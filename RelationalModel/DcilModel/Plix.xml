@@ -3,4 +3,5 @@
 	<plixLoader:sourceFile file="DcilModel.AttachRules.xml" transformFile="..\..\ORMModel\Transforms\AttachRulesGenerator.xslt"/>
 	<plixLoader:sourceFile file="DcilModel.SerializationExtensions.xml" transformFile="..\..\ORMModel\Transforms\SerializationExtensions.xslt"/>
 	<plixLoader:sourceFile file="DcilModel.SurveyQuestionProvider.xml" transformFile="..\..\ORMModel\Transforms\SurveyQuestionProvider.xslt"/>
+	<plixLoader:sourceFile file="Resources\ResourceStringsGenerator.xml" transformFile="..\..\ORMModel\Transforms\ResourceStringsGenerator.xslt"/>
 </plixLoader:sourceFiles>

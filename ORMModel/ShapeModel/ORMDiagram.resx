@@ -352,7 +352,7 @@
   </data>
   <data name="FactEditorToolWindow.Caption">
     <value xml:space="preserve">ORM Fact Editor</value>
-    <comment xml:space="preserve">This is the caption that appears in the title bar of the Fact Editor tool window.</comment>
+    <comment xml:space="preserve">The caption of the Fact Editor Tool Window.</comment>
   </data>
   <data name="FontsAndColors.ActiveConstraintColor">
     <value xml:space="preserve">Constraint (Activated)</value>
@@ -424,7 +424,7 @@
   </data>
   <data name="AddInternalUniquenessConstraint.TransactionName">
     <value xml:space="preserve">Add Internal Uniqueness Constraint</value>
-    <comment xml:space="preserve">The name given to the transaction used when adding an internal uniqueness constraint.</comment>
+    <comment xml:space="preserve">The name given to the transaction used when adding an internal uniqueness constraint to correct the FactTypeRequiresInternalUniquenessConstraint error.</comment>
   </data>
   <data name="DropShape.TransactionName">
     <value xml:space="preserve">Add Shape</value>
@@ -472,7 +472,7 @@
   </data>
   <data name="MoveRoleOrder.TransactionName">
     <value xml:space="preserve">Move Role Order</value>
-    <comment xml:space="preserve">The transaction name used for moving a role order in a fact type shape.</comment>
+    <comment xml:space="preserve">The transaction name used for moving a role order in a fact type shape. The text appears in the undo dropdown in the VS IDE.</comment>
   </data>
   <data name="MoveRoleSequenceDown.TransactionName">
     <value xml:space="preserve">Move Role Sequence Down</value>
@@ -668,7 +668,7 @@
   </data>
   <data name="Package.OfficialName">
     <value xml:space="preserve">Neumont ORM Architect</value>
-    <comment xml:space="preserve">The official name of the package</comment>
+    <comment xml:space="preserve">The official name of the package used in the About dialog</comment>
   </data>
   <data name="Package.ProductDetails">
     <value xml:space="preserve">NORMA - Neumont Object-Role Modeling Architect</value>
@@ -692,7 +692,7 @@
   </data>
   <data name="ReverseRoleOrder.TransactionName">
     <value xml:space="preserve">Reverse Role Order</value>
-    <comment xml:space="preserve">The transaction name used for reversing the role order in a fact type shape.</comment>
+    <comment xml:space="preserve">The transaction name used for reversing the role order in a fact type shape. The text appears in the undo dropdown in the VS IDE.</comment>
   </data>
   <data name="RoleConnectAction.TransactionName">
     <value xml:space="preserve">Set Role Player</value>

@@ -6,4 +6,5 @@
 	<plixLoader:sourceFile file="ObjectModel\ORMCore.SerializationExtensions.xml" transformFile="Transforms\SerializationExtensions.xslt"/>
 	<plixLoader:sourceFile file="ShapeModel\ORMShape.SerializationExtensions.xml" transformFile="Transforms\SerializationExtensions.xslt"/>
 	<plixLoader:sourceFile file="ObjectModel\ORMCore.SurveyQuestionProvider.xml" transformFile="Transforms\SurveyQuestionProvider.xslt"/>
+	<plixLoader:sourceFile file="Resources\ResourceStringsGenerator.xml" transformFile="Transforms\ResourceStringsGenerator.xslt"/>
 </plixLoader:sourceFiles>

@@ -130,6 +130,10 @@
       <Generator>NUPlixLoader</Generator>
       <LastGenOutput>DcilModel.SurveyQuestionProvider.cs</LastGenOutput>
     </Content>
+    <None Include="Resources\ResourceStringsGenerator.xml">
+      <Generator>NUPlixLoader</Generator>
+      <LastGenOutput>ResourceStringsGenerator.cs</LastGenOutput>
+    </None>
     <Compile Include="DcilModel.SerializationExtensions.cs">
       <AutoGen>True</AutoGen>
       <DependentUpon>DcilModel.SerializationExtensions.xml</DependentUpon>
@@ -143,6 +147,11 @@
     <Compile Include="Catalog.cs" />
     <Compile Include="Design\ConceptualDatabaseModelElementTypeDescriptor.cs" />
     <Compile Include="Resources.cs" />
+    <Compile Include="Resources\ResourceStrings.cs" />
+    <Compile Include="Resources\ResourceStringsGenerator.cs">
+      <AutoGen>True</AutoGen>
+      <DependentUpon>ResourceStringsGenerator.xml</DependentUpon>
+    </Compile>
     <Compile Include="SurveyImplementations\SurveyQuestions.cs" />
     <EmbeddedResource Include="Catalog.resx">
       <DependentUpon>Catalog.cs</DependentUpon>
@@ -151,9 +160,6 @@
   </ItemGroup>
   <ItemGroup>
     <Service Include="{B4F97281-0DBD-4835-9ED8-7DFB966E87FF}" />
-  </ItemGroup>
-  <ItemGroup>
-    <Folder Include="Resources\" />
   </ItemGroup>
   <Import Project="$(MSBuildBinPath)\Microsoft.CSharp.targets" />
   <Import Project="$(MSBuildExtensionsPath)\Neumont\Neumont.Build.targets" />

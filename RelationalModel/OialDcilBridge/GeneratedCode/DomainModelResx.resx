@@ -125,6 +125,94 @@
     <value>(Preliminary) ORMAbstraction/ConceptualDatabase Bridge</value>
     <comment>DisplayName for DslLibrary &apos;ORMAbstractionToConceptualDatabaseBridge&apos;</comment>
   </data>
+  <data name="Neumont.Tools.ORMAbstractionToConceptualDatabaseBridge.MappingCustomizationModel.Description" xml:space="preserve">
+    <value></value>
+    <comment>Description for DomainClass &apos;MappingCustomizationModel&apos;</comment>
+  </data>
+  <data name="Neumont.Tools.ORMAbstractionToConceptualDatabaseBridge.MappingCustomizationModel.DisplayName" xml:space="preserve">
+    <value>MappingCustomizationModel</value>
+    <comment>DisplayName for DomainClass &apos;MappingCustomizationModel&apos;</comment>
+  </data>
+  <data name="Neumont.Tools.ORMAbstractionToConceptualDatabaseBridge.AssimilationMapping.Description" xml:space="preserve">
+    <value></value>
+    <comment>Description for DomainClass &apos;AssimilationMapping&apos;</comment>
+  </data>
+  <data name="Neumont.Tools.ORMAbstractionToConceptualDatabaseBridge.AssimilationMapping.DisplayName" xml:space="preserve">
+    <value>AssimilationMapping</value>
+    <comment>DisplayName for DomainClass &apos;AssimilationMapping&apos;</comment>
+  </data>
+  <data name="Neumont.Tools.ORMAbstractionToConceptualDatabaseBridge.AssimilationMapping/AbsorptionChoice.Description" xml:space="preserve">
+    <value>Description for Neumont.Tools.ORMAbstractionToConceptualDatabaseBridge.AssimilationMapping.AbsorptionChoice</value>
+    <comment>Description for DomainProperty &apos;AbsorptionChoice&apos; on DomainClass &apos;AssimilationMapping&apos;</comment>
+  </data>
+  <data name="Neumont.Tools.ORMAbstractionToConceptualDatabaseBridge.AssimilationMapping/AbsorptionChoice.DisplayName" xml:space="preserve">
+    <value>AbsorptionChoice</value>
+    <comment>DisplayName for DomainProperty &apos;AbsorptionChoice&apos; on DomainClass &apos;AssimilationMapping&apos;</comment>
+  </data>
+  <data name="Neumont.Tools.ORMAbstractionToConceptualDatabaseBridge.AssimilationMappingCustomizesAssimilation.Description" xml:space="preserve">
+    <value>Description for Neumont.Tools.ORMAbstractionToConceptualDatabaseBridge.AssimilationMappingCustomizesAssimilation</value>
+    <comment>Description for DomainClass &apos;AssimilationMappingCustomizesAssimilation&apos;</comment>
+  </data>
+  <data name="Neumont.Tools.ORMAbstractionToConceptualDatabaseBridge.AssimilationMappingCustomizesAssimilation.DisplayName" xml:space="preserve">
+    <value>Assimilation Mapping Customizes Assimilation</value>
+    <comment>DisplayName for DomainClass &apos;AssimilationMappingCustomizesAssimilation&apos;</comment>
+  </data>
+  <data name="Neumont.Tools.ORMAbstractionToConceptualDatabaseBridge.AssimilationMappingCustomizesAssimilation/AssimilationMapping.Description" xml:space="preserve">
+    <value></value>
+    <comment>Description for DomainRole &apos;AssimilationMapping&apos; on DomainRelationship &apos;AssimilationMappingCustomizesAssimilation&apos;</comment>
+  </data>
+  <data name="Neumont.Tools.ORMAbstractionToConceptualDatabaseBridge.AssimilationMappingCustomizesAssimilation/AssimilationMapping.DisplayName" xml:space="preserve">
+    <value>Assimilation Mapping</value>
+    <comment>DisplayName for DomainRole &apos;AssimilationMapping&apos; on DomainRelationship &apos;AssimilationMappingCustomizesAssimilation&apos;</comment>
+  </data>
+  <data name="Neumont.Tools.ORMAbstractionToConceptualDatabaseBridge.AssimilationMappingCustomizesAssimilation/AssimilationMapping.PropertyDisplayName" xml:space="preserve">
+    <value>Assimilation</value>
+    <comment>PropertyDisplayName for DomainRole &apos;AssimilationMapping&apos; on DomainRelationship &apos;AssimilationMappingCustomizesAssimilation&apos;</comment>
+  </data>
+  <data name="Neumont.Tools.ORMAbstractionToConceptualDatabaseBridge.AssimilationMappingCustomizesAssimilation/Assimilation.Description" xml:space="preserve">
+    <value></value>
+    <comment>Description for DomainRole &apos;Assimilation&apos; on DomainRelationship &apos;AssimilationMappingCustomizesAssimilation&apos;</comment>
+  </data>
+  <data name="Neumont.Tools.ORMAbstractionToConceptualDatabaseBridge.AssimilationMappingCustomizesAssimilation/Assimilation.DisplayName" xml:space="preserve">
+    <value>Assimilation</value>
+    <comment>DisplayName for DomainRole &apos;Assimilation&apos; on DomainRelationship &apos;AssimilationMappingCustomizesAssimilation&apos;</comment>
+  </data>
+  <data name="Neumont.Tools.ORMAbstractionToConceptualDatabaseBridge.AssimilationMappingCustomizesAssimilation/Assimilation.PropertyDisplayName" xml:space="preserve">
+    <value>Assimilation Mapping</value>
+    <comment>PropertyDisplayName for DomainRole &apos;Assimilation&apos; on DomainRelationship &apos;AssimilationMappingCustomizesAssimilation&apos;</comment>
+  </data>
+  <data name="Neumont.Tools.ORMAbstractionToConceptualDatabaseBridge.MappingCustomizationModelHasAssimilationMapping.Description" xml:space="preserve">
+    <value>Description for Neumont.Tools.ORMAbstractionToConceptualDatabaseBridge.MappingCustomizationModelHasAssimilationMapping</value>
+    <comment>Description for DomainClass &apos;MappingCustomizationModelHasAssimilationMapping&apos;</comment>
+  </data>
+  <data name="Neumont.Tools.ORMAbstractionToConceptualDatabaseBridge.MappingCustomizationModelHasAssimilationMapping.DisplayName" xml:space="preserve">
+    <value>Mapping Customization Model Has Assimilation Mapping</value>
+    <comment>DisplayName for DomainClass &apos;MappingCustomizationModelHasAssimilationMapping&apos;</comment>
+  </data>
+  <data name="Neumont.Tools.ORMAbstractionToConceptualDatabaseBridge.MappingCustomizationModelHasAssimilationMapping/Model.Description" xml:space="preserve">
+    <value></value>
+    <comment>Description for DomainRole &apos;Model&apos; on DomainRelationship &apos;MappingCustomizationModelHasAssimilationMapping&apos;</comment>
+  </data>
+  <data name="Neumont.Tools.ORMAbstractionToConceptualDatabaseBridge.MappingCustomizationModelHasAssimilationMapping/Model.DisplayName" xml:space="preserve">
+    <value>Model</value>
+    <comment>DisplayName for DomainRole &apos;Model&apos; on DomainRelationship &apos;MappingCustomizationModelHasAssimilationMapping&apos;</comment>
+  </data>
+  <data name="Neumont.Tools.ORMAbstractionToConceptualDatabaseBridge.MappingCustomizationModelHasAssimilationMapping/Model.PropertyDisplayName" xml:space="preserve">
+    <value>Assimilation Mapping Collection</value>
+    <comment>PropertyDisplayName for DomainRole &apos;Model&apos; on DomainRelationship &apos;MappingCustomizationModelHasAssimilationMapping&apos;</comment>
+  </data>
+  <data name="Neumont.Tools.ORMAbstractionToConceptualDatabaseBridge.MappingCustomizationModelHasAssimilationMapping/AssimilationMapping.Description" xml:space="preserve">
+    <value></value>
+    <comment>Description for DomainRole &apos;AssimilationMapping&apos; on DomainRelationship &apos;MappingCustomizationModelHasAssimilationMapping&apos;</comment>
+  </data>
+  <data name="Neumont.Tools.ORMAbstractionToConceptualDatabaseBridge.MappingCustomizationModelHasAssimilationMapping/AssimilationMapping.DisplayName" xml:space="preserve">
+    <value>Assimilation Mapping</value>
+    <comment>DisplayName for DomainRole &apos;AssimilationMapping&apos; on DomainRelationship &apos;MappingCustomizationModelHasAssimilationMapping&apos;</comment>
+  </data>
+  <data name="Neumont.Tools.ORMAbstractionToConceptualDatabaseBridge.MappingCustomizationModelHasAssimilationMapping/AssimilationMapping.PropertyDisplayName" xml:space="preserve">
+    <value>Model</value>
+    <comment>PropertyDisplayName for DomainRole &apos;AssimilationMapping&apos; on DomainRelationship &apos;MappingCustomizationModelHasAssimilationMapping&apos;</comment>
+  </data>
   <data name="Neumont.Tools.ORMAbstractionToConceptualDatabaseBridge.SchemaIsForAbstractionModel.Description" xml:space="preserve">
     <value>Description for Neumont.Tools.ORMAbstractionToConceptualDatabaseBridge.SchemaIsForAbstractionModel</value>
     <comment>Description for DomainClass &apos;SchemaIsForAbstractionModel&apos;</comment>
@@ -316,6 +404,30 @@
   <data name="Neumont.Tools.ORMAbstractionToConceptualDatabaseBridge.DomainIsForInformationTypeFormat/InformationTypeFormat.PropertyDisplayName" xml:space="preserve">
     <value>Domain</value>
     <comment>PropertyDisplayName for DomainRole &apos;InformationTypeFormat&apos; on DomainRelationship &apos;DomainIsForInformationTypeFormat&apos;</comment>
+  </data>
+  <data name="Neumont.Tools.ORMAbstractionToConceptualDatabaseBridge.AssimilationAbsorptionChoice/Absorb.DisplayName" xml:space="preserve">
+    <value>Absorb</value>
+    <comment>Display name for EnumerationLiteral &apos;Absorb&apos; on DomainEnumeration &apos;AssimilationAbsorptionChoice&apos;</comment>
+  </data>
+  <data name="Neumont.Tools.ORMAbstractionToConceptualDatabaseBridge.AssimilationAbsorptionChoice/Absorb.Description" xml:space="preserve">
+    <value>All assimilations are pulled into the same table as the supertype.</value>
+    <comment>Description for EnumerationLiteral &apos;Absorb&apos; on DomainEnumeration &apos;AssimilationAbsorptionChoice&apos;</comment>
+  </data>
+  <data name="Neumont.Tools.ORMAbstractionToConceptualDatabaseBridge.AssimilationAbsorptionChoice/Partition.DisplayName" xml:space="preserve">
+    <value>Partition</value>
+    <comment>Display name for EnumerationLiteral &apos;Partition&apos; on DomainEnumeration &apos;AssimilationAbsorptionChoice&apos;</comment>
+  </data>
+  <data name="Neumont.Tools.ORMAbstractionToConceptualDatabaseBridge.AssimilationAbsorptionChoice/Partition.Description" xml:space="preserve">
+    <value>Each subtype is given its own table. Data from the supertype is duplicated.</value>
+    <comment>Description for EnumerationLiteral &apos;Partition&apos; on DomainEnumeration &apos;AssimilationAbsorptionChoice&apos;</comment>
+  </data>
+  <data name="Neumont.Tools.ORMAbstractionToConceptualDatabaseBridge.AssimilationAbsorptionChoice/Separate.DisplayName" xml:space="preserve">
+    <value>Separate</value>
+    <comment>Display name for EnumerationLiteral &apos;Separate&apos; on DomainEnumeration &apos;AssimilationAbsorptionChoice&apos;</comment>
+  </data>
+  <data name="Neumont.Tools.ORMAbstractionToConceptualDatabaseBridge.AssimilationAbsorptionChoice/Separate.Description" xml:space="preserve">
+    <value>Each subtype is given its own table, data from the supertype is stored in a separate referenced table.</value>
+    <comment>Description for EnumerationLiteral &apos;Separate&apos; on DomainEnumeration &apos;AssimilationAbsorptionChoice&apos;</comment>
   </data>
   <data name="AmbiguousSchema" xml:space="preserve">
     <value>More than one schema found for target namespace &apos;{0}&apos;, use the first one at &apos;{1}&apos;.</value>

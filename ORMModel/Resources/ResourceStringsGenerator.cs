@@ -364,7 +364,7 @@ namespace Neumont.Tools.ORM
 				return ResourceStrings.GetString(ResourceManagers.Model, "SubtypeFact.ElementNameFormat");
 			}
 		}
-		/// <summary>The inverse reading for the predicate created by creating a sub type relationship.</summary>
+		/// <summary>The inverse instance reading for the predicate created by creating a sub type relationship.</summary>
 		public static string SubtypeFactPredicateInverseReading
 		{
 			get
@@ -372,7 +372,7 @@ namespace Neumont.Tools.ORM
 				return ResourceStrings.GetString(ResourceManagers.Model, "SubtypeFact.PredicateInverseReading");
 			}
 		}
-		/// <summary>The reading for the forward predicate created by creating a subtype relationship.</summary>
+		/// <summary>The instance reading for the forward predicate created by creating a subtype relationship.</summary>
 		public static string SubtypeFactPredicateReading
 		{
 			get
@@ -388,7 +388,7 @@ namespace Neumont.Tools.ORM
 				return ResourceStrings.GetString(ResourceManagers.Model, "ImpliedFactType.PredicateInverseReading");
 			}
 		}
-		/// <summary>The reading for the predicate created implicitly via objectification. There is no attempt made to keep the predicate readings unique in ring situations.We allow the model error to populate instead of generating an articial unique reading.</summary>
+		/// <summary>The reading for the predicate created implicitly via objectification.There is no attempt made to keep the predicate readings unique in ring situations.We allow the model error to populate instead of generating an articial unique reading.</summary>
 		public static string ImpliedFactTypePredicateReading
 		{
 			get
@@ -404,7 +404,7 @@ namespace Neumont.Tools.ORM
 				return ResourceStrings.GetString(ResourceManagers.Model, "SubtypeFact.ComponentNameFormat");
 			}
 		}
-		/// <summary>The name given to the transaction used when adding an internal uniqueness constraint to correct the error of lacking one.</summary>
+		/// <summary>The name given to the transaction used when adding an internal uniqueness constraint to correct the FactTypeRequiresInternalUniquenessConstraint error.</summary>
 		public static string AddInternalConstraintTransactionName
 		{
 			get
@@ -428,7 +428,7 @@ namespace Neumont.Tools.ORM
 				return ResourceStrings.GetString(ResourceManagers.Diagram, "UnobjectifyFactType.TransactionName");
 			}
 		}
-		/// <summary>The transaction name used by ExclusiveOrCoupler command.</summary>
+		/// <summary>The transaction name used by ExclusiveOrCoupler command. The text appears in the undo dropdown in the VS IDE.</summary>
 		public static string ExclusiveOrCouplerTransactionName
 		{
 			get
@@ -436,7 +436,7 @@ namespace Neumont.Tools.ORM
 				return ResourceStrings.GetString(ResourceManagers.Diagram, "ExclusiveOrCoupler.TransactionName");
 			}
 		}
-		/// <summary>The transaction name used by ExclusiveOrDecoupler command.</summary>
+		/// <summary>The transaction name used by ExclusiveOrDecoupler command. The text appears in the undo dropdown in the VS IDE.</summary>
 		public static string ExclusiveOrDecouplerTransactionName
 		{
 			get
@@ -452,7 +452,7 @@ namespace Neumont.Tools.ORM
 				return ResourceStrings.GetString(ResourceManagers.Diagram, "DropShape.TransactionName");
 			}
 		}
-		/// <summary>The instructions shown when creating an external constraint</summary>
+		/// <summary>The text shown to explain how to hook up an external constraint to its associated roles.</summary>
 		public static string ExternalConstraintConnectActionInstructions
 		{
 			get
@@ -468,7 +468,7 @@ namespace Neumont.Tools.ORM
 				return ResourceStrings.GetString(ResourceManagers.Diagram, "ExternalConstraintConnectAction.TransactionName");
 			}
 		}
-		/// <summary>The string used to represent a greater than symbol on a frequency constraint.</summary>
+		/// <summary>The format to be used in frequency constraints for a minimum value (eg: Minimum of {0}).</summary>
 		public static string FrequencyConstraintMinimumFormatString
 		{
 			get
@@ -484,7 +484,7 @@ namespace Neumont.Tools.ORM
 				return ResourceStrings.GetString(ResourceManagers.Diagram, "FrequencyConstraint.MinimumOne.FormatString");
 			}
 		}
-		/// <summary>The string used to represent 'between' on a frequency constraint (eg: 'Between 1 and 5' would be represented as '1[this string]5'.</summary>
+		/// <summary>The format to be used in frequency constraints to represent a range of values (eg: Between {0} and {1}).</summary>
 		public static string FrequencyConstraintBetweenFormatString
 		{
 			get
@@ -492,7 +492,7 @@ namespace Neumont.Tools.ORM
 				return ResourceStrings.GetString(ResourceManagers.Diagram, "FrequencyConstraint.Between.FormatString");
 			}
 		}
-		/// <summary>The instructions shown when creating an internal uniqueness constraint</summary>
+		/// <summary>The text shown to explain how to hook up an internal uniqueness constraint to its associated roles.</summary>
 		public static string InternalUniquenessConstraintConnectActionInstructions
 		{
 			get
@@ -532,7 +532,7 @@ namespace Neumont.Tools.ORM
 				return ResourceStrings.GetString(ResourceManagers.Diagram, "SubtypeConnectAction.TransactionName");
 			}
 		}
-		/// <summary>The transaction name used by the model note connect action. The text appears in the undo dropdown in the VS IDE.</summary>
+		/// <summary>The transaction name used by the modelnote connect action. The text appears in the undo dropdown in the VS IDE.</summary>
 		public static string ModelNoteConnectActionTransactionName
 		{
 			get
@@ -596,7 +596,7 @@ namespace Neumont.Tools.ORM
 				return ResourceStrings.GetString(ResourceManagers.Diagram, "ReverseRoleOrder.TransactionName");
 			}
 		}
-		/// <summary>The transaction name used for moving a role order in a fact type. The text appears in the undo dropdown in the VS IDE.</summary>
+		/// <summary>The transaction name used for moving a role order in a fact type shape. The text appears in the undo dropdown in the VS IDE.</summary>
 		public static string MoveRoleOrderTransactionName
 		{
 			get
@@ -612,7 +612,7 @@ namespace Neumont.Tools.ORM
 				return ResourceStrings.GetString(ResourceManagers.Diagram, "MoveRoleSequenceDown.TransactionName");
 			}
 		}
-		/// <summary>The transaction name used for moving a role sequence up in a multi column external uniqueness constraint. The text appears in the undo dropdown in the VS IDE. </summary>
+		/// <summary>The transaction name used for moving a role sequence up in a multi column external uniqueness constraint. The text appears in the undo dropdown in the VS IDE.</summary>
 		public static string MoveRoleSequenceUpTransactionName
 		{
 			get
@@ -628,7 +628,7 @@ namespace Neumont.Tools.ORM
 				return ResourceStrings.GetString(ResourceManagers.Diagram, "InterpretFactEditorLine.TransactionName");
 			}
 		}
-		/// <summary>The window title for the model browser tool window</summary>
+		/// <summary>The window title for the ORM model browser window</summary>
 		public static string ModelBrowserWindowTitle
 		{
 			get
@@ -660,7 +660,7 @@ namespace Neumont.Tools.ORM
 				return ResourceStrings.GetString(ResourceManagers.Model, "ModelException.Objectification.ImpliedFactTypesCannotBeObjectified");
 			}
 		}
-		/// <summary>Exception message when an attempt is made to change an explicit Objectification to implied when it does not match the implied objectification pattern or is not independent or plays a Role in a non-implied FactType.</summary>
+		/// <summary>Exception message when an attempt is made to change an explicit Objectification to implied when it does not match the implied objectification pattern or is not independent (if possible) or plays a Role in a non-implied FactType.</summary>
 		public static string ModelExceptionObjectificationImpliedMustBeImpliedAndIndependentAndCannotPlayRoleInNonImpliedFact
 		{
 			get
@@ -676,7 +676,7 @@ namespace Neumont.Tools.ORM
 				return ResourceStrings.GetString(ResourceManagers.Model, "ModelException.Objectification.ImpliedObjectificationNotAllowed");
 			}
 		}
-		/// <summary>The error message to return when an attempt is made to change the IsPrimary property of a reading to false.</summary>
+		/// <summary>Exception message output when an attempt is made to set the IsPrimaryForReadingOrder or IsPrimaryForFactType properties of a Reading to false.</summary>
 		public static string ModelExceptionReadingIsPrimaryToFalse
 		{
 			get
@@ -684,7 +684,7 @@ namespace Neumont.Tools.ORM
 				return ResourceStrings.GetString(ResourceManagers.Model, "ModelException.Reading.IsPrimary.ReadOnlyWhenFalse");
 			}
 		}
-		/// <summary>The error message that is returned when attempting to add a new reading to a fact and the text is not valid.  It needs to have a number of place holders equal to the number of roles in the fact and they need to have their positions identified by number using the replacement syntax of String.Format. For example: "{0} has {1}"</summary>
+		/// <summary>The error message that is returned when attempting to add a new reading to a fact and the text is not valid. Validate reading text must have the number of placeholders equal to the number of roles in the FactType. The replacement fields must be ordered and identified using String.Format replacement syntax. For example: "{0} has {1}".</summary>
 		public static string ModelExceptionFactAddReadingInvalidReadingText
 		{
 			get
@@ -700,7 +700,7 @@ namespace Neumont.Tools.ORM
 				return ResourceStrings.GetString(ResourceManagers.Model, "ModelError.Constraint.ImplicationError.Text");
 			}
 		}
-		/// <summary>Model validation error text when an equality constraint or subset constraint is put on roles that are mandatory.</summary>
+		/// <summary>Model validation error text when an equality or subset constraint is put on roles that are mandatory.</summary>
 		public static string ModelErrorConstraintImplicationEqualityOrSubsetMandatory
 		{
 			get
@@ -724,7 +724,7 @@ namespace Neumont.Tools.ORM
 				return ResourceStrings.GetString(ResourceManagers.Model, "ModelError.Constraint.ContradictionError.Text");
 			}
 		}
-		/// <summary>Model validation error shown when too few role sequences are defined for a constraint. This is a frequent occurrence as external constraints are easily created in this state.</summary>
+		/// <summary>Model validation error text when too few role sequences are specified for a constraint. This is a common condition when constraints are being created.</summary>
 		public static string ModelErrorConstraintHasTooFewRoleSequencesText
 		{
 			get
@@ -740,7 +740,7 @@ namespace Neumont.Tools.ORM
 				return ResourceStrings.GetString(ResourceManagers.Model, "ModelError.Constraint.FrequencyConstraintContradictsInternalUniquenessConstraintError.Text");
 			}
 		}
-		/// <summary>Model validation error shown when too many role sequences are defined for a constraint. This is an infrequent occurrence which should not be attainable via the UI</summary>
+		/// <summary>Model validation error text when too many role sequences are specified for a constraint. This is an uncommon condition that should only occur with a hand edit to a model file.</summary>
 		public static string ModelErrorConstraintHasTooManyRoleSequencesText
 		{
 			get
@@ -756,7 +756,7 @@ namespace Neumont.Tools.ORM
 				return ResourceStrings.GetString(ResourceManagers.Model, "ModelError.Constraint.ExternalConstraintArityMismatch.Text");
 			}
 		}
-		/// <summary>Model validation error shown when multiple constraints have the same name. This is an uncommon condition that should only occur with a hand edit to a model file.</summary>
+		/// <summary>Model validation error text used when multiple constraints with the same name are loaded into a model. Field 0 is the model name, field 1 is the element name.This is an uncommon condition that should only occur with a hand edit to a model file.</summary>
 		public static string ModelErrorModelHasDuplicateConstraintNames
 		{
 			get
@@ -764,7 +764,7 @@ namespace Neumont.Tools.ORM
 				return ResourceStrings.GetString(ResourceManagers.Model, "ModelError.Model.DuplicateConstraintNames.Text");
 			}
 		}
-		/// <summary>Model validation error shown when multiple object types have the same name. This is an uncommon condition that should only occur with a hand edit to a model file.</summary>
+		/// <summary>Model validation error text used when multiple object types with the same name are loaded into a model.Field 0 is the model name, field 1 is the element name.This is an uncommon condition that should only occur with a hand edit to a model file.</summary>
 		public static string ModelErrorModelHasDuplicateObjectTypeNames
 		{
 			get
@@ -772,7 +772,7 @@ namespace Neumont.Tools.ORM
 				return ResourceStrings.GetString(ResourceManagers.Model, "ModelError.Model.DuplicateObjectTypeNames.Text");
 			}
 		}
-		/// <summary>Model validation error shown when a population violates a uniqueness constraint and the role is named.</summary>
+		/// <summary>Model validation error shown when a population violates a uniqueness constraint and its role is named.  Field 0 is the name of the object type, field 1 is the string representation of the instance, field 2 is the model name, field 3 is the role name.</summary>
 		public static string ModelErrorModelHasPopulationUniquenessErrorWithNamedRole
 		{
 			get
@@ -780,7 +780,7 @@ namespace Neumont.Tools.ORM
 				return ResourceStrings.GetString(ResourceManagers.Model, "ModelError.Model.PopulationUniquenessError.Role.Text");
 			}
 		}
-		/// <summary>Model validation error shown when a population violates a uniqueness constraint and the role is unnamed.</summary>
+		/// <summary>Model validation error shown when a population violates a uniqueness constraint and its role is unnamed.  Field 0 is the name of the object type, field 1 is the string representation of the instance, field 2 is the model name, field 3 is the facttype name.</summary>
 		public static string ModelErrorModelHasPopulationUniquenessErrorWithUnnamedRole
 		{
 			get
@@ -788,7 +788,7 @@ namespace Neumont.Tools.ORM
 				return ResourceStrings.GetString(ResourceManagers.Model, "ModelError.Model.PopulationUniquenessError.FactType.Text");
 			}
 		}
-		/// <summary>Model validation error shown when a population violates a mandatory constraint.</summary>
+		/// <summary>Model validation error shown when a population violates a mandatory constraint.  Field 0 is the derived name of the instance, field 1 is the model name, field 2 is the facttype name.</summary>
 		public static string ModelErrorModelHasPopulationMandatoryError
 		{
 			get
@@ -796,7 +796,7 @@ namespace Neumont.Tools.ORM
 				return ResourceStrings.GetString(ResourceManagers.Model, "ModelError.Model.PopulationMandatoryError.Text");
 			}
 		}
-		/// <summary>Role data type does not match max inclusion</summary>
+		/// <summary>Role data type does not match max inclusion. {0}=model {1}=facttype {2}=role number.</summary>
 		public static string ModelErrorRoleValueRangeMaxValueMismatchError
 		{
 			get
@@ -804,7 +804,7 @@ namespace Neumont.Tools.ORM
 				return ResourceStrings.GetString(ResourceManagers.Model, "ModelError.ValueRange.MaxValueMismatchError.Role.Message");
 			}
 		}
-		/// <summary>Role data type does not match min inclusion</summary>
+		/// <summary>Role data type does not match min inclusion. {0}=model {1}=facttype {2}=role number.</summary>
 		public static string ModelErrorRoleValueRangeMinValueMismatchError
 		{
 			get
@@ -812,7 +812,7 @@ namespace Neumont.Tools.ORM
 				return ResourceStrings.GetString(ResourceManagers.Model, "ModelError.ValueRange.MinValueMismatchError.Role.Message");
 			}
 		}
-		/// <summary>Data type does not match max inclusion</summary>
+		/// <summary>data type does not match max inclusion. {0}=valuetype {1}=model.</summary>
 		public static string ModelErrorValueRangeMaxValueMismatchError
 		{
 			get
@@ -820,7 +820,7 @@ namespace Neumont.Tools.ORM
 				return ResourceStrings.GetString(ResourceManagers.Model, "ModelError.ValueRange.MaxValueMismatchError.ValueType.Message");
 			}
 		}
-		/// <summary>Data type does not match min inclusion</summary>
+		/// <summary>data type does not match min inclusion. {0}=valuetype {1}=model.</summary>
 		public static string ModelErrorValueRangeMinValueMismatchError
 		{
 			get
@@ -828,7 +828,7 @@ namespace Neumont.Tools.ORM
 				return ResourceStrings.GetString(ResourceManagers.Model, "ModelError.ValueRange.MinValueMismatchError.ValueType.Message");
 			}
 		}
-		/// <summary>ValueRangeOverlapError text for a ValueTypeConstraint. Replace valuetype, model.</summary>
+		/// <summary>ValueRangeOverlapError text for a ValueTypeConstraint. {0}=valuetype {1}=model.</summary>
 		public static string ModelErrorValueTypeValueRangeOverlapError
 		{
 			get
@@ -836,7 +836,7 @@ namespace Neumont.Tools.ORM
 				return ResourceStrings.GetString(ResourceManagers.Model, "ModelError.ValueConstraint.ValueRangeOverlapError.ValueType.Message");
 			}
 		}
-		/// <summary>ValueRangeOverlapError text for a RoleValueConstraint. Replace model,fact,role number.</summary>
+		/// <summary>ValueRangeOverlapError text for a RoleValueConstraint. {0}=model {1}=facttype {2}=role number.</summary>
 		public static string ModelErrorRoleValueRangeOverlapError
 		{
 			get
@@ -908,7 +908,7 @@ namespace Neumont.Tools.ORM
 				return ResourceStrings.GetString(ResourceManagers.Model, "ModelException.ObjectType.EnforceIsIndependentPattern");
 			}
 		}
-		/// <summary>Exception message when an attempt is made to set\ both a primary identifier and a value type on the same object type.</summary>
+		/// <summary>Exception message when an attempt is made to set both a primary identifier and a value type on the same object type.</summary>
 		public static string ModelExceptionEnforcePreferredIdentifierForEntityType
 		{
 			get
@@ -988,7 +988,7 @@ namespace Neumont.Tools.ORM
 				return ResourceStrings.GetString(ResourceManagers.Model, "Verbalization.SnippetsTypeDescription");
 			}
 		}
-		/// <summary>The description for the default verbalization report snippets for the core model.</summary>
+		/// <summary>The description for the default verbalization report snippets.</summary>
 		public static string VerbalizationReportSnippetsDefaultDescription
 		{
 			get
@@ -996,7 +996,7 @@ namespace Neumont.Tools.ORM
 				return ResourceStrings.GetString(ResourceManagers.Model, "Verbalization.ReportSnippetsDefaultDescription");
 			}
 		}
-		/// <summary>The description for the verbalization report snippets associated with the core model.</summary>
+		/// <summary>The description for the snippets associated with the verbalization reports.</summary>
 		public static string VerbalizationReportSnippetsTypeDescription
 		{
 			get
@@ -1108,7 +1108,7 @@ namespace Neumont.Tools.ORM
 				return ResourceStrings.GetString(ResourceManagers.Diagram, "Command.DeleteModelNote.Text");
 			}
 		}
-		/// <summary>This text appears in the edit menu when references to model notes are selected in the diagram.</summary>
+		/// <summary>This text appears in the edit menu when reference to model notes are selected in the diagram.</summary>
 		public static string CommandDeleteModelNoteReferenceText
 		{
 			get
@@ -1172,7 +1172,7 @@ namespace Neumont.Tools.ORM
 				return ResourceStrings.GetString(ResourceManagers.Diagram, "Command.NextOnThisDiagram.Text");
 			}
 		}
-		/// <summary>Text that appears in the headers of the reading editor tool window for the reading text Text that appears in the headers of the reading editor tool window for the reading text</summary>
+		/// <summary>The text that will be displayed in the column header of the reading list in the reading editor tool window.</summary>
 		public static string ModelReadingEditorListColumnHeaderReadingText
 		{
 			get
@@ -1180,7 +1180,7 @@ namespace Neumont.Tools.ORM
 				return ResourceStrings.GetString(ResourceManagers.Model, "ModelReadingEditor.ListColumnHeader.ReadingText");
 			}
 		}
-		/// <summary>Text that appears in the header of the IsPrimary column in the reading editor tool window.</summary>
+		/// <summary>Text used for IsPrimary column header in the reading editor tool window.</summary>
 		public static string ModelReadingEditorListColumnHeaderIsPrimary
 		{
 			get
@@ -1188,7 +1188,7 @@ namespace Neumont.Tools.ORM
 				return ResourceStrings.GetString(ResourceManagers.Model, "ModelReadingEditor.ListColumnHeader.IsPrimary");
 			}
 		}
-		/// <summary>The text to place in the node of the tree in the readings editor that shows all readings for the fact.</summary>
+		/// <summary>Text to use for the display All readings node in the readings editor tool window.</summary>
 		public static string ModelReadingEditorAllReadingsNodeName
 		{
 			get
@@ -1196,7 +1196,7 @@ namespace Neumont.Tools.ORM
 				return ResourceStrings.GetString(ResourceManagers.Model, "ModelReadingEditor.AllReadingsNodeName");
 			}
 		}
-		/// <summary>The text to display in the readings editor when a role has no roleplayer.</summary>
+		/// <summary>Text to display in the reading editor when the role has no roleplayer to substitute into the text.</summary>
 		public static string ModelReadingEditorMissingRolePlayerText
 		{
 			get
@@ -1204,7 +1204,7 @@ namespace Neumont.Tools.ORM
 				return ResourceStrings.GetString(ResourceManagers.Model, "ModelReadingEditor.MissingRolePlayerText");
 			}
 		}
-		/// <summary>The text that will be used for the new reading item in the readings list of the reading editor tool window.</summary>
+		/// <summary>Text to place in the new item entry of the readings list in the reading editor tool window</summary>
 		public static string ModelReadingEditorNewItemText
 		{
 			get
@@ -1220,7 +1220,7 @@ namespace Neumont.Tools.ORM
 				return ResourceStrings.GetString(ResourceManagers.Model, "ModelReadingEditor.NewReadingTransactionText");
 			}
 		}
-		/// <summary>Text used to label the transaction created when changing reading text through the editor</summary>
+		/// <summary>Text used to describe the transaction created when the text of a reading is changed through the editor.</summary>
 		public static string ModelReadingEditorChangeReadingText
 		{
 			get
@@ -1228,7 +1228,7 @@ namespace Neumont.Tools.ORM
 				return ResourceStrings.GetString(ResourceManagers.Model, "ModelReadingEditor.ChangeReadingText");
 			}
 		}
-		/// <summary>Text used to label the transaction created when a reading order is moved through the reading editor</summary>
+		/// <summary>Text used to label the transaction created when a reading order is moved through the reading editor.</summary>
 		public static string ModelReadingEditorMoveReadingOrder
 		{
 			get
@@ -1236,7 +1236,7 @@ namespace Neumont.Tools.ORM
 				return ResourceStrings.GetString(ResourceManagers.Model, "ModelReadingEditor.MoveReadingOrder");
 			}
 		}
-		/// <summary>Text used to label the transaction created when a reading is moved through the reading editor</summary>
+		/// <summary>Text used to label the transaction created when a reading is moved through the reading editor.</summary>
 		public static string ModelReadingEditorMoveReading
 		{
 			get
@@ -1244,7 +1244,7 @@ namespace Neumont.Tools.ORM
 				return ResourceStrings.GetString(ResourceManagers.Model, "ModelReadingEditor.MoveReading");
 			}
 		}
-		/// <summary>ToolTip text that appears on the reading list for the IsPrimary status column.</summary>
+		/// <summary>Text used for the ToolTip on the IsPrimary column of the reading list.</summary>
 		public static string ModelReadingEditorIsPrimaryToolTip
 		{
 			get
@@ -1252,7 +1252,7 @@ namespace Neumont.Tools.ORM
 				return ResourceStrings.GetString(ResourceManagers.Model, "ModelReadingEditor.IsPrimaryToolTip");
 			}
 		}
-		/// <summary>Text used to label the transaction created when which reading is primary is changed in the editor.</summary>
+		/// <summary>Text used to label the transaction created when the primary reading is changed through the reading editor.</summary>
 		public static string ModelReadingEditorChangePrimaryReadingText
 		{
 			get
@@ -1284,7 +1284,7 @@ namespace Neumont.Tools.ORM
 				return ResourceStrings.GetString(ResourceManagers.Model, "ModelReadingEditor.PrimaryFactTypeReadingsText");
 			}
 		}
-		/// <summary>Text to place in the title bar of the notes tool window.</summary>
+		/// <summary>Text to place in the title bar of the notes editor tool window.</summary>
 		public static string ModelNotesWindowTitle
 		{
 			get
@@ -1308,7 +1308,7 @@ namespace Neumont.Tools.ORM
 				return ResourceStrings.GetString(ResourceManagers.Model, "ModelNotesWindow.RootTypeNameNotesSeparatorFormatString");
 			}
 		}
-		/// <summary>Text that will display in the middle of the tool window when the document view currently has an unsuppoted collection.</summary>
+		/// <summary>Text to place in the reading editor when the document view currently has a selection with no associated reading.</summary>
 		public static string ModelReadingEditorUnsupportedSelectionText
 		{
 			get
@@ -1364,7 +1364,7 @@ namespace Neumont.Tools.ORM
 				return ResourceStrings.GetString(ResourceManagers.Diagram, "Package.OfficialName");
 			}
 		}
-		/// <summary>The description of the package used in the About dialog</summary>
+		/// <summary>The extra information that appears in the about box of Visual Studio</summary>
 		public static string PackageProductDetails
 		{
 			get
@@ -1372,7 +1372,7 @@ namespace Neumont.Tools.ORM
 				return ResourceStrings.GetString(ResourceManagers.Diagram, "Package.ProductDetails");
 			}
 		}
-		/// <summary>returns the Text that names the reference mode.</summary>
+		/// <summary>Text that names the reference mode in the displayed format string.</summary>
 		public static string ModelReferenceModeEditorReferenceModeName
 		{
 			get
@@ -1380,7 +1380,7 @@ namespace Neumont.Tools.ORM
 				return ResourceStrings.GetString(ResourceManagers.Model, "ModelReferenceModeEditor.ReferenceModeName");
 			}
 		}
-		/// <summary>returns the Text that names the Entity Type.</summary>
+		/// <summary>Text that names the Entity Type in the displayed format string.</summary>
 		public static string ModelReferenceModeEditorEntityTypeName
 		{
 			get
@@ -1388,7 +1388,7 @@ namespace Neumont.Tools.ORM
 				return ResourceStrings.GetString(ResourceManagers.Model, "ModelReferenceModeEditor.EntityTypeName");
 			}
 		}
-		/// <summary>returns the Text used to name the Reference Mode Kind column</summary>
+		/// <summary>Text used to name the Reference Mode Kind column</summary>
 		public static string ModelReferenceModeEditorReferenceModeKindHeader
 		{
 			get
@@ -1396,7 +1396,7 @@ namespace Neumont.Tools.ORM
 				return ResourceStrings.GetString(ResourceManagers.Model, "ModelReferenceModeEditor.ReferenceModeKindHeader");
 			}
 		}
-		/// <summary>returns the Text used to name the transaction the changes the name of a custom reference mode</summary>
+		/// <summary>Text used to name the transaction the changes the name of a custom reference mode</summary>
 		public static string ModelReferenceModeEditorChangeNameTransaction
 		{
 			get
@@ -1404,7 +1404,7 @@ namespace Neumont.Tools.ORM
 				return ResourceStrings.GetString(ResourceManagers.Model, "ModelReferenceModeEditor.ChangeNameTransaction");
 			}
 		}
-		/// <summary>returns the Text used to name the Custom Reference Modes column</summary>
+		/// <summary>Text used to name the Custom Reference Modes column</summary>
 		public static string ModelReferenceModeEditorCustomReferenceModesHeader
 		{
 			get
@@ -1412,7 +1412,7 @@ namespace Neumont.Tools.ORM
 				return ResourceStrings.GetString(ResourceManagers.Model, "ModelReferenceModeEditor.CustomReferenceModesHeader");
 			}
 		}
-		/// <summary>returns the Text used to name the Intrinsic Reference Modes column</summary>
+		/// <summary>Text used to name the Intrinsic Reference Modes column</summary>
 		public static string ModelReferenceModeEditorIntrinsicReferenceModesHeader
 		{
 			get
@@ -1420,7 +1420,7 @@ namespace Neumont.Tools.ORM
 				return ResourceStrings.GetString(ResourceManagers.Model, "ModelReferenceModeEditor.IntrinsicReferenceModesHeader");
 			}
 		}
-		/// <summary>returns the abbreviated form of the entity type name</summary>
+		/// <summary>Abbreviated form of the entity type name</summary>
 		public static string ModelReferenceModeEditorAbbreviatedEntityTypeName
 		{
 			get
@@ -1428,7 +1428,7 @@ namespace Neumont.Tools.ORM
 				return ResourceStrings.GetString(ResourceManagers.Model, "ModelReferenceModeEditor.AbbreviatedEntityTypeName");
 			}
 		}
-		/// <summary>return the abbreviated form of the reference mode name</summary>
+		/// <summary>Abbreviated form of the reference mode name</summary>
 		public static string ModelReferenceModeEditorAbbreviatedReferenceModeName
 		{
 			get
@@ -1436,7 +1436,7 @@ namespace Neumont.Tools.ORM
 				return ResourceStrings.GetString(ResourceManagers.Model, "ModelReferenceModeEditor.AbbreviatedReferenceModeName");
 			}
 		}
-		/// <summary>returns the text used to name the transaction that adds a custom reference mode</summary>
+		/// <summary>Text used to name the transaction that adds a custom reference mode</summary>
 		public static string ModelReferenceModeEditorAddCustomReferenceModeTransaction
 		{
 			get
@@ -1444,7 +1444,7 @@ namespace Neumont.Tools.ORM
 				return ResourceStrings.GetString(ResourceManagers.Model, "ModelReferenceModeEditor.AddCustomReferenceModeTransaction");
 			}
 		}
-		/// <summary>returns the text to display the add a new row to the custom reference modes branch</summary>
+		/// <summary>Text to display the add a new row to the custom reference modes branch</summary>
 		public static string ModelReferenceModeEditorAddNewRowText
 		{
 			get
@@ -1452,7 +1452,7 @@ namespace Neumont.Tools.ORM
 				return ResourceStrings.GetString(ResourceManagers.Model, "ModelReferenceModeEditor.AddNewRowText");
 			}
 		}
-		/// <summary>returns the text used to name the transaction that changes the format string. </summary>
+		/// <summary>Text used to name the transaction that changes the format string.</summary>
 		public static string ModelReferenceModeEditorChangeFormatStringTransaction
 		{
 			get
@@ -1460,7 +1460,7 @@ namespace Neumont.Tools.ORM
 				return ResourceStrings.GetString(ResourceManagers.Model, "ModelReferenceModeEditor.ChangeFormatStringTransaction");
 			}
 		}
-		/// <summary>returns The text that displays the title of the editor window.</summary>
+		/// <summary>The text that displays the title of the editor window.</summary>
 		public static string ModelReferenceModeEditorEditorWindowTitle
 		{
 			get
@@ -1468,7 +1468,7 @@ namespace Neumont.Tools.ORM
 				return ResourceStrings.GetString(ResourceManagers.Model, "ModelReferenceModeEditor.EditorWindowTitle");
 			}
 		}
-		/// <summary>returns Exception message when the unique format string rule is violated for reference modes</summary>
+		/// <summary>Exception message when the unique format string rule is violated for reference modes</summary>
 		public static string ModelExceptionReferenceModeEnforceUniqueFormatString
 		{
 			get
@@ -1476,7 +1476,7 @@ namespace Neumont.Tools.ORM
 				return ResourceStrings.GetString(ResourceManagers.Model, "ModelException.ReferenceMode.EnforceUniqueFormatString");
 			}
 		}
-		/// <summary>returns Exception message when the unique format string rule is violated for reference mode kinds</summary>
+		/// <summary>Exception message when the unique format string rule is violated for reference mode kinds</summary>
 		public static string ModelExceptionReferenceModeKindEnforceUniqueFormatString
 		{
 			get
@@ -1484,7 +1484,7 @@ namespace Neumont.Tools.ORM
 				return ResourceStrings.GetString(ResourceManagers.Model, "ModelException.ReferenceModeKind.EnforceUniqueFormatString");
 			}
 		}
-		/// <summary>returns Exception messege when atttempt is made to change the kind of an intrinsic reference mode</summary>
+		/// <summary>Exception messege when atttempt is made to change the kind of an intrinsic reference mode</summary>
 		public static string ModelExceptionReferenceModeIntrinsicRefModesDontChange
 		{
 			get
@@ -1492,7 +1492,7 @@ namespace Neumont.Tools.ORM
 				return ResourceStrings.GetString(ResourceManagers.Model, "ModelException.ReferenceMode.IntrinsicRefModesDontChange");
 			}
 		}
-		/// <summary>returns Exception messege when attempt is made to remove reference mode kind.</summary>
+		/// <summary>Exception message when attempt is made to remove reference mode kind.</summary>
 		public static string ModelExceptionReferenceModeReferenceModesKindNotEmpty
 		{
 			get
@@ -1500,7 +1500,7 @@ namespace Neumont.Tools.ORM
 				return ResourceStrings.GetString(ResourceManagers.Model, "ModelException.ReferenceMode.ReferenceModesKindNotEmpty");
 			}
 		}
-		/// <summary>returns Text used to name the transaction that changes the referencemode Kind.</summary>
+		/// <summary>Text used to name the transaction that changes the reference mode Kind.</summary>
 		public static string ModelReferenceModeEditorChangeReferenceModeKindTransaction
 		{
 			get
@@ -1508,7 +1508,7 @@ namespace Neumont.Tools.ORM
 				return ResourceStrings.GetString(ResourceManagers.Model, "ModelReferenceModeEditor.ChangeReferenceModeKindTransaction");
 			}
 		}
-		/// <summary>returns The reading for the predicate created by setting the ref mode.</summary>
+		/// <summary>The reading for the predicate created by setting the ref mode.</summary>
 		public static string ReferenceModePredicateReading
 		{
 			get
@@ -1516,7 +1516,7 @@ namespace Neumont.Tools.ORM
 				return ResourceStrings.GetString(ResourceManagers.Model, "ReferenceMode.PredicateReading");
 			}
 		}
-		/// <summary>returns The inverse reading for the predicate created by setting the ref mode.</summary>
+		/// <summary>The inverse reading for the predicate created by setting the ref mode.</summary>
 		public static string ReferenceModePredicateInverseReading
 		{
 			get
@@ -1524,7 +1524,7 @@ namespace Neumont.Tools.ORM
 				return ResourceStrings.GetString(ResourceManagers.Model, "ReferenceMode.PredicateInverseReading");
 			}
 		}
-		/// <summary>returns The Column header text for the Format String column.</summary>
+		/// <summary>Column header text for the Format String column.</summary>
 		public static string ModelReferenceModeEditorFormatStringColumn
 		{
 			get
@@ -1532,7 +1532,7 @@ namespace Neumont.Tools.ORM
 				return ResourceStrings.GetString(ResourceManagers.Model, "ModelReferenceModeEditor.FormatStringColumn");
 			}
 		}
-		/// <summary>returns The Column header text for the Kind column.</summary>
+		/// <summary>Column header text for the Kind column.</summary>
 		public static string ModelReferenceModeEditorKindColumn
 		{
 			get
@@ -1540,7 +1540,7 @@ namespace Neumont.Tools.ORM
 				return ResourceStrings.GetString(ResourceManagers.Model, "ModelReferenceModeEditor.KindColumn");
 			}
 		}
-		/// <summary>returns The Column header text for the name column.</summary>
+		/// <summary>Column header text for the name column</summary>
 		public static string ModelReferenceModeEditorNameColumn
 		{
 			get
@@ -1548,7 +1548,7 @@ namespace Neumont.Tools.ORM
 				return ResourceStrings.GetString(ResourceManagers.Model, "ModelReferenceModeEditor.NameColumn");
 			}
 		}
-		/// <summary>The caption of the Fact Editor Tool Window</summary>
+		/// <summary>The caption of the Fact Editor Tool Window.</summary>
 		public static string FactEditorToolWindowCaption
 		{
 			get
@@ -1644,7 +1644,7 @@ namespace Neumont.Tools.ORM
 				return ResourceStrings.GetString(ResourceManagers.Model, "ModelException.SupertypeMetaRole.OnlyAllowsImplicitDisjunctiveMandatoryAndExclusionConstraints");
 			}
 		}
-		/// <summary>returns the format string for the display text for reference mode picker</summary>
+		/// <summary>The format string for the reference mode display text in the reference mode picker</summary>
 		public static string ModelReferenceModePickerFormatString
 		{
 			get
@@ -1684,7 +1684,7 @@ namespace Neumont.Tools.ORM
 				return ResourceStrings.GetString(ResourceManagers.Model, "Model.Reading.RoleDeletedText");
 			}
 		}
-		/// <summary>Text displayed in the text of the FactTypeRequiresReadingError</summary>
+		/// <summary>Text displayed in the text of the FactTypeRequiresInternalUniquenessContraintError</summary>
 		public static string ModelErrorFactTypeRequiresInternalUniquenessConstraintMessage
 		{
 			get
@@ -1692,7 +1692,7 @@ namespace Neumont.Tools.ORM
 				return ResourceStrings.GetString(ResourceManagers.Model, "ModelError.FactType.RequiresInternalUniquenessConstraint.Message");
 			}
 		}
-		/// <summary>Text displayed in the text of the FactTypeRequiresInternalUniquenessContraintError</summary>
+		/// <summary>Text displayed in the text of the FactTypeRequiresReadingError</summary>
 		public static string ModelErrorFactTypeRequiresReadingMessage
 		{
 			get
@@ -1700,7 +1700,7 @@ namespace Neumont.Tools.ORM
 				return ResourceStrings.GetString(ResourceManagers.Model, "ModelError.FactType.RequiresReading.Message");
 			}
 		}
-		/// <summary>Text displayed for an unspecified data type.</summary>
+		/// <summary>Text displayed for an unspecified data type</summary>
 		public static string ModelErrorValueTypeDataTypeNotSpecifiedMessage
 		{
 			get
@@ -1708,7 +1708,7 @@ namespace Neumont.Tools.ORM
 				return ResourceStrings.GetString(ResourceManagers.Model, "ModelError.ValueType.DataTypeNotSpecified.Message");
 			}
 		}
-		/// <summary>Text displayed when there aren't enough entity type role instances to completely fill a single entity population row.</summary>
+		/// <summary>Text displayed when there aren't enough entity type role instances to completely fill a single entity population row. {0}=entitytype, {1}=model.</summary>
 		public static string ModelErrorEntityTypeInstanceTooFewEntityTypeRoleInstancesMessage
 		{
 			get
@@ -1716,7 +1716,7 @@ namespace Neumont.Tools.ORM
 				return ResourceStrings.GetString(ResourceManagers.Model, "ModelError.EntityTypeInstance.TooFewEntityTypeRoleInstances.Message");
 			}
 		}
-		/// <summary>Text displayed when there aren't enough fact type role instances to completely fill a single fact type population row.</summary>
+		/// <summary>Text displayed when there aren't enough fact type role instances to completely fill a single fact type population row. {0}=facttype {1}=model.</summary>
 		public static string ModelErrorFactTypeInstanceTooFewFactTypeRoleInstancesMessage
 		{
 			get
@@ -1724,7 +1724,7 @@ namespace Neumont.Tools.ORM
 				return ResourceStrings.GetString(ResourceManagers.Model, "ModelError.FactTypeInstance.TooFewFactTypeRoleInstances.Message");
 			}
 		}
-		/// <summary>Text displayed when the data type of the sample data doesn't match it's set data type.</summary>
+		/// <summary>Text displayed when the data type of the sample data doesn't match it's set data type. {0}=value {1}=valuetype {2}=model.</summary>
 		public static string ModelErrorValueTypeInstanceCompatibleValueTypeInstanceValueMessage
 		{
 			get
@@ -1860,7 +1860,7 @@ namespace Neumont.Tools.ORM
 				return ResourceStrings.GetString(ResourceManagers.Diagram, "ReadingShape.ReadingSeparator");
 			}
 		}
-		/// <summary>The character to use as the object placeholder in a ReadingShape (an ellipsis).</summary>
+		/// <summary>The character to use as the object placeholder in a ReadingShape.</summary>
 		public static string ReadingShapeEllipsis
 		{
 			get
@@ -1916,7 +1916,7 @@ namespace Neumont.Tools.ORM
 				return ResourceStrings.GetString(ResourceManagers.Model, "ModelError.Role.RolePlayerRequired.Message");
 			}
 		}
-		/// <summary>Constraint '{0}' is implied by mandatory constraints.</summary>
+		/// <summary>Model validation error text when two roles played by the same object have an external equality constrant and also have both roles identified as mandatory. {0}=constraint name {1}=model name</summary>
 		public static string ModelErrorExternalEqualityImpliedByMandatoryError
 		{
 			get
@@ -1924,7 +1924,7 @@ namespace Neumont.Tools.ORM
 				return ResourceStrings.GetString(ResourceManagers.Model, "ModelError.Constraint.ExternalEqualityImpliedByMandatory.Text");
 			}
 		}
-		/// <summary>Text displayed in the text of the ObjectTypeRequiresPrimarySupertypeError. {0} is the name of the object type and {1} is the name of the model.</summary>
+		/// <summary>Text displayed in the text of the ObjectTypeRequiresPrimarySupertypeError. {0}=ObjectType name {1}=model name</summary>
 		public static string ModelErrorObjectTypeRequiresPrimarySupertypeError
 		{
 			get
@@ -1932,7 +1932,7 @@ namespace Neumont.Tools.ORM
 				return ResourceStrings.GetString(ResourceManagers.Model, "ModelError.ObjectType.ObjectTypeRequiresPrimarySupertypeError.Message");
 			}
 		}
-		/// <summary>Text displayed in the text of the CompatibleSupertypesError. {0} is the name of the object type and {1} is the name of the model.</summary>
+		/// <summary>Text displayed in the text of the CompatibleSupertypesError.</summary>
 		public static string ModelErrorObjectTypeCompatibleSupertypesError
 		{
 			get
@@ -1940,7 +1940,7 @@ namespace Neumont.Tools.ORM
 				return ResourceStrings.GetString(ResourceManagers.Model, "ModelError.ObjectType.CompatibleSupertypesError.Message");
 			}
 		}
-		/// <summary>Text displayed in the text of the PreferredIdentifierRequiresMandatoryError. {0} is the name of the object type and {1} is the name of the model.</summary>
+		/// <summary>Text displayed in the text of the PreferredIdentifierRequiresMandatoryError. {0}=ObjectType name {1}=model name</summary>
 		public static string ModelErrorObjectTypePreferredIdentifierRequiresMandatoryError
 		{
 			get
@@ -1948,7 +1948,7 @@ namespace Neumont.Tools.ORM
 				return ResourceStrings.GetString(ResourceManagers.Model, "ModelError.ObjectType.PreferredIdentifierRequiresMandatoryError.Message");
 			}
 		}
-		/// <summary>An entity type must have a primary reference scheme. Replacement field {0} is the entity type name and {1} is the model name.</summary>
+		/// <summary>An entity type must have a preferred reference scheme. Replacement field {0} is the entity type name and {1} is the model name.</summary>
 		public static string ModelErrorEntityTypeRequiresReferenceSchemeMessage
 		{
 			get
@@ -1964,7 +1964,7 @@ namespace Neumont.Tools.ORM
 				return ResourceStrings.GetString(ResourceManagers.Model, "ModelError.Constraint.RingConstraintTypeNotSpecifiedError.Message");
 			}
 		}
-		/// <summary>Text displayed in the text of the FrequencyConstraintMinMaxError. {0} is the constraint name and {1} is the model name</summary>
+		/// <summary>The frequency constraint minimum must be less than or equal to the maximum. {0}=constraint name {1}=model name</summary>
 		public static string ModelErrorFrequencyConstraintMinMaxError
 		{
 			get
@@ -1980,7 +1980,7 @@ namespace Neumont.Tools.ORM
 				return ResourceStrings.GetString(ResourceManagers.Model, "ModelVerbalization.WindowTitle");
 			}
 		}
-		/// <summary>Text displayed in the text of the ImpliedInternalUniquenessConstraintError. {0} is the fact type name</summary>
+		/// <summary>Text used in the ImpliedInternalUniquenessConstraintError' {0}=fact type name {2}=model name</summary>
 		public static string ModelErrorImpliedInternalUniquenessConstraintError
 		{
 			get
@@ -1988,7 +1988,7 @@ namespace Neumont.Tools.ORM
 				return ResourceStrings.GetString(ResourceManagers.Model, "ModelError.FactType.ImpliedInternalUniquenessConstraintError.Text");
 			}
 		}
-		/// <summary>The message of the auto-fix message box for implied internal constraints</summary>
+		/// <summary>The message for the auto-fix implied internal uniqueness constraint message box.</summary>
 		public static string ImpliedInternalConstraintFixMessage
 		{
 			get
@@ -2132,8 +2132,7 @@ namespace Neumont.Tools.ORM
 				return ResourceStrings.GetString(ResourceManagers.Diagram, "ExtensionLoadFailure.Title");
 			}
 		}
-		/// <summary>The format string for the content of the message shown when a registered extension fails to load.</summary>
-		/// <remarks>{0} will be <see cref="System.Environment.NewLine"/>. {1} will be the registered name of the extension that failed to load. {2} will be the result of calling <see cref="System.Exception.ToString">ToString()</see> on the <see cref="System.Exception"/> that caused the load failure.</remarks>
+		/// <summary>The format string for the content of the message shown when a registered extension fails to load. {0} will be System.Environment.NewLine. {1} will be the registered name of the extension that failed to load. {2} will be the result of calling ToString() on the Exception that caused the load failure.</summary>
 		public static string ExtensionLoadFailureMessage
 		{
 			get
@@ -2197,7 +2196,7 @@ namespace Neumont.Tools.ORM
 				return ResourceStrings.GetString(ResourceManagers.Model, "SchemaValidationFailure.Instructions");
 			}
 		}
-		/// <summary>Error message for when a user attempts to modify properties on an Implicit Boolean ValueType</summary>
+		/// <summary>Error message for when a user attempts to modify the IsImplicitBooleanValueType property on a ValueType</summary>
 		public static string ImplicitBooleanValueTypeRestriction
 		{
 			get
@@ -2205,7 +2204,7 @@ namespace Neumont.Tools.ORM
 				return ResourceStrings.GetString(ResourceManagers.Model, "ImplicitBooleanValueType.Restriction");
 			}
 		}
-		/// <summary>Error message for when a user attempts to modify the IsImplicitBooleanValueType property on a ValueType</summary>
+		/// <summary>Error message for when a user attempts to modify properties on an Implicit Boolean ValueType</summary>
 		public static string ImplicitBooleanValueTypePropertyRestriction
 		{
 			get

@@ -105,11 +105,6 @@
     <Compile Include="..\Version.cs">
       <Link>Properties\Version.cs</Link>
     </Compile>
-    <Compile Include="CustomPropertyProvidersResources.Designer.cs">
-      <AutoGen>True</AutoGen>
-      <DesignTime>True</DesignTime>
-      <DependentUpon>CustomPropertyProvidersResources.resx</DependentUpon>
-    </Compile>
     <Compile Include="CustomPropertyVerbalizationGenerator.cs">
       <AutoGen>True</AutoGen>
       <DependentUpon>CustomPropertyVerbalizationGenerator.xml</DependentUpon>
@@ -167,7 +162,6 @@
       <Generator>NUPlixLoader</Generator>
       <LastGenOutput>ResourceStringsGenerator.cs</LastGenOutput>
     </Content>
-    <Content Include="Resources\ResourceStringsGenerator.xslt" />
     <Content Include="VerbalizationSnippets\CustomPropertyVerbalizationSnippets.xml" />
   </ItemGroup>
   <ItemGroup>
@@ -194,9 +188,8 @@
       <SubType>Designer</SubType>
     </EmbeddedResource>
     <EmbeddedResource Include="CustomPropertyProvidersResources.resx">
+      <LogicalName>Neumont.Tools.ORM.CustomProperties.CustomProperty.resources</LogicalName>
       <SubType>Designer</SubType>
-      <Generator>ResXFileCodeGenerator</Generator>
-      <LastGenOutput>CustomPropertyProvidersResources.Designer.cs</LastGenOutput>
     </EmbeddedResource>
   </ItemGroup>
   <Import Project="$(MSBuildBinPath)\Microsoft.CSharp.targets" />

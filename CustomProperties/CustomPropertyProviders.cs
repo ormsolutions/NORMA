@@ -216,21 +216,21 @@ namespace Neumont.Tools.ORM.CustomProperties
 			{
 				get
 				{
-					return CustomPropertyProvidersResources.DisplayName;
+					return ResourceStrings.PropertiesEditorDisplayName;
 				}
 			}
 			public sealed override string Category
 			{
 				get
 				{
-					return CustomPropertyProvidersResources.Category;
+					return ResourceStrings.PropertiesEditorCategory;
 				}
 			}
 			public sealed override string Description
 			{
 				get
 				{
-					return CustomPropertyProvidersResources.Description;
+					return ResourceStrings.PropertiesEditorDescription;
 				}
 			}
 			public sealed override object GetValue(object component)

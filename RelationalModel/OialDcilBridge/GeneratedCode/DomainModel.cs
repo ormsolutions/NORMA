@@ -66,6 +66,10 @@ namespace Neumont.Tools.ORMAbstractionToConceptualDatabaseBridge
 		{
 			return new global::System.Type[]
 			{
+				typeof(MappingCustomizationModel),
+				typeof(AssimilationMapping),
+				typeof(AssimilationMappingCustomizesAssimilation),
+				typeof(MappingCustomizationModelHasAssimilationMapping),
 				typeof(SchemaIsForAbstractionModel),
 				typeof(TableIsPrimarilyForConceptType),
 				typeof(TableIsAlsoForConceptType),
@@ -82,6 +86,7 @@ namespace Neumont.Tools.ORMAbstractionToConceptualDatabaseBridge
 		{
 			return new DomainMemberInfo[]
 			{
+				new DomainMemberInfo(typeof(AssimilationMapping), "AbsorptionChoice", AssimilationMapping.AbsorptionChoiceDomainPropertyId, typeof(AssimilationMapping.AbsorptionChoicePropertyHandler)),
 			};
 		}
 		/// <summary>
@@ -92,6 +97,10 @@ namespace Neumont.Tools.ORMAbstractionToConceptualDatabaseBridge
 		{
 			return new DomainRolePlayerInfo[]
 			{
+				new DomainRolePlayerInfo(typeof(AssimilationMappingCustomizesAssimilation), "AssimilationMapping", AssimilationMappingCustomizesAssimilation.AssimilationMappingDomainRoleId),
+				new DomainRolePlayerInfo(typeof(AssimilationMappingCustomizesAssimilation), "Assimilation", AssimilationMappingCustomizesAssimilation.AssimilationDomainRoleId),
+				new DomainRolePlayerInfo(typeof(MappingCustomizationModelHasAssimilationMapping), "Model", MappingCustomizationModelHasAssimilationMapping.ModelDomainRoleId),
+				new DomainRolePlayerInfo(typeof(MappingCustomizationModelHasAssimilationMapping), "AssimilationMapping", MappingCustomizationModelHasAssimilationMapping.AssimilationMappingDomainRoleId),
 				new DomainRolePlayerInfo(typeof(SchemaIsForAbstractionModel), "Schema", SchemaIsForAbstractionModel.SchemaDomainRoleId),
 				new DomainRolePlayerInfo(typeof(SchemaIsForAbstractionModel), "AbstractionModel", SchemaIsForAbstractionModel.AbstractionModelDomainRoleId),
 				new DomainRolePlayerInfo(typeof(TableIsPrimarilyForConceptType), "Table", TableIsPrimarilyForConceptType.TableDomainRoleId),
@@ -124,7 +133,9 @@ namespace Neumont.Tools.ORMAbstractionToConceptualDatabaseBridge
 	
 			if (createElementMap == null)
 			{
-				createElementMap = new global::System.Collections.Generic.Dictionary<global::System.Type, int>(0);
+				createElementMap = new global::System.Collections.Generic.Dictionary<global::System.Type, int>(2);
+				createElementMap.Add(typeof(MappingCustomizationModel), 0);
+				createElementMap.Add(typeof(AssimilationMapping), 1);
 			}
 			int index;
 			if (!createElementMap.TryGetValue(elementType, out index))
@@ -133,6 +144,8 @@ namespace Neumont.Tools.ORMAbstractionToConceptualDatabaseBridge
 			}
 			switch (index)
 			{
+				case 0: return new MappingCustomizationModel(partition, propertyAssignments);
+				case 1: return new AssimilationMapping(partition, propertyAssignments);
 				default: return null;
 			}
 		}
@@ -155,13 +168,15 @@ namespace Neumont.Tools.ORMAbstractionToConceptualDatabaseBridge
 	
 			if (createElementLinkMap == null)
 			{
-				createElementLinkMap = new global::System.Collections.Generic.Dictionary<global::System.Type, int>(6);
-				createElementLinkMap.Add(typeof(SchemaIsForAbstractionModel), 0);
-				createElementLinkMap.Add(typeof(TableIsPrimarilyForConceptType), 1);
-				createElementLinkMap.Add(typeof(TableIsAlsoForConceptType), 2);
-				createElementLinkMap.Add(typeof(ColumnHasConceptTypeChild), 3);
-				createElementLinkMap.Add(typeof(UniquenessConstraintIsForUniqueness), 4);
-				createElementLinkMap.Add(typeof(DomainIsForInformationTypeFormat), 5);
+				createElementLinkMap = new global::System.Collections.Generic.Dictionary<global::System.Type, int>(8);
+				createElementLinkMap.Add(typeof(AssimilationMappingCustomizesAssimilation), 0);
+				createElementLinkMap.Add(typeof(MappingCustomizationModelHasAssimilationMapping), 1);
+				createElementLinkMap.Add(typeof(SchemaIsForAbstractionModel), 2);
+				createElementLinkMap.Add(typeof(TableIsPrimarilyForConceptType), 3);
+				createElementLinkMap.Add(typeof(TableIsAlsoForConceptType), 4);
+				createElementLinkMap.Add(typeof(ColumnHasConceptTypeChild), 5);
+				createElementLinkMap.Add(typeof(UniquenessConstraintIsForUniqueness), 6);
+				createElementLinkMap.Add(typeof(DomainIsForInformationTypeFormat), 7);
 			}
 			int index;
 			if (!createElementLinkMap.TryGetValue(elementLinkType, out index))
@@ -170,12 +185,14 @@ namespace Neumont.Tools.ORMAbstractionToConceptualDatabaseBridge
 			}
 			switch (index)
 			{
-				case 0: return new SchemaIsForAbstractionModel(partition, roleAssignments, propertyAssignments);
-				case 1: return new TableIsPrimarilyForConceptType(partition, roleAssignments, propertyAssignments);
-				case 2: return new TableIsAlsoForConceptType(partition, roleAssignments, propertyAssignments);
-				case 3: return new ColumnHasConceptTypeChild(partition, roleAssignments, propertyAssignments);
-				case 4: return new UniquenessConstraintIsForUniqueness(partition, roleAssignments, propertyAssignments);
-				case 5: return new DomainIsForInformationTypeFormat(partition, roleAssignments, propertyAssignments);
+				case 0: return new AssimilationMappingCustomizesAssimilation(partition, roleAssignments, propertyAssignments);
+				case 1: return new MappingCustomizationModelHasAssimilationMapping(partition, roleAssignments, propertyAssignments);
+				case 2: return new SchemaIsForAbstractionModel(partition, roleAssignments, propertyAssignments);
+				case 3: return new TableIsPrimarilyForConceptType(partition, roleAssignments, propertyAssignments);
+				case 4: return new TableIsAlsoForConceptType(partition, roleAssignments, propertyAssignments);
+				case 5: return new ColumnHasConceptTypeChild(partition, roleAssignments, propertyAssignments);
+				case 6: return new UniquenessConstraintIsForUniqueness(partition, roleAssignments, propertyAssignments);
+				case 7: return new DomainIsForInformationTypeFormat(partition, roleAssignments, propertyAssignments);
 				default: return null;
 			}
 		}
@@ -312,6 +329,8 @@ namespace Neumont.Tools.ORMAbstractionToConceptualDatabaseBridge
 		public ORMAbstractionToConceptualDatabaseBridgeDeleteClosureBase()
 		{
 			#region Initialize DomainData Table
+			DomainRoles.Add(global::Neumont.Tools.ORMAbstractionToConceptualDatabaseBridge.AssimilationMappingCustomizesAssimilation.AssimilationMappingDomainRoleId, true);
+			DomainRoles.Add(global::Neumont.Tools.ORMAbstractionToConceptualDatabaseBridge.MappingCustomizationModelHasAssimilationMapping.AssimilationMappingDomainRoleId, true);
 			#endregion
 		}
 		/// <summary>
@@ -430,5 +449,37 @@ namespace Neumont.Tools.ORMAbstractionToConceptualDatabaseBridge
 	}
 	#endregion
 		
+}
+namespace Neumont.Tools.ORMAbstractionToConceptualDatabaseBridge
+{
+	/// <summary>
+	/// DomainEnumeration: AssimilationAbsorptionChoice
+	/// Determines the mechanism used to map assimilation relationships as table or
+	/// column elements.
+	/// </summary>
+	[global::System.ComponentModel.TypeConverter(typeof(global::Neumont.Tools.Modeling.Design.EnumConverter<AssimilationAbsorptionChoice, global::Neumont.Tools.ORMAbstractionToConceptualDatabaseBridge.MappingCustomizationModel>))]
+	[global::System.CLSCompliant(true)]
+	public enum AssimilationAbsorptionChoice
+	{
+		/// <summary>
+		/// Absorb
+		/// All assimilations are pulled into the same table as the supertype.
+		/// </summary>
+		[DslDesign::DescriptionResource("Neumont.Tools.ORMAbstractionToConceptualDatabaseBridge.AssimilationAbsorptionChoice/Absorb.Description", typeof(global::Neumont.Tools.ORMAbstractionToConceptualDatabaseBridge.ORMAbstractionToConceptualDatabaseBridgeDomainModel), "Neumont.Tools.ORMAbstractionToConceptualDatabaseBridge.GeneratedCode.DomainModelResx")]
+		Absorb = 0,
+		/// <summary>
+		/// Partition
+		/// Each subtype is given its own table. Data from the supertype is duplicated.
+		/// </summary>
+		[DslDesign::DescriptionResource("Neumont.Tools.ORMAbstractionToConceptualDatabaseBridge.AssimilationAbsorptionChoice/Partition.Description", typeof(global::Neumont.Tools.ORMAbstractionToConceptualDatabaseBridge.ORMAbstractionToConceptualDatabaseBridgeDomainModel), "Neumont.Tools.ORMAbstractionToConceptualDatabaseBridge.GeneratedCode.DomainModelResx")]
+		Partition = 1,
+		/// <summary>
+		/// Separate
+		/// Each subtype is given its own table, data from the supertype is stored in a
+		/// separate referenced table.
+		/// </summary>
+		[DslDesign::DescriptionResource("Neumont.Tools.ORMAbstractionToConceptualDatabaseBridge.AssimilationAbsorptionChoice/Separate.Description", typeof(global::Neumont.Tools.ORMAbstractionToConceptualDatabaseBridge.ORMAbstractionToConceptualDatabaseBridgeDomainModel), "Neumont.Tools.ORMAbstractionToConceptualDatabaseBridge.GeneratedCode.DomainModelResx")]
+		Separate = 2,
+	}
 }
 

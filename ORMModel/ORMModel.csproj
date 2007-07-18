@@ -520,8 +520,8 @@
     <Content Include="Resources\ResourceStringsGenerator.xml">
       <Generator>NUPlixLoader</Generator>
       <LastGenOutput>ResourceStringsGenerator.cs</LastGenOutput>
+      <CustomToolNamespace>Neumont.Tools.ORM</CustomToolNamespace>
     </Content>
-    <Content Include="Resources\ResourceStringsGenerator.xslt" />
     <None Include="Shell\catalog.xml" />
     <EmbeddedResource Include="ShapeModel\ConnectModelNoteAllowed.cur" />
     <EmbeddedResource Include="ShapeModel\ConnectModelNoteSearching.cur" />
@@ -536,7 +536,8 @@
     <Content Include="Shell\Converters\VisioToCoreModelImport.xslt" />
     <EmbeddedResource Include="Shell\ExtensionStripper.xslt" />
     <Content Include="Shell\ORMDesignerSettings.xml" />
-    <Content Include="Transforms\SurveyQuestionProvider.xslt" />
+    <None Include="Transforms\ResourceStringsGenerator.xslt" />
+    <None Include="Transforms\SurveyQuestionProvider.xslt" />
     <Content Include="ObjectModel\VerbalizationReportGenerator.xml">
       <Generator>NUPlixLoader</Generator>
       <LastGenOutput>VerbalizationReportGenerator.cs</LastGenOutput>
@@ -699,6 +700,9 @@
     <None Include="Resources\AboutBox.ico" />
     <None Include="Resources\ORM.ico" />
     <None Include="Shell\ProjectItems\General.zip" />
+    <None Include="Transforms\ResourceStringsGenerator.xsd">
+      <SubType>Designer</SubType>
+    </None>
     <None Include="Transforms\SurveyQuestionProvider.xsd">
       <SubType>Designer</SubType>
     </None>

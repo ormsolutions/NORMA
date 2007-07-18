@@ -132,6 +132,10 @@
 			You must not remove this notice, or any other, from this software.
 		</value>
   </metadata>
+  <data name="ColumnReference.DisplayFormatString" xml:space="preserve">
+    <value>{0} = {1}</value>
+    <comment>The format string used to display a column reference in the ORM Model Browser. {0}=name of the source column, {1}=name of the target column</comment>
+  </data>
   <data name="PredefinedType.BigInt" xml:space="preserve">
     <value>BIGINT</value>
   </data>

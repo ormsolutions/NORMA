@@ -97,6 +97,10 @@
       <Generator>TextTemplatingFileGenerator</Generator>
       <LastGenOutput>DomainRelationships.cs</LastGenOutput>
     </None>
+    <EmbeddedResource Include="MappingCustomizationModel.resx">
+      <DependentUpon>MappingCustomizationModel.cs</DependentUpon>
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
     <EmbeddedResource Include="ORMAbstractionToConceptualDatabase.xsd">
       <SubType>Designer</SubType>
     </EmbeddedResource>
@@ -127,6 +131,8 @@
       <Generator>NUPlixLoader</Generator>
       <LastGenOutput>OialDcilBridge.AttachRules.cs</LastGenOutput>
     </Content>
+    <Compile Include="AssimilationMapping.cs" />
+    <Compile Include="MappingCustomizationModel.cs" />
     <Compile Include="OialDcilBridge.AttachRules.cs">
       <AutoGen>True</AutoGen>
       <DependentUpon>OialDcilBridge.AttachRules.xml</DependentUpon>
@@ -135,10 +141,19 @@
       <Generator>NUPlixLoader</Generator>
       <LastGenOutput>OialDcilBridge.SerializationExtensions.cs</LastGenOutput>
     </Content>
+    <None Include="Resources\ResourceStringsGenerator.xml">
+      <Generator>NUPlixLoader</Generator>
+      <LastGenOutput>ResourceStringsGenerator.cs</LastGenOutput>
+    </None>
     <Compile Include="OialDcilBridge.DeserializationFixupListeners.cs" />
     <Compile Include="OialDcilBridge.SerializationExtensions.cs">
       <AutoGen>True</AutoGen>
       <DependentUpon>OialDcilBridge.SerializationExtensions.xml</DependentUpon>
+    </Compile>
+    <Compile Include="Resources\ResourceStrings.cs" />
+    <Compile Include="Resources\ResourceStringsGenerator.cs">
+      <AutoGen>True</AutoGen>
+      <DependentUpon>ResourceStringsGenerator.xml</DependentUpon>
     </Compile>
   </ItemGroup>
   <ItemGroup>

@@ -161,7 +161,7 @@
 	</data>
 	<data name="FactType.RemoveImpliedInternalUniquenessConstraints.TransactionName" xml:space="preserve">
 		<value>Remove Implied Internal Uniqueness Constraints</value>
-		<comment>The message of the auto-fix message box for implied internal constraints</comment>
+		<comment>The name of the transaction that auto-fixes implied and duplicate internal constraints.</comment>
 	</data>
 	<data name="ImplicitBooleanValueType.PropertyRestriction" xml:space="preserve">
 		<value>The modification of the IsImplicitBooleanValue property on a ValueType is not allowed.</value>
@@ -211,7 +211,7 @@
 	</data>
 	<data name="ModelError.Constraint.EqualityOrSubsetImpliedByMandatoryError.Text" xml:space="preserve">
 		<value>Constraint '{0}' in model '{1}' is implied by intersecting simple mandatory constraints.</value>
-		<comment>Model validation error text when an equality constraint is put on roles that are mandatory.</comment>
+		<comment>Model validation error text when an equality or subset constraint is put on roles that are mandatory.</comment>
 	</data>
 	<data name="ModelError.Constraint.ExternalConstraintArityMismatch.Text" xml:space="preserve">
 		<value>Constraint '{0}' has role sequences with different numbers of roles.</value>
@@ -219,7 +219,7 @@
 	</data>
 	<data name="ModelError.Constraint.ExternalEqualityImpliedByMandatory.Text" xml:space="preserve">
 		<value>Constraint '{0}' in Model '{1}' is implied by mandatory constraint(s).</value>
-		<comment>Model validation error text when two roles played by the same object have an external equality constrant and also have both roles identified as mandatory.</comment>
+		<comment>Model validation error text when two roles played by the same object have an external equality constrant and also have both roles identified as mandatory. {0}=constraint name {1}=model name</comment>
 	</data>
 	<data name="ModelError.Constraint.FrequencyConstraintContradictsInternalUniquenessConstraintError.Text" xml:space="preserve">
 		<value>Frequency constraint '{0}' in model '{2}' contradicts one or more internal uniqueness constraints on fact '{1}'.</value>
@@ -227,7 +227,7 @@
 	</data>
 	<data name="ModelError.Constraint.FrequencyConstraintMinMaxError.Text" xml:space="preserve">
 		<value>Maximum value for constraint '{0}' in model '{1}' cannot be less than the minimum value.</value>
-		<comment>The frequency constraint minimum must be less than or equal to the maximum</comment>
+		<comment>The frequency constraint minimum must be less than or equal to the maximum. {0}=constraint name {1}=model name</comment>
 	</data>
 	<data name="ModelError.Constraint.ImplicationError.Text" xml:space="preserve">
 		<value>Constraint '{0}' in model '{1}' is implied by at least one constraint of the same type attached to a subset of the same roles.</value>
@@ -255,11 +255,11 @@
 	</data>
 	<data name="ModelError.EntityTypeInstance.TooFewEntityTypeRoleInstances.Message" xml:space="preserve">
 		<value>Entity type '{0}' in model '{1}' is missing instance data to completely identify a sample instance.</value>
-		<comment>Text displayed when there aren't enough entity type role instances to completely fill a single entity population row. Replace entitytype, model.</comment>
+		<comment>Text displayed when there aren't enough entity type role instances to completely fill a single entity population row. {0}=entitytype, {1}=model.</comment>
 	</data>
 	<data name="ModelError.FactType.ImpliedInternalUniquenessConstraintError.Text" xml:space="preserve">
 		<value>FactType '{0}' in model '{1}' contains one or more internal uniqueness constraints that are implied by or duplicates of other internal uniqueness constraints.</value>
-		<comment>Text used in the ImpliedInternalUniquenessConstraintError</comment>
+		<comment>Text used in the ImpliedInternalUniquenessConstraintError' {0}=fact type name {2}=model name</comment>
 	</data>
 	<data name="ModelError.FactType.NMinusOneRule.Text" xml:space="preserve">
 		<value>Uniqueness constraint '{0}' on fact type '{1}' in model '{2}' must span at least {3} roles.</value>
@@ -275,7 +275,7 @@
 	</data>
 	<data name="ModelError.FactTypeInstance.TooFewFactTypeRoleInstances.Message" xml:space="preserve">
 		<value>Fact type '{0}' in model '{1}' is missing instance data to completely identify a sample instance.</value>
-		<comment>Text displayed when there aren't enough fact type role instances to completely fill a single fact type population row. Replace facttype, model.</comment>
+		<comment>Text displayed when there aren't enough fact type role instances to completely fill a single fact type population row. {0}=facttype {1}=model.</comment>
 	</data>
 	<data name="ModelError.Model.DuplicateConstraintNames.Text" xml:space="preserve">
 		<value>Model '{0}' contains multiple constraints named '{1}'. Constraint names must be unique in the model.</value>
@@ -287,7 +287,7 @@
 	</data>
 	<data name="ModelError.Model.PopulationMandatoryError.Text" xml:space="preserve">
 		<value>'{0}' instance '{1}' in model '{2}' does not participate in required fact type '{3}'.</value>
-		<comment>Model validation error shown when a population violates a mandatory constraint.  Field 0 is the name of the object type, field 0 is the derived name of the instance, field 1 is the model name, field 2 is the facttype name.</comment>
+		<comment>Model validation error shown when a population violates a mandatory constraint.  Field 0 is the derived name of the instance, field 1 is the model name, field 2 is the facttype name.</comment>
 	</data>
 	<data name="ModelError.Model.PopulationUniquenessError.FactType.Text" xml:space="preserve">
 		<value>'{0}'  instance '{1}' in model '{2}' violates a uniqueness constraint on FactType '{3}'.</value>
@@ -298,16 +298,16 @@
 		<comment>Model validation error shown when a population violates a uniqueness constraint and its role is named.  Field 0 is the name of the object type, field 1 is the string representation of the instance, field 2 is the model name, field 3 is the role name.</comment>
 	</data>
 	<data name="ModelError.ObjectType.CompatibleSupertypesError.Message" xml:space="preserve">
-		<value>Supertypes for object type '{0}' in model '{1}' must be compatible and intransitive.</value>
+		<value>Supertypes for object type '{0}' in model '{1}' must be compatible and intransitive. {0}=ObjectType name {1}=model name</value>
 		<comment>Text displayed in the text of the CompatibleSupertypesError.</comment>
 	</data>
 	<data name="ModelError.ObjectType.ObjectTypeRequiresPrimarySupertypeError.Message" xml:space="preserve">
 		<value>Object type '{0}' in model '{1}' requires a primary supertype.</value>
-		<comment>Text displayed in the text of the ObjectTypeRequiresPrimarySupertypeError.</comment>
+		<comment>Text displayed in the text of the ObjectTypeRequiresPrimarySupertypeError. {0}=ObjectType name {1}=model name</comment>
 	</data>
 	<data name="ModelError.ObjectType.PreferredIdentifierRequiresMandatoryError.Message" xml:space="preserve">
 		<value>Object type '{0}' in model '{1}' has a preferred identification scheme with no corresponding mandatory roles. One or more near roles in the facts attached to the preferred identifier must be mandatory.</value>
-		<comment>Text displayed in the text of the PreferredIdentifierRequiresMandatoryError.</comment>
+		<comment>Text displayed in the text of the PreferredIdentifierRequiresMandatoryError. {0}=ObjectType name {1}=model name</comment>
 	</data>
 	<data name="ModelError.Reading.RequiresUserModification.Message" xml:space="preserve">
 		<value>Fact type '{0}' in model '{1}' requires user modification of the reading text '{2}'.</value>
@@ -331,27 +331,27 @@
 	</data>
 	<data name="ModelError.ValueConstraint.ValueRangeOverlapError.Role.Message" xml:space="preserve">
 		<value>Role '{2}' of fact '{1}' in model '{0}' has a value constraint with overlapping values.</value>
-		<comment>ValueRangeOverlapError text for a RoleValueConstraint. Replace model,fact,role number.</comment>
+		<comment>ValueRangeOverlapError text for a RoleValueConstraint. {0}=model {1}=facttype {2}=role number.</comment>
 	</data>
 	<data name="ModelError.ValueConstraint.ValueRangeOverlapError.ValueType.Message" xml:space="preserve">
 		<value>The value constraint for '{0}' in model '{1}' has overlapping values.</value>
-		<comment>ValueRangeOverlapError text for a ValueTypeConstraint. Replace valuetype, model.</comment>
+		<comment>ValueRangeOverlapError text for a ValueTypeConstraint. {0}=valuetype {1}=model.</comment>
 	</data>
 	<data name="ModelError.ValueRange.MaxValueMismatchError.Role.Message" xml:space="preserve">
 		<value>Role '{2}' of fact '{1}' in model '{0}' has a max value that does not match the specified data type.</value>
-		<comment>Role data type does not match max inclusion. Replace model,fact,role number.</comment>
+		<comment>Role data type does not match max inclusion. {0}=model {1}=facttype {2}=role number.</comment>
 	</data>
 	<data name="ModelError.ValueRange.MaxValueMismatchError.ValueType.Message" xml:space="preserve">
 		<value>The max value for '{0}' in model '{1}' must match the specified data type.</value>
-		<comment>data type does not match max inclusion. Replace valuetype, model.</comment>
+		<comment>data type does not match max inclusion. {0}=valuetype {1}=model.</comment>
 	</data>
 	<data name="ModelError.ValueRange.MinValueMismatchError.Role.Message" xml:space="preserve">
 		<value>Role '{2}' of fact '{1}' in model '{0}' has a min value that does not match the specified data type.</value>
-		<comment>Role data type does not match min inclusion. Replace model,fact,role number.</comment>
+		<comment>Role data type does not match min inclusion. {0}=model {1}=facttype {2}=role number.</comment>
 	</data>
 	<data name="ModelError.ValueRange.MinValueMismatchError.ValueType.Message" xml:space="preserve">
 		<value>The min value for '{0}' in model '{1}' must match the specified data type.</value>
-		<comment>data type does not match min inclusion. Replace valuetype, model.</comment>
+		<comment>data type does not match min inclusion. {0}=valuetype {1}=model.</comment>
 	</data>
 	<data name="ModelError.ValueType.DataTypeNotSpecified.Message" xml:space="preserve">
 		<value>A data type must be specified for value type '{0}' in model '{1}'.</value>
@@ -359,11 +359,11 @@
 	</data>
 	<data name="ModelError.ValueTypeInstance.CompatibleValueTypeInstanceValue.Message" xml:space="preserve">
 		<value>Value '{0}' in the sample population for value type '{1}' in model '{2}' is not of the specified data type '{3}'.</value>
-		<comment>Text displayed when the data type of the sample data doesn't match it's set data type. Replace value, valuetype, model.</comment>
+		<comment>Text displayed when the data type of the sample data doesn't match it's set data type. {0}=value {1}=valuetype {2}=model.</comment>
 	</data>
 	<data name="ModelErrorDisplayFilter.ToStringOverrideText" xml:space="preserve">
 		<value>(Filtered)</value>
-		<comment>Text returned by the ModelErrorDisplayFilter's ToString override.</comment>
+		<comment>Text to display for the property for the ModelErrorDisplayFilter when it is filtered.</comment>
 	</data>
 	<data name="ModelException.Constraint.EnforceNoForeignFactTypes" xml:space="preserve">
 		<value>A constraint must be attached to a fact in the same model as the constraint.</value>
@@ -395,7 +395,7 @@
 	</data>
 	<data name="ModelException.Fact.AddReading.InvalidReadingText" xml:space="preserve">
 		<value>Reading text is not in a valid format.</value>
-		<comment>Thrown when adding a reading to a fact using the AddReading with the reading text to add.</comment>
+		<comment>The error message that is returned when attempting to add a new reading to a fact and the text is not valid. Validate reading text must have the number of placeholders equal to the number of roles in the FactType. The replacement fields must be ordered and identified using String.Format replacement syntax. For example: "{0} has {1}".</comment>
 	</data>
 	<data name="ModelException.FactType.EnforceNoImplicitBooleanValueTypeRolePlayerChange" xml:space="preserve">
 		<value>The role associated with an implicit boolean value type cannot be changed.</value>
@@ -459,7 +459,7 @@
 	</data>
 	<data name="ModelException.ReferenceMode.EnforceUniqueFormatString" xml:space="preserve">
 		<value>Format strings must be unique across all reference modes in the model.</value>
-		<comment>Exception message when the unique format string rule is violated for modes</comment>
+		<comment>Exception message when the unique format string rule is violated for reference modes</comment>
 	</data>
 	<data name="ModelException.ReferenceMode.IntrinsicRefModesDontChange" xml:space="preserve">
 		<value>Reference mode kind cannot be changed for intrinsic reference modes.</value>
@@ -471,7 +471,7 @@
 	</data>
 	<data name="ModelException.ReferenceModeKind.EnforceUniqueFormatString" xml:space="preserve">
 		<value>Format strings must be unique across all reference mode kinds in the model.</value>
-		<comment>Exception message when the unique format string rule is violated for reference kinds</comment>
+		<comment>Exception message when the unique format string rule is violated for reference mode kinds</comment>
 	</data>
 	<data name="ModelException.Role.IsMandatoryRequiresAttachedFactType" xml:space="preserve">
 		<value>A Role must be owned by a FactType to set the IsMandatory property.</value>
@@ -495,13 +495,13 @@
 	</data>
 	<data name="ModelException.SubtypeFact.PrimaryMustBeTrue" xml:space="preserve">
 		<value>The SubtypeFact.IsPrimary property cannot be set to false.</value>
-		<comment>Exception message when an attempt is made to change the SubtypeFact.</comment>
+		<comment>Exception message when an attempt is made to change the SubtypeFact.IsPrimary property to false.</comment>
 	</data>
 	<data name="ModelException.SubtypeFact.RolePlayersTypesNotMixed" xml:space="preserve">
 		<value>The Subtype and Supertype ObjectTypes of a SubtypeFact must either be EntityTypes or ValueTypes, not one of each.</value>
 		<comment>Exception message when an attempt is made to mix EntityType and ValueType role players on a SubtypeFact.</comment>
 	</data>
-	<data name="ModelException.SubtypeMetaRole.OnlyImplicitConstraintsAllowed" xml:space="preserve">
+	<data name="ModelException.SubtypeMetaRole.OnlyAllowsImplicitConstraints" xml:space="preserve">
 		<value>A SubtypeMetaRole cannot only be constrained by implicit single-role uniqueness and mandatory constraints.</value>
 		<comment>Exception message when an attempt is made to constraint a SubtypeMetaRole with a constraint other than the implicit uniqueness and mandatory constraints.</comment>
 	</data>
@@ -519,7 +519,7 @@
 	</data>
 	<data name="ModelException.UniquenessConstraint.InvalidPreferredIdentifierPreConditions" xml:space="preserve">
 		<value>The current state of the roles attached to the external uniqueness constraint do no permit its use as a preferred identifier. All roles must be on a binary fact types, and all opposite roles must be attached to the same non-ValueType ObjectType. All opposite roles must also have single-column uniqueness constraints, but this precondition is applied automatically by the object model if it is not satisfied.</value>
-		<comment>Exception message when an attempt is made to set an external uniqueness constraint as a preferred identifier when the preconditions are not met.</comment>
+		<comment>Exception message when an attempt is made to set a uniqueness constraint as a preferred identifier when the preconditions are not met.</comment>
 	</data>
 	<data name="ModelException.ValueTypeInstance.InvalidValueTypeParent" xml:space="preserve">
 		<value>Sample value instances can only be hooked up to a value type.</value>
@@ -587,7 +587,7 @@
 	</data>
 	<data name="ModelReadingEditor.UnsupportedSelectionText" xml:space="preserve">
 		<value>Select an item related to a FactType</value>
-		<comment>Text to place in the reading editor when the document view currently has an unsupported selection.</comment>
+		<comment>Text to place in the reading editor when the document view currently has a selection with no associated reading.</comment>
 	</data>
 	<data name="ModelReadingEditor.WindowTitle" xml:space="preserve">
 		<value>ORM Reading Editor</value>
@@ -619,7 +619,7 @@
 	</data>
 	<data name="ModelReferenceModeEditor.ChangeReferenceModeKindTransaction" xml:space="preserve">
 		<value>Change Reference Mode Kind</value>
-		<comment>Text used to name the transaction that changes the referencemode Kind.</comment>
+		<comment>Text used to name the transaction that changes the reference mode Kind.</comment>
 	</data>
 	<data name="ModelReferenceModeEditor.CustomReferenceModesHeader" xml:space="preserve">
 		<value>Custom Reference Modes</value>
@@ -631,7 +631,7 @@
 	</data>
 	<data name="ModelReferenceModeEditor.EntityTypeName" xml:space="preserve">
 		<value>EntityTypeName</value>
-		<comment>Text that names the Entity Type.</comment>
+		<comment>Text that names the Entity Type in the displayed format string.</comment>
 	</data>
 	<data name="ModelReferenceModeEditor.FormatStringColumn" xml:space="preserve">
 		<value>Format String</value>
@@ -655,7 +655,7 @@
 	</data>
 	<data name="ModelReferenceModeEditor.ReferenceModeName" xml:space="preserve">
 		<value>ReferenceModeName</value>
-		<comment>Text that names the reference mode.</comment>
+		<comment>Text that names the reference mode in the displayed format string.</comment>
 	</data>
 	<data name="ModelReferenceModePicker.FormatString" xml:space="preserve">
 		<value>{0} ({1})</value>

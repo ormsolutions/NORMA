@@ -1,5 +1,5 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
-<ResourceStrings xmlns:xs="http://www.w3.org/2001/XMLSchema">
+<ResourceStrings xmlns="http://schemas.neumont.edu/ORM/SDK/ResourceStringsGenerator">
 	<Copyright name="Common Public License Copyright Notice">
 		<CopyrightLine>/**************************************************************************\</CopyrightLine>
 		<CopyrightLine>* Neumont Object-Role Modeling Architect for Visual Studio                 *</CopyrightLine>
@@ -15,887 +15,397 @@
 		<CopyrightLine>* You must not remove this notice, or any other, from this software.       *</CopyrightLine>
 		<CopyrightLine>\**************************************************************************/</CopyrightLine>
 	</Copyright>
-	<xs:schema attributeFormDefault="unqualified" elementFormDefault="unqualified">
-		<xs:element name="ResourceStrings">
-			<xs:complexType>
-				<xs:sequence>
-					<xs:element name="Copyright" minOccurs="0">
-						<xs:annotation>
-							<xs:documentation>Copyright notice.</xs:documentation>
-						</xs:annotation>
-						<xs:complexType>
-							<xs:sequence>
-								<xs:element name="CopyrightLine" type="xs:string" maxOccurs="unbounded"/>
-							</xs:sequence>
-							<xs:attribute name="name" type="xs:string" use="required"/>
-						</xs:complexType>
-					</xs:element>
-					<xs:element name="ResourceString" maxOccurs="unbounded">
-						<xs:complexType>
-							<xs:sequence>
-								<xs:element name="comment" maxOccurs="unbounded">
-									<xs:complexType>
-										<xs:simpleContent>
-											<xs:extension base="xs:string">
-												<xs:attribute name="type" use="required">
-													<xs:simpleType>
-														<xs:union memberTypes="xs:NCName">
-															<xs:simpleType>
-																<xs:restriction base="xs:NCName">
-																	<xs:enumeration value="summary"/>
-																	<xs:enumeration value="remarks"/>
-																</xs:restriction>
-															</xs:simpleType>
-														</xs:union>
-													</xs:simpleType>
-												</xs:attribute>
-											</xs:extension>
-										</xs:simpleContent>
-									</xs:complexType>
-								</xs:element>
-							</xs:sequence>
-							<xs:attribute name="name" type="xs:NCName" use="required"/>
-							<xs:attribute name="resourceName" type="xs:token" use="required"/>
-							<xs:attribute name="model" use="required">
-								<xs:simpleType>
-									<xs:restriction base="xs:NCName">
-										<xs:enumeration value="ShapeModel"/>
-										<xs:enumeration value="ObjectModel"/>
-										<xs:enumeration value="Diagram"/>
-										<xs:enumeration value="Model"/>
-									</xs:restriction>
-								</xs:simpleType>
-							</xs:attribute>
-						</xs:complexType>
-					</xs:element>
-				</xs:sequence>
-			</xs:complexType>
-		</xs:element>
+	<!-- Redefine schema to fill in modelType -->
+	<xs:schema
+			elementFormDefault="qualified"
+			targetNamespace="http://schemas.neumont.edu/ORM/SDK/ResourceStringsGenerator"
+			xmlns:xs="http://www.w3.org/2001/XMLSchema">
+		<xs:redefine schemaLocation="../Transforms/ResourceStringsGenerator.xsd">
+			<xs:simpleType name="modelType">
+				<xs:restriction base="modelType">
+					<xs:enumeration value="ShapeModel"/>
+					<xs:enumeration value="ObjectModel"/>
+					<xs:enumeration value="Diagram"/>
+					<xs:enumeration value="Model"/>
+				</xs:restriction>
+			</xs:simpleType>
+		</xs:redefine>
 	</xs:schema>
+	<FileAssociations>
+		<FileAssociation model="ShapeModel" resourceFile="..\ShapeModel\GeneratedCode\DomainModelResx.resx" useFileComments="never"/>
+		<FileAssociation model="ObjectModel" resourceFile="..\ObjectModel\ORMCoreDomainModel.resx" useFileComments="secondary"/>
+		<FileAssociation model="Diagram" resourceFile="..\ShapeModel\ORMDiagram.resx" useFileComments="primary"/>
+		<FileAssociation model="Model" resourceFile="..\ObjectModel\ORMModel.resx" useFileComments="primary"/>
+	</FileAssociations>
 	<ResourceString name="ToolboxDefaultTabName" resourceName="ORM DesignerToolboxTab" model="ShapeModel">
-		<comment type="summary">The tab name for default toolbox</comment>
+		<comment>The tab name for default toolbox</comment>
 	</ResourceString>
 	<ResourceString name="ORMDiagramAccessibleName" resourceName="Neumont.Tools.ORM.ShapeModel.ORMDiagram.DisplayName" model="ShapeModel">
-		<comment type="summary">The accessible name for a diagram</comment>
+		<comment>The accessible name for a diagram</comment>
 	</ResourceString>
 	<ResourceString name="ValueType" model="ObjectModel" resourceName="Neumont.Tools.ORM.ObjectModel.ValueType">
-		<comment type="summary">The display name used for an ObjectType when IsValueType is false</comment>
+		<comment>The display name used for an ObjectType when IsValueType is false</comment>
 	</ResourceString>
 	<ResourceString name="EntityType" model="ObjectModel" resourceName="Neumont.Tools.ORM.ObjectModel.EntityType">
-		<comment type="summary">The display name used for an ObjectType when IsValueType is true</comment>
+		<comment>The display name used for an ObjectType when IsValueType is true</comment>
 	</ResourceString>
 	<ResourceString name="FactType" model="ObjectModel" resourceName="Neumont.Tools.ORM.ObjectModel.FactType">
-		<comment type="summary">The display name used for a simple FactType</comment>
+		<comment>The display name used for a simple FactType</comment>
 	</ResourceString>
 	<ResourceString name="SubtypeFact" model="ObjectModel" resourceName="Neumont.Tools.ORM.ObjectModel.SubtypeFact">
-		<comment type="summary">The display name used for a SubtypeFact</comment>
+		<comment>The display name used for a SubtypeFact</comment>
 	</ResourceString>
 	<ResourceString name="ObjectifiedFactType" model="ObjectModel" resourceName="Neumont.Tools.ORM.ObjectModel.ObjectifiedFactType">
-		<comment type="summary">The display name used for an objectified (nested) FactType</comment>
+		<comment>The display name used for an objectified (nested) FactType</comment>
 	</ResourceString>
 	<ResourceString name="InternalUniquenessConstraint" model="ObjectModel" resourceName="Neumont.Tools.ORM.ObjectModel.InternalUniquenessConstraint">
-		<comment type="summary">The display name used for an internal uniqueness constraint</comment>
+		<comment>The display name used for an internal uniqueness constraint</comment>
 	</ResourceString>
 	<ResourceString name="ExternalUniquenessConstraint" model="ObjectModel" resourceName="Neumont.Tools.ORM.ObjectModel.UniquenessConstraint">
-		<comment type="summary">The display name used for an external uniqueness constraint</comment>
+		<comment>The display name used for an external uniqueness constraint</comment>
 	</ResourceString>
 	<ResourceString name="DisjunctiveMandatoryConstraint" model="ObjectModel" resourceName="Neumont.Tools.ORM.ObjectModel.MandatoryConstraint">
-		<comment type="summary">The display name used for a disjunctive mandatory constraint</comment>
+		<comment>The display name used for a disjunctive mandatory constraint</comment>
 	</ResourceString>
 	<ResourceString name="ImpliedMandatoryConstraint" model="ObjectModel" resourceName="Neumont.Tools.ORM.ObjectModel.ImpliedMandatoryConstraint">
-		<comment type="summary">The display name used for an implied mandatory constraint</comment>
+		<comment>The display name used for an implied mandatory constraint</comment>
 	</ResourceString>
 	<ResourceString name="SimpleMandatoryConstraint" model="ObjectModel" resourceName="Neumont.Tools.ORM.ObjectModel.SimpleMandatoryConstraint">
-		<comment type="summary">The display name used for a simple mandatory constraint</comment>
+		<comment>The display name used for a simple mandatory constraint</comment>
 	</ResourceString>
 	<ResourceString name="ReadingType" model="ObjectModel" resourceName="Neumont.Tools.ORM.ObjectModel.Reading">
-		<comment type="summary">The display name used for a ReadingType</comment>
+		<comment>The display name used for a ReadingType</comment>
 	</ResourceString>
 	<ResourceString name="RolePlayerPickerNullItemText" model="ObjectModel" resourceName="Neumont.Tools.ORM.ObjectModel.Editors.RolePlayerPicker.NullItemText">
-		<comment type="summary">The name displayed to represent null in the role player picker</comment>
+		<comment>The name displayed to represent null in the role player picker</comment>
 	</ResourceString>
 	<ResourceString name="NestedFactTypePickerNullItemText" model="ObjectModel" resourceName="Neumont.Tools.ORM.ObjectModel.Editors.NestedFactTypePicker.NullItemText">
-		<comment type="summary">The name displayed to represent null in the nested fact type picker</comment>
+		<comment>The name displayed to represent null in the nested fact type picker</comment>
 	</ResourceString>
 	<ResourceString name="NestingTypePickerNullItemText" model="ObjectModel" resourceName="Neumont.Tools.ORM.ObjectModel.Editors.NestingTypePicker.NullItemText">
-		<comment type="summary">The name displayed to represent null in the nesting type picker</comment>
+		<comment>The name displayed to represent null in the nesting type picker</comment>
 	</ResourceString>
 	<ResourceString name="EntityTypeDefaultNamePattern" model="ObjectModel" resourceName="Neumont.Tools.ORM.ObjectModel.EntityType.DefaultNamePattern">
-		<comment type="summary">The base name used to create a name for a new EntityType. This is a format string</comment>
+		<comment>The base name used to create a name for a new EntityType. This is a format string</comment>
 	</ResourceString>
 	<ResourceString name="PortableDataTypeUnspecified" model="ObjectModel" resourceName="Neumont.Tools.ORM.ObjectModel.DataType.PortableDataType.Unspecified.Text">
-		<comment type="summary">The descriptive text for a PortableDataType of Unspecified.</comment>
+		<comment>The descriptive text for a PortableDataType of Unspecified.</comment>
 	</ResourceString>
 	<ResourceString name="PortableDataTypeTextFixedLength" model="ObjectModel" resourceName="Neumont.Tools.ORM.ObjectModel.DataType.PortableDataType.Text.FixedLength.Text">
-		<comment type="summary">A fixed length text data type</comment>
+		<comment>A fixed length text data type</comment>
 	</ResourceString>
 	<ResourceString name="PortableDataTypeTextVariableLength" model="ObjectModel" resourceName="Neumont.Tools.ORM.ObjectModel.DataType.PortableDataType.Text.VariableLength.Text">
-		<comment type="summary">A variable length text data type</comment>
+		<comment>A variable length text data type</comment>
 	</ResourceString>
 	<ResourceString name="PortableDataTypeTextLargeLength" model="ObjectModel" resourceName="Neumont.Tools.ORM.ObjectModel.DataType.PortableDataType.Text.LargeLength.Text">
-		<comment type="summary">A large length text data type</comment>
+		<comment>A large length text data type</comment>
 	</ResourceString>
 	<ResourceString name="PortableDataTypeNumericSignedInteger" model="ObjectModel" resourceName="Neumont.Tools.ORM.ObjectModel.DataType.PortableDataType.Numeric.SignedInteger.Text">
-		<comment type="summary">A signed integer numeric data type</comment>
+		<comment>A signed integer numeric data type</comment>
 	</ResourceString>
 	<ResourceString name="PortableDataTypeNumericUnsignedInteger" model="ObjectModel" resourceName="Neumont.Tools.ORM.ObjectModel.DataType.PortableDataType.Numeric.UnsignedInteger.Text">
-		<comment type="summary">An unsigned integer numeric data type</comment>
+		<comment>An unsigned integer numeric data type</comment>
 	</ResourceString>
 	<ResourceString name="PortableDataTypeNumericAutoCounter" model="ObjectModel" resourceName="Neumont.Tools.ORM.ObjectModel.DataType.PortableDataType.Numeric.AutoCounter.Text">
-		<comment type="summary">An auto counter numeric data type</comment>
+		<comment>An auto counter numeric data type</comment>
 	</ResourceString>
 	<ResourceString name="PortableDataTypeNumericFloatingPoint" model="ObjectModel" resourceName="Neumont.Tools.ORM.ObjectModel.DataType.PortableDataType.Numeric.FloatingPoint.Text">
-		<comment type="summary">A floating point numeric data type</comment>
+		<comment>A floating point numeric data type</comment>
 	</ResourceString>
 	<ResourceString name="PortableDataTypeNumericDecimal" model="ObjectModel" resourceName="Neumont.Tools.ORM.ObjectModel.DataType.PortableDataType.Numeric.Decimal.Text">
-		<comment type="summary">A decimal numeric data type</comment>
+		<comment>A decimal numeric data type</comment>
 	</ResourceString>
 	<ResourceString name="PortableDataTypeNumericMoney" model="ObjectModel" resourceName="Neumont.Tools.ORM.ObjectModel.DataType.PortableDataType.Numeric.Money.Text">
-		<comment type="summary">A money numeric data type</comment>
+		<comment>A money numeric data type</comment>
 	</ResourceString>
 	<ResourceString name="PortableDataTypeRawDataFixedLength" model="ObjectModel" resourceName="Neumont.Tools.ORM.ObjectModel.DataType.PortableDataType.RawData.FixedLength.Text">
-		<comment type="summary">A fixed length raw data data type</comment>
+		<comment>A fixed length raw data data type</comment>
 	</ResourceString>
 	<ResourceString name="PortableDataTypeRawDataVariableLength" model="ObjectModel" resourceName="Neumont.Tools.ORM.ObjectModel.DataType.PortableDataType.RawData.VariableLength.Text">
-		<comment type="summary">A variable length raw data data type</comment>
+		<comment>A variable length raw data data type</comment>
 	</ResourceString>
 	<ResourceString name="PortableDataTypeRawDataLargeLength" model="ObjectModel" resourceName="Neumont.Tools.ORM.ObjectModel.DataType.PortableDataType.RawData.LargeLength.Text">
-		<comment type="summary">A large length raw data data type</comment>
+		<comment>A large length raw data data type</comment>
 	</ResourceString>
 	<ResourceString name="PortableDataTypeRawDataPicture" model="ObjectModel" resourceName="Neumont.Tools.ORM.ObjectModel.DataType.PortableDataType.RawData.Picture.Text">
-		<comment type="summary">A picture raw data data type</comment>
+		<comment>A picture raw data data type</comment>
 	</ResourceString>
 	<ResourceString name="PortableDataTypeRawDataOleObject" model="ObjectModel" resourceName="Neumont.Tools.ORM.ObjectModel.DataType.PortableDataType.RawData.OleObject.Text">
-		<comment type="summary">An OLE object raw data data type</comment>
+		<comment>An OLE object raw data data type</comment>
 	</ResourceString>
 	<ResourceString name="PortableDataTypeTemporalAutoTimestamp" model="ObjectModel" resourceName="Neumont.Tools.ORM.ObjectModel.DataType.PortableDataType.Temporal.AutoTimestamp.Text">
-		<comment type="summary">An auto timestamp temporal data type</comment>
+		<comment>An auto timestamp temporal data type</comment>
 	</ResourceString>
 	<ResourceString name="PortableDataTypeTemporalTime" model="ObjectModel" resourceName="Neumont.Tools.ORM.ObjectModel.DataType.PortableDataType.Temporal.Time.Text">
-		<comment type="summary">An time temporal data type</comment>
+		<comment>An time temporal data type</comment>
 	</ResourceString>
 	<ResourceString name="PortableDataTypeTemporalDate" model="ObjectModel" resourceName="Neumont.Tools.ORM.ObjectModel.DataType.PortableDataType.Temporal.Date.Text">
-		<comment type="summary">An date temporal data type</comment>
+		<comment>An date temporal data type</comment>
 	</ResourceString>
 	<ResourceString name="PortableDataTypeTemporalDateAndTime" model="ObjectModel" resourceName="Neumont.Tools.ORM.ObjectModel.DataType.PortableDataType.Temporal.DateAndTime.Text">
-		<comment type="summary">An date and time temporal data type</comment>
+		<comment>An date and time temporal data type</comment>
 	</ResourceString>
 	<ResourceString name="PortableDataTypeLogicalTrueOrFalse" model="ObjectModel" resourceName="Neumont.Tools.ORM.ObjectModel.DataType.PortableDataType.Logical.TrueOrFalse.Text">
-		<comment type="summary">A true or false logical data type</comment>
+		<comment>A true or false logical data type</comment>
 	</ResourceString>
 	<ResourceString name="PortableDataTypeLogicalYesOrNo" model="ObjectModel" resourceName="Neumont.Tools.ORM.ObjectModel.DataType.PortableDataType.Logical.YesOrNo.Text">
-		<comment type="summary">A yes or no logical data type</comment>
+		<comment>A yes or no logical data type</comment>
 	</ResourceString>
 	<ResourceString name="PortableDataTypeOtherRowId" model="ObjectModel" resourceName="Neumont.Tools.ORM.ObjectModel.DataType.PortableDataType.Other.RowId.Text">
-		<comment type="summary">A row id data type (can not be classified in any of the groups above)</comment>
+		<comment>A row id data type (can not be classified in any of the groups above)</comment>
 	</ResourceString>
 	<ResourceString name="PortableDataTypeOtherObjectId" model="ObjectModel" resourceName="Neumont.Tools.ORM.ObjectModel.DataType.PortableDataType.Other.ObjectId.Text">
-		<comment type="summary">An object id data type (can not be classified in any of the groups above)</comment>
+		<comment>An object id data type (can not be classified in any of the groups above)</comment>
 	</ResourceString>
 	<ResourceString name="ValueTypeAutoCreateReferenceModeNamePattern" model="ObjectModel" resourceName="Neumont.Tools.ORM.ObjectModel.ValueType.AutoCreateReferenceModeNamePattern">
-		<comment type="summary">Used to automatically turn a value type into an entity type with a reference mode when IsValueType is set to false and the ValueType has downstream value roles. Replacement field {0} is the name of the exisiting type and field {1} is used to insert a number to ensure that the name is unique. {0}Values{1} is the default format.</comment>
+		<comment>Used to automatically turn a value type into an entity type with a reference mode when IsValueType is set to false and the ValueType has downstream value roles. Replacement field {0} is the name of the exisiting type and field {1} is used to insert a number to ensure that the name is unique. {0}Values{1} is the default format.</comment>
 	</ResourceString>
 	<ResourceString name="ValueTypeDefaultNamePattern" model="ObjectModel" resourceName="Neumont.Tools.ORM.ObjectModel.ValueType.DefaultNamePattern">
-		<comment type="summary">The base name used to create a name for a new ValueType. This is a format string with {0} being the placeholder for the number placement.</comment>
-	</ResourceString>
-	<ResourceString name="SubtypeFactElementNameFormat" model="Model" resourceName="SubtypeFact.ElementNameFormat">
-		<comment type="summary">The format string for the generated name of a subtype relationship. The {0} replacement field is used for the subtype element name; {1} for the supertype.</comment>
-	</ResourceString>
-	<ResourceString name="SubtypeFactPredicateInverseReading" model="Model" resourceName="SubtypeFact.PredicateInverseReading">
-		<comment type="summary">The inverse reading for the predicate created by creating a sub type relationship.</comment>
-	</ResourceString>
-	<ResourceString name="SubtypeFactPredicateReading" model="Model" resourceName="SubtypeFact.PredicateReading">
-		<comment type="summary">The reading for the forward predicate created by creating a subtype relationship.</comment>
-	</ResourceString>
-	<ResourceString name="ImpliedFactTypePredicateInverseReading" model="Model" resourceName="ImpliedFactType.PredicateInverseReading">
-		<comment type="summary">The inverse reading for the predicate created implicitly via objectification. There is no attempt made to keep the predicate readings unique in ring situations.We allow the model error to populate instead of generating an articial unique reading.</comment>
-	</ResourceString>
-	<ResourceString name="ImpliedFactTypePredicateReading" model="Model" resourceName="ImpliedFactType.PredicateReading">
-		<comment type="summary">The reading for the predicate created implicitly via objectification. There is no attempt made to keep the predicate readings unique in ring situations.We allow the model error to populate instead of generating an articial unique reading.</comment>
-	</ResourceString>
-	<ResourceString name="SubtypeFactComponentNameFormat" model="Model" resourceName="SubtypeFact.ComponentNameFormat">
-		<comment type="summary">String for generating a component name for a subtype. The {0} replacement field is used for the subtype component name; {1} for the supertype.</comment>
-	</ResourceString>
-	<ResourceString name="AddInternalConstraintTransactionName" model="Diagram" resourceName="AddInternalUniquenessConstraint.TransactionName">
-		<comment type="summary">The name given to the transaction used when adding an internal uniqueness constraint to correct the error of lacking one.</comment>
-	</ResourceString>
-	<ResourceString name="ObjectifyFactTypeTransactionName" model="Diagram" resourceName="ObjectifyFactType.TransactionName">
-		<comment type="summary">The name given to the transaction used when objectifying a fact type.</comment>
-	</ResourceString>
-	<ResourceString name="UnobjectifyFactTypeTransactionName" model="Diagram" resourceName="UnobjectifyFactType.TransactionName">
-		<comment type="summary">The name given to the transaction used when unobjectifying a fact type.</comment>
-	</ResourceString>
-	<ResourceString name="ExclusiveOrCouplerTransactionName" model="Diagram" resourceName="ExclusiveOrCoupler.TransactionName">
-		<comment type="summary">The transaction name used by ExclusiveOrCoupler command.</comment>
-	</ResourceString>
-	<ResourceString name="ExclusiveOrDecouplerTransactionName" model="Diagram" resourceName="ExclusiveOrDecoupler.TransactionName">
-		<comment type="summary">The transaction name used by ExclusiveOrDecoupler command.</comment>
-	</ResourceString>
-	<ResourceString name="DropShapeTransactionName" model="Diagram" resourceName="DropShape.TransactionName">
-		<comment type="summary">The name given to the transaction used when adding a shape element for an existing object.</comment>
-	</ResourceString>
-	<ResourceString name="ExternalConstraintConnectActionInstructions" model="Diagram" resourceName="ExternalConstraintConnectAction.Instructions">
-		<comment type="summary">The instructions shown when creating an external constraint</comment>
-	</ResourceString>
-	<ResourceString name="ExternalConstraintConnectActionTransactionName" model="Diagram" resourceName="ExternalConstraintConnectAction.TransactionName">
-		<comment type="summary">The transaction name used by the external constraint connect action. The text appears in the undo dropdown in the VS IDE.</comment>
-	</ResourceString>
-	<ResourceString name="FrequencyConstraintMinimumFormatString" model="Diagram" resourceName="FrequencyConstraint.Minimum.FormatString">
-		<comment type="summary">The string used to represent a greater than symbol on a frequency constraint.</comment>
-	</ResourceString>
-	<ResourceString name="FrequencyConstraintMinimumOneFormatString" model="Diagram" resourceName="FrequencyConstraint.MinimumOne.FormatString">
-		<comment type="summary">The format to be used in frequency constraints with a minimum value of 1 (eg: Maximum of {0}).</comment>
-	</ResourceString>
-	<ResourceString name="FrequencyConstraintBetweenFormatString" model="Diagram" resourceName="FrequencyConstraint.Between.FormatString">
-		<comment type="summary">The string used to represent 'between' on a frequency constraint (eg: 'Between 1 and 5' would be represented as '1[this string]5'.</comment>
-	</ResourceString>
-	<ResourceString name="InternalUniquenessConstraintConnectActionInstructions" model="Diagram" resourceName="InternalUniquenessConstraintConnectAction.Instructions">
-		<comment type="summary">The instructions shown when creating an internal uniqueness constraint</comment>
-	</ResourceString>
-	<ResourceString name="InternalUniquenessConstraintConnectActionTransactionName" model="Diagram" resourceName="InternalUniquenessConstraintConnectAction.TransactionName">
-		<comment type="summary">The transaction name used by the internal uniqueness constraint connect action. The text appears in the undo dropdown in the VS IDE.</comment>
-	</ResourceString>
-	<ResourceString name="InsertRoleTransactionName" model="Diagram" resourceName="InsertRole.TransactionName">
-		<comment type="summary">The transaction name used by the InsertRoleBefore/InsertRoleAfter commands. The text appears in the undo dropdown in the VS IDE.</comment>
-	</ResourceString>
-	<ResourceString name="RoleConnectActionTransactionName" model="Diagram" resourceName="RoleConnectAction.TransactionName">
-		<comment type="summary">The transaction name used by the role connect action. The text appears in the undo dropdown in the VS IDE.</comment>
-	</ResourceString>
-	<ResourceString name="SubtypeConnectActionTransactionName" model="Diagram" resourceName="SubtypeConnectAction.TransactionName">
-		<comment type="summary">The transaction name used by the subtype connect action. The text appears in the undo dropdown in the VS IDE.</comment>
-	</ResourceString>
-	<ResourceString name="ModelNoteConnectActionTransactionName" model="Diagram" resourceName="ModelNoteConnectAction.TransactionName">
-		<comment type="summary">The transaction name used by the model note connect action. The text appears in the undo dropdown in the VS IDE.</comment>
-	</ResourceString>
-	<ResourceString name="ModelErrorDisplayFilterChangeTransactionName" model="Diagram" resourceName="ModelErrorDisplayFilterChange.TransactionName">
-		<comment type="summary">The transaction name used by the model error display filter dialog when a filter is changed. The text appears in the undo dropdown in the VS IDE.</comment>
-	</ResourceString>
-	<ResourceString name="OptionsPageChangeTransactionName" model="Diagram" resourceName="OptionsPageChange.TransactionName">
-		<comment type="summary">The transaction name used when an options page change modifies diagram layout and connections. The text appears in the undo dropdown in the VS IDE.</comment>
-	</ResourceString>
-	<ResourceString name="OptionsPagePropertyCustomVerbalizationSnippetsDisplayValueCustom" model="Diagram" resourceName="OptionsPage.Property.CustomVerbalizationSnippets.DisplayValue.Custom">
-		<comment type="summary">Value displayed for any modified state of the Custom Verbalization Snippets option.</comment>
-	</ResourceString>
-	<ResourceString name="OptionsPagePropertyCustomVerbalizationSnippetsDisplayValueDefault" model="Diagram" resourceName="OptionsPage.Property.CustomVerbalizationSnippets.DisplayValue.Default">
-		<comment type="summary">Value displayed for the default state of the Custom Verbalization Snippets option.</comment>
-	</ResourceString>
-	<ResourceString name="OptionsPagePropertyCustomVerbalizationSnippetsDisplayValueLanguageFormat" model="Diagram" resourceName="OptionsPage.Property.CustomVerbalizationSnippets.DisplayValue.LanguageFormat">
-		<comment type="summary">Language format string for the Custom Verbalization Snippets option dropdown.</comment>
-	</ResourceString>
-	<ResourceString name="DeleteRoleSequenceTransactionName" model="Diagram" resourceName="DeleteRoleSequence.TransactionName">
-		<comment type="summary">The transaction name used for deleting a role sequence from a multi column external uniqueness constraint. The text appears in the undo dropdown in the VS IDE.</comment>
-	</ResourceString>
-	<ResourceString name="ReverseRoleOrderTransactionName" model="Diagram" resourceName="ReverseRoleOrder.TransactionName">
-		<comment type="summary">The transaction name used for reversing the role order in a fact type shape. The text appears in the undo dropdown in the VS IDE.</comment>
-	</ResourceString>
-	<ResourceString name="MoveRoleOrderTransactionName" model="Diagram" resourceName="MoveRoleOrder.TransactionName">
-		<comment type="summary">The transaction name used for moving a role order in a fact type. The text appears in the undo dropdown in the VS IDE.</comment>
-	</ResourceString>
-	<ResourceString name="MoveRoleSequenceDownTransactionName" model="Diagram" resourceName="MoveRoleSequenceDown.TransactionName">
-		<comment type="summary">The transaction name used for moving a role sequence down in a multi column external uniqueness constraint. The text appears in the undo dropdown in the VS IDE.</comment>
-	</ResourceString>
-	<ResourceString name="MoveRoleSequenceUpTransactionName" model="Diagram" resourceName="MoveRoleSequenceUp.TransactionName">
-		<comment type="summary">The transaction name used for moving a role sequence up in a multi column external uniqueness constraint. The text appears in the undo dropdown in the VS IDE. </comment>
-	</ResourceString>
-	<ResourceString name="InterpretFactEditorLineTransactionName" model="Diagram" resourceName="InterpretFactEditorLine.TransactionName">
-		<comment type="summary">The transaction name used for changes made in response to committing a modified line in the fact editor. The text appears in the undo dropdown in the VS IDE.</comment>
-	</ResourceString>
-	<ResourceString name="ModelBrowserWindowTitle" model="Diagram" resourceName="ORMModelBrowser.WindowTitle">
-		<comment type="summary">The window title for the model browser tool window</comment>
-	</ResourceString>
-	<ResourceString name="ModelExceptionModelErrorCategoryInvalid" model="Model" resourceName="ModelException.ModelErrorCategory.TypeNotDerivedFromModelErrorCategory">
-		<comment type="summary">Exception message when a ModelErrorDisplayFilterAttribute is initialized with a type that does not derive from ModelErrorCategory.</comment>
-	</ResourceString>
-	<ResourceString name="ModelExceptionObjectificationImpliedElementModified" model="Model" resourceName="ModelException.Objectification.DirectModificationOfImpliedElement">
-		<comment type="summary">Exception message when an attempt is made to modify roles, constraints, and role players on elements implied by an Objectification relationship.</comment>
-	</ResourceString>
-	<ResourceString name="ModelExceptionObjectificationImpliedFactObjectified" model="Model" resourceName="ModelException.Objectification.ImpliedFactTypesCannotBeObjectified">
-		<comment type="summary">Exception message when an attempt is made to objectify a fact that is implied by another objectification.</comment>
-	</ResourceString>
-	<ResourceString name="ModelExceptionObjectificationImpliedMustBeImpliedAndIndependentAndCannotPlayRoleInNonImpliedFact" model="Model" resourceName="ModelException.Objectification.ImpliedMustBeImpliedAndIndependentAndCannotPlayRoleInNonImpliedFact">
-		<comment type="summary">Exception message when an attempt is made to change an explicit Objectification to implied when it does not match the implied objectification pattern or is not independent or plays a Role in a non-implied FactType.</comment>
-	</ResourceString>
-	<ResourceString name="ModelExceptionObjectificationImpliedObjectificationNotAllowed" model="Model" resourceName="ModelException.Objectification.ImpliedObjectificationNotAllowed">
-		<comment type="summary">Exception message when an attempt is made to operate on an implied objectification by a method that only accepts explicit objectifications.</comment>
-	</ResourceString>
-	<ResourceString name="ModelExceptionReadingIsPrimaryToFalse" model="Model" resourceName="ModelException.Reading.IsPrimary.ReadOnlyWhenFalse">
-		<comment type="summary">The error message to return when an attempt is made to change the IsPrimary property of a reading to false.</comment>
-	</ResourceString>
-	<ResourceString name="ModelExceptionFactAddReadingInvalidReadingText" model="Model" resourceName="ModelException.Fact.AddReading.InvalidReadingText">
-		<comment type="summary">The error message that is returned when attempting to add a new reading to a fact and the text is not valid.  It needs to have a number of place holders equal to the number of roles in the fact and they need to have their positions identified by number using the replacement syntax of String.Format. For example: "{0} has {1}"</comment>
-	</ResourceString>
-	<ResourceString name="ModelErrorConstraintImplication" model="Model" resourceName="ModelError.Constraint.ImplicationError.Text">
-		<comment type="summary">Model validation error text when a constraint intersects a second constraint where the second constraints roles are a subset of the constraint roles.</comment>
-	</ResourceString>
-	<ResourceString name="ModelErrorConstraintImplicationEqualityOrSubsetMandatory" model="Model" resourceName="ModelError.Constraint.EqualityOrSubsetImpliedByMandatoryError.Text">
-		<comment type="summary">Model validation error text when an equality constraint or subset constraint is put on roles that are mandatory.</comment>
-	</ResourceString>
-	<ResourceString name="ModelErrorNotWellModeledSubsetAndMandatoryError" model="Model" resourceName="ModelError.Constraint.NotWellModeledSubsetAndMandatoryError.Text">
-		<comment type="summary">Model validation error text when a mandatory constraint is put on the subset role of a subset constraint relationship.</comment>
-	</ResourceString>
-	<ResourceString name="ModelErrorConstraintContradiction" model="Model" resourceName="ModelError.Constraint.ContradictionError.Text">
-		<comment type="summary">Model validation error text when a constraint intersects a second constraint where the second constraints roles are a subset of the constraint roles and are in a state of contradiction.</comment>
-	</ResourceString>
-	<ResourceString name="ModelErrorConstraintHasTooFewRoleSequencesText" model="Model" resourceName="ModelError.Constraint.TooFewRoleSequences.Text">
-		<comment type="summary">Model validation error shown when too few role sequences are defined for a constraint. This is a frequent occurrence as external constraints are easily created in this state.</comment>
-	</ResourceString>
-	<ResourceString name="FrequencyConstraintContradictsInternalUniquenessConstraintText" model="Model" resourceName="ModelError.Constraint.FrequencyConstraintContradictsInternalUniquenessConstraintError.Text">
-		<comment type="summary">Model validation error text used when a frequency constraint contradicts an internal uniqueness constraint</comment>
-	</ResourceString>
-	<ResourceString name="ModelErrorConstraintHasTooManyRoleSequencesText" model="Model" resourceName="ModelError.Constraint.TooManyRoleSequences.Text">
-		<comment type="summary">Model validation error shown when too many role sequences are defined for a constraint. This is an infrequent occurrence which should not be attainable via the UI</comment>
-	</ResourceString>
-	<ResourceString name="ModelErrorConstraintExternalConstraintArityMismatch" model="Model" resourceName="ModelError.Constraint.ExternalConstraintArityMismatch.Text">
-		<comment type="summary">Model validation error text when role sequences in a multi column constraint have different role counts (arity).</comment>
-	</ResourceString>
-	<ResourceString name="ModelErrorModelHasDuplicateConstraintNames" model="Model" resourceName="ModelError.Model.DuplicateConstraintNames.Text">
-		<comment type="summary">Model validation error shown when multiple constraints have the same name. This is an uncommon condition that should only occur with a hand edit to a model file.</comment>
-	</ResourceString>
-	<ResourceString name="ModelErrorModelHasDuplicateObjectTypeNames" model="Model" resourceName="ModelError.Model.DuplicateObjectTypeNames.Text">
-		<comment type="summary">Model validation error shown when multiple object types have the same name. This is an uncommon condition that should only occur with a hand edit to a model file.</comment>
-	</ResourceString>
-	<ResourceString name="ModelErrorModelHasPopulationUniquenessErrorWithNamedRole" model="Model" resourceName="ModelError.Model.PopulationUniquenessError.Role.Text">
-		<comment type="summary">Model validation error shown when a population violates a uniqueness constraint and the role is named.</comment>
-	</ResourceString>
-	<ResourceString name="ModelErrorModelHasPopulationUniquenessErrorWithUnnamedRole" model="Model" resourceName="ModelError.Model.PopulationUniquenessError.FactType.Text">
-		<comment type="summary">Model validation error shown when a population violates a uniqueness constraint and the role is unnamed.</comment>
-	</ResourceString>
-	<ResourceString name="ModelErrorModelHasPopulationMandatoryError" model="Model" resourceName="ModelError.Model.PopulationMandatoryError.Text">
-		<comment type="summary">Model validation error shown when a population violates a mandatory constraint.</comment>
-	</ResourceString>
-	<ResourceString name="ModelErrorRoleValueRangeMaxValueMismatchError" model="Model" resourceName="ModelError.ValueRange.MaxValueMismatchError.Role.Message">
-		<comment type="summary">Role data type does not match max inclusion</comment>
-	</ResourceString>
-	<ResourceString name="ModelErrorRoleValueRangeMinValueMismatchError" model="Model" resourceName="ModelError.ValueRange.MinValueMismatchError.Role.Message">
-		<comment type="summary">Role data type does not match min inclusion</comment>
-	</ResourceString>
-	<ResourceString name="ModelErrorValueRangeMaxValueMismatchError" model="Model" resourceName="ModelError.ValueRange.MaxValueMismatchError.ValueType.Message">
-		<comment type="summary">Data type does not match max inclusion</comment>
-	</ResourceString>
-	<ResourceString name="ModelErrorValueRangeMinValueMismatchError" model="Model" resourceName="ModelError.ValueRange.MinValueMismatchError.ValueType.Message">
-		<comment type="summary">Data type does not match min inclusion</comment>
-	</ResourceString>
-	<ResourceString name="ModelErrorValueTypeValueRangeOverlapError" model="Model" resourceName="ModelError.ValueConstraint.ValueRangeOverlapError.ValueType.Message">
-		<comment type="summary">ValueRangeOverlapError text for a ValueTypeConstraint. Replace valuetype, model.</comment>
-	</ResourceString>
-	<ResourceString name="ModelErrorRoleValueRangeOverlapError" model="Model" resourceName="ModelError.ValueConstraint.ValueRangeOverlapError.Role.Message">
-		<comment type="summary">ValueRangeOverlapError text for a RoleValueConstraint. Replace model,fact,role number.</comment>
-	</ResourceString>
-	<ResourceString name="ModelErrorUncategorized" model="Model" resourceName="ModelError.UncategorizedModelError.CategoryDisplayName">
-		<comment type="summary">Category name to display for uncategorized model errors.</comment>
-	</ResourceString>
-	<ResourceString name="ModelErrorDisplayFilteredText" model="Model" resourceName="ModelErrorDisplayFilter.ToStringOverrideText">
-		<comment type="summary">Text to display for the property for the ModelErrorDisplayFilter when it is filtered.</comment>
-	</ResourceString>
-	<ResourceString name="ModelExceptionNameAlreadyUsedByModel" model="Model" resourceName="ModelException.Model.DuplicateName.Text">
-		<comment type="summary">Exception message when a name change in the editor attempts to introduce a duplicate name into the model.</comment>
-	</ResourceString>
-	<ResourceString name="ModelExceptionEnforceValueTypeNotNestingType" model="Model" resourceName="ModelException.ObjectType.EnforceValueTypeNotNestingType">
-		<comment type="summary">Exception message when an attempt is made to make an object type both a value type and an objectified fact type.</comment>
-	</ResourceString>
-	<ResourceString name="ModelExceptionEnforceRolePlayerNotNestingType" model="Model" resourceName="ModelException.FactType.EnforceRolePlayerNotNestingType">
-		<comment type="summary">Exception message when an attempt is made to use the same type as both a role player and the nesting type of a fact type.</comment>
-	</ResourceString>
-	<ResourceString name="ModelExceptionFactTypeEnforceNoImplicitBooleanValueTypeRolePlayerChange" model="Model" resourceName="ModelException.FactType.EnforceNoImplicitBooleanValueTypeRolePlayerChange">
-		<comment type="summary">Exception message when an attempt is made to modify a role player associated with an implicit boolean value.</comment>
-	</ResourceString>
-	<ResourceString name="ModelExceptionFactTypeEnforceNoRoleMigration" model="Model" resourceName="ModelException.FactType.EnforceNoRoleMigration">
-		<comment type="summary">Exception message when an attempt is made to move a role to a different FactType.</comment>
-	</ResourceString>
-	<ResourceString name="ModelExceptionObjectTypeEnforceIsIndependentPattern" model="Model" resourceName="ModelException.ObjectType.EnforceIsIndependentPattern">
-		<comment type="summary">Exception message when an attempt is made to set the IsIndependent property on an object type that plays mandatory roles that are not part of its preferred identification scheme.</comment>
-	</ResourceString>
-	<ResourceString name="ModelExceptionEnforcePreferredIdentifierForEntityType" model="Model" resourceName="ModelException.ObjectType.EnforcePreferredIdentifierForEntityType">
-		<comment type="summary">Exception message when an attempt is made to set\ both a primary identifier and a value type on the same object type.</comment>
-	</ResourceString>
-	<ResourceString name="ModelExceptionExclusiveOrConstraintCouplerDirectExclusionConstraintEdit" model="Model" resourceName="ModelException.ExclusiveOrConstraintCoupler.DirectExclusionConstraintEdit">
-		<comment type="summary">Exception message when an attempt is made to directly edit roles on an ExclusionConstraint that participates in an ExclusiveOrCoupler relationship.</comment>
-	</ResourceString>
-	<ResourceString name="ModelExceptionIsMandatoryRequiresAttachedFactType" model="Model" resourceName="ModelException.Role.IsMandatoryRequiresAttachedFactType">
-		<comment type="summary">Exception message when an attempt is made to set the IsMandatory property on an unattached role. IsMandatory creates an internal constraint, which is owned by an FactType, so cannot be realized if the parent fact is unknown.</comment>
-	</ResourceString>
-	<ResourceString name="ModelExceptionInvalidPreferredIdentifierPreConditions" model="Model" resourceName="ModelException.UniquenessConstraint.InvalidPreferredIdentifierPreConditions">
-		<comment type="summary">Exception message when an attempt is made to set a uniqueness constraint as a preferred identifier when the preconditions are not met.</comment>
-	</ResourceString>
-	<ResourceString name="ModelExceptionConstraintEnforceNoForeignFactTypes" model="Model" resourceName="ModelException.Constraint.EnforceNoForeignFactTypes">
-		<comment type="summary">Exception message when an attempt is made to attached facts from an external model to a constraint.</comment>
-	</ResourceString>
-	<ResourceString name="ModelExceptionConstraintEnforceSingleFactTypeForInternalConstraint" model="Model" resourceName="ModelException.Constraint.EnforceSingleFactTypeForInternalConstraint">
-		<comment type="summary">Exception message when an attempt is made to attached more than one fact to an internal constraint.</comment>
-	</ResourceString>
-	<ResourceString name="ModelExceptionConstraintRoleSequenceHasRoleEnforceNoRolePlayerChange" model="Model" resourceName="ModelException.ConstraintRoleSequenceHasRole.EnforceNoRolePlayerChange">
-		<comment type="summary">Exception message when an attempt is made to directly modify role players on the ConstraintRoleSequenceHasRole relationship.</comment>
-	</ResourceString>
-	<ResourceString name="ModelExceptionExclusiveOrConstraintCouplerInconsistentConstraints" model="Model" resourceName="ModelException.ExclusiveOrConstraintCoupler.InconsistentConstraintRolesOrModality">
-		<comment type="summary">Exception message when an attempt is made to form an ExclusiveOrConstraintCoupler relationship between incompatible MandatoryConstraint and ExclusionConstraint elements.</comment>
-	</ResourceString>
-	<ResourceString name="CoreVerbalizationSnippetsDefaultDescription" model="Model" resourceName="Verbalization.SnippetsDefaultDescription">
-		<comment type="summary">The description for the default verbalization snippets for the core model.</comment>
-	</ResourceString>
-	<ResourceString name="CoreVerbalizationSnippetsTypeDescription" model="Model" resourceName="Verbalization.SnippetsTypeDescription">
-		<comment type="summary">The description for the verbalization snippets associated with the core model.</comment>
-	</ResourceString>
-	<ResourceString name="VerbalizationReportSnippetsDefaultDescription" model="Model" resourceName="Verbalization.ReportSnippetsDefaultDescription">
-		<comment type="summary">The description for the default verbalization report snippets for the core model.</comment>
-	</ResourceString>
-	<ResourceString name="VerbalizationReportSnippetsTypeDescription" model="Model" resourceName="Verbalization.ReportSnippetsTypeDescription">
-		<comment type="summary">The description for the verbalization report snippets associated with the core model.</comment>
-	</ResourceString>
-	<ResourceString name="ModelExceptionFactTypeInstanceInconsistentRoleOwners" model="Model" resourceName="ModelException.FactTypeInstance.InconsistentRoleOwners">
-		<comment type="summary">Exception message when an attempt is made to add roles from different fact types to a role sequence owned by a fact type instance.</comment>
-	</ResourceString>
-	<ResourceString name="ModelExceptionEntityTypeInstanceInvalidRolesPreferredIdentifier" model="Model" resourceName="ModelException.EntityTypeInstance.InvalidRolesPreferredIdentifier">
-		<comment type="summary">Exception message when an attempt is made to hook up role instances to an entity type where the roles are not in the entity type's preferred identifier collection.</comment>
-	</ResourceString>
-	<ResourceString name="ModelExceptionEntityTypeInstanceInvalidEntityTypeParent" model="Model" resourceName="ModelException.EntityTypeInstance.InvalidEntityTypeParent">
-		<comment type="summary">Exception message when an attempt is made to hook up a ValueType to an EntityTypeInstance.</comment>
-	</ResourceString>
-	<ResourceString name="ModelExceptionValueTypeInstanceInvalidValueTypeParent" model="Model" resourceName="ModelException.ValueTypeInstance.InvalidValueTypeParent">
-		<comment type="summary">Exception message when an attempt is made to hook up an EntityType to a ValueTypeInstance.</comment>
-	</ResourceString>
-	<ResourceString name="CommandDeleteFactTypeText" model="Diagram" resourceName="Command.DeleteFactType.Text">
-		<comment type="summary">This text appears in the edit menu when fact types are selected in the diagram.</comment>
-	</ResourceString>
-	<ResourceString name="CommandDeleteObjectTypeText" model="Diagram" resourceName="Command.DeleteObjectType.Text">
-		<comment type="summary">This text appears in the edit menu when object types are selected in the diagram.</comment>
-	</ResourceString>
-	<ResourceString name="CommandDeleteConstraintText" model="Diagram" resourceName="Command.DeleteConstraint.Text">
-		<comment type="summary">This text appears in the edit menu when constraint types are selected in the diagram.</comment>
-	</ResourceString>
-	<ResourceString name="CommandDeleteMultipleElementsText" model="Diagram" resourceName="Command.DeleteMultipleElements.Text">
-		<comment type="summary">This text appears in the edit menu when multiple elements of different types are selected in the diagram.</comment>
-	</ResourceString>
-	<ResourceString name="CommandDeleteMultipleShapesText" model="Diagram" resourceName="Command.DeleteMultipleShapes.Text">
-		<comment type="summary">This text appears in the edit menu when multiple shapes of different types are selected in the diagram.</comment>
-	</ResourceString>
-	<ResourceString name="CommandDeleteFactTypeShapeText" model="Diagram" resourceName="Command.DeleteFactTypeShape.Text">
-		<comment type="summary">This text appears in the edit menu when fact types are selected in the diagram.</comment>
-	</ResourceString>
-	<ResourceString name="CommandDeleteObjectTypeShapeText" model="Diagram" resourceName="Command.DeleteObjectTypeShape.Text">
-		<comment type="summary">This text appears in the edit menu when object types are selected in the diagram.</comment>
-	</ResourceString>
-	<ResourceString name="CommandDeleteConstraintShapeText" model="Diagram" resourceName="Command.DeleteConstraintShape.Text">
-		<comment type="summary">This text appears in the edit menu when constraint types are selected in the diagram.</comment>
-	</ResourceString>
-	<ResourceString name="CommandDeleteModelNoteText" model="Diagram" resourceName="Command.DeleteModelNote.Text">
-		<comment type="summary">This text appears in the edit menu when model notes are selected in the diagram.</comment>
-	</ResourceString>
-	<ResourceString name="CommandDeleteModelNoteReferenceText" model="Diagram" resourceName="Command.DeleteModelNoteReference.Text">
-		<comment type="summary">This text appears in the edit menu when references to model notes are selected in the diagram.</comment>
-	</ResourceString>
-	<ResourceString name="CommandDeleteModelNoteShapeText" model="Diagram" resourceName="Command.DeleteModelNoteShape.Text">
-		<comment type="summary">This text appears in the edit menu when model notes are selected in the diagram.</comment>
-	</ResourceString>
-	<ResourceString name="CommandDeleteMultipleShapeText" model="Diagram" resourceName="Command.DeleteMultipleShape.Text">
-		<comment type="summary">This text appears in the edit menu when multiple elements of different types are selected in the diagram.</comment>
-	</ResourceString>
-	<ResourceString name="CommandDeleteRoleText" model="Diagram" resourceName="Command.DeleteRole.Text">
-		<comment type="summary">This text appears in the edit menu when roles are selected in the diagram.</comment>
-	</ResourceString>
-	<ResourceString name="CommandDeleteReadingText" model="Diagram" resourceName="Command.DeleteReading.Text">
-		<comment type="summary">This text appears on the undo/redo menu when a reading is deleted.</comment>
-	</ResourceString>
-	<ResourceString name="CommandEditReadingText" model="Diagram" resourceName="Command.EditReading.Text">
-		<comment type="summary">This text appears on the undo/redo menu when a reading is edited.</comment>
-	</ResourceString>
-	<ResourceString name="CommandSwapRoleOrderText" model="Diagram" resourceName="Command.SwapRoleOrder.Text">
-		<comment type="summary">This text appears on the move role left/right when the fact type is binary.</comment>
-	</ResourceString>
-	<ResourceString name="CommandNextOnThisDiagramText" model="Diagram" resourceName="Command.NextOnThisDiagram.Text">
-		<comment type="summary">This text appears on the 'Select on Diagram' menu if there is more than one shape for the selected element on the current diagram.</comment>
-	</ResourceString>
-	<ResourceString name="ModelReadingEditorListColumnHeaderReadingText" model="Model" resourceName="ModelReadingEditor.ListColumnHeader.ReadingText">
-		<comment type="summary">Text that appears in the headers of the reading editor tool window for the reading text Text that appears in the headers of the reading editor tool window for the reading text</comment>
-	</ResourceString>
-	<ResourceString name="ModelReadingEditorListColumnHeaderIsPrimary" model="Model" resourceName="ModelReadingEditor.ListColumnHeader.IsPrimary">
-		<comment type="summary">Text that appears in the header of the IsPrimary column in the reading editor tool window.</comment>
-	</ResourceString>
-	<ResourceString name="ModelReadingEditorAllReadingsNodeName" model="Model" resourceName="ModelReadingEditor.AllReadingsNodeName">
-		<comment type="summary">The text to place in the node of the tree in the readings editor that shows all readings for the fact.</comment>
-	</ResourceString>
-	<ResourceString name="ModelReadingEditorMissingRolePlayerText" model="Model" resourceName="ModelReadingEditor.MissingRolePlayerText">
-		<comment type="summary">The text to display in the readings editor when a role has no roleplayer.</comment>
-	</ResourceString>
-	<ResourceString name="ModelReadingEditorNewItemText" model="Model" resourceName="ModelReadingEditor.NewItemText">
-		<comment type="summary">The text that will be used for the new reading item in the readings list of the reading editor tool window.</comment>
-	</ResourceString>
-	<ResourceString name="ModelReadingEditorNewReadingTransactionText" model="Model" resourceName="ModelReadingEditor.NewReadingTransactionText">
-		<comment type="summary">Text used to describe the transaction created when creating a new reading.</comment>
-	</ResourceString>
-	<ResourceString name="ModelReadingEditorChangeReadingText" model="Model" resourceName="ModelReadingEditor.ChangeReadingText">
-		<comment type="summary">Text used to label the transaction created when changing reading text through the editor</comment>
-	</ResourceString>
-	<ResourceString name="ModelReadingEditorMoveReadingOrder" model="Model" resourceName="ModelReadingEditor.MoveReadingOrder">
-		<comment type="summary">Text used to label the transaction created when a reading order is moved through the reading editor</comment>
-	</ResourceString>
-	<ResourceString name="ModelReadingEditorMoveReading" model="Model" resourceName="ModelReadingEditor.MoveReading">
-		<comment type="summary">Text used to label the transaction created when a reading is moved through the reading editor</comment>
-	</ResourceString>
-	<ResourceString name="ModelReadingEditorIsPrimaryToolTip" model="Model" resourceName="ModelReadingEditor.IsPrimaryToolTip">
-		<comment type="summary">ToolTip text that appears on the reading list for the IsPrimary status column.</comment>
-	</ResourceString>
-	<ResourceString name="ModelReadingEditorChangePrimaryReadingText" model="Model" resourceName="ModelReadingEditor.ChangePrimaryReadingText">
-		<comment type="summary">Text used to label the transaction created when which reading is primary is changed in the editor.</comment>
-	</ResourceString>
-	<ResourceString name="ModelReadingEditorWindowTitle" model="Model" resourceName="ModelReadingEditor.WindowTitle">
-		<comment type="summary">Text to place in the title of the reading editor tool window.</comment>
-	</ResourceString>
-	<ResourceString name="ModelReadingEditorImpliedFactTypeReadingsText" model="Model" resourceName="ModelReadingEditor.ImpliedFactTypeReadingsText">
-		<comment type="summary">Text used as the header row for the implied readings in the reading editor for a role selection on an objectified fact type.</comment>
-	</ResourceString>
-	<ResourceString name="ModelReadingEditorPrimaryFactTypeReadingsText" model="Model" resourceName="ModelReadingEditor.PrimaryFactTypeReadingsText">
-		<comment type="summary">Text used as the header row for the primary readings in the reading editor for a role selection on an objectified fact type.</comment>
-	</ResourceString>
-	<ResourceString name="ModelNotesWindowTitle" model="Model" resourceName="ModelNotesWindow.WindowTitle">
-		<comment type="summary">Text to place in the title bar of the notes tool window.</comment>
-	</ResourceString>
-	<ResourceString name="ModelContextWindowTitle" model="Model" resourceName="ModelContextWindow.WindowTitle">
-		<comment type="summary">Text to place in the title bar of the context tool window.</comment>
-	</ResourceString>
-	<ResourceString name="ModelNotesWindowRootTypeNameNotesSeparatorFormatString" model="Model" resourceName="ModelNotesWindow.RootTypeNameNotesSeparatorFormatString">
-		<comment type="summary">Text that separates a root type's name from notes if multiple notes are displayed in the ORM notes window. Replacement field 0 is the element name, 1 is the note text.</comment>
-	</ResourceString>
-	<ResourceString name="ModelReadingEditorUnsupportedSelectionText" model="Model" resourceName="ModelReadingEditor.UnsupportedSelectionText">
-		<comment type="summary">Text that will display in the middle of the tool window when the document view currently has an unsuppoted collection.</comment>
-	</ResourceString>
-	<ResourceString name="ModelSamplePopulationEditorNewInstanceTransactionText" model="Model" resourceName="ModelSamplePopulationEditor.NewInstanceTransactionText">
-		<comment type="summary">Text used to describe the transaction when creating an instance.  Replacement field 0 is the column name of the instance being created.</comment>
-	</ResourceString>
-	<ResourceString name="ModelSamplePopulationEditorEditInstanceTransactionText" model="Model" resourceName="ModelSamplePopulationEditor.EditInstanceTransactionText">
-		<comment type="summary">Text used to describe the transaction when editing an instance.  Replacement field 0 is the column name of the instance being edited.</comment>
-	</ResourceString>
-	<ResourceString name="ModelSamplePopulationEditorRemoveInstanceTransactionText" model="Model" resourceName="ModelSamplePopulationEditor.RemoveInstanceTransactionText">
-		<comment type="summary">Text used to describe the transaction when removing an instance.  Replacement field 0 is the column name of the instance being removed.</comment>
-	</ResourceString>
-	<ResourceString name="ModelSamplePopulationEditorWindowTitle" model="Model" resourceName="ModelSamplePopulationEditor.WindowTitle">
-		<comment type="summary">Text to place in the title bar of the sample population window.</comment>
-	</ResourceString>
-	<ResourceString name="ModelSamplePopulationEditorNullSelection" model="Model" resourceName="ModelSamplePopulationEditor.NullSelection">
-		<comment type="summary">Text to place when selection is null in the sample population window.</comment>
-	</ResourceString>
-	<ResourceString name="PackageOfficialName" model="Diagram" resourceName="Package.OfficialName">
-		<comment type="summary">The official name of the package used in the About dialog</comment>
-	</ResourceString>
-	<ResourceString name="PackageProductDetails" model="Diagram" resourceName="Package.ProductDetails">
-		<comment type="summary">The description of the package used in the About dialog</comment>
-	</ResourceString>
-	<ResourceString name="ModelReferenceModeEditorReferenceModeName" model="Model" resourceName="ModelReferenceModeEditor.ReferenceModeName">
-		<comment type="summary">returns the Text that names the reference mode.</comment>
-	</ResourceString>
-	<ResourceString name="ModelReferenceModeEditorEntityTypeName" model="Model" resourceName="ModelReferenceModeEditor.EntityTypeName">
-		<comment type="summary">returns the Text that names the Entity Type.</comment>
-	</ResourceString>
-	<ResourceString name="ModelReferenceModeEditorReferenceModeKindHeader" model="Model" resourceName="ModelReferenceModeEditor.ReferenceModeKindHeader">
-		<comment type="summary">returns the Text used to name the Reference Mode Kind column</comment>
-	</ResourceString>
-	<ResourceString name="ModelReferenceModeEditorChangeNameTransaction" model="Model" resourceName="ModelReferenceModeEditor.ChangeNameTransaction">
-		<comment type="summary">returns the Text used to name the transaction the changes the name of a custom reference mode</comment>
-	</ResourceString>
-	<ResourceString name="ModelReferenceModeEditorCustomReferenceModesHeader" model="Model" resourceName="ModelReferenceModeEditor.CustomReferenceModesHeader">
-		<comment type="summary">returns the Text used to name the Custom Reference Modes column</comment>
-	</ResourceString>
-	<ResourceString name="ModelReferenceModeEditorIntrinsicReferenceModesHeader" model="Model" resourceName="ModelReferenceModeEditor.IntrinsicReferenceModesHeader">
-		<comment type="summary">returns the Text used to name the Intrinsic Reference Modes column</comment>
-	</ResourceString>
-	<ResourceString name="ModelReferenceModeEditorAbbreviatedEntityTypeName" model="Model" resourceName="ModelReferenceModeEditor.AbbreviatedEntityTypeName">
-		<comment type="summary">returns the abbreviated form of the entity type name</comment>
-	</ResourceString>
-	<ResourceString name="ModelReferenceModeEditorAbbreviatedReferenceModeName" model="Model" resourceName="ModelReferenceModeEditor.AbbreviatedReferenceModeName">
-		<comment type="summary">return the abbreviated form of the reference mode name</comment>
-	</ResourceString>
-	<ResourceString name="ModelReferenceModeEditorAddCustomReferenceModeTransaction" model="Model" resourceName="ModelReferenceModeEditor.AddCustomReferenceModeTransaction">
-		<comment type="summary">returns the text used to name the transaction that adds a custom reference mode</comment>
-	</ResourceString>
-	<ResourceString name="ModelReferenceModeEditorAddNewRowText" model="Model" resourceName="ModelReferenceModeEditor.AddNewRowText">
-		<comment type="summary">returns the text to display the add a new row to the custom reference modes branch</comment>
-	</ResourceString>
-	<ResourceString name="ModelReferenceModeEditorChangeFormatStringTransaction" model="Model" resourceName="ModelReferenceModeEditor.ChangeFormatStringTransaction">
-		<comment type="summary">returns the text used to name the transaction that changes the format string. </comment>
-	</ResourceString>
-	<ResourceString name="ModelReferenceModeEditorEditorWindowTitle" model="Model" resourceName="ModelReferenceModeEditor.EditorWindowTitle">
-		<comment type="summary">returns The text that displays the title of the editor window.</comment>
-	</ResourceString>
-	<ResourceString name="ModelExceptionReferenceModeEnforceUniqueFormatString" model="Model" resourceName="ModelException.ReferenceMode.EnforceUniqueFormatString">
-		<comment type="summary">returns Exception message when the unique format string rule is violated for reference modes</comment>
-	</ResourceString>
-	<ResourceString name="ModelExceptionReferenceModeKindEnforceUniqueFormatString" model="Model" resourceName="ModelException.ReferenceModeKind.EnforceUniqueFormatString">
-		<comment type="summary">returns Exception message when the unique format string rule is violated for reference mode kinds</comment>
-	</ResourceString>
-	<ResourceString name="ModelExceptionReferenceModeIntrinsicRefModesDontChange" model="Model" resourceName="ModelException.ReferenceMode.IntrinsicRefModesDontChange">
-		<comment type="summary">returns Exception messege when atttempt is made to change the kind of an intrinsic reference mode</comment>
-	</ResourceString>
-	<ResourceString name="ModelExceptionReferenceModeReferenceModesKindNotEmpty" model="Model" resourceName="ModelException.ReferenceMode.ReferenceModesKindNotEmpty">
-		<comment type="summary">returns Exception messege when attempt is made to remove reference mode kind.</comment>
-	</ResourceString>
-	<ResourceString name="ModelReferenceModeEditorChangeReferenceModeKindTransaction" model="Model" resourceName="ModelReferenceModeEditor.ChangeReferenceModeKindTransaction">
-		<comment type="summary">returns Text used to name the transaction that changes the referencemode Kind.</comment>
-	</ResourceString>
-	<ResourceString name="ReferenceModePredicateReading" model="Model" resourceName="ReferenceMode.PredicateReading">
-		<comment type="summary">returns The reading for the predicate created by setting the ref mode.</comment>
-	</ResourceString>
-	<ResourceString name="ReferenceModePredicateInverseReading" model="Model" resourceName="ReferenceMode.PredicateInverseReading">
-		<comment type="summary">returns The inverse reading for the predicate created by setting the ref mode.</comment>
-	</ResourceString>
-	<ResourceString name="ModelReferenceModeEditorFormatStringColumn" model="Model" resourceName="ModelReferenceModeEditor.FormatStringColumn">
-		<comment type="summary">returns The Column header text for the Format String column.</comment>
-	</ResourceString>
-	<ResourceString name="ModelReferenceModeEditorKindColumn" model="Model" resourceName="ModelReferenceModeEditor.KindColumn">
-		<comment type="summary">returns The Column header text for the Kind column.</comment>
-	</ResourceString>
-	<ResourceString name="ModelReferenceModeEditorNameColumn" model="Model" resourceName="ModelReferenceModeEditor.NameColumn">
-		<comment type="summary">returns The Column header text for the name column.</comment>
-	</ResourceString>
-	<ResourceString name="FactEditorToolWindowCaption" model="Diagram" resourceName="FactEditorToolWindow.Caption">
-		<comment type="summary">The caption of the Fact Editor Tool Window</comment>
-	</ResourceString>
-	<ResourceString name="ModelExceptionReferenceModeAmbiguousName" model="Model" resourceName="ModelException.ReferenceMode.AmbiguousName">
-		<comment type="summary">Exception message output when multiple reference modes are found with the same name</comment>
-	</ResourceString>
-	<ResourceString name="ModelExceptionSubtypeConstraintAndRolePatternFixed" model="Model" resourceName="ModelException.SubtypeFact.ConstraintAndRolePatternFixed">
-		<comment type="summary">Exception message when an attempt is made to modify the roles collection or internal constraints of a SubtypeFact.</comment>
-	</ResourceString>
-	<ResourceString name="ModelExceptionSubtypeFactMustBeParentOfMetaRole" model="Model" resourceName="ModelException.SubtypeFact.MetaRolesMustBeUsedOnSubtypeFact">
-		<comment type="summary">Exception message when an attempt is made to attach SubtypeMetaRole or SuperTypeMetaRole objects to a FactType that is not a SubtypeFact.</comment>
-	</ResourceString>
-	<ResourceString name="ModelExceptionSubtypeRolePlayerTypesCannotBeMixed" model="Model" resourceName="ModelException.SubtypeFact.RolePlayersTypesNotMixed">
-		<comment type="summary">Exception message when an attempt is made to mix EntityType and ValueType role players on a SubtypeFact.</comment>
-	</ResourceString>
-	<ResourceString name="ModelExceptionSubtypeFactNotNested" model="Model" resourceName="ModelException.SubtypeFact.NotNested">
-		<comment type="summary">Exception message when an attempt is made to nest a SubtypeFact.</comment>
-	</ResourceString>
-	<ResourceString name="ModelExceptionSubtypeFactPrimaryMustBeTrue" model="Model" resourceName="ModelException.SubtypeFact.PrimaryMustBeTrue">
-		<comment type="summary">Exception message when an attempt is made to change the SubtypeFact.IsPrimary property to false.</comment>
-	</ResourceString>
-	<ResourceString name="ModelExceptionSubtypeFactCycle" model="Model" resourceName="ModelException.SubtypeFact.Cycle">
-		<comment type="summary">Exception message when an attempt is made to add a subtype relationship where the subtype is a direct or indirect subtype of the supertype.</comment>
-	</ResourceString>
-	<ResourceString name="ModelExceptionSubtypeMetaRoleOnlyAllowsImplicitConstraints" model="Model" resourceName="ModelException.SubtypeMetaRole.OnlyAllowsImplicitConstraints">
-		<comment type="summary">Exception message when an attempt is made to constraint a SubtypeMetaRole with a constraint other than the implicit uniqueness and mandatory constraints.</comment>
-	</ResourceString>
-	<ResourceString name="ModelExceptionSupertypeMetaRoleDisjunctiveMandatoryMustContainOnlySupertypeMetaRoles" model="Model" resourceName="ModelException.SupertypeMetaRole.DisjunctiveMandatoryMustContainOnlySupertypeMetaRoles">
-			<comment type="summary">Exception message when an attempt is made to mix Roles and SupertypeMetaRoles in the same DisjunctiveMandatory constraint.</comment>
-		</ResourceString>
-		<ResourceString name="ModelExceptionSupertypeMetaRoleExclusionMustBeSingleColumnAndContainOnlySupertypeMetaRoles" model="Model" resourceName="ModelException.SupertypeMetaRole.ExclusionMustBeSingleColumnAndContainOnlySupertypeMetaRoles">
-		<comment type="summary">Exception message when an attempt is made to mix Roles and SupertypeMetaRoles in the same Exclusion constraint or to constraint SubtypeFacts with a multi-column Exclusion constraint.</comment>
-	</ResourceString>
-	<ResourceString name="ModelExceptionSupertypeMetaRoleOnlyAllowsImplicitDisjunctiveMandatoryAndExclusionConstraints" model="Model" resourceName="ModelException.SupertypeMetaRole.OnlyAllowsImplicitDisjunctiveMandatoryAndExclusionConstraints">
-		<comment type="summary">Exception message when an attempt is made to constraint a SupertypeMetaRole with a constraint other than the implicit uniqueness constraint, or disjunctive mandatory or exclusion constraints.</comment>
-	</ResourceString>
-	<ResourceString name="ModelReferenceModePickerFormatString" model="Model" resourceName="ModelReferenceModePicker.FormatString">
-		<comment type="summary">returns the format string for the display text for reference mode picker</comment>
-	</ResourceString>
-	<ResourceString name="ModelErrorReadingTooFewRolesMessage" model="Model" resourceName="ModelError.Reading.TooFewRoles.Message">
-		<comment type="summary">Text displayed in the text of the TooFewRolesError. {0}=fact name,{1}=model name,{2}=reading text</comment>
-	</ResourceString>
-	<ResourceString name="ModelErrorReadingRequiresUserModificationMessage" model="Model" resourceName="ModelError.Reading.RequiresUserModification.Message">
-		<comment type="summary">Text displayed in the text of the ReadingRequiresUserModificationError. {0}=fact name,{1}=model name,{2}=reading text</comment>
-	</ResourceString>
-	<ResourceString name="ModelErrorReadingTooManyRolesMessage" model="Model" resourceName="ModelError.Reading.TooManyRoles.Message">
-		<comment type="summary">Text displayed in the text of the TooManyRolesError. {0}=fact name,{1}=model name,{2}=reading text</comment>
-	</ResourceString>
-	<ResourceString name="ModelReadingRoleDeletedRoleText" model="Model" resourceName="Model.Reading.RoleDeletedText">
-		<comment type="summary">Text used to replace a role place holder when the role is deleted</comment>
-	</ResourceString>
-	<ResourceString name="ModelErrorFactTypeRequiresInternalUniquenessConstraintMessage" model="Model" resourceName="ModelError.FactType.RequiresInternalUniquenessConstraint.Message">
-		<comment type="summary">Text displayed in the text of the FactTypeRequiresReadingError</comment>
-	</ResourceString>
-	<ResourceString name="ModelErrorFactTypeRequiresReadingMessage" model="Model" resourceName="ModelError.FactType.RequiresReading.Message">
-		<comment type="summary">Text displayed in the text of the FactTypeRequiresInternalUniquenessContraintError</comment>
-	</ResourceString>
-	<ResourceString name="ModelErrorValueTypeDataTypeNotSpecifiedMessage" model="Model" resourceName="ModelError.ValueType.DataTypeNotSpecified.Message">
-		<comment type="summary">Text displayed for an unspecified data type.</comment>
-	</ResourceString>
-	<ResourceString name="ModelErrorEntityTypeInstanceTooFewEntityTypeRoleInstancesMessage" model="Model" resourceName="ModelError.EntityTypeInstance.TooFewEntityTypeRoleInstances.Message">
-		<comment type="summary">Text displayed when there aren't enough entity type role instances to completely fill a single entity population row.</comment>
-	</ResourceString>
-	<ResourceString name="ModelErrorFactTypeInstanceTooFewFactTypeRoleInstancesMessage" model="Model" resourceName="ModelError.FactTypeInstance.TooFewFactTypeRoleInstances.Message">
-		<comment type="summary">Text displayed when there aren't enough fact type role instances to completely fill a single fact type population row.</comment>
-	</ResourceString>
-	<ResourceString name="ModelErrorValueTypeInstanceCompatibleValueTypeInstanceValueMessage" model="Model" resourceName="ModelError.ValueTypeInstance.CompatibleValueTypeInstanceValue.Message">
-		<comment type="summary">Text displayed when the data type of the sample data doesn't match it's set data type.</comment>
-	</ResourceString>
-	<ResourceString name="ExclusiveOrConstraint" model="Model" resourceName="ExclusiveOrConstraint.ClassName">
-		<comment type="summary">Text used as the class name, displayed in the properties window.</comment>
-	</ResourceString>
-	<ResourceString name="ExclusiveOrConstraintMandatoryConstraintNameDisplayName" model="Model" resourceName="ExclusiveOrConstraint.MandatoryConstraintName.DisplayName">
-		<comment type="summary">Text used as the name for Name property of the coupled mandatory constraint, displayed in the properties window.</comment>
-	</ResourceString>
-	<ResourceString name="ExclusiveOrConstraintExclusionConstraintNameDisplayName" model="Model" resourceName="ExclusiveOrConstraint.ExclusionConstraintName.DisplayName">
-		<comment type="summary">Text used as the name for Name property of the coupled exclusion constraint, displayed in the properties window.</comment>
-	</ResourceString>
+		<comment>The base name used to create a name for a new ValueType. This is a format string with {0} being the placeholder for the number placement.</comment>
+	</ResourceString>
+	<ResourceString name="SubtypeFactElementNameFormat" model="Model" resourceName="SubtypeFact.ElementNameFormat"/>
+	<ResourceString name="SubtypeFactPredicateInverseReading" model="Model" resourceName="SubtypeFact.PredicateInverseReading"/>
+	<ResourceString name="SubtypeFactPredicateReading" model="Model" resourceName="SubtypeFact.PredicateReading"/>
+	<ResourceString name="ImpliedFactTypePredicateInverseReading" model="Model" resourceName="ImpliedFactType.PredicateInverseReading"/>
+	<ResourceString name="ImpliedFactTypePredicateReading" model="Model" resourceName="ImpliedFactType.PredicateReading"/>
+	<ResourceString name="SubtypeFactComponentNameFormat" model="Model" resourceName="SubtypeFact.ComponentNameFormat"/>
+	<ResourceString name="AddInternalConstraintTransactionName" model="Diagram" resourceName="AddInternalUniquenessConstraint.TransactionName"/>
+	<ResourceString name="ObjectifyFactTypeTransactionName" model="Diagram" resourceName="ObjectifyFactType.TransactionName"/>
+	<ResourceString name="UnobjectifyFactTypeTransactionName" model="Diagram" resourceName="UnobjectifyFactType.TransactionName"/>
+	<ResourceString name="ExclusiveOrCouplerTransactionName" model="Diagram" resourceName="ExclusiveOrCoupler.TransactionName"/>
+	<ResourceString name="ExclusiveOrDecouplerTransactionName" model="Diagram" resourceName="ExclusiveOrDecoupler.TransactionName"/>
+	<ResourceString name="DropShapeTransactionName" model="Diagram" resourceName="DropShape.TransactionName"/>
+	<ResourceString name="ExternalConstraintConnectActionInstructions" model="Diagram" resourceName="ExternalConstraintConnectAction.Instructions"/>
+	<ResourceString name="ExternalConstraintConnectActionTransactionName" model="Diagram" resourceName="ExternalConstraintConnectAction.TransactionName"/>
+	<ResourceString name="FrequencyConstraintMinimumFormatString" model="Diagram" resourceName="FrequencyConstraint.Minimum.FormatString"/>
+	<ResourceString name="FrequencyConstraintMinimumOneFormatString" model="Diagram" resourceName="FrequencyConstraint.MinimumOne.FormatString"/>
+	<ResourceString name="FrequencyConstraintBetweenFormatString" model="Diagram" resourceName="FrequencyConstraint.Between.FormatString"/>
+	<ResourceString name="InternalUniquenessConstraintConnectActionInstructions" model="Diagram" resourceName="InternalUniquenessConstraintConnectAction.Instructions"/>
+	<ResourceString name="InternalUniquenessConstraintConnectActionTransactionName" model="Diagram" resourceName="InternalUniquenessConstraintConnectAction.TransactionName"/>
+	<ResourceString name="InsertRoleTransactionName" model="Diagram" resourceName="InsertRole.TransactionName"/>
+	<ResourceString name="RoleConnectActionTransactionName" model="Diagram" resourceName="RoleConnectAction.TransactionName"/>
+	<ResourceString name="SubtypeConnectActionTransactionName" model="Diagram" resourceName="SubtypeConnectAction.TransactionName"/>
+	<ResourceString name="ModelNoteConnectActionTransactionName" model="Diagram" resourceName="ModelNoteConnectAction.TransactionName"/>
+	<ResourceString name="ModelErrorDisplayFilterChangeTransactionName" model="Diagram" resourceName="ModelErrorDisplayFilterChange.TransactionName"/>
+	<ResourceString name="OptionsPageChangeTransactionName" model="Diagram" resourceName="OptionsPageChange.TransactionName"/>
+	<ResourceString name="OptionsPagePropertyCustomVerbalizationSnippetsDisplayValueCustom" model="Diagram" resourceName="OptionsPage.Property.CustomVerbalizationSnippets.DisplayValue.Custom"/>
+	<ResourceString name="OptionsPagePropertyCustomVerbalizationSnippetsDisplayValueDefault" model="Diagram" resourceName="OptionsPage.Property.CustomVerbalizationSnippets.DisplayValue.Default"/>
+	<ResourceString name="OptionsPagePropertyCustomVerbalizationSnippetsDisplayValueLanguageFormat" model="Diagram" resourceName="OptionsPage.Property.CustomVerbalizationSnippets.DisplayValue.LanguageFormat"/>
+	<ResourceString name="DeleteRoleSequenceTransactionName" model="Diagram" resourceName="DeleteRoleSequence.TransactionName"/>
+	<ResourceString name="ReverseRoleOrderTransactionName" model="Diagram" resourceName="ReverseRoleOrder.TransactionName"/>
+	<ResourceString name="MoveRoleOrderTransactionName" model="Diagram" resourceName="MoveRoleOrder.TransactionName"/>
+	<ResourceString name="MoveRoleSequenceDownTransactionName" model="Diagram" resourceName="MoveRoleSequenceDown.TransactionName"/>
+	<ResourceString name="MoveRoleSequenceUpTransactionName" model="Diagram" resourceName="MoveRoleSequenceUp.TransactionName"/>
+	<ResourceString name="InterpretFactEditorLineTransactionName" model="Diagram" resourceName="InterpretFactEditorLine.TransactionName"/>
+	<ResourceString name="ModelBrowserWindowTitle" model="Diagram" resourceName="ORMModelBrowser.WindowTitle"/>
+	<ResourceString name="ModelExceptionModelErrorCategoryInvalid" model="Model" resourceName="ModelException.ModelErrorCategory.TypeNotDerivedFromModelErrorCategory"/>
+	<ResourceString name="ModelExceptionObjectificationImpliedElementModified" model="Model" resourceName="ModelException.Objectification.DirectModificationOfImpliedElement"/>
+	<ResourceString name="ModelExceptionObjectificationImpliedFactObjectified" model="Model" resourceName="ModelException.Objectification.ImpliedFactTypesCannotBeObjectified"/>
+	<ResourceString name="ModelExceptionObjectificationImpliedMustBeImpliedAndIndependentAndCannotPlayRoleInNonImpliedFact" model="Model" resourceName="ModelException.Objectification.ImpliedMustBeImpliedAndIndependentAndCannotPlayRoleInNonImpliedFact"/>
+	<ResourceString name="ModelExceptionObjectificationImpliedObjectificationNotAllowed" model="Model" resourceName="ModelException.Objectification.ImpliedObjectificationNotAllowed"/>
+	<ResourceString name="ModelExceptionReadingIsPrimaryToFalse" model="Model" resourceName="ModelException.Reading.IsPrimary.ReadOnlyWhenFalse"/>
+	<ResourceString name="ModelExceptionFactAddReadingInvalidReadingText" model="Model" resourceName="ModelException.Fact.AddReading.InvalidReadingText"/>
+	<ResourceString name="ModelErrorConstraintImplication" model="Model" resourceName="ModelError.Constraint.ImplicationError.Text"/>
+	<ResourceString name="ModelErrorConstraintImplicationEqualityOrSubsetMandatory" model="Model" resourceName="ModelError.Constraint.EqualityOrSubsetImpliedByMandatoryError.Text"/>
+	<ResourceString name="ModelErrorNotWellModeledSubsetAndMandatoryError" model="Model" resourceName="ModelError.Constraint.NotWellModeledSubsetAndMandatoryError.Text"/>
+	<ResourceString name="ModelErrorConstraintContradiction" model="Model" resourceName="ModelError.Constraint.ContradictionError.Text"/>
+	<ResourceString name="ModelErrorConstraintHasTooFewRoleSequencesText" model="Model" resourceName="ModelError.Constraint.TooFewRoleSequences.Text"/>
+	<ResourceString name="FrequencyConstraintContradictsInternalUniquenessConstraintText" model="Model" resourceName="ModelError.Constraint.FrequencyConstraintContradictsInternalUniquenessConstraintError.Text"/>
+	<ResourceString name="ModelErrorConstraintHasTooManyRoleSequencesText" model="Model" resourceName="ModelError.Constraint.TooManyRoleSequences.Text"/>
+	<ResourceString name="ModelErrorConstraintExternalConstraintArityMismatch" model="Model" resourceName="ModelError.Constraint.ExternalConstraintArityMismatch.Text"/>
+	<ResourceString name="ModelErrorModelHasDuplicateConstraintNames" model="Model" resourceName="ModelError.Model.DuplicateConstraintNames.Text"/>
+	<ResourceString name="ModelErrorModelHasDuplicateObjectTypeNames" model="Model" resourceName="ModelError.Model.DuplicateObjectTypeNames.Text"/>
+	<ResourceString name="ModelErrorModelHasPopulationUniquenessErrorWithNamedRole" model="Model" resourceName="ModelError.Model.PopulationUniquenessError.Role.Text"/>
+	<ResourceString name="ModelErrorModelHasPopulationUniquenessErrorWithUnnamedRole" model="Model" resourceName="ModelError.Model.PopulationUniquenessError.FactType.Text"/>
+	<ResourceString name="ModelErrorModelHasPopulationMandatoryError" model="Model" resourceName="ModelError.Model.PopulationMandatoryError.Text"/>
+	<ResourceString name="ModelErrorRoleValueRangeMaxValueMismatchError" model="Model" resourceName="ModelError.ValueRange.MaxValueMismatchError.Role.Message"/>
+	<ResourceString name="ModelErrorRoleValueRangeMinValueMismatchError" model="Model" resourceName="ModelError.ValueRange.MinValueMismatchError.Role.Message"/>
+	<ResourceString name="ModelErrorValueRangeMaxValueMismatchError" model="Model" resourceName="ModelError.ValueRange.MaxValueMismatchError.ValueType.Message"/>
+	<ResourceString name="ModelErrorValueRangeMinValueMismatchError" model="Model" resourceName="ModelError.ValueRange.MinValueMismatchError.ValueType.Message"/>
+	<ResourceString name="ModelErrorValueTypeValueRangeOverlapError" model="Model" resourceName="ModelError.ValueConstraint.ValueRangeOverlapError.ValueType.Message"/>
+	<ResourceString name="ModelErrorRoleValueRangeOverlapError" model="Model" resourceName="ModelError.ValueConstraint.ValueRangeOverlapError.Role.Message"/>
+	<ResourceString name="ModelErrorUncategorized" model="Model" resourceName="ModelError.UncategorizedModelError.CategoryDisplayName"/>
+	<ResourceString name="ModelErrorDisplayFilteredText" model="Model" resourceName="ModelErrorDisplayFilter.ToStringOverrideText"/>
+	<ResourceString name="ModelExceptionNameAlreadyUsedByModel" model="Model" resourceName="ModelException.Model.DuplicateName.Text"/>
+	<ResourceString name="ModelExceptionEnforceValueTypeNotNestingType" model="Model" resourceName="ModelException.ObjectType.EnforceValueTypeNotNestingType"/>
+	<ResourceString name="ModelExceptionEnforceRolePlayerNotNestingType" model="Model" resourceName="ModelException.FactType.EnforceRolePlayerNotNestingType"/>
+	<ResourceString name="ModelExceptionFactTypeEnforceNoImplicitBooleanValueTypeRolePlayerChange" model="Model" resourceName="ModelException.FactType.EnforceNoImplicitBooleanValueTypeRolePlayerChange"/>
+	<ResourceString name="ModelExceptionFactTypeEnforceNoRoleMigration" model="Model" resourceName="ModelException.FactType.EnforceNoRoleMigration"/>
+	<ResourceString name="ModelExceptionObjectTypeEnforceIsIndependentPattern" model="Model" resourceName="ModelException.ObjectType.EnforceIsIndependentPattern"/>
+	<ResourceString name="ModelExceptionEnforcePreferredIdentifierForEntityType" model="Model" resourceName="ModelException.ObjectType.EnforcePreferredIdentifierForEntityType"/>
+	<ResourceString name="ModelExceptionExclusiveOrConstraintCouplerDirectExclusionConstraintEdit" model="Model" resourceName="ModelException.ExclusiveOrConstraintCoupler.DirectExclusionConstraintEdit"/>
+	<ResourceString name="ModelExceptionIsMandatoryRequiresAttachedFactType" model="Model" resourceName="ModelException.Role.IsMandatoryRequiresAttachedFactType"/>
+	<ResourceString name="ModelExceptionInvalidPreferredIdentifierPreConditions" model="Model" resourceName="ModelException.UniquenessConstraint.InvalidPreferredIdentifierPreConditions"/>
+	<ResourceString name="ModelExceptionConstraintEnforceNoForeignFactTypes" model="Model" resourceName="ModelException.Constraint.EnforceNoForeignFactTypes"/>
+	<ResourceString name="ModelExceptionConstraintEnforceSingleFactTypeForInternalConstraint" model="Model" resourceName="ModelException.Constraint.EnforceSingleFactTypeForInternalConstraint"/>
+	<ResourceString name="ModelExceptionConstraintRoleSequenceHasRoleEnforceNoRolePlayerChange" model="Model" resourceName="ModelException.ConstraintRoleSequenceHasRole.EnforceNoRolePlayerChange"/>
+	<ResourceString name="ModelExceptionExclusiveOrConstraintCouplerInconsistentConstraints" model="Model" resourceName="ModelException.ExclusiveOrConstraintCoupler.InconsistentConstraintRolesOrModality"/>
+	<ResourceString name="CoreVerbalizationSnippetsDefaultDescription" model="Model" resourceName="Verbalization.SnippetsDefaultDescription"/>
+	<ResourceString name="CoreVerbalizationSnippetsTypeDescription" model="Model" resourceName="Verbalization.SnippetsTypeDescription"/>
+	<ResourceString name="VerbalizationReportSnippetsDefaultDescription" model="Model" resourceName="Verbalization.ReportSnippetsDefaultDescription"/>
+	<ResourceString name="VerbalizationReportSnippetsTypeDescription" model="Model" resourceName="Verbalization.ReportSnippetsTypeDescription"/>
+	<ResourceString name="ModelExceptionFactTypeInstanceInconsistentRoleOwners" model="Model" resourceName="ModelException.FactTypeInstance.InconsistentRoleOwners"/>
+	<ResourceString name="ModelExceptionEntityTypeInstanceInvalidRolesPreferredIdentifier" model="Model" resourceName="ModelException.EntityTypeInstance.InvalidRolesPreferredIdentifier"/>
+	<ResourceString name="ModelExceptionEntityTypeInstanceInvalidEntityTypeParent" model="Model" resourceName="ModelException.EntityTypeInstance.InvalidEntityTypeParent"/>
+	<ResourceString name="ModelExceptionValueTypeInstanceInvalidValueTypeParent" model="Model" resourceName="ModelException.ValueTypeInstance.InvalidValueTypeParent"/>
+	<ResourceString name="CommandDeleteFactTypeText" model="Diagram" resourceName="Command.DeleteFactType.Text"/>
+	<ResourceString name="CommandDeleteObjectTypeText" model="Diagram" resourceName="Command.DeleteObjectType.Text"/>
+	<ResourceString name="CommandDeleteConstraintText" model="Diagram" resourceName="Command.DeleteConstraint.Text"/>
+	<ResourceString name="CommandDeleteMultipleElementsText" model="Diagram" resourceName="Command.DeleteMultipleElements.Text"/>
+	<ResourceString name="CommandDeleteMultipleShapesText" model="Diagram" resourceName="Command.DeleteMultipleShapes.Text"/>
+	<ResourceString name="CommandDeleteFactTypeShapeText" model="Diagram" resourceName="Command.DeleteFactTypeShape.Text"/>
+	<ResourceString name="CommandDeleteObjectTypeShapeText" model="Diagram" resourceName="Command.DeleteObjectTypeShape.Text"/>
+	<ResourceString name="CommandDeleteConstraintShapeText" model="Diagram" resourceName="Command.DeleteConstraintShape.Text"/>
+	<ResourceString name="CommandDeleteModelNoteText" model="Diagram" resourceName="Command.DeleteModelNote.Text"/>
+	<ResourceString name="CommandDeleteModelNoteReferenceText" model="Diagram" resourceName="Command.DeleteModelNoteReference.Text"/>
+	<ResourceString name="CommandDeleteModelNoteShapeText" model="Diagram" resourceName="Command.DeleteModelNoteShape.Text"/>
+	<ResourceString name="CommandDeleteMultipleShapeText" model="Diagram" resourceName="Command.DeleteMultipleShape.Text"/>
+	<ResourceString name="CommandDeleteRoleText" model="Diagram" resourceName="Command.DeleteRole.Text"/>
+	<ResourceString name="CommandDeleteReadingText" model="Diagram" resourceName="Command.DeleteReading.Text"/>
+	<ResourceString name="CommandEditReadingText" model="Diagram" resourceName="Command.EditReading.Text"/>
+	<ResourceString name="CommandSwapRoleOrderText" model="Diagram" resourceName="Command.SwapRoleOrder.Text"/>
+	<ResourceString name="CommandNextOnThisDiagramText" model="Diagram" resourceName="Command.NextOnThisDiagram.Text"/>
+	<ResourceString name="ModelReadingEditorListColumnHeaderReadingText" model="Model" resourceName="ModelReadingEditor.ListColumnHeader.ReadingText"/>
+	<ResourceString name="ModelReadingEditorListColumnHeaderIsPrimary" model="Model" resourceName="ModelReadingEditor.ListColumnHeader.IsPrimary"/>
+	<ResourceString name="ModelReadingEditorAllReadingsNodeName" model="Model" resourceName="ModelReadingEditor.AllReadingsNodeName"/>
+	<ResourceString name="ModelReadingEditorMissingRolePlayerText" model="Model" resourceName="ModelReadingEditor.MissingRolePlayerText"/>
+	<ResourceString name="ModelReadingEditorNewItemText" model="Model" resourceName="ModelReadingEditor.NewItemText"/>
+	<ResourceString name="ModelReadingEditorNewReadingTransactionText" model="Model" resourceName="ModelReadingEditor.NewReadingTransactionText"/>
+	<ResourceString name="ModelReadingEditorChangeReadingText" model="Model" resourceName="ModelReadingEditor.ChangeReadingText"/>
+	<ResourceString name="ModelReadingEditorMoveReadingOrder" model="Model" resourceName="ModelReadingEditor.MoveReadingOrder"/>
+	<ResourceString name="ModelReadingEditorMoveReading" model="Model" resourceName="ModelReadingEditor.MoveReading"/>
+	<ResourceString name="ModelReadingEditorIsPrimaryToolTip" model="Model" resourceName="ModelReadingEditor.IsPrimaryToolTip"/>
+	<ResourceString name="ModelReadingEditorChangePrimaryReadingText" model="Model" resourceName="ModelReadingEditor.ChangePrimaryReadingText"/>
+	<ResourceString name="ModelReadingEditorWindowTitle" model="Model" resourceName="ModelReadingEditor.WindowTitle"/>
+	<ResourceString name="ModelReadingEditorImpliedFactTypeReadingsText" model="Model" resourceName="ModelReadingEditor.ImpliedFactTypeReadingsText"/>
+	<ResourceString name="ModelReadingEditorPrimaryFactTypeReadingsText" model="Model" resourceName="ModelReadingEditor.PrimaryFactTypeReadingsText"/>
+	<ResourceString name="ModelNotesWindowTitle" model="Model" resourceName="ModelNotesWindow.WindowTitle"/>
+	<ResourceString name="ModelContextWindowTitle" model="Model" resourceName="ModelContextWindow.WindowTitle"/>
+	<ResourceString name="ModelNotesWindowRootTypeNameNotesSeparatorFormatString" model="Model" resourceName="ModelNotesWindow.RootTypeNameNotesSeparatorFormatString"/>
+	<ResourceString name="ModelReadingEditorUnsupportedSelectionText" model="Model" resourceName="ModelReadingEditor.UnsupportedSelectionText"/>
+	<ResourceString name="ModelSamplePopulationEditorNewInstanceTransactionText" model="Model" resourceName="ModelSamplePopulationEditor.NewInstanceTransactionText"/>
+	<ResourceString name="ModelSamplePopulationEditorEditInstanceTransactionText" model="Model" resourceName="ModelSamplePopulationEditor.EditInstanceTransactionText"/>
+	<ResourceString name="ModelSamplePopulationEditorRemoveInstanceTransactionText" model="Model" resourceName="ModelSamplePopulationEditor.RemoveInstanceTransactionText"/>
+	<ResourceString name="ModelSamplePopulationEditorWindowTitle" model="Model" resourceName="ModelSamplePopulationEditor.WindowTitle"/>
+	<ResourceString name="ModelSamplePopulationEditorNullSelection" model="Model" resourceName="ModelSamplePopulationEditor.NullSelection"/>
+	<ResourceString name="PackageOfficialName" model="Diagram" resourceName="Package.OfficialName"/>
+	<ResourceString name="PackageProductDetails" model="Diagram" resourceName="Package.ProductDetails"/>
+	<ResourceString name="ModelReferenceModeEditorReferenceModeName" model="Model" resourceName="ModelReferenceModeEditor.ReferenceModeName"/>
+	<ResourceString name="ModelReferenceModeEditorEntityTypeName" model="Model" resourceName="ModelReferenceModeEditor.EntityTypeName"/>
+	<ResourceString name="ModelReferenceModeEditorReferenceModeKindHeader" model="Model" resourceName="ModelReferenceModeEditor.ReferenceModeKindHeader"/>
+	<ResourceString name="ModelReferenceModeEditorChangeNameTransaction" model="Model" resourceName="ModelReferenceModeEditor.ChangeNameTransaction"/>
+	<ResourceString name="ModelReferenceModeEditorCustomReferenceModesHeader" model="Model" resourceName="ModelReferenceModeEditor.CustomReferenceModesHeader"/>
+	<ResourceString name="ModelReferenceModeEditorIntrinsicReferenceModesHeader" model="Model" resourceName="ModelReferenceModeEditor.IntrinsicReferenceModesHeader"/>
+	<ResourceString name="ModelReferenceModeEditorAbbreviatedEntityTypeName" model="Model" resourceName="ModelReferenceModeEditor.AbbreviatedEntityTypeName"/>
+	<ResourceString name="ModelReferenceModeEditorAbbreviatedReferenceModeName" model="Model" resourceName="ModelReferenceModeEditor.AbbreviatedReferenceModeName"/>
+	<ResourceString name="ModelReferenceModeEditorAddCustomReferenceModeTransaction" model="Model" resourceName="ModelReferenceModeEditor.AddCustomReferenceModeTransaction"/>
+	<ResourceString name="ModelReferenceModeEditorAddNewRowText" model="Model" resourceName="ModelReferenceModeEditor.AddNewRowText"/>
+	<ResourceString name="ModelReferenceModeEditorChangeFormatStringTransaction" model="Model" resourceName="ModelReferenceModeEditor.ChangeFormatStringTransaction"/>
+	<ResourceString name="ModelReferenceModeEditorEditorWindowTitle" model="Model" resourceName="ModelReferenceModeEditor.EditorWindowTitle"/>
+	<ResourceString name="ModelExceptionReferenceModeEnforceUniqueFormatString" model="Model" resourceName="ModelException.ReferenceMode.EnforceUniqueFormatString"/>
+	<ResourceString name="ModelExceptionReferenceModeKindEnforceUniqueFormatString" model="Model" resourceName="ModelException.ReferenceModeKind.EnforceUniqueFormatString"/>
+	<ResourceString name="ModelExceptionReferenceModeIntrinsicRefModesDontChange" model="Model" resourceName="ModelException.ReferenceMode.IntrinsicRefModesDontChange"/>
+	<ResourceString name="ModelExceptionReferenceModeReferenceModesKindNotEmpty" model="Model" resourceName="ModelException.ReferenceMode.ReferenceModesKindNotEmpty"/>
+	<ResourceString name="ModelReferenceModeEditorChangeReferenceModeKindTransaction" model="Model" resourceName="ModelReferenceModeEditor.ChangeReferenceModeKindTransaction"/>
+	<ResourceString name="ReferenceModePredicateReading" model="Model" resourceName="ReferenceMode.PredicateReading"/>
+	<ResourceString name="ReferenceModePredicateInverseReading" model="Model" resourceName="ReferenceMode.PredicateInverseReading"/>
+	<ResourceString name="ModelReferenceModeEditorFormatStringColumn" model="Model" resourceName="ModelReferenceModeEditor.FormatStringColumn"/>
+	<ResourceString name="ModelReferenceModeEditorKindColumn" model="Model" resourceName="ModelReferenceModeEditor.KindColumn"/>
+	<ResourceString name="ModelReferenceModeEditorNameColumn" model="Model" resourceName="ModelReferenceModeEditor.NameColumn"/>
+	<ResourceString name="FactEditorToolWindowCaption" model="Diagram" resourceName="FactEditorToolWindow.Caption"/>
+	<ResourceString name="ModelExceptionReferenceModeAmbiguousName" model="Model" resourceName="ModelException.ReferenceMode.AmbiguousName"/>
+	<ResourceString name="ModelExceptionSubtypeConstraintAndRolePatternFixed" model="Model" resourceName="ModelException.SubtypeFact.ConstraintAndRolePatternFixed"/>
+	<ResourceString name="ModelExceptionSubtypeFactMustBeParentOfMetaRole" model="Model" resourceName="ModelException.SubtypeFact.MetaRolesMustBeUsedOnSubtypeFact"/>
+	<ResourceString name="ModelExceptionSubtypeRolePlayerTypesCannotBeMixed" model="Model" resourceName="ModelException.SubtypeFact.RolePlayersTypesNotMixed"/>
+	<ResourceString name="ModelExceptionSubtypeFactNotNested" model="Model" resourceName="ModelException.SubtypeFact.NotNested"/>
+	<ResourceString name="ModelExceptionSubtypeFactPrimaryMustBeTrue" model="Model" resourceName="ModelException.SubtypeFact.PrimaryMustBeTrue"/>
+	<ResourceString name="ModelExceptionSubtypeFactCycle" model="Model" resourceName="ModelException.SubtypeFact.Cycle"/>
+	<ResourceString name="ModelExceptionSubtypeMetaRoleOnlyAllowsImplicitConstraints" model="Model" resourceName="ModelException.SubtypeMetaRole.OnlyAllowsImplicitConstraints"/>
+	<ResourceString name="ModelExceptionSupertypeMetaRoleDisjunctiveMandatoryMustContainOnlySupertypeMetaRoles" model="Model" resourceName="ModelException.SupertypeMetaRole.DisjunctiveMandatoryMustContainOnlySupertypeMetaRoles"/>
+	<ResourceString name="ModelExceptionSupertypeMetaRoleExclusionMustBeSingleColumnAndContainOnlySupertypeMetaRoles" model="Model" resourceName="ModelException.SupertypeMetaRole.ExclusionMustBeSingleColumnAndContainOnlySupertypeMetaRoles"/>
+	<ResourceString name="ModelExceptionSupertypeMetaRoleOnlyAllowsImplicitDisjunctiveMandatoryAndExclusionConstraints" model="Model" resourceName="ModelException.SupertypeMetaRole.OnlyAllowsImplicitDisjunctiveMandatoryAndExclusionConstraints"/>
+	<ResourceString name="ModelReferenceModePickerFormatString" model="Model" resourceName="ModelReferenceModePicker.FormatString"/>
+	<ResourceString name="ModelErrorReadingTooFewRolesMessage" model="Model" resourceName="ModelError.Reading.TooFewRoles.Message"/>
+	<ResourceString name="ModelErrorReadingRequiresUserModificationMessage" model="Model" resourceName="ModelError.Reading.RequiresUserModification.Message"/>
+	<ResourceString name="ModelErrorReadingTooManyRolesMessage" model="Model" resourceName="ModelError.Reading.TooManyRoles.Message"/>
+	<ResourceString name="ModelReadingRoleDeletedRoleText" model="Model" resourceName="Model.Reading.RoleDeletedText"/>
+	<ResourceString name="ModelErrorFactTypeRequiresInternalUniquenessConstraintMessage" model="Model" resourceName="ModelError.FactType.RequiresInternalUniquenessConstraint.Message"/>
+	<ResourceString name="ModelErrorFactTypeRequiresReadingMessage" model="Model" resourceName="ModelError.FactType.RequiresReading.Message"/>
+	<ResourceString name="ModelErrorValueTypeDataTypeNotSpecifiedMessage" model="Model" resourceName="ModelError.ValueType.DataTypeNotSpecified.Message"/>
+	<ResourceString name="ModelErrorEntityTypeInstanceTooFewEntityTypeRoleInstancesMessage" model="Model" resourceName="ModelError.EntityTypeInstance.TooFewEntityTypeRoleInstances.Message"/>
+	<ResourceString name="ModelErrorFactTypeInstanceTooFewFactTypeRoleInstancesMessage" model="Model" resourceName="ModelError.FactTypeInstance.TooFewFactTypeRoleInstances.Message"/>
+	<ResourceString name="ModelErrorValueTypeInstanceCompatibleValueTypeInstanceValueMessage" model="Model" resourceName="ModelError.ValueTypeInstance.CompatibleValueTypeInstanceValue.Message"/>
+	<ResourceString name="ExclusiveOrConstraint" model="Model" resourceName="ExclusiveOrConstraint.ClassName"/>
+	<ResourceString name="ExclusiveOrConstraintMandatoryConstraintNameDisplayName" model="Model" resourceName="ExclusiveOrConstraint.MandatoryConstraintName.DisplayName"/>
+	<ResourceString name="ExclusiveOrConstraintExclusionConstraintNameDisplayName" model="Model" resourceName="ExclusiveOrConstraint.ExclusionConstraintName.DisplayName"/>
 	<ResourceString name="ValueConstraintDefinitionContainerPattern" model="ObjectModel" resourceName="Neumont.Tools.ORM.ObjectModel.ValueConstraint.DefinitionContainerPattern">
-		<comment type="summary">Pattern showing left- and right-string to use for containing a value range definition.</comment>
+		<comment>Pattern showing left- and right-string to use for containing a value range definition.</comment>
 	</ResourceString>
 	<ResourceString name="ValueConstraintRangeDelimiter" model="ObjectModel" resourceName="Neumont.Tools.ORM.ObjectModel.ValueConstraint.RangeDelimiter">
-		<comment type="summary">String used to delimit sets of value ranges in a definition.</comment>
+		<comment>String used to delimit sets of value ranges in a definition.</comment>
 	</ResourceString>
 	<ResourceString name="ValueConstraintValueDelimiter" model="ObjectModel" resourceName="Neumont.Tools.ORM.ObjectModel.ValueConstraint.ValueDelimiter">
-		<comment type="summary">String used to delimit the min- and max-values of a value range.</comment>
+		<comment>String used to delimit the min- and max-values of a value range.</comment>
 	</ResourceString>
 	<ResourceString name="ValueConstraintStringContainerPattern" model="ObjectModel" resourceName="Neumont.Tools.ORM.ObjectModel.ValueConstraint.StringContainerPattern">
-		<comment type="summary">Pattern showing left- and right-string to use for containing a value range as a string.</comment>
+		<comment>Pattern showing left- and right-string to use for containing a value range as a string.</comment>
 	</ResourceString>
 	<ResourceString name="ValueConstraintOpenInclusionContainer" model="ObjectModel" resourceName="Neumont.Tools.ORM.ObjectModel.ValueConstraint.OpenInclusionPattern">
-		<comment type="summary">Pattern showing left- and right-string to use to indicate the min- and max-values are open (i.e. the value itself is not a member of the range).</comment>
+		<comment>Pattern showing left- and right-string to use to indicate the min- and max-values are open (i.e. the value itself is not a member of the range).</comment>
 	</ResourceString>
 	<ResourceString name="ValueConstraintClosedInclusionContainer" model="ObjectModel" resourceName="Neumont.Tools.ORM.ObjectModel.ValueConstraint.ClosedInclusionPattern">
-		<comment type="summary">Pattern showing left- and right-string to use to indicate the min- and max-values are closed (i.e. the value itself is a member of the range).</comment>
+		<comment>Pattern showing left- and right-string to use to indicate the min- and max-values are closed (i.e. the value itself is a member of the range).</comment>
 	</ResourceString>
-	<ResourceString name="ObjectTypeShapeIndependentFormatString" model="Diagram" resourceName="ObjectTypeShape.IndependentFormatString">
-		<comment type="summary">The string used to display that an object is independent.</comment>
-	</ResourceString>
-	<ResourceString name="ObjectTypeShapeReferenceModeFormatString" model="Diagram" resourceName="ObjectTypeShape.ReferenceModeFormatString">
-		<comment type="summary">The string used to display a reference mode.</comment>
-	</ResourceString>
-	<ResourceString name="ObjectifiedFactTypeNameShapeStandardFormatString" model="Diagram" resourceName="ObjectifiedFactTypeNameShape.StandardFormatString">
-		<comment type="summary">The string used to display an objectified type name.</comment>
-	</ResourceString>
-	<ResourceString name="ObjectifiedFactTypeNameShapeIndependentFormatString" model="Diagram" resourceName="ObjectifiedFactTypeNameShape.IndependentFormatString">
-		<comment type="summary">The string used to display an objectified type name for an independent object.</comment>
-	</ResourceString>
-	<ResourceString name="ObjectifiedFactTypeNameShapeRefModeIndependentFormatString" model="Diagram" resourceName="ObjectifiedFactTypeNameShape.RefModeIndependentFormatString">
-		<comment type="summary">The string used to display an objectified type name for an independent object with a reference mode.</comment>
-	</ResourceString>
-	<ResourceString name="ObjectifiedFactTypeNameShapeRefModeFormatString" model="Diagram" resourceName="ObjectifiedFactTypeNameShape.RefModeFormatString">
-		<comment type="summary">The string used to display an objectified type name for an object with a reference mode.</comment>
-	</ResourceString>
-	<ResourceString name="ReadingShapeReadingSeparator" model="Diagram" resourceName="ReadingShape.ReadingSeparator">
-		<comment type="summary">The string used to divide multiple readings shown in a ReadingShape.</comment>
-	</ResourceString>
-	<ResourceString name="ReadingShapeEllipsis" model="Diagram" resourceName="ReadingShape.Ellipsis">
-		<comment type="summary">The character to use as the object placeholder in a ReadingShape (an ellipsis).</comment>
-	</ResourceString>
-	<ResourceString name="ReadingShapeAttachedRoleDisplay" model="Diagram" resourceName="ReadingShape.AttachedRoleDisplay">
-		<comment type="summary">The string used to display a reading with a non-primary order when the role is attached.</comment>
-	</ResourceString>
-	<ResourceString name="ReadingShapeUnattachedRoleDisplay" model="Diagram" resourceName="ReadingShape.UnattachedRoleDisplay">
-		<comment type="summary">The string used to display a reading with a non-primary order when the role is not attached.</comment>
-	</ResourceString>
-	<ResourceString name="NMinusOneRuleInternalSpan" model="Model" resourceName="ModelError.FactType.NMinusOneRule.Text">
-		<comment type="summary">Text diplayed in the Model Error when the span of the internal constraint is less than the span of the Fact Type - 1. {0}=constraint name, {1}=fact name, {2}=model name, {3}=factarity-1</comment>
-	</ResourceString>
-	<ResourceString name="ModelErrorSetConstraintCompatibleRolePlayerTypeError" model="Model" resourceName="ModelError.Constraint.CompatibleRolePlayerTypeError.Set.Text">
-		<comment type="summary">The role players in an external constraint must have compatible types. Replacement field {0} is the constraint name and {1} is the model name.</comment>
-	</ResourceString>
-	<ResourceString name="ModelErrorSetComparisonConstraintCompatibleRolePlayerTypeError" model="Model" resourceName="ModelError.Constraint.CompatibleRolePlayerTypeError.SetComparison.Text">
-		<comment type="summary">The role players in an external constraint column must have compatible types. Replacement field {0} is the constraint name, {1} is the model name, and {2} is the (1-based) column number.</comment>
-	</ResourceString>
-	<ResourceString name="ModelErrorRolePlayerRequiredError" model="Model" resourceName="ModelError.Role.RolePlayerRequired.Message">
-		<comment type="summary">Text displayed in the text of the RoleRequiresRolePlayerError. {0} is the (1-based) role number, {1} is the name of the fact, and {2} is the name of the model.</comment>
-	</ResourceString>
-	<ResourceString name="ModelErrorExternalEqualityImpliedByMandatoryError" model="Model" resourceName="ModelError.Constraint.ExternalEqualityImpliedByMandatory.Text">
-		<comment type="summary">Constraint '{0}' is implied by mandatory constraints.</comment>
-	</ResourceString>
-	<ResourceString name="ModelErrorObjectTypeRequiresPrimarySupertypeError" model="Model" resourceName="ModelError.ObjectType.ObjectTypeRequiresPrimarySupertypeError.Message">
-		<comment type="summary">Text displayed in the text of the ObjectTypeRequiresPrimarySupertypeError. {0} is the name of the object type and {1} is the name of the model.</comment>
-	</ResourceString>
-	<ResourceString name="ModelErrorObjectTypeCompatibleSupertypesError" model="Model" resourceName="ModelError.ObjectType.CompatibleSupertypesError.Message">
-		<comment type="summary">Text displayed in the text of the CompatibleSupertypesError. {0} is the name of the object type and {1} is the name of the model.</comment>
-	</ResourceString>
-	<ResourceString name="ModelErrorObjectTypePreferredIdentifierRequiresMandatoryError" model="Model" resourceName="ModelError.ObjectType.PreferredIdentifierRequiresMandatoryError.Message">
-		<comment type="summary">Text displayed in the text of the PreferredIdentifierRequiresMandatoryError. {0} is the name of the object type and {1} is the name of the model.</comment>
-	</ResourceString>
-	<ResourceString name="ModelErrorEntityTypeRequiresReferenceSchemeMessage" model="Model" resourceName="ModelError.EntityType.RequiresReferenceScheme.Message">
-		<comment type="summary">An entity type must have a primary reference scheme. Replacement field {0} is the entity type name and {1} is the model name.</comment>
-	</ResourceString>
-	<ResourceString name="RingConstraintTypeNotSpecifiedError" model ="Model" resourceName="ModelError.Constraint.RingConstraintTypeNotSpecifiedError.Message">
-		<comment type="summary">The ring constraint type must be specified. {0} is the constraint name and {1} is the model name.</comment>
-	</ResourceString>
-	<ResourceString name="ModelErrorFrequencyConstraintMinMaxError" model="Model" resourceName="ModelError.Constraint.FrequencyConstraintMinMaxError.Text">
-		<comment type="summary">Text displayed in the text of the FrequencyConstraintMinMaxError. {0} is the constraint name and {1} is the model name</comment>
-	</ResourceString>
-	<ResourceString name="ModelVerbalizationWindowTitle" model="Model" resourceName="ModelVerbalization.WindowTitle">
-		<comment type="summary">Text to place in the title of the verbalization tool window.</comment>
-	</ResourceString>
-	<ResourceString name="ModelErrorImpliedInternalUniquenessConstraintError" model="Model" resourceName="ModelError.FactType.ImpliedInternalUniquenessConstraintError.Text">
-		<comment type="summary">Text displayed in the text of the ImpliedInternalUniquenessConstraintError. {0} is the fact type name</comment>
-	</ResourceString>
-	<ResourceString name="ImpliedInternalConstraintFixMessage" model="Diagram" resourceName="MessageBox.ImpliedInternalUniquenessConstraint.Message">
-		<comment type="summary">The message of the auto-fix message box for implied internal constraints</comment>
-	</ResourceString>
-	<ResourceString name="FinalShapeDeletionMessage" model="Diagram" resourceName="MessageBox.FinalShapeDeletion.Message">
-		<comment type="summary">The message for the prompt to delete an element from the model when the final shape representing it is delete. Replacement field 0 gets the class name and 1 the component name.</comment>
-	</ResourceString>
-	<ResourceString name="RemoveImpliedInternalUniquenessConstraintsTransactionName" model="Model" resourceName="FactType.RemoveImpliedInternalUniquenessConstraints.TransactionName">
-		<comment type="summary">The name of the transaction that auto-fixes implied and duplicate internal constraints.</comment>
-	</ResourceString>
-	<ResourceString name="AlignShapesTransactionName" model="Diagram" resourceName="AlignShapes.TransactionName">
-		<comment type="summary">The transaction name used by shape alignment commands. The text appears in the undo dropdown in the VS IDE.</comment>
-	</ResourceString>
-	<ResourceString name="AutoLayoutTransactionName" model="Diagram" resourceName="AutoLayout.TransactionName">
-		<comment type="summary">The transaction name used by AutoLayout command. The text appears in the undo dropdown in the VS IDE.</comment>
-	</ResourceString>
-	<ResourceString name="DefaultLinkShapeAccessibleValueFormat" model="Diagram" resourceName="ORMBaseBinaryLinkShape.Accessible.ValueFormat">
-		<comment type="summary">Return the default format string for any link shape. Replacement field {0} is the accessible name for the from object, field {1} is the accessible name for the to object.</comment>
-	</ResourceString>
-	<ResourceString name="RolePlayerLinkAccessibleDescription" model="Diagram" resourceName="RolePlayerLink.Accessible.Description">
-		<comment type="summary">Returned as the accessible description for a role player link</comment>
-	</ResourceString>
-	<ResourceString name="RolePlayerLinkAccessibleName" model="Diagram" resourceName="RolePlayerLink.Accessible.Name">
-		<comment type="summary">Returned as the accessible name for a role player link</comment>
-	</ResourceString>
-	<ResourceString name="RolePlayerLinkAccessibleFromValueFormat" model="Diagram" resourceName="RolePlayerLink.Accessible.FromValueFormat">
-		<comment type="summary">The end point of a role player link is described in terms of the fact name and the role name. Replacement field {0} is the fact name, {1} is the role name, and {2} is the role position.</comment>
-	</ResourceString>
-	<ResourceString name="SubtypeLinkAccessibleDescription" model="Diagram" resourceName="SubtypeLink.Accessible.Description">
-		<comment type="summary">Returned as the accessible description for a subtype link</comment>
-	</ResourceString>
-	<ResourceString name="SubtypeLinkAccessibleName" model="Diagram" resourceName="SubtypeLink.Accessible.Name">
-		<comment type="summary">Returned as the accessible name for a subtype link</comment>
-	</ResourceString>
-	<ResourceString name="ExternalConstraintLinkAccessibleDescription" model="Diagram" resourceName="ExternalConstraintLink.Accessible.Description">
-		<comment type="summary">Returned as the accessible description for an external constraint link</comment>
-	</ResourceString>
-	<ResourceString name="ExternalConstraintLinkAccessibleName" model="Diagram" resourceName="ExternalConstraintLink.Accessible.Name">
-		<comment type="summary">Returned as the accessible name for an external constraint link</comment>
-	</ResourceString>
-	<ResourceString name="ModelNoteLinkAccessibleDescription" model="Diagram" resourceName="ModelNoteLink.Accessible.Description">
-		<comment type="summary">Returned as the accessible description for a model note link</comment>
-	</ResourceString>
-	<ResourceString name="ModelNoteLinkAccessibleName" model="Diagram" resourceName="ModelNoteLink.Accessible.Name">
-		<comment type="summary">Returned as the accessible name for a model note link</comment>
-	</ResourceString>
-	<ResourceString name="ValueRangeLinkAccessibleDescription" model="Diagram" resourceName="ValueRangeLink.Accessible.Description">
-		<comment type="summary">Returned as the accessible description for a value range link</comment>
-	</ResourceString>
-	<ResourceString name="ValueRangeLinkAccessibleName" model="Diagram" resourceName="ValueRangeLink.Accessible.Name">
-		<comment type="summary">Returned as the accessible name for a value range link</comment>
-	</ResourceString>
-	<ResourceString name="ExtensionLoadFailureTitle" model="Diagram" resourceName="ExtensionLoadFailure.Title">
-		<comment type="summary">The title of the message shown when a registered extension fails to load.</comment>
-	</ResourceString>
-	<ResourceString name="ExtensionLoadFailureMessage" model="Diagram" resourceName="ExtensionLoadFailure.Message">
-		<comment type="summary">The format string for the content of the message shown when a registered extension fails to load.</comment>
-		<comment type="remarks">{0} will be &lt;see cref="System.Environment.NewLine"/&gt;. {1} will be the registered name of the extension that failed to load. {2} will be the result of calling &lt;see cref="System.Exception.ToString"&gt;ToString()&lt;/see&gt; on the &lt;see cref="System.Exception"/&gt; that caused the load failure.</comment>
-	</ResourceString>
-	<ResourceString name="DiagramCommandNewPage" model="Diagram" resourceName="Diagram.Command.NewPage">
-		<comment type="summary">The default name for new diagrams and the context menu command text and transaction name for creating a new diagram.</comment>
-	</ResourceString>
-	<ResourceString name="DiagramCommandRenamePage" model="Diagram" resourceName="Diagram.Command.RenamePage">
-		<comment type="summary">The context menu command text and transaction name for renaming a diagram.</comment>
-	</ResourceString>
-	<ResourceString name="DiagramCommandDeletePage" model="Diagram" resourceName="Diagram.Command.DeletePage">
-		<comment type="summary">The context menu command text and transaction name for deleting diagram.</comment>
-	</ResourceString>
-	<ResourceString name="SetConstraintStickyRoleFormatString" model="Diagram" resourceName="SetConstraintStickyRole.DisplayFormatString">
-		<comment type="summary">The format string used to combine the sequence and column numbers in the role box of an active set (multicolumn) constraint.</comment>
-	</ResourceString>
-	<ResourceString name="SetConstraintStickyRoleTooltipFormatString" model="Diagram" resourceName="SetConstraintStickyRole.DisplayTooltipFormatString">
-		<comment type="summary">The format string used to combine the sequence and column numbers in the tooltip of the role box of an active set (multicolumn) constraint.</comment>
-	</ResourceString>
-	<ResourceString name="SetConstraintStickyRoleOverlapping" model="Diagram" resourceName="SetConstraintStickyRole.DisplayOverlapping">
-		<comment type="summary">The string to display when role sequences in the active set (multicolumn) constraint overlap on a single role.</comment>
-	</ResourceString>
-	<ResourceString name="SchemaValidationFailureInstructions" model="Model" resourceName="SchemaValidationFailure.Instructions">
-		<comment type="summary">Text used to display instructions when a load fails due to schema validation issues</comment>
-	</ResourceString>
-	<ResourceString name="ImplicitBooleanValueTypeRestriction" model="Model" resourceName="ImplicitBooleanValueType.Restriction">
-		<comment type="summary">Error message for when a user attempts to modify properties on an Implicit Boolean ValueType</comment>
-	</ResourceString>
-	<ResourceString name="ImplicitBooleanValueTypePropertyRestriction" model="Model" resourceName="ImplicitBooleanValueType.PropertyRestriction">
-		<comment type="summary">Error message for when a user attempts to modify the IsImplicitBooleanValueType property on a ValueType</comment>
-	</ResourceString>
-	<ResourceString name="ImplicitBooleanValueTypeNoReadingFormatString" model="Model" resourceName="ImplicitBooleanValueType.NoReadingFormatString">
-		<comment type="summary">The format string for naming an implicit boolean value type when there are no readings on the fact type.</comment>
-	</ResourceString>
+	<ResourceString name="ObjectTypeShapeIndependentFormatString" model="Diagram" resourceName="ObjectTypeShape.IndependentFormatString"/>
+	<ResourceString name="ObjectTypeShapeReferenceModeFormatString" model="Diagram" resourceName="ObjectTypeShape.ReferenceModeFormatString"/>
+	<ResourceString name="ObjectifiedFactTypeNameShapeStandardFormatString" model="Diagram" resourceName="ObjectifiedFactTypeNameShape.StandardFormatString"/>
+	<ResourceString name="ObjectifiedFactTypeNameShapeIndependentFormatString" model="Diagram" resourceName="ObjectifiedFactTypeNameShape.IndependentFormatString"/>
+	<ResourceString name="ObjectifiedFactTypeNameShapeRefModeIndependentFormatString" model="Diagram" resourceName="ObjectifiedFactTypeNameShape.RefModeIndependentFormatString"/>
+	<ResourceString name="ObjectifiedFactTypeNameShapeRefModeFormatString" model="Diagram" resourceName="ObjectifiedFactTypeNameShape.RefModeFormatString"/>
+	<ResourceString name="ReadingShapeReadingSeparator" model="Diagram" resourceName="ReadingShape.ReadingSeparator"/>
+	<ResourceString name="ReadingShapeEllipsis" model="Diagram" resourceName="ReadingShape.Ellipsis"/>
+	<ResourceString name="ReadingShapeAttachedRoleDisplay" model="Diagram" resourceName="ReadingShape.AttachedRoleDisplay"/>
+	<ResourceString name="ReadingShapeUnattachedRoleDisplay" model="Diagram" resourceName="ReadingShape.UnattachedRoleDisplay"/>
+	<ResourceString name="NMinusOneRuleInternalSpan" model="Model" resourceName="ModelError.FactType.NMinusOneRule.Text"/>
+	<ResourceString name="ModelErrorSetConstraintCompatibleRolePlayerTypeError" model="Model" resourceName="ModelError.Constraint.CompatibleRolePlayerTypeError.Set.Text"/>
+	<ResourceString name="ModelErrorSetComparisonConstraintCompatibleRolePlayerTypeError" model="Model" resourceName="ModelError.Constraint.CompatibleRolePlayerTypeError.SetComparison.Text"/>
+	<ResourceString name="ModelErrorRolePlayerRequiredError" model="Model" resourceName="ModelError.Role.RolePlayerRequired.Message"/>
+	<ResourceString name="ModelErrorExternalEqualityImpliedByMandatoryError" model="Model" resourceName="ModelError.Constraint.ExternalEqualityImpliedByMandatory.Text"/>
+	<ResourceString name="ModelErrorObjectTypeRequiresPrimarySupertypeError" model="Model" resourceName="ModelError.ObjectType.ObjectTypeRequiresPrimarySupertypeError.Message"/>
+	<ResourceString name="ModelErrorObjectTypeCompatibleSupertypesError" model="Model" resourceName="ModelError.ObjectType.CompatibleSupertypesError.Message"/>
+	<ResourceString name="ModelErrorObjectTypePreferredIdentifierRequiresMandatoryError" model="Model" resourceName="ModelError.ObjectType.PreferredIdentifierRequiresMandatoryError.Message"/>
+	<ResourceString name="ModelErrorEntityTypeRequiresReferenceSchemeMessage" model="Model" resourceName="ModelError.EntityType.RequiresReferenceScheme.Message"/>
+	<ResourceString name="RingConstraintTypeNotSpecifiedError" model ="Model" resourceName="ModelError.Constraint.RingConstraintTypeNotSpecifiedError.Message"/>
+	<ResourceString name="ModelErrorFrequencyConstraintMinMaxError" model="Model" resourceName="ModelError.Constraint.FrequencyConstraintMinMaxError.Text"/>
+	<ResourceString name="ModelVerbalizationWindowTitle" model="Model" resourceName="ModelVerbalization.WindowTitle"/>
+	<ResourceString name="ModelErrorImpliedInternalUniquenessConstraintError" model="Model" resourceName="ModelError.FactType.ImpliedInternalUniquenessConstraintError.Text"/>
+	<ResourceString name="ImpliedInternalConstraintFixMessage" model="Diagram" resourceName="MessageBox.ImpliedInternalUniquenessConstraint.Message"/>
+	<ResourceString name="FinalShapeDeletionMessage" model="Diagram" resourceName="MessageBox.FinalShapeDeletion.Message"/>
+	<ResourceString name="RemoveImpliedInternalUniquenessConstraintsTransactionName" model="Model" resourceName="FactType.RemoveImpliedInternalUniquenessConstraints.TransactionName"/>
+	<ResourceString name="AlignShapesTransactionName" model="Diagram" resourceName="AlignShapes.TransactionName"/>
+	<ResourceString name="AutoLayoutTransactionName" model="Diagram" resourceName="AutoLayout.TransactionName"/>
+	<ResourceString name="DefaultLinkShapeAccessibleValueFormat" model="Diagram" resourceName="ORMBaseBinaryLinkShape.Accessible.ValueFormat"/>
+	<ResourceString name="RolePlayerLinkAccessibleDescription" model="Diagram" resourceName="RolePlayerLink.Accessible.Description"/>
+	<ResourceString name="RolePlayerLinkAccessibleName" model="Diagram" resourceName="RolePlayerLink.Accessible.Name"/>
+	<ResourceString name="RolePlayerLinkAccessibleFromValueFormat" model="Diagram" resourceName="RolePlayerLink.Accessible.FromValueFormat"/>
+	<ResourceString name="SubtypeLinkAccessibleDescription" model="Diagram" resourceName="SubtypeLink.Accessible.Description"/>
+	<ResourceString name="SubtypeLinkAccessibleName" model="Diagram" resourceName="SubtypeLink.Accessible.Name"/>
+	<ResourceString name="ExternalConstraintLinkAccessibleDescription" model="Diagram" resourceName="ExternalConstraintLink.Accessible.Description"/>
+	<ResourceString name="ExternalConstraintLinkAccessibleName" model="Diagram" resourceName="ExternalConstraintLink.Accessible.Name"/>
+	<ResourceString name="ModelNoteLinkAccessibleDescription" model="Diagram" resourceName="ModelNoteLink.Accessible.Description"/>
+	<ResourceString name="ModelNoteLinkAccessibleName" model="Diagram" resourceName="ModelNoteLink.Accessible.Name"/>
+	<ResourceString name="ValueRangeLinkAccessibleDescription" model="Diagram" resourceName="ValueRangeLink.Accessible.Description"/>
+	<ResourceString name="ValueRangeLinkAccessibleName" model="Diagram" resourceName="ValueRangeLink.Accessible.Name"/>
+	<ResourceString name="ExtensionLoadFailureTitle" model="Diagram" resourceName="ExtensionLoadFailure.Title"/>
+	<ResourceString name="ExtensionLoadFailureMessage" model="Diagram" resourceName="ExtensionLoadFailure.Message"/>
+	<ResourceString name="DiagramCommandNewPage" model="Diagram" resourceName="Diagram.Command.NewPage"/>
+	<ResourceString name="DiagramCommandRenamePage" model="Diagram" resourceName="Diagram.Command.RenamePage"/>
+	<ResourceString name="DiagramCommandDeletePage" model="Diagram" resourceName="Diagram.Command.DeletePage"/>
+	<ResourceString name="SetConstraintStickyRoleFormatString" model="Diagram" resourceName="SetConstraintStickyRole.DisplayFormatString"/>
+	<ResourceString name="SetConstraintStickyRoleTooltipFormatString" model="Diagram" resourceName="SetConstraintStickyRole.DisplayTooltipFormatString"/>
+	<ResourceString name="SetConstraintStickyRoleOverlapping" model="Diagram" resourceName="SetConstraintStickyRole.DisplayOverlapping"/>
+	<ResourceString name="SchemaValidationFailureInstructions" model="Model" resourceName="SchemaValidationFailure.Instructions"/>
+	<ResourceString name="ImplicitBooleanValueTypeRestriction" model="Model" resourceName="ImplicitBooleanValueType.Restriction"/>
+	<ResourceString name="ImplicitBooleanValueTypePropertyRestriction" model="Model" resourceName="ImplicitBooleanValueType.PropertyRestriction"/>
+	<ResourceString name="ImplicitBooleanValueTypeNoReadingFormatString" model="Model" resourceName="ImplicitBooleanValueType.NoReadingFormatString"/>
 </ResourceStrings>

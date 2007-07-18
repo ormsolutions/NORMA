@@ -21,6 +21,9 @@
 		<se:Namespaces>
 			<se:Namespace Prefix="oialtocdb" URI="http://schemas.neumont.edu/ORM/Bridge/2007-06/ORMAbstractionToConceptualDatabase" SchemaFile="ORMAbstractionToConceptualDatabase.xsd" DefaultPrefix="true"/>
 		</se:Namespaces>
+		<se:RootElements>
+			<se:RootElement Class="MappingCustomizationModel" Name="MappingCustomization"/>
+		</se:RootElements>
 		<se:RootLinks>
 			<se:Container Name="Bridge">
 				<se:RootLink Class="SchemaIsForAbstractionModel" PrimaryLinkElement="true">
@@ -50,4 +53,55 @@
 			</se:Container>
 		</se:RootLinks>
 	</se:DomainModel>
+	<se:Element Class="MappingCustomizationModel" Name="MappingCustomization">
+		<se:ConditionalSerialization>
+			<!-- Only serialize if there is at least one AssimilationMapping that will serialize-->
+			<plx:iterator dataTypeName="AssimilationMapping" localName="assimilationMapping">
+				<plx:initialize>
+					<plx:callThis name="AssimilationMappingCollection" type="property"/>
+				</plx:initialize>
+				<plx:branch>
+					<plx:condition>
+						<plx:binaryOperator type="inequality">
+							<plx:left>
+								<plx:callInstance name="AbsorptionChoice" type="property">
+									<plx:callObject>
+										<plx:nameRef name="assimilationMapping"/>
+									</plx:callObject>
+								</plx:callInstance>
+							</plx:left>
+							<plx:right>
+								<plx:callStatic dataTypeName="AssimilationAbsorptionChoice" name="Absorb" type="field"/>
+							</plx:right>
+						</plx:binaryOperator>
+					</plx:condition>
+					<plx:return>
+						<plx:trueKeyword/>
+					</plx:return>
+				</plx:branch>
+			</plx:iterator>
+			<plx:return>
+				<plx:falseKeyword/>
+			</plx:return>
+		</se:ConditionalSerialization>
+		<se:Container Name="AssimilationMappings">
+			<se:Embed RelationshipName="MappingCustomizationModelHasAssimilationMapping" RoleName="AssimilationMapping"/>
+		</se:Container>
+	</se:Element>
+	<se:Element Class="AssimilationMapping">
+		<se:ConditionalSerialization>
+			<plx:return>
+				<plx:binaryOperator type="inequality">
+					<plx:left>
+						<plx:callThis name="AbsorptionChoice" type="property"/>
+					</plx:left>
+					<plx:right>
+						<plx:callStatic dataTypeName="AssimilationAbsorptionChoice" name="Absorb" type="field"/>
+					</plx:right>
+				</plx:binaryOperator>
+			</plx:return>
+		</se:ConditionalSerialization>
+		<!--<se:Attribute ID="AbsorptionChoice"/> not needed for default serialization -->
+		<se:Link RelationshipName="AssimilationMappingCustomizesAssimilation" RoleName="Assimilation" Name="Assimilation"/>
+	</se:Element>
 </se:CustomSerializedElements>

@@ -24,3 +24,231 @@
 
 using DslModeling = global::Microsoft.VisualStudio.Modeling;
 using DslDesign = global::Microsoft.VisualStudio.Modeling.Design;
+namespace Neumont.Tools.ORMAbstractionToConceptualDatabaseBridge
+{
+	/// <summary>
+	/// DomainClass MappingCustomizationModel
+	/// </summary>
+	[DslDesign::DisplayNameResource("Neumont.Tools.ORMAbstractionToConceptualDatabaseBridge.MappingCustomizationModel.DisplayName", typeof(global::Neumont.Tools.ORMAbstractionToConceptualDatabaseBridge.ORMAbstractionToConceptualDatabaseBridgeDomainModel), "Neumont.Tools.ORMAbstractionToConceptualDatabaseBridge.GeneratedCode.DomainModelResx")]
+	[DslDesign::DescriptionResource("Neumont.Tools.ORMAbstractionToConceptualDatabaseBridge.MappingCustomizationModel.Description", typeof(global::Neumont.Tools.ORMAbstractionToConceptualDatabaseBridge.ORMAbstractionToConceptualDatabaseBridgeDomainModel), "Neumont.Tools.ORMAbstractionToConceptualDatabaseBridge.GeneratedCode.DomainModelResx")]
+	[global::System.CLSCompliant(true)]
+	[DslModeling::DomainObjectId("d027cce5-b22a-44c0-a580-630658605da5")]
+	public partial class MappingCustomizationModel : DslModeling::ModelElement
+	{
+		#region Constructors, domain class Id
+	
+		/// <summary>
+		/// MappingCustomizationModel domain class Id.
+		/// </summary>
+		public static readonly new global::System.Guid DomainClassId = new global::System.Guid(0xd027cce5, 0xb22a, 0x44c0, 0xa5, 0x80, 0x63, 0x06, 0x58, 0x60, 0x5d, 0xa5);
+		/// <summary>
+		/// Constructor
+		/// </summary>
+		/// <param name="store">Store where new element is to be created.</param>
+		/// <param name="propertyAssignments">List of domain property id/value pairs to set once the element is created.</param>
+		public MappingCustomizationModel(DslModeling::Store store, params DslModeling::PropertyAssignment[] propertyAssignments)
+			: this(store != null ? store.DefaultPartition : null, propertyAssignments)
+		{
+		}
+		
+		/// <summary>
+		/// Constructor
+		/// </summary>
+		/// <param name="partition">Partition where new element is to be created.</param>
+		/// <param name="propertyAssignments">List of domain property id/value pairs to set once the element is created.</param>
+		public MappingCustomizationModel(DslModeling::Partition partition, params DslModeling::PropertyAssignment[] propertyAssignments)
+			: base(partition, propertyAssignments)
+		{
+		}
+		#endregion
+		#region AssimilationMappingCollection opposite domain role accessor
+		/// <summary>
+		/// Gets a list of AssimilationMappingCollection.
+		/// </summary>
+		public virtual DslModeling::LinkedElementCollection<AssimilationMapping> AssimilationMappingCollection
+		{
+			[global::System.Diagnostics.DebuggerStepThrough]
+			get
+			{
+				return new DslModeling::LinkedElementCollection<AssimilationMapping>(this, global::Neumont.Tools.ORMAbstractionToConceptualDatabaseBridge.MappingCustomizationModelHasAssimilationMapping.ModelDomainRoleId);
+			}
+		}
+		#endregion
+	}
+}
+namespace Neumont.Tools.ORMAbstractionToConceptualDatabaseBridge
+{
+	/// <summary>
+	/// DomainClass AssimilationMapping
+	/// </summary>
+	[DslDesign::DisplayNameResource("Neumont.Tools.ORMAbstractionToConceptualDatabaseBridge.AssimilationMapping.DisplayName", typeof(global::Neumont.Tools.ORMAbstractionToConceptualDatabaseBridge.ORMAbstractionToConceptualDatabaseBridgeDomainModel), "Neumont.Tools.ORMAbstractionToConceptualDatabaseBridge.GeneratedCode.DomainModelResx")]
+	[DslDesign::DescriptionResource("Neumont.Tools.ORMAbstractionToConceptualDatabaseBridge.AssimilationMapping.Description", typeof(global::Neumont.Tools.ORMAbstractionToConceptualDatabaseBridge.ORMAbstractionToConceptualDatabaseBridgeDomainModel), "Neumont.Tools.ORMAbstractionToConceptualDatabaseBridge.GeneratedCode.DomainModelResx")]
+	[global::System.CLSCompliant(true)]
+	[DslModeling::DomainObjectId("2f631fd8-6b87-42e6-961f-750a566fb7c1")]
+	public partial class AssimilationMapping : DslModeling::ModelElement
+	{
+		#region Constructors, domain class Id
+	
+		/// <summary>
+		/// AssimilationMapping domain class Id.
+		/// </summary>
+		public static readonly new global::System.Guid DomainClassId = new global::System.Guid(0x2f631fd8, 0x6b87, 0x42e6, 0x96, 0x1f, 0x75, 0x0a, 0x56, 0x6f, 0xb7, 0xc1);
+		/// <summary>
+		/// Constructor
+		/// </summary>
+		/// <param name="store">Store where new element is to be created.</param>
+		/// <param name="propertyAssignments">List of domain property id/value pairs to set once the element is created.</param>
+		public AssimilationMapping(DslModeling::Store store, params DslModeling::PropertyAssignment[] propertyAssignments)
+			: this(store != null ? store.DefaultPartition : null, propertyAssignments)
+		{
+		}
+		
+		/// <summary>
+		/// Constructor
+		/// </summary>
+		/// <param name="partition">Partition where new element is to be created.</param>
+		/// <param name="propertyAssignments">List of domain property id/value pairs to set once the element is created.</param>
+		public AssimilationMapping(DslModeling::Partition partition, params DslModeling::PropertyAssignment[] propertyAssignments)
+			: base(partition, propertyAssignments)
+		{
+		}
+		#endregion
+		#region AbsorptionChoice domain property code
+		
+		/// <summary>
+		/// AbsorptionChoice domain property Id.
+		/// </summary>
+		public static readonly global::System.Guid AbsorptionChoiceDomainPropertyId = new global::System.Guid(0x62b69840, 0xb95f, 0x467b, 0x8f, 0xff, 0x67, 0x05, 0x52, 0x13, 0x9e, 0x1d);
+		
+		/// <summary>
+		/// Storage for AbsorptionChoice
+		/// </summary>
+		private AssimilationAbsorptionChoice absorptionChoicePropertyStorage = Neumont.Tools.ORMAbstractionToConceptualDatabaseBridge.AssimilationAbsorptionChoice.Absorb;
+		
+		/// <summary>
+		/// Gets or sets the value of AbsorptionChoice domain property.
+		/// Description for
+		/// Neumont.Tools.ORMAbstractionToConceptualDatabaseBridge.AssimilationMapping.AbsorptionChoice
+		/// </summary>
+		[DslDesign::DisplayNameResource("Neumont.Tools.ORMAbstractionToConceptualDatabaseBridge.AssimilationMapping/AbsorptionChoice.DisplayName", typeof(global::Neumont.Tools.ORMAbstractionToConceptualDatabaseBridge.ORMAbstractionToConceptualDatabaseBridgeDomainModel), "Neumont.Tools.ORMAbstractionToConceptualDatabaseBridge.GeneratedCode.DomainModelResx")]
+		[DslDesign::DescriptionResource("Neumont.Tools.ORMAbstractionToConceptualDatabaseBridge.AssimilationMapping/AbsorptionChoice.Description", typeof(global::Neumont.Tools.ORMAbstractionToConceptualDatabaseBridge.ORMAbstractionToConceptualDatabaseBridgeDomainModel), "Neumont.Tools.ORMAbstractionToConceptualDatabaseBridge.GeneratedCode.DomainModelResx")]
+		[global::System.ComponentModel.DefaultValue(Neumont.Tools.ORMAbstractionToConceptualDatabaseBridge.AssimilationAbsorptionChoice.Absorb)]
+		[DslModeling::DomainObjectId("62b69840-b95f-467b-8fff-670552139e1d")]
+		public AssimilationAbsorptionChoice AbsorptionChoice
+		{
+			[global::System.Diagnostics.DebuggerStepThrough]
+			get
+			{
+				return absorptionChoicePropertyStorage;
+			}
+			[global::System.Diagnostics.DebuggerStepThrough]
+			set
+			{
+				AbsorptionChoicePropertyHandler.Instance.SetValue(this, value);
+			}
+		}
+		/// <summary>
+		/// Value handler for the AssimilationMapping.AbsorptionChoice domain property.
+		/// </summary>
+		internal sealed partial class AbsorptionChoicePropertyHandler : DslModeling::DomainPropertyValueHandler<AssimilationMapping, AssimilationAbsorptionChoice>
+		{
+			private AbsorptionChoicePropertyHandler() { }
+		
+			/// <summary>
+			/// Gets the singleton instance of the AssimilationMapping.AbsorptionChoice domain property value handler.
+			/// </summary>
+			public static readonly AbsorptionChoicePropertyHandler Instance = new AbsorptionChoicePropertyHandler();
+		
+			/// <summary>
+			/// Gets the Id of the AssimilationMapping.AbsorptionChoice domain property.
+			/// </summary>
+			public sealed override global::System.Guid DomainPropertyId
+			{
+				[global::System.Diagnostics.DebuggerStepThrough]
+				get
+				{
+					return AbsorptionChoiceDomainPropertyId;
+				}
+			}
+			
+			/// <summary>
+			/// Gets a strongly-typed value of the property on specified element.
+			/// </summary>
+			/// <param name="element">Element which owns the property.</param>
+			/// <returns>Property value.</returns>
+			public override sealed AssimilationAbsorptionChoice GetValue(AssimilationMapping element)
+			{
+				if (element == null) throw new global::System.ArgumentNullException("element");
+				return element.absorptionChoicePropertyStorage;
+			}
+		
+			/// <summary>
+			/// Sets property value on an element.
+			/// </summary>
+			/// <param name="element">Element which owns the property.</param>
+			/// <param name="newValue">New property value.</param>
+			public override sealed void SetValue(AssimilationMapping element, AssimilationAbsorptionChoice newValue)
+			{
+				if (element == null) throw new global::System.ArgumentNullException("element");
+		
+				AssimilationAbsorptionChoice oldValue = GetValue(element);
+				if (newValue != oldValue)
+				{
+					ValueChanging(element, oldValue, newValue);
+					element.absorptionChoicePropertyStorage = newValue;
+					ValueChanged(element, oldValue, newValue);
+				}
+			}
+		}
+		
+		#endregion
+		#region Assimilation opposite domain role accessor
+		/// <summary>
+		/// Gets or sets Assimilation.
+		/// </summary>
+		public virtual global::Neumont.Tools.ORMAbstraction.ConceptTypeAssimilatesConceptType Assimilation
+		{
+			[global::System.Diagnostics.DebuggerStepThrough]
+			get
+			{
+				return DslModeling::DomainRoleInfo.GetLinkedElement(this, global::Neumont.Tools.ORMAbstractionToConceptualDatabaseBridge.AssimilationMappingCustomizesAssimilation.AssimilationMappingDomainRoleId) as global::Neumont.Tools.ORMAbstraction.ConceptTypeAssimilatesConceptType;
+			}
+			[global::System.Diagnostics.DebuggerStepThrough]
+			set
+			{
+				DslModeling::ModelElement existingSource;
+				if (null != value &&
+					null != (existingSource = DslModeling::DomainRoleInfo.GetLinkedElement(value, global::Neumont.Tools.ORMAbstractionToConceptualDatabaseBridge.AssimilationMappingCustomizesAssimilation.AssimilationDomainRoleId)))
+				{
+					if (existingSource != value)
+					{
+						DslModeling::DomainRoleInfo.SetLinkedElement(value, global::Neumont.Tools.ORMAbstractionToConceptualDatabaseBridge.AssimilationMappingCustomizesAssimilation.AssimilationDomainRoleId, this);
+					}
+				}
+				else
+				{
+					DslModeling::DomainRoleInfo.SetLinkedElement(this, global::Neumont.Tools.ORMAbstractionToConceptualDatabaseBridge.AssimilationMappingCustomizesAssimilation.AssimilationMappingDomainRoleId, value);
+				}
+			}
+		}
+		#endregion
+		#region Model opposite domain role accessor
+		/// <summary>
+		/// Gets or sets Model.
+		/// </summary>
+		public virtual MappingCustomizationModel Model
+		{
+			[global::System.Diagnostics.DebuggerStepThrough]
+			get
+			{
+				return DslModeling::DomainRoleInfo.GetLinkedElement(this, global::Neumont.Tools.ORMAbstractionToConceptualDatabaseBridge.MappingCustomizationModelHasAssimilationMapping.AssimilationMappingDomainRoleId) as MappingCustomizationModel;
+			}
+			[global::System.Diagnostics.DebuggerStepThrough]
+			set
+			{
+				DslModeling::DomainRoleInfo.SetLinkedElement(this, global::Neumont.Tools.ORMAbstractionToConceptualDatabaseBridge.MappingCustomizationModelHasAssimilationMapping.AssimilationMappingDomainRoleId, value);
+			}
+		}
+		#endregion
+	}
+}

@@ -20,33 +20,27 @@ using System.Resources;
 using System.Windows.Forms;
 using Neumont.Tools.Modeling.Design;
 using Neumont.Tools.ORM.ObjectModel;
-using Neumont.Tools.ORM.ShapeModel;
-using System.Drawing;
-using System.IO;
 
-namespace Neumont.Tools.ORM.CustomProperties
+namespace Neumont.Tools.ORMAbstractionToConceptualDatabaseBridge
 {
 	internal partial class ResourceStrings
 	{
 		/// <summary>
-		/// The Custom Properties Resource Manager.
+		/// The abstraction/conceptual database bridge resource.
 		/// </summary>
 		public enum ResourceManagers
 		{
 			/// <summary>
-			/// Standalone resource file for the custom properties model
+			/// Standalone resource file for the MappingCustomizationModel
 			/// </summary>
-			CustomProperties,
+			CustomizationModel,
 		}
 		private static ResourceManager GetResourceManager(ResourceManagers manager)
 		{
 			switch (manager)
 			{
-				case ResourceManagers.CustomProperties:
-					// Note that this maps to the CustomPropertyProvidersResources.resx file because
-					// of a custom LogicalName element in the project file. You can only access this
-					// attribute if you edit the xml form of the project file.
-					return ResourceAccessor<CustomProperty>.ResourceManager;
+				case ResourceManagers.CustomizationModel:
+					return ResourceAccessor<MappingCustomizationModel>.ResourceManager;
 			}
 			return null;
 		}

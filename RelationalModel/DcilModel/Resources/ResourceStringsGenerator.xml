@@ -20,20 +20,16 @@
 			elementFormDefault="qualified"
 			targetNamespace="http://schemas.neumont.edu/ORM/SDK/ResourceStringsGenerator"
 			xmlns:xs="http://www.w3.org/2001/XMLSchema">
-		<xs:redefine schemaLocation="../../ORMModel/Transforms/ResourceStringsGenerator.xsd">
+		<xs:redefine schemaLocation="../../../ORMModel/Transforms/ResourceStringsGenerator.xsd">
 			<xs:simpleType name="modelType">
 				<xs:restriction base="modelType">
-					<xs:enumeration value="CustomProperties"/>
+					<xs:enumeration value="CatalogModel"/>
 				</xs:restriction>
 			</xs:simpleType>
 		</xs:redefine>
 	</xs:schema>
 	<FileAssociations>
-		<FileAssociation model="CustomProperties" resourceFile="..\CustomPropertyProvidersResources.resx" useFileComments="primary"/>
+		<FileAssociation model="CatalogModel" resourceFile="..\Catalog.resx" useFileComments="primary"/>
 	</FileAssociations>
-	<ResourceString name="CustomPropertiesSnippetsTypeDescription" model="CustomProperties" resourceName="Verbalization.CustomPropertiesSnippetsTypeDescription"/>
-	<ResourceString name="CustomPropertiesSnippetsDefaultDescription" model="CustomProperties" resourceName="Verbalization.CustomPropertiesSnippetsDefaultDescription"/>
-	<ResourceString name="PropertiesEditorCategory" model="CustomProperties" resourceName="PropertiesEditor.Category"/>
-	<ResourceString name="PropertiesEditorDescription" model="CustomProperties" resourceName="PropertiesEditor.Description"/>
-	<ResourceString name="PropertiesEditorDisplayName" model="CustomProperties" resourceName="PropertiesEditor.DisplayName"/>
+	<ResourceString name="ColumnReferenceDisplayFormatString" model="CatalogModel" resourceName="ColumnReference.DisplayFormatString"/>
 </ResourceStrings>

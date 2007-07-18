@@ -2,4 +2,5 @@
 <plixLoader:sourceFiles xmlns:plixLoader="http://schemas.neumont.edu/CodeGeneration/PLiXLoader">
 	<plixLoader:sourceFile file="OialDcilBridge.AttachRules.xml" transformFile="..\..\ORMModel\Transforms\AttachRulesGenerator.xslt"/>
 	<plixLoader:sourceFile file="OialDcilBridge.SerializationExtensions.xml" transformFile="..\..\ORMModel\Transforms\SerializationExtensions.xslt"/>
+	<plixLoader:sourceFile file="Resources\ResourceStringsGenerator.xml" transformFile="..\..\ORMModel\Transforms\ResourceStringsGenerator.xslt"/>
 </plixLoader:sourceFiles>

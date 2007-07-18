@@ -1,0 +1,105 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<xs:schema
+	id="ResourceStringsGenerator"
+	elementFormDefault="qualified"
+	targetNamespace="http://schemas.neumont.edu/ORM/SDK/ResourceStringsGenerator"
+	xmlns="http://schemas.neumont.edu/ORM/SDK/ResourceStringsGenerator"
+	xmlns:rsg="http://schemas.neumont.edu/ORM/SDK/ResourceStringsGenerator"
+	xmlns:xs="http://www.w3.org/2001/XMLSchema">
+	<xs:annotation>
+		<xs:appinfo source="Common Public License Copyright Notice">
+			Neumont Object-Role Modeling Architect for Visual Studio
+
+			Copyright © Neumont University. All rights reserved.
+
+			The use and distribution terms for this software are covered by the
+			Common Public License 1.0 (http://opensource.org/licenses/cpl) which
+			can be found in the file CPL.txt at the root of this distribution.
+			By using this software in any fashion, you are agreeing to be bound by
+			the terms of this license.
+
+			You must not remove this notice, or any other, from this software.
+		</xs:appinfo>
+	</xs:annotation>
+	<xs:element name="ResourceStrings">
+		<xs:complexType>
+			<xs:sequence>
+				<xs:element name="Copyright" minOccurs="0">
+					<xs:annotation>
+						<xs:documentation>Copyright notice.</xs:documentation>
+					</xs:annotation>
+					<xs:complexType>
+						<xs:sequence>
+							<xs:element name="CopyrightLine" type="xs:string" maxOccurs="unbounded"/>
+						</xs:sequence>
+						<xs:attribute name="name" type="xs:string" use="required"/>
+					</xs:complexType>
+				</xs:element>
+				<xs:element name="FileAssociations">
+					<xs:annotation>
+						<xs:documentation>Associate each model type with a physical resource file. Allows verification of the referenced resource strings, and consistent comments between the files.</xs:documentation>
+					</xs:annotation>
+					<xs:complexType>
+						<xs:sequence>
+							<xs:element name="FileAssociation" maxOccurs="unbounded">
+								<xs:complexType>
+									<xs:attribute name="model" type="modelType" use="required">
+										<xs:annotation>
+											<xs:documentation>The name designating the model to load. Model names are established using a redefine of modelType.</xs:documentation>
+										</xs:annotation>
+									</xs:attribute>
+									<xs:attribute name="resourceFile" type="xs:string" use="required">
+										<xs:annotation>
+											<xs:documentation>The relative path from this file to the resource file associated with this model.</xs:documentation>
+										</xs:annotation>
+									</xs:attribute>
+									<xs:attribute name="useFileComments" use="required">
+										<xs:simpleType>
+											<xs:restriction base="xs:token">
+												<xs:enumeration value="never">
+													<xs:annotation>
+														<xs:documentation>Do not use comments in the resource file.</xs:documentation>
+													</xs:annotation>
+												</xs:enumeration>
+												<xs:enumeration value="primary">
+													<xs:annotation>
+														<xs:documentation>Use a comment in the resource file before a comment in the ResourceStringsGenerator.xml file.</xs:documentation>
+													</xs:annotation>
+												</xs:enumeration>
+												<xs:enumeration value="secondary">
+													<xs:annotation>
+														<xs:documentation>Only use a comment in the resource file if a comment is not specified in the ResourceStringsGenerator.xml file.</xs:documentation>
+													</xs:annotation>
+												</xs:enumeration>
+											</xs:restriction>
+										</xs:simpleType>
+									</xs:attribute>
+								</xs:complexType>
+							</xs:element>
+						</xs:sequence>
+					</xs:complexType>
+					<xs:unique name="UniqueFileAssociations">
+						<xs:selector xpath="rsg:FileAssociation"/>
+						<xs:field xpath="@model"/>
+					</xs:unique>
+				</xs:element>
+				<xs:element name="ResourceString" maxOccurs="unbounded">
+					<xs:complexType>
+						<xs:sequence>
+							<xs:element name="comment" minOccurs="0" type="xs:string"/>
+						</xs:sequence>
+						<xs:attribute name="name" type="xs:NCName" use="required"/>
+						<xs:attribute name="resourceName" type="xs:token" use="required"/>
+						<xs:attribute name="model" use="required" type="modelType"/>
+					</xs:complexType>
+				</xs:element>
+			</xs:sequence>
+		</xs:complexType>
+	</xs:element>
+	<xs:simpleType name="modelType">
+		<xs:annotation>
+			<xs:documentation>The modelType simpleType should be redefined in schemas referencing this file.</xs:documentation>
+		</xs:annotation>
+		<xs:restriction base="xs:NCName"/>
+	</xs:simpleType>
+</xs:schema>

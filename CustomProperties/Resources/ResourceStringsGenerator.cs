@@ -36,6 +36,30 @@ namespace Neumont.Tools.ORM.CustomProperties
 				return ResourceStrings.GetString(ResourceManagers.CustomProperties, "Verbalization.CustomPropertiesSnippetsDefaultDescription");
 			}
 		}
+		/// <summary>The category for the custom properties editor. Displays as a grouping category in the Properties Window.</summary>
+		public static string PropertiesEditorCategory
+		{
+			get
+			{
+				return ResourceStrings.GetString(ResourceManagers.CustomProperties, "PropertiesEditor.Category");
+			}
+		}
+		/// <summary>The description for the custom properties editor. Displays as a detailed description in the Properties Window.</summary>
+		public static string PropertiesEditorDescription
+		{
+			get
+			{
+				return ResourceStrings.GetString(ResourceManagers.CustomProperties, "PropertiesEditor.Description");
+			}
+		}
+		/// <summary>The display name for the custom properties editor. Displays as the name of a property in the Properties Window.</summary>
+		public static string PropertiesEditorDisplayName
+		{
+			get
+			{
+				return ResourceStrings.GetString(ResourceManagers.CustomProperties, "PropertiesEditor.DisplayName");
+			}
+		}
 	}
 	#endregion // ResourceStrings class
 }

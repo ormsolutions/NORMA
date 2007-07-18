@@ -35,8 +35,53 @@
 			</Parameters>
 		</ClrAttribute>
 	</Attributes>
+
+	<Classes>
+		<DomainClass Name="MappingCustomizationModel" Namespace="Neumont.Tools.ORMAbstractionToConceptualDatabaseBridge" Id="D027CCE5-B22A-44C0-A580-630658605DA5" DisplayName="MappingCustomizationModel" Description=""/>
+		<DomainClass Name="AssimilationMapping" Namespace="Neumont.Tools.ORMAbstractionToConceptualDatabaseBridge" Id="2F631FD8-6B87-42E6-961F-750A566FB7C1" DisplayName="AssimilationMapping" Description="">
+			<Properties>
+				<DomainProperty Name="AbsorptionChoice" DefaultValue="Absorb" DisplayName="AbsorptionChoice" Id="62B69840-B95F-467B-8FFF-670552139E1D">
+					<Type>
+						<DomainEnumerationMoniker Name="AssimilationAbsorptionChoice"/>
+					</Type>
+				</DomainProperty>
+			</Properties>
+		</DomainClass>
+	</Classes>
 	
 	<Relationships>
+		<DomainRelationship Id="C997059D-5F08-43DB-A225-B698EA7BADFB" Name="AssimilationMappingCustomizesAssimilation" Namespace="Neumont.Tools.ORMAbstractionToConceptualDatabaseBridge">
+			<Source>
+				<DomainRole Id="CDF964C3-4A74-479A-86DB-5D5ABB23DCEA" Description="" Name="AssimilationMapping" PropertyName="Assimilation" Multiplicity="ZeroOne" PropagatesDelete="true" IsPropertyGenerator="true">
+					<RolePlayer>
+						<DomainClassMoniker Name="AssimilationMapping"/>
+					</RolePlayer>
+				</DomainRole>
+			</Source>
+			<Target>
+				<DomainRole Id="41BD276D-D55E-4972-AFD9-757EBE824F39" Description="" Name="Assimilation" PropertyName="AssimilationMapping" Multiplicity="One" IsPropertyGenerator="false">
+					<RolePlayer>
+						<DomainRelationshipMoniker Name="/Neumont.Tools.ORMAbstraction/ConceptTypeAssimilatesConceptType"/>
+					</RolePlayer>
+				</DomainRole>
+			</Target>
+		</DomainRelationship>
+		<DomainRelationship Id="61DEB15B-308B-4266-8766-C1E4348250D8" Name="MappingCustomizationModelHasAssimilationMapping" Namespace="Neumont.Tools.ORMAbstractionToConceptualDatabaseBridge" IsEmbedding="true">
+			<Source>
+				<DomainRole Id="2122D3FD-134D-41DB-8B12-8FD2FD60727E" Description="" Name="Model" PropertyName="AssimilationMappingCollection" Multiplicity="ZeroMany" IsPropertyGenerator="true">
+					<RolePlayer>
+						<DomainClassMoniker Name="MappingCustomizationModel"/>
+					</RolePlayer>
+				</DomainRole>
+			</Source>
+			<Target>
+				<DomainRole Id="DA82C400-912E-45B2-87C4-56AF21A7D481" Description="" Name="AssimilationMapping" PropertyName="Model" Multiplicity="One" PropagatesDelete="true" IsPropertyGenerator="true">
+					<RolePlayer>
+						<DomainClassMoniker Name="AssimilationMapping"/>
+					</RolePlayer>
+				</DomainRole>
+			</Target>
+		</DomainRelationship>
 		<DomainRelationship Id="9CA44CEF-1787-41BC-A0AC-5AC79753DABB" Name="SchemaIsForAbstractionModel" Namespace="Neumont.Tools.ORMAbstractionToConceptualDatabaseBridge">
 			<Source>
 				<DomainRole Id="6ED59846-E0D8-4980-81AC-B3541AD9D7DD" Description="" Name="Schema" PropertyName="AbstractionModel" Multiplicity="One">
@@ -134,6 +179,23 @@
 			</Target>
 		</DomainRelationship>
 	</Relationships>
+
+	<Types>
+		<DomainEnumeration Namespace="Neumont.Tools.ORMAbstractionToConceptualDatabaseBridge" Name="AssimilationAbsorptionChoice" Description="Determines the mechanism used to map assimilation relationships as table or column elements.">
+			<Literals>
+				<EnumerationLiteral Name="Absorb" Value="0" Description="All assimilations are pulled into the same table as the supertype."/>
+				<EnumerationLiteral Name="Partition" Value="1" Description="Each subtype is given its own table. Data from the supertype is duplicated."/>
+				<EnumerationLiteral Name="Separate" Value="2" Description="Each subtype is given its own table, data from the supertype is stored in a separate referenced table."/>
+			</Literals>
+			<Attributes>
+				<ClrAttribute Name="global::System.ComponentModel.TypeConverter">
+					<Parameters>
+						<AttributeParameter Value="typeof(global::Neumont.Tools.Modeling.Design.EnumConverter&lt;AssimilationAbsorptionChoice, global::Neumont.Tools.ORMAbstractionToConceptualDatabaseBridge.MappingCustomizationModel&gt;)"/>
+					</Parameters>
+				</ClrAttribute>
+			</Attributes>
+		</DomainEnumeration>
+	</Types>
 
 	<XmlSerializationBehavior Name="ORMAbstractionToConceptualDatabaseBridgeSerializationBehavior" Namespace="Neumont.Tools.ORMAbstractionToConceptualDatabaseBridge"/>	
 </Dsl>

@@ -57,6 +57,50 @@
 			</xs:choice>
 		</xs:complexType>
 	</xs:element>
+	<xs:element name="MappingCustomization">
+		<xs:complexType>
+			<xs:all>
+				<xs:element name="AssimilationMappings" type="AssimilationMappingsType"/>
+			</xs:all>
+			<xs:attribute name="id" type="xs:ID" use="required"/>
+		</xs:complexType>
+	</xs:element>
+	<xs:complexType name="AssimilationMappingsType">
+		<xs:choice minOccurs="0" maxOccurs="unbounded">
+			<xs:element name="AssimilationMapping" type="AssimilationMappingType"/>
+		</xs:choice>
+	</xs:complexType>
+	<xs:complexType name="AssimilationMappingType">
+		<xs:sequence>
+			<xs:element name="Assimilation">
+				<xs:complexType>
+					<xs:attribute name="ref" type="xs:IDREF" use="required"/>
+				</xs:complexType>
+			</xs:element>
+		</xs:sequence>
+		<xs:attribute name="id" type="xs:ID" use="required"/>
+		<xs:attribute name="AbsorptionChoice" default="Absorb">
+			<xs:simpleType>
+				<xs:restriction base="xs:token">
+					<xs:enumeration value="Absorb">
+						<xs:annotation>
+							<xs:documentation>All assimilations are pulled into the same table as the supertype.</xs:documentation>
+						</xs:annotation>
+					</xs:enumeration>
+					<xs:enumeration value="Partition">
+						<xs:annotation>
+							<xs:documentation>Each subtype is given its own table. Data from the supertype is duplicated.</xs:documentation>
+						</xs:annotation>
+					</xs:enumeration>
+					<xs:enumeration value="Separate">
+						<xs:annotation>
+							<xs:documentation>Each subtype is given its own table, data from the supertype is stored in a separate referenced table.</xs:documentation>
+						</xs:annotation>
+					</xs:enumeration>
+				</xs:restriction>
+			</xs:simpleType>
+		</xs:attribute>
+	</xs:complexType>
 	<xs:complexType name="SchemaIsForAbstractionModelType">
 		<xs:attribute name="id" type="xs:ID" use="required"/>
 		<xs:attribute name="Schema" type="xs:IDREF" use="required"/>

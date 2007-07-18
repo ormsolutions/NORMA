@@ -117,24 +117,32 @@
   <resheader name="writer">
     <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
-  <data name="PropertiesEditor.Category" xml:space="preserve">
-    <value>Custom Properties</value>
-		<comment>The category for the custom properties editor. Displays as a grouping category in the Properties Window.</comment>
+	<data name="AbsorptionChoiceProperty.TransactionName" xml:space="preserve">
+		<value>Set Absorption Choice</value>
+		<comment>The format string to use when the assimilation absorption choice property is modified. Shown in the undo dropdown in VS.</comment>
+	</data>
+	<data name="AbsorptionChoiceProperty.Category" xml:space="preserve">
+		<value>Relational Mapping Options</value>
+		<comment>The category for the AbsorptionChoice property. Displays as a grouping category in the Properties Window.</comment>
+	</data>
+	<data name="AbsorptionChoiceProperty.Description" xml:space="preserve">
+		<value>Absorption choices for one-to-one FactTypes and Subtype relationships.</value>
+		<comment>The description for the AbsorptionChoice property. Displays as a detailed description in the Properties Window.</comment>
+	</data>
+	<data name="AbsorptionChoiceProperty.DisplayName" xml:space="preserve">
+		<value>AbsorptionChoice</value>
+		<comment>The display name for the AbsorptionChoice property. Displays as the name of a property in the Properties Window.</comment>
+	</data>
+	<data name="AssimilationAbsorptionChoice.Absorb" xml:space="preserve">
+    <value>Absorb</value>
+		<comment>The displayed form of the Absorb enum value</comment>
   </data>
-  <data name="PropertiesEditor.Description" xml:space="preserve">
-    <value>Press the button to edit custom properties associated with this model and this machine.</value>
-		<comment>The description for the custom properties editor. Displays as a detailed description in the Properties Window.</comment>
+  <data name="AssimilationAbsorptionChoice.Partition" xml:space="preserve">
+    <value>Partition</value>
+		<comment>The displayed form of the Partition enum value</comment>
   </data>
-  <data name="PropertiesEditor.DisplayName" xml:space="preserve">
-    <value>PropertiesEditor</value>
-		<comment>The display name for the custom properties editor. Displays as the name of a property in the Properties Window.</comment>
-  </data>
-  <data name="Verbalization.CustomPropertiesSnippetsDefaultDescription" xml:space="preserve">
-    <value>Default Verbalization</value>
-    <comment>The description for the default custom properties verbalization snippets for the custom properties model.</comment>
-  </data>
-  <data name="Verbalization.CustomPropertiesSnippetsTypeDescription" xml:space="preserve">
-    <value>Custom Properties Verbalization</value>
-    <comment>The description for the custom properties verbalization snippets associated with the custom properties model.</comment>
+  <data name="AssimilationAbsorptionChoice.Separate" xml:space="preserve">
+    <value>Separate</value>
+		<comment>The displayed form of the Separate enum value</comment>
   </data>
 </root>
