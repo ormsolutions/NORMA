@@ -348,12 +348,12 @@ namespace Neumont.Tools.ORMToORMAbstractionBridge
 		}
 
 		/// <summary>
-		/// An object type is a concept type when:
+		/// An object type (A) is a concept type when:
 		///		1. It is independent, or
 		///		2. It is a subtype, or
-		///		3. Another object type is mapped to it, and
-		///			a. There exists a role being mapped to that object type on which there are no constraints, or
-		///			b. There exists a role being mapped to that object type on which there is a uniqueness that is not preferred.
+		///		3. Another object type (B) is mapped to it, and
+		///			a. There exists a role being mapped to object type A on which there are no constraints, or
+		///			b. There exists a role being mapped to object type A on which there is a uniqueness that is not preferred.
 		/// 
 		/// A concept type is a top-level concept type when:
 		///		1. It is not deeply mapped towards any other concept type.

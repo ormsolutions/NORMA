@@ -277,6 +277,9 @@ namespace Neumont.Tools.ORMToORMAbstractionBridge
 									// Shallow map toward secondRolePlayer.
 									potentialFactTypeMappings.Add(new FactTypeMapping(factType, firstRole, secondRole, FactTypeMappingType.Shallow));
 								}
+                                // If exactly one role is mandatory, we only allow shallow towards that role or deep away from it.
+                                // This is an optimization, but at this point I don't remember with 100% confidence that it is correct.
+                                // -Kevin
 								else if (firstRoleIsMandatory && !secondRoleIsMandatory) // ...only firstRole is mandatory...
 								{
 									// Shallow map toward firstRolePlayer.
@@ -295,6 +298,8 @@ namespace Neumont.Tools.ORMToORMAbstractionBridge
 								{
 									bool firstRoleIsUniqueAndPreferred = firstRoleIsUnique && firstRoleUniquenessConstraint.IsPreferred;
 									bool secondRoleIsUniqueAndPreferred = secondRoleIsUnique && secondRoleUniquenessConstraint.IsPreferred;
+
+                                    // We do this to make sure that we never shallowly map towards a preferred identifier.
 
 									// If firstRole is not preferred...
 									if (!firstRoleIsUniqueAndPreferred)
@@ -451,6 +456,9 @@ namespace Neumont.Tools.ORMToORMAbstractionBridge
 					bool firstRolePlayerHasPossibleDeepMappingsAway = ObjectTypeHasPossibleDeepMappingsAway(firstRolePlayer, factType, decidedFactTypeMappings, undecidedFactTypeMappings);
 					bool secondRolePlayerHasPossibleDeepMappingsAway = ObjectTypeHasPossibleDeepMappingsAway(secondRolePlayer, factType, decidedFactTypeMappings, undecidedFactTypeMappings);
 
+                    // UNDONE: I think we need to be checking that the deep mappings we decide on here are actually in the list of potentials...
+                    // UNDONE: Also, this can create new decided deep mappings, so we need to be applying the related filters after this runs.
+
 					// TODO: This may not be strong enough.
 					// If secondRolePlayer has no possible deep mappings away from it...
 					if (firstRolePlayerHasPossibleDeepMappingsAway && !secondRolePlayerHasPossibleDeepMappingsAway)
@@ -531,7 +539,7 @@ namespace Neumont.Tools.ORMToORMAbstractionBridge
 			return false;
 		}
 		#endregion // Filter Algorithms Methods
-		#region Generation Algorightm Methods
+		#region Generation Algorithm Methods
 		/// <summary>
 		/// Generates the <see cref="InformationTypeFormat"/> objects and adds them to the model.
 		/// </summary>
@@ -850,7 +858,7 @@ namespace Neumont.Tools.ORMToORMAbstractionBridge
 				}
 			}
 		}
-		#endregion // Generation Algorightm Methods
+		#endregion // Generation Algorithm Methods
 		#region Helper Methods
 		/// <summary>
 		/// Resolve the name that will be used for a <see cref="ConceptTypeChild"/> given the <see cref="Role"/> it's resulting from.
@@ -902,6 +910,14 @@ namespace Neumont.Tools.ORMToORMAbstractionBridge
 		/// <summary>
 		/// Determins wheather an <see cref="ObjectType"/> should have a <see cref="ConceptType"/> or not.
 		/// </summary>
+		/// <remarks>
+		/// An <see cref="ObjectType"/> should have a <see cref="ConceptType"/> if:
+		/// <list>
+		/// <item><description>It is independent.</description></item>
+		/// <item><description>It is a subtype.</description></item>
+		/// <item><description>It has a <see cref="FactTypeMapping"/> towards it for a <see cref="FactType"/> that is not part of its preferred identifier.</description></item>
+		/// </list>
+		/// </remarks>
 		/// <param name="objectType">The <see cref="ObjectType"/> to test.</param>
 		/// <param name="factTypeMappings">A dictionary of all the final decided <see cref="FactTypeMapping"/> objects.</param>
 		/// <returns>Returns true if the <see cref="ObjectType"/> should have <see cref="ConceptType"/>.</returns>
@@ -913,37 +929,34 @@ namespace Neumont.Tools.ORMToORMAbstractionBridge
 				return true;
 			}
 
-			LinkedElementCollection<Role> rolesPlayed = ObjectTypePlaysRole.GetPlayedRoleCollection(objectType);
-
-			foreach (Role role in rolesPlayed)
+			foreach (Role role in ObjectTypePlaysRole.GetPlayedRoleCollection(objectType))
 			{
-				// If objectType is a subtype...
-				if (role is SubtypeMetaRole)
+				FactType factType = role.FactType;
+				// Skip non-binarized FactTypes.
+				if (factType.Objectification != null)
 				{
-					return true;
+					continue;
 				}
-
-				FactType factType = role.BinarizedFactType;
 				FactTypeMapping factTypeMapping = factTypeMappings[factType];
 
 				// If fact type mapping is toward objectType...
 				if (factTypeMapping.TowardsObjectType == objectType)
 				{
-					// If there are no constraints on this role...
-					if (factTypeMapping.FromRole.ConstraintRoleSequenceCollection.Count == 0)
-					{
-						return true;
-					}
-
+					bool isPartOfPreferredIdentifier = false;
 					foreach (ConstraintRoleSequence constraintRoleSequence in factTypeMapping.FromRole.ConstraintRoleSequenceCollection)
 					{
 						UniquenessConstraint uninquenessConstraint = constraintRoleSequence as UniquenessConstraint;
-
-						// If fromRole does not have a preferred uniqueness constraint on it...
-						if (uninquenessConstraint != null && !uninquenessConstraint.IsPreferred)
+						if (uninquenessConstraint != null && uninquenessConstraint.IsPreferred)
 						{
-							return true;
+							isPartOfPreferredIdentifier = true;
+							break;
 						}
+					}
+
+					if (!isPartOfPreferredIdentifier)
+					{
+						// This FactType is not part of the preferred identifier.
+						return true;
 					}
 				}
 			}
