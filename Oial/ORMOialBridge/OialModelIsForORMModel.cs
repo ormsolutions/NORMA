@@ -932,11 +932,21 @@ namespace Neumont.Tools.ORMToORMAbstractionBridge
 			foreach (Role role in ObjectTypePlaysRole.GetPlayedRoleCollection(objectType))
 			{
 				FactType factType = role.FactType;
-				// Skip non-binarized FactTypes.
+
+				// If it is a subtype fact, we need a concept type. Although the algorithm only calls for this in the case
+				// of subtype meta roles, supertype meta roles will always match the patterns below, so we can immediately
+				// return true for them as well.
+				if (factType is SubtypeFact)
+				{
+					return true;
+				}
+
+				// Skip non-binarized fact types.
 				if (factType.Objectification != null)
 				{
 					continue;
 				}
+
 				FactTypeMapping factTypeMapping = factTypeMappings[factType];
 
 				// If fact type mapping is toward objectType...
