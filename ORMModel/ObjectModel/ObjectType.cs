@@ -1384,7 +1384,15 @@ namespace Neumont.Tools.ORM.ObjectModel
 					{
 						if (mandatoryConstraint.IsImplied)
 						{
-							Debug.Assert(impliedMandatory == null || impliedMandatory == mandatoryConstraint, "We should never have multiple implied mandatory constraints on one ObjectType");
+							if (impliedMandatory == null || impliedMandatory != mandatoryConstraint)
+							{
+								// This occurs in a role player change situation when the role player is changed
+								// from one ObjectType with an existing implied MandatoryConstraint to another
+								// ObjectType with an existing implied MandatoryConstraint. Other role players
+								// will be cleaned up in different passes over this function.
+								Debug.Assert(mandatoryConstraint.ImpliedByObjectType != this, "The implied mandatory should be on a different object type");
+								continue;
+							}
 							currentRoleIsAlreadyImplied = true;
 							continue;
 						}
@@ -1487,7 +1495,8 @@ namespace Neumont.Tools.ORM.ObjectModel
 							{
 								MandatoryConstraint mandatoryConstraint;
 								if (null != (mandatoryConstraint = constraints[j] as MandatoryConstraint) &&
-									mandatoryConstraint.Modality == ConstraintModality.Alethic)
+									mandatoryConstraint.Modality == ConstraintModality.Alethic &&
+									!mandatoryConstraint.IsImplied) // An implied mandatory here will be on the wrong object type
 								{
 									// This must be on the preferred identifier, already verified in the initial test to verify canBeIndependent loop
 									roleIsMandatory = true;
