@@ -205,16 +205,34 @@ namespace Neumont.Tools.ORM.Shell
 				}
 			}
 			/// <summary>
-			/// Defer to VerbalizationSnippetsDictionary on the document. Implements
+			/// Defer to GetVerbalizationSnippetsDictionary on the document. Implements
 			/// IORMToolServices.GetVerbalizationSnippetsDictionary
 			/// </summary>
-			protected IDictionary<Type, IVerbalizationSets> GetVerbalizationSnippetsDictionary(VerbalizationTarget target)
+			protected IDictionary<Type, IVerbalizationSets> GetVerbalizationSnippetsDictionary(string target)
 			{
 				return myServices.GetVerbalizationSnippetsDictionary(target);
 			}
-			IDictionary<Type, IVerbalizationSets> IORMToolServices.GetVerbalizationSnippetsDictionary(VerbalizationTarget target)
+			IDictionary<Type, IVerbalizationSets> IORMToolServices.GetVerbalizationSnippetsDictionary(string target)
 			{
 				return GetVerbalizationSnippetsDictionary(target);
+			}
+			/// <summary>
+			/// Defer to VerbalizationTargets on the document. Implements
+			/// IORMToolServices.VerbalizationTargets
+			/// </summary>
+			protected IDictionary<string, VerbalizationTargetData> VerbalizationTargets
+			{
+				get
+				{
+					return myServices.VerbalizationTargets;
+				}
+			}
+			IDictionary<string, VerbalizationTargetData> IORMToolServices.VerbalizationTargets
+			{
+				get
+				{
+					return VerbalizationTargets;
+				}
 			}
 			/// <summary>
 			/// Returns an instance of the specified layout engine type
@@ -989,7 +1007,8 @@ namespace Neumont.Tools.ORM.Shell
 		#region IORMToolServices Implementation
 		private IORMToolTaskProvider myTaskProvider;
 		private string myLastVerbalizationSnippetsOptions;
-		private IDictionary<VerbalizationTarget, IDictionary<Type, IVerbalizationSets>> myTargetedVerbalizationSnippets;
+		private IDictionary<string, IDictionary<Type, IVerbalizationSets>> myTargetedVerbalizationSnippets;
+		private IDictionary<string, VerbalizationTargetData> myVerbalizationTargets;
 		private IDictionary<Type, LayoutEngineData> myLayoutEngines;
 		private int myCustomBlockCanAddTransactionCount;
 		private IORMPropertyProviderService myPropertyProviderService;
@@ -1064,12 +1083,12 @@ namespace Neumont.Tools.ORM.Shell
 			}
 		}
 		/// <summary>
-		/// Implements IORMToolServices.GetVerbalizationSnippetsDictionary
+		/// Implements <see cref="IORMToolServices.GetVerbalizationSnippetsDictionary"/>
 		/// </summary>
-		protected IDictionary<Type, IVerbalizationSets> GetVerbalizationSnippetsDictionary(VerbalizationTarget target)
+		protected IDictionary<Type, IVerbalizationSets> GetVerbalizationSnippetsDictionary(string target)
 		{
 			IDictionary<Type, IVerbalizationSets> retVal = null;
-			IDictionary<VerbalizationTarget, IDictionary<Type, IVerbalizationSets>> targetedSnippets = myTargetedVerbalizationSnippets;
+			IDictionary<string, IDictionary<Type, IVerbalizationSets>> targetedSnippets = myTargetedVerbalizationSnippets;
 			string currentSnippetsOptions = myLastVerbalizationSnippetsOptions;
 			string verbalizationOptions = OptionsPage.CurrentCustomVerbalizationSnippets;
 			if (verbalizationOptions == null)
@@ -1103,15 +1122,58 @@ namespace Neumont.Tools.ORM.Shell
 					VerbalizationSnippetsIdentifier.ParseIdentifiers(verbalizationOptions));
 				if (targetedSnippets == null)
 				{
-					myTargetedVerbalizationSnippets = targetedSnippets = new Dictionary<VerbalizationTarget, IDictionary<Type, IVerbalizationSets>>();
+					myTargetedVerbalizationSnippets = targetedSnippets = new Dictionary<string, IDictionary<Type, IVerbalizationSets>>();
 				}
 				targetedSnippets[target] = retVal;
 			}
 			return retVal;
 		}
-		IDictionary<Type, IVerbalizationSets> IORMToolServices.GetVerbalizationSnippetsDictionary(VerbalizationTarget target)
+		IDictionary<Type, IVerbalizationSets> IORMToolServices.GetVerbalizationSnippetsDictionary(string target)
 		{
 			return GetVerbalizationSnippetsDictionary(target);
+		}
+		/// <summary>
+		/// Implements <see cref="IORMToolServices.VerbalizationTargets"/>
+		/// </summary>
+		protected IDictionary<string, VerbalizationTargetData> VerbalizationTargets
+		{
+			get
+			{
+				IDictionary<string, VerbalizationTargetData> retVal = myVerbalizationTargets;
+				if (null == retVal)
+				{
+					retVal = new Dictionary<string, VerbalizationTargetData>();
+					foreach (DomainModel domainModel in Store.DomainModels)
+					{
+						Type domainModelType = domainModel.GetType();
+						object[] providers = domainModelType.GetCustomAttributes(typeof(VerbalizationTargetProviderAttribute), false);
+						if (providers.Length != 0) // Single use non-inheritable attribute, there will only be one
+						{
+							IVerbalizationTargetProvider provider = ((VerbalizationTargetProviderAttribute)providers[0]).CreateTargetProvider(domainModelType);
+							if (provider != null)
+							{
+								VerbalizationTargetData[] targets = provider.ProvideVerbalizationTargets();
+								if (targets != null)
+								{
+									for (int i = 0; i < targets.Length; ++i)
+									{
+										retVal[targets[i].KeyName] = targets[i];
+									}
+								}
+							}
+						}
+					}
+					myVerbalizationTargets = retVal;
+				}
+				return retVal;
+			}
+		}
+		IDictionary<string, VerbalizationTargetData> IORMToolServices.VerbalizationTargets
+		{
+			get
+			{
+				return VerbalizationTargets;
+			}
 		}
 		/// <summary>
 		/// Get an instance of the specified <seealso cref="LayoutEngine"/> type.

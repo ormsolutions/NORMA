@@ -52,6 +52,10 @@ namespace Neumont.Tools.ORM.ObjectModel.Design
 		/// </summary>
 		protected abstract IEnumerable<IVerbalizationSnippetsProvider> SnippetsProviders { get;}
 		/// <summary>
+		/// An enumerator of target providers
+		/// </summary>
+		protected abstract IEnumerable<IVerbalizationTargetProvider> TargetProviders { get;}
+		/// <summary>
 		/// A format string indicating how language information should be combined
 		/// with the description of a given snippet. The {0} replacement field gets
 		/// the description, the {1} gets the field value. Return null or empty to
@@ -66,7 +70,7 @@ namespace Neumont.Tools.ORM.ObjectModel.Design
 		protected override ITree GetTree(ITypeDescriptorContext context, object value)
 		{
 			ITree tree = new VirtualTree();
-			IBranch rootBranch = new ProviderBranch((string)value, SnippetsProviders, VerbalizationDirectory, LanguageFormatString);
+			IBranch rootBranch = new ProviderBranch((string)value, TargetProviders, SnippetsProviders, VerbalizationDirectory, LanguageFormatString);
 			tree.Root = rootBranch;
 			if (rootBranch.VisibleItemCount == 1)
 			{
@@ -127,31 +131,44 @@ namespace Neumont.Tools.ORM.ObjectModel.Design
 			#region TargetedSnippetsType structure
 			private struct TargetedSnippetsType
 			{
-				public VerbalizationTarget Target;
+				public string Target;
 				public int TypeIndex;
 				public int FirstIdentifier;
 				public int LastIdentifier;
 				public int CurrentIdentifier;
-				public void BindType(int typeIndex, VerbalizationTarget target)
+				public void BindType(int typeIndex, string target)
 				{
 					TypeIndex = typeIndex;
 					Target = target;
 				}
 			}
 			#endregion // TargetedSnippetsType structure
+			#region TargetKeyComparer class
+			private sealed class TargetKeyComparer : IComparer<VerbalizationTargetData>
+			{
+				public static readonly IComparer<VerbalizationTargetData> Instance = new TargetKeyComparer();
+				private TargetKeyComparer()
+				{
+				}
+				int IComparer<VerbalizationTargetData>.Compare(VerbalizationTargetData x, VerbalizationTargetData y)
+				{
+					return string.CompareOrdinal(x.KeyName, y.KeyName);
+				}
+			}
+			#endregion // TargetKeyComparer class
 			#region Member Variables
 			private List<SnippetsType> myTypes;
 			private TargetedSnippetsType[] myTargetedTypes;
 			private VerbalizationSnippetsIdentifier[] myIdentifiers;
 			private string[] myItemStrings;
 			private string myLanguageFormatString;
-			private static string[] myTargetDisplayNames;
+			private VerbalizationTargetData[] myVerbalizationTargets;
 			#endregion // Member Variables
 			#region Constructors
-			public ProviderBranch(string currentSettings, IEnumerable<IVerbalizationSnippetsProvider> providers, string verbalizationDirectory, string languageFormatString)
+			public ProviderBranch(string currentSettings, IEnumerable<IVerbalizationTargetProvider> targetProviders, IEnumerable<IVerbalizationSnippetsProvider> snippetProviders, string verbalizationDirectory, string languageFormatString)
 			{
 				VerbalizationSnippetsIdentifier[] allIdentifiers = VerbalizationSnippetSetsManager.LoadAvailableSnippets(
-					providers,
+					snippetProviders,
 					verbalizationDirectory);
 				VerbalizationSnippetsIdentifier[] currentIdentifiers = VerbalizationSnippetsIdentifier.ParseIdentifiers(currentSettings);
 
@@ -167,19 +184,67 @@ namespace Neumont.Tools.ORM.ObjectModel.Design
 					}
 				}
 
+				// Gather all targets
+				List<VerbalizationTargetData> targetsList = new List<VerbalizationTargetData>();
+				foreach (IVerbalizationTargetProvider provider in targetProviders)
+				{
+					VerbalizationTargetData[] currentData = provider.ProvideVerbalizationTargets();
+					if (currentData != null)
+					{
+						for (int i = 0; i < currentData.Length; ++i)
+						{
+							targetsList.Add(currentData[i]);
+							// Put it in a condition we can binary search it
+							targetsList.Sort(TargetKeyComparer.Instance);
+						}
+					}
+				}
+				VerbalizationTargetData[] targets;
+				myVerbalizationTargets = targets = targetsList.ToArray();
+
+				// Make sure all identifiers can map to a known target
+				int unknownTargetsCount = 0;
+				for (int i = 0; i < allIdentifiers.Length; ++i)
+				{
+					string identifierTarget = allIdentifiers[i].Target;
+					if (!string.IsNullOrEmpty(identifierTarget) &&
+						0 > Array.BinarySearch<VerbalizationTargetData>(targets, new VerbalizationTargetData(identifierTarget, null), TargetKeyComparer.Instance))
+					{
+						++unknownTargetsCount;
+						allIdentifiers[i] = default(VerbalizationSnippetsIdentifier);
+					}
+				}
+				if (unknownTargetsCount != 0)
+				{
+					VerbalizationSnippetsIdentifier[] reducedIdentifiers = new VerbalizationSnippetsIdentifier[allIdentifiers.Length - unknownTargetsCount];
+					int currentValidIdentifier = 0;
+					for (int i = 0; i < allIdentifiers.Length; ++i)
+					{
+						VerbalizationSnippetsIdentifier identifier = allIdentifiers[i];
+						if (!identifier.IsEmpty)
+						{
+							reducedIdentifiers[currentValidIdentifier] = identifier;
+							++currentValidIdentifier;
+						}
+					}
+					allIdentifiers = reducedIdentifiers;
+				}
+
 				// Gather all types
 				List<SnippetsType> types = new List<SnippetsType>();
 				SnippetsType currentType;
-				foreach (IVerbalizationSnippetsProvider provider in providers)
+				foreach (IVerbalizationSnippetsProvider provider in snippetProviders)
 				{
 					VerbalizationSnippetsData[] currentData = provider.ProvideVerbalizationSnippets();
-					int count = (currentData != null) ? currentData.Length : 0;
-					for (int i = 0; i < count; ++i)
+					if (currentData != null)
 					{
-						currentType = default(SnippetsType);
-						currentType.TypeDescription = currentData[i].TypeDescription;
-						currentType.EnumTypeName = currentData[i].EnumType.FullName;
-						types.Add(currentType);
+						for (int i = 0; i < currentData.Length; ++i)
+						{
+							currentType = default(SnippetsType);
+							currentType.TypeDescription = currentData[i].TypeDescription;
+							currentType.EnumTypeName = currentData[i].EnumType.FullName;
+							types.Add(currentType);
+						}
 					}
 				}
 
@@ -224,22 +289,21 @@ namespace Neumont.Tools.ORM.ObjectModel.Design
 						}
 						if (retVal == 0)
 						{
-							VerbalizationTarget target1 = identifier1.Target;
-							VerbalizationTarget target2 = identifier2.Target;
+							string target1 = identifier1.Target;
+							string target2 = identifier2.Target;
 							if (target1 != target2)
 							{
-								if (target1 == VerbalizationTarget.Default)
+								if (target1 == VerbalizationSnippetsIdentifier.DefaultTarget)
 								{
 									retVal = -1;
 								}
-								else if (target2 == VerbalizationTarget.Default)
+								else if (target2 == VerbalizationSnippetsIdentifier.DefaultTarget)
 								{
 									retVal = 1;
 								}
 								else
 								{
-									string[] targetNames = VerbalizationTargetDisplayNames;
-									retVal = string.Compare(targetNames[(int)target1], targetNames[(int)target2], StringComparison.CurrentCultureIgnoreCase);
+									retVal = string.Compare(GetVerbalizationTargetDisplayName(target1), GetVerbalizationTargetDisplayName(target2), StringComparison.CurrentCultureIgnoreCase);
 								}
 							}
 						}
@@ -269,11 +333,11 @@ namespace Neumont.Tools.ORM.ObjectModel.Design
 				// Now get a count of all targeted types
 				int allIdentifiersCount = allIdentifiers.Length;
 				int targetedTypesCount = 0;
-				VerbalizationTarget lastTarget = (VerbalizationTarget)(-1); // Start with invalid target
+				string lastTarget = null; // Start with invalid target
 				string lastEnumTypeName = null;
 				for (int i = 0; i < allIdentifiersCount; ++i)
 				{
-					VerbalizationTarget currentTarget = allIdentifiers[i].Target;
+					string currentTarget = allIdentifiers[i].Target;
 					if (currentTarget != lastTarget)
 					{
 						lastEnumTypeName = allIdentifiers[i].EnumTypeName;
@@ -293,7 +357,7 @@ namespace Neumont.Tools.ORM.ObjectModel.Design
 
 				// Allocate targeted types and bind targeted types to types
 				TargetedSnippetsType[] targetedTypes = new TargetedSnippetsType[targetedTypesCount];
-				lastTarget = (VerbalizationTarget)(-1);
+				lastTarget = null;
 				int currentTypeIndex = -1;
 				currentType = default(SnippetsType);
 				TargetedSnippetsType currentTargetedType = default(TargetedSnippetsType);
@@ -301,7 +365,7 @@ namespace Neumont.Tools.ORM.ObjectModel.Design
 				lastEnumTypeName = null;
 				for (int i = 0; i < allIdentifiersCount; ++i)
 				{
-					VerbalizationTarget currentTarget = allIdentifiers[i].Target;
+					string currentTarget = allIdentifiers[i].Target;
 					string currentEnumTypeName = allIdentifiers[i].EnumTypeName;
 					bool enumNameChanged = lastEnumTypeName == null || currentEnumTypeName != lastEnumTypeName;
 					if (enumNameChanged || currentTarget != lastTarget)
@@ -326,7 +390,7 @@ namespace Neumont.Tools.ORM.ObjectModel.Design
 						}
 						targetedTypes[currentTargetIndex].BindType(currentTypeIndex, currentTarget);
 					}
-					if (currentTarget != VerbalizationTarget.Default && currentType.FirstExplicitlyTargetedType == -1)
+					if (!string.IsNullOrEmpty(currentTarget) && currentType.FirstExplicitlyTargetedType == -1)
 					{
 						currentType.FirstExplicitlyTargetedType = currentTargetIndex;
 					}
@@ -342,7 +406,7 @@ namespace Neumont.Tools.ORM.ObjectModel.Design
 				{
 					currentTargetedType = targetedTypes[i];
 					string matchTypeName = types[currentTargetedType.TypeIndex].EnumTypeName;
-					VerbalizationTarget matchTarget = currentTargetedType.Target;
+					string matchTarget = currentTargetedType.Target;
 					currentTargetedType.FirstIdentifier = nextIdentifier;
 					currentTargetedType.LastIdentifier = nextIdentifier;
 					currentTargetedType.CurrentIdentifier = nextIdentifier;
@@ -378,17 +442,19 @@ namespace Neumont.Tools.ORM.ObjectModel.Design
 			}
 			#endregion // Constructors
 			#region ProviderBranch specific
-			private static string[] VerbalizationTargetDisplayNames
+			/// <summary>
+			/// Get the display name for the verbalization target
+			/// </summary>
+			private string GetVerbalizationTargetDisplayName(string targetKey)
 			{
-				get
+				string retVal = null;
+				VerbalizationTargetData[] targets = myVerbalizationTargets;
+				int targetIndex = Array.BinarySearch<VerbalizationTargetData>(targets, new VerbalizationTargetData(targetKey, ""), TargetKeyComparer.Instance);
+				if (targetIndex >= 0)
 				{
-					string[] retVal = myTargetDisplayNames;
-					if (retVal == null)
-					{
-						myTargetDisplayNames = retVal = Utility.GetLocalizedEnumNames(typeof(VerbalizationTarget), true);
-					}
-					return retVal;
+					retVal = targets[targetIndex].DisplayName;
 				}
+				return retVal ?? targetKey;
 			}
 			/// <summary>
 			/// An enumerable of current identifiers
@@ -447,7 +513,7 @@ namespace Neumont.Tools.ORM.ObjectModel.Design
 					TargetedTypeData[] typeData = new TargetedTypeData[targetedTypesCount];
 					for (int i = 0; i < targetedTypesCount; ++i)
 					{
-						typeData[i] = new TargetedTypeData(VerbalizationTargetDisplayNames[(int)myTargetedTypes[firstTargetedType + 1].Target], firstTargetedType + i + 1);
+						typeData[i] = new TargetedTypeData(GetVerbalizationTargetDisplayName(myTargetedTypes[firstTargetedType + 1].Target), firstTargetedType + i + 1);
 					}
 					return new TypeBranchWithExplicitTargets(this, firstTargetedType, typeData);
 				}

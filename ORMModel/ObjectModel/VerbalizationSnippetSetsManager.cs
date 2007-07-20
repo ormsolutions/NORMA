@@ -31,7 +31,219 @@ using Microsoft.VisualStudio.VirtualTreeGrid;
 
 namespace Neumont.Tools.ORM.ObjectModel
 {
-	#region ORMVerbalizationSnippetsData struct
+	#region GenerateVerbalizationReport delegate
+	/// <summary>
+	/// Callback delegate provided with <see cref="VerbalizationTargetData"/> for generating report information
+	/// </summary>
+	/// <param name="store">The context <see cref="Store"/>. The store will implement the <see cref="IORMToolServices"/> interface,
+	/// which can be used to retrieve an <see cref="IServiceProvider"/> and other functionality.</param>
+	public delegate void GenerateVerbalizationReport(Store store);
+	#endregion // GenerateVerbalizationReport delegate
+	#region VerbalizationTargetData structure
+	/// <summary>
+	/// Information representing the target type for an element
+	/// </summary>
+	public struct VerbalizationTargetData
+	{
+		#region Member variables
+		private string myKeyName;
+		private string myDisplayName;
+		private string myReportCommandName;
+		private GenerateVerbalizationReport myReportCallback;
+		#endregion // Member variables
+		#region Constructors
+		/// <summary>
+		/// Create a new <see cref="VerbalizationTargetData"/> without report generation support
+		/// </summary>
+		/// <param name="keyName">The key name for this verbalization target.</param>
+		/// <param name="displayName">The publicly display name for the target. This string should be localized.</param>
+		public VerbalizationTargetData(string keyName, string displayName)
+			: this(keyName, displayName, null, null)
+		{
+		}
+		/// <summary>
+		/// Create a new <see cref="VerbalizationTargetData"/> with report generation support
+		/// </summary>
+		/// <param name="keyName">The key name for this verbalization target.</param>
+		/// <param name="displayName">The publicly display name for the target. This string should be localized.</param>
+		/// <param name="reportCommandName">The name of the report command displayed for this target in the report menu.</param>
+		/// <param name="reportCallback">The <see cref="GenerateVerbalizationReport"/> callback delegate.</param>
+		public VerbalizationTargetData(string keyName, string displayName, string reportCommandName, GenerateVerbalizationReport reportCallback)
+		{
+			myKeyName = keyName;
+			myDisplayName = displayName;
+			myReportCommandName = reportCommandName;
+			myReportCallback = reportCallback;
+		}
+		#endregion // Constructors
+		#region Accessor properties
+		/// <summary>
+		/// The unique name for this verbalization target. This name will
+		/// be used in XML and by <see cref="VerbalizationSnippetsData"/>
+		/// instances to refer to this target.
+		/// </summary>
+		public string KeyName
+		{
+			get
+			{
+				return myKeyName;
+			}
+		}
+		/// <summary>
+		/// The friendly display name for this target. Shown in the options dialog.
+		/// </summary>
+		public string DisplayName
+		{
+			get
+			{
+				return myDisplayName;
+			}
+		}
+		/// <summary>
+		/// If a ReportCommandName is not null then it will automatically display as one of the default
+		/// report targets. The <see cref="ReportCallback"/> delegate will be used to execute the command.
+		/// </summary>
+		public string ReportCommandName
+		{
+			get
+			{
+				return myReportCommandName;
+			}
+		}
+		/// <summary>
+		/// Generate a report for this verbalization target. May be <see langword="null"/>.
+		/// </summary>
+		public GenerateVerbalizationReport ReportCallback
+		{
+			get
+			{
+				return myReportCallback;
+			}
+		}
+		/// <summary>
+		/// Return true if this verbalization target supports report generation
+		/// </summary>
+		public bool CanReport
+		{
+			get
+			{
+				return myReportCallback != null && myReportCommandName != null;
+			}
+		}
+		#endregion // Accessor properties
+		#region Equality overrides
+		/// <summary>
+		/// Equals operator override
+		/// </summary>
+		public static bool operator ==(VerbalizationTargetData data1, VerbalizationTargetData data2)
+		{
+			return data2.Equals(data2);
+		}
+		/// <summary>
+		/// Not equals operator override
+		/// </summary>
+		public static bool operator !=(VerbalizationTargetData data1, VerbalizationTargetData data2)
+		{
+			return !(data1.Equals(data2));
+		}
+		/// <summary>
+		/// Standard Equals override
+		/// </summary>
+		public override bool Equals(object obj)
+		{
+			return (obj is VerbalizationTargetData) ? Equals((VerbalizationTargetData)obj) : false;
+		}
+		/// <summary>
+		/// Typed Equals method
+		/// </summary>
+		public bool Equals(VerbalizationTargetData obj)
+		{
+			bool leftEmpty = myKeyName == null;
+			bool rightEmpty = obj.myKeyName == null;
+			if (leftEmpty && rightEmpty)
+			{
+				return true;
+			}
+			else if (!leftEmpty && !rightEmpty)
+			{
+				// Note that everything other than the key name is ignored
+				return myKeyName == obj.myKeyName;
+			}
+			return false;
+		}
+		/// <summary>
+		/// Standard override
+		/// </summary>
+		public override int GetHashCode()
+		{
+			// Note that everything other than the key name is ignored
+			return (myKeyName == null) ? 0 : myKeyName.GetHashCode();
+		}
+		#endregion // Equality overrides
+	}
+	#endregion // VerbalizationTargetData structure
+	#region IVerbalizationTargetProvider interface
+	/// <summary>
+	/// The IVerbalizationTargetsProvider
+	/// </summary>
+	public interface IVerbalizationTargetProvider
+	{
+		/// <summary>
+		/// Return an array of supported verbalization targets
+		/// </summary>
+		/// <returns><see cref="VerbalizationTargetData"/> array</returns>
+		VerbalizationTargetData[] ProvideVerbalizationTargets();
+	}
+	#endregion // IVerbalizationTargetProvider interface
+	#region VerbalizationTargetProviderAttribute class
+	/// <summary>
+	/// Provide an IVerbalizationTargetProvider implementation for a DomainModel
+	/// </summary>
+	[AttributeUsage(AttributeTargets.Class, AllowMultiple = false, Inherited = false)]
+	public sealed class VerbalizationTargetProviderAttribute : Attribute
+	{
+		private Type myProviderType;
+		private string myNestedProviderName;
+		/// <summary>
+		/// Associate an IVerbalizationTargetProvider implementation with a DomainModel-derived class
+		/// </summary>
+		/// <param name="providerType">A type that implements IVerbalizationTargetProvider
+		/// and has a parameterless constructor</param>
+		public VerbalizationTargetProviderAttribute(Type providerType)
+		{
+			myProviderType = providerType;
+		}
+		/// <summary>
+		/// Associate an IVerbalizationtargetProvider implementation with a DomainModel-derived class
+		/// </summary>
+		/// <param name="nestedTypeName">The name of a nested class in the DomainModel that implements
+		/// the IVerbalizationTargetProvider interface.</param>
+		public VerbalizationTargetProviderAttribute(string nestedTypeName)
+		{
+			myNestedProviderName = nestedTypeName;
+		}
+		/// <summary>
+		/// Create an instance of the associated snippets provider
+		/// </summary>
+		/// <param name="domainModelType">The type of the associated domain model</param>
+		/// <returns>IVerbalizationTargetProvider implementation</returns>
+		public IVerbalizationTargetProvider CreateTargetProvider(Type domainModelType)
+		{
+			Type createType = myProviderType;
+			if (createType == null)
+			{
+				string[] nestedTypeNames = myNestedProviderName.Split(new char[] { '.', '+' }, StringSplitOptions.RemoveEmptyEntries);
+				createType = domainModelType;
+				for (int i = 0; i < nestedTypeNames.Length; ++i)
+				{
+					createType = createType.GetNestedType(nestedTypeNames[i], BindingFlags.NonPublic | BindingFlags.Public);
+				}
+			}
+			return (IVerbalizationTargetProvider)Activator.CreateInstance(createType, true);
+		}
+	}
+	#endregion // VerbalizationTargetProviderAttribute class
+	#region VerbalizationSnippetsData struct
 	/// <summary>
 	/// Data returned for each set of verbalization snippets supported.
 	/// </summary>
@@ -326,9 +538,8 @@ namespace Neumont.Tools.ORM.ObjectModel
 			if (createType == null)
 			{
 				string[] nestedTypeNames = myNestedProviderName.Split(new char[] { '.', '+' }, StringSplitOptions.RemoveEmptyEntries);
-				int nestedNamesCount = nestedTypeNames.Length;
 				createType = domainModelType;
-				for (int i = 0; i < nestedNamesCount; ++i)
+				for (int i = 0; i < nestedTypeNames.Length; ++i)
 				{
 					createType = createType.GetNestedType(nestedTypeNames[i], BindingFlags.NonPublic | BindingFlags.Public);
 				}
@@ -337,7 +548,6 @@ namespace Neumont.Tools.ORM.ObjectModel
 		}
 	}
 	#endregion // VerbalizationSnippetsProviderAttribute class
-
 	#region VerbalizationSnippetsIdentifier struct
 	/// <summary>
 	/// A unique identifier for verbalization snippets
@@ -349,9 +559,13 @@ namespace Neumont.Tools.ORM.ObjectModel
 		private string myLangId;
 		private string myId;
 		private string myDescription;
-		private VerbalizationTarget myTarget;
+		private string myTarget;
 		private const string DefaultLanguageId = "en-US";
 		private const string DefaultId = "_default";
+		/// <summary>
+		/// The default target name if no explicit target is specified
+		/// </summary>
+		public const string DefaultTarget = "";
 		#endregion // Member Variables
 		#region Constructors
 		/// <summary>
@@ -361,7 +575,7 @@ namespace Neumont.Tools.ORM.ObjectModel
 		/// <param name="languageId">The name of the language identifying the snippets</param>
 		/// <param name="id">The identifier for the snippets</param>
 		public VerbalizationSnippetsIdentifier(Type enumType, string languageId, string id)
-			: this(enumType, VerbalizationTarget.Default, languageId, id, null)
+			: this(enumType, DefaultTarget, languageId, id, null)
 		{
 		}
 		/// <summary>
@@ -371,7 +585,7 @@ namespace Neumont.Tools.ORM.ObjectModel
 		/// <param name="target">The target output of the Verbalization Snippets set</param>
 		/// <param name="languageId">The name of the language identifying the snippets</param>
 		/// <param name="id">The identifier for the snippets</param>
-		public VerbalizationSnippetsIdentifier(Type enumType, VerbalizationTarget target, string languageId, string id)
+		public VerbalizationSnippetsIdentifier(Type enumType, string target, string languageId, string id)
 			: this(enumType, target, languageId, id, null)
 		{
 		}
@@ -383,7 +597,7 @@ namespace Neumont.Tools.ORM.ObjectModel
 		/// <param name="languageId">The name of the language identifying the snippets</param>
 		/// <param name="id">The identifier for the snippets</param>
 		/// <param name="description">A displayable description for this identifier</param>
-		public VerbalizationSnippetsIdentifier(Type enumType, VerbalizationTarget target, string languageId, string id, string description)
+		public VerbalizationSnippetsIdentifier(Type enumType, string target, string languageId, string id, string description)
 		{
 			if (enumType == null)
 			{
@@ -402,7 +616,7 @@ namespace Neumont.Tools.ORM.ObjectModel
 			myLangId = languageId;
 			myId = id;
 			myDescription = description;
-			myTarget = target;
+			myTarget = target ?? DefaultTarget;
 		}
 		/// <summary>
 		/// Create a snippets identifier from a type name
@@ -411,7 +625,7 @@ namespace Neumont.Tools.ORM.ObjectModel
 		/// <param name="languageId">The name of the language identifying the snippets</param>
 		/// <param name="id">The identifier for the snippets</param>
 		public VerbalizationSnippetsIdentifier(string enumTypeName, string languageId, string id)
-			: this(enumTypeName, VerbalizationTarget.Default, languageId, id, null)
+			: this(enumTypeName, DefaultTarget, languageId, id, null)
 		{
 		}
 		/// <summary>
@@ -421,7 +635,7 @@ namespace Neumont.Tools.ORM.ObjectModel
 		/// <param name="target">The target output of the Verbalization Snippets set</param>
 		/// <param name="languageId">The name of the language identifying the snippets</param>
 		/// <param name="id">The identifier for the snippets</param>
-		public VerbalizationSnippetsIdentifier(string enumTypeName, VerbalizationTarget target, string languageId, string id)
+		public VerbalizationSnippetsIdentifier(string enumTypeName, string target, string languageId, string id)
 			: this(enumTypeName, target, languageId, id, null)
 		{
 		}
@@ -433,7 +647,7 @@ namespace Neumont.Tools.ORM.ObjectModel
 		/// <param name="languageId">The name of the language identifying the snippets</param>
 		/// <param name="id">The identifier for the snippets</param>
 		/// <param name="description">A displayable description for this identifier</param>
-		public VerbalizationSnippetsIdentifier(string enumTypeName, VerbalizationTarget target, string languageId, string id, string description)
+		public VerbalizationSnippetsIdentifier(string enumTypeName, string target, string languageId, string id, string description)
 		{
 			if (enumTypeName == null)
 			{
@@ -451,7 +665,7 @@ namespace Neumont.Tools.ORM.ObjectModel
 			myLangId = languageId;
 			myId = id;
 			myDescription = null;
-			myTarget = target;
+			myTarget = target ?? DefaultTarget;
 		}
 		#endregion // Constructors
 		#region Accessor Properties
@@ -480,8 +694,8 @@ namespace Neumont.Tools.ORM.ObjectModel
 		/// Return true if this is a default identifier for the enum type and target.
 		/// Default identifiers are created with the static CreateDefaultIdentifier method.
 		/// </summary>
-		/// <param name="target">The <see cref="VerbalizationTarget"/></param>
-		public bool IsTargetedDefaultIdentifier(VerbalizationTarget target)
+		/// <param name="target">The verbalization target</param>
+		public bool IsTargetedDefaultIdentifier(string target)
 		{
 			return !IsEmpty && myLangId == DefaultLanguageId && myId == DefaultId && myTarget == target;
 		}
@@ -493,16 +707,16 @@ namespace Neumont.Tools.ORM.ObjectModel
 		/// <returns>VerbalizationSnippetsIdentifier with default language and id</returns>
 		public static VerbalizationSnippetsIdentifier CreateDefaultIdentifier(Type enumType, string description)
 		{
-			return new VerbalizationSnippetsIdentifier(enumType, VerbalizationTarget.Default, DefaultLanguageId, DefaultId, description);
+			return new VerbalizationSnippetsIdentifier(enumType, DefaultTarget, DefaultLanguageId, DefaultId, description);
 		}
 		/// <summary>
 		/// Create a default identifier for the specified enum type
 		/// </summary>
 		/// <param name="enumType">A type representing an enum</param>
-		/// <param name="target">The <see cref="VerbalizationTarget"/></param>
+		/// <param name="target">The verbalization target</param>
 		/// <param name="description">An optional description for the identifier. Can be null</param>
 		/// <returns>VerbalizationSnippetsIdentifier with default language and id</returns>
-		public static VerbalizationSnippetsIdentifier CreateDefaultIdentifier(Type enumType, VerbalizationTarget target, string description)
+		public static VerbalizationSnippetsIdentifier CreateDefaultIdentifier(Type enumType, string target, string description)
 		{
 			return new VerbalizationSnippetsIdentifier(enumType, target, DefaultLanguageId, DefaultId, description);
 		}
@@ -514,16 +728,16 @@ namespace Neumont.Tools.ORM.ObjectModel
 		/// <returns>VerbalizationSnippetsIdentifier with default language and id</returns>
 		public static VerbalizationSnippetsIdentifier CreateDefaultIdentifier(string enumTypeName, string description)
 		{
-			return new VerbalizationSnippetsIdentifier(enumTypeName, VerbalizationTarget.Default, DefaultLanguageId, DefaultId, description);
+			return new VerbalizationSnippetsIdentifier(enumTypeName, DefaultTarget, DefaultLanguageId, DefaultId, description);
 		}
 		/// <summary>
 		/// Create a default identifier for the specified enum type name
 		/// </summary>
 		/// <param name="enumTypeName">The full name of an enum type</param>
-		/// <param name="target">The <see cref="VerbalizationTarget"/></param>
+		/// <param name="target">The verbalization target</param>
 		/// <param name="description">An optional description for the identifier. Can be null</param>
 		/// <returns>VerbalizationSnippetsIdentifier with default language and id</returns>
-		public static VerbalizationSnippetsIdentifier CreateDefaultIdentifier(string enumTypeName, VerbalizationTarget target, string description)
+		public static VerbalizationSnippetsIdentifier CreateDefaultIdentifier(string enumTypeName, string target, string description)
 		{
 			return new VerbalizationSnippetsIdentifier(enumTypeName, target, DefaultLanguageId, DefaultId, description);
 		}
@@ -570,7 +784,7 @@ namespace Neumont.Tools.ORM.ObjectModel
 		/// <summary>
 		/// The target output of the Verbalization Snippets set
 		/// </summary>
-		public VerbalizationTarget Target
+		public string Target
 		{
 			get
 			{
@@ -605,7 +819,7 @@ namespace Neumont.Tools.ORM.ObjectModel
 						Debug.Assert(fieldsLength == 3 || fieldsLength == 4, "The string passed to ParseIdentifiers must be saved with SaveIdentifiers");
 						if (fieldsLength == 4)
 						{
-							retVal[i] = new VerbalizationSnippetsIdentifier(fields[0], (VerbalizationTarget)Enum.Parse(typeof(VerbalizationTarget), fields[3], true), fields[1], fields[2]);
+							retVal[i] = new VerbalizationSnippetsIdentifier(fields[0], fields[3], fields[1], fields[2]);
 						}
 						else
 						{
@@ -643,7 +857,7 @@ namespace Neumont.Tools.ORM.ObjectModel
 						sb.Append(identifier.LanguageId);
 						sb.Append(',');
 						sb.Append(identifier.Id);
-						if (identifier.Target != VerbalizationTarget.Default)
+						if (identifier.Target != DefaultTarget)
 						{
 							sb.Append(',');
 							sb.Append(identifier.Target.ToString());
@@ -832,12 +1046,12 @@ namespace Neumont.Tools.ORM.ObjectModel
 		/// Load all verbalization snippets provided by <see cref="DomainModel"/>s in the provided <see cref="Store"/>.
 		/// </summary>
 		/// <param name="store">The store to load</param>
-		/// <param name="target">The <see cref="VerbalizationTarget"/> to load.</param>
+		/// <param name="target">The verbalization target to load.</param>
 		/// <param name="customSnippetsDirectory">The base directory to search for additional snippets</param>
 		/// <param name="customIdentifiers">An array of preferred custom identifiers
 		/// for the preferred verbalization sets. Can be null if no customizations are in place.</param>
 		/// <returns>Snippets dictionary</returns>
-		public static IDictionary<Type, IVerbalizationSets> LoadSnippetsDictionary(Store store, VerbalizationTarget target, string customSnippetsDirectory, VerbalizationSnippetsIdentifier[] customIdentifiers)
+		public static IDictionary<Type, IVerbalizationSets> LoadSnippetsDictionary(Store store, string target, string customSnippetsDirectory, VerbalizationSnippetsIdentifier[] customIdentifiers)
 		{
 			if (store == null)
 			{
@@ -920,12 +1134,12 @@ namespace Neumont.Tools.ORM.ObjectModel
 		/// Load all verbalization snippets provided by <see cref="DomainModel"/>s in the provided <see cref="Store"/>.
 		/// </summary>
 		/// <param name="providers">The snippet providers</param>
-		/// <param name="target">The <see cref="VerbalizationTarget"/> to load.</param>
+		/// <param name="target">The verbalization target to load.</param>
 		/// <param name="customSnippetsDirectory">The base directory to search for additional snippets</param>
 		/// <param name="customIdentifiers">An array of preferred custom identifiers
 		/// for the preferred verbalization sets. Can be null if no customizations are in place.</param>
 		/// <returns>Snippets dictionary</returns>
-		public static IDictionary<Type, IVerbalizationSets> LoadSnippetsDictionary(IEnumerable<IVerbalizationSnippetsProvider> providers, VerbalizationTarget target, string customSnippetsDirectory, VerbalizationSnippetsIdentifier[] customIdentifiers)
+		public static IDictionary<Type, IVerbalizationSets> LoadSnippetsDictionary(IEnumerable<IVerbalizationSnippetsProvider> providers, string target, string customSnippetsDirectory, VerbalizationSnippetsIdentifier[] customIdentifiers)
 		{
 			// UNDONE: The API here should change to load the full dictionary regardless of target and
 			// return a dictionary keyed off a targeted identifier. A wrapper can then be placed on
@@ -959,9 +1173,9 @@ namespace Neumont.Tools.ORM.ObjectModel
 								VerbalizationSnippetsIdentifier testIdentifier = customIdentifiers[j];
 								if (testIdentifier.EnumTypeName == enumTypeName)
 								{
-									if (target == VerbalizationTarget.Default)
+									if (target == VerbalizationSnippetsIdentifier.DefaultTarget)
 									{
-										if (testIdentifier.Target == VerbalizationTarget.Default &&
+										if (testIdentifier.Target == VerbalizationSnippetsIdentifier.DefaultTarget &&
 											!testIdentifier.IsDefaultIdentifier)
 										{
 											customIdentifierIndex = j;
@@ -973,7 +1187,7 @@ namespace Neumont.Tools.ORM.ObjectModel
 										customIdentifierIndex = j;
 										break;
 									}
-									else if (testIdentifier.Target == VerbalizationTarget.Default && !testIdentifier.IsDefaultIdentifier)
+									else if (testIdentifier.Target == VerbalizationSnippetsIdentifier.DefaultTarget && !testIdentifier.IsDefaultIdentifier)
 									{
 										// Fall back on default if a custom target is not available.
 										// Don't break for cases where the custom target is listed later.
@@ -981,7 +1195,7 @@ namespace Neumont.Tools.ORM.ObjectModel
 									}
 								}
 							}
-							if (customIdentifierIndex != -1 || target != VerbalizationTarget.Default)
+							if (customIdentifierIndex != -1 || target != VerbalizationSnippetsIdentifier.DefaultTarget)
 							{
 								typeArgs[0] = enumType;
 								if (allSets == null)
@@ -1472,14 +1686,13 @@ namespace Neumont.Tools.ORM.ObjectModel
 			if (identifiersOnly || retVal.Snippets != null)
 			{
 				VerbalizationSnippetsIdentifier retValId;
-				VerbalizationTarget targetValue = ((target != null) ? (VerbalizationTarget)Enum.Parse(typeof(VerbalizationTarget), target) : VerbalizationTarget.Default);
 				retVal.Id = retValId = new VerbalizationSnippetsIdentifier(
 					typeof(TEnum),
-					targetValue,
+					target,
 					languageId,
 					name,
 					description);
-				retVal.BaseId = new VerbalizationSnippetsIdentifier(typeof(TEnum), retValId.IsDefaultIdentifier ? VerbalizationTarget.Default : targetValue, baseLang, baseName);
+				retVal.BaseId = new VerbalizationSnippetsIdentifier(typeof(TEnum), retValId.IsDefaultIdentifier ? VerbalizationSnippetsIdentifier.DefaultTarget : target, baseLang, baseName);
 			}
 			return retVal;
 		}

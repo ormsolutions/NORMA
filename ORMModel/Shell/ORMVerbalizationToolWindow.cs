@@ -315,7 +315,7 @@ namespace Neumont.Tools.ORM.Shell
 						{
 							if (snippetsDictionary == null)
 							{
-								snippetsDictionary = (mel.Store as IORMToolServices).GetVerbalizationSnippetsDictionary(VerbalizationTarget.VerbalizationBrowser);
+								snippetsDictionary = (mel.Store as IORMToolServices).GetVerbalizationSnippetsDictionary(ORMCoreDomainModel.VerbalizationTargetName);
 								snippets = (IVerbalizationSets<CoreVerbalizationSnippetType>)snippetsDictionary[typeof(CoreVerbalizationSnippetType)];
 								myStringWriter.NewLine = snippets.GetSnippet(CoreVerbalizationSnippetType.VerbalizerNewLine);
 							}

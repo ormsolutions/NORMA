@@ -29,11 +29,16 @@ using Neumont.Tools.Modeling.Diagnostics;
 
 namespace Neumont.Tools.ORM.ObjectModel
 {
+	[VerbalizationTargetProvider("VerbalizationTargets")]
 	[VerbalizationSnippetsProvider("VerbalizationSnippets")]
 	public partial class ORMCoreDomainModel : IORMModelEventSubscriber, ISurveyNodeProvider
 	{
 		private static Type[] errorQuestionTypes = new Type[] { typeof(SurveyErrorState) };
 		private static Type[] questionTypes = new Type[] { typeof(SurveyQuestionGlyph) };
+		/// <summary>
+		/// The unique name the VerbalizationBrowser target. Used in the Xml files and in code to identify the core target provider.
+		/// </summary>
+		public const string VerbalizationTargetName = "VerbalizationBrowser";
 		#region IORMModelEventSubscriber Implementation
 		/// <summary>
 		/// Implements <see cref="IORMModelEventSubscriber.ManagePreLoadModelingEventHandlers"/>.
@@ -145,6 +150,17 @@ namespace Neumont.Tools.ORM.ObjectModel
 			this.ManageSurveyQuestionModelingEventHandlers(eventManager, action);
 		}
 		#endregion // IORMModelEventSubscriber Implementation
+		#region IVerbalizationTargetProvider implementation
+		private sealed class VerbalizationTargets : IVerbalizationTargetProvider
+		{
+			#region IVerbalizationTargetProvider implementation
+			VerbalizationTargetData[] IVerbalizationTargetProvider.ProvideVerbalizationTargets()
+			{
+				return new VerbalizationTargetData[] { new VerbalizationTargetData("VerbalizationBrowser", ResourceStrings.VerbalizationTargetVerbalizationBrowserDisplayName) };
+			}
+			#endregion // IVerbalizationTargetProvider implementation
+		}
+		#endregion // IVerbalizationTargetProvider implementation
 		#region IVerbalizationSnippetsProvider Implementation
 		private class VerbalizationSnippets : IVerbalizationSnippetsProvider
 		{
@@ -165,7 +181,7 @@ namespace Neumont.Tools.ORM.ObjectModel
 					new VerbalizationSnippetsData(
 						typeof(ReportVerbalizationSnippetType),
 						ReportVerbalizationSets.Default,
-						"Report",
+						"HtmlReport",
 						ResourceStrings.VerbalizationReportSnippetsTypeDescription,
 						ResourceStrings.VerbalizationReportSnippetsDefaultDescription
 					)

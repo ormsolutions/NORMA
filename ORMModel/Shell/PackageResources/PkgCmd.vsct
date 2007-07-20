@@ -67,6 +67,14 @@
 					<CommandName>Select on Dia&amp;gram</CommandName>
 				</Strings>
 			</Menu>
+			<Menu guid="guidORMDesignerCommandSet" id="menuIdReportGeneratorList" priority="0x0400" type="Context">
+				<Parent guid="guidORMDesignerCommandSet" id="groupIdModelCommands"/>
+				<Strings>
+					<ButtonText>Report Generator List</ButtonText>
+					<CommandName>Generate &amp;Report</CommandName>
+				</Strings>
+			</Menu>
+
 			<Menu guid="guidORMDesignerCommandSet" id="menuIdReadingEditorContextMenu" priority="0x0000" type="Context">
 				<Parent guid="guidORMDesignerCommandSet" id="0"/>
 				<Strings>
@@ -128,6 +136,10 @@
 
 			<Group guid="guidORMDesignerCommandSet" id="groupIdDiagramListTest" priority="0x0010">
 				<Parent guid="guidORMDesignerCommandSet" id="menuIdDiagramList"/>
+			</Group>
+
+			<Group guid="guidORMDesignerCommandSet" id="groupIdReportGeneratorListTest" priority="0x0010">
+				<Parent guid="guidORMDesignerCommandSet" id="menuIdReportGeneratorList"/>
 			</Group>
 
 			<Group guid="guidORMDesignerCommandSet" id="groupIdDisplayOrientation" priority="0x0010">
@@ -248,14 +260,6 @@
 				</Strings>
 			</Button>
 
-			<Button guid="guidORMDesignerCommandSet" id="cmdIdGenerateReport" priority="0x0400" type="Button">
-				<Parent guid="guidORMDesignerCommandSet" id="groupIdModelCommands"/>
-				<CommandFlag>DefaultInvisible</CommandFlag>
-				<CommandFlag>DynamicVisibility</CommandFlag>
-				<Strings>
-					<ButtonText>&amp;Report Generator...</ButtonText>
-				</Strings>
-			</Button>
 			<Button guid="guidORMDesignerCommandSet" id="cmdIdExtensionManager" priority="0x0500" type="Button">
 				<Parent guid="guidORMDesignerCommandSet" id="groupIdModelCommands"/>
 				<CommandFlag>DefaultInvisible</CommandFlag>
@@ -284,6 +288,17 @@
 				<CommandFlag>TextChanges</CommandFlag>
 				<Strings>
 					<ButtonText>No Other &amp;Diagrams</ButtonText>
+				</Strings>
+			</Button>
+
+			<Button guid="guidORMDesignerCommandSet" id="cmdIdReportGeneratorList" priority="0x0010" type="Button">
+				<Parent guid="guidORMDesignerCommandSet" id="groupIdReportGeneratorListTest"/>
+				<CommandFlag>DynamicItemStart</CommandFlag>
+				<CommandFlag>DefaultInvisible</CommandFlag>
+				<CommandFlag>DynamicVisibility</CommandFlag>
+				<CommandFlag>TextChanges</CommandFlag>
+				<Strings>
+					<ButtonText>No &amp;Report Generators</ButtonText>
 				</Strings>
 			</Button>
 
@@ -605,6 +620,7 @@
 			<IDSymbol value="0x0104" name="menuIdDisplayOrientation"/>
 			<IDSymbol value="0x0105" name="menuIdToolWindows"/>
 			<IDSymbol value="0x0106" name="menuIdDiagramList"/>
+			<IDSymbol value="0x0107" name="menuIdReportGeneratorList"/>
 
 			<!-- Groups (0x10__) -->
 			<IDSymbol value="0x0FFF" name="groupIdDebugCommands"/>
@@ -627,6 +643,7 @@
 			<IDSymbol value="0x1010" name="groupIdDisplayReverseRoleOrder"/>
 			<IDSymbol value="0x1011" name="groupIdToolWindows"/>
 			<IDSymbol value="0x1012" name="groupIdDiagramListTest"/>
+			<IDSymbol value="0x1013" name="groupIdReportGeneratorListTest"/>
 
 			<!-- Commands (0x2___) -->
 			<IDSymbol value="0x28FE" name="cmdIdDebugViewTransactionLogs"/>
@@ -672,12 +689,15 @@
 			<IDSymbol value="0x2926" name="cmdIdDisplayReverseRoleOrder"/>
 			<IDSymbol value="0x2927" name="cmdIdExclusiveOrCoupler"/>
 			<IDSymbol value="0x2928" name="cmdIdExclusiveOrDecoupler"/>
-			<IDSymbol value="0x2929" name="cmdIdGenerateReport"/>
-			<IDSymbol value="0x292A" name="cmdIdUnobjectifyFactType"/>
+			<IDSymbol value="0x2929" name="cmdIdUnobjectifyFactType"/>
+
+			<!-- Large ranges for dynamic commands, keep single commands in the 0x29__ range -->
 			<IDSymbol value="0x2A00" name="cmdIdErrorList"/>
-			<!-- Reserve 2A__ range for errors, start additional commands after. -->
+			<!-- Reserve 2A__ range for errors. -->
 			<IDSymbol value="0x2B00" name="cmdIdDiagramList"/>
-			<!-- Reserve 2B__ range for diagrams, start additional commands after. -->
+			<!-- Reserve 2B__ range for errors. -->
+			<IDSymbol value="0x2C00" name="cmdIdReportGeneratorList"/>
+			<!-- Reserve 2C__ range for reports. -->
 		</GuidSymbol>
 		<GuidSymbol name="guidORMVerbalizationToolbarImages" value="{5743D786-F88A-45F9-8117-F915CA6A9433}">
 			<IDSymbol value="0x0001" name="bmpIdShowNegativeVerbalization"/>

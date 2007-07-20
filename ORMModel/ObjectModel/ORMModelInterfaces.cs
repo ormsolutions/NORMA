@@ -28,28 +28,6 @@ using Neumont.Tools.Modeling.Diagrams;
 
 namespace Neumont.Tools.ORM.ObjectModel
 {
-	#region VerbalizationTarget enum
-	/// <summary>
-	/// Determines what target the Verbalization Set applies to
-	/// </summary>
-	[TypeConverter(typeof(EnumConverter<VerbalizationTarget, ORMModel>))]
-	public enum VerbalizationTarget
-	{
-		/// <summary>
-		/// Specifies the default verbalization snippet set. If a specific set is
-		/// not available for any of the other values, then we use the default set.
-		/// </summary>
-		Default,
-		/// <summary>
-		/// Specifies the verbalization snippet set to be used with the ORM Verbalization Browser
-		/// </summary>
-		VerbalizationBrowser,
-		/// <summary>
-		/// Specifies the verbalization snippet set to be used with the Verbalization Reports
-		/// </summary>
-		Report,
-	}
-	#endregion // VerbalizationTarget enum
 	#region IORMToolServices interface
 	/// <summary>
 	/// An interface that should be implemented by any
@@ -81,7 +59,12 @@ namespace Neumont.Tools.ORM.ObjectModel
 		/// Retrieve the VerbalizationSnippets dictionary for this store
 		/// </summary>
 		/// <param name="target">The type of dictionary to retrieve.</param>
-		IDictionary<Type, IVerbalizationSets> GetVerbalizationSnippetsDictionary(VerbalizationTarget target);
+		IDictionary<Type, IVerbalizationSets> GetVerbalizationSnippetsDictionary(string target);
+		/// <summary>
+		/// Get the current verbalization targets dictionary, which contains information about all verbalization targets
+		/// supported by loaded domain models.
+		/// </summary>
+		IDictionary<string, VerbalizationTargetData> VerbalizationTargets { get;}
 		/// <summary>
 		/// Retrieve the LayoutEngines dictionary for this store
 		/// </summary>

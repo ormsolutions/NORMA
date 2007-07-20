@@ -84,18 +84,12 @@
 						</xs:simpleType>
 					</xs:attribute>
 					<xs:attribute name="target" use="optional">
+						<xs:annotation>
+							<xs:documentation>The target name associated with this set of snippets. This is an extensible set. Targets are provided with the Neumont.Tools.ORM.ObjectModel.IVerbalizationTargetProvider interface.</xs:documentation>
+						</xs:annotation>
 						<xs:simpleType>
 							<xs:restriction base="xs:token">
-								<xs:enumeration value="VerbalizationBrowser">
-									<xs:annotation>
-										<xs:documentation>Specifies the verbalization snippet set to be used with the ORM Verbalization Browser. This is the default value.</xs:documentation>
-									</xs:annotation>
-								</xs:enumeration>
-								<xs:enumeration value="Report">
-									<xs:annotation>
-										<xs:documentation>Specifies the verbalization snippet set to be used with the Verbalization Reports.</xs:documentation>
-									</xs:annotation>
-								</xs:enumeration>
+								<xs:minLength value="3"/>
 							</xs:restriction>
 						</xs:simpleType>
 					</xs:attribute>

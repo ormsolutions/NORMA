@@ -13,7 +13,8 @@ CALL:_MakeDir "%NORMADir%\Help"
 CALL:_MakeDir "%NORMADir%\Xml\Schemas"
 CALL:_MakeDir "%NORMADir%\Xml\Transforms\Converters"
 CALL:_MakeDir "%NORMADir%\Xml\Verbalization\Core"
-CALL:_MakeDir "%NORMADir%\Xml\Verbalization\Report"
+CALL:_MakeDirCopy "%NORMADir%\Xml\Verbalization\HtmlReport" "%NORMADir%\Xml\Verbalization\Report"
+CALL:_RemoveDir "%NORMADir%\Xml\Verbalization\Report"
 CALL:_RemoveDir "%NORMADir%\ORMProjectItems"
 CALL:_RemoveDir "%ORMDir%\..\..\ORM"
 CALL:_MakeDir "%ORMDir%\Schemas"
@@ -45,7 +46,7 @@ XCOPY /Y /D /V /Q "%RootDir%\ORMModel\Shell\ORMDesignerSettings.xml" "%NORMADir%
 XCOPY /Y /D /V /Q "%RootDir%\ORMModel\Shell\Converters\*.xslt" "%NORMADir%\Xml\Transforms\Converters\"
 XCOPY /Y /D /V /Q "%RootDir%\ORMModel\ObjectModel\VerbalizationUntypedSnippets.xsd" "%NORMADir%\Xml\Verbalization\"
 XCOPY /Y /D /V /Q "%RootDir%\ORMModel\ObjectModel\VerbalizationCoreSnippets\*.x??" "%NORMADir%\Xml\Verbalization\Core\"
-XCOPY /Y /D /V /Q "%RootDir%\ORMModel\ObjectModel\VerbalizationReportSnippets\*.x??" "%NORMADir%\Xml\Verbalization\Report\"
+XCOPY /Y /D /V /Q "%RootDir%\ORMModel\ObjectModel\VerbalizationReportSnippets\*.x??" "%NORMADir%\Xml\Verbalization\HtmlReport\"
 XCOPY /Y /D /V /Q "%RootDir%\ORMModel\ObjectModel\VerbalizationCoreSnippetsDocumentation.html" "%NORMADir%\Xml\Verbalization\Core\"
 IF EXIST "%NORMADir%\Xml\Verbalization\Core\VerbalizationCoreSnippets.xml" (
 	CALL:_CleanupFile "%NORMADir%\Xml\Verbalization\Core\_default.xml"
@@ -55,9 +56,9 @@ IF EXIST "%NORMADir%\Xml\Verbalization\Core\VerbalizationCoreReportSnippets.xml"
 	CALL:_CleanupFile "%NORMADir%\Xml\Verbalization\Core\DefaultReportSnippets.xml"
 	REN "%NORMADir%\Xml\Verbalization\Core\VerbalizationCoreReportSnippets.xml" "DefaultReportSnippets.xml"
 )
-IF EXIST "%NORMADir%\Xml\Verbalization\Report\VerbalizationReportSnippets.xml" (
-	CALL:_CleanupFile "%NORMADir%\Xml\Verbalization\Report\_default.xml"
-	REN "%NORMADir%\Xml\Verbalization\Report\VerbalizationReportSnippets.xml" "_default.xml"
+IF EXIST "%NORMADir%\Xml\Verbalization\HtmlReport\VerbalizationReportSnippets.xml" (
+	CALL:_CleanupFile "%NORMADir%\Xml\Verbalization\HtmlReport\_default.xml"
+	REN "%NORMADir%\Xml\Verbalization\HtmlReport\VerbalizationReportSnippets.xml" "_default.xml"
 )
 
 XCOPY /Y /D /V /Q "%RootDir%\XML\DIL\DIL.xsd" "%DILDir%\Schemas\"
@@ -116,6 +117,15 @@ GOTO:EOF
 
 :_MakeDir
 IF NOT EXIST "%~1" (MKDIR "%~1")
+GOTO:EOF
+
+:_MakeDirCopy
+IF NOT EXIST "%~1" (
+	MKDIR "%~1"
+	IF EXIST "%2" (
+		XCOPY /S /Q "%~2" "%~1"
+	)
+)
 GOTO:EOF
 
 :_RemoveDir

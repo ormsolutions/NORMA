@@ -2220,6 +2220,30 @@ namespace Neumont.Tools.ORM
 				return ResourceStrings.GetString(ResourceManagers.Model, "ImplicitBooleanValueType.NoReadingFormatString");
 			}
 		}
+		/// <summary>Description for target HtmlReport customizations. Displays in the verbalization customizations dropdown in the options page.</summary>
+		public static string VerbalizationTargetHtmlReportDisplayName
+		{
+			get
+			{
+				return ResourceStrings.GetString(ResourceManagers.Model, "VerbalizationTarget.HtmlReport.DisplayName");
+			}
+		}
+		/// <summary>Description for target HtmlReport command name. Displays in the GenerateReport submenu on the context menu.</summary>
+		public static string VerbalizationTargetHtmlReportCommandName
+		{
+			get
+			{
+				return ResourceStrings.GetString(ResourceManagers.Model, "VerbalizationTarget.HtmlReport.CommandName");
+			}
+		}
+		/// <summary>Description for target VerbalizationBrowser customizations. Displays in the verbalization customizations dropdown in the options page.</summary>
+		public static string VerbalizationTargetVerbalizationBrowserDisplayName
+		{
+			get
+			{
+				return ResourceStrings.GetString(ResourceManagers.Model, "VerbalizationTarget.VerbalizationBrowser.DisplayName");
+			}
+		}
 	}
 	#endregion // ResourceStrings class
 }

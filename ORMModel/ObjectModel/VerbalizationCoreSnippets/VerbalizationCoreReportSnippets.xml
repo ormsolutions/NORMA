@@ -14,7 +14,7 @@ You must not remove this notice, or any other, from this software.
 -->
 <Languages xmlns="http://schemas.neumont.edu/ORM/SDK/Verbalization" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://schemas.neumont.edu/ORM/SDK/Verbalization VerbalizationCoreSnippets.xsd">
 	<Language xml:lang="en-US">
-		<Snippets name="_default" description="Default Core Report" target="Report">
+		<Snippets name="_default" description="Default Html Report" target="HtmlReport">
 		</Snippets>
 	</Language>
 </Languages>

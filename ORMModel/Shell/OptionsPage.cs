@@ -903,6 +903,27 @@ namespace Neumont.Tools.ORM.Shell
 				}
 			}
 			/// <summary>
+			/// Enumerate all registered snippets providers
+			/// </summary>
+			protected sealed override IEnumerable<IVerbalizationTargetProvider> TargetProviders
+			{
+				get
+				{
+					foreach (Type metaModelType in ORMDesignerPackage.GetAvailableDomainModels())
+					{
+						object[] providers = metaModelType.GetCustomAttributes(typeof(VerbalizationTargetProviderAttribute), false);
+						if (providers.Length != 0) // Single use non-inheritable attribute, there will only be one
+						{
+							IVerbalizationTargetProvider provider = ((VerbalizationTargetProviderAttribute)providers[0]).CreateTargetProvider(metaModelType);
+							if (provider != null)
+							{
+								yield return provider;
+							}
+						}
+					}
+				}
+			}
+			/// <summary>
 			/// Get the format string for the dropdown
 			/// </summary>
 			protected sealed override string LanguageFormatString

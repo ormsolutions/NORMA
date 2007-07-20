@@ -36,6 +36,61 @@ using Neumont.Tools.ORM.ObjectModel;
 
 namespace Neumont.Tools.ORM.ObjectModel.Verbalization
 {
+	#region HtmlReport class
+	/// <summary>
+	/// Provided as a service domain model (no elements or relationships) for the HtmlReport
+	/// </summary>
+	[VerbalizationTargetProvider("VerbalizationTargets")]
+	[DomainObjectId("8532FB7F-8F25-4E0E-A6B5-370EBE89E455")]
+	public class HtmlReport : DomainModel
+	{
+		#region Public constants
+		/// <summary>
+		/// The unique name of the HtmlReport verbalization target. Used in the Xml files and in code to identify this target provider.
+		/// </summary>
+		public const string HtmlReportTargetName = "HtmlReport";
+		#endregion // Public constants
+		#region Constructor
+		/// <summary>
+		/// Required constructor for a domain model
+		/// </summary>
+		/// <param name="store">The <see cref="Store"/> being populated</param>
+		public HtmlReport(Store store)
+			: base(store, new Guid("8532FB7F-8F25-4E0E-A6B5-370EBE89E455"))
+		{
+		}
+		#endregion // Constructor
+		#region VerbalizationTargets class
+		private sealed class VerbalizationTargets : IVerbalizationTargetProvider
+		{
+			#region IVerbalizationTargetProvider implementation
+			VerbalizationTargetData[] IVerbalizationTargetProvider.ProvideVerbalizationTargets()
+			{
+				return new VerbalizationTargetData[] {new VerbalizationTargetData(
+				HtmlReportTargetName,
+				ResourceStrings.VerbalizationTargetHtmlReportDisplayName,
+				ResourceStrings.VerbalizationTargetHtmlReportCommandName,
+				#region Report generation
+				delegate(Store store)
+				{
+					foreach (ORMModel model in store.ElementDirectory.FindElements<ORMModel>())
+					{
+						IServiceProvider provider;
+						System.Windows.Forms.Design.IUIService uiService;
+						if (null != (provider = (model.Store as IORMToolServices).ServiceProvider) &&
+								null != (uiService = (System.Windows.Forms.Design.IUIService)provider.GetService(typeof(System.Windows.Forms.Design.IUIService))))
+						{
+							uiService.ShowDialog(new GenerateReportDialog(model));
+						}
+					}
+				})};
+				#endregion // Report generation
+			}
+			#endregion // IVerbalizationTargetProvider implementation
+		}
+		#endregion // VerbalizationTargets class
+	}
+	#endregion // HtmlReport class
 	#region VerbalizationReport Implementation
 	#region VerbalizationReportContent enum
 	/// <summary>
@@ -128,7 +183,7 @@ namespace Neumont.Tools.ORM.ObjectModel.Verbalization
 		{
 			#region Member Variable
 			bool isNegative = false;
-			IDictionary<Type, IVerbalizationSets> snippetsDictionary = (model.Store as IORMToolServices).GetVerbalizationSnippetsDictionary(VerbalizationTarget.Report);
+			IDictionary<Type, IVerbalizationSets> snippetsDictionary = (model.Store as IORMToolServices).GetVerbalizationSnippetsDictionary(HtmlReport.HtmlReportTargetName);
 			IVerbalizationSets<ReportVerbalizationSnippetType> snippets = (IVerbalizationSets<ReportVerbalizationSnippetType>)snippetsDictionary[typeof(ReportVerbalizationSnippetType)];
 			Dictionary<IVerbalize, IVerbalize> verbalized;
 			Stream fileStream;

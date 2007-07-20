@@ -966,6 +966,8 @@ namespace Neumont.Tools.ORM.Shell
 			yield return typeof(Neumont.Tools.Modeling.FrameworkDomainModel);
 			yield return typeof(Neumont.Tools.ORM.ObjectModel.ORMCoreDomainModel);
 			yield return typeof(Neumont.Tools.ORM.ShapeModel.ORMShapeDomainModel);
+			// UNDONE: Temporary until the report validation is moved into a separate dll. See https://projects.neumont.edu/orm2/ticket/315
+			yield return typeof(Neumont.Tools.ORM.ObjectModel.Verbalization.HtmlReport);
 			foreach (ORMExtensionType extension in GetAvailableCustomExtensions())
 			{
 				Type type = extension.Type;

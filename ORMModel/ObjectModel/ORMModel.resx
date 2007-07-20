@@ -861,10 +861,16 @@
 	<data name="VerbalizationReportContent.ValidationReport" xml:space="preserve">
 		<value>Validation Report</value>
 	</data>
-	<data name="VerbalizationTarget.Report" xml:space="preserve">
-		<value>Report Settings</value>
+	<data name="VerbalizationTarget.HtmlReport.DisplayName" xml:space="preserve">
+		<value>Html Report Settings</value>
+		<comment>Description for target HtmlReport customizations. Displays in the verbalization customizations dropdown in the options page.</comment>
 	</data>
-	<data name="VerbalizationTarget.VerbalizationBrowser" xml:space="preserve">
+	<data name="VerbalizationTarget.HtmlReport.CommandName" xml:space="preserve">
+		<value>&amp;Html Report...</value>
+		<comment>Description for target HtmlReport command name. Displays in the GenerateReport submenu on the context menu.</comment>
+	</data>
+	<data name="VerbalizationTarget.VerbalizationBrowser.DisplayName" xml:space="preserve">
 		<value>Browser Settings</value>
+		<comment>Description for target VerbalizationBrowser customizations. Displays in the verbalization customizations dropdown in the options page.</comment>
 	</data>
 </root>

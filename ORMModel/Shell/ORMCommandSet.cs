@@ -221,10 +221,10 @@ namespace Neumont.Tools.ORM.Shell
 						new EventHandler(OnStatusExclusiveOrDecoupler), 
 						new EventHandler(OnMenuExclusiveOrDecoupler),
 						ORMDesignerCommandIds.ExclusiveOrDecoupler)
-						,new DynamicStatusMenuCommand(
-						new EventHandler(OnStatusGenerateReport), 
-						new EventHandler(OnMenuGenerateReport),
-						ORMDesignerCommandIds.GenerateReport)
+						,new DynamicReportGeneratorCommand(
+						new EventHandler(OnStatusReportGenerator),
+						new EventHandler(OnMenuReportGenerator),
+						ORMDesignerCommandIds.ReportGeneratorList)
 						,new DynamicStatusMenuCommand(
 						new EventHandler(OnStatusUnobjectifyFactType), 
 						new EventHandler(OnMenuUnobjectifyFactType),
@@ -781,20 +781,41 @@ namespace Neumont.Tools.ORM.Shell
 					docView.OnMenuExclusiveOrDecoupler();
 				}
 			}
-			private void OnStatusGenerateReport(object sender, EventArgs e)
+			private void OnStatusReportGenerator(object sender, EventArgs e)
 			{
-				ORMDesignerDocView.OnStatusCommand(sender, CurrentORMView, ORMDesignerCommands.GenerateReport);
+				ORMDesignerDocView.OnStatusCommand(sender, CurrentORMView, ORMDesignerCommands.ReportGeneratorList);
+				((OleMenuCommand)sender).MatchedCommandId = 0;
 			}
 			/// <summary>
 			/// Menu handler
 			/// </summary>
-			private void OnMenuGenerateReport(object sender, EventArgs e)
+			private void OnMenuReportGenerator(object sender, EventArgs e)
 			{
 				ORMDesignerDocView docView = CurrentORMView;
 				if (docView != null)
 				{
 					// Defer to the doc view
-					docView.OnMenuGenerateReport();
+					docView.OnMenuGenerateReport(((OleMenuCommand)sender).MatchedCommandId);
+				}
+			}
+			private sealed class DynamicReportGeneratorCommand : DynamicStatusMenuCommand
+			{
+				public DynamicReportGeneratorCommand(EventHandler statusHandler, EventHandler invokeHandler, CommandID id)
+					: base(statusHandler, invokeHandler, id)
+				{
+				}
+				public sealed override bool DynamicItemMatch(int cmdId)
+				{
+					int baseCmdId = CommandID.ID;
+					int testId = cmdId - baseCmdId;
+
+
+					if (testId >= 0 && testId < ORMDesignerCommandIds.ReportGeneratorListLength)
+					{
+						MatchedCommandId = testId;
+						return true;
+					}
+					return false;
 				}
 			}
 			private void OnStatusUnobjectifyFactType(object sender, EventArgs e)
@@ -1419,10 +1440,6 @@ namespace Neumont.Tools.ORM.Shell
 			/// </summary>
 			public static readonly CommandID ExclusiveOrDecoupler = new CommandID(guidORMDesignerCommandSet, cmdIdExclusiveOrDecoupler);
 			/// <summary>
-			/// Launch the Generate Report dialog
-			/// </summary>
-			public static readonly CommandID GenerateReport = new CommandID(guidORMDesignerCommandSet, cmdIdGenerateReport);
-			/// <summary>
 			/// Unobjectifies the fact type.
 			/// </summary>
 			public static readonly CommandID UnobjectifyFactType = new CommandID(guidORMDesignerCommandSet, cmdIdUnobjectifyFactType);
@@ -1476,6 +1493,14 @@ namespace Neumont.Tools.ORM.Shell
 			/// Indicates the number of command ids reserved for display diagrams
 			/// </summary>
 			public const int DiagramListLength = cmdIdDiagramListEnd - cmdIdDiagramList + 1;
+			/// <summary>
+			/// Available if report generators are registered
+			/// </summary>
+			public static readonly CommandID ReportGeneratorList = new CommandID(guidORMDesignerCommandSet, cmdIdReportGeneratorList);
+			/// <summary>
+			/// Indicates the number of command ids reserved for display diagrams
+			/// </summary>
+			public const int ReportGeneratorListLength = cmdIdReportGeneratorListEnd - cmdIdReportGeneratorList + 1;
 			#endregion //CommandID objects for menus
 			#region cmdIds
 			// IMPORTANT: keep these constants in sync with PkgCmd.vsct
@@ -1599,6 +1624,14 @@ namespace Neumont.Tools.ORM.Shell
 			/// </summary>
 			private const int cmdIdDiagramListEnd = 0x2bff;
 			/// <summary>
+			/// The context menu item for available report generators
+			/// </summary>
+			private const int cmdIdReportGeneratorList = 0x2c00;
+			/// <summary>
+			/// The last allowed id for a report generator list
+			/// </summary>
+			private const int cmdIdReportGeneratorListEnd = 0x2cff;
+			/// <summary>
 			/// The context menu for the diagram
 			/// </summary>
 			private const int menuIdContextMenu = 0x0100;
@@ -1687,13 +1720,9 @@ namespace Neumont.Tools.ORM.Shell
 			/// </summary>
 			private const int cmdIdExclusiveOrDecoupler = 0x2928;
 			/// <summary>
-			/// Launch the Generate Report dialog
-			/// </summary>
-			private const int cmdIdGenerateReport = 0x2929;
-			/// <summary>
 			/// Unobjectifies the fact type.
 			/// </summary>
-			private const int cmdIdUnobjectifyFactType = 0x292A;
+			private const int cmdIdUnobjectifyFactType = 0x2929;
 			#endregion
 		}
 	}

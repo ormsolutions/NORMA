@@ -99,6 +99,8 @@ namespace Neumont.Tools.ORM.Shell
 			standardDomainModels.Add(typeof(FrameworkDomainModel).FullName, typeof(FrameworkDomainModel));
 			standardDomainModels.Add(ORMCoreDomainModel.XmlNamespace, typeof(ORMCoreDomainModel));
 			standardDomainModels.Add(ORMShapeDomainModel.XmlNamespace, typeof(ORMShapeDomainModel));
+			// UNDONE: Temporary until the report validation is moved into a separate dll. See https://projects.neumont.edu/orm2/ticket/315
+			standardDomainModels.Add(typeof(Neumont.Tools.ORM.ObjectModel.Verbalization.HtmlReport).FullName, typeof(Neumont.Tools.ORM.ObjectModel.Verbalization.HtmlReport));
 			return standardDomainModels;
 		}
 		private static StoreDiagramMappingDataClearChangesDelegate InitializeStoreDiagramMappingDataClearChanges()
@@ -214,8 +216,9 @@ namespace Neumont.Tools.ORM.Shell
 					taskProvider.RemoveAllTasks();
 				}
 
-				// Remove the cached verbalization snippets, this set will change
+				// Remove the cached verbalization snippets and targets, this set will change
 				myTargetedVerbalizationSnippets = null;
+				myVerbalizationTargets = null;
 			}
 			// Convert early so we can accurately check extension elements
 			int retVal = 0;

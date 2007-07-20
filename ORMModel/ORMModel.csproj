@@ -520,7 +520,6 @@
     <Content Include="Resources\ResourceStringsGenerator.xml">
       <Generator>NUPlixLoader</Generator>
       <LastGenOutput>ResourceStringsGenerator.cs</LastGenOutput>
-      <CustomToolNamespace>Neumont.Tools.ORM</CustomToolNamespace>
     </Content>
     <None Include="Shell\catalog.xml" />
     <EmbeddedResource Include="ShapeModel\ConnectModelNoteAllowed.cur" />

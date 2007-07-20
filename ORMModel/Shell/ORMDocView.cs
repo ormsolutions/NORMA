@@ -237,7 +237,7 @@ namespace Neumont.Tools.ORM.Shell
 		/// <summary>
 		/// Run the report generator
 		/// </summary>
-		GenerateReport = 1L << 43,
+		ReportGeneratorList = 1L << 43,
 		/// <summary>
 		/// Unobjectifies the fact type.
 		/// </summary>
@@ -292,7 +292,7 @@ namespace Neumont.Tools.ORM.Shell
 			ORMDesignerCommands.AutoLayout |
 			ORMDesignerCommands.AddInternalUniqueness |
 			ORMDesignerCommands.ToggleSimpleMandatory |
-			ORMDesignerCommands.GenerateReport |
+			ORMDesignerCommands.ReportGeneratorList |
 			ORMDesignerCommands.DeleteAny |
 			ORMDesignerCommands.DeleteAnyShape |
 			ORMDesignerCommands.DeleteShape |
@@ -1121,8 +1121,8 @@ namespace Neumont.Tools.ORM.Shell
 				enabledCommands |= ORMDesignerCommands.DiagramList;
 			}
 			// Turn on standard commands for all selections
-			visibleCommands |= ORMDesignerCommands.DisplayStandardWindows | ORMDesignerCommands.CopyImage | ORMDesignerCommands.SelectAll | ORMDesignerCommands.ExtensionManager | ORMDesignerCommands.ErrorList | ORMDesignerCommands.GenerateReport;
-			enabledCommands |= ORMDesignerCommands.DisplayStandardWindows | ORMDesignerCommands.CopyImage | ORMDesignerCommands.SelectAll | ORMDesignerCommands.ExtensionManager | ORMDesignerCommands.ErrorList | ORMDesignerCommands.GenerateReport;
+			visibleCommands |= ORMDesignerCommands.DisplayStandardWindows | ORMDesignerCommands.CopyImage | ORMDesignerCommands.SelectAll | ORMDesignerCommands.ExtensionManager | ORMDesignerCommands.ErrorList | ORMDesignerCommands.ReportGeneratorList;
+			enabledCommands |= ORMDesignerCommands.DisplayStandardWindows | ORMDesignerCommands.CopyImage | ORMDesignerCommands.SelectAll | ORMDesignerCommands.ExtensionManager | ORMDesignerCommands.ErrorList | ORMDesignerCommands.ReportGeneratorList;
 		}
 		private static void UpdateMoveRoleCommandStatus(FactTypeShape factShape, Role role, ref ORMDesignerCommands visibleCommands, ref ORMDesignerCommands enabledCommands)
 		{
@@ -1418,6 +1418,38 @@ namespace Neumont.Tools.ORM.Shell
 							}
 						}
 						else if (!thisDiagram)
+						{
+							cmd.Supported = false;
+						}
+					}
+				}
+				else if (commandFlag == ORMDesignerCommands.ReportGeneratorList)
+				{
+					if (isEnabled)
+					{
+						OleMenuCommand cmd = sender as OleMenuCommand;
+						string reportGeneratorText = null;
+						int reportGeneratorIndex = cmd.MatchedCommandId;
+						foreach (VerbalizationTargetData targetData in ((IORMToolServices)docView.Store).VerbalizationTargets.Values)
+						{
+							if (targetData.CanReport)
+							{
+								if (reportGeneratorIndex == 0)
+								{
+									reportGeneratorText = targetData.ReportCommandName;
+									break;
+								}
+								--reportGeneratorIndex;
+							}
+						}
+						if (reportGeneratorText != null)
+						{
+							cmd.Enabled = true;
+							cmd.Visible = true;
+							cmd.Supported = true;
+							cmd.Text = reportGeneratorText;
+						}
+						else
 						{
 							cmd.Supported = false;
 						}
@@ -1968,21 +2000,20 @@ namespace Neumont.Tools.ORM.Shell
 			}
 		}
 		/// <summary>
-		/// Run the report generator
+		/// Run the selected report generator
 		/// </summary>
-		protected virtual void OnMenuGenerateReport()
+		protected virtual void OnMenuGenerateReport(int reportGeneratorIndex)
 		{
-			Diagram diagram;
-			ORMModel model;
-			if (null != (diagram = CurrentDiagram) &&
-				null != (model = diagram.ModelElement as ORMModel))
+			foreach (VerbalizationTargetData targetData in ((IORMToolServices)Store).VerbalizationTargets.Values)
 			{
-				IServiceProvider provider;
-				System.Windows.Forms.Design.IUIService uiService;
-				if (null != (provider = (model.Store as IORMToolServices).ServiceProvider) &&
-						null != (uiService = (System.Windows.Forms.Design.IUIService)provider.GetService(typeof(System.Windows.Forms.Design.IUIService))))
+				if (targetData.CanReport)
 				{
-					uiService.ShowDialog(new GenerateReportDialog(model));
+					if (reportGeneratorIndex == 0)
+					{
+						targetData.ReportCallback(Store);
+						break;
+					}
+					--reportGeneratorIndex;
 				}
 			}
 		}

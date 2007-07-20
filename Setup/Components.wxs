@@ -254,7 +254,7 @@
 											DefaultLanguage="0" CompanionFile="Neumont.Tools.ORM.dll"/>
 									</Component>
 								</Directory>
-								<Directory Id="ReportVerbalization" Name="Report">
+								<Directory Id="ReportVerbalization" Name="HtmlRprt" LongName="HtmlReport">
 									<Component Id="NORMAVSVerbalizationReportComponent" Guid="6F50F477-F95B-45AE-$(var.VersionGuidSuffix)" DiskId="1" Win64="$(var.Win64)" KeyPath="yes">
 										<File Id="VrbReDef.xml" Name="_default.xml" src="..\ORMModel\ObjectModel\VerbalizationReportSnippets\VerbalizationReportSnippets.xml"
 											DefaultLanguage="0" CompanionFile="Neumont.Tools.ORM.dll"/>
