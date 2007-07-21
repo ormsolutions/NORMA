@@ -68,6 +68,7 @@ namespace Neumont.Tools.Modeling.Diagnostics
 			this.ImageList.Images.SetKeyName(10, "");
 			this.ImageList.Images.SetKeyName(11, "");
 			this.ImageList.Images.SetKeyName(12, "");
+			this.ImageList.Images.SetKeyName(13, "");
 			// 
 			// TreeControl
 			// 

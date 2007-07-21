@@ -278,6 +278,7 @@ namespace Neumont.Tools.Modeling.Diagnostics
 			NewElementId,
 			Partition,
 			Filter, // Used for FilterLabel
+			Blank, // Blank image
 		}
 		#endregion // GlyphIndex enum
 		#region Member Variables
@@ -407,16 +408,28 @@ namespace Neumont.Tools.Modeling.Diagnostics
 						continue;
 					}
 					GenericEventArgs genericArgs = changeArgs as GenericEventArgs;
-					ElementPropertyChangedEventArgs propertyChangeArgs;
-					if (modelInfo != null && (genericArgs == null || modelInfo != genericArgs.DomainModel))
+					ElementPropertyChangedEventArgs propertyChangeArgs = genericArgs as ElementPropertyChangedEventArgs;
+					if (modelInfo != null)
+					{
+						if (propertyChangeArgs != null)
+						{
+							if (propertyChangeArgs.DomainProperty.DomainModel != modelInfo)
+							{
+								continue;
+							}
+						}
+						else if (genericArgs == null || modelInfo != genericArgs.DomainModel)
+						{
+							continue;
+						}
+					}
+					if (classInfo != null &&
+						(genericArgs == null || classInfo != genericArgs.DomainClass) &&
+						(propertyChangeArgs == null || propertyChangeArgs.DomainProperty.DomainClass != classInfo))
 					{
 						continue;
 					}
-					if (classInfo != null && (genericArgs == null || classInfo != genericArgs.DomainClass))
-					{
-						continue;
-					}
-					if (propertyInfo != null && (null == (propertyChangeArgs = genericArgs as ElementPropertyChangedEventArgs) || propertyInfo != propertyChangeArgs.DomainProperty))
+					if (propertyInfo != null && (null == propertyChangeArgs || propertyInfo != propertyChangeArgs.DomainProperty))
 					{
 						continue;
 					}
@@ -905,6 +918,16 @@ namespace Neumont.Tools.Modeling.Diagnostics
 				/// <param name="requiredData"><see cref="VirtualTreeDisplayDataMasks"/></param>
 				/// <returns><see cref="VirtualTreeDisplayData"/></returns>
 				VirtualTreeDisplayData GetDetailDisplayData(PartitionChange change, int detailColumn, VirtualTreeDisplayDataMasks requiredData);
+				/// <summary>
+				/// Provide base class info for this element. Used to display a base ClassInfo/DomainModel
+				/// when the change is bound to a base type but the instance is of a more derived type, such
+				/// as a property change on a base class.
+				/// </summary>
+				/// <remarks>This has nothing to do with the two detail columns, but is not a sufficiently compelling reason to
+				/// add a parallel type mechanism.</remarks>
+				/// <param name="change">The <see cref="PartitionChange"/> to provide details for</param>
+				/// <returns>A <see cref="DomainClassInfo"/> or <see langword="null"/></returns>
+				DomainClassInfo GetBaseDomainClassInfo(PartitionChange change);
 			}
 			#endregion // IDetailHandler interface
 			#region Helper methods
@@ -981,45 +1004,141 @@ namespace Neumont.Tools.Modeling.Diagnostics
 				if (filter.ApplyFilter(myChanges, ref newFilter))
 				{
 					int itemCount = VisibleItemCount;
-					// UNDONE: This could be done without losing the current selection
-					// by doing an item-by-item diff on the before and after states of the filter.
 					BranchModificationEventHandler modify = myModify;
 					if (modify != null)
 					{
 						modify(this, BranchModificationEventArgs.DelayRedraw(true));
 
-						// MSBUG: Hack workaround a bug in VirtualTree.DeleteItems. The
-						// call to ChangeFullCountRecursive needs to pass a valid subItemIncr
-						// instead of the constant value 0.
-						int columnCount = (int)ColumnContent.Count;
-						for (int i = 0; i < columnCount; ++i)
-						{
-							if (0 != (ColumnStyles(i) & SubItemCellStyles.Complex))
-							{
-								for (int j = 0; j < itemCount; ++j)
-								{
-									modify(this, BranchModificationEventArgs.UpdateCellStyle(this, j, i, false));
-								}
-							}
-						}
-						modify(this, BranchModificationEventArgs.DeleteItems(this, 0, itemCount));
 						myFilter = newFilter; // This changes the VisibleItemCount
-						itemCount = VisibleItemCount;
-						modify(this, BranchModificationEventArgs.InsertItems(this, -1, itemCount));
-						for (int i = 0; i < columnCount; ++i)
+						int columnCount = (int)ColumnContent.Count;
+
+						// MSBUG: VirtualTreeControl is not handling selection tracking
+						// properly for some insert cases. So reducing the filter will work most
+						// of the time, but anything with an insert (clearing the filter or changing
+						// the filtered id) may end up with a random selection. There appear to be
+						// two problems here.
+						// 1) (Most common) VirtualTreeControl.ListBoxStateTracker.ApplyChange
+						// is not processing absIndex == -1 for a positive count. This is the notification provided
+						// when a new item is inserted before the current first item, so this is very bad.
+						// 2) (Less common, but bad for us) Subitem changes are not being tracked correctly. I
+						// have not tracked this one down fully, but it is likely in either the same routine
+						// or VirtualTreeControl.OnToggleExpansion.
+						
+						// UNDONE: Work around selection tracking bug.
+						// There should be two reliable workarounds:
+						// 1) Support selection tracking so the control can snapshot the selection and
+						// call VirtualTreeControl.SelectObject after the filter changes.
+						// 2) Add our own OnItemCountChanged callback to calculate the correct selection
+						// offsets and apply the selection change directly (probably more code, but also
+						// a much more localized change. This might also help track down the problem
+						// in the MS code)
+						
+						// Incrementally step through the change sets. Note that we must do this
+						// carefully and in order because any callbacks for an insert/updatecellstyle must
+						// be carefully coordinated to call back at the correct index in the filter.
+						int fullItemCount = myChanges.Length;
+						int oldItemNextIndex = 0;
+						int oldFilterCount;
+						int oldItem;
+						if (oldFilter == null)
 						{
-							if (0 != (ColumnStyles(i) & SubItemCellStyles.Complex))
+							oldItem = 0;
+							oldFilterCount = fullItemCount;
+						}
+						else
+						{
+							oldFilterCount = oldFilter.Length;
+							oldItem = (oldFilterCount == 0) ? fullItemCount : oldFilter[oldItemNextIndex++];
+						}
+						int newItemNextIndex = 0;
+						int newFilterCount;
+						int newItem;
+						if (newFilter == null)
+						{
+							newItem = 0;
+							newFilterCount = fullItemCount;
+						}
+						else
+						{
+							newFilterCount = newFilter.Length;
+							newItem = (newFilterCount == 0) ? fullItemCount : newFilter[newItemNextIndex++];
+						}
+						int nextIndex = 0;
+						for (; ; )
+						{
+							if (newItem == oldItem)
 							{
-								for (int j = 0; j < itemCount; ++j)
+								if (newItem == fullItemCount)
 								{
-									// MSBUG: Hack workaround a bug in VirtualTree.InsertItems. Inserting
-									// a complex item should requery the branch for subitem expansions.
-									// This isn't as severe as the other (it doesn't crash), but this should
-									// still happen automatically.
-									modify(this, BranchModificationEventArgs.UpdateCellStyle(this, j, i, true));
+									break;
+								}
+								newItem = (newFilter == null) ?
+									(newItem + 1) :
+									((newItemNextIndex < newFilterCount) ? newFilter[newItemNextIndex++] : fullItemCount);
+								oldItem = (oldFilter == null) ?
+									(oldItem + 1) :
+									((oldItemNextIndex < oldFilterCount) ? oldFilter[oldItemNextIndex++] : fullItemCount);
+								++nextIndex;
+							}
+							else if (newItem < oldItem)
+							{
+								int startInsert = nextIndex;
+								while (newItem < oldItem)
+								{
+									// Insert numbered item (newItem + 1)
+									newItem = (newFilter == null) ?
+										(newItem + 1) :
+										((newItemNextIndex < newFilterCount) ? newFilter[newItemNextIndex++] : fullItemCount);
+									++nextIndex;
+								}
+								// Insert indexed items: (startInsert + 1) through (nextIndex)
+
+								// insert at startInsert with count nextIndex - startInsert
+								modify(this, BranchModificationEventArgs.InsertItems(this, startInsert - 1, nextIndex - startInsert));
+								for (int i = 0; i < columnCount; ++i)
+								{
+									if (0 != (ColumnStyles(i) & SubItemCellStyles.Complex))
+									{
+										for (int j = startInsert; j < nextIndex; ++j)
+										{
+											// MSBUG: Hack workaround a bug in VirtualTree.InsertItems. Inserting
+											// a complex item should requery the branch for subitem expansions.
+											// This isn't as severe as the other (it doesn't crash), but this should
+											// still happen automatically.
+											modify(this, BranchModificationEventArgs.UpdateCellStyle(this, j, i, true));
+										}
+									}
 								}
 							}
+							else // oldItem < newItem
+							{
+								int deleteBound = nextIndex;
+								while (oldItem < newItem)
+								{
+									//Debug.WriteLine("Delete numbered item " + (oldItem + 1).ToString());
+									++deleteBound;
+									oldItem = (oldFilter == null) ?
+										(oldItem + 1) :
+										((oldItemNextIndex < oldFilterCount) ? oldFilter[oldItemNextIndex++] : fullItemCount);
+								}
+								// Delete index items: (nextIndex) through (deleteBound - 1)
+								// MSBUG: Hack workaround a bug in VirtualTree.DeleteItems. The
+								// call to ChangeFullCountRecursive needs to pass a valid subItemIncr
+								// instead of the constant value 0.
+								for (int i = 0; i < columnCount; ++i)
+								{
+									if (0 != (ColumnStyles(i) & SubItemCellStyles.Complex))
+									{
+										for (int j = nextIndex; j < deleteBound; ++j)
+										{
+											modify(this, BranchModificationEventArgs.UpdateCellStyle(this, j, i, false));
+										}
+									}
+								}
+								modify(this, BranchModificationEventArgs.DeleteItems(this, nextIndex, deleteBound - nextIndex));
+							}
 						}
+
 						modify(this, BranchModificationEventArgs.DelayRedraw(false));
 					}
 				}
@@ -1125,6 +1244,12 @@ namespace Neumont.Tools.Modeling.Diagnostics
 						retVal.Bold = true;
 					}
 					return retVal;
+				}
+				DomainClassInfo IDetailHandler.GetBaseDomainClassInfo(PartitionChange change)
+				{
+					ElementPropertyChangedEventArgs args = (ElementPropertyChangedEventArgs)change.ChangeArgs;
+					DomainClassInfo propertyClass = args.DomainProperty.DomainClass;
+					return (propertyClass != args.DomainClass) ? propertyClass : null;
 				}
 			}
 			#endregion // PropertyChangedDetailHandler class
@@ -1324,6 +1449,10 @@ namespace Neumont.Tools.Modeling.Diagnostics
 				{
 					return VirtualTreeDisplayData.Empty;
 				}
+				DomainClassInfo IDetailHandler.GetBaseDomainClassInfo(PartitionChange change)
+				{
+					return null;
+				}
 			}
 			#endregion // AddDetailHandler class
 			#region DeleteDetailHandler class
@@ -1364,6 +1493,10 @@ namespace Neumont.Tools.Modeling.Diagnostics
 				VirtualTreeDisplayData IDetailHandler.GetDetailDisplayData(PartitionChange change, int detailColumn, VirtualTreeDisplayDataMasks requiredData)
 				{
 					return VirtualTreeDisplayData.Empty;
+				}
+				DomainClassInfo IDetailHandler.GetBaseDomainClassInfo(PartitionChange change)
+				{
+					return null;
 				}
 			}
 			#endregion // AddDetailHandler class
@@ -1493,6 +1626,10 @@ namespace Neumont.Tools.Modeling.Diagnostics
 					retVal.SelectedImage = retVal.Image = ((RolePlayerChangedEventArgs)change.ChangeArgs).DomainRole.OppositeDomainRole.IsSource ? (short)GlyphIndex.SourceDomainRole : (short)GlyphIndex.TargetDomainRole;
 					retVal.Bold = true;
 					return retVal;
+				}
+				DomainClassInfo IDetailHandler.GetBaseDomainClassInfo(PartitionChange change)
+				{
+					return null;
 				}
 			}
 			#endregion // RolePlayerChangeDetailHandler class
@@ -1646,6 +1783,10 @@ namespace Neumont.Tools.Modeling.Diagnostics
 				{
 					return VirtualTreeDisplayData.Empty;
 				}
+				DomainClassInfo IDetailHandler.GetBaseDomainClassInfo(PartitionChange change)
+				{
+					return null;
+				}
 			}
 			#endregion // RolePlayerOrderChangeDetailHandler class
 			#region RedirectDetailHandler class
@@ -1711,6 +1852,10 @@ namespace Neumont.Tools.Modeling.Diagnostics
 				{
 					return myDetailHandlers[change.ChangeArgs.GetType()].GetDetailDisplayData(change, detailColumn, requiredData);
 				}
+				DomainClassInfo IDetailHandler.GetBaseDomainClassInfo(PartitionChange change)
+				{
+					return myDetailHandlers[change.ChangeArgs.GetType()].GetBaseDomainClassInfo(change);
+				}
 			}
 			#endregion // RedirectDetailHandler class
 			#endregion // DetailHandler implementations
@@ -1745,12 +1890,31 @@ namespace Neumont.Tools.Modeling.Diagnostics
 						break;
 					case ObjectStyle.SubItemExpansion:
 					case ObjectStyle.SubItemRootBranch:
-						column -= (int)ColumnContent.Detail1;
 						PartitionChange change = GetChange(row);
-						if (RedirectDetailHandler.Instance.GetDetailColumnCount(change) > column &&
-							((style == ObjectStyle.SubItemRootBranch) ? SubItemCellStyles.Complex : SubItemCellStyles.Expandable) == RedirectDetailHandler.Instance.GetDetailColumnStyle(change, column))
+						switch ((ColumnContent)column)
 						{
-							return RedirectDetailHandler.Instance.GetDetailObject(change, column, style);
+							case ColumnContent.Class:
+								if (style == ObjectStyle.SubItemRootBranch)
+								{
+									GenericEventArgs genericArgs;
+									DomainClassInfo classInfo;
+									DomainClassInfo baseClassInfo;
+									if (null != (baseClassInfo = RedirectDetailHandler.Instance.GetBaseDomainClassInfo(change)) &&
+										null != (genericArgs = change.ChangeArgs as GenericEventArgs) &&
+										null != (classInfo = genericArgs.DomainClass))
+									{
+										return new ClassDetailBranch(baseClassInfo, classInfo);
+									}
+								}
+								break;
+							default:
+								column -= (int)ColumnContent.Detail1;
+								if (RedirectDetailHandler.Instance.GetDetailColumnCount(change) > column &&
+									((style == ObjectStyle.SubItemRootBranch) ? SubItemCellStyles.Complex : SubItemCellStyles.Expandable) == RedirectDetailHandler.Instance.GetDetailColumnStyle(change, column))
+								{
+									return RedirectDetailHandler.Instance.GetDetailObject(change, column, style);
+								}
+								break;
 						}
 						break;
 				}
@@ -1807,6 +1971,12 @@ namespace Neumont.Tools.Modeling.Diagnostics
 							if (null != (genericArgs = change.ChangeArgs as GenericEventArgs) &&
 								null != (modelInfo = genericArgs.DomainModel))
 							{
+								DomainClassInfo baseDomainClass = RedirectDetailHandler.Instance.GetBaseDomainClassInfo(change);
+								DomainModelInfo baseModelInfo;
+								if (baseDomainClass != null && (baseModelInfo = baseDomainClass.DomainModel) != modelInfo)
+								{
+									modelInfo = baseModelInfo;
+								}
 								retVal = modelInfo.Name;
 							}
 						}
@@ -1968,6 +2138,8 @@ namespace Neumont.Tools.Modeling.Diagnostics
 					case ColumnContent.Detail1:
 					case ColumnContent.Detail2:
 						return SubItemCellStyles.Mixed | SubItemCellStyles.Simple;
+					case ColumnContent.Class:
+						return SubItemCellStyles.Complex | SubItemCellStyles.Simple;
 					default:
 						return SubItemCellStyles.Simple;
 				}
@@ -1985,10 +2157,11 @@ namespace Neumont.Tools.Modeling.Diagnostics
 			void IItemFilter.FilterItem(PartitionChangeFilter filter, int row, int column)
 			{
 				GenericEventArgs args;
+				PartitionChange change = GetChange(row);
 				switch ((ColumnContent)column)
 				{
 					case ColumnContent.Partition:
-						Partition partition = GetChange(row).Partition;
+						Partition partition = change.Partition;
 						if (partition != null)
 						{
 							filter.Partition = partition;
@@ -1996,28 +2169,34 @@ namespace Neumont.Tools.Modeling.Diagnostics
 						break;
 					case ColumnContent.Model:
 						DomainModelInfo model;
-						if (null != (args = GetChange(row).ChangeArgs as GenericEventArgs) &&
+						if (null != (args = change.ChangeArgs as GenericEventArgs) &&
 							null != (model = args.DomainModel))
 						{
+							DomainClassInfo baseDomainClass = RedirectDetailHandler.Instance.GetBaseDomainClassInfo(change);
+							DomainModelInfo baseModelInfo;
+							if (baseDomainClass != null && (baseModelInfo = baseDomainClass.DomainModel) != model)
+							{
+								model = baseModelInfo;
+							}
 							filter.DomainModel = model;
 						}
 						break;
 					case ColumnContent.Class:
 						DomainClassInfo classInfo;
-						if (null != (args = GetChange(row).ChangeArgs as GenericEventArgs) &&
+						if (null != (args = change.ChangeArgs as GenericEventArgs) &&
 							null != (classInfo = args.DomainClass))
 						{
 							filter.DomainClass = classInfo;
 						}
 						break;
 					case ColumnContent.ChangeSource:
-						if (null != (args = GetChange(row).ChangeArgs as GenericEventArgs))
+						if (null != (args = change.ChangeArgs as GenericEventArgs))
 						{
 							filter.ChangeSource = args.ChangeSource;
 						}
 						break;
 					case ColumnContent.Id:
-						if (null != (args = GetChange(row).ChangeArgs as GenericEventArgs))
+						if (null != (args = change.ChangeArgs as GenericEventArgs))
 						{
 							Guid id = args.ElementId;
 							if (id != Guid.Empty)
@@ -2027,10 +2206,10 @@ namespace Neumont.Tools.Modeling.Diagnostics
 						}
 						break;
 					case ColumnContent.ChangeType:
-						filter.ChangeType = GetChange(row).ChangeArgs.GetType();
+						filter.ChangeType = change.ChangeArgs.GetType();
 						break;
 					case ColumnContent.Detail1:
-						ElementPropertyChangedEventArgs propertyChangedArgs = GetChange(row).ChangeArgs as ElementPropertyChangedEventArgs;
+						ElementPropertyChangedEventArgs propertyChangedArgs = change.ChangeArgs as ElementPropertyChangedEventArgs;
 						if (null != propertyChangedArgs)
 						{
 							filter.DomainProperty = propertyChangedArgs.DomainProperty;
@@ -2039,6 +2218,59 @@ namespace Neumont.Tools.Modeling.Diagnostics
 				}
 			}
 			#endregion // IItemFilter Implementation
+			#region ClassDetailBranch class
+			private class ClassDetailBranch : BaseBranch, IBranch, IItemFilter
+			{
+				#region Member variables and constructor
+				private DomainClassInfo[] myDomainClasses;
+				public ClassDetailBranch(DomainClassInfo baseDomainClass, DomainClassInfo instanceDomainClass)
+				{
+					myDomainClasses = new DomainClassInfo[] { baseDomainClass, instanceDomainClass };
+				}
+				#endregion // Member variables and constructor
+				#region IBranch Implementation
+				BranchFeatures IBranch.Features
+				{
+					get
+					{
+						return BranchFeatures.None;
+					}
+				}
+				string IBranch.GetText(int row, int column)
+				{
+					return myDomainClasses[row].Name;
+				}
+				VirtualTreeDisplayData IBranch.GetDisplayData(int row, int column, VirtualTreeDisplayDataMasks requiredData)
+				{
+					VirtualTreeDisplayData retVal = VirtualTreeDisplayData.Empty;
+					retVal.Bold = true;
+					if (row == 0)
+					{
+						retVal.SelectedImage = retVal.Image = (myDomainClasses[row] is DomainRelationshipInfo) ? (short)GlyphIndex.DomainRelationship : (short)GlyphIndex.DomainClass;
+					}
+					else
+					{
+						retVal.SelectedImage = retVal.Image = (short)GlyphIndex.Blank;
+						retVal.GrayText = true;
+					}
+					return retVal;
+				}
+				int IBranch.VisibleItemCount
+				{
+					get
+					{
+						return 2;
+					}
+				}
+				#endregion // IBranch Implementation
+				#region IItemFilter Implementation
+				void IItemFilter.FilterItem(PartitionChangeFilter filter, int row, int column)
+				{
+					filter.DomainClass = myDomainClasses[row];
+				}
+				#endregion // IItemFilter Implementation
+			}
+			#endregion // ClassDetailBranch class
 		}
 		#endregion // BaseBranch class
 		#region Event Handlers
