@@ -37,18 +37,6 @@ namespace Neumont.Tools.ORMToORMAbstractionBridge
 		}
 	}
 
-	enum FactTypeMappingType
-	{
-		/// <summary>
-		/// Only the <see cref="FactType"/> referenced is mapped to the destination <see cref="ObjectType"/>.
-		/// </summary>
-		Shallow,
-		/// <summary>
-		/// The <see cref="FactType"/> referenced is mapped to the destination <see cref="ObjectType"/>, and the <see cref="ObjectType"/> playing the opposite role is absorbed into the destination <see cref="ObjectType"/>.
-		/// </summary>
-		Deep
-	}
-
 	struct FactTypeMapping
 	{
 		private FactType factType;
@@ -56,7 +44,7 @@ namespace Neumont.Tools.ORMToORMAbstractionBridge
 		private Role towardsRole;
 		private ObjectType fromObjectType;
 		private ObjectType towardsObjectType;
-		private FactTypeMappingType mappingType;
+		private MappingDepth mappingDepth;
 		private bool isFromPreferredIdentifier;
 
 		/// <value>
@@ -99,9 +87,9 @@ namespace Neumont.Tools.ORMToORMAbstractionBridge
 			get { return towardsRole; }
 		}
 
-		public FactTypeMappingType MappingType
+		public MappingDepth MappingDepth
 		{
-			get { return mappingType; }
+			get { return mappingDepth; }
 		}
 
 		public bool IsFromPreferredIdentifier
@@ -109,12 +97,12 @@ namespace Neumont.Tools.ORMToORMAbstractionBridge
 			get { return isFromPreferredIdentifier; }
 		}
 
-		public FactTypeMapping(FactType factType, Role fromRole, Role towardsRole, FactTypeMappingType mappingType)
+		public FactTypeMapping(FactType factType, Role fromRole, Role towardsRole, MappingDepth mappingDepth)
 		{
 			this.factType = factType;
 			this.fromRole = fromRole;
 			this.towardsRole = towardsRole;
-			this.mappingType = mappingType;
+			this.mappingDepth = mappingDepth;
 
 			this.fromObjectType = fromRole.RolePlayer;
 			this.towardsObjectType = towardsRole.RolePlayer;

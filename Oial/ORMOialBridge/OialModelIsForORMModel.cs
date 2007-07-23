@@ -223,7 +223,7 @@ namespace Neumont.Tools.ORMToORMAbstractionBridge
 					Role supertypeRole = subtypeFact.SupertypeRole;
 
 					// Map deeply toward the supertype.
-					FactTypeMapping factTypeMapping = new FactTypeMapping(subtypeFact, subtypeRole, supertypeRole, FactTypeMappingType.Deep);
+					FactTypeMapping factTypeMapping = new FactTypeMapping(subtypeFact, subtypeRole, supertypeRole, MappingDepth.Deep);
 
 					decidedFactTypeMappings.Add(subtypeFact, factTypeMapping);
 				}
@@ -246,14 +246,14 @@ namespace Neumont.Tools.ORMToORMAbstractionBridge
 					if (firstRoleIsUnique && !secondRoleIsUnique)
 					{
 						// Shallow map toward firstRolePlayer.
-						FactTypeMapping factTypeMapping = new FactTypeMapping(factType, secondRole, firstRole, FactTypeMappingType.Shallow);
+						FactTypeMapping factTypeMapping = new FactTypeMapping(factType, secondRole, firstRole, MappingDepth.Shallow);
 
 						decidedFactTypeMappings.Add(factType, factTypeMapping);
 					}
 					else if (!firstRoleIsUnique && secondRoleIsUnique) // ...only secondRole is unique...
 					{
 						// Shallow map toward secondRolePlayer.
-						FactTypeMapping factTypeMapping = new FactTypeMapping(factType, firstRole, secondRole, FactTypeMappingType.Shallow);
+						FactTypeMapping factTypeMapping = new FactTypeMapping(factType, firstRole, secondRole, MappingDepth.Shallow);
 
 						decidedFactTypeMappings.Add(factType, factTypeMapping);
 					}
@@ -271,21 +271,21 @@ namespace Neumont.Tools.ORMToORMAbstractionBridge
 							if (firstRoleIsMandatory && !secondRoleIsMandatory)
 							{
 								// Shallow map toward firstRolePlayer (mandatory role player).
-								FactTypeMapping factTypeMapping = new FactTypeMapping(factType, firstRole, secondRole, FactTypeMappingType.Shallow);
+								FactTypeMapping factTypeMapping = new FactTypeMapping(factType, firstRole, secondRole, MappingDepth.Shallow);
 
 								decidedFactTypeMappings.Add(factType, factTypeMapping);
 							}
 							else if (!firstRoleIsMandatory && secondRoleIsMandatory) // ...only secondRole is mandatory...
 							{
 								// Shallow map toward secondRolePlayer (mandatory role player).
-								FactTypeMapping factTypeMapping = new FactTypeMapping(factType, secondRole, firstRole, FactTypeMappingType.Shallow);
+								FactTypeMapping factTypeMapping = new FactTypeMapping(factType, secondRole, firstRole, MappingDepth.Shallow);
 
 								decidedFactTypeMappings.Add(factType, factTypeMapping);
 							}
 							else // ...otherwise...
 							{
 								// Shallow map toward firstRolePlayer.
-								FactTypeMapping factTypeMapping = new FactTypeMapping(factType, firstRole, secondRole, FactTypeMappingType.Shallow);
+								FactTypeMapping factTypeMapping = new FactTypeMapping(factType, firstRole, secondRole, MappingDepth.Shallow);
 
 								decidedFactTypeMappings.Add(factType, factTypeMapping);
 							}
@@ -298,9 +298,9 @@ namespace Neumont.Tools.ORMToORMAbstractionBridge
 							if (!(firstRoleIsMandatory || secondRoleIsMandatory))
 							{
 								// Shallow map toward firstRolePlayer.
-								potentialFactTypeMappings.Add(new FactTypeMapping(factType, secondRole, firstRole, FactTypeMappingType.Shallow));
+								potentialFactTypeMappings.Add(new FactTypeMapping(factType, secondRole, firstRole, MappingDepth.Shallow));
 								// Shallow map toward secondRolePlayer.
-								potentialFactTypeMappings.Add(new FactTypeMapping(factType, firstRole, secondRole, FactTypeMappingType.Shallow));
+								potentialFactTypeMappings.Add(new FactTypeMapping(factType, firstRole, secondRole, MappingDepth.Shallow));
 							}
 							// If exactly one role is mandatory, we only allow shallow towards that role or deep away from it.
 							// This is an optimization, but at this point I don't remember with 100% confidence that it is correct.
@@ -308,16 +308,16 @@ namespace Neumont.Tools.ORMToORMAbstractionBridge
 							else if (firstRoleIsMandatory && !secondRoleIsMandatory) // ...only firstRole is mandatory...
 							{
 								// Shallow map toward firstRolePlayer.
-								potentialFactTypeMappings.Add(new FactTypeMapping(factType, secondRole, firstRole, FactTypeMappingType.Shallow));
+								potentialFactTypeMappings.Add(new FactTypeMapping(factType, secondRole, firstRole, MappingDepth.Shallow));
 								// Deep map toward secondRolePlayer.
-								potentialFactTypeMappings.Add(new FactTypeMapping(factType, firstRole, secondRole, FactTypeMappingType.Deep));
+								potentialFactTypeMappings.Add(new FactTypeMapping(factType, firstRole, secondRole, MappingDepth.Deep));
 							}
 							else if (!firstRoleIsMandatory && secondRoleIsMandatory) // ...only secondRole is mandatory...
 							{
 								// Deep map toward firstRolePlayer.
-								potentialFactTypeMappings.Add(new FactTypeMapping(factType, secondRole, firstRole, FactTypeMappingType.Deep));
+								potentialFactTypeMappings.Add(new FactTypeMapping(factType, secondRole, firstRole, MappingDepth.Deep));
 								// Shallow map toward secondRolePlayer.
-								potentialFactTypeMappings.Add(new FactTypeMapping(factType, firstRole, secondRole, FactTypeMappingType.Shallow));
+								potentialFactTypeMappings.Add(new FactTypeMapping(factType, firstRole, secondRole, MappingDepth.Shallow));
 							}
 							else // ...both roles are mandatory...
 							{
@@ -331,20 +331,20 @@ namespace Neumont.Tools.ORMToORMAbstractionBridge
 								if (!firstRoleIsUniqueAndPreferred)
 								{
 									// Shallow map toward firstRolePlayer.
-									potentialFactTypeMappings.Add(new FactTypeMapping(factType, secondRole, firstRole, FactTypeMappingType.Shallow));
+									potentialFactTypeMappings.Add(new FactTypeMapping(factType, secondRole, firstRole, MappingDepth.Shallow));
 								}
 
 								// If seccondRole is not preferred...
 								if (!secondRoleIsUniqueAndPreferred)
 								{
 									// Shallow map toward secondRolePlayer.
-									potentialFactTypeMappings.Add(new FactTypeMapping(factType, firstRole, secondRole, FactTypeMappingType.Shallow));
+									potentialFactTypeMappings.Add(new FactTypeMapping(factType, firstRole, secondRole, MappingDepth.Shallow));
 								}
 
 								// Deep map toward firstRolePlayer.
-								potentialFactTypeMappings.Add(new FactTypeMapping(factType, secondRole, firstRole, FactTypeMappingType.Deep));
+								potentialFactTypeMappings.Add(new FactTypeMapping(factType, secondRole, firstRole, MappingDepth.Deep));
 								// Deep map toward secondRolePlayer.
-								potentialFactTypeMappings.Add(new FactTypeMapping(factType, firstRole, secondRole, FactTypeMappingType.Deep));
+								potentialFactTypeMappings.Add(new FactTypeMapping(factType, firstRole, secondRole, MappingDepth.Deep));
 							}
 
 							undecidedFactTypeMappings.Add(factType, potentialFactTypeMappings);
@@ -387,7 +387,7 @@ namespace Neumont.Tools.ORMToORMAbstractionBridge
 				FactTypeMapping factTypeMapping = decidedFactTypeMapping.Value;
 
 				// If it's a deep mapping...
-				if (factTypeMapping.MappingType == FactTypeMappingType.Deep)
+				if (factTypeMapping.MappingDepth == MappingDepth.Deep)
 				{
 					deeplyMappedObjectTypes.Add(factTypeMapping.FromObjectType);
 				}
@@ -406,7 +406,7 @@ namespace Neumont.Tools.ORMToORMAbstractionBridge
 					FactTypeMapping potentialFactTypeMapping = potentialFactTypeMappings[i];
 
 					// If it is maped away from an ObjectType that is already determined to be mapped elsewhere...
-					if (deeplyMappedObjectTypes.Contains(potentialFactTypeMapping.FromObjectType) && potentialFactTypeMapping.MappingType == FactTypeMappingType.Deep)
+					if (deeplyMappedObjectTypes.Contains(potentialFactTypeMapping.FromObjectType) && potentialFactTypeMapping.MappingDepth == MappingDepth.Deep)
 					{
 						// Remove it as a possibility.
 						potentialFactTypeMappings.RemoveAt(i);
@@ -475,7 +475,7 @@ namespace Neumont.Tools.ORMToORMAbstractionBridge
 					if (firstRolePlayerHasPossibleDeepMappingsAway && !secondRolePlayerHasPossibleDeepMappingsAway)
 					{
 						// Deep map toward firstRolePlayer
-						FactTypeMapping factTypeMapping = new FactTypeMapping(factType, secondRole, firstRole, FactTypeMappingType.Deep);
+						FactTypeMapping factTypeMapping = new FactTypeMapping(factType, secondRole, firstRole, MappingDepth.Deep);
 
 						decidedFactTypeMappings.Add(factType, factTypeMapping);
 						factsPendingDeletion.Add(factType);
@@ -484,7 +484,7 @@ namespace Neumont.Tools.ORMToORMAbstractionBridge
 					else if (!firstRolePlayerHasPossibleDeepMappingsAway && secondRolePlayerHasPossibleDeepMappingsAway) // ...firstRolePlayer...
 					{
 						// Deep map toward secondRolePlayer
-						FactTypeMapping factTypeMapping = new FactTypeMapping(factType, firstRole, secondRole, FactTypeMappingType.Deep);
+						FactTypeMapping factTypeMapping = new FactTypeMapping(factType, firstRole, secondRole, MappingDepth.Deep);
 
 						decidedFactTypeMappings.Add(factType, factTypeMapping);
 						factsPendingDeletion.Add(factType);
@@ -531,7 +531,7 @@ namespace Neumont.Tools.ORMToORMAbstractionBridge
 				bool potentialFactTypeMappingsExist = undecidedFactTypeMappings.TryGetValue(factType, out potentialFactTypeMappings);
 
 				// If there's a decided deep fact type mapping away from objectType...
-				if (decidedFactTypeMappingExists && decidedFactTypeMapping.MappingType == FactTypeMappingType.Deep && decidedFactTypeMapping.FromObjectType == objectType)
+				if (decidedFactTypeMappingExists && decidedFactTypeMapping.MappingDepth == MappingDepth.Deep && decidedFactTypeMapping.FromObjectType == objectType)
 				{
 					return true;
 				}
@@ -540,7 +540,7 @@ namespace Neumont.Tools.ORMToORMAbstractionBridge
 					foreach (FactTypeMapping potentialFactTypeMapping in potentialFactTypeMappings)
 					{
 						// If there's a potential deep fact type mapping away from objectType...
-						if (potentialFactTypeMapping.MappingType == FactTypeMappingType.Deep && potentialFactTypeMapping.FromObjectType == objectType)
+						if (potentialFactTypeMapping.MappingDepth == MappingDepth.Deep && potentialFactTypeMapping.FromObjectType == objectType)
 						{
 							return true;
 						}
@@ -670,7 +670,7 @@ namespace Neumont.Tools.ORMToORMAbstractionBridge
 				{
 					ConceptType fromConceptType = ConceptTypeIsForObjectType.GetConceptType(factTypeMapping.FromObjectType);
 
-					if (factTypeMapping.MappingType == FactTypeMappingType.Deep)
+					if (factTypeMapping.MappingDepth == MappingDepth.Deep)
 					{
 						bool factTypeIsSubtype = factTypeMapping.FactType is SubtypeFact;
 
@@ -862,8 +862,23 @@ namespace Neumont.Tools.ORMToORMAbstractionBridge
 		{
 			foreach (FactTypeMapping mapping in factTypeMappings.Values)
 			{
-				FactTypeMapsTowardsRole r = new FactTypeMapsTowardsRole(mapping.FactType, mapping.TowardsRole);
-				r.Depth = (mapping.MappingType == FactTypeMappingType.Deep ? MappingDepth.Deep : MappingDepth.Shallow);
+				FactTypeMapsTowardsRole mapsTowardsRole = FactTypeMapsTowardsRole.GetLinkToTowardsRole(mapping.FactType);
+				if (mapsTowardsRole != null)
+				{
+					if (mapsTowardsRole.TowardsRole != mapping.TowardsRole)
+					{
+						mapsTowardsRole.TowardsRole = mapping.TowardsRole;
+					}
+					if (mapsTowardsRole.Depth != mapping.MappingDepth)
+					{
+						mapsTowardsRole.Depth = mapping.MappingDepth;
+					}
+				}
+				else
+				{
+					FactTypeMapsTowardsRole r = new FactTypeMapsTowardsRole(mapping.FactType, mapping.TowardsRole);
+					r.Depth = mapping.MappingDepth;
+				}
 			}
 		}
 
@@ -935,7 +950,7 @@ namespace Neumont.Tools.ORMToORMAbstractionBridge
 					}
 					FactTypeMapping factTypeMapping = factTypeMappings[factType];
 
-					if (factTypeMapping.FromObjectType == objectType && factTypeMapping.MappingType == FactTypeMappingType.Deep)
+					if (factTypeMapping.FromObjectType == objectType && factTypeMapping.MappingDepth == MappingDepth.Deep)
 					{
 						return false;
 					}

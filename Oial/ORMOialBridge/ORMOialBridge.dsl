@@ -161,6 +161,7 @@
 						<AttributeParameter Value="typeof(global::Neumont.Tools.Modeling.Design.EnumConverter&lt;MappingDepth, global::Neumont.Tools.ORMToORMAbstractionBridge.ORMToORMAbstractionBridgeDomainModel&gt;)"/>
 					</Parameters>
 				</ClrAttribute>
+				<ClrAttribute Name="global::System.Serializable"/>
 			</Attributes>
 		</DomainEnumeration>
 	</Types>

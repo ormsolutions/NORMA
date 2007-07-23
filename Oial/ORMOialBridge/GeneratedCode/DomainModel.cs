@@ -439,6 +439,7 @@ namespace Neumont.Tools.ORMToORMAbstractionBridge
 	/// Description for Neumont.Tools.ORMToORMAbstractionBridge.MappingDepth
 	/// </summary>
 	[global::System.ComponentModel.TypeConverter(typeof(global::Neumont.Tools.Modeling.Design.EnumConverter<MappingDepth, global::Neumont.Tools.ORMToORMAbstractionBridge.ORMToORMAbstractionBridgeDomainModel>))]
+	[global::System.Serializable()]
 	[global::System.CLSCompliant(true)]
 	public enum MappingDepth
 	{

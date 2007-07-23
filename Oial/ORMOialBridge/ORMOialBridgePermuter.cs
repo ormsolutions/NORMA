@@ -395,9 +395,9 @@ namespace Neumont.Tools.ORMToORMAbstractionBridge
 					state.ConceptTypeGarbage.Add(from);
 				}
 			}
-			FactTypeMappingType mappingType = state.Mapping.MappingType;
+			MappingDepth mappingType = state.Mapping.MappingDepth;
 			// If the |from| OT is mapped away deeply, and has objects mapped to it, remove it and invalidate it as a possible top-level type
-			if (myPossibleTopLevelConceptTypes.ContainsKey(from) && mappingType == FactTypeMappingType.Deep)
+			if (myPossibleTopLevelConceptTypes.ContainsKey(from) && mappingType == MappingDepth.Deep)
 			{
 				myPossibleTopLevelConceptTypes.Remove(from);
 				myInvalidObjectTypes.Add(from, true);
@@ -560,9 +560,9 @@ namespace Neumont.Tools.ORMToORMAbstractionBridge
 				for (int i = 0; i < maplist.Count; i++)
 				{
 					FactTypeMapping mapping = maplist[i];
-					FactTypeMappingType mappingType = mapping.MappingType;
+					MappingDepth mappingType = mapping.MappingDepth;
 					// An object type can only be deeply mapped once
-					if (mappingType == FactTypeMappingType.Deep && permstate.DeepMappings.Contains(mapping.FromObjectType))
+					if (mappingType == MappingDepth.Deep && permstate.DeepMappings.Contains(mapping.FromObjectType))
 					{
 						// The permutation never makes to the "possible" list since it would map the object type deeply in two directions
 						break;
@@ -580,12 +580,12 @@ namespace Neumont.Tools.ORMToORMAbstractionBridge
 					}
 					else
 					{
-						if (mappingType == FactTypeMappingType.Deep)
+						if (mappingType == MappingDepth.Deep)
 						{
 							permstate.DeepMappings.Add(mapping.FromObjectType);
 						}
 						PermuteFactTypeMappingsRecurse(newpermstate);
-						if (mappingType == FactTypeMappingType.Deep)
+						if (mappingType == MappingDepth.Deep)
 						{
 							permstate.DeepMappings.Remove(mapping.FromObjectType);
 						}
