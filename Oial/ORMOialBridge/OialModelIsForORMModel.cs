@@ -136,6 +136,35 @@ namespace Neumont.Tools.ORMToORMAbstractionBridge
 			}
 		}
 		#endregion
+
+		#region ORM Error Filtering Methods
+		private static bool ShouldIgnoreFactType(FactType factType)
+		{
+			// Subtype facts are always binarized, and never missing role players
+			if (factType is SubtypeFact)
+			{
+				return false;
+			}
+			LinkedElementCollection<RoleBase> roles = factType.RoleCollection;
+
+			// Ignore non-binarized fact types
+			if ((roles.Count != 2) || factType.Objectification != null)
+			{
+				return true;
+			}
+			// Ignore fact types that contain roles that are missing role players
+			foreach (RoleBase roleBase in roles)
+			{
+				// UNDONE: Should we just be checking RolePlayer == null instead?
+				if (roleBase.Role.RolePlayerRequiredError != null)
+				{
+					return true;
+				}
+			}
+
+			return false;
+		}
+		#endregion // ORM Error Filtering Methods
 		#region ORM to OIAL Algorithm Methods
 		/// <summary>
 		/// Transforms the data in <see cref="ORMModel"/> into this <see cref="AbstractionModel"/>.
@@ -181,6 +210,10 @@ namespace Neumont.Tools.ORMToORMAbstractionBridge
 			// For each fact type in the model...
 			foreach (FactType factType in modelFactTypes)
 			{
+				if (ShouldIgnoreFactType(factType))
+				{
+					continue;
+				}
 				SubtypeFact subtypeFact = factType as SubtypeFact;
 
 				// If it's a subtype relation...
@@ -197,132 +230,124 @@ namespace Neumont.Tools.ORMToORMAbstractionBridge
 				else
 				{
 					LinkedElementCollection<RoleBase> roles = factType.RoleCollection;
-					int roleCount = roles.Count;
 
-					// If it's a binary fact type...
-					if (roleCount == 2)
+					Debug.Assert(roles.Count == 2 && factType.Objectification == null, "Non-binarized fact types should have been filtered out already.");
+					
+					Role firstRole = roles[0].Role;
+					Role secondRole = roles[1].Role;
+					ObjectType firstRolePlayer = firstRole.RolePlayer;
+					ObjectType secondRolePlayer = secondRole.RolePlayer;
+					UniquenessConstraint firstRoleUniquenessConstraint = (UniquenessConstraint)firstRole.SingleRoleAlethicUniquenessConstraint;
+					UniquenessConstraint secondRoleUniquenessConstraint = (UniquenessConstraint)secondRole.SingleRoleAlethicUniquenessConstraint;
+					bool firstRoleIsUnique = (firstRoleUniquenessConstraint != null);
+					bool secondRoleIsUnique = (secondRoleUniquenessConstraint != null);
+
+					// If only firstRole is unique...
+					if (firstRoleIsUnique && !secondRoleIsUnique)
 					{
-						// If factType is implicitly or explicity objectified...
-						if (factType.Objectification != null)
+						// Shallow map toward firstRolePlayer.
+						FactTypeMapping factTypeMapping = new FactTypeMapping(factType, secondRole, firstRole, FactTypeMappingType.Shallow);
+
+						decidedFactTypeMappings.Add(factType, factTypeMapping);
+					}
+					else if (!firstRoleIsUnique && secondRoleIsUnique) // ...only secondRole is unique...
+					{
+						// Shallow map toward secondRolePlayer.
+						FactTypeMapping factTypeMapping = new FactTypeMapping(factType, firstRole, secondRole, FactTypeMappingType.Shallow);
+
+						decidedFactTypeMappings.Add(factType, factTypeMapping);
+					}
+					else if (firstRoleIsUnique && secondRoleIsUnique) // ...both roles are unique...
+					{
+						MandatoryConstraint firstRoleMandatoryConstraint = firstRole.SimpleMandatoryConstraint;
+						MandatoryConstraint secondRoleMandatoryConstraint = secondRole.SimpleMandatoryConstraint;
+						bool firstRoleIsMandatory = (firstRoleMandatoryConstraint != null && firstRoleMandatoryConstraint.Modality == ConstraintModality.Alethic);
+						bool secondRoleIsMandatory = (secondRoleMandatoryConstraint != null && secondRoleMandatoryConstraint.Modality == ConstraintModality.Alethic);
+
+						// If this is a ring fact type...
+						if (firstRolePlayer.Id == secondRolePlayer.Id)
 						{
-							continue;
-						}
-
-						Role firstRole = roles[0].Role;
-						Role secondRole = roles[1].Role;
-						ObjectType firstRolePlayer = firstRole.RolePlayer;
-						ObjectType secondRolePlayer = secondRole.RolePlayer;
-						UniquenessConstraint firstRoleUniquenessConstraint = (UniquenessConstraint)firstRole.SingleRoleAlethicUniquenessConstraint;
-						UniquenessConstraint secondRoleUniquenessConstraint = (UniquenessConstraint)secondRole.SingleRoleAlethicUniquenessConstraint;
-						bool firstRoleIsUnique = (firstRoleUniquenessConstraint != null);
-						bool secondRoleIsUnique = (secondRoleUniquenessConstraint != null);
-
-						// If only firstRole is unique...
-						if (firstRoleIsUnique && !secondRoleIsUnique)
-						{
-							// Shallow map toward firstRolePlayer.
-							FactTypeMapping factTypeMapping = new FactTypeMapping(factType, secondRole, firstRole, FactTypeMappingType.Shallow);
-
-							decidedFactTypeMappings.Add(factType, factTypeMapping);
-						}
-						else if (!firstRoleIsUnique && secondRoleIsUnique) // ...only secondRole is unique...
-						{
-							// Shallow map toward secondRolePlayer.
-							FactTypeMapping factTypeMapping = new FactTypeMapping(factType, firstRole, secondRole, FactTypeMappingType.Shallow);
-
-							decidedFactTypeMappings.Add(factType, factTypeMapping);
-						}
-						else if (firstRoleIsUnique && secondRoleIsUnique) // ...both roles are unique...
-						{
-							MandatoryConstraint firstRoleMandatoryConstraint = firstRole.SimpleMandatoryConstraint;
-							MandatoryConstraint secondRoleMandatoryConstraint = secondRole.SimpleMandatoryConstraint;
-							bool firstRoleIsMandatory = (firstRoleMandatoryConstraint != null && firstRoleMandatoryConstraint.Modality == ConstraintModality.Alethic);
-							bool secondRoleIsMandatory = (secondRoleMandatoryConstraint != null && secondRoleMandatoryConstraint.Modality == ConstraintModality.Alethic);
-
-							// If this is a ring fact type...
-							if (firstRolePlayer.Id == secondRolePlayer.Id)
+							// If only firstRole is mandatory...
+							if (firstRoleIsMandatory && !secondRoleIsMandatory)
 							{
-								// If only firstRole is mandatory...
-								if (firstRoleIsMandatory && !secondRoleIsMandatory)
-								{
-									// Shallow map toward firstRolePlayer (mandatory role player).
-									FactTypeMapping factTypeMapping = new FactTypeMapping(factType, firstRole, secondRole, FactTypeMappingType.Shallow);
+								// Shallow map toward firstRolePlayer (mandatory role player).
+								FactTypeMapping factTypeMapping = new FactTypeMapping(factType, firstRole, secondRole, FactTypeMappingType.Shallow);
 
-									decidedFactTypeMappings.Add(factType, factTypeMapping);
-								}
-								else if (!firstRoleIsMandatory && secondRoleIsMandatory) // ...only secondRole is mandatory...
-								{
-									// Shallow map toward secondRolePlayer (mandatory role player).
-									FactTypeMapping factTypeMapping = new FactTypeMapping(factType, secondRole, firstRole, FactTypeMappingType.Shallow);
-
-									decidedFactTypeMappings.Add(factType, factTypeMapping);
-								}
-								else // ...otherwise...
-								{
-									// Shallow map toward firstRolePlayer.
-									FactTypeMapping factTypeMapping = new FactTypeMapping(factType, firstRole, secondRole, FactTypeMappingType.Shallow);
-
-									decidedFactTypeMappings.Add(factType, factTypeMapping);
-								}
+								decidedFactTypeMappings.Add(factType, factTypeMapping);
 							}
-							else // ...not a ring fact type...
+							else if (!firstRoleIsMandatory && secondRoleIsMandatory) // ...only secondRole is mandatory...
 							{
-								FactTypeMappingList potentialFactTypeMappings = new FactTypeMappingList();
+								// Shallow map toward secondRolePlayer (mandatory role player).
+								FactTypeMapping factTypeMapping = new FactTypeMapping(factType, secondRole, firstRole, FactTypeMappingType.Shallow);
 
-								// If neither role is mandatory...
-								if (!(firstRoleIsMandatory || secondRoleIsMandatory))
+								decidedFactTypeMappings.Add(factType, factTypeMapping);
+							}
+							else // ...otherwise...
+							{
+								// Shallow map toward firstRolePlayer.
+								FactTypeMapping factTypeMapping = new FactTypeMapping(factType, firstRole, secondRole, FactTypeMappingType.Shallow);
+
+								decidedFactTypeMappings.Add(factType, factTypeMapping);
+							}
+						}
+						else // ...not a ring fact type...
+						{
+							FactTypeMappingList potentialFactTypeMappings = new FactTypeMappingList();
+
+							// If neither role is mandatory...
+							if (!(firstRoleIsMandatory || secondRoleIsMandatory))
+							{
+								// Shallow map toward firstRolePlayer.
+								potentialFactTypeMappings.Add(new FactTypeMapping(factType, secondRole, firstRole, FactTypeMappingType.Shallow));
+								// Shallow map toward secondRolePlayer.
+								potentialFactTypeMappings.Add(new FactTypeMapping(factType, firstRole, secondRole, FactTypeMappingType.Shallow));
+							}
+							// If exactly one role is mandatory, we only allow shallow towards that role or deep away from it.
+							// This is an optimization, but at this point I don't remember with 100% confidence that it is correct.
+							// -Kevin
+							else if (firstRoleIsMandatory && !secondRoleIsMandatory) // ...only firstRole is mandatory...
+							{
+								// Shallow map toward firstRolePlayer.
+								potentialFactTypeMappings.Add(new FactTypeMapping(factType, secondRole, firstRole, FactTypeMappingType.Shallow));
+								// Deep map toward secondRolePlayer.
+								potentialFactTypeMappings.Add(new FactTypeMapping(factType, firstRole, secondRole, FactTypeMappingType.Deep));
+							}
+							else if (!firstRoleIsMandatory && secondRoleIsMandatory) // ...only secondRole is mandatory...
+							{
+								// Deep map toward firstRolePlayer.
+								potentialFactTypeMappings.Add(new FactTypeMapping(factType, secondRole, firstRole, FactTypeMappingType.Deep));
+								// Shallow map toward secondRolePlayer.
+								potentialFactTypeMappings.Add(new FactTypeMapping(factType, firstRole, secondRole, FactTypeMappingType.Shallow));
+							}
+							else // ...both roles are mandatory...
+							{
+								bool firstRoleIsUniqueAndPreferred = firstRoleIsUnique && firstRoleUniquenessConstraint.IsPreferred;
+								bool secondRoleIsUniqueAndPreferred = secondRoleIsUnique && secondRoleUniquenessConstraint.IsPreferred;
+
+								// We do this to make sure that we never shallowly map towards a preferred identifier.
+								// UNDONE: Should we be doing this for the less-than-two mandatories cases as well? -Kevin
+
+								// If firstRole is not preferred...
+								if (!firstRoleIsUniqueAndPreferred)
 								{
 									// Shallow map toward firstRolePlayer.
 									potentialFactTypeMappings.Add(new FactTypeMapping(factType, secondRole, firstRole, FactTypeMappingType.Shallow));
+								}
+
+								// If seccondRole is not preferred...
+								if (!secondRoleIsUniqueAndPreferred)
+								{
 									// Shallow map toward secondRolePlayer.
 									potentialFactTypeMappings.Add(new FactTypeMapping(factType, firstRole, secondRole, FactTypeMappingType.Shallow));
 								}
-                                // If exactly one role is mandatory, we only allow shallow towards that role or deep away from it.
-                                // This is an optimization, but at this point I don't remember with 100% confidence that it is correct.
-                                // -Kevin
-								else if (firstRoleIsMandatory && !secondRoleIsMandatory) // ...only firstRole is mandatory...
-								{
-									// Shallow map toward firstRolePlayer.
-									potentialFactTypeMappings.Add(new FactTypeMapping(factType, secondRole, firstRole, FactTypeMappingType.Shallow));
-									// Deep map toward secondRolePlayer.
-									potentialFactTypeMappings.Add(new FactTypeMapping(factType, firstRole, secondRole, FactTypeMappingType.Deep));
-								}
-								else if (!firstRoleIsMandatory && secondRoleIsMandatory) // ...only secondRole is mandatory...
-								{
-									// Deep map toward firstRolePlayer.
-									potentialFactTypeMappings.Add(new FactTypeMapping(factType, secondRole, firstRole, FactTypeMappingType.Deep));
-									// Shallow map toward secondRolePlayer.
-									potentialFactTypeMappings.Add(new FactTypeMapping(factType, firstRole, secondRole, FactTypeMappingType.Shallow));
-								}
-								else // ...both roles are mandatory...
-								{
-									bool firstRoleIsUniqueAndPreferred = firstRoleIsUnique && firstRoleUniquenessConstraint.IsPreferred;
-									bool secondRoleIsUniqueAndPreferred = secondRoleIsUnique && secondRoleUniquenessConstraint.IsPreferred;
 
-                                    // We do this to make sure that we never shallowly map towards a preferred identifier.
-
-									// If firstRole is not preferred...
-									if (!firstRoleIsUniqueAndPreferred)
-									{
-										// Shallow map toward firstRolePlayer.
-										potentialFactTypeMappings.Add(new FactTypeMapping(factType, secondRole, firstRole, FactTypeMappingType.Shallow));
-									}
-
-									// If seccondRole is not preferred...
-									if (!secondRoleIsUniqueAndPreferred)
-									{
-										// Shallow map toward secondRolePlayer.
-										potentialFactTypeMappings.Add(new FactTypeMapping(factType, firstRole, secondRole, FactTypeMappingType.Shallow));
-									}
-
-									// Deep map toward firstRolePlayer.
-									potentialFactTypeMappings.Add(new FactTypeMapping(factType, secondRole, firstRole, FactTypeMappingType.Deep));
-									// Deep map toward secondRolePlayer.
-									potentialFactTypeMappings.Add(new FactTypeMapping(factType, firstRole, secondRole, FactTypeMappingType.Deep));
-								}
-
-								undecidedFactTypeMappings.Add(factType, potentialFactTypeMappings);
+								// Deep map toward firstRolePlayer.
+								potentialFactTypeMappings.Add(new FactTypeMapping(factType, secondRole, firstRole, FactTypeMappingType.Deep));
+								// Deep map toward secondRolePlayer.
+								potentialFactTypeMappings.Add(new FactTypeMapping(factType, firstRole, secondRole, FactTypeMappingType.Deep));
 							}
+
+							undecidedFactTypeMappings.Add(factType, potentialFactTypeMappings);
 						}
 					}
 				}
@@ -345,19 +370,6 @@ namespace Neumont.Tools.ORMToORMAbstractionBridge
 			} while (changeCount > 0);
 		}
 
-		/// <summary>
-		/// Populates this <see cref="AbstractionModel"/> given the decided <see cref="FactTypeMapping"/> objects.
-		/// </summary>
-		/// <param name="factTypeMappings">The decided <see cref="FactTypeMapping"/> objects.</param>
-		private void GenerateOialModel(FactTypeMappingDictionary factTypeMappings)
-		{
-			GenerateInformationTypeFormats();
-			GenerateConceptTypes(factTypeMappings);
-			GenerateConceptTypeChildren(factTypeMappings);
-			GenerateFactTypeMappings(factTypeMappings);
-			GenerateUniqueness(factTypeMappings);
-			GenerateAssociations();
-		}
 		#region Filter Algorithms Methods
 		/// <summary>
 		/// Filters out deep potential mappings that are from an <see cref="ObjectType"/> that already has a decided deep
@@ -435,9 +447,8 @@ namespace Neumont.Tools.ORMToORMAbstractionBridge
 				FactType factType = undecidedFactTypeMapping.Key;
 				FactTypeMappingList potentialFactTypeMappings = undecidedFactTypeMapping.Value;
 				LinkedElementCollection<RoleBase> roles = factType.RoleCollection;
-				int roleCount = roles.Count;
 
-				Debug.Assert(roleCount == 2, "All fact type mappings should be for fact types with exactly two roles.");
+				Debug.Assert(roles.Count == 2, "All fact type mappings should be for fact types with exactly two roles.");
 
 				Role firstRole = roles[0].Role;
 				Role secondRole = roles[1].Role;
@@ -506,6 +517,7 @@ namespace Neumont.Tools.ORMToORMAbstractionBridge
 
 			foreach (Role rolePlayed in rolesPlayed)
 			{
+				// NOTE: We don't need the ShouldIgnoreFactType filter here, because fact types that we want to ignore won't be in the dictionaries in the first place.
 				FactType factType = rolePlayed.BinarizedFactType;
 
 				if (factType == excludedFactType)
@@ -539,6 +551,21 @@ namespace Neumont.Tools.ORMToORMAbstractionBridge
 			return false;
 		}
 		#endregion // Filter Algorithms Methods
+
+		/// <summary>
+		/// Populates this <see cref="AbstractionModel"/> given the decided <see cref="FactTypeMapping"/> objects.
+		/// </summary>
+		/// <param name="factTypeMappings">The decided <see cref="FactTypeMapping"/> objects.</param>
+		private void GenerateOialModel(FactTypeMappingDictionary factTypeMappings)
+		{
+			GenerateInformationTypeFormats();
+			GenerateConceptTypes(factTypeMappings);
+			GenerateConceptTypeChildren(factTypeMappings);
+			GenerateFactTypeMappings(factTypeMappings);
+			GenerateUniqueness(factTypeMappings);
+			GenerateAssociations();
+		}
+
 		#region Generation Algorithm Methods
 		/// <summary>
 		/// Generates the <see cref="InformationTypeFormat"/> objects and adds them to the model.
@@ -729,8 +756,7 @@ namespace Neumont.Tools.ORMToORMAbstractionBridge
 				// For each role played by its object type...
 				foreach (Role role in objectType.PlayedRoleCollection)
 				{
-					// If factType is implicitly or explicity objectified...
-					if (role.FactType.RoleCollection.Count != 2 || role.FactType.Objectification != null)
+					if (ShouldIgnoreFactType(role.FactType))
 					{
 						continue;
 					}
@@ -755,12 +781,18 @@ namespace Neumont.Tools.ORMToORMAbstractionBridge
 								continue;
 							}
 
+							bool hasFactTypeThatShouldBeIgnored = false;
 							bool allChildrenMapTowardObjectType = true;
 							IList<FactType> factTypes = new List<FactType>();
 
 							foreach (Role childRole in uninquenessConstraint.RoleCollection)
 							{
 								FactType binarizedFactType = childRole.BinarizedFactType;
+								if (ShouldIgnoreFactType(binarizedFactType))
+								{
+									hasFactTypeThatShouldBeIgnored = true;
+									break;
+								}
 								FactTypeMapping factTypeMapping = factTypeMappings[binarizedFactType];
 
 								if (factTypeMapping.TowardsObjectType != objectType)
@@ -772,6 +804,10 @@ namespace Neumont.Tools.ORMToORMAbstractionBridge
 								{
 									factTypes.Add(binarizedFactType);
 								}
+							}
+							if (hasFactTypeThatShouldBeIgnored)
+							{
+								continue;
 							}
 
 							if (allChildrenMapTowardObjectType)
@@ -808,7 +844,7 @@ namespace Neumont.Tools.ORMToORMAbstractionBridge
 									// Create uniquenesss
 									Uniqueness uniqueness = new Uniqueness(Store, propertyAssignments);
 									uniqueness.ConceptType = conceptType;
-									UniquenessIsForUniquenessConstraint uniquenessIsForUniquenessConstraint = new UniquenessIsForUniquenessConstraint(uniqueness, uninquenessConstraint);
+									new UniquenessIsForUniquenessConstraint(uniqueness, uninquenessConstraint);
 
 									foreach (ConceptTypeChild conceptTypeChild in conceptTypeChildren)
 									{
@@ -893,6 +929,10 @@ namespace Neumont.Tools.ORMToORMAbstractionBridge
 				foreach (Role role in roles)
 				{
 					FactType factType = role.BinarizedFactType;
+					if (ShouldIgnoreFactType(factType))
+					{
+						continue;
+					}
 					FactTypeMapping factTypeMapping = factTypeMappings[factType];
 
 					if (factTypeMapping.FromObjectType == objectType && factTypeMapping.MappingType == FactTypeMappingType.Deep)
@@ -900,7 +940,6 @@ namespace Neumont.Tools.ORMToORMAbstractionBridge
 						return false;
 					}
 				}
-
 				return true;
 			}
 
@@ -932,6 +971,10 @@ namespace Neumont.Tools.ORMToORMAbstractionBridge
 			foreach (Role role in ObjectTypePlaysRole.GetPlayedRoleCollection(objectType))
 			{
 				FactType factType = role.FactType;
+				if (ShouldIgnoreFactType(factType))
+				{
+					continue;
+				}
 
 				// If it is a subtype fact, we need a concept type. Although the algorithm only calls for this in the case
 				// of subtype meta roles, supertype meta roles will always match the patterns below, so we can immediately
@@ -939,12 +982,6 @@ namespace Neumont.Tools.ORMToORMAbstractionBridge
 				if (factType is SubtypeFact)
 				{
 					return true;
-				}
-
-				// Skip non-binarized fact types.
-				if (factType.Objectification != null)
-				{
-					continue;
 				}
 
 				FactTypeMapping factTypeMapping = factTypeMappings[factType];
@@ -998,7 +1035,12 @@ namespace Neumont.Tools.ORMToORMAbstractionBridge
 
 				foreach (Role role in rolesPlayed)
 				{
-					FactType factType = role.BinarizedFactType;
+					FactType factType = role.FactType;
+					// UNDONE: Double check whether this actually needs to be filtered. -Kevin
+					if (ShouldIgnoreFactType(factType))
+					{
+						continue;
+					}
 					Role oppositeRole = (Role)role.OppositeRoleAlwaysResolveProxy;
 
 					// Recursivly call this for each of objectType's preferred identifier object types.
