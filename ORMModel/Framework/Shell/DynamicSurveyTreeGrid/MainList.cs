@@ -335,7 +335,7 @@ namespace Neumont.Tools.Modeling.Shell.DynamicSurveyTreeGrid
 						{
 							if (overlayImage == -1)
 							{
-								overlayImage = answer;
+								overlayImage = answer + question.ProviderImageListOffset;
 							}
 							else
 							{
@@ -344,7 +344,7 @@ namespace Neumont.Tools.Modeling.Shell.DynamicSurveyTreeGrid
 									overlayBitField = 0;
 									AddToOverlayList(overlayImage, ref overlayBitField);
 								}
-								AddToOverlayList(answer, ref overlayBitField);
+								AddToOverlayList(answer + question.ProviderImageListOffset, ref overlayBitField);
 							}
 						}
 					}

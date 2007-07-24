@@ -23,6 +23,8 @@ using Neumont.Tools.Modeling.Shell.DynamicSurveyTreeGrid;
 using System.Windows.Forms;
 using Microsoft.VisualStudio.Modeling;
 using System.Globalization;
+using Neumont.Tools.Modeling;
+using Neumont.Tools.ORM.ObjectModel;
 
 namespace Neumont.Tools.RelationalModels.ConceptualDatabase
 {
@@ -1120,7 +1122,7 @@ namespace Neumont.Tools.RelationalModels.ConceptualDatabase
 	}
 	#endregion // ReferenceConstraintTargetsTable answers
 	#region ISurveyNodeProvider Implementation
-	partial class ConceptualDatabaseDomainModel : ISurveyNodeProvider
+	partial class ConceptualDatabaseDomainModel : ISurveyNodeProvider, IModelingEventSubscriber
 	{
 		#region ISurveyNodeProvider Implementation
 		IEnumerable<object> ISurveyNodeProvider.GetSurveyNodes(object context, object expansionKey)
@@ -1201,6 +1203,258 @@ namespace Neumont.Tools.RelationalModels.ConceptualDatabase
 			}
 		}
 		#endregion // ISurveyNodeProvider Implementation
+		#region IModelingEventSubscriber Implementation
+		/// <summary>
+		/// Implements <see cref="IModelingEventSubscriber.ManagePostLoadModelingEventHandlers"/>
+		/// </summary>
+		protected static void ManagePostLoadModelingEventHandlers(ModelingEventManager eventManager, EventHandlerAction action)
+		{
+			// Nothing to do
+		}
+		void IModelingEventSubscriber.ManagePostLoadModelingEventHandlers(ModelingEventManager eventManager, EventHandlerAction action)
+		{
+			ManagePostLoadModelingEventHandlers(eventManager, action);
+		}
+		/// <summary>
+		/// Implements <see cref="IModelingEventSubscriber.ManagePreLoadModelingEventHandlers"/>
+		/// </summary>
+		protected static void ManagePreLoadModelingEventHandlers(ModelingEventManager eventManager, EventHandlerAction action)
+		{
+			// Nothing to do
+		}
+		void IModelingEventSubscriber.ManagePreLoadModelingEventHandlers(ModelingEventManager eventManager, EventHandlerAction action)
+		{
+			ManagePreLoadModelingEventHandlers(eventManager, action);
+		}
+		/// <summary>
+		/// Implements <see cref="IModelingEventSubscriber.ManageSurveyQuestionModelingEventHandlers"/>
+		/// </summary>
+		protected void ManageSurveyQuestionModelingEventHandlers(ModelingEventManager eventManager, EventHandlerAction action)
+		{
+			Store store = this.Store;
+			DomainDataDirectory dataDir = store.DomainDataDirectory;
+			DomainClassInfo classInfo;
+
+			// Schema elements (top level)
+			classInfo = dataDir.FindDomainClass(Schema.DomainClassId);
+			eventManager.AddOrRemoveHandler(classInfo, new EventHandler<ElementAddedEventArgs>(SchemaAdded), action);
+			eventManager.AddOrRemoveHandler(classInfo, new EventHandler<ElementDeletedEventArgs>(ElementRemoved), action);
+			eventManager.AddOrRemoveHandler(classInfo, new EventHandler<ElementPropertyChangedEventArgs>(SchemaChanged), action);
+				
+			// Table elements (schema expansion)
+			eventManager.AddOrRemoveHandler(dataDir.FindDomainRelationship(SchemaContainsTable.DomainClassId), new EventHandler<ElementAddedEventArgs>(TableAdded), action);
+			classInfo = dataDir.FindDomainClass(Table.DomainClassId);
+			eventManager.AddOrRemoveHandler(classInfo, new EventHandler<ElementDeletedEventArgs>(ElementRemoved), action);
+			eventManager.AddOrRemoveHandler(classInfo, new EventHandler<ElementPropertyChangedEventArgs>(TableChanged), action);
+
+			// Column, uniqueness, and foreign key elements (inside table)
+			eventManager.AddOrRemoveHandler(dataDir.FindDomainRelationship(TableContainsColumn.DomainClassId), new EventHandler<ElementAddedEventArgs>(ColumnAdded), action);
+			classInfo = dataDir.FindDomainClass(Column.DomainClassId);
+			eventManager.AddOrRemoveHandler(classInfo, new EventHandler<ElementDeletedEventArgs>(ElementRemoved), action);
+			eventManager.AddOrRemoveHandler(classInfo, new EventHandler<ElementPropertyChangedEventArgs>(ColumnChanged), action);
+			eventManager.AddOrRemoveHandler(dataDir.FindDomainRelationship(TableContainsReferenceConstraint.DomainClassId), new EventHandler<ElementAddedEventArgs>(ReferenceConstraintAdded), action);
+			classInfo = dataDir.FindDomainClass(ReferenceConstraint.DomainClassId);
+			eventManager.AddOrRemoveHandler(classInfo, new EventHandler<ElementDeletedEventArgs>(ElementRemoved), action);
+			eventManager.AddOrRemoveHandler(classInfo, new EventHandler<ElementPropertyChangedEventArgs>(ReferenceConstraintChanged), action);
+			eventManager.AddOrRemoveHandler(dataDir.FindDomainRelationship(TableContainsUniquenessConstraint.DomainClassId), new EventHandler<ElementAddedEventArgs>(UniquenessConstraintAdded), action);
+			classInfo = dataDir.FindDomainClass(UniquenessConstraint.DomainClassId);
+			eventManager.AddOrRemoveHandler(classInfo, new EventHandler<ElementDeletedEventArgs>(ElementRemoved), action);
+			eventManager.AddOrRemoveHandler(classInfo, new EventHandler<ElementPropertyChangedEventArgs>(UniquenessConstraintChanged), action);
+
+			// Reference constraint expansion elements
+			classInfo = dataDir.FindDomainRelationship(ReferenceConstraintTargetsTable.DomainClassId);
+			eventManager.AddOrRemoveHandler(classInfo, new EventHandler<ElementAddedEventArgs>(TargetedTableAdded), action);
+			eventManager.AddOrRemoveHandler(classInfo, new EventHandler<ElementDeletedEventArgs>(ElementRemoved), action);
+			eventManager.AddOrRemoveHandler(dataDir.FindDomainRelationship(ReferenceConstraintContainsColumnReference.DomainClassId), new EventHandler<ElementAddedEventArgs>(ColumnReferenceAdded), action);
+			eventManager.AddOrRemoveHandler(dataDir.FindDomainRelationship(ColumnReference.DomainClassId), new EventHandler<ElementDeletedEventArgs>(ElementRemoved), action);
+
+			// Uniqueness constraint expansion elements
+			classInfo = dataDir.FindDomainRelationship(UniquenessConstraintIncludesColumn.DomainClassId);
+			eventManager.AddOrRemoveHandler(classInfo, new EventHandler<ElementAddedEventArgs>(UniquenessConstraintColumnAdded), action);
+			eventManager.AddOrRemoveHandler(classInfo, new EventHandler<ElementDeletedEventArgs>(ElementRemoved), action);
+		}
+		void IModelingEventSubscriber.ManageSurveyQuestionModelingEventHandlers(ModelingEventManager eventManager, EventHandlerAction action)
+		{
+			ManageSurveyQuestionModelingEventHandlers(eventManager, action);
+		}
+		#endregion // IModelingEventSubscriber Implementation
+		#region SurveyQuestion event handlers
+		private static readonly Type[] SurveyTableChildGlyphTypeQuestionTypes = new Type[] { typeof(SurveyTableChildGlyphType) };
+		/// <summary>
+		/// This will work for almost all delete scenarios
+		/// </summary>
+		private static void ElementRemoved(object sender, ElementDeletedEventArgs e)
+		{
+			INotifySurveyElementChanged eventNotify;
+			ModelElement element = e.ModelElement;
+			if (null != (eventNotify = (element.Store as IORMToolServices).NotifySurveyElementChanged))
+			{
+				eventNotify.ElementDeleted(element);
+			}
+		}
+		private static void SchemaAdded(object sender, ElementAddedEventArgs e)
+		{
+			INotifySurveyElementChanged eventNotify;
+			ModelElement element = e.ModelElement;
+			if (null != (eventNotify = (element.Store as IORMToolServices).NotifySurveyElementChanged))
+			{
+				eventNotify.ElementAdded(element, null);
+			}
+		}
+		private static void SchemaChanged(object sender, ElementPropertyChangedEventArgs e)
+		{
+			if (e.DomainProperty.Id == Schema.NameDomainPropertyId)
+			{
+				INotifySurveyElementChanged eventNotify;
+				ModelElement element = e.ModelElement;
+				if (null != (eventNotify = (element.Store as IORMToolServices).NotifySurveyElementChanged))
+				{
+					eventNotify.ElementRenamed(element);
+				}
+			}
+		}
+		private static void TableAdded(object sender, ElementAddedEventArgs e)
+		{
+			INotifySurveyElementChanged eventNotify;
+			ModelElement element = e.ModelElement;
+			if (null != (eventNotify = (element.Store as IORMToolServices).NotifySurveyElementChanged))
+			{
+				SchemaContainsTable link = element as SchemaContainsTable;
+				eventNotify.ElementAdded(link.Table, link.Schema);
+			}
+		}
+		private static void TableChanged(object sender, ElementPropertyChangedEventArgs e)
+		{
+			if (e.DomainProperty.Id == Table.NameDomainPropertyId)
+			{
+				INotifySurveyElementChanged eventNotify;
+				ModelElement element = e.ModelElement;
+				if (null != (eventNotify = (element.Store as IORMToolServices).NotifySurveyElementChanged))
+				{
+					eventNotify.ElementRenamed(element);
+					foreach (ReferenceConstraintTargetsTable targetTableLink in ReferenceConstraintTargetsTable.GetLinksToReferenceConstraints((Table)element))
+					{
+						eventNotify.ElementRenamed(targetTableLink);
+					}
+				}
+			}
+		}
+		private static void ColumnAdded(object sender, ElementAddedEventArgs e)
+		{
+			INotifySurveyElementChanged eventNotify;
+			ModelElement element = e.ModelElement;
+			if (null != (eventNotify = (element.Store as IORMToolServices).NotifySurveyElementChanged))
+			{
+				TableContainsColumn link = element as TableContainsColumn;
+				eventNotify.ElementAdded(link.Column, link.Table);
+			}
+		}
+		private static void ColumnChanged(object sender, ElementPropertyChangedEventArgs e)
+		{
+			if (e.DomainProperty.Id == Column.NameDomainPropertyId)
+			{
+				INotifySurveyElementChanged eventNotify;
+				ModelElement element = e.ModelElement;
+				if (null != (eventNotify = (element.Store as IORMToolServices).NotifySurveyElementChanged))
+				{
+					eventNotify.ElementRenamed(element);
+					Column column = (Column)element;
+					foreach (ColumnReference columnRef in ColumnReference.GetLinksToSourceColumnCollection(column))
+					{
+						eventNotify.ElementRenamed(columnRef);
+					}
+					foreach (ColumnReference columnRef in ColumnReference.GetLinksToTargetColumnCollection(column))
+					{
+						eventNotify.ElementRenamed(columnRef);
+					}
+					foreach (UniquenessConstraintIncludesColumn columnRef in UniquenessConstraintIncludesColumn.GetLinksToUniquenessConstraints(column))
+					{
+						eventNotify.ElementRenamed(columnRef);
+					}
+				}
+			}
+		}
+		private static void ReferenceConstraintAdded(object sender, ElementAddedEventArgs e)
+		{
+			INotifySurveyElementChanged eventNotify;
+			ModelElement element = e.ModelElement;
+			if (null != (eventNotify = (element.Store as IORMToolServices).NotifySurveyElementChanged))
+			{
+				TableContainsReferenceConstraint link = element as TableContainsReferenceConstraint;
+				eventNotify.ElementAdded(link.ReferenceConstraint, link.Table);
+			}
+		}
+		private static void ReferenceConstraintChanged(object sender, ElementPropertyChangedEventArgs e)
+		{
+			if (e.DomainProperty.Id == ReferenceConstraint.NameDomainPropertyId)
+			{
+				INotifySurveyElementChanged eventNotify;
+				ModelElement element = e.ModelElement;
+				if (null != (eventNotify = (element.Store as IORMToolServices).NotifySurveyElementChanged))
+				{
+					eventNotify.ElementRenamed(element);
+				}
+			}
+		}
+		private static void TargetedTableAdded(object sender, ElementAddedEventArgs e)
+		{
+			INotifySurveyElementChanged eventNotify;
+			ModelElement element = e.ModelElement;
+			if (null != (eventNotify = (element.Store as IORMToolServices).NotifySurveyElementChanged))
+			{
+				ReferenceConstraintTargetsTable link = element as ReferenceConstraintTargetsTable;
+				eventNotify.ElementAdded(link.TargetTable, link.ReferenceConstraint);
+			}
+		}
+		private static void ColumnReferenceAdded(object sender, ElementAddedEventArgs e)
+		{
+			INotifySurveyElementChanged eventNotify;
+			ModelElement element = e.ModelElement;
+			if (null != (eventNotify = (element.Store as IORMToolServices).NotifySurveyElementChanged))
+			{
+				ReferenceConstraintContainsColumnReference link = element as ReferenceConstraintContainsColumnReference;
+				eventNotify.ElementAdded(link.ColumnReference, link.ReferenceConstraint);
+			}
+		}
+		private static void UniquenessConstraintAdded(object sender, ElementAddedEventArgs e)
+		{
+			INotifySurveyElementChanged eventNotify;
+			ModelElement element = e.ModelElement;
+			if (null != (eventNotify = (element.Store as IORMToolServices).NotifySurveyElementChanged))
+			{
+				TableContainsUniquenessConstraint link = element as TableContainsUniquenessConstraint;
+				eventNotify.ElementAdded(link.UniquenessConstraint, link.Table);
+			}
+		}
+		private static void UniquenessConstraintChanged(object sender, ElementPropertyChangedEventArgs e)
+		{
+
+			INotifySurveyElementChanged eventNotify;
+			ModelElement element = e.ModelElement;
+			if (null != (eventNotify = (element.Store as IORMToolServices).NotifySurveyElementChanged))
+			{
+				Guid attributeId = e.DomainProperty.Id;
+				if (attributeId == UniquenessConstraint.NameDomainPropertyId)
+				{
+					eventNotify.ElementRenamed(element);
+				}
+				else if (attributeId == UniquenessConstraint.IsPrimaryDomainPropertyId)
+				{
+					eventNotify.ElementChanged(element, ConceptualDatabaseDomainModel.SurveyTableChildGlyphTypeQuestionTypes);
+				}
+			}
+		}
+		private static void UniquenessConstraintColumnAdded(object sender, ElementAddedEventArgs e)
+		{
+			INotifySurveyElementChanged eventNotify;
+			ModelElement element = e.ModelElement;
+			if (null != (eventNotify = (element.Store as IORMToolServices).NotifySurveyElementChanged))
+			{
+				UniquenessConstraintIncludesColumn link = element as UniquenessConstraintIncludesColumn;
+				eventNotify.ElementAdded(link.Column, link.UniquenessConstraint);
+			}
+		}
+		#endregion // SurveyQuestion event handlers
 	}
 	#endregion // ISurveyNodeProvider Implementation
 }

@@ -102,46 +102,4 @@ namespace Neumont.Tools.ORM.ObjectModel
 		MergeAsTopLevelProperty = 2,
 	}
 	#endregion
-	#region IORMModelEventSubscriber
-	/// <summary>
-	/// This interface provides needed methods that are required to add Events to the Object Model.
-	/// </summary>
-	public interface IORMModelEventSubscriber
-	{
-		/// <summary>
-		/// Manages modeling <see cref="EventHandler{TEventArgs}"/>s for the primary <see cref="Store"/>.
-		/// Called before the document is loaded and when <see cref="EventHandler{TEventArgs}"/>s are removed.
-		/// </summary>
-		/// <param name="eventManager">
-		/// The <see cref="ModelingEventManager"/> used to add or remove <see cref="EventHandler{TEventArgs}"/>s.
-		/// </param>
-		/// <param name="action">
-		/// The <see cref="EventHandlerAction"/> that should be taken for the <see cref="EventHandler{TEventArgs}"/>s.
-		/// </param>
-		void ManagePreLoadModelingEventHandlers(ModelingEventManager eventManager, EventHandlerAction action);
-		/// <summary>
-		/// Manages modeling <see cref="EventHandler{TEventArgs}"/>s for the primary <see cref="Store"/>.
-		/// Called after the document is loaded and when <see cref="EventHandler{TEventArgs}"/>s are removed.
-		/// </summary>
-		/// <param name="eventManager">
-		/// The <see cref="ModelingEventManager"/> used to add or remove <see cref="EventHandler{TEventArgs}"/>s.
-		/// </param>
-		/// <param name="action">
-		/// The <see cref="EventHandlerAction"/> that should be taken for the <see cref="EventHandler{TEventArgs}"/>s.
-		/// </param>
-		void ManagePostLoadModelingEventHandlers(ModelingEventManager eventManager, EventHandlerAction action);
-		/// <summary>
-		/// Manages modeling <see cref="EventHandler{TEventArgs}"/>s for the primary <see cref="Store"/>.
-		/// Called when survey questions (used to load the model browser) are required and when
-		/// <see cref="EventHandler{TEventArgs}"/>s are removed.
-		/// </summary>
-		/// <param name="eventManager">
-		/// The <see cref="ModelingEventManager"/> used to add or remove <see cref="EventHandler{TEventArgs}"/>s.
-		/// </param>
-		/// <param name="action">
-		/// The <see cref="EventHandlerAction"/> that should be taken for the <see cref="EventHandler{TEventArgs}"/>s.
-		/// </param>
-		void ManageSurveyQuestionModelingEventHandlers(ModelingEventManager eventManager, EventHandlerAction action);
-	}
-	#endregion // IORMModelEventSubscriber
 }

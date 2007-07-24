@@ -456,7 +456,7 @@ namespace Neumont.Tools.ORM.Shell
 		{
 			Store store = Store;
 			ModelingEventManager eventManager = ModelingEventManager.GetModelingEventManager(store);
-			foreach (IORMModelEventSubscriber subscriber in Utility.EnumerateDomainModels<IORMModelEventSubscriber>(Store.DomainModels))
+			foreach (IModelingEventSubscriber subscriber in Utility.EnumerateDomainModels<IModelingEventSubscriber>(Store.DomainModels))
 			{
 				subscriber.ManagePreLoadModelingEventHandlers(eventManager, EventHandlerAction.Add);
 			}
@@ -470,7 +470,7 @@ namespace Neumont.Tools.ORM.Shell
 		{
 			Store store = Store;
 			ModelingEventManager eventManager = ModelingEventManager.GetModelingEventManager(store);
-			foreach (IORMModelEventSubscriber subscriber in Utility.EnumerateDomainModels<IORMModelEventSubscriber>(Store.DomainModels))
+			foreach (IModelingEventSubscriber subscriber in Utility.EnumerateDomainModels<IModelingEventSubscriber>(Store.DomainModels))
 			{
 				subscriber.ManagePostLoadModelingEventHandlers(eventManager, EventHandlerAction.Add);
 			}
@@ -495,7 +495,7 @@ namespace Neumont.Tools.ORM.Shell
 			}
 			Store store = Store;
 			ModelingEventManager eventManager = ModelingEventManager.GetModelingEventManager(store);
-			foreach (IORMModelEventSubscriber subscriber in Utility.EnumerateDomainModels<IORMModelEventSubscriber>(Store.DomainModels))
+			foreach (IModelingEventSubscriber subscriber in Utility.EnumerateDomainModels<IModelingEventSubscriber>(Store.DomainModels))
 			{
 				if (addedPreLoad)
 				{

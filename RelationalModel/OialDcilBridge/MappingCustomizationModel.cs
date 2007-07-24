@@ -25,43 +25,43 @@ namespace Neumont.Tools.ORMAbstractionToConceptualDatabaseBridge
 	{
 		// Put this first so that MappingCustomizationModel.resx binds the resource name to the correct class
 	}
-	public partial class ORMAbstractionToConceptualDatabaseBridgeDomainModel : IORMModelEventSubscriber
+	public partial class ORMAbstractionToConceptualDatabaseBridgeDomainModel : IModelingEventSubscriber
 	{
-		#region IORMModelEventSubscriber Implementation
+		#region IModelingEventSubscriber Implementation
 		/// <summary>
-		/// Implements <see cref="IORMModelEventSubscriber.ManagePostLoadModelingEventHandlers"/>
+		/// Implements <see cref="IModelingEventSubscriber.ManagePostLoadModelingEventHandlers"/>
 		/// </summary>
 		protected void ManagePostLoadModelingEventHandlers(ModelingEventManager eventManager, EventHandlerAction action)
 		{
 			IORMPropertyProviderService propertyProvider = ((IORMToolServices)Store).PropertyProviderService;
 			propertyProvider.AddOrRemovePropertyProvider<FactType>(AssimilationMapping.PopulateAssimilationMappingExtensionProperties, true, action);
 		}
-		void IORMModelEventSubscriber.ManagePostLoadModelingEventHandlers(ModelingEventManager eventManager, EventHandlerAction action)
+		void IModelingEventSubscriber.ManagePostLoadModelingEventHandlers(ModelingEventManager eventManager, EventHandlerAction action)
 		{
 			ManagePostLoadModelingEventHandlers(eventManager, action);
 		}
 		/// <summary>
-		/// Implements <see cref="IORMModelEventSubscriber.ManagePreLoadModelingEventHandlers"/>
+		/// Implements <see cref="IModelingEventSubscriber.ManagePreLoadModelingEventHandlers"/>
 		/// </summary>
 		protected static void ManagePreLoadModelingEventHandlers(ModelingEventManager eventManager, EventHandlerAction action)
 		{
 			// Nothing to do
 		}
-		void IORMModelEventSubscriber.ManagePreLoadModelingEventHandlers(ModelingEventManager eventManager, EventHandlerAction action)
+		void IModelingEventSubscriber.ManagePreLoadModelingEventHandlers(ModelingEventManager eventManager, EventHandlerAction action)
 		{
 			ManagePreLoadModelingEventHandlers(eventManager, action);
 		}
 		/// <summary>
-		/// Implements <see cref="IORMModelEventSubscriber.ManageSurveyQuestionModelingEventHandlers"/>
+		/// Implements <see cref="IModelingEventSubscriber.ManageSurveyQuestionModelingEventHandlers"/>
 		/// </summary>
 		protected static void ManageSurveyQuestionModelingEventHandlers(ModelingEventManager eventManager, EventHandlerAction action)
 		{
 			// Nothing to do
 		}
-		void IORMModelEventSubscriber.ManageSurveyQuestionModelingEventHandlers(ModelingEventManager eventManager, EventHandlerAction action)
+		void IModelingEventSubscriber.ManageSurveyQuestionModelingEventHandlers(ModelingEventManager eventManager, EventHandlerAction action)
 		{
 			ManageSurveyQuestionModelingEventHandlers(eventManager, action);
 		}
-		#endregion // IORMModelEventSubscriber Implementation
+		#endregion // IModelingEventSubscriber Implementation
 	}
 }

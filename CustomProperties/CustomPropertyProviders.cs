@@ -29,7 +29,7 @@ using Neumont.Tools.Modeling;
 namespace Neumont.Tools.ORM.CustomProperties
 {
 	[VerbalizationSnippetsProvider("VerbalizationSnippets")]
-	sealed partial class CustomPropertiesDomainModel : IORMModelEventSubscriber
+	sealed partial class CustomPropertiesDomainModel : IModelingEventSubscriber
 	{
 		#region CustomPropertyProviders class
 		private static class CustomPropertyProviders
@@ -101,8 +101,8 @@ namespace Neumont.Tools.ORM.CustomProperties
 		}
 		#endregion // CustomPropertyProviders class
 
-		#region IORMModelEventSubscriber Members
-		void IORMModelEventSubscriber.ManagePostLoadModelingEventHandlers(ModelingEventManager eventManager, EventHandlerAction action)
+		#region IModelingEventSubscriber Members
+		void IModelingEventSubscriber.ManagePostLoadModelingEventHandlers(ModelingEventManager eventManager, EventHandlerAction action)
 		{
 			IORMPropertyProviderService propertyProvisioningService = ((IORMToolServices)this.Store).PropertyProviderService;
 			propertyProvisioningService.AddOrRemovePropertyProvider<ORMModel>(CustomPropertyProviders.CustomPropertiesEditor, true, action);
@@ -119,11 +119,11 @@ namespace Neumont.Tools.ORM.CustomProperties
 			propertyProvisioningService.AddOrRemovePropertyProvider<SubsetConstraint>(CustomPropertyProviders.SubsetConstraint, true, action);
 			propertyProvisioningService.AddOrRemovePropertyProvider<ValueConstraint>(CustomPropertyProviders.ValueConstraint, true, action);
 		}
-		void IORMModelEventSubscriber.ManagePreLoadModelingEventHandlers(ModelingEventManager eventManager, EventHandlerAction action)
+		void IModelingEventSubscriber.ManagePreLoadModelingEventHandlers(ModelingEventManager eventManager, EventHandlerAction action)
 		{
 			// Do nothing
 		}
-		void IORMModelEventSubscriber.ManageSurveyQuestionModelingEventHandlers(ModelingEventManager eventManager, EventHandlerAction action)
+		void IModelingEventSubscriber.ManageSurveyQuestionModelingEventHandlers(ModelingEventManager eventManager, EventHandlerAction action)
 		{
 			// Do nothing
 		}

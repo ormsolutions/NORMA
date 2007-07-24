@@ -16,23 +16,22 @@
 
 using System;
 using Microsoft.VisualStudio.Modeling;
-using Neumont.Tools.ORM.ObjectModel;
 using Neumont.Tools.Modeling;
 
 namespace Neumont.Tools.ORM.ShapeModel
 {
-	public partial class ORMShapeDomainModel : IORMModelEventSubscriber
+	public partial class ORMShapeDomainModel : IModelingEventSubscriber
 	{
-		#region IORMModelEventSubscriber Implementation
+		#region IModelingEventSubscriber Implementation
 		/// <summary>
-		/// Implements <see cref="IORMModelEventSubscriber.ManagePreLoadModelingEventHandlers"/>.
+		/// Implements <see cref="IModelingEventSubscriber.ManagePreLoadModelingEventHandlers"/>.
 		/// This implementation does nothing and does not need to be called.
 		/// </summary>
-		void IORMModelEventSubscriber.ManagePreLoadModelingEventHandlers(ModelingEventManager eventManager, EventHandlerAction action)
+		void IModelingEventSubscriber.ManagePreLoadModelingEventHandlers(ModelingEventManager eventManager, EventHandlerAction action)
 		{
 		}
 		/// <summary>
-		/// Implements <see cref="IORMModelEventSubscriber.ManagePostLoadModelingEventHandlers"/>.
+		/// Implements <see cref="IModelingEventSubscriber.ManagePostLoadModelingEventHandlers"/>.
 		/// </summary>
 		protected void ManagePostLoadModelingEventHandlers(ModelingEventManager eventManager, EventHandlerAction action)
 		{
@@ -45,18 +44,18 @@ namespace Neumont.Tools.ORM.ShapeModel
 			FactTypeShape.ManageEventHandlers(store, eventManager, action);
 			SubtypeLink.ManageEventHandlers(store, eventManager, action);
 		}
-		void IORMModelEventSubscriber.ManagePostLoadModelingEventHandlers(ModelingEventManager eventManager, EventHandlerAction action)
+		void IModelingEventSubscriber.ManagePostLoadModelingEventHandlers(ModelingEventManager eventManager, EventHandlerAction action)
 		{
 			ManagePostLoadModelingEventHandlers(eventManager, action);
 		}
 		/// <summary>
-		/// Implements <see cref="IORMModelEventSubscriber.ManageSurveyQuestionModelingEventHandlers"/>.
+		/// Implements <see cref="IModelingEventSubscriber.ManageSurveyQuestionModelingEventHandlers"/>.
 		/// This implementation does nothing and does not need to be called.
 		/// </summary>
-		void IORMModelEventSubscriber.ManageSurveyQuestionModelingEventHandlers(ModelingEventManager eventManager, EventHandlerAction action)
+		void IModelingEventSubscriber.ManageSurveyQuestionModelingEventHandlers(ModelingEventManager eventManager, EventHandlerAction action)
 		{
 			//currently unimplemented as the survey doesn't care about shape model changes
 		}
-		#endregion // IORMModelEventSubscriber Implementation
+		#endregion // IModelingEventSubscriber Implementation
 	}
 }

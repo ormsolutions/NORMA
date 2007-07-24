@@ -86,10 +86,8 @@ namespace Neumont.Tools.Modeling.Shell.DynamicSurveyTreeGrid
 					/// <param name="index">The index.</param>
 					/// <param name="adjustIndex">Index of the adjust.</param>
 					/// <param name="modificationEvents">The modification events.</param>
-					/// <param name="notifyThrough">The notify through.</param>
-					/// <param name="notifyThroughOffset">The notify through offset.</param>
 					/// <returns></returns>
-					public bool AdjustDelete(int index, int adjustIndex, BranchModificationEventHandler modificationEvents, IBranch notifyThrough, int notifyThroughOffset)
+					public bool AdjustDelete(int index, int adjustIndex, BranchModificationEventHandler modificationEvents)
 					{
 						if (index <= End)
 						{
@@ -123,19 +121,12 @@ namespace Neumont.Tools.Modeling.Shell.DynamicSurveyTreeGrid
 											notifyListShifter.Count += adjustIndex;
 											if (modificationEvents != null)
 											{
-												if (notifyThrough != null)
-												{
-													HandleNeutral(index, adjustIndex, modificationEvents, notifyThrough, notifyThroughOffset);
-												}
-												else
-												{
-													HandleSubranch(index, adjustIndex, modificationEvents, notifyListShifter);
-												}
+												HandleSubranch(index, adjustIndex, modificationEvents, notifyListShifter);
 											}
 										}
 										else
 										{
-											notifyListGrouper.ElementDeletedAt(startIndex, modificationEvents, notifyThrough, notifyThroughOffset);
+											notifyListGrouper.ElementDeletedAt(startIndex, modificationEvents, null, 0);
 										}
 									}
 								}
@@ -150,7 +141,7 @@ namespace Neumont.Tools.Modeling.Shell.DynamicSurveyTreeGrid
 										}
 										else
 										{
-											notifyListGrouper.ElementDeletedAt(startIndex, modificationEvents, notifyThrough, notifyThroughOffset);
+											notifyListGrouper.ElementDeletedAt(startIndex, modificationEvents, null, 0);
 										}
 									}
 								}
@@ -181,7 +172,7 @@ namespace Neumont.Tools.Modeling.Shell.DynamicSurveyTreeGrid
 					/// <summary>
 					/// Return true if the calling grouper should show a new header item
 					/// </summary>
-					public bool AdjustAdd(bool isChanged, bool afterChanged, int index, BranchModificationEventHandler modificationEvents, IBranch notifyThrough, int notifyThroughOffset)
+					public bool AdjustAdd(bool isChanged, bool afterChanged, int index, BranchModificationEventHandler modificationEvents)
 					{
 						if (index <= End || (isChanged && (index == End + 1)))
 						{
@@ -212,19 +203,12 @@ namespace Neumont.Tools.Modeling.Shell.DynamicSurveyTreeGrid
 										notifyListShifter.Count += 1;
 										if (modificationEvents != null)
 										{
-											if (notifyThrough != null)
-											{
-												HandleNeutral(index, +1, modificationEvents, notifyThrough, notifyThroughOffset);
-											}
-											else
-											{
-												HandleSubranch(index, +1, modificationEvents, notifyListShifter);
-											}
+											HandleSubranch(index, +1, modificationEvents, notifyListShifter);
 										}
 									}
 									else
 									{
-										notifyListGrouper.ElementAddedAt(startIndex, modificationEvents, notifyThrough, notifyThroughOffset);
+										notifyListGrouper.ElementAddedAt(startIndex, modificationEvents, null, 0);
 									}
 								}
 							}
@@ -254,7 +238,7 @@ namespace Neumont.Tools.Modeling.Shell.DynamicSurveyTreeGrid
 					}
 					#endregion // AdjustAdd method
 					#region AdjustRename method
-					public void AdjustRename(int fromIndex, int toIndex, BranchModificationEventHandler modificationEvents, IBranch notifyThrough, int notifyThroughOffset)
+					public void AdjustRename(int fromIndex, int toIndex, BranchModificationEventHandler modificationEvents)
 					{
 						if (modificationEvents != null)
 						{
@@ -272,30 +256,16 @@ namespace Neumont.Tools.Modeling.Shell.DynamicSurveyTreeGrid
 										toIndex -= Start;
 										if (fromIndex != toIndex)
 										{
-											if (notifyThrough != null)
-											{
-												modificationEvents(notifyThrough, BranchModificationEventArgs.MoveItem(notifyThrough, fromIndex + notifyThroughOffset, toIndex + notifyThroughOffset));
-											}
-											else
-											{
-												modificationEvents(shifter, BranchModificationEventArgs.MoveItem(shifter, fromIndex, toIndex));
-											}
+											modificationEvents(shifter, BranchModificationEventArgs.MoveItem(shifter, fromIndex, toIndex));
 										}
 										else
 										{
-											if (notifyThrough != null)
-											{
-												modificationEvents(notifyThrough, BranchModificationEventArgs.DisplayDataChanged(new DisplayDataChangedData(VirtualTreeDisplayDataChanges.Text, notifyThrough, fromIndex + notifyThroughOffset, 0, 1)));
-											}
-											else
-											{
-												modificationEvents(shifter, BranchModificationEventArgs.DisplayDataChanged(new DisplayDataChangedData(VirtualTreeDisplayDataChanges.Text, shifter, fromIndex, 0, 1)));
-											}
+											modificationEvents(shifter, BranchModificationEventArgs.DisplayDataChanged(new DisplayDataChangedData(VirtualTreeDisplayDataChanges.Text, shifter, fromIndex, 0, 1)));
 										}
 									}
 									else if (null != (grouper = branch as ListGrouper))
 									{
-										grouper.ElementRenamedAt(fromIndex, toIndex, modificationEvents, notifyThrough, notifyThroughOffset);
+										grouper.ElementRenamedAt(fromIndex, toIndex, modificationEvents, null, 0);
 									}
 								}
 
@@ -318,21 +288,9 @@ namespace Neumont.Tools.Modeling.Shell.DynamicSurveyTreeGrid
 
 						}
 					}
-
-					private static void HandleNeutral(int index, int adjustIndex, BranchModificationEventHandler modificationEvents, IBranch notifyThrough, int notifyThroughOffset)
-					{
-						if (adjustIndex == -1)
-						{
-							modificationEvents(notifyThrough, BranchModificationEventArgs.DeleteItems(notifyThrough, notifyThroughOffset + index, 1));
-						}
-						else if (adjustIndex == 1)
-						{
-							modificationEvents(notifyThrough, BranchModificationEventArgs.InsertItems(notifyThrough, notifyThroughOffset + index -1, 1));
-						}
-					}
 					#endregion
 					#region AdjustChange
-					public void AdjustChange(int index, BranchModificationEventHandler modificationEvents, IBranch notifyThrough, int notifyThroughOffset)
+					public void AdjustChange(int index, BranchModificationEventHandler modificationEvents)
 					{
 						if (Start <= index && End >= index)
 						{
@@ -344,18 +302,11 @@ namespace Neumont.Tools.Modeling.Shell.DynamicSurveyTreeGrid
 								ListGrouper grouper;
 								if (null != (shifter = branch as SimpleListShifter))
 								{
-									if (notifyThrough != null)
-									{
-										modificationEvents(notifyThrough, BranchModificationEventArgs.DisplayDataChanged(new DisplayDataChangedData(VirtualTreeDisplayDataChanges.VisibleElements, notifyThrough, index + notifyThroughOffset, 0, 1)));
-									}
-									else
-									{
-										modificationEvents(shifter, BranchModificationEventArgs.DisplayDataChanged(new DisplayDataChangedData(VirtualTreeDisplayDataChanges.VisibleElements, shifter, index, 0, 1)));
-									}
+									modificationEvents(shifter, BranchModificationEventArgs.DisplayDataChanged(new DisplayDataChangedData(VirtualTreeDisplayDataChanges.VisibleElements, shifter, index, 0, 1)));
 								}
 								else if (null != (grouper = branch as ListGrouper))
 								{
-									grouper.ElementChangedAt(index, modificationEvents, notifyThrough, notifyThroughOffset);
+									grouper.ElementChangedAt(index, modificationEvents, null, 0);
 								}
 							}
 						}
@@ -836,7 +787,7 @@ namespace Neumont.Tools.Modeling.Shell.DynamicSurveyTreeGrid
 					MainList baseBranch = ((MainList)this.myBaseBranch);
 					for (int i = 0; i < this.mySubBranches.Length; i++)
 					{
-						if (mySubBranches[i].AdjustDelete(index, -1, modificationEvents, notifyThrough, notifyThroughOffset))
+						if (mySubBranches[i].AdjustDelete(index, -1, modificationEvents))
 						{
 							int currentHeaderCount = myVisibleSubBranchCount;
 							int[] orderArray = mySubBranchOrder;
@@ -917,7 +868,7 @@ namespace Neumont.Tools.Modeling.Shell.DynamicSurveyTreeGrid
 					int currentAnswer = myQuestion.ExtractAnswer(((MainList)myBaseBranch).myNodes[index].NodeData);
 					for (int i = 0; i < this.mySubBranches.Length; i++)
 					{
-						if (mySubBranches[i].AdjustAdd(i == currentAnswer, i > currentAnswer, index, modificationEvents, notifyThrough, notifyThroughOffset))
+						if (mySubBranches[i].AdjustAdd(i == currentAnswer, i > currentAnswer, index, modificationEvents))
 						{
 							// We need to add the header row
 							int currentHeaderCount = myVisibleSubBranchCount;
@@ -1013,7 +964,7 @@ namespace Neumont.Tools.Modeling.Shell.DynamicSurveyTreeGrid
 						SubBranchMetaData[] subBranches = mySubBranches;
 						for (int i = 0; i < subBranches.Length; i++)
 						{
-							subBranches[i].AdjustRename(fromIndex, toIndex, modificationEvents, notifyThrough, notifyThroughOffset);
+							subBranches[i].AdjustRename(fromIndex, toIndex, modificationEvents);
 						}
 						// Handle any nested neutral branches
 						IBranch neutralBranch = myNeutralBranch;
@@ -1067,7 +1018,7 @@ namespace Neumont.Tools.Modeling.Shell.DynamicSurveyTreeGrid
 						SubBranchMetaData[] subBranches = mySubBranches;
 						for (int i = 0; i < subBranches.Length; i++)
 						{
-							subBranches[i].AdjustChange(index, modificationEvents, notifyThrough, notifyThroughOffset);
+							subBranches[i].AdjustChange(index, modificationEvents);
 						}
 
 						// Handle any nested neutral branches

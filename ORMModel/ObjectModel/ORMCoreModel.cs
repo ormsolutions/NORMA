@@ -31,7 +31,7 @@ namespace Neumont.Tools.ORM.ObjectModel
 {
 	[VerbalizationTargetProvider("VerbalizationTargets")]
 	[VerbalizationSnippetsProvider("VerbalizationSnippets")]
-	public partial class ORMCoreDomainModel : IORMModelEventSubscriber, ISurveyNodeProvider
+	public partial class ORMCoreDomainModel : IModelingEventSubscriber, ISurveyNodeProvider
 	{
 		private static Type[] errorQuestionTypes = new Type[] { typeof(SurveyErrorState) };
 		private static Type[] questionTypes = new Type[] { typeof(SurveyQuestionGlyph) };
@@ -39,27 +39,27 @@ namespace Neumont.Tools.ORM.ObjectModel
 		/// The unique name the VerbalizationBrowser target. Used in the Xml files and in code to identify the core target provider.
 		/// </summary>
 		public const string VerbalizationTargetName = "VerbalizationBrowser";
-		#region IORMModelEventSubscriber Implementation
+		#region IModelingEventSubscriber Implementation
 		/// <summary>
-		/// Implements <see cref="IORMModelEventSubscriber.ManagePreLoadModelingEventHandlers"/>.
+		/// Implements <see cref="IModelingEventSubscriber.ManagePreLoadModelingEventHandlers"/>.
 		/// This implementation does nothing and does not need to be called.
 		/// </summary>
-		void IORMModelEventSubscriber.ManagePreLoadModelingEventHandlers(ModelingEventManager eventManager, EventHandlerAction action)
+		void IModelingEventSubscriber.ManagePreLoadModelingEventHandlers(ModelingEventManager eventManager, EventHandlerAction action)
 		{
 		}
 		/// <summary>
-		/// Implements <see cref="IORMModelEventSubscriber.ManagePostLoadModelingEventHandlers"/>.
+		/// Implements <see cref="IModelingEventSubscriber.ManagePostLoadModelingEventHandlers"/>.
 		/// </summary>
 		protected void ManagePostLoadModelingEventHandlers(ModelingEventManager eventManager, EventHandlerAction action)
 		{
 			NamedElementDictionary.ManageEventHandlers(Store, eventManager, action);
 		}
-		void IORMModelEventSubscriber.ManagePostLoadModelingEventHandlers(ModelingEventManager eventManager, EventHandlerAction action)
+		void IModelingEventSubscriber.ManagePostLoadModelingEventHandlers(ModelingEventManager eventManager, EventHandlerAction action)
 		{
 			this.ManagePostLoadModelingEventHandlers(eventManager, action);
 		}
 		/// <summary>
-		/// Implementes <see cref="IORMModelEventSubscriber.ManageSurveyQuestionModelingEventHandlers"/>.
+		/// Implementes <see cref="IModelingEventSubscriber.ManageSurveyQuestionModelingEventHandlers"/>.
 		/// </summary>
 		protected void ManageSurveyQuestionModelingEventHandlers(ModelingEventManager eventManager, EventHandlerAction action)
 		{
@@ -145,11 +145,11 @@ namespace Neumont.Tools.ORM.ObjectModel
 			eventManager.AddOrRemoveHandler(info, new EventHandler<ElementPropertyChangedEventArgs>(SubtypeFactIsPrimaryChanged), action);
 		}
 
-		void IORMModelEventSubscriber.ManageSurveyQuestionModelingEventHandlers(ModelingEventManager eventManager, EventHandlerAction action)
+		void IModelingEventSubscriber.ManageSurveyQuestionModelingEventHandlers(ModelingEventManager eventManager, EventHandlerAction action)
 		{
 			this.ManageSurveyQuestionModelingEventHandlers(eventManager, action);
 		}
-		#endregion // IORMModelEventSubscriber Implementation
+		#endregion // IModelingEventSubscriber Implementation
 		#region IVerbalizationTargetProvider implementation
 		private sealed class VerbalizationTargets : IVerbalizationTargetProvider
 		{

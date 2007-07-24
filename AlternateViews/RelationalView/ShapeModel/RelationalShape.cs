@@ -946,9 +946,9 @@ namespace Neumont.Tools.ORM.Views.RelationalView
 		#endregion // Helper Methods
 	}
 
-	internal partial class RelationalShapeDomainModel : IORMModelEventSubscriber
+	internal partial class RelationalShapeDomainModel : IModelingEventSubscriber
 	{
-		#region IORMModelEventSubscriber Implementation
+		#region IModelingEventSubscriber Implementation
 		/// <summary>
 		/// Hack implementation to turn on the FixupDiagram rules before the model loads.
 		/// Normally this would be done with a coordinated fixup listener. However, we
@@ -956,19 +956,19 @@ namespace Neumont.Tools.ORM.Views.RelationalView
 		/// a lot of hoops, so we do it here, which fires after the rules are created and
 		/// before the model loads.
 		/// </summary>
-		void IORMModelEventSubscriber.ManagePreLoadModelingEventHandlers(ModelingEventManager eventManager, EventHandlerAction action)
+		void IModelingEventSubscriber.ManagePreLoadModelingEventHandlers(ModelingEventManager eventManager, EventHandlerAction action)
 		{
 			if (action == EventHandlerAction.Add)
 			{
 				Store.RuleManager.EnableRule(typeof(FixUpDiagram));
 			}
 		}
-		void IORMModelEventSubscriber.ManagePostLoadModelingEventHandlers(ModelingEventManager eventManager, EventHandlerAction action)
+		void IModelingEventSubscriber.ManagePostLoadModelingEventHandlers(ModelingEventManager eventManager, EventHandlerAction action)
 		{
 		}
-		void IORMModelEventSubscriber.ManageSurveyQuestionModelingEventHandlers(ModelingEventManager eventManager, EventHandlerAction action)
+		void IModelingEventSubscriber.ManageSurveyQuestionModelingEventHandlers(ModelingEventManager eventManager, EventHandlerAction action)
 		{
 		}
-		#endregion // IORMModelEventSubscriber Implementation
+		#endregion // IModelingEventSubscriber Implementation
 	}
 }

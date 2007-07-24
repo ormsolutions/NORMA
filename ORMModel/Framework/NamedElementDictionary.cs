@@ -1502,7 +1502,7 @@ namespace Neumont.Tools.Modeling
 			}
 		}
 		/// <summary>
-		/// Call from <see cref="Neumont.Tools.ORM.ObjectModel.IORMModelEventSubscriber.ManagePostLoadModelingEventHandlers"/>
+		/// Call from <see cref="IModelingEventSubscriber.ManagePostLoadModelingEventHandlers"/>
 		/// implementations to attach <see cref="EventHandler{TEventArgs}"/>s that correctly deal with undo and redo scenarios.
 		/// </summary>
 		/// <param name="store">The <see cref="Store"/> for which the <see cref="EventHandler{TEventArgs}"/>s should be managed.</param>
