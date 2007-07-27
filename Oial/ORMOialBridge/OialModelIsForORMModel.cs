@@ -138,7 +138,11 @@ namespace Neumont.Tools.ORMToORMAbstractionBridge
 		#endregion
 
 		#region ORM Error Filtering Methods
-		private static bool ShouldIgnoreFactType(FactType factType)
+		private bool ShouldIgnoreObjectType(ObjectType objectType)
+		{
+			return false;
+		}
+		private bool ShouldIgnoreFactType(FactType factType)
 		{
 			// Subtype facts are always binarized, and never missing role players
 			if (factType is SubtypeFact)
@@ -155,8 +159,8 @@ namespace Neumont.Tools.ORMToORMAbstractionBridge
 			// Ignore fact types that contain roles that are missing role players
 			foreach (RoleBase roleBase in roles)
 			{
-				// UNDONE: Should we just be checking RolePlayer == null instead?
-				if (roleBase.Role.RolePlayerRequiredError != null)
+				ObjectType rolePlayer = roleBase.Role.RolePlayer;
+				if (rolePlayer != null || ShouldIgnoreObjectType(rolePlayer))
 				{
 					return true;
 				}
@@ -579,6 +583,10 @@ namespace Neumont.Tools.ORMToORMAbstractionBridge
 			// For each ValueType in the model...
 			foreach (ObjectType valueType in modelValueTypes)
 			{
+				if (ShouldIgnoreObjectType(valueType))
+				{
+					continue;
+				}
 				// Create InformationTypeFormat.
 				PropertyAssignment namePropertyAssignment = new PropertyAssignment(InformationTypeFormat.NameDomainPropertyId, valueType.Name);
 				InformationTypeFormat informationTypeFormat = new InformationTypeFormat(Store, namePropertyAssignment);
@@ -604,6 +612,10 @@ namespace Neumont.Tools.ORMToORMAbstractionBridge
 			// For each object type in the model...
 			foreach (ObjectType objectType in modelObjectTypes)
 			{
+				if (ShouldIgnoreObjectType(objectType))
+				{
+					continue;
+				}
 				// If it should have a conctpt type...
 				if (ObjectTypeIsConceptType(objectType, factTypeMappings))
 				{
