@@ -122,7 +122,7 @@ GOTO:EOF
 :_MakeDirCopy
 IF NOT EXIST "%~1" (
 	MKDIR "%~1"
-	IF EXIST "%2" (
+	IF EXIST "%~2" (
 		XCOPY /S /Q "%~2" "%~1"
 	)
 )
