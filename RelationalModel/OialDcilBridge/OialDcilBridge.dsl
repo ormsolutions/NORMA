@@ -155,9 +155,9 @@
 				</DomainRole>
 			</Source>
 			<Target>
-				<DomainRole Id="78AB7C46-D141-4136-B1DA-2F5A64E820DC" Description="" Name="ConceptTypeChild" PropertyName="Column" Multiplicity="ZeroMany">
+				<DomainRole Id="78AB7C46-D141-4136-B1DA-2F5A64E820DC" Description="" Name="Uniqueness" PropertyName="UniquenessConstraint" Multiplicity="ZeroMany">
 					<RolePlayer>
-						<DomainRelationshipMoniker Name="/Neumont.Tools.ORMAbstraction/ConceptTypeChild"/>
+						<DomainClassMoniker Name="/Neumont.Tools.ORMAbstraction/Uniqueness"/>
 					</RolePlayer>
 				</DomainRole>
 			</Target>

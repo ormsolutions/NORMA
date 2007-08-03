@@ -110,7 +110,7 @@ namespace Neumont.Tools.ORMAbstractionToConceptualDatabaseBridge
 				new DomainRolePlayerInfo(typeof(ColumnHasConceptTypeChild), "Column", ColumnHasConceptTypeChild.ColumnDomainRoleId),
 				new DomainRolePlayerInfo(typeof(ColumnHasConceptTypeChild), "ConceptTypeChild", ColumnHasConceptTypeChild.ConceptTypeChildDomainRoleId),
 				new DomainRolePlayerInfo(typeof(UniquenessConstraintIsForUniqueness), "UniquenessConstraint", UniquenessConstraintIsForUniqueness.UniquenessConstraintDomainRoleId),
-				new DomainRolePlayerInfo(typeof(UniquenessConstraintIsForUniqueness), "ConceptTypeChild", UniquenessConstraintIsForUniqueness.ConceptTypeChildDomainRoleId),
+				new DomainRolePlayerInfo(typeof(UniquenessConstraintIsForUniqueness), "Uniqueness", UniquenessConstraintIsForUniqueness.UniquenessDomainRoleId),
 				new DomainRolePlayerInfo(typeof(DomainIsForInformationTypeFormat), "Domain", DomainIsForInformationTypeFormat.DomainDomainRoleId),
 				new DomainRolePlayerInfo(typeof(DomainIsForInformationTypeFormat), "InformationTypeFormat", DomainIsForInformationTypeFormat.InformationTypeFormatDomainRoleId),
 			};

@@ -46,9 +46,9 @@
 					<se:Role RoleName="Table"/>
 					<se:Role RoleName="ConceptType"/>
 				</se:RootLink>
-				<se:RootLink Class="UniquenessConstraintIsForUniqueness" Name="UniquenessConstraintIsForConceptTypeChild" PrimaryLinkElement="true">
+				<se:RootLink Class="UniquenessConstraintIsForUniqueness" PrimaryLinkElement="true">
 					<se:Role RoleName="UniquenessConstraint"/>
-					<se:Role RoleName="ConceptTypeChild"/>
+					<se:Role RoleName="Uniqueness"/>
 				</se:RootLink>
 			</se:Container>
 		</se:RootLinks>

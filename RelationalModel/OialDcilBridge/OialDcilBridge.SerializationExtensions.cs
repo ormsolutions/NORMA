@@ -104,7 +104,7 @@ namespace Neumont.Tools.ORMAbstractionToConceptualDatabaseBridge
 							new CustomSerializedStandaloneRelationshipRole("ConceptType", TableIsAlsoForConceptType.ConceptTypeDomainRoleId)}, null, null, null),
 						new CustomSerializedStandaloneRelationship(UniquenessConstraintIsForUniqueness.DomainClassId, new CustomSerializedStandaloneRelationshipRole[]{
 							new CustomSerializedStandaloneRelationshipRole("UniquenessConstraint", UniquenessConstraintIsForUniqueness.UniquenessConstraintDomainRoleId),
-							new CustomSerializedStandaloneRelationshipRole("ConceptTypeChild", UniquenessConstraintIsForUniqueness.ConceptTypeChildDomainRoleId)}, null, null, null)})};
+							new CustomSerializedStandaloneRelationshipRole("Uniqueness", UniquenessConstraintIsForUniqueness.UniquenessDomainRoleId)}, null, null, null)})};
 				ORMAbstractionToConceptualDatabaseBridgeDomainModel.myRootRelationshipContainers = retVal;
 			}
 			return retVal;

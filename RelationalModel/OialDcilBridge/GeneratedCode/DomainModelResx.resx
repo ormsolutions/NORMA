@@ -361,17 +361,17 @@
     <value>Uniqueness</value>
     <comment>PropertyDisplayName for DomainRole &apos;UniquenessConstraint&apos; on DomainRelationship &apos;UniquenessConstraintIsForUniqueness&apos;</comment>
   </data>
-  <data name="Neumont.Tools.ORMAbstractionToConceptualDatabaseBridge.UniquenessConstraintIsForUniqueness/ConceptTypeChild.Description" xml:space="preserve">
+  <data name="Neumont.Tools.ORMAbstractionToConceptualDatabaseBridge.UniquenessConstraintIsForUniqueness/Uniqueness.Description" xml:space="preserve">
     <value></value>
-    <comment>Description for DomainRole &apos;ConceptTypeChild&apos; on DomainRelationship &apos;UniquenessConstraintIsForUniqueness&apos;</comment>
+    <comment>Description for DomainRole &apos;Uniqueness&apos; on DomainRelationship &apos;UniquenessConstraintIsForUniqueness&apos;</comment>
   </data>
-  <data name="Neumont.Tools.ORMAbstractionToConceptualDatabaseBridge.UniquenessConstraintIsForUniqueness/ConceptTypeChild.DisplayName" xml:space="preserve">
-    <value>Concept Type Child</value>
-    <comment>DisplayName for DomainRole &apos;ConceptTypeChild&apos; on DomainRelationship &apos;UniquenessConstraintIsForUniqueness&apos;</comment>
+  <data name="Neumont.Tools.ORMAbstractionToConceptualDatabaseBridge.UniquenessConstraintIsForUniqueness/Uniqueness.DisplayName" xml:space="preserve">
+    <value>Uniqueness</value>
+    <comment>DisplayName for DomainRole &apos;Uniqueness&apos; on DomainRelationship &apos;UniquenessConstraintIsForUniqueness&apos;</comment>
   </data>
-  <data name="Neumont.Tools.ORMAbstractionToConceptualDatabaseBridge.UniquenessConstraintIsForUniqueness/ConceptTypeChild.PropertyDisplayName" xml:space="preserve">
-    <value>Column</value>
-    <comment>PropertyDisplayName for DomainRole &apos;ConceptTypeChild&apos; on DomainRelationship &apos;UniquenessConstraintIsForUniqueness&apos;</comment>
+  <data name="Neumont.Tools.ORMAbstractionToConceptualDatabaseBridge.UniquenessConstraintIsForUniqueness/Uniqueness.PropertyDisplayName" xml:space="preserve">
+    <value>Uniqueness Constraint</value>
+    <comment>PropertyDisplayName for DomainRole &apos;Uniqueness&apos; on DomainRelationship &apos;UniquenessConstraintIsForUniqueness&apos;</comment>
   </data>
   <data name="Neumont.Tools.ORMAbstractionToConceptualDatabaseBridge.DomainIsForInformationTypeFormat.Description" xml:space="preserve">
     <value>Description for Neumont.Tools.ORMAbstractionToConceptualDatabaseBridge.DomainIsForInformationTypeFormat</value>

@@ -52,8 +52,7 @@
 				<xs:element name="DomainIsForInformationTypeFormat" type="DomainIsForInformationTypeFormatType"/>
 				<xs:element name="TableIsPrimarilyForConceptType" type="TableIsForConceptTypeType"/>
 				<xs:element name="TableIsAlsoForConceptType" type="TableIsForConceptTypeType"/>
-				<!-- UNDONE: Not sure what this relationship does, the relationship name doesn't match up with the role name -->
-				<xs:element name="UniquenessConstraintIsForConceptTypeChild" type="UniquenessConstraintIsForConceptTypeChildType"/>
+				<xs:element name="UniquenessConstraintIsForUniqueness" type="UniquenessConstraintIsForUniquenessType"/>
 			</xs:choice>
 		</xs:complexType>
 	</xs:element>
@@ -121,10 +120,9 @@
 		<xs:attribute name="Table" type="xs:IDREF" use="required"/>
 		<xs:attribute name="ConceptType" type="xs:IDREF" use="required"/>
 	</xs:complexType>
-	<!-- UNDONE: Not sure what this relationship does, the relationship name doesn't match up with the role name -->
-	<xs:complexType name="UniquenessConstraintIsForConceptTypeChildType">
+	<xs:complexType name="UniquenessConstraintIsForUniquenessType">
 		<xs:attribute name="id" type="xs:ID" use="required"/>
 		<xs:attribute name="UniquenessConstraint" type="xs:IDREF" use="required"/>
-		<xs:attribute name="ConceptTypeChild" type="xs:IDREF" use="required"/>
+		<xs:attribute name="Uniqueness" type="xs:IDREF" use="required"/>
 	</xs:complexType>
 </xs:schema>
