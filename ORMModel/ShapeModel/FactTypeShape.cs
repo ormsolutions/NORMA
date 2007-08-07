@@ -5284,6 +5284,41 @@ namespace Neumont.Tools.ORM.ShapeModel
 			}
 		}
 		#endregion // Derivation Rules
+		#region Deserialization Fixup
+		/// <summary>
+		/// Return a deserialization fixup listener. The listener
+		/// ensures that non-serialized information on a FactTypeShape is properly restored
+		/// </summary>
+		public static IDeserializationFixupListener FixupListener
+		{
+			get
+			{
+				return new FactTypeShapeFixupListener();
+			}
+		}
+		/// <summary>
+		/// A listener to reset non-serialized FactTypeShape properties.
+		/// </summary>
+		private sealed class FactTypeShapeFixupListener : DeserializationFixupListener<FactTypeShape>
+		{
+			/// <summary>
+			/// Create a new FactTypeShapeFixupListener
+			/// </summary>
+			public FactTypeShapeFixupListener()
+				: base((int)ORMDeserializationFixupPhase.ModifyStoredPresentationElements)
+			{
+			}
+			/// <summary>
+			/// Update the non-serialized RolesPosition property, used to keep a FactTypeShape
+			/// anchored on the center of the roles box
+			/// </summary>
+			protected sealed override void ProcessElement(FactTypeShape element, Store store, INotifyElementAdded notifyAdded)
+			{
+				PointD centerPoint = RolesShape.GetBounds(element).Center;
+				element.RolesPosition = (element.DisplayOrientation != DisplayOrientation.Horizontal) ? centerPoint.X : centerPoint.Y;
+			}
+		}
+		#endregion Deserialization Fixup
 	}
 	#endregion // FactTypeShape class
 	#region ObjectifiedFactTypeNameShape class

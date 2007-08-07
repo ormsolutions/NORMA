@@ -62,10 +62,14 @@ namespace Neumont.Tools.ORM.ObjectModel
 		/// </summary>
 		ValidateErrors = 500,
 		/// <summary>
+		/// Fixup stored presentation elements
+		/// </summary>
+		ModifyStoredPresentationElements = 700,
+		/// <summary>
 		/// Add any presentation elements that are implicit and not
 		/// serialized with the model.
 		/// </summary>
-		AddImplicitPresentationElements = 600,
+		AddImplicitPresentationElements = 700,
 	}
 	#endregion // ORMDeserializationFixupPhase enum
 	public partial class ORMModel

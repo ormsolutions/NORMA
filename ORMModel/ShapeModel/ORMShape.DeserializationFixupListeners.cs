@@ -39,6 +39,7 @@ namespace Neumont.Tools.ORM.ShapeModel
 				yield return new DisplayRoleNameFixupListener();
 				yield return new DisplayUnaryFactTypeFixupListener();
 				yield return new DisplayModelNoteLinksFixupListener();
+				yield return FactTypeShape.FixupListener;
 			}
 		}
 		IEnumerable<IDeserializationFixupListener> IDeserializationFixupListenerProvider.DeserializationFixupListenerCollection

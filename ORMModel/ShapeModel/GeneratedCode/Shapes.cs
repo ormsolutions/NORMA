@@ -818,8 +818,9 @@ namespace Neumont.Tools.ORM.ShapeModel
 		[DslDesign::DisplayNameResource("Neumont.Tools.ORM.ShapeModel.FactTypeShape/RolesPosition.DisplayName", typeof(global::Neumont.Tools.ORM.ShapeModel.ORMShapeDomainModel), "Neumont.Tools.ORM.GeneratedCode.ShapeDomainModelResx")]
 		[DslDesign::DescriptionResource("Neumont.Tools.ORM.ShapeModel.FactTypeShape/RolesPosition.Description", typeof(global::Neumont.Tools.ORM.ShapeModel.ORMShapeDomainModel), "Neumont.Tools.ORM.GeneratedCode.ShapeDomainModelResx")]
 		[global::System.ComponentModel.Browsable(false)]
+		[global::System.ComponentModel.ReadOnly(true)]
 		[DslModeling::DomainObjectId("89244439-fbb1-4deb-bff3-69d47cb90a6b")]
-		public global::System.Double RolesPosition
+		private global::System.Double RolesPosition
 		{
 			[global::System.Diagnostics.DebuggerStepThrough]
 			get

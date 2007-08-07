@@ -152,7 +152,7 @@
 						<DomainEnumerationMoniker Name="DisplayOrientation"/>
 					</Type>
 				</DomainProperty>
-				<DomainProperty Name="RolesPosition" Id="89244439-FBB1-4DEB-BFF3-69D47CB90A6B" DefaultValue="0" IsBrowsable="false">
+				<DomainProperty Name="RolesPosition" Id="89244439-FBB1-4DEB-BFF3-69D47CB90A6B" DefaultValue="0" IsBrowsable="false" GetterAccessModifier="Private" SetterAccessModifier="Private">
 					<Type>
 						<ExternalTypeMoniker Name="/System/Double"/>
 					</Type>
