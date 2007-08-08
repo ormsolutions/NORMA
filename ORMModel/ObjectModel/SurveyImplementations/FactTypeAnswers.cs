@@ -194,12 +194,14 @@ namespace Neumont.Tools.ORM.ObjectModel
 			}
 			else
 			{
-				switch (RoleCollection.Count)
+				LinkedElementCollection<RoleBase> roles = RoleCollection;
+				switch (roles.Count)
 				{
 					case 1:
+						// This case should not get hit with unary binarization, but it isn't hurting anything
 						return (int)SurveyQuestionGlyph.UnaryFactType;
 					case 2:
-						return (int)SurveyQuestionGlyph.BinaryFactType;
+						return GetUnaryRoleIndex(roles).HasValue ? (int)SurveyQuestionGlyph.UnaryFactType : (int)SurveyQuestionGlyph.BinaryFactType;
 					case 3:
 						return (int)SurveyQuestionGlyph.TernaryFactType;
 					default:

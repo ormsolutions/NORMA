@@ -439,9 +439,9 @@ namespace Neumont.Tools.ORM.ShapeModel
 					FactTypeShape shape = pel as FactTypeShape;
 					if (shape != null)
 					{
-						if (factType.UnaryRole != null)
+						Role unaryRole = factType.UnaryRole;
+						if (unaryRole != null)
 						{
-							Role unaryRole = factType.UnaryRole;
 							LinkedElementCollection<RoleBase> displayOrder = shape.RoleDisplayOrderCollection;
 							if (!displayOrder.Contains(unaryRole))
 							{
@@ -515,49 +515,48 @@ namespace Neumont.Tools.ORM.ShapeModel
 			// Make sure the object type, fact type, and link
 			// are displayed on the diagram
 			FactType associatedFact;
-			if ((associatedFact = link.PlayedRole.FactType) != null)
+			ObjectType rolePlayer;
+			ORMModel model;
+			if (!link.IsDeleted &&
+				null != (associatedFact = link.PlayedRole.FactType) &&
+				null != (model = (rolePlayer = link.RolePlayer).Model))
 			{
-				ObjectType rolePlayer = link.RolePlayer;
-				ORMModel model;
-				if ((model = rolePlayer.Model) != null)
+				FactType nestedFact;
+				if (FactTypeShape.ShouldDrawObjectification(nestedFact = rolePlayer.NestedFactType))
 				{
-					FactType nestedFact;
-					if (FactTypeShape.ShouldDrawObjectification(nestedFact = rolePlayer.NestedFactType))
-					{
-						Diagram.FixUpDiagram(model, nestedFact);
-						Diagram.FixUpDiagram(nestedFact, rolePlayer);
-					}
-					else
-					{
-						Diagram.FixUpDiagram(model, rolePlayer);
-					}
-					Diagram.FixUpDiagram(model, associatedFact);
+					Diagram.FixUpDiagram(model, nestedFact);
+					Diagram.FixUpDiagram(nestedFact, rolePlayer);
+				}
+				else
+				{
+					Diagram.FixUpDiagram(model, rolePlayer);
+				}
+				Diagram.FixUpDiagram(model, associatedFact);
 
-					object AllowMultipleShapes;
-					Dictionary<object, object> topLevelContextInfo;
-					bool containedAllowMultipleShapes;
-					if (!(containedAllowMultipleShapes = (topLevelContextInfo = link.Store.TransactionManager.CurrentTransaction.TopLevelTransaction.Context.ContextInfo).ContainsKey(AllowMultipleShapes = MultiShapeUtility.AllowMultipleShapes)))
-					{
-						topLevelContextInfo.Add(AllowMultipleShapes, null);
-					}
+				object AllowMultipleShapes;
+				Dictionary<object, object> topLevelContextInfo;
+				bool containedAllowMultipleShapes;
+				if (!(containedAllowMultipleShapes = (topLevelContextInfo = link.Store.TransactionManager.CurrentTransaction.TopLevelTransaction.Context.ContextInfo).ContainsKey(AllowMultipleShapes = MultiShapeUtility.AllowMultipleShapes)))
+				{
+					topLevelContextInfo.Add(AllowMultipleShapes, null);
+				}
 
-					foreach (PresentationViewsSubject presentationViewsSubject in DomainRoleInfo.GetElementLinks<PresentationViewsSubject>(model, PresentationViewsSubject.SubjectDomainRoleId))
+				foreach (PresentationViewsSubject presentationViewsSubject in DomainRoleInfo.GetElementLinks<PresentationViewsSubject>(model, PresentationViewsSubject.SubjectDomainRoleId))
+				{
+					ORMDiagram diagram;
+					if ((diagram = presentationViewsSubject.Presentation as ORMDiagram) != null)
 					{
-						ORMDiagram diagram;
-						if ((diagram = presentationViewsSubject.Presentation as ORMDiagram) != null)
+						//add a link shape for each fact type shape on the diagram for the played role
+						foreach (FactTypeShape shapeElement in MultiShapeUtility.FindAllShapesForElement<FactTypeShape>(diagram, associatedFact))
 						{
-							//add a link shape for each fact type shape on the diagram for the played role
-							foreach (FactTypeShape shapeElement in MultiShapeUtility.FindAllShapesForElement<FactTypeShape>(diagram, associatedFact))
-							{
-								diagram.FixUpLocalDiagram(link);
-							}
+							diagram.FixUpLocalDiagram(link);
 						}
 					}
+				}
 
-					if (!containedAllowMultipleShapes)
-					{
-						topLevelContextInfo.Remove(AllowMultipleShapes);
-					}
+				if (!containedAllowMultipleShapes)
+				{
+					topLevelContextInfo.Remove(AllowMultipleShapes);
 				}
 			}
 		}
@@ -844,45 +843,46 @@ namespace Neumont.Tools.ORM.ShapeModel
 			// are displayed on the diagram
 			IFactConstraint ifc = link as IFactConstraint;
 			IConstraint constraint = ifc.Constraint;
-			FactType factType = ifc.FactType;
-			if (factType != null)
+			FactType factType;
+			ORMModel model;
+			ModelElement constraintElement = (ModelElement)constraint;
+			if (!constraintElement.IsDeleted &&
+				null != (factType = ifc.FactType) &&
+				!factType.IsDeleted &&
+				null != (model = factType.Model))
 			{
-				ORMModel model = factType.Model;
-				if (model != null)
+				Debug.Assert(model == constraint.Model);
+
+				Diagram.FixUpDiagram(model, constraint as ModelElement);
+				Diagram.FixUpDiagram(model, factType);
+
+				object AllowMultipleShapes;
+				Dictionary<object, object> topLevelContextInfo;
+				bool containedAllowMultipleShapes;
+				if (!(containedAllowMultipleShapes = (topLevelContextInfo = link.Store.TransactionManager.CurrentTransaction.TopLevelTransaction.Context.ContextInfo).ContainsKey(AllowMultipleShapes = MultiShapeUtility.AllowMultipleShapes)))
 				{
-					Debug.Assert(model == constraint.Model);
+					topLevelContextInfo.Add(AllowMultipleShapes, null);
+				}
 
-					Diagram.FixUpDiagram(model, constraint as ModelElement);
-					Diagram.FixUpDiagram(model, factType);
-
-					object AllowMultipleShapes;
-					Dictionary<object, object> topLevelContextInfo;
-					bool containedAllowMultipleShapes;
-					if (!(containedAllowMultipleShapes = (topLevelContextInfo = link.Store.TransactionManager.CurrentTransaction.TopLevelTransaction.Context.ContextInfo).ContainsKey(AllowMultipleShapes = MultiShapeUtility.AllowMultipleShapes)))
+				foreach (PresentationViewsSubject presentationViewsSubject in DomainRoleInfo.GetElementLinks<PresentationViewsSubject>(model, PresentationViewsSubject.SubjectDomainRoleId))
+				{
+					ORMDiagram diagram;
+					if ((diagram = presentationViewsSubject.Presentation as ORMDiagram) != null)
 					{
-						topLevelContextInfo.Add(AllowMultipleShapes, null);
-					}
-
-					foreach (PresentationViewsSubject presentationViewsSubject in DomainRoleInfo.GetElementLinks<PresentationViewsSubject>(model, PresentationViewsSubject.SubjectDomainRoleId))
-					{
-						ORMDiagram diagram;
-						if ((diagram = presentationViewsSubject.Presentation as ORMDiagram) != null)
+						//add a link shape for each constraint shape
+						foreach (ExternalConstraintShape shapeElement in MultiShapeUtility.FindAllShapesForElement<ExternalConstraintShape>(diagram, constraint as ModelElement))
 						{
-							//add a link shape for each constraint shape
-							foreach (ExternalConstraintShape shapeElement in MultiShapeUtility.FindAllShapesForElement<ExternalConstraintShape>(diagram, constraint as ModelElement))
+							if (null == diagram.FixUpLocalDiagram(link))
 							{
-								if (null == diagram.FixUpLocalDiagram(link))
-								{
-									shapeElement.Delete();
-								}
+								shapeElement.Delete();
 							}
 						}
 					}
+				}
 
-					if (!containedAllowMultipleShapes)
-					{
-						topLevelContextInfo.Remove(AllowMultipleShapes);
-					}
+				if (!containedAllowMultipleShapes)
+				{
+					topLevelContextInfo.Remove(AllowMultipleShapes);
 				}
 			}
 		}
@@ -1016,59 +1016,6 @@ namespace Neumont.Tools.ORM.ShapeModel
 			}
 		}
 		#endregion // DisplayRolePlayersFixupListener class
-		#region DisplayUnaryFactTypeFixupListener class
-		/// <summary>
-		/// Processes Unary FactTypes so that they display the correct number of roles
-		/// </summary>
-		private sealed class DisplayUnaryFactTypeFixupListener : DeserializationFixupListener<FactType>
-		{
-			/// <summary>
-			/// Create a new DisplayUnaryFactTypeFixupListener
-			/// </summary>
-			public DisplayUnaryFactTypeFixupListener()
-				: base((int)ORMDeserializationFixupPhase.AddImplicitPresentationElements)
-			{
-			}
-
-			protected override void ProcessElement(FactType element, Store store, INotifyElementAdded notifyAdded)
-			{
-				Role unaryRole = element.UnaryRole;
-				if (unaryRole != null)
-				{
-					foreach (PresentationElement pel in PresentationViewsSubject.GetPresentation(element))
-					{
-						FactTypeShape shape = pel as FactTypeShape;
-						if (shape != null)
-						{
-							// Create a RoleDisplayOrder for Unary FactTypes.
-							LinkedElementCollection<RoleBase> roles = shape.RoleDisplayOrderCollection;
-							switch (roles.Count)
-							{
-								case 0:
-									// The RoleDisplayOrder is empty, so we don't need to do anything.
-									break;
-								case 1:
-									// We already have only one role in the RoleDisplayOrder, so all
-									// we have to do is make sure it is the right one.
-									if (roles[0] != unaryRole)
-									{
-										roles[0] = unaryRole;
-									}
-									continue;
-								default:
-									// We have more than one role in the RoleDisplayOrder, so we
-									// have to clear it.
-									roles.Clear();
-									break;
-							}
-							roles.Add(unaryRole);
-							shape.AutoResize();
-						}
-					}
-				}
-			}
-		}
-		#endregion // DisplayUnaryFactTypeFixupListener class
 		#region ModelNote fixup
 		#region ModelNoteAddedRule
 		/// <summary>

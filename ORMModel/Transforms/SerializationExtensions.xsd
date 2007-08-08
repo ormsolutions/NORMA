@@ -25,6 +25,7 @@
 		</xs:appinfo>
 	</xs:annotation>
 
+	<xs:import namespace="http://schemas.neumont.edu/CodeGeneration/PLiX"/>
 	<xs:simpleType name="ElementWriteStyle">
 		<xs:annotation>
 			<xs:documentation>How to write and element.</xs:documentation>

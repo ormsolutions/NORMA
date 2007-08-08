@@ -255,7 +255,6 @@ namespace Neumont.Tools.ORM.ShapeModel
 			int roleCount = roleCollection.Count;
 			for (int i = 0; i < roleCount; ++i)
 			{
-				//Role role = roleBase.Role;
 				Role role = roleCollection[i].Role;
 
 				if (!duplicateShape)

@@ -578,6 +578,41 @@ namespace Neumont.Tools.ORM.ShapeModel
 			return displayRoles;
 		}
 		/// <summary>
+		/// Standard override
+		/// </summary>
+		public override void ConfiguringAsChildOf(NodeShape parent, bool createdDuringViewFixup)
+		{
+			/// Make sure the factType shape is prepared to display as a unary
+			FactType factType;
+			Role unaryRole;
+			if (null != (factType = AssociatedFactType) &&
+				null != (unaryRole = factType.UnaryRole))
+			{
+				// Create a RoleDisplayOrder for Unary FactTypes.
+				LinkedElementCollection<RoleBase> displayRoles = RoleDisplayOrderCollection;
+				switch (displayRoles.Count)
+				{
+					case 0:
+						// The RoleDisplayOrder is empty, so we don't need to do anything.
+						break;
+					case 1:
+						// We already have only one role in the RoleDisplayOrder, so all
+						// we have to do is make sure it is the right one.
+						if (displayRoles[0] != unaryRole)
+						{
+							displayRoles[0] = unaryRole;
+						}
+						return;
+					default:
+						// We have more than one role in the RoleDisplayOrder, so we
+						// have to clear it.
+						displayRoles.Clear();
+						break;
+				}
+				displayRoles.Add(unaryRole);
+			}
+		}
+		/// <summary>
 		/// Retrieve an editable version of the <see cref="DisplayedRoleOrder"/> property. Editing
 		/// DisplayedRoleOrder directly can change the role order in the associated FactType. Using
 		/// this method to retrieve the collection ensures it will only be modified on the shape.
@@ -5093,7 +5128,7 @@ namespace Neumont.Tools.ORM.ShapeModel
 							FactTypeShape shape = pel as FactTypeShape;
 							if (shape != null)
 							{
-								// When a binarized Unary Fact is not longer a unary, clear the displayed role orders
+								// When a binarized Unary Fact is no longer a unary, clear the displayed role orders
 								shape.RoleDisplayOrderCollection.Clear();
 								shape.AutoResize();
 							}

@@ -64,7 +64,7 @@ namespace Neumont.Tools.ORM.ObjectModel
 		/// <summary>
 		/// Fixup stored presentation elements
 		/// </summary>
-		ModifyStoredPresentationElements = 700,
+		ModifyStoredPresentationElements = 600,
 		/// <summary>
 		/// Add any presentation elements that are implicit and not
 		/// serialized with the model.
