@@ -10,254 +10,182 @@ using System.Diagnostics;
 namespace Neumont.Tools.ORMToORMAbstractionBridge
 {
 	#region Chain calculator
-	class UndecidedMappingChains
+	sealed class UndecidedMappingChains
 	{
-		FactTypeMappingListDictionary myUndecided = null;
-		FactTypeMappingDictionary myDecidedOneToOnes = null;
-		ChainList myChains = new ChainList();
-		ObjectTypeListDictionary myFromTo = new ObjectTypeListDictionary();
+		private readonly FactTypeMappingListDictionary myUndecided;
+		private readonly FactTypeMappingDictionary myPredecidedOneToOneFactTypeMappings;
+		private readonly ChainList myChains;
 
-		public UndecidedMappingChains(FactTypeMappingListDictionary undecided, FactTypeMappingDictionary myDecidedOneToOneFactTypeMappings)
+		public UndecidedMappingChains(FactTypeMappingListDictionary undecided, FactTypeMappingDictionary predecidedOneToOneFactTypeMappings)
 		{
+			myChains = new ChainList();
 			myUndecided = undecided;
-			myDecidedOneToOnes = myDecidedOneToOneFactTypeMappings;
+			myPredecidedOneToOneFactTypeMappings = predecidedOneToOneFactTypeMappings;
 		}
-#if PERMUTATION_DEBUG_OUTPUT
-		public void Run(StreamWriter sw, ref int largestChain)
+
+		public int Run()
 		{
-			DateTime starttime = DateTime.Now;
+			BuildChains();
+			//DeleteEmptyChains();
 
-			AddDecidedOneToOnes();
-			BuildData();
-			SplitChains();
-			RemoveDecidedOneToOnes();
-			DeleteEmptyChains();
-
-			DateTime endtime = DateTime.Now;
-
-			// If you remove logging, need to retain at least the largestChain code & loop
-			sw.WriteLine("Chain Timer: " + endtime.Subtract(starttime).ToString());
-			sw.WriteLine("Chains:");
-			int i = 0;
-			foreach (FactTypeMappingListDictionary chain in myChains)
+			// Delete empty chains and find the largest chain.
+			int largestChainCount = 0;
+			for (int i = myChains.Count - 1; i >= 0; i--)
 			{
-				if (chain.Count > largestChain)
-					largestChain = chain.Count;
-
-				/*
-				sw.WriteLine("\t" + i + ":");
-				foreach (FactType factType in chain.Keys)
+				Chain chain = myChains[i];
+				if (chain.UndecidedFactTypeMappings.Count <= 0)
 				{
-
-					sw.WriteLine("\t\t" + factType.Name);
-					FactTypeMappingList list = chain[factType];
-					foreach (FactTypeMapping mapping in list)
-					{
-						sw.WriteLine("\t\t\t" + mapping.FromObjectType.ToString() + " to " + mapping.TowardsObjectType.ToString() + " (" + mapping.MappingType.ToString() + ")");
-					}
+					myChains.RemoveAt(i);
+					continue;
 				}
-				 */
+				int chainCount = chain.FactTypeCount;
+				if (chainCount > largestChainCount)
+				{
+					largestChainCount = chainCount;
+				}
 			}
-			sw.WriteLine("");
-			sw.Flush();
+
+			return largestChainCount;
 		}
-#else
-		public void Run(ref int largestChain)
-		{
-			AddDecidedOneToOnes();
-			BuildData();
-			SplitChains();
-			RemoveDecidedOneToOnes();
-			DeleteEmptyChains();
-		}
-#endif
+
 		public ChainList Chains
 		{
 			get { return myChains; }
 		}
 
-		private void DeleteEmptyChains()
+		private void BuildChains()
 		{
-			for (int i = 0; i < myChains.Count; )
+			int factTypesCount = myUndecided.Count + myPredecidedOneToOneFactTypeMappings.Count;
+			Dictionary<FactType, object> visitedFactTypes = new Dictionary<FactType, object>(factTypesCount);
+			Dictionary<ObjectType, object> visitedObjectTypes = new Dictionary<ObjectType, object>(factTypesCount * 2);
+
+
+			FactTypeMappingDictionary.Enumerator predecidedEnumerator = myPredecidedOneToOneFactTypeMappings.GetEnumerator();
+			FactTypeMappingListDictionary.Enumerator undecidedEnumerator = myUndecided.GetEnumerator();
+			while (true)
 			{
-				if (myChains[i].MappingList.Count == 0)
+				KeyValuePair<FactType, FactTypeMapping> predecidedPair;
+				KeyValuePair<FactType, FactTypeMappingList> undecidedPair;
+				FactType factType;
+				// Find a fact type that we haven't already visited.
+				while (true)
 				{
-					myChains.RemoveAt(i);
+					if (predecidedEnumerator.MoveNext())
+					{
+						predecidedPair = predecidedEnumerator.Current;
+						factType = predecidedPair.Key;
+					}
+					else if (undecidedEnumerator.MoveNext())
+					{
+						undecidedPair = undecidedEnumerator.Current;
+						factType = undecidedPair.Key;
+					}
+					else
+					{
+						return;
+					}
+
+					if (!visitedFactTypes.ContainsKey(factType))
+					{
+						// We've found a fact type that hasn't been visited, so break out of the loop.
+						break;
+					}
+				}
+
+				// We're following a new path, so clear the current dictionary.
+				Chain chain = new Chain();
+				myChains.Add(chain);
+
+				ProcessObjectType(factType.RoleCollection[0].Role.RolePlayer, chain, visitedFactTypes, visitedObjectTypes);
+
+			}
+		}
+		private void ProcessObjectType(ObjectType objectType, Chain chain, Dictionary<FactType, object> visitedFactTypes, Dictionary<ObjectType, object> visitedObjectTypes)
+		{
+			if (visitedObjectTypes.ContainsKey(objectType))
+			{
+				// We've already visited this object type.
+				return;
+			}
+			// Record that this object type has been visited.
+			visitedObjectTypes[objectType] = null;
+			foreach (Role role in objectType.PlayedRoleCollection)
+			{
+				FactType factType = role.BinarizedFactType;
+				// If we've already visited this fact type, go on to the next one.
+				if (visitedFactTypes.ContainsKey(factType))
+				{
+					continue;
+				}
+
+				FactTypeMapping mapping;
+				FactTypeMappingList mappingList;
+				if (myUndecided.TryGetValue(factType, out mappingList))
+				{
+					chain.UndecidedFactTypeMappings.Add(mappingList);
+				}
+				else if (myPredecidedOneToOneFactTypeMappings.TryGetValue(factType, out mapping))
+				{
+					chain.PredecidedOneToOneFactTypeMappings.Add(mapping);
 				}
 				else
 				{
-					i++;
-				}
-			}
-		}
-
-		private void AddDecidedOneToOnes()
-		{
-			foreach (KeyValuePair<FactType, FactTypeMapping> pair in myDecidedOneToOnes)
-			{
-				FactTypeMappingList list = new FactTypeMappingList(1);
-				list.Add(pair.Value);
-				myUndecided.Add(pair.Key, list);
-			}
-		}
-
-		private void BuildData()
-		{
-			// Build all of the from->to mappings
-			foreach (FactType factType in myUndecided.Keys)
-			{
-				FactTypeMappingList maplist = myUndecided[factType];
-				foreach (FactTypeMapping mapping in maplist)
-				{
-					// For each mapping, add the "towards" to the "from" list
-					ObjectType fromObject = mapping.FromObjectType;
-					ObjectType toObject = mapping.TowardsObjectType;
-					ObjectTypeList list = null;
-
-					// from->to
-					if (!myFromTo.TryGetValue(fromObject, out list))
-					{
-						list = new ObjectTypeList();
-						myFromTo.Add(fromObject, list);
-					}
-					if (!list.Contains(toObject))
-					{
-						list.Add(toObject);
-					}
-				}
-			}
-		}
-
-		private void SplitChains()
-		{
-			// Set up chains of from->to, then analyze all chains where the "to" for one is the "from" for another.
-			// When there is no "from" corresponding to a "to" for a given mapping, the chain stops.
-
-			// Create the list that ensures we don't double-back on ourselves
-			Dictionary<ObjectType, bool> visited = new Dictionary<ObjectType, bool>();
-
-			// Loop through and get the chains!
-			foreach (ObjectType objectType in myFromTo.Keys)
-			{
-				if (visited.ContainsKey(objectType))
-				{
 					continue;
 				}
 
-				Chain chain = new Chain();
-				FindChain(objectType, chain, visited);
-				myChains.Add(chain);
-			}
-		}
+				// Record that this fact type has been visited.
+				visitedFactTypes[factType] = null;
 
-		private void RemoveDecidedOneToOnes()
-		{
-			foreach (KeyValuePair<FactType, FactTypeMapping> pair in myDecidedOneToOnes)
-			{
-				myUndecided.Remove(pair.Key);
-				foreach (Chain chain in myChains)
-				{
-					chain.Remove(pair.Key);
-				}
-			}
-		}
-
-		private void FindChain(ObjectType from, Chain chain, Dictionary<ObjectType, bool> visited)
-		{
-			ObjectTypeList toList;
-			if (!myFromTo.TryGetValue(from, out toList))
-			{
-				return;
-			}
-			if (toList == null || toList.Count == 0)
-			{
-				return;
-			}
-
-			if (!visited.ContainsKey(from))
-			{
-				visited.Add(from, true);
-			}
-
-			foreach (ObjectType towards in toList)
-			{
-				if (visited.ContainsKey(towards))
-				{
-					continue;
-				}
-
-				// look for an undecided mapping matching the |from| and |toward| values (and vice versa)
-				foreach (KeyValuePair<FactType, FactTypeMappingList> pair in myUndecided)
-				{
-					FactType mappingFactType = pair.Key;
-					FactTypeMappingList mappings = pair.Value;
-					if (mappings.Count > 0 && ((mappings[0].FromObjectType.Equals(from) && mappings[0].TowardsObjectType.Equals(towards)) ||
-						(mappings[0].FromObjectType.Equals(towards) && mappings[0].TowardsObjectType.Equals(from))))
-					{
-						chain.Add(mappingFactType, mappings);
-						FindChain(towards, chain, visited);
-					}
-				}
+				LinkedElementCollection<RoleBase> roles = factType.RoleCollection;
+				Debug.Assert(roles.Count == 2);
+				ObjectType objectType1 = roles[0].Role.RolePlayer;
+				ObjectType objectType2 = roles[1].Role.RolePlayer;
+				ProcessObjectType(objectType1, chain, visitedFactTypes, visitedObjectTypes);
+				ProcessObjectType(objectType2, chain, visitedFactTypes, visitedObjectTypes);
 			}
 		}
 	}
 	#endregion
-	#region LiveOialPermuter
-	class LiveOialPermuter
+	#region FactTypeMappingPermuter
+	sealed class FactTypeMappingPermuter
 	{
-		FactTypeMappingDictionary myDecidedFactTypeMappings = null;
-		FactTypeMappingDictionary myDecidedOneToOneFactTypeMappings = null;
-		FactTypeMappingListDictionary myUndecidedFactTypeMappings = null;
+		private readonly FactTypeMappingDictionary myDecidedFactTypeMappings;
+		private readonly FactTypeMappingDictionary myDecidedOneToOneFactTypeMappings;
+		private readonly FactTypeMappingListDictionary myUndecidedFactTypeMappings;
+
 		// Stores a list of object types that had been considered valid top-level, but was later found to be deeply mapped away
-		ObjectTypeDictionary myInvalidObjectTypes = null;
-		FinalMappingStateList myPossibleFactTypeMappings = new FinalMappingStateList();
-		// List of all smallest mappings of the diagram (contains only permutation elements)
-		FinalMappingStateList mySmallestPermutationsList = new FinalMappingStateList();
+		private readonly ObjectTypeDictionary myInvalidObjectTypes;
+
 		// A single set of possible fact type mappings represented at a given iteration through all possible fact type mappings
-		ObjectTypeDictionary myPossibleTopLevelConceptTypes = null;
-		ObjectTypeDictionary myPossibleConceptTypes = null;
-#if PERMUTATION_DEBUG_OUTPUT
-		StreamWriter sw;
-#endif
+		private readonly ObjectTypeDictionary myPossibleTopLevelConceptTypes;
+		private readonly ObjectTypeDictionary myPossibleConceptTypes;
 
-		public FinalMappingStateList SmallestPermutationsList
-		{
-			get { return mySmallestPermutationsList; }
-		}
 
-		public LiveOialPermuter(FactTypeMappingDictionary decidedFactTypeMappings, FactTypeMappingListDictionary undecidedFactTypeMappings)
+		public FactTypeMappingPermuter(FactTypeMappingDictionary decidedFactTypeMappings, FactTypeMappingListDictionary undecidedFactTypeMappings)
 		{
 			myDecidedFactTypeMappings = decidedFactTypeMappings;
 			myUndecidedFactTypeMappings = undecidedFactTypeMappings;
+
+			myDecidedOneToOneFactTypeMappings = new FactTypeMappingDictionary(myDecidedFactTypeMappings.Count);
+
+			// Stores a list of object types that had been considered valid top-level, but was later found to be deeply mapped away
+			myInvalidObjectTypes = new ObjectTypeDictionary(myDecidedFactTypeMappings.Count);
+			myPossibleTopLevelConceptTypes = new ObjectTypeDictionary(myDecidedFactTypeMappings.Count);
+			myPossibleConceptTypes = new ObjectTypeDictionary(myDecidedFactTypeMappings.Count);
 		}
 
+		/// <summary>
+		/// Runs the permuter, and adds the final decided mapping to the decidedFactTypeMappings dictionary specified when this instance was constructed.
+		/// </summary>
 		public void Run()
 		{
-#if PERMUTATION_DEBUG_OUTPUT
-			sw = new StreamWriter("output.txt");
-			DateTime start;
-			DateTime end;
-
-			start = DateTime.Now;
-#endif
 			FindDecidedOneToOneMappings();
-#if PERMUTATION_DEBUG_OUTPUT
-			end = DateTime.Now;
-			sw.WriteLine("FindDecidedOneToOneMappings: " +end.Subtract(start).ToString());
 
-			start = DateTime.Now;
-#endif
 			PermuteFactTypeMappings();
-#if PERMUTATION_DEBUG_OUTPUT
-			end = DateTime.Now;
-			sw.WriteLine("PermuteFactTypeMappings: " +end.Subtract(start).ToString());
-			sw.Close();
-#endif
 		}
 
 		private void FindDecidedOneToOneMappings()
-		{
-			myDecidedOneToOneFactTypeMappings = new FactTypeMappingDictionary(myDecidedFactTypeMappings.Count);
+		{	
 			FactTypeMapping mapping;
 			Role firstRole;
 			Role secondRole;
@@ -284,58 +212,77 @@ namespace Neumont.Tools.ORMToORMAbstractionBridge
 
 		private void PermuteFactTypeMappings()
 		{
-			int largestChain = 0;
+			int largestChainCount;
 			// Break up the chains of contiguous undecided fact types
 			UndecidedMappingChains chains = new UndecidedMappingChains(myUndecidedFactTypeMappings, myDecidedOneToOneFactTypeMappings);
-#if PERMUTATION_DEBUG_OUTPUT
-			chains.Run(sw, ref largestChain);
-#else
-			chains.Run(ref largestChain);
-#endif
-			// This object validates against deep mapping an object type in two directions
-			ObjectTypeList deepMappings = new ObjectTypeList(largestChain);
-			FactTypeMappingDictionary myDecidedFactTypeMappings = new FactTypeMappingDictionary(300000);
-			// Stores a list of object types that had been considered valid top-level, but was later found to be deeply mapped away
-			myInvalidObjectTypes = new ObjectTypeDictionary(myDecidedFactTypeMappings.Count);
-			myPossibleTopLevelConceptTypes = new ObjectTypeDictionary(myDecidedFactTypeMappings.Count);
-			myPossibleConceptTypes = new ObjectTypeDictionary(myDecidedFactTypeMappings.Count);
+			largestChainCount = chains.Run();
+
 			// Perform one-time pass of top-level types for the decided mappings
 			PrecalculateDecidedConceptTypes();
 
-			// Loop through each chain, obtaining the permutations
+			// This is used in PermuteFactTypeMappings(). We allocate it once, here, for permformance reasons.
+			FactTypeMappingList newlyDecidedFactTypeMappings = new FactTypeMappingList(largestChainCount);
+
+			// This is used to prevent deep mappings of an object type in two directions.
+			Dictionary<ObjectType, object> deeplyMappedObjectTypes = new Dictionary<ObjectType, object>(largestChainCount);
+
+			// Loop through each chain, calculating the permutations.
 			foreach (Chain chain in chains.Chains)
 			{
-				MappingState initialState = new MappingState(myDecidedFactTypeMappings, chain.MappingList);
-				PermuteFactTypeMappingsRecurse(new PermutationState(initialState, chain.PossibleFactTypeMappings, deepMappings, true));
-				CalculateTopLevelConceptTypes(chain);
-				ChooseBest(chain);
-			}
-			BuildFinalMappingList(chains.Chains);
-			OutputResults(myPossibleFactTypeMappings);
-		}
-
-		private void ChooseBest(Chain chain)
-		{
-			// UNDONE: This should do something smart!
-			FinalMappingStateList smallestPermutationsList = chain.SmallestPermutationsList;
-			FinalMappingState firstFinalMappingState = smallestPermutationsList[0];
-			smallestPermutationsList.Clear();
-			smallestPermutationsList.Add(firstFinalMappingState);
-		}
-
-		private void BuildFinalMappingList(ChainList chains)
-		{
-			FinalMappingState state = new FinalMappingState();
-			foreach (Chain chain in chains)
-			{
-				Debug.Assert(chain.SmallestPermutationsList.Count == 1);
-				FinalMappingState chainstate = chain.SmallestPermutationsList[0];
-				foreach (DecidedMappingStateEntry entry in chainstate.Mappings)
+				// Find the object types that we already know have deep mappings away from them.
+				foreach (FactTypeMapping decidedMapping in chain.PredecidedOneToOneFactTypeMappings)
 				{
-					state.Mappings.Add(entry);
+					if (decidedMapping.MappingDepth == MappingDepth.Deep)
+					{
+						deeplyMappedObjectTypes[decidedMapping.FromObjectType] = null;
+					}
+				}
+
+				// UNDONE: Eventually we should actually check this and warn the user if it would take too long on their machine.
+				// This would need to be calculated, though. A hard-coded limit wouldn't be appropriate here.
+				//int maxPermutations = CalculateMaxNumberOfPermutations(chain.UndecidedFactTypeMappings);
+
+				PermuteFactTypeMappings(chain.PossiblePermutations, chain.UndecidedFactTypeMappings, newlyDecidedFactTypeMappings, deeplyMappedObjectTypes, 0);
+				EliminateInvalidPermutations(chain);
+				CalculateTopLevelConceptTypes(chain);
+
+				// Add each mapping from the optimal permutation to the "global" set of decided mappings.
+				foreach (FactTypeMapping optimalMapping in ChooseOptimalPermutation(chain).Mappings)
+				{
+					myDecidedFactTypeMappings.Add(optimalMapping.FactType, optimalMapping);
+				}
+
+				// Clear the set of object types that have some deep mapping away from them (they will be different for the next chain).
+				deeplyMappedObjectTypes.Clear();
+			}
+		}
+
+		private static FactTypeMapping FindDeepMappingAwayFromObjectType(ObjectType objectType, FactTypeMappingList predecidedOneToOneFactTypeMappings, FactTypeMappingList permutationFactTypeMappings)
+		{
+			foreach (FactTypeMapping mapping in predecidedOneToOneFactTypeMappings)
+			{
+				if (mapping.MappingDepth == MappingDepth.Deep && mapping.FromObjectType == objectType)
+				{
+					return mapping;
 				}
 			}
-			mySmallestPermutationsList.Add(state);
+			foreach (FactTypeMapping mapping in permutationFactTypeMappings)
+			{
+				if (mapping.MappingDepth == MappingDepth.Deep && mapping.FromObjectType == objectType)
+				{
+					return mapping;
+				}
+			}
+			return null;
+		}
+
+		private static Permutation ChooseOptimalPermutation(Chain chain)
+		{
+			// UNDONE: This should do something smart!
+			PermutationList smallestPermutationsList = chain.SmallestPermutations;
+			Permutation firstFinalMappingState = smallestPermutationsList[0];
+			smallestPermutationsList.Clear();
+			return firstFinalMappingState;
 		}
 
 		private void PrecalculateDecidedConceptTypes()
@@ -437,14 +384,14 @@ namespace Neumont.Tools.ORMToORMAbstractionBridge
 			ObjectTypeList restore = new ObjectTypeList(myDecidedFactTypeMappings.Count);
 			ObjectTypeList conceptTypeGarbage = new ObjectTypeList(myDecidedFactTypeMappings.Count);
 			// Now include the permutations in the calculation of top-level types.
-			for (int i = 0; i < chain.PossibleFactTypeMappings.Count; i++)
+			for (int i = 0; i < chain.PossiblePermutations.Count; i++)
 			{
 				garbage.Clear();
 				restore.Clear();
-				FinalMappingState state = chain.PossibleFactTypeMappings[i];
-				foreach (DecidedMappingStateEntry mappingState in state.Mappings)
+				Permutation state = chain.PossiblePermutations[i];
+				foreach (FactTypeMapping mapping in state.Mappings)
 				{
-					ProcessEntityState entitystate = new ProcessEntityState(mappingState.Mapping, restore, garbage, conceptTypeGarbage);
+					ProcessEntityState entitystate = new ProcessEntityState(mapping, restore, garbage, conceptTypeGarbage);
 					ProcessEntity(entitystate);
 					if (myPossibleTopLevelConceptTypes.Count > smallest)
 					{
@@ -457,7 +404,7 @@ namespace Neumont.Tools.ORMToORMAbstractionBridge
 				if (state.TopLevelConceptTypes <= smallest)
 				{
 					smallest = state.TopLevelConceptTypes;
-					FinalMappingStateList smallestList = chain.SmallestPermutationsList;
+					PermutationList smallestList = chain.SmallestPermutations;
 					if (smallestList.Count > 0)
 					{
 						if (smallestList[0].TopLevelConceptTypes > state.TopLevelConceptTypes)
@@ -518,86 +465,161 @@ namespace Neumont.Tools.ORMToORMAbstractionBridge
 #endif
 		}
 
-		private void OutputResults(FinalMappingStateList finalStates)
+		/// <summary>
+		/// Returns the maximum number of <see cref="Permutation"/>s that could result for the specified set of undecided <see cref="FactTypeMappings"/>.
+		/// </summary>
+		private static int CalculateMaxNumberOfPermutations(FactTypeMappingListList undecidedMappings)
 		{
-#if PERMUTATION_DEBUG_OUTPUT
-			// Statistics
-			sw.WriteLine("Total permutations: " + finalStates.Count.ToString());
-
-			/*
-			// Headings
-			string top = "Fact Type".PadRight(40) + "| " + "From".PadRight(40) + "| " + "To".PadRight(40) + "| " + "Type".PadRight(10);
-			sw.WriteLine(top);
-			sw.WriteLine("".PadLeft(top.Length, '-'));
-
-			// Permutation states
-			foreach (FinalMappingState finalState in finalStates)
+			int maxPermutations = 1;
+			foreach (FactTypeMappingList mappingList in undecidedMappings)
 			{
-				foreach (KeyValuePair<FactType, FactTypeMapping> pair in finalState.Mappings)
-				{
-					FactTypeMapping mapping = pair.Value;
-					sw.Write(mapping.FactType.Name.PadRight(40));
-					sw.Write("| " + mapping.FromObjectType.Name.PadRight(40));
-					sw.Write("| " + mapping.TowardsObjectType.Name.PadRight(40));
-					sw.Write("| " + mapping.MappingType.ToString().PadRight(10));
-					sw.WriteLine();
-				}
-				sw.WriteLine();
+				maxPermutations *= mappingList.Count;
 			}
-			 */
-#endif
+			return maxPermutations;
 		}
 
-		private void PermuteFactTypeMappingsRecurse(PermutationState permstate)
+		/// <summary>
+		/// Permutes the <see cref="FactTypeMapping"/>s, recursively.
+		/// </summary>
+		/// <param name="permutations">The collection containing <see cref="Permutation"/>s that have already been calculated, and to which newly calculated <see cref="Permutation"/>s are added.</param>
+		/// <param name="undecidedMappings">The list of potential <see cref="FactTypeMapping"/>s for each <see cref="FactType"/> that need to be permuted.</param>
+		/// <param name="decidedMappings">The <see cref="FactTypeMapping"/>s that have already been decided for this branch of the permutation. Should initially be empty.</param>
+		/// <param name="deeplyMappedObjectTypes"><see cref="ObjectType"/>s that already have some deep <see cref="FactTypeMapping"/> away from them.</param>
+		/// <param name="currentPosition">The index into <paramref name="undecidedMappings"/> that should be processed.</param>
+		private static void PermuteFactTypeMappings(PermutationList permutations, FactTypeMappingListList undecidedMappings, FactTypeMappingList decidedMappings, Dictionary<ObjectType, object> deeplyMappedObjectTypes, int currentPosition)
 		{
-			MappingState mapstate = permstate.MappingState;
-			FactTypeMappingListDictionary undecided = new FactTypeMappingListDictionary(mapstate.Undecided);
-			// Loop through each undecided mapping state
-			foreach (KeyValuePair<FactType, FactTypeMappingList> pair in mapstate.Undecided)
+			int nextPosition = currentPosition + 1;
+			bool isLastUndecided = (nextPosition == undecidedMappings.Count);
+			foreach (FactTypeMapping potentialMapping in undecidedMappings[currentPosition])
 			{
-				FactType factType = pair.Key;
-				FactTypeMappingList maplist = pair.Value;
-				for (int i = 0; i < maplist.Count; i++)
+				if (potentialMapping.MappingDepth == MappingDepth.Deep && deeplyMappedObjectTypes.ContainsKey(potentialMapping.FromObjectType))
 				{
-					FactTypeMapping mapping = maplist[i];
-					MappingDepth mappingType = mapping.MappingDepth;
-					// An object type can only be deeply mapped once
-					if (mappingType == MappingDepth.Deep && permstate.DeepMappings.Contains(mapping.FromObjectType))
+					// We already have a deep mapping away from this object type, so we can skip this potential mapping (which would result in an illegal permutation).
+					continue;
+				}
+
+				// Put this potential mapping onto the stack of decided mappings.
+				decidedMappings.Add(potentialMapping);
+
+				if (isLastUndecided)
+				{
+					// This is the end of the list of undecided fact types, so we can create a permutation.
+					permutations.Add(new Permutation(new FactTypeMappingList(decidedMappings)));
+				}
+				else
+				{
+					if (potentialMapping.MappingDepth == MappingDepth.Deep)
 					{
-						// The permutation never makes to the "possible" list since it would map the object type deeply in two directions
+						// This is a deep mapping, so add the from object type to the set of deeply mapped object types.
+						deeplyMappedObjectTypes[potentialMapping.FromObjectType] = null;
+					}
+
+					// Go on to the potential mappings for the next undecided fact type.
+					PermuteFactTypeMappings(permutations, undecidedMappings, decidedMappings, deeplyMappedObjectTypes, nextPosition);
+
+					if (potentialMapping.MappingDepth == MappingDepth.Deep)
+					{
+						// Remove the from object type from the set of deeply mapped object types.
+						deeplyMappedObjectTypes.Remove(potentialMapping.FromObjectType);
+					}
+				}
+
+				// Pop this potential mapping off the stack of decided mappings so that we can go on to the next potential mapping.
+				decidedMappings.RemoveAt(decidedMappings.Count - 1);
+			}
+		}
+
+		/// <summary>
+		/// Eliminates any <see cref="Permutation"/>s that contain cyclical deep <see cref="FactTypeMapping"/>s.
+		/// </summary>
+		/// <param name="chain">
+		/// The <see cref="Chain"/> for which invalid <see cref="Permutation"/>s should be eliminated.
+		/// </param>
+		private static void EliminateInvalidPermutations(Chain chain)
+		{
+			Debug.Assert(chain.UndecidedFactTypeMappings.Count > 0);
+
+			int factTypeCount = chain.FactTypeCount;
+
+			FactTypeMappingList predecidedOneToOneFactTypeMappings = chain.PredecidedOneToOneFactTypeMappings;
+			PermutationList possiblePermutations = chain.PossiblePermutations;
+
+			Dictionary<FactType, object> visited = new Dictionary<FactType, object>(factTypeCount);
+			Dictionary<FactType, object> current = new Dictionary<FactType, object>(factTypeCount);
+
+			Debug.Assert(possiblePermutations[0].Mappings.Count > 0);
+			// All of the permutations will always contain the same number of mappings, so we can calculate it here.
+			int mappingsCount = possiblePermutations[0].Mappings.Count;
+
+			for (int permutationIndex = possiblePermutations.Count - 1; permutationIndex >= 0; permutationIndex--)
+			{
+				// We're checking a new permutation, so clear the visited dictionary.
+				visited.Clear();
+				bool permutationIsInvalid = false;
+				Permutation permutation = possiblePermutations[permutationIndex];
+				FactTypeMappingList mappings = permutation.Mappings;
+
+				int mappingIndex = 0;
+				do
+				{
+					FactTypeMapping mapping = null;
+					FactType factType = null;
+					// Find a deep mapping that we haven't already visited.
+					while (mappingIndex < mappingsCount)
+					{
+						mapping = mappings[mappingIndex++];
+						factType = mapping.FactType;
+						if (mapping.MappingDepth == MappingDepth.Deep && !visited.ContainsKey(factType))
+						{
+							break;
+						}
+					}
+
+					if (mapping == null)
+					{
 						break;
 					}
-					// Temporarily set the state of decided & undecided collections
-					mapstate.Decided.Add(factType, mapping);
-					undecided.Remove(factType);
-					// Generate a new state to represent the collections
-					MappingState newmapstate = new MappingState(mapstate.Decided, undecided);
-					PermutationState newpermstate = new PermutationState(newmapstate, permstate.PossibleFactTypeMappings, permstate.DeepMappings, false);
-					// If there are no more undecided states left, add it as a final state
-					if (undecided.Count == 0)
+
+					// Record that the fact type has been visited
+					visited[factType] = null;
+					if (mapping.MappingDepth != MappingDepth.Deep)
 					{
-						permstate.PossibleFactTypeMappings.Add(new FinalMappingState(permstate.MappingState));
+						// If we hit this, we have no more deep mappings in the permutation.
+						break;
 					}
-					else
+
+					// We're following a new path, so clear the current dictionary.
+					current.Clear();
+					// Follow this path until we hit an object type that has no deep mappings away from it, or find a cycle.
+					while (true)
 					{
-						if (mappingType == MappingDepth.Deep)
+						if (current.ContainsKey(factType))
 						{
-							permstate.DeepMappings.Add(mapping.FromObjectType);
+							// We're back to a fact type we already processed, which means that there is a cycle, and this permutation is illegal.
+							possiblePermutations.RemoveAt(permutationIndex);
+							permutationIsInvalid = true;
+							break;
 						}
-						PermuteFactTypeMappingsRecurse(newpermstate);
-						if (mappingType == MappingDepth.Deep)
+						// Add the fact type to the list of those seen on this path already.
+						current[factType] = null;
+						// Also add the fact type to the list of those seen already.
+						visited[factType] = null;
+
+						// Find the next hop on this path.
+						ObjectType towardsObjectType = mapping.TowardsObjectType;
+						mapping = FindDeepMappingAwayFromObjectType(towardsObjectType, predecidedOneToOneFactTypeMappings, mappings);
+
+						if (mapping == null)
 						{
-							permstate.DeepMappings.Remove(mapping.FromObjectType);
+							// The object type has no deep mappings away from it, so we continue with the outer loop.
+							break;
 						}
+
+						// Let this loop continue and process the fact type for the next hop.
+						factType = mapping.FactType;
 					}
-					// Restore from temporary state
-					mapstate.Decided.Remove(factType);
-					undecided.Add(factType, maplist);
 				}
-				if (permstate.IsRoot)
-				{
-					return;
-				}
+				while (!permutationIsInvalid && (visited.Count < factTypeCount));
 			}
 		}
 	}

@@ -1,5 +1,7 @@
 using System;
 using System.Collections.Generic;
+using System.Diagnostics;
+using System.Runtime.Serialization;
 using System.Text;
 using Microsoft.VisualStudio.Modeling;
 using Neumont.Tools.ORM.ObjectModel;
@@ -37,15 +39,17 @@ namespace Neumont.Tools.ORMToORMAbstractionBridge
 		}
 	}
 
-	struct FactTypeMapping
+	[Serializable]
+	[DebuggerDisplay("FactTypeMapping (TowardsRole={FactType.RoleCollection.IndexOf(FromRole)}, Depth={MappingDepth}, FactType={FactType.Name})")]
+	sealed class FactTypeMapping
 	{
-		private FactType factType;
-		private Role fromRole;
-		private Role towardsRole;
-		private ObjectType fromObjectType;
-		private ObjectType towardsObjectType;
-		private MappingDepth mappingDepth;
-		private bool isFromPreferredIdentifier;
+		private readonly FactType factType;
+		private readonly Role fromRole;
+		private readonly Role towardsRole;
+		private readonly ObjectType fromObjectType;
+		private readonly ObjectType towardsObjectType;
+		private readonly MappingDepth mappingDepth;
+		private readonly bool isFromPreferredIdentifier;
 
 		/// <value>
 		/// The <see cref="FactType"/> that this mapping is for.
@@ -106,11 +110,10 @@ namespace Neumont.Tools.ORMToORMAbstractionBridge
 
 			this.fromObjectType = fromRole.RolePlayer;
 			this.towardsObjectType = towardsRole.RolePlayer;
-			this.isFromPreferredIdentifier = false;
-			DetermineWhetherFromIsPreferredIdentifier();
+			this.isFromPreferredIdentifier = DetermineWhetherFromIsPreferredIdentifier();
 		}
 
-		private void DetermineWhetherFromIsPreferredIdentifier()
+		private bool DetermineWhetherFromIsPreferredIdentifier()
 		{
 			foreach (ConstraintRoleSequence constraintRoleSequence in fromRole.ConstraintRoleSequenceCollection)
 			{
@@ -118,17 +121,19 @@ namespace Neumont.Tools.ORMToORMAbstractionBridge
 				// If fromRole does not have a preferred uniqueness constraint on it...
 				if (uniquenessConstraint != null && uniquenessConstraint.IsPreferred)
 				{
-					this.isFromPreferredIdentifier = true;
-					return;
+					return true;
 				}
 			}
+			return false;
 		}
 	}
 	#region Permutation structures
-	class FactTypeLinkedElementCollection : LinkedElementCollection<FactType> { }
-	class ObjectTypeLinkedElementCollection : LinkedElementCollection<ObjectType> { }
-	class FactTypeList : List<FactType> { }
-	class ObjectTypeList : List<ObjectType>
+	[Serializable]
+	sealed class FactTypeList : List<FactType>
+	{
+	}
+	[Serializable]
+	sealed class ObjectTypeList : List<ObjectType>
 	{
 		public ObjectTypeList()
 		{
@@ -139,16 +144,21 @@ namespace Neumont.Tools.ORMToORMAbstractionBridge
 		{
 		}
 	}
-	class ObjectTypeListDictionary : Dictionary<ObjectType, ObjectTypeList> { }
-	class ObjectTypeDictionary : Dictionary<ObjectType, bool>
+	[Serializable]
+	sealed class ObjectTypeDictionary : Dictionary<ObjectType, bool>
 	{
-		public ObjectTypeDictionary(int size)
-			: base(size)
+		public ObjectTypeDictionary(int capacity)
+			: base(capacity)
+		{
+		}
+
+		private ObjectTypeDictionary(SerializationInfo info, StreamingContext context)
+			: base(info, context)
 		{
 		}
 	}
-
-	class FactTypeMappingDictionary : Dictionary<FactType, FactTypeMapping>
+	[Serializable]
+	sealed class FactTypeMappingDictionary : Dictionary<FactType, FactTypeMapping>
 	{
 		public FactTypeMappingDictionary()
 		{
@@ -167,9 +177,14 @@ namespace Neumont.Tools.ORMToORMAbstractionBridge
 				Add(pair.Key, pair.Value);
 			}
 		}
-	}
 
-	class FactTypeMappingListDictionary : Dictionary<FactType, FactTypeMappingList>
+		private FactTypeMappingDictionary(SerializationInfo info, StreamingContext context)
+			: base(info, context)
+		{
+		}
+	}
+	[Serializable]
+	sealed class FactTypeMappingListDictionary : Dictionary<FactType, FactTypeMappingList>
 	{
 		public FactTypeMappingListDictionary()
 		{
@@ -179,34 +194,17 @@ namespace Neumont.Tools.ORMToORMAbstractionBridge
 			: base(size)
 		{
 		}
-
-		public FactTypeMappingListDictionary(FactTypeMappingListDictionary values)
-			: base(values.Count)
+		private FactTypeMappingListDictionary(SerializationInfo info, StreamingContext context)
+			: base(info, context)
 		{
-			foreach (KeyValuePair<FactType, FactTypeMappingList> pair in values)
-			{
-				FactTypeMappingList oldlist = pair.Value;
-				FactTypeMappingList list = new FactTypeMappingList(oldlist.Count);
-				for (int i = 0; i < oldlist.Count; i++)
-				{
-					list.Add(oldlist[i]);
-				}
-				Add(pair.Key, list);
-			}
 		}
 	}
-
-	class FinalMappingStateList : List<FinalMappingState>
+	[Serializable]
+	sealed class PermutationList : List<Permutation>
 	{
-		private int myTopLevelConceptTypes = 0;
-
-		public int TopLevelConceptTypes
-		{
-			get { return myTopLevelConceptTypes; }
-			set { myTopLevelConceptTypes = value; }
-		}
 	}
-	class FactTypeMappingList : List<FactTypeMapping>
+	[Serializable]
+	sealed class FactTypeMappingList : List<FactTypeMapping>
 	{
 		public FactTypeMappingList()
 		{
@@ -216,113 +214,37 @@ namespace Neumont.Tools.ORMToORMAbstractionBridge
 			: base(size)
 		{
 		}
+
+		public FactTypeMappingList(IEnumerable<FactTypeMapping> collection)
+			: base(collection)
+		{
+		}
 	}
-	class FactTypeMappingListDictionaryList : List<FactTypeMappingListDictionary> { }
-
-	class DecidedMappingStateEntryList : List<DecidedMappingStateEntry>
+	[Serializable]
+	sealed class FactTypeMappingListList : List<FactTypeMappingList>
 	{
-		private FactTypeMappingDictionary myFactTypeMappings;
-
-		public DecidedMappingStateEntryList(int size)
-			: base(size)
+		public FactTypeMappingListList()
 		{
-			myFactTypeMappings = new FactTypeMappingDictionary(size);
 		}
-
-		public DecidedMappingStateEntryList(DecidedMappingStateEntryList values)
-			: this(values.Count)
+		public FactTypeMappingListList(int capacity)
+			: base(capacity)
 		{
-			this.AddRange(values);
-		}
-
-		public DecidedMappingStateEntryList(FactTypeMappingDictionary values)
-			: this(values.Count)
-		{
-			foreach (KeyValuePair<FactType, FactTypeMapping> pair in values)
-			{
-				this.Add(new DecidedMappingStateEntry(pair.Key, pair.Value));
-			}
-		}
-
-		public new void Add(DecidedMappingStateEntry value)
-		{
-			myFactTypeMappings.Add(value.FactType, value.Mapping);
-			base.Add(value);
-		}
-
-		public bool TryGetByFactType(FactType factType, out FactTypeMapping mapping)
-		{
-			return (myFactTypeMappings.TryGetValue(factType, out mapping));
 		}
 	}
 
-	class UndecidedMappingStateEntryList : List<UndecidedMappingStateEntry>
+	[Serializable]
+	sealed class Permutation
 	{
-		public UndecidedMappingStateEntryList(int size)
-			: base(size)
+		private readonly FactTypeMappingList myMappings;
+		private int myTopLevelConceptTypes;
+		private int myConceptTypes;
+
+		public Permutation(FactTypeMappingList mappings)
 		{
+			myMappings = mappings;
 		}
 
-		public UndecidedMappingStateEntryList(UndecidedMappingStateEntryList values)
-			: this(values.Count)
-		{
-			this.AddRange(values);
-		}
-	}
-
-	struct DecidedMappingStateEntry
-	{
-		public FactType FactType;
-		public FactTypeMapping Mapping;
-
-		public DecidedMappingStateEntry(FactType factType, FactTypeMapping mapping)
-		{
-			FactType = factType;
-			Mapping = mapping;
-		}
-	}
-
-	struct UndecidedMappingStateEntry
-	{
-		public FactType FactType;
-		public FactTypeMappingList MappingList;
-
-		public UndecidedMappingStateEntry(FactType factType, FactTypeMappingList mappingList)
-		{
-			FactType = factType;
-			MappingList = mappingList;
-		}
-	}
-
-	class MappingState
-	{
-		public FactTypeMappingDictionary Decided;
-		public FactTypeMappingListDictionary Undecided;
-
-		public MappingState(FactTypeMappingDictionary decided, FactTypeMappingListDictionary undecided)
-		{
-			Decided = decided;
-			Undecided = undecided;
-		}
-	}
-
-	class FinalMappingState
-	{
-		private DecidedMappingStateEntryList myMappings = null;
-		private int myTopLevelConceptTypes = 0;
-		private int myConceptTypes = 0;
-
-		public FinalMappingState(MappingState state)
-		{
-			myMappings = new DecidedMappingStateEntryList(state.Decided);
-		}
-
-		public FinalMappingState()
-		{
-			myMappings = new DecidedMappingStateEntryList(0);
-		}
-
-		public DecidedMappingStateEntryList Mappings
+		public FactTypeMappingList Mappings
 		{
 			get { return myMappings; }
 		}
@@ -340,28 +262,13 @@ namespace Neumont.Tools.ORMToORMAbstractionBridge
 		}
 	}
 
-	struct PermutationState
-	{
-		public MappingState MappingState;
-		public FinalMappingStateList PossibleFactTypeMappings;
-		public ObjectTypeList DeepMappings;
-		public bool IsRoot;
-
-		public PermutationState(MappingState mappingState, FinalMappingStateList possibleFactTypeMappings, ObjectTypeList deepMappings, bool isRoot)
-		{
-			MappingState = mappingState;
-			PossibleFactTypeMappings = possibleFactTypeMappings;
-			DeepMappings = deepMappings;
-			IsRoot = isRoot;
-		}
-	}
-
+	[Serializable]
 	struct ProcessEntityState
 	{
-		public FactTypeMapping Mapping;
-		public ObjectTypeList Restore;
-		public ObjectTypeList Garbage;
-		public ObjectTypeList ConceptTypeGarbage;
+		public readonly FactTypeMapping Mapping;
+		public readonly ObjectTypeList Restore;
+		public readonly ObjectTypeList Garbage;
+		public readonly ObjectTypeList ConceptTypeGarbage;
 
 		public ProcessEntityState(FactTypeMapping mapping, ObjectTypeList restore, ObjectTypeList garbage, ObjectTypeList conceptTypeGarbage)
 		{
@@ -372,37 +279,71 @@ namespace Neumont.Tools.ORMToORMAbstractionBridge
 		}
 	}
 
-	class ChainList : List<Chain> { }
-
-	class Chain
+	[Serializable]
+	sealed class ChainList : List<Chain>
 	{
-		FactTypeMappingListDictionary myMappingList = new FactTypeMappingListDictionary(10);
-		FinalMappingStateList myPossibleFactTypeMappings = new FinalMappingStateList();
-		FinalMappingStateList mySmallestPermutationsList = new FinalMappingStateList();
+	}
 
-		public void Add(FactType factType, FactTypeMappingList value)
+	[Serializable]
+	sealed class Chain
+	{
+		private readonly FactTypeMappingList myPredecidedOneToOneFactTypeMappings;
+		private readonly FactTypeMappingListList myUndecidedFactTypeMappings;
+		private readonly PermutationList myPossiblePermutations;
+		private readonly PermutationList mySmallestPermutations;
+
+		public Chain()
 		{
-			myMappingList.Add(factType, value);
+			myPredecidedOneToOneFactTypeMappings = new FactTypeMappingList();
+			myUndecidedFactTypeMappings = new FactTypeMappingListList();
+			myPossiblePermutations = new PermutationList();
+			mySmallestPermutations = new PermutationList();
 		}
 
-		public void Remove(FactType factType)
+		/// <summary>
+		/// Returns the number of FactTypes in this Chain.
+		/// </summary>
+		public int FactTypeCount
 		{
-			myMappingList.Remove(factType);
+			get
+			{
+				return myPredecidedOneToOneFactTypeMappings.Count + myUndecidedFactTypeMappings.Count;
+			}
 		}
 
-		public FactTypeMappingListDictionary MappingList
+		/// <summary>
+		/// One-to-one FactTypeMappings that are part of this chain but were decided before the permutation phase.
+		/// </summary>
+		public FactTypeMappingList PredecidedOneToOneFactTypeMappings
 		{
-			get { return myMappingList; }
+			get
+			{
+				return myPredecidedOneToOneFactTypeMappings;
+			}
 		}
 
-		public FinalMappingStateList PossibleFactTypeMappings
+		/// <summary>
+		/// The potential mappings of the undecided FactTypes that are in this Chain.
+		/// </summary>
+		public FactTypeMappingListList UndecidedFactTypeMappings
 		{
-			get { return myPossibleFactTypeMappings; }
+			get { return myUndecidedFactTypeMappings; }
 		}
 
-		public FinalMappingStateList SmallestPermutationsList
+		/// <summary>
+		/// Contains a list of all possible permutations for this chain.  Fully populated after LiveOialPermuter.PermuteFactTypeMappingsRecurse is finished with the chain.
+		/// </summary>
+		public PermutationList PossiblePermutations
 		{
-			get { return mySmallestPermutationsList; }
+			get { return myPossiblePermutations; }
+		}
+
+		/// <summary>
+		/// The entries from PossiblePermutations which map to the smallest number of top-level concept types.
+		/// </summary>
+		public PermutationList SmallestPermutations
+		{
+			get { return mySmallestPermutations; }
 		}
 	}
 	#endregion

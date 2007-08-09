@@ -160,7 +160,7 @@ namespace Neumont.Tools.ORMToORMAbstractionBridge
 			foreach (RoleBase roleBase in roles)
 			{
 				ObjectType rolePlayer = roleBase.Role.RolePlayer;
-				if (rolePlayer != null || ShouldIgnoreObjectType(rolePlayer))
+				if (rolePlayer == null || ShouldIgnoreObjectType(rolePlayer))
 				{
 					return true;
 				}
@@ -183,19 +183,8 @@ namespace Neumont.Tools.ORMToORMAbstractionBridge
 			InitialFactTypeMappings(modelFactTypes, out decidedFactTypeMappings, out undecidedFactTypeMappings);
 			FilterFactTypeMappings(decidedFactTypeMappings, undecidedFactTypeMappings);
 
-			LiveOialPermuter permuter = new LiveOialPermuter(decidedFactTypeMappings, undecidedFactTypeMappings);
+			FactTypeMappingPermuter permuter = new FactTypeMappingPermuter(decidedFactTypeMappings, undecidedFactTypeMappings);
 			permuter.Run();
-			// smallestPermutationsList now contains those permutations which result in the smallest number of possible top-level concept types
-			FinalMappingStateList smallestPermutationsList = permuter.SmallestPermutationsList;
-
-			// TODO: if more than one possible permutation, further decide.
-			Debug.Assert(smallestPermutationsList.Count == 1, "There was more than one item in smallestPermutationsList.  We do not currently have a process for further decision.");
-
-			FinalMappingState mapstate = smallestPermutationsList[0];
-			foreach (DecidedMappingStateEntry entry in mapstate.Mappings)
-			{
-				decidedFactTypeMappings.Add(entry.FactType, entry.Mapping);
-			}
 
 			GenerateOialModel(decidedFactTypeMappings);
 		}
