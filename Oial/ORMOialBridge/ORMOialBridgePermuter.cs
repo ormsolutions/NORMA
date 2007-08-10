@@ -10,35 +10,37 @@ using System.Diagnostics;
 namespace Neumont.Tools.ORMToORMAbstractionBridge
 {
 	#region Chain calculator
-	sealed class UndecidedMappingChains
+	sealed class FactTypeChainer
 	{
-		private readonly FactTypeMappingListDictionary myUndecided;
+		private readonly FactTypeMappingDictionary myPredecidedManyToOneFactTypeMappings;
 		private readonly FactTypeMappingDictionary myPredecidedOneToOneFactTypeMappings;
+		private readonly FactTypeMappingListDictionary myUndecidedOneToOneFactTypeMappings;
 		private readonly ChainList myChains;
 
-		public UndecidedMappingChains(FactTypeMappingListDictionary undecided, FactTypeMappingDictionary predecidedOneToOneFactTypeMappings)
+		public FactTypeChainer(FactTypeMappingDictionary predecidedManyToOneFactTypeMappings, FactTypeMappingDictionary predecidedOneToOneFactTypeMappings, FactTypeMappingListDictionary undecidedOneToOneFactTypeMappings)
 		{
 			myChains = new ChainList();
-			myUndecided = undecided;
+
+			myPredecidedManyToOneFactTypeMappings = predecidedManyToOneFactTypeMappings;
 			myPredecidedOneToOneFactTypeMappings = predecidedOneToOneFactTypeMappings;
+			myUndecidedOneToOneFactTypeMappings = undecidedOneToOneFactTypeMappings;
 		}
 
 		public int Run()
 		{
 			BuildChains();
-			//DeleteEmptyChains();
 
 			// Delete empty chains and find the largest chain.
 			int largestChainCount = 0;
 			for (int i = myChains.Count - 1; i >= 0; i--)
 			{
 				Chain chain = myChains[i];
-				if (chain.UndecidedFactTypeMappings.Count <= 0)
+				if (chain.UndecidedOneToOneFactTypeMappings.Count <= 0)
 				{
 					myChains.RemoveAt(i);
 					continue;
 				}
-				int chainCount = chain.FactTypeCount;
+				int chainCount = chain.OneToOneFactTypeCount;
 				if (chainCount > largestChainCount)
 				{
 					largestChainCount = chainCount;
@@ -55,13 +57,13 @@ namespace Neumont.Tools.ORMToORMAbstractionBridge
 
 		private void BuildChains()
 		{
-			int factTypesCount = myUndecided.Count + myPredecidedOneToOneFactTypeMappings.Count;
+			int factTypesCount = myUndecidedOneToOneFactTypeMappings.Count + myPredecidedOneToOneFactTypeMappings.Count;
 			Dictionary<FactType, object> visitedFactTypes = new Dictionary<FactType, object>(factTypesCount);
 			Dictionary<ObjectType, object> visitedObjectTypes = new Dictionary<ObjectType, object>(factTypesCount * 2);
 
 
 			FactTypeMappingDictionary.Enumerator predecidedEnumerator = myPredecidedOneToOneFactTypeMappings.GetEnumerator();
-			FactTypeMappingListDictionary.Enumerator undecidedEnumerator = myUndecided.GetEnumerator();
+			FactTypeMappingListDictionary.Enumerator undecidedEnumerator = myUndecidedOneToOneFactTypeMappings.GetEnumerator();
 			while (true)
 			{
 				KeyValuePair<FactType, FactTypeMapping> predecidedPair;
@@ -92,7 +94,7 @@ namespace Neumont.Tools.ORMToORMAbstractionBridge
 					}
 				}
 
-				// We're following a new path, so clear the current dictionary.
+				// We've found a new path, so create a chain for it.
 				Chain chain = new Chain();
 				myChains.Add(chain);
 
@@ -120,13 +122,17 @@ namespace Neumont.Tools.ORMToORMAbstractionBridge
 
 				FactTypeMapping mapping;
 				FactTypeMappingList mappingList;
-				if (myUndecided.TryGetValue(factType, out mappingList))
+				if (myUndecidedOneToOneFactTypeMappings.TryGetValue(factType, out mappingList))
 				{
-					chain.UndecidedFactTypeMappings.Add(mappingList);
+					chain.UndecidedOneToOneFactTypeMappings.Add(mappingList);
 				}
 				else if (myPredecidedOneToOneFactTypeMappings.TryGetValue(factType, out mapping))
 				{
 					chain.PredecidedOneToOneFactTypeMappings.Add(mapping);
+				}
+				else if (myPredecidedManyToOneFactTypeMappings.TryGetValue(factType, out mapping))
+				{
+					chain.PredecidedManyToOneFactTypeMappings.Add(mapping);
 				}
 				else
 				{
@@ -146,12 +152,15 @@ namespace Neumont.Tools.ORMToORMAbstractionBridge
 		}
 	}
 	#endregion
+
 	#region FactTypeMappingPermuter
 	sealed class FactTypeMappingPermuter
 	{
+		private readonly FactTypeMappingDictionary myPredecidedManyToOneFactTypeMappings;
+		private readonly FactTypeMappingDictionary myPredecidedOneToOneFactTypeMappings;
+		private readonly FactTypeMappingListDictionary myUndecidedOneToOneFactTypeMappings;
+
 		private readonly FactTypeMappingDictionary myDecidedFactTypeMappings;
-		private readonly FactTypeMappingDictionary myDecidedOneToOneFactTypeMappings;
-		private readonly FactTypeMappingListDictionary myUndecidedFactTypeMappings;
 
 		// Stores a list of object types that had been considered valid top-level, but was later found to be deeply mapped away
 		private readonly ObjectTypeDictionary myInvalidObjectTypes;
@@ -161,61 +170,45 @@ namespace Neumont.Tools.ORMToORMAbstractionBridge
 		private readonly ObjectTypeDictionary myPossibleConceptTypes;
 
 
-		public FactTypeMappingPermuter(FactTypeMappingDictionary decidedFactTypeMappings, FactTypeMappingListDictionary undecidedFactTypeMappings)
+		public FactTypeMappingPermuter(FactTypeMappingDictionary predecidedManyToOneFactTypeMappings, FactTypeMappingDictionary predecidedOneToOneFactTypeMappings, FactTypeMappingListDictionary undecidedOneToOneFactTypeMappings)
 		{
-			myDecidedFactTypeMappings = decidedFactTypeMappings;
-			myUndecidedFactTypeMappings = undecidedFactTypeMappings;
+			myPredecidedManyToOneFactTypeMappings = predecidedManyToOneFactTypeMappings;
+			myPredecidedOneToOneFactTypeMappings = predecidedOneToOneFactTypeMappings;
+			myUndecidedOneToOneFactTypeMappings = undecidedOneToOneFactTypeMappings;
 
-			myDecidedOneToOneFactTypeMappings = new FactTypeMappingDictionary(myDecidedFactTypeMappings.Count);
+			int oneToOneFactTypeCount = predecidedOneToOneFactTypeMappings.Count + undecidedOneToOneFactTypeMappings.Count;
+			myDecidedFactTypeMappings = new FactTypeMappingDictionary(predecidedManyToOneFactTypeMappings.Count + oneToOneFactTypeCount);
+
+			foreach (KeyValuePair<FactType, FactTypeMapping> pair in predecidedManyToOneFactTypeMappings)
+			{
+				myDecidedFactTypeMappings.Add(pair.Key, pair.Value);
+			}
+			foreach (KeyValuePair<FactType, FactTypeMapping> pair in predecidedOneToOneFactTypeMappings)
+			{
+				myDecidedFactTypeMappings.Add(pair.Key, pair.Value);
+			}
 
 			// Stores a list of object types that had been considered valid top-level, but was later found to be deeply mapped away
-			myInvalidObjectTypes = new ObjectTypeDictionary(myDecidedFactTypeMappings.Count);
-			myPossibleTopLevelConceptTypes = new ObjectTypeDictionary(myDecidedFactTypeMappings.Count);
-			myPossibleConceptTypes = new ObjectTypeDictionary(myDecidedFactTypeMappings.Count);
+			myInvalidObjectTypes = new ObjectTypeDictionary(oneToOneFactTypeCount);
+			myPossibleTopLevelConceptTypes = new ObjectTypeDictionary(oneToOneFactTypeCount);
+			myPossibleConceptTypes = new ObjectTypeDictionary(oneToOneFactTypeCount);
 		}
 
 		/// <summary>
 		/// Runs the permuter, and adds the final decided mapping to the decidedFactTypeMappings dictionary specified when this instance was constructed.
 		/// </summary>
-		public void Run()
+		public FactTypeMappingDictionary Run()
 		{
-			FindDecidedOneToOneMappings();
-
 			PermuteFactTypeMappings();
-		}
-
-		private void FindDecidedOneToOneMappings()
-		{	
-			FactTypeMapping mapping;
-			Role firstRole;
-			Role secondRole;
-			UniquenessConstraint firstRoleUniquenessConstraint;
-			UniquenessConstraint secondRoleUniquenessConstraint;
-			bool firstRoleIsUnique;
-			bool secondRoleIsUnique;
-			foreach (KeyValuePair<FactType, FactTypeMapping> pair in myDecidedFactTypeMappings)
-			{
-				mapping = pair.Value;
-				firstRole = mapping.FromRole;
-				secondRole = mapping.TowardsRole;
-				firstRoleUniquenessConstraint = (UniquenessConstraint)firstRole.SingleRoleAlethicUniquenessConstraint;
-				secondRoleUniquenessConstraint = (UniquenessConstraint)secondRole.SingleRoleAlethicUniquenessConstraint;
-				firstRoleIsUnique = (firstRoleUniquenessConstraint != null);
-				secondRoleIsUnique = (secondRoleUniquenessConstraint != null);
-
-				if (firstRoleIsUnique && secondRoleIsUnique)
-				{
-					myDecidedOneToOneFactTypeMappings.Add(pair.Key, pair.Value);
-				}
-			}
+			return myDecidedFactTypeMappings;
 		}
 
 		private void PermuteFactTypeMappings()
 		{
 			int largestChainCount;
-			// Break up the chains of contiguous undecided fact types
-			UndecidedMappingChains chains = new UndecidedMappingChains(myUndecidedFactTypeMappings, myDecidedOneToOneFactTypeMappings);
-			largestChainCount = chains.Run();
+			// Break up the chains of contiguous one-to-one fact types
+			FactTypeChainer chainer = new FactTypeChainer(myPredecidedManyToOneFactTypeMappings, myPredecidedOneToOneFactTypeMappings, myUndecidedOneToOneFactTypeMappings);
+			largestChainCount = chainer.Run();
 
 			// Perform one-time pass of top-level types for the decided mappings
 			PrecalculateDecidedConceptTypes();
@@ -227,7 +220,7 @@ namespace Neumont.Tools.ORMToORMAbstractionBridge
 			Dictionary<ObjectType, object> deeplyMappedObjectTypes = new Dictionary<ObjectType, object>(largestChainCount);
 
 			// Loop through each chain, calculating the permutations.
-			foreach (Chain chain in chains.Chains)
+			foreach (Chain chain in chainer.Chains)
 			{
 				// Find the object types that we already know have deep mappings away from them.
 				foreach (FactTypeMapping decidedMapping in chain.PredecidedOneToOneFactTypeMappings)
@@ -240,9 +233,9 @@ namespace Neumont.Tools.ORMToORMAbstractionBridge
 
 				// UNDONE: Eventually we should actually check this and warn the user if it would take too long on their machine.
 				// This would need to be calculated, though. A hard-coded limit wouldn't be appropriate here.
-				//int maxPermutations = CalculateMaxNumberOfPermutations(chain.UndecidedFactTypeMappings);
+				//int maxPermutations = CalculateMaxNumberOfPermutations(chain.UndecidedOneToOneFactTypeMappings);
 
-				PermuteFactTypeMappings(chain.PossiblePermutations, chain.UndecidedFactTypeMappings, newlyDecidedFactTypeMappings, deeplyMappedObjectTypes, 0);
+				PermuteFactTypeMappings(chain.PossiblePermutations, chain.UndecidedOneToOneFactTypeMappings, newlyDecidedFactTypeMappings, deeplyMappedObjectTypes, 0);
 				EliminateInvalidPermutations(chain);
 				CalculateTopLevelConceptTypes(chain);
 
@@ -259,6 +252,7 @@ namespace Neumont.Tools.ORMToORMAbstractionBridge
 
 		private static FactTypeMapping FindDeepMappingAwayFromObjectType(ObjectType objectType, FactTypeMappingList predecidedOneToOneFactTypeMappings, FactTypeMappingList permutationFactTypeMappings)
 		{
+			// UNDONE: Figure out a way we can do this off of PlayedRoles instead, which should be faster.
 			foreach (FactTypeMapping mapping in predecidedOneToOneFactTypeMappings)
 			{
 				if (mapping.MappingDepth == MappingDepth.Deep && mapping.FromObjectType == objectType)
@@ -300,7 +294,7 @@ namespace Neumont.Tools.ORMToORMAbstractionBridge
 		///		2. It is a subtype, or
 		///		3. Another object type (B) is mapped to it, and
 		///			a. There exists a role being mapped to object type A on which there are no constraints, or
-		///			b. There exists a role being mapped to object type A on which there is a uniqueness that is not preferred.
+		///			b. There exists a role being mapped to object type A on which there is not a preferred uniqueness.
 		/// 
 		/// A concept type is a top-level concept type when:
 		///		1. It is not deeply mapped towards any other concept type.
@@ -374,9 +368,6 @@ namespace Neumont.Tools.ORMToORMAbstractionBridge
 		/// <param name="chain"></param>
 		private void CalculateTopLevelConceptTypes(Chain chain)
 		{
-#if PERMUTATION_DEBUG_OUTPUT
-			DateTime start = DateTime.Now;
-#endif
 			// The smallest overall mapping that we've found
 			int smallest = int.MaxValue;
 			// These dictionaries track the OTs that are temporarily removed or added for each permutation in the list
@@ -437,32 +428,6 @@ namespace Neumont.Tools.ORMToORMAbstractionBridge
 					myPossibleConceptTypes.Remove(ot);
 				}
 			}
-#if PERMUTATION_DEBUG_OUTPUT
-			DateTime endat = DateTime.Now;
-			// Output values to a file
-			StreamWriter s = new StreamWriter("output_combinations.txt");
-			s.WriteLine("Smallest mapping: " + smallest.ToString());
-			s.WriteLine("# calculated as smallest (efficiency): " + mySmallestPermutationsList.Count);
-			s.WriteLine("Time: " + endat.Subtract(start).ToString());
-			/*
-			int p = 0;
-			foreach (FinalMappingState state in smallestList)
-			{
-				p++;
-				sw.WriteLine("\t" + p.ToString() + " (" + state.TopLevelConceptTypes.ToString() + " TLCTs)");
-				foreach (KeyValuePair<FactType, FactTypeMapping> pair in myDecidedFactTypeMappings)
-				{
-					FactTypeMapping mapping = pair.Value;
-					s.WriteLine("\t\t" + mapping.FromObjectType.ToString() + " to " + mapping.TowardsObjectType.ToString() + " (" + mapping.MappingType.ToString() + ")");
-				}
-				foreach (DecidedMappingStateEntry mapping in state.Mappings)
-				{
-					s.WriteLine("\t\t" + mapping.Mapping.FromObjectType.ToString() + " to " + mapping.Mapping.TowardsObjectType.ToString() + " (" + mapping.Mapping.MappingType.ToString() + ")");
-				}
-			}
-			 */
-			s.Close();
-#endif
 		}
 
 		/// <summary>
@@ -537,9 +502,9 @@ namespace Neumont.Tools.ORMToORMAbstractionBridge
 		/// </param>
 		private static void EliminateInvalidPermutations(Chain chain)
 		{
-			Debug.Assert(chain.UndecidedFactTypeMappings.Count > 0);
+			Debug.Assert(chain.UndecidedOneToOneFactTypeMappings.Count > 0);
 
-			int factTypeCount = chain.FactTypeCount;
+			int factTypeCount = chain.OneToOneFactTypeCount;
 
 			FactTypeMappingList predecidedOneToOneFactTypeMappings = chain.PredecidedOneToOneFactTypeMappings;
 			PermutationList possiblePermutations = chain.PossiblePermutations;

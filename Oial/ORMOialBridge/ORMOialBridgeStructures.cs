@@ -287,27 +287,40 @@ namespace Neumont.Tools.ORMToORMAbstractionBridge
 	[Serializable]
 	sealed class Chain
 	{
+		private readonly FactTypeMappingList myPredecidedManyToOneFactTypeMappings;
 		private readonly FactTypeMappingList myPredecidedOneToOneFactTypeMappings;
-		private readonly FactTypeMappingListList myUndecidedFactTypeMappings;
+		private readonly FactTypeMappingListList myUndecidedOneToOneFactTypeMappings;
 		private readonly PermutationList myPossiblePermutations;
 		private readonly PermutationList mySmallestPermutations;
 
 		public Chain()
 		{
+			myPredecidedManyToOneFactTypeMappings = new FactTypeMappingList();
 			myPredecidedOneToOneFactTypeMappings = new FactTypeMappingList();
-			myUndecidedFactTypeMappings = new FactTypeMappingListList();
+			myUndecidedOneToOneFactTypeMappings = new FactTypeMappingListList();
 			myPossiblePermutations = new PermutationList();
 			mySmallestPermutations = new PermutationList();
 		}
 
 		/// <summary>
-		/// Returns the number of FactTypes in this Chain.
+		/// Returns the number of one-to-one FactTypes in this Chain.
 		/// </summary>
-		public int FactTypeCount
+		public int OneToOneFactTypeCount
 		{
 			get
 			{
-				return myPredecidedOneToOneFactTypeMappings.Count + myUndecidedFactTypeMappings.Count;
+				return myPredecidedOneToOneFactTypeMappings.Count + myUndecidedOneToOneFactTypeMappings.Count;
+			}
+		}
+
+		/// <summary>
+		/// Many-to-one FactTypeMappings that are part of this chain but were decided before the permutation phase.
+		/// </summary>
+		public FactTypeMappingList PredecidedManyToOneFactTypeMappings
+		{
+			get
+			{
+				return myPredecidedManyToOneFactTypeMappings;
 			}
 		}
 
@@ -323,11 +336,11 @@ namespace Neumont.Tools.ORMToORMAbstractionBridge
 		}
 
 		/// <summary>
-		/// The potential mappings of the undecided FactTypes that are in this Chain.
+		/// The potential mappings of the undecided one-to-one FactTypes that are in this Chain.
 		/// </summary>
-		public FactTypeMappingListList UndecidedFactTypeMappings
+		public FactTypeMappingListList UndecidedOneToOneFactTypeMappings
 		{
-			get { return myUndecidedFactTypeMappings; }
+			get { return myUndecidedOneToOneFactTypeMappings; }
 		}
 
 		/// <summary>
