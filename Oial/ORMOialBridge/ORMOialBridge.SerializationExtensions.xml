@@ -49,5 +49,34 @@
 				</se:RootLink>
 			</se:Container>
 		</se:RootLinks>
+		<se:OmittedDomainElements>
+			<se:OmitRelationship Class="ExcludedORMModelElement"/>
+		</se:OmittedDomainElements>
 	</se:DomainModel>
+	<se:Element Class="FactTypeMapsTowardsRole">
+		<se:Attribute ID="MandatoryPattern">
+			<se:Condition WriteStyle="NotWritten">
+				<plx:binaryOperator type="equality">
+					<plx:left>
+						<plx:callStatic name="None" type="field" dataTypeName="MappingMandatoryPattern"/>
+					</plx:left>
+					<plx:right>
+						<plx:callThis name="MandatoryPattern" type="property"/>
+					</plx:right>
+				</plx:binaryOperator>
+			</se:Condition>
+		</se:Attribute>
+		<se:Attribute ID="UniquenessPattern">
+			<se:Condition WriteStyle="NotWritten">
+				<plx:binaryOperator type="equality">
+					<plx:left>
+						<plx:callStatic name="None" type="field" dataTypeName="MappingUniquenessPattern"/>
+					</plx:left>
+					<plx:right>
+						<plx:callThis name="UniquenessPattern" type="property"/>
+					</plx:right>
+				</plx:binaryOperator>
+			</se:Condition>
+		</se:Attribute>
+	</se:Element>
 </se:CustomSerializedElements>

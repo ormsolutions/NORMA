@@ -466,9 +466,6 @@
 			<arg:DeleteRule methodName="ConstraintRoleSequenceHasRoleDeletedRule">
 				<arg:RuleOn targetType="ConstraintRoleSequenceHasRole"/>
 			</arg:DeleteRule>
-			<arg:RolePlayerChangeRule methodName="ConstraintRoleSequenceHasRoleRolePlayerChangedRule">
-				<arg:RuleOn targetType="ConstraintRoleSequenceHasRole"/>
-			</arg:RolePlayerChangeRule>
 			<arg:AddRule methodName="EntityTypeInstanceHasRoleInstanceAddedRule">
 				<arg:RuleOn targetType="EntityTypeInstanceHasRoleInstance"/>
 			</arg:AddRule>
@@ -547,9 +544,9 @@
 			<arg:DeleteRule methodName="ConstraintRoleSequenceHasRoleDeletedRule">
 				<arg:RuleOn targetType="ConstraintRoleSequenceHasRole"/>
 			</arg:DeleteRule>
-			<arg:RolePlayerChangeRule methodName="ConstraintRoleSequenceHasRoleRolePlayerChangedRule">
-				<arg:RuleOn targetType="ConstraintRoleSequenceHasRole"/>
-			</arg:RolePlayerChangeRule>
+			<arg:ChangeRule methodName="ConstraintChangedRule">
+				<arg:RuleOn targetType="SetConstraint"/>
+			</arg:ChangeRule>
 			<arg:ChangeRule methodName="RoleChangeRule">
 				<arg:RuleOn targetType="Role"/>
 			</arg:ChangeRule>

@@ -57,13 +57,27 @@ namespace Neumont.Tools.ORMToORMAbstractionBridge
 		{
 			return GetCustomElementNamespaces();
 		}
+		private Dictionary<DomainClassInfo, object> myCustomSerializationOmissions;
+		private static Dictionary<DomainClassInfo, object> BuildCustomSerializationOmissions(Store store)
+		{
+			Dictionary<DomainClassInfo, object> retVal = new Dictionary<DomainClassInfo, object>();
+			DomainDataDirectory dataDir = store.DomainDataDirectory;
+			retVal[dataDir.FindDomainRelationship(ExcludedORMModelElement.DomainClassId)] = null;
+			return retVal;
+		}
 		private static Dictionary<string, Guid> myClassNameMap;
 		private static Collection<string> myValidNamespaces;
 		private static CustomSerializedRootRelationshipContainer[] myRootRelationshipContainers;
 		/// <summary>Implements ICustomSerializedDomainModel.ShouldSerializeDomainClass</summary>
 		protected bool ShouldSerializeDomainClass(Store store, DomainClassInfo classInfo)
 		{
-			return true;
+			Dictionary<DomainClassInfo, object> omissions = this.myCustomSerializationOmissions;
+			if (omissions == null)
+			{
+				omissions = ORMToORMAbstractionBridgeDomainModel.BuildCustomSerializationOmissions(store);
+				this.myCustomSerializationOmissions = omissions;
+			}
+			return !(omissions.ContainsKey(classInfo));
 		}
 		bool ICustomSerializedDomainModel.ShouldSerializeDomainClass(Store store, DomainClassInfo classInfo)
 		{
@@ -135,6 +149,7 @@ namespace Neumont.Tools.ORMToORMAbstractionBridge
 			if (classNameMap == null)
 			{
 				classNameMap = new Dictionary<string, Guid>();
+				classNameMap.Add("FactTypeMapsTowardsRole", FactTypeMapsTowardsRole.DomainClassId);
 				ORMToORMAbstractionBridgeDomainModel.myClassNameMap = classNameMap;
 			}
 			if (validNamespaces.Contains(xmlNamespace) && classNameMap.ContainsKey(elementName))
@@ -149,4 +164,140 @@ namespace Neumont.Tools.ORMToORMAbstractionBridge
 		}
 	}
 	#endregion // ORMToORMAbstractionBridgeDomainModel model serialization
+	#region FactTypeMapsTowardsRole serialization
+	partial class FactTypeMapsTowardsRole : ICustomSerializedElement
+	{
+		/// <summary>Implements ICustomSerializedElement.SupportedCustomSerializedOperations</summary>
+		protected CustomSerializedElementSupportedOperations SupportedCustomSerializedOperations
+		{
+			get
+			{
+				return CustomSerializedElementSupportedOperations.PropertyInfo;
+			}
+		}
+		CustomSerializedElementSupportedOperations ICustomSerializedElement.SupportedCustomSerializedOperations
+		{
+			get
+			{
+				return this.SupportedCustomSerializedOperations;
+			}
+		}
+		/// <summary>Implements ICustomSerializedElement.GetCustomSerializedChildElementInfo</summary>
+		protected CustomSerializedContainerElementInfo[] GetCustomSerializedChildElementInfo()
+		{
+			throw new NotSupportedException();
+		}
+		CustomSerializedContainerElementInfo[] ICustomSerializedElement.GetCustomSerializedChildElementInfo()
+		{
+			return this.GetCustomSerializedChildElementInfo();
+		}
+		/// <summary>Implements ICustomSerializedElement.CustomSerializedElementInfo</summary>
+		protected CustomSerializedElementInfo CustomSerializedElementInfo
+		{
+			get
+			{
+				throw new NotSupportedException();
+			}
+		}
+		CustomSerializedElementInfo ICustomSerializedElement.CustomSerializedElementInfo
+		{
+			get
+			{
+				return this.CustomSerializedElementInfo;
+			}
+		}
+		/// <summary>Implements ICustomSerializedElement.GetCustomSerializedPropertyInfo</summary>
+		protected CustomSerializedPropertyInfo GetCustomSerializedPropertyInfo(DomainPropertyInfo domainPropertyInfo, DomainRoleInfo rolePlayedInfo)
+		{
+			if (domainPropertyInfo.Id == FactTypeMapsTowardsRole.MandatoryPatternDomainPropertyId)
+			{
+				if (MappingMandatoryPattern.None == this.MandatoryPattern)
+				{
+					return new CustomSerializedPropertyInfo(null, null, null, false, CustomSerializedAttributeWriteStyle.NotWritten, null);
+				}
+				return new CustomSerializedPropertyInfo(null, null, null, false, CustomSerializedAttributeWriteStyle.Attribute, null);
+			}
+			if (domainPropertyInfo.Id == FactTypeMapsTowardsRole.UniquenessPatternDomainPropertyId)
+			{
+				if (MappingUniquenessPattern.None == this.UniquenessPattern)
+				{
+					return new CustomSerializedPropertyInfo(null, null, null, false, CustomSerializedAttributeWriteStyle.NotWritten, null);
+				}
+				return new CustomSerializedPropertyInfo(null, null, null, false, CustomSerializedAttributeWriteStyle.Attribute, null);
+			}
+			return CustomSerializedPropertyInfo.Default;
+		}
+		CustomSerializedPropertyInfo ICustomSerializedElement.GetCustomSerializedPropertyInfo(DomainPropertyInfo domainPropertyInfo, DomainRoleInfo rolePlayedInfo)
+		{
+			return this.GetCustomSerializedPropertyInfo(domainPropertyInfo, rolePlayedInfo);
+		}
+		/// <summary>Implements ICustomSerializedElement.GetCustomSerializedLinkInfo</summary>
+		protected CustomSerializedElementInfo GetCustomSerializedLinkInfo(DomainRoleInfo rolePlayedInfo, ElementLink elementLink)
+		{
+			throw new NotSupportedException();
+		}
+		CustomSerializedElementInfo ICustomSerializedElement.GetCustomSerializedLinkInfo(DomainRoleInfo rolePlayedInfo, ElementLink elementLink)
+		{
+			return this.GetCustomSerializedLinkInfo(rolePlayedInfo, elementLink);
+		}
+		/// <summary>Implements ICustomSerializedElement.CustomSerializedChildRoleComparer</summary>
+		protected IComparer<DomainRoleInfo> CustomSerializedChildRoleComparer
+		{
+			get
+			{
+				return null;
+			}
+		}
+		IComparer<DomainRoleInfo> ICustomSerializedElement.CustomSerializedChildRoleComparer
+		{
+			get
+			{
+				return this.CustomSerializedChildRoleComparer;
+			}
+		}
+		/// <summary>Implements ICustomSerializedElement.MapChildElement</summary>
+		protected CustomSerializedElementMatch MapChildElement(string elementNamespace, string elementName, string containerNamespace, string containerName, string outerContainerNamespace, string outerContainerName)
+		{
+			return default(CustomSerializedElementMatch);
+		}
+		CustomSerializedElementMatch ICustomSerializedElement.MapChildElement(string elementNamespace, string elementName, string containerNamespace, string containerName, string outerContainerNamespace, string outerContainerName)
+		{
+			return this.MapChildElement(elementNamespace, elementName, containerNamespace, containerName, outerContainerNamespace, outerContainerName);
+		}
+		private static Dictionary<string, Guid> myCustomSerializedAttributes;
+		/// <summary>Implements ICustomSerializedElement.MapAttribute</summary>
+		protected Guid MapAttribute(string xmlNamespace, string attributeName)
+		{
+			Dictionary<string, Guid> customSerializedAttributes = FactTypeMapsTowardsRole.myCustomSerializedAttributes;
+			if (customSerializedAttributes == null)
+			{
+				customSerializedAttributes = new Dictionary<string, Guid>();
+				customSerializedAttributes.Add("MandatoryPattern", FactTypeMapsTowardsRole.MandatoryPatternDomainPropertyId);
+				customSerializedAttributes.Add("UniquenessPattern", FactTypeMapsTowardsRole.UniquenessPatternDomainPropertyId);
+				FactTypeMapsTowardsRole.myCustomSerializedAttributes = customSerializedAttributes;
+			}
+			Guid rVal;
+			string key = attributeName;
+			if (xmlNamespace.Length != 0)
+			{
+				key = string.Concat(xmlNamespace, "|", attributeName);
+			}
+			customSerializedAttributes.TryGetValue(key, out rVal);
+			return rVal;
+		}
+		Guid ICustomSerializedElement.MapAttribute(string xmlNamespace, string attributeName)
+		{
+			return this.MapAttribute(xmlNamespace, attributeName);
+		}
+		/// <summary>Implements ICustomSerializedElement.ShouldSerialize</summary>
+		protected static bool ShouldSerialize()
+		{
+			return true;
+		}
+		bool ICustomSerializedElement.ShouldSerialize()
+		{
+			return ShouldSerialize();
+		}
+	}
+	#endregion // FactTypeMapsTowardsRole serialization
 }

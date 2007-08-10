@@ -39,11 +39,21 @@
 	</Attributes>
 
 	<Relationships>
-		<DomainRelationship Name="FactTypeMapsTowardsRole" Namespace="Neumont.Tools.ORMToORMAbstractionBridge" Id="98ABB729-F2F0-4629-BFA7-801B6615137D">
+		<DomainRelationship Name="FactTypeMapsTowardsRole" Namespace="Neumont.Tools.ORMToORMAbstractionBridge" Id="98ABB729-F2F0-4629-BFA7-801B6615137D" HasCustomConstructor="true">
 			<Properties>
 				<DomainProperty Name="Depth" DisplayName="Depth" Id="720B9285-CC59-48E2-8B33-D9944A9ED400">
 					<Type>
 						<DomainEnumerationMoniker Name="MappingDepth"/>
+					</Type>
+				</DomainProperty>
+				<DomainProperty Name="UniquenessPattern" DefaultValue="None" DisplayName="UniquenessPattern" Id="8789B1D0-9BE1-4C7A-B63B-D8D431AF5A47">
+					<Type>
+						<DomainEnumerationMoniker Name="MappingUniquenessPattern"/>
+					</Type>
+				</DomainProperty>
+				<DomainProperty Name="MandatoryPattern" DefaultValue="None" DisplayName="MandatoryPattern" Id="1BEE0F25-5E38-4C51-8744-1BCB5FEB20CC">
+					<Type>
+						<DomainEnumerationMoniker Name="MappingMandatoryPattern"/>
 					</Type>
 				</DomainProperty>
 			</Properties>
@@ -147,10 +157,27 @@
 				</DomainRole>
 			</Target>
 		</DomainRelationship>
+
+		<DomainRelationship Name="ExcludedORMModelElement" Namespace="Neumont.Tools.ORMToORMAbstractionBridge" Id="6A9A8EFB-4DB5-49A2-8818-D66BED21D590">
+			<Source>
+				<DomainRole Name="ExcludedElement" PropertyName="AbstractionModel" Multiplicity="ZeroOne" PropagatesDelete="false" IsPropertyGenerator="false" DisplayName="ExcludedElement" Id="7DCCCA8C-9283-4167-9CC2-79CAEA5DA008">
+					<RolePlayer>
+						<DomainClassMoniker Name="/Neumont.Tools.ORM.ObjectModel/ORMModelElement"/>
+					</RolePlayer>
+				</DomainRole>
+			</Source>
+			<Target>
+				<DomainRole Name="AbstractionModel" PropertyName="ExcludedElement" Multiplicity="ZeroMany" PropagatesDelete="false" IsPropertyGenerator="false" DisplayName="AbstractionModel" Id="AFBD0D81-5EF6-4D0E-A4CB-0145F8EA939B">
+					<RolePlayer>
+						<DomainClassMoniker Name="/Neumont.Tools.ORMAbstraction/AbstractionModel"/>
+					</RolePlayer>
+				</DomainRole>
+			</Target>
+		</DomainRelationship>
 	</Relationships>
 
 	<Types>
-		<DomainEnumeration Namespace="Neumont.Tools.ORMToORMAbstractionBridge" Name="MappingDepth">
+		<DomainEnumeration Namespace="Neumont.Tools.ORMToORMAbstractionBridge" Name="MappingDepth" Description="Specify whether a mapping is shallow (absorbs just the &lt;see cref=&quot;Neumont.Tools.ORM.ObjectModel.FactType&quot;/&gt; only) or deep (absorbs the &lt;see cref=&quot;Neumont.Tools.ORM.ObjectModel.FactType&quot;/&gt; and the opposite &lt;see cref=&quot;Neumont.Tools.ORM.ObjectModel.ObjectType&quot;&gt;role player&lt;/see&gt;.">
 			<Literals>
 				<EnumerationLiteral Name="Shallow" Value="0" Description="Only the &lt;see cref=&quot;Neumont.Tools.ORM.ObjectModel.FactType&quot;/&gt; referenced is mapped to the destination &lt;see cref=&quot;Neumont.Tools.ORM.ObjectModel.ObjectType&quot;/&gt;."/>
 				<EnumerationLiteral Name="Deep" Value="1" Description="The &lt;see cref=&quot;Neumont.Tools.ORM.ObjectModel.FactType&quot;/&gt; referenced is mapped to the destination &lt;see cref=&quot;Neumont.Tools.ORM.ObjectModel.ObjectType&quot;/&gt;, and the &lt;see cref=&quot;Neumont.Tools.ORM.ObjectModel.ObjectType&quot;/&gt; playing the opposite role is absorbed into the destination &lt;see cref=&quot;Neumont.Tools.ORM.ObjectModel.ObjectType&quot;/&gt;."/>
@@ -159,6 +186,40 @@
 				<ClrAttribute Name="global::System.ComponentModel.TypeConverter">
 					<Parameters>
 						<AttributeParameter Value="typeof(global::Neumont.Tools.Modeling.Design.EnumConverter&lt;MappingDepth, global::Neumont.Tools.ORMToORMAbstractionBridge.ORMToORMAbstractionBridgeDomainModel&gt;)"/>
+					</Parameters>
+				</ClrAttribute>
+				<ClrAttribute Name="global::System.Serializable"/>
+			</Attributes>
+		</DomainEnumeration>
+		<DomainEnumeration Namespace="Neumont.Tools.ORMToORMAbstractionBridge" Name="MappingUniquenessPattern" Description="Specifies the uniqueness pattern present on the &lt;see cref=&quot;Neumont.Tools.ORM.ObjectModel.FactType&quot;/&gt; at the time the &lt;see cref=&quot;FactTypeMapsTowardsRole&quot;/&gt; relationship was last updated.">
+			<Literals>
+				<EnumerationLiteral Name="None" Value="0" Description="Uniqueness pattern not specified"/>
+				<EnumerationLiteral Name="OneToMany" Value="1" Description="The mapping is based on a one-to-many &lt;see cref=&quot;Neumont.Tools.ORM.ObjectModel.FactType&quot;/&gt; with a &lt;see cref=&quot;Neumont.Tools.ORM.ObjectModel.UniquenessConstraint&quot;/&gt; on the &lt;see cref=&quot;FactTypeMapsTowardsRole.TowardsRole&quot;/&gt;."/>
+				<EnumerationLiteral Name="ManyToOne" Value="2" Description="The mapping is based on a many-to-one &lt;see cref=&quot;Neumont.Tools.ORM.ObjectModel.FactType&quot;/&gt; with a &lt;see cref=&quot;Neumont.Tools.ORM.ObjectModel.UniquenessConstraint&quot;/&gt; on the role opposite &lt;see cref=&quot;FactTypeMapsTowardsRole.TowardsRole&quot;/&gt;. Note that this value is included for completeness and will not appear in actual &lt;see cref=&quot;FactTypeMapsTowardsRole&quot;/&gt; instances."/>
+				<EnumerationLiteral Name="OneToOne" Value="3" Description="The mapping is based on a one-to-one &lt;see cref=&quot;Neumont.Tools.ORM.ObjectModel.FactType&quot;/&gt;."/>
+				<EnumerationLiteral Name="Subtype" Value="4" Description="The mapping is based on a &lt;see cref=&quot;Neumont.Tools.ORM.ObjectModel.SubtypeFact&quot;/&gt; with the &lt;see cref=&quot;FactTypeMapsTowardsRole.TowardsRole&quot;/&gt; acting as the superttype."/>
+			</Literals>
+			<Attributes>
+				<ClrAttribute Name="global::System.ComponentModel.TypeConverter">
+					<Parameters>
+						<AttributeParameter Value="typeof(global::Neumont.Tools.Modeling.Design.EnumConverter&lt;MappingUniquenessPattern, global::Neumont.Tools.ORMToORMAbstractionBridge.ORMToORMAbstractionBridgeDomainModel&gt;)"/>
+					</Parameters>
+				</ClrAttribute>
+				<ClrAttribute Name="global::System.Serializable"/>
+			</Attributes>
+		</DomainEnumeration>
+		<DomainEnumeration Namespace="Neumont.Tools.ORMToORMAbstractionBridge" Name="MappingMandatoryPattern" Description="Specifies the mandatory pattern present on the &lt;see cref=&quot;Neumont.Tools.ORM.ObjectModel.FactType&quot;/&gt; at the time the &lt;see cref=&quot;FactTypeMapsTowardsRole&quot;/&gt; relationship was last updated. Indicated mandatory relationships include single-role implied mandatory constraints.">
+			<Literals>
+				<EnumerationLiteral Name="None" Value="0" Description="Mandatory pattern not specified"/>
+				<EnumerationLiteral Name="NotMandatory" Value="1" Description="The &lt;see cref=&quot;Neumont.Tools.ORM.ObjectModel.FactType&quot;/&gt; has no mandatory roles."/>
+				<EnumerationLiteral Name="TowardsRoleMandatory" Value="2" Description="The &lt;see cref=&quot;FactTypeMapsTowardsRole.TowardsRole&quot;/&gt; of the &lt;see cref=&quot;Neumont.Tools.ORM.ObjectModel.FactType&quot;/&gt; is mandatory."/>
+				<EnumerationLiteral Name="OppositeRoleMandatory" Value="3" Description="The role opposite &lt;see cref=&quot;FactTypeMapsTowardsRole.TowardsRole&quot;/&gt; of the &lt;see cref=&quot;Neumont.Tools.ORM.ObjectModel.FactType&quot;/&gt; is mandatory."/>
+				<EnumerationLiteral Name="BothRolesMandatory" Value="4" Description="Both the &lt;see cref=&quot;FactTypeMapsTowardsRole.TowardsRole&quot;/&gt; and opposite role of the &lt;see cref=&quot;Neumont.Tools.ORM.ObjectModel.FactType&quot;/&gt; are mandatory."/>
+			</Literals>
+			<Attributes>
+				<ClrAttribute Name="global::System.ComponentModel.TypeConverter">
+					<Parameters>
+						<AttributeParameter Value="typeof(global::Neumont.Tools.Modeling.Design.EnumConverter&lt;MappingMandatoryPattern, global::Neumont.Tools.ORMToORMAbstractionBridge.ORMToORMAbstractionBridgeDomainModel&gt;)"/>
 					</Parameters>
 				</ClrAttribute>
 				<ClrAttribute Name="global::System.Serializable"/>

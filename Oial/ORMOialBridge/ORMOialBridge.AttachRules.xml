@@ -16,58 +16,73 @@
 		<arg:CopyrightLine>\**************************************************************************/</arg:CopyrightLine>
 	</arg:Copyright>
 	<arg:Model class="ORMToORMAbstractionBridgeDomainModel">
-		<arg:RuleContainer class="AbstractionModelIsForORMModel">
-			<arg:AddRule methodName="ConstraintAddRule">
-				<arg:RuleOn targetType="ModelHasSetConstraint" targetTypeQualifier="Neumont.Tools.ORM.ObjectModel"/>
+		<arg:RuleContainer class="AbstractionModelIsForORMModel.ORMElementGateway">
+			<arg:AddRule methodName="ElementExclusionAddedRule">
+				<arg:RuleOn targetType="ExcludedORMModelElement"/>
 			</arg:AddRule>
-			<arg:ChangeRule methodName="ConstraintChangeRule">
+			<arg:AddRule methodName="FactTypeAddedRule">
+				<arg:RuleOn targetType="ModelHasFactType" targetTypeQualifier="Neumont.Tools.ORM.ObjectModel"/>
+			</arg:AddRule>
+			<arg:AddRule methodName="FactTypeErrorAddedRule">
+				<arg:RuleOn targetType="FactTypeHasImpliedInternalUniquenessConstraintError" targetTypeQualifier="Neumont.Tools.ORM.ObjectModel"/>
+				<arg:RuleOn targetType="FactTypeHasFactTypeRequiresInternalUniquenessConstraintError" targetTypeQualifier="Neumont.Tools.ORM.ObjectModel"/>
+			</arg:AddRule>
+			<arg:DeleteRule methodName="FactTypeErrorDeletedRule">
+				<arg:RuleOn targetType="FactTypeHasImpliedInternalUniquenessConstraintError" targetTypeQualifier="Neumont.Tools.ORM.ObjectModel"/>
+				<arg:RuleOn targetType="FactTypeHasFactTypeRequiresInternalUniquenessConstraintError" targetTypeQualifier="Neumont.Tools.ORM.ObjectModel"/>
+			</arg:DeleteRule>
+			<arg:AddRule methodName="ObjectTypeAddedRule">
+				<arg:RuleOn targetType="ModelHasObjectType" targetTypeQualifier="Neumont.Tools.ORM.ObjectModel"/>
+			</arg:AddRule>
+			<arg:AddRule methodName="ObjectTypeErrorAddedRule">
+				<arg:RuleOn targetType="ObjectTypeHasEntityTypeRequiresReferenceSchemeError" targetTypeQualifier="Neumont.Tools.ORM.ObjectModel"/>
+				<arg:RuleOn targetType="ObjectTypeHasCompatibleSupertypesError" targetTypeQualifier="Neumont.Tools.ORM.ObjectModel"/>
+				<arg:RuleOn targetType="ObjectTypeHasPreferredIdentifierRequiresMandatoryError" targetTypeQualifier="Neumont.Tools.ORM.ObjectModel"/>
+				<arg:RuleOn targetType="ObjectTypeHasObjectTypeRequiresPrimarySupertypeError" targetTypeQualifier="Neumont.Tools.ORM.ObjectModel"/>
+				<arg:RuleOn targetType="ValueTypeHasUnspecifiedDataTypeError" targetTypeQualifier="Neumont.Tools.ORM.ObjectModel"/>
+			</arg:AddRule>
+			<arg:DeleteRule methodName="ObjectTypeErrorDeletedRule">
+				<arg:RuleOn targetType="ObjectTypeHasEntityTypeRequiresReferenceSchemeError" targetTypeQualifier="Neumont.Tools.ORM.ObjectModel"/>
+				<arg:RuleOn targetType="ObjectTypeHasCompatibleSupertypesError" targetTypeQualifier="Neumont.Tools.ORM.ObjectModel"/>
+				<arg:RuleOn targetType="ObjectTypeHasPreferredIdentifierRequiresMandatoryError" targetTypeQualifier="Neumont.Tools.ORM.ObjectModel"/>
+				<arg:RuleOn targetType="ObjectTypeHasObjectTypeRequiresPrimarySupertypeError" targetTypeQualifier="Neumont.Tools.ORM.ObjectModel"/>
+				<arg:RuleOn targetType="ValueTypeHasUnspecifiedDataTypeError" targetTypeQualifier="Neumont.Tools.ORM.ObjectModel"/>
+			</arg:DeleteRule>
+			<arg:AddRule methodName="RolePlayerAddedRule">
+				<arg:RuleOn targetType="ObjectTypePlaysRole" targetTypeQualifier="Neumont.Tools.ORM.ObjectModel"/>
+			</arg:AddRule>
+			<arg:DeleteRule methodName="RolePlayerDeletedRule">
+				<arg:RuleOn targetType="ObjectTypePlaysRole" targetTypeQualifier="Neumont.Tools.ORM.ObjectModel"/>
+			</arg:DeleteRule>
+			<arg:RolePlayerChangeRule methodName="RolePlayerRolePlayerChangedRule">
+				<arg:RuleOn targetType="ObjectTypePlaysRole" targetTypeQualifier="Neumont.Tools.ORM.ObjectModel"/>
+			</arg:RolePlayerChangeRule>
+		</arg:RuleContainer>
+		<arg:RuleContainer class="AbstractionModelIsForORMModel.ModificationTracker">
+			<arg:DeleteRule methodName="ConceptTypeBridgeDetachedRule">
+				<arg:RuleOn targetType="ConceptTypeIsForObjectType"/>
+			</arg:DeleteRule>
+			<arg:DeleteRule methodName="InformationTypeFormatBridgeDetachedRule">
+				<arg:RuleOn targetType="InformationTypeFormatIsForValueType"/>
+			</arg:DeleteRule>
+			<arg:DeleteRule methodName="ConceptTypeChildPathBridgeDetachedRule">
+				<arg:RuleOn targetType="ConceptTypeChildHasPathFactType"/>
+			</arg:DeleteRule>
+			<arg:AddRule methodName="ConstraintRoleAddedRule">
+				<arg:RuleOn targetType="ConstraintRoleSequenceHasRole" targetTypeQualifier="Neumont.Tools.ORM.ObjectModel"/>
+			</arg:AddRule>
+			<arg:DeleteRule methodName="ConstraintRoleDeletedRule">
+				<arg:RuleOn targetType="ConstraintRoleSequenceHasRole" targetTypeQualifier="Neumont.Tools.ORM.ObjectModel"/>
+			</arg:DeleteRule>
+			<arg:ChangeRule methodName="ObjectTypeChangedRule">
+				<arg:RuleOn targetType="ObjectType" targetTypeQualifier="Neumont.Tools.ORM.ObjectModel"/>
+			</arg:ChangeRule>
+			<arg:ChangeRule methodName="ORMModelChangedRule">
+				<arg:RuleOn targetType="ORMModel" targetTypeQualifier="Neumont.Tools.ORM.ObjectModel"/>
+			</arg:ChangeRule>
+			<arg:ChangeRule methodName="SetConstraintChangedRule">
 				<arg:RuleOn targetType="SetConstraint" targetTypeQualifier="Neumont.Tools.ORM.ObjectModel"/>
 			</arg:ChangeRule>
-			<arg:DeleteRule methodName="ConstraintDeleteRule">
-				<arg:RuleOn targetType="ModelHasSetConstraint" targetTypeQualifier="Neumont.Tools.ORM.ObjectModel"/>
-			</arg:DeleteRule>
-			<arg:AddRule methodName="ConstraintRoleAddRule">
-				<arg:RuleOn targetType="ConstraintRoleSequenceHasRole" targetTypeQualifier="Neumont.Tools.ORM.ObjectModel"/>
-			</arg:AddRule>
-			<arg:DeletingRule methodName="ConstraintRoleDeletingRule">
-				<arg:RuleOn targetType="ConstraintRoleSequenceHasRole" targetTypeQualifier="Neumont.Tools.ORM.ObjectModel"/>
-			</arg:DeletingRule>
-			<arg:AddRule methodName="ValueTypeDataTypeAddRule">
-				<arg:RuleOn targetType="ValueTypeHasDataType" targetTypeQualifier="Neumont.Tools.ORM.ObjectModel"/>
-			</arg:AddRule>
-			<arg:DeletingRule methodName="ValueTypeDataTypeDeletingRule">
-				<arg:RuleOn targetType="ValueTypeHasDataType" targetTypeQualifier="Neumont.Tools.ORM.ObjectModel"/>
-			</arg:DeletingRule>
 		</arg:RuleContainer>
-		<!--
-		<arg:Rule class="OialModelIsForORMModel.ModelHasObjectTypeAddRule"/>
-		<arg:Rule class="OialModelIsForORMModel.ModelHasObjectTypeDeletingRule"/>
-		<arg:Rule class="OialModelIsForORMModel.ObjectTypeChangeRule"/>
-		<arg:Rule class="OialModelIsForORMModel.ObjectTypePlaysRoleAddRule"/>
-		<arg:Rule class="OialModelIsForORMModel.ObjectTypePlaysRoleDeletingRule"/>
-		<arg:Rule class="OialModelIsForORMModel.ModelHasFactTypeAddRule"/>
-		<arg:Rule class="OialModelIsForORMModel.ModelHasFactTypeDeletingRule"/>
-		<arg:Rule class="OialModelIsForORMModel.FactTypeChangeRule"/>
-		<arg:Rule class="OialModelIsForORMModel.ModelHasSetConstraintAddRule"/>
-		<arg:Rule class="OialModelIsForORMModel.ModelHasSetConstraintChangeRule"/>
-		<arg:Rule class="OialModelIsForORMModel.ModelHasSetConstraintDeletingRule"/>
-		<arg:Rule class="OialModelIsForORMModel.ConstraintRoleSequenceHasRoleAddRule"/>
-		<arg:Rule class="OialModelIsForORMModel.ConstraintRoleSequenceHasRoleDeletingRule"/>
-		<arg:Rule class="OialModelIsForORMModel.UniquenessConstraintChangeRule"/>
-		<arg:Rule class="OialModelIsForORMModel.MandatoryConstraintChangeRule"/>
-		<arg:Rule class="OialModelIsForORMModel.RoleBaseChangeRule"/>
-		<arg:Rule class="OialModelIsForORMModel.MandatoryConstraintRule.MandatoryConstraintAddRule"/>
-		<arg:Rule class="OialModelIsForORMModel.MandatoryConstraintRule.MandatoryConstraintChangeRule"/>
-		<arg:Rule class="OialModelIsForORMModel.MandatoryConstraintRule.MandatoryConstraintDeletingRule"/>
-		<arg:Rule class="OialModelIsForORMModel.UniquenessConstraintRule.UniquenessConstraintAddRule"/>
-		<arg:Rule class="OialModelIsForORMModel.UniquenessConstraintRule.UniquenessConstraintChangeRule"/>
-		<arg:Rule class="OialModelIsForORMModel.UniquenessConstraintRule.UniquenessConstraintDeletingRule"/>
-		<arg:Rule class="OialModelIsForORMModel.CheckConceptTypeParentExclusiveMandatory.OialModelHasConceptTypeAddRule"/>
-		<arg:Rule class="OialModelIsForORMModel.CheckConceptTypeParentExclusiveMandatory.OialModelHasConceptTypeDeleteRule"/>
-		<arg:Rule class="OialModelIsForORMModel.CheckConceptTypeParentExclusiveMandatory.ConceptTypeAbsorbedConceptTypeAddRule"/>
-		<arg:Rule class="OialModelIsForORMModel.CheckConceptTypeParentExclusiveMandatory.ConceptTypeAbsorbedConceptTypeDeleteRule"/>
-		<arg:Rule class="OialModelIsForORMModel.CheckPathNodeParentExclusiveMandatory.ConceptTypeChildHasPathRoleAddRule"/>
-		<arg:Rule class="OialModelIsForORMModel.CheckPathNodeParentExclusiveMandatory.ConceptTypeChildHasPathRoleDeleteRule"/>
-		-->
 	</arg:Model>
 </arg:Rules>

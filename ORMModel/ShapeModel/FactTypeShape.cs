@@ -582,7 +582,7 @@ namespace Neumont.Tools.ORM.ShapeModel
 		/// </summary>
 		public override void ConfiguringAsChildOf(NodeShape parent, bool createdDuringViewFixup)
 		{
-			/// Make sure the factType shape is prepared to display as a unary
+			// Make sure the factType shape is prepared to display as a unary
 			FactType factType;
 			Role unaryRole;
 			if (null != (factType = AssociatedFactType) &&
@@ -3931,7 +3931,7 @@ namespace Neumont.Tools.ORM.ShapeModel
 			FactTypeRequiresInternalUniquenessConstraintError noUniqueness;
 			NMinusOneError nMinusOne;
 			RolePlayerRequiredError requireRolePlayer;
-			FactType fact;
+			FactType factType;
 			ConstraintDuplicateNameError constraintNameError;
 			ImpliedInternalUniquenessConstraintError implConstraint;
 			Reading reading = null;
@@ -3959,11 +3959,11 @@ namespace Neumont.Tools.ORM.ShapeModel
 			}
 			else if (null != (noReading = error as FactTypeRequiresReadingError))
 			{
-				fact = noReading.FactType;
-				Debug.Assert(fact != null);
+				factType = noReading.FactType;
+				Debug.Assert(factType != null);
 				ORMReadingEditorToolWindow newWindow = ORMDesignerPackage.ReadingEditorWindow;
 				newWindow.Show();
-				newWindow.ActivateReading(fact);
+				newWindow.ActivateReading(factType);
 			}
 			else if (null != (userModification = error as ReadingRequiresUserModificationError))
 			{
@@ -3971,12 +3971,23 @@ namespace Neumont.Tools.ORM.ShapeModel
 			}
 			else if (null != (noUniqueness = error as FactTypeRequiresInternalUniquenessConstraintError))
 			{
-				fact = noUniqueness.FactType;
-				Store theStore = fact.Store;
-				using (Transaction tran = theStore.TransactionManager.BeginTransaction(ResourceStrings.AddInternalConstraintTransactionName))
+				factType = noUniqueness.FactType;
+				// This error ignores any existing zero-role internal uniqueness constraints, find an existing one if possible
+				foreach (UniquenessConstraint testConstraint in factType.GetInternalConstraints<UniquenessConstraint>())
 				{
-					activateConstraint = UniquenessConstraint.CreateInternalUniquenessConstraint(fact);
-					tran.Commit();
+					if (testConstraint.Modality == ConstraintModality.Alethic && testConstraint.RoleCollection.Count == 0)
+					{
+						activateConstraint = testConstraint;
+						break;
+					}
+				}
+				if (activateConstraint == null)
+				{
+					using (Transaction tran = factType.Store.TransactionManager.BeginTransaction(ResourceStrings.AddInternalConstraintTransactionName))
+					{
+						activateConstraint = UniquenessConstraint.CreateInternalUniquenessConstraint(factType);
+						tran.Commit();
+					}
 				}
 			}
 			else if (null != (nMinusOne = error as NMinusOneError))
@@ -3999,13 +4010,13 @@ namespace Neumont.Tools.ORM.ShapeModel
 				// We'll get here if one of the constraints we own has a duplicate name
 				IList setConstraints = constraintNameError.SetConstraintCollection;
 				int setConstraintsCount = setConstraints.Count;
-				fact = AssociatedFactType;
+				factType = AssociatedFactType;
 				for (int i = 0; i < setConstraintsCount; ++i)
 				{
 					SetConstraint setConstraint = (SetConstraint)setConstraints[i];
 					IConstraint ic = setConstraint.Constraint;
 					if (ic.ConstraintIsInternal &&
-						setConstraint.FactTypeCollection.Contains(fact))
+						setConstraint.FactTypeCollection.Contains(factType))
 					{
 						switch (ic.ConstraintType)
 						{

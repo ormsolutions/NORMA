@@ -60,6 +60,9 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="ModificationTracker.cs" />
+    <Compile Include="FactTypeMapsTowardsRole.cs" />
+    <Compile Include="ORMElementGateway.cs" />
     <Compile Include="GeneratedCode\DomainModel.cs">
       <AutoGen>True</AutoGen>
       <DesignTime>True</DesignTime>
@@ -70,8 +73,6 @@
       <DesignTime>True</DesignTime>
       <DependentUpon>DomainRelationships.tt</DependentUpon>
     </Compile>
-    <Compile Include="LiveRules\OialModelIsForORMModel.Constraints.cs" />
-    <Compile Include="LiveRules\OialModelIsForORMModel.ObjectTypes.cs" />
     <Compile Include="OialModelIsForORMModel.cs" />
     <Compile Include="OialModelIsForORMModel.DeserializationFixupListeners.cs" />
     <Compile Include="ORMOialBridge.AttachRules.cs">

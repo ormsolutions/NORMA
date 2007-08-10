@@ -48,9 +48,10 @@ namespace Neumont.Tools.ORM.ObjectModel.Design
 			Guid propertyId = domainProperty.Id;
 			if (propertyId.Equals(Role.MultiplicityDomainPropertyId))
 			{
-				FactType fact = ModelElement.FactType;
+				FactType factType = ModelElement.FactType;
+				LinkedElementCollection<RoleBase> roles;
 				// Display for binary fact types
-				return fact != null && fact.RoleCollection.Count == 2;
+				return factType != null && (roles = factType.RoleCollection).Count == 2 && !FactType.GetUnaryRoleIndex(roles).HasValue;
 			}
 			else if (propertyId.Equals(Role.MandatoryConstraintNameDomainPropertyId) ||
 				propertyId.Equals(Role.MandatoryConstraintModalityDomainPropertyId))

@@ -141,6 +141,22 @@
     <value>Depth</value>
     <comment>DisplayName for DomainProperty &apos;Depth&apos; on DomainClass &apos;FactTypeMapsTowardsRole&apos;</comment>
   </data>
+  <data name="Neumont.Tools.ORMToORMAbstractionBridge.FactTypeMapsTowardsRole/UniquenessPattern.Description" xml:space="preserve">
+    <value>Description for Neumont.Tools.ORMToORMAbstractionBridge.FactTypeMapsTowardsRole.UniquenessPattern</value>
+    <comment>Description for DomainProperty &apos;UniquenessPattern&apos; on DomainClass &apos;FactTypeMapsTowardsRole&apos;</comment>
+  </data>
+  <data name="Neumont.Tools.ORMToORMAbstractionBridge.FactTypeMapsTowardsRole/UniquenessPattern.DisplayName" xml:space="preserve">
+    <value>UniquenessPattern</value>
+    <comment>DisplayName for DomainProperty &apos;UniquenessPattern&apos; on DomainClass &apos;FactTypeMapsTowardsRole&apos;</comment>
+  </data>
+  <data name="Neumont.Tools.ORMToORMAbstractionBridge.FactTypeMapsTowardsRole/MandatoryPattern.Description" xml:space="preserve">
+    <value>Description for Neumont.Tools.ORMToORMAbstractionBridge.FactTypeMapsTowardsRole.MandatoryPattern</value>
+    <comment>Description for DomainProperty &apos;MandatoryPattern&apos; on DomainClass &apos;FactTypeMapsTowardsRole&apos;</comment>
+  </data>
+  <data name="Neumont.Tools.ORMToORMAbstractionBridge.FactTypeMapsTowardsRole/MandatoryPattern.DisplayName" xml:space="preserve">
+    <value>MandatoryPattern</value>
+    <comment>DisplayName for DomainProperty &apos;MandatoryPattern&apos; on DomainClass &apos;FactTypeMapsTowardsRole&apos;</comment>
+  </data>
   <data name="Neumont.Tools.ORMToORMAbstractionBridge.FactTypeMapsTowardsRole/FactType.Description" xml:space="preserve">
     <value>Description for Neumont.Tools.ORMToORMAbstractionBridge.FactTypeMapsTowardsRole.FactType</value>
     <comment>Description for DomainRole &apos;FactType&apos; on DomainRelationship &apos;FactTypeMapsTowardsRole&apos;</comment>
@@ -325,6 +341,38 @@
     <value>Uniqueness</value>
     <comment>PropertyDisplayName for DomainRole &apos;UniquenessConstraint&apos; on DomainRelationship &apos;UniquenessIsForUniquenessConstraint&apos;</comment>
   </data>
+  <data name="Neumont.Tools.ORMToORMAbstractionBridge.ExcludedORMModelElement.Description" xml:space="preserve">
+    <value>Description for Neumont.Tools.ORMToORMAbstractionBridge.ExcludedORMModelElement</value>
+    <comment>Description for DomainClass &apos;ExcludedORMModelElement&apos;</comment>
+  </data>
+  <data name="Neumont.Tools.ORMToORMAbstractionBridge.ExcludedORMModelElement.DisplayName" xml:space="preserve">
+    <value>Excluded ORMModel Element</value>
+    <comment>DisplayName for DomainClass &apos;ExcludedORMModelElement&apos;</comment>
+  </data>
+  <data name="Neumont.Tools.ORMToORMAbstractionBridge.ExcludedORMModelElement/ExcludedElement.Description" xml:space="preserve">
+    <value>Description for Neumont.Tools.ORMToORMAbstractionBridge.ExcludedORMModelElement.ExcludedElement</value>
+    <comment>Description for DomainRole &apos;ExcludedElement&apos; on DomainRelationship &apos;ExcludedORMModelElement&apos;</comment>
+  </data>
+  <data name="Neumont.Tools.ORMToORMAbstractionBridge.ExcludedORMModelElement/ExcludedElement.DisplayName" xml:space="preserve">
+    <value>ExcludedElement</value>
+    <comment>DisplayName for DomainRole &apos;ExcludedElement&apos; on DomainRelationship &apos;ExcludedORMModelElement&apos;</comment>
+  </data>
+  <data name="Neumont.Tools.ORMToORMAbstractionBridge.ExcludedORMModelElement/ExcludedElement.PropertyDisplayName" xml:space="preserve">
+    <value>Abstraction Model</value>
+    <comment>PropertyDisplayName for DomainRole &apos;ExcludedElement&apos; on DomainRelationship &apos;ExcludedORMModelElement&apos;</comment>
+  </data>
+  <data name="Neumont.Tools.ORMToORMAbstractionBridge.ExcludedORMModelElement/AbstractionModel.Description" xml:space="preserve">
+    <value>Description for Neumont.Tools.ORMToORMAbstractionBridge.ExcludedORMModelElement.AbstractionModel</value>
+    <comment>Description for DomainRole &apos;AbstractionModel&apos; on DomainRelationship &apos;ExcludedORMModelElement&apos;</comment>
+  </data>
+  <data name="Neumont.Tools.ORMToORMAbstractionBridge.ExcludedORMModelElement/AbstractionModel.DisplayName" xml:space="preserve">
+    <value>AbstractionModel</value>
+    <comment>DisplayName for DomainRole &apos;AbstractionModel&apos; on DomainRelationship &apos;ExcludedORMModelElement&apos;</comment>
+  </data>
+  <data name="Neumont.Tools.ORMToORMAbstractionBridge.ExcludedORMModelElement/AbstractionModel.PropertyDisplayName" xml:space="preserve">
+    <value>Excluded Element</value>
+    <comment>PropertyDisplayName for DomainRole &apos;AbstractionModel&apos; on DomainRelationship &apos;ExcludedORMModelElement&apos;</comment>
+  </data>
   <data name="Neumont.Tools.ORMToORMAbstractionBridge.MappingDepth/Shallow.DisplayName" xml:space="preserve">
     <value>Shallow</value>
     <comment>Display name for EnumerationLiteral &apos;Shallow&apos; on DomainEnumeration &apos;MappingDepth&apos;</comment>
@@ -340,6 +388,86 @@
   <data name="Neumont.Tools.ORMToORMAbstractionBridge.MappingDepth/Deep.Description" xml:space="preserve">
     <value>The &lt;see cref=&quot;Neumont.Tools.ORM.ObjectModel.FactType&quot;/&gt; referenced is mapped to the destination &lt;see cref=&quot;Neumont.Tools.ORM.ObjectModel.ObjectType&quot;/&gt;, and the &lt;see cref=&quot;Neumont.Tools.ORM.ObjectModel.ObjectType&quot;/&gt; playing the opposite role is absorbed into the destination &lt;see cref=&quot;Neumont.Tools.ORM.ObjectModel.ObjectType&quot;/&gt;.</value>
     <comment>Description for EnumerationLiteral &apos;Deep&apos; on DomainEnumeration &apos;MappingDepth&apos;</comment>
+  </data>
+  <data name="Neumont.Tools.ORMToORMAbstractionBridge.MappingUniquenessPattern/None.DisplayName" xml:space="preserve">
+    <value>None</value>
+    <comment>Display name for EnumerationLiteral &apos;None&apos; on DomainEnumeration &apos;MappingUniquenessPattern&apos;</comment>
+  </data>
+  <data name="Neumont.Tools.ORMToORMAbstractionBridge.MappingUniquenessPattern/None.Description" xml:space="preserve">
+    <value>Uniqueness pattern not specified</value>
+    <comment>Description for EnumerationLiteral &apos;None&apos; on DomainEnumeration &apos;MappingUniquenessPattern&apos;</comment>
+  </data>
+  <data name="Neumont.Tools.ORMToORMAbstractionBridge.MappingUniquenessPattern/OneToMany.DisplayName" xml:space="preserve">
+    <value>OneToMany</value>
+    <comment>Display name for EnumerationLiteral &apos;OneToMany&apos; on DomainEnumeration &apos;MappingUniquenessPattern&apos;</comment>
+  </data>
+  <data name="Neumont.Tools.ORMToORMAbstractionBridge.MappingUniquenessPattern/OneToMany.Description" xml:space="preserve">
+    <value>The mapping is based on a one-to-many &lt;see cref=&quot;Neumont.Tools.ORM.ObjectModel.FactType&quot;/&gt; with a &lt;see cref=&quot;Neumont.Tools.ORM.ObjectModel.UniquenessConstraint&quot;/&gt; on the &lt;see cref=&quot;FactTypeMapsTowardsRole.TowardsRole&quot;/&gt;.</value>
+    <comment>Description for EnumerationLiteral &apos;OneToMany&apos; on DomainEnumeration &apos;MappingUniquenessPattern&apos;</comment>
+  </data>
+  <data name="Neumont.Tools.ORMToORMAbstractionBridge.MappingUniquenessPattern/ManyToOne.DisplayName" xml:space="preserve">
+    <value>ManyToOne</value>
+    <comment>Display name for EnumerationLiteral &apos;ManyToOne&apos; on DomainEnumeration &apos;MappingUniquenessPattern&apos;</comment>
+  </data>
+  <data name="Neumont.Tools.ORMToORMAbstractionBridge.MappingUniquenessPattern/ManyToOne.Description" xml:space="preserve">
+    <value>The mapping is based on a many-to-one &lt;see cref=&quot;Neumont.Tools.ORM.ObjectModel.FactType&quot;/&gt; with a &lt;see cref=&quot;Neumont.Tools.ORM.ObjectModel.UniquenessConstraint&quot;/&gt; on the role opposite &lt;see cref=&quot;FactTypeMapsTowardsRole.TowardsRole&quot;/&gt;. Note that this value is included for completeness and will not appear in actual &lt;see cref=&quot;FactTypeMapsTowardsRole&quot;/&gt; instances.</value>
+    <comment>Description for EnumerationLiteral &apos;ManyToOne&apos; on DomainEnumeration &apos;MappingUniquenessPattern&apos;</comment>
+  </data>
+  <data name="Neumont.Tools.ORMToORMAbstractionBridge.MappingUniquenessPattern/OneToOne.DisplayName" xml:space="preserve">
+    <value>OneToOne</value>
+    <comment>Display name for EnumerationLiteral &apos;OneToOne&apos; on DomainEnumeration &apos;MappingUniquenessPattern&apos;</comment>
+  </data>
+  <data name="Neumont.Tools.ORMToORMAbstractionBridge.MappingUniquenessPattern/OneToOne.Description" xml:space="preserve">
+    <value>The mapping is based on a one-to-one &lt;see cref=&quot;Neumont.Tools.ORM.ObjectModel.FactType&quot;/&gt;.</value>
+    <comment>Description for EnumerationLiteral &apos;OneToOne&apos; on DomainEnumeration &apos;MappingUniquenessPattern&apos;</comment>
+  </data>
+  <data name="Neumont.Tools.ORMToORMAbstractionBridge.MappingUniquenessPattern/Subtype.DisplayName" xml:space="preserve">
+    <value>Subtype</value>
+    <comment>Display name for EnumerationLiteral &apos;Subtype&apos; on DomainEnumeration &apos;MappingUniquenessPattern&apos;</comment>
+  </data>
+  <data name="Neumont.Tools.ORMToORMAbstractionBridge.MappingUniquenessPattern/Subtype.Description" xml:space="preserve">
+    <value>The mapping is based on a &lt;see cref=&quot;Neumont.Tools.ORM.ObjectModel.SubtypeFact&quot;/&gt; with the &lt;see cref=&quot;FactTypeMapsTowardsRole.TowardsRole&quot;/&gt; acting as the superttype.</value>
+    <comment>Description for EnumerationLiteral &apos;Subtype&apos; on DomainEnumeration &apos;MappingUniquenessPattern&apos;</comment>
+  </data>
+  <data name="Neumont.Tools.ORMToORMAbstractionBridge.MappingMandatoryPattern/None.DisplayName" xml:space="preserve">
+    <value>None</value>
+    <comment>Display name for EnumerationLiteral &apos;None&apos; on DomainEnumeration &apos;MappingMandatoryPattern&apos;</comment>
+  </data>
+  <data name="Neumont.Tools.ORMToORMAbstractionBridge.MappingMandatoryPattern/None.Description" xml:space="preserve">
+    <value>Mandatory pattern not specified</value>
+    <comment>Description for EnumerationLiteral &apos;None&apos; on DomainEnumeration &apos;MappingMandatoryPattern&apos;</comment>
+  </data>
+  <data name="Neumont.Tools.ORMToORMAbstractionBridge.MappingMandatoryPattern/NotMandatory.DisplayName" xml:space="preserve">
+    <value>NotMandatory</value>
+    <comment>Display name for EnumerationLiteral &apos;NotMandatory&apos; on DomainEnumeration &apos;MappingMandatoryPattern&apos;</comment>
+  </data>
+  <data name="Neumont.Tools.ORMToORMAbstractionBridge.MappingMandatoryPattern/NotMandatory.Description" xml:space="preserve">
+    <value>The &lt;see cref=&quot;Neumont.Tools.ORM.ObjectModel.FactType&quot;/&gt; has no mandatory roles.</value>
+    <comment>Description for EnumerationLiteral &apos;NotMandatory&apos; on DomainEnumeration &apos;MappingMandatoryPattern&apos;</comment>
+  </data>
+  <data name="Neumont.Tools.ORMToORMAbstractionBridge.MappingMandatoryPattern/TowardsRoleMandatory.DisplayName" xml:space="preserve">
+    <value>TowardsRoleMandatory</value>
+    <comment>Display name for EnumerationLiteral &apos;TowardsRoleMandatory&apos; on DomainEnumeration &apos;MappingMandatoryPattern&apos;</comment>
+  </data>
+  <data name="Neumont.Tools.ORMToORMAbstractionBridge.MappingMandatoryPattern/TowardsRoleMandatory.Description" xml:space="preserve">
+    <value>The &lt;see cref=&quot;FactTypeMapsTowardsRole.TowardsRole&quot;/&gt; of the &lt;see cref=&quot;Neumont.Tools.ORM.ObjectModel.FactType&quot;/&gt; is mandatory.</value>
+    <comment>Description for EnumerationLiteral &apos;TowardsRoleMandatory&apos; on DomainEnumeration &apos;MappingMandatoryPattern&apos;</comment>
+  </data>
+  <data name="Neumont.Tools.ORMToORMAbstractionBridge.MappingMandatoryPattern/OppositeRoleMandatory.DisplayName" xml:space="preserve">
+    <value>OppositeRoleMandatory</value>
+    <comment>Display name for EnumerationLiteral &apos;OppositeRoleMandatory&apos; on DomainEnumeration &apos;MappingMandatoryPattern&apos;</comment>
+  </data>
+  <data name="Neumont.Tools.ORMToORMAbstractionBridge.MappingMandatoryPattern/OppositeRoleMandatory.Description" xml:space="preserve">
+    <value>The role opposite &lt;see cref=&quot;FactTypeMapsTowardsRole.TowardsRole&quot;/&gt; of the &lt;see cref=&quot;Neumont.Tools.ORM.ObjectModel.FactType&quot;/&gt; is mandatory.</value>
+    <comment>Description for EnumerationLiteral &apos;OppositeRoleMandatory&apos; on DomainEnumeration &apos;MappingMandatoryPattern&apos;</comment>
+  </data>
+  <data name="Neumont.Tools.ORMToORMAbstractionBridge.MappingMandatoryPattern/BothRolesMandatory.DisplayName" xml:space="preserve">
+    <value>BothRolesMandatory</value>
+    <comment>Display name for EnumerationLiteral &apos;BothRolesMandatory&apos; on DomainEnumeration &apos;MappingMandatoryPattern&apos;</comment>
+  </data>
+  <data name="Neumont.Tools.ORMToORMAbstractionBridge.MappingMandatoryPattern/BothRolesMandatory.Description" xml:space="preserve">
+    <value>Both the &lt;see cref=&quot;FactTypeMapsTowardsRole.TowardsRole&quot;/&gt; and opposite role of the &lt;see cref=&quot;Neumont.Tools.ORM.ObjectModel.FactType&quot;/&gt; are mandatory.</value>
+    <comment>Description for EnumerationLiteral &apos;BothRolesMandatory&apos; on DomainEnumeration &apos;MappingMandatoryPattern&apos;</comment>
   </data>
   <data name="AmbiguousSchema" xml:space="preserve">
     <value>More than one schema found for target namespace &apos;{0}&apos;, use the first one at &apos;{1}&apos;.</value>

@@ -946,7 +946,7 @@ namespace Neumont.Tools.ORM.ObjectModel
 				{
 					foreach (UniquenessConstraint iuc in GetInternalConstraints<UniquenessConstraint>())
 					{
-						if (iuc.Modality == ConstraintModality.Alethic)
+						if (iuc.Modality == ConstraintModality.Alethic && iuc.RoleCollection.Count != 0)
 						{
 							hasError = false;
 							break;
@@ -1451,7 +1451,16 @@ namespace Neumont.Tools.ORM.ObjectModel
 				constraint.IsInternal &&
 				1 == (facts = constraint.FactTypeCollection).Count)
 			{
-				FrameworkDomainModel.DelayValidateElement(facts[0], DelayValidateImpliedInternalUniquenessConstraintError);
+				FactType factType = facts[0];
+				if (constraint.Modality == ConstraintModality.Alethic &&
+					factType.InternalUniquenessConstraintRequiredError != null)
+				{
+					// We only need to do this on an add for an existing internal uniqueness with no roles.
+					// The required error validator will be triggered for adds/deletes it cares about through
+					// other mechanisms. We don't need to run it constantly here.
+					FrameworkDomainModel.DelayValidateElement(factType, DelayValidateFactTypeRequiresInternalUniquenessConstraintError);
+				}
+				FrameworkDomainModel.DelayValidateElement(factType, DelayValidateImpliedInternalUniquenessConstraintError);
 			}
 		}
 		/// <summary>

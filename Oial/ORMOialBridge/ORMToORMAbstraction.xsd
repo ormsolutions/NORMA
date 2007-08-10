@@ -70,6 +70,25 @@
 				</xs:restriction>
 			</xs:simpleType>
 		</xs:attribute>
+		<xs:attribute name="MandatoryPattern">
+			<xs:simpleType>
+				<xs:restriction base="xs:token">
+					<xs:enumeration value="NotMandatory"/>
+					<xs:enumeration value="TowardsRoleMandatory"/>
+					<xs:enumeration value="OppositeRoleMandatory"/>
+					<xs:enumeration value="BothRolesMandatory"/>
+				</xs:restriction>
+			</xs:simpleType>
+		</xs:attribute>
+		<xs:attribute name="UniquenessPattern">
+			<xs:simpleType>
+				<xs:restriction base="xs:token">
+					<xs:enumeration value="OneToMany"/>
+					<xs:enumeration value="OneToOne"/>
+					<xs:enumeration value="Subtype"/>
+				</xs:restriction>
+			</xs:simpleType>
+		</xs:attribute>
 	</xs:complexType>
 	<xs:complexType name="ConceptTypeIsForObjectTypeType">
 		<xs:attribute name="id" type="xs:ID" use="required"/>

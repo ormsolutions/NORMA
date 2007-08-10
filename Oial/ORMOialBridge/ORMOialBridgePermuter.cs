@@ -466,7 +466,7 @@ namespace Neumont.Tools.ORMToORMAbstractionBridge
 		}
 
 		/// <summary>
-		/// Returns the maximum number of <see cref="Permutation"/>s that could result for the specified set of undecided <see cref="FactTypeMappings"/>.
+		/// Returns the maximum number of <see cref="Permutation"/>s that could result for the specified set of undecided <see cref="FactTypeMapping"/>s.
 		/// </summary>
 		private static int CalculateMaxNumberOfPermutations(FactTypeMappingListList undecidedMappings)
 		{

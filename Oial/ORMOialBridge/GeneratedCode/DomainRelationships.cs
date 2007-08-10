@@ -44,59 +44,61 @@ namespace Neumont.Tools.ORMToORMAbstractionBridge
 		/// </summary>
 		public static readonly new global::System.Guid DomainClassId = new global::System.Guid(0x98abb729, 0xf2f0, 0x4629, 0xbf, 0xa7, 0x80, 0x1b, 0x66, 0x15, 0x13, 0x7d);
 	
-				
-		/// <summary>
-		/// Constructor
-		/// Creates a FactTypeMapsTowardsRole link in the same Partition as the given FactType
-		/// </summary>
-		/// <param name="source">FactType to use as the source of the relationship.</param>
-		/// <param name="target">RoleBase to use as the target of the relationship.</param>
-		public FactTypeMapsTowardsRole(global::Neumont.Tools.ORM.ObjectModel.FactType source, global::Neumont.Tools.ORM.ObjectModel.RoleBase target)
-			: base((source != null ? source.Partition : null), new DslModeling::RoleAssignment[]{new DslModeling::RoleAssignment(FactTypeMapsTowardsRole.FactTypeDomainRoleId, source), new DslModeling::RoleAssignment(FactTypeMapsTowardsRole.TowardsRoleDomainRoleId, target)}, null)
-		{
-		}
-		
-		/// <summary>
-		/// Constructor
-		/// </summary>
-		/// <param name="store">Store where new link is to be created.</param>
-		/// <param name="roleAssignments">List of relationship role assignments.</param>
-		public FactTypeMapsTowardsRole(DslModeling::Store store, params DslModeling::RoleAssignment[] roleAssignments)
-			: base(store != null ? store.DefaultPartition : null, roleAssignments, null)
-		{
-		}
-		
-		/// <summary>
-		/// Constructor
-		/// </summary>
-		/// <param name="store">Store where new link is to be created.</param>
-		/// <param name="roleAssignments">List of relationship role assignments.</param>
-		/// <param name="propertyAssignments">List of properties assignments to set on the new link.</param>
-		public FactTypeMapsTowardsRole(DslModeling::Store store, DslModeling::RoleAssignment[] roleAssignments, DslModeling::PropertyAssignment[] propertyAssignments)
-			: base(store != null ? store.DefaultPartition : null, roleAssignments, propertyAssignments)
-		{
-		}
-		
-		/// <summary>
-		/// Constructor
-		/// </summary>
-		/// <param name="partition">Partition where new link is to be created.</param>
-		/// <param name="roleAssignments">List of relationship role assignments.</param>
-		public FactTypeMapsTowardsRole(DslModeling::Partition partition, params DslModeling::RoleAssignment[] roleAssignments)
-			: base(partition, roleAssignments, null)
-		{
-		}
-		
-		/// <summary>
-		/// Constructor
-		/// </summary>
-		/// <param name="partition">Partition where new link is to be created.</param>
-		/// <param name="roleAssignments">List of relationship role assignments.</param>
-		/// <param name="propertyAssignments">List of properties assignments to set on the new link.</param>
-		public FactTypeMapsTowardsRole(DslModeling::Partition partition, DslModeling::RoleAssignment[] roleAssignments, DslModeling::PropertyAssignment[] propertyAssignments)
-			: base(partition, roleAssignments, propertyAssignments)
-		{
-		}
+		// Constructors were not generated for this relationship because it had HasCustomConstructor
+		// set to true. Please provide the constructors below in a partial class.
+		//		
+		///// <summary>
+		///// Constructor
+		///// Creates a FactTypeMapsTowardsRole link in the same Partition as the given FactType
+		///// </summary>
+		///// <param name="source">FactType to use as the source of the relationship.</param>
+		///// <param name="target">RoleBase to use as the target of the relationship.</param>
+		//public FactTypeMapsTowardsRole(global::Neumont.Tools.ORM.ObjectModel.FactType source, global::Neumont.Tools.ORM.ObjectModel.RoleBase target)
+		//	: base((source != null ? source.Partition : null), new DslModeling::RoleAssignment[]{new DslModeling::RoleAssignment(FactTypeMapsTowardsRole.FactTypeDomainRoleId, source), new DslModeling::RoleAssignment(FactTypeMapsTowardsRole.TowardsRoleDomainRoleId, target)}, null)
+		//{
+		//}
+		//
+		///// <summary>
+		///// Constructor
+		///// </summary>
+		///// <param name="store">Store where new link is to be created.</param>
+		///// <param name="roleAssignments">List of relationship role assignments.</param>
+		//public FactTypeMapsTowardsRole(DslModeling::Store store, params DslModeling::RoleAssignment[] roleAssignments)
+		//	: base(store != null ? store.DefaultPartition : null, roleAssignments, null)
+		//{
+		//}
+		//
+		///// <summary>
+		///// Constructor
+		///// </summary>
+		///// <param name="store">Store where new link is to be created.</param>
+		///// <param name="roleAssignments">List of relationship role assignments.</param>
+		///// <param name="propertyAssignments">List of properties assignments to set on the new link.</param>
+		//public FactTypeMapsTowardsRole(DslModeling::Store store, DslModeling::RoleAssignment[] roleAssignments, DslModeling::PropertyAssignment[] propertyAssignments)
+		//	: base(store != null ? store.DefaultPartition : null, roleAssignments, propertyAssignments)
+		//{
+		//}
+		//
+		///// <summary>
+		///// Constructor
+		///// </summary>
+		///// <param name="partition">Partition where new link is to be created.</param>
+		///// <param name="roleAssignments">List of relationship role assignments.</param>
+		//public FactTypeMapsTowardsRole(DslModeling::Partition partition, params DslModeling::RoleAssignment[] roleAssignments)
+		//	: base(partition, roleAssignments, null)
+		//{
+		//}
+		//
+		///// <summary>
+		///// Constructor
+		///// </summary>
+		///// <param name="partition">Partition where new link is to be created.</param>
+		///// <param name="roleAssignments">List of relationship role assignments.</param>
+		///// <param name="propertyAssignments">List of properties assignments to set on the new link.</param>
+		//public FactTypeMapsTowardsRole(DslModeling::Partition partition, DslModeling::RoleAssignment[] roleAssignments, DslModeling::PropertyAssignment[] propertyAssignments)
+		//	: base(partition, roleAssignments, propertyAssignments)
+		//{
+		//}
 		#endregion
 		#region FactType domain role code
 		
@@ -284,6 +286,184 @@ namespace Neumont.Tools.ORMToORMAbstractionBridge
 				{
 					ValueChanging(element, oldValue, newValue);
 					element.depthPropertyStorage = newValue;
+					ValueChanged(element, oldValue, newValue);
+				}
+			}
+		}
+		
+		#endregion
+		#region UniquenessPattern domain property code
+		
+		/// <summary>
+		/// UniquenessPattern domain property Id.
+		/// </summary>
+		public static readonly global::System.Guid UniquenessPatternDomainPropertyId = new global::System.Guid(0x8789b1d0, 0x9be1, 0x4c7a, 0xb6, 0x3b, 0xd8, 0xd4, 0x31, 0xaf, 0x5a, 0x47);
+		
+		/// <summary>
+		/// Storage for UniquenessPattern
+		/// </summary>
+		private MappingUniquenessPattern uniquenessPatternPropertyStorage = Neumont.Tools.ORMToORMAbstractionBridge.MappingUniquenessPattern.None;
+		
+		/// <summary>
+		/// Gets or sets the value of UniquenessPattern domain property.
+		/// Description for
+		/// Neumont.Tools.ORMToORMAbstractionBridge.FactTypeMapsTowardsRole.UniquenessPattern
+		/// </summary>
+		[DslDesign::DisplayNameResource("Neumont.Tools.ORMToORMAbstractionBridge.FactTypeMapsTowardsRole/UniquenessPattern.DisplayName", typeof(global::Neumont.Tools.ORMToORMAbstractionBridge.ORMToORMAbstractionBridgeDomainModel), "Neumont.Tools.ORMToORMAbstractionBridge.GeneratedCode.ORMToORMAbstractionBridgeDomainModelResx")]
+		[DslDesign::DescriptionResource("Neumont.Tools.ORMToORMAbstractionBridge.FactTypeMapsTowardsRole/UniquenessPattern.Description", typeof(global::Neumont.Tools.ORMToORMAbstractionBridge.ORMToORMAbstractionBridgeDomainModel), "Neumont.Tools.ORMToORMAbstractionBridge.GeneratedCode.ORMToORMAbstractionBridgeDomainModelResx")]
+		[global::System.ComponentModel.DefaultValue(Neumont.Tools.ORMToORMAbstractionBridge.MappingUniquenessPattern.None)]
+		[DslModeling::DomainObjectId("8789b1d0-9be1-4c7a-b63b-d8d431af5a47")]
+		public MappingUniquenessPattern UniquenessPattern
+		{
+			[global::System.Diagnostics.DebuggerStepThrough]
+			get
+			{
+				return uniquenessPatternPropertyStorage;
+			}
+			[global::System.Diagnostics.DebuggerStepThrough]
+			set
+			{
+				UniquenessPatternPropertyHandler.Instance.SetValue(this, value);
+			}
+		}
+		/// <summary>
+		/// Value handler for the FactTypeMapsTowardsRole.UniquenessPattern domain property.
+		/// </summary>
+		internal sealed partial class UniquenessPatternPropertyHandler : DslModeling::DomainPropertyValueHandler<FactTypeMapsTowardsRole, MappingUniquenessPattern>
+		{
+			private UniquenessPatternPropertyHandler() { }
+		
+			/// <summary>
+			/// Gets the singleton instance of the FactTypeMapsTowardsRole.UniquenessPattern domain property value handler.
+			/// </summary>
+			public static readonly UniquenessPatternPropertyHandler Instance = new UniquenessPatternPropertyHandler();
+		
+			/// <summary>
+			/// Gets the Id of the FactTypeMapsTowardsRole.UniquenessPattern domain property.
+			/// </summary>
+			public sealed override global::System.Guid DomainPropertyId
+			{
+				[global::System.Diagnostics.DebuggerStepThrough]
+				get
+				{
+					return UniquenessPatternDomainPropertyId;
+				}
+			}
+			
+			/// <summary>
+			/// Gets a strongly-typed value of the property on specified element.
+			/// </summary>
+			/// <param name="element">Element which owns the property.</param>
+			/// <returns>Property value.</returns>
+			public override sealed MappingUniquenessPattern GetValue(FactTypeMapsTowardsRole element)
+			{
+				if (element == null) throw new global::System.ArgumentNullException("element");
+				return element.uniquenessPatternPropertyStorage;
+			}
+		
+			/// <summary>
+			/// Sets property value on an element.
+			/// </summary>
+			/// <param name="element">Element which owns the property.</param>
+			/// <param name="newValue">New property value.</param>
+			public override sealed void SetValue(FactTypeMapsTowardsRole element, MappingUniquenessPattern newValue)
+			{
+				if (element == null) throw new global::System.ArgumentNullException("element");
+		
+				MappingUniquenessPattern oldValue = GetValue(element);
+				if (newValue != oldValue)
+				{
+					ValueChanging(element, oldValue, newValue);
+					element.uniquenessPatternPropertyStorage = newValue;
+					ValueChanged(element, oldValue, newValue);
+				}
+			}
+		}
+		
+		#endregion
+		#region MandatoryPattern domain property code
+		
+		/// <summary>
+		/// MandatoryPattern domain property Id.
+		/// </summary>
+		public static readonly global::System.Guid MandatoryPatternDomainPropertyId = new global::System.Guid(0x1bee0f25, 0x5e38, 0x4c51, 0x87, 0x44, 0x1b, 0xcb, 0x5f, 0xeb, 0x20, 0xcc);
+		
+		/// <summary>
+		/// Storage for MandatoryPattern
+		/// </summary>
+		private MappingMandatoryPattern mandatoryPatternPropertyStorage = Neumont.Tools.ORMToORMAbstractionBridge.MappingMandatoryPattern.None;
+		
+		/// <summary>
+		/// Gets or sets the value of MandatoryPattern domain property.
+		/// Description for
+		/// Neumont.Tools.ORMToORMAbstractionBridge.FactTypeMapsTowardsRole.MandatoryPattern
+		/// </summary>
+		[DslDesign::DisplayNameResource("Neumont.Tools.ORMToORMAbstractionBridge.FactTypeMapsTowardsRole/MandatoryPattern.DisplayName", typeof(global::Neumont.Tools.ORMToORMAbstractionBridge.ORMToORMAbstractionBridgeDomainModel), "Neumont.Tools.ORMToORMAbstractionBridge.GeneratedCode.ORMToORMAbstractionBridgeDomainModelResx")]
+		[DslDesign::DescriptionResource("Neumont.Tools.ORMToORMAbstractionBridge.FactTypeMapsTowardsRole/MandatoryPattern.Description", typeof(global::Neumont.Tools.ORMToORMAbstractionBridge.ORMToORMAbstractionBridgeDomainModel), "Neumont.Tools.ORMToORMAbstractionBridge.GeneratedCode.ORMToORMAbstractionBridgeDomainModelResx")]
+		[global::System.ComponentModel.DefaultValue(Neumont.Tools.ORMToORMAbstractionBridge.MappingMandatoryPattern.None)]
+		[DslModeling::DomainObjectId("1bee0f25-5e38-4c51-8744-1bcb5feb20cc")]
+		public MappingMandatoryPattern MandatoryPattern
+		{
+			[global::System.Diagnostics.DebuggerStepThrough]
+			get
+			{
+				return mandatoryPatternPropertyStorage;
+			}
+			[global::System.Diagnostics.DebuggerStepThrough]
+			set
+			{
+				MandatoryPatternPropertyHandler.Instance.SetValue(this, value);
+			}
+		}
+		/// <summary>
+		/// Value handler for the FactTypeMapsTowardsRole.MandatoryPattern domain property.
+		/// </summary>
+		internal sealed partial class MandatoryPatternPropertyHandler : DslModeling::DomainPropertyValueHandler<FactTypeMapsTowardsRole, MappingMandatoryPattern>
+		{
+			private MandatoryPatternPropertyHandler() { }
+		
+			/// <summary>
+			/// Gets the singleton instance of the FactTypeMapsTowardsRole.MandatoryPattern domain property value handler.
+			/// </summary>
+			public static readonly MandatoryPatternPropertyHandler Instance = new MandatoryPatternPropertyHandler();
+		
+			/// <summary>
+			/// Gets the Id of the FactTypeMapsTowardsRole.MandatoryPattern domain property.
+			/// </summary>
+			public sealed override global::System.Guid DomainPropertyId
+			{
+				[global::System.Diagnostics.DebuggerStepThrough]
+				get
+				{
+					return MandatoryPatternDomainPropertyId;
+				}
+			}
+			
+			/// <summary>
+			/// Gets a strongly-typed value of the property on specified element.
+			/// </summary>
+			/// <param name="element">Element which owns the property.</param>
+			/// <returns>Property value.</returns>
+			public override sealed MappingMandatoryPattern GetValue(FactTypeMapsTowardsRole element)
+			{
+				if (element == null) throw new global::System.ArgumentNullException("element");
+				return element.mandatoryPatternPropertyStorage;
+			}
+		
+			/// <summary>
+			/// Sets property value on an element.
+			/// </summary>
+			/// <param name="element">Element which owns the property.</param>
+			/// <param name="newValue">New property value.</param>
+			public override sealed void SetValue(FactTypeMapsTowardsRole element, MappingMandatoryPattern newValue)
+			{
+				if (element == null) throw new global::System.ArgumentNullException("element");
+		
+				MappingMandatoryPattern oldValue = GetValue(element);
+				if (newValue != oldValue)
+				{
+					ValueChanging(element, oldValue, newValue);
+					element.mandatoryPatternPropertyStorage = newValue;
 					ValueChanged(element, oldValue, newValue);
 				}
 			}
@@ -1623,6 +1803,246 @@ namespace Neumont.Tools.ORMToORMAbstractionBridge
 			foreach ( global::Neumont.Tools.ORMToORMAbstractionBridge.UniquenessIsForUniquenessConstraint link in links )
 			{
 				if ( target.Equals(link.UniquenessConstraint) )
+				{
+					return link;
+				}
+			}
+			return null;
+		}
+		
+		#endregion
+	}
+}
+namespace Neumont.Tools.ORMToORMAbstractionBridge
+{
+	/// <summary>
+	/// DomainRelationship ExcludedORMModelElement
+	/// Description for Neumont.Tools.ORMToORMAbstractionBridge.ExcludedORMModelElement
+	/// </summary>
+	[DslDesign::DisplayNameResource("Neumont.Tools.ORMToORMAbstractionBridge.ExcludedORMModelElement.DisplayName", typeof(global::Neumont.Tools.ORMToORMAbstractionBridge.ORMToORMAbstractionBridgeDomainModel), "Neumont.Tools.ORMToORMAbstractionBridge.GeneratedCode.ORMToORMAbstractionBridgeDomainModelResx")]
+	[DslDesign::DescriptionResource("Neumont.Tools.ORMToORMAbstractionBridge.ExcludedORMModelElement.Description", typeof(global::Neumont.Tools.ORMToORMAbstractionBridge.ORMToORMAbstractionBridgeDomainModel), "Neumont.Tools.ORMToORMAbstractionBridge.GeneratedCode.ORMToORMAbstractionBridgeDomainModelResx")]
+	[global::System.CLSCompliant(true)]
+	[DslModeling::DomainRelationship()]
+	[DslModeling::DomainObjectId("6a9a8efb-4db5-49a2-8818-d66bed21d590")]
+	public partial class ExcludedORMModelElement : DslModeling::ElementLink
+	{
+		#region Constructors, domain class Id
+		
+		/// <summary>
+		/// ExcludedORMModelElement domain class Id.
+		/// </summary>
+		public static readonly new global::System.Guid DomainClassId = new global::System.Guid(0x6a9a8efb, 0x4db5, 0x49a2, 0x88, 0x18, 0xd6, 0x6b, 0xed, 0x21, 0xd5, 0x90);
+	
+				
+		/// <summary>
+		/// Constructor
+		/// Creates a ExcludedORMModelElement link in the same Partition as the given ORMModelElement
+		/// </summary>
+		/// <param name="source">ORMModelElement to use as the source of the relationship.</param>
+		/// <param name="target">AbstractionModel to use as the target of the relationship.</param>
+		public ExcludedORMModelElement(global::Neumont.Tools.ORM.ObjectModel.ORMModelElement source, global::Neumont.Tools.ORMAbstraction.AbstractionModel target)
+			: base((source != null ? source.Partition : null), new DslModeling::RoleAssignment[]{new DslModeling::RoleAssignment(ExcludedORMModelElement.ExcludedElementDomainRoleId, source), new DslModeling::RoleAssignment(ExcludedORMModelElement.AbstractionModelDomainRoleId, target)}, null)
+		{
+		}
+		
+		/// <summary>
+		/// Constructor
+		/// </summary>
+		/// <param name="store">Store where new link is to be created.</param>
+		/// <param name="roleAssignments">List of relationship role assignments.</param>
+		public ExcludedORMModelElement(DslModeling::Store store, params DslModeling::RoleAssignment[] roleAssignments)
+			: base(store != null ? store.DefaultPartition : null, roleAssignments, null)
+		{
+		}
+		
+		/// <summary>
+		/// Constructor
+		/// </summary>
+		/// <param name="store">Store where new link is to be created.</param>
+		/// <param name="roleAssignments">List of relationship role assignments.</param>
+		/// <param name="propertyAssignments">List of properties assignments to set on the new link.</param>
+		public ExcludedORMModelElement(DslModeling::Store store, DslModeling::RoleAssignment[] roleAssignments, DslModeling::PropertyAssignment[] propertyAssignments)
+			: base(store != null ? store.DefaultPartition : null, roleAssignments, propertyAssignments)
+		{
+		}
+		
+		/// <summary>
+		/// Constructor
+		/// </summary>
+		/// <param name="partition">Partition where new link is to be created.</param>
+		/// <param name="roleAssignments">List of relationship role assignments.</param>
+		public ExcludedORMModelElement(DslModeling::Partition partition, params DslModeling::RoleAssignment[] roleAssignments)
+			: base(partition, roleAssignments, null)
+		{
+		}
+		
+		/// <summary>
+		/// Constructor
+		/// </summary>
+		/// <param name="partition">Partition where new link is to be created.</param>
+		/// <param name="roleAssignments">List of relationship role assignments.</param>
+		/// <param name="propertyAssignments">List of properties assignments to set on the new link.</param>
+		public ExcludedORMModelElement(DslModeling::Partition partition, DslModeling::RoleAssignment[] roleAssignments, DslModeling::PropertyAssignment[] propertyAssignments)
+			: base(partition, roleAssignments, propertyAssignments)
+		{
+		}
+		#endregion
+		#region ExcludedElement domain role code
+		
+		/// <summary>
+		/// ExcludedElement domain role Id.
+		/// </summary>
+		public static readonly global::System.Guid ExcludedElementDomainRoleId = new global::System.Guid(0x7dccca8c, 0x9283, 0x4167, 0x9c, 0xc2, 0x79, 0xca, 0xea, 0x5d, 0xa0, 0x08);
+		
+		/// <summary>
+		/// DomainRole ExcludedElement
+		/// Description for
+		/// Neumont.Tools.ORMToORMAbstractionBridge.ExcludedORMModelElement.ExcludedElement
+		/// </summary>
+		[DslDesign::DisplayNameResource("Neumont.Tools.ORMToORMAbstractionBridge.ExcludedORMModelElement/ExcludedElement.DisplayName", typeof(global::Neumont.Tools.ORMToORMAbstractionBridge.ORMToORMAbstractionBridgeDomainModel), "Neumont.Tools.ORMToORMAbstractionBridge.GeneratedCode.ORMToORMAbstractionBridgeDomainModelResx")]
+		[DslDesign::DescriptionResource("Neumont.Tools.ORMToORMAbstractionBridge.ExcludedORMModelElement/ExcludedElement.Description", typeof(global::Neumont.Tools.ORMToORMAbstractionBridge.ORMToORMAbstractionBridgeDomainModel), "Neumont.Tools.ORMToORMAbstractionBridge.GeneratedCode.ORMToORMAbstractionBridgeDomainModelResx")]
+		[DslModeling::DomainRole(DslModeling::DomainRoleOrder.Source, PropertyName = "AbstractionModel", PropertyDisplayNameKey="Neumont.Tools.ORMToORMAbstractionBridge.ExcludedORMModelElement/ExcludedElement.PropertyDisplayName", Multiplicity = DslModeling::Multiplicity.ZeroOne)]
+		[DslModeling::DomainObjectId("7dccca8c-9283-4167-9cc2-79caea5da008")]
+		public virtual global::Neumont.Tools.ORM.ObjectModel.ORMModelElement ExcludedElement
+		{
+			[global::System.Diagnostics.DebuggerStepThrough]
+			get
+			{
+				return (global::Neumont.Tools.ORM.ObjectModel.ORMModelElement)DslModeling::DomainRoleInfo.GetRolePlayer(this, ExcludedElementDomainRoleId);
+			}
+			[global::System.Diagnostics.DebuggerStepThrough]
+			set
+			{
+				DslModeling::DomainRoleInfo.SetRolePlayer(this, ExcludedElementDomainRoleId, value);
+			}
+		}
+				
+		#endregion
+		#region Static methods to access ExcludedElement of a AbstractionModel
+		/// <summary>
+		/// Gets a list of ExcludedElement.
+		/// </summary>
+		[global::System.Diagnostics.DebuggerStepThrough]
+		[global::System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Design", "CA1011")]
+		public static DslModeling::LinkedElementCollection<global::Neumont.Tools.ORM.ObjectModel.ORMModelElement> GetExcludedElement(global::Neumont.Tools.ORMAbstraction.AbstractionModel element)
+		{
+			return new DslModeling::LinkedElementCollection<global::Neumont.Tools.ORM.ObjectModel.ORMModelElement>(element, AbstractionModelDomainRoleId);
+		}
+		#endregion
+		#region AbstractionModel domain role code
+		
+		/// <summary>
+		/// AbstractionModel domain role Id.
+		/// </summary>
+		public static readonly global::System.Guid AbstractionModelDomainRoleId = new global::System.Guid(0xafbd0d81, 0x5ef6, 0x4d0e, 0xa4, 0xcb, 0x01, 0x45, 0xf8, 0xea, 0x93, 0x9b);
+		
+		/// <summary>
+		/// DomainRole AbstractionModel
+		/// Description for
+		/// Neumont.Tools.ORMToORMAbstractionBridge.ExcludedORMModelElement.AbstractionModel
+		/// </summary>
+		[DslDesign::DisplayNameResource("Neumont.Tools.ORMToORMAbstractionBridge.ExcludedORMModelElement/AbstractionModel.DisplayName", typeof(global::Neumont.Tools.ORMToORMAbstractionBridge.ORMToORMAbstractionBridgeDomainModel), "Neumont.Tools.ORMToORMAbstractionBridge.GeneratedCode.ORMToORMAbstractionBridgeDomainModelResx")]
+		[DslDesign::DescriptionResource("Neumont.Tools.ORMToORMAbstractionBridge.ExcludedORMModelElement/AbstractionModel.Description", typeof(global::Neumont.Tools.ORMToORMAbstractionBridge.ORMToORMAbstractionBridgeDomainModel), "Neumont.Tools.ORMToORMAbstractionBridge.GeneratedCode.ORMToORMAbstractionBridgeDomainModelResx")]
+		[DslModeling::DomainRole(DslModeling::DomainRoleOrder.Target, PropertyName = "ExcludedElement", PropertyDisplayNameKey="Neumont.Tools.ORMToORMAbstractionBridge.ExcludedORMModelElement/AbstractionModel.PropertyDisplayName", Multiplicity = DslModeling::Multiplicity.ZeroMany)]
+		[DslModeling::DomainObjectId("afbd0d81-5ef6-4d0e-a4cb-0145f8ea939b")]
+		public virtual global::Neumont.Tools.ORMAbstraction.AbstractionModel AbstractionModel
+		{
+			[global::System.Diagnostics.DebuggerStepThrough]
+			get
+			{
+				return (global::Neumont.Tools.ORMAbstraction.AbstractionModel)DslModeling::DomainRoleInfo.GetRolePlayer(this, AbstractionModelDomainRoleId);
+			}
+			[global::System.Diagnostics.DebuggerStepThrough]
+			set
+			{
+				DslModeling::DomainRoleInfo.SetRolePlayer(this, AbstractionModelDomainRoleId, value);
+			}
+		}
+				
+		#endregion
+		#region Static methods to access AbstractionModel of a ORMModelElement
+		/// <summary>
+		/// Gets AbstractionModel.
+		/// </summary>
+		[global::System.Diagnostics.DebuggerStepThrough]
+		[global::System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Design", "CA1011")]
+		public static global::Neumont.Tools.ORMAbstraction.AbstractionModel GetAbstractionModel(global::Neumont.Tools.ORM.ObjectModel.ORMModelElement element)
+		{
+			return DslModeling::DomainRoleInfo.GetLinkedElement(element, ExcludedElementDomainRoleId) as global::Neumont.Tools.ORMAbstraction.AbstractionModel;
+		}
+		
+		/// <summary>
+		/// Sets AbstractionModel.
+		/// </summary>
+		[global::System.Diagnostics.DebuggerStepThrough]
+		[global::System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Design", "CA1011")]
+		public static void SetAbstractionModel(global::Neumont.Tools.ORM.ObjectModel.ORMModelElement element, global::Neumont.Tools.ORMAbstraction.AbstractionModel newAbstractionModel)
+		{
+			DslModeling::DomainRoleInfo.SetLinkedElement(element, ExcludedElementDomainRoleId, newAbstractionModel);
+		}
+		#endregion
+		#region ExcludedElement link accessor
+		/// <summary>
+		/// Get the ExcludedORMModelElement link to a ORMModelElement.
+		/// </summary>
+		[global::System.Diagnostics.DebuggerStepThrough]
+		[global::System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Design", "CA1011")]
+		public static global::Neumont.Tools.ORMToORMAbstractionBridge.ExcludedORMModelElement GetLinkToAbstractionModel (global::Neumont.Tools.ORM.ObjectModel.ORMModelElement excludedElementInstance)
+		{
+			global::System.Collections.Generic.IList<global::Neumont.Tools.ORMToORMAbstractionBridge.ExcludedORMModelElement> links = DslModeling::DomainRoleInfo.GetElementLinks<global::Neumont.Tools.ORMToORMAbstractionBridge.ExcludedORMModelElement>(excludedElementInstance, global::Neumont.Tools.ORMToORMAbstractionBridge.ExcludedORMModelElement.ExcludedElementDomainRoleId);
+			global::System.Diagnostics.Debug.Assert(links.Count <= 1, "Multiplicity of ExcludedElement not obeyed.");
+			if ( links.Count == 0 )
+			{
+				return null;
+			}
+			else
+			{
+				return links[0];
+			}
+		}
+		#endregion
+		#region AbstractionModel link accessor
+		/// <summary>
+		/// Get the list of ExcludedORMModelElement links to a AbstractionModel.
+		/// </summary>
+		[global::System.Diagnostics.DebuggerStepThrough]
+		[global::System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Design", "CA1011")]
+		public static global::System.Collections.ObjectModel.ReadOnlyCollection<global::Neumont.Tools.ORMToORMAbstractionBridge.ExcludedORMModelElement> GetLinksToExcludedElement ( global::Neumont.Tools.ORMAbstraction.AbstractionModel abstractionModelInstance )
+		{
+			return DslModeling::DomainRoleInfo.GetElementLinks<global::Neumont.Tools.ORMToORMAbstractionBridge.ExcludedORMModelElement>(abstractionModelInstance, global::Neumont.Tools.ORMToORMAbstractionBridge.ExcludedORMModelElement.AbstractionModelDomainRoleId);
+		}
+		#endregion
+		#region ExcludedORMModelElement instance accessors
+		
+		/// <summary>
+		/// Get any ExcludedORMModelElement links between a given ORMModelElement and a AbstractionModel.
+		/// </summary>
+		[global::System.Diagnostics.DebuggerStepThrough]
+		[global::System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Design", "CA1011")]
+		public static global::System.Collections.ObjectModel.ReadOnlyCollection<global::Neumont.Tools.ORMToORMAbstractionBridge.ExcludedORMModelElement> GetLinks( global::Neumont.Tools.ORM.ObjectModel.ORMModelElement source, global::Neumont.Tools.ORMAbstraction.AbstractionModel target )
+		{
+			global::System.Collections.Generic.List<global::Neumont.Tools.ORMToORMAbstractionBridge.ExcludedORMModelElement> outLinks = new global::System.Collections.Generic.List<global::Neumont.Tools.ORMToORMAbstractionBridge.ExcludedORMModelElement>();
+			global::System.Collections.Generic.IList<global::Neumont.Tools.ORMToORMAbstractionBridge.ExcludedORMModelElement> links = DslModeling::DomainRoleInfo.GetElementLinks<global::Neumont.Tools.ORMToORMAbstractionBridge.ExcludedORMModelElement>(source, global::Neumont.Tools.ORMToORMAbstractionBridge.ExcludedORMModelElement.ExcludedElementDomainRoleId);
+			foreach ( global::Neumont.Tools.ORMToORMAbstractionBridge.ExcludedORMModelElement link in links )
+			{
+				if ( target.Equals(link.AbstractionModel) )
+				{
+					outLinks.Add(link);
+				}
+			}
+			return outLinks.AsReadOnly();
+		}
+		/// <summary>
+		/// Get the one ExcludedORMModelElement link between a given ORMModelElementand a AbstractionModel.
+		/// </summary>
+		[global::System.Diagnostics.DebuggerStepThrough]
+		[global::System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Design", "CA1011")]
+		public static global::Neumont.Tools.ORMToORMAbstractionBridge.ExcludedORMModelElement GetLink( global::Neumont.Tools.ORM.ObjectModel.ORMModelElement source, global::Neumont.Tools.ORMAbstraction.AbstractionModel target )
+		{
+			global::System.Collections.Generic.IList<global::Neumont.Tools.ORMToORMAbstractionBridge.ExcludedORMModelElement> links = DslModeling::DomainRoleInfo.GetElementLinks<global::Neumont.Tools.ORMToORMAbstractionBridge.ExcludedORMModelElement>(source, global::Neumont.Tools.ORMToORMAbstractionBridge.ExcludedORMModelElement.ExcludedElementDomainRoleId);
+			foreach ( global::Neumont.Tools.ORMToORMAbstractionBridge.ExcludedORMModelElement link in links )
+			{
+				if ( target.Equals(link.AbstractionModel) )
 				{
 					return link;
 				}

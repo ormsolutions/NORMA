@@ -162,7 +162,6 @@ namespace Neumont.Tools.ORM.ObjectModel
 						typeof(ObjectType).GetNestedType("VerifyValueTypeHasDataTypeDeleteRuleClass", BindingFlags.Public | BindingFlags.NonPublic),
 						typeof(ObjectTypeInstance).GetNestedType("ConstraintRoleSequenceHasRoleAddedRuleClass", BindingFlags.Public | BindingFlags.NonPublic),
 						typeof(ObjectTypeInstance).GetNestedType("ConstraintRoleSequenceHasRoleDeletedRuleClass", BindingFlags.Public | BindingFlags.NonPublic),
-						typeof(ObjectTypeInstance).GetNestedType("ConstraintRoleSequenceHasRoleRolePlayerChangedRuleClass", BindingFlags.Public | BindingFlags.NonPublic),
 						typeof(ObjectTypeInstance).GetNestedType("EntityTypeInstanceHasRoleInstanceAddedRuleClass", BindingFlags.Public | BindingFlags.NonPublic),
 						typeof(ObjectTypeInstance).GetNestedType("EntityTypeInstanceHasRoleInstanceDeletedRuleClass", BindingFlags.Public | BindingFlags.NonPublic),
 						typeof(ObjectTypeInstance).GetNestedType("EntityTypeInstanceHasRoleInstanceRolePlayerChangedRuleClass", BindingFlags.Public | BindingFlags.NonPublic),
@@ -183,7 +182,7 @@ namespace Neumont.Tools.ORM.ObjectModel
 						typeof(RingConstraint).GetNestedType("RingConstraintTypeChangeRuleClass", BindingFlags.Public | BindingFlags.NonPublic),
 						typeof(Role).GetNestedType("ConstraintRoleSequenceHasRoleAddedRuleClass", BindingFlags.Public | BindingFlags.NonPublic),
 						typeof(Role).GetNestedType("ConstraintRoleSequenceHasRoleDeletedRuleClass", BindingFlags.Public | BindingFlags.NonPublic),
-						typeof(Role).GetNestedType("ConstraintRoleSequenceHasRoleRolePlayerChangedRuleClass", BindingFlags.Public | BindingFlags.NonPublic),
+						typeof(Role).GetNestedType("ConstraintChangedRuleClass", BindingFlags.Public | BindingFlags.NonPublic),
 						typeof(Role).GetNestedType("RoleChangeRuleClass", BindingFlags.Public | BindingFlags.NonPublic),
 						typeof(Role).GetNestedType("RoleInstanceAddedRuleClass", BindingFlags.Public | BindingFlags.NonPublic),
 						typeof(Role).GetNestedType("RoleInstanceDeletedRuleClass", BindingFlags.Public | BindingFlags.NonPublic),
@@ -291,7 +290,7 @@ namespace Neumont.Tools.ORM.ObjectModel
 		{
 			Microsoft.VisualStudio.Modeling.RuleManager ruleManager = store.RuleManager;
 			Type[] disabledRuleTypes = ORMCoreDomainModel.CustomDomainModelTypes;
-			for (int i = 0; i < 224; ++i)
+			for (int i = 0; i < 223; ++i)
 			{
 				ruleManager.EnableRule(disabledRuleTypes[i]);
 			}
@@ -3444,30 +3443,6 @@ namespace Neumont.Tools.ORM.ObjectModel
 				Neumont.Tools.Modeling.Diagnostics.TraceUtility.TraceRuleEnd(e.ModelElement.Store, "Neumont.Tools.ORM.ObjectModel.ObjectTypeInstance.ConstraintRoleSequenceHasRoleDeletedRule");
 			}
 		}
-		[Microsoft.VisualStudio.Modeling.RuleOn(typeof(ConstraintRoleSequenceHasRole))]
-		private sealed class ConstraintRoleSequenceHasRoleRolePlayerChangedRuleClass : Microsoft.VisualStudio.Modeling.RolePlayerChangeRule
-		{
-			public ConstraintRoleSequenceHasRoleRolePlayerChangedRuleClass()
-			{
-				base.IsEnabled = false;
-			}
-			/// <summary>
-			/// Provide the following method in class: 
-			/// Neumont.Tools.ORM.ObjectModel.ObjectTypeInstance
-			/// /// <summary>
-			/// /// RolePlayerChangeRule: typeof(ConstraintRoleSequenceHasRole)
-			/// /// </summary>
-			/// private static void ConstraintRoleSequenceHasRoleRolePlayerChangedRule(RolePlayerChangedEventArgs e)
-			/// {
-			/// }
-			/// </summary>
-			public override void RolePlayerChanged(Microsoft.VisualStudio.Modeling.RolePlayerChangedEventArgs e)
-			{
-				Neumont.Tools.Modeling.Diagnostics.TraceUtility.TraceRuleStart(e.ElementLink.Store, "Neumont.Tools.ORM.ObjectModel.ObjectTypeInstance.ConstraintRoleSequenceHasRoleRolePlayerChangedRule");
-				ObjectTypeInstance.ConstraintRoleSequenceHasRoleRolePlayerChangedRule(e);
-				Neumont.Tools.Modeling.Diagnostics.TraceUtility.TraceRuleEnd(e.ElementLink.Store, "Neumont.Tools.ORM.ObjectModel.ObjectTypeInstance.ConstraintRoleSequenceHasRoleRolePlayerChangedRule");
-			}
-		}
 		[Microsoft.VisualStudio.Modeling.RuleOn(typeof(EntityTypeInstanceHasRoleInstance))]
 		private sealed class EntityTypeInstanceHasRoleInstanceAddedRuleClass : Microsoft.VisualStudio.Modeling.AddRule
 		{
@@ -3992,10 +3967,10 @@ namespace Neumont.Tools.ORM.ObjectModel
 				Neumont.Tools.Modeling.Diagnostics.TraceUtility.TraceRuleEnd(e.ModelElement.Store, "Neumont.Tools.ORM.ObjectModel.Role.ConstraintRoleSequenceHasRoleDeletedRule");
 			}
 		}
-		[Microsoft.VisualStudio.Modeling.RuleOn(typeof(ConstraintRoleSequenceHasRole))]
-		private sealed class ConstraintRoleSequenceHasRoleRolePlayerChangedRuleClass : Microsoft.VisualStudio.Modeling.RolePlayerChangeRule
+		[Microsoft.VisualStudio.Modeling.RuleOn(typeof(SetConstraint))]
+		private sealed class ConstraintChangedRuleClass : Microsoft.VisualStudio.Modeling.ChangeRule
 		{
-			public ConstraintRoleSequenceHasRoleRolePlayerChangedRuleClass()
+			public ConstraintChangedRuleClass()
 			{
 				base.IsEnabled = false;
 			}
@@ -4003,17 +3978,17 @@ namespace Neumont.Tools.ORM.ObjectModel
 			/// Provide the following method in class: 
 			/// Neumont.Tools.ORM.ObjectModel.Role
 			/// /// <summary>
-			/// /// RolePlayerChangeRule: typeof(ConstraintRoleSequenceHasRole)
+			/// /// ChangeRule: typeof(SetConstraint)
 			/// /// </summary>
-			/// private static void ConstraintRoleSequenceHasRoleRolePlayerChangedRule(RolePlayerChangedEventArgs e)
+			/// private static void ConstraintChangedRule(ElementPropertyChangedEventArgs e)
 			/// {
 			/// }
 			/// </summary>
-			public override void RolePlayerChanged(Microsoft.VisualStudio.Modeling.RolePlayerChangedEventArgs e)
+			public override void ElementPropertyChanged(Microsoft.VisualStudio.Modeling.ElementPropertyChangedEventArgs e)
 			{
-				Neumont.Tools.Modeling.Diagnostics.TraceUtility.TraceRuleStart(e.ElementLink.Store, "Neumont.Tools.ORM.ObjectModel.Role.ConstraintRoleSequenceHasRoleRolePlayerChangedRule");
-				Role.ConstraintRoleSequenceHasRoleRolePlayerChangedRule(e);
-				Neumont.Tools.Modeling.Diagnostics.TraceUtility.TraceRuleEnd(e.ElementLink.Store, "Neumont.Tools.ORM.ObjectModel.Role.ConstraintRoleSequenceHasRoleRolePlayerChangedRule");
+				Neumont.Tools.Modeling.Diagnostics.TraceUtility.TraceRuleStart(e.ModelElement.Store, "Neumont.Tools.ORM.ObjectModel.Role.ConstraintChangedRule");
+				Role.ConstraintChangedRule(e);
+				Neumont.Tools.Modeling.Diagnostics.TraceUtility.TraceRuleEnd(e.ModelElement.Store, "Neumont.Tools.ORM.ObjectModel.Role.ConstraintChangedRule");
 			}
 		}
 		[Microsoft.VisualStudio.Modeling.RuleOn(typeof(Role))]

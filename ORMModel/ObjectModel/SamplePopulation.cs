@@ -1357,7 +1357,7 @@ namespace Neumont.Tools.ORM.ObjectModel
 			if (!IsDeleted)
 			{
 				HashSet<ObjectTypeInstance, RoleInstance> population = myPopulation;
-				ConstraintRoleSequence singleRoleConstraint = this.SingleRoleAlethicUniquenessConstraint;
+				UniquenessConstraint singleRoleConstraint = this.SingleRoleAlethicUniquenessConstraint;
 				ReadOnlyCollection<RoleInstance> roleInstances = RoleInstance.GetLinksToObjectTypeInstanceCollection(this);
 				int roleInstanceCount = roleInstances.Count;
 				if (singleRoleConstraint != null)
@@ -1470,7 +1470,7 @@ namespace Neumont.Tools.ORM.ObjectModel
 				ObjectType parentType;
 				MandatoryConstraint constraint;
 				if (null != (parentType = this.RolePlayer) &&
-					null != (constraint = this.SimpleMandatoryConstraint))
+					null != (constraint = this.SingleRoleAlethicMandatoryConstraint))
 				{
 					List<ObjectTypeInstance> instances = new List<ObjectTypeInstance>(RoleInstance.GetObjectTypeInstanceCollection(this));
 					instances.Sort(HashCodeComparer<ObjectTypeInstance>.Instance);
@@ -1557,90 +1557,81 @@ namespace Neumont.Tools.ORM.ObjectModel
 		#region Role Rules
 		/// <summary>
 		/// AddRule: typeof(ConstraintRoleSequenceHasRole)
-		/// Validate population uniqueness and mandatory errors
+		/// Validate population uniqueness and mandatory errors when a role is added to an internal or implied constraint
 		/// </summary>
 		private static void ConstraintRoleSequenceHasRoleAddedRule(ElementAddedEventArgs e)
 		{
 			ConstraintRoleSequenceHasRole link = e.ModelElement as ConstraintRoleSequenceHasRole;
-			ConstraintRoleSequence constraint = link.ConstraintRoleSequence;
-			UniquenessConstraint uniConstraint;
-			MandatoryConstraint mandConstraint;
-			if (null != (uniConstraint = constraint as UniquenessConstraint))
+			SetConstraint constraint = link.ConstraintRoleSequence as SetConstraint;
+			if (constraint != null && constraint.Modality == ConstraintModality.Alethic)
 			{
-				Role selectedRole = link.Role;
-				if (!selectedRole.IsDeleted)
+				switch (constraint.Constraint.ConstraintType)
 				{
-					FrameworkDomainModel.DelayValidateElement(selectedRole, DelayValidatePopulationUniquenessError);
-				}
-			}
-			else if (null != (mandConstraint = constraint as MandatoryConstraint))
-			{
-				Role selectedRole = link.Role;
-				if (!selectedRole.IsDeleted)
-				{
-					FrameworkDomainModel.DelayValidateElement(selectedRole, DelayValidatePopulationMandatoryError);
+					case ConstraintType.InternalUniqueness:
+						FrameworkDomainModel.DelayValidateElement(link.Role, DelayValidatePopulationUniquenessError);
+						break;
+					case ConstraintType.SimpleMandatory:
+					case ConstraintType.ImpliedMandatory:
+						FrameworkDomainModel.DelayValidateElement(link.Role, DelayValidatePopulationMandatoryError);
+						break;
 				}
 			}
 		}
 		/// <summary>
 		/// DeleteRule: typeof(ConstraintRoleSequenceHasRole)
+		/// Validate population uniqueness and mandatory errors when a role is deleted from an internal or implied constraint
 		/// </summary>
 		private static void ConstraintRoleSequenceHasRoleDeletedRule(ElementDeletedEventArgs e)
 		{
 			ConstraintRoleSequenceHasRole link = e.ModelElement as ConstraintRoleSequenceHasRole;
-			ConstraintRoleSequence constraint = link.ConstraintRoleSequence;
-			UniquenessConstraint uniConstraint;
-			MandatoryConstraint mandConstraint;
-			if (null != (uniConstraint = constraint as UniquenessConstraint))
+			SetConstraint constraint = link.ConstraintRoleSequence as SetConstraint;
+			if (constraint != null && constraint.Modality == ConstraintModality.Alethic)
 			{
-				Role selectedRole = link.Role;
-				if (!selectedRole.IsDeleted)
+				Role role;
+				switch (constraint.Constraint.ConstraintType)
 				{
-					FrameworkDomainModel.DelayValidateElement(selectedRole, DelayValidatePopulationUniquenessError);
-				}
-			}
-			else if (null != (mandConstraint = constraint as MandatoryConstraint))
-			{
-				Role selectedRole = link.Role;
-				if (!selectedRole.IsDeleted)
-				{
-					FrameworkDomainModel.DelayValidateElement(selectedRole, DelayValidatePopulationMandatoryError);
+					case ConstraintType.InternalUniqueness:
+						if (!(role = link.Role).IsDeleted)
+						{
+							FrameworkDomainModel.DelayValidateElement(role, DelayValidatePopulationUniquenessError);
+						}
+						break;
+					case ConstraintType.SimpleMandatory:
+					case ConstraintType.ImpliedMandatory:
+						if (!(role = link.Role).IsDeleted)
+						{
+							FrameworkDomainModel.DelayValidateElement(role, DelayValidatePopulationMandatoryError);
+						}
+						break;
 				}
 			}
 		}
 		/// <summary>
-		/// RolePlayerChangeRule: typeof(ConstraintRoleSequenceHasRole)
-		/// UNDONE: This rule is garbage, it's comparing DomainRoleId values to DomainClassId values
-		/// The rule should probably be a RolePlayerPositionChangeRule, not a RolePlayerChangeRule
+		/// ChangeRule: typeof(SetConstraint)
+		/// Validate population uniqueness and mandatory errors when the modality of an internal or implied constraint changes
 		/// </summary>
-		private static void ConstraintRoleSequenceHasRoleRolePlayerChangedRule(RolePlayerChangedEventArgs e)
+		private static void ConstraintChangedRule(ElementPropertyChangedEventArgs e)
 		{
-			ConstraintRoleSequenceHasRole link = e.ElementLink as ConstraintRoleSequenceHasRole;
-			ConstraintRoleSequence constraint = link.ConstraintRoleSequence;
-			UniquenessConstraint uniConstraint;
-			MandatoryConstraint mandConstraint;
-			if (null != (uniConstraint = constraint as UniquenessConstraint))
+			if (e.DomainProperty.Id == SetConstraint.ModalityDomainPropertyId)
 			{
-				Guid changedRole = e.DomainRole.Id;
-				if (changedRole == ConstraintRoleSequence.DomainClassId)
+				SetConstraint constraint = (SetConstraint)e.ModelElement;
+				ElementValidation validation = null;
+				switch (constraint.Constraint.ConstraintType)
 				{
-					FrameworkDomainModel.DelayValidateElement(e.NewRolePlayer as Role, DelayValidatePopulationUniquenessError);
+					case ConstraintType.InternalUniqueness:
+						validation = DelayValidatePopulationMandatoryError;
+						break;
+					case ConstraintType.SimpleMandatory:
+					// case ConstraintType.ImpliedMandatory: // Implied mandatory constraints cannot change their modality
+						validation = DelayValidatePopulationUniquenessError;
+						break;
 				}
-				else if (changedRole == Role.DomainClassId)
+				if (validation != null)
 				{
-					FrameworkDomainModel.DelayValidateElement(link.Role, DelayValidatePopulationUniquenessError);
-				}
-			}
-			else if (null != (mandConstraint = constraint as MandatoryConstraint))
-			{
-				Guid changedRole = e.DomainRole.Id;
-				if (changedRole == ConstraintRoleSequence.DomainClassId)
-				{
-					FrameworkDomainModel.DelayValidateElement(e.NewRolePlayer as Role, DelayValidatePopulationMandatoryError);
-				}
-				else if (changedRole == Role.DomainClassId)
-				{
-					FrameworkDomainModel.DelayValidateElement(link.Role, DelayValidatePopulationMandatoryError);
+					foreach (Role role in constraint.RoleCollection)
+					{
+						FrameworkDomainModel.DelayValidateElement(role, validation);
+					}
 				}
 			}
 		}
@@ -2192,7 +2183,7 @@ namespace Neumont.Tools.ORM.ObjectModel
 					for (int i = 0; i < playedRoleCount; ++i)
 					{
 						Role selectedRole = playedRoles[i];
-						MandatoryConstraint simpleMandatory = selectedRole.SimpleMandatoryConstraint;
+						MandatoryConstraint simpleMandatory = selectedRole.SingleRoleAlethicMandatoryConstraint;
 						if (simpleMandatory != null)
 						{
 							int index = instanceRoles.BinarySearch(playedRoles[i], HashCodeComparer<Role>.Instance);
@@ -2317,82 +2308,6 @@ namespace Neumont.Tools.ORM.ObjectModel
 						{
 							FrameworkDomainModel.DelayValidateElement(instances[i], DelayValidateObjectTypeInstanceNamePartChanged);
 						}
-					}
-				}
-			}
-		}
-		// UNDONE: This rule is garbage, it's comparing DomainRoleId values to DomainClassId values
-		// The rule should probably be a RolePlayerPositionChangeRule, not a RolePlayerChangeRule
-		/// <summary>
-		/// RolePlayerChangeRule: typeof(ConstraintRoleSequenceHasRole)
-		/// </summary>
-		private static void ConstraintRoleSequenceHasRoleRolePlayerChangedRule(RolePlayerChangedEventArgs e)
-		{
-			Guid changedRole = e.DomainRole.Id;
-			ConstraintRoleSequenceHasRole link = e.ElementLink as ConstraintRoleSequenceHasRole;
-			ObjectType newRolePlayer = null;
-			if (changedRole == Role.DomainClassId)
-			{
-				RoleBase oppositeRoleBase;
-				Role oppositeRole;
-				if (null != (oppositeRoleBase = (e.NewRolePlayer as Role).OppositeRole) &&
-					null != (oppositeRole = oppositeRoleBase.Role))
-				{
-					newRolePlayer = oppositeRole.RolePlayer;
-				}
-				ObjectType oldRolePlayer;
-				if (null != (oppositeRoleBase = (e.OldRolePlayer as Role).OppositeRole) &&
-					null != (oppositeRole = oppositeRoleBase.Role) &&
-					null != (oldRolePlayer = oppositeRole.RolePlayer))
-				{
-					if (oldRolePlayer.IsValueType)
-					{
-						LinkedElementCollection<ValueTypeInstance> instances = oldRolePlayer.ValueTypeInstanceCollection;
-						int instanceCount = instances.Count;
-						for (int i = 0; i < instanceCount; ++i)
-						{
-							FrameworkDomainModel.DelayValidateElement(instances[i], DelayValidateObjectTypeInstanceNamePartChanged);
-						}
-					}
-					else
-					{
-						LinkedElementCollection<EntityTypeInstance> instances = oldRolePlayer.EntityTypeInstanceCollection;
-						int instanceCount = instances.Count;
-						for (int i = 0; i < instanceCount; ++i)
-						{
-							FrameworkDomainModel.DelayValidateElement(instances[i], DelayValidateObjectTypeInstanceNamePartChanged);
-						}
-					}
-				}
-			}
-			else if (changedRole == ConstraintRoleSequence.DomainClassId)
-			{
-				RoleBase oppositeRoleBase;
-				Role oppositeRole;
-				if (null != (oppositeRoleBase = link.Role.OppositeRole) &&
-					null != (oppositeRole = oppositeRoleBase.Role))
-				{
-					newRolePlayer = oppositeRole.RolePlayer;
-				}
-			}
-			if (newRolePlayer != null)
-			{
-				if (newRolePlayer.IsValueType)
-				{
-					LinkedElementCollection<ValueTypeInstance> instances = newRolePlayer.ValueTypeInstanceCollection;
-					int instanceCount = instances.Count;
-					for (int i = 0; i < instanceCount; ++i)
-					{
-						FrameworkDomainModel.DelayValidateElement(instances[i], DelayValidateObjectTypeInstanceNamePartChanged);
-					}
-				}
-				else
-				{
-					LinkedElementCollection<EntityTypeInstance> instances = newRolePlayer.EntityTypeInstanceCollection;
-					int instanceCount = instances.Count;
-					for (int i = 0; i < instanceCount; ++i)
-					{
-						FrameworkDomainModel.DelayValidateElement(instances[i], DelayValidateObjectTypeInstanceNamePartChanged);
 					}
 				}
 			}

@@ -130,81 +130,10 @@ namespace Neumont.Tools.ORM.ObjectModel
 			// Handled by RoleChangeRule
 		}
 		#endregion // CustomStorage setters
-		private RoleMultiplicity GetReverseMultiplicity(FactType factType, LinkedElementCollection<RoleBase> roles)
-		{
-			RoleMultiplicity retVal = RoleMultiplicity.Unspecified;
-			bool haveMandatory = false;
-			bool haveUniqueness = false;
-			bool haveDoubleWideUniqueness = false;
-			bool tooManyUniquenessConstraints = false;
-			foreach (ConstraintRoleSequence roleSet in ConstraintRoleSequenceCollection)
-			{
-				IConstraint constraint = roleSet.Constraint;
-				switch (constraint.ConstraintType)
-				{
-					case ConstraintType.SimpleMandatory:
-						// Ignore multiple mandatories. Unlike
-						// condition, and we ignore it in the IsMandatory
-						// getter anyway.
-						haveMandatory = true;
-						break;
-					case ConstraintType.InternalUniqueness:
-						if (haveUniqueness)
-						{
-							tooManyUniquenessConstraints = true;
-						}
-						else
-						{
-							haveUniqueness = true;
-							if (roleSet.RoleCollection.Count == 2)
-							{
-								haveDoubleWideUniqueness = true;
-							}
-						}
-						break;
-				}
-				if (tooManyUniquenessConstraints)
-				{
-					break;
-				}
-			}
-			if (tooManyUniquenessConstraints)
-			{
-				retVal = RoleMultiplicity.Indeterminate;
-			}
-			else if (!haveUniqueness)
-			{
-				bool haveOppositeUniqueness = false;
-				Role oppositeRole = roles[0].Role;
-				if (oppositeRole == this)
-				{
-					oppositeRole = roles[1].Role;
-				}
-				foreach (ConstraintRoleSequence roleSet in oppositeRole.ConstraintRoleSequenceCollection)
-				{
-					if (roleSet.Constraint.ConstraintType == ConstraintType.InternalUniqueness)
-					{
-						haveOppositeUniqueness = true;
-						break;
-					}
-				}
-				if (haveOppositeUniqueness)
-				{
-					retVal = haveMandatory ? RoleMultiplicity.OneToMany : RoleMultiplicity.ZeroToMany;
-				}
-			}
-			else if (haveDoubleWideUniqueness)
-			{
-				retVal = haveMandatory ? RoleMultiplicity.OneToMany : RoleMultiplicity.ZeroToMany;
-			}
-			else
-			{
-				retVal = haveMandatory ? RoleMultiplicity.ExactlyOne : RoleMultiplicity.ZeroToOne;
-			}
-			return retVal;
-		}
 		/// <summary>
-		/// Gets the <see cref="MandatoryConstraint"/> associated with this <see cref="Role"/>, if any.
+		/// Gets the explicit <see cref="MandatoryConstraint"/> associated with this <see cref="Role"/>, if any.
+		/// To get a single-role alethic mandatory constraint (either explicit or implied) on this Role, use the
+		/// <see cref="SingleRoleAlethicMandatoryConstraint"/> property.
 		/// </summary>
 		public MandatoryConstraint SimpleMandatoryConstraint
 		{
@@ -229,10 +158,45 @@ namespace Neumont.Tools.ORM.ObjectModel
 		}
 
 		/// <summary>
+		/// Gets an explicit or implicit <see cref="MandatoryConstraint"/> with alethic <see cref="ConstraintModality">modality</see>
+		/// associated with this <see cref="Role"/>, if any.
+		/// Use the <see cref="SimpleMandatoryConstraint"/> constraint property to get explicit constraint of
+		/// any modality.
+		/// </summary>
+		public MandatoryConstraint SingleRoleAlethicMandatoryConstraint
+		{
+			get
+			{
+				LinkedElementCollection<ConstraintRoleSequence> constraintRoleSequences = ConstraintRoleSequenceCollection;
+				int roleSequenceCount = constraintRoleSequences.Count;
+				for (int i = 0; i < roleSequenceCount; ++i)
+				{
+					ConstraintRoleSequence roleSequence = constraintRoleSequences[i];
+					IConstraint constraint = roleSequence.Constraint;
+					if (constraint != null && constraint.Modality == ConstraintModality.Alethic)
+					{
+						switch (constraint.ConstraintType)
+						{
+							case ConstraintType.SimpleMandatory:
+								return (MandatoryConstraint)constraint;
+							case ConstraintType.ImpliedMandatory:
+								if (roleSequence.RoleCollection.Count == 1)
+								{
+									return (MandatoryConstraint)constraint;
+								}
+								break;
+						}
+					}
+				}
+				return null;
+			}
+		}
+
+		/// <summary>
 		/// Gets the <see cref="ConstraintModality.Alethic"/> single role <see cref="ConstraintRoleSequence"/> for the constraint of type <see cref="ConstraintType.InternalUniqueness"/>
 		/// associated with this <see cref="Role"/>, if any.
 		/// </summary>
-		public ConstraintRoleSequence SingleRoleAlethicUniquenessConstraint
+		public UniquenessConstraint SingleRoleAlethicUniquenessConstraint
 		{
 			get
 			{
@@ -244,7 +208,7 @@ namespace Neumont.Tools.ORM.ObjectModel
 					IConstraint constraint = roleSequence.Constraint;
 					if (constraint.ConstraintType == ConstraintType.InternalUniqueness && constraint.Modality == ConstraintModality.Alethic && roleSequence.RoleCollection.Count == 1)
 					{
-						return roleSequence;
+						return (UniquenessConstraint)roleSequence;
 					}
 				}
 				return null;
@@ -271,14 +235,80 @@ namespace Neumont.Tools.ORM.ObjectModel
 			if (fact != null)
 			{
 				LinkedElementCollection<RoleBase> roles = fact.RoleCollection;
-				if (roles.Count == 2)
+				if (roles.Count == 2 && !FactType.GetUnaryRoleIndex(roles).HasValue)
 				{
-					RoleBase oppositeRole = roles[0];
+					Role oppositeRole = roles[0].Role;
 					if (oppositeRole == this)
 					{
-						oppositeRole = roles[1];
+						oppositeRole = roles[1].Role;
 					}
-					retVal = oppositeRole.Role.GetReverseMultiplicity(fact, roles);
+					bool haveMandatory = false;
+					bool haveUniqueness = false;
+					bool haveDoubleWideUniqueness = false;
+					bool tooManyUniquenessConstraints = false;
+					foreach (ConstraintRoleSequence roleSet in oppositeRole.ConstraintRoleSequenceCollection)
+					{
+						IConstraint constraint = roleSet.Constraint;
+						if (constraint.Modality == ConstraintModality.Alethic)
+						{
+							switch (constraint.ConstraintType)
+							{
+								case ConstraintType.SimpleMandatory:
+									// Ignore multiple mandatories. Unlike
+									// condition, and we ignore it in the IsMandatory
+									// getter anyway.
+									haveMandatory = true;
+									break;
+								case ConstraintType.InternalUniqueness:
+									if (haveUniqueness)
+									{
+										tooManyUniquenessConstraints = true;
+									}
+									else
+									{
+										haveUniqueness = true;
+										if (roleSet.RoleCollection.Count == 2)
+										{
+											haveDoubleWideUniqueness = true;
+										}
+									}
+									break;
+							}
+						}
+						if (tooManyUniquenessConstraints)
+						{
+							break;
+						}
+					}
+					if (tooManyUniquenessConstraints)
+					{
+						retVal = RoleMultiplicity.Indeterminate;
+					}
+					else if (!haveUniqueness)
+					{
+						bool haveThisUniqueness = false;
+						foreach (ConstraintRoleSequence roleSet in this.ConstraintRoleSequenceCollection)
+						{
+							UniquenessConstraint oppositeUniqueness = roleSet as UniquenessConstraint;
+							if (oppositeUniqueness != null && oppositeUniqueness.IsInternal && oppositeUniqueness.Modality == ConstraintModality.Alethic)
+							{
+								haveThisUniqueness = true;
+								break;
+							}
+						}
+						if (haveThisUniqueness)
+						{
+							retVal = haveMandatory ? RoleMultiplicity.OneToMany : RoleMultiplicity.ZeroToMany;
+						}
+					}
+					else if (haveDoubleWideUniqueness)
+					{
+						retVal = haveMandatory ? RoleMultiplicity.OneToMany : RoleMultiplicity.ZeroToMany;
+					}
+					else
+					{
+						retVal = haveMandatory ? RoleMultiplicity.ExactlyOne : RoleMultiplicity.ZeroToOne;
+					}
 				}
 			}
 			return retVal;
@@ -662,7 +692,22 @@ namespace Neumont.Tools.ORM.ObjectModel
 					}
 					if (newMandatory ^ oldMandatory)
 					{
-						role.IsMandatory = newMandatory;
+						MandatoryConstraint simpleMandatory = role.SimpleMandatoryConstraint;
+						if (newMandatory)
+						{
+							if (simpleMandatory != null)
+							{
+								simpleMandatory.Modality = ConstraintModality.Alethic;
+							}
+							else
+							{
+								MandatoryConstraint.CreateSimpleMandatoryConstraint(role);
+							}
+						}
+						else if (simpleMandatory != null && simpleMandatory.Modality == ConstraintModality.Alethic)
+						{
+							role.IsMandatory = false;
+						}
 					}
 
 					// Now take care of the one/many changes
@@ -711,7 +756,7 @@ namespace Neumont.Tools.ORM.ObjectModel
 						{
 							ConstraintRoleSequence roleSequence = roleSequences[i];
 							IConstraint constraint = roleSequence.Constraint;
-							if (constraint.ConstraintType == ConstraintType.InternalUniqueness)
+							if (constraint.ConstraintType == ConstraintType.InternalUniqueness && constraint.Modality == ConstraintModality.Alethic)
 							{
 								int currentMultiplicity = roleSequence.RoleCollection.Count;
 								if (keepCandidate == null)
@@ -767,40 +812,71 @@ namespace Neumont.Tools.ORM.ObjectModel
 							// a zero-to-one or 1-to-1 multiplicity on the opposite role,
 							// which is a change from the current zero-to-many or one-to-many
 							// multiplicity it currently has.
-							foreach (ConstraintRoleSequence roleSequence in role.ConstraintRoleSequenceCollection)
+							UniquenessConstraint existingDeonticUniqueness = null;
+							LinkedElementCollection<ConstraintRoleSequence> sequences = role.ConstraintRoleSequenceCollection;
+							int sequenceCount = sequences.Count;
+							// Walk backwards so we can delete
+							for (int i = sequenceCount - 1; i >= 0; --i)
 							{
+								ConstraintRoleSequence roleSequence = sequences[i];
 								IConstraint spanningConstraint = roleSequence.Constraint;
 								if (spanningConstraint.ConstraintType == ConstraintType.InternalUniqueness)
 								{
-									Debug.Assert(roleSequence.RoleCollection.Count == 2);
-									(spanningConstraint as ModelElement).Delete();
-									// There will only be one of these because we
-									// already fixed any 'broken' states earlier.
-									break;
+									UniquenessConstraint currentUniqueness = (UniquenessConstraint)roleSequence;
+									if (roleSequence.RoleCollection.Count == 1 &&
+										currentUniqueness.Modality == ConstraintModality.Deontic &&
+										existingDeonticUniqueness == null)
+									{
+										existingDeonticUniqueness = currentUniqueness;
+									}
+									else
+									{
+										currentUniqueness.Delete();
+										// There may be more than one of these, the early broken state check
+										// only checked alethic constraints. Do not break.
+									}
 								}
 							}
 
 							// Now create a new uniqueness constraint containing only this role
-							UniquenessConstraint.CreateInternalUniquenessConstraint(store).RoleCollection.Add(role);
+							if (existingDeonticUniqueness != null)
+							{
+								existingDeonticUniqueness.Modality = ConstraintModality.Alethic;
+							}
+							else
+							{
+								UniquenessConstraint.CreateInternalUniquenessConstraint(store).RoleCollection.Add(role);
+							}
 						}
 						else
 						{
 							bool oppositeHasUnique = false;
 							bool wasUnspecified = oldMultiplicity == RoleMultiplicity.Unspecified;
-							if (!wasUnspecified)
+							UniquenessConstraint existingDeonticSpanningConstraint = null;
+							// Switch to a many by removing an internal uniqueness constraint from
+							// this role. If the opposite role does not have an internal uniqueness constraint,
+							// then we need to automatically create a uniqueness constraint that spans both
+							// roles.
+							LinkedElementCollection<ConstraintRoleSequence> sequences = role.ConstraintRoleSequenceCollection;
+							int sequenceCount = sequences.Count;
+							// Walk backwards so we can delete
+							for (int i = sequenceCount - 1; i >= 0; --i)
 							{
-								// Switch to a many by removing an internal uniqueness constraint from
-								// this role. If the opposite role does not have an internal uniqueness constraint,
-								// then we need to automatically create a uniqueness constraint that spans both
-								// roles.
-								foreach (ConstraintRoleSequence roleSequence in role.ConstraintRoleSequenceCollection)
+								ConstraintRoleSequence roleSequence = sequences[i];
+								IConstraint constraint = roleSequence.Constraint;
+								if (constraint.ConstraintType == ConstraintType.InternalUniqueness)
 								{
-									IConstraint constraint = roleSequence.Constraint;
-									if (constraint.ConstraintType == ConstraintType.InternalUniqueness)
+									UniquenessConstraint currentUniqueness = (UniquenessConstraint)roleSequence;
+									if (roleSequence.RoleCollection.Count == 2 &&
+										currentUniqueness.Modality == ConstraintModality.Deontic &&
+										existingDeonticSpanningConstraint == null)
 									{
-										Debug.Assert(roleSequence.RoleCollection.Count == 1);
-										(constraint as ModelElement).Delete();
-										break;
+										existingDeonticSpanningConstraint = currentUniqueness;
+									}
+									else if (currentUniqueness.Modality == ConstraintModality.Alethic)
+									{
+										currentUniqueness.Delete();
+										// Don't break, we may find an existing deontic spanning constraint later in the set
 									}
 								}
 							}
@@ -815,19 +891,34 @@ namespace Neumont.Tools.ORM.ObjectModel
 							{
 								foreach (ConstraintRoleSequence roleSequence in oppositeRole.ConstraintRoleSequenceCollection)
 								{
-									if (roleSequence.Constraint.ConstraintType == ConstraintType.InternalUniqueness)
+									IConstraint constraint = roleSequence.Constraint;
+									if (constraint.ConstraintType == ConstraintType.InternalUniqueness && constraint.Modality == ConstraintModality.Alethic)
 									{
 										oppositeHasUnique = true;
 										Debug.Assert(roleSequence.RoleCollection.Count == 1);
 									}
 								}
 							}
-							if (!oppositeHasUnique)
+							if (oppositeHasUnique)
 							{
-								// Now create a new uniqueness constraint containing both roles
-								LinkedElementCollection<Role> constraintRoles = UniquenessConstraint.CreateInternalUniquenessConstraint(factType).RoleCollection;
-								constraintRoles.Add(role);
-								constraintRoles.Add(oppositeRole);
+								if (existingDeonticSpanningConstraint != null)
+								{
+									existingDeonticSpanningConstraint.Delete();
+								}
+							}
+							else
+							{
+								if (existingDeonticSpanningConstraint != null)
+								{
+									existingDeonticSpanningConstraint.Modality = ConstraintModality.Alethic;
+								}
+								else
+								{
+									// Now create a new uniqueness constraint containing both roles
+									LinkedElementCollection<Role> constraintRoles = UniquenessConstraint.CreateInternalUniquenessConstraint(factType).RoleCollection;
+									constraintRoles.Add(role);
+									constraintRoles.Add(oppositeRole);
+								}
 							}
 						}
 					}

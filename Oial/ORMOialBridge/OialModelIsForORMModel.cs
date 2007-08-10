@@ -9,21 +9,39 @@ using System.IO;
 using System.Collections;
 using System.Threading;
 using Neumont.Tools.ORMAbstraction;
+using System.Collections.ObjectModel;
 
 namespace Neumont.Tools.ORMToORMAbstractionBridge
 {
-	#region OIAL support code
-	enum OialModelElementAction
-	{
-		Add = 1,
-		Change = 2,
-		Delete = 4,
-	}
-	#endregion
 	public partial class AbstractionModelIsForORMModel
 	{
-		#region ModelElement transaction support
-		private static object Key = new object();
+		#region Element tracking transaction support
+		#region ModelElementModification enum
+		/// <summary>
+		/// An enumeration of changes that may affect the ORM model
+		/// </summary>
+		[Flags]
+		private enum ModelElementModification
+		{
+			/// <summary>
+			/// An element from the ORM object model was added
+			/// </summary>
+			ORMElementAdded = 1,
+			/// <summary>
+			/// An element from the ORM object model was changed
+			/// </summary>
+			ORMElementChanged = 2,
+			/// <summary>
+			/// An element from the ORM object model was deleted
+			/// </summary>
+			ORMElementDeleted = 4,
+			/// <summary>
+			/// A bridge element was removed from this abstraction element
+			/// </summary>
+			AbstractionElementDetached = 8,
+		}
+		#endregion // ModelElementModification enum
+		private static readonly object Key = new object();
 
 		private static Dictionary<ModelElement, int> EnsureContextKeyExists(Store store)
 		{
@@ -38,22 +56,7 @@ namespace Neumont.Tools.ORMToORMAbstractionBridge
 			return (Dictionary<ModelElement, int>)elementList;
 		}
 
-		private static bool IsValidConstraintType(IConstraint constraint)
-		{
-			if (constraint != null)
-			{
-				switch (constraint.ConstraintType)
-				{
-					case ConstraintType.InternalUniqueness:
-					case ConstraintType.ImpliedMandatory:
-					case ConstraintType.SimpleMandatory:
-						return true;
-				}
-			}
-			return false;
-		}
-
-		private static void AddTransactedModelElement(ModelElement element, OialModelElementAction action)
+		private static void AddTransactedModelElement(ModelElement element, ModelElementModification action)
 		{
 			Dictionary<ModelElement, int> elementList;
 			elementList = EnsureContextKeyExists(element.Store);
@@ -67,15 +70,16 @@ namespace Neumont.Tools.ORMToORMAbstractionBridge
 				elementList.Add(element, (int)action);
 			}
 		}
-		#endregion
+		#endregion // Element tracking transaction support
 		#region Model validation
+		private bool myRebuildingAbstractionModel;
 		/// <summary>
 		/// Delays the validate model.
 		/// </summary>
 		/// <param name="element">The element.</param>
+		[DelayValidatePriority(100)]
 		public static void DelayValidateModel(ModelElement element)
 		{
-			ORMModel model = (ORMModel)element;
 			Dictionary<object, object> contextDictionary = element.Store.TransactionManager.CurrentTransaction.TopLevelTransaction.Context.ContextInfo;
 
 			if (contextDictionary.ContainsKey(Key))
@@ -94,30 +98,66 @@ namespace Neumont.Tools.ORMToORMAbstractionBridge
 				}
 			}
 
+			ORMModel model = (ORMModel)element;
+			Store store = model.Store;
+
 			// Get the link from the given ORMModel
 			AbstractionModelIsForORMModel oialModelIsForORMModel = AbstractionModelIsForORMModel.GetLinkToAbstractionModel(model);
 
-			// If the link exists...
+			// If the link exists, clear it out. There is no need to recreate it completely.
 			if (oialModelIsForORMModel != null)
 			{
-				AbstractionModel oialModel;
-				if (null != (oialModel = oialModelIsForORMModel.AbstractionModel))
+				// Make sure the RebuildingAbstractionModel returns true during the rebuild
+				oialModelIsForORMModel.myRebuildingAbstractionModel = true;
+				try
 				{
-					oialModel.Delete();
-				}
+					AbstractionModel oialModel = oialModelIsForORMModel.AbstractionModel;
+					oialModel.ConceptTypeCollection.Clear();
+					oialModel.InformationTypeFormatCollection.Clear();
 
-				// Delete it.
-				oialModelIsForORMModel.Delete();
+					ReadOnlyCollection<FactTypeMapsTowardsRole> factTypeMaps = store.ElementDirectory.FindElements<FactTypeMapsTowardsRole>(false);
+					int factTypeMapCount = factTypeMaps.Count;
+					for (int i = factTypeMapCount - 1; i >= 0; --i)
+					{
+						FactTypeMapsTowardsRole factTypeMap = factTypeMaps[i];
+						if (factTypeMap.FactType.Model == model)
+						{
+							factTypeMap.Delete();
+						}
+					}
+					// Apply ORM to OIAL algorithm
+					oialModelIsForORMModel.TransformORMtoOial();
+				}
+				finally
+				{
+					oialModelIsForORMModel.myRebuildingAbstractionModel = false;
+				}
+			}
+			else
+			{
+				AbstractionModel oial = new AbstractionModel(
+					store,
+					new PropertyAssignment[]{
+				new PropertyAssignment(AbstractionModel.NameDomainPropertyId, model.Name)});
+				oialModelIsForORMModel = new AbstractionModelIsForORMModel(oial, model);
+
+				// Set initial object exclusion states
+				ORMElementGateway.Initialize(model);
+
+				// Apply ORM to OIAL algorithm
+				oialModelIsForORMModel.TransformORMtoOial();
 			}
 
-			AbstractionModel oial = new AbstractionModel(
-				model.Store,
-				new PropertyAssignment[]{
-				new PropertyAssignment(AbstractionModel.NameDomainPropertyId, model.Name)});
-			oialModelIsForORMModel = new AbstractionModelIsForORMModel(oial, model);
-
-			// Apply ORM to OIAL algorithm
-			oialModelIsForORMModel.TransformORMtoOial();
+		}
+		/// <summary>
+		/// Determine if the abstraction model is being rebuild
+		/// </summary>
+		/// <param name="model">The <see cref="AbstractionModel"/> to check for rebuilding</param>
+		/// <returns><see langword="true"/> if the model is being rebuilt.</returns>
+		private static bool RebuildingAbstractionModel(AbstractionModel model)
+		{
+			AbstractionModelIsForORMModel link = AbstractionModelIsForORMModel.GetLinkToORMModel(model);
+			return link != null && link.myRebuildingAbstractionModel;
 		}
 
 		/// <summary>
@@ -129,46 +169,13 @@ namespace Neumont.Tools.ORMToORMAbstractionBridge
 			foreach (ModelElement element in elementList.Keys)
 			{
 				int actions = elementList[element];
-				if ((actions & (int)OialModelElementAction.Add) != 0 && (actions & (int)OialModelElementAction.Delete) != 0)
+				if ((actions & (int)ModelElementModification.ORMElementAdded) != 0 && (actions & (int)ModelElementModification.ORMElementDeleted) != 0)
 				{
 					elementList.Remove(element);
 				}
 			}
 		}
 		#endregion
-
-		#region ORM Error Filtering Methods
-		private bool ShouldIgnoreObjectType(ObjectType objectType)
-		{
-			return false;
-		}
-		private bool ShouldIgnoreFactType(FactType factType)
-		{
-			// Subtype facts are always binarized, and never missing role players
-			if (factType is SubtypeFact)
-			{
-				return false;
-			}
-			LinkedElementCollection<RoleBase> roles = factType.RoleCollection;
-
-			// Ignore non-binarized fact types
-			if ((roles.Count != 2) || factType.Objectification != null)
-			{
-				return true;
-			}
-			// Ignore fact types that contain roles that are missing role players
-			foreach (RoleBase roleBase in roles)
-			{
-				ObjectType rolePlayer = roleBase.Role.RolePlayer;
-				if (rolePlayer == null || ShouldIgnoreObjectType(rolePlayer))
-				{
-					return true;
-				}
-			}
-
-			return false;
-		}
-		#endregion // ORM Error Filtering Methods
 		#region ORM to OIAL Algorithm Methods
 		/// <summary>
 		/// Transforms the data in <see cref="ORMModel"/> into this <see cref="AbstractionModel"/>.
@@ -252,10 +259,8 @@ namespace Neumont.Tools.ORMToORMAbstractionBridge
 					}
 					else if (firstRoleIsUnique && secondRoleIsUnique) // ...both roles are unique...
 					{
-						MandatoryConstraint firstRoleMandatoryConstraint = firstRole.SimpleMandatoryConstraint;
-						MandatoryConstraint secondRoleMandatoryConstraint = secondRole.SimpleMandatoryConstraint;
-						bool firstRoleIsMandatory = (firstRoleMandatoryConstraint != null && firstRoleMandatoryConstraint.Modality == ConstraintModality.Alethic);
-						bool secondRoleIsMandatory = (secondRoleMandatoryConstraint != null && secondRoleMandatoryConstraint.Modality == ConstraintModality.Alethic);
+						bool firstRoleIsMandatory = null != firstRole.SingleRoleAlethicMandatoryConstraint;
+						bool secondRoleIsMandatory = null != secondRole.SingleRoleAlethicMandatoryConstraint;
 
 						// If this is a ring fact type...
 						if (firstRolePlayer.Id == secondRolePlayer.Id)
@@ -449,10 +454,8 @@ namespace Neumont.Tools.ORMToORMAbstractionBridge
 				ObjectType secondRolePlayer = secondRole.RolePlayer;
 				bool firstRoleIsUnique = (firstRole.SingleRoleAlethicUniquenessConstraint != null);
 				bool secondRoleIsUnique = (secondRole.SingleRoleAlethicUniquenessConstraint != null);
-				MandatoryConstraint firstRoleMandatoryConstraint = firstRole.SimpleMandatoryConstraint;
-				MandatoryConstraint secondRoleMandatoryConstraint = secondRole.SimpleMandatoryConstraint;
-				bool firstRoleIsMandatory = (firstRoleMandatoryConstraint != null && firstRoleMandatoryConstraint.Modality == ConstraintModality.Alethic);
-				bool secondRoleIsMandatory = (secondRoleMandatoryConstraint != null && secondRoleMandatoryConstraint.Modality == ConstraintModality.Alethic);
+				bool firstRoleIsMandatory = null != firstRole.SingleRoleAlethicMandatoryConstraint;
+				bool secondRoleIsMandatory = null != secondRole.SingleRoleAlethicMandatoryConstraint;
 
 				// If this is a one-to-one fact type with two simple alethic mandatories...
 				if (firstRoleIsUnique && secondRoleIsUnique && firstRoleIsMandatory && secondRoleIsMandatory)
@@ -664,8 +667,7 @@ namespace Neumont.Tools.ORMToORMAbstractionBridge
 					continue;
 				}
 
-				MandatoryConstraint towardsRoleMandatoryConstraint = factTypeMapping.TowardsRole.SimpleMandatoryConstraint;
-				bool towardsRoleIsMandatory = (towardsRoleMandatoryConstraint != null && towardsRoleMandatoryConstraint.Modality == ConstraintModality.Alethic);
+				bool towardsRoleIsMandatory = null != factTypeMapping.TowardsRole.SingleRoleAlethicMandatoryConstraint;
 
 				if (ObjectTypeIsConceptType(factTypeMapping.FromObjectType, factTypeMappings))
 				{
@@ -863,23 +865,13 @@ namespace Neumont.Tools.ORMToORMAbstractionBridge
 		{
 			foreach (FactTypeMapping mapping in factTypeMappings.Values)
 			{
-				FactTypeMapsTowardsRole mapsTowardsRole = FactTypeMapsTowardsRole.GetLinkToTowardsRole(mapping.FactType);
-				if (mapsTowardsRole != null)
-				{
-					if (mapsTowardsRole.TowardsRole != mapping.TowardsRole)
-					{
-						mapsTowardsRole.TowardsRole = mapping.TowardsRole;
-					}
-					if (mapsTowardsRole.Depth != mapping.MappingDepth)
-					{
-						mapsTowardsRole.Depth = mapping.MappingDepth;
-					}
-				}
-				else
-				{
-					FactTypeMapsTowardsRole r = new FactTypeMapsTowardsRole(mapping.FactType, mapping.TowardsRole);
-					r.Depth = mapping.MappingDepth;
-				}
+				// Note that there will currently be no existing maps, but this is
+				// likely to change once we do more incremental work. If the FactTypeMapsTowardsRole
+				// instance already exists for this FactType, then the following will throw.
+				// Any role changes here need to properly update the existing link's mapping
+				// pattern properties. This should be done with an OnRolePlayerChanged call
+				// (or a rule) inside FactTypeMapsTowardsRole.
+				FactTypeMapsTowardsRole.Create(mapping.FactType, mapping.TowardsRole, mapping.MappingDepth);
 			}
 		}
 

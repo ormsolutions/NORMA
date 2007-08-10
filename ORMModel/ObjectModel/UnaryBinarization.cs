@@ -237,7 +237,7 @@ namespace Neumont.Tools.ORM.ObjectModel
 						Role role = binarizedUnaryFactRoleCollection[i] as Role;
 						if (role != null)
 						{
-							ConstraintRoleSequence singleRoleAlethicUniquenessConstraint = role.SingleRoleAlethicUniquenessConstraint;
+							UniquenessConstraint singleRoleAlethicUniquenessConstraint = role.SingleRoleAlethicUniquenessConstraint;
 							if (singleRoleAlethicUniquenessConstraint != null)
 							{
 								// Delete the uniqueness constraint
