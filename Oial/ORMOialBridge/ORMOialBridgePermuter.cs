@@ -120,18 +120,27 @@ namespace Neumont.Tools.ORMToORMAbstractionBridge
 					continue;
 				}
 
+				// Indicates whether we should follow the fact type and include
+				// the object type at the other end of it in the current chain.
+				bool traverseFactType;
 				FactTypeMapping mapping;
 				FactTypeMappingList mappingList;
+				// Check for undecided one-to-one mappings...
 				if (myUndecidedOneToOneFactTypeMappings.TryGetValue(factType, out mappingList))
 				{
+					traverseFactType = true;
 					chain.UndecidedOneToOneFactTypeMappings.Add(mappingList);
 				}
+				// ...or predecided one-to-one mappings...
 				else if (myPredecidedOneToOneFactTypeMappings.TryGetValue(factType, out mapping))
 				{
+					traverseFactType = true;
 					chain.PredecidedOneToOneFactTypeMappings.Add(mapping);
 				}
-				else if (myPredecidedManyToOneFactTypeMappings.TryGetValue(factType, out mapping))
+				// ...or predecided many-to-one mappings towards this object type.
+				else if (myPredecidedManyToOneFactTypeMappings.TryGetValue(factType, out mapping) && mapping.TowardsObjectType == objectType)
 				{
+					traverseFactType = false;
 					chain.PredecidedManyToOneFactTypeMappings.Add(mapping);
 				}
 				else
@@ -142,12 +151,31 @@ namespace Neumont.Tools.ORMToORMAbstractionBridge
 				// Record that this fact type has been visited.
 				visitedFactTypes[factType] = null;
 
+				// We don't want to include the object type at the other end of this
+				// fact type in the chain, so continue on with the next played role.
+				if (!traverseFactType)
+				{
+					continue;
+				}
+
+				// At most one of the two roles will be played by a different object type.
 				LinkedElementCollection<RoleBase> roles = factType.RoleCollection;
 				Debug.Assert(roles.Count == 2);
 				ObjectType objectType1 = roles[0].Role.RolePlayer;
-				ObjectType objectType2 = roles[1].Role.RolePlayer;
-				ProcessObjectType(objectType1, chain, visitedFactTypes, visitedObjectTypes);
-				ProcessObjectType(objectType2, chain, visitedFactTypes, visitedObjectTypes);
+				if (objectType1 != objectType)
+				{
+					// We found the role played by a different object type, so there is no need to check the other role.
+					ProcessObjectType(objectType1, chain, visitedFactTypes, visitedObjectTypes);
+				}
+				else
+				{
+					// The first role was played by this object tpye, so we need to check the second role.
+					ObjectType objectType2 = roles[1].Role.RolePlayer;
+					if (objectType2 != objectType)
+					{
+						ProcessObjectType(objectType2, chain, visitedFactTypes, visitedObjectTypes);
+					}
+				}
 			}
 		}
 	}
