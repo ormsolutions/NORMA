@@ -798,17 +798,12 @@ namespace Neumont.Tools.ORMToORMAbstractionBridge
 				// For each role played by its object type...
 				foreach (Role role in objectType.PlayedRoleCollection)
 				{
-					if (ShouldIgnoreFactType(role.FactType))
+					if (ShouldIgnoreFactType(role.BinarizedFactType))
 					{
 						continue;
 					}
 
-					Role oppositeRole = role.OppositeRoleAlwaysResolveProxy as Role;
-
-					if (oppositeRole == null)
-					{
-						continue;
-					}
+					Role oppositeRole = role.OppositeRoleAlwaysResolveProxy.Role;
 
 					// For each constraint on the opposite role...
 					foreach (ConstraintRoleSequence constraintRoleSequence in oppositeRole.ConstraintRoleSequenceCollection)
@@ -1017,7 +1012,7 @@ namespace Neumont.Tools.ORMToORMAbstractionBridge
 
 			foreach (Role role in ObjectTypePlaysRole.GetPlayedRoleCollection(objectType))
 			{
-				FactType factType = role.FactType;
+				FactType factType = role.BinarizedFactType;
 				if (ShouldIgnoreFactType(factType))
 				{
 					continue;
