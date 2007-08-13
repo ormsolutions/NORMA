@@ -188,9 +188,10 @@
 		DependsOnTargets="$(_ResolveResourceMergeTargetsDependsOn)"
 		Condition="'@(MergeResource)'!=''">
 
+		<!-- In MSBuild v3.5, _CoreCompileResourceInputs and _SatelliteAssemblyResourceInputs replace ManifestResourceWithNoCulture and ManifestResourceWithCulture, respectively.-->
 		<ResourceMergeTargetResolver
 			MergeResources="@(MergeResource)" 
-			ManifestResources="@(ManifestResourceWithCulture);@(ManifestResourceWithNoCulture)">
+			ManifestResources="@(ManifestResourceWithCulture);@(ManifestResourceWithNoCulture);@(_CoreCompileResourceInputs);@(_SatelliteAssemblyResourceInputs)">
 			<Output TaskParameter="MergeResourcesWithResolvedTargets" ItemName="_MergeResourceWithResolvedTarget"/>
 		</ResourceMergeTargetResolver>
 
@@ -252,9 +253,14 @@
 	</Target>
 
 
+	<PropertyGroup>
+		<!-- HACK: BuildInParallel is a new property in MSBuild 3.5. If it is present, we can (for now) assume that we want to use the 3.5 version of VSCT. -->
+		<VsctAssemblyVersion Condition="'$(VsctAssemblyVersion)'=='' and '$(BuildInParallel)'!=''">3.5.0.0</VsctAssemblyVersion>
+		<VsctAssemblyVersion Condition="'$(VsctAssemblyVersion)'==''">2.0.0.0</VsctAssemblyVersion>
+	</PropertyGroup>
 
 	<!-- Compiles .vsct files into .cto files. -->
-	<UsingTask TaskName="VSCTCompiler" AssemblyName="VSCT, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a"/>
+	<UsingTask TaskName="VSCTCompiler" AssemblyName="VSCT, Version=$(VsctAssemblyVersion), Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a"/>
 	<ItemGroup>
 		<!-- Add the CompileVsct Item name to the AvailableItemName item, so that it shows up in the Build Action drop-down menu in the properties windows in Visual Studio (and the equivalent in other IDEs). -->
 		<AvailableItemName Include="CompileVsct"/>

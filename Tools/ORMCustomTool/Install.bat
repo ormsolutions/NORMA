@@ -16,10 +16,10 @@ XCOPY /Y /D /V /Q "%~dp0\bin\Neumont.Tools.ORM.ORMCustomTool.dll" "%NORMADir%\bi
 XCOPY /Y /D /V /Q "%~dp0\bin\Neumont.Tools.ORM.ORMCustomTool.pdb" "%NORMADir%\bin\"
 :: For some reason, the next copy is randomly giving errors about half the time. They can be safely ignored, so they've been redirected to NUL.
 XCOPY /Y /D /V /Q "%~dp0\bin\Neumont.Tools.ORM.ORMCustomTool.xml" "%NORMADir%\bin\" 2>NUL
-CALL:_InstallCustomToolReg "8.0"
-CALL:_InstallExtenderReg "8.0"
-IF NOT "%VSRegistryRootSuffix%"=="" (CALL:_InstallCustomToolReg "8.0%VSRegistryRootSuffix%")
-IF NOT "%VSRegistryRootSuffix%"=="" (CALL:_InstallExtenderReg "8.0%VSRegistryRootSuffix%")
+CALL:_InstallCustomToolReg "%VSRegistryRootVersion%"
+CALL:_InstallExtenderReg "%VSRegistryRootVersion%"
+IF NOT "%VSRegistryRootSuffix%"=="" (CALL:_InstallCustomToolReg "%VSRegistryRootVersion%%VSRegistryRootSuffix%")
+IF NOT "%VSRegistryRootSuffix%"=="" (CALL:_InstallExtenderReg "%VSRegistryRootVersion%%VSRegistryRootSuffix%")
 
 :: Get rid of old transform registrations
 REG DELETE "HKLM\SOFTWARE\Neumont\ORM Architect for Visual Studio\Generators" /f 1>NUL 2>&1

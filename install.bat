@@ -106,7 +106,7 @@ REG ADD "HKCR\ormfile\DefaultIcon" /ve /d "%NORMADir%\bin\Neumont.Tools.ORM.dll,
 REG ADD "HKCR\ormfile\shell\open" /ve /d "&Open" /f 1>NUL
 REG ADD "HKCR\ormfile\shell\open\command" /ve /d "\"%VSEnvironmentPath%\" /RootSuffix \"%VSRegistryRootSuffix%\" /dde \"%%1\"" /f 1>NUL
 REG ADD "HKCR\ormfile\shell\open\ddeexec" /ve /d "Open(\"%%1\")" /f 1>NUL
-REG ADD "HKCR\ormfile\shell\open\ddeexec\application" /ve /d "VisualStudio.8.0" /f 1>NUL
+REG ADD "HKCR\ormfile\shell\open\ddeexec\application" /ve /d "VisualStudio.%TargetVisualStudioNumericVersion%" /f 1>NUL
 REG ADD "HKCR\ormfile\shell\open\ddeexec\topic" /ve /d "system" /f 1>NUL
 
 
