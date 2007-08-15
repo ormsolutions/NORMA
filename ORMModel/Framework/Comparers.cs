@@ -17,6 +17,7 @@
 using System;
 using System.Collections.Generic;
 using System.ComponentModel;
+using System.Diagnostics;
 using System.Runtime.Serialization;
 using System.Security.Permissions;
 using Microsoft.VisualStudio.Modeling;
@@ -152,6 +153,7 @@ namespace Neumont.Tools.Modeling
 	/// implementation (which is based on <see cref="RuntimeMethodHandle.Value"/>) should be used in order to avoid boxing.
 	/// </remarks>
 	[Serializable]
+	[DebuggerStepThrough]
 	public sealed class RuntimeMethodHandleComparer : EqualityComparer<RuntimeMethodHandle>, IComparer<RuntimeMethodHandle>, IComparer, IEquatable<RuntimeMethodHandleComparer>, ISerializable
 	{
 		private RuntimeMethodHandleComparer()

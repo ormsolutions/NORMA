@@ -65,7 +65,11 @@ namespace Neumont.Tools.ORMToORMAbstractionBridge
 			if (newUniquenessPattern == oldUniquenessPattern)
 			{
 				MappingMandatoryPattern oldMandatoryPattern = MandatoryPattern;
-				if (newMandatoryPattern != oldMandatoryPattern)
+				if (newMandatoryPattern == oldMandatoryPattern)
+				{
+					retVal = true;
+				}
+				else
 				{
 					switch (oldUniquenessPattern)
 					{

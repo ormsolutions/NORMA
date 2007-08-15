@@ -83,6 +83,7 @@ namespace Neumont.Tools.Modeling
 			/// {
 			/// }
 			/// </summary>
+			[System.Diagnostics.DebuggerStepThrough()]
 			public override void ElementAdded(Microsoft.VisualStudio.Modeling.ElementAddedEventArgs e)
 			{
 				Neumont.Tools.Modeling.Diagnostics.TraceUtility.TraceRuleStart(e.ModelElement.Store, "Neumont.Tools.Modeling.FrameworkDomainModel.DelayValidateElements");
@@ -106,6 +107,7 @@ namespace Neumont.Tools.Modeling
 			/// 	}
 			/// }
 			/// </summary>
+			[System.Diagnostics.DebuggerStepThrough()]
 			public override void TransactionBeginning(Microsoft.VisualStudio.Modeling.TransactionBeginningEventArgs e)
 			{
 				Neumont.Tools.Modeling.Diagnostics.TraceUtility.TraceRuleStart(e.Transaction.Store, "Neumont.Tools.Modeling.FrameworkDomainModel.TransactionRulesFixupHack");

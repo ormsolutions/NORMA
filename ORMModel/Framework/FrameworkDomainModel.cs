@@ -52,6 +52,7 @@ namespace Neumont.Tools.Modeling
 		/// </summary>
 		/// <param name="priority">The relative priority to run the code. 0 is the default priority. Negative
 		/// values will run before the default, positive values after.</param>
+		[DebuggerStepThrough]
 		public DelayValidatePriorityAttribute(int priority)
 		{
 			myPriority = priority;
@@ -60,6 +61,7 @@ namespace Neumont.Tools.Modeling
 		/// values will run before the default, positive values after.</summary>
 		public int Priority
 		{
+			[DebuggerStepThrough]
 			get
 			{
 				return myPriority;
@@ -71,10 +73,12 @@ namespace Neumont.Tools.Modeling
 		/// </summary>
 		public Type DomainModelType
 		{
+			[DebuggerStepThrough]
 			get
 			{
 				return myDomainModelType;
 			}
+			[DebuggerStepThrough]
 			set
 			{
 				if (typeof(DomainModel).IsAssignableFrom(value))
@@ -131,6 +135,7 @@ namespace Neumont.Tools.Modeling
 		/// AddRule: typeof(DelayValidateSignal), FireTime=LocalCommit, Priority=FrameworkDomainModel.DelayValidateRulePriority;
 		/// Delay validate registered elements during LocalCommit
 		/// </summary>
+		[DebuggerStepThrough]
 		private static void DelayValidateElements(ElementAddedEventArgs e)
 		{
 			ModelElement element = e.ModelElement;
@@ -191,6 +196,7 @@ namespace Neumont.Tools.Modeling
 		/// Note that the sort happens in reverse priority to enable pulling
 		/// the highest priority items off the end of a list.
 		/// </summary>
+		[DebuggerStepThrough]
 		private sealed class ElementValidatorOrderComparer : IComparer<ElementValidator>
 		{
 			private IList<DomainModel> myDomainModels;
@@ -236,6 +242,7 @@ namespace Neumont.Tools.Modeling
 			}
 			#endregion // IComparer<ElementValidator> Implementation
 		}
+		[DebuggerStepThrough]
 		private struct ElementValidatorOrder : IEquatable<ElementValidatorOrder>
 		{
 			private DomainModel myDomainModel;
@@ -296,6 +303,7 @@ namespace Neumont.Tools.Modeling
 				return myDomainModel == other.myDomainModel && myPriority == other.myPriority;
 			}
 		}
+		[DebuggerStepThrough]
 		private struct ElementValidatorOrderCache : IEquatable<ElementValidatorOrderCache>
 		{
 			private Guid myDomainModelId;
@@ -358,6 +366,7 @@ namespace Neumont.Tools.Modeling
 		/// <summary>
 		/// A structure to use for <see cref="ModelElement"/> validation.
 		/// </summary>
+		[DebuggerStepThrough]
 		[DebuggerDisplay("{(Validation!=null) ? System.String.Concat(Validation.Method.DeclaringType.FullName, \".\", Validation.Method.Name, \" (\", Element.ToString(),\")\") : GetType().Name}")]
 		private struct ElementValidator : IEquatable<ElementValidator>
 		{
@@ -471,6 +480,7 @@ namespace Neumont.Tools.Modeling
 		/// <param name="element">The element to validate</param>
 		/// <param name="validation">The validation function to run</param>
 		/// <returns>true if this element/validator pair is being added for the first time in this transaction</returns>
+		[DebuggerStepThrough]
 		public static bool DelayValidateElement(ModelElement element, ElementValidation validation)
 		{
 			if (element == null)

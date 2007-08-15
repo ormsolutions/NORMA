@@ -102,6 +102,7 @@ namespace Neumont.Tools.ORM.OIALModel
 	{
 		partial class ModelHasObjectTypeAddRule
 		{
+			[System.Diagnostics.DebuggerStepThrough()]
 			public ModelHasObjectTypeAddRule()
 			{
 				base.IsEnabled = false;
@@ -112,6 +113,7 @@ namespace Neumont.Tools.ORM.OIALModel
 	{
 		partial class ModelHasObjectTypeDeletingRule
 		{
+			[System.Diagnostics.DebuggerStepThrough()]
 			public ModelHasObjectTypeDeletingRule()
 			{
 				base.IsEnabled = false;
@@ -122,6 +124,7 @@ namespace Neumont.Tools.ORM.OIALModel
 	{
 		partial class ObjectTypeChangeRule
 		{
+			[System.Diagnostics.DebuggerStepThrough()]
 			public ObjectTypeChangeRule()
 			{
 				base.IsEnabled = false;
@@ -132,6 +135,7 @@ namespace Neumont.Tools.ORM.OIALModel
 	{
 		partial class ObjectTypePlaysRoleAddRule
 		{
+			[System.Diagnostics.DebuggerStepThrough()]
 			public ObjectTypePlaysRoleAddRule()
 			{
 				base.IsEnabled = false;
@@ -142,6 +146,7 @@ namespace Neumont.Tools.ORM.OIALModel
 	{
 		partial class ObjectTypePlaysRoleDeletingRule
 		{
+			[System.Diagnostics.DebuggerStepThrough()]
 			public ObjectTypePlaysRoleDeletingRule()
 			{
 				base.IsEnabled = false;
@@ -152,6 +157,7 @@ namespace Neumont.Tools.ORM.OIALModel
 	{
 		partial class ModelHasFactTypeAddRule
 		{
+			[System.Diagnostics.DebuggerStepThrough()]
 			public ModelHasFactTypeAddRule()
 			{
 				base.IsEnabled = false;
@@ -162,6 +168,7 @@ namespace Neumont.Tools.ORM.OIALModel
 	{
 		partial class ModelHasFactTypeDeletingRule
 		{
+			[System.Diagnostics.DebuggerStepThrough()]
 			public ModelHasFactTypeDeletingRule()
 			{
 				base.IsEnabled = false;
@@ -172,6 +179,7 @@ namespace Neumont.Tools.ORM.OIALModel
 	{
 		partial class ModelHasSetConstraintAddRule
 		{
+			[System.Diagnostics.DebuggerStepThrough()]
 			public ModelHasSetConstraintAddRule()
 			{
 				base.IsEnabled = false;
@@ -182,6 +190,7 @@ namespace Neumont.Tools.ORM.OIALModel
 	{
 		partial class ModelHasSetConstraintChangeRule
 		{
+			[System.Diagnostics.DebuggerStepThrough()]
 			public ModelHasSetConstraintChangeRule()
 			{
 				base.IsEnabled = false;
@@ -192,6 +201,7 @@ namespace Neumont.Tools.ORM.OIALModel
 	{
 		partial class ModelHasSetConstraintDeletingRule
 		{
+			[System.Diagnostics.DebuggerStepThrough()]
 			public ModelHasSetConstraintDeletingRule()
 			{
 				base.IsEnabled = false;
@@ -202,6 +212,7 @@ namespace Neumont.Tools.ORM.OIALModel
 	{
 		partial class ConstraintRoleSequenceHasRoleAddRule
 		{
+			[System.Diagnostics.DebuggerStepThrough()]
 			public ConstraintRoleSequenceHasRoleAddRule()
 			{
 				base.IsEnabled = false;
@@ -212,6 +223,7 @@ namespace Neumont.Tools.ORM.OIALModel
 	{
 		partial class ConstraintRoleSequenceHasRoleDeletingRule
 		{
+			[System.Diagnostics.DebuggerStepThrough()]
 			public ConstraintRoleSequenceHasRoleDeletingRule()
 			{
 				base.IsEnabled = false;
@@ -222,6 +234,7 @@ namespace Neumont.Tools.ORM.OIALModel
 	{
 		partial class UniquenessConstraintChangeRule
 		{
+			[System.Diagnostics.DebuggerStepThrough()]
 			public UniquenessConstraintChangeRule()
 			{
 				base.IsEnabled = false;
@@ -232,6 +245,7 @@ namespace Neumont.Tools.ORM.OIALModel
 	{
 		partial class MandatoryConstraintChangeRule
 		{
+			[System.Diagnostics.DebuggerStepThrough()]
 			public MandatoryConstraintChangeRule()
 			{
 				base.IsEnabled = false;
@@ -242,6 +256,7 @@ namespace Neumont.Tools.ORM.OIALModel
 	{
 		partial class RoleBaseChangeRule
 		{
+			[System.Diagnostics.DebuggerStepThrough()]
 			public RoleBaseChangeRule()
 			{
 				base.IsEnabled = false;
@@ -254,6 +269,7 @@ namespace Neumont.Tools.ORM.OIALModel
 		{
 			partial class OIALModelHasConceptTypeAddRule
 			{
+				[System.Diagnostics.DebuggerStepThrough()]
 				public OIALModelHasConceptTypeAddRule()
 				{
 					base.IsEnabled = false;
@@ -267,6 +283,7 @@ namespace Neumont.Tools.ORM.OIALModel
 		{
 			partial class OIALModelHasConceptTypeDeleteRule
 			{
+				[System.Diagnostics.DebuggerStepThrough()]
 				public OIALModelHasConceptTypeDeleteRule()
 				{
 					base.IsEnabled = false;
@@ -280,6 +297,7 @@ namespace Neumont.Tools.ORM.OIALModel
 		{
 			partial class ConceptTypeAbsorbedConceptTypeAddRule
 			{
+				[System.Diagnostics.DebuggerStepThrough()]
 				public ConceptTypeAbsorbedConceptTypeAddRule()
 				{
 					base.IsEnabled = false;
@@ -293,6 +311,7 @@ namespace Neumont.Tools.ORM.OIALModel
 		{
 			partial class ConceptTypeAbsorbedConceptTypeDeleteRule
 			{
+				[System.Diagnostics.DebuggerStepThrough()]
 				public ConceptTypeAbsorbedConceptTypeDeleteRule()
 				{
 					base.IsEnabled = false;

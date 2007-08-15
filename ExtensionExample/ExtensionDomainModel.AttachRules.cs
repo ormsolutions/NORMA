@@ -88,6 +88,7 @@ namespace Neumont.Tools.ORM.ExtensionExample
 		[Microsoft.VisualStudio.Modeling.RuleOn(typeof(Neumont.Tools.ORM.ObjectModel.FactTypeHasRole))]
 		private sealed class RoleAddRuleClass : Microsoft.VisualStudio.Modeling.AddRule
 		{
+			[System.Diagnostics.DebuggerStepThrough()]
 			public RoleAddRuleClass()
 			{
 				base.IsEnabled = false;
@@ -102,6 +103,7 @@ namespace Neumont.Tools.ORM.ExtensionExample
 			/// {
 			/// }
 			/// </summary>
+			[System.Diagnostics.DebuggerStepThrough()]
 			public override void ElementAdded(Microsoft.VisualStudio.Modeling.ElementAddedEventArgs e)
 			{
 				Neumont.Tools.Modeling.Diagnostics.TraceUtility.TraceRuleStart(e.ModelElement.Store, "Neumont.Tools.ORM.ExtensionExample.MyCustomExtensionElement.RoleAddRule");
@@ -117,6 +119,7 @@ namespace Neumont.Tools.ORM.ExtensionExample
 		[Microsoft.VisualStudio.Modeling.RuleOn(typeof(Neumont.Tools.ORM.ObjectModel.ModelHasObjectType))]
 		private sealed class ExtensionObjectTypeAddRuleClass : Microsoft.VisualStudio.Modeling.AddRule
 		{
+			[System.Diagnostics.DebuggerStepThrough()]
 			public ExtensionObjectTypeAddRuleClass()
 			{
 				base.IsEnabled = false;
@@ -131,6 +134,7 @@ namespace Neumont.Tools.ORM.ExtensionExample
 			/// {
 			/// }
 			/// </summary>
+			[System.Diagnostics.DebuggerStepThrough()]
 			public override void ElementAdded(Microsoft.VisualStudio.Modeling.ElementAddedEventArgs e)
 			{
 				Neumont.Tools.Modeling.Diagnostics.TraceUtility.TraceRuleStart(e.ModelElement.Store, "Neumont.Tools.ORM.ExtensionExample.ObjectTypeRequiresMeaningfulNameError.ExtensionObjectTypeAddRule");
@@ -141,6 +145,7 @@ namespace Neumont.Tools.ORM.ExtensionExample
 		[Microsoft.VisualStudio.Modeling.RuleOn(typeof(Neumont.Tools.ORM.ObjectModel.ObjectType))]
 		private sealed class ExtensionObjectTypeChangeRuleClass : Microsoft.VisualStudio.Modeling.ChangeRule
 		{
+			[System.Diagnostics.DebuggerStepThrough()]
 			public ExtensionObjectTypeChangeRuleClass()
 			{
 				base.IsEnabled = false;
@@ -155,6 +160,7 @@ namespace Neumont.Tools.ORM.ExtensionExample
 			/// {
 			/// }
 			/// </summary>
+			[System.Diagnostics.DebuggerStepThrough()]
 			public override void ElementPropertyChanged(Microsoft.VisualStudio.Modeling.ElementPropertyChangedEventArgs e)
 			{
 				Neumont.Tools.Modeling.Diagnostics.TraceUtility.TraceRuleStart(e.ModelElement.Store, "Neumont.Tools.ORM.ExtensionExample.ObjectTypeRequiresMeaningfulNameError.ExtensionObjectTypeChangeRule");

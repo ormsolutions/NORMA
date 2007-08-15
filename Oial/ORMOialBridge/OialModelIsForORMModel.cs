@@ -78,7 +78,7 @@ namespace Neumont.Tools.ORMToORMAbstractionBridge
 		/// </summary>
 		/// <param name="element">The element.</param>
 		[DelayValidatePriority(100)]
-		public static void DelayValidateModel(ModelElement element)
+		private static void DelayValidateModel(ModelElement element)
 		{
 			Dictionary<object, object> contextDictionary = element.Store.TransactionManager.CurrentTransaction.TopLevelTransaction.Context.ContextInfo;
 
@@ -142,12 +142,11 @@ namespace Neumont.Tools.ORMToORMAbstractionBridge
 				oialModelIsForORMModel = new AbstractionModelIsForORMModel(oial, model);
 
 				// Set initial object exclusion states
-				ORMElementGateway.Initialize(model);
+				ORMElementGateway.Initialize(model, null);
 
 				// Apply ORM to OIAL algorithm
 				oialModelIsForORMModel.TransformORMtoOial();
 			}
-
 		}
 		/// <summary>
 		/// Determine if the abstraction model is being rebuild

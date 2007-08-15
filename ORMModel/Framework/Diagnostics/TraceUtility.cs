@@ -31,6 +31,7 @@ namespace Neumont.Tools.Modeling.Diagnostics
 	/// <summary>
 	/// Utility class used for trace diagnostics
 	/// </summary>
+	[DebuggerStepThrough]
 	public static class TraceUtility
 	{
 		#region TraceRule methods

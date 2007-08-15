@@ -105,6 +105,7 @@ namespace Neumont.Tools.ORMToORMAbstractionBridge
 			[Microsoft.VisualStudio.Modeling.RuleOn(typeof(ExcludedORMModelElement))]
 			private sealed class ElementExclusionAddedRuleClass : Microsoft.VisualStudio.Modeling.AddRule
 			{
+				[System.Diagnostics.DebuggerStepThrough()]
 				public ElementExclusionAddedRuleClass()
 				{
 					base.IsEnabled = false;
@@ -119,6 +120,7 @@ namespace Neumont.Tools.ORMToORMAbstractionBridge
 				/// {
 				/// }
 				/// </summary>
+				[System.Diagnostics.DebuggerStepThrough()]
 				public override void ElementAdded(Microsoft.VisualStudio.Modeling.ElementAddedEventArgs e)
 				{
 					Neumont.Tools.Modeling.Diagnostics.TraceUtility.TraceRuleStart(e.ModelElement.Store, "Neumont.Tools.ORMToORMAbstractionBridge.AbstractionModelIsForORMModel.ORMElementGateway.ElementExclusionAddedRule");
@@ -129,6 +131,7 @@ namespace Neumont.Tools.ORMToORMAbstractionBridge
 			[Microsoft.VisualStudio.Modeling.RuleOn(typeof(Neumont.Tools.ORM.ObjectModel.ModelHasFactType))]
 			private sealed class FactTypeAddedRuleClass : Microsoft.VisualStudio.Modeling.AddRule
 			{
+				[System.Diagnostics.DebuggerStepThrough()]
 				public FactTypeAddedRuleClass()
 				{
 					base.IsEnabled = false;
@@ -143,6 +146,7 @@ namespace Neumont.Tools.ORMToORMAbstractionBridge
 				/// {
 				/// }
 				/// </summary>
+				[System.Diagnostics.DebuggerStepThrough()]
 				public override void ElementAdded(Microsoft.VisualStudio.Modeling.ElementAddedEventArgs e)
 				{
 					Neumont.Tools.Modeling.Diagnostics.TraceUtility.TraceRuleStart(e.ModelElement.Store, "Neumont.Tools.ORMToORMAbstractionBridge.AbstractionModelIsForORMModel.ORMElementGateway.FactTypeAddedRule");
@@ -154,6 +158,7 @@ namespace Neumont.Tools.ORMToORMAbstractionBridge
 			[Microsoft.VisualStudio.Modeling.RuleOn(typeof(Neumont.Tools.ORM.ObjectModel.FactTypeHasFactTypeRequiresInternalUniquenessConstraintError))]
 			private sealed class FactTypeErrorAddedRuleClass : Microsoft.VisualStudio.Modeling.AddRule
 			{
+				[System.Diagnostics.DebuggerStepThrough()]
 				public FactTypeErrorAddedRuleClass()
 				{
 					base.IsEnabled = false;
@@ -169,6 +174,7 @@ namespace Neumont.Tools.ORMToORMAbstractionBridge
 				/// {
 				/// }
 				/// </summary>
+				[System.Diagnostics.DebuggerStepThrough()]
 				public override void ElementAdded(Microsoft.VisualStudio.Modeling.ElementAddedEventArgs e)
 				{
 					Neumont.Tools.Modeling.Diagnostics.TraceUtility.TraceRuleStart(e.ModelElement.Store, "Neumont.Tools.ORMToORMAbstractionBridge.AbstractionModelIsForORMModel.ORMElementGateway.FactTypeErrorAddedRule");
@@ -180,6 +186,7 @@ namespace Neumont.Tools.ORMToORMAbstractionBridge
 			[Microsoft.VisualStudio.Modeling.RuleOn(typeof(Neumont.Tools.ORM.ObjectModel.FactTypeHasFactTypeRequiresInternalUniquenessConstraintError))]
 			private sealed class FactTypeErrorDeletedRuleClass : Microsoft.VisualStudio.Modeling.DeleteRule
 			{
+				[System.Diagnostics.DebuggerStepThrough()]
 				public FactTypeErrorDeletedRuleClass()
 				{
 					base.IsEnabled = false;
@@ -195,6 +202,7 @@ namespace Neumont.Tools.ORMToORMAbstractionBridge
 				/// {
 				/// }
 				/// </summary>
+				[System.Diagnostics.DebuggerStepThrough()]
 				public override void ElementDeleted(Microsoft.VisualStudio.Modeling.ElementDeletedEventArgs e)
 				{
 					Neumont.Tools.Modeling.Diagnostics.TraceUtility.TraceRuleStart(e.ModelElement.Store, "Neumont.Tools.ORMToORMAbstractionBridge.AbstractionModelIsForORMModel.ORMElementGateway.FactTypeErrorDeletedRule");
@@ -205,6 +213,7 @@ namespace Neumont.Tools.ORMToORMAbstractionBridge
 			[Microsoft.VisualStudio.Modeling.RuleOn(typeof(Neumont.Tools.ORM.ObjectModel.ModelHasObjectType))]
 			private sealed class ObjectTypeAddedRuleClass : Microsoft.VisualStudio.Modeling.AddRule
 			{
+				[System.Diagnostics.DebuggerStepThrough()]
 				public ObjectTypeAddedRuleClass()
 				{
 					base.IsEnabled = false;
@@ -219,6 +228,7 @@ namespace Neumont.Tools.ORMToORMAbstractionBridge
 				/// {
 				/// }
 				/// </summary>
+				[System.Diagnostics.DebuggerStepThrough()]
 				public override void ElementAdded(Microsoft.VisualStudio.Modeling.ElementAddedEventArgs e)
 				{
 					Neumont.Tools.Modeling.Diagnostics.TraceUtility.TraceRuleStart(e.ModelElement.Store, "Neumont.Tools.ORMToORMAbstractionBridge.AbstractionModelIsForORMModel.ORMElementGateway.ObjectTypeAddedRule");
@@ -233,6 +243,7 @@ namespace Neumont.Tools.ORMToORMAbstractionBridge
 			[Microsoft.VisualStudio.Modeling.RuleOn(typeof(Neumont.Tools.ORM.ObjectModel.ValueTypeHasUnspecifiedDataTypeError))]
 			private sealed class ObjectTypeErrorAddedRuleClass : Microsoft.VisualStudio.Modeling.AddRule
 			{
+				[System.Diagnostics.DebuggerStepThrough()]
 				public ObjectTypeErrorAddedRuleClass()
 				{
 					base.IsEnabled = false;
@@ -251,6 +262,7 @@ namespace Neumont.Tools.ORMToORMAbstractionBridge
 				/// {
 				/// }
 				/// </summary>
+				[System.Diagnostics.DebuggerStepThrough()]
 				public override void ElementAdded(Microsoft.VisualStudio.Modeling.ElementAddedEventArgs e)
 				{
 					Neumont.Tools.Modeling.Diagnostics.TraceUtility.TraceRuleStart(e.ModelElement.Store, "Neumont.Tools.ORMToORMAbstractionBridge.AbstractionModelIsForORMModel.ORMElementGateway.ObjectTypeErrorAddedRule");
@@ -265,6 +277,7 @@ namespace Neumont.Tools.ORMToORMAbstractionBridge
 			[Microsoft.VisualStudio.Modeling.RuleOn(typeof(Neumont.Tools.ORM.ObjectModel.ValueTypeHasUnspecifiedDataTypeError))]
 			private sealed class ObjectTypeErrorDeletedRuleClass : Microsoft.VisualStudio.Modeling.DeleteRule
 			{
+				[System.Diagnostics.DebuggerStepThrough()]
 				public ObjectTypeErrorDeletedRuleClass()
 				{
 					base.IsEnabled = false;
@@ -283,6 +296,7 @@ namespace Neumont.Tools.ORMToORMAbstractionBridge
 				/// {
 				/// }
 				/// </summary>
+				[System.Diagnostics.DebuggerStepThrough()]
 				public override void ElementDeleted(Microsoft.VisualStudio.Modeling.ElementDeletedEventArgs e)
 				{
 					Neumont.Tools.Modeling.Diagnostics.TraceUtility.TraceRuleStart(e.ModelElement.Store, "Neumont.Tools.ORMToORMAbstractionBridge.AbstractionModelIsForORMModel.ORMElementGateway.ObjectTypeErrorDeletedRule");
@@ -293,6 +307,7 @@ namespace Neumont.Tools.ORMToORMAbstractionBridge
 			[Microsoft.VisualStudio.Modeling.RuleOn(typeof(Neumont.Tools.ORM.ObjectModel.ObjectTypePlaysRole))]
 			private sealed class RolePlayerAddedRuleClass : Microsoft.VisualStudio.Modeling.AddRule
 			{
+				[System.Diagnostics.DebuggerStepThrough()]
 				public RolePlayerAddedRuleClass()
 				{
 					base.IsEnabled = false;
@@ -307,6 +322,7 @@ namespace Neumont.Tools.ORMToORMAbstractionBridge
 				/// {
 				/// }
 				/// </summary>
+				[System.Diagnostics.DebuggerStepThrough()]
 				public override void ElementAdded(Microsoft.VisualStudio.Modeling.ElementAddedEventArgs e)
 				{
 					Neumont.Tools.Modeling.Diagnostics.TraceUtility.TraceRuleStart(e.ModelElement.Store, "Neumont.Tools.ORMToORMAbstractionBridge.AbstractionModelIsForORMModel.ORMElementGateway.RolePlayerAddedRule");
@@ -317,6 +333,7 @@ namespace Neumont.Tools.ORMToORMAbstractionBridge
 			[Microsoft.VisualStudio.Modeling.RuleOn(typeof(Neumont.Tools.ORM.ObjectModel.ObjectTypePlaysRole))]
 			private sealed class RolePlayerDeletedRuleClass : Microsoft.VisualStudio.Modeling.DeleteRule
 			{
+				[System.Diagnostics.DebuggerStepThrough()]
 				public RolePlayerDeletedRuleClass()
 				{
 					base.IsEnabled = false;
@@ -331,6 +348,7 @@ namespace Neumont.Tools.ORMToORMAbstractionBridge
 				/// {
 				/// }
 				/// </summary>
+				[System.Diagnostics.DebuggerStepThrough()]
 				public override void ElementDeleted(Microsoft.VisualStudio.Modeling.ElementDeletedEventArgs e)
 				{
 					Neumont.Tools.Modeling.Diagnostics.TraceUtility.TraceRuleStart(e.ModelElement.Store, "Neumont.Tools.ORMToORMAbstractionBridge.AbstractionModelIsForORMModel.ORMElementGateway.RolePlayerDeletedRule");
@@ -341,6 +359,7 @@ namespace Neumont.Tools.ORMToORMAbstractionBridge
 			[Microsoft.VisualStudio.Modeling.RuleOn(typeof(Neumont.Tools.ORM.ObjectModel.ObjectTypePlaysRole))]
 			private sealed class RolePlayerRolePlayerChangedRuleClass : Microsoft.VisualStudio.Modeling.RolePlayerChangeRule
 			{
+				[System.Diagnostics.DebuggerStepThrough()]
 				public RolePlayerRolePlayerChangedRuleClass()
 				{
 					base.IsEnabled = false;
@@ -355,6 +374,7 @@ namespace Neumont.Tools.ORMToORMAbstractionBridge
 				/// {
 				/// }
 				/// </summary>
+				[System.Diagnostics.DebuggerStepThrough()]
 				public override void RolePlayerChanged(Microsoft.VisualStudio.Modeling.RolePlayerChangedEventArgs e)
 				{
 					Neumont.Tools.Modeling.Diagnostics.TraceUtility.TraceRuleStart(e.ElementLink.Store, "Neumont.Tools.ORMToORMAbstractionBridge.AbstractionModelIsForORMModel.ORMElementGateway.RolePlayerRolePlayerChangedRule");
@@ -373,6 +393,7 @@ namespace Neumont.Tools.ORMToORMAbstractionBridge
 			[Microsoft.VisualStudio.Modeling.RuleOn(typeof(ConceptTypeIsForObjectType))]
 			private sealed class ConceptTypeBridgeDetachedRuleClass : Microsoft.VisualStudio.Modeling.DeleteRule
 			{
+				[System.Diagnostics.DebuggerStepThrough()]
 				public ConceptTypeBridgeDetachedRuleClass()
 				{
 					base.IsEnabled = false;
@@ -387,6 +408,7 @@ namespace Neumont.Tools.ORMToORMAbstractionBridge
 				/// {
 				/// }
 				/// </summary>
+				[System.Diagnostics.DebuggerStepThrough()]
 				public override void ElementDeleted(Microsoft.VisualStudio.Modeling.ElementDeletedEventArgs e)
 				{
 					Neumont.Tools.Modeling.Diagnostics.TraceUtility.TraceRuleStart(e.ModelElement.Store, "Neumont.Tools.ORMToORMAbstractionBridge.AbstractionModelIsForORMModel.ModificationTracker.ConceptTypeBridgeDetachedRule");
@@ -397,6 +419,7 @@ namespace Neumont.Tools.ORMToORMAbstractionBridge
 			[Microsoft.VisualStudio.Modeling.RuleOn(typeof(InformationTypeFormatIsForValueType))]
 			private sealed class InformationTypeFormatBridgeDetachedRuleClass : Microsoft.VisualStudio.Modeling.DeleteRule
 			{
+				[System.Diagnostics.DebuggerStepThrough()]
 				public InformationTypeFormatBridgeDetachedRuleClass()
 				{
 					base.IsEnabled = false;
@@ -411,6 +434,7 @@ namespace Neumont.Tools.ORMToORMAbstractionBridge
 				/// {
 				/// }
 				/// </summary>
+				[System.Diagnostics.DebuggerStepThrough()]
 				public override void ElementDeleted(Microsoft.VisualStudio.Modeling.ElementDeletedEventArgs e)
 				{
 					Neumont.Tools.Modeling.Diagnostics.TraceUtility.TraceRuleStart(e.ModelElement.Store, "Neumont.Tools.ORMToORMAbstractionBridge.AbstractionModelIsForORMModel.ModificationTracker.InformationTypeFormatBridgeDetachedRule");
@@ -421,6 +445,7 @@ namespace Neumont.Tools.ORMToORMAbstractionBridge
 			[Microsoft.VisualStudio.Modeling.RuleOn(typeof(ConceptTypeChildHasPathFactType))]
 			private sealed class ConceptTypeChildPathBridgeDetachedRuleClass : Microsoft.VisualStudio.Modeling.DeleteRule
 			{
+				[System.Diagnostics.DebuggerStepThrough()]
 				public ConceptTypeChildPathBridgeDetachedRuleClass()
 				{
 					base.IsEnabled = false;
@@ -435,6 +460,7 @@ namespace Neumont.Tools.ORMToORMAbstractionBridge
 				/// {
 				/// }
 				/// </summary>
+				[System.Diagnostics.DebuggerStepThrough()]
 				public override void ElementDeleted(Microsoft.VisualStudio.Modeling.ElementDeletedEventArgs e)
 				{
 					Neumont.Tools.Modeling.Diagnostics.TraceUtility.TraceRuleStart(e.ModelElement.Store, "Neumont.Tools.ORMToORMAbstractionBridge.AbstractionModelIsForORMModel.ModificationTracker.ConceptTypeChildPathBridgeDetachedRule");
@@ -445,6 +471,7 @@ namespace Neumont.Tools.ORMToORMAbstractionBridge
 			[Microsoft.VisualStudio.Modeling.RuleOn(typeof(Neumont.Tools.ORM.ObjectModel.ConstraintRoleSequenceHasRole))]
 			private sealed class ConstraintRoleAddedRuleClass : Microsoft.VisualStudio.Modeling.AddRule
 			{
+				[System.Diagnostics.DebuggerStepThrough()]
 				public ConstraintRoleAddedRuleClass()
 				{
 					base.IsEnabled = false;
@@ -459,6 +486,7 @@ namespace Neumont.Tools.ORMToORMAbstractionBridge
 				/// {
 				/// }
 				/// </summary>
+				[System.Diagnostics.DebuggerStepThrough()]
 				public override void ElementAdded(Microsoft.VisualStudio.Modeling.ElementAddedEventArgs e)
 				{
 					Neumont.Tools.Modeling.Diagnostics.TraceUtility.TraceRuleStart(e.ModelElement.Store, "Neumont.Tools.ORMToORMAbstractionBridge.AbstractionModelIsForORMModel.ModificationTracker.ConstraintRoleAddedRule");
@@ -469,6 +497,7 @@ namespace Neumont.Tools.ORMToORMAbstractionBridge
 			[Microsoft.VisualStudio.Modeling.RuleOn(typeof(Neumont.Tools.ORM.ObjectModel.ConstraintRoleSequenceHasRole))]
 			private sealed class ConstraintRoleDeletedRuleClass : Microsoft.VisualStudio.Modeling.DeleteRule
 			{
+				[System.Diagnostics.DebuggerStepThrough()]
 				public ConstraintRoleDeletedRuleClass()
 				{
 					base.IsEnabled = false;
@@ -483,6 +512,7 @@ namespace Neumont.Tools.ORMToORMAbstractionBridge
 				/// {
 				/// }
 				/// </summary>
+				[System.Diagnostics.DebuggerStepThrough()]
 				public override void ElementDeleted(Microsoft.VisualStudio.Modeling.ElementDeletedEventArgs e)
 				{
 					Neumont.Tools.Modeling.Diagnostics.TraceUtility.TraceRuleStart(e.ModelElement.Store, "Neumont.Tools.ORMToORMAbstractionBridge.AbstractionModelIsForORMModel.ModificationTracker.ConstraintRoleDeletedRule");
@@ -493,6 +523,7 @@ namespace Neumont.Tools.ORMToORMAbstractionBridge
 			[Microsoft.VisualStudio.Modeling.RuleOn(typeof(Neumont.Tools.ORM.ObjectModel.ObjectType))]
 			private sealed class ObjectTypeChangedRuleClass : Microsoft.VisualStudio.Modeling.ChangeRule
 			{
+				[System.Diagnostics.DebuggerStepThrough()]
 				public ObjectTypeChangedRuleClass()
 				{
 					base.IsEnabled = false;
@@ -507,6 +538,7 @@ namespace Neumont.Tools.ORMToORMAbstractionBridge
 				/// {
 				/// }
 				/// </summary>
+				[System.Diagnostics.DebuggerStepThrough()]
 				public override void ElementPropertyChanged(Microsoft.VisualStudio.Modeling.ElementPropertyChangedEventArgs e)
 				{
 					Neumont.Tools.Modeling.Diagnostics.TraceUtility.TraceRuleStart(e.ModelElement.Store, "Neumont.Tools.ORMToORMAbstractionBridge.AbstractionModelIsForORMModel.ModificationTracker.ObjectTypeChangedRule");
@@ -517,6 +549,7 @@ namespace Neumont.Tools.ORMToORMAbstractionBridge
 			[Microsoft.VisualStudio.Modeling.RuleOn(typeof(Neumont.Tools.ORM.ObjectModel.ORMModel))]
 			private sealed class ORMModelChangedRuleClass : Microsoft.VisualStudio.Modeling.ChangeRule
 			{
+				[System.Diagnostics.DebuggerStepThrough()]
 				public ORMModelChangedRuleClass()
 				{
 					base.IsEnabled = false;
@@ -531,6 +564,7 @@ namespace Neumont.Tools.ORMToORMAbstractionBridge
 				/// {
 				/// }
 				/// </summary>
+				[System.Diagnostics.DebuggerStepThrough()]
 				public override void ElementPropertyChanged(Microsoft.VisualStudio.Modeling.ElementPropertyChangedEventArgs e)
 				{
 					Neumont.Tools.Modeling.Diagnostics.TraceUtility.TraceRuleStart(e.ModelElement.Store, "Neumont.Tools.ORMToORMAbstractionBridge.AbstractionModelIsForORMModel.ModificationTracker.ORMModelChangedRule");
@@ -541,6 +575,7 @@ namespace Neumont.Tools.ORMToORMAbstractionBridge
 			[Microsoft.VisualStudio.Modeling.RuleOn(typeof(Neumont.Tools.ORM.ObjectModel.SetConstraint))]
 			private sealed class SetConstraintChangedRuleClass : Microsoft.VisualStudio.Modeling.ChangeRule
 			{
+				[System.Diagnostics.DebuggerStepThrough()]
 				public SetConstraintChangedRuleClass()
 				{
 					base.IsEnabled = false;
@@ -555,6 +590,7 @@ namespace Neumont.Tools.ORMToORMAbstractionBridge
 				/// {
 				/// }
 				/// </summary>
+				[System.Diagnostics.DebuggerStepThrough()]
 				public override void ElementPropertyChanged(Microsoft.VisualStudio.Modeling.ElementPropertyChangedEventArgs e)
 				{
 					Neumont.Tools.Modeling.Diagnostics.TraceUtility.TraceRuleStart(e.ModelElement.Store, "Neumont.Tools.ORMToORMAbstractionBridge.AbstractionModelIsForORMModel.ModificationTracker.SetConstraintChangedRule");

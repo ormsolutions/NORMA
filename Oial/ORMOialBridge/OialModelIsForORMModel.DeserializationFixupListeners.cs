@@ -43,7 +43,7 @@ namespace Neumont.Tools.ORMToORMAbstractionBridge
 		{
 			get
 			{
-				yield return new ORMModelFixupListener();
+				yield return AbstractionModelIsForORMModel.FixupListener;
 			}
 		}
 		IEnumerable<IDeserializationFixupListener> IDeserializationFixupListenerProvider.DeserializationFixupListenerCollection
@@ -71,18 +71,27 @@ namespace Neumont.Tools.ORMToORMAbstractionBridge
 			}
 		}
 		#endregion // IDeserializationFixupListenerProvider Implementation
+	}
+	partial class AbstractionModelIsForORMModel
+	{
 		#region Deserialization Fixup Classes
 		/// <summary>
-		/// Fixup listener implementation. Adds implicit MyCustomExtensionElement objects to roles
-		/// that don't have them when the file is deserialized. This allows extension elements to
-		/// be added to existing files, as well as extensions with default values (which don't serialize
-		/// because of the settings in the ExtensionDomainModel.SerializationExtensions.xml file) to
-		/// be readded when the file loads.
+		/// A <see cref="IDeserializationFixupListener"/> for synchronizing the abstraction model on load
+		/// </summary>
+		public static IDeserializationFixupListener FixupListener
+		{
+			get
+			{
+				return new ORMModelFixupListener();
+			}
+		}
+		/// <summary>
+		/// Fixup listener implementation.
 		/// </summary>
 		private sealed class ORMModelFixupListener : DeserializationFixupListener<ORMModel>
 		{
 			/// <summary>
-			/// ExternalConstraintFixupListener constructor
+			/// ORMModelFixupListener constructor
 			/// </summary>
 			public ORMModelFixupListener()
 				: base((int)ORMToORMAbstractionBridgeDeserializationFixupPhase.CreateImplicitElements)
@@ -102,11 +111,48 @@ namespace Neumont.Tools.ORMToORMAbstractionBridge
 					// UNDONE: DelayValidateModel currently deletes and recreates any existing
 					// bridge relationship, so there is no point deleting it up front, we'll
 					// just retrieve it later. Also not that DelayValidateModel does not call notifyAdded.
-					AbstractionModelIsForORMModel.DelayValidateModel(element);
+					DelayValidateModel(element);
 					oil = AbstractionModelIsForORMModel.GetAbstractionModel(element);
 					if (oil != null)
 					{
 						notifyAdded.ElementAdded(oil, true);
+					}
+				}
+				else
+				{
+					bool excludedBridgedElement = false;
+					ORMElementGateway.Initialize(
+						element,
+						delegate(ORMModelElement modelElement)
+						{
+							if (excludedBridgedElement)
+							{
+								return;
+							}
+							ObjectType objectType;
+							FactType factType;
+							// Note that the types we're checking here are synchronized with the ORMElementGateway.ExclusionAdded method
+							if (null != (objectType = modelElement as ObjectType))
+							{
+								if (null != ConceptTypeIsForObjectType.GetLinkToConceptType(objectType) ||
+									null != InformationTypeFormatIsForValueType.GetLinkToInformationTypeFormat(objectType))
+								{
+									excludedBridgedElement = true;
+								}
+							}
+							else if (null != (factType = modelElement as FactType))
+							{
+								if (null != FactTypeMapsTowardsRole.GetLinkToTowardsRole(factType) ||
+									ConceptTypeChildHasPathFactType.GetLinksToConceptTypeChild(factType).Count != 0)
+								{
+									excludedBridgedElement = true;
+								}
+							}
+						});
+					if (excludedBridgedElement)
+					{
+						// Something is very wrong, regenerate (does not regenerate the excluded elements we already have)
+						DelayValidateModel(element);
 					}
 				}
 			}

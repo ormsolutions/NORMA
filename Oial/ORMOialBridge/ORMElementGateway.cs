@@ -54,10 +54,16 @@ namespace Neumont.Tools.ORMToORMAbstractionBridge
 				return null != ExcludedORMModelElement.GetLinkToAbstractionModel(element);
 			}
 			/// <summary>
+			/// A callback used to notify when an element has been deleted. Used during deserialization.
+			/// </summary>
+			/// <param name="element">The <see cref="ORMModelElement"/> being excluded.</param>
+			public delegate void NotifyORMElementExcluded(ORMModelElement element);
+			/// <summary>
 			/// Perfom initial gateway checks when an <see cref="ORMModel"/> is first considered for absorption
 			/// </summary>
 			/// <param name="model">The <see cref="ORMModel"/> to verify and exclude elements in</param>
-			public static void Initialize(ORMModel model)
+			/// <param name="notifyExcluded">A callback notifying when an element is being excluded. Used during deserialization. Can be <see langword="null"/>.</param>
+			public static void Initialize(ORMModel model, NotifyORMElementExcluded notifyExcluded)
 			{
 				AbstractionModel abstractionModel = AbstractionModelIsForORMModel.GetAbstractionModel(model);
 				foreach (ObjectType objectType in model.ObjectTypeCollection)
@@ -65,15 +71,15 @@ namespace Neumont.Tools.ORMToORMAbstractionBridge
 					if (!IsElementExcluded(objectType) &&
 						!ShouldConsiderObjectType(objectType, null))
 					{
-						ExcludeObjectType(objectType, abstractionModel, true);
+						ExcludeObjectType(objectType, abstractionModel, true, notifyExcluded);
 					}
 				}
 				foreach (FactType factType in model.FactTypeCollection)
 				{
 					if (!IsElementExcluded(factType) &&
-						!ShouldConsiderFactType(factType, false))
+						!ShouldConsiderFactType(factType, null, false))
 					{
-						ExcludeFactType(factType, abstractionModel, true);
+						ExcludeFactType(factType, abstractionModel, true, notifyExcluded);
 					}
 				}
 			}
@@ -108,9 +114,20 @@ namespace Neumont.Tools.ORMToORMAbstractionBridge
 						// may not be valid for consideration by the time the model is processed.
 						foreach (FactType factType in pid.FactTypeCollection)
 						{
-							if (factType != ignoreFactType && IsElementExcluded(factType))
+							if (factType != ignoreFactType &&
+								IsElementExcluded(factType))
 							{
-								return false;
+								if (ignoreFactType != null && ShouldConsiderFactType(factType, objectType, true))
+								{
+									// This pattern is used only during delay validation. A cleaner model would
+									// be a delagate callback, but it isn't worth the additional overhead given
+									// that this would be the only code that would ever run there.
+									FilterModifiedFactType(factType, true);
+								}
+								else
+								{
+									return false;
+								}
 							}
 						}
 					}
@@ -124,9 +141,10 @@ namespace Neumont.Tools.ORMToORMAbstractionBridge
 			/// markings on its role players.
 			/// </summary>
 			/// <param name="factType">The <see cref="FactType"/> to test</param>
+			/// <param name="ignoreRolePlayer">No not excluded the <paramref name="factType"/> because this <see cref="ObjectType"/> is currently excluded.</param>
 			/// <param name="ignoreRolePlayersFilteredForThisFactType">Do block consideration because a role player is filtered for this <paramref name="factType"/>.</param>
 			/// <returns><see langword="true"/> if the <paramref name="factType"/> passes all necessary conditions for consideration.</returns>
-			private static bool ShouldConsiderFactType(FactType factType, bool ignoreRolePlayersFilteredForThisFactType)
+			private static bool ShouldConsiderFactType(FactType factType, ObjectType ignoreRolePlayer, bool ignoreRolePlayersFilteredForThisFactType)
 			{
 				// Note that any changes to the list of errors must correspond to changes in
 				// FactTypeErrorAddedRule and FactTypeErrorDeletedRule
@@ -137,8 +155,9 @@ namespace Neumont.Tools.ORMToORMAbstractionBridge
 					{
 						ObjectType rolePlayer = role.Role.RolePlayer;
 						if (rolePlayer == null ||
-							(IsElementExcluded(rolePlayer) &&
-							!(!ignoreRolePlayersFilteredForThisFactType || !ShouldConsiderObjectType(rolePlayer, factType))))
+							(ignoreRolePlayer != rolePlayer &&
+							IsElementExcluded(rolePlayer) &&
+							!(!ignoreRolePlayersFilteredForThisFactType || ShouldConsiderObjectType(rolePlayer, factType))))
 						{
 							return false;
 						}
@@ -154,7 +173,7 @@ namespace Neumont.Tools.ORMToORMAbstractionBridge
 			{
 				ModelHasFactType link = element as ModelHasFactType;
 				FactType factType = link.FactType;
-				if (ShouldConsiderFactType(factType, false))
+				if (ShouldConsiderFactType(factType, null, false))
 				{
 					AddFactType(factType);
 				}
@@ -207,7 +226,7 @@ namespace Neumont.Tools.ORMToORMAbstractionBridge
 				{
 					FactType factType = (FactType)element;
 					ExcludedORMModelElement exclusionLink = ExcludedORMModelElement.GetLinkToAbstractionModel(factType);
-					if (ShouldConsiderFactType(factType, true))
+					if (ShouldConsiderFactType(factType, null, true))
 					{
 						if (exclusionLink != null)
 						{
@@ -216,7 +235,7 @@ namespace Neumont.Tools.ORMToORMAbstractionBridge
 							foreach (IFactConstraint factConstraint in factType.FactConstraintCollection)
 							{
 								ObjectType preferredFor = factConstraint.Constraint.PreferredIdentifierFor;
-								if (preferredFor != null)
+								if (preferredFor != null && IsElementExcluded(preferredFor))
 								{
 									FilterModifiedObjectType(preferredFor);
 								}
@@ -256,11 +275,19 @@ namespace Neumont.Tools.ORMToORMAbstractionBridge
 							AddObjectType(objectType);
 							foreach (Role playedRole in objectType.PlayedRoleCollection)
 							{
-								FilterModifiedFactType(playedRole.FactType, false);
+								FactType factType = playedRole.FactType;
+								if (IsElementExcluded(factType))
+								{
+									FilterModifiedFactType(factType, false);
+								}
 								RoleProxy proxy = playedRole.Proxy;
 								if (proxy != null)
 								{
-									FilterModifiedFactType(proxy.FactType, false);
+									factType = proxy.FactType;
+									if (IsElementExcluded(factType))
+									{
+										FilterModifiedFactType(factType, false);
+									}
 								}
 							}
 						}
@@ -278,25 +305,25 @@ namespace Neumont.Tools.ORMToORMAbstractionBridge
 				AbstractionModel model = AbstractionModelIsForORMModel.GetAbstractionModel(factType.Model);
 				if (model != null)
 				{
-					ExcludeFactType(factType, model, false);
+					ExcludeFactType(factType, model, false, null);
 				}
 			}
-			private static void ExcludeFactType(FactType factType, AbstractionModel model)
-			{
-				ExcludeFactType(factType, model, false);
-			}
-			private static void ExcludeFactType(FactType factType, AbstractionModel model, bool forceCreate)
+			private static void ExcludeFactType(FactType factType, AbstractionModel model, bool forceCreate, NotifyORMElementExcluded notifyExcluded)
 			{
 				if (forceCreate ||
 					null == ExcludedORMModelElement.GetAbstractionModel(factType))
 				{
 					new ExcludedORMModelElement(factType, model);
+					if (notifyExcluded != null)
+					{
+						notifyExcluded(factType);
+					}
 					foreach (IFactConstraint constraint in factType.FactConstraintCollection)
 					{
 						ObjectType preferredFor = constraint.Constraint.PreferredIdentifierFor;
 						if (preferredFor != null)
 						{
-							ExcludeObjectType(preferredFor, model);
+							ExcludeObjectType(preferredFor, model, false, notifyExcluded);
 						}
 					}
 				}
@@ -306,26 +333,26 @@ namespace Neumont.Tools.ORMToORMAbstractionBridge
 				AbstractionModel model = AbstractionModelIsForORMModel.GetAbstractionModel(objectType.Model);
 				if (model != null)
 				{
-					ExcludeObjectType(objectType, model, false);
+					ExcludeObjectType(objectType, model, false, null);
 				}
 			}
-			private static void ExcludeObjectType(ObjectType objectType, AbstractionModel model)
-			{
-				ExcludeObjectType(objectType, model, false);
-			}
-			private static void ExcludeObjectType(ObjectType objectType, AbstractionModel model, bool forceCreate)
+			private static void ExcludeObjectType(ObjectType objectType, AbstractionModel model, bool forceCreate, NotifyORMElementExcluded notifyExcluded)
 			{
 				if (forceCreate ||
 					null == ExcludedORMModelElement.GetAbstractionModel(objectType))
 				{
 					new ExcludedORMModelElement(objectType, model);
+					if (notifyExcluded != null)
+					{
+						notifyExcluded(objectType);
+					}
 					foreach (Role playedRole in objectType.PlayedRoleCollection)
 					{
-						ExcludeFactType(playedRole.FactType, model);
+						ExcludeFactType(playedRole.FactType, model, false, notifyExcluded);
 						RoleProxy proxy = playedRole.Proxy;
 						if (proxy != null)
 						{
-							ExcludeFactType(proxy.FactType, model);
+							ExcludeFactType(proxy.FactType, model, false, notifyExcluded);
 						}
 					}
 				}
@@ -411,6 +438,7 @@ namespace Neumont.Tools.ORMToORMAbstractionBridge
 				// prematurely delete existing links
 				if (!link.IsDeleted)
 				{
+					// Note that any objects deleted here need to be kept in sync with the ORMModelFixupListener implementation
 					ObjectType objectType;
 					FactType factType;
 					if (null != (objectType = link.ExcludedElement as ObjectType))

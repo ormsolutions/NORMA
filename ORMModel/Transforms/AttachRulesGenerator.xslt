@@ -619,6 +619,7 @@
 				</xsl:when>
 				<xsl:otherwise>
 					<plx:function name=".construct" visibility="public">
+						<plx:attribute dataTypeName="DebuggerStepThrough" dataTypeQualifier="System.Diagnostics"/>
 						<plx:assign>
 							<plx:left>
 								<plx:callThis accessor="base" name="IsEnabled" type="property"/>
@@ -770,6 +771,7 @@
 							<plx:derivesFromClass dataTypeName="{local-name()}" dataTypeQualifier="Microsoft.VisualStudio.Modeling"/>
 							<xsl:if test="not(@alwaysOn='true' or @alwaysOn='1')">
 								<plx:function name=".construct" visibility="public">
+									<plx:attribute dataTypeName="DebuggerStepThrough" dataTypeQualifier="System.Diagnostics"/>
 									<plx:assign>
 										<plx:left>
 											<plx:callThis accessor="base" name="IsEnabled" type="property"/>
@@ -784,6 +786,7 @@
 								<plx:property modifier="override" visibility="public" name="FireBefore">
 									<plx:returns dataTypeName=".boolean"/>
 									<plx:get>
+										<plx:attribute dataTypeName="DebuggerStepThrough" dataTypeQualifier="System.Diagnostics"/>
 										<plx:return>
 											<plx:trueKeyword/>
 										</plx:return>
@@ -910,6 +913,7 @@
 										</summary>
 									</plx:docComment>
 								</plx:leadingInfo>
+								<plx:attribute dataTypeName="DebuggerStepThrough" dataTypeQualifier="System.Diagnostics"/>
 								<plx:param name="e" dataTypeName="{$methodInfo/@ruleEventArgsType}" dataTypeQualifier="Microsoft.VisualStudio.Modeling"/>
 								<xsl:variable name="classFullNameString">
 									<plx:string>

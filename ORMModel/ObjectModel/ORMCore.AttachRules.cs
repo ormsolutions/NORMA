@@ -308,6 +308,7 @@ namespace Neumont.Tools.ORM.ObjectModel
 		[Microsoft.VisualStudio.Modeling.RuleOn(typeof(ConstraintRoleSequenceHasRole))]
 		private sealed class BlockRolePlayerChangeRuleClass : Microsoft.VisualStudio.Modeling.RolePlayerChangeRule
 		{
+			[System.Diagnostics.DebuggerStepThrough()]
 			public BlockRolePlayerChangeRuleClass()
 			{
 				base.IsEnabled = false;
@@ -322,6 +323,7 @@ namespace Neumont.Tools.ORM.ObjectModel
 			/// {
 			/// }
 			/// </summary>
+			[System.Diagnostics.DebuggerStepThrough()]
 			public override void RolePlayerChanged(Microsoft.VisualStudio.Modeling.RolePlayerChangedEventArgs e)
 			{
 				Neumont.Tools.Modeling.Diagnostics.TraceUtility.TraceRuleStart(e.ElementLink.Store, "Neumont.Tools.ORM.ObjectModel.ConstraintRoleSequence.BlockRolePlayerChangeRule");
@@ -332,6 +334,7 @@ namespace Neumont.Tools.ORM.ObjectModel
 		[Microsoft.VisualStudio.Modeling.RuleOn(typeof(ConstraintRoleSequenceHasRole))]
 		private sealed class ConstraintRoleSequenceHasRoleAddedRuleClass : Microsoft.VisualStudio.Modeling.AddRule
 		{
+			[System.Diagnostics.DebuggerStepThrough()]
 			public ConstraintRoleSequenceHasRoleAddedRuleClass()
 			{
 				base.IsEnabled = false;
@@ -346,6 +349,7 @@ namespace Neumont.Tools.ORM.ObjectModel
 			/// {
 			/// }
 			/// </summary>
+			[System.Diagnostics.DebuggerStepThrough()]
 			public override void ElementAdded(Microsoft.VisualStudio.Modeling.ElementAddedEventArgs e)
 			{
 				Neumont.Tools.Modeling.Diagnostics.TraceUtility.TraceRuleStart(e.ModelElement.Store, "Neumont.Tools.ORM.ObjectModel.ConstraintRoleSequence.ConstraintRoleSequenceHasRoleAddedRule");
@@ -356,6 +360,7 @@ namespace Neumont.Tools.ORM.ObjectModel
 		[Microsoft.VisualStudio.Modeling.RuleOn(typeof(ConstraintRoleSequenceHasRole))]
 		private sealed class ConstraintRoleSequenceHasRoleDeletedRuleClass : Microsoft.VisualStudio.Modeling.DeleteRule
 		{
+			[System.Diagnostics.DebuggerStepThrough()]
 			public ConstraintRoleSequenceHasRoleDeletedRuleClass()
 			{
 				base.IsEnabled = false;
@@ -370,6 +375,7 @@ namespace Neumont.Tools.ORM.ObjectModel
 			/// {
 			/// }
 			/// </summary>
+			[System.Diagnostics.DebuggerStepThrough()]
 			public override void ElementDeleted(Microsoft.VisualStudio.Modeling.ElementDeletedEventArgs e)
 			{
 				Neumont.Tools.Modeling.Diagnostics.TraceUtility.TraceRuleStart(e.ModelElement.Store, "Neumont.Tools.ORM.ObjectModel.ConstraintRoleSequence.ConstraintRoleSequenceHasRoleDeletedRule");
@@ -380,6 +386,7 @@ namespace Neumont.Tools.ORM.ObjectModel
 		[Microsoft.VisualStudio.Modeling.RuleOn(typeof(SetComparisonConstraint))]
 		private sealed class ModalityChangeRuleClass : Microsoft.VisualStudio.Modeling.ChangeRule
 		{
+			[System.Diagnostics.DebuggerStepThrough()]
 			public ModalityChangeRuleClass()
 			{
 				base.IsEnabled = false;
@@ -394,6 +401,7 @@ namespace Neumont.Tools.ORM.ObjectModel
 			/// {
 			/// }
 			/// </summary>
+			[System.Diagnostics.DebuggerStepThrough()]
 			public override void ElementPropertyChanged(Microsoft.VisualStudio.Modeling.ElementPropertyChangedEventArgs e)
 			{
 				Neumont.Tools.Modeling.Diagnostics.TraceUtility.TraceRuleStart(e.ModelElement.Store, "Neumont.Tools.ORM.ObjectModel.ConstraintRoleSequence.ModalityChangeRule");
@@ -404,6 +412,7 @@ namespace Neumont.Tools.ORM.ObjectModel
 		[Microsoft.VisualStudio.Modeling.RuleOn(typeof(ConstraintRoleSequence))]
 		private sealed class SetComparisonConstraintHasRoleDeletingRuleClass : Microsoft.VisualStudio.Modeling.DeletingRule
 		{
+			[System.Diagnostics.DebuggerStepThrough()]
 			public SetComparisonConstraintHasRoleDeletingRuleClass()
 			{
 				base.IsEnabled = false;
@@ -418,6 +427,7 @@ namespace Neumont.Tools.ORM.ObjectModel
 			/// {
 			/// }
 			/// </summary>
+			[System.Diagnostics.DebuggerStepThrough()]
 			public override void ElementDeleting(Microsoft.VisualStudio.Modeling.ElementDeletingEventArgs e)
 			{
 				Neumont.Tools.Modeling.Diagnostics.TraceUtility.TraceRuleStart(e.ModelElement.Store, "Neumont.Tools.ORM.ObjectModel.ConstraintRoleSequence.SetComparisonConstraintHasRoleDeletingRule");
@@ -428,6 +438,7 @@ namespace Neumont.Tools.ORM.ObjectModel
 		[Microsoft.VisualStudio.Modeling.RuleOn(typeof(SetConstraint))]
 		private sealed class SetConstraintDeletingRuleClass : Microsoft.VisualStudio.Modeling.DeletingRule
 		{
+			[System.Diagnostics.DebuggerStepThrough()]
 			public SetConstraintDeletingRuleClass()
 			{
 				base.IsEnabled = false;
@@ -442,6 +453,7 @@ namespace Neumont.Tools.ORM.ObjectModel
 			/// {
 			/// }
 			/// </summary>
+			[System.Diagnostics.DebuggerStepThrough()]
 			public override void ElementDeleting(Microsoft.VisualStudio.Modeling.ElementDeletingEventArgs e)
 			{
 				Neumont.Tools.Modeling.Diagnostics.TraceUtility.TraceRuleStart(e.ModelElement.Store, "Neumont.Tools.ORM.ObjectModel.ConstraintRoleSequence.SetConstraintDeletingRule");
@@ -457,6 +469,7 @@ namespace Neumont.Tools.ORM.ObjectModel
 		[Microsoft.VisualStudio.Modeling.RuleOn(typeof(ConstraintRoleSequenceHasRole), FireTime=Microsoft.VisualStudio.Modeling.TimeToFire.LocalCommit, Priority=Neumont.Tools.Modeling.FrameworkDomainModel.BeforeDelayValidateRulePriority)]
 		private sealed class ConstraintRoleSequenceHasRoleDeletedRuleClass : Microsoft.VisualStudio.Modeling.DeleteRule
 		{
+			[System.Diagnostics.DebuggerStepThrough()]
 			public ConstraintRoleSequenceHasRoleDeletedRuleClass()
 			{
 				base.IsEnabled = false;
@@ -471,6 +484,7 @@ namespace Neumont.Tools.ORM.ObjectModel
 			/// {
 			/// }
 			/// </summary>
+			[System.Diagnostics.DebuggerStepThrough()]
 			public override void ElementDeleted(Microsoft.VisualStudio.Modeling.ElementDeletedEventArgs e)
 			{
 				Neumont.Tools.Modeling.Diagnostics.TraceUtility.TraceRuleStart(e.ModelElement.Store, "Neumont.Tools.ORM.ObjectModel.ConstraintUtility.ConstraintRoleSequenceHasRoleDeletedRule");
@@ -486,6 +500,7 @@ namespace Neumont.Tools.ORM.ObjectModel
 		[Microsoft.VisualStudio.Modeling.RuleOn(typeof(CustomReferenceMode))]
 		private sealed class CustomReferenceModeChangeRuleClass : Microsoft.VisualStudio.Modeling.ChangeRule
 		{
+			[System.Diagnostics.DebuggerStepThrough()]
 			public CustomReferenceModeChangeRuleClass()
 			{
 				base.IsEnabled = false;
@@ -500,6 +515,7 @@ namespace Neumont.Tools.ORM.ObjectModel
 			/// {
 			/// }
 			/// </summary>
+			[System.Diagnostics.DebuggerStepThrough()]
 			public override void ElementPropertyChanged(Microsoft.VisualStudio.Modeling.ElementPropertyChangedEventArgs e)
 			{
 				Neumont.Tools.Modeling.Diagnostics.TraceUtility.TraceRuleStart(e.ModelElement.Store, "Neumont.Tools.ORM.ObjectModel.CustomReferenceMode.CustomReferenceModeChangeRule");
@@ -515,6 +531,7 @@ namespace Neumont.Tools.ORM.ObjectModel
 		[Microsoft.VisualStudio.Modeling.RuleOn(typeof(SetConstraint))]
 		private sealed class ModalityChangeRuleClass : Microsoft.VisualStudio.Modeling.ChangeRule
 		{
+			[System.Diagnostics.DebuggerStepThrough()]
 			public ModalityChangeRuleClass()
 			{
 				base.IsEnabled = false;
@@ -529,6 +546,7 @@ namespace Neumont.Tools.ORM.ObjectModel
 			/// {
 			/// }
 			/// </summary>
+			[System.Diagnostics.DebuggerStepThrough()]
 			public override void ElementPropertyChanged(Microsoft.VisualStudio.Modeling.ElementPropertyChangedEventArgs e)
 			{
 				Neumont.Tools.Modeling.Diagnostics.TraceUtility.TraceRuleStart(e.ModelElement.Store, "Neumont.Tools.ORM.ObjectModel.EntityTypeHasPreferredIdentifier.ModalityChangeRule");
@@ -539,12 +557,14 @@ namespace Neumont.Tools.ORM.ObjectModel
 		[Microsoft.VisualStudio.Modeling.RuleOn(typeof(EntityTypeHasPreferredIdentifier))]
 		private sealed class PreferredIdentifierAddedRuleClass : Microsoft.VisualStudio.Modeling.AddRule
 		{
+			[System.Diagnostics.DebuggerStepThrough()]
 			public PreferredIdentifierAddedRuleClass()
 			{
 				base.IsEnabled = false;
 			}
 			public override bool FireBefore
 			{
+				[System.Diagnostics.DebuggerStepThrough()]
 				get
 				{
 					return true;
@@ -560,6 +580,7 @@ namespace Neumont.Tools.ORM.ObjectModel
 			/// {
 			/// }
 			/// </summary>
+			[System.Diagnostics.DebuggerStepThrough()]
 			public override void ElementAdded(Microsoft.VisualStudio.Modeling.ElementAddedEventArgs e)
 			{
 				Neumont.Tools.Modeling.Diagnostics.TraceUtility.TraceRuleStart(e.ModelElement.Store, "Neumont.Tools.ORM.ObjectModel.EntityTypeHasPreferredIdentifier.PreferredIdentifierAddedRule");
@@ -570,6 +591,7 @@ namespace Neumont.Tools.ORM.ObjectModel
 		[Microsoft.VisualStudio.Modeling.RuleOn(typeof(EntityTypeHasPreferredIdentifier))]
 		private sealed class PreferredIdentifierRolePlayerChangeRuleClass : Microsoft.VisualStudio.Modeling.RolePlayerChangeRule
 		{
+			[System.Diagnostics.DebuggerStepThrough()]
 			public PreferredIdentifierRolePlayerChangeRuleClass()
 			{
 				base.IsEnabled = false;
@@ -584,6 +606,7 @@ namespace Neumont.Tools.ORM.ObjectModel
 			/// {
 			/// }
 			/// </summary>
+			[System.Diagnostics.DebuggerStepThrough()]
 			public override void RolePlayerChanged(Microsoft.VisualStudio.Modeling.RolePlayerChangedEventArgs e)
 			{
 				Neumont.Tools.Modeling.Diagnostics.TraceUtility.TraceRuleStart(e.ElementLink.Store, "Neumont.Tools.ORM.ObjectModel.EntityTypeHasPreferredIdentifier.PreferredIdentifierRolePlayerChangeRule");
@@ -594,6 +617,7 @@ namespace Neumont.Tools.ORM.ObjectModel
 		[Microsoft.VisualStudio.Modeling.RuleOn(typeof(ConstraintRoleSequenceHasRole))]
 		private sealed class TestRemovePreferredIdentifierConstraintRoleAddRuleClass : Microsoft.VisualStudio.Modeling.AddRule
 		{
+			[System.Diagnostics.DebuggerStepThrough()]
 			public TestRemovePreferredIdentifierConstraintRoleAddRuleClass()
 			{
 				base.IsEnabled = false;
@@ -608,6 +632,7 @@ namespace Neumont.Tools.ORM.ObjectModel
 			/// {
 			/// }
 			/// </summary>
+			[System.Diagnostics.DebuggerStepThrough()]
 			public override void ElementAdded(Microsoft.VisualStudio.Modeling.ElementAddedEventArgs e)
 			{
 				Neumont.Tools.Modeling.Diagnostics.TraceUtility.TraceRuleStart(e.ModelElement.Store, "Neumont.Tools.ORM.ObjectModel.EntityTypeHasPreferredIdentifier.TestRemovePreferredIdentifierConstraintRoleAddRule");
@@ -619,6 +644,7 @@ namespace Neumont.Tools.ORM.ObjectModel
 		[Microsoft.VisualStudio.Modeling.RuleOn(typeof(ConstraintRoleSequenceHasRole))]
 		private sealed class TestRemovePreferredIdentifierDeletingRuleClass : Microsoft.VisualStudio.Modeling.DeletingRule
 		{
+			[System.Diagnostics.DebuggerStepThrough()]
 			public TestRemovePreferredIdentifierDeletingRuleClass()
 			{
 				base.IsEnabled = false;
@@ -634,6 +660,7 @@ namespace Neumont.Tools.ORM.ObjectModel
 			/// {
 			/// }
 			/// </summary>
+			[System.Diagnostics.DebuggerStepThrough()]
 			public override void ElementDeleting(Microsoft.VisualStudio.Modeling.ElementDeletingEventArgs e)
 			{
 				Neumont.Tools.Modeling.Diagnostics.TraceUtility.TraceRuleStart(e.ModelElement.Store, "Neumont.Tools.ORM.ObjectModel.EntityTypeHasPreferredIdentifier.TestRemovePreferredIdentifierDeletingRule");
@@ -644,6 +671,7 @@ namespace Neumont.Tools.ORM.ObjectModel
 		[Microsoft.VisualStudio.Modeling.RuleOn(typeof(Objectification))]
 		private sealed class TestRemovePreferredIdentifierObjectificationAddRuleClass : Microsoft.VisualStudio.Modeling.AddRule
 		{
+			[System.Diagnostics.DebuggerStepThrough()]
 			public TestRemovePreferredIdentifierObjectificationAddRuleClass()
 			{
 				base.IsEnabled = false;
@@ -658,6 +686,7 @@ namespace Neumont.Tools.ORM.ObjectModel
 			/// {
 			/// }
 			/// </summary>
+			[System.Diagnostics.DebuggerStepThrough()]
 			public override void ElementAdded(Microsoft.VisualStudio.Modeling.ElementAddedEventArgs e)
 			{
 				Neumont.Tools.Modeling.Diagnostics.TraceUtility.TraceRuleStart(e.ModelElement.Store, "Neumont.Tools.ORM.ObjectModel.EntityTypeHasPreferredIdentifier.TestRemovePreferredIdentifierObjectificationAddRule");
@@ -668,6 +697,7 @@ namespace Neumont.Tools.ORM.ObjectModel
 		[Microsoft.VisualStudio.Modeling.RuleOn(typeof(Objectification))]
 		private sealed class TestRemovePreferredIdentifierObjectificationRolePlayerChangeRuleClass : Microsoft.VisualStudio.Modeling.RolePlayerChangeRule
 		{
+			[System.Diagnostics.DebuggerStepThrough()]
 			public TestRemovePreferredIdentifierObjectificationRolePlayerChangeRuleClass()
 			{
 				base.IsEnabled = false;
@@ -682,6 +712,7 @@ namespace Neumont.Tools.ORM.ObjectModel
 			/// {
 			/// }
 			/// </summary>
+			[System.Diagnostics.DebuggerStepThrough()]
 			public override void RolePlayerChanged(Microsoft.VisualStudio.Modeling.RolePlayerChangedEventArgs e)
 			{
 				Neumont.Tools.Modeling.Diagnostics.TraceUtility.TraceRuleStart(e.ElementLink.Store, "Neumont.Tools.ORM.ObjectModel.EntityTypeHasPreferredIdentifier.TestRemovePreferredIdentifierObjectificationRolePlayerChangeRule");
@@ -692,6 +723,7 @@ namespace Neumont.Tools.ORM.ObjectModel
 		[Microsoft.VisualStudio.Modeling.RuleOn(typeof(FactTypeHasRole))]
 		private sealed class TestRemovePreferredIdentifierRoleAddRuleClass : Microsoft.VisualStudio.Modeling.AddRule
 		{
+			[System.Diagnostics.DebuggerStepThrough()]
 			public TestRemovePreferredIdentifierRoleAddRuleClass()
 			{
 				base.IsEnabled = false;
@@ -706,6 +738,7 @@ namespace Neumont.Tools.ORM.ObjectModel
 			/// {
 			/// }
 			/// </summary>
+			[System.Diagnostics.DebuggerStepThrough()]
 			public override void ElementAdded(Microsoft.VisualStudio.Modeling.ElementAddedEventArgs e)
 			{
 				Neumont.Tools.Modeling.Diagnostics.TraceUtility.TraceRuleStart(e.ModelElement.Store, "Neumont.Tools.ORM.ObjectModel.EntityTypeHasPreferredIdentifier.TestRemovePreferredIdentifierRoleAddRule");
@@ -716,6 +749,7 @@ namespace Neumont.Tools.ORM.ObjectModel
 		[Microsoft.VisualStudio.Modeling.RuleOn(typeof(ObjectTypePlaysRole))]
 		private sealed class TestRemovePreferredIdentifierRolePlayerChangeRuleClass : Microsoft.VisualStudio.Modeling.RolePlayerChangeRule
 		{
+			[System.Diagnostics.DebuggerStepThrough()]
 			public TestRemovePreferredIdentifierRolePlayerChangeRuleClass()
 			{
 				base.IsEnabled = false;
@@ -730,6 +764,7 @@ namespace Neumont.Tools.ORM.ObjectModel
 			/// {
 			/// }
 			/// </summary>
+			[System.Diagnostics.DebuggerStepThrough()]
 			public override void RolePlayerChanged(Microsoft.VisualStudio.Modeling.RolePlayerChangedEventArgs e)
 			{
 				Neumont.Tools.Modeling.Diagnostics.TraceUtility.TraceRuleStart(e.ElementLink.Store, "Neumont.Tools.ORM.ObjectModel.EntityTypeHasPreferredIdentifier.TestRemovePreferredIdentifierRolePlayerChangeRule");
@@ -745,6 +780,7 @@ namespace Neumont.Tools.ORM.ObjectModel
 		[Microsoft.VisualStudio.Modeling.RuleOn(typeof(ConstraintRoleSequenceHasRole))]
 		private sealed class ConstraintRoleSequenceHasRoleAddedRuleClass : Microsoft.VisualStudio.Modeling.AddRule
 		{
+			[System.Diagnostics.DebuggerStepThrough()]
 			public ConstraintRoleSequenceHasRoleAddedRuleClass()
 			{
 				base.IsEnabled = false;
@@ -759,6 +795,7 @@ namespace Neumont.Tools.ORM.ObjectModel
 			/// {
 			/// }
 			/// </summary>
+			[System.Diagnostics.DebuggerStepThrough()]
 			public override void ElementAdded(Microsoft.VisualStudio.Modeling.ElementAddedEventArgs e)
 			{
 				Neumont.Tools.Modeling.Diagnostics.TraceUtility.TraceRuleStart(e.ModelElement.Store, "Neumont.Tools.ORM.ObjectModel.EntityTypeInstance.ConstraintRoleSequenceHasRoleAddedRule");
@@ -769,6 +806,7 @@ namespace Neumont.Tools.ORM.ObjectModel
 		[Microsoft.VisualStudio.Modeling.RuleOn(typeof(ConstraintRoleSequenceHasRole))]
 		private sealed class ConstraintRoleSequenceHasRoleDeletedRuleClass : Microsoft.VisualStudio.Modeling.DeleteRule
 		{
+			[System.Diagnostics.DebuggerStepThrough()]
 			public ConstraintRoleSequenceHasRoleDeletedRuleClass()
 			{
 				base.IsEnabled = false;
@@ -783,6 +821,7 @@ namespace Neumont.Tools.ORM.ObjectModel
 			/// {
 			/// }
 			/// </summary>
+			[System.Diagnostics.DebuggerStepThrough()]
 			public override void ElementDeleted(Microsoft.VisualStudio.Modeling.ElementDeletedEventArgs e)
 			{
 				Neumont.Tools.Modeling.Diagnostics.TraceUtility.TraceRuleStart(e.ModelElement.Store, "Neumont.Tools.ORM.ObjectModel.EntityTypeInstance.ConstraintRoleSequenceHasRoleDeletedRule");
@@ -793,6 +832,7 @@ namespace Neumont.Tools.ORM.ObjectModel
 		[Microsoft.VisualStudio.Modeling.RuleOn(typeof(EntityTypeHasEntityTypeInstance))]
 		private sealed class EntityTypeHasEntityTypeInstanceAddedRuleClass : Microsoft.VisualStudio.Modeling.AddRule
 		{
+			[System.Diagnostics.DebuggerStepThrough()]
 			public EntityTypeHasEntityTypeInstanceAddedRuleClass()
 			{
 				base.IsEnabled = false;
@@ -807,6 +847,7 @@ namespace Neumont.Tools.ORM.ObjectModel
 			/// {
 			/// }
 			/// </summary>
+			[System.Diagnostics.DebuggerStepThrough()]
 			public override void ElementAdded(Microsoft.VisualStudio.Modeling.ElementAddedEventArgs e)
 			{
 				Neumont.Tools.Modeling.Diagnostics.TraceUtility.TraceRuleStart(e.ModelElement.Store, "Neumont.Tools.ORM.ObjectModel.EntityTypeInstance.EntityTypeHasEntityTypeInstanceAddedRule");
@@ -817,6 +858,7 @@ namespace Neumont.Tools.ORM.ObjectModel
 		[Microsoft.VisualStudio.Modeling.RuleOn(typeof(EntityTypeHasPreferredIdentifier))]
 		private sealed class EntityTypeHasPreferredIdentifierAddedRuleClass : Microsoft.VisualStudio.Modeling.AddRule
 		{
+			[System.Diagnostics.DebuggerStepThrough()]
 			public EntityTypeHasPreferredIdentifierAddedRuleClass()
 			{
 				base.IsEnabled = false;
@@ -831,6 +873,7 @@ namespace Neumont.Tools.ORM.ObjectModel
 			/// {
 			/// }
 			/// </summary>
+			[System.Diagnostics.DebuggerStepThrough()]
 			public override void ElementAdded(Microsoft.VisualStudio.Modeling.ElementAddedEventArgs e)
 			{
 				Neumont.Tools.Modeling.Diagnostics.TraceUtility.TraceRuleStart(e.ModelElement.Store, "Neumont.Tools.ORM.ObjectModel.EntityTypeInstance.EntityTypeHasPreferredIdentifierAddedRule");
@@ -841,6 +884,7 @@ namespace Neumont.Tools.ORM.ObjectModel
 		[Microsoft.VisualStudio.Modeling.RuleOn(typeof(EntityTypeHasPreferredIdentifier))]
 		private sealed class EntityTypeHasPreferredIdentifierDeletedRuleClass : Microsoft.VisualStudio.Modeling.DeleteRule
 		{
+			[System.Diagnostics.DebuggerStepThrough()]
 			public EntityTypeHasPreferredIdentifierDeletedRuleClass()
 			{
 				base.IsEnabled = false;
@@ -855,6 +899,7 @@ namespace Neumont.Tools.ORM.ObjectModel
 			/// {
 			/// }
 			/// </summary>
+			[System.Diagnostics.DebuggerStepThrough()]
 			public override void ElementDeleted(Microsoft.VisualStudio.Modeling.ElementDeletedEventArgs e)
 			{
 				Neumont.Tools.Modeling.Diagnostics.TraceUtility.TraceRuleStart(e.ModelElement.Store, "Neumont.Tools.ORM.ObjectModel.EntityTypeInstance.EntityTypeHasPreferredIdentifierDeletedRule");
@@ -865,6 +910,7 @@ namespace Neumont.Tools.ORM.ObjectModel
 		[Microsoft.VisualStudio.Modeling.RuleOn(typeof(EntityTypeHasPreferredIdentifier))]
 		private sealed class EntityTypeHasPreferredIdentifierRolePlayerChangedRuleClass : Microsoft.VisualStudio.Modeling.RolePlayerChangeRule
 		{
+			[System.Diagnostics.DebuggerStepThrough()]
 			public EntityTypeHasPreferredIdentifierRolePlayerChangedRuleClass()
 			{
 				base.IsEnabled = false;
@@ -879,6 +925,7 @@ namespace Neumont.Tools.ORM.ObjectModel
 			/// {
 			/// }
 			/// </summary>
+			[System.Diagnostics.DebuggerStepThrough()]
 			public override void RolePlayerChanged(Microsoft.VisualStudio.Modeling.RolePlayerChangedEventArgs e)
 			{
 				Neumont.Tools.Modeling.Diagnostics.TraceUtility.TraceRuleStart(e.ElementLink.Store, "Neumont.Tools.ORM.ObjectModel.EntityTypeInstance.EntityTypeHasPreferredIdentifierRolePlayerChangedRule");
@@ -889,6 +936,7 @@ namespace Neumont.Tools.ORM.ObjectModel
 		[Microsoft.VisualStudio.Modeling.RuleOn(typeof(EntityTypeInstance))]
 		private sealed class EntityTypeInstanceDeletingRuleClass : Microsoft.VisualStudio.Modeling.DeletingRule
 		{
+			[System.Diagnostics.DebuggerStepThrough()]
 			public EntityTypeInstanceDeletingRuleClass()
 			{
 				base.IsEnabled = false;
@@ -903,6 +951,7 @@ namespace Neumont.Tools.ORM.ObjectModel
 			/// {
 			/// }
 			/// </summary>
+			[System.Diagnostics.DebuggerStepThrough()]
 			public override void ElementDeleting(Microsoft.VisualStudio.Modeling.ElementDeletingEventArgs e)
 			{
 				Neumont.Tools.Modeling.Diagnostics.TraceUtility.TraceRuleStart(e.ModelElement.Store, "Neumont.Tools.ORM.ObjectModel.EntityTypeInstance.EntityTypeInstanceDeletingRule");
@@ -913,6 +962,7 @@ namespace Neumont.Tools.ORM.ObjectModel
 		[Microsoft.VisualStudio.Modeling.RuleOn(typeof(EntityTypeInstanceHasRoleInstance))]
 		private sealed class EntityTypeInstanceHasRoleInstanceAddedRuleClass : Microsoft.VisualStudio.Modeling.AddRule
 		{
+			[System.Diagnostics.DebuggerStepThrough()]
 			public EntityTypeInstanceHasRoleInstanceAddedRuleClass()
 			{
 				base.IsEnabled = false;
@@ -927,6 +977,7 @@ namespace Neumont.Tools.ORM.ObjectModel
 			/// {
 			/// }
 			/// </summary>
+			[System.Diagnostics.DebuggerStepThrough()]
 			public override void ElementAdded(Microsoft.VisualStudio.Modeling.ElementAddedEventArgs e)
 			{
 				Neumont.Tools.Modeling.Diagnostics.TraceUtility.TraceRuleStart(e.ModelElement.Store, "Neumont.Tools.ORM.ObjectModel.EntityTypeInstance.EntityTypeInstanceHasRoleInstanceAddedRule");
@@ -937,6 +988,7 @@ namespace Neumont.Tools.ORM.ObjectModel
 		[Microsoft.VisualStudio.Modeling.RuleOn(typeof(EntityTypeInstanceHasRoleInstance))]
 		private sealed class EntityTypeInstanceHasRoleInstanceDeletedRuleClass : Microsoft.VisualStudio.Modeling.DeleteRule
 		{
+			[System.Diagnostics.DebuggerStepThrough()]
 			public EntityTypeInstanceHasRoleInstanceDeletedRuleClass()
 			{
 				base.IsEnabled = false;
@@ -951,6 +1003,7 @@ namespace Neumont.Tools.ORM.ObjectModel
 			/// {
 			/// }
 			/// </summary>
+			[System.Diagnostics.DebuggerStepThrough()]
 			public override void ElementDeleted(Microsoft.VisualStudio.Modeling.ElementDeletedEventArgs e)
 			{
 				Neumont.Tools.Modeling.Diagnostics.TraceUtility.TraceRuleStart(e.ModelElement.Store, "Neumont.Tools.ORM.ObjectModel.EntityTypeInstance.EntityTypeInstanceHasRoleInstanceDeletedRule");
@@ -961,6 +1014,7 @@ namespace Neumont.Tools.ORM.ObjectModel
 		[Microsoft.VisualStudio.Modeling.RuleOn(typeof(RoleInstanceHasPopulationUniquenessError))]
 		private sealed class RoleInstanceHasPopulationUniquenessErrorDeletedRuleClass : Microsoft.VisualStudio.Modeling.DeleteRule
 		{
+			[System.Diagnostics.DebuggerStepThrough()]
 			public RoleInstanceHasPopulationUniquenessErrorDeletedRuleClass()
 			{
 				base.IsEnabled = false;
@@ -975,6 +1029,7 @@ namespace Neumont.Tools.ORM.ObjectModel
 			/// {
 			/// }
 			/// </summary>
+			[System.Diagnostics.DebuggerStepThrough()]
 			public override void ElementDeleted(Microsoft.VisualStudio.Modeling.ElementDeletedEventArgs e)
 			{
 				Neumont.Tools.Modeling.Diagnostics.TraceUtility.TraceRuleStart(e.ModelElement.Store, "Neumont.Tools.ORM.ObjectModel.EntityTypeInstance.RoleInstanceHasPopulationUniquenessErrorDeletedRule");
@@ -990,6 +1045,7 @@ namespace Neumont.Tools.ORM.ObjectModel
 		[Microsoft.VisualStudio.Modeling.RuleOn(typeof(ConstraintRoleSequenceHasRole), FireTime=Microsoft.VisualStudio.Modeling.TimeToFire.LocalCommit, Priority=Neumont.Tools.Modeling.FrameworkDomainModel.BeforeDelayValidateRulePriority)]
 		private sealed class ConstraintRoleSequenceHasRoleAddedRuleClass : Microsoft.VisualStudio.Modeling.AddRule
 		{
+			[System.Diagnostics.DebuggerStepThrough()]
 			public ConstraintRoleSequenceHasRoleAddedRuleClass()
 			{
 				base.IsEnabled = false;
@@ -1004,6 +1060,7 @@ namespace Neumont.Tools.ORM.ObjectModel
 			/// {
 			/// }
 			/// </summary>
+			[System.Diagnostics.DebuggerStepThrough()]
 			public override void ElementAdded(Microsoft.VisualStudio.Modeling.ElementAddedEventArgs e)
 			{
 				Neumont.Tools.Modeling.Diagnostics.TraceUtility.TraceRuleStart(e.ModelElement.Store, "Neumont.Tools.ORM.ObjectModel.EqualityConstraint.ConstraintRoleSequenceHasRoleAddedRule");
@@ -1014,6 +1071,7 @@ namespace Neumont.Tools.ORM.ObjectModel
 		[Microsoft.VisualStudio.Modeling.RuleOn(typeof(ConstraintRoleSequenceHasRole))]
 		private sealed class ConstraintRoleSequenceHasRoleDeletingRuleClass : Microsoft.VisualStudio.Modeling.DeletingRule
 		{
+			[System.Diagnostics.DebuggerStepThrough()]
 			public ConstraintRoleSequenceHasRoleDeletingRuleClass()
 			{
 				base.IsEnabled = false;
@@ -1028,6 +1086,7 @@ namespace Neumont.Tools.ORM.ObjectModel
 			/// {
 			/// }
 			/// </summary>
+			[System.Diagnostics.DebuggerStepThrough()]
 			public override void ElementDeleting(Microsoft.VisualStudio.Modeling.ElementDeletingEventArgs e)
 			{
 				Neumont.Tools.Modeling.Diagnostics.TraceUtility.TraceRuleStart(e.ModelElement.Store, "Neumont.Tools.ORM.ObjectModel.EqualityConstraint.ConstraintRoleSequenceHasRoleDeletingRule");
@@ -1043,6 +1102,7 @@ namespace Neumont.Tools.ORM.ObjectModel
 		[Microsoft.VisualStudio.Modeling.RuleOn(typeof(ExclusiveOrConstraintCoupler))]
 		private sealed class CouplerAddRuleClass : Microsoft.VisualStudio.Modeling.AddRule
 		{
+			[System.Diagnostics.DebuggerStepThrough()]
 			public CouplerAddRuleClass()
 			{
 				base.IsEnabled = false;
@@ -1057,6 +1117,7 @@ namespace Neumont.Tools.ORM.ObjectModel
 			/// {
 			/// }
 			/// </summary>
+			[System.Diagnostics.DebuggerStepThrough()]
 			public override void ElementAdded(Microsoft.VisualStudio.Modeling.ElementAddedEventArgs e)
 			{
 				Neumont.Tools.Modeling.Diagnostics.TraceUtility.TraceRuleStart(e.ModelElement.Store, "Neumont.Tools.ORM.ObjectModel.ExclusiveOrConstraintCoupler.CouplerAddRule");
@@ -1067,6 +1128,7 @@ namespace Neumont.Tools.ORM.ObjectModel
 		[Microsoft.VisualStudio.Modeling.RuleOn(typeof(ExclusiveOrConstraintCoupler), FireTime=Microsoft.VisualStudio.Modeling.TimeToFire.LocalCommit, Priority=Neumont.Tools.Modeling.FrameworkDomainModel.BeforeDelayValidateRulePriority)]
 		private sealed class CouplerDeleteRuleClass : Microsoft.VisualStudio.Modeling.DeleteRule
 		{
+			[System.Diagnostics.DebuggerStepThrough()]
 			public CouplerDeleteRuleClass()
 			{
 				base.IsEnabled = false;
@@ -1081,6 +1143,7 @@ namespace Neumont.Tools.ORM.ObjectModel
 			/// {
 			/// }
 			/// </summary>
+			[System.Diagnostics.DebuggerStepThrough()]
 			public override void ElementDeleted(Microsoft.VisualStudio.Modeling.ElementDeletedEventArgs e)
 			{
 				Neumont.Tools.Modeling.Diagnostics.TraceUtility.TraceRuleStart(e.ModelElement.Store, "Neumont.Tools.ORM.ObjectModel.ExclusiveOrConstraintCoupler.CouplerDeleteRule");
@@ -1091,6 +1154,7 @@ namespace Neumont.Tools.ORM.ObjectModel
 		[Microsoft.VisualStudio.Modeling.RuleOn(typeof(ExclusionConstraint))]
 		private sealed class ExclusionConstraintChangeRuleClass : Microsoft.VisualStudio.Modeling.ChangeRule
 		{
+			[System.Diagnostics.DebuggerStepThrough()]
 			public ExclusionConstraintChangeRuleClass()
 			{
 				base.IsEnabled = false;
@@ -1105,6 +1169,7 @@ namespace Neumont.Tools.ORM.ObjectModel
 			/// {
 			/// }
 			/// </summary>
+			[System.Diagnostics.DebuggerStepThrough()]
 			public override void ElementPropertyChanged(Microsoft.VisualStudio.Modeling.ElementPropertyChangedEventArgs e)
 			{
 				Neumont.Tools.Modeling.Diagnostics.TraceUtility.TraceRuleStart(e.ModelElement.Store, "Neumont.Tools.ORM.ObjectModel.ExclusiveOrConstraintCoupler.ExclusionConstraintChangeRule");
@@ -1115,6 +1180,7 @@ namespace Neumont.Tools.ORM.ObjectModel
 		[Microsoft.VisualStudio.Modeling.RuleOn(typeof(MandatoryConstraint))]
 		private sealed class MandatoryConstraintChangeRuleClass : Microsoft.VisualStudio.Modeling.ChangeRule
 		{
+			[System.Diagnostics.DebuggerStepThrough()]
 			public MandatoryConstraintChangeRuleClass()
 			{
 				base.IsEnabled = false;
@@ -1129,6 +1195,7 @@ namespace Neumont.Tools.ORM.ObjectModel
 			/// {
 			/// }
 			/// </summary>
+			[System.Diagnostics.DebuggerStepThrough()]
 			public override void ElementPropertyChanged(Microsoft.VisualStudio.Modeling.ElementPropertyChangedEventArgs e)
 			{
 				Neumont.Tools.Modeling.Diagnostics.TraceUtility.TraceRuleStart(e.ModelElement.Store, "Neumont.Tools.ORM.ObjectModel.ExclusiveOrConstraintCoupler.MandatoryConstraintChangeRule");
@@ -1139,6 +1206,7 @@ namespace Neumont.Tools.ORM.ObjectModel
 		[Microsoft.VisualStudio.Modeling.RuleOn(typeof(ConstraintRoleSequenceHasRole))]
 		private sealed class RoleAddRuleClass : Microsoft.VisualStudio.Modeling.AddRule
 		{
+			[System.Diagnostics.DebuggerStepThrough()]
 			public RoleAddRuleClass()
 			{
 				base.IsEnabled = false;
@@ -1153,6 +1221,7 @@ namespace Neumont.Tools.ORM.ObjectModel
 			/// {
 			/// }
 			/// </summary>
+			[System.Diagnostics.DebuggerStepThrough()]
 			public override void ElementAdded(Microsoft.VisualStudio.Modeling.ElementAddedEventArgs e)
 			{
 				Neumont.Tools.Modeling.Diagnostics.TraceUtility.TraceRuleStart(e.ModelElement.Store, "Neumont.Tools.ORM.ObjectModel.ExclusiveOrConstraintCoupler.RoleAddRule");
@@ -1163,6 +1232,7 @@ namespace Neumont.Tools.ORM.ObjectModel
 		[Microsoft.VisualStudio.Modeling.RuleOn(typeof(ConstraintRoleSequenceHasRole))]
 		private sealed partial class RoleDeletingRuleClass : Microsoft.VisualStudio.Modeling.DeletingRule
 		{
+			[System.Diagnostics.DebuggerStepThrough()]
 			public RoleDeletingRuleClass()
 			{
 				base.IsEnabled = false;
@@ -1180,6 +1250,7 @@ namespace Neumont.Tools.ORM.ObjectModel
 			/// 	}
 			/// }
 			/// </summary>
+			[System.Diagnostics.DebuggerStepThrough()]
 			public override void ElementDeleting(Microsoft.VisualStudio.Modeling.ElementDeletingEventArgs e)
 			{
 				Neumont.Tools.Modeling.Diagnostics.TraceUtility.TraceRuleStart(e.ModelElement.Store, "Neumont.Tools.ORM.ObjectModel.ExclusiveOrConstraintCoupler.RoleDeletingRule");
@@ -1190,6 +1261,7 @@ namespace Neumont.Tools.ORM.ObjectModel
 		[Microsoft.VisualStudio.Modeling.RuleOn(typeof(ConstraintRoleSequenceHasRole))]
 		private sealed class RolePositionChangeRuleClass : Microsoft.VisualStudio.Modeling.RolePlayerPositionChangeRule
 		{
+			[System.Diagnostics.DebuggerStepThrough()]
 			public RolePositionChangeRuleClass()
 			{
 				base.IsEnabled = false;
@@ -1204,6 +1276,7 @@ namespace Neumont.Tools.ORM.ObjectModel
 			/// {
 			/// }
 			/// </summary>
+			[System.Diagnostics.DebuggerStepThrough()]
 			public override void RolePlayerPositionChanged(Microsoft.VisualStudio.Modeling.RolePlayerOrderChangedEventArgs e)
 			{
 				Neumont.Tools.Modeling.Diagnostics.TraceUtility.TraceRuleStart(e.SourceElement.Store, "Neumont.Tools.ORM.ObjectModel.ExclusiveOrConstraintCoupler.RolePositionChangeRule");
@@ -1214,6 +1287,7 @@ namespace Neumont.Tools.ORM.ObjectModel
 		[Microsoft.VisualStudio.Modeling.RuleOn(typeof(SetComparisonConstraintHasRoleSequence))]
 		private sealed class RoleSequenceAddRuleClass : Microsoft.VisualStudio.Modeling.AddRule
 		{
+			[System.Diagnostics.DebuggerStepThrough()]
 			public RoleSequenceAddRuleClass()
 			{
 				base.IsEnabled = false;
@@ -1228,6 +1302,7 @@ namespace Neumont.Tools.ORM.ObjectModel
 			/// {
 			/// }
 			/// </summary>
+			[System.Diagnostics.DebuggerStepThrough()]
 			public override void ElementAdded(Microsoft.VisualStudio.Modeling.ElementAddedEventArgs e)
 			{
 				Neumont.Tools.Modeling.Diagnostics.TraceUtility.TraceRuleStart(e.ModelElement.Store, "Neumont.Tools.ORM.ObjectModel.ExclusiveOrConstraintCoupler.RoleSequenceAddRule");
@@ -1238,6 +1313,7 @@ namespace Neumont.Tools.ORM.ObjectModel
 		[Microsoft.VisualStudio.Modeling.RuleOn(typeof(SetComparisonConstraintHasRoleSequence))]
 		private sealed class RoleSequencePositionChangeRuleClass : Microsoft.VisualStudio.Modeling.RolePlayerPositionChangeRule
 		{
+			[System.Diagnostics.DebuggerStepThrough()]
 			public RoleSequencePositionChangeRuleClass()
 			{
 				base.IsEnabled = false;
@@ -1252,6 +1328,7 @@ namespace Neumont.Tools.ORM.ObjectModel
 			/// {
 			/// }
 			/// </summary>
+			[System.Diagnostics.DebuggerStepThrough()]
 			public override void RolePlayerPositionChanged(Microsoft.VisualStudio.Modeling.RolePlayerOrderChangedEventArgs e)
 			{
 				Neumont.Tools.Modeling.Diagnostics.TraceUtility.TraceRuleStart(e.SourceElement.Store, "Neumont.Tools.ORM.ObjectModel.ExclusiveOrConstraintCoupler.RoleSequencePositionChangeRule");
@@ -1267,6 +1344,7 @@ namespace Neumont.Tools.ORM.ObjectModel
 		[Microsoft.VisualStudio.Modeling.RuleOn(typeof(FactTypeHasRole))]
 		private sealed class BlockRoleMigrationRuleClass : Microsoft.VisualStudio.Modeling.RolePlayerChangeRule
 		{
+			[System.Diagnostics.DebuggerStepThrough()]
 			public BlockRoleMigrationRuleClass()
 			{
 				base.IsEnabled = false;
@@ -1281,6 +1359,7 @@ namespace Neumont.Tools.ORM.ObjectModel
 			/// {
 			/// }
 			/// </summary>
+			[System.Diagnostics.DebuggerStepThrough()]
 			public override void RolePlayerChanged(Microsoft.VisualStudio.Modeling.RolePlayerChangedEventArgs e)
 			{
 				Neumont.Tools.Modeling.Diagnostics.TraceUtility.TraceRuleStart(e.ElementLink.Store, "Neumont.Tools.ORM.ObjectModel.FactType.BlockRoleMigrationRule");
@@ -1291,6 +1370,7 @@ namespace Neumont.Tools.ORM.ObjectModel
 		[Microsoft.VisualStudio.Modeling.RuleOn(typeof(ModelHasFactType))]
 		private sealed class FactTypeAddedRuleClass : Microsoft.VisualStudio.Modeling.AddRule
 		{
+			[System.Diagnostics.DebuggerStepThrough()]
 			public FactTypeAddedRuleClass()
 			{
 				base.IsEnabled = false;
@@ -1305,6 +1385,7 @@ namespace Neumont.Tools.ORM.ObjectModel
 			/// {
 			/// }
 			/// </summary>
+			[System.Diagnostics.DebuggerStepThrough()]
 			public override void ElementAdded(Microsoft.VisualStudio.Modeling.ElementAddedEventArgs e)
 			{
 				Neumont.Tools.Modeling.Diagnostics.TraceUtility.TraceRuleStart(e.ModelElement.Store, "Neumont.Tools.ORM.ObjectModel.FactType.FactTypeAddedRule");
@@ -1315,6 +1396,7 @@ namespace Neumont.Tools.ORM.ObjectModel
 		[Microsoft.VisualStudio.Modeling.RuleOn(typeof(FactType))]
 		private sealed class FactTypeChangeRuleClass : Microsoft.VisualStudio.Modeling.ChangeRule
 		{
+			[System.Diagnostics.DebuggerStepThrough()]
 			public FactTypeChangeRuleClass()
 			{
 				base.IsEnabled = false;
@@ -1329,6 +1411,7 @@ namespace Neumont.Tools.ORM.ObjectModel
 			/// {
 			/// }
 			/// </summary>
+			[System.Diagnostics.DebuggerStepThrough()]
 			public override void ElementPropertyChanged(Microsoft.VisualStudio.Modeling.ElementPropertyChangedEventArgs e)
 			{
 				Neumont.Tools.Modeling.Diagnostics.TraceUtility.TraceRuleStart(e.ModelElement.Store, "Neumont.Tools.ORM.ObjectModel.FactType.FactTypeChangeRule");
@@ -1339,6 +1422,7 @@ namespace Neumont.Tools.ORM.ObjectModel
 		[Microsoft.VisualStudio.Modeling.RuleOn(typeof(FactTypeHasReadingOrder))]
 		private sealed class FactTypeHasReadingOrderAddRuleClass : Microsoft.VisualStudio.Modeling.AddRule
 		{
+			[System.Diagnostics.DebuggerStepThrough()]
 			public FactTypeHasReadingOrderAddRuleClass()
 			{
 				base.IsEnabled = false;
@@ -1353,6 +1437,7 @@ namespace Neumont.Tools.ORM.ObjectModel
 			/// {
 			/// }
 			/// </summary>
+			[System.Diagnostics.DebuggerStepThrough()]
 			public override void ElementAdded(Microsoft.VisualStudio.Modeling.ElementAddedEventArgs e)
 			{
 				Neumont.Tools.Modeling.Diagnostics.TraceUtility.TraceRuleStart(e.ModelElement.Store, "Neumont.Tools.ORM.ObjectModel.FactType.FactTypeHasReadingOrderAddRule");
@@ -1363,6 +1448,7 @@ namespace Neumont.Tools.ORM.ObjectModel
 		[Microsoft.VisualStudio.Modeling.RuleOn(typeof(FactTypeHasReadingOrder))]
 		private sealed class FactTypeHasReadingOrderDeleteRuleClass : Microsoft.VisualStudio.Modeling.DeleteRule
 		{
+			[System.Diagnostics.DebuggerStepThrough()]
 			public FactTypeHasReadingOrderDeleteRuleClass()
 			{
 				base.IsEnabled = false;
@@ -1377,6 +1463,7 @@ namespace Neumont.Tools.ORM.ObjectModel
 			/// {
 			/// }
 			/// </summary>
+			[System.Diagnostics.DebuggerStepThrough()]
 			public override void ElementDeleted(Microsoft.VisualStudio.Modeling.ElementDeletedEventArgs e)
 			{
 				Neumont.Tools.Modeling.Diagnostics.TraceUtility.TraceRuleStart(e.ModelElement.Store, "Neumont.Tools.ORM.ObjectModel.FactType.FactTypeHasReadingOrderDeleteRule");
@@ -1387,6 +1474,7 @@ namespace Neumont.Tools.ORM.ObjectModel
 		[Microsoft.VisualStudio.Modeling.RuleOn(typeof(FactTypeHasRole))]
 		private sealed class FactTypeHasRoleAddRuleClass : Microsoft.VisualStudio.Modeling.AddRule
 		{
+			[System.Diagnostics.DebuggerStepThrough()]
 			public FactTypeHasRoleAddRuleClass()
 			{
 				base.IsEnabled = false;
@@ -1401,6 +1489,7 @@ namespace Neumont.Tools.ORM.ObjectModel
 			/// {
 			/// }
 			/// </summary>
+			[System.Diagnostics.DebuggerStepThrough()]
 			public override void ElementAdded(Microsoft.VisualStudio.Modeling.ElementAddedEventArgs e)
 			{
 				Neumont.Tools.Modeling.Diagnostics.TraceUtility.TraceRuleStart(e.ModelElement.Store, "Neumont.Tools.ORM.ObjectModel.FactType.FactTypeHasRoleAddRule");
@@ -1411,6 +1500,7 @@ namespace Neumont.Tools.ORM.ObjectModel
 		[Microsoft.VisualStudio.Modeling.RuleOn(typeof(FactTypeHasRole))]
 		private sealed class FactTypeHasRoleDeleteRuleClass : Microsoft.VisualStudio.Modeling.DeleteRule
 		{
+			[System.Diagnostics.DebuggerStepThrough()]
 			public FactTypeHasRoleDeleteRuleClass()
 			{
 				base.IsEnabled = false;
@@ -1425,6 +1515,7 @@ namespace Neumont.Tools.ORM.ObjectModel
 			/// {
 			/// }
 			/// </summary>
+			[System.Diagnostics.DebuggerStepThrough()]
 			public override void ElementDeleted(Microsoft.VisualStudio.Modeling.ElementDeletedEventArgs e)
 			{
 				Neumont.Tools.Modeling.Diagnostics.TraceUtility.TraceRuleStart(e.ModelElement.Store, "Neumont.Tools.ORM.ObjectModel.FactType.FactTypeHasRoleDeleteRule");
@@ -1435,6 +1526,7 @@ namespace Neumont.Tools.ORM.ObjectModel
 		[Microsoft.VisualStudio.Modeling.RuleOn(typeof(FactSetConstraint))]
 		private sealed class InternalConstraintAddRuleClass : Microsoft.VisualStudio.Modeling.AddRule
 		{
+			[System.Diagnostics.DebuggerStepThrough()]
 			public InternalConstraintAddRuleClass()
 			{
 				base.IsEnabled = false;
@@ -1449,6 +1541,7 @@ namespace Neumont.Tools.ORM.ObjectModel
 			/// {
 			/// }
 			/// </summary>
+			[System.Diagnostics.DebuggerStepThrough()]
 			public override void ElementAdded(Microsoft.VisualStudio.Modeling.ElementAddedEventArgs e)
 			{
 				Neumont.Tools.Modeling.Diagnostics.TraceUtility.TraceRuleStart(e.ModelElement.Store, "Neumont.Tools.ORM.ObjectModel.FactType.InternalConstraintAddRule");
@@ -1459,6 +1552,7 @@ namespace Neumont.Tools.ORM.ObjectModel
 		[Microsoft.VisualStudio.Modeling.RuleOn(typeof(FactSetConstraint))]
 		private sealed class InternalConstraintDeleteRuleClass : Microsoft.VisualStudio.Modeling.DeleteRule
 		{
+			[System.Diagnostics.DebuggerStepThrough()]
 			public InternalConstraintDeleteRuleClass()
 			{
 				base.IsEnabled = false;
@@ -1473,6 +1567,7 @@ namespace Neumont.Tools.ORM.ObjectModel
 			/// {
 			/// }
 			/// </summary>
+			[System.Diagnostics.DebuggerStepThrough()]
 			public override void ElementDeleted(Microsoft.VisualStudio.Modeling.ElementDeletedEventArgs e)
 			{
 				Neumont.Tools.Modeling.Diagnostics.TraceUtility.TraceRuleStart(e.ModelElement.Store, "Neumont.Tools.ORM.ObjectModel.FactType.InternalConstraintDeleteRule");
@@ -1483,6 +1578,7 @@ namespace Neumont.Tools.ORM.ObjectModel
 		[Microsoft.VisualStudio.Modeling.RuleOn(typeof(ConstraintRoleSequenceHasRole))]
 		private sealed class InternalConstraintCollectionHasConstraintAddedRuleClass : Microsoft.VisualStudio.Modeling.AddRule
 		{
+			[System.Diagnostics.DebuggerStepThrough()]
 			public InternalConstraintCollectionHasConstraintAddedRuleClass()
 			{
 				base.IsEnabled = false;
@@ -1497,6 +1593,7 @@ namespace Neumont.Tools.ORM.ObjectModel
 			/// {
 			/// }
 			/// </summary>
+			[System.Diagnostics.DebuggerStepThrough()]
 			public override void ElementAdded(Microsoft.VisualStudio.Modeling.ElementAddedEventArgs e)
 			{
 				Neumont.Tools.Modeling.Diagnostics.TraceUtility.TraceRuleStart(e.ModelElement.Store, "Neumont.Tools.ORM.ObjectModel.FactType.InternalConstraintCollectionHasConstraintAddedRule");
@@ -1507,6 +1604,7 @@ namespace Neumont.Tools.ORM.ObjectModel
 		[Microsoft.VisualStudio.Modeling.RuleOn(typeof(ConstraintRoleSequenceHasRole))]
 		private sealed class InternalConstraintCollectionHasConstraintDeleteRuleClass : Microsoft.VisualStudio.Modeling.DeleteRule
 		{
+			[System.Diagnostics.DebuggerStepThrough()]
 			public InternalConstraintCollectionHasConstraintDeleteRuleClass()
 			{
 				base.IsEnabled = false;
@@ -1521,6 +1619,7 @@ namespace Neumont.Tools.ORM.ObjectModel
 			/// {
 			/// }
 			/// </summary>
+			[System.Diagnostics.DebuggerStepThrough()]
 			public override void ElementDeleted(Microsoft.VisualStudio.Modeling.ElementDeletedEventArgs e)
 			{
 				Neumont.Tools.Modeling.Diagnostics.TraceUtility.TraceRuleStart(e.ModelElement.Store, "Neumont.Tools.ORM.ObjectModel.FactType.InternalConstraintCollectionHasConstraintDeleteRule");
@@ -1531,6 +1630,7 @@ namespace Neumont.Tools.ORM.ObjectModel
 		[Microsoft.VisualStudio.Modeling.RuleOn(typeof(UniquenessConstraint))]
 		private sealed class InternalUniquenessConstraintChangeRuleClass : Microsoft.VisualStudio.Modeling.ChangeRule
 		{
+			[System.Diagnostics.DebuggerStepThrough()]
 			public InternalUniquenessConstraintChangeRuleClass()
 			{
 				base.IsEnabled = false;
@@ -1545,6 +1645,7 @@ namespace Neumont.Tools.ORM.ObjectModel
 			/// {
 			/// }
 			/// </summary>
+			[System.Diagnostics.DebuggerStepThrough()]
 			public override void ElementPropertyChanged(Microsoft.VisualStudio.Modeling.ElementPropertyChangedEventArgs e)
 			{
 				Neumont.Tools.Modeling.Diagnostics.TraceUtility.TraceRuleStart(e.ModelElement.Store, "Neumont.Tools.ORM.ObjectModel.FactType.InternalUniquenessConstraintChangeRule");
@@ -1555,6 +1656,7 @@ namespace Neumont.Tools.ORM.ObjectModel
 		[Microsoft.VisualStudio.Modeling.RuleOn(typeof(ReadingOrderHasReading))]
 		private sealed class ReadingOrderHasReadingAddRuleClass : Microsoft.VisualStudio.Modeling.AddRule
 		{
+			[System.Diagnostics.DebuggerStepThrough()]
 			public ReadingOrderHasReadingAddRuleClass()
 			{
 				base.IsEnabled = false;
@@ -1569,6 +1671,7 @@ namespace Neumont.Tools.ORM.ObjectModel
 			/// {
 			/// }
 			/// </summary>
+			[System.Diagnostics.DebuggerStepThrough()]
 			public override void ElementAdded(Microsoft.VisualStudio.Modeling.ElementAddedEventArgs e)
 			{
 				Neumont.Tools.Modeling.Diagnostics.TraceUtility.TraceRuleStart(e.ModelElement.Store, "Neumont.Tools.ORM.ObjectModel.FactType.ReadingOrderHasReadingAddRule");
@@ -1579,6 +1682,7 @@ namespace Neumont.Tools.ORM.ObjectModel
 		[Microsoft.VisualStudio.Modeling.RuleOn(typeof(ReadingOrderHasReading))]
 		private sealed class ReadingOrderHasReadingDeleteRuleClass : Microsoft.VisualStudio.Modeling.DeleteRule
 		{
+			[System.Diagnostics.DebuggerStepThrough()]
 			public ReadingOrderHasReadingDeleteRuleClass()
 			{
 				base.IsEnabled = false;
@@ -1593,6 +1697,7 @@ namespace Neumont.Tools.ORM.ObjectModel
 			/// {
 			/// }
 			/// </summary>
+			[System.Diagnostics.DebuggerStepThrough()]
 			public override void ElementDeleted(Microsoft.VisualStudio.Modeling.ElementDeletedEventArgs e)
 			{
 				Neumont.Tools.Modeling.Diagnostics.TraceUtility.TraceRuleStart(e.ModelElement.Store, "Neumont.Tools.ORM.ObjectModel.FactType.ReadingOrderHasReadingDeleteRule");
@@ -1603,6 +1708,7 @@ namespace Neumont.Tools.ORM.ObjectModel
 		[Microsoft.VisualStudio.Modeling.RuleOn(typeof(Objectification), Priority=1)]
 		private sealed class ValidateFactTypeNameForObjectificationAddedRuleClass : Microsoft.VisualStudio.Modeling.AddRule
 		{
+			[System.Diagnostics.DebuggerStepThrough()]
 			public ValidateFactTypeNameForObjectificationAddedRuleClass()
 			{
 				base.IsEnabled = false;
@@ -1617,6 +1723,7 @@ namespace Neumont.Tools.ORM.ObjectModel
 			/// {
 			/// }
 			/// </summary>
+			[System.Diagnostics.DebuggerStepThrough()]
 			public override void ElementAdded(Microsoft.VisualStudio.Modeling.ElementAddedEventArgs e)
 			{
 				Neumont.Tools.Modeling.Diagnostics.TraceUtility.TraceRuleStart(e.ModelElement.Store, "Neumont.Tools.ORM.ObjectModel.FactType.ValidateFactTypeNameForObjectificationAddedRule");
@@ -1627,6 +1734,7 @@ namespace Neumont.Tools.ORM.ObjectModel
 		[Microsoft.VisualStudio.Modeling.RuleOn(typeof(Objectification), Priority=1)]
 		private sealed class ValidateFactTypeNameForObjectificationDeleteRuleClass : Microsoft.VisualStudio.Modeling.DeleteRule
 		{
+			[System.Diagnostics.DebuggerStepThrough()]
 			public ValidateFactTypeNameForObjectificationDeleteRuleClass()
 			{
 				base.IsEnabled = false;
@@ -1641,6 +1749,7 @@ namespace Neumont.Tools.ORM.ObjectModel
 			/// {
 			/// }
 			/// </summary>
+			[System.Diagnostics.DebuggerStepThrough()]
 			public override void ElementDeleted(Microsoft.VisualStudio.Modeling.ElementDeletedEventArgs e)
 			{
 				Neumont.Tools.Modeling.Diagnostics.TraceUtility.TraceRuleStart(e.ModelElement.Store, "Neumont.Tools.ORM.ObjectModel.FactType.ValidateFactTypeNameForObjectificationDeleteRule");
@@ -1651,6 +1760,7 @@ namespace Neumont.Tools.ORM.ObjectModel
 		[Microsoft.VisualStudio.Modeling.RuleOn(typeof(Objectification), Priority=1)]
 		private sealed class ValidateFactTypeNameForObjectificationRolePlayerChangeRuleClass : Microsoft.VisualStudio.Modeling.RolePlayerChangeRule
 		{
+			[System.Diagnostics.DebuggerStepThrough()]
 			public ValidateFactTypeNameForObjectificationRolePlayerChangeRuleClass()
 			{
 				base.IsEnabled = false;
@@ -1665,6 +1775,7 @@ namespace Neumont.Tools.ORM.ObjectModel
 			/// {
 			/// }
 			/// </summary>
+			[System.Diagnostics.DebuggerStepThrough()]
 			public override void RolePlayerChanged(Microsoft.VisualStudio.Modeling.RolePlayerChangedEventArgs e)
 			{
 				Neumont.Tools.Modeling.Diagnostics.TraceUtility.TraceRuleStart(e.ElementLink.Store, "Neumont.Tools.ORM.ObjectModel.FactType.ValidateFactTypeNameForObjectificationRolePlayerChangeRule");
@@ -1675,6 +1786,7 @@ namespace Neumont.Tools.ORM.ObjectModel
 		[Microsoft.VisualStudio.Modeling.RuleOn(typeof(ObjectType))]
 		private sealed class ValidateFactTypeNameForObjectTypeNameChangeRuleClass : Microsoft.VisualStudio.Modeling.ChangeRule
 		{
+			[System.Diagnostics.DebuggerStepThrough()]
 			public ValidateFactTypeNameForObjectTypeNameChangeRuleClass()
 			{
 				base.IsEnabled = false;
@@ -1689,6 +1801,7 @@ namespace Neumont.Tools.ORM.ObjectModel
 			/// {
 			/// }
 			/// </summary>
+			[System.Diagnostics.DebuggerStepThrough()]
 			public override void ElementPropertyChanged(Microsoft.VisualStudio.Modeling.ElementPropertyChangedEventArgs e)
 			{
 				Neumont.Tools.Modeling.Diagnostics.TraceUtility.TraceRuleStart(e.ModelElement.Store, "Neumont.Tools.ORM.ObjectModel.FactType.ValidateFactTypeNameForObjectTypeNameChangeRule");
@@ -1699,6 +1812,7 @@ namespace Neumont.Tools.ORM.ObjectModel
 		[Microsoft.VisualStudio.Modeling.RuleOn(typeof(Reading))]
 		private sealed class ValidateFactTypeNameForReadingChangeRuleClass : Microsoft.VisualStudio.Modeling.ChangeRule
 		{
+			[System.Diagnostics.DebuggerStepThrough()]
 			public ValidateFactTypeNameForReadingChangeRuleClass()
 			{
 				base.IsEnabled = false;
@@ -1713,6 +1827,7 @@ namespace Neumont.Tools.ORM.ObjectModel
 			/// {
 			/// }
 			/// </summary>
+			[System.Diagnostics.DebuggerStepThrough()]
 			public override void ElementPropertyChanged(Microsoft.VisualStudio.Modeling.ElementPropertyChangedEventArgs e)
 			{
 				Neumont.Tools.Modeling.Diagnostics.TraceUtility.TraceRuleStart(e.ModelElement.Store, "Neumont.Tools.ORM.ObjectModel.FactType.ValidateFactTypeNameForReadingChangeRule");
@@ -1723,6 +1838,7 @@ namespace Neumont.Tools.ORM.ObjectModel
 		[Microsoft.VisualStudio.Modeling.RuleOn(typeof(FactTypeHasReadingOrder))]
 		private sealed class ValidateFactTypeNameForReadingOrderReorderRuleClass : Microsoft.VisualStudio.Modeling.RolePlayerPositionChangeRule
 		{
+			[System.Diagnostics.DebuggerStepThrough()]
 			public ValidateFactTypeNameForReadingOrderReorderRuleClass()
 			{
 				base.IsEnabled = false;
@@ -1737,6 +1853,7 @@ namespace Neumont.Tools.ORM.ObjectModel
 			/// {
 			/// }
 			/// </summary>
+			[System.Diagnostics.DebuggerStepThrough()]
 			public override void RolePlayerPositionChanged(Microsoft.VisualStudio.Modeling.RolePlayerOrderChangedEventArgs e)
 			{
 				Neumont.Tools.Modeling.Diagnostics.TraceUtility.TraceRuleStart(e.SourceElement.Store, "Neumont.Tools.ORM.ObjectModel.FactType.ValidateFactTypeNameForReadingOrderReorderRule");
@@ -1747,6 +1864,7 @@ namespace Neumont.Tools.ORM.ObjectModel
 		[Microsoft.VisualStudio.Modeling.RuleOn(typeof(ReadingOrderHasReading))]
 		private sealed class ValidateFactTypeNameForReadingReorderRuleClass : Microsoft.VisualStudio.Modeling.RolePlayerPositionChangeRule
 		{
+			[System.Diagnostics.DebuggerStepThrough()]
 			public ValidateFactTypeNameForReadingReorderRuleClass()
 			{
 				base.IsEnabled = false;
@@ -1761,6 +1879,7 @@ namespace Neumont.Tools.ORM.ObjectModel
 			/// {
 			/// }
 			/// </summary>
+			[System.Diagnostics.DebuggerStepThrough()]
 			public override void RolePlayerPositionChanged(Microsoft.VisualStudio.Modeling.RolePlayerOrderChangedEventArgs e)
 			{
 				Neumont.Tools.Modeling.Diagnostics.TraceUtility.TraceRuleStart(e.SourceElement.Store, "Neumont.Tools.ORM.ObjectModel.FactType.ValidateFactTypeNameForReadingReorderRule");
@@ -1771,6 +1890,7 @@ namespace Neumont.Tools.ORM.ObjectModel
 		[Microsoft.VisualStudio.Modeling.RuleOn(typeof(ObjectTypePlaysRole))]
 		private sealed class ValidateFactTypeNameForRolePlayerAddedRuleClass : Microsoft.VisualStudio.Modeling.AddRule
 		{
+			[System.Diagnostics.DebuggerStepThrough()]
 			public ValidateFactTypeNameForRolePlayerAddedRuleClass()
 			{
 				base.IsEnabled = false;
@@ -1785,6 +1905,7 @@ namespace Neumont.Tools.ORM.ObjectModel
 			/// {
 			/// }
 			/// </summary>
+			[System.Diagnostics.DebuggerStepThrough()]
 			public override void ElementAdded(Microsoft.VisualStudio.Modeling.ElementAddedEventArgs e)
 			{
 				Neumont.Tools.Modeling.Diagnostics.TraceUtility.TraceRuleStart(e.ModelElement.Store, "Neumont.Tools.ORM.ObjectModel.FactType.ValidateFactTypeNameForRolePlayerAddedRule");
@@ -1795,6 +1916,7 @@ namespace Neumont.Tools.ORM.ObjectModel
 		[Microsoft.VisualStudio.Modeling.RuleOn(typeof(ObjectTypePlaysRole))]
 		private sealed class ValidateFactTypeNameForRolePlayerDeleteRuleClass : Microsoft.VisualStudio.Modeling.DeleteRule
 		{
+			[System.Diagnostics.DebuggerStepThrough()]
 			public ValidateFactTypeNameForRolePlayerDeleteRuleClass()
 			{
 				base.IsEnabled = false;
@@ -1809,6 +1931,7 @@ namespace Neumont.Tools.ORM.ObjectModel
 			/// {
 			/// }
 			/// </summary>
+			[System.Diagnostics.DebuggerStepThrough()]
 			public override void ElementDeleted(Microsoft.VisualStudio.Modeling.ElementDeletedEventArgs e)
 			{
 				Neumont.Tools.Modeling.Diagnostics.TraceUtility.TraceRuleStart(e.ModelElement.Store, "Neumont.Tools.ORM.ObjectModel.FactType.ValidateFactTypeNameForRolePlayerDeleteRule");
@@ -1819,6 +1942,7 @@ namespace Neumont.Tools.ORM.ObjectModel
 		[Microsoft.VisualStudio.Modeling.RuleOn(typeof(ObjectTypePlaysRole))]
 		private sealed class ValidateFactTypeNameForRolePlayerRolePlayerChangeRuleClass : Microsoft.VisualStudio.Modeling.RolePlayerChangeRule
 		{
+			[System.Diagnostics.DebuggerStepThrough()]
 			public ValidateFactTypeNameForRolePlayerRolePlayerChangeRuleClass()
 			{
 				base.IsEnabled = false;
@@ -1833,6 +1957,7 @@ namespace Neumont.Tools.ORM.ObjectModel
 			/// {
 			/// }
 			/// </summary>
+			[System.Diagnostics.DebuggerStepThrough()]
 			public override void RolePlayerChanged(Microsoft.VisualStudio.Modeling.RolePlayerChangedEventArgs e)
 			{
 				Neumont.Tools.Modeling.Diagnostics.TraceUtility.TraceRuleStart(e.ElementLink.Store, "Neumont.Tools.ORM.ObjectModel.FactType.ValidateFactTypeNameForRolePlayerRolePlayerChangeRule");
@@ -1850,6 +1975,7 @@ namespace Neumont.Tools.ORM.ObjectModel
 			[Microsoft.VisualStudio.Modeling.RuleOn(typeof(ConstraintRoleSequenceHasRole))]
 			private sealed class ConstraintRoleSequenceHasRoleAddedRuleClass : Microsoft.VisualStudio.Modeling.AddRule
 			{
+				[System.Diagnostics.DebuggerStepThrough()]
 				public ConstraintRoleSequenceHasRoleAddedRuleClass()
 				{
 					base.IsEnabled = false;
@@ -1864,6 +1990,7 @@ namespace Neumont.Tools.ORM.ObjectModel
 				/// {
 				/// }
 				/// </summary>
+				[System.Diagnostics.DebuggerStepThrough()]
 				public override void ElementAdded(Microsoft.VisualStudio.Modeling.ElementAddedEventArgs e)
 				{
 					Neumont.Tools.Modeling.Diagnostics.TraceUtility.TraceRuleStart(e.ModelElement.Store, "Neumont.Tools.ORM.ObjectModel.FactType.UnaryBinarizationUtility.ConstraintRoleSequenceHasRoleAddedRule");
@@ -1874,6 +2001,7 @@ namespace Neumont.Tools.ORM.ObjectModel
 			[Microsoft.VisualStudio.Modeling.RuleOn(typeof(ConstraintRoleSequenceHasRole))]
 			private sealed class ConstraintRoleSequenceHasRoleDeletedRuleClass : Microsoft.VisualStudio.Modeling.DeleteRule
 			{
+				[System.Diagnostics.DebuggerStepThrough()]
 				public ConstraintRoleSequenceHasRoleDeletedRuleClass()
 				{
 					base.IsEnabled = false;
@@ -1888,6 +2016,7 @@ namespace Neumont.Tools.ORM.ObjectModel
 				/// {
 				/// }
 				/// </summary>
+				[System.Diagnostics.DebuggerStepThrough()]
 				public override void ElementDeleted(Microsoft.VisualStudio.Modeling.ElementDeletedEventArgs e)
 				{
 					Neumont.Tools.Modeling.Diagnostics.TraceUtility.TraceRuleStart(e.ModelElement.Store, "Neumont.Tools.ORM.ObjectModel.FactType.UnaryBinarizationUtility.ConstraintRoleSequenceHasRoleDeletedRule");
@@ -1898,6 +2027,7 @@ namespace Neumont.Tools.ORM.ObjectModel
 			[Microsoft.VisualStudio.Modeling.RuleOn(typeof(FactTypeHasRole))]
 			private sealed class FactTypeHasRoleAddedRuleClass : Microsoft.VisualStudio.Modeling.AddRule
 			{
+				[System.Diagnostics.DebuggerStepThrough()]
 				public FactTypeHasRoleAddedRuleClass()
 				{
 					base.IsEnabled = false;
@@ -1912,6 +2042,7 @@ namespace Neumont.Tools.ORM.ObjectModel
 				/// {
 				/// }
 				/// </summary>
+				[System.Diagnostics.DebuggerStepThrough()]
 				public override void ElementAdded(Microsoft.VisualStudio.Modeling.ElementAddedEventArgs e)
 				{
 					Neumont.Tools.Modeling.Diagnostics.TraceUtility.TraceRuleStart(e.ModelElement.Store, "Neumont.Tools.ORM.ObjectModel.FactType.UnaryBinarizationUtility.FactTypeHasRoleAddedRule");
@@ -1922,6 +2053,7 @@ namespace Neumont.Tools.ORM.ObjectModel
 			[Microsoft.VisualStudio.Modeling.RuleOn(typeof(FactTypeHasRole))]
 			private sealed class FactTypeHasRoleDeletingRuleClass : Microsoft.VisualStudio.Modeling.DeletingRule
 			{
+				[System.Diagnostics.DebuggerStepThrough()]
 				public FactTypeHasRoleDeletingRuleClass()
 				{
 					base.IsEnabled = false;
@@ -1936,6 +2068,7 @@ namespace Neumont.Tools.ORM.ObjectModel
 				/// {
 				/// }
 				/// </summary>
+				[System.Diagnostics.DebuggerStepThrough()]
 				public override void ElementDeleting(Microsoft.VisualStudio.Modeling.ElementDeletingEventArgs e)
 				{
 					Neumont.Tools.Modeling.Diagnostics.TraceUtility.TraceRuleStart(e.ModelElement.Store, "Neumont.Tools.ORM.ObjectModel.FactType.UnaryBinarizationUtility.FactTypeHasRoleDeletingRule");
@@ -1946,6 +2079,7 @@ namespace Neumont.Tools.ORM.ObjectModel
 			[Microsoft.VisualStudio.Modeling.RuleOn(typeof(FactType))]
 			private sealed class FactTypeNameChangedRuleClass : Microsoft.VisualStudio.Modeling.ChangeRule
 			{
+				[System.Diagnostics.DebuggerStepThrough()]
 				public FactTypeNameChangedRuleClass()
 				{
 					base.IsEnabled = false;
@@ -1960,6 +2094,7 @@ namespace Neumont.Tools.ORM.ObjectModel
 				/// {
 				/// }
 				/// </summary>
+				[System.Diagnostics.DebuggerStepThrough()]
 				public override void ElementPropertyChanged(Microsoft.VisualStudio.Modeling.ElementPropertyChangedEventArgs e)
 				{
 					Neumont.Tools.Modeling.Diagnostics.TraceUtility.TraceRuleStart(e.ModelElement.Store, "Neumont.Tools.ORM.ObjectModel.FactType.UnaryBinarizationUtility.FactTypeNameChangedRule");
@@ -1970,6 +2105,7 @@ namespace Neumont.Tools.ORM.ObjectModel
 			[Microsoft.VisualStudio.Modeling.RuleOn(typeof(ObjectTypePlaysRole))]
 			private sealed class ObjectTypePlaysRoleAddedRuleClass : Microsoft.VisualStudio.Modeling.AddRule
 			{
+				[System.Diagnostics.DebuggerStepThrough()]
 				public ObjectTypePlaysRoleAddedRuleClass()
 				{
 					base.IsEnabled = false;
@@ -1984,6 +2120,7 @@ namespace Neumont.Tools.ORM.ObjectModel
 				/// {
 				/// }
 				/// </summary>
+				[System.Diagnostics.DebuggerStepThrough()]
 				public override void ElementAdded(Microsoft.VisualStudio.Modeling.ElementAddedEventArgs e)
 				{
 					Neumont.Tools.Modeling.Diagnostics.TraceUtility.TraceRuleStart(e.ModelElement.Store, "Neumont.Tools.ORM.ObjectModel.FactType.UnaryBinarizationUtility.ObjectTypePlaysRoleAddedRule");
@@ -1994,6 +2131,7 @@ namespace Neumont.Tools.ORM.ObjectModel
 			[Microsoft.VisualStudio.Modeling.RuleOn(typeof(ObjectTypePlaysRole))]
 			private sealed class ObjectTypePlaysRoleDeletedRuleClass : Microsoft.VisualStudio.Modeling.DeleteRule
 			{
+				[System.Diagnostics.DebuggerStepThrough()]
 				public ObjectTypePlaysRoleDeletedRuleClass()
 				{
 					base.IsEnabled = false;
@@ -2008,6 +2146,7 @@ namespace Neumont.Tools.ORM.ObjectModel
 				/// {
 				/// }
 				/// </summary>
+				[System.Diagnostics.DebuggerStepThrough()]
 				public override void ElementDeleted(Microsoft.VisualStudio.Modeling.ElementDeletedEventArgs e)
 				{
 					Neumont.Tools.Modeling.Diagnostics.TraceUtility.TraceRuleStart(e.ModelElement.Store, "Neumont.Tools.ORM.ObjectModel.FactType.UnaryBinarizationUtility.ObjectTypePlaysRoleDeletedRule");
@@ -2018,6 +2157,7 @@ namespace Neumont.Tools.ORM.ObjectModel
 			[Microsoft.VisualStudio.Modeling.RuleOn(typeof(ObjectTypePlaysRole))]
 			private sealed class ObjectTypePlaysRoleRolePlayerChangedRuleClass : Microsoft.VisualStudio.Modeling.RolePlayerChangeRule
 			{
+				[System.Diagnostics.DebuggerStepThrough()]
 				public ObjectTypePlaysRoleRolePlayerChangedRuleClass()
 				{
 					base.IsEnabled = false;
@@ -2032,6 +2172,7 @@ namespace Neumont.Tools.ORM.ObjectModel
 				/// {
 				/// }
 				/// </summary>
+				[System.Diagnostics.DebuggerStepThrough()]
 				public override void RolePlayerChanged(Microsoft.VisualStudio.Modeling.RolePlayerChangedEventArgs e)
 				{
 					Neumont.Tools.Modeling.Diagnostics.TraceUtility.TraceRuleStart(e.ElementLink.Store, "Neumont.Tools.ORM.ObjectModel.FactType.UnaryBinarizationUtility.ObjectTypePlaysRoleRolePlayerChangedRule");
@@ -2048,6 +2189,7 @@ namespace Neumont.Tools.ORM.ObjectModel
 		[Microsoft.VisualStudio.Modeling.RuleOn(typeof(FactTypeDerivationExpression))]
 		private sealed class FactTypeDerivationExpressionChangeRuleClass : Microsoft.VisualStudio.Modeling.ChangeRule
 		{
+			[System.Diagnostics.DebuggerStepThrough()]
 			public FactTypeDerivationExpressionChangeRuleClass()
 			{
 				base.IsEnabled = false;
@@ -2062,6 +2204,7 @@ namespace Neumont.Tools.ORM.ObjectModel
 			/// {
 			/// }
 			/// </summary>
+			[System.Diagnostics.DebuggerStepThrough()]
 			public override void ElementPropertyChanged(Microsoft.VisualStudio.Modeling.ElementPropertyChangedEventArgs e)
 			{
 				Neumont.Tools.Modeling.Diagnostics.TraceUtility.TraceRuleStart(e.ModelElement.Store, "Neumont.Tools.ORM.ObjectModel.FactTypeDerivationExpression.FactTypeDerivationExpressionChangeRule");
@@ -2077,6 +2220,7 @@ namespace Neumont.Tools.ORM.ObjectModel
 		[Microsoft.VisualStudio.Modeling.RuleOn(typeof(FactTypeHasFactTypeInstance))]
 		private sealed class FactTypeHasFactTypeInstanceAddedClass : Microsoft.VisualStudio.Modeling.AddRule
 		{
+			[System.Diagnostics.DebuggerStepThrough()]
 			public FactTypeHasFactTypeInstanceAddedClass()
 			{
 				base.IsEnabled = false;
@@ -2091,6 +2235,7 @@ namespace Neumont.Tools.ORM.ObjectModel
 			/// {
 			/// }
 			/// </summary>
+			[System.Diagnostics.DebuggerStepThrough()]
 			public override void ElementAdded(Microsoft.VisualStudio.Modeling.ElementAddedEventArgs e)
 			{
 				Neumont.Tools.Modeling.Diagnostics.TraceUtility.TraceRuleStart(e.ModelElement.Store, "Neumont.Tools.ORM.ObjectModel.FactTypeInstance.FactTypeHasFactTypeInstanceAdded");
@@ -2101,6 +2246,7 @@ namespace Neumont.Tools.ORM.ObjectModel
 		[Microsoft.VisualStudio.Modeling.RuleOn(typeof(FactTypeHasRole))]
 		private sealed class FactTypeHasRoleAddedRuleClass : Microsoft.VisualStudio.Modeling.AddRule
 		{
+			[System.Diagnostics.DebuggerStepThrough()]
 			public FactTypeHasRoleAddedRuleClass()
 			{
 				base.IsEnabled = false;
@@ -2115,6 +2261,7 @@ namespace Neumont.Tools.ORM.ObjectModel
 			/// {
 			/// }
 			/// </summary>
+			[System.Diagnostics.DebuggerStepThrough()]
 			public override void ElementAdded(Microsoft.VisualStudio.Modeling.ElementAddedEventArgs e)
 			{
 				Neumont.Tools.Modeling.Diagnostics.TraceUtility.TraceRuleStart(e.ModelElement.Store, "Neumont.Tools.ORM.ObjectModel.FactTypeInstance.FactTypeHasRoleAddedRule");
@@ -2125,6 +2272,7 @@ namespace Neumont.Tools.ORM.ObjectModel
 		[Microsoft.VisualStudio.Modeling.RuleOn(typeof(FactTypeHasRole))]
 		private sealed class FactTypeHasRoleDeletedRuleClass : Microsoft.VisualStudio.Modeling.DeleteRule
 		{
+			[System.Diagnostics.DebuggerStepThrough()]
 			public FactTypeHasRoleDeletedRuleClass()
 			{
 				base.IsEnabled = false;
@@ -2139,6 +2287,7 @@ namespace Neumont.Tools.ORM.ObjectModel
 			/// {
 			/// }
 			/// </summary>
+			[System.Diagnostics.DebuggerStepThrough()]
 			public override void ElementDeleted(Microsoft.VisualStudio.Modeling.ElementDeletedEventArgs e)
 			{
 				Neumont.Tools.Modeling.Diagnostics.TraceUtility.TraceRuleStart(e.ModelElement.Store, "Neumont.Tools.ORM.ObjectModel.FactTypeInstance.FactTypeHasRoleDeletedRule");
@@ -2149,6 +2298,7 @@ namespace Neumont.Tools.ORM.ObjectModel
 		[Microsoft.VisualStudio.Modeling.RuleOn(typeof(FactTypeInstanceHasRoleInstance))]
 		private sealed class FactTypeInstanceHasRoleInstanceAddedRuleClass : Microsoft.VisualStudio.Modeling.AddRule
 		{
+			[System.Diagnostics.DebuggerStepThrough()]
 			public FactTypeInstanceHasRoleInstanceAddedRuleClass()
 			{
 				base.IsEnabled = false;
@@ -2163,6 +2313,7 @@ namespace Neumont.Tools.ORM.ObjectModel
 			/// {
 			/// }
 			/// </summary>
+			[System.Diagnostics.DebuggerStepThrough()]
 			public override void ElementAdded(Microsoft.VisualStudio.Modeling.ElementAddedEventArgs e)
 			{
 				Neumont.Tools.Modeling.Diagnostics.TraceUtility.TraceRuleStart(e.ModelElement.Store, "Neumont.Tools.ORM.ObjectModel.FactTypeInstance.FactTypeInstanceHasRoleInstanceAddedRule");
@@ -2173,6 +2324,7 @@ namespace Neumont.Tools.ORM.ObjectModel
 		[Microsoft.VisualStudio.Modeling.RuleOn(typeof(FactTypeInstanceHasRoleInstance), FireTime=Microsoft.VisualStudio.Modeling.TimeToFire.LocalCommit, Priority=Neumont.Tools.Modeling.FrameworkDomainModel.BeforeDelayValidateRulePriority)]
 		private sealed class FactTypeInstanceHasRoleInstanceDeletedRuleClass : Microsoft.VisualStudio.Modeling.DeleteRule
 		{
+			[System.Diagnostics.DebuggerStepThrough()]
 			public FactTypeInstanceHasRoleInstanceDeletedRuleClass()
 			{
 				base.IsEnabled = false;
@@ -2187,6 +2339,7 @@ namespace Neumont.Tools.ORM.ObjectModel
 			/// {
 			/// }
 			/// </summary>
+			[System.Diagnostics.DebuggerStepThrough()]
 			public override void ElementDeleted(Microsoft.VisualStudio.Modeling.ElementDeletedEventArgs e)
 			{
 				Neumont.Tools.Modeling.Diagnostics.TraceUtility.TraceRuleStart(e.ModelElement.Store, "Neumont.Tools.ORM.ObjectModel.FactTypeInstance.FactTypeInstanceHasRoleInstanceDeletedRule");
@@ -2202,6 +2355,7 @@ namespace Neumont.Tools.ORM.ObjectModel
 		[Microsoft.VisualStudio.Modeling.RuleOn(typeof(FrequencyConstraint))]
 		private sealed class FrequencyConstraintMinMaxRuleClass : Microsoft.VisualStudio.Modeling.ChangeRule
 		{
+			[System.Diagnostics.DebuggerStepThrough()]
 			public FrequencyConstraintMinMaxRuleClass()
 			{
 				base.IsEnabled = false;
@@ -2216,6 +2370,7 @@ namespace Neumont.Tools.ORM.ObjectModel
 			/// {
 			/// }
 			/// </summary>
+			[System.Diagnostics.DebuggerStepThrough()]
 			public override void ElementPropertyChanged(Microsoft.VisualStudio.Modeling.ElementPropertyChangedEventArgs e)
 			{
 				Neumont.Tools.Modeling.Diagnostics.TraceUtility.TraceRuleStart(e.ModelElement.Store, "Neumont.Tools.ORM.ObjectModel.FrequencyConstraint.FrequencyConstraintMinMaxRule");
@@ -2226,6 +2381,7 @@ namespace Neumont.Tools.ORM.ObjectModel
 		[Microsoft.VisualStudio.Modeling.RuleOn(typeof(FactSetConstraint))]
 		private sealed class RemoveContradictionErrorsWithFactTypeRuleClass : Microsoft.VisualStudio.Modeling.DeleteRule
 		{
+			[System.Diagnostics.DebuggerStepThrough()]
 			public RemoveContradictionErrorsWithFactTypeRuleClass()
 			{
 				base.IsEnabled = false;
@@ -2240,6 +2396,7 @@ namespace Neumont.Tools.ORM.ObjectModel
 			/// {
 			/// }
 			/// </summary>
+			[System.Diagnostics.DebuggerStepThrough()]
 			public override void ElementDeleted(Microsoft.VisualStudio.Modeling.ElementDeletedEventArgs e)
 			{
 				Neumont.Tools.Modeling.Diagnostics.TraceUtility.TraceRuleStart(e.ModelElement.Store, "Neumont.Tools.ORM.ObjectModel.FrequencyConstraint.RemoveContradictionErrorsWithFactTypeRule");
@@ -2255,6 +2412,7 @@ namespace Neumont.Tools.ORM.ObjectModel
 		[Microsoft.VisualStudio.Modeling.RuleOn(typeof(MandatoryConstraint))]
 		private sealed class MandatoryConstraintChangeRuleClass : Microsoft.VisualStudio.Modeling.ChangeRule
 		{
+			[System.Diagnostics.DebuggerStepThrough()]
 			public MandatoryConstraintChangeRuleClass()
 			{
 				base.IsEnabled = false;
@@ -2269,6 +2427,7 @@ namespace Neumont.Tools.ORM.ObjectModel
 			/// {
 			/// }
 			/// </summary>
+			[System.Diagnostics.DebuggerStepThrough()]
 			public override void ElementPropertyChanged(Microsoft.VisualStudio.Modeling.ElementPropertyChangedEventArgs e)
 			{
 				Neumont.Tools.Modeling.Diagnostics.TraceUtility.TraceRuleStart(e.ModelElement.Store, "Neumont.Tools.ORM.ObjectModel.MandatoryConstraint.MandatoryConstraintChangeRule");
@@ -2284,6 +2443,7 @@ namespace Neumont.Tools.ORM.ObjectModel
 		[Microsoft.VisualStudio.Modeling.RuleOn(typeof(ORMModel))]
 		private sealed class SynchronizeErrorTextForModelRuleClass : Microsoft.VisualStudio.Modeling.ChangeRule
 		{
+			[System.Diagnostics.DebuggerStepThrough()]
 			public SynchronizeErrorTextForModelRuleClass()
 			{
 				base.IsEnabled = false;
@@ -2298,6 +2458,7 @@ namespace Neumont.Tools.ORM.ObjectModel
 			/// {
 			/// }
 			/// </summary>
+			[System.Diagnostics.DebuggerStepThrough()]
 			public override void ElementPropertyChanged(Microsoft.VisualStudio.Modeling.ElementPropertyChangedEventArgs e)
 			{
 				Neumont.Tools.Modeling.Diagnostics.TraceUtility.TraceRuleStart(e.ModelElement.Store, "Neumont.Tools.ORM.ObjectModel.ModelError.SynchronizeErrorTextForModelRule");
@@ -2308,6 +2469,7 @@ namespace Neumont.Tools.ORM.ObjectModel
 		[Microsoft.VisualStudio.Modeling.RuleOn(typeof(ORMNamedElement))]
 		private sealed class SynchronizeErrorTextForOwnerRuleClass : Microsoft.VisualStudio.Modeling.ChangeRule
 		{
+			[System.Diagnostics.DebuggerStepThrough()]
 			public SynchronizeErrorTextForOwnerRuleClass()
 			{
 				base.IsEnabled = false;
@@ -2322,6 +2484,7 @@ namespace Neumont.Tools.ORM.ObjectModel
 			/// {
 			/// }
 			/// </summary>
+			[System.Diagnostics.DebuggerStepThrough()]
 			public override void ElementPropertyChanged(Microsoft.VisualStudio.Modeling.ElementPropertyChangedEventArgs e)
 			{
 				Neumont.Tools.Modeling.Diagnostics.TraceUtility.TraceRuleStart(e.ModelElement.Store, "Neumont.Tools.ORM.ObjectModel.ModelError.SynchronizeErrorTextForOwnerRule");
@@ -2337,6 +2500,7 @@ namespace Neumont.Tools.ORM.ObjectModel
 		[Microsoft.VisualStudio.Modeling.RuleOn(typeof(Note))]
 		private sealed class NoteChangeRuleClass : Microsoft.VisualStudio.Modeling.ChangeRule
 		{
+			[System.Diagnostics.DebuggerStepThrough()]
 			public NoteChangeRuleClass()
 			{
 				base.IsEnabled = false;
@@ -2351,6 +2515,7 @@ namespace Neumont.Tools.ORM.ObjectModel
 			/// {
 			/// }
 			/// </summary>
+			[System.Diagnostics.DebuggerStepThrough()]
 			public override void ElementPropertyChanged(Microsoft.VisualStudio.Modeling.ElementPropertyChangedEventArgs e)
 			{
 				Neumont.Tools.Modeling.Diagnostics.TraceUtility.TraceRuleStart(e.ModelElement.Store, "Neumont.Tools.ORM.ObjectModel.Note.NoteChangeRule");
@@ -2366,6 +2531,7 @@ namespace Neumont.Tools.ORM.ObjectModel
 		[Microsoft.VisualStudio.Modeling.RuleOn(typeof(ObjectificationImpliesFactType))]
 		private sealed class ImpliedFactTypeAddRuleClass : Microsoft.VisualStudio.Modeling.AddRule
 		{
+			[System.Diagnostics.DebuggerStepThrough()]
 			public ImpliedFactTypeAddRuleClass()
 			{
 				base.IsEnabled = false;
@@ -2380,6 +2546,7 @@ namespace Neumont.Tools.ORM.ObjectModel
 			/// {
 			/// }
 			/// </summary>
+			[System.Diagnostics.DebuggerStepThrough()]
 			public override void ElementAdded(Microsoft.VisualStudio.Modeling.ElementAddedEventArgs e)
 			{
 				Neumont.Tools.Modeling.Diagnostics.TraceUtility.TraceRuleStart(e.ModelElement.Store, "Neumont.Tools.ORM.ObjectModel.Objectification.ImpliedFactTypeAddRule");
@@ -2390,6 +2557,7 @@ namespace Neumont.Tools.ORM.ObjectModel
 		[Microsoft.VisualStudio.Modeling.RuleOn(typeof(ConstraintRoleSequenceHasRole))]
 		private sealed class ImpliedObjectificationConstraintRoleSequenceHasRoleAddRuleClass : Microsoft.VisualStudio.Modeling.AddRule
 		{
+			[System.Diagnostics.DebuggerStepThrough()]
 			public ImpliedObjectificationConstraintRoleSequenceHasRoleAddRuleClass()
 			{
 				base.IsEnabled = false;
@@ -2404,6 +2572,7 @@ namespace Neumont.Tools.ORM.ObjectModel
 			/// {
 			/// }
 			/// </summary>
+			[System.Diagnostics.DebuggerStepThrough()]
 			public override void ElementAdded(Microsoft.VisualStudio.Modeling.ElementAddedEventArgs e)
 			{
 				Neumont.Tools.Modeling.Diagnostics.TraceUtility.TraceRuleStart(e.ModelElement.Store, "Neumont.Tools.ORM.ObjectModel.Objectification.ImpliedObjectificationConstraintRoleSequenceHasRoleAddRule");
@@ -2414,6 +2583,7 @@ namespace Neumont.Tools.ORM.ObjectModel
 		[Microsoft.VisualStudio.Modeling.RuleOn(typeof(ConstraintRoleSequenceHasRole))]
 		private sealed class ImpliedObjectificationConstraintRoleSequenceHasRoleDeletingRuleClass : Microsoft.VisualStudio.Modeling.DeletingRule
 		{
+			[System.Diagnostics.DebuggerStepThrough()]
 			public ImpliedObjectificationConstraintRoleSequenceHasRoleDeletingRuleClass()
 			{
 				base.IsEnabled = false;
@@ -2428,6 +2598,7 @@ namespace Neumont.Tools.ORM.ObjectModel
 			/// {
 			/// }
 			/// </summary>
+			[System.Diagnostics.DebuggerStepThrough()]
 			public override void ElementDeleting(Microsoft.VisualStudio.Modeling.ElementDeletingEventArgs e)
 			{
 				Neumont.Tools.Modeling.Diagnostics.TraceUtility.TraceRuleStart(e.ModelElement.Store, "Neumont.Tools.ORM.ObjectModel.Objectification.ImpliedObjectificationConstraintRoleSequenceHasRoleDeletingRule");
@@ -2438,6 +2609,7 @@ namespace Neumont.Tools.ORM.ObjectModel
 		[Microsoft.VisualStudio.Modeling.RuleOn(typeof(FactTypeHasRole))]
 		private sealed class ImpliedObjectificationFactTypeHasRoleAddRuleClass : Microsoft.VisualStudio.Modeling.AddRule
 		{
+			[System.Diagnostics.DebuggerStepThrough()]
 			public ImpliedObjectificationFactTypeHasRoleAddRuleClass()
 			{
 				base.IsEnabled = false;
@@ -2452,6 +2624,7 @@ namespace Neumont.Tools.ORM.ObjectModel
 			/// {
 			/// }
 			/// </summary>
+			[System.Diagnostics.DebuggerStepThrough()]
 			public override void ElementAdded(Microsoft.VisualStudio.Modeling.ElementAddedEventArgs e)
 			{
 				Neumont.Tools.Modeling.Diagnostics.TraceUtility.TraceRuleStart(e.ModelElement.Store, "Neumont.Tools.ORM.ObjectModel.Objectification.ImpliedObjectificationFactTypeHasRoleAddRule");
@@ -2462,6 +2635,7 @@ namespace Neumont.Tools.ORM.ObjectModel
 		[Microsoft.VisualStudio.Modeling.RuleOn(typeof(FactTypeHasRole))]
 		private sealed class ImpliedObjectificationFactTypeHasRoleDeletingRuleClass : Microsoft.VisualStudio.Modeling.DeletingRule
 		{
+			[System.Diagnostics.DebuggerStepThrough()]
 			public ImpliedObjectificationFactTypeHasRoleDeletingRuleClass()
 			{
 				base.IsEnabled = false;
@@ -2476,6 +2650,7 @@ namespace Neumont.Tools.ORM.ObjectModel
 			/// {
 			/// }
 			/// </summary>
+			[System.Diagnostics.DebuggerStepThrough()]
 			public override void ElementDeleting(Microsoft.VisualStudio.Modeling.ElementDeletingEventArgs e)
 			{
 				Neumont.Tools.Modeling.Diagnostics.TraceUtility.TraceRuleStart(e.ModelElement.Store, "Neumont.Tools.ORM.ObjectModel.Objectification.ImpliedObjectificationFactTypeHasRoleDeletingRule");
@@ -2486,6 +2661,7 @@ namespace Neumont.Tools.ORM.ObjectModel
 		[Microsoft.VisualStudio.Modeling.RuleOn(typeof(Objectification))]
 		private sealed class ImpliedObjectificationIsImpliedChangeRuleClass : Microsoft.VisualStudio.Modeling.ChangeRule
 		{
+			[System.Diagnostics.DebuggerStepThrough()]
 			public ImpliedObjectificationIsImpliedChangeRuleClass()
 			{
 				base.IsEnabled = false;
@@ -2500,6 +2676,7 @@ namespace Neumont.Tools.ORM.ObjectModel
 			/// {
 			/// }
 			/// </summary>
+			[System.Diagnostics.DebuggerStepThrough()]
 			public override void ElementPropertyChanged(Microsoft.VisualStudio.Modeling.ElementPropertyChangedEventArgs e)
 			{
 				Neumont.Tools.Modeling.Diagnostics.TraceUtility.TraceRuleStart(e.ModelElement.Store, "Neumont.Tools.ORM.ObjectModel.Objectification.ImpliedObjectificationIsImpliedChangeRule");
@@ -2510,6 +2687,7 @@ namespace Neumont.Tools.ORM.ObjectModel
 		[Microsoft.VisualStudio.Modeling.RuleOn(typeof(ObjectType))]
 		private sealed class ImpliedObjectificationObjectifyingTypeIsIndependentChangeRuleClass : Microsoft.VisualStudio.Modeling.ChangeRule
 		{
+			[System.Diagnostics.DebuggerStepThrough()]
 			public ImpliedObjectificationObjectifyingTypeIsIndependentChangeRuleClass()
 			{
 				base.IsEnabled = false;
@@ -2524,6 +2702,7 @@ namespace Neumont.Tools.ORM.ObjectModel
 			/// {
 			/// }
 			/// </summary>
+			[System.Diagnostics.DebuggerStepThrough()]
 			public override void ElementPropertyChanged(Microsoft.VisualStudio.Modeling.ElementPropertyChangedEventArgs e)
 			{
 				Neumont.Tools.Modeling.Diagnostics.TraceUtility.TraceRuleStart(e.ModelElement.Store, "Neumont.Tools.ORM.ObjectModel.Objectification.ImpliedObjectificationObjectifyingTypeIsIndependentChangeRule");
@@ -2534,6 +2713,7 @@ namespace Neumont.Tools.ORM.ObjectModel
 		[Microsoft.VisualStudio.Modeling.RuleOn(typeof(ObjectTypePlaysRole))]
 		private sealed class ImpliedObjectificationObjectifyingTypePlaysRoleAddRuleClass : Microsoft.VisualStudio.Modeling.AddRule
 		{
+			[System.Diagnostics.DebuggerStepThrough()]
 			public ImpliedObjectificationObjectifyingTypePlaysRoleAddRuleClass()
 			{
 				base.IsEnabled = false;
@@ -2548,6 +2728,7 @@ namespace Neumont.Tools.ORM.ObjectModel
 			/// {
 			/// }
 			/// </summary>
+			[System.Diagnostics.DebuggerStepThrough()]
 			public override void ElementAdded(Microsoft.VisualStudio.Modeling.ElementAddedEventArgs e)
 			{
 				Neumont.Tools.Modeling.Diagnostics.TraceUtility.TraceRuleStart(e.ModelElement.Store, "Neumont.Tools.ORM.ObjectModel.Objectification.ImpliedObjectificationObjectifyingTypePlaysRoleAddRule");
@@ -2558,6 +2739,7 @@ namespace Neumont.Tools.ORM.ObjectModel
 		[Microsoft.VisualStudio.Modeling.RuleOn(typeof(UniquenessConstraint))]
 		private sealed class ImpliedObjectificationUniquenessConstraintChangeRuleClass : Microsoft.VisualStudio.Modeling.ChangeRule
 		{
+			[System.Diagnostics.DebuggerStepThrough()]
 			public ImpliedObjectificationUniquenessConstraintChangeRuleClass()
 			{
 				base.IsEnabled = false;
@@ -2572,6 +2754,7 @@ namespace Neumont.Tools.ORM.ObjectModel
 			/// {
 			/// }
 			/// </summary>
+			[System.Diagnostics.DebuggerStepThrough()]
 			public override void ElementPropertyChanged(Microsoft.VisualStudio.Modeling.ElementPropertyChangedEventArgs e)
 			{
 				Neumont.Tools.Modeling.Diagnostics.TraceUtility.TraceRuleStart(e.ModelElement.Store, "Neumont.Tools.ORM.ObjectModel.Objectification.ImpliedObjectificationUniquenessConstraintChangeRule");
@@ -2582,6 +2765,7 @@ namespace Neumont.Tools.ORM.ObjectModel
 		[Microsoft.VisualStudio.Modeling.RuleOn(typeof(SetConstraint))]
 		private sealed class InternalConstraintChangeRuleClass : Microsoft.VisualStudio.Modeling.ChangeRule
 		{
+			[System.Diagnostics.DebuggerStepThrough()]
 			public InternalConstraintChangeRuleClass()
 			{
 				base.IsEnabled = false;
@@ -2596,6 +2780,7 @@ namespace Neumont.Tools.ORM.ObjectModel
 			/// {
 			/// }
 			/// </summary>
+			[System.Diagnostics.DebuggerStepThrough()]
 			public override void ElementPropertyChanged(Microsoft.VisualStudio.Modeling.ElementPropertyChangedEventArgs e)
 			{
 				Neumont.Tools.Modeling.Diagnostics.TraceUtility.TraceRuleStart(e.ModelElement.Store, "Neumont.Tools.ORM.ObjectModel.Objectification.InternalConstraintChangeRule");
@@ -2606,6 +2791,7 @@ namespace Neumont.Tools.ORM.ObjectModel
 		[Microsoft.VisualStudio.Modeling.RuleOn(typeof(Objectification))]
 		private sealed class ObjectificationAddRuleClass : Microsoft.VisualStudio.Modeling.AddRule
 		{
+			[System.Diagnostics.DebuggerStepThrough()]
 			public ObjectificationAddRuleClass()
 			{
 				base.IsEnabled = false;
@@ -2620,6 +2806,7 @@ namespace Neumont.Tools.ORM.ObjectModel
 			/// {
 			/// }
 			/// </summary>
+			[System.Diagnostics.DebuggerStepThrough()]
 			public override void ElementAdded(Microsoft.VisualStudio.Modeling.ElementAddedEventArgs e)
 			{
 				Neumont.Tools.Modeling.Diagnostics.TraceUtility.TraceRuleStart(e.ModelElement.Store, "Neumont.Tools.ORM.ObjectModel.Objectification.ObjectificationAddRule");
@@ -2630,6 +2817,7 @@ namespace Neumont.Tools.ORM.ObjectModel
 		[Microsoft.VisualStudio.Modeling.RuleOn(typeof(Objectification))]
 		private sealed class ObjectificationDeletingRuleClass : Microsoft.VisualStudio.Modeling.DeletingRule
 		{
+			[System.Diagnostics.DebuggerStepThrough()]
 			public ObjectificationDeletingRuleClass()
 			{
 				base.IsEnabled = false;
@@ -2644,6 +2832,7 @@ namespace Neumont.Tools.ORM.ObjectModel
 			/// {
 			/// }
 			/// </summary>
+			[System.Diagnostics.DebuggerStepThrough()]
 			public override void ElementDeleting(Microsoft.VisualStudio.Modeling.ElementDeletingEventArgs e)
 			{
 				Neumont.Tools.Modeling.Diagnostics.TraceUtility.TraceRuleStart(e.ModelElement.Store, "Neumont.Tools.ORM.ObjectModel.Objectification.ObjectificationDeletingRule");
@@ -2654,6 +2843,7 @@ namespace Neumont.Tools.ORM.ObjectModel
 		[Microsoft.VisualStudio.Modeling.RuleOn(typeof(Objectification))]
 		private sealed class ObjectificationRolePlayerChangeRuleClass : Microsoft.VisualStudio.Modeling.RolePlayerChangeRule
 		{
+			[System.Diagnostics.DebuggerStepThrough()]
 			public ObjectificationRolePlayerChangeRuleClass()
 			{
 				base.IsEnabled = false;
@@ -2668,6 +2858,7 @@ namespace Neumont.Tools.ORM.ObjectModel
 			/// {
 			/// }
 			/// </summary>
+			[System.Diagnostics.DebuggerStepThrough()]
 			public override void RolePlayerChanged(Microsoft.VisualStudio.Modeling.RolePlayerChangedEventArgs e)
 			{
 				Neumont.Tools.Modeling.Diagnostics.TraceUtility.TraceRuleStart(e.ElementLink.Store, "Neumont.Tools.ORM.ObjectModel.Objectification.ObjectificationRolePlayerChangeRule");
@@ -2678,6 +2869,7 @@ namespace Neumont.Tools.ORM.ObjectModel
 		[Microsoft.VisualStudio.Modeling.RuleOn(typeof(EntityTypeHasPreferredIdentifier))]
 		private sealed class PreferredIdentifierDeletingRuleClass : Microsoft.VisualStudio.Modeling.DeletingRule
 		{
+			[System.Diagnostics.DebuggerStepThrough()]
 			public PreferredIdentifierDeletingRuleClass()
 			{
 				base.IsEnabled = false;
@@ -2692,6 +2884,7 @@ namespace Neumont.Tools.ORM.ObjectModel
 			/// {
 			/// }
 			/// </summary>
+			[System.Diagnostics.DebuggerStepThrough()]
 			public override void ElementDeleting(Microsoft.VisualStudio.Modeling.ElementDeletingEventArgs e)
 			{
 				Neumont.Tools.Modeling.Diagnostics.TraceUtility.TraceRuleStart(e.ModelElement.Store, "Neumont.Tools.ORM.ObjectModel.Objectification.PreferredIdentifierDeletingRule");
@@ -2702,6 +2895,7 @@ namespace Neumont.Tools.ORM.ObjectModel
 		[Microsoft.VisualStudio.Modeling.RuleOn(typeof(EntityTypeHasPreferredIdentifier))]
 		private sealed class PreferredIdentifierRolePlayerChangeRuleClass : Microsoft.VisualStudio.Modeling.RolePlayerChangeRule
 		{
+			[System.Diagnostics.DebuggerStepThrough()]
 			public PreferredIdentifierRolePlayerChangeRuleClass()
 			{
 				base.IsEnabled = false;
@@ -2716,6 +2910,7 @@ namespace Neumont.Tools.ORM.ObjectModel
 			/// {
 			/// }
 			/// </summary>
+			[System.Diagnostics.DebuggerStepThrough()]
 			public override void RolePlayerChanged(Microsoft.VisualStudio.Modeling.RolePlayerChangedEventArgs e)
 			{
 				Neumont.Tools.Modeling.Diagnostics.TraceUtility.TraceRuleStart(e.ElementLink.Store, "Neumont.Tools.ORM.ObjectModel.Objectification.PreferredIdentifierRolePlayerChangeRule");
@@ -2728,6 +2923,7 @@ namespace Neumont.Tools.ORM.ObjectModel
 		[Microsoft.VisualStudio.Modeling.RuleOn(typeof(FactSetConstraint))]
 		private sealed class RoleAddRuleClass : Microsoft.VisualStudio.Modeling.AddRule
 		{
+			[System.Diagnostics.DebuggerStepThrough()]
 			public RoleAddRuleClass()
 			{
 				base.IsEnabled = false;
@@ -2744,6 +2940,7 @@ namespace Neumont.Tools.ORM.ObjectModel
 			/// {
 			/// }
 			/// </summary>
+			[System.Diagnostics.DebuggerStepThrough()]
 			public override void ElementAdded(Microsoft.VisualStudio.Modeling.ElementAddedEventArgs e)
 			{
 				Neumont.Tools.Modeling.Diagnostics.TraceUtility.TraceRuleStart(e.ModelElement.Store, "Neumont.Tools.ORM.ObjectModel.Objectification.RoleAddRule");
@@ -2755,6 +2952,7 @@ namespace Neumont.Tools.ORM.ObjectModel
 		[Microsoft.VisualStudio.Modeling.RuleOn(typeof(ConstraintRoleSequenceHasRole))]
 		private sealed partial class RoleDeletingRuleClass : Microsoft.VisualStudio.Modeling.DeletingRule
 		{
+			[System.Diagnostics.DebuggerStepThrough()]
 			public RoleDeletingRuleClass()
 			{
 				base.IsEnabled = false;
@@ -2773,6 +2971,7 @@ namespace Neumont.Tools.ORM.ObjectModel
 			/// 	}
 			/// }
 			/// </summary>
+			[System.Diagnostics.DebuggerStepThrough()]
 			public override void ElementDeleting(Microsoft.VisualStudio.Modeling.ElementDeletingEventArgs e)
 			{
 				Neumont.Tools.Modeling.Diagnostics.TraceUtility.TraceRuleStart(e.ModelElement.Store, "Neumont.Tools.ORM.ObjectModel.Objectification.RoleDeletingRule");
@@ -2783,6 +2982,7 @@ namespace Neumont.Tools.ORM.ObjectModel
 		[Microsoft.VisualStudio.Modeling.RuleOn(typeof(ObjectTypePlaysRole))]
 		private sealed class RolePlayerAddRuleClass : Microsoft.VisualStudio.Modeling.AddRule
 		{
+			[System.Diagnostics.DebuggerStepThrough()]
 			public RolePlayerAddRuleClass()
 			{
 				base.IsEnabled = false;
@@ -2797,6 +2997,7 @@ namespace Neumont.Tools.ORM.ObjectModel
 			/// {
 			/// }
 			/// </summary>
+			[System.Diagnostics.DebuggerStepThrough()]
 			public override void ElementAdded(Microsoft.VisualStudio.Modeling.ElementAddedEventArgs e)
 			{
 				Neumont.Tools.Modeling.Diagnostics.TraceUtility.TraceRuleStart(e.ModelElement.Store, "Neumont.Tools.ORM.ObjectModel.Objectification.RolePlayerAddRule");
@@ -2807,6 +3008,7 @@ namespace Neumont.Tools.ORM.ObjectModel
 		[Microsoft.VisualStudio.Modeling.RuleOn(typeof(ObjectTypePlaysRole))]
 		private sealed class RolePlayerDeletingRuleClass : Microsoft.VisualStudio.Modeling.DeletingRule
 		{
+			[System.Diagnostics.DebuggerStepThrough()]
 			public RolePlayerDeletingRuleClass()
 			{
 				base.IsEnabled = false;
@@ -2821,6 +3023,7 @@ namespace Neumont.Tools.ORM.ObjectModel
 			/// {
 			/// }
 			/// </summary>
+			[System.Diagnostics.DebuggerStepThrough()]
 			public override void ElementDeleting(Microsoft.VisualStudio.Modeling.ElementDeletingEventArgs e)
 			{
 				Neumont.Tools.Modeling.Diagnostics.TraceUtility.TraceRuleStart(e.ModelElement.Store, "Neumont.Tools.ORM.ObjectModel.Objectification.RolePlayerDeletingRule");
@@ -2831,6 +3034,7 @@ namespace Neumont.Tools.ORM.ObjectModel
 		[Microsoft.VisualStudio.Modeling.RuleOn(typeof(ModelHasSetConstraint))]
 		private sealed class UniquenessConstraintAddRuleClass : Microsoft.VisualStudio.Modeling.AddRule
 		{
+			[System.Diagnostics.DebuggerStepThrough()]
 			public UniquenessConstraintAddRuleClass()
 			{
 				base.IsEnabled = false;
@@ -2845,6 +3049,7 @@ namespace Neumont.Tools.ORM.ObjectModel
 			/// {
 			/// }
 			/// </summary>
+			[System.Diagnostics.DebuggerStepThrough()]
 			public override void ElementAdded(Microsoft.VisualStudio.Modeling.ElementAddedEventArgs e)
 			{
 				Neumont.Tools.Modeling.Diagnostics.TraceUtility.TraceRuleStart(e.ModelElement.Store, "Neumont.Tools.ORM.ObjectModel.Objectification.UniquenessConstraintAddRule");
@@ -2855,6 +3060,7 @@ namespace Neumont.Tools.ORM.ObjectModel
 		[Microsoft.VisualStudio.Modeling.RuleOn(typeof(ModelHasSetConstraint))]
 		private sealed class UniquenessConstraintDeletingRuleClass : Microsoft.VisualStudio.Modeling.DeletingRule
 		{
+			[System.Diagnostics.DebuggerStepThrough()]
 			public UniquenessConstraintDeletingRuleClass()
 			{
 				base.IsEnabled = false;
@@ -2869,6 +3075,7 @@ namespace Neumont.Tools.ORM.ObjectModel
 			/// {
 			/// }
 			/// </summary>
+			[System.Diagnostics.DebuggerStepThrough()]
 			public override void ElementDeleting(Microsoft.VisualStudio.Modeling.ElementDeletingEventArgs e)
 			{
 				Neumont.Tools.Modeling.Diagnostics.TraceUtility.TraceRuleStart(e.ModelElement.Store, "Neumont.Tools.ORM.ObjectModel.Objectification.UniquenessConstraintDeletingRule");
@@ -2887,12 +3094,14 @@ namespace Neumont.Tools.ORM.ObjectModel
 		[Microsoft.VisualStudio.Modeling.RuleOn(typeof(FactTypeHasRole))]
 		private sealed class CheckForIncompatibleRelationshipAddRuleClass : Microsoft.VisualStudio.Modeling.AddRule
 		{
+			[System.Diagnostics.DebuggerStepThrough()]
 			public CheckForIncompatibleRelationshipAddRuleClass()
 			{
 				base.IsEnabled = false;
 			}
 			public override bool FireBefore
 			{
+				[System.Diagnostics.DebuggerStepThrough()]
 				get
 				{
 					return true;
@@ -2911,6 +3120,7 @@ namespace Neumont.Tools.ORM.ObjectModel
 			/// {
 			/// }
 			/// </summary>
+			[System.Diagnostics.DebuggerStepThrough()]
 			public override void ElementAdded(Microsoft.VisualStudio.Modeling.ElementAddedEventArgs e)
 			{
 				Neumont.Tools.Modeling.Diagnostics.TraceUtility.TraceRuleStart(e.ModelElement.Store, "Neumont.Tools.ORM.ObjectModel.ObjectType.CheckForIncompatibleRelationshipAddRule");
@@ -2924,12 +3134,14 @@ namespace Neumont.Tools.ORM.ObjectModel
 		[Microsoft.VisualStudio.Modeling.RuleOn(typeof(FactTypeHasRole))]
 		private sealed class CheckForIncompatibleRelationshipRolePlayerChangeRuleClass : Microsoft.VisualStudio.Modeling.RolePlayerChangeRule
 		{
+			[System.Diagnostics.DebuggerStepThrough()]
 			public CheckForIncompatibleRelationshipRolePlayerChangeRuleClass()
 			{
 				base.IsEnabled = false;
 			}
 			public override bool FireBefore
 			{
+				[System.Diagnostics.DebuggerStepThrough()]
 				get
 				{
 					return true;
@@ -2948,6 +3160,7 @@ namespace Neumont.Tools.ORM.ObjectModel
 			/// {
 			/// }
 			/// </summary>
+			[System.Diagnostics.DebuggerStepThrough()]
 			public override void RolePlayerChanged(Microsoft.VisualStudio.Modeling.RolePlayerChangedEventArgs e)
 			{
 				Neumont.Tools.Modeling.Diagnostics.TraceUtility.TraceRuleStart(e.ElementLink.Store, "Neumont.Tools.ORM.ObjectModel.ObjectType.CheckForIncompatibleRelationshipRolePlayerChangeRule");
@@ -2958,6 +3171,7 @@ namespace Neumont.Tools.ORM.ObjectModel
 		[Microsoft.VisualStudio.Modeling.RuleOn(typeof(ObjectTypePlaysRole))]
 		private sealed class CheckIsIndependentRolePlayerChangeRuleClass : Microsoft.VisualStudio.Modeling.RolePlayerChangeRule
 		{
+			[System.Diagnostics.DebuggerStepThrough()]
 			public CheckIsIndependentRolePlayerChangeRuleClass()
 			{
 				base.IsEnabled = false;
@@ -2972,6 +3186,7 @@ namespace Neumont.Tools.ORM.ObjectModel
 			/// {
 			/// }
 			/// </summary>
+			[System.Diagnostics.DebuggerStepThrough()]
 			public override void RolePlayerChanged(Microsoft.VisualStudio.Modeling.RolePlayerChangedEventArgs e)
 			{
 				Neumont.Tools.Modeling.Diagnostics.TraceUtility.TraceRuleStart(e.ElementLink.Store, "Neumont.Tools.ORM.ObjectModel.ObjectType.CheckIsIndependentRolePlayerChangeRule");
@@ -2982,6 +3197,7 @@ namespace Neumont.Tools.ORM.ObjectModel
 		[Microsoft.VisualStudio.Modeling.RuleOn(typeof(MandatoryConstraint))]
 		private sealed class MandatoryModalityChangeRuleClass : Microsoft.VisualStudio.Modeling.ChangeRule
 		{
+			[System.Diagnostics.DebuggerStepThrough()]
 			public MandatoryModalityChangeRuleClass()
 			{
 				base.IsEnabled = false;
@@ -2996,6 +3212,7 @@ namespace Neumont.Tools.ORM.ObjectModel
 			/// {
 			/// }
 			/// </summary>
+			[System.Diagnostics.DebuggerStepThrough()]
 			public override void ElementPropertyChanged(Microsoft.VisualStudio.Modeling.ElementPropertyChangedEventArgs e)
 			{
 				Neumont.Tools.Modeling.Diagnostics.TraceUtility.TraceRuleStart(e.ModelElement.Store, "Neumont.Tools.ORM.ObjectModel.ObjectType.MandatoryModalityChangeRule");
@@ -3006,6 +3223,7 @@ namespace Neumont.Tools.ORM.ObjectModel
 		[Microsoft.VisualStudio.Modeling.RuleOn(typeof(ConstraintRoleSequenceHasRole))]
 		private sealed class MandatoryRoleAddedRuleClass : Microsoft.VisualStudio.Modeling.AddRule
 		{
+			[System.Diagnostics.DebuggerStepThrough()]
 			public MandatoryRoleAddedRuleClass()
 			{
 				base.IsEnabled = false;
@@ -3020,6 +3238,7 @@ namespace Neumont.Tools.ORM.ObjectModel
 			/// {
 			/// }
 			/// </summary>
+			[System.Diagnostics.DebuggerStepThrough()]
 			public override void ElementAdded(Microsoft.VisualStudio.Modeling.ElementAddedEventArgs e)
 			{
 				Neumont.Tools.Modeling.Diagnostics.TraceUtility.TraceRuleStart(e.ModelElement.Store, "Neumont.Tools.ORM.ObjectModel.ObjectType.MandatoryRoleAddedRule");
@@ -3030,6 +3249,7 @@ namespace Neumont.Tools.ORM.ObjectModel
 		[Microsoft.VisualStudio.Modeling.RuleOn(typeof(ConstraintRoleSequenceHasRole))]
 		private sealed class MandatoryRoleDeletingRuleClass : Microsoft.VisualStudio.Modeling.DeletingRule
 		{
+			[System.Diagnostics.DebuggerStepThrough()]
 			public MandatoryRoleDeletingRuleClass()
 			{
 				base.IsEnabled = false;
@@ -3044,6 +3264,7 @@ namespace Neumont.Tools.ORM.ObjectModel
 			/// {
 			/// }
 			/// </summary>
+			[System.Diagnostics.DebuggerStepThrough()]
 			public override void ElementDeleting(Microsoft.VisualStudio.Modeling.ElementDeletingEventArgs e)
 			{
 				Neumont.Tools.Modeling.Diagnostics.TraceUtility.TraceRuleStart(e.ModelElement.Store, "Neumont.Tools.ORM.ObjectModel.ObjectType.MandatoryRoleDeletingRule");
@@ -3054,6 +3275,7 @@ namespace Neumont.Tools.ORM.ObjectModel
 		[Microsoft.VisualStudio.Modeling.RuleOn(typeof(ModelHasObjectType))]
 		private sealed class ObjectTypeAddedRuleClass : Microsoft.VisualStudio.Modeling.AddRule
 		{
+			[System.Diagnostics.DebuggerStepThrough()]
 			public ObjectTypeAddedRuleClass()
 			{
 				base.IsEnabled = false;
@@ -3068,6 +3290,7 @@ namespace Neumont.Tools.ORM.ObjectModel
 			/// {
 			/// }
 			/// </summary>
+			[System.Diagnostics.DebuggerStepThrough()]
 			public override void ElementAdded(Microsoft.VisualStudio.Modeling.ElementAddedEventArgs e)
 			{
 				Neumont.Tools.Modeling.Diagnostics.TraceUtility.TraceRuleStart(e.ModelElement.Store, "Neumont.Tools.ORM.ObjectModel.ObjectType.ObjectTypeAddedRule");
@@ -3078,6 +3301,7 @@ namespace Neumont.Tools.ORM.ObjectModel
 		[Microsoft.VisualStudio.Modeling.RuleOn(typeof(ObjectType))]
 		private sealed class ObjectTypeChangeRuleClass : Microsoft.VisualStudio.Modeling.ChangeRule
 		{
+			[System.Diagnostics.DebuggerStepThrough()]
 			public ObjectTypeChangeRuleClass()
 			{
 				base.IsEnabled = false;
@@ -3092,6 +3316,7 @@ namespace Neumont.Tools.ORM.ObjectModel
 			/// {
 			/// }
 			/// </summary>
+			[System.Diagnostics.DebuggerStepThrough()]
 			public override void ElementPropertyChanged(Microsoft.VisualStudio.Modeling.ElementPropertyChangedEventArgs e)
 			{
 				Neumont.Tools.Modeling.Diagnostics.TraceUtility.TraceRuleStart(e.ModelElement.Store, "Neumont.Tools.ORM.ObjectModel.ObjectType.ObjectTypeChangeRule");
@@ -3102,6 +3327,7 @@ namespace Neumont.Tools.ORM.ObjectModel
 		[Microsoft.VisualStudio.Modeling.RuleOn(typeof(ObjectType))]
 		private sealed class ObjectTypeDeletingRuleClass : Microsoft.VisualStudio.Modeling.DeletingRule
 		{
+			[System.Diagnostics.DebuggerStepThrough()]
 			public ObjectTypeDeletingRuleClass()
 			{
 				base.IsEnabled = false;
@@ -3116,6 +3342,7 @@ namespace Neumont.Tools.ORM.ObjectModel
 			/// {
 			/// }
 			/// </summary>
+			[System.Diagnostics.DebuggerStepThrough()]
 			public override void ElementDeleting(Microsoft.VisualStudio.Modeling.ElementDeletingEventArgs e)
 			{
 				Neumont.Tools.Modeling.Diagnostics.TraceUtility.TraceRuleStart(e.ModelElement.Store, "Neumont.Tools.ORM.ObjectModel.ObjectType.ObjectTypeDeletingRule");
@@ -3126,6 +3353,7 @@ namespace Neumont.Tools.ORM.ObjectModel
 		[Microsoft.VisualStudio.Modeling.RuleOn(typeof(SubtypeFact))]
 		private sealed partial class SubtypeFactChangeRuleClass : Microsoft.VisualStudio.Modeling.ChangeRule
 		{
+			[System.Diagnostics.DebuggerStepThrough()]
 			public SubtypeFactChangeRuleClass()
 			{
 				base.IsEnabled = false;
@@ -3143,6 +3371,7 @@ namespace Neumont.Tools.ORM.ObjectModel
 			/// 	}
 			/// }
 			/// </summary>
+			[System.Diagnostics.DebuggerStepThrough()]
 			public override void ElementPropertyChanged(Microsoft.VisualStudio.Modeling.ElementPropertyChangedEventArgs e)
 			{
 				Neumont.Tools.Modeling.Diagnostics.TraceUtility.TraceRuleStart(e.ModelElement.Store, "Neumont.Tools.ORM.ObjectModel.ObjectType.SubtypeFactChangeRule");
@@ -3153,6 +3382,7 @@ namespace Neumont.Tools.ORM.ObjectModel
 		[Microsoft.VisualStudio.Modeling.RuleOn(typeof(ObjectTypePlaysRole))]
 		private sealed class SupertypeAddedRuleClass : Microsoft.VisualStudio.Modeling.AddRule
 		{
+			[System.Diagnostics.DebuggerStepThrough()]
 			public SupertypeAddedRuleClass()
 			{
 				base.IsEnabled = false;
@@ -3167,6 +3397,7 @@ namespace Neumont.Tools.ORM.ObjectModel
 			/// {
 			/// }
 			/// </summary>
+			[System.Diagnostics.DebuggerStepThrough()]
 			public override void ElementAdded(Microsoft.VisualStudio.Modeling.ElementAddedEventArgs e)
 			{
 				Neumont.Tools.Modeling.Diagnostics.TraceUtility.TraceRuleStart(e.ModelElement.Store, "Neumont.Tools.ORM.ObjectModel.ObjectType.SupertypeAddedRule");
@@ -3177,6 +3408,7 @@ namespace Neumont.Tools.ORM.ObjectModel
 		[Microsoft.VisualStudio.Modeling.RuleOn(typeof(ObjectTypePlaysRole))]
 		private sealed class SupertypeDeleteRuleClass : Microsoft.VisualStudio.Modeling.DeleteRule
 		{
+			[System.Diagnostics.DebuggerStepThrough()]
 			public SupertypeDeleteRuleClass()
 			{
 				base.IsEnabled = false;
@@ -3191,6 +3423,7 @@ namespace Neumont.Tools.ORM.ObjectModel
 			/// {
 			/// }
 			/// </summary>
+			[System.Diagnostics.DebuggerStepThrough()]
 			public override void ElementDeleted(Microsoft.VisualStudio.Modeling.ElementDeletedEventArgs e)
 			{
 				Neumont.Tools.Modeling.Diagnostics.TraceUtility.TraceRuleStart(e.ModelElement.Store, "Neumont.Tools.ORM.ObjectModel.ObjectType.SupertypeDeleteRule");
@@ -3201,6 +3434,7 @@ namespace Neumont.Tools.ORM.ObjectModel
 		[Microsoft.VisualStudio.Modeling.RuleOn(typeof(ObjectTypePlaysRole))]
 		private sealed class SupertypeDeletingRuleClass : Microsoft.VisualStudio.Modeling.DeletingRule
 		{
+			[System.Diagnostics.DebuggerStepThrough()]
 			public SupertypeDeletingRuleClass()
 			{
 				base.IsEnabled = false;
@@ -3215,6 +3449,7 @@ namespace Neumont.Tools.ORM.ObjectModel
 			/// {
 			/// }
 			/// </summary>
+			[System.Diagnostics.DebuggerStepThrough()]
 			public override void ElementDeleting(Microsoft.VisualStudio.Modeling.ElementDeletingEventArgs e)
 			{
 				Neumont.Tools.Modeling.Diagnostics.TraceUtility.TraceRuleStart(e.ModelElement.Store, "Neumont.Tools.ORM.ObjectModel.ObjectType.SupertypeDeletingRule");
@@ -3225,6 +3460,7 @@ namespace Neumont.Tools.ORM.ObjectModel
 		[Microsoft.VisualStudio.Modeling.RuleOn(typeof(ValueTypeHasDataType))]
 		private sealed class UnspecifiedDataTypeAddRuleClass : Microsoft.VisualStudio.Modeling.AddRule
 		{
+			[System.Diagnostics.DebuggerStepThrough()]
 			public UnspecifiedDataTypeAddRuleClass()
 			{
 				base.IsEnabled = false;
@@ -3239,6 +3475,7 @@ namespace Neumont.Tools.ORM.ObjectModel
 			/// {
 			/// }
 			/// </summary>
+			[System.Diagnostics.DebuggerStepThrough()]
 			public override void ElementAdded(Microsoft.VisualStudio.Modeling.ElementAddedEventArgs e)
 			{
 				Neumont.Tools.Modeling.Diagnostics.TraceUtility.TraceRuleStart(e.ModelElement.Store, "Neumont.Tools.ORM.ObjectModel.ObjectType.UnspecifiedDataTypeAddRule");
@@ -3249,6 +3486,7 @@ namespace Neumont.Tools.ORM.ObjectModel
 		[Microsoft.VisualStudio.Modeling.RuleOn(typeof(ValueTypeHasDataType))]
 		private sealed class UnspecifiedDataTypeRolePlayerChangeRuleClass : Microsoft.VisualStudio.Modeling.RolePlayerChangeRule
 		{
+			[System.Diagnostics.DebuggerStepThrough()]
 			public UnspecifiedDataTypeRolePlayerChangeRuleClass()
 			{
 				base.IsEnabled = false;
@@ -3263,6 +3501,7 @@ namespace Neumont.Tools.ORM.ObjectModel
 			/// {
 			/// }
 			/// </summary>
+			[System.Diagnostics.DebuggerStepThrough()]
 			public override void RolePlayerChanged(Microsoft.VisualStudio.Modeling.RolePlayerChangedEventArgs e)
 			{
 				Neumont.Tools.Modeling.Diagnostics.TraceUtility.TraceRuleStart(e.ElementLink.Store, "Neumont.Tools.ORM.ObjectModel.ObjectType.UnspecifiedDataTypeRolePlayerChangeRule");
@@ -3273,6 +3512,7 @@ namespace Neumont.Tools.ORM.ObjectModel
 		[Microsoft.VisualStudio.Modeling.RuleOn(typeof(EntityTypeHasPreferredIdentifier))]
 		private sealed class VerifyReferenceSchemeAddRuleClass : Microsoft.VisualStudio.Modeling.AddRule
 		{
+			[System.Diagnostics.DebuggerStepThrough()]
 			public VerifyReferenceSchemeAddRuleClass()
 			{
 				base.IsEnabled = false;
@@ -3287,6 +3527,7 @@ namespace Neumont.Tools.ORM.ObjectModel
 			/// {
 			/// }
 			/// </summary>
+			[System.Diagnostics.DebuggerStepThrough()]
 			public override void ElementAdded(Microsoft.VisualStudio.Modeling.ElementAddedEventArgs e)
 			{
 				Neumont.Tools.Modeling.Diagnostics.TraceUtility.TraceRuleStart(e.ModelElement.Store, "Neumont.Tools.ORM.ObjectModel.ObjectType.VerifyReferenceSchemeAddRule");
@@ -3297,6 +3538,7 @@ namespace Neumont.Tools.ORM.ObjectModel
 		[Microsoft.VisualStudio.Modeling.RuleOn(typeof(EntityTypeHasPreferredIdentifier))]
 		private sealed class VerifyReferenceSchemeDeleteRuleClass : Microsoft.VisualStudio.Modeling.DeleteRule
 		{
+			[System.Diagnostics.DebuggerStepThrough()]
 			public VerifyReferenceSchemeDeleteRuleClass()
 			{
 				base.IsEnabled = false;
@@ -3311,6 +3553,7 @@ namespace Neumont.Tools.ORM.ObjectModel
 			/// {
 			/// }
 			/// </summary>
+			[System.Diagnostics.DebuggerStepThrough()]
 			public override void ElementDeleted(Microsoft.VisualStudio.Modeling.ElementDeletedEventArgs e)
 			{
 				Neumont.Tools.Modeling.Diagnostics.TraceUtility.TraceRuleStart(e.ModelElement.Store, "Neumont.Tools.ORM.ObjectModel.ObjectType.VerifyReferenceSchemeDeleteRule");
@@ -3321,6 +3564,7 @@ namespace Neumont.Tools.ORM.ObjectModel
 		[Microsoft.VisualStudio.Modeling.RuleOn(typeof(EntityTypeHasPreferredIdentifier))]
 		private sealed class VerifyReferenceSchemeRolePlayerChangeRuleClass : Microsoft.VisualStudio.Modeling.RolePlayerChangeRule
 		{
+			[System.Diagnostics.DebuggerStepThrough()]
 			public VerifyReferenceSchemeRolePlayerChangeRuleClass()
 			{
 				base.IsEnabled = false;
@@ -3335,6 +3579,7 @@ namespace Neumont.Tools.ORM.ObjectModel
 			/// {
 			/// }
 			/// </summary>
+			[System.Diagnostics.DebuggerStepThrough()]
 			public override void RolePlayerChanged(Microsoft.VisualStudio.Modeling.RolePlayerChangedEventArgs e)
 			{
 				Neumont.Tools.Modeling.Diagnostics.TraceUtility.TraceRuleStart(e.ElementLink.Store, "Neumont.Tools.ORM.ObjectModel.ObjectType.VerifyReferenceSchemeRolePlayerChangeRule");
@@ -3345,6 +3590,7 @@ namespace Neumont.Tools.ORM.ObjectModel
 		[Microsoft.VisualStudio.Modeling.RuleOn(typeof(ValueTypeHasDataType))]
 		private sealed class VerifyValueTypeHasDataTypeAddRuleClass : Microsoft.VisualStudio.Modeling.AddRule
 		{
+			[System.Diagnostics.DebuggerStepThrough()]
 			public VerifyValueTypeHasDataTypeAddRuleClass()
 			{
 				base.IsEnabled = false;
@@ -3359,6 +3605,7 @@ namespace Neumont.Tools.ORM.ObjectModel
 			/// {
 			/// }
 			/// </summary>
+			[System.Diagnostics.DebuggerStepThrough()]
 			public override void ElementAdded(Microsoft.VisualStudio.Modeling.ElementAddedEventArgs e)
 			{
 				Neumont.Tools.Modeling.Diagnostics.TraceUtility.TraceRuleStart(e.ModelElement.Store, "Neumont.Tools.ORM.ObjectModel.ObjectType.VerifyValueTypeHasDataTypeAddRule");
@@ -3369,6 +3616,7 @@ namespace Neumont.Tools.ORM.ObjectModel
 		[Microsoft.VisualStudio.Modeling.RuleOn(typeof(ValueTypeHasDataType))]
 		private sealed class VerifyValueTypeHasDataTypeDeleteRuleClass : Microsoft.VisualStudio.Modeling.DeleteRule
 		{
+			[System.Diagnostics.DebuggerStepThrough()]
 			public VerifyValueTypeHasDataTypeDeleteRuleClass()
 			{
 				base.IsEnabled = false;
@@ -3383,6 +3631,7 @@ namespace Neumont.Tools.ORM.ObjectModel
 			/// {
 			/// }
 			/// </summary>
+			[System.Diagnostics.DebuggerStepThrough()]
 			public override void ElementDeleted(Microsoft.VisualStudio.Modeling.ElementDeletedEventArgs e)
 			{
 				Neumont.Tools.Modeling.Diagnostics.TraceUtility.TraceRuleStart(e.ModelElement.Store, "Neumont.Tools.ORM.ObjectModel.ObjectType.VerifyValueTypeHasDataTypeDeleteRule");
@@ -3398,6 +3647,7 @@ namespace Neumont.Tools.ORM.ObjectModel
 		[Microsoft.VisualStudio.Modeling.RuleOn(typeof(ConstraintRoleSequenceHasRole))]
 		private sealed class ConstraintRoleSequenceHasRoleAddedRuleClass : Microsoft.VisualStudio.Modeling.AddRule
 		{
+			[System.Diagnostics.DebuggerStepThrough()]
 			public ConstraintRoleSequenceHasRoleAddedRuleClass()
 			{
 				base.IsEnabled = false;
@@ -3412,6 +3662,7 @@ namespace Neumont.Tools.ORM.ObjectModel
 			/// {
 			/// }
 			/// </summary>
+			[System.Diagnostics.DebuggerStepThrough()]
 			public override void ElementAdded(Microsoft.VisualStudio.Modeling.ElementAddedEventArgs e)
 			{
 				Neumont.Tools.Modeling.Diagnostics.TraceUtility.TraceRuleStart(e.ModelElement.Store, "Neumont.Tools.ORM.ObjectModel.ObjectTypeInstance.ConstraintRoleSequenceHasRoleAddedRule");
@@ -3422,6 +3673,7 @@ namespace Neumont.Tools.ORM.ObjectModel
 		[Microsoft.VisualStudio.Modeling.RuleOn(typeof(ConstraintRoleSequenceHasRole))]
 		private sealed class ConstraintRoleSequenceHasRoleDeletedRuleClass : Microsoft.VisualStudio.Modeling.DeleteRule
 		{
+			[System.Diagnostics.DebuggerStepThrough()]
 			public ConstraintRoleSequenceHasRoleDeletedRuleClass()
 			{
 				base.IsEnabled = false;
@@ -3436,6 +3688,7 @@ namespace Neumont.Tools.ORM.ObjectModel
 			/// {
 			/// }
 			/// </summary>
+			[System.Diagnostics.DebuggerStepThrough()]
 			public override void ElementDeleted(Microsoft.VisualStudio.Modeling.ElementDeletedEventArgs e)
 			{
 				Neumont.Tools.Modeling.Diagnostics.TraceUtility.TraceRuleStart(e.ModelElement.Store, "Neumont.Tools.ORM.ObjectModel.ObjectTypeInstance.ConstraintRoleSequenceHasRoleDeletedRule");
@@ -3446,6 +3699,7 @@ namespace Neumont.Tools.ORM.ObjectModel
 		[Microsoft.VisualStudio.Modeling.RuleOn(typeof(EntityTypeInstanceHasRoleInstance))]
 		private sealed class EntityTypeInstanceHasRoleInstanceAddedRuleClass : Microsoft.VisualStudio.Modeling.AddRule
 		{
+			[System.Diagnostics.DebuggerStepThrough()]
 			public EntityTypeInstanceHasRoleInstanceAddedRuleClass()
 			{
 				base.IsEnabled = false;
@@ -3460,6 +3714,7 @@ namespace Neumont.Tools.ORM.ObjectModel
 			/// {
 			/// }
 			/// </summary>
+			[System.Diagnostics.DebuggerStepThrough()]
 			public override void ElementAdded(Microsoft.VisualStudio.Modeling.ElementAddedEventArgs e)
 			{
 				Neumont.Tools.Modeling.Diagnostics.TraceUtility.TraceRuleStart(e.ModelElement.Store, "Neumont.Tools.ORM.ObjectModel.ObjectTypeInstance.EntityTypeInstanceHasRoleInstanceAddedRule");
@@ -3470,6 +3725,7 @@ namespace Neumont.Tools.ORM.ObjectModel
 		[Microsoft.VisualStudio.Modeling.RuleOn(typeof(EntityTypeInstanceHasRoleInstance))]
 		private sealed class EntityTypeInstanceHasRoleInstanceDeletedRuleClass : Microsoft.VisualStudio.Modeling.DeleteRule
 		{
+			[System.Diagnostics.DebuggerStepThrough()]
 			public EntityTypeInstanceHasRoleInstanceDeletedRuleClass()
 			{
 				base.IsEnabled = false;
@@ -3484,6 +3740,7 @@ namespace Neumont.Tools.ORM.ObjectModel
 			/// {
 			/// }
 			/// </summary>
+			[System.Diagnostics.DebuggerStepThrough()]
 			public override void ElementDeleted(Microsoft.VisualStudio.Modeling.ElementDeletedEventArgs e)
 			{
 				Neumont.Tools.Modeling.Diagnostics.TraceUtility.TraceRuleStart(e.ModelElement.Store, "Neumont.Tools.ORM.ObjectModel.ObjectTypeInstance.EntityTypeInstanceHasRoleInstanceDeletedRule");
@@ -3494,6 +3751,7 @@ namespace Neumont.Tools.ORM.ObjectModel
 		[Microsoft.VisualStudio.Modeling.RuleOn(typeof(EntityTypeInstanceHasRoleInstance))]
 		private sealed class EntityTypeInstanceHasRoleInstanceRolePlayerChangedRuleClass : Microsoft.VisualStudio.Modeling.RolePlayerChangeRule
 		{
+			[System.Diagnostics.DebuggerStepThrough()]
 			public EntityTypeInstanceHasRoleInstanceRolePlayerChangedRuleClass()
 			{
 				base.IsEnabled = false;
@@ -3508,6 +3766,7 @@ namespace Neumont.Tools.ORM.ObjectModel
 			/// {
 			/// }
 			/// </summary>
+			[System.Diagnostics.DebuggerStepThrough()]
 			public override void RolePlayerChanged(Microsoft.VisualStudio.Modeling.RolePlayerChangedEventArgs e)
 			{
 				Neumont.Tools.Modeling.Diagnostics.TraceUtility.TraceRuleStart(e.ElementLink.Store, "Neumont.Tools.ORM.ObjectModel.ObjectTypeInstance.EntityTypeInstanceHasRoleInstanceRolePlayerChangedRule");
@@ -3518,6 +3777,7 @@ namespace Neumont.Tools.ORM.ObjectModel
 		[Microsoft.VisualStudio.Modeling.RuleOn(typeof(ValueTypeInstance))]
 		private sealed class ValueTypeInstanceValueChangedRuleClass : Microsoft.VisualStudio.Modeling.ChangeRule
 		{
+			[System.Diagnostics.DebuggerStepThrough()]
 			public ValueTypeInstanceValueChangedRuleClass()
 			{
 				base.IsEnabled = false;
@@ -3532,6 +3792,7 @@ namespace Neumont.Tools.ORM.ObjectModel
 			/// {
 			/// }
 			/// </summary>
+			[System.Diagnostics.DebuggerStepThrough()]
 			public override void ElementPropertyChanged(Microsoft.VisualStudio.Modeling.ElementPropertyChangedEventArgs e)
 			{
 				Neumont.Tools.Modeling.Diagnostics.TraceUtility.TraceRuleStart(e.ModelElement.Store, "Neumont.Tools.ORM.ObjectModel.ObjectTypeInstance.ValueTypeInstanceValueChangedRule");
@@ -3549,6 +3810,7 @@ namespace Neumont.Tools.ORM.ObjectModel
 		[Microsoft.VisualStudio.Modeling.RuleOn(typeof(ValueConstraintHasDuplicateNameError))]
 		private sealed class DuplicateConstraintNameConstraintDeleteRuleClass : Microsoft.VisualStudio.Modeling.DeleteRule
 		{
+			[System.Diagnostics.DebuggerStepThrough()]
 			public DuplicateConstraintNameConstraintDeleteRuleClass()
 			{
 				base.IsEnabled = false;
@@ -3565,6 +3827,7 @@ namespace Neumont.Tools.ORM.ObjectModel
 			/// {
 			/// }
 			/// </summary>
+			[System.Diagnostics.DebuggerStepThrough()]
 			public override void ElementDeleted(Microsoft.VisualStudio.Modeling.ElementDeletedEventArgs e)
 			{
 				Neumont.Tools.Modeling.Diagnostics.TraceUtility.TraceRuleStart(e.ModelElement.Store, "Neumont.Tools.ORM.ObjectModel.ORMModel.DuplicateConstraintNameConstraintDeleteRule");
@@ -3575,6 +3838,7 @@ namespace Neumont.Tools.ORM.ObjectModel
 		[Microsoft.VisualStudio.Modeling.RuleOn(typeof(ObjectTypeHasDuplicateNameError))]
 		private sealed class DuplicateObjectTypeNameObjectTypeDeleteRuleClass : Microsoft.VisualStudio.Modeling.DeleteRule
 		{
+			[System.Diagnostics.DebuggerStepThrough()]
 			public DuplicateObjectTypeNameObjectTypeDeleteRuleClass()
 			{
 				base.IsEnabled = false;
@@ -3589,6 +3853,7 @@ namespace Neumont.Tools.ORM.ObjectModel
 			/// {
 			/// }
 			/// </summary>
+			[System.Diagnostics.DebuggerStepThrough()]
 			public override void ElementDeleted(Microsoft.VisualStudio.Modeling.ElementDeletedEventArgs e)
 			{
 				Neumont.Tools.Modeling.Diagnostics.TraceUtility.TraceRuleStart(e.ModelElement.Store, "Neumont.Tools.ORM.ObjectModel.ORMModel.DuplicateObjectTypeNameObjectTypeDeleteRule");
@@ -3604,6 +3869,7 @@ namespace Neumont.Tools.ORM.ObjectModel
 		[Microsoft.VisualStudio.Modeling.RuleOn(typeof(ReadingOrderHasRole))]
 		private sealed class ReadingOrderHasRoleDeletedRuleClass : Microsoft.VisualStudio.Modeling.DeleteRule
 		{
+			[System.Diagnostics.DebuggerStepThrough()]
 			public ReadingOrderHasRoleDeletedRuleClass()
 			{
 				base.IsEnabled = false;
@@ -3618,6 +3884,7 @@ namespace Neumont.Tools.ORM.ObjectModel
 			/// {
 			/// }
 			/// </summary>
+			[System.Diagnostics.DebuggerStepThrough()]
 			public override void ElementDeleted(Microsoft.VisualStudio.Modeling.ElementDeletedEventArgs e)
 			{
 				Neumont.Tools.Modeling.Diagnostics.TraceUtility.TraceRuleStart(e.ModelElement.Store, "Neumont.Tools.ORM.ObjectModel.Reading.ReadingOrderHasRoleDeletedRule");
@@ -3628,6 +3895,7 @@ namespace Neumont.Tools.ORM.ObjectModel
 		[Microsoft.VisualStudio.Modeling.RuleOn(typeof(Reading))]
 		private sealed class ReadingPropertiesChangedRuleClass : Microsoft.VisualStudio.Modeling.ChangeRule
 		{
+			[System.Diagnostics.DebuggerStepThrough()]
 			public ReadingPropertiesChangedRuleClass()
 			{
 				base.IsEnabled = false;
@@ -3642,6 +3910,7 @@ namespace Neumont.Tools.ORM.ObjectModel
 			/// {
 			/// }
 			/// </summary>
+			[System.Diagnostics.DebuggerStepThrough()]
 			public override void ElementPropertyChanged(Microsoft.VisualStudio.Modeling.ElementPropertyChangedEventArgs e)
 			{
 				Neumont.Tools.Modeling.Diagnostics.TraceUtility.TraceRuleStart(e.ModelElement.Store, "Neumont.Tools.ORM.ObjectModel.Reading.ReadingPropertiesChangedRule");
@@ -3657,6 +3926,7 @@ namespace Neumont.Tools.ORM.ObjectModel
 		[Microsoft.VisualStudio.Modeling.RuleOn(typeof(ReadingOrderHasReading), FireTime=Microsoft.VisualStudio.Modeling.TimeToFire.LocalCommit, Priority=Neumont.Tools.Modeling.FrameworkDomainModel.BeforeDelayValidateRulePriority)]
 		private sealed class EnforceNoEmptyReadingOrderDeleteRuleClass : Microsoft.VisualStudio.Modeling.DeleteRule
 		{
+			[System.Diagnostics.DebuggerStepThrough()]
 			public EnforceNoEmptyReadingOrderDeleteRuleClass()
 			{
 				base.IsEnabled = false;
@@ -3671,6 +3941,7 @@ namespace Neumont.Tools.ORM.ObjectModel
 			/// {
 			/// }
 			/// </summary>
+			[System.Diagnostics.DebuggerStepThrough()]
 			public override void ElementDeleted(Microsoft.VisualStudio.Modeling.ElementDeletedEventArgs e)
 			{
 				Neumont.Tools.Modeling.Diagnostics.TraceUtility.TraceRuleStart(e.ModelElement.Store, "Neumont.Tools.ORM.ObjectModel.ReadingOrder.EnforceNoEmptyReadingOrderDeleteRule");
@@ -3681,6 +3952,7 @@ namespace Neumont.Tools.ORM.ObjectModel
 		[Microsoft.VisualStudio.Modeling.RuleOn(typeof(ReadingOrderHasReading), FireTime=Microsoft.VisualStudio.Modeling.TimeToFire.LocalCommit, Priority=Neumont.Tools.Modeling.FrameworkDomainModel.BeforeDelayValidateRulePriority)]
 		private sealed class EnforceNoEmptyReadingOrderRolePlayerChangeRuleClass : Microsoft.VisualStudio.Modeling.RolePlayerChangeRule
 		{
+			[System.Diagnostics.DebuggerStepThrough()]
 			public EnforceNoEmptyReadingOrderRolePlayerChangeRuleClass()
 			{
 				base.IsEnabled = false;
@@ -3695,6 +3967,7 @@ namespace Neumont.Tools.ORM.ObjectModel
 			/// {
 			/// }
 			/// </summary>
+			[System.Diagnostics.DebuggerStepThrough()]
 			public override void RolePlayerChanged(Microsoft.VisualStudio.Modeling.RolePlayerChangedEventArgs e)
 			{
 				Neumont.Tools.Modeling.Diagnostics.TraceUtility.TraceRuleStart(e.ElementLink.Store, "Neumont.Tools.ORM.ObjectModel.ReadingOrder.EnforceNoEmptyReadingOrderRolePlayerChangeRule");
@@ -3705,6 +3978,7 @@ namespace Neumont.Tools.ORM.ObjectModel
 		[Microsoft.VisualStudio.Modeling.RuleOn(typeof(FactTypeHasRole))]
 		private sealed class FactTypeHasRoleAddedRuleClass : Microsoft.VisualStudio.Modeling.AddRule
 		{
+			[System.Diagnostics.DebuggerStepThrough()]
 			public FactTypeHasRoleAddedRuleClass()
 			{
 				base.IsEnabled = false;
@@ -3719,6 +3993,7 @@ namespace Neumont.Tools.ORM.ObjectModel
 			/// {
 			/// }
 			/// </summary>
+			[System.Diagnostics.DebuggerStepThrough()]
 			public override void ElementAdded(Microsoft.VisualStudio.Modeling.ElementAddedEventArgs e)
 			{
 				Neumont.Tools.Modeling.Diagnostics.TraceUtility.TraceRuleStart(e.ModelElement.Store, "Neumont.Tools.ORM.ObjectModel.ReadingOrder.FactTypeHasRoleAddedRule");
@@ -3729,6 +4004,7 @@ namespace Neumont.Tools.ORM.ObjectModel
 		[Microsoft.VisualStudio.Modeling.RuleOn(typeof(ReadingOrderHasRole))]
 		private sealed class ReadingOrderHasRoleDeletingRuleClass : Microsoft.VisualStudio.Modeling.DeletingRule
 		{
+			[System.Diagnostics.DebuggerStepThrough()]
 			public ReadingOrderHasRoleDeletingRuleClass()
 			{
 				base.IsEnabled = false;
@@ -3743,6 +4019,7 @@ namespace Neumont.Tools.ORM.ObjectModel
 			/// {
 			/// }
 			/// </summary>
+			[System.Diagnostics.DebuggerStepThrough()]
 			public override void ElementDeleting(Microsoft.VisualStudio.Modeling.ElementDeletingEventArgs e)
 			{
 				Neumont.Tools.Modeling.Diagnostics.TraceUtility.TraceRuleStart(e.ModelElement.Store, "Neumont.Tools.ORM.ObjectModel.ReadingOrder.ReadingOrderHasRoleDeletingRule");
@@ -3758,6 +4035,7 @@ namespace Neumont.Tools.ORM.ObjectModel
 		[Microsoft.VisualStudio.Modeling.RuleOn(typeof(ModelHasReferenceMode), FireTime=Microsoft.VisualStudio.Modeling.TimeToFire.LocalCommit, Priority=Neumont.Tools.Modeling.FrameworkDomainModel.BeforeDelayValidateRulePriority)]
 		private sealed class ReferenceModeAddedRuleClass : Microsoft.VisualStudio.Modeling.AddRule
 		{
+			[System.Diagnostics.DebuggerStepThrough()]
 			public ReferenceModeAddedRuleClass()
 			{
 				base.IsEnabled = false;
@@ -3772,6 +4050,7 @@ namespace Neumont.Tools.ORM.ObjectModel
 			/// {
 			/// }
 			/// </summary>
+			[System.Diagnostics.DebuggerStepThrough()]
 			public override void ElementAdded(Microsoft.VisualStudio.Modeling.ElementAddedEventArgs e)
 			{
 				Neumont.Tools.Modeling.Diagnostics.TraceUtility.TraceRuleStart(e.ModelElement.Store, "Neumont.Tools.ORM.ObjectModel.ReferenceMode.ReferenceModeAddedRule");
@@ -3782,6 +4061,7 @@ namespace Neumont.Tools.ORM.ObjectModel
 		[Microsoft.VisualStudio.Modeling.RuleOn(typeof(ReferenceMode))]
 		private sealed class ReferenceModeChangeRuleClass : Microsoft.VisualStudio.Modeling.ChangeRule
 		{
+			[System.Diagnostics.DebuggerStepThrough()]
 			public ReferenceModeChangeRuleClass()
 			{
 				base.IsEnabled = false;
@@ -3796,6 +4076,7 @@ namespace Neumont.Tools.ORM.ObjectModel
 			/// {
 			/// }
 			/// </summary>
+			[System.Diagnostics.DebuggerStepThrough()]
 			public override void ElementPropertyChanged(Microsoft.VisualStudio.Modeling.ElementPropertyChangedEventArgs e)
 			{
 				Neumont.Tools.Modeling.Diagnostics.TraceUtility.TraceRuleStart(e.ModelElement.Store, "Neumont.Tools.ORM.ObjectModel.ReferenceMode.ReferenceModeChangeRule");
@@ -3811,6 +4092,7 @@ namespace Neumont.Tools.ORM.ObjectModel
 		[Microsoft.VisualStudio.Modeling.RuleOn(typeof(ReferenceModeHasReferenceModeKind))]
 		private sealed class ReferenceModeHasReferenceModeKindDeletingRuleClass : Microsoft.VisualStudio.Modeling.DeletingRule
 		{
+			[System.Diagnostics.DebuggerStepThrough()]
 			public ReferenceModeHasReferenceModeKindDeletingRuleClass()
 			{
 				base.IsEnabled = false;
@@ -3825,6 +4107,7 @@ namespace Neumont.Tools.ORM.ObjectModel
 			/// {
 			/// }
 			/// </summary>
+			[System.Diagnostics.DebuggerStepThrough()]
 			public override void ElementDeleting(Microsoft.VisualStudio.Modeling.ElementDeletingEventArgs e)
 			{
 				Neumont.Tools.Modeling.Diagnostics.TraceUtility.TraceRuleStart(e.ModelElement.Store, "Neumont.Tools.ORM.ObjectModel.ReferenceModeHasReferenceModeKind.ReferenceModeHasReferenceModeKindDeletingRule");
@@ -3835,6 +4118,7 @@ namespace Neumont.Tools.ORM.ObjectModel
 		[Microsoft.VisualStudio.Modeling.RuleOn(typeof(ReferenceModeHasReferenceModeKind))]
 		private sealed class ReferenceModeHasReferenceModeKindRolePlayerChangeRuleClass : Microsoft.VisualStudio.Modeling.RolePlayerChangeRule
 		{
+			[System.Diagnostics.DebuggerStepThrough()]
 			public ReferenceModeHasReferenceModeKindRolePlayerChangeRuleClass()
 			{
 				base.IsEnabled = false;
@@ -3849,6 +4133,7 @@ namespace Neumont.Tools.ORM.ObjectModel
 			/// {
 			/// }
 			/// </summary>
+			[System.Diagnostics.DebuggerStepThrough()]
 			public override void RolePlayerChanged(Microsoft.VisualStudio.Modeling.RolePlayerChangedEventArgs e)
 			{
 				Neumont.Tools.Modeling.Diagnostics.TraceUtility.TraceRuleStart(e.ElementLink.Store, "Neumont.Tools.ORM.ObjectModel.ReferenceModeHasReferenceModeKind.ReferenceModeHasReferenceModeKindRolePlayerChangeRule");
@@ -3864,6 +4149,7 @@ namespace Neumont.Tools.ORM.ObjectModel
 		[Microsoft.VisualStudio.Modeling.RuleOn(typeof(ReferenceModeKind))]
 		private sealed class ReferenceModeKindChangeRuleClass : Microsoft.VisualStudio.Modeling.ChangeRule
 		{
+			[System.Diagnostics.DebuggerStepThrough()]
 			public ReferenceModeKindChangeRuleClass()
 			{
 				base.IsEnabled = false;
@@ -3878,6 +4164,7 @@ namespace Neumont.Tools.ORM.ObjectModel
 			/// {
 			/// }
 			/// </summary>
+			[System.Diagnostics.DebuggerStepThrough()]
 			public override void ElementPropertyChanged(Microsoft.VisualStudio.Modeling.ElementPropertyChangedEventArgs e)
 			{
 				Neumont.Tools.Modeling.Diagnostics.TraceUtility.TraceRuleStart(e.ModelElement.Store, "Neumont.Tools.ORM.ObjectModel.ReferenceModeKind.ReferenceModeKindChangeRule");
@@ -3893,6 +4180,7 @@ namespace Neumont.Tools.ORM.ObjectModel
 		[Microsoft.VisualStudio.Modeling.RuleOn(typeof(RingConstraint))]
 		private sealed class RingConstraintTypeChangeRuleClass : Microsoft.VisualStudio.Modeling.ChangeRule
 		{
+			[System.Diagnostics.DebuggerStepThrough()]
 			public RingConstraintTypeChangeRuleClass()
 			{
 				base.IsEnabled = false;
@@ -3907,6 +4195,7 @@ namespace Neumont.Tools.ORM.ObjectModel
 			/// {
 			/// }
 			/// </summary>
+			[System.Diagnostics.DebuggerStepThrough()]
 			public override void ElementPropertyChanged(Microsoft.VisualStudio.Modeling.ElementPropertyChangedEventArgs e)
 			{
 				Neumont.Tools.Modeling.Diagnostics.TraceUtility.TraceRuleStart(e.ModelElement.Store, "Neumont.Tools.ORM.ObjectModel.RingConstraint.RingConstraintTypeChangeRule");
@@ -3922,6 +4211,7 @@ namespace Neumont.Tools.ORM.ObjectModel
 		[Microsoft.VisualStudio.Modeling.RuleOn(typeof(ConstraintRoleSequenceHasRole))]
 		private sealed class ConstraintRoleSequenceHasRoleAddedRuleClass : Microsoft.VisualStudio.Modeling.AddRule
 		{
+			[System.Diagnostics.DebuggerStepThrough()]
 			public ConstraintRoleSequenceHasRoleAddedRuleClass()
 			{
 				base.IsEnabled = false;
@@ -3936,6 +4226,7 @@ namespace Neumont.Tools.ORM.ObjectModel
 			/// {
 			/// }
 			/// </summary>
+			[System.Diagnostics.DebuggerStepThrough()]
 			public override void ElementAdded(Microsoft.VisualStudio.Modeling.ElementAddedEventArgs e)
 			{
 				Neumont.Tools.Modeling.Diagnostics.TraceUtility.TraceRuleStart(e.ModelElement.Store, "Neumont.Tools.ORM.ObjectModel.Role.ConstraintRoleSequenceHasRoleAddedRule");
@@ -3946,6 +4237,7 @@ namespace Neumont.Tools.ORM.ObjectModel
 		[Microsoft.VisualStudio.Modeling.RuleOn(typeof(ConstraintRoleSequenceHasRole))]
 		private sealed class ConstraintRoleSequenceHasRoleDeletedRuleClass : Microsoft.VisualStudio.Modeling.DeleteRule
 		{
+			[System.Diagnostics.DebuggerStepThrough()]
 			public ConstraintRoleSequenceHasRoleDeletedRuleClass()
 			{
 				base.IsEnabled = false;
@@ -3960,6 +4252,7 @@ namespace Neumont.Tools.ORM.ObjectModel
 			/// {
 			/// }
 			/// </summary>
+			[System.Diagnostics.DebuggerStepThrough()]
 			public override void ElementDeleted(Microsoft.VisualStudio.Modeling.ElementDeletedEventArgs e)
 			{
 				Neumont.Tools.Modeling.Diagnostics.TraceUtility.TraceRuleStart(e.ModelElement.Store, "Neumont.Tools.ORM.ObjectModel.Role.ConstraintRoleSequenceHasRoleDeletedRule");
@@ -3970,6 +4263,7 @@ namespace Neumont.Tools.ORM.ObjectModel
 		[Microsoft.VisualStudio.Modeling.RuleOn(typeof(SetConstraint))]
 		private sealed class ConstraintChangedRuleClass : Microsoft.VisualStudio.Modeling.ChangeRule
 		{
+			[System.Diagnostics.DebuggerStepThrough()]
 			public ConstraintChangedRuleClass()
 			{
 				base.IsEnabled = false;
@@ -3984,6 +4278,7 @@ namespace Neumont.Tools.ORM.ObjectModel
 			/// {
 			/// }
 			/// </summary>
+			[System.Diagnostics.DebuggerStepThrough()]
 			public override void ElementPropertyChanged(Microsoft.VisualStudio.Modeling.ElementPropertyChangedEventArgs e)
 			{
 				Neumont.Tools.Modeling.Diagnostics.TraceUtility.TraceRuleStart(e.ModelElement.Store, "Neumont.Tools.ORM.ObjectModel.Role.ConstraintChangedRule");
@@ -3994,6 +4289,7 @@ namespace Neumont.Tools.ORM.ObjectModel
 		[Microsoft.VisualStudio.Modeling.RuleOn(typeof(Role))]
 		private sealed class RoleChangeRuleClass : Microsoft.VisualStudio.Modeling.ChangeRule
 		{
+			[System.Diagnostics.DebuggerStepThrough()]
 			public RoleChangeRuleClass()
 			{
 				base.IsEnabled = false;
@@ -4008,6 +4304,7 @@ namespace Neumont.Tools.ORM.ObjectModel
 			/// {
 			/// }
 			/// </summary>
+			[System.Diagnostics.DebuggerStepThrough()]
 			public override void ElementPropertyChanged(Microsoft.VisualStudio.Modeling.ElementPropertyChangedEventArgs e)
 			{
 				Neumont.Tools.Modeling.Diagnostics.TraceUtility.TraceRuleStart(e.ModelElement.Store, "Neumont.Tools.ORM.ObjectModel.Role.RoleChangeRule");
@@ -4018,6 +4315,7 @@ namespace Neumont.Tools.ORM.ObjectModel
 		[Microsoft.VisualStudio.Modeling.RuleOn(typeof(RoleInstance))]
 		private sealed class RoleInstanceAddedRuleClass : Microsoft.VisualStudio.Modeling.AddRule
 		{
+			[System.Diagnostics.DebuggerStepThrough()]
 			public RoleInstanceAddedRuleClass()
 			{
 				base.IsEnabled = false;
@@ -4032,6 +4330,7 @@ namespace Neumont.Tools.ORM.ObjectModel
 			/// {
 			/// }
 			/// </summary>
+			[System.Diagnostics.DebuggerStepThrough()]
 			public override void ElementAdded(Microsoft.VisualStudio.Modeling.ElementAddedEventArgs e)
 			{
 				Neumont.Tools.Modeling.Diagnostics.TraceUtility.TraceRuleStart(e.ModelElement.Store, "Neumont.Tools.ORM.ObjectModel.Role.RoleInstanceAddedRule");
@@ -4042,6 +4341,7 @@ namespace Neumont.Tools.ORM.ObjectModel
 		[Microsoft.VisualStudio.Modeling.RuleOn(typeof(RoleInstance))]
 		private sealed class RoleInstanceDeletedRuleClass : Microsoft.VisualStudio.Modeling.DeleteRule
 		{
+			[System.Diagnostics.DebuggerStepThrough()]
 			public RoleInstanceDeletedRuleClass()
 			{
 				base.IsEnabled = false;
@@ -4056,6 +4356,7 @@ namespace Neumont.Tools.ORM.ObjectModel
 			/// {
 			/// }
 			/// </summary>
+			[System.Diagnostics.DebuggerStepThrough()]
 			public override void ElementDeleted(Microsoft.VisualStudio.Modeling.ElementDeletedEventArgs e)
 			{
 				Neumont.Tools.Modeling.Diagnostics.TraceUtility.TraceRuleStart(e.ModelElement.Store, "Neumont.Tools.ORM.ObjectModel.Role.RoleInstanceDeletedRule");
@@ -4066,6 +4367,7 @@ namespace Neumont.Tools.ORM.ObjectModel
 		[Microsoft.VisualStudio.Modeling.RuleOn(typeof(RoleInstance))]
 		private sealed class RoleInstanceRolePlayerChangedRuleClass : Microsoft.VisualStudio.Modeling.RolePlayerChangeRule
 		{
+			[System.Diagnostics.DebuggerStepThrough()]
 			public RoleInstanceRolePlayerChangedRuleClass()
 			{
 				base.IsEnabled = false;
@@ -4080,6 +4382,7 @@ namespace Neumont.Tools.ORM.ObjectModel
 			/// {
 			/// }
 			/// </summary>
+			[System.Diagnostics.DebuggerStepThrough()]
 			public override void RolePlayerChanged(Microsoft.VisualStudio.Modeling.RolePlayerChangedEventArgs e)
 			{
 				Neumont.Tools.Modeling.Diagnostics.TraceUtility.TraceRuleStart(e.ElementLink.Store, "Neumont.Tools.ORM.ObjectModel.Role.RoleInstanceRolePlayerChangedRule");
@@ -4090,6 +4393,7 @@ namespace Neumont.Tools.ORM.ObjectModel
 		[Microsoft.VisualStudio.Modeling.RuleOn(typeof(ObjectTypePlaysRole), FireTime=Microsoft.VisualStudio.Modeling.TimeToFire.LocalCommit, Priority=Neumont.Tools.Modeling.FrameworkDomainModel.BeforeDelayValidateRulePriority)]
 		private sealed class RolePlayerRequiredAddRuleClass : Microsoft.VisualStudio.Modeling.AddRule
 		{
+			[System.Diagnostics.DebuggerStepThrough()]
 			public RolePlayerRequiredAddRuleClass()
 			{
 				base.IsEnabled = false;
@@ -4104,6 +4408,7 @@ namespace Neumont.Tools.ORM.ObjectModel
 			/// {
 			/// }
 			/// </summary>
+			[System.Diagnostics.DebuggerStepThrough()]
 			public override void ElementAdded(Microsoft.VisualStudio.Modeling.ElementAddedEventArgs e)
 			{
 				Neumont.Tools.Modeling.Diagnostics.TraceUtility.TraceRuleStart(e.ModelElement.Store, "Neumont.Tools.ORM.ObjectModel.Role.RolePlayerRequiredAddRule");
@@ -4114,6 +4419,7 @@ namespace Neumont.Tools.ORM.ObjectModel
 		[Microsoft.VisualStudio.Modeling.RuleOn(typeof(ObjectTypePlaysRole))]
 		private sealed class RolePlayerRequiredDeleteRuleClass : Microsoft.VisualStudio.Modeling.DeleteRule
 		{
+			[System.Diagnostics.DebuggerStepThrough()]
 			public RolePlayerRequiredDeleteRuleClass()
 			{
 				base.IsEnabled = false;
@@ -4128,6 +4434,7 @@ namespace Neumont.Tools.ORM.ObjectModel
 			/// {
 			/// }
 			/// </summary>
+			[System.Diagnostics.DebuggerStepThrough()]
 			public override void ElementDeleted(Microsoft.VisualStudio.Modeling.ElementDeletedEventArgs e)
 			{
 				Neumont.Tools.Modeling.Diagnostics.TraceUtility.TraceRuleStart(e.ModelElement.Store, "Neumont.Tools.ORM.ObjectModel.Role.RolePlayerRequiredDeleteRule");
@@ -4138,6 +4445,7 @@ namespace Neumont.Tools.ORM.ObjectModel
 		[Microsoft.VisualStudio.Modeling.RuleOn(typeof(FactTypeHasRole))]
 		private sealed class RolePlayerRequiredForNewRoleAddRuleClass : Microsoft.VisualStudio.Modeling.AddRule
 		{
+			[System.Diagnostics.DebuggerStepThrough()]
 			public RolePlayerRequiredForNewRoleAddRuleClass()
 			{
 				base.IsEnabled = false;
@@ -4152,6 +4460,7 @@ namespace Neumont.Tools.ORM.ObjectModel
 			/// {
 			/// }
 			/// </summary>
+			[System.Diagnostics.DebuggerStepThrough()]
 			public override void ElementAdded(Microsoft.VisualStudio.Modeling.ElementAddedEventArgs e)
 			{
 				Neumont.Tools.Modeling.Diagnostics.TraceUtility.TraceRuleStart(e.ModelElement.Store, "Neumont.Tools.ORM.ObjectModel.Role.RolePlayerRequiredForNewRoleAddRule");
@@ -4162,6 +4471,7 @@ namespace Neumont.Tools.ORM.ObjectModel
 		[Microsoft.VisualStudio.Modeling.RuleOn(typeof(FactTypeHasRole))]
 		private sealed class UpdatedRolePlayerRequiredErrorsDeleteRuleClass : Microsoft.VisualStudio.Modeling.DeleteRule
 		{
+			[System.Diagnostics.DebuggerStepThrough()]
 			public UpdatedRolePlayerRequiredErrorsDeleteRuleClass()
 			{
 				base.IsEnabled = false;
@@ -4176,6 +4486,7 @@ namespace Neumont.Tools.ORM.ObjectModel
 			/// {
 			/// }
 			/// </summary>
+			[System.Diagnostics.DebuggerStepThrough()]
 			public override void ElementDeleted(Microsoft.VisualStudio.Modeling.ElementDeletedEventArgs e)
 			{
 				Neumont.Tools.Modeling.Diagnostics.TraceUtility.TraceRuleStart(e.ModelElement.Store, "Neumont.Tools.ORM.ObjectModel.Role.UpdatedRolePlayerRequiredErrorsDeleteRule");
@@ -4191,12 +4502,14 @@ namespace Neumont.Tools.ORM.ObjectModel
 		[Microsoft.VisualStudio.Modeling.RuleOn(typeof(SetComparisonConstraintHasRoleSequence))]
 		private sealed class ConstraintHasRoleSequenceAddedRuleClass : Microsoft.VisualStudio.Modeling.AddRule
 		{
+			[System.Diagnostics.DebuggerStepThrough()]
 			public ConstraintHasRoleSequenceAddedRuleClass()
 			{
 				base.IsEnabled = false;
 			}
 			public override bool FireBefore
 			{
+				[System.Diagnostics.DebuggerStepThrough()]
 				get
 				{
 					return true;
@@ -4212,6 +4525,7 @@ namespace Neumont.Tools.ORM.ObjectModel
 			/// {
 			/// }
 			/// </summary>
+			[System.Diagnostics.DebuggerStepThrough()]
 			public override void ElementAdded(Microsoft.VisualStudio.Modeling.ElementAddedEventArgs e)
 			{
 				Neumont.Tools.Modeling.Diagnostics.TraceUtility.TraceRuleStart(e.ModelElement.Store, "Neumont.Tools.ORM.ObjectModel.SetComparisonConstraint.ConstraintHasRoleSequenceAddedRule");
@@ -4222,12 +4536,14 @@ namespace Neumont.Tools.ORM.ObjectModel
 		[Microsoft.VisualStudio.Modeling.RuleOn(typeof(ConstraintRoleSequenceHasRole))]
 		private sealed class ConstraintRoleSequenceHasRoleAddedRuleClass : Microsoft.VisualStudio.Modeling.AddRule
 		{
+			[System.Diagnostics.DebuggerStepThrough()]
 			public ConstraintRoleSequenceHasRoleAddedRuleClass()
 			{
 				base.IsEnabled = false;
 			}
 			public override bool FireBefore
 			{
+				[System.Diagnostics.DebuggerStepThrough()]
 				get
 				{
 					return true;
@@ -4243,6 +4559,7 @@ namespace Neumont.Tools.ORM.ObjectModel
 			/// {
 			/// }
 			/// </summary>
+			[System.Diagnostics.DebuggerStepThrough()]
 			public override void ElementAdded(Microsoft.VisualStudio.Modeling.ElementAddedEventArgs e)
 			{
 				Neumont.Tools.Modeling.Diagnostics.TraceUtility.TraceRuleStart(e.ModelElement.Store, "Neumont.Tools.ORM.ObjectModel.SetComparisonConstraint.ConstraintRoleSequenceHasRoleAddedRule");
@@ -4253,6 +4570,7 @@ namespace Neumont.Tools.ORM.ObjectModel
 		[Microsoft.VisualStudio.Modeling.RuleOn(typeof(ModelHasSetComparisonConstraint))]
 		private sealed class EnforceRoleSequenceCardinalityForConstraintAddRuleClass : Microsoft.VisualStudio.Modeling.AddRule
 		{
+			[System.Diagnostics.DebuggerStepThrough()]
 			public EnforceRoleSequenceCardinalityForConstraintAddRuleClass()
 			{
 				base.IsEnabled = false;
@@ -4267,6 +4585,7 @@ namespace Neumont.Tools.ORM.ObjectModel
 			/// {
 			/// }
 			/// </summary>
+			[System.Diagnostics.DebuggerStepThrough()]
 			public override void ElementAdded(Microsoft.VisualStudio.Modeling.ElementAddedEventArgs e)
 			{
 				Neumont.Tools.Modeling.Diagnostics.TraceUtility.TraceRuleStart(e.ModelElement.Store, "Neumont.Tools.ORM.ObjectModel.SetComparisonConstraint.EnforceRoleSequenceCardinalityForConstraintAddRule");
@@ -4277,6 +4596,7 @@ namespace Neumont.Tools.ORM.ObjectModel
 		[Microsoft.VisualStudio.Modeling.RuleOn(typeof(SetComparisonConstraintHasRoleSequence))]
 		private sealed class EnforceRoleSequenceCardinalityForSequenceAddRuleClass : Microsoft.VisualStudio.Modeling.AddRule
 		{
+			[System.Diagnostics.DebuggerStepThrough()]
 			public EnforceRoleSequenceCardinalityForSequenceAddRuleClass()
 			{
 				base.IsEnabled = false;
@@ -4291,6 +4611,7 @@ namespace Neumont.Tools.ORM.ObjectModel
 			/// {
 			/// }
 			/// </summary>
+			[System.Diagnostics.DebuggerStepThrough()]
 			public override void ElementAdded(Microsoft.VisualStudio.Modeling.ElementAddedEventArgs e)
 			{
 				Neumont.Tools.Modeling.Diagnostics.TraceUtility.TraceRuleStart(e.ModelElement.Store, "Neumont.Tools.ORM.ObjectModel.SetComparisonConstraint.EnforceRoleSequenceCardinalityForSequenceAddRule");
@@ -4301,6 +4622,7 @@ namespace Neumont.Tools.ORM.ObjectModel
 		[Microsoft.VisualStudio.Modeling.RuleOn(typeof(SetComparisonConstraintHasRoleSequence))]
 		private sealed class EnforceRoleSequenceCardinalityForSequenceDeleteRuleClass : Microsoft.VisualStudio.Modeling.DeleteRule
 		{
+			[System.Diagnostics.DebuggerStepThrough()]
 			public EnforceRoleSequenceCardinalityForSequenceDeleteRuleClass()
 			{
 				base.IsEnabled = false;
@@ -4315,6 +4637,7 @@ namespace Neumont.Tools.ORM.ObjectModel
 			/// {
 			/// }
 			/// </summary>
+			[System.Diagnostics.DebuggerStepThrough()]
 			public override void ElementDeleted(Microsoft.VisualStudio.Modeling.ElementDeletedEventArgs e)
 			{
 				Neumont.Tools.Modeling.Diagnostics.TraceUtility.TraceRuleStart(e.ModelElement.Store, "Neumont.Tools.ORM.ObjectModel.SetComparisonConstraint.EnforceRoleSequenceCardinalityForSequenceDeleteRule");
@@ -4325,6 +4648,7 @@ namespace Neumont.Tools.ORM.ObjectModel
 		[Microsoft.VisualStudio.Modeling.RuleOn(typeof(ConstraintRoleSequenceHasRole))]
 		private sealed class EnforceRoleSequenceValidityForRoleAddRuleClass : Microsoft.VisualStudio.Modeling.AddRule
 		{
+			[System.Diagnostics.DebuggerStepThrough()]
 			public EnforceRoleSequenceValidityForRoleAddRuleClass()
 			{
 				base.IsEnabled = false;
@@ -4339,6 +4663,7 @@ namespace Neumont.Tools.ORM.ObjectModel
 			/// {
 			/// }
 			/// </summary>
+			[System.Diagnostics.DebuggerStepThrough()]
 			public override void ElementAdded(Microsoft.VisualStudio.Modeling.ElementAddedEventArgs e)
 			{
 				Neumont.Tools.Modeling.Diagnostics.TraceUtility.TraceRuleStart(e.ModelElement.Store, "Neumont.Tools.ORM.ObjectModel.SetComparisonConstraint.EnforceRoleSequenceValidityForRoleAddRule");
@@ -4349,6 +4674,7 @@ namespace Neumont.Tools.ORM.ObjectModel
 		[Microsoft.VisualStudio.Modeling.RuleOn(typeof(ConstraintRoleSequenceHasRole))]
 		private sealed class EnforceRoleSequenceValidityForRoleDeleteRuleClass : Microsoft.VisualStudio.Modeling.DeleteRule
 		{
+			[System.Diagnostics.DebuggerStepThrough()]
 			public EnforceRoleSequenceValidityForRoleDeleteRuleClass()
 			{
 				base.IsEnabled = false;
@@ -4363,6 +4689,7 @@ namespace Neumont.Tools.ORM.ObjectModel
 			/// {
 			/// }
 			/// </summary>
+			[System.Diagnostics.DebuggerStepThrough()]
 			public override void ElementDeleted(Microsoft.VisualStudio.Modeling.ElementDeletedEventArgs e)
 			{
 				Neumont.Tools.Modeling.Diagnostics.TraceUtility.TraceRuleStart(e.ModelElement.Store, "Neumont.Tools.ORM.ObjectModel.SetComparisonConstraint.EnforceRoleSequenceValidityForRoleDeleteRule");
@@ -4373,6 +4700,7 @@ namespace Neumont.Tools.ORM.ObjectModel
 		[Microsoft.VisualStudio.Modeling.RuleOn(typeof(ConstraintRoleSequenceHasRole))]
 		private sealed class EnforceRoleSequenceValidityForRoleReorderRuleClass : Microsoft.VisualStudio.Modeling.RolePlayerPositionChangeRule
 		{
+			[System.Diagnostics.DebuggerStepThrough()]
 			public EnforceRoleSequenceValidityForRoleReorderRuleClass()
 			{
 				base.IsEnabled = false;
@@ -4387,6 +4715,7 @@ namespace Neumont.Tools.ORM.ObjectModel
 			/// {
 			/// }
 			/// </summary>
+			[System.Diagnostics.DebuggerStepThrough()]
 			public override void RolePlayerPositionChanged(Microsoft.VisualStudio.Modeling.RolePlayerOrderChangedEventArgs e)
 			{
 				Neumont.Tools.Modeling.Diagnostics.TraceUtility.TraceRuleStart(e.SourceElement.Store, "Neumont.Tools.ORM.ObjectModel.SetComparisonConstraint.EnforceRoleSequenceValidityForRoleReorderRule");
@@ -4397,6 +4726,7 @@ namespace Neumont.Tools.ORM.ObjectModel
 		[Microsoft.VisualStudio.Modeling.RuleOn(typeof(ObjectTypePlaysRole))]
 		private sealed class EnforceRoleSequenceValidityForRolePlayerAddRuleClass : Microsoft.VisualStudio.Modeling.AddRule
 		{
+			[System.Diagnostics.DebuggerStepThrough()]
 			public EnforceRoleSequenceValidityForRolePlayerAddRuleClass()
 			{
 				base.IsEnabled = false;
@@ -4411,6 +4741,7 @@ namespace Neumont.Tools.ORM.ObjectModel
 			/// {
 			/// }
 			/// </summary>
+			[System.Diagnostics.DebuggerStepThrough()]
 			public override void ElementAdded(Microsoft.VisualStudio.Modeling.ElementAddedEventArgs e)
 			{
 				Neumont.Tools.Modeling.Diagnostics.TraceUtility.TraceRuleStart(e.ModelElement.Store, "Neumont.Tools.ORM.ObjectModel.SetComparisonConstraint.EnforceRoleSequenceValidityForRolePlayerAddRule");
@@ -4421,6 +4752,7 @@ namespace Neumont.Tools.ORM.ObjectModel
 		[Microsoft.VisualStudio.Modeling.RuleOn(typeof(ObjectTypePlaysRole))]
 		private sealed class EnforceRoleSequenceValidityForRolePlayerDeleteRuleClass : Microsoft.VisualStudio.Modeling.DeleteRule
 		{
+			[System.Diagnostics.DebuggerStepThrough()]
 			public EnforceRoleSequenceValidityForRolePlayerDeleteRuleClass()
 			{
 				base.IsEnabled = false;
@@ -4435,6 +4767,7 @@ namespace Neumont.Tools.ORM.ObjectModel
 			/// {
 			/// }
 			/// </summary>
+			[System.Diagnostics.DebuggerStepThrough()]
 			public override void ElementDeleted(Microsoft.VisualStudio.Modeling.ElementDeletedEventArgs e)
 			{
 				Neumont.Tools.Modeling.Diagnostics.TraceUtility.TraceRuleStart(e.ModelElement.Store, "Neumont.Tools.ORM.ObjectModel.SetComparisonConstraint.EnforceRoleSequenceValidityForRolePlayerDeleteRule");
@@ -4445,6 +4778,7 @@ namespace Neumont.Tools.ORM.ObjectModel
 		[Microsoft.VisualStudio.Modeling.RuleOn(typeof(ObjectTypePlaysRole))]
 		private sealed class EnforceRoleSequenceValidityForRolePlayerRolePlayerChangeRuleClass : Microsoft.VisualStudio.Modeling.RolePlayerChangeRule
 		{
+			[System.Diagnostics.DebuggerStepThrough()]
 			public EnforceRoleSequenceValidityForRolePlayerRolePlayerChangeRuleClass()
 			{
 				base.IsEnabled = false;
@@ -4459,6 +4793,7 @@ namespace Neumont.Tools.ORM.ObjectModel
 			/// {
 			/// }
 			/// </summary>
+			[System.Diagnostics.DebuggerStepThrough()]
 			public override void RolePlayerChanged(Microsoft.VisualStudio.Modeling.RolePlayerChangedEventArgs e)
 			{
 				Neumont.Tools.Modeling.Diagnostics.TraceUtility.TraceRuleStart(e.ElementLink.Store, "Neumont.Tools.ORM.ObjectModel.SetComparisonConstraint.EnforceRoleSequenceValidityForRolePlayerRolePlayerChangeRule");
@@ -4469,6 +4804,7 @@ namespace Neumont.Tools.ORM.ObjectModel
 		[Microsoft.VisualStudio.Modeling.RuleOn(typeof(ExternalRoleConstraint), FireTime=Microsoft.VisualStudio.Modeling.TimeToFire.LocalCommit, Priority=Neumont.Tools.Modeling.FrameworkDomainModel.BeforeDelayValidateRulePriority)]
 		private sealed class ExternalRoleConstraintDeletedRuleClass : Microsoft.VisualStudio.Modeling.DeleteRule
 		{
+			[System.Diagnostics.DebuggerStepThrough()]
 			public ExternalRoleConstraintDeletedRuleClass()
 			{
 				base.IsEnabled = false;
@@ -4483,6 +4819,7 @@ namespace Neumont.Tools.ORM.ObjectModel
 			/// {
 			/// }
 			/// </summary>
+			[System.Diagnostics.DebuggerStepThrough()]
 			public override void ElementDeleted(Microsoft.VisualStudio.Modeling.ElementDeletedEventArgs e)
 			{
 				Neumont.Tools.Modeling.Diagnostics.TraceUtility.TraceRuleStart(e.ModelElement.Store, "Neumont.Tools.ORM.ObjectModel.SetComparisonConstraint.ExternalRoleConstraintDeletedRule");
@@ -4493,6 +4830,7 @@ namespace Neumont.Tools.ORM.ObjectModel
 		[Microsoft.VisualStudio.Modeling.RuleOn(typeof(ModelHasFactType))]
 		private sealed class FactTypeAddedRuleClass : Microsoft.VisualStudio.Modeling.AddRule
 		{
+			[System.Diagnostics.DebuggerStepThrough()]
 			public FactTypeAddedRuleClass()
 			{
 				base.IsEnabled = false;
@@ -4507,6 +4845,7 @@ namespace Neumont.Tools.ORM.ObjectModel
 			/// {
 			/// }
 			/// </summary>
+			[System.Diagnostics.DebuggerStepThrough()]
 			public override void ElementAdded(Microsoft.VisualStudio.Modeling.ElementAddedEventArgs e)
 			{
 				Neumont.Tools.Modeling.Diagnostics.TraceUtility.TraceRuleStart(e.ModelElement.Store, "Neumont.Tools.ORM.ObjectModel.SetComparisonConstraint.FactTypeAddedRule");
@@ -4517,6 +4856,7 @@ namespace Neumont.Tools.ORM.ObjectModel
 		[Microsoft.VisualStudio.Modeling.RuleOn(typeof(FactSetComparisonConstraint))]
 		private sealed class FactSetComparisonConstraintAddedRuleClass : Microsoft.VisualStudio.Modeling.AddRule
 		{
+			[System.Diagnostics.DebuggerStepThrough()]
 			public FactSetComparisonConstraintAddedRuleClass()
 			{
 				base.IsEnabled = false;
@@ -4531,6 +4871,7 @@ namespace Neumont.Tools.ORM.ObjectModel
 			/// {
 			/// }
 			/// </summary>
+			[System.Diagnostics.DebuggerStepThrough()]
 			public override void ElementAdded(Microsoft.VisualStudio.Modeling.ElementAddedEventArgs e)
 			{
 				Neumont.Tools.Modeling.Diagnostics.TraceUtility.TraceRuleStart(e.ModelElement.Store, "Neumont.Tools.ORM.ObjectModel.SetComparisonConstraint.FactSetComparisonConstraintAddedRule");
@@ -4541,6 +4882,7 @@ namespace Neumont.Tools.ORM.ObjectModel
 		[Microsoft.VisualStudio.Modeling.RuleOn(typeof(SetComparisonConstraintHasRoleSequence), FireTime=Microsoft.VisualStudio.Modeling.TimeToFire.LocalCommit, Priority=Neumont.Tools.Modeling.FrameworkDomainModel.BeforeDelayValidateRulePriority)]
 		private sealed class SetComparisonConstraintRoleSequenceDeletedRuleClass : Microsoft.VisualStudio.Modeling.DeleteRule
 		{
+			[System.Diagnostics.DebuggerStepThrough()]
 			public SetComparisonConstraintRoleSequenceDeletedRuleClass()
 			{
 				base.IsEnabled = false;
@@ -4555,6 +4897,7 @@ namespace Neumont.Tools.ORM.ObjectModel
 			/// {
 			/// }
 			/// </summary>
+			[System.Diagnostics.DebuggerStepThrough()]
 			public override void ElementDeleted(Microsoft.VisualStudio.Modeling.ElementDeletedEventArgs e)
 			{
 				Neumont.Tools.Modeling.Diagnostics.TraceUtility.TraceRuleStart(e.ModelElement.Store, "Neumont.Tools.ORM.ObjectModel.SetComparisonConstraint.SetComparisonConstraintRoleSequenceDeletedRule");
@@ -4570,6 +4913,7 @@ namespace Neumont.Tools.ORM.ObjectModel
 		[Microsoft.VisualStudio.Modeling.RuleOn(typeof(ModelHasSetConstraint))]
 		private sealed class ConstraintAddedRuleClass : Microsoft.VisualStudio.Modeling.AddRule
 		{
+			[System.Diagnostics.DebuggerStepThrough()]
 			public ConstraintAddedRuleClass()
 			{
 				base.IsEnabled = false;
@@ -4584,6 +4928,7 @@ namespace Neumont.Tools.ORM.ObjectModel
 			/// {
 			/// }
 			/// </summary>
+			[System.Diagnostics.DebuggerStepThrough()]
 			public override void ElementAdded(Microsoft.VisualStudio.Modeling.ElementAddedEventArgs e)
 			{
 				Neumont.Tools.Modeling.Diagnostics.TraceUtility.TraceRuleStart(e.ModelElement.Store, "Neumont.Tools.ORM.ObjectModel.SetConstraint.ConstraintAddedRule");
@@ -4594,12 +4939,14 @@ namespace Neumont.Tools.ORM.ObjectModel
 		[Microsoft.VisualStudio.Modeling.RuleOn(typeof(ConstraintRoleSequenceHasRole))]
 		private sealed class ConstraintRoleSequenceHasRoleAddedRuleClass : Microsoft.VisualStudio.Modeling.AddRule
 		{
+			[System.Diagnostics.DebuggerStepThrough()]
 			public ConstraintRoleSequenceHasRoleAddedRuleClass()
 			{
 				base.IsEnabled = false;
 			}
 			public override bool FireBefore
 			{
+				[System.Diagnostics.DebuggerStepThrough()]
 				get
 				{
 					return true;
@@ -4615,6 +4962,7 @@ namespace Neumont.Tools.ORM.ObjectModel
 			/// {
 			/// }
 			/// </summary>
+			[System.Diagnostics.DebuggerStepThrough()]
 			public override void ElementAdded(Microsoft.VisualStudio.Modeling.ElementAddedEventArgs e)
 			{
 				Neumont.Tools.Modeling.Diagnostics.TraceUtility.TraceRuleStart(e.ModelElement.Store, "Neumont.Tools.ORM.ObjectModel.SetConstraint.ConstraintRoleSequenceHasRoleAddedRule");
@@ -4625,6 +4973,7 @@ namespace Neumont.Tools.ORM.ObjectModel
 		[Microsoft.VisualStudio.Modeling.RuleOn(typeof(ConstraintRoleSequenceHasRole))]
 		private sealed class EnforceRoleSequenceValidityForRoleAddRuleClass : Microsoft.VisualStudio.Modeling.AddRule
 		{
+			[System.Diagnostics.DebuggerStepThrough()]
 			public EnforceRoleSequenceValidityForRoleAddRuleClass()
 			{
 				base.IsEnabled = false;
@@ -4639,6 +4988,7 @@ namespace Neumont.Tools.ORM.ObjectModel
 			/// {
 			/// }
 			/// </summary>
+			[System.Diagnostics.DebuggerStepThrough()]
 			public override void ElementAdded(Microsoft.VisualStudio.Modeling.ElementAddedEventArgs e)
 			{
 				Neumont.Tools.Modeling.Diagnostics.TraceUtility.TraceRuleStart(e.ModelElement.Store, "Neumont.Tools.ORM.ObjectModel.SetConstraint.EnforceRoleSequenceValidityForRoleAddRule");
@@ -4649,6 +4999,7 @@ namespace Neumont.Tools.ORM.ObjectModel
 		[Microsoft.VisualStudio.Modeling.RuleOn(typeof(ConstraintRoleSequenceHasRole))]
 		private sealed class EnforceRoleSequenceValidityForRoleDeleteRuleClass : Microsoft.VisualStudio.Modeling.DeleteRule
 		{
+			[System.Diagnostics.DebuggerStepThrough()]
 			public EnforceRoleSequenceValidityForRoleDeleteRuleClass()
 			{
 				base.IsEnabled = false;
@@ -4663,6 +5014,7 @@ namespace Neumont.Tools.ORM.ObjectModel
 			/// {
 			/// }
 			/// </summary>
+			[System.Diagnostics.DebuggerStepThrough()]
 			public override void ElementDeleted(Microsoft.VisualStudio.Modeling.ElementDeletedEventArgs e)
 			{
 				Neumont.Tools.Modeling.Diagnostics.TraceUtility.TraceRuleStart(e.ModelElement.Store, "Neumont.Tools.ORM.ObjectModel.SetConstraint.EnforceRoleSequenceValidityForRoleDeleteRule");
@@ -4673,6 +5025,7 @@ namespace Neumont.Tools.ORM.ObjectModel
 		[Microsoft.VisualStudio.Modeling.RuleOn(typeof(ObjectTypePlaysRole))]
 		private sealed class EnforceRoleSequenceValidityForRolePlayerAddRuleClass : Microsoft.VisualStudio.Modeling.AddRule
 		{
+			[System.Diagnostics.DebuggerStepThrough()]
 			public EnforceRoleSequenceValidityForRolePlayerAddRuleClass()
 			{
 				base.IsEnabled = false;
@@ -4687,6 +5040,7 @@ namespace Neumont.Tools.ORM.ObjectModel
 			/// {
 			/// }
 			/// </summary>
+			[System.Diagnostics.DebuggerStepThrough()]
 			public override void ElementAdded(Microsoft.VisualStudio.Modeling.ElementAddedEventArgs e)
 			{
 				Neumont.Tools.Modeling.Diagnostics.TraceUtility.TraceRuleStart(e.ModelElement.Store, "Neumont.Tools.ORM.ObjectModel.SetConstraint.EnforceRoleSequenceValidityForRolePlayerAddRule");
@@ -4697,6 +5051,7 @@ namespace Neumont.Tools.ORM.ObjectModel
 		[Microsoft.VisualStudio.Modeling.RuleOn(typeof(ObjectTypePlaysRole))]
 		private sealed class EnforceRoleSequenceValidityForRolePlayerDeleteRuleClass : Microsoft.VisualStudio.Modeling.DeleteRule
 		{
+			[System.Diagnostics.DebuggerStepThrough()]
 			public EnforceRoleSequenceValidityForRolePlayerDeleteRuleClass()
 			{
 				base.IsEnabled = false;
@@ -4711,6 +5066,7 @@ namespace Neumont.Tools.ORM.ObjectModel
 			/// {
 			/// }
 			/// </summary>
+			[System.Diagnostics.DebuggerStepThrough()]
 			public override void ElementDeleted(Microsoft.VisualStudio.Modeling.ElementDeletedEventArgs e)
 			{
 				Neumont.Tools.Modeling.Diagnostics.TraceUtility.TraceRuleStart(e.ModelElement.Store, "Neumont.Tools.ORM.ObjectModel.SetConstraint.EnforceRoleSequenceValidityForRolePlayerDeleteRule");
@@ -4721,6 +5077,7 @@ namespace Neumont.Tools.ORM.ObjectModel
 		[Microsoft.VisualStudio.Modeling.RuleOn(typeof(ObjectTypePlaysRole))]
 		private sealed class EnforceRoleSequenceValidityForRolePlayerRolePlayerChangeRuleClass : Microsoft.VisualStudio.Modeling.RolePlayerChangeRule
 		{
+			[System.Diagnostics.DebuggerStepThrough()]
 			public EnforceRoleSequenceValidityForRolePlayerRolePlayerChangeRuleClass()
 			{
 				base.IsEnabled = false;
@@ -4735,6 +5092,7 @@ namespace Neumont.Tools.ORM.ObjectModel
 			/// {
 			/// }
 			/// </summary>
+			[System.Diagnostics.DebuggerStepThrough()]
 			public override void RolePlayerChanged(Microsoft.VisualStudio.Modeling.RolePlayerChangedEventArgs e)
 			{
 				Neumont.Tools.Modeling.Diagnostics.TraceUtility.TraceRuleStart(e.ElementLink.Store, "Neumont.Tools.ORM.ObjectModel.SetConstraint.EnforceRoleSequenceValidityForRolePlayerRolePlayerChangeRule");
@@ -4745,6 +5103,7 @@ namespace Neumont.Tools.ORM.ObjectModel
 		[Microsoft.VisualStudio.Modeling.RuleOn(typeof(FactSetConstraint))]
 		private sealed class FactSetConstraintAddedRuleClass : Microsoft.VisualStudio.Modeling.AddRule
 		{
+			[System.Diagnostics.DebuggerStepThrough()]
 			public FactSetConstraintAddedRuleClass()
 			{
 				base.IsEnabled = false;
@@ -4759,6 +5118,7 @@ namespace Neumont.Tools.ORM.ObjectModel
 			/// {
 			/// }
 			/// </summary>
+			[System.Diagnostics.DebuggerStepThrough()]
 			public override void ElementAdded(Microsoft.VisualStudio.Modeling.ElementAddedEventArgs e)
 			{
 				Neumont.Tools.Modeling.Diagnostics.TraceUtility.TraceRuleStart(e.ModelElement.Store, "Neumont.Tools.ORM.ObjectModel.SetConstraint.FactSetConstraintAddedRule");
@@ -4769,6 +5129,7 @@ namespace Neumont.Tools.ORM.ObjectModel
 		[Microsoft.VisualStudio.Modeling.RuleOn(typeof(FactSetConstraint))]
 		private sealed class FactSetConstraintDeletedRuleClass : Microsoft.VisualStudio.Modeling.DeleteRule
 		{
+			[System.Diagnostics.DebuggerStepThrough()]
 			public FactSetConstraintDeletedRuleClass()
 			{
 				base.IsEnabled = false;
@@ -4783,6 +5144,7 @@ namespace Neumont.Tools.ORM.ObjectModel
 			/// {
 			/// }
 			/// </summary>
+			[System.Diagnostics.DebuggerStepThrough()]
 			public override void ElementDeleted(Microsoft.VisualStudio.Modeling.ElementDeletedEventArgs e)
 			{
 				Neumont.Tools.Modeling.Diagnostics.TraceUtility.TraceRuleStart(e.ModelElement.Store, "Neumont.Tools.ORM.ObjectModel.SetConstraint.FactSetConstraintDeletedRule");
@@ -4793,6 +5155,7 @@ namespace Neumont.Tools.ORM.ObjectModel
 		[Microsoft.VisualStudio.Modeling.RuleOn(typeof(ModelHasFactType))]
 		private sealed class FactTypeAddedRuleClass : Microsoft.VisualStudio.Modeling.AddRule
 		{
+			[System.Diagnostics.DebuggerStepThrough()]
 			public FactTypeAddedRuleClass()
 			{
 				base.IsEnabled = false;
@@ -4807,6 +5170,7 @@ namespace Neumont.Tools.ORM.ObjectModel
 			/// {
 			/// }
 			/// </summary>
+			[System.Diagnostics.DebuggerStepThrough()]
 			public override void ElementAdded(Microsoft.VisualStudio.Modeling.ElementAddedEventArgs e)
 			{
 				Neumont.Tools.Modeling.Diagnostics.TraceUtility.TraceRuleStart(e.ModelElement.Store, "Neumont.Tools.ORM.ObjectModel.SetConstraint.FactTypeAddedRule");
@@ -4817,6 +5181,7 @@ namespace Neumont.Tools.ORM.ObjectModel
 		[Microsoft.VisualStudio.Modeling.RuleOn(typeof(SetConstraint))]
 		private sealed class ModalityChangeRuleClass : Microsoft.VisualStudio.Modeling.ChangeRule
 		{
+			[System.Diagnostics.DebuggerStepThrough()]
 			public ModalityChangeRuleClass()
 			{
 				base.IsEnabled = false;
@@ -4831,6 +5196,7 @@ namespace Neumont.Tools.ORM.ObjectModel
 			/// {
 			/// }
 			/// </summary>
+			[System.Diagnostics.DebuggerStepThrough()]
 			public override void ElementPropertyChanged(Microsoft.VisualStudio.Modeling.ElementPropertyChangedEventArgs e)
 			{
 				Neumont.Tools.Modeling.Diagnostics.TraceUtility.TraceRuleStart(e.ModelElement.Store, "Neumont.Tools.ORM.ObjectModel.SetConstraint.ModalityChangeRule");
@@ -4841,6 +5207,7 @@ namespace Neumont.Tools.ORM.ObjectModel
 		[Microsoft.VisualStudio.Modeling.RuleOn(typeof(ConstraintRoleSequenceHasRole))]
 		private sealed class SetConstraintRoleSequenceHasRoleAddedRuleClass : Microsoft.VisualStudio.Modeling.AddRule
 		{
+			[System.Diagnostics.DebuggerStepThrough()]
 			public SetConstraintRoleSequenceHasRoleAddedRuleClass()
 			{
 				base.IsEnabled = false;
@@ -4855,6 +5222,7 @@ namespace Neumont.Tools.ORM.ObjectModel
 			/// {
 			/// }
 			/// </summary>
+			[System.Diagnostics.DebuggerStepThrough()]
 			public override void ElementAdded(Microsoft.VisualStudio.Modeling.ElementAddedEventArgs e)
 			{
 				Neumont.Tools.Modeling.Diagnostics.TraceUtility.TraceRuleStart(e.ModelElement.Store, "Neumont.Tools.ORM.ObjectModel.SetConstraint.SetConstraintRoleSequenceHasRoleAddedRule");
@@ -4865,6 +5233,7 @@ namespace Neumont.Tools.ORM.ObjectModel
 		[Microsoft.VisualStudio.Modeling.RuleOn(typeof(ConstraintRoleSequenceHasRole))]
 		private sealed class SetConstraintRoleSequenceHasRoleDeletingRuleClass : Microsoft.VisualStudio.Modeling.DeletingRule
 		{
+			[System.Diagnostics.DebuggerStepThrough()]
 			public SetConstraintRoleSequenceHasRoleDeletingRuleClass()
 			{
 				base.IsEnabled = false;
@@ -4879,6 +5248,7 @@ namespace Neumont.Tools.ORM.ObjectModel
 			/// {
 			/// }
 			/// </summary>
+			[System.Diagnostics.DebuggerStepThrough()]
 			public override void ElementDeleting(Microsoft.VisualStudio.Modeling.ElementDeletingEventArgs e)
 			{
 				Neumont.Tools.Modeling.Diagnostics.TraceUtility.TraceRuleStart(e.ModelElement.Store, "Neumont.Tools.ORM.ObjectModel.SetConstraint.SetConstraintRoleSequenceHasRoleDeletingRule");
@@ -4894,6 +5264,7 @@ namespace Neumont.Tools.ORM.ObjectModel
 		[Microsoft.VisualStudio.Modeling.RuleOn(typeof(ObjectTypePlaysRole), FireTime=Microsoft.VisualStudio.Modeling.TimeToFire.LocalCommit, Priority=Neumont.Tools.Modeling.FrameworkDomainModel.BeforeDelayValidateRulePriority)]
 		private sealed class DeleteSubtypeWhenRolePlayerDeletedRuleClass : Microsoft.VisualStudio.Modeling.DeleteRule
 		{
+			[System.Diagnostics.DebuggerStepThrough()]
 			public DeleteSubtypeWhenRolePlayerDeletedRuleClass()
 			{
 				base.IsEnabled = false;
@@ -4908,6 +5279,7 @@ namespace Neumont.Tools.ORM.ObjectModel
 			/// {
 			/// }
 			/// </summary>
+			[System.Diagnostics.DebuggerStepThrough()]
 			public override void ElementDeleted(Microsoft.VisualStudio.Modeling.ElementDeletedEventArgs e)
 			{
 				Neumont.Tools.Modeling.Diagnostics.TraceUtility.TraceRuleStart(e.ModelElement.Store, "Neumont.Tools.ORM.ObjectModel.SubtypeFact.DeleteSubtypeWhenRolePlayerDeletedRule");
@@ -4918,6 +5290,7 @@ namespace Neumont.Tools.ORM.ObjectModel
 		[Microsoft.VisualStudio.Modeling.RuleOn(typeof(ValueTypeHasDataType))]
 		private sealed class EnsureConsistentDataTypesAddRuleClass : Microsoft.VisualStudio.Modeling.AddRule
 		{
+			[System.Diagnostics.DebuggerStepThrough()]
 			public EnsureConsistentDataTypesAddRuleClass()
 			{
 				base.IsEnabled = false;
@@ -4932,6 +5305,7 @@ namespace Neumont.Tools.ORM.ObjectModel
 			/// {
 			/// }
 			/// </summary>
+			[System.Diagnostics.DebuggerStepThrough()]
 			public override void ElementAdded(Microsoft.VisualStudio.Modeling.ElementAddedEventArgs e)
 			{
 				Neumont.Tools.Modeling.Diagnostics.TraceUtility.TraceRuleStart(e.ModelElement.Store, "Neumont.Tools.ORM.ObjectModel.SubtypeFact.EnsureConsistentDataTypesAddRule");
@@ -4942,6 +5316,7 @@ namespace Neumont.Tools.ORM.ObjectModel
 		[Microsoft.VisualStudio.Modeling.RuleOn(typeof(ValueTypeHasDataType))]
 		private sealed class EnsureConsistentDataTypesDeleteRuleClass : Microsoft.VisualStudio.Modeling.DeleteRule
 		{
+			[System.Diagnostics.DebuggerStepThrough()]
 			public EnsureConsistentDataTypesDeleteRuleClass()
 			{
 				base.IsEnabled = false;
@@ -4956,6 +5331,7 @@ namespace Neumont.Tools.ORM.ObjectModel
 			/// {
 			/// }
 			/// </summary>
+			[System.Diagnostics.DebuggerStepThrough()]
 			public override void ElementDeleted(Microsoft.VisualStudio.Modeling.ElementDeletedEventArgs e)
 			{
 				Neumont.Tools.Modeling.Diagnostics.TraceUtility.TraceRuleStart(e.ModelElement.Store, "Neumont.Tools.ORM.ObjectModel.SubtypeFact.EnsureConsistentDataTypesDeleteRule");
@@ -4966,6 +5342,7 @@ namespace Neumont.Tools.ORM.ObjectModel
 		[Microsoft.VisualStudio.Modeling.RuleOn(typeof(ObjectTypePlaysRole), FireTime=Microsoft.VisualStudio.Modeling.TimeToFire.LocalCommit, Priority=Neumont.Tools.Modeling.FrameworkDomainModel.BeforeDelayValidateRulePriority)]
 		private sealed class EnsureConsistentRolePlayerTypesAddRuleClass : Microsoft.VisualStudio.Modeling.AddRule
 		{
+			[System.Diagnostics.DebuggerStepThrough()]
 			public EnsureConsistentRolePlayerTypesAddRuleClass()
 			{
 				base.IsEnabled = false;
@@ -4980,6 +5357,7 @@ namespace Neumont.Tools.ORM.ObjectModel
 			/// {
 			/// }
 			/// </summary>
+			[System.Diagnostics.DebuggerStepThrough()]
 			public override void ElementAdded(Microsoft.VisualStudio.Modeling.ElementAddedEventArgs e)
 			{
 				Neumont.Tools.Modeling.Diagnostics.TraceUtility.TraceRuleStart(e.ModelElement.Store, "Neumont.Tools.ORM.ObjectModel.SubtypeFact.EnsureConsistentRolePlayerTypesAddRule");
@@ -4990,6 +5368,7 @@ namespace Neumont.Tools.ORM.ObjectModel
 		[Microsoft.VisualStudio.Modeling.RuleOn(typeof(SubtypeFact))]
 		private sealed class InitializeSubtypeAddRuleClass : Microsoft.VisualStudio.Modeling.AddRule
 		{
+			[System.Diagnostics.DebuggerStepThrough()]
 			public InitializeSubtypeAddRuleClass()
 			{
 				base.IsEnabled = false;
@@ -5004,6 +5383,7 @@ namespace Neumont.Tools.ORM.ObjectModel
 			/// {
 			/// }
 			/// </summary>
+			[System.Diagnostics.DebuggerStepThrough()]
 			public override void ElementAdded(Microsoft.VisualStudio.Modeling.ElementAddedEventArgs e)
 			{
 				Neumont.Tools.Modeling.Diagnostics.TraceUtility.TraceRuleStart(e.ModelElement.Store, "Neumont.Tools.ORM.ObjectModel.SubtypeFact.InitializeSubtypeAddRule");
@@ -5014,6 +5394,7 @@ namespace Neumont.Tools.ORM.ObjectModel
 		[Microsoft.VisualStudio.Modeling.RuleOn(typeof(SetConstraint))]
 		private sealed class LimitSubtypeConstraintChangeRuleClass : Microsoft.VisualStudio.Modeling.ChangeRule
 		{
+			[System.Diagnostics.DebuggerStepThrough()]
 			public LimitSubtypeConstraintChangeRuleClass()
 			{
 				base.IsEnabled = false;
@@ -5028,6 +5409,7 @@ namespace Neumont.Tools.ORM.ObjectModel
 			/// {
 			/// }
 			/// </summary>
+			[System.Diagnostics.DebuggerStepThrough()]
 			public override void ElementPropertyChanged(Microsoft.VisualStudio.Modeling.ElementPropertyChangedEventArgs e)
 			{
 				Neumont.Tools.Modeling.Diagnostics.TraceUtility.TraceRuleStart(e.ModelElement.Store, "Neumont.Tools.ORM.ObjectModel.SubtypeFact.LimitSubtypeConstraintChangeRule");
@@ -5038,6 +5420,7 @@ namespace Neumont.Tools.ORM.ObjectModel
 		[Microsoft.VisualStudio.Modeling.RuleOn(typeof(ConstraintRoleSequenceHasRole))]
 		private sealed class LimitSubtypeConstraintRolesAddRuleClass : Microsoft.VisualStudio.Modeling.AddRule
 		{
+			[System.Diagnostics.DebuggerStepThrough()]
 			public LimitSubtypeConstraintRolesAddRuleClass()
 			{
 				base.IsEnabled = false;
@@ -5052,6 +5435,7 @@ namespace Neumont.Tools.ORM.ObjectModel
 			/// {
 			/// }
 			/// </summary>
+			[System.Diagnostics.DebuggerStepThrough()]
 			public override void ElementAdded(Microsoft.VisualStudio.Modeling.ElementAddedEventArgs e)
 			{
 				Neumont.Tools.Modeling.Diagnostics.TraceUtility.TraceRuleStart(e.ModelElement.Store, "Neumont.Tools.ORM.ObjectModel.SubtypeFact.LimitSubtypeConstraintRolesAddRule");
@@ -5062,6 +5446,7 @@ namespace Neumont.Tools.ORM.ObjectModel
 		[Microsoft.VisualStudio.Modeling.RuleOn(typeof(ConstraintRoleSequenceHasRole), FireTime=Microsoft.VisualStudio.Modeling.TimeToFire.LocalCommit, Priority=Neumont.Tools.Modeling.FrameworkDomainModel.BeforeDelayValidateRulePriority)]
 		private sealed class LimitSubtypeConstraintRolesDeleteRuleClass : Microsoft.VisualStudio.Modeling.DeleteRule
 		{
+			[System.Diagnostics.DebuggerStepThrough()]
 			public LimitSubtypeConstraintRolesDeleteRuleClass()
 			{
 				base.IsEnabled = false;
@@ -5076,6 +5461,7 @@ namespace Neumont.Tools.ORM.ObjectModel
 			/// {
 			/// }
 			/// </summary>
+			[System.Diagnostics.DebuggerStepThrough()]
 			public override void ElementDeleted(Microsoft.VisualStudio.Modeling.ElementDeletedEventArgs e)
 			{
 				Neumont.Tools.Modeling.Diagnostics.TraceUtility.TraceRuleStart(e.ModelElement.Store, "Neumont.Tools.ORM.ObjectModel.SubtypeFact.LimitSubtypeConstraintRolesDeleteRule");
@@ -5086,6 +5472,7 @@ namespace Neumont.Tools.ORM.ObjectModel
 		[Microsoft.VisualStudio.Modeling.RuleOn(typeof(FactSetConstraint))]
 		private sealed class LimitSubtypeConstraintsAddRuleClass : Microsoft.VisualStudio.Modeling.AddRule
 		{
+			[System.Diagnostics.DebuggerStepThrough()]
 			public LimitSubtypeConstraintsAddRuleClass()
 			{
 				base.IsEnabled = false;
@@ -5100,6 +5487,7 @@ namespace Neumont.Tools.ORM.ObjectModel
 			/// {
 			/// }
 			/// </summary>
+			[System.Diagnostics.DebuggerStepThrough()]
 			public override void ElementAdded(Microsoft.VisualStudio.Modeling.ElementAddedEventArgs e)
 			{
 				Neumont.Tools.Modeling.Diagnostics.TraceUtility.TraceRuleStart(e.ModelElement.Store, "Neumont.Tools.ORM.ObjectModel.SubtypeFact.LimitSubtypeConstraintsAddRule");
@@ -5110,6 +5498,7 @@ namespace Neumont.Tools.ORM.ObjectModel
 		[Microsoft.VisualStudio.Modeling.RuleOn(typeof(FactSetConstraint), FireTime=Microsoft.VisualStudio.Modeling.TimeToFire.LocalCommit, Priority=Neumont.Tools.Modeling.FrameworkDomainModel.BeforeDelayValidateRulePriority)]
 		private sealed class LimitSubtypeConstraintsDeleteRuleClass : Microsoft.VisualStudio.Modeling.DeleteRule
 		{
+			[System.Diagnostics.DebuggerStepThrough()]
 			public LimitSubtypeConstraintsDeleteRuleClass()
 			{
 				base.IsEnabled = false;
@@ -5124,6 +5513,7 @@ namespace Neumont.Tools.ORM.ObjectModel
 			/// {
 			/// }
 			/// </summary>
+			[System.Diagnostics.DebuggerStepThrough()]
 			public override void ElementDeleted(Microsoft.VisualStudio.Modeling.ElementDeletedEventArgs e)
 			{
 				Neumont.Tools.Modeling.Diagnostics.TraceUtility.TraceRuleStart(e.ModelElement.Store, "Neumont.Tools.ORM.ObjectModel.SubtypeFact.LimitSubtypeConstraintsDeleteRule");
@@ -5134,6 +5524,7 @@ namespace Neumont.Tools.ORM.ObjectModel
 		[Microsoft.VisualStudio.Modeling.RuleOn(typeof(FactTypeHasRole))]
 		private sealed class LimitSubtypeRolesAddRuleClass : Microsoft.VisualStudio.Modeling.AddRule
 		{
+			[System.Diagnostics.DebuggerStepThrough()]
 			public LimitSubtypeRolesAddRuleClass()
 			{
 				base.IsEnabled = false;
@@ -5148,6 +5539,7 @@ namespace Neumont.Tools.ORM.ObjectModel
 			/// {
 			/// }
 			/// </summary>
+			[System.Diagnostics.DebuggerStepThrough()]
 			public override void ElementAdded(Microsoft.VisualStudio.Modeling.ElementAddedEventArgs e)
 			{
 				Neumont.Tools.Modeling.Diagnostics.TraceUtility.TraceRuleStart(e.ModelElement.Store, "Neumont.Tools.ORM.ObjectModel.SubtypeFact.LimitSubtypeRolesAddRule");
@@ -5158,6 +5550,7 @@ namespace Neumont.Tools.ORM.ObjectModel
 		[Microsoft.VisualStudio.Modeling.RuleOn(typeof(FactTypeHasRole), FireTime=Microsoft.VisualStudio.Modeling.TimeToFire.LocalCommit, Priority=Neumont.Tools.Modeling.FrameworkDomainModel.BeforeDelayValidateRulePriority)]
 		private sealed class LimitSubtypeRolesDeleteRuleClass : Microsoft.VisualStudio.Modeling.DeleteRule
 		{
+			[System.Diagnostics.DebuggerStepThrough()]
 			public LimitSubtypeRolesDeleteRuleClass()
 			{
 				base.IsEnabled = false;
@@ -5172,6 +5565,7 @@ namespace Neumont.Tools.ORM.ObjectModel
 			/// {
 			/// }
 			/// </summary>
+			[System.Diagnostics.DebuggerStepThrough()]
 			public override void ElementDeleted(Microsoft.VisualStudio.Modeling.ElementDeletedEventArgs e)
 			{
 				Neumont.Tools.Modeling.Diagnostics.TraceUtility.TraceRuleStart(e.ModelElement.Store, "Neumont.Tools.ORM.ObjectModel.SubtypeFact.LimitSubtypeRolesDeleteRule");
@@ -5182,6 +5576,7 @@ namespace Neumont.Tools.ORM.ObjectModel
 		[Microsoft.VisualStudio.Modeling.RuleOn(typeof(SetComparisonConstraintHasRoleSequence))]
 		private sealed class LimitSubtypeSetComparisonConstraintSequenceAddRuleClass : Microsoft.VisualStudio.Modeling.AddRule
 		{
+			[System.Diagnostics.DebuggerStepThrough()]
 			public LimitSubtypeSetComparisonConstraintSequenceAddRuleClass()
 			{
 				base.IsEnabled = false;
@@ -5196,6 +5591,7 @@ namespace Neumont.Tools.ORM.ObjectModel
 			/// {
 			/// }
 			/// </summary>
+			[System.Diagnostics.DebuggerStepThrough()]
 			public override void ElementAdded(Microsoft.VisualStudio.Modeling.ElementAddedEventArgs e)
 			{
 				Neumont.Tools.Modeling.Diagnostics.TraceUtility.TraceRuleStart(e.ModelElement.Store, "Neumont.Tools.ORM.ObjectModel.SubtypeFact.LimitSubtypeSetComparisonConstraintSequenceAddRule");
@@ -5211,6 +5607,7 @@ namespace Neumont.Tools.ORM.ObjectModel
 		[Microsoft.VisualStudio.Modeling.RuleOn(typeof(FactSetConstraint))]
 		private sealed class NMinusOneConstraintAddRuleClass : Microsoft.VisualStudio.Modeling.AddRule
 		{
+			[System.Diagnostics.DebuggerStepThrough()]
 			public NMinusOneConstraintAddRuleClass()
 			{
 				base.IsEnabled = false;
@@ -5225,6 +5622,7 @@ namespace Neumont.Tools.ORM.ObjectModel
 			/// {
 			/// }
 			/// </summary>
+			[System.Diagnostics.DebuggerStepThrough()]
 			public override void ElementAdded(Microsoft.VisualStudio.Modeling.ElementAddedEventArgs e)
 			{
 				Neumont.Tools.Modeling.Diagnostics.TraceUtility.TraceRuleStart(e.ModelElement.Store, "Neumont.Tools.ORM.ObjectModel.UniquenessConstraint.NMinusOneConstraintAddRule");
@@ -5235,6 +5633,7 @@ namespace Neumont.Tools.ORM.ObjectModel
 		[Microsoft.VisualStudio.Modeling.RuleOn(typeof(ConstraintRoleSequenceHasRole))]
 		private sealed class NMinusOneConstraintRoleAddRuleClass : Microsoft.VisualStudio.Modeling.AddRule
 		{
+			[System.Diagnostics.DebuggerStepThrough()]
 			public NMinusOneConstraintRoleAddRuleClass()
 			{
 				base.IsEnabled = false;
@@ -5249,6 +5648,7 @@ namespace Neumont.Tools.ORM.ObjectModel
 			/// {
 			/// }
 			/// </summary>
+			[System.Diagnostics.DebuggerStepThrough()]
 			public override void ElementAdded(Microsoft.VisualStudio.Modeling.ElementAddedEventArgs e)
 			{
 				Neumont.Tools.Modeling.Diagnostics.TraceUtility.TraceRuleStart(e.ModelElement.Store, "Neumont.Tools.ORM.ObjectModel.UniquenessConstraint.NMinusOneConstraintRoleAddRule");
@@ -5259,6 +5659,7 @@ namespace Neumont.Tools.ORM.ObjectModel
 		[Microsoft.VisualStudio.Modeling.RuleOn(typeof(ConstraintRoleSequenceHasRole))]
 		private sealed class NMinusOneConstraintRoleDeleteRuleClass : Microsoft.VisualStudio.Modeling.DeleteRule
 		{
+			[System.Diagnostics.DebuggerStepThrough()]
 			public NMinusOneConstraintRoleDeleteRuleClass()
 			{
 				base.IsEnabled = false;
@@ -5273,6 +5674,7 @@ namespace Neumont.Tools.ORM.ObjectModel
 			/// {
 			/// }
 			/// </summary>
+			[System.Diagnostics.DebuggerStepThrough()]
 			public override void ElementDeleted(Microsoft.VisualStudio.Modeling.ElementDeletedEventArgs e)
 			{
 				Neumont.Tools.Modeling.Diagnostics.TraceUtility.TraceRuleStart(e.ModelElement.Store, "Neumont.Tools.ORM.ObjectModel.UniquenessConstraint.NMinusOneConstraintRoleDeleteRule");
@@ -5283,6 +5685,7 @@ namespace Neumont.Tools.ORM.ObjectModel
 		[Microsoft.VisualStudio.Modeling.RuleOn(typeof(FactTypeHasRole))]
 		private sealed class NMinusOneFactTypeRoleAddRuleClass : Microsoft.VisualStudio.Modeling.AddRule
 		{
+			[System.Diagnostics.DebuggerStepThrough()]
 			public NMinusOneFactTypeRoleAddRuleClass()
 			{
 				base.IsEnabled = false;
@@ -5297,6 +5700,7 @@ namespace Neumont.Tools.ORM.ObjectModel
 			/// {
 			/// }
 			/// </summary>
+			[System.Diagnostics.DebuggerStepThrough()]
 			public override void ElementAdded(Microsoft.VisualStudio.Modeling.ElementAddedEventArgs e)
 			{
 				Neumont.Tools.Modeling.Diagnostics.TraceUtility.TraceRuleStart(e.ModelElement.Store, "Neumont.Tools.ORM.ObjectModel.UniquenessConstraint.NMinusOneFactTypeRoleAddRule");
@@ -5307,6 +5711,7 @@ namespace Neumont.Tools.ORM.ObjectModel
 		[Microsoft.VisualStudio.Modeling.RuleOn(typeof(FactTypeHasRole))]
 		private sealed class NMinusOneFactTypeRoleDeleteRuleClass : Microsoft.VisualStudio.Modeling.DeleteRule
 		{
+			[System.Diagnostics.DebuggerStepThrough()]
 			public NMinusOneFactTypeRoleDeleteRuleClass()
 			{
 				base.IsEnabled = false;
@@ -5321,6 +5726,7 @@ namespace Neumont.Tools.ORM.ObjectModel
 			/// {
 			/// }
 			/// </summary>
+			[System.Diagnostics.DebuggerStepThrough()]
 			public override void ElementDeleted(Microsoft.VisualStudio.Modeling.ElementDeletedEventArgs e)
 			{
 				Neumont.Tools.Modeling.Diagnostics.TraceUtility.TraceRuleStart(e.ModelElement.Store, "Neumont.Tools.ORM.ObjectModel.UniquenessConstraint.NMinusOneFactTypeRoleDeleteRule");
@@ -5331,6 +5737,7 @@ namespace Neumont.Tools.ORM.ObjectModel
 		[Microsoft.VisualStudio.Modeling.RuleOn(typeof(UniquenessConstraint))]
 		private sealed class UniquenessConstraintChangeRuleClass : Microsoft.VisualStudio.Modeling.ChangeRule
 		{
+			[System.Diagnostics.DebuggerStepThrough()]
 			public UniquenessConstraintChangeRuleClass()
 			{
 				base.IsEnabled = false;
@@ -5345,6 +5752,7 @@ namespace Neumont.Tools.ORM.ObjectModel
 			/// {
 			/// }
 			/// </summary>
+			[System.Diagnostics.DebuggerStepThrough()]
 			public override void ElementPropertyChanged(Microsoft.VisualStudio.Modeling.ElementPropertyChangedEventArgs e)
 			{
 				Neumont.Tools.Modeling.Diagnostics.TraceUtility.TraceRuleStart(e.ModelElement.Store, "Neumont.Tools.ORM.ObjectModel.UniquenessConstraint.UniquenessConstraintChangeRule");
@@ -5360,6 +5768,7 @@ namespace Neumont.Tools.ORM.ObjectModel
 		[Microsoft.VisualStudio.Modeling.RuleOn(typeof(ValueTypeHasDataType))]
 		private sealed class DataTypeChangeRuleClass : Microsoft.VisualStudio.Modeling.ChangeRule
 		{
+			[System.Diagnostics.DebuggerStepThrough()]
 			public DataTypeChangeRuleClass()
 			{
 				base.IsEnabled = false;
@@ -5374,6 +5783,7 @@ namespace Neumont.Tools.ORM.ObjectModel
 			/// {
 			/// }
 			/// </summary>
+			[System.Diagnostics.DebuggerStepThrough()]
 			public override void ElementPropertyChanged(Microsoft.VisualStudio.Modeling.ElementPropertyChangedEventArgs e)
 			{
 				Neumont.Tools.Modeling.Diagnostics.TraceUtility.TraceRuleStart(e.ModelElement.Store, "Neumont.Tools.ORM.ObjectModel.ValueConstraint.DataTypeChangeRule");
@@ -5384,6 +5794,7 @@ namespace Neumont.Tools.ORM.ObjectModel
 		[Microsoft.VisualStudio.Modeling.RuleOn(typeof(ValueTypeHasDataType))]
 		private sealed class DataTypeDeletingRuleClass : Microsoft.VisualStudio.Modeling.DeletingRule
 		{
+			[System.Diagnostics.DebuggerStepThrough()]
 			public DataTypeDeletingRuleClass()
 			{
 				base.IsEnabled = false;
@@ -5398,6 +5809,7 @@ namespace Neumont.Tools.ORM.ObjectModel
 			/// {
 			/// }
 			/// </summary>
+			[System.Diagnostics.DebuggerStepThrough()]
 			public override void ElementDeleting(Microsoft.VisualStudio.Modeling.ElementDeletingEventArgs e)
 			{
 				Neumont.Tools.Modeling.Diagnostics.TraceUtility.TraceRuleStart(e.ModelElement.Store, "Neumont.Tools.ORM.ObjectModel.ValueConstraint.DataTypeDeletingRule");
@@ -5408,6 +5820,7 @@ namespace Neumont.Tools.ORM.ObjectModel
 		[Microsoft.VisualStudio.Modeling.RuleOn(typeof(ValueTypeHasDataType))]
 		private sealed class DataTypeRolePlayerChangeRuleClass : Microsoft.VisualStudio.Modeling.RolePlayerChangeRule
 		{
+			[System.Diagnostics.DebuggerStepThrough()]
 			public DataTypeRolePlayerChangeRuleClass()
 			{
 				base.IsEnabled = false;
@@ -5422,6 +5835,7 @@ namespace Neumont.Tools.ORM.ObjectModel
 			/// {
 			/// }
 			/// </summary>
+			[System.Diagnostics.DebuggerStepThrough()]
 			public override void RolePlayerChanged(Microsoft.VisualStudio.Modeling.RolePlayerChangedEventArgs e)
 			{
 				Neumont.Tools.Modeling.Diagnostics.TraceUtility.TraceRuleStart(e.ElementLink.Store, "Neumont.Tools.ORM.ObjectModel.ValueConstraint.DataTypeRolePlayerChangeRule");
@@ -5432,6 +5846,7 @@ namespace Neumont.Tools.ORM.ObjectModel
 		[Microsoft.VisualStudio.Modeling.RuleOn(typeof(ObjectTypePlaysRole))]
 		private sealed class ObjectTypeRoleAddedClass : Microsoft.VisualStudio.Modeling.AddRule
 		{
+			[System.Diagnostics.DebuggerStepThrough()]
 			public ObjectTypeRoleAddedClass()
 			{
 				base.IsEnabled = false;
@@ -5446,6 +5861,7 @@ namespace Neumont.Tools.ORM.ObjectModel
 			/// {
 			/// }
 			/// </summary>
+			[System.Diagnostics.DebuggerStepThrough()]
 			public override void ElementAdded(Microsoft.VisualStudio.Modeling.ElementAddedEventArgs e)
 			{
 				Neumont.Tools.Modeling.Diagnostics.TraceUtility.TraceRuleStart(e.ModelElement.Store, "Neumont.Tools.ORM.ObjectModel.ValueConstraint.ObjectTypeRoleAdded");
@@ -5456,6 +5872,7 @@ namespace Neumont.Tools.ORM.ObjectModel
 		[Microsoft.VisualStudio.Modeling.RuleOn(typeof(EntityTypeHasPreferredIdentifier))]
 		private sealed class PreferredIdentifierDeletingRuleClass : Microsoft.VisualStudio.Modeling.DeletingRule
 		{
+			[System.Diagnostics.DebuggerStepThrough()]
 			public PreferredIdentifierDeletingRuleClass()
 			{
 				base.IsEnabled = false;
@@ -5470,6 +5887,7 @@ namespace Neumont.Tools.ORM.ObjectModel
 			/// {
 			/// }
 			/// </summary>
+			[System.Diagnostics.DebuggerStepThrough()]
 			public override void ElementDeleting(Microsoft.VisualStudio.Modeling.ElementDeletingEventArgs e)
 			{
 				Neumont.Tools.Modeling.Diagnostics.TraceUtility.TraceRuleStart(e.ModelElement.Store, "Neumont.Tools.ORM.ObjectModel.ValueConstraint.PreferredIdentifierDeletingRule");
@@ -5480,6 +5898,7 @@ namespace Neumont.Tools.ORM.ObjectModel
 		[Microsoft.VisualStudio.Modeling.RuleOn(typeof(EntityTypeHasPreferredIdentifier))]
 		private sealed class PreferredIdentifierRolePlayerChangeRuleClass : Microsoft.VisualStudio.Modeling.RolePlayerChangeRule
 		{
+			[System.Diagnostics.DebuggerStepThrough()]
 			public PreferredIdentifierRolePlayerChangeRuleClass()
 			{
 				base.IsEnabled = false;
@@ -5494,6 +5913,7 @@ namespace Neumont.Tools.ORM.ObjectModel
 			/// {
 			/// }
 			/// </summary>
+			[System.Diagnostics.DebuggerStepThrough()]
 			public override void RolePlayerChanged(Microsoft.VisualStudio.Modeling.RolePlayerChangedEventArgs e)
 			{
 				Neumont.Tools.Modeling.Diagnostics.TraceUtility.TraceRuleStart(e.ElementLink.Store, "Neumont.Tools.ORM.ObjectModel.ValueConstraint.PreferredIdentifierRolePlayerChangeRule");
@@ -5504,6 +5924,7 @@ namespace Neumont.Tools.ORM.ObjectModel
 		[Microsoft.VisualStudio.Modeling.RuleOn(typeof(ConstraintRoleSequenceHasRole), Priority=1)]
 		private sealed class PreferredIdentifierRoleAddRuleClass : Microsoft.VisualStudio.Modeling.AddRule
 		{
+			[System.Diagnostics.DebuggerStepThrough()]
 			public PreferredIdentifierRoleAddRuleClass()
 			{
 				base.IsEnabled = false;
@@ -5518,6 +5939,7 @@ namespace Neumont.Tools.ORM.ObjectModel
 			/// {
 			/// }
 			/// </summary>
+			[System.Diagnostics.DebuggerStepThrough()]
 			public override void ElementAdded(Microsoft.VisualStudio.Modeling.ElementAddedEventArgs e)
 			{
 				Neumont.Tools.Modeling.Diagnostics.TraceUtility.TraceRuleStart(e.ModelElement.Store, "Neumont.Tools.ORM.ObjectModel.ValueConstraint.PreferredIdentifierRoleAddRule");
@@ -5528,6 +5950,7 @@ namespace Neumont.Tools.ORM.ObjectModel
 		[Microsoft.VisualStudio.Modeling.RuleOn(typeof(ObjectTypePlaysRole))]
 		private sealed class RolePlayerDeletingRuleClass : Microsoft.VisualStudio.Modeling.DeletingRule
 		{
+			[System.Diagnostics.DebuggerStepThrough()]
 			public RolePlayerDeletingRuleClass()
 			{
 				base.IsEnabled = false;
@@ -5542,6 +5965,7 @@ namespace Neumont.Tools.ORM.ObjectModel
 			/// {
 			/// }
 			/// </summary>
+			[System.Diagnostics.DebuggerStepThrough()]
 			public override void ElementDeleting(Microsoft.VisualStudio.Modeling.ElementDeletingEventArgs e)
 			{
 				Neumont.Tools.Modeling.Diagnostics.TraceUtility.TraceRuleStart(e.ModelElement.Store, "Neumont.Tools.ORM.ObjectModel.ValueConstraint.RolePlayerDeletingRule");
@@ -5552,6 +5976,7 @@ namespace Neumont.Tools.ORM.ObjectModel
 		[Microsoft.VisualStudio.Modeling.RuleOn(typeof(ObjectTypePlaysRole))]
 		private sealed class RolePlayerRolePlayerChangeRuleClass : Microsoft.VisualStudio.Modeling.RolePlayerChangeRule
 		{
+			[System.Diagnostics.DebuggerStepThrough()]
 			public RolePlayerRolePlayerChangeRuleClass()
 			{
 				base.IsEnabled = false;
@@ -5566,6 +5991,7 @@ namespace Neumont.Tools.ORM.ObjectModel
 			/// {
 			/// }
 			/// </summary>
+			[System.Diagnostics.DebuggerStepThrough()]
 			public override void RolePlayerChanged(Microsoft.VisualStudio.Modeling.RolePlayerChangedEventArgs e)
 			{
 				Neumont.Tools.Modeling.Diagnostics.TraceUtility.TraceRuleStart(e.ElementLink.Store, "Neumont.Tools.ORM.ObjectModel.ValueConstraint.RolePlayerRolePlayerChangeRule");
@@ -5576,6 +6002,7 @@ namespace Neumont.Tools.ORM.ObjectModel
 		[Microsoft.VisualStudio.Modeling.RuleOn(typeof(RoleHasValueConstraint))]
 		private sealed class RoleValueConstraintAddedRuleClass : Microsoft.VisualStudio.Modeling.AddRule
 		{
+			[System.Diagnostics.DebuggerStepThrough()]
 			public RoleValueConstraintAddedRuleClass()
 			{
 				base.IsEnabled = false;
@@ -5590,6 +6017,7 @@ namespace Neumont.Tools.ORM.ObjectModel
 			/// {
 			/// }
 			/// </summary>
+			[System.Diagnostics.DebuggerStepThrough()]
 			public override void ElementAdded(Microsoft.VisualStudio.Modeling.ElementAddedEventArgs e)
 			{
 				Neumont.Tools.Modeling.Diagnostics.TraceUtility.TraceRuleStart(e.ModelElement.Store, "Neumont.Tools.ORM.ObjectModel.ValueConstraint.RoleValueConstraintAddedRule");
@@ -5600,6 +6028,7 @@ namespace Neumont.Tools.ORM.ObjectModel
 		[Microsoft.VisualStudio.Modeling.RuleOn(typeof(ValueTypeHasValueConstraint))]
 		private sealed class ValueConstraintAddRuleClass : Microsoft.VisualStudio.Modeling.AddRule
 		{
+			[System.Diagnostics.DebuggerStepThrough()]
 			public ValueConstraintAddRuleClass()
 			{
 				base.IsEnabled = false;
@@ -5614,6 +6043,7 @@ namespace Neumont.Tools.ORM.ObjectModel
 			/// {
 			/// }
 			/// </summary>
+			[System.Diagnostics.DebuggerStepThrough()]
 			public override void ElementAdded(Microsoft.VisualStudio.Modeling.ElementAddedEventArgs e)
 			{
 				Neumont.Tools.Modeling.Diagnostics.TraceUtility.TraceRuleStart(e.ModelElement.Store, "Neumont.Tools.ORM.ObjectModel.ValueConstraint.ValueConstraintAddRule");
@@ -5624,6 +6054,7 @@ namespace Neumont.Tools.ORM.ObjectModel
 		[Microsoft.VisualStudio.Modeling.RuleOn(typeof(ValueConstraint))]
 		private sealed class ValueConstraintChangeRuleClass : Microsoft.VisualStudio.Modeling.ChangeRule
 		{
+			[System.Diagnostics.DebuggerStepThrough()]
 			public ValueConstraintChangeRuleClass()
 			{
 				base.IsEnabled = false;
@@ -5638,6 +6069,7 @@ namespace Neumont.Tools.ORM.ObjectModel
 			/// {
 			/// }
 			/// </summary>
+			[System.Diagnostics.DebuggerStepThrough()]
 			public override void ElementPropertyChanged(Microsoft.VisualStudio.Modeling.ElementPropertyChangedEventArgs e)
 			{
 				Neumont.Tools.Modeling.Diagnostics.TraceUtility.TraceRuleStart(e.ModelElement.Store, "Neumont.Tools.ORM.ObjectModel.ValueConstraint.ValueConstraintChangeRule");
@@ -5648,6 +6080,7 @@ namespace Neumont.Tools.ORM.ObjectModel
 		[Microsoft.VisualStudio.Modeling.RuleOn(typeof(ValueConstraintHasValueRange))]
 		private sealed class ValueRangeAddedRuleClass : Microsoft.VisualStudio.Modeling.AddRule
 		{
+			[System.Diagnostics.DebuggerStepThrough()]
 			public ValueRangeAddedRuleClass()
 			{
 				base.IsEnabled = false;
@@ -5662,6 +6095,7 @@ namespace Neumont.Tools.ORM.ObjectModel
 			/// {
 			/// }
 			/// </summary>
+			[System.Diagnostics.DebuggerStepThrough()]
 			public override void ElementAdded(Microsoft.VisualStudio.Modeling.ElementAddedEventArgs e)
 			{
 				Neumont.Tools.Modeling.Diagnostics.TraceUtility.TraceRuleStart(e.ModelElement.Store, "Neumont.Tools.ORM.ObjectModel.ValueConstraint.ValueRangeAddedRule");
@@ -5672,6 +6106,7 @@ namespace Neumont.Tools.ORM.ObjectModel
 		[Microsoft.VisualStudio.Modeling.RuleOn(typeof(ValueRange))]
 		private sealed class ValueRangeChangeRuleClass : Microsoft.VisualStudio.Modeling.ChangeRule
 		{
+			[System.Diagnostics.DebuggerStepThrough()]
 			public ValueRangeChangeRuleClass()
 			{
 				base.IsEnabled = false;
@@ -5686,6 +6121,7 @@ namespace Neumont.Tools.ORM.ObjectModel
 			/// {
 			/// }
 			/// </summary>
+			[System.Diagnostics.DebuggerStepThrough()]
 			public override void ElementPropertyChanged(Microsoft.VisualStudio.Modeling.ElementPropertyChangedEventArgs e)
 			{
 				Neumont.Tools.Modeling.Diagnostics.TraceUtility.TraceRuleStart(e.ModelElement.Store, "Neumont.Tools.ORM.ObjectModel.ValueConstraint.ValueRangeChangeRule");
@@ -5701,6 +6137,7 @@ namespace Neumont.Tools.ORM.ObjectModel
 		[Microsoft.VisualStudio.Modeling.RuleOn(typeof(ValueRange))]
 		private sealed class ValueRangeChangeRuleClass : Microsoft.VisualStudio.Modeling.ChangeRule
 		{
+			[System.Diagnostics.DebuggerStepThrough()]
 			public ValueRangeChangeRuleClass()
 			{
 				base.IsEnabled = false;
@@ -5715,6 +6152,7 @@ namespace Neumont.Tools.ORM.ObjectModel
 			/// {
 			/// }
 			/// </summary>
+			[System.Diagnostics.DebuggerStepThrough()]
 			public override void ElementPropertyChanged(Microsoft.VisualStudio.Modeling.ElementPropertyChangedEventArgs e)
 			{
 				Neumont.Tools.Modeling.Diagnostics.TraceUtility.TraceRuleStart(e.ModelElement.Store, "Neumont.Tools.ORM.ObjectModel.ValueRange.ValueRangeChangeRule");
@@ -5730,6 +6168,7 @@ namespace Neumont.Tools.ORM.ObjectModel
 		[Microsoft.VisualStudio.Modeling.RuleOn(typeof(ValueTypeHasDataType))]
 		private sealed class ValueTypeHasDataTypeAddedRuleClass : Microsoft.VisualStudio.Modeling.AddRule
 		{
+			[System.Diagnostics.DebuggerStepThrough()]
 			public ValueTypeHasDataTypeAddedRuleClass()
 			{
 				base.IsEnabled = false;
@@ -5744,6 +6183,7 @@ namespace Neumont.Tools.ORM.ObjectModel
 			/// {
 			/// }
 			/// </summary>
+			[System.Diagnostics.DebuggerStepThrough()]
 			public override void ElementAdded(Microsoft.VisualStudio.Modeling.ElementAddedEventArgs e)
 			{
 				Neumont.Tools.Modeling.Diagnostics.TraceUtility.TraceRuleStart(e.ModelElement.Store, "Neumont.Tools.ORM.ObjectModel.ValueTypeInstance.ValueTypeHasDataTypeAddedRule");
@@ -5754,6 +6194,7 @@ namespace Neumont.Tools.ORM.ObjectModel
 		[Microsoft.VisualStudio.Modeling.RuleOn(typeof(ValueTypeHasDataType))]
 		private sealed class ValueTypeHasDataTypeRolePlayerChangeRuleClass : Microsoft.VisualStudio.Modeling.RolePlayerChangeRule
 		{
+			[System.Diagnostics.DebuggerStepThrough()]
 			public ValueTypeHasDataTypeRolePlayerChangeRuleClass()
 			{
 				base.IsEnabled = false;
@@ -5768,6 +6209,7 @@ namespace Neumont.Tools.ORM.ObjectModel
 			/// {
 			/// }
 			/// </summary>
+			[System.Diagnostics.DebuggerStepThrough()]
 			public override void RolePlayerChanged(Microsoft.VisualStudio.Modeling.RolePlayerChangedEventArgs e)
 			{
 				Neumont.Tools.Modeling.Diagnostics.TraceUtility.TraceRuleStart(e.ElementLink.Store, "Neumont.Tools.ORM.ObjectModel.ValueTypeInstance.ValueTypeHasDataTypeRolePlayerChangeRule");
@@ -5778,6 +6220,7 @@ namespace Neumont.Tools.ORM.ObjectModel
 		[Microsoft.VisualStudio.Modeling.RuleOn(typeof(ValueTypeInstance))]
 		private sealed class ValueTypeInstanceValueChangedRuleClass : Microsoft.VisualStudio.Modeling.ChangeRule
 		{
+			[System.Diagnostics.DebuggerStepThrough()]
 			public ValueTypeInstanceValueChangedRuleClass()
 			{
 				base.IsEnabled = false;
@@ -5792,6 +6235,7 @@ namespace Neumont.Tools.ORM.ObjectModel
 			/// {
 			/// }
 			/// </summary>
+			[System.Diagnostics.DebuggerStepThrough()]
 			public override void ElementPropertyChanged(Microsoft.VisualStudio.Modeling.ElementPropertyChangedEventArgs e)
 			{
 				Neumont.Tools.Modeling.Diagnostics.TraceUtility.TraceRuleStart(e.ModelElement.Store, "Neumont.Tools.ORM.ObjectModel.ValueTypeInstance.ValueTypeInstanceValueChangedRule");
@@ -5802,6 +6246,7 @@ namespace Neumont.Tools.ORM.ObjectModel
 		[Microsoft.VisualStudio.Modeling.RuleOn(typeof(ValueTypeHasValueTypeInstance))]
 		private sealed class ValueTypeHasValueTypeInstanceAddedRuleClass : Microsoft.VisualStudio.Modeling.AddRule
 		{
+			[System.Diagnostics.DebuggerStepThrough()]
 			public ValueTypeHasValueTypeInstanceAddedRuleClass()
 			{
 				base.IsEnabled = false;
@@ -5816,6 +6261,7 @@ namespace Neumont.Tools.ORM.ObjectModel
 			/// {
 			/// }
 			/// </summary>
+			[System.Diagnostics.DebuggerStepThrough()]
 			public override void ElementAdded(Microsoft.VisualStudio.Modeling.ElementAddedEventArgs e)
 			{
 				Neumont.Tools.Modeling.Diagnostics.TraceUtility.TraceRuleStart(e.ModelElement.Store, "Neumont.Tools.ORM.ObjectModel.ValueTypeInstance.ValueTypeHasValueTypeInstanceAddedRule");
@@ -5836,6 +6282,7 @@ namespace Neumont.Tools.Modeling
 		[Microsoft.VisualStudio.Modeling.RuleOn(typeof(Microsoft.VisualStudio.Modeling.ElementLink), Priority=NamedElementDictionary.RulePriority)]
 		private sealed class ElementLinkAddedRuleClass : Microsoft.VisualStudio.Modeling.AddRule
 		{
+			[System.Diagnostics.DebuggerStepThrough()]
 			public ElementLinkAddedRuleClass()
 			{
 				base.IsEnabled = false;
@@ -5850,6 +6297,7 @@ namespace Neumont.Tools.Modeling
 			/// {
 			/// }
 			/// </summary>
+			[System.Diagnostics.DebuggerStepThrough()]
 			public override void ElementAdded(Microsoft.VisualStudio.Modeling.ElementAddedEventArgs e)
 			{
 				Neumont.Tools.Modeling.Diagnostics.TraceUtility.TraceRuleStart(e.ModelElement.Store, "Neumont.Tools.ORM.ObjectModel.NamedElementDictionary.ElementLinkAddedRule");
@@ -5860,6 +6308,7 @@ namespace Neumont.Tools.Modeling
 		[Microsoft.VisualStudio.Modeling.RuleOn(typeof(Microsoft.VisualStudio.Modeling.ElementLink), Priority=NamedElementDictionary.RulePriority)]
 		private sealed class ElementLinkDeletingRuleClass : Microsoft.VisualStudio.Modeling.DeletingRule
 		{
+			[System.Diagnostics.DebuggerStepThrough()]
 			public ElementLinkDeletingRuleClass()
 			{
 				base.IsEnabled = false;
@@ -5874,6 +6323,7 @@ namespace Neumont.Tools.Modeling
 			/// {
 			/// }
 			/// </summary>
+			[System.Diagnostics.DebuggerStepThrough()]
 			public override void ElementDeleting(Microsoft.VisualStudio.Modeling.ElementDeletingEventArgs e)
 			{
 				Neumont.Tools.Modeling.Diagnostics.TraceUtility.TraceRuleStart(e.ModelElement.Store, "Neumont.Tools.ORM.ObjectModel.NamedElementDictionary.ElementLinkDeletingRule");
@@ -5884,6 +6334,7 @@ namespace Neumont.Tools.Modeling
 		[Microsoft.VisualStudio.Modeling.RuleOn(typeof(Microsoft.VisualStudio.Modeling.ModelElement), Priority=NamedElementDictionary.RulePriority)]
 		private sealed class NamedElementChangedRuleClass : Microsoft.VisualStudio.Modeling.ChangeRule
 		{
+			[System.Diagnostics.DebuggerStepThrough()]
 			public NamedElementChangedRuleClass()
 			{
 				base.IsEnabled = false;
@@ -5898,6 +6349,7 @@ namespace Neumont.Tools.Modeling
 			/// {
 			/// }
 			/// </summary>
+			[System.Diagnostics.DebuggerStepThrough()]
 			public override void ElementPropertyChanged(Microsoft.VisualStudio.Modeling.ElementPropertyChangedEventArgs e)
 			{
 				Neumont.Tools.Modeling.Diagnostics.TraceUtility.TraceRuleStart(e.ModelElement.Store, "Neumont.Tools.ORM.ObjectModel.NamedElementDictionary.NamedElementChangedRule");

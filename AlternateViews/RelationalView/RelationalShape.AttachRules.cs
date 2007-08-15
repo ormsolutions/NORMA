@@ -107,6 +107,7 @@ namespace Neumont.Tools.ORM.Views.RelationalView
 	{
 		partial class NameChangeRule
 		{
+			[System.Diagnostics.DebuggerStepThrough()]
 			public NameChangeRule()
 			{
 				base.IsEnabled = false;
