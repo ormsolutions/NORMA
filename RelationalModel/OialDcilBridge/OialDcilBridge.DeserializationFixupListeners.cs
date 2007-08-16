@@ -918,8 +918,8 @@ namespace Neumont.Tools.ORMAbstractionToConceptualDatabaseBridge
 			//int relatingCount = relating.Count;
 			//ConceptType[] real = new ConceptType[] { relatingCount };
 			//relating.CopyTo(real, 0);	
-			
-			foreach (Column targetColumn in possibles)
+
+			foreach (Column targetColumn in ConceptTypeHasPrimaryIdentifierColumns(column, conceptType))
 			{
 				targetFound = true;
 				int offset = 0;
