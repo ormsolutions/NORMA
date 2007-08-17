@@ -182,6 +182,8 @@ namespace Neumont.Tools.ORMAbstractionToConceptualDatabaseBridge
 			{
 				CreateForeignKeys(table, store);
 			}
+
+			GenerateAllMandatoryConstraints(schema);
 		}
 
 		/// <summary>
@@ -810,12 +812,42 @@ namespace Neumont.Tools.ORMAbstractionToConceptualDatabaseBridge
 					}
 				}
 			}
+
 			// Walk the assimililating path looking for possible relationships that may hold the key.
 			if (columns.Count == 0)
 			{
 				InformationType matchingBaseType = ColumnHasConceptTypeChild.GetConceptTypeChildPath(column)[ColumnHasConceptTypeChild.GetConceptTypeChildPath(column).Count - 1] as InformationType;
-
 				LinkedElementCollection<ConceptType> assimilations;
+
+				while (columns.Count == 0 && (assimilations = conceptType.AssimilatorConceptTypeCollection).Count != 0)
+				{
+					conceptType = assimilations[0];
+
+					Table targetTable = TableIsPrimarilyForConceptType.GetTable(conceptType);
+
+					//LinkedElementCollection<ConceptType> relating =	ConceptTypeRelatesToConceptType.GetRelatingConceptTypeCollection(conceptType);
+					//int relatingCount = relating.Count;
+					//ConceptType[] real = new ConceptType[] { relatingCount };
+					//relating.CopyTo(real, 0);			
+
+					if (targetTable != null)
+					{
+						foreach (Column possibleColumn in targetTable.ColumnCollection)
+						{
+							if (ColumnHasConceptTypeChild.GetConceptTypeChildPath(possibleColumn)[ColumnHasConceptTypeChild.GetConceptTypeChildPath(possibleColumn).Count - 1] == matchingBaseType)
+							{
+								columns.Add(possibleColumn);
+							}
+						}
+					}
+				}
+			}
+
+			if(columns.Count == 0)
+			{
+				InformationType matchingBaseType = ColumnHasConceptTypeChild.GetConceptTypeChildPath(column)[ColumnHasConceptTypeChild.GetConceptTypeChildPath(column).Count - 1] as InformationType;
+				LinkedElementCollection<ConceptType> assimilations;
+
 				while (columns.Count == 0 && (assimilations = conceptType.AssimilatorConceptTypeCollection).Count != 0)
 				{
 					conceptType = assimilations[0];
@@ -913,61 +945,63 @@ namespace Neumont.Tools.ORMAbstractionToConceptualDatabaseBridge
 				}
 			}
 
-
 			//LinkedElementCollection<ConceptType> relating =	ConceptTypeRelatesToConceptType.GetRelatingConceptTypeCollection(conceptType);
 			//int relatingCount = relating.Count;
 			//ConceptType[] real = new ConceptType[] { relatingCount };
 			//relating.CopyTo(real, 0);	
+			List<Column> possibleColumns = ConceptTypeHasPrimaryIdentifierColumns(column, conceptType);
 
-			foreach (Column targetColumn in ConceptTypeHasPrimaryIdentifierColumns(column, conceptType))
+			foreach (Column targetColumn in possibleColumns)
 			{
 				targetFound = true;
-				int offset = 0;
 
-
-				for (int i = 0; i < ColumnHasConceptTypeChild.GetConceptTypeChildPath(targetColumn).Count; ++i)
+				if (targetColumn.Equals(column))
 				{
-					LinkedElementCollection<ConceptTypeChild> leftPath = ColumnHasConceptTypeChild.GetConceptTypeChildPath(column);
-					LinkedElementCollection<ConceptTypeChild> rightPath = ColumnHasConceptTypeChild.GetConceptTypeChildPath(targetColumn);
-
-					// Look through the target path and find the first information type and set its index as the offset.
-					for (int j = 0; j < rightPath.Count; ++j)
+					targetFound = false;
+				}
+				else
+				{
+					for (int i = 0; i < ColumnHasConceptTypeChild.GetConceptTypeChildPath(targetColumn).Count; ++i)
 					{
-						if (rightPath[j].GetType() == typeof(InformationType))
-						{
-							offset = j;
-						}
-					}
+						LinkedElementCollection<ConceptTypeChild> leftPath = ColumnHasConceptTypeChild.GetConceptTypeChildPath(column);
+						LinkedElementCollection<ConceptTypeChild> rightPath = ColumnHasConceptTypeChild.GetConceptTypeChildPath(targetColumn);
 
-					// UNDONE Decimal comparision operator ID is breaking here, possibly because it is attempting to map downward, it's an odd FK. good tester
-					// UNDONE This may also be a part of the reason why we have some FK's that arn't mapping and are apearing outside of the column.
-					// TEST
-					if (leftPath.Count >= rightPath.Count)
-					{
-						for (int reverseIndex = rightPath.Count - 1; reverseIndex < 0; reverseIndex++)
+						// Look through the target path and find the first information type and set its index as the offset.
+						//for (int j = 0; j < rightPath.Count; ++j)
+						//{
+						//    if (rightPath[j].GetType() == typeof(InformationType))
+						//    {
+						//        offset = j;
+						//    }
+						//}
+
+						// UNDONE Decimal comparision operator ID is breaking here, possibly because it is attempting to map downward, it's an odd FK. good tester
+						// UNDONE This may also be a part of the reason why we have some FK's that arn't mapping and are apearing outside of the column.
+						// TEST
+						if (leftPath.Count >= rightPath.Count)
 						{
-							if (rightPath[reverseIndex] != leftPath[reverseIndex])
+							for (int reverseIndex = 0; reverseIndex < rightPath.Count; reverseIndex++)
 							{
-								targetFound = false;
-								break;
-							}
+								if (rightPath[rightPath.Count - 1 - reverseIndex] != leftPath[leftPath.Count - 1 - reverseIndex])
+								{
+									targetFound = false;
+									break;
+								}
 
-						}
-					}
-					else
-					{
-						for (int reverseIndex = leftPath.Count - 1; reverseIndex < 0; reverseIndex++)
-						{
-							if (leftPath[reverseIndex] != rightPath[reverseIndex])
-							{
-								targetFound = false;
-								break;
 							}
 						}
-
-
+						else
+						{
+							for (int reverseIndex = 0; reverseIndex < leftPath.Count; reverseIndex++)
+							{
+								if (leftPath[leftPath.Count - 1 - reverseIndex] != rightPath[rightPath.Count - 1 - reverseIndex])
+								{
+									targetFound = false;
+									break;
+								}
+							}
+						}
 					}
-
 					// END TEST
 
 					//if ((i + 1 < leftPath.Count && i + offset < rightPath.Count &&
@@ -1144,6 +1178,32 @@ namespace Neumont.Tools.ORMAbstractionToConceptualDatabaseBridge
 				}
 			}
 			return null;
+		}
+
+		/// <summary>
+		/// 
+		/// </summary>
+		/// <param name="schema"></param>
+		private static void GenerateAllMandatoryConstraints(Schema schema)
+		{
+			foreach (Table table in schema.TableCollection)
+			{
+				foreach (Column column in table.ColumnCollection)
+				{
+					CheckColumnConstraint(column);
+				}
+			}
+		}
+
+		private static void CheckColumnConstraint(Column column)
+		{
+			foreach (ConceptTypeChild concept in ColumnHasConceptTypeChild.GetConceptTypeChildPath(column))
+			{
+				if (!concept.IsMandatory)
+				{
+					column.IsNullable = true;
+				}
+			}
 		}
 
 		#endregion // Fully populate from OIAL
