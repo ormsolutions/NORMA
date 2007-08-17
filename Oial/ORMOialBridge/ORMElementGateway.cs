@@ -31,20 +31,6 @@ namespace Neumont.Tools.ORMToORMAbstractionBridge
 		/// </summary>
 		private static partial class ORMElementGateway
 		{
-			#region ValidationPriority enum
-			/// <summary>
-			/// DelayValidate ordering constants
-			/// </summary>
-			private static class ValidationPriority
-			{
-				public const int NewObjectType = -100;
-				public const int ReconsiderObjectType = -90;
-				public const int NewFactType = -80;
-				public const int ReconsiderFactType = -70;
-				public const int RemoveExcludedBridgeRelationships = -60;
-				public const int AddElement = -50;
-			}
-			#endregion // ValidationPriority enum
 			#region Public methods
 			/// <summary>
 			/// Returns <see langword="true"/> if an element is currently excluded from 
@@ -168,7 +154,7 @@ namespace Neumont.Tools.ORMToORMAbstractionBridge
 			}
 			#endregion // ShouldConsider* methods, determine if an element should be filtered
 			#region FilterNew* methods, determine filtering for newly created elements
-			[DelayValidatePriority(ValidationPriority.NewFactType)]
+			[DelayValidatePriority(ValidationPriority.GatewayNewFactType)]
 			private static void FilterNewFactType(ModelElement element)
 			{
 				ModelHasFactType link = element as ModelHasFactType;
@@ -182,7 +168,7 @@ namespace Neumont.Tools.ORMToORMAbstractionBridge
 					ExcludeFactType(factType);
 				}
 			}
-			[DelayValidatePriority(ValidationPriority.NewObjectType)]
+			[DelayValidatePriority(ValidationPriority.GatewayNewObjectType)]
 			private static void FilterNewObjectType(ModelElement element)
 			{
 				ModelHasObjectType link = element as ModelHasObjectType;
@@ -219,7 +205,7 @@ namespace Neumont.Tools.ORMToORMAbstractionBridge
 					}
 				}
 			}
-			[DelayValidatePriority(ValidationPriority.ReconsiderFactType)]
+			[DelayValidatePriority(ValidationPriority.GatewayReconsiderFactType)]
 			private static void FilterModifiedFactTypeDelayed(ModelElement element)
 			{
 				if (!element.IsDeleted)
@@ -260,7 +246,7 @@ namespace Neumont.Tools.ORMToORMAbstractionBridge
 					FrameworkDomainModel.DelayValidateElement(objectType, FilterModifiedObjectTypeDelayed);
 				}
 			}
-			[DelayValidatePriority(ValidationPriority.ReconsiderObjectType)]
+			[DelayValidatePriority(ValidationPriority.GatewayReconsiderObjectType)]
 			private static void FilterModifiedObjectTypeDelayed(ModelElement element)
 			{
 				if (!element.IsDeleted)
@@ -374,7 +360,7 @@ namespace Neumont.Tools.ORMToORMAbstractionBridge
 			/// Delay validation callback used when the state of a <see cref="FactType"/>
 			/// has changed such that it may or may not be included in the abstraction model.
 			/// </summary>
-			[DelayValidatePriority(ValidationPriority.AddElement)]
+			[DelayValidatePriority(ValidationPriority.GatewayAddElement)]
 			private static void AddFactTypeDelayed(ModelElement element)
 			{
 				if (!element.IsDeleted)
@@ -404,7 +390,7 @@ namespace Neumont.Tools.ORMToORMAbstractionBridge
 			/// Delay validation callback used when the state of a <see cref="ObjectType"/>
 			/// has changed such that it may or may not be included in the abstraction model.
 			/// </summary>
-			[DelayValidatePriority(ValidationPriority.AddElement)]
+			[DelayValidatePriority(ValidationPriority.GatewayAddElement)]
 			private static void AddObjectTypeDelayed(ModelElement element)
 			{
 				if (!element.IsDeleted)
@@ -429,7 +415,7 @@ namespace Neumont.Tools.ORMToORMAbstractionBridge
 			{
 				FrameworkDomainModel.DelayValidateElement(e.ModelElement, ExclusionAdded);
 			}
-			[DelayValidatePriority(ValidationPriority.RemoveExcludedBridgeRelationships)]
+			[DelayValidatePriority(ValidationPriority.GatewayRemoveExcludedBridgeRelationships)]
 			private static void ExclusionAdded(ModelElement element)
 			{
 				ExcludedORMModelElement link = (ExcludedORMModelElement)element;

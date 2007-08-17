@@ -15,6 +15,53 @@ namespace Neumont.Tools.ORMToORMAbstractionBridge
 {
 	public partial class AbstractionModelIsForORMModel
 	{
+		#region ValidationPriority enum
+		/// <summary>
+		/// DelayValidate ordering constants. Handles non-zero values for
+		/// validation methods in this class and nested classes.
+		/// </summary>
+		private static class ValidationPriority
+		{
+			/// <summary>
+			/// A new <see cref="ObjectType"/> has been added to the ORM model, establish
+			/// gateway exclusion relationships.
+			/// </summary>
+			public const int GatewayNewObjectType = -100;
+			/// <summary>
+			/// An <see cref="ObjectType"/> has been modified in the ORM model, establish
+			/// gateway exclusion relationships.
+			/// </summary>
+			public const int GatewayReconsiderObjectType = -90;
+			/// <summary>
+			/// A <see cref="FactType"/> has been modified in the ORM model, establish
+			/// gateway exclusion relationships.
+			/// </summary>
+			public const int GatewayNewFactType = -80;
+			/// <summary>
+			/// A <see cref="FactType"/> has been modified in the ORM model, establish
+			/// gateway exclusion relationships.
+			/// </summary>
+			public const int GatewayReconsiderFactType = -70;
+			/// <summary>
+			/// Gateway exclusion relationships have been added, remove other existing
+			/// bridge relationships
+			/// </summary>
+			public const int GatewayRemoveExcludedBridgeRelationships = -60;
+			/// <summary>
+			/// A new element has been added and passed gateway filtering
+			/// </summary>
+			public const int GatewayAddElement = -50;
+			/// <summary>
+			/// Validate the model. Current rebuilds the entire model.
+			/// </summary>
+			public const int ValidateModel = 100;
+			/// <summary>
+			/// Reset mandatory properties. This is done after ValidateModel
+			/// so that we don't waste time 
+			/// </summary>
+			public const int ValidateMandatory = 110;
+		}
+		#endregion // ValidationPriority enum
 		#region Element tracking transaction support
 		#region ModelElementModification enum
 		/// <summary>
@@ -77,7 +124,7 @@ namespace Neumont.Tools.ORMToORMAbstractionBridge
 		/// Delays the validate model.
 		/// </summary>
 		/// <param name="element">The element.</param>
-		[DelayValidatePriority(100)]
+		[DelayValidatePriority(ValidationPriority.ValidateModel)]
 		private static void DelayValidateModel(ModelElement element)
 		{
 			Dictionary<object, object> contextDictionary = element.Store.TransactionManager.CurrentTransaction.TopLevelTransaction.Context.ContextInfo;

@@ -114,6 +114,59 @@ namespace Neumont.Tools.ORMToORMAbstractionBridge
 					}
 				}
 			}
+			/// <summary>
+			/// RolePlayerChangeRule: typeof(Neumont.Tools.ORM.ObjectModel.EntityTypeHasPreferredIdentifier)
+			/// Changing the preferred identifier for an <see cref="ObjectType"/> is considered to
+			/// be a significant change until we support full incremental tracking.
+			/// </summary>
+			private static void PreferredIdentifierRolePlayerChangedRule(RolePlayerChangedEventArgs e)
+			{
+				// UNDONE: Incremental changes, propagate changes to Uniqueness.IsPreferred property
+				EntityTypeHasPreferredIdentifier link = (EntityTypeHasPreferredIdentifier)e.ElementLink;
+				if (e.DomainRole.Id == EntityTypeHasPreferredIdentifier.PreferredIdentifierForDomainRoleId)
+				{
+					SignificantObjectTypeChange((ObjectType)e.OldRolePlayer);
+				}
+				SignificantObjectTypeChange(link.PreferredIdentifierFor);
+			}
+			/// <summary>
+			/// DeleteRule: typeof(Neumont.Tools.ORM.ObjectModel.EntityTypeHasPreferredIdentifier)
+			/// If an <see cref="ObjectType"/> is alive after gateway processing when its preferred identifier
+			/// is deleted then it needs to be reprocessed.
+			/// </summary>
+			private static void PreferredIdentifierDeletedRule(ElementDeletedEventArgs e)
+			{
+				// UNDONE: Incremental If this gets passed the gateway and is not excluded,
+				// then it changed from an EntityType to a ValueType
+				ObjectType objectType = ((EntityTypeHasPreferredIdentifier)e.ModelElement).PreferredIdentifierFor;
+				if (!objectType.IsDeleted)
+				{
+					SignificantObjectTypeChange(objectType);
+				}
+			}
+			/// <summary>
+			/// RolePlayerChangeRule: typeof(Neumont.Tools.ORM.ObjectModel.ObjectTypePlaysRole)
+			/// Revalidate the model when the <see cref="ObjectType">role player</see> of a <see cref="Role"/>
+			/// is changed.
+			/// </summary>
+			private static void RolePlayerRolePlayerChangedRule(RolePlayerChangedEventArgs e)
+			{
+				// UNDONE: Incremental changes will not be as severe here. Note that adding
+				// and deleting role players already triggers the correct actions in the
+				// gateway rules. However, a change where none of the parties are excluded
+				// simply needs to regenerate for now.
+				ObjectTypePlaysRole link = (ObjectTypePlaysRole)e.ElementLink;
+				if (e.DomainRole.Id == ObjectTypePlaysRole.PlayedRoleDomainRoleId)
+				{
+					SignificantFactTypeChange(((Role)e.OldRolePlayer).FactType);
+				}
+				else
+				{
+					SignificantObjectTypeChange((ObjectType)e.OldRolePlayer);
+				}
+				SignificantObjectTypeChange(link.RolePlayer);
+				SignificantFactTypeChange(link.PlayedRole.FactType);
+			}
 			#endregion // ORM modification rule methods
 			#region Bridge deletion rule methods
 			/// <summary>
@@ -152,6 +205,20 @@ namespace Neumont.Tools.ORMToORMAbstractionBridge
 					!RebuildingAbstractionModel(conceptType.Model))
 				{
 					AddTransactedModelElement(conceptType, ModelElementModification.AbstractionElementDetached);
+				}
+			}
+			/// <summary>
+			/// DeleteRule: typeof(UniquenessIsForUniquenessConstraint)
+			/// </summary>
+			private static void UniquenessBridgeDetachedRule(ElementDeletedEventArgs e)
+			{
+				Uniqueness uniqueness = ((UniquenessIsForUniquenessConstraint)e.ModelElement).Uniqueness;
+				if (!uniqueness.IsDeleted)
+				{
+					// We don't want to rebuild the model for this case. Any significant
+					// change that affects the absorption pattern will remove it, and
+					// there are no cases where we need to keep it. Just propagate.
+					uniqueness.Delete();
 				}
 			}
 			#endregion // Bridge deletion rule methods
@@ -198,7 +265,10 @@ namespace Neumont.Tools.ORMToORMAbstractionBridge
 							MappingMandatoryPattern endMandatoryPattern = mapToRole.MandatoryPattern;
 							if (endMandatoryPattern != startMandatoryPattern)
 							{
-								// UNDONE: Propagate IsMandatory changes directly to the model
+								foreach (ConceptTypeChild child in ConceptTypeChildHasPathFactType.GetConceptTypeChild(factType))
+								{
+									ValidateMandatory(child, startMandatoryPattern, endMandatoryPattern);
+								}
 							}
 						}
 						else
@@ -207,6 +277,88 @@ namespace Neumont.Tools.ORMToORMAbstractionBridge
 							FrameworkDomainModel.DelayValidateElement(factType.Model, DelayValidateModel);
 						}
 					}
+				}
+			}
+			/// <summary>
+			/// The <see cref="ConceptTypeChild.IsMandatory">IsMandatory</see> setting may
+			/// have change, revalidate if necessary.
+			/// </summary>
+			/// <param name="child">The <see cref="ConceptTypeChild"/> element to validate</param>
+			/// <param name="oldMandatory">The old mandatory pattern for any <see cref="FactType"/> in the path.</param>
+			/// <param name="newMandatory">The new mandatory pattern for any <see cref="FactType"/> in the path.</param>
+			private static void ValidateMandatory(ConceptTypeChild child, MappingMandatoryPattern oldMandatory, MappingMandatoryPattern newMandatory)
+			{
+				// We pre filter this and don't both to notify unless a change is possible
+				bool mightHaveChanged = false;
+				if (child.IsMandatory)
+				{
+					switch (oldMandatory)
+					{
+						case MappingMandatoryPattern.BothRolesMandatory:
+						case MappingMandatoryPattern.TowardsRoleMandatory:
+							switch (newMandatory)
+							{
+								case MappingMandatoryPattern.OppositeRoleMandatory:
+								case MappingMandatoryPattern.NotMandatory:
+									mightHaveChanged = true;
+									break;
+							}
+							break;
+					}
+				}
+				else
+				{
+					switch (oldMandatory)
+					{
+						case MappingMandatoryPattern.NotMandatory:
+						case MappingMandatoryPattern.OppositeRoleMandatory:
+							switch (newMandatory)
+							{
+								case MappingMandatoryPattern.BothRolesMandatory:
+								case MappingMandatoryPattern.TowardsRoleMandatory:
+									mightHaveChanged = true;
+									break;
+							}
+							break;
+					}
+				}
+				if (mightHaveChanged)
+				{
+					FrameworkDomainModel.DelayValidateElement(child, ValidateMandatoryDelayed);
+				}
+			}
+			[DelayValidatePriority(ValidationPriority.ValidateMandatory)]
+			private static void ValidateMandatoryDelayed(ModelElement element)
+			{
+				if (!element.IsDeleted)
+				{
+					ConceptTypeChild child = (ConceptTypeChild)element;
+					bool newMandatory = true;
+					foreach (FactType factType in ConceptTypeChildHasPathFactType.GetPathFactTypeCollection(child))
+					{
+						FactTypeMapsTowardsRole towardsRoleLink = FactTypeMapsTowardsRole.GetLinkToTowardsRole(factType);
+						if (null == towardsRoleLink)
+						{
+							newMandatory = false;
+							break;
+						}
+						else
+						{
+							switch (towardsRoleLink.MandatoryPattern)
+							{
+								case MappingMandatoryPattern.None:
+								case MappingMandatoryPattern.NotMandatory:
+								case MappingMandatoryPattern.OppositeRoleMandatory:
+									newMandatory = false;
+									break;
+							}
+							if (!newMandatory)
+							{
+								break;
+							}
+						}
+					}
+					child.IsMandatory = newMandatory;
 				}
 			}
 			private static void SignificantFactTypeChange(FactType factType)

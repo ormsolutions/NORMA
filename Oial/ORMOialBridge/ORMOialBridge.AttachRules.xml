@@ -80,9 +80,21 @@
 			<arg:ChangeRule methodName="ORMModelChangedRule">
 				<arg:RuleOn targetType="ORMModel" targetTypeQualifier="Neumont.Tools.ORM.ObjectModel"/>
 			</arg:ChangeRule>
+			<arg:DeleteRule methodName="PreferredIdentifierDeletedRule">
+				<arg:RuleOn targetType="EntityTypeHasPreferredIdentifier" targetTypeQualifier="Neumont.Tools.ORM.ObjectModel"/>
+			</arg:DeleteRule>
+			<arg:RolePlayerChangeRule methodName="PreferredIdentifierRolePlayerChangedRule">
+				<arg:RuleOn targetType="EntityTypeHasPreferredIdentifier" targetTypeQualifier="Neumont.Tools.ORM.ObjectModel"/>
+			</arg:RolePlayerChangeRule>
+			<arg:RolePlayerChangeRule methodName="RolePlayerRolePlayerChangedRule">
+				<arg:RuleOn targetType="ObjectTypePlaysRole" targetTypeQualifier="Neumont.Tools.ORM.ObjectModel"/>
+			</arg:RolePlayerChangeRule>
 			<arg:ChangeRule methodName="SetConstraintChangedRule">
 				<arg:RuleOn targetType="SetConstraint" targetTypeQualifier="Neumont.Tools.ORM.ObjectModel"/>
 			</arg:ChangeRule>
+			<arg:DeleteRule methodName="UniquenessBridgeDetachedRule">
+				<arg:RuleOn targetType="UniquenessIsForUniquenessConstraint"/>
+			</arg:DeleteRule>
 		</arg:RuleContainer>
 	</arg:Model>
 </arg:Rules>

@@ -51,7 +51,11 @@ namespace Neumont.Tools.ORMToORMAbstractionBridge
 						typeof(AbstractionModelIsForORMModel).GetNestedType("ModificationTracker", BindingFlags.Public | BindingFlags.NonPublic).GetNestedType("ConstraintRoleDeletedRuleClass", BindingFlags.Public | BindingFlags.NonPublic),
 						typeof(AbstractionModelIsForORMModel).GetNestedType("ModificationTracker", BindingFlags.Public | BindingFlags.NonPublic).GetNestedType("ObjectTypeChangedRuleClass", BindingFlags.Public | BindingFlags.NonPublic),
 						typeof(AbstractionModelIsForORMModel).GetNestedType("ModificationTracker", BindingFlags.Public | BindingFlags.NonPublic).GetNestedType("ORMModelChangedRuleClass", BindingFlags.Public | BindingFlags.NonPublic),
-						typeof(AbstractionModelIsForORMModel).GetNestedType("ModificationTracker", BindingFlags.Public | BindingFlags.NonPublic).GetNestedType("SetConstraintChangedRuleClass", BindingFlags.Public | BindingFlags.NonPublic)};
+						typeof(AbstractionModelIsForORMModel).GetNestedType("ModificationTracker", BindingFlags.Public | BindingFlags.NonPublic).GetNestedType("PreferredIdentifierDeletedRuleClass", BindingFlags.Public | BindingFlags.NonPublic),
+						typeof(AbstractionModelIsForORMModel).GetNestedType("ModificationTracker", BindingFlags.Public | BindingFlags.NonPublic).GetNestedType("PreferredIdentifierRolePlayerChangedRuleClass", BindingFlags.Public | BindingFlags.NonPublic),
+						typeof(AbstractionModelIsForORMModel).GetNestedType("ModificationTracker", BindingFlags.Public | BindingFlags.NonPublic).GetNestedType("RolePlayerRolePlayerChangedRuleClass", BindingFlags.Public | BindingFlags.NonPublic),
+						typeof(AbstractionModelIsForORMModel).GetNestedType("ModificationTracker", BindingFlags.Public | BindingFlags.NonPublic).GetNestedType("SetConstraintChangedRuleClass", BindingFlags.Public | BindingFlags.NonPublic),
+						typeof(AbstractionModelIsForORMModel).GetNestedType("ModificationTracker", BindingFlags.Public | BindingFlags.NonPublic).GetNestedType("UniquenessBridgeDetachedRuleClass", BindingFlags.Public | BindingFlags.NonPublic)};
 					ORMToORMAbstractionBridgeDomainModel.myCustomDomainModelTypes = retVal;
 					System.Diagnostics.Debug.Assert(Array.IndexOf<Type>(retVal, null) < 0, "One or more rule types failed to resolve. The file and/or package will fail to load.");
 				}
@@ -85,7 +89,7 @@ namespace Neumont.Tools.ORMToORMAbstractionBridge
 		{
 			Microsoft.VisualStudio.Modeling.RuleManager ruleManager = store.RuleManager;
 			Type[] disabledRuleTypes = ORMToORMAbstractionBridgeDomainModel.CustomDomainModelTypes;
-			for (int i = 0; i < 18; ++i)
+			for (int i = 0; i < 22; ++i)
 			{
 				ruleManager.EnableRule(disabledRuleTypes[i]);
 			}
@@ -572,6 +576,84 @@ namespace Neumont.Tools.ORMToORMAbstractionBridge
 					Neumont.Tools.Modeling.Diagnostics.TraceUtility.TraceRuleEnd(e.ModelElement.Store, "Neumont.Tools.ORMToORMAbstractionBridge.AbstractionModelIsForORMModel.ModificationTracker.ORMModelChangedRule");
 				}
 			}
+			[Microsoft.VisualStudio.Modeling.RuleOn(typeof(Neumont.Tools.ORM.ObjectModel.EntityTypeHasPreferredIdentifier))]
+			private sealed class PreferredIdentifierDeletedRuleClass : Microsoft.VisualStudio.Modeling.DeleteRule
+			{
+				[System.Diagnostics.DebuggerStepThrough()]
+				public PreferredIdentifierDeletedRuleClass()
+				{
+					base.IsEnabled = false;
+				}
+				/// <summary>
+				/// Provide the following method in class: 
+				/// Neumont.Tools.ORMToORMAbstractionBridge.AbstractionModelIsForORMModel.ModificationTracker
+				/// /// <summary>
+				/// /// DeleteRule: typeof(Neumont.Tools.ORM.ObjectModel.EntityTypeHasPreferredIdentifier)
+				/// /// </summary>
+				/// private static void PreferredIdentifierDeletedRule(ElementDeletedEventArgs e)
+				/// {
+				/// }
+				/// </summary>
+				[System.Diagnostics.DebuggerStepThrough()]
+				public override void ElementDeleted(Microsoft.VisualStudio.Modeling.ElementDeletedEventArgs e)
+				{
+					Neumont.Tools.Modeling.Diagnostics.TraceUtility.TraceRuleStart(e.ModelElement.Store, "Neumont.Tools.ORMToORMAbstractionBridge.AbstractionModelIsForORMModel.ModificationTracker.PreferredIdentifierDeletedRule");
+					ModificationTracker.PreferredIdentifierDeletedRule(e);
+					Neumont.Tools.Modeling.Diagnostics.TraceUtility.TraceRuleEnd(e.ModelElement.Store, "Neumont.Tools.ORMToORMAbstractionBridge.AbstractionModelIsForORMModel.ModificationTracker.PreferredIdentifierDeletedRule");
+				}
+			}
+			[Microsoft.VisualStudio.Modeling.RuleOn(typeof(Neumont.Tools.ORM.ObjectModel.EntityTypeHasPreferredIdentifier))]
+			private sealed class PreferredIdentifierRolePlayerChangedRuleClass : Microsoft.VisualStudio.Modeling.RolePlayerChangeRule
+			{
+				[System.Diagnostics.DebuggerStepThrough()]
+				public PreferredIdentifierRolePlayerChangedRuleClass()
+				{
+					base.IsEnabled = false;
+				}
+				/// <summary>
+				/// Provide the following method in class: 
+				/// Neumont.Tools.ORMToORMAbstractionBridge.AbstractionModelIsForORMModel.ModificationTracker
+				/// /// <summary>
+				/// /// RolePlayerChangeRule: typeof(Neumont.Tools.ORM.ObjectModel.EntityTypeHasPreferredIdentifier)
+				/// /// </summary>
+				/// private static void PreferredIdentifierRolePlayerChangedRule(RolePlayerChangedEventArgs e)
+				/// {
+				/// }
+				/// </summary>
+				[System.Diagnostics.DebuggerStepThrough()]
+				public override void RolePlayerChanged(Microsoft.VisualStudio.Modeling.RolePlayerChangedEventArgs e)
+				{
+					Neumont.Tools.Modeling.Diagnostics.TraceUtility.TraceRuleStart(e.ElementLink.Store, "Neumont.Tools.ORMToORMAbstractionBridge.AbstractionModelIsForORMModel.ModificationTracker.PreferredIdentifierRolePlayerChangedRule");
+					ModificationTracker.PreferredIdentifierRolePlayerChangedRule(e);
+					Neumont.Tools.Modeling.Diagnostics.TraceUtility.TraceRuleEnd(e.ElementLink.Store, "Neumont.Tools.ORMToORMAbstractionBridge.AbstractionModelIsForORMModel.ModificationTracker.PreferredIdentifierRolePlayerChangedRule");
+				}
+			}
+			[Microsoft.VisualStudio.Modeling.RuleOn(typeof(Neumont.Tools.ORM.ObjectModel.ObjectTypePlaysRole))]
+			private sealed class RolePlayerRolePlayerChangedRuleClass : Microsoft.VisualStudio.Modeling.RolePlayerChangeRule
+			{
+				[System.Diagnostics.DebuggerStepThrough()]
+				public RolePlayerRolePlayerChangedRuleClass()
+				{
+					base.IsEnabled = false;
+				}
+				/// <summary>
+				/// Provide the following method in class: 
+				/// Neumont.Tools.ORMToORMAbstractionBridge.AbstractionModelIsForORMModel.ModificationTracker
+				/// /// <summary>
+				/// /// RolePlayerChangeRule: typeof(Neumont.Tools.ORM.ObjectModel.ObjectTypePlaysRole)
+				/// /// </summary>
+				/// private static void RolePlayerRolePlayerChangedRule(RolePlayerChangedEventArgs e)
+				/// {
+				/// }
+				/// </summary>
+				[System.Diagnostics.DebuggerStepThrough()]
+				public override void RolePlayerChanged(Microsoft.VisualStudio.Modeling.RolePlayerChangedEventArgs e)
+				{
+					Neumont.Tools.Modeling.Diagnostics.TraceUtility.TraceRuleStart(e.ElementLink.Store, "Neumont.Tools.ORMToORMAbstractionBridge.AbstractionModelIsForORMModel.ModificationTracker.RolePlayerRolePlayerChangedRule");
+					ModificationTracker.RolePlayerRolePlayerChangedRule(e);
+					Neumont.Tools.Modeling.Diagnostics.TraceUtility.TraceRuleEnd(e.ElementLink.Store, "Neumont.Tools.ORMToORMAbstractionBridge.AbstractionModelIsForORMModel.ModificationTracker.RolePlayerRolePlayerChangedRule");
+				}
+			}
 			[Microsoft.VisualStudio.Modeling.RuleOn(typeof(Neumont.Tools.ORM.ObjectModel.SetConstraint))]
 			private sealed class SetConstraintChangedRuleClass : Microsoft.VisualStudio.Modeling.ChangeRule
 			{
@@ -596,6 +678,32 @@ namespace Neumont.Tools.ORMToORMAbstractionBridge
 					Neumont.Tools.Modeling.Diagnostics.TraceUtility.TraceRuleStart(e.ModelElement.Store, "Neumont.Tools.ORMToORMAbstractionBridge.AbstractionModelIsForORMModel.ModificationTracker.SetConstraintChangedRule");
 					ModificationTracker.SetConstraintChangedRule(e);
 					Neumont.Tools.Modeling.Diagnostics.TraceUtility.TraceRuleEnd(e.ModelElement.Store, "Neumont.Tools.ORMToORMAbstractionBridge.AbstractionModelIsForORMModel.ModificationTracker.SetConstraintChangedRule");
+				}
+			}
+			[Microsoft.VisualStudio.Modeling.RuleOn(typeof(UniquenessIsForUniquenessConstraint))]
+			private sealed class UniquenessBridgeDetachedRuleClass : Microsoft.VisualStudio.Modeling.DeleteRule
+			{
+				[System.Diagnostics.DebuggerStepThrough()]
+				public UniquenessBridgeDetachedRuleClass()
+				{
+					base.IsEnabled = false;
+				}
+				/// <summary>
+				/// Provide the following method in class: 
+				/// Neumont.Tools.ORMToORMAbstractionBridge.AbstractionModelIsForORMModel.ModificationTracker
+				/// /// <summary>
+				/// /// DeleteRule: typeof(UniquenessIsForUniquenessConstraint)
+				/// /// </summary>
+				/// private static void UniquenessBridgeDetachedRule(ElementDeletedEventArgs e)
+				/// {
+				/// }
+				/// </summary>
+				[System.Diagnostics.DebuggerStepThrough()]
+				public override void ElementDeleted(Microsoft.VisualStudio.Modeling.ElementDeletedEventArgs e)
+				{
+					Neumont.Tools.Modeling.Diagnostics.TraceUtility.TraceRuleStart(e.ModelElement.Store, "Neumont.Tools.ORMToORMAbstractionBridge.AbstractionModelIsForORMModel.ModificationTracker.UniquenessBridgeDetachedRule");
+					ModificationTracker.UniquenessBridgeDetachedRule(e);
+					Neumont.Tools.Modeling.Diagnostics.TraceUtility.TraceRuleEnd(e.ModelElement.Store, "Neumont.Tools.ORMToORMAbstractionBridge.AbstractionModelIsForORMModel.ModificationTracker.UniquenessBridgeDetachedRule");
 				}
 			}
 		}
