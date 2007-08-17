@@ -34,6 +34,31 @@ namespace Neumont.Tools.Modeling
 	/// <param name="element">The <see cref="ModelElement"/> to validate</param>
 	public delegate void ElementValidation(ModelElement element);
 	#endregion // ElementValidation delegate
+	#region DelayValidatePriorityOrder enum
+	/// <summary>
+	/// Determines the order where delay validation routines run relative
+	/// to the routines in the <see cref="P:DelayValidatePriorityAttribute.DomainModelType"/>
+	/// </summary>
+	public enum DelayValidatePriorityOrder
+	{
+		/// <summary>
+		/// Run this validation routine before routines that run with the domain model.
+		/// All routines in this priority order will complete before routines running
+		/// in the <see cref="WithDomainModel"/> ordering begin.
+		/// </summary>
+		BeforeDomainModel = -1,
+		/// <summary>
+		/// Run this routine with other routines that run with the domain model
+		/// All routines in this priority order will complete before routines running
+		/// in the <see cref="AfterDomainModel"/> ordering begin.
+		/// </summary>
+		WithDomainModel = 0,
+		/// <summary>
+		/// Run this routine with other routines that run after the domain model.
+		/// </summary>
+		AfterDomainModel = 1,
+	}
+	#endregion // DelayValidatePriorityOrder enum
 	#region DelayValidatePriorityAttribute class
 	/// <summary>
 	/// Place on a static delay validate method to explicitly control the execution order
@@ -46,7 +71,15 @@ namespace Neumont.Tools.Modeling
 	public sealed class DelayValidatePriorityAttribute : Attribute
 	{
 		private int myPriority;
+		private DelayValidatePriorityOrder myOrder;
 		private Type myDomainModelType;
+		/// <summary>
+		/// Create a new <see cref="DelayValidatePriorityAttribute"/>
+		/// </summary>
+		[DebuggerStepThrough]
+		public DelayValidatePriorityAttribute()
+		{
+		}
 		/// <summary>
 		/// Create a new <see cref="DelayValidatePriorityAttribute"/>
 		/// </summary>
@@ -85,6 +118,23 @@ namespace Neumont.Tools.Modeling
 				{
 					myDomainModelType = value;
 				}
+			}
+		}
+		/// <summary>
+		/// The <see cref="DelayValidatePriorityOrder">order</see>/> relative to the <see cref="DomainModelType"/> that
+		/// this routine will run in.
+		/// </summary>
+		public DelayValidatePriorityOrder Order
+		{
+			[DebuggerStepThrough]
+			get
+			{
+				return myOrder;
+			}
+			[DebuggerStepThrough]
+			set
+			{
+				myOrder = value;
 			}
 		}
 	}
@@ -220,13 +270,24 @@ namespace Neumont.Tools.Modeling
 				DomainModel model2 = order2.DomainModel;
 				if (model1 == model2)
 				{
-					int priority1 = order1.Priority;
-					int priority2 = order2.Priority;
-					if (priority1 == priority2)
+					DelayValidatePriorityOrder relativeOrder1 = order1.Order;
+					DelayValidatePriorityOrder relativeOrder2 = order2.Order;
+					if (relativeOrder1 == relativeOrder2)
 					{
-						return 0;
+						int priority1 = order1.Priority;
+						int priority2 = order2.Priority;
+						if (priority1 == priority2)
+						{
+							return 0;
+						}
+						else if (priority1 < priority2)
+						{
+							// This would be -1 for forward order, reverse order here
+							return 1;
+						}
+						return -1;
 					}
-					else if (priority1 < priority2)
+					else if (relativeOrder1 < relativeOrder2)
 					{
 						// This would be -1 for forward order, reverse order here
 						return 1;
@@ -246,6 +307,7 @@ namespace Neumont.Tools.Modeling
 		private struct ElementValidatorOrder : IEquatable<ElementValidatorOrder>
 		{
 			private DomainModel myDomainModel;
+			private DelayValidatePriorityOrder myOrder;
 			private int myPriority;
 			/// <summary>
 			/// Create a new ElementValidatorOrder structure with a default priority
@@ -254,10 +316,34 @@ namespace Neumont.Tools.Modeling
 			public ElementValidatorOrder(DomainModel domainModel)
 			{
 				myDomainModel = domainModel;
+				myOrder = DelayValidatePriorityOrder.WithDomainModel;
 				myPriority = 0;
 			}
 			/// <summary>
-			/// Create a new ElementValidatorOrder structure with a default priority
+			/// Create a new ElementValidatorOrder structure with a default priority and explicit order
+			/// </summary>
+			/// <param name="domainModel">The <see cref="DomainModel"/> the validator runs with.</param>
+			/// <param name="order">The <see cref="DelayValidatePriorityOrder"/> the validator runs in relative to the <paramref name="DomainModel"/>.</param>
+			public ElementValidatorOrder(DomainModel domainModel, DelayValidatePriorityOrder order)
+			{
+				myDomainModel = domainModel;
+				myOrder = order;
+				myPriority = 0;
+			}
+			/// <summary>
+			/// Create a new ElementValidatorOrder structure with explicit order and priority
+			/// </summary>
+			/// <param name="domainModel">The <see cref="DomainModel"/> the validator runs with.</param>
+			/// <param name="order">The <see cref="DelayValidatePriorityOrder"/> the validator runs in relative to the <paramref name="DomainModel"/>.</param>
+			/// <param name="priority">A custom priority. The default priority is 0. Anything less runs before, anything higher afterwards</param>
+			public ElementValidatorOrder(DomainModel domainModel, DelayValidatePriorityOrder order, int priority)
+			{
+				myDomainModel = domainModel;
+				myOrder = order;
+				myPriority = priority;
+			}
+			/// <summary>
+			/// Create a new ElementValidatorOrder structure with an explicit priority
 			/// </summary>
 			/// <param name="domainModel">The <see cref="DomainModel"/> the validator runs with.</param>
 			/// <param name="priority">A custom priority. The default priority is 0. Anything less runs before, anything higher afterwards</param>
@@ -265,6 +351,7 @@ namespace Neumont.Tools.Modeling
 			{
 				myDomainModel = domainModel;
 				myPriority = priority;
+				myOrder = DelayValidatePriorityOrder.WithDomainModel;
 			}
 			/// <summary>
 			/// The <see cref="DomainModel"/> that this element runs with
@@ -274,6 +361,16 @@ namespace Neumont.Tools.Modeling
 				get
 				{
 					return myDomainModel;
+				}
+			}
+			/// <summary>
+			/// The order relative to other validate routines in the same domain model
+			/// </summary>
+			public DelayValidatePriorityOrder Order
+			{
+				get
+				{
+					return myOrder;
 				}
 			}
 			/// <summary>
@@ -290,23 +387,27 @@ namespace Neumont.Tools.Modeling
 			public override int GetHashCode()
 			{
 				DomainModel domainModel = myDomainModel;
-				return ((domainModel != null) ? domainModel.GetHashCode() : 0) ^ myPriority.GetHashCode();
+				return Utility.GetCombinedHashCode(
+					(domainModel != null) ? domainModel.GetHashCode() : 0,
+					myOrder.GetHashCode(),
+					myPriority.GetHashCode());
 			}
 			/// <summary>See <see cref="Object.Equals(Object)"/>.</summary>
 			public override bool Equals(object obj)
 			{
-				return obj is ElementValidatorOrder && this.Equals((ElementValidatorOrderCache)obj);
+				return obj is ElementValidatorOrder && this.Equals((ElementValidatorOrder)obj);
 			}
 			/// <summary>See <see cref="IEquatable{ElementValidatorOrder}.Equals"/>.</summary>
 			public bool Equals(ElementValidatorOrder other)
 			{
-				return myDomainModel == other.myDomainModel && myPriority == other.myPriority;
+				return myDomainModel == other.myDomainModel && myOrder == other.myOrder && myPriority == other.myPriority;
 			}
 		}
 		[DebuggerStepThrough]
 		private struct ElementValidatorOrderCache : IEquatable<ElementValidatorOrderCache>
 		{
 			private Guid myDomainModelId;
+			private DelayValidatePriorityOrder myOrder;
 			private int myPriority;
 			/// <summary>
 			/// Create a new ElementValidatorOrder structure with a default priority
@@ -315,10 +416,34 @@ namespace Neumont.Tools.Modeling
 			public ElementValidatorOrderCache(Guid domainModelId)
 			{
 				myDomainModelId = domainModelId;
+				myOrder = DelayValidatePriorityOrder.WithDomainModel;
 				myPriority = 0;
 			}
 			/// <summary>
-			/// Create a new ElementValidatorOrder structure with a default priority
+			/// Create a new ElementValidatorOrder structure with a default priority and explicit order
+			/// </summary>
+			/// <param name="domainModelId">The id for the <see cref="DomainModel"/> the validator runs with.</param>
+			/// <param name="order">The <see cref="DelayValidatePriorityOrder"/> the validator runs in relative to the <paramref name="DomainModel"/>.</param>
+			public ElementValidatorOrderCache(Guid domainModelId, DelayValidatePriorityOrder order)
+			{
+				myDomainModelId = domainModelId;
+				myOrder = order;
+				myPriority = 0;
+			}
+			/// <summary>
+			/// Create a new ElementValidatorOrder structure with explicit order and priority
+			/// </summary>
+			/// <param name="domainModelId">The id for the <see cref="DomainModel"/> the validator runs with.</param>
+			/// <param name="order">The <see cref="DelayValidatePriorityOrder"/> the validator runs in relative to the <paramref name="DomainModel"/>.</param>
+			/// <param name="priority">A custom priority. The default priority is 0. Anything less runs before, anything higher afterwards</param>
+			public ElementValidatorOrderCache(Guid domainModelId, DelayValidatePriorityOrder order, int priority)
+			{
+				myDomainModelId = domainModelId;
+				myOrder = order;
+				myPriority = priority;
+			}
+			/// <summary>
+			/// Create a new ElementValidatorOrder structure with an explicit priority
 			/// </summary>
 			/// <param name="domainModelId">The id for the <see cref="DomainModel"/> the validator runs with.</param>
 			/// <param name="priority">A custom priority. The default priority is 0. Anything less runs before, anything higher afterwards</param>
@@ -326,6 +451,7 @@ namespace Neumont.Tools.Modeling
 			{
 				myDomainModelId = domainModelId;
 				myPriority = priority;
+				myOrder = DelayValidatePriorityOrder.WithDomainModel;
 			}
 			/// <summary>
 			/// The id for the <see cref="DomainModel"/> that this element runs with
@@ -335,6 +461,16 @@ namespace Neumont.Tools.Modeling
 				get
 				{
 					return myDomainModelId;
+				}
+			}
+			/// <summary>
+			/// The order relative to other validate routines in the same domain model
+			/// </summary>
+			public DelayValidatePriorityOrder Order
+			{
+				get
+				{
+					return myOrder;
 				}
 			}
 			/// <summary>
@@ -350,7 +486,10 @@ namespace Neumont.Tools.Modeling
 			/// <summary>See <see cref="Object.GetHashCode()"/>.</summary>
 			public override int GetHashCode()
 			{
-				return myDomainModelId.GetHashCode() ^ myPriority.GetHashCode();
+				return Utility.GetCombinedHashCode(
+					myDomainModelId.GetHashCode(),
+					myOrder.GetHashCode(),
+					myPriority.GetHashCode());
 			}
 			/// <summary>See <see cref="Object.Equals(Object)"/>.</summary>
 			public override bool Equals(object obj)
@@ -360,7 +499,7 @@ namespace Neumont.Tools.Modeling
 			/// <summary>See <see cref="IEquatable{ElementValidatorOrder}.Equals"/>.</summary>
 			public bool Equals(ElementValidatorOrderCache other)
 			{
-				return myDomainModelId == other.myDomainModelId && myPriority == other.myPriority;
+				return myDomainModelId == other.myDomainModelId && myOrder == other.myOrder && myPriority == other.myPriority;
 			}
 		}
 		/// <summary>
@@ -403,24 +542,26 @@ namespace Neumont.Tools.Modeling
 					Store store = Element.Store;
 					if (myMethodToElementValidatorOrderCacheMap.TryGetValue(methodHandle, out orderCache))
 					{
-						retVal = new ElementValidatorOrder(store.GetDomainModel(orderCache.DomainModelId), orderCache.Priority);
+						retVal = new ElementValidatorOrder(store.GetDomainModel(orderCache.DomainModelId), orderCache.Order, orderCache.Priority);
 					}
 					else
 					{
 						object[] explicitPriorityAttributes = method.GetCustomAttributes(typeof(DelayValidatePriorityAttribute), false);
+						DelayValidatePriorityOrder order = DelayValidatePriorityOrder.WithDomainModel;
 						int priority = 0;
 						Type explicitDomainModelType = null;
 						if (explicitPriorityAttributes.Length != 0)
 						{
 							DelayValidatePriorityAttribute priorityAttr = (DelayValidatePriorityAttribute)explicitPriorityAttributes[0];
 							priority = priorityAttr.Priority;
+							order = priorityAttr.Order;
 							explicitDomainModelType = priorityAttr.DomainModelType;
 						}
 						if (explicitDomainModelType != null)
 						{
 							DomainModelInfo explicitModelInfo = store.DomainDataDirectory.GetDomainModel(explicitDomainModelType);
-							retVal = new ElementValidatorOrder(store.GetDomainModel(explicitModelInfo.Id), priority);
-							myMethodToElementValidatorOrderCacheMap[methodHandle] = new ElementValidatorOrderCache(explicitModelInfo.Id, priority);
+							retVal = new ElementValidatorOrder(store.GetDomainModel(explicitModelInfo.Id), order, priority);
+							myMethodToElementValidatorOrderCacheMap[methodHandle] = new ElementValidatorOrderCache(explicitModelInfo.Id, order, priority);
 						}
 						else
 						{
@@ -434,8 +575,8 @@ namespace Neumont.Tools.Modeling
 									if (classInfo != null)
 									{
 										Guid domainModelId = classInfo.DomainModel.Id;
-										retVal = new ElementValidatorOrder(store.GetDomainModel(domainModelId), priority);
-										myMethodToElementValidatorOrderCacheMap[methodHandle] = new ElementValidatorOrderCache(domainModelId, priority);
+										retVal = new ElementValidatorOrder(store.GetDomainModel(domainModelId), order, priority);
+										myMethodToElementValidatorOrderCacheMap[methodHandle] = new ElementValidatorOrderCache(domainModelId, order, priority);
 										break;
 									}
 								}

@@ -31,6 +31,7 @@ namespace Neumont.Tools.ORM.ShapeModel
 	/// DomainModel ORMShapeDomainModel
 	/// Description for Neumont.Tools.ORM.ShapeModel.ORMShape
 	/// </summary>
+	[DslModeling::ExtendsDomainModel("F60BC3F1-C38E-4C7D-9EE5-9211DB26CB45"/*Neumont.Tools.Modeling.FrameworkDomainModel*/)]
 	[DslModeling::ExtendsDomainModel("3EAE649F-E654-4D04-8289-C25D2C0322D8"/*Neumont.Tools.ORM.ObjectModel.ORMCoreDomainModel*/)]
 	[DslDesign::DisplayNameResource("Neumont.Tools.ORM.ShapeModel.ORMShapeDomainModel.DisplayName", typeof(global::Neumont.Tools.ORM.ShapeModel.ORMShapeDomainModel), "Neumont.Tools.ORM.GeneratedCode.ShapeDomainModelResx")]
 	[DslDesign::DescriptionResource("Neumont.Tools.ORM.ShapeModel.ORMShapeDomainModel.Description", typeof(global::Neumont.Tools.ORM.ShapeModel.ORMShapeDomainModel), "Neumont.Tools.ORM.GeneratedCode.ShapeDomainModelResx")]

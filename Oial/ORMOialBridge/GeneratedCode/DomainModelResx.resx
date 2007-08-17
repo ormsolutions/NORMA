@@ -122,7 +122,7 @@
     <comment>Description for DslLibrary &apos;ORMToORMAbstractionBridge&apos;</comment>
   </data>
   <data name="Neumont.Tools.ORMToORMAbstractionBridge.ORMToORMAbstractionBridgeDomainModel.DisplayName" xml:space="preserve">
-    <value>(Preliminary) ORM/ORMAbstraction Bridge</value>
+    <value>(Preview) ORM/ORMAbstraction Bridge</value>
     <comment>DisplayName for DslLibrary &apos;ORMToORMAbstractionBridge&apos;</comment>
   </data>
   <data name="Neumont.Tools.ORMToORMAbstractionBridge.FactTypeMapsTowardsRole.Description" xml:space="preserve">

@@ -30,6 +30,7 @@ namespace Neumont.Tools.ORM.ObjectModel
 	/// DomainModel ORMCoreDomainModel
 	/// Description for Neumont.Tools.ORM.ObjectModel.ORMCore
 	/// </summary>
+	[DslModeling::ExtendsDomainModel("F60BC3F1-C38E-4C7D-9EE5-9211DB26CB45"/*Neumont.Tools.Modeling.FrameworkDomainModel*/)]
 	[DslDesign::DisplayNameResource("Neumont.Tools.ORM.ObjectModel.ORMCoreDomainModel.DisplayName", typeof(global::Neumont.Tools.ORM.ObjectModel.ORMCoreDomainModel), "Neumont.Tools.ORM.GeneratedCode.CoreDomainModelResx")]
 	[DslDesign::DescriptionResource("Neumont.Tools.ORM.ObjectModel.ORMCoreDomainModel.Description", typeof(global::Neumont.Tools.ORM.ObjectModel.ORMCoreDomainModel), "Neumont.Tools.ORM.GeneratedCode.CoreDomainModelResx")]
 	[global::System.CLSCompliant(true)]

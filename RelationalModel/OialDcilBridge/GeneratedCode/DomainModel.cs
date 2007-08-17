@@ -31,6 +31,7 @@ namespace Neumont.Tools.ORMAbstractionToConceptualDatabaseBridge
 	/// Description for
 	/// Neumont.Tools.ORMAbstractionToConceptualDatabaseBridge.ORMAbstractionToConceptualDatabaseBridge
 	/// </summary>
+	[DslModeling::ExtendsDomainModel("F60BC3F1-C38E-4C7D-9EE5-9211DB26CB45"/*Neumont.Tools.Modeling.FrameworkDomainModel*/)]
 	[DslModeling::ExtendsDomainModel("F7BC82F4-83D1-408C-BA42-607E90B23BEA"/*Neumont.Tools.ORMAbstraction.AbstractionDomainModel*/)]
 	[DslModeling::ExtendsDomainModel("CEDE46B1-9CA1-4C55-BC88-3DACFADD70EA"/*Neumont.Tools.RelationalModels.ConceptualDatabase.ConceptualDatabaseDomainModel*/)]
 	[DslDesign::DisplayNameResource("Neumont.Tools.ORMAbstractionToConceptualDatabaseBridge.ORMAbstractionToConceptualDatabaseBridgeDomainModel.DisplayName", typeof(global::Neumont.Tools.ORMAbstractionToConceptualDatabaseBridge.ORMAbstractionToConceptualDatabaseBridgeDomainModel), "Neumont.Tools.ORMAbstractionToConceptualDatabaseBridge.GeneratedCode.DomainModelResx")]

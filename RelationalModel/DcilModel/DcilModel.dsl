@@ -19,7 +19,7 @@
 	Namespace="Neumont.Tools.RelationalModels.ConceptualDatabase"
 	PackageNamespace="Neumont.Tools.RelationalModels"
 	Name="ConceptualDatabase"
-	DisplayName="(Preliminary) Conceptual Database"
+	DisplayName="(Preview) Conceptual Database"
 	CompanyName="Neumont University"
 	ProductName="Neumont ORM Architect for Visual Studio"
 	Description="Relational Database View of ORM Model"

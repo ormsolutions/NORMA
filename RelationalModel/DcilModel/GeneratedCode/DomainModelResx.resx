@@ -122,7 +122,7 @@
     <comment>Description for DslLibrary &apos;ConceptualDatabase&apos;</comment>
   </data>
   <data name="Neumont.Tools.RelationalModels.ConceptualDatabase.ConceptualDatabaseDomainModel.DisplayName" xml:space="preserve">
-    <value>(Preliminary) Conceptual Database</value>
+    <value>(Preview) Conceptual Database</value>
     <comment>DisplayName for DslLibrary &apos;ConceptualDatabase&apos;</comment>
   </data>
   <data name="Neumont.Tools.RelationalModels.ConceptualDatabase.ConceptualDatabaseModelElement.Description" xml:space="preserve">

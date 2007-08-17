@@ -25,6 +25,14 @@
 	ProductName="Neumont ORM Architect for Visual Studio"
 	MajorVersion="1" MinorVersion="0" Build="0" Revision="0">
 
+	<Attributes>
+		<ClrAttribute Name="DslModeling::ExtendsDomainModel">
+			<Parameters>
+				<AttributeParameter Value="&quot;F60BC3F1-C38E-4C7D-9EE5-9211DB26CB45&quot;/*Neumont.Tools.Modeling.FrameworkDomainModel*/"/>
+			</Parameters>
+		</ClrAttribute>
+	</Attributes>
+
 	<Classes>
 
 		<DomainClass Name="ModelErrorCategory" Namespace="Neumont.Tools.ORM.ObjectModel" Id="C9730E21-67A1-47E1-A065-B08C2B3815CE" DisplayName="ModelErrorCategory" InheritanceModifier="Abstract" Description=""/>

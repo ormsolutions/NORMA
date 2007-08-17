@@ -716,6 +716,10 @@
       <SubType>Designer</SubType>
       <DesignTime>True</DesignTime>
     </EmbeddedResource>
+    <EmbeddedResource Include="Shell\ExtensionManager.resx">
+      <SubType>Designer</SubType>
+      <DependentUpon>ExtensionManager.cs</DependentUpon>
+    </EmbeddedResource>
     <EmbeddedResource Include="Shell\PackageResources\VSPackage.resx">
       <LogicalName>VSPackage.resources</LogicalName>
       <SubType>Designer</SubType>

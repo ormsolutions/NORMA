@@ -115,6 +115,19 @@ namespace Neumont.Tools.ORMToORMAbstractionBridge
 				}
 			}
 			/// <summary>
+			/// ChangeRule: typeof(Neumont.Tools.ORM.ObjectModel.SubtypeFact)
+			/// Changing the <see cref="P:SubtypeFact.IsPrimary"/> property on a <see cref="SubtypeFact"/>
+			/// can modify preferred identification schemes.
+			/// </summary>
+			private static void SubtypeFactChangedRule(ElementPropertyChangedEventArgs e)
+			{
+				// UNDONE: Incremental changes, propagate changes to Uniqueness.IsPreferred property
+				if (e.DomainProperty.Id == SubtypeFact.IsPrimaryDomainPropertyId)
+				{
+					SignificantFactTypeChange((FactType)e.ModelElement);
+				}
+			}
+			/// <summary>
 			/// RolePlayerChangeRule: typeof(Neumont.Tools.ORM.ObjectModel.EntityTypeHasPreferredIdentifier)
 			/// Changing the preferred identifier for an <see cref="ObjectType"/> is considered to
 			/// be a significant change until we support full incremental tracking.
@@ -176,7 +189,7 @@ namespace Neumont.Tools.ORMToORMAbstractionBridge
 			{
 				ConceptType conceptType = ((ConceptTypeIsForObjectType)e.ModelElement).ConceptType;
 				if (!conceptType.IsDeleted &&
-					!RebuildingAbstractionModel(conceptType.Model))
+					TestRebuildAbstractionModel(conceptType.Model))
 				{
 					AddTransactedModelElement(conceptType, ModelElementModification.AbstractionElementDetached);
 				}
@@ -188,7 +201,7 @@ namespace Neumont.Tools.ORMToORMAbstractionBridge
 			{
 				InformationTypeFormat format = ((InformationTypeFormatIsForValueType)e.ModelElement).InformationTypeFormat;
 				if (!format.IsDeleted &&
-					!RebuildingAbstractionModel(format.Model))
+					TestRebuildAbstractionModel(format.Model))
 				{
 					AddTransactedModelElement(format, ModelElementModification.AbstractionElementDetached);
 				}
@@ -202,7 +215,7 @@ namespace Neumont.Tools.ORMToORMAbstractionBridge
 				ConceptType conceptType = child.Parent;
 				if (conceptType != null &&
 					!conceptType.IsDeleted &&
-					!RebuildingAbstractionModel(conceptType.Model))
+					TestRebuildAbstractionModel(conceptType.Model))
 				{
 					AddTransactedModelElement(conceptType, ModelElementModification.AbstractionElementDetached);
 				}
@@ -249,6 +262,7 @@ namespace Neumont.Tools.ORMToORMAbstractionBridge
 					FrameworkDomainModel.DelayValidateElement(factType, FactTypeConstraintPatternChangedDelayed);
 				}
 			}
+			[DelayValidatePriority(DomainModelType=typeof(ORMCoreDomainModel), Order=DelayValidatePriorityOrder.AfterDomainModel)]
 			private static void FactTypeConstraintPatternChangedDelayed(ModelElement element)
 			{
 				FactType factType;
@@ -327,7 +341,7 @@ namespace Neumont.Tools.ORMToORMAbstractionBridge
 					FrameworkDomainModel.DelayValidateElement(child, ValidateMandatoryDelayed);
 				}
 			}
-			[DelayValidatePriority(ValidationPriority.ValidateMandatory)]
+			[DelayValidatePriority(ValidationPriority.ValidateMandatory, DomainModelType = typeof(ORMCoreDomainModel), Order = DelayValidatePriorityOrder.AfterDomainModel)]
 			private static void ValidateMandatoryDelayed(ModelElement element)
 			{
 				if (!element.IsDeleted)
@@ -370,6 +384,7 @@ namespace Neumont.Tools.ORMToORMAbstractionBridge
 					FrameworkDomainModel.DelayValidateElement(factType, SignificantFactTypeChangeDelayed);
 				}
 			}
+			[DelayValidatePriority(DomainModelType = typeof(ORMCoreDomainModel), Order = DelayValidatePriorityOrder.AfterDomainModel)]
 			private static void SignificantFactTypeChangeDelayed(ModelElement element)
 			{
 				FactType factType;
@@ -403,6 +418,7 @@ namespace Neumont.Tools.ORMToORMAbstractionBridge
 					FrameworkDomainModel.DelayValidateElement(objectType, SignificantObjectTypeChangeDelayed);
 				}
 			}
+			[DelayValidatePriority(DomainModelType = typeof(ORMCoreDomainModel), Order = DelayValidatePriorityOrder.AfterDomainModel)]
 			private static void SignificantObjectTypeChangeDelayed(ModelElement element)
 			{
 				ObjectType objectType;

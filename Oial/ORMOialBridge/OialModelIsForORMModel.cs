@@ -124,7 +124,7 @@ namespace Neumont.Tools.ORMToORMAbstractionBridge
 		/// Delays the validate model.
 		/// </summary>
 		/// <param name="element">The element.</param>
-		[DelayValidatePriority(ValidationPriority.ValidateModel)]
+		[DelayValidatePriority(ValidationPriority.ValidateModel, DomainModelType = typeof(ORMCoreDomainModel), Order = DelayValidatePriorityOrder.AfterDomainModel)]
 		private static void DelayValidateModel(ModelElement element)
 		{
 			Dictionary<object, object> contextDictionary = element.Store.TransactionManager.CurrentTransaction.TopLevelTransaction.Context.ContextInfo;
@@ -196,14 +196,19 @@ namespace Neumont.Tools.ORMToORMAbstractionBridge
 			}
 		}
 		/// <summary>
-		/// Determine if the abstraction model is being rebuild
+		/// Initiate a model rebuild if a rebuild is not already under way
 		/// </summary>
 		/// <param name="model">The <see cref="AbstractionModel"/> to check for rebuilding</param>
-		/// <returns><see langword="true"/> if the model is being rebuilt.</returns>
-		private static bool RebuildingAbstractionModel(AbstractionModel model)
+		/// <returns><see langword="true"/> if the requested rebuild will occur.</returns>
+		private static bool TestRebuildAbstractionModel(AbstractionModel model)
 		{
 			AbstractionModelIsForORMModel link = AbstractionModelIsForORMModel.GetLinkToORMModel(model);
-			return link != null && link.myRebuildingAbstractionModel;
+			bool allow = !(link != null && link.myRebuildingAbstractionModel);
+			if (allow)
+			{
+				FrameworkDomainModel.DelayValidateElement(link.ORMModel, DelayValidateModel);
+			}
+			return allow;
 		}
 
 		/// <summary>

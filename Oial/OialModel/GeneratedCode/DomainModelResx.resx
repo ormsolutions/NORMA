@@ -122,7 +122,7 @@
     <comment>Description for DslLibrary &apos;Abstraction&apos;</comment>
   </data>
   <data name="Neumont.Tools.ORMAbstraction.AbstractionDomainModel.DisplayName" xml:space="preserve">
-    <value>(Preliminary) ORM Abstraction</value>
+    <value>(Preview) ORM Abstraction</value>
     <comment>DisplayName for DslLibrary &apos;Abstraction&apos;</comment>
   </data>
   <data name="Neumont.Tools.ORMAbstraction.AbstractionModel.Description" xml:space="preserve">

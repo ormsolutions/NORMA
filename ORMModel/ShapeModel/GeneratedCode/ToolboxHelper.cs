@@ -131,6 +131,7 @@ namespace Neumont.Tools.ORM.ShapeModel
 			using(DslModeling::Store store = new DslModeling::Store(this.ServiceProvider))
 			{
 				store.LoadDomainModels(typeof(DslDiagrams::CoreDesignSurfaceDomainModel),
+					typeof(global::Neumont.Tools.Modeling.FrameworkDomainModel),
 					typeof(global::Neumont.Tools.ORM.ObjectModel.ORMCoreDomainModel),
 					typeof(global::Neumont.Tools.ORM.ShapeModel.ORMShapeDomainModel));
 				global::System.Resources.ResourceManager resourceManager = global::Neumont.Tools.ORM.ShapeModel.ORMShapeDomainModel.SingletonResourceManager;

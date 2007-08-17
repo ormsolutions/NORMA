@@ -18,12 +18,17 @@
 	Id="005CBD56-3BA5-4947-9F46-5608BD563CED"
 	Namespace="Neumont.Tools.ORMAbstractionToConceptualDatabaseBridge"
 	Name="ORMAbstractionToConceptualDatabaseBridge"
-	DisplayName="(Preliminary) ORMAbstraction/ConceptualDatabase Bridge"
+	DisplayName="(Preview) ORMAbstraction/ConceptualDatabase Bridge"
 	CompanyName="Neumont University"
 	ProductName="Neumont ORM Architect for Visual Studio"
 	MajorVersion="1" MinorVersion="0" Build="0" Revision="0">
 
 	<Attributes>
+		<ClrAttribute Name="DslModeling::ExtendsDomainModel">
+			<Parameters>
+				<AttributeParameter Value="&quot;F60BC3F1-C38E-4C7D-9EE5-9211DB26CB45&quot;/*Neumont.Tools.Modeling.FrameworkDomainModel*/"/>
+			</Parameters>
+		</ClrAttribute>
 		<ClrAttribute Name="DslModeling::ExtendsDomainModel">
 			<Parameters>
 				<AttributeParameter Value="&quot;F7BC82F4-83D1-408C-BA42-607E90B23BEA&quot;/*Neumont.Tools.ORMAbstraction.AbstractionDomainModel*/"/>

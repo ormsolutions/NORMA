@@ -92,6 +92,9 @@
 			<arg:ChangeRule methodName="SetConstraintChangedRule">
 				<arg:RuleOn targetType="SetConstraint" targetTypeQualifier="Neumont.Tools.ORM.ObjectModel"/>
 			</arg:ChangeRule>
+			<arg:ChangeRule methodName="SubtypeFactChangedRule">
+				<arg:RuleOn targetType="SubtypeFact" targetTypeQualifier="Neumont.Tools.ORM.ObjectModel"/>
+			</arg:ChangeRule>
 			<arg:DeleteRule methodName="UniquenessBridgeDetachedRule">
 				<arg:RuleOn targetType="UniquenessIsForUniquenessConstraint"/>
 			</arg:DeleteRule>
