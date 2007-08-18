@@ -317,34 +317,49 @@ namespace Neumont.Tools.Modeling.Shell.DynamicSurveyTreeGrid
 				for (int i = 0; i < questionCount; i++)
 				{
 					SurveyQuestion question = mySurvey[i];
-					if (0 != (question.Question.UISupport & SurveyQuestionUISupport.Glyph))
+					ISurveyQuestionTypeInfo questionInfo = question.Question;
+					SurveyQuestionUISupport support = questionInfo.UISupport;
+					if (0 != (support & (SurveyQuestionUISupport.Glyph | SurveyQuestionUISupport.Overlay | SurveyQuestionUISupport.DisplayData)))
 					{
-						int answer;
-						if (image == -1 &&
-							SurveyQuestion.NeutralAnswer != (answer = myCurrentDisplays[i].Question.ExtractAnswer(nodeData)) &&
-							0 <= (image = question.Question.MapAnswerToImageIndex(answer)))
+						int answer = myCurrentDisplays[i].Question.ExtractAnswer(nodeData);
+						if (answer != SurveyQuestion.NeutralAnswer)
 						{
-							image += question.ProviderImageListOffset;
-						}
-					}
-					else if (0 != (question.Question.UISupport & SurveyQuestionUISupport.Overlay))
-					{
-						int answer;
-						if (SurveyQuestion.NeutralAnswer != (answer = myCurrentDisplays[i].Question.ExtractAnswer(nodeData)) &&
-							0 <= (answer = question.Question.MapAnswerToImageIndex(answer)))
-						{
-							if (overlayImage == -1)
+							// Extract image and overlay support
+							if (0 != (support & SurveyQuestionUISupport.Glyph))
 							{
-								overlayImage = answer + question.ProviderImageListOffset;
-							}
-							else
-							{
-								if (overlayBitField == -1)
+								if (image == -1 &&
+									0 <= (image = questionInfo.MapAnswerToImageIndex(answer)))
 								{
-									overlayBitField = 0;
-									AddToOverlayList(overlayImage, ref overlayBitField);
+									image += question.ProviderImageListOffset;
 								}
-								AddToOverlayList(answer + question.ProviderImageListOffset, ref overlayBitField);
+							}
+							else if (0 != (support & SurveyQuestionUISupport.Overlay))
+							{
+								int answerImage = questionInfo.MapAnswerToImageIndex(answer);
+								if (0 <= answerImage)
+								{
+									if (overlayImage == -1)
+									{
+										overlayImage = answerImage + question.ProviderImageListOffset;
+									}
+									else
+									{
+										if (overlayBitField == -1)
+										{
+											overlayBitField = 0;
+											AddToOverlayList(overlayImage, ref overlayBitField);
+										}
+										AddToOverlayList(answerImage + question.ProviderImageListOffset, ref overlayBitField);
+									}
+								}
+							}
+
+							// Extract other display settings
+							if (0 != (support & SurveyQuestionUISupport.DisplayData))
+							{
+								SurveyQuestionDisplayData displayData = questionInfo.GetDisplayData(answer);
+								retVal.Bold = displayData.Bold;
+								retVal.GrayText = displayData.GrayText;
 							}
 						}
 					}

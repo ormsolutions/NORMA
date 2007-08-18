@@ -109,6 +109,32 @@ namespace Neumont.Tools.RelationalModels.ConceptualDatabase
 		Last = PrimaryUniquenessConstraint,
 	}
 	/// <summary>
+	/// The list of possible answers to the ColumnNullableType category in the model browser
+	/// </summary>
+	public enum SurveyColumnClassificationType
+	{
+		/// <summary>
+		/// The column is required
+		/// </summary>
+		Required,
+		/// <summary>
+		/// The column is primary and required
+		/// </summary>
+		PrimaryRequired,
+		/// <summary>
+		/// The column is nullable
+		/// </summary>
+		Nullable,
+		/// <summary>
+		/// The column is primary and nullable
+		/// </summary>
+		PrimaryNullable,
+		/// <summary>
+		/// The current highest-valued value in the enumeration
+		/// </summary>
+		Last = PrimaryNullable,
+	}
+	/// <summary>
 	/// The list of possible answers for the ReferenceConstraintChildType grouping in the model browser
 	/// </summary>
 	[TypeConverter(typeof(EnumConverter<SurveyReferenceConstraintChildType, Catalog>))]
@@ -382,7 +408,7 @@ namespace Neumont.Tools.RelationalModels.ConceptualDatabase
 	}
 	#endregion // Table answers
 	#region Column answers
-	partial class Column : IAnswerSurveyQuestion<SurveyTableChildType>, IAnswerSurveyQuestion<SurveyTableChildGlyphType>, ISurveyNode
+	partial class Column : IAnswerSurveyQuestion<SurveyTableChildType>, IAnswerSurveyQuestion<SurveyTableChildGlyphType>, IAnswerSurveyQuestion<SurveyColumnClassificationType>, ISurveyNode, ICustomComparableSurveyNode
 	{
 		#region IAnswerSurveyQuestion<SurveyTableChildType> Implementation
 		int IAnswerSurveyQuestion<SurveyTableChildType>.AskQuestion()
@@ -408,6 +434,21 @@ namespace Neumont.Tools.RelationalModels.ConceptualDatabase
 		protected int AskElementQuestionForGlyph()
 		{
 			return (int)SurveyTableChildGlyphType.Column;
+		}
+		#endregion // IAnswerSurveyQuestion<SurveyTableChildGlyphType> Implementation
+		#region IAnswerSurveyQuestion<SurveyColumnClassificationType> Implementation
+		int IAnswerSurveyQuestion<SurveyColumnClassificationType>.AskQuestion()
+		{
+			return AskElementQuestionForClassification();
+		}
+		/// <summary>
+		/// implementation of AskQuestion method from IAnswerSurveyQuestion
+		/// </summary>
+		protected int AskElementQuestionForClassification()
+		{
+			return (int)(IsPartOfPrimaryIdentifier ?
+				IsNullable ? SurveyColumnClassificationType.PrimaryNullable : SurveyColumnClassificationType.PrimaryRequired :
+				IsNullable ? SurveyColumnClassificationType.Nullable : SurveyColumnClassificationType.Required);
 		}
 		#endregion // IAnswerSurveyQuestion<SurveyTableChildGlyphType> Implementation
 		#region ISurveyNode Implementation
@@ -507,6 +548,48 @@ namespace Neumont.Tools.RelationalModels.ConceptualDatabase
 			}
 		}
 		#endregion // ISurveyNode Implementation
+		#region ICustomComparableSurveyNode Implementation
+		int ICustomComparableSurveyNode.CompareToSurveyNode(object other)
+		{
+			return CompareToSurveyNode(other);
+		}
+		/// <summary>
+		/// Implements <see cref="ICustomComparableSurveyNode.CompareToSurveyNode"/>. Columns
+		/// sort with columns in the preferred identifier first.
+		/// </summary>
+		protected int CompareToSurveyNode(object other)
+		{
+			Column otherColumn = other as Column;
+			if (otherColumn != null)
+			{
+				bool leftIsPrimary = this.IsPartOfPrimaryIdentifier;
+				bool rightIsPrimary = otherColumn.IsPartOfPrimaryIdentifier;
+				if (leftIsPrimary ^ rightIsPrimary)
+				{
+					return leftIsPrimary ? -1 : 1;
+				}
+			}
+			// For this comparison, 0 implies no information is available
+			return 0;
+		}
+		/// <summary>
+		/// Is this column part of the primary identification scheme?
+		/// </summary>
+		private bool IsPartOfPrimaryIdentifier
+		{
+			get
+			{
+				foreach (UniquenessConstraint constraint in UniquenessConstraintIncludesColumn.GetUniquenessConstraints(this))
+				{
+					if (constraint.IsPrimary)
+					{
+						return true;
+					}
+				}
+				return false;
+			}
+		}
+		#endregion // ICustomComparableSurveyNode Implementation
 	}
 	#endregion // Column answers
 	#region ReferenceConstraint answers
@@ -1248,6 +1331,8 @@ namespace Neumont.Tools.RelationalModels.ConceptualDatabase
 			eventManager.AddOrRemoveHandler(classInfo, new EventHandler<ElementPropertyChangedEventArgs>(TableChanged), action);
 
 			// Column, uniqueness, and foreign key elements (inside table)
+			// UNDONE: This does not handle updates to the primary identifier keys and sort order.
+			// There are currently no incremental updates involving primary keys.
 			eventManager.AddOrRemoveHandler(dataDir.FindDomainRelationship(TableContainsColumn.DomainClassId), new EventHandler<ElementAddedEventArgs>(ColumnAdded), action);
 			classInfo = dataDir.FindDomainClass(Column.DomainClassId);
 			eventManager.AddOrRemoveHandler(classInfo, new EventHandler<ElementDeletedEventArgs>(ElementRemoved), action);
@@ -1280,6 +1365,7 @@ namespace Neumont.Tools.RelationalModels.ConceptualDatabase
 		#endregion // IModelingEventSubscriber Implementation
 		#region SurveyQuestion event handlers
 		private static readonly Type[] SurveyTableChildGlyphTypeQuestionTypes = new Type[] { typeof(SurveyTableChildGlyphType) };
+		private static readonly Type[] SurveyColumnClassificationTypeQuestionTypes = new Type[] { typeof(SurveyColumnClassificationType) };
 		/// <summary>
 		/// This will work for almost all delete scenarios
 		/// </summary>
@@ -1351,11 +1437,12 @@ namespace Neumont.Tools.RelationalModels.ConceptualDatabase
 		}
 		private static void ColumnChanged(object sender, ElementPropertyChangedEventArgs e)
 		{
-			if (e.DomainProperty.Id == Column.NameDomainPropertyId)
+			INotifySurveyElementChanged eventNotify;
+			ModelElement element = e.ModelElement;
+			if (null != (eventNotify = (element.Store as IORMToolServices).NotifySurveyElementChanged))
 			{
-				INotifySurveyElementChanged eventNotify;
-				ModelElement element = e.ModelElement;
-				if (null != (eventNotify = (element.Store as IORMToolServices).NotifySurveyElementChanged))
+				Guid attributeId = e.DomainProperty.Id;
+				if (attributeId == Column.NameDomainPropertyId)
 				{
 					eventNotify.ElementRenamed(element);
 					Column column = (Column)element;
@@ -1371,6 +1458,10 @@ namespace Neumont.Tools.RelationalModels.ConceptualDatabase
 					{
 						eventNotify.ElementRenamed(columnRef);
 					}
+				}
+				else if (attributeId == Column.IsNullableDomainPropertyId)
+				{
+					eventNotify.ElementChanged(e.ModelElement, SurveyColumnClassificationTypeQuestionTypes);
 				}
 			}
 		}
@@ -1440,7 +1531,7 @@ namespace Neumont.Tools.RelationalModels.ConceptualDatabase
 				}
 				else if (attributeId == UniquenessConstraint.IsPrimaryDomainPropertyId)
 				{
-					eventNotify.ElementChanged(element, ConceptualDatabaseDomainModel.SurveyTableChildGlyphTypeQuestionTypes);
+					eventNotify.ElementChanged(element, SurveyTableChildGlyphTypeQuestionTypes);
 				}
 			}
 		}

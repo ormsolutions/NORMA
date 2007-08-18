@@ -12,7 +12,8 @@ namespace Neumont.Tools.RelationalModels.ConceptualDatabase
 			ProvideSurveyQuestionForSurveySchemaChildType.Instance};
 		private static readonly ISurveyQuestionTypeInfo[] mySurveyQuestionTypeInfo3 = new ISurveyQuestionTypeInfo[]{
 			ProvideSurveyQuestionForSurveyTableChildType.Instance,
-			ProvideSurveyQuestionForSurveyTableChildGlyphType.Instance};
+			ProvideSurveyQuestionForSurveyTableChildGlyphType.Instance,
+			ProvideSurveyQuestionForSurveyColumnClassificationType.Instance};
 		private static readonly ISurveyQuestionTypeInfo[] mySurveyQuestionTypeInfo4 = new ISurveyQuestionTypeInfo[]{
 			ProvideSurveyQuestionForSurveyReferenceConstraintChildType.Instance};
 		private static readonly ISurveyQuestionTypeInfo[] mySurveyQuestionTypeInfo5 = new ISurveyQuestionTypeInfo[]{
@@ -96,6 +97,10 @@ namespace Neumont.Tools.RelationalModels.ConceptualDatabase
 			{
 				return answer;
 			}
+			public SurveyQuestionDisplayData GetDisplayData(int answer)
+			{
+				return SurveyQuestionDisplayData.Default;
+			}
 			public SurveyQuestionUISupport UISupport
 			{
 				get
@@ -129,6 +134,10 @@ namespace Neumont.Tools.RelationalModels.ConceptualDatabase
 			public int MapAnswerToImageIndex(int answer)
 			{
 				return ((int)SurveySchemaType.Last + 1) + answer;
+			}
+			public SurveyQuestionDisplayData GetDisplayData(int answer)
+			{
+				return SurveyQuestionDisplayData.Default;
 			}
 			public SurveyQuestionUISupport UISupport
 			{
@@ -164,6 +173,10 @@ namespace Neumont.Tools.RelationalModels.ConceptualDatabase
 			{
 				return -1;
 			}
+			public SurveyQuestionDisplayData GetDisplayData(int answer)
+			{
+				return SurveyQuestionDisplayData.Default;
+			}
 			public SurveyQuestionUISupport UISupport
 			{
 				get
@@ -198,11 +211,70 @@ namespace Neumont.Tools.RelationalModels.ConceptualDatabase
 			{
 				return (((int)SurveySchemaType.Last + 1) + ((int)SurveySchemaChildType.Last + 1)) + answer;
 			}
+			public SurveyQuestionDisplayData GetDisplayData(int answer)
+			{
+				return SurveyQuestionDisplayData.Default;
+			}
 			public SurveyQuestionUISupport UISupport
 			{
 				get
 				{
 					return SurveyQuestionUISupport.Glyph;
+				}
+			}
+		}
+		private sealed class ProvideSurveyQuestionForSurveyColumnClassificationType : ISurveyQuestionTypeInfo
+		{
+			private ProvideSurveyQuestionForSurveyColumnClassificationType()
+			{
+			}
+			public static readonly ISurveyQuestionTypeInfo Instance = new ProvideSurveyQuestionForSurveyColumnClassificationType();
+			public Type QuestionType
+			{
+				get
+				{
+					return typeof(SurveyColumnClassificationType);
+				}
+			}
+			public int AskQuestion(object data)
+			{
+				IAnswerSurveyQuestion<SurveyColumnClassificationType> typedData = data as IAnswerSurveyQuestion<SurveyColumnClassificationType>;
+				if (typedData != null)
+				{
+					return typedData.AskQuestion();
+				}
+				return -1;
+			}
+			public int MapAnswerToImageIndex(int answer)
+			{
+				int retVal;
+				switch ((SurveyColumnClassificationType)answer)
+				{
+					case SurveyColumnClassificationType.PrimaryRequired:
+					case SurveyColumnClassificationType.PrimaryNullable:
+						retVal = ((((((int)SurveySchemaType.Last + 1) + ((int)SurveySchemaChildType.Last + 1)) + ((int)SurveyTableChildGlyphType.Last + 1)) + ((int)SurveyReferenceConstraintChildType.Last + 1)) + ((int)SurveyUniquenessConstraintChildType.Last + 1)) + 0;
+						break;
+					default:
+						retVal = -1;
+						break;
+				}
+				return retVal;
+			}
+			public SurveyQuestionDisplayData GetDisplayData(int answer)
+			{
+				switch ((SurveyColumnClassificationType)answer)
+				{
+					case SurveyColumnClassificationType.Required:
+					case SurveyColumnClassificationType.PrimaryRequired:
+						return new SurveyQuestionDisplayData(true, false);
+				}
+				return SurveyQuestionDisplayData.Default;
+			}
+			public SurveyQuestionUISupport UISupport
+			{
+				get
+				{
+					return SurveyQuestionUISupport.Overlay | SurveyQuestionUISupport.DisplayData;
 				}
 			}
 		}
@@ -231,6 +303,10 @@ namespace Neumont.Tools.RelationalModels.ConceptualDatabase
 			public int MapAnswerToImageIndex(int answer)
 			{
 				return ((((int)SurveySchemaType.Last + 1) + ((int)SurveySchemaChildType.Last + 1)) + ((int)SurveyTableChildGlyphType.Last + 1)) + answer;
+			}
+			public SurveyQuestionDisplayData GetDisplayData(int answer)
+			{
+				return SurveyQuestionDisplayData.Default;
 			}
 			public SurveyQuestionUISupport UISupport
 			{
@@ -265,6 +341,10 @@ namespace Neumont.Tools.RelationalModels.ConceptualDatabase
 			public int MapAnswerToImageIndex(int answer)
 			{
 				return (((((int)SurveySchemaType.Last + 1) + ((int)SurveySchemaChildType.Last + 1)) + ((int)SurveyTableChildGlyphType.Last + 1)) + ((int)SurveyReferenceConstraintChildType.Last + 1)) + answer;
+			}
+			public SurveyQuestionDisplayData GetDisplayData(int answer)
+			{
+				return SurveyQuestionDisplayData.Default;
 			}
 			public SurveyQuestionUISupport UISupport
 			{

@@ -56,6 +56,11 @@ namespace Neumont.Tools.Modeling.Shell.DynamicSurveyTreeGrid
 		/// <see cref="ISurveyQuestionTypeInfo.MapAnswerToImageIndex"/> method.
 		/// </summary>
 		Overlay = 8,
+		/// <summary>
+		/// Question supports additional display settings with the
+		/// <see cref="ISurveyQuestionTypeInfo.GetDisplayData"/> method.
+		/// </summary>
+		DisplayData = 0x10,
 	}
 	#endregion // SurveyQuestionUISupport enum
 	#region ISurveyQuestionProvider interface
@@ -86,6 +91,61 @@ namespace Neumont.Tools.Modeling.Shell.DynamicSurveyTreeGrid
         IEnumerable<Type> GetErrorDisplayTypes();
 	}
 	#endregion // ISurveyQuestionProvider interface
+	#region SurveyQuestionDisplayData structure
+	/// <summary>
+	/// Associate additional display information with this question.
+	/// Used by the <see cref="ISurveyQuestionTypeInfo.GetDisplayData"/> method.
+	/// </summary>
+	public struct SurveyQuestionDisplayData
+	{
+		private bool myIsBold;
+		private bool myIsGrayText;
+		/// <summary>
+		/// Default display settings
+		/// </summary>
+		public static readonly SurveyQuestionDisplayData Default = new SurveyQuestionDisplayData();
+		/// <summary>
+		/// Create a new <see cref="SurveyQuestionDisplayData"/>
+		/// </summary>
+		/// <param name="isBold">Display text as bold</param>
+		/// <param name="isGrayText">Display text as gray text</param>
+		public SurveyQuestionDisplayData(bool isBold, bool isGrayText)
+		{
+			myIsBold = isBold;
+			myIsGrayText = isGrayText;
+		}
+		/// <summary>
+		/// Return <see langword="true"/> if these are the default settings
+		/// </summary>
+		public bool IsDefault
+		{
+			get
+			{
+				return !(myIsBold || myIsGrayText);
+			}
+		}
+		/// <summary>
+		/// Should the text display bold?
+		/// </summary>
+		public bool Bold
+		{
+			get
+			{
+				return myIsBold;
+			}
+		}
+		/// <summary>
+		/// Should the text display gray?
+		/// </summary>
+		public bool GrayText
+		{
+			get
+			{
+				return myIsGrayText;
+			}
+		}
+	}
+	#endregion // SurveyQuestionDisplayData structure
 	#region ISurveyQuestionTypeInfo interface
 	/// <summary>
 	/// Holds a reference to a specific type of question and method for asking question of objects
@@ -113,6 +173,13 @@ namespace Neumont.Tools.Modeling.Shell.DynamicSurveyTreeGrid
 		/// <param name="answer">A value from the enum type returned by the <see cref="QuestionType"/> property.</param>
 		/// <returns>0-based index into the image list.</returns>
 		int MapAnswerToImageIndex(int answer);
+		/// <summary>
+		/// Retrieves additional display information for a given answer. Used only if
+		/// <see cref="UISupport"/> indicates support for <see cref="SurveyQuestionUISupport.DisplayData"/>
+		/// </summary>
+		/// <param name="answer">A value from the enum type returned by the <see cref="QuestionType"/> property.</param>
+		/// <returns><see cref="SurveyQuestionDisplayData"/> settings</returns>
+		SurveyQuestionDisplayData GetDisplayData(int answer);
 		/// <summary>
 		/// UISupport for Question
 		/// </summary>

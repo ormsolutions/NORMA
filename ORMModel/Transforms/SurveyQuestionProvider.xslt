@@ -275,6 +275,11 @@
 											<plx:condition>
 												<plx:callStatic dataTypeName="{$questionType}" name="{@enumValue}" type="field"/>
 											</plx:condition>
+											<xsl:for-each select="$imageMap/qp:mapSameAs[@targetEnumValue=current()/@enumValue]">
+												<plx:condition>
+													<plx:callStatic dataTypeName="{$questionType}" name="{@enumValue}" type="field"/>
+												</plx:condition>
+											</xsl:for-each>
 											<plx:assign>
 												<plx:left>
 													<plx:nameRef name="retVal"/>
@@ -285,7 +290,22 @@
 																<xsl:copy-of select="child::plx:*"/>
 														</xsl:when>
 														<xsl:otherwise>
-															<plx:value data="{@imageIndex}" type="i4"/>
+															<xsl:variable name="offset" select="child::plx:*"/>
+															<xsl:choose>
+																<xsl:when test="$offset">
+																	<plx:binaryOperator type="add">
+																		<plx:left>
+																			<xsl:copy-of select="$offset"/>
+																		</plx:left>
+																		<plx:right>
+																			<plx:value data="{@imageIndex}" type="i4"/>
+																		</plx:right>
+																	</plx:binaryOperator>
+																</xsl:when>
+																<xsl:otherwise>
+																	<plx:value data="{@imageIndex}" type="i4"/>
+																</xsl:otherwise>
+															</xsl:choose>
 														</xsl:otherwise>
 													</xsl:choose>
 												</plx:right>
@@ -315,6 +335,65 @@
 						</plx:return>
 					</xsl:otherwise>
 				</xsl:choose>
+			</plx:function>
+			<plx:function name="GetDisplayData" visibility="public">
+				<plx:interfaceMember dataTypeName="ISurveyQuestionTypeInfo" memberName="GetDisplayData"/>
+				<plx:param name="answer" dataTypeName=".i4"/>
+				<plx:returns dataTypeName="SurveyQuestionDisplayData"/>
+				<xsl:if test="qp:displaySupport[@displayCategory='DisplayData']">
+					<xsl:variable name="displayDataMaps" select="qp:displayDataMap/qp:displayData[(@bold='true' or @bold='1') or (@gray='true' or @gray='1')]"/>
+					<xsl:if test="$displayDataMaps">
+						<xsl:variable name="questionType" select="string(@questionType)"/>
+						<plx:switch>
+							<plx:condition>
+								<plx:cast dataTypeName="{$questionType}">
+									<plx:nameRef name="answer" type="parameter"/>
+								</plx:cast>
+							</plx:condition>
+							<xsl:for-each select="$displayDataMaps">
+								<plx:case>
+									<plx:condition>
+										<plx:callStatic dataTypeName="{$questionType}" name="{@enumValue}" type="field"/>
+									</plx:condition>
+									<xsl:for-each select="../qp:displayDataSameAs[@targetEnumValue=current()/@enumValue]">
+										<plx:condition>
+											<plx:callStatic dataTypeName="{$questionType}" name="{@enumValue}" type="field"/>
+										</plx:condition>
+									</xsl:for-each>
+									<plx:return>
+										<plx:callNew dataTypeName="SurveyQuestionDisplayData">
+											<plx:passParam>
+												<!-- The isBold parameter -->
+												<xsl:choose>
+													<xsl:when test="@bold='true' or @bold='1'">
+														<plx:trueKeyword/>
+													</xsl:when>
+													<xsl:otherwise>
+														<plx:falseKeyword/>
+													</xsl:otherwise>
+												</xsl:choose>
+											</plx:passParam>
+											<plx:passParam>
+												<!-- The isGrayText parameter -->
+												<xsl:choose>
+													<xsl:when test="@gray='true' or @gray='1'">
+														<plx:trueKeyword/>
+													</xsl:when>
+													<xsl:otherwise>
+														<plx:falseKeyword/>
+													</xsl:otherwise>
+												</xsl:choose>
+											</plx:passParam>
+										</plx:callNew>
+									</plx:return>
+								</plx:case>
+							</xsl:for-each>
+						</plx:switch>
+					</xsl:if>	
+				</xsl:if>
+				<plx:return>
+					<plx:callStatic name="Default" dataTypeName="SurveyQuestionDisplayData" type="property"/>
+				</plx:return>
 			</plx:function>
 			<plx:property name="UISupport" visibility="public">
 				<plx:interfaceMember dataTypeName="ISurveyQuestionTypeInfo" memberName="UISupport"/>

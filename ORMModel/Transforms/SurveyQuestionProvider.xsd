@@ -91,9 +91,64 @@
 		<xs:sequence>
 			<xs:element ref="displaySupport" maxOccurs="unbounded"/>
 			<xs:element ref="imageMap" minOccurs="0"/>
+			<xs:element ref="displayDataMap" minOccurs="0"/>
 		</xs:sequence>
 		<xs:attribute name="questionType" type="xs:string" use="required"/>
 		<xs:attribute name="isErrorDisplay" type="xs:boolean" default="false"/>
+	</xs:complexType>
+	<xs:element name="displayDataMap" type="displayDataMapType">
+		<xs:unique name="DisplayDataUnique">
+			<xs:selector xpath="qp:displayData | qp:displayDataSameAs"/>
+			<xs:field xpath="@enumValue"/>
+		</xs:unique>
+		<xs:key name="DisplayDataKey">
+			<xs:selector xpath="qp:displayData"/>
+			<xs:field xpath="@enumValue"/>
+		</xs:key>
+		<xs:keyref name="DisplayDataSameAsKeyRef" refer="DisplayDataKey">
+			<xs:selector xpath="qp:displayDataSameAs"/>
+			<xs:field xpath="@targetEnumValue"/>
+		</xs:keyref>
+	</xs:element>
+	<xs:complexType name="displayDataMapType">
+		<xs:annotation>
+			<xs:documentation>Associate an answer with different display data settings.</xs:documentation>
+		</xs:annotation>
+		<xs:choice maxOccurs="unbounded">
+			<xs:element name="displayData">
+				<xs:complexType>
+					<xs:attribute name="enumValue" type="xs:token" use="required">
+						<xs:annotation>
+							<xs:documentation>The value from the questionType enum to associate with these display settings.</xs:documentation>
+						</xs:annotation>
+					</xs:attribute>
+					<xs:attribute name="bold" type="xs:boolean" default="false">
+						<xs:annotation>
+							<xs:documentation>Display answers from this category in bold text</xs:documentation>
+						</xs:annotation>
+					</xs:attribute>
+					<xs:attribute name="gray" type="xs:boolean" default="false">
+						<xs:annotation>
+							<xs:documentation>Display answers from this category in gray text</xs:documentation>
+						</xs:annotation>
+					</xs:attribute>
+				</xs:complexType>
+			</xs:element>
+			<xs:element name="displayDataSameAs">
+				<xs:complexType>
+					<xs:attribute name="enumValue" type="xs:token" use="required">
+						<xs:annotation>
+							<xs:documentation>The value from the questionType enum to associate with these display settings.</xs:documentation>
+						</xs:annotation>
+					</xs:attribute>
+					<xs:attribute name="targetEnumValue" type="xs:token" use="required">
+						<xs:annotation>
+							<xs:documentation>This value should have the same display settings as the targeted value.</xs:documentation>
+						</xs:annotation>
+					</xs:attribute>
+				</xs:complexType>
+			</xs:element>
+		</xs:choice>
 	</xs:complexType>
 	<xs:complexType name="imageMapType"/>
 	<xs:element name="imageMap" abstract="true" type="imageMapType"/>
@@ -121,24 +176,40 @@
 			</xs:extension>
 		</xs:complexContent>
 	</xs:complexType>
-	<xs:element name="explicitImageMap" type="explicitImageMapType" substitutionGroup="imageMap"/>
+	<xs:element name="explicitImageMap" type="explicitImageMapType" substitutionGroup="imageMap">
+		<xs:unique name="ExplicitImageMapUnique">
+			<xs:selector xpath="qp:map | qp:mapSameAs"/>
+			<xs:field xpath="@enumValue"/>
+		</xs:unique>
+		<xs:key name="ExplicitImageMapKey">
+			<xs:selector xpath="qp:map"/>
+			<xs:field xpath="@enumValue"/>
+		</xs:key>
+		<xs:keyref name="ExplicitImageMapSameAsKeyRef" refer="ExplicitImageMapKey">
+			<xs:selector xpath="qp:mapSameAs"/>
+			<xs:field xpath="@targetEnumValue"/>
+		</xs:keyref>
+	</xs:element>
 	<xs:complexType name="explicitImageMapType">
 		<xs:annotation>
 			<xs:documentation>Enum values in this question type require custom mapping to image indices.</xs:documentation>
 		</xs:annotation>
 		<xs:complexContent>
 			<xs:extension base="imageMapType">
-				<xs:sequence>
-					<xs:element name="map" maxOccurs="unbounded">
+				<xs:choice maxOccurs="unbounded">
+					<xs:element name="map">
 						<xs:complexType>
 							<xs:sequence>
 								<xs:any namespace="http://schemas.neumont.edu/CodeGeneration/PLiX" processContents="strict" minOccurs="0">
 									<xs:annotation>
-										<xs:documentation>A custom expression. Used if the imageIndex attribute is set to .custom.</xs:documentation>
+										<xs:documentation>A custom expression. If the imageIndex attribute is set .custom then this expression is used directly. Otherwise, it is added to the imageIndex.</xs:documentation>
 									</xs:annotation>
 								</xs:any>
 							</xs:sequence>
 							<xs:attribute name="imageIndex" use="required">
+								<xs:annotation>
+									<xs:documentation>An non-negative value indicating the index in the image list, or the special .custom value indicating a custom code expression.</xs:documentation>
+								</xs:annotation>
 								<xs:simpleType>
 									<xs:union memberTypes="xs:nonNegativeInteger">
 										<xs:simpleType>
@@ -153,10 +224,28 @@
 									</xs:union>
 								</xs:simpleType>
 							</xs:attribute>
-							<xs:attribute name="enumValue" type="xs:token" use="required"/>
+							<xs:attribute name="enumValue" type="xs:token" use="required">
+								<xs:annotation>
+									<xs:documentation>The value from the questionType enum to associate with this image.</xs:documentation>
+								</xs:annotation>
+							</xs:attribute>
 						</xs:complexType>
 					</xs:element>
-				</xs:sequence>
+					<xs:element name="mapSameAs">
+						<xs:complexType>
+							<xs:attribute name="enumValue" type="xs:token" use="required">
+								<xs:annotation>
+									<xs:documentation>The value from the questionType enum to associate with this image.</xs:documentation>
+								</xs:annotation>
+							</xs:attribute>
+							<xs:attribute name="targetEnumValue" type="xs:token" use="required">
+								<xs:annotation>
+									<xs:documentation>This value should have the same image as the other value.</xs:documentation>
+								</xs:annotation>
+							</xs:attribute>
+						</xs:complexType>
+					</xs:element>
+				</xs:choice>
 			</xs:extension>
 		</xs:complexContent>
 	</xs:complexType>
@@ -183,6 +272,11 @@
 					<xs:enumeration value="Overlay">
 						<xs:annotation>
 							<xs:documentation>Answers to this question are used to overlay the list of contents</xs:documentation>
+						</xs:annotation>
+					</xs:enumeration>
+					<xs:enumeration value="DisplayData">
+						<xs:annotation>
+							<xs:documentation>Answers to this question can be used to retrieve additional display information</xs:documentation>
 						</xs:annotation>
 					</xs:enumeration>
 				</xs:restriction>

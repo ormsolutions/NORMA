@@ -82,6 +82,10 @@ namespace Neumont.Tools.ORM.ObjectModel
 			{
 				return -1;
 			}
+			public SurveyQuestionDisplayData GetDisplayData(int answer)
+			{
+				return SurveyQuestionDisplayData.Default;
+			}
 			public SurveyQuestionUISupport UISupport
 			{
 				get
@@ -126,6 +130,10 @@ namespace Neumont.Tools.ORM.ObjectModel
 				}
 				return retVal;
 			}
+			public SurveyQuestionDisplayData GetDisplayData(int answer)
+			{
+				return SurveyQuestionDisplayData.Default;
+			}
 			public SurveyQuestionUISupport UISupport
 			{
 				get
@@ -160,6 +168,10 @@ namespace Neumont.Tools.ORM.ObjectModel
 			{
 				return answer;
 			}
+			public SurveyQuestionDisplayData GetDisplayData(int answer)
+			{
+				return SurveyQuestionDisplayData.Default;
+			}
 			public SurveyQuestionUISupport UISupport
 			{
 				get
@@ -193,6 +205,10 @@ namespace Neumont.Tools.ORM.ObjectModel
 			public int MapAnswerToImageIndex(int answer)
 			{
 				return -1;
+			}
+			public SurveyQuestionDisplayData GetDisplayData(int answer)
+			{
+				return SurveyQuestionDisplayData.Default;
 			}
 			public SurveyQuestionUISupport UISupport
 			{
