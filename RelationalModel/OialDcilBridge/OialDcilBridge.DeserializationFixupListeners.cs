@@ -180,10 +180,9 @@ namespace Neumont.Tools.ORMAbstractionToConceptualDatabaseBridge
 
 			foreach (Table table in schema.TableCollection)
 			{
-				CreateForeignKeys(table, store);
+				CreateForeignKeys(table);
+				GenerateMandatoryConstraints(table);
 			}
-
-			GenerateAllMandatoryConstraints(schema);
 		}
 
 		/// <summary>
@@ -714,8 +713,7 @@ namespace Neumont.Tools.ORMAbstractionToConceptualDatabaseBridge
 		/// CreateForeignKeys looks at a table and creates the foreign keys between it.
 		/// </summary>
 		/// <param name="table">The table to check for foreign keys on.</param>
-		/// <param name="store">The <see cref="Store" />.</param>
-		private static void CreateForeignKeys(Table table, Store store)
+		private static void CreateForeignKeys(Table table)
 		{
 			Dictionary<ConceptTypeRelatesToConceptType, List<Column>> foreignKeyList = new Dictionary<ConceptTypeRelatesToConceptType, List<Column>>();
 
@@ -737,9 +735,11 @@ namespace Neumont.Tools.ORMAbstractionToConceptualDatabaseBridge
 					}
 				}
 			}
+			Store store = table.Store;
 			foreach (KeyValuePair<ConceptTypeRelatesToConceptType, List<Column>> keyValuePair in foreignKeyList)
 			{
-				ReferenceConstraint referenceConstraint = new ReferenceConstraint(store, new PropertyAssignment[] { new PropertyAssignment(ReferenceConstraint.NameDomainPropertyId, keyValuePair.Key.Name) });
+				ReferenceConstraint referenceConstraint = null;
+				LinkedElementCollection<ColumnReference> referenceColumns = null;
 				foreach (Column column in keyValuePair.Value)
 				{
 					Column targetColumn = FindTarget(column, keyValuePair.Key.ReferencedConceptType);
@@ -747,13 +747,15 @@ namespace Neumont.Tools.ORMAbstractionToConceptualDatabaseBridge
 					{
 						break;
 					}
-					ColumnReference columnReference = new ColumnReference(column, targetColumn);
-					referenceConstraint.ColumnReferenceCollection.Add(columnReference);
-					if (table != null && !table.ReferenceConstraintCollection.Contains(referenceConstraint))
+					if (referenceConstraint == null)
 					{
-						TableContainsReferenceConstraint tableContainsReferenceConstraint = new TableContainsReferenceConstraint(table, referenceConstraint);
-						ReferenceConstraintTargetsTable referenceConstraintTargetsTable = new ReferenceConstraintTargetsTable(referenceConstraint, targetColumn.Table);
+						referenceConstraint = new ReferenceConstraint(store, new PropertyAssignment[] { new PropertyAssignment(ReferenceConstraint.NameDomainPropertyId, keyValuePair.Key.Name) });
+						// Add it to the table
+						new TableContainsReferenceConstraint(table, referenceConstraint);
+						referenceColumns = referenceConstraint.ColumnReferenceCollection;
+						new ReferenceConstraintTargetsTable(referenceConstraint, targetColumn.Table);
 					}
+					referenceColumns.Add(new ColumnReference(column, targetColumn));
 				}
 			}
 		}
@@ -1181,29 +1183,29 @@ namespace Neumont.Tools.ORMAbstractionToConceptualDatabaseBridge
 		}
 
 		/// <summary>
-		/// 
+		/// Set the IsNullable property for all columns on the table
 		/// </summary>
-		/// <param name="schema"></param>
-		private static void GenerateAllMandatoryConstraints(Schema schema)
+		/// <param name="table">The <see cref="Table"/> to set initial constraints for</param>
+		private static void GenerateMandatoryConstraints(Table table)
 		{
-			foreach (Table table in schema.TableCollection)
+			foreach (Column column in table.ColumnCollection)
 			{
-				foreach (Column column in table.ColumnCollection)
-				{
-					CheckColumnConstraint(column);
-				}
+				CheckColumnConstraint(column);
 			}
 		}
 
 		private static void CheckColumnConstraint(Column column)
 		{
+			bool allStepsMandatory = true;
 			foreach (ConceptTypeChild concept in ColumnHasConceptTypeChild.GetConceptTypeChildPath(column))
 			{
 				if (!concept.IsMandatory)
 				{
-					column.IsNullable = true;
+					allStepsMandatory = false;
+					break;
 				}
 			}
+			column.IsNullable = !allStepsMandatory;
 		}
 
 		#endregion // Fully populate from OIAL

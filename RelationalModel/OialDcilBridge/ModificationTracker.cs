@@ -26,6 +26,16 @@ namespace Neumont.Tools.ORMAbstractionToConceptualDatabaseBridge
 			// for cases where we start from an empty ORM model
 
 			/// <summary>
+			/// ChangeRule: typeof(Neumont.Tools.ORMAbstraction.ConceptTypeChild)
+			/// </summary>
+			private static void ConceptTypeChildChangedRule(ElementPropertyChangedEventArgs e)
+			{
+				if (e.DomainProperty.Id == ConceptTypeChild.IsMandatoryDomainPropertyId)
+				{
+					ValidateAssociatedColumnsIsNullable((ConceptTypeChild)e.ModelElement);
+				}
+			}
+			/// <summary>
 			/// AddRule: typeof(Neumont.Tools.ORMAbstraction.AbstractionModelHasConceptType)
 			/// </summary>
 			private static void ConceptTypeAddedRule(ElementAddedEventArgs e)
@@ -73,6 +83,43 @@ namespace Neumont.Tools.ORMAbstractionToConceptualDatabaseBridge
 					constraint.Delete();
 				}
 			}
+			[DelayValidatePriority(DomainModelType = typeof(AbstractionDomainModel), Order = DelayValidatePriorityOrder.AfterDomainModel)]
+			private static void RebuildForAbstractionModelDelayed(ModelElement element)
+			{
+				if (!element.IsDeleted)
+				{
+					AbstractionModel model = (AbstractionModel)element;
+					Schema schema = SchemaIsForAbstractionModel.GetSchema(model);
+					if (schema != null)
+					{
+						schema.TableCollection.Clear();
+						schema.DomainCollection.Clear();
+						FullyGenerateConceptualDatabaseModel(schema, model);
+					}
+				}
+			}
+			private static void ValidateAssociatedColumnsIsNullable(ConceptTypeChild child)
+			{
+				bool canBeNullable = !child.IsMandatory;
+				foreach (Column column in ColumnHasConceptTypeChild.GetColumn(child))
+				{
+					if (canBeNullable ? !column.IsNullable : column.IsNullable)
+					{
+						FrameworkDomainModel.DelayValidateElement(column, ValidateColumnIsNullableDelayed);
+					}
+				}
+			}
+			[DelayValidatePriority(10, DomainModelType = typeof(AbstractionDomainModel), Order = DelayValidatePriorityOrder.AfterDomainModel)]
+			private static void ValidateColumnIsNullableDelayed(ModelElement element)
+			{
+				// Check if the element survived regeneration. Note priority is after RebuildForAbstractionModelDelayed
+				if (!element.IsDeleted)
+				{
+					CheckColumnConstraint((Column)element);
+				}
+			}
+			#endregion // Abstraction model modification rules
+			#region Bridge element modification rules
 			/// <summary>
 			/// ChangeRule: typeof(Neumont.Tools.ORMAbstraction.AbstractionModel)
 			/// Update the schema name when the abstraction model name changes
@@ -89,22 +136,7 @@ namespace Neumont.Tools.ORMAbstractionToConceptualDatabaseBridge
 					}
 				}
 			}
-			[DelayValidatePriority(DomainModelType = typeof(AbstractionDomainModel), Order = DelayValidatePriorityOrder.AfterDomainModel)]
-			private static void RebuildForAbstractionModelDelayed(ModelElement element)
-			{
-				if (!element.IsDeleted)
-				{
-					AbstractionModel model = (AbstractionModel)element;
-					Schema schema = SchemaIsForAbstractionModel.GetSchema(model);
-					if (schema != null)
-					{
-						schema.TableCollection.Clear();
-						schema.DomainCollection.Clear();
-						FullyGenerateConceptualDatabaseModel(schema, model);
-					}
-				}
-			}
-			#endregion // Abstraction model modification rules
+			#endregion // Bridge element modification rules
 		}
 		#endregion // Regeneration rule delay validation methods
 	}

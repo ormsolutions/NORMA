@@ -23,6 +23,9 @@
 			<arg:AddRule methodName="ConceptTypeAddedRule">
 				<arg:RuleOn targetType="AbstractionModelHasConceptType" targetTypeQualifier="Neumont.Tools.ORMAbstraction"/>
 			</arg:AddRule>
+			<arg:ChangeRule methodName="ConceptTypeChildChangedRule">
+				<arg:RuleOn targetType="ConceptTypeChild" targetTypeQualifier="Neumont.Tools.ORMAbstraction"/>
+			</arg:ChangeRule>
 			<arg:DeleteRule methodName="ConceptTypeDeletedRule">
 				<arg:RuleOn targetType="AbstractionModelHasConceptType" targetTypeQualifier="Neumont.Tools.ORMAbstraction"/>
 			</arg:DeleteRule>
