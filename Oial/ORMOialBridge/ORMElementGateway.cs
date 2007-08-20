@@ -70,7 +70,7 @@ namespace Neumont.Tools.ORMToORMAbstractionBridge
 				foreach (ObjectType objectType in model.ObjectTypeCollection)
 				{
 					if (!IsElementExcluded(objectType) &&
-						!ShouldConsiderObjectType(objectType, null))
+						!ShouldConsiderObjectType(objectType, null, false))
 					{
 						ExcludeObjectType(objectType, abstractionModel, true, notifyExcluded);
 					}
@@ -92,9 +92,10 @@ namespace Neumont.Tools.ORMToORMAbstractionBridge
 			/// markings on its preferred identifier.
 			/// </summary>
 			/// <param name="objectType">The <see cref="ObjectType"/> to test</param>
+			/// <param name="ignoreFactTypesFilteredForThisObjectType">Don't block consideration of this <paramref name="objectType"/> if a <see cref="FactType"/> is excluded because this <see cref="ObjectType"/> is currently excluded.</param>
 			/// <param name="ignoreFactType">Succeed even if this <see cref="FactType"/> is excluded. Can be <see langword="null"/>.</param>
 			/// <returns><see langword="true"/> if the <paramref name="objectType"/> passes all necessary conditions for consideration.</returns>
-			private static bool ShouldConsiderObjectType(ObjectType objectType, FactType ignoreFactType)
+			private static bool ShouldConsiderObjectType(ObjectType objectType, FactType ignoreFactType, bool ignoreFactTypesFilteredForThisObjectType)
 			{
 				// Look at the error states we care about. If any of these error
 				// states are present then we do not consider.
@@ -118,10 +119,10 @@ namespace Neumont.Tools.ORMToORMAbstractionBridge
 							if (factType != ignoreFactType &&
 								IsElementExcluded(factType))
 							{
-								if (ignoreFactType != null && ShouldConsiderFactType(factType, objectType, true))
+								if (ignoreFactTypesFilteredForThisObjectType && ShouldConsiderFactType(factType, objectType, true))
 								{
 									// This pattern is used only during delay validation. A cleaner model would
-									// be a delagate callback, but it isn't worth the additional overhead given
+									// be a delegate callback, but it isn't worth the additional overhead given
 									// that this would be the only code that would ever run there.
 									FilterModifiedFactType(factType, true);
 								}
@@ -158,7 +159,7 @@ namespace Neumont.Tools.ORMToORMAbstractionBridge
 						if (rolePlayer == null ||
 							(ignoreRolePlayer != rolePlayer &&
 							IsElementExcluded(rolePlayer) &&
-							!(!ignoreRolePlayersFilteredForThisFactType || ShouldConsiderObjectType(rolePlayer, factType))))
+							!(!ignoreRolePlayersFilteredForThisFactType || ShouldConsiderObjectType(rolePlayer, factType, true))))
 						{
 							return false;
 						}
@@ -188,7 +189,7 @@ namespace Neumont.Tools.ORMToORMAbstractionBridge
 			{
 				ModelHasObjectType link = element as ModelHasObjectType;
 				ObjectType objectType = link.ObjectType;
-				if (ShouldConsiderObjectType(objectType, null))
+				if (ShouldConsiderObjectType(objectType, null, false))
 				{
 					AddObjectType(objectType);
 				}
@@ -268,7 +269,7 @@ namespace Neumont.Tools.ORMToORMAbstractionBridge
 				{
 					ObjectType objectType = (ObjectType)element;
 					ExcludedORMModelElement exclusionLink = ExcludedORMModelElement.GetLinkToAbstractionModel(objectType);
-					if (ShouldConsiderObjectType(objectType, null))
+					if (ShouldConsiderObjectType(objectType, null, true))
 					{
 						if (exclusionLink != null)
 						{

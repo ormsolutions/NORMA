@@ -1363,6 +1363,7 @@ namespace Neumont.Tools.ORM.ObjectModel
 		{
 			bool canBeIndependent = true;
 			LinkedElementCollection<Role> preferredIdentifierRoles = null;
+			bool checkedPreferredRoles = false;
 			LinkedElementCollection<Role> playedRoles = PlayedRoleCollection;
 			int playedRoleCount = playedRoles.Count;
 			MandatoryConstraint impliedMandatory = ImpliedMandatoryConstraint;
@@ -1404,18 +1405,19 @@ namespace Neumont.Tools.ORM.ObjectModel
 						currentRoleIsMandatory = true;
 						bool turnedOffCanBeIndependent = false;
 						// The role must be part of a fact type that has a role in the preferred identifier.
-						if (preferredIdentifierRoles == null)
+						if (!checkedPreferredRoles)
 						{
+							checkedPreferredRoles = true;
 							UniquenessConstraint preferredIdentifier = PreferredIdentifier;
-							if (preferredIdentifier == null)
-							{
-								canBeIndependent = false;
-								turnedOffCanBeIndependent = true;
-							}
-							else
+							if (preferredIdentifier != null)
 							{
 								preferredIdentifierRoles = preferredIdentifier.RoleCollection;
 							}
+						}
+						if (preferredIdentifierRoles == null)
+						{
+							canBeIndependent = false;
+							turnedOffCanBeIndependent = true;
 						}
 						if (canBeIndependent)
 						{
@@ -1445,9 +1447,29 @@ namespace Neumont.Tools.ORM.ObjectModel
 						}
 					}
 				}
-				if (!currentRoleIsMandatory)
+				if (!currentRoleIsMandatory && canBeIndependent)
 				{
-					seenNonMandatoryRole = true;
+					bool nonMandatoryRoleInPreferredIdentifier = false;
+					if (!checkedPreferredRoles)
+					{
+						checkedPreferredRoles = true;
+						UniquenessConstraint preferredIdentifier = PreferredIdentifier;
+						if (preferredIdentifier != null)
+						{
+							preferredIdentifierRoles = preferredIdentifier.RoleCollection;
+						}
+					}
+					if (preferredIdentifierRoles != null)
+					{
+						RoleBase oppositeRole = playedRole.OppositeRole;
+						nonMandatoryRoleInPreferredIdentifier =
+							null != oppositeRole &&
+							preferredIdentifierRoles.Contains(oppositeRole.Role);
+					}
+					if (!nonMandatoryRoleInPreferredIdentifier)
+					{
+						seenNonMandatoryRole = true;
+					}
 				}
 				if (impliedMandatory != null &&	canBeIndependent)
 				{
@@ -1565,7 +1587,7 @@ namespace Neumont.Tools.ORM.ObjectModel
 					{
 						if (mandatoryConstraint.IsImplied)
 						{
-							// The pattern has already been validated. Anything object
+							// The pattern has already been validated. Any object with
 							// an implied mandatory constraint can be independent.
 							return true;
 						}
