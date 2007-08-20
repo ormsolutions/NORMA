@@ -218,6 +218,11 @@ namespace Neumont.Tools.ORM.ObjectModel.Verbalization
 						false,
 						ref firstCall);
 
+					if (!firstCall)
+					{
+						writer.WriteDocumentFooter();
+					}
+
 					textWriter.Flush();
 					textWriter.Close();
 					#endregion // Object Type List Report
@@ -330,6 +335,11 @@ namespace Neumont.Tools.ORM.ObjectModel.Verbalization
 						writer,
 						false,
 						ref firstCall);
+
+					if (!firstCall)
+					{
+						writer.WriteDocumentFooter();
+					}
 
 					textWriter.Flush();
 					textWriter.Close();
@@ -453,52 +463,6 @@ namespace Neumont.Tools.ORM.ObjectModel.Verbalization
 			: this(snippets, writer)
 		{
 			myDocumentHeaderReplacementFields = documentHeaderReplacementFields;
-		}
-		/// <summary>
-		/// Retrieves replacement fields for the Document Header snippet from the given IORMFontAndColorService implementation
-		/// </summary>
-		/// <param name="colorService"></param>
-		/// <param name="snippets"></param>
-		/// <returns></returns>
-		public static string[] GetDocumentHeaderReplacementFields(IORMFontAndColorService colorService, IVerbalizationSets<CoreVerbalizationSnippetType> snippets)
-		{
-			string[] retVal;
-			// The replacement fields, pulled from VerbalizationGenerator.xsd
-			//{0} font-family
-			//{1} font-size
-			//{2} predicate text color
-			//{3} predicate text bold
-			//{4} object name color
-			//{5} object name bold
-			//{6} formal item color
-			//{7} formal item bold
-			//{8} notes item color
-			//{9} notes item bold
-			//{10} refmode item color
-			//{11} refmode item bold
-			//{12} instance value item color
-			//{13} instance value item bold
-			string boldWeight = snippets.GetSnippet(CoreVerbalizationSnippetType.VerbalizerFontWeightBold);
-			string normalWeight = snippets.GetSnippet(CoreVerbalizationSnippetType.VerbalizerFontWeightNormal);
-			retVal = new string[] { "Tahoma", "8", "darkgreen", normalWeight, "purple", normalWeight, "mediumblue", boldWeight, "brown", normalWeight, "darkgray", normalWeight, "brown", normalWeight };
-			using (Font font = colorService.GetFont(ORMDesignerColorCategory.Verbalizer))
-			{
-				retVal[0] = font.FontFamily.Name;
-				retVal[1] = (font.Size * 72f).ToString(CultureInfo.InvariantCulture);
-				retVal[2] = ColorTranslator.ToHtml(colorService.GetForeColor(ORMDesignerColor.VerbalizerPredicateText));
-				retVal[3] = (0 != (colorService.GetFontStyle(ORMDesignerColor.VerbalizerPredicateText) & FontStyle.Bold)) ? boldWeight : normalWeight;
-				retVal[4] = ColorTranslator.ToHtml(colorService.GetForeColor(ORMDesignerColor.VerbalizerObjectName));
-				retVal[5] = (0 != (colorService.GetFontStyle(ORMDesignerColor.VerbalizerObjectName) & FontStyle.Bold)) ? boldWeight : normalWeight;
-				retVal[6] = ColorTranslator.ToHtml(colorService.GetForeColor(ORMDesignerColor.VerbalizerFormalItem));
-				retVal[7] = (0 != (colorService.GetFontStyle(ORMDesignerColor.VerbalizerFormalItem) & FontStyle.Bold)) ? boldWeight : normalWeight;
-				retVal[8] = ColorTranslator.ToHtml(colorService.GetForeColor(ORMDesignerColor.VerbalizerNotesItem));
-				retVal[9] = (0 != (colorService.GetFontStyle(ORMDesignerColor.VerbalizerNotesItem) & FontStyle.Bold)) ? boldWeight : normalWeight;
-				retVal[10] = ColorTranslator.ToHtml(colorService.GetForeColor(ORMDesignerColor.VerbalizerRefMode));
-				retVal[11] = (0 != (colorService.GetFontStyle(ORMDesignerColor.VerbalizerRefMode) & FontStyle.Bold)) ? boldWeight : normalWeight;
-				retVal[12] = ColorTranslator.ToHtml(colorService.GetForeColor(ORMDesignerColor.VerbalizerInstanceValue));
-				retVal[13] = (0 != (colorService.GetFontStyle(ORMDesignerColor.VerbalizerInstanceValue) & FontStyle.Bold)) ? boldWeight : normalWeight;
-			}
-			return retVal;
 		}
 		/// <summary>
 		/// Gets the underlying TextWriter

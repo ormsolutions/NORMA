@@ -31,6 +31,8 @@ using Microsoft.VisualStudio.Shell.Interop;
 using Neumont.Tools.Modeling.Design;
 using Neumont.Tools.ORM.ObjectModel;
 using Neumont.Tools.Modeling.Shell;
+using System.Collections;
+using System.Globalization;
 
 namespace Neumont.Tools.ORM.Shell
 {
@@ -292,6 +294,22 @@ namespace Neumont.Tools.ORM.Shell
 			foreach (ORMExtensionType type in this._allExtensionTypes)
 			{
 				AddItemToListView(type);
+			}
+			lvExtensions.ListViewItemSorter = ItemComparer.Instance;
+		}
+
+		private sealed class ItemComparer : IComparer
+		{
+			public static readonly IComparer Instance = new ItemComparer();
+			private ItemComparer()
+			{
+			}
+
+			public int Compare(object obj1, object obj2)
+			{
+				ListViewItem item1 = (ListViewItem) obj1;
+				ListViewItem item2 = (ListViewItem) obj2;
+				return string.Compare(item1.SubItems[1].Text, item2.SubItems[1].Text, false, CultureInfo.CurrentCulture);
 			}
 		}
 		/// <summary>

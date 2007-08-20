@@ -153,6 +153,7 @@
       <DependentUpon>ResourceStringsGenerator.xml</DependentUpon>
     </Compile>
     <Compile Include="SurveyImplementations\SurveyQuestions.cs" />
+    <Compile Include="Verbalization.cs" />
     <EmbeddedResource Include="Catalog.resx">
       <DependentUpon>Catalog.cs</DependentUpon>
       <SubType>Designer</SubType>

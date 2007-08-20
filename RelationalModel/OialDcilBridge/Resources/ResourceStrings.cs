@@ -19,7 +19,6 @@ using System.Diagnostics;
 using System.Resources;
 using System.Windows.Forms;
 using Neumont.Tools.Modeling.Design;
-using Neumont.Tools.ORM.ObjectModel;
 
 namespace Neumont.Tools.ORMAbstractionToConceptualDatabaseBridge
 {
