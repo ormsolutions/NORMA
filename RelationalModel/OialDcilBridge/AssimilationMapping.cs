@@ -183,5 +183,84 @@ namespace Neumont.Tools.ORMAbstractionToConceptualDatabaseBridge
 			}
 		}
 		#endregion // AssimilationMappingPropertyDescriptor class
+		#region AssimilationMappingKeepAlive support
+		// UNDONE: AssimilationMappingKeepAlive, routines to allow mapping customization options to survive
+		// regeneration of the absorption model
+
+		/// <summary>
+		/// AddRule: typeof(Neumont.Tools.ORMToORMAbstractionBridge.ConceptTypeChildHasPathFactType)
+		/// Temporary routine to keep mapping customization options alive as long as the FactType survives
+		/// </summary>
+		private static void FactTypeAddedToPathRule(ElementAddedEventArgs e)
+		{
+			ConceptTypeChildHasPathFactType link = (e.ModelElement) as ConceptTypeChildHasPathFactType;
+			ConceptTypeAssimilatesConceptType assimilation;
+			if (null != (assimilation = link.ConceptTypeChild as ConceptTypeAssimilatesConceptType))
+			{
+				foreach (AssimilationMappingKeepAlive keepAlive in AssimilationMappingKeepAlive.GetLinksToAssimilationMapping(link.PathFactType))
+				{
+					AssimilationMapping mapping = keepAlive.AssimilationMapping;
+					if (mapping.Assimilation == null)
+					{
+						mapping.Assimilation = assimilation;
+					}
+				}
+			}
+		}
+		/// <summary>
+		/// AddRule: typeof(AssimilationMappingCustomizesAssimilation)
+		/// Temporary routine to keep mapping customization options alive as long as the FactType survives
+		/// </summary>
+		private static void AssimilationMappingAddedRule(ElementAddedEventArgs e)
+		{
+			AssimilationMappingCustomizesAssimilation link = (AssimilationMappingCustomizesAssimilation)e.ModelElement;
+			ConceptTypeAssimilatesConceptType assimilation = link.Assimilation;
+			foreach (FactType pathFactType in ConceptTypeChildHasPathFactType.GetPathFactTypeCollection(assimilation))
+			{
+				AssimilationMappingKeepAlive.SetFactType(link.AssimilationMapping, pathFactType);
+				break;
+			}
+		}
+		#region Deserialization Fixup
+		/// <summary>
+		/// Return a deserialization fixup listener.
+		/// </summary>
+		public static IDeserializationFixupListener FixupListener
+		{
+			get
+			{
+				return new AssimilationMappingFixupListener();
+			}
+		}
+		/// <summary>
+		/// Validation AssimilationMapping options
+		/// </summary>
+		private sealed class AssimilationMappingFixupListener : DeserializationFixupListener<AssimilationMappingCustomizesAssimilation>
+		{
+			/// <summary>
+			/// ExternalConstraintFixupListener constructor
+			/// </summary>
+			public AssimilationMappingFixupListener()
+				: base((int)ORMAbstractionToConceptualDatabaseBridgeDeserializationFixupPhase.ValidateCustomizationOptions)
+			{
+			}
+			/// <summary>
+			/// Validate AssimilationMapping options
+			/// </summary>
+			protected sealed override void ProcessElement(AssimilationMappingCustomizesAssimilation element, Store store, INotifyElementAdded notifyAdded)
+			{
+				if (!element.IsDeleted)
+				{
+					ConceptTypeAssimilatesConceptType assimilation = element.Assimilation;
+					foreach (FactType pathFactType in ConceptTypeChildHasPathFactType.GetPathFactTypeCollection(assimilation))
+					{
+						AssimilationMappingKeepAlive.SetFactType(element.AssimilationMapping, pathFactType);
+						break;
+					}
+				}
+			}
+		}
+		#endregion // Deserialization Fixup
+		#endregion //AssimilationMappingKeepAlive support
 	}
 }

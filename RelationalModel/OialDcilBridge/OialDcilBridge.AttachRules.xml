@@ -39,5 +39,15 @@
 				<arg:RuleOn targetType="UniquenessConstraintIsForUniqueness"/>
 			</arg:DeleteRule>
 		</arg:RuleContainer>
+		<arg:RuleContainer class="AssimilationMapping">
+			<!-- UNDONE: AssimilationMappingKeepAlive, temporary rule until the assimilations are not lost during remapping -->
+			<arg:AddRule methodName="FactTypeAddedToPathRule">
+				<arg:RuleOn targetType="ConceptTypeChildHasPathFactType" targetTypeQualifier="Neumont.Tools.ORMToORMAbstractionBridge"/>
+			</arg:AddRule>
+			<!-- UNDONE: AssimilationMappingKeepAlive, temporary rule until the assimilations are not lost during remapping -->
+			<arg:AddRule methodName="AssimilationMappingAddedRule">
+				<arg:RuleOn targetType="AssimilationMappingCustomizesAssimilation"/>
+			</arg:AddRule>
+		</arg:RuleContainer>
 	</arg:Model>
 </arg:Rules>

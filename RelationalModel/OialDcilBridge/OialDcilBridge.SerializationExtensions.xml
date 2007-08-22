@@ -52,6 +52,9 @@
 				</se:RootLink>
 			</se:Container>
 		</se:RootLinks>
+		<se:OmittedDomainElements>
+			<se:OmitRelationship Class="AssimilationMappingKeepAlive"/>
+		</se:OmittedDomainElements>
 	</se:DomainModel>
 	<se:Element Class="MappingCustomizationModel" Name="MappingCustomization">
 		<se:ConditionalSerialization>
@@ -62,16 +65,35 @@
 				</plx:initialize>
 				<plx:branch>
 					<plx:condition>
-						<plx:binaryOperator type="inequality">
+						<plx:binaryOperator type="booleanAnd">
 							<plx:left>
-								<plx:callInstance name="AbsorptionChoice" type="property">
-									<plx:callObject>
-										<plx:nameRef name="assimilationMapping"/>
-									</plx:callObject>
-								</plx:callInstance>
+								<plx:binaryOperator type="inequality">
+									<plx:left>
+										<plx:callInstance name="AbsorptionChoice" type="property">
+											<plx:callObject>
+												<plx:nameRef name="assimilationMapping"/>
+											</plx:callObject>
+										</plx:callInstance>
+									</plx:left>
+									<plx:right>
+										<plx:callStatic dataTypeName="AssimilationAbsorptionChoice" name="Absorb" type="field"/>
+									</plx:right>
+								</plx:binaryOperator>
 							</plx:left>
 							<plx:right>
-								<plx:callStatic dataTypeName="AssimilationAbsorptionChoice" name="Absorb" type="field"/>
+								<!-- UNDONE: AssimilationMappingKeepAlive, only serialize if the mapping option is actually attached to an assimilation -->
+								<plx:binaryOperator type="identityInequality">
+									<plx:left>
+										<plx:callInstance name="Assimilation" type="property">
+											<plx:callObject>
+												<plx:nameRef name="assimilationMapping"/>
+											</plx:callObject>
+										</plx:callInstance>
+									</plx:left>
+									<plx:right>
+										<plx:nullKeyword/>
+									</plx:right>
+								</plx:binaryOperator>
 							</plx:right>
 						</plx:binaryOperator>
 					</plx:condition>
@@ -91,12 +113,27 @@
 	<se:Element Class="AssimilationMapping">
 		<se:ConditionalSerialization>
 			<plx:return>
-				<plx:binaryOperator type="inequality">
+				<plx:binaryOperator type="booleanAnd">
 					<plx:left>
-						<plx:callThis name="AbsorptionChoice" type="property"/>
+						<plx:binaryOperator type="inequality">
+							<plx:left>
+								<plx:callThis name="AbsorptionChoice" type="property"/>
+							</plx:left>
+							<plx:right>
+								<plx:callStatic dataTypeName="AssimilationAbsorptionChoice" name="Absorb" type="field"/>
+							</plx:right>
+						</plx:binaryOperator>
 					</plx:left>
 					<plx:right>
-						<plx:callStatic dataTypeName="AssimilationAbsorptionChoice" name="Absorb" type="field"/>
+						<!-- UNDONE: AssimilationMappingKeepAlive, only serialize if the mapping option is actually attached to an assimilation -->
+						<plx:binaryOperator type="identityInequality">
+							<plx:left>
+								<plx:callThis name="Assimilation" type="property"/>
+							</plx:left>
+							<plx:right>
+								<plx:nullKeyword/>
+							</plx:right>
+						</plx:binaryOperator>
 					</plx:right>
 				</plx:binaryOperator>
 			</plx:return>

@@ -40,7 +40,9 @@ namespace Neumont.Tools.ORMAbstractionToConceptualDatabaseBridge
 						typeof(ModificationTracker).GetNestedType("ConceptTypeDeletedRuleClass", BindingFlags.Public | BindingFlags.NonPublic),
 						typeof(ModificationTracker).GetNestedType("InformationTypeFormatAddedRuleClass", BindingFlags.Public | BindingFlags.NonPublic),
 						typeof(ModificationTracker).GetNestedType("InformationTypeFormatDeletedRuleClass", BindingFlags.Public | BindingFlags.NonPublic),
-						typeof(ModificationTracker).GetNestedType("UniquenessDeletedRuleClass", BindingFlags.Public | BindingFlags.NonPublic)};
+						typeof(ModificationTracker).GetNestedType("UniquenessDeletedRuleClass", BindingFlags.Public | BindingFlags.NonPublic),
+						typeof(AssimilationMapping).GetNestedType("FactTypeAddedToPathRuleClass", BindingFlags.Public | BindingFlags.NonPublic),
+						typeof(AssimilationMapping).GetNestedType("AssimilationMappingAddedRuleClass", BindingFlags.Public | BindingFlags.NonPublic)};
 					ORMAbstractionToConceptualDatabaseBridgeDomainModel.myCustomDomainModelTypes = retVal;
 					System.Diagnostics.Debug.Assert(Array.IndexOf<Type>(retVal, null) < 0, "One or more rule types failed to resolve. The file and/or package will fail to load.");
 				}
@@ -74,7 +76,7 @@ namespace Neumont.Tools.ORMAbstractionToConceptualDatabaseBridge
 		{
 			Microsoft.VisualStudio.Modeling.RuleManager ruleManager = store.RuleManager;
 			Type[] disabledRuleTypes = ORMAbstractionToConceptualDatabaseBridgeDomainModel.CustomDomainModelTypes;
-			for (int i = 0; i < 7; ++i)
+			for (int i = 0; i < 9; ++i)
 			{
 				ruleManager.EnableRule(disabledRuleTypes[i]);
 			}
@@ -276,5 +278,62 @@ namespace Neumont.Tools.ORMAbstractionToConceptualDatabaseBridge
 		}
 	}
 	#endregion // Rule classes for ORMAbstractionToConceptualDatabaseBridgeDomainModel.ModificationTracker
+	#region Rule classes for AssimilationMapping
+	partial class AssimilationMapping
+	{
+		[Microsoft.VisualStudio.Modeling.RuleOn(typeof(Neumont.Tools.ORMToORMAbstractionBridge.ConceptTypeChildHasPathFactType))]
+		private sealed class FactTypeAddedToPathRuleClass : Microsoft.VisualStudio.Modeling.AddRule
+		{
+			[System.Diagnostics.DebuggerStepThrough()]
+			public FactTypeAddedToPathRuleClass()
+			{
+				base.IsEnabled = false;
+			}
+			/// <summary>
+			/// Provide the following method in class: 
+			/// Neumont.Tools.ORMAbstractionToConceptualDatabaseBridge.AssimilationMapping
+			/// /// <summary>
+			/// /// AddRule: typeof(Neumont.Tools.ORMToORMAbstractionBridge.ConceptTypeChildHasPathFactType)
+			/// /// </summary>
+			/// private static void FactTypeAddedToPathRule(ElementAddedEventArgs e)
+			/// {
+			/// }
+			/// </summary>
+			[System.Diagnostics.DebuggerStepThrough()]
+			public override void ElementAdded(Microsoft.VisualStudio.Modeling.ElementAddedEventArgs e)
+			{
+				Neumont.Tools.Modeling.Diagnostics.TraceUtility.TraceRuleStart(e.ModelElement.Store, "Neumont.Tools.ORMAbstractionToConceptualDatabaseBridge.AssimilationMapping.FactTypeAddedToPathRule");
+				AssimilationMapping.FactTypeAddedToPathRule(e);
+				Neumont.Tools.Modeling.Diagnostics.TraceUtility.TraceRuleEnd(e.ModelElement.Store, "Neumont.Tools.ORMAbstractionToConceptualDatabaseBridge.AssimilationMapping.FactTypeAddedToPathRule");
+			}
+		}
+		[Microsoft.VisualStudio.Modeling.RuleOn(typeof(AssimilationMappingCustomizesAssimilation))]
+		private sealed class AssimilationMappingAddedRuleClass : Microsoft.VisualStudio.Modeling.AddRule
+		{
+			[System.Diagnostics.DebuggerStepThrough()]
+			public AssimilationMappingAddedRuleClass()
+			{
+				base.IsEnabled = false;
+			}
+			/// <summary>
+			/// Provide the following method in class: 
+			/// Neumont.Tools.ORMAbstractionToConceptualDatabaseBridge.AssimilationMapping
+			/// /// <summary>
+			/// /// AddRule: typeof(AssimilationMappingCustomizesAssimilation)
+			/// /// </summary>
+			/// private static void AssimilationMappingAddedRule(ElementAddedEventArgs e)
+			/// {
+			/// }
+			/// </summary>
+			[System.Diagnostics.DebuggerStepThrough()]
+			public override void ElementAdded(Microsoft.VisualStudio.Modeling.ElementAddedEventArgs e)
+			{
+				Neumont.Tools.Modeling.Diagnostics.TraceUtility.TraceRuleStart(e.ModelElement.Store, "Neumont.Tools.ORMAbstractionToConceptualDatabaseBridge.AssimilationMapping.AssimilationMappingAddedRule");
+				AssimilationMapping.AssimilationMappingAddedRule(e);
+				Neumont.Tools.Modeling.Diagnostics.TraceUtility.TraceRuleEnd(e.ModelElement.Store, "Neumont.Tools.ORMAbstractionToConceptualDatabaseBridge.AssimilationMapping.AssimilationMappingAddedRule");
+			}
+		}
+	}
+	#endregion // Rule classes for AssimilationMapping
 	#endregion // Auto-rule classes
 }

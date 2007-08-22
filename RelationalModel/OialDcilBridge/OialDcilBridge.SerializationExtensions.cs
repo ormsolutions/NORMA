@@ -57,13 +57,27 @@ namespace Neumont.Tools.ORMAbstractionToConceptualDatabaseBridge
 		{
 			return GetCustomElementNamespaces();
 		}
+		private Dictionary<DomainClassInfo, object> myCustomSerializationOmissions;
+		private static Dictionary<DomainClassInfo, object> BuildCustomSerializationOmissions(Store store)
+		{
+			Dictionary<DomainClassInfo, object> retVal = new Dictionary<DomainClassInfo, object>();
+			DomainDataDirectory dataDir = store.DomainDataDirectory;
+			retVal[dataDir.FindDomainRelationship(AssimilationMappingKeepAlive.DomainClassId)] = null;
+			return retVal;
+		}
 		private static Dictionary<string, Guid> myClassNameMap;
 		private static Collection<string> myValidNamespaces;
 		private static CustomSerializedRootRelationshipContainer[] myRootRelationshipContainers;
 		/// <summary>Implements ICustomSerializedDomainModel.ShouldSerializeDomainClass</summary>
 		protected bool ShouldSerializeDomainClass(Store store, DomainClassInfo classInfo)
 		{
-			return true;
+			Dictionary<DomainClassInfo, object> omissions = this.myCustomSerializationOmissions;
+			if (omissions == null)
+			{
+				omissions = ORMAbstractionToConceptualDatabaseBridgeDomainModel.BuildCustomSerializationOmissions(store);
+				this.myCustomSerializationOmissions = omissions;
+			}
+			return !(omissions.ContainsKey(classInfo));
 		}
 		bool ICustomSerializedDomainModel.ShouldSerializeDomainClass(Store store, DomainClassInfo classInfo)
 		{
@@ -274,7 +288,7 @@ namespace Neumont.Tools.ORMAbstractionToConceptualDatabaseBridge
 		{
 			foreach (AssimilationMapping assimilationMapping in this.AssimilationMappingCollection)
 			{
-				if (assimilationMapping.AbsorptionChoice != AssimilationAbsorptionChoice.Absorb)
+				if ((assimilationMapping.AbsorptionChoice != AssimilationAbsorptionChoice.Absorb) && (assimilationMapping.Assimilation != null))
 				{
 					return true;
 				}
@@ -400,7 +414,7 @@ namespace Neumont.Tools.ORMAbstractionToConceptualDatabaseBridge
 		/// <summary>Implements ICustomSerializedElement.ShouldSerialize</summary>
 		protected bool ShouldSerialize()
 		{
-			return this.AbsorptionChoice != AssimilationAbsorptionChoice.Absorb;
+			return (this.AbsorptionChoice != AssimilationAbsorptionChoice.Absorb) && (this.Assimilation != null);
 		}
 		bool ICustomSerializedElement.ShouldSerialize()
 		{

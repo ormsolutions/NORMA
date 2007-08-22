@@ -31,6 +31,10 @@ namespace Neumont.Tools.ORMAbstractionToConceptualDatabaseBridge
 	public enum ORMAbstractionToConceptualDatabaseBridgeDeserializationFixupPhase
 	{
 		/// <summary>
+		/// Validate Customization Options
+		/// </summary>
+		ValidateCustomizationOptions = (int)ORMToORMAbstractionBridgeDeserializationFixupPhase.CreateImplicitElements + 5,
+		/// <summary>
 		/// Validate bridge elements after all core ORM validation is complete
 		/// </summary>
 		ValidateElements = (int)ORMToORMAbstractionBridgeDeserializationFixupPhase.CreateImplicitElements + 10,
@@ -1218,6 +1222,7 @@ namespace Neumont.Tools.ORMAbstractionToConceptualDatabaseBridge
 			get
 			{
 				yield return new GenerateConceptualDatabaseFixupListener();
+				yield return AssimilationMapping.FixupListener;
 			}
 		}
 		IEnumerable<IDeserializationFixupListener> IDeserializationFixupListenerProvider.DeserializationFixupListenerCollection
