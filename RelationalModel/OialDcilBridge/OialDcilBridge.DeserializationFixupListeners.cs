@@ -70,7 +70,9 @@ namespace Neumont.Tools.ORMAbstractionToConceptualDatabaseBridge
 		#endregion // AssimilationPath structure
 
 		/// <summary>
-		/// 
+		/// Generates the conceptual database model for a given Schema and AbstractionModel.  
+		/// The generation of the Conceptual Database Model includes the population of all tables with 
+		/// Columns, Uniquenesses, Foreign Keys, and Manditory restrictions.
 		/// </summary>
 		private static void FullyGenerateConceptualDatabaseModel(Schema schema, AbstractionModel sourceModel)
 		{
@@ -90,7 +92,6 @@ namespace Neumont.Tools.ORMAbstractionToConceptualDatabaseBridge
 			//    new DomainIsForInformationTypeFormat(domain, itf);
 			//    notifyAdded.ElementAdded(domain, true);
 			//}
-
 			Dictionary<TableIsAlsoForConceptType, AssimilationPath> assimilationPath = new Dictionary<TableIsAlsoForConceptType, AssimilationPath>();
 			Dictionary<Column, List<ConceptTypeChild>> columnHasConceptTypeChildPath = new Dictionary<Column, List<ConceptTypeChild>>();
 
@@ -131,20 +132,26 @@ namespace Neumont.Tools.ORMAbstractionToConceptualDatabaseBridge
 			// Create the table mappings for all Absorption and Partioning cases
 			Dictionary<ConceptType, List<ConceptType>> mappingPaths = new Dictionary<ConceptType, List<ConceptType>>();
 			Dictionary<ConceptType, ConceptType> pathDictonary = new Dictionary<ConceptType, ConceptType>();
+			
+			// When there is a assimilation path larger then a single assimilation, it is possible the grandchild elements 
+			// will not intially map to the superparent table
+			// With the do / while we iterate through the assimilations, mapping the closest, and then using that mapping to find the correct mapping
+			// for it's children.
 			do
 			{
-				foreach (KeyValuePair<ConceptType, ConceptTypeAssimilatesConceptType> conceptType in assimilatedConceptTypes)
+				foreach (KeyValuePair<ConceptType, ConceptTypeAssimilatesConceptType> keyedAssimilation in assimilatedConceptTypes)
 				{
-					if (AssimilationMapping.GetAbsorptionChoiceFromAssimilation(conceptType.Value) == AssimilationAbsorptionChoice.Absorb)
-					{
-						MapAbsorbedConceptType(conceptType.Key, pathDictonary, allAssimilations, assimilationPath, new List<ConceptTypeAssimilatesConceptType>());
-					}
-					else if (AssimilationMapping.GetAbsorptionChoiceFromAssimilation(conceptType.Value) == AssimilationAbsorptionChoice.Partition)
-					{
-						MapPartitionedConceptType(conceptType.Key, mappingPaths, pathDictonary, allAssimilations, assimilationPath, new List<ConceptTypeAssimilatesConceptType>());
-					}
+						if (AssimilationMapping.GetAbsorptionChoiceFromAssimilation(keyedAssimilation.Value) == AssimilationAbsorptionChoice.Absorb)
+						{
+							MapAbsorbedConceptType(keyedAssimilation.Key, pathDictonary, allAssimilations, assimilationPath, new List<ConceptTypeAssimilatesConceptType>());
+						}
+						else if (AssimilationMapping.GetAbsorptionChoiceFromAssimilation(keyedAssimilation.Value) == AssimilationAbsorptionChoice.Partition)
+						{
+							MapPartitionedConceptType(keyedAssimilation.Key, mappingPaths, pathDictonary, allAssimilations, assimilationPath, new List<ConceptTypeAssimilatesConceptType>());
+						}
 				}
 			} while (pathDictonary.ContainsValue(null));
+
 			foreach (KeyValuePair<ConceptType, List<ConceptType>> kvp in mappingPaths)
 			{
 				foreach (ConceptType myConceptType in kvp.Value)
@@ -187,10 +194,14 @@ namespace Neumont.Tools.ORMAbstractionToConceptualDatabaseBridge
 				CreateForeignKeys(table);
 				GenerateMandatoryConstraints(table);
 			}
+
+			// Change all names to a more apropriate verson.
+			//NameGeneration.GenerateAllNames(schema);
 		}
 
 		/// <summary>
-		/// Gets all ConceptType Assimilates ConceptType retaitions containing a given ConceptType as either the Asimmilator or the Assimilated ConceptType
+		/// Gets all ConceptType Assimilates ConceptType retaitions containing a given ConceptType as either the Asimmilator 
+		/// or the Assimilated ConceptType.
 		/// </summary>
 		private static IEnumerable<ConceptTypeAssimilatesConceptType> GetAssimilationsForConceptType(ConceptType conceptType)
 		{
@@ -206,7 +217,7 @@ namespace Neumont.Tools.ORMAbstractionToConceptualDatabaseBridge
 
 		/// <summary>
 		/// Maps all Absorbed ConceptTypes
-		/// For a ConceptType it finds the Primary Tables that they map to, 
+		/// for a ConceptType it finds the Primary Tables that they map to, 
 		/// and then map a TableIsAlsoForConceptType to the Primary Table with that ConceptType.
 		/// </summary>
 		/// <param name="conceptType">The ConceptType that is to be checked for Absorbtion.</param>
@@ -245,9 +256,13 @@ namespace Neumont.Tools.ORMAbstractionToConceptualDatabaseBridge
 					}
 					else if (assimilatedConceptTypes.ContainsKey(assimilation.AssimilatorConceptType) && assimilatedConceptTypes[conceptType] == null)
 					{
-						assimilatedConceptTypes[conceptType] = assimilatedConceptTypes[assimilation.AssimilatorConceptType];
-						TableIsAlsoForConceptType tableForConceptType = new TableIsAlsoForConceptType(TableIsPrimarilyForConceptType.GetTable(assimilatedConceptTypes[assimilation.AssimilatorConceptType]), conceptType);
-						assimilationPathDictionary[tableForConceptType] = new AssimilationPath(assimilationPath);
+						ConceptType targetMappingPath = assimilatedConceptTypes[assimilation.AssimilatorConceptType];
+						if (targetMappingPath != null)
+						{
+							assimilatedConceptTypes[conceptType] = targetMappingPath;
+							TableIsAlsoForConceptType tableForConceptType = new TableIsAlsoForConceptType(TableIsPrimarilyForConceptType.GetTable(targetMappingPath), conceptType);
+							assimilationPathDictionary[tableForConceptType] = new AssimilationPath(assimilationPath);
+						}
 					}
 					else
 					{
@@ -288,7 +303,7 @@ namespace Neumont.Tools.ORMAbstractionToConceptualDatabaseBridge
 
 					assimilationPath.Add(assimilation);
 					Table isPrimarilyForTable = TableIsPrimarilyForConceptType.GetTable(assimilation.AssimilatedConceptType);
-					if (isPrimarilyForTable != null)
+					if (isPrimarilyForTable != null && !TableIsAlsoForConceptType.GetConceptType(isPrimarilyForTable).Contains(conceptType))
 					{
 						TableIsAlsoForConceptType tableIsAlsoForConceptType = new TableIsAlsoForConceptType(isPrimarilyForTable, conceptType);
 						assimilationPathDictionary[tableIsAlsoForConceptType] = new AssimilationPath(assimilationPath);
@@ -332,6 +347,10 @@ namespace Neumont.Tools.ORMAbstractionToConceptualDatabaseBridge
 				if (assimilatedConceptType.GetType() == typeof(ConceptTypeAssimilatesConceptType))
 				{
 					columnsForConceptType.AddRange(GetColumnsForConceptTypeChild(assimilatedConceptType, new List<ConceptTypeChild>()));
+				}
+				else if (assimilatedConceptType.GetType() == typeof(InformationType))
+				{
+					//columnsForConceptType.AddRange(GetColumnsForConceptTypeChild(assimilatedConceptType, new List<ConceptTypeChild>()));
 				}
 			}
 			// TESTING - UNDONE#1 -- Not needed, should be contained within the first Foreach
@@ -403,6 +422,11 @@ namespace Neumont.Tools.ORMAbstractionToConceptualDatabaseBridge
 					{
 						Column clonedColumn = new Column(column.Store, new PropertyAssignment[] { new PropertyAssignment(Column.NameDomainPropertyId, column.Name) });
 						List<ConceptTypeChild> clonedConceptTypeChildPath = new List<ConceptTypeChild>(ColumnHasConceptTypeChild.GetConceptTypeChildPath(column));
+						if (!assimilationPath.ContainsKey(table))
+						{
+							assimilationPath[table] = new AssimilationPath(new List<ConceptTypeAssimilatesConceptType>(ConceptTypeAssimilatesConceptType.GetLinksToAssimilatedConceptTypeCollection(conceptType)));
+						}
+
 						AssimilationPath assimPath = new AssimilationPath(assimilationPath[table].Path);
 
 						int inumerator = 0;
@@ -607,7 +631,7 @@ namespace Neumont.Tools.ORMAbstractionToConceptualDatabaseBridge
 		}
 
 		/// <summary>
-		/// 
+		/// DoSeperation handles the generation of columns and foreign keys when an assimilation is set to seperate.
 		/// </summary>
 		private static void DoSeparation(ConceptTypeAssimilatesConceptType assimilation, ref bool isPreferredForChildFound)
 		{
@@ -660,20 +684,51 @@ namespace Neumont.Tools.ORMAbstractionToConceptualDatabaseBridge
 				else if (assimilation.IsMandatory)
 				{
 					ReferenceConstraint referenceConstraint = new ReferenceConstraint(assimilation.Store, new PropertyAssignment[] { new PropertyAssignment(ReferenceConstraint.NameDomainPropertyId, assimilation.Name) });
-					TableContainsReferenceConstraint tableContainsReferenceConstraint = new TableContainsReferenceConstraint(TableIsPrimarilyForConceptType.GetTable(assimilation.AssimilatorConceptType), referenceConstraint);
-					ReferenceConstraintTargetsTable referenceConstraintTargetsTable = new ReferenceConstraintTargetsTable(referenceConstraint, table);
+					TableContainsReferenceConstraint tableContainsReferenceConstraint = new TableContainsReferenceConstraint(TableIsPrimarilyForConceptType.GetTable(assimilation.AssimilatedConceptType), referenceConstraint);
+					ReferenceConstraintTargetsTable referenceConstraintTargetsTable = new ReferenceConstraintTargetsTable(referenceConstraint, TableIsPrimarilyForConceptType.GetTable(assimilation.AssimilatorConceptType));
+					LinkedElementCollection<ConceptType> assimilations;
+					ConceptType conceptType = assimilation.AssimilatedConceptType;
+					List<Column> primaryIdentifierColumns = new List<Column>();
 
-					// UC
+					bool primaryIdentifierFound = false;
+					while ((assimilations = conceptType.AssimilatorConceptTypeCollection).Count != 0 && !primaryIdentifierFound)
+					{
+						Table primaryTable = TableIsPrimarilyForConceptType.GetTable(conceptType);
 
-					List<Column> primaryIdentifierColumns = ConceptTypeHasPrimaryIdentifierColumns(null, assimilation.AssimilatedConceptType);
+						conceptType = assimilations[0];
+						if (primaryTable != null)
+						{
+
+							foreach (UniquenessConstraint uniqueness in primaryTable.UniquenessConstraintCollection)
+							{
+								if (uniqueness.IsPrimary)
+								{
+									primaryIdentifierColumns.AddRange(uniqueness.ColumnCollection);
+									assimilation.IsMandatory = true;
+									primaryIdentifierFound = true;
+								}
+							}
+						}
+
+					}
+					if (primaryIdentifierColumns.Count == 0)
+					{
+						primaryIdentifierColumns.AddRange(GetColumnsForConceptTypeChild(assimilation as ConceptTypeChild, new List<ConceptTypeChild>()));
+					}
+
 					foreach (Column identifierColumn in primaryIdentifierColumns)
 					{
 						Column clonedColumn = new Column(identifierColumn.Store, new PropertyAssignment[] { new PropertyAssignment(Column.NameDomainPropertyId, identifierColumn.Name) });
 						List<ConceptTypeChild> clonedConceptTypeChildPath = new List<ConceptTypeChild>(ColumnHasConceptTypeChild.GetConceptTypeChildPath(identifierColumn));
+
+						foreach (ConceptTypeChild conceptTypeChild in clonedConceptTypeChildPath)
+						{
+							conceptTypeChild.IsMandatory = true;
+						}
 						ColumnHasConceptTypeChild.GetConceptTypeChildPath(clonedColumn).Clear();
 						ColumnHasConceptTypeChild.GetConceptTypeChildPath(clonedColumn).AddRange(clonedConceptTypeChildPath);
-						ColumnHasConceptTypeChild.GetConceptTypeChildPath(clonedColumn).Insert(0, (ConceptTypeChild)assimilation);
-						TableIsPrimarilyForConceptType.GetTable(assimilation.AssimilatorConceptType).ColumnCollection.Add(clonedColumn);
+
+						TableIsPrimarilyForConceptType.GetTable(assimilation.AssimilatedConceptType).ColumnCollection.Add(clonedColumn);
 						ColumnReference relationship = new ColumnReference(clonedColumn, identifierColumn);
 						referenceConstraint.ColumnReferenceCollection.Add(relationship);
 					}
@@ -684,8 +739,6 @@ namespace Neumont.Tools.ORMAbstractionToConceptualDatabaseBridge
 
 					if (targetTable != null)
 					{
-
-
 						ReferenceConstraint referenceConstraint = new ReferenceConstraint(assimilation.Store, new PropertyAssignment[] { new PropertyAssignment(ReferenceConstraint.NameDomainPropertyId, assimilation.Name) });
 						TableContainsReferenceConstraint tableContainsReferenceConstraint = new TableContainsReferenceConstraint(table, referenceConstraint);
 						ReferenceConstraintTargetsTable referenceConstraintTargetsTable = new ReferenceConstraintTargetsTable(referenceConstraint, targetTable);
@@ -693,14 +746,52 @@ namespace Neumont.Tools.ORMAbstractionToConceptualDatabaseBridge
 						UniquenessConstraint mappedConstraint = new UniquenessConstraint(assimilation.Store, new PropertyAssignment[] { new PropertyAssignment(UniquenessConstraint.NameDomainPropertyId, "Constraint") });
 						mappedConstraint.IsPrimary = true;
 
-						List<Column> primaryIdentifierColumns = ConceptTypeHasPrimaryIdentifierColumns(null, assimilation.Parent);
+						/*****************************/
+						//InformationType matchingBaseType = ColumnHasConceptTypeChild.GetConceptTypeChildPath(column)[ColumnHasConceptTypeChild.GetConceptTypeChildPath(column).Count - 1] as InformationType;
+
+						LinkedElementCollection<ConceptType> assimilations;
+						ConceptType conceptType = assimilation.AssimilatedConceptType;
+						List<Column> primaryIdentifierColumns = new List<Column>();
+
+						bool primaryIdentifierFound = false;
+						while ((assimilations = conceptType.AssimilatorConceptTypeCollection).Count != 0 && !primaryIdentifierFound)
+						{
+							conceptType = assimilations[0];
+
+							Table primaryTable = TableIsPrimarilyForConceptType.GetTable(conceptType);
+
+							if (primaryTable != null)
+							{
+								foreach (UniquenessConstraint uniqueness in primaryTable.UniquenessConstraintCollection)
+								{
+									if (uniqueness.IsPrimary)
+									{
+										primaryIdentifierColumns.AddRange(uniqueness.ColumnCollection);
+										assimilation.IsMandatory = true;
+										primaryIdentifierFound = true;
+									}
+								}
+							}
+						}
+						if (primaryIdentifierColumns.Count == 0)
+						{
+							primaryIdentifierColumns.AddRange(GetColumnsForConceptTypeChild(assimilation as ConceptTypeChild, new List<ConceptTypeChild>()));
+						}
+						/*************************/
+
+
+
 						foreach (Column identifierColumn in primaryIdentifierColumns)
 						{
+							LinkedElementCollection<ConceptTypeChild> ctcpath = ColumnHasConceptTypeChild.GetConceptTypeChildPath(identifierColumn);
+							foreach (ConceptTypeChild ctc in ctcpath)
+							{
+								ctc.IsMandatory = true;
+							}
 							Column clonedColumn = new Column(identifierColumn.Store, new PropertyAssignment[] { new PropertyAssignment(Column.NameDomainPropertyId, identifierColumn.Name) });
 							List<ConceptTypeChild> clonedConceptTypeChildPath = new List<ConceptTypeChild>(ColumnHasConceptTypeChild.GetConceptTypeChildPath(identifierColumn));
 							ColumnHasConceptTypeChild.GetConceptTypeChildPath(clonedColumn).Clear();
 							ColumnHasConceptTypeChild.GetConceptTypeChildPath(clonedColumn).AddRange(clonedConceptTypeChildPath);
-							ColumnHasConceptTypeChild.GetConceptTypeChildPath(clonedColumn).Insert(0, (ConceptTypeChild)assimilation);
 							table.ColumnCollection.Add(clonedColumn);
 							ColumnReference relationship = new ColumnReference(clonedColumn, identifierColumn);
 							referenceConstraint.ColumnReferenceCollection.Add(relationship);
@@ -714,7 +805,7 @@ namespace Neumont.Tools.ORMAbstractionToConceptualDatabaseBridge
 		}
 
 		/// <summary>
-		/// CreateForeignKeys looks at a table and creates the foreign keys between it.
+		/// CreateForeignKeys looks at a table and generates all Foreign Keys (<see cref="ReferenceConstraint"/>) required by the columns in that table.
 		/// </summary>
 		/// <param name="table">The table to check for foreign keys on.</param>
 		private static void CreateForeignKeys(Table table)
@@ -801,6 +892,21 @@ namespace Neumont.Tools.ORMAbstractionToConceptualDatabaseBridge
 						}
 					}
 				}
+				else if (AssimilationMapping.GetAbsorptionChoiceFromAssimilation(conceptTypeAssimilatesConceptType) == AssimilationAbsorptionChoice.Separate)
+				{
+					Table targetTable = TableIsPrimarilyForConceptType.GetTable(conceptTypeAssimilatesConceptType.AssimilatedConceptType);
+
+					foreach (Column target in targetTable.ColumnCollection)
+					{
+						foreach (ConceptTypeChild conceptTypeChild in ColumnHasConceptTypeChild.GetConceptTypeChildPath(target))
+						{
+							if (ColumnHasConceptTypeChild.GetConceptTypeChildPath(target).Contains(conceptTypeChild) && target != column)
+							{
+								columns.Add(target);
+							}
+						}
+					}
+				}
 			}
 			foreach (ConceptTypeAssimilatesConceptType conceptTypeAssimilatesConceptType in ConceptTypeAssimilatesConceptType.GetLinksToAssimilatedConceptTypeCollection(conceptType))
 			{
@@ -817,7 +923,24 @@ namespace Neumont.Tools.ORMAbstractionToConceptualDatabaseBridge
 						}
 					}
 				}
+				else if (AssimilationMapping.GetAbsorptionChoiceFromAssimilation(conceptTypeAssimilatesConceptType) == AssimilationAbsorptionChoice.Separate)
+				{
+					Table targetTable = TableIsPrimarilyForConceptType.GetTable(conceptTypeAssimilatesConceptType.AssimilatedConceptType);
+
+					foreach (Column target in targetTable.ColumnCollection)
+					{
+						foreach (ConceptTypeChild conceptTypeChild in ColumnHasConceptTypeChild.GetConceptTypeChildPath(target))
+						{
+							if (ColumnHasConceptTypeChild.GetConceptTypeChildPath(target).Contains(conceptTypeChild) && target != column)
+							{
+								columns.Add(target);
+							}
+						}	
+					}
+				}
 			}
+			
+
 
 			// Walk the assimililating path looking for possible relationships that may hold the key.
 			if (columns.Count == 0)
@@ -830,11 +953,6 @@ namespace Neumont.Tools.ORMAbstractionToConceptualDatabaseBridge
 					conceptType = assimilations[0];
 
 					Table targetTable = TableIsPrimarilyForConceptType.GetTable(conceptType);
-
-					//LinkedElementCollection<ConceptType> relating =	ConceptTypeRelatesToConceptType.GetRelatingConceptTypeCollection(conceptType);
-					//int relatingCount = relating.Count;
-					//ConceptType[] real = new ConceptType[] { relatingCount };
-					//relating.CopyTo(real, 0);			
 
 					if (targetTable != null)
 					{
@@ -849,7 +967,7 @@ namespace Neumont.Tools.ORMAbstractionToConceptualDatabaseBridge
 				}
 			}
 
-			if(columns.Count == 0)
+			if (columns.Count == 0)
 			{
 				InformationType matchingBaseType = ColumnHasConceptTypeChild.GetConceptTypeChildPath(column)[ColumnHasConceptTypeChild.GetConceptTypeChildPath(column).Count - 1] as InformationType;
 				LinkedElementCollection<ConceptType> assimilations;
@@ -967,26 +1085,32 @@ namespace Neumont.Tools.ORMAbstractionToConceptualDatabaseBridge
 				}
 				else
 				{
-					for (int i = 0; i < ColumnHasConceptTypeChild.GetConceptTypeChildPath(targetColumn).Count; ++i)
-					{
+					//for (int i = 0; i < ColumnHasConceptTypeChild.GetConceptTypeChildPath(targetColumn).Count; ++i)
+					//{
 						LinkedElementCollection<ConceptTypeChild> leftPath = ColumnHasConceptTypeChild.GetConceptTypeChildPath(column);
 						LinkedElementCollection<ConceptTypeChild> rightPath = ColumnHasConceptTypeChild.GetConceptTypeChildPath(targetColumn);
 
-						// Look through the target path and find the first information type and set its index as the offset.
-						//for (int j = 0; j < rightPath.Count; ++j)
-						//{
-						//    if (rightPath[j].GetType() == typeof(InformationType))
-						//    {
-						//        offset = j;
-						//    }
-						//}
-
-						// UNDONE Decimal comparision operator ID is breaking here, possibly because it is attempting to map downward, it's an odd FK. good tester
-						// UNDONE This may also be a part of the reason why we have some FK's that arn't mapping and are apearing outside of the column.
-						// TEST
-						if (leftPath.Count >= rightPath.Count)
+						int leftBuffer = 0;
+						int rightBuffer = 0;
+						
+						if (rightPath[0].GetType() == typeof(ConceptTypeAssimilatesConceptType))
 						{
-							for (int reverseIndex = 0; reverseIndex < rightPath.Count; reverseIndex++)
+							if (AssimilationMapping.GetAbsorptionChoiceFromAssimilation(rightPath[0] as ConceptTypeAssimilatesConceptType) == AssimilationAbsorptionChoice.Separate)
+							{
+								rightBuffer += 1;
+							}
+						}
+						if (leftPath[0].GetType() == typeof(ConceptTypeAssimilatesConceptType))
+						{
+							if (AssimilationMapping.GetAbsorptionChoiceFromAssimilation(leftPath[0] as ConceptTypeAssimilatesConceptType) == AssimilationAbsorptionChoice.Separate)
+							{
+								leftBuffer += 1;
+							}
+						}
+
+						if (leftPath.Count-leftBuffer >= rightPath.Count-rightBuffer)
+						{
+							for (int reverseIndex = 0; reverseIndex < rightPath.Count-rightBuffer; reverseIndex++)
 							{
 								if (rightPath[rightPath.Count - 1 - reverseIndex] != leftPath[leftPath.Count - 1 - reverseIndex])
 								{
@@ -998,7 +1122,7 @@ namespace Neumont.Tools.ORMAbstractionToConceptualDatabaseBridge
 						}
 						else
 						{
-							for (int reverseIndex = 0; reverseIndex < leftPath.Count; reverseIndex++)
+							for (int reverseIndex = 0; reverseIndex < leftPath.Count-leftBuffer; reverseIndex++)
 							{
 								if (leftPath[leftPath.Count - 1 - reverseIndex] != rightPath[rightPath.Count - 1 - reverseIndex])
 								{
@@ -1007,7 +1131,7 @@ namespace Neumont.Tools.ORMAbstractionToConceptualDatabaseBridge
 								}
 							}
 						}
-					}
+					//}
 					// END TEST
 
 					//if ((i + 1 < leftPath.Count && i + offset < rightPath.Count &&
@@ -1187,7 +1311,7 @@ namespace Neumont.Tools.ORMAbstractionToConceptualDatabaseBridge
 		}
 
 		/// <summary>
-		/// Set the IsNullable property for all columns on the table
+		/// Applies Nullable/nonNullable constraints on all columns for a given table.
 		/// </summary>
 		/// <param name="table">The <see cref="Table"/> to set initial constraints for</param>
 		private static void GenerateMandatoryConstraints(Table table)
@@ -1198,6 +1322,9 @@ namespace Neumont.Tools.ORMAbstractionToConceptualDatabaseBridge
 			}
 		}
 
+		/// <summary>
+		/// CheckColumnConstraint looks at the the ConceptTypeChildPath for a column, setting the column to nullable when some point in the path is not manditory. 
+		/// </summary>
 		private static void CheckColumnConstraint(Column column)
 		{
 			bool allStepsMandatory = true;
@@ -1205,8 +1332,17 @@ namespace Neumont.Tools.ORMAbstractionToConceptualDatabaseBridge
 			{
 				if (!concept.IsMandatory)
 				{
-					allStepsMandatory = false;
-					break;
+					// A ConceptTypeAssimilatesConceptType that is set to partition may(will) not be manditory, but the resulting columns should be, 
+					// Do we wwant to perform a check on the ConceptTypeChild for that case here, or should we eariler change that Assimilation to a manditory one?
+					if (concept.GetType() == typeof(ConceptTypeAssimilatesConceptType) && AssimilationMapping.GetAbsorptionChoiceFromAssimilation(concept as ConceptTypeAssimilatesConceptType) == AssimilationAbsorptionChoice.Partition)
+					{ 
+					
+					}
+					else
+					{
+						allStepsMandatory = false;
+						break;
+					}
 				}
 			}
 			column.IsNullable = !allStepsMandatory;
