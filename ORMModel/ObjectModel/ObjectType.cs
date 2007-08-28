@@ -668,11 +668,11 @@ namespace Neumont.Tools.ORM.ObjectModel
 				if (role is SubtypeMetaRole)
 				{
 					SubtypeFact subtypeFact;
-					ObjectType superType;
+					ObjectType supertype;
 					if (null != (subtypeFact = role.FactType as SubtypeFact) &&
-						null != (superType = subtypeFact.Supertype))
+						null != (supertype = subtypeFact.Supertype))
 					{
-						switch (WalkSupertypes(startingType, subtypeFact.Supertype, depth, subtypeFact.IsPrimary && !subtypeFact.IsDeleting, visitor))
+						switch (WalkSupertypes(startingType, supertype, depth, subtypeFact.IsPrimary && !subtypeFact.IsDeleting, visitor))
 						{
 							case ObjectTypeVisitorResult.Stop:
 								return ObjectTypeVisitorResult.Stop;
@@ -726,21 +726,26 @@ namespace Neumont.Tools.ORM.ObjectModel
 				Role role = playedRoles[i];
 				if (role is SupertypeMetaRole)
 				{
-					SubtypeFact subtypeFact = role.FactType as SubtypeFact;
-					switch (WalkSubtypes(startingType, subtypeFact.Subtype, depth, subtypeFact.IsPrimary && !subtypeFact.IsDeleting, visitor))
+					SubtypeFact subtypeFact;
+					ObjectType subtype;
+					if (null != (subtypeFact = role.FactType as SubtypeFact) &&
+						null != (subtype = subtypeFact.Subtype))
 					{
-						case ObjectTypeVisitorResult.Stop:
-							return ObjectTypeVisitorResult.Stop;
-						case ObjectTypeVisitorResult.SkipChildren:
-							if (result != ObjectTypeVisitorResult.SkipFollowingSiblings)
-							{
-								result = ObjectTypeVisitorResult.SkipChildren;
-							}
+						switch (WalkSubtypes(startingType, subtype, depth, subtypeFact.IsPrimary && !subtypeFact.IsDeleting, visitor))
+						{
+							case ObjectTypeVisitorResult.Stop:
+								return ObjectTypeVisitorResult.Stop;
+							case ObjectTypeVisitorResult.SkipChildren:
+								if (result != ObjectTypeVisitorResult.SkipFollowingSiblings)
+								{
+									result = ObjectTypeVisitorResult.SkipChildren;
+								}
+								break;
+						}
+						if (result == ObjectTypeVisitorResult.SkipFollowingSiblings)
+						{
 							break;
-					}
-					if (result == ObjectTypeVisitorResult.SkipFollowingSiblings)
-					{
-						break;
+						}
 					}
 				}
 			}
@@ -2013,6 +2018,11 @@ namespace Neumont.Tools.ORM.ObjectModel
 				Dictionary<ObjectType, int> visitedNodes = null;
 				bool firstSupertypeComplete = false;
 				ObjectTypeVisitorResult lastResult = ObjectTypeVisitorResult.Continue;
+				int deepestSharedForFirstSupertype = 0;
+				const int MultipleVisitsFlag = unchecked((int)0x80000000);
+				const int FirstSupertypeBranchFlag = 0x40000000;
+				const int AllFlags = MultipleVisitsFlag | FirstSupertypeBranchFlag;
+				bool sawMultiples = false;
 				WalkSupertypes(this, delegate(ObjectType type, int depth, bool isPrimary)
 				{
 					switch (depth)
@@ -2022,6 +2032,8 @@ namespace Neumont.Tools.ORM.ObjectModel
 						case 1:
 							if (null == visitedNodes)
 							{
+								// UNDONE: We shouldn't need to create the dictionary until we know
+								// we have at least two elements to track
 								visitedNodes = new Dictionary<ObjectType, int>();
 							}
 							else if (firstSupertypeComplete)
@@ -2044,7 +2056,9 @@ namespace Neumont.Tools.ORM.ObjectModel
 					{
 						if (visitedNodes.TryGetValue(type, out existingDepth))
 						{
-							// If our current depth is 1 of the existing depth
+							int flags = existingDepth & AllFlags;
+							existingDepth &= ~AllFlags;
+							// If our current depth is one or the existing depth
 							// is one then we're in a transitive condition, which
 							// is not allowed.
 							if (depth == 1 || existingDepth == 1)
@@ -2054,6 +2068,18 @@ namespace Neumont.Tools.ORM.ObjectModel
 							}
 							else
 							{
+								if (0 != (flags & FirstSupertypeBranchFlag))
+								{
+									if (existingDepth > deepestSharedForFirstSupertype)
+									{
+										deepestSharedForFirstSupertype = existingDepth;
+									}
+								}
+								if (0 == (flags & MultipleVisitsFlag))
+								{
+									sawMultiples = true;
+									visitedNodes[type] = existingDepth | flags | MultipleVisitsFlag;
+								}
 								retVal = ObjectTypeVisitorResult.SkipChildren;
 							}
 						}
@@ -2064,17 +2090,17 @@ namespace Neumont.Tools.ORM.ObjectModel
 					}
 					else if (visitedNodes.TryGetValue(type, out existingDepth))
 					{
-						if (depth == 1 && existingDepth > 1)
+						if (0 == (existingDepth & MultipleVisitsFlag))
 						{
-							// We only care about the special depth 1 to check the intransitive condition.
-							// Recursive values will be further than 1, so there is no point in recursing again.
-							visitedNodes[type] = 1;
+							sawMultiples = true;
+							visitedNodes[type] = existingDepth | MultipleVisitsFlag;
 						}
 						retVal = ObjectTypeVisitorResult.SkipChildren;
 					}
 					else
 					{
-						visitedNodes.Add(type, depth);
+						// Flag nodes on the first supertype branch
+						visitedNodes.Add(type, depth | FirstSupertypeBranchFlag);
 					}
 					lastResult = retVal;
 					return retVal;
@@ -2083,6 +2109,58 @@ namespace Neumont.Tools.ORM.ObjectModel
 				{
 					hasError = true;
 				}
+				if (!hasError && sawMultiples)
+				{
+					// A subtype is not compatible if any of its supertypes are exclusive
+					foreach (KeyValuePair<ObjectType, int> pair in visitedNodes)
+					{
+						int valueData = pair.Value;
+						if ((0 != (valueData & MultipleVisitsFlag)) &&
+							(0 == (valueData & FirstSupertypeBranchFlag) || (valueData & ~AllFlags) <= deepestSharedForFirstSupertype))
+						{
+							ObjectType superType = pair.Key;
+							foreach (Role role in superType.PlayedRoleCollection)
+							{
+								SupertypeMetaRole superTypeRole = role as SupertypeMetaRole;
+								if (null != superTypeRole)
+								{
+									foreach (ConstraintRoleSequence sequence in superTypeRole.ConstraintRoleSequenceCollection)
+									{
+										IConstraint constraint = sequence.Constraint;
+										if (constraint != null && constraint.ConstraintType == ConstraintType.Exclusion && constraint.Modality == ConstraintModality.Alethic)
+										{
+											bool constraintIntersects = false;
+											foreach (ConstraintRoleSequence exclusionSequence in ((ExclusionConstraint)constraint).RoleSequenceCollection)
+											{
+												foreach (Role sequenceRole in exclusionSequence.RoleCollection)
+												{
+													RoleBase oppositeRoleBase;
+													Role oppositeRole;
+													ObjectType oppositeRolePlayer;
+													// Note that these are very unlikely to fail at this point,
+													// but it doesn't hurt to be safe
+													if (null != (oppositeRoleBase = sequenceRole.OppositeRole) &&
+														null != (oppositeRole = oppositeRoleBase.Role) &&
+														null != (oppositeRolePlayer = oppositeRole.RolePlayer) &&
+														visitedNodes.ContainsKey(oppositeRolePlayer))
+													{
+														if (constraintIntersects)
+														{
+															hasError = true;
+															goto ExclusionErrorBreak;
+														}
+														constraintIntersects = true;
+													}
+												}
+											}
+										}
+									}
+								}
+							}
+						}
+					}
+				}
+			ExclusionErrorBreak:
 				CompatibleSupertypesError incompatibleSupertypes = this.CompatibleSupertypesError;
 				if (hasError)
 				{
@@ -2340,14 +2418,89 @@ namespace Neumont.Tools.ORM.ObjectModel
 			}
 		}
 		/// <summary>
+		/// ChangeRule: typeof(ExclusionConstraint)
+		/// Reverify downstream subtypes if the exclusion constraint is attached to
+		/// a supertype and the modality changes.
+		/// </summary>
+		private static void ExclusionModalityChangeRule(ElementPropertyChangedEventArgs e)
+		{
+			if (e.DomainProperty.Id == ExclusionConstraint.ModalityDomainPropertyId)
+			{
+				DelayValidateSubtypeExclusion((ExclusionConstraint)e.ModelElement);
+			}
+		}
+		/// <summary>
+		/// Rule helper function to walk subtypes that may be affected by an exclusion constraint
+		/// </summary>
+		/// <param name="exclusionConstraint">The modified <see cref="ExclusionConstraint"/></param>
+		private static void DelayValidateSubtypeExclusion(ExclusionConstraint exclusionConstraint)
+		{
+			foreach (ConstraintRoleSequence roleSequence in exclusionConstraint.RoleSequenceCollection)
+			{
+				foreach (Role role in roleSequence.RoleCollection)
+				{
+					SupertypeMetaRole supertypeRole = role as SupertypeMetaRole;
+					if (supertypeRole == null)
+					{
+						// We can't mix and match these, there is nothing else to do.
+						return;
+					}
+					RoleBase oppositeRoleBase;
+					Role oppositeRole;
+					ObjectType oppositeRolePlayer;
+					if (null != (oppositeRoleBase = supertypeRole.OppositeRole) &&
+						null != (oppositeRole = oppositeRoleBase.Role) &&
+						null != (oppositeRolePlayer = oppositeRole.RolePlayer))
+					{
+						WalkSubtypes(oppositeRolePlayer, delegate(ObjectType type, int depth, bool isPrimary)
+						{
+							if (depth != 0)
+							{
+								DelayValidateCompatibleSupertypesError(type);
+							}
+							return ObjectTypeVisitorResult.Continue;
+						});
+					}
+				}
+			}
+		}
+		/// <summary>
+		/// AddRule: typeof(SetComparisonConstraintHasRoleSequence)
+		/// Test subtype compatibility when an exclusion constraint sequence is
+		/// added with roles already attached
+		/// </summary>
+		private static void ExclusionSequenceAddedRule(ElementAddedEventArgs e)
+		{
+			SetComparisonConstraintHasRoleSequence link = e.ModelElement as SetComparisonConstraintHasRoleSequence;
+			ExclusionConstraint exclusionConstraint;
+			LinkedElementCollection<Role> roles;
+			if (null != (exclusionConstraint = link.ExternalConstraint as ExclusionConstraint) &&
+				(roles = link.RoleSequence.RoleCollection).Count != 0 &&
+				roles[0] is SupertypeMetaRole)
+			{
+				DelayValidateSubtypeExclusion(exclusionConstraint);
+			}
+		}
+		/// <summary>
 		/// AddRule: typeof(ConstraintRoleSequenceHasRole)
 		/// </summary>
-		private static void MandatoryRoleAddedRule(ElementAddedEventArgs e)
+		private static void ConstraintRoleAddedRule(ElementAddedEventArgs e)
 		{
 			ConstraintRoleSequenceHasRole link = e.ModelElement as ConstraintRoleSequenceHasRole;
 			ConstraintRoleSequence sequence = link.ConstraintRoleSequence;
 			if (sequence is SetComparisonConstraintRoleSequence)
 			{
+				IConstraint setComparisonConstraint = sequence.Constraint;
+				if (setComparisonConstraint != null &&
+					setComparisonConstraint.ConstraintType == ConstraintType.Exclusion &&
+					setComparisonConstraint.Modality == ConstraintModality.Alethic)
+				{
+					SupertypeMetaRole superTypeRole = link.Role as SupertypeMetaRole;
+					if (superTypeRole != null)
+					{
+						DelayValidateSubtypeExclusion((ExclusionConstraint)setComparisonConstraint);
+					}
+				}
 				return;
 			}
 			IConstraint constraint = ((IConstraint)sequence);
@@ -2386,12 +2539,26 @@ namespace Neumont.Tools.ORM.ObjectModel
 		/// <summary>
 		/// DeletingRule: typeof(ConstraintRoleSequenceHasRole)
 		/// </summary>
-		private static void MandatoryRoleDeletingRule(ElementDeletingEventArgs e)
+		private static void ConstraintRoleDeletingRule(ElementDeletingEventArgs e)
 		{
 			ConstraintRoleSequenceHasRole link = e.ModelElement as ConstraintRoleSequenceHasRole;
 			ConstraintRoleSequence sequence = link.ConstraintRoleSequence;
 			if (sequence is SetComparisonConstraintRoleSequence)
 			{
+				if (!link.Role.IsDeleting)
+				{
+					IConstraint setComparisonConstraint = sequence.Constraint;
+					if (setComparisonConstraint != null &&
+						setComparisonConstraint.ConstraintType == ConstraintType.Exclusion &&
+						setComparisonConstraint.Modality == ConstraintModality.Alethic)
+					{
+						SupertypeMetaRole superTypeRole = link.Role as SupertypeMetaRole;
+						if (superTypeRole != null)
+						{
+							DelayValidateSubtypeExclusion((ExclusionConstraint)setComparisonConstraint);
+						}
+					}
+				}
 				return;
 			}
 			IConstraint constraint = (IConstraint)sequence;

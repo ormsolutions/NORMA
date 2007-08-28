@@ -20,6 +20,12 @@
 			<arg:ChangeRule methodName="AbstractionModelChangedRule">
 				<arg:RuleOn targetType="AbstractionModel" targetTypeQualifier="Neumont.Tools.ORMAbstraction"/>
 			</arg:ChangeRule>
+			<arg:AddRule methodName="AssimilationMappingAddedRule">
+				<arg:RuleOn targetType="AssimilationMappingCustomizesFactType"/>
+			</arg:AddRule>
+			<arg:ChangeRule methodName="AssimilationMappingChangedRule">
+				<arg:RuleOn targetType="AssimilationMapping"/>
+			</arg:ChangeRule>
 			<arg:AddRule methodName="ConceptTypeAddedRule">
 				<arg:RuleOn targetType="AbstractionModelHasConceptType" targetTypeQualifier="Neumont.Tools.ORMAbstraction"/>
 			</arg:AddRule>
@@ -40,14 +46,12 @@
 			</arg:DeleteRule>
 		</arg:RuleContainer>
 		<arg:RuleContainer class="AssimilationMapping">
-			<!-- UNDONE: AssimilationMappingKeepAlive, temporary rule until the assimilations are not lost during remapping -->
-			<arg:AddRule methodName="FactTypeAddedToPathRule">
-				<arg:RuleOn targetType="ConceptTypeChildHasPathFactType" targetTypeQualifier="Neumont.Tools.ORMToORMAbstractionBridge"/>
-			</arg:AddRule>
-			<!-- UNDONE: AssimilationMappingKeepAlive, temporary rule until the assimilations are not lost during remapping -->
 			<arg:AddRule methodName="AssimilationMappingAddedRule">
-				<arg:RuleOn targetType="AssimilationMappingCustomizesAssimilation"/>
+				<arg:RuleOn targetType="AssimilationMappingCustomizesFactType"/>
 			</arg:AddRule>
+			<arg:ChangeRule methodName="AssimilationMappingChangedRule">
+				<arg:RuleOn targetType="AssimilationMapping"/>
+			</arg:ChangeRule>
 		</arg:RuleContainer>
 	</arg:Model>
 </arg:Rules>

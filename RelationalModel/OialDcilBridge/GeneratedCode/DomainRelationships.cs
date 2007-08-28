@@ -27,33 +27,33 @@ using DslDesign = global::Microsoft.VisualStudio.Modeling.Design;
 namespace Neumont.Tools.ORMAbstractionToConceptualDatabaseBridge
 {
 	/// <summary>
-	/// DomainRelationship AssimilationMappingCustomizesAssimilation
+	/// DomainRelationship AssimilationMappingCustomizesFactType
 	/// Description for
-	/// Neumont.Tools.ORMAbstractionToConceptualDatabaseBridge.AssimilationMappingCustomizesAssimilation
+	/// Neumont.Tools.ORMAbstractionToConceptualDatabaseBridge.AssimilationMappingCustomizesFactType
 	/// </summary>
-	[DslDesign::DisplayNameResource("Neumont.Tools.ORMAbstractionToConceptualDatabaseBridge.AssimilationMappingCustomizesAssimilation.DisplayName", typeof(global::Neumont.Tools.ORMAbstractionToConceptualDatabaseBridge.ORMAbstractionToConceptualDatabaseBridgeDomainModel), "Neumont.Tools.ORMAbstractionToConceptualDatabaseBridge.GeneratedCode.DomainModelResx")]
-	[DslDesign::DescriptionResource("Neumont.Tools.ORMAbstractionToConceptualDatabaseBridge.AssimilationMappingCustomizesAssimilation.Description", typeof(global::Neumont.Tools.ORMAbstractionToConceptualDatabaseBridge.ORMAbstractionToConceptualDatabaseBridgeDomainModel), "Neumont.Tools.ORMAbstractionToConceptualDatabaseBridge.GeneratedCode.DomainModelResx")]
+	[DslDesign::DisplayNameResource("Neumont.Tools.ORMAbstractionToConceptualDatabaseBridge.AssimilationMappingCustomizesFactType.DisplayName", typeof(global::Neumont.Tools.ORMAbstractionToConceptualDatabaseBridge.ORMAbstractionToConceptualDatabaseBridgeDomainModel), "Neumont.Tools.ORMAbstractionToConceptualDatabaseBridge.GeneratedCode.DomainModelResx")]
+	[DslDesign::DescriptionResource("Neumont.Tools.ORMAbstractionToConceptualDatabaseBridge.AssimilationMappingCustomizesFactType.Description", typeof(global::Neumont.Tools.ORMAbstractionToConceptualDatabaseBridge.ORMAbstractionToConceptualDatabaseBridgeDomainModel), "Neumont.Tools.ORMAbstractionToConceptualDatabaseBridge.GeneratedCode.DomainModelResx")]
 	[global::System.CLSCompliant(true)]
 	[DslModeling::DomainRelationship()]
 	[DslModeling::DomainObjectId("c997059d-5f08-43db-a225-b698ea7badfb")]
-	public partial class AssimilationMappingCustomizesAssimilation : DslModeling::ElementLink
+	public partial class AssimilationMappingCustomizesFactType : DslModeling::ElementLink
 	{
 		#region Constructors, domain class Id
 		
 		/// <summary>
-		/// AssimilationMappingCustomizesAssimilation domain class Id.
+		/// AssimilationMappingCustomizesFactType domain class Id.
 		/// </summary>
 		public static readonly new global::System.Guid DomainClassId = new global::System.Guid(0xc997059d, 0x5f08, 0x43db, 0xa2, 0x25, 0xb6, 0x98, 0xea, 0x7b, 0xad, 0xfb);
 	
 				
 		/// <summary>
 		/// Constructor
-		/// Creates a AssimilationMappingCustomizesAssimilation link in the same Partition as the given AssimilationMapping
+		/// Creates a AssimilationMappingCustomizesFactType link in the same Partition as the given AssimilationMapping
 		/// </summary>
 		/// <param name="source">AssimilationMapping to use as the source of the relationship.</param>
-		/// <param name="target">ConceptTypeAssimilatesConceptType to use as the target of the relationship.</param>
-		public AssimilationMappingCustomizesAssimilation(AssimilationMapping source, global::Neumont.Tools.ORMAbstraction.ConceptTypeAssimilatesConceptType target)
-			: base((source != null ? source.Partition : null), new DslModeling::RoleAssignment[]{new DslModeling::RoleAssignment(AssimilationMappingCustomizesAssimilation.AssimilationMappingDomainRoleId, source), new DslModeling::RoleAssignment(AssimilationMappingCustomizesAssimilation.AssimilationDomainRoleId, target)}, null)
+		/// <param name="target">FactType to use as the target of the relationship.</param>
+		public AssimilationMappingCustomizesFactType(AssimilationMapping source, global::Neumont.Tools.ORM.ObjectModel.FactType target)
+			: base((source != null ? source.Partition : null), new DslModeling::RoleAssignment[]{new DslModeling::RoleAssignment(AssimilationMappingCustomizesFactType.AssimilationMappingDomainRoleId, source), new DslModeling::RoleAssignment(AssimilationMappingCustomizesFactType.FactTypeDomainRoleId, target)}, null)
 		{
 		}
 		
@@ -62,7 +62,7 @@ namespace Neumont.Tools.ORMAbstractionToConceptualDatabaseBridge
 		/// </summary>
 		/// <param name="store">Store where new link is to be created.</param>
 		/// <param name="roleAssignments">List of relationship role assignments.</param>
-		public AssimilationMappingCustomizesAssimilation(DslModeling::Store store, params DslModeling::RoleAssignment[] roleAssignments)
+		public AssimilationMappingCustomizesFactType(DslModeling::Store store, params DslModeling::RoleAssignment[] roleAssignments)
 			: base(store != null ? store.DefaultPartition : null, roleAssignments, null)
 		{
 		}
@@ -73,7 +73,7 @@ namespace Neumont.Tools.ORMAbstractionToConceptualDatabaseBridge
 		/// <param name="store">Store where new link is to be created.</param>
 		/// <param name="roleAssignments">List of relationship role assignments.</param>
 		/// <param name="propertyAssignments">List of properties assignments to set on the new link.</param>
-		public AssimilationMappingCustomizesAssimilation(DslModeling::Store store, DslModeling::RoleAssignment[] roleAssignments, DslModeling::PropertyAssignment[] propertyAssignments)
+		public AssimilationMappingCustomizesFactType(DslModeling::Store store, DslModeling::RoleAssignment[] roleAssignments, DslModeling::PropertyAssignment[] propertyAssignments)
 			: base(store != null ? store.DefaultPartition : null, roleAssignments, propertyAssignments)
 		{
 		}
@@ -83,7 +83,7 @@ namespace Neumont.Tools.ORMAbstractionToConceptualDatabaseBridge
 		/// </summary>
 		/// <param name="partition">Partition where new link is to be created.</param>
 		/// <param name="roleAssignments">List of relationship role assignments.</param>
-		public AssimilationMappingCustomizesAssimilation(DslModeling::Partition partition, params DslModeling::RoleAssignment[] roleAssignments)
+		public AssimilationMappingCustomizesFactType(DslModeling::Partition partition, params DslModeling::RoleAssignment[] roleAssignments)
 			: base(partition, roleAssignments, null)
 		{
 		}
@@ -94,7 +94,7 @@ namespace Neumont.Tools.ORMAbstractionToConceptualDatabaseBridge
 		/// <param name="partition">Partition where new link is to be created.</param>
 		/// <param name="roleAssignments">List of relationship role assignments.</param>
 		/// <param name="propertyAssignments">List of properties assignments to set on the new link.</param>
-		public AssimilationMappingCustomizesAssimilation(DslModeling::Partition partition, DslModeling::RoleAssignment[] roleAssignments, DslModeling::PropertyAssignment[] propertyAssignments)
+		public AssimilationMappingCustomizesFactType(DslModeling::Partition partition, DslModeling::RoleAssignment[] roleAssignments, DslModeling::PropertyAssignment[] propertyAssignments)
 			: base(partition, roleAssignments, propertyAssignments)
 		{
 		}
@@ -109,9 +109,9 @@ namespace Neumont.Tools.ORMAbstractionToConceptualDatabaseBridge
 		/// <summary>
 		/// DomainRole AssimilationMapping
 		/// </summary>
-		[DslDesign::DisplayNameResource("Neumont.Tools.ORMAbstractionToConceptualDatabaseBridge.AssimilationMappingCustomizesAssimilation/AssimilationMapping.DisplayName", typeof(global::Neumont.Tools.ORMAbstractionToConceptualDatabaseBridge.ORMAbstractionToConceptualDatabaseBridgeDomainModel), "Neumont.Tools.ORMAbstractionToConceptualDatabaseBridge.GeneratedCode.DomainModelResx")]
-		[DslDesign::DescriptionResource("Neumont.Tools.ORMAbstractionToConceptualDatabaseBridge.AssimilationMappingCustomizesAssimilation/AssimilationMapping.Description", typeof(global::Neumont.Tools.ORMAbstractionToConceptualDatabaseBridge.ORMAbstractionToConceptualDatabaseBridgeDomainModel), "Neumont.Tools.ORMAbstractionToConceptualDatabaseBridge.GeneratedCode.DomainModelResx")]
-		[DslModeling::DomainRole(DslModeling::DomainRoleOrder.Source, PropertyName = "Assimilation", PropertyDisplayNameKey="Neumont.Tools.ORMAbstractionToConceptualDatabaseBridge.AssimilationMappingCustomizesAssimilation/AssimilationMapping.PropertyDisplayName", Multiplicity = DslModeling::Multiplicity.ZeroOne)]
+		[DslDesign::DisplayNameResource("Neumont.Tools.ORMAbstractionToConceptualDatabaseBridge.AssimilationMappingCustomizesFactType/AssimilationMapping.DisplayName", typeof(global::Neumont.Tools.ORMAbstractionToConceptualDatabaseBridge.ORMAbstractionToConceptualDatabaseBridgeDomainModel), "Neumont.Tools.ORMAbstractionToConceptualDatabaseBridge.GeneratedCode.DomainModelResx")]
+		[DslDesign::DescriptionResource("Neumont.Tools.ORMAbstractionToConceptualDatabaseBridge.AssimilationMappingCustomizesFactType/AssimilationMapping.Description", typeof(global::Neumont.Tools.ORMAbstractionToConceptualDatabaseBridge.ORMAbstractionToConceptualDatabaseBridgeDomainModel), "Neumont.Tools.ORMAbstractionToConceptualDatabaseBridge.GeneratedCode.DomainModelResx")]
+		[DslModeling::DomainRole(DslModeling::DomainRoleOrder.Source, PropertyName = "FactType", PropertyDisplayNameKey="Neumont.Tools.ORMAbstractionToConceptualDatabaseBridge.AssimilationMappingCustomizesFactType/AssimilationMapping.PropertyDisplayName", PropagatesDelete = true, Multiplicity = DslModeling::Multiplicity.ZeroOne)]
 		[DslModeling::DomainObjectId("cdf964c3-4a74-479a-86db-5d5abb23dcea")]
 		public virtual AssimilationMapping AssimilationMapping
 		{
@@ -128,15 +128,15 @@ namespace Neumont.Tools.ORMAbstractionToConceptualDatabaseBridge
 		}
 				
 		#endregion
-		#region Static methods to access AssimilationMapping of a ConceptTypeAssimilatesConceptType
+		#region Static methods to access AssimilationMapping of a FactType
 		/// <summary>
 		/// Gets AssimilationMapping.
 		/// </summary>
 		[global::System.Diagnostics.DebuggerStepThrough]
 		[global::System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Design", "CA1011")]
-		public static AssimilationMapping GetAssimilationMapping(global::Neumont.Tools.ORMAbstraction.ConceptTypeAssimilatesConceptType element)
+		public static AssimilationMapping GetAssimilationMapping(global::Neumont.Tools.ORM.ObjectModel.FactType element)
 		{
-			return DslModeling::DomainRoleInfo.GetLinkedElement(element, AssimilationDomainRoleId) as AssimilationMapping;
+			return DslModeling::DomainRoleInfo.GetLinkedElement(element, FactTypeDomainRoleId) as AssimilationMapping;
 		}
 		
 		/// <summary>
@@ -144,70 +144,70 @@ namespace Neumont.Tools.ORMAbstractionToConceptualDatabaseBridge
 		/// </summary>
 		[global::System.Diagnostics.DebuggerStepThrough]
 		[global::System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Design", "CA1011")]
-		public static void SetAssimilationMapping(global::Neumont.Tools.ORMAbstraction.ConceptTypeAssimilatesConceptType element, AssimilationMapping newAssimilationMapping)
+		public static void SetAssimilationMapping(global::Neumont.Tools.ORM.ObjectModel.FactType element, AssimilationMapping newAssimilationMapping)
 		{
-			DslModeling::DomainRoleInfo.SetLinkedElement(element, AssimilationDomainRoleId, newAssimilationMapping);
+			DslModeling::DomainRoleInfo.SetLinkedElement(element, FactTypeDomainRoleId, newAssimilationMapping);
 		}
 		#endregion
-		#region Assimilation domain role code
+		#region FactType domain role code
 		
 		/// <summary>
-		/// Assimilation domain role Id.
+		/// FactType domain role Id.
 		/// </summary>
-		public static readonly global::System.Guid AssimilationDomainRoleId = new global::System.Guid(0x41bd276d, 0xd55e, 0x4972, 0xaf, 0xd9, 0x75, 0x7e, 0xbe, 0x82, 0x4f, 0x39);
+		public static readonly global::System.Guid FactTypeDomainRoleId = new global::System.Guid(0x41bd276d, 0xd55e, 0x4972, 0xaf, 0xd9, 0x75, 0x7e, 0xbe, 0x82, 0x4f, 0x39);
 		
 		/// <summary>
-		/// DomainRole Assimilation
+		/// DomainRole FactType
 		/// </summary>
-		[DslDesign::DisplayNameResource("Neumont.Tools.ORMAbstractionToConceptualDatabaseBridge.AssimilationMappingCustomizesAssimilation/Assimilation.DisplayName", typeof(global::Neumont.Tools.ORMAbstractionToConceptualDatabaseBridge.ORMAbstractionToConceptualDatabaseBridgeDomainModel), "Neumont.Tools.ORMAbstractionToConceptualDatabaseBridge.GeneratedCode.DomainModelResx")]
-		[DslDesign::DescriptionResource("Neumont.Tools.ORMAbstractionToConceptualDatabaseBridge.AssimilationMappingCustomizesAssimilation/Assimilation.Description", typeof(global::Neumont.Tools.ORMAbstractionToConceptualDatabaseBridge.ORMAbstractionToConceptualDatabaseBridgeDomainModel), "Neumont.Tools.ORMAbstractionToConceptualDatabaseBridge.GeneratedCode.DomainModelResx")]
-		[DslModeling::DomainRole(DslModeling::DomainRoleOrder.Target, PropertyName = "AssimilationMapping", PropertyDisplayNameKey="Neumont.Tools.ORMAbstractionToConceptualDatabaseBridge.AssimilationMappingCustomizesAssimilation/Assimilation.PropertyDisplayName", Multiplicity = DslModeling::Multiplicity.One)]
+		[DslDesign::DisplayNameResource("Neumont.Tools.ORMAbstractionToConceptualDatabaseBridge.AssimilationMappingCustomizesFactType/FactType.DisplayName", typeof(global::Neumont.Tools.ORMAbstractionToConceptualDatabaseBridge.ORMAbstractionToConceptualDatabaseBridgeDomainModel), "Neumont.Tools.ORMAbstractionToConceptualDatabaseBridge.GeneratedCode.DomainModelResx")]
+		[DslDesign::DescriptionResource("Neumont.Tools.ORMAbstractionToConceptualDatabaseBridge.AssimilationMappingCustomizesFactType/FactType.Description", typeof(global::Neumont.Tools.ORMAbstractionToConceptualDatabaseBridge.ORMAbstractionToConceptualDatabaseBridgeDomainModel), "Neumont.Tools.ORMAbstractionToConceptualDatabaseBridge.GeneratedCode.DomainModelResx")]
+		[DslModeling::DomainRole(DslModeling::DomainRoleOrder.Target, PropertyName = "AssimilationMapping", PropertyDisplayNameKey="Neumont.Tools.ORMAbstractionToConceptualDatabaseBridge.AssimilationMappingCustomizesFactType/FactType.PropertyDisplayName", Multiplicity = DslModeling::Multiplicity.One)]
 		[DslModeling::DomainObjectId("41bd276d-d55e-4972-afd9-757ebe824f39")]
-		public virtual global::Neumont.Tools.ORMAbstraction.ConceptTypeAssimilatesConceptType Assimilation
+		public virtual global::Neumont.Tools.ORM.ObjectModel.FactType FactType
 		{
 			[global::System.Diagnostics.DebuggerStepThrough]
 			get
 			{
-				return (global::Neumont.Tools.ORMAbstraction.ConceptTypeAssimilatesConceptType)DslModeling::DomainRoleInfo.GetRolePlayer(this, AssimilationDomainRoleId);
+				return (global::Neumont.Tools.ORM.ObjectModel.FactType)DslModeling::DomainRoleInfo.GetRolePlayer(this, FactTypeDomainRoleId);
 			}
 			[global::System.Diagnostics.DebuggerStepThrough]
 			set
 			{
-				DslModeling::DomainRoleInfo.SetRolePlayer(this, AssimilationDomainRoleId, value);
+				DslModeling::DomainRoleInfo.SetRolePlayer(this, FactTypeDomainRoleId, value);
 			}
 		}
 				
 		#endregion
-		#region Static methods to access Assimilation of a AssimilationMapping
+		#region Static methods to access FactType of a AssimilationMapping
 		/// <summary>
-		/// Gets Assimilation.
+		/// Gets FactType.
 		/// </summary>
 		[global::System.Diagnostics.DebuggerStepThrough]
 		[global::System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Design", "CA1011")]
-		public static global::Neumont.Tools.ORMAbstraction.ConceptTypeAssimilatesConceptType GetAssimilation(AssimilationMapping element)
+		public static global::Neumont.Tools.ORM.ObjectModel.FactType GetFactType(AssimilationMapping element)
 		{
-			return DslModeling::DomainRoleInfo.GetLinkedElement(element, AssimilationMappingDomainRoleId) as global::Neumont.Tools.ORMAbstraction.ConceptTypeAssimilatesConceptType;
+			return DslModeling::DomainRoleInfo.GetLinkedElement(element, AssimilationMappingDomainRoleId) as global::Neumont.Tools.ORM.ObjectModel.FactType;
 		}
 		
 		/// <summary>
-		/// Sets Assimilation.
+		/// Sets FactType.
 		/// </summary>
 		[global::System.Diagnostics.DebuggerStepThrough]
 		[global::System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Design", "CA1011")]
-		public static void SetAssimilation(AssimilationMapping element, global::Neumont.Tools.ORMAbstraction.ConceptTypeAssimilatesConceptType newAssimilation)
+		public static void SetFactType(AssimilationMapping element, global::Neumont.Tools.ORM.ObjectModel.FactType newFactType)
 		{
-			DslModeling::DomainRoleInfo.SetLinkedElement(element, AssimilationMappingDomainRoleId, newAssimilation);
+			DslModeling::DomainRoleInfo.SetLinkedElement(element, AssimilationMappingDomainRoleId, newFactType);
 		}
 		#endregion
 		#region AssimilationMapping link accessor
 		/// <summary>
-		/// Get the AssimilationMappingCustomizesAssimilation link to a AssimilationMapping.
+		/// Get the AssimilationMappingCustomizesFactType link to a AssimilationMapping.
 		/// </summary>
 		[global::System.Diagnostics.DebuggerStepThrough]
 		[global::System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Design", "CA1011")]
-		public static global::Neumont.Tools.ORMAbstractionToConceptualDatabaseBridge.AssimilationMappingCustomizesAssimilation GetLinkToAssimilation (global::Neumont.Tools.ORMAbstractionToConceptualDatabaseBridge.AssimilationMapping assimilationMappingInstance)
+		public static global::Neumont.Tools.ORMAbstractionToConceptualDatabaseBridge.AssimilationMappingCustomizesFactType GetLinkToFactType (global::Neumont.Tools.ORMAbstractionToConceptualDatabaseBridge.AssimilationMapping assimilationMappingInstance)
 		{
-			global::System.Collections.Generic.IList<global::Neumont.Tools.ORMAbstractionToConceptualDatabaseBridge.AssimilationMappingCustomizesAssimilation> links = DslModeling::DomainRoleInfo.GetElementLinks<global::Neumont.Tools.ORMAbstractionToConceptualDatabaseBridge.AssimilationMappingCustomizesAssimilation>(assimilationMappingInstance, global::Neumont.Tools.ORMAbstractionToConceptualDatabaseBridge.AssimilationMappingCustomizesAssimilation.AssimilationMappingDomainRoleId);
+			global::System.Collections.Generic.IList<global::Neumont.Tools.ORMAbstractionToConceptualDatabaseBridge.AssimilationMappingCustomizesFactType> links = DslModeling::DomainRoleInfo.GetElementLinks<global::Neumont.Tools.ORMAbstractionToConceptualDatabaseBridge.AssimilationMappingCustomizesFactType>(assimilationMappingInstance, global::Neumont.Tools.ORMAbstractionToConceptualDatabaseBridge.AssimilationMappingCustomizesFactType.AssimilationMappingDomainRoleId);
 			global::System.Diagnostics.Debug.Assert(links.Count <= 1, "Multiplicity of AssimilationMapping not obeyed.");
 			if ( links.Count == 0 )
 			{
@@ -219,16 +219,16 @@ namespace Neumont.Tools.ORMAbstractionToConceptualDatabaseBridge
 			}
 		}
 		#endregion
-		#region Assimilation link accessor
+		#region FactType link accessor
 		/// <summary>
-		/// Get the AssimilationMappingCustomizesAssimilation link to a ConceptTypeAssimilatesConceptType.
+		/// Get the AssimilationMappingCustomizesFactType link to a FactType.
 		/// </summary>
 		[global::System.Diagnostics.DebuggerStepThrough]
 		[global::System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Design", "CA1011")]
-		public static global::Neumont.Tools.ORMAbstractionToConceptualDatabaseBridge.AssimilationMappingCustomizesAssimilation GetLinkToAssimilationMapping (global::Neumont.Tools.ORMAbstraction.ConceptTypeAssimilatesConceptType assimilationInstance)
+		public static global::Neumont.Tools.ORMAbstractionToConceptualDatabaseBridge.AssimilationMappingCustomizesFactType GetLinkToAssimilationMapping (global::Neumont.Tools.ORM.ObjectModel.FactType factTypeInstance)
 		{
-			global::System.Collections.Generic.IList<global::Neumont.Tools.ORMAbstractionToConceptualDatabaseBridge.AssimilationMappingCustomizesAssimilation> links = DslModeling::DomainRoleInfo.GetElementLinks<global::Neumont.Tools.ORMAbstractionToConceptualDatabaseBridge.AssimilationMappingCustomizesAssimilation>(assimilationInstance, global::Neumont.Tools.ORMAbstractionToConceptualDatabaseBridge.AssimilationMappingCustomizesAssimilation.AssimilationDomainRoleId);
-			global::System.Diagnostics.Debug.Assert(links.Count <= 1, "Multiplicity of Assimilation not obeyed.");
+			global::System.Collections.Generic.IList<global::Neumont.Tools.ORMAbstractionToConceptualDatabaseBridge.AssimilationMappingCustomizesFactType> links = DslModeling::DomainRoleInfo.GetElementLinks<global::Neumont.Tools.ORMAbstractionToConceptualDatabaseBridge.AssimilationMappingCustomizesFactType>(factTypeInstance, global::Neumont.Tools.ORMAbstractionToConceptualDatabaseBridge.AssimilationMappingCustomizesFactType.FactTypeDomainRoleId);
+			global::System.Diagnostics.Debug.Assert(links.Count <= 1, "Multiplicity of FactType not obeyed.");
 			if ( links.Count == 0 )
 			{
 				return null;
@@ -239,20 +239,20 @@ namespace Neumont.Tools.ORMAbstractionToConceptualDatabaseBridge
 			}
 		}
 		#endregion
-		#region AssimilationMappingCustomizesAssimilation instance accessors
+		#region AssimilationMappingCustomizesFactType instance accessors
 		
 		/// <summary>
-		/// Get any AssimilationMappingCustomizesAssimilation links between a given AssimilationMapping and a ConceptTypeAssimilatesConceptType.
+		/// Get any AssimilationMappingCustomizesFactType links between a given AssimilationMapping and a FactType.
 		/// </summary>
 		[global::System.Diagnostics.DebuggerStepThrough]
 		[global::System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Design", "CA1011")]
-		public static global::System.Collections.ObjectModel.ReadOnlyCollection<global::Neumont.Tools.ORMAbstractionToConceptualDatabaseBridge.AssimilationMappingCustomizesAssimilation> GetLinks( global::Neumont.Tools.ORMAbstractionToConceptualDatabaseBridge.AssimilationMapping source, global::Neumont.Tools.ORMAbstraction.ConceptTypeAssimilatesConceptType target )
+		public static global::System.Collections.ObjectModel.ReadOnlyCollection<global::Neumont.Tools.ORMAbstractionToConceptualDatabaseBridge.AssimilationMappingCustomizesFactType> GetLinks( global::Neumont.Tools.ORMAbstractionToConceptualDatabaseBridge.AssimilationMapping source, global::Neumont.Tools.ORM.ObjectModel.FactType target )
 		{
-			global::System.Collections.Generic.List<global::Neumont.Tools.ORMAbstractionToConceptualDatabaseBridge.AssimilationMappingCustomizesAssimilation> outLinks = new global::System.Collections.Generic.List<global::Neumont.Tools.ORMAbstractionToConceptualDatabaseBridge.AssimilationMappingCustomizesAssimilation>();
-			global::System.Collections.Generic.IList<global::Neumont.Tools.ORMAbstractionToConceptualDatabaseBridge.AssimilationMappingCustomizesAssimilation> links = DslModeling::DomainRoleInfo.GetElementLinks<global::Neumont.Tools.ORMAbstractionToConceptualDatabaseBridge.AssimilationMappingCustomizesAssimilation>(source, global::Neumont.Tools.ORMAbstractionToConceptualDatabaseBridge.AssimilationMappingCustomizesAssimilation.AssimilationMappingDomainRoleId);
-			foreach ( global::Neumont.Tools.ORMAbstractionToConceptualDatabaseBridge.AssimilationMappingCustomizesAssimilation link in links )
+			global::System.Collections.Generic.List<global::Neumont.Tools.ORMAbstractionToConceptualDatabaseBridge.AssimilationMappingCustomizesFactType> outLinks = new global::System.Collections.Generic.List<global::Neumont.Tools.ORMAbstractionToConceptualDatabaseBridge.AssimilationMappingCustomizesFactType>();
+			global::System.Collections.Generic.IList<global::Neumont.Tools.ORMAbstractionToConceptualDatabaseBridge.AssimilationMappingCustomizesFactType> links = DslModeling::DomainRoleInfo.GetElementLinks<global::Neumont.Tools.ORMAbstractionToConceptualDatabaseBridge.AssimilationMappingCustomizesFactType>(source, global::Neumont.Tools.ORMAbstractionToConceptualDatabaseBridge.AssimilationMappingCustomizesFactType.AssimilationMappingDomainRoleId);
+			foreach ( global::Neumont.Tools.ORMAbstractionToConceptualDatabaseBridge.AssimilationMappingCustomizesFactType link in links )
 			{
-				if ( target.Equals(link.Assimilation) )
+				if ( target.Equals(link.FactType) )
 				{
 					outLinks.Add(link);
 				}
@@ -260,16 +260,16 @@ namespace Neumont.Tools.ORMAbstractionToConceptualDatabaseBridge
 			return outLinks.AsReadOnly();
 		}
 		/// <summary>
-		/// Get the one AssimilationMappingCustomizesAssimilation link between a given AssimilationMappingand a ConceptTypeAssimilatesConceptType.
+		/// Get the one AssimilationMappingCustomizesFactType link between a given AssimilationMappingand a FactType.
 		/// </summary>
 		[global::System.Diagnostics.DebuggerStepThrough]
 		[global::System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Design", "CA1011")]
-		public static global::Neumont.Tools.ORMAbstractionToConceptualDatabaseBridge.AssimilationMappingCustomizesAssimilation GetLink( global::Neumont.Tools.ORMAbstractionToConceptualDatabaseBridge.AssimilationMapping source, global::Neumont.Tools.ORMAbstraction.ConceptTypeAssimilatesConceptType target )
+		public static global::Neumont.Tools.ORMAbstractionToConceptualDatabaseBridge.AssimilationMappingCustomizesFactType GetLink( global::Neumont.Tools.ORMAbstractionToConceptualDatabaseBridge.AssimilationMapping source, global::Neumont.Tools.ORM.ObjectModel.FactType target )
 		{
-			global::System.Collections.Generic.IList<global::Neumont.Tools.ORMAbstractionToConceptualDatabaseBridge.AssimilationMappingCustomizesAssimilation> links = DslModeling::DomainRoleInfo.GetElementLinks<global::Neumont.Tools.ORMAbstractionToConceptualDatabaseBridge.AssimilationMappingCustomizesAssimilation>(source, global::Neumont.Tools.ORMAbstractionToConceptualDatabaseBridge.AssimilationMappingCustomizesAssimilation.AssimilationMappingDomainRoleId);
-			foreach ( global::Neumont.Tools.ORMAbstractionToConceptualDatabaseBridge.AssimilationMappingCustomizesAssimilation link in links )
+			global::System.Collections.Generic.IList<global::Neumont.Tools.ORMAbstractionToConceptualDatabaseBridge.AssimilationMappingCustomizesFactType> links = DslModeling::DomainRoleInfo.GetElementLinks<global::Neumont.Tools.ORMAbstractionToConceptualDatabaseBridge.AssimilationMappingCustomizesFactType>(source, global::Neumont.Tools.ORMAbstractionToConceptualDatabaseBridge.AssimilationMappingCustomizesFactType.AssimilationMappingDomainRoleId);
+			foreach ( global::Neumont.Tools.ORMAbstractionToConceptualDatabaseBridge.AssimilationMappingCustomizesFactType link in links )
 			{
-				if ( target.Equals(link.Assimilation) )
+				if ( target.Equals(link.FactType) )
 				{
 					return link;
 				}
@@ -507,243 +507,6 @@ namespace Neumont.Tools.ORMAbstractionToConceptualDatabaseBridge
 			foreach ( global::Neumont.Tools.ORMAbstractionToConceptualDatabaseBridge.MappingCustomizationModelHasAssimilationMapping link in links )
 			{
 				if ( target.Equals(link.AssimilationMapping) )
-				{
-					return link;
-				}
-			}
-			return null;
-		}
-		
-		#endregion
-	}
-}
-namespace Neumont.Tools.ORMAbstractionToConceptualDatabaseBridge
-{
-	/// <summary>
-	/// DomainRelationship AssimilationMappingKeepAlive
-	/// Description for
-	/// Neumont.Tools.ORMAbstractionToConceptualDatabaseBridge.AssimilationMappingKeepAlive
-	/// </summary>
-	[DslDesign::DisplayNameResource("Neumont.Tools.ORMAbstractionToConceptualDatabaseBridge.AssimilationMappingKeepAlive.DisplayName", typeof(global::Neumont.Tools.ORMAbstractionToConceptualDatabaseBridge.ORMAbstractionToConceptualDatabaseBridgeDomainModel), "Neumont.Tools.ORMAbstractionToConceptualDatabaseBridge.GeneratedCode.DomainModelResx")]
-	[DslDesign::DescriptionResource("Neumont.Tools.ORMAbstractionToConceptualDatabaseBridge.AssimilationMappingKeepAlive.Description", typeof(global::Neumont.Tools.ORMAbstractionToConceptualDatabaseBridge.ORMAbstractionToConceptualDatabaseBridgeDomainModel), "Neumont.Tools.ORMAbstractionToConceptualDatabaseBridge.GeneratedCode.DomainModelResx")]
-	[global::System.CLSCompliant(true)]
-	[DslModeling::DomainRelationship()]
-	[DslModeling::DomainObjectId("8b7d8bc7-a27b-4dae-8864-3fa212655d0d")]
-	public partial class AssimilationMappingKeepAlive : DslModeling::ElementLink
-	{
-		#region Constructors, domain class Id
-		
-		/// <summary>
-		/// AssimilationMappingKeepAlive domain class Id.
-		/// </summary>
-		public static readonly new global::System.Guid DomainClassId = new global::System.Guid(0x8b7d8bc7, 0xa27b, 0x4dae, 0x88, 0x64, 0x3f, 0xa2, 0x12, 0x65, 0x5d, 0x0d);
-	
-				
-		/// <summary>
-		/// Constructor
-		/// Creates a AssimilationMappingKeepAlive link in the same Partition as the given AssimilationMapping
-		/// </summary>
-		/// <param name="source">AssimilationMapping to use as the source of the relationship.</param>
-		/// <param name="target">ModelElement to use as the target of the relationship.</param>
-		public AssimilationMappingKeepAlive(AssimilationMapping source, global::Microsoft.VisualStudio.Modeling.ModelElement target)
-			: base((source != null ? source.Partition : null), new DslModeling::RoleAssignment[]{new DslModeling::RoleAssignment(AssimilationMappingKeepAlive.AssimilationMappingDomainRoleId, source), new DslModeling::RoleAssignment(AssimilationMappingKeepAlive.FactTypeDomainRoleId, target)}, null)
-		{
-		}
-		
-		/// <summary>
-		/// Constructor
-		/// </summary>
-		/// <param name="store">Store where new link is to be created.</param>
-		/// <param name="roleAssignments">List of relationship role assignments.</param>
-		public AssimilationMappingKeepAlive(DslModeling::Store store, params DslModeling::RoleAssignment[] roleAssignments)
-			: base(store != null ? store.DefaultPartition : null, roleAssignments, null)
-		{
-		}
-		
-		/// <summary>
-		/// Constructor
-		/// </summary>
-		/// <param name="store">Store where new link is to be created.</param>
-		/// <param name="roleAssignments">List of relationship role assignments.</param>
-		/// <param name="propertyAssignments">List of properties assignments to set on the new link.</param>
-		public AssimilationMappingKeepAlive(DslModeling::Store store, DslModeling::RoleAssignment[] roleAssignments, DslModeling::PropertyAssignment[] propertyAssignments)
-			: base(store != null ? store.DefaultPartition : null, roleAssignments, propertyAssignments)
-		{
-		}
-		
-		/// <summary>
-		/// Constructor
-		/// </summary>
-		/// <param name="partition">Partition where new link is to be created.</param>
-		/// <param name="roleAssignments">List of relationship role assignments.</param>
-		public AssimilationMappingKeepAlive(DslModeling::Partition partition, params DslModeling::RoleAssignment[] roleAssignments)
-			: base(partition, roleAssignments, null)
-		{
-		}
-		
-		/// <summary>
-		/// Constructor
-		/// </summary>
-		/// <param name="partition">Partition where new link is to be created.</param>
-		/// <param name="roleAssignments">List of relationship role assignments.</param>
-		/// <param name="propertyAssignments">List of properties assignments to set on the new link.</param>
-		public AssimilationMappingKeepAlive(DslModeling::Partition partition, DslModeling::RoleAssignment[] roleAssignments, DslModeling::PropertyAssignment[] propertyAssignments)
-			: base(partition, roleAssignments, propertyAssignments)
-		{
-		}
-		#endregion
-		#region AssimilationMapping domain role code
-		
-		/// <summary>
-		/// AssimilationMapping domain role Id.
-		/// </summary>
-		public static readonly global::System.Guid AssimilationMappingDomainRoleId = new global::System.Guid(0xc6e40fc7, 0xbb65, 0x437a, 0xa1, 0x78, 0xf9, 0x88, 0x82, 0x9e, 0x0f, 0x23);
-		
-		/// <summary>
-		/// DomainRole AssimilationMapping
-		/// </summary>
-		[DslDesign::DisplayNameResource("Neumont.Tools.ORMAbstractionToConceptualDatabaseBridge.AssimilationMappingKeepAlive/AssimilationMapping.DisplayName", typeof(global::Neumont.Tools.ORMAbstractionToConceptualDatabaseBridge.ORMAbstractionToConceptualDatabaseBridgeDomainModel), "Neumont.Tools.ORMAbstractionToConceptualDatabaseBridge.GeneratedCode.DomainModelResx")]
-		[DslDesign::DescriptionResource("Neumont.Tools.ORMAbstractionToConceptualDatabaseBridge.AssimilationMappingKeepAlive/AssimilationMapping.Description", typeof(global::Neumont.Tools.ORMAbstractionToConceptualDatabaseBridge.ORMAbstractionToConceptualDatabaseBridgeDomainModel), "Neumont.Tools.ORMAbstractionToConceptualDatabaseBridge.GeneratedCode.DomainModelResx")]
-		[DslModeling::DomainRole(DslModeling::DomainRoleOrder.Source, PropertyName = "FactType", PropertyDisplayNameKey="Neumont.Tools.ORMAbstractionToConceptualDatabaseBridge.AssimilationMappingKeepAlive/AssimilationMapping.PropertyDisplayName", PropagatesDelete = true, Multiplicity = DslModeling::Multiplicity.ZeroOne)]
-		[DslModeling::DomainObjectId("c6e40fc7-bb65-437a-a178-f988829e0f23")]
-		public virtual AssimilationMapping AssimilationMapping
-		{
-			[global::System.Diagnostics.DebuggerStepThrough]
-			get
-			{
-				return (AssimilationMapping)DslModeling::DomainRoleInfo.GetRolePlayer(this, AssimilationMappingDomainRoleId);
-			}
-			[global::System.Diagnostics.DebuggerStepThrough]
-			set
-			{
-				DslModeling::DomainRoleInfo.SetRolePlayer(this, AssimilationMappingDomainRoleId, value);
-			}
-		}
-				
-		#endregion
-		#region Static methods to access AssimilationMapping of a ModelElement
-		/// <summary>
-		/// Gets a list of AssimilationMapping.
-		/// </summary>
-		[global::System.Diagnostics.DebuggerStepThrough]
-		[global::System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Design", "CA1011")]
-		public static DslModeling::LinkedElementCollection<AssimilationMapping> GetAssimilationMapping(global::Microsoft.VisualStudio.Modeling.ModelElement element)
-		{
-			return new DslModeling::LinkedElementCollection<AssimilationMapping>(element, FactTypeDomainRoleId);
-		}
-		#endregion
-		#region FactType domain role code
-		
-		/// <summary>
-		/// FactType domain role Id.
-		/// </summary>
-		public static readonly global::System.Guid FactTypeDomainRoleId = new global::System.Guid(0x2b75c3ce, 0xb9e9, 0x47ff, 0xbf, 0x8c, 0x06, 0xd3, 0x88, 0xf4, 0x9e, 0x6a);
-		
-		/// <summary>
-		/// DomainRole FactType
-		/// </summary>
-		[DslDesign::DisplayNameResource("Neumont.Tools.ORMAbstractionToConceptualDatabaseBridge.AssimilationMappingKeepAlive/FactType.DisplayName", typeof(global::Neumont.Tools.ORMAbstractionToConceptualDatabaseBridge.ORMAbstractionToConceptualDatabaseBridgeDomainModel), "Neumont.Tools.ORMAbstractionToConceptualDatabaseBridge.GeneratedCode.DomainModelResx")]
-		[DslDesign::DescriptionResource("Neumont.Tools.ORMAbstractionToConceptualDatabaseBridge.AssimilationMappingKeepAlive/FactType.Description", typeof(global::Neumont.Tools.ORMAbstractionToConceptualDatabaseBridge.ORMAbstractionToConceptualDatabaseBridgeDomainModel), "Neumont.Tools.ORMAbstractionToConceptualDatabaseBridge.GeneratedCode.DomainModelResx")]
-		[DslModeling::DomainRole(DslModeling::DomainRoleOrder.Target, PropertyName = "AssimilationMapping", PropertyDisplayNameKey="Neumont.Tools.ORMAbstractionToConceptualDatabaseBridge.AssimilationMappingKeepAlive/FactType.PropertyDisplayName", Multiplicity = DslModeling::Multiplicity.ZeroMany)]
-		[DslModeling::DomainObjectId("2b75c3ce-b9e9-47ff-bf8c-06d388f49e6a")]
-		public virtual global::Microsoft.VisualStudio.Modeling.ModelElement FactType
-		{
-			[global::System.Diagnostics.DebuggerStepThrough]
-			get
-			{
-				return (global::Microsoft.VisualStudio.Modeling.ModelElement)DslModeling::DomainRoleInfo.GetRolePlayer(this, FactTypeDomainRoleId);
-			}
-			[global::System.Diagnostics.DebuggerStepThrough]
-			set
-			{
-				DslModeling::DomainRoleInfo.SetRolePlayer(this, FactTypeDomainRoleId, value);
-			}
-		}
-				
-		#endregion
-		#region Static methods to access FactType of a AssimilationMapping
-		/// <summary>
-		/// Gets FactType.
-		/// </summary>
-		[global::System.Diagnostics.DebuggerStepThrough]
-		[global::System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Design", "CA1011")]
-		public static global::Microsoft.VisualStudio.Modeling.ModelElement GetFactType(AssimilationMapping element)
-		{
-			return DslModeling::DomainRoleInfo.GetLinkedElement(element, AssimilationMappingDomainRoleId) as global::Microsoft.VisualStudio.Modeling.ModelElement;
-		}
-		
-		/// <summary>
-		/// Sets FactType.
-		/// </summary>
-		[global::System.Diagnostics.DebuggerStepThrough]
-		[global::System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Design", "CA1011")]
-		public static void SetFactType(AssimilationMapping element, global::Microsoft.VisualStudio.Modeling.ModelElement newFactType)
-		{
-			DslModeling::DomainRoleInfo.SetLinkedElement(element, AssimilationMappingDomainRoleId, newFactType);
-		}
-		#endregion
-		#region AssimilationMapping link accessor
-		/// <summary>
-		/// Get the AssimilationMappingKeepAlive link to a AssimilationMapping.
-		/// </summary>
-		[global::System.Diagnostics.DebuggerStepThrough]
-		[global::System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Design", "CA1011")]
-		public static global::Neumont.Tools.ORMAbstractionToConceptualDatabaseBridge.AssimilationMappingKeepAlive GetLinkToFactType (global::Neumont.Tools.ORMAbstractionToConceptualDatabaseBridge.AssimilationMapping assimilationMappingInstance)
-		{
-			global::System.Collections.Generic.IList<global::Neumont.Tools.ORMAbstractionToConceptualDatabaseBridge.AssimilationMappingKeepAlive> links = DslModeling::DomainRoleInfo.GetElementLinks<global::Neumont.Tools.ORMAbstractionToConceptualDatabaseBridge.AssimilationMappingKeepAlive>(assimilationMappingInstance, global::Neumont.Tools.ORMAbstractionToConceptualDatabaseBridge.AssimilationMappingKeepAlive.AssimilationMappingDomainRoleId);
-			global::System.Diagnostics.Debug.Assert(links.Count <= 1, "Multiplicity of AssimilationMapping not obeyed.");
-			if ( links.Count == 0 )
-			{
-				return null;
-			}
-			else
-			{
-				return links[0];
-			}
-		}
-		#endregion
-		#region FactType link accessor
-		/// <summary>
-		/// Get the list of AssimilationMappingKeepAlive links to a ModelElement.
-		/// </summary>
-		[global::System.Diagnostics.DebuggerStepThrough]
-		[global::System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Design", "CA1011")]
-		public static global::System.Collections.ObjectModel.ReadOnlyCollection<global::Neumont.Tools.ORMAbstractionToConceptualDatabaseBridge.AssimilationMappingKeepAlive> GetLinksToAssimilationMapping ( global::Microsoft.VisualStudio.Modeling.ModelElement factTypeInstance )
-		{
-			return DslModeling::DomainRoleInfo.GetElementLinks<global::Neumont.Tools.ORMAbstractionToConceptualDatabaseBridge.AssimilationMappingKeepAlive>(factTypeInstance, global::Neumont.Tools.ORMAbstractionToConceptualDatabaseBridge.AssimilationMappingKeepAlive.FactTypeDomainRoleId);
-		}
-		#endregion
-		#region AssimilationMappingKeepAlive instance accessors
-		
-		/// <summary>
-		/// Get any AssimilationMappingKeepAlive links between a given AssimilationMapping and a ModelElement.
-		/// </summary>
-		[global::System.Diagnostics.DebuggerStepThrough]
-		[global::System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Design", "CA1011")]
-		public static global::System.Collections.ObjectModel.ReadOnlyCollection<global::Neumont.Tools.ORMAbstractionToConceptualDatabaseBridge.AssimilationMappingKeepAlive> GetLinks( global::Neumont.Tools.ORMAbstractionToConceptualDatabaseBridge.AssimilationMapping source, global::Microsoft.VisualStudio.Modeling.ModelElement target )
-		{
-			global::System.Collections.Generic.List<global::Neumont.Tools.ORMAbstractionToConceptualDatabaseBridge.AssimilationMappingKeepAlive> outLinks = new global::System.Collections.Generic.List<global::Neumont.Tools.ORMAbstractionToConceptualDatabaseBridge.AssimilationMappingKeepAlive>();
-			global::System.Collections.Generic.IList<global::Neumont.Tools.ORMAbstractionToConceptualDatabaseBridge.AssimilationMappingKeepAlive> links = DslModeling::DomainRoleInfo.GetElementLinks<global::Neumont.Tools.ORMAbstractionToConceptualDatabaseBridge.AssimilationMappingKeepAlive>(source, global::Neumont.Tools.ORMAbstractionToConceptualDatabaseBridge.AssimilationMappingKeepAlive.AssimilationMappingDomainRoleId);
-			foreach ( global::Neumont.Tools.ORMAbstractionToConceptualDatabaseBridge.AssimilationMappingKeepAlive link in links )
-			{
-				if ( target.Equals(link.FactType) )
-				{
-					outLinks.Add(link);
-				}
-			}
-			return outLinks.AsReadOnly();
-		}
-		/// <summary>
-		/// Get the one AssimilationMappingKeepAlive link between a given AssimilationMappingand a ModelElement.
-		/// </summary>
-		[global::System.Diagnostics.DebuggerStepThrough]
-		[global::System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Design", "CA1011")]
-		public static global::Neumont.Tools.ORMAbstractionToConceptualDatabaseBridge.AssimilationMappingKeepAlive GetLink( global::Neumont.Tools.ORMAbstractionToConceptualDatabaseBridge.AssimilationMapping source, global::Microsoft.VisualStudio.Modeling.ModelElement target )
-		{
-			global::System.Collections.Generic.IList<global::Neumont.Tools.ORMAbstractionToConceptualDatabaseBridge.AssimilationMappingKeepAlive> links = DslModeling::DomainRoleInfo.GetElementLinks<global::Neumont.Tools.ORMAbstractionToConceptualDatabaseBridge.AssimilationMappingKeepAlive>(source, global::Neumont.Tools.ORMAbstractionToConceptualDatabaseBridge.AssimilationMappingKeepAlive.AssimilationMappingDomainRoleId);
-			foreach ( global::Neumont.Tools.ORMAbstractionToConceptualDatabaseBridge.AssimilationMappingKeepAlive link in links )
-			{
-				if ( target.Equals(link.FactType) )
 				{
 					return link;
 				}

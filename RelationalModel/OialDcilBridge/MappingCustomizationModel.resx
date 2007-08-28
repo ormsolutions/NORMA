@@ -134,15 +134,15 @@
 		<comment>The display name for the AbsorptionChoice property. Displays as the name of a property in the Properties Window.</comment>
 	</data>
 	<data name="AssimilationAbsorptionChoice.Absorb" xml:space="preserve">
-    <value>Absorb</value>
+    <value>Absorbed</value>
 		<comment>The displayed form of the Absorb enum value</comment>
   </data>
   <data name="AssimilationAbsorptionChoice.Partition" xml:space="preserve">
-    <value>Partition</value>
+    <value>Partitioned</value>
 		<comment>The displayed form of the Partition enum value</comment>
   </data>
   <data name="AssimilationAbsorptionChoice.Separate" xml:space="preserve">
-    <value>Separate</value>
+    <value>Not Absorbed</value>
 		<comment>The displayed form of the Separate enum value</comment>
   </data>
 </root>

@@ -24,6 +24,7 @@ using Neumont.Tools.ORMToORMAbstractionBridge;
 using Neumont.Tools.ORMAbstraction;
 using Neumont.Tools.RelationalModels.ConceptualDatabase;
 using System.Collections.ObjectModel;
+using ORMCore = Neumont.Tools.ORM.ObjectModel;
 
 namespace Neumont.Tools.ORMAbstractionToConceptualDatabaseBridge
 {
@@ -77,6 +78,33 @@ namespace Neumont.Tools.ORMAbstractionToConceptualDatabaseBridge
 			private static void InformationTypeFormatDeletedRule(ElementDeletedEventArgs e)
 			{
 				RebuildAbstractionModel(((AbstractionModelHasInformationTypeFormat)e.ModelElement).Model);
+			}
+			/// <summary>
+			/// AddRule: typeof(AssimilationMappingCustomizesFactType)
+			/// </summary>
+			private static void AssimilationMappingAddedRule(ElementAddedEventArgs e)
+			{
+				ORMCore.ORMModel ormModel = ((AssimilationMappingCustomizesFactType)e.ModelElement).FactType.Model;
+				if (ormModel != null)
+				{
+					RebuildAbstractionModel(AbstractionModelIsForORMModel.GetAbstractionModel(ormModel));
+				}
+			}
+			/// <summary>
+			/// ChangeRule: typeof(AssimilationMapping)
+			/// </summary>
+			private static void AssimilationMappingChangedRule(ElementPropertyChangedEventArgs e)
+			{
+				if (e.DomainProperty.Id == AssimilationMapping.AbsorptionChoiceDomainPropertyId)
+				{
+					ORMCore.FactType factType;
+					ORMCore.ORMModel ormModel;
+					if (null != (factType = ((AssimilationMapping)e.ModelElement).FactType) &&
+						null != (ormModel = factType.Model))
+					{
+						RebuildAbstractionModel(AbstractionModelIsForORMModel.GetAbstractionModel(ormModel));
+					}
+				}
 			}
 			private static void RebuildAbstractionModel(AbstractionModel model)
 			{

@@ -149,37 +149,37 @@
     <value>AbsorptionChoice</value>
     <comment>DisplayName for DomainProperty &apos;AbsorptionChoice&apos; on DomainClass &apos;AssimilationMapping&apos;</comment>
   </data>
-  <data name="Neumont.Tools.ORMAbstractionToConceptualDatabaseBridge.AssimilationMappingCustomizesAssimilation.Description" xml:space="preserve">
-    <value>Description for Neumont.Tools.ORMAbstractionToConceptualDatabaseBridge.AssimilationMappingCustomizesAssimilation</value>
-    <comment>Description for DomainClass &apos;AssimilationMappingCustomizesAssimilation&apos;</comment>
+  <data name="Neumont.Tools.ORMAbstractionToConceptualDatabaseBridge.AssimilationMappingCustomizesFactType.Description" xml:space="preserve">
+    <value>Description for Neumont.Tools.ORMAbstractionToConceptualDatabaseBridge.AssimilationMappingCustomizesFactType</value>
+    <comment>Description for DomainClass &apos;AssimilationMappingCustomizesFactType&apos;</comment>
   </data>
-  <data name="Neumont.Tools.ORMAbstractionToConceptualDatabaseBridge.AssimilationMappingCustomizesAssimilation.DisplayName" xml:space="preserve">
-    <value>Assimilation Mapping Customizes Assimilation</value>
-    <comment>DisplayName for DomainClass &apos;AssimilationMappingCustomizesAssimilation&apos;</comment>
+  <data name="Neumont.Tools.ORMAbstractionToConceptualDatabaseBridge.AssimilationMappingCustomizesFactType.DisplayName" xml:space="preserve">
+    <value>Assimilation Mapping Customizes Fact Type</value>
+    <comment>DisplayName for DomainClass &apos;AssimilationMappingCustomizesFactType&apos;</comment>
   </data>
-  <data name="Neumont.Tools.ORMAbstractionToConceptualDatabaseBridge.AssimilationMappingCustomizesAssimilation/AssimilationMapping.Description" xml:space="preserve">
+  <data name="Neumont.Tools.ORMAbstractionToConceptualDatabaseBridge.AssimilationMappingCustomizesFactType/AssimilationMapping.Description" xml:space="preserve">
     <value></value>
-    <comment>Description for DomainRole &apos;AssimilationMapping&apos; on DomainRelationship &apos;AssimilationMappingCustomizesAssimilation&apos;</comment>
+    <comment>Description for DomainRole &apos;AssimilationMapping&apos; on DomainRelationship &apos;AssimilationMappingCustomizesFactType&apos;</comment>
   </data>
-  <data name="Neumont.Tools.ORMAbstractionToConceptualDatabaseBridge.AssimilationMappingCustomizesAssimilation/AssimilationMapping.DisplayName" xml:space="preserve">
+  <data name="Neumont.Tools.ORMAbstractionToConceptualDatabaseBridge.AssimilationMappingCustomizesFactType/AssimilationMapping.DisplayName" xml:space="preserve">
     <value>Assimilation Mapping</value>
-    <comment>DisplayName for DomainRole &apos;AssimilationMapping&apos; on DomainRelationship &apos;AssimilationMappingCustomizesAssimilation&apos;</comment>
+    <comment>DisplayName for DomainRole &apos;AssimilationMapping&apos; on DomainRelationship &apos;AssimilationMappingCustomizesFactType&apos;</comment>
   </data>
-  <data name="Neumont.Tools.ORMAbstractionToConceptualDatabaseBridge.AssimilationMappingCustomizesAssimilation/AssimilationMapping.PropertyDisplayName" xml:space="preserve">
-    <value>Assimilation</value>
-    <comment>PropertyDisplayName for DomainRole &apos;AssimilationMapping&apos; on DomainRelationship &apos;AssimilationMappingCustomizesAssimilation&apos;</comment>
+  <data name="Neumont.Tools.ORMAbstractionToConceptualDatabaseBridge.AssimilationMappingCustomizesFactType/AssimilationMapping.PropertyDisplayName" xml:space="preserve">
+    <value>Fact Type</value>
+    <comment>PropertyDisplayName for DomainRole &apos;AssimilationMapping&apos; on DomainRelationship &apos;AssimilationMappingCustomizesFactType&apos;</comment>
   </data>
-  <data name="Neumont.Tools.ORMAbstractionToConceptualDatabaseBridge.AssimilationMappingCustomizesAssimilation/Assimilation.Description" xml:space="preserve">
+  <data name="Neumont.Tools.ORMAbstractionToConceptualDatabaseBridge.AssimilationMappingCustomizesFactType/FactType.Description" xml:space="preserve">
     <value></value>
-    <comment>Description for DomainRole &apos;Assimilation&apos; on DomainRelationship &apos;AssimilationMappingCustomizesAssimilation&apos;</comment>
+    <comment>Description for DomainRole &apos;FactType&apos; on DomainRelationship &apos;AssimilationMappingCustomizesFactType&apos;</comment>
   </data>
-  <data name="Neumont.Tools.ORMAbstractionToConceptualDatabaseBridge.AssimilationMappingCustomizesAssimilation/Assimilation.DisplayName" xml:space="preserve">
-    <value>Assimilation</value>
-    <comment>DisplayName for DomainRole &apos;Assimilation&apos; on DomainRelationship &apos;AssimilationMappingCustomizesAssimilation&apos;</comment>
+  <data name="Neumont.Tools.ORMAbstractionToConceptualDatabaseBridge.AssimilationMappingCustomizesFactType/FactType.DisplayName" xml:space="preserve">
+    <value>Fact Type</value>
+    <comment>DisplayName for DomainRole &apos;FactType&apos; on DomainRelationship &apos;AssimilationMappingCustomizesFactType&apos;</comment>
   </data>
-  <data name="Neumont.Tools.ORMAbstractionToConceptualDatabaseBridge.AssimilationMappingCustomizesAssimilation/Assimilation.PropertyDisplayName" xml:space="preserve">
+  <data name="Neumont.Tools.ORMAbstractionToConceptualDatabaseBridge.AssimilationMappingCustomizesFactType/FactType.PropertyDisplayName" xml:space="preserve">
     <value>Assimilation Mapping</value>
-    <comment>PropertyDisplayName for DomainRole &apos;Assimilation&apos; on DomainRelationship &apos;AssimilationMappingCustomizesAssimilation&apos;</comment>
+    <comment>PropertyDisplayName for DomainRole &apos;FactType&apos; on DomainRelationship &apos;AssimilationMappingCustomizesFactType&apos;</comment>
   </data>
   <data name="Neumont.Tools.ORMAbstractionToConceptualDatabaseBridge.MappingCustomizationModelHasAssimilationMapping.Description" xml:space="preserve">
     <value>Description for Neumont.Tools.ORMAbstractionToConceptualDatabaseBridge.MappingCustomizationModelHasAssimilationMapping</value>
@@ -212,38 +212,6 @@
   <data name="Neumont.Tools.ORMAbstractionToConceptualDatabaseBridge.MappingCustomizationModelHasAssimilationMapping/AssimilationMapping.PropertyDisplayName" xml:space="preserve">
     <value>Model</value>
     <comment>PropertyDisplayName for DomainRole &apos;AssimilationMapping&apos; on DomainRelationship &apos;MappingCustomizationModelHasAssimilationMapping&apos;</comment>
-  </data>
-  <data name="Neumont.Tools.ORMAbstractionToConceptualDatabaseBridge.AssimilationMappingKeepAlive.Description" xml:space="preserve">
-    <value>Description for Neumont.Tools.ORMAbstractionToConceptualDatabaseBridge.AssimilationMappingKeepAlive</value>
-    <comment>Description for DomainClass &apos;AssimilationMappingKeepAlive&apos;</comment>
-  </data>
-  <data name="Neumont.Tools.ORMAbstractionToConceptualDatabaseBridge.AssimilationMappingKeepAlive.DisplayName" xml:space="preserve">
-    <value>Assimilation Mapping Keep Alive</value>
-    <comment>DisplayName for DomainClass &apos;AssimilationMappingKeepAlive&apos;</comment>
-  </data>
-  <data name="Neumont.Tools.ORMAbstractionToConceptualDatabaseBridge.AssimilationMappingKeepAlive/AssimilationMapping.Description" xml:space="preserve">
-    <value></value>
-    <comment>Description for DomainRole &apos;AssimilationMapping&apos; on DomainRelationship &apos;AssimilationMappingKeepAlive&apos;</comment>
-  </data>
-  <data name="Neumont.Tools.ORMAbstractionToConceptualDatabaseBridge.AssimilationMappingKeepAlive/AssimilationMapping.DisplayName" xml:space="preserve">
-    <value>Assimilation Mapping</value>
-    <comment>DisplayName for DomainRole &apos;AssimilationMapping&apos; on DomainRelationship &apos;AssimilationMappingKeepAlive&apos;</comment>
-  </data>
-  <data name="Neumont.Tools.ORMAbstractionToConceptualDatabaseBridge.AssimilationMappingKeepAlive/AssimilationMapping.PropertyDisplayName" xml:space="preserve">
-    <value>Fact Type</value>
-    <comment>PropertyDisplayName for DomainRole &apos;AssimilationMapping&apos; on DomainRelationship &apos;AssimilationMappingKeepAlive&apos;</comment>
-  </data>
-  <data name="Neumont.Tools.ORMAbstractionToConceptualDatabaseBridge.AssimilationMappingKeepAlive/FactType.Description" xml:space="preserve">
-    <value></value>
-    <comment>Description for DomainRole &apos;FactType&apos; on DomainRelationship &apos;AssimilationMappingKeepAlive&apos;</comment>
-  </data>
-  <data name="Neumont.Tools.ORMAbstractionToConceptualDatabaseBridge.AssimilationMappingKeepAlive/FactType.DisplayName" xml:space="preserve">
-    <value>Fact Type</value>
-    <comment>DisplayName for DomainRole &apos;FactType&apos; on DomainRelationship &apos;AssimilationMappingKeepAlive&apos;</comment>
-  </data>
-  <data name="Neumont.Tools.ORMAbstractionToConceptualDatabaseBridge.AssimilationMappingKeepAlive/FactType.PropertyDisplayName" xml:space="preserve">
-    <value>Assimilation Mapping</value>
-    <comment>PropertyDisplayName for DomainRole &apos;FactType&apos; on DomainRelationship &apos;AssimilationMappingKeepAlive&apos;</comment>
   </data>
   <data name="Neumont.Tools.ORMAbstractionToConceptualDatabaseBridge.SchemaIsForAbstractionModel.Description" xml:space="preserve">
     <value>Description for Neumont.Tools.ORMAbstractionToConceptualDatabaseBridge.SchemaIsForAbstractionModel</value>

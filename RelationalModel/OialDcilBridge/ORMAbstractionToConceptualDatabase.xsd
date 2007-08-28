@@ -71,7 +71,7 @@
 	</xs:complexType>
 	<xs:complexType name="AssimilationMappingType">
 		<xs:sequence>
-			<xs:element name="Assimilation">
+			<xs:element name="FactType">
 				<xs:complexType>
 					<xs:attribute name="ref" type="xs:IDREF" use="required"/>
 				</xs:complexType>

@@ -1932,7 +1932,7 @@ namespace Neumont.Tools.ORM
 				return ResourceStrings.GetString(ResourceManagers.Model, "ModelError.ObjectType.ObjectTypeRequiresPrimarySupertypeError.Message");
 			}
 		}
-		/// <summary>Text displayed in the text of the CompatibleSupertypesError.</summary>
+		/// <summary>Text displayed in the text of the CompatibleSupertypesError. {0}=ObjectType name {1}=model name.</summary>
 		public static string ModelErrorObjectTypeCompatibleSupertypesError
 		{
 			get

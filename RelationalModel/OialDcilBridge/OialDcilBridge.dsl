@@ -31,6 +31,11 @@
 		</ClrAttribute>
 		<ClrAttribute Name="DslModeling::ExtendsDomainModel">
 			<Parameters>
+				<AttributeParameter Value="&quot;3EAE649F-E654-4D04-8289-C25D2C0322D8&quot;/*Neumont.Tools.ORM.ObjectModel.ORMCoreDomainModel*/"/>
+			</Parameters>
+		</ClrAttribute>
+		<ClrAttribute Name="DslModeling::ExtendsDomainModel">
+			<Parameters>
 				<AttributeParameter Value="&quot;F7BC82F4-83D1-408C-BA42-607E90B23BEA&quot;/*Neumont.Tools.ORMAbstraction.AbstractionDomainModel*/"/>
 			</Parameters>
 		</ClrAttribute>
@@ -55,20 +60,18 @@
 	</Classes>
 	
 	<Relationships>
-		<DomainRelationship Id="C997059D-5F08-43DB-A225-B698EA7BADFB" Name="AssimilationMappingCustomizesAssimilation" Namespace="Neumont.Tools.ORMAbstractionToConceptualDatabaseBridge">
+		<DomainRelationship Id="C997059D-5F08-43DB-A225-B698EA7BADFB" Name="AssimilationMappingCustomizesFactType" Namespace="Neumont.Tools.ORMAbstractionToConceptualDatabaseBridge">
 			<Source>
-				<!-- UNDONE: AssimilationMappingKeepAlive, propagateDelete="true" was removed here so that the AssimilationMapping survives reabsorbing the model. This
-				is a temporary hack until we have more incremental work in place and the ConceptTypeAssimilatesConceptType elements survive regeneration. -->
-				<DomainRole Id="CDF964C3-4A74-479A-86DB-5D5ABB23DCEA" Description="" Name="AssimilationMapping" PropertyName="Assimilation" Multiplicity="ZeroOne" IsPropertyGenerator="true">
+				<DomainRole Id="CDF964C3-4A74-479A-86DB-5D5ABB23DCEA" Description="" Name="AssimilationMapping" PropertyName="FactType" Multiplicity="ZeroOne" PropagatesDelete="true" IsPropertyGenerator="true">
 					<RolePlayer>
 						<DomainClassMoniker Name="AssimilationMapping"/>
 					</RolePlayer>
 				</DomainRole>
 			</Source>
 			<Target>
-				<DomainRole Id="41BD276D-D55E-4972-AFD9-757EBE824F39" Description="" Name="Assimilation" PropertyName="AssimilationMapping" Multiplicity="One" IsPropertyGenerator="false">
+				<DomainRole Id="41BD276D-D55E-4972-AFD9-757EBE824F39" Description="" Name="FactType" PropertyName="AssimilationMapping" Multiplicity="One" IsPropertyGenerator="false">
 					<RolePlayer>
-						<DomainRelationshipMoniker Name="/Neumont.Tools.ORMAbstraction/ConceptTypeAssimilatesConceptType"/>
+						<DomainClassMoniker Name="/Neumont.Tools.ORM.ObjectModel/FactType"/>
 					</RolePlayer>
 				</DomainRole>
 			</Target>
@@ -85,25 +88,6 @@
 				<DomainRole Id="DA82C400-912E-45B2-87C4-56AF21A7D481" Description="" Name="AssimilationMapping" PropertyName="Model" Multiplicity="One" PropagatesDelete="true" IsPropertyGenerator="true">
 					<RolePlayer>
 						<DomainClassMoniker Name="AssimilationMapping"/>
-					</RolePlayer>
-				</DomainRole>
-			</Target>
-		</DomainRelationship>
-		<!-- UNDONE: AssimilationMappingKeepAlive, This is a temporary relationship from the AssimilationMapping directly to the FactType. We create
-		these automatically and use them as the delete propagation relationship, effectively stopping regeneration of the abstraction model from
-		deleting our absorption options. -->
-		<DomainRelationship Id="8B7D8BC7-A27B-4DAE-8864-3FA212655D0D" Name="AssimilationMappingKeepAlive" Namespace="Neumont.Tools.ORMAbstractionToConceptualDatabaseBridge" Description="Temporary relationship to keep mapping options associated with a FactType when the absorption model is recalculated">
-			<Source>
-				<DomainRole Id="C6E40FC7-BB65-437A-A178-F988829E0F23" Description="" Name="AssimilationMapping" PropertyName="FactType" Multiplicity="ZeroOne" PropagatesDelete="true" IsPropertyGenerator="false">
-					<RolePlayer>
-						<DomainClassMoniker Name="AssimilationMapping"/>
-					</RolePlayer>
-				</DomainRole>
-			</Source>
-			<Target>
-				<DomainRole Id="2B75C3CE-B9E9-47FF-BF8C-06D388F49E6A" Description="" Name="FactType" PropertyName="AssimilationMapping" Multiplicity="ZeroMany" IsPropertyGenerator="false">
-					<RolePlayer>
-						<DomainClassMoniker Name="/Microsoft.VisualStudio.Modeling/ModelElement"/>
 					</RolePlayer>
 				</DomainRole>
 			</Target>

@@ -298,8 +298,8 @@
 		<comment>Model validation error shown when a population violates a uniqueness constraint and its role is named.  Field 0 is the name of the object type, field 1 is the string representation of the instance, field 2 is the model name, field 3 is the role name.</comment>
 	</data>
 	<data name="ModelError.ObjectType.CompatibleSupertypesError.Message" xml:space="preserve">
-		<value>Supertypes for object type '{0}' in model '{1}' must be compatible and intransitive. {0}=ObjectType name {1}=model name</value>
-		<comment>Text displayed in the text of the CompatibleSupertypesError.</comment>
+		<value>Direct supertypes of ObjectType '{0}' in model '{1}' must be overlapping without transitive implication.</value>
+		<comment>Text displayed in the text of the CompatibleSupertypesError. {0}=ObjectType name {1}=model name.</comment>
 	</data>
 	<data name="ModelError.ObjectType.ObjectTypeRequiresPrimarySupertypeError.Message" xml:space="preserve">
 		<value>Object type '{0}' in model '{1}' requires a primary supertype.</value>

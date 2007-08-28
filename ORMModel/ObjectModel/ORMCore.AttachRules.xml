@@ -407,15 +407,21 @@
 			<arg:RolePlayerChangeRule methodName="CheckIsIndependentRolePlayerChangeRule">
 				<arg:RuleOn targetType="ObjectTypePlaysRole"/>
 			</arg:RolePlayerChangeRule>
+			<arg:AddRule methodName="ConstraintRoleAddedRule">
+				<arg:RuleOn targetType="ConstraintRoleSequenceHasRole"/>
+			</arg:AddRule>
+			<arg:DeletingRule methodName="ConstraintRoleDeletingRule">
+				<arg:RuleOn targetType="ConstraintRoleSequenceHasRole"/>
+			</arg:DeletingRule>
+			<arg:ChangeRule methodName="ExclusionModalityChangeRule">
+				<arg:RuleOn targetType="ExclusionConstraint"/>
+			</arg:ChangeRule>
+			<arg:AddRule methodName="ExclusionSequenceAddedRule">
+				<arg:RuleOn targetType="SetComparisonConstraintHasRoleSequence"/>
+			</arg:AddRule>
 			<arg:ChangeRule methodName="MandatoryModalityChangeRule">
 				<arg:RuleOn targetType="MandatoryConstraint"/>
 			</arg:ChangeRule>
-			<arg:AddRule methodName="MandatoryRoleAddedRule">
-				<arg:RuleOn targetType="ConstraintRoleSequenceHasRole"/>
-			</arg:AddRule>
-			<arg:DeletingRule methodName="MandatoryRoleDeletingRule">
-				<arg:RuleOn targetType="ConstraintRoleSequenceHasRole"/>
-			</arg:DeletingRule>
 			<arg:AddRule methodName="ObjectTypeAddedRule">
 				<arg:RuleOn targetType="ModelHasObjectType"/>
 			</arg:AddRule>

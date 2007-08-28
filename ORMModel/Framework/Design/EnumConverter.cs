@@ -43,7 +43,7 @@ namespace Neumont.Tools.Modeling.Design
 	/// </remarks>
 	[CLSCompliant(false)] // IConvertible is not CLS-compliant
 	[HostProtection(SecurityAction.LinkDemand, SharedState = true)]
-	public sealed class EnumConverter<TEnum, TResourceManagerSource> : EnumConverter
+	public class EnumConverter<TEnum, TResourceManagerSource> : EnumConverter
 		where TEnum : struct, IFormattable, IComparable, IConvertible // This is as close as we can get to 'System.Enum'
 	{
 		#region EnumValueInfo struct
@@ -405,7 +405,7 @@ namespace Neumont.Tools.Modeling.Design
 		/// </list>
 		/// </remarks>
 		/// <seealso cref="TypeConverter.GetStandardValues(ITypeDescriptorContext)"/>
-		public sealed override StandardValuesCollection GetStandardValues(ITypeDescriptorContext context)
+		public override StandardValuesCollection GetStandardValues(ITypeDescriptorContext context)
 		{
 			StandardValuesCollection standardValuesCollection = base.GetStandardValues(context);
 			object component;

@@ -202,32 +202,32 @@ namespace Neumont.Tools.ORMAbstractionToConceptualDatabaseBridge
 		}
 		
 		#endregion
-		#region Assimilation opposite domain role accessor
+		#region FactType opposite domain role accessor
 		/// <summary>
-		/// Gets or sets Assimilation.
+		/// Gets or sets FactType.
 		/// </summary>
-		public virtual global::Neumont.Tools.ORMAbstraction.ConceptTypeAssimilatesConceptType Assimilation
+		public virtual global::Neumont.Tools.ORM.ObjectModel.FactType FactType
 		{
 			[global::System.Diagnostics.DebuggerStepThrough]
 			get
 			{
-				return DslModeling::DomainRoleInfo.GetLinkedElement(this, global::Neumont.Tools.ORMAbstractionToConceptualDatabaseBridge.AssimilationMappingCustomizesAssimilation.AssimilationMappingDomainRoleId) as global::Neumont.Tools.ORMAbstraction.ConceptTypeAssimilatesConceptType;
+				return DslModeling::DomainRoleInfo.GetLinkedElement(this, global::Neumont.Tools.ORMAbstractionToConceptualDatabaseBridge.AssimilationMappingCustomizesFactType.AssimilationMappingDomainRoleId) as global::Neumont.Tools.ORM.ObjectModel.FactType;
 			}
 			[global::System.Diagnostics.DebuggerStepThrough]
 			set
 			{
 				DslModeling::ModelElement existingSource;
 				if (null != value &&
-					null != (existingSource = DslModeling::DomainRoleInfo.GetLinkedElement(value, global::Neumont.Tools.ORMAbstractionToConceptualDatabaseBridge.AssimilationMappingCustomizesAssimilation.AssimilationDomainRoleId)))
+					null != (existingSource = DslModeling::DomainRoleInfo.GetLinkedElement(value, global::Neumont.Tools.ORMAbstractionToConceptualDatabaseBridge.AssimilationMappingCustomizesFactType.FactTypeDomainRoleId)))
 				{
 					if (existingSource != value)
 					{
-						DslModeling::DomainRoleInfo.SetLinkedElement(value, global::Neumont.Tools.ORMAbstractionToConceptualDatabaseBridge.AssimilationMappingCustomizesAssimilation.AssimilationDomainRoleId, this);
+						DslModeling::DomainRoleInfo.SetLinkedElement(value, global::Neumont.Tools.ORMAbstractionToConceptualDatabaseBridge.AssimilationMappingCustomizesFactType.FactTypeDomainRoleId, this);
 					}
 				}
 				else
 				{
-					DslModeling::DomainRoleInfo.SetLinkedElement(this, global::Neumont.Tools.ORMAbstractionToConceptualDatabaseBridge.AssimilationMappingCustomizesAssimilation.AssimilationMappingDomainRoleId, value);
+					DslModeling::DomainRoleInfo.SetLinkedElement(this, global::Neumont.Tools.ORMAbstractionToConceptualDatabaseBridge.AssimilationMappingCustomizesFactType.AssimilationMappingDomainRoleId, value);
 				}
 			}
 		}

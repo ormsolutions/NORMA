@@ -57,27 +57,13 @@ namespace Neumont.Tools.ORMAbstractionToConceptualDatabaseBridge
 		{
 			return GetCustomElementNamespaces();
 		}
-		private Dictionary<DomainClassInfo, object> myCustomSerializationOmissions;
-		private static Dictionary<DomainClassInfo, object> BuildCustomSerializationOmissions(Store store)
-		{
-			Dictionary<DomainClassInfo, object> retVal = new Dictionary<DomainClassInfo, object>();
-			DomainDataDirectory dataDir = store.DomainDataDirectory;
-			retVal[dataDir.FindDomainRelationship(AssimilationMappingKeepAlive.DomainClassId)] = null;
-			return retVal;
-		}
 		private static Dictionary<string, Guid> myClassNameMap;
 		private static Collection<string> myValidNamespaces;
 		private static CustomSerializedRootRelationshipContainer[] myRootRelationshipContainers;
 		/// <summary>Implements ICustomSerializedDomainModel.ShouldSerializeDomainClass</summary>
 		protected bool ShouldSerializeDomainClass(Store store, DomainClassInfo classInfo)
 		{
-			Dictionary<DomainClassInfo, object> omissions = this.myCustomSerializationOmissions;
-			if (omissions == null)
-			{
-				omissions = ORMAbstractionToConceptualDatabaseBridgeDomainModel.BuildCustomSerializationOmissions(store);
-				this.myCustomSerializationOmissions = omissions;
-			}
-			return !(omissions.ContainsKey(classInfo));
+			return true;
 		}
 		bool ICustomSerializedDomainModel.ShouldSerializeDomainClass(Store store, DomainClassInfo classInfo)
 		{
@@ -288,7 +274,7 @@ namespace Neumont.Tools.ORMAbstractionToConceptualDatabaseBridge
 		{
 			foreach (AssimilationMapping assimilationMapping in this.AssimilationMappingCollection)
 			{
-				if ((assimilationMapping.AbsorptionChoice != AssimilationAbsorptionChoice.Absorb) && (assimilationMapping.Assimilation != null))
+				if (((ICustomSerializedElement)assimilationMapping).ShouldSerialize())
 				{
 					return true;
 				}
@@ -356,9 +342,9 @@ namespace Neumont.Tools.ORMAbstractionToConceptualDatabaseBridge
 		protected CustomSerializedElementInfo GetCustomSerializedLinkInfo(DomainRoleInfo rolePlayedInfo, ElementLink elementLink)
 		{
 			Guid roleId = rolePlayedInfo.Id;
-			if (roleId == AssimilationMappingCustomizesAssimilation.AssimilationDomainRoleId)
+			if (roleId == AssimilationMappingCustomizesFactType.FactTypeDomainRoleId)
 			{
-				return new CustomSerializedElementInfo(null, "Assimilation", null, CustomSerializedElementWriteStyle.Element, null);
+				return new CustomSerializedElementInfo(null, "FactType", null, CustomSerializedElementWriteStyle.Element, null);
 			}
 			return CustomSerializedElementInfo.Default;
 		}
@@ -390,8 +376,8 @@ namespace Neumont.Tools.ORMAbstractionToConceptualDatabaseBridge
 			{
 				childElementMappings = new Dictionary<string, CustomSerializedElementMatch>();
 				CustomSerializedElementMatch match = new CustomSerializedElementMatch();
-				match.InitializeRoles(AssimilationMappingCustomizesAssimilation.AssimilationDomainRoleId);
-				childElementMappings.Add("||||http://schemas.neumont.edu/ORM/Bridge/2007-06/ORMAbstractionToConceptualDatabase|Assimilation", match);
+				match.InitializeRoles(AssimilationMappingCustomizesFactType.FactTypeDomainRoleId);
+				childElementMappings.Add("||||http://schemas.neumont.edu/ORM/Bridge/2007-06/ORMAbstractionToConceptualDatabase|FactType", match);
 				AssimilationMapping.myChildElementMappings = childElementMappings;
 			}
 			CustomSerializedElementMatch rVal;
@@ -414,7 +400,8 @@ namespace Neumont.Tools.ORMAbstractionToConceptualDatabaseBridge
 		/// <summary>Implements ICustomSerializedElement.ShouldSerialize</summary>
 		protected bool ShouldSerialize()
 		{
-			return (this.AbsorptionChoice != AssimilationAbsorptionChoice.Absorb) && (this.Assimilation != null);
+			Neumont.Tools.ORM.ObjectModel.FactType factType = this.FactType;
+			return (this.AbsorptionChoice != GetDefaultAbsorptionChoice(factType)) && IsFactTypeAssociatedWithDeepAssimilationsOnly(factType);
 		}
 		bool ICustomSerializedElement.ShouldSerialize()
 		{
