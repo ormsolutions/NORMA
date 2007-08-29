@@ -278,6 +278,7 @@ namespace Neumont.Tools.ORMToORMAbstractionBridge
 				PermuteFactTypeMappings(chain.PossiblePermutations, chain.UndecidedOneToOneFactTypeMappings, newlyDecidedFactTypeMappings, deeplyMappedObjectTypes, 0);
 				EliminateInvalidPermutations(chain);
 				FindSmallestPermutationsInTermsOfConceptTypes(chain);
+				EliminatePermutationsWithIdenticalResults(chain);
 
 				// Add each mapping from the optimal permutation to the "global" set of decided mappings.
 				foreach (FactTypeMapping optimalMapping in ChooseOptimalPermutation(chain).Mappings)
@@ -441,7 +442,7 @@ namespace Neumont.Tools.ORMToORMAbstractionBridge
 				else
 				{
 					// We have the same number of top-level concept types as the minimum, so we need to check the number of non-top-level concept types.
-					if (nonTopLevelConceptTypes.Count > minTopLevelConceptTypesCount)
+					if (nonTopLevelConceptTypes.Count > minNonTopLevelConceptTypesCount)
 					{
 						// This isn't an optimal permutation, so go on to the next one.
 						continue;
@@ -455,6 +456,53 @@ namespace Neumont.Tools.ORMToORMAbstractionBridge
 				}
 				permutation.SetConceptTypes(topLevelConceptTypes, nonTopLevelConceptTypes);
 				smallestPermutationsInTermsOfConceptTypes.Add(permutation);
+			}
+		}
+
+		/// <summary>
+		/// Eliminates <see cref="Permutation"/>s that have the same set of top-level concept types and non-top-level concept types,
+		/// which will always result in the same OIAL.
+		/// </summary>
+		private static void EliminatePermutationsWithIdenticalResults(Chain chain)
+		{
+			PermutationList smallestPermutationsInTermsOfConceptTypes = chain.SmallestPermutationsInTermsOfConceptTypes;
+			for (int currentPermutationIndex = 0; currentPermutationIndex < smallestPermutationsInTermsOfConceptTypes.Count - 1; currentPermutationIndex++)
+			{
+				Permutation currentPermutation = smallestPermutationsInTermsOfConceptTypes[currentPermutationIndex];
+				for (int comparisonPermutationIndex = smallestPermutationsInTermsOfConceptTypes.Count - 1; comparisonPermutationIndex > currentPermutationIndex; comparisonPermutationIndex--)
+				{
+					Permutation comparisonPermutation = smallestPermutationsInTermsOfConceptTypes[comparisonPermutationIndex];
+
+					bool hasIdenticalConceptTypes = true;
+					// Check if comparisonPermutation has the same top-level concept types.
+					foreach (ObjectType topLevelConceptType in currentPermutation.TopLevelConceptTypes.Keys)
+					{
+						if (!comparisonPermutation.TopLevelConceptTypes.ContainsKey(topLevelConceptType))
+						{
+							hasIdenticalConceptTypes = false;
+							break;
+						}
+					}
+					if (hasIdenticalConceptTypes)
+					{
+						// Check if comparisonPermutation has the same non-top-level concept types.
+						foreach (ObjectType nonTopLevelConceptType in currentPermutation.NonTopLevelConceptTypes.Keys)
+						{
+							if (!comparisonPermutation.NonTopLevelConceptTypes.ContainsKey(nonTopLevelConceptType))
+							{
+								hasIdenticalConceptTypes = false;
+								break;
+							}
+						}
+
+						if (hasIdenticalConceptTypes)
+						{
+							// comparisonPermutation has the same set of top-level and non-top-level concept types, so we can get rid of it.
+							// It is entirely arbitrary which one we get rid of, so we'll keep the first since it is easier.
+							smallestPermutationsInTermsOfConceptTypes.RemoveAt(comparisonPermutationIndex);
+						}
+					}
+				}
 			}
 		}
 
