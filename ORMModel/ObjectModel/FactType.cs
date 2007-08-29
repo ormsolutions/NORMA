@@ -66,7 +66,7 @@ namespace Neumont.Tools.ORM.ObjectModel
 		/// it will then create a new ReadingOrder. It operates under the assumption
 		/// that a transaction has already been started.
 		/// </summary>
-		public ReadingOrder GetReadingOrder(IList<RoleBase> roleOrder)
+		public ReadingOrder EnsureReadingOrder(IList<RoleBase> roleOrder)
 		{
 			ReadingOrder retVal = FindMatchingReadingOrder(roleOrder);
 			if (retVal == null)
@@ -118,7 +118,7 @@ namespace Neumont.Tools.ORM.ObjectModel
 		/// the assumption that a transaction has already been started.
 		/// </summary>
 		/// <returns>Should always return a value unless there was an error creating the ReadingOrder</returns>
-		public ReadingOrder CreateReadingOrder(IList<RoleBase> roleOrder)
+		private ReadingOrder CreateReadingOrder(IList<RoleBase> roleOrder)
 		{
 			ReadingOrder retval = null;
 			if (roleOrder.Count > 0)

@@ -134,6 +134,7 @@
     <Compile Include="AssimilationMapping.cs" />
     <Compile Include="MappingCustomizationModel.cs" />
     <Compile Include="ModificationTracker.cs" />
+    <Compile Include="NameGeneration.cs" />
     <Compile Include="OialDcilBridge.AttachRules.cs">
       <AutoGen>True</AutoGen>
       <DependentUpon>OialDcilBridge.AttachRules.xml</DependentUpon>

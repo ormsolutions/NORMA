@@ -196,7 +196,7 @@ namespace Neumont.Tools.ORMAbstractionToConceptualDatabaseBridge
 			}
 
 			// Change all names to a more apropriate verson.
-			//NameGeneration.GenerateAllNames(schema);
+			NameGeneration.GenerateAllNames(schema);
 		}
 
 		/// <summary>

@@ -180,6 +180,98 @@ namespace Neumont.Tools.ORMAbstractionToConceptualDatabaseBridge
 				}
 			}
 			#endregion // Bridge element modification rules
+			#region Name modification rules
+			/// <summary>
+			/// ChangeRule: typeof(Neumont.Tools.ORMAbstraction.ConceptType)
+			/// </summary>
+			private static void ConceptTypeChangedRule(ElementPropertyChangedEventArgs e)
+			{
+				if (e.DomainProperty.Id == ConceptType.NameDomainPropertyId)
+				{
+					ValidateTableNameChanged(TableIsPrimarilyForConceptType.GetTable((ConceptType)e.ModelElement));
+				}
+			}
+			/// <summary>
+			/// ChangeRule: typeof(Neumont.Tools.ORM.ObjectModel.FactType)
+			/// </summary>
+			private static void FactTypeNameChangedRule(ElementPropertyChangedEventArgs e)
+			{
+				if (e.DomainProperty.Id == ORMCore.FactType.NameChangedDomainPropertyId)
+				{
+					foreach (ConceptTypeChild child in ConceptTypeChildHasPathFactType.GetConceptTypeChild((ORMCore.FactType)e.ModelElement))
+					{
+						ValidateConceptTypeChildNameChanged(child);
+					}
+				}
+			}
+			/// <summary>
+			/// ChangeRule: typeof(Neumont.Tools.ORM.ObjectModel.Role)
+			/// </summary>
+			private static void RoleNameChangedRule(ElementPropertyChangedEventArgs e)
+			{
+				if (e.DomainProperty.Id == ORMCore.Role.NameDomainPropertyId)
+				{
+					ORMCore.FactType factType = ((ORMCore.Role)e.ModelElement).FactType;
+					if (factType != null)
+					{
+						foreach (ConceptTypeChild child in ConceptTypeChildHasPathFactType.GetConceptTypeChild(factType))
+						{
+							ValidateConceptTypeChildNameChanged(child);
+						}
+					}
+				}
+			}
+			private static void ValidateConceptTypeChildNameChanged(ConceptTypeChild child)
+			{
+				if (child != null)
+				{
+					FrameworkDomainModel.DelayValidateElement(child, DelayValidateConceptTypeChildNameChanged);
+				}
+			}
+			[DelayValidatePriority(20, DomainModelType = typeof(AbstractionDomainModel), Order = DelayValidatePriorityOrder.AfterDomainModel)]
+			private static void DelayValidateConceptTypeChildNameChanged(ModelElement element)
+			{
+				if (!element.IsDeleted)
+				{
+					ConceptTypeChild child = (ConceptTypeChild)element;
+					foreach (Column column in ColumnHasConceptTypeChild.GetColumn(child))
+					{
+						ValidateSchemaNamesChanged(column.Table.Schema);
+						break;
+					}
+				}
+			}
+			private static void ValidateTableNameChanged(Table table)
+			{
+				if (table != null)
+				{
+					FrameworkDomainModel.DelayValidateElement(table, DelayValidateTableNameChanged);
+				}
+			}
+			[DelayValidatePriority(20, DomainModelType = typeof(AbstractionDomainModel), Order = DelayValidatePriorityOrder.AfterDomainModel)]
+			private static void DelayValidateTableNameChanged(ModelElement element)
+			{
+				if (!element.IsDeleted)
+				{
+					ValidateSchemaNamesChanged(((Table)element).Schema);
+				}
+			}
+			private static void ValidateSchemaNamesChanged(Schema schema)
+			{
+				if (schema != null)
+				{
+					FrameworkDomainModel.DelayValidateElement(schema, DelayValidateSchemaNamesChanged);
+				}
+			}
+			[DelayValidatePriority(30, DomainModelType = typeof(AbstractionDomainModel), Order = DelayValidatePriorityOrder.AfterDomainModel)]
+			private static void DelayValidateSchemaNamesChanged(ModelElement element)
+			{
+				if (!element.IsDeleted)
+				{
+					NameGeneration.GenerateAllNames((Schema)element);
+				}
+			}
+			#endregion // Name modification rules
 		}
 		#endregion // Regeneration rule delay validation methods
 	}
