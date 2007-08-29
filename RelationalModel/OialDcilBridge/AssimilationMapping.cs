@@ -55,11 +55,20 @@ namespace Neumont.Tools.ORMAbstractionToConceptualDatabaseBridge
 		public static AssimilationAbsorptionChoice GetAbsorptionChoiceFromAssimilation(ConceptTypeAssimilatesConceptType assimilation)
 		{
 			LinkedElementCollection<FactType> factTypes = ConceptTypeChildHasPathFactType.GetPathFactTypeCollection(assimilation);
-			if (factTypes.Count == 1)
-			{
-				return GetAbsorptionChoiceFromFactType(factTypes[0]);
-			}
-			return AssimilationAbsorptionChoice.Absorb;
+			return (factTypes.Count == 1) ?
+				GetAbsorptionChoiceFromFactType(factTypes[0]) :
+				AssimilationAbsorptionChoice.Absorb;
+		}
+		/// <summary>
+		/// Given a <see cref="ConceptTypeAssimilatesConceptType"/> relationship, determine the current
+		/// <see cref="AssimilationMapping"/> for that assimilation
+		/// </summary>
+		public static AssimilationMapping GetAssimilationMappingFromAssimilation(ConceptTypeAssimilatesConceptType assimilation)
+		{
+			LinkedElementCollection<FactType> factTypes = ConceptTypeChildHasPathFactType.GetPathFactTypeCollection(assimilation);
+			return (factTypes.Count == 1) ?
+				AssimilationMappingCustomizesFactType.GetAssimilationMapping(factTypes[0]) :
+				null;
 		}
 		/// <summary>
 		/// Given a <see cref="FactType"/>, determine the stored <see cref="AssimilationAbsorptionChoice"/>.
@@ -69,7 +78,9 @@ namespace Neumont.Tools.ORMAbstractionToConceptualDatabaseBridge
 		private static AssimilationAbsorptionChoice GetAbsorptionChoiceFromFactType(FactType factType)
 		{
 			AssimilationMapping mapping = AssimilationMappingCustomizesFactType.GetAssimilationMapping(factType);
-			return (null != mapping) ? mapping.AbsorptionChoice : AssimilationMapping.GetDefaultAbsorptionChoice(factType);
+			return (null != mapping) ?
+				mapping.AbsorptionChoice :
+				AssimilationMapping.GetDefaultAbsorptionChoice(factType);
 		}
 		/// <summary>
 		/// Given a <see cref="FactType"/>, return an associated <see cref="ConceptTypeAssimilatesConceptType"/>
@@ -121,6 +132,26 @@ namespace Neumont.Tools.ORMAbstractionToConceptualDatabaseBridge
 				}
 			}
 			return retVal;
+		}
+		/// <summary>
+		/// Find or create the <see cref="MappingCustomizationModel"/> for the given <paramref name="store"/>
+		/// </summary>
+		/// <param name="store">The context <see cref="Store"/></param>
+		/// <param name="forceCreate">Set to <see langword="true"/> to force a new customization model to
+		/// be created if one does not already exist.</param>
+		private static MappingCustomizationModel GetMappingCustomizationModel(Store store, bool forceCreate)
+		{
+			MappingCustomizationModel model = null;
+			foreach (MappingCustomizationModel findModel in store.ElementDirectory.FindElements<MappingCustomizationModel>())
+			{
+				model = findModel;
+				break;
+			}
+			if (model == null && forceCreate)
+			{
+				model = new MappingCustomizationModel(store);
+			}
+			return model;
 		}
 		#endregion // Static helper functions
 		#region AssimilationMappingPropertyDescriptor class
@@ -260,34 +291,10 @@ namespace Neumont.Tools.ORMAbstractionToConceptualDatabaseBridge
 			}
 			private static void SetValue(FactType factType, AssimilationAbsorptionChoice newChoice)
 			{
-				AssimilationMapping mapping = AssimilationMappingCustomizesFactType.GetAssimilationMapping(factType);
 				Store store = factType.Store;
 				using (Transaction t = store.TransactionManager.BeginTransaction(ResourceStrings.AbsorptionChoicePropertyTransactionName))
 				{
-					if (mapping != null)
-					{
-						// Note that we don't delete these once they're created so that we
-						// only have to deal with property changes, not deletions, when deciding
-						// our course of acton.
-						mapping.AbsorptionChoice = newChoice;
-					}
-					else if (newChoice != GetDefaultAbsorptionChoice(factType))
-					{
-						MappingCustomizationModel model = null;
-						foreach (MappingCustomizationModel findModel in store.ElementDirectory.FindElements<MappingCustomizationModel>())
-						{
-							model = findModel;
-							break;
-						}
-						if (model == null)
-						{
-							model = new MappingCustomizationModel(store);
-						}
-						mapping = new AssimilationMapping(store, new PropertyAssignment(AssimilationMapping.AbsorptionChoiceDomainPropertyId, newChoice));
-						// Add the model first tells the AssimilationMappingAddedRule method that we want it to process this element
-						mapping.Model = model;
-						mapping.FactType = factType;
-					}
+					SetPrimaryAbsorptionChoice(factType, newChoice);
 					if (t.HasPendingChanges)
 					{
 						t.Commit();
@@ -602,25 +609,19 @@ namespace Neumont.Tools.ORMAbstractionToConceptualDatabaseBridge
 			}
 		}
 		/// <summary>
-		/// Is it possible to partition this <see cref="FactType"/> with the current
-		/// assimilation pattern? Only the possibility of partition is verified. No
-		/// attempt is made to determine if other related FactTypes have the correct
-		/// settings (such as not absorbing away from the partitioned ConceptType) to
-		/// allow partitioning.
+		/// Helper method for <see cref="VerifyCanPartitionFactType"/> and <see cref="DelayValidatePartitionedAssimilator"/>
+		/// If the <paramref name="factType"/> maps towards a role, then get the disjunctive mandatory
+		/// roles associated with that role.
 		/// </summary>
-		/// <param name="factType">The <see cref="FactType"/> to validate</param>
-		/// <param name="throwOnFailure">Throw an exception if this fails instead of returning <see langword="false"/></param>
-		/// <returns><see langword="true"/> if the <paramref name="factType"/> can be partitioned</returns>
-		private static bool VerifyCanPartitionFactType(FactType factType, bool throwOnFailure)
+		/// <param name="factType">An assimilated <see cref="FactType"/></param>
+		/// <param name="towardsRole">The <see cref="Role"/> the <paramref name="factType"/> maps towards</param>
+		/// <returns>The roles from a disjunctive mandatory constraint, or <see langword="null"/></returns>
+		private static LinkedElementCollection<Role> GetDisjunctiveMandatoryRoles(FactType factType, out Role towardsRole)
 		{
-			bool canPartition = false;
-			// We only allow the partition if all of the deeply mapped assimilations
-			// have target roles pointing to the same target as this one and all of
-			// them are part of the same disjunctive mandatory constraint
 			LinkedElementCollection<Role> disjunctiveMandatoryRoles = null;
 			FactTypeMapsTowardsRole towardsRoleLink = FactTypeMapsTowardsRole.GetLinkToTowardsRole(factType);
 
-			Role towardsRole = null;
+			towardsRole = null;
 			if (towardsRoleLink != null &&
 				towardsRoleLink.Depth == MappingDepth.Deep)
 			{
@@ -629,6 +630,7 @@ namespace Neumont.Tools.ORMAbstractionToConceptualDatabaseBridge
 				{
 					MandatoryConstraint testMandatory = constraintSequence as MandatoryConstraint;
 					if (testMandatory != null &&
+						testMandatory.Modality == ConstraintModality.Alethic &&
 						testMandatory.ExclusiveOrExclusionConstraint != null)
 					{
 						if (!ModelError.HasErrors(testMandatory, ModelErrorUses.None))
@@ -639,19 +641,23 @@ namespace Neumont.Tools.ORMAbstractionToConceptualDatabaseBridge
 					}
 				}
 			}
-			ObjectType objectType;
-			ConceptType conceptType;
-			if (disjunctiveMandatoryRoles != null &&
-				null != (objectType = towardsRole.RolePlayer) &&
-				null != (conceptType = ConceptTypeIsForObjectType.GetConceptType(objectType)))
+			return disjunctiveMandatoryRoles;
+		}
+		/// <summary>
+		/// Helper method for <see cref="VerifyCanPartitionFactType"/> and <see cref="DelayValidatePartitionedAssimilator"/>
+		/// </summary>
+		private static bool CanPartitionAssimilations(ReadOnlyCollection<ConceptTypeAssimilatesConceptType> assimilations, LinkedElementCollection<Role> disjunctiveMandatoryRoles)
+		{
+			bool canPartition = false;
+			if (disjunctiveMandatoryRoles != null)
 			{
 				int rolePassedCount = 0;
 				canPartition = true; // Prove otherwise
-				foreach (ConceptTypeAssimilatesConceptType assimilation in ConceptTypeAssimilatesConceptType.GetLinksToAssimilatedConceptTypeCollection(conceptType))
+				foreach (ConceptTypeAssimilatesConceptType assimilation in assimilations)
 				{
-					foreach (FactType otherFactType in ConceptTypeChildHasPathFactType.GetPathFactTypeCollection(assimilation))
+					foreach (FactType factType in ConceptTypeChildHasPathFactType.GetPathFactTypeCollection(assimilation))
 					{
-						FactTypeMapsTowardsRole link = FactTypeMapsTowardsRole.GetLinkToTowardsRole(otherFactType);
+						FactTypeMapsTowardsRole link = FactTypeMapsTowardsRole.GetLinkToTowardsRole(factType);
 						if (link.Depth == MappingDepth.Deep) // UNDONE: Can the mapping depth just be asserted for an assimilated FactType?
 						{
 							if (!disjunctiveMandatoryRoles.Contains(link.TowardsRole.Role))
@@ -668,10 +674,37 @@ namespace Neumont.Tools.ORMAbstractionToConceptualDatabaseBridge
 					canPartition = false;
 				}
 			}
+			return canPartition;
+		}
+		/// <summary>
+		/// Is it possible to partition this <see cref="FactType"/> with the current
+		/// assimilation pattern? Only the possibility of partition is verified. No
+		/// attempt is made to determine if other related FactTypes have the correct
+		/// settings (such as not absorbing away from the partitioned ConceptType) to
+		/// allow partitioning.
+		/// </summary>
+		/// <param name="factType">The <see cref="FactType"/> to validate</param>
+		/// <param name="throwOnFailure">Throw an exception if this fails instead of returning <see langword="false"/></param>
+		/// <returns><see langword="true"/> if the <paramref name="factType"/> can be partitioned</returns>
+		private static bool VerifyCanPartitionFactType(FactType factType, bool throwOnFailure)
+		{
+			bool canPartition = false;
+			// We only allow the partition if all of the deeply mapped assimilations
+			// have target roles pointing to the same target as this one and all of
+			// them are part of the same disjunctive mandatory constraint
+			LinkedElementCollection<Role> disjunctiveMandatoryRoles;
+			ObjectType objectType;
+			ConceptType conceptType;
+			Role towardsRole;
+			if (null != (disjunctiveMandatoryRoles = GetDisjunctiveMandatoryRoles(factType, out towardsRole)) &&
+				null != (objectType = towardsRole.RolePlayer) &&
+				null != (conceptType = ConceptTypeIsForObjectType.GetConceptType(objectType)))
+			{
+				canPartition = CanPartitionAssimilations(ConceptTypeAssimilatesConceptType.GetLinksToAssimilatedConceptTypeCollection(conceptType), disjunctiveMandatoryRoles);
+			}
 			if (throwOnFailure && !canPartition)
 			{
-				// UNDONE: Localize exception
-				throw new InvalidOperationException("Partitioning is not allowed with the current subtyping pattern.");
+				throw new InvalidOperationException(ResourceStrings.AssimilationMappingInvalidPatternForPartitionException);
 			}
 			return canPartition;
 		}
@@ -691,9 +724,8 @@ namespace Neumont.Tools.ORMAbstractionToConceptualDatabaseBridge
 					{
 						return false;
 					}
-					// UNDONE: Localize exception
 					// UNDONE: We can give a better error message here (get all possible (not just nearest) potential shared assimilators for the assimilator)
-					throw new InvalidOperationException("Absorption is not possible without additional modifications on direct or indirect supertype relationships");
+					throw new InvalidOperationException(ResourceStrings.AssimilationMappingInvalidSeparationPatternForAbsorbException);
 				}
 			}
 			else
@@ -702,12 +734,11 @@ namespace Neumont.Tools.ORMAbstractionToConceptualDatabaseBridge
 				{
 					if (GetAbsorptionChoiceFromAssimilation(childAssimilation) == AssimilationAbsorptionChoice.Partition)
 					{
-						// UNDONE: Localize exception
 						if (!throwOnFailure)
 						{
 							return false;
 						}
-						throw new InvalidOperationException("A partitioned ObjectType cannot be absorbed.");
+						throw new InvalidOperationException(ResourceStrings.AssimilationMappingInvalidPartitionPatternForAbsorbException);
 					}
 					break;
 				}
@@ -749,10 +780,55 @@ namespace Neumont.Tools.ORMAbstractionToConceptualDatabaseBridge
 				null;
 		}
 		/// <summary>
-		/// Helper function for <see cref="ProcessModifiedAbsorptionChoice"/>
+		/// Set the <see cref="AssimilationAbsorptionChoice"/> for the provided <see cref="FactType"/>
+		/// and trigger all associated rules.
 		/// </summary>
-		private static void SetAbsorptionChoice(ConceptTypeAssimilatesConceptType assimilation, AssimilationAbsorptionChoice newAbsorptionChoice, AssimilationAbsorptionChoice? requireOldAbsorptionChoice, MappingCustomizationModel customizationModel, AssimilationMapping skipMapping, ref Type disabledChangeRuleType)
+		private static void SetPrimaryAbsorptionChoice(FactType factType, AssimilationAbsorptionChoice newChoice)
 		{
+			AssimilationMapping mapping = AssimilationMappingCustomizesFactType.GetAssimilationMapping(factType);
+			if (mapping != null)
+			{
+				// Note that we don't delete these once they're created so that we
+				// only have to deal with property changes, not deletions, when deciding
+				// our course of acton.
+				mapping.AbsorptionChoice = newChoice;
+			}
+			else if (newChoice != GetDefaultAbsorptionChoice(factType))
+			{
+				Store store = factType.Store;
+				mapping = new AssimilationMapping(store, new PropertyAssignment(AssimilationMapping.AbsorptionChoiceDomainPropertyId, newChoice));
+				// Add the model first tells the AssimilationMappingAddedRule method that we want it to process this element
+				mapping.Model = GetMappingCustomizationModel(store, true);
+				if (factType.IsDeleting)
+				{
+					// UNDONE: Helper to temporary hack workaround in FactTypeDeletingRule. We create these elements
+					// while the FactType is deleting, so they are not automatically deleted at the appropriate time.
+					FrameworkDomainModel.DelayValidateElement(new AssimilationMappingCustomizesFactType(mapping, factType), DelayValidateDeleteTemporaryAssimilationMapping);
+				}
+				else
+				{
+					mapping.FactType = factType;
+				}
+			}
+		}
+		private static void DelayValidateDeleteTemporaryAssimilationMapping(ModelElement element)
+		{
+			if (!element.IsDeleted)
+			{
+				AssimilationMappingCustomizesFactType link = (AssimilationMappingCustomizesFactType)element;
+				if (link.FactType.IsDeleted)
+				{
+					link.Delete();
+				}
+			}
+		}
+		/// <summary>
+		/// Helper function for <see cref="ProcessModifiedAbsorptionChoice"/>. Does not fire additional
+		/// rules for modified absorption choices.
+		/// </summary>
+		private static bool SetSecondaryAbsorptionChoice(ConceptTypeAssimilatesConceptType assimilation, AssimilationAbsorptionChoice newAbsorptionChoice, AssimilationAbsorptionChoice? requireOldAbsorptionChoice, AssimilationMapping skipMapping, ref MappingCustomizationModel customizationModel, ref Type disabledChangeRuleType)
+		{
+			bool retVal = false;
 			Store store = assimilation.Store;
 			foreach (FactType assimilatedFactType in ConceptTypeChildHasPathFactType.GetPathFactTypeCollection(assimilation))
 			{
@@ -761,13 +837,24 @@ namespace Neumont.Tools.ORMAbstractionToConceptualDatabaseBridge
 				{
 					if (mapping != null)
 					{
-						if (!requireOldAbsorptionChoice.HasValue || mapping.AbsorptionChoice == requireOldAbsorptionChoice.Value)
+						if (!requireOldAbsorptionChoice.HasValue || (retVal = mapping.AbsorptionChoice == requireOldAbsorptionChoice.Value))
 						{
-							if (disabledChangeRuleType == null)
+							if (!retVal)
 							{
-								store.RuleManager.DisableRule(disabledChangeRuleType = typeof(AssimilationMappingChangedRuleClass));
+								retVal = mapping.AbsorptionChoice != newAbsorptionChoice;
 							}
-							mapping.AbsorptionChoice = newAbsorptionChoice;
+							if (retVal)
+							{
+								if (disabledChangeRuleType == null)
+								{
+									store.RuleManager.DisableRule(disabledChangeRuleType = typeof(AssimilationMappingChangedRuleClass));
+								}
+								mapping.AbsorptionChoice = newAbsorptionChoice;
+							}
+						}
+						if (customizationModel == null)
+						{
+							customizationModel = mapping.Model;
 						}
 					}
 					else if (GetDefaultAbsorptionChoice(assimilatedFactType) != newAbsorptionChoice)
@@ -775,10 +862,16 @@ namespace Neumont.Tools.ORMAbstractionToConceptualDatabaseBridge
 						mapping = new AssimilationMapping(store, new PropertyAssignment(AssimilationMapping.AbsorptionChoiceDomainPropertyId, newAbsorptionChoice));
 						mapping.FactType = assimilatedFactType;
 						// Add the model last so that this does not interact with the AssimilationMappingAddedRule
+						if (customizationModel == null)
+						{
+							customizationModel = GetMappingCustomizationModel(store, true);
+						}
 						mapping.Model = customizationModel;
+						retVal = true;
 					}
 				}
 			}
+			return retVal;
 		}
 		private static void ProcessModifiedAbsorptionChoice(FactType factType, AssimilationMapping currentMapping, AssimilationAbsorptionChoice oldChoice)
 		{
@@ -805,12 +898,12 @@ namespace Neumont.Tools.ORMAbstractionToConceptualDatabaseBridge
 						{
 							foreach (ConceptTypeAssimilatesConceptType assimilation in ConceptTypeAssimilatesConceptType.GetLinksToAssimilatedConceptTypeCollection(conceptType))
 							{
-								SetAbsorptionChoice(assimilation, AssimilationAbsorptionChoice.Partition, null, customizationModel, currentMapping, ref disabledChangeRuleType);
+								SetSecondaryAbsorptionChoice(assimilation, AssimilationAbsorptionChoice.Partition, null, currentMapping, ref customizationModel, ref disabledChangeRuleType);
 							}
 							// Any assimilation away cannot be absorbed for a partitioned concept type
 							foreach (ConceptTypeAssimilatesConceptType assimilation in ConceptTypeAssimilatesConceptType.GetLinksToAssimilatorConceptTypeCollection(conceptType))
 							{
-								SetAbsorptionChoice(assimilation, AssimilationAbsorptionChoice.Separate, AssimilationAbsorptionChoice.Absorb, customizationModel, currentMapping, ref disabledChangeRuleType);
+								SetSecondaryAbsorptionChoice(assimilation, AssimilationAbsorptionChoice.Separate, AssimilationAbsorptionChoice.Absorb, currentMapping, ref customizationModel, ref disabledChangeRuleType);
 								// Note that any case that would cause the separation here to have side effects is
 								// excluded by the partition pattern. The only time we would worry changing something
 								// to separate is when the downstream types potentially come back together, but
@@ -856,7 +949,7 @@ namespace Neumont.Tools.ORMAbstractionToConceptualDatabaseBridge
 											// as long as there is one.
 											null == AssimilatorTracker.GetNearestAbsorbingAssimilatorConceptType(assimilatorLinks, false, null))
 										{
-											SetAbsorptionChoice(currentAssimilation, AssimilationAbsorptionChoice.Separate, AssimilationAbsorptionChoice.Absorb, customizationModel, currentMapping, ref disabledChangeRuleType);
+											SetSecondaryAbsorptionChoice(currentAssimilation, AssimilationAbsorptionChoice.Separate, AssimilationAbsorptionChoice.Absorb, currentMapping, ref customizationModel, ref disabledChangeRuleType);
 											// Although it is not obvious, there is no need to recurse here. If there are additional assimilations
 											// lower down the chain then they will simply absorb through a remaining assimilator. There is no guarantee
 											// that they will absorb to the same shared concept type, but they will always continue to absorb with the
@@ -886,7 +979,7 @@ namespace Neumont.Tools.ORMAbstractionToConceptualDatabaseBridge
 					{
 						if (partitionedAssimilation != modifiedAssimilation)
 						{
-							SetAbsorptionChoice(partitionedAssimilation, AssimilationAbsorptionChoice.Absorb, AssimilationAbsorptionChoice.Partition, customizationModel, currentMapping, ref disabledChangeRuleType);
+							SetSecondaryAbsorptionChoice(partitionedAssimilation, AssimilationAbsorptionChoice.Absorb, AssimilationAbsorptionChoice.Partition, currentMapping, ref customizationModel, ref disabledChangeRuleType);
 						}
 					}
 				}
@@ -1000,5 +1093,234 @@ namespace Neumont.Tools.ORMAbstractionToConceptualDatabaseBridge
 			}
 		}
 		#endregion // Deserialization Fixup
+		#region ORM/ORMAbstraction Bridge modification tracker
+		/// <summary>
+		/// AddRule: typeof(Neumont.Tools.ORMToORMAbstractionBridge.ConceptTypeChildHasPathFactType)
+		/// Validation absorption choices when a fact type is added to a path
+		/// </summary>
+		private static void PathFactTypeAddedRule(ElementAddedEventArgs e)
+		{
+			ConceptTypeChildHasPathFactType link = (ConceptTypeChildHasPathFactType)e.ModelElement;
+			ConceptTypeAssimilatesConceptType assimilation;
+			FactType factType;
+			AssimilationAbsorptionChoice choice;
+			AssimilationMapping mapping;
+			if (null != (assimilation = link.ConceptTypeChild as ConceptTypeAssimilatesConceptType) &&
+				null != (mapping = AssimilationMappingCustomizesFactType.GetAssimilationMapping(factType = link.PathFactType)) &&
+				(choice = mapping.AbsorptionChoice) != GetDefaultAbsorptionChoice(factType))
+			{
+				switch (choice)
+				{
+					case AssimilationAbsorptionChoice.Partition:
+						FrameworkDomainModel.DelayValidateElement(assimilation.AssimilatorConceptType, DelayValidatePartitionedAssimilator);
+						break;
+					case AssimilationAbsorptionChoice.Separate:
+						FrameworkDomainModel.DelayValidateElement(assimilation, DelayValidateSeparatedAssimilation);
+						break;
+				}
+			}
+		}
+		/// <summary>
+		/// DeletingRule: typeof(Neumont.Tools.ORM.ObjectModel.ExclusiveOrConstraintCoupler)
+		/// Validate partition patterns when a disjunctive mandatory constraint is decoupled or
+		/// being deleted
+		/// </summary>
+		private static void DisjunctiveMandatoryCouplerDeletingRule(ElementDeletingEventArgs e)
+		{
+			ExclusiveOrConstraintCoupler coupler = (ExclusiveOrConstraintCoupler)e.ModelElement;
+			foreach (Role role in coupler.MandatoryConstraint.RoleCollection)
+			{
+				FactType factType;
+				AssimilationMapping mapping;
+				ObjectType rolePlayer;
+				ConceptType conceptType;
+				if (null != (factType = role.BinarizedFactType) &&
+					null != (mapping = AssimilationMappingCustomizesFactType.GetAssimilationMapping(factType)) &&
+					mapping.AbsorptionChoice == AssimilationAbsorptionChoice.Partition &&
+					null != (rolePlayer = role.RolePlayer) &&
+					!rolePlayer.IsDeleting &&
+					null != (conceptType = ConceptTypeIsForObjectType.GetConceptType(rolePlayer)) &&
+					!conceptType.IsDeleting)
+				{
+					FrameworkDomainModel.DelayValidateElement(conceptType, DelayValidatePartitionedAssimilator);
+				}
+				// Just look at the first role, partitions are on all or none
+				break;
+			}
+		}
+		/// <summary>
+		/// DeleteRule: typeof(Neumont.Tools.ORM.ObjectModel.ConstraintRoleSequenceHasRole)
+		/// Validate partition patterns when a role is removed from a disjunctive mandatory constraint
+		/// </summary>
+		private static void DisjunctiveMandatoryRoleDeletedRule(ElementDeletedEventArgs e)
+		{
+			ConstraintRoleSequenceHasRole link = (ConstraintRoleSequenceHasRole)e.ModelElement;
+			Role role = link.Role;
+			ConstraintRoleSequence sequence;
+			MandatoryConstraint mandatoryConstraint;
+			FactType factType;
+			AssimilationMapping mapping;
+			ObjectType rolePlayer;
+			ConceptType conceptType;
+			if (!(role = link.Role).IsDeleted &&
+				!(sequence = link.ConstraintRoleSequence).IsDeleted &&
+				null != (mandatoryConstraint = sequence as MandatoryConstraint) &&
+				null != mandatoryConstraint.ExclusiveOrExclusionConstraint &&
+				null != (factType = role.BinarizedFactType) &&
+				null != (mapping = AssimilationMappingCustomizesFactType.GetAssimilationMapping(factType)) &&
+				mapping.AbsorptionChoice == AssimilationAbsorptionChoice.Partition &&
+				null != (rolePlayer = role.RolePlayer) &&
+				null != (conceptType = ConceptTypeIsForObjectType.GetConceptType(rolePlayer)))
+			{
+				// Note that the case where the full constraint is deleted is handled in the
+				// DisjunctiveMandatoryCouplerDeletingRule
+				FrameworkDomainModel.DelayValidateElement(conceptType, DelayValidatePartitionedAssimilator);
+			}
+		}
+		/// <summary>
+		/// DeletingRule: typeof(Neumont.Tools.ORM.ObjectModel.FactType)
+		/// UNDONE: Very expensive rule that needs to be revisited when
+		/// incremental ORMAbstraction is in place. This takes any assimilated
+		/// <see cref="FactType"/> that is being deleted and separates it.
+		/// </summary>
+		private static void FactTypeDeletingRule(ElementDeletingEventArgs e)
+		{
+			FactType factType = (FactType)e.ModelElement;
+			ConceptTypeAssimilatesConceptType assimilation;
+			MappingCustomizationModel customizationModel;
+			if (null != (assimilation = GetAssimilationFromFactType(factType)) &&
+				null != (customizationModel = GetMappingCustomizationModel(factType.Store, false)))
+			{
+				if (GetAbsorptionChoiceFromAssimilation(assimilation) == AssimilationAbsorptionChoice.Absorb)
+				{
+					SetPrimaryAbsorptionChoice(factType, AssimilationAbsorptionChoice.Separate);
+				}
+			}
+		}
+		/// <summary>
+		/// Delay validator to verify that partitioning is still valid for a <see cref="ConceptType"/>
+		/// with partitioned assimilations. Runs before separation validation.
+		/// </summary>
+		[DelayValidatePriority(-20, DomainModelType = typeof(AbstractionDomainModel), Order = DelayValidatePriorityOrder.AfterDomainModel)]
+		private static void DelayValidatePartitionedAssimilator(ModelElement element)
+		{
+			if (!element.IsDeleted)
+			{
+				ConceptType assimilator = (ConceptType)element;
+				ReadOnlyCollection<ConceptTypeAssimilatesConceptType> assimilations = ConceptTypeAssimilatesConceptType.GetLinksToAssimilatedConceptTypeCollection(assimilator);
+				if (assimilations.Count != 0) // Very unlikely, but need to check
+				{
+					bool partitionInvalid = true; // Prove otherwise
+					// Choose any assimilation, they all need to follow the same pattern
+					LinkedElementCollection<FactType> factTypes = ConceptTypeChildHasPathFactType.GetPathFactTypeCollection(assimilations[0]);
+					if (factTypes.Count == 1)
+					{
+						Role towardsRoleDummy;
+						LinkedElementCollection<Role> disjunctiveMandatoryRoles = GetDisjunctiveMandatoryRoles(factTypes[0], out towardsRoleDummy);
+						if (disjunctiveMandatoryRoles != null)
+						{
+							partitionInvalid = !CanPartitionAssimilations(assimilations, disjunctiveMandatoryRoles);
+						}
+					}
+					if (partitionInvalid)
+					{
+						Type disabledChangeRuleType = null;
+						try
+						{
+							MappingCustomizationModel customizationModel = null;
+							foreach (ConceptTypeAssimilatesConceptType assimilation in assimilations)
+							{
+								// Change from partition to separate. Separate is closest conceptually: the user
+								// will still get separate table for each of the concept types that were previously partitioned.
+								if (SetSecondaryAbsorptionChoice(assimilation, AssimilationAbsorptionChoice.Separate, AssimilationAbsorptionChoice.Partition, null, ref customizationModel, ref disabledChangeRuleType))
+								{
+									FrameworkDomainModel.DelayValidateElement(assimilation, DelayValidateSeparatedAssimilation);
+								}
+							}
+						}
+						finally
+						{
+							if (disabledChangeRuleType != null)
+							{
+								element.Store.RuleManager.EnableRule(disabledChangeRuleType);
+							}
+						}
+					}
+				}
+			}
+		}
+		/// <summary>
+		/// Delay validator to verify that separation does not break downstream absorption choices. This
+		/// routine identifies potentially influenced <see cref="ConceptType"/>s, which are then validated
+		/// at a later phase by <see cref="DelayValidateDownstreamSeparatedConceptType"/>
+		/// </summary>
+		[DelayValidatePriority(-15, DomainModelType = typeof(AbstractionDomainModel), Order = DelayValidatePriorityOrder.AfterDomainModel)]
+		private static void DelayValidateSeparatedAssimilation(ModelElement element)
+		{
+			if (!element.IsDeleted)
+			{
+				ConceptTypeAssimilatesConceptType assimilation = (ConceptTypeAssimilatesConceptType)element;
+				// Goal of this routine is to find all direct and indirect assimilated concept types
+				// so we can verify that any absorption pattern on them is still valid
+				ValidateDownstreamSeparatedConceptType(assimilation.AssimilatedConceptType);
+			}
+		}
+		private static void ValidateDownstreamSeparatedConceptType(ConceptType conceptType)
+		{
+			FrameworkDomainModel.DelayValidateElement(conceptType, DelayValidateDownstreamSeparatedConceptType);
+			foreach (ConceptType assimilatedConceptType in ConceptTypeAssimilatesConceptType.GetAssimilatedConceptTypeCollection(conceptType))
+			{
+				ValidateDownstreamSeparatedConceptType(assimilatedConceptType);
+			}
+		}
+		/// <summary>
+		/// Make sure that any <see cref="ConceptType"/> that is absorbed in more than
+		/// one direction has a shared node.
+		/// </summary>
+		[DelayValidatePriority(-10, DomainModelType = typeof(AbstractionDomainModel), Order = DelayValidatePriorityOrder.AfterDomainModel)]
+		private static void DelayValidateDownstreamSeparatedConceptType(ModelElement element)
+		{
+			if (!element.IsDeleted)
+			{
+				ConceptType conceptType = (ConceptType)element;
+				ReadOnlyCollection<ConceptTypeAssimilatesConceptType> assimilatorLinks = ConceptTypeAssimilatesConceptType.GetLinksToAssimilatorConceptTypeCollection(conceptType);
+				if (assimilatorLinks.Count > 1)
+				{
+					if (null == (AssimilatorTracker.GetNearestAbsorbingAssimilatorConceptType(assimilatorLinks)))
+					{
+						Type disabledChangeRuleType = null;
+						try
+						{
+							MappingCustomizationModel customizationModel = null;
+							bool separationModified = false;
+							foreach (ConceptTypeAssimilatesConceptType assimilation in assimilatorLinks)
+							{
+								// At this point, making an intelligence choice on which
+								// assimilators to separate and which to absorb is difficult,
+								// expensive, and arbitrary. We just separate all of them for now.
+								separationModified |= SetSecondaryAbsorptionChoice(assimilation, AssimilationAbsorptionChoice.Separate, AssimilationAbsorptionChoice.Absorb, null, ref customizationModel, ref disabledChangeRuleType);
+							}
+							if (separationModified)
+							{
+								// Make sure any downstream concept types that have not yet been validated
+								// or have already been validated once are correctly validated.
+								foreach (ConceptType assimilatedConceptType in ConceptTypeAssimilatesConceptType.GetAssimilatedConceptTypeCollection(conceptType))
+								{
+									ValidateDownstreamSeparatedConceptType(assimilatedConceptType);
+								}
+							}
+						}
+						finally
+						{
+							if (disabledChangeRuleType != null)
+							{
+								element.Store.RuleManager.EnableRule(disabledChangeRuleType);
+							}
+						}
+					}
+				}
+			}
+		}
+		#endregion // ORM/ORMAbstraction Bridge modification tracker
 	}
 }

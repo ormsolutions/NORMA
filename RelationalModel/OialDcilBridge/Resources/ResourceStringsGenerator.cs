@@ -52,6 +52,30 @@ namespace Neumont.Tools.ORMAbstractionToConceptualDatabaseBridge
 				return ResourceStrings.GetString(ResourceManagers.CustomizationModel, "AbsorptionChoiceProperty.DisplayName");
 			}
 		}
+		/// <summary>The exception message used when an attempt is made to partition a pattern that does not support partitioning.</summary>
+		public static string AssimilationMappingInvalidPatternForPartitionException
+		{
+			get
+			{
+				return ResourceStrings.GetString(ResourceManagers.CustomizationModel, "AssimilationMapping.InvalidPatternForPartitionException");
+			}
+		}
+		/// <summary>The exception message used when an attempt is made to absorb an assimilation in an incorrect pattern.</summary>
+		public static string AssimilationMappingInvalidSeparationPatternForAbsorbException
+		{
+			get
+			{
+				return ResourceStrings.GetString(ResourceManagers.CustomizationModel, "AssimilationMapping.InvalidSeparationPatternForAbsorbException");
+			}
+		}
+		/// <summary>The exception message used when an attempt is made to absorb a partitioned object type.</summary>
+		public static string AssimilationMappingInvalidPartitionPatternForAbsorbException
+		{
+			get
+			{
+				return ResourceStrings.GetString(ResourceManagers.CustomizationModel, "AssimilationMapping.InvalidPartitionPatternForAbsorbException");
+			}
+		}
 	}
 	#endregion // ResourceStrings class
 }

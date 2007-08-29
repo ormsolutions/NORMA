@@ -59,4 +59,33 @@ namespace Neumont.Tools.RelationalModels.ConceptualDatabase
 		}
 		#endregion // IRedirectVerbalization implementation
 	}
+	partial class UniquenessConstraintIncludesColumn : IRedirectVerbalization
+	{
+		#region IRedirectVerbalization implementation
+		/// <summary>
+		/// The guid for the role in the bridge model we want to defer verbalization to. Lifted
+		/// from the generated bridge code.
+		/// </summary>
+		private static readonly Guid ColumnBridgeRoleId = new Guid(0xbc7ea8a8, 0x8772, 0x4ca4, 0xb9, 0x14, 0xb7, 0x8b, 0x4b, 0x58, 0x33, 0x38);
+
+		/// <summary>
+		/// Implements <see cref="IRedirectVerbalization.SurrogateVerbalizer"/>. Defers to the
+		/// redirection on the column.
+		/// </summary>
+		protected IVerbalize SurrogateVerbalizer
+		{
+			get
+			{
+				return (Column as IRedirectVerbalization).SurrogateVerbalizer;
+			}
+		}
+		IVerbalize IRedirectVerbalization.SurrogateVerbalizer
+		{
+			get
+			{
+				return SurrogateVerbalizer;
+			}
+		}
+		#endregion // IRedirectVerbalization implementation
+	}
 }

@@ -145,4 +145,16 @@
     <value>Not Absorbed</value>
 		<comment>The displayed form of the Separate enum value</comment>
   </data>
+  <data name="AssimilationMapping.InvalidPatternForPartitionException" xml:space="preserve">
+    <value>Partitioning is not allowed with the current subtyping pattern. Partitioning requires an ExclusiveOr constraint between all subtypes.</value>
+    <comment>The exception message used when an attempt is made to partition a pattern that does not support partitioning.</comment>
+  </data>
+  <data name="AssimilationMapping.InvalidSeparationPatternForAbsorbException" xml:space="preserve">
+    <value>Absorption is not possible without additional modifications on direct or indirect supertype relationships.</value>
+    <comment>The exception message used when an attempt is made to absorb an assimilation in an incorrect pattern.</comment>
+  </data>
+  <data name="AssimilationMapping.InvalidPartitionPatternForAbsorbException" xml:space="preserve">
+    <value>A partitioned ObjectType cannot be absorbed into another ObjectType.</value>
+    <comment>The exception message used when an attempt is made to absorb a partitioned object type.</comment>
+  </data>
 </root>

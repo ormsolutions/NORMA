@@ -47,7 +47,11 @@ namespace Neumont.Tools.ORMAbstractionToConceptualDatabaseBridge
 						typeof(ModificationTracker).GetNestedType("RoleNameChangedRuleClass", BindingFlags.Public | BindingFlags.NonPublic),
 						typeof(ModificationTracker).GetNestedType("UniquenessDeletedRuleClass", BindingFlags.Public | BindingFlags.NonPublic),
 						typeof(AssimilationMapping).GetNestedType("AssimilationMappingAddedRuleClass", BindingFlags.Public | BindingFlags.NonPublic),
-						typeof(AssimilationMapping).GetNestedType("AssimilationMappingChangedRuleClass", BindingFlags.Public | BindingFlags.NonPublic)};
+						typeof(AssimilationMapping).GetNestedType("AssimilationMappingChangedRuleClass", BindingFlags.Public | BindingFlags.NonPublic),
+						typeof(AssimilationMapping).GetNestedType("DisjunctiveMandatoryCouplerDeletingRuleClass", BindingFlags.Public | BindingFlags.NonPublic),
+						typeof(AssimilationMapping).GetNestedType("DisjunctiveMandatoryRoleDeletedRuleClass", BindingFlags.Public | BindingFlags.NonPublic),
+						typeof(AssimilationMapping).GetNestedType("FactTypeDeletingRuleClass", BindingFlags.Public | BindingFlags.NonPublic),
+						typeof(AssimilationMapping).GetNestedType("PathFactTypeAddedRuleClass", BindingFlags.Public | BindingFlags.NonPublic)};
 					ORMAbstractionToConceptualDatabaseBridgeDomainModel.myCustomDomainModelTypes = retVal;
 					System.Diagnostics.Debug.Assert(Array.IndexOf<Type>(retVal, null) < 0, "One or more rule types failed to resolve. The file and/or package will fail to load.");
 				}
@@ -81,7 +85,7 @@ namespace Neumont.Tools.ORMAbstractionToConceptualDatabaseBridge
 		{
 			Microsoft.VisualStudio.Modeling.RuleManager ruleManager = store.RuleManager;
 			Type[] disabledRuleTypes = ORMAbstractionToConceptualDatabaseBridgeDomainModel.CustomDomainModelTypes;
-			for (int i = 0; i < 14; ++i)
+			for (int i = 0; i < 18; ++i)
 			{
 				ruleManager.EnableRule(disabledRuleTypes[i]);
 			}
@@ -466,6 +470,110 @@ namespace Neumont.Tools.ORMAbstractionToConceptualDatabaseBridge
 				Neumont.Tools.Modeling.Diagnostics.TraceUtility.TraceRuleStart(e.ModelElement.Store, "Neumont.Tools.ORMAbstractionToConceptualDatabaseBridge.AssimilationMapping.AssimilationMappingChangedRule");
 				AssimilationMapping.AssimilationMappingChangedRule(e);
 				Neumont.Tools.Modeling.Diagnostics.TraceUtility.TraceRuleEnd(e.ModelElement.Store, "Neumont.Tools.ORMAbstractionToConceptualDatabaseBridge.AssimilationMapping.AssimilationMappingChangedRule");
+			}
+		}
+		[Microsoft.VisualStudio.Modeling.RuleOn(typeof(Neumont.Tools.ORM.ObjectModel.ExclusiveOrConstraintCoupler))]
+		private sealed class DisjunctiveMandatoryCouplerDeletingRuleClass : Microsoft.VisualStudio.Modeling.DeletingRule
+		{
+			[System.Diagnostics.DebuggerStepThrough()]
+			public DisjunctiveMandatoryCouplerDeletingRuleClass()
+			{
+				base.IsEnabled = false;
+			}
+			/// <summary>
+			/// Provide the following method in class: 
+			/// Neumont.Tools.ORMAbstractionToConceptualDatabaseBridge.AssimilationMapping
+			/// /// <summary>
+			/// /// DeletingRule: typeof(Neumont.Tools.ORM.ObjectModel.ExclusiveOrConstraintCoupler)
+			/// /// </summary>
+			/// private static void DisjunctiveMandatoryCouplerDeletingRule(ElementDeletingEventArgs e)
+			/// {
+			/// }
+			/// </summary>
+			[System.Diagnostics.DebuggerStepThrough()]
+			public override void ElementDeleting(Microsoft.VisualStudio.Modeling.ElementDeletingEventArgs e)
+			{
+				Neumont.Tools.Modeling.Diagnostics.TraceUtility.TraceRuleStart(e.ModelElement.Store, "Neumont.Tools.ORMAbstractionToConceptualDatabaseBridge.AssimilationMapping.DisjunctiveMandatoryCouplerDeletingRule");
+				AssimilationMapping.DisjunctiveMandatoryCouplerDeletingRule(e);
+				Neumont.Tools.Modeling.Diagnostics.TraceUtility.TraceRuleEnd(e.ModelElement.Store, "Neumont.Tools.ORMAbstractionToConceptualDatabaseBridge.AssimilationMapping.DisjunctiveMandatoryCouplerDeletingRule");
+			}
+		}
+		[Microsoft.VisualStudio.Modeling.RuleOn(typeof(Neumont.Tools.ORM.ObjectModel.ConstraintRoleSequenceHasRole))]
+		private sealed class DisjunctiveMandatoryRoleDeletedRuleClass : Microsoft.VisualStudio.Modeling.DeleteRule
+		{
+			[System.Diagnostics.DebuggerStepThrough()]
+			public DisjunctiveMandatoryRoleDeletedRuleClass()
+			{
+				base.IsEnabled = false;
+			}
+			/// <summary>
+			/// Provide the following method in class: 
+			/// Neumont.Tools.ORMAbstractionToConceptualDatabaseBridge.AssimilationMapping
+			/// /// <summary>
+			/// /// DeleteRule: typeof(Neumont.Tools.ORM.ObjectModel.ConstraintRoleSequenceHasRole)
+			/// /// </summary>
+			/// private static void DisjunctiveMandatoryRoleDeletedRule(ElementDeletedEventArgs e)
+			/// {
+			/// }
+			/// </summary>
+			[System.Diagnostics.DebuggerStepThrough()]
+			public override void ElementDeleted(Microsoft.VisualStudio.Modeling.ElementDeletedEventArgs e)
+			{
+				Neumont.Tools.Modeling.Diagnostics.TraceUtility.TraceRuleStart(e.ModelElement.Store, "Neumont.Tools.ORMAbstractionToConceptualDatabaseBridge.AssimilationMapping.DisjunctiveMandatoryRoleDeletedRule");
+				AssimilationMapping.DisjunctiveMandatoryRoleDeletedRule(e);
+				Neumont.Tools.Modeling.Diagnostics.TraceUtility.TraceRuleEnd(e.ModelElement.Store, "Neumont.Tools.ORMAbstractionToConceptualDatabaseBridge.AssimilationMapping.DisjunctiveMandatoryRoleDeletedRule");
+			}
+		}
+		[Microsoft.VisualStudio.Modeling.RuleOn(typeof(Neumont.Tools.ORM.ObjectModel.FactType))]
+		private sealed class FactTypeDeletingRuleClass : Microsoft.VisualStudio.Modeling.DeletingRule
+		{
+			[System.Diagnostics.DebuggerStepThrough()]
+			public FactTypeDeletingRuleClass()
+			{
+				base.IsEnabled = false;
+			}
+			/// <summary>
+			/// Provide the following method in class: 
+			/// Neumont.Tools.ORMAbstractionToConceptualDatabaseBridge.AssimilationMapping
+			/// /// <summary>
+			/// /// DeletingRule: typeof(Neumont.Tools.ORM.ObjectModel.FactType)
+			/// /// </summary>
+			/// private static void FactTypeDeletingRule(ElementDeletingEventArgs e)
+			/// {
+			/// }
+			/// </summary>
+			[System.Diagnostics.DebuggerStepThrough()]
+			public override void ElementDeleting(Microsoft.VisualStudio.Modeling.ElementDeletingEventArgs e)
+			{
+				Neumont.Tools.Modeling.Diagnostics.TraceUtility.TraceRuleStart(e.ModelElement.Store, "Neumont.Tools.ORMAbstractionToConceptualDatabaseBridge.AssimilationMapping.FactTypeDeletingRule");
+				AssimilationMapping.FactTypeDeletingRule(e);
+				Neumont.Tools.Modeling.Diagnostics.TraceUtility.TraceRuleEnd(e.ModelElement.Store, "Neumont.Tools.ORMAbstractionToConceptualDatabaseBridge.AssimilationMapping.FactTypeDeletingRule");
+			}
+		}
+		[Microsoft.VisualStudio.Modeling.RuleOn(typeof(Neumont.Tools.ORMToORMAbstractionBridge.ConceptTypeChildHasPathFactType))]
+		private sealed class PathFactTypeAddedRuleClass : Microsoft.VisualStudio.Modeling.AddRule
+		{
+			[System.Diagnostics.DebuggerStepThrough()]
+			public PathFactTypeAddedRuleClass()
+			{
+				base.IsEnabled = false;
+			}
+			/// <summary>
+			/// Provide the following method in class: 
+			/// Neumont.Tools.ORMAbstractionToConceptualDatabaseBridge.AssimilationMapping
+			/// /// <summary>
+			/// /// AddRule: typeof(Neumont.Tools.ORMToORMAbstractionBridge.ConceptTypeChildHasPathFactType)
+			/// /// </summary>
+			/// private static void PathFactTypeAddedRule(ElementAddedEventArgs e)
+			/// {
+			/// }
+			/// </summary>
+			[System.Diagnostics.DebuggerStepThrough()]
+			public override void ElementAdded(Microsoft.VisualStudio.Modeling.ElementAddedEventArgs e)
+			{
+				Neumont.Tools.Modeling.Diagnostics.TraceUtility.TraceRuleStart(e.ModelElement.Store, "Neumont.Tools.ORMAbstractionToConceptualDatabaseBridge.AssimilationMapping.PathFactTypeAddedRule");
+				AssimilationMapping.PathFactTypeAddedRule(e);
+				Neumont.Tools.Modeling.Diagnostics.TraceUtility.TraceRuleEnd(e.ModelElement.Store, "Neumont.Tools.ORMAbstractionToConceptualDatabaseBridge.AssimilationMapping.PathFactTypeAddedRule");
 			}
 		}
 	}

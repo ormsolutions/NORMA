@@ -61,6 +61,18 @@
 			<arg:ChangeRule methodName="AssimilationMappingChangedRule">
 				<arg:RuleOn targetType="AssimilationMapping"/>
 			</arg:ChangeRule>
+			<arg:DeletingRule methodName="DisjunctiveMandatoryCouplerDeletingRule">
+				<arg:RuleOn targetType="ExclusiveOrConstraintCoupler" targetTypeQualifier="Neumont.Tools.ORM.ObjectModel"/>
+			</arg:DeletingRule>
+			<arg:DeleteRule methodName="DisjunctiveMandatoryRoleDeletedRule">
+				<arg:RuleOn targetType="ConstraintRoleSequenceHasRole" targetTypeQualifier="Neumont.Tools.ORM.ObjectModel"/>
+			</arg:DeleteRule>
+			<arg:DeletingRule methodName="FactTypeDeletingRule">
+				<arg:RuleOn targetType="FactType" targetTypeQualifier="Neumont.Tools.ORM.ObjectModel"/>
+			</arg:DeletingRule>
+			<arg:AddRule methodName="PathFactTypeAddedRule">
+				<arg:RuleOn targetType="ConceptTypeChildHasPathFactType" targetTypeQualifier="Neumont.Tools.ORMToORMAbstractionBridge"/>
+			</arg:AddRule>
 		</arg:RuleContainer>
 	</arg:Model>
 </arg:Rules>

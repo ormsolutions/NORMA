@@ -35,4 +35,7 @@
 	<ResourceString name="AbsorptionChoicePropertyCategory" model="CustomizationModel" resourceName="AbsorptionChoiceProperty.Category"/>
 	<ResourceString name="AbsorptionChoicePropertyDescription" model="CustomizationModel" resourceName="AbsorptionChoiceProperty.Description"/>
 	<ResourceString name="AbsorptionChoicePropertyDisplayName" model="CustomizationModel" resourceName="AbsorptionChoiceProperty.DisplayName"/>
+	<ResourceString name="AssimilationMappingInvalidPatternForPartitionException" model="CustomizationModel" resourceName="AssimilationMapping.InvalidPatternForPartitionException"/>
+	<ResourceString name="AssimilationMappingInvalidSeparationPatternForAbsorbException" model="CustomizationModel" resourceName="AssimilationMapping.InvalidSeparationPatternForAbsorbException"/>
+	<ResourceString name="AssimilationMappingInvalidPartitionPatternForAbsorbException" model="CustomizationModel" resourceName="AssimilationMapping.InvalidPartitionPatternForAbsorbException"/>
 </ResourceStrings>

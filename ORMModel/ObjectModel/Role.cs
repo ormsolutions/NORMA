@@ -1431,21 +1431,22 @@ namespace Neumont.Tools.ORM.ObjectModel
 			get
 			{
 				// Only do this if it's a binary fact
-				LinkedElementCollection<RoleBase> roles = this.FactType.RoleCollection;
-				if (roles.Count == 2)
+				FactType factType = this.FactType;
+				if (factType != null)
 				{
-					// loop over the collection and get the other role
-					RoleBase oppositeRole = roles[0];
-					if (oppositeRole == this)
+					LinkedElementCollection<RoleBase> roles = factType.RoleCollection;
+					if (roles.Count == 2)
 					{
-						return roles[1];
+						// loop over the collection and get the other role
+						RoleBase oppositeRole = roles[0];
+						if (oppositeRole == this)
+						{
+							return roles[1];
+						}
+						return oppositeRole;
 					}
-					return oppositeRole;
 				}
-				else
-				{
-					return null;
-				}
+				return null;
 			}
 		}
 		/// <summary>
