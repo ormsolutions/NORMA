@@ -466,13 +466,13 @@ namespace Neumont.Tools.ORMToORMAbstractionBridge
 		/// <param name="undecidedOneToOneFactTypeMappings">The undecided <see cref="FactTypeMapping"/> possibilities.</param>
 		private void FilterFactTypeMappings(FactTypeMappingDictionary decidedManyToOneFactTypeMappings, FactTypeMappingDictionary decidedOneToOneFactTypeMappings, FactTypeMappingListDictionary undecidedOneToOneFactTypeMappings)
 		{
-			RemoveImpossiblePotentialFactTypeMappings(decidedOneToOneFactTypeMappings, undecidedOneToOneFactTypeMappings);
-
-			int changeCount = 0;
+			bool changed;
 			do
 			{
-				changeCount = MapTrivialOneToOneFactTypesWithTwoMandatories(decidedOneToOneFactTypeMappings, undecidedOneToOneFactTypeMappings);
-			} while (changeCount > 0);
+				RemoveImpossiblePotentialFactTypeMappings(decidedOneToOneFactTypeMappings, undecidedOneToOneFactTypeMappings);
+
+				changed = MapTrivialOneToOneFactTypesWithTwoMandatories(decidedOneToOneFactTypeMappings, undecidedOneToOneFactTypeMappings) > 0;
+			} while (changed);
 		}
 
 		#region Filter Algorithms Methods
@@ -484,17 +484,15 @@ namespace Neumont.Tools.ORMToORMAbstractionBridge
 		/// <param name="undecidedOneToOneFactTypeMappings">The undecided <see cref="FactTypeMapping"/> possibilities.</param>
 		private void RemoveImpossiblePotentialFactTypeMappings(FactTypeMappingDictionary decidedOneToOneFactTypeMappings, FactTypeMappingListDictionary undecidedOneToOneFactTypeMappings)
 		{
-			ObjectTypeList deeplyMappedObjectTypes = new ObjectTypeList();
+			Dictionary<ObjectType, object> deeplyMappedObjectTypes = new Dictionary<ObjectType,object>(decidedOneToOneFactTypeMappings.Count + undecidedOneToOneFactTypeMappings.Count);
 
 			// For each decided fact type mapping...
-			foreach (KeyValuePair<FactType, FactTypeMapping> decidedFactTypeMapping in decidedOneToOneFactTypeMappings)
+			foreach (FactTypeMapping factTypeMapping in decidedOneToOneFactTypeMappings.Values)
 			{
-				FactTypeMapping factTypeMapping = decidedFactTypeMapping.Value;
-
 				// If it's a deep mapping...
 				if (factTypeMapping.MappingDepth == MappingDepth.Deep)
 				{
-					deeplyMappedObjectTypes.Add(factTypeMapping.FromObjectType);
+					deeplyMappedObjectTypes[factTypeMapping.FromObjectType] = null;
 				}
 			}
 
@@ -511,12 +509,14 @@ namespace Neumont.Tools.ORMToORMAbstractionBridge
 					FactTypeMapping potentialFactTypeMapping = potentialFactTypeMappings[i];
 
 					// If it is maped away from an ObjectType that is already determined to be mapped elsewhere...
-					if (deeplyMappedObjectTypes.Contains(potentialFactTypeMapping.FromObjectType) && potentialFactTypeMapping.MappingDepth == MappingDepth.Deep)
+					if (potentialFactTypeMapping.MappingDepth == MappingDepth.Deep &&  deeplyMappedObjectTypes.ContainsKey(potentialFactTypeMapping.FromObjectType))
 					{
 						// Remove it as a possibility.
 						potentialFactTypeMappings.RemoveAt(i);
 					}
 				}
+
+				Debug.Assert(potentialFactTypeMappings.Count > 0);
 
 				// If there is only one possibility left...
 				if (potentialFactTypeMappings.Count == 1)
@@ -544,13 +544,12 @@ namespace Neumont.Tools.ORMToORMAbstractionBridge
 		/// <returns>The number of previously potential one-to-one fact type mappings that are now decided.</returns>
 		private int MapTrivialOneToOneFactTypesWithTwoMandatories(FactTypeMappingDictionary decidedOneToOneFactTypeMappings, FactTypeMappingListDictionary undecidedOneToOneFactTypeMappings)
 		{
-			int changeCount = 0;
-			FactTypeList factsPendingDeletion = new FactTypeList();
+			FactTypeList factTypesPendingDeletion = new FactTypeList();
 
-			foreach (KeyValuePair<FactType, FactTypeMappingList> undecidedFactTypeMapping in undecidedOneToOneFactTypeMappings)
+			foreach (KeyValuePair<FactType, FactTypeMappingList> undecidedPair in undecidedOneToOneFactTypeMappings)
 			{
-				FactType factType = undecidedFactTypeMapping.Key;
-				FactTypeMappingList potentialFactTypeMappings = undecidedFactTypeMapping.Value;
+				FactType factType = undecidedPair.Key;
+				FactTypeMappingList potentialFactTypeMappings = undecidedPair.Value;
 				LinkedElementCollection<RoleBase> roles = factType.RoleCollection;
 
 				Debug.Assert(roles.Count == 2, "All fact type mappings should be for fact types with exactly two roles.");
@@ -559,48 +558,77 @@ namespace Neumont.Tools.ORMToORMAbstractionBridge
 				Role secondRole = roles[1].Role;
 				ObjectType firstRolePlayer = firstRole.RolePlayer;
 				ObjectType secondRolePlayer = secondRole.RolePlayer;
-				bool firstRoleIsMandatory = null != firstRole.SingleRoleAlethicMandatoryConstraint;
-				bool secondRoleIsMandatory = null != secondRole.SingleRoleAlethicMandatoryConstraint;
 
 				// If this is a one-to-one fact type with two simple alethic mandatories...
-				if (firstRoleIsMandatory && secondRoleIsMandatory)
+				if (firstRole.SingleRoleAlethicMandatoryConstraint != null && secondRole.SingleRoleAlethicMandatoryConstraint != null)
 				{
+					FactTypeMapping deepMappingTowardsFirstRole = null;
+					FactTypeMapping deepMappingTowardsSecondRole = null;
+
+					// Find our potential deep mappings.
+					foreach (FactTypeMapping potentialFactTypeMapping in potentialFactTypeMappings)
+					{
+						if (potentialFactTypeMapping.MappingDepth == MappingDepth.Deep)
+						{
+							if (potentialFactTypeMapping.TowardsRole == firstRole)
+							{
+								deepMappingTowardsFirstRole = potentialFactTypeMapping;
+							}
+							else
+							{
+								Debug.Assert(potentialFactTypeMapping.TowardsRole == secondRole);
+								deepMappingTowardsSecondRole = potentialFactTypeMapping;
+							}
+						}
+					}
+
 					bool firstRolePlayerHasPossibleDeepMappingsAway = ObjectTypeHasPossibleDeepMappingsAway(firstRolePlayer, factType, decidedOneToOneFactTypeMappings, undecidedOneToOneFactTypeMappings);
 					bool secondRolePlayerHasPossibleDeepMappingsAway = ObjectTypeHasPossibleDeepMappingsAway(secondRolePlayer, factType, decidedOneToOneFactTypeMappings, undecidedOneToOneFactTypeMappings);
 
-                    // UNDONE: I think we need to be checking that the deep mappings we decide on here are actually in the list of potentials...
-                    // UNDONE: Also, this can create new decided deep mappings, so we need to be applying the related filters after this runs.
-
-					// TODO: This may not be strong enough.
-					// If secondRolePlayer has no possible deep mappings away from it...
+					// If secondRolePlayer has no possible deep mappings away from it, and firstRolePlayer does...
 					if (firstRolePlayerHasPossibleDeepMappingsAway && !secondRolePlayerHasPossibleDeepMappingsAway)
 					{
-						// Deep map toward firstRolePlayer
-						FactTypeMapping factTypeMapping = new FactTypeMapping(factType, secondRole, firstRole, MappingDepth.Deep);
-
-						decidedOneToOneFactTypeMappings.Add(factType, factTypeMapping);
-						factsPendingDeletion.Add(factType);
-						++changeCount;
+						// Make sure that this deep mapping was one of our potentials.
+						if (deepMappingTowardsFirstRole != null)
+						{
+							Debug.Assert(firstRole.SingleRoleAlethicUniquenessConstraint != null);
+							// Make sure we're not going towards a preferred identifier. Doing so is valid, and sometimes optimal,
+							// but not always, hence the permuter needs to consider it.
+							if (!firstRole.SingleRoleAlethicUniquenessConstraint.IsPreferred)
+							{
+								// Deep map toward firstRolePlayer
+								decidedOneToOneFactTypeMappings.Add(factType, deepMappingTowardsFirstRole);
+								factTypesPendingDeletion.Add(factType);
+							}
+						}
 					}
-					else if (!firstRolePlayerHasPossibleDeepMappingsAway && secondRolePlayerHasPossibleDeepMappingsAway) // ...firstRolePlayer...
+					// ...and vice-versa...
+					else if (!firstRolePlayerHasPossibleDeepMappingsAway && secondRolePlayerHasPossibleDeepMappingsAway)
 					{
-						// Deep map toward secondRolePlayer
-						FactTypeMapping factTypeMapping = new FactTypeMapping(factType, firstRole, secondRole, MappingDepth.Deep);
-
-						decidedOneToOneFactTypeMappings.Add(factType, factTypeMapping);
-						factsPendingDeletion.Add(factType);
-						++changeCount;
+						// Make sure that this deep mapping was one of our potentials.
+						if (deepMappingTowardsSecondRole != null)
+						{
+							Debug.Assert(secondRole.SingleRoleAlethicUniquenessConstraint != null);
+							// Make sure we're not going towards a preferred identifier. Doing so is valid, and sometimes optimal,
+							// but not always, hence the permuter needs to consider it.
+							if (!secondRole.SingleRoleAlethicUniquenessConstraint.IsPreferred)
+							{
+								// Deep map toward secondRolePlayer
+								decidedOneToOneFactTypeMappings.Add(factType, deepMappingTowardsSecondRole);
+								factTypesPendingDeletion.Add(factType);
+							}
+						}
 					}
 				}
 			}
 
 			// Delete each undecided (now decided) fact type mapping marked for deletion.
-			foreach (FactType key in factsPendingDeletion)
+			foreach (FactType key in factTypesPendingDeletion)
 			{
 				undecidedOneToOneFactTypeMappings.Remove(key);
 			}
 
-			return changeCount;
+			return factTypesPendingDeletion.Count;
 		}
 
 		/// <summary>
@@ -786,6 +814,16 @@ namespace Neumont.Tools.ORMToORMAbstractionBridge
 						UniquenessConstraint towardsRoleUniquenessConstraint = (UniquenessConstraint)factTypeMapping.TowardsRole.SingleRoleAlethicUniquenessConstraint;
 						bool fromRoleIsPreferred = fromRoleUniquenessConstraint.IsPreferred;
 						bool towardsRoleIsPreferred = towardsRoleUniquenessConstraint.IsPreferred;
+
+						// UNDONE: Once subtyping is handled correctly on the ORM side, this may need to be adjusted.
+						// If the from object type doesn't have its own preferred identifier and this is a primary subtyping relationship, mark it as being preferred.
+						if (!towardsRoleIsPreferred && factTypeIsSubtype && factTypeMapping.FromObjectType.PreferredIdentifier == null)
+						{
+							if (((SubtypeFact)factTypeMapping.FactType).IsPrimary)
+							{
+								towardsRoleIsPreferred = true;
+							}
+						}
 
 						RoleAssignment assimilatorConceptType = new RoleAssignment(ConceptTypeAssimilatesConceptType.AssimilatorConceptTypeDomainRoleId, towardsConceptType);
 						RoleAssignment assimilatedConceptType = new RoleAssignment(ConceptTypeAssimilatesConceptType.AssimilatedConceptTypeDomainRoleId, fromConceptType);
@@ -1071,7 +1109,7 @@ namespace Neumont.Tools.ORMToORMAbstractionBridge
 		private bool ObjectTypeIsConceptType(ObjectType objectType, FactTypeMappingDictionary factTypeMappings)
 		{
 			// If objectType is independent...
-			if (objectType.IsIndependent)
+			if (objectType.IsAnyIndependent())
 			{
 				return true;
 			}

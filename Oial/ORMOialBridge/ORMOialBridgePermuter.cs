@@ -113,8 +113,14 @@ namespace Neumont.Tools.ORMToORMAbstractionBridge
 				Chain chain = new Chain();
 				myChains.Add(chain);
 
+				// Assuming ProcessObjectType works correctly, we will never hit an object type a second time,
+				// so we can clear the Dictionary here and then use it as a record of all object types in the chain.
+				visitedObjectTypes.Clear();
+
 				ProcessObjectType(factType.RoleCollection[0].Role.RolePlayer, chain, visitedFactTypes, visitedObjectTypes);
 
+				// Record all object types that are in the chain.
+				chain.ObjectTypes.AddRange(visitedObjectTypes.Keys);
 			}
 		}
 		private void ProcessObjectType(ObjectType objectType, Chain chain, Dictionary<FactType, object> visitedFactTypes, Dictionary<ObjectType, object> visitedObjectTypes)
@@ -205,13 +211,6 @@ namespace Neumont.Tools.ORMToORMAbstractionBridge
 
 		private readonly FactTypeMappingDictionary myDecidedFactTypeMappings;
 
-		// Stores a list of object types that had been considered valid top-level, but was later found to be deeply mapped away
-		private readonly ObjectTypeDictionary myInvalidObjectTypes;
-
-		// A single set of possible fact type mappings represented at a given iteration through all possible fact type mappings
-		private readonly ObjectTypeDictionary myPossibleTopLevelConceptTypes;
-		private readonly ObjectTypeDictionary myPossibleConceptTypes;
-
 
 		public FactTypeMappingPermuter(FactTypeMappingDictionary predecidedManyToOneFactTypeMappings, FactTypeMappingDictionary predecidedOneToOneFactTypeMappings, FactTypeMappingListDictionary undecidedOneToOneFactTypeMappings)
 		{
@@ -219,8 +218,7 @@ namespace Neumont.Tools.ORMToORMAbstractionBridge
 			myPredecidedOneToOneFactTypeMappings = predecidedOneToOneFactTypeMappings;
 			myUndecidedOneToOneFactTypeMappings = undecidedOneToOneFactTypeMappings;
 
-			int oneToOneFactTypeCount = predecidedOneToOneFactTypeMappings.Count + undecidedOneToOneFactTypeMappings.Count;
-			myDecidedFactTypeMappings = new FactTypeMappingDictionary(predecidedManyToOneFactTypeMappings.Count + oneToOneFactTypeCount);
+			myDecidedFactTypeMappings = new FactTypeMappingDictionary(predecidedManyToOneFactTypeMappings.Count + predecidedOneToOneFactTypeMappings.Count + undecidedOneToOneFactTypeMappings.Count);
 
 			foreach (KeyValuePair<FactType, FactTypeMapping> pair in predecidedManyToOneFactTypeMappings)
 			{
@@ -230,11 +228,6 @@ namespace Neumont.Tools.ORMToORMAbstractionBridge
 			{
 				myDecidedFactTypeMappings.Add(pair.Key, pair.Value);
 			}
-
-			// Stores a list of object types that had been considered valid top-level, but was later found to be deeply mapped away
-			myInvalidObjectTypes = new ObjectTypeDictionary(oneToOneFactTypeCount);
-			myPossibleTopLevelConceptTypes = new ObjectTypeDictionary(oneToOneFactTypeCount);
-			myPossibleConceptTypes = new ObjectTypeDictionary(oneToOneFactTypeCount);
 		}
 
 		/// <summary>
@@ -248,13 +241,17 @@ namespace Neumont.Tools.ORMToORMAbstractionBridge
 
 		private void PermuteFactTypeMappings()
 		{
+			// UNDONE: We should consider whether we can determine what object types will collapse earlier in the process, which would allow us to
+			// potentially eliminate multiple permutations that have the same result. (Rationale: When an object type is collapsed, it doesn't matter
+			// whether the mappings away from it are shallow or deep; they both result in the same output.)
+
 			int largestChainCount;
 			// Break up the chains of contiguous one-to-one fact types
 			FactTypeChainer chainer = new FactTypeChainer(myPredecidedManyToOneFactTypeMappings, myPredecidedOneToOneFactTypeMappings, myUndecidedOneToOneFactTypeMappings);
 			largestChainCount = chainer.Run();
 
 			// Perform one-time pass of top-level types for the decided mappings
-			PrecalculateDecidedConceptTypes();
+			//PrecalculateDecidedConceptTypes();
 
 			// This is used in PermuteFactTypeMappings(). We allocate it once, here, for permformance reasons.
 			FactTypeMappingList newlyDecidedFactTypeMappings = new FactTypeMappingList(largestChainCount);
@@ -280,7 +277,7 @@ namespace Neumont.Tools.ORMToORMAbstractionBridge
 
 				PermuteFactTypeMappings(chain.PossiblePermutations, chain.UndecidedOneToOneFactTypeMappings, newlyDecidedFactTypeMappings, deeplyMappedObjectTypes, 0);
 				EliminateInvalidPermutations(chain);
-				CalculateTopLevelConceptTypes(chain);
+				FindSmallestPermutationsInTermsOfConceptTypes(chain);
 
 				// Add each mapping from the optimal permutation to the "global" set of decided mappings.
 				foreach (FactTypeMapping optimalMapping in ChooseOptimalPermutation(chain).Mappings)
@@ -313,164 +310,163 @@ namespace Neumont.Tools.ORMToORMAbstractionBridge
 			return null;
 		}
 
+		private static void FindSmallestPermutationsInTermsOfConceptTypes(Chain chain)
+		{
+			int maxPossibleObjectTypes = chain.ObjectTypes.Count;
+
+			// These object types definitely DO result in concept types, but MAY or MAY NOT result in top-level concept types
+			Dictionary<ObjectType, object> predecidedObjectTypesThatAreIndependentOrSubtypesOrHaveNonPreferredIdentifierMappingsTowards = new Dictionary<ObjectType, object>(maxPossibleObjectTypes);
+
+			// These object types definitely DO NOT result in top-level concept types, but MAY or MAY NOT result in concept types
+			Dictionary<ObjectType, object> predecidedObjectTypesThatHaveDeepMappingsAway = new Dictionary<ObjectType, object>(maxPossibleObjectTypes);
+
+			// By just examining the predecided mappings, we can determine the specified truth values for the following:
+			// Object Type is Concept Type				{true, unknown}
+			// Object Type is Top Level Concept Type	{false, unknown}
+
+			foreach (FactTypeMapping mapping in chain.PredecidedManyToOneFactTypeMappings)
+			{
+				Debug.Assert(mapping.MappingDepth == MappingDepth.Shallow);
+				if (!mapping.IsFromPreferredIdentifier)
+				{
+					predecidedObjectTypesThatAreIndependentOrSubtypesOrHaveNonPreferredIdentifierMappingsTowards[mapping.TowardsObjectType] = null;
+				}
+			}
+
+			foreach (FactTypeMapping mapping in chain.PredecidedOneToOneFactTypeMappings)
+			{
+				if (!mapping.IsFromPreferredIdentifier)
+				{
+					predecidedObjectTypesThatAreIndependentOrSubtypesOrHaveNonPreferredIdentifierMappingsTowards[mapping.TowardsObjectType] = null;
+				}
+				if (mapping.FromRole is SubtypeMetaRole)
+				{
+					predecidedObjectTypesThatAreIndependentOrSubtypesOrHaveNonPreferredIdentifierMappingsTowards[mapping.FromObjectType] = null;
+				}
+				if (mapping.MappingDepth == MappingDepth.Deep)
+				{
+					predecidedObjectTypesThatHaveDeepMappingsAway[mapping.FromObjectType] = null;
+				}
+			}
+
+			foreach (ObjectType objectType in chain.ObjectTypes)
+			{
+				if (objectType.IsAnyIndependent())
+				{
+					predecidedObjectTypesThatAreIndependentOrSubtypesOrHaveNonPreferredIdentifierMappingsTowards[objectType] = null;
+				}
+			}
+
+			Dictionary<ObjectType, object> permutationObjectTypesThatHaveNonPreferredIdentifierMappingsTowards = new Dictionary<ObjectType, object>(maxPossibleObjectTypes);
+			Dictionary<ObjectType, object> permutationObjectTypesThatHaveDeepMappingsAway = new Dictionary<ObjectType, object>(maxPossibleObjectTypes);
+
+			Dictionary<ObjectType, object> notConceptTypes = new Dictionary<ObjectType, object>(maxPossibleObjectTypes);
+			Dictionary<ObjectType, object> nonTopLevelConceptTypes = new Dictionary<ObjectType, object>(maxPossibleObjectTypes);
+			Dictionary<ObjectType, object> topLevelConceptTypes = new Dictionary<ObjectType, object>(maxPossibleObjectTypes);
+
+			PermutationList smallestPermutationsInTermsOfConceptTypes = chain.SmallestPermutationsInTermsOfConceptTypes;
+
+			int minTopLevelConceptTypesCount = int.MaxValue;
+			int minNonTopLevelConceptTypesCount = int.MaxValue;
+
+			foreach (Permutation permutation in chain.PossiblePermutations)
+			{
+				bool isNotOptimalPermutation = false;
+
+				permutationObjectTypesThatHaveDeepMappingsAway.Clear();
+				permutationObjectTypesThatHaveNonPreferredIdentifierMappingsTowards.Clear();
+
+				notConceptTypes.Clear();
+				nonTopLevelConceptTypes.Clear();
+				topLevelConceptTypes.Clear();
+
+				foreach (FactTypeMapping mapping in permutation.Mappings)
+				{
+					if (!mapping.IsFromPreferredIdentifier)
+					{
+						permutationObjectTypesThatHaveNonPreferredIdentifierMappingsTowards[mapping.TowardsObjectType] = null;
+					}
+					if (mapping.MappingDepth == MappingDepth.Deep)
+					{
+						permutationObjectTypesThatHaveDeepMappingsAway[mapping.FromObjectType] = null;
+					}
+				}
+
+				foreach (ObjectType objectType in chain.ObjectTypes)
+				{
+					bool isIndependentOrSubtypeOrHasNonPreferredIdentifierMappingsTowards = predecidedObjectTypesThatAreIndependentOrSubtypesOrHaveNonPreferredIdentifierMappingsTowards.ContainsKey(objectType) ||
+						permutationObjectTypesThatHaveNonPreferredIdentifierMappingsTowards.ContainsKey(objectType);
+					bool hasDeepMappingsAway = predecidedObjectTypesThatHaveDeepMappingsAway.ContainsKey(objectType) || permutationObjectTypesThatHaveDeepMappingsAway.ContainsKey(objectType);
+
+					if (isIndependentOrSubtypeOrHasNonPreferredIdentifierMappingsTowards)
+					{
+						if (hasDeepMappingsAway)
+						{
+							nonTopLevelConceptTypes[objectType] = null;
+							if ((topLevelConceptTypes.Count == minTopLevelConceptTypesCount) && (nonTopLevelConceptTypes.Count > minNonTopLevelConceptTypesCount))
+							{
+								// We now have more non-top-level concept types than the minimum, and the same number of top-level concept types as the minimum, so throw this permutation out.
+								isNotOptimalPermutation = true;
+								break;
+							}
+						}
+						else
+						{
+							topLevelConceptTypes[objectType] = null;
+							if (topLevelConceptTypes.Count > minTopLevelConceptTypesCount)
+							{
+								// We now have more top-level concept types than the minimum, so throw this permutation out.
+								isNotOptimalPermutation = true;
+								break;
+							}
+						}
+					}
+				}
+
+				if (isNotOptimalPermutation)
+				{
+					// This isn't an optimal permutation, so go on to the next one.
+					continue;
+				}
+
+				Debug.Assert(topLevelConceptTypes.Count <= minTopLevelConceptTypesCount, "Permutations with greater than the minimum number of top-level concept types should have been rejected inline.");
+
+				if (topLevelConceptTypes.Count < minTopLevelConceptTypesCount)
+				{
+					// We have a new minimum number of top-level concept types (and hence a new minimum number of non-top-level concept types as well).
+					minTopLevelConceptTypesCount = topLevelConceptTypes.Count;
+					minNonTopLevelConceptTypesCount = nonTopLevelConceptTypes.Count;
+					smallestPermutationsInTermsOfConceptTypes.Clear();
+				}
+				else
+				{
+					// We have the same number of top-level concept types as the minimum, so we need to check the number of non-top-level concept types.
+					if (nonTopLevelConceptTypes.Count > minTopLevelConceptTypesCount)
+					{
+						// This isn't an optimal permutation, so go on to the next one.
+						continue;
+					}
+					else if (nonTopLevelConceptTypes.Count < minNonTopLevelConceptTypesCount)
+					{
+						// We have a new minimum number of non-top-level concept type.
+						minNonTopLevelConceptTypesCount = nonTopLevelConceptTypes.Count;
+						smallestPermutationsInTermsOfConceptTypes.Clear();
+					}
+				}
+				permutation.SetConceptTypes(topLevelConceptTypes, nonTopLevelConceptTypes);
+				smallestPermutationsInTermsOfConceptTypes.Add(permutation);
+			}
+		}
+
+
+
 		private static Permutation ChooseOptimalPermutation(Chain chain)
 		{
 			// UNDONE: This should do something smart!
-			PermutationList smallestPermutationsList = chain.SmallestPermutations;
-			Permutation firstFinalMappingState = smallestPermutationsList[0];
-			smallestPermutationsList.Clear();
+			PermutationList smallestPermutationsInTermsOfConceptTypes = chain.SmallestPermutationsInTermsOfConceptTypes;
+			Permutation firstFinalMappingState = smallestPermutationsInTermsOfConceptTypes[0];
+			//smallestPermutationsInTermsOfConceptTypes.Clear();
 			return firstFinalMappingState;
-		}
-
-		private void PrecalculateDecidedConceptTypes()
-		{
-			// Calculate decided top-level types (these are *not* final until individual permutations have been considered)
-			foreach (KeyValuePair<FactType, FactTypeMapping> pair in myDecidedFactTypeMappings)
-			{
-				ProcessEntity(new ProcessEntityState(pair.Value, null, null, null));
-			}
-		}
-
-		/// <summary>
-		/// An object type (A) is a concept type when:
-		///		1. It is independent, or
-		///		2. It is a subtype, or
-		///		3. Another object type (B) is mapped to it, and
-		///			a. There exists a role being mapped to object type A on which there are no constraints, or
-		///			b. There exists a role being mapped to object type A on which there is not a preferred uniqueness.
-		/// 
-		/// A concept type is a top-level concept type when:
-		///		1. It is not deeply mapped towards any other concept type.
-		/// 
-		/// As this method processes the ObjectType passed in it gradually (and probably not in the same pass) executes each of
-		/// the above checks to see whether the ObjectType is a concept type or top-level concept type.
-		/// </summary>
-		/// <param name="state"></param>
-		private void ProcessEntity(ProcessEntityState state)
-		{
-			ObjectType towards = state.Mapping.TowardsObjectType;
-			if (myInvalidObjectTypes.ContainsKey(towards))
-			{
-				return;
-			}
-			ObjectType from = state.Mapping.FromObjectType;
-			Role fromRole = state.Mapping.FromRole;
-			if (from.IsIndependent && !(fromRole is SubtypeMetaRole) && !myPossibleConceptTypes.ContainsKey(from))
-			{
-				// Add the object type as a concept type if it's independent.
-				myPossibleConceptTypes.Add(from, true);
-				if (state.ConceptTypeGarbage != null)
-				{
-					state.ConceptTypeGarbage.Add(from);
-				}
-			}
-			// If the |from| OT is a primary identifier, DO NOT add the |towards| OT to the top-level list
-			// (Note that it doesn't mean it cannot be added earlier/later, but will not if only role played is primary identifier)
-			if (state.Mapping.IsFromPreferredIdentifier)
-			{
-				return;
-			}
-			if (!myPossibleConceptTypes.ContainsKey(from))
-			{
-				// All top-level concept types are at least concept types
-				myPossibleConceptTypes.Add(from, true);
-				if (state.ConceptTypeGarbage != null && !state.ConceptTypeGarbage.Contains(from))
-				{
-					state.ConceptTypeGarbage.Add(from);
-				}
-			}
-			MappingDepth mappingType = state.Mapping.MappingDepth;
-			// If the |from| OT is mapped away deeply, and has objects mapped to it, remove it and invalidate it as a possible top-level type
-			if (myPossibleTopLevelConceptTypes.ContainsKey(from) && mappingType == MappingDepth.Deep)
-			{
-				myPossibleTopLevelConceptTypes.Remove(from);
-				myInvalidObjectTypes.Add(from, true);
-				if (state.Restore != null)
-				{
-					state.Restore.Add(from);
-				}
-			}
-			// First clause in there because |from| could equal |towards|, and may be invalidated in prior conditional
-			if (!myInvalidObjectTypes.ContainsKey(towards) && !myPossibleTopLevelConceptTypes.ContainsKey(towards))
-			{
-				if (state.Garbage != null)
-				{
-					state.Garbage.Add(towards);
-				}
-				myPossibleTopLevelConceptTypes.Add(towards, true);
-			}
-		}
-
-		/// <summary>
-		/// This method processes concept type and top-level concept type conditions gradually as it iterates over the chain, rather than 
-		/// calculating top-level-ness immediately for every concept type.  The final state of each concept type is valid after this 
-		/// method is finished executing.
-		/// 
-		/// See <see cref="ProcessEntity">ProcessEntity</see> for the algorithm.
-		/// </summary>
-		/// <param name="chain"></param>
-		private void CalculateTopLevelConceptTypes(Chain chain)
-		{
-			// The smallest overall mapping that we've found
-			int smallest = int.MaxValue;
-			// These dictionaries track the OTs that are temporarily removed or added for each permutation in the list
-			ObjectTypeList garbage = new ObjectTypeList(myDecidedFactTypeMappings.Count);
-			ObjectTypeList restore = new ObjectTypeList(myDecidedFactTypeMappings.Count);
-			ObjectTypeList conceptTypeGarbage = new ObjectTypeList(myDecidedFactTypeMappings.Count);
-			// Now include the permutations in the calculation of top-level types.
-			for (int i = 0; i < chain.PossiblePermutations.Count; i++)
-			{
-				garbage.Clear();
-				restore.Clear();
-				Permutation state = chain.PossiblePermutations[i];
-				foreach (FactTypeMapping mapping in state.Mappings)
-				{
-					ProcessEntityState entitystate = new ProcessEntityState(mapping, restore, garbage, conceptTypeGarbage);
-					ProcessEntity(entitystate);
-					if (myPossibleTopLevelConceptTypes.Count > smallest)
-					{
-						break;
-					}
-				}
-				// Done for this state, so finalize and clean up
-				state.TopLevelConceptTypes = myPossibleTopLevelConceptTypes.Count;
-				state.ConceptTypes = myPossibleConceptTypes.Count;
-				if (state.TopLevelConceptTypes <= smallest)
-				{
-					smallest = state.TopLevelConceptTypes;
-					PermutationList smallestList = chain.SmallestPermutations;
-					if (smallestList.Count > 0)
-					{
-						if (smallestList[0].TopLevelConceptTypes > state.TopLevelConceptTypes)
-						{
-							smallestList.Clear();
-						}
-						// Be sure the logic works if you put this |else if| into the primary |if|.
-						else if (smallestList[0].ConceptTypes > state.ConceptTypes)
-						{
-							smallestList.Clear();
-						}
-					}
-					if (smallestList.Count == 0 || smallestList[0].ConceptTypes == state.ConceptTypes)
-					{
-						smallestList.Add(state);
-					}
-				}
-				// Restore OTs removed from the |myPossibleTopLevelConceptTypes| collection; remove elements that were added to the collection
-				foreach (ObjectType ot in garbage)
-				{
-					myPossibleTopLevelConceptTypes.Remove(ot);
-				}
-				foreach (ObjectType ot in restore)
-				{
-					myPossibleTopLevelConceptTypes.Add(ot, true);
-					myInvalidObjectTypes.Remove(ot);
-				}
-				foreach (ObjectType ot in conceptTypeGarbage)
-				{
-					myPossibleConceptTypes.Remove(ot);
-				}
-			}
 		}
 
 		/// <summary>

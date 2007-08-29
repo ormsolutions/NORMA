@@ -55,7 +55,7 @@ namespace Neumont.Tools.ORMToORMAbstractionBridge
 	}
 
 	[Serializable]
-	[DebuggerDisplay("FactTypeMapping (TowardsRole={FactType.RoleCollection.IndexOf(FromRole)}, Depth={MappingDepth}, FactType={FactType.Name})")]
+	[DebuggerDisplay("FactTypeMapping (TowardsRole={FactType.RoleCollection.IndexOf(TowardsRoleDebug)}, Depth={MappingDepth}, FactType={FactType.Name})")]
 	sealed class FactTypeMapping
 	{
 		private readonly FactType factType;
@@ -104,6 +104,14 @@ namespace Neumont.Tools.ORMToORMAbstractionBridge
 		public Role TowardsRole
 		{
 			get { return towardsRole; }
+		}
+
+		/// <summary>
+		/// Used by the <see cref="DebuggerDisplayAttribute"/> for this type.
+		/// </summary>
+		private RoleBase TowardsRoleDebug
+		{
+			get { return (RoleBase)towardsRole.Proxy ?? towardsRole; }
 		}
 
 		public MappingDepth MappingDepth
@@ -251,8 +259,8 @@ namespace Neumont.Tools.ORMToORMAbstractionBridge
 	sealed class Permutation
 	{
 		private readonly FactTypeMappingList myMappings;
-		private int myTopLevelConceptTypes;
-		private int myConceptTypes;
+		private Dictionary<ObjectType, object> myTopLevelConceptTypes;
+		private Dictionary<ObjectType, object> myNonTopLevelConceptTypes;
 
 		public Permutation(FactTypeMappingList mappings)
 		{
@@ -264,16 +272,27 @@ namespace Neumont.Tools.ORMToORMAbstractionBridge
 			get { return myMappings; }
 		}
 
-		public int TopLevelConceptTypes
+		public void SetConceptTypes(Dictionary<ObjectType, object> topLevelConceptTypes, Dictionary<ObjectType, object> nonTopLevelConceptTypes)
 		{
-			get { return myTopLevelConceptTypes; }
-			set { myTopLevelConceptTypes = value; }
+			Debug.Assert(myTopLevelConceptTypes == null && myNonTopLevelConceptTypes == null);
+			myTopLevelConceptTypes = new Dictionary<ObjectType,object>(topLevelConceptTypes);
+			myNonTopLevelConceptTypes = new Dictionary<ObjectType,object>(nonTopLevelConceptTypes);
 		}
 
-		public int ConceptTypes
+		public Dictionary<ObjectType, object> TopLevelConceptTypes
 		{
-			get { return myConceptTypes; }
-			set { myConceptTypes = value; }
+			get
+			{
+				return myTopLevelConceptTypes;
+			}
+		}
+
+		public Dictionary<ObjectType, object> NonTopLevelConceptTypes
+		{
+			get
+			{
+				return myNonTopLevelConceptTypes;
+			}
 		}
 	}
 
@@ -302,19 +321,21 @@ namespace Neumont.Tools.ORMToORMAbstractionBridge
 	[Serializable]
 	sealed class Chain
 	{
+		private readonly ObjectTypeList myObjectTypes;
 		private readonly FactTypeMappingList myPredecidedManyToOneFactTypeMappings;
 		private readonly FactTypeMappingList myPredecidedOneToOneFactTypeMappings;
 		private readonly FactTypeMappingListList myUndecidedOneToOneFactTypeMappings;
 		private readonly PermutationList myPossiblePermutations;
-		private readonly PermutationList mySmallestPermutations;
+		private readonly PermutationList mySmallestPermutationsInTermsOfConceptTypes;
 
 		public Chain()
 		{
+			myObjectTypes = new ObjectTypeList();
 			myPredecidedManyToOneFactTypeMappings = new FactTypeMappingList();
 			myPredecidedOneToOneFactTypeMappings = new FactTypeMappingList();
 			myUndecidedOneToOneFactTypeMappings = new FactTypeMappingListList();
 			myPossiblePermutations = new PermutationList();
-			mySmallestPermutations = new PermutationList();
+			mySmallestPermutationsInTermsOfConceptTypes = new PermutationList();
 		}
 
 		/// <summary>
@@ -325,6 +346,18 @@ namespace Neumont.Tools.ORMToORMAbstractionBridge
 			get
 			{
 				return myPredecidedOneToOneFactTypeMappings.Count + myUndecidedOneToOneFactTypeMappings.Count;
+			}
+		}
+
+		/// <summary>
+		/// The set of all <see cref="ObjectType"/>s that play a role in a one-to-one <see cref="FactType"/>
+		/// in this <see cref="Chain"/>.
+		/// </summary>
+		public ObjectTypeList ObjectTypes
+		{
+			get
+			{
+				return myObjectTypes;
 			}
 		}
 
@@ -367,11 +400,11 @@ namespace Neumont.Tools.ORMToORMAbstractionBridge
 		}
 
 		/// <summary>
-		/// The entries from PossiblePermutations which map to the smallest number of top-level concept types.
+		/// The entries from PossiblePermutations which map to the smallest number of top-level concept types and overall concept types.
 		/// </summary>
-		public PermutationList SmallestPermutations
+		public PermutationList SmallestPermutationsInTermsOfConceptTypes
 		{
-			get { return mySmallestPermutations; }
+			get { return mySmallestPermutationsInTermsOfConceptTypes; }
 		}
 	}
 	#endregion

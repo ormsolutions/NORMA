@@ -1569,6 +1569,20 @@ namespace Neumont.Tools.ORM.ObjectModel
 			}
 		}
 		/// <summary>
+		/// Indicates if this <see cref="ObjectType"/> is implied independent.
+		/// </summary>
+		public bool IsImpliedIndependent()
+		{
+			return !this.IsIndependent && this.ImpliedMandatoryConstraint == null && this.AllowIsIndependent(false);
+		}
+		/// <summary>
+		/// Indicates if this <see cref="ObjectType"/> is either implied independent or explicity independent.
+		/// </summary>
+		public bool IsAnyIndependent()
+		{
+			return this.IsIndependent || this.IsImpliedIndependent();
+		}
+		/// <summary>
 		/// Test if the <see cref="IsIndependent"/> property can be set to true.
 		/// </summary>
 		/// <param name="throwIfFalse">Set to <see langword="true"/> to throw an exception instead of returning false.</param>
