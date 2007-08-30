@@ -587,7 +587,7 @@ namespace Neumont.Tools.ORMAbstractionToConceptualDatabaseBridge
 				foreach (ConceptTypeAssimilatesConceptType conceptTypeAssimilatesConceptType
 					in ConceptTypeAssimilatesConceptType.GetLinksToAssimilatorConceptTypeCollection(conceptType))
 				{
-					if (conceptTypeAssimilatesConceptType.IsPreferredForTarget)
+					if (false && conceptTypeAssimilatesConceptType.IsPreferredForTarget)
 					{
 						prefferedConceptTypeChildrenList.Add(conceptTypeAssimilatesConceptType);
 						break;
@@ -658,7 +658,7 @@ namespace Neumont.Tools.ORMAbstractionToConceptualDatabaseBridge
 					TableIsPrimarilyForConceptType.GetTable(assimilation.AssimilatorConceptType).UniquenessConstraintCollection.Add(mappedConstraint);
 
 				}
-				else if (assimilation.IsPreferredForTarget)
+				else if (false && assimilation.IsPreferredForTarget)
 				{
 					if (isPreferredForChildFound == false)
 					{
@@ -879,7 +879,7 @@ namespace Neumont.Tools.ORMAbstractionToConceptualDatabaseBridge
 			}
 			foreach (ConceptTypeAssimilatesConceptType conceptTypeAssimilatesConceptType in ConceptTypeAssimilatesConceptType.GetLinksToAssimilatorConceptTypeCollection(conceptType))
 			{
-				if (conceptTypeAssimilatesConceptType.IsPreferredForTarget)
+				if (false && conceptTypeAssimilatesConceptType.IsPreferredForTarget)
 				{
 					foreach (Column target in ColumnHasConceptTypeChild.GetColumn((ConceptTypeChild)conceptTypeAssimilatesConceptType))
 					{

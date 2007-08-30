@@ -1109,7 +1109,7 @@ namespace Neumont.Tools.ORMToORMAbstractionBridge
 		private bool ObjectTypeIsConceptType(ObjectType objectType, FactTypeMappingDictionary factTypeMappings)
 		{
 			// If objectType is independent...
-			if (objectType.IsAnyIndependent())
+			if (objectType.TreatAsIndependent)
 			{
 				return true;
 			}

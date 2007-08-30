@@ -352,7 +352,7 @@ namespace Neumont.Tools.ORMToORMAbstractionBridge
 
 			foreach (ObjectType objectType in chain.ObjectTypes)
 			{
-				if (objectType.IsAnyIndependent())
+				if (objectType.TreatAsIndependent)
 				{
 					predecidedObjectTypesThatAreIndependentOrSubtypesOrHaveNonPreferredIdentifierMappingsTowards[objectType] = null;
 				}
