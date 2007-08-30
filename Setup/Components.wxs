@@ -23,6 +23,26 @@
 					<File Id="Neumont.Tools.ORM.dll_GAC" Name="ORM.dll" LongName="Neumont.Tools.ORM.dll" src="..\ORMModel\bin\$(var.BuildConfiguration)\Neumont.Tools.ORM.dll"
 						DefaultVersion="$(var.ProductVersion)" DefaultLanguage="0" KeyPath="yes" Vital="yes" Assembly=".net" AssemblyManifest="Neumont.Tools.ORM.dll_GAC" ProcessorArchitecture="msil"/>
 				</Component>
+				<Component Id="NORMAVSCustomPropertiesGACComponent" Guid="0772D284-812E-4ECC-$(var.VersionGuidSuffix)" DiskId="1" Win64="$(var.Win64)">
+					<File Id="Neumont.Tools.ORM.CustomProperties.dll_GAC" Name="ORMCstPr.dll" LongName="Neumont.Tools.ORM.CustomProperties.dll" src="..\CustomProperties\bin\$(var.BuildConfiguration)\Neumont.Tools.ORM.CustomProperties.dll"
+						DefaultVersion="$(var.ProductVersion)" DefaultLanguage="0" KeyPath="yes" Assembly=".net" AssemblyManifest="Neumont.Tools.ORM.CustomProperties.dll_GAC" ProcessorArchitecture="msil"/>
+				</Component>
+				<Component Id="NORMAVSORMAbstractionGACComponent" Guid="287179E2-73E9-4685-$(var.VersionGuidSuffix)" DiskId="1" Win64="$(var.Win64)">
+					<File Id="Neumont.Tools.ORMAbstraction.dll_GAC" Name="ORMAbstr.dll" LongName="Neumont.Tools.ORMAbstraction.dll" src="..\Oial\OialModel\bin\$(var.BuildConfiguration)\Neumont.Tools.ORMAbstraction.dll"
+						DefaultVersion="$(var.ProductVersion)" DefaultLanguage="0" KeyPath="yes" Assembly=".net" AssemblyManifest="Neumont.Tools.ORMAbstraction.dll_GAC" ProcessorArchitecture="msil"/>
+				</Component>
+				<Component Id="NORMAVSORMToORMAbstractionGACComponent" Guid="83ACCC60-19F4-4BBE-$(var.VersionGuidSuffix)" DiskId="1" Win64="$(var.Win64)">
+					<File Id="Neumont.Tools.ORMToORMAbstractionBridge.dll_GAC" Name="ORMAbsBr.dll" LongName="Neumont.Tools.ORMToORMAbstractionBridge.dll" src="..\Oial\ORMOialBridge\bin\$(var.BuildConfiguration)\Neumont.Tools.ORMToORMAbstractionBridge.dll"
+						DefaultVersion="$(var.ProductVersion)" DefaultLanguage="0" KeyPath="yes" Assembly=".net" AssemblyManifest="Neumont.Tools.ORMToORMAbstractionBridge.dll_GAC" ProcessorArchitecture="msil"/>
+				</Component>
+				<Component Id="NORMAVSRelationalModelsGACComponent" Guid="8877E891-60A3-454C-$(var.VersionGuidSuffix)" DiskId="1" Win64="$(var.Win64)">
+					<File Id="Neumont.Tools.RelationalModels.dll_GAC" Name="RelMods.dll" LongName="Neumont.Tools.RelationalModels.dll" src="..\RelationalModel\DcilModel\bin\$(var.BuildConfiguration)\Neumont.Tools.RelationalModels.dll"
+						DefaultVersion="$(var.ProductVersion)" DefaultLanguage="0" KeyPath="yes" Assembly=".net" AssemblyManifest="Neumont.Tools.RelationalModels.dll_GAC" ProcessorArchitecture="msil"/>
+				</Component>
+				<Component Id="NORMAVSORMAbstractionToConceptualDatabaseGACComponent" Guid="B14BF95A-EC48-49EE-$(var.VersionGuidSuffix)" DiskId="1" Win64="$(var.Win64)">
+					<File Id="Neumont.Tools.ORMAbstractionToConceptualDatabaseBridge.dll_GAC" Name="CDBBr.dll" LongName="Neumont.Tools.ORMAbstractionToConceptualDatabaseBridge.dll" src="..\RelationalModel\OialDcilBridge\bin\$(var.BuildConfiguration)\Neumont.Tools.ORMAbstractionToConceptualDatabaseBridge.dll"
+						DefaultVersion="$(var.ProductVersion)" DefaultLanguage="0" KeyPath="yes" Assembly=".net" AssemblyManifest="Neumont.Tools.ORMAbstractionToConceptualDatabaseBridge.dll_GAC" ProcessorArchitecture="msil"/>
+				</Component>
 			</Directory>
 
 			<Directory Id="$(var.ProgramFilesFolder)">
@@ -58,6 +78,9 @@
 								</Registry>
 								<Registry Action="createKeyAndRemoveKeyOnUninstall" Root="HKLM" Key="SOFTWARE\Microsoft\.NETFramework\v2.0.50727\AssemblyFoldersEx\NORMAVS">
 									<Registry Type="string" Value="[BINDIR]"/>
+								</Registry>
+								<Registry Action="createKeyAndRemoveKeyOnUninstall" Root="HKLM" Key="SOFTWARE\Microsoft\.NETFramework\v2.0.50727\AssemblyFoldersEx\NORMAVSExtensions">
+									<Registry Type="string" Value="[EXTENSIONSDIR]"/>
 								</Registry>
 								<Registry Action="createKeyAndRemoveKeyOnUninstall" Root="HKLM" Key="$(var.NORMARegRoot)">
 									<Registry Type="string" Name="InstallDir" Value="[$(var.DefaultShortProductDir)]"/>
@@ -150,8 +173,7 @@
 								</Registry>
 							</Component>
 
-							<Directory Id="Extensions" Name="Ext" LongName="Extenions">
-
+							<Directory Id="EXTENSIONSDIR" Name="Ext" LongName="Extensions">
 								<Component Id="NORMAVSOIALModelExtensionComponent" Guid="27157B36-345A-4E11-$(var.VersionGuidSuffix)" DiskId="1" Win64="$(var.Win64)">
 									<File Id="Neumont.Tools.ORM.OIALModel.dll" Name="OIALModl.dll" LongName="Neumont.Tools.ORM.OIALModel.dll" src="..\OIALModel\bin\$(var.BuildConfiguration)\Neumont.Tools.ORM.OIALModel.dll"
 										DefaultVersion="$(var.ProductVersion)" DefaultLanguage="0" KeyPath="yes" Assembly=".net" AssemblyManifest="Neumont.Tools.ORM.OIALModel.dll" AssemblyApplication="Neumont.Tools.ORM.OIALModel.dll" ProcessorArchitecture="msil"/>
@@ -188,6 +210,61 @@
 									</Registry>
 								</Component>
 
+								<Component Id="NORMAVSORMAbstractionExtensionComponent" Guid="2AF4858D-43CC-4107-$(var.VersionGuidSuffix)" DiskId="1" Win64="$(var.Win64)">
+									<File Id="Neumont.Tools.ORMAbstraction.dll" Name="ORMAbstr.dll" LongName="Neumont.Tools.ORMAbstraction.dll" src="..\Oial\OialModel\bin\$(var.BuildConfiguration)\Neumont.Tools.ORMAbstraction.dll"
+										DefaultVersion="$(var.ProductVersion)" DefaultLanguage="0" KeyPath="yes" Assembly=".net" AssemblyManifest="Neumont.Tools.ORMAbstraction.dll" AssemblyApplication="Neumont.Tools.ORMAbstraction.dll" ProcessorArchitecture="msil"/>
+									<File Id="Neumont.Tools.ORMAbstraction.pdb" Name="ORMAbstr.pdb" LongName="Neumont.Tools.ORMAbstraction.pdb" src="..\Oial\OialModel\bin\$(var.BuildConfiguration)\Neumont.Tools.ORMAbstraction.pdb"
+										DefaultLanguage="0" CompanionFile="Neumont.Tools.ORMAbstraction.dll"/>
+									<File Id="Neumont.Tools.ORMAbstraction.xml" Name="ORMAbstr.xml" LongName="Neumont.Tools.ORMAbstraction.xml" src="..\Oial\OialModel\bin\$(var.BuildConfiguration)\Neumont.Tools.ORMAbstraction.xml"
+										DefaultLanguage="0" CompanionFile="Neumont.Tools.ORMAbstraction.dll"/>
+									<Registry Action="createKeyAndRemoveKeyOnUninstall" Root="HKLM" Key="$(var.NORMAVSExtensionsRegRoot)\http://schemas.neumont.edu/ORM/Abstraction/2007-06/Core">
+										<Registry Type="string" Name="Class" Value="Neumont.Tools.ORMAbstraction.AbstractionDomainModel"/>
+										<Registry Type="string" Name="Assembly" Value="Neumont.Tools.ORMAbstraction, $(var.BaseAssemblyName)"/>
+										<Registry Type="string" Name="CodeBase" Value="[#Neumont.Tools.ORMAbstraction.dll]"/>
+									</Registry>
+								</Component>
+
+								<Component Id="NORMAVSORMToORMAbstractionExtensionComponent" Guid="C6CED0EA-97CA-40AA-$(var.VersionGuidSuffix)" DiskId="1" Win64="$(var.Win64)">
+									<File Id="Neumont.Tools.ORMToORMAbstractionBridge.dll" Name="ORMAbsBr.dll" LongName="Neumont.Tools.ORMToORMAbstractionBridge.dll" src="..\Oial\ORMOialBridge\bin\$(var.BuildConfiguration)\Neumont.Tools.ORMToORMAbstractionBridge.dll"
+										DefaultVersion="$(var.ProductVersion)" DefaultLanguage="0" KeyPath="yes" Assembly=".net" AssemblyManifest="Neumont.Tools.ORMToORMAbstractionBridge.dll" AssemblyApplication="Neumont.Tools.ORMToORMAbstractionBridge.dll" ProcessorArchitecture="msil"/>
+									<File Id="Neumont.Tools.ORMToORMAbstractionBridge.pdb" Name="ORMAbsBr.pdb" LongName="Neumont.Tools.ORMToORMAbstractionBridge.pdb" src="..\Oial\ORMOialBridge\bin\$(var.BuildConfiguration)\Neumont.Tools.ORMToORMAbstractionBridge.pdb"
+										DefaultLanguage="0" CompanionFile="Neumont.Tools.ORMToORMAbstractionBridge.dll"/>
+									<File Id="Neumont.Tools.ORMToORMAbstractionBridge.xml" Name="ORMAbsBr.xml" LongName="Neumont.Tools.ORMToORMAbstractionBridge.xml" src="..\Oial\ORMOialBridge\bin\$(var.BuildConfiguration)\Neumont.Tools.ORMToORMAbstractionBridge.xml"
+										DefaultLanguage="0" CompanionFile="Neumont.Tools.ORMToORMAbstractionBridge.dll"/>
+									<Registry Action="createKeyAndRemoveKeyOnUninstall" Root="HKLM" Key="$(var.NORMAVSExtensionsRegRoot)\http://schemas.neumont.edu/ORM/Bridge/2007-06/ORMToORMAbstraction">
+										<Registry Type="string" Name="Class" Value="Neumont.Tools.ORMToORMAbstractionBridge.ORMToORMAbstractionBridgeDomainModel"/>
+										<Registry Type="string" Name="Assembly" Value="Neumont.Tools.ORMToORMAbstractionBridge, $(var.BaseAssemblyName)"/>
+										<Registry Type="string" Name="CodeBase" Value="[#Neumont.Tools.ORMToORMAbstractionBridge.dll]"/>
+									</Registry>
+								</Component>
+
+								<Component Id="NORMAVSRelationalModelsExtensionComponent" Guid="8CA7B2DB-1669-427B-$(var.VersionGuidSuffix)" DiskId="1" Win64="$(var.Win64)">
+									<File Id="Neumont.Tools.RelationalModels.dll" Name="RelMods.dll" LongName="Neumont.Tools.RelationalModels.dll" src="..\RelationalModel\DcilModel\bin\$(var.BuildConfiguration)\Neumont.Tools.RelationalModels.dll"
+										DefaultVersion="$(var.ProductVersion)" DefaultLanguage="0" KeyPath="yes" Assembly=".net" AssemblyManifest="Neumont.Tools.RelationalModels.dll" AssemblyApplication="Neumont.Tools.RelationalModels.dll" ProcessorArchitecture="msil"/>
+									<File Id="Neumont.Tools.RelationalModels.pdb" Name="RelMods.pdb" LongName="Neumont.Tools.RelationalModels.pdb" src="..\RelationalModel\DcilModel\bin\$(var.BuildConfiguration)\Neumont.Tools.RelationalModels.pdb"
+										DefaultLanguage="0" CompanionFile="Neumont.Tools.RelationalModels.dll"/>
+									<File Id="Neumont.Tools.RelationalModels.xml" Name="RelMods.xml" LongName="Neumont.Tools.RelationalModels.xml" src="..\RelationalModel\DcilModel\bin\$(var.BuildConfiguration)\Neumont.Tools.RelationalModels.xml"
+										DefaultLanguage="0" CompanionFile="Neumont.Tools.RelationalModels.dll"/>
+									<Registry Action="createKeyAndRemoveKeyOnUninstall" Root="HKLM" Key="$(var.NORMAVSExtensionsRegRoot)\http://schemas.neumont.edu/ORM/Relational/2007-06/ConceptualDatabase">
+										<Registry Type="string" Name="Class" Value="Neumont.Tools.RelationalModels.ConceptualDatabase.ConceptualDatabaseDomainModel"/>
+										<Registry Type="string" Name="Assembly" Value="Neumont.Tools.RelationalModels, $(var.BaseAssemblyName)"/>
+										<Registry Type="string" Name="CodeBase" Value="[#Neumont.Tools.RelationalModels.dll]"/>
+									</Registry>
+								</Component>
+
+								<Component Id="NORMAVSORMAbstractionToConceptualDatabaseExtensionComponent" Guid="2D11803B-91D7-446E-$(var.VersionGuidSuffix)" DiskId="1" Win64="$(var.Win64)">
+									<File Id="Neumont.Tools.ORMAbstractionToConceptualDatabaseBridge.dll" Name="CDBBr.dll" LongName="Neumont.Tools.ORMAbstractionToConceptualDatabaseBridge.dll" src="..\RelationalModel\OialDcilBridge\bin\$(var.BuildConfiguration)\Neumont.Tools.ORMAbstractionToConceptualDatabaseBridge.dll"
+										DefaultVersion="$(var.ProductVersion)" DefaultLanguage="0" KeyPath="yes" Assembly=".net" AssemblyManifest="Neumont.Tools.ORMAbstractionToConceptualDatabaseBridge.dll" AssemblyApplication="Neumont.Tools.ORMAbstractionToConceptualDatabaseBridge.dll" ProcessorArchitecture="msil"/>
+									<File Id="Neumont.Tools.ORMAbstractionToConceptualDatabaseBridge.pdb" Name="CDBBr.pdb" LongName="Neumont.Tools.ORMAbstractionToConceptualDatabaseBridge.pdb" src="..\RelationalModel\OialDcilBridge\bin\$(var.BuildConfiguration)\Neumont.Tools.ORMAbstractionToConceptualDatabaseBridge.pdb"
+										DefaultLanguage="0" CompanionFile="Neumont.Tools.ORMAbstractionToConceptualDatabaseBridge.dll"/>
+									<File Id="Neumont.Tools.ORMAbstractionToConceptualDatabaseBridge.xml" Name="CDBBr.xml" LongName="Neumont.Tools.ORMAbstractionToConceptualDatabaseBridge.xml" src="..\RelationalModel\OialDcilBridge\bin\$(var.BuildConfiguration)\Neumont.Tools.ORMAbstractionToConceptualDatabaseBridge.xml"
+										DefaultLanguage="0" CompanionFile="Neumont.Tools.ORMAbstractionToConceptualDatabaseBridge.dll"/>
+									<Registry Action="createKeyAndRemoveKeyOnUninstall" Root="HKLM" Key="$(var.NORMAVSExtensionsRegRoot)\http://schemas.neumont.edu/ORM/Bridge/2007-06/ORMAbstractionToConceptualDatabase">
+										<Registry Type="string" Name="Class" Value="Neumont.Tools.ORMAbstractionToConceptualDatabaseBridge.ORMAbstractionToConceptualDatabaseBridgeDomainModel"/>
+										<Registry Type="string" Name="Assembly" Value="Neumont.Tools.ORMAbstractionToConceptualDatabaseBridge, $(var.BaseAssemblyName)"/>
+										<Registry Type="string" Name="CodeBase" Value="[#Neumont.Tools.ORMAbstractionToConceptualDatabaseBridge.dll]"/>
+									</Registry>
+								</Component>
 							</Directory>
 
 						</Directory>
@@ -210,6 +287,28 @@
 								<Component Id="NORMAVSSettingsSchemaComponent" Guid="B2DEF872-436C-4BED-$(var.VersionGuidSuffix)" DiskId="1" Win64="$(var.Win64)" KeyPath="yes">
 									<File Id="ORMDesignerSettings.xsd" Name="DsgnrStg.xsd" LongName="ORMDesignerSettings.xsd" src="..\ORMModel\Shell\ORMDesignerSettings.xsd"
 										DefaultLanguage="0" CompanionFile="Neumont.Tools.ORM.dll"/>
+								</Component>
+								<Component Id="NORMAVSCustomPropertiesSchemaComponent" Guid="27EB4413-1888-4038-$(var.VersionGuidSuffix)" DiskId="1" Win64="$(var.Win64)" KeyPath="yes">
+									<File Id="CustomProperties.xsd" Name="ORMCstPr.xsd" LongName="CustomProperties.xsd" src="..\CustomProperties\CustomProperties.xsd"
+										DefaultLanguage="0" CompanionFile="Neumont.Tools.ORM.CustomProperties.dll"/>
+								</Component>
+								<Component Id="NORMAVSORMAbstractionSchemaComponent" Guid="1AFB3357-16AC-4A2B-$(var.VersionGuidSuffix)" DiskId="1" Win64="$(var.Win64)" KeyPath="yes">
+									<File Id="ORMAbstraction.xsd" Name="ORMAbstr.xsd" LongName="ORMAbstraction.xsd" src="..\Oial\OialModel\OIAL.xsd"
+										DefaultLanguage="0" CompanionFile="Neumont.Tools.ORMAbstraction.dll"/>
+									<File Id="ORMAbstractionDataTypes.xsd" Name="ORMAbsDT.xsd" LongName="ORMAbstractionDataTypes.xsd" src="..\Oial\OialModel\OIALDatatypes.xsd"
+										DefaultLanguage="0" CompanionFile="Neumont.Tools.ORMAbstraction.dll"/>
+								</Component>
+								<Component Id="NORMAVSORMToORMAbstractionSchemaComponent" Guid="D79F2881-1707-4499-$(var.VersionGuidSuffix)" DiskId="1" Win64="$(var.Win64)" KeyPath="yes">
+									<File Id="ORMToORMAbstraction.xsd" Name="ORMAbsBr.xsd" LongName="ORMToORMAbstraction.xsd" src="..\Oial\ORMOialBridge\ORMToORMAbstraction.xsd"
+										DefaultLanguage="0" CompanionFile="Neumont.Tools.ORMToORMAbstractionBridge.dll"/>
+								</Component>
+								<Component Id="NORMAVSRelationalModelsSchemaComponent" Guid="5D8B0055-6336-4226-$(var.VersionGuidSuffix)" DiskId="1" Win64="$(var.Win64)" KeyPath="yes">
+									<File Id="ConceptualDatabase.xsd" Name="CDB.xsd" LongName="ConceptualDatabase.xsd" src="..\RelationalModel\DcilModel\ConceptualDatabase.xsd"
+										DefaultLanguage="0" CompanionFile="Neumont.Tools.RelationalModels.dll"/>
+								</Component>
+								<Component Id="NORMAVSORMAbstractionToConceptualDatabaseSchemaComponent" Guid="F3ECE70B-A746-4FDA-$(var.VersionGuidSuffix)" DiskId="1" Win64="$(var.Win64)" KeyPath="yes">
+									<File Id="ORMAbstractionToConceptualDatabase.xsd" Name="CDBBr.xsd" LongName="ORMAbstractionToConceptualDatabase.xsd" src="..\RelationalModel\OialDcilBridge\ORMAbstractionToConceptualDatabase.xsd"
+										DefaultLanguage="0" CompanionFile="Neumont.Tools.ORMAbstractionToConceptualDatabaseBridge.dll"/>
 								</Component>
 							</Directory>
 							<Directory Id="Transforms" Name="Trnsfrms" LongName="Transforms">

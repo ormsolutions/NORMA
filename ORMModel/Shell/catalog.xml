@@ -1,4 +1,10 @@
 <?xml version="1.0" encoding="utf-8"?>
 <SchemaCatalog xmlns="http://schemas.microsoft.com/xsd/catalog">
 	<Schema targetNamespace="http://schemas.neumont.edu/ORM/DesignerSettings" href="ORMDesignerSettings.xsd"/>
+	<Schema targetNamespace="http://schemas.neumont.edu/ORM/Preview/CustomProperties" href="CustomProperties.xsd"/>
+	<Schema targetNamespace="http://schemas.neumont.edu/ORM/Abstraction/2007-06/Core" href="ORMAbstraction.xsd"/>
+	<Schema targetNamespace="http://schemas.neumont.edu/ORM/Abstraction/2007-06/DataTypes/Core" href="ORMAbstractionDataTypes.xsd"/>
+	<Schema targetNamespace="http://schemas.neumont.edu/ORM/Bridge/2007-06/ORMToORMAbstraction" href="ORMToORMAbstraction.xsd"/>
+	<Schema targetNamespace="http://schemas.neumont.edu/ORM/Relational/2007-06/ConceptualDatabase" href="ConceptualDatabase.xsd"/>
+	<Schema targetNamespace="http://schemas.neumont.edu/ORM/Bridge/2007-06/ORMAbstractionToConceptualDatabase" href="ORMAbstractionToConceptualDatabase.xsd"/>
 </SchemaCatalog>

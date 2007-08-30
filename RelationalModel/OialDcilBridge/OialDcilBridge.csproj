@@ -32,7 +32,7 @@
     <Optimize>true</Optimize>
     <OutputPath>bin\Release\</OutputPath>
     <DefineConstants>TRACE</DefineConstants>
-    <DocumentationFile>bin\Release\Neumont.Tools.Dil.OialDcilBridge.xml</DocumentationFile>
+    <DocumentationFile>bin\Release\Neumont.Tools.ORMAbstractionToConceptualDatabaseBridge.xml</DocumentationFile>
     <ErrorReport>prompt</ErrorReport>
     <NoWarn>1607</NoWarn>
     <UseVSHostingProcess>false</UseVSHostingProcess>

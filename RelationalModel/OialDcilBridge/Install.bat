@@ -7,6 +7,7 @@ IF NOT EXIST "%NORMAExtensionsDir%" (MKDIR "%NORMAExtensionsDir%")
 
 XCOPY /Y /D /V /Q "%RootDir%\%BuildOutDir%\Neumont.Tools.ORMAbstractionToConceptualDatabaseBridge.dll" "%NORMAExtensionsDir%\"
 XCOPY /Y /D /V /Q "%RootDir%\%BuildOutDir%\Neumont.Tools.ORMAbstractionToConceptualDatabaseBridge.pdb" "%NORMAExtensionsDir%\"
+XCOPY /Y /D /V /Q "%RootDir%\%BuildOutDir%\Neumont.Tools.ORMAbstractionToConceptualDatabaseBridge.xml" "%NORMAExtensionsDir%\"
 
 REG ADD "HKLM\%VSRegistryRoot%\Neumont\ORM Architect\Extensions\http://schemas.neumont.edu/ORM/Bridge/2007-06/ORMAbstractionToConceptualDatabase" /v "Class" /d "Neumont.Tools.ORMAbstractionToConceptualDatabaseBridge.ORMAbstractionToConceptualDatabaseBridgeDomainModel" /f 1>NUL
 REG ADD "HKLM\%VSRegistryRoot%\Neumont\ORM Architect\Extensions\http://schemas.neumont.edu/ORM/Bridge/2007-06/ORMAbstractionToConceptualDatabase" /v "CodeBase" /d "%NORMAExtensionsDir%\Neumont.Tools.ORMAbstractionToConceptualDatabaseBridge.dll" /f 1>NUL

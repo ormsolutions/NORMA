@@ -41,6 +41,12 @@ XCOPY /Y /D /V /Q "%RootDir%\XML\OIALtoPLiX\OIALtoPLiX_Properties.xsd" "%ORMDir%
 XCOPY /Y /D /V /Q "%RootDir%\catalog.xml" "%ORMDir%\Schemas\"
 
 XCOPY /Y /D /V /Q "%RootDir%\ORMModel\Shell\ORMDesignerSettings.xsd" "%NORMADir%\Xml\Schemas\"
+XCOPY /Y /D /V /Q "%RootDir%\CustomProperties\CustomProperties.xsd" "%NORMADir%\Xml\Schemas\"
+ECHO F | XCOPY /Y /D /V /Q "%RootDir%\Oial\OialModel\OIAL.xsd" "%NORMADir%\Xml\Schemas\ORMAbstraction.xsd"
+ECHO F | XCOPY /Y /D /V /Q "%RootDir%\Oial\OialModel\OIALDatatypes.xsd" "%NORMADir%\Xml\Schemas\ORMAbstractionDataTypes.xsd"
+XCOPY /Y /D /V /Q "%RootDir%\Oial\ORMOialBridge\ORMToORMAbstraction.xsd" "%NORMADir%\Xml\Schemas\"
+XCOPY /Y /D /V /Q "%RootDir%\RelationalModel\DcilModel\ConceptualDatabase.xsd" "%NORMADir%\Xml\Schemas\"
+XCOPY /Y /D /V /Q "%RootDir%\RelationalModel\OialDcilBridge\ORMAbstractionToConceptualDatabase.xsd" "%NORMADir%\Xml\Schemas\"
 XCOPY /Y /D /V /Q "%RootDir%\ORMModel\Shell\catalog.xml" "%NORMADir%\Xml\Schemas\"
 XCOPY /Y /D /V /Q "%RootDir%\ORMModel\Shell\ORMDesignerSettings.xml" "%NORMADir%\"
 XCOPY /Y /D /V /Q "%RootDir%\ORMModel\Shell\Converters\*.xslt" "%NORMADir%\Xml\Transforms\Converters\"
@@ -97,6 +103,9 @@ REG ADD "HKLM\%VSRegistryRoot%\XmlDesigners\{EDA9E282-8FC6-4AE4-AF2C-C224FD3AE49
 REG ADD "HKLM\%VSRegistryRoot%\XmlDesigners\{EDA9E282-8FC6-4AE4-AF2C-C224FD3AE49B}" /v "Extension" /d "orm" /f 1>NUL
 REG ADD "HKLM\%VSRegistryRoot%\XmlDesigners\{EDA9E282-8FC6-4AE4-AF2C-C224FD3AE49B}" /v "LogicalView" /d "7651A702-06E5-11D1-8EBD-00A0C90F26EA" /f 1>NUL
 REG ADD "HKLM\%VSRegistryRoot%\XmlDesigners\{EDA9E282-8FC6-4AE4-AF2C-C224FD3AE49B}" /v "Namespace" /d "http://schemas.neumont.edu/ORM/2006-04/ORMRoot" /f 1>NUL
+
+REG ADD "HKLM\SOFTWARE\Microsoft\.NETFramework\v2.0.50727\AssemblyFoldersEx\NORMAVS" /ve /d "%NORMADir%\bin" /f 1>NUL
+REG ADD "HKLM\SOFTWARE\Microsoft\.NETFramework\v2.0.50727\AssemblyFoldersEx\NORMAVSExtensions" /ve /d "%NORMADir%\bin\Extensions" /f 1>NUL
 
 REG ADD "HKCR\MIME\Database\Content Type\application/orm+xml" /v "Extension" /d ".orm" /f 1>NUL
 REG ADD "HKCR\.orm" /ve /d "ormfile" /f 1>NUL
