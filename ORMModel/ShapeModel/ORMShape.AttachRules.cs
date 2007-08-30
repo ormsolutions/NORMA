@@ -177,7 +177,7 @@ namespace Neumont.Tools.ORM.ShapeModel
 				Neumont.Tools.Modeling.Diagnostics.TraceUtility.TraceRuleEnd(e.ModelElement.Store, "Neumont.Tools.ORM.ShapeModel.ExternalConstraintLink.DeleteDanglingConstraintShapeAddRule");
 			}
 		}
-		[Microsoft.VisualStudio.Modeling.RuleOn(typeof(Microsoft.VisualStudio.Modeling.Diagrams.LinkConnectsToNode))]
+		[Microsoft.VisualStudio.Modeling.RuleOn(typeof(Microsoft.VisualStudio.Modeling.Diagrams.LinkConnectsToNode), Priority=Neumont.Tools.Modeling.FrameworkDomainModel.InlineRulePriority)]
 		private sealed class DeleteDanglingConstraintShapeDeletingRuleClass : Microsoft.VisualStudio.Modeling.DeletingRule
 		{
 			[System.Diagnostics.DebuggerStepThrough()]
@@ -203,7 +203,7 @@ namespace Neumont.Tools.ORM.ShapeModel
 				Neumont.Tools.Modeling.Diagnostics.TraceUtility.TraceRuleEnd(e.ModelElement.Store, "Neumont.Tools.ORM.ShapeModel.ExternalConstraintLink.DeleteDanglingConstraintShapeDeletingRule");
 			}
 		}
-		[Microsoft.VisualStudio.Modeling.RuleOn(typeof(Microsoft.VisualStudio.Modeling.Diagrams.LinkConnectsToNode))]
+		[Microsoft.VisualStudio.Modeling.RuleOn(typeof(Microsoft.VisualStudio.Modeling.Diagrams.LinkConnectsToNode), Priority=Neumont.Tools.Modeling.FrameworkDomainModel.InlineRulePriority)]
 		private sealed class DeleteDanglingConstraintShapeRolePlayerChangeRuleClass : Microsoft.VisualStudio.Modeling.RolePlayerChangeRule
 		{
 			[System.Diagnostics.DebuggerStepThrough()]
@@ -525,7 +525,7 @@ namespace Neumont.Tools.ORM.ShapeModel
 				Neumont.Tools.Modeling.Diagnostics.TraceUtility.TraceRuleEnd(e.ModelElement.Store, "Neumont.Tools.ORM.ShapeModel.FactTypeShape.FactTypeShapeChangeRule");
 			}
 		}
-		[Microsoft.VisualStudio.Modeling.RuleOn(typeof(Neumont.Tools.ORM.ObjectModel.ObjectType))]
+		[Microsoft.VisualStudio.Modeling.RuleOn(typeof(Neumont.Tools.ORM.ObjectModel.ObjectType), Priority=Neumont.Tools.Modeling.FrameworkDomainModel.InlineRulePriority)]
 		private sealed class ImplicitBooleanValueChangeRuleClass : Microsoft.VisualStudio.Modeling.ChangeRule
 		{
 			[System.Diagnostics.DebuggerStepThrough()]
@@ -748,7 +748,7 @@ namespace Neumont.Tools.ORM.ShapeModel
 	#region Rule classes for ObjectTypeShape
 	partial class ObjectTypeShape
 	{
-		[Microsoft.VisualStudio.Modeling.RuleOn(typeof(Neumont.Tools.ORM.ObjectModel.ValueTypeHasDataType))]
+		[Microsoft.VisualStudio.Modeling.RuleOn(typeof(Neumont.Tools.ORM.ObjectModel.ValueTypeHasDataType), Priority=Neumont.Tools.Modeling.FrameworkDomainModel.InlineRulePriority)]
 		private sealed class DataTypeAddedRuleClass : Microsoft.VisualStudio.Modeling.AddRule
 		{
 			[System.Diagnostics.DebuggerStepThrough()]
@@ -852,7 +852,7 @@ namespace Neumont.Tools.ORM.ShapeModel
 				Neumont.Tools.Modeling.Diagnostics.TraceUtility.TraceRuleEnd(e.ModelElement.Store, "Neumont.Tools.ORM.ShapeModel.ObjectTypeShape.ObjectTypeShapeChangeRule");
 			}
 		}
-		[Microsoft.VisualStudio.Modeling.RuleOn(typeof(Neumont.Tools.ORM.ObjectModel.EntityTypeHasPreferredIdentifier))]
+		[Microsoft.VisualStudio.Modeling.RuleOn(typeof(Neumont.Tools.ORM.ObjectModel.EntityTypeHasPreferredIdentifier), Priority=Neumont.Tools.Modeling.FrameworkDomainModel.InlineRulePriority)]
 		private sealed class PreferredIdentifierAddedRuleClass : Microsoft.VisualStudio.Modeling.AddRule
 		{
 			[System.Diagnostics.DebuggerStepThrough()]
@@ -930,7 +930,7 @@ namespace Neumont.Tools.ORM.ShapeModel
 				Neumont.Tools.Modeling.Diagnostics.TraceUtility.TraceRuleEnd(e.ModelElement.Store, "Neumont.Tools.ORM.ShapeModel.ObjectTypeShape.PreferredIdentifierLengthenedRule");
 			}
 		}
-		[Microsoft.VisualStudio.Modeling.RuleOn(typeof(Neumont.Tools.ORM.ObjectModel.EntityTypeHasPreferredIdentifier))]
+		[Microsoft.VisualStudio.Modeling.RuleOn(typeof(Neumont.Tools.ORM.ObjectModel.EntityTypeHasPreferredIdentifier), Priority=Neumont.Tools.Modeling.FrameworkDomainModel.InlineRulePriority)]
 		private sealed class PreferredIdentifierRolePlayerChangeRuleClass : Microsoft.VisualStudio.Modeling.RolePlayerChangeRule
 		{
 			[System.Diagnostics.DebuggerStepThrough()]
@@ -1008,7 +1008,7 @@ namespace Neumont.Tools.ORM.ShapeModel
 				Neumont.Tools.Modeling.Diagnostics.TraceUtility.TraceRuleEnd(e.ModelElement.Store, "Neumont.Tools.ORM.ShapeModel.ObjectTypeShape.PreferredIdentifierShortenedRule");
 			}
 		}
-		[Microsoft.VisualStudio.Modeling.RuleOn(typeof(Neumont.Tools.ORM.ObjectModel.ObjectTypePlaysRole))]
+		[Microsoft.VisualStudio.Modeling.RuleOn(typeof(Neumont.Tools.ORM.ObjectModel.ObjectTypePlaysRole), Priority=Neumont.Tools.Modeling.FrameworkDomainModel.InlineRulePriority)]
 		private sealed class RolePlayerAddedRuleClass : Microsoft.VisualStudio.Modeling.AddRule
 		{
 			[System.Diagnostics.DebuggerStepThrough()]
@@ -1122,7 +1122,7 @@ namespace Neumont.Tools.ORM.ShapeModel
 				Neumont.Tools.Modeling.Diagnostics.TraceUtility.TraceRuleEnd(e.ModelElement.Store, "Neumont.Tools.ORM.ShapeModel.ORMBaseShape.AbsoluteBoundsChangedRule");
 			}
 		}
-		[Microsoft.VisualStudio.Modeling.RuleOn(typeof(Neumont.Tools.ORM.ObjectModel.ModelHasError))]
+		[Microsoft.VisualStudio.Modeling.RuleOn(typeof(Neumont.Tools.ORM.ObjectModel.ModelHasError), Priority=Neumont.Tools.Modeling.FrameworkDomainModel.InlineRulePriority)]
 		private sealed class ModelErrorAddedRuleClass : Microsoft.VisualStudio.Modeling.AddRule
 		{
 			[System.Diagnostics.DebuggerStepThrough()]
@@ -1148,7 +1148,7 @@ namespace Neumont.Tools.ORM.ShapeModel
 				Neumont.Tools.Modeling.Diagnostics.TraceUtility.TraceRuleEnd(e.ModelElement.Store, "Neumont.Tools.ORM.ShapeModel.ORMBaseShape.ModelErrorAddedRule");
 			}
 		}
-		[Microsoft.VisualStudio.Modeling.RuleOn(typeof(Neumont.Tools.ORM.ObjectModel.ModelHasError))]
+		[Microsoft.VisualStudio.Modeling.RuleOn(typeof(Neumont.Tools.ORM.ObjectModel.ModelHasError), Priority=Neumont.Tools.Modeling.FrameworkDomainModel.InlineRulePriority)]
 		private sealed class ModelErrorDeletingRuleClass : Microsoft.VisualStudio.Modeling.DeletingRule
 		{
 			[System.Diagnostics.DebuggerStepThrough()]

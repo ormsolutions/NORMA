@@ -691,13 +691,14 @@
 							</xsl:if>
 							<xsl:for-each select="arg:RuleOn">
 								<xsl:variable name="fireTime" select="string(@fireTime)"/>
+								<xsl:variable name="fireInline" select="$fireTime='Inline' or not($fireTime)"/>
 								<xsl:variable name="standardPriority" select="normalize-space(@priority)"/>
 								<xsl:variable name="priorityAdjustment" select="arg:PriorityAdjustment/child::plx:*"/>
 								<plx:attribute dataTypeName="RuleOn" dataTypeQualifier="Microsoft.VisualStudio.Modeling">
 									<plx:passParam>
 										<plx:typeOf dataTypeName="{@targetType}" dataTypeQualifier="{@targetTypeQualifier}"/>
 									</plx:passParam>
-									<xsl:if test="string-length($fireTime) and $fireTime!='Inline'">
+									<xsl:if test="not($fireInline)">
 										<plx:passParam>
 											<plx:binaryOperator type="assignNamed">
 												<plx:left>
@@ -709,57 +710,103 @@
 											</plx:binaryOperator>
 										</plx:passParam>
 									</xsl:if>
-									<xsl:if test="$standardPriority or $priorityAdjustment">
+									<xsl:if test="$standardPriority or $priorityAdjustment or $fireInline">
 										<plx:passParam>
 											<plx:binaryOperator type="assignNamed">
 												<plx:left>
 													<plx:nameRef name="Priority" type="namedParameter"/>
 												</plx:left>
 												<plx:right>
+													<xsl:variable name="fireInlineAdjustment">
+														<xsl:if test="$fireInline">
+															<plx:callStatic name="InlineRulePriority" dataTypeName="FrameworkDomainModel" dataTypeQualifier="Neumont.Tools.Modeling" type="field"/>
+														</xsl:if>
+													</xsl:variable>
 													<xsl:choose>
-														<xsl:when test="$standardPriority">
-															<xsl:variable name="standardPriorityFragment">
-																<xsl:choose>
-																	<xsl:when test="$standardPriority='BeforeDelayValidateRulePriority'">
-																		<plx:callStatic name="BeforeDelayValidateRulePriority" dataTypeName="FrameworkDomainModel" dataTypeQualifier="Neumont.Tools.Modeling" type="field"/>
-																	</xsl:when>
-																	<xsl:when test="$standardPriority='DelayValidateRulePriority'">
-																		<plx:callStatic name="DelayValidateRulePriority" dataTypeName="FrameworkDomainModel" dataTypeQualifier="Neumont.Tools.Modeling" type="field"/>
-																	</xsl:when>
-																	<xsl:when test="starts-with($standardPriority,'D')">
-																		<plx:callStatic name="{substring-after($standardPriority,'.')}" dataTypeName="DiagramFixupConstants" dataTypeQualifier="Microsoft.VisualStudio.Modeling.Diagrams" type="field"/>
-																	</xsl:when>
-																	<xsl:when test="starts-with($standardPriority, '-')">
-																		<plx:unaryOperator type="negative">
-																			<plx:value data="{substring-after($standardPriority,'-')}" type="i4"/>
-																		</plx:unaryOperator>
-																	</xsl:when>
-																	<xsl:when test="starts-with($standardPriority, '+')">
-																		<plx:value data="{substring-after($standardPriority,'+')}" type="i4"/>
-																	</xsl:when>
-																	<xsl:otherwise>
-																		<plx:value data="{$standardPriority}" type="i4"/>
-																	</xsl:otherwise>
-																</xsl:choose>
-															</xsl:variable>
+														<xsl:when test="$standardPriority or $priorityAdjustment">
 															<xsl:choose>
-																<xsl:when test="$priorityAdjustment">
+																<xsl:when test="$standardPriority">
+																	<xsl:variable name="standardPriorityFragment">
+																		<xsl:choose>
+																			<xsl:when test="$standardPriority='BeforeDelayValidateRulePriority'">
+																				<plx:callStatic name="BeforeDelayValidateRulePriority" dataTypeName="FrameworkDomainModel" dataTypeQualifier="Neumont.Tools.Modeling" type="field"/>
+																			</xsl:when>
+																			<xsl:when test="$standardPriority='DelayValidateRulePriority'">
+																				<plx:callStatic name="DelayValidateRulePriority" dataTypeName="FrameworkDomainModel" dataTypeQualifier="Neumont.Tools.Modeling" type="field"/>
+																			</xsl:when>
+																			<xsl:when test="starts-with($standardPriority,'D')">
+																				<plx:callStatic name="{substring-after($standardPriority,'.')}" dataTypeName="DiagramFixupConstants" dataTypeQualifier="Microsoft.VisualStudio.Modeling.Diagrams" type="field"/>
+																			</xsl:when>
+																			<xsl:when test="starts-with($standardPriority, '-')">
+																				<plx:unaryOperator type="negative">
+																					<plx:value data="{substring-after($standardPriority,'-')}" type="i4"/>
+																				</plx:unaryOperator>
+																			</xsl:when>
+																			<xsl:when test="starts-with($standardPriority, '+')">
+																				<plx:value data="{substring-after($standardPriority,'+')}" type="i4"/>
+																			</xsl:when>
+																			<xsl:otherwise>
+																				<plx:value data="{$standardPriority}" type="i4"/>
+																			</xsl:otherwise>
+																		</xsl:choose>
+																	</xsl:variable>
+																	<xsl:choose>
+																		<xsl:when test="$priorityAdjustment">
+																			<plx:binaryOperator type="add">
+																				<plx:left>
+																					<xsl:copy-of select="$standardPriorityFragment"/>
+																				</plx:left>
+																				<plx:right>
+																					<xsl:choose>
+																						<xsl:when test="$fireInline">
+																							<plx:binaryOperator type="add">
+																								<plx:left>
+																									<xsl:copy-of select="$priorityAdjustment"/>
+																								</plx:left>
+																								<plx:right>
+																									<xsl:copy-of select="$fireInlineAdjustment"/>
+																								</plx:right>
+																							</plx:binaryOperator>
+																						</xsl:when>
+																						<xsl:otherwise>
+																							<xsl:copy-of select="$priorityAdjustment"/>
+																						</xsl:otherwise>
+																					</xsl:choose>
+																				</plx:right>
+																			</plx:binaryOperator>
+																		</xsl:when>
+																		<xsl:when test="$fireInline">
+																			<plx:binaryOperator type="add">
+																				<plx:left>
+																					<xsl:copy-of select="$standardPriorityFragment"/>
+																				</plx:left>
+																				<plx:right>
+																					<xsl:copy-of select="$fireInlineAdjustment"/>
+																				</plx:right>
+																			</plx:binaryOperator>
+																		</xsl:when>
+																		<xsl:otherwise>
+																			<xsl:copy-of select="$standardPriorityFragment"/>
+																		</xsl:otherwise>
+																	</xsl:choose>
+																</xsl:when>
+																<xsl:when test="$fireInline">
 																	<plx:binaryOperator type="add">
 																		<plx:left>
-																			<xsl:copy-of select="$standardPriorityFragment"/>
+																			<xsl:copy-of select="$priorityAdjustment"/>
 																		</plx:left>
 																		<plx:right>
-																			<xsl:copy-of select="$priorityAdjustment"/>
+																			<xsl:copy-of select="$fireInlineAdjustment"/>
 																		</plx:right>
 																	</plx:binaryOperator>
 																</xsl:when>
 																<xsl:otherwise>
-																	<xsl:copy-of select="$standardPriorityFragment"/>
+																	<xsl:copy-of select="$priorityAdjustment"/>
 																</xsl:otherwise>
 															</xsl:choose>
 														</xsl:when>
 														<xsl:otherwise>
-															<xsl:copy-of select="$priorityAdjustment"/>
+															<xsl:copy-of select="$fireInlineAdjustment"/>
 														</xsl:otherwise>
 													</xsl:choose>
 												</plx:right>

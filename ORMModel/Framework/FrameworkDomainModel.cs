@@ -163,6 +163,13 @@ namespace Neumont.Tools.Modeling
 		#endregion // InitializingToolboxItems property
 		#region Delayed Model Validation
 		/// <summary>
+		/// The framework transaction engine can force all inline rules to
+		/// commit time. When this happens, we need our 'inline' rules to run
+		/// before any commit-time rules. All inline priorities need to run
+		/// at a reasonable offset from this value to avoid issues.
+		/// </summary>
+		public const int InlineRulePriority = -100000;
+		/// <summary>
 		/// The rule priority where delay validation fires during a local commit.
 		/// Note that rules marked with <see cref="TimeToFire.TopLevelCommit"/> and
 		/// <see cref="TimeToFire.LocalCommit"/> fire at the same time for the top

@@ -102,7 +102,7 @@ namespace Neumont.Tools.ORMAbstractionToConceptualDatabaseBridge
 	{
 		partial class ModificationTracker
 		{
-			[Microsoft.VisualStudio.Modeling.RuleOn(typeof(Neumont.Tools.ORMAbstraction.AbstractionModel))]
+			[Microsoft.VisualStudio.Modeling.RuleOn(typeof(Neumont.Tools.ORMAbstraction.AbstractionModel), Priority=Neumont.Tools.Modeling.FrameworkDomainModel.InlineRulePriority)]
 			private sealed class AbstractionModelChangedRuleClass : Microsoft.VisualStudio.Modeling.ChangeRule
 			{
 				[System.Diagnostics.DebuggerStepThrough()]
@@ -128,7 +128,7 @@ namespace Neumont.Tools.ORMAbstractionToConceptualDatabaseBridge
 					Neumont.Tools.Modeling.Diagnostics.TraceUtility.TraceRuleEnd(e.ModelElement.Store, "Neumont.Tools.ORMAbstractionToConceptualDatabaseBridge.ORMAbstractionToConceptualDatabaseBridgeDomainModel.ModificationTracker.AbstractionModelChangedRule");
 				}
 			}
-			[Microsoft.VisualStudio.Modeling.RuleOn(typeof(AssimilationMappingCustomizesFactType))]
+			[Microsoft.VisualStudio.Modeling.RuleOn(typeof(AssimilationMappingCustomizesFactType), Priority=Neumont.Tools.Modeling.FrameworkDomainModel.InlineRulePriority)]
 			private sealed class AssimilationMappingAddedRuleClass : Microsoft.VisualStudio.Modeling.AddRule
 			{
 				[System.Diagnostics.DebuggerStepThrough()]
@@ -154,7 +154,7 @@ namespace Neumont.Tools.ORMAbstractionToConceptualDatabaseBridge
 					Neumont.Tools.Modeling.Diagnostics.TraceUtility.TraceRuleEnd(e.ModelElement.Store, "Neumont.Tools.ORMAbstractionToConceptualDatabaseBridge.ORMAbstractionToConceptualDatabaseBridgeDomainModel.ModificationTracker.AssimilationMappingAddedRule");
 				}
 			}
-			[Microsoft.VisualStudio.Modeling.RuleOn(typeof(AssimilationMapping))]
+			[Microsoft.VisualStudio.Modeling.RuleOn(typeof(AssimilationMapping), Priority=Neumont.Tools.Modeling.FrameworkDomainModel.InlineRulePriority)]
 			private sealed class AssimilationMappingChangedRuleClass : Microsoft.VisualStudio.Modeling.ChangeRule
 			{
 				[System.Diagnostics.DebuggerStepThrough()]
@@ -180,7 +180,7 @@ namespace Neumont.Tools.ORMAbstractionToConceptualDatabaseBridge
 					Neumont.Tools.Modeling.Diagnostics.TraceUtility.TraceRuleEnd(e.ModelElement.Store, "Neumont.Tools.ORMAbstractionToConceptualDatabaseBridge.ORMAbstractionToConceptualDatabaseBridgeDomainModel.ModificationTracker.AssimilationMappingChangedRule");
 				}
 			}
-			[Microsoft.VisualStudio.Modeling.RuleOn(typeof(Neumont.Tools.ORMAbstraction.AbstractionModelHasConceptType))]
+			[Microsoft.VisualStudio.Modeling.RuleOn(typeof(Neumont.Tools.ORMAbstraction.AbstractionModelHasConceptType), Priority=Neumont.Tools.Modeling.FrameworkDomainModel.InlineRulePriority)]
 			private sealed class ConceptTypeAddedRuleClass : Microsoft.VisualStudio.Modeling.AddRule
 			{
 				[System.Diagnostics.DebuggerStepThrough()]
@@ -206,7 +206,7 @@ namespace Neumont.Tools.ORMAbstractionToConceptualDatabaseBridge
 					Neumont.Tools.Modeling.Diagnostics.TraceUtility.TraceRuleEnd(e.ModelElement.Store, "Neumont.Tools.ORMAbstractionToConceptualDatabaseBridge.ORMAbstractionToConceptualDatabaseBridgeDomainModel.ModificationTracker.ConceptTypeAddedRule");
 				}
 			}
-			[Microsoft.VisualStudio.Modeling.RuleOn(typeof(Neumont.Tools.ORMAbstraction.ConceptType))]
+			[Microsoft.VisualStudio.Modeling.RuleOn(typeof(Neumont.Tools.ORMAbstraction.ConceptType), Priority=Neumont.Tools.Modeling.FrameworkDomainModel.InlineRulePriority)]
 			private sealed class ConceptTypeChangedRuleClass : Microsoft.VisualStudio.Modeling.ChangeRule
 			{
 				[System.Diagnostics.DebuggerStepThrough()]
@@ -232,7 +232,7 @@ namespace Neumont.Tools.ORMAbstractionToConceptualDatabaseBridge
 					Neumont.Tools.Modeling.Diagnostics.TraceUtility.TraceRuleEnd(e.ModelElement.Store, "Neumont.Tools.ORMAbstractionToConceptualDatabaseBridge.ORMAbstractionToConceptualDatabaseBridgeDomainModel.ModificationTracker.ConceptTypeChangedRule");
 				}
 			}
-			[Microsoft.VisualStudio.Modeling.RuleOn(typeof(Neumont.Tools.ORMAbstraction.ConceptTypeChild))]
+			[Microsoft.VisualStudio.Modeling.RuleOn(typeof(Neumont.Tools.ORMAbstraction.ConceptTypeChild), Priority=Neumont.Tools.Modeling.FrameworkDomainModel.InlineRulePriority)]
 			private sealed class ConceptTypeChildChangedRuleClass : Microsoft.VisualStudio.Modeling.ChangeRule
 			{
 				[System.Diagnostics.DebuggerStepThrough()]
@@ -258,7 +258,7 @@ namespace Neumont.Tools.ORMAbstractionToConceptualDatabaseBridge
 					Neumont.Tools.Modeling.Diagnostics.TraceUtility.TraceRuleEnd(e.ModelElement.Store, "Neumont.Tools.ORMAbstractionToConceptualDatabaseBridge.ORMAbstractionToConceptualDatabaseBridgeDomainModel.ModificationTracker.ConceptTypeChildChangedRule");
 				}
 			}
-			[Microsoft.VisualStudio.Modeling.RuleOn(typeof(Neumont.Tools.ORMAbstraction.AbstractionModelHasConceptType))]
+			[Microsoft.VisualStudio.Modeling.RuleOn(typeof(Neumont.Tools.ORMAbstraction.AbstractionModelHasConceptType), Priority=Neumont.Tools.Modeling.FrameworkDomainModel.InlineRulePriority)]
 			private sealed class ConceptTypeDeletedRuleClass : Microsoft.VisualStudio.Modeling.DeleteRule
 			{
 				[System.Diagnostics.DebuggerStepThrough()]
@@ -284,7 +284,7 @@ namespace Neumont.Tools.ORMAbstractionToConceptualDatabaseBridge
 					Neumont.Tools.Modeling.Diagnostics.TraceUtility.TraceRuleEnd(e.ModelElement.Store, "Neumont.Tools.ORMAbstractionToConceptualDatabaseBridge.ORMAbstractionToConceptualDatabaseBridgeDomainModel.ModificationTracker.ConceptTypeDeletedRule");
 				}
 			}
-			[Microsoft.VisualStudio.Modeling.RuleOn(typeof(Neumont.Tools.ORM.ObjectModel.FactType))]
+			[Microsoft.VisualStudio.Modeling.RuleOn(typeof(Neumont.Tools.ORM.ObjectModel.FactType), Priority=Neumont.Tools.Modeling.FrameworkDomainModel.InlineRulePriority)]
 			private sealed class FactTypeNameChangedRuleClass : Microsoft.VisualStudio.Modeling.ChangeRule
 			{
 				[System.Diagnostics.DebuggerStepThrough()]
@@ -310,7 +310,7 @@ namespace Neumont.Tools.ORMAbstractionToConceptualDatabaseBridge
 					Neumont.Tools.Modeling.Diagnostics.TraceUtility.TraceRuleEnd(e.ModelElement.Store, "Neumont.Tools.ORMAbstractionToConceptualDatabaseBridge.ORMAbstractionToConceptualDatabaseBridgeDomainModel.ModificationTracker.FactTypeNameChangedRule");
 				}
 			}
-			[Microsoft.VisualStudio.Modeling.RuleOn(typeof(Neumont.Tools.ORMAbstraction.AbstractionModelHasInformationTypeFormat))]
+			[Microsoft.VisualStudio.Modeling.RuleOn(typeof(Neumont.Tools.ORMAbstraction.AbstractionModelHasInformationTypeFormat), Priority=Neumont.Tools.Modeling.FrameworkDomainModel.InlineRulePriority)]
 			private sealed class InformationTypeFormatAddedRuleClass : Microsoft.VisualStudio.Modeling.AddRule
 			{
 				[System.Diagnostics.DebuggerStepThrough()]
@@ -336,7 +336,7 @@ namespace Neumont.Tools.ORMAbstractionToConceptualDatabaseBridge
 					Neumont.Tools.Modeling.Diagnostics.TraceUtility.TraceRuleEnd(e.ModelElement.Store, "Neumont.Tools.ORMAbstractionToConceptualDatabaseBridge.ORMAbstractionToConceptualDatabaseBridgeDomainModel.ModificationTracker.InformationTypeFormatAddedRule");
 				}
 			}
-			[Microsoft.VisualStudio.Modeling.RuleOn(typeof(Neumont.Tools.ORMAbstraction.AbstractionModelHasInformationTypeFormat))]
+			[Microsoft.VisualStudio.Modeling.RuleOn(typeof(Neumont.Tools.ORMAbstraction.AbstractionModelHasInformationTypeFormat), Priority=Neumont.Tools.Modeling.FrameworkDomainModel.InlineRulePriority)]
 			private sealed class InformationTypeFormatDeletedRuleClass : Microsoft.VisualStudio.Modeling.DeleteRule
 			{
 				[System.Diagnostics.DebuggerStepThrough()]
@@ -362,7 +362,7 @@ namespace Neumont.Tools.ORMAbstractionToConceptualDatabaseBridge
 					Neumont.Tools.Modeling.Diagnostics.TraceUtility.TraceRuleEnd(e.ModelElement.Store, "Neumont.Tools.ORMAbstractionToConceptualDatabaseBridge.ORMAbstractionToConceptualDatabaseBridgeDomainModel.ModificationTracker.InformationTypeFormatDeletedRule");
 				}
 			}
-			[Microsoft.VisualStudio.Modeling.RuleOn(typeof(Neumont.Tools.ORM.ObjectModel.Role))]
+			[Microsoft.VisualStudio.Modeling.RuleOn(typeof(Neumont.Tools.ORM.ObjectModel.Role), Priority=Neumont.Tools.Modeling.FrameworkDomainModel.InlineRulePriority)]
 			private sealed class RoleNameChangedRuleClass : Microsoft.VisualStudio.Modeling.ChangeRule
 			{
 				[System.Diagnostics.DebuggerStepThrough()]
@@ -388,7 +388,7 @@ namespace Neumont.Tools.ORMAbstractionToConceptualDatabaseBridge
 					Neumont.Tools.Modeling.Diagnostics.TraceUtility.TraceRuleEnd(e.ModelElement.Store, "Neumont.Tools.ORMAbstractionToConceptualDatabaseBridge.ORMAbstractionToConceptualDatabaseBridgeDomainModel.ModificationTracker.RoleNameChangedRule");
 				}
 			}
-			[Microsoft.VisualStudio.Modeling.RuleOn(typeof(UniquenessConstraintIsForUniqueness))]
+			[Microsoft.VisualStudio.Modeling.RuleOn(typeof(UniquenessConstraintIsForUniqueness), Priority=Neumont.Tools.Modeling.FrameworkDomainModel.InlineRulePriority)]
 			private sealed class UniquenessDeletedRuleClass : Microsoft.VisualStudio.Modeling.DeleteRule
 			{
 				[System.Diagnostics.DebuggerStepThrough()]
@@ -420,7 +420,7 @@ namespace Neumont.Tools.ORMAbstractionToConceptualDatabaseBridge
 	#region Rule classes for AssimilationMapping
 	partial class AssimilationMapping
 	{
-		[Microsoft.VisualStudio.Modeling.RuleOn(typeof(AssimilationMappingCustomizesFactType))]
+		[Microsoft.VisualStudio.Modeling.RuleOn(typeof(AssimilationMappingCustomizesFactType), Priority=Neumont.Tools.Modeling.FrameworkDomainModel.InlineRulePriority)]
 		private sealed class AssimilationMappingAddedRuleClass : Microsoft.VisualStudio.Modeling.AddRule
 		{
 			[System.Diagnostics.DebuggerStepThrough()]
@@ -446,7 +446,7 @@ namespace Neumont.Tools.ORMAbstractionToConceptualDatabaseBridge
 				Neumont.Tools.Modeling.Diagnostics.TraceUtility.TraceRuleEnd(e.ModelElement.Store, "Neumont.Tools.ORMAbstractionToConceptualDatabaseBridge.AssimilationMapping.AssimilationMappingAddedRule");
 			}
 		}
-		[Microsoft.VisualStudio.Modeling.RuleOn(typeof(AssimilationMapping))]
+		[Microsoft.VisualStudio.Modeling.RuleOn(typeof(AssimilationMapping), Priority=Neumont.Tools.Modeling.FrameworkDomainModel.InlineRulePriority)]
 		private sealed class AssimilationMappingChangedRuleClass : Microsoft.VisualStudio.Modeling.ChangeRule
 		{
 			[System.Diagnostics.DebuggerStepThrough()]
@@ -472,7 +472,7 @@ namespace Neumont.Tools.ORMAbstractionToConceptualDatabaseBridge
 				Neumont.Tools.Modeling.Diagnostics.TraceUtility.TraceRuleEnd(e.ModelElement.Store, "Neumont.Tools.ORMAbstractionToConceptualDatabaseBridge.AssimilationMapping.AssimilationMappingChangedRule");
 			}
 		}
-		[Microsoft.VisualStudio.Modeling.RuleOn(typeof(Neumont.Tools.ORM.ObjectModel.ExclusiveOrConstraintCoupler))]
+		[Microsoft.VisualStudio.Modeling.RuleOn(typeof(Neumont.Tools.ORM.ObjectModel.ExclusiveOrConstraintCoupler), Priority=Neumont.Tools.Modeling.FrameworkDomainModel.InlineRulePriority)]
 		private sealed class DisjunctiveMandatoryCouplerDeletingRuleClass : Microsoft.VisualStudio.Modeling.DeletingRule
 		{
 			[System.Diagnostics.DebuggerStepThrough()]
@@ -498,7 +498,7 @@ namespace Neumont.Tools.ORMAbstractionToConceptualDatabaseBridge
 				Neumont.Tools.Modeling.Diagnostics.TraceUtility.TraceRuleEnd(e.ModelElement.Store, "Neumont.Tools.ORMAbstractionToConceptualDatabaseBridge.AssimilationMapping.DisjunctiveMandatoryCouplerDeletingRule");
 			}
 		}
-		[Microsoft.VisualStudio.Modeling.RuleOn(typeof(Neumont.Tools.ORM.ObjectModel.ConstraintRoleSequenceHasRole))]
+		[Microsoft.VisualStudio.Modeling.RuleOn(typeof(Neumont.Tools.ORM.ObjectModel.ConstraintRoleSequenceHasRole), Priority=Neumont.Tools.Modeling.FrameworkDomainModel.InlineRulePriority)]
 		private sealed class DisjunctiveMandatoryRoleDeletedRuleClass : Microsoft.VisualStudio.Modeling.DeleteRule
 		{
 			[System.Diagnostics.DebuggerStepThrough()]
@@ -524,7 +524,7 @@ namespace Neumont.Tools.ORMAbstractionToConceptualDatabaseBridge
 				Neumont.Tools.Modeling.Diagnostics.TraceUtility.TraceRuleEnd(e.ModelElement.Store, "Neumont.Tools.ORMAbstractionToConceptualDatabaseBridge.AssimilationMapping.DisjunctiveMandatoryRoleDeletedRule");
 			}
 		}
-		[Microsoft.VisualStudio.Modeling.RuleOn(typeof(Neumont.Tools.ORM.ObjectModel.FactType))]
+		[Microsoft.VisualStudio.Modeling.RuleOn(typeof(Neumont.Tools.ORM.ObjectModel.FactType), Priority=Neumont.Tools.Modeling.FrameworkDomainModel.InlineRulePriority)]
 		private sealed class FactTypeDeletingRuleClass : Microsoft.VisualStudio.Modeling.DeletingRule
 		{
 			[System.Diagnostics.DebuggerStepThrough()]
@@ -550,7 +550,7 @@ namespace Neumont.Tools.ORMAbstractionToConceptualDatabaseBridge
 				Neumont.Tools.Modeling.Diagnostics.TraceUtility.TraceRuleEnd(e.ModelElement.Store, "Neumont.Tools.ORMAbstractionToConceptualDatabaseBridge.AssimilationMapping.FactTypeDeletingRule");
 			}
 		}
-		[Microsoft.VisualStudio.Modeling.RuleOn(typeof(Neumont.Tools.ORMToORMAbstractionBridge.ConceptTypeChildHasPathFactType))]
+		[Microsoft.VisualStudio.Modeling.RuleOn(typeof(Neumont.Tools.ORMToORMAbstractionBridge.ConceptTypeChildHasPathFactType), Priority=Neumont.Tools.Modeling.FrameworkDomainModel.InlineRulePriority)]
 		private sealed class PathFactTypeAddedRuleClass : Microsoft.VisualStudio.Modeling.AddRule
 		{
 			[System.Diagnostics.DebuggerStepThrough()]

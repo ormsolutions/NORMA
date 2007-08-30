@@ -85,7 +85,7 @@ namespace Neumont.Tools.ORM.ExtensionExample
 	#region Rule classes for MyCustomExtensionElement
 	partial class MyCustomExtensionElement
 	{
-		[Microsoft.VisualStudio.Modeling.RuleOn(typeof(Neumont.Tools.ORM.ObjectModel.FactTypeHasRole))]
+		[Microsoft.VisualStudio.Modeling.RuleOn(typeof(Neumont.Tools.ORM.ObjectModel.FactTypeHasRole), Priority=Neumont.Tools.Modeling.FrameworkDomainModel.InlineRulePriority)]
 		private sealed class RoleAddRuleClass : Microsoft.VisualStudio.Modeling.AddRule
 		{
 			[System.Diagnostics.DebuggerStepThrough()]
@@ -116,7 +116,7 @@ namespace Neumont.Tools.ORM.ExtensionExample
 	#region Rule classes for ObjectTypeRequiresMeaningfulNameError
 	partial class ObjectTypeRequiresMeaningfulNameError
 	{
-		[Microsoft.VisualStudio.Modeling.RuleOn(typeof(Neumont.Tools.ORM.ObjectModel.ModelHasObjectType))]
+		[Microsoft.VisualStudio.Modeling.RuleOn(typeof(Neumont.Tools.ORM.ObjectModel.ModelHasObjectType), Priority=Neumont.Tools.Modeling.FrameworkDomainModel.InlineRulePriority)]
 		private sealed class ExtensionObjectTypeAddRuleClass : Microsoft.VisualStudio.Modeling.AddRule
 		{
 			[System.Diagnostics.DebuggerStepThrough()]
@@ -142,7 +142,7 @@ namespace Neumont.Tools.ORM.ExtensionExample
 				Neumont.Tools.Modeling.Diagnostics.TraceUtility.TraceRuleEnd(e.ModelElement.Store, "Neumont.Tools.ORM.ExtensionExample.ObjectTypeRequiresMeaningfulNameError.ExtensionObjectTypeAddRule");
 			}
 		}
-		[Microsoft.VisualStudio.Modeling.RuleOn(typeof(Neumont.Tools.ORM.ObjectModel.ObjectType))]
+		[Microsoft.VisualStudio.Modeling.RuleOn(typeof(Neumont.Tools.ORM.ObjectModel.ObjectType), Priority=Neumont.Tools.Modeling.FrameworkDomainModel.InlineRulePriority)]
 		private sealed class ExtensionObjectTypeChangeRuleClass : Microsoft.VisualStudio.Modeling.ChangeRule
 		{
 			[System.Diagnostics.DebuggerStepThrough()]
