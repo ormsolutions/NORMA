@@ -2,6 +2,7 @@ using System;
 using System.Collections.Generic;
 using System.Text;
 using Neumont.Tools.ORM.ObjectModel;
+using ORMCore = Neumont.Tools.ORM.ObjectModel;
 using Microsoft.VisualStudio.Modeling;
 using Neumont.Tools.ORMAbstraction;
 using Neumont.Tools.ORMToORMAbstractionBridge;
@@ -274,17 +275,16 @@ namespace Neumont.Tools.ORMAbstractionToConceptualDatabaseBridge
 						LinkedElementCollection<ConceptType> types = informationTypeFormat.ConceptTypeCollection;
 						if (types.Count == 1)
 						{
-							ObjectType preferredFor = ConceptTypeIsForObjectType.GetObjectType(types[0]);
-							LinkedElementCollection<Role> identifiers = preferredFor.ResolvedPreferredIdentifier.RoleCollection;
-							if (identifiers.Count == 1)
+							ObjectType preferredFor;
+							ORMCore.UniquenessConstraint preferredIdentifier;
+							LinkedElementCollection<Role> identifiers;
+							if (null != (preferredFor = ConceptTypeIsForObjectType.GetObjectType(types[0])) &&
+								null != (preferredIdentifier = preferredFor.ResolvedPreferredIdentifier) &&
+								1 == (identifiers = preferredIdentifier.RoleCollection).Count &&
+								identifiers[0].RolePlayer == InformationTypeFormatIsForValueType.GetValueType(informationTypeFormat) &&
+								!informationTypeFormat.Name.StartsWith(preferredFor.Name))
 							{
-								if (identifiers[0].RolePlayer.Id == InformationTypeFormatIsForValueType.GetValueType(informationTypeFormat).Id)
-								{
-									if (!informationTypeFormat.Name.StartsWith(preferredFor.Name))
-									{
-										valueTypeName = preferredFor.Name + "_";
-									}
-								}
+								valueTypeName = preferredFor.Name + "_";
 							}
 						}
 
