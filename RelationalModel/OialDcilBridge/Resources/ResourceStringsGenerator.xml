@@ -38,4 +38,6 @@
 	<ResourceString name="AssimilationMappingInvalidPatternForPartitionException" model="CustomizationModel" resourceName="AssimilationMapping.InvalidPatternForPartitionException"/>
 	<ResourceString name="AssimilationMappingInvalidSeparationPatternForAbsorbException" model="CustomizationModel" resourceName="AssimilationMapping.InvalidSeparationPatternForAbsorbException"/>
 	<ResourceString name="AssimilationMappingInvalidPartitionPatternForAbsorbException" model="CustomizationModel" resourceName="AssimilationMapping.InvalidPartitionPatternForAbsorbException"/>
+	<ResourceString name="ObjectTypeAbsorptionChoicePropertyDescription" model="CustomizationModel" resourceName="ObjectTypeAbsorptionChoiceProperty.Description"/>
+	<ResourceString name="ObjectTypeAbsorptionChoicePropertyDisplayName" model="CustomizationModel" resourceName="ObjectTypeAbsorptionChoiceProperty.DisplayName"/>
 </ResourceStrings>

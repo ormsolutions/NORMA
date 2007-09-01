@@ -44,7 +44,7 @@ namespace Neumont.Tools.ORMAbstractionToConceptualDatabaseBridge
 				return ResourceStrings.GetString(ResourceManagers.CustomizationModel, "AbsorptionChoiceProperty.Description");
 			}
 		}
-		/// <summary>The display name for the AbsorptionChoice property. Displays as the name of a property in the Properties Window.</summary>
+		/// <summary>The display name for the AbsorptionChoice property on a FactType. Displays as the name of a property in the Properties Window.</summary>
 		public static string AbsorptionChoicePropertyDisplayName
 		{
 			get
@@ -74,6 +74,22 @@ namespace Neumont.Tools.ORMAbstractionToConceptualDatabaseBridge
 			get
 			{
 				return ResourceStrings.GetString(ResourceManagers.CustomizationModel, "AssimilationMapping.InvalidPartitionPatternForAbsorbException");
+			}
+		}
+		/// <summary>The description for the AbsorptionChoice property on an ObjectType. Displays as a detailed description in the Properties Window.</summary>
+		public static string ObjectTypeAbsorptionChoicePropertyDescription
+		{
+			get
+			{
+				return ResourceStrings.GetString(ResourceManagers.CustomizationModel, "ObjectTypeAbsorptionChoiceProperty.Description");
+			}
+		}
+		/// <summary>The display name for the AbsorptionChoice property on an ObjectType. Displays as the name of a property in the Properties Window.</summary>
+		public static string ObjectTypeAbsorptionChoicePropertyDisplayName
+		{
+			get
+			{
+				return ResourceStrings.GetString(ResourceManagers.CustomizationModel, "ObjectTypeAbsorptionChoiceProperty.DisplayName");
 			}
 		}
 	}

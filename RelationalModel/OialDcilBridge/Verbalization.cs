@@ -15,6 +15,7 @@
 #endregion
 using Microsoft.VisualStudio.Modeling;
 using Neumont.Tools.ORM.ObjectModel;
+using ORMCore = Neumont.Tools.ORM.ObjectModel;
 using Neumont.Tools.ORMAbstraction;
 using Neumont.Tools.ORMToORMAbstractionBridge;
 using Neumont.Tools.RelationalModels.ConceptualDatabase;
@@ -50,6 +51,27 @@ namespace Neumont.Tools.ORMAbstractionToConceptualDatabaseBridge
 					}
 					verbalizationContext.DeferVerbalization(factType, null);
 				}
+			}
+			return false;
+		}
+		bool IVerbalize.GetVerbalization(TextWriter writer, IDictionary<Type, IVerbalizationSets> snippetsDictionary, IVerbalizationContext verbalizationContext, bool isNegative)
+		{
+			return GetVerbalization(writer, snippetsDictionary, verbalizationContext, isNegative);
+		}
+		#endregion // IVerbalize Implementation
+	}
+	partial class UniquenessConstraintIsForUniqueness : IVerbalize
+	{
+		#region IVerbalize Implementation
+		/// <summary>
+		/// Implements <see cref="IVerbalize.GetVerbalization"/>
+		/// </summary>
+		protected bool GetVerbalization(TextWriter writer, IDictionary<Type, IVerbalizationSets> snippetsDictionary, IVerbalizationContext verbalizationContext, bool isNegative)
+		{
+			ORMCore.UniquenessConstraint constraint = UniquenessIsForUniquenessConstraint.GetUniquenessConstraint(this.Uniqueness);
+			if (constraint != null)
+			{
+				verbalizationContext.DeferVerbalization(constraint, null);
 			}
 			return false;
 		}

@@ -122,7 +122,7 @@
 		<comment>The format string to use when the assimilation absorption choice property is modified. Shown in the undo dropdown in VS.</comment>
 	</data>
 	<data name="AbsorptionChoiceProperty.Category" xml:space="preserve">
-		<value>Relational Mapping Options</value>
+		<value>Relational Mapping</value>
 		<comment>The category for the AbsorptionChoice property. Displays as a grouping category in the Properties Window.</comment>
 	</data>
 	<data name="AbsorptionChoiceProperty.Description" xml:space="preserve">
@@ -131,9 +131,9 @@
 	</data>
 	<data name="AbsorptionChoiceProperty.DisplayName" xml:space="preserve">
 		<value>AbsorptionChoice</value>
-		<comment>The display name for the AbsorptionChoice property. Displays as the name of a property in the Properties Window.</comment>
+		<comment>The display name for the AbsorptionChoice property on a FactType. Displays as the name of a property in the Properties Window.</comment>
 	</data>
-	<data name="AssimilationAbsorptionChoice.Absorb" xml:space="preserve">
+  <data name="AssimilationAbsorptionChoice.Absorb" xml:space="preserve">
     <value>Absorbed</value>
 		<comment>The displayed form of the Absorb enum value</comment>
   </data>
@@ -156,5 +156,45 @@
   <data name="AssimilationMapping.InvalidPartitionPatternForAbsorbException" xml:space="preserve">
     <value>A partitioned ObjectType cannot be absorbed into another ObjectType.</value>
     <comment>The exception message used when an attempt is made to absorb a partitioned object type.</comment>
+  </data>
+  <data name="ObjectTypeAbsorptionChoiceProperty.Description" xml:space="preserve">
+    <value>Absorption state for an ObjectType involved in Subtyping and some other one-to-one FactType relationships.</value>
+    <comment>The description for the AbsorptionChoice property on an ObjectType. Displays as a detailed description in the Properties Window.</comment>
+  </data>
+  <data name="ObjectTypeAbsorptionChoiceProperty.DisplayName" xml:space="preserve">
+    <value>AbsorptionChoice</value>
+    <comment>The display name for the AbsorptionChoice property on an ObjectType. Displays as the name of a property in the Properties Window.</comment>
+  </data>
+  <data name="ObjectTypeAbsorptionChoice.Absorbed" xml:space="preserve">
+    <value>Absorbed</value>
+    <comment>The ObjectType is absorbed through all paths.</comment>
+  </data>
+  <data name="ObjectTypeAbsorptionChoice.CustomAbsorbed" xml:space="preserve">
+    <value>Absorbed (Explicit Paths)</value>
+    <comment>The ObjectType is absorbed, but not through all paths.</comment>
+  </data>
+  <data name="ObjectTypeAbsorptionChoice.NotApplicable" xml:space="preserve">
+    <value>(Absorbed or Separate Unavailable)</value>
+    <comment>The ObjectType has supertypes, does not need be separated.</comment>
+  </data>
+  <data name="ObjectTypeAbsorptionChoice.Partitioned" xml:space="preserve">
+    <value>Partitioned</value>
+    <comment>The ObjectType is partitioned.</comment>
+  </data>
+  <data name="ObjectTypeAbsorptionChoice.PartitionedChild" xml:space="preserve">
+    <value>(Partitioned Child)</value>
+    <comment>The ObjectType is the subtype of a partitioned parent.</comment>
+  </data>
+  <data name="ObjectTypeAbsorptionChoice.Separate" xml:space="preserve">
+    <value>Separate</value>
+    <comment>The ObjectType is fully separated on all paths.</comment>
+  </data>
+  <data name="ObjectTypeAbsorptionChoice.UnpartitionAbsorb" xml:space="preserve">
+    <value>Remove Partition (Try to Absorb Subtypes)</value>
+    <comment>Remove the current partition, absorbing subtypes when then are not partitioned.</comment>
+  </data>
+  <data name="ObjectTypeAbsorptionChoice.UnpartitionSeparate" xml:space="preserve">
+    <value>Remove Partition (Separate Subtypes)</value>
+    <comment>Remove the current partition, separating all subtypes.</comment>
   </data>
 </root>

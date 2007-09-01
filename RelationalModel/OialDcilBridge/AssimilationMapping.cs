@@ -31,22 +31,120 @@ using System.Collections.ObjectModel;
 
 namespace Neumont.Tools.ORMAbstractionToConceptualDatabaseBridge
 {
+	#region ObjectTypeAbsorptionChoice enum
+	/// <summary>
+	/// Derives options for <see cref="ObjectType"/> absorption based on current
+	/// settings of properties on related assimilations.
+	/// </summary>
+	[TypeConverter(typeof(EnumConverter<ObjectTypeAbsorptionChoice, MappingCustomizationModel>))]
+	public enum ObjectTypeAbsorptionChoice
+	{
+		/// <summary>
+		/// The associated <see cref="ObjectType"/> is absorbed through all paths
+		/// </summary>
+		Absorbed = 0,
+		/// <summary>
+		/// Each subtype is given its own table with duplicated data from this <see cref="ObjectType"/>
+		/// </summary>
+		Partitioned = 1,
+		/// <summary>
+		/// This <see cref="ObjectType"/> receives its own table.
+		/// </summary>
+		Separate = 2,
+		/// <summary>
+		/// This <see cref="ObjectType"/> is absorbed, but the absorption
+		/// path is customized on the individual supertype relationships
+		/// </summary>
+		CustomAbsorbed = 3,
+		/// <summary>
+		/// Displayed as an option for removing a partitioned state. Setting
+		/// to this value acts as a command to remove the partition from
+		/// the <see cref="ObjectType"/> and leaving all paritioned subtypes
+		/// that are not themselves partitioned in a separated state.
+		/// </summary>
+		UnpartitionAbsorb = 4,
+		/// <summary>
+		/// Displayed as an option for removing a partitioned state. Setting
+		/// to this value acts as a command to remove the partition from
+		/// the <see cref="ObjectType"/> and leaving all paritioned subtypes
+		/// in a separated state.
+		/// </summary>
+		UnpartitionSeparate = 5,
+		/// <summary>
+		/// This <see cref="ObjectType"/> is a child of a partitioned parent
+		/// </summary>
+		PartitionedChild = 6,
+		/// <summary>
+		/// There are no subtyping relationship on the current <see cref="ObjectType"/>
+		/// that make an absorption choice relevant
+		/// </summary>
+		NotApplicable = 7,
+	}
+	#endregion // ObjectTypeAbsorptionChoice enum
 	partial class AssimilationMapping
 	{
-		#region Extension property provider callback
+		#region Extension property provider callbacks
 		/// <summary>
 		/// An <see cref="ORMPropertyProvisioning"/> callback for adding extender properties to a <see cref="FactType"/>
 		/// </summary>
 		public static void PopulateAssimilationMappingExtensionProperties(IORMExtendableElement extendableElement, PropertyDescriptorCollection properties)
 		{
-			FactType factType = extendableElement as FactType;
-			if (null != factType &&
+			FactType factType;
+			if (null != (factType = extendableElement as FactType) &&
+				!factType.IsDeleted &&
 				IsFactTypeAssociatedWithDeepAssimilationsOnly(factType))
 			{
 				properties.Add(AssimilationMappingPropertyDescriptor.Instance);
 			}
 		}
-		#endregion // Extension property provider callback
+		/// <summary>
+		/// An <see cref="ORMPropertyProvisioning"/> callback for adding extender properties to an <see cref="ObjectType"/>
+		/// </summary>
+		public static void PopulateObjectTypeAbsorptionExtensionProperties(IORMExtendableElement extendableElement, PropertyDescriptorCollection properties)
+		{
+			ObjectType objectType;
+			ConceptType conceptType;
+			if (null != (objectType = extendableElement as ObjectType) &&
+				!objectType.IsDeleted &&
+				null != (conceptType = ConceptTypeIsForObjectType.GetConceptType(objectType)))
+			{
+				bool shouldAddProperty = false;
+				if (ConceptTypeAssimilatesConceptType.GetLinksToAssimilatorConceptTypeCollection(conceptType).Count != 0)
+				{
+					shouldAddProperty = true;
+				}
+				else
+				{
+					ReadOnlyCollection<ConceptTypeAssimilatesConceptType> assimilations = ConceptTypeAssimilatesConceptType.GetLinksToAssimilatedConceptTypeCollection(conceptType);
+					if (assimilations.Count != 0)
+					{
+						LinkedElementCollection<FactType> factTypes = ConceptTypeChildHasPathFactType.GetPathFactTypeCollection(assimilations[0]);
+						if (factTypes.Count == 1)
+						{
+							FactType factType = factTypes[0];
+							if (GetAbsorptionChoiceFromFactType(factType) == AssimilationAbsorptionChoice.Partition)
+							{
+								shouldAddProperty = true;
+							}
+							else
+							{
+								Role towardsRoleDummy;
+								LinkedElementCollection<Role> disjunctiveMandatoryRoles = GetDisjunctiveMandatoryRoles(factType, out towardsRoleDummy);
+								if (disjunctiveMandatoryRoles != null)
+								{
+									shouldAddProperty = CanPartitionAssimilations(assimilations, disjunctiveMandatoryRoles);
+								}
+							}
+						}
+					}
+				}
+				if (shouldAddProperty)
+				{
+					properties.Add(ObjectTypeAbsorptionPropertyDescriptor.Instance);
+				}
+			}
+		}
+		#endregion // Extension property provider callbacks
 		#region Static helper functions
 		/// <summary>
 		/// Given a <see cref="ConceptTypeAssimilatesConceptType"/> relationship, determine the current
@@ -163,10 +261,10 @@ namespace Neumont.Tools.ORMAbstractionToConceptualDatabaseBridge
 			public class AssimilationMappingEnumConverter : EnumConverter<AssimilationAbsorptionChoice, MappingCustomizationModel>
 			{
 				public static readonly AssimilationMappingEnumConverter Instance = new AssimilationMappingEnumConverter();
-				private static readonly StandardValuesCollection AllValues = new StandardValuesCollection(new object[] { AssimilationAbsorptionChoice.Absorb, AssimilationAbsorptionChoice.Partition, AssimilationAbsorptionChoice.Separate });
+				private static readonly StandardValuesCollection AllValues = new StandardValuesCollection(new object[] { AssimilationAbsorptionChoice.Absorb, AssimilationAbsorptionChoice.Separate, AssimilationAbsorptionChoice.Partition });
 				private static readonly StandardValuesCollection AbsorbAndSeparateValues = new StandardValuesCollection(new object[] { AssimilationAbsorptionChoice.Absorb, AssimilationAbsorptionChoice.Separate });
 				private static readonly StandardValuesCollection SeparateValues = new StandardValuesCollection(new object[] { AssimilationAbsorptionChoice.Separate });
-				private static readonly StandardValuesCollection PartitionAndSeparateValues = new StandardValuesCollection(new object[] { AssimilationAbsorptionChoice.Partition, AssimilationAbsorptionChoice.Separate });
+				private static readonly StandardValuesCollection PartitionAndSeparateValues = new StandardValuesCollection(new object[] { AssimilationAbsorptionChoice.Separate, AssimilationAbsorptionChoice.Partition });
 				private AssimilationMappingEnumConverter()
 				{
 				}
@@ -303,6 +401,456 @@ namespace Neumont.Tools.ORMAbstractionToConceptualDatabaseBridge
 			}
 		}
 		#endregion // AssimilationMappingPropertyDescriptor class
+		#region ObjectTypeAbsorptionPropertyDescriptor class
+		private sealed class ObjectTypeAbsorptionPropertyDescriptor : PropertyDescriptor
+		{
+			#region ObjectTypeAbsorptionEnumConverter
+			[TypeConverter(typeof(EnumConverter<ObjectTypeAbsorptionChoice, MappingCustomizationModel>))]
+			[HostProtection(SecurityAction.LinkDemand, SharedState = true)]
+			public class ObjectTypeAbsorptionEnumConverter : EnumConverter<ObjectTypeAbsorptionChoice, MappingCustomizationModel>
+			{
+				public static readonly ObjectTypeAbsorptionEnumConverter Instance = new ObjectTypeAbsorptionEnumConverter();
+
+				// Note that the values are explicitly ordered with special displayed
+				// values (values we return from a get, but cannot set) first, then
+				// in the absorb/separate/partition order. The special command values
+				// for unpartitioning display after the partition.
+				private static readonly StandardValuesCollection NotApplicableValues = new StandardValuesCollection(new object[] { ObjectTypeAbsorptionChoice.NotApplicable });
+				private static readonly StandardValuesCollection PartitionedValues = new StandardValuesCollection(new object[] { ObjectTypeAbsorptionChoice.Partitioned, ObjectTypeAbsorptionChoice.UnpartitionSeparate, ObjectTypeAbsorptionChoice.UnpartitionAbsorb });
+				private static readonly StandardValuesCollection PartitionableNotApplicableValues = new StandardValuesCollection(new object[] { ObjectTypeAbsorptionChoice.NotApplicable, ObjectTypeAbsorptionChoice.Partitioned });
+				private static readonly StandardValuesCollection PartitionedChildValues = new StandardValuesCollection(new object[] { ObjectTypeAbsorptionChoice.PartitionedChild });
+				private static readonly StandardValuesCollection PartitionablePartitionedChildValues = new StandardValuesCollection(new object[] { ObjectTypeAbsorptionChoice.PartitionedChild, ObjectTypeAbsorptionChoice.Partitioned });
+				private static readonly StandardValuesCollection SeparateValues = new StandardValuesCollection(new object[] { ObjectTypeAbsorptionChoice.Separate });
+				private static readonly StandardValuesCollection SeparateAbsorbedValues = new StandardValuesCollection(new object[] { ObjectTypeAbsorptionChoice.Absorbed, ObjectTypeAbsorptionChoice.Separate });
+				private static readonly StandardValuesCollection SeparatePartitionedValues = new StandardValuesCollection(new object[] { ObjectTypeAbsorptionChoice.Separate, ObjectTypeAbsorptionChoice.Partitioned });
+				private static readonly StandardValuesCollection SeparateAbsorbedPartitionedValues = new StandardValuesCollection(new object[] { ObjectTypeAbsorptionChoice.Absorbed, ObjectTypeAbsorptionChoice.Separate, ObjectTypeAbsorptionChoice.Partitioned });
+				private static readonly StandardValuesCollection SeparateCustomAbsorbedValues = new StandardValuesCollection(new object[] { ObjectTypeAbsorptionChoice.CustomAbsorbed, ObjectTypeAbsorptionChoice.Separate });
+				private static readonly StandardValuesCollection SeparateCustomAbsorbedPartitionedValues = new StandardValuesCollection(new object[] { ObjectTypeAbsorptionChoice.CustomAbsorbed, ObjectTypeAbsorptionChoice.Separate, ObjectTypeAbsorptionChoice.Partitioned });
+				private static readonly StandardValuesCollection SeparateCustomAbsorbedAbsorbedValues = new StandardValuesCollection(new object[] { ObjectTypeAbsorptionChoice.CustomAbsorbed, ObjectTypeAbsorptionChoice.Absorbed, ObjectTypeAbsorptionChoice.Separate });
+				private static readonly StandardValuesCollection SeparateCustomAbsorbedAbsorbedPartitionedValues = new StandardValuesCollection(new object[] { ObjectTypeAbsorptionChoice.CustomAbsorbed, ObjectTypeAbsorptionChoice.Absorbed, ObjectTypeAbsorptionChoice.Separate, ObjectTypeAbsorptionChoice.Partitioned });
+				private ObjectTypeAbsorptionEnumConverter()
+				{
+				}
+				/// <summary>
+				/// Limit the items that are actually displayed
+				/// </summary>
+				public override StandardValuesCollection GetStandardValues(ITypeDescriptorContext context)
+				{
+					object instance;
+					ObjectType objectType;
+					ConceptType conceptType;
+					if (null != (instance = context.Instance) &&
+						null != (objectType = GetObjectTypeFromComponent(instance)) &&
+						null != (conceptType = ConceptTypeIsForObjectType.GetConceptType(objectType)))
+					{
+						bool canPartition = false;
+						// Figure out the down side (are we partitioned/partitionable)
+						ReadOnlyCollection<ConceptTypeAssimilatesConceptType> assimilations = ConceptTypeAssimilatesConceptType.GetLinksToAssimilatedConceptTypeCollection(conceptType);
+						if (assimilations.Count != 0)
+						{
+							LinkedElementCollection<FactType> factTypes = ConceptTypeChildHasPathFactType.GetPathFactTypeCollection(assimilations[0]);
+							if (factTypes.Count == 1)
+							{
+								FactType factType = factTypes[0];
+								if (GetAbsorptionChoiceFromFactType(factType) == AssimilationAbsorptionChoice.Partition)
+								{
+									// If one assimilation is partitioned, it will be set on all of them.
+									// The only thing we can reasonably do when we're partitioned is unpartition.
+									return PartitionedValues;
+								}
+								else
+								{
+									Role towardsRoleDummy;
+									LinkedElementCollection<Role> disjunctiveMandatoryRoles = GetDisjunctiveMandatoryRoles(factType, out towardsRoleDummy);
+									if (disjunctiveMandatoryRoles != null)
+									{
+										canPartition = CanPartitionAssimilations(assimilations, disjunctiveMandatoryRoles);
+									}
+								}
+							}
+						}
+
+						// Figure out the rest of the current state by looking at things that assimilate us
+						assimilations = ConceptTypeAssimilatesConceptType.GetLinksToAssimilatorConceptTypeCollection(conceptType);
+						bool seenAbsorb = false;
+						bool seenSeparation = false;
+						bool customAbsorb = false;
+						bool fullAbsorbAvailable = false;
+						bool seenPartition = false;
+						int assimilatorCount = assimilations.Count;
+						if (assimilatorCount != 0)
+						{
+							foreach (ConceptTypeAssimilatesConceptType assimilation in assimilations)
+							{
+								switch (GetAbsorptionChoiceFromAssimilation(assimilation))
+								{
+									case AssimilationAbsorptionChoice.Absorb:
+										seenAbsorb = true;
+										customAbsorb = seenSeparation;
+										break;
+									case AssimilationAbsorptionChoice.Separate:
+										seenSeparation = true;
+										customAbsorb = seenAbsorb;
+										break;
+									case AssimilationAbsorptionChoice.Partition:
+										seenPartition = true;
+										break;
+								}
+								if (customAbsorb)
+								{
+									break;
+								}
+							}
+							if (seenPartition && !(seenAbsorb || seenSeparation))
+							{
+								return canPartition ? PartitionablePartitionedChildValues : PartitionedChildValues;
+							}
+							if (customAbsorb || (!seenAbsorb && null != AssimilatorTracker.GetNearestAbsorbingAssimilatorConceptType(assimilations, true, null)))
+							{
+								fullAbsorbAvailable = true;
+							}
+							else if (seenAbsorb)
+							{
+								fullAbsorbAvailable = true;
+							}
+							// We always offer separate, it's 0. Get a reasonable list by or'ing other values together
+							switch ((fullAbsorbAvailable ? 1 : 0) | (canPartition ? 2 : 0) | (customAbsorb ? 4 : 0))
+							{
+								case 0: // separate
+									return SeparateValues;
+								case 1: // separate|absorbed
+									return SeparateAbsorbedValues;
+								case 2: // separate|partition
+									return SeparatePartitionedValues;
+								case 3: // separate|partition|absorb
+									return SeparateAbsorbedPartitionedValues;
+								case 4: // separate|customAbsorb
+									return SeparateCustomAbsorbedValues;
+								case 5: // separate|customAbsorb|absorb
+									return SeparateCustomAbsorbedAbsorbedValues;
+								case 6: // separate|customAbsorb|partition
+									return SeparateCustomAbsorbedPartitionedValues;
+								case 7: // separate|customAbsorb|absorb|partition
+									return SeparateCustomAbsorbedAbsorbedPartitionedValues;
+							}
+						}
+						else if (canPartition)
+						{
+							return PartitionableNotApplicableValues;
+						}
+						return NotApplicableValues;
+					}
+					return base.GetStandardValues(context);
+				}
+			}
+			#endregion // ObjectTypeAbsorptionEnumConverter
+			public static readonly ObjectTypeAbsorptionPropertyDescriptor Instance = new ObjectTypeAbsorptionPropertyDescriptor();
+			private ObjectTypeAbsorptionPropertyDescriptor()
+				: base("ObjectTypeAbsorptionPropertyEditor", null)
+			{
+			}
+			private static ObjectType GetObjectTypeFromComponent(object component)
+			{
+				return EditorUtility.ResolveContextInstance(component, false) as ObjectType;
+			}
+			public override AttributeCollection Attributes
+			{
+				get
+				{
+					// Absorption properties are a poor mergeable candidate. There are too
+					// many places where the same setting on multiple assimilations will cause
+					// a contradiction within the same transaction
+					return new AttributeCollection(new MergablePropertyAttribute(false));
+				}
+			}
+			public override TypeConverter Converter
+			{
+				get
+				{
+					return ObjectTypeAbsorptionEnumConverter.Instance;
+				}
+			}
+			public sealed override bool CanResetValue(object component)
+			{
+				return false;
+			}
+			public sealed override bool ShouldSerializeValue(object component)
+			{
+				return false;
+			}
+			public sealed override string DisplayName
+			{
+				get
+				{
+					return ResourceStrings.ObjectTypeAbsorptionChoicePropertyDisplayName;
+				}
+			}
+			public sealed override string Category
+			{
+				get
+				{
+					return ResourceStrings.AbsorptionChoicePropertyCategory;
+				}
+			}
+			public sealed override string Description
+			{
+				get
+				{
+					return ResourceStrings.ObjectTypeAbsorptionChoicePropertyDescription;
+				}
+			}
+			public sealed override object GetValue(object component)
+			{
+				ObjectType objectType;
+				ConceptType conceptType;
+				if (null != (objectType = GetObjectTypeFromComponent(component)) &&
+					!objectType.IsDeleted &&
+					null != (conceptType = ConceptTypeIsForObjectType.GetConceptType(objectType)))
+				{
+					// First see if we're partitioned. Partitioned downstream does not check
+					// anthing else upstream
+					ReadOnlyCollection<ConceptTypeAssimilatesConceptType> assimilations = ConceptTypeAssimilatesConceptType.GetLinksToAssimilatedConceptTypeCollection(conceptType);
+					if (assimilations.Count != 0 &&
+						GetAbsorptionChoiceFromAssimilation(assimilations[0]) == AssimilationAbsorptionChoice.Partition)
+					{
+						return ObjectTypeAbsorptionChoice.Partitioned;
+					}
+					assimilations = ConceptTypeAssimilatesConceptType.GetLinksToAssimilatorConceptTypeCollection(conceptType);
+					if (assimilations.Count != 0)
+					{
+						bool seenAbsorb = false;
+						bool seenSeparation = false;
+						bool customAbsorb = false;
+						bool seenPartition = false;
+						int assimilatorCount = assimilations.Count;
+						if (assimilatorCount != 0)
+						{
+							foreach (ConceptTypeAssimilatesConceptType assimilation in assimilations)
+							{
+								switch (GetAbsorptionChoiceFromAssimilation(assimilation))
+								{
+									case AssimilationAbsorptionChoice.Absorb:
+										seenAbsorb = true;
+										customAbsorb = seenSeparation;
+										break;
+									case AssimilationAbsorptionChoice.Separate:
+										seenSeparation = true;
+										customAbsorb = seenAbsorb;
+										break;
+									case AssimilationAbsorptionChoice.Partition:
+										seenPartition = true;
+										break;
+								}
+								if (customAbsorb)
+								{
+									return ObjectTypeAbsorptionChoice.CustomAbsorbed;
+								}
+							}
+							return seenAbsorb ?
+								ObjectTypeAbsorptionChoice.Absorbed :
+								(seenPartition && !seenSeparation) ?
+									ObjectTypeAbsorptionChoice.PartitionedChild :
+									ObjectTypeAbsorptionChoice.Separate;
+						}
+					}
+				}
+				return ObjectTypeAbsorptionChoice.NotApplicable;
+			}
+			public sealed override Type ComponentType
+			{
+				get
+				{
+					return typeof(ObjectType);
+				}
+			}
+			public sealed override bool IsReadOnly
+			{
+				get
+				{
+					return false;
+				}
+			}
+			public sealed override Type PropertyType
+			{
+				get
+				{
+					return typeof(ObjectTypeAbsorptionChoice);
+				}
+			}
+			public sealed override void ResetValue(object component)
+			{
+				// CanResetValue returns false, nothing to do
+			}
+			public sealed override void SetValue(object component, object value)
+			{
+				ObjectType objectType = GetObjectTypeFromComponent(component);
+				if (objectType != null)
+				{
+					SetValue(objectType, (ObjectTypeAbsorptionChoice)value);
+				}
+			}
+			private static void SetValue(ObjectType objectType, ObjectTypeAbsorptionChoice newChoice)
+			{
+				using (Transaction t = objectType.Store.TransactionManager.BeginTransaction(ResourceStrings.AbsorptionChoicePropertyTransactionName))
+				{
+					switch (newChoice)
+					{
+						case ObjectTypeAbsorptionChoice.Absorbed:
+							AbsorbObjectType(objectType);
+							break;
+						case ObjectTypeAbsorptionChoice.Separate:
+							SeparateObjectType(objectType);
+							break;
+						case ObjectTypeAbsorptionChoice.Partitioned:
+							PartitionObjectType(objectType);
+							break;
+						case ObjectTypeAbsorptionChoice.UnpartitionSeparate:
+						case ObjectTypeAbsorptionChoice.UnpartitionAbsorb:
+							UnpartitionObjectType(objectType, newChoice == ObjectTypeAbsorptionChoice.UnpartitionAbsorb);
+							break;
+						// Other choices are just for show, they are not actionable
+					}
+					if (t.HasPendingChanges)
+					{
+						t.Commit();
+					}
+				}
+			}
+			private static void PartitionObjectType(ObjectType objectType)
+			{
+				// Partition any child assimilation for automatic synchronization
+				ConceptType conceptType;
+				ReadOnlyCollection<ConceptTypeAssimilatesConceptType> assimilations;
+				LinkedElementCollection<FactType> factTypes;
+				if (null != (conceptType = ConceptTypeIsForObjectType.GetConceptType(objectType)) &&
+					(assimilations = ConceptTypeAssimilatesConceptType.GetLinksToAssimilatedConceptTypeCollection(conceptType)).Count != 0 &&
+					(factTypes = ConceptTypeChildHasPathFactType.GetPathFactTypeCollection(assimilations[0])).Count == 1)
+				{
+					SetPrimaryAbsorptionChoice(factTypes[0], AssimilationAbsorptionChoice.Partition);
+				}
+			}
+			private static void UnpartitionObjectType(ObjectType objectType, bool attemptAbsorption)
+			{
+				ConceptType conceptType;
+				ReadOnlyCollection<ConceptTypeAssimilatesConceptType> assimilations;
+				if (null != (conceptType = ConceptTypeIsForObjectType.GetConceptType(objectType)) &&
+					(assimilations = ConceptTypeAssimilatesConceptType.GetLinksToAssimilatedConceptTypeCollection(conceptType)).Count != 0)
+				{
+					ConceptTypeAssimilatesConceptType candidateAssimilation = null;
+					bool doAbsorb = false;
+					foreach (ConceptTypeAssimilatesConceptType assimilation in assimilations)
+					{
+						if (attemptAbsorption)
+						{
+							// Verify there is at least one assimilation we can absorb.
+							// Otherwise, we just separate.
+							if (VerifyCanAbsorbAssimilation(assimilation, false))
+							{
+								doAbsorb = true;
+								candidateAssimilation = assimilation;
+								break;
+							}
+							if (candidateAssimilation == null)
+							{
+								candidateAssimilation = assimilation;
+							}
+						}
+						else
+						{
+							candidateAssimilation = assimilation;
+							break;
+						}
+					}
+					LinkedElementCollection<FactType> factTypes;
+					if (candidateAssimilation != null &&
+						(factTypes = ConceptTypeChildHasPathFactType.GetPathFactTypeCollection(candidateAssimilation)).Count == 1)
+					{
+						SetPrimaryAbsorptionChoice(factTypes[0], doAbsorb ? AssimilationAbsorptionChoice.Absorb : AssimilationAbsorptionChoice.Separate);
+					}
+				}
+			}
+			private static void SeparateObjectType(ObjectType objectType)
+			{
+				// Find assimilators that are not separated and separate them. Note
+				// that we only need to do a primary absorption on one of them. Setting
+				// the primary absorption verifies that downstream assimilations are
+				// separated to ensure that multiple assimilations rejoin, but this
+				// condition will only change when the last absorbed assimilator
+				// is removed, so we only need to fire the expensive primary check once.
+
+				// Note that we don't touched partitioned assimilators here. These are handled
+				// by settings on the parent.
+				ConceptType conceptType;
+				ReadOnlyCollection<ConceptTypeAssimilatesConceptType> assimilations;
+				if (null != (conceptType = ConceptTypeIsForObjectType.GetConceptType(objectType)) &&
+					(assimilations = ConceptTypeAssimilatesConceptType.GetLinksToAssimilatorConceptTypeCollection(conceptType)).Count != 0)
+				{
+					ConceptTypeAssimilatesConceptType firstAbsorbedAssimilation = null;
+					MappingCustomizationModel customizationModel = null;
+					Type disabledChangeRuleType = null;
+					try
+					{
+						foreach (ConceptTypeAssimilatesConceptType assimilation in assimilations)
+						{
+							if (firstAbsorbedAssimilation == null)
+							{
+								if (GetAbsorptionChoiceFromAssimilation(assimilation) == AssimilationAbsorptionChoice.Absorb)
+								{
+									firstAbsorbedAssimilation = assimilation;
+								}
+								continue;
+							}
+							SetSecondaryAbsorptionChoice(assimilation, AssimilationAbsorptionChoice.Separate, AssimilationAbsorptionChoice.Absorb, null, ref customizationModel, ref disabledChangeRuleType);
+						}
+					}
+					finally
+					{
+						if (disabledChangeRuleType != null)
+						{
+							objectType.Store.RuleManager.EnableRule(disabledChangeRuleType);
+						}
+					}
+					LinkedElementCollection<FactType> factTypes;
+					if (firstAbsorbedAssimilation != null &&
+						(factTypes = ConceptTypeChildHasPathFactType.GetPathFactTypeCollection(firstAbsorbedAssimilation)).Count == 1)
+					{
+						SetPrimaryAbsorptionChoice(factTypes[0], AssimilationAbsorptionChoice.Separate);
+					}
+				}
+			}
+			private static void AbsorbObjectType(ObjectType objectType)
+			{
+				ConceptType conceptType;
+				ReadOnlyCollection<ConceptTypeAssimilatesConceptType> assimilations;
+				if (null != (conceptType = ConceptTypeIsForObjectType.GetConceptType(objectType)) &&
+					(assimilations = ConceptTypeAssimilatesConceptType.GetLinksToAssimilatorConceptTypeCollection(conceptType)).Count != 0)
+				{
+					// We're only using secondary absorption choices here, so there is no backup condition
+					// checking in the rules. Do some validation checking here.
+					if (null == AssimilatorTracker.GetNearestAbsorbingAssimilatorConceptType(assimilations, true, null))
+					{
+						throw new InvalidOperationException(ResourceStrings.AssimilationMappingInvalidSeparationPatternForAbsorbException);
+					}
+					MappingCustomizationModel customizationModel = null;
+					Type disabledChangeRuleType = null;
+					try
+					{
+						foreach (ConceptTypeAssimilatesConceptType assimilation in assimilations)
+						{
+							SetSecondaryAbsorptionChoice(assimilation, AssimilationAbsorptionChoice.Absorb, AssimilationAbsorptionChoice.Separate, null, ref customizationModel, ref disabledChangeRuleType);
+						}
+					}
+					finally
+					{
+						if (disabledChangeRuleType != null)
+						{
+							objectType.Store.RuleManager.EnableRule(disabledChangeRuleType);
+						}
+					}
+				}
+			}
+		}
+		#endregion // AssimilationMappingPropertyDescriptor class
 		#region Assimilation pattern checking
 		private struct AssimilatorTracker
 		{
@@ -328,14 +876,28 @@ namespace Neumont.Tools.ORMAbstractionToConceptualDatabaseBridge
 			/// </summary>
 			private bool TreatInitialAssimilationAsAbsorbed(ConceptTypeAssimilatesConceptType assimilation)
 			{
-				return (myIgnoreInitialAbsorptionChoices || myAlwaysAbsorbAssimilation == assimilation || GetAbsorptionChoiceFromAssimilation(assimilation) == AssimilationAbsorptionChoice.Absorb);
+				if (myAlwaysAbsorbAssimilation == assimilation)
+				{
+					return true;
+				}
+				AssimilationAbsorptionChoice choice = GetAbsorptionChoiceFromAssimilation(assimilation);
+				return myIgnoreInitialAbsorptionChoices ?
+					choice != AssimilationAbsorptionChoice.Partition :
+					choice == AssimilationAbsorptionChoice.Absorb;
 			}
 			/// <summary>
 			/// Return true if one of the non-initial assimilations should be treated as absorbed
 			/// </summary>
 			private bool TreatUpstreamAssimilationAsAbsorbed(ConceptTypeAssimilatesConceptType assimilation)
 			{
-				return (myIgnoreAllAbsorptionChoices || myAlwaysAbsorbAssimilation == assimilation || GetAbsorptionChoiceFromAssimilation(assimilation) == AssimilationAbsorptionChoice.Absorb);
+				if (myAlwaysAbsorbAssimilation == assimilation)
+				{
+					return true;
+				}
+				AssimilationAbsorptionChoice choice = GetAbsorptionChoiceFromAssimilation(assimilation);
+				return myIgnoreAllAbsorptionChoices ?
+					choice != AssimilationAbsorptionChoice.Partition :
+					choice == AssimilationAbsorptionChoice.Absorb;
 			}
 			#endregion // Settings helper methods
 			#region Public accessor methods
@@ -365,7 +927,7 @@ namespace Neumont.Tools.ORMAbstractionToConceptualDatabaseBridge
 			/// of the assimilators.
 			/// </summary>
 			/// <param name="assimilationCollection">Initial assimilation relationships to walk. All assimilators should assimilate the same <see cref="ConceptType"/></param>
-			/// <param name="ignoreInitialAbsorptionChoices">Ignore the absorption choices for the assimilators in <paramref name="assimilationCollection"/></param>
+			/// <param name="ignoreInitialAbsorptionChoices">Treat separated assimilations as absorbed for the assimilators in <paramref name="assimilationCollection"/>. Note that partitioned assimilators are note treated as absorbed.</param>
 			/// <param name="alwaysAbsorbAssimilation">Assume the provided <see cref="ConceptTypeAssimilatesConceptType">assimilation</see> absorbs, regardless of its current setting.</param>
 			/// <returns>The absorbing <see cref="ConceptType"/> that is the nearest shared assimilator for
 			/// all assimilators in <paramref name="assimilationCollection"/>. Can return <see langword="null"/></returns>
@@ -715,10 +1277,22 @@ namespace Neumont.Tools.ORMAbstractionToConceptualDatabaseBridge
 				return false;
 			}
 			ConceptType assimilatedConceptType = assimilation.AssimilatedConceptType;
+			foreach (ConceptTypeAssimilatesConceptType childAssimilation in ConceptTypeAssimilatesConceptType.GetLinksToAssimilatedConceptTypeCollection(assimilatedConceptType))
+			{
+				if (GetAbsorptionChoiceFromAssimilation(childAssimilation) == AssimilationAbsorptionChoice.Partition)
+				{
+					if (!throwOnFailure)
+					{
+						return false;
+					}
+					throw new InvalidOperationException(ResourceStrings.AssimilationMappingInvalidPartitionPatternForAbsorbException);
+				}
+				break;
+			}
 			ReadOnlyCollection<ConceptTypeAssimilatesConceptType> assimilatedAssimilators = ConceptTypeAssimilatesConceptType.GetLinksToAssimilatorConceptTypeCollection(assimilatedConceptType);
 			if (1 < assimilatedAssimilators.Count)
 			{
-				if (null == AssimilatorTracker.GetNearestAbsorbingAssimilatorConceptType(assimilatedAssimilators, false, null))
+				if (null == AssimilatorTracker.GetNearestAbsorbingAssimilatorConceptType(assimilatedAssimilators, false, assimilation))
 				{
 					if (!throwOnFailure)
 					{
@@ -726,21 +1300,6 @@ namespace Neumont.Tools.ORMAbstractionToConceptualDatabaseBridge
 					}
 					// UNDONE: We can give a better error message here (get all possible (not just nearest) potential shared assimilators for the assimilator)
 					throw new InvalidOperationException(ResourceStrings.AssimilationMappingInvalidSeparationPatternForAbsorbException);
-				}
-			}
-			else
-			{
-				foreach (ConceptTypeAssimilatesConceptType childAssimilation in ConceptTypeAssimilatesConceptType.GetLinksToAssimilatedConceptTypeCollection(assimilatedConceptType))
-				{
-					if (GetAbsorptionChoiceFromAssimilation(childAssimilation) == AssimilationAbsorptionChoice.Partition)
-					{
-						if (!throwOnFailure)
-						{
-							return false;
-						}
-						throw new InvalidOperationException(ResourceStrings.AssimilationMappingInvalidPartitionPatternForAbsorbException);
-					}
-					break;
 				}
 			}
 			return true;
@@ -884,7 +1443,8 @@ namespace Neumont.Tools.ORMAbstractionToConceptualDatabaseBridge
 			RuleManager ruleManager = store.RuleManager;
 			Type disabledChangeRuleType = null;
 			ConceptTypeAssimilatesConceptType modifiedAssimilation = null;
-			bool absorbRemainingPartitions = false;
+			bool handleRemainingPartitions = false;
+			bool attemptRemainingPartitionAbsorption = false;
 			try
 			{
 				AssimilationAbsorptionChoice newChoice = currentMapping.AbsorptionChoice;
@@ -960,7 +1520,7 @@ namespace Neumont.Tools.ORMAbstractionToConceptualDatabaseBridge
 							}
 							else
 							{
-								absorbRemainingPartitions = true;
+								handleRemainingPartitions = true;
 							}
 						}
 						break;
@@ -969,17 +1529,20 @@ namespace Neumont.Tools.ORMAbstractionToConceptualDatabaseBridge
 						{
 							// This throws, will not return on failure
 							VerifyCanAbsorbAssimilation(modifiedAssimilation, true);
-							absorbRemainingPartitions = oldChoice == AssimilationAbsorptionChoice.Partition;
+							attemptRemainingPartitionAbsorption = handleRemainingPartitions = oldChoice == AssimilationAbsorptionChoice.Partition;
 						}
 						break;
 				}
-				if (absorbRemainingPartitions)
+				if (handleRemainingPartitions)
 				{
 					foreach (ConceptTypeAssimilatesConceptType partitionedAssimilation in ConceptTypeAssimilatesConceptType.GetLinksToAssimilatedConceptTypeCollection(modifiedAssimilation.AssimilatorConceptType))
 					{
 						if (partitionedAssimilation != modifiedAssimilation)
 						{
-							SetSecondaryAbsorptionChoice(partitionedAssimilation, AssimilationAbsorptionChoice.Absorb, AssimilationAbsorptionChoice.Partition, currentMapping, ref customizationModel, ref disabledChangeRuleType);
+							AssimilationAbsorptionChoice verifiedChoice = attemptRemainingPartitionAbsorption && VerifyCanAbsorbAssimilation(partitionedAssimilation, false) ?
+								AssimilationAbsorptionChoice.Absorb :
+								AssimilationAbsorptionChoice.Separate;
+							SetSecondaryAbsorptionChoice(partitionedAssimilation, verifiedChoice, AssimilationAbsorptionChoice.Partition, currentMapping, ref customizationModel, ref disabledChangeRuleType);
 						}
 					}
 				}
