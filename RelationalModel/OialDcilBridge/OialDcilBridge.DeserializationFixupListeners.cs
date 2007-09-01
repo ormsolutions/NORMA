@@ -42,7 +42,6 @@ namespace Neumont.Tools.ORMAbstractionToConceptualDatabaseBridge
 	}
 	public partial class ORMAbstractionToConceptualDatabaseBridgeDomainModel : IDeserializationFixupListenerProvider
 	{
-		private const bool AllowIsPreferredForTarget = true;
 		#region Fully populate from OIAL
 		#region AssimilationPath class
 
@@ -764,7 +763,7 @@ namespace Neumont.Tools.ORMAbstractionToConceptualDatabaseBridge
 				foreach (ConceptTypeAssimilatesConceptType conceptTypeAssimilatesConceptType
 					in ConceptTypeAssimilatesConceptType.GetLinksToAssimilatorConceptTypeCollection(conceptType))
 				{
-					if (AllowIsPreferredForTarget && conceptTypeAssimilatesConceptType.IsPreferredForTarget)
+					if (conceptTypeAssimilatesConceptType.IsPreferredForTarget)
 					{
 						prefferedConceptTypeChildrenList.AddRange(GetPreferredConceptTypeChildrenForConceptType(conceptTypeAssimilatesConceptType.AssimilatorConceptType));
 						break;
@@ -837,7 +836,7 @@ namespace Neumont.Tools.ORMAbstractionToConceptualDatabaseBridge
 						TableIsPrimarilyForConceptType.GetTable(assimilation.AssimilatorConceptType).UniquenessConstraintCollection.Add(mappedConstraint);
 
 					}
-					else if (AllowIsPreferredForTarget && assimilation.IsPreferredForTarget)
+					else if (assimilation.IsPreferredForTarget)
 					{
 						if (isPreferredForChildFound == false)
 						{
@@ -1153,7 +1152,7 @@ namespace Neumont.Tools.ORMAbstractionToConceptualDatabaseBridge
 			}
 			foreach (ConceptTypeAssimilatesConceptType conceptTypeAssimilatesConceptType in ConceptTypeAssimilatesConceptType.GetLinksToAssimilatorConceptTypeCollection(conceptType))
 			{
-				if (AllowIsPreferredForTarget && conceptTypeAssimilatesConceptType.IsPreferredForTarget)
+				if (conceptTypeAssimilatesConceptType.IsPreferredForTarget)
 				{
 					foreach (Column target in ColumnHasConceptTypeChild.GetColumn((ConceptTypeChild)conceptTypeAssimilatesConceptType))
 					{
