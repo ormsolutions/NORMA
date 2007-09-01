@@ -48,6 +48,9 @@
 				<arg:RuleOn targetType="ObjectTypeHasObjectTypeRequiresPrimarySupertypeError" targetTypeQualifier="Neumont.Tools.ORM.ObjectModel"/>
 				<arg:RuleOn targetType="ValueTypeHasUnspecifiedDataTypeError" targetTypeQualifier="Neumont.Tools.ORM.ObjectModel"/>
 			</arg:DeleteRule>
+			<arg:AddRule methodName="PreferredIdentifierAddedRule">
+				<arg:RuleOn targetType="EntityTypeHasPreferredIdentifier" targetTypeQualifier="Neumont.Tools.ORM.ObjectModel"/>
+			</arg:AddRule>
 			<arg:AddRule methodName="RolePlayerAddedRule">
 				<arg:RuleOn targetType="ObjectTypePlaysRole" targetTypeQualifier="Neumont.Tools.ORM.ObjectModel"/>
 			</arg:AddRule>

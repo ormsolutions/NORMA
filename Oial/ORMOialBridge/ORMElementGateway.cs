@@ -133,6 +133,40 @@ namespace Neumont.Tools.ORMToORMAbstractionBridge
 							}
 						}
 					}
+					else if (!objectType.IsValueType)
+					{
+						// If this is a subtype, then we need to resolve
+						// the preferred identifier back to a non-excluded super type
+						ObjectType preferridentifierFrom = null;
+						ObjectType.WalkSupertypes(
+							objectType,
+							delegate(ObjectType type, int depth, bool isPrimary)
+							{
+								ObjectTypeVisitorResult result = ObjectTypeVisitorResult.Continue;
+								if (isPrimary)
+								{
+									if (IsElementExcluded(type))
+									{
+										result = ObjectTypeVisitorResult.Stop;
+									}
+									else if (type.PreferredIdentifier != null)
+									{
+										preferridentifierFrom = type;
+										result = ObjectTypeVisitorResult.Stop;
+									}
+									else
+									{
+										result = ObjectTypeVisitorResult.SkipFollowingSiblings; // We already have the primary, no need to look further at this level
+									}
+								}
+								else if (depth != 0)
+								{
+									result = ObjectTypeVisitorResult.SkipChildren;
+								}
+								return result;
+							});
+						return preferridentifierFrom != null;
+					}
 					return true;
 				}
 				return false;
@@ -275,6 +309,8 @@ namespace Neumont.Tools.ORMToORMAbstractionBridge
 						{
 							exclusionLink.Delete();
 							AddObjectType(objectType);
+
+							// Consider readding associated fact types
 							foreach (Role playedRole in objectType.PlayedRoleCollection)
 							{
 								FactType factType = playedRole.FactType;
@@ -291,6 +327,33 @@ namespace Neumont.Tools.ORMToORMAbstractionBridge
 										FilterModifiedFactType(factType, false);
 									}
 								}
+							}
+
+							// Consider readding subtypes excluded because this element was excluded
+							if (!objectType.IsValueType)
+							{
+								// Excluding an object type can leave a downstream subtype without an
+								// identifier, which excludes them. Note we only go one level deep
+								// as this will recurse naturally on the next level.
+								ObjectType.WalkSubtypes(objectType, delegate(ObjectType type, int depth, bool isPrimary)
+								{
+									switch (depth)
+									{
+										case 0:
+											return ObjectTypeVisitorResult.Continue;
+										case 1:
+											if (isPrimary)
+											{
+												if (type.PreferredIdentifier == null)
+												{
+													FilterModifiedObjectType(type);
+												}
+											}
+											return ObjectTypeVisitorResult.SkipChildren;
+										default:
+											return ObjectTypeVisitorResult.Stop;
+									}
+								});
 							}
 						}
 					}
@@ -348,6 +411,9 @@ namespace Neumont.Tools.ORMToORMAbstractionBridge
 					{
 						notifyExcluded(objectType);
 					}
+
+					// Excluding an object type leaves a FactType with a null role player,
+					// so the associated fact types also need to be excluded.
 					foreach (Role playedRole in objectType.PlayedRoleCollection)
 					{
 						ExcludeFactType(playedRole.FactType, model, false, notifyExcluded);
@@ -356,6 +422,32 @@ namespace Neumont.Tools.ORMToORMAbstractionBridge
 						{
 							ExcludeFactType(proxy.FactType, model, false, notifyExcluded);
 						}
+					}
+
+					if (!objectType.IsValueType)
+					{
+						// Excluding an object type can leave a downstream subtype without an
+						// identifier, so exclude those as well. Note we only go one level deep
+						// as this will recurse naturally on the next level.
+						ObjectType.WalkSubtypes(objectType, delegate(ObjectType type, int depth, bool isPrimary)
+						{
+							switch (depth)
+							{
+								case 0:
+									return ObjectTypeVisitorResult.Continue;
+								case 1:
+									if (isPrimary)
+									{
+										if (type.PreferredIdentifier == null)
+										{
+											ExcludeObjectType(type, model, false, notifyExcluded);
+										}
+									}
+									return ObjectTypeVisitorResult.SkipChildren;
+								default:
+									return ObjectTypeVisitorResult.Stop;
+							}
+						});
 					}
 				}
 			}
@@ -575,6 +667,27 @@ namespace Neumont.Tools.ORMToORMAbstractionBridge
 				}
 			}
 			#endregion // Model error tracking rules
+			#region Preferred Identifier Tracking Rules
+			/// <summary>
+			/// AddRule: typeof(Neumont.Tools.ORM.ObjectModel.EntityTypeHasPreferredIdentifier)
+			/// Handle cases where subtypes have no preferred identifier. Note that this
+			/// is not necessarily an error condition in the core model, so we will not always
+			/// an error deleting notification on this object type, but this condition blocks
+			/// absorption on directly and indirectly subtyped objects that now need to be reconsidered.
+			/// </summary>
+			private static void PreferredIdentifierAddedRule(ElementAddedEventArgs e)
+			{
+				ObjectType objectType = ((EntityTypeHasPreferredIdentifier)e.ModelElement).PreferredIdentifierFor;
+				ObjectType.WalkSubtypes(objectType, delegate(ObjectType type, int depth, bool isPrimary)
+				{
+					if (isPrimary || depth == 0)
+					{
+						FilterModifiedObjectType(type);
+					}
+					return ObjectTypeVisitorResult.Continue;
+				});
+			}
+			#endregion // Preferred Identifier Tracking Rules
 			#region RolePlayer tracking rules
 			/// <summary>
 			/// AddRule: typeof(Neumont.Tools.ORM.ObjectModel.ObjectTypePlaysRole)
