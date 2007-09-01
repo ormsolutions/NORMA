@@ -1184,6 +1184,23 @@ namespace Neumont.Tools.ORMAbstractionToConceptualDatabaseBridge
 			return new DslModeling::LinkedElementCollection<global::Neumont.Tools.ORMAbstraction.ConceptType>(element, TableDomainRoleId);
 		}
 		#endregion
+		#region Accessors for roles that this REL plays in other RELs
+		#region AssimilationPath opposite domain role accessor
+		/// <summary>
+		/// Gets a list of AssimilationPath.
+		/// Description for
+		/// Neumont.Tools.ORMAbstractionToConceptualDatabaseBridge.TableIsAlsoForConceptTypeHasAssimilationPath.TableIsAlsoForConceptType
+		/// </summary>
+		public virtual DslModeling::LinkedElementCollection<global::Neumont.Tools.ORMAbstraction.ConceptTypeAssimilatesConceptType> AssimilationPath
+		{
+			[global::System.Diagnostics.DebuggerStepThrough]
+			get
+			{
+				return new DslModeling::LinkedElementCollection<global::Neumont.Tools.ORMAbstraction.ConceptTypeAssimilatesConceptType>(this, global::Neumont.Tools.ORMAbstractionToConceptualDatabaseBridge.TableIsAlsoForConceptTypeHasAssimilationPath.TableIsAlsoForConceptTypeDomainRoleId);
+			}
+		}
+		#endregion
+		#endregion
 		#region Table link accessor
 		/// <summary>
 		/// Get the list of TableIsAlsoForConceptType links to a Table.
@@ -1237,6 +1254,228 @@ namespace Neumont.Tools.ORMAbstractionToConceptualDatabaseBridge
 			foreach ( global::Neumont.Tools.ORMAbstractionToConceptualDatabaseBridge.TableIsAlsoForConceptType link in links )
 			{
 				if ( target.Equals(link.ConceptType) )
+				{
+					return link;
+				}
+			}
+			return null;
+		}
+		
+		#endregion
+	}
+}
+namespace Neumont.Tools.ORMAbstractionToConceptualDatabaseBridge
+{
+	/// <summary>
+	/// DomainRelationship TableIsAlsoForConceptTypeHasAssimilationPath
+	/// Description for
+	/// Neumont.Tools.ORMAbstractionToConceptualDatabaseBridge.TableIsAlsoForConceptTypeHasAssimilationPath
+	/// </summary>
+	[DslDesign::DisplayNameResource("Neumont.Tools.ORMAbstractionToConceptualDatabaseBridge.TableIsAlsoForConceptTypeHasAssimilationPath.DisplayName", typeof(global::Neumont.Tools.ORMAbstractionToConceptualDatabaseBridge.ORMAbstractionToConceptualDatabaseBridgeDomainModel), "Neumont.Tools.ORMAbstractionToConceptualDatabaseBridge.GeneratedCode.DomainModelResx")]
+	[DslDesign::DescriptionResource("Neumont.Tools.ORMAbstractionToConceptualDatabaseBridge.TableIsAlsoForConceptTypeHasAssimilationPath.Description", typeof(global::Neumont.Tools.ORMAbstractionToConceptualDatabaseBridge.ORMAbstractionToConceptualDatabaseBridgeDomainModel), "Neumont.Tools.ORMAbstractionToConceptualDatabaseBridge.GeneratedCode.DomainModelResx")]
+	[global::System.CLSCompliant(true)]
+	[DslModeling::DomainRelationship()]
+	[DslModeling::DomainObjectId("1772c296-ec3e-4fe3-88d5-4abc85e74849")]
+	public partial class TableIsAlsoForConceptTypeHasAssimilationPath : DslModeling::ElementLink
+	{
+		#region Constructors, domain class Id
+		
+		/// <summary>
+		/// TableIsAlsoForConceptTypeHasAssimilationPath domain class Id.
+		/// </summary>
+		public static readonly new global::System.Guid DomainClassId = new global::System.Guid(0x1772c296, 0xec3e, 0x4fe3, 0x88, 0xd5, 0x4a, 0xbc, 0x85, 0xe7, 0x48, 0x49);
+	
+				
+		/// <summary>
+		/// Constructor
+		/// Creates a TableIsAlsoForConceptTypeHasAssimilationPath link in the same Partition as the given TableIsAlsoForConceptType
+		/// </summary>
+		/// <param name="source">TableIsAlsoForConceptType to use as the source of the relationship.</param>
+		/// <param name="target">ConceptTypeAssimilatesConceptType to use as the target of the relationship.</param>
+		public TableIsAlsoForConceptTypeHasAssimilationPath(TableIsAlsoForConceptType source, global::Neumont.Tools.ORMAbstraction.ConceptTypeAssimilatesConceptType target)
+			: base((source != null ? source.Partition : null), new DslModeling::RoleAssignment[]{new DslModeling::RoleAssignment(TableIsAlsoForConceptTypeHasAssimilationPath.TableIsAlsoForConceptTypeDomainRoleId, source), new DslModeling::RoleAssignment(TableIsAlsoForConceptTypeHasAssimilationPath.AssimilationDomainRoleId, target)}, null)
+		{
+		}
+		
+		/// <summary>
+		/// Constructor
+		/// </summary>
+		/// <param name="store">Store where new link is to be created.</param>
+		/// <param name="roleAssignments">List of relationship role assignments.</param>
+		public TableIsAlsoForConceptTypeHasAssimilationPath(DslModeling::Store store, params DslModeling::RoleAssignment[] roleAssignments)
+			: base(store != null ? store.DefaultPartition : null, roleAssignments, null)
+		{
+		}
+		
+		/// <summary>
+		/// Constructor
+		/// </summary>
+		/// <param name="store">Store where new link is to be created.</param>
+		/// <param name="roleAssignments">List of relationship role assignments.</param>
+		/// <param name="propertyAssignments">List of properties assignments to set on the new link.</param>
+		public TableIsAlsoForConceptTypeHasAssimilationPath(DslModeling::Store store, DslModeling::RoleAssignment[] roleAssignments, DslModeling::PropertyAssignment[] propertyAssignments)
+			: base(store != null ? store.DefaultPartition : null, roleAssignments, propertyAssignments)
+		{
+		}
+		
+		/// <summary>
+		/// Constructor
+		/// </summary>
+		/// <param name="partition">Partition where new link is to be created.</param>
+		/// <param name="roleAssignments">List of relationship role assignments.</param>
+		public TableIsAlsoForConceptTypeHasAssimilationPath(DslModeling::Partition partition, params DslModeling::RoleAssignment[] roleAssignments)
+			: base(partition, roleAssignments, null)
+		{
+		}
+		
+		/// <summary>
+		/// Constructor
+		/// </summary>
+		/// <param name="partition">Partition where new link is to be created.</param>
+		/// <param name="roleAssignments">List of relationship role assignments.</param>
+		/// <param name="propertyAssignments">List of properties assignments to set on the new link.</param>
+		public TableIsAlsoForConceptTypeHasAssimilationPath(DslModeling::Partition partition, DslModeling::RoleAssignment[] roleAssignments, DslModeling::PropertyAssignment[] propertyAssignments)
+			: base(partition, roleAssignments, propertyAssignments)
+		{
+		}
+		#endregion
+		#region TableIsAlsoForConceptType domain role code
+		
+		/// <summary>
+		/// TableIsAlsoForConceptType domain role Id.
+		/// </summary>
+		public static readonly global::System.Guid TableIsAlsoForConceptTypeDomainRoleId = new global::System.Guid(0xbda4bd0b, 0xf86e, 0x481a, 0x92, 0x1f, 0x7f, 0x76, 0xed, 0xbe, 0x81, 0xa7);
+		
+		/// <summary>
+		/// DomainRole TableIsAlsoForConceptType
+		/// Description for
+		/// Neumont.Tools.ORMAbstractionToConceptualDatabaseBridge.TableIsAlsoForConceptTypeHasAssimilationPath.TableIsAlsoForConceptType
+		/// </summary>
+		[DslDesign::DisplayNameResource("Neumont.Tools.ORMAbstractionToConceptualDatabaseBridge.TableIsAlsoForConceptTypeHasAssimilationPath/TableIsAlsoForConceptType.DisplayName", typeof(global::Neumont.Tools.ORMAbstractionToConceptualDatabaseBridge.ORMAbstractionToConceptualDatabaseBridgeDomainModel), "Neumont.Tools.ORMAbstractionToConceptualDatabaseBridge.GeneratedCode.DomainModelResx")]
+		[DslDesign::DescriptionResource("Neumont.Tools.ORMAbstractionToConceptualDatabaseBridge.TableIsAlsoForConceptTypeHasAssimilationPath/TableIsAlsoForConceptType.Description", typeof(global::Neumont.Tools.ORMAbstractionToConceptualDatabaseBridge.ORMAbstractionToConceptualDatabaseBridgeDomainModel), "Neumont.Tools.ORMAbstractionToConceptualDatabaseBridge.GeneratedCode.DomainModelResx")]
+		[DslModeling::DomainRole(DslModeling::DomainRoleOrder.Source, PropertyName = "AssimilationPath", PropertyDisplayNameKey="Neumont.Tools.ORMAbstractionToConceptualDatabaseBridge.TableIsAlsoForConceptTypeHasAssimilationPath/TableIsAlsoForConceptType.PropertyDisplayName", Multiplicity = DslModeling::Multiplicity.OneMany)]
+		[DslModeling::DomainObjectId("bda4bd0b-f86e-481a-921f-7f76edbe81a7")]
+		public virtual TableIsAlsoForConceptType TableIsAlsoForConceptType
+		{
+			[global::System.Diagnostics.DebuggerStepThrough]
+			get
+			{
+				return (TableIsAlsoForConceptType)DslModeling::DomainRoleInfo.GetRolePlayer(this, TableIsAlsoForConceptTypeDomainRoleId);
+			}
+			[global::System.Diagnostics.DebuggerStepThrough]
+			set
+			{
+				DslModeling::DomainRoleInfo.SetRolePlayer(this, TableIsAlsoForConceptTypeDomainRoleId, value);
+			}
+		}
+				
+		#endregion
+		#region Static methods to access TableIsAlsoForConceptType of a ConceptTypeAssimilatesConceptType
+		/// <summary>
+		/// Gets a list of TableIsAlsoForConceptType.
+		/// </summary>
+		[global::System.Diagnostics.DebuggerStepThrough]
+		[global::System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Design", "CA1011")]
+		public static DslModeling::LinkedElementCollection<TableIsAlsoForConceptType> GetTableIsAlsoForConceptType(global::Neumont.Tools.ORMAbstraction.ConceptTypeAssimilatesConceptType element)
+		{
+			return new DslModeling::LinkedElementCollection<TableIsAlsoForConceptType>(element, AssimilationDomainRoleId);
+		}
+		#endregion
+		#region Assimilation domain role code
+		
+		/// <summary>
+		/// Assimilation domain role Id.
+		/// </summary>
+		public static readonly global::System.Guid AssimilationDomainRoleId = new global::System.Guid(0xc14aed06, 0xe158, 0x4082, 0x96, 0xe3, 0x62, 0xc2, 0xa7, 0xe3, 0x02, 0xf1);
+		
+		/// <summary>
+		/// DomainRole Assimilation
+		/// Description for
+		/// Neumont.Tools.ORMAbstractionToConceptualDatabaseBridge.TableIsAlsoForConceptTypeHasAssimilationPath.Assimilation
+		/// </summary>
+		[DslDesign::DisplayNameResource("Neumont.Tools.ORMAbstractionToConceptualDatabaseBridge.TableIsAlsoForConceptTypeHasAssimilationPath/Assimilation.DisplayName", typeof(global::Neumont.Tools.ORMAbstractionToConceptualDatabaseBridge.ORMAbstractionToConceptualDatabaseBridgeDomainModel), "Neumont.Tools.ORMAbstractionToConceptualDatabaseBridge.GeneratedCode.DomainModelResx")]
+		[DslDesign::DescriptionResource("Neumont.Tools.ORMAbstractionToConceptualDatabaseBridge.TableIsAlsoForConceptTypeHasAssimilationPath/Assimilation.Description", typeof(global::Neumont.Tools.ORMAbstractionToConceptualDatabaseBridge.ORMAbstractionToConceptualDatabaseBridgeDomainModel), "Neumont.Tools.ORMAbstractionToConceptualDatabaseBridge.GeneratedCode.DomainModelResx")]
+		[DslModeling::DomainRole(DslModeling::DomainRoleOrder.Target, PropertyName = "TableIsAlsoForConceptType", PropertyDisplayNameKey="Neumont.Tools.ORMAbstractionToConceptualDatabaseBridge.TableIsAlsoForConceptTypeHasAssimilationPath/Assimilation.PropertyDisplayName", Multiplicity = DslModeling::Multiplicity.ZeroMany)]
+		[DslModeling::DomainObjectId("c14aed06-e158-4082-96e3-62c2a7e302f1")]
+		public virtual global::Neumont.Tools.ORMAbstraction.ConceptTypeAssimilatesConceptType Assimilation
+		{
+			[global::System.Diagnostics.DebuggerStepThrough]
+			get
+			{
+				return (global::Neumont.Tools.ORMAbstraction.ConceptTypeAssimilatesConceptType)DslModeling::DomainRoleInfo.GetRolePlayer(this, AssimilationDomainRoleId);
+			}
+			[global::System.Diagnostics.DebuggerStepThrough]
+			set
+			{
+				DslModeling::DomainRoleInfo.SetRolePlayer(this, AssimilationDomainRoleId, value);
+			}
+		}
+				
+		#endregion
+		#region Static methods to access AssimilationPath of a TableIsAlsoForConceptType
+		/// <summary>
+		/// Gets a list of AssimilationPath.
+		/// </summary>
+		[global::System.Diagnostics.DebuggerStepThrough]
+		[global::System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Design", "CA1011")]
+		public static DslModeling::LinkedElementCollection<global::Neumont.Tools.ORMAbstraction.ConceptTypeAssimilatesConceptType> GetAssimilationPath(TableIsAlsoForConceptType element)
+		{
+			return new DslModeling::LinkedElementCollection<global::Neumont.Tools.ORMAbstraction.ConceptTypeAssimilatesConceptType>(element, TableIsAlsoForConceptTypeDomainRoleId);
+		}
+		#endregion
+		#region TableIsAlsoForConceptType link accessor
+		/// <summary>
+		/// Get the list of TableIsAlsoForConceptTypeHasAssimilationPath links to a TableIsAlsoForConceptType.
+		/// </summary>
+		[global::System.Diagnostics.DebuggerStepThrough]
+		[global::System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Design", "CA1011")]
+		public static global::System.Collections.ObjectModel.ReadOnlyCollection<global::Neumont.Tools.ORMAbstractionToConceptualDatabaseBridge.TableIsAlsoForConceptTypeHasAssimilationPath> GetLinksToAssimilationPath ( global::Neumont.Tools.ORMAbstractionToConceptualDatabaseBridge.TableIsAlsoForConceptType tableIsAlsoForConceptTypeInstance )
+		{
+			return DslModeling::DomainRoleInfo.GetElementLinks<global::Neumont.Tools.ORMAbstractionToConceptualDatabaseBridge.TableIsAlsoForConceptTypeHasAssimilationPath>(tableIsAlsoForConceptTypeInstance, global::Neumont.Tools.ORMAbstractionToConceptualDatabaseBridge.TableIsAlsoForConceptTypeHasAssimilationPath.TableIsAlsoForConceptTypeDomainRoleId);
+		}
+		#endregion
+		#region Assimilation link accessor
+		/// <summary>
+		/// Get the list of TableIsAlsoForConceptTypeHasAssimilationPath links to a ConceptTypeAssimilatesConceptType.
+		/// </summary>
+		[global::System.Diagnostics.DebuggerStepThrough]
+		[global::System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Design", "CA1011")]
+		public static global::System.Collections.ObjectModel.ReadOnlyCollection<global::Neumont.Tools.ORMAbstractionToConceptualDatabaseBridge.TableIsAlsoForConceptTypeHasAssimilationPath> GetLinksToTableIsAlsoForConceptType ( global::Neumont.Tools.ORMAbstraction.ConceptTypeAssimilatesConceptType assimilationInstance )
+		{
+			return DslModeling::DomainRoleInfo.GetElementLinks<global::Neumont.Tools.ORMAbstractionToConceptualDatabaseBridge.TableIsAlsoForConceptTypeHasAssimilationPath>(assimilationInstance, global::Neumont.Tools.ORMAbstractionToConceptualDatabaseBridge.TableIsAlsoForConceptTypeHasAssimilationPath.AssimilationDomainRoleId);
+		}
+		#endregion
+		#region TableIsAlsoForConceptTypeHasAssimilationPath instance accessors
+		
+		/// <summary>
+		/// Get any TableIsAlsoForConceptTypeHasAssimilationPath links between a given TableIsAlsoForConceptType and a ConceptTypeAssimilatesConceptType.
+		/// </summary>
+		[global::System.Diagnostics.DebuggerStepThrough]
+		[global::System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Design", "CA1011")]
+		public static global::System.Collections.ObjectModel.ReadOnlyCollection<global::Neumont.Tools.ORMAbstractionToConceptualDatabaseBridge.TableIsAlsoForConceptTypeHasAssimilationPath> GetLinks( global::Neumont.Tools.ORMAbstractionToConceptualDatabaseBridge.TableIsAlsoForConceptType source, global::Neumont.Tools.ORMAbstraction.ConceptTypeAssimilatesConceptType target )
+		{
+			global::System.Collections.Generic.List<global::Neumont.Tools.ORMAbstractionToConceptualDatabaseBridge.TableIsAlsoForConceptTypeHasAssimilationPath> outLinks = new global::System.Collections.Generic.List<global::Neumont.Tools.ORMAbstractionToConceptualDatabaseBridge.TableIsAlsoForConceptTypeHasAssimilationPath>();
+			global::System.Collections.Generic.IList<global::Neumont.Tools.ORMAbstractionToConceptualDatabaseBridge.TableIsAlsoForConceptTypeHasAssimilationPath> links = DslModeling::DomainRoleInfo.GetElementLinks<global::Neumont.Tools.ORMAbstractionToConceptualDatabaseBridge.TableIsAlsoForConceptTypeHasAssimilationPath>(source, global::Neumont.Tools.ORMAbstractionToConceptualDatabaseBridge.TableIsAlsoForConceptTypeHasAssimilationPath.TableIsAlsoForConceptTypeDomainRoleId);
+			foreach ( global::Neumont.Tools.ORMAbstractionToConceptualDatabaseBridge.TableIsAlsoForConceptTypeHasAssimilationPath link in links )
+			{
+				if ( target.Equals(link.Assimilation) )
+				{
+					outLinks.Add(link);
+				}
+			}
+			return outLinks.AsReadOnly();
+		}
+		/// <summary>
+		/// Get the one TableIsAlsoForConceptTypeHasAssimilationPath link between a given TableIsAlsoForConceptTypeand a ConceptTypeAssimilatesConceptType.
+		/// </summary>
+		[global::System.Diagnostics.DebuggerStepThrough]
+		[global::System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Design", "CA1011")]
+		public static global::Neumont.Tools.ORMAbstractionToConceptualDatabaseBridge.TableIsAlsoForConceptTypeHasAssimilationPath GetLink( global::Neumont.Tools.ORMAbstractionToConceptualDatabaseBridge.TableIsAlsoForConceptType source, global::Neumont.Tools.ORMAbstraction.ConceptTypeAssimilatesConceptType target )
+		{
+			global::System.Collections.Generic.IList<global::Neumont.Tools.ORMAbstractionToConceptualDatabaseBridge.TableIsAlsoForConceptTypeHasAssimilationPath> links = DslModeling::DomainRoleInfo.GetElementLinks<global::Neumont.Tools.ORMAbstractionToConceptualDatabaseBridge.TableIsAlsoForConceptTypeHasAssimilationPath>(source, global::Neumont.Tools.ORMAbstractionToConceptualDatabaseBridge.TableIsAlsoForConceptTypeHasAssimilationPath.TableIsAlsoForConceptTypeDomainRoleId);
+			foreach ( global::Neumont.Tools.ORMAbstractionToConceptualDatabaseBridge.TableIsAlsoForConceptTypeHasAssimilationPath link in links )
+			{
+				if ( target.Equals(link.Assimilation) )
 				{
 					return link;
 				}

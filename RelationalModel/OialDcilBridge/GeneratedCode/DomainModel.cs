@@ -75,6 +75,7 @@ namespace Neumont.Tools.ORMAbstractionToConceptualDatabaseBridge
 				typeof(SchemaIsForAbstractionModel),
 				typeof(TableIsPrimarilyForConceptType),
 				typeof(TableIsAlsoForConceptType),
+				typeof(TableIsAlsoForConceptTypeHasAssimilationPath),
 				typeof(ColumnHasConceptTypeChild),
 				typeof(UniquenessConstraintIsForUniqueness),
 				typeof(DomainIsForInformationTypeFormat),
@@ -109,6 +110,8 @@ namespace Neumont.Tools.ORMAbstractionToConceptualDatabaseBridge
 				new DomainRolePlayerInfo(typeof(TableIsPrimarilyForConceptType), "ConceptType", TableIsPrimarilyForConceptType.ConceptTypeDomainRoleId),
 				new DomainRolePlayerInfo(typeof(TableIsAlsoForConceptType), "Table", TableIsAlsoForConceptType.TableDomainRoleId),
 				new DomainRolePlayerInfo(typeof(TableIsAlsoForConceptType), "ConceptType", TableIsAlsoForConceptType.ConceptTypeDomainRoleId),
+				new DomainRolePlayerInfo(typeof(TableIsAlsoForConceptTypeHasAssimilationPath), "TableIsAlsoForConceptType", TableIsAlsoForConceptTypeHasAssimilationPath.TableIsAlsoForConceptTypeDomainRoleId),
+				new DomainRolePlayerInfo(typeof(TableIsAlsoForConceptTypeHasAssimilationPath), "Assimilation", TableIsAlsoForConceptTypeHasAssimilationPath.AssimilationDomainRoleId),
 				new DomainRolePlayerInfo(typeof(ColumnHasConceptTypeChild), "Column", ColumnHasConceptTypeChild.ColumnDomainRoleId),
 				new DomainRolePlayerInfo(typeof(ColumnHasConceptTypeChild), "ConceptTypeChild", ColumnHasConceptTypeChild.ConceptTypeChildDomainRoleId),
 				new DomainRolePlayerInfo(typeof(UniquenessConstraintIsForUniqueness), "UniquenessConstraint", UniquenessConstraintIsForUniqueness.UniquenessConstraintDomainRoleId),
@@ -170,15 +173,16 @@ namespace Neumont.Tools.ORMAbstractionToConceptualDatabaseBridge
 	
 			if (createElementLinkMap == null)
 			{
-				createElementLinkMap = new global::System.Collections.Generic.Dictionary<global::System.Type, int>(8);
+				createElementLinkMap = new global::System.Collections.Generic.Dictionary<global::System.Type, int>(9);
 				createElementLinkMap.Add(typeof(AssimilationMappingCustomizesFactType), 0);
 				createElementLinkMap.Add(typeof(MappingCustomizationModelHasAssimilationMapping), 1);
 				createElementLinkMap.Add(typeof(SchemaIsForAbstractionModel), 2);
 				createElementLinkMap.Add(typeof(TableIsPrimarilyForConceptType), 3);
 				createElementLinkMap.Add(typeof(TableIsAlsoForConceptType), 4);
-				createElementLinkMap.Add(typeof(ColumnHasConceptTypeChild), 5);
-				createElementLinkMap.Add(typeof(UniquenessConstraintIsForUniqueness), 6);
-				createElementLinkMap.Add(typeof(DomainIsForInformationTypeFormat), 7);
+				createElementLinkMap.Add(typeof(TableIsAlsoForConceptTypeHasAssimilationPath), 5);
+				createElementLinkMap.Add(typeof(ColumnHasConceptTypeChild), 6);
+				createElementLinkMap.Add(typeof(UniquenessConstraintIsForUniqueness), 7);
+				createElementLinkMap.Add(typeof(DomainIsForInformationTypeFormat), 8);
 			}
 			int index;
 			if (!createElementLinkMap.TryGetValue(elementLinkType, out index))
@@ -192,9 +196,10 @@ namespace Neumont.Tools.ORMAbstractionToConceptualDatabaseBridge
 				case 2: return new SchemaIsForAbstractionModel(partition, roleAssignments, propertyAssignments);
 				case 3: return new TableIsPrimarilyForConceptType(partition, roleAssignments, propertyAssignments);
 				case 4: return new TableIsAlsoForConceptType(partition, roleAssignments, propertyAssignments);
-				case 5: return new ColumnHasConceptTypeChild(partition, roleAssignments, propertyAssignments);
-				case 6: return new UniquenessConstraintIsForUniqueness(partition, roleAssignments, propertyAssignments);
-				case 7: return new DomainIsForInformationTypeFormat(partition, roleAssignments, propertyAssignments);
+				case 5: return new TableIsAlsoForConceptTypeHasAssimilationPath(partition, roleAssignments, propertyAssignments);
+				case 6: return new ColumnHasConceptTypeChild(partition, roleAssignments, propertyAssignments);
+				case 7: return new UniquenessConstraintIsForUniqueness(partition, roleAssignments, propertyAssignments);
+				case 8: return new DomainIsForInformationTypeFormat(partition, roleAssignments, propertyAssignments);
 				default: return null;
 			}
 		}

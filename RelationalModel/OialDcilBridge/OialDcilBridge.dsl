@@ -140,6 +140,22 @@
 				</DomainRole>
 			</Target>
 		</DomainRelationship>
+		<DomainRelationship Id="1772C296-EC3E-4FE3-88D5-4ABC85E74849" Name="TableIsAlsoForConceptTypeHasAssimilationPath" Namespace="Neumont.Tools.ORMAbstractionToConceptualDatabaseBridge">
+			<Source>
+				<DomainRole Id="BDA4BD0B-F86E-481A-921F-7F76EDBE81A7" Name="TableIsAlsoForConceptType" PropertyName="AssimilationPath" Multiplicity="OneMany">
+					<RolePlayer>
+						<DomainRelationshipMoniker Name="TableIsAlsoForConceptType"/>
+					</RolePlayer>
+				</DomainRole>
+			</Source>
+			<Target>
+				<DomainRole Id="C14AED06-E158-4082-96E3-62C2A7E302F1" Name="Assimilation" PropertyName="TableIsAlsoForConceptType" IsPropertyGenerator="false" Multiplicity="ZeroMany">
+					<RolePlayer>
+						<DomainRelationshipMoniker Name="/Neumont.Tools.ORMAbstraction/ConceptTypeAssimilatesConceptType"/>
+					</RolePlayer>
+				</DomainRole>
+			</Target>
+		</DomainRelationship>
 		<DomainRelationship Id="CCBCAB63-ADE4-43FA-8E29-8A598B0969F5" Name="ColumnHasConceptTypeChild" Namespace="Neumont.Tools.ORMAbstractionToConceptualDatabaseBridge">
 			<Source>
 				<DomainRole Id="BC7EA8A8-8772-4CA4-B914-B78B4B583338" Description="" Name="Column" PropertyName="ConceptTypeChildPath" Multiplicity="OneMany">

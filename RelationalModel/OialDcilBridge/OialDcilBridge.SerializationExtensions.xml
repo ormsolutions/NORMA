@@ -52,6 +52,9 @@
 				</se:RootLink>
 			</se:Container>
 		</se:RootLinks>
+		<se:OmittedDomainElements>
+			<se:OmitRelationship Class="TableIsAlsoForConceptTypeHasAssimilationPath"/>
+		</se:OmittedDomainElements>
 	</se:DomainModel>
 	<se:Element Class="MappingCustomizationModel" Name="MappingCustomization">
 		<se:ConditionalSerialization>

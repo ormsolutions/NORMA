@@ -309,6 +309,38 @@
     <value>Table</value>
     <comment>PropertyDisplayName for DomainRole &apos;ConceptType&apos; on DomainRelationship &apos;TableIsAlsoForConceptType&apos;</comment>
   </data>
+  <data name="Neumont.Tools.ORMAbstractionToConceptualDatabaseBridge.TableIsAlsoForConceptTypeHasAssimilationPath.Description" xml:space="preserve">
+    <value>Description for Neumont.Tools.ORMAbstractionToConceptualDatabaseBridge.TableIsAlsoForConceptTypeHasAssimilationPath</value>
+    <comment>Description for DomainClass &apos;TableIsAlsoForConceptTypeHasAssimilationPath&apos;</comment>
+  </data>
+  <data name="Neumont.Tools.ORMAbstractionToConceptualDatabaseBridge.TableIsAlsoForConceptTypeHasAssimilationPath.DisplayName" xml:space="preserve">
+    <value>Table Is Also For Concept Type Has Assimilation Path</value>
+    <comment>DisplayName for DomainClass &apos;TableIsAlsoForConceptTypeHasAssimilationPath&apos;</comment>
+  </data>
+  <data name="Neumont.Tools.ORMAbstractionToConceptualDatabaseBridge.TableIsAlsoForConceptTypeHasAssimilationPath/TableIsAlsoForConceptType.Description" xml:space="preserve">
+    <value>Description for Neumont.Tools.ORMAbstractionToConceptualDatabaseBridge.TableIsAlsoForConceptTypeHasAssimilationPath.TableIsAlsoForConceptType</value>
+    <comment>Description for DomainRole &apos;TableIsAlsoForConceptType&apos; on DomainRelationship &apos;TableIsAlsoForConceptTypeHasAssimilationPath&apos;</comment>
+  </data>
+  <data name="Neumont.Tools.ORMAbstractionToConceptualDatabaseBridge.TableIsAlsoForConceptTypeHasAssimilationPath/TableIsAlsoForConceptType.DisplayName" xml:space="preserve">
+    <value>Table Is Also For Concept Type</value>
+    <comment>DisplayName for DomainRole &apos;TableIsAlsoForConceptType&apos; on DomainRelationship &apos;TableIsAlsoForConceptTypeHasAssimilationPath&apos;</comment>
+  </data>
+  <data name="Neumont.Tools.ORMAbstractionToConceptualDatabaseBridge.TableIsAlsoForConceptTypeHasAssimilationPath/TableIsAlsoForConceptType.PropertyDisplayName" xml:space="preserve">
+    <value>Assimilation Path</value>
+    <comment>PropertyDisplayName for DomainRole &apos;TableIsAlsoForConceptType&apos; on DomainRelationship &apos;TableIsAlsoForConceptTypeHasAssimilationPath&apos;</comment>
+  </data>
+  <data name="Neumont.Tools.ORMAbstractionToConceptualDatabaseBridge.TableIsAlsoForConceptTypeHasAssimilationPath/Assimilation.Description" xml:space="preserve">
+    <value>Description for Neumont.Tools.ORMAbstractionToConceptualDatabaseBridge.TableIsAlsoForConceptTypeHasAssimilationPath.Assimilation</value>
+    <comment>Description for DomainRole &apos;Assimilation&apos; on DomainRelationship &apos;TableIsAlsoForConceptTypeHasAssimilationPath&apos;</comment>
+  </data>
+  <data name="Neumont.Tools.ORMAbstractionToConceptualDatabaseBridge.TableIsAlsoForConceptTypeHasAssimilationPath/Assimilation.DisplayName" xml:space="preserve">
+    <value>Assimilation</value>
+    <comment>DisplayName for DomainRole &apos;Assimilation&apos; on DomainRelationship &apos;TableIsAlsoForConceptTypeHasAssimilationPath&apos;</comment>
+  </data>
+  <data name="Neumont.Tools.ORMAbstractionToConceptualDatabaseBridge.TableIsAlsoForConceptTypeHasAssimilationPath/Assimilation.PropertyDisplayName" xml:space="preserve">
+    <value>Table Is Also For Concept Type</value>
+    <comment>PropertyDisplayName for DomainRole &apos;Assimilation&apos; on DomainRelationship &apos;TableIsAlsoForConceptTypeHasAssimilationPath&apos;</comment>
+  </data>
   <data name="Neumont.Tools.ORMAbstractionToConceptualDatabaseBridge.ColumnHasConceptTypeChild.Description" xml:space="preserve">
     <value>Description for Neumont.Tools.ORMAbstractionToConceptualDatabaseBridge.ColumnHasConceptTypeChild</value>
     <comment>Description for DomainClass &apos;ColumnHasConceptTypeChild&apos;</comment>
