@@ -166,7 +166,7 @@
     <comment>The display name for the AbsorptionChoice property on an ObjectType. Displays as the name of a property in the Properties Window.</comment>
   </data>
   <data name="ObjectTypeAbsorptionChoice.Absorbed" xml:space="preserve">
-    <value>Absorbed</value>
+    <value>Absorbed (All Paths)</value>
     <comment>The ObjectType is absorbed through all paths.</comment>
   </data>
   <data name="ObjectTypeAbsorptionChoice.CustomAbsorbed" xml:space="preserve">

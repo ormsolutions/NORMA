@@ -505,9 +505,9 @@ namespace Neumont.Tools.ORMAbstractionToConceptualDatabaseBridge
 							{
 								return canPartition ? PartitionablePartitionedChildValues : PartitionedChildValues;
 							}
-							if (customAbsorb || (!seenAbsorb && null != AssimilatorTracker.GetNearestAbsorbingAssimilatorConceptType(assimilations, true, null)))
+							if (customAbsorb || !seenAbsorb)
 							{
-								fullAbsorbAvailable = true;
+								fullAbsorbAvailable = null != AssimilatorTracker.GetNearestAbsorbingAssimilatorConceptType(assimilations, true, null);
 							}
 							else if (seenAbsorb)
 							{
