@@ -511,11 +511,9 @@ namespace Neumont.Tools.ORMAbstractionToConceptualDatabaseBridge
 			List<ConceptTypeChild> preferredConceptTypeChildList = GetPreferredConceptTypeChildrenForConceptType(conceptType);
 			List<Column> columnsForConceptType = new List<Column>();
 
-			List<ConceptTypeChild> tester = new List<ConceptTypeChild>();
 
 			foreach (ConceptTypeChild conceptTypeChild in ConceptTypeChild.GetLinksToTargetCollection(conceptType))
 			{
-				tester.Add(conceptTypeChild);
 				if (!(conceptTypeChild is ConceptTypeAssimilatesConceptType))
 				{
 					columnsForConceptType.AddRange(GetColumnsForConceptTypeChild(conceptTypeChild, new List<ConceptTypeChild>()));
@@ -1075,6 +1073,29 @@ namespace Neumont.Tools.ORMAbstractionToConceptualDatabaseBridge
 					}
 				}
 			}
+			else
+			{
+				// If the seperation is further partitioned then it will not have a secondary child table, further assimilations or seperations are ok though.
+				ReadOnlyCollection<ConceptTypeAssimilatesConceptType> childAssimilations = ConceptTypeAssimilatesConceptType.GetLinksToAssimilatedConceptTypeCollection(assimilation.AssimilatedConceptType);
+				bool isPartitioned = false;
+				foreach (ConceptTypeAssimilatesConceptType possiblePartition in childAssimilations)
+				{
+					if (AssimilationMapping.GetAssimilationMappingFromAssimilation(possiblePartition).AbsorptionChoice == AssimilationAbsorptionChoice.Partition)
+					{
+						isPartitioned = true;
+						break;
+					}
+				}
+				if (isPartitioned)
+				{
+					bool prefered = false;
+					foreach (ConceptTypeAssimilatesConceptType partition in childAssimilations)
+					{
+						DoSeparation(partition, ref prefered);
+						prefered = false;
+					}
+				}
+			}
 		}
 
 		/// <summary>
@@ -1198,18 +1219,47 @@ namespace Neumont.Tools.ORMAbstractionToConceptualDatabaseBridge
 				}
 				else if (AssimilationMapping.GetAbsorptionChoiceFromAssimilation(conceptTypeAssimilatesConceptType) == AssimilationAbsorptionChoice.Separate)
 				{
-					Table targetTable = TableIsPrimarilyForConceptType.GetTable(conceptTypeAssimilatesConceptType.AssimilatedConceptType);
+					// UNDONE: Problem occuring with A is partitioned to B, C; C is partitioned to D, E. Setting A-C to Partition
+					ReadOnlyCollection<ConceptTypeAssimilatesConceptType> childCollection = ConceptTypeAssimilatesConceptType.GetLinksToAssimilatedConceptTypeCollection(conceptTypeAssimilatesConceptType.AssimilatedConceptType);
 
-					foreach (Column target in targetTable.ColumnCollection)
+					/**/
+					bool containsPartitions = false;
+					foreach (ConceptTypeAssimilatesConceptType act in childCollection)
 					{
-						foreach (ConceptTypeChild conceptTypeChild in ColumnHasConceptTypeChild.GetConceptTypeChildPath(target))
+						if (AssimilationMapping.GetAssimilationMappingFromAssimilation(act).AbsorptionChoice == AssimilationAbsorptionChoice.Partition)
 						{
-							if (ColumnHasConceptTypeChild.GetConceptTypeChildPath(target).Contains(conceptTypeChild) && target != column)
-							{
-								columns.Add(target);
-							}
+
+							containsPartitions = true;
+							break;
 						}
 					}
+					/**/
+					/**/
+					if (!containsPartitions)
+					{
+						/**/
+						Table targetTable = TableIsPrimarilyForConceptType.GetTable(conceptTypeAssimilatesConceptType.AssimilatedConceptType);
+
+						foreach (Column target in targetTable.ColumnCollection)
+						{
+							foreach (ConceptTypeChild conceptTypeChild in ColumnHasConceptTypeChild.GetConceptTypeChildPath(target))
+							{
+								if (ColumnHasConceptTypeChild.GetConceptTypeChildPath(target).Contains(conceptTypeChild) && target != column)
+								{
+									columns.Add(target);
+								}
+							}
+						}
+						/**/
+					}
+					else
+					{
+						foreach (ConceptTypeAssimilatesConceptType act in childCollection)
+						{
+							columns.AddRange(ConceptTypeHasPrimaryIdentifierColumns(column, act.AssimilatedConceptType));
+						}
+					}
+					/**/
 				}
 			}
 
@@ -1440,9 +1490,11 @@ namespace Neumont.Tools.ORMAbstractionToConceptualDatabaseBridge
 		/// <param name="conceptType">The <see cref="ConceptType"/>.</param>
 		private static void CreateUniquenessConstraints(ConceptType conceptType)
 		{
+			// UNDONE: Look here for possible problems with ring contstraints
 			Table isPrimarilyForTable = TableIsPrimarilyForConceptType.GetTable(conceptType);
 			if (isPrimarilyForTable != null)
 			{
+				List<Uniqueness> alreadyDone = new List<Uniqueness>();
 				foreach (Uniqueness uniqueness in conceptType.UniquenessCollection)
 				{
 					UniquenessConstraint uniquenessConstraint = new UniquenessConstraint(uniqueness.Store, new PropertyAssignment[] { new PropertyAssignment(UniquenessConstraint.NameDomainPropertyId, uniqueness.Name) });

@@ -936,7 +936,7 @@ namespace Neumont.Tools.ORMToORMAbstractionBridge
 								}
 								FactTypeMapping factTypeMapping = factTypeMappings[binarizedFactType];
 
-								if (factTypeMapping.TowardsObjectType != objectType)
+								if (factTypeMapping.TowardsRole != childRole.OppositeRoleAlwaysResolveProxy.Role)
 								{
 									allChildrenMapTowardObjectType = false;
 									break;

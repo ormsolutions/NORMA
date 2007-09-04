@@ -409,9 +409,11 @@ namespace Neumont.Tools.RelationalModels.ConceptualDatabase
 			DomainRoles.Add(global::Neumont.Tools.RelationalModels.ConceptualDatabase.TableContainsColumn.ColumnDomainRoleId, true);
 			DomainRoles.Add(global::Neumont.Tools.RelationalModels.ConceptualDatabase.TableContainsConstraint.ConstraintDomainRoleId, true);
 			DomainRoles.Add(global::Neumont.Tools.RelationalModels.ConceptualDatabase.TableContainsUniquenessConstraint.UniquenessConstraintDomainRoleId, true);
+			DomainRoles.Add(global::Neumont.Tools.RelationalModels.ConceptualDatabase.TableContainsReferenceConstraint.ReferenceConstraintDomainRoleId, true);
 			DomainRoles.Add(global::Neumont.Tools.RelationalModels.ConceptualDatabase.TableContainsCheckConstraint.CheckConstraintDomainRoleId, true);
 			DomainRoles.Add(global::Neumont.Tools.RelationalModels.ConceptualDatabase.DomainContainsCheckConstraint.CheckConstraintDomainRoleId, true);
 			DomainRoles.Add(global::Neumont.Tools.RelationalModels.ConceptualDatabase.ColumnHasPredefinedDataType.PredefinedDataTypeDomainRoleId, true);
+			DomainRoles.Add(global::Neumont.Tools.RelationalModels.ConceptualDatabase.ReferenceConstraintTargetsTable.ReferenceConstraintDomainRoleId, true);
 			DomainRoles.Add(global::Neumont.Tools.RelationalModels.ConceptualDatabase.ReferenceConstraintContainsColumnReference.ColumnReferenceDomainRoleId, true);
 			#endregion
 		}

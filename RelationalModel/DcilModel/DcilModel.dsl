@@ -544,7 +544,7 @@
 				</DomainRole>
 			</Source>
 			<Target>
-				<DomainRole Id="6DAA73B4-E37E-4BE1-BB3C-DAFBCFD51343" Name="ReferenceConstraint" PropertyName="SourceTable" Multiplicity="One">
+				<DomainRole Id="6DAA73B4-E37E-4BE1-BB3C-DAFBCFD51343" Name="ReferenceConstraint" PropertyName="SourceTable" Multiplicity="One" PropagatesDelete="true">
 					<RolePlayer>
 						<DomainClassMoniker Name="ReferenceConstraint"/>
 					</RolePlayer>
@@ -653,7 +653,7 @@
 				</DomainRole>
 			</Source>
 			<Target>
-				<DomainRole Id="32200848-28E3-4D35-9A61-F592903B52BF" Name="Column" IsPropertyGenerator="false" Multiplicity="ZeroMany">
+				<DomainRole Id="32200848-28E3-4D35-9A61-F592903B52BF" Name="Column" PropertyName="UniquenessConstraints" IsPropertyGenerator="false" Multiplicity="ZeroMany">
 					<RolePlayer>
 						<DomainClassMoniker Name="Column"/>
 					</RolePlayer>
@@ -670,14 +670,14 @@
 				</ClrAttribute>
 			</Attributes>
 			<Source>
-				<DomainRole Id="22F748A4-8086-46C4-A323-E93574438D16" Name="ReferenceConstraint" PropertyName="TargetTable" Multiplicity="One">
+				<DomainRole Id="22F748A4-8086-46C4-A323-E93574438D16" Name="ReferenceConstraint" PropertyName="TargetTable" Multiplicity="One" PropagatesDelete="true">
 					<RolePlayer>
 						<DomainClassMoniker Name="ReferenceConstraint"/>
 					</RolePlayer>
 				</DomainRole>
 			</Source>
 			<Target>
-				<DomainRole Id="3EFFDDB4-4B20-4EB4-8A79-271240574413" Name="TargetTable" IsPropertyGenerator="false" Multiplicity="ZeroMany">
+				<DomainRole Id="3EFFDDB4-4B20-4EB4-8A79-271240574413" Name="TargetTable" PropertyName="ReferenceConstraints" IsPropertyGenerator="false" Multiplicity="ZeroMany">
 					<RolePlayer>
 						<DomainClassMoniker Name="Table"/>
 					</RolePlayer>
