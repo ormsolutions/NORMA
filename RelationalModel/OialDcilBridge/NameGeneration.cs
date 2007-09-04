@@ -166,11 +166,11 @@ namespace Neumont.Tools.ORMAbstractionToConceptualDatabaseBridge
 				{
 					foreach (ConceptType conceptType in secondaryConceptTypes)
 					{
-						name.Append(conceptType.Name);
 						if (longerThan == null || FinalizeName(name.ToString(), tableCase, tableStringReplace) != longerThan)
 						{
 							break;
 						}
+						name.Append(conceptType.Name);
 					}
 				}
 
@@ -180,9 +180,12 @@ namespace Neumont.Tools.ORMAbstractionToConceptualDatabaseBridge
 				}
 
 				string finalName = FinalizeName(name.ToString(), tableCase, tableStringReplace);
-				while (finalName == longerThan)
+				if (longerThan != null && finalName == longerThan.TrimEnd('_'))
 				{
-					finalName += "_";
+					while (finalName.Length <= longerThan.Length)
+					{
+						finalName += "_";
+					}
 				}
 				return finalName;
 			}
@@ -212,6 +215,8 @@ namespace Neumont.Tools.ORMAbstractionToConceptualDatabaseBridge
 					//get a role name for each fact type, or generate one from the reading
 					foreach (FactType factType in factTypes)
 					{
+						//factType.ImpliedByObjectification
+						//factType.Objectification.ImpliedFactTypeCollection
 						string roleName;
 						LinkedElementCollection<RoleBase> factTypeRoles = factType.RoleCollection;
 						int? unaryRoleIndex = FactType.GetUnaryRoleIndex(factTypeRoles);
@@ -292,6 +297,7 @@ namespace Neumont.Tools.ORMAbstractionToConceptualDatabaseBridge
 
 						if (!hasUnary || (longerThan != null && longerThan == FinalizeName(name.ToString(), columnCasing, columnStringReplace)))
 						{
+							string curName;
 							if (!(hasRoleOrHyphenBound || alwaysKeepText) && (predicateTextCount == 1 &&
 								(longerThan == null || longerThan != FinalizeName(valueTypeName, columnCasing, columnStringReplace))))
 							{
@@ -299,7 +305,8 @@ namespace Neumont.Tools.ORMAbstractionToConceptualDatabaseBridge
 								name.Remove(0, name.Length);
 								name.Append(valueTypeName);
 							}
-							else if (!hasRoleOrHyphenBound || FinalizeName(name.ToString(),  columnCasing, columnStringReplace) == longerThan)
+							else if (!hasRoleOrHyphenBound || (longerThan != null && (FinalizeName(curName = name.ToString(), columnCasing, columnStringReplace) == longerThan
+								|| FinalizeName(curName + valueTypeName, columnCasing, columnStringReplace) == longerThan)))
 							{
 								name.Append(valueTypeName);
 							}

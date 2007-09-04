@@ -214,9 +214,26 @@ namespace Neumont.Tools.ORMAbstractionToConceptualDatabaseBridge
 					ORMCore.FactType factType = ((ORMCore.Role)e.ModelElement).FactType;
 					if (factType != null)
 					{
-						foreach (ConceptTypeChild child in ConceptTypeChildHasPathFactType.GetConceptTypeChild(factType))
+						ORMCore.Objectification objectification = factType.Objectification;
+						if (objectification != null)
 						{
-							ValidateConceptTypeChildNameChanged(child);
+							foreach (ORMCore.FactType impliedFactType in objectification.ImpliedFactTypeCollection)
+							{
+								foreach (ConceptTypeChild child in ConceptTypeChildHasPathFactType.GetConceptTypeChild(impliedFactType))
+								{
+									ValidateConceptTypeChildNameChanged(child);
+									goto doubleBreak;
+								}
+							}
+						doubleBreak: ;
+						}
+						else
+						{
+							foreach (ConceptTypeChild child in ConceptTypeChildHasPathFactType.GetConceptTypeChild(factType))
+							{
+								ValidateConceptTypeChildNameChanged(child);
+								break;
+							}
 						}
 					}
 				}
