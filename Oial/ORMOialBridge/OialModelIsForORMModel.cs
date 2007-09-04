@@ -1033,8 +1033,6 @@ namespace Neumont.Tools.ORMToORMAbstractionBridge
 						LinkedElementCollection<ConceptTypeChild> childrenForFactType =
 							ConceptTypeChildHasPathFactType.GetConceptTypeChild(factType);
 
-						Debug.Assert(childrenForFactType.Count == 1, "Can this not be 1?");
-
 						associationChildren.AddRange(ConceptTypeChildHasPathFactType.GetConceptTypeChild(factType));
 					}
 				}
