@@ -182,7 +182,11 @@ namespace Neumont.Tools.ORM.ObjectModel
 							case ConstraintType.ImpliedMandatory:
 								if (roleSequence.RoleCollection.Count == 1)
 								{
-									return (MandatoryConstraint)constraint;
+									MandatoryConstraint mandatoryConstraint = (MandatoryConstraint)constraint;
+									ObjectType objectType;
+									return (null != (objectType = mandatoryConstraint.ImpliedByObjectType) && objectType.IsIndependent) ?
+										null :
+										mandatoryConstraint;
 								}
 								break;
 						}
