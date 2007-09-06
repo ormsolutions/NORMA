@@ -32,12 +32,12 @@
 		<FileAssociation model="CustomizationModel" resourceFile="..\MappingCustomizationModel.resx" useFileComments="primary"/>
 	</FileAssociations>
 	<ResourceString name="AbsorptionChoicePropertyTransactionName" model="CustomizationModel" resourceName="AbsorptionChoiceProperty.TransactionName"/>
-	<ResourceString name="AbsorptionChoicePropertyCategory" model="CustomizationModel" resourceName="AbsorptionChoiceProperty.Category"/>
 	<ResourceString name="AbsorptionChoicePropertyDescription" model="CustomizationModel" resourceName="AbsorptionChoiceProperty.Description"/>
 	<ResourceString name="AbsorptionChoicePropertyDisplayName" model="CustomizationModel" resourceName="AbsorptionChoiceProperty.DisplayName"/>
 	<ResourceString name="AssimilationMappingInvalidPatternForPartitionException" model="CustomizationModel" resourceName="AssimilationMapping.InvalidPatternForPartitionException"/>
 	<ResourceString name="AssimilationMappingInvalidSeparationPatternForAbsorbException" model="CustomizationModel" resourceName="AssimilationMapping.InvalidSeparationPatternForAbsorbException"/>
 	<ResourceString name="AssimilationMappingInvalidPartitionPatternForAbsorbException" model="CustomizationModel" resourceName="AssimilationMapping.InvalidPartitionPatternForAbsorbException"/>
+	<ResourceString name="MappingCustomizationPropertyCategory" model="CustomizationModel" resourceName="MappingCustomizationProperty.Category"/>
 	<ResourceString name="ObjectTypeAbsorptionChoicePropertyDescription" model="CustomizationModel" resourceName="ObjectTypeAbsorptionChoiceProperty.Description"/>
 	<ResourceString name="ObjectTypeAbsorptionChoicePropertyDisplayName" model="CustomizationModel" resourceName="ObjectTypeAbsorptionChoiceProperty.DisplayName"/>
 </ResourceStrings>

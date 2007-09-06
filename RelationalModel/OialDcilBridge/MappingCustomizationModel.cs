@@ -23,7 +23,29 @@ namespace Neumont.Tools.ORMAbstractionToConceptualDatabaseBridge
 {
 	partial class MappingCustomizationModel
 	{
+		#region Static helper functions
 		// Put this first so that MappingCustomizationModel.resx binds the resource name to the correct class
+		/// <summary>
+		/// Find or create the <see cref="MappingCustomizationModel"/> for the given <paramref name="store"/>
+		/// </summary>
+		/// <param name="store">The context <see cref="Store"/></param>
+		/// <param name="forceCreate">Set to <see langword="true"/> to force a new customization model to
+		/// be created if one does not already exist.</param>
+		public static MappingCustomizationModel GetMappingCustomizationModel(Store store, bool forceCreate)
+		{
+			MappingCustomizationModel model = null;
+			foreach (MappingCustomizationModel findModel in store.ElementDirectory.FindElements<MappingCustomizationModel>())
+			{
+				model = findModel;
+				break;
+			}
+			if (model == null && forceCreate)
+			{
+				model = new MappingCustomizationModel(store);
+			}
+			return model;
+		}
+		#endregion // Static helper functions
 	}
 	public partial class ORMAbstractionToConceptualDatabaseBridgeDomainModel : IModelingEventSubscriber
 	{
@@ -36,6 +58,8 @@ namespace Neumont.Tools.ORMAbstractionToConceptualDatabaseBridge
 			IORMPropertyProviderService propertyProvider = ((IORMToolServices)Store).PropertyProviderService;
 			propertyProvider.AddOrRemovePropertyProvider<FactType>(AssimilationMapping.PopulateAssimilationMappingExtensionProperties, true, action);
 			propertyProvider.AddOrRemovePropertyProvider<ObjectType>(AssimilationMapping.PopulateObjectTypeAbsorptionExtensionProperties, false, action);
+			propertyProvider.AddOrRemovePropertyProvider<ObjectType>(ReferenceModeNaming.PopulateReferenceModeNamingExtensionProperties, false, action);
+			propertyProvider.AddOrRemovePropertyProvider<ORMModel>(ReferenceModeNaming.PopulateDefaultReferenceModeNamingExtensionProperties, false, action);
 		}
 		void IModelingEventSubscriber.ManagePostLoadModelingEventHandlers(ModelingEventManager eventManager, EventHandlerAction action)
 		{

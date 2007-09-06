@@ -231,32 +231,11 @@ namespace Neumont.Tools.ORMAbstractionToConceptualDatabaseBridge
 			}
 			return retVal;
 		}
-		/// <summary>
-		/// Find or create the <see cref="MappingCustomizationModel"/> for the given <paramref name="store"/>
-		/// </summary>
-		/// <param name="store">The context <see cref="Store"/></param>
-		/// <param name="forceCreate">Set to <see langword="true"/> to force a new customization model to
-		/// be created if one does not already exist.</param>
-		private static MappingCustomizationModel GetMappingCustomizationModel(Store store, bool forceCreate)
-		{
-			MappingCustomizationModel model = null;
-			foreach (MappingCustomizationModel findModel in store.ElementDirectory.FindElements<MappingCustomizationModel>())
-			{
-				model = findModel;
-				break;
-			}
-			if (model == null && forceCreate)
-			{
-				model = new MappingCustomizationModel(store);
-			}
-			return model;
-		}
 		#endregion // Static helper functions
 		#region AssimilationMappingPropertyDescriptor class
 		private sealed class AssimilationMappingPropertyDescriptor : PropertyDescriptor
 		{
 			#region AssimilationMappingEnumConverter
-			[TypeConverter(typeof(EnumConverter<AssimilationAbsorptionChoice, MappingCustomizationModel>))]
 			[HostProtection(SecurityAction.LinkDemand, SharedState = true)]
 			public class AssimilationMappingEnumConverter : EnumConverter<AssimilationAbsorptionChoice, MappingCustomizationModel>
 			{
@@ -336,7 +315,7 @@ namespace Neumont.Tools.ORMAbstractionToConceptualDatabaseBridge
 			{
 				get
 				{
-					return ResourceStrings.AbsorptionChoicePropertyCategory;
+					return ResourceStrings.MappingCustomizationPropertyCategory;
 				}
 			}
 			public sealed override string Description
@@ -405,7 +384,6 @@ namespace Neumont.Tools.ORMAbstractionToConceptualDatabaseBridge
 		private sealed class ObjectTypeAbsorptionPropertyDescriptor : PropertyDescriptor
 		{
 			#region ObjectTypeAbsorptionEnumConverter
-			[TypeConverter(typeof(EnumConverter<ObjectTypeAbsorptionChoice, MappingCustomizationModel>))]
 			[HostProtection(SecurityAction.LinkDemand, SharedState = true)]
 			public class ObjectTypeAbsorptionEnumConverter : EnumConverter<ObjectTypeAbsorptionChoice, MappingCustomizationModel>
 			{
@@ -589,7 +567,7 @@ namespace Neumont.Tools.ORMAbstractionToConceptualDatabaseBridge
 			{
 				get
 				{
-					return ResourceStrings.AbsorptionChoicePropertyCategory;
+					return ResourceStrings.MappingCustomizationPropertyCategory;
 				}
 			}
 			public sealed override string Description
@@ -1357,7 +1335,7 @@ namespace Neumont.Tools.ORMAbstractionToConceptualDatabaseBridge
 				Store store = factType.Store;
 				mapping = new AssimilationMapping(store, new PropertyAssignment(AssimilationMapping.AbsorptionChoiceDomainPropertyId, newChoice));
 				// Add the model first tells the AssimilationMappingAddedRule method that we want it to process this element
-				mapping.Model = GetMappingCustomizationModel(store, true);
+				mapping.Model = MappingCustomizationModel.GetMappingCustomizationModel(store, true);
 				if (factType.IsDeleting)
 				{
 					// UNDONE: Helper to temporary hack workaround in FactTypeDeletingRule. We create these elements
@@ -1423,7 +1401,7 @@ namespace Neumont.Tools.ORMAbstractionToConceptualDatabaseBridge
 						// Add the model last so that this does not interact with the AssimilationMappingAddedRule
 						if (customizationModel == null)
 						{
-							customizationModel = GetMappingCustomizationModel(store, true);
+							customizationModel = MappingCustomizationModel.GetMappingCustomizationModel(store, true);
 						}
 						mapping.Model = customizationModel;
 						retVal = true;
@@ -1752,7 +1730,7 @@ namespace Neumont.Tools.ORMAbstractionToConceptualDatabaseBridge
 			ConceptTypeAssimilatesConceptType assimilation;
 			MappingCustomizationModel customizationModel;
 			if (null != (assimilation = GetAssimilationFromFactType(factType)) &&
-				null != (customizationModel = GetMappingCustomizationModel(factType.Store, false)))
+				null != (customizationModel = MappingCustomizationModel.GetMappingCustomizationModel(factType.Store, false)))
 			{
 				if (GetAbsorptionChoiceFromAssimilation(assimilation) == AssimilationAbsorptionChoice.Absorb)
 				{

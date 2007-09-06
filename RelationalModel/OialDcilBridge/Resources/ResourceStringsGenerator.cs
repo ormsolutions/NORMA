@@ -28,14 +28,6 @@ namespace Neumont.Tools.ORMAbstractionToConceptualDatabaseBridge
 				return ResourceStrings.GetString(ResourceManagers.CustomizationModel, "AbsorptionChoiceProperty.TransactionName");
 			}
 		}
-		/// <summary>The category for the AbsorptionChoice property. Displays as a grouping category in the Properties Window.</summary>
-		public static string AbsorptionChoicePropertyCategory
-		{
-			get
-			{
-				return ResourceStrings.GetString(ResourceManagers.CustomizationModel, "AbsorptionChoiceProperty.Category");
-			}
-		}
 		/// <summary>The description for the AbsorptionChoice property. Displays as a detailed description in the Properties Window.</summary>
 		public static string AbsorptionChoicePropertyDescription
 		{
@@ -74,6 +66,14 @@ namespace Neumont.Tools.ORMAbstractionToConceptualDatabaseBridge
 			get
 			{
 				return ResourceStrings.GetString(ResourceManagers.CustomizationModel, "AssimilationMapping.InvalidPartitionPatternForAbsorbException");
+			}
+		}
+		/// <summary>The category for relational mapping customizations. Displays as a grouping category in the Properties Window.</summary>
+		public static string MappingCustomizationPropertyCategory
+		{
+			get
+			{
+				return ResourceStrings.GetString(ResourceManagers.CustomizationModel, "MappingCustomizationProperty.Category");
 			}
 		}
 		/// <summary>The description for the AbsorptionChoice property on an ObjectType. Displays as a detailed description in the Properties Window.</summary>

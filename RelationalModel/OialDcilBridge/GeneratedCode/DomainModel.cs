@@ -70,8 +70,14 @@ namespace Neumont.Tools.ORMAbstractionToConceptualDatabaseBridge
 			{
 				typeof(MappingCustomizationModel),
 				typeof(AssimilationMapping),
+				typeof(ReferenceModeNaming),
+				typeof(DefaultReferenceModeNaming),
 				typeof(AssimilationMappingCustomizesFactType),
 				typeof(MappingCustomizationModelHasAssimilationMapping),
+				typeof(ReferenceModeNamingCustomizesObjectType),
+				typeof(MappingCustomizationModelHasReferenceModeNaming),
+				typeof(DefaultReferenceModeNamingCustomizesORMModel),
+				typeof(MappingCustomizationModelHasDefaultReferenceModeNaming),
 				typeof(SchemaIsForAbstractionModel),
 				typeof(TableIsPrimarilyForConceptType),
 				typeof(TableIsAlsoForConceptType),
@@ -90,6 +96,11 @@ namespace Neumont.Tools.ORMAbstractionToConceptualDatabaseBridge
 			return new DomainMemberInfo[]
 			{
 				new DomainMemberInfo(typeof(AssimilationMapping), "AbsorptionChoice", AssimilationMapping.AbsorptionChoiceDomainPropertyId, typeof(AssimilationMapping.AbsorptionChoicePropertyHandler)),
+				new DomainMemberInfo(typeof(ReferenceModeNaming), "NamingChoice", ReferenceModeNaming.NamingChoiceDomainPropertyId, typeof(ReferenceModeNaming.NamingChoicePropertyHandler)),
+				new DomainMemberInfo(typeof(ReferenceModeNaming), "CustomFormat", ReferenceModeNaming.CustomFormatDomainPropertyId, typeof(ReferenceModeNaming.CustomFormatPropertyHandler)),
+				new DomainMemberInfo(typeof(DefaultReferenceModeNaming), "NamingChoice", DefaultReferenceModeNaming.NamingChoiceDomainPropertyId, typeof(DefaultReferenceModeNaming.NamingChoicePropertyHandler)),
+				new DomainMemberInfo(typeof(DefaultReferenceModeNaming), "CustomFormat", DefaultReferenceModeNaming.CustomFormatDomainPropertyId, typeof(DefaultReferenceModeNaming.CustomFormatPropertyHandler)),
+				new DomainMemberInfo(typeof(DefaultReferenceModeNaming), "ReferenceModeTargetKind", DefaultReferenceModeNaming.ReferenceModeTargetKindDomainPropertyId, typeof(DefaultReferenceModeNaming.ReferenceModeTargetKindPropertyHandler)),
 			};
 		}
 		/// <summary>
@@ -104,6 +115,14 @@ namespace Neumont.Tools.ORMAbstractionToConceptualDatabaseBridge
 				new DomainRolePlayerInfo(typeof(AssimilationMappingCustomizesFactType), "FactType", AssimilationMappingCustomizesFactType.FactTypeDomainRoleId),
 				new DomainRolePlayerInfo(typeof(MappingCustomizationModelHasAssimilationMapping), "Model", MappingCustomizationModelHasAssimilationMapping.ModelDomainRoleId),
 				new DomainRolePlayerInfo(typeof(MappingCustomizationModelHasAssimilationMapping), "AssimilationMapping", MappingCustomizationModelHasAssimilationMapping.AssimilationMappingDomainRoleId),
+				new DomainRolePlayerInfo(typeof(ReferenceModeNamingCustomizesObjectType), "ReferenceModeNaming", ReferenceModeNamingCustomizesObjectType.ReferenceModeNamingDomainRoleId),
+				new DomainRolePlayerInfo(typeof(ReferenceModeNamingCustomizesObjectType), "ObjectType", ReferenceModeNamingCustomizesObjectType.ObjectTypeDomainRoleId),
+				new DomainRolePlayerInfo(typeof(MappingCustomizationModelHasReferenceModeNaming), "Model", MappingCustomizationModelHasReferenceModeNaming.ModelDomainRoleId),
+				new DomainRolePlayerInfo(typeof(MappingCustomizationModelHasReferenceModeNaming), "ReferenceModeNaming", MappingCustomizationModelHasReferenceModeNaming.ReferenceModeNamingDomainRoleId),
+				new DomainRolePlayerInfo(typeof(DefaultReferenceModeNamingCustomizesORMModel), "DefaultReferenceModeNaming", DefaultReferenceModeNamingCustomizesORMModel.DefaultReferenceModeNamingDomainRoleId),
+				new DomainRolePlayerInfo(typeof(DefaultReferenceModeNamingCustomizesORMModel), "ORMModel", DefaultReferenceModeNamingCustomizesORMModel.ORMModelDomainRoleId),
+				new DomainRolePlayerInfo(typeof(MappingCustomizationModelHasDefaultReferenceModeNaming), "Model", MappingCustomizationModelHasDefaultReferenceModeNaming.ModelDomainRoleId),
+				new DomainRolePlayerInfo(typeof(MappingCustomizationModelHasDefaultReferenceModeNaming), "DefaultReferenceModeNaming", MappingCustomizationModelHasDefaultReferenceModeNaming.DefaultReferenceModeNamingDomainRoleId),
 				new DomainRolePlayerInfo(typeof(SchemaIsForAbstractionModel), "Schema", SchemaIsForAbstractionModel.SchemaDomainRoleId),
 				new DomainRolePlayerInfo(typeof(SchemaIsForAbstractionModel), "AbstractionModel", SchemaIsForAbstractionModel.AbstractionModelDomainRoleId),
 				new DomainRolePlayerInfo(typeof(TableIsPrimarilyForConceptType), "Table", TableIsPrimarilyForConceptType.TableDomainRoleId),
@@ -138,9 +157,11 @@ namespace Neumont.Tools.ORMAbstractionToConceptualDatabaseBridge
 	
 			if (createElementMap == null)
 			{
-				createElementMap = new global::System.Collections.Generic.Dictionary<global::System.Type, int>(2);
+				createElementMap = new global::System.Collections.Generic.Dictionary<global::System.Type, int>(4);
 				createElementMap.Add(typeof(MappingCustomizationModel), 0);
 				createElementMap.Add(typeof(AssimilationMapping), 1);
+				createElementMap.Add(typeof(ReferenceModeNaming), 2);
+				createElementMap.Add(typeof(DefaultReferenceModeNaming), 3);
 			}
 			int index;
 			if (!createElementMap.TryGetValue(elementType, out index))
@@ -151,6 +172,8 @@ namespace Neumont.Tools.ORMAbstractionToConceptualDatabaseBridge
 			{
 				case 0: return new MappingCustomizationModel(partition, propertyAssignments);
 				case 1: return new AssimilationMapping(partition, propertyAssignments);
+				case 2: return new ReferenceModeNaming(partition, propertyAssignments);
+				case 3: return new DefaultReferenceModeNaming(partition, propertyAssignments);
 				default: return null;
 			}
 		}
@@ -173,16 +196,20 @@ namespace Neumont.Tools.ORMAbstractionToConceptualDatabaseBridge
 	
 			if (createElementLinkMap == null)
 			{
-				createElementLinkMap = new global::System.Collections.Generic.Dictionary<global::System.Type, int>(9);
+				createElementLinkMap = new global::System.Collections.Generic.Dictionary<global::System.Type, int>(13);
 				createElementLinkMap.Add(typeof(AssimilationMappingCustomizesFactType), 0);
 				createElementLinkMap.Add(typeof(MappingCustomizationModelHasAssimilationMapping), 1);
-				createElementLinkMap.Add(typeof(SchemaIsForAbstractionModel), 2);
-				createElementLinkMap.Add(typeof(TableIsPrimarilyForConceptType), 3);
-				createElementLinkMap.Add(typeof(TableIsAlsoForConceptType), 4);
-				createElementLinkMap.Add(typeof(TableIsAlsoForConceptTypeHasAssimilationPath), 5);
-				createElementLinkMap.Add(typeof(ColumnHasConceptTypeChild), 6);
-				createElementLinkMap.Add(typeof(UniquenessConstraintIsForUniqueness), 7);
-				createElementLinkMap.Add(typeof(DomainIsForInformationTypeFormat), 8);
+				createElementLinkMap.Add(typeof(ReferenceModeNamingCustomizesObjectType), 2);
+				createElementLinkMap.Add(typeof(MappingCustomizationModelHasReferenceModeNaming), 3);
+				createElementLinkMap.Add(typeof(DefaultReferenceModeNamingCustomizesORMModel), 4);
+				createElementLinkMap.Add(typeof(MappingCustomizationModelHasDefaultReferenceModeNaming), 5);
+				createElementLinkMap.Add(typeof(SchemaIsForAbstractionModel), 6);
+				createElementLinkMap.Add(typeof(TableIsPrimarilyForConceptType), 7);
+				createElementLinkMap.Add(typeof(TableIsAlsoForConceptType), 8);
+				createElementLinkMap.Add(typeof(TableIsAlsoForConceptTypeHasAssimilationPath), 9);
+				createElementLinkMap.Add(typeof(ColumnHasConceptTypeChild), 10);
+				createElementLinkMap.Add(typeof(UniquenessConstraintIsForUniqueness), 11);
+				createElementLinkMap.Add(typeof(DomainIsForInformationTypeFormat), 12);
 			}
 			int index;
 			if (!createElementLinkMap.TryGetValue(elementLinkType, out index))
@@ -193,13 +220,17 @@ namespace Neumont.Tools.ORMAbstractionToConceptualDatabaseBridge
 			{
 				case 0: return new AssimilationMappingCustomizesFactType(partition, roleAssignments, propertyAssignments);
 				case 1: return new MappingCustomizationModelHasAssimilationMapping(partition, roleAssignments, propertyAssignments);
-				case 2: return new SchemaIsForAbstractionModel(partition, roleAssignments, propertyAssignments);
-				case 3: return new TableIsPrimarilyForConceptType(partition, roleAssignments, propertyAssignments);
-				case 4: return new TableIsAlsoForConceptType(partition, roleAssignments, propertyAssignments);
-				case 5: return new TableIsAlsoForConceptTypeHasAssimilationPath(partition, roleAssignments, propertyAssignments);
-				case 6: return new ColumnHasConceptTypeChild(partition, roleAssignments, propertyAssignments);
-				case 7: return new UniquenessConstraintIsForUniqueness(partition, roleAssignments, propertyAssignments);
-				case 8: return new DomainIsForInformationTypeFormat(partition, roleAssignments, propertyAssignments);
+				case 2: return new ReferenceModeNamingCustomizesObjectType(partition, roleAssignments, propertyAssignments);
+				case 3: return new MappingCustomizationModelHasReferenceModeNaming(partition, roleAssignments, propertyAssignments);
+				case 4: return new DefaultReferenceModeNamingCustomizesORMModel(partition, roleAssignments, propertyAssignments);
+				case 5: return new MappingCustomizationModelHasDefaultReferenceModeNaming(partition, roleAssignments, propertyAssignments);
+				case 6: return new SchemaIsForAbstractionModel(partition, roleAssignments, propertyAssignments);
+				case 7: return new TableIsPrimarilyForConceptType(partition, roleAssignments, propertyAssignments);
+				case 8: return new TableIsAlsoForConceptType(partition, roleAssignments, propertyAssignments);
+				case 9: return new TableIsAlsoForConceptTypeHasAssimilationPath(partition, roleAssignments, propertyAssignments);
+				case 10: return new ColumnHasConceptTypeChild(partition, roleAssignments, propertyAssignments);
+				case 11: return new UniquenessConstraintIsForUniqueness(partition, roleAssignments, propertyAssignments);
+				case 12: return new DomainIsForInformationTypeFormat(partition, roleAssignments, propertyAssignments);
 				default: return null;
 			}
 		}
@@ -338,6 +369,10 @@ namespace Neumont.Tools.ORMAbstractionToConceptualDatabaseBridge
 			#region Initialize DomainData Table
 			DomainRoles.Add(global::Neumont.Tools.ORMAbstractionToConceptualDatabaseBridge.AssimilationMappingCustomizesFactType.AssimilationMappingDomainRoleId, true);
 			DomainRoles.Add(global::Neumont.Tools.ORMAbstractionToConceptualDatabaseBridge.MappingCustomizationModelHasAssimilationMapping.AssimilationMappingDomainRoleId, true);
+			DomainRoles.Add(global::Neumont.Tools.ORMAbstractionToConceptualDatabaseBridge.ReferenceModeNamingCustomizesObjectType.ReferenceModeNamingDomainRoleId, true);
+			DomainRoles.Add(global::Neumont.Tools.ORMAbstractionToConceptualDatabaseBridge.MappingCustomizationModelHasReferenceModeNaming.ReferenceModeNamingDomainRoleId, true);
+			DomainRoles.Add(global::Neumont.Tools.ORMAbstractionToConceptualDatabaseBridge.DefaultReferenceModeNamingCustomizesORMModel.DefaultReferenceModeNamingDomainRoleId, true);
+			DomainRoles.Add(global::Neumont.Tools.ORMAbstractionToConceptualDatabaseBridge.MappingCustomizationModelHasDefaultReferenceModeNaming.DefaultReferenceModeNamingDomainRoleId, true);
 			#endregion
 		}
 		/// <summary>
@@ -487,6 +522,110 @@ namespace Neumont.Tools.ORMAbstractionToConceptualDatabaseBridge
 		/// </summary>
 		[DslDesign::DescriptionResource("Neumont.Tools.ORMAbstractionToConceptualDatabaseBridge.AssimilationAbsorptionChoice/Separate.Description", typeof(global::Neumont.Tools.ORMAbstractionToConceptualDatabaseBridge.ORMAbstractionToConceptualDatabaseBridgeDomainModel), "Neumont.Tools.ORMAbstractionToConceptualDatabaseBridge.GeneratedCode.DomainModelResx")]
 		Separate = 2,
+	}
+}
+namespace Neumont.Tools.ORMAbstractionToConceptualDatabaseBridge
+{
+	/// <summary>
+	/// DomainEnumeration: ReferenceModeNamingChoice
+	/// Specify how reference mode names are used when generating relational information
+	/// for an <see cref="Neumont.Tools.ORM.ObjectModel.ObjectType"/>, including an
+	/// option for deferring to the model.
+	/// </summary>
+	[global::System.ComponentModel.TypeConverter(typeof(global::Neumont.Tools.Modeling.Design.EnumConverter<ReferenceModeNamingChoice, global::Neumont.Tools.ORMAbstractionToConceptualDatabaseBridge.MappingCustomizationModel>))]
+	[global::System.CLSCompliant(true)]
+	public enum ReferenceModeNamingChoice
+	{
+		/// <summary>
+		/// ValueTypeName
+		/// Use the name of the identifying value type for the column.
+		/// </summary>
+		[DslDesign::DescriptionResource("Neumont.Tools.ORMAbstractionToConceptualDatabaseBridge.ReferenceModeNamingChoice/ValueTypeName.Description", typeof(global::Neumont.Tools.ORMAbstractionToConceptualDatabaseBridge.ORMAbstractionToConceptualDatabaseBridgeDomainModel), "Neumont.Tools.ORMAbstractionToConceptualDatabaseBridge.GeneratedCode.DomainModelResx")]
+		ValueTypeName = 0,
+		/// <summary>
+		/// EntityTypeName
+		/// Use the name of the entity type for the related column.
+		/// </summary>
+		[DslDesign::DescriptionResource("Neumont.Tools.ORMAbstractionToConceptualDatabaseBridge.ReferenceModeNamingChoice/EntityTypeName.Description", typeof(global::Neumont.Tools.ORMAbstractionToConceptualDatabaseBridge.ORMAbstractionToConceptualDatabaseBridgeDomainModel), "Neumont.Tools.ORMAbstractionToConceptualDatabaseBridge.GeneratedCode.DomainModelResx")]
+		EntityTypeName = 1,
+		/// <summary>
+		/// ReferenceModeName
+		/// Use the name of the reference mode for the related column.
+		/// </summary>
+		[DslDesign::DescriptionResource("Neumont.Tools.ORMAbstractionToConceptualDatabaseBridge.ReferenceModeNamingChoice/ReferenceModeName.Description", typeof(global::Neumont.Tools.ORMAbstractionToConceptualDatabaseBridge.ORMAbstractionToConceptualDatabaseBridgeDomainModel), "Neumont.Tools.ORMAbstractionToConceptualDatabaseBridge.GeneratedCode.DomainModelResx")]
+		ReferenceModeName = 2,
+		/// <summary>
+		/// CustomFormat
+		/// Use a custom format string using the other three values as replacement fields.
+		/// </summary>
+		[DslDesign::DescriptionResource("Neumont.Tools.ORMAbstractionToConceptualDatabaseBridge.ReferenceModeNamingChoice/CustomFormat.Description", typeof(global::Neumont.Tools.ORMAbstractionToConceptualDatabaseBridge.ORMAbstractionToConceptualDatabaseBridgeDomainModel), "Neumont.Tools.ORMAbstractionToConceptualDatabaseBridge.GeneratedCode.DomainModelResx")]
+		CustomFormat = 3,
+		/// <summary>
+		/// ModelDefault
+		/// Use the default setting from the model.
+		/// </summary>
+		[DslDesign::DescriptionResource("Neumont.Tools.ORMAbstractionToConceptualDatabaseBridge.ReferenceModeNamingChoice/ModelDefault.Description", typeof(global::Neumont.Tools.ORMAbstractionToConceptualDatabaseBridge.ORMAbstractionToConceptualDatabaseBridgeDomainModel), "Neumont.Tools.ORMAbstractionToConceptualDatabaseBridge.GeneratedCode.DomainModelResx")]
+		ModelDefault = 4,
+	}
+}
+namespace Neumont.Tools.ORMAbstractionToConceptualDatabaseBridge
+{
+	/// <summary>
+	/// DomainEnumeration: EffectiveReferenceModeNamingChoice
+	/// Specify how reference mode names are used when generating relational information
+	/// for an <see cref="Neumont.Tools.ORM.ObjectModel.ObjectType"/>.
+	/// </summary>
+	[global::System.ComponentModel.TypeConverter(typeof(global::Neumont.Tools.Modeling.Design.EnumConverter<EffectiveReferenceModeNamingChoice, global::Neumont.Tools.ORMAbstractionToConceptualDatabaseBridge.MappingCustomizationModel>))]
+	[global::System.CLSCompliant(true)]
+	public enum EffectiveReferenceModeNamingChoice
+	{
+		/// <summary>
+		/// ValueTypeName
+		/// Use the name of the identifying value type for the column.
+		/// </summary>
+		[DslDesign::DescriptionResource("Neumont.Tools.ORMAbstractionToConceptualDatabaseBridge.EffectiveReferenceModeNamingChoice/ValueTypeName.Description", typeof(global::Neumont.Tools.ORMAbstractionToConceptualDatabaseBridge.ORMAbstractionToConceptualDatabaseBridgeDomainModel), "Neumont.Tools.ORMAbstractionToConceptualDatabaseBridge.GeneratedCode.DomainModelResx")]
+		ValueTypeName = 0,
+		/// <summary>
+		/// EntityTypeName
+		/// Use the name of the entity type for the related column.
+		/// </summary>
+		[DslDesign::DescriptionResource("Neumont.Tools.ORMAbstractionToConceptualDatabaseBridge.EffectiveReferenceModeNamingChoice/EntityTypeName.Description", typeof(global::Neumont.Tools.ORMAbstractionToConceptualDatabaseBridge.ORMAbstractionToConceptualDatabaseBridgeDomainModel), "Neumont.Tools.ORMAbstractionToConceptualDatabaseBridge.GeneratedCode.DomainModelResx")]
+		EntityTypeName = 1,
+		/// <summary>
+		/// ReferenceModeName
+		/// Use a custom format string using the other three values as replacement fields.
+		/// </summary>
+		[DslDesign::DescriptionResource("Neumont.Tools.ORMAbstractionToConceptualDatabaseBridge.EffectiveReferenceModeNamingChoice/ReferenceModeName.Description", typeof(global::Neumont.Tools.ORMAbstractionToConceptualDatabaseBridge.ORMAbstractionToConceptualDatabaseBridgeDomainModel), "Neumont.Tools.ORMAbstractionToConceptualDatabaseBridge.GeneratedCode.DomainModelResx")]
+		ReferenceModeName = 2,
+		/// <summary>
+		/// CustomFormat
+		/// Use a custom format of the other three values.
+		/// </summary>
+		[DslDesign::DescriptionResource("Neumont.Tools.ORMAbstractionToConceptualDatabaseBridge.EffectiveReferenceModeNamingChoice/CustomFormat.Description", typeof(global::Neumont.Tools.ORMAbstractionToConceptualDatabaseBridge.ORMAbstractionToConceptualDatabaseBridgeDomainModel), "Neumont.Tools.ORMAbstractionToConceptualDatabaseBridge.GeneratedCode.DomainModelResx")]
+		CustomFormat = 3,
+	}
+}
+namespace Neumont.Tools.ORMAbstractionToConceptualDatabaseBridge
+{
+	/// <summary>
+	/// DomainEnumeration: DefaultReferenceModeNamingTargetKind
+	/// Specifies the reference mode kind of a set of default reference mode.
+	/// </summary>
+	[global::System.CLSCompliant(true)]
+	public enum DefaultReferenceModeNamingTargetKind
+	{
+		/// <summary>
+		/// Popular
+		/// The popular reference mode.
+		/// </summary>
+		[DslDesign::DescriptionResource("Neumont.Tools.ORMAbstractionToConceptualDatabaseBridge.DefaultReferenceModeNamingTargetKind/Popular.Description", typeof(global::Neumont.Tools.ORMAbstractionToConceptualDatabaseBridge.ORMAbstractionToConceptualDatabaseBridgeDomainModel), "Neumont.Tools.ORMAbstractionToConceptualDatabaseBridge.GeneratedCode.DomainModelResx")]
+		Popular = 1,
+		/// <summary>
+		/// UnitBased
+		/// The unit based reference mode.
+		/// </summary>
+		[DslDesign::DescriptionResource("Neumont.Tools.ORMAbstractionToConceptualDatabaseBridge.DefaultReferenceModeNamingTargetKind/UnitBased.Description", typeof(global::Neumont.Tools.ORMAbstractionToConceptualDatabaseBridge.ORMAbstractionToConceptualDatabaseBridgeDomainModel), "Neumont.Tools.ORMAbstractionToConceptualDatabaseBridge.GeneratedCode.DomainModelResx")]
+		UnitBased = 2,
 	}
 }
 

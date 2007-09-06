@@ -59,7 +59,14 @@
 	<xs:element name="MappingCustomization">
 		<xs:complexType>
 			<xs:all>
-				<xs:element name="AssimilationMappings" type="AssimilationMappingsType"/>
+				<xs:element name="AssimilationMappings" type="AssimilationMappingsType" minOccurs="0"/>
+				<xs:element name="ReferenceModeNamings" type="ReferenceModeNamingsType" minOccurs="0">
+					<xs:unique name="DefaultReferenceModeNamingsUnique">
+						<xs:selector xpath="oialtocdb:DefaultReferenceModeNaming"/>
+						<xs:field xpath="@TargetKind"/>
+						<xs:field xpath="oialtocdb:ORMModel/@ref"/>
+					</xs:unique>
+				</xs:element>
 			</xs:all>
 			<xs:attribute name="id" type="xs:ID" use="required"/>
 		</xs:complexType>
@@ -98,6 +105,118 @@
 					</xs:enumeration>
 				</xs:restriction>
 			</xs:simpleType>
+		</xs:attribute>
+	</xs:complexType>
+	<xs:complexType name="ReferenceModeNamingsType">
+		<xs:sequence>
+			<xs:element name="DefaultReferenceModeNaming" type="DefaultReferenceModeNamingType" minOccurs="0" maxOccurs="unbounded"/>
+			<xs:element name="ReferenceModeNaming" type="ReferenceModeNamingType" minOccurs="0" maxOccurs="unbounded"/>
+		</xs:sequence>
+	</xs:complexType>
+	<xs:complexType name="ReferenceModeNamingType">
+		<xs:sequence>
+			<xs:element name="ObjectType">
+				<xs:complexType>
+					<xs:attribute name="ref" type="xs:IDREF" use="required"/>
+				</xs:complexType>
+			</xs:element>
+		</xs:sequence>
+		<xs:attribute name="id" type="xs:ID" use="required"/>
+		<xs:attribute name="NamingChoice" default="ModelDefault">
+			<xs:simpleType>
+				<xs:restriction base="xs:token">
+					<xs:enumeration value="ModelDefault">
+						<xs:annotation>
+							<xs:documentation>Use the default setting for the model</xs:documentation>
+						</xs:annotation>
+					</xs:enumeration>
+					<xs:enumeration value="ValueTypeName">
+						<xs:annotation>
+							<xs:documentation>The name of the ValueType is used for naming.</xs:documentation>
+						</xs:annotation>
+					</xs:enumeration>
+					<xs:enumeration value="EntityTypeName">
+						<xs:annotation>
+							<xs:documentation>The name of the EntityType is used for naming.</xs:documentation>
+						</xs:annotation>
+					</xs:enumeration>
+					<xs:enumeration value="ReferenceModeName">
+						<xs:annotation>
+							<xs:documentation>The name of the ReferenceMode is used for naming.</xs:documentation>
+						</xs:annotation>
+					</xs:enumeration>
+					<xs:enumeration value="CustomFormat">
+						<xs:annotation>
+							<xs:documentation>A custom format string with any combination of the ValueTypeName/EntityTypeName/ReferenceModeName values is allowed. Use CustomFormat if specified or the default CustomFormat for the corresponding reference mode kind.</xs:documentation>
+						</xs:annotation>
+					</xs:enumeration>
+				</xs:restriction>
+			</xs:simpleType>
+		</xs:attribute>
+		<xs:attribute name="CustomFormat" type="xs:string">
+			<xs:annotation>
+				<xs:documentation>May be set if NamingChoice is CustomFormat. The replacement field {0} is the ValueTypeName, {1} is the EntityTypeName, and {2} is the ReferenceModeName.</xs:documentation>
+			</xs:annotation>
+		</xs:attribute>
+	</xs:complexType>
+	<xs:complexType name="DefaultReferenceModeNamingType">
+		<xs:sequence>
+			<xs:element name="ORMModel">
+				<xs:complexType>
+					<xs:attribute name="ref" type="xs:IDREF" use="required"/>
+				</xs:complexType>
+			</xs:element>
+		</xs:sequence>
+		<xs:attribute name="id" type="xs:ID" use="required"/>
+		<xs:attribute name="TargetKind" use="required">
+			<xs:annotation>
+				<xs:documentation>Specify if these are the defaults for unit based or popular reference modes.</xs:documentation>
+			</xs:annotation>
+			<xs:simpleType>
+				<xs:restriction base="xs:token">
+					<xs:enumeration value="Popular">
+						<xs:annotation>
+							<xs:documentation>The naming conventions correspond to popular reference modes.</xs:documentation>
+						</xs:annotation>
+					</xs:enumeration>
+					<xs:enumeration value="UnitBased">
+						<xs:annotation>
+							<xs:documentation>The naming conventions correspond to unit based reference modes.</xs:documentation>
+						</xs:annotation>
+					</xs:enumeration>
+				</xs:restriction>
+			</xs:simpleType>
+		</xs:attribute>
+		<xs:attribute name="NamingChoice" default="ValueTypeName">
+			<xs:simpleType>
+				<xs:restriction base="xs:token">
+					<xs:enumeration value="ValueTypeName">
+						<xs:annotation>
+							<xs:documentation>The name of the ValueType is used for naming.</xs:documentation>
+						</xs:annotation>
+					</xs:enumeration>
+					<xs:enumeration value="EntityTypeName">
+						<xs:annotation>
+							<xs:documentation>The name of the EntityType is used for naming.</xs:documentation>
+						</xs:annotation>
+					</xs:enumeration>
+					<xs:enumeration value="ReferenceModeName">
+						<xs:annotation>
+							<xs:documentation>The name of the ReferenceMode is used for naming.</xs:documentation>
+						</xs:annotation>
+					</xs:enumeration>
+					<xs:enumeration value="CustomFormat">
+						<xs:annotation>
+							<xs:documentation>A custom format string with any combination of the ValueTypeName/EntityTypeName/ReferenceModeName values is allowed. Use CustomFormat if specified or the default CustomFormat for the corresponding reference mode kind.</xs:documentation>
+						</xs:annotation>
+					</xs:enumeration>
+				</xs:restriction>
+			</xs:simpleType>
+		</xs:attribute>
+		<xs:attribute name="CustomFormat" type="xs:string">
+			<xs:annotation>
+				<xs:documentation>May be set if NamingChoice is CustomFormat. The replacement field {0} is the ValueTypeName, {1} is the EntityTypeName, and {2} is the ReferenceModeName.</xs:documentation>
+			</xs:annotation>
 		</xs:attribute>
 	</xs:complexType>
 	<xs:complexType name="SchemaIsForAbstractionModelType">

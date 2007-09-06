@@ -56,9 +56,47 @@
 			<se:OmitRelationship Class="TableIsAlsoForConceptTypeHasAssimilationPath"/>
 		</se:OmittedDomainElements>
 	</se:DomainModel>
-	<se:Element Class="MappingCustomizationModel" Name="MappingCustomization">
+	<se:Element Class="MappingCustomizationModel" Name="MappingCustomization" SortChildElements="true">
 		<se:ConditionalSerialization>
-			<!-- Only serialize if there is at least one AssimilationMapping that will serialize-->
+			<!-- Only serialize if there is a child that will serialize -->
+			<plx:branch>
+				<plx:condition>
+					<plx:binaryOperator type="inequality">
+						<plx:left>
+							<plx:callInstance name="Count" type="property">
+								<plx:callObject>
+									<plx:callThis name="DefaultReferenceModeNamingCollection" type="property"/>
+								</plx:callObject>
+							</plx:callInstance>
+						</plx:left>
+						<plx:right>
+							<plx:value data="0" type="i4"/>
+						</plx:right>
+					</plx:binaryOperator>
+				</plx:condition>
+				<plx:return>
+					<plx:trueKeyword/>
+				</plx:return>
+			</plx:branch>
+			<plx:iterator dataTypeName="ReferenceModeNaming" localName="referenceModeNaming">
+				<plx:initialize>
+					<plx:callThis name="ReferenceModeNamingCollection" type="property"/>
+				</plx:initialize>
+				<plx:branch>
+					<plx:condition>
+						<plx:callInstance name="ShouldSerialize">
+							<plx:callObject>
+								<plx:cast dataTypeName="ICustomSerializedElement">
+									<plx:nameRef name="referenceModeNaming" type="local"/>
+								</plx:cast>
+							</plx:callObject>
+						</plx:callInstance>
+					</plx:condition>
+					<plx:return>
+						<plx:trueKeyword/>
+					</plx:return>
+				</plx:branch>
+			</plx:iterator>
 			<plx:iterator dataTypeName="AssimilationMapping" localName="assimilationMapping">
 				<plx:initialize>
 					<plx:callThis name="AssimilationMappingCollection" type="property"/>
@@ -84,6 +122,10 @@
 		</se:ConditionalSerialization>
 		<se:Container Name="AssimilationMappings">
 			<se:Embed RelationshipName="MappingCustomizationModelHasAssimilationMapping" RoleName="AssimilationMapping"/>
+		</se:Container>
+		<se:Container Name="ReferenceModeNamings" SortChildElements="true">
+			<se:Embed RelationshipName="MappingCustomizationModelHasDefaultReferenceModeNaming" RoleName="DefaultReferenceModeNaming"/>
+			<se:Embed RelationshipName="MappingCustomizationModelHasReferenceModeNaming" RoleName="ReferenceModeNaming"/>
 		</se:Container>
 	</se:Element>
 	<se:Element Class="AssimilationMapping">
@@ -121,5 +163,142 @@
 		</se:ConditionalSerialization>
 		<!--<se:Attribute ID="AbsorptionChoice"/> not needed for default serialization -->
 		<se:Link RelationshipName="AssimilationMappingCustomizesFactType" RoleName="FactType" Name="FactType"/>
+	</se:Element>
+	<se:Element Class="ReferenceModeNaming">
+		<se:ConditionalSerialization>
+			<plx:local name="objectType" dataTypeName="ObjectType" dataTypeQualifier="Neumont.Tools.ORM.ObjectModel"/>
+			<plx:local name="referenceMode" dataTypeName="ReferenceMode" dataTypeQualifier="Neumont.Tools.ORM.ObjectModel"/>
+			<plx:return>
+				<plx:binaryOperator type="booleanOr">
+					<plx:left>
+						<plx:callThis name="UsesCustomFormat">
+							<plx:passParam>
+								<plx:trueKeyword/>
+							</plx:passParam>
+						</plx:callThis>
+					</plx:left>
+					<plx:right>
+						<plx:binaryOperator type="booleanAnd">
+							<plx:left>
+								<plx:binaryOperator type="inequality">
+									<plx:left>
+										<plx:callThis name="NamingChoice" type="property"/>
+									</plx:left>
+									<plx:right>
+										<plx:callStatic dataTypeName="ReferenceModeNamingChoice" name="ModelDefault" type="field"/>
+									</plx:right>
+								</plx:binaryOperator>
+							</plx:left>
+							<plx:right>
+								<plx:binaryOperator type="booleanAnd">
+									<plx:left>
+										<plx:binaryOperator type="identityInequality">
+											<plx:left>
+												<plx:inlineStatement dataTypeName="ObjectType" dataTypeQualifier="Neumont.Tools.ORM.ObjectModel">
+													<plx:assign>
+														<plx:left>
+															<plx:nameRef name="objectType"/>
+														</plx:left>
+														<plx:right>
+															<plx:callThis name="ObjectType" type="property"/>
+														</plx:right>
+													</plx:assign>
+												</plx:inlineStatement>
+											</plx:left>
+											<plx:right>
+												<plx:nullKeyword/>
+											</plx:right>
+										</plx:binaryOperator>
+									</plx:left>
+									<plx:right>
+										<plx:binaryOperator type="booleanAnd">
+											<plx:left>
+												<plx:binaryOperator type="identityInequality">
+													<plx:left>
+														<plx:inlineStatement dataTypeName="ReferenceMode" dataTypeQualifier="Neumont.Tools.ORM.ObjectModel">
+															<plx:assign>
+																<plx:left>
+																	<plx:nameRef name="referenceMode"/>
+																</plx:left>
+																<plx:right>
+																	<plx:callInstance name="ReferenceMode" type="property">
+																		<plx:callObject>
+																			<plx:nameRef name="objectType"/>
+																		</plx:callObject>
+																	</plx:callInstance>
+																</plx:right>
+															</plx:assign>
+														</plx:inlineStatement>
+													</plx:left>
+													<plx:right>
+														<plx:nullKeyword/>
+													</plx:right>
+												</plx:binaryOperator>
+											</plx:left>
+											<plx:right>
+												<plx:binaryOperator type="inequality">
+													<plx:left>
+														<plx:callStatic name="General" dataTypeName="ReferenceModeType" dataTypeQualifier="Neumont.Tools.ORM.ObjectModel" type="field"/>
+													</plx:left>
+													<plx:right>
+														<plx:callInstance name="ReferenceModeType" type="property">
+															<plx:callObject>
+																<plx:callInstance name="Kind" type="property">
+																	<plx:callObject>
+																		<plx:nameRef name="referenceMode"/>
+																	</plx:callObject>
+																</plx:callInstance>
+															</plx:callObject>
+														</plx:callInstance>
+													</plx:right>
+												</plx:binaryOperator>
+											</plx:right>
+										</plx:binaryOperator>
+									</plx:right>
+								</plx:binaryOperator>
+							</plx:right>
+						</plx:binaryOperator>
+					</plx:right>
+				</plx:binaryOperator>
+			</plx:return>
+		</se:ConditionalSerialization>
+		<se:Attribute ID="NamingChoice">
+			<se:Condition WriteStyle="NotWritten">
+				<plx:binaryOperator type="equality">
+					<plx:left>
+						<plx:callThis name="NamingChoice" type="property"/>
+					</plx:left>
+					<plx:right>
+						<plx:callStatic dataTypeName="ReferenceModeNamingChoice" name="ModelDefault" type="field"/>
+					</plx:right>
+				</plx:binaryOperator>
+			</se:Condition>
+		</se:Attribute>
+		<se:Attribute ID="CustomFormat">
+			<se:Condition WriteStyle="NotWritten">
+				<plx:unaryOperator type="booleanNot">
+					<plx:callThis name="UsesCustomFormat">
+						<plx:passParam>
+							<plx:trueKeyword/>
+						</plx:passParam>
+					</plx:callThis>
+				</plx:unaryOperator>
+			</se:Condition>
+		</se:Attribute>
+		<se:Link RelationshipName="ReferenceModeNamingCustomizesObjectType" RoleName="ObjectType" Name="ObjectType"/>
+	</se:Element>
+	<se:Element Class="DefaultReferenceModeNaming">
+		<!--<se:Attribute ID="NamingChoice"/> not needed for default serialization-->
+		<se:Attribute ID="ReferenceModeTargetKind" Name="TargetKind"/>
+		<se:Attribute ID="CustomFormat">
+			<se:Condition WriteStyle="NotWritten">
+				<plx:callStatic name="IsNullOrEmpty" dataTypeName=".string">
+					<plx:passParam>
+						<plx:callThis name="CustomFormat" type="property"/>
+					</plx:passParam>
+				</plx:callStatic>
+			</se:Condition>
+		</se:Attribute>
+		<se:Link RelationshipName="DefaultReferenceModeNamingCustomizesORMModel" RoleName="ORMModel" Name="ORMModel"/>
 	</se:Element>
 </se:CustomSerializedElements>

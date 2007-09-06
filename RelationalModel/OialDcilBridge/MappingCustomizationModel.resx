@@ -121,10 +121,6 @@
 		<value>Set Absorption Choice</value>
 		<comment>The format string to use when the assimilation absorption choice property is modified. Shown in the undo dropdown in VS.</comment>
 	</data>
-	<data name="AbsorptionChoiceProperty.Category" xml:space="preserve">
-		<value>Relational Mapping</value>
-		<comment>The category for the AbsorptionChoice property. Displays as a grouping category in the Properties Window.</comment>
-	</data>
 	<data name="AbsorptionChoiceProperty.Description" xml:space="preserve">
 		<value>Absorption choices for one-to-one FactTypes and Subtype relationships.</value>
 		<comment>The description for the AbsorptionChoice property. Displays as a detailed description in the Properties Window.</comment>
@@ -156,6 +152,26 @@
   <data name="AssimilationMapping.InvalidPartitionPatternForAbsorbException" xml:space="preserve">
     <value>A partitioned ObjectType cannot be absorbed into another ObjectType.</value>
     <comment>The exception message used when an attempt is made to absorb a partitioned object type.</comment>
+  </data>
+  <data name="EffectiveReferenceModeNamingChoice.CustomFormat" xml:space="preserve">
+    <value>Custom Format</value>
+    <comment>The displayed form of the CustomFormat enum value</comment>
+  </data>
+  <data name="EffectiveReferenceModeNamingChoice.EntityTypeName" xml:space="preserve">
+    <value>EntityType Name</value>
+    <comment>The displayed form of the EntityTypeName enum value</comment>
+  </data>
+  <data name="EffectiveReferenceModeNamingChoice.ReferenceModeName" xml:space="preserve">
+    <value>ReferenceMode Name</value>
+    <comment>The displayed form of the ReferenceModeName enum value</comment>
+  </data>
+  <data name="EffectiveReferenceModeNamingChoice.ValueTypeName" xml:space="preserve">
+    <value>ValueType Name</value>
+    <comment>The displayed form of the ValueTypeName enum value</comment>
+  </data>
+  <data name="MappingCustomizationProperty.Category" xml:space="preserve">
+    <value>Relational Mapping</value>
+    <comment>The category for relational mapping customizations. Displays as a grouping category in the Properties Window.</comment>
   </data>
   <data name="ObjectTypeAbsorptionChoiceProperty.Description" xml:space="preserve">
     <value>Absorption state for an ObjectType involved in Subtyping and some other one-to-one FactType relationships.</value>
@@ -196,5 +212,25 @@
   <data name="ObjectTypeAbsorptionChoice.UnpartitionSeparate" xml:space="preserve">
     <value>Remove Partition (Separate Subtypes)</value>
     <comment>Remove the current partition, separating all subtypes.</comment>
+  </data>
+  <data name="ReferenceModeNamingChoice.CustomFormat" xml:space="preserve">
+    <value>Custom Format</value>
+    <comment>The displayed form of the CustomFormat enum value</comment>
+  </data>
+  <data name="ReferenceModeNamingChoice.EntityTypeName" xml:space="preserve">
+    <value>EntityType Name</value>
+    <comment>The displayed form of the EntityTypeName enum value</comment>
+  </data>
+  <data name="ReferenceModeNamingChoice.ModelDefault" xml:space="preserve">
+    <value>Model Default</value>
+    <comment>The displayed form of the ReferenceModeName enum value</comment>
+  </data>
+  <data name="ReferenceModeNamingChoice.ReferenceModeName" xml:space="preserve">
+    <value>ReferenceMode Name</value>
+    <comment>The displayed form of the ReferenceModeName enum value</comment>
+  </data>
+  <data name="ReferenceModeNamingChoice.ValueTypeName" xml:space="preserve">
+    <value>ValueType Name</value>
+    <comment>The displayed form of the ValueTypeName enum value</comment>
   </data>
 </root>

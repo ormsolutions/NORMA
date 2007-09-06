@@ -156,6 +156,8 @@ namespace Neumont.Tools.ORMAbstractionToConceptualDatabaseBridge
 				classNameMap = new Dictionary<string, Guid>();
 				classNameMap.Add("MappingCustomization", MappingCustomizationModel.DomainClassId);
 				classNameMap.Add("AssimilationMapping", AssimilationMapping.DomainClassId);
+				classNameMap.Add("ReferenceModeNaming", ReferenceModeNaming.DomainClassId);
+				classNameMap.Add("DefaultReferenceModeNaming", DefaultReferenceModeNaming.DomainClassId);
 				ORMAbstractionToConceptualDatabaseBridgeDomainModel.myClassNameMap = classNameMap;
 			}
 			if (validNamespaces.Contains(xmlNamespace) && classNameMap.ContainsKey(elementName))
@@ -178,7 +180,7 @@ namespace Neumont.Tools.ORMAbstractionToConceptualDatabaseBridge
 		{
 			get
 			{
-				return CustomSerializedElementSupportedOperations.ChildElementInfo | CustomSerializedElementSupportedOperations.ElementInfo;
+				return CustomSerializedElementSupportedOperations.ChildElementInfo | (CustomSerializedElementSupportedOperations.ElementInfo | CustomSerializedElementSupportedOperations.CustomSortChildRoles);
 			}
 		}
 		CustomSerializedElementSupportedOperations ICustomSerializedElement.SupportedCustomSerializedOperations
@@ -195,8 +197,9 @@ namespace Neumont.Tools.ORMAbstractionToConceptualDatabaseBridge
 			CustomSerializedContainerElementInfo[] ret = MappingCustomizationModel.myCustomSerializedChildElementInfo;
 			if (ret == null)
 			{
-				ret = new CustomSerializedContainerElementInfo[1];
+				ret = new CustomSerializedContainerElementInfo[2];
 				ret[0] = new CustomSerializedContainerElementInfo(null, "AssimilationMappings", null, CustomSerializedElementWriteStyle.Element, null, MappingCustomizationModelHasAssimilationMapping.AssimilationMappingDomainRoleId);
+				ret[1] = new CustomSerializedContainerElementInfo(null, "ReferenceModeNamings", null, CustomSerializedElementWriteStyle.Element, null, MappingCustomizationModelHasDefaultReferenceModeNaming.DefaultReferenceModeNamingDomainRoleId, MappingCustomizationModelHasReferenceModeNaming.ReferenceModeNamingDomainRoleId);
 				MappingCustomizationModel.myCustomSerializedChildElementInfo = ret;
 			}
 			return ret;
@@ -238,12 +241,50 @@ namespace Neumont.Tools.ORMAbstractionToConceptualDatabaseBridge
 		{
 			return this.GetCustomSerializedLinkInfo(rolePlayedInfo, elementLink);
 		}
+		private static IComparer<DomainRoleInfo> myCustomSortChildComparer;
+		private sealed class CustomSortChildComparer : IComparer<DomainRoleInfo>
+		{
+			private readonly Dictionary<string, int> myRoleOrderDictionary;
+			public CustomSortChildComparer(Store store)
+			{
+				DomainDataDirectory domainDataDirectory = store.DomainDataDirectory;
+				Dictionary<string, int> roleOrderDictionary = new Dictionary<string, int>();
+				DomainRoleInfo domainRole;
+				domainRole = domainDataDirectory.FindDomainRole(MappingCustomizationModelHasAssimilationMapping.AssimilationMappingDomainRoleId).OppositeDomainRole;
+				roleOrderDictionary[string.Concat(domainRole.DomainRelationship.ImplementationClass.FullName, ".", domainRole.Name)] = 0;
+				domainRole = domainDataDirectory.FindDomainRole(MappingCustomizationModelHasDefaultReferenceModeNaming.DefaultReferenceModeNamingDomainRoleId).OppositeDomainRole;
+				roleOrderDictionary[string.Concat(domainRole.DomainRelationship.ImplementationClass.FullName, ".", domainRole.Name)] = 1;
+				domainRole = domainDataDirectory.FindDomainRole(MappingCustomizationModelHasReferenceModeNaming.ReferenceModeNamingDomainRoleId).OppositeDomainRole;
+				roleOrderDictionary[string.Concat(domainRole.DomainRelationship.ImplementationClass.FullName, ".", domainRole.Name)] = 2;
+				this.myRoleOrderDictionary = roleOrderDictionary;
+			}
+			int IComparer<DomainRoleInfo>.Compare(DomainRoleInfo x, DomainRoleInfo y)
+			{
+				int xPos;
+				if (!(this.myRoleOrderDictionary.TryGetValue(string.Concat(x.DomainRelationship.ImplementationClass.FullName, ".", x.Name), out xPos)))
+				{
+					xPos = int.MaxValue;
+				}
+				int yPos;
+				if (!(this.myRoleOrderDictionary.TryGetValue(string.Concat(y.DomainRelationship.ImplementationClass.FullName, ".", y.Name), out yPos)))
+				{
+					yPos = int.MaxValue;
+				}
+				return xPos.CompareTo(yPos);
+			}
+		}
 		/// <summary>Implements ICustomSerializedElement.CustomSerializedChildRoleComparer</summary>
 		protected IComparer<DomainRoleInfo> CustomSerializedChildRoleComparer
 		{
 			get
 			{
-				return null;
+				IComparer<DomainRoleInfo> retVal = MappingCustomizationModel.myCustomSortChildComparer;
+				if (null == retVal)
+				{
+					retVal = new CustomSortChildComparer(this.Store);
+					MappingCustomizationModel.myCustomSortChildComparer = retVal;
+				}
+				return retVal;
 			}
 		}
 		IComparer<DomainRoleInfo> ICustomSerializedElement.CustomSerializedChildRoleComparer
@@ -264,6 +305,8 @@ namespace Neumont.Tools.ORMAbstractionToConceptualDatabaseBridge
 				CustomSerializedElementMatch match = new CustomSerializedElementMatch();
 				match.InitializeRoles(MappingCustomizationModelHasAssimilationMapping.AssimilationMappingDomainRoleId);
 				childElementMappings.Add("||http://schemas.neumont.edu/ORM/Bridge/2007-06/ORMAbstractionToConceptualDatabase|AssimilationMappings||", match);
+				match.InitializeRoles(MappingCustomizationModelHasDefaultReferenceModeNaming.DefaultReferenceModeNamingDomainRoleId, MappingCustomizationModelHasReferenceModeNaming.ReferenceModeNamingDomainRoleId);
+				childElementMappings.Add("||http://schemas.neumont.edu/ORM/Bridge/2007-06/ORMAbstractionToConceptualDatabase|ReferenceModeNamings||", match);
 				MappingCustomizationModel.myChildElementMappings = childElementMappings;
 			}
 			CustomSerializedElementMatch rVal;
@@ -286,6 +329,17 @@ namespace Neumont.Tools.ORMAbstractionToConceptualDatabaseBridge
 		/// <summary>Implements ICustomSerializedElement.ShouldSerialize</summary>
 		protected bool ShouldSerialize()
 		{
+			if (this.DefaultReferenceModeNamingCollection.Count != 0)
+			{
+				return true;
+			}
+			foreach (ReferenceModeNaming referenceModeNaming in this.ReferenceModeNamingCollection)
+			{
+				if (((ICustomSerializedElement)referenceModeNaming).ShouldSerialize())
+				{
+					return true;
+				}
+			}
 			foreach (AssimilationMapping assimilationMapping in this.AssimilationMappingCollection)
 			{
 				if (((ICustomSerializedElement)assimilationMapping).ShouldSerialize())
@@ -423,4 +477,308 @@ namespace Neumont.Tools.ORMAbstractionToConceptualDatabaseBridge
 		}
 	}
 	#endregion // AssimilationMapping serialization
+	#region ReferenceModeNaming serialization
+	partial class ReferenceModeNaming : ICustomSerializedElement
+	{
+		/// <summary>Implements ICustomSerializedElement.SupportedCustomSerializedOperations</summary>
+		protected CustomSerializedElementSupportedOperations SupportedCustomSerializedOperations
+		{
+			get
+			{
+				return CustomSerializedElementSupportedOperations.PropertyInfo | CustomSerializedElementSupportedOperations.LinkInfo;
+			}
+		}
+		CustomSerializedElementSupportedOperations ICustomSerializedElement.SupportedCustomSerializedOperations
+		{
+			get
+			{
+				return this.SupportedCustomSerializedOperations;
+			}
+		}
+		/// <summary>Implements ICustomSerializedElement.GetCustomSerializedChildElementInfo</summary>
+		protected CustomSerializedContainerElementInfo[] GetCustomSerializedChildElementInfo()
+		{
+			throw new NotSupportedException();
+		}
+		CustomSerializedContainerElementInfo[] ICustomSerializedElement.GetCustomSerializedChildElementInfo()
+		{
+			return this.GetCustomSerializedChildElementInfo();
+		}
+		/// <summary>Implements ICustomSerializedElement.CustomSerializedElementInfo</summary>
+		protected CustomSerializedElementInfo CustomSerializedElementInfo
+		{
+			get
+			{
+				throw new NotSupportedException();
+			}
+		}
+		CustomSerializedElementInfo ICustomSerializedElement.CustomSerializedElementInfo
+		{
+			get
+			{
+				return this.CustomSerializedElementInfo;
+			}
+		}
+		/// <summary>Implements ICustomSerializedElement.GetCustomSerializedPropertyInfo</summary>
+		protected CustomSerializedPropertyInfo GetCustomSerializedPropertyInfo(DomainPropertyInfo domainPropertyInfo, DomainRoleInfo rolePlayedInfo)
+		{
+			if (domainPropertyInfo.Id == ReferenceModeNaming.NamingChoiceDomainPropertyId)
+			{
+				if (this.NamingChoice == ReferenceModeNamingChoice.ModelDefault)
+				{
+					return new CustomSerializedPropertyInfo(null, null, null, false, CustomSerializedAttributeWriteStyle.NotWritten, null);
+				}
+				return new CustomSerializedPropertyInfo(null, null, null, false, CustomSerializedAttributeWriteStyle.Attribute, null);
+			}
+			if (domainPropertyInfo.Id == ReferenceModeNaming.CustomFormatDomainPropertyId)
+			{
+				if (!(this.UsesCustomFormat(true)))
+				{
+					return new CustomSerializedPropertyInfo(null, null, null, false, CustomSerializedAttributeWriteStyle.NotWritten, null);
+				}
+				return new CustomSerializedPropertyInfo(null, null, null, false, CustomSerializedAttributeWriteStyle.Attribute, null);
+			}
+			return CustomSerializedPropertyInfo.Default;
+		}
+		CustomSerializedPropertyInfo ICustomSerializedElement.GetCustomSerializedPropertyInfo(DomainPropertyInfo domainPropertyInfo, DomainRoleInfo rolePlayedInfo)
+		{
+			return this.GetCustomSerializedPropertyInfo(domainPropertyInfo, rolePlayedInfo);
+		}
+		/// <summary>Implements ICustomSerializedElement.GetCustomSerializedLinkInfo</summary>
+		protected CustomSerializedElementInfo GetCustomSerializedLinkInfo(DomainRoleInfo rolePlayedInfo, ElementLink elementLink)
+		{
+			Guid roleId = rolePlayedInfo.Id;
+			if (roleId == ReferenceModeNamingCustomizesObjectType.ObjectTypeDomainRoleId)
+			{
+				return new CustomSerializedElementInfo(null, "ObjectType", null, CustomSerializedElementWriteStyle.Element, null);
+			}
+			return CustomSerializedElementInfo.Default;
+		}
+		CustomSerializedElementInfo ICustomSerializedElement.GetCustomSerializedLinkInfo(DomainRoleInfo rolePlayedInfo, ElementLink elementLink)
+		{
+			return this.GetCustomSerializedLinkInfo(rolePlayedInfo, elementLink);
+		}
+		/// <summary>Implements ICustomSerializedElement.CustomSerializedChildRoleComparer</summary>
+		protected IComparer<DomainRoleInfo> CustomSerializedChildRoleComparer
+		{
+			get
+			{
+				return null;
+			}
+		}
+		IComparer<DomainRoleInfo> ICustomSerializedElement.CustomSerializedChildRoleComparer
+		{
+			get
+			{
+				return this.CustomSerializedChildRoleComparer;
+			}
+		}
+		private static Dictionary<string, CustomSerializedElementMatch> myChildElementMappings;
+		/// <summary>Implements ICustomSerializedElement.MapChildElement</summary>
+		protected CustomSerializedElementMatch MapChildElement(string elementNamespace, string elementName, string containerNamespace, string containerName, string outerContainerNamespace, string outerContainerName)
+		{
+			Dictionary<string, CustomSerializedElementMatch> childElementMappings = ReferenceModeNaming.myChildElementMappings;
+			if (childElementMappings == null)
+			{
+				childElementMappings = new Dictionary<string, CustomSerializedElementMatch>();
+				CustomSerializedElementMatch match = new CustomSerializedElementMatch();
+				match.InitializeRoles(ReferenceModeNamingCustomizesObjectType.ObjectTypeDomainRoleId);
+				childElementMappings.Add("||||http://schemas.neumont.edu/ORM/Bridge/2007-06/ORMAbstractionToConceptualDatabase|ObjectType", match);
+				ReferenceModeNaming.myChildElementMappings = childElementMappings;
+			}
+			CustomSerializedElementMatch rVal;
+			childElementMappings.TryGetValue(string.Concat(outerContainerNamespace, "|", outerContainerName, "|", ((object)containerNamespace != (object)outerContainerNamespace) ? containerNamespace : null, "|", containerName, "|", ((object)elementNamespace != (object)containerNamespace) ? elementNamespace : null, "|", elementName), out rVal);
+			return rVal;
+		}
+		CustomSerializedElementMatch ICustomSerializedElement.MapChildElement(string elementNamespace, string elementName, string containerNamespace, string containerName, string outerContainerNamespace, string outerContainerName)
+		{
+			return this.MapChildElement(elementNamespace, elementName, containerNamespace, containerName, outerContainerNamespace, outerContainerName);
+		}
+		private static Dictionary<string, Guid> myCustomSerializedAttributes;
+		/// <summary>Implements ICustomSerializedElement.MapAttribute</summary>
+		protected Guid MapAttribute(string xmlNamespace, string attributeName)
+		{
+			Dictionary<string, Guid> customSerializedAttributes = ReferenceModeNaming.myCustomSerializedAttributes;
+			if (customSerializedAttributes == null)
+			{
+				customSerializedAttributes = new Dictionary<string, Guid>();
+				customSerializedAttributes.Add("NamingChoice", ReferenceModeNaming.NamingChoiceDomainPropertyId);
+				customSerializedAttributes.Add("CustomFormat", ReferenceModeNaming.CustomFormatDomainPropertyId);
+				ReferenceModeNaming.myCustomSerializedAttributes = customSerializedAttributes;
+			}
+			Guid rVal;
+			string key = attributeName;
+			if (xmlNamespace.Length != 0)
+			{
+				key = string.Concat(xmlNamespace, "|", attributeName);
+			}
+			customSerializedAttributes.TryGetValue(key, out rVal);
+			return rVal;
+		}
+		Guid ICustomSerializedElement.MapAttribute(string xmlNamespace, string attributeName)
+		{
+			return this.MapAttribute(xmlNamespace, attributeName);
+		}
+		/// <summary>Implements ICustomSerializedElement.ShouldSerialize</summary>
+		protected bool ShouldSerialize()
+		{
+			Neumont.Tools.ORM.ObjectModel.ObjectType objectType;
+			Neumont.Tools.ORM.ObjectModel.ReferenceMode referenceMode;
+			return this.UsesCustomFormat(true) || ((this.NamingChoice != ReferenceModeNamingChoice.ModelDefault) && (((objectType = this.ObjectType) != null) && (((referenceMode = objectType.ReferenceMode) != null) && (Neumont.Tools.ORM.ObjectModel.ReferenceModeType.General != referenceMode.Kind.ReferenceModeType))));
+		}
+		bool ICustomSerializedElement.ShouldSerialize()
+		{
+			return this.ShouldSerialize();
+		}
+	}
+	#endregion // ReferenceModeNaming serialization
+	#region DefaultReferenceModeNaming serialization
+	partial class DefaultReferenceModeNaming : ICustomSerializedElement
+	{
+		/// <summary>Implements ICustomSerializedElement.SupportedCustomSerializedOperations</summary>
+		protected CustomSerializedElementSupportedOperations SupportedCustomSerializedOperations
+		{
+			get
+			{
+				return CustomSerializedElementSupportedOperations.PropertyInfo | CustomSerializedElementSupportedOperations.LinkInfo;
+			}
+		}
+		CustomSerializedElementSupportedOperations ICustomSerializedElement.SupportedCustomSerializedOperations
+		{
+			get
+			{
+				return this.SupportedCustomSerializedOperations;
+			}
+		}
+		/// <summary>Implements ICustomSerializedElement.GetCustomSerializedChildElementInfo</summary>
+		protected CustomSerializedContainerElementInfo[] GetCustomSerializedChildElementInfo()
+		{
+			throw new NotSupportedException();
+		}
+		CustomSerializedContainerElementInfo[] ICustomSerializedElement.GetCustomSerializedChildElementInfo()
+		{
+			return this.GetCustomSerializedChildElementInfo();
+		}
+		/// <summary>Implements ICustomSerializedElement.CustomSerializedElementInfo</summary>
+		protected CustomSerializedElementInfo CustomSerializedElementInfo
+		{
+			get
+			{
+				throw new NotSupportedException();
+			}
+		}
+		CustomSerializedElementInfo ICustomSerializedElement.CustomSerializedElementInfo
+		{
+			get
+			{
+				return this.CustomSerializedElementInfo;
+			}
+		}
+		/// <summary>Implements ICustomSerializedElement.GetCustomSerializedPropertyInfo</summary>
+		protected CustomSerializedPropertyInfo GetCustomSerializedPropertyInfo(DomainPropertyInfo domainPropertyInfo, DomainRoleInfo rolePlayedInfo)
+		{
+			if (domainPropertyInfo.Id == DefaultReferenceModeNaming.ReferenceModeTargetKindDomainPropertyId)
+			{
+				return new CustomSerializedPropertyInfo(null, "TargetKind", null, false, CustomSerializedAttributeWriteStyle.Attribute, null);
+			}
+			if (domainPropertyInfo.Id == DefaultReferenceModeNaming.CustomFormatDomainPropertyId)
+			{
+				if (string.IsNullOrEmpty(this.CustomFormat))
+				{
+					return new CustomSerializedPropertyInfo(null, null, null, false, CustomSerializedAttributeWriteStyle.NotWritten, null);
+				}
+				return new CustomSerializedPropertyInfo(null, null, null, false, CustomSerializedAttributeWriteStyle.Attribute, null);
+			}
+			return CustomSerializedPropertyInfo.Default;
+		}
+		CustomSerializedPropertyInfo ICustomSerializedElement.GetCustomSerializedPropertyInfo(DomainPropertyInfo domainPropertyInfo, DomainRoleInfo rolePlayedInfo)
+		{
+			return this.GetCustomSerializedPropertyInfo(domainPropertyInfo, rolePlayedInfo);
+		}
+		/// <summary>Implements ICustomSerializedElement.GetCustomSerializedLinkInfo</summary>
+		protected CustomSerializedElementInfo GetCustomSerializedLinkInfo(DomainRoleInfo rolePlayedInfo, ElementLink elementLink)
+		{
+			Guid roleId = rolePlayedInfo.Id;
+			if (roleId == DefaultReferenceModeNamingCustomizesORMModel.ORMModelDomainRoleId)
+			{
+				return new CustomSerializedElementInfo(null, "ORMModel", null, CustomSerializedElementWriteStyle.Element, null);
+			}
+			return CustomSerializedElementInfo.Default;
+		}
+		CustomSerializedElementInfo ICustomSerializedElement.GetCustomSerializedLinkInfo(DomainRoleInfo rolePlayedInfo, ElementLink elementLink)
+		{
+			return this.GetCustomSerializedLinkInfo(rolePlayedInfo, elementLink);
+		}
+		/// <summary>Implements ICustomSerializedElement.CustomSerializedChildRoleComparer</summary>
+		protected IComparer<DomainRoleInfo> CustomSerializedChildRoleComparer
+		{
+			get
+			{
+				return null;
+			}
+		}
+		IComparer<DomainRoleInfo> ICustomSerializedElement.CustomSerializedChildRoleComparer
+		{
+			get
+			{
+				return this.CustomSerializedChildRoleComparer;
+			}
+		}
+		private static Dictionary<string, CustomSerializedElementMatch> myChildElementMappings;
+		/// <summary>Implements ICustomSerializedElement.MapChildElement</summary>
+		protected CustomSerializedElementMatch MapChildElement(string elementNamespace, string elementName, string containerNamespace, string containerName, string outerContainerNamespace, string outerContainerName)
+		{
+			Dictionary<string, CustomSerializedElementMatch> childElementMappings = DefaultReferenceModeNaming.myChildElementMappings;
+			if (childElementMappings == null)
+			{
+				childElementMappings = new Dictionary<string, CustomSerializedElementMatch>();
+				CustomSerializedElementMatch match = new CustomSerializedElementMatch();
+				match.InitializeRoles(DefaultReferenceModeNamingCustomizesORMModel.ORMModelDomainRoleId);
+				childElementMappings.Add("||||http://schemas.neumont.edu/ORM/Bridge/2007-06/ORMAbstractionToConceptualDatabase|ORMModel", match);
+				DefaultReferenceModeNaming.myChildElementMappings = childElementMappings;
+			}
+			CustomSerializedElementMatch rVal;
+			childElementMappings.TryGetValue(string.Concat(outerContainerNamespace, "|", outerContainerName, "|", ((object)containerNamespace != (object)outerContainerNamespace) ? containerNamespace : null, "|", containerName, "|", ((object)elementNamespace != (object)containerNamespace) ? elementNamespace : null, "|", elementName), out rVal);
+			return rVal;
+		}
+		CustomSerializedElementMatch ICustomSerializedElement.MapChildElement(string elementNamespace, string elementName, string containerNamespace, string containerName, string outerContainerNamespace, string outerContainerName)
+		{
+			return this.MapChildElement(elementNamespace, elementName, containerNamespace, containerName, outerContainerNamespace, outerContainerName);
+		}
+		private static Dictionary<string, Guid> myCustomSerializedAttributes;
+		/// <summary>Implements ICustomSerializedElement.MapAttribute</summary>
+		protected Guid MapAttribute(string xmlNamespace, string attributeName)
+		{
+			Dictionary<string, Guid> customSerializedAttributes = DefaultReferenceModeNaming.myCustomSerializedAttributes;
+			if (customSerializedAttributes == null)
+			{
+				customSerializedAttributes = new Dictionary<string, Guid>();
+				customSerializedAttributes.Add("TargetKind", DefaultReferenceModeNaming.ReferenceModeTargetKindDomainPropertyId);
+				customSerializedAttributes.Add("CustomFormat", DefaultReferenceModeNaming.CustomFormatDomainPropertyId);
+				DefaultReferenceModeNaming.myCustomSerializedAttributes = customSerializedAttributes;
+			}
+			Guid rVal;
+			string key = attributeName;
+			if (xmlNamespace.Length != 0)
+			{
+				key = string.Concat(xmlNamespace, "|", attributeName);
+			}
+			customSerializedAttributes.TryGetValue(key, out rVal);
+			return rVal;
+		}
+		Guid ICustomSerializedElement.MapAttribute(string xmlNamespace, string attributeName)
+		{
+			return this.MapAttribute(xmlNamespace, attributeName);
+		}
+		/// <summary>Implements ICustomSerializedElement.ShouldSerialize</summary>
+		protected static bool ShouldSerialize()
+		{
+			return true;
+		}
+		bool ICustomSerializedElement.ShouldSerialize()
+		{
+			return ShouldSerialize();
+		}
+	}
+	#endregion // DefaultReferenceModeNaming serialization
 }

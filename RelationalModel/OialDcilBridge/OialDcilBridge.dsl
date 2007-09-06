@@ -57,6 +57,39 @@
 				</DomainProperty>
 			</Properties>
 		</DomainClass>
+		<DomainClass Name="ReferenceModeNaming" Namespace="Neumont.Tools.ORMAbstractionToConceptualDatabaseBridge" Id="B49AE46D-1551-4477-A2EB-C56415059912" DisplayName="ReferenceModeNaming" Description="">
+			<Properties>
+				<DomainProperty Name="NamingChoice" DefaultValue="ModelDefault" DisplayName="NamingChoice" Id="3E60BEBC-05E3-4D6E-8662-66C04FF27B8F">
+					<Type>
+						<DomainEnumerationMoniker Name="ReferenceModeNamingChoice"/>
+					</Type>
+				</DomainProperty>
+				<DomainProperty Name="CustomFormat" DefaultValue="" DisplayName="NamingChoice" Id="24265C6B-8058-43AE-91A3-D04968CA7C32">
+					<Type>
+						<ExternalTypeMoniker Name="/System/String"/>
+					</Type>
+				</DomainProperty>
+			</Properties>
+		</DomainClass>
+		<DomainClass Name="DefaultReferenceModeNaming" Namespace="Neumont.Tools.ORMAbstractionToConceptualDatabaseBridge" Id="443F27D8-44D6-4D4D-A918-2B9E7F613157" DisplayName="DefaultReferenceModeNaming" Description="">
+			<Properties>
+				<DomainProperty Name="NamingChoice" DefaultValue="ValueTypeName" DisplayName="DefaultReferenceModeNaming" Id="178450CE-A301-4022-9CA7-ADC28F59D7C9">
+					<Type>
+						<DomainEnumerationMoniker Name="EffectiveReferenceModeNamingChoice"/>
+					</Type>
+				</DomainProperty>
+				<DomainProperty Name="CustomFormat" DefaultValue="" DisplayName="NamingChoice" Id="D0266C9E-C95E-43A6-A874-A0EBE08F5E28">
+					<Type>
+						<ExternalTypeMoniker Name="/System/String"/>
+					</Type>
+				</DomainProperty>
+				<DomainProperty Name="ReferenceModeTargetKind" DefaultValue="Popular" DisplayName="ReferenceModeTargetKind" Id="1699FA2A-D247-4D5B-9B4C-7E147B2459AF">
+					<Type>
+						<DomainEnumerationMoniker Name="DefaultReferenceModeNamingTargetKind"/>
+					</Type>
+				</DomainProperty>
+			</Properties>
+		</DomainClass>
 	</Classes>
 	
 	<Relationships>
@@ -88,6 +121,70 @@
 				<DomainRole Id="DA82C400-912E-45B2-87C4-56AF21A7D481" Description="" Name="AssimilationMapping" PropertyName="Model" Multiplicity="One" PropagatesDelete="true" IsPropertyGenerator="true">
 					<RolePlayer>
 						<DomainClassMoniker Name="AssimilationMapping"/>
+					</RolePlayer>
+				</DomainRole>
+			</Target>
+		</DomainRelationship>
+		<DomainRelationship Id="F96C317D-4820-4604-AA3E-7F8A97541B7E" Name="ReferenceModeNamingCustomizesObjectType" Namespace="Neumont.Tools.ORMAbstractionToConceptualDatabaseBridge">
+			<Source>
+				<DomainRole Id="D83F7C4D-F955-4EC8-BDBC-0E7CDC480A79" Description="" Name="ReferenceModeNaming" PropertyName="ObjectType" Multiplicity="ZeroOne" PropagatesDelete="true" IsPropertyGenerator="true">
+					<RolePlayer>
+						<DomainClassMoniker Name="ReferenceModeNaming"/>
+					</RolePlayer>
+				</DomainRole>
+			</Source>
+			<Target>
+				<DomainRole Id="67C2B3CD-F276-411B-980D-13D94970D604" Description="" Name="ObjectType" PropertyName="ReferenceModeNaming" Multiplicity="One" IsPropertyGenerator="false">
+					<RolePlayer>
+						<DomainClassMoniker Name="/Neumont.Tools.ORM.ObjectModel/ObjectType"/>
+					</RolePlayer>
+				</DomainRole>
+			</Target>
+		</DomainRelationship>
+		<DomainRelationship Id="D412080D-5555-4134-8106-9F9452A7D452" Name="MappingCustomizationModelHasReferenceModeNaming" Namespace="Neumont.Tools.ORMAbstractionToConceptualDatabaseBridge" IsEmbedding="true">
+			<Source>
+				<DomainRole Id="F10B9590-AF11-4FD9-BBA9-D277A7A50FA0" Description="" Name="Model" PropertyName="ReferenceModeNamingCollection" Multiplicity="ZeroMany" IsPropertyGenerator="true">
+					<RolePlayer>
+						<DomainClassMoniker Name="MappingCustomizationModel"/>
+					</RolePlayer>
+				</DomainRole>
+			</Source>
+			<Target>
+				<DomainRole Id="219A1852-9896-4303-BF8F-2696BAA25962" Description="" Name="ReferenceModeNaming" PropertyName="Model" Multiplicity="One" PropagatesDelete="true" IsPropertyGenerator="true">
+					<RolePlayer>
+						<DomainClassMoniker Name="ReferenceModeNaming"/>
+					</RolePlayer>
+				</DomainRole>
+			</Target>
+		</DomainRelationship>
+		<DomainRelationship Id="0B75DB0C-3196-4C80-884B-2ADDA04DE8B0" Name="DefaultReferenceModeNamingCustomizesORMModel" Namespace="Neumont.Tools.ORMAbstractionToConceptualDatabaseBridge">
+			<Source>
+				<DomainRole Id="5C4580AD-BC05-4691-A9CE-E54952DB1EF9" Description="" Name="DefaultReferenceModeNaming" PropertyName="ORMModel" Multiplicity="One" PropagatesDelete="true" IsPropertyGenerator="true">
+					<RolePlayer>
+						<DomainClassMoniker Name="DefaultReferenceModeNaming"/>
+					</RolePlayer>
+				</DomainRole>
+			</Source>
+			<Target>
+				<DomainRole Id="341C7C8A-D168-4D09-B02D-6A79BC3F34C8" Description="" Name="ORMModel" PropertyName="DefaultReferenceModeNamingCollection" Multiplicity="ZeroMany" IsPropertyGenerator="false">
+					<RolePlayer>
+						<DomainClassMoniker Name="/Neumont.Tools.ORM.ObjectModel/ORMModel"/>
+					</RolePlayer>
+				</DomainRole>
+			</Target>
+		</DomainRelationship>
+		<DomainRelationship Id="93737680-42D1-4453-BD79-D143406648CE" Name="MappingCustomizationModelHasDefaultReferenceModeNaming" Namespace="Neumont.Tools.ORMAbstractionToConceptualDatabaseBridge" IsEmbedding="true">
+			<Source>
+				<DomainRole Id="652081EB-9586-407C-8D3F-A6491B975C27" Description="" Name="Model" PropertyName="DefaultReferenceModeNamingCollection" Multiplicity="ZeroMany" IsPropertyGenerator="true">
+					<RolePlayer>
+						<DomainClassMoniker Name="MappingCustomizationModel"/>
+					</RolePlayer>
+				</DomainRole>
+			</Source>
+			<Target>
+				<DomainRole Id="32C09A1C-8139-489A-8A4E-2E35A5C31D7C" Description="" Name="DefaultReferenceModeNaming" PropertyName="Model" Multiplicity="One" PropagatesDelete="true" IsPropertyGenerator="true">
+					<RolePlayer>
+						<DomainClassMoniker Name="DefaultReferenceModeNaming"/>
 					</RolePlayer>
 				</DomainRole>
 			</Target>
@@ -220,6 +317,43 @@
 					</Parameters>
 				</ClrAttribute>
 			</Attributes>
+		</DomainEnumeration>
+		<DomainEnumeration Namespace="Neumont.Tools.ORMAbstractionToConceptualDatabaseBridge" Name="ReferenceModeNamingChoice" Description="Specify how reference mode names are used when generating relational information for an &lt;see cref=&quot;Neumont.Tools.ORM.ObjectModel.ObjectType&quot;/&gt;, including an option for deferring to the model.">
+			<Literals>
+				<EnumerationLiteral Name="ValueTypeName" Value="0" Description="Use the name of the identifying value type for the column."/>
+				<EnumerationLiteral Name="EntityTypeName" Value="1" Description="Use the name of the entity type for the related column."/>
+				<EnumerationLiteral Name="ReferenceModeName" Value="2" Description="Use the name of the reference mode for the related column."/>
+				<EnumerationLiteral Name="CustomFormat" Value="3" Description="Use a custom format string using the other three values as replacement fields."/>
+				<EnumerationLiteral Name="ModelDefault" Value="4" Description="Use the default setting from the model."/>
+			</Literals>
+			<Attributes>
+				<ClrAttribute Name="global::System.ComponentModel.TypeConverter">
+					<Parameters>
+						<AttributeParameter Value="typeof(global::Neumont.Tools.Modeling.Design.EnumConverter&lt;ReferenceModeNamingChoice, global::Neumont.Tools.ORMAbstractionToConceptualDatabaseBridge.MappingCustomizationModel&gt;)"/>
+					</Parameters>
+				</ClrAttribute>
+			</Attributes>
+		</DomainEnumeration>
+		<DomainEnumeration Namespace="Neumont.Tools.ORMAbstractionToConceptualDatabaseBridge" Name="EffectiveReferenceModeNamingChoice" Description="Specify how reference mode names are used when generating relational information for an &lt;see cref=&quot;Neumont.Tools.ORM.ObjectModel.ObjectType&quot;/&gt;.">
+			<Literals>
+				<EnumerationLiteral Name="ValueTypeName" Value="0" Description="Use the name of the identifying value type for the column."/>
+				<EnumerationLiteral Name="EntityTypeName" Value="1" Description="Use the name of the entity type for the related column."/>
+				<EnumerationLiteral Name="ReferenceModeName" Value="2" Description="Use a custom format string using the other three values as replacement fields."/>
+				<EnumerationLiteral Name="CustomFormat" Value="3" Description="Use a custom format with the other three values as replacement fiels."/>
+			</Literals>
+			<Attributes>
+				<ClrAttribute Name="global::System.ComponentModel.TypeConverter">
+					<Parameters>
+						<AttributeParameter Value="typeof(global::Neumont.Tools.Modeling.Design.EnumConverter&lt;EffectiveReferenceModeNamingChoice, global::Neumont.Tools.ORMAbstractionToConceptualDatabaseBridge.MappingCustomizationModel&gt;)"/>
+					</Parameters>
+				</ClrAttribute>
+			</Attributes>
+		</DomainEnumeration>
+		<DomainEnumeration Namespace="Neumont.Tools.ORMAbstractionToConceptualDatabaseBridge" Name="DefaultReferenceModeNamingTargetKind" Description="Specifies the reference mode kind of a set of default reference mode.">
+			<Literals>
+				<EnumerationLiteral Name="Popular" Value="1" Description="The popular reference mode."/>
+				<EnumerationLiteral Name="UnitBased" Value="2" Description="The unit based reference mode."/>
+			</Literals>
 		</DomainEnumeration>
 	</Types>
 

@@ -520,6 +520,973 @@ namespace Neumont.Tools.ORMAbstractionToConceptualDatabaseBridge
 namespace Neumont.Tools.ORMAbstractionToConceptualDatabaseBridge
 {
 	/// <summary>
+	/// DomainRelationship ReferenceModeNamingCustomizesObjectType
+	/// Description for
+	/// Neumont.Tools.ORMAbstractionToConceptualDatabaseBridge.ReferenceModeNamingCustomizesObjectType
+	/// </summary>
+	[DslDesign::DisplayNameResource("Neumont.Tools.ORMAbstractionToConceptualDatabaseBridge.ReferenceModeNamingCustomizesObjectType.DisplayName", typeof(global::Neumont.Tools.ORMAbstractionToConceptualDatabaseBridge.ORMAbstractionToConceptualDatabaseBridgeDomainModel), "Neumont.Tools.ORMAbstractionToConceptualDatabaseBridge.GeneratedCode.DomainModelResx")]
+	[DslDesign::DescriptionResource("Neumont.Tools.ORMAbstractionToConceptualDatabaseBridge.ReferenceModeNamingCustomizesObjectType.Description", typeof(global::Neumont.Tools.ORMAbstractionToConceptualDatabaseBridge.ORMAbstractionToConceptualDatabaseBridgeDomainModel), "Neumont.Tools.ORMAbstractionToConceptualDatabaseBridge.GeneratedCode.DomainModelResx")]
+	[global::System.CLSCompliant(true)]
+	[DslModeling::DomainRelationship()]
+	[DslModeling::DomainObjectId("f96c317d-4820-4604-aa3e-7f8a97541b7e")]
+	public partial class ReferenceModeNamingCustomizesObjectType : DslModeling::ElementLink
+	{
+		#region Constructors, domain class Id
+		
+		/// <summary>
+		/// ReferenceModeNamingCustomizesObjectType domain class Id.
+		/// </summary>
+		public static readonly new global::System.Guid DomainClassId = new global::System.Guid(0xf96c317d, 0x4820, 0x4604, 0xaa, 0x3e, 0x7f, 0x8a, 0x97, 0x54, 0x1b, 0x7e);
+	
+				
+		/// <summary>
+		/// Constructor
+		/// Creates a ReferenceModeNamingCustomizesObjectType link in the same Partition as the given ReferenceModeNaming
+		/// </summary>
+		/// <param name="source">ReferenceModeNaming to use as the source of the relationship.</param>
+		/// <param name="target">ObjectType to use as the target of the relationship.</param>
+		public ReferenceModeNamingCustomizesObjectType(ReferenceModeNaming source, global::Neumont.Tools.ORM.ObjectModel.ObjectType target)
+			: base((source != null ? source.Partition : null), new DslModeling::RoleAssignment[]{new DslModeling::RoleAssignment(ReferenceModeNamingCustomizesObjectType.ReferenceModeNamingDomainRoleId, source), new DslModeling::RoleAssignment(ReferenceModeNamingCustomizesObjectType.ObjectTypeDomainRoleId, target)}, null)
+		{
+		}
+		
+		/// <summary>
+		/// Constructor
+		/// </summary>
+		/// <param name="store">Store where new link is to be created.</param>
+		/// <param name="roleAssignments">List of relationship role assignments.</param>
+		public ReferenceModeNamingCustomizesObjectType(DslModeling::Store store, params DslModeling::RoleAssignment[] roleAssignments)
+			: base(store != null ? store.DefaultPartition : null, roleAssignments, null)
+		{
+		}
+		
+		/// <summary>
+		/// Constructor
+		/// </summary>
+		/// <param name="store">Store where new link is to be created.</param>
+		/// <param name="roleAssignments">List of relationship role assignments.</param>
+		/// <param name="propertyAssignments">List of properties assignments to set on the new link.</param>
+		public ReferenceModeNamingCustomizesObjectType(DslModeling::Store store, DslModeling::RoleAssignment[] roleAssignments, DslModeling::PropertyAssignment[] propertyAssignments)
+			: base(store != null ? store.DefaultPartition : null, roleAssignments, propertyAssignments)
+		{
+		}
+		
+		/// <summary>
+		/// Constructor
+		/// </summary>
+		/// <param name="partition">Partition where new link is to be created.</param>
+		/// <param name="roleAssignments">List of relationship role assignments.</param>
+		public ReferenceModeNamingCustomizesObjectType(DslModeling::Partition partition, params DslModeling::RoleAssignment[] roleAssignments)
+			: base(partition, roleAssignments, null)
+		{
+		}
+		
+		/// <summary>
+		/// Constructor
+		/// </summary>
+		/// <param name="partition">Partition where new link is to be created.</param>
+		/// <param name="roleAssignments">List of relationship role assignments.</param>
+		/// <param name="propertyAssignments">List of properties assignments to set on the new link.</param>
+		public ReferenceModeNamingCustomizesObjectType(DslModeling::Partition partition, DslModeling::RoleAssignment[] roleAssignments, DslModeling::PropertyAssignment[] propertyAssignments)
+			: base(partition, roleAssignments, propertyAssignments)
+		{
+		}
+		#endregion
+		#region ReferenceModeNaming domain role code
+		
+		/// <summary>
+		/// ReferenceModeNaming domain role Id.
+		/// </summary>
+		public static readonly global::System.Guid ReferenceModeNamingDomainRoleId = new global::System.Guid(0xd83f7c4d, 0xf955, 0x4ec8, 0xbd, 0xbc, 0x0e, 0x7c, 0xdc, 0x48, 0x0a, 0x79);
+		
+		/// <summary>
+		/// DomainRole ReferenceModeNaming
+		/// </summary>
+		[DslDesign::DisplayNameResource("Neumont.Tools.ORMAbstractionToConceptualDatabaseBridge.ReferenceModeNamingCustomizesObjectType/ReferenceModeNaming.DisplayName", typeof(global::Neumont.Tools.ORMAbstractionToConceptualDatabaseBridge.ORMAbstractionToConceptualDatabaseBridgeDomainModel), "Neumont.Tools.ORMAbstractionToConceptualDatabaseBridge.GeneratedCode.DomainModelResx")]
+		[DslDesign::DescriptionResource("Neumont.Tools.ORMAbstractionToConceptualDatabaseBridge.ReferenceModeNamingCustomizesObjectType/ReferenceModeNaming.Description", typeof(global::Neumont.Tools.ORMAbstractionToConceptualDatabaseBridge.ORMAbstractionToConceptualDatabaseBridgeDomainModel), "Neumont.Tools.ORMAbstractionToConceptualDatabaseBridge.GeneratedCode.DomainModelResx")]
+		[DslModeling::DomainRole(DslModeling::DomainRoleOrder.Source, PropertyName = "ObjectType", PropertyDisplayNameKey="Neumont.Tools.ORMAbstractionToConceptualDatabaseBridge.ReferenceModeNamingCustomizesObjectType/ReferenceModeNaming.PropertyDisplayName", PropagatesDelete = true, Multiplicity = DslModeling::Multiplicity.ZeroOne)]
+		[DslModeling::DomainObjectId("d83f7c4d-f955-4ec8-bdbc-0e7cdc480a79")]
+		public virtual ReferenceModeNaming ReferenceModeNaming
+		{
+			[global::System.Diagnostics.DebuggerStepThrough]
+			get
+			{
+				return (ReferenceModeNaming)DslModeling::DomainRoleInfo.GetRolePlayer(this, ReferenceModeNamingDomainRoleId);
+			}
+			[global::System.Diagnostics.DebuggerStepThrough]
+			set
+			{
+				DslModeling::DomainRoleInfo.SetRolePlayer(this, ReferenceModeNamingDomainRoleId, value);
+			}
+		}
+				
+		#endregion
+		#region Static methods to access ReferenceModeNaming of a ObjectType
+		/// <summary>
+		/// Gets ReferenceModeNaming.
+		/// </summary>
+		[global::System.Diagnostics.DebuggerStepThrough]
+		[global::System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Design", "CA1011")]
+		public static ReferenceModeNaming GetReferenceModeNaming(global::Neumont.Tools.ORM.ObjectModel.ObjectType element)
+		{
+			return DslModeling::DomainRoleInfo.GetLinkedElement(element, ObjectTypeDomainRoleId) as ReferenceModeNaming;
+		}
+		
+		/// <summary>
+		/// Sets ReferenceModeNaming.
+		/// </summary>
+		[global::System.Diagnostics.DebuggerStepThrough]
+		[global::System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Design", "CA1011")]
+		public static void SetReferenceModeNaming(global::Neumont.Tools.ORM.ObjectModel.ObjectType element, ReferenceModeNaming newReferenceModeNaming)
+		{
+			DslModeling::DomainRoleInfo.SetLinkedElement(element, ObjectTypeDomainRoleId, newReferenceModeNaming);
+		}
+		#endregion
+		#region ObjectType domain role code
+		
+		/// <summary>
+		/// ObjectType domain role Id.
+		/// </summary>
+		public static readonly global::System.Guid ObjectTypeDomainRoleId = new global::System.Guid(0x67c2b3cd, 0xf276, 0x411b, 0x98, 0x0d, 0x13, 0xd9, 0x49, 0x70, 0xd6, 0x04);
+		
+		/// <summary>
+		/// DomainRole ObjectType
+		/// </summary>
+		[DslDesign::DisplayNameResource("Neumont.Tools.ORMAbstractionToConceptualDatabaseBridge.ReferenceModeNamingCustomizesObjectType/ObjectType.DisplayName", typeof(global::Neumont.Tools.ORMAbstractionToConceptualDatabaseBridge.ORMAbstractionToConceptualDatabaseBridgeDomainModel), "Neumont.Tools.ORMAbstractionToConceptualDatabaseBridge.GeneratedCode.DomainModelResx")]
+		[DslDesign::DescriptionResource("Neumont.Tools.ORMAbstractionToConceptualDatabaseBridge.ReferenceModeNamingCustomizesObjectType/ObjectType.Description", typeof(global::Neumont.Tools.ORMAbstractionToConceptualDatabaseBridge.ORMAbstractionToConceptualDatabaseBridgeDomainModel), "Neumont.Tools.ORMAbstractionToConceptualDatabaseBridge.GeneratedCode.DomainModelResx")]
+		[DslModeling::DomainRole(DslModeling::DomainRoleOrder.Target, PropertyName = "ReferenceModeNaming", PropertyDisplayNameKey="Neumont.Tools.ORMAbstractionToConceptualDatabaseBridge.ReferenceModeNamingCustomizesObjectType/ObjectType.PropertyDisplayName", Multiplicity = DslModeling::Multiplicity.One)]
+		[DslModeling::DomainObjectId("67c2b3cd-f276-411b-980d-13d94970d604")]
+		public virtual global::Neumont.Tools.ORM.ObjectModel.ObjectType ObjectType
+		{
+			[global::System.Diagnostics.DebuggerStepThrough]
+			get
+			{
+				return (global::Neumont.Tools.ORM.ObjectModel.ObjectType)DslModeling::DomainRoleInfo.GetRolePlayer(this, ObjectTypeDomainRoleId);
+			}
+			[global::System.Diagnostics.DebuggerStepThrough]
+			set
+			{
+				DslModeling::DomainRoleInfo.SetRolePlayer(this, ObjectTypeDomainRoleId, value);
+			}
+		}
+				
+		#endregion
+		#region Static methods to access ObjectType of a ReferenceModeNaming
+		/// <summary>
+		/// Gets ObjectType.
+		/// </summary>
+		[global::System.Diagnostics.DebuggerStepThrough]
+		[global::System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Design", "CA1011")]
+		public static global::Neumont.Tools.ORM.ObjectModel.ObjectType GetObjectType(ReferenceModeNaming element)
+		{
+			return DslModeling::DomainRoleInfo.GetLinkedElement(element, ReferenceModeNamingDomainRoleId) as global::Neumont.Tools.ORM.ObjectModel.ObjectType;
+		}
+		
+		/// <summary>
+		/// Sets ObjectType.
+		/// </summary>
+		[global::System.Diagnostics.DebuggerStepThrough]
+		[global::System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Design", "CA1011")]
+		public static void SetObjectType(ReferenceModeNaming element, global::Neumont.Tools.ORM.ObjectModel.ObjectType newObjectType)
+		{
+			DslModeling::DomainRoleInfo.SetLinkedElement(element, ReferenceModeNamingDomainRoleId, newObjectType);
+		}
+		#endregion
+		#region ReferenceModeNaming link accessor
+		/// <summary>
+		/// Get the ReferenceModeNamingCustomizesObjectType link to a ReferenceModeNaming.
+		/// </summary>
+		[global::System.Diagnostics.DebuggerStepThrough]
+		[global::System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Design", "CA1011")]
+		public static global::Neumont.Tools.ORMAbstractionToConceptualDatabaseBridge.ReferenceModeNamingCustomizesObjectType GetLinkToObjectType (global::Neumont.Tools.ORMAbstractionToConceptualDatabaseBridge.ReferenceModeNaming referenceModeNamingInstance)
+		{
+			global::System.Collections.Generic.IList<global::Neumont.Tools.ORMAbstractionToConceptualDatabaseBridge.ReferenceModeNamingCustomizesObjectType> links = DslModeling::DomainRoleInfo.GetElementLinks<global::Neumont.Tools.ORMAbstractionToConceptualDatabaseBridge.ReferenceModeNamingCustomizesObjectType>(referenceModeNamingInstance, global::Neumont.Tools.ORMAbstractionToConceptualDatabaseBridge.ReferenceModeNamingCustomizesObjectType.ReferenceModeNamingDomainRoleId);
+			global::System.Diagnostics.Debug.Assert(links.Count <= 1, "Multiplicity of ReferenceModeNaming not obeyed.");
+			if ( links.Count == 0 )
+			{
+				return null;
+			}
+			else
+			{
+				return links[0];
+			}
+		}
+		#endregion
+		#region ObjectType link accessor
+		/// <summary>
+		/// Get the ReferenceModeNamingCustomizesObjectType link to a ObjectType.
+		/// </summary>
+		[global::System.Diagnostics.DebuggerStepThrough]
+		[global::System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Design", "CA1011")]
+		public static global::Neumont.Tools.ORMAbstractionToConceptualDatabaseBridge.ReferenceModeNamingCustomizesObjectType GetLinkToReferenceModeNaming (global::Neumont.Tools.ORM.ObjectModel.ObjectType objectTypeInstance)
+		{
+			global::System.Collections.Generic.IList<global::Neumont.Tools.ORMAbstractionToConceptualDatabaseBridge.ReferenceModeNamingCustomizesObjectType> links = DslModeling::DomainRoleInfo.GetElementLinks<global::Neumont.Tools.ORMAbstractionToConceptualDatabaseBridge.ReferenceModeNamingCustomizesObjectType>(objectTypeInstance, global::Neumont.Tools.ORMAbstractionToConceptualDatabaseBridge.ReferenceModeNamingCustomizesObjectType.ObjectTypeDomainRoleId);
+			global::System.Diagnostics.Debug.Assert(links.Count <= 1, "Multiplicity of ObjectType not obeyed.");
+			if ( links.Count == 0 )
+			{
+				return null;
+			}
+			else
+			{
+				return links[0];
+			}
+		}
+		#endregion
+		#region ReferenceModeNamingCustomizesObjectType instance accessors
+		
+		/// <summary>
+		/// Get any ReferenceModeNamingCustomizesObjectType links between a given ReferenceModeNaming and a ObjectType.
+		/// </summary>
+		[global::System.Diagnostics.DebuggerStepThrough]
+		[global::System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Design", "CA1011")]
+		public static global::System.Collections.ObjectModel.ReadOnlyCollection<global::Neumont.Tools.ORMAbstractionToConceptualDatabaseBridge.ReferenceModeNamingCustomizesObjectType> GetLinks( global::Neumont.Tools.ORMAbstractionToConceptualDatabaseBridge.ReferenceModeNaming source, global::Neumont.Tools.ORM.ObjectModel.ObjectType target )
+		{
+			global::System.Collections.Generic.List<global::Neumont.Tools.ORMAbstractionToConceptualDatabaseBridge.ReferenceModeNamingCustomizesObjectType> outLinks = new global::System.Collections.Generic.List<global::Neumont.Tools.ORMAbstractionToConceptualDatabaseBridge.ReferenceModeNamingCustomizesObjectType>();
+			global::System.Collections.Generic.IList<global::Neumont.Tools.ORMAbstractionToConceptualDatabaseBridge.ReferenceModeNamingCustomizesObjectType> links = DslModeling::DomainRoleInfo.GetElementLinks<global::Neumont.Tools.ORMAbstractionToConceptualDatabaseBridge.ReferenceModeNamingCustomizesObjectType>(source, global::Neumont.Tools.ORMAbstractionToConceptualDatabaseBridge.ReferenceModeNamingCustomizesObjectType.ReferenceModeNamingDomainRoleId);
+			foreach ( global::Neumont.Tools.ORMAbstractionToConceptualDatabaseBridge.ReferenceModeNamingCustomizesObjectType link in links )
+			{
+				if ( target.Equals(link.ObjectType) )
+				{
+					outLinks.Add(link);
+				}
+			}
+			return outLinks.AsReadOnly();
+		}
+		/// <summary>
+		/// Get the one ReferenceModeNamingCustomizesObjectType link between a given ReferenceModeNamingand a ObjectType.
+		/// </summary>
+		[global::System.Diagnostics.DebuggerStepThrough]
+		[global::System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Design", "CA1011")]
+		public static global::Neumont.Tools.ORMAbstractionToConceptualDatabaseBridge.ReferenceModeNamingCustomizesObjectType GetLink( global::Neumont.Tools.ORMAbstractionToConceptualDatabaseBridge.ReferenceModeNaming source, global::Neumont.Tools.ORM.ObjectModel.ObjectType target )
+		{
+			global::System.Collections.Generic.IList<global::Neumont.Tools.ORMAbstractionToConceptualDatabaseBridge.ReferenceModeNamingCustomizesObjectType> links = DslModeling::DomainRoleInfo.GetElementLinks<global::Neumont.Tools.ORMAbstractionToConceptualDatabaseBridge.ReferenceModeNamingCustomizesObjectType>(source, global::Neumont.Tools.ORMAbstractionToConceptualDatabaseBridge.ReferenceModeNamingCustomizesObjectType.ReferenceModeNamingDomainRoleId);
+			foreach ( global::Neumont.Tools.ORMAbstractionToConceptualDatabaseBridge.ReferenceModeNamingCustomizesObjectType link in links )
+			{
+				if ( target.Equals(link.ObjectType) )
+				{
+					return link;
+				}
+			}
+			return null;
+		}
+		
+		#endregion
+	}
+}
+namespace Neumont.Tools.ORMAbstractionToConceptualDatabaseBridge
+{
+	/// <summary>
+	/// DomainRelationship MappingCustomizationModelHasReferenceModeNaming
+	/// Description for
+	/// Neumont.Tools.ORMAbstractionToConceptualDatabaseBridge.MappingCustomizationModelHasReferenceModeNaming
+	/// </summary>
+	[DslDesign::DisplayNameResource("Neumont.Tools.ORMAbstractionToConceptualDatabaseBridge.MappingCustomizationModelHasReferenceModeNaming.DisplayName", typeof(global::Neumont.Tools.ORMAbstractionToConceptualDatabaseBridge.ORMAbstractionToConceptualDatabaseBridgeDomainModel), "Neumont.Tools.ORMAbstractionToConceptualDatabaseBridge.GeneratedCode.DomainModelResx")]
+	[DslDesign::DescriptionResource("Neumont.Tools.ORMAbstractionToConceptualDatabaseBridge.MappingCustomizationModelHasReferenceModeNaming.Description", typeof(global::Neumont.Tools.ORMAbstractionToConceptualDatabaseBridge.ORMAbstractionToConceptualDatabaseBridgeDomainModel), "Neumont.Tools.ORMAbstractionToConceptualDatabaseBridge.GeneratedCode.DomainModelResx")]
+	[global::System.CLSCompliant(true)]
+	[DslModeling::DomainRelationship(IsEmbedding=true)]
+	[DslModeling::DomainObjectId("d412080d-5555-4134-8106-9f9452a7d452")]
+	public partial class MappingCustomizationModelHasReferenceModeNaming : DslModeling::ElementLink
+	{
+		#region Constructors, domain class Id
+		
+		/// <summary>
+		/// MappingCustomizationModelHasReferenceModeNaming domain class Id.
+		/// </summary>
+		public static readonly new global::System.Guid DomainClassId = new global::System.Guid(0xd412080d, 0x5555, 0x4134, 0x81, 0x06, 0x9f, 0x94, 0x52, 0xa7, 0xd4, 0x52);
+	
+				
+		/// <summary>
+		/// Constructor
+		/// Creates a MappingCustomizationModelHasReferenceModeNaming link in the same Partition as the given MappingCustomizationModel
+		/// </summary>
+		/// <param name="source">MappingCustomizationModel to use as the source of the relationship.</param>
+		/// <param name="target">ReferenceModeNaming to use as the target of the relationship.</param>
+		public MappingCustomizationModelHasReferenceModeNaming(MappingCustomizationModel source, ReferenceModeNaming target)
+			: base((source != null ? source.Partition : null), new DslModeling::RoleAssignment[]{new DslModeling::RoleAssignment(MappingCustomizationModelHasReferenceModeNaming.ModelDomainRoleId, source), new DslModeling::RoleAssignment(MappingCustomizationModelHasReferenceModeNaming.ReferenceModeNamingDomainRoleId, target)}, null)
+		{
+		}
+		
+		/// <summary>
+		/// Constructor
+		/// </summary>
+		/// <param name="store">Store where new link is to be created.</param>
+		/// <param name="roleAssignments">List of relationship role assignments.</param>
+		public MappingCustomizationModelHasReferenceModeNaming(DslModeling::Store store, params DslModeling::RoleAssignment[] roleAssignments)
+			: base(store != null ? store.DefaultPartition : null, roleAssignments, null)
+		{
+		}
+		
+		/// <summary>
+		/// Constructor
+		/// </summary>
+		/// <param name="store">Store where new link is to be created.</param>
+		/// <param name="roleAssignments">List of relationship role assignments.</param>
+		/// <param name="propertyAssignments">List of properties assignments to set on the new link.</param>
+		public MappingCustomizationModelHasReferenceModeNaming(DslModeling::Store store, DslModeling::RoleAssignment[] roleAssignments, DslModeling::PropertyAssignment[] propertyAssignments)
+			: base(store != null ? store.DefaultPartition : null, roleAssignments, propertyAssignments)
+		{
+		}
+		
+		/// <summary>
+		/// Constructor
+		/// </summary>
+		/// <param name="partition">Partition where new link is to be created.</param>
+		/// <param name="roleAssignments">List of relationship role assignments.</param>
+		public MappingCustomizationModelHasReferenceModeNaming(DslModeling::Partition partition, params DslModeling::RoleAssignment[] roleAssignments)
+			: base(partition, roleAssignments, null)
+		{
+		}
+		
+		/// <summary>
+		/// Constructor
+		/// </summary>
+		/// <param name="partition">Partition where new link is to be created.</param>
+		/// <param name="roleAssignments">List of relationship role assignments.</param>
+		/// <param name="propertyAssignments">List of properties assignments to set on the new link.</param>
+		public MappingCustomizationModelHasReferenceModeNaming(DslModeling::Partition partition, DslModeling::RoleAssignment[] roleAssignments, DslModeling::PropertyAssignment[] propertyAssignments)
+			: base(partition, roleAssignments, propertyAssignments)
+		{
+		}
+		#endregion
+		#region Model domain role code
+		
+		/// <summary>
+		/// Model domain role Id.
+		/// </summary>
+		public static readonly global::System.Guid ModelDomainRoleId = new global::System.Guid(0xf10b9590, 0xaf11, 0x4fd9, 0xbb, 0xa9, 0xd2, 0x77, 0xa7, 0xa5, 0x0f, 0xa0);
+		
+		/// <summary>
+		/// DomainRole Model
+		/// </summary>
+		[DslDesign::DisplayNameResource("Neumont.Tools.ORMAbstractionToConceptualDatabaseBridge.MappingCustomizationModelHasReferenceModeNaming/Model.DisplayName", typeof(global::Neumont.Tools.ORMAbstractionToConceptualDatabaseBridge.ORMAbstractionToConceptualDatabaseBridgeDomainModel), "Neumont.Tools.ORMAbstractionToConceptualDatabaseBridge.GeneratedCode.DomainModelResx")]
+		[DslDesign::DescriptionResource("Neumont.Tools.ORMAbstractionToConceptualDatabaseBridge.MappingCustomizationModelHasReferenceModeNaming/Model.Description", typeof(global::Neumont.Tools.ORMAbstractionToConceptualDatabaseBridge.ORMAbstractionToConceptualDatabaseBridgeDomainModel), "Neumont.Tools.ORMAbstractionToConceptualDatabaseBridge.GeneratedCode.DomainModelResx")]
+		[DslModeling::DomainRole(DslModeling::DomainRoleOrder.Source, PropertyName = "ReferenceModeNamingCollection", PropertyDisplayNameKey="Neumont.Tools.ORMAbstractionToConceptualDatabaseBridge.MappingCustomizationModelHasReferenceModeNaming/Model.PropertyDisplayName", Multiplicity = DslModeling::Multiplicity.ZeroMany)]
+		[DslModeling::DomainObjectId("f10b9590-af11-4fd9-bba9-d277a7a50fa0")]
+		public virtual MappingCustomizationModel Model
+		{
+			[global::System.Diagnostics.DebuggerStepThrough]
+			get
+			{
+				return (MappingCustomizationModel)DslModeling::DomainRoleInfo.GetRolePlayer(this, ModelDomainRoleId);
+			}
+			[global::System.Diagnostics.DebuggerStepThrough]
+			set
+			{
+				DslModeling::DomainRoleInfo.SetRolePlayer(this, ModelDomainRoleId, value);
+			}
+		}
+				
+		#endregion
+		#region Static methods to access Model of a ReferenceModeNaming
+		/// <summary>
+		/// Gets Model.
+		/// </summary>
+		[global::System.Diagnostics.DebuggerStepThrough]
+		[global::System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Design", "CA1011")]
+		public static MappingCustomizationModel GetModel(ReferenceModeNaming element)
+		{
+			return DslModeling::DomainRoleInfo.GetLinkedElement(element, ReferenceModeNamingDomainRoleId) as MappingCustomizationModel;
+		}
+		
+		/// <summary>
+		/// Sets Model.
+		/// </summary>
+		[global::System.Diagnostics.DebuggerStepThrough]
+		[global::System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Design", "CA1011")]
+		public static void SetModel(ReferenceModeNaming element, MappingCustomizationModel newModel)
+		{
+			DslModeling::DomainRoleInfo.SetLinkedElement(element, ReferenceModeNamingDomainRoleId, newModel);
+		}
+		#endregion
+		#region ReferenceModeNaming domain role code
+		
+		/// <summary>
+		/// ReferenceModeNaming domain role Id.
+		/// </summary>
+		public static readonly global::System.Guid ReferenceModeNamingDomainRoleId = new global::System.Guid(0x219a1852, 0x9896, 0x4303, 0xbf, 0x8f, 0x26, 0x96, 0xba, 0xa2, 0x59, 0x62);
+		
+		/// <summary>
+		/// DomainRole ReferenceModeNaming
+		/// </summary>
+		[DslDesign::DisplayNameResource("Neumont.Tools.ORMAbstractionToConceptualDatabaseBridge.MappingCustomizationModelHasReferenceModeNaming/ReferenceModeNaming.DisplayName", typeof(global::Neumont.Tools.ORMAbstractionToConceptualDatabaseBridge.ORMAbstractionToConceptualDatabaseBridgeDomainModel), "Neumont.Tools.ORMAbstractionToConceptualDatabaseBridge.GeneratedCode.DomainModelResx")]
+		[DslDesign::DescriptionResource("Neumont.Tools.ORMAbstractionToConceptualDatabaseBridge.MappingCustomizationModelHasReferenceModeNaming/ReferenceModeNaming.Description", typeof(global::Neumont.Tools.ORMAbstractionToConceptualDatabaseBridge.ORMAbstractionToConceptualDatabaseBridgeDomainModel), "Neumont.Tools.ORMAbstractionToConceptualDatabaseBridge.GeneratedCode.DomainModelResx")]
+		[DslModeling::DomainRole(DslModeling::DomainRoleOrder.Target, PropertyName = "Model", PropertyDisplayNameKey="Neumont.Tools.ORMAbstractionToConceptualDatabaseBridge.MappingCustomizationModelHasReferenceModeNaming/ReferenceModeNaming.PropertyDisplayName", PropagatesDelete = true, Multiplicity = DslModeling::Multiplicity.One)]
+		[DslModeling::DomainObjectId("219a1852-9896-4303-bf8f-2696baa25962")]
+		public virtual ReferenceModeNaming ReferenceModeNaming
+		{
+			[global::System.Diagnostics.DebuggerStepThrough]
+			get
+			{
+				return (ReferenceModeNaming)DslModeling::DomainRoleInfo.GetRolePlayer(this, ReferenceModeNamingDomainRoleId);
+			}
+			[global::System.Diagnostics.DebuggerStepThrough]
+			set
+			{
+				DslModeling::DomainRoleInfo.SetRolePlayer(this, ReferenceModeNamingDomainRoleId, value);
+			}
+		}
+				
+		#endregion
+		#region Static methods to access ReferenceModeNamingCollection of a MappingCustomizationModel
+		/// <summary>
+		/// Gets a list of ReferenceModeNamingCollection.
+		/// </summary>
+		[global::System.Diagnostics.DebuggerStepThrough]
+		[global::System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Design", "CA1011")]
+		public static DslModeling::LinkedElementCollection<ReferenceModeNaming> GetReferenceModeNamingCollection(MappingCustomizationModel element)
+		{
+			return new DslModeling::LinkedElementCollection<ReferenceModeNaming>(element, ModelDomainRoleId);
+		}
+		#endregion
+		#region Model link accessor
+		/// <summary>
+		/// Get the list of MappingCustomizationModelHasReferenceModeNaming links to a MappingCustomizationModel.
+		/// </summary>
+		[global::System.Diagnostics.DebuggerStepThrough]
+		[global::System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Design", "CA1011")]
+		public static global::System.Collections.ObjectModel.ReadOnlyCollection<global::Neumont.Tools.ORMAbstractionToConceptualDatabaseBridge.MappingCustomizationModelHasReferenceModeNaming> GetLinksToReferenceModeNamingCollection ( global::Neumont.Tools.ORMAbstractionToConceptualDatabaseBridge.MappingCustomizationModel modelInstance )
+		{
+			return DslModeling::DomainRoleInfo.GetElementLinks<global::Neumont.Tools.ORMAbstractionToConceptualDatabaseBridge.MappingCustomizationModelHasReferenceModeNaming>(modelInstance, global::Neumont.Tools.ORMAbstractionToConceptualDatabaseBridge.MappingCustomizationModelHasReferenceModeNaming.ModelDomainRoleId);
+		}
+		#endregion
+		#region ReferenceModeNaming link accessor
+		/// <summary>
+		/// Get the MappingCustomizationModelHasReferenceModeNaming link to a ReferenceModeNaming.
+		/// </summary>
+		[global::System.Diagnostics.DebuggerStepThrough]
+		[global::System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Design", "CA1011")]
+		public static global::Neumont.Tools.ORMAbstractionToConceptualDatabaseBridge.MappingCustomizationModelHasReferenceModeNaming GetLinkToModel (global::Neumont.Tools.ORMAbstractionToConceptualDatabaseBridge.ReferenceModeNaming referenceModeNamingInstance)
+		{
+			global::System.Collections.Generic.IList<global::Neumont.Tools.ORMAbstractionToConceptualDatabaseBridge.MappingCustomizationModelHasReferenceModeNaming> links = DslModeling::DomainRoleInfo.GetElementLinks<global::Neumont.Tools.ORMAbstractionToConceptualDatabaseBridge.MappingCustomizationModelHasReferenceModeNaming>(referenceModeNamingInstance, global::Neumont.Tools.ORMAbstractionToConceptualDatabaseBridge.MappingCustomizationModelHasReferenceModeNaming.ReferenceModeNamingDomainRoleId);
+			global::System.Diagnostics.Debug.Assert(links.Count <= 1, "Multiplicity of ReferenceModeNaming not obeyed.");
+			if ( links.Count == 0 )
+			{
+				return null;
+			}
+			else
+			{
+				return links[0];
+			}
+		}
+		#endregion
+		#region MappingCustomizationModelHasReferenceModeNaming instance accessors
+		
+		/// <summary>
+		/// Get any MappingCustomizationModelHasReferenceModeNaming links between a given MappingCustomizationModel and a ReferenceModeNaming.
+		/// </summary>
+		[global::System.Diagnostics.DebuggerStepThrough]
+		[global::System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Design", "CA1011")]
+		public static global::System.Collections.ObjectModel.ReadOnlyCollection<global::Neumont.Tools.ORMAbstractionToConceptualDatabaseBridge.MappingCustomizationModelHasReferenceModeNaming> GetLinks( global::Neumont.Tools.ORMAbstractionToConceptualDatabaseBridge.MappingCustomizationModel source, global::Neumont.Tools.ORMAbstractionToConceptualDatabaseBridge.ReferenceModeNaming target )
+		{
+			global::System.Collections.Generic.List<global::Neumont.Tools.ORMAbstractionToConceptualDatabaseBridge.MappingCustomizationModelHasReferenceModeNaming> outLinks = new global::System.Collections.Generic.List<global::Neumont.Tools.ORMAbstractionToConceptualDatabaseBridge.MappingCustomizationModelHasReferenceModeNaming>();
+			global::System.Collections.Generic.IList<global::Neumont.Tools.ORMAbstractionToConceptualDatabaseBridge.MappingCustomizationModelHasReferenceModeNaming> links = DslModeling::DomainRoleInfo.GetElementLinks<global::Neumont.Tools.ORMAbstractionToConceptualDatabaseBridge.MappingCustomizationModelHasReferenceModeNaming>(source, global::Neumont.Tools.ORMAbstractionToConceptualDatabaseBridge.MappingCustomizationModelHasReferenceModeNaming.ModelDomainRoleId);
+			foreach ( global::Neumont.Tools.ORMAbstractionToConceptualDatabaseBridge.MappingCustomizationModelHasReferenceModeNaming link in links )
+			{
+				if ( target.Equals(link.ReferenceModeNaming) )
+				{
+					outLinks.Add(link);
+				}
+			}
+			return outLinks.AsReadOnly();
+		}
+		/// <summary>
+		/// Get the one MappingCustomizationModelHasReferenceModeNaming link between a given MappingCustomizationModeland a ReferenceModeNaming.
+		/// </summary>
+		[global::System.Diagnostics.DebuggerStepThrough]
+		[global::System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Design", "CA1011")]
+		public static global::Neumont.Tools.ORMAbstractionToConceptualDatabaseBridge.MappingCustomizationModelHasReferenceModeNaming GetLink( global::Neumont.Tools.ORMAbstractionToConceptualDatabaseBridge.MappingCustomizationModel source, global::Neumont.Tools.ORMAbstractionToConceptualDatabaseBridge.ReferenceModeNaming target )
+		{
+			global::System.Collections.Generic.IList<global::Neumont.Tools.ORMAbstractionToConceptualDatabaseBridge.MappingCustomizationModelHasReferenceModeNaming> links = DslModeling::DomainRoleInfo.GetElementLinks<global::Neumont.Tools.ORMAbstractionToConceptualDatabaseBridge.MappingCustomizationModelHasReferenceModeNaming>(source, global::Neumont.Tools.ORMAbstractionToConceptualDatabaseBridge.MappingCustomizationModelHasReferenceModeNaming.ModelDomainRoleId);
+			foreach ( global::Neumont.Tools.ORMAbstractionToConceptualDatabaseBridge.MappingCustomizationModelHasReferenceModeNaming link in links )
+			{
+				if ( target.Equals(link.ReferenceModeNaming) )
+				{
+					return link;
+				}
+			}
+			return null;
+		}
+		
+		#endregion
+	}
+}
+namespace Neumont.Tools.ORMAbstractionToConceptualDatabaseBridge
+{
+	/// <summary>
+	/// DomainRelationship DefaultReferenceModeNamingCustomizesORMModel
+	/// Description for
+	/// Neumont.Tools.ORMAbstractionToConceptualDatabaseBridge.DefaultReferenceModeNamingCustomizesORMModel
+	/// </summary>
+	[DslDesign::DisplayNameResource("Neumont.Tools.ORMAbstractionToConceptualDatabaseBridge.DefaultReferenceModeNamingCustomizesORMModel.DisplayName", typeof(global::Neumont.Tools.ORMAbstractionToConceptualDatabaseBridge.ORMAbstractionToConceptualDatabaseBridgeDomainModel), "Neumont.Tools.ORMAbstractionToConceptualDatabaseBridge.GeneratedCode.DomainModelResx")]
+	[DslDesign::DescriptionResource("Neumont.Tools.ORMAbstractionToConceptualDatabaseBridge.DefaultReferenceModeNamingCustomizesORMModel.Description", typeof(global::Neumont.Tools.ORMAbstractionToConceptualDatabaseBridge.ORMAbstractionToConceptualDatabaseBridgeDomainModel), "Neumont.Tools.ORMAbstractionToConceptualDatabaseBridge.GeneratedCode.DomainModelResx")]
+	[global::System.CLSCompliant(true)]
+	[DslModeling::DomainRelationship()]
+	[DslModeling::DomainObjectId("0b75db0c-3196-4c80-884b-2adda04de8b0")]
+	public partial class DefaultReferenceModeNamingCustomizesORMModel : DslModeling::ElementLink
+	{
+		#region Constructors, domain class Id
+		
+		/// <summary>
+		/// DefaultReferenceModeNamingCustomizesORMModel domain class Id.
+		/// </summary>
+		public static readonly new global::System.Guid DomainClassId = new global::System.Guid(0x0b75db0c, 0x3196, 0x4c80, 0x88, 0x4b, 0x2a, 0xdd, 0xa0, 0x4d, 0xe8, 0xb0);
+	
+				
+		/// <summary>
+		/// Constructor
+		/// Creates a DefaultReferenceModeNamingCustomizesORMModel link in the same Partition as the given DefaultReferenceModeNaming
+		/// </summary>
+		/// <param name="source">DefaultReferenceModeNaming to use as the source of the relationship.</param>
+		/// <param name="target">ORMModel to use as the target of the relationship.</param>
+		public DefaultReferenceModeNamingCustomizesORMModel(DefaultReferenceModeNaming source, global::Neumont.Tools.ORM.ObjectModel.ORMModel target)
+			: base((source != null ? source.Partition : null), new DslModeling::RoleAssignment[]{new DslModeling::RoleAssignment(DefaultReferenceModeNamingCustomizesORMModel.DefaultReferenceModeNamingDomainRoleId, source), new DslModeling::RoleAssignment(DefaultReferenceModeNamingCustomizesORMModel.ORMModelDomainRoleId, target)}, null)
+		{
+		}
+		
+		/// <summary>
+		/// Constructor
+		/// </summary>
+		/// <param name="store">Store where new link is to be created.</param>
+		/// <param name="roleAssignments">List of relationship role assignments.</param>
+		public DefaultReferenceModeNamingCustomizesORMModel(DslModeling::Store store, params DslModeling::RoleAssignment[] roleAssignments)
+			: base(store != null ? store.DefaultPartition : null, roleAssignments, null)
+		{
+		}
+		
+		/// <summary>
+		/// Constructor
+		/// </summary>
+		/// <param name="store">Store where new link is to be created.</param>
+		/// <param name="roleAssignments">List of relationship role assignments.</param>
+		/// <param name="propertyAssignments">List of properties assignments to set on the new link.</param>
+		public DefaultReferenceModeNamingCustomizesORMModel(DslModeling::Store store, DslModeling::RoleAssignment[] roleAssignments, DslModeling::PropertyAssignment[] propertyAssignments)
+			: base(store != null ? store.DefaultPartition : null, roleAssignments, propertyAssignments)
+		{
+		}
+		
+		/// <summary>
+		/// Constructor
+		/// </summary>
+		/// <param name="partition">Partition where new link is to be created.</param>
+		/// <param name="roleAssignments">List of relationship role assignments.</param>
+		public DefaultReferenceModeNamingCustomizesORMModel(DslModeling::Partition partition, params DslModeling::RoleAssignment[] roleAssignments)
+			: base(partition, roleAssignments, null)
+		{
+		}
+		
+		/// <summary>
+		/// Constructor
+		/// </summary>
+		/// <param name="partition">Partition where new link is to be created.</param>
+		/// <param name="roleAssignments">List of relationship role assignments.</param>
+		/// <param name="propertyAssignments">List of properties assignments to set on the new link.</param>
+		public DefaultReferenceModeNamingCustomizesORMModel(DslModeling::Partition partition, DslModeling::RoleAssignment[] roleAssignments, DslModeling::PropertyAssignment[] propertyAssignments)
+			: base(partition, roleAssignments, propertyAssignments)
+		{
+		}
+		#endregion
+		#region DefaultReferenceModeNaming domain role code
+		
+		/// <summary>
+		/// DefaultReferenceModeNaming domain role Id.
+		/// </summary>
+		public static readonly global::System.Guid DefaultReferenceModeNamingDomainRoleId = new global::System.Guid(0x5c4580ad, 0xbc05, 0x4691, 0xa9, 0xce, 0xe5, 0x49, 0x52, 0xdb, 0x1e, 0xf9);
+		
+		/// <summary>
+		/// DomainRole DefaultReferenceModeNaming
+		/// </summary>
+		[DslDesign::DisplayNameResource("Neumont.Tools.ORMAbstractionToConceptualDatabaseBridge.DefaultReferenceModeNamingCustomizesORMModel/DefaultReferenceModeNaming.DisplayName", typeof(global::Neumont.Tools.ORMAbstractionToConceptualDatabaseBridge.ORMAbstractionToConceptualDatabaseBridgeDomainModel), "Neumont.Tools.ORMAbstractionToConceptualDatabaseBridge.GeneratedCode.DomainModelResx")]
+		[DslDesign::DescriptionResource("Neumont.Tools.ORMAbstractionToConceptualDatabaseBridge.DefaultReferenceModeNamingCustomizesORMModel/DefaultReferenceModeNaming.Description", typeof(global::Neumont.Tools.ORMAbstractionToConceptualDatabaseBridge.ORMAbstractionToConceptualDatabaseBridgeDomainModel), "Neumont.Tools.ORMAbstractionToConceptualDatabaseBridge.GeneratedCode.DomainModelResx")]
+		[DslModeling::DomainRole(DslModeling::DomainRoleOrder.Source, PropertyName = "ORMModel", PropertyDisplayNameKey="Neumont.Tools.ORMAbstractionToConceptualDatabaseBridge.DefaultReferenceModeNamingCustomizesORMModel/DefaultReferenceModeNaming.PropertyDisplayName", PropagatesDelete = true, Multiplicity = DslModeling::Multiplicity.One)]
+		[DslModeling::DomainObjectId("5c4580ad-bc05-4691-a9ce-e54952db1ef9")]
+		public virtual DefaultReferenceModeNaming DefaultReferenceModeNaming
+		{
+			[global::System.Diagnostics.DebuggerStepThrough]
+			get
+			{
+				return (DefaultReferenceModeNaming)DslModeling::DomainRoleInfo.GetRolePlayer(this, DefaultReferenceModeNamingDomainRoleId);
+			}
+			[global::System.Diagnostics.DebuggerStepThrough]
+			set
+			{
+				DslModeling::DomainRoleInfo.SetRolePlayer(this, DefaultReferenceModeNamingDomainRoleId, value);
+			}
+		}
+				
+		#endregion
+		#region Static methods to access DefaultReferenceModeNamingCollection of a ORMModel
+		/// <summary>
+		/// Gets a list of DefaultReferenceModeNamingCollection.
+		/// </summary>
+		[global::System.Diagnostics.DebuggerStepThrough]
+		[global::System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Design", "CA1011")]
+		public static DslModeling::LinkedElementCollection<DefaultReferenceModeNaming> GetDefaultReferenceModeNamingCollection(global::Neumont.Tools.ORM.ObjectModel.ORMModel element)
+		{
+			return new DslModeling::LinkedElementCollection<DefaultReferenceModeNaming>(element, ORMModelDomainRoleId);
+		}
+		#endregion
+		#region ORMModel domain role code
+		
+		/// <summary>
+		/// ORMModel domain role Id.
+		/// </summary>
+		public static readonly global::System.Guid ORMModelDomainRoleId = new global::System.Guid(0x341c7c8a, 0xd168, 0x4d09, 0xb0, 0x2d, 0x6a, 0x79, 0xbc, 0x3f, 0x34, 0xc8);
+		
+		/// <summary>
+		/// DomainRole ORMModel
+		/// </summary>
+		[DslDesign::DisplayNameResource("Neumont.Tools.ORMAbstractionToConceptualDatabaseBridge.DefaultReferenceModeNamingCustomizesORMModel/ORMModel.DisplayName", typeof(global::Neumont.Tools.ORMAbstractionToConceptualDatabaseBridge.ORMAbstractionToConceptualDatabaseBridgeDomainModel), "Neumont.Tools.ORMAbstractionToConceptualDatabaseBridge.GeneratedCode.DomainModelResx")]
+		[DslDesign::DescriptionResource("Neumont.Tools.ORMAbstractionToConceptualDatabaseBridge.DefaultReferenceModeNamingCustomizesORMModel/ORMModel.Description", typeof(global::Neumont.Tools.ORMAbstractionToConceptualDatabaseBridge.ORMAbstractionToConceptualDatabaseBridgeDomainModel), "Neumont.Tools.ORMAbstractionToConceptualDatabaseBridge.GeneratedCode.DomainModelResx")]
+		[DslModeling::DomainRole(DslModeling::DomainRoleOrder.Target, PropertyName = "DefaultReferenceModeNamingCollection", PropertyDisplayNameKey="Neumont.Tools.ORMAbstractionToConceptualDatabaseBridge.DefaultReferenceModeNamingCustomizesORMModel/ORMModel.PropertyDisplayName", Multiplicity = DslModeling::Multiplicity.ZeroMany)]
+		[DslModeling::DomainObjectId("341c7c8a-d168-4d09-b02d-6a79bc3f34c8")]
+		public virtual global::Neumont.Tools.ORM.ObjectModel.ORMModel ORMModel
+		{
+			[global::System.Diagnostics.DebuggerStepThrough]
+			get
+			{
+				return (global::Neumont.Tools.ORM.ObjectModel.ORMModel)DslModeling::DomainRoleInfo.GetRolePlayer(this, ORMModelDomainRoleId);
+			}
+			[global::System.Diagnostics.DebuggerStepThrough]
+			set
+			{
+				DslModeling::DomainRoleInfo.SetRolePlayer(this, ORMModelDomainRoleId, value);
+			}
+		}
+				
+		#endregion
+		#region Static methods to access ORMModel of a DefaultReferenceModeNaming
+		/// <summary>
+		/// Gets ORMModel.
+		/// </summary>
+		[global::System.Diagnostics.DebuggerStepThrough]
+		[global::System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Design", "CA1011")]
+		public static global::Neumont.Tools.ORM.ObjectModel.ORMModel GetORMModel(DefaultReferenceModeNaming element)
+		{
+			return DslModeling::DomainRoleInfo.GetLinkedElement(element, DefaultReferenceModeNamingDomainRoleId) as global::Neumont.Tools.ORM.ObjectModel.ORMModel;
+		}
+		
+		/// <summary>
+		/// Sets ORMModel.
+		/// </summary>
+		[global::System.Diagnostics.DebuggerStepThrough]
+		[global::System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Design", "CA1011")]
+		public static void SetORMModel(DefaultReferenceModeNaming element, global::Neumont.Tools.ORM.ObjectModel.ORMModel newORMModel)
+		{
+			DslModeling::DomainRoleInfo.SetLinkedElement(element, DefaultReferenceModeNamingDomainRoleId, newORMModel);
+		}
+		#endregion
+		#region DefaultReferenceModeNaming link accessor
+		/// <summary>
+		/// Get the DefaultReferenceModeNamingCustomizesORMModel link to a DefaultReferenceModeNaming.
+		/// </summary>
+		[global::System.Diagnostics.DebuggerStepThrough]
+		[global::System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Design", "CA1011")]
+		public static global::Neumont.Tools.ORMAbstractionToConceptualDatabaseBridge.DefaultReferenceModeNamingCustomizesORMModel GetLinkToORMModel (global::Neumont.Tools.ORMAbstractionToConceptualDatabaseBridge.DefaultReferenceModeNaming defaultReferenceModeNamingInstance)
+		{
+			global::System.Collections.Generic.IList<global::Neumont.Tools.ORMAbstractionToConceptualDatabaseBridge.DefaultReferenceModeNamingCustomizesORMModel> links = DslModeling::DomainRoleInfo.GetElementLinks<global::Neumont.Tools.ORMAbstractionToConceptualDatabaseBridge.DefaultReferenceModeNamingCustomizesORMModel>(defaultReferenceModeNamingInstance, global::Neumont.Tools.ORMAbstractionToConceptualDatabaseBridge.DefaultReferenceModeNamingCustomizesORMModel.DefaultReferenceModeNamingDomainRoleId);
+			global::System.Diagnostics.Debug.Assert(links.Count <= 1, "Multiplicity of DefaultReferenceModeNaming not obeyed.");
+			if ( links.Count == 0 )
+			{
+				return null;
+			}
+			else
+			{
+				return links[0];
+			}
+		}
+		#endregion
+		#region ORMModel link accessor
+		/// <summary>
+		/// Get the list of DefaultReferenceModeNamingCustomizesORMModel links to a ORMModel.
+		/// </summary>
+		[global::System.Diagnostics.DebuggerStepThrough]
+		[global::System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Design", "CA1011")]
+		public static global::System.Collections.ObjectModel.ReadOnlyCollection<global::Neumont.Tools.ORMAbstractionToConceptualDatabaseBridge.DefaultReferenceModeNamingCustomizesORMModel> GetLinksToDefaultReferenceModeNamingCollection ( global::Neumont.Tools.ORM.ObjectModel.ORMModel oRMModelInstance )
+		{
+			return DslModeling::DomainRoleInfo.GetElementLinks<global::Neumont.Tools.ORMAbstractionToConceptualDatabaseBridge.DefaultReferenceModeNamingCustomizesORMModel>(oRMModelInstance, global::Neumont.Tools.ORMAbstractionToConceptualDatabaseBridge.DefaultReferenceModeNamingCustomizesORMModel.ORMModelDomainRoleId);
+		}
+		#endregion
+		#region DefaultReferenceModeNamingCustomizesORMModel instance accessors
+		
+		/// <summary>
+		/// Get any DefaultReferenceModeNamingCustomizesORMModel links between a given DefaultReferenceModeNaming and a ORMModel.
+		/// </summary>
+		[global::System.Diagnostics.DebuggerStepThrough]
+		[global::System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Design", "CA1011")]
+		public static global::System.Collections.ObjectModel.ReadOnlyCollection<global::Neumont.Tools.ORMAbstractionToConceptualDatabaseBridge.DefaultReferenceModeNamingCustomizesORMModel> GetLinks( global::Neumont.Tools.ORMAbstractionToConceptualDatabaseBridge.DefaultReferenceModeNaming source, global::Neumont.Tools.ORM.ObjectModel.ORMModel target )
+		{
+			global::System.Collections.Generic.List<global::Neumont.Tools.ORMAbstractionToConceptualDatabaseBridge.DefaultReferenceModeNamingCustomizesORMModel> outLinks = new global::System.Collections.Generic.List<global::Neumont.Tools.ORMAbstractionToConceptualDatabaseBridge.DefaultReferenceModeNamingCustomizesORMModel>();
+			global::System.Collections.Generic.IList<global::Neumont.Tools.ORMAbstractionToConceptualDatabaseBridge.DefaultReferenceModeNamingCustomizesORMModel> links = DslModeling::DomainRoleInfo.GetElementLinks<global::Neumont.Tools.ORMAbstractionToConceptualDatabaseBridge.DefaultReferenceModeNamingCustomizesORMModel>(source, global::Neumont.Tools.ORMAbstractionToConceptualDatabaseBridge.DefaultReferenceModeNamingCustomizesORMModel.DefaultReferenceModeNamingDomainRoleId);
+			foreach ( global::Neumont.Tools.ORMAbstractionToConceptualDatabaseBridge.DefaultReferenceModeNamingCustomizesORMModel link in links )
+			{
+				if ( target.Equals(link.ORMModel) )
+				{
+					outLinks.Add(link);
+				}
+			}
+			return outLinks.AsReadOnly();
+		}
+		/// <summary>
+		/// Get the one DefaultReferenceModeNamingCustomizesORMModel link between a given DefaultReferenceModeNamingand a ORMModel.
+		/// </summary>
+		[global::System.Diagnostics.DebuggerStepThrough]
+		[global::System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Design", "CA1011")]
+		public static global::Neumont.Tools.ORMAbstractionToConceptualDatabaseBridge.DefaultReferenceModeNamingCustomizesORMModel GetLink( global::Neumont.Tools.ORMAbstractionToConceptualDatabaseBridge.DefaultReferenceModeNaming source, global::Neumont.Tools.ORM.ObjectModel.ORMModel target )
+		{
+			global::System.Collections.Generic.IList<global::Neumont.Tools.ORMAbstractionToConceptualDatabaseBridge.DefaultReferenceModeNamingCustomizesORMModel> links = DslModeling::DomainRoleInfo.GetElementLinks<global::Neumont.Tools.ORMAbstractionToConceptualDatabaseBridge.DefaultReferenceModeNamingCustomizesORMModel>(source, global::Neumont.Tools.ORMAbstractionToConceptualDatabaseBridge.DefaultReferenceModeNamingCustomizesORMModel.DefaultReferenceModeNamingDomainRoleId);
+			foreach ( global::Neumont.Tools.ORMAbstractionToConceptualDatabaseBridge.DefaultReferenceModeNamingCustomizesORMModel link in links )
+			{
+				if ( target.Equals(link.ORMModel) )
+				{
+					return link;
+				}
+			}
+			return null;
+		}
+		
+		#endregion
+	}
+}
+namespace Neumont.Tools.ORMAbstractionToConceptualDatabaseBridge
+{
+	/// <summary>
+	/// DomainRelationship MappingCustomizationModelHasDefaultReferenceModeNaming
+	/// Description for
+	/// Neumont.Tools.ORMAbstractionToConceptualDatabaseBridge.MappingCustomizationModelHasDefaultReferenceModeNaming
+	/// </summary>
+	[DslDesign::DisplayNameResource("Neumont.Tools.ORMAbstractionToConceptualDatabaseBridge.MappingCustomizationModelHasDefaultReferenceModeNaming.DisplayName", typeof(global::Neumont.Tools.ORMAbstractionToConceptualDatabaseBridge.ORMAbstractionToConceptualDatabaseBridgeDomainModel), "Neumont.Tools.ORMAbstractionToConceptualDatabaseBridge.GeneratedCode.DomainModelResx")]
+	[DslDesign::DescriptionResource("Neumont.Tools.ORMAbstractionToConceptualDatabaseBridge.MappingCustomizationModelHasDefaultReferenceModeNaming.Description", typeof(global::Neumont.Tools.ORMAbstractionToConceptualDatabaseBridge.ORMAbstractionToConceptualDatabaseBridgeDomainModel), "Neumont.Tools.ORMAbstractionToConceptualDatabaseBridge.GeneratedCode.DomainModelResx")]
+	[global::System.CLSCompliant(true)]
+	[DslModeling::DomainRelationship(IsEmbedding=true)]
+	[DslModeling::DomainObjectId("93737680-42d1-4453-bd79-d143406648ce")]
+	public partial class MappingCustomizationModelHasDefaultReferenceModeNaming : DslModeling::ElementLink
+	{
+		#region Constructors, domain class Id
+		
+		/// <summary>
+		/// MappingCustomizationModelHasDefaultReferenceModeNaming domain class Id.
+		/// </summary>
+		public static readonly new global::System.Guid DomainClassId = new global::System.Guid(0x93737680, 0x42d1, 0x4453, 0xbd, 0x79, 0xd1, 0x43, 0x40, 0x66, 0x48, 0xce);
+	
+				
+		/// <summary>
+		/// Constructor
+		/// Creates a MappingCustomizationModelHasDefaultReferenceModeNaming link in the same Partition as the given MappingCustomizationModel
+		/// </summary>
+		/// <param name="source">MappingCustomizationModel to use as the source of the relationship.</param>
+		/// <param name="target">DefaultReferenceModeNaming to use as the target of the relationship.</param>
+		public MappingCustomizationModelHasDefaultReferenceModeNaming(MappingCustomizationModel source, DefaultReferenceModeNaming target)
+			: base((source != null ? source.Partition : null), new DslModeling::RoleAssignment[]{new DslModeling::RoleAssignment(MappingCustomizationModelHasDefaultReferenceModeNaming.ModelDomainRoleId, source), new DslModeling::RoleAssignment(MappingCustomizationModelHasDefaultReferenceModeNaming.DefaultReferenceModeNamingDomainRoleId, target)}, null)
+		{
+		}
+		
+		/// <summary>
+		/// Constructor
+		/// </summary>
+		/// <param name="store">Store where new link is to be created.</param>
+		/// <param name="roleAssignments">List of relationship role assignments.</param>
+		public MappingCustomizationModelHasDefaultReferenceModeNaming(DslModeling::Store store, params DslModeling::RoleAssignment[] roleAssignments)
+			: base(store != null ? store.DefaultPartition : null, roleAssignments, null)
+		{
+		}
+		
+		/// <summary>
+		/// Constructor
+		/// </summary>
+		/// <param name="store">Store where new link is to be created.</param>
+		/// <param name="roleAssignments">List of relationship role assignments.</param>
+		/// <param name="propertyAssignments">List of properties assignments to set on the new link.</param>
+		public MappingCustomizationModelHasDefaultReferenceModeNaming(DslModeling::Store store, DslModeling::RoleAssignment[] roleAssignments, DslModeling::PropertyAssignment[] propertyAssignments)
+			: base(store != null ? store.DefaultPartition : null, roleAssignments, propertyAssignments)
+		{
+		}
+		
+		/// <summary>
+		/// Constructor
+		/// </summary>
+		/// <param name="partition">Partition where new link is to be created.</param>
+		/// <param name="roleAssignments">List of relationship role assignments.</param>
+		public MappingCustomizationModelHasDefaultReferenceModeNaming(DslModeling::Partition partition, params DslModeling::RoleAssignment[] roleAssignments)
+			: base(partition, roleAssignments, null)
+		{
+		}
+		
+		/// <summary>
+		/// Constructor
+		/// </summary>
+		/// <param name="partition">Partition where new link is to be created.</param>
+		/// <param name="roleAssignments">List of relationship role assignments.</param>
+		/// <param name="propertyAssignments">List of properties assignments to set on the new link.</param>
+		public MappingCustomizationModelHasDefaultReferenceModeNaming(DslModeling::Partition partition, DslModeling::RoleAssignment[] roleAssignments, DslModeling::PropertyAssignment[] propertyAssignments)
+			: base(partition, roleAssignments, propertyAssignments)
+		{
+		}
+		#endregion
+		#region Model domain role code
+		
+		/// <summary>
+		/// Model domain role Id.
+		/// </summary>
+		public static readonly global::System.Guid ModelDomainRoleId = new global::System.Guid(0x652081eb, 0x9586, 0x407c, 0x8d, 0x3f, 0xa6, 0x49, 0x1b, 0x97, 0x5c, 0x27);
+		
+		/// <summary>
+		/// DomainRole Model
+		/// </summary>
+		[DslDesign::DisplayNameResource("Neumont.Tools.ORMAbstractionToConceptualDatabaseBridge.MappingCustomizationModelHasDefaultReferenceModeNaming/Model.DisplayName", typeof(global::Neumont.Tools.ORMAbstractionToConceptualDatabaseBridge.ORMAbstractionToConceptualDatabaseBridgeDomainModel), "Neumont.Tools.ORMAbstractionToConceptualDatabaseBridge.GeneratedCode.DomainModelResx")]
+		[DslDesign::DescriptionResource("Neumont.Tools.ORMAbstractionToConceptualDatabaseBridge.MappingCustomizationModelHasDefaultReferenceModeNaming/Model.Description", typeof(global::Neumont.Tools.ORMAbstractionToConceptualDatabaseBridge.ORMAbstractionToConceptualDatabaseBridgeDomainModel), "Neumont.Tools.ORMAbstractionToConceptualDatabaseBridge.GeneratedCode.DomainModelResx")]
+		[DslModeling::DomainRole(DslModeling::DomainRoleOrder.Source, PropertyName = "DefaultReferenceModeNamingCollection", PropertyDisplayNameKey="Neumont.Tools.ORMAbstractionToConceptualDatabaseBridge.MappingCustomizationModelHasDefaultReferenceModeNaming/Model.PropertyDisplayName", Multiplicity = DslModeling::Multiplicity.ZeroMany)]
+		[DslModeling::DomainObjectId("652081eb-9586-407c-8d3f-a6491b975c27")]
+		public virtual MappingCustomizationModel Model
+		{
+			[global::System.Diagnostics.DebuggerStepThrough]
+			get
+			{
+				return (MappingCustomizationModel)DslModeling::DomainRoleInfo.GetRolePlayer(this, ModelDomainRoleId);
+			}
+			[global::System.Diagnostics.DebuggerStepThrough]
+			set
+			{
+				DslModeling::DomainRoleInfo.SetRolePlayer(this, ModelDomainRoleId, value);
+			}
+		}
+				
+		#endregion
+		#region Static methods to access Model of a DefaultReferenceModeNaming
+		/// <summary>
+		/// Gets Model.
+		/// </summary>
+		[global::System.Diagnostics.DebuggerStepThrough]
+		[global::System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Design", "CA1011")]
+		public static MappingCustomizationModel GetModel(DefaultReferenceModeNaming element)
+		{
+			return DslModeling::DomainRoleInfo.GetLinkedElement(element, DefaultReferenceModeNamingDomainRoleId) as MappingCustomizationModel;
+		}
+		
+		/// <summary>
+		/// Sets Model.
+		/// </summary>
+		[global::System.Diagnostics.DebuggerStepThrough]
+		[global::System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Design", "CA1011")]
+		public static void SetModel(DefaultReferenceModeNaming element, MappingCustomizationModel newModel)
+		{
+			DslModeling::DomainRoleInfo.SetLinkedElement(element, DefaultReferenceModeNamingDomainRoleId, newModel);
+		}
+		#endregion
+		#region DefaultReferenceModeNaming domain role code
+		
+		/// <summary>
+		/// DefaultReferenceModeNaming domain role Id.
+		/// </summary>
+		public static readonly global::System.Guid DefaultReferenceModeNamingDomainRoleId = new global::System.Guid(0x32c09a1c, 0x8139, 0x489a, 0x8a, 0x4e, 0x2e, 0x35, 0xa5, 0xc3, 0x1d, 0x7c);
+		
+		/// <summary>
+		/// DomainRole DefaultReferenceModeNaming
+		/// </summary>
+		[DslDesign::DisplayNameResource("Neumont.Tools.ORMAbstractionToConceptualDatabaseBridge.MappingCustomizationModelHasDefaultReferenceModeNaming/DefaultReferenceModeNaming.DisplayName", typeof(global::Neumont.Tools.ORMAbstractionToConceptualDatabaseBridge.ORMAbstractionToConceptualDatabaseBridgeDomainModel), "Neumont.Tools.ORMAbstractionToConceptualDatabaseBridge.GeneratedCode.DomainModelResx")]
+		[DslDesign::DescriptionResource("Neumont.Tools.ORMAbstractionToConceptualDatabaseBridge.MappingCustomizationModelHasDefaultReferenceModeNaming/DefaultReferenceModeNaming.Description", typeof(global::Neumont.Tools.ORMAbstractionToConceptualDatabaseBridge.ORMAbstractionToConceptualDatabaseBridgeDomainModel), "Neumont.Tools.ORMAbstractionToConceptualDatabaseBridge.GeneratedCode.DomainModelResx")]
+		[DslModeling::DomainRole(DslModeling::DomainRoleOrder.Target, PropertyName = "Model", PropertyDisplayNameKey="Neumont.Tools.ORMAbstractionToConceptualDatabaseBridge.MappingCustomizationModelHasDefaultReferenceModeNaming/DefaultReferenceModeNaming.PropertyDisplayName", PropagatesDelete = true, Multiplicity = DslModeling::Multiplicity.One)]
+		[DslModeling::DomainObjectId("32c09a1c-8139-489a-8a4e-2e35a5c31d7c")]
+		public virtual DefaultReferenceModeNaming DefaultReferenceModeNaming
+		{
+			[global::System.Diagnostics.DebuggerStepThrough]
+			get
+			{
+				return (DefaultReferenceModeNaming)DslModeling::DomainRoleInfo.GetRolePlayer(this, DefaultReferenceModeNamingDomainRoleId);
+			}
+			[global::System.Diagnostics.DebuggerStepThrough]
+			set
+			{
+				DslModeling::DomainRoleInfo.SetRolePlayer(this, DefaultReferenceModeNamingDomainRoleId, value);
+			}
+		}
+				
+		#endregion
+		#region Static methods to access DefaultReferenceModeNamingCollection of a MappingCustomizationModel
+		/// <summary>
+		/// Gets a list of DefaultReferenceModeNamingCollection.
+		/// </summary>
+		[global::System.Diagnostics.DebuggerStepThrough]
+		[global::System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Design", "CA1011")]
+		public static DslModeling::LinkedElementCollection<DefaultReferenceModeNaming> GetDefaultReferenceModeNamingCollection(MappingCustomizationModel element)
+		{
+			return new DslModeling::LinkedElementCollection<DefaultReferenceModeNaming>(element, ModelDomainRoleId);
+		}
+		#endregion
+		#region Model link accessor
+		/// <summary>
+		/// Get the list of MappingCustomizationModelHasDefaultReferenceModeNaming links to a MappingCustomizationModel.
+		/// </summary>
+		[global::System.Diagnostics.DebuggerStepThrough]
+		[global::System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Design", "CA1011")]
+		public static global::System.Collections.ObjectModel.ReadOnlyCollection<global::Neumont.Tools.ORMAbstractionToConceptualDatabaseBridge.MappingCustomizationModelHasDefaultReferenceModeNaming> GetLinksToDefaultReferenceModeNamingCollection ( global::Neumont.Tools.ORMAbstractionToConceptualDatabaseBridge.MappingCustomizationModel modelInstance )
+		{
+			return DslModeling::DomainRoleInfo.GetElementLinks<global::Neumont.Tools.ORMAbstractionToConceptualDatabaseBridge.MappingCustomizationModelHasDefaultReferenceModeNaming>(modelInstance, global::Neumont.Tools.ORMAbstractionToConceptualDatabaseBridge.MappingCustomizationModelHasDefaultReferenceModeNaming.ModelDomainRoleId);
+		}
+		#endregion
+		#region DefaultReferenceModeNaming link accessor
+		/// <summary>
+		/// Get the MappingCustomizationModelHasDefaultReferenceModeNaming link to a DefaultReferenceModeNaming.
+		/// </summary>
+		[global::System.Diagnostics.DebuggerStepThrough]
+		[global::System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Design", "CA1011")]
+		public static global::Neumont.Tools.ORMAbstractionToConceptualDatabaseBridge.MappingCustomizationModelHasDefaultReferenceModeNaming GetLinkToModel (global::Neumont.Tools.ORMAbstractionToConceptualDatabaseBridge.DefaultReferenceModeNaming defaultReferenceModeNamingInstance)
+		{
+			global::System.Collections.Generic.IList<global::Neumont.Tools.ORMAbstractionToConceptualDatabaseBridge.MappingCustomizationModelHasDefaultReferenceModeNaming> links = DslModeling::DomainRoleInfo.GetElementLinks<global::Neumont.Tools.ORMAbstractionToConceptualDatabaseBridge.MappingCustomizationModelHasDefaultReferenceModeNaming>(defaultReferenceModeNamingInstance, global::Neumont.Tools.ORMAbstractionToConceptualDatabaseBridge.MappingCustomizationModelHasDefaultReferenceModeNaming.DefaultReferenceModeNamingDomainRoleId);
+			global::System.Diagnostics.Debug.Assert(links.Count <= 1, "Multiplicity of DefaultReferenceModeNaming not obeyed.");
+			if ( links.Count == 0 )
+			{
+				return null;
+			}
+			else
+			{
+				return links[0];
+			}
+		}
+		#endregion
+		#region MappingCustomizationModelHasDefaultReferenceModeNaming instance accessors
+		
+		/// <summary>
+		/// Get any MappingCustomizationModelHasDefaultReferenceModeNaming links between a given MappingCustomizationModel and a DefaultReferenceModeNaming.
+		/// </summary>
+		[global::System.Diagnostics.DebuggerStepThrough]
+		[global::System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Design", "CA1011")]
+		public static global::System.Collections.ObjectModel.ReadOnlyCollection<global::Neumont.Tools.ORMAbstractionToConceptualDatabaseBridge.MappingCustomizationModelHasDefaultReferenceModeNaming> GetLinks( global::Neumont.Tools.ORMAbstractionToConceptualDatabaseBridge.MappingCustomizationModel source, global::Neumont.Tools.ORMAbstractionToConceptualDatabaseBridge.DefaultReferenceModeNaming target )
+		{
+			global::System.Collections.Generic.List<global::Neumont.Tools.ORMAbstractionToConceptualDatabaseBridge.MappingCustomizationModelHasDefaultReferenceModeNaming> outLinks = new global::System.Collections.Generic.List<global::Neumont.Tools.ORMAbstractionToConceptualDatabaseBridge.MappingCustomizationModelHasDefaultReferenceModeNaming>();
+			global::System.Collections.Generic.IList<global::Neumont.Tools.ORMAbstractionToConceptualDatabaseBridge.MappingCustomizationModelHasDefaultReferenceModeNaming> links = DslModeling::DomainRoleInfo.GetElementLinks<global::Neumont.Tools.ORMAbstractionToConceptualDatabaseBridge.MappingCustomizationModelHasDefaultReferenceModeNaming>(source, global::Neumont.Tools.ORMAbstractionToConceptualDatabaseBridge.MappingCustomizationModelHasDefaultReferenceModeNaming.ModelDomainRoleId);
+			foreach ( global::Neumont.Tools.ORMAbstractionToConceptualDatabaseBridge.MappingCustomizationModelHasDefaultReferenceModeNaming link in links )
+			{
+				if ( target.Equals(link.DefaultReferenceModeNaming) )
+				{
+					outLinks.Add(link);
+				}
+			}
+			return outLinks.AsReadOnly();
+		}
+		/// <summary>
+		/// Get the one MappingCustomizationModelHasDefaultReferenceModeNaming link between a given MappingCustomizationModeland a DefaultReferenceModeNaming.
+		/// </summary>
+		[global::System.Diagnostics.DebuggerStepThrough]
+		[global::System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Design", "CA1011")]
+		public static global::Neumont.Tools.ORMAbstractionToConceptualDatabaseBridge.MappingCustomizationModelHasDefaultReferenceModeNaming GetLink( global::Neumont.Tools.ORMAbstractionToConceptualDatabaseBridge.MappingCustomizationModel source, global::Neumont.Tools.ORMAbstractionToConceptualDatabaseBridge.DefaultReferenceModeNaming target )
+		{
+			global::System.Collections.Generic.IList<global::Neumont.Tools.ORMAbstractionToConceptualDatabaseBridge.MappingCustomizationModelHasDefaultReferenceModeNaming> links = DslModeling::DomainRoleInfo.GetElementLinks<global::Neumont.Tools.ORMAbstractionToConceptualDatabaseBridge.MappingCustomizationModelHasDefaultReferenceModeNaming>(source, global::Neumont.Tools.ORMAbstractionToConceptualDatabaseBridge.MappingCustomizationModelHasDefaultReferenceModeNaming.ModelDomainRoleId);
+			foreach ( global::Neumont.Tools.ORMAbstractionToConceptualDatabaseBridge.MappingCustomizationModelHasDefaultReferenceModeNaming link in links )
+			{
+				if ( target.Equals(link.DefaultReferenceModeNaming) )
+				{
+					return link;
+				}
+			}
+			return null;
+		}
+		
+		#endregion
+	}
+}
+namespace Neumont.Tools.ORMAbstractionToConceptualDatabaseBridge
+{
+	/// <summary>
 	/// DomainRelationship SchemaIsForAbstractionModel
 	/// Description for
 	/// Neumont.Tools.ORMAbstractionToConceptualDatabaseBridge.SchemaIsForAbstractionModel
