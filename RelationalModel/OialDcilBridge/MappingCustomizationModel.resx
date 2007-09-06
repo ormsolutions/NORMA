@@ -233,4 +233,144 @@
     <value>ValueType Name</value>
     <comment>The displayed form of the ValueTypeName enum value</comment>
   </data>
+  <data name="ReferenceModeNaming.CurrentModelDefault.CustomFormat" xml:space="preserve">
+    <value>Model Default (Custom Format)</value>
+    <comment>The displayed form of the ModelDefault value in the dropdown list when the ModelDefault is CustomFormat</comment>
+  </data>
+  <data name="ReferenceModeNaming.CurrentModelDefault.EntityTypeName" xml:space="preserve">
+    <value>Model Default (EntityType Name)</value>
+    <comment>The displayed form of the ModelDefault value in the dropdown list when the ModelDefault is EntityTypeName</comment>
+  </data>
+  <data name="ReferenceModeNaming.CurrentModelDefault.ReferenceModeName" xml:space="preserve">
+    <value>Model Default (ReferenceMode Name)</value>
+    <comment>The displayed form of the ModelDefault value in the dropdown list when the ModelDefault is ReferenceModeName</comment>
+  </data>
+  <data name="ReferenceModeNaming.CurrentModelDefault.ValueTypeName" xml:space="preserve">
+    <value>Model Default (ValueType Name)</value>
+    <comment>The displayed form of the ModelDefault value in the dropdown list when the ModelDefault is ValueTypeName</comment>
+  </data>
+  <data name="ReferenceModeNaming.CurrentFormatString.CustomFormat" xml:space="preserve">
+    <value>Custom Format ({0})</value>
+    <comment>The format string for the dropdown form of the current naming choice when CustomFormat is current. {0} is replaced with the customized name for the current selection.</comment>
+  </data>
+  <data name="ReferenceModeNaming.CurrentFormatString.EntityTypeName" xml:space="preserve">
+    <value>EntityType Name ({0})</value>
+    <comment>The format string for the dropdown form of the current naming choice when EntityTypeName is current. {0} is replaced with the name of the EntityType for the current selection.</comment>
+  </data>
+  <data name="ReferenceModeNaming.CurrentFormatString.ReferenceModeName" xml:space="preserve">
+    <value>ReferenceMode Name ({0})</value>
+    <comment>The format string for the dropdown form of the current naming choice when ReferenceModeName is current. {0} is replaced with the name of the ReferenceMode for the current selection.</comment>
+  </data>
+  <data name="ReferenceModeNaming.CurrentFormatString.ValueTypeName" xml:space="preserve">
+    <value>ValueType Name ({0})</value>
+    <comment>The format string for the dropdown form of the current naming choice when ValueTypeName is current. {0} is replaced with the name of the ValueType for the current selection.</comment>
+  </data>
+  <data name="ReferenceModeNaming.DefaultCustomFormat.InvalidDefaultCustomFormatException" xml:space="preserve">
+    <value>At least one recognized replacement field must be specified for a default custom format.</value>
+    <comment>The text for the exception thrown when an attempt is made to enter a default custom format with no replacement fields.</comment>
+  </data>
+  <data name="ReferenceModeNaming.DefaultCustomFormat.Popular" xml:space="preserve">
+    <value>{1}{2}</value>
+    <comment>Custom formatting for a popular reference mode defaults to {EntityType}{ReferenceMode}.</comment>
+  </data>
+  <data name="ReferenceModeNaming.DefaultCustomFormat.UnitBased" xml:space="preserve">
+    <value>{2}{1}</value>
+    <comment>Custom formatting for a unit-base reference mode defaults to {ReferenceMode}{EntityType}.</comment>
+  </data>
+  <data name="ReferenceModeNaming.DisplayedReplacementField.EntityTypeName" xml:space="preserve">
+    <value>{EntityType}</value>
+    <comment>The replacement field displayed to the user for the EntityTypeName in the CustomFormat editor.</comment>
+  </data>
+  <data name="ReferenceModeNaming.DisplayedReplacementField.ReferenceModeName" xml:space="preserve">
+    <value>{ReferenceMode}</value>
+    <comment>The replacement field displayed to the user for the ReferenceModeName in the CustomFormat editor.</comment>
+  </data>
+  <data name="ReferenceModeNaming.DisplayedReplacementField.ValueTypeName" xml:space="preserve">
+    <value>{ValueType}</value>
+    <comment>The replacement field displayed to the user for the ValueTypeName in the CustomFormat editor.</comment>
+  </data>
+  <data name="ReferenceModeNaming.DisplayedReplacementFieldShortForm.EntityTypeName" xml:space="preserve">
+    <value>{E}</value>
+    <comment>The short form of the parseable replacement field for an EntityTypeName in the CustomFormat editor.</comment>
+  </data>
+  <data name="ReferenceModeNaming.DisplayedReplacementFieldShortForm.ReferenceModeName" xml:space="preserve">
+    <value>{R}</value>
+    <comment>The short form of the parseable replacement field for a ReferenceModeName in the CustomFormat editor.</comment>
+  </data>
+  <data name="ReferenceModeNaming.DisplayedReplacementFieldShortForm.ValueTypeName" xml:space="preserve">
+    <value>{V}</value>
+    <comment>The short form of the parseable replacement field for a ValueTypeName in the CustomFormat editor.</comment>
+  </data>
+  <data name="ReferenceModeNamingCustomFormatProperty.Description" xml:space="preserve">
+    <value>Set the custom format for reference mode name mapping. Use the {ValueType} {EntityType} and {ReferenceMode} replacement fields mixed with any other text. The short forms (V}{E}{R} can also be used to enter replacement fields.</value>
+    <comment>The description for the ReferenceModeNamingCustomFormat property on an ObjectType. Displays as a detailed description in the Properties Window.</comment>
+  </data>
+  <data name="ReferenceModeNamingCustomFormatProperty.DisplayName" xml:space="preserve">
+    <value>ReferenceModeNamingCustomFormat</value>
+    <comment>The display name for the ReferenceModeNamingCustomFormat property on an ObjectType. Displays as the name of a property in the Properties Window.</comment>
+  </data>
+  <data name="ReferenceModeNamingCustomFormatProperty.TransactionName" xml:space="preserve">
+    <value>Set ReferenceModeNamingCustomFormat Value</value>
+    <comment>The format string to use when the ReferenceModeNamingCustomFormat property is modified. Shown in the undo dropdown in VS.</comment>
+  </data>
+  <data name="ReferenceModeNamingNamingChoiceProperty.Description" xml:space="preserve">
+    <value>Determine how the reference mode pattern is used to generate names for relational paths using this EntityType.</value>
+    <comment>The description for the ReferenceModeNaming property on an ObjectType. Displays as a detailed description in the Properties Window.</comment>
+  </data>
+  <data name="ReferenceModeNamingNamingChoiceProperty.DisplayName" xml:space="preserve">
+    <value>ReferenceModeNaming</value>
+    <comment>The display name for the ReferenceModeNaming property on an ObjectType. Displays as the name of a property in the Properties Window.</comment>
+  </data>
+  <data name="ReferenceModeNamingNamingChoiceProperty.TransactionName" xml:space="preserve">
+    <value>Set ReferenceModeNaming Value</value>
+    <comment>The format string to use when the ReferenceModeNaming property is modified. Shown in the undo dropdown in VS.</comment>
+  </data>
+  <data name="ReferenceModeNamingPopularCustomFormatProperty.Description" xml:space="preserve">
+    <value>Set the custom format for default popular reference mode name mapping. Use the {ValueType} {EntityType} and {ReferenceMode} replacement fields mixed with any other text. The short forms (V}{E}{R} can also be used to enter replacement fields.</value>
+    <comment>The description for the PopularReferenceModeNamingCustomFormat property on an ORMModel. Displays as a detailed description in the Properties Window.</comment>
+  </data>
+  <data name="ReferenceModeNamingPopularCustomFormatProperty.DisplayName" xml:space="preserve">
+    <value>PopularReferenceModeNamingCustomFormat</value>
+    <comment>The display name for the PopularReferenceModeNamingCustomFormat property on an ORMModel. Displays as the name of a property in the Properties Window.</comment>
+  </data>
+  <data name="ReferenceModeNamingPopularCustomFormatProperty.TransactionName" xml:space="preserve">
+    <value>Set PopularReferenceModeNamingCustomFormat Value</value>
+    <comment>The format string to use when the PopularReferenceModeNamingCustomFormat property is modified. Shown in the undo dropdown in VS.</comment>
+  </data>
+  <data name="ReferenceModeNamingPopularNamingChoiceProperty.Description" xml:space="preserve">
+    <value>Determine the model default for how popular reference mode names are used to generate names for an EntityType with a popular reference mode that is used in a relational path.</value>
+    <comment>The description for the PopularReferenceModeNaming property on an ORMModel. Displays as a detailed description in the Properties Window.</comment>
+  </data>
+  <data name="ReferenceModeNamingPopularNamingChoiceProperty.DisplayName" xml:space="preserve">
+    <value>PopularReferenceModeNaming</value>
+    <comment>The display name for the PopularReferenceModeNaming property on an ORMModel. Displays as the name of a property in the Properties Window.</comment>
+  </data>
+  <data name="ReferenceModeNamingPopularNamingChoiceProperty.TransactionName" xml:space="preserve">
+    <value>Set PopularReferenceModeNaming Value</value>
+    <comment>The format string to use when the PopularReferenceModeNaming property is modified. Shown in the undo dropdown in VS.</comment>
+  </data>
+  <data name="ReferenceModeNamingUnitBasedCustomFormatProperty.Description" xml:space="preserve">
+    <value>Set the custom format for default unit-based reference mode name mapping. Use the {ValueType} {EntityType} and {ReferenceMode} replacement fields mixed with any other text. The short forms (V}{E}{R} can also be used to enter replacement fields.</value>
+    <comment>The description for the UnitBasedReferenceModeNamingCustomFormat property on an ORMModel. Displays as a detailed description in the Properties Window.</comment>
+  </data>
+  <data name="ReferenceModeNamingUnitBasedCustomFormatProperty.DisplayName" xml:space="preserve">
+    <value>UnitBasedReferenceModeNamingCustomFormat</value>
+    <comment>The display name for the UnitBasedReferenceModeNamingCustomFormat property on an ORMModel. Displays as the name of a property in the Properties Window.</comment>
+  </data>
+  <data name="ReferenceModeNamingUnitBasedCustomFormatProperty.TransactionName" xml:space="preserve">
+    <value>Set UnitBasedReferenceModeNamingCustomFormat Value</value>
+    <comment>The format string to use when the UnitBasedReferenceModeNamingCustomFormat property is modified. Shown in the undo dropdown in VS.</comment>
+  </data>
+  <data name="ReferenceModeNamingUnitBasedNamingChoiceProperty.Description" xml:space="preserve">
+    <value>Determine the model default for how unit-based reference mode names are used to generate names for an EntityType with a unit-based reference mode that is used in a relational path.</value>
+    <comment>The description for the UnitBasedReferenceModeNaming property on an ORMModel. Displays as a detailed description in the Properties Window.</comment>
+  </data>
+  <data name="ReferenceModeNamingUnitBasedNamingChoiceProperty.DisplayName" xml:space="preserve">
+    <value>UnitBasedReferenceModeNaming</value>
+    <comment>The display name for the UnitBasedReferenceModeNaming property on an ORMModel. Displays as the name of a property in the Properties Window.</comment>
+  </data>
+  <data name="ReferenceModeNamingUnitBasedNamingChoiceProperty.TransactionName" xml:space="preserve">
+    <value>Set UnitBasedReferenceModeNaming Value</value>
+    <comment>The format string to use when the UnitBasedReferenceModeNaming property is modified. Shown in the undo dropdown in VS.</comment>
+  </data>
 </root>

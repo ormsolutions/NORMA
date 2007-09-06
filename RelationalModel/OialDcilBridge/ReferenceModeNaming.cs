@@ -30,6 +30,7 @@ using Neumont.Tools.Modeling.Design;
 using System.Collections.ObjectModel;
 using System.Drawing.Design;
 using System.Globalization;
+using System.Text.RegularExpressions;
 
 namespace Neumont.Tools.ORMAbstractionToConceptualDatabaseBridge
 {
@@ -153,26 +154,26 @@ namespace Neumont.Tools.ORMAbstractionToConceptualDatabaseBridge
 						switch (GetNamingChoiceFromORMModel(objectType.Model, referenceModeType))
 						{
 							case EffectiveReferenceModeNamingChoice.ValueTypeName:
-								currentModelDefault = "Model Default (ValueType Name)";
+								currentModelDefault = ResourceStrings.ReferenceModeNamingCurrentModelDefaultValueTypeName;
 								break;
 							case EffectiveReferenceModeNamingChoice.ReferenceModeName:
-								currentModelDefault = "Model Default (ReferenceMode Name)";
+								currentModelDefault = ResourceStrings.ReferenceModeNamingCurrentModelDefaultReferenceModeName;
 								break;
 							case EffectiveReferenceModeNamingChoice.EntityTypeName:
-								currentModelDefault = "Model Default (EntityType Name)";
+								currentModelDefault = ResourceStrings.ReferenceModeNamingCurrentModelDefaultEntityTypeName;
 								break;
 							case EffectiveReferenceModeNamingChoice.CustomFormat:
-								currentModelDefault = "Model Default (Custom Format)";
+								currentModelDefault = ResourceStrings.ReferenceModeNamingCurrentModelDefaultCustomFormat;
 								break;
 						}
+						CultureInfo culture = CultureInfo.CurrentCulture;
 						return new string[]
 						{
-							// UNDONE: Localize all of this
 							currentModelDefault,
-							"EntityType Name (" + objectType.Name + ")",
-							"ReferenceMode Name (" + referenceMode.Name + ")",
-							"ValueType Name (" + objectType.PreferredIdentifier.RoleCollection[0].RolePlayer.Name + ")",
-							"Custom Format (" + ResolveObjectTypeName(objectType, null) + ")",
+							string.Format(culture, ResourceStrings.ReferenceModeNamingCurrentFormatStringEntityTypeName, objectType.Name),
+							string.Format(culture, ResourceStrings.ReferenceModeNamingCurrentFormatStringReferenceModeName, referenceMode.Name),
+							string.Format(culture, ResourceStrings.ReferenceModeNamingCurrentFormatStringValueTypeName, objectType.PreferredIdentifier.RoleCollection[0].RolePlayer.Name),
+							string.Format(culture, ResourceStrings.ReferenceModeNamingCurrentFormatStringCustomFormat, ResolveObjectTypeName(objectType, null, ReferenceModeNamingChoice.CustomFormat)),
 						};
 					}
 					return null;
@@ -212,8 +213,7 @@ namespace Neumont.Tools.ORMAbstractionToConceptualDatabaseBridge
 			{
 				get
 				{
-					// UNDONE: Localize
-					return "ReferenceModeNaming";
+					return ResourceStrings.ReferenceModeNamingNamingChoicePropertyDisplayName;
 				}
 			}
 			public sealed override string Category
@@ -227,8 +227,7 @@ namespace Neumont.Tools.ORMAbstractionToConceptualDatabaseBridge
 			{
 				get
 				{
-					// UNDONE: Localize
-					return "Determine how the reference mode name is used.";
+					return ResourceStrings.ReferenceModeNamingNamingChoicePropertyDescription;
 				}
 			}
 			public sealed override object GetValue(object component)
@@ -275,8 +274,7 @@ namespace Neumont.Tools.ORMAbstractionToConceptualDatabaseBridge
 			private static void SetValue(ObjectType objectType, ReferenceModeNamingChoice newChoice)
 			{
 				Store store = objectType.Store;
-				// UNDONE: Localize
-				using (Transaction t = store.TransactionManager.BeginTransaction("Set Reference Mode Naming Choice"/*ResourceStrings.AbsorptionChoicePropertyTransactionName*/))
+				using (Transaction t = store.TransactionManager.BeginTransaction(ResourceStrings.ReferenceModeNamingNamingChoicePropertyTransactionName))
 				{
 					ReferenceModeNaming naming = ReferenceModeNamingCustomizesObjectType.GetReferenceModeNaming(objectType);
 					if (naming != null)
@@ -286,8 +284,8 @@ namespace Neumont.Tools.ORMAbstractionToConceptualDatabaseBridge
 					else if (newChoice != ReferenceModeNamingChoice.ModelDefault)
 					{
 						naming = new ReferenceModeNaming(store, new PropertyAssignment(ReferenceModeNaming.NamingChoiceDomainPropertyId, newChoice));
-						naming.ObjectType = objectType;
 						naming.Model = MappingCustomizationModel.GetMappingCustomizationModel(store, true);
+						naming.ObjectType = objectType;
 					}
 					if (t.HasPendingChanges)
 					{
@@ -297,9 +295,176 @@ namespace Neumont.Tools.ORMAbstractionToConceptualDatabaseBridge
 			}
 		}
 		#endregion // ReferenceModeNamingPropertyDescriptor class
+		#region ReferenceModeNamingCustomFormatTypeConverter class
+		private abstract class ReferenceModeNamingCustomFormatTypeConverter : StringConverter
+		{
+			private static Regex myParseRegex;
+			private static Regex myCleanDanglingBracesRegex;
+			private struct CustomFormatDisplayMapping
+			{
+				public CustomFormatDisplayMapping(string native, string display, string shortParse)
+				{
+					Native = native;
+					Display = display;
+					ShortParse = shortParse;
+				}
+				public string Native;
+				public string Display;
+				public string ShortParse;
+			}
+			private static CustomFormatDisplayMapping[] myDisplayMappings;
+			protected ReferenceModeNamingCustomFormatTypeConverter()
+			{
+			}
+			private static CustomFormatDisplayMapping[] DisplayMappings
+			{
+				get
+				{
+					CustomFormatDisplayMapping[] retVal = myDisplayMappings;
+					if (retVal == null)
+					{
+						myDisplayMappings = retVal = new CustomFormatDisplayMapping[]
+						{
+							new CustomFormatDisplayMapping("{0}", ResourceStrings.ReferenceModeNamingDisplayedReplacementFieldValueTypeName, ResourceStrings.ReferenceModeNamingDisplayedReplacementFieldShortFormValueTypeName),
+							new CustomFormatDisplayMapping("{1}", ResourceStrings.ReferenceModeNamingDisplayedReplacementFieldEntityTypeName, ResourceStrings.ReferenceModeNamingDisplayedReplacementFieldShortFormEntityTypeName),
+							new CustomFormatDisplayMapping("{2}", ResourceStrings.ReferenceModeNamingDisplayedReplacementFieldReferenceModeName, ResourceStrings.ReferenceModeNamingDisplayedReplacementFieldShortFormReferenceModeName),
+						};
+					}
+					return retVal;
+				}
+			}
+			public override object ConvertTo(ITypeDescriptorContext context, CultureInfo culture, object value, Type destinationType)
+			{
+				if (destinationType == typeof(string))
+				{
+					CustomFormatDisplayMapping[] mappings = DisplayMappings;
+					return string.Format(culture, value.ToString(), mappings[0].Display, mappings[1].Display, mappings[2].Display);
+				}
+				return base.ConvertTo(context, culture, value, destinationType);
+			}
+			private static string CleanDanglingBraces(string startString, Regex cleanDanglingBracesRegex)
+			{
+				return cleanDanglingBracesRegex.Replace(
+					startString,
+					delegate(Match match)
+					{
+						GroupCollection groups = match.Groups;
+						Group group = groups["Open"];
+						if (group.Success)
+						{
+							return "{{";
+						}
+						group = groups["Close"];
+						if (group.Success)
+						{
+							return "}}";
+						}
+						return match.Value;
+					});
+			}
+			public override object ConvertFrom(ITypeDescriptorContext context, CultureInfo culture, object value)
+			{
+				bool seenReplacementField;
+				return TestConvertFrom(culture, value, out seenReplacementField);
+			}
+			protected object TestConvertFrom(CultureInfo culture, object value, out bool seenReplacementField)
+			{
+				#region Regex expressions
+				Regex parseRegex = myParseRegex;
+				if (parseRegex == null)
+				{
+					System.Threading.Interlocked.CompareExchange<Regex>(
+						ref myParseRegex,
+						new Regex(
+							@"(?n)\G(?(?=((\{\{)|[^\{])*\{.+?\})((?<Before>((\{\{)|[^\{])*)(?<Replace>\{.+?\}))|(.*))",
+							RegexOptions.Compiled),
+						null);
+					parseRegex = myParseRegex;
+				}
+				Regex cleanDanglingBracesRegex = myCleanDanglingBracesRegex;
+				if (cleanDanglingBracesRegex == null)
+				{
+					System.Threading.Interlocked.CompareExchange<Regex>(
+						ref myCleanDanglingBracesRegex,
+						new Regex(
+							@"(?n)\G(?<Open>\{)|(?<Close>\})|[^\{\}]*",
+							RegexOptions.Compiled),
+						null);
+					cleanDanglingBracesRegex = myCleanDanglingBracesRegex;
+				}
+				#endregion // Regex expressions
+				bool localSeenKnownToken = false;
+				string retVal = parseRegex.Replace(
+					(string)value,
+					delegate(Match match)
+					{
+						GroupCollection groups = match.Groups;
+						Group replaceGroup = groups["Replace"];
+						if (replaceGroup.Success)
+						{
+							string knownToken = null;
+							string replacementField = replaceGroup.Value;
+							CustomFormatDisplayMapping[] mappings = DisplayMappings;
+							for (int i = 0; i < mappings.Length; ++i)
+							{
+								CustomFormatDisplayMapping mapping = mappings[i];
+								if (0 == string.Compare(replacementField, mapping.Display, true, culture) ||
+									0 == string.Compare(replacementField, mapping.ShortParse, true, culture))
+								{
+									knownToken = mapping.Native;
+									break;
+								}
+							}
+							if (knownToken != null)
+							{
+								localSeenKnownToken = true;
+								return CleanDanglingBraces(groups["Before"].Value, cleanDanglingBracesRegex) + knownToken;
+							}
+						}
+						return CleanDanglingBraces(match.Value, cleanDanglingBracesRegex);
+					});
+				seenReplacementField = localSeenKnownToken;
+				return retVal;
+			}
+		}
+		#endregion // ReferenceModeNamingCustomFormatTypeConverter class
 		#region ReferenceModeNamingCustomFormatPropertyDescriptor class
 		private sealed class ReferenceModeNamingCustomFormatPropertyDescriptor : PropertyDescriptor
 		{
+			#region DefaultAwareReferenceModeNamingCustomFormatTypeConverter class
+			private class DefaultAwareReferenceModeNamingCustomFormatTypeConverter : ReferenceModeNamingCustomFormatTypeConverter
+			{
+				public static readonly DefaultAwareReferenceModeNamingCustomFormatTypeConverter Instance = new DefaultAwareReferenceModeNamingCustomFormatTypeConverter();
+				private DefaultAwareReferenceModeNamingCustomFormatTypeConverter()
+				{
+				}
+				public override object ConvertTo(ITypeDescriptorContext context, CultureInfo culture, object value, Type destinationType)
+				{
+					if (destinationType == typeof(string))
+					{
+						string stringValue = value as string;
+						if (string.IsNullOrEmpty(stringValue))
+						{
+							// Fill in the backing default value if no data is currently shown
+							value = GetDefaultCustomFormatForObjectType(GetObjectTypeFromComponent(context.Instance));
+						}
+					}
+					return base.ConvertTo(context, culture, value, destinationType);
+				}
+				public override object ConvertFrom(ITypeDescriptorContext context, CultureInfo culture, object value)
+				{
+					object newValue = base.ConvertFrom(context, culture, value);
+					ObjectType objectType = GetObjectTypeFromComponent(context.Instance);
+					string oldFormat = GetCustomFormatFromObjectType(objectType);
+					if (string.IsNullOrEmpty(oldFormat) &&
+						GetDefaultCustomFormatForObjectType(objectType) == newValue.ToString())
+					{
+						return "";
+					}
+					return newValue;
+				}
+			}
+			#endregion // DefaultAwareReferenceModeNamingCustomFormatTypeConverter class
 			public static readonly ReferenceModeNamingCustomFormatPropertyDescriptor Instance = new ReferenceModeNamingCustomFormatPropertyDescriptor();
 			private ReferenceModeNamingCustomFormatPropertyDescriptor()
 				: base("ReferenceModeNamingCustomFormatPropertyDescriptor", null)
@@ -315,14 +480,22 @@ namespace Neumont.Tools.ORMAbstractionToConceptualDatabaseBridge
 			}
 			public sealed override bool ShouldSerializeValue(object component)
 			{
-				return GetCustomFormatFromObjectType(GetObjectTypeFromComponent(component)).Length != 0;
+				ObjectType objectType = GetObjectTypeFromComponent(component);
+				string objectFormat = GetCustomFormatFromObjectType(objectType);
+				return !(objectFormat.Length == 0 || objectFormat == GetDefaultCustomFormatForObjectType(objectType));
+			}
+			public override TypeConverter Converter
+			{
+				get
+				{
+					return DefaultAwareReferenceModeNamingCustomFormatTypeConverter.Instance;
+				}
 			}
 			public sealed override string DisplayName
 			{
 				get
 				{
-					// UNDONE: Localize
-					return "ReferenceModeNamingCustomFormat";
+					return ResourceStrings.ReferenceModeNamingCustomFormatPropertyDisplayName;
 				}
 			}
 			public sealed override string Category
@@ -336,8 +509,7 @@ namespace Neumont.Tools.ORMAbstractionToConceptualDatabaseBridge
 			{
 				get
 				{
-					// UNDONE: Localize
-					return "Set the custom format for reference mode name mapping. Use the {ValueType} {EntityType} and {ReferenceMode} replacement fields. Short forms (V}{E}{R}. (Note: In place editor is NYI, use {0}={V}, {1}={1}, {2}={R})";
+					return ResourceStrings.ReferenceModeNamingCustomFormatPropertyDescription;
 				}
 			}
 			public sealed override object GetValue(object component)
@@ -384,8 +556,7 @@ namespace Neumont.Tools.ORMAbstractionToConceptualDatabaseBridge
 			private static void SetValue(ObjectType objectType, string value)
 			{
 				Store store = objectType.Store;
-				// UNDONE: Localize
-				using (Transaction t = store.TransactionManager.BeginTransaction("Set Reference Mode Naming Format"))
+				using (Transaction t = store.TransactionManager.BeginTransaction(ResourceStrings.ReferenceModeNamingCustomFormatPropertyTransactionName))
 				{
 					ReferenceModeNaming naming = ReferenceModeNamingCustomizesObjectType.GetReferenceModeNaming(objectType);
 					if (naming != null)
@@ -397,8 +568,8 @@ namespace Neumont.Tools.ORMAbstractionToConceptualDatabaseBridge
 						// The only way to not have one of these already is with a ModelDefault NamingChoice, which is the default, so we
 						// just need to assign the CustomFormat property.
 						naming = new ReferenceModeNaming(store, new PropertyAssignment(ReferenceModeNaming.CustomFormatDomainPropertyId, value));
-						naming.ObjectType = objectType;
 						naming.Model = MappingCustomizationModel.GetMappingCustomizationModel(store, true);
+						naming.ObjectType = objectType;
 					}
 					if (t.HasPendingChanges)
 					{
@@ -424,25 +595,26 @@ namespace Neumont.Tools.ORMAbstractionToConceptualDatabaseBridge
 			{
 				get { return EffectiveReferenceModeNamingChoice.EntityTypeName; }
 			}
+			protected override string DefaultCustomFormat
+			{
+				get { return ResourceStrings.ReferenceModeNamingDefaultCustomFormatUnitBased; }
+			}
 			protected override string TransactionName
 			{
-				// UNDONE: Localize
-				get { return "Set Model Default UnitBase Reference Mode Naming Choice"; }
+				get { return ResourceStrings.ReferenceModeNamingUnitBasedNamingChoicePropertyTransactionName; }
 			}
 			public sealed override string DisplayName
 			{
 				get
 				{
-					// UNDONE: Localize
-					return "UnitBasedReferenceModeNaming";
+					return ResourceStrings.ReferenceModeNamingUnitBasedNamingChoicePropertyDisplayName;
 				}
 			}
 			public sealed override string Description
 			{
 				get
 				{
-					// UNDONE: Localize
-					return "Determine the model default for how unit based reference mode information is used.";
+					return ResourceStrings.ReferenceModeNamingUnitBasedNamingChoicePropertyDescription;
 				}
 			}
 		}
@@ -461,25 +633,26 @@ namespace Neumont.Tools.ORMAbstractionToConceptualDatabaseBridge
 			{
 				get { return EffectiveReferenceModeNamingChoice.ValueTypeName; }
 			}
+			protected override string DefaultCustomFormat
+			{
+				get { return ResourceStrings.ReferenceModeNamingDefaultCustomFormatPopular; }
+			}
 			protected override string TransactionName
 			{
-				// UNDONE: Localize
-				get { return "Set Model Default Popular Reference Mode Naming Choice"; }
+				get { return ResourceStrings.ReferenceModeNamingPopularNamingChoicePropertyTransactionName; }
 			}
 			public sealed override string DisplayName
 			{
 				get
 				{
-					// UNDONE: Localize
-					return "PopularReferenceModeNaming";
+					return ResourceStrings.ReferenceModeNamingPopularNamingChoicePropertyDisplayName;
 				}
 			}
 			public sealed override string Description
 			{
 				get
 				{
-					// UNDONE: Localize
-					return "Determine the model default for how popular reference mode information is used.";
+					return ResourceStrings.ReferenceModeNamingPopularNamingChoicePropertyDescription;
 				}
 			}
 		}
@@ -517,6 +690,10 @@ namespace Neumont.Tools.ORMAbstractionToConceptualDatabaseBridge
 			/// Get the default naming choice for this type of object
 			/// </summary>
 			protected abstract EffectiveReferenceModeNamingChoice DefaultNamingChoice { get;}
+			/// <summary>
+			/// Get the default custom format for this type of object
+			/// </summary>
+			protected abstract string DefaultCustomFormat { get;}
 			/// <summary>
 			/// The string used for the name of the transaction to set this property
 			/// </summary>
@@ -613,10 +790,10 @@ namespace Neumont.Tools.ORMAbstractionToConceptualDatabaseBridge
 						naming = new DefaultReferenceModeNaming(
 							store,
 							new PropertyAssignment(DefaultReferenceModeNaming.NamingChoiceDomainPropertyId, newChoice),
-							new PropertyAssignment(DefaultReferenceModeNaming.ReferenceModeTargetKindDomainPropertyId, testKind));
-						// UNDONE: Default format string
-						naming.ORMModel = model;
+							new PropertyAssignment(DefaultReferenceModeNaming.ReferenceModeTargetKindDomainPropertyId, testKind),
+							new PropertyAssignment(DefaultReferenceModeNaming.CustomFormatDomainPropertyId, DefaultCustomFormat));
 						naming.Model = MappingCustomizationModel.GetMappingCustomizationModel(store, true);
+						naming.ORMModel = model;
 					}
 					if (t.HasPendingChanges)
 					{
@@ -638,16 +815,14 @@ namespace Neumont.Tools.ORMAbstractionToConceptualDatabaseBridge
 			{
 				get
 				{
-					// UNDONE: Localize
-					return "UnitBasedReferenceModeNamingCustomFormat";
+					return ResourceStrings.ReferenceModeNamingUnitBasedCustomFormatPropertyDisplayName;
 				}
 			}
 			public sealed override string Description
 			{
 				get
 				{
-					// UNDONE: Localize
-					return "Set the default custom format for unit-based reference mode name mapping. Use the {ValueType} {EntityType} and {ReferenceMode} replacement fields. Short forms (V}{E}{R}. (Note: In place editor is NYI, use {0}={V}, {1}={1}, {2}={R})";
+					return ResourceStrings.ReferenceModeNamingUnitBasedCustomFormatPropertyDescription;
 				}
 			}
 			protected override DefaultReferenceModeNamingTargetKind TargetKind
@@ -660,13 +835,11 @@ namespace Neumont.Tools.ORMAbstractionToConceptualDatabaseBridge
 			}
 			protected override string TransactionName
 			{
-				// UNDONE: Localize
-				get { return "Set Model Default Unit-Based Reference Mode Custom Format"; }
+				get { return ResourceStrings.ReferenceModeNamingUnitBasedCustomFormatPropertyTransactionName; }
 			}
 			protected override string DefaultCustomFormat
 			{
-				// UNDONE: Localize (refmode then entity)
-				get { return "{2}{1}"; }
+				get { return ResourceStrings.ReferenceModeNamingDefaultCustomFormatUnitBased; }
 			}
 		}
 		private sealed class PopularDefaultReferenceModeNamingCustomFormatPropertyDescriptor : DefaultReferenceModeNamingCustomFormatPropertyDescriptor
@@ -680,16 +853,14 @@ namespace Neumont.Tools.ORMAbstractionToConceptualDatabaseBridge
 			{
 				get
 				{
-					// UNDONE: Localize
-					return "PopularReferenceModeNamingCustomFormat";
+					return ResourceStrings.ReferenceModeNamingPopularCustomFormatPropertyDisplayName;
 				}
 			}
 			public sealed override string Description
 			{
 				get
 				{
-					// UNDONE: Localize
-					return "Set the default custom format for popular reference mode name mapping. Use the {ValueType} {EntityType} and {ReferenceMode} replacement fields. Short forms (V}{E}{R}. (Note: In place editor is NYI, use {0}={V}, {1}={1}, {2}={R})";
+					return ResourceStrings.ReferenceModeNamingPopularCustomFormatPropertyDescription;
 				}
 			}
 			protected override DefaultReferenceModeNamingTargetKind TargetKind
@@ -702,17 +873,34 @@ namespace Neumont.Tools.ORMAbstractionToConceptualDatabaseBridge
 			}
 			protected override string TransactionName
 			{
-				// UNDONE: Localize
-				get { return "Set Model Default Popular Reference Mode Custom Format"; }
+				get { return ResourceStrings.ReferenceModeNamingPopularCustomFormatPropertyTransactionName; }
 			}
 			protected override string DefaultCustomFormat
 			{
-				// UNDONE: Localize (entity then refmode)
-				get { return "{1}{2}"; }
+				get { return ResourceStrings.ReferenceModeNamingDefaultCustomFormatPopular; }
 			}
 		}
 		private abstract class DefaultReferenceModeNamingCustomFormatPropertyDescriptor : PropertyDescriptor
 		{
+			#region ReplacementRequiredReferenceModeNamingCustomFormatTypeConverter class
+			private class ReplacementRequiredReferenceModeNamingCustomFormatTypeConverter : ReferenceModeNamingCustomFormatTypeConverter
+			{
+				public static readonly ReplacementRequiredReferenceModeNamingCustomFormatTypeConverter Instance = new ReplacementRequiredReferenceModeNamingCustomFormatTypeConverter();
+				private ReplacementRequiredReferenceModeNamingCustomFormatTypeConverter()
+				{
+				}
+				public override object ConvertFrom(ITypeDescriptorContext context, CultureInfo culture, object value)
+				{
+					bool seenReplacementField;
+					object retVal = TestConvertFrom(culture, value, out seenReplacementField);
+					if (!seenReplacementField)
+					{
+						throw new InvalidOperationException(ResourceStrings.ReferenceModeNamingDefaultCustomFormatInvalidDefaultCustomFormatException);
+					}
+					return retVal;
+				}
+			}
+			#endregion // ReplacementRequiredReferenceModeNamingCustomFormatTypeConverter class
 			protected DefaultReferenceModeNamingCustomFormatPropertyDescriptor(string name)
 				: base(name, null)
 			{
@@ -736,6 +924,13 @@ namespace Neumont.Tools.ORMAbstractionToConceptualDatabaseBridge
 			private static ORMModel GetORMModelFromComponent(object component)
 			{
 				return EditorUtility.ResolveContextInstance(component, false) as ORMModel;
+			}
+			public override TypeConverter Converter
+			{
+				get
+				{
+					return ReplacementRequiredReferenceModeNamingCustomFormatTypeConverter.Instance;
+				}
 			}
 			public sealed override bool CanResetValue(object component)
 			{
@@ -835,6 +1030,19 @@ namespace Neumont.Tools.ORMAbstractionToConceptualDatabaseBridge
 		/// <returns>An appropriate name, or <see langword="null"/> if the expected relationship does not pan out.</returns>
 		public static string ResolveObjectTypeName(ObjectType possibleEntityType, ObjectType possibleValueType)
 		{
+			return ResolveObjectTypeName(possibleEntityType, possibleValueType, null);
+		}
+		/// <summary>
+		/// Given two <see cref="ObjectType"/> instances, determine if the <paramref name="possibleEntityType"/>
+		/// is related to <paramref name="possibleValueType"/> via a reference mode pattern. If so, use the
+		/// reference mode naming settings associated with the entity type to determine an appropriate name.
+		/// </summary>
+		/// <param name="possibleEntityType">An <see cref="ObjectType"/> that may be an EntityType with a <see cref="ReferenceMode"/></param>
+		/// <param name="possibleValueType">An <see cref="ValueType"/> that may be the reference mode value type associated with <paramref name="possibleEntityType"/>. Set to <see langword="null"/> to automatically retrieve the available value type.</param>
+		/// <param name="forceNamingChoice">Use this naming choice (if specified) instead of the current setting on <paramref name="possibleEntityType"/></param>
+		/// <returns>An appropriate name, or <see langword="null"/> if the expected relationship does not pan out.</returns>
+		private static string ResolveObjectTypeName(ObjectType possibleEntityType, ObjectType possibleValueType, ReferenceModeNamingChoice? forceNamingChoice)
+		{
 			ReferenceMode referenceMode;
 			ReferenceModeType referenceModeType;
 			if (possibleEntityType != null &&
@@ -846,8 +1054,8 @@ namespace Neumont.Tools.ORMAbstractionToConceptualDatabaseBridge
 				{
 					return null;
 				}
-				
-				ReferenceModeNamingChoice choice = GetNamingChoiceFromObjectType(possibleEntityType);
+
+				ReferenceModeNamingChoice choice = forceNamingChoice.HasValue ? forceNamingChoice.Value : GetNamingChoiceFromObjectType(possibleEntityType);
 				switch (choice)
 				{
 					case ReferenceModeNamingChoice.ModelDefault:
@@ -932,6 +1140,23 @@ namespace Neumont.Tools.ORMAbstractionToConceptualDatabaseBridge
 			return null;
 		}
 		/// <summary>
+		/// Given an <see cref="ObjectType"/>, determine the default custom format for the specified ReferenceModeType in the associated <see cref="ORMModel"/>
+		/// </summary>
+		private static string GetDefaultCustomFormatForObjectType(ObjectType objectType)
+		{
+			ORMModel model;
+			ReferenceMode referenceMode;
+			ReferenceModeType referenceModeType;
+			if (null != objectType &&
+				null != (model = objectType.Model) &&
+				null != (referenceMode = objectType.ReferenceMode) &&
+				ReferenceModeType.General != (referenceModeType = referenceMode.Kind.ReferenceModeType))
+			{
+				return GetCustomFormatFromORMModel(model, referenceModeType);
+			}
+			return "";
+		}
+		/// <summary>
 		/// Given an <see cref="ORMModel"/>, determine the stored custom format used for reference mode naming
 		/// </summary>
 		private static string GetCustomFormatFromORMModel(ORMModel model, ReferenceModeType referenceModeType)
@@ -941,8 +1166,7 @@ namespace Neumont.Tools.ORMAbstractionToConceptualDatabaseBridge
 			{
 				return naming.CustomFormat;
 			}
-			// UNDONE: Localize these values, coordinate with property descriptors
-			return (referenceModeType == ReferenceModeType.UnitBased) ? "{2}{1}" : "{1}{2}";
+			return (referenceModeType == ReferenceModeType.UnitBased) ? ResourceStrings.ReferenceModeNamingDefaultCustomFormatUnitBased : ResourceStrings.ReferenceModeNamingDefaultCustomFormatPopular;
 		}
 		#endregion // Static helper functions
 		#region Instance helper functions

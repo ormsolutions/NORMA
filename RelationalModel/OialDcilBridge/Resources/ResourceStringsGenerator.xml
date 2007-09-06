@@ -40,4 +40,39 @@
 	<ResourceString name="MappingCustomizationPropertyCategory" model="CustomizationModel" resourceName="MappingCustomizationProperty.Category"/>
 	<ResourceString name="ObjectTypeAbsorptionChoicePropertyDescription" model="CustomizationModel" resourceName="ObjectTypeAbsorptionChoiceProperty.Description"/>
 	<ResourceString name="ObjectTypeAbsorptionChoicePropertyDisplayName" model="CustomizationModel" resourceName="ObjectTypeAbsorptionChoiceProperty.DisplayName"/>
+	<ResourceString name="ReferenceModeNamingCurrentModelDefaultCustomFormat" model="CustomizationModel" resourceName="ReferenceModeNaming.CurrentModelDefault.CustomFormat"/>
+	<ResourceString name="ReferenceModeNamingCurrentModelDefaultEntityTypeName" model="CustomizationModel" resourceName="ReferenceModeNaming.CurrentModelDefault.EntityTypeName"/>
+	<ResourceString name="ReferenceModeNamingCurrentModelDefaultReferenceModeName" model="CustomizationModel" resourceName="ReferenceModeNaming.CurrentModelDefault.ReferenceModeName"/>
+	<ResourceString name="ReferenceModeNamingCurrentModelDefaultValueTypeName" model="CustomizationModel" resourceName="ReferenceModeNaming.CurrentModelDefault.ValueTypeName"/>
+	<ResourceString name="ReferenceModeNamingCurrentFormatStringCustomFormat" model="CustomizationModel" resourceName="ReferenceModeNaming.CurrentFormatString.CustomFormat"/>
+	<ResourceString name="ReferenceModeNamingCurrentFormatStringEntityTypeName" model="CustomizationModel" resourceName="ReferenceModeNaming.CurrentFormatString.EntityTypeName"/>
+	<ResourceString name="ReferenceModeNamingCurrentFormatStringReferenceModeName" model="CustomizationModel" resourceName="ReferenceModeNaming.CurrentFormatString.ReferenceModeName"/>
+	<ResourceString name="ReferenceModeNamingCurrentFormatStringValueTypeName" model="CustomizationModel" resourceName="ReferenceModeNaming.CurrentFormatString.ValueTypeName"/>
+	<ResourceString name="ReferenceModeNamingCustomFormatPropertyDescription" model="CustomizationModel" resourceName="ReferenceModeNamingCustomFormatProperty.Description"/>
+	<ResourceString name="ReferenceModeNamingCustomFormatPropertyDisplayName" model="CustomizationModel" resourceName="ReferenceModeNamingCustomFormatProperty.DisplayName"/>
+	<ResourceString name="ReferenceModeNamingCustomFormatPropertyTransactionName" model="CustomizationModel" resourceName="ReferenceModeNamingCustomFormatProperty.TransactionName"/>
+	<ResourceString name="ReferenceModeNamingNamingChoicePropertyDescription" model="CustomizationModel" resourceName="ReferenceModeNamingNamingChoiceProperty.Description"/>
+	<ResourceString name="ReferenceModeNamingNamingChoicePropertyDisplayName" model="CustomizationModel" resourceName="ReferenceModeNamingNamingChoiceProperty.DisplayName"/>
+	<ResourceString name="ReferenceModeNamingNamingChoicePropertyTransactionName" model="CustomizationModel" resourceName="ReferenceModeNamingNamingChoiceProperty.TransactionName"/>
+	<ResourceString name="ReferenceModeNamingPopularCustomFormatPropertyDescription" model="CustomizationModel" resourceName="ReferenceModeNamingPopularCustomFormatProperty.Description"/>
+	<ResourceString name="ReferenceModeNamingPopularCustomFormatPropertyDisplayName" model="CustomizationModel" resourceName="ReferenceModeNamingPopularCustomFormatProperty.DisplayName"/>
+	<ResourceString name="ReferenceModeNamingPopularCustomFormatPropertyTransactionName" model="CustomizationModel" resourceName="ReferenceModeNamingPopularCustomFormatProperty.TransactionName"/>
+	<ResourceString name="ReferenceModeNamingPopularNamingChoicePropertyDescription" model="CustomizationModel" resourceName="ReferenceModeNamingPopularNamingChoiceProperty.Description"/>
+	<ResourceString name="ReferenceModeNamingPopularNamingChoicePropertyDisplayName" model="CustomizationModel" resourceName="ReferenceModeNamingPopularNamingChoiceProperty.DisplayName"/>
+	<ResourceString name="ReferenceModeNamingPopularNamingChoicePropertyTransactionName" model="CustomizationModel" resourceName="ReferenceModeNamingPopularNamingChoiceProperty.TransactionName"/>
+	<ResourceString name="ReferenceModeNamingUnitBasedCustomFormatPropertyDescription" model="CustomizationModel" resourceName="ReferenceModeNamingUnitBasedCustomFormatProperty.Description"/>
+	<ResourceString name="ReferenceModeNamingUnitBasedCustomFormatPropertyDisplayName" model="CustomizationModel" resourceName="ReferenceModeNamingUnitBasedCustomFormatProperty.DisplayName"/>
+	<ResourceString name="ReferenceModeNamingUnitBasedCustomFormatPropertyTransactionName" model="CustomizationModel" resourceName="ReferenceModeNamingUnitBasedCustomFormatProperty.TransactionName"/>
+	<ResourceString name="ReferenceModeNamingUnitBasedNamingChoicePropertyDescription" model="CustomizationModel" resourceName="ReferenceModeNamingUnitBasedNamingChoiceProperty.Description"/>
+	<ResourceString name="ReferenceModeNamingUnitBasedNamingChoicePropertyDisplayName" model="CustomizationModel" resourceName="ReferenceModeNamingUnitBasedNamingChoiceProperty.DisplayName"/>
+	<ResourceString name="ReferenceModeNamingUnitBasedNamingChoicePropertyTransactionName" model="CustomizationModel" resourceName="ReferenceModeNamingUnitBasedNamingChoiceProperty.TransactionName"/>
+	<ResourceString name="ReferenceModeNamingDisplayedReplacementFieldShortFormEntityTypeName" model="CustomizationModel" resourceName="ReferenceModeNaming.DisplayedReplacementFieldShortForm.EntityTypeName"/>
+	<ResourceString name="ReferenceModeNamingDisplayedReplacementFieldShortFormReferenceModeName" model="CustomizationModel" resourceName="ReferenceModeNaming.DisplayedReplacementFieldShortForm.ReferenceModeName"/>
+	<ResourceString name="ReferenceModeNamingDisplayedReplacementFieldShortFormValueTypeName" model="CustomizationModel" resourceName="ReferenceModeNaming.DisplayedReplacementFieldShortForm.ValueTypeName"/>
+	<ResourceString name="ReferenceModeNamingDisplayedReplacementFieldEntityTypeName" model="CustomizationModel" resourceName="ReferenceModeNaming.DisplayedReplacementField.EntityTypeName"/>
+	<ResourceString name="ReferenceModeNamingDisplayedReplacementFieldReferenceModeName" model="CustomizationModel" resourceName="ReferenceModeNaming.DisplayedReplacementField.ReferenceModeName"/>
+	<ResourceString name="ReferenceModeNamingDisplayedReplacementFieldValueTypeName" model="CustomizationModel" resourceName="ReferenceModeNaming.DisplayedReplacementField.ValueTypeName"/>
+	<ResourceString name="ReferenceModeNamingDefaultCustomFormatPopular" model="CustomizationModel" resourceName="ReferenceModeNaming.DefaultCustomFormat.Popular"/>
+	<ResourceString name="ReferenceModeNamingDefaultCustomFormatUnitBased" model="CustomizationModel" resourceName="ReferenceModeNaming.DefaultCustomFormat.UnitBased"/>
+	<ResourceString name="ReferenceModeNamingDefaultCustomFormatInvalidDefaultCustomFormatException" model="CustomizationModel" resourceName="ReferenceModeNaming.DefaultCustomFormat.InvalidDefaultCustomFormatException"/>
 </ResourceStrings>

@@ -302,6 +302,11 @@ namespace Neumont.Tools.ORMAbstractionToConceptualDatabaseBridge
 			}
 			public sealed override bool ShouldSerializeValue(object component)
 			{
+				FactType factType = GetFactTypeFromComponent(component);
+				if (factType != null)
+				{
+					return GetAbsorptionChoiceFromFactType(factType) != GetDefaultAbsorptionChoice(factType);
+				}
 				return false;
 			}
 			public sealed override string DisplayName
