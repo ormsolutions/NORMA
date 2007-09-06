@@ -38,6 +38,12 @@
 			<arg:DeleteRule methodName="ConceptTypeDeletedRule">
 				<arg:RuleOn targetType="AbstractionModelHasConceptType" targetTypeQualifier="Neumont.Tools.ORMAbstraction"/>
 			</arg:DeleteRule>
+			<arg:AddRule methodName="DefaultReferenceModeNamingCustomizesORMModelAddedRule">
+				<arg:RuleOn targetType="DefaultReferenceModeNamingCustomizesORMModel"/>
+			</arg:AddRule>
+			<arg:ChangeRule methodName="DefaultReferenceModeNamingChangedRule">
+				<arg:RuleOn targetType="DefaultReferenceModeNaming"/>
+			</arg:ChangeRule>
 			<arg:ChangeRule methodName="FactTypeNameChangedRule">
 				<arg:RuleOn targetType="FactType" targetTypeQualifier="Neumont.Tools.ORM.ObjectModel"/>
 			</arg:ChangeRule>
@@ -47,6 +53,12 @@
 			<arg:DeleteRule methodName="InformationTypeFormatDeletedRule">
 				<arg:RuleOn targetType="AbstractionModelHasInformationTypeFormat" targetTypeQualifier="Neumont.Tools.ORMAbstraction"/>
 			</arg:DeleteRule>
+			<arg:AddRule methodName="ReferenceModeNamingCustomizesObjectTypeAddedRule">
+				<arg:RuleOn targetType="ReferenceModeNamingCustomizesObjectType"/>
+			</arg:AddRule>
+			<arg:ChangeRule methodName="ReferenceModeNamingChangedRule">
+				<arg:RuleOn targetType="ReferenceModeNaming"/>
+			</arg:ChangeRule>
 			<arg:ChangeRule methodName="RoleNameChangedRule">
 				<arg:RuleOn targetType="Role" targetTypeQualifier="Neumont.Tools.ORM.ObjectModel"/>
 			</arg:ChangeRule>

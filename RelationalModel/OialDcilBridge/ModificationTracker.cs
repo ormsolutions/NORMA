@@ -205,6 +205,98 @@ namespace Neumont.Tools.ORMAbstractionToConceptualDatabaseBridge
 				}
 			}
 			/// <summary>
+			/// AddRule: typeof(DefaultReferenceModeNamingCustomizesORMModel)
+			/// </summary>
+			private static void DefaultReferenceModeNamingCustomizesORMModelAddedRule(ElementAddedEventArgs e)
+			{
+				ValidateDefaultReferenceModeNamingChanged(e.ModelElement as DefaultReferenceModeNamingCustomizesORMModel);
+			}
+			/// <summary>
+			/// ChangeRule: typeof(ReferenceModeNaming)
+			/// </summary>
+			private static void DefaultReferenceModeNamingChangedRule(ElementPropertyChangedEventArgs e)
+			{
+				ValidateDefaultReferenceModeNamingChanged(DefaultReferenceModeNamingCustomizesORMModel.GetLinkToORMModel(e.ModelElement as DefaultReferenceModeNaming));
+			}
+			/// <summary>
+			/// AddRule: typeof(ReferenceModeNamingCustomizesObjectType)
+			/// </summary>
+			private static void ReferenceModeNamingCustomizesObjectTypeAddedRule(ElementAddedEventArgs e)
+			{
+				ValidateReferenceModeNamingChanged(e.ModelElement as ReferenceModeNamingCustomizesObjectType);
+			}
+			/// <summary>
+			/// ChangeRule: typeof(DefaultReferenceModeNaming)
+			/// </summary>
+			private static void ReferenceModeNamingChangedRule(ElementPropertyChangedEventArgs e)
+			{
+				ValidateReferenceModeNamingChanged(ReferenceModeNamingCustomizesObjectType.GetLinkToObjectType(e.ModelElement as ReferenceModeNaming));
+			}
+			private static void ValidateDefaultReferenceModeNamingChanged(DefaultReferenceModeNamingCustomizesORMModel defaultReferenceModeNamingCustomizesORMModel)
+			{
+				if (null != defaultReferenceModeNamingCustomizesORMModel)
+				{
+					ORMCore.ORMModel model = defaultReferenceModeNamingCustomizesORMModel.ORMModel;
+					if (null != model)
+					{
+						foreach (ConceptType conceptType in AbstractionModelHasConceptType.GetConceptTypeCollection(
+								AbstractionModelIsForORMModel.GetAbstractionModel(model)))
+						{
+							ValidateConceptTypeNameChanged(conceptType);
+						}
+					}
+				}
+			}
+			private static void ValidateReferenceModeNamingChanged(ReferenceModeNamingCustomizesObjectType referenceModeNamingCustomizesObjectType)
+			{
+				if (null != referenceModeNamingCustomizesObjectType)
+				{
+					ORMCore.ObjectType objectType = referenceModeNamingCustomizesObjectType.ObjectType;
+					if (objectType != null)
+					{
+						ConceptType conceptType = ConceptTypeIsForObjectType.GetConceptType(objectType);
+						if (null == conceptType)
+						{
+							foreach (ORMCore.Role role in objectType.PlayedRoleCollection)
+							{
+								foreach (ConceptTypeChild conceptTypeChild in ConceptTypeChildHasPathFactType.GetConceptTypeChild(role.FactType))
+								{
+									ValidateConceptTypeChildNameChanged(conceptTypeChild);
+								}
+							}
+						}
+						else
+						{
+							ValidateConceptTypeNameChanged(conceptType);
+						}
+					}
+				}
+			}
+			private static void ValidateConceptTypeNameChanged(ConceptType conceptType)
+			{
+				if (null != conceptType)
+				{
+					FrameworkDomainModel.DelayValidateElement(conceptType, DelayValidateConceptTypeNameChanged);
+				}
+			}
+			[DelayValidatePriority(20, DomainModelType = typeof(AbstractionDomainModel), Order = DelayValidatePriorityOrder.AfterDomainModel)]
+			private static void DelayValidateConceptTypeNameChanged(ModelElement element)
+			{
+				if (!element.IsDeleted)
+				{
+					ConceptType conceptType = (ConceptType)element;
+					Table table1 = TableIsPrimarilyForConceptType.GetTable(conceptType);
+					if (null != table1)
+					{
+						ValidateSchemaNamesChanged(table1.Schema);
+					}
+					foreach (Table table2 in TableIsAlsoForConceptType.GetTable(conceptType))
+					{
+						ValidateSchemaNamesChanged(table2.Schema);
+					}
+				}
+			}
+			/// <summary>
 			/// ChangeRule: typeof(Neumont.Tools.ORM.ObjectModel.Role)
 			/// </summary>
 			private static void RoleNameChangedRule(ElementPropertyChangedEventArgs e)
@@ -212,27 +304,24 @@ namespace Neumont.Tools.ORMAbstractionToConceptualDatabaseBridge
 				if (e.DomainProperty.Id == ORMCore.Role.NameDomainPropertyId)
 				{
 					ORMCore.FactType factType = ((ORMCore.Role)e.ModelElement).FactType;
-					if (factType != null)
+					if (null != factType)
 					{
 						ORMCore.Objectification objectification = factType.Objectification;
-						if (objectification != null)
+						if (null != objectification)
 						{
 							foreach (ORMCore.FactType impliedFactType in objectification.ImpliedFactTypeCollection)
 							{
 								foreach (ConceptTypeChild child in ConceptTypeChildHasPathFactType.GetConceptTypeChild(impliedFactType))
 								{
 									ValidateConceptTypeChildNameChanged(child);
-									goto doubleBreak;
 								}
 							}
-						doubleBreak: ;
 						}
 						else
 						{
 							foreach (ConceptTypeChild child in ConceptTypeChildHasPathFactType.GetConceptTypeChild(factType))
 							{
 								ValidateConceptTypeChildNameChanged(child);
-								break;
 							}
 						}
 					}
@@ -240,7 +329,7 @@ namespace Neumont.Tools.ORMAbstractionToConceptualDatabaseBridge
 			}
 			private static void ValidateConceptTypeChildNameChanged(ConceptTypeChild child)
 			{
-				if (child != null)
+				if (null != child)
 				{
 					FrameworkDomainModel.DelayValidateElement(child, DelayValidateConceptTypeChildNameChanged);
 				}
@@ -254,13 +343,12 @@ namespace Neumont.Tools.ORMAbstractionToConceptualDatabaseBridge
 					foreach (Column column in ColumnHasConceptTypeChild.GetColumn(child))
 					{
 						ValidateSchemaNamesChanged(column.Table.Schema);
-						break;
 					}
 				}
 			}
 			private static void ValidateTableNameChanged(Table table)
 			{
-				if (table != null)
+				if (null != table)
 				{
 					FrameworkDomainModel.DelayValidateElement(table, DelayValidateTableNameChanged);
 				}
@@ -275,7 +363,7 @@ namespace Neumont.Tools.ORMAbstractionToConceptualDatabaseBridge
 			}
 			private static void ValidateSchemaNamesChanged(Schema schema)
 			{
-				if (schema != null)
+				if (null != schema)
 				{
 					FrameworkDomainModel.DelayValidateElement(schema, DelayValidateSchemaNamesChanged);
 				}

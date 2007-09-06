@@ -9,6 +9,7 @@ using Neumont.Tools.ORMToORMAbstractionBridge;
 using Neumont.Tools.RelationalModels.ConceptualDatabase;
 using System.Text.RegularExpressions;
 using System.Diagnostics;
+using System.Globalization;
 
 namespace Neumont.Tools.ORMAbstractionToConceptualDatabaseBridge
 {
@@ -59,6 +60,7 @@ namespace Neumont.Tools.ORMAbstractionToConceptualDatabaseBridge
 				LinkedElementCollection<Table> tables = schema.TableCollection;
 				foreach (Table table in tables)
 				{
+					//table names
 					CallGeneratorForTableName(table, tableNames, null);
 
 					//column names
@@ -71,7 +73,7 @@ namespace Neumont.Tools.ORMAbstractionToConceptualDatabaseBridge
 
 					//constraint names
 					LinkedElementCollection<ReferenceConstraint> constraints;
-					if ((constraints = table.ReferenceConstraintCollection) != null)
+					if (null != (constraints = table.ReferenceConstraintCollection))
 					{
 						tempNames.Clear();
 						foreach (ReferenceConstraint constraint in constraints)
@@ -113,331 +115,408 @@ namespace Neumont.Tools.ORMAbstractionToConceptualDatabaseBridge
 				ConceptualDatabaseModelElement nameConflictElement = null;
 				while (true)
 				{
-					if (nameConflictElement != null)
+					if (null != nameConflictElement)
 					{
+						//set the value in the collection to null so this element does not have yet another name generated
 						existingNames[curName] = null;
+						//generate a new name for this element as well
 						CallGenerator(nameConflictElement, existingNames, curName, generatorCall);
 					}
+
 					curName = generatorCall(element, curName);
 
 					if (existingNames.ContainsKey(curName))
 					{
+						//mark the conflicting element to have a new name generated as well
 						nameConflictElement = existingNames[curName];
 					}
 					else
 					{
+						//no conflict, so we are done
 						break;
 					}
 				}
 				existingNames.Add(curName, element);
+
+				//set the name
 				Table table;
 				Column column;
 				Constraint constraint;
-				if ((constraint = element as Constraint) != null)
+				if (null != (constraint = element as Constraint))
 				{
 					constraint.Name = curName;
 				}
-				else if ((column = element as Column) != null)
+				else if (null != (column = element as Column))
 				{
 					column.Name = curName;
 				}
-				else if ((table = element as Table) != null)
+				else if (null != (table = element as Table))
 				{
 					table.Name = curName;
 				}
 			}
 			#endregion // private helper methods
 			#region UNDONE: temporary static imitation of an IDatabaseNameGenerator implementation
-			private static Regex myReplaceStrings;
-			private static Regex myIsNumber;
+			private static Regex myReplaceFieldsPattern;
+			private static Regex myNumberPattern;
 			// UNDONE: This field will not remain static when this is moved
 			// into an object model with additional information
 			private static Dictionary<string, int> myCounts;
 			private static string GenerateTableName(Table table, string longerThan)
 			{
-				CasingOption tableCase = CasingOption.Pascal;
-				string tableStringReplace = "";
-
-				ConceptType primaryConceptType = TableIsPrimarilyForConceptType.GetConceptType(table);
-				LinkedElementCollection<ConceptType> secondaryConceptTypes = TableIsAlsoForConceptType.GetConceptType(table);
-				StringBuilder name = new StringBuilder();
-				name.Append(primaryConceptType.Name);
-				if (secondaryConceptTypes != null)
-				{
-					foreach (ConceptType conceptType in secondaryConceptTypes)
-					{
-						if (longerThan == null || FinalizeName(name.ToString(), tableCase, tableStringReplace) != longerThan)
-						{
-							break;
-						}
-						name.Append(conceptType.Name);
-					}
-				}
-
-				if (myCounts != null)
+				if (null != myCounts && null == longerThan)
 				{
 					myCounts.Clear();
 				}
-
-				string finalName = FinalizeName(name.ToString(), tableCase, tableStringReplace);
-				if (longerThan != null && finalName == longerThan.TrimEnd('_'))
-				{
-					while (finalName.Length <= longerThan.Length)
-					{
-						finalName += "_";
-					}
-				}
-				return finalName;
+				string singleName = null;
+				List<string> nameCollection = null;
+				AddToNameCollection(ref singleName, ref nameCollection, TableIsPrimarilyForConceptType.GetConceptType(table).Name);
+				return EnsureDifference(GetFinalName(singleName, nameCollection, "", CasingOption.Pascal), longerThan);
 			}
 			private static string GenerateColumnName(Column column, string longerThan)
 			{
-				CasingOption columnCasing = CasingOption.Pascal;
-				string columnStringReplace = "";
+				// UNDONE: use these two varables to reflect preference customization 
+				CasingOption columnCase = CasingOption.Pascal;
+				string columnSpace = "";
 
-				string finalName;
+				//the string is used when possible to avoid using the list for a single entry
+				string singleName = null;
+				List<string> nameCollection = null;
 				LinkedElementCollection<ConceptTypeChild> path = ColumnHasConceptTypeChild.GetConceptTypeChildPath(column);
-				if (path.Count < 1)
+				int pathCount = path.Count;
+				if (pathCount < 1)
 				{
-					finalName = FinalizeName(column.Name, columnCasing, columnStringReplace);
-					return EnsureDiff(finalName, longerThan);
+					//if we dont have a path, there is nothing we can do
+					AddToNameCollection(ref singleName, ref nameCollection, column.Name);
 				}
-
-				Guid tableObjectTypeID = ConceptTypeIsForObjectType.GetObjectType(TableIsPrimarilyForConceptType.GetConceptType(column.Table)).Id;
-				StringBuilder name = new StringBuilder();
-
-				bool hasUnary = false;
-				int predicateTextCount = 0;
-				bool alwaysKeepText = false;
-				bool hasRoleOrHyphenBound = false;
-				foreach (ConceptTypeChild link in path)
+				else
 				{
-					LinkedElementCollection<FactType> factTypes = ConceptTypeChildHasPathFactType.GetPathFactTypeCollection(link);
-					//get a role name for each fact type, or generate one from the reading
-					foreach (FactType factType in factTypes)
+					ConceptTypeChild link = null;
+					//this is used so that only the leaf subtype node is collected by default
+					bool hasSubtypeNode = false;
+					FactType firstFactType = null;
+					//find the first non subtype fact type
+					for (int i = 0; i < pathCount; ++i)
 					{
-						//factType.ImpliedByObjectification
-						//factType.Objectification.ImpliedFactTypeCollection
-						string roleName;
-						LinkedElementCollection<RoleBase> factTypeRoles = factType.RoleCollection;
-						int? unaryRoleIndex = FactType.GetUnaryRoleIndex(factTypeRoles);
-						if (unaryRoleIndex.HasValue)
+						link = path[i];
+						LinkedElementCollection<FactType> factTypes = ConceptTypeChildHasPathFactType.GetPathFactTypeCollection(link);
+						if (factTypes.Count < 1)
 						{
-							Role unaryRole = factTypeRoles[unaryRoleIndex.Value].Role;
-							//get the role name, if supplied
-							roleName = unaryRole.Name;
-							if (string.IsNullOrEmpty(roleName))
+							continue;
+						}
+						firstFactType = factTypes[0];
+						if (firstFactType is SubtypeFact)
+						{
+							if (!hasSubtypeNode)
 							{
-								if (IsPreferredIdentifierFactType(factType, unaryRole))
-								{
-									alwaysKeepText = true;
-									//we don't generate a role name from the reading if the fact type participates in the primary reference scheme
-									continue;
-								}
-
-								roleName = GetRoleName(factType, factTypeRoles, unaryRole, unaryRoleIndex, ref hasRoleOrHyphenBound);
+								AddToNameCollection(ref singleName, ref nameCollection, ((ConceptType)link.Target).Name);
+								hasSubtypeNode = true;
 							}
-							else
-							{
-								hasRoleOrHyphenBound = true;
-							}
-							hasUnary = true;
 						}
 						else
 						{
-							RoleBase towardsRoleBase = FactTypeMapsTowardsRole.GetTowardsRole(factType);
-							RoleBase oppositeRoleBase = towardsRoleBase.OppositeRoleAlwaysResolveProxy;
-							roleName = oppositeRoleBase.Role.Name;
-							if (string.IsNullOrEmpty(roleName))
-							{
-								if (IsPreferredIdentifierFactType(factType, towardsRoleBase.Role))
-								{
-									alwaysKeepText = true;
-									continue;
-								}
+							break;
+						}
+					}
 
-								roleName = GetRoleName(factType, factTypeRoles, oppositeRoleBase, null, ref hasRoleOrHyphenBound);
+					if (null == firstFactType)
+					{
+						//not much we can really do if there are no fact types
+						AddToNameCollection(ref singleName, ref nameCollection, link.Name);
+					}
+					else
+					{
+						//use the first fact type to determine if this column is part of the primary identifier
+						RoleBase towardsRoleBase = FactTypeMapsTowardsRole.GetTowardsRole(firstFactType);
+						if (IsPreferredIdentifierFactType(firstFactType, towardsRoleBase.Role))
+						{
+							//for primary identifiers, just use the end node value type name
+							AddToNameCollection(ref singleName, ref nameCollection, GetValueType(path, pathCount));
+						}
+						else
+						{
+							//search the fact type for a role name or relevant hyphen binding
+							LinkedElementCollection<RoleBase> factTypeRoles = firstFactType.RoleCollection;
+							int? unaryRoleIndex = FactType.GetUnaryRoleIndex(factTypeRoles);
+							bool isUnary = unaryRoleIndex.HasValue;
+							RoleBase oppositeRoleBase = towardsRoleBase.OppositeRoleAlwaysResolveProxy;
+							Role oppositeRole = oppositeRoleBase.Role;
+							string roleName = oppositeRole.Name;
+							bool usingRolePlayerName = false;
+							if (StringIsNullOrEmpty(roleName))
+							{
+								//no role name, look for hyphen binding
+								ReadingOrder readingOrder = GetReadingOrder(firstFactType, oppositeRole, isUnary);
+								string rolePlayerName = oppositeRole.RolePlayer.Name;
+								string hyphenBoundRolePlayerName;
+								if ((null != readingOrder) &&
+									(IsHyphenBound(readingOrder.PrimaryReading, factTypeRoles, oppositeRoleBase, unaryRoleIndex, out hyphenBoundRolePlayerName)))
+								{
+									//use the hyphen bound name
+									AddToNameCollection(ref singleName, ref nameCollection, hyphenBoundRolePlayerName);
+								}
+								else
+								{
+									if (isUnary)
+									{
+										//always use predicate text for unary fact types
+										AddToNameCollection(ref singleName, ref nameCollection,
+											GetRoleNameFromPredicateText(firstFactType, firstFactType.UnaryRole, isUnary, columnSpace));
+									}
+									else
+									{
+										AddToNameCollection(ref singleName, ref nameCollection, rolePlayerName);
+										//used for second-level name precision later on, if needed
+										usingRolePlayerName = true;
+									}
+								}
 							}
 							else
 							{
-								hasRoleOrHyphenBound = true;
+								//use the role name
+								AddToNameCollection(ref singleName, ref nameCollection, roleName);
 							}
-						}
-						if (!string.IsNullOrEmpty(roleName))
-						{
-							++predicateTextCount;
-						}
-						name.Append(roleName);
-					}
 
-					//value type name
-					InformationTypeFormat informationTypeFormat;
-					if ((informationTypeFormat = link.Target as InformationTypeFormat) != null)
-					{
-						string valueTypeName = "";
-
-						//check if this value type is the preferred identifier, 
-						//and if so prepend the object type name to the value type name
-						LinkedElementCollection<ConceptType> types = informationTypeFormat.ConceptTypeCollection;
-						if (types.Count == 1)
-						{
-							ObjectType preferredFor;
-							ORMCore.UniquenessConstraint preferredIdentifier;
-							LinkedElementCollection<Role> identifiers;
-							if (null != (preferredFor = ConceptTypeIsForObjectType.GetObjectType(types[0])) &&
-								null != (preferredIdentifier = preferredFor.ResolvedPreferredIdentifier) &&
-								1 == (identifiers = preferredIdentifier.RoleCollection).Count &&
-								identifiers[0].RolePlayer == InformationTypeFormatIsForValueType.GetValueType(informationTypeFormat) &&
-								!informationTypeFormat.Name.StartsWith(preferredFor.Name))
+							//check if we need second-level name precision
+							if (IsEqual(singleName, nameCollection, longerThan, columnSpace))
 							{
-								valueTypeName = preferredFor.Name + "_";
-							}
-						}
-
-						valueTypeName += informationTypeFormat.Name;
-
-						if (!hasUnary || (longerThan != null && longerThan == FinalizeName(name.ToString(), columnCasing, columnStringReplace)))
-						{
-							string curName;
-							if (!(hasRoleOrHyphenBound || alwaysKeepText) && (predicateTextCount == 1 &&
-								(longerThan == null || longerThan != FinalizeName(valueTypeName, columnCasing, columnStringReplace))))
-							{
-								//if the only existing text is a single role name generated from predicate text, remove it
-								name.Remove(0, name.Length);
-								name.Append(valueTypeName);
-							}
-							else if (!hasRoleOrHyphenBound || (longerThan != null && (FinalizeName(curName = name.ToString(), columnCasing, columnStringReplace) == longerThan
-								|| FinalizeName(curName + valueTypeName, columnCasing, columnStringReplace) == longerThan)))
-							{
-								name.Append(valueTypeName);
+								bool needValueType = true;
+								if (usingRolePlayerName)
+								{
+									//generate a role name from the predicate text and prepend it
+									AddToNameCollection(ref singleName, ref nameCollection,
+										GetRoleNameFromPredicateText(firstFactType, oppositeRoleBase, isUnary, columnSpace),
+										0);
+									//determine if we still need to append the value type name for third-level precision
+									needValueType = IsEqual(singleName, nameCollection, longerThan, columnSpace);
+								}
+								if (needValueType)
+								{
+									AddToNameCollection(ref singleName, ref nameCollection, GetValueType(path, pathCount));
+								}
 							}
 						}
 					}
 				}
 
-				finalName = FinalizeName(name.ToString(), columnCasing, columnStringReplace);
-				return EnsureDiff(finalName, longerThan);
+				//call the final method to ensure a name difference
+				return EnsureDifference(GetFinalName(singleName, nameCollection, columnSpace, columnCase), longerThan);
 			}
-
 			private static string GenerateConstraintName(Constraint constraint, string longerThan)
 			{
 				ReferenceConstraint refConstraint = constraint as ReferenceConstraint;
-				if (refConstraint != null)
+				if (null != refConstraint)
 				{
 					StringBuilder name = new StringBuilder(refConstraint.SourceTable.Name);
 					name.Append("_FK");
-					return EnsureDiff(name.ToString(), longerThan);
+					return EnsureDifference(name.ToString(), longerThan);
 				}
 				return constraint.Name;
 			}
-			private enum CasingOption
+			private static void AddToNameCollection(ref string singleName, ref List<string> nameCollection, string newName)
 			{
-				Pascal,
-				Camel,
-				Flat,
-				Upper,
+				Debug.Assert(!StringIsNullOrEmpty(newName));
+				AddToNameCollection(ref singleName, ref  nameCollection, newName, -1);
 			}
-			private static string FinalizeName(string name, CasingOption casing, string spaceReplaceString)
+			private static void AddToNameCollection(ref string singleName, ref List<string> nameCollection, string newName, int index)
 			{
-				for (int i = name.Length; --i > -1; )
+				newName = newName.Trim();
+				if (newName.Contains(" "))
 				{
-					if (char.IsUpper(name, i))
+					string[] individualEntries = newName.Split(' ');
+					for (int i = 0; i < individualEntries.Length; ++i)
 					{
-						name = name.Insert(i, " ");
+						//add each space separated name individually
+						AddToNameCollection(ref singleName, ref nameCollection, individualEntries[i], index == -1 ? -1 : index + i);
 					}
+					return;
 				}
 
-				string[] words = name.Split(new char[] { ' ' }, StringSplitOptions.RemoveEmptyEntries);
-				if (words.Length > 0)
+				if (null == singleName)
 				{
-					switch (casing)
+					//we only have one name so far, so just use the string
+					singleName = newName;
+				}
+				else
+				{
+					//we need to now use the collection
+					if (null == nameCollection)
 					{
-						case CasingOption.Camel:
-							words[0] = words[0].ToLowerInvariant();
-							CapitalizeWords(words, 1);
-							break;
-						case CasingOption.Pascal:
-							CapitalizeWords(words, 0);
-							break;
+						nameCollection = new List<string>();
+						//first add to the actual collection the element that had previosly been added
+						nameCollection.Add(singleName);
 					}
-					StringBuilder builder = new StringBuilder(words[0]);
-					for (int i = 1; i < words.Length; ++i)
+					if (index == -1)
 					{
-						builder.Append(spaceReplaceString);
-						builder.Append(words[i]);
+						nameCollection.Add(newName);
 					}
-					name = builder.ToString();
-
-					switch (casing)
+					else
 					{
-						case CasingOption.Flat:
-							name = name.ToLowerInvariant();
-							break;
-						case CasingOption.Upper:
-							name = name.ToUpperInvariant();
-							break;
+						nameCollection.Insert(index, newName);
+					}
+				}
+			}
+			private static bool IsEqual(string finalName, List<string> finalNameCollection, string longerThan, string space)
+			{
+				return (null != longerThan) &&
+					longerThan.StartsWith(GetFinalName(finalName, finalNameCollection, space), StringComparison.CurrentCultureIgnoreCase);
+			}
+			private static string GetFinalName(string singleName, List<string> nameCollection, string space)
+			{
+				//use -1 to signify that case changes should not be done
+				return GetFinalName(singleName, nameCollection, space, CasingOption.None);
+			}
+			private static string GetFinalName(string singleName, List<string> nameCollection, string space, CasingOption casing)
+			{
+				string finalName;
+				if (null == nameCollection)
+				{
+					if (casing == CasingOption.None)
+					{
+						finalName = singleName;
+					}
+					else
+					{
+						finalName = DoFirstWordCasing(singleName, casing);
 					}
 				}
 				else
 				{
-					name = "";
-				}
-
-				return name;
-			}
-
-			private static void CapitalizeWords(string[] words, int startIndex)
-			{
-				for (int i = startIndex; i < words.Length; ++i)
-				{
-					words[i] = System.Globalization.CultureInfo.CurrentCulture.TextInfo.ToTitleCase(words[i]);
-				}
-			}
-			private static string EnsureDiff(string name, string longerThan)
-			{
-				if (longerThan != null && longerThan.StartsWith(name))
-				{
-					bool isSame = name == longerThan;
-					if (!isSame)
+					string name;
+					if (casing == CasingOption.None)
 					{
-						if (myIsNumber == null)
-						{
-							myIsNumber = new Regex(@"\d+", RegexOptions.RightToLeft | RegexOptions.Compiled);
-						}
-						string endNumbers = longerThan.Substring(name.Length);
-						Match longerThanMatches = myIsNumber.Match(endNumbers);
-						if (longerThanMatches.Success && longerThanMatches.Index + longerThanMatches.Length == endNumbers.Length)
-						{
-							isSame = true;
-						}
+						name = nameCollection[0];
+					}
+					else
+					{
+						name = DoFirstWordCasing(nameCollection[0], casing);
 					}
 
-					if (isSame)
+					//we already know there are at least two name entries, so use a string builder
+					StringBuilder builder = new StringBuilder(name);
+
+					//we already have the first entry, so mark camel as pascal
+					CasingOption tempCasing = casing;
+					if (tempCasing == CasingOption.Camel)
 					{
-						if (myCounts == null)
+						tempCasing = CasingOption.Pascal;
+					}
+
+					int count = nameCollection.Count;
+					for (int i = 1; i < count; ++i)
+					{
+						builder.Append(space);
+						if (casing == CasingOption.None)
 						{
-							myCounts = new Dictionary<string, int>();
-						}
-						int curCount;
-						if (myCounts.ContainsKey(name))
-						{
-							curCount = myCounts[name];
-							++myCounts[name];
+							name = nameCollection[i];
 						}
 						else
 						{
-							curCount = 1;
-							myCounts.Add(name, 2);
+							name = DoFirstWordCasing(nameCollection[i], tempCasing);
 						}
-						name += curCount.ToString();
+						builder.Append(name);
 					}
+					finalName = builder.ToString();
+				}
+
+				return finalName;
+			}
+			private static string DoFirstWordCasing(string name, CasingOption casing)
+			{
+				switch (casing)
+				{
+					case CasingOption.Camel:
+						return DoFirstLetterCase(name, false);
+					case CasingOption.Pascal:
+						return DoFirstLetterCase(name, true);
+					case CasingOption.Flat:
+						return CultureInfo.CurrentCulture.TextInfo.ToLower(name);
+					case CasingOption.Upper:
+						return CultureInfo.CurrentCulture.TextInfo.ToUpper(name);
+				}
+
+				return null;
+			}
+			private static string DoFirstLetterCase(string name, bool upper)
+			{
+				char c = name[0];
+				if (upper)
+				{
+					c = CultureInfo.CurrentCulture.TextInfo.ToUpper(c);
+				}
+				else
+				{
+					c = CultureInfo.CurrentCulture.TextInfo.ToLower(c);
+				}
+				if (name.Length > 1)
+				{
+					name = c.ToString() + name.Substring(1);
+				}
+				else
+				{
+					name = c.ToString();
 				}
 				return name;
+			}
+			private static bool IsHyphenBound(IReading reading, LinkedElementCollection<RoleBase> factTypeRoles, RoleBase role, int? unaryRoleIndex, out string hyphenBoundRolePlayerName)
+			{
+				// UNDONE: The hyphen binder does a lot of stuff we don't need, including
+				// building replacement strings for each role and rebuilding the predicate text.
+				// Add another method to the hyphenBinder to support binding one role only.
+				VerbalizationHyphenBinder hyphenBinder = new VerbalizationHyphenBinder(reading, factTypeRoles, unaryRoleIndex, "{0}{{0}}{1}");
+				string rolePlayerName = role.Role.RolePlayer.Name;
+				hyphenBoundRolePlayerName = hyphenBinder.HyphenBindRoleReplacement(rolePlayerName, factTypeRoles.IndexOf(role));
+				return ((object)hyphenBoundRolePlayerName != (object)rolePlayerName);
 			}
 			private static bool IsPreferredIdentifierFactType(FactType factType, Role role)
 			{
 				return role.RolePlayer.ResolvedPreferredIdentifier.FactTypeCollection.Contains(factType);
 			}
-			private static ReadingOrder GetReading(FactType factType, Role role, bool isUnary)
+			private static string GetValueType(LinkedElementCollection<ConceptTypeChild> path, int pathCount)
+			{
+				//find the last ConceptTypeChild with an InformationTypeFormat target
+				for (int i = pathCount; --i > -1; )
+				{
+					ConceptTypeChild link = path[i];
+					InformationTypeFormat target;
+					if (null != (target = link.Target as InformationTypeFormat))
+					{
+						LinkedElementCollection<FactType> factTypes = ConceptTypeChildHasPathFactType.GetPathFactTypeCollection(link);
+						ObjectType objectType = FactTypeMapsTowardsRole.GetTowardsRole(factTypes[factTypes.Count - 1]).Role.RolePlayer;
+						ObjectType valueType;
+						string name = ReferenceModeNaming.ResolveObjectTypeName(objectType,
+							valueType = InformationTypeFormatIsForValueType.GetValueType(target));
+						return name ?? valueType.Name;
+					}
+				}
+				return null;
+			}
+			private static string GetRoleNameFromPredicateText(FactType factType, RoleBase role, bool isUnary, string spaceReplaceString)
+			{
+				ReadingOrder readingOrder = GetReadingOrder(factType, role.Role, isUnary);
+				if (null == readingOrder)
+				{
+					return role.Role.RolePlayer.Name;
+				}
+				else
+				{
+					IReading reading = readingOrder.PrimaryReading;
+					if (null == myReplaceFieldsPattern)
+					{
+						myReplaceFieldsPattern = new Regex(@"{\d+}", RegexOptions.Compiled);
+					}
+					//get rid of string replace fields
+					string text = " " + myReplaceFieldsPattern.Replace(reading.Text, " ") + " ";
+					//remove articles
+					text = text.Replace(" a ", " ").Replace(" an ", " ").Replace(" the ", " ");
+					if (!isUnary)
+					{
+						text = text.Replace(" has ", " ");
+					}
+					return text;
+				}
+			}
+			private static ReadingOrder GetReadingOrder(FactType factType, Role role, bool isUnary)
 			{
 				if (!isUnary)
 				{
@@ -449,67 +528,70 @@ namespace Neumont.Tools.ORMAbstractionToConceptualDatabaseBridge
 					}
 				}
 
-				LinkedElementCollection<ReadingOrder> readingOrders = factType.ReadingOrderCollection;
-
-				foreach (ReadingOrder readingOrder in readingOrders)
+				//return the first reading
+				foreach (ReadingOrder readingOrder in factType.ReadingOrderCollection)
 				{
 					return readingOrder;
 				}
 
-				//if there is no reading return the object type name
 				return null;
 			}
-			private static string GetRoleName(FactType factType, LinkedElementCollection<RoleBase> factTypeRoles, RoleBase role, int? unaryRoleIndex, ref bool alwaysKeepText)
+			private static string EnsureDifference(string name, string longerThan)
 			{
-				string roleName = role.Role.Name;
-				if (string.IsNullOrEmpty(roleName))
+				if (null != longerThan && longerThan.StartsWith(name))
 				{
-					roleName = GetRoleNameFromPredicateText(factType, factTypeRoles, role, unaryRoleIndex, ref alwaysKeepText);
+					bool areEqual = name == longerThan;
+					if (!areEqual)
+					{
+						//determine if longerThan is just name followed by a string of numbers
+						if (null == myNumberPattern)
+						{
+							myNumberPattern = new Regex(@"\d+", RegexOptions.RightToLeft | RegexOptions.Compiled);
+						}
+						string endNumbers = longerThan.Substring(name.Length);
+						Match longerThanMatches = myNumberPattern.Match(endNumbers);
+						if (longerThanMatches.Success && longerThanMatches.Index + longerThanMatches.Length == endNumbers.Length)
+						{
+							//if so, mark them as equal
+							areEqual = true;
+						}
+					}
+
+					if (areEqual)
+					{
+						if (null == myCounts)
+						{
+							myCounts = new Dictionary<string, int>();
+						}
+						int curCount;
+						if (myCounts.ContainsKey(name))
+						{
+							//keep track of the number of occurances of this string
+							curCount = ++myCounts[name];
+						}
+						else
+						{
+							curCount = 1;
+							myCounts.Add(name, 1);
+						}
+						name += curCount.ToString();
+					}
 				}
-				return roleName;
+				return name;
 			}
-			private static string GetRoleNameFromPredicateText(FactType factType, LinkedElementCollection<RoleBase> factTypeRoles, RoleBase role, int? unaryRoleIndex, ref bool alwaysKeepText)
+			private static bool StringIsNullOrEmpty(string newName)
 			{
-				bool isUnary = unaryRoleIndex.HasValue;
-				ReadingOrder readingOrder = GetReading(factType, role.Role, isUnary);
-				string rolePlayerName = role.Role.RolePlayer.Name;
-				if (readingOrder == null)
-				{
-					return rolePlayerName;
-				}
-				else
-				{
-					IReading reading = readingOrder.PrimaryReading;
-					// UNDONE: The hyphen binder does a lot of stuff we don't need, including
-					// building replacement strings for each role and rebuilding the predicate text.
-					// Add another method to the hyphenBinder to support binding one role only.
-					VerbalizationHyphenBinder hyphenBinder = new VerbalizationHyphenBinder(reading, factTypeRoles, unaryRoleIndex, "{0}{{0}}{1}");
-					string hyphenBoundRolePlayerName = hyphenBinder.HyphenBindRoleReplacement(rolePlayerName, factTypeRoles.IndexOf(role));
-					if ((object)hyphenBoundRolePlayerName != (object)rolePlayerName)
-					{
-						alwaysKeepText = true;
-						// The hyphen binder had an opinion
-						return hyphenBoundRolePlayerName;
-					}
-					string text = reading.Text;
-					if (myReplaceStrings == null)
-					{
-						myReplaceStrings = new Regex(@"{\d+}", RegexOptions.Compiled);
-					}
-					text = myReplaceStrings.Replace(text, "");
-					text = text.Replace(" a ", " ").Replace(" an ", " ").Replace(" the ", " ");
-					if (!isUnary)
-					{
-						text = text.Replace(" has ", " ");
-					}
-					else if (text.Trim().ToLowerInvariant() == "has")
-					{
-						text = " ";
-					}
-					return text;
-				}
+				return string.IsNullOrEmpty(newName.Trim());
 			}
-			#endregion //UNDONE: temporary static immitation of an IDatabaseNameGenerator implementation
+			private enum CasingOption
+			{
+				None,
+				Pascal,
+				Camel,
+				Flat,
+				Upper,
+			}
+			#endregion // UNDONE: temporary static immitation of an IDatabaseNameGenerator implementation
 		}
 	}
 }
