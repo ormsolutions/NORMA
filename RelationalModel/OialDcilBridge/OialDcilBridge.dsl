@@ -253,7 +253,7 @@
 				</DomainRole>
 			</Target>
 		</DomainRelationship>
-		<DomainRelationship Id="CCBCAB63-ADE4-43FA-8E29-8A598B0969F5" Name="ColumnHasConceptTypeChild" Namespace="Neumont.Tools.ORMAbstractionToConceptualDatabaseBridge">
+		<DomainRelationship Id="CCBCAB63-ADE4-43FA-8E29-8A598B0969F5" Name="ColumnHasConceptTypeChild" Namespace="Neumont.Tools.ORMAbstractionToConceptualDatabaseBridge" AllowsDuplicates="true">
 			<Source>
 				<DomainRole Id="BC7EA8A8-8772-4CA4-B914-B78B4B583338" Description="" Name="Column" PropertyName="ConceptTypeChildPath" Multiplicity="OneMany">
 					<RolePlayer>

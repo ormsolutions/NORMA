@@ -2463,7 +2463,7 @@ namespace Neumont.Tools.ORMAbstractionToConceptualDatabaseBridge
 	[DslDesign::DisplayNameResource("Neumont.Tools.ORMAbstractionToConceptualDatabaseBridge.ColumnHasConceptTypeChild.DisplayName", typeof(global::Neumont.Tools.ORMAbstractionToConceptualDatabaseBridge.ORMAbstractionToConceptualDatabaseBridgeDomainModel), "Neumont.Tools.ORMAbstractionToConceptualDatabaseBridge.GeneratedCode.DomainModelResx")]
 	[DslDesign::DescriptionResource("Neumont.Tools.ORMAbstractionToConceptualDatabaseBridge.ColumnHasConceptTypeChild.Description", typeof(global::Neumont.Tools.ORMAbstractionToConceptualDatabaseBridge.ORMAbstractionToConceptualDatabaseBridgeDomainModel), "Neumont.Tools.ORMAbstractionToConceptualDatabaseBridge.GeneratedCode.DomainModelResx")]
 	[global::System.CLSCompliant(true)]
-	[DslModeling::DomainRelationship()]
+	[DslModeling::DomainRelationship(AllowsDuplicates = true)]
 	[DslModeling::DomainObjectId("ccbcab63-ade4-43fa-8e29-8a598b0969f5")]
 	public partial class ColumnHasConceptTypeChild : DslModeling::ElementLink
 	{
@@ -2650,24 +2650,6 @@ namespace Neumont.Tools.ORMAbstractionToConceptualDatabaseBridge
 			}
 			return outLinks.AsReadOnly();
 		}
-		/// <summary>
-		/// Get the one ColumnHasConceptTypeChild link between a given Columnand a ConceptTypeChild.
-		/// </summary>
-		[global::System.Diagnostics.DebuggerStepThrough]
-		[global::System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Design", "CA1011")]
-		public static global::Neumont.Tools.ORMAbstractionToConceptualDatabaseBridge.ColumnHasConceptTypeChild GetLink( global::Neumont.Tools.RelationalModels.ConceptualDatabase.Column source, global::Neumont.Tools.ORMAbstraction.ConceptTypeChild target )
-		{
-			global::System.Collections.Generic.IList<global::Neumont.Tools.ORMAbstractionToConceptualDatabaseBridge.ColumnHasConceptTypeChild> links = DslModeling::DomainRoleInfo.GetElementLinks<global::Neumont.Tools.ORMAbstractionToConceptualDatabaseBridge.ColumnHasConceptTypeChild>(source, global::Neumont.Tools.ORMAbstractionToConceptualDatabaseBridge.ColumnHasConceptTypeChild.ColumnDomainRoleId);
-			foreach ( global::Neumont.Tools.ORMAbstractionToConceptualDatabaseBridge.ColumnHasConceptTypeChild link in links )
-			{
-				if ( target.Equals(link.ConceptTypeChild) )
-				{
-					return link;
-				}
-			}
-			return null;
-		}
-		
 		#endregion
 	}
 }
