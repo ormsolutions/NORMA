@@ -10,6 +10,7 @@ using Neumont.Tools.RelationalModels.ConceptualDatabase;
 using System.Text.RegularExpressions;
 using System.Diagnostics;
 using System.Globalization;
+using System.Collections;
 
 namespace Neumont.Tools.ORMAbstractionToConceptualDatabaseBridge
 {
@@ -55,107 +56,347 @@ namespace Neumont.Tools.ORMAbstractionToConceptualDatabaseBridge
 			#region GenerateAllNames method
 			public static void GenerateAllNames(Schema schema)
 			{
-				Dictionary<string, ConceptualDatabaseModelElement> tableNames = new Dictionary<string, ConceptualDatabaseModelElement>();
-				Dictionary<string, ConceptualDatabaseModelElement> tempNames = new Dictionary<string, ConceptualDatabaseModelElement>();
+				UniqueNameGenerator uniqueChecker = new UniqueNameGenerator();
+
 				LinkedElementCollection<Table> tables = schema.TableCollection;
+
+				// Generate table names
+				uniqueChecker.GenerateUniqueElementNames(
+					tables,
+					delegate(object element, string longerThan)
+					{
+						return GenerateTableName((Table)element, longerThan);
+					},
+					delegate(object element, string longerThan)
+					{
+						((Table)element).Name = longerThan;
+					});
+
 				foreach (Table table in tables)
 				{
-					//table names
-					CallGeneratorForTableName(table, tableNames, null);
-
 					//column names
-					tempNames.Clear();
-					LinkedElementCollection<Column> columns = table.ColumnCollection;
-					foreach (Column column in columns)
-					{
-						CallGeneratorForColumnName(column, tempNames, null);
-					}
+					uniqueChecker.GenerateUniqueElementNames(
+						table.ColumnCollection,
+						delegate(object element, string longerThan)
+						{
+							return GenerateColumnName((Column)element, longerThan);
+						},
+						delegate(object element, string longerThan)
+						{
+							((Column)element).Name = longerThan;
+						});
 
 					//constraint names
 					LinkedElementCollection<ReferenceConstraint> constraints;
-					if (null != (constraints = table.ReferenceConstraintCollection))
+					if (0 != (constraints = table.ReferenceConstraintCollection).Count)
 					{
-						tempNames.Clear();
-						foreach (ReferenceConstraint constraint in constraints)
-						{
-							CallGeneratorForConstraintName(constraint, tempNames, null);
-						}
+						uniqueChecker.GenerateUniqueElementNames(
+							constraints,
+							delegate(object element, string longerThan)
+							{
+								return GenerateConstraintName((Constraint)element, longerThan);
+							},
+							delegate(object element, string longerThan)
+							{
+								((Constraint)element).Name = longerThan;
+							});
 					}
 				}
 			}
 			#endregion // GenerateAllNames method
-			#region private helper methods
-			private static void CallGeneratorForTableName(Table table, Dictionary<string, ConceptualDatabaseModelElement> tableNames, string tableName)
+			#region Unique name generation algorithm
+			/// <summary>
+			/// Generate a candidate name for the given <paramref name="element"/>
+			/// </summary>
+			/// <param name="element">The element to generate a candidate name for</param>
+			/// <param name="longerThan">A previously generated name. Generate a longer form of the name. Generate a shorter name if this is null.</param>
+			/// <returns>The candidate name, or <see langword="null"/> if a longer name is not available.</returns>
+			private delegate string GenerateCandidateElementNameCallback(object element, string longerThan);
+			/// <summary>
+			/// Set the name for the given element. Used by GenerateUniqueElementNames
+			/// </summary>
+			private delegate void SetElementNameCallback(object element, string elementName);
+			private struct UniqueNameGenerator
 			{
-				CallGenerator(table, tableNames, tableName,
-					new GeneratorCall(delegate(ConceptualDatabaseModelElement element, string longerThan)
-					{
-						return GenerateTableName(element as Table, longerThan);
-					}));
-			}
-			private static void CallGeneratorForColumnName(Column column, Dictionary<string, ConceptualDatabaseModelElement> columnNames, string columnName)
-			{
-				CallGenerator(column, columnNames, columnName,
-					new GeneratorCall(delegate(ConceptualDatabaseModelElement element, string longerThan)
-					{
-						return GenerateColumnName(element as Column, longerThan);
-					}));
-			}
-			private static void CallGeneratorForConstraintName(Constraint constraint, Dictionary<string, ConceptualDatabaseModelElement> constraintNames, string constraintName)
-			{
-				CallGenerator(constraint, constraintNames, constraintName,
-					new GeneratorCall(delegate(ConceptualDatabaseModelElement element, string longerThan)
-					{
-						return GenerateConstraintName(element as Constraint, longerThan);
-					}));
-			}
-			delegate string GeneratorCall(ConceptualDatabaseModelElement element, string longerThan);
-			private static void CallGenerator(ConceptualDatabaseModelElement element, Dictionary<string, ConceptualDatabaseModelElement> existingNames, string curName, GeneratorCall generatorCall)
-			{
-				ConceptualDatabaseModelElement nameConflictElement = null;
-				while (true)
+				#region ElementNode class
+				/// <summary>
+				/// A linked list node class. LinkedList{} is too hard to modify during iteration,
+				/// and a LinkedListNode{} requires a LinkedList, so we rolled our own.
+				/// </summary>
+				private class ElementNode
 				{
-					if (null != nameConflictElement)
+					private object myElement;
+					private ElementNode myNext;
+					private ElementNode myPrev;
+					public ElementNode(object element)
 					{
-						//set the value in the collection to null so this element does not have yet another name generated
-						existingNames[curName] = null;
-						//generate a new name for this element as well
-						CallGenerator(nameConflictElement, existingNames, curName, generatorCall);
+						myElement = element;
 					}
-
-					curName = generatorCall(element, curName);
-
-					if (existingNames.ContainsKey(curName))
+					/// <summary>
+					/// Set the next element
+					/// </summary>
+					/// <param name="next">Next element. If next has a previous element, then the head of the next element is inserted.</param>
+					/// <param name="head">Reference to head node</param>
+					public void SetNext(ElementNode next, ref ElementNode head)
 					{
-						//mark the conflicting element to have a new name generated as well
-						nameConflictElement = existingNames[curName];
+						Debug.Assert(next != null);
+						if (next.myPrev != null)
+						{
+							next.myPrev.SetNext(GetHead(), ref head);
+							return;
+						}
+						if (myNext != null)
+						{
+							myNext.myPrev = next.GetTail();
+						}
+						if (myPrev == null)
+						{
+							head = this;
+						}
+						myNext = next;
+						next.myPrev = this;
+					}
+					/// <summary>
+					/// The element passed to the constructor
+					/// </summary>
+					public object Element
+					{
+						get
+						{
+							return myElement;
+						}
+					}
+					/// <summary>
+					/// Get the next node
+					/// </summary>
+					public ElementNode Next
+					{
+						get
+						{
+							return myNext;
+						}
+					}
+					/// <summary>
+					/// Get the previous node
+					/// </summary>
+					public ElementNode Previous
+					{
+						get
+						{
+							return myPrev;
+						}
+					}
+					/// <summary>
+					/// Get the head element in the linked list
+					/// </summary>
+					public ElementNode GetHead()
+					{
+						ElementNode retVal = this;
+						ElementNode prev;
+						while (null != (prev = retVal.myPrev))
+						{
+							retVal = prev;
+						}
+						return retVal;
+					}
+					/// <summary>
+					/// Get the tail element in the linked list
+					/// </summary>
+					public ElementNode GetTail()
+					{
+						ElementNode retVal = this;
+						ElementNode next;
+						while (null != (next = retVal.myNext))
+						{
+							retVal = next;
+						}
+						return retVal;
+					}
+					/// <summary>
+					/// Detach the current node
+					/// </summary>
+					/// <param name="headNode"></param>
+					public void Detach(ref ElementNode headNode)
+					{
+						if (myPrev == null)
+						{
+							headNode = myNext;
+						}
+						else
+						{
+							myPrev.myNext = myNext;
+						}
+						if (myNext != null)
+						{
+							myNext.myPrev = myPrev;
+						}
+						myNext = null;
+						myPrev = null;
+					}
+				}
+				#endregion // ElementNode class
+				#region Fields
+				/// <summary>
+				/// Map already generated names into a dictionary that contains either one of the element
+				/// objects or a linked list of objects. Linked lists contain duplicate nodes
+				/// </summary>
+				private Dictionary<string, object> myNameMappingDictionary;
+				/// <summary>
+				/// A dictionary of unresolved names, corresponds to keys in the nameMappingDictionary
+				/// </summary>
+				Dictionary<string, string> myUnresolvedNames;
+				#endregion // Fields
+				#region Public methods
+				public void GenerateUniqueElementNames(IEnumerable elements, GenerateCandidateElementNameCallback generateName, SetElementNameCallback setName)
+				{
+					if (myNameMappingDictionary != null)
+					{
+						myNameMappingDictionary.Clear();
 					}
 					else
 					{
-						//no conflict, so we are done
-						break;
+						myNameMappingDictionary = new Dictionary<string, object>();
+					}
+					if (myUnresolvedNames != null)
+					{
+						myUnresolvedNames.Clear();
+					}
+					// Generate initial names
+					foreach (object element in elements)
+					{
+						string elementName = generateName(element, null);
+						if (elementName != null)
+						{
+							AddElement(element, elementName);
+						}
+					}
+
+					Dictionary<string, object> nameMappingDictionary = myNameMappingDictionary;
+					while (myUnresolvedNames != null && 0 != myUnresolvedNames.Count)
+					{
+						// Walk the existing unresolved names and attempt to resolve them further.
+						// Iterate until we can't resolve any more
+						Dictionary<string, string> unresolvedNames = myUnresolvedNames;
+						myUnresolvedNames = null;
+
+						foreach (string currentName in unresolvedNames.Values)
+						{
+							// If we've added this name as unresolved during this pass, then take it back out
+							// We'll a
+							if (myUnresolvedNames != null && myUnresolvedNames.ContainsKey(currentName))
+							{
+								myUnresolvedNames.Remove(currentName);
+							}
+							ElementNode startHeadNode = (ElementNode)nameMappingDictionary[currentName];
+							ElementNode headNode = startHeadNode;
+							ElementNode nextNode = headNode;
+							while (nextNode != null)
+							{
+								ElementNode currentNode = nextNode;
+								nextNode = currentNode.Next;
+
+								object element = currentNode.Element;
+								string newName = generateName(element, currentName);
+								// Name generation can return null if the longerThan condition cannot be satisfied
+								if (newName != null && newName.Length > currentName.Length)
+								{
+									currentNode.Detach(ref headNode);
+									// UNDONE: Is it worth reusing the old node?
+									AddElement(element, newName);
+								}
+							}
+
+							// Manage the remains of the list in the dictionary
+							if (headNode == null)
+							{
+								// Everything detached from this name, remove the key
+								nameMappingDictionary.Remove(currentName);
+							}
+							else if (headNode != startHeadNode)
+							{
+								nameMappingDictionary[currentName] = headNode;
+							}
+						}
+					}
+
+					// Walk the set, appending additional numbers as needed, and set the names
+					foreach (KeyValuePair<string, object> pair in nameMappingDictionary)
+					{
+						object element = pair.Value;
+						ElementNode node = element as ElementNode;
+						if (node != null)
+						{
+							// We added these in reverse order, so walk backwards to number them
+							ElementNode tail = node.GetTail();
+							if (node == tail)
+							{
+								setName(node.Element, pair.Key);
+							}
+							else
+							{
+								// We need to resolve further
+								string baseName = pair.Key;
+								int currentIndex = 0;
+								ElementNode nextNode = tail;
+								while (nextNode != null)
+								{
+									element = nextNode.Element;
+									nextNode = nextNode.Previous; // We started at the tail, walk backwards
+
+									string candidateName;
+									do
+									{
+										++currentIndex;
+										candidateName = baseName + currentIndex.ToString();
+									} while (nameMappingDictionary.ContainsKey(candidateName));
+
+									// If we get out of the loop, then we finally have a unique name
+									setName(element, candidateName);
+								}
+							}
+						}
+						else
+						{
+							setName(element, pair.Key);
+						}
 					}
 				}
-				existingNames.Add(curName, element);
+				#endregion // Public methods
+				#region Helper methods
+				private void AddElement(object element, string elementName)
+				{
+					object existing;
+					Dictionary<string, object> nameMappingDictionary = myNameMappingDictionary;
+					if (nameMappingDictionary.TryGetValue(elementName, out existing))
+					{
+						// Note: We use LinkedListNode here directly instead of a LinkedList
+						// to facilitate dynamically adding/removing elements during iteration
+						ElementNode node = existing as ElementNode;
+						if (node == null)
+						{
+							// Record the unresolvedName
+							if (myUnresolvedNames == null)
+							{
+								myUnresolvedNames = new Dictionary<string, string>();
+							}
+							myUnresolvedNames[elementName] = elementName;
 
-				//set the name
-				Table table;
-				Column column;
-				Constraint constraint;
-				if (null != (constraint = element as Constraint))
-				{
-					constraint.Name = curName;
+							// Create a node for the original element
+							node = new ElementNode(existing);
+						}
+
+						ElementNode newNode = new ElementNode(element);
+						newNode.SetNext(node, ref node);
+						nameMappingDictionary[elementName] = newNode;
+					}
+					else
+					{
+						nameMappingDictionary[elementName] = element;
+					}
 				}
-				else if (null != (column = element as Column))
-				{
-					column.Name = curName;
-				}
-				else if (null != (table = element as Table))
-				{
-					table.Name = curName;
-				}
+				#endregion // Helper methods
 			}
-			#endregion // private helper methods
+			#endregion // Unique name generation algorithm
 			#region UNDONE: temporary static imitation of an IDatabaseNameGenerator implementation
 			private static Regex myReplaceFieldsPattern;
 			private static Regex myNumberPattern;

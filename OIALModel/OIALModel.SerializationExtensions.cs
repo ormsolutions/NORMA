@@ -34,7 +34,7 @@ namespace Neumont.Tools.ORM.OIALModel
 		{
 			get
 			{
-				return "oial";
+				return "oial0";
 			}
 		}
 		string ICustomSerializedDomainModel.DefaultElementPrefix
@@ -48,7 +48,7 @@ namespace Neumont.Tools.ORM.OIALModel
 		protected static string[,] GetCustomElementNamespaces()
 		{
 			string[,] ret = new string[1, 3];
-			ret[0, 0] = "oial";
+			ret[0, 0] = "oial0";
 			ret[0, 1] = "http://schemas.neumont.edu/ORM/2006-01/OIALModel";
 			ret[0, 2] = "OIALModel.xsd";
 			return ret;

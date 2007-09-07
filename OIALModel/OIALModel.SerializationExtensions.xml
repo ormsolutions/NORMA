@@ -19,7 +19,7 @@
 	</se:Copyright>
 	<se:DomainModel Class="OIALDomainModel">
 		<se:Namespaces>
-			<se:Namespace Prefix="oial" URI="http://schemas.neumont.edu/ORM/2006-01/OIALModel" SchemaFile="OIALModel.xsd" DefaultPrefix="true"/>
+			<se:Namespace Prefix="oial0" URI="http://schemas.neumont.edu/ORM/2006-01/OIALModel" SchemaFile="OIALModel.xsd" DefaultPrefix="true"/>
 		</se:Namespaces>
 		<se:RootElements>
 			<se:RootElement Class="OIALModel" Name="Model"/>
