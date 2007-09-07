@@ -1576,7 +1576,7 @@ namespace Neumont.Tools.ORM.ObjectModel
 		{
 			get
 			{
-				return this.IsIndependent || (this.ImpliedMandatoryConstraint == null && this.AllowIsIndependent(false));
+				return this.IsIndependent || (!this.IsValueType && this.ImpliedMandatoryConstraint == null && this.AllowIsIndependent(false));
 			}
 		}
 		/// <summary>
