@@ -64,43 +64,36 @@ namespace Neumont.Tools.ORM.ShapeModel.Design
 		}
 
 		private static readonly object LockObject = new object();
-		private static volatile bool Initialized;
-		private static DomainPropertyInfo ConstraintDisplayPositionDomainPropertyInfo;
+		private static volatile bool myCustomPropertyAttributesInitialized;
 		private static Attribute[] ConstraintDisplayPositionDomainPropertyAttributes;
-		private static DomainPropertyInfo DisplayOrientationDomainPropertyInfo;
 		private static Attribute[] DisplayOrientationDomainPropertyAttributes;
-		private static DomainPropertyInfo DisplayRoleNamesDomainPropertyInfo;
 		private static Attribute[] DisplayRoleNamesDomainPropertyAttributes;
-		private static DomainPropertyInfo NameDomainPropertyInfo;
 		private static Attribute[] NameDomainPropertyAttributes;
-		private static DomainPropertyInfo IsIndependentDomainPropertyInfo;
 		private static Attribute[] IsIndependentDomainPropertyAttributes;
-		private static DomainRoleInfo NestedFactTypeDomainRoleInfo;
 		private static Attribute[] NestedFactTypeDomainRoleAttributes;
-		private static DomainRoleInfo NestingTypeDomainRoleInfo;
 		private static Attribute[] NestingTypeDomainRoleAttributes;
 
-		private void EnsureDomainPropertiesInitialized(DomainDataDirectory domainDataDirectory)
+		private void EnsureDomainAttributesInitialized(DomainDataDirectory domainDataDirectory)
 		{
-			if (!Initialized)
+			if (!myCustomPropertyAttributesInitialized)
 			{
 				lock (LockObject)
 				{
-					if (!Initialized)
+					if (!myCustomPropertyAttributesInitialized)
 					{
-						ConstraintDisplayPositionDomainPropertyAttributes = GetDomainPropertyAttributes(ConstraintDisplayPositionDomainPropertyInfo = domainDataDirectory.FindDomainProperty(FactTypeShape.ConstraintDisplayPositionDomainPropertyId));
-						DisplayOrientationDomainPropertyAttributes = GetDomainPropertyAttributes(DisplayOrientationDomainPropertyInfo = domainDataDirectory.FindDomainProperty(FactTypeShape.DisplayOrientationDomainPropertyId));
-						DisplayRoleNamesDomainPropertyAttributes = GetDomainPropertyAttributes(DisplayRoleNamesDomainPropertyInfo = domainDataDirectory.FindDomainProperty(FactTypeShape.DisplayRoleNamesDomainPropertyId));
-						NameDomainPropertyAttributes = GetDomainPropertyAttributes(NameDomainPropertyInfo = domainDataDirectory.FindDomainProperty(ORMNamedElement.NameDomainPropertyId));
-						IsIndependentDomainPropertyAttributes = GetDomainPropertyAttributes(IsIndependentDomainPropertyInfo = domainDataDirectory.FindDomainProperty(ObjectType.IsIndependentDomainPropertyId));
-						NestedFactTypeDomainRoleAttributes = ProcessAttributes(GetRolePlayerPropertyAttributes(NestedFactTypeDomainRoleInfo = domainDataDirectory.FindDomainRole(Objectification.NestedFactTypeDomainRoleId)));
-						NestingTypeDomainRoleAttributes = ProcessAttributes(GetRolePlayerPropertyAttributes(NestingTypeDomainRoleInfo = domainDataDirectory.FindDomainRole(Objectification.NestingTypeDomainRoleId)));
-						Initialized = true;
+						ConstraintDisplayPositionDomainPropertyAttributes = GetDomainPropertyAttributes(domainDataDirectory.FindDomainProperty(FactTypeShape.ConstraintDisplayPositionDomainPropertyId));
+						DisplayOrientationDomainPropertyAttributes = GetDomainPropertyAttributes(domainDataDirectory.FindDomainProperty(FactTypeShape.DisplayOrientationDomainPropertyId));
+						DisplayRoleNamesDomainPropertyAttributes = GetDomainPropertyAttributes(domainDataDirectory.FindDomainProperty(FactTypeShape.DisplayRoleNamesDomainPropertyId));
+						NameDomainPropertyAttributes = GetDomainPropertyAttributes(domainDataDirectory.FindDomainProperty(ORMNamedElement.NameDomainPropertyId));
+						IsIndependentDomainPropertyAttributes = GetDomainPropertyAttributes(domainDataDirectory.FindDomainProperty(ObjectType.IsIndependentDomainPropertyId));
+						NestedFactTypeDomainRoleAttributes = AddExpandableElementTypeConverterAttribute(GetRolePlayerPropertyAttributes(domainDataDirectory.FindDomainRole(Objectification.NestedFactTypeDomainRoleId)));
+						NestingTypeDomainRoleAttributes = AddExpandableElementTypeConverterAttribute(GetRolePlayerPropertyAttributes(domainDataDirectory.FindDomainRole(Objectification.NestingTypeDomainRoleId)));
+						myCustomPropertyAttributesInitialized = true;
 					}
 				}
 			}
 		}
-		private static Attribute[] ProcessAttributes(Attribute[] attributes)
+		private static Attribute[] AddExpandableElementTypeConverterAttribute(Attribute[] attributes)
 		{
 			List<Attribute> newAttributes = new List<Attribute>(attributes.Length + 1);
 			foreach (Attribute attribute in attributes)
@@ -127,16 +120,17 @@ namespace Neumont.Tools.ORM.ShapeModel.Design
 			{
 				FactTypeShape factTypeShape = PresentationElement;
 				ObjectType nestingType = factType.NestingType;
-				EnsureDomainPropertiesInitialized(factType.Store.DomainDataDirectory);
+				DomainDataDirectory domainDataDirectory = factType.Store.DomainDataDirectory;
+				EnsureDomainAttributesInitialized(domainDataDirectory);
 
 				return new PropertyDescriptorCollection(new PropertyDescriptor[]{
-					CreatePropertyDescriptor(factTypeShape, ConstraintDisplayPositionDomainPropertyInfo, ConstraintDisplayPositionDomainPropertyAttributes),
-					CreatePropertyDescriptor(factTypeShape, DisplayOrientationDomainPropertyInfo, DisplayOrientationDomainPropertyAttributes),
-					CreatePropertyDescriptor(factTypeShape, DisplayRoleNamesDomainPropertyInfo, DisplayRoleNamesDomainPropertyAttributes),
-					CreatePropertyDescriptor(nestingType, NameDomainPropertyInfo, NameDomainPropertyAttributes),
-					CreatePropertyDescriptor(nestingType, IsIndependentDomainPropertyInfo, IsIndependentDomainPropertyAttributes),
-					new ObjectificationRolePlayerPropertyDescriptor(factType, NestingTypeDomainRoleInfo, NestedFactTypeDomainRoleAttributes),
-					new ObjectificationRolePlayerPropertyDescriptor(nestingType, NestedFactTypeDomainRoleInfo, NestingTypeDomainRoleAttributes)
+					CreatePropertyDescriptor(factTypeShape, domainDataDirectory.FindDomainProperty(FactTypeShape.ConstraintDisplayPositionDomainPropertyId), ConstraintDisplayPositionDomainPropertyAttributes),
+					CreatePropertyDescriptor(factTypeShape, domainDataDirectory.FindDomainProperty(FactTypeShape.DisplayOrientationDomainPropertyId), DisplayOrientationDomainPropertyAttributes),
+					CreatePropertyDescriptor(factTypeShape, domainDataDirectory.FindDomainProperty(FactTypeShape.DisplayRoleNamesDomainPropertyId), DisplayRoleNamesDomainPropertyAttributes),
+					CreatePropertyDescriptor(nestingType, domainDataDirectory.FindDomainProperty(ORMNamedElement.NameDomainPropertyId), NameDomainPropertyAttributes),
+					CreatePropertyDescriptor(nestingType, domainDataDirectory.FindDomainProperty(ObjectType.IsIndependentDomainPropertyId), IsIndependentDomainPropertyAttributes),
+					new ObjectificationRolePlayerPropertyDescriptor(factType, domainDataDirectory.FindDomainRole(Objectification.NestingTypeDomainRoleId), NestedFactTypeDomainRoleAttributes),
+					new ObjectificationRolePlayerPropertyDescriptor(nestingType, domainDataDirectory.FindDomainRole(Objectification.NestedFactTypeDomainRoleId), NestingTypeDomainRoleAttributes)
 				});
 			}
 			return base.GetProperties(attributes);
