@@ -74,6 +74,7 @@
     <Reference Include="VSLangProj80, Version=8.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="ORMExtensionManager.cs" />
     <Compile Include="Extender.cs" />
     <Compile Include="ExtenderProvider.cs" />
     <Compile Include="UI\BranchBase.cs">

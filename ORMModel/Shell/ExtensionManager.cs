@@ -77,46 +77,7 @@ namespace Neumont.Tools.ORM.Shell
 					checkedTypes.Add((ORMExtensionType)listViewItem.Tag);
 				}
 
-				IList<ORMExtensionType> allExtensionTypes = extensionManager._allExtensionTypes;
-
-				List<Guid> loadedDomainModelIds = new List<Guid>(4 + checkedTypes.Count);
-				loadedDomainModelIds.Add(CoreDomainModel.DomainModelId);
-				loadedDomainModelIds.Add(Microsoft.VisualStudio.Modeling.Diagrams.CoreDesignSurfaceDomainModel.DomainModelId);
-				loadedDomainModelIds.Add(ObjectModel.ORMCoreDomainModel.DomainModelId);
-				loadedDomainModelIds.Add(ShapeModel.ORMShapeDomainModel.DomainModelId);
-				foreach (ORMExtensionType extensionType in checkedTypes)
-				{
-					loadedDomainModelIds.Add(extensionType.Type.GUID);
-				}
-
-				for (int i = 0; i < checkedTypes.Count; i++)
-				{
-					foreach (ExtendsDomainModelAttribute extendsDomainModelAttribute in checkedTypes[i].Type.GetCustomAttributes(typeof(ExtendsDomainModelAttribute), false))
-					{
-						Guid extendedModelId = extendsDomainModelAttribute.ExtendedModelId;
-						if (!loadedDomainModelIds.Contains(extendedModelId))
-						{
-							// Find the missing domain model
-							foreach (ORMExtensionType candidateExtensionType in allExtensionTypes)
-							{
-								object[] domainObjectIdAttributes = candidateExtensionType.Type.GetCustomAttributes(typeof(DomainObjectIdAttribute), false);
-								if (domainObjectIdAttributes.Length <= 0)
-								{
-									continue;
-								}
-								Guid candidateModelId = ((DomainObjectIdAttribute)domainObjectIdAttributes[0]).Id;
-								if (extendedModelId.Equals(candidateModelId))
-								{
-									loadedDomainModelIds.Add(candidateModelId);
-									checkedTypes.Add(candidateExtensionType);
-									break;
-								}
-							}
-							// If we didn't find the requested domain model, we don't need to worry about doing anything here,
-							// since the Store will throw later when they try to load the requesting domain model.
-						}
-					}
-				}
+				AddRequiredExtensions(checkedTypes, extensionManager._allExtensionTypes);
 
 				Stream stream = null;
 				try
@@ -135,6 +96,50 @@ namespace Neumont.Tools.ORM.Shell
 					if (stream != null)
 					{
 						stream.Dispose();
+					}
+				}
+			}
+		}
+		/// <summary>
+		/// Given a current list of extensions and all available extensions, add additional required extensions to the list
+		/// </summary>
+		public static void AddRequiredExtensions(IList<ORMExtensionType> extensions, IList<ORMExtensionType> allExtensions)
+		{
+			Dictionary<Guid, object> loadedDomainModelIds = new Dictionary<Guid, object>(4 + allExtensions.Count);
+			loadedDomainModelIds.Add(CoreDomainModel.DomainModelId, null);
+			loadedDomainModelIds.Add(Microsoft.VisualStudio.Modeling.Diagrams.CoreDesignSurfaceDomainModel.DomainModelId, null);
+			loadedDomainModelIds.Add(ObjectModel.ORMCoreDomainModel.DomainModelId, null);
+			loadedDomainModelIds.Add(ShapeModel.ORMShapeDomainModel.DomainModelId, null);
+			foreach (ORMExtensionType extensionType in extensions)
+			{
+				loadedDomainModelIds.Add(extensionType.Type.GUID, null);
+			}
+
+			for (int i = 0; i < extensions.Count; i++) // The count check here is correct, we're growing the list as we go
+			{
+				foreach (ExtendsDomainModelAttribute extendsDomainModelAttribute in extensions[i].Type.GetCustomAttributes(typeof(ExtendsDomainModelAttribute), false))
+				{
+					Guid extendedModelId = extendsDomainModelAttribute.ExtendedModelId;
+					if (!loadedDomainModelIds.ContainsKey(extendedModelId))
+					{
+						// Find the missing domain model
+						foreach (ORMExtensionType candidateExtensionType in allExtensions)
+						{
+							object[] domainObjectIdAttributes = candidateExtensionType.Type.GetCustomAttributes(typeof(DomainObjectIdAttribute), false);
+							if (domainObjectIdAttributes.Length <= 0)
+							{
+								continue;
+							}
+							Guid candidateModelId = ((DomainObjectIdAttribute)domainObjectIdAttributes[0]).Id;
+							if (extendedModelId.Equals(candidateModelId))
+							{
+								loadedDomainModelIds.Add(candidateModelId, null);
+								extensions.Add(candidateExtensionType);
+								break;
+							}
+						}
+						// If we didn't find the requested domain model, we don't need to worry about doing anything here,
+						// since the Store will throw later when they try to load the requesting domain model.
 					}
 				}
 			}
@@ -225,7 +230,7 @@ namespace Neumont.Tools.ORM.Shell
 		/// <param name="stream">The file stream that contains the ORM file.</param>
 		/// <param name="extensionTypes">A list of extension types.</param>
 		/// <returns>The cleaned stream.</returns>
-		private static Stream CleanupStream(Stream stream, IList<ORMExtensionType> extensionTypes)
+		public static Stream CleanupStream(Stream stream, IList<ORMExtensionType> extensionTypes)
 		{
 			MemoryStream outputStream = new MemoryStream((int)stream.Length);
 			XsltArgumentList argList = new XsltArgumentList();

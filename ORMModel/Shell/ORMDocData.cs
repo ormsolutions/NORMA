@@ -35,6 +35,7 @@ using EnvDTE;
 using System.Xml.Schema;
 using System.Collections.ObjectModel;
 using Neumont.Tools.Modeling.Shell.DynamicSurveyTreeGrid;
+using System.Runtime.InteropServices;
 
 namespace Neumont.Tools.ORM.Shell
 {
@@ -690,6 +691,120 @@ namespace Neumont.Tools.ORM.Shell
 		#endregion // Tab Restoration Hack
 		#region Automation support
 		/// <summary>
+		/// Class used for the document extensibility layer. Request
+		/// the "ORMExtensionManager" extension object.
+		/// </summary>
+		[ComVisible(true)]
+		[ClassInterface(ClassInterfaceType.AutoDispatch)]
+		public class ORMExtensionManagerAutomationObject
+		{
+			private ORMDesignerDocData myDocData;
+			/// <summary>
+			/// Create a new <see cref="ORMExtensionManagerAutomationObject"/> for the specific <paramref name="docData"/>
+			/// </summary>
+			/// <param name="docData">An <see cref="ORMDesignerDocData"/> instance</param>
+			public ORMExtensionManagerAutomationObject(ORMDesignerDocData docData)
+			{
+				myDocData = docData;
+			}
+			/// <summary>
+			/// Retrieve a string array of loaded extension names
+			/// </summary>
+			public string[] GetLoadedExtensions()
+			{
+				IList<ORMExtensionType> availableExtensions = ORMDesignerPackage.GetAvailableCustomExtensions();
+				List<string> extensionNames = new List<string>();
+				foreach (DomainModel domainModel in myDocData.Store.DomainModels)
+				{
+					Type domainModelType = domainModel.GetType();
+					foreach (ORMExtensionType extensionInfo in availableExtensions)
+					{
+						if (extensionInfo.Type == domainModelType)
+						{
+							extensionNames.Add(extensionInfo.NamespaceUri);
+							break;
+						}
+					}
+				}
+				return extensionNames.ToArray();
+			}
+			/// <summary>
+			/// Verify that the requested extensions are loaded in the current designer instance
+			/// </summary>
+			public void EnsureExtensions(string[] extensions)
+			{
+				int ensureCount;
+				if (extensions != null && (ensureCount = extensions.Length) != 0)
+				{
+					string[] clonedExtensions = (string[])extensions.Clone();
+					IList<ORMExtensionType> availableExtensions = ORMDesignerPackage.GetAvailableCustomExtensions();
+					List<ORMExtensionType> loadedExtensions = null;
+					foreach (DomainModel domainModel in myDocData.Store.DomainModels)
+					{
+						Type domainModelType = domainModel.GetType();
+						foreach (ORMExtensionType extensionInfo in availableExtensions)
+						{
+							if (extensionInfo.Type == domainModelType)
+							{
+								string namespaceUri = extensionInfo.NamespaceUri;
+								for (int i = 0; i < clonedExtensions.Length; ++i)
+								{
+									if (clonedExtensions[i] == namespaceUri)
+									{
+										--ensureCount;
+										if (ensureCount == 0)
+										{
+											return; // Nothing to do, everything we need is already loaded
+										}
+										if (loadedExtensions == null)
+										{
+											loadedExtensions = new List<ORMExtensionType>();
+										}
+										loadedExtensions.Add(extensionInfo);
+										clonedExtensions[i] = null;
+									}
+								}
+								break;
+							}
+						}
+					}
+					for (int i = 0; i < clonedExtensions.Length; ++i)
+					{
+						string newExtension = clonedExtensions[i];
+						if (newExtension != null)
+						{
+							--ensureCount;
+							foreach (ORMExtensionType extensionInfo in availableExtensions)
+							{
+								if (extensionInfo.NamespaceUri == newExtension)
+								{
+									if (loadedExtensions == null)
+									{
+										loadedExtensions = new List<ORMExtensionType>();
+									}
+									loadedExtensions.Add(extensionInfo);
+									break;
+								}
+							}
+							if (ensureCount == 0)
+							{
+								break;
+							}
+						}
+					}
+					Object streamObj;
+					(myDocData as EnvDTE.IExtensibleObject).GetAutomationObject("ORMXmlStream", null, out streamObj);
+					Stream stream = streamObj as Stream;
+
+					Debug.Assert(stream != null);
+
+					ExtensionManager.AddRequiredExtensions(loadedExtensions, availableExtensions);
+					stream = ExtensionManager.CleanupStream(stream, loadedExtensions);
+					myDocData.ReloadFromStream(stream);
+				}
+			}
+		}
+		/// <summary>
 		/// Implements IExtensibleObject.GetAutomationObject. Returns the ORM XML stream for
 		/// the "ORMXmlStream" object name and the this object for everything else.
 		/// </summary>
@@ -701,6 +816,14 @@ namespace Neumont.Tools.ORM.Shell
 				(new ORMSerializationEngine(Store)).Save(stream);
 				stream.Position = 0;
 				result = stream;
+				return;
+			}
+			else if ("ORMExtensionManager" == name)
+			{
+				// This returns an object with two methods:
+				// GetLoadedExtensions returns an array of current loaded extension objects
+				// EnsureExtensions accepts an array of extensions that need to be loaded
+				result = new ORMExtensionManagerAutomationObject(this);
 				return;
 			}
 			result = this;

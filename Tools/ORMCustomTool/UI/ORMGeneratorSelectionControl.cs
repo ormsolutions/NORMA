@@ -206,6 +206,42 @@ namespace Neumont.Tools.ORM.ORMCustomTool
 		{
 			if (_savedChanges)
 			{
+				// Make sure the current document has the necessary
+				// extensions loaded.
+				// UNDONE: We should be able to do this with the document
+				// closed or open as text as well via a registered service
+				// on the ORMDesignerPackage, but this is sufficient for now.
+				Dictionary<string, string> requiredExtensions = null;
+				string[] loadedExtensions = null;
+				foreach (IORMGenerator selectedGenerator in _mainBranch.SelectedGenerators)
+				{
+					foreach (string requiredExtension in selectedGenerator.GetRequiredExtensionsForInputFormat("ORM"))
+					{
+						if (loadedExtensions == null)
+						{
+							loadedExtensions = (new ORMExtensionManager(_projectItem)).GetLoadedExtensions();
+						}
+						if (Array.BinarySearch<string>(loadedExtensions, requiredExtension) < 0)
+						{
+							if (requiredExtensions == null)
+							{
+								requiredExtensions = new Dictionary<string, string>();
+							}
+							else if (requiredExtensions.ContainsKey(requiredExtension))
+							{
+								continue;
+							}
+							requiredExtensions.Add(requiredExtension, requiredExtension);
+						}
+					}
+				}
+				if (requiredExtensions != null)
+				{
+					_savedChanges = ORMExtensionManager.EnsureExtensions(_projectItem, requiredExtensions.Values);
+				}
+			}
+			if (_savedChanges)
+			{
 				// Delete the removed items from the project
 				if (_removedItems != null)
 				{

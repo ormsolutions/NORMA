@@ -517,8 +517,14 @@ namespace Neumont.Tools.ORM.ORMCustomTool
 					ormStream = new MemoryStream(Encoding.UTF8.GetBytes(bstrInputFileContents), false);
 				}
 
+				// Switch the ormStream to a readonly stream so we can reuse it multiple times
+				ormStream = new ReadOnlyStream(ormStream);
+
 				// Add the input ORM file Stream...
-				outputFormatStreams.Add(ORMOutputFormat.ORM, new ReadOnlyStream(ormStream));
+				outputFormatStreams.Add(ORMOutputFormat.ORM, ormStream);
+
+				ORMExtensionManager ormExtensionManager = new ORMExtensionManager(projectItemDocument, ormStream);
+				string[] ormExtensions = null; // Delay populated if a requires is made
 
 				// Null out bstrInputFileContents to prevent its usage beyond this point.
 				bstrInputFileContents = null;
@@ -572,8 +578,30 @@ namespace Neumont.Tools.ORM.ORMCustomTool
 								Stream readonlyOutputStream = null;
 								try
 								{
-									ormGenerator.GenerateOutput(buildItem, outputStream, readonlyOutputFormatStreams, wszDefaultNamespace);
-									readonlyOutputStream = new ReadOnlyStream(outputStream);
+									// UNDONE: Extension checking should happen in the current generator
+									// going back to the generator that produced the input file. We're only
+									// extending ORM files right now, and the ORM file doesn't have a generator,
+									// so we just do it here.
+									bool extensionsSatisfied = true;
+									foreach (string extension in ormGenerator.GetRequiredExtensionsForInputFormat("ORM"))
+									{
+										if (null == ormExtensions)
+										{
+											ormExtensions = ormExtensionManager.GetLoadedExtensions();
+										}
+										if (Array.BinarySearch<string>(ormExtensions, extension) < 0)
+										{
+											extensionsSatisfied = false;
+											// UNDONE: Localize error messages.
+											message = string.Format(CultureInfo.InvariantCulture, "The extension '{0}' in the '{1}' is required for generation of the '{2}' file. The existing contents of '{3}' will not be modified. Open the 'ORM Generator Selection' dialog and choose 'Save Changes' to automatically add required extensions.", extension, "ORM", ormGenerator.OfficialName, buildItem.FinalItemSpec);
+											report(message, ReportType.Error, null);
+										}
+									}
+									if (extensionsSatisfied)
+									{
+										ormGenerator.GenerateOutput(buildItem, outputStream, readonlyOutputFormatStreams, wszDefaultNamespace);
+										readonlyOutputStream = new ReadOnlyStream(outputStream);
+									}
 								}
 								catch (Exception ex)
 								{

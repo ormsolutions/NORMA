@@ -17,6 +17,7 @@ using VSLangProj;
 using System.Runtime.InteropServices;
 using System.ComponentModel;
 using System.Drawing.Design;
+using System.Diagnostics;
 
 namespace Neumont.Tools.ORM.ORMCustomTool
 {
@@ -78,6 +79,15 @@ namespace Neumont.Tools.ORM.ORMCustomTool
 		/// </summary>
 		~Extender()
 		{
+			NotifyDeleteCookie();
+		}
+		/// <summary>
+		/// Helper method to prevent the debugger from breaking when a common
+		/// exception is thrown deleting the cookie.
+		/// </summary>
+		[DebuggerStepThrough]
+		private void NotifyDeleteCookie()
+		{
 			// Wrap this call in a try-catch to avoid any failure code the
 			// Site may return. For instance, since this object is GC'ed,
 			// the Site may have already let go of its Cookie.
@@ -88,7 +98,7 @@ namespace Neumont.Tools.ORM.ORMCustomTool
 					mySite.NotifyDelete(myCookie);
 				}
 			}
-			catch 
+			catch
 			{
 			}
 		}

@@ -69,6 +69,21 @@ namespace Neumont.Tools.ORM.ORMCustomTool
 				}
 			}
 
+			public IEnumerable<IORMGenerator> SelectedGenerators
+			{
+				get
+				{
+					foreach (OutputFormatBranch branch in _branches.Values)
+					{
+						IORMGenerator selectedGenerator = branch.SelectedORMGenerator;
+						if (selectedGenerator != null)
+						{
+							yield return selectedGenerator;
+						}
+					}
+				}
+			}
+
 			public bool IsPrimaryDisplayItem(int index)
 			{
 				OutputFormatBranch branch = _branches.Values[index];

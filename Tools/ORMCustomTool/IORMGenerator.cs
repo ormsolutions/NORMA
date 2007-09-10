@@ -93,6 +93,14 @@ namespace Neumont.Tools.ORM.ORMCustomTool
 		}
 
 		/// <summary>
+		/// Get required extensions for an associated input format. The extensions ensure that the input formats
+		/// meet additional content requirements not expressible based solely on file format.
+		/// </summary>
+		/// <param name="inputFormat">The official name of the required input format, retrieved from <see cref="RequiresInputFormats"/>.</param>
+		/// <returns>An enumerable of required extensions. The extensions must be enabled by the generator chosen to produce the given input format.</returns>
+		IEnumerable<string> GetRequiredExtensionsForInputFormat(string inputFormat);
+
+		/// <summary>
 		/// Returns the default name of the file generated for a specific source file name.
 		/// </summary>
 		/// <param name="sourceFileName">A <see cref="String"/> containing the name (without file extension) of the source ORM file.</param>

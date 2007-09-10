@@ -64,17 +64,27 @@ namespace Neumont.Tools.ORM.ORMCustomTool
 				this._generatesSupportFile = Convert.ToBoolean((int)generatorKey.GetValue("GeneratesSupportFile", 0));
 				this._customTool = generatorKey.GetValue("CustomTool", null) as string;
 
-				string sourceInputFormat = this._sourceInputFormat = generatorKey.GetValue("SourceInputFormat", null) as string;
+				Dictionary<string, IEnumerable<string>> extensions = null;
+				string sourceInputFormat = generatorKey.GetValue("SourceInputFormat", null) as string;
 				Debug.Assert(sourceInputFormat != null);
-				string[] referenceInputFormats = this._referenceInputFormats = generatorKey.GetValue("ReferenceInputFormats", EmptyStringArray) as string[];
+				string[] referenceInputFormats = generatorKey.GetValue("ReferenceInputFormats", EmptyStringArray) as string[];
 				string[] prequisiteInputFormats = generatorKey.GetValue("PrequisiteInputFormats", EmptyStringArray) as string[];
 
 				List<string> requiresInputFormats;
 
 				requiresInputFormats = new List<string>(referenceInputFormats.Length + prequisiteInputFormats.Length + 1);
-				requiresInputFormats.Add(sourceInputFormat);
-				requiresInputFormats.AddRange(referenceInputFormats);
-				requiresInputFormats.AddRange(prequisiteInputFormats);
+				requiresInputFormats.Add(sourceInputFormat = StripFormatExtensions(sourceInputFormat, ref extensions));
+				for (int i = 0; i < referenceInputFormats.Length; ++i)
+				{
+					requiresInputFormats.Add(referenceInputFormats[i] = StripFormatExtensions(referenceInputFormats[i], ref extensions));
+				}
+				for (int i = 0; i < prequisiteInputFormats.Length; ++i)
+				{
+					requiresInputFormats.Add(StripFormatExtensions(prequisiteInputFormats[i], ref extensions));
+				}
+				this._sourceInputFormat = sourceInputFormat;
+				this._referenceInputFormats = referenceInputFormats;
+				this._requiredExtensions = extensions;
 				this._requiresInputFormats = new ReadOnlyCollection<string>(requiresInputFormats);
 
 				this._transform = new XslCompiledTransform(System.Diagnostics.Debugger.IsAttached);
@@ -85,6 +95,46 @@ namespace Neumont.Tools.ORM.ORMCustomTool
 				{
 					this._transformLocalPath = transformUri.LocalPath;
 				}
+			}
+
+			private static readonly char[] _extensionSplitChars = new char[] { ' ' };
+			private static string StripFormatExtensions(string format, ref Dictionary<string, IEnumerable<string>> extensions)
+			{
+				string[] substrings = format.Split(_extensionSplitChars, StringSplitOptions.RemoveEmptyEntries);
+				int substringCount = substrings.Length;
+				if (substringCount > 0)
+				{
+					format = substrings[0];
+					if (substringCount > 1)
+					{
+						string[] oldExtensions = null;
+						if (extensions == null)
+						{
+							extensions = new Dictionary<string, IEnumerable<string>>();
+							oldExtensions = null;
+						}
+						else
+						{
+							IEnumerable<string> oldEntry;
+							if (extensions.TryGetValue(format, out oldEntry))
+							{
+								oldExtensions = (string[])oldEntry;
+							}
+						}
+						int oldLength = (oldExtensions != null) ? oldExtensions.Length : 0;
+						string[] newExtensions = new string[oldLength + substringCount - 1];
+						if (oldLength != 0)
+						{
+							oldExtensions.CopyTo(newExtensions, 0);
+						}
+						for (int i = 1; i < substringCount; ++i, ++oldLength)
+						{
+							newExtensions[oldLength] = substrings[i];
+						}
+						extensions[format] = newExtensions;
+					}
+				}
+				return format;
 			}
 
 			private void LoadTransform()
@@ -146,6 +196,16 @@ namespace Neumont.Tools.ORM.ORMCustomTool
 			public string ProvidesOutputFormat
 			{
 				get { return this._providesOutputFormat; }
+			}
+
+			private readonly IDictionary<string, IEnumerable<string>> _requiredExtensions;
+			public IEnumerable<string> GetRequiredExtensionsForInputFormat(string outputFormat)
+			{
+				IDictionary<string, IEnumerable<string>> dictionary = _requiredExtensions;
+				IEnumerable<string> retVal;
+				return (dictionary != null && dictionary.TryGetValue(outputFormat, out retVal)) ?
+					retVal :
+					EmptyStringArray;
 			}
 
 			private readonly bool _generatesSupportFile;
