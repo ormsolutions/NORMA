@@ -35,8 +35,20 @@
 		<SubType name="SignedInteger" backingType=".i4">
 			<comment type="summary">A signed integer numeric data type</comment>
 		</SubType>
+		<SubType name="SignedSmallInteger" backingType=".i2">
+			<comment type="summary">A small signed integer numeric data type</comment>
+		</SubType>
+		<SubType name="SignedLargeInteger" backingType=".i8">
+			<comment type="summary">A small signed integer numeric data type</comment>
+		</SubType>
 		<SubType name="UnsignedInteger" backingType=".u4">
 			<comment type="summary">An unsigned integer numeric data type</comment>
+		</SubType>
+		<SubType name="UnsignedSmallInteger" backingType=".u2">
+			<comment type="summary">A small unsigned integer numeric data type</comment>
+		</SubType>
+		<SubType name="UnsignedLargeInteger" backingType=".u8">
+			<comment type="summary">A large unsigned integer numeric data type</comment>
 		</SubType>
 		<SubType name="AutoCounter" backingType=".u8">
 			<comment type="summary">An auto counter numeric data type</comment>

@@ -156,11 +156,23 @@
   <data name="Neumont.Tools.ORM.ObjectModel.DataType.PortableDataType.Numeric.SignedInteger.Text" xml:space="preserve">
     <value>Numeric: Signed Integer</value>
   </data>
+  <data name="Neumont.Tools.ORM.ObjectModel.DataType.PortableDataType.Numeric.SignedLargeInteger.Text" xml:space="preserve">
+    <value>Numeric: Signed Big Integer</value>
+  </data>
+  <data name="Neumont.Tools.ORM.ObjectModel.DataType.PortableDataType.Numeric.SignedSmallInteger.Text" xml:space="preserve">
+    <value>Numeric: Signed Small Integer</value>
+  </data>
   <data name="Neumont.Tools.ORM.ObjectModel.DataType.PortableDataType.Numeric.Text" xml:space="preserve">
     <value>Numeric</value>
   </data>
   <data name="Neumont.Tools.ORM.ObjectModel.DataType.PortableDataType.Numeric.UnsignedInteger.Text" xml:space="preserve">
     <value>Numeric: Unsigned Integer</value>
+  </data>
+  <data name="Neumont.Tools.ORM.ObjectModel.DataType.PortableDataType.Numeric.UnsignedLargeInteger.Text" xml:space="preserve">
+    <value>Numeric: Unsigned Big Integer</value>
+  </data>
+  <data name="Neumont.Tools.ORM.ObjectModel.DataType.PortableDataType.Numeric.UnsignedSmallInteger.Text" xml:space="preserve">
+    <value>Numeric: Unsigned Small Integer</value>
   </data>
   <data name="Neumont.Tools.ORM.ObjectModel.DataType.PortableDataType.Other.ObjectId.Text" xml:space="preserve">
     <value>Other: Object ID</value>

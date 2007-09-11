@@ -238,7 +238,11 @@
 			<xs:element name="VariableLengthTextDataType" type="VariableLengthTextDataType"/>
 			<xs:element name="LargeLengthTextDataType" type="LargeLengthTextDataType"/>
 			<xs:element name="SignedIntegerNumericDataType" type="SignedIntegerNumericDataType"/>
+			<xs:element name="SignedSmallIntegerNumericDataType" type="SignedSmallIntegerNumericDataType"/>
+			<xs:element name="SignedLargeIntegerNumericDataType" type="SignedLargeIntegerNumericDataType"/>
 			<xs:element name="UnsignedIntegerNumericDataType" type="UnsignedIntegerNumericDataType"/>
+			<xs:element name="UnsignedSmallIntegerNumericDataType" type="UnsignedSmallIntegerNumericDataType"/>
+			<xs:element name="UnsignedLargeIntegerNumericDataType" type="UnsignedLargeIntegerNumericDataType"/>
 			<xs:element name="AutoCounterNumericDataType" type="AutoCounterNumericDataType"/>
 			<xs:element name="FloatingPointNumericDataType" type="FloatingPointNumericDataType"/>
 			<xs:element name="DecimalNumericDataType" type="DecimalNumericDataType"/>
@@ -289,7 +293,27 @@
 			<xs:extension base="DataType"/>
 		</xs:complexContent>
 	</xs:complexType>
+	<xs:complexType name="SignedSmallIntegerNumericDataType">
+		<xs:complexContent>
+			<xs:extension base="DataType"/>
+		</xs:complexContent>
+	</xs:complexType>
+	<xs:complexType name="SignedLargeIntegerNumericDataType">
+		<xs:complexContent>
+			<xs:extension base="DataType"/>
+		</xs:complexContent>
+	</xs:complexType>
 	<xs:complexType name="UnsignedIntegerNumericDataType">
+		<xs:complexContent>
+			<xs:extension base="DataType"/>
+		</xs:complexContent>
+	</xs:complexType>
+	<xs:complexType name="UnsignedSmallIntegerNumericDataType">
+		<xs:complexContent>
+			<xs:extension base="DataType"/>
+		</xs:complexContent>
+	</xs:complexType>
+	<xs:complexType name="UnsignedLargeIntegerNumericDataType">
 		<xs:complexContent>
 			<xs:extension base="DataType"/>
 		</xs:complexContent>

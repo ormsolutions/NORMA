@@ -969,7 +969,31 @@
 			</BaseClass>
 		</DomainClass>
 
+		<DomainClass Name="SignedSmallIntegerNumericDataType" Namespace="Neumont.Tools.ORM.ObjectModel" Id="67825482-E490-4A16-B47D-53E72F4EBEE3" DisplayName="SignedSmallIntegerNumericDataType" Description="">
+			<BaseClass>
+				<DomainClassMoniker Name="NumericDataType"/>
+			</BaseClass>
+		</DomainClass>
+
+		<DomainClass Name="SignedLargeIntegerNumericDataType" Namespace="Neumont.Tools.ORM.ObjectModel" Id="AF56003A-52F1-4C02-B203-EF15B4CB2AE1" DisplayName="SignedLargeIntegerNumericDataType" Description="">
+			<BaseClass>
+				<DomainClassMoniker Name="NumericDataType"/>
+			</BaseClass>
+		</DomainClass>
+
 		<DomainClass Name="UnsignedIntegerNumericDataType" Namespace="Neumont.Tools.ORM.ObjectModel" Id="9D76D09D-10F6-4DB0-8890-1077A95FB364" DisplayName="UnsignedIntegerNumericDataType" Description="">
+			<BaseClass>
+				<DomainClassMoniker Name="NumericDataType"/>
+			</BaseClass>
+		</DomainClass>
+
+		<DomainClass Name="UnsignedSmallIntegerNumericDataType" Namespace="Neumont.Tools.ORM.ObjectModel" Id="0EDC60E7-0548-48C3-BC6B-219AF6E50A31" DisplayName="UnsignedSmallIntegerNumericDataType" Description="">
+			<BaseClass>
+				<DomainClassMoniker Name="NumericDataType"/>
+			</BaseClass>
+		</DomainClass>
+
+		<DomainClass Name="UnsignedLargeIntegerNumericDataType" Namespace="Neumont.Tools.ORM.ObjectModel" Id="0ED930F6-73C7-4E04-8898-E5F30EF3A641" DisplayName="UnsignedLargeIntegerNumericDataType" Description="">
 			<BaseClass>
 				<DomainClassMoniker Name="NumericDataType"/>
 			</BaseClass>

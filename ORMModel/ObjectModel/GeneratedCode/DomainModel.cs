@@ -131,7 +131,11 @@ namespace Neumont.Tools.ORM.ObjectModel
 				typeof(LargeLengthTextDataType),
 				typeof(TextDataType),
 				typeof(SignedIntegerNumericDataType),
+				typeof(SignedSmallIntegerNumericDataType),
+				typeof(SignedLargeIntegerNumericDataType),
 				typeof(UnsignedIntegerNumericDataType),
+				typeof(UnsignedSmallIntegerNumericDataType),
+				typeof(UnsignedLargeIntegerNumericDataType),
 				typeof(AutoCounterNumericDataType),
 				typeof(FloatingPointNumericDataType),
 				typeof(DecimalNumericDataType),
@@ -613,7 +617,7 @@ namespace Neumont.Tools.ORM.ObjectModel
 	
 			if (createElementMap == null)
 			{
-				createElementMap = new global::System.Collections.Generic.Dictionary<global::System.Type, int>(121);
+				createElementMap = new global::System.Collections.Generic.Dictionary<global::System.Type, int>(125);
 				createElementMap.Add(typeof(ModelErrorDisplayFilter), 0);
 				createElementMap.Add(typeof(ORMModel), 1);
 				createElementMap.Add(typeof(ObjectType), 2);
@@ -661,51 +665,55 @@ namespace Neumont.Tools.ORM.ObjectModel
 				createElementMap.Add(typeof(VariableLengthTextDataType), 44);
 				createElementMap.Add(typeof(LargeLengthTextDataType), 45);
 				createElementMap.Add(typeof(SignedIntegerNumericDataType), 46);
-				createElementMap.Add(typeof(UnsignedIntegerNumericDataType), 47);
-				createElementMap.Add(typeof(AutoCounterNumericDataType), 48);
-				createElementMap.Add(typeof(FloatingPointNumericDataType), 49);
-				createElementMap.Add(typeof(DecimalNumericDataType), 50);
-				createElementMap.Add(typeof(MoneyNumericDataType), 51);
-				createElementMap.Add(typeof(FixedLengthRawDataDataType), 52);
-				createElementMap.Add(typeof(VariableLengthRawDataDataType), 53);
-				createElementMap.Add(typeof(LargeLengthRawDataDataType), 54);
-				createElementMap.Add(typeof(PictureRawDataDataType), 55);
-				createElementMap.Add(typeof(OleObjectRawDataDataType), 56);
-				createElementMap.Add(typeof(AutoTimestampTemporalDataType), 57);
-				createElementMap.Add(typeof(TimeTemporalDataType), 58);
-				createElementMap.Add(typeof(DateTemporalDataType), 59);
-				createElementMap.Add(typeof(DateAndTimeTemporalDataType), 60);
-				createElementMap.Add(typeof(TrueOrFalseLogicalDataType), 61);
-				createElementMap.Add(typeof(YesOrNoLogicalDataType), 62);
-				createElementMap.Add(typeof(RowIdOtherDataType), 63);
-				createElementMap.Add(typeof(ObjectIdOtherDataType), 64);
-				createElementMap.Add(typeof(Reading), 65);
-				createElementMap.Add(typeof(ReadingOrder), 66);
-				createElementMap.Add(typeof(ValueRange), 67);
-				createElementMap.Add(typeof(ValueTypeValueConstraint), 68);
-				createElementMap.Add(typeof(RoleValueConstraint), 69);
-				createElementMap.Add(typeof(MinValueMismatchError), 70);
-				createElementMap.Add(typeof(MaxValueMismatchError), 71);
-				createElementMap.Add(typeof(ImpliedInternalUniquenessConstraintError), 72);
-				createElementMap.Add(typeof(FrequencyConstraintContradictsInternalUniquenessConstraintError), 73);
-				createElementMap.Add(typeof(RingConstraintTypeNotSpecifiedError), 74);
-				createElementMap.Add(typeof(SubtypeMetaRole), 75);
-				createElementMap.Add(typeof(SupertypeMetaRole), 76);
-				createElementMap.Add(typeof(ObjectTypeRequiresPrimarySupertypeError), 77);
-				createElementMap.Add(typeof(Note), 78);
-				createElementMap.Add(typeof(ModelNote), 79);
-				createElementMap.Add(typeof(CompatibleSupertypesError), 80);
-				createElementMap.Add(typeof(ImplicationError), 81);
-				createElementMap.Add(typeof(EqualityOrSubsetImpliedByMandatoryError), 82);
-				createElementMap.Add(typeof(PreferredIdentifierRequiresMandatoryError), 83);
-				createElementMap.Add(typeof(ValueRangeOverlapError), 84);
-				createElementMap.Add(typeof(FactTypeDerivationExpression), 85);
-				createElementMap.Add(typeof(EntityTypeInstance), 86);
-				createElementMap.Add(typeof(ValueTypeInstance), 87);
-				createElementMap.Add(typeof(FactTypeInstance), 88);
-				createElementMap.Add(typeof(TooFewEntityTypeRoleInstancesError), 89);
-				createElementMap.Add(typeof(TooFewFactTypeRoleInstancesError), 90);
-				createElementMap.Add(typeof(CompatibleValueTypeInstanceValueError), 91);
+				createElementMap.Add(typeof(SignedSmallIntegerNumericDataType), 47);
+				createElementMap.Add(typeof(SignedLargeIntegerNumericDataType), 48);
+				createElementMap.Add(typeof(UnsignedIntegerNumericDataType), 49);
+				createElementMap.Add(typeof(UnsignedSmallIntegerNumericDataType), 50);
+				createElementMap.Add(typeof(UnsignedLargeIntegerNumericDataType), 51);
+				createElementMap.Add(typeof(AutoCounterNumericDataType), 52);
+				createElementMap.Add(typeof(FloatingPointNumericDataType), 53);
+				createElementMap.Add(typeof(DecimalNumericDataType), 54);
+				createElementMap.Add(typeof(MoneyNumericDataType), 55);
+				createElementMap.Add(typeof(FixedLengthRawDataDataType), 56);
+				createElementMap.Add(typeof(VariableLengthRawDataDataType), 57);
+				createElementMap.Add(typeof(LargeLengthRawDataDataType), 58);
+				createElementMap.Add(typeof(PictureRawDataDataType), 59);
+				createElementMap.Add(typeof(OleObjectRawDataDataType), 60);
+				createElementMap.Add(typeof(AutoTimestampTemporalDataType), 61);
+				createElementMap.Add(typeof(TimeTemporalDataType), 62);
+				createElementMap.Add(typeof(DateTemporalDataType), 63);
+				createElementMap.Add(typeof(DateAndTimeTemporalDataType), 64);
+				createElementMap.Add(typeof(TrueOrFalseLogicalDataType), 65);
+				createElementMap.Add(typeof(YesOrNoLogicalDataType), 66);
+				createElementMap.Add(typeof(RowIdOtherDataType), 67);
+				createElementMap.Add(typeof(ObjectIdOtherDataType), 68);
+				createElementMap.Add(typeof(Reading), 69);
+				createElementMap.Add(typeof(ReadingOrder), 70);
+				createElementMap.Add(typeof(ValueRange), 71);
+				createElementMap.Add(typeof(ValueTypeValueConstraint), 72);
+				createElementMap.Add(typeof(RoleValueConstraint), 73);
+				createElementMap.Add(typeof(MinValueMismatchError), 74);
+				createElementMap.Add(typeof(MaxValueMismatchError), 75);
+				createElementMap.Add(typeof(ImpliedInternalUniquenessConstraintError), 76);
+				createElementMap.Add(typeof(FrequencyConstraintContradictsInternalUniquenessConstraintError), 77);
+				createElementMap.Add(typeof(RingConstraintTypeNotSpecifiedError), 78);
+				createElementMap.Add(typeof(SubtypeMetaRole), 79);
+				createElementMap.Add(typeof(SupertypeMetaRole), 80);
+				createElementMap.Add(typeof(ObjectTypeRequiresPrimarySupertypeError), 81);
+				createElementMap.Add(typeof(Note), 82);
+				createElementMap.Add(typeof(ModelNote), 83);
+				createElementMap.Add(typeof(CompatibleSupertypesError), 84);
+				createElementMap.Add(typeof(ImplicationError), 85);
+				createElementMap.Add(typeof(EqualityOrSubsetImpliedByMandatoryError), 86);
+				createElementMap.Add(typeof(PreferredIdentifierRequiresMandatoryError), 87);
+				createElementMap.Add(typeof(ValueRangeOverlapError), 88);
+				createElementMap.Add(typeof(FactTypeDerivationExpression), 89);
+				createElementMap.Add(typeof(EntityTypeInstance), 90);
+				createElementMap.Add(typeof(ValueTypeInstance), 91);
+				createElementMap.Add(typeof(FactTypeInstance), 92);
+				createElementMap.Add(typeof(TooFewEntityTypeRoleInstancesError), 93);
+				createElementMap.Add(typeof(TooFewFactTypeRoleInstancesError), 94);
+				createElementMap.Add(typeof(CompatibleValueTypeInstanceValueError), 95);
 			}
 			int index;
 			if (!createElementMap.TryGetValue(elementType, out index))
@@ -761,51 +769,55 @@ namespace Neumont.Tools.ORM.ObjectModel
 				case 44: return new VariableLengthTextDataType(partition, propertyAssignments);
 				case 45: return new LargeLengthTextDataType(partition, propertyAssignments);
 				case 46: return new SignedIntegerNumericDataType(partition, propertyAssignments);
-				case 47: return new UnsignedIntegerNumericDataType(partition, propertyAssignments);
-				case 48: return new AutoCounterNumericDataType(partition, propertyAssignments);
-				case 49: return new FloatingPointNumericDataType(partition, propertyAssignments);
-				case 50: return new DecimalNumericDataType(partition, propertyAssignments);
-				case 51: return new MoneyNumericDataType(partition, propertyAssignments);
-				case 52: return new FixedLengthRawDataDataType(partition, propertyAssignments);
-				case 53: return new VariableLengthRawDataDataType(partition, propertyAssignments);
-				case 54: return new LargeLengthRawDataDataType(partition, propertyAssignments);
-				case 55: return new PictureRawDataDataType(partition, propertyAssignments);
-				case 56: return new OleObjectRawDataDataType(partition, propertyAssignments);
-				case 57: return new AutoTimestampTemporalDataType(partition, propertyAssignments);
-				case 58: return new TimeTemporalDataType(partition, propertyAssignments);
-				case 59: return new DateTemporalDataType(partition, propertyAssignments);
-				case 60: return new DateAndTimeTemporalDataType(partition, propertyAssignments);
-				case 61: return new TrueOrFalseLogicalDataType(partition, propertyAssignments);
-				case 62: return new YesOrNoLogicalDataType(partition, propertyAssignments);
-				case 63: return new RowIdOtherDataType(partition, propertyAssignments);
-				case 64: return new ObjectIdOtherDataType(partition, propertyAssignments);
-				case 65: return new Reading(partition, propertyAssignments);
-				case 66: return new ReadingOrder(partition, propertyAssignments);
-				case 67: return new ValueRange(partition, propertyAssignments);
-				case 68: return new ValueTypeValueConstraint(partition, propertyAssignments);
-				case 69: return new RoleValueConstraint(partition, propertyAssignments);
-				case 70: return new MinValueMismatchError(partition, propertyAssignments);
-				case 71: return new MaxValueMismatchError(partition, propertyAssignments);
-				case 72: return new ImpliedInternalUniquenessConstraintError(partition, propertyAssignments);
-				case 73: return new FrequencyConstraintContradictsInternalUniquenessConstraintError(partition, propertyAssignments);
-				case 74: return new RingConstraintTypeNotSpecifiedError(partition, propertyAssignments);
-				case 75: return new SubtypeMetaRole(partition, propertyAssignments);
-				case 76: return new SupertypeMetaRole(partition, propertyAssignments);
-				case 77: return new ObjectTypeRequiresPrimarySupertypeError(partition, propertyAssignments);
-				case 78: return new Note(partition, propertyAssignments);
-				case 79: return new ModelNote(partition, propertyAssignments);
-				case 80: return new CompatibleSupertypesError(partition, propertyAssignments);
-				case 81: return new ImplicationError(partition, propertyAssignments);
-				case 82: return new EqualityOrSubsetImpliedByMandatoryError(partition, propertyAssignments);
-				case 83: return new PreferredIdentifierRequiresMandatoryError(partition, propertyAssignments);
-				case 84: return new ValueRangeOverlapError(partition, propertyAssignments);
-				case 85: return new FactTypeDerivationExpression(partition, propertyAssignments);
-				case 86: return new EntityTypeInstance(partition, propertyAssignments);
-				case 87: return new ValueTypeInstance(partition, propertyAssignments);
-				case 88: return new FactTypeInstance(partition, propertyAssignments);
-				case 89: return new TooFewEntityTypeRoleInstancesError(partition, propertyAssignments);
-				case 90: return new TooFewFactTypeRoleInstancesError(partition, propertyAssignments);
-				case 91: return new CompatibleValueTypeInstanceValueError(partition, propertyAssignments);
+				case 47: return new SignedSmallIntegerNumericDataType(partition, propertyAssignments);
+				case 48: return new SignedLargeIntegerNumericDataType(partition, propertyAssignments);
+				case 49: return new UnsignedIntegerNumericDataType(partition, propertyAssignments);
+				case 50: return new UnsignedSmallIntegerNumericDataType(partition, propertyAssignments);
+				case 51: return new UnsignedLargeIntegerNumericDataType(partition, propertyAssignments);
+				case 52: return new AutoCounterNumericDataType(partition, propertyAssignments);
+				case 53: return new FloatingPointNumericDataType(partition, propertyAssignments);
+				case 54: return new DecimalNumericDataType(partition, propertyAssignments);
+				case 55: return new MoneyNumericDataType(partition, propertyAssignments);
+				case 56: return new FixedLengthRawDataDataType(partition, propertyAssignments);
+				case 57: return new VariableLengthRawDataDataType(partition, propertyAssignments);
+				case 58: return new LargeLengthRawDataDataType(partition, propertyAssignments);
+				case 59: return new PictureRawDataDataType(partition, propertyAssignments);
+				case 60: return new OleObjectRawDataDataType(partition, propertyAssignments);
+				case 61: return new AutoTimestampTemporalDataType(partition, propertyAssignments);
+				case 62: return new TimeTemporalDataType(partition, propertyAssignments);
+				case 63: return new DateTemporalDataType(partition, propertyAssignments);
+				case 64: return new DateAndTimeTemporalDataType(partition, propertyAssignments);
+				case 65: return new TrueOrFalseLogicalDataType(partition, propertyAssignments);
+				case 66: return new YesOrNoLogicalDataType(partition, propertyAssignments);
+				case 67: return new RowIdOtherDataType(partition, propertyAssignments);
+				case 68: return new ObjectIdOtherDataType(partition, propertyAssignments);
+				case 69: return new Reading(partition, propertyAssignments);
+				case 70: return new ReadingOrder(partition, propertyAssignments);
+				case 71: return new ValueRange(partition, propertyAssignments);
+				case 72: return new ValueTypeValueConstraint(partition, propertyAssignments);
+				case 73: return new RoleValueConstraint(partition, propertyAssignments);
+				case 74: return new MinValueMismatchError(partition, propertyAssignments);
+				case 75: return new MaxValueMismatchError(partition, propertyAssignments);
+				case 76: return new ImpliedInternalUniquenessConstraintError(partition, propertyAssignments);
+				case 77: return new FrequencyConstraintContradictsInternalUniquenessConstraintError(partition, propertyAssignments);
+				case 78: return new RingConstraintTypeNotSpecifiedError(partition, propertyAssignments);
+				case 79: return new SubtypeMetaRole(partition, propertyAssignments);
+				case 80: return new SupertypeMetaRole(partition, propertyAssignments);
+				case 81: return new ObjectTypeRequiresPrimarySupertypeError(partition, propertyAssignments);
+				case 82: return new Note(partition, propertyAssignments);
+				case 83: return new ModelNote(partition, propertyAssignments);
+				case 84: return new CompatibleSupertypesError(partition, propertyAssignments);
+				case 85: return new ImplicationError(partition, propertyAssignments);
+				case 86: return new EqualityOrSubsetImpliedByMandatoryError(partition, propertyAssignments);
+				case 87: return new PreferredIdentifierRequiresMandatoryError(partition, propertyAssignments);
+				case 88: return new ValueRangeOverlapError(partition, propertyAssignments);
+				case 89: return new FactTypeDerivationExpression(partition, propertyAssignments);
+				case 90: return new EntityTypeInstance(partition, propertyAssignments);
+				case 91: return new ValueTypeInstance(partition, propertyAssignments);
+				case 92: return new FactTypeInstance(partition, propertyAssignments);
+				case 93: return new TooFewEntityTypeRoleInstancesError(partition, propertyAssignments);
+				case 94: return new TooFewFactTypeRoleInstancesError(partition, propertyAssignments);
+				case 95: return new CompatibleValueTypeInstanceValueError(partition, propertyAssignments);
 				default: return null;
 			}
 		}

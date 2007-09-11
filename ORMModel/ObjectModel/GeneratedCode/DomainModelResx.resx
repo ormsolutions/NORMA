@@ -1085,6 +1085,22 @@
     <value>SignedIntegerNumericDataType</value>
     <comment>DisplayName for DomainClass &apos;SignedIntegerNumericDataType&apos;</comment>
   </data>
+  <data name="Neumont.Tools.ORM.ObjectModel.SignedSmallIntegerNumericDataType.Description" xml:space="preserve">
+    <value></value>
+    <comment>Description for DomainClass &apos;SignedSmallIntegerNumericDataType&apos;</comment>
+  </data>
+  <data name="Neumont.Tools.ORM.ObjectModel.SignedSmallIntegerNumericDataType.DisplayName" xml:space="preserve">
+    <value>SignedSmallIntegerNumericDataType</value>
+    <comment>DisplayName for DomainClass &apos;SignedSmallIntegerNumericDataType&apos;</comment>
+  </data>
+  <data name="Neumont.Tools.ORM.ObjectModel.SignedLargeIntegerNumericDataType.Description" xml:space="preserve">
+    <value></value>
+    <comment>Description for DomainClass &apos;SignedLargeIntegerNumericDataType&apos;</comment>
+  </data>
+  <data name="Neumont.Tools.ORM.ObjectModel.SignedLargeIntegerNumericDataType.DisplayName" xml:space="preserve">
+    <value>SignedLargeIntegerNumericDataType</value>
+    <comment>DisplayName for DomainClass &apos;SignedLargeIntegerNumericDataType&apos;</comment>
+  </data>
   <data name="Neumont.Tools.ORM.ObjectModel.UnsignedIntegerNumericDataType.Description" xml:space="preserve">
     <value></value>
     <comment>Description for DomainClass &apos;UnsignedIntegerNumericDataType&apos;</comment>
@@ -1092,6 +1108,22 @@
   <data name="Neumont.Tools.ORM.ObjectModel.UnsignedIntegerNumericDataType.DisplayName" xml:space="preserve">
     <value>UnsignedIntegerNumericDataType</value>
     <comment>DisplayName for DomainClass &apos;UnsignedIntegerNumericDataType&apos;</comment>
+  </data>
+  <data name="Neumont.Tools.ORM.ObjectModel.UnsignedSmallIntegerNumericDataType.Description" xml:space="preserve">
+    <value></value>
+    <comment>Description for DomainClass &apos;UnsignedSmallIntegerNumericDataType&apos;</comment>
+  </data>
+  <data name="Neumont.Tools.ORM.ObjectModel.UnsignedSmallIntegerNumericDataType.DisplayName" xml:space="preserve">
+    <value>UnsignedSmallIntegerNumericDataType</value>
+    <comment>DisplayName for DomainClass &apos;UnsignedSmallIntegerNumericDataType&apos;</comment>
+  </data>
+  <data name="Neumont.Tools.ORM.ObjectModel.UnsignedLargeIntegerNumericDataType.Description" xml:space="preserve">
+    <value></value>
+    <comment>Description for DomainClass &apos;UnsignedLargeIntegerNumericDataType&apos;</comment>
+  </data>
+  <data name="Neumont.Tools.ORM.ObjectModel.UnsignedLargeIntegerNumericDataType.DisplayName" xml:space="preserve">
+    <value>UnsignedLargeIntegerNumericDataType</value>
+    <comment>DisplayName for DomainClass &apos;UnsignedLargeIntegerNumericDataType&apos;</comment>
   </data>
   <data name="Neumont.Tools.ORM.ObjectModel.AutoCounterNumericDataType.Description" xml:space="preserve">
     <value></value>

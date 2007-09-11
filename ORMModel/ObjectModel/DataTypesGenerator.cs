@@ -32,8 +32,16 @@ namespace Neumont.Tools.ORM.ObjectModel
 		TextLargeLength,
 		/// <summary>A signed integer numeric data type</summary>
 		NumericSignedInteger,
+		/// <summary>A small signed integer numeric data type</summary>
+		NumericSignedSmallInteger,
+		/// <summary>A small signed integer numeric data type</summary>
+		NumericSignedLargeInteger,
 		/// <summary>An unsigned integer numeric data type</summary>
 		NumericUnsignedInteger,
+		/// <summary>A small unsigned integer numeric data type</summary>
+		NumericUnsignedSmallInteger,
+		/// <summary>A large unsigned integer numeric data type</summary>
+		NumericUnsignedLargeInteger,
 		/// <summary>An auto counter numeric data type</summary>
 		NumericAutoCounter,
 		/// <summary>A floating point numeric data type</summary>
@@ -83,7 +91,11 @@ namespace Neumont.Tools.ORM.ObjectModel
 				typeof(VariableLengthTextDataType),
 				typeof(LargeLengthTextDataType),
 				typeof(SignedIntegerNumericDataType),
+				typeof(SignedSmallIntegerNumericDataType),
+				typeof(SignedLargeIntegerNumericDataType),
 				typeof(UnsignedIntegerNumericDataType),
+				typeof(UnsignedSmallIntegerNumericDataType),
+				typeof(UnsignedLargeIntegerNumericDataType),
 				typeof(AutoCounterNumericDataType),
 				typeof(FloatingPointNumericDataType),
 				typeof(DecimalNumericDataType),
@@ -287,6 +299,106 @@ namespace Neumont.Tools.ORM.ObjectModel
 			return ((IComparable<int>)typedValue1).CompareTo(typedValue2);
 		}
 	}
+	/// <summary>A small signed integer numeric data type</summary>
+	public partial class SignedSmallIntegerNumericDataType
+	{
+		/// <summary>PortableDataType enum value for this type</summary>
+		public override PortableDataType PortableDataType
+		{
+			get
+			{
+				return PortableDataType.NumericSignedSmallInteger;
+			}
+		}
+		/// <summary>Localized data type name</summary>
+		public override string ToString()
+		{
+			return ResourceStrings.PortableDataTypeNumericSignedSmallInteger;
+		}
+		/// <summary>The data type supports 'Closed' ranges</summary>
+		public override DataTypeRangeSupport RangeSupport
+		{
+			get
+			{
+				return DataTypeRangeSupport.Closed;
+			}
+		}
+		/// <summary>Returns true if the string value can be interpreted as this data type</summary>
+		public override bool CanParse(string value)
+		{
+			short result;
+			return short.TryParse(value, out result);
+		}
+		/// <summary>Returns false, meaning that CanParse can fail for some values</summary>
+		public override bool CanParseAnyValue
+		{
+			get
+			{
+				return false;
+			}
+		}
+		/// <summary>Compare two values. Each value should be checked previously with CanParse</summary>
+		public override int Compare(string value1, string value2)
+		{
+			Debug.Assert(this.CanParse(value1), "Don't call Compare if CanParse(value1) returns false");
+			short typedValue1;
+			short.TryParse(value1, out typedValue1);
+			Debug.Assert(this.CanParse(value2), "Don't call Compare if CanParse(value2) returns false");
+			short typedValue2;
+			short.TryParse(value2, out typedValue2);
+			return ((IComparable<short>)typedValue1).CompareTo(typedValue2);
+		}
+	}
+	/// <summary>A small signed integer numeric data type</summary>
+	public partial class SignedLargeIntegerNumericDataType
+	{
+		/// <summary>PortableDataType enum value for this type</summary>
+		public override PortableDataType PortableDataType
+		{
+			get
+			{
+				return PortableDataType.NumericSignedLargeInteger;
+			}
+		}
+		/// <summary>Localized data type name</summary>
+		public override string ToString()
+		{
+			return ResourceStrings.PortableDataTypeNumericSignedLargeInteger;
+		}
+		/// <summary>The data type supports 'Closed' ranges</summary>
+		public override DataTypeRangeSupport RangeSupport
+		{
+			get
+			{
+				return DataTypeRangeSupport.Closed;
+			}
+		}
+		/// <summary>Returns true if the string value can be interpreted as this data type</summary>
+		public override bool CanParse(string value)
+		{
+			long result;
+			return long.TryParse(value, out result);
+		}
+		/// <summary>Returns false, meaning that CanParse can fail for some values</summary>
+		public override bool CanParseAnyValue
+		{
+			get
+			{
+				return false;
+			}
+		}
+		/// <summary>Compare two values. Each value should be checked previously with CanParse</summary>
+		public override int Compare(string value1, string value2)
+		{
+			Debug.Assert(this.CanParse(value1), "Don't call Compare if CanParse(value1) returns false");
+			long typedValue1;
+			long.TryParse(value1, out typedValue1);
+			Debug.Assert(this.CanParse(value2), "Don't call Compare if CanParse(value2) returns false");
+			long typedValue2;
+			long.TryParse(value2, out typedValue2);
+			return ((IComparable<long>)typedValue1).CompareTo(typedValue2);
+		}
+	}
 	/// <summary>An unsigned integer numeric data type</summary>
 	public partial class UnsignedIntegerNumericDataType
 	{
@@ -335,6 +447,106 @@ namespace Neumont.Tools.ORM.ObjectModel
 			uint typedValue2;
 			uint.TryParse(value2, out typedValue2);
 			return ((IComparable<uint>)typedValue1).CompareTo(typedValue2);
+		}
+	}
+	/// <summary>A small unsigned integer numeric data type</summary>
+	public partial class UnsignedSmallIntegerNumericDataType
+	{
+		/// <summary>PortableDataType enum value for this type</summary>
+		public override PortableDataType PortableDataType
+		{
+			get
+			{
+				return PortableDataType.NumericUnsignedSmallInteger;
+			}
+		}
+		/// <summary>Localized data type name</summary>
+		public override string ToString()
+		{
+			return ResourceStrings.PortableDataTypeNumericUnsignedSmallInteger;
+		}
+		/// <summary>The data type supports 'Closed' ranges</summary>
+		public override DataTypeRangeSupport RangeSupport
+		{
+			get
+			{
+				return DataTypeRangeSupport.Closed;
+			}
+		}
+		/// <summary>Returns true if the string value can be interpreted as this data type</summary>
+		public override bool CanParse(string value)
+		{
+			ushort result;
+			return ushort.TryParse(value, out result);
+		}
+		/// <summary>Returns false, meaning that CanParse can fail for some values</summary>
+		public override bool CanParseAnyValue
+		{
+			get
+			{
+				return false;
+			}
+		}
+		/// <summary>Compare two values. Each value should be checked previously with CanParse</summary>
+		public override int Compare(string value1, string value2)
+		{
+			Debug.Assert(this.CanParse(value1), "Don't call Compare if CanParse(value1) returns false");
+			ushort typedValue1;
+			ushort.TryParse(value1, out typedValue1);
+			Debug.Assert(this.CanParse(value2), "Don't call Compare if CanParse(value2) returns false");
+			ushort typedValue2;
+			ushort.TryParse(value2, out typedValue2);
+			return ((IComparable<ushort>)typedValue1).CompareTo(typedValue2);
+		}
+	}
+	/// <summary>A large unsigned integer numeric data type</summary>
+	public partial class UnsignedLargeIntegerNumericDataType
+	{
+		/// <summary>PortableDataType enum value for this type</summary>
+		public override PortableDataType PortableDataType
+		{
+			get
+			{
+				return PortableDataType.NumericUnsignedLargeInteger;
+			}
+		}
+		/// <summary>Localized data type name</summary>
+		public override string ToString()
+		{
+			return ResourceStrings.PortableDataTypeNumericUnsignedLargeInteger;
+		}
+		/// <summary>The data type supports 'Closed' ranges</summary>
+		public override DataTypeRangeSupport RangeSupport
+		{
+			get
+			{
+				return DataTypeRangeSupport.Closed;
+			}
+		}
+		/// <summary>Returns true if the string value can be interpreted as this data type</summary>
+		public override bool CanParse(string value)
+		{
+			ulong result;
+			return ulong.TryParse(value, out result);
+		}
+		/// <summary>Returns false, meaning that CanParse can fail for some values</summary>
+		public override bool CanParseAnyValue
+		{
+			get
+			{
+				return false;
+			}
+		}
+		/// <summary>Compare two values. Each value should be checked previously with CanParse</summary>
+		public override int Compare(string value1, string value2)
+		{
+			Debug.Assert(this.CanParse(value1), "Don't call Compare if CanParse(value1) returns false");
+			ulong typedValue1;
+			ulong.TryParse(value1, out typedValue1);
+			Debug.Assert(this.CanParse(value2), "Don't call Compare if CanParse(value2) returns false");
+			ulong typedValue2;
+			ulong.TryParse(value2, out typedValue2);
+			return ((IComparable<ulong>)typedValue1).CompareTo(typedValue2);
 		}
 	}
 	/// <summary>An auto counter numeric data type</summary>

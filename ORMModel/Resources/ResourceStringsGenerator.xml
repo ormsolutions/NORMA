@@ -103,8 +103,20 @@
 	<ResourceString name="PortableDataTypeNumericSignedInteger" model="ObjectModel" resourceName="Neumont.Tools.ORM.ObjectModel.DataType.PortableDataType.Numeric.SignedInteger.Text">
 		<comment>A signed integer numeric data type</comment>
 	</ResourceString>
+	<ResourceString name="PortableDataTypeNumericSignedLargeInteger" model="ObjectModel" resourceName="Neumont.Tools.ORM.ObjectModel.DataType.PortableDataType.Numeric.SignedLargeInteger.Text">
+		<comment>A signed large integer numeric data type</comment>
+	</ResourceString>
+	<ResourceString name="PortableDataTypeNumericSignedSmallInteger" model="ObjectModel" resourceName="Neumont.Tools.ORM.ObjectModel.DataType.PortableDataType.Numeric.SignedSmallInteger.Text">
+		<comment>A signed small integer numeric data type</comment>
+	</ResourceString>
 	<ResourceString name="PortableDataTypeNumericUnsignedInteger" model="ObjectModel" resourceName="Neumont.Tools.ORM.ObjectModel.DataType.PortableDataType.Numeric.UnsignedInteger.Text">
 		<comment>An unsigned integer numeric data type</comment>
+	</ResourceString>
+	<ResourceString name="PortableDataTypeNumericUnsignedLargeInteger" model="ObjectModel" resourceName="Neumont.Tools.ORM.ObjectModel.DataType.PortableDataType.Numeric.UnsignedLargeInteger.Text">
+		<comment>An unsigned large integer numeric data type</comment>
+	</ResourceString>
+	<ResourceString name="PortableDataTypeNumericUnsignedSmallInteger" model="ObjectModel" resourceName="Neumont.Tools.ORM.ObjectModel.DataType.PortableDataType.Numeric.UnsignedSmallInteger.Text">
+		<comment>An unsigned small integer numeric data type</comment>
 	</ResourceString>
 	<ResourceString name="PortableDataTypeNumericAutoCounter" model="ObjectModel" resourceName="Neumont.Tools.ORM.ObjectModel.DataType.PortableDataType.Numeric.AutoCounter.Text">
 		<comment>An auto counter numeric data type</comment>

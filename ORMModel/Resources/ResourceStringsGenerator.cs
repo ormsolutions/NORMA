@@ -196,12 +196,44 @@ namespace Neumont.Tools.ORM
 				return ResourceStrings.GetString(ResourceManagers.ObjectModel, "Neumont.Tools.ORM.ObjectModel.DataType.PortableDataType.Numeric.SignedInteger.Text");
 			}
 		}
+		/// <summary>A signed large integer numeric data type</summary>
+		public static string PortableDataTypeNumericSignedLargeInteger
+		{
+			get
+			{
+				return ResourceStrings.GetString(ResourceManagers.ObjectModel, "Neumont.Tools.ORM.ObjectModel.DataType.PortableDataType.Numeric.SignedLargeInteger.Text");
+			}
+		}
+		/// <summary>A signed small integer numeric data type</summary>
+		public static string PortableDataTypeNumericSignedSmallInteger
+		{
+			get
+			{
+				return ResourceStrings.GetString(ResourceManagers.ObjectModel, "Neumont.Tools.ORM.ObjectModel.DataType.PortableDataType.Numeric.SignedSmallInteger.Text");
+			}
+		}
 		/// <summary>An unsigned integer numeric data type</summary>
 		public static string PortableDataTypeNumericUnsignedInteger
 		{
 			get
 			{
 				return ResourceStrings.GetString(ResourceManagers.ObjectModel, "Neumont.Tools.ORM.ObjectModel.DataType.PortableDataType.Numeric.UnsignedInteger.Text");
+			}
+		}
+		/// <summary>An unsigned large integer numeric data type</summary>
+		public static string PortableDataTypeNumericUnsignedLargeInteger
+		{
+			get
+			{
+				return ResourceStrings.GetString(ResourceManagers.ObjectModel, "Neumont.Tools.ORM.ObjectModel.DataType.PortableDataType.Numeric.UnsignedLargeInteger.Text");
+			}
+		}
+		/// <summary>An unsigned small integer numeric data type</summary>
+		public static string PortableDataTypeNumericUnsignedSmallInteger
+		{
+			get
+			{
+				return ResourceStrings.GetString(ResourceManagers.ObjectModel, "Neumont.Tools.ORM.ObjectModel.DataType.PortableDataType.Numeric.UnsignedSmallInteger.Text");
 			}
 		}
 		/// <summary>An auto counter numeric data type</summary>
