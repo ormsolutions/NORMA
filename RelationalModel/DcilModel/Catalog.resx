@@ -200,7 +200,7 @@
     <value>Tables</value>
   </data>
   <data name="SurveySchemaType.Schema" xml:space="preserve">
-    <value>Relational Schemas</value>
+    <value>Relational Schema</value>
   </data>
   <data name="SurveyTableChildType.Column" xml:space="preserve">
     <value>Columns</value>
