@@ -93,6 +93,13 @@
 			</Properties>
 		</DomainClass>
 		<DomainClass Id="16628BD3-D761-4C6A-816E-C98AEFBADC41" Namespace="Neumont.Tools.RelationalModels.ConceptualDatabase" Name="Column" Description="Equivalent to a 'COLUMN' in the SQL Standard.">
+			<Attributes>
+				<ClrAttribute Name="global::System.ComponentModel.TypeDescriptionProvider">
+					<Parameters>
+						<AttributeParameter Value="typeof(global::Neumont.Tools.Modeling.Design.ElementTypeDescriptionProvider&lt;Column, Design.ColumnTypeDescriptor&lt;Column&gt;&gt;)"/>
+					</Parameters>
+				</ClrAttribute>
+			</Attributes>
 			<BaseClass>
 				<DomainClassMoniker Name="ConceptualDatabaseModelElement"/>
 			</BaseClass>
@@ -109,7 +116,7 @@
 						<ExternalTypeMoniker Name="/System/String"/>
 					</Type>
 				</DomainProperty>
-				<DomainProperty Id="2FD3C751-BD3D-44EA-94E1-6F318FE25A07" Name="IsNullable" Description="Is NULL a valid value for this column?">
+				<DomainProperty Id="2FD3C751-BD3D-44EA-94E1-6F318FE25A07" Name="IsNullable" DisplayName="IsNullable" Description="Is NULL a valid value for this column?">
 					<Attributes>
 						<ClrAttribute Name="global::System.Xml.Serialization.XmlAttribute">
 							<Parameters>
@@ -121,7 +128,7 @@
 						<ExternalTypeMoniker Name="/System/Boolean"/>
 					</Type>
 				</DomainProperty>
-				<DomainProperty Id="BEAD460A-E2BA-417D-B36E-182833217F9A" Name="IsIdentity" Description="Is this an IDENTITY column?">
+				<DomainProperty Id="BEAD460A-E2BA-417D-B36E-182833217F9A" Name="IsIdentity" DisplayName="IsIdentity" Description="Is this an IDENTITY column?">
 					<Notes>If 'true' is specified for this attribute, the generationCode element must not be present.</Notes>
 					<Attributes>
 						<ClrAttribute Name="global::System.Xml.Serialization.XmlAttribute">
@@ -132,6 +139,29 @@
 					</Attributes>
 					<Type>
 						<ExternalTypeMoniker Name="/System/Boolean"/>
+					</Type>
+				</DomainProperty>
+				<DomainProperty Name="DataType" DefaultValue="" DisplayName="DataType" Id="02E07257-8739-4708-8474-5145183BACF5" Kind="CustomStorage">
+					<Attributes>
+						<ClrAttribute Name="global::System.ComponentModel.Editor">
+							<Parameters>
+								<AttributeParameter Value="typeof(global::Neumont.Tools.RelationalModels.ConceptualDatabase.Design.ColumnDataTypePicker)"/>
+								<AttributeParameter Value="typeof(global::System.Drawing.Design.UITypeEditor)"/>
+							</Parameters>
+						</ClrAttribute>
+					</Attributes>
+					<Type>
+						<ExternalTypeMoniker Name="/System/Object"/>
+					</Type>
+				</DomainProperty>
+				<DomainProperty Name="Scale" DefaultValue="0" DisplayName="DataTypeScale" Id="A30271E0-613D-4198-9147-9C67A8BF0D3F" Kind="CustomStorage">
+					<Type>
+						<ExternalTypeMoniker Name="/System/Int32"/>
+					</Type>
+				</DomainProperty>
+				<DomainProperty Name="Length" DefaultValue="0" DisplayName="DataTypeLength" Id="1A3AA9D0-A2B9-46A5-8B77-55BA9F5D4D98" Kind="CustomStorage">
+					<Type>
+						<ExternalTypeMoniker Name="/System/Int32"/>
 					</Type>
 				</DomainProperty>
 				<!-- UNDONE: How are we going to represent the formula used to compute a column? (For now, we're not...) -->
@@ -167,7 +197,7 @@
 				<DomainClassMoniker Name="Constraint"/>
 			</BaseClass>
 			<Properties>
-				<DomainProperty Id="F09AC57C-454B-48D7-BE68-53A5CE64B8F9" Name="IsPrimary" Description="Is this uniqueness constraint a PRIMARY KEY?">
+				<DomainProperty Id="F09AC57C-454B-48D7-BE68-53A5CE64B8F9" Name="IsPrimary" DisplayName="IsPrimary" Description="Is this uniqueness constraint a PRIMARY KEY?">
 					<Attributes>
 						<ClrAttribute Name="global::System.Xml.Serialization.XmlAttribute">
 							<Parameters>

@@ -302,19 +302,19 @@
     <comment>DisplayName for DomainProperty &apos;IsValueType&apos; on DomainClass &apos;ObjectType&apos;</comment>
   </data>
   <data name="Neumont.Tools.ORM.ObjectModel.ObjectType/Scale.Description" xml:space="preserve">
-    <value>Description for Neumont.Tools.ORM.ObjectModel.ObjectType.Scale</value>
+    <value>Description for Neumont.Tools.ORM.ObjectModel.ObjectType.DataTypeScale</value>
     <comment>Description for DomainProperty &apos;Scale&apos; on DomainClass &apos;ObjectType&apos;</comment>
   </data>
   <data name="Neumont.Tools.ORM.ObjectModel.ObjectType/Scale.DisplayName" xml:space="preserve">
-    <value>Scale</value>
+    <value>DataTypeScale</value>
     <comment>DisplayName for DomainProperty &apos;Scale&apos; on DomainClass &apos;ObjectType&apos;</comment>
   </data>
   <data name="Neumont.Tools.ORM.ObjectModel.ObjectType/Length.Description" xml:space="preserve">
-    <value>Description for Neumont.Tools.ORM.ObjectModel.ObjectType.Length</value>
+    <value>Description for Neumont.Tools.ORM.ObjectModel.ObjectType.DataTypeLength</value>
     <comment>Description for DomainProperty &apos;Length&apos; on DomainClass &apos;ObjectType&apos;</comment>
   </data>
   <data name="Neumont.Tools.ORM.ObjectModel.ObjectType/Length.DisplayName" xml:space="preserve">
-    <value>Length</value>
+    <value>DataTypeLength</value>
     <comment>DisplayName for DomainProperty &apos;Length&apos; on DomainClass &apos;ObjectType&apos;</comment>
   </data>
   <data name="Neumont.Tools.ORM.ObjectModel.ObjectType/ReferenceModeDisplay.Description" xml:space="preserve">
@@ -1140,6 +1140,22 @@
   <data name="Neumont.Tools.ORM.ObjectModel.FloatingPointNumericDataType.DisplayName" xml:space="preserve">
     <value>FloatingPointNumericDataType</value>
     <comment>DisplayName for DomainClass &apos;FloatingPointNumericDataType&apos;</comment>
+  </data>
+  <data name="Neumont.Tools.ORM.ObjectModel.SinglePrecisionFloatingPointNumericDataType.Description" xml:space="preserve">
+    <value></value>
+    <comment>Description for DomainClass &apos;SinglePrecisionFloatingPointNumericDataType&apos;</comment>
+  </data>
+  <data name="Neumont.Tools.ORM.ObjectModel.SinglePrecisionFloatingPointNumericDataType.DisplayName" xml:space="preserve">
+    <value>SinglePrecisionFloatingPointNumericDataType</value>
+    <comment>DisplayName for DomainClass &apos;SinglePrecisionFloatingPointNumericDataType&apos;</comment>
+  </data>
+  <data name="Neumont.Tools.ORM.ObjectModel.DoublePrecisionFloatingPointNumericDataType.Description" xml:space="preserve">
+    <value></value>
+    <comment>Description for DomainClass &apos;DoublePrecisionFloatingPointNumericDataType&apos;</comment>
+  </data>
+  <data name="Neumont.Tools.ORM.ObjectModel.DoublePrecisionFloatingPointNumericDataType.DisplayName" xml:space="preserve">
+    <value>DoublePrecisionFloatingPointNumericDataType</value>
+    <comment>DisplayName for DomainClass &apos;DoublePrecisionFloatingPointNumericDataType&apos;</comment>
   </data>
   <data name="Neumont.Tools.ORM.ObjectModel.DecimalNumericDataType.Description" xml:space="preserve">
     <value></value>

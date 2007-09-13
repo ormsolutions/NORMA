@@ -147,8 +147,11 @@
   <data name="Neumont.Tools.ORM.ObjectModel.DataType.PortableDataType.Numeric.Decimal.Text" xml:space="preserve">
     <value>Numeric: Decimal</value>
   </data>
+  <data name="Neumont.Tools.ORM.ObjectModel.DataType.PortableDataType.Numeric.DoublePrecisionFloatingPoint.Text" xml:space="preserve">
+    <value>Numeric: Float (Double Precision)</value>
+  </data>
   <data name="Neumont.Tools.ORM.ObjectModel.DataType.PortableDataType.Numeric.FloatingPoint.Text" xml:space="preserve">
-    <value>Numeric: Floating Point</value>
+    <value>Numeric: Float (Custom Precision)</value>
   </data>
   <data name="Neumont.Tools.ORM.ObjectModel.DataType.PortableDataType.Numeric.Money.Text" xml:space="preserve">
     <value>Numeric: Money</value>
@@ -161,6 +164,9 @@
   </data>
   <data name="Neumont.Tools.ORM.ObjectModel.DataType.PortableDataType.Numeric.SignedSmallInteger.Text" xml:space="preserve">
     <value>Numeric: Signed Small Integer</value>
+  </data>
+  <data name="Neumont.Tools.ORM.ObjectModel.DataType.PortableDataType.Numeric.SinglePrecisionFloatingPoint.Text" xml:space="preserve">
+    <value>Numeric: Float (Single Precision)</value>
   </data>
   <data name="Neumont.Tools.ORM.ObjectModel.DataType.PortableDataType.Numeric.Text" xml:space="preserve">
     <value>Numeric</value>

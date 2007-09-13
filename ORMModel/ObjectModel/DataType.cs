@@ -210,6 +210,30 @@ namespace Neumont.Tools.ORM.ObjectModel
 			}
 		}
 		/// <summary>
+		/// Override to return a name to display for the Scale property.
+		/// A <see langword="null"/> return does not show the property,
+		/// and an empty string uses the default name.
+		/// </summary>
+		public virtual string ScaleName
+		{
+			get
+			{
+				return null;
+			}
+		}
+		/// <summary>
+		/// Override to return a name to display for the Length property.
+		/// A <see langword="null"/> return does not show the property,
+		/// and an empty string uses the default name.
+		/// </summary>
+		public virtual string LengthName
+		{
+			get
+			{
+				return null;
+			}
+		}
+		/// <summary>
 		/// Compare two values according to the semantics of this data type
 		/// </summary>
 		/// <param name="value1">Left string value</param>

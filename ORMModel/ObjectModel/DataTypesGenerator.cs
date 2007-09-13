@@ -44,8 +44,12 @@ namespace Neumont.Tools.ORM.ObjectModel
 		NumericUnsignedLargeInteger,
 		/// <summary>An auto counter numeric data type</summary>
 		NumericAutoCounter,
-		/// <summary>A floating point numeric data type</summary>
+		/// <summary>A custom precision floating point numeric data type</summary>
 		NumericFloatingPoint,
+		/// <summary>A 32-bit floating point numeric data type</summary>
+		NumericSinglePrecisionFloatingPoint,
+		/// <summary>A 64-bit floating point numeric data type</summary>
+		NumericDoublePrecisionFloatingPoint,
 		/// <summary>A decimal numeric data type</summary>
 		NumericDecimal,
 		/// <summary>A money numeric data type</summary>
@@ -98,6 +102,8 @@ namespace Neumont.Tools.ORM.ObjectModel
 				typeof(UnsignedLargeIntegerNumericDataType),
 				typeof(AutoCounterNumericDataType),
 				typeof(FloatingPointNumericDataType),
+				typeof(SinglePrecisionFloatingPointNumericDataType),
+				typeof(DoublePrecisionFloatingPointNumericDataType),
 				typeof(DecimalNumericDataType),
 				typeof(MoneyNumericDataType),
 				typeof(FixedLengthRawDataDataType),
@@ -188,6 +194,14 @@ namespace Neumont.Tools.ORM.ObjectModel
 		{
 			return value1.CompareTo(value2);
 		}
+		/// <summary>Show the Length property with this DataType</summary>
+		public override string LengthName
+		{
+			get
+			{
+				return "";
+			}
+		}
 	}
 	/// <summary>A variable length text data type</summary>
 	public partial class VariableLengthTextDataType
@@ -218,6 +232,14 @@ namespace Neumont.Tools.ORM.ObjectModel
 		{
 			return value1.CompareTo(value2);
 		}
+		/// <summary>Show the Length property with this DataType</summary>
+		public override string LengthName
+		{
+			get
+			{
+				return "";
+			}
+		}
 	}
 	/// <summary>A large length text data type</summary>
 	public partial class LargeLengthTextDataType
@@ -247,6 +269,14 @@ namespace Neumont.Tools.ORM.ObjectModel
 		public override int Compare(string value1, string value2)
 		{
 			return value1.CompareTo(value2);
+		}
+		/// <summary>Show the Length property with this DataType</summary>
+		public override string LengthName
+		{
+			get
+			{
+				return "";
+			}
 		}
 	}
 	/// <summary>A signed integer numeric data type</summary>
@@ -599,7 +629,7 @@ namespace Neumont.Tools.ORM.ObjectModel
 			return ((IComparable<ulong>)typedValue1).CompareTo(typedValue2);
 		}
 	}
-	/// <summary>A floating point numeric data type</summary>
+	/// <summary>A custom precision floating point numeric data type</summary>
 	public partial class FloatingPointNumericDataType
 	{
 		/// <summary>PortableDataType enum value for this type</summary>
@@ -614,6 +644,114 @@ namespace Neumont.Tools.ORM.ObjectModel
 		public override string ToString()
 		{
 			return ResourceStrings.PortableDataTypeNumericFloatingPoint;
+		}
+		/// <summary>The data type supports 'Open' ranges</summary>
+		public override DataTypeRangeSupport RangeSupport
+		{
+			get
+			{
+				return DataTypeRangeSupport.Open;
+			}
+		}
+		/// <summary>Returns true if the string value can be interpreted as this data type</summary>
+		public override bool CanParse(string value)
+		{
+			double result;
+			return double.TryParse(value, out result);
+		}
+		/// <summary>Returns false, meaning that CanParse can fail for some values</summary>
+		public override bool CanParseAnyValue
+		{
+			get
+			{
+				return false;
+			}
+		}
+		/// <summary>Compare two values. Each value should be checked previously with CanParse</summary>
+		public override int Compare(string value1, string value2)
+		{
+			Debug.Assert(this.CanParse(value1), "Don't call Compare if CanParse(value1) returns false");
+			double typedValue1;
+			double.TryParse(value1, out typedValue1);
+			Debug.Assert(this.CanParse(value2), "Don't call Compare if CanParse(value2) returns false");
+			double typedValue2;
+			double.TryParse(value2, out typedValue2);
+			return ((IComparable<double>)typedValue1).CompareTo(typedValue2);
+		}
+		/// <summary>Show the Length property named as 'DataTypePrecision' with this DataType</summary>
+		public override string LengthName
+		{
+			get
+			{
+				return "DataTypePrecision";
+			}
+		}
+	}
+	/// <summary>A 32-bit floating point numeric data type</summary>
+	public partial class SinglePrecisionFloatingPointNumericDataType
+	{
+		/// <summary>PortableDataType enum value for this type</summary>
+		public override PortableDataType PortableDataType
+		{
+			get
+			{
+				return PortableDataType.NumericSinglePrecisionFloatingPoint;
+			}
+		}
+		/// <summary>Localized data type name</summary>
+		public override string ToString()
+		{
+			return ResourceStrings.PortableDataTypeNumericSinglePrecisionFloatingPoint;
+		}
+		/// <summary>The data type supports 'Open' ranges</summary>
+		public override DataTypeRangeSupport RangeSupport
+		{
+			get
+			{
+				return DataTypeRangeSupport.Open;
+			}
+		}
+		/// <summary>Returns true if the string value can be interpreted as this data type</summary>
+		public override bool CanParse(string value)
+		{
+			float result;
+			return float.TryParse(value, out result);
+		}
+		/// <summary>Returns false, meaning that CanParse can fail for some values</summary>
+		public override bool CanParseAnyValue
+		{
+			get
+			{
+				return false;
+			}
+		}
+		/// <summary>Compare two values. Each value should be checked previously with CanParse</summary>
+		public override int Compare(string value1, string value2)
+		{
+			Debug.Assert(this.CanParse(value1), "Don't call Compare if CanParse(value1) returns false");
+			float typedValue1;
+			float.TryParse(value1, out typedValue1);
+			Debug.Assert(this.CanParse(value2), "Don't call Compare if CanParse(value2) returns false");
+			float typedValue2;
+			float.TryParse(value2, out typedValue2);
+			return ((IComparable<float>)typedValue1).CompareTo(typedValue2);
+		}
+	}
+	/// <summary>A 64-bit floating point numeric data type</summary>
+	public partial class DoublePrecisionFloatingPointNumericDataType
+	{
+		/// <summary>PortableDataType enum value for this type</summary>
+		public override PortableDataType PortableDataType
+		{
+			get
+			{
+				return PortableDataType.NumericDoublePrecisionFloatingPoint;
+			}
+		}
+		/// <summary>Localized data type name</summary>
+		public override string ToString()
+		{
+			return ResourceStrings.PortableDataTypeNumericDoublePrecisionFloatingPoint;
 		}
 		/// <summary>The data type supports 'Open' ranges</summary>
 		public override DataTypeRangeSupport RangeSupport
@@ -697,6 +835,22 @@ namespace Neumont.Tools.ORM.ObjectModel
 			decimal typedValue2;
 			decimal.TryParse(value2, out typedValue2);
 			return ((IComparable<decimal>)typedValue1).CompareTo(typedValue2);
+		}
+		/// <summary>Show the Length property named as 'DataTypePrecision' with this DataType</summary>
+		public override string LengthName
+		{
+			get
+			{
+				return "DataTypePrecision";
+			}
+		}
+		/// <summary>Show the Scale property with this DataType</summary>
+		public override string ScaleName
+		{
+			get
+			{
+				return "";
+			}
 		}
 	}
 	/// <summary>A money numeric data type</summary>
@@ -787,6 +941,14 @@ namespace Neumont.Tools.ORM.ObjectModel
 				return DataTypeRangeSupport.None;
 			}
 		}
+		/// <summary>Show the Length property with this DataType</summary>
+		public override string LengthName
+		{
+			get
+			{
+				return "";
+			}
+		}
 	}
 	/// <summary>A variable length raw data data type</summary>
 	public partial class VariableLengthRawDataDataType
@@ -826,6 +988,14 @@ namespace Neumont.Tools.ORM.ObjectModel
 				return DataTypeRangeSupport.None;
 			}
 		}
+		/// <summary>Show the Length property with this DataType</summary>
+		public override string LengthName
+		{
+			get
+			{
+				return "";
+			}
+		}
 	}
 	/// <summary>A large length raw data data type</summary>
 	public partial class LargeLengthRawDataDataType
@@ -863,6 +1033,14 @@ namespace Neumont.Tools.ORM.ObjectModel
 			get
 			{
 				return DataTypeRangeSupport.None;
+			}
+		}
+		/// <summary>Show the Length property with this DataType</summary>
+		public override string LengthName
+		{
+			get
+			{
+				return "";
 			}
 		}
 	}

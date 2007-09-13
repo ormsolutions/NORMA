@@ -244,12 +244,28 @@ namespace Neumont.Tools.ORM
 				return ResourceStrings.GetString(ResourceManagers.ObjectModel, "Neumont.Tools.ORM.ObjectModel.DataType.PortableDataType.Numeric.AutoCounter.Text");
 			}
 		}
-		/// <summary>A floating point numeric data type</summary>
+		/// <summary>A custom precision floating point numeric data type</summary>
 		public static string PortableDataTypeNumericFloatingPoint
 		{
 			get
 			{
 				return ResourceStrings.GetString(ResourceManagers.ObjectModel, "Neumont.Tools.ORM.ObjectModel.DataType.PortableDataType.Numeric.FloatingPoint.Text");
+			}
+		}
+		/// <summary>A single precision floating point numeric data type</summary>
+		public static string PortableDataTypeNumericSinglePrecisionFloatingPoint
+		{
+			get
+			{
+				return ResourceStrings.GetString(ResourceManagers.ObjectModel, "Neumont.Tools.ORM.ObjectModel.DataType.PortableDataType.Numeric.SinglePrecisionFloatingPoint.Text");
+			}
+		}
+		/// <summary>A double precision floating point numeric data type</summary>
+		public static string PortableDataTypeNumericDoublePrecisionFloatingPoint
+		{
+			get
+			{
+				return ResourceStrings.GetString(ResourceManagers.ObjectModel, "Neumont.Tools.ORM.ObjectModel.DataType.PortableDataType.Numeric.DoublePrecisionFloatingPoint.Text");
 			}
 		}
 		/// <summary>A decimal numeric data type</summary>

@@ -21,13 +21,13 @@
 		</SubType>
 	</DataType>
 	<DataType name="Text" backingType=".string">
-		<SubType name="FixedLength">
+		<SubType name="FixedLength" lengthName="">
 			<comment type="summary">A fixed length text data type</comment>
 		</SubType>
-		<SubType name="VariableLength">
+		<SubType name="VariableLength" lengthName="">
 			<comment type="summary">A variable length text data type</comment>
 		</SubType>
-		<SubType name="LargeLength">
+		<SubType name="LargeLength" lengthName="">
 			<comment type="summary">A large length text data type</comment>
 		</SubType>
 	</DataType>
@@ -53,10 +53,16 @@
 		<SubType name="AutoCounter" backingType=".u8">
 			<comment type="summary">An auto counter numeric data type</comment>
 		</SubType>
-		<SubType name="FloatingPoint" rangeSupport="Open" backingType=".r8">
-			<comment type="summary">A floating point numeric data type</comment>
+		<SubType name="FloatingPoint" rangeSupport="Open" backingType=".r8" lengthName="DataTypePrecision">
+			<comment type="summary">A custom precision floating point numeric data type</comment>
 		</SubType>
-		<SubType name="Decimal" rangeSupport="Open" backingType=".decimal">
+		<SubType name="SinglePrecisionFloatingPoint" rangeSupport="Open" backingType=".r4">
+			<comment type="summary">A 32-bit floating point numeric data type</comment>
+		</SubType>
+		<SubType name="DoublePrecisionFloatingPoint" rangeSupport="Open" backingType=".r8">
+			<comment type="summary">A 64-bit floating point numeric data type</comment>
+		</SubType>
+		<SubType name="Decimal" rangeSupport="Open" backingType=".decimal" lengthName="DataTypePrecision" scaleName="">
 			<comment type="summary">A decimal numeric data type</comment>
 		</SubType>
 		<SubType name="Money" rangeSupport="Open" backingType=".decimal">
@@ -64,13 +70,13 @@
 		</SubType>
 	</DataType>
 	<DataType name="RawData" canCompare="false" rangeSupport="None">
-		<SubType name="FixedLength">
+		<SubType name="FixedLength" lengthName="">
 			<comment type="summary">A fixed length raw data data type</comment>
 		</SubType>
-		<SubType name="VariableLength">
+		<SubType name="VariableLength" lengthName="">
 			<comment type="summary">A variable length raw data data type</comment>
 		</SubType>
-		<SubType name="LargeLength">
+		<SubType name="LargeLength" lengthName="">
 			<comment type="summary">A large length raw data data type</comment>
 		</SubType>
 		<SubType name="Picture">

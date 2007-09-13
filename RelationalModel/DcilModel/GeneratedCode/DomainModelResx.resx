@@ -202,7 +202,7 @@
     <comment>Description for DomainProperty &apos;IsNullable&apos; on DomainClass &apos;Column&apos;</comment>
   </data>
   <data name="Neumont.Tools.RelationalModels.ConceptualDatabase.Column/IsNullable.DisplayName" xml:space="preserve">
-    <value>Is Nullable</value>
+    <value>IsNullable</value>
     <comment>DisplayName for DomainProperty &apos;IsNullable&apos; on DomainClass &apos;Column&apos;</comment>
   </data>
   <data name="Neumont.Tools.RelationalModels.ConceptualDatabase.Column/IsIdentity.Description" xml:space="preserve">
@@ -210,8 +210,32 @@
     <comment>Description for DomainProperty &apos;IsIdentity&apos; on DomainClass &apos;Column&apos;</comment>
   </data>
   <data name="Neumont.Tools.RelationalModels.ConceptualDatabase.Column/IsIdentity.DisplayName" xml:space="preserve">
-    <value>Is Identity</value>
+    <value>IsIdentity</value>
     <comment>DisplayName for DomainProperty &apos;IsIdentity&apos; on DomainClass &apos;Column&apos;</comment>
+  </data>
+  <data name="Neumont.Tools.RelationalModels.ConceptualDatabase.Column/DataType.Description" xml:space="preserve">
+    <value>Description for Neumont.Tools.RelationalModels.ConceptualDatabase.Column.DataType</value>
+    <comment>Description for DomainProperty &apos;DataType&apos; on DomainClass &apos;Column&apos;</comment>
+  </data>
+  <data name="Neumont.Tools.RelationalModels.ConceptualDatabase.Column/DataType.DisplayName" xml:space="preserve">
+    <value>DataType</value>
+    <comment>DisplayName for DomainProperty &apos;DataType&apos; on DomainClass &apos;Column&apos;</comment>
+  </data>
+  <data name="Neumont.Tools.RelationalModels.ConceptualDatabase.Column/Scale.Description" xml:space="preserve">
+    <value>Description for Neumont.Tools.RelationalModels.ConceptualDatabase.Column.DataTypeScale</value>
+    <comment>Description for DomainProperty &apos;Scale&apos; on DomainClass &apos;Column&apos;</comment>
+  </data>
+  <data name="Neumont.Tools.RelationalModels.ConceptualDatabase.Column/Scale.DisplayName" xml:space="preserve">
+    <value>DataTypeScale</value>
+    <comment>DisplayName for DomainProperty &apos;Scale&apos; on DomainClass &apos;Column&apos;</comment>
+  </data>
+  <data name="Neumont.Tools.RelationalModels.ConceptualDatabase.Column/Length.Description" xml:space="preserve">
+    <value>Description for Neumont.Tools.RelationalModels.ConceptualDatabase.Column.DataTypeLength</value>
+    <comment>Description for DomainProperty &apos;Length&apos; on DomainClass &apos;Column&apos;</comment>
+  </data>
+  <data name="Neumont.Tools.RelationalModels.ConceptualDatabase.Column/Length.DisplayName" xml:space="preserve">
+    <value>DataTypeLength</value>
+    <comment>DisplayName for DomainProperty &apos;Length&apos; on DomainClass &apos;Column&apos;</comment>
   </data>
   <data name="Neumont.Tools.RelationalModels.ConceptualDatabase.Constraint.Description" xml:space="preserve">
     <value>Base class for ConceptualData constraints.</value>
@@ -242,7 +266,7 @@
     <comment>Description for DomainProperty &apos;IsPrimary&apos; on DomainClass &apos;UniquenessConstraint&apos;</comment>
   </data>
   <data name="Neumont.Tools.RelationalModels.ConceptualDatabase.UniquenessConstraint/IsPrimary.DisplayName" xml:space="preserve">
-    <value>Is Primary</value>
+    <value>IsPrimary</value>
     <comment>DisplayName for DomainProperty &apos;IsPrimary&apos; on DomainClass &apos;UniquenessConstraint&apos;</comment>
   </data>
   <data name="Neumont.Tools.RelationalModels.ConceptualDatabase.ReferenceConstraint.Description" xml:space="preserve">

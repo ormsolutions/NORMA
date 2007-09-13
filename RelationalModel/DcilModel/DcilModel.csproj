@@ -140,12 +140,15 @@
     </Compile>
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Column.cs" />
     <Compile Include="DcilModel.SurveyQuestionProvider.cs">
       <AutoGen>True</AutoGen>
       <DependentUpon>DcilModel.SurveyQuestionProvider.xml</DependentUpon>
     </Compile>
     <Compile Include="Catalog.cs" />
     <Compile Include="Design\ConceptualDatabaseModelElementTypeDescriptor.cs" />
+    <Compile Include="Design\ColumnTypeDescriptor.cs" />
+    <Compile Include="Design\Editors\ColumnDataTypePicker.cs" />
     <Compile Include="Resources.cs" />
     <Compile Include="Resources\ResourceStrings.cs" />
     <Compile Include="Resources\ResourceStringsGenerator.cs">

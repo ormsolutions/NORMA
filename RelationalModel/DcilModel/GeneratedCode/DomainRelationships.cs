@@ -2551,13 +2551,13 @@ namespace Neumont.Tools.RelationalModels.ConceptualDatabase
 		}
 				
 		#endregion
-		#region Static methods to access columns of a Domain
+		#region Static methods to access Columns of a Domain
 		/// <summary>
-		/// Gets a list of columns.
+		/// Gets a list of Columns.
 		/// </summary>
 		[global::System.Diagnostics.DebuggerStepThrough]
 		[global::System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Design", "CA1011")]
-		public static DslModeling::LinkedElementCollection<Column> Getcolumns(Domain element)
+		public static DslModeling::LinkedElementCollection<Column> GetColumns(Domain element)
 		{
 			return new DslModeling::LinkedElementCollection<Column>(element, DomainDomainRoleId);
 		}
@@ -2576,7 +2576,7 @@ namespace Neumont.Tools.RelationalModels.ConceptualDatabase
 		/// </summary>
 		[DslDesign::DisplayNameResource("Neumont.Tools.RelationalModels.ConceptualDatabase.ColumnHasDomain/Domain.DisplayName", typeof(global::Neumont.Tools.RelationalModels.ConceptualDatabase.ConceptualDatabaseDomainModel), "Neumont.Tools.RelationalModels.ConceptualDatabase.GeneratedCode.DomainModelResx")]
 		[DslDesign::DescriptionResource("Neumont.Tools.RelationalModels.ConceptualDatabase.ColumnHasDomain/Domain.Description", typeof(global::Neumont.Tools.RelationalModels.ConceptualDatabase.ConceptualDatabaseDomainModel), "Neumont.Tools.RelationalModels.ConceptualDatabase.GeneratedCode.DomainModelResx")]
-		[DslModeling::DomainRole(DslModeling::DomainRoleOrder.Target, PropertyName = "columns", PropertyDisplayNameKey="Neumont.Tools.RelationalModels.ConceptualDatabase.ColumnHasDomain/Domain.PropertyDisplayName", Multiplicity = DslModeling::Multiplicity.ZeroMany)]
+		[DslModeling::DomainRole(DslModeling::DomainRoleOrder.Target, PropertyName = "Columns", PropertyDisplayNameKey="Neumont.Tools.RelationalModels.ConceptualDatabase.ColumnHasDomain/Domain.PropertyDisplayName", Multiplicity = DslModeling::Multiplicity.ZeroMany)]
 		[DslModeling::DomainObjectId("8049efc1-7e4f-4965-82e7-d0b376424c57")]
 		public virtual Domain Domain
 		{
@@ -2640,7 +2640,7 @@ namespace Neumont.Tools.RelationalModels.ConceptualDatabase
 		/// </summary>
 		[global::System.Diagnostics.DebuggerStepThrough]
 		[global::System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Design", "CA1011")]
-		public static global::System.Collections.ObjectModel.ReadOnlyCollection<global::Neumont.Tools.RelationalModels.ConceptualDatabase.ColumnHasDomain> GetLinksTocolumns ( global::Neumont.Tools.RelationalModels.ConceptualDatabase.Domain domainInstance )
+		public static global::System.Collections.ObjectModel.ReadOnlyCollection<global::Neumont.Tools.RelationalModels.ConceptualDatabase.ColumnHasDomain> GetLinksToColumns ( global::Neumont.Tools.RelationalModels.ConceptualDatabase.Domain domainInstance )
 		{
 			return DslModeling::DomainRoleInfo.GetElementLinks<global::Neumont.Tools.RelationalModels.ConceptualDatabase.ColumnHasDomain>(domainInstance, global::Neumont.Tools.RelationalModels.ConceptualDatabase.ColumnHasDomain.DomainDomainRoleId);
 		}

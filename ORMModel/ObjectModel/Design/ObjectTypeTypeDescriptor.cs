@@ -49,11 +49,19 @@ namespace Neumont.Tools.ORM.ObjectModel.Design
 			ObjectType objectType = ModelElement;
 			Guid propertyId = domainProperty.Id;
 			if (propertyId.Equals(ObjectType.DataTypeDisplayDomainPropertyId) ||
-				propertyId.Equals(ObjectType.ScaleDomainPropertyId) ||
-				propertyId.Equals(ObjectType.LengthDomainPropertyId) ||
 				propertyId.Equals(ObjectType.ValueRangeTextDomainPropertyId))
 			{
 				return objectType.IsValueType || objectType.HasReferenceMode;
+			}
+			else if (propertyId.Equals(ObjectType.ScaleDomainPropertyId))
+			{
+				DataType dataType = GetObjectTypeDataType(objectType);
+				return dataType != null && dataType.ScaleName != null;
+			}
+			else if (propertyId.Equals(ObjectType.LengthDomainPropertyId))
+			{
+				DataType dataType = objectType.DataType ?? (objectType.HasReferenceMode ? objectType.PreferredIdentifier.RoleCollection[0].RolePlayer.DataType : null);
+				return dataType != null && dataType.LengthName != null;
 			}
 			else if (propertyId.Equals(ObjectType.ValueTypeValueRangeTextDomainPropertyId))
 			{
@@ -72,6 +80,38 @@ namespace Neumont.Tools.ORM.ObjectModel.Design
 			{
 				return base.ShouldCreatePropertyDescriptor(requestor, domainProperty);
 			}
+		}
+		private static DataType GetObjectTypeDataType(ObjectType objectType)
+		{
+			return (objectType != null) ?
+				(objectType.DataType ?? (objectType.HasReferenceMode ? objectType.PreferredIdentifier.RoleCollection[0].RolePlayer.DataType : null)) :
+				null;
+		}
+		/// <summary>
+		/// Get custom display names for the Scale and Length properties
+		/// </summary>
+		protected override string GetPropertyDescriptorDisplayName(ElementPropertyDescriptor propertyDescriptor)
+		{
+			Guid propertyId = propertyDescriptor.DomainPropertyInfo.Id;
+			DataType dataType;
+			string displayName;
+			if (propertyId == ObjectType.ScaleDomainPropertyId)
+			{
+				if (null != (dataType = GetObjectTypeDataType(propertyDescriptor.ModelElement as ObjectType)) &&
+					!string.IsNullOrEmpty(displayName = dataType.ScaleName))
+				{
+					return displayName;
+				}
+			}
+			else if (propertyId == ObjectType.LengthDomainPropertyId)
+			{
+				if (null != (dataType = GetObjectTypeDataType(propertyDescriptor.ModelElement as ObjectType)) &&
+					!string.IsNullOrEmpty(displayName = dataType.LengthName))
+				{
+					return displayName;
+				}
+			}
+			return base.GetPropertyDescriptorDisplayName(propertyDescriptor);
 		}
 
 		/// <summary>

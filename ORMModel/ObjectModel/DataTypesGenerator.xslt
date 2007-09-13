@@ -361,6 +361,65 @@
 										</xsl:choose>
 									</plx:function>
 								</xsl:if>
+								<xsl:if test="@lengthName">
+									<plx:property name="LengthName" modifier="override" visibility="public">
+										<plx:leadingInfo>
+											<plx:docComment>
+												<xsl:choose>
+													<xsl:when test="string(@lengthName)">
+														<summary>
+															<xsl:text>Show the Length property named as '</xsl:text>
+															<xsl:value-of select="@lengthName"/>
+															<xsl:text>' with this DataType</xsl:text></summary>
+													</xsl:when>
+													<xsl:otherwise>
+														<summary>Show the Length property with this DataType</summary>
+													</xsl:otherwise>
+												</xsl:choose>
+											</plx:docComment>
+										</plx:leadingInfo>
+										<plx:returns dataTypeName=".string"/>
+										<plx:get>
+											<plx:return>
+												<plx:string>
+													<xsl:if test="string(@lengthName)">
+														<xsl:value-of select="@lengthName"/>
+													</xsl:if>
+												</plx:string>
+											</plx:return>
+										</plx:get>
+									</plx:property>
+								</xsl:if>
+								<xsl:if test="@scaleName">
+									<plx:property name="ScaleName" modifier="override" visibility="public">
+										<plx:leadingInfo>
+											<plx:docComment>
+												<xsl:choose>
+													<xsl:when test="string(@scaleName)">
+														<summary>
+															<xsl:text>Show the Scale property named as '</xsl:text>
+															<xsl:value-of select="@scaleName"/>
+															<xsl:text>' with this DataType</xsl:text>
+														</summary>
+													</xsl:when>
+													<xsl:otherwise>
+														<summary>Show the Scale property with this DataType</summary>
+													</xsl:otherwise>
+												</xsl:choose>
+											</plx:docComment>
+										</plx:leadingInfo>
+										<plx:returns dataTypeName=".string"/>
+										<plx:get>
+											<plx:return>
+												<plx:string>
+													<xsl:if test="string(@scaleName)">
+														<xsl:value-of select="@scaleName"/>
+													</xsl:if>
+												</plx:string>
+											</plx:return>
+										</plx:get>
+									</plx:property>
+								</xsl:if>
 							</plx:class>
 						</xsl:for-each>
 					</xsl:if>

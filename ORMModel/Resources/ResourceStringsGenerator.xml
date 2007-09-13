@@ -122,7 +122,13 @@
 		<comment>An auto counter numeric data type</comment>
 	</ResourceString>
 	<ResourceString name="PortableDataTypeNumericFloatingPoint" model="ObjectModel" resourceName="Neumont.Tools.ORM.ObjectModel.DataType.PortableDataType.Numeric.FloatingPoint.Text">
-		<comment>A floating point numeric data type</comment>
+		<comment>A custom precision floating point numeric data type</comment>
+	</ResourceString>
+	<ResourceString name="PortableDataTypeNumericSinglePrecisionFloatingPoint" model="ObjectModel" resourceName="Neumont.Tools.ORM.ObjectModel.DataType.PortableDataType.Numeric.SinglePrecisionFloatingPoint.Text">
+		<comment>A single precision floating point numeric data type</comment>
+	</ResourceString>
+	<ResourceString name="PortableDataTypeNumericDoublePrecisionFloatingPoint" model="ObjectModel" resourceName="Neumont.Tools.ORM.ObjectModel.DataType.PortableDataType.Numeric.DoublePrecisionFloatingPoint.Text">
+		<comment>A double precision floating point numeric data type</comment>
 	</ResourceString>
 	<ResourceString name="PortableDataTypeNumericDecimal" model="ObjectModel" resourceName="Neumont.Tools.ORM.ObjectModel.DataType.PortableDataType.Numeric.Decimal.Text">
 		<comment>A decimal numeric data type</comment>

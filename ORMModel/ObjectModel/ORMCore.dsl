@@ -237,12 +237,12 @@
 						<ExternalTypeMoniker Name="/System/Boolean"/>
 					</Type>
 				</DomainProperty>
-				<DomainProperty Name="Scale" DefaultValue="0" DisplayName="Scale" Id="BD2D708A-7687-4218-94BC-05834AFAC869" Kind="CustomStorage">
+				<DomainProperty Name="Scale" DefaultValue="0" DisplayName="DataTypeScale" Id="BD2D708A-7687-4218-94BC-05834AFAC869" Kind="CustomStorage">
 					<Type>
 						<ExternalTypeMoniker Name="/System/Int32"/>
 					</Type>
 				</DomainProperty>
-				<DomainProperty Name="Length" DefaultValue="0" DisplayName="Length" Id="C9B01797-2CA1-4FF8-865A-FDA0DDF33F8D" Kind="CustomStorage">
+				<DomainProperty Name="Length" DefaultValue="0" DisplayName="DataTypeLength" Id="C9B01797-2CA1-4FF8-865A-FDA0DDF33F8D" Kind="CustomStorage">
 					<Type>
 						<ExternalTypeMoniker Name="/System/Int32"/>
 					</Type>
@@ -1006,6 +1006,18 @@
 		</DomainClass>
 
 		<DomainClass Name="FloatingPointNumericDataType" Namespace="Neumont.Tools.ORM.ObjectModel" Id="C82CD420-BB13-4F63-9EA7-850512E5B7DD" DisplayName="FloatingPointNumericDataType" Description="">
+			<BaseClass>
+				<DomainClassMoniker Name="NumericDataType"/>
+			</BaseClass>
+		</DomainClass>
+
+		<DomainClass Name="SinglePrecisionFloatingPointNumericDataType" Namespace="Neumont.Tools.ORM.ObjectModel" Id="53399895-20E9-49E0-BC73-E00461387680" DisplayName="SinglePrecisionFloatingPointNumericDataType" Description="">
+			<BaseClass>
+				<DomainClassMoniker Name="NumericDataType"/>
+			</BaseClass>
+		</DomainClass>
+
+		<DomainClass Name="DoublePrecisionFloatingPointNumericDataType" Namespace="Neumont.Tools.ORM.ObjectModel" Id="F5A7B8A3-2EF5-4143-BDEE-1AA762CB6E02" DisplayName="DoublePrecisionFloatingPointNumericDataType" Description="">
 			<BaseClass>
 				<DomainClassMoniker Name="NumericDataType"/>
 			</BaseClass>

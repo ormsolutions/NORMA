@@ -597,6 +597,7 @@ namespace Neumont.Tools.RelationalModels.ConceptualDatabase
 	/// DomainClass Column
 	/// Equivalent to a 'COLUMN' in the SQL Standard.
 	/// </summary>
+	[global::System.ComponentModel.TypeDescriptionProvider(typeof(global::Neumont.Tools.Modeling.Design.ElementTypeDescriptionProvider<Column, Design.ColumnTypeDescriptor<Column>>))]
 	[DslDesign::DisplayNameResource("Neumont.Tools.RelationalModels.ConceptualDatabase.Column.DisplayName", typeof(global::Neumont.Tools.RelationalModels.ConceptualDatabase.ConceptualDatabaseDomainModel), "Neumont.Tools.RelationalModels.ConceptualDatabase.GeneratedCode.DomainModelResx")]
 	[DslDesign::DescriptionResource("Neumont.Tools.RelationalModels.ConceptualDatabase.Column.Description", typeof(global::Neumont.Tools.RelationalModels.ConceptualDatabase.ConceptualDatabaseDomainModel), "Neumont.Tools.RelationalModels.ConceptualDatabase.GeneratedCode.DomainModelResx")]
 	[global::System.CLSCompliant(true)]
@@ -889,6 +890,281 @@ namespace Neumont.Tools.RelationalModels.ConceptualDatabase
 				{
 					ValueChanging(element, oldValue, newValue);
 					element.isIdentityPropertyStorage = newValue;
+					ValueChanged(element, oldValue, newValue);
+				}
+			}
+		}
+		
+		#endregion
+		#region DataType domain property code
+		
+		/// <summary>
+		/// DataType domain property Id.
+		/// </summary>
+		public static readonly global::System.Guid DataTypeDomainPropertyId = new global::System.Guid(0x02e07257, 0x8739, 0x4708, 0x84, 0x74, 0x51, 0x45, 0x18, 0x3b, 0xac, 0xf5);
+		
+		/// <summary>
+		/// Gets or sets the value of DataType domain property.
+		/// Description for
+		/// Neumont.Tools.RelationalModels.ConceptualDatabase.Column.DataType
+		/// </summary>
+		[global::System.ComponentModel.Editor(typeof(global::Neumont.Tools.RelationalModels.ConceptualDatabase.Design.ColumnDataTypePicker), typeof(global::System.Drawing.Design.UITypeEditor))]
+		[DslDesign::DisplayNameResource("Neumont.Tools.RelationalModels.ConceptualDatabase.Column/DataType.DisplayName", typeof(global::Neumont.Tools.RelationalModels.ConceptualDatabase.ConceptualDatabaseDomainModel), "Neumont.Tools.RelationalModels.ConceptualDatabase.GeneratedCode.DomainModelResx")]
+		[DslDesign::DescriptionResource("Neumont.Tools.RelationalModels.ConceptualDatabase.Column/DataType.Description", typeof(global::Neumont.Tools.RelationalModels.ConceptualDatabase.ConceptualDatabaseDomainModel), "Neumont.Tools.RelationalModels.ConceptualDatabase.GeneratedCode.DomainModelResx")]
+		[DslModeling::DomainProperty(Kind = DslModeling::DomainPropertyKind.CustomStorage)]
+		[DslModeling::DomainObjectId("02e07257-8739-4708-8474-5145183bacf5")]
+		public global::System.Object DataType
+		{
+			[global::System.Diagnostics.DebuggerStepThrough]
+			get
+			{
+				return DataTypePropertyHandler.Instance.GetValue(this);
+			}
+			[global::System.Diagnostics.DebuggerStepThrough]
+			set
+			{
+				DataTypePropertyHandler.Instance.SetValue(this, value);
+			}
+		}
+		/// <summary>
+		/// Value handler for the Column.DataType domain property.
+		/// </summary>
+		internal sealed partial class DataTypePropertyHandler : DslModeling::DomainPropertyValueHandler<Column, global::System.Object>
+		{
+			private DataTypePropertyHandler() { }
+		
+			/// <summary>
+			/// Gets the singleton instance of the Column.DataType domain property value handler.
+			/// </summary>
+			public static readonly DataTypePropertyHandler Instance = new DataTypePropertyHandler();
+		
+			/// <summary>
+			/// Gets the Id of the Column.DataType domain property.
+			/// </summary>
+			public sealed override global::System.Guid DomainPropertyId
+			{
+				[global::System.Diagnostics.DebuggerStepThrough]
+				get
+				{
+					return DataTypeDomainPropertyId;
+				}
+			}
+			
+			/// <summary>
+			/// Gets a strongly-typed value of the property on specified element.
+			/// </summary>
+			/// <param name="element">Element which owns the property.</param>
+			/// <returns>Property value.</returns>
+			public override sealed global::System.Object GetValue(Column element)
+			{
+				if (element == null) throw new global::System.ArgumentNullException("element");
+				// There is no storage for DataType because its Kind is
+				// set to CustomStorage. Please provide the GetDataTypeValue()
+				// method on the domain class.
+				return element.GetDataTypeValue();
+			}
+		
+			/// <summary>
+			/// Sets property value on an element.
+			/// </summary>
+			/// <param name="element">Element which owns the property.</param>
+			/// <param name="newValue">New property value.</param>
+			public override sealed void SetValue(Column element, global::System.Object newValue)
+			{
+				if (element == null) throw new global::System.ArgumentNullException("element");
+		
+				global::System.Object oldValue = GetValue(element);
+				// Don't use != with object properties
+				if (!global::System.Object.Equals(newValue, oldValue))
+				{
+					ValueChanging(element, oldValue, newValue);
+					// There is no storage for DataType because its Kind is
+					// set to CustomStorage. Please provide the SetDataTypeValue()
+					// method on the domain class.
+					element.SetDataTypeValue(newValue);
+					//ValueChanged(element, oldValue, GetValue(element));
+					ValueChanged(element, oldValue, newValue);
+				}
+			}
+		}
+		
+		#endregion
+		#region Scale domain property code
+		
+		/// <summary>
+		/// Scale domain property Id.
+		/// </summary>
+		public static readonly global::System.Guid ScaleDomainPropertyId = new global::System.Guid(0xa30271e0, 0x613d, 0x4198, 0x91, 0x47, 0x9c, 0x67, 0xa8, 0xbf, 0x0d, 0x3f);
+		
+		/// <summary>
+		/// Gets or sets the value of Scale domain property.
+		/// Description for
+		/// Neumont.Tools.RelationalModels.ConceptualDatabase.Column.DataTypeScale
+		/// </summary>
+		[DslDesign::DisplayNameResource("Neumont.Tools.RelationalModels.ConceptualDatabase.Column/Scale.DisplayName", typeof(global::Neumont.Tools.RelationalModels.ConceptualDatabase.ConceptualDatabaseDomainModel), "Neumont.Tools.RelationalModels.ConceptualDatabase.GeneratedCode.DomainModelResx")]
+		[DslDesign::DescriptionResource("Neumont.Tools.RelationalModels.ConceptualDatabase.Column/Scale.Description", typeof(global::Neumont.Tools.RelationalModels.ConceptualDatabase.ConceptualDatabaseDomainModel), "Neumont.Tools.RelationalModels.ConceptualDatabase.GeneratedCode.DomainModelResx")]
+		[DslModeling::DomainProperty(Kind = DslModeling::DomainPropertyKind.CustomStorage)]
+		[DslModeling::DomainObjectId("a30271e0-613d-4198-9147-9c67a8bf0d3f")]
+		public global::System.Int32 Scale
+		{
+			[global::System.Diagnostics.DebuggerStepThrough]
+			get
+			{
+				return ScalePropertyHandler.Instance.GetValue(this);
+			}
+			[global::System.Diagnostics.DebuggerStepThrough]
+			set
+			{
+				ScalePropertyHandler.Instance.SetValue(this, value);
+			}
+		}
+		/// <summary>
+		/// Value handler for the Column.Scale domain property.
+		/// </summary>
+		internal sealed partial class ScalePropertyHandler : DslModeling::DomainPropertyValueHandler<Column, global::System.Int32>
+		{
+			private ScalePropertyHandler() { }
+		
+			/// <summary>
+			/// Gets the singleton instance of the Column.Scale domain property value handler.
+			/// </summary>
+			public static readonly ScalePropertyHandler Instance = new ScalePropertyHandler();
+		
+			/// <summary>
+			/// Gets the Id of the Column.Scale domain property.
+			/// </summary>
+			public sealed override global::System.Guid DomainPropertyId
+			{
+				[global::System.Diagnostics.DebuggerStepThrough]
+				get
+				{
+					return ScaleDomainPropertyId;
+				}
+			}
+			
+			/// <summary>
+			/// Gets a strongly-typed value of the property on specified element.
+			/// </summary>
+			/// <param name="element">Element which owns the property.</param>
+			/// <returns>Property value.</returns>
+			public override sealed global::System.Int32 GetValue(Column element)
+			{
+				if (element == null) throw new global::System.ArgumentNullException("element");
+				// There is no storage for Scale because its Kind is
+				// set to CustomStorage. Please provide the GetScaleValue()
+				// method on the domain class.
+				return element.GetScaleValue();
+			}
+		
+			/// <summary>
+			/// Sets property value on an element.
+			/// </summary>
+			/// <param name="element">Element which owns the property.</param>
+			/// <param name="newValue">New property value.</param>
+			public override sealed void SetValue(Column element, global::System.Int32 newValue)
+			{
+				if (element == null) throw new global::System.ArgumentNullException("element");
+		
+				global::System.Int32 oldValue = GetValue(element);
+				if (newValue != oldValue)
+				{
+					ValueChanging(element, oldValue, newValue);
+					// There is no storage for Scale because its Kind is
+					// set to CustomStorage. Please provide the SetScaleValue()
+					// method on the domain class.
+					element.SetScaleValue(newValue);
+					//ValueChanged(element, oldValue, GetValue(element));
+					ValueChanged(element, oldValue, newValue);
+				}
+			}
+		}
+		
+		#endregion
+		#region Length domain property code
+		
+		/// <summary>
+		/// Length domain property Id.
+		/// </summary>
+		public static readonly global::System.Guid LengthDomainPropertyId = new global::System.Guid(0x1a3aa9d0, 0xa2b9, 0x46a5, 0x8b, 0x77, 0x55, 0xba, 0x9f, 0x5d, 0x4d, 0x98);
+		
+		/// <summary>
+		/// Gets or sets the value of Length domain property.
+		/// Description for
+		/// Neumont.Tools.RelationalModels.ConceptualDatabase.Column.DataTypeLength
+		/// </summary>
+		[DslDesign::DisplayNameResource("Neumont.Tools.RelationalModels.ConceptualDatabase.Column/Length.DisplayName", typeof(global::Neumont.Tools.RelationalModels.ConceptualDatabase.ConceptualDatabaseDomainModel), "Neumont.Tools.RelationalModels.ConceptualDatabase.GeneratedCode.DomainModelResx")]
+		[DslDesign::DescriptionResource("Neumont.Tools.RelationalModels.ConceptualDatabase.Column/Length.Description", typeof(global::Neumont.Tools.RelationalModels.ConceptualDatabase.ConceptualDatabaseDomainModel), "Neumont.Tools.RelationalModels.ConceptualDatabase.GeneratedCode.DomainModelResx")]
+		[DslModeling::DomainProperty(Kind = DslModeling::DomainPropertyKind.CustomStorage)]
+		[DslModeling::DomainObjectId("1a3aa9d0-a2b9-46a5-8b77-55ba9f5d4d98")]
+		public global::System.Int32 Length
+		{
+			[global::System.Diagnostics.DebuggerStepThrough]
+			get
+			{
+				return LengthPropertyHandler.Instance.GetValue(this);
+			}
+			[global::System.Diagnostics.DebuggerStepThrough]
+			set
+			{
+				LengthPropertyHandler.Instance.SetValue(this, value);
+			}
+		}
+		/// <summary>
+		/// Value handler for the Column.Length domain property.
+		/// </summary>
+		internal sealed partial class LengthPropertyHandler : DslModeling::DomainPropertyValueHandler<Column, global::System.Int32>
+		{
+			private LengthPropertyHandler() { }
+		
+			/// <summary>
+			/// Gets the singleton instance of the Column.Length domain property value handler.
+			/// </summary>
+			public static readonly LengthPropertyHandler Instance = new LengthPropertyHandler();
+		
+			/// <summary>
+			/// Gets the Id of the Column.Length domain property.
+			/// </summary>
+			public sealed override global::System.Guid DomainPropertyId
+			{
+				[global::System.Diagnostics.DebuggerStepThrough]
+				get
+				{
+					return LengthDomainPropertyId;
+				}
+			}
+			
+			/// <summary>
+			/// Gets a strongly-typed value of the property on specified element.
+			/// </summary>
+			/// <param name="element">Element which owns the property.</param>
+			/// <returns>Property value.</returns>
+			public override sealed global::System.Int32 GetValue(Column element)
+			{
+				if (element == null) throw new global::System.ArgumentNullException("element");
+				// There is no storage for Length because its Kind is
+				// set to CustomStorage. Please provide the GetLengthValue()
+				// method on the domain class.
+				return element.GetLengthValue();
+			}
+		
+			/// <summary>
+			/// Sets property value on an element.
+			/// </summary>
+			/// <param name="element">Element which owns the property.</param>
+			/// <param name="newValue">New property value.</param>
+			public override sealed void SetValue(Column element, global::System.Int32 newValue)
+			{
+				if (element == null) throw new global::System.ArgumentNullException("element");
+		
+				global::System.Int32 oldValue = GetValue(element);
+				if (newValue != oldValue)
+				{
+					ValueChanging(element, oldValue, newValue);
+					// There is no storage for Length because its Kind is
+					// set to CustomStorage. Please provide the SetLengthValue()
+					// method on the domain class.
+					element.SetLengthValue(newValue);
+					//ValueChanged(element, oldValue, GetValue(element));
 					ValueChanged(element, oldValue, newValue);
 				}
 			}
