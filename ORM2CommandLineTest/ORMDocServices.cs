@@ -181,7 +181,7 @@ namespace Neumont.Tools.ORM.SDK.TestEngine
 					return retVal;
 				}
 			}
-			Store IORMToolTestServices.Load(MethodInfo testMethod, string referenceName)
+			Store IORMToolTestServices.Load(MethodInfo testMethod, string referenceName, IList<SuiteExtension> extensions)
 			{
 				Store retVal = null;
 				Type testType = testMethod.ReflectedType;
@@ -208,7 +208,7 @@ namespace Neumont.Tools.ORM.SDK.TestEngine
 					}
 					if (resourceStream != null)
 					{
-						retVal = LoadFileStream(resourceStream);
+						retVal = LoadFileStream(resourceStream, extensions);
 					}
 				}
 				finally
@@ -220,7 +220,7 @@ namespace Neumont.Tools.ORM.SDK.TestEngine
 				}
 				return retVal;
 			}
-			private Store LoadFileStream(Stream stream)
+			private Store LoadFileStream(Stream stream, IList<SuiteExtension> extensions)
 			{
 				if (stream == null)
 				{
@@ -228,8 +228,25 @@ namespace Neumont.Tools.ORM.SDK.TestEngine
 				}
 				ORMStore store = new ORMStore(this);
 				store.UndoManager.UndoState = UndoState.Disabled;
+
 				Type[] domainModels = new Type[5] { typeof(CoreDomainModel), typeof(CoreDesignSurfaceDomainModel), typeof(FrameworkDomainModel), typeof(ORMCoreDomainModel), typeof(ORMShapeDomainModel) };
 				store.LoadDomainModels(domainModels);
+
+				if (extensions != null)
+				{
+					Type[] extensionTypes = new Type[extensions.Count];
+					for (int i = 0; i < extensionTypes.Length; ++i)
+					{
+						SuiteExtension extension = extensions[i];
+						if (extension.Assembly != null)
+						{
+							Type domainModelType = extension.Assembly.GetType(extension.DomainType);
+							extensionTypes[i] = domainModelType;
+						}
+					}
+					store.LoadDomainModels(extensionTypes);
+				}
+
 				using (Transaction t = store.TransactionManager.BeginTransaction("File load and fixup"))
 				{
 					if (stream.Length > 1)

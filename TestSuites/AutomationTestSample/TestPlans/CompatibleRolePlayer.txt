@@ -1,0 +1,224 @@
+Test Plan for feature for  RolePlayerRequiredError:
+
+Definition of Error
+
+From Orm2Spec:
+	Each role in a fact type must be associated with an ObjectType.
+
+Related Features
+
+	Add a fact type
+	Add an entity type
+	Add a value type
+	Add an objectified fact type
+	Associate an entity type with a role
+	Associate a value type with a role
+	Associate an objectified fact type with a role
+	Un-associate an entity type from a role
+	Un-associate a value type with a role
+	Un-associate an objectified fact type with a roleo
+	Delete an associated entity type
+	Delete an associated value type
+	Delete an associated objectified fact type
+	Reorder role sequences
+
+Relevant Equivalence Classes
+
+	RoleStateVariant:
+
+Short Name
+Description
+HasRolePlayer 
+The role is associated with an entity type, value type, or objectified fact type
+DoesNotHaveRolePlayer
+The role is not associated with an entity type, value type, or objectified fact type
+RoleDoesNotExist
+The role does not exist.
+
+
+Test Cases
+
+	Error exists when it should: 
+	Error should appear when role is not associated with an entity type.
+	Error should appear when role is not associated with a value type.
+	Error should appear when role is not associated with an objectified fact type.
+
+	Error does not exist when it shouldn’t:
+	Fact Type is properly associated with an entity type
+	Fact Type is properly associated with a value type
+	Fact Type is properly associated with an objectified fact type
+
+
+
+
+	Test Plan for feature for ImpliedInternalUniquenessConstraintError:
+
+Definition of Error
+
+	An internal uniqueness constraint is implied if it includes the same roles as another internal uniqueness constraint. The roles may be equal, or there may be more roles in the applied constraint.
+	Role order (not displayed on a diagram, but stored in the model and file based on the order the items are entered) should not matter.
+	A FactType will have a single ImpliedInternalUniquenessConstraintError regardless of the number of implied constraints. For example, a binary fact type with two alethic uniqueness constraints on one role and a spanning uniqueness constraint will have a single error on the FactType (the individual constraints may have other errors, but this error is on the FactType itself, not the constraints).
+	Alethic constraints imply deontic constraints, but not vice versa.
+
+
+
+Related Features
+
+	Add a fact type
+	Add an objectified fact type
+	Reorder role sequences.
+	Add an internal uniqueness constraint
+	Remove an internal uniqueness constraint
+
+
+
+
+Relevant Equivalence Classes
+
+	RoleUniquenessVariant:
+
+Short Name
+Description
+ NoOverlapping
+Role only has one internal uniqueness constraint that applies (no error).
+OverlappingDeonticWithDeonticSingle
+Role has a deontic non-spanning internal uniqueness constraint and also a alethic overlapping internal uniqueness constraint (no error).
+
+OverlappingSingleWithSpanning
+Role has a non-spanning internal uniqueness constraint and also an overlapping spanning internal uniqueness constraint (error).
+
+OverlappingSpanningWithSpanningSame
+Role has a spanning internal uniqueness constraint and also an overlapping spanning internal uniqueness constraint that occupies the same space (error).
+
+OverlappingSpanningWithSpanning
+Role has a spanning internal uniqueness constraint and also an overlapping spanning internal uniqueness constraint that does not occupy the same space (no error).
+
+
+
+
+Test Cases
+
+	Error exists when it should: 
+
+	Error should appear if role has a  non-spanning internal uniqueness constraint and also an overlapping spanning internal uniqueness constraint 
+	Error should appear if role has a spanning internal uniqueness constraint and also an overlapping spanning internal uniqueness constraint that occupies the same role. 
+	Error should appear if role has an alethic constraint that implies deontic constraint and deontic  is also present. 
+
+	Error does not exist when it shouldn’t:
+     
+	Role only has only one internal uniqueness constraint that applies to it.
+	Role has a deontic non-spanning internal uniqueness constraint and also a alethic overlapping internal uniqueness constraint (alethic constraints imply deontic constraints, but not vice versa.)
+	Role has a spanning internal uniqueness constraint and also an overlapping spanning internal uniqueness constraint that does not occupy the same space.
+
+
+Test Plan for feature for ExternalConstraintRoleSequenceArityMismatchError:
+
+Definition of Error
+
+
+	A set comparison constraint has rows with differing numbers of roles. This error is not validated if the TooFewRoleSequencesError or TooManyRoleSequencesError are present.
+
+
+Related Features
+
+	Add a fact type
+	Add an external uniqueness constraint
+	Add an exclusion constraint
+	Add an equality constraint
+	Add a subset constraint 
+	Associate an exclusion constraint with role
+	Associate an equality constraint with role
+	Associate a subset.
+	Un-associate SetComparisonConstraint role from constraint
+	Reorder role sequences
+
+
+Relevant Equivalence Classes
+
+	ArityVariant:
+
+
+Short Name
+Description
+UniformArity
+For each role sequence, there are number of roles m (where m is equal among all role sequences).
+
+NonuniformArity
+For each role sequence, there are number of roles m (where m is not equal among all role sequences)
+
+
+
+Test Cases
+
+	Error exists when a set comparison constraint has rows with differing numbers of roles: 
+
+	Error appears when a set comparison constraint has rows with differing numbers of roles. 
+
+	Error does not exist when it shouldn’t:
+     
+	Set comparison constraint has the same number of rows as role numbers. 
+
+	Error is not validated when it shouldn’t: 
+	Either TooFewRoleSequencesError or TooManyRoleSequencesError is present.
+
+
+
+
+
+
+Test Plan for feature for EqualityImpliedByMandatoryError:
+
+Definition of Error
+
+
+	An Equality constraint is implied by mandatory constraints if the equality constraint has a single column and all of the roles in that column have SimpleMandatory constraints.
+
+
+Related Features
+
+	Add a fact type
+	Add an entity type
+	Add a value type
+	Add an objectified fact type
+	Associate an entity type with a role
+	Associate a value type with a role
+	Associate an objectified fact type with a role
+	Add an equality constraint
+	Associate equality constraint with a role
+	Add a mandatory constraint to a role
+	Reorder role sequences
+
+
+Relevant Equivalence Classes
+
+	MandatoryVariant:
+
+
+Short Name
+Description
+MultipleRolesValid
+Number of roles involved in a role sequence > 1
+MandatoryValid
+ Number of roles involved in a role sequence = 1 and only one role overall has a mandatory constraint
+MandatoryInvalid
+Number of roles involved in a role sequence = 1 and both roles involved overall have mandatory constraints
+
+
+
+
+
+Test Cases
+
+
+	Error exists when it should 
+
+	An equality constraint has a single column and all of the roles in that column have SimpleMandatory constraints.
+	Error does not exist when it shouldn’t:
+	 Number of roles involved in a role sequence = 1 and only one  role overall has  a mandatory constraint
+	An equality constraint has a single column and not all of the roles in that column have SimpleMandatory constraints. 
+
+
+
+
+
+

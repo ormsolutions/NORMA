@@ -20,6 +20,7 @@
 			<xs:documentation>A single suite. A suite consists of a name, category settings and test assemblies. Corresponds to the Suite element in the SuiteReport file.</xs:documentation>
 		</xs:annotation>
 		<xs:all>
+			<xs:element name="Extensions" type="ExtensionsType" minOccurs="0"/>
 			<xs:element name="TestAssemblies" type="TestAssembliesType"/>
 			<xs:element name="Categories" minOccurs="0">
 				<xs:complexType>
@@ -59,6 +60,34 @@
 		<xs:attribute name="location" type="xs:string" use="required">
 			<xs:annotation>
 				<xs:documentation>The location of the test assembly, relative to the location of the suite file.</xs:documentation>
+			</xs:annotation>
+		</xs:attribute>
+	</xs:complexType>
+	<xs:complexType name="ExtensionsType">
+		<xs:annotation>
+			<xs:documentation>A container for Extension elements</xs:documentation>
+		</xs:annotation>
+		<xs:sequence minOccurs="0" maxOccurs="unbounded">
+			<xs:element name="Extension" type="ExtensionType"/>
+		</xs:sequence>
+		<xs:attribute name="path" type="xs:string" use="optional">
+			<xs:annotation>
+				<xs:documentation>The full path to the extensions directory.</xs:documentation>
+			</xs:annotation>
+		</xs:attribute>
+	</xs:complexType>
+	<xs:complexType name="ExtensionType">
+		<xs:annotation>
+			<xs:documentation>A single Neumont ORM extension. Corresponds to the Extension element in a SuiteReport.</xs:documentation>
+		</xs:annotation>
+		<xs:attribute name="location" type="xs:string" use="required">
+			<xs:annotation>
+				<xs:documentation>The location of the extension assembly, relative to the suite file or full path.</xs:documentation>
+			</xs:annotation>
+		</xs:attribute>
+		<xs:attribute name="domain" type="xs:string" use="required">
+			<xs:annotation>
+				<xs:documentation>Each extension must come with an appropriate domain model to load. Provide the fully qualified name of said DomainModel type.</xs:documentation>
 			</xs:annotation>
 		</xs:attribute>
 	</xs:complexType>

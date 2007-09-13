@@ -306,7 +306,7 @@
 			</ormDiagram:ObjectTypeShape>
 			<ormDiagram:FactTypeShape id="_43F118C2-10D0-460B-BB9C-6522389F3EF4" IsExpanded="true" AbsoluteBounds="1.9625000000000001, 1.1500000000000001, 0.38388888899236917, 0.24388888899236916" ConstraintDisplayPosition="Top">
 				<ormDiagram:RelativeShapes>
-					<ormDiagram:ReadingShape id="_56D5D34C-9F55-4D87-9241-37910FE4A3F4" IsExpanded="true" AbsoluteBounds="1.9625000000000001, 1.4125, 0.64014118909835815, 0.12950302660465241">
+					<ormDiagram:ReadingShape id="_56D5D34C-9F55-4D87-9241-37910FE4A3F4" IsExpanded="true" AbsoluteBounds="1.9625000000000001, 1.4125, 0.63750000000000007, 0.125">
 						<ormDiagram:Subject ref="_6EF9E47E-99EA-4EF2-8B07-0E6A51954F79" />
 					</ormDiagram:ReadingShape>
 				</ormDiagram:RelativeShapes>

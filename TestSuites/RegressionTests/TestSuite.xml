@@ -1,0 +1,13 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<Suites xmlns="http://schemas.neumont.edu/ORM/SDK/TestSuite">
+	<Suite name="Sample">
+		<Categories>
+			<IncludeCategory name="FactType"/>
+			<IncludeCategory name="RolePlayerRequiredError"/>
+			<ExcludeCategory name="NotYet"/>
+		</Categories>
+		<TestAssemblies>
+			<TestAssembly location="..\TestSample\TestSample.dll"/>
+		</TestAssemblies>
+	</Suite>
+</Suites>

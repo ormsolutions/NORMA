@@ -1,0 +1,16 @@
+﻿<?xml version="1.0" encoding="utf-8" standalone="no"?>
+<Extensibility xmlns="http://schemas.microsoft.com/AutomationExtensibility">
+  <HostApplication>
+    <Name>Microsoft Visual Studio</Name>
+    <Version>8.0</Version>
+  </HostApplication>
+  <Addin>
+    <FriendlyName>ORMRegressionTestAddin</FriendlyName>
+    <Description>ORMRegressionTestAddin - ORM test driver</Description>
+    <Assembly>ORMRegressionTestAddin.dll</Assembly>
+    <FullClassName>ORMRegressionTestAddin.Connect</FullClassName>
+    <LoadBehavior>0</LoadBehavior>
+    <CommandPreload>1</CommandPreload>
+    <CommandLineSafe>0</CommandLineSafe>
+  </Addin>
+</Extensibility>

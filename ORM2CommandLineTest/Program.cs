@@ -34,7 +34,7 @@ namespace Neumont.Tools.ORM.SDK.TestDriver
 					if (LoadingSchemaNamespace == SchemaNamespace)
 					{
 						//If the suite is not a report then we need to generate a report.
-						IList<Suite> suites = Suite.LoadSuiteFile(args[0]);
+						IList<Suite> suites = Suite.LoadSuiteFile(suiteFile);
 						if (suites != null)
 						{
 							int suiteCount = suites.Count;

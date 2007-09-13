@@ -1,0 +1,45 @@
+Constraint Implication and Contradiction
+	- Constraint Implied by Intersecting Constraints
+	- Contradicting Exclusion and Equality Constraints
+	- Contradicting Exclusion and Mandatory Constraints
+	- Contradicting Exclusion and Subset Constraints
+	- Contradicting Frequency and Internal Uniqueness Constraints
+	- Contradicting Subset and Mandatory Constraints
+	- Equality Constraint Implied By Mandatory Constraint(s)
+	- Mandatory Constraint Implies Equality or Subset Constraint
+Constraint Structure Errors
+	- Constraint Role Sequences with Different Number of Roles
+	- Incompatible Constrained Role Players
+	- Inconsistent Frequency Constraint Minimum and Maximum Values
+	- Ring Constraint Type Not Specified
+	- Too Few Role Sequences
+	- Too Many Role Sequences
+DataType and Value
+	- DataType not Specified for ValueType
+	- Maximum Bound of Value Range Invalid for DataType
+	- Minimum Bound of Value Range Invalid for DataType
+	- Value Ranges Overlap
+	** Value Ranges are out of bounds according to constraint.
+Fact Type Definition
+	- FactType has Fewer Role than Reading Text
+	- FactType has Implied Internal Uniqueness Constraint
+	- FactType has More Roles than Reading Text
+	- FactType Requires Internal Uniqueness Constraint
+	- FactType Requires Reading
+	- Insufficient Roles for Internal Uniqueness Constraint(s)
+	- Reading Text Automatically Modified
+	- Role Player Required
+Naming
+	- Duplicate Constraint Name
+	- Duplicate ObjectType Names
+Reference Scheme
+	- EntityType Requires Reference Scheme
+	- EntityType with Compound Preferred Identifier Requires Mandatory Constraint
+	- Incompatible or Transitive Supertypes
+	- ObjectType Requires Primary Supertype
+Sample Population
+	- Incomplete FactType Sample Population
+	- Incomplete Sample Population to Identify EntityType
+	- Missing Mandatory Sample Population
+	- Population Violates Uniqueness Constraint
+	- Sample Population Value Invalid for DataType

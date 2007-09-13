@@ -3,6 +3,8 @@ Microsoft Visual Studio Solution File, Format Version 9.00
 # Visual Studio 2005
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "TestSample", "TestSample\TestSample.csproj", "{7DAB2FAD-F582-4D21-B3E0-B831C5F544CF}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "AutomationTestSample", "AutomationTestSample\AutomationTestSample.csproj", "{30BC16E5-AA07-4FA1-85A2-7DDE22D063DF}"
+EndProject
 Global
 	GlobalSection(TextTemplating) = postSolution
 		TextTemplating = 1
@@ -16,6 +18,10 @@ Global
 		{7DAB2FAD-F582-4D21-B3E0-B831C5F544CF}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{7DAB2FAD-F582-4D21-B3E0-B831C5F544CF}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{7DAB2FAD-F582-4D21-B3E0-B831C5F544CF}.Release|Any CPU.Build.0 = Release|Any CPU
+		{30BC16E5-AA07-4FA1-85A2-7DDE22D063DF}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{30BC16E5-AA07-4FA1-85A2-7DDE22D063DF}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{30BC16E5-AA07-4FA1-85A2-7DDE22D063DF}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{30BC16E5-AA07-4FA1-85A2-7DDE22D063DF}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

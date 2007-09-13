@@ -59,13 +59,15 @@
     <Compile Include="DTBlankTests\DTBlankTests.cs" />
     <Compile Include="FCMinMaxTests\FCMinMaxTests.cs" />
     <Compile Include="NMinus1Tests\NMinus1Tests.cs" />
-    <Compile Include="Tests.cs" />
+    <Compile Include="Sample\Tests.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="..\..\ORMPackage.snk">
       <Link>ORMPackage.snk</Link>
     </None>
+    <None Include="ormtest.snippet" />
+    <None Include="ormtestclass.snippet" />
     <EmbeddedResource Include="NMinus1Tests\NMinus1Tests.NMinus1Test2a.Compare.orm" />
     <EmbeddedResource Include="DTBlankTests\DTBlankTests.DTBlankTest2a.Compare.orm" />
     <EmbeddedResource Include="DTBlankTests\DTBlankTests.DTBlankTest2b.Compare.orm" />
@@ -96,16 +98,16 @@
     <EmbeddedResource Include="NMinus1Tests\NMinus1Tests.NMinus1Test1b.Load.orm" />
     <EmbeddedResource Include="NMinus1Tests\NMinus1Tests.NMinus1Test1a.Compare.orm" />
     <EmbeddedResource Include="NMinus1Tests\NMinus1Tests.NMinus1Test1a.Load.orm" />
-    <EmbeddedResource Include="Tests.Test2.Compare.orm" />
-    <EmbeddedResource Include="Tests.Test2.Load.orm" />
-    <EmbeddedResource Include="Tests.Test1.Compare.orm" />
-    <EmbeddedResource Include="Tests.Test1.Load.orm" />
+    <EmbeddedResource Include="Sample\Tests.Test2.Compare.orm" />
+    <EmbeddedResource Include="Sample\Tests.Test2.Load.orm" />
+    <EmbeddedResource Include="Sample\Tests.Test1.Compare.orm" />
+    <EmbeddedResource Include="Sample\Tests.Test1.Load.orm" />
   </ItemGroup>
   <ItemGroup>
-    <EmbeddedResource Include="Tests.Test1.Report.xml" />
+    <EmbeddedResource Include="Sample\Tests.Test1.Report.xml" />
   </ItemGroup>
   <ItemGroup>
-    <EmbeddedResource Include="Tests.Test2.Report.xml" />
+    <EmbeddedResource Include="Sample\Tests.Test2.Report.xml" />
   </ItemGroup>
   <ItemGroup>
     <Service Include="{B4F97281-0DBD-4835-9ED8-7DFB966E87FF}" />

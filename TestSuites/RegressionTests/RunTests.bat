@@ -1,0 +1,1 @@
+@call TestHost.bat ORMRegressionTestAddin TestEnv Tests.log "" TestConfiguration

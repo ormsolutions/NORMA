@@ -7,7 +7,7 @@ using NUnit.Framework;
 using NUnitCategory = NUnit.Framework.CategoryAttribute;
 //using Neumont.Tools.ORM.
 using Neumont.Tools.Modeling.Design;
-namespace TestSample
+namespace TestSample.Sample
 {
 	/// <summary>
 	/// A sample class to demonstrate how to run a test. The class runs

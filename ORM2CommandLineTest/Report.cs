@@ -768,7 +768,7 @@ namespace Neumont.Tools.ORM.SDK.TestReportViewer
 
 						// Populate a store. Automatically loads the starting
 						// file from the test assembly if one is provided
-						store = testServices.Load(method, null);
+						store = testServices.Load(method, null, null);
 
 						// Run the method
 						methodParams[0] = store;

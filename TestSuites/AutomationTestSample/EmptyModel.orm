@@ -1,0 +1,17 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<ormRoot:ORM2 xmlns:orm="http://schemas.neumont.edu/ORM/2006-04/ORMCore" xmlns:ormDiagram="http://schemas.neumont.edu/ORM/2006-04/ORMDiagram" xmlns:ormRoot="http://schemas.neumont.edu/ORM/2006-04/ORMRoot">
+	<orm:ORMModel id="_7F7193A8-D8DD-42EA-8E55-1EFF1D3E4877" Name="EmptyModel">
+		<orm:Constraints>
+			<orm:UniquenessConstraint id="_CB29D78F-7E11-4539-9694-E130742F843F" Name="InternalUniquenessConstraint1" IsInternal="true" />
+			<orm:UniquenessConstraint id="_46EEFF3E-64AA-43F3-9038-8C6C261B4199" Name="InternalUniquenessConstraint2" IsInternal="true" />
+		</orm:Constraints>
+		<orm:ReferenceModeKinds>
+			<orm:ReferenceModeKind id="_439B3DEA-EA34-482B-A6CB-79E994E70DDF" FormatString="{1}" ReferenceModeType="General" />
+			<orm:ReferenceModeKind id="_37E68D8B-E280-44CB-9CCB-24594D519208" FormatString="{0}_{1}" ReferenceModeType="Popular" />
+			<orm:ReferenceModeKind id="_248043B3-6904-40B2-85CF-8A0A7EFD3C21" FormatString="{1}Value" ReferenceModeType="UnitBased" />
+		</orm:ReferenceModeKinds>
+	</orm:ORMModel>
+	<ormDiagram:ORMDiagram id="_B8D670EF-B823-4441-AA87-13315E7C2B1E" IsCompleteView="false" Name="EmptyModel" BaseFontName="Tahoma" BaseFontSize="0.0972222238779068">
+		<ormDiagram:Subject ref="_7F7193A8-D8DD-42EA-8E55-1EFF1D3E4877" />
+	</ormDiagram:ORMDiagram>
+</ormRoot:ORM2>

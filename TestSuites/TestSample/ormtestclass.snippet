@@ -1,0 +1,61 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<CodeSnippets  xmlns="http://schemas.microsoft.com/VisualStudio/2005/CodeSnippet">
+	<CodeSnippet Format="1.0.0">
+		<Header>
+			<Title>ormtestclass</Title>
+			<Shortcut>ormtestclass</Shortcut>
+			<Description>Code snippet for ormtestclass</Description>
+			<Author>Neumont ORM Architect for Visual Studio</Author>
+			<SnippetTypes>
+				<SnippetType>Expansion</SnippetType>
+				<SnippetType>SurroundsWith</SnippetType>
+			</SnippetTypes>
+		</Header>
+		<Snippet>
+			<Declarations>
+				<Literal>
+					<ID>name</ID>
+					<ToolTip>Class name</ToolTip>
+					<Default>MyClass</Default>
+				</Literal>
+        <Literal>
+          <ID>namespace</ID>
+          <ToolTip>Namespace name</ToolTip>
+          <Default>MyTestScenarios</Default>
+        </Literal>
+			</Declarations>
+			<Code Language="csharp">
+        <![CDATA[using System;
+        using System.Collections.Generic;
+        using System.Reflection;
+        using Neumont.Tools.ORM.SDK.TestEngine;
+        using Neumont.Tools.ORM.ObjectModel;
+        using Microsoft.VisualStudio.Modeling;
+        using NUnit.Framework;
+        using NUnitCategory = NUnit.Framework.CategoryAttribute;
+        using Neumont.Tools.ORMAbstraction;
+        using Neumont.Tools.RelationalModels.ConceptualDatabase;
+        namespace TestSample.$namespace$
+        {
+            [ORMTestFixture]
+            [TestFixture(Description = "Test Oial Generation")]
+            public class $name$
+	          {
+		            #region Boilerplate code
+                private IORMToolServices myServices;
+                private IORMToolTestServices myTestServices;
+                public $name$(IORMToolServices services)
+                {
+                    myServices = services;
+                    myTestServices = (IORMToolTestServices)services.ServiceProvider.GetService(typeof(IORMToolTestServices));
+                }
+                public $name$() : this(Suite.CreateServices()) { }
+                #endregion // Boilerplate code
+                
+                $selected$$end$
+	          }
+        }]]>
+			</Code>
+		</Snippet>
+	</CodeSnippet>
+</CodeSnippets>

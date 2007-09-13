@@ -9,7 +9,7 @@ namespace Neumont.Tools.ORM.SDK.TestEngine
 	/// <summary>
 	/// Interface for services offered by the testing engine.
 	/// An implementation of this interface can be retrieved
-	/// from the IORMToolServices.ServiceProvide.GetService method
+	/// from the IORMToolServices.ServiceProvider.GetService method
 	/// for the IORMToolServices passed to the testclass constructor.
 	/// </summary>
 	public interface IORMToolTestServices
@@ -29,8 +29,9 @@ namespace Neumont.Tools.ORM.SDK.TestEngine
 		/// stream cannot be found, then a new Store is created and
 		/// the default 'ORM Model File' template is loaded into the
 		/// store.</param>
+		/// <param name="extensions">An optional list of <see cref="SuiteExtension"/>s to support with the load.</param>
 		/// <returns>Newly created store with the file loaded into it.</returns>
-		Store Load(MethodInfo testMethod, string referenceName);
+		Store Load(MethodInfo testMethod, string referenceName, IList<SuiteExtension> extensions);
 		/// <summary>
 		/// Compare an .orm file to the current contents of the
 		/// specified store. This involves saving the current

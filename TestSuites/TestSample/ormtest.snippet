@@ -1,0 +1,50 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<CodeSnippets  xmlns="http://schemas.microsoft.com/VisualStudio/2005/CodeSnippet">
+	<CodeSnippet Format="1.0.0">
+		<Header>
+			<Title>ormtest</Title>
+			<Shortcut>ormtest</Shortcut>
+			<Description>Code snippet for ormtest</Description>
+			<Author>Neumont ORM Architect for Visual Studio</Author>
+			<SnippetTypes>
+				<SnippetType>Expansion</SnippetType>
+				<SnippetType>SurroundsWith</SnippetType>
+			</SnippetTypes>
+		</Header>
+		<Snippet>
+			<Declarations>
+				<Literal>
+					<ID>category</ID>
+					<ToolTip>Test category name</ToolTip>
+					<Default>MyTests</Default>
+				</Literal>
+        <Literal>
+          <ID>testname</ID>
+          <ToolTip>Test name</ToolTip>
+          <Default>NewTest</Default>
+        </Literal>
+        <Literal>
+          <ID>description</ID>
+          <ToolTip>Description for the test case</ToolTip>
+          <Default>Sample description for the test case.</Default>
+        </Literal>
+			</Declarations>
+			<Code Language="csharp">
+        <![CDATA[[Test(Description = "$description$")]
+        [NUnitCategory("$category$")]
+        public void $testname$()
+        {
+            Suite.RunNUnitTest(this, myTestServices);
+        }
+        [ORMTest("$category$")]
+        public void $testname$(Store store)
+        {
+            myTestServices.LogValidationErrors("Before scenario");
+
+            myTestServices.LogValidationErrors("After scenario");
+        }
+]]>
+			</Code>
+		</Snippet>
+	</CodeSnippet>
+</CodeSnippets>

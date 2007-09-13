@@ -65,6 +65,67 @@ namespace Neumont.Tools.ORM.SDK.TestEngine
 		}
 	}
 	#endregion // SuiteCategory structure
+	#region SuiteExtension structure
+	/// <summary>
+	/// A structure holding the fully qualified 
+	/// domain model extension type as well 
+	/// as the location to the assembly and 
+	/// a reference to the resolved assembly.
+	/// </summary>
+	public struct SuiteExtension
+	{
+		private string myDomainType;
+		private Assembly myAssembly;
+		private string myLocation;
+		/// <summary>
+		/// Creates a SuiteExtension structure.
+		/// </summary>
+		/// <param name="location">The relative path from the 
+		/// suite file to the assembly location.</param>
+		/// <param name="assembly">The resolved assembly, or 
+		/// null if the assembly could not be loaded.</param>
+		/// <param name="domainType">The fully qualified domain model 
+		/// named type associated with the extension.</param>
+		public SuiteExtension(string location, Assembly assembly, string domainType)
+		{
+			myLocation = location;
+			myAssembly = assembly;
+			myDomainType = domainType;
+		}
+		/// <summary>
+		/// The relative path from
+		/// the suite file to the assembly location
+		/// </summary>
+		public string Location
+		{
+			get
+			{
+				return myLocation;
+			}
+		}
+		/// <summary>
+		/// The resolved assembly, or
+		/// null if the assembly could not be loaded
+		/// </summary>
+		public Assembly Assembly
+		{
+			get
+			{
+				return myAssembly;
+			}
+		}
+		/// <summary>
+		/// The fully qualified name of the domain model type.
+		/// </summary>
+		public string DomainType
+		{
+			get
+			{
+				return myDomainType;
+			}
+		}
+	}
+	#endregion
 	#region SuiteAssembly structure
 	/// <summary>
 	/// A structure holding the relative location
@@ -122,17 +183,20 @@ namespace Neumont.Tools.ORM.SDK.TestEngine
 		private string myName;
 		private IList<SuiteAssembly> myAssemblies;
 		private IList<SuiteCategory> myCategories;
+		private IList<SuiteExtension> myExtensions;
 		/// <summary>
 		/// Suite constructor
 		/// </summary>
 		/// <param name="name">The suite name</param>
 		/// <param name="assemblies">A list of assemblies to search for test classes</param>
 		/// <param name="categories">An (optional) list of categories to include/exclude</param>
-		public Suite(string name, IList<SuiteAssembly> assemblies, IList<SuiteCategory> categories)
+		/// <param name="extensions">An (optional) list of enabled extensions</param>
+		public Suite(string name, IList<SuiteAssembly> assemblies, IList<SuiteCategory> categories, IList<SuiteExtension> extensions)
 		{
 			myName = name;
 			myAssemblies = assemblies;
 			myCategories = categories;
+			myExtensions = extensions;
 		}
 		/// <summary>
 		/// The suite name
@@ -162,6 +226,16 @@ namespace Neumont.Tools.ORM.SDK.TestEngine
 			get
 			{
 				return myCategories;
+			}
+		}
+		/// <summary>
+		/// A list of assemblies to load in the domain model.
+		/// </summary>
+		public IList<SuiteExtension> Extensions
+		{
+			get
+			{
+				return myExtensions;
 			}
 		}
 		#endregion // Instance data and accessors
@@ -225,11 +299,15 @@ namespace Neumont.Tools.ORM.SDK.TestEngine
 			public const string SuiteElement = "Suite";
 			public const string TestAssembliesElement = "TestAssemblies";
 			public const string TestAssemblyElement = "TestAssembly";
+			public const string ExtensionsElement = "Extensions";
+			public const string ExtensionElement = "Extension";
 			public const string CategoriesElement = "Categories";
 			public const string ExcludeCategoryElement = "ExcludeCategory";
 			public const string IncludeCategoryElement = "IncludeCategory";
 			public const string LocationAttribute = "location";
 			public const string NameAttribute = "name";
+			public const string PathAttribute = "path";
+			public const string DomainAttribute = "domain";
 			#endregion // String Constants
 			#region Static properties
 			private static SuiteLoaderNameTable myNames;
@@ -286,11 +364,15 @@ namespace Neumont.Tools.ORM.SDK.TestEngine
 			public readonly string SuiteElement;
 			public readonly string TestAssembliesElement;
 			public readonly string TestAssemblyElement;
+			public readonly string ExtensionsElement;
+			public readonly string ExtensionElement;
 			public readonly string CategoriesElement;
 			public readonly string ExcludeCategoryElement;
 			public readonly string IncludeCategoryElement;
 			public readonly string LocationAttribute;
 			public readonly string NameAttribute;
+			public readonly string PathAttribute;
+			public readonly string DomainAttribute;
 			public SuiteLoaderNameTable()
 				: base()
 			{
@@ -299,11 +381,15 @@ namespace Neumont.Tools.ORM.SDK.TestEngine
 				SuiteElement = Add(SuiteLoaderSchema.SuiteElement);
 				TestAssembliesElement = Add(SuiteLoaderSchema.TestAssembliesElement);
 				TestAssemblyElement = Add(SuiteLoaderSchema.TestAssemblyElement);
+				ExtensionsElement = Add(SuiteLoaderSchema.ExtensionsElement);
+				ExtensionElement = Add(SuiteLoaderSchema.ExtensionElement);
 				CategoriesElement = Add(SuiteLoaderSchema.CategoriesElement);
 				ExcludeCategoryElement = Add(SuiteLoaderSchema.ExcludeCategoryElement);
 				IncludeCategoryElement = Add(SuiteLoaderSchema.IncludeCategoryElement);
 				LocationAttribute = Add(SuiteLoaderSchema.LocationAttribute);
 				NameAttribute = Add(SuiteLoaderSchema.NameAttribute);
+				PathAttribute = Add(SuiteLoaderSchema.PathAttribute);
+				DomainAttribute = Add(SuiteLoaderSchema.DomainAttribute);
 			}
 		}
 		#endregion // SuiteLoaderNameTable class
@@ -344,6 +430,7 @@ namespace Neumont.Tools.ORM.SDK.TestEngine
 											string suiteName = reader.GetAttribute(names.NameAttribute);
 											IList<SuiteAssembly> assemblies = null;
 											IList<SuiteCategory> categories = null;
+											IList<SuiteExtension> extensions = null;
 											if (!reader.IsEmptyElement)
 											{
 												while (reader.Read())
@@ -354,11 +441,16 @@ namespace Neumont.Tools.ORM.SDK.TestEngine
 														string localName = reader.LocalName;
 														if (TestElementName(localName, names.TestAssembliesElement))
 														{
-															assemblies = ProcessTestAssemblies(reader, names, baseDirectory);
+															assemblies = ProcessAssemblies<SuiteAssembly>(reader, names, baseDirectory, names.TestAssemblyElement);
 														}
 														else if (TestElementName(localName, names.CategoriesElement))
 														{
 															categories = ProcessCategories(reader, names);
+														}
+														else if (TestElementName(localName, names.ExtensionsElement))
+														{
+															string path = reader.GetAttribute(names.PathAttribute);
+															extensions = ProcessAssemblies<SuiteExtension>(reader, names, path, names.ExtensionElement);
 														}
 														else
 														{
@@ -376,7 +468,7 @@ namespace Neumont.Tools.ORM.SDK.TestEngine
 											{
 												retVal = new List<Suite>();
 											}
-											retVal.Add(new Suite(suiteName, assemblies, categories));
+											retVal.Add(new Suite(suiteName, assemblies, categories, extensions));
 										}
 										else if (nodeType1 == XmlNodeType.EndElement)
 										{
@@ -391,26 +483,26 @@ namespace Neumont.Tools.ORM.SDK.TestEngine
 			}
 			return retVal;
 		}
-		private static IList<SuiteAssembly> ProcessTestAssemblies(XmlReader reader, SuiteLoaderNameTable names, string baseDirectory)
+		private static IList<T> ProcessAssemblies<T>(XmlReader reader, SuiteLoaderNameTable names, string baseDirectory, string elementName)
 		{
 			if (reader.IsEmptyElement)
 			{
 				return null;
 			}
-			List<SuiteAssembly> retVal = null;
+			List<T> retVal = null;
 			while (reader.Read())
 			{
 				XmlNodeType nodeType = reader.NodeType;
 				if (nodeType == XmlNodeType.Element)
 				{
 					string localName = reader.LocalName;
-					if (TestElementName(localName, names.TestAssemblyElement))
+					if (TestElementName(localName, elementName))
 					{
 						if (retVal == null)
 						{
-							retVal = new List<SuiteAssembly>();
+							retVal = new List<T>();
 						}
-						retVal.Add(ProcessTestAssembly(reader, names, baseDirectory));
+						retVal.Add(ProcessAssembly<T>(reader, names, baseDirectory));
 					}
 					else
 					{
@@ -425,10 +517,12 @@ namespace Neumont.Tools.ORM.SDK.TestEngine
 			}
 			return retVal;
 		}
-		private static SuiteAssembly ProcessTestAssembly(XmlReader reader, SuiteLoaderNameTable names, string baseDirectory)
+		private static T ProcessAssembly<T>(XmlReader reader, SuiteLoaderNameTable names, string baseDirectory)
 		{
 			Assembly retVal = null;
 			string location = reader.GetAttribute(names.LocationAttribute);
+			string domain = reader.GetAttribute(names.DomainAttribute);
+			baseDirectory = Environment.ExpandEnvironmentVariables(baseDirectory);
 			string fullAssemblyPath = string.Concat(baseDirectory, @"\", location);
 			if (File.Exists(fullAssemblyPath))
 			{
@@ -446,7 +540,16 @@ namespace Neumont.Tools.ORM.SDK.TestEngine
 			{
 				PassEndElement(reader);
 			}
-			return new SuiteAssembly(location, retVal);
+			if (typeof(T).Equals(typeof(SuiteAssembly)))
+			{
+				return (T)typeof(T).GetConstructor(new Type[2] { typeof(string), typeof(Assembly) }).Invoke(
+					new object[2] { location, retVal });
+			}
+			else
+			{
+				return (T)typeof(T).GetConstructor(new Type[3] { typeof(string), typeof(Assembly), typeof(string) }).Invoke(
+					new object[3] { location, retVal, domain });
+			}
 		}
 		private static IList<SuiteCategory> ProcessCategories(XmlReader reader, SuiteLoaderNameTable names)
 		{
@@ -643,7 +746,7 @@ namespace Neumont.Tools.ORM.SDK.TestEngine
 						return;
 					}
 				}
-				
+
 				ParameterInfo[] methodParamInfos = method.GetParameters();
 				if (!(methodParamInfos.Length == 1 && typeof(Store).IsAssignableFrom(methodParamInfos[0].ParameterType)))
 				{
@@ -661,7 +764,7 @@ namespace Neumont.Tools.ORM.SDK.TestEngine
 
 						// Populate a store. Automatically loads the starting
 						// file from the test assembly if one is provided
-						store = testServices.Load(method, null);
+						store = testServices.Load(method, null, Extensions);
 
 						// Run the method
 						methodParams[0] = store;
@@ -811,7 +914,7 @@ namespace Neumont.Tools.ORM.SDK.TestEngine
 			try
 			{
 				testServices.OpenReport();
-				store = testServices.Load(testMethod, null);
+				store = testServices.Load(testMethod, null, null);
 				testMethod.Invoke(testInstance, new object[] { store });
 			}
 			finally

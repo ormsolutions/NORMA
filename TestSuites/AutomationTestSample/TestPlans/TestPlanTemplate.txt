@@ -1,0 +1,21 @@
+Test Plan for feature for  [insert test name]:
+
+Definition of Error
+
+From Orm2Spec:
+	[Define the specification that the test plan utilizes] 
+
+Related Features
+
+	[Insert any statements needed to complete the test]
+	[Each statement should be set as a related feature]
+	[And therefore be tested in an alternate test plan]
+
+Relevant Equivalence Classes
+
+	[Define the relevent equivalence classes]:
+
+
+Test Cases
+
+	Define test scenarios for the feature test plan.
