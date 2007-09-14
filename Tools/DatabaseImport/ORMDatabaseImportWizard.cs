@@ -196,7 +196,7 @@ namespace Neumont.Tools.ORM.DatabaseImport
 				return;
 			}
 			const int OrcasMajorVersionNumber = 9;
-			const string TemplateWizardAssemblyName = "Microsoft.VisualStudio.TemplateWizard";
+			// UNDONE: See assert where this is used const string TemplateWizardAssemblyName = "Microsoft.VisualStudio.TemplateWizard";
 			const string SuppressOpeningItems = "$__suppress_opening_items__$";
 
 			bool? templateWizardIsOrcasOrLater = TemplateWizardIsOrcasOrLater;

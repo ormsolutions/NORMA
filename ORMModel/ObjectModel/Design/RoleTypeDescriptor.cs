@@ -75,9 +75,23 @@ namespace Neumont.Tools.ORM.ObjectModel.Design
 		/// </summary>
 		protected override bool IsPropertyDescriptorReadOnly(ElementPropertyDescriptor propertyDescriptor)
 		{
-			if (propertyDescriptor.DomainPropertyInfo.Id == Role.ValueRangeTextDomainPropertyId)
+			Guid propertyId = propertyDescriptor.DomainPropertyInfo.Id;
+			if (propertyId == Role.ValueRangeTextDomainPropertyId)
 			{
 				return !ModelElement.IsValueRole;
+			}
+			else if (propertyId == Role.IsMandatoryDomainPropertyId ||
+				propertyId == Role.RolePlayerDisplayDomainPropertyId ||
+				propertyId == Role.MandatoryConstraintModalityDomainPropertyId ||
+				propertyId == Role.MultiplicityDomainPropertyId)
+			{
+				Role role = ModelElement;
+				if (role is SubtypeMetaRole ||
+					role is SupertypeMetaRole ||
+					null != role.FactType.UnaryRole)
+				{
+					return true;
+				}
 			}
 			return base.IsPropertyDescriptorReadOnly(propertyDescriptor);
 		}
