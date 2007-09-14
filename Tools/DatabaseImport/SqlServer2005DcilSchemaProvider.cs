@@ -143,15 +143,12 @@ namespace Neumont.Tools.ORM.DatabaseImport
 				_conn.Open();
 				IDbCommand cmd = _conn.CreateCommand();
 				cmd.CommandType = CommandType.Text;
-				string commandText = "SELECT COLUMN_NAME, IS_NULLABLE, COLUMNPROPERTY(OBJECT_ID(TABLE_NAME), COLUMN_NAME, 'IsIdentity') IS_IDENTITY, DATA_TYPE, CHARACTER_MAXIMUM_LENGTH, COALESCE(NUMERIC_PRECISION, DATETIME_PRECISION), NUMERIC_SCALE FROM INFORMATION_SCHEMA.COLUMNS WHERE COLUMN_NAME IS NOT NULL";
-				if (!String.IsNullOrEmpty(schemaName))
-				{
-					commandText += " AND TABLE_SCHEMA = '" + schemaName + "'";
-				}
-				if (!String.IsNullOrEmpty(tableName))
-				{
-					commandText += " AND TABLE_NAME = '" + tableName + "'";
-				}
+				bool haveSchema = !string.IsNullOrEmpty(schemaName);
+				string commandText = "SELECT COLUMN_NAME, IS_NULLABLE, COLUMNPROPERTY(OBJECT_ID(" +
+					(haveSchema ? "TABLE_SCHEMA + '.' + " : "") +
+					"TABLE_NAME), COLUMN_NAME, 'IsIdentity') IS_IDENTITY, DATA_TYPE, CHARACTER_MAXIMUM_LENGTH, COALESCE(NUMERIC_PRECISION, DATETIME_PRECISION), NUMERIC_SCALE FROM INFORMATION_SCHEMA.COLUMNS WHERE COLUMN_NAME IS NOT NULL" +
+					(haveSchema ? " AND TABLE_SCHEMA = '" + schemaName + "'" : "") +
+					" AND TABLE_NAME = '" + tableName + "'";
 				cmd.CommandText = commandText;
                 using (IDataReader reader = cmd.ExecuteReader(CommandBehavior.Default))
                 {

@@ -106,6 +106,14 @@
 		<value>../../Resources/ORM.ico;System.Drawing.Icon, System.Drawing, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
 		<comment>PackageResources.Id.ORMFileIcon</comment>
 	</data>
+	<data name="112">
+		<value>Object-Role Modeling (DB Import)</value>
+		<comment>PackageResources.Id.ORMFileDBImportDisplayName</comment>
+	</data>
+	<data name="113">
+		<value>Object-Role Modeling File for Neumont ORM Architect (Reverse Engineer from Database)</value>
+		<comment>PackageResources.Id.ORMFileDBImportDescription</comment>
+	</data>
 	<data name="125" type="System.Resources.ResXFileRef, System.Windows.Forms">
 		<value>../../Resources/ToolWindowIcons.bmp;System.Drawing.Bitmap, System.Drawing, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
 		<comment>PackageResources.Id.ToolWindowIcons and IDB_TOOLWINDOWICONS</comment>

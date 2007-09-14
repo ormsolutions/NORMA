@@ -37,6 +37,7 @@ namespace Neumont.Tools.ORM.Shell
 	// Given that we can't make a non-nested class 'private', 'internal' is at least better than 'public'.
 	internal sealed class ORMGeneralTemplateWizard : IWizard
 	{
+		// This code is duplicated in Tools/DatabaseImport/ORMDatabaseImportWizard.cs (ORMDatabaseImportGeneralProjectWizard class)
 		private static bool? TemplateWizardIsOrcasOrLater;
 
 		/// <summary>

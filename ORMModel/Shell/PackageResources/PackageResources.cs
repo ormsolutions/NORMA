@@ -21,6 +21,11 @@ namespace Neumont.Tools.ORM.Shell
 			public const int AboutBoxIcon = 110;
 			public const int ORMFileIcon = 111;
 
+			// Favor for the DatabaseImport project, the resources
+			// need to be in a package.
+			// public const int ORMFileDBImportDisplayName = 112;
+			// public const int ORMFileDBImportDescription = 113;
+
 			public const int ToolWindowIcons = 125;
 
 			public const int PackageLoadKey = 150;
