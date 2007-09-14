@@ -101,7 +101,7 @@
 	<!--Each ORM ValueType maps to an owl:DatatypeProperty-->
 	<owl:DatatypeProperty rdf:ID="BlogEntry_Id">
 		<rdfs:domain rdf:resource="#BlogEntry" />
-		<rdfs:range rdf:resource="xs:decimalNumber" />
+		<rdfs:range />
 	</owl:DatatypeProperty>
 	<owl:DatatypeProperty rdf:ID="EntryTitle">
 		<rdfs:domain rdf:resource="#BlogEntry" />

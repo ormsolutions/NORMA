@@ -8,6 +8,7 @@ class PersonDrivesCarBase extends Entity {
 	}
 	public function addValidationRules() {
 		$this->validationRules->addValidationRule(new RequiredFieldValidator("DrivesCar_vin"));
+		$this->validationRules->addValidationRule(new ValueRangeValidator("vin", 0, ValueRangeValidatorClusivity::$inclusive, 4294967295, ValueRangeValidatorClusivity::$inclusive));
 	}
 	public function setDrivenByPerson(Person $value) {
 		$this->PersonDrivesCar_DrivenByPerson_Person_Proxy->Set($value);
@@ -95,9 +96,11 @@ class PersonBase extends Entity {
 		$this->validationRules->addValidationRule(new RequiredFieldValidator("OptionalUniqueString"));
 		$this->validationRules->addValidationRule(new StringLenthValidator("OptionalUniqueString", 11, 11));
 		$this->validationRules->addValidationRule(new RequiredFieldValidator("HatType_ColorARGB"));
+		$this->validationRules->addValidationRule(new ValueRangeValidator("ColorARGB", -2147483648, ValueRangeValidatorClusivity::$inclusive, 2147483647, ValueRangeValidatorClusivity::$inclusive));
 		$this->validationRules->addValidationRule(new RequiredFieldValidator("HatType_HatTypeStyle_HatTypeStyle_Description"));
 		$this->validationRules->addValidationRule(new StringLenthValidator("HatTypeStyle_Description", null, 256));
 		$this->validationRules->addValidationRule(new RequiredFieldValidator("OwnsCar_vin"));
+		$this->validationRules->addValidationRule(new ValueRangeValidator("vin", 0, ValueRangeValidatorClusivity::$inclusive, 4294967295, ValueRangeValidatorClusivity::$inclusive));
 		$this->validationRules->addValidationRule(new RequiredFieldValidator("Gender_Gender_Code"));
 		$this->validationRules->addValidationRule(new StringLenthValidator("Gender_Code", 1, 1));
 		$this->validationRules->addValidationRule(new RequiredFieldValidator("hasParents"));
@@ -300,6 +303,7 @@ class ChildPersonBase extends Entity {
 	}
 	public function addValidationRules() {
 		$this->validationRules->addValidationRule(new RequiredFieldValidator("BirthOrder_BirthOrder_Nr"));
+		$this->validationRules->addValidationRule(new ValueRangeValidator("BirthOrder_Nr", 0, ValueRangeValidatorClusivity::$inclusive, 4294967295, ValueRangeValidatorClusivity::$inclusive));
 	}
 	public function getPerson() {
 		return $this->Person;
@@ -516,6 +520,7 @@ class ValueType1Base extends Entity {
 	}
 	public function addValidationRules() {
 		$this->validationRules->addValidationRule(new RequiredFieldValidator("ValueType1Value"));
+		$this->validationRules->addValidationRule(new ValueRangeValidator("ValueType1", -2147483648, ValueRangeValidatorClusivity::$inclusive, 2147483647, ValueRangeValidatorClusivity::$inclusive));
 	}
 	public function getValueType1Value() {
 		return $this->ValueType1Value;
@@ -549,6 +554,7 @@ class PersonBoughtCarFromPersonOnDateBase extends Entity {
 	}
 	public function addValidationRules() {
 		$this->validationRules->addValidationRule(new RequiredFieldValidator("CarSold_vin"));
+		$this->validationRules->addValidationRule(new ValueRangeValidator("vin", 0, ValueRangeValidatorClusivity::$inclusive, 4294967295, ValueRangeValidatorClusivity::$inclusive));
 		$this->validationRules->addValidationRule(new RequiredFieldValidator("SaleDate_YMD"));
 	}
 	public function setBuyer(Person $value) {
@@ -592,7 +598,9 @@ class ReviewBase extends Entity {
 	}
 	public function addValidationRules() {
 		$this->validationRules->addValidationRule(new RequiredFieldValidator("Car_vin"));
+		$this->validationRules->addValidationRule(new ValueRangeValidator("vin", 0, ValueRangeValidatorClusivity::$inclusive, 4294967295, ValueRangeValidatorClusivity::$inclusive));
 		$this->validationRules->addValidationRule(new RequiredFieldValidator("Rating_Nr_Integer"));
+		$this->validationRules->addValidationRule(new ValueRangeValidator("Integer", 0, ValueRangeValidatorClusivity::$inclusive, 4294967295, ValueRangeValidatorClusivity::$inclusive));
 		$this->validationRules->addValidationRule(new ValueRangeValidator("Integer", 1, ValueRangeValidatorClusivity::$inclusive, 7, ValueRangeValidatorClusivity::$inclusive));
 		$this->validationRules->addValidationRule(new ValueRangeValidator("Integer", 14, ValueRangeValidatorClusivity::$inclusive, 16, ValueRangeValidatorClusivity::$inclusive));
 		$this->validationRules->addValidationRule(new ValueRangeValidator("Integer", 18, ValueRangeValidatorClusivity::$inclusive, null, ValueRangeValidatorClusivity::$));

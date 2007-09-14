@@ -18,6 +18,20 @@
 			<xs:maxLength value="11" />
 		</xs:restriction>
 	</xs:simpleType>
+	<xs:simpleType name="ColorARGB">
+		<xs:restriction base="xs:decimal">
+			<xs:fractionDigits value="0" />
+			<xs:minInclusive value="-2147483648" />
+			<xs:maxInclusive value="2147483647" />
+		</xs:restriction>
+	</xs:simpleType>
+	<xs:simpleType name="vin">
+		<xs:restriction base="xs:decimal">
+			<xs:fractionDigits value="0" />
+			<xs:minInclusive value="0" />
+			<xs:maxInclusive value="4294967295" />
+		</xs:restriction>
+	</xs:simpleType>
 	<xs:simpleType name="Name">
 		<xs:restriction base="xs:string">
 			<xs:maxLength value="64" />
@@ -26,6 +40,8 @@
 	<xs:simpleType name="Integer">
 		<xs:restriction base="xs:decimal">
 			<xs:fractionDigits value="0" />
+			<xs:minInclusive value="0" />
+			<xs:maxInclusive value="4294967295" />
 			<xs:minInclusive value="1" />
 			<xs:maxInclusive value="7" />
 			<xs:minInclusive value="14" />
@@ -38,6 +54,13 @@
 			<xs:maxLength value="64" />
 		</xs:restriction>
 	</xs:simpleType>
+	<xs:simpleType name="ValueType1">
+		<xs:restriction base="xs:decimal">
+			<xs:fractionDigits value="0" />
+			<xs:minInclusive value="-2147483648" />
+			<xs:maxInclusive value="2147483647" />
+		</xs:restriction>
+	</xs:simpleType>
 	<xs:simpleType name="DeathCause_Type">
 		<xs:restriction base="xs:string">
 			<xs:maxLength value="14" />
@@ -48,6 +71,13 @@
 	<xs:simpleType name="HatTypeStyle_Description">
 		<xs:restriction base="xs:string">
 			<xs:maxLength value="256" />
+		</xs:restriction>
+	</xs:simpleType>
+	<xs:simpleType name="BirthOrder_Nr">
+		<xs:restriction base="xs:decimal">
+			<xs:fractionDigits value="0" />
+			<xs:minInclusive value="0" />
+			<xs:maxInclusive value="4294967295" />
 		</xs:restriction>
 	</xs:simpleType>
 	<xs:simpleType name="Gender_Code">
@@ -78,7 +108,7 @@
 	</xs:simpleType>
 	<!--Each ORM EntityType and it's Preferred Id or top level ValueType-->
 	<xs:complexType name="PersonDrivesCarIdentifier">
-		<xs:attribute name="DrivesCar_vin" use="required" type="xs:integer" />
+		<xs:attribute name="DrivesCar_vin" use="required" type="oxs:vin" />
 		<xs:attribute name="Person_id" use="required" type="xs:integer" />
 	</xs:complexType>
 	<xs:complexType name="PersonHasNickNameIdentifier">
@@ -91,7 +121,7 @@
 	<xs:complexType name="MalePersonIdentifier" />
 	<xs:complexType name="FemalePersonIdentifier" />
 	<xs:complexType name="ChildPersonIdentifier">
-		<xs:attribute name="BirthOrder_BirthOrder_Nr" use="required" type="xs:integer" />
+		<xs:attribute name="BirthOrder_BirthOrder_Nr" use="required" type="oxs:BirthOrder_Nr" />
 	</xs:complexType>
 	<xs:complexType name="DeathIdentifier" />
 	<xs:complexType name="NaturalDeathIdentifier" />
@@ -100,15 +130,15 @@
 		<xs:attribute name="Task_id" use="required" type="xs:integer" />
 	</xs:complexType>
 	<xs:complexType name="ValueType1Identifier">
-		<xs:attribute name="ValueType1Value" use="required" type="xs:integer" />
+		<xs:attribute name="ValueType1Value" use="required" type="oxs:ValueType1" />
 	</xs:complexType>
 	<xs:complexType name="PersonBoughtCarFromPersonOnDateIdentifier">
 		<xs:attribute name="Person_id" use="required" type="xs:integer" />
-		<xs:attribute name="CarSold_vin" use="required" type="xs:integer" />
+		<xs:attribute name="CarSold_vin" use="required" type="oxs:vin" />
 		<xs:attribute name="Person_id" use="required" type="xs:integer" />
 	</xs:complexType>
 	<xs:complexType name="ReviewIdentifier">
-		<xs:attribute name="Car_vin" use="required" type="xs:integer" />
+		<xs:attribute name="Car_vin" use="required" type="oxs:vin" />
 		<xs:attribute name="Criterion_Name" use="required" type="oxs:Name" />
 	</xs:complexType>
 	<!--Each ORM Major Object Type grouping-->
@@ -118,7 +148,7 @@
 				<xs:sequence>
 					<xs:element name="DrivenByPerson" type="oxs:PersonIdentifier" />
 				</xs:sequence>
-				<xs:attribute name="vin" type="xs:integer" use="required" />
+				<xs:attribute name="vin" type="oxs:vin" use="required" />
 			</xs:extension>
 		</xs:complexContent>
 	</xs:complexType>
@@ -161,9 +191,9 @@
 				<xs:attribute name="YMD" type="xs:integer" use="required" />
 				<xs:attribute name="LastName" type="oxs:LastName" use="required" />
 				<xs:attribute name="OptionalUniqueString" type="oxs:OptionalUniqueString" use="optional" />
-				<xs:attribute name="ColorARGB" type="xs:integer" use="optional" />
+				<xs:attribute name="ColorARGB" type="oxs:ColorARGB" use="optional" />
 				<xs:attribute name="HatTypeStyle_Description" type="oxs:HatTypeStyle_Description" use="optional" />
-				<xs:attribute name="vin" type="xs:integer" use="optional" />
+				<xs:attribute name="vin" type="oxs:vin" use="optional" />
 				<xs:attribute name="Gender_Code" type="oxs:Gender_Code" use="required" />
 				<xs:attribute name="PersonhasParents" type="xs:boolean" use="optional" />
 				<xs:attribute name="OptionalUniqueDecimal" type="oxs:OptionalUniqueDecimal" use="optional" />
@@ -197,7 +227,7 @@
 					<xs:element name="Buyer" type="oxs:PersonIdentifier" />
 					<xs:element name="Seller" type="oxs:PersonIdentifier" />
 				</xs:sequence>
-				<xs:attribute name="vin" type="xs:integer" use="required" />
+				<xs:attribute name="vin" type="oxs:vin" use="required" />
 				<xs:attribute name="YMD" type="xs:integer" use="required" />
 			</xs:extension>
 		</xs:complexContent>
@@ -206,7 +236,7 @@
 		<xs:complexContent>
 			<xs:extension base="oxs:ReviewIdentifier">
 				<xs:sequence />
-				<xs:attribute name="vin" type="xs:integer" use="required" />
+				<xs:attribute name="vin" type="oxs:vin" use="required" />
 				<xs:attribute name="Integer" type="oxs:Integer" use="required" />
 				<xs:attribute name="Name" type="oxs:Name" use="required" />
 			</xs:extension>

@@ -6,13 +6,27 @@
 		<odt:string name="FirstName" maxLength="64" />
 		<odt:string name="LastName" maxLength="64" />
 		<odt:string name="OptionalUniqueString" maxLength="11" minLength="11" />
-		<odt:decimalNumber name="ColorARGB" fractionDigits="0" />
+		<odt:decimalNumber name="ColorARGB" fractionDigits="0">
+			<odt:range>
+				<odt:lowerBound clusivity="inclusive" value="-2147483648" />
+				<odt:upperBound clusivity="inclusive" value="2147483647" />
+			</odt:range>
+		</odt:decimalNumber>
 		<odt:identity name="Task_id" />
-		<odt:decimalNumber name="vin" fractionDigits="0" />
+		<odt:decimalNumber name="vin" fractionDigits="0">
+			<odt:range>
+				<odt:lowerBound clusivity="inclusive" value="0" />
+				<odt:upperBound clusivity="inclusive" value="4294967295" />
+			</odt:range>
+		</odt:decimalNumber>
 		<!--WARNING: ORM2 does not yet support temporal data types, but you tried to transform a model that used an ORM1 temporal data type. This data type has been converted to an arbitrary-precision integer that measures the number of ticks (100 nanosecond increments) since 0000-01-01T00:00:00.-->
 		<odt:decimalNumber name="YMD" fractionDigits="0" />
 		<odt:string name="Name" maxLength="64" />
 		<odt:decimalNumber name="Integer" fractionDigits="0">
+			<odt:range>
+				<odt:lowerBound clusivity="inclusive" value="0" />
+				<odt:upperBound clusivity="inclusive" value="4294967295" />
+			</odt:range>
 			<odt:range>
 				<odt:lowerBound value="1" clusivity="inclusive" />
 				<odt:upperBound value="7" clusivity="inclusive" />
@@ -29,13 +43,23 @@
 			</odt:range>
 		</odt:decimalNumber>
 		<odt:string name="NickName" maxLength="64" />
-		<odt:decimalNumber name="ValueType1" fractionDigits="0" />
+		<odt:decimalNumber name="ValueType1" fractionDigits="0">
+			<odt:range>
+				<odt:lowerBound clusivity="inclusive" value="-2147483648" />
+				<odt:upperBound clusivity="inclusive" value="2147483647" />
+			</odt:range>
+		</odt:decimalNumber>
 		<odt:string name="DeathCause_Type" maxLength="14">
 			<odt:enumeration value="natural" />
 			<odt:enumeration value="not so natural" />
 		</odt:string>
 		<odt:string name="HatTypeStyle_Description" maxLength="256" />
-		<odt:decimalNumber name="BirthOrder_Nr" fractionDigits="0" />
+		<odt:decimalNumber name="BirthOrder_Nr" fractionDigits="0">
+			<odt:range>
+				<odt:lowerBound clusivity="inclusive" value="0" />
+				<odt:upperBound clusivity="inclusive" value="4294967295" />
+			</odt:range>
+		</odt:decimalNumber>
 		<odt:string name="Gender_Code" maxLength="1" minLength="1">
 			<odt:enumeration value="M" />
 			<odt:enumeration value="F" />
@@ -43,11 +67,11 @@
 		<odt:decimalNumber name="OptionalUniqueDecimal" totalDigits="9" />
 		<odt:decimalNumber name="MandatoryUniqueDecimal" totalDigits="9" />
 		<odt:string name="MandatoryUniqueString" maxLength="11" minLength="11" />
-		<odt:boolean name="PersonisDead" fixed="True" />
-		<odt:boolean name="NaturalDeathisFromProstateCancer" fixed="True" />
-		<odt:boolean name="UnnaturalDeathisViolent" fixed="True" />
-		<odt:boolean name="UnnaturalDeathisBloody" fixed="True" />
-		<odt:boolean name="PersonhasParents" fixed="True" />
+		<odt:boolean name="PersonisDead" />
+		<odt:boolean name="NaturalDeathisFromProstateCancer" />
+		<odt:boolean name="UnnaturalDeathisViolent" />
+		<odt:boolean name="UnnaturalDeathisBloody" />
+		<odt:boolean name="PersonhasParents" />
 	</oil:informationTypeFormats>
 	<oil:conceptType name="PersonDrivesCar" sourceRef="_72D0A608-D62A-4A03-9A14-695CE9F67496">
 		<oil:conceptTypeRef name="DrivenByPerson" target="Person" oppositeName="PersonDrivesCar" mandatory="alethic" sourceRoleRef="_5E7AEB81-DCB6-441C-82AD-EADB5354CDFE" />

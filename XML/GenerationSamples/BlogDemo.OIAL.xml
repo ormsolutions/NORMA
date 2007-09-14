@@ -2,7 +2,12 @@
 <oil:model name="BlogDemo" sourceRef="_F434295F-CF9E-4E0A-8EAC-7DBF899336FD" xmlns:oil="http://schemas.orm.net/OIAL" xmlns:odt="http://schemas.orm.net/ORMDataTypes">
 	<oil:informationTypeFormats>
 		<!--These may change in the future once they are integrated into the core ORM model file.-->
-		<odt:decimalNumber name="BlogEntry_Id" fractionDigits="0" />
+		<odt:decimalNumber name="BlogEntry_Id" fractionDigits="0">
+			<odt:range>
+				<odt:lowerBound clusivity="inclusive" value="-2147483648" />
+				<odt:upperBound clusivity="inclusive" value="2147483647" />
+			</odt:range>
+		</odt:decimalNumber>
 		<odt:string name="EntryTitle" maxLength="30" />
 		<odt:string name="EntryBody" />
 		<!--WARNING: ORM2 does not yet support temporal data types, but you tried to transform a model that used an ORM1 temporal data type. This data type has been converted to an arbitrary-precision integer that measures the number of ticks (100 nanosecond increments) since 0000-01-01T00:00:00.-->

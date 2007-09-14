@@ -43,6 +43,7 @@ class BlogEntryBase extends Entity {
 	}
 	public function addValidationRules() {
 		$this->validationRules->addValidationRule(new RequiredFieldValidator("BlogEntry_Id"));
+		$this->validationRules->addValidationRule(new ValueRangeValidator("BlogEntry_Id", -2147483648, ValueRangeValidatorClusivity::$inclusive, 2147483647, ValueRangeValidatorClusivity::$inclusive));
 		$this->validationRules->addValidationRule(new RequiredFieldValidator("entryTitle"));
 		$this->validationRules->addValidationRule(new StringLenthValidator("EntryTitle", null, 30));
 		$this->validationRules->addValidationRule(new RequiredFieldValidator("entryBody"));

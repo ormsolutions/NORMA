@@ -33,6 +33,21 @@
 	<!-- To use $OutputVerboseDebugInformation, $OutputDebugInformtion must also be set to true() -->
 	<xsl:param name="OutputVerboseDebugInformation" select="false()"/>
 
+	<xsl:param name="SmallIntegerMinValue" select="number(-32768)"/>
+	<xsl:param name="SmallIntegerMaxValue" select="number(32767)"/>
+	<xsl:param name="UnsignedSmallIntegerMinValue" select="number(0)"/>
+	<xsl:param name="UnsignedSmallIntegerMaxValue" select="number(65535)"/>
+	<xsl:param name="IntegerMinValue" select="number(-2147483648)"/>
+	<xsl:param name="IntegerMaxValue" select="number(2147483647)"/>
+	<xsl:param name="UnsignedIntegerMinValue" select="number(0)"/>
+	<xsl:param name="UnsignedIntegerMaxValue" select="number(4294967295)"/>
+	<xsl:param name="LargeIntegerMinValue" select="number(-9223372036854775808)"/>
+	<xsl:param name="LargeIntegerMaxValue" select="number(9223372036854775807)"/>
+	<xsl:param name="UnsignedLargeIntegerMinValue" select="number(0)"/>
+	<xsl:param name="UnsignedLargeIntegerMaxValue" select="number(18446744073709551615)"/>
+	<xsl:param name="SingleFloatingPointPrecision" select="number(24)"/>
+	<xsl:param name="DoubleFloatingPointPrecision" select="number(53)"/>
+
 	<xsl:template match="ormRoot:ORM2">
 		<xsl:apply-templates select="orm:ORMModel"/>
 	</xsl:template>
@@ -314,11 +329,11 @@
 		<!-- All direct and inherited roles that are played by the supertype(s) of this object type. -->
 		<xsl:variable name="inheritedPlayedRolesFragment">
 			<xsl:for-each select="$Model/orm:Objects/child::*[@id=$subtypeMetaFacts/orm:FactRoles/orm:SupertypeMetaRole/orm:RolePlayer/@ref]">
-					<xsl:call-template name="GetObjectTypeInformation">
-						<xsl:with-param name="Model" select="$Model"/>
-						<xsl:with-param name="AlethicSingleRoleMandatoryConstraints" select="$AlethicSingleRoleMandatoryConstraints"/>
-						<xsl:with-param name="AlethicSingleRoleUniquenessConstraints" select="$AlethicSingleRoleUniquenessConstraints"/>
-					</xsl:call-template>
+				<xsl:call-template name="GetObjectTypeInformation">
+					<xsl:with-param name="Model" select="$Model"/>
+					<xsl:with-param name="AlethicSingleRoleMandatoryConstraints" select="$AlethicSingleRoleMandatoryConstraints"/>
+					<xsl:with-param name="AlethicSingleRoleUniquenessConstraints" select="$AlethicSingleRoleUniquenessConstraints"/>
+				</xsl:call-template>
 			</xsl:for-each>
 		</xsl:variable>
 		<xsl:variable name="inheritedPlayedRoles" select="exsl:node-set($inheritedPlayedRolesFragment)/child::directAndInheritedPlayedRoles/child::*"/>
@@ -354,19 +369,19 @@
 
 		<!-- $directPlayedRoles that are alethicly mandatory -->
 		<xsl:variable name="mandatoryDirectPlayedRoles" select="$directPlayedRoles[@ref=$AlethicSingleRoleMandatoryConstraints/orm:RoleSequence/child::*/@ref]"/>
-		
+
 		<!-- $directFacts that are alethicly mandatory -->
 		<xsl:variable name="mandatoryDirectFacts" select="$directFacts[orm:FactRoles/child::*/@id=$mandatoryDirectPlayedRoles/@ref]"/>
 
 		<!-- $nonPreferredIdentifierDirectFacts that are alethicly mandatory -->
 		<xsl:variable name="mandatoryNonPreferredIdentifierDirectFacts" select="$nonPreferredIdentifierDirectFacts[@id=$mandatoryDirectFacts/@id]"/>
-		
+
 		<!-- $directFacts on which this object type is functionally dependent (i.e. $directFacts containing an alethicly unique role that is also in in $directFactsOppositeRoles) -->
 		<xsl:variable name="dependentDirectFacts" select="$directFacts[orm:FactRoles/child::*[@id=$AlethicSingleRoleUniquenessConstraints/orm:RoleSequence/child::*/@ref and @id=$directFactsOppositeRoles/@id]]"/>
 
 		<!-- $directPlayedRoles that are functional for this object type -->
 		<xsl:variable name="functionalDirectPlayedRoles" select="$directPlayedRoles[@ref=$AlethicSingleRoleUniquenessConstraints/orm:RoleSequence/child::*/@ref]"/>
-		
+
 		<!-- $directFacts in which this object type plays a functional role -->
 		<xsl:variable name="functionalDirectFacts" select="$directFacts[orm:FactRoles/child::*/@id=$functionalDirectPlayedRoles/@ref]"/>
 
@@ -478,15 +493,31 @@
 			</xsl:when>
 			<xsl:when test="$modelDataType/self::orm:TrueOrFalseLogicalDataType or $modelDataType/self::orm:YesOrNoLogicalDataType">
 				<odt:boolean name="{$dataTypeName}">
-					<xsl:if test="$modelValueRanges">
+					<!-- BOOLEAN_HACK: Remove the false() on the next line to stop forcing open-world-with-negation. -->
+					<xsl:if test="false() and $modelValueRanges">
 						<xsl:attribute name="fixed">
 							<!-- This is a boolean, so there will only ever be at most one ValueRange for it, and @MinValue will always match @MaxValue -->
-							<xsl:value-of select="$modelValueRanges/@MinValue"/>
+							<xsl:choose>
+								<xsl:when test="$modelValueRanges[translate(@MinValue, 'true', 'TRUE') = 'TRUE' or translate(@MinValue, 'yes', 'YES') = 'YES' or @MinValue = 1]">
+									<xsl:value-of select="true()"/>
+								</xsl:when>
+								<xsl:when test="$modelValueRanges[translate(@MinValue, 'false', 'FALSE') = 'FALSE' or translate(@MinValue, 'no', 'NO') = 'NO' or @MinValue = 0]">
+									<xsl:value-of select="false()"/>
+								</xsl:when>
+								<xsl:when test="$EnableAssertions">
+									<xsl:message terminate="yes">
+										<xsl:text>ERROR: Unrecognized boolean constraint value "</xsl:text>
+										<xsl:value-of select="@MinValue"/>
+										<xsl:text>".</xsl:text>
+									</xsl:message>
+								</xsl:when>
+							</xsl:choose>
 						</xsl:attribute>
 					</xsl:if>
 				</odt:boolean>
 			</xsl:when>
-			<xsl:when test="$modelDataType/self::orm:SignedIntegerNumericDataType or $modelDataType/self::orm:UnsignedIntegerNumericDataType or $modelDataType/self::orm:DecimalNumericDataType or $modelDataType/self::orm:MoneyNumericDataType">
+			<xsl:when test="$modelDataType/self::orm:SignedSmallIntegerNumericDataType or $modelDataType/self::orm:UnsignedSmallIntegerNumericDataType or $modelDataType/self::orm:SignedIntegerNumericDataType or $modelDataType/self::orm:UnsignedIntegerNumericDataType or $modelDataType/self::orm:SignedLargeIntegerNumericDataType or $modelDataType/self::orm:UnsignedLargeIntegerNumericDataType or $modelDataType/self::orm:DecimalNumericDataType or $modelDataType/self::orm:MoneyNumericDataType">
+				<xsl:variable name="isIntegral" select="$modelDataType/self::orm:SignedSmallIntegerNumericDataType or $modelDataType/self::orm:UnsignedSmallIntegerNumericDataType or $modelDataType/self::orm:SignedIntegerNumericDataType or $modelDataType/self::orm:UnsignedIntegerNumericDataType or $modelDataType/self::orm:SignedLargeIntegerNumericDataType or $modelDataType/self::orm:UnsignedLargeIntegerNumericDataType"/>
 				<odt:decimalNumber name="{$dataTypeName}">
 					<xsl:if test="$length > 0">
 						<xsl:attribute name="totalDigits">
@@ -494,7 +525,7 @@
 						</xsl:attribute>
 					</xsl:if>
 					<xsl:choose>
-						<xsl:when test="$modelDataType/self::orm:SignedIntegerNumericDataType or $modelDataType/self::orm:UnsignedIntegerNumericDataType">
+						<xsl:when test="$isIntegral">
 							<xsl:attribute name="fractionDigits">
 								<xsl:value-of select="0"/>
 							</xsl:attribute>
@@ -505,12 +536,63 @@
 							</xsl:attribute>
 						</xsl:when>
 					</xsl:choose>
+					<xsl:if test="$isIntegral">
+						<odt:range>
+							<xsl:choose>
+								<xsl:when test="$modelDataType/self::orm:SignedSmallIntegerNumericDataType">
+									<odt:lowerBound clusivity="inclusive" value="{$SmallIntegerMinValue}"/>
+									<odt:upperBound clusivity="inclusive" value="{$SmallIntegerMaxValue}"/>
+								</xsl:when>
+								<xsl:when test="$modelDataType/self::orm:UnsignedSmallIntegerNumericDataType">
+									<odt:lowerBound clusivity="inclusive" value="{$UnsignedSmallIntegerMinValue}"/>
+									<odt:upperBound clusivity="inclusive" value="{$UnsignedSmallIntegerMaxValue}"/>
+								</xsl:when>
+								<xsl:when test="$modelDataType/self::orm:SignedIntegerNumericDataType">
+									<odt:lowerBound clusivity="inclusive" value="{$IntegerMinValue}"/>
+									<odt:upperBound clusivity="inclusive" value="{$IntegerMaxValue}"/>
+								</xsl:when>
+								<xsl:when test="$modelDataType/self::orm:UnsignedIntegerNumericDataType">
+									<odt:lowerBound clusivity="inclusive" value="{$UnsignedIntegerMinValue}"/>
+									<odt:upperBound clusivity="inclusive" value="{$UnsignedIntegerMaxValue}"/>
+								</xsl:when>
+								<xsl:when test="$modelDataType/self::orm:SignedLargeIntegerNumericDataType">
+									<odt:lowerBound clusivity="inclusive" value="{$LargeIntegerMinValue}"/>
+									<odt:upperBound clusivity="inclusive" value="{$LargeIntegerMaxValue}"/>
+								</xsl:when>
+								<xsl:when test="$modelDataType/self::orm:UnsignedLargeIntegerNumericDataType">
+									<odt:lowerBound clusivity="inclusive" value="{$UnsignedLargeIntegerMinValue}"/>
+									<odt:upperBound clusivity="inclusive" value="{$UnsignedLargeIntegerMaxValue}"/>
+								</xsl:when>
+							</xsl:choose>
+						</odt:range>
+					</xsl:if>
 					<xsl:apply-templates select="$modelValueRanges" mode="ProcessOrmValueRange"/>
 				</odt:decimalNumber>
 			</xsl:when>
-			<xsl:when test="$modelDataType/self::orm:FloatingPointNumericDataType">
+			<xsl:when test="$modelDataType/self::orm:FloatingPointNumericDataType or $modelDataType/self::orm:SinglePrecisionFloatingPointNumericDataType or $modelDataType/self::orm:DoublePrecisionFloatingPointNumericDataType">
 				<!-- TODO: Is the precision the $scale or the $length? -->
 				<odt:floatingPointNumber name="{$dataTypeName}" precision="{$scale}">
+					<xsl:if test="$length > 0">
+						<xsl:attribute name="precision">
+							<xsl:value-of select="$length"/>
+						</xsl:attribute>
+					</xsl:if>
+					<xsl:choose>
+						<xsl:when test="$modelDataType/self::orm:SinglePrecisionFloatingPointNumericDataType">
+							<xsl:if test="not($length) or ($length = 0) or ($length > $SingleFloatingPointPrecision)">
+								<xsl:attribute name="precision">
+									<xsl:value-of select="$SingleFloatingPointPrecision"/>
+								</xsl:attribute>
+							</xsl:if>
+						</xsl:when>
+						<xsl:when test="$modelDataType/self::orm:DoublePrecisionFloatingPointNumericDataType">
+							<xsl:if test="not($length) or ($length = 0) or ($length > $DoubleFloatingPointPrecision)">
+								<xsl:attribute name="precision">
+									<xsl:value-of select="$DoubleFloatingPointPrecision"/>
+								</xsl:attribute>
+							</xsl:if>
+						</xsl:when>
+					</xsl:choose>
 					<xsl:apply-templates select="$modelValueRanges" mode="ProcessOrmValueRange"/>
 				</odt:floatingPointNumber>
 			</xsl:when>
@@ -753,14 +835,14 @@
 			</xsl:for-each>
 
 			<!-- Process external constraints. -->
-			<xsl:for-each select="$Model/orm:Constraints/child::*[(child::orm:RoleSequences|self::*)[count(orm:RoleSequence/orm:Role)>1]/orm:RoleSequence/orm:Role/@ref=$thisObjectTypeInformation/directFactsOppositeRoles/child::*/@id]">
+			<xsl:for-each select="$Model/orm:Constraints/child::*[(child::orm:RoleSequences|self::*)[count(orm:RoleSequence/child::*)>1]/orm:RoleSequence/child::*/@ref=$thisObjectTypeInformation/directFactsOppositeRoles/child::*/@id]">
 
 				<!-- HACK: TODO: UNDONE: The code inside $roleSequences kind of works, but is largely untested and very fragile. -->
 				<xsl:variable name="roleSequencesFragment">
 					<!-- This code will probably only work when ALL of the roles in ALL of the role sequences are from facts in which the opposite role is played by this object. -->
 					<xsl:for-each select="(child::orm:RoleSequences|self::*)/orm:RoleSequence">
 						<oil:roleSequence>
-							<xsl:for-each select="orm:Role">
+							<xsl:for-each select="child::*">
 								<!-- Remember: We are looping over the roles and role sequences of an external constraint, NOT of a fact type! -->
 								<!-- HACK: A lot of these are not really needed, other than that the templates we call to process the role require them. -->
 								<xsl:variable name="fact" select="$Model/orm:Facts/orm:Fact[orm:FactRoles/child::*/@id=current()/@ref]"/>

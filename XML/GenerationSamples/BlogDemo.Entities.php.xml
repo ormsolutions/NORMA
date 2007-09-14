@@ -122,6 +122,30 @@
 						<plx:callThis name="validationRules" type="field" accessor="this" />
 					</plx:callObject>
 					<plx:passParam>
+						<plx:callNew dataTypeName="ValueRangeValidator" dataTypeQualifier="PHPEntities">
+							<plx:passParam>
+								<plx:string>BlogEntry_Id</plx:string>
+							</plx:passParam>
+							<plx:passParam>
+								<plx:value data="-2147483648" type=".i4" />
+							</plx:passParam>
+							<plx:passParam>
+								<plx:callStatic name="inclusive" type="field" dataTypeName="ValueRangeValidatorClusivity" dataTypeQualifier="PHPEntities" />
+							</plx:passParam>
+							<plx:passParam>
+								<plx:value data="2147483647" type=".i4" />
+							</plx:passParam>
+							<plx:passParam>
+								<plx:callStatic name="inclusive" type="field" dataTypeName="ValueRangeValidatorClusivity" dataTypeQualifier="PHPEntities" />
+							</plx:passParam>
+						</plx:callNew>
+					</plx:passParam>
+				</plx:callInstance>
+				<plx:callInstance name="addValidationRule">
+					<plx:callObject>
+						<plx:callThis name="validationRules" type="field" accessor="this" />
+					</plx:callObject>
+					<plx:passParam>
 						<plx:callNew dataTypeName="RequiredFieldValidator" dataTypeQualifier="PHPEntities">
 							<plx:passParam>
 								<plx:string>entryTitle</plx:string>
