@@ -2504,6 +2504,7 @@ namespace Neumont.Tools.Modeling.Shell
 				CustomSerializedRootRelationshipContainer[] rootContainers = ns.GetRootRelationshipContainers();
 				if (rootContainers != null)
 				{
+					Dictionary<ModelElement, ModelElement> linksBySource = null;
 					for (int i = 0; i < rootContainers.Length; ++i)
 					{
 						CustomSerializedRootRelationshipContainer container = rootContainers[i];
@@ -2514,32 +2515,81 @@ namespace Neumont.Tools.Modeling.Shell
 						{
 							CustomSerializedStandaloneRelationship relationship = relationships[j];
 							DomainRelationshipInfo relationshipInfo = dataDir.GetDomainClass(relationship.DomainClassId) as DomainRelationshipInfo;
-							ReadOnlyCollection<ModelElement> relationshipElements = elementDir.FindElements(relationshipInfo);
-							int elementCount = relationshipElements.Count;
-							for (int k = 0; k < elementCount; ++k)
+							ReadOnlyCollection<ModelElement> allRelationshipElements = elementDir.FindElements(relationshipInfo);
+
+							// This collection is very randomly order. To maintain order within the relationship, find
+							// all of the unique source elements and requery to get the ordered targets for that element.
+							// UNDONE: Do we want to specify if we should key off the source, target, or not at all in
+							// the serialization specs?
+							int allElementCount = allRelationshipElements.Count;
+							if (allElementCount == 0)
 							{
-								ElementLink link = relationshipElements[k] as ElementLink;
-								CustomSerializedStandaloneRelationshipRole[] roles = relationship.GetRoles();
-								if (relationship.IsPrimaryLinkElement)
+								continue;
+							}
+							if (linksBySource == null)
+							{
+								linksBySource = new Dictionary<ModelElement, ModelElement>();
+							}
+							else
+							{
+								linksBySource.Clear();
+							}
+							for (int k = 0; k < allElementCount; ++k)
+							{
+								ModelElement sourceElement = DomainRoleInfo.GetSourceRolePlayer((ElementLink)allRelationshipElements[k]);
+								if (!linksBySource.ContainsKey(sourceElement))
 								{
-									SerializeElement(file, link, new SerializeExtraAttributesCallback(delegate(XmlWriter xmlFile)
-									{
-										for (int l = 0; l < roles.Length; ++l)
-										{
-											CustomSerializedStandaloneRelationshipRole role = roles[l];
-											xmlFile.WriteAttributeString(role.AttributeName, ToXml(DomainRoleInfo.GetRolePlayer(link, role.DomainRoleId).Id));
-										}
-									}));
+									linksBySource[sourceElement] = sourceElement;
 								}
-								else
+							}
+							IList<DomainRoleInfo> roleInfos = relationshipInfo.DomainRoles;
+							DomainRoleInfo sourceRoleInfo = roleInfos[0];
+							if (!sourceRoleInfo.IsSource)
+							{
+								sourceRoleInfo = roleInfos[1];
+								Debug.Assert(sourceRoleInfo.IsSource);
+							}
+							CustomSerializedStandaloneRelationshipRole[] customRelationshipRoles = relationship.GetRoles();
+
+							// The values collection is officially randomly ordered and may change over time.
+							// Sort the elements by Id to get a stable XML file
+							ICollection<ModelElement> sourceValues = linksBySource.Values;
+							int sourceCount = sourceValues.Count;
+							if (sourceCount > 1)
+							{
+								ModelElement[] sortedSources = new ModelElement[sourceCount];
+								sourceValues.CopyTo(sortedSources, 0);
+								Array.Sort<ModelElement>(sortedSources, ModelElementGuidComparer.Instance);
+								sourceValues = sortedSources;
+							}
+							foreach (ModelElement element in sourceValues)
+							{
+								ReadOnlyCollection<ElementLink> relationshipElements = sourceRoleInfo.GetElementLinks(element);
+								int linkCount = relationshipElements.Count;
+								for (int k = 0; k < linkCount; ++k)
 								{
-									file.WriteStartElement(relationship.ElementPrefix, relationship.ElementName, relationship.ElementNamespace);
-									for (int l = 0; l < roles.Length; ++l)
+									ElementLink link = relationshipElements[k] as ElementLink;
+									if (relationship.IsPrimaryLinkElement)
 									{
-										CustomSerializedStandaloneRelationshipRole role = roles[l];
-										file.WriteAttributeString(role.AttributeName, ToXml(DomainRoleInfo.GetRolePlayer(link, role.DomainRoleId).Id));
+										SerializeElement(file, link, new SerializeExtraAttributesCallback(delegate(XmlWriter xmlFile)
+										{
+											for (int l = 0; l < customRelationshipRoles.Length; ++l)
+											{
+												CustomSerializedStandaloneRelationshipRole role = customRelationshipRoles[l];
+												xmlFile.WriteAttributeString(role.AttributeName, ToXml(DomainRoleInfo.GetRolePlayer(link, role.DomainRoleId).Id));
+											}
+										}));
 									}
-									file.WriteEndElement();
+									else
+									{
+										file.WriteStartElement(relationship.ElementPrefix, relationship.ElementName, relationship.ElementNamespace);
+										for (int l = 0; l < customRelationshipRoles.Length; ++l)
+										{
+											CustomSerializedStandaloneRelationshipRole role = customRelationshipRoles[l];
+											file.WriteAttributeString(role.AttributeName, ToXml(DomainRoleInfo.GetRolePlayer(link, role.DomainRoleId).Id));
+										}
+										file.WriteEndElement();
+									}
 								}
 							}
 						}
@@ -2553,6 +2603,25 @@ namespace Neumont.Tools.Modeling.Shell
 
 			return;
 		}
+		#region ModelElementGuidComparer class
+		/// <summary>
+		/// Helper class used to impose a reproducible order on a randomly
+		/// ordered set of model elements
+		/// </summary>
+		private class ModelElementGuidComparer : IComparer<ModelElement>
+		{
+			public static readonly IComparer<ModelElement> Instance = new ModelElementGuidComparer();
+			private ModelElementGuidComparer()
+			{
+			}
+			#region IComparer<ModelElement> Implementation
+			public int Compare(ModelElement x, ModelElement y)
+			{
+				return x.Id.CompareTo(y.Id); ;
+			}
+			#endregion // IComparer<ModelElement> Implementation
+		}
+		#endregion // ModelElementGuidComparer class
 	}
 	#endregion // Serialization Routines
 	#region Deserialization Routines
