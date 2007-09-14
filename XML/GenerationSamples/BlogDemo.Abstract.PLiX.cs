@@ -2008,7 +2008,7 @@ namespace BlogDemo
 			get
 			{
 				System.Delegate[] localEvents;
-				return (localEvents = this._events) ?? (System.Threading.Interlocked.CompareExchange<System.Delegate[]>(ref this._events, localEvents = new System.Delegate[2], null) ?? localEvents);
+				return (localEvents = this._events) ?? (System.Threading.Interlocked.CompareExchange<System.Delegate[]>(ref this._events, localEvents = new System.Delegate[4], null) ?? localEvents);
 			}
 		}
 		private static void InterlockedDelegateCombine(ref System.Delegate location, System.Delegate value)
@@ -2025,7 +2025,7 @@ namespace BlogDemo
 			{
 			}
 		}
-		public event EventHandler<PropertyChangingEventArgs<BlogLabel, string>> titleChanging
+		public event EventHandler<PropertyChangingEventArgs<BlogLabel, int>> BlogLabel_IdChanging
 		{
 			add
 			{
@@ -2043,17 +2043,17 @@ namespace BlogDemo
 				}
 			}
 		}
-		protected bool OntitleChanging(string newValue)
+		protected bool OnBlogLabel_IdChanging(int newValue)
 		{
 			System.Delegate[] events;
-			EventHandler<PropertyChangingEventArgs<BlogLabel, string>> eventHandler;
-			if (((object)(events = this._events) != null) && ((object)(eventHandler = (EventHandler<PropertyChangingEventArgs<BlogLabel, string>>)events[0]) != null))
+			EventHandler<PropertyChangingEventArgs<BlogLabel, int>> eventHandler;
+			if (((object)(events = this._events) != null) && ((object)(eventHandler = (EventHandler<PropertyChangingEventArgs<BlogLabel, int>>)events[0]) != null))
 			{
-				return EventHandlerUtility.InvokeCancelableEventHandler<PropertyChangingEventArgs<BlogLabel, string>>(eventHandler, this, new PropertyChangingEventArgs<BlogLabel, string>(this, "title", this.title, newValue));
+				return EventHandlerUtility.InvokeCancelableEventHandler<PropertyChangingEventArgs<BlogLabel, int>>(eventHandler, this, new PropertyChangingEventArgs<BlogLabel, int>(this, "BlogLabel_Id", this.BlogLabel_Id, newValue));
 			}
 			return true;
 		}
-		public event EventHandler<PropertyChangedEventArgs<BlogLabel, string>> titleChanged
+		public event EventHandler<PropertyChangedEventArgs<BlogLabel, int>> BlogLabel_IdChanged
 		{
 			add
 			{
@@ -2071,11 +2071,70 @@ namespace BlogDemo
 				}
 			}
 		}
+		protected void OnBlogLabel_IdChanged(int oldValue)
+		{
+			System.Delegate[] events;
+			EventHandler<PropertyChangedEventArgs<BlogLabel, int>> eventHandler;
+			if (((object)(events = this._events) != null) && ((object)(eventHandler = (EventHandler<PropertyChangedEventArgs<BlogLabel, int>>)events[1]) != null))
+			{
+				EventHandlerUtility.InvokeEventHandlerAsync<PropertyChangedEventArgs<BlogLabel, int>>(eventHandler, this, new PropertyChangedEventArgs<BlogLabel, int>(this, "BlogLabel_Id", oldValue, this.BlogLabel_Id), this._propertyChangedEventHandler);
+			}
+			else
+			{
+				this.OnPropertyChanged("BlogLabel_Id");
+			}
+		}
+		public event EventHandler<PropertyChangingEventArgs<BlogLabel, string>> titleChanging
+		{
+			add
+			{
+				if ((object)value != null)
+				{
+					BlogLabel.InterlockedDelegateCombine(ref this.Events[2], value);
+				}
+			}
+			remove
+			{
+				System.Delegate[] events;
+				if (((object)value != null) && ((object)(events = this._events) != null))
+				{
+					BlogLabel.InterlockedDelegateRemove(ref events[2], value);
+				}
+			}
+		}
+		protected bool OntitleChanging(string newValue)
+		{
+			System.Delegate[] events;
+			EventHandler<PropertyChangingEventArgs<BlogLabel, string>> eventHandler;
+			if (((object)(events = this._events) != null) && ((object)(eventHandler = (EventHandler<PropertyChangingEventArgs<BlogLabel, string>>)events[2]) != null))
+			{
+				return EventHandlerUtility.InvokeCancelableEventHandler<PropertyChangingEventArgs<BlogLabel, string>>(eventHandler, this, new PropertyChangingEventArgs<BlogLabel, string>(this, "title", this.title, newValue));
+			}
+			return true;
+		}
+		public event EventHandler<PropertyChangedEventArgs<BlogLabel, string>> titleChanged
+		{
+			add
+			{
+				if ((object)value != null)
+				{
+					BlogLabel.InterlockedDelegateCombine(ref this.Events[3], value);
+				}
+			}
+			remove
+			{
+				System.Delegate[] events;
+				if (((object)value != null) && ((object)(events = this._events) != null))
+				{
+					BlogLabel.InterlockedDelegateRemove(ref events[3], value);
+				}
+			}
+		}
 		protected void OntitleChanged(string oldValue)
 		{
 			System.Delegate[] events;
 			EventHandler<PropertyChangedEventArgs<BlogLabel, string>> eventHandler;
-			if (((object)(events = this._events) != null) && ((object)(eventHandler = (EventHandler<PropertyChangedEventArgs<BlogLabel, string>>)events[1]) != null))
+			if (((object)(events = this._events) != null) && ((object)(eventHandler = (EventHandler<PropertyChangedEventArgs<BlogLabel, string>>)events[3]) != null))
 			{
 				EventHandlerUtility.InvokeEventHandlerAsync<PropertyChangedEventArgs<BlogLabel, string>>(eventHandler, this, new PropertyChangedEventArgs<BlogLabel, string>(this, "title", oldValue, this.title), this._propertyChangedEventHandler);
 			}
@@ -2089,6 +2148,12 @@ namespace BlogDemo
 		public abstract BlogDemoContext Context
 		{
 			get;
+		}
+		[DataObjectField(false, false, false)]
+		public abstract int BlogLabel_Id
+		{
+			get;
+			set;
 		}
 		[DataObjectField(false, false, true)]
 		public abstract string title
@@ -2109,7 +2174,7 @@ namespace BlogDemo
 		}
 		public virtual string ToString(IFormatProvider provider)
 		{
-			return string.Format(provider, @"BlogLabel{0}{{{0}{1}title = ""{2}""{0}}}", Environment.NewLine, @"	", this.title);
+			return string.Format(provider, @"BlogLabel{0}{{{0}{1}BlogLabel_Id = ""{2}"",{0}{1}title = ""{3}""{0}}}", Environment.NewLine, @"	", this.BlogLabel_Id, this.title);
 		}
 		#endregion // BlogLabel ToString Methods
 	}
@@ -2134,6 +2199,8 @@ namespace BlogDemo
 		bool TryGetUserByExternalUniquenessConstraint1(string firstName, string lastName, out User User);
 		BlogEntry GetBlogEntryByBlogEntry_Id(int BlogEntry_Id);
 		bool TryGetBlogEntryByBlogEntry_Id(int BlogEntry_Id, out BlogEntry BlogEntry);
+		BlogLabel GetBlogLabelByBlogLabel_Id(int BlogLabel_Id);
+		bool TryGetBlogLabelByBlogLabel_Id(int BlogLabel_Id, out BlogLabel BlogLabel);
 		BlogEntryLabel CreateBlogEntryLabel(BlogEntry blogEntryId, BlogLabel blogLabelId);
 		IEnumerable<BlogEntryLabel> BlogEntryLabelCollection
 		{
@@ -2159,7 +2226,7 @@ namespace BlogDemo
 		{
 			get;
 		}
-		BlogLabel CreateBlogLabel();
+		BlogLabel CreateBlogLabel(int BlogLabel_Id);
 		IEnumerable<BlogLabel> BlogLabelCollection
 		{
 			get;

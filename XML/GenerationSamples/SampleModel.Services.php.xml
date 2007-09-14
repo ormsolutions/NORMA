@@ -11,6 +11,236 @@
 				<plx:string>DataLayer.php</plx:string>
 			</plx:passParam>
 		</plx:callStatic>
+		<plx:class name="PersonDrivesCarService" partial="true" visibility="public">
+			<plx:field dataTypeName="PersonDrivesCarService" static="true" name="instance" visibility="private" />
+			<plx:function name=".construct" visibility="public">
+				<plx:leadingInfo>
+					<plx:docComment>Instantiates a new instance of PersonDrivesCarService</plx:docComment>
+				</plx:leadingInfo>
+			</plx:function>
+			<plx:property name="Instance" modifier="static" visibility="public">
+				<plx:returns dataTypeName="PersonDrivesCarService" />
+				<plx:get>
+					<plx:branch>
+						<plx:condition>
+							<plx:unaryOperator type="booleanNot">
+								<plx:callStatic dataTypeName=".global" name="isset" />
+							</plx:unaryOperator>
+						</plx:condition>
+						<plx:assign>
+							<plx:left>
+								<plx:callThis accessor="static" name="instance" type="field" />
+							</plx:left>
+							<plx:right>
+								<plx:callNew dataTypeName="PersonDrivesCarService" type="new" />
+							</plx:right>
+						</plx:assign>
+					</plx:branch>
+					<plx:return>
+						<plx:callThis accessor="static" name="instance" type="field" />
+					</plx:return>
+				</plx:get>
+			</plx:property>
+			<plx:function name="getAll" visibility="public">
+				<plx:leadingInfo>
+					<plx:docComment>Retrieves the entire collection of PersonDrivesCar objects</plx:docComment>
+				</plx:leadingInfo>
+				<plx:return>
+					<plx:callInstance name="getAll" type="methodCall">
+						<plx:callObject>
+							<plx:callStatic name="Instance" type="property" dataTypeName="PersonDrivesCarDAO" />
+						</plx:callObject>
+					</plx:callInstance>
+				</plx:return>
+			</plx:function>
+			<plx:function name="getSingle" visibility="public">
+				<plx:leadingInfo>
+					<plx:docComment>Retrieves the specified PersonDrivesCar object from the database</plx:docComment>
+				</plx:leadingInfo>
+				<plx:param name="DrivesCar_vin" />
+				<plx:param name="Person_id" />
+				<plx:returns dataTypeName="PersonDrivesCar" />
+				<plx:return>
+					<plx:callInstance name="getSingle" type="methodCall">
+						<plx:callObject>
+							<plx:callStatic name="Instance" type="property" dataTypeName="PersonDrivesCarDAO" />
+						</plx:callObject>
+						<plx:passParam>
+							<plx:nameRef name="DrivesCar_vin" type="parameter" />
+						</plx:passParam>
+						<plx:passParam>
+							<plx:nameRef name="Person_id" type="parameter" />
+						</plx:passParam>
+					</plx:callInstance>
+				</plx:return>
+			</plx:function>
+			<plx:function name="insert" visibility="public">
+				<plx:leadingInfo>
+					<plx:docComment>Inserts the given PersonDrivesCar object into the database</plx:docComment>
+				</plx:leadingInfo>
+				<plx:param dataTypeName="PersonDrivesCar" name="PersonDrivesCar" />
+				<plx:returns dataTypeName=".boolean" />
+				<plx:return>
+					<plx:callInstance name="insert" type="methodCall">
+						<plx:callObject>
+							<plx:callStatic name="Instance" type="property" dataTypeName="PersonDrivesCarDAO" />
+						</plx:callObject>
+						<plx:passParam>
+							<plx:nameRef name="PersonDrivesCar" type="parameter" />
+						</plx:passParam>
+					</plx:callInstance>
+				</plx:return>
+			</plx:function>
+			<plx:function name="update" visibility="public">
+				<plx:leadingInfo>
+					<plx:docComment>Updates the given PersonDrivesCar object in the database</plx:docComment>
+				</plx:leadingInfo>
+				<plx:param dataTypeName="PersonDrivesCar" name="PersonDrivesCar" />
+				<plx:returns dataTypeName=".boolean" />
+				<plx:return>
+					<plx:callInstance name="update" type="methodCall">
+						<plx:callObject>
+							<plx:callStatic name="Instance" type="property" dataTypeName="PersonDrivesCarDAO" />
+						</plx:callObject>
+						<plx:passParam>
+							<plx:nameRef name="PersonDrivesCar" type="parameter" />
+						</plx:passParam>
+					</plx:callInstance>
+				</plx:return>
+			</plx:function>
+			<plx:function name="delete" visibility="public">
+				<plx:leadingInfo>
+					<plx:docComment>Deletes the given PersonDrivesCar object from the database</plx:docComment>
+				</plx:leadingInfo>
+				<plx:param dataTypeName="PersonDrivesCar" name="PersonDrivesCar" />
+				<plx:returns dataTypeName=".boolean" />
+				<plx:return>
+					<plx:callInstance name="delete" type="methodCall">
+						<plx:callObject>
+							<plx:callStatic name="Instance" type="property" dataTypeName="PersonDrivesCarDAO" />
+						</plx:callObject>
+						<plx:passParam>
+							<plx:nameRef name="PersonDrivesCar" type="parameter" />
+						</plx:passParam>
+					</plx:callInstance>
+				</plx:return>
+			</plx:function>
+		</plx:class>
+		<plx:class name="PersonHasNickNameService" partial="true" visibility="public">
+			<plx:field dataTypeName="PersonHasNickNameService" static="true" name="instance" visibility="private" />
+			<plx:function name=".construct" visibility="public">
+				<plx:leadingInfo>
+					<plx:docComment>Instantiates a new instance of PersonHasNickNameService</plx:docComment>
+				</plx:leadingInfo>
+			</plx:function>
+			<plx:property name="Instance" modifier="static" visibility="public">
+				<plx:returns dataTypeName="PersonHasNickNameService" />
+				<plx:get>
+					<plx:branch>
+						<plx:condition>
+							<plx:unaryOperator type="booleanNot">
+								<plx:callStatic dataTypeName=".global" name="isset" />
+							</plx:unaryOperator>
+						</plx:condition>
+						<plx:assign>
+							<plx:left>
+								<plx:callThis accessor="static" name="instance" type="field" />
+							</plx:left>
+							<plx:right>
+								<plx:callNew dataTypeName="PersonHasNickNameService" type="new" />
+							</plx:right>
+						</plx:assign>
+					</plx:branch>
+					<plx:return>
+						<plx:callThis accessor="static" name="instance" type="field" />
+					</plx:return>
+				</plx:get>
+			</plx:property>
+			<plx:function name="getAll" visibility="public">
+				<plx:leadingInfo>
+					<plx:docComment>Retrieves the entire collection of PersonHasNickName objects</plx:docComment>
+				</plx:leadingInfo>
+				<plx:return>
+					<plx:callInstance name="getAll" type="methodCall">
+						<plx:callObject>
+							<plx:callStatic name="Instance" type="property" dataTypeName="PersonHasNickNameDAO" />
+						</plx:callObject>
+					</plx:callInstance>
+				</plx:return>
+			</plx:function>
+			<plx:function name="getSingle" visibility="public">
+				<plx:leadingInfo>
+					<plx:docComment>Retrieves the specified PersonHasNickName object from the database</plx:docComment>
+				</plx:leadingInfo>
+				<plx:param name="NickName" />
+				<plx:param name="Person_id" />
+				<plx:returns dataTypeName="PersonHasNickName" />
+				<plx:return>
+					<plx:callInstance name="getSingle" type="methodCall">
+						<plx:callObject>
+							<plx:callStatic name="Instance" type="property" dataTypeName="PersonHasNickNameDAO" />
+						</plx:callObject>
+						<plx:passParam>
+							<plx:nameRef name="NickName" type="parameter" />
+						</plx:passParam>
+						<plx:passParam>
+							<plx:nameRef name="Person_id" type="parameter" />
+						</plx:passParam>
+					</plx:callInstance>
+				</plx:return>
+			</plx:function>
+			<plx:function name="insert" visibility="public">
+				<plx:leadingInfo>
+					<plx:docComment>Inserts the given PersonHasNickName object into the database</plx:docComment>
+				</plx:leadingInfo>
+				<plx:param dataTypeName="PersonHasNickName" name="PersonHasNickName" />
+				<plx:returns dataTypeName=".boolean" />
+				<plx:return>
+					<plx:callInstance name="insert" type="methodCall">
+						<plx:callObject>
+							<plx:callStatic name="Instance" type="property" dataTypeName="PersonHasNickNameDAO" />
+						</plx:callObject>
+						<plx:passParam>
+							<plx:nameRef name="PersonHasNickName" type="parameter" />
+						</plx:passParam>
+					</plx:callInstance>
+				</plx:return>
+			</plx:function>
+			<plx:function name="update" visibility="public">
+				<plx:leadingInfo>
+					<plx:docComment>Updates the given PersonHasNickName object in the database</plx:docComment>
+				</plx:leadingInfo>
+				<plx:param dataTypeName="PersonHasNickName" name="PersonHasNickName" />
+				<plx:returns dataTypeName=".boolean" />
+				<plx:return>
+					<plx:callInstance name="update" type="methodCall">
+						<plx:callObject>
+							<plx:callStatic name="Instance" type="property" dataTypeName="PersonHasNickNameDAO" />
+						</plx:callObject>
+						<plx:passParam>
+							<plx:nameRef name="PersonHasNickName" type="parameter" />
+						</plx:passParam>
+					</plx:callInstance>
+				</plx:return>
+			</plx:function>
+			<plx:function name="delete" visibility="public">
+				<plx:leadingInfo>
+					<plx:docComment>Deletes the given PersonHasNickName object from the database</plx:docComment>
+				</plx:leadingInfo>
+				<plx:param dataTypeName="PersonHasNickName" name="PersonHasNickName" />
+				<plx:returns dataTypeName=".boolean" />
+				<plx:return>
+					<plx:callInstance name="delete" type="methodCall">
+						<plx:callObject>
+							<plx:callStatic name="Instance" type="property" dataTypeName="PersonHasNickNameDAO" />
+						</plx:callObject>
+						<plx:passParam>
+							<plx:nameRef name="PersonHasNickName" type="parameter" />
+						</plx:passParam>
+					</plx:callInstance>
+				</plx:return>
+			</plx:function>
+		</plx:class>
 		<plx:class name="PersonService" partial="true" visibility="public">
 			<plx:field dataTypeName="PersonService" static="true" name="instance" visibility="private" />
 			<plx:function name=".construct" visibility="public">
@@ -117,6 +347,44 @@
 						</plx:callObject>
 						<plx:passParam>
 							<plx:nameRef name="Person" type="parameter" />
+						</plx:passParam>
+					</plx:callInstance>
+				</plx:return>
+			</plx:function>
+			<plx:function name="get_PersonDrivesCar_Collection_By_DrivenByPerson" visibility="public">
+				<plx:leadingInfo>
+					<plx:docComment>
+						<summary>Retrieves a collection of PersonDrivesCar objects by the given Person object</summary>
+					</plx:docComment>
+				</plx:leadingInfo>
+				<plx:param name="Person_id" dataTypeName=".i4" />
+				<plx:returns dataTypeIsSimpleArray="true" />
+				<plx:return>
+					<plx:callInstance name="get_PersonDrivesCar_Collection_By_DrivenByPerson" type="methodCall">
+						<plx:callObject>
+							<plx:callStatic name="Instance" type="property" dataTypeName="PersonDAO" />
+						</plx:callObject>
+						<plx:passParam>
+							<plx:nameRef name="Person_id" type="parameter" />
+						</plx:passParam>
+					</plx:callInstance>
+				</plx:return>
+			</plx:function>
+			<plx:function name="get_PersonHasNickName_Collection_By_Person" visibility="public">
+				<plx:leadingInfo>
+					<plx:docComment>
+						<summary>Retrieves a collection of PersonHasNickName objects by the given Person object</summary>
+					</plx:docComment>
+				</plx:leadingInfo>
+				<plx:param name="Person_id" dataTypeName=".i4" />
+				<plx:returns dataTypeIsSimpleArray="true" />
+				<plx:return>
+					<plx:callInstance name="get_PersonHasNickName_Collection_By_Person" type="methodCall">
+						<plx:callObject>
+							<plx:callStatic name="Instance" type="property" dataTypeName="PersonDAO" />
+						</plx:callObject>
+						<plx:passParam>
+							<plx:nameRef name="Person_id" type="parameter" />
 						</plx:passParam>
 					</plx:callInstance>
 				</plx:return>
@@ -524,12 +792,20 @@
 					<plx:docComment>Retrieves the specified ChildPerson object from the database</plx:docComment>
 				</plx:leadingInfo>
 				<plx:param name="Person_id" />
+				<plx:param name="BirthOrder_BirthOrder_Nr" />
+				<plx:param name="Person_id" />
 				<plx:returns dataTypeName="ChildPerson" />
 				<plx:return>
 					<plx:callInstance name="getSingle" type="methodCall">
 						<plx:callObject>
 							<plx:callStatic name="Instance" type="property" dataTypeName="ChildPersonDAO" />
 						</plx:callObject>
+						<plx:passParam>
+							<plx:nameRef name="Person_id" type="parameter" />
+						</plx:passParam>
+						<plx:passParam>
+							<plx:nameRef name="BirthOrder_BirthOrder_Nr" type="parameter" />
+						</plx:passParam>
 						<plx:passParam>
 							<plx:nameRef name="Person_id" type="parameter" />
 						</plx:passParam>

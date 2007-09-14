@@ -8,7 +8,7 @@
 	<ddl:domainDefinition name="Title" schema="PersonCountryDemo">
 		<ddt:characterString type="CHARACTER VARYING" length="4" />
 		<ddl:domainConstraint>
-			<dep:constraintNameDefinition name="Title_Chk" />
+			<dep:constraintNameDefinition name="ValueTypeValueConstraint1" />
 			<ddl:checkConstraintDefinition>
 				<dep:inPredicate type="IN">
 					<dep:valueKeyword />
@@ -22,29 +22,9 @@
 			</ddl:checkConstraintDefinition>
 		</ddl:domainConstraint>
 	</ddl:domainDefinition>
-	<ddl:domainDefinition name="Region_code" schema="PersonCountryDemo">
-		<ddt:characterString type="CHARACTER" length="8" />
-		<ddl:domainConstraint>
-			<dep:constraintNameDefinition name="Region_code_Chk" />
-			<ddl:checkConstraintDefinition>
-				<dep:comparisonPredicate operator="greaterThanOrEquals">
-					<dep:parenthesizedValueExpression>
-						<dep:charLengthExpression>
-							<dep:trimFunction specification="BOTH">
-								<dep:trimSource>
-									<dep:valueKeyword />
-								</dep:trimSource>
-							</dep:trimFunction>
-						</dep:charLengthExpression>
-					</dep:parenthesizedValueExpression>
-					<ddt:exactNumericLiteral value="8" />
-				</dep:comparisonPredicate>
-			</ddl:checkConstraintDefinition>
-		</ddl:domainConstraint>
-	</ddl:domainDefinition>
 	<ddl:tableDefinition name="Person" schema="PersonCountryDemo">
 		<ddl:columnDefinition name="Person_id">
-			<ddt:exactNumeric type="BIGINT" />
+			<ddt:exactNumeric type="INTEGER" />
 			<ddl:identityColumnSpecification type="ALWAYS">
 				<ddl:sequenceGeneratorStartWithOption>
 					<ddt:exactNumericLiteral value="1" />
@@ -72,7 +52,7 @@
 		<ddl:columnDefinition name="Title">
 			<ddt:domain name="Title" schema="PersonCountryDemo" />
 		</ddl:columnDefinition>
-		<ddl:columnDefinition name="Country_Country_name">
+		<ddl:columnDefinition name="Country_name">
 			<ddt:characterString type="CHARACTER VARYING" length="20" />
 		</ddl:columnDefinition>
 		<ddl:tableConstraintDefinition>
@@ -89,8 +69,8 @@
 				<ddl:notNullKeyword />
 			</ddl:columnConstraintDefinition>
 		</ddl:columnDefinition>
-		<ddl:columnDefinition name="Region_Region_code">
-			<ddt:domain name="Region_code" schema="PersonCountryDemo" />
+		<ddl:columnDefinition name="Region_code">
+			<ddt:characterString type="CHARACTER" length="8" />
 		</ddl:columnDefinition>
 		<ddl:tableConstraintDefinition>
 			<dep:constraintNameDefinition name="InternalUniquenessConstraint3" />
@@ -101,9 +81,9 @@
 	</ddl:tableDefinition>
 	<ddl:alterTableStatement name="Person" schema="PersonCountryDemo">
 		<ddl:addTableConstraintDefinition>
-			<dep:constraintNameDefinition name="Country_FK" />
+			<dep:constraintNameDefinition name="Person_FK" />
 			<ddl:referentialConstraintDefinition>
-				<ddl:column name="Country_Country_name" />
+				<ddl:column name="Country_name" />
 				<ddl:referencesSpecification name="Country" onDelete="RESTRICT" onUpdate="RESTRICT" schema="PersonCountryDemo">
 					<ddl:referenceColumn name="Country_name" />
 				</ddl:referencesSpecification>

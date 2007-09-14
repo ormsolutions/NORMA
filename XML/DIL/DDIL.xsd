@@ -10,25 +10,44 @@
 	elementFormDefault="qualified"
 	attributeFormDefault="unqualified"
 	version="0.8">
-	<xs:annotation>
-		<xs:appinfo source="zlib/libpng License Copyright Notice">
-			Copyright © Neumont University. All rights reserved.
 
-			This software is provided 'as-is', without any express or implied warranty. In no event will the authors be held liable for any damages arising from the use of this software.
-			Permission is granted to anyone to use this software for any purpose, including commercial applications, and to alter it and redistribute it freely, subject to the following restrictions:
-			1. The origin of this software must not be misrepresented; you must not claim that you wrote the original software. If you use this software in a product, an acknowledgment in the product documentation would be appreciated but is not required.
-			2. Altered source versions must be plainly marked as such, and must not be misrepresented as being the original software.
-			3. This notice may not be removed or altered from any source distribution.
+	<xs:annotation>
+		<xs:appinfo>
+			<rdf:RDF
+				xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#"
+				xmlns:dc="http://purl.org/dc/elements/1.1/"
+				xmlns:dcterms="http://purl.org/dc/terms/">
+				<rdf:Description rdf:about="http://schemas.orm.net/DIL/DDIL">
+					<dcterms:isPartOf rdf:resource="http://schemas.orm.net/DIL"/>
+					<dcterms:isRequiredBy rdf:resource="http://schemas.orm.net/DIL/DIL"/>
+					<dcterms:requires rdf:resource="http://schemas.orm.net/DIL/DIL"/>
+					<dcterms:requires rdf:resource="http://schemas.orm.net/DIL/DILDT"/>
+					<dcterms:requires rdf:resource="http://schemas.orm.net/DIL/DILEP"/>
+					<dcterms:requires rdf:resource="http://schemas.orm.net/DIL/DMIL"/>
+					<dc:title>Data Definition Intermediate Language</dc:title>
+					<dcterms:abstract>Encompasses SQL Standard Foundation "11 - Schema definition and manipulation" and "12 - Access control"</dcterms:abstract>
+					<dc:creator>Kevin M. Owen</dc:creator>
+					<dc:creator>Corey Kaylor</dc:creator>
+					<dc:contributor>Korvyn Dornseif</dc:contributor>
+					<dc:contributor>Clé Diggins</dc:contributor>
+					<dc:rights>Copyright © Neumont University. All rights reserved.</dc:rights>
+					<dcterms:rightsHolder>Neumont University</dcterms:rightsHolder>
+					<dcterms:license>
+						This software is provided 'as-is', without any express or implied warranty. In no event will the authors be held liable for any damages arising from the use of this software.
+						Permission is granted to anyone to use this software for any purpose, including commercial applications, and to alter it and redistribute it freely, subject to the following restrictions:
+						1. The origin of this software must not be misrepresented; you must not claim that you wrote the original software. If you use this software in a product, an acknowledgment in the product documentation would be appreciated but is not required.
+						2. Altered source versions must be plainly marked as such, and must not be misrepresented as being the original software.
+						3. This notice may not be removed or altered from any source distribution.
+					</dcterms:license>
+				</rdf:Description>
+			</rdf:RDF>
 		</xs:appinfo>
-		<xs:appinfo source="Contributors">Kevin M. Owen, Corey Kaylor, Korvyn Dornseif, Clé Diggins</xs:appinfo>
-		<xs:documentation>Data Definition Intermediate Language</xs:documentation>
-		<xs:documentation>Encompasses SQL Standard Foundation "11 - Schema definition and manipulation" and "12 - Access control"</xs:documentation>
 	</xs:annotation>
 
+	<xs:import namespace="http://schemas.orm.net/DIL/DIL"/>
 	<xs:import namespace="http://schemas.orm.net/DIL/DILDT"/>
 	<xs:import namespace="http://schemas.orm.net/DIL/DILEP"/>
 	<xs:import namespace="http://schemas.orm.net/DIL/DMIL"/>
-	<xs:import namespace="http://schemas.orm.net/DIL/DIL"/>
 
 
 	<xs:simpleType name="dropBehavior">
@@ -713,15 +732,6 @@
 		</xs:complexType>
 	</xs:element>
 
-	<xs:element name="alterSequenceGeneratorRestartOption">
-		<xs:annotation>
-			<xs:documentation>RESTART WITH &lt;signed numeric literal&gt;</xs:documentation>
-		</xs:annotation>
-		<xs:complexType>
-			<xs:group ref="ddt:numericLiteral"/>
-		</xs:complexType>
-	</xs:element>
-
 	<xs:group name="alterSequenceGeneratorOptions">
 		<xs:sequence>
 			<xs:element name="alterSequenceGeneratorRestartOption" minOccurs="0">
@@ -738,58 +748,53 @@
 
 	<xs:group name="commonSequenceGeneratorOptions">
 		<xs:sequence>
-			<xs:element ref="ddl:sequenceGeneratorStartWithOption" minOccurs="0"/>
+			<xs:element name="sequenceGeneratorStartWithOption" minOccurs="0">
+				<xs:annotation>
+					<xs:documentation>START WITH &lt;numeric literal&gt;</xs:documentation>
+				</xs:annotation>
+				<xs:complexType>
+					<xs:group ref="ddt:numericLiteral"/>
+				</xs:complexType>
+			</xs:element>
 			<xs:group ref="ddl:basicSequenceGeneratorOptions" minOccurs="0"/>
 		</xs:sequence>
 	</xs:group>
 	<xs:group name="basicSequenceGeneratorOptions">
 		<xs:sequence>
-			<xs:element ref="ddl:sequenceGeneratorIncrementByOption" minOccurs="0"/>
-			<xs:element ref="ddl:sequenceGeneratorMaxValueOption" minOccurs="0"/>
-			<xs:element ref="ddl:sequenceGeneratorMinValueOption" minOccurs="0"/>
-			<xs:element ref="ddl:sequenceGeneratorCycleOption" minOccurs="0"/>
+			<xs:element name="sequenceGeneratorIncrementByOption" minOccurs="0">
+				<xs:annotation>
+					<xs:documentation>INCREMENT BY &lt;numeric literal&gt;</xs:documentation>
+				</xs:annotation>
+				<xs:complexType>
+					<xs:group ref="ddt:numericLiteral"/>
+				</xs:complexType>
+			</xs:element>
+			<xs:element name="sequenceGeneratorMaxValueOption" minOccurs="0">
+				<xs:annotation>
+					<xs:documentation>MAXVALUE &lt;numeric literal&gt;</xs:documentation>
+				</xs:annotation>
+				<xs:complexType>
+					<xs:group ref="ddt:numericLiteral"/>
+				</xs:complexType>
+			</xs:element>
+			<xs:element name="sequenceGeneratorMinValueOption" minOccurs="0">
+				<xs:annotation>
+					<xs:documentation>MINVALUE &lt;numeric literal&gt;</xs:documentation>
+				</xs:annotation>
+				<xs:complexType>
+					<xs:group ref="ddt:numericLiteral"/>
+				</xs:complexType>
+			</xs:element>
+			<xs:element name="sequenceGeneratorCycleOption" minOccurs="0">
+				<xs:annotation>
+					<xs:documentation>CYCLE</xs:documentation>
+				</xs:annotation>
+				<xs:complexType>
+					<xs:attribute name="shouldCycle" use="required" type="xs:boolean"/>
+				</xs:complexType>
+			</xs:element>
 		</xs:sequence>
 	</xs:group>
-	<xs:element name="sequenceGeneratorStartWithOption">
-		<xs:annotation>
-			<xs:documentation>START WITH &lt;numeric literal&gt;</xs:documentation>
-		</xs:annotation>
-		<xs:complexType>
-			<xs:group ref="ddt:numericLiteral"/>
-		</xs:complexType>
-	</xs:element>
-	<xs:element name="sequenceGeneratorIncrementByOption">
-		<xs:annotation>
-			<xs:documentation>INCREMENT BY &lt;numeric literal&gt;</xs:documentation>
-		</xs:annotation>
-		<xs:complexType>
-			<xs:group ref="ddt:numericLiteral"/>
-		</xs:complexType>
-	</xs:element>
-	<xs:element name="sequenceGeneratorMaxValueOption">
-		<xs:annotation>
-			<xs:documentation>MAXVALUE &lt;numeric literal&gt;</xs:documentation>
-		</xs:annotation>
-		<xs:complexType>
-			<xs:group ref="ddt:numericLiteral"/>
-		</xs:complexType>
-	</xs:element>
-	<xs:element name="sequenceGeneratorMinValueOption">
-		<xs:annotation>
-			<xs:documentation>MINVALUE &lt;numeric literal&gt;</xs:documentation>
-		</xs:annotation>
-		<xs:complexType>
-			<xs:group ref="ddt:numericLiteral"/>
-		</xs:complexType>
-	</xs:element>
-	<xs:element name="sequenceGeneratorCycleOption">
-		<xs:annotation>
-			<xs:documentation>CYCLE</xs:documentation>
-		</xs:annotation>
-		<xs:complexType>
-			<xs:attribute name="shouldCycle" use="required" type="xs:boolean"/>
-		</xs:complexType>
-	</xs:element>
 
 	<xs:element name="assertionDefinition">
 		<xs:annotation>

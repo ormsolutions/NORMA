@@ -68,19 +68,19 @@ namespace Neumont.Tools.ORM.ORMCustomTool
 				string sourceInputFormat = generatorKey.GetValue("SourceInputFormat", null) as string;
 				Debug.Assert(sourceInputFormat != null);
 				string[] referenceInputFormats = generatorKey.GetValue("ReferenceInputFormats", EmptyStringArray) as string[];
-				string[] prequisiteInputFormats = generatorKey.GetValue("PrequisiteInputFormats", EmptyStringArray) as string[];
+				string[] prerequisiteInputFormats = generatorKey.GetValue("PrerequisiteInputFormats", EmptyStringArray) as string[];
 
 				List<string> requiresInputFormats;
 
-				requiresInputFormats = new List<string>(referenceInputFormats.Length + prequisiteInputFormats.Length + 1);
+				requiresInputFormats = new List<string>(referenceInputFormats.Length + prerequisiteInputFormats.Length + 1);
 				requiresInputFormats.Add(sourceInputFormat = StripFormatExtensions(sourceInputFormat, ref extensions));
 				for (int i = 0; i < referenceInputFormats.Length; ++i)
 				{
 					requiresInputFormats.Add(referenceInputFormats[i] = StripFormatExtensions(referenceInputFormats[i], ref extensions));
 				}
-				for (int i = 0; i < prequisiteInputFormats.Length; ++i)
+				for (int i = 0; i < prerequisiteInputFormats.Length; ++i)
 				{
-					requiresInputFormats.Add(StripFormatExtensions(prequisiteInputFormats[i], ref extensions));
+					requiresInputFormats.Add(StripFormatExtensions(prerequisiteInputFormats[i], ref extensions));
 				}
 				this._sourceInputFormat = sourceInputFormat;
 				this._referenceInputFormats = referenceInputFormats;

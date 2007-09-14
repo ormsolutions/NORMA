@@ -2,22 +2,22 @@
 
 CREATE TABLE Person
 (
-	Person_id NUMBER(38) NOT NULL, 
-	LastName CHARACTER VARYING(30) NOT NULL, 
-	FirstName CHARACTER VARYING(30) NOT NULL, 
-	Title CHARACTER VARYING(4) CONSTRAINT Title_Chk CHECK (Title IN ('Dr', 'Prof', 'Mr', 'Mrs', 'Miss', 'Ms')) , 
-	Country_Country_name CHARACTER VARYING(20) , 
+	Person_id NUMBER NOT NULL,
+	LastName NVARCHAR2(30) NOT NULL,
+	FirstName NVARCHAR2(30) NOT NULL,
+	Title NVARCHAR2(4) CHECK (Title IN ('Dr', 'Prof', 'Mr', 'Mrs', 'Miss', 'Ms')),
+	Country_name NVARCHAR2(20),
 	CONSTRAINT InternalUniquenessConstraint1 PRIMARY KEY(Person_id)
 );
 
 CREATE TABLE Country
 (
-	Country_name CHARACTER VARYING(20) NOT NULL, 
-	Region_Region_code CHARACTER(8) CONSTRAINT Region_code_Chk CHECK ((LENGTH(TRIM(BOTH FROM Region_Region_code))) >= 8) , 
+	Country_name NVARCHAR2(20) NOT NULL,
+	Region_code NCHAR(8),
 	CONSTRAINT InternalUniquenessConstraint3 PRIMARY KEY(Country_name)
 );
 
-ALTER TABLE Person ADD CONSTRAINT Person_Country_FK FOREIGN KEY (Country_Country_name)  REFERENCES Country (Country_name) ;
+ALTER TABLE Person ADD CONSTRAINT Person_Person_FK FOREIGN KEY (Country_name)  REFERENCES Country (Country_name) ;
 
 COMMIT WORK;
 

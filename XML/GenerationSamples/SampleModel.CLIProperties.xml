@@ -1,10 +1,28 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
 <prop:AllProperties xmlns:prop="urn:schemas-orm-net:PLiX:CLI:Properties" xmlns:plx="http://schemas.neumont.edu/CodeGeneration/PLiX">
+	<prop:Properties conceptTypeName="PersonDrivesCar">
+		<prop:Property name="DrivesCar_vin" mandatory="alethic" isUnique="false" canBeNull="false" isCollection="false" isCustomType="false">
+			<prop:DataType dataTypeName=".i4" />
+		</prop:Property>
+		<prop:Property name="DrivenByPerson" mandatory="alethic" isUnique="false" isCollection="false" isCustomType="true" canBeNull="true" oppositeName="PersonDrivesCar">
+			<prop:DataType dataTypeName="Person" />
+		</prop:Property>
+	</prop:Properties>
+	<prop:Properties conceptTypeName="PersonHasNickName">
+		<prop:Property name="NickName" mandatory="alethic" isUnique="false" canBeNull="true" isCollection="false" isCustomType="false">
+			<prop:DataType dataTypeName=".string" />
+		</prop:Property>
+		<prop:Property name="Person" mandatory="alethic" isUnique="false" isCollection="false" isCustomType="true" canBeNull="true" oppositeName="PersonHasNickName">
+			<prop:DataType dataTypeName="Person" />
+		</prop:Property>
+	</prop:Properties>
 	<prop:Properties conceptTypeName="Person">
 		<prop:Property name="FirstName" mandatory="alethic" isUnique="false" canBeNull="true" isCollection="false" isCustomType="false">
 			<prop:DataType dataTypeName=".string" />
 		</prop:Property>
-		<prop:IdentityField name="Person_id" />
+		<prop:Property name="Person_id" mandatory="alethic" isUnique="true" canBeNull="false" isCollection="false" isCustomType="false">
+			<prop:DataType dataTypeName=".i4" />
+		</prop:Property>
 		<prop:Property name="Date_YMD" mandatory="alethic" isUnique="false" canBeNull="false" isCollection="false" isCustomType="false">
 			<prop:DataType dataTypeName=".i4" />
 		</prop:Property>
@@ -30,8 +48,10 @@
 		<prop:Property name="Gender_Gender_Code" mandatory="alethic" isUnique="false" canBeNull="true" isCollection="false" isCustomType="false">
 			<prop:DataType dataTypeName=".string" />
 		</prop:Property>
-		<prop:Property name="hasParents" mandatory="alethic" isUnique="false" canBeNull="false" isCollection="false" isCustomType="false">
-			<prop:DataType dataTypeName=".boolean" />
+		<prop:Property name="hasParents" mandatory="false" isUnique="false" canBeNull="true" isCollection="false" isCustomType="false">
+			<prop:DataType dataTypeName="Nullable">
+				<plx:passTypeParam dataTypeName=".boolean" />
+			</prop:DataType>
 		</prop:Property>
 		<prop:Property name="OptionalUniqueDecimal" mandatory="false" isUnique="true" canBeNull="true" isCollection="false" isCustomType="false">
 			<prop:DataType dataTypeName="Nullable">
@@ -61,6 +81,16 @@
 		</prop:Property>
 		<prop:Property name="Death" mandatory="false" isUnique="true" isCollection="false" isCustomType="true" canBeNull="true" oppositeName="Person">
 			<prop:DataType dataTypeName="Death" />
+		</prop:Property>
+		<prop:Property name="PersonDrivesCarViaDrivenByPersonCollection" mandatory="false" isUnique="true" isCollection="true" isCustomType="true" canBeNull="true" oppositeName="DrivenByPerson">
+			<prop:DataType dataTypeName="IEnumerable">
+				<plx:passTypeParam dataTypeName="PersonDrivesCar" />
+			</prop:DataType>
+		</prop:Property>
+		<prop:Property name="PersonHasNickNameViaPersonCollection" mandatory="false" isUnique="true" isCollection="true" isCustomType="true" canBeNull="true" oppositeName="Person">
+			<prop:DataType dataTypeName="IEnumerable">
+				<plx:passTypeParam dataTypeName="PersonHasNickName" />
+			</prop:DataType>
 		</prop:Property>
 		<prop:Property name="Wife" mandatory="false" isUnique="true" isCollection="false" isCustomType="true" canBeNull="true" oppositeName="Husband">
 			<prop:DataType dataTypeName="Person" />
@@ -129,6 +159,9 @@
 		<prop:Property name="DeathCause_DeathCause_Type" mandatory="alethic" isUnique="false" canBeNull="true" isCollection="false" isCustomType="false">
 			<prop:DataType dataTypeName=".string" />
 		</prop:Property>
+		<prop:Property name="isDead" mandatory="alethic" isUnique="false" canBeNull="false" isCollection="false" isCustomType="false">
+			<prop:DataType dataTypeName=".boolean" />
+		</prop:Property>
 		<prop:Property name="NaturalDeath" mandatory="false" isUnique="true" isCollection="false" isCustomType="true" canBeNull="true" oppositeName="Death">
 			<prop:DataType dataTypeName="NaturalDeath" />
 		</prop:Property>
@@ -140,26 +173,34 @@
 		</prop:Property>
 	</prop:Properties>
 	<prop:Properties conceptTypeName="NaturalDeath">
-		<prop:Property name="isFromProstateCancer" mandatory="alethic" isUnique="false" canBeNull="false" isCollection="false" isCustomType="false">
-			<prop:DataType dataTypeName=".boolean" />
+		<prop:Property name="isFromProstateCancer" mandatory="false" isUnique="false" canBeNull="true" isCollection="false" isCustomType="false">
+			<prop:DataType dataTypeName="Nullable">
+				<plx:passTypeParam dataTypeName=".boolean" />
+			</prop:DataType>
 		</prop:Property>
 		<prop:Property name="Death" mandatory="alethic" isUnique="true" isCollection="false" isCustomType="true" canBeNull="true" oppositeName="NaturalDeath">
 			<prop:DataType dataTypeName="Death" />
 		</prop:Property>
 	</prop:Properties>
 	<prop:Properties conceptTypeName="UnnaturalDeath">
-		<prop:Property name="isViolent" mandatory="alethic" isUnique="false" canBeNull="false" isCollection="false" isCustomType="false">
-			<prop:DataType dataTypeName=".boolean" />
+		<prop:Property name="isViolent" mandatory="false" isUnique="false" canBeNull="true" isCollection="false" isCustomType="false">
+			<prop:DataType dataTypeName="Nullable">
+				<plx:passTypeParam dataTypeName=".boolean" />
+			</prop:DataType>
 		</prop:Property>
-		<prop:Property name="isBloody" mandatory="alethic" isUnique="false" canBeNull="false" isCollection="false" isCustomType="false">
-			<prop:DataType dataTypeName=".boolean" />
+		<prop:Property name="isBloody" mandatory="false" isUnique="false" canBeNull="true" isCollection="false" isCustomType="false">
+			<prop:DataType dataTypeName="Nullable">
+				<plx:passTypeParam dataTypeName=".boolean" />
+			</prop:DataType>
 		</prop:Property>
 		<prop:Property name="Death" mandatory="alethic" isUnique="true" isCollection="false" isCustomType="true" canBeNull="true" oppositeName="UnnaturalDeath">
 			<prop:DataType dataTypeName="Death" />
 		</prop:Property>
 	</prop:Properties>
 	<prop:Properties conceptTypeName="Task">
-		<prop:IdentityField name="Task_id" />
+		<prop:Property name="Task_id" mandatory="alethic" isUnique="true" canBeNull="false" isCollection="false" isCustomType="false">
+			<prop:DataType dataTypeName=".i4" />
+		</prop:Property>
 		<prop:Property name="Person" mandatory="false" isUnique="false" isCollection="false" isCustomType="true" canBeNull="true" oppositeName="Task">
 			<prop:DataType dataTypeName="Person" />
 		</prop:Property>

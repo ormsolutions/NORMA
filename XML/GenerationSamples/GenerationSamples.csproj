@@ -12,14 +12,17 @@
     <None Include="BlogDemo.orm">
       <Generator>ORMCustomTool</Generator>
       <LastGenOutput>BlogDemo._ORMCustomToolReport.cs</LastGenOutput>
+      <SubType>Designer</SubType>
     </None>
     <None Include="SampleModel.orm">
+      <SubType>Designer</SubType>
       <Generator>ORMCustomTool</Generator>
       <LastGenOutput>SampleModel._ORMCustomToolReport.cs</LastGenOutput>
     </None>
     <None Include="PersonCountryDemo.orm">
       <Generator>ORMCustomTool</Generator>
       <LastGenOutput>PersonCountryDemo._ORMCustomToolReport.cs</LastGenOutput>
+      <SubType>Designer</SubType>
     </None>
   </ItemGroup>
   <ItemGroup>
@@ -161,7 +164,7 @@
     <None Include="SampleModel.DCIL.xml">
       <AutoGen>True</AutoGen>
       <DependentUpon>SampleModel.orm</DependentUpon>
-      <ORMGenerator>OIALtoDCIL</ORMGenerator>
+      <ORMGenerator>ConceptualDBtoDCL</ORMGenerator>
     </None>
     <None Include="SampleModel.DDIL.xml">
       <AutoGen>True</AutoGen>
@@ -182,7 +185,7 @@
       <AutoGen>True</AutoGen>
       <Generator>NUPlixLoader</Generator>
       <DependentUpon>SampleModel.orm</DependentUpon>
-      <ORMGenerator>CLIPropertiesToPLiXInMemory</ORMGenerator>
+      <ORMGenerator>CLIPropertiesToPliXDataLayerSprocFree</ORMGenerator>
       <LastGenOutput>SampleModel.Implementation.PLiX.cs</LastGenOutput>
     </None>
     <None Include="SampleModel.MySQL.sql">
@@ -251,7 +254,8 @@
       <AutoGen>True</AutoGen>
       <DependentUpon>SampleModel.orm</DependentUpon>
       <ORMGenerator>OIALtoXSD</ORMGenerator>
-      <SubType>Designer</SubType>
+      <SubType>
+      </SubType>
     </None>
   </ItemGroup>
   <ItemGroup Condition="Exists('PersonCountryDemo.orm')">
@@ -271,6 +275,7 @@
       <AutoGen>True</AutoGen>
       <DependentUpon>PersonCountryDemo.orm</DependentUpon>
       <ORMGenerator>CoRefORM</ORMGenerator>
+      <SubType>Designer</SubType>
     </None>
     <None Include="PersonCountryDemo.DataLayer.php">
       <AutoGen>True</AutoGen>
@@ -311,7 +316,7 @@
     <None Include="PersonCountryDemo.DCIL.xml">
       <AutoGen>True</AutoGen>
       <DependentUpon>PersonCountryDemo.orm</DependentUpon>
-      <ORMGenerator>OIALtoDCIL</ORMGenerator>
+      <ORMGenerator>ConceptualDBtoDCL</ORMGenerator>
     </None>
     <None Include="PersonCountryDemo.DDIL.xml">
       <AutoGen>True</AutoGen>
@@ -414,6 +419,7 @@
       <AutoGen>True</AutoGen>
       <DependentUpon>BlogDemo.orm</DependentUpon>
       <ORMGenerator>CoRefORM</ORMGenerator>
+      <SubType>Designer</SubType>
     </None>
     <None Include="BlogDemo.DataLayer.php">
       <AutoGen>True</AutoGen>
@@ -454,7 +460,7 @@
     <None Include="BlogDemo.DCIL.xml">
       <AutoGen>True</AutoGen>
       <DependentUpon>BlogDemo.orm</DependentUpon>
-      <ORMGenerator>OIALtoDCIL</ORMGenerator>
+      <ORMGenerator>ConceptualDBtoDCL</ORMGenerator>
     </None>
     <None Include="BlogDemo.DDIL.xml">
       <AutoGen>True</AutoGen>

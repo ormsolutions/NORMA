@@ -6,27 +6,45 @@
 	elementFormDefault="qualified"
 	attributeFormDefault="unqualified"
 	version="0.9">
-	<xs:annotation>
-		<xs:appinfo source="zlib/libpng License Copyright Notice">
-			Copyright © Neumont University. All rights reserved.
 
-			This software is provided 'as-is', without any express or implied warranty. In no event will the authors be held liable for any damages arising from the use of this software.
-			Permission is granted to anyone to use this software for any purpose, including commercial applications, and to alter it and redistribute it freely, subject to the following restrictions:
-			1. The origin of this software must not be misrepresented; you must not claim that you wrote the original software. If you use this software in a product, an acknowledgment in the product documentation would be appreciated but is not required.
-			2. Altered source versions must be plainly marked as such, and must not be misrepresented as being the original software.
-			3. This notice may not be removed or altered from any source distribution.
+	<xs:annotation>
+		<xs:appinfo>
+			<rdf:RDF
+				xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#"
+				xmlns:dc="http://purl.org/dc/elements/1.1/"
+				xmlns:dcterms="http://purl.org/dc/terms/">
+				<rdf:Description rdf:about="http://schemas.orm.net/DIL/DILDT">
+					<dcterms:isPartOf rdf:resource="http://schemas.orm.net/DIL"/>
+					<dcterms:isRequiredBy rdf:resource="http://schemas.orm.net/DIL/DIL"/>
+					<dcterms:isRequiredBy rdf:resource="http://schemas.orm.net/DIL/DILEP"/>
+					<dcterms:isRequiredBy rdf:resource="http://schemas.orm.net/DIL/DILMS"/>
+					<dcterms:isRequiredBy rdf:resource="http://schemas.orm.net/DIL/DMIL"/>
+					<dcterms:isRequiredBy rdf:resource="http://schemas.orm.net/DIL/DDIL"/>
+					<dc:title>Database Intermediate Language Data Types</dc:title>
+					<dcterms:abstract>Encompasses SQL Standard Foundation "5 - Lexical elements", "6.1 - &lt;data type&gt;", "6.2 - &lt;field definition&gt;", and "6.6 - &lt;identifier chain&gt;"</dcterms:abstract>
+					<dc:creator>Kevin M. Owen</dc:creator>
+					<dc:creator>Corey Kaylor</dc:creator>
+					<dc:contributor>Korvyn Dornseif</dc:contributor>
+					<dc:rights>Copyright © Neumont University. All rights reserved.</dc:rights>
+					<dcterms:rightsHolder>Neumont University</dcterms:rightsHolder>
+					<dcterms:license>
+						This software is provided 'as-is', without any express or implied warranty. In no event will the authors be held liable for any damages arising from the use of this software.
+						Permission is granted to anyone to use this software for any purpose, including commercial applications, and to alter it and redistribute it freely, subject to the following restrictions:
+						1. The origin of this software must not be misrepresented; you must not claim that you wrote the original software. If you use this software in a product, an acknowledgment in the product documentation would be appreciated but is not required.
+						2. Altered source versions must be plainly marked as such, and must not be misrepresented as being the original software.
+						3. This notice may not be removed or altered from any source distribution.
+					</dcterms:license>
+				</rdf:Description>
+			</rdf:RDF>
 		</xs:appinfo>
-		<xs:appinfo source="Contributors">Kevin M. Owen, Corey Kaylor, Korvyn Dornseif</xs:appinfo>
-		<xs:documentation>Database Intermediate Language Data Types</xs:documentation>
-		<xs:documentation>Encompasses SQL Standard Foundation "5 - Lexical elements", "6.1 - &lt;data type&gt;", "6.2 - &lt;field definition&gt;", and "6.6 - &lt;identifier chain&gt;"</xs:documentation>
 	</xs:annotation>
 
 	<!-- NOTE: According to the SQL standard, without optional feature F391 ("Long identifiers"), identifiers should be limited in length to 18. -->
 	<!-- However, this is too short to allow meaningful names for many common concepts, and most actual implementations support identifiers with lengths of at least 30. -->
-	<!-- Hence, we deviate slightly from the standard here by allowing identifiers to have a length up to and including 30. -->
+	<!-- Hence, we assume that optional feature F391 is supported, and leave it up to external entities to determine the best course of action in situations where it is not. -->
 	<xs:simpleType name="identifierChain">
 		<xs:restriction base="xs:string">
-			<xs:pattern value="(([\p{L}\p{Nl}][\p{L}\p{Nl}&#x00B7;\p{Mn}\p{Mc}\p{Nd}\p{Pc}\p{Cf}]{0,29})|(&quot;([^&quot;]|&quot;&quot;){1,30}&quot;))(\.(([\p{L}\p{Nl}][\p{L}\p{Nl}&#x00B7;\p{Mn}\p{Mc}\p{Nd}\p{Pc}\p{Cf}]{0,29})|(&quot;([^&quot;]|&quot;&quot;){1,30}&quot;)))*"/>
+			<xs:pattern value="(([\p{L}\p{Nl}][\p{L}\p{Nl}&#x00B7;\p{Mn}\p{Mc}\p{Nd}\p{Pc}\p{Cf}]{0,127})|(&quot;([^&quot;]|&quot;&quot;){1,128}&quot;))(\.(([\p{L}\p{Nl}][\p{L}\p{Nl}&#x00B7;\p{Mn}\p{Mc}\p{Nd}\p{Pc}\p{Cf}]{0,127})|(&quot;([^&quot;]|&quot;&quot;){1,128}&quot;)))*"/>
 		</xs:restriction>
 	</xs:simpleType>
 	<xs:simpleType name="identifier">
@@ -34,17 +52,17 @@
 			<xs:documentation>A valid identifier, according to the SQL standard.</xs:documentation>
 		</xs:annotation>
 		<xs:restriction base="xs:string">
-			<xs:pattern value="(([\p{L}\p{Nl}][\p{L}\p{Nl}&#x00B7;\p{Mn}\p{Mc}\p{Nd}\p{Pc}\p{Cf}]{0,29})|(&quot;([^&quot;]|&quot;&quot;){1,30}&quot;))"/>
+			<xs:pattern value="(([\p{L}\p{Nl}][\p{L}\p{Nl}&#x00B7;\p{Mn}\p{Mc}\p{Nd}\p{Pc}\p{Cf}]{0,127})|(&quot;([^&quot;]|&quot;&quot;){1,128}&quot;))"/>
 		</xs:restriction>
 	</xs:simpleType>
 	<xs:simpleType name="regularIdentifier">
 		<xs:restriction base="xs:string">
-			<xs:pattern value="[\p{L}\p{Nl}][\p{L}\p{Nl}&#x00B7;\p{Mn}\p{Mc}\p{Nd}\p{Pc}\p{Cf}]{0,29}"/>
+			<xs:pattern value="[\p{L}\p{Nl}][\p{L}\p{Nl}&#x00B7;\p{Mn}\p{Mc}\p{Nd}\p{Pc}\p{Cf}]{0,127}"/>
 		</xs:restriction>
 	</xs:simpleType>
 	<xs:simpleType name="delimitedIdentifier">
 		<xs:restriction base="xs:string">
-			<xs:pattern value="&quot;([^&quot;]|&quot;&quot;){1,30}&quot;"/>
+			<xs:pattern value="&quot;([^&quot;]|&quot;&quot;){1,128}&quot;"/>
 		</xs:restriction>
 	</xs:simpleType>
 

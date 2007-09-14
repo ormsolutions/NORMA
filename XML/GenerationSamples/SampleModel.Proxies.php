@@ -1,4 +1,32 @@
 ﻿<?php
+// <summary>Class used to proxy a Person for the role DrivenByPerson for use inside of a PersonDrivesCar isCollection: false</summary>
+class PersonDrivesCar_DrivenByPerson_Person_Proxy {
+	private $ref = null;
+	private $value = null;
+	public function __construct(/*object*/ $ref) {
+		$this->ref = $ref;
+	}
+	public function get() {
+		if (!(isset($this->value))) {
+			$this->value = PersonDrivesCarDAO::getInstance()->getSingle($this->ref->getPerson_id());
+		}
+		return $this->value;
+	}
+}
+// <summary>Class used to proxy a Person for the role Person for use inside of a PersonHasNickName isCollection: false</summary>
+class PersonHasNickName_Person_Person_Proxy {
+	private $ref = null;
+	private $value = null;
+	public function __construct(/*object*/ $ref) {
+		$this->ref = $ref;
+	}
+	public function get() {
+		if (!(isset($this->value))) {
+			$this->value = PersonHasNickNameDAO::getInstance()->getSingle($this->ref->getPerson_id());
+		}
+		return $this->value;
+	}
+}
 // <summary>Class used to proxy a Person for the role Husband for use inside of a Person isCollection: false</summary>
 class Wife_Husband_Person_Proxy {
 	private $ref = null;
@@ -23,6 +51,34 @@ class DoesSomethingElseWithPerson_ValueType1DoesSomethingElseWith_ValueType1_Pro
 	public function get() {
 		if (!(isset($this->value))) {
 			$this->value = PersonDAO::getInstance()->getSingle($this->ref->getValueType1Value());
+		}
+		return $this->value;
+	}
+}
+// <summary>Class used to proxy a Person for the role DrivenByPerson for use inside of a Person isCollection: true</summary>
+class Person_DrivenByPerson_PersonDrivesCar_Proxy {
+	private $ref = null;
+	private $value = null;
+	public function __construct(/*object*/ $ref) {
+		$this->ref = $ref;
+	}
+	public function get() {
+		if (!(isset($this->value))) {
+			$this->value = PersonDAO::getInstance()->get_PersonDrivesCar_Collection_By_DrivenByPerson($this->ref->getPerson_id());
+		}
+		return $this->value;
+	}
+}
+// <summary>Class used to proxy a Person for the role Person for use inside of a Person isCollection: true</summary>
+class Person_Person_PersonHasNickName_Proxy {
+	private $ref = null;
+	private $value = null;
+	public function __construct(/*object*/ $ref) {
+		$this->ref = $ref;
+	}
+	public function get() {
+		if (!(isset($this->value))) {
+			$this->value = PersonDAO::getInstance()->get_PersonHasNickName_Collection_By_Person($this->ref->getPerson_id());
 		}
 		return $this->value;
 	}

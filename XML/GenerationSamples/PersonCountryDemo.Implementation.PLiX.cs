@@ -33,6 +33,15 @@ namespace PersonCountryDemo
 		}
 		#endregion // Exception Helpers
 		#region Lookup and External Constraint Enforcement
+		private readonly Dictionary<int, Person> _PersonPerson_idDictionary = new Dictionary<int, Person>();
+		public Person GetPersonByPerson_id(int Person_id)
+		{
+			return this._PersonPerson_idDictionary[Person_id];
+		}
+		public bool TryGetPersonByPerson_id(int Person_id, out Person Person)
+		{
+			return this._PersonPerson_idDictionary.TryGetValue(Person_id, out Person);
+		}
 		private readonly Dictionary<string, Country> _CountryCountry_nameDictionary = new Dictionary<string, Country>();
 		public Country GetCountryByCountry_name(string Country_name)
 		{
@@ -183,7 +192,7 @@ namespace PersonCountryDemo
 		}
 		#endregion // ConstraintEnforcementCollection
 		#region Person
-		public Person CreatePerson(string LastName, string FirstName)
+		public Person CreatePerson(int Person_id, string LastName, string FirstName)
 		{
 			if ((object)LastName == null)
 			{
@@ -193,6 +202,10 @@ namespace PersonCountryDemo
 			{
 				throw new ArgumentNullException("FirstName");
 			}
+			if (!(this.OnPersonPerson_idChanging(null, Person_id)))
+			{
+				throw PersonCountryDemoContext.GetConstraintEnforcementFailedException("Person_id");
+			}
 			if (!(this.OnPersonLastNameChanging(null, LastName)))
 			{
 				throw PersonCountryDemoContext.GetConstraintEnforcementFailedException("LastName");
@@ -201,7 +214,27 @@ namespace PersonCountryDemo
 			{
 				throw PersonCountryDemoContext.GetConstraintEnforcementFailedException("FirstName");
 			}
-			return new PersonCore(this, LastName, FirstName);
+			return new PersonCore(this, Person_id, LastName, FirstName);
+		}
+		private bool OnPersonPerson_idChanging(Person instance, int newValue)
+		{
+			Person currentInstance;
+			if (this._PersonPerson_idDictionary.TryGetValue(newValue, out currentInstance))
+			{
+				if ((object)currentInstance != (object)instance)
+				{
+					return false;
+				}
+			}
+			return true;
+		}
+		private void OnPersonPerson_idChanged(Person instance, Nullable<int> oldValue)
+		{
+			this._PersonPerson_idDictionary.Add(instance.Person_id, instance);
+			if (oldValue.HasValue)
+			{
+				this._PersonPerson_idDictionary.Remove(oldValue.GetValueOrDefault());
+			}
 		}
 		private bool OnPersonLastNameChanging(Person instance, string newValue)
 		{
@@ -250,9 +283,11 @@ namespace PersonCountryDemo
 		[System.Runtime.InteropServices.StructLayout(System.Runtime.InteropServices.LayoutKind.Auto, CharSet=System.Runtime.InteropServices.CharSet.Auto)]
 		private sealed class PersonCore : Person
 		{
-			public PersonCore(PersonCountryDemoContext context, string LastName, string FirstName)
+			public PersonCore(PersonCountryDemoContext context, int Person_id, string LastName, string FirstName)
 			{
 				this._Context = context;
+				this._Person_id = Person_id;
+				context.OnPersonPerson_idChanged(this, null);
 				this._LastName = LastName;
 				this._FirstName = FirstName;
 				context._PersonList.Add(this);
@@ -263,6 +298,27 @@ namespace PersonCountryDemo
 				get
 				{
 					return this._Context;
+				}
+			}
+			private int _Person_id;
+			public sealed override int Person_id
+			{
+				get
+				{
+					return this._Person_id;
+				}
+				set
+				{
+					int oldValue = this._Person_id;
+					if (oldValue != value)
+					{
+						if (this._Context.OnPersonPerson_idChanging(this, value) && base.OnPerson_idChanging(value))
+						{
+							this._Person_id = value;
+							this._Context.OnPersonPerson_idChanged(this, oldValue);
+							base.OnPerson_idChanged(oldValue);
+						}
+					}
 				}
 			}
 			private string _LastName;

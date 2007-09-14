@@ -75,6 +75,16 @@
 			icPersonCore.Dock = System.Windows.Forms.DockStyle.Fill;
 			this.MasterTabControl.TabPages["Person"].Controls.Add(icPersonCore);
 
+			this.MasterTabControl.TabPages.Add("PersonDrivesCar", "PersonDrivesCar");
+			PersonDrivesCarCore_InputControl icPersonDrivesCarCore = new PersonDrivesCarCore_InputControl();
+			icPersonDrivesCarCore.Dock = System.Windows.Forms.DockStyle.Fill;
+			this.MasterTabControl.TabPages["PersonDrivesCar"].Controls.Add(icPersonDrivesCarCore);
+
+			this.MasterTabControl.TabPages.Add("PersonHasNickName", "PersonHasNickName");
+			PersonHasNickNameCore_InputControl icPersonHasNickNameCore = new PersonHasNickNameCore_InputControl();
+			icPersonHasNickNameCore.Dock = System.Windows.Forms.DockStyle.Fill;
+			this.MasterTabControl.TabPages["PersonHasNickName"].Controls.Add(icPersonHasNickNameCore);
+
 			this.MasterTabControl.TabPages.Add("Review", "Review");
 			ReviewCore_InputControl icReviewCore = new ReviewCore_InputControl();
 			icReviewCore.Dock = System.Windows.Forms.DockStyle.Fill;

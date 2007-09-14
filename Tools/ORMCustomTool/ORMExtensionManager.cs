@@ -98,7 +98,6 @@ namespace Neumont.Tools.ORM.ORMCustomTool
 				}
 				if (stream != null)
 				{
-					myStream = null; // No longer needed
 					// Attempt to open the stream as an Xml file to
 					// get the required extensions from the Xml
 					string[] namespaces = null;
@@ -140,6 +139,14 @@ namespace Neumont.Tools.ORM.ORMCustomTool
 					catch (XmlException)
 					{
 						// Nothing to do
+					}
+					finally
+					{
+						if (myStream != null)
+						{
+							myStream.Seek(0, SeekOrigin.Begin);
+							myStream = null;
+						}
 					}
 					if (namespaceCount != 0)
 					{

@@ -1,4 +1,65 @@
 ﻿<?php
+class PersonDrivesCarBase extends Entity {
+	private $PersonDrivesCar_DrivenByPerson_Person_Proxy;
+	private $DrivesCar_vin;
+	public function __construct() {
+		parent::__construct();
+		$this->PersonDrivesCar_DrivenByPerson_Person_Proxy = new PersonDrivesCar_DrivenByPerson_Person_Proxy($this);
+	}
+	public function addValidationRules() {
+		$this->validationRules->addValidationRule(new RequiredFieldValidator("DrivesCar_vin"));
+	}
+	public function setDrivenByPerson(Person $value) {
+		$this->PersonDrivesCar_DrivenByPerson_Person_Proxy->Set($value);
+	}
+	public function getDrivenByPerson() {
+		return $this->PersonDrivesCar_DrivenByPerson_Person_Proxy->Get();
+	}
+	public function getDrivesCar_vin() {
+		return $this->DrivesCar_vin;
+	}
+	public function setDrivesCar_vin(/*int*/ $value) {
+		$this->DrivesCar_vin = $value;
+	}
+}
+if (!class_exists('PersonDrivesCar')) {
+	class PersonDrivesCar extends PersonDrivesCarBase {
+		public function __construct() {
+			parent::__construct();
+		}
+	}
+}
+class PersonHasNickNameBase extends Entity {
+	private $NickName;
+	private $PersonHasNickName_Person_Person_Proxy;
+	public function __construct() {
+		parent::__construct();
+		$this->PersonHasNickName_Person_Person_Proxy = new PersonHasNickName_Person_Person_Proxy($this);
+	}
+	public function addValidationRules() {
+		$this->validationRules->addValidationRule(new RequiredFieldValidator("NickName"));
+		$this->validationRules->addValidationRule(new StringLenthValidator("NickName", null, 64));
+	}
+	public function getNickName() {
+		return $this->NickName;
+	}
+	public function setNickName(/*string*/ $value) {
+		$this->NickName = $value;
+	}
+	public function setPerson(Person $value) {
+		$this->PersonHasNickName_Person_Person_Proxy->Set($value);
+	}
+	public function getPerson() {
+		return $this->PersonHasNickName_Person_Person_Proxy->Get();
+	}
+}
+if (!class_exists('PersonHasNickName')) {
+	class PersonHasNickName extends PersonHasNickNameBase {
+		public function __construct() {
+			parent::__construct();
+		}
+	}
+}
 class PersonBase extends Entity {
 	private $MalePerson;
 	private $FemalePerson;
@@ -280,6 +341,7 @@ class DeathBase extends Entity {
 	private $UnnaturalDeath;
 	private $Date_YMD;
 	private $DeathCause_DeathCause_Type;
+	private $isDead;
 	private $Person;
 	public function __construct() {
 		parent::__construct();
@@ -288,6 +350,7 @@ class DeathBase extends Entity {
 		$this->validationRules->addValidationRule(new RequiredFieldValidator("Date_YMD"));
 		$this->validationRules->addValidationRule(new RequiredFieldValidator("DeathCause_DeathCause_Type"));
 		$this->validationRules->addValidationRule(new StringLenthValidator("DeathCause_Type", null, 14));
+		$this->validationRules->addValidationRule(new RequiredFieldValidator("isDead"));
 	}
 	public function getPerson() {
 		return $this->Person;
@@ -327,6 +390,12 @@ class DeathBase extends Entity {
 	}
 	public function setDeathCause_DeathCause_Type(/*string*/ $value) {
 		$this->DeathCause_DeathCause_Type = $value;
+	}
+	public function getisDead() {
+		return $this->isDead;
+	}
+	public function setisDead(/*bool*/ $value) {
+		$this->isDead = $value;
 	}
 }
 if (!class_exists('Death')) {
@@ -525,6 +594,8 @@ class ReviewBase extends Entity {
 		$this->validationRules->addValidationRule(new RequiredFieldValidator("Car_vin"));
 		$this->validationRules->addValidationRule(new RequiredFieldValidator("Rating_Nr_Integer"));
 		$this->validationRules->addValidationRule(new ValueRangeValidator("Integer", 1, ValueRangeValidatorClusivity::$inclusive, 7, ValueRangeValidatorClusivity::$inclusive));
+		$this->validationRules->addValidationRule(new ValueRangeValidator("Integer", 14, ValueRangeValidatorClusivity::$inclusive, 16, ValueRangeValidatorClusivity::$inclusive));
+		$this->validationRules->addValidationRule(new ValueRangeValidator("Integer", 18, ValueRangeValidatorClusivity::$inclusive, null, ValueRangeValidatorClusivity::$));
 		$this->validationRules->addValidationRule(new RequiredFieldValidator("Criterion_Name"));
 		$this->validationRules->addValidationRule(new StringLenthValidator("Name", null, 64));
 	}

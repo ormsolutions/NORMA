@@ -277,7 +277,7 @@ namespace PersonCountryDemo
 		{
 			try
 			{
-				this.abstractTypeVar = this.testVar.CreatePerson(this.dgvCreate.Rows[0].Cells["LastName"].Value.ToString(), this.dgvCreate.Rows[0].Cells["FirstName"].Value.ToString());
+				this.abstractTypeVar = this.testVar.CreatePerson(int.Parse(this.dgvCreate.Rows[0].Cells["Person_id"].Value.ToString()), this.dgvCreate.Rows[0].Cells["LastName"].Value.ToString(), this.dgvCreate.Rows[0].Cells["FirstName"].Value.ToString());
 				if (this.abstractTypeVar != null)
 				{
 					if ((this.dgvCreate.Rows[0].Cells["LastName"].Value != null) && (this.dgvCreate.Rows[0].Cells["LastName"].Value.ToString() != this.abstractTypeVar.LastName))
@@ -337,6 +337,7 @@ namespace PersonCountryDemo
 					while (iterator.MoveNext())
 					{
 						this.dgvCollection.Rows.Add();
+						this.dgvCollection.Rows[index].Cells["Person_id"].Value = iterator.Current.Person_id;
 						this.dgvCollection.Rows[index].Cells["LastName"].Value = iterator.Current.LastName;
 						this.dgvCollection.Rows[index].Cells["FirstName"].Value = iterator.Current.FirstName;
 						this.dgvCollection.Rows[index].Cells["Title"].Value = iterator.Current.Title;
@@ -378,6 +379,9 @@ namespace PersonCountryDemo
 			{
 				switch (this.cbxSelectionMode.SelectedItem.ToString())
 				{
+					case "Person_id":
+						this.abstractTypeVar = this.testVar.GetPersonByPerson_id(int.Parse(this.dgvSelect.Rows[0].Cells["Person_id"].Value.ToString()));
+						break;
 					default:
 						break;
 				}
@@ -407,6 +411,8 @@ namespace PersonCountryDemo
 					this.pnlSave.Visible = true;
 					this.dgvCurrentObject.Visible = true;
 					this.lblCurrentObject.Text = "The current selected Person:";
+					this.dgvCurrentObject.Rows[0].Cells["Person_id"].Value = this.abstractTypeVar.Person_id;
+					this.dgvCurrentObject.Columns["Person_id"].Visible = true;
 					this.dgvCurrentObject.Rows[0].Cells["LastName"].Value = this.abstractTypeVar.LastName;
 					this.dgvCurrentObject.Columns["LastName"].Visible = true;
 					this.dgvCurrentObject.Rows[0].Cells["FirstName"].Value = this.abstractTypeVar.FirstName;
@@ -427,12 +433,16 @@ namespace PersonCountryDemo
 		{
 			try
 			{
+				this.dgvSelect.Columns["Person_id"].Visible = false;
 				this.dgvSelect.Columns["LastName"].Visible = false;
 				this.dgvSelect.Columns["FirstName"].Visible = false;
 				this.dgvSelect.Columns["Title"].Visible = false;
 				this.dgvSelect.Columns["Country"].Visible = false;
 				switch (this.cbxSelectionMode.SelectedItem.ToString())
 				{
+					case "Person_id":
+						this.dgvSelect.Columns["Person_id"].Visible = true;
+						break;
 					default:
 						break;
 				}

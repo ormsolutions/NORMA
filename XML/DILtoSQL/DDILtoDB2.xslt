@@ -22,14 +22,18 @@
 	exclude-result-prefixes="dml dms dep ddt dil ddl">
 
 	<xsl:import href="DDILtoSQLStandard.xslt"/>
+	<xsl:import href="TruthValueTestRemover.xslt"/>
 	<xsl:import href="DomainInliner.xslt"/>
 
 	<xsl:output method="text" encoding="utf-8" indent="no" omit-xml-declaration="yes"/>
 	<xsl:strip-space elements="*"/>
 
 	<xsl:template match="/">
+		<xsl:variable name="truthValueTestRemovedDilFragment">
+			<xsl:apply-templates mode="TruthValueTestRemover" select="."/>
+		</xsl:variable>
 		<xsl:variable name="domainInlinedDilFragment">
-			<xsl:apply-templates mode="DomainInliner" select="."/>
+			<xsl:apply-templates mode="DomainInliner" select="exsl:node-set($truthValueTestRemovedDilFragment)/child::*"/>
 		</xsl:variable>
 		<xsl:apply-templates select="exsl:node-set($domainInlinedDilFragment)/child::*"/>
 	</xsl:template>
@@ -37,6 +41,28 @@
 	<xsl:template match="dms:startTransactionStatement"/>
 
 	<xsl:template match="@defaultCharacterSet" mode="ForSchemaDefinition"/>
+
+	<xsl:template match="@type[.='BOOLEAN']" mode="ForDataType">
+		<xsl:text>CHARACTER</xsl:text>
+		<xsl:value-of select="$LeftParen"/>
+		<xsl:text>1</xsl:text>
+		<xsl:value-of select="$RightParen"/>
+		<xsl:text> FOR BIT DATA </xsl:text>
+	</xsl:template>
+
+	<xsl:template match="ddt:booleanLiteral">
+		<xsl:choose>
+			<xsl:when test="@value='TRUE'">
+				<xsl:text>X'01'</xsl:text>
+			</xsl:when>
+			<xsl:when test="@value='FALSE'">
+				<xsl:text>X'00'</xsl:text>
+			</xsl:when>
+			<xsl:otherwise>
+				<xsl:text>NULL</xsl:text>
+			</xsl:otherwise>
+		</xsl:choose>
+	</xsl:template>
 
 	<xsl:template match="dms:commitStatement">
 		<xsl:text>COMMIT</xsl:text>
@@ -78,13 +104,6 @@
 		<xsl:value-of select="$RightParen"/>
 	</xsl:template>
 
-	<xsl:template match="ddt:boolean">
-		<xsl:text>CHARACTER</xsl:text>
-		<xsl:value-of select="$LeftParen"/>
-		<xsl:text>1</xsl:text>
-		<xsl:value-of select="$RightParen"/>
-		<xsl:text> FOR BIT DATA </xsl:text>
-	</xsl:template>
 	<!-- This commentput here by Cle' for testing.
 	<!- UNDONE: This isn't going to work for ddl:tableConstraintDefinition elements that are not inside of ddl:tableDefinition elements ->
 	<xsl:template match="ddl:tableConstraintDefinition[child::ddl:uniqueConstraintDefinition]kk">

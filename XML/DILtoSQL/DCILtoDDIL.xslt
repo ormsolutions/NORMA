@@ -34,7 +34,7 @@
 			<dms:setSchemaStatement>
 				<ddt:characterStringLiteral value="{dsf:getStringLiteralForm(@name)}"/>
 			</dms:setSchemaStatement>
-			<xsl:apply-templates select="dcl:domainDataType"/>
+			<xsl:apply-templates select="dcl:domain"/>
 			<xsl:apply-templates select="dcl:table" mode="GenerateTableBase"/>
 			<xsl:apply-templates select="dcl:table" mode="GenerateTableReferences"/>
 			<xsl:apply-templates select="dcl:trigger"/>
@@ -51,7 +51,7 @@
 		</xsl:if>
 	</xsl:template>
 
-	<xsl:template match="dcl:domainDataType">
+	<xsl:template match="dcl:domain">
 		<ddl:domainDefinition name="{@name}">
 			<xsl:call-template name="GenerateSchemaAttribute"/>
 			<xsl:apply-templates select="dcl:predefinedDataType"/>
@@ -125,7 +125,7 @@
 	<xsl:template match="dcl:column">
 		<ddl:columnDefinition name="{@name}">
 			<xsl:apply-templates select="dcl:predefinedDataType"/>
-			<xsl:apply-templates select="dcl:domainDataTypeRef"/>
+			<xsl:apply-templates select="dcl:domainRef"/>
 			<xsl:choose>
 				<xsl:when test="@isIdentity='true'">
 					<ddl:identityColumnSpecification type="ALWAYS">
@@ -239,7 +239,7 @@
 	</xsl:template>
 
 
-	<xsl:template match="dcl:domainDataTypeRef">
+	<xsl:template match="dcl:domainRef">
 		<ddt:domain name="{@name}">
 			<xsl:call-template name="GenerateSchemaAttribute"/>
 		</ddt:domain>
@@ -271,12 +271,14 @@
 	</xsl:template>
 	<xsl:template match="dcl:predefinedDataType[@name='INTERVAL']">
 		<!-- TODO: DCIL currently doesn't have a way for the user to specify the @fields they want for an INTERVAL -->
+		<ddt:interval type="{@name}" fields="DAY TO SECOND"/>
 	</xsl:template>
 	<xsl:template match="dcl:predefinedDataType[@name='DATE']">
 		<ddt:date type="{@name}"/>
 	</xsl:template>
 	<xsl:template match="dcl:predefinedDataType[@name='TIME' or @name='TIMESTAMP']">
 		<!-- TODO: DCIL currently doesn't have a way for the user to specify the @zone they want for a TIME or TIMESTAMP -->
+		<ddt:time type="{@name}"/>
 	</xsl:template>
 
 </xsl:stylesheet>

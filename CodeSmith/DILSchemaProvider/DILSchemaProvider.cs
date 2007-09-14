@@ -102,11 +102,11 @@ namespace SchemaExplorer.DILSchemaProvider
 				XmlNode predefinedDataTypeNode = currentColumn.SelectSingleNode("dcl:predefinedDataType", _manager);
 				if (predefinedDataTypeNode == null)
 				{
-					XmlNode refNameNode = currentColumn.SelectSingleNode("dcl:domainDataTypeRef/@name", _manager);
+					XmlNode refNameNode = currentColumn.SelectSingleNode("dcl:domainRef/@name", _manager);
 					if (refNameNode != null)
 					{
 						string refName = refNameNode.Value;
-						predefinedDataTypeNode = currentColumn.SelectSingleNode("dcl:schema/dcl:domainDataType[@name='" + refName +"']/dcl:predefinedDataType", _manager);
+						predefinedDataTypeNode = currentColumn.SelectSingleNode("dcl:schema/dcl:domain[@name='" + refName +"']/dcl:predefinedDataType", _manager);
 					}
 				}
 				if (predefinedDataTypeNode != null)

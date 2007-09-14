@@ -26,6 +26,208 @@ if (!class_exists('DataAccess')) {
 	static class DataAccess extends DataAccessBase {
 	}
 }
+class PersonDrivesCarDaoBase {
+	private static $instance;
+	
+	public function __construct() {
+	}
+	public static function getInstance() {
+		if (!(isset(instance))) {
+			instance = new PersonDrivesCarDao();
+		}
+		return instance;
+	}
+	
+	public function getAll() {
+		try {
+			$retVal = null;
+			$db = DataAccess::getDataAdapter();
+			$select = $db->select();
+			$select->from("PersonDrivesCar", "*");
+			$db->setFetchMode(PDO::FETCH_ASSOC);
+			$result = $db->fetchPairs($select);
+			$rowCount = count($result);
+			for ($i = 0; $i < $rowCount; ++$i) {
+				$tempEntity = new PersonDrivesCar();
+				$tempEntity->setPerson_id($results["DrivenByPerson_Person_id"]);
+				$tempEntity->setDrivesCar_vin($results["DrivesCar_vin"]);
+				$retVal[] = $tempEntity;
+			}
+			return $retVal;
+		}
+		catch (Exception $exc) {
+			return null;
+		}
+	}
+	
+	public function getSingle(/*decimal*/ $DrivesCar_vin, /*int*/ $Person_id) {
+		try {
+			$retVal = new PersonDrivesCar();
+			$db = DataAccess::getDataAdapter();
+			$db->setFetchMode(PDO::FETCH_ASSOC);
+			$select = $db->select();
+			$select->from("PersonDrivesCar", "*");
+			$select->where("DrivesCar_vin = ?", $DrivesCar_vin);
+			$select->where("Person_id = ?", $Person_id);
+			$row = $db->fetchRow($select);
+			$retVal->setPerson_id($row["DrivenByPerson_Person_id"]);
+			$retVal->setDrivesCar_vin($row["DrivesCar_vin"]);
+			return $retVal;
+		}
+		catch (Exception $exc) {
+			return null;
+		}
+	}
+	
+	public function insert(PersonDrivesCar $PersonDrivesCar) {
+		$retVal = false;
+		try {
+			$db = DataAccess::getDataAdapter();
+			$dataArray = array();
+			$dataArray["DrivenByPerson"] = $PersonDrivesCar->getPerson_id();
+			$dataArray["DrivesCar_vin"] = $PersonDrivesCar->getDrivesCar_vin();
+			$nrRowsAffected = $db->insert("PersonDrivesCar", $dataArray);
+		}
+		catch (Exception $exc) {
+		}
+		return $retVal;
+	}
+	
+	public function update(PersonDrivesCar $PersonDrivesCar) {
+		$retVal = false;
+		try {
+			$db = DataAccess::getDataAdapter();
+			$dataArray = array();
+			$dataArray["DrivenByPerson"] = $PersonDrivesCar->getPerson_id();
+			$dataArray["DrivesCar_vin"] = $PersonDrivesCar->getDrivesCar_vin();
+			$whereClause = $db->quoteInto("DrivesCar_vin = ?", $PersonDrivesCar->getDrivesCar_vin()).$db->quoteInto("Person_id = ?", $PersonDrivesCar->getPerson_id());
+			$nrRowsAffected = $db->update("PersonDrivesCar", $dataArray, $whereClause);
+		}
+		catch (Exception $exc) {
+		}
+		return $retVal;
+	}
+	
+	public function delete(PersonDrivesCar $PersonDrivesCar) {
+		$retVal = false;
+		try {
+			$db = DataAccess::getDataAdapter();
+			$whereClause = $db->quoteInto("DrivesCar_vin = ?", $PersonDrivesCar->getDrivesCar_vin()).$db->quoteInto("Person_id = ?", $PersonDrivesCar->getPerson_id());
+			$nrRowsAffected = $db->delete("PersonDrivesCar", $whereClause);
+		}
+		catch (Exception $exc) {
+		}
+		return $retVal;
+	}
+}
+if (!class_exists('PersonDrivesCarDao')) {
+	class PersonDrivesCarDao extends PersonDrivesCarDaoBase {
+		public function __construct() {
+			parent::__construct();
+		}
+	}
+}
+class PersonHasNickNameDaoBase {
+	private static $instance;
+	
+	public function __construct() {
+	}
+	public static function getInstance() {
+		if (!(isset(instance))) {
+			instance = new PersonHasNickNameDao();
+		}
+		return instance;
+	}
+	
+	public function getAll() {
+		try {
+			$retVal = null;
+			$db = DataAccess::getDataAdapter();
+			$select = $db->select();
+			$select->from("PersonHasNickName", "*");
+			$db->setFetchMode(PDO::FETCH_ASSOC);
+			$result = $db->fetchPairs($select);
+			$rowCount = count($result);
+			for ($i = 0; $i < $rowCount; ++$i) {
+				$tempEntity = new PersonHasNickName();
+				$tempEntity->setNickName($results["NickName"]);
+				$tempEntity->setPerson_id($results["Person_Person_id"]);
+				$retVal[] = $tempEntity;
+			}
+			return $retVal;
+		}
+		catch (Exception $exc) {
+			return null;
+		}
+	}
+	
+	public function getSingle(/*string*/ $NickName, /*int*/ $Person_id) {
+		try {
+			$retVal = new PersonHasNickName();
+			$db = DataAccess::getDataAdapter();
+			$db->setFetchMode(PDO::FETCH_ASSOC);
+			$select = $db->select();
+			$select->from("PersonHasNickName", "*");
+			$select->where("NickName = ?", $NickName);
+			$select->where("Person_id = ?", $Person_id);
+			$row = $db->fetchRow($select);
+			$retVal->setNickName($row["NickName"]);
+			$retVal->setPerson_id($row["Person_Person_id"]);
+			return $retVal;
+		}
+		catch (Exception $exc) {
+			return null;
+		}
+	}
+	
+	public function insert(PersonHasNickName $PersonHasNickName) {
+		$retVal = false;
+		try {
+			$db = DataAccess::getDataAdapter();
+			$dataArray = array();
+			$dataArray["NickName"] = $PersonHasNickName->getNickName();
+			$dataArray["Person"] = $PersonHasNickName->getPerson_id();
+			$nrRowsAffected = $db->insert("PersonHasNickName", $dataArray);
+		}
+		catch (Exception $exc) {
+		}
+		return $retVal;
+	}
+	
+	public function update(PersonHasNickName $PersonHasNickName) {
+		$retVal = false;
+		try {
+			$db = DataAccess::getDataAdapter();
+			$dataArray = array();
+			$dataArray["NickName"] = $PersonHasNickName->getNickName();
+			$dataArray["Person"] = $PersonHasNickName->getPerson_id();
+			$whereClause = $db->quoteInto("NickName = ?", $PersonHasNickName->getNickName()).$db->quoteInto("Person_id = ?", $PersonHasNickName->getPerson_id());
+			$nrRowsAffected = $db->update("PersonHasNickName", $dataArray, $whereClause);
+		}
+		catch (Exception $exc) {
+		}
+		return $retVal;
+	}
+	
+	public function delete(PersonHasNickName $PersonHasNickName) {
+		$retVal = false;
+		try {
+			$db = DataAccess::getDataAdapter();
+			$whereClause = $db->quoteInto("NickName = ?", $PersonHasNickName->getNickName()).$db->quoteInto("Person_id = ?", $PersonHasNickName->getPerson_id());
+			$nrRowsAffected = $db->delete("PersonHasNickName", $whereClause);
+		}
+		catch (Exception $exc) {
+		}
+		return $retVal;
+	}
+}
+if (!class_exists('PersonHasNickNameDao')) {
+	class PersonHasNickNameDao extends PersonHasNickNameDaoBase {
+		public function __construct() {
+			parent::__construct();
+		}
+	}
+}
 class PersonDaoBase {
 	private static $instance;
 	
@@ -167,6 +369,52 @@ class PersonDaoBase {
 		catch (Exception $exc) {
 		}
 		return $retVal;
+	}
+	// <summary>Retrieves a collection of PersonDrivesCar objects by the given Person object</summary>
+	public function get_PersonDrivesCar_Collection_By_DrivenByPerson(/*int*/ $Person_id) {
+		try {
+			$retVal = null;
+			$db = DataAccess::getDataAdapter();
+			$select = $db->select();
+			$select->from("PersonDrivesCar", "*");
+			$select->where("Person_id = ?", $Person_id);
+			$db->setFetchMode(PDO::FETCH_ASSOC);
+			$result = $db->fetchPairs($select);
+			$rowCount = count($result);
+			for ($i = 0; $i < $rowCount; ++$i) {
+				$tempEntity = new PersonDrivesCar();
+				$tempEntity->setPerson_id($results["DrivenByPerson_Person_id"]);
+				$tempEntity->setDrivesCar_vin($results["DrivesCar_vin"]);
+				$retVal[] = $tempEntity;
+			}
+			return $retVal;
+		}
+		catch (Exception $exc) {
+			return null;
+		}
+	}
+	// <summary>Retrieves a collection of PersonHasNickName objects by the given Person object</summary>
+	public function get_PersonHasNickName_Collection_By_Person(/*int*/ $Person_id) {
+		try {
+			$retVal = null;
+			$db = DataAccess::getDataAdapter();
+			$select = $db->select();
+			$select->from("PersonHasNickName", "*");
+			$select->where("Person_id = ?", $Person_id);
+			$db->setFetchMode(PDO::FETCH_ASSOC);
+			$result = $db->fetchPairs($select);
+			$rowCount = count($result);
+			for ($i = 0; $i < $rowCount; ++$i) {
+				$tempEntity = new PersonHasNickName();
+				$tempEntity->setNickName($results["NickName"]);
+				$tempEntity->setPerson_id($results["Person_Person_id"]);
+				$retVal[] = $tempEntity;
+			}
+			return $retVal;
+		}
+		catch (Exception $exc) {
+			return null;
+		}
 	}
 	// <summary>Retrieves a collection of Wife objects by the given Person object</summary>
 	public function get_Wife_Collection_By_Husband(/*int*/ $Person_id) {
@@ -706,13 +954,15 @@ class ChildPersonDaoBase {
 		}
 	}
 	
-	public function getSingle(/*int*/ $Person_id) {
+	public function getSingle(/*int*/ $Person_id, /*decimal*/ $BirthOrder_BirthOrder_Nr, /*int*/ $Person_id) {
 		try {
 			$retVal = new ChildPerson();
 			$db = DataAccess::getDataAdapter();
 			$db->setFetchMode(PDO::FETCH_ASSOC);
 			$select = $db->select();
 			$select->from("Person", "*");
+			$select->where("Person_id = ?", $Person_id);
+			$select->where("BirthOrder_BirthOrder_Nr = ?", $BirthOrder_BirthOrder_Nr);
 			$select->where("Person_id = ?", $Person_id);
 			$row = $db->fetchRow($select);
 			$retVal->getPerson()->setFirstName($row["FirstName"]);
@@ -785,7 +1035,7 @@ class ChildPersonDaoBase {
 			$dataArray["MandatoryUniqueDecimal"] = $ChildPerson->getPerson()->getMandatoryUniqueDecimal();
 			$dataArray["MandatoryUniqueString"] = $ChildPerson->getPerson()->getMandatoryUniqueString();
 			$dataArray["BirthOrder_BirthOrder_Nr"] = $ChildPerson->getBirthOrder_BirthOrder_Nr();
-			$whereClause = $db->quoteInto("Person_id = ?", $ChildPerson->getPerson()->getPerson_id());
+			$whereClause = $db->quoteInto("Person_id = ?", $ChildPerson->getPerson()->getPerson_id()).$db->quoteInto("BirthOrder_BirthOrder_Nr = ?", $ChildPerson->getBirthOrder_BirthOrder_Nr()).$db->quoteInto("Person_id = ?", $ChildPerson->getPerson()->getPerson_id());
 			$nrRowsAffected = $db->update("ChildPerson", $dataArray, $whereClause);
 		}
 		catch (Exception $exc) {
@@ -797,7 +1047,7 @@ class ChildPersonDaoBase {
 		$retVal = false;
 		try {
 			$db = DataAccess::getDataAdapter();
-			$whereClause = $db->quoteInto("Person_id = ?", $ChildPerson->getPerson()->getPerson_id());
+			$whereClause = $db->quoteInto("Person_id = ?", $ChildPerson->getPerson()->getPerson_id()).$db->quoteInto("BirthOrder_BirthOrder_Nr = ?", $ChildPerson->getBirthOrder_BirthOrder_Nr()).$db->quoteInto("Person_id = ?", $ChildPerson->getPerson()->getPerson_id());
 			$nrRowsAffected = $db->delete("ChildPerson", $whereClause);
 		}
 		catch (Exception $exc) {
@@ -910,6 +1160,7 @@ class DeathDaoBase {
 			$dataArray["MandatoryUniqueString"] = $Death->getPerson()->getMandatoryUniqueString();
 			$dataArray["Date_YMD"] = $Death->getDate_YMD();
 			$dataArray["DeathCause_DeathCause_Type"] = $Death->getDeathCause_DeathCause_Type();
+			$dataArray["isDead"] = $Death->getisDead();
 			$nrRowsAffected = $db->insert("Death", $dataArray);
 		}
 		catch (Exception $exc) {
@@ -939,6 +1190,7 @@ class DeathDaoBase {
 			$dataArray["MandatoryUniqueString"] = $Death->getPerson()->getMandatoryUniqueString();
 			$dataArray["Date_YMD"] = $Death->getDate_YMD();
 			$dataArray["DeathCause_DeathCause_Type"] = $Death->getDeathCause_DeathCause_Type();
+			$dataArray["isDead"] = $Death->getisDead();
 			$whereClause = $db->quoteInto("Person_id = ?", $Death->getPerson()->getPerson_id());
 			$nrRowsAffected = $db->update("Death", $dataArray, $whereClause);
 		}
@@ -1064,6 +1316,7 @@ class NaturalDeathDaoBase {
 			$dataArray["MandatoryUniqueString"] = $NaturalDeath->getDeath()->getPerson()->getMandatoryUniqueString();
 			$dataArray["Date_YMD"] = $NaturalDeath->getDeath()->getDate_YMD();
 			$dataArray["DeathCause_DeathCause_Type"] = $NaturalDeath->getDeath()->getDeathCause_DeathCause_Type();
+			$dataArray["isDead"] = $NaturalDeath->getDeath()->getisDead();
 			$dataArray["isFromProstateCancer"] = $NaturalDeath->getisFromProstateCancer();
 			$nrRowsAffected = $db->insert("NaturalDeath", $dataArray);
 		}
@@ -1094,6 +1347,7 @@ class NaturalDeathDaoBase {
 			$dataArray["MandatoryUniqueString"] = $NaturalDeath->getDeath()->getPerson()->getMandatoryUniqueString();
 			$dataArray["Date_YMD"] = $NaturalDeath->getDeath()->getDate_YMD();
 			$dataArray["DeathCause_DeathCause_Type"] = $NaturalDeath->getDeath()->getDeathCause_DeathCause_Type();
+			$dataArray["isDead"] = $NaturalDeath->getDeath()->getisDead();
 			$dataArray["isFromProstateCancer"] = $NaturalDeath->getisFromProstateCancer();
 			$whereClause = $db->quoteInto("Person_id = ?", $NaturalDeath->getDeath()->getPerson()->getPerson_id());
 			$nrRowsAffected = $db->update("NaturalDeath", $dataArray, $whereClause);
@@ -1220,6 +1474,7 @@ class UnnaturalDeathDaoBase {
 			$dataArray["MandatoryUniqueString"] = $UnnaturalDeath->getDeath()->getPerson()->getMandatoryUniqueString();
 			$dataArray["Date_YMD"] = $UnnaturalDeath->getDeath()->getDate_YMD();
 			$dataArray["DeathCause_DeathCause_Type"] = $UnnaturalDeath->getDeath()->getDeathCause_DeathCause_Type();
+			$dataArray["isDead"] = $UnnaturalDeath->getDeath()->getisDead();
 			$dataArray["isViolent"] = $UnnaturalDeath->getisViolent();
 			$dataArray["isBloody"] = $UnnaturalDeath->getisBloody();
 			$nrRowsAffected = $db->insert("UnnaturalDeath", $dataArray);
@@ -1251,6 +1506,7 @@ class UnnaturalDeathDaoBase {
 			$dataArray["MandatoryUniqueString"] = $UnnaturalDeath->getDeath()->getPerson()->getMandatoryUniqueString();
 			$dataArray["Date_YMD"] = $UnnaturalDeath->getDeath()->getDate_YMD();
 			$dataArray["DeathCause_DeathCause_Type"] = $UnnaturalDeath->getDeath()->getDeathCause_DeathCause_Type();
+			$dataArray["isDead"] = $UnnaturalDeath->getDeath()->getisDead();
 			$dataArray["isViolent"] = $UnnaturalDeath->getisViolent();
 			$dataArray["isBloody"] = $UnnaturalDeath->getisBloody();
 			$whereClause = $db->quoteInto("Person_id = ?", $UnnaturalDeath->getDeath()->getPerson()->getPerson_id());

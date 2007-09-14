@@ -30,6 +30,7 @@ XCOPY /Y /D /V /Q "%XMLDir%\OIAL\ORMtoOIAL.xslt" "%ORMTransformsDir%\"
 XCOPY /Y /D /V /Q "%XMLDir%\OIALtoXSD\OIALtoXSD.xslt" "%ORMTransformsDir%\"
 XCOPY /Y /D /V /Q "%XMLDir%\OIALtoOWL\OIALtoOWL.xslt" "%ORMTransformsDir%\"
 XCOPY /Y /D /V /Q "%XMLDir%\OIALtoDCIL\OIALtoDCIL.xslt" "%ORMTransformsDir%\"
+XCOPY /Y /D /V /Q "%XMLDir%\ConceptualDBtoDCIL\ConceptualDBtoDCIL.xslt" "%ORMTransformsDir%\"
 
 XCOPY /Y /D /V /Q "%XMLDir%\OIALtoPLiX\OIALtoCLIProperties.xslt" "%ORMTransformsDir%\"
 XCOPY /Y /D /V /Q "%XMLDir%\OIALtoPLiX\OIALtoPLiX_GenerateTuple.xslt" "%ORMTransformsDir%\"
@@ -51,6 +52,7 @@ CALL:_AddXslORMGenerator "ORMtoOIAL" "ORM to OIAL" "Transforms a coreferenced OR
 CALL:_AddXslORMGenerator "OIALtoXSD" "OIAL to XSD" "Transforms an OIAL file to XML Schema." ".xsd" "OIAL" "XSD" "%ORMTransformsDir%\OIALtoXSD.xslt"
 CALL:_AddXslORMGenerator "OIALtoOWL" "OIAL to OWL" "Transforms an OIAL file to OWL." ".owl" "OIAL" "OWL" "%ORMTransformsDir%\OIALtoOWL.xslt"
 CALL:_AddXslORMGenerator "OIALtoDCIL" "OIAL to DCIL" "Transforms an OIAL file to DCIL." ".DCIL.xml" "OIAL" "DCIL" "%ORMTransformsDir%\OIALtoDCIL.xslt" "" "1"
+CALL:_AddXslORMGenerator "ConceptualDBtoDCL" "ConceptualDB to DCIL" "Transforms an ORM file with the ConceptualDB extension to DCIL." ".DCIL.xml" "ORM http://schemas.neumont.edu/ORM/Relational/2007-06/ConceptualDatabase http://schemas.neumont.edu/ORM/Bridge/2007-06/ORMAbstractionToConceptualDatabase http://schemas.neumont.edu/ORM/Abstraction/2007-06/Core http://schemas.neumont.edu/ORM/Bridge/2007-06/ORMToORMAbstraction" "DCIL" "%ORMTransformsDir%\ConceptualDBtoDCIL.xslt" "" "1"
 
 CALL:_AddXslORMGenerator "OIALtoCLIProperties" "OIAL to CLI Properties" "Transforms an OIAL file to CLI (Common Language Infrastructure) Properties" ".CLIProperties.xml" "OIAL" "CLIProperties" "%ORMTransformsDir%\OIALtoCLIProperties.xslt" "" "1"
 CALL:_AddXslORMGenerator "PLiXSupport" "PLiX Support" "Transforms nothing to SupportClasses PLiX." ".Support.PLiX.xml" "OIAL" "PLiX_Support" "%ORMTransformsDir%\OIALtoPLiX_GenerateGlobalSupportClasses.xslt" "NUPlixLoader"
@@ -72,6 +74,7 @@ XCOPY /Y /D /V /Q "%XMLDir%\DILtoSQL\DDILtoSQLServer.xslt" "%DILTransformsDir%\"
 XCOPY /Y /D /V /Q "%XMLDir%\DILtoSQL\DDILtoOracle.xslt" "%DILTransformsDir%\"
 XCOPY /Y /D /V /Q "%XMLDir%\DILtoSQL\DDILtoMySQL.xslt" "%DILTransformsDir%\"
 XCOPY /Y /D /V /Q "%XMLDir%\DILtoSQL\DomainInliner.xslt" "%DILTransformsDir%\"
+XCOPY /Y /D /V /Q "%XMLDir%\DILtoSQL\TruthValueTestRemover.xslt" "%DILTransformsDir%\"
 XCOPY /Y /D /V /Q "%XMLDir%\DIL\DILSupportFunctions.xslt" "%DILTransformsDir%\"
 CALL:_AddXslORMGenerator "DCILtoDDIL" "DCIL to DDIL" "Transforms DCIL to DDIL." ".DDIL.xml" "DCIL" "DDIL" "%DILTransformsDir%\DCILtoDDIL.xslt" "" "1"
 CALL:_AddXslORMGenerator "DDILtoSQLStandard" "DDIL to SQL Standard" "Transforms DDIL to Standard-dialect SQL." ".SQLStandard.sql" "DDIL" "SQL_SQLStandard" "%DILTransformsDir%\DDILtoSQLStandard.xslt"
@@ -170,5 +173,5 @@ IF NOT "%~9"=="" (REG ADD "HKLM\SOFTWARE\Neumont\ORM Architect for Visual Studio
 SHIFT /8
 IF NOT "%~9"=="" (REG ADD "HKLM\SOFTWARE\Neumont\ORM Architect for Visual Studio\Generators\%~1" /f /v "ReferenceInputFormats" /t REG_MULTI_SZ /d "%~9") 1>NUL
 SHIFT /8
-IF NOT "%~9"=="" (REG ADD "HKLM\SOFTWARE\Neumont\ORM Architect for Visual Studio\Generators\%~1" /f /v "PrequisiteInputFormats" /t REG_MULTI_SZ /d "%~9") 1>NUL
+IF NOT "%~9"=="" (REG ADD "HKLM\SOFTWARE\Neumont\ORM Architect for Visual Studio\Generators\%~1" /f /v "PrerequisiteInputFormats" /t REG_MULTI_SZ /d "%~9") 1>NUL
 GOTO:EOF

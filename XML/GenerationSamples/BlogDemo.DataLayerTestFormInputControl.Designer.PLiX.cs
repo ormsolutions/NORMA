@@ -1547,6 +1547,7 @@
 			this.dgvCollection.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
 			this.dgvCollection.Name = "dgvCollection";
 			this.dgvCollection.TabIndex = 0;
+			this.dgvCollection.Columns.Add("BlogLabel_Id", "BlogLabel_Id");
 			this.dgvCollection.Columns.Add("title", "title");
 			this.dgvCollection.ScrollBars = System.Windows.Forms.ScrollBars.Both;
 			this.dgvCollection.Height = 300;
@@ -1673,6 +1674,7 @@
 			this.cbxSelectionMode.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
 			this.cbxSelectionMode.TabIndex = 2;
 			this.cbxSelectionMode.SelectedIndexChanged += new System.EventHandler(this.cbxSelectionMode_SelectedIndexChanged);
+			this.cbxSelectionMode.Items.Add("BlogLabel_Id");
 			// 
 			// lblCurrentObject
 			// 
@@ -1691,9 +1693,12 @@
 			this.dgvCurrentObject.Name = "dgvCurrentObject";
 			this.dgvCurrentObject.Size = new System.Drawing.Size(500, 150);
 			this.dgvCurrentObject.TabIndex = 4;
+			this.dgvCurrentObject.Columns.Add("BlogLabel_Id", "BlogLabel_Id");
+			this.dgvCurrentObject.Columns["BlogLabel_Id"].Visible = false;
 			this.dgvCurrentObject.Columns.Add("title", "title");
 			this.dgvCurrentObject.Columns["title"].Visible = false;
 			this.dgvCurrentObject.Visible = false;
+			this.dgvCurrentObject.Columns["BlogLabel_Id"].ReadOnly = true;
 			this.dgvCurrentObject.CellBeginEdit += new System.Windows.Forms.DataGridViewCellCancelEventHandler(this.dgvCurrentObject_CellBeginEdit);
 			this.Controls.Add(this.pnlSave);
 			this.Controls.Add(this.dgvCurrentObject);
@@ -1734,6 +1739,7 @@
 			this.dgvSelect.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
 			this.dgvSelect.Name = "dgvSelect";
 			this.dgvSelect.TabIndex = 0;
+			this.dgvSelect.Columns.Add("BlogLabel_Id", "BlogLabel_Id");
 			this.dgvSelect.Columns.Add("title", "title");
 			this.dgvSelect.ScrollBars = System.Windows.Forms.ScrollBars.Both;
 			this.dgvSelect.Height = 75;

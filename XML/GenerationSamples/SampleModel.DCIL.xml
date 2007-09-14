@@ -1,273 +1,317 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
 <dcl:schema name="SampleModel" xmlns:dcl="http://schemas.orm.net/DIL/DCIL" xmlns:dil="http://schemas.orm.net/DIL/DIL" xmlns:ddt="http://schemas.orm.net/DIL/DILDT" xmlns:dep="http://schemas.orm.net/DIL/DILEP" xmlns:dml="http://schemas.orm.net/DIL/DMIL" xmlns:ddl="http://schemas.orm.net/DIL/DDIL">
-	<dcl:domainDataType name="OptionalUniqueString" oilRefName="OptionalUniqueString">
-		<dcl:predefinedDataType name="CHARACTER" length="11" />
-		<dcl:checkConstraint name="OptionalUniqueString_Chk">
+	<dcl:domain name="vin">
+		<dcl:predefinedDataType name="INTEGER" />
+		<dcl:checkConstraint name="vin_Unsigned_Chk">
 			<dep:comparisonPredicate operator="greaterThanOrEquals">
-				<dep:parenthesizedValueExpression>
-					<dep:charLengthExpression>
-						<dep:trimFunction specification="BOTH">
-							<dep:trimSource>
-								<dep:valueKeyword />
-							</dep:trimSource>
-						</dep:trimFunction>
-					</dep:charLengthExpression>
-				</dep:parenthesizedValueExpression>
-				<ddt:exactNumericLiteral value="11" />
+				<dep:valueKeyword />
+				<ddt:exactNumericLiteral value="0" />
 			</dep:comparisonPredicate>
 		</dcl:checkConstraint>
-	</dcl:domainDataType>
-	<dcl:domainDataType name="&quot;Integer&quot;" oilRefName="Integer">
-		<dcl:predefinedDataType name="BIGINT" />
-		<dcl:checkConstraint name="Integer_Chk">
-			<dep:betweenPredicate type="BETWEEN">
-				<dep:valueKeyword />
-				<ddt:exactNumericLiteral value="1" />
-				<ddt:exactNumericLiteral value="7" />
-			</dep:betweenPredicate>
+	</dcl:domain>
+	<dcl:domain name="&quot;Integer&quot;">
+		<dcl:predefinedDataType name="INTEGER" />
+		<dcl:checkConstraint name="ValueTypeValueConstraint1">
+			<dep:and>
+				<dep:comparisonPredicate operator="greaterThanOrEquals">
+					<dep:valueKeyword />
+					<ddt:exactNumericLiteral value="0" />
+				</dep:comparisonPredicate>
+				<dep:or>
+					<dep:inPredicate type="IN">
+						<dep:valueKeyword />
+						<ddt:exactNumericLiteral value="9" />
+						<ddt:exactNumericLiteral value="10" />
+						<ddt:exactNumericLiteral value="12" />
+					</dep:inPredicate>
+					<dep:or>
+						<dep:betweenPredicate type="BETWEEN">
+							<dep:valueKeyword />
+							<ddt:exactNumericLiteral value="1" />
+							<ddt:exactNumericLiteral value="7" />
+						</dep:betweenPredicate>
+						<dep:or>
+							<dep:betweenPredicate type="BETWEEN">
+								<dep:valueKeyword />
+								<ddt:exactNumericLiteral value="14" />
+								<ddt:exactNumericLiteral value="16" />
+							</dep:betweenPredicate>
+							<dep:comparisonPredicate operator="greaterThanOrEquals">
+								<dep:valueKeyword />
+								<ddt:exactNumericLiteral value="18" />
+							</dep:comparisonPredicate>
+						</dep:or>
+					</dep:or>
+				</dep:or>
+			</dep:and>
 		</dcl:checkConstraint>
-	</dcl:domainDataType>
-	<dcl:domainDataType name="DeathCause_Type" oilRefName="DeathCause_Type">
+	</dcl:domain>
+	<dcl:domain name="DeathCause_Type">
 		<dcl:predefinedDataType name="CHARACTER VARYING" length="14" />
-		<dcl:checkConstraint name="DeathCause_Type_Chk">
+		<dcl:checkConstraint name="ValueTypeValueConstraint2">
 			<dep:inPredicate type="IN">
 				<dep:valueKeyword />
 				<ddt:characterStringLiteral value="natural" />
 				<ddt:characterStringLiteral value="not so natural" />
 			</dep:inPredicate>
 		</dcl:checkConstraint>
-	</dcl:domainDataType>
-	<dcl:domainDataType name="Gender_Code" oilRefName="Gender_Code">
-		<dcl:predefinedDataType name="CHARACTER" length="1" />
-		<dcl:checkConstraint name="Gender_Code_Chk">
-			<dep:and>
-				<dep:comparisonPredicate operator="greaterThanOrEquals">
-					<dep:parenthesizedValueExpression>
-						<dep:charLengthExpression>
-							<dep:trimFunction specification="BOTH">
-								<dep:trimSource>
-									<dep:valueKeyword />
-								</dep:trimSource>
-							</dep:trimFunction>
-						</dep:charLengthExpression>
-					</dep:parenthesizedValueExpression>
-					<ddt:exactNumericLiteral value="1" />
-				</dep:comparisonPredicate>
-				<dep:inPredicate type="IN">
-					<dep:valueKeyword />
-					<ddt:characterStringLiteral value="M" />
-					<ddt:characterStringLiteral value="F" />
-				</dep:inPredicate>
-			</dep:and>
-		</dcl:checkConstraint>
-	</dcl:domainDataType>
-	<dcl:domainDataType name="MandatoryUniqueString" oilRefName="MandatoryUniqueString">
-		<dcl:predefinedDataType name="CHARACTER" length="11" />
-		<dcl:checkConstraint name="MandatoryUniqueString_Chk">
+	</dcl:domain>
+	<dcl:domain name="BirthOrder_Nr">
+		<dcl:predefinedDataType name="INTEGER" />
+		<dcl:checkConstraint name="BirthOrder_Nr_Unsigned_Chk">
 			<dep:comparisonPredicate operator="greaterThanOrEquals">
-				<dep:parenthesizedValueExpression>
-					<dep:charLengthExpression>
-						<dep:trimFunction specification="BOTH">
-							<dep:trimSource>
-								<dep:valueKeyword />
-							</dep:trimSource>
-						</dep:trimFunction>
-					</dep:charLengthExpression>
-				</dep:parenthesizedValueExpression>
-				<ddt:exactNumericLiteral value="11" />
+				<dep:valueKeyword />
+				<ddt:exactNumericLiteral value="0" />
 			</dep:comparisonPredicate>
 		</dcl:checkConstraint>
-	</dcl:domainDataType>
-	<dcl:table name="Person" oilRefName="Person">
-		<dcl:column name="FirstName" isNullable="false" isIdentity="false" oilRefName="FirstName">
+	</dcl:domain>
+	<dcl:domain name="Gender_Code">
+		<dcl:predefinedDataType name="CHARACTER" length="1" />
+		<dcl:checkConstraint name="ValueTypeValueConstraint3">
+			<dep:inPredicate type="IN">
+				<dep:valueKeyword />
+				<ddt:characterStringLiteral value="M" />
+				<ddt:characterStringLiteral value="F" />
+			</dep:inPredicate>
+		</dcl:checkConstraint>
+	</dcl:domain>
+	<dcl:table name="Person">
+		<dcl:column name="Person_id" isNullable="false" isIdentity="true">
+			<dcl:predefinedDataType name="INTEGER" />
+		</dcl:column>
+		<dcl:column name="FirstName" isNullable="false" isIdentity="false">
 			<dcl:predefinedDataType name="CHARACTER VARYING" length="64" />
 		</dcl:column>
-		<dcl:column name="Person_id" isNullable="false" isIdentity="true" oilRefName="Person_id">
-			<dcl:predefinedDataType name="BIGINT" />
+		<dcl:column name="&quot;Date&quot;" isNullable="false" isIdentity="false">
+			<dcl:predefinedDataType name="DATE" />
 		</dcl:column>
-		<dcl:uniquenessConstraint name="InternalUniquenessConstraint2" isPrimary="true" oilRefName="InternalUniquenessConstraint2">
-			<dcl:columnRef name="Person_id" oilRefName="Person_id" />
-		</dcl:uniquenessConstraint>
-		<dcl:column name="Date_YMD" isNullable="false" isIdentity="false" oilRefName="Date_YMD">
-			<dcl:predefinedDataType name="BIGINT" />
-		</dcl:column>
-		<dcl:column name="LastName" isNullable="false" isIdentity="false" oilRefName="LastName">
+		<dcl:column name="LastName" isNullable="false" isIdentity="false">
 			<dcl:predefinedDataType name="CHARACTER VARYING" length="64" />
 		</dcl:column>
-		<dcl:column name="OptionalUniqueString" isNullable="true" isIdentity="false" oilRefName="OptionalUniqueString">
-			<dcl:domainDataTypeRef name="OptionalUniqueString" />
+		<dcl:column name="MandatoryUniqueDecimal" isNullable="false" isIdentity="false">
+			<dcl:predefinedDataType name="DECIMAL" precision="9" />
 		</dcl:column>
-		<dcl:uniquenessConstraint name="InternalUniquenessConstraint9" isPrimary="false" oilRefName="InternalUniquenessConstraint9">
-			<dcl:columnRef name="OptionalUniqueString" oilRefName="OptionalUniqueString" />
-		</dcl:uniquenessConstraint>
-		<dcl:column name="HatType_ColorARGB" isNullable="true" isIdentity="false" oilRefName="HatType_ColorARGB">
-			<dcl:predefinedDataType name="BIGINT" />
+		<dcl:column name="MandatoryUniqueString" isNullable="false" isIdentity="false">
+			<dcl:predefinedDataType name="CHARACTER" length="11" />
 		</dcl:column>
-		<dcl:column name="HTHTSHTSD" isNullable="true" isIdentity="false" oilRefName="HatType_HatTypeStyle_HatTypeStyle_Description">
+		<dcl:column name="Gender_Code" isNullable="false" isIdentity="false">
+			<dcl:domainRef name="Gender_Code" />
+		</dcl:column>
+		<dcl:column name="OptionalUniqueString" isNullable="true" isIdentity="false">
+			<dcl:predefinedDataType name="CHARACTER" length="11" />
+		</dcl:column>
+		<dcl:column name="OwnsCar" isNullable="true" isIdentity="false">
+			<dcl:domainRef name="vin" />
+		</dcl:column>
+		<dcl:column name="OptionalUniqueDecimal" isNullable="true" isIdentity="false">
+			<dcl:predefinedDataType name="DECIMAL" precision="9" />
+		</dcl:column>
+		<dcl:column name="Wife" isNullable="true" isIdentity="false">
+			<dcl:predefinedDataType name="INTEGER" />
+		</dcl:column>
+		<dcl:column name="ChildPerson" isNullable="true" isIdentity="false">
+			<dcl:domainRef name="BirthOrder_Nr" />
+		</dcl:column>
+		<dcl:column name="ChildPersonFather" isNullable="true" isIdentity="false">
+			<dcl:predefinedDataType name="INTEGER" />
+		</dcl:column>
+		<dcl:column name="ChildPersonMother" isNullable="true" isIdentity="false">
+			<dcl:predefinedDataType name="INTEGER" />
+		</dcl:column>
+		<dcl:column name="WearsHatTypeColorARGB" isNullable="true" isIdentity="false">
+			<dcl:predefinedDataType name="INTEGER" />
+		</dcl:column>
+		<dcl:column name="WearsHatTypeStyle_Description" isNullable="true" isIdentity="false">
 			<dcl:predefinedDataType name="CHARACTER VARYING" length="256" />
 		</dcl:column>
-		<dcl:column name="OwnsCar_vin" isNullable="true" isIdentity="false" oilRefName="OwnsCar_vin">
-			<dcl:predefinedDataType name="BIGINT" />
-		</dcl:column>
-		<dcl:uniquenessConstraint name="InternalUniquenessConstraint22" isPrimary="false" oilRefName="InternalUniquenessConstraint22">
-			<dcl:columnRef name="OwnsCar_vin" oilRefName="OwnsCar_vin" />
-		</dcl:uniquenessConstraint>
-		<dcl:column name="Gender_Gender_Code" isNullable="false" isIdentity="false" oilRefName="Gender_Gender_Code">
-			<dcl:domainDataTypeRef name="Gender_Code" />
-		</dcl:column>
-		<dcl:column name="hasParents" isNullable="false" isIdentity="false" oilRefName="hasParents">
+		<dcl:column name="HasParents" isNullable="true" isIdentity="false">
 			<dcl:predefinedDataType name="BOOLEAN" />
 		</dcl:column>
-		<dcl:column name="OptionalUniqueDecimal" isNullable="true" isIdentity="false" oilRefName="OptionalUniqueDecimal">
-			<dcl:predefinedDataType name="DECIMAL" precision="9" />
+		<dcl:column name="ValueType1DoesSomethingElseWith" isNullable="true" isIdentity="false">
+			<dcl:predefinedDataType name="INTEGER" />
 		</dcl:column>
-		<dcl:uniquenessConstraint name="InternalUniquenessConstraint65" isPrimary="false" oilRefName="InternalUniquenessConstraint65">
-			<dcl:columnRef name="OptionalUniqueDecimal" oilRefName="OptionalUniqueDecimal" />
+		<dcl:uniquenessConstraint name="InternalUniquenessConstraint2" isPrimary="true">
+			<dcl:columnRef name="Person_id" />
 		</dcl:uniquenessConstraint>
-		<dcl:column name="MandatoryUniqueDecimal" isNullable="false" isIdentity="false" oilRefName="MandatoryUniqueDecimal">
-			<dcl:predefinedDataType name="DECIMAL" precision="9" />
-		</dcl:column>
-		<dcl:uniquenessConstraint name="InternalUniquenessConstraint69" isPrimary="false" oilRefName="InternalUniquenessConstraint69">
-			<dcl:columnRef name="MandatoryUniqueDecimal" oilRefName="MandatoryUniqueDecimal" />
+		<dcl:uniquenessConstraint name="ExternalUniquenessConstraint1" isPrimary="false">
+			<dcl:columnRef name="FirstName" />
+			<dcl:columnRef name="&quot;Date&quot;" />
 		</dcl:uniquenessConstraint>
-		<dcl:column name="MandatoryUniqueString" isNullable="false" isIdentity="false" oilRefName="MandatoryUniqueString">
-			<dcl:domainDataTypeRef name="MandatoryUniqueString" />
-		</dcl:column>
-		<dcl:uniquenessConstraint name="InternalUniquenessConstraint67" isPrimary="false" oilRefName="InternalUniquenessConstraint67">
-			<dcl:columnRef name="MandatoryUniqueString" oilRefName="MandatoryUniqueString" />
+		<dcl:uniquenessConstraint name="ExternalUniquenessConstraint2" isPrimary="false">
+			<dcl:columnRef name="&quot;Date&quot;" />
+			<dcl:columnRef name="LastName" />
 		</dcl:uniquenessConstraint>
-		<dcl:column isNullable="true" isIdentity="false" oilRefName="Person_id" name="Husband_Person_id">
-			<dcl:predefinedDataType name="BIGINT" />
-		</dcl:column>
-		<dcl:referenceConstraint name="Husband_FK" oilRefName="Husband" targetTable="Person">
-			<dcl:columnRef sourceName="Husband_Person_id" targetName="Person_id" oilRefName="Husband_Person_id" />
-		</dcl:referenceConstraint>
-		<dcl:column isNullable="true" isIdentity="false" oilRefName="ValueType1Value" name="VlTyp1DsSmthngElsWth_VlTyp1Vl">
-			<dcl:predefinedDataType name="BIGINT" />
-		</dcl:column>
-		<dcl:referenceConstraint name="VlTyp1DsSmthngElsWth_FK" oilRefName="ValueType1DoesSomethingElseWith" targetTable="ValueType1">
-			<dcl:columnRef sourceName="VlTyp1DsSmthngElsWth_VlTyp1Vl" targetName="ValueType1Value" oilRefName="ValueType1DoesSomethingElseWith_ValueType1Value" />
-		</dcl:referenceConstraint>
-		<dcl:column name="ChldPrsn_BrthOrdr_BrthOrdr_Nr" isNullable="true" isIdentity="false" oilRefName="BirthOrder_BirthOrder_Nr">
-			<dcl:predefinedDataType name="BIGINT" />
-		</dcl:column>
-		<dcl:column isNullable="false" isIdentity="false" oilRefName="Person_id" name="Father_Person_id">
-			<dcl:predefinedDataType name="BIGINT" />
-		</dcl:column>
-		<dcl:referenceConstraint name="Father_FK" oilRefName="Father" targetTable="Person">
-			<dcl:columnRef sourceName="Father_Person_id" targetName="Person_id" oilRefName="Father_Person_id" />
-		</dcl:referenceConstraint>
-		<dcl:column isNullable="false" isIdentity="false" oilRefName="Person_id" name="Mother_Person_id">
-			<dcl:predefinedDataType name="BIGINT" />
-		</dcl:column>
-		<dcl:referenceConstraint name="Mother_FK" oilRefName="Mother" targetTable="Person">
-			<dcl:columnRef sourceName="Mother_Person_id" targetName="Person_id" oilRefName="Mother_Person_id" />
-		</dcl:referenceConstraint>
-		<dcl:uniquenessConstraint name="ChldPrsn_IntrnlUnqnssCnstrnt49" isPrimary="false" oilRefName="InternalUniquenessConstraint49">
-			<dcl:columnRef name="Father_Person_id" oilRefName="Father_Person_id" />
-			<dcl:columnRef name="ChldPrsn_BrthOrdr_BrthOrdr_Nr" oilRefName="BirthOrder_BirthOrder_Nr" />
-			<dcl:columnRef name="Mother_Person_id" oilRefName="Mother_Person_id" />
+		<dcl:uniquenessConstraint name="InternalUniquenessConstraint9" isPrimary="false">
+			<dcl:columnRef name="OptionalUniqueString" />
 		</dcl:uniquenessConstraint>
-		<dcl:column name="Death_Date_YMD" isNullable="true" isIdentity="false" oilRefName="Date_YMD">
-			<dcl:predefinedDataType name="BIGINT" />
+		<dcl:uniquenessConstraint name="InternalUniquenessConstraint13" isPrimary="false">
+			<dcl:columnRef name="Wife" />
+		</dcl:uniquenessConstraint>
+		<dcl:uniquenessConstraint name="InternalUniquenessConstraint22" isPrimary="false">
+			<dcl:columnRef name="OwnsCar" />
+		</dcl:uniquenessConstraint>
+		<dcl:uniquenessConstraint name="InternalUniquenessConstraint65" isPrimary="false">
+			<dcl:columnRef name="OptionalUniqueDecimal" />
+		</dcl:uniquenessConstraint>
+		<dcl:uniquenessConstraint name="InternalUniquenessConstraint69" isPrimary="false">
+			<dcl:columnRef name="MandatoryUniqueDecimal" />
+		</dcl:uniquenessConstraint>
+		<dcl:uniquenessConstraint name="InternalUniquenessConstraint67" isPrimary="false">
+			<dcl:columnRef name="MandatoryUniqueString" />
+		</dcl:uniquenessConstraint>
+		<dcl:uniquenessConstraint name="InternalUniquenessConstraint49" isPrimary="false">
+			<dcl:columnRef name="ChildPersonFather" />
+			<dcl:columnRef name="ChildPerson" />
+			<dcl:columnRef name="ChildPersonMother" />
+		</dcl:uniquenessConstraint>
+		<dcl:referenceConstraint name="Person_FK1" targetTable="ValueType1">
+			<dcl:columnRef sourceName="ValueType1DoesSomethingElseWith" targetName="ValueType1Value" />
+		</dcl:referenceConstraint>
+		<dcl:referenceConstraint name="Person_FK2" targetTable="Person">
+			<dcl:columnRef sourceName="Wife" targetName="Person_id" />
+		</dcl:referenceConstraint>
+		<dcl:referenceConstraint name="Person_FK3" targetTable="Person">
+			<dcl:columnRef sourceName="ChildPersonFather" targetName="Person_id" />
+		</dcl:referenceConstraint>
+		<dcl:referenceConstraint name="Person_FK4" targetTable="Person">
+			<dcl:columnRef sourceName="ChildPersonMother" targetName="Person_id" />
+		</dcl:referenceConstraint>
+	</dcl:table>
+	<dcl:table name="Task">
+		<dcl:column name="Task_id" isNullable="false" isIdentity="true">
+			<dcl:predefinedDataType name="INTEGER" />
 		</dcl:column>
-		<dcl:column name="Dth_DthCs_DthCs_Typ" isNullable="true" isIdentity="false" oilRefName="DeathCause_DeathCause_Type">
-			<dcl:domainDataTypeRef name="DeathCause_Type" />
+		<dcl:column name="Person_id" isNullable="false" isIdentity="false">
+			<dcl:predefinedDataType name="INTEGER" />
 		</dcl:column>
-		<dcl:column name="Dth_NtrlDth_sFrmPrsttCncr" isNullable="true" isIdentity="false" oilRefName="isFromProstateCancer">
+		<dcl:uniquenessConstraint name="InternalUniquenessConstraint16" isPrimary="true">
+			<dcl:columnRef name="Task_id" />
+		</dcl:uniquenessConstraint>
+		<dcl:referenceConstraint name="Task_FK" targetTable="Person">
+			<dcl:columnRef sourceName="Person_id" targetName="Person_id" />
+		</dcl:referenceConstraint>
+	</dcl:table>
+	<dcl:table name="ValueType1">
+		<dcl:column name="ValueType1Value" isNullable="false" isIdentity="false">
+			<dcl:predefinedDataType name="INTEGER" />
+		</dcl:column>
+		<dcl:column name="DoesSomethingWithPerson" isNullable="true" isIdentity="false">
+			<dcl:predefinedDataType name="INTEGER" />
+		</dcl:column>
+		<dcl:uniquenessConstraint name="ValueType1Uniqueness" isPrimary="true">
+			<dcl:columnRef name="ValueType1Value" />
+		</dcl:uniquenessConstraint>
+		<dcl:referenceConstraint name="ValueType1_FK" targetTable="Person">
+			<dcl:columnRef sourceName="DoesSomethingWithPerson" targetName="Person_id" />
+		</dcl:referenceConstraint>
+	</dcl:table>
+	<dcl:table name="Death">
+		<dcl:column name="Person_id" isNullable="false" isIdentity="true">
+			<dcl:predefinedDataType name="INTEGER" />
+		</dcl:column>
+		<dcl:column name="DeathCause" isNullable="false" isIdentity="false">
+			<dcl:domainRef name="DeathCause_Type" />
+		</dcl:column>
+		<dcl:column name="IsDead" isNullable="false" isIdentity="false">
 			<dcl:predefinedDataType name="BOOLEAN" />
 		</dcl:column>
-		<dcl:column name="Death_UnnaturalDeath_isViolent" isNullable="true" isIdentity="false" oilRefName="isViolent">
+		<dcl:column name="&quot;Date&quot;" isNullable="true" isIdentity="false">
+			<dcl:predefinedDataType name="DATE" />
+		</dcl:column>
+		<dcl:column name="NaturalDeathIsFromProstateCancer" isNullable="true" isIdentity="false">
 			<dcl:predefinedDataType name="BOOLEAN" />
 		</dcl:column>
-		<dcl:column name="Death_UnnaturalDeath_isBloody" isNullable="true" isIdentity="false" oilRefName="isBloody">
+		<dcl:column name="UnnaturalDeathIsViolent" isNullable="true" isIdentity="false">
 			<dcl:predefinedDataType name="BOOLEAN" />
 		</dcl:column>
-		<dcl:uniquenessConstraint name="ExternalUniquenessConstraint1" isPrimary="false" oilRefName="ExternalUniquenessConstraint1">
-			<dcl:columnRef name="FirstName" oilRefName="FirstName" />
-			<dcl:columnRef name="Date_YMD" oilRefName="Date_YMD" />
-		</dcl:uniquenessConstraint>
-		<dcl:uniquenessConstraint name="ExternalUniquenessConstraint2" isPrimary="false" oilRefName="ExternalUniquenessConstraint2">
-			<dcl:columnRef name="LastName" oilRefName="LastName" />
-			<dcl:columnRef name="Date_YMD" oilRefName="Date_YMD" />
-		</dcl:uniquenessConstraint>
-	</dcl:table>
-	<dcl:table name="Task" oilRefName="Task">
-		<dcl:column name="Task_id" isNullable="false" isIdentity="true" oilRefName="Task_id">
-			<dcl:predefinedDataType name="BIGINT" />
+		<dcl:column name="UnnaturalDeathIsBloody" isNullable="true" isIdentity="false">
+			<dcl:predefinedDataType name="BOOLEAN" />
 		</dcl:column>
-		<dcl:uniquenessConstraint name="InternalUniquenessConstraint16" isPrimary="true" oilRefName="InternalUniquenessConstraint16">
-			<dcl:columnRef name="Task_id" oilRefName="Task_id" />
+		<dcl:uniquenessConstraint name="&quot;Constraint&quot;" isPrimary="true">
+			<dcl:columnRef name="Person_id" />
 		</dcl:uniquenessConstraint>
-		<dcl:column isNullable="true" isIdentity="false" oilRefName="Person_id" name="Person_Person_id">
-			<dcl:predefinedDataType name="BIGINT" />
-		</dcl:column>
-		<dcl:referenceConstraint name="Person_FK" oilRefName="Person" targetTable="Person">
-			<dcl:columnRef sourceName="Person_Person_id" targetName="Person_id" oilRefName="Person_Person_id" />
+		<dcl:referenceConstraint name="Death_FK" targetTable="Person">
+			<dcl:columnRef sourceName="Person_id" targetName="Person_id" />
 		</dcl:referenceConstraint>
 	</dcl:table>
-	<dcl:table name="ValueType1" oilRefName="ValueType1">
-		<dcl:column name="ValueType1Value" isNullable="false" isIdentity="false" oilRefName="ValueType1Value">
-			<dcl:predefinedDataType name="BIGINT" />
+	<dcl:table name="PersonDrivesCar">
+		<dcl:column name="DrivesCar" isNullable="false" isIdentity="false">
+			<dcl:domainRef name="vin" />
 		</dcl:column>
-		<dcl:uniquenessConstraint name="ValueType1Value_Unique" isPrimary="true" oilRefName="ValueType1Value_Unique">
-			<dcl:columnRef name="ValueType1Value" oilRefName="ValueType1Value" />
+		<dcl:column name="DrivenByPerson" isNullable="false" isIdentity="false">
+			<dcl:predefinedDataType name="INTEGER" />
+		</dcl:column>
+		<dcl:uniquenessConstraint name="InternalUniquenessConstraint18" isPrimary="true">
+			<dcl:columnRef name="DrivesCar" />
+			<dcl:columnRef name="DrivenByPerson" />
 		</dcl:uniquenessConstraint>
-		<dcl:column isNullable="true" isIdentity="false" oilRefName="Person_id" name="DsSmthngWthPrsn_Prsn_d">
-			<dcl:predefinedDataType name="BIGINT" />
-		</dcl:column>
-		<dcl:referenceConstraint name="DoesSomethingWithPerson_FK" oilRefName="DoesSomethingWithPerson" targetTable="Person">
-			<dcl:columnRef sourceName="DsSmthngWthPrsn_Prsn_d" targetName="Person_id" oilRefName="DoesSomethingWithPerson_Person_id" />
+		<dcl:referenceConstraint name="PersonDrivesCar_FK" targetTable="Person">
+			<dcl:columnRef sourceName="DrivenByPerson" targetName="Person_id" />
 		</dcl:referenceConstraint>
 	</dcl:table>
-	<dcl:table name="PrsnBghtCrFrmPrsnOnDt" oilRefName="PersonBoughtCarFromPersonOnDate">
-		<dcl:column name="CarSold_vin" isNullable="false" isIdentity="false" oilRefName="CarSold_vin">
-			<dcl:predefinedDataType name="BIGINT" />
+	<dcl:table name="PersonBoughtCarFromPersonOnDate">
+		<dcl:column name="CarSold" isNullable="false" isIdentity="false">
+			<dcl:domainRef name="vin" />
 		</dcl:column>
-		<dcl:column name="SaleDate_YMD" isNullable="false" isIdentity="false" oilRefName="SaleDate_YMD">
-			<dcl:predefinedDataType name="BIGINT" />
+		<dcl:column name="Buyer" isNullable="false" isIdentity="false">
+			<dcl:predefinedDataType name="INTEGER" />
 		</dcl:column>
-		<dcl:column isNullable="false" isIdentity="false" oilRefName="Person_id" name="Buyer_Person_id">
-			<dcl:predefinedDataType name="BIGINT" />
+		<dcl:column name="Seller" isNullable="false" isIdentity="false">
+			<dcl:predefinedDataType name="INTEGER" />
 		</dcl:column>
-		<dcl:referenceConstraint name="Buyer_FK" oilRefName="Buyer" targetTable="Person">
-			<dcl:columnRef sourceName="Buyer_Person_id" targetName="Person_id" oilRefName="Buyer_Person_id" />
+		<dcl:column name="SaleDate" isNullable="false" isIdentity="false">
+			<dcl:predefinedDataType name="DATE" />
+		</dcl:column>
+		<dcl:uniquenessConstraint name="InternalUniquenessConstraint23" isPrimary="true">
+			<dcl:columnRef name="CarSold" />
+			<dcl:columnRef name="Buyer" />
+			<dcl:columnRef name="Seller" />
+		</dcl:uniquenessConstraint>
+		<dcl:uniquenessConstraint name="InternalUniquenessConstraint25" isPrimary="false">
+			<dcl:columnRef name="CarSold" />
+			<dcl:columnRef name="SaleDate" />
+			<dcl:columnRef name="Buyer" />
+		</dcl:uniquenessConstraint>
+		<dcl:uniquenessConstraint name="InternalUniquenessConstraint24" isPrimary="false">
+			<dcl:columnRef name="CarSold" />
+			<dcl:columnRef name="SaleDate" />
+			<dcl:columnRef name="Seller" />
+		</dcl:uniquenessConstraint>
+		<dcl:referenceConstraint name="PersonBoughtCarFromPersonOnDate_FK1" targetTable="Person">
+			<dcl:columnRef sourceName="Buyer" targetName="Person_id" />
 		</dcl:referenceConstraint>
-		<dcl:column isNullable="false" isIdentity="false" oilRefName="Person_id" name="Seller_Person_id">
-			<dcl:predefinedDataType name="BIGINT" />
-		</dcl:column>
-		<dcl:referenceConstraint name="Seller_FK" oilRefName="Seller" targetTable="Person">
-			<dcl:columnRef sourceName="Seller_Person_id" targetName="Person_id" oilRefName="Seller_Person_id" />
+		<dcl:referenceConstraint name="PersonBoughtCarFromPersonOnDate_FK2" targetTable="Person">
+			<dcl:columnRef sourceName="Seller" targetName="Person_id" />
 		</dcl:referenceConstraint>
-		<dcl:uniquenessConstraint name="InternalUniquenessConstraint23" isPrimary="true" oilRefName="InternalUniquenessConstraint23">
-			<dcl:columnRef name="Buyer_Person_id" oilRefName="Buyer_Person_id" />
-			<dcl:columnRef name="CarSold_vin" oilRefName="CarSold_vin" />
-			<dcl:columnRef name="Seller_Person_id" oilRefName="Seller_Person_id" />
-		</dcl:uniquenessConstraint>
-		<dcl:uniquenessConstraint name="InternalUniquenessConstraint24" isPrimary="false" oilRefName="InternalUniquenessConstraint24">
-			<dcl:columnRef name="SaleDate_YMD" oilRefName="SaleDate_YMD" />
-			<dcl:columnRef name="Seller_Person_id" oilRefName="Seller_Person_id" />
-			<dcl:columnRef name="CarSold_vin" oilRefName="CarSold_vin" />
-		</dcl:uniquenessConstraint>
-		<dcl:uniquenessConstraint name="InternalUniquenessConstraint25" isPrimary="false" oilRefName="InternalUniquenessConstraint25">
-			<dcl:columnRef name="CarSold_vin" oilRefName="CarSold_vin" />
-			<dcl:columnRef name="SaleDate_YMD" oilRefName="SaleDate_YMD" />
-			<dcl:columnRef name="Buyer_Person_id" oilRefName="Buyer_Person_id" />
-		</dcl:uniquenessConstraint>
 	</dcl:table>
-	<dcl:table name="Review" oilRefName="Review">
-		<dcl:column name="Car_vin" isNullable="false" isIdentity="false" oilRefName="Car_vin">
-			<dcl:predefinedDataType name="BIGINT" />
+	<dcl:table name="Review">
+		<dcl:column name="Vin" isNullable="false" isIdentity="false">
+			<dcl:domainRef name="vin" />
 		</dcl:column>
-		<dcl:column name="Rating_Nr_Integer" isNullable="false" isIdentity="false" oilRefName="Rating_Nr_Integer">
-			<dcl:domainDataTypeRef name="&quot;Integer&quot;" />
-		</dcl:column>
-		<dcl:column name="Criterion_Name" isNullable="false" isIdentity="false" oilRefName="Criterion_Name">
+		<dcl:column name="Name" isNullable="false" isIdentity="false">
 			<dcl:predefinedDataType name="CHARACTER VARYING" length="64" />
 		</dcl:column>
-		<dcl:uniquenessConstraint name="InternalUniquenessConstraint26" isPrimary="true" oilRefName="InternalUniquenessConstraint26">
-			<dcl:columnRef name="Car_vin" oilRefName="Car_vin" />
-			<dcl:columnRef name="Criterion_Name" oilRefName="Criterion_Name" />
+		<dcl:column name="&quot;Integer&quot;" isNullable="false" isIdentity="false">
+			<dcl:domainRef name="&quot;Integer&quot;" />
+		</dcl:column>
+		<dcl:uniquenessConstraint name="InternalUniquenessConstraint26" isPrimary="true">
+			<dcl:columnRef name="Vin" />
+			<dcl:columnRef name="Name" />
 		</dcl:uniquenessConstraint>
+	</dcl:table>
+	<dcl:table name="PersonHasNickName">
+		<dcl:column name="NickName" isNullable="false" isIdentity="false">
+			<dcl:predefinedDataType name="CHARACTER VARYING" length="64" />
+		</dcl:column>
+		<dcl:column name="Person_id" isNullable="false" isIdentity="false">
+			<dcl:predefinedDataType name="INTEGER" />
+		</dcl:column>
+		<dcl:uniquenessConstraint name="InternalUniquenessConstraint33" isPrimary="true">
+			<dcl:columnRef name="NickName" />
+			<dcl:columnRef name="Person_id" />
+		</dcl:uniquenessConstraint>
+		<dcl:referenceConstraint name="PersonHasNickName_FK" targetTable="Person">
+			<dcl:columnRef sourceName="Person_id" targetName="Person_id" />
+		</dcl:referenceConstraint>
 	</dcl:table>
 </dcl:schema>

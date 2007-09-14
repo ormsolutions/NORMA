@@ -10,18 +10,38 @@
 	elementFormDefault="qualified"
 	attributeFormDefault="unqualified"
 	version="0.9">
-	<xs:annotation>
-		<xs:appinfo source="zlib/libpng License Copyright Notice">
-			Copyright © Neumont University. All rights reserved.
 
-			This software is provided 'as-is', without any express or implied warranty. In no event will the authors be held liable for any damages arising from the use of this software.
-			Permission is granted to anyone to use this software for any purpose, including commercial applications, and to alter it and redistribute it freely, subject to the following restrictions:
-			1. The origin of this software must not be misrepresented; you must not claim that you wrote the original software. If you use this software in a product, an acknowledgment in the product documentation would be appreciated but is not required.
-			2. Altered source versions must be plainly marked as such, and must not be misrepresented as being the original software.
-			3. This notice may not be removed or altered from any source distribution.
+	<xs:annotation>
+		<xs:appinfo>
+			<rdf:RDF
+				xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#"
+				xmlns:dc="http://purl.org/dc/elements/1.1/"
+				xmlns:dcterms="http://purl.org/dc/terms/">
+				<rdf:Description rdf:about="http://schemas.orm.net/DIL/DCIL">
+					<dcterms:isPartOf rdf:resource="http://schemas.orm.net/DIL"/>
+					<dcterms:requires rdf:resource="http://schemas.orm.net/DIL/DIL"/>
+					<dcterms:requires rdf:resource="http://schemas.orm.net/DIL/DILDT"/>
+					<dcterms:requires rdf:resource="http://schemas.orm.net/DIL/DILEP"/>
+					<dc:title>Database Conceptual Intermediate Language</dc:title>
+					<dc:creator>Kevin M. Owen</dc:creator>
+					<dc:creator>Corey Kaylor</dc:creator>
+					<dc:contributor>Korvyn Dornseif</dc:contributor>
+					<dc:contributor>Rolando Sanidad</dc:contributor>
+					<dc:contributor>Jeremy Robertson</dc:contributor>
+					<dc:contributor>Noah Langenwalter</dc:contributor>
+					<dc:contributor>Jason Barnes</dc:contributor>
+					<dc:rights>Copyright © Neumont University. All rights reserved.</dc:rights>
+					<dcterms:rightsHolder>Neumont University</dcterms:rightsHolder>
+					<dcterms:license>
+						This software is provided 'as-is', without any express or implied warranty. In no event will the authors be held liable for any damages arising from the use of this software.
+						Permission is granted to anyone to use this software for any purpose, including commercial applications, and to alter it and redistribute it freely, subject to the following restrictions:
+						1. The origin of this software must not be misrepresented; you must not claim that you wrote the original software. If you use this software in a product, an acknowledgment in the product documentation would be appreciated but is not required.
+						2. Altered source versions must be plainly marked as such, and must not be misrepresented as being the original software.
+						3. This notice may not be removed or altered from any source distribution.
+					</dcterms:license>
+				</rdf:Description>
+			</rdf:RDF>
 		</xs:appinfo>
-		<xs:appinfo source="Contributors">Kevin M. Owen, Corey Kaylor, Korvyn Dornseif, Rolando Sanidad</xs:appinfo>
-		<xs:documentation>Database Conceptual Intermediate Language</xs:documentation>
 	</xs:annotation>
 
 	<xs:import namespace="http://schemas.orm.net/DIL/DIL"/>
@@ -34,7 +54,7 @@
 				<xs:element ref="dcl:catalog" minOccurs="1" maxOccurs="unbounded"/>
 			</xs:sequence>
 		</xs:complexType>
-		<xs:key name="catalogKey">
+		<xs:key name="catalogNameKey">
 			<xs:selector xpath="dcl:catalog"/>
 			<xs:field xpath="@name"/>
 		</xs:key>
@@ -59,7 +79,7 @@
 				</xs:simpleType>
 			</xs:attribute>
 		</xs:complexType>
-		<xs:key name="schemaKey">
+		<xs:key name="schemaNameKey">
 			<xs:selector xpath="dcl:schema"/>
 			<xs:field xpath="@name"/>
 		</xs:key>
@@ -70,37 +90,35 @@
 			<xs:documentation>Equivalent to a 'SCHEMA' in the SQL Standard.</xs:documentation>
 		</xs:annotation>
 		<xs:complexType>
-			<xs:group ref="dcl:schemaContents"/>
+			<xs:choice maxOccurs="unbounded">
+				<xs:element ref="dcl:table"/>
+				<xs:element ref="dcl:domain"/>
+				<xs:element ref="dcl:trigger"/>
+				<xs:element ref="dcl:procedure"/>
+			</xs:choice>
 			<xs:attribute name="name" use="required" type="ddt:identifier">
 				<xs:annotation>
 					<xs:documentation>The name of the schema.</xs:documentation>
 				</xs:annotation>
 			</xs:attribute>
 		</xs:complexType>
-		<xs:key name="tableKey">
+		<xs:key name="tableNameKey">
 			<xs:selector xpath="dcl:table"/>
 			<xs:field xpath="@name"/>
 		</xs:key>
-		<xs:key name="domainDataTypeKey">
-			<xs:selector xpath="dcl:domainDataType"/>
+		<xs:key name="domainNameKey">
+			<xs:selector xpath="dcl:domain"/>
 			<xs:field xpath="@name"/>
 		</xs:key>
-		<xs:key name="triggerKey">
+		<xs:key name="triggerNameKey">
 			<xs:selector xpath="dcl:trigger"/>
 			<xs:field xpath="@name"/>
 		</xs:key>
+		<xs:key name="procedureNameKey">
+			<xs:selector xpath="dcl:procedure"/>
+			<xs:field xpath="@name"/>
+		</xs:key>
 	</xs:element>
-
-	<xs:group name="schemaContents">
-		<xs:sequence>
-			<xs:choice minOccurs="1" maxOccurs="unbounded">
-				<xs:element ref="dcl:table"/>
-				<xs:element ref="dcl:domainDataType"/>
-				<xs:element ref="dcl:trigger"/>
-				<xs:element ref="dcl:procedure"/>
-			</xs:choice>
-		</xs:sequence>
-	</xs:group>
 
 	<xs:element name="table">
 		<xs:annotation>
@@ -116,22 +134,12 @@
 					<xs:documentation>The name of the table.</xs:documentation>
 				</xs:annotation>
 			</xs:attribute>
-			<xs:attribute name="oilRefName" use="required">
-				<xs:annotation>
-					<xs:documentation>The name of the OIAL element that corresponds to this element name</xs:documentation>
-				</xs:annotation>
-				<xs:simpleType>
-					<xs:restriction base="xs:token">
-						<xs:minLength value="1"/>
-					</xs:restriction>
-				</xs:simpleType>
-			</xs:attribute>
 		</xs:complexType>
-		<xs:key name="tableChildKey">
-			<xs:selector xpath="dcl:table/child::*"/>
+		<xs:key name="tableChildNameKey">
+			<xs:selector xpath="dcl:table/*"/>
 			<xs:field xpath="@name"/>
 		</xs:key>
-		<xs:key name="columnKey">
+		<xs:key name="columnNameKey">
 			<xs:selector xpath="dcl:column"/>
 			<xs:field xpath="@name"/>
 		</xs:key>
@@ -166,17 +174,21 @@
 		<xs:complexType>
 			<xs:sequence>
 				<xs:choice minOccurs="1" maxOccurs="1">
-					<xs:element name="domainDataTypeRef">
+					<xs:element name="domainRef">
 						<xs:annotation>
-							<xs:documentation>A reference to a user-defined, domain-specific data type.</xs:documentation>
+							<xs:documentation>A reference to a user-defined data domain.</xs:documentation>
 						</xs:annotation>
 						<xs:complexType>
 							<xs:attribute name="name" type="ddt:identifier">
 								<xs:annotation>
-									<xs:documentation>The name of the domain-specific data type being referenced.</xs:documentation>
+									<xs:documentation>The name of the data domain being referenced.</xs:documentation>
 								</xs:annotation>
 							</xs:attribute>
 						</xs:complexType>
+						<xs:keyref name="domainRef" refer="dcl:domainNameKey">
+							<xs:selector xpath="."/>
+							<xs:field xpath="@name"/>
+						</xs:keyref>
 					</xs:element>
 					<xs:element name="predefinedDataType" type="dcl:predefinedDataType"/>
 				</xs:choice>
@@ -203,50 +215,27 @@
 					<xs:documentation>If 'true' is specified for this attribute, the generationCode element must not be present.</xs:documentation>
 				</xs:annotation>
 			</xs:attribute>
-			<xs:attribute name="oilRefName" use="required">
-				<xs:annotation>
-					<xs:documentation>The name of the OIAL element that corresponds to this element name</xs:documentation>
-				</xs:annotation>
-				<xs:simpleType>
-					<xs:restriction base="xs:token">
-						<xs:minLength value="1"/>
-					</xs:restriction>
-				</xs:simpleType>
-			</xs:attribute>
 		</xs:complexType>
-		<xs:keyref name="domainDataTypeKeyRef" refer="dcl:domainDataTypeKey">
-			<xs:selector xpath="dcl:domainDataTypeRef"/>
-			<xs:field xpath="@name"/>
-		</xs:keyref>
+
 	</xs:element>
 
-	<xs:element name="domainDataType">
+	<xs:element name="domain">
 		<xs:annotation>
-			<xs:documentation>A user-defined, domain-specific data type with custom restrictions on it.</xs:documentation>
+			<xs:documentation>A user-defined data domain, which can have custom restrictions on it.</xs:documentation>
 		</xs:annotation>
 		<xs:complexType>
 			<xs:sequence>
 				<xs:element name="predefinedDataType" type="dcl:predefinedDataType"/>
-				<xs:element ref="dcl:checkConstraint">
+				<xs:element ref="dcl:checkConstraint" maxOccurs="unbounded">
 					<xs:annotation>
-						<xs:documentation>The check constraint on this domain-specific data type.</xs:documentation>
+						<xs:documentation>A check constraint on this data domain.</xs:documentation>
 					</xs:annotation>
 				</xs:element>
 			</xs:sequence>
 			<xs:attribute name="name" use="required" type="ddt:identifier">
 				<xs:annotation>
-					<xs:documentation>The name of the domain-specific data type.</xs:documentation>
+					<xs:documentation>The name of the data domain.</xs:documentation>
 				</xs:annotation>
-			</xs:attribute>
-			<xs:attribute name="oilRefName" use="optional">
-				<xs:annotation>
-					<xs:documentation>The name of the OIAL element that corresponds to this element name</xs:documentation>
-				</xs:annotation>
-				<xs:simpleType>
-					<xs:restriction base="xs:token">
-						<xs:minLength value="1"/>
-					</xs:restriction>
-				</xs:simpleType>
 			</xs:attribute>
 		</xs:complexType>
 	</xs:element>
@@ -260,22 +249,12 @@
 	</xs:group>
 	<xs:complexType name="constraintType" abstract="true">
 		<xs:annotation>
-			<xs:documentation>A constraint on a table or a domain-specific data type.</xs:documentation>
+			<xs:documentation>A constraint on a table or a data domain.</xs:documentation>
 		</xs:annotation>
 		<xs:attribute name="name" use="required" type="ddt:identifier">
 			<xs:annotation>
 				<xs:documentation>The name of the constraint.</xs:documentation>
 			</xs:annotation>
-		</xs:attribute>
-		<xs:attribute name="oilRefName" use="optional">
-			<xs:annotation>
-				<xs:documentation>The name of the OIAL element that corresponds to this element name</xs:documentation>
-			</xs:annotation>
-			<xs:simpleType>
-				<xs:restriction base="xs:token">
-					<xs:minLength value="1"/>
-				</xs:restriction>
-			</xs:simpleType>
 		</xs:attribute>
 	</xs:complexType>
 
@@ -297,17 +276,11 @@
 										<xs:documentation>The name of the column being referenced.</xs:documentation>
 									</xs:annotation>
 								</xs:attribute>
-								<xs:attribute name="oilRefName" use="optional">
-									<xs:annotation>
-										<xs:documentation>The name of the OIAL element that corresponds to this element name</xs:documentation>
-									</xs:annotation>
-									<xs:simpleType>
-										<xs:restriction base="xs:token">
-											<xs:minLength value="1"/>
-										</xs:restriction>
-									</xs:simpleType>
-								</xs:attribute>
 							</xs:complexType>
+							<xs:keyref name="uniquenessConstraintColumnRef" refer="dcl:columnNameKey">
+								<xs:selector xpath="."/>
+								<xs:field xpath="@name"/>
+							</xs:keyref>
 						</xs:element>
 					</xs:sequence>
 					<xs:attribute name="isPrimary" use="required" type="xs:boolean">
@@ -318,10 +291,6 @@
 				</xs:extension>
 			</xs:complexContent>
 		</xs:complexType>
-		<xs:keyref name="uniquenessConstraintColumnKeyRef" refer="dcl:columnKey">
-			<xs:selector xpath="dcl:columnRef"/>
-			<xs:field xpath="@name"/>
-		</xs:keyref>
 	</xs:element>
 
 	<xs:element name="referenceConstraint">
@@ -347,17 +316,11 @@
 										<xs:documentation>The name of the referenced column in the target table.</xs:documentation>
 									</xs:annotation>
 								</xs:attribute>
-								<xs:attribute name="oilRefName" use="optional">
-									<xs:annotation>
-										<xs:documentation>The name of the OIAL element that corresponds to this element name</xs:documentation>
-									</xs:annotation>
-									<xs:simpleType>
-										<xs:restriction base="xs:token">
-											<xs:minLength value="1"/>
-										</xs:restriction>
-									</xs:simpleType>
-								</xs:attribute>
 							</xs:complexType>
+							<xs:keyref name="referenceConstraintColumnRef" refer="dcl:columnNameKey">
+								<xs:selector xpath="dcl:columnRef"/>
+								<xs:field xpath="@sourceName"/>
+							</xs:keyref>
 						</xs:element>
 					</xs:sequence>
 					<xs:attribute name="targetTable" use="required" type="ddt:identifier">
@@ -368,13 +331,9 @@
 				</xs:extension>
 			</xs:complexContent>
 		</xs:complexType>
-		<xs:keyref name="referenceConstraintTableKeyRef" refer="dcl:tableKey">
+		<xs:keyref name="referenceConstraintTargetTableRef" refer="dcl:tableNameKey">
 			<xs:selector xpath="."/>
 			<xs:field xpath="@tableName"/>
-		</xs:keyref>
-		<xs:keyref name="referenceConstraintSourceColumnKeyRef" refer="dcl:columnKey">
-			<xs:selector xpath="dcl:columnRef"/>
-			<xs:field xpath="@sourceName"/>
 		</xs:keyref>
 	</xs:element>
 
@@ -413,20 +372,18 @@
 											<xs:documentation>The name of the column being referenced.</xs:documentation>
 										</xs:annotation>
 									</xs:attribute>
-									<xs:attribute name="oilRefName" use="optional">
-										<xs:annotation>
-											<xs:documentation>The name of the OIAL element that corresponds to this element name</xs:documentation>
-										</xs:annotation>
-										<xs:simpleType>
-											<xs:restriction base="xs:token">
-												<xs:minLength value="1"/>
-											</xs:restriction>
-										</xs:simpleType>
-									</xs:attribute>
 								</xs:complexType>
+								<xs:keyref name="triggerColumnRef" refer="dcl:columnNameKey">
+									<xs:selector xpath="."/>
+									<xs:field xpath="@name"/>
+								</xs:keyref>
 							</xs:element>
 						</xs:sequence>
 					</xs:complexType>
+					<xs:key name="triggerColumnRefNameKey">
+						<xs:selector xpath="dcl:columnRef"/>
+						<xs:field xpath="@name"/>
+					</xs:key>
 				</xs:element>
 				<xs:element name="referencing" minOccurs="0" maxOccurs="4">
 					<xs:annotation>
@@ -506,13 +463,17 @@
 				</xs:simpleType>
 			</xs:attribute>
 		</xs:complexType>
-		<xs:keyref name="triggerTableKeyRef" refer="dcl:tableKey">
+		<xs:key name="referencingTargetKey">
+			<xs:selector xpath="dcl:referencing"/>
+			<xs:field xpath="@target"/>
+		</xs:key>
+		<xs:key name="referencingNameKey">
+			<xs:selector xpath="dcl:referencing"/>
+			<xs:field xpath="@name"/>
+			</xs:key>
+		<xs:keyref name="triggerTargetTableRef" refer="dcl:tableNameKey">
 			<xs:selector xpath="."/>
 			<xs:field xpath="@targetTable"/>
-		</xs:keyref>
-		<xs:keyref name="triggerColumnKeyRef" refer="dcl:columnKey">
-			<xs:selector xpath="dcl:columns/dcl:columnRef"/>
-			<xs:field xpath="@name"/>
 		</xs:keyref>
 	</xs:element>
 
@@ -560,27 +521,11 @@
 					</xs:restriction>
 				</xs:simpleType>
 			</xs:attribute>
-			<xs:attribute name="oilRefName" use="optional">
-				<xs:annotation>
-					<xs:documentation>The name of the OIAL element that corresponds to this element name</xs:documentation>
-				</xs:annotation>
-				<xs:simpleType>
-					<xs:restriction base="xs:token">
-						<xs:minLength value="1"/>
-					</xs:restriction>
-				</xs:simpleType>
-			</xs:attribute>
-			<xs:attribute name="oilColumnRef" use="optional">
-				<xs:annotation>
-					<xs:documentation>The name of the OIAL column for update statements</xs:documentation>
-				</xs:annotation>
-				<xs:simpleType>
-					<xs:restriction base="xs:token">
-						<xs:minLength value="1"/>
-					</xs:restriction>
-				</xs:simpleType>
-			</xs:attribute>
 		</xs:complexType>
+		<xs:key name="procedureParameterNameKey">
+			<xs:selector xpath="dcl:parameter"/>
+			<xs:field xpath="@name"/>
+		</xs:key>
 	</xs:element>
 
 </xs:schema>

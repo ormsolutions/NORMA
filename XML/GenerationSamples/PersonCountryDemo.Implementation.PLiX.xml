@@ -216,6 +216,50 @@
 			</plx:function>
 			<plx:pragma type="closeRegion" data="Exception Helpers" />
 			<plx:pragma type="region" data="Lookup and External Constraint Enforcement" />
+			<plx:field visibility="private" readOnly="true" name="_PersonPerson_idDictionary" dataTypeName="Dictionary">
+				<plx:passTypeParam dataTypeName=".i4" />
+				<plx:passTypeParam dataTypeName="Person" />
+				<plx:initialize>
+					<plx:callNew dataTypeName="Dictionary">
+						<plx:passTypeParam dataTypeName=".i4" />
+						<plx:passTypeParam dataTypeName="Person" />
+					</plx:callNew>
+				</plx:initialize>
+			</plx:field>
+			<plx:function visibility="public" name="GetPersonByPerson_id">
+				<plx:interfaceMember memberName="GetPersonByPerson_id" dataTypeName="IPersonCountryDemoContext" />
+				<plx:param name="Person_id" dataTypeName=".i4" />
+				<plx:returns dataTypeName="Person" />
+				<plx:return>
+					<plx:callInstance type="indexerCall" name=".implied">
+						<plx:callObject>
+							<plx:callThis type="field" name="_PersonPerson_idDictionary" />
+						</plx:callObject>
+						<plx:passParam>
+							<plx:nameRef type="parameter" name="Person_id" />
+						</plx:passParam>
+					</plx:callInstance>
+				</plx:return>
+			</plx:function>
+			<plx:function visibility="public" name="TryGetPersonByPerson_id">
+				<plx:interfaceMember memberName="TryGetPersonByPerson_id" dataTypeName="IPersonCountryDemoContext" />
+				<plx:param name="Person_id" dataTypeName=".i4" />
+				<plx:param type="out" name="Person" dataTypeName="Person" />
+				<plx:returns dataTypeName=".boolean" />
+				<plx:return>
+					<plx:callInstance type="methodCall" name="TryGetValue">
+						<plx:callObject>
+							<plx:callThis type="field" name="_PersonPerson_idDictionary" />
+						</plx:callObject>
+						<plx:passParam>
+							<plx:nameRef type="parameter" name="Person_id" />
+						</plx:passParam>
+						<plx:passParam type="out">
+							<plx:nameRef type="parameter" name="Person" />
+						</plx:passParam>
+					</plx:callInstance>
+				</plx:return>
+			</plx:function>
 			<plx:field visibility="private" readOnly="true" name="_CountryCountry_nameDictionary" dataTypeName="Dictionary">
 				<plx:passTypeParam dataTypeName=".string" />
 				<plx:passTypeParam dataTypeName="Country" />
@@ -939,6 +983,7 @@
 			<plx:pragma type="region" data="Person" />
 			<plx:function visibility="public" name="CreatePerson">
 				<plx:interfaceMember memberName="CreatePerson" dataTypeName="IPersonCountryDemoContext" />
+				<plx:param name="Person_id" dataTypeName=".i4" />
 				<plx:param name="LastName" dataTypeName=".string" />
 				<plx:param name="FirstName" dataTypeName=".string" />
 				<plx:returns dataTypeName="Person" />
@@ -982,6 +1027,27 @@
 								<plx:string>FirstName</plx:string>
 							</plx:passParam>
 						</plx:callNew>
+					</plx:throw>
+				</plx:branch>
+				<plx:branch>
+					<plx:condition>
+						<plx:unaryOperator type="booleanNot">
+							<plx:callThis accessor="this" type="methodCall" name="OnPersonPerson_idChanging">
+								<plx:passParam>
+									<plx:nullKeyword />
+								</plx:passParam>
+								<plx:passParam>
+									<plx:nameRef type="parameter" name="Person_id" />
+								</plx:passParam>
+							</plx:callThis>
+						</plx:unaryOperator>
+					</plx:condition>
+					<plx:throw>
+						<plx:callStatic type="methodCall" name="GetConstraintEnforcementFailedException" dataTypeName="PersonCountryDemoContext">
+							<plx:passParam>
+								<plx:string>Person_id</plx:string>
+							</plx:passParam>
+						</plx:callStatic>
 					</plx:throw>
 				</plx:branch>
 				<plx:branch>
@@ -1032,6 +1098,9 @@
 							<plx:thisKeyword />
 						</plx:passParam>
 						<plx:passParam>
+							<plx:nameRef type="parameter" name="Person_id" />
+						</plx:passParam>
+						<plx:passParam>
 							<plx:nameRef type="parameter" name="LastName" />
 						</plx:passParam>
 						<plx:passParam>
@@ -1039,6 +1108,91 @@
 						</plx:passParam>
 					</plx:callNew>
 				</plx:return>
+			</plx:function>
+			<plx:function visibility="private" name="OnPersonPerson_idChanging">
+				<plx:param name="instance" dataTypeName="Person" />
+				<plx:param name="newValue" dataTypeName=".i4" />
+				<plx:returns dataTypeName=".boolean" />
+				<plx:local name="currentInstance" dataTypeName="Person" />
+				<plx:branch>
+					<plx:condition>
+						<plx:callInstance name="TryGetValue">
+							<plx:callObject>
+								<plx:callThis accessor="this" type="field" name="_PersonPerson_idDictionary" />
+							</plx:callObject>
+							<plx:passParam>
+								<plx:nameRef type="parameter" name="newValue" />
+							</plx:passParam>
+							<plx:passParam type="out">
+								<plx:nameRef type="local" name="currentInstance" />
+							</plx:passParam>
+						</plx:callInstance>
+					</plx:condition>
+					<plx:branch>
+						<plx:condition>
+							<plx:binaryOperator type="identityInequality">
+								<plx:left>
+									<plx:cast type="exceptionCast" dataTypeName=".object">
+										<plx:nameRef type="local" name="currentInstance" />
+									</plx:cast>
+								</plx:left>
+								<plx:right>
+									<plx:cast type="exceptionCast" dataTypeName=".object">
+										<plx:nameRef type="parameter" name="instance" />
+									</plx:cast>
+								</plx:right>
+							</plx:binaryOperator>
+						</plx:condition>
+						<plx:return>
+							<plx:falseKeyword />
+						</plx:return>
+					</plx:branch>
+				</plx:branch>
+				<plx:return>
+					<plx:trueKeyword />
+				</plx:return>
+			</plx:function>
+			<plx:function visibility="private" overload="true" name="OnPersonPerson_idChanged">
+				<plx:param name="instance" dataTypeName="Person" />
+				<plx:param name="oldValue" dataTypeName="Nullable">
+					<plx:passTypeParam dataTypeName=".i4" />
+				</plx:param>
+				<plx:callInstance type="methodCall" name="Add">
+					<plx:callObject>
+						<plx:callThis accessor="this" type="field" name="_PersonPerson_idDictionary" />
+					</plx:callObject>
+					<plx:passParam>
+						<plx:callInstance type="property" name="Person_id">
+							<plx:callObject>
+								<plx:nameRef type="parameter" name="instance" />
+							</plx:callObject>
+						</plx:callInstance>
+					</plx:passParam>
+					<plx:passParam>
+						<plx:nameRef type="parameter" name="instance" />
+					</plx:passParam>
+				</plx:callInstance>
+				<plx:branch>
+					<plx:condition>
+						<plx:callInstance type="property" name="HasValue">
+							<plx:callObject>
+								<plx:nameRef type="parameter" name="oldValue" />
+							</plx:callObject>
+						</plx:callInstance>
+					</plx:condition>
+					<plx:callInstance type="methodCall" name="Remove">
+						<plx:callObject>
+							<plx:callThis accessor="this" type="field" name="_PersonPerson_idDictionary" />
+						</plx:callObject>
+						<plx:passParam>
+							<plx:callInstance type="methodCall" name="GetValueOrDefault">
+								<plx:callObject>
+									<plx:nameRef type="parameter" name="oldValue" />
+								</plx:callObject>
+							</plx:callInstance>
+						</plx:passParam>
+					</plx:callInstance>
+				</plx:branch>
 			</plx:function>
 			<plx:function visibility="private" name="OnPersonLastNameChanging">
 				<plx:param name="instance" dataTypeName="Person" />
@@ -1221,6 +1375,7 @@
 				<plx:derivesFromClass dataTypeName="Person" />
 				<plx:function visibility="public" name=".construct">
 					<plx:param name="context" dataTypeName="PersonCountryDemoContext" />
+					<plx:param name="Person_id" dataTypeName=".i4" />
 					<plx:param name="LastName" dataTypeName=".string" />
 					<plx:param name="FirstName" dataTypeName=".string" />
 					<plx:assign>
@@ -1231,6 +1386,25 @@
 							<plx:nameRef type="parameter" name="context" />
 						</plx:right>
 					</plx:assign>
+					<plx:assign>
+						<plx:left>
+							<plx:callThis accessor="this" type="field" name="_Person_id" />
+						</plx:left>
+						<plx:right>
+							<plx:nameRef type="parameter" name="Person_id" />
+						</plx:right>
+					</plx:assign>
+					<plx:callInstance type="methodCall" name="OnPersonPerson_idChanged">
+						<plx:callObject>
+							<plx:nameRef type="parameter" name="context" />
+						</plx:callObject>
+						<plx:passParam>
+							<plx:thisKeyword />
+						</plx:passParam>
+						<plx:passParam>
+							<plx:nullKeyword />
+						</plx:passParam>
+					</plx:callInstance>
 					<plx:assign>
 						<plx:left>
 							<plx:callThis accessor="this" type="field" name="_LastName" />
@@ -1268,6 +1442,84 @@
 							<plx:callThis accessor="this" type="field" name="_Context" />
 						</plx:return>
 					</plx:get>
+				</plx:property>
+				<plx:field visibility="private" readOnly="false" name="_Person_id" dataTypeName=".i4" />
+				<plx:property visibility="public" modifier="sealedOverride" name="Person_id">
+					<plx:returns dataTypeName=".i4" />
+					<plx:get>
+						<plx:return>
+							<plx:callThis accessor="this" type="field" name="_Person_id" />
+						</plx:return>
+					</plx:get>
+					<plx:set>
+						<plx:local name="oldValue" dataTypeName=".i4">
+							<plx:initialize>
+								<plx:callThis accessor="this" type="field" name="_Person_id" />
+							</plx:initialize>
+						</plx:local>
+						<plx:branch>
+							<plx:condition>
+								<plx:binaryOperator type="inequality">
+									<plx:left>
+										<plx:nameRef type="local" name="oldValue" />
+									</plx:left>
+									<plx:right>
+										<plx:valueKeyword />
+									</plx:right>
+								</plx:binaryOperator>
+							</plx:condition>
+							<plx:branch>
+								<plx:condition>
+									<plx:binaryOperator type="booleanAnd">
+										<plx:left>
+											<plx:callInstance type="methodCall" name="OnPersonPerson_idChanging">
+												<plx:callObject>
+													<plx:callThis accessor="this" type="field" name="_Context" />
+												</plx:callObject>
+												<plx:passParam>
+													<plx:thisKeyword />
+												</plx:passParam>
+												<plx:passParam>
+													<plx:valueKeyword />
+												</plx:passParam>
+											</plx:callInstance>
+										</plx:left>
+										<plx:right>
+											<plx:callThis accessor="base" type="methodCall" name="OnPerson_idChanging">
+												<plx:passParam>
+													<plx:valueKeyword />
+												</plx:passParam>
+											</plx:callThis>
+										</plx:right>
+									</plx:binaryOperator>
+								</plx:condition>
+								<plx:assign>
+									<plx:left>
+										<plx:callThis accessor="this" type="field" name="_Person_id" />
+									</plx:left>
+									<plx:right>
+										<plx:valueKeyword />
+									</plx:right>
+								</plx:assign>
+								<plx:callInstance name="OnPersonPerson_idChanged">
+									<plx:callObject>
+										<plx:callThis accessor="this" type="field" name="_Context" />
+									</plx:callObject>
+									<plx:passParam>
+										<plx:thisKeyword />
+									</plx:passParam>
+									<plx:passParam>
+										<plx:nameRef type="local" name="oldValue" />
+									</plx:passParam>
+								</plx:callInstance>
+								<plx:callThis accessor="base" type="methodCall" name="OnPerson_idChanged">
+									<plx:passParam>
+										<plx:nameRef type="local" name="oldValue" />
+									</plx:passParam>
+								</plx:callThis>
+							</plx:branch>
+						</plx:branch>
+					</plx:set>
 				</plx:property>
 				<plx:field visibility="private" readOnly="false" name="_LastName" dataTypeName=".string" />
 				<plx:property visibility="public" modifier="sealedOverride" name="LastName">

@@ -1,6 +1,84 @@
 ﻿<?php
 require_once("Entities.php");
 require_once("DataLayer.php");
+class PersonDrivesCarServiceBase {
+	private static $instance;
+	
+	public function __construct() {
+	}
+	public static function getInstance() {
+		if (!(isset())) {
+			instance = new PersonDrivesCarService();
+		}
+		return instance;
+	}
+	
+	public function getAll() {
+		return PersonDrivesCarDAO::getInstance()->getAll();
+	}
+	
+	public function getSingle( $DrivesCar_vin,  $Person_id) {
+		return PersonDrivesCarDAO::getInstance()->getSingle($DrivesCar_vin, $Person_id);
+	}
+	
+	public function insert(PersonDrivesCar $PersonDrivesCar) {
+		return PersonDrivesCarDAO::getInstance()->insert($PersonDrivesCar);
+	}
+	
+	public function update(PersonDrivesCar $PersonDrivesCar) {
+		return PersonDrivesCarDAO::getInstance()->update($PersonDrivesCar);
+	}
+	
+	public function delete(PersonDrivesCar $PersonDrivesCar) {
+		return PersonDrivesCarDAO::getInstance()->delete($PersonDrivesCar);
+	}
+}
+if (!class_exists('PersonDrivesCarService')) {
+	class PersonDrivesCarService extends PersonDrivesCarServiceBase {
+		public function __construct() {
+			parent::__construct();
+		}
+	}
+}
+class PersonHasNickNameServiceBase {
+	private static $instance;
+	
+	public function __construct() {
+	}
+	public static function getInstance() {
+		if (!(isset())) {
+			instance = new PersonHasNickNameService();
+		}
+		return instance;
+	}
+	
+	public function getAll() {
+		return PersonHasNickNameDAO::getInstance()->getAll();
+	}
+	
+	public function getSingle( $NickName,  $Person_id) {
+		return PersonHasNickNameDAO::getInstance()->getSingle($NickName, $Person_id);
+	}
+	
+	public function insert(PersonHasNickName $PersonHasNickName) {
+		return PersonHasNickNameDAO::getInstance()->insert($PersonHasNickName);
+	}
+	
+	public function update(PersonHasNickName $PersonHasNickName) {
+		return PersonHasNickNameDAO::getInstance()->update($PersonHasNickName);
+	}
+	
+	public function delete(PersonHasNickName $PersonHasNickName) {
+		return PersonHasNickNameDAO::getInstance()->delete($PersonHasNickName);
+	}
+}
+if (!class_exists('PersonHasNickNameService')) {
+	class PersonHasNickNameService extends PersonHasNickNameServiceBase {
+		public function __construct() {
+			parent::__construct();
+		}
+	}
+}
 class PersonServiceBase {
 	private static $instance;
 	
@@ -31,6 +109,14 @@ class PersonServiceBase {
 	
 	public function delete(Person $Person) {
 		return PersonDAO::getInstance()->delete($Person);
+	}
+	// <summary>Retrieves a collection of PersonDrivesCar objects by the given Person object</summary>
+	public function get_PersonDrivesCar_Collection_By_DrivenByPerson(/*int*/ $Person_id) {
+		return PersonDAO::getInstance()->get_PersonDrivesCar_Collection_By_DrivenByPerson($Person_id);
+	}
+	// <summary>Retrieves a collection of PersonHasNickName objects by the given Person object</summary>
+	public function get_PersonHasNickName_Collection_By_Person(/*int*/ $Person_id) {
+		return PersonDAO::getInstance()->get_PersonHasNickName_Collection_By_Person($Person_id);
 	}
 	// <summary>Retrieves a collection of Wife objects by the given Person object</summary>
 	public function get_Wife_Collection_By_Husband(/*int*/ $Person_id) {
@@ -162,8 +248,8 @@ class ChildPersonServiceBase {
 		return ChildPersonDAO::getInstance()->getAll();
 	}
 	
-	public function getSingle( $Person_id) {
-		return ChildPersonDAO::getInstance()->getSingle($Person_id);
+	public function getSingle( $Person_id,  $BirthOrder_BirthOrder_Nr,  $Person_id) {
+		return ChildPersonDAO::getInstance()->getSingle($Person_id, $BirthOrder_BirthOrder_Nr, $Person_id);
 	}
 	
 	public function insert(ChildPerson $ChildPerson) {

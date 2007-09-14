@@ -43,7 +43,7 @@
 						</xsl:choose>
 					</xsl:if>
 				</xsl:for-each>
-				<xsl:for-each select="dcl:domainDataType">
+				<xsl:for-each select="dcl:domain">
 					<xsl:choose>
 						<xsl:when test="dcl:predefinedDataType/@precision">
 							<xsl:call-template name="CreateInformationFormat">

@@ -43,15 +43,15 @@
 			</xsl:variable>
 			<xsl:variable name="dataTypes" select="exsl:node-set($dataTypesFragment)/child::*"/>
 
-			<xsl:variable name="domainDataTypesFragment">
-				<xsl:for-each select="oil:informationTypeFormats/child::*[@name = $dataTypes[dcl:domainDataTypeRef]/@name]">
-					<dcl:domainDataType name="{dsf:makeValidIdentifier(@name)}" oilRefName="{@name}">
+			<xsl:variable name="domainsFragment">
+				<xsl:for-each select="oil:informationTypeFormats/child::*[@name = $dataTypes[dcl:domainRef]/@name]">
+					<dcl:domain name="{dsf:makeValidIdentifier(@name)}" oilRefName="{@name}">
 						<xsl:apply-templates select="." mode="GenerateDomain"/>
-					</dcl:domainDataType>
+					</dcl:domain>
 				</xsl:for-each>
 			</xsl:variable>
-			<xsl:variable name="domainDataTypes" select="exsl:node-set($domainDataTypesFragment)/child::*"/>
-			<xsl:copy-of select="$domainDataTypes"/>
+			<xsl:variable name="domains" select="exsl:node-set($domainsFragment)/child::*"/>
+			<xsl:copy-of select="$domains"/>
 
 			<xsl:for-each select="oil:conceptType">
 
@@ -71,26 +71,26 @@
 					<!--Generic Insert Procedure - Generate entire table (all column values except identity specified) insert-->
 					<xsl:apply-templates select="." mode="GenerateInsertProcedure">
 						<xsl:with-param name="Table" select="$table"/>
-						<xsl:with-param name="DomainDataTypes" select="$domainDataTypes"/>
+						<xsl:with-param name="Domains" select="$domains"/>
 					</xsl:apply-templates>
 					<!--Generic Delete Procedure - delete all rows matching <primary key values>-->
 					<xsl:apply-templates select="." mode="GenerateDeleteProcedure">
 						<xsl:with-param name="Table" select="$table"/>
-						<xsl:with-param name="DomainDataTypes" select="$domainDataTypes"/>
+						<xsl:with-param name="Domains" select="$domains"/>
 						<xsl:with-param name="OilModel" select="$oilModel"/>
 						<xsl:with-param name="DataTypes" select="$dataTypes"/>
 					</xsl:apply-templates>
 					<!--Generic Update procedures - update for single row matching <primary key values>-->
 					<xsl:apply-templates select="." mode="GenerateUpdateProcedures">
 						<xsl:with-param name="Table" select="$table"/>
-						<xsl:with-param name="DomainDataTypes" select="$domainDataTypes"/>
+						<xsl:with-param name="Domains" select="$domains"/>
 						<xsl:with-param name="OilModel" select="$oilModel"/>
 						<xsl:with-param name="DataTypes" select="$dataTypes"/>
 					</xsl:apply-templates>
 					<!--Generic Select procedures - select all rows that match <unique identifier>-->
 					<xsl:apply-templates select="." mode="GenerateSelectProcedures">
 						<xsl:with-param name="Table" select="$table"/>
-						<xsl:with-param name="DomainDataTypes" select="$domainDataTypes"/>
+						<xsl:with-param name="Domains" select="$domains"/>
 						<xsl:with-param name="OilModel" select="$oilModel"/>
 						<xsl:with-param name="DataTypes" select="$dataTypes"/>
 					</xsl:apply-templates>
@@ -121,7 +121,7 @@
 		</xsl:attribute>
 		<xsl:choose>
 			<xsl:when test="odt:enumeration or odt:range">
-				<dcl:domainDataTypeRef name="{dsf:makeValidIdentifier(@name)}"/>
+				<dcl:domainRef name="{dsf:makeValidIdentifier(@name)}"/>
 			</xsl:when>
 			<xsl:when test="@fractionDigits = 0 and not(@totalDigits)">
 				<dcl:predefinedDataType name="BIGINT"/>
@@ -148,7 +148,7 @@
 		</xsl:attribute>
 		<xsl:choose>
 			<xsl:when test="odt:enumeration or odt:range">
-				<dcl:domainDataTypeRef name="{dsf:makeValidIdentifier(@name)}"/>
+				<dcl:domainRef name="{dsf:makeValidIdentifier(@name)}"/>
 			</xsl:when>
 			<xsl:otherwise>
 				<dcl:predefinedDataType name="FLOAT">
@@ -167,7 +167,7 @@
 		</xsl:attribute>
 		<xsl:choose>
 			<xsl:when test="oil:pattern or odt:enumeration or @minLength">
-				<dcl:domainDataTypeRef name="{dsf:makeValidIdentifier(@name)}"/>
+				<dcl:domainRef name="{dsf:makeValidIdentifier(@name)}"/>
 			</xsl:when>
 			<xsl:otherwise>
 				<dcl:predefinedDataType name="CHARACTER VARYING">
@@ -497,7 +497,7 @@
 			<xsl:for-each select="$Table/dcl:column">
 				<dcl:parameter mode="IN" name="{@name}">
 					<xsl:copy-of select="dcl:predefinedDataType"/>
-					<xsl:copy-of select="$DomainDataTypes[@name=current()/dcl:domainDataTypeRef/@name]/dcl:predefinedDataType"/>
+					<xsl:copy-of select="$DomainDataTypes[@name=current()/dcl:domainRef/@name]/dcl:predefinedDataType"/>
 				</dcl:parameter>
 			</xsl:for-each>
 			<dml:insertStatement schema="{dsf:makeValidIdentifier(../@name)}" name="{dsf:makeValidIdentifier(@name)}">
@@ -536,7 +536,7 @@
 			<xsl:for-each select="$preferredIdentifierColumns/child::*">
 				<dcl:parameter mode="IN" name="{@name}">
 					<xsl:copy-of select="dcl:predefinedDataType"/>
-					<xsl:copy-of select="$DomainDataTypes[@name=current()/dcl:domainDataTypeRef/@name]/dcl:predefinedDataType"/>
+					<xsl:copy-of select="$DomainDataTypes[@name=current()/dcl:domainRef/@name]/dcl:predefinedDataType"/>
 				</dcl:parameter>
 			</xsl:for-each>
 
@@ -601,12 +601,12 @@
 				<xsl:for-each select="$preferredIdentifierColumns/dcl:column">
 					<dcl:parameter mode="IN" name="{dsf:makeValidIdentifier(concat('old_',@name))}">
 						<xsl:copy-of select="dcl:predefinedDataType"/>
-						<xsl:copy-of select="$DomainDataTypes[@name=current()/dcl:domainDataTypeRef/@name]/dcl:predefinedDataType"/>
+						<xsl:copy-of select="$DomainDataTypes[@name=current()/dcl:domainRef/@name]/dcl:predefinedDataType"/>
 					</dcl:parameter>
 				</xsl:for-each>
 				<dcl:parameter mode="IN" name="{@name}">
 					<xsl:copy-of select="dcl:predefinedDataType"/>
-					<xsl:copy-of select="$DomainDataTypes[@name=current()/dcl:domainDataTypeRef/@name]/dcl:predefinedDataType"/>
+					<xsl:copy-of select="$DomainDataTypes[@name=current()/dcl:domainRef/@name]/dcl:predefinedDataType"/>
 				</dcl:parameter>
 				<dml:updateStatement schema="{$SchemaName}" name="{$TableName}" >
 					<dml:setClause>

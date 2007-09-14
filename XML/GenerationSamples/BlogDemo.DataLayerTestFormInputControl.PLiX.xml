@@ -4555,10 +4555,43 @@
 											<plx:left>
 												<plx:callInstance name="BlogLabel_Id" type="property">
 													<plx:callObject>
-														<plx:callInstance name="" type="methodCall">
+														<plx:callInstance name="GetBlogLabelByBlogLabel_Id" type="methodCall">
 															<plx:callObject>
 																<plx:callThis name="testVar" type="field" accessor="this" />
 															</plx:callObject>
+															<plx:passParam>
+																<plx:callStatic name="Parse" dataTypeName=".i4" type="methodCall">
+																	<plx:passParam>
+																		<plx:callInstance name="ToString" type="methodCall">
+																			<plx:callObject>
+																				<plx:callInstance name="Value" type="property">
+																					<plx:callObject>
+																						<plx:callInstance name="Cells" type="property">
+																							<plx:callObject>
+																								<plx:callInstance name="Rows" type="property">
+																									<plx:callObject>
+																										<plx:callInstance name="dgvCreate" type="field">
+																											<plx:callObject>
+																												<plx:thisKeyword />
+																											</plx:callObject>
+																										</plx:callInstance>
+																									</plx:callObject>
+																									<plx:passParam>
+																										<plx:value data="0" type="i4" />
+																									</plx:passParam>
+																								</plx:callInstance>
+																							</plx:callObject>
+																							<plx:passParam>
+																								<plx:string data="blogLabelId(BlogLabel_Id)" />
+																							</plx:passParam>
+																						</plx:callInstance>
+																					</plx:callObject>
+																				</plx:callInstance>
+																			</plx:callObject>
+																		</plx:callInstance>
+																	</plx:passParam>
+																</plx:callStatic>
+															</plx:passParam>
 														</plx:callInstance>
 													</plx:callObject>
 												</plx:callInstance>
@@ -4587,10 +4620,43 @@
 									</plx:callInstance>
 								</plx:left>
 								<plx:right>
-									<plx:callInstance name="" type="methodCall">
+									<plx:callInstance name="GetBlogLabelByBlogLabel_Id" type="methodCall">
 										<plx:callObject>
 											<plx:callThis name="testVar" type="field" accessor="this" />
 										</plx:callObject>
+										<plx:passParam>
+											<plx:callStatic name="Parse" dataTypeName=".i4" type="methodCall">
+												<plx:passParam>
+													<plx:callInstance name="ToString" type="methodCall">
+														<plx:callObject>
+															<plx:callInstance name="Value" type="property">
+																<plx:callObject>
+																	<plx:callInstance name="Cells" type="property">
+																		<plx:callObject>
+																			<plx:callInstance name="Rows" type="property">
+																				<plx:callObject>
+																					<plx:callInstance name="dgvCreate" type="field">
+																						<plx:callObject>
+																							<plx:thisKeyword />
+																						</plx:callObject>
+																					</plx:callInstance>
+																				</plx:callObject>
+																				<plx:passParam>
+																					<plx:value data="0" type="i4" />
+																				</plx:passParam>
+																			</plx:callInstance>
+																		</plx:callObject>
+																		<plx:passParam>
+																			<plx:string data="blogLabelId(BlogLabel_Id)" />
+																		</plx:passParam>
+																	</plx:callInstance>
+																</plx:callObject>
+															</plx:callInstance>
+														</plx:callObject>
+													</plx:callInstance>
+												</plx:passParam>
+											</plx:callStatic>
+										</plx:passParam>
 									</plx:callInstance>
 								</plx:right>
 							</plx:assign>
@@ -5477,10 +5543,43 @@
 							</plx:callInstance>
 						</plx:left>
 						<plx:right>
-							<plx:callInstance name="" type="methodCall">
+							<plx:callInstance name="GetBlogLabelByBlogLabel_Id" type="methodCall">
 								<plx:callObject>
 									<plx:callThis name="testVar" type="field" accessor="this" />
 								</plx:callObject>
+								<plx:passParam>
+									<plx:callStatic name="Parse" dataTypeName=".i4" type="methodCall">
+										<plx:passParam>
+											<plx:callInstance name="ToString" type="methodCall">
+												<plx:callObject>
+													<plx:callInstance name="Value" type="property">
+														<plx:callObject>
+															<plx:callInstance name="Cells" type="property">
+																<plx:callObject>
+																	<plx:callInstance name="Rows" type="property">
+																		<plx:callObject>
+																			<plx:callInstance name="dgvCurrentObject" type="field">
+																				<plx:callObject>
+																					<plx:thisKeyword />
+																				</plx:callObject>
+																			</plx:callInstance>
+																		</plx:callObject>
+																		<plx:passParam>
+																			<plx:value data="0" type="i4" />
+																		</plx:passParam>
+																	</plx:callInstance>
+																</plx:callObject>
+																<plx:passParam>
+																	<plx:string data="blogLabelId(BlogLabel_Id)" />
+																</plx:passParam>
+															</plx:callInstance>
+														</plx:callObject>
+													</plx:callInstance>
+												</plx:callObject>
+											</plx:callInstance>
+										</plx:passParam>
+									</plx:callStatic>
+								</plx:passParam>
 							</plx:callInstance>
 						</plx:right>
 					</plx:assign>
@@ -5733,6 +5832,39 @@
 								<plx:callObject>
 									<plx:callThis name="testVar" type="field" accessor="this" />
 								</plx:callObject>
+								<plx:passParam>
+									<plx:callStatic name="Parse" dataTypeName=".i4" type="methodCall">
+										<plx:passParam>
+											<plx:callInstance name="ToString" type="methodCall">
+												<plx:callObject>
+													<plx:callInstance name="Value" type="property">
+														<plx:callObject>
+															<plx:callInstance name="Cells" type="property">
+																<plx:callObject>
+																	<plx:callInstance name="Rows" type="property">
+																		<plx:callObject>
+																			<plx:callInstance name="dgvCreate" type="field">
+																				<plx:callObject>
+																					<plx:thisKeyword />
+																				</plx:callObject>
+																			</plx:callInstance>
+																		</plx:callObject>
+																		<plx:passParam>
+																			<plx:value data="0" type="i4" />
+																		</plx:passParam>
+																	</plx:callInstance>
+																</plx:callObject>
+																<plx:passParam>
+																	<plx:string data="BlogLabel_Id" />
+																</plx:passParam>
+															</plx:callInstance>
+														</plx:callObject>
+													</plx:callInstance>
+												</plx:callObject>
+											</plx:callInstance>
+										</plx:passParam>
+									</plx:callStatic>
+								</plx:passParam>
 							</plx:callInstance>
 						</plx:right>
 					</plx:assign>
@@ -6011,6 +6143,44 @@
 													</plx:callInstance>
 												</plx:callObject>
 												<plx:passParam>
+													<plx:string data="BlogLabel_Id" />
+												</plx:passParam>
+											</plx:callInstance>
+										</plx:callObject>
+									</plx:callInstance>
+								</plx:left>
+								<plx:right>
+									<plx:callInstance name="BlogLabel_Id" type="property">
+										<plx:callObject>
+											<plx:callInstance name="Current" type="property">
+												<plx:callObject>
+													<plx:nameRef name="iterator" />
+												</plx:callObject>
+											</plx:callInstance>
+										</plx:callObject>
+									</plx:callInstance>
+								</plx:right>
+							</plx:assign>
+							<plx:assign>
+								<plx:left>
+									<plx:callInstance name="Value" type="property">
+										<plx:callObject>
+											<plx:callInstance name="Cells" type="property">
+												<plx:callObject>
+													<plx:callInstance name="Rows" type="property">
+														<plx:callObject>
+															<plx:callInstance name="dgvCollection" type="field">
+																<plx:callObject>
+																	<plx:thisKeyword />
+																</plx:callObject>
+															</plx:callInstance>
+														</plx:callObject>
+														<plx:passParam>
+															<plx:nameRef name="index" type="local" />
+														</plx:passParam>
+													</plx:callInstance>
+												</plx:callObject>
+												<plx:passParam>
 													<plx:string data="title" />
 												</plx:passParam>
 											</plx:callInstance>
@@ -6120,6 +6290,56 @@
 								</plx:callObject>
 							</plx:callInstance>
 						</plx:condition>
+						<plx:case>
+							<plx:condition>
+								<plx:string data="BlogLabel_Id" />
+							</plx:condition>
+							<plx:assign>
+								<plx:left>
+									<plx:callThis name="abstractTypeVar" type="field" accessor="this" />
+								</plx:left>
+								<plx:right>
+									<plx:callInstance name="GetBlogLabelByBlogLabel_Id" type="methodCall">
+										<plx:callObject>
+											<plx:callThis name="testVar" type="field" accessor="this" />
+										</plx:callObject>
+										<plx:passParam>
+											<plx:callStatic name="Parse" dataTypeName=".i4" type="methodCall">
+												<plx:passParam>
+													<plx:callInstance name="ToString" type="methodCall">
+														<plx:callObject>
+															<plx:callInstance name="Value" type="property">
+																<plx:callObject>
+																	<plx:callInstance name="Cells" type="property">
+																		<plx:callObject>
+																			<plx:callInstance name="Rows" type="property">
+																				<plx:callObject>
+																					<plx:callInstance name="dgvSelect" type="field">
+																						<plx:callObject>
+																							<plx:thisKeyword />
+																						</plx:callObject>
+																					</plx:callInstance>
+																				</plx:callObject>
+																				<plx:passParam>
+																					<plx:value data="0" type="i4" />
+																				</plx:passParam>
+																			</plx:callInstance>
+																		</plx:callObject>
+																		<plx:passParam>
+																			<plx:string data="BlogLabel_Id" />
+																		</plx:passParam>
+																	</plx:callInstance>
+																</plx:callObject>
+															</plx:callInstance>
+														</plx:callObject>
+													</plx:callInstance>
+												</plx:passParam>
+											</plx:callStatic>
+										</plx:passParam>
+									</plx:callInstance>
+								</plx:right>
+							</plx:assign>
+						</plx:case>
 						<plx:fallbackCase />
 					</plx:switch>
 					<plx:assign>
@@ -6286,6 +6506,63 @@
 												</plx:callInstance>
 											</plx:callObject>
 											<plx:passParam>
+												<plx:string data="BlogLabel_Id" />
+											</plx:passParam>
+										</plx:callInstance>
+									</plx:callObject>
+								</plx:callInstance>
+							</plx:left>
+							<plx:right>
+								<plx:callInstance name="BlogLabel_Id" type="property">
+									<plx:callObject>
+										<plx:callThis name="abstractTypeVar" type="field" accessor="this" />
+									</plx:callObject>
+								</plx:callInstance>
+							</plx:right>
+						</plx:assign>
+						<plx:assign>
+							<plx:left>
+								<plx:callInstance name="Visible" type="property">
+									<plx:callObject>
+										<plx:callInstance name="Columns" type="property">
+											<plx:callObject>
+												<plx:callInstance name="dgvCurrentObject" type="field">
+													<plx:callObject>
+														<plx:thisKeyword />
+													</plx:callObject>
+												</plx:callInstance>
+											</plx:callObject>
+											<plx:passParam>
+												<plx:string data="BlogLabel_Id" />
+											</plx:passParam>
+										</plx:callInstance>
+									</plx:callObject>
+								</plx:callInstance>
+							</plx:left>
+							<plx:right>
+								<plx:trueKeyword />
+							</plx:right>
+						</plx:assign>
+						<plx:assign>
+							<plx:left>
+								<plx:callInstance name="Value" type="property">
+									<plx:callObject>
+										<plx:callInstance name="Cells" type="property">
+											<plx:callObject>
+												<plx:callInstance name="Rows" type="property">
+													<plx:callObject>
+														<plx:callInstance name="dgvCurrentObject" type="field">
+															<plx:callObject>
+																<plx:thisKeyword />
+															</plx:callObject>
+														</plx:callInstance>
+													</plx:callObject>
+													<plx:passParam>
+														<plx:value data="0" type="i4" />
+													</plx:passParam>
+												</plx:callInstance>
+											</plx:callObject>
+											<plx:passParam>
 												<plx:string data="title" />
 											</plx:passParam>
 										</plx:callInstance>
@@ -6369,6 +6646,29 @@
 											</plx:callInstance>
 										</plx:callObject>
 										<plx:passParam>
+											<plx:string data="BlogLabel_Id" />
+										</plx:passParam>
+									</plx:callInstance>
+								</plx:callObject>
+							</plx:callInstance>
+						</plx:left>
+						<plx:right>
+							<plx:falseKeyword />
+						</plx:right>
+					</plx:assign>
+					<plx:assign>
+						<plx:left>
+							<plx:callInstance name="Visible" type="property">
+								<plx:callObject>
+									<plx:callInstance name="Columns" type="property">
+										<plx:callObject>
+											<plx:callInstance name="dgvSelect" type="field">
+												<plx:callObject>
+													<plx:thisKeyword />
+												</plx:callObject>
+											</plx:callInstance>
+										</plx:callObject>
+										<plx:passParam>
 											<plx:string data="title" />
 										</plx:passParam>
 									</plx:callInstance>
@@ -6391,6 +6691,34 @@
 								</plx:callObject>
 							</plx:callInstance>
 						</plx:condition>
+						<plx:case>
+							<plx:condition>
+								<plx:string data="BlogLabel_Id" />
+							</plx:condition>
+							<plx:assign>
+								<plx:left>
+									<plx:callInstance name="Visible" type="property">
+										<plx:callObject>
+											<plx:callInstance name="Columns" type="property">
+												<plx:callObject>
+													<plx:callInstance name="dgvSelect" type="field">
+														<plx:callObject>
+															<plx:thisKeyword />
+														</plx:callObject>
+													</plx:callInstance>
+												</plx:callObject>
+												<plx:passParam>
+													<plx:string data="BlogLabel_Id" />
+												</plx:passParam>
+											</plx:callInstance>
+										</plx:callObject>
+									</plx:callInstance>
+								</plx:left>
+								<plx:right>
+									<plx:trueKeyword />
+								</plx:right>
+							</plx:assign>
+						</plx:case>
 						<plx:fallbackCase />
 					</plx:switch>
 					<plx:catch localName="exception" dataTypeName="Exception">

@@ -5,89 +5,45 @@
 	<dms:setSchemaStatement>
 		<ddt:characterStringLiteral value="BLOGDEMO" />
 	</dms:setSchemaStatement>
-	<ddl:domainDefinition name="Password" schema="BlogDemo">
-		<ddt:characterString type="CHARACTER" length="32" />
-		<ddl:domainConstraint>
-			<dep:constraintNameDefinition name="Password_Chk" />
-			<ddl:checkConstraintDefinition>
-				<dep:comparisonPredicate operator="greaterThanOrEquals">
-					<dep:parenthesizedValueExpression>
-						<dep:charLengthExpression>
-							<dep:trimFunction specification="BOTH">
-								<dep:trimSource>
-									<dep:valueKeyword />
-								</dep:trimSource>
-							</dep:trimFunction>
-						</dep:charLengthExpression>
-					</dep:parenthesizedValueExpression>
-					<ddt:exactNumericLiteral value="32" />
-				</dep:comparisonPredicate>
-			</ddl:checkConstraintDefinition>
-		</ddl:domainConstraint>
-	</ddl:domainDefinition>
-	<ddl:tableDefinition name="BlogEntryLabel" schema="BlogDemo">
-		<ddl:columnDefinition name="blogEntryId_BlogEntry_Id">
-			<ddt:exactNumeric type="BIGINT" />
-			<ddl:columnConstraintDefinition>
-				<ddl:notNullKeyword />
-			</ddl:columnConstraintDefinition>
-		</ddl:columnDefinition>
-		<ddl:columnDefinition name="blogLabelId_BlogLabel_Id">
-			<ddt:exactNumeric type="BIGINT" />
-			<ddl:columnConstraintDefinition>
-				<ddl:notNullKeyword />
-			</ddl:columnConstraintDefinition>
-		</ddl:columnDefinition>
-		<ddl:tableConstraintDefinition>
-			<dep:constraintNameDefinition name="InternalUniquenessConstraint20" />
-			<ddl:uniqueConstraintDefinition type="PRIMARY KEY">
-				<ddl:column name="blogEntryId_BlogEntry_Id" />
-				<ddl:column name="blogLabelId_BlogLabel_Id" />
-			</ddl:uniqueConstraintDefinition>
-		</ddl:tableConstraintDefinition>
-	</ddl:tableDefinition>
 	<ddl:tableDefinition name="BlogEntry" schema="BlogDemo">
 		<ddl:columnDefinition name="BlogEntry_Id">
-			<ddt:exactNumeric type="BIGINT" />
+			<ddt:exactNumeric type="INTEGER" />
 			<ddl:columnConstraintDefinition>
 				<ddl:notNullKeyword />
 			</ddl:columnConstraintDefinition>
 		</ddl:columnDefinition>
-		<ddl:columnDefinition name="entryTitle">
+		<ddl:columnDefinition name="EntryTitle">
 			<ddt:characterString type="CHARACTER VARYING" length="30" />
 			<ddl:columnConstraintDefinition>
 				<ddl:notNullKeyword />
 			</ddl:columnConstraintDefinition>
 		</ddl:columnDefinition>
-		<ddl:columnDefinition name="entryBody">
-			<ddt:characterString type="CHARACTER VARYING" length="" />
+		<ddl:columnDefinition name="EntryBody">
+			<ddt:characterString type="CHARACTER LARGE OBJECT" length="" />
 			<ddl:columnConstraintDefinition>
 				<ddl:notNullKeyword />
 			</ddl:columnConstraintDefinition>
 		</ddl:columnDefinition>
-		<ddl:columnDefinition name="postedDate_MDYValue">
-			<ddt:exactNumeric type="BIGINT" />
+		<ddl:columnDefinition name="PostedDate">
+			<ddt:time type="TIMESTAMP" />
 			<ddl:columnConstraintDefinition>
 				<ddl:notNullKeyword />
 			</ddl:columnConstraintDefinition>
 		</ddl:columnDefinition>
-		<ddl:columnDefinition name="userId_firstName">
+		<ddl:columnDefinition name="UserIdName2">
 			<ddt:characterString type="CHARACTER VARYING" length="30" />
 			<ddl:columnConstraintDefinition>
 				<ddl:notNullKeyword />
 			</ddl:columnConstraintDefinition>
 		</ddl:columnDefinition>
-		<ddl:columnDefinition name="userId_lastName">
+		<ddl:columnDefinition name="UserIdName1">
 			<ddt:characterString type="CHARACTER VARYING" length="30" />
 			<ddl:columnConstraintDefinition>
 				<ddl:notNullKeyword />
 			</ddl:columnConstraintDefinition>
 		</ddl:columnDefinition>
-		<ddl:columnDefinition name="parentEntryId_BlogEntry_Id">
-			<ddt:exactNumeric type="BIGINT" />
-			<ddl:columnConstraintDefinition>
-				<ddl:notNullKeyword />
-			</ddl:columnConstraintDefinition>
+		<ddl:columnDefinition name="BlogCommentParentEntryId">
+			<ddt:exactNumeric type="INTEGER" />
 		</ddl:columnDefinition>
 		<ddl:tableConstraintDefinition>
 			<dep:constraintNameDefinition name="InternalUniquenessConstraint1" />
@@ -97,26 +53,26 @@
 		</ddl:tableConstraintDefinition>
 	</ddl:tableDefinition>
 	<ddl:tableDefinition name="&quot;User&quot;" schema="BlogDemo">
-		<ddl:columnDefinition name="firstName">
+		<ddl:columnDefinition name="Name1">
 			<ddt:characterString type="CHARACTER VARYING" length="30" />
 			<ddl:columnConstraintDefinition>
 				<ddl:notNullKeyword />
 			</ddl:columnConstraintDefinition>
 		</ddl:columnDefinition>
-		<ddl:columnDefinition name="lastName">
+		<ddl:columnDefinition name="Name2">
 			<ddt:characterString type="CHARACTER VARYING" length="30" />
 			<ddl:columnConstraintDefinition>
 				<ddl:notNullKeyword />
 			</ddl:columnConstraintDefinition>
 		</ddl:columnDefinition>
-		<ddl:columnDefinition name="username">
+		<ddl:columnDefinition name="Username">
 			<ddt:characterString type="CHARACTER VARYING" length="30" />
 			<ddl:columnConstraintDefinition>
 				<ddl:notNullKeyword />
 			</ddl:columnConstraintDefinition>
 		</ddl:columnDefinition>
-		<ddl:columnDefinition name="password">
-			<ddt:domain name="Password" schema="BlogDemo" />
+		<ddl:columnDefinition name="Password">
+			<ddt:characterString type="CHARACTER" length="32" />
 			<ddl:columnConstraintDefinition>
 				<ddl:notNullKeyword />
 			</ddl:columnConstraintDefinition>
@@ -124,14 +80,14 @@
 		<ddl:tableConstraintDefinition>
 			<dep:constraintNameDefinition name="ExternalUniquenessConstraint1" />
 			<ddl:uniqueConstraintDefinition type="PRIMARY KEY">
-				<ddl:column name="firstName" />
-				<ddl:column name="lastName" />
+				<ddl:column name="Name1" />
+				<ddl:column name="Name2" />
 			</ddl:uniqueConstraintDefinition>
 		</ddl:tableConstraintDefinition>
 	</ddl:tableDefinition>
 	<ddl:tableDefinition name="BlogLabel" schema="BlogDemo">
 		<ddl:columnDefinition name="BlogLabel_Id">
-			<ddt:exactNumeric type="BIGINT" />
+			<ddt:exactNumeric type="INTEGER" />
 			<ddl:identityColumnSpecification type="ALWAYS">
 				<ddl:sequenceGeneratorStartWithOption>
 					<ddt:exactNumericLiteral value="1" />
@@ -144,8 +100,8 @@
 				<ddl:notNullKeyword />
 			</ddl:columnConstraintDefinition>
 		</ddl:columnDefinition>
-		<ddl:columnDefinition name="title">
-			<ddt:characterString type="CHARACTER VARYING" length="" />
+		<ddl:columnDefinition name="Title">
+			<ddt:characterString type="CHARACTER LARGE OBJECT" length="" />
 		</ddl:columnDefinition>
 		<ddl:tableConstraintDefinition>
 			<dep:constraintNameDefinition name="InternalUniquenessConstraint18" />
@@ -154,11 +110,45 @@
 			</ddl:uniqueConstraintDefinition>
 		</ddl:tableConstraintDefinition>
 	</ddl:tableDefinition>
-	<ddl:alterTableStatement name="BlogEntryLabel" schema="BlogDemo">
+	<ddl:tableDefinition name="BlogEntryLabel" schema="BlogDemo">
+		<ddl:columnDefinition name="BlogEntryId">
+			<ddt:exactNumeric type="INTEGER" />
+			<ddl:columnConstraintDefinition>
+				<ddl:notNullKeyword />
+			</ddl:columnConstraintDefinition>
+		</ddl:columnDefinition>
+		<ddl:columnDefinition name="BlogLabelId">
+			<ddt:exactNumeric type="INTEGER" />
+			<ddl:columnConstraintDefinition>
+				<ddl:notNullKeyword />
+			</ddl:columnConstraintDefinition>
+		</ddl:columnDefinition>
+		<ddl:tableConstraintDefinition>
+			<dep:constraintNameDefinition name="InternalUniquenessConstraint20" />
+			<ddl:uniqueConstraintDefinition type="PRIMARY KEY">
+				<ddl:column name="BlogEntryId" />
+				<ddl:column name="BlogLabelId" />
+			</ddl:uniqueConstraintDefinition>
+		</ddl:tableConstraintDefinition>
+	</ddl:tableDefinition>
+	<ddl:alterTableStatement name="BlogEntry" schema="BlogDemo">
 		<ddl:addTableConstraintDefinition>
-			<dep:constraintNameDefinition name="blogEntryId_FK" />
+			<dep:constraintNameDefinition name="BlogEntry_FK1" />
 			<ddl:referentialConstraintDefinition>
-				<ddl:column name="blogEntryId_BlogEntry_Id" />
+				<ddl:column name="UserIdName2" />
+				<ddl:column name="UserIdName1" />
+				<ddl:referencesSpecification name="&quot;User&quot;" onDelete="RESTRICT" onUpdate="RESTRICT" schema="BlogDemo">
+					<ddl:referenceColumn name="Name1" />
+					<ddl:referenceColumn name="Name2" />
+				</ddl:referencesSpecification>
+			</ddl:referentialConstraintDefinition>
+		</ddl:addTableConstraintDefinition>
+	</ddl:alterTableStatement>
+	<ddl:alterTableStatement name="BlogEntry" schema="BlogDemo">
+		<ddl:addTableConstraintDefinition>
+			<dep:constraintNameDefinition name="BlogEntry_FK2" />
+			<ddl:referentialConstraintDefinition>
+				<ddl:column name="BlogCommentParentEntryId" />
 				<ddl:referencesSpecification name="BlogEntry" onDelete="RESTRICT" onUpdate="RESTRICT" schema="BlogDemo">
 					<ddl:referenceColumn name="BlogEntry_Id" />
 				</ddl:referencesSpecification>
@@ -167,35 +157,22 @@
 	</ddl:alterTableStatement>
 	<ddl:alterTableStatement name="BlogEntryLabel" schema="BlogDemo">
 		<ddl:addTableConstraintDefinition>
-			<dep:constraintNameDefinition name="blogLabelId_FK" />
+			<dep:constraintNameDefinition name="BlogEntryLabel_FK1" />
 			<ddl:referentialConstraintDefinition>
-				<ddl:column name="blogLabelId_BlogLabel_Id" />
+				<ddl:column name="BlogEntryId" />
+				<ddl:referencesSpecification name="BlogEntry" onDelete="RESTRICT" onUpdate="RESTRICT" schema="BlogDemo">
+					<ddl:referenceColumn name="BlogEntry_Id" />
+				</ddl:referencesSpecification>
+			</ddl:referentialConstraintDefinition>
+		</ddl:addTableConstraintDefinition>
+	</ddl:alterTableStatement>
+	<ddl:alterTableStatement name="BlogEntryLabel" schema="BlogDemo">
+		<ddl:addTableConstraintDefinition>
+			<dep:constraintNameDefinition name="BlogEntryLabel_FK2" />
+			<ddl:referentialConstraintDefinition>
+				<ddl:column name="BlogLabelId" />
 				<ddl:referencesSpecification name="BlogLabel" onDelete="RESTRICT" onUpdate="RESTRICT" schema="BlogDemo">
 					<ddl:referenceColumn name="BlogLabel_Id" />
-				</ddl:referencesSpecification>
-			</ddl:referentialConstraintDefinition>
-		</ddl:addTableConstraintDefinition>
-	</ddl:alterTableStatement>
-	<ddl:alterTableStatement name="BlogEntry" schema="BlogDemo">
-		<ddl:addTableConstraintDefinition>
-			<dep:constraintNameDefinition name="userId_FK" />
-			<ddl:referentialConstraintDefinition>
-				<ddl:column name="userId_firstName" />
-				<ddl:column name="userId_lastName" />
-				<ddl:referencesSpecification name="&quot;User&quot;" onDelete="RESTRICT" onUpdate="RESTRICT" schema="BlogDemo">
-					<ddl:referenceColumn name="firstName" />
-					<ddl:referenceColumn name="lastName" />
-				</ddl:referencesSpecification>
-			</ddl:referentialConstraintDefinition>
-		</ddl:addTableConstraintDefinition>
-	</ddl:alterTableStatement>
-	<ddl:alterTableStatement name="BlogEntry" schema="BlogDemo">
-		<ddl:addTableConstraintDefinition>
-			<dep:constraintNameDefinition name="parentEntryId_FK" />
-			<ddl:referentialConstraintDefinition>
-				<ddl:column name="parentEntryId_BlogEntry_Id" />
-				<ddl:referencesSpecification name="BlogEntry" onDelete="RESTRICT" onUpdate="RESTRICT" schema="BlogDemo">
-					<ddl:referenceColumn name="BlogEntry_Id" />
 				</ddl:referencesSpecification>
 			</ddl:referentialConstraintDefinition>
 		</ddl:addTableConstraintDefinition>

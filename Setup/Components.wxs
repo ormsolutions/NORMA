@@ -514,7 +514,7 @@
 									<Registry Type="multiString" Name="ReferenceInputFormats">
 										<RegistryValue>OIAL</RegistryValue>
 									</Registry>
-									<Registry Type="multiString" Name="PrequisiteInputFormats">
+									<Registry Type="multiString" Name="PrerequisiteInputFormats">
 										<RegistryValue>PLiX_Abstract</RegistryValue>
 									</Registry>
 								</Registry>
@@ -534,7 +534,7 @@
 									<Registry Type="multiString" Name="ReferenceInputFormats">
 										<RegistryValue>OIAL</RegistryValue>
 									</Registry>
-									<Registry Type="multiString" Name="PrequisiteInputFormats">
+									<Registry Type="multiString" Name="PrerequisiteInputFormats">
 										<RegistryValue>PLiX_Abstract</RegistryValue>
 									</Registry>
 								</Registry>-->
@@ -554,7 +554,7 @@
 									<Registry Type="multiString" Name="ReferenceInputFormats">
 										<RegistryValue>OIAL</RegistryValue>
 									</Registry>
-									<Registry Type="multiString" Name="PrequisiteInputFormats">
+									<Registry Type="multiString" Name="PrerequisiteInputFormats">
 										<RegistryValue>PLiX_Abstract</RegistryValue>
 									</Registry>
 								</Registry>
@@ -576,7 +576,7 @@
 										<Registry Type="string" Name="ProvidesOutputFormat" Value="PHPEntitiesPLiX"/>
 										<Registry Type="string" Name="TransformUri" Value="[#PHP_PHPEntities.xslt]"/>
 										<Registry Type="integer" Name="GeneratesSupportFile" Value="1"/>
-										<Registry Type="multiString" Name="PrequisiteInputFormats">
+										<Registry Type="multiString" Name="PrerequisiteInputFormats">
 											<RegistryValue>PHPProxiesPLiX</RegistryValue>
 											<RegistryValue>PHPServicesPLiX</RegistryValue>
 											<RegistryValue>PHPDataLayerPLiX</RegistryValue>
@@ -591,7 +591,7 @@
 										<Registry Type="string" Name="SourceInputFormat" Value="PHPEntitiesPLiX"/>
 										<Registry Type="string" Name="ProvidesOutputFormat" Value="PHPEntitiesImplementation"/>
 										<Registry Type="string" Name="TransformUri" Value="[NEUMONTCOMMONFILESDIR]\PLiX\Formatters\PLiXPHP.xslt"/>
-										<Registry Type="multiString" Name="PrequisiteInputFormats">
+										<Registry Type="multiString" Name="PrerequisiteInputFormats">
 											<RegistryValue>PHPProxiesImplementation</RegistryValue>
 											<RegistryValue>PHPServicesImplementation</RegistryValue>
 											<RegistryValue>PHPDataLayerImplementation</RegistryValue>
@@ -690,7 +690,7 @@
 										<Registry Type="string" Name="ProvidesOutputFormat" Value="DataLayerTestForm"/>
 										<Registry Type="string" Name="TransformUri" Value="[#OIALtoPLiX_DataLayerTestForm.xslt]"/>
 										<Registry Type="string" Name="CustomTool" Value="NUPlixLoader"/>
-										<Registry Type="multiString" Name="PrequisiteInputFormats">
+										<Registry Type="multiString" Name="PrerequisiteInputFormats">
 											<RegistryValue>DataLayerTestFormInputControl</RegistryValue>
 										</Registry>
 									</Registry>
@@ -709,7 +709,7 @@
 										<Registry Type="multiString" Name="ReferenceInputFormats">
 											<RegistryValue>OIAL</RegistryValue>
 										</Registry>
-										<Registry Type="multiString" Name="PrequisiteInputFormats">
+										<Registry Type="multiString" Name="PrerequisiteInputFormats">
 											<RegistryValue>DataLayerTestFormInputControlDesigner</RegistryValue>
 										</Registry>
 									</Registry>
@@ -749,6 +749,19 @@
 							</Component>
 
 							<Component Id="ORMRelationalSchemaTransformsComponent" Guid="2A455908-5BB2-48A3-$(var.VersionGuidSuffix)" DiskId="1" Win64="$(var.Win64)" KeyPath="yes">
+								<File Id="ConceptualDBtoDCIL.xslt" Name="CDB2DCIL.xsl" LongName="ConceptualDBtoDCIL.xslt" src="..\XML\ConceptualDBtoDCIL\ConceptualDBtoDCIL.xslt"
+									DefaultLanguage="0" CompanionFile="Neumont.Tools.ORM.dll"/>
+								<Registry Action="createKeyAndRemoveKeyOnUninstall" Root="HKLM" Key="$(var.NORMARegRoot)\Generators\ConceptualDBtoDCL">
+									<Registry Type="string" Name="Type" Value="XSLT"/>
+									<Registry Type="string" Name="OfficialName" Value="ConceptualDBtoDCL"/>
+									<Registry Type="string" Name="DisplayName" Value="ConceptualDB to DCIL"/>
+									<Registry Type="string" Name="DisplayDescription" Value="Transforms an ORM file with the ConceptualDB extension to DCIL."/>
+									<Registry Type="string" Name="FileExtension" Value=".DCIL.xml"/>
+									<Registry Type="string" Name="SourceInputFormat" Value="ORM http://schemas.neumont.edu/ORM/Relational/2007-06/ConceptualDatabase http://schemas.neumont.edu/ORM/Bridge/2007-06/ORMAbstractionToConceptualDatabase http://schemas.neumont.edu/ORM/Abstraction/2007-06/Core http://schemas.neumont.edu/ORM/Bridge/2007-06/ORMToORMAbstraction"/>
+									<Registry Type="string" Name="ProvidesOutputFormat" Value="DCIL"/>
+									<Registry Type="string" Name="TransformUri" Value="[#ConceptualDBtoDCIL.xslt]"/>
+									<Registry Type="integer" Name="GeneratesSupportFile" Value="1"/>
+								</Registry>
 								<File Id="OIALtoDCIL.xslt" Name="OIL2DCIL.xsl" LongName="OIALtoDCIL.xslt" src="..\XML\OIALtoDCIL\OIALtoDCIL.xslt"
 									DefaultLanguage="0" CompanionFile="Neumont.Tools.ORM.dll"/>
 								<Registry Action="createKeyAndRemoveKeyOnUninstall" Root="HKLM" Key="$(var.NORMARegRoot)\Generators\OIALtoDCIL">
@@ -867,6 +880,9 @@
 
 								<File Id="DomainInliner.xslt" Name="DmnInlnr.xsl" LongName="DomainInliner.xslt" src="..\XML\DILtoSQL\DomainInliner.xslt"
 									DefaultLanguage="0" CompanionFile="DILSupportFunctions.xslt"/>
+								<File Id="TruthValueTestRemover.xslt" Name="TVTRmvr.xsl" LongName="TruthValueTestRemover.xslt" src="..\XML\DILtoSQL\TruthValueTestRemover.xslt"
+									DefaultLanguage="0" CompanionFile="DILSupportFunctions.xslt"/>
+
 								<File Id="DCILtoDDIL.xslt" Name="DCIL2DDL.xsl" LongName="DCILtoDDIL.xslt" src="..\XML\DILtoSQL\DCILtoDDIL.xslt"
 									DefaultLanguage="0" CompanionFile="DILSupportFunctions.xslt"/>
 								<Registry Action="createKeyAndRemoveKeyOnUninstall" Root="HKLM" Key="$(var.NORMARegRoot)\Generators\DCILtoDDIL">

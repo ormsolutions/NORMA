@@ -23,13 +23,13 @@
 	<xsl:output method="xml" encoding="utf-8" media-type="text/xml" indent="yes"/>
 	<xsl:strip-space elements="*"/>
 
-	<xsl:variable name="domainDefinitions" select="//ddl:domainDefinition"/>
-
 	<xsl:template match="*" mode="DomainInliner">
+		<xsl:param name="domainDefinitions" select="//ddl:domainDefinition"/>
 		<xsl:param name="columnName"/>
 		<xsl:copy>
 			<xsl:copy-of select="@*"/>
 			<xsl:apply-templates mode="DomainInliner">
+				<xsl:with-param name="domainDefinitions" select="$domainDefinitions"/>
 				<xsl:with-param name="columnName" select="$columnName"/>
 			</xsl:apply-templates>
 		</xsl:copy>
@@ -38,6 +38,7 @@
 	<xsl:template match="ddl:domainDefinition" mode="DomainInliner"/>
 
 	<xsl:template match="ddl:columnDefinition[ddt:domain]" mode="DomainInliner">
+		<xsl:param name="domainDefinitions" select="//ddl:domainDefinition"/>
 		<xsl:copy>
 			<xsl:copy-of select="@*"/>
 			<xsl:variable name="columnName" select="@name"/>
@@ -53,7 +54,8 @@
 			<xsl:for-each select="$domainDefinition/ddl:domainConstraint">
 				<ddl:columnConstraintDefinition>
 					<xsl:copy-of select="@*"/>
-					<xsl:apply-templates mode="DomainInliner">
+					<xsl:apply-templates mode="DomainInliner" select="child::*[not(self::dep:constraintNameDefinition)]">
+						<xsl:with-param name="domainDefinitions" select="$domainDefinitions"/>
 						<xsl:with-param name="columnName" select="$columnName"/>
 					</xsl:apply-templates>
 				</ddl:columnConstraintDefinition>

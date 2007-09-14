@@ -56,7 +56,7 @@ namespace PersonCountryDemo
 			get
 			{
 				System.Delegate[] localEvents;
-				return (localEvents = this._events) ?? (System.Threading.Interlocked.CompareExchange<System.Delegate[]>(ref this._events, localEvents = new System.Delegate[8], null) ?? localEvents);
+				return (localEvents = this._events) ?? (System.Threading.Interlocked.CompareExchange<System.Delegate[]>(ref this._events, localEvents = new System.Delegate[10], null) ?? localEvents);
 			}
 		}
 		private static void InterlockedDelegateCombine(ref System.Delegate location, System.Delegate value)
@@ -73,7 +73,7 @@ namespace PersonCountryDemo
 			{
 			}
 		}
-		public event EventHandler<PropertyChangingEventArgs<Person, string>> LastNameChanging
+		public event EventHandler<PropertyChangingEventArgs<Person, int>> Person_idChanging
 		{
 			add
 			{
@@ -91,17 +91,17 @@ namespace PersonCountryDemo
 				}
 			}
 		}
-		protected bool OnLastNameChanging(string newValue)
+		protected bool OnPerson_idChanging(int newValue)
 		{
 			System.Delegate[] events;
-			EventHandler<PropertyChangingEventArgs<Person, string>> eventHandler;
-			if (((object)(events = this._events) != null) && ((object)(eventHandler = (EventHandler<PropertyChangingEventArgs<Person, string>>)events[0]) != null))
+			EventHandler<PropertyChangingEventArgs<Person, int>> eventHandler;
+			if (((object)(events = this._events) != null) && ((object)(eventHandler = (EventHandler<PropertyChangingEventArgs<Person, int>>)events[0]) != null))
 			{
-				return EventHandlerUtility.InvokeCancelableEventHandler<PropertyChangingEventArgs<Person, string>>(eventHandler, this, new PropertyChangingEventArgs<Person, string>(this, "LastName", this.LastName, newValue));
+				return EventHandlerUtility.InvokeCancelableEventHandler<PropertyChangingEventArgs<Person, int>>(eventHandler, this, new PropertyChangingEventArgs<Person, int>(this, "Person_id", this.Person_id, newValue));
 			}
 			return true;
 		}
-		public event EventHandler<PropertyChangedEventArgs<Person, string>> LastNameChanged
+		public event EventHandler<PropertyChangedEventArgs<Person, int>> Person_idChanged
 		{
 			add
 			{
@@ -119,20 +119,20 @@ namespace PersonCountryDemo
 				}
 			}
 		}
-		protected void OnLastNameChanged(string oldValue)
+		protected void OnPerson_idChanged(int oldValue)
 		{
 			System.Delegate[] events;
-			EventHandler<PropertyChangedEventArgs<Person, string>> eventHandler;
-			if (((object)(events = this._events) != null) && ((object)(eventHandler = (EventHandler<PropertyChangedEventArgs<Person, string>>)events[1]) != null))
+			EventHandler<PropertyChangedEventArgs<Person, int>> eventHandler;
+			if (((object)(events = this._events) != null) && ((object)(eventHandler = (EventHandler<PropertyChangedEventArgs<Person, int>>)events[1]) != null))
 			{
-				EventHandlerUtility.InvokeEventHandlerAsync<PropertyChangedEventArgs<Person, string>>(eventHandler, this, new PropertyChangedEventArgs<Person, string>(this, "LastName", oldValue, this.LastName), this._propertyChangedEventHandler);
+				EventHandlerUtility.InvokeEventHandlerAsync<PropertyChangedEventArgs<Person, int>>(eventHandler, this, new PropertyChangedEventArgs<Person, int>(this, "Person_id", oldValue, this.Person_id), this._propertyChangedEventHandler);
 			}
 			else
 			{
-				this.OnPropertyChanged("LastName");
+				this.OnPropertyChanged("Person_id");
 			}
 		}
-		public event EventHandler<PropertyChangingEventArgs<Person, string>> FirstNameChanging
+		public event EventHandler<PropertyChangingEventArgs<Person, string>> LastNameChanging
 		{
 			add
 			{
@@ -150,17 +150,17 @@ namespace PersonCountryDemo
 				}
 			}
 		}
-		protected bool OnFirstNameChanging(string newValue)
+		protected bool OnLastNameChanging(string newValue)
 		{
 			System.Delegate[] events;
 			EventHandler<PropertyChangingEventArgs<Person, string>> eventHandler;
 			if (((object)(events = this._events) != null) && ((object)(eventHandler = (EventHandler<PropertyChangingEventArgs<Person, string>>)events[2]) != null))
 			{
-				return EventHandlerUtility.InvokeCancelableEventHandler<PropertyChangingEventArgs<Person, string>>(eventHandler, this, new PropertyChangingEventArgs<Person, string>(this, "FirstName", this.FirstName, newValue));
+				return EventHandlerUtility.InvokeCancelableEventHandler<PropertyChangingEventArgs<Person, string>>(eventHandler, this, new PropertyChangingEventArgs<Person, string>(this, "LastName", this.LastName, newValue));
 			}
 			return true;
 		}
-		public event EventHandler<PropertyChangedEventArgs<Person, string>> FirstNameChanged
+		public event EventHandler<PropertyChangedEventArgs<Person, string>> LastNameChanged
 		{
 			add
 			{
@@ -178,20 +178,20 @@ namespace PersonCountryDemo
 				}
 			}
 		}
-		protected void OnFirstNameChanged(string oldValue)
+		protected void OnLastNameChanged(string oldValue)
 		{
 			System.Delegate[] events;
 			EventHandler<PropertyChangedEventArgs<Person, string>> eventHandler;
 			if (((object)(events = this._events) != null) && ((object)(eventHandler = (EventHandler<PropertyChangedEventArgs<Person, string>>)events[3]) != null))
 			{
-				EventHandlerUtility.InvokeEventHandlerAsync<PropertyChangedEventArgs<Person, string>>(eventHandler, this, new PropertyChangedEventArgs<Person, string>(this, "FirstName", oldValue, this.FirstName), this._propertyChangedEventHandler);
+				EventHandlerUtility.InvokeEventHandlerAsync<PropertyChangedEventArgs<Person, string>>(eventHandler, this, new PropertyChangedEventArgs<Person, string>(this, "LastName", oldValue, this.LastName), this._propertyChangedEventHandler);
 			}
 			else
 			{
-				this.OnPropertyChanged("FirstName");
+				this.OnPropertyChanged("LastName");
 			}
 		}
-		public event EventHandler<PropertyChangingEventArgs<Person, string>> TitleChanging
+		public event EventHandler<PropertyChangingEventArgs<Person, string>> FirstNameChanging
 		{
 			add
 			{
@@ -209,17 +209,17 @@ namespace PersonCountryDemo
 				}
 			}
 		}
-		protected bool OnTitleChanging(string newValue)
+		protected bool OnFirstNameChanging(string newValue)
 		{
 			System.Delegate[] events;
 			EventHandler<PropertyChangingEventArgs<Person, string>> eventHandler;
 			if (((object)(events = this._events) != null) && ((object)(eventHandler = (EventHandler<PropertyChangingEventArgs<Person, string>>)events[4]) != null))
 			{
-				return EventHandlerUtility.InvokeCancelableEventHandler<PropertyChangingEventArgs<Person, string>>(eventHandler, this, new PropertyChangingEventArgs<Person, string>(this, "Title", this.Title, newValue));
+				return EventHandlerUtility.InvokeCancelableEventHandler<PropertyChangingEventArgs<Person, string>>(eventHandler, this, new PropertyChangingEventArgs<Person, string>(this, "FirstName", this.FirstName, newValue));
 			}
 			return true;
 		}
-		public event EventHandler<PropertyChangedEventArgs<Person, string>> TitleChanged
+		public event EventHandler<PropertyChangedEventArgs<Person, string>> FirstNameChanged
 		{
 			add
 			{
@@ -237,20 +237,20 @@ namespace PersonCountryDemo
 				}
 			}
 		}
-		protected void OnTitleChanged(string oldValue)
+		protected void OnFirstNameChanged(string oldValue)
 		{
 			System.Delegate[] events;
 			EventHandler<PropertyChangedEventArgs<Person, string>> eventHandler;
 			if (((object)(events = this._events) != null) && ((object)(eventHandler = (EventHandler<PropertyChangedEventArgs<Person, string>>)events[5]) != null))
 			{
-				EventHandlerUtility.InvokeEventHandlerAsync<PropertyChangedEventArgs<Person, string>>(eventHandler, this, new PropertyChangedEventArgs<Person, string>(this, "Title", oldValue, this.Title), this._propertyChangedEventHandler);
+				EventHandlerUtility.InvokeEventHandlerAsync<PropertyChangedEventArgs<Person, string>>(eventHandler, this, new PropertyChangedEventArgs<Person, string>(this, "FirstName", oldValue, this.FirstName), this._propertyChangedEventHandler);
 			}
 			else
 			{
-				this.OnPropertyChanged("Title");
+				this.OnPropertyChanged("FirstName");
 			}
 		}
-		public event EventHandler<PropertyChangingEventArgs<Person, Country>> CountryChanging
+		public event EventHandler<PropertyChangingEventArgs<Person, string>> TitleChanging
 		{
 			add
 			{
@@ -268,17 +268,17 @@ namespace PersonCountryDemo
 				}
 			}
 		}
-		protected bool OnCountryChanging(Country newValue)
+		protected bool OnTitleChanging(string newValue)
 		{
 			System.Delegate[] events;
-			EventHandler<PropertyChangingEventArgs<Person, Country>> eventHandler;
-			if (((object)(events = this._events) != null) && ((object)(eventHandler = (EventHandler<PropertyChangingEventArgs<Person, Country>>)events[6]) != null))
+			EventHandler<PropertyChangingEventArgs<Person, string>> eventHandler;
+			if (((object)(events = this._events) != null) && ((object)(eventHandler = (EventHandler<PropertyChangingEventArgs<Person, string>>)events[6]) != null))
 			{
-				return EventHandlerUtility.InvokeCancelableEventHandler<PropertyChangingEventArgs<Person, Country>>(eventHandler, this, new PropertyChangingEventArgs<Person, Country>(this, "Country", this.Country, newValue));
+				return EventHandlerUtility.InvokeCancelableEventHandler<PropertyChangingEventArgs<Person, string>>(eventHandler, this, new PropertyChangingEventArgs<Person, string>(this, "Title", this.Title, newValue));
 			}
 			return true;
 		}
-		public event EventHandler<PropertyChangedEventArgs<Person, Country>> CountryChanged
+		public event EventHandler<PropertyChangedEventArgs<Person, string>> TitleChanged
 		{
 			add
 			{
@@ -296,11 +296,70 @@ namespace PersonCountryDemo
 				}
 			}
 		}
+		protected void OnTitleChanged(string oldValue)
+		{
+			System.Delegate[] events;
+			EventHandler<PropertyChangedEventArgs<Person, string>> eventHandler;
+			if (((object)(events = this._events) != null) && ((object)(eventHandler = (EventHandler<PropertyChangedEventArgs<Person, string>>)events[7]) != null))
+			{
+				EventHandlerUtility.InvokeEventHandlerAsync<PropertyChangedEventArgs<Person, string>>(eventHandler, this, new PropertyChangedEventArgs<Person, string>(this, "Title", oldValue, this.Title), this._propertyChangedEventHandler);
+			}
+			else
+			{
+				this.OnPropertyChanged("Title");
+			}
+		}
+		public event EventHandler<PropertyChangingEventArgs<Person, Country>> CountryChanging
+		{
+			add
+			{
+				if ((object)value != null)
+				{
+					Person.InterlockedDelegateCombine(ref this.Events[8], value);
+				}
+			}
+			remove
+			{
+				System.Delegate[] events;
+				if (((object)value != null) && ((object)(events = this._events) != null))
+				{
+					Person.InterlockedDelegateRemove(ref events[8], value);
+				}
+			}
+		}
+		protected bool OnCountryChanging(Country newValue)
+		{
+			System.Delegate[] events;
+			EventHandler<PropertyChangingEventArgs<Person, Country>> eventHandler;
+			if (((object)(events = this._events) != null) && ((object)(eventHandler = (EventHandler<PropertyChangingEventArgs<Person, Country>>)events[8]) != null))
+			{
+				return EventHandlerUtility.InvokeCancelableEventHandler<PropertyChangingEventArgs<Person, Country>>(eventHandler, this, new PropertyChangingEventArgs<Person, Country>(this, "Country", this.Country, newValue));
+			}
+			return true;
+		}
+		public event EventHandler<PropertyChangedEventArgs<Person, Country>> CountryChanged
+		{
+			add
+			{
+				if ((object)value != null)
+				{
+					Person.InterlockedDelegateCombine(ref this.Events[9], value);
+				}
+			}
+			remove
+			{
+				System.Delegate[] events;
+				if (((object)value != null) && ((object)(events = this._events) != null))
+				{
+					Person.InterlockedDelegateRemove(ref events[9], value);
+				}
+			}
+		}
 		protected void OnCountryChanged(Country oldValue)
 		{
 			System.Delegate[] events;
 			EventHandler<PropertyChangedEventArgs<Person, Country>> eventHandler;
-			if (((object)(events = this._events) != null) && ((object)(eventHandler = (EventHandler<PropertyChangedEventArgs<Person, Country>>)events[7]) != null))
+			if (((object)(events = this._events) != null) && ((object)(eventHandler = (EventHandler<PropertyChangedEventArgs<Person, Country>>)events[9]) != null))
 			{
 				EventHandlerUtility.InvokeEventHandlerAsync<PropertyChangedEventArgs<Person, Country>>(eventHandler, this, new PropertyChangedEventArgs<Person, Country>(this, "Country", oldValue, this.Country), this._propertyChangedEventHandler);
 			}
@@ -314,6 +373,12 @@ namespace PersonCountryDemo
 		public abstract PersonCountryDemoContext Context
 		{
 			get;
+		}
+		[DataObjectField(false, false, false)]
+		public abstract int Person_id
+		{
+			get;
+			set;
 		}
 		[DataObjectField(false, false, false)]
 		public abstract string LastName
@@ -347,7 +412,7 @@ namespace PersonCountryDemo
 		}
 		public virtual string ToString(IFormatProvider provider)
 		{
-			return string.Format(provider, @"Person{0}{{{0}{1}LastName = ""{2}"",{0}{1}FirstName = ""{3}"",{0}{1}Title = ""{4}"",{0}{1}Country = {5}{0}}}", Environment.NewLine, @"	", this.LastName, this.FirstName, this.Title, "TODO: Recursively call ToString for customTypes...");
+			return string.Format(provider, @"Person{0}{{{0}{1}Person_id = ""{2}"",{0}{1}LastName = ""{3}"",{0}{1}FirstName = ""{4}"",{0}{1}Title = ""{5}"",{0}{1}Country = {6}{0}}}", Environment.NewLine, @"	", this.Person_id, this.LastName, this.FirstName, this.Title, "TODO: Recursively call ToString for customTypes...");
 		}
 		#endregion // Person ToString Methods
 	}
@@ -588,9 +653,11 @@ namespace PersonCountryDemo
 	[System.CodeDom.Compiler.GeneratedCode("OIALtoPLiX", "1.0")]
 	public interface IPersonCountryDemoContext
 	{
+		Person GetPersonByPerson_id(int Person_id);
+		bool TryGetPersonByPerson_id(int Person_id, out Person Person);
 		Country GetCountryByCountry_name(string Country_name);
 		bool TryGetCountryByCountry_name(string Country_name, out Country Country);
-		Person CreatePerson(string LastName, string FirstName);
+		Person CreatePerson(int Person_id, string LastName, string FirstName);
 		IEnumerable<Person> PersonCollection
 		{
 			get;

@@ -24,14 +24,18 @@
 
 	<xsl:import href="DDILtoSQLStandard.xslt"/>
 	<xsl:import href="DILSupportFunctions.xslt"/>
+	<xsl:import href="TruthValueTestRemover.xslt"/>
 	<xsl:import href="DomainInliner.xslt"/>
 
 	<xsl:output method="text" encoding="utf-8" indent="no" omit-xml-declaration="yes"/>
 	<xsl:strip-space elements="*"/>
 
 	<xsl:template match="/">
+		<xsl:variable name="truthValueTestRemovedDilFragment">
+			<xsl:apply-templates mode="TruthValueTestRemover" select="."/>
+		</xsl:variable>
 		<xsl:variable name="domainInlinedDilFragment">
-			<xsl:apply-templates mode="DomainInliner" select="."/>
+			<xsl:apply-templates mode="DomainInliner" select="exsl:node-set($truthValueTestRemovedDilFragment)/child::*"/>
 		</xsl:variable>
 		<xsl:apply-templates select="exsl:node-set($domainInlinedDilFragment)/child::*"/>
 	</xsl:template>
@@ -59,25 +63,42 @@
 
 	<xsl:template match="dms:setSchemaStatement"/>
 
-	<xsl:template match="ddt:exactNumeric">
-		<xsl:choose>
-			<xsl:when test="@type='BIGINT' or 'INTEGER' or 'SMALLINT'">
-				<xsl:text>NUMBER(38)</xsl:text>
-			</xsl:when>
-			<xsl:otherwise>
-				<xsl:text>NUMBER</xsl:text>
-				<xsl:apply-templates select="@precision" mode="ForExactNumeric"/>
-				<xsl:apply-templates select="@scale" mode="ForExactNumeric"/>
-			</xsl:otherwise>
-		</xsl:choose>
-		<xsl:text> </xsl:text>
+	<xsl:template match="@type[.='BIGINT' or .='INTEGER' or .='SMALLINT' or .='NUMERIC' or .='DECIMAL']" mode="ForDataType">
+		<xsl:text>NUMBER</xsl:text>
 	</xsl:template>
 
-	<xsl:template match="ddt:approximateNumeric">
-		<xsl:text>NUMBER</xsl:text>
-		<xsl:apply-templates select="@precision" mode="ForExactNumeric"/>
-		<xsl:value-of select="$RightParen"/>
-		<xsl:text> </xsl:text>
+	<xsl:template match="@type[.='REAL']" mode="ForDataType">
+		<xsl:text>BINARY_FLOAT</xsl:text>
+	</xsl:template>
+
+	<xsl:template match="@type[.='DOUBLE PRECISION']" mode="ForDataType">
+		<xsl:text>BINARY_DOUBLE</xsl:text>
+	</xsl:template>
+
+	<xsl:template match="@type[.='CHARACTER VARYING']" mode="ForDataType">
+		<xsl:text>NVARCHAR2</xsl:text>
+	</xsl:template>
+	
+	<xsl:template match="@type[.='CHARACTER']" mode="ForDataType">
+		<xsl:text>NCHAR</xsl:text>
+	</xsl:template>
+	
+	<xsl:template match="@type[.='BOOLEAN']" mode="ForDataType">
+		<xsl:text>NCHAR(1)</xsl:text>
+	</xsl:template>
+
+	<xsl:template match="ddt:booleanLiteral">
+		<xsl:choose>
+			<xsl:when test="@value='TRUE'">
+				<xsl:text>'Y'</xsl:text>
+			</xsl:when>
+			<xsl:when test="@value='FALSE'">
+				<xsl:text>'N'</xsl:text>
+			</xsl:when>
+			<xsl:otherwise>
+				<xsl:text>NULL</xsl:text>
+			</xsl:otherwise>
+		</xsl:choose>
 	</xsl:template>
 
 	<xsl:template match="@schema" mode="ForTableDefinition">
@@ -112,10 +133,6 @@
 	<xsl:template match="ddl:identityColumnSpecification">
 		<!-- This should always be absorbed until Oracle provides some kind of auto-incremented number field. -->
 		<!-- The only way to make this happen is to create a sequence, trigger, and regular column Integer datatype. -->
-	</xsl:template>
-
-	<xsl:template match="ddt:boolean">
-		<xsl:text>NCHAR </xsl:text>
 	</xsl:template>
 
 	<xsl:template match="dep:charLengthExpression">

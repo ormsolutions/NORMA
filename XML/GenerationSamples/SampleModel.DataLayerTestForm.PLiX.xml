@@ -615,6 +615,126 @@
 						</plx:callInstance>
 					</plx:callObject>
 					<plx:passParam>
+						<plx:string data="PersonDrivesCar" />
+					</plx:passParam>
+					<plx:passParam>
+						<plx:string data="PersonDrivesCar" />
+					</plx:passParam>
+				</plx:callInstance>
+				<plx:local dataTypeName="PersonDrivesCarCore_InputControl" name="icPersonDrivesCarCore">
+					<plx:initialize>
+						<plx:callNew dataTypeName="PersonDrivesCarCore_InputControl" />
+					</plx:initialize>
+				</plx:local>
+				<plx:assign>
+					<plx:left>
+						<plx:callInstance name="Dock" type="property">
+							<plx:callObject>
+								<plx:nameRef name="icPersonDrivesCarCore" type="local" />
+							</plx:callObject>
+						</plx:callInstance>
+					</plx:left>
+					<plx:right>
+						<plx:callStatic name="Fill" dataTypeName="DockStyle" dataTypeQualifier="System.Windows.Forms" type="property" />
+					</plx:right>
+				</plx:assign>
+				<plx:callInstance name="Add" type="methodCall">
+					<plx:callObject>
+						<plx:callInstance name="Controls" type="property">
+							<plx:callObject>
+								<plx:callInstance name="TabPages" type="property">
+									<plx:callObject>
+										<plx:callInstance name="MasterTabControl" type="field">
+											<plx:callObject>
+												<plx:thisKeyword />
+											</plx:callObject>
+										</plx:callInstance>
+									</plx:callObject>
+									<plx:passParam>
+										<plx:string data="PersonDrivesCar" />
+									</plx:passParam>
+								</plx:callInstance>
+							</plx:callObject>
+						</plx:callInstance>
+					</plx:callObject>
+					<plx:passParam>
+						<plx:nameRef name="icPersonDrivesCarCore" />
+					</plx:passParam>
+				</plx:callInstance>
+				<plx:comment blankLine="true" />
+				<plx:callInstance name="Add" type="methodCall">
+					<plx:callObject>
+						<plx:callInstance name="TabPages" type="property">
+							<plx:callObject>
+								<plx:callInstance name="MasterTabControl" type="field">
+									<plx:callObject>
+										<plx:thisKeyword />
+									</plx:callObject>
+								</plx:callInstance>
+							</plx:callObject>
+						</plx:callInstance>
+					</plx:callObject>
+					<plx:passParam>
+						<plx:string data="PersonHasNickName" />
+					</plx:passParam>
+					<plx:passParam>
+						<plx:string data="PersonHasNickName" />
+					</plx:passParam>
+				</plx:callInstance>
+				<plx:local dataTypeName="PersonHasNickNameCore_InputControl" name="icPersonHasNickNameCore">
+					<plx:initialize>
+						<plx:callNew dataTypeName="PersonHasNickNameCore_InputControl" />
+					</plx:initialize>
+				</plx:local>
+				<plx:assign>
+					<plx:left>
+						<plx:callInstance name="Dock" type="property">
+							<plx:callObject>
+								<plx:nameRef name="icPersonHasNickNameCore" type="local" />
+							</plx:callObject>
+						</plx:callInstance>
+					</plx:left>
+					<plx:right>
+						<plx:callStatic name="Fill" dataTypeName="DockStyle" dataTypeQualifier="System.Windows.Forms" type="property" />
+					</plx:right>
+				</plx:assign>
+				<plx:callInstance name="Add" type="methodCall">
+					<plx:callObject>
+						<plx:callInstance name="Controls" type="property">
+							<plx:callObject>
+								<plx:callInstance name="TabPages" type="property">
+									<plx:callObject>
+										<plx:callInstance name="MasterTabControl" type="field">
+											<plx:callObject>
+												<plx:thisKeyword />
+											</plx:callObject>
+										</plx:callInstance>
+									</plx:callObject>
+									<plx:passParam>
+										<plx:string data="PersonHasNickName" />
+									</plx:passParam>
+								</plx:callInstance>
+							</plx:callObject>
+						</plx:callInstance>
+					</plx:callObject>
+					<plx:passParam>
+						<plx:nameRef name="icPersonHasNickNameCore" />
+					</plx:passParam>
+				</plx:callInstance>
+				<plx:comment blankLine="true" />
+				<plx:callInstance name="Add" type="methodCall">
+					<plx:callObject>
+						<plx:callInstance name="TabPages" type="property">
+							<plx:callObject>
+								<plx:callInstance name="MasterTabControl" type="field">
+									<plx:callObject>
+										<plx:thisKeyword />
+									</plx:callObject>
+								</plx:callInstance>
+							</plx:callObject>
+						</plx:callInstance>
+					</plx:callObject>
+					<plx:passParam>
 						<plx:string data="Review" />
 					</plx:passParam>
 					<plx:passParam>

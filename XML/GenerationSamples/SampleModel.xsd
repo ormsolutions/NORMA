@@ -28,6 +28,9 @@
 			<xs:fractionDigits value="0" />
 			<xs:minInclusive value="1" />
 			<xs:maxInclusive value="7" />
+			<xs:minInclusive value="14" />
+			<xs:maxInclusive value="16" />
+			<xs:minInclusive value="18" />
 		</xs:restriction>
 	</xs:simpleType>
 	<xs:simpleType name="NickName">
@@ -74,12 +77,22 @@
 		</xs:restriction>
 	</xs:simpleType>
 	<!--Each ORM EntityType and it's Preferred Id or top level ValueType-->
+	<xs:complexType name="PersonDrivesCarIdentifier">
+		<xs:attribute name="DrivesCar_vin" use="required" type="xs:integer" />
+		<xs:attribute name="Person_id" use="required" type="xs:integer" />
+	</xs:complexType>
+	<xs:complexType name="PersonHasNickNameIdentifier">
+		<xs:attribute name="NickName" use="required" type="oxs:NickName" />
+		<xs:attribute name="Person_id" use="required" type="xs:integer" />
+	</xs:complexType>
 	<xs:complexType name="PersonIdentifier">
 		<xs:attribute name="Person_id" use="required" type="xs:integer" />
 	</xs:complexType>
 	<xs:complexType name="MalePersonIdentifier" />
 	<xs:complexType name="FemalePersonIdentifier" />
-	<xs:complexType name="ChildPersonIdentifier" />
+	<xs:complexType name="ChildPersonIdentifier">
+		<xs:attribute name="BirthOrder_BirthOrder_Nr" use="required" type="xs:integer" />
+	</xs:complexType>
 	<xs:complexType name="DeathIdentifier" />
 	<xs:complexType name="NaturalDeathIdentifier" />
 	<xs:complexType name="UnnaturalDeathIdentifier" />
@@ -99,6 +112,26 @@
 		<xs:attribute name="Criterion_Name" use="required" type="oxs:Name" />
 	</xs:complexType>
 	<!--Each ORM Major Object Type grouping-->
+	<xs:complexType name="PersonDrivesCarFacts">
+		<xs:complexContent>
+			<xs:extension base="oxs:PersonDrivesCarIdentifier">
+				<xs:sequence>
+					<xs:element name="DrivenByPerson" type="oxs:PersonIdentifier" />
+				</xs:sequence>
+				<xs:attribute name="vin" type="xs:integer" use="required" />
+			</xs:extension>
+		</xs:complexContent>
+	</xs:complexType>
+	<xs:complexType name="PersonHasNickNameFacts">
+		<xs:complexContent>
+			<xs:extension base="oxs:PersonHasNickNameIdentifier">
+				<xs:sequence>
+					<xs:element name="Person" type="oxs:PersonIdentifier" />
+				</xs:sequence>
+				<xs:attribute name="NickName" type="oxs:NickName" use="required" />
+			</xs:extension>
+		</xs:complexContent>
+	</xs:complexType>
 	<xs:complexType name="PersonFacts">
 		<xs:complexContent>
 			<xs:extension base="oxs:PersonIdentifier">
@@ -132,7 +165,7 @@
 				<xs:attribute name="HatTypeStyle_Description" type="oxs:HatTypeStyle_Description" use="optional" />
 				<xs:attribute name="vin" type="xs:integer" use="optional" />
 				<xs:attribute name="Gender_Code" type="oxs:Gender_Code" use="required" />
-				<xs:attribute name="Person_hasParents" type="xs:boolean" use="required" />
+				<xs:attribute name="PersonhasParents" type="xs:boolean" use="optional" />
 				<xs:attribute name="OptionalUniqueDecimal" type="oxs:OptionalUniqueDecimal" use="optional" />
 				<xs:attribute name="MandatoryUniqueDecimal" type="oxs:MandatoryUniqueDecimal" use="required" />
 				<xs:attribute name="MandatoryUniqueString" type="oxs:MandatoryUniqueString" use="required" />
@@ -183,6 +216,20 @@
 	<xs:element name="SampleModel">
 		<xs:complexType>
 			<xs:all>
+				<xs:element name="PersonDrivesCarElements">
+					<xs:complexType>
+						<xs:choice minOccurs="0" maxOccurs="unbounded">
+							<xs:element name="PersonDrivesCar" type="oxs:PersonDrivesCarFacts" />
+						</xs:choice>
+					</xs:complexType>
+				</xs:element>
+				<xs:element name="PersonHasNickNameElements">
+					<xs:complexType>
+						<xs:choice minOccurs="0" maxOccurs="unbounded">
+							<xs:element name="PersonHasNickName" type="oxs:PersonHasNickNameFacts" />
+						</xs:choice>
+					</xs:complexType>
+				</xs:element>
 				<xs:element name="PersonElements">
 					<xs:complexType>
 						<xs:choice minOccurs="0" maxOccurs="unbounded">
@@ -221,6 +268,12 @@
 			</xs:all>
 		</xs:complexType>
 		<!--Key Constraints-->
+		<xs:key name="PersonDrivesCarKey">
+			<xs:selector xpath="oxs:PersonDrivesCarElements/oxs:PersonDrivesCar" />
+		</xs:key>
+		<xs:key name="PersonHasNickNameKey">
+			<xs:selector xpath="oxs:PersonHasNickNameElements/oxs:PersonHasNickName" />
+		</xs:key>
 		<xs:key name="PersonKey">
 			<xs:selector xpath="oxs:PersonElements/oxs:Person" />
 			<xs:field xpath="@Person_id" />
@@ -261,6 +314,14 @@
 			<xs:field xpath="oxs:MandatoryUniqueString" />
 		</xs:unique>
 		<!--KeyRefs between Major Object Type groupings-->
+		<xs:keyref name="PersonDrivesCarDrivenByPersonRef" refer="PersonKey">
+			<xs:selector xpath="oxs:PersonDrivesCarElements/oxs:PersonDrivesCar" />
+			<xs:field xpath="oxs:Person/@Person_id" />
+		</xs:keyref>
+		<xs:keyref name="PersonHasNickNamePersonRef" refer="PersonKey">
+			<xs:selector xpath="oxs:PersonHasNickNameElements/oxs:PersonHasNickName" />
+			<xs:field xpath="oxs:Person/@Person_id" />
+		</xs:keyref>
 		<xs:keyref name="PersonHusbandRef" refer="PersonKey">
 			<xs:selector xpath="oxs:PersonElements/oxs:Person" />
 			<xs:field xpath="oxs:Person/@Person_id" />

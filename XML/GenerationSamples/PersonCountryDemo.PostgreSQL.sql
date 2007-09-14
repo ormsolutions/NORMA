@@ -2,28 +2,26 @@
 
 CREATE SCHEMA PersonCountryDemo;
 
-CREATE DOMAIN PersonCountryDemo.Title AS CHARACTER VARYING(4) CONSTRAINT Title_Chk CHECK (VALUE IN ('Dr', 'Prof', 'Mr', 'Mrs', 'Miss', 'Ms')) ;
-
-CREATE DOMAIN PersonCountryDemo.Region_code AS CHARACTER(8) CONSTRAINT Region_code_Chk CHECK ((CHARACTER_LENGTH(TRIM(BOTH FROM VALUE))) >= 8) ;
+CREATE DOMAIN PersonCountryDemo.Title AS CHARACTER VARYING(4) CONSTRAINT ValueTypeValueConstraint1 CHECK (VALUE IN ('Dr', 'Prof', 'Mr', 'Mrs', 'Miss', 'Ms'));
 
 CREATE TABLE PersonCountryDemo.Person
 (
-	Person_id BIGSERIAL NOT NULL, 
-	LastName CHARACTER VARYING(30) NOT NULL, 
-	FirstName CHARACTER VARYING(30) NOT NULL, 
-	Title PersonCountryDemo.Title , 
-	Country_Country_name CHARACTER VARYING(20) , 
+	Person_id SERIAL NOT NULL, 
+	LastName CHARACTER VARYING(30) NOT NULL,
+	FirstName CHARACTER VARYING(30) NOT NULL,
+	Title PersonCountryDemo.Title,
+	Country_name CHARACTER VARYING(20),
 	CONSTRAINT InternalUniquenessConstraint1 PRIMARY KEY(Person_id)
 );
 
 CREATE TABLE PersonCountryDemo.Country
 (
-	Country_name CHARACTER VARYING(20) NOT NULL, 
-	Region_Region_code PersonCountryDemo.Region_code , 
+	Country_name CHARACTER VARYING(20) NOT NULL,
+	Region_code CHARACTER(8),
 	CONSTRAINT InternalUniquenessConstraint3 PRIMARY KEY(Country_name)
 );
 
-ALTER TABLE PersonCountryDemo.Person ADD CONSTRAINT Country_FK FOREIGN KEY (Country_Country_name)  REFERENCES PersonCountryDemo.Country (Country_name)  ON DELETE RESTRICT ON UPDATE RESTRICT;
+ALTER TABLE PersonCountryDemo.Person ADD CONSTRAINT Person_FK FOREIGN KEY (Country_name) REFERENCES PersonCountryDemo.Country (Country_name) ON DELETE RESTRICT ON UPDATE RESTRICT;
 
 COMMIT WORK;
 

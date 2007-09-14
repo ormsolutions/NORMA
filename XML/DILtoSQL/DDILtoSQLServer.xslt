@@ -22,6 +22,7 @@
 	exclude-result-prefixes="dml dms dep ddt dil ddl">
 
 	<xsl:import href="DDILtoSQLStandard.xslt"/>
+	<xsl:import href="TruthValueTestRemover.xslt"/>
 	<xsl:import href="DomainInliner.xslt"/>
 
 	<xsl:output method="text" encoding="utf-8" indent="no" omit-xml-declaration="yes"/>
@@ -38,8 +39,11 @@
 	</xsl:param>
 
 	<xsl:template match="/">
+		<xsl:variable name="truthValueTestRemovedDilFragment">
+			<xsl:apply-templates mode="TruthValueTestRemover" select="."/>
+		</xsl:variable>
 		<xsl:variable name="domainInlinedDilFragment">
-			<xsl:apply-templates mode="DomainInliner" select="."/>
+			<xsl:apply-templates mode="DomainInliner" select="exsl:node-set($truthValueTestRemovedDilFragment)/child::*"/>
 		</xsl:variable>
 		<xsl:apply-templates select="exsl:node-set($domainInlinedDilFragment)/child::*"/>
 	</xsl:template>
@@ -90,13 +94,12 @@
 	<xsl:template match="dms:setSchemaStatement"/>
 
 	<xsl:template match="ddl:identityColumnSpecification">
-		<xsl:text>IDENTITY </xsl:text>
+		<xsl:text> IDENTITY </xsl:text>
 		<xsl:value-of select="$LeftParen"/>
 		<xsl:apply-templates select="child::*[1]"/>
 		<xsl:text>, </xsl:text>
 		<xsl:apply-templates select="child::*[2]"/>
 		<xsl:value-of select="$RightParen"/>
-		<xsl:text> </xsl:text>
 	</xsl:template>
 
 	<xsl:template match="ddl:sequenceGeneratorStartWithOption">
@@ -107,31 +110,31 @@
 		<xsl:apply-templates/>
 	</xsl:template>
 
-	<xsl:template match="ddt:boolean">
-		<xsl:text>BIT </xsl:text>
+	<xsl:template match="@type[.='BOOLEAN']" mode="ForDataType">
+		<xsl:text>BIT</xsl:text>
 	</xsl:template>
-	
-	<xsl:template match="ddt:characterString">
+
+	<xsl:template match="@type[.='CHARACTER' or .='CHARACTER VARYING']" mode="ForDataType">
+		<xsl:text>NATIONAL </xsl:text>
+		<xsl:value-of select="."/>
+	</xsl:template>
+
+	<xsl:template match="@type[.='DATE' or .='TIME']" mode="ForDataType">
+		<xsl:text>DATETIME</xsl:text>
+	</xsl:template>
+
+	<xsl:template match="ddt:booleanLiteral">
 		<xsl:choose>
-			<xsl:when test="@type='CHARACTER' or @type='CHARACTER VARYING'">
-				<xsl:if test="@type='CHARACTER'">
-					<xsl:text>NATIONAL </xsl:text>
-				</xsl:if>
-				<xsl:if test="@type='CHARACTER VARYING'">
-					<xsl:text>NATIONAL </xsl:text>
-				</xsl:if>
+			<xsl:when test="@value='TRUE'">
+				<xsl:text>1</xsl:text>
+			</xsl:when>
+			<xsl:when test="@value='FALSE'">
+				<xsl:text>0</xsl:text>
 			</xsl:when>
 			<xsl:otherwise>
-				<xsl:apply-imports/>
+				<xsl:text>NULL</xsl:text>
 			</xsl:otherwise>
 		</xsl:choose>
-		<xsl:value-of select="@type"/>
-		<xsl:value-of select="$LeftParen"/>
-		<xsl:value-of select="@length"/>
-		<xsl:value-of select="$RightParen"/>
-		<xsl:text> </xsl:text>
-		<xsl:apply-templates select="@characterSet" mode="ForColumnDataType"/>
-		<xsl:apply-templates select="@collate" mode="ForColumnDataType"/>
 	</xsl:template>
 
 	<xsl:template match="dep:charLengthExpression">

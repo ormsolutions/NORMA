@@ -50,7 +50,8 @@ namespace Neumont.Tools.ORMToORMAbstractionBridge
 		public InformationTypeFormatWithFactTypes(InformationTypeFormat informationTypeFormat, IList<FactType> factTypes)
 		{
 			this.informationTypeFormat = informationTypeFormat;
-			this.factTypes = factTypes;
+			// UNDONE: There might be a better place to clone this list...
+			this.factTypes = new List<FactType>(factTypes);
 		}
 	}
 

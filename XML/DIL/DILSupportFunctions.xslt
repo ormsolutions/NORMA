@@ -26,7 +26,7 @@
 	<msxsl:script implements-prefix="dsf" language="javascript"><![CDATA[
 		/*@cc_on@*/
 
-		/*@if (@_jscript_version >= 7) private static const @else@*/ var /*@end@*/ MAX_IDENTIFIER_LENGTH /*@if (@_jscript_version >= 7) : int @end@*/ = 30;
+		/*@if (@_jscript_version >= 7) private static const @else@*/ var /*@end@*/ MAX_IDENTIFIER_LENGTH /*@if (@_jscript_version >= 7) : int @end@*/ = 128;
 
 		// The enumerated Unicode general category code points and case mappings used for non-JScript engines and JScript
 		// engines prior to version 7 are accurate as of Unicode Character Database version 5.0.0 (published 2006-07-14).
