@@ -426,6 +426,7 @@
 	<ResourceString name="ImplicitBooleanValueTypeRestriction" model="Model" resourceName="ImplicitBooleanValueType.Restriction"/>
 	<ResourceString name="ImplicitBooleanValueTypePropertyRestriction" model="Model" resourceName="ImplicitBooleanValueType.PropertyRestriction"/>
 	<ResourceString name="ImplicitBooleanValueTypeNoReadingFormatString" model="Model" resourceName="ImplicitBooleanValueType.NoReadingFormatString"/>
+	<ResourceString name="FrequencyConstraintUnboundedMaxValueText" model="Model" resourceName="FrequencyConstraint.UnboundedMaxValueText"/>
 	<ResourceString name="VerbalizationTargetHtmlReportDisplayName" model="Model" resourceName="VerbalizationTarget.HtmlReport.DisplayName"/>
 	<ResourceString name="VerbalizationTargetHtmlReportCommandName" model="Model" resourceName="VerbalizationTarget.HtmlReport.CommandName"/>
 	<ResourceString name="VerbalizationTargetVerbalizationBrowserDisplayName" model="Model" resourceName="VerbalizationTarget.VerbalizationBrowser.DisplayName"/>

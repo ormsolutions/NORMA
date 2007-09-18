@@ -417,6 +417,8 @@
     </Compile>
     <Compile Include="Framework\Shell\DiagramMenuDisplay.cs" />
     <Compile Include="Framework\Shell\SerializationEngine.cs" />
+    <Compile Include="ObjectModel\Design\FrequencyConstraintBoundConverter.cs" />
+    <Compile Include="ObjectModel\Design\Editors\FrequencyConstraintMaxPicker.cs" />
     <Compile Include="ObjectModel\Design\ObjectificationRolePlayerPropertyDescriptor.cs" />
     <Compile Include="ObjectModel\Design\Editors\ModelErrorDisplayFilterEditor.cs" />
     <Compile Include="ObjectModel\ModelErrorDisplayFilter.cs" />

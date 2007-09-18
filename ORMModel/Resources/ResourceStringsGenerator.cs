@@ -2268,6 +2268,14 @@ namespace Neumont.Tools.ORM
 				return ResourceStrings.GetString(ResourceManagers.Model, "ImplicitBooleanValueType.NoReadingFormatString");
 			}
 		}
+		/// <summary>Text used in the dropdown editor and type converter for the frequency constraint max value. Correspond to the 0 value in the object model.</summary>
+		public static string FrequencyConstraintUnboundedMaxValueText
+		{
+			get
+			{
+				return ResourceStrings.GetString(ResourceManagers.Model, "FrequencyConstraint.UnboundedMaxValueText");
+			}
+		}
 		/// <summary>Description for target HtmlReport customizations. Displays in the verbalization customizations dropdown in the options page.</summary>
 		public static string VerbalizationTargetHtmlReportDisplayName
 		{

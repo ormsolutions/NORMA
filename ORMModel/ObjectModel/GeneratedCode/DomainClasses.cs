@@ -1384,7 +1384,8 @@ namespace Neumont.Tools.ORM.ObjectModel
 		
 		/// <summary>
 		/// Gets or sets the value of NoteText domain property.
-		/// Description for Neumont.Tools.ORM.ObjectModel.ObjectType.Note
+		/// A note to associate with this ObjectType. To insert new lines, use Control-Enter
+		/// in the dropdown editor, or open the 'ORM Notes Editor' toolwindow.
 		/// </summary>
 		[global::System.ComponentModel.Editor(typeof(global::Neumont.Tools.Modeling.Design.MultilineTextEditor<global::Neumont.Tools.ORM.ObjectModel.Note>), typeof(global::System.Drawing.Design.UITypeEditor))]
 		[global::System.ComponentModel.MergableProperty(false)]
@@ -3086,7 +3087,8 @@ namespace Neumont.Tools.ORM.ObjectModel
 		
 		/// <summary>
 		/// Gets or sets the value of NoteText domain property.
-		/// Description for Neumont.Tools.ORM.ObjectModel.FactType.Note
+		/// A note to associate with this FactType. To insert new lines, use Control-Enter
+		/// in the dropdown editor, or open the 'ORM Notes Editor' toolwindow.
 		/// </summary>
 		[global::System.ComponentModel.Editor(typeof(global::Neumont.Tools.Modeling.Design.MultilineTextEditor<global::Neumont.Tools.ORM.ObjectModel.Note>), typeof(global::System.Drawing.Design.UITypeEditor))]
 		[global::System.ComponentModel.MergableProperty(false)]
@@ -6247,6 +6249,7 @@ namespace Neumont.Tools.ORM.ObjectModel
 		/// Gets or sets the value of MinFrequency domain property.
 		/// Description for Neumont.Tools.ORM.ObjectModel.FrequencyConstraint.MinFrequency
 		/// </summary>
+		[global::System.ComponentModel.TypeConverter(typeof(global::Neumont.Tools.ORM.ObjectModel.Design.FrequencyConstraintMinConverter))]
 		[DslDesign::DisplayNameResource("Neumont.Tools.ORM.ObjectModel.FrequencyConstraint/MinFrequency.DisplayName", typeof(global::Neumont.Tools.ORM.ObjectModel.ORMCoreDomainModel), "Neumont.Tools.ORM.GeneratedCode.CoreDomainModelResx")]
 		[DslDesign::DescriptionResource("Neumont.Tools.ORM.ObjectModel.FrequencyConstraint/MinFrequency.Description", typeof(global::Neumont.Tools.ORM.ObjectModel.ORMCoreDomainModel), "Neumont.Tools.ORM.GeneratedCode.CoreDomainModelResx")]
 		[global::System.ComponentModel.DefaultValue(1)]
@@ -6335,6 +6338,8 @@ namespace Neumont.Tools.ORM.ObjectModel
 		/// Gets or sets the value of MaxFrequency domain property.
 		/// Description for Neumont.Tools.ORM.ObjectModel.FrequencyConstraint.MaxFrequency
 		/// </summary>
+		[global::System.ComponentModel.Editor(typeof(global::Neumont.Tools.ORM.ObjectModel.Design.FrequencyConstraintMaxPicker), typeof(global::System.Drawing.Design.UITypeEditor))]
+		[global::System.ComponentModel.TypeConverter(typeof(global::Neumont.Tools.ORM.ObjectModel.Design.FrequencyConstraintMaxConverter))]
 		[DslDesign::DisplayNameResource("Neumont.Tools.ORM.ObjectModel.FrequencyConstraint/MaxFrequency.DisplayName", typeof(global::Neumont.Tools.ORM.ObjectModel.ORMCoreDomainModel), "Neumont.Tools.ORM.GeneratedCode.CoreDomainModelResx")]
 		[DslDesign::DescriptionResource("Neumont.Tools.ORM.ObjectModel.FrequencyConstraint/MaxFrequency.Description", typeof(global::Neumont.Tools.ORM.ObjectModel.ORMCoreDomainModel), "Neumont.Tools.ORM.GeneratedCode.CoreDomainModelResx")]
 		[global::System.ComponentModel.DefaultValue(2)]
@@ -13876,7 +13881,8 @@ namespace Neumont.Tools.ORM.ObjectModel
 		
 		/// <summary>
 		/// Gets or sets the value of Text domain property.
-		/// Description for Neumont.Tools.ORM.ObjectModel.Note.Note
+		/// The note contents. To insert new lines, use Control-Enter in the dropdown
+		/// editor, or open the 'ORM Notes Editor' toolwindow.
 		/// </summary>
 		[global::System.ComponentModel.Editor(typeof(global::Neumont.Tools.Modeling.Design.MultilineTextEditor<global::Neumont.Tools.ORM.ObjectModel.Note>), typeof(global::System.Drawing.Design.UITypeEditor))]
 		[global::System.ComponentModel.MergableProperty(false)]

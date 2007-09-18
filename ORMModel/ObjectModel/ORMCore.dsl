@@ -202,7 +202,7 @@
 						<ExternalTypeMoniker Name="/System/Boolean"/>
 					</Type>
 				</DomainProperty>
-				<DomainProperty Name="NoteText" DefaultValue="" DisplayName="Note" Id="17C4E23D-CA49-4329-982F-48F4EFCA23BD" Kind="CustomStorage">
+				<DomainProperty Name="NoteText" DefaultValue="" DisplayName="Note" Description="A note to associate with this ObjectType. To insert new lines, use Control-Enter in the dropdown editor, or open the 'ORM Notes Editor' toolwindow." Id="17C4E23D-CA49-4329-982F-48F4EFCA23BD" Kind="CustomStorage">
 					<Attributes>
 						<ClrAttribute Name="global::System.ComponentModel.Editor">
 							<Parameters>
@@ -328,7 +328,7 @@
 						<ExternalTypeMoniker Name="/System/Boolean"/>
 					</Type>
 				</DomainProperty>
-				<DomainProperty Name="NoteText" DefaultValue="" DisplayName="Note" Id="AF6200B1-068D-434A-98D3-44E872B921BD" Kind="CustomStorage">
+				<DomainProperty Name="NoteText" DefaultValue="" DisplayName="Note" Description="A note to associate with this FactType. To insert new lines, use Control-Enter in the dropdown editor, or open the 'ORM Notes Editor' toolwindow." Id="AF6200B1-068D-434A-98D3-44E872B921BD" Kind="CustomStorage">
 					<Attributes>
 						<ClrAttribute Name="global::System.ComponentModel.Editor">
 							<Parameters>
@@ -593,11 +593,31 @@
 			</BaseClass>
 			<Properties>
 				<DomainProperty Name="MinFrequency" DefaultValue="1" DisplayName="MinFrequency" Id="2D48D3CA-564D-459E-A701-4209A12C4783">
+					<Attributes>
+						<ClrAttribute Name="global::System.ComponentModel.TypeConverter">
+							<Parameters>
+								<AttributeParameter Value="typeof(global::Neumont.Tools.ORM.ObjectModel.Design.FrequencyConstraintMinConverter)"/>
+							</Parameters>
+						</ClrAttribute>
+					</Attributes>
 					<Type>
 						<ExternalTypeMoniker Name="/System/Int32"/>
 					</Type>
 				</DomainProperty>
 				<DomainProperty Name="MaxFrequency" DefaultValue="2" DisplayName="MaxFrequency" Id="F46D9200-3602-435C-B852-C53BE10D99C6">
+					<Attributes>
+						<ClrAttribute Name="global::System.ComponentModel.Editor">
+							<Parameters>
+								<AttributeParameter Value="typeof(global::Neumont.Tools.ORM.ObjectModel.Design.FrequencyConstraintMaxPicker)"/>
+								<AttributeParameter Value="typeof(global::System.Drawing.Design.UITypeEditor)"/>
+							</Parameters>
+						</ClrAttribute>
+						<ClrAttribute Name="global::System.ComponentModel.TypeConverter">
+							<Parameters>
+								<AttributeParameter Value="typeof(global::Neumont.Tools.ORM.ObjectModel.Design.FrequencyConstraintMaxConverter)"/>
+							</Parameters>
+						</ClrAttribute>
+					</Attributes>
 					<Type>
 						<ExternalTypeMoniker Name="/System/Int32"/>
 					</Type>
@@ -1334,7 +1354,7 @@
 				<DomainClassMoniker Name="ORMModelElement"/>
 			</BaseClass>
 			<Properties>
-				<DomainProperty Name="Text" DefaultValue="" DisplayName="Note" Id="0EF3BC12-45FF-46A8-B325-CDFCC105A1E1">
+				<DomainProperty Name="Text" DefaultValue="" Description="The note contents. To insert new lines, use Control-Enter in the dropdown editor, or open the 'ORM Notes Editor' toolwindow." DisplayName="Note" Id="0EF3BC12-45FF-46A8-B325-CDFCC105A1E1">
 					<Attributes>
 						<ClrAttribute Name="global::System.ComponentModel.Editor">
 							<Parameters>
