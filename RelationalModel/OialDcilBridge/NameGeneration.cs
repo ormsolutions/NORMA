@@ -459,7 +459,7 @@ namespace Neumont.Tools.ORMAbstractionToConceptualDatabaseBridge
 						bool hasSubtypeNode = false;
 						FactType mainFactType = null;
 						//find the first non subtype fact type
-						for (int i = pathCount - 1; i >= 0; --i)
+						for (int i = 0; i < pathCount; ++i)
 						{
 							link = path[i];
 							LinkedElementCollection<FactType> factTypes = ConceptTypeChildHasPathFactType.GetPathFactTypeCollection(link);
