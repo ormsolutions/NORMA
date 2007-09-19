@@ -157,7 +157,7 @@ namespace Neumont.Tools.ORMAbstractionToConceptualDatabaseBridge
 		/// <summary>
 		/// Generates the conceptual database model for a given Schema and AbstractionModel.  
 		/// The generation of the Conceptual Database Model includes the population of all tables with 
-		/// Columns, Uniquenesses, Foreign Keys, and Manditory restrictions.
+		/// Columns, Uniquenesses, Foreign Keys, and Mandatory restrictions.
 		/// </summary>
 		private static void FullyGenerateConceptualDatabaseModel(Schema schema, AbstractionModel sourceModel)
 		{
@@ -272,27 +272,35 @@ namespace Neumont.Tools.ORMAbstractionToConceptualDatabaseBridge
 #endif // OLDPARTITIONCODE
 
 
-			Collection<ConceptTypeAssimilatesConceptType> separatedConceptTypes = new Collection<ConceptTypeAssimilatesConceptType>();
-
-			// For every concept type create all columns that they represent, perform separations, and map unqiuenesses that they participate in.
+			// For every concept type create all columns that they represent, map uniquenesses that they participate in.
 			foreach (ConceptType conceptType in conceptTypes)
 			{
 				CreateColumns(conceptType);
-
-				bool isPreferredForChildFound = false;
-				foreach (ConceptTypeAssimilatesConceptType conceptTypeAssimilation in ConceptTypeAssimilatesConceptType.GetLinksToAssimilatorConceptTypeCollection(conceptType))//GetAssimilationsForConceptType(conceptType))
-				{
-					if (AssimilationMapping.GetAbsorptionChoiceFromAssimilation(conceptTypeAssimilation) == AssimilationAbsorptionChoice.Separate && !separatedConceptTypes.Contains(conceptTypeAssimilation))
-					{
-						DoSeparation(conceptTypeAssimilation, ref isPreferredForChildFound);
-						separatedConceptTypes.Add(conceptTypeAssimilation);
-					}
-				}
-
 				CreateUniquenessConstraints(conceptType);
 			}
 
-			// For each table in the schema generate any foreign keys it contains and detemine witch of it's columns are manditory and nullible.
+			// Make a second pass over the concept types to population separation columns, constraint, and uniquenesses.
+			// Note that we do this second so that any target columns already exist
+			Dictionary<ConceptTypeAssimilatesConceptType, object> separatedConceptTypes = null;
+			foreach (ConceptType conceptType in conceptTypes)
+			{
+				bool isPreferredForChildFound = false;
+				foreach (ConceptTypeAssimilatesConceptType conceptTypeAssimilation in ConceptTypeAssimilatesConceptType.GetLinksToAssimilatorConceptTypeCollection(conceptType))//GetAssimilationsForConceptType(conceptType))
+				{
+					if (AssimilationMapping.GetAbsorptionChoiceFromAssimilation(conceptTypeAssimilation) == AssimilationAbsorptionChoice.Separate &&
+						(separatedConceptTypes == null || !separatedConceptTypes.ContainsKey(conceptTypeAssimilation)))
+					{
+						DoSeparation(conceptTypeAssimilation, ref isPreferredForChildFound);
+						if (separatedConceptTypes == null)
+						{
+							separatedConceptTypes = new Dictionary<ConceptTypeAssimilatesConceptType, object>();
+						}
+						separatedConceptTypes.Add(conceptTypeAssimilation, null);
+					}
+				}
+			}
+
+			// For each table in the schema generate any foreign keys it contains and detemine witch of it's columns are mandatory and nullable.
 			foreach (Table table in schema.TableCollection)
 			{
 				CreateForeignKeys(table);
@@ -330,7 +338,10 @@ namespace Neumont.Tools.ORMAbstractionToConceptualDatabaseBridge
 
 					ProcessConceptTypeForTable(assimilation.AssimilatedConceptType, table, assimilationPath);
 
-					ConceptTypeAssimilatesConceptType poppedAssimilation = assimilationPath.Pop();
+#if DEBUG
+					ConceptTypeAssimilatesConceptType poppedAssimilation =
+#endif // DEBUG
+					assimilationPath.Pop();
 					Debug.Assert(assimilation == poppedAssimilation);
 				}
 			}
@@ -345,7 +356,10 @@ namespace Neumont.Tools.ORMAbstractionToConceptualDatabaseBridge
 
 					ProcessConceptTypeForTable(assimilation.AssimilatorConceptType, table, assimilationPath);
 
-					ConceptTypeAssimilatesConceptType poppedAssimilation = assimilationPath.Pop();
+#if DEBUG
+					ConceptTypeAssimilatesConceptType poppedAssimilation =
+#endif // DEBUG
+					assimilationPath.Pop();
 					Debug.Assert(assimilation == poppedAssimilation);
 				}
 			}
@@ -551,11 +565,6 @@ namespace Neumont.Tools.ORMAbstractionToConceptualDatabaseBridge
 			}
 
 
-			//foreach (ConceptTypeChild conceptTypeChild in ConceptTypeChild.GetLinksToTargetCollection(conceptType))
-			//{
-			//    columnsForConceptType.AddRange(GetColumnsForConceptTypeChild(conceptTypeChild, new List<ConceptTypeChild>()));
-			//}
-			
 			Table conceptTypeTable = TableIsPrimarilyForConceptType.GetTable(conceptType);
 			if (conceptTypeTable != null)
 			{
@@ -677,76 +686,62 @@ namespace Neumont.Tools.ORMAbstractionToConceptualDatabaseBridge
 			throw new InvalidOperationException();
 		}
 
-		
-
+		/// <summary>
+		/// A callback delegate for <see cref="GetColumnsForConceptTypeChild"/>
+		/// </summary>
+		/// <param name="childInformationType">The current <see cref="InformationType"/></param>
+		/// <param name="childPathStack">The path to the <paramref name="childInformationType"/>. Converting
+		/// the stack to an array and reversing will give the assimilation path. The childInformationType will be on the top of the stack.
+		/// The stack is <see langword="null"/> if no stack is passed into GetColumnsForConceptTypeChild.</param>
+		private delegate void ProcessChildInformationType(InformationType childInformationType, Stack<ConceptTypeChild> childPathStack);
 		/// <summary>
 		/// GetColumnsForConceptTypeChild gets the <see cref="Column"/> coresponding to a <see cref="ConceptTypeChild"/>.
 		/// </summary>
 		/// <remarks>
-		/// GetColumnsForConceptTypeChild populates a list of Columns pertaining to a ConceptTypeChild, 
-		/// Columns are only added if the ConceptTypeChild is an Information Type, if the ConceptTypeChild is of type
-		/// ConceptTypeRelatesToConceptType or ConceptTypeAssimilatesConceptType then it recursively calls itself using 
-		/// the preffered target ConceptType of the ConceptTypeChild as the new ConceptTypeChildren, adding the result to the ColumnList.
+		/// GetColumnsForConceptTypeChild enables a callback for each InformationType. The callback delegate can create
+		/// a new column or use the callback for information purposes only.
 		/// </remarks>
-		/// <param name="conceptTypeChild"></param>
-		/// <param name="conceptTypeChildPath">ConceptTypeChildPath is populated in GetColumnsForConceptTypeChild,
-		/// but may already contain ConceptTypeChildren.</param>
-		private static List<Column> GetColumnsForConceptTypeChild(ConceptTypeChild conceptTypeChild, List<ConceptTypeChild> conceptTypeChildPath)
+		/// <param name="conceptTypeChild">The child to process</param>
+		/// <param name="conceptTypeChildPath">A stack of preceding children in the path. Provide an empty starting stack
+		/// if stack information is required for the callback.</param>
+		/// <param name="informationTypeCallback">A callback method to process informaton types</param>
+		private static void GetColumnsForConceptTypeChild(ConceptTypeChild conceptTypeChild, Stack<ConceptTypeChild> conceptTypeChildPath, ProcessChildInformationType informationTypeCallback)
 		{
-			List<Column> columnList = new List<Column>();
-			conceptTypeChildPath.Add(conceptTypeChild);
-
-			if (conceptTypeChild is InformationType)
+			if (conceptTypeChildPath != null)
 			{
-				Column informationTypeColumn = new Column(conceptTypeChild.Store,
-											new PropertyAssignment[]{
-											new PropertyAssignment(Column.NameDomainPropertyId, conceptTypeChild.Name)});
-				ColumnHasConceptTypeChild.GetConceptTypeChildPath(informationTypeColumn).AddRange(conceptTypeChildPath);
-				columnList.Add(informationTypeColumn);
+				conceptTypeChildPath.Push(conceptTypeChild);
 			}
-			else if (conceptTypeChild is ConceptTypeRelatesToConceptType)
+			InformationType informationType = conceptTypeChild as InformationType;
+
+			if (null != (informationType = conceptTypeChild as InformationType))
 			{
-
-				ConceptType relatedConceptType = (ConceptType)conceptTypeChild.Target;
-				List<ConceptTypeChild> preferredList = GetPreferredConceptTypeChildrenForConceptType(relatedConceptType);
-				foreach (ConceptTypeChild child in preferredList)
+				informationTypeCallback(informationType, conceptTypeChildPath);
+			}
+			else
+			{
+				ConceptType recursePreferredForConceptType = null;
+				if (conceptTypeChild is ConceptTypeRelatesToConceptType)
 				{
-					if (child == preferredList[preferredList.Count - 1])
+					recursePreferredForConceptType = (ConceptType)conceptTypeChild.Target;
+				}
+				else if (conceptTypeChild is ConceptTypeAssimilatesConceptType)
+				{
+					recursePreferredForConceptType = conceptTypeChild.Parent;
+				}
+				if (recursePreferredForConceptType != null)
+				{
+					IList<ConceptTypeChild> preferredList = GetPreferredConceptTypeChildrenForConceptType(recursePreferredForConceptType);
+					int preferredCount = preferredList.Count;
+					for (int i = 0; i < preferredCount; ++i)
 					{
-
-						columnList.AddRange(GetColumnsForConceptTypeChild(child, conceptTypeChildPath));
-
-						//conceptTypeChildPath.Clear();
-						//columnList.AddRange(GetColumnsForConceptTypeChild(child, conceptTypeChildPath));
-					}
-					else
-					{
-						List<ConceptTypeChild> clonedConceptTypeChildPath = new List<ConceptTypeChild>(conceptTypeChildPath);
-						columnList.AddRange(GetColumnsForConceptTypeChild(child, clonedConceptTypeChildPath));
+						GetColumnsForConceptTypeChild(preferredList[i], conceptTypeChildPath, informationTypeCallback);
 					}
 				}
-				return columnList;
 			}
-			else if (conceptTypeChild is ConceptTypeAssimilatesConceptType)
+			if (conceptTypeChildPath != null)
 			{
-				ConceptType targetConceptType = (ConceptType)conceptTypeChild.Parent;
-				List<ConceptTypeChild> preferredList = GetPreferredConceptTypeChildrenForConceptType(targetConceptType);
-				foreach (ConceptTypeChild child in preferredList)
-				{
-					if (child == preferredList[preferredList.Count - 1])
-					{
-						columnList.AddRange(GetColumnsForConceptTypeChild(child, conceptTypeChildPath));
-					}
-					else
-					{
-						List<ConceptTypeChild> clonedConceptTypeChildPath = new List<ConceptTypeChild>(conceptTypeChildPath);
-						columnList.AddRange(GetColumnsForConceptTypeChild(child, clonedConceptTypeChildPath));
-					}
-				}
-				return columnList;
+				conceptTypeChildPath.Pop();
 			}
-
-			return columnList;
 		}
 
 		/// <summary>
@@ -790,40 +785,41 @@ namespace Neumont.Tools.ORMAbstractionToConceptualDatabaseBridge
 		/// GetPreferredConceptTypeChildrenForConceptType parses through the uniquenesses of a single concept type, 
 		/// adding all ConceptTypeChildren of any Preferred Uniqueness.  If there are no conceptTypeChildren that meet this critria 
 		/// then it checks for anyConceptTypeAssimilatesConceptTypes within the Assimillator collection, and finally through the Assimilated Collection
-		/// returning the list of all ConceptTypeChildren that are Prefered for the ConceptType.
+		/// returning the list of all ConceptTypeChildren that are Preferred for the ConceptType.
 		/// </summary>
-		private static List<ConceptTypeChild> GetPreferredConceptTypeChildrenForConceptType(ConceptType conceptType)
+		private static IList<ConceptTypeChild> GetPreferredConceptTypeChildrenForConceptType(ConceptType conceptType)
 		{
 			foreach (Uniqueness uniqueness in conceptType.UniquenessCollection)
 			{
 				if (uniqueness.IsPreferred)
 				{
-					return new List<ConceptTypeChild>(uniqueness.ConceptTypeChildCollection);
+					return uniqueness.ConceptTypeChildCollection;
 				}
 			}
-			foreach (ConceptTypeAssimilatesConceptType conceptTypeAssimilatesConceptType
+			ConceptTypeAssimilatesConceptType bestAssimilation = null;
+			ConceptTypeAssimilatesConceptType preferredForParent = null;
+			foreach (ConceptTypeAssimilatesConceptType assimilation
 				in ConceptTypeAssimilatesConceptType.GetLinksToAssimilatorConceptTypeCollection(conceptType))
 			{
-				if (conceptTypeAssimilatesConceptType.IsPreferredForTarget)
+				if (assimilation.IsPreferredForTarget)
 				{
-					List<ConceptTypeChild> prefferedConceptTypeChildrenList = new List<ConceptTypeChild>(1);
-					prefferedConceptTypeChildrenList.Add(conceptTypeAssimilatesConceptType);
-					return prefferedConceptTypeChildrenList;
+					bestAssimilation = assimilation;
+					break;
+				}
+				else if (preferredForParent == null && assimilation.IsPreferredForParent)
+				{
+					preferredForParent = assimilation;
+					// Keep going to find the target preference if available
 				}
 			}
-			foreach (ConceptTypeAssimilatesConceptType conceptTypeAssimilatesConceptType
-				in ConceptTypeAssimilatesConceptType.GetLinksToAssimilatedConceptTypeCollection(conceptType))
+			if (null != bestAssimilation ||
+				null != (bestAssimilation = preferredForParent))
 			{
-				if (conceptTypeAssimilatesConceptType.IsPreferredForParent)
-				{
-					List<ConceptTypeChild> prefferedConceptTypeChildrenList = new List<ConceptTypeChild>(1);
-					prefferedConceptTypeChildrenList.Add(conceptTypeAssimilatesConceptType);
-					return prefferedConceptTypeChildrenList;
-				}
+				return new ConceptTypeChild[] { bestAssimilation };
 			}
 
 			Debug.Fail("Couldn't find preferred identifier.");
-			return null;
+			return new ConceptTypeChild[0];
 		}
 
 		/// <summary>
@@ -834,15 +830,16 @@ namespace Neumont.Tools.ORMAbstractionToConceptualDatabaseBridge
 			Table table = TableIsPrimarilyForConceptType.GetTable(assimilation.AssimilatedConceptType);
 			if (table != null)
 			{
-				if (isPreferredForChildFound == false)
+				if (!isPreferredForChildFound)
 				{
+					Store store = table.Store;
 					if (assimilation.IsPreferredForParent)
 					{
-						ReferenceConstraint referenceConstraint = new ReferenceConstraint(assimilation.Store, new PropertyAssignment[] { new PropertyAssignment(ReferenceConstraint.NameDomainPropertyId, assimilation.Name) });
+						ReferenceConstraint referenceConstraint = new ReferenceConstraint(store, new PropertyAssignment[] { new PropertyAssignment(ReferenceConstraint.NameDomainPropertyId, assimilation.Name) });
 						TableContainsReferenceConstraint tableContainsReferenceConstraint = new TableContainsReferenceConstraint(TableIsPrimarilyForConceptType.GetTable(assimilation.AssimilatorConceptType), referenceConstraint);
 						ReferenceConstraintTargetsTable referenceConstraintTargetsTable = new ReferenceConstraintTargetsTable(referenceConstraint, table);
 
-						UniquenessConstraint mappedConstraint = new UniquenessConstraint(assimilation.Store, new PropertyAssignment[] { new PropertyAssignment(UniquenessConstraint.NameDomainPropertyId, "Constraint") });
+						UniquenessConstraint mappedConstraint = new UniquenessConstraint(store, new PropertyAssignment[] { new PropertyAssignment(UniquenessConstraint.NameDomainPropertyId, "Constraint") });
 						mappedConstraint.IsPrimary = true;
 
 						List<Column> sourceColumns = ConceptTypeHasPrimaryIdentifierColumns(null, assimilation.Parent);
@@ -856,155 +853,6 @@ namespace Neumont.Tools.ORMAbstractionToConceptualDatabaseBridge
 						TableIsPrimarilyForConceptType.GetTable(assimilation.AssimilatorConceptType).UniquenessConstraintCollection.Add(mappedConstraint);
 
 					}
-					else if (assimilation.IsPreferredForTarget)
-					{
-						if (isPreferredForChildFound == false)
-						{
-							ConceptType parentConcept = assimilation.AssimilatorConceptType;
-							ConceptTypeAssimilatesConceptType assimilationPath = assimilation;
-							Table targetTable = null;
-
-							while (targetTable == null)
-							{
-								targetTable = TableIsPrimarilyForConceptType.GetTable(parentConcept);
-								if (targetTable == null)
-								{
-									parentConcept = parentConcept.AssimilatorConceptTypeCollection[0];
-								}
-								else
-								{
-									break;
-								}
-							}
-
-							if (targetTable != null)
-							{
-								ReferenceConstraint referenceConstraint = new ReferenceConstraint(assimilation.Store, new PropertyAssignment[] { new PropertyAssignment(ReferenceConstraint.NameDomainPropertyId, assimilation.Name) });
-								TableContainsReferenceConstraint tableContainsReferenceConstraint = new TableContainsReferenceConstraint(table, referenceConstraint);
-								ReferenceConstraintTargetsTable referenceConstraintTargetsTable = new ReferenceConstraintTargetsTable(referenceConstraint, targetTable);
-
-								UniquenessConstraint mappedConstraint = new UniquenessConstraint(assimilation.Store, new PropertyAssignment[] { new PropertyAssignment(UniquenessConstraint.NameDomainPropertyId, "Constraint") });
-
-								// If it is prefered for target set the constraint as primary, otherwise perform the check in the defualt case.
-								mappedConstraint.IsPrimary = true;
-
-								LinkedElementCollection<ConceptType> assimilations;
-								ConceptType conceptType = assimilation.AssimilatedConceptType;
-								List<Column> primaryIdentifierColumns = new List<Column>();
-
-								bool primaryIdentifierFound = false;
-								while ((assimilations = conceptType.AssimilatorConceptTypeCollection).Count != 0 && !primaryIdentifierFound)
-								{
-									conceptType = assimilations[0];
-
-									Table primaryTable = TableIsPrimarilyForConceptType.GetTable(conceptType);
-
-									if (primaryTable != null)
-									{
-										foreach (UniquenessConstraint uniqueness in primaryTable.UniquenessConstraintCollection)
-										{
-											if (uniqueness.IsPrimary)
-											{
-												primaryIdentifierColumns.AddRange(uniqueness.ColumnCollection);
-												assimilation.IsMandatory = true;
-												primaryIdentifierFound = true;
-											}
-										}
-
-									}
-								}
-								if (primaryIdentifierColumns.Count == 0)
-								{
-									primaryIdentifierColumns.AddRange(GetColumnsForConceptTypeChild(assimilation as ConceptTypeChild, new List<ConceptTypeChild>()));
-									primaryIdentifierFound = true;
-								}
-
-								foreach (Column identifierColumn in primaryIdentifierColumns)
-								{
-									LinkedElementCollection<ConceptTypeChild> ctcpath = ColumnHasConceptTypeChild.GetConceptTypeChildPath(identifierColumn);
-									if (primaryIdentifierFound == true)
-									{
-										foreach (ConceptTypeChild ctc in ctcpath)
-										{
-											ctc.IsMandatory = true;
-										}
-									}
-									Column clonedColumn = new Column(identifierColumn.Store, new PropertyAssignment[] { new PropertyAssignment(Column.NameDomainPropertyId, identifierColumn.Name) });
-									List<ConceptTypeChild> clonedConceptTypeChildPath = new List<ConceptTypeChild>(ColumnHasConceptTypeChild.GetConceptTypeChildPath(identifierColumn));
-									ColumnHasConceptTypeChild.GetConceptTypeChildPath(clonedColumn).Clear();
-									ColumnHasConceptTypeChild.GetConceptTypeChildPath(clonedColumn).AddRange(clonedConceptTypeChildPath);
-									table.ColumnCollection.Add(clonedColumn);
-									ColumnReference relationship = new ColumnReference(clonedColumn, identifierColumn);
-									referenceConstraint.ColumnReferenceCollection.Add(relationship);
-
-									mappedConstraint.ColumnCollection.Add(clonedColumn);
-								}
-								table.UniquenessConstraintCollection.Add(mappedConstraint);
-							}
-							isPreferredForChildFound = true;
-						}
-					}
-					//else if (assimilation.IsMandatory)
-					//{
-
-					//    Table targetTable = null;
-					//    ConceptType parentConcept = assimilation.AssimilatorConceptType;
-					//    ConceptTypeAssimilatesConceptType assimilationPath = assimilation;
-
-					//    LinkedElementCollection<ConceptType> assimilations = null;
-					//    ConceptType conceptType = assimilation.AssimilatedConceptType;
-					//    List<Column> primaryIdentifierColumns = new List<Column>();
-
-					//    bool primaryIdentifierFound = false;
-
-					//    while (targetTable == null && !primaryIdentifierFound)
-					//    {
-					//        targetTable = TableIsPrimarilyForConceptType.GetTable(parentConcept);
-					//        if (targetTable == null)
-					//        {
-					//            parentConcept = parentConcept.AssimilatorConceptTypeCollection[0];
-					//        }
-					//        else
-					//        {
-					//            foreach (UniquenessConstraint uniqueness in targetTable.UniquenessConstraintCollection)
-					//            {
-					//                if (uniqueness.IsPrimary)
-					//                {
-					//                    primaryIdentifierColumns.AddRange(uniqueness.ColumnCollection);
-					//                    assimilation.IsMandatory = true;
-					//                    primaryIdentifierFound = true;
-					//                }
-					//            }
-					//        }
-					//    } 
-
-					//    ReferenceConstraint referenceConstraint = new ReferenceConstraint(assimilation.Store, new PropertyAssignment[] { new PropertyAssignment(ReferenceConstraint.NameDomainPropertyId, assimilation.Name) });
-					//    TableContainsReferenceConstraint tableContainsReferenceConstraint = new TableContainsReferenceConstraint(TableIsPrimarilyForConceptType.GetTable(assimilation.AssimilatedConceptType), referenceConstraint);
-					//    ReferenceConstraintTargetsTable referenceConstraintTargetsTable = new ReferenceConstraintTargetsTable(referenceConstraint, targetTable);
-
-
-					//    if (primaryIdentifierColumns.Count == 0)
-					//    {
-					//        primaryIdentifierColumns.AddRange(GetColumnsForConceptTypeChild(assimilation as ConceptTypeChild, new List<ConceptTypeChild>()));
-					//    }
-
-					//    foreach (Column identifierColumn in primaryIdentifierColumns)
-					//    {
-					//        Column clonedColumn = new Column(identifierColumn.Store, new PropertyAssignment[] { new PropertyAssignment(Column.NameDomainPropertyId, identifierColumn.Name) });
-					//        List<ConceptTypeChild> clonedConceptTypeChildPath = new List<ConceptTypeChild>(ColumnHasConceptTypeChild.GetConceptTypeChildPath(identifierColumn));
-
-					//        foreach (ConceptTypeChild conceptTypeChild in clonedConceptTypeChildPath)
-					//        {
-					//            conceptTypeChild.IsMandatory = true;
-					//        }
-					//        ColumnHasConceptTypeChild.GetConceptTypeChildPath(clonedColumn).Clear();
-					//        ColumnHasConceptTypeChild.GetConceptTypeChildPath(clonedColumn).AddRange(clonedConceptTypeChildPath);
-
-					//        TableIsPrimarilyForConceptType.GetTable(assimilation.AssimilatedConceptType).ColumnCollection.Add(clonedColumn);
-					//        ColumnReference relationship = new ColumnReference(clonedColumn, identifierColumn);
-					//        referenceConstraint.ColumnReferenceCollection.Add(relationship);
-					//    }
-					//}
 					else
 					{
 						ConceptType parentConcept = assimilation.AssimilatorConceptType;
@@ -1026,23 +874,33 @@ namespace Neumont.Tools.ORMAbstractionToConceptualDatabaseBridge
 
 						if (targetTable != null)
 						{
-							ReferenceConstraint referenceConstraint = new ReferenceConstraint(assimilation.Store, new PropertyAssignment[] { new PropertyAssignment(ReferenceConstraint.NameDomainPropertyId, assimilation.Name) });
+							ReferenceConstraint referenceConstraint = new ReferenceConstraint(store, new PropertyAssignment[] { new PropertyAssignment(ReferenceConstraint.NameDomainPropertyId, assimilation.Name) });
 							TableContainsReferenceConstraint tableContainsReferenceConstraint = new TableContainsReferenceConstraint(table, referenceConstraint);
 							ReferenceConstraintTargetsTable referenceConstraintTargetsTable = new ReferenceConstraintTargetsTable(referenceConstraint, targetTable);
 
-							UniquenessConstraint mappedConstraint = new UniquenessConstraint(assimilation.Store, new PropertyAssignment[] { new PropertyAssignment(UniquenessConstraint.NameDomainPropertyId, "Constraint") });
+							UniquenessConstraint mappedConstraint = new UniquenessConstraint(store, new PropertyAssignment[] { new PropertyAssignment(UniquenessConstraint.NameDomainPropertyId, "Constraint") });
 
-							if (GetColumnsForConceptTypeChild(GetPreferredConceptTypeChildrenForConceptType(assimilation.AssimilatedConceptType)[0], new List<ConceptTypeChild>()) == null)
+							bool seenPrimary = false;
+							if (!assimilation.IsPreferredForTarget)
+							{
+								GetColumnsForConceptTypeChild(
+									GetPreferredConceptTypeChildrenForConceptType(assimilation.AssimilatedConceptType)[0],
+									null,
+									delegate(InformationType childInformationType, Stack<ConceptTypeChild> childPathStack)
+									{
+										seenPrimary = true;
+									});
+							}
+							if (!seenPrimary)
 							{
 								mappedConstraint.IsPrimary = true;
 							}
 
 							LinkedElementCollection<ConceptType> assimilations;
 							ConceptType conceptType = assimilation.AssimilatedConceptType;
-							List<Column> primaryIdentifierColumns = new List<Column>();
 
 							bool primaryIdentifierFound = false;
-							while ((assimilations = conceptType.AssimilatorConceptTypeCollection).Count != 0 && !primaryIdentifierFound)
+							while (!primaryIdentifierFound && (assimilations = conceptType.AssimilatorConceptTypeCollection).Count != 0)
 							{
 								conceptType = assimilations[0];
 
@@ -1054,42 +912,74 @@ namespace Neumont.Tools.ORMAbstractionToConceptualDatabaseBridge
 									{
 										if (uniqueness.IsPrimary)
 										{
-											primaryIdentifierColumns.AddRange(uniqueness.ColumnCollection);
-											assimilation.IsMandatory = true;
+											foreach (Column identifierColumn in uniqueness.ColumnCollection)
+											{
+												Column clonedColumn = new Column(store, new PropertyAssignment[] { new PropertyAssignment(Column.NameDomainPropertyId, identifierColumn.Name) });
+												LinkedElementCollection<ConceptTypeChild> clonedColumnPath = ColumnHasConceptTypeChild.GetConceptTypeChildPath(clonedColumn);
+												clonedColumnPath.Add(assimilation);
+												clonedColumnPath.AddRange(ColumnHasConceptTypeChild.GetConceptTypeChildPath(identifierColumn));
+												new TableContainsColumn(table, clonedColumn);
+												new ReferenceConstraintContainsColumnReference(referenceConstraint, new ColumnReference(clonedColumn, identifierColumn));
+												new UniquenessConstraintIncludesColumn(mappedConstraint, clonedColumn);
+											}
 											primaryIdentifierFound = true;
 										}
 									}
 
 								}
 							}
-							if (primaryIdentifierColumns.Count == 0)
+							if (!primaryIdentifierFound)
 							{
-								primaryIdentifierColumns.AddRange(GetColumnsForConceptTypeChild(assimilation as ConceptTypeChild, new List<ConceptTypeChild>()));
-								primaryIdentifierFound = true;
-							}
-
-							foreach (Column identifierColumn in primaryIdentifierColumns)
-							{
-								LinkedElementCollection<ConceptTypeChild> ctcpath = ColumnHasConceptTypeChild.GetConceptTypeChildPath(identifierColumn);
-								if (primaryIdentifierFound == true)
-								{
-									foreach (ConceptTypeChild ctc in ctcpath)
+								GetColumnsForConceptTypeChild(
+									assimilation,
+									new Stack<ConceptTypeChild>(),
+									delegate(InformationType childInformationType, Stack<ConceptTypeChild> childPathStack)
 									{
-										ctc.IsMandatory = true;
-									}
-								}
-								Column clonedColumn = new Column(identifierColumn.Store, new PropertyAssignment[] { new PropertyAssignment(Column.NameDomainPropertyId, identifierColumn.Name) });
-								List<ConceptTypeChild> clonedConceptTypeChildPath = new List<ConceptTypeChild>(ColumnHasConceptTypeChild.GetConceptTypeChildPath(identifierColumn));
-								ColumnHasConceptTypeChild.GetConceptTypeChildPath(clonedColumn).Clear();
-								ColumnHasConceptTypeChild.GetConceptTypeChildPath(clonedColumn).AddRange(clonedConceptTypeChildPath);
-								table.ColumnCollection.Add(clonedColumn);
-								ColumnReference relationship = new ColumnReference(clonedColumn, identifierColumn);
-								referenceConstraint.ColumnReferenceCollection.Add(relationship);
+										Column informationTypeColumn = new Column(
+											childInformationType.Store,
+											new PropertyAssignment[] { new PropertyAssignment(Column.NameDomainPropertyId, childInformationType.Name) });
+										ConceptTypeChild[] pathArray = childPathStack.ToArray();
+										int pathLength = pathArray.Length;
+										if (pathLength > 1)
+										{
+											Array.Reverse(pathArray);
+										}
+										ColumnHasConceptTypeChild.GetConceptTypeChildPath(informationTypeColumn).AddRange(pathArray);
+										new TableContainsColumn(table, informationTypeColumn);
+										new UniquenessConstraintIncludesColumn(mappedConstraint, informationTypeColumn);
 
-								mappedConstraint.ColumnCollection.Add(clonedColumn);
+										// Create a column reference to the other column
+										foreach (Column possibleColumn in targetTable.ColumnCollection)
+										{
+											LinkedElementCollection<ConceptTypeChild> possiblePath = ColumnHasConceptTypeChild.GetConceptTypeChildPath(possibleColumn);
+											int possiblePathCount = possiblePath.Count;
+
+											if (possiblePathCount < pathLength)
+											{
+												// We're looking for the end of the separated path to match
+												// the full possible path, and the Parent of the previous
+												// ConceptTypeChild in the separated path to match the
+												// concept type for the target table.
+												bool isMatch = true;
+												int sizeDifference = pathLength - possiblePathCount;
+												for (int i = possiblePathCount - 1; i >= 0; --i)
+												{
+													if (possiblePath[i] != pathArray[i + sizeDifference])
+													{
+														isMatch = false;
+														break;
+													}
+												}
+												if (isMatch && pathArray[sizeDifference - 1].Parent == parentConcept)
+												{
+													new ReferenceConstraintContainsColumnReference(referenceConstraint, new ColumnReference(informationTypeColumn, possibleColumn));
+													break;
+												}
+											}
+										}
+									});
 							}
-							table.UniquenessConstraintCollection.Add(mappedConstraint);
-
+							new TableContainsUniquenessConstraint(table, mappedConstraint);
 							isPreferredForChildFound = true;
 						}
 					}
@@ -1097,7 +987,7 @@ namespace Neumont.Tools.ORMAbstractionToConceptualDatabaseBridge
 			}
 			else
 			{
-				// If the seperation is further partitioned then it will not have a secondary child table, further assimilations or seperations are ok though.
+				// If the separation is further partitioned then it will not have a secondary child table, further assimilations or separations are ok though.
 				ReadOnlyCollection<ConceptTypeAssimilatesConceptType> childAssimilations = ConceptTypeAssimilatesConceptType.GetLinksToAssimilatedConceptTypeCollection(assimilation.AssimilatedConceptType);
 				bool isPartitioned = false;
 				foreach (ConceptTypeAssimilatesConceptType possiblePartition in childAssimilations)
@@ -1110,11 +1000,10 @@ namespace Neumont.Tools.ORMAbstractionToConceptualDatabaseBridge
 				}
 				if (isPartitioned)
 				{
-					bool prefered = false;
 					foreach (ConceptTypeAssimilatesConceptType partition in childAssimilations)
 					{
-						DoSeparation(partition, ref prefered);
-						prefered = false;
+						bool preferred = false;
+						DoSeparation(partition, ref preferred);
 					}
 				}
 			}
@@ -1645,18 +1534,16 @@ namespace Neumont.Tools.ORMAbstractionToConceptualDatabaseBridge
 		{
 			foreach (ConceptTypeChild conceptTypeChild in ColumnHasConceptTypeChild.GetConceptTypeChildPath(column))
 			{
-				if (conceptTypeChild.GetType() == typeof(InformationType))
+				ConceptTypeRelatesToConceptType relation;
+				if (null != (relation = conceptTypeChild as ConceptTypeRelatesToConceptType))
+				{
+					return relation;
+				}
+				ConceptTypeAssimilatesConceptType assimilation = conceptTypeChild as ConceptTypeAssimilatesConceptType;
+				if (assimilation == null || // We have an InformationType
+					AssimilationMapping.GetAbsorptionChoiceFromAssimilation(assimilation) == AssimilationAbsorptionChoice.Separate)
 				{
 					return null;
-				}
-				else if (conceptTypeChild.GetType() == typeof(ConceptTypeRelatesToConceptType))
-				{
-					return (ConceptTypeRelatesToConceptType)conceptTypeChild;
-				}
-				else if (conceptTypeChild.GetType() == typeof(ConceptTypeAssimilatesConceptType))
-				{
-					if (AssimilationMapping.GetAbsorptionChoiceFromAssimilation((ConceptTypeAssimilatesConceptType)conceptTypeChild) == AssimilationAbsorptionChoice.Separate)
-					{ return null; }
 				}
 			}
 			return null;
@@ -1670,32 +1557,56 @@ namespace Neumont.Tools.ORMAbstractionToConceptualDatabaseBridge
 		{
 			foreach (Column column in table.ColumnCollection)
 			{
-				CheckColumnConstraint(column);
+				CheckColumnConstraint(column, table);
 			}
 		}
 
 		/// <summary>
-		/// CheckColumnConstraint looks at the the ConceptTypeChildPath for a column, setting the column to nullable when some point in the path is not manditory. 
+		/// CheckColumnConstraint looks at the the ConceptTypeChildPath for a column, setting the column to nullable when some point in the path is not mandatory. 
 		/// </summary>
 		private static void CheckColumnConstraint(Column column)
 		{
+			CheckColumnConstraint(column, null);
+		}
+		/// <summary>
+		/// CheckColumnConstraint looks at the the ConceptTypeChildPath for a column, setting the column to nullable when some point in the path is not mandatory. 
+		/// </summary>
+		private static void CheckColumnConstraint(Column column, Table table)
+		{
 			bool allStepsMandatory = true;
-			foreach (ConceptTypeChild concept in ColumnHasConceptTypeChild.GetConceptTypeChildPath(column))
+			ConceptType lastTarget = null;
+			bool firstPass = true;
+			foreach (ConceptTypeChild child in ColumnHasConceptTypeChild.GetConceptTypeChildPath(column))
 			{
-				if (!concept.IsMandatory)
+				if (!child.IsMandatory)
 				{
-					// A ConceptTypeAssimilatesConceptType that is set to partition may(will) not be manditory, but the resulting columns should be, 
-					// Do we wwant to perform a check on the ConceptTypeChild for that case here, or should we eariler change that Assimilation to a manditory one?
-					if (concept.GetType() == typeof(ConceptTypeAssimilatesConceptType) && AssimilationMapping.GetAbsorptionChoiceFromAssimilation(concept as ConceptTypeAssimilatesConceptType) == AssimilationAbsorptionChoice.Partition)
+					ConceptTypeAssimilatesConceptType assimilation = child as ConceptTypeAssimilatesConceptType;
+					if (assimilation != null)
 					{
+						// The IsMandatory property applies when stepping parent-to-target, However, stepping target-to-parent
+						// is always considered mandatory. See if we're in this situation.
+						if (firstPass)
+						{
+							if (table == null)
+							{
+								table = column.Table;
+							}
+							lastTarget = TableIsPrimarilyForConceptType.GetConceptType(table);
 
+						}
+						if (lastTarget != null &&
+							lastTarget == assimilation.Target)
+						{
+							lastTarget = assimilation.Parent;
+							firstPass = false;
+							continue;
+						}
 					}
-					else
-					{
-						allStepsMandatory = false;
-						break;
-					}
+					allStepsMandatory = false;
+					break;
 				}
+				lastTarget = child.Target as ConceptType;
+				firstPass = false;
 			}
 			column.IsNullable = !allStepsMandatory;
 		}
