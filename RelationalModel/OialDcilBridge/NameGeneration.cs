@@ -439,7 +439,7 @@ namespace Neumont.Tools.ORMAbstractionToConceptualDatabaseBridge
 				private string GenerateColumnName(Column column, string longerThan)
 				{
 					// UNDONE: use these two varables to reflect preference customization 
-					CasingOption columnCase = CasingOption.Pascal;
+					CasingOption columnCase = CasingOption.Camel;
 					string columnSpace = "";
 
 					//the string is used when possible to avoid using the list for a single entry
@@ -459,7 +459,7 @@ namespace Neumont.Tools.ORMAbstractionToConceptualDatabaseBridge
 						bool hasSubtypeNode = false;
 						FactType mainFactType = null;
 						//find the first non subtype fact type
-						for (int i = 0; i < pathCount; ++i)
+						for (int i = pathCount - 1; i >= 0; --i)
 						{
 							link = path[i];
 							LinkedElementCollection<FactType> factTypes = ConceptTypeChildHasPathFactType.GetPathFactTypeCollection(link);
@@ -725,6 +725,15 @@ namespace Neumont.Tools.ORMAbstractionToConceptualDatabaseBridge
 				}
 				private string GetFinalName(string singleName, List<string> nameCollection, string space, CasingOption casing)
 				{
+					// UNDONE: There are several things we need to do this correctly.
+					// Object type names cannot be treated as atomic unit.
+					// 1) ValueType names may be composed of EntityType and reference mode names combined with
+					//    a format string.
+					// 2) EntityType names may be composed of a format string combining EntityType/ValueType/ReferenceMode names
+					//    that also need to be considered as atomic names and a format string to combine them
+					// 3) ReferenceModeNames may be units, which should never be cased.
+					//
+					// Camel gives inconsistent results until these are done, although it is used as the column default.
 					string finalName;
 					if (null == nameCollection)
 					{
@@ -790,16 +799,46 @@ namespace Neumont.Tools.ORMAbstractionToConceptualDatabaseBridge
 					switch (casing)
 					{
 						case CasingOption.Camel:
-							return DoFirstLetterCase(name, false, textInfo);
+							return TestHasAdjacentUpperCase(name) ? name : DoFirstLetterCase(name, false, textInfo);
 						case CasingOption.Pascal:
-							return DoFirstLetterCase(name, true, textInfo);
+							return TestHasAdjacentUpperCase(name) ? name : DoFirstLetterCase(name, true, textInfo);
 						case CasingOption.Flat:
-							return textInfo.ToLower(name);
+							return TestHasAdjacentUpperCase(name) ? name : textInfo.ToLower(name);
 						case CasingOption.Upper:
 							return textInfo.ToUpper(name);
 					}
 
 					return null;
+				}
+				private bool TestHasAdjacentUpperCase(string name)
+				{
+					if (!string.IsNullOrEmpty(name))
+					{
+						int length = name.Length;
+						bool previousCharUpper = false;
+						for (int i = 0; i < length; ++i)
+						{
+							// UNDONE: Hack until we can consider individual parts of
+							// reference mode names. Ignore anything after a separator.
+							if (!Char.IsLetterOrDigit(name, i))
+							{
+								return false;
+							}
+							if (Char.IsUpper(name, i))
+							{
+								if (previousCharUpper)
+								{
+									return true;
+								}
+								previousCharUpper = true;
+							}
+							else
+							{
+								previousCharUpper = false;
+							}
+						}
+					}
+					return false;
 				}
 				private string DoFirstLetterCase(string name, bool upper, TextInfo textInfo)
 				{
