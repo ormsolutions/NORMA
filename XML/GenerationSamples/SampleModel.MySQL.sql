@@ -4,7 +4,7 @@
 	FirstName VARCHAR(64)  NOT NULL,
 	`Date` DATE NOT NULL,
 	LastName VARCHAR(64)  NOT NULL,
-	MandatoryUniqueDecimal DECIMAL(9) NOT NULL,
+	MandatoryUniqueDecimal  NOT NULL,
 	MandatoryUniqueString CHAR(11)  NOT NULL,
 	Gender_Code CHAR(1)  NOT NULL,
 	OptionalUniqueString CHAR(11) ,
@@ -27,7 +27,9 @@
 	CONSTRAINT InternalUniquenessConstraint65 UNIQUE(OptionalUniqueDecimal),
 	CONSTRAINT InternalUniquenessConstraint69 UNIQUE(MandatoryUniqueDecimal),
 	CONSTRAINT InternalUniquenessConstraint67 UNIQUE(MandatoryUniqueString),
-	CONSTRAINT InternalUniquenessConstraint49 UNIQUE(ChildPersonFather, ChildPerson, ChildPersonMother)
+	CONSTRAINT InternalUniquenessConstraint49 UNIQUE(ChildPersonFather, ChildPerson, ChildPersonMother),
+	CONSTRAINT RoleValueConstraint2 CHECK (MandatoryUniqueDecimal BETWEEN 9000 AND 10000),
+	CONSTRAINT RoleValueConstraint1 CHECK (OptionalUniqueDecimal BETWEEN 100 AND 4000)
 );
 
 CREATE TABLE Task

@@ -6,14 +6,14 @@ CREATE TABLE Person
 	FirstName NVARCHAR2(64) NOT NULL,
 	"Date" DATE NOT NULL,
 	LastName NVARCHAR2(64) NOT NULL,
-	MandatoryUniqueDecimal NUMBER(9) NOT NULL,
+	MandatoryUniqueDecimal NUMBER(9) CHECK (MandatoryUniqueDecimal BETWEEN 4000 AND 20000) NOT NULL,
 	MandatoryUniqueString NCHAR(11) NOT NULL,
 	Gender_Code NCHAR(1) CHECK (Gender_Code IN ('M', 'F')) NOT NULL,
 	OptionalUniqueString NCHAR(11),
 	OwnsCar NUMBER CHECK (OwnsCar >= 0),
 	OptionalUniqueDecimal NUMBER(9),
 	Wife NUMBER,
-	ChildPerson NUMBER CHECK (ChildPerson >= 0),
+	ChildPerson NUMBER CHECK (ChildPerson >= 0 AND ChildPerson >= 1),
 	ChildPersonFather NUMBER,
 	ChildPersonMother NUMBER,
 	WearsHatTypeColorARGB NUMBER,
@@ -29,7 +29,9 @@ CREATE TABLE Person
 	CONSTRAINT InternalUniquenessConstraint65 UNIQUE(OptionalUniqueDecimal),
 	CONSTRAINT InternalUniquenessConstraint69 UNIQUE(MandatoryUniqueDecimal),
 	CONSTRAINT InternalUniquenessConstraint67 UNIQUE(MandatoryUniqueString),
-	CONSTRAINT InternalUniquenessConstraint49 UNIQUE(ChildPersonFather, ChildPerson, ChildPersonMother)
+	CONSTRAINT InternalUniquenessConstraint49 UNIQUE(ChildPersonFather, ChildPerson, ChildPersonMother),
+	CONSTRAINT RoleValueConstraint2 CHECK (MandatoryUniqueDecimal BETWEEN 9000 AND 10000),
+	CONSTRAINT RoleValueConstraint1 CHECK (OptionalUniqueDecimal BETWEEN 100 AND 4000)
 );
 
 CREATE TABLE Task

@@ -106,6 +106,7 @@ class PersonBase extends Entity {
 		$this->validationRules->addValidationRule(new RequiredFieldValidator("hasParents"));
 		$this->validationRules->addValidationRule(new RequiredFieldValidator("OptionalUniqueDecimal"));
 		$this->validationRules->addValidationRule(new RequiredFieldValidator("MandatoryUniqueDecimal"));
+		$this->validationRules->addValidationRule(new ValueRangeValidator("MandatoryUniqueDecimal", 4000, ValueRangeValidatorClusivity::$inclusive, 20000, ValueRangeValidatorClusivity::$inclusive));
 		$this->validationRules->addValidationRule(new RequiredFieldValidator("MandatoryUniqueString"));
 		$this->validationRules->addValidationRule(new StringLenthValidator("MandatoryUniqueString", 11, 11));
 	}
@@ -304,6 +305,7 @@ class ChildPersonBase extends Entity {
 	public function addValidationRules() {
 		$this->validationRules->addValidationRule(new RequiredFieldValidator("BirthOrder_BirthOrder_Nr"));
 		$this->validationRules->addValidationRule(new ValueRangeValidator("BirthOrder_Nr", 0, ValueRangeValidatorClusivity::$inclusive, 4294967295, ValueRangeValidatorClusivity::$inclusive));
+		$this->validationRules->addValidationRule(new ValueRangeValidator("BirthOrder_Nr", 1, ValueRangeValidatorClusivity::$inclusive, null, ValueRangeValidatorClusivity::$));
 	}
 	public function getPerson() {
 		return $this->Person;

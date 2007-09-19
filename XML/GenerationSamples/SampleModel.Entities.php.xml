@@ -531,6 +531,30 @@
 						<plx:callThis name="validationRules" type="field" accessor="this" />
 					</plx:callObject>
 					<plx:passParam>
+						<plx:callNew dataTypeName="ValueRangeValidator" dataTypeQualifier="PHPEntities">
+							<plx:passParam>
+								<plx:string>MandatoryUniqueDecimal</plx:string>
+							</plx:passParam>
+							<plx:passParam>
+								<plx:value data="4000" type=".decimal" />
+							</plx:passParam>
+							<plx:passParam>
+								<plx:callStatic name="inclusive" type="field" dataTypeName="ValueRangeValidatorClusivity" dataTypeQualifier="PHPEntities" />
+							</plx:passParam>
+							<plx:passParam>
+								<plx:value data="20000" type=".decimal" />
+							</plx:passParam>
+							<plx:passParam>
+								<plx:callStatic name="inclusive" type="field" dataTypeName="ValueRangeValidatorClusivity" dataTypeQualifier="PHPEntities" />
+							</plx:passParam>
+						</plx:callNew>
+					</plx:passParam>
+				</plx:callInstance>
+				<plx:callInstance name="addValidationRule">
+					<plx:callObject>
+						<plx:callThis name="validationRules" type="field" accessor="this" />
+					</plx:callObject>
+					<plx:passParam>
 						<plx:callNew dataTypeName="RequiredFieldValidator" dataTypeQualifier="PHPEntities">
 							<plx:passParam>
 								<plx:string>MandatoryUniqueString</plx:string>
@@ -1174,6 +1198,30 @@
 							</plx:passParam>
 							<plx:passParam>
 								<plx:callStatic name="inclusive" type="field" dataTypeName="ValueRangeValidatorClusivity" dataTypeQualifier="PHPEntities" />
+							</plx:passParam>
+						</plx:callNew>
+					</plx:passParam>
+				</plx:callInstance>
+				<plx:callInstance name="addValidationRule">
+					<plx:callObject>
+						<plx:callThis name="validationRules" type="field" accessor="this" />
+					</plx:callObject>
+					<plx:passParam>
+						<plx:callNew dataTypeName="ValueRangeValidator" dataTypeQualifier="PHPEntities">
+							<plx:passParam>
+								<plx:string>BirthOrder_Nr</plx:string>
+							</plx:passParam>
+							<plx:passParam>
+								<plx:value data="1" type=".i4" />
+							</plx:passParam>
+							<plx:passParam>
+								<plx:callStatic name="inclusive" type="field" dataTypeName="ValueRangeValidatorClusivity" dataTypeQualifier="PHPEntities" />
+							</plx:passParam>
+							<plx:passParam>
+								<plx:nullKeyword />
+							</plx:passParam>
+							<plx:passParam>
+								<plx:callStatic name="" type="field" dataTypeName="ValueRangeValidatorClusivity" dataTypeQualifier="PHPEntities" />
 							</plx:passParam>
 						</plx:callNew>
 					</plx:passParam>

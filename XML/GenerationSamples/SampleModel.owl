@@ -350,7 +350,7 @@
 	</owl:DatatypeProperty>
 	<owl:DatatypeProperty rdf:ID="MandatoryUniqueDecimal">
 		<rdfs:domain rdf:resource="#Person" />
-		<rdfs:range rdf:resource="xs:decimalNumber" />
+		<rdfs:range />
 	</owl:DatatypeProperty>
 	<owl:DatatypeProperty rdf:ID="MandatoryUniqueString">
 		<rdfs:domain rdf:resource="#Person" />

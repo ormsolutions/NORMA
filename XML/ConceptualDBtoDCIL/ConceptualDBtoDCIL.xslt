@@ -88,6 +88,7 @@
 				<xsl:with-param name="oialModel" select="$oialModel"/>
 				<xsl:with-param name="ormModel" select="$ormModel"/>
 				<xsl:with-param name="dataTypeMappings" select="$dataTypeMappings"/>
+				<xsl:with-param name="initialDataTypeMappings" select="$initialDataTypeMappings"/>
 			</xsl:apply-templates>
 		</dcl:schema>
 	</xsl:template>
@@ -98,6 +99,7 @@
 		<xsl:param name="oialModel"/>
 		<xsl:param name="ormModel"/>
 		<xsl:param name="dataTypeMappings"/>
+		<xsl:param name="initialDataTypeMappings"/>
 		<dcl:table name="{dsf:makeValidIdentifier(@Name)}">
 			<xsl:variable name="uniquenessConstraints" select="cdb:Constraints/cdb:UniquenessConstraint"/>
 			<xsl:apply-templates mode="GenerateTableContent" select="cdb:Columns/cdb:Column">
@@ -109,6 +111,7 @@
 				<xsl:with-param name="oialModel" select="$oialModel"/>
 				<xsl:with-param name="ormModel" select="$ormModel"/>
 				<xsl:with-param name="dataTypeMappings" select="$dataTypeMappings"/>
+				<xsl:with-param name="initialDataTypeMappings" select="$initialDataTypeMappings"/>
 			</xsl:apply-templates>
 			<xsl:apply-templates mode="GenerateTableContent" select="cdb:Constraints/cdb:*"/>
 		</dcl:table>
@@ -120,59 +123,81 @@
 		<xsl:param name="oialModel"/>
 		<xsl:param name="ormModel"/>
 		<xsl:param name="dataTypeMappings"/>
-		<dcl:column name="{dsf:makeValidIdentifier(@Name)}" isNullable="{@IsNullable='true' or @IsNullable=1}" isIdentity="false">
-			<xsl:variable name="conceptTypeChildPath" select="$oialDcilBridge/oialtocdb:ColumnHasConceptTypeChild[@Column = current()/@id]"/>
-			<xsl:variable name="valueTypeId">
-				<xsl:variable name="informationTypeId" select="$conceptTypeChildPath[last()]/@ConceptTypeChild"/>
-				<xsl:variable name="factTypeId" select="$ormOialBridge/ormtooial:ConceptTypeChildHasPathFactType[@ConceptTypeChild = $informationTypeId][last()]/@PathFactType"/>
+		<xsl:param name="initialDataTypeMappings"/>
+
+		<xsl:variable name="conceptTypeChildPath" select="$oialDcilBridge/oialtocdb:ColumnHasConceptTypeChild[@Column = current()/@id]"/>
+		<xsl:variable name="factTypePath" select="$ormOialBridge/ormtooial:ConceptTypeChildHasPathFactType[@ConceptTypeChild = $conceptTypeChildPath/@ConceptTypeChild]"/>
+		<xsl:variable name="fromRolePathFragment">
+			<xsl:for-each select="$ormModel/orm:Facts/orm:*[@id = $factTypePath/@PathFactType]">
+				<xsl:variable name="factTypeMapping" select="$ormOialBridge/ormtooial:FactTypeMapsTowardsRole[@FactType = current()/@id]"/>
+				<xsl:variable name="fromRoleOrProxy" select="orm:FactRoles/orm:*[not(@id = $factTypeMapping/@TowardsRole)]"/>
 				<xsl:choose>
-					<xsl:when test="string-length($factTypeId)">
-						<xsl:variable name="factTypeMapping" select="$ormOialBridge/ormtooial:FactTypeMapsTowardsRole[@FactType = $factTypeId]"/>
-						<xsl:variable name="factType" select="$ormModel/orm:Facts/orm:*[@id = $factTypeId]"/>
-						<xsl:variable name="roleOrProxy" select="$factType/orm:FactRoles/orm:*[not(@id = $factTypeMapping/@TowardsRole)]"/>
-						<xsl:if test="count($roleOrProxy) != 1">
-							<xsl:message terminate="yes">
-								<xsl:text>SANITY CHECK: Found no or multiple roles for column "</xsl:text>
-								<xsl:value-of select="@Name"/>
-								<xsl:text>" in table "</xsl:text>
-								<xsl:value-of select="parent::cdb:Columns/parent::cdb:Table/@Name"/>
-								<xsl:text>".</xsl:text>
-							</xsl:message>
-						</xsl:if>
-						<xsl:choose>
-							<xsl:when test="$roleOrProxy/self::orm:Role">
-								<xsl:value-of select="$roleOrProxy/orm:RolePlayer/@ref"/>
-							</xsl:when>
-							<xsl:when test="$roleOrProxy/self::orm:RoleProxy">
-								<xsl:value-of select="$ormModel/orm:Facts/orm:*/orm:FactRoles/orm:Role[@id = $roleOrProxy/orm:Role/@ref]/orm:RolePlayer/@ref"/>
-							</xsl:when>
-							<xsl:otherwise>
-								<xsl:message terminate="yes">
-									<xsl:text>SANITY CHECK: Unexpected type of role (</xsl:text>
-									<xsl:value-of select="local-name($roleOrProxy)"/>
-									<xsl:text>).</xsl:text>
-								</xsl:message>
-							</xsl:otherwise>
-						</xsl:choose>
+					<xsl:when test="$fromRoleOrProxy/self::orm:RoleProxy">
+						<xsl:copy-of select="$ormModel/orm:Facts/orm:*/orm:FactRoles/orm:Role[@id = $fromRoleOrProxy/orm:Role/@ref]"/>
 					</xsl:when>
 					<xsl:otherwise>
-						<xsl:variable name="conceptTypeId" select="$oialModel/oial:conceptTypes/oial:conceptType[oial:children/oial:informationType/@id = $informationTypeId]/@id"/>
-						<xsl:variable name="objectTypeId" select="$ormOialBridge/ormtooial:ConceptTypeIsForObjectType[@ConceptType = $conceptTypeId]/@ObjectType"/>
-						<xsl:if test="not($ormModel/orm:Objects/orm:ValueType[@id = $objectTypeId])">
-							<xsl:message terminate="yes">
-								<xsl:text>SANITY CHECK: Found no roles and no value type for column "</xsl:text>
-								<xsl:value-of select="@Name"/>
-								<xsl:text>" in table "</xsl:text>
-								<xsl:value-of select="parent::cdb:Columns/parent::cdb:Table/@Name"/>
-								<xsl:text>".</xsl:text>
-							</xsl:message>
-						</xsl:if>
-						<xsl:value-of select="$objectTypeId"/>
+						<xsl:copy-of select="$fromRoleOrProxy"/>
 					</xsl:otherwise>
 				</xsl:choose>
-			</xsl:variable>
+			</xsl:for-each>
+		</xsl:variable>
+		<xsl:variable name="fromRolePath" select="exsl:node-set($fromRolePathFragment)/child::*"/>
+		<xsl:variable name="valueTypeId">
+			<xsl:variable name="informationTypeId" select="$conceptTypeChildPath[last()]/@ConceptTypeChild"/>
+			<xsl:variable name="factTypeId" select="$factTypePath[@ConceptTypeChild = $informationTypeId][last()]/@PathFactType"/>
+			<xsl:choose>
+				<xsl:when test="string-length($factTypeId)">
+					<xsl:variable name="factTypeMapping" select="$ormOialBridge/ormtooial:FactTypeMapsTowardsRole[@FactType = $factTypeId]"/>
+					<xsl:variable name="factType" select="$ormModel/orm:Facts/orm:*[@id = $factTypeId]"/>
+					<xsl:variable name="roleOrProxy" select="$factType/orm:FactRoles/orm:*[not(@id = $factTypeMapping/@TowardsRole)]"/>
+					<xsl:if test="count($roleOrProxy) != 1">
+						<xsl:message terminate="yes">
+							<xsl:text>SANITY CHECK: Found no or multiple roles for column "</xsl:text>
+							<xsl:value-of select="@Name"/>
+							<xsl:text>" in table "</xsl:text>
+							<xsl:value-of select="parent::cdb:Columns/parent::cdb:Table/@Name"/>
+							<xsl:text>".</xsl:text>
+						</xsl:message>
+					</xsl:if>
+					<xsl:choose>
+						<xsl:when test="$roleOrProxy/self::orm:Role">
+							<xsl:value-of select="$roleOrProxy/orm:RolePlayer/@ref"/>
+						</xsl:when>
+						<xsl:when test="$roleOrProxy/self::orm:RoleProxy">
+							<xsl:value-of select="$ormModel/orm:Facts/orm:*/orm:FactRoles/orm:Role[@id = $roleOrProxy/orm:Role/@ref]/orm:RolePlayer/@ref"/>
+						</xsl:when>
+						<xsl:otherwise>
+							<xsl:message terminate="yes">
+								<xsl:text>SANITY CHECK: Unexpected type of role (</xsl:text>
+								<xsl:value-of select="local-name($roleOrProxy)"/>
+								<xsl:text>).</xsl:text>
+							</xsl:message>
+						</xsl:otherwise>
+					</xsl:choose>
+				</xsl:when>
+				<xsl:otherwise>
+					<xsl:variable name="conceptTypeId" select="$oialModel/oial:conceptTypes/oial:conceptType[oial:children/oial:informationType/@id = $informationTypeId]/@id"/>
+					<xsl:variable name="objectTypeId" select="$ormOialBridge/ormtooial:ConceptTypeIsForObjectType[@ConceptType = $conceptTypeId]/@ObjectType"/>
+					<xsl:if test="not($ormModel/orm:Objects/orm:ValueType[@id = $objectTypeId])">
+						<xsl:message terminate="yes">
+							<xsl:text>SANITY CHECK: Found no roles and no value type for column "</xsl:text>
+							<xsl:value-of select="@Name"/>
+							<xsl:text>" in table "</xsl:text>
+							<xsl:value-of select="parent::cdb:Columns/parent::cdb:Table/@Name"/>
+							<xsl:text>".</xsl:text>
+						</xsl:message>
+					</xsl:if>
+					<xsl:value-of select="$objectTypeId"/>
+				</xsl:otherwise>
+			</xsl:choose>
+		</xsl:variable>
 
-			<xsl:variable name="dataTypeMapping" select="$dataTypeMappings[@id = $valueTypeId]"/>
+		<xsl:variable name="dataTypeMapping" select="$dataTypeMappings[@id = $valueTypeId]"/>
+		<xsl:variable name="initialDataTypeMapping" select="$initialDataTypeMappings[@id = $valueTypeId]"/>
+
+		<xsl:variable name="columnName" select="dsf:makeValidIdentifier(@Name)"/>
+		
+		<dcl:column name="{$columnName}" isNullable="{@IsNullable='true' or @IsNullable=1}" isIdentity="false">
 			<xsl:if test="
 				count($conceptTypeChildPath) = 1 or
 				(not($oialModel/oial:conceptTypes/oial:conceptType/oial:children/oial:*[@id = $conceptTypeChildPath/@ConceptTypeChild and self::oial:relatedConceptType]) and
@@ -187,13 +212,94 @@
 				-->
 				<xsl:copy-of select="$dataTypeMapping/@isIdentity"/>
 			</xsl:if>
-			<xsl:if test="not($dataTypeMapping) or not($dataTypeMapping/dcl:*)">
-				<xsl:message>
-					<xsl:text>Something is wrong.</xsl:text>
-				</xsl:message>
-			</xsl:if>
 			<xsl:copy-of select="$dataTypeMapping/dcl:*"/>
 		</dcl:column>
+
+		<xsl:variable name="roleValueConstraints" select="$fromRolePath/orm:ValueRestriction/orm:RoleValueConstraint"/>
+		<xsl:if test="$roleValueConstraints">
+
+			<xsl:variable name="literalName">
+				<xsl:variable name="predefinedDataType" select="$initialDataTypeMapping//dcl:predefinedDataType"/>
+				<xsl:variable name="predefinedDataTypeName" select="string($predefinedDataType/@name)"/>
+				<xsl:choose>
+					<xsl:when test="
+						$predefinedDataTypeName = 'CHARACTER LARGE OBJECT' or
+						$predefinedDataTypeName = 'CHARACTER' or
+						$predefinedDataTypeName = 'CHARACTER VARYING'">
+						<xsl:value-of select="'ddt:characterStringLiteral'"/>
+					</xsl:when>
+					<xsl:when test="
+						$predefinedDataTypeName = 'BINARY LARGE OBJECT'">
+						<xsl:value-of select="'ddt:binaryStringLiteral'"/>
+					</xsl:when>
+					<xsl:when test="
+						$predefinedDataTypeName = 'NUMERIC' or
+						$predefinedDataTypeName = 'DECIMAL' or
+						$predefinedDataTypeName = 'SMALLINT' or
+						$predefinedDataTypeName = 'INTEGER' or
+						$predefinedDataTypeName = 'BIGINT'">
+						<xsl:value-of select="'ddt:exactNumericLiteral'"/>
+					</xsl:when>
+					<xsl:when test="
+						$predefinedDataTypeName = 'FLOAT' or
+						$predefinedDataTypeName = 'REAL' or
+						$predefinedDataTypeName = 'DOUBLE PRECISION'">
+						<xsl:value-of select="'ddt:approximateNumericLiteral'"/>
+					</xsl:when>
+					<!-- BOOLEAN_HACK: Remove the false() on the next line to stop forcing open-world-with-negation. -->
+					<xsl:when test="false() and
+						$predefinedDataTypeName = 'BOOLEAN'">
+						<xsl:value-of select="'ddt:booleanLiteral'"/>
+					</xsl:when>
+					<xsl:when test="
+						$predefinedDataTypeName = 'DATE'">
+						<xsl:value-of select="'ddt:dateLiteral'"/>
+					</xsl:when>
+					<xsl:when test="
+						$predefinedDataTypeName = 'TIME'">
+						<xsl:value-of select="'ddt:timeLiteral'"/>
+					</xsl:when>
+					<xsl:when test="
+						$predefinedDataTypeName = 'TIMESTAMP'">
+						<xsl:value-of select="'ddt:timestampLiteral'"/>
+					</xsl:when>
+					<xsl:when test="
+						$predefinedDataTypeName = 'INTERVAL'">
+						<xsl:choose>
+							<xsl:when test="$predefinedDataType/@fields = 'YEAR' or $predefinedDataType/@fields = 'YEAR TO MONTH' or $predefinedDataType/@fields = 'MONTH'">
+								<xsl:value-of select="'ddt:yearMonthIntervalLiteral'"/>
+							</xsl:when>
+							<xsl:otherwise>
+								<xsl:value-of select="'ddt:dayTimeIntervalLiteral'"/>
+							</xsl:otherwise>
+						</xsl:choose>
+					</xsl:when>
+					<xsl:otherwise>
+						<xsl:message terminate="yes">
+							<xsl:text>ERROR: Unrecognized data type '</xsl:text>
+							<xsl:value-of select="$predefinedDataTypeName"/>
+							<xsl:text>'.</xsl:text>
+						</xsl:message>
+					</xsl:otherwise>
+				</xsl:choose>
+			</xsl:variable>
+
+			<xsl:variable name="valueReferenceFragment">
+				<dep:columnReference name="{$columnName}"/>
+			</xsl:variable>
+			<xsl:variable name="valueReference" select="exsl:node-set($valueReferenceFragment)/child::*"/>
+
+			<xsl:for-each select="$roleValueConstraints">
+				<dcl:checkConstraint name="{dsf:makeValidIdentifier(@Name)}">
+					<xsl:call-template name="ProcessValueConstraintRanges">
+						<xsl:with-param name="literalName" select="$literalName"/>
+						<xsl:with-param name="valueRanges" select="orm:ValueRanges/orm:ValueRange"/>
+						<xsl:with-param name="valueReference" select="$valueReference"/>
+					</xsl:call-template>
+				</dcl:checkConstraint>
+			</xsl:for-each>
+		</xsl:if>
+
 	</xsl:template>
 
 	<xsl:template match="cdb:UniquenessConstraint" mode="GenerateTableContent">
@@ -600,6 +706,20 @@
 	<xsl:template name="ProcessValueConstraintRanges">
 		<xsl:param name="literalName"/>
 		<xsl:param name="valueRanges"/>
+		<xsl:param name="valueReference"/>
+
+		<xsl:variable name="realValueReferenceFragment">
+			<xsl:choose>
+				<xsl:when test="$valueReference">
+					<xsl:copy-of select="$valueReference"/>
+				</xsl:when>
+				<xsl:otherwise>
+					<dep:valueKeyword/>
+				</xsl:otherwise>
+			</xsl:choose>
+		</xsl:variable>
+		<xsl:variable name="realValueReference" select="exsl:node-set($realValueReferenceFragment)/child::*"/>
+		
 		<xsl:variable name="valueRangesForIn" select="$valueRanges[string-length(@MinValue) and string-length(@MaxValue) and (@MinValue = @MaxValue)]"/>
 		<xsl:variable name="valueRangesForComparisons" select="$valueRanges[not(string-length(@MinValue)) or not(string-length(@MaxValue)) or not(@MinValue = @MaxValue)]"/>
 
@@ -609,10 +729,12 @@
 					<xsl:call-template name="ProcessValueConstraintRangesForIn">
 						<xsl:with-param name="literalName" select="$literalName"/>
 						<xsl:with-param name="valueRanges" select="$valueRangesForIn"/>
+						<xsl:with-param name="valueReference" select="$realValueReference"/>
 					</xsl:call-template>
 					<xsl:call-template name="ProcessValueConstraintRangesForComparisons">
 						<xsl:with-param name="literalName" select="$literalName"/>
 						<xsl:with-param name="valueRanges" select="$valueRangesForComparisons"/>
+						<xsl:with-param name="valueReference" select="$realValueReference"/>
 					</xsl:call-template>
 				</dep:or>
 			</xsl:when>
@@ -620,12 +742,14 @@
 				<xsl:call-template name="ProcessValueConstraintRangesForIn">
 					<xsl:with-param name="literalName" select="$literalName"/>
 					<xsl:with-param name="valueRanges" select="$valueRangesForIn"/>
+					<xsl:with-param name="valueReference" select="$realValueReference"/>
 				</xsl:call-template>
 			</xsl:when>
 			<xsl:when test="not($valueRangesForIn) and $valueRangesForComparisons">
 				<xsl:call-template name="ProcessValueConstraintRangesForComparisons">
 					<xsl:with-param name="literalName" select="$literalName"/>
 					<xsl:with-param name="valueRanges" select="$valueRangesForComparisons"/>
+					<xsl:with-param name="valueReference" select="$realValueReference"/>
 				</xsl:call-template>
 			</xsl:when>
 			<xsl:otherwise>
@@ -639,8 +763,9 @@
 	<xsl:template name="ProcessValueConstraintRangesForIn">
 		<xsl:param name="literalName"/>
 		<xsl:param name="valueRanges"/>
+		<xsl:param name="valueReference"/>
 		<dep:inPredicate type="IN">
-			<dep:valueKeyword/>
+			<xsl:copy-of select="$valueReference"/>
 			<xsl:for-each select="$valueRanges">
 				<xsl:element name="{$literalName}">
 					<xsl:attribute name="value">
@@ -653,6 +778,7 @@
 	<xsl:template name="ProcessValueConstraintRangesForComparisons">
 		<xsl:param name="literalName"/>
 		<xsl:param name="valueRanges"/>
+		<xsl:param name="valueReference"/>
 		<xsl:param name="currentNr" select="1"/>
 		<xsl:param name="totalNr" select="count($valueRanges)"/>
 		<xsl:variable name="rangeCode">
@@ -702,7 +828,7 @@
 			<xsl:choose>
 				<xsl:when test="$lowerBoundOperator='greaterThanOrEquals' and $upperBoundOperator='lessThanOrEquals'">
 					<dep:betweenPredicate type="BETWEEN">
-						<dep:valueKeyword/>
+						<xsl:copy-of select="$valueReference"/>
 						<xsl:copy-of select="exsl:node-set($lowerBoundLiteral)"/>
 						<xsl:copy-of select="exsl:node-set($upperBoundLiteral)"/>
 					</dep:betweenPredicate>
@@ -710,24 +836,24 @@
 				<xsl:when test="string-length($lowerBoundOperator) and string-length($upperBoundOperator)">
 					<dep:and>
 						<dep:comparisonPredicate operator="{$lowerBoundOperator}">
-							<dep:valueKeyword/>
+							<xsl:copy-of select="$valueReference"/>
 							<xsl:copy-of select="exsl:node-set($lowerBoundLiteral)"/>
 						</dep:comparisonPredicate>
 						<dep:comparisonPredicate operator="{$upperBoundOperator}">
-							<dep:valueKeyword/>
+							<xsl:copy-of select="$valueReference"/>
 							<xsl:copy-of select="exsl:node-set($upperBoundLiteral)"/>
 						</dep:comparisonPredicate>
 					</dep:and>
 				</xsl:when>
 				<xsl:when test="string-length($lowerBoundOperator)">
 					<dep:comparisonPredicate operator="{$lowerBoundOperator}">
-						<dep:valueKeyword/>
+						<xsl:copy-of select="$valueReference"/>
 						<xsl:copy-of select="exsl:node-set($lowerBoundLiteral)"/>
 					</dep:comparisonPredicate>
 				</xsl:when>
 				<xsl:when test="string-length($upperBoundOperator)">
 					<dep:comparisonPredicate operator="{$upperBoundOperator}">
-						<dep:valueKeyword/>
+						<xsl:copy-of select="$valueReference"/>
 						<xsl:copy-of select="exsl:node-set($upperBoundLiteral)"/>
 					</dep:comparisonPredicate>
 				</xsl:when>
@@ -740,6 +866,7 @@
 					<xsl:call-template name="ProcessValueConstraintRangesForComparisons">
 						<xsl:with-param name="literalName" select="$literalName"/>
 						<xsl:with-param name="valueRanges" select="$valueRanges"/>
+						<xsl:with-param name="valueReference" select="$valueReference"/>
 						<xsl:with-param name="currentNr" select="$currentNr + 1"/>
 						<xsl:with-param name="totalNr" select="$totalNr"/>
 					</xsl:call-template>

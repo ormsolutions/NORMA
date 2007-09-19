@@ -78,6 +78,7 @@
 			<xs:fractionDigits value="0" />
 			<xs:minInclusive value="0" />
 			<xs:maxInclusive value="4294967295" />
+			<xs:minInclusive value="1" />
 		</xs:restriction>
 	</xs:simpleType>
 	<xs:simpleType name="Gender_Code">
@@ -98,6 +99,8 @@
 		<xs:restriction base="xs:decimal">
 			<xs:fractionDigits value="" />
 			<xs:totalDigits value="9" />
+			<xs:minInclusive value="4000" />
+			<xs:maxInclusive value="20000" />
 		</xs:restriction>
 	</xs:simpleType>
 	<xs:simpleType name="MandatoryUniqueString">

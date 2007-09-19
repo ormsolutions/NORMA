@@ -73,12 +73,18 @@
 	<ddl:domainDefinition name="BirthOrder_Nr" schema="SampleModel">
 		<ddt:exactNumeric type="INTEGER" />
 		<ddl:domainConstraint>
-			<dep:constraintNameDefinition name="BirthOrder_Nr_Unsigned_Chk" />
+			<dep:constraintNameDefinition name="ValueTypeValueConstraint10" />
 			<ddl:checkConstraintDefinition>
-				<dep:comparisonPredicate operator="greaterThanOrEquals">
-					<dep:valueKeyword />
-					<ddt:exactNumericLiteral value="0" />
-				</dep:comparisonPredicate>
+				<dep:and>
+					<dep:comparisonPredicate operator="greaterThanOrEquals">
+						<dep:valueKeyword />
+						<ddt:exactNumericLiteral value="0" />
+					</dep:comparisonPredicate>
+					<dep:comparisonPredicate operator="greaterThanOrEquals">
+						<dep:valueKeyword />
+						<ddt:exactNumericLiteral value="1" />
+					</dep:comparisonPredicate>
+				</dep:and>
 			</ddl:checkConstraintDefinition>
 		</ddl:domainConstraint>
 	</ddl:domainDefinition>
@@ -92,6 +98,19 @@
 					<ddt:characterStringLiteral value="M" />
 					<ddt:characterStringLiteral value="F" />
 				</dep:inPredicate>
+			</ddl:checkConstraintDefinition>
+		</ddl:domainConstraint>
+	</ddl:domainDefinition>
+	<ddl:domainDefinition name="MandatoryUniqueDecimal" schema="SampleModel">
+		<ddt:exactNumeric type="DECIMAL" precision="9" />
+		<ddl:domainConstraint>
+			<dep:constraintNameDefinition name="ValueTypeValueConstraint9" />
+			<ddl:checkConstraintDefinition>
+				<dep:betweenPredicate type="BETWEEN">
+					<dep:valueKeyword />
+					<ddt:exactNumericLiteral value="4000" />
+					<ddt:exactNumericLiteral value="20000" />
+				</dep:betweenPredicate>
 			</ddl:checkConstraintDefinition>
 		</ddl:domainConstraint>
 	</ddl:domainDefinition>
@@ -129,7 +148,7 @@
 			</ddl:columnConstraintDefinition>
 		</ddl:columnDefinition>
 		<ddl:columnDefinition name="MandatoryUniqueDecimal">
-			<ddt:exactNumeric type="DECIMAL" precision="9" />
+			<ddt:domain name="MandatoryUniqueDecimal" schema="SampleModel" />
 			<ddl:columnConstraintDefinition>
 				<ddl:notNullKeyword />
 			</ddl:columnConstraintDefinition>
@@ -242,6 +261,26 @@
 				<ddl:column name="ChildPerson" />
 				<ddl:column name="ChildPersonMother" />
 			</ddl:uniqueConstraintDefinition>
+		</ddl:tableConstraintDefinition>
+		<ddl:tableConstraintDefinition>
+			<dep:constraintNameDefinition name="RoleValueConstraint2" />
+			<ddl:checkConstraintDefinition>
+				<dep:betweenPredicate type="BETWEEN">
+					<dep:columnReference name="MandatoryUniqueDecimal" />
+					<ddt:exactNumericLiteral value="9000" />
+					<ddt:exactNumericLiteral value="10000" />
+				</dep:betweenPredicate>
+			</ddl:checkConstraintDefinition>
+		</ddl:tableConstraintDefinition>
+		<ddl:tableConstraintDefinition>
+			<dep:constraintNameDefinition name="RoleValueConstraint1" />
+			<ddl:checkConstraintDefinition>
+				<dep:betweenPredicate type="BETWEEN">
+					<dep:columnReference name="OptionalUniqueDecimal" />
+					<ddt:exactNumericLiteral value="100" />
+					<ddt:exactNumericLiteral value="4000" />
+				</dep:betweenPredicate>
+			</ddl:checkConstraintDefinition>
 		</ddl:tableConstraintDefinition>
 	</ddl:tableDefinition>
 	<ddl:tableDefinition name="Task" schema="SampleModel">

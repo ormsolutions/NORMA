@@ -253,6 +253,13 @@
 				<orm:Role ref="_3C92E223-EE65-48D2-8B3B-7620EC3B7B4C" />
 			</orm:PlayedRoles>
 			<orm:ConceptualDataType id="_069A2A9A-6F6D-4925-9E41-287238FD4E1A" ref="_6CC1913D-21DD-4FF0-BB0B-9043B47EC4F1" Scale="0" Length="0" />
+			<orm:ValueRestriction>
+				<orm:ValueConstraint id="_3447FC15-A40A-468D-A9AE-6DE01D4D25DF" Name="ValueTypeValueConstraint10">
+					<orm:ValueRanges>
+						<orm:ValueRange id="_52CDBFAB-089E-445D-8A08-74D61B289D1F" MinValue="1" MaxValue="" MinInclusion="NotSet" MaxInclusion="NotSet" />
+					</orm:ValueRanges>
+				</orm:ValueConstraint>
+			</orm:ValueRestriction>
 		</orm:ValueType>
 		<orm:EntityType id="_D15A716E-037F-4263-B4FF-09CAC6B69738" Name="ChildPerson" _ReferenceMode="">
 			<orm:PlayedRoles>
@@ -295,6 +302,13 @@
 				<orm:Role ref="_BB2CAEEC-A46A-47B8-BF32-6ADA59183BDA" />
 			</orm:PlayedRoles>
 			<orm:ConceptualDataType id="_647A6071-4FF7-4C7D-B158-1B8B5429C1FF" ref="_67F5F110-8533-4F2B-B100-21EA12E80047" Scale="0" Length="9" />
+			<orm:ValueRestriction>
+				<orm:ValueConstraint id="_972194B4-69CF-4560-A2A2-F92C3D65D93E" Name="ValueTypeValueConstraint9">
+					<orm:ValueRanges>
+						<orm:ValueRange id="_3708DDC5-E393-4231-AA35-3BD7FAD45CA7" MinValue="4000" MaxValue="20000" MinInclusion="NotSet" MaxInclusion="NotSet" />
+					</orm:ValueRanges>
+				</orm:ValueConstraint>
+			</orm:ValueRestriction>
 		</orm:ValueType>
 		<orm:ValueType id="_91B577BB-0803-480C-8834-1E09D8C91EB1" Name="MandatoryUniqueString">
 			<orm:PlayedRoles>
@@ -1596,6 +1610,13 @@
 				</orm:Role>
 				<orm:Role id="_894A2917-2473-4234-9CA8-D87114B8A595" _IsMandatory="false" _Multiplicity="ZeroToOne" Name="">
 					<orm:RolePlayer ref="_5108C39B-17A7-48C0-A0EB-D38B93ACF388" />
+					<orm:ValueRestriction>
+						<orm:RoleValueConstraint id="_6D5D13C0-37D6-4669-8CA3-AEFD2BC2A590" Name="RoleValueConstraint1">
+							<orm:ValueRanges>
+								<orm:ValueRange id="_DF71601E-245C-40A3-AA84-2864B5887016" MinValue="100" MaxValue="4000" MinInclusion="NotSet" MaxInclusion="NotSet" />
+							</orm:ValueRanges>
+						</orm:RoleValueConstraint>
+					</orm:ValueRestriction>
 				</orm:Role>
 			</orm:FactRoles>
 			<orm:ReadingOrders>
@@ -1623,6 +1644,13 @@
 				</orm:Role>
 				<orm:Role id="_BB2CAEEC-A46A-47B8-BF32-6ADA59183BDA" _IsMandatory="false" _Multiplicity="ExactlyOne" Name="">
 					<orm:RolePlayer ref="_709C7978-6FC6-4F6B-92AE-2431FE996E54" />
+					<orm:ValueRestriction>
+						<orm:RoleValueConstraint id="_D78E38A7-474E-4E4B-AB4C-02B91C168D25" Name="RoleValueConstraint2">
+							<orm:ValueRanges>
+								<orm:ValueRange id="_9D6DA754-5235-4144-ADB0-E9F81B60C454" MinValue="9000" MaxValue="10000" MinInclusion="NotSet" MaxInclusion="NotSet" />
+							</orm:ValueRanges>
+						</orm:RoleValueConstraint>
+					</orm:ValueRestriction>
 				</orm:Role>
 			</orm:FactRoles>
 			<orm:ReadingOrders>

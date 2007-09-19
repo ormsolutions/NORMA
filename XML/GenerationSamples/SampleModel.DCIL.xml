@@ -58,11 +58,17 @@
 	</dcl:domain>
 	<dcl:domain name="BirthOrder_Nr">
 		<dcl:predefinedDataType name="INTEGER" />
-		<dcl:checkConstraint name="BirthOrder_Nr_Unsigned_Chk">
-			<dep:comparisonPredicate operator="greaterThanOrEquals">
-				<dep:valueKeyword />
-				<ddt:exactNumericLiteral value="0" />
-			</dep:comparisonPredicate>
+		<dcl:checkConstraint name="ValueTypeValueConstraint10">
+			<dep:and>
+				<dep:comparisonPredicate operator="greaterThanOrEquals">
+					<dep:valueKeyword />
+					<ddt:exactNumericLiteral value="0" />
+				</dep:comparisonPredicate>
+				<dep:comparisonPredicate operator="greaterThanOrEquals">
+					<dep:valueKeyword />
+					<ddt:exactNumericLiteral value="1" />
+				</dep:comparisonPredicate>
+			</dep:and>
 		</dcl:checkConstraint>
 	</dcl:domain>
 	<dcl:domain name="Gender_Code">
@@ -73,6 +79,16 @@
 				<ddt:characterStringLiteral value="M" />
 				<ddt:characterStringLiteral value="F" />
 			</dep:inPredicate>
+		</dcl:checkConstraint>
+	</dcl:domain>
+	<dcl:domain name="MandatoryUniqueDecimal">
+		<dcl:predefinedDataType name="DECIMAL" precision="9" />
+		<dcl:checkConstraint name="ValueTypeValueConstraint9">
+			<dep:betweenPredicate type="BETWEEN">
+				<dep:valueKeyword />
+				<ddt:exactNumericLiteral value="4000" />
+				<ddt:exactNumericLiteral value="20000" />
+			</dep:betweenPredicate>
 		</dcl:checkConstraint>
 	</dcl:domain>
 	<dcl:table name="Person">
@@ -89,8 +105,15 @@
 			<dcl:predefinedDataType name="CHARACTER VARYING" length="64" />
 		</dcl:column>
 		<dcl:column name="MandatoryUniqueDecimal" isNullable="false" isIdentity="false">
-			<dcl:predefinedDataType name="DECIMAL" precision="9" />
+			<dcl:domainRef name="MandatoryUniqueDecimal" />
 		</dcl:column>
+		<dcl:checkConstraint name="RoleValueConstraint2">
+			<dep:betweenPredicate type="BETWEEN">
+				<dep:columnReference name="MandatoryUniqueDecimal" />
+				<ddt:exactNumericLiteral value="9000" />
+				<ddt:exactNumericLiteral value="10000" />
+			</dep:betweenPredicate>
+		</dcl:checkConstraint>
 		<dcl:column name="MandatoryUniqueString" isNullable="false" isIdentity="false">
 			<dcl:predefinedDataType name="CHARACTER" length="11" />
 		</dcl:column>
@@ -106,6 +129,13 @@
 		<dcl:column name="OptionalUniqueDecimal" isNullable="true" isIdentity="false">
 			<dcl:predefinedDataType name="DECIMAL" precision="9" />
 		</dcl:column>
+		<dcl:checkConstraint name="RoleValueConstraint1">
+			<dep:betweenPredicate type="BETWEEN">
+				<dep:columnReference name="OptionalUniqueDecimal" />
+				<ddt:exactNumericLiteral value="100" />
+				<ddt:exactNumericLiteral value="4000" />
+			</dep:betweenPredicate>
+		</dcl:checkConstraint>
 		<dcl:column name="Wife" isNullable="true" isIdentity="false">
 			<dcl:predefinedDataType name="INTEGER" />
 		</dcl:column>

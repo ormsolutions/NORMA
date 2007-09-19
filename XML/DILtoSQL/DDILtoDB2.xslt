@@ -47,7 +47,7 @@
 		<xsl:value-of select="$LeftParen"/>
 		<xsl:text>1</xsl:text>
 		<xsl:value-of select="$RightParen"/>
-		<xsl:text> FOR BIT DATA </xsl:text>
+		<xsl:text> FOR BIT DATA</xsl:text>
 	</xsl:template>
 
 	<xsl:template match="ddt:booleanLiteral">
