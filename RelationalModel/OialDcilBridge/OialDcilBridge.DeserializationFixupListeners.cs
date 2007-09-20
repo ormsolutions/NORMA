@@ -1349,21 +1349,41 @@ namespace Neumont.Tools.ORMAbstractionToConceptualDatabaseBridge
 
 				// Remove everything at and after index, and add everything before it
 				int index;
-				for (index = 0; index < targetAssimilationPath.Count; index++)
+				int officialAssimilationPathCount = targetAssimilationPath.Count;
+				for (index = 0; index < officialAssimilationPathCount; index++)
 				{
 					if (targetAssimilationPath[index].Parent == informationTypeParent)
 					{
 						break;
 					}
 				}
-#if DEBUG
-				for (int i = targetAssimilationPath.Count - 1, j = 0; i >= index; i--, j++)
-				{
-					Debug.Assert(targetCtcPath[j] == targetAssimilationPath[i]);
-				}
-#endif //DEBUG
 
-				targetCtcPath.RemoveRange(0, targetAssimilationPath.Count - index);
+				int removeCount = officialAssimilationPathCount - index;
+				for (int i = officialAssimilationPathCount - 1, j = 0; i >= index; i--, j++)
+				{
+					if (targetCtcPath[j] != targetAssimilationPath[i])
+					{
+						// Handle alternate assimilation paths
+						ConceptType testAssimilator = targetAssimilationPath[index].AssimilatorConceptType;
+						int targetPathCount = targetCtcPath.Count;
+						for (int k = j + 1; k < targetPathCount; ++k)
+						{
+							ConceptTypeAssimilatesConceptType targetAssimilation = targetCtcPath[k] as ConceptTypeAssimilatesConceptType;
+							Debug.Assert(targetAssimilation != null, "Alternate assimilation paths should rejoin before we run out of assimilations.");
+							if (targetAssimilation != null)
+							{
+								if (targetAssimilation.AssimilatorConceptType == testAssimilator)
+								{
+									removeCount = k + 1;
+									break;
+								}
+							}
+						}
+						break;
+					}
+				}
+
+				targetCtcPath.RemoveRange(0, removeCount);
 
 				for (int i = index - 1; i >= 0; i--)
 				{
