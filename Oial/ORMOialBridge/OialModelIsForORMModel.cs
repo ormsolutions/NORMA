@@ -1185,7 +1185,7 @@ namespace Neumont.Tools.ORMToORMAbstractionBridge
 					{
 						continue;
 					}
-					Role oppositeRole = (Role)role.OppositeRoleAlwaysResolveProxy;
+					Role oppositeRole = role.OppositeRoleAlwaysResolveProxy.Role;
 
 					// Recursivly call this for each of objectType's preferred identifier object types.
 					foreach (ConstraintRoleSequence constraintRoleSequence in oppositeRole.ConstraintRoleSequenceCollection)
