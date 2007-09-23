@@ -514,7 +514,7 @@ namespace Neumont.Tools.ORMAbstractionToConceptualDatabaseBridge
 								{
 									//get the nested fact type and its towards role as they should provide more logical names
 									mainFactType = objectification.NestedFactType;
-									oppositeRole = (towardsRole.OppositeRoleAlwaysResolveProxy as RoleProxy).TargetRole;
+									oppositeRole = towardsRole.OppositeRoleAlwaysResolveProxy.Role;
 									towardsRole = oppositeRole.Role.OppositeRoleResolveProxy;
 									//used for second-level name precision later on, if needed
 									createRoleNameSecond = true;
