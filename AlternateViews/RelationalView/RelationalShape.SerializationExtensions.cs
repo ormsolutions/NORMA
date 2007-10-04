@@ -79,7 +79,7 @@ namespace Neumont.Tools.ORM.Views.RelationalView
 				omissions = RelationalShapeDomainModel.BuildCustomSerializationOmissions(store);
 				this.myCustomSerializationOmissions = omissions;
 			}
-			return !(omissions.ContainsKey(classInfo));
+			return !omissions.ContainsKey(classInfo);
 		}
 		bool ICustomSerializedDomainModel.ShouldSerializeDomainClass(Store store, DomainClassInfo classInfo)
 		{
@@ -108,11 +108,11 @@ namespace Neumont.Tools.ORM.Views.RelationalView
 		/// <summary>Implements ICustomSerializedDomainModel.MapRootElement</summary>
 		protected static Guid MapRootElement(string xmlNamespace, string elementName)
 		{
-			if ((elementName == "RelationalModel") && (xmlNamespace == "http://schemas.neumont.edu/ORM/Views/RelationalView"))
+			if (elementName == "RelationalModel" && xmlNamespace == "http://schemas.neumont.edu/ORM/Views/RelationalView")
 			{
 				return RelationalModel.DomainClassId;
 			}
-			if ((elementName == "RelationalDiagram") && (xmlNamespace == "http://schemas.neumont.edu/ORM/Views/RelationalView"))
+			if (elementName == "RelationalDiagram" && xmlNamespace == "http://schemas.neumont.edu/ORM/Views/RelationalView")
 			{
 				return RelationalDiagram.DomainClassId;
 			}
@@ -402,7 +402,7 @@ namespace Neumont.Tools.ORM.Views.RelationalView
 				RelationalModel.myChildElementMappings = childElementMappings;
 			}
 			CustomSerializedElementMatch rVal;
-			childElementMappings.TryGetValue(string.Concat(outerContainerNamespace, "|", outerContainerName, "|", ((object)containerNamespace != (object)outerContainerNamespace) ? containerNamespace : null, "|", containerName, "|", ((object)elementNamespace != (object)containerNamespace) ? elementNamespace : null, "|", elementName), out rVal);
+			childElementMappings.TryGetValue(string.Concat(outerContainerNamespace, "|", outerContainerName, "|", (object)containerNamespace != (object)outerContainerNamespace ? containerNamespace : null, "|", containerName, "|", (object)elementNamespace != (object)containerNamespace ? elementNamespace : null, "|", elementName), out rVal);
 			return rVal;
 		}
 		CustomSerializedElementMatch ICustomSerializedElement.MapChildElement(string elementNamespace, string elementName, string containerNamespace, string containerName, string outerContainerNamespace, string outerContainerName)

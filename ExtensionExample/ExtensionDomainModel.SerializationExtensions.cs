@@ -221,7 +221,7 @@ namespace Neumont.Tools.ORM.ExtensionExample
 		/// <summary>Implements ICustomSerializedElement.ShouldSerialize</summary>
 		protected bool ShouldSerialize()
 		{
-			return (TestEnumeration.Zero != this.CustomEnum) || ("Default value" != this.TestProperty);
+			return TestEnumeration.Zero != this.CustomEnum || "Default value" != this.TestProperty;
 		}
 		bool ICustomSerializedElement.ShouldSerialize()
 		{
@@ -279,7 +279,7 @@ namespace Neumont.Tools.ORM.ExtensionExample
 				ObjectTypeRequiresMeaningfulNameError.myChildElementMappings = childElementMappings;
 			}
 			CustomSerializedElementMatch rVal;
-			if (!(childElementMappings.TryGetValue(string.Concat(outerContainerNamespace, "|", outerContainerName, "|", ((object)containerNamespace != (object)outerContainerNamespace) ? containerNamespace : null, "|", containerName, "|", ((object)elementNamespace != (object)containerNamespace) ? elementNamespace : null, "|", elementName), out rVal)))
+			if (!childElementMappings.TryGetValue(string.Concat(outerContainerNamespace, "|", outerContainerName, "|", (object)containerNamespace != (object)outerContainerNamespace ? containerNamespace : null, "|", containerName, "|", (object)elementNamespace != (object)containerNamespace ? elementNamespace : null, "|", elementName), out rVal))
 			{
 				rVal = base.MapChildElement(elementNamespace, elementName, containerNamespace, containerName, outerContainerNamespace, outerContainerName);
 			}

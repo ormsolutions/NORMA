@@ -195,6 +195,7 @@ namespace Neumont.Tools.ORM.Views.RelationalView
 			field1.DefaultAutoSize = true;
 			field1.AnchoringBehavior.MinimumHeightInLines = 1;
 			field1.AnchoringBehavior.MinimumWidthInCharacters = 1;
+			field1.DefaultAccessibleState = System.Windows.Forms.AccessibleStates.Invisible;
 			field1.DefaultFontId = new DslDiagrams::StyleSetResourceId(string.Empty, "ShapeTextBold10");			
 			shapeFields.Add(field1);
 			

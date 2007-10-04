@@ -93,7 +93,7 @@ namespace Neumont.Tools.ORMAbstraction
 		/// <summary>Implements ICustomSerializedDomainModel.MapRootElement</summary>
 		protected static Guid MapRootElement(string xmlNamespace, string elementName)
 		{
-			if ((elementName == "model") && (xmlNamespace == "http://schemas.neumont.edu/ORM/Abstraction/2007-06/Core"))
+			if (elementName == "model" && xmlNamespace == "http://schemas.neumont.edu/ORM/Abstraction/2007-06/Core")
 			{
 				return AbstractionModel.DomainClassId;
 			}
@@ -144,7 +144,7 @@ namespace Neumont.Tools.ORMAbstraction
 		{
 			get
 			{
-				return CustomSerializedElementSupportedOperations.ChildElementInfo | (CustomSerializedElementSupportedOperations.ElementInfo | (CustomSerializedElementSupportedOperations.PropertyInfo | CustomSerializedElementSupportedOperations.CustomSortChildRoles));
+				return CustomSerializedElementSupportedOperations.ChildElementInfo | CustomSerializedElementSupportedOperations.ElementInfo | CustomSerializedElementSupportedOperations.PropertyInfo | CustomSerializedElementSupportedOperations.CustomSortChildRoles;
 			}
 		}
 		private static CustomSerializedContainerElementInfo[] myCustomSerializedChildElementInfo;
@@ -201,12 +201,12 @@ namespace Neumont.Tools.ORMAbstraction
 			int IComparer<DomainRoleInfo>.Compare(DomainRoleInfo x, DomainRoleInfo y)
 			{
 				int xPos;
-				if (!(this.myRoleOrderDictionary.TryGetValue(string.Concat(x.DomainRelationship.ImplementationClass.FullName, ".", x.Name), out xPos)))
+				if (!this.myRoleOrderDictionary.TryGetValue(string.Concat(x.DomainRelationship.ImplementationClass.FullName, ".", x.Name), out xPos))
 				{
 					xPos = int.MaxValue;
 				}
 				int yPos;
-				if (!(this.myRoleOrderDictionary.TryGetValue(string.Concat(y.DomainRelationship.ImplementationClass.FullName, ".", y.Name), out yPos)))
+				if (!this.myRoleOrderDictionary.TryGetValue(string.Concat(y.DomainRelationship.ImplementationClass.FullName, ".", y.Name), out yPos))
 				{
 					yPos = int.MaxValue;
 				}
@@ -243,7 +243,7 @@ namespace Neumont.Tools.ORMAbstraction
 				AbstractionModel.myChildElementMappings = childElementMappings;
 			}
 			CustomSerializedElementMatch rVal;
-			childElementMappings.TryGetValue(string.Concat(outerContainerNamespace, "|", outerContainerName, "|", ((object)containerNamespace != (object)outerContainerNamespace) ? containerNamespace : null, "|", containerName, "|", ((object)elementNamespace != (object)containerNamespace) ? elementNamespace : null, "|", elementName), out rVal);
+			childElementMappings.TryGetValue(string.Concat(outerContainerNamespace, "|", outerContainerName, "|", (object)containerNamespace != (object)outerContainerNamespace ? containerNamespace : null, "|", containerName, "|", (object)elementNamespace != (object)containerNamespace ? elementNamespace : null, "|", elementName), out rVal);
 			return rVal;
 		}
 		private static Dictionary<string, Guid> myCustomSerializedAttributes;
@@ -285,7 +285,7 @@ namespace Neumont.Tools.ORMAbstraction
 		{
 			get
 			{
-				return CustomSerializedElementSupportedOperations.ElementInfo | (CustomSerializedElementSupportedOperations.PropertyInfo | CustomSerializedElementSupportedOperations.LinkInfo);
+				return CustomSerializedElementSupportedOperations.ElementInfo | CustomSerializedElementSupportedOperations.PropertyInfo | CustomSerializedElementSupportedOperations.LinkInfo;
 			}
 		}
 		CustomSerializedElementSupportedOperations ICustomSerializedElement.SupportedCustomSerializedOperations
@@ -417,7 +417,7 @@ namespace Neumont.Tools.ORMAbstraction
 		{
 			get
 			{
-				return CustomSerializedElementSupportedOperations.ElementInfo | (CustomSerializedElementSupportedOperations.PropertyInfo | CustomSerializedElementSupportedOperations.LinkInfo);
+				return CustomSerializedElementSupportedOperations.ElementInfo | CustomSerializedElementSupportedOperations.PropertyInfo | CustomSerializedElementSupportedOperations.LinkInfo;
 			}
 		}
 		/// <summary>Implements ICustomSerializedElement.GetCustomSerializedChildElementInfo</summary>
@@ -438,7 +438,7 @@ namespace Neumont.Tools.ORMAbstraction
 		{
 			if (domainPropertyInfo.Id == Uniqueness.IsPreferredDomainPropertyId)
 			{
-				if (!(this.IsPreferred))
+				if (!this.IsPreferred)
 				{
 					return new CustomSerializedPropertyInfo(null, null, null, false, CustomSerializedAttributeWriteStyle.NotWritten, null);
 				}
@@ -482,7 +482,7 @@ namespace Neumont.Tools.ORMAbstraction
 				Uniqueness.myChildElementMappings = childElementMappings;
 			}
 			CustomSerializedElementMatch rVal;
-			childElementMappings.TryGetValue(string.Concat(outerContainerNamespace, "|", outerContainerName, "|", ((object)containerNamespace != (object)outerContainerNamespace) ? containerNamespace : null, "|", containerName, "|", ((object)elementNamespace != (object)containerNamespace) ? elementNamespace : null, "|", elementName), out rVal);
+			childElementMappings.TryGetValue(string.Concat(outerContainerNamespace, "|", outerContainerName, "|", (object)containerNamespace != (object)outerContainerNamespace ? containerNamespace : null, "|", containerName, "|", (object)elementNamespace != (object)containerNamespace ? elementNamespace : null, "|", elementName), out rVal);
 			return rVal;
 		}
 		private static Dictionary<string, Guid> myCustomSerializedAttributes;
@@ -525,7 +525,7 @@ namespace Neumont.Tools.ORMAbstraction
 		{
 			get
 			{
-				return CustomSerializedElementSupportedOperations.ChildElementInfo | (CustomSerializedElementSupportedOperations.ElementInfo | (CustomSerializedElementSupportedOperations.PropertyInfo | (CustomSerializedElementSupportedOperations.LinkInfo | CustomSerializedElementSupportedOperations.CustomSortChildRoles)));
+				return CustomSerializedElementSupportedOperations.ChildElementInfo | CustomSerializedElementSupportedOperations.ElementInfo | CustomSerializedElementSupportedOperations.PropertyInfo | CustomSerializedElementSupportedOperations.LinkInfo | CustomSerializedElementSupportedOperations.CustomSortChildRoles;
 			}
 		}
 		private static CustomSerializedContainerElementInfo[] myCustomSerializedChildElementInfo;
@@ -642,12 +642,12 @@ namespace Neumont.Tools.ORMAbstraction
 			int IComparer<DomainRoleInfo>.Compare(DomainRoleInfo x, DomainRoleInfo y)
 			{
 				int xPos;
-				if (!(this.myRoleOrderDictionary.TryGetValue(string.Concat(x.DomainRelationship.ImplementationClass.FullName, ".", x.Name), out xPos)))
+				if (!this.myRoleOrderDictionary.TryGetValue(string.Concat(x.DomainRelationship.ImplementationClass.FullName, ".", x.Name), out xPos))
 				{
 					xPos = int.MaxValue;
 				}
 				int yPos;
-				if (!(this.myRoleOrderDictionary.TryGetValue(string.Concat(y.DomainRelationship.ImplementationClass.FullName, ".", y.Name), out yPos)))
+				if (!this.myRoleOrderDictionary.TryGetValue(string.Concat(y.DomainRelationship.ImplementationClass.FullName, ".", y.Name), out yPos))
 				{
 					yPos = int.MaxValue;
 				}
@@ -690,7 +690,7 @@ namespace Neumont.Tools.ORMAbstraction
 				ConceptType.myChildElementMappings = childElementMappings;
 			}
 			CustomSerializedElementMatch rVal;
-			childElementMappings.TryGetValue(string.Concat(outerContainerNamespace, "|", outerContainerName, "|", ((object)containerNamespace != (object)outerContainerNamespace) ? containerNamespace : null, "|", containerName, "|", ((object)elementNamespace != (object)containerNamespace) ? elementNamespace : null, "|", elementName), out rVal);
+			childElementMappings.TryGetValue(string.Concat(outerContainerNamespace, "|", outerContainerName, "|", (object)containerNamespace != (object)outerContainerNamespace ? containerNamespace : null, "|", containerName, "|", (object)elementNamespace != (object)containerNamespace ? elementNamespace : null, "|", elementName), out rVal);
 			return rVal;
 		}
 		private static Dictionary<string, Guid> myCustomSerializedAttributes;
@@ -771,7 +771,7 @@ namespace Neumont.Tools.ORMAbstraction
 		{
 			if (domainPropertyInfo.Id == ConceptTypeChild.IsMandatoryDomainPropertyId)
 			{
-				if (!(this.IsMandatory))
+				if (!this.IsMandatory)
 				{
 					return new CustomSerializedPropertyInfo(null, null, null, false, CustomSerializedAttributeWriteStyle.NotWritten, null);
 				}
@@ -938,7 +938,7 @@ namespace Neumont.Tools.ORMAbstraction
 			{
 				key = string.Concat(xmlNamespace, "|", attributeName);
 			}
-			if (!(customSerializedAttributes.TryGetValue(key, out rVal)))
+			if (!customSerializedAttributes.TryGetValue(key, out rVal))
 			{
 				rVal = base.MapAttribute(xmlNamespace, attributeName);
 			}
@@ -979,7 +979,7 @@ namespace Neumont.Tools.ORMAbstraction
 		{
 			get
 			{
-				return base.SupportedCustomSerializedOperations | (CustomSerializedElementSupportedOperations.ElementInfo | CustomSerializedElementSupportedOperations.PropertyInfo);
+				return base.SupportedCustomSerializedOperations | CustomSerializedElementSupportedOperations.ElementInfo | CustomSerializedElementSupportedOperations.PropertyInfo;
 			}
 		}
 		/// <summary>Implements ICustomSerializedElement.CustomSerializedElementInfo</summary>
@@ -995,7 +995,7 @@ namespace Neumont.Tools.ORMAbstraction
 		{
 			if (domainPropertyInfo.Id == ConceptTypeAssimilatesConceptType.RefersToSubtypeDomainPropertyId)
 			{
-				if (!(this.RefersToSubtype))
+				if (!this.RefersToSubtype)
 				{
 					return new CustomSerializedPropertyInfo(null, null, null, false, CustomSerializedAttributeWriteStyle.NotWritten, null);
 				}
@@ -1003,7 +1003,7 @@ namespace Neumont.Tools.ORMAbstraction
 			}
 			if (domainPropertyInfo.Id == ConceptTypeAssimilatesConceptType.IsPreferredForTargetDomainPropertyId)
 			{
-				if (!(this.IsPreferredForTarget))
+				if (!this.IsPreferredForTarget)
 				{
 					return new CustomSerializedPropertyInfo(null, null, null, false, CustomSerializedAttributeWriteStyle.NotWritten, null);
 				}
@@ -1011,7 +1011,7 @@ namespace Neumont.Tools.ORMAbstraction
 			}
 			if (domainPropertyInfo.Id == ConceptTypeAssimilatesConceptType.IsPreferredForParentDomainPropertyId)
 			{
-				if (!(this.IsPreferredForParent))
+				if (!this.IsPreferredForParent)
 				{
 					return new CustomSerializedPropertyInfo(null, null, null, false, CustomSerializedAttributeWriteStyle.NotWritten, null);
 				}
@@ -1042,7 +1042,7 @@ namespace Neumont.Tools.ORMAbstraction
 			{
 				key = string.Concat(xmlNamespace, "|", attributeName);
 			}
-			if (!(customSerializedAttributes.TryGetValue(key, out rVal)))
+			if (!customSerializedAttributes.TryGetValue(key, out rVal))
 			{
 				rVal = base.MapAttribute(xmlNamespace, attributeName);
 			}

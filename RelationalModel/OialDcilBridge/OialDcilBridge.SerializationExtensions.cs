@@ -77,7 +77,7 @@ namespace Neumont.Tools.ORMAbstractionToConceptualDatabaseBridge
 				omissions = ORMAbstractionToConceptualDatabaseBridgeDomainModel.BuildCustomSerializationOmissions(store);
 				this.myCustomSerializationOmissions = omissions;
 			}
-			return !(omissions.ContainsKey(classInfo));
+			return !omissions.ContainsKey(classInfo);
 		}
 		bool ICustomSerializedDomainModel.ShouldSerializeDomainClass(Store store, DomainClassInfo classInfo)
 		{
@@ -130,7 +130,7 @@ namespace Neumont.Tools.ORMAbstractionToConceptualDatabaseBridge
 		/// <summary>Implements ICustomSerializedDomainModel.MapRootElement</summary>
 		protected static Guid MapRootElement(string xmlNamespace, string elementName)
 		{
-			if ((elementName == "MappingCustomization") && (xmlNamespace == "http://schemas.neumont.edu/ORM/Bridge/2007-06/ORMAbstractionToConceptualDatabase"))
+			if (elementName == "MappingCustomization" && xmlNamespace == "http://schemas.neumont.edu/ORM/Bridge/2007-06/ORMAbstractionToConceptualDatabase")
 			{
 				return MappingCustomizationModel.DomainClassId;
 			}
@@ -180,7 +180,7 @@ namespace Neumont.Tools.ORMAbstractionToConceptualDatabaseBridge
 		{
 			get
 			{
-				return CustomSerializedElementSupportedOperations.ChildElementInfo | (CustomSerializedElementSupportedOperations.ElementInfo | CustomSerializedElementSupportedOperations.CustomSortChildRoles);
+				return CustomSerializedElementSupportedOperations.ChildElementInfo | CustomSerializedElementSupportedOperations.ElementInfo | CustomSerializedElementSupportedOperations.CustomSortChildRoles;
 			}
 		}
 		CustomSerializedElementSupportedOperations ICustomSerializedElement.SupportedCustomSerializedOperations
@@ -261,12 +261,12 @@ namespace Neumont.Tools.ORMAbstractionToConceptualDatabaseBridge
 			int IComparer<DomainRoleInfo>.Compare(DomainRoleInfo x, DomainRoleInfo y)
 			{
 				int xPos;
-				if (!(this.myRoleOrderDictionary.TryGetValue(string.Concat(x.DomainRelationship.ImplementationClass.FullName, ".", x.Name), out xPos)))
+				if (!this.myRoleOrderDictionary.TryGetValue(string.Concat(x.DomainRelationship.ImplementationClass.FullName, ".", x.Name), out xPos))
 				{
 					xPos = int.MaxValue;
 				}
 				int yPos;
-				if (!(this.myRoleOrderDictionary.TryGetValue(string.Concat(y.DomainRelationship.ImplementationClass.FullName, ".", y.Name), out yPos)))
+				if (!this.myRoleOrderDictionary.TryGetValue(string.Concat(y.DomainRelationship.ImplementationClass.FullName, ".", y.Name), out yPos))
 				{
 					yPos = int.MaxValue;
 				}
@@ -310,7 +310,7 @@ namespace Neumont.Tools.ORMAbstractionToConceptualDatabaseBridge
 				MappingCustomizationModel.myChildElementMappings = childElementMappings;
 			}
 			CustomSerializedElementMatch rVal;
-			childElementMappings.TryGetValue(string.Concat(outerContainerNamespace, "|", outerContainerName, "|", ((object)containerNamespace != (object)outerContainerNamespace) ? containerNamespace : null, "|", containerName, "|", ((object)elementNamespace != (object)containerNamespace) ? elementNamespace : null, "|", elementName), out rVal);
+			childElementMappings.TryGetValue(string.Concat(outerContainerNamespace, "|", outerContainerName, "|", (object)containerNamespace != (object)outerContainerNamespace ? containerNamespace : null, "|", containerName, "|", (object)elementNamespace != (object)containerNamespace ? elementNamespace : null, "|", elementName), out rVal);
 			return rVal;
 		}
 		CustomSerializedElementMatch ICustomSerializedElement.MapChildElement(string elementNamespace, string elementName, string containerNamespace, string containerName, string outerContainerNamespace, string outerContainerName)
@@ -449,7 +449,7 @@ namespace Neumont.Tools.ORMAbstractionToConceptualDatabaseBridge
 				AssimilationMapping.myChildElementMappings = childElementMappings;
 			}
 			CustomSerializedElementMatch rVal;
-			childElementMappings.TryGetValue(string.Concat(outerContainerNamespace, "|", outerContainerName, "|", ((object)containerNamespace != (object)outerContainerNamespace) ? containerNamespace : null, "|", containerName, "|", ((object)elementNamespace != (object)containerNamespace) ? elementNamespace : null, "|", elementName), out rVal);
+			childElementMappings.TryGetValue(string.Concat(outerContainerNamespace, "|", outerContainerName, "|", (object)containerNamespace != (object)outerContainerNamespace ? containerNamespace : null, "|", containerName, "|", (object)elementNamespace != (object)containerNamespace ? elementNamespace : null, "|", elementName), out rVal);
 			return rVal;
 		}
 		CustomSerializedElementMatch ICustomSerializedElement.MapChildElement(string elementNamespace, string elementName, string containerNamespace, string containerName, string outerContainerNamespace, string outerContainerName)
@@ -469,7 +469,7 @@ namespace Neumont.Tools.ORMAbstractionToConceptualDatabaseBridge
 		protected bool ShouldSerialize()
 		{
 			Neumont.Tools.ORM.ObjectModel.FactType factType = this.FactType;
-			return (this.AbsorptionChoice != GetDefaultAbsorptionChoice(factType)) && IsFactTypeAssociatedWithDeepAssimilationsOnly(factType);
+			return this.AbsorptionChoice != GetDefaultAbsorptionChoice(factType) && IsFactTypeAssociatedWithDeepAssimilationsOnly(factType);
 		}
 		bool ICustomSerializedElement.ShouldSerialize()
 		{
@@ -532,7 +532,7 @@ namespace Neumont.Tools.ORMAbstractionToConceptualDatabaseBridge
 			}
 			if (domainPropertyInfo.Id == ReferenceModeNaming.CustomFormatDomainPropertyId)
 			{
-				if (!(this.UsesCustomFormat(true)))
+				if (!this.UsesCustomFormat(true))
 				{
 					return new CustomSerializedPropertyInfo(null, null, null, false, CustomSerializedAttributeWriteStyle.NotWritten, null);
 				}
@@ -587,7 +587,7 @@ namespace Neumont.Tools.ORMAbstractionToConceptualDatabaseBridge
 				ReferenceModeNaming.myChildElementMappings = childElementMappings;
 			}
 			CustomSerializedElementMatch rVal;
-			childElementMappings.TryGetValue(string.Concat(outerContainerNamespace, "|", outerContainerName, "|", ((object)containerNamespace != (object)outerContainerNamespace) ? containerNamespace : null, "|", containerName, "|", ((object)elementNamespace != (object)containerNamespace) ? elementNamespace : null, "|", elementName), out rVal);
+			childElementMappings.TryGetValue(string.Concat(outerContainerNamespace, "|", outerContainerName, "|", (object)containerNamespace != (object)outerContainerNamespace ? containerNamespace : null, "|", containerName, "|", (object)elementNamespace != (object)containerNamespace ? elementNamespace : null, "|", elementName), out rVal);
 			return rVal;
 		}
 		CustomSerializedElementMatch ICustomSerializedElement.MapChildElement(string elementNamespace, string elementName, string containerNamespace, string containerName, string outerContainerNamespace, string outerContainerName)
@@ -624,7 +624,7 @@ namespace Neumont.Tools.ORMAbstractionToConceptualDatabaseBridge
 		{
 			Neumont.Tools.ORM.ObjectModel.ObjectType objectType;
 			Neumont.Tools.ORM.ObjectModel.ReferenceMode referenceMode;
-			return this.UsesCustomFormat(true) || ((this.NamingChoice != ReferenceModeNamingChoice.ModelDefault) && (((objectType = this.ObjectType) != null) && (((referenceMode = objectType.ReferenceMode) != null) && (Neumont.Tools.ORM.ObjectModel.ReferenceModeType.General != referenceMode.Kind.ReferenceModeType))));
+			return this.UsesCustomFormat(true) || this.NamingChoice != ReferenceModeNamingChoice.ModelDefault && (objectType = this.ObjectType) != null && (referenceMode = objectType.ReferenceMode) != null && Neumont.Tools.ORM.ObjectModel.ReferenceModeType.General != referenceMode.Kind.ReferenceModeType;
 		}
 		bool ICustomSerializedElement.ShouldSerialize()
 		{
@@ -738,7 +738,7 @@ namespace Neumont.Tools.ORMAbstractionToConceptualDatabaseBridge
 				DefaultReferenceModeNaming.myChildElementMappings = childElementMappings;
 			}
 			CustomSerializedElementMatch rVal;
-			childElementMappings.TryGetValue(string.Concat(outerContainerNamespace, "|", outerContainerName, "|", ((object)containerNamespace != (object)outerContainerNamespace) ? containerNamespace : null, "|", containerName, "|", ((object)elementNamespace != (object)containerNamespace) ? elementNamespace : null, "|", elementName), out rVal);
+			childElementMappings.TryGetValue(string.Concat(outerContainerNamespace, "|", outerContainerName, "|", (object)containerNamespace != (object)outerContainerNamespace ? containerNamespace : null, "|", containerName, "|", (object)elementNamespace != (object)containerNamespace ? elementNamespace : null, "|", elementName), out rVal);
 			return rVal;
 		}
 		CustomSerializedElementMatch ICustomSerializedElement.MapChildElement(string elementNamespace, string elementName, string containerNamespace, string containerName, string outerContainerNamespace, string outerContainerName)

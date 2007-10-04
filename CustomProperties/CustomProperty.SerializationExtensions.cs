@@ -86,7 +86,7 @@ namespace Neumont.Tools.ORM.CustomProperties
 		/// <summary>Implements ICustomSerializedDomainModel.MapRootElement</summary>
 		private static Guid MapRootElement(string xmlNamespace, string elementName)
 		{
-			if ((elementName == "CustomPropertyGroup") && (xmlNamespace == "http://schemas.neumont.edu/ORM/Preview/CustomProperties"))
+			if (elementName == "CustomPropertyGroup" && xmlNamespace == "http://schemas.neumont.edu/ORM/Preview/CustomProperties")
 			{
 				return CustomPropertyGroup.DomainClassId;
 			}
@@ -207,7 +207,7 @@ namespace Neumont.Tools.ORM.CustomProperties
 				CustomPropertyGroup.myChildElementMappings = childElementMappings;
 			}
 			CustomSerializedElementMatch rVal;
-			childElementMappings.TryGetValue(string.Concat(outerContainerNamespace, "|", outerContainerName, "|", ((object)containerNamespace != (object)outerContainerNamespace) ? containerNamespace : null, "|", containerName, "|", ((object)elementNamespace != (object)containerNamespace) ? elementNamespace : null, "|", elementName), out rVal);
+			childElementMappings.TryGetValue(string.Concat(outerContainerNamespace, "|", outerContainerName, "|", (object)containerNamespace != (object)outerContainerNamespace ? containerNamespace : null, "|", containerName, "|", (object)elementNamespace != (object)containerNamespace ? elementNamespace : null, "|", elementName), out rVal);
 			return rVal;
 		}
 		private static Dictionary<string, Guid> myCustomSerializedAttributes;
@@ -284,7 +284,7 @@ namespace Neumont.Tools.ORM.CustomProperties
 			}
 			if (domainPropertyInfo.Id == CustomPropertyDefinition.CategoryDomainPropertyId)
 			{
-				if (string.IsNullOrEmpty(this.Category) || (this.Category == "Default"))
+				if (string.IsNullOrEmpty(this.Category) || this.Category == "Default")
 				{
 					return new CustomSerializedPropertyInfo(null, null, null, false, CustomSerializedAttributeWriteStyle.NotWritten, null);
 				}
@@ -441,7 +441,7 @@ namespace Neumont.Tools.ORM.CustomProperties
 				CustomProperty.myChildElementMappings = childElementMappings;
 			}
 			CustomSerializedElementMatch rVal;
-			childElementMappings.TryGetValue(string.Concat(outerContainerNamespace, "|", outerContainerName, "|", ((object)containerNamespace != (object)outerContainerNamespace) ? containerNamespace : null, "|", containerName, "|", ((object)elementNamespace != (object)containerNamespace) ? elementNamespace : null, "|", elementName), out rVal);
+			childElementMappings.TryGetValue(string.Concat(outerContainerNamespace, "|", outerContainerName, "|", (object)containerNamespace != (object)outerContainerNamespace ? containerNamespace : null, "|", containerName, "|", (object)elementNamespace != (object)containerNamespace ? elementNamespace : null, "|", elementName), out rVal);
 			return rVal;
 		}
 		private static Dictionary<string, Guid> myCustomSerializedAttributes;

@@ -83,7 +83,7 @@ namespace Neumont.Tools.ORM.ShapeModel
 				omissions = ORMShapeDomainModel.BuildCustomSerializationOmissions(store);
 				this.myCustomSerializationOmissions = omissions;
 			}
-			return !(omissions.ContainsKey(classInfo));
+			return !omissions.ContainsKey(classInfo);
 		}
 		bool ICustomSerializedDomainModel.ShouldSerializeDomainClass(Store store, DomainClassInfo classInfo)
 		{
@@ -111,7 +111,7 @@ namespace Neumont.Tools.ORM.ShapeModel
 		/// <summary>Implements ICustomSerializedDomainModel.MapRootElement</summary>
 		protected static Guid MapRootElement(string xmlNamespace, string elementName)
 		{
-			if ((elementName == "ORMDiagram") && (xmlNamespace == "http://schemas.neumont.edu/ORM/2006-04/ORMDiagram"))
+			if (elementName == "ORMDiagram" && xmlNamespace == "http://schemas.neumont.edu/ORM/2006-04/ORMDiagram")
 			{
 				return ORMDiagram.DomainClassId;
 			}
@@ -166,7 +166,7 @@ namespace Neumont.Tools.ORM.ShapeModel
 		{
 			get
 			{
-				return CustomSerializedElementSupportedOperations.ChildElementInfo | (CustomSerializedElementSupportedOperations.PropertyInfo | (CustomSerializedElementSupportedOperations.LinkInfo | CustomSerializedElementSupportedOperations.CustomSortChildRoles));
+				return CustomSerializedElementSupportedOperations.ChildElementInfo | CustomSerializedElementSupportedOperations.PropertyInfo | CustomSerializedElementSupportedOperations.LinkInfo | CustomSerializedElementSupportedOperations.CustomSortChildRoles;
 			}
 		}
 		CustomSerializedElementSupportedOperations ICustomSerializedElement.SupportedCustomSerializedOperations
@@ -277,12 +277,12 @@ namespace Neumont.Tools.ORM.ShapeModel
 			int IComparer<DomainRoleInfo>.Compare(DomainRoleInfo x, DomainRoleInfo y)
 			{
 				int xPos;
-				if (!(this.myRoleOrderDictionary.TryGetValue(string.Concat(x.DomainRelationship.ImplementationClass.FullName, ".", x.Name), out xPos)))
+				if (!this.myRoleOrderDictionary.TryGetValue(string.Concat(x.DomainRelationship.ImplementationClass.FullName, ".", x.Name), out xPos))
 				{
 					xPos = int.MaxValue;
 				}
 				int yPos;
-				if (!(this.myRoleOrderDictionary.TryGetValue(string.Concat(y.DomainRelationship.ImplementationClass.FullName, ".", y.Name), out yPos)))
+				if (!this.myRoleOrderDictionary.TryGetValue(string.Concat(y.DomainRelationship.ImplementationClass.FullName, ".", y.Name), out yPos))
 				{
 					yPos = int.MaxValue;
 				}
@@ -326,7 +326,7 @@ namespace Neumont.Tools.ORM.ShapeModel
 				ORMDiagram.myChildElementMappings = childElementMappings;
 			}
 			CustomSerializedElementMatch rVal;
-			childElementMappings.TryGetValue(string.Concat(outerContainerNamespace, "|", outerContainerName, "|", ((object)containerNamespace != (object)outerContainerNamespace) ? containerNamespace : null, "|", containerName, "|", ((object)elementNamespace != (object)containerNamespace) ? elementNamespace : null, "|", elementName), out rVal);
+			childElementMappings.TryGetValue(string.Concat(outerContainerNamespace, "|", outerContainerName, "|", (object)containerNamespace != (object)outerContainerNamespace ? containerNamespace : null, "|", containerName, "|", (object)elementNamespace != (object)containerNamespace ? elementNamespace : null, "|", elementName), out rVal);
 			return rVal;
 		}
 		CustomSerializedElementMatch ICustomSerializedElement.MapChildElement(string elementNamespace, string elementName, string containerNamespace, string containerName, string outerContainerNamespace, string outerContainerName)
@@ -361,7 +361,7 @@ namespace Neumont.Tools.ORM.ShapeModel
 		{
 			get
 			{
-				return CustomSerializedElementSupportedOperations.ChildElementInfo | (CustomSerializedElementSupportedOperations.PropertyInfo | (CustomSerializedElementSupportedOperations.LinkInfo | CustomSerializedElementSupportedOperations.CustomSortChildRoles));
+				return CustomSerializedElementSupportedOperations.ChildElementInfo | CustomSerializedElementSupportedOperations.PropertyInfo | CustomSerializedElementSupportedOperations.LinkInfo | CustomSerializedElementSupportedOperations.CustomSortChildRoles;
 			}
 		}
 		CustomSerializedElementSupportedOperations ICustomSerializedElement.SupportedCustomSerializedOperations
@@ -455,12 +455,12 @@ namespace Neumont.Tools.ORM.ShapeModel
 			int IComparer<DomainRoleInfo>.Compare(DomainRoleInfo x, DomainRoleInfo y)
 			{
 				int xPos;
-				if (!(this.myRoleOrderDictionary.TryGetValue(string.Concat(x.DomainRelationship.ImplementationClass.FullName, ".", x.Name), out xPos)))
+				if (!this.myRoleOrderDictionary.TryGetValue(string.Concat(x.DomainRelationship.ImplementationClass.FullName, ".", x.Name), out xPos))
 				{
 					xPos = int.MaxValue;
 				}
 				int yPos;
-				if (!(this.myRoleOrderDictionary.TryGetValue(string.Concat(y.DomainRelationship.ImplementationClass.FullName, ".", y.Name), out yPos)))
+				if (!this.myRoleOrderDictionary.TryGetValue(string.Concat(y.DomainRelationship.ImplementationClass.FullName, ".", y.Name), out yPos))
 				{
 					yPos = int.MaxValue;
 				}
@@ -506,7 +506,7 @@ namespace Neumont.Tools.ORM.ShapeModel
 				ORMBaseShape.myChildElementMappings = childElementMappings;
 			}
 			CustomSerializedElementMatch rVal;
-			childElementMappings.TryGetValue(string.Concat(outerContainerNamespace, "|", outerContainerName, "|", ((object)containerNamespace != (object)outerContainerNamespace) ? containerNamespace : null, "|", containerName, "|", ((object)elementNamespace != (object)containerNamespace) ? elementNamespace : null, "|", elementName), out rVal);
+			childElementMappings.TryGetValue(string.Concat(outerContainerNamespace, "|", outerContainerName, "|", (object)containerNamespace != (object)outerContainerNamespace ? containerNamespace : null, "|", containerName, "|", (object)elementNamespace != (object)containerNamespace ? elementNamespace : null, "|", elementName), out rVal);
 			return rVal;
 		}
 		CustomSerializedElementMatch ICustomSerializedElement.MapChildElement(string elementNamespace, string elementName, string containerNamespace, string containerName, string outerContainerNamespace, string outerContainerName)
@@ -572,7 +572,7 @@ namespace Neumont.Tools.ORM.ShapeModel
 		{
 			if (domainPropertyInfo.Id == ObjectTypeShape.ExpandRefModeDomainPropertyId)
 			{
-				if (!(this.ExpandRefMode))
+				if (!this.ExpandRefMode)
 				{
 					return new CustomSerializedPropertyInfo(null, null, null, false, CustomSerializedAttributeWriteStyle.NotWritten, null);
 				}
@@ -605,7 +605,7 @@ namespace Neumont.Tools.ORM.ShapeModel
 			{
 				key = string.Concat(xmlNamespace, "|", attributeName);
 			}
-			if (!(customSerializedAttributes.TryGetValue(key, out rVal)))
+			if (!customSerializedAttributes.TryGetValue(key, out rVal))
 			{
 				rVal = base.MapAttribute(xmlNamespace, attributeName);
 			}
@@ -640,7 +640,7 @@ namespace Neumont.Tools.ORM.ShapeModel
 		{
 			if (domainPropertyInfo.Id == ObjectifiedFactTypeNameShape.ExpandRefModeDomainPropertyId)
 			{
-				if (!(this.ExpandRefMode))
+				if (!this.ExpandRefMode)
 				{
 					return new CustomSerializedPropertyInfo(null, null, null, false, CustomSerializedAttributeWriteStyle.NotWritten, null);
 				}
@@ -673,7 +673,7 @@ namespace Neumont.Tools.ORM.ShapeModel
 			{
 				key = string.Concat(xmlNamespace, "|", attributeName);
 			}
-			if (!(customSerializedAttributes.TryGetValue(key, out rVal)))
+			if (!customSerializedAttributes.TryGetValue(key, out rVal))
 			{
 				rVal = base.MapAttribute(xmlNamespace, attributeName);
 			}
@@ -753,7 +753,7 @@ namespace Neumont.Tools.ORM.ShapeModel
 		{
 			get
 			{
-				return base.SupportedCustomSerializedOperations | (CustomSerializedElementSupportedOperations.ChildElementInfo | (CustomSerializedElementSupportedOperations.PropertyInfo | (CustomSerializedElementSupportedOperations.LinkInfo | CustomSerializedElementSupportedOperations.CustomSortChildRoles)));
+				return base.SupportedCustomSerializedOperations | CustomSerializedElementSupportedOperations.ChildElementInfo | CustomSerializedElementSupportedOperations.PropertyInfo | CustomSerializedElementSupportedOperations.LinkInfo | CustomSerializedElementSupportedOperations.CustomSortChildRoles;
 			}
 		}
 		CustomSerializedElementSupportedOperations ICustomSerializedElement.SupportedCustomSerializedOperations
@@ -871,12 +871,12 @@ namespace Neumont.Tools.ORM.ShapeModel
 					}
 				}
 				int xPos;
-				if (!(this.myRoleOrderDictionary.TryGetValue(string.Concat(x.DomainRelationship.ImplementationClass.FullName, ".", x.Name), out xPos)))
+				if (!this.myRoleOrderDictionary.TryGetValue(string.Concat(x.DomainRelationship.ImplementationClass.FullName, ".", x.Name), out xPos))
 				{
 					xPos = int.MaxValue;
 				}
 				int yPos;
-				if (!(this.myRoleOrderDictionary.TryGetValue(string.Concat(y.DomainRelationship.ImplementationClass.FullName, ".", y.Name), out yPos)))
+				if (!this.myRoleOrderDictionary.TryGetValue(string.Concat(y.DomainRelationship.ImplementationClass.FullName, ".", y.Name), out yPos))
 				{
 					yPos = int.MaxValue;
 				}
@@ -923,7 +923,7 @@ namespace Neumont.Tools.ORM.ShapeModel
 				FactTypeShape.myChildElementMappings = childElementMappings;
 			}
 			CustomSerializedElementMatch rVal;
-			if (!(childElementMappings.TryGetValue(string.Concat(outerContainerNamespace, "|", outerContainerName, "|", ((object)containerNamespace != (object)outerContainerNamespace) ? containerNamespace : null, "|", containerName, "|", ((object)elementNamespace != (object)containerNamespace) ? elementNamespace : null, "|", elementName), out rVal)))
+			if (!childElementMappings.TryGetValue(string.Concat(outerContainerNamespace, "|", outerContainerName, "|", (object)containerNamespace != (object)outerContainerNamespace ? containerNamespace : null, "|", containerName, "|", (object)elementNamespace != (object)containerNamespace ? elementNamespace : null, "|", elementName), out rVal))
 			{
 				rVal = base.MapChildElement(elementNamespace, elementName, containerNamespace, containerName, outerContainerNamespace, outerContainerName);
 			}
@@ -951,7 +951,7 @@ namespace Neumont.Tools.ORM.ShapeModel
 			{
 				key = string.Concat(xmlNamespace, "|", attributeName);
 			}
-			if (!(customSerializedAttributes.TryGetValue(key, out rVal)))
+			if (!customSerializedAttributes.TryGetValue(key, out rVal))
 			{
 				rVal = base.MapAttribute(xmlNamespace, attributeName);
 			}

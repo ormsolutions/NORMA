@@ -77,7 +77,7 @@ namespace Neumont.Tools.ORMToORMAbstractionBridge
 				omissions = ORMToORMAbstractionBridgeDomainModel.BuildCustomSerializationOmissions(store);
 				this.myCustomSerializationOmissions = omissions;
 			}
-			return !(omissions.ContainsKey(classInfo));
+			return !omissions.ContainsKey(classInfo);
 		}
 		bool ICustomSerializedDomainModel.ShouldSerializeDomainClass(Store store, DomainClassInfo classInfo)
 		{

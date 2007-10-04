@@ -339,7 +339,7 @@
 				<EnumerationLiteral Name="ValueTypeName" Value="0" Description="Use the name of the identifying value type for the column."/>
 				<EnumerationLiteral Name="EntityTypeName" Value="1" Description="Use the name of the entity type for the related column."/>
 				<EnumerationLiteral Name="ReferenceModeName" Value="2" Description="Use a custom format string using the other three values as replacement fields."/>
-				<EnumerationLiteral Name="CustomFormat" Value="3" Description="Use a custom format with the other three values as replacement fiels."/>
+				<EnumerationLiteral Name="CustomFormat" Value="3" Description="Use a custom format with the other three values as replacement fields."/>
 			</Literals>
 			<Attributes>
 				<ClrAttribute Name="global::System.ComponentModel.TypeConverter">

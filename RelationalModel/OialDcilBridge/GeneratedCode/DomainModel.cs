@@ -599,7 +599,7 @@ namespace Neumont.Tools.ORMAbstractionToConceptualDatabaseBridge
 		ReferenceModeName = 2,
 		/// <summary>
 		/// CustomFormat
-		/// Use a custom format of the other three values.
+		/// Use a custom format with the other three values as replacement fields.
 		/// </summary>
 		[DslDesign::DescriptionResource("Neumont.Tools.ORMAbstractionToConceptualDatabaseBridge.EffectiveReferenceModeNamingChoice/CustomFormat.Description", typeof(global::Neumont.Tools.ORMAbstractionToConceptualDatabaseBridge.ORMAbstractionToConceptualDatabaseBridgeDomainModel), "Neumont.Tools.ORMAbstractionToConceptualDatabaseBridge.GeneratedCode.DomainModelResx")]
 		CustomFormat = 3,
