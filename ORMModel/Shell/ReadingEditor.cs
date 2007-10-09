@@ -25,6 +25,7 @@ using System.Drawing;
 using System.Drawing.Design;
 using System.Globalization;
 using System.Runtime.InteropServices;
+using System.Security.Permissions;
 using System.Text;
 using System.Windows.Forms;
 using Microsoft.VisualStudio;
@@ -33,12 +34,15 @@ using Microsoft.VisualStudio.Shell.Interop;
 using Microsoft.VisualStudio.TextManager.Interop;
 using Microsoft.VisualStudio.VirtualTreeGrid;
 using OleInterop = Microsoft.VisualStudio.OLE.Interop;
+using Neumont.Tools.Modeling;
 using Neumont.Tools.Modeling.Design;
 using Neumont.Tools.ORM.ObjectModel;
 using Neumont.Tools.ORM.ShapeModel;
 using Neumont.Tools.ORM.Shell;
-using System.Security.Permissions;
-using Neumont.Tools.Modeling;
+
+#if VISUALSTUDIO_9_0
+using VirtualTreeInPlaceControlFlags = Microsoft.VisualStudio.VirtualTreeGrid.VirtualTreeInPlaceControls;
+#endif //VISUALSTUDIO_9_0
 
 namespace Neumont.Tools.ORM.Shell
 {

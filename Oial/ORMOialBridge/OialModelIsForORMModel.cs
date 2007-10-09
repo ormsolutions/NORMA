@@ -585,6 +585,8 @@ namespace Neumont.Tools.ORMToORMAbstractionBridge
 					bool firstRolePlayerHasPossibleDeepMappingsAway = ObjectTypeHasPossibleDeepMappingsAway(firstRolePlayer, factType, decidedOneToOneFactTypeMappings, undecidedOneToOneFactTypeMappings);
 					bool secondRolePlayerHasPossibleDeepMappingsAway = ObjectTypeHasPossibleDeepMappingsAway(secondRolePlayer, factType, decidedOneToOneFactTypeMappings, undecidedOneToOneFactTypeMappings);
 
+					// UNDONE: We need to do cycle checking at or before this point, since otherwise this can create a decided deep mapping cycle.
+
 					// If secondRolePlayer has no possible deep mappings away from it, and firstRolePlayer does...
 					if (firstRolePlayerHasPossibleDeepMappingsAway && !secondRolePlayerHasPossibleDeepMappingsAway)
 					{

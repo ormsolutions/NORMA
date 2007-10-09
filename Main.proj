@@ -1,0 +1,14 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+	<ItemGroup>
+		<ProjectReference Include="ORMPackage.sln"/>
+		<ProjectReference Include="ExtensionExample\ExtensionExample.sln"/>
+		<ProjectReference Include="OIALModel\OIALModel.sln"/>
+		<ProjectReference Include="AlternateViews\RelationalView\RelationalView.sln"/>
+		<ProjectReference Include="Oial\Oial.sln"/>
+		<ProjectReference Include="RelationalModel\Dil.sln"/>
+		<ProjectReference Include="CustomProperties\CustomProperties.sln"/>
+		<ProjectReference Include="Tools\ORMCustomTool\ORMCustomTool.sln"/>
+	</ItemGroup>
+	<Import Project="Default.targets"/>
+</Project>

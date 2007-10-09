@@ -1,6 +1,6 @@
 #region Public Domain Notice
 /**************************************************************************\
-* DSL Import Directive Processor for the Neumont Modeling Framework        *
+* Disable Rule Directive Processor for the Neumont Modeling Framework      *
 *                                                                          *
 * This file is hereby released into the public domain by its author. This  *
 * applies worldwide. For countries in which this is not legally possible,  *
@@ -11,7 +11,6 @@
 
 using System;
 using System.Collections.Generic;
-using Microsoft.VisualStudio.Modeling.DslDefinition;
 using Microsoft.VisualStudio.TextTemplating;
 
 namespace Neumont.Tools.Modeling

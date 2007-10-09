@@ -3,16 +3,13 @@ using System.Collections.Generic;
 using System.Text;
 using EnvDTE;
 using EnvDTE80;
-using Microsoft.VisualStudio.Modeling;
 using System.ComponentModel;
 using Neumont.Tools.ORM.ObjectModel;
 using Accessibility;
-using System.Windows.Forms;
 using System.IO;
 using NUnitCategory = NUnit.Framework.CategoryAttribute;
 using NUnit.Framework;
 using Neumont.Tools.Modeling.Design;
-using System.Xml;
 
 namespace ORMRegressionTestAddin
 {

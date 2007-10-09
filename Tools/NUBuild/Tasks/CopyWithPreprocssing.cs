@@ -53,7 +53,7 @@ namespace Neumont.Build.Tasks
 			}
 			if (this.DisableAllPreprocessing)
 			{
-				base.Log.LogMessage(MessageImportance.Normal, "Skipped all preprocessing because $(DisableAllPreprocessing) is 'true'", null);
+				base.Log.LogMessage(MessageImportance.Normal, "Skipped all preprocessing because $(DisableAllPreprocessing) is 'true'.", null);
 				return base.Execute();
 			}
 			
@@ -79,7 +79,7 @@ namespace Neumont.Build.Tasks
 				bool disablePreprocessing;
 				if (bool.TryParse(sourceItem.GetMetadata("DisablePreprocessing"), out disablePreprocessing) && disablePreprocessing)
 				{
-					base.Log.LogMessage(MessageImportance.Normal, "Skipped preprocessing for \"{0}\" because %(DisablePreprocessing) is 'true'", sourceItem.ItemSpec);
+					base.Log.LogMessage(MessageImportance.Normal, "Skipped preprocessing for \"{0}\" because %(DisablePreprocessing) is 'true'.", sourceItem.ItemSpec);
 					continue;
 				}
 				if (Array.BinarySearch<string>(xmlFileExtensionsToPreprocess, sourceItem.GetMetadata("Extension")) < 0)
@@ -99,7 +99,7 @@ namespace Neumont.Build.Tasks
 					// Remove it from the list so the regular copy doesn't see it
 					if (sourceFile.Length != destinationFile.Length)
 					{
-						base.Log.LogMessage("Skipping preprocessing for \"{0}\" because the last modified time of the source is less than or equal to that of the destination. " +
+						base.Log.LogMessage(MessageImportance.Low, "Skipping preprocessing for \"{0}\" because the last modified time of the source is less than or equal to that of the destination. " +
 							"Hiding from regular Copy task so that it doesn't see the file size difference.", sourceItem.ItemSpec);
 						newSourceFiles.RemoveAt(i);
 						newDestinationFiles.RemoveAt(i);

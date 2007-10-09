@@ -1,0 +1,119 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<!--
+	Neumont Build System
+
+	Copyright © Neumont University. All rights reserved.
+
+	This software is provided 'as-is', without any express or implied warranty. In no event will the authors be held liable for any damages arising from the use of this software.
+	Permission is granted to anyone to use this software for any purpose, including commercial applications, and to alter it and redistribute it freely, subject to the following restrictions:
+	1. The origin of this software must not be misrepresented; you must not claim that you wrote the original software. If you use this software in a product, an acknowledgment in the product documentation would be appreciated but is not required.
+	2. Altered source versions must be plainly marked as such, and must not be misrepresented as being the original software.
+	3. This notice may not be removed or altered from any source distribution.
+-->
+<Project xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+	
+	<!--
+		This .targets file provides various tasks and targets related to extending Microsoft® Visual Studio®.
+		It should be imported after Microsoft.Common.targets is imported.
+		(Note: Microsoft.Common.targets is typically imported indirectly via language-specific .targets files, such as Microsoft.CSharp.targets or Microsoft.VisualBasic.targets.)
+	-->
+
+	<PropertyGroup>
+		 <!-- The name of the assembly that contains the NUBuildVS tasks. -->
+		<NUBuildVSTasksAssemblyName>Neumont.Build.VisualStudio, Version=1.0.0.0, Culture=neutral, PublicKeyToken=957d5b7d5e79e25f</NUBuildVSTasksAssemblyName>
+	</PropertyGroup>
+	
+	<UsingTask TaskName="VsSDKLocator" AssemblyName="$(NUBuildVSTasksAssemblyName)"/>
+
+
+	<PropertyGroup Condition="Exists('$(MSBuildExtensionsPath)\Neumont\VisualStudio\Neumont.Build.VisualStudio.targets')">
+		 <!-- This forces a rebuild of a project if it references this targets file and this targets file changes. -->
+		<MSBuildAllProjects>$(MSBuildAllProjects);$(MSBuildExtensionsPath)\Neumont\VisualStudio\Neumont.Build.VisualStudio.targets</MSBuildAllProjects>
+	</PropertyGroup>
+	
+
+	<!-- Retrieves the location of various Visual Studio SDK directories and tools. -->
+	<PropertyGroup>
+		<LocateVisualStudioSDKDependsOn>
+			$(LocateVisualStudioSDKDependsOn)
+		</LocateVisualStudioSDKDependsOn>
+	</PropertyGroup>
+
+	<Target
+		Name="LocateVisualStudioSDK"
+		DependsOnTargets="$(LocateVisualStudioSDKDependsOn)">
+
+		<VsSDKLocator>
+			<Output TaskParameter="InstallationDirectory" PropertyName="VsSDKInstallationDir"/>
+			<Output TaskParameter="ToolsDirectory" PropertyName="VsSDKToolsDir"/>
+			<Output TaskParameter="IncludesDirectory" PropertyName="VsSDKIncludesDir"/>
+		</VsSDKLocator>
+
+	</Target>
+
+
+	<PropertyGroup>
+		<!-- If we are building for Visual Studio 9.0, use VSCT v3.5, otherwise use VSCT v2.0. -->
+		<VsctAssemblyVersion Condition="'$(VsctAssemblyVersion)'=='' and '$(TargetVisualStudioVersion)'=='v9.0'">3.5.0.0</VsctAssemblyVersion>
+		<VsctAssemblyVersion Condition="'$(VsctAssemblyVersion)'==''">2.0.0.0</VsctAssemblyVersion>
+	</PropertyGroup>
+
+	<!-- Compiles .vsct files into .cto files. -->
+	<UsingTask TaskName="VSCTCompiler" AssemblyName="VSCT, Version=$(VsctAssemblyVersion), Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a"/>
+	<ItemGroup>
+		<!-- Add the CompileVsct Item name to the AvailableItemName item, so that it shows up in the Build Action drop-down menu in the properties windows in Visual Studio (and the equivalent in other IDEs). -->
+		<AvailableItemName Include="CompileVsct"/>
+	</ItemGroup>
+	
+	<PropertyGroup>
+		<VsctCompileDependsOn>
+			$(VsctCompileDependsOn);
+			LocateVisualStudioSDK
+		</VsctCompileDependsOn>
+		<MergeResourcesDependsOn>
+			$(MergeResourcesDependsOn);
+			VsctCompile
+		</MergeResourcesDependsOn>
+		<ResGenDependsOn>
+			$(ResGenDependsOn);
+			VsctCompile
+		</ResGenDependsOn>
+
+		<VsctIncludesDirs>$(VsctIncludesDirs)</VsctIncludesDirs>
+	</PropertyGroup>
+
+	<Target
+		Name="VsctCompile"
+		DependsOnTargets="$(VsctCompileDependsOn)"
+		Condition="'@(CompileVsct)'!=''">
+
+		<!-- We need to include the $(MSBuildProjectDirectory) in the IntermediateDirectory below because the VSCT compiler changes the current directory while it is running. -->
+		<VSCTCompiler
+			NoLogo="true"
+			MinimalRebuild="true"
+			IntermediateDirectory="$(MSBuildProjectDirectory)\$(IntermediateOutputPath)"
+			AdditionalIncludeDirectories="$(VsctIncludesDirs);$(VsSDKIncludesDir);$(VsSDKIncludesDir)\office10"
+			Definitions="$(DefineConstants)"
+			Source="@(CompileVsct)"
+			OutputFile="%(FileName).cto"
+		/>
+
+		<!-- Add the generated .cto file to FileWrites and MergeResources. -->
+		<!-- NOTE: @(CompileVsct) is expected to already have the MergeTarget and ResourceName metadata values specified. -->
+		<CreateItem Include="@(CompileVsct->'$(IntermediateOutputPath)%(FileName).cto')" Condition="Exists('@(CompileVsct->'$(IntermediateOutputPath)%(FileName).cto')')">
+			<Output TaskParameter="Include" ItemName="FileWrites"/>
+			<Output TaskParameter="Include" ItemName="MergeResource"/>
+		</CreateItem>
+
+		<!-- The VSCT compiler uses these files for tracking its dependencies, so we need to include them in FileWrites. -->
+		<CreateItem Include="$(IntermediateOutputPath)VSCT.read.1.tlog" Condition="Exists('$(IntermediateOutputPath)VSCT.read.1.tlog')">
+			<Output TaskParameter="Include" ItemName="FileWrites"/>
+		</CreateItem>
+		<CreateItem Include="$(IntermediateOutputPath)VSCT.write.1.tlog" Condition="Exists('$(IntermediateOutputPath)VSCT.write.1.tlog')">
+			<Output TaskParameter="Include" ItemName="FileWrites"/>
+		</CreateItem>
+
+	</Target>
+
+
+</Project>

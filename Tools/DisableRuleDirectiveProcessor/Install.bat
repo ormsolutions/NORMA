@@ -13,5 +13,5 @@ GOTO:EOF
 :_AddTextTemplateReg
 REG ADD "HKLM\%VSRegistryRootBase%\%~1\TextTemplating\DirectiveProcessors\%~2" /f /ve /d "A directive processor that disables Rules."
 REG ADD "HKLM\%VSRegistryRootBase%\%~1\TextTemplating\DirectiveProcessors\%~2" /f /v "Class" /d "Neumont.Tools.Modeling.%~2"
-REG ADD "HKLM\%VSRegistryRootBase%\%~1\TextTemplating\DirectiveProcessors\%~2" /f /v "CodeBase" /d "%BinDir%\Neumont.Tools.Modeling.DisableRuleDirectiveProcessor.dll"
+REG ADD "HKLM\%VSRegistryRootBase%\%~1\TextTemplating\DirectiveProcessors\%~2" /f /v "Assembly" /d "Neumont.Tools.Modeling.DisableRuleDirectiveProcessor, Version=1.0.0.0, Culture=neutral, PublicKeyToken=957d5b7d5e79e25f"
 GOTO:EOF

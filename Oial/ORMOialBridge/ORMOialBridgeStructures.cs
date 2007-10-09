@@ -55,6 +55,14 @@ namespace Neumont.Tools.ORMToORMAbstractionBridge
 		}
 	}
 
+	#region FactTypeMapping class
+	/// <summary>
+	/// Indicates towards which <see cref="Role"/> a binary <see cref="FactType"/> is mapped,
+	/// as well as the <see cref="MappingDepth"/> of that mapping.
+	/// </summary>
+	/// <remarks>
+	/// This type is the non-transacted counterpart to <see cref="FactTypeMapsTowardsRole"/>.
+	/// </remarks>
 	[Serializable]
 	[DebuggerDisplay("FactTypeMapping (TowardsRole={FactType.RoleCollection.IndexOf(TowardsRoleDebug)}, Depth={MappingDepth}, FactType={FactType.Name})")]
 	sealed class FactTypeMapping
@@ -142,7 +150,6 @@ namespace Neumont.Tools.ORMToORMAbstractionBridge
 			foreach (ConstraintRoleSequence constraintRoleSequence in fromRole.ConstraintRoleSequenceCollection)
 			{
 				UniquenessConstraint uniquenessConstraint = constraintRoleSequence as UniquenessConstraint;
-				// If fromRole does not have a preferred uniqueness constraint on it...
 				if (uniquenessConstraint != null && uniquenessConstraint.IsPreferred)
 				{
 					return true;
@@ -151,6 +158,8 @@ namespace Neumont.Tools.ORMToORMAbstractionBridge
 			return false;
 		}
 	}
+	#endregion // FactTypeMapping class
+
 	#region Permutation structures
 	[Serializable]
 	sealed class FactTypeList : List<FactType>

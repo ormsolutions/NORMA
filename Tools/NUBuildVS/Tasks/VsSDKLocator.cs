@@ -32,7 +32,6 @@ using System.Reflection;
 using System.Text;
 using Microsoft.Build.Framework;
 using Microsoft.Build.Utilities;
-using Microsoft.Build.Tasks;
 using Microsoft.Win32;
 
 namespace Neumont.Build.Tasks
@@ -51,9 +50,6 @@ namespace Neumont.Build.Tasks
 			const string VsSDKInstallDirRegistryValue = "InstallDir";
 			const string VsSDKIncludeFilesSubdirectory = @"VisualStudioIntegration\Common\Inc";
 			const string VsSDKToolsSubdirectory = @"VisualStudioIntegration\Tools\Bin";
-			const string VsSDKVsctAssemblyName = "VSCT, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a";
-			const string VsSDKVsctFileName = "VSCT.exe";
-			const string VsSDKVsctPrereleasePath = @"Prerelease\VSCT\" + VsSDKVsctFileName;
 
 			TaskLoggingHelper log = base.Log;
 
@@ -139,57 +135,6 @@ namespace Neumont.Build.Tasks
 				log.LogWarning("Visual Studio SDK tools directory \"{0}\" does not exist.", toolsDirInfo.FullName);
 			}
 
-			// NOTE: We initially did all of this so that we could determine at run-time where the VSCT assembly was located,
-			// but in the end we just GAC'd them, so this isn't strictly needed any more.
-
-			// Get the path to the VSCT assembly
-			// First try loading it based on the assembly name
-			FileInfo vsctFileInfo = null;
-			try
-			{
-				Assembly vsctAssembly = Assembly.Load(VsSDKVsctAssemblyName);
-				vsctFileInfo = new FileInfo(vsctAssembly.Location);
-			}
-			catch (FileNotFoundException)
-			{
-				// Ignore, this just means that the runtime couldn't find it
-			}
-			// We probably don't have to check that the path given for Assembly.Location actually exists, but just in case...
-			if (vsctFileInfo == null || !vsctFileInfo.Exists)
-			{
-				log.LogMessage(MessageImportance.Low, "VSCT assembly not found by Assembly.Load.");
-
-				vsctFileInfo = new FileInfo(Path.Combine(installDir, VsSDKVsctPrereleasePath));
-				if (!vsctFileInfo.Exists)
-				{
-					log.LogMessage("VSCT assembly not found at \"{0}\".", vsctFileInfo.FullName);
-
-					// If VSCT.exe doesn't exist in the Prerelease directory, try the tools directory
-					vsctFileInfo = new FileInfo(Path.Combine(toolsDirInfo.FullName, VsSDKVsctFileName));
-					if (!vsctFileInfo.Exists)
-					{
-						log.LogMessage("VSCT assembly not found at \"{0}\".", vsctFileInfo.FullName);
-
-						// If it isn't in the tools directory either, try searching for it everywhere under the VsSDK installation directory
-						FileInfo[] foundFiles = installDirInfo.GetFiles(VsSDKVsctFileName, SearchOption.AllDirectories);
-						if (foundFiles.Length > 0)
-						{
-							// UNDONE: Does it matter if we found more than one? Which one should we choose?
-							vsctFileInfo = foundFiles[0];
-						}
-					}
-				}
-			}
-			if (vsctFileInfo.Exists)
-			{
-				string vsctPath = this._vsctPath = vsctFileInfo.FullName;
-				log.LogMessage(MessageImportance.Low, "VSCT assembly found at \"{0}\".", vsctPath);
-			}
-			else
-			{
-				log.LogWarning("VSCT assembly could not be found.");
-			}
-
 			return true;
 		}
 		#endregion // Execute method
@@ -231,19 +176,6 @@ namespace Neumont.Build.Tasks
 			get
 			{
 				return this._includesDirectory;
-			}
-		}
-
-		private string _vsctPath;
-		/// <summary>
-		/// The full path to the VSCT assembly for the latest installed version of the Visual Studio SDK.
-		/// </summary>
-		[Output]
-		public string VsctPath
-		{
-			get
-			{
-				return this._vsctPath;
 			}
 		}
 		#endregion // Properties

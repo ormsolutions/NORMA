@@ -14,6 +14,8 @@
     <SignAssembly>true</SignAssembly>
     <AssemblyOriginatorKeyFile>..\..\ORMPackage.snk</AssemblyOriginatorKeyFile>
     <RunPostBuildEvent>OnOutputUpdated</RunPostBuildEvent>
+    <InstallInGac>true</InstallInGac>
+    <TrunkDir Condition=" '$(TrunkDir)' == '' ">$(MSBuildProjectDirectory)\..\..</TrunkDir>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
     <DebugSymbols>true</DebugSymbols>
@@ -24,7 +26,7 @@
     <ErrorReport>prompt</ErrorReport>
     <NoWarn>1607</NoWarn>
     <UseVSHostingProcess>false</UseVSHostingProcess>
-    <DocumentationFile>bin\Debug\Neumont.Tools.ORM.Views.RelationalView.XML</DocumentationFile>
+    <DocumentationFile>bin\Debug\Neumont.Tools.ORM.Views.RelationalView.xml</DocumentationFile>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
     <DebugType>pdbonly</DebugType>
@@ -34,16 +36,13 @@
     <ErrorReport>prompt</ErrorReport>
     <NoWarn>1607</NoWarn>
     <UseVSHostingProcess>false</UseVSHostingProcess>
+    <DocumentationFile>bin\Release\Neumont.Tools.ORM.Views.RelationalView.xml</DocumentationFile>
   </PropertyGroup>
+  <Import Project="$(MSBuildExtensionsPath)\Neumont\VisualStudio\Neumont.Build.VisualStudio.Multitargeting.targets" />
   <ItemGroup>
-    <Reference Include="Microsoft.VisualStudio.Modeling.Sdk, Version=8.2.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a, processorArchitecture=MSIL">
-      <SpecificVersion>False</SpecificVersion>
-    </Reference>
-    <Reference Include="Microsoft.VisualStudio.Modeling.Sdk.Diagrams, Version=8.2.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a, processorArchitecture=MSIL">
-      <SpecificVersion>False</SpecificVersion>
-    </Reference>
-    <Reference Include="Microsoft.VisualStudio.Modeling.Sdk.Diagrams.GraphObject, Version=8.2.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a, processorArchitecture=x86">
-      <SpecificVersion>False</SpecificVersion>
+    <Reference Include="Microsoft.VisualStudio.Modeling.Sdk, Version=$(TargetDslToolsAssemblyVersion), Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a, processorArchitecture=MSIL" />
+    <Reference Include="Microsoft.VisualStudio.Modeling.Sdk.Diagrams, Version=$(TargetDslToolsAssemblyVersion), Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a, processorArchitecture=MSIL" />
+    <Reference Include="Microsoft.VisualStudio.Modeling.Sdk.Diagrams.GraphObject, Version=$(TargetDslToolsAssemblyVersion), Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a, processorArchitecture=x86">
       <Private>False</Private>
     </Reference>
     <Reference Include="Neumont.Tools.ORM, Version=1.0.0.0, Culture=neutral, PublicKeyToken=957d5b7d5e79e25f, processorArchitecture=MSIL">
@@ -79,7 +78,7 @@
   </ItemGroup>
   <ItemGroup>
     <None Include="..\..\ORMPackage.snk">
-      <Link>ORMPackage.snk</Link>
+      <Link>Properties\ORMPackage.snk</Link>
     </None>
     <None Include="GeneratedCode\ConnectionBuilders.tt">
       <Generator>TextTemplatingFileGenerator</Generator>
@@ -202,7 +201,7 @@
     <Service Include="{B4F97281-0DBD-4835-9ED8-7DFB966E87FF}" />
   </ItemGroup>
   <PropertyGroup>
-    <PreBuildEvent>"$(ProjectDir)..\..\VersionGenerator.exe"</PreBuildEvent>
-    <PostBuildEvent>"$(ProjectDir)install.bat" "bin\$(ConfigurationName)"</PostBuildEvent>
+    <PreBuildEvent>"$(TrunkDir)\VersionGenerator.exe"</PreBuildEvent>
+    <PostBuildEvent>"$(MSBuildProjectDirectory)\Install.bat" "$(OutputPath)"</PostBuildEvent>
   </PropertyGroup>
 </Project>

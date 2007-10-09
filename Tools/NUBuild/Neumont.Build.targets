@@ -12,8 +12,14 @@
 -->
 <Project xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
 
+	<!--
+		This .targets file provides various general-purpose tasks and targets.
+		It should be imported after Microsoft.Common.targets is imported.
+		(Note: Microsoft.Common.targets is typically imported indirectly via language-specific .targets files, such as Microsoft.CSharp.targets or Microsoft.VisualBasic.targets.)
+	-->
+
 	<PropertyGroup>
-		 <!-- The name of the assembly that contains the NUBuild Tasks. -->
+		 <!-- The name of the assembly that contains the NUBuild tasks. -->
 		<NUBuildTasksAssemblyName>Neumont.Build, Version=1.0.0.0, Culture=neutral, PublicKeyToken=957d5b7d5e79e25f</NUBuildTasksAssemblyName>
 	</PropertyGroup>
 	
@@ -22,7 +28,6 @@
 	<UsingTask TaskName="CopyWithPreprocessing" AssemblyName="$(NUBuildTasksAssemblyName)"/>
 	<UsingTask TaskName="ResourceMergeTargetResolver" AssemblyName="$(NUBuildTasksAssemblyName)"/>
 	<UsingTask TaskName="ResourceMerger" AssemblyName="$(NUBuildTasksAssemblyName)"/>
-	<UsingTask TaskName="VsSDKLocator" AssemblyName="$(NUBuildTasksAssemblyName)"/>
 	<UsingTask TaskName="RegexCompiler" AssemblyName="$(NUBuildTasksAssemblyName)"/>
 
 
@@ -229,93 +234,6 @@
 		</CreateItem>
 
 	</Target>
-
-
-
-	<!-- Retrieves the location of various Visual Studio SDK directories and tools. -->
-	<PropertyGroup>
-		<LocateVisualStudioSDKDependsOn>
-			$(LocateVisualStudioSDKDependsOn)
-		</LocateVisualStudioSDKDependsOn>
-	</PropertyGroup>
-
-	<Target
-		Name="LocateVisualStudioSDK"
-		DependsOnTargets="$(LocateVisualStudioSDKDependsOn)">
-
-		<VsSDKLocator>
-			<Output TaskParameter="InstallationDirectory" PropertyName="VsSDKInstallationDir"/>
-			<Output TaskParameter="ToolsDirectory" PropertyName="VsSDKToolsDir"/>
-			<Output TaskParameter="IncludesDirectory" PropertyName="VsSDKIncludesDir"/>
-			<Output TaskParameter="VsctPath" PropertyName="VsSDKVsctPath"/>
-		</VsSDKLocator>
-
-	</Target>
-
-
-	<PropertyGroup>
-		<!-- HACK: BuildInParallel is a new property in MSBuild 3.5. If it is present, we can (for now) assume that we want to use the 3.5 version of VSCT. -->
-		<VsctAssemblyVersion Condition="'$(VsctAssemblyVersion)'=='' and '$(BuildInParallel)'!=''">3.5.0.0</VsctAssemblyVersion>
-		<VsctAssemblyVersion Condition="'$(VsctAssemblyVersion)'==''">2.0.0.0</VsctAssemblyVersion>
-	</PropertyGroup>
-
-	<!-- Compiles .vsct files into .cto files. -->
-	<UsingTask TaskName="VSCTCompiler" AssemblyName="VSCT, Version=$(VsctAssemblyVersion), Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a"/>
-	<ItemGroup>
-		<!-- Add the CompileVsct Item name to the AvailableItemName item, so that it shows up in the Build Action drop-down menu in the properties windows in Visual Studio (and the equivalent in other IDEs). -->
-		<AvailableItemName Include="CompileVsct"/>
-	</ItemGroup>
-	
-	<PropertyGroup>
-		<VsctCompileDependsOn>
-			$(VsctCompileDependsOn);
-			LocateVisualStudioSDK
-		</VsctCompileDependsOn>
-		<MergeResourcesDependsOn>
-			$(MergeResourcesDependsOn);
-			VsctCompile
-		</MergeResourcesDependsOn>
-		<ResGenDependsOn>
-			$(ResGenDependsOn);
-			VsctCompile
-		</ResGenDependsOn>
-
-		<VsctIncludesDirs>$(VsctIncludesDirs)</VsctIncludesDirs>
-	</PropertyGroup>
-
-	<Target
-		Name="VsctCompile"
-		DependsOnTargets="$(VsctCompileDependsOn)"
-		Condition="'@(CompileVsct)'!=''">
-
-		<!-- We need to include the $(MSBuildProjectDirectory) in the IntermediateDirectory below because the VSCT compiler changes the current directory while it is running. -->
-		<VSCTCompiler
-			NoLogo="true"
-			MinimalRebuild="true"
-			IntermediateDirectory="$(MSBuildProjectDirectory)\$(IntermediateOutputPath)"
-			AdditionalIncludeDirectories="$(VsctIncludesDirs);$(VsSDKIncludesDir);$(VsSDKIncludesDir)\office10"
-			Definitions="$(DefineConstants)"
-			Source="@(CompileVsct)"
-			OutputFile="%(FileName).cto"
-		/>
-
-		<!-- Add the generated .cto file to FileWrites and MergeResources. -->
-		<!-- NOTE: @(CompileVsct) is expected to already have the MergeTarget and ResourceName metadata values specified. -->
-		<CreateItem Include="@(CompileVsct->'$(IntermediateOutputPath)%(FileName).cto')" Condition="Exists('@(CompileVsct->'$(IntermediateOutputPath)%(FileName).cto')')">
-			<Output TaskParameter="Include" ItemName="FileWrites"/>
-			<Output TaskParameter="Include" ItemName="MergeResource"/>
-		</CreateItem>
-
-		<!-- The VSCT compiler uses these files for tracking its dependencies, so we need to include them in FileWrites. -->
-		<CreateItem Include="$(IntermediateOutputPath)VSCT.read.1.tlog" Condition="Exists('$(IntermediateOutputPath)VSCT.read.1.tlog')">
-			<Output TaskParameter="Include" ItemName="FileWrites"/>
-		</CreateItem>
-		<CreateItem Include="$(IntermediateOutputPath)VSCT.write.1.tlog" Condition="Exists('$(IntermediateOutputPath)VSCT.write.1.tlog')">
-			<Output TaskParameter="Include" ItemName="FileWrites"/>
-		</CreateItem>
-
-	</Target>
-
 
 
 	<!-- RegexCompiler -->

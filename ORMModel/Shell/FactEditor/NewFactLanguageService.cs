@@ -113,6 +113,13 @@ namespace Neumont.Tools.ORM.Shell.FactEditor
 		#endregion
 
 		#region Overriden Methods
+		/// <summary>Returns a list of file extension filters suitable for a Save As dialog box.</summary>
+		/// <returns>If successful, returns a string containing the file extension filters; otherwise, returns an empty string.</returns>
+		public override string GetFormatFilterList()
+		{
+			return string.Empty;
+		}
+
 		/// <summary>
 		/// Instantiates a <see cref="T:Microsoft.VisualStudio.Package.Source"></see> class.
 		/// </summary>
@@ -122,7 +129,6 @@ namespace Neumont.Tools.ORM.Shell.FactEditor
 		/// If successful, returns a <see cref="T:Microsoft.VisualStudio.Package.Source"></see>
 		/// object; otherwise, returns a null value.
 		/// </returns>
-		[CLSCompliant(false)]
 		public override Source CreateSource(IVsTextLines buffer)
 		{
 			NewFactSource source = new NewFactSource(this, buffer, this.GetColorizer(buffer));
@@ -136,7 +142,6 @@ namespace Neumont.Tools.ORM.Shell.FactEditor
 		/// Creates a IVsTextLines and forwards the call to the overloaded GetOrCreateSource method.
 		/// </summary>
 		/// <param name="view">The IVsTextView to get or create a source from.</param>
-		[CLSCompliant(false)]
 		public Source GetOrCreateSource(IVsTextView view)
 		{
 			if (view == null)
@@ -150,12 +155,12 @@ namespace Neumont.Tools.ORM.Shell.FactEditor
 			return this.GetOrCreateSource(ppBuffer);
 		}
 
+#if !VISUALSTUDIO_9_0
 		/// <summary>
 		/// Calls GetSource with the given IVsTextLines.  If the source does not exist
 		/// it is created and returned.
 		/// </summary>
 		/// <param name="lines">The IVsTextLines of the source you want to get or create.</param>
-		[CLSCompliant(false)]
 		public Source GetOrCreateSource(IVsTextLines lines)
 		{
 			if (lines == null)
@@ -174,6 +179,7 @@ namespace Neumont.Tools.ORM.Shell.FactEditor
 				return this.CreateSource(lines);
 			}
 		}
+#endif //!VISUALSTUDIO_9_0
 
 		/// <summary>
 		/// Returns an existing <see cref="T:Microsoft.VisualStudio.Package.Source"></see>
@@ -186,7 +192,6 @@ namespace Neumont.Tools.ORM.Shell.FactEditor
 		/// otherwise, returns a null value (there is no <see cref="T:Microsoft.VisualStudio.Package.Source"></see>
 		/// object in this language service that controls the set of source lines shown in the specified view).
 		/// </returns>
-		[CLSCompliant(false)]
 		new public Source GetSource(IVsTextView view)
 		{
 			IVsTextLines ppBuffer;
@@ -209,7 +214,6 @@ namespace Neumont.Tools.ORM.Shell.FactEditor
 		/// otherwise, returns a null value (there is no <see cref="T:Microsoft.VisualStudio.Package.Source"></see>
 		/// object in this language service that controls that set of source lines).
 		/// </returns>
-		[CLSCompliant(false)]
 		new public Source GetSource(IVsTextLines buffer)
 		{
 			Source source = base.GetSource(buffer);
@@ -237,7 +241,6 @@ namespace Neumont.Tools.ORM.Shell.FactEditor
 		/// If successful, returns <see cref="F:Microsoft.VisualStudio.VSConstants.S_OK"></see>;
 		/// otherwise, returns an error code.
 		/// </returns>
-		[CLSCompliant(false)]
 		public override Int32 GetColorableItem(Int32 index, out IVsColorableItem item)
 		{
 			if (index > (m_ColorableItems.Length - 1))
@@ -275,7 +278,6 @@ namespace Neumont.Tools.ORM.Shell.FactEditor
 		/// If successful, returns a <see cref="T:Microsoft.VisualStudio.Package.LanguagePreferences"></see> object;
 		/// otherwise, returns a null value.
 		/// </returns>
-		[CLSCompliant(false)]
 		public override LanguagePreferences GetLanguagePreferences()
 		{
 			if (m_LanguagePreferences == null)
@@ -308,7 +310,6 @@ namespace Neumont.Tools.ORM.Shell.FactEditor
 		/// If successful, returns an <see cref="T:Microsoft.VisualStudio.Package.IScanner"></see> object;
 		/// otherwise, returns a null value.
 		/// </returns>
-		[CLSCompliant(false)]
 		public override IScanner GetScanner(IVsTextLines buffer)
 		{
 			if (m_FactScanner == null)
@@ -325,7 +326,6 @@ namespace Neumont.Tools.ORM.Shell.FactEditor
 		/// If successful, returns an <see cref="T:Microsoft.VisualStudio.Package.AuthoringScope"></see> object;
 		/// otherwise, returns a null value.
 		/// </returns>
-		[CLSCompliant(false)]
 		public override AuthoringScope ParseSource(ParseRequest req)
 		{
 			//Trace.WriteLine(String.Format("\nParse Request: {0}\n", req.Reason.ToString()));

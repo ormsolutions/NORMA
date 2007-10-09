@@ -14,3 +14,4 @@ using System.Runtime.InteropServices;
 	"without any conditions, unless such conditions are required by law.")]
 [assembly: AssemblyVersion("1.0.0.0")]
 
+[assembly: Dependency("Microsoft.VisualStudio.TextTemplating,", LoadHint.Always)]

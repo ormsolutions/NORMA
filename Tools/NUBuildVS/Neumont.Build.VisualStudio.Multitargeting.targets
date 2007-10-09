@@ -1,0 +1,94 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<!--
+	Neumont Build System
+
+	Copyright © Neumont University. All rights reserved.
+
+	This software is provided 'as-is', without any express or implied warranty. In no event will the authors be held liable for any damages arising from the use of this software.
+	Permission is granted to anyone to use this software for any purpose, including commercial applications, and to alter it and redistribute it freely, subject to the following restrictions:
+	1. The origin of this software must not be misrepresented; you must not claim that you wrote the original software. If you use this software in a product, an acknowledgment in the product documentation would be appreciated but is not required.
+	2. Altered source versions must be plainly marked as such, and must not be misrepresented as being the original software.
+	3. This notice may not be removed or altered from any source distribution.
+-->
+<Project xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+	
+	<!--
+		This .targets file provides common properties used for targeting multiple versions of Microsoft® Visual Studio®.
+		This .targets file should be imported before any of the properties it defines are used, but after $(TargetVisualStudioVersion) and/or $(TargetFrameworkVersion) are defined, if desired.
+	-->
+
+	<PropertyGroup Condition="Exists('$(MSBuildExtensionsPath)\Neumont\VisualStudio\Neumont.Build.VisualStudio.Multitargeting.targets')">
+		 <!-- This forces a rebuild of a project if it references this targets file and this targets file changes. -->
+		<MSBuildAllProjects>$(MSBuildAllProjects);$(MSBuildExtensionsPath)\Neumont\VisualStudio\Neumont.Build.VisualStudio.Multitargeting.targets</MSBuildAllProjects>
+	</PropertyGroup>
+
+
+	<PropertyGroup>
+		<!-- If not specified, set TargetVisualStudioVersion to the default. -->
+		<TargetVisualStudioVersion Condition=" '$(TargetVisualStudioVersion)' == '' ">v8.0</TargetVisualStudioVersion>
+	</PropertyGroup>
+
+	<Choose>
+		<When Condition=" '$(TargetVisualStudioVersion)' == 'v8.0' ">
+			<PropertyGroup>
+				<TargetFrameworkVersion Condition=" '$(TargetFrameworkVersion)' == '' ">v2.0</TargetFrameworkVersion>
+				<TargetVisualStudioAssemblyVersion Condition=" '$(TargetVisualStudioAssemblyVersion)' == '' ">8.0.0.0</TargetVisualStudioAssemblyVersion>
+				<TargetVisualStudioAssemblySuffix Condition=" '$(TargetVisualStudioAssemblySuffix)' == '' "></TargetVisualStudioAssemblySuffix>
+				<TargetVisualStudioFrameworkAssemblyVersion Condition=" '$(TargetVisualStudioFrameworkAssemblyVersion)' == '' ">2.0.0.0</TargetVisualStudioFrameworkAssemblyVersion>
+				<TargetVisualStudioFrameworkAssemblySuffix Condition=" '$(TargetVisualStudioFrameworkAssemblySuffix)' == '' "></TargetVisualStudioFrameworkAssemblySuffix>
+				<TargetDslToolsAssemblyVersion Condition=" '$(TargetDslToolsAssemblyVersion)' == '' ">8.2.0.0</TargetDslToolsAssemblyVersion>
+			</PropertyGroup>
+		</When>
+		<When Condition=" '$(TargetVisualStudioVersion)' == 'v9.0' ">
+			<PropertyGroup>
+				<TargetFrameworkVersion Condition=" '$(TargetFrameworkVersion)' == '' ">v3.5</TargetFrameworkVersion>
+				<TargetVisualStudioAssemblyVersion Condition=" '$(TargetVisualStudioAssemblyVersion)' == '' ">9.0.0.0</TargetVisualStudioAssemblyVersion>
+				<TargetVisualStudioAssemblySuffix Condition=" '$(TargetVisualStudioAssemblySuffix)' == '' ">.9.0</TargetVisualStudioAssemblySuffix>
+				<TargetVisualStudioFrameworkAssemblyVersion Condition=" '$(TargetVisualStudioFrameworkAssemblyVersion)' == '' ">3.5.0.0</TargetVisualStudioFrameworkAssemblyVersion>
+				<TargetVisualStudioFrameworkAssemblySuffix Condition=" '$(TargetVisualStudioFrameworkAssemblySuffix)' == '' ">.9.0</TargetVisualStudioFrameworkAssemblySuffix>
+				<TargetDslToolsAssemblyVersion Condition=" '$(TargetDslToolsAssemblyVersion)' == '' ">9.0.0.0</TargetDslToolsAssemblyVersion>
+			</PropertyGroup>
+		</When>
+		<Otherwise>
+			<PropertyGroup>
+				<TargetVisualStudioAssemblyVersion Condition=" '$(TargetVisualStudioAssemblyVersion)' == '' ">*Undefined*</TargetVisualStudioAssemblyVersion>
+				<TargetVisualStudioFrameworkAssemblyVersion Condition=" '$(TargetVisualStudioFrameworkAssemblyVersion)' == '' ">*Undefined*</TargetVisualStudioFrameworkAssemblyVersion>
+				<TargetDslToolsAssemblyVersion Condition=" '$(TargetDslToolsAssemblyVersion)' == '' ">*Undefined*</TargetDslToolsAssemblyVersion>
+			</PropertyGroup>
+		</Otherwise>
+	</Choose>
+
+	<!-- Set up conditional compilation constants for Visual Studio. -->
+	<Choose>
+		<When Condition=" '$(TargetVisualStudioVersion)' == 'v9.0' ">
+			<PropertyGroup>
+				<DefineConstants>$(DefineConstants);VISUALSTUDIO_9_0</DefineConstants>
+			</PropertyGroup>
+		</When>
+	</Choose>
+
+	<!-- Set up conditional compilation constants for the .NET Framework. -->
+	<Choose>
+		<When Condition=" '$(TargetFrameworkVersion)' == '' or '$(TargetFrameworkVersion)' == 'v2.0' ">
+			<PropertyGroup>
+				<DefineConstants>$(DefineConstants);NET_2_0</DefineConstants>
+			</PropertyGroup>
+		</When>
+		<When Condition=" '$(TargetFrameworkVersion)' == 'v3.0' ">
+			<PropertyGroup>
+				<DefineConstants>$(DefineConstants);NET_2_0;NET_3_0</DefineConstants>
+			</PropertyGroup>
+		</When>
+		<When Condition=" '$(TargetFrameworkVersion)' == 'v3.5' ">
+			<PropertyGroup>
+				<DefineConstants>$(DefineConstants);NET_2_0;NET_3_0;NET_3_5</DefineConstants>
+			</PropertyGroup>
+		</When>
+	</Choose>
+
+
+	<!-- This is here because the MSBuild schema requires at least one Target or Import to be present. -->
+	<Target Name="_Neumont_Build_VisualStudio_Multitargeting_DummyTarget" Condition="'false'"/>
+	
+
+</Project>

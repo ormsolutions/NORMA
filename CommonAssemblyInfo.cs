@@ -10,7 +10,7 @@ using System.Runtime.CompilerServices;
 [assembly: AssemblyCompany("Neumont University")]
 
 #if !NO_SECURITYPERMISSIONATTRIBUTE
-[assembly: SecurityPermission(SecurityAction.RequestMinimum)]
+[assembly: SecurityPermission(SecurityAction.RequestMinimum, Execution = true)]
 #endif //!NO_SECURITYPERMISSIONATTRIBUTE
 
 #if !NO_ASSEMBLYCOPYRIGHTATTRIBUTE

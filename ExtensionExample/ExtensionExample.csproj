@@ -13,6 +13,7 @@
     <SignAssembly>true</SignAssembly>
     <AssemblyOriginatorKeyFile>..\ORMPackage.snk</AssemblyOriginatorKeyFile>
     <RunPostBuildEvent>OnOutputUpdated</RunPostBuildEvent>
+    <TrunkDir Condition=" '$(TrunkDir)' == '' ">$(MSBuildProjectDirectory)\..</TrunkDir>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
     <DebugSymbols>true</DebugSymbols>
@@ -33,17 +34,16 @@
     <NoWarn>1607</NoWarn>
     <UseVSHostingProcess>false</UseVSHostingProcess>
   </PropertyGroup>
+  <Import Project="$(MSBuildExtensionsPath)\Neumont\VisualStudio\Neumont.Build.VisualStudio.Multitargeting.targets" />
   <ItemGroup>
-    <Reference Include="Microsoft.VisualStudio.Modeling.Sdk, Version=8.2.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a, processorArchitecture=MSIL">
+    <Reference Include="Microsoft.VisualStudio.Modeling.Sdk, Version=$(TargetDslToolsAssemblyVersion), Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a, processorArchitecture=MSIL" />
+    <Reference Include="Neumont.Tools.ORM, Version=1.0.0.0, Culture=neutral, PublicKeyToken=957d5b7d5e79e25f, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
-    </Reference>
-    <Reference Include="Microsoft.VisualStudio.Modeling.Sdk.Diagrams, Version=8.2.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a, processorArchitecture=MSIL">
-      <SpecificVersion>False</SpecificVersion>
+      <HintPath>$(ProgramFiles)\Neumont\ORM Architect for Visual Studio\bin\Neumont.Tools.ORM.dll</HintPath>
+      <Private>False</Private>
     </Reference>
     <Reference Include="System" />
-    <Reference Include="System.Data" />
     <Reference Include="System.Drawing" />
-    <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
     <Compile Include="CustomExtensionElement.cs" />
@@ -85,7 +85,7 @@
       <LastGenOutput>ExtensionDomainModel.SerializationExtensions.cs</LastGenOutput>
     </Content>
     <None Include="..\ORMPackage.snk">
-      <Link>ORMPackage.snk</Link>
+      <Link>Properties\ORMPackage.snk</Link>
     </None>
     <EmbeddedResource Include="ExtensionDomainModelTest.xsd">
       <SubType>Designer</SubType>
@@ -109,15 +109,7 @@
       <Generator>TextTemplatingFileGenerator</Generator>
       <LastGenOutput>DomainModelResx.resx</LastGenOutput>
     </None>
-    <None Include="Plix.xml">
-    </None>
-  </ItemGroup>
-  <ItemGroup>
-    <ProjectReference Include="..\ORMModel\ORMModel.csproj">
-      <Project>{888816BF-5497-49F9-8353-C8EF30CB9226}</Project>
-      <Name>ORMModel</Name>
-      <Private>False</Private>
-    </ProjectReference>
+    <None Include="Plix.xml" />
   </ItemGroup>
   <ItemGroup>
     <Service Include="{B4F97281-0DBD-4835-9ED8-7DFB966E87FF}" />
@@ -125,6 +117,7 @@
   <Import Project="$(MSBuildBinPath)\Microsoft.CSharp.targets" />
   <Import Project="$(MSBuildExtensionsPath)\Neumont\Neumont.Build.targets" />
   <PropertyGroup>
-    <PostBuildEvent>"$(ProjectDir)Install.bat" "$(OutputPath)"</PostBuildEvent>
+    <PreBuildEvent>"$(TrunkDir)\VersionGenerator.exe"</PreBuildEvent>
+    <PostBuildEvent>"$(MSBuildProjectDirectory)\Install.bat" "$(OutputPath)"</PostBuildEvent>
   </PropertyGroup>
 </Project>

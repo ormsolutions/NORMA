@@ -11,6 +11,8 @@
     <AssemblyName>Neumont.Tools.Modeling.DisableRuleDirectiveProcessor</AssemblyName>
     <SignAssembly>true</SignAssembly>
     <AssemblyOriginatorKeyFile>..\..\ORMPackage.snk</AssemblyOriginatorKeyFile>
+    <InstallInGac>true</InstallInGac>
+    <GenerateNativeImage>true</GenerateNativeImage>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)' == 'DisableRuleDirectiveProcessor' ">
     <DebugType>full</DebugType>
@@ -24,9 +26,6 @@
     <UseVSHostingProcess>false</UseVSHostingProcess>
   </PropertyGroup>
   <ItemGroup>
-    <Reference Include="Microsoft.VisualStudio.Modeling.Sdk.DslDefinition, Version=8.2.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a, processorArchitecture=MSIL">
-      <SpecificVersion>False</SpecificVersion>
-    </Reference>
     <Reference Include="Microsoft.VisualStudio.TextTemplating, Version=8.2.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
     </Reference>
@@ -40,7 +39,8 @@
     <None Include="Install.bat" />
   </ItemGroup>
   <Import Project="$(MSBuildBinPath)\Microsoft.CSharp.targets" />
+  <Import Project="$(MSBuildExtensionsPath)\Neumont\Neumont.Build.targets" />
   <PropertyGroup>
-    <PostBuildEvent>"$(SolutionDir)Install.bat"</PostBuildEvent>
+    <PostBuildEvent>"$(MSBuildProjectDirectory)\Install.bat"</PostBuildEvent>
   </PropertyGroup>
 </Project>

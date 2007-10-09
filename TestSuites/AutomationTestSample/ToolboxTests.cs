@@ -6,7 +6,6 @@ using EnvDTE80;
 using Microsoft.VisualStudio.Modeling;
 using System.ComponentModel;
 using Neumont.Tools.ORM.ObjectModel;
-using Accessibility;
 using System.Windows.Forms;
 using System.IO;
 using Neumont.Tools.ORM.SDK.TestEngine;

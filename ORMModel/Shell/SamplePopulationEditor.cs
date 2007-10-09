@@ -10,9 +10,13 @@ using System.Text;
 using System.Windows.Forms;
 using Microsoft.VisualStudio.Modeling;
 using Microsoft.VisualStudio.VirtualTreeGrid;
+using Neumont.Tools.Modeling;
 using Neumont.Tools.Modeling.Design;
 using Neumont.Tools.ORM.ObjectModel;
-using Neumont.Tools.Modeling;
+
+#if VISUALSTUDIO_9_0
+using VirtualTreeInPlaceControlFlags = Microsoft.VisualStudio.VirtualTreeGrid.VirtualTreeInPlaceControls;
+#endif //VISUALSTUDIO_9_0
 
 namespace Neumont.Tools.ORM.Shell
 {
