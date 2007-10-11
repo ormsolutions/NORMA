@@ -2018,9 +2018,9 @@
 		</DomainRelationship>
 
 		<DomainRelationship Name="ObjectTypeHasDuplicateNameError" Namespace="Neumont.Tools.ORM.ObjectModel" Id="BC1031EB-8590-4A14-ABBD-F12A18622855">
-			<!--<BaseRelationship>
-				<DomainRelationshipMoniker Name="ORMElementLink"/>
-			</BaseRelationship>-->
+			<BaseRelationship>
+				<DomainRelationshipMoniker Name="ElementAssociatedWithModelError"/>
+			</BaseRelationship>
 			<Source>
 				<DomainRole Name="ObjectType" PropertyName="DuplicateNameError" Multiplicity="ZeroOne" PropagatesDelete="false" IsPropertyGenerator="true" DisplayName="ObjectType" Id="A2252380-7CAC-4D36-8857-2426AE558C08">
 					<RolePlayer>
@@ -2338,9 +2338,9 @@
 		</DomainRelationship>
 
 		<DomainRelationship Name="SetConstraintHasDuplicateNameError" Namespace="Neumont.Tools.ORM.ObjectModel" Id="CB5DF90F-3917-4BD1-9807-A24F6D7C52F9">
-			<!--<BaseRelationship>
-				<DomainRelationshipMoniker Name="ORMElementLink"/>
-			</BaseRelationship>-->
+			<BaseRelationship>
+				<DomainRelationshipMoniker Name="ElementAssociatedWithModelError"/>
+			</BaseRelationship>
 			<Source>
 				<DomainRole Name="SetConstraint" PropertyName="DuplicateNameError" Multiplicity="ZeroOne" PropagatesDelete="false" IsPropertyGenerator="true" DisplayName="SetConstraint" Id="B4623963-690D-4687-A95E-0FC998AA59EC">
 					<RolePlayer>
@@ -2358,9 +2358,9 @@
 		</DomainRelationship>
 
 		<DomainRelationship Name="SetComparisonConstraintHasDuplicateNameError" Namespace="Neumont.Tools.ORM.ObjectModel" Id="CF7AF531-F3D3-42E4-A9F7-D44536DA9E53">
-			<!--<BaseRelationship>
-				<DomainRelationshipMoniker Name="ORMElementLink"/>
-			</BaseRelationship>-->
+			<BaseRelationship>
+				<DomainRelationshipMoniker Name="ElementAssociatedWithModelError"/>
+			</BaseRelationship>
 			<Source>
 				<DomainRole Name="SetComparisonConstraint" PropertyName="DuplicateNameError" Multiplicity="ZeroOne" PropagatesDelete="false" IsPropertyGenerator="true" DisplayName="SetComparisonConstraint" Id="86A9CB44-0050-4E7C-9DF5-692F980F96EC">
 					<RolePlayer>

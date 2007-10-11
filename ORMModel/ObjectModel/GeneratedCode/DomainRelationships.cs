@@ -6026,7 +6026,7 @@ namespace Neumont.Tools.ORM.ObjectModel
 	[global::System.CLSCompliant(true)]
 	[DslModeling::DomainRelationship()]
 	[DslModeling::DomainObjectId("bc1031eb-8590-4a14-abbd-f12a18622855")]
-	public partial class ObjectTypeHasDuplicateNameError : DslModeling::ElementLink
+	public partial class ObjectTypeHasDuplicateNameError : ElementAssociatedWithModelError
 	{
 		#region Constructors, domain class Id
 		
@@ -6131,6 +6131,28 @@ namespace Neumont.Tools.ORM.ObjectModel
 			return new DslModeling::LinkedElementCollection<ObjectType>(element, DuplicateNameErrorDomainRoleId);
 		}
 		#endregion
+		#region AssociatedElement domain role override
+		
+		/// <summary>
+		/// Gets the element playing ObjectType domain role.
+		/// Description for
+		/// Neumont.Tools.ORM.ObjectModel.ElementAssociatedWithModelError.AssociatedElement
+		/// </summary>
+		public override global::Microsoft.VisualStudio.Modeling.ModelElement AssociatedElement
+		{
+			[global::System.Diagnostics.DebuggerStepThrough]
+			get
+			{
+				return this.ObjectType;
+			}
+			[global::System.Diagnostics.DebuggerStepThrough]
+			set
+			{
+				this.ObjectType = (ObjectType)value;
+			}
+		}
+		
+		#endregion
 		#region DuplicateNameError domain role code
 		
 		/// <summary>
@@ -6182,6 +6204,28 @@ namespace Neumont.Tools.ORM.ObjectModel
 		{
 			DslModeling::DomainRoleInfo.SetLinkedElement(element, ObjectTypeDomainRoleId, newDuplicateNameError);
 		}
+		#endregion
+		#region ModelError domain role override
+		
+		/// <summary>
+		/// Gets the element playing DuplicateNameError domain role.
+		/// Description for
+		/// Neumont.Tools.ORM.ObjectModel.ElementAssociatedWithModelError.ModelError
+		/// </summary>
+		public override ModelError ModelError
+		{
+			[global::System.Diagnostics.DebuggerStepThrough]
+			get
+			{
+				return this.DuplicateNameError;
+			}
+			[global::System.Diagnostics.DebuggerStepThrough]
+			set
+			{
+				this.DuplicateNameError = (ObjectTypeDuplicateNameError)value;
+			}
+		}
+		
 		#endregion
 		#region ObjectType link accessor
 		/// <summary>
@@ -10173,7 +10217,7 @@ namespace Neumont.Tools.ORM.ObjectModel
 	[global::System.CLSCompliant(true)]
 	[DslModeling::DomainRelationship()]
 	[DslModeling::DomainObjectId("cb5df90f-3917-4bd1-9807-a24f6d7c52f9")]
-	public partial class SetConstraintHasDuplicateNameError : DslModeling::ElementLink
+	public partial class SetConstraintHasDuplicateNameError : ElementAssociatedWithModelError
 	{
 		#region Constructors, domain class Id
 		
@@ -10278,6 +10322,28 @@ namespace Neumont.Tools.ORM.ObjectModel
 			return new DslModeling::LinkedElementCollection<SetConstraint>(element, DuplicateNameErrorDomainRoleId);
 		}
 		#endregion
+		#region AssociatedElement domain role override
+		
+		/// <summary>
+		/// Gets the element playing SetConstraint domain role.
+		/// Description for
+		/// Neumont.Tools.ORM.ObjectModel.ElementAssociatedWithModelError.AssociatedElement
+		/// </summary>
+		public override global::Microsoft.VisualStudio.Modeling.ModelElement AssociatedElement
+		{
+			[global::System.Diagnostics.DebuggerStepThrough]
+			get
+			{
+				return this.SetConstraint;
+			}
+			[global::System.Diagnostics.DebuggerStepThrough]
+			set
+			{
+				this.SetConstraint = (SetConstraint)value;
+			}
+		}
+		
+		#endregion
 		#region DuplicateNameError domain role code
 		
 		/// <summary>
@@ -10329,6 +10395,28 @@ namespace Neumont.Tools.ORM.ObjectModel
 		{
 			DslModeling::DomainRoleInfo.SetLinkedElement(element, SetConstraintDomainRoleId, newDuplicateNameError);
 		}
+		#endregion
+		#region ModelError domain role override
+		
+		/// <summary>
+		/// Gets the element playing DuplicateNameError domain role.
+		/// Description for
+		/// Neumont.Tools.ORM.ObjectModel.ElementAssociatedWithModelError.ModelError
+		/// </summary>
+		public override ModelError ModelError
+		{
+			[global::System.Diagnostics.DebuggerStepThrough]
+			get
+			{
+				return this.DuplicateNameError;
+			}
+			[global::System.Diagnostics.DebuggerStepThrough]
+			set
+			{
+				this.DuplicateNameError = (ConstraintDuplicateNameError)value;
+			}
+		}
+		
 		#endregion
 		#region SetConstraint link accessor
 		/// <summary>
@@ -10414,7 +10502,7 @@ namespace Neumont.Tools.ORM.ObjectModel
 	[global::System.CLSCompliant(true)]
 	[DslModeling::DomainRelationship()]
 	[DslModeling::DomainObjectId("cf7af531-f3d3-42e4-a9f7-d44536da9e53")]
-	public partial class SetComparisonConstraintHasDuplicateNameError : DslModeling::ElementLink
+	public partial class SetComparisonConstraintHasDuplicateNameError : ElementAssociatedWithModelError
 	{
 		#region Constructors, domain class Id
 		
@@ -10519,6 +10607,28 @@ namespace Neumont.Tools.ORM.ObjectModel
 			return new DslModeling::LinkedElementCollection<SetComparisonConstraint>(element, DuplicateNameErrorDomainRoleId);
 		}
 		#endregion
+		#region AssociatedElement domain role override
+		
+		/// <summary>
+		/// Gets the element playing SetComparisonConstraint domain role.
+		/// Description for
+		/// Neumont.Tools.ORM.ObjectModel.ElementAssociatedWithModelError.AssociatedElement
+		/// </summary>
+		public override global::Microsoft.VisualStudio.Modeling.ModelElement AssociatedElement
+		{
+			[global::System.Diagnostics.DebuggerStepThrough]
+			get
+			{
+				return this.SetComparisonConstraint;
+			}
+			[global::System.Diagnostics.DebuggerStepThrough]
+			set
+			{
+				this.SetComparisonConstraint = (SetComparisonConstraint)value;
+			}
+		}
+		
+		#endregion
 		#region DuplicateNameError domain role code
 		
 		/// <summary>
@@ -10570,6 +10680,28 @@ namespace Neumont.Tools.ORM.ObjectModel
 		{
 			DslModeling::DomainRoleInfo.SetLinkedElement(element, SetComparisonConstraintDomainRoleId, newDuplicateNameError);
 		}
+		#endregion
+		#region ModelError domain role override
+		
+		/// <summary>
+		/// Gets the element playing DuplicateNameError domain role.
+		/// Description for
+		/// Neumont.Tools.ORM.ObjectModel.ElementAssociatedWithModelError.ModelError
+		/// </summary>
+		public override ModelError ModelError
+		{
+			[global::System.Diagnostics.DebuggerStepThrough]
+			get
+			{
+				return this.DuplicateNameError;
+			}
+			[global::System.Diagnostics.DebuggerStepThrough]
+			set
+			{
+				this.DuplicateNameError = (ConstraintDuplicateNameError)value;
+			}
+		}
+		
 		#endregion
 		#region SetComparisonConstraint link accessor
 		/// <summary>
