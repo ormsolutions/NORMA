@@ -19,7 +19,7 @@
 	xmlns:oil="http://schemas.orm.net/OIAL"
 	extension-element-prefixes="exsl"
 	exclude-result-prefixes="odt oil">
-	<xsl:variable name="RequireReadingModification" select="false()"/>
+	<xsl:param name="RequireReadingModification" select="false()"/>
 	<xsl:output method="xml" encoding="utf-8" media-type="text/xml" indent="no"/>
 	<xsl:template match="oil:model">
 		<xsl:variable name="dirtyOrmIdsFragment">

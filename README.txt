@@ -19,7 +19,7 @@ Microsoft Visual Studio 2005 SDK (v3.0 or later)
 Additional components used by other portions of this software include:
 
 Windows Installer XML (WiX) toolset
-	Homepage: http://wix.sourceforge.net
+	Homepage: http://wix.sourceforge.net (use version 3)
 
 Microsoft XML Diff and Patch 1.0
 	Homepage: http://apps.gotdotnet.com/xmltools/xmldiff
