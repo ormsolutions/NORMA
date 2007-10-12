@@ -225,7 +225,7 @@ namespace Neumont.Tools.ORM.Shell
 			int retVal = 0;
 			bool dontSave = false;
 			ORMDesignerSettings settings = ORMDesignerPackage.DesignerSettings;
-			using (Stream convertedStream = settings.ConvertStream(inputStream))
+			using (Stream convertedStream = settings.ConvertStream(inputStream, ServiceProvider))
 			{
 				dontSave = convertedStream != null;
 				Stream stream = dontSave ? convertedStream : inputStream;
@@ -535,7 +535,11 @@ namespace Neumont.Tools.ORM.Shell
 			}
 			finally
 			{
-				base.Dispose(disposing);
+				if (ModelingDocStore != null)
+				{
+					// This crashes if the ModelingDocStore has not been established
+					base.Dispose(disposing);
+				}
 			}
 		}
 		/// <summary>

@@ -22,10 +22,13 @@ using System.IO;
 using System.Text;
 using System.Xml;
 using System.Xml.Xsl;
+using System.Windows.Forms;
+using System.Windows.Forms.Design;
 using Microsoft.VisualStudio.Shell;
 using Microsoft.VisualStudio.Shell.Interop;
 using Microsoft.VisualStudio;
 using Neumont.Tools.ORM.ObjectModel;
+using System.ComponentModel;
 
 namespace Neumont.Tools.ORM.Shell
 {
@@ -33,7 +36,7 @@ namespace Neumont.Tools.ORM.Shell
 	/// A class used to read XmlConverters section of the designer settings file
 	/// and run transforms between registered converter types.
 	/// </summary>
-	public class ORMDesignerSettings
+	public partial class ORMDesignerSettings
 	{
 		#region Schema definition classes
 		#region ORMDesignerSchema class
@@ -53,6 +56,10 @@ namespace Neumont.Tools.ORM.Shell
 			public const string TransformParameterElement = "transformParameter";
 			public const string NameAttribute = "name";
 			public const string ValueAttribute = "value";
+			public const string DynamicTypeAttribute = "dynamicType";
+			public const string DynamicValuesExclusiveAttribute = "dynamicValuesExclusive";
+
+			public const string DynamicValueElement = "dynamicValue";
 
 			public const string ExtensionClassElement = "extensionClass";
 			public const string XslNamespaceAttribute = "xslNamespace";
@@ -119,6 +126,9 @@ namespace Neumont.Tools.ORM.Shell
 			public readonly string TransformParameterElement;
 			public readonly string NameAttribute;
 			public readonly string ValueAttribute;
+			public readonly string DynamicTypeAttribute;
+			public readonly string DynamicValuesExclusiveAttribute;
+			public readonly string DynamicValueElement;
 			public readonly string ExtensionClassElement;
 			public readonly string XslNamespaceAttribute;
 			public readonly string ClassNameAttribute;
@@ -138,6 +148,9 @@ namespace Neumont.Tools.ORM.Shell
 				NameAttribute = Add(ORMDesignerSchema.NameAttribute);
 				ValueAttribute = Add(ORMDesignerSchema.ValueAttribute);
 				ExtensionClassElement = Add(ORMDesignerSchema.ExtensionClassElement);
+				DynamicTypeAttribute = Add(ORMDesignerSchema.DynamicTypeAttribute);
+				DynamicValuesExclusiveAttribute = Add(ORMDesignerSchema.DynamicValuesExclusiveAttribute);
+				DynamicValueElement = Add(ORMDesignerSchema.DynamicValueElement);
 				XslNamespaceAttribute = Add(ORMDesignerSchema.XslNamespaceAttribute);
 				ClassNameAttribute = Add(ORMDesignerSchema.ClassNameAttribute);
 			}
@@ -191,8 +204,9 @@ namespace Neumont.Tools.ORM.Shell
 		/// at its original position.
 		/// </summary>
 		/// <param name="stream">The starting stream</param>
+		/// <param name="serviceProvider">The context service provider</param>
 		/// <returns>A new stream with modified content. The caller is responsible for disposing the new stream.</returns>
-		public Stream ConvertStream(Stream stream)
+		public Stream ConvertStream(Stream stream, IServiceProvider serviceProvider)
 		{
 			EnsureGlobalSettingsLoaded();
 			if (myXmlConverters == null)
@@ -204,7 +218,7 @@ namespace Neumont.Tools.ORM.Shell
 			{
 				XmlReaderSettings readerSettings = new XmlReaderSettings();
 				readerSettings.CloseInput = false;
-				TransformNode node = default(TransformNode);
+				TransformNode node = null;
 				bool haveTransform = false;
 				using (XmlReader reader = XmlReader.Create(stream, readerSettings))
 				{
@@ -221,8 +235,20 @@ namespace Neumont.Tools.ORM.Shell
 								LinkedList<TransformNode> nodes;
 								if (myXmlConverters.TryGetValue(sourceId, out nodes))
 								{
-									// UNDONE: If there is more than one transform, then ask the user
 									node = nodes.First.Value;
+									if (nodes.Count > 1 || node.HasDynamicParameters)
+									{
+										IUIService uiService;
+										if (null != serviceProvider &&
+											null != (uiService = (IUIService)serviceProvider.GetService(typeof(IUIService))))
+										{
+											node = ImportStepOptions.GetTransformOptions(uiService, nodes);
+											if (node == null)
+											{
+												throw new OperationCanceledException();
+											}
+										}
+									}
 									haveTransform = true;
 								}
 							}
@@ -242,7 +268,7 @@ namespace Neumont.Tools.ORM.Shell
 							node.Transform.Transform(reader, node.Arguments, writer);
 						}
 						outputStream.Position = 0;
-						Stream nextStream = ConvertStream(outputStream);
+						Stream nextStream = ConvertStream(outputStream, serviceProvider);
 						if (nextStream != null)
 						{
 							outputStream.Dispose();
@@ -404,8 +430,289 @@ namespace Neumont.Tools.ORM.Shell
 			#endregion // Accessor Functions
 		}
 		#endregion // XmlElementIdentifier Structure
-		#region TransformNode Structure
-		private struct TransformNode
+		#region DynamicParameter class
+		private abstract class DynamicParameter : PropertyDescriptor
+		{
+			#region Public methods
+			/// <summary>
+			/// Create a new <see cref="DynamicParameter"/> and advance the reader to the
+			/// end of the parent transformParameter element.
+			/// </summary>
+			/// <param name="reader">The <see cref="XmlReader"/> with a selection on a transformParameter element</param>
+			/// <param name="names">The nametable to reference</param>
+			/// <param name="name">The parameter name (already read from the reader)</param>
+			/// <param name="defaultValue">The parameter default value (already read from the reader)</param>
+			/// <param name="dynamicType">The type of dynamic parameter (already read from the reader)</param>
+			/// <returns>A new DynamicParameter, or <see langword="null"/> if the value cannot be established.</returns>
+			public static DynamicParameter Create(XmlReader reader, ORMDesignerNameTable names, string name, string defaultValue, string dynamicType)
+			{
+				DynamicParameter retVal = null;
+				string description = reader.GetAttribute(names.DescriptionAttribute);
+				string dynamicValuesExclusiveString = reader.GetAttribute(names.DynamicValuesExclusiveAttribute);
+				bool dynamicValuesExclusive = (dynamicValuesExclusiveString == null) ? true : XmlConvert.ToBoolean(dynamicValuesExclusiveString);
+				switch (dynamicType)
+				{
+					case "string":
+						retVal = new DynamicStringParameter(name, description, dynamicValuesExclusive, defaultValue);
+						break;
+					case "number":
+						retVal = new DynamicNumericParameter(name, description, dynamicValuesExclusive, defaultValue);
+						break;
+					case "boolean":
+						retVal = new DynamicBooleanParameter(name, description, dynamicValuesExclusive, defaultValue);
+						break;
+					default:
+						PassEndElement(reader);
+						break;
+				}
+				if (retVal != null && !reader.IsEmptyElement)
+				{
+					while (reader.Read())
+					{
+						XmlNodeType nodeType = reader.NodeType;
+						if (nodeType == XmlNodeType.Element)
+						{
+							string localName = reader.LocalName;
+							if (TestElementName(reader.LocalName, names.DynamicValueElement))
+							{
+								retVal.AddExclusiveValue(reader.GetAttribute(names.ValueAttribute));
+							}
+							PassEndElement(reader);
+						}
+						else if (nodeType == XmlNodeType.EndElement)
+						{
+							break;
+						}
+					}
+				}
+				return retVal;
+			}
+			#endregion // Public methods
+			#region Member variables
+			private string myName;
+			private string myDescription;
+			private bool myValuesExclusive;
+			private object myDefaultValue;
+			private object myCurrentValue;
+			private IList<object> myValues;
+			#endregion // Member variables
+			#region Constructors
+			protected DynamicParameter(string name, string description, bool valuesExclusive, object defaultValue)
+				: base(name, null)
+			{
+				myName = name;
+				myDefaultValue = defaultValue;
+				myCurrentValue = defaultValue;
+				myDescription = description ?? "";
+				myValuesExclusive = valuesExclusive;
+			}
+			#endregion // Constructors
+			#region Methods
+			private void AddExclusiveValue(string value)
+			{
+				if (value == null)
+				{
+					return;
+				}
+				object typedValue = ParseValue(value);
+				IList<object> values = myValues;
+				if (values == null)
+				{
+					myValues = values = new List<object>();
+				}
+				values.Add(typedValue);
+			}
+			/// <summary>
+			/// Interpret a string value as the given type
+			/// </summary>
+			protected abstract object ParseValue(string value);
+			#endregion // Methods
+			#region Typed classes
+			private abstract class TypedDynamicParameter<TValue> : DynamicParameter
+			{
+				protected TypedDynamicParameter(string name, string description, bool valuesExclusive, TValue defaultValue)
+					: base(name, description, valuesExclusive, defaultValue)
+				{
+				}
+				public override Type PropertyType
+				{
+					get
+					{
+						return typeof(TValue);
+					}
+				}
+			}
+			private sealed class DynamicStringParameter : TypedDynamicParameter<string>
+			{
+				public DynamicStringParameter(string name, string description, bool valuesExclusive, string defaultValue)
+					: base(name, description, valuesExclusive, defaultValue)
+				{
+				}
+				protected override object ParseValue(string value)
+				{
+					return value;
+				}
+			}
+			private sealed class DynamicBooleanParameter : TypedDynamicParameter<bool>
+			{
+				public DynamicBooleanParameter(string name, string description, bool valuesExclusive, string defaultValue)
+					: base(name, description, valuesExclusive, XmlConvert.ToBoolean(defaultValue))
+				{
+				}
+				protected override object ParseValue(string value)
+				{
+					return XmlConvert.ToBoolean(value);
+				}
+			}
+			private sealed class DynamicNumericParameter : TypedDynamicParameter<double>
+			{
+				public DynamicNumericParameter(string name, string description, bool valuesExclusive, string defaultValue)
+					: base(name, description, valuesExclusive, XmlConvert.ToDouble(defaultValue))
+				{
+				}
+				protected override object ParseValue(string value)
+				{
+					return XmlConvert.ToDouble(value);
+				}
+			}
+			#endregion // Typed classes
+			#region PropertyDescriptor Implementation
+			public override bool CanResetValue(object component)
+			{
+				return true;
+			}
+			public override Type ComponentType
+			{
+				get
+				{
+					return typeof(object);
+				}
+			}
+			public override object GetValue(object component)
+			{
+				return myCurrentValue;
+			}
+			public override bool IsReadOnly
+			{
+				get
+				{
+					return false;
+				}
+			}
+			public override void ResetValue(object component)
+			{
+				myCurrentValue = myDefaultValue;
+			}
+			public override void SetValue(object component, object value)
+			{
+				myCurrentValue = value;
+			}
+			public override bool ShouldSerializeValue(object component)
+			{
+				return !myCurrentValue.Equals(myDefaultValue);
+			}
+			public override string Description
+			{
+				get
+				{
+					return myDescription;
+				}
+			}
+			public override TypeConverter Converter
+			{
+				get
+				{
+					if (myValues != null)
+					{
+						return new AddStandardValuesConverter(TypeDescriptor.GetConverter(PropertyType), myValues, myValuesExclusive);
+					}
+					return base.Converter;
+				}
+			}
+			private class AddStandardValuesConverter : TypeConverter
+			{
+				#region Member Variables and Constructor
+				private TypeConverter myInner;
+				private IList<object> myStandardValues;
+				private bool myStandardValuesExclusive;
+				private StandardValuesCollection myValuesCollection;
+				public AddStandardValuesConverter(TypeConverter innerConverter, IList<object> standardValues, bool standardValuesExclusive)
+				{
+					myInner = innerConverter;
+					myStandardValues = standardValues;
+					myStandardValuesExclusive = standardValuesExclusive;
+				}
+				#endregion // Member Variables and Constructor
+				#region Forward all overrides
+				public override bool CanConvertFrom(ITypeDescriptorContext context, Type sourceType)
+				{
+					return myInner.CanConvertFrom(context, sourceType);
+				}
+				public override bool CanConvertTo(ITypeDescriptorContext context, Type destinationType)
+				{
+					return myInner.CanConvertTo(context, destinationType);
+				}
+				public override object ConvertFrom(ITypeDescriptorContext context, System.Globalization.CultureInfo culture, object value)
+				{
+					return myInner.ConvertFrom(context, culture, value);
+				}
+				public override object ConvertTo(ITypeDescriptorContext context, System.Globalization.CultureInfo culture, object value, Type destinationType)
+				{
+					return myInner.ConvertTo(context, culture, value, destinationType);
+				}
+				public override object CreateInstance(ITypeDescriptorContext context, System.Collections.IDictionary propertyValues)
+				{
+					return myInner.CreateInstance(context, propertyValues);
+				}
+				public override bool GetCreateInstanceSupported(ITypeDescriptorContext context)
+				{
+					return myInner.GetCreateInstanceSupported(context);
+				}
+				public override PropertyDescriptorCollection GetProperties(ITypeDescriptorContext context, object value, Attribute[] attributes)
+				{
+					return myInner.GetProperties(context, value, attributes);
+				}
+				public override bool GetPropertiesSupported(ITypeDescriptorContext context)
+				{
+					return myInner.GetPropertiesSupported(context);
+				}
+				public override bool IsValid(ITypeDescriptorContext context, object value)
+				{
+					return myInner.IsValid(context, value);
+				}
+				public override string ToString()
+				{
+					return myInner.ToString();
+				}
+				#endregion // Forward all overrides
+				#region Standard values handling
+				public override StandardValuesCollection GetStandardValues(ITypeDescriptorContext context)
+				{
+					StandardValuesCollection retVal = myValuesCollection;
+					if (retVal == null)
+					{
+						IList<object> values = myStandardValues;
+						object[] valuesArray = new object[values.Count];
+						values.CopyTo(valuesArray, 0);
+						myValuesCollection = retVal = new StandardValuesCollection(valuesArray);
+					}
+					return retVal;
+				}
+				public override bool GetStandardValuesExclusive(ITypeDescriptorContext context)
+				{
+					return myStandardValuesExclusive;
+				}
+				public override bool GetStandardValuesSupported(ITypeDescriptorContext context)
+				{
+					return true;
+				}
+				#endregion // Standard values handling
+			}
+			#endregion // Property Descriptor Implementation
+		}
+		#endregion // DynamicParameter class
+		#region TransformNode Class
+		private class TransformNode
 		{
 			#region Member Variables
 			private string myDescription;
@@ -413,15 +720,17 @@ namespace Neumont.Tools.ORM.Shell
 			private string myTransformFile;
 			private XsltArgumentList myArguments;
 			private XmlElementIdentifier myTargetElement;
+			private IList<DynamicParameter> myDynamicParameters;
 			#endregion // Member Variables
 			#region Constructors
-			public TransformNode(XmlElementIdentifier targetElement, string description, string transformFile, XsltArgumentList arguments)
+			public TransformNode(XmlElementIdentifier targetElement, string description, string transformFile, XsltArgumentList arguments, IList<DynamicParameter> dynamicParameters)
 			{
 				myTargetElement = targetElement;
 				myDescription = description;
 				myTransform = null;
 				myTransformFile = transformFile;
 				myArguments = arguments;
+				myDynamicParameters = dynamicParameters;
 			}
 			#endregion // Constructors
 			#region Accessor Functions
@@ -476,9 +785,119 @@ namespace Neumont.Tools.ORM.Shell
 					return myArguments;
 				}
 			}
+			/// <summary>
+			/// Return true if dynamic parameters are available for this node
+			/// </summary>
+			public bool HasDynamicParameters
+			{
+				get
+				{
+					return myDynamicParameters != null;
+				}
+			}
 			#endregion // Accessor Functions
+			#region Public methods
+			/// <summary>
+			/// Dynamic parameter values may have changed, synchronize the
+			/// current arguments
+			/// </summary>
+			public void SynchronizeArguments()
+			{
+				IList<DynamicParameter> parameters = myDynamicParameters;
+				XsltArgumentList arguments = myArguments;
+				if (parameters != null)
+				{
+					int count = parameters.Count;
+					for (int i = 0; i < count; ++i)
+					{
+						DynamicParameter parameter = parameters[i];
+						string name = parameter.Name;
+						arguments.RemoveParam(name, "");
+						arguments.AddParam(name, "", parameter.GetValue(null));
+					}
+				}
+			}
+			#endregion // Public methods
+			#region TypeDescriptor implementation
+			public ICustomTypeDescriptor CreateDynamicParametersTypeDescriptor()
+			{
+				IList<DynamicParameter> parameters = myDynamicParameters;
+				return (parameters != null && parameters.Count != 0) ? new DynamicParametersTypeDescriptor(this) : null;
+			}
+			private class DynamicParametersTypeDescriptor : ICustomTypeDescriptor
+			{
+				#region Member Variables and Constructors
+				private PropertyDescriptorCollection myProperties;
+				private TransformNode myContextNode;
+				public DynamicParametersTypeDescriptor(TransformNode contextNode)
+				{
+					myContextNode = contextNode;
+					IList<DynamicParameter> parameters = contextNode.myDynamicParameters;
+					int count = parameters.Count;
+					PropertyDescriptor[] descriptors = new PropertyDescriptor[count];
+					for (int i = 0; i < count; ++i)
+					{
+						descriptors[i] = parameters[i];
+					}
+					myProperties = new PropertyDescriptorCollection(descriptors);
+				}
+				#endregion // Member Variables and Constructors
+				#region ICustomTypeDescriptor Implementation
+				AttributeCollection ICustomTypeDescriptor.GetAttributes()
+				{
+					return null;
+				}
+				string ICustomTypeDescriptor.GetClassName()
+				{
+					return "";
+				}
+				string ICustomTypeDescriptor.GetComponentName()
+				{
+					return "";
+				}
+				TypeConverter ICustomTypeDescriptor.GetConverter()
+				{
+					return null;
+				}
+				EventDescriptor ICustomTypeDescriptor.GetDefaultEvent()
+				{
+					return null;
+				}
+				PropertyDescriptor ICustomTypeDescriptor.GetDefaultProperty()
+				{
+					return null;
+				}
+				object ICustomTypeDescriptor.GetEditor(Type editorBaseType)
+				{
+					return null;
+				}
+				EventDescriptorCollection ICustomTypeDescriptor.GetEvents(Attribute[] attributes)
+				{
+					return null;
+				}
+				EventDescriptorCollection ICustomTypeDescriptor.GetEvents()
+				{
+					return null;
+				}
+
+				PropertyDescriptorCollection ICustomTypeDescriptor.GetProperties(Attribute[] attributes)
+				{
+					return myProperties;
+				}
+
+				PropertyDescriptorCollection ICustomTypeDescriptor.GetProperties()
+				{
+					return myProperties;
+				}
+				object ICustomTypeDescriptor.GetPropertyOwner(PropertyDescriptor pd)
+				{
+					return myContextNode;
+				}
+				#endregion // ICustomTypeDescriptor Implementation
+			}
+			#endregion // TypeDescriptor implementation
 		}
-		#endregion // TransformNode Structure
+		#endregion // TransformNode Class
 		#endregion // Helper Classes
 		private void ProcessXmlConverter(XmlReader reader, ORMDesignerNameTable names)
 		{
@@ -494,6 +913,7 @@ namespace Neumont.Tools.ORM.Shell
 			XmlElementIdentifier sourceIdentifier = new XmlElementIdentifier(sourceElement, reader);
 			XmlElementIdentifier targetIdentifier = new XmlElementIdentifier(targetElement, reader);
 			XsltArgumentList arguments = null;
+			IList<DynamicParameter> dynamicParameters = null;
 
 			if (!reader.IsEmptyElement)
 			{
@@ -510,8 +930,27 @@ namespace Neumont.Tools.ORM.Shell
 							{
 								arguments = new XsltArgumentList();
 							}
-							arguments.AddParam(reader.GetAttribute(names.NameAttribute), "", reader.GetAttribute(names.ValueAttribute));
-							PassEndElement(reader);
+							string paramName = reader.GetAttribute(names.NameAttribute);
+							string paramValue = reader.GetAttribute(names.ValueAttribute);
+							arguments.AddParam(paramName, "", paramValue);
+							DynamicParameter dynamicParameter = null;
+							string dynamicType = reader.GetAttribute(names.DynamicTypeAttribute);
+							if (dynamicType != null)
+							{
+								dynamicParameter = DynamicParameter.Create(reader, names, paramName, paramValue, dynamicType);
+								if (dynamicParameter != null)
+								{
+									if (dynamicParameters == null)
+									{
+										dynamicParameters = new List<DynamicParameter>();
+									}
+									dynamicParameters.Add(dynamicParameter);
+								}
+							}
+							else
+							{
+								PassEndElement(reader);
+							}
 						}
 						else if (TestElementName(localName, names.ExtensionClassElement))
 						{
@@ -536,7 +975,7 @@ namespace Neumont.Tools.ORM.Shell
 					}
 				}
 			}
-			TransformNode transformNode = new TransformNode(targetIdentifier, description, Path.Combine(XmlConvertersDirectory, transformFile), arguments);
+			TransformNode transformNode = new TransformNode(targetIdentifier, description, Path.Combine(XmlConvertersDirectory, transformFile), arguments, dynamicParameters);
 			LinkedList<TransformNode> nodes;
 			if (myXmlConverters.TryGetValue(sourceIdentifier, out nodes))
 			{

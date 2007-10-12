@@ -119,7 +119,7 @@ namespace Neumont.Tools.ORM.Shell
 				// At the point this is called, the ProjectItem seems to not have the Document associated with it yet.
 				// In that case, we need to look through the documents to find it. We'll try ActiveDocument first...
 				document = application.ActiveDocument;
-				if (document.ProjectItem != projectItem)
+				if (document != null && document.ProjectItem != projectItem)
 				{
 					document = null;
 					Documents documents = application.Documents;

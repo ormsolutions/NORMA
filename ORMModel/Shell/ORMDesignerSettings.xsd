@@ -66,7 +66,20 @@
 					<xs:documentation>A parameter value to pass to the transform</xs:documentation>
 				</xs:annotation>
 				<xs:complexType>
-					<xs:sequence></xs:sequence>
+					<xs:sequence>
+						<xs:element name="dynamicValue" minOccurs="0" maxOccurs="unbounded">
+							<xs:annotation>
+								<xs:documentation>A predefined value for a dynamic transform parameter. If dynamicValuesExclusive is set (the default), then one of the values must match the value attribute on the parent transformParameter element.</xs:documentation>
+							</xs:annotation>
+							<xs:complexType>
+								<xs:attribute name="value" type="xs:string" use="required">
+									<xs:annotation>
+										<xs:documentation>The predefined value</xs:documentation>
+									</xs:annotation>
+								</xs:attribute>
+							</xs:complexType>
+						</xs:element>
+					</xs:sequence>
 					<xs:attribute name="name" type="xs:string" use="required">
 						<xs:annotation>
 							<xs:documentation>The name of the param in the transform file</xs:documentation>
@@ -74,7 +87,41 @@
 					</xs:attribute>
 					<xs:attribute name="value" type="xs:string" use="required">
 						<xs:annotation>
-							<xs:documentation>The value to pass to the parameter</xs:documentation>
+							<xs:documentation>The value to pass to the parameter. Used as the default value for a dynamic parameter.</xs:documentation>
+						</xs:annotation>
+					</xs:attribute>
+					<xs:attribute name="description" type="xs:string">
+						<xs:annotation>
+							<xs:documentation>The parameter description, displayed to the user for dynamic parameters.</xs:documentation>
+						</xs:annotation>
+					</xs:attribute>
+					<xs:attribute name="dynamicType">
+						<xs:annotation>
+							<xs:documentation>If specified, allow the user to </xs:documentation>
+						</xs:annotation>
+						<xs:simpleType>
+							<xs:restriction base="xs:token">
+								<xs:enumeration value="string">
+									<xs:annotation>
+										<xs:documentation>A string parameter</xs:documentation>
+									</xs:annotation>
+								</xs:enumeration>
+								<xs:enumeration value="number">
+									<xs:annotation>
+										<xs:documentation>A numeric parameter</xs:documentation>
+									</xs:annotation>
+								</xs:enumeration>
+								<xs:enumeration value="boolean">
+									<xs:annotation>
+										<xs:documentation>A boolean parameter</xs:documentation>
+									</xs:annotation>
+								</xs:enumeration>
+							</xs:restriction>
+						</xs:simpleType>
+					</xs:attribute>
+					<xs:attribute name="dynamicValuesExclusive" type="xs:boolean" default="true">
+						<xs:annotation>
+							<xs:documentation>If nested dynamic values are specified, indicates if those are the only values supported.</xs:documentation>
 						</xs:annotation>
 					</xs:attribute>
 				</xs:complexType>

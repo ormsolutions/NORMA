@@ -367,7 +367,6 @@ namespace Neumont.Tools.ORM.DatabaseImport
 		public void WriteXml(XmlWriter writer)
 		{
 			writer.WriteAttributeString("name", _tableName);
-			writer.WriteAttributeString("oilRefName", _tableName);
 
 			IList<DcilColumn> columns = Columns;
 			int columnCount = columns.Count;
@@ -496,7 +495,6 @@ namespace Neumont.Tools.ORM.DatabaseImport
 		public void WriteXml(XmlWriter writer)
 		{
 			writer.WriteAttributeString("name", _name);
-			writer.WriteAttributeString("oilRefName", _name);
 			writer.WriteAttributeString("isNullable", _isNullable.ToString().ToLowerInvariant());
 			writer.WriteAttributeString("isIdentity", _isIdentity.ToString().ToLowerInvariant());
 			XmlSerializer dataTypeSerializer = new XmlSerializer(typeof(DcilDataType));

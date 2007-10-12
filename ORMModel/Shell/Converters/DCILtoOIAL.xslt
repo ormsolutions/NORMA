@@ -17,31 +17,35 @@
 	xmlns:dcl="http://schemas.orm.net/DIL/DCIL"
 	extension-element-prefixes="exsl"
 	exclude-result-prefixes="dcl">
-	<xsl:output method="xml" encoding="utf-8" media-type="text/xml" indent="yes"/>
+	<xsl:output method="xml" encoding="utf-8" media-type="text/xml" indent="no"/>
 	<xsl:template match="dcl:schema">
+		<xsl:variable name="allTables" select="dcl:table"/>
 		<oil:model sourceRef="{@name}" name="{@name}">
 			<oil:informationTypeFormats>
-				<xsl:for-each select="dcl:table/dcl:column">
-					<xsl:if test="not(@name = ../dcl:referenceConstraint/dcl:columnRef/@sourceName)">
-						<xsl:choose>
-							<xsl:when test="dcl:predefinedDataType/@precision">
-								<xsl:call-template name="CreateInformationFormat">
-									<xsl:with-param name="tableName" select="../@name"/>
-									<xsl:with-param name="columnName" select="@name"/>
-									<xsl:with-param name="dataType" select="dcl:predefinedDataType/@name"/>
-									<xsl:with-param name="maxLength" select="dcl:predefinedDataType/@precision"/>
-								</xsl:call-template>
-							</xsl:when>
-							<xsl:otherwise>
-								<xsl:call-template name="CreateInformationFormat">
-									<xsl:with-param name="tableName" select="../@name"/>
-									<xsl:with-param name="columnName" select="@name"/>
-									<xsl:with-param name="dataType" select="dcl:predefinedDataType/@name"/>
-									<xsl:with-param name="maxLength" select="dcl:predefinedDataType/@length"/>
-								</xsl:call-template>
-							</xsl:otherwise>
-						</xsl:choose>
-					</xsl:if>
+				<xsl:for-each select="$allTables">
+					<xsl:variable name="resolvedReferenceConstraintColumnNames" select="dcl:referenceConstraint[@targetTable=$allTables/@name]/dcl:columnRef/@sourceName"/>
+					<xsl:for-each select="dcl:column">
+						<xsl:if test="not(@name=$resolvedReferenceConstraintColumnNames)">
+							<xsl:choose>
+								<xsl:when test="dcl:predefinedDataType/@precision">
+									<xsl:call-template name="CreateInformationFormat">
+										<xsl:with-param name="tableName" select="../@name"/>
+										<xsl:with-param name="columnName" select="@name"/>
+										<xsl:with-param name="dataType" select="dcl:predefinedDataType/@name"/>
+										<xsl:with-param name="maxLength" select="dcl:predefinedDataType/@precision"/>
+									</xsl:call-template>
+								</xsl:when>
+								<xsl:otherwise>
+									<xsl:call-template name="CreateInformationFormat">
+										<xsl:with-param name="tableName" select="../@name"/>
+										<xsl:with-param name="columnName" select="@name"/>
+										<xsl:with-param name="dataType" select="dcl:predefinedDataType/@name"/>
+										<xsl:with-param name="maxLength" select="dcl:predefinedDataType/@length"/>
+									</xsl:call-template>
+								</xsl:otherwise>
+							</xsl:choose>
+						</xsl:if>
+					</xsl:for-each>
 				</xsl:for-each>
 				<xsl:for-each select="dcl:domain">
 					<xsl:choose>
@@ -65,10 +69,11 @@
 				</xsl:for-each>
 			</oil:informationTypeFormats>
 			<xsl:for-each select="dcl:table">
+				<xsl:variable name="resolvedReferenceConstraintColumnNames" select="dcl:referenceConstraint[@targetTable=$allTables/@name]/dcl:columnRef/@sourceName"/>
 				<oil:conceptType name="{@name}" sourceRef="{@name}">
 					<xsl:for-each select="dcl:column">
 						<xsl:choose>
-							<xsl:when test="@name = ../dcl:referenceConstraint/dcl:columnRef/@sourceName">
+							<xsl:when test="@name=$resolvedReferenceConstraintColumnNames">
 								<xsl:call-template name="OutputConceptTypeRef"/>
 							</xsl:when>
 							<xsl:otherwise>
@@ -96,16 +101,34 @@
 		<xsl:variable name="formatName" select="concat(concat($tableName, '_'), $columnName)"/>
 		<xsl:choose>
 			<xsl:when test="$dataType='CHARACTER' or $dataType='CHARACTER VARYING' or $dataType='CHARACTER LARGE OBJECT'">
-				<odt:string name="{$formatName}" maxLength="{$maxLength}" />
+				<odt:string name="{$formatName}">
+					<xsl:if test="$maxLength">
+						<xsl:attribute name="maxLength">
+							<xsl:value-of select="$maxLength"/>
+						</xsl:attribute>
+					</xsl:if>
+				</odt:string>
 			</xsl:when>
 			<xsl:when test="$dataType='BIGINT' or $dataType='INTEGER' or $dataType='SMALLINT' or $dataType='DECIMAL' or $dataType='DOUBLE PRECISION' or $dataType='REAL' or $dataType='NUMERIC'">
 				<odt:decimalNumber name="{$formatName}" fractionDigits="0" />
 			</xsl:when>
 			<xsl:when test="$dataType='BINARY LARGE OBJECT'">
-				<odt:binary maxLength="{$maxLength}" name="{$formatName}"/>
+				<odt:binary name="{$formatName}">
+					<xsl:if test="$maxLength">
+						<xsl:attribute name="maxLength">
+							<xsl:value-of select="$maxLength"/>
+						</xsl:attribute>
+					</xsl:if>
+				</odt:binary>
 			</xsl:when>
 			<xsl:when test="$dataType='FLOAT'">
-				<odt:floatingPointNumber precision="{$maxLength}" name="{$formatName}"/>
+				<odt:floatingPointNumber name="{$formatName}">
+					<xsl:if test="$maxLength">
+						<xsl:attribute name="precision">
+							<xsl:value-of select="$maxLength"/>
+						</xsl:attribute>
+					</xsl:if>
+				</odt:floatingPointNumber>
 			</xsl:when>
 			<xsl:when test="$dataType='BOOLEAN'">
 				<odt:boolean name="{$formatName}" fixed="false"/>
@@ -119,7 +142,7 @@
 		<oil:conceptTypeRef name="{@name}" sourceRoleRef="{@name}" oppositeName="{../@name}" target="{../dcl:referenceConstraint/dcl:columnRef[@sourceName=current()/@name]/../@targetTable}">
 			<xsl:attribute name="mandatory">
 				<xsl:choose>
-					<xsl:when test="@isNullable = 'True' or @isNullable = 'true'">
+					<xsl:when test="@isNullable = 'True' or @isNullable = 'true' or @isNullable = '1'">
 						<xsl:text>false</xsl:text>
 					</xsl:when>
 					<xsl:otherwise>
@@ -149,7 +172,7 @@
 		<oil:informationType name="{@name}" formatRef="{@name}" sourceRef="{@name}">
 			<xsl:attribute name="mandatory">
 				<xsl:choose>
-					<xsl:when test="@isNullable = 'True' or @isNullable = 'true'">
+					<xsl:when test="@isNullable = 'True' or @isNullable = 'true' or @isNullable = '1'">
 						<xsl:text>false</xsl:text>
 					</xsl:when>
 					<xsl:otherwise>

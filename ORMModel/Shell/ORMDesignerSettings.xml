@@ -9,10 +9,14 @@
 		xmlns:unversionedOrmCore="http://schemas.neumont.edu/ORM/ORMCore"
 		xmlns:dcl="http://schemas.orm.net/DIL/DCIL"
 		xmlns:oil="http://schemas.orm.net/OIAL">
-		<ds:xmlConverter description="Import standalone core model file" sourceElement="ormCore2006-04:ORMModel" targetElement="ormRoot2006-04:ORM2" transformFile="CoreModelImport.xslt"/>
+		<ds:xmlConverter description="Import standalone core model file" sourceElement="ormCore2006-04:ORMModel" targetElement="ormRoot2006-04:ORM2" transformFile="CoreModelImport.xslt">
+			<ds:transformParameter name="AutoPopulateShapes" value="true" description="Automatically add all shapes to the default diagram. If this is false, then shapes can be added by dragging from the 'ORM Model Brower' or 'ORM Context Window' windows." dynamicType="boolean"/>
+		</ds:xmlConverter>
 		<ds:xmlConverter description="Import Visio ORM models from Orthogonal Toolbox" sourceElement="VisioModels" targetElement="ormCore2006-01:ORMModel" transformFile="VisioToCoreModelImport.xslt"/>
 		<ds:xmlConverter description="Import OIAL files from DCIL source" sourceElement="dcl:schema" targetElement="oil:model" transformFile="DCILtoOIAL.xslt"/>
-		<ds:xmlConverter description="Import ORM models from OIAL source" sourceElement="oil:model" targetElement="ormCore2006-04:ORMModel" transformFile="OIALtoORM.xslt"/>
+		<ds:xmlConverter description="Import from database schema" sourceElement="oil:model" targetElement="ormCore2006-04:ORMModel" transformFile="OIALtoORM.xslt">
+			<ds:transformParameter name="RequireReadingModification" value="false" description="Add 'Reading requires user modfication' validation errors for all generated readings." dynamicType="boolean"/>
+		</ds:xmlConverter>
 		<ds:xmlConverter description="Upgrade core model to 2006-01 schema" sourceElement="unversionedOrmCore:ORMModel" targetElement="ormCore2006-01:ORMModel" transformFile="CoreUpgradeTo2006-01.xslt"/>
 		<ds:xmlConverter description="Upgrade root model to 2006-01 schema" sourceElement="unversionedOrmRoot:ORM2" targetElement="ormRoot2006-01:ORM2" transformFile="RootUpgradeTo2006-01.xslt"/>
 		<ds:xmlConverter description="Upgrade core model to 2006-04 schema" sourceElement="ormCore2006-01:ORMModel" targetElement="ormCore2006-04:ORMModel" transformFile="CoreUpgradeTo2006-04.xslt"/>

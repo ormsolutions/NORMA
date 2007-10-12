@@ -426,6 +426,12 @@
       <AutoGen>True</AutoGen>
       <DependentUpon>VerbalizationGenerator.xml</DependentUpon>
     </Compile>
+    <Compile Include="Shell\ImportStepOptions.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Shell\ImportStepOptions.Designer.cs">
+      <DependentUpon>ImportStepOptions.cs</DependentUpon>
+    </Compile>
     <Compile Include="Shell\ORMSerializationEngine.cs" />
     <Compile Include="Shell\FactEditor\FactTokenHelper.cs" />
     <Compile Include="Shell\FactEditor\FactTokenInfo.cs" />
@@ -714,6 +720,10 @@
       <AutoGen>True</AutoGen>
       <SubType>Designer</SubType>
       <DesignTime>True</DesignTime>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Shell\ImportStepOptions.resx">
+      <SubType>Designer</SubType>
+      <DependentUpon>ImportStepOptions.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="Shell\PackageResources\VSPackage.resx">
       <LogicalName>VSPackage.resources</LogicalName>

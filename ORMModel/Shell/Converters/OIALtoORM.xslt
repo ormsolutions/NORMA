@@ -19,31 +19,29 @@
 	xmlns:oil="http://schemas.orm.net/OIAL"
 	extension-element-prefixes="exsl"
 	exclude-result-prefixes="odt oil">
-	<xsl:variable name="GenerateUserModificationRequiredErrorsFragment">
-		<xsl:apply-templates select="." mode="GenerateUserModificationRequiredErrors"/>
-	</xsl:variable>
-	<xsl:variable name="GenerateUserModificationRequiredErrors" select="boolean(exsl:node-set($GenerateUserModificationRequiredErrorsFragment)/node())"/>
-	<xsl:template match="*" mode="GenerateUserModificationRequiredErrors">
-		<!-- To override this, import this template and redefine this template with no contents-->
-		<xsl:text>Do It</xsl:text>
-	</xsl:template>
-	<xsl:output method="xml" encoding="utf-8" media-type="text/xml" indent="yes"/>
+	<xsl:variable name="RequireReadingModification" select="false()"/>
+	<xsl:output method="xml" encoding="utf-8" media-type="text/xml" indent="no"/>
 	<xsl:template match="oil:model">
 		<xsl:variable name="dirtyOrmIdsFragment">
+			<xsl:variable name="conceptTypes" select="oil:conceptType"/>
 			<orm:ORMModel id="{@sourceRef}" Name="{@name}">
 				<orm:Objects>
-					<xsl:apply-templates select="oil:conceptType" mode="GenerateObjectTypes"/>
+					<xsl:apply-templates select="$conceptTypes" mode="GenerateObjectTypes">
+						<xsl:with-param name="allConceptTypes" select="$conceptTypes"/>
+						<xsl:with-param name="allFormats" select="oil:informationTypeFormats/child::odt:*"/>
+						<xsl:with-param name="allInformationTypes" select="$conceptTypes/oil:informationType"/>
+					</xsl:apply-templates>
 				</orm:Objects>
 				<orm:Constraints>
-					<xsl:apply-templates mode="GenerateConstraints" select="oil:conceptType/child::oil:*"/>
+					<xsl:apply-templates mode="GenerateConstraints" select="$conceptTypes/child::oil:*"/>
 				</orm:Constraints>
 				<xsl:variable name="allFactTypesFragment">
-					<xsl:apply-templates mode="GenerateFacts" select="oil:conceptType/child::oil:*"/>
+					<xsl:apply-templates mode="GenerateFacts" select="$conceptTypes/child::oil:*"/>
 				</xsl:variable>
 				<orm:Facts>
 					<xsl:copy-of select="$allFactTypesFragment"/>
 				</orm:Facts>
-				<xsl:if test="$GenerateUserModificationRequiredErrors">
+				<xsl:if test="$RequireReadingModification">
 					<orm:ModelErrors>
 						<xsl:for-each select="exsl:node-set($allFactTypesFragment)/child::orm:Fact/orm:ReadingOrders/orm:ReadingOrder/orm:Readings/orm:Reading">
 							<orm:ReadingRequiresUserModificationError Name="" id="{@id}usermodificationerror">
@@ -101,7 +99,7 @@
 		</xsl:for-each>
 	</xsl:template>
 	<xsl:template match="*" mode="CollectIds">
-		<xsl:param name="ParentPath" select="concat('_',position())"/>
+		<xsl:param name="ParentPath" select="concat('id_',position())"/>
 		<xsl:variable name="idValue" select="string(@id)"/>
 		<xsl:variable name="MyPath" select="concat($ParentPath,'_',position())"/>
 		<xsl:if test="$idValue">
@@ -128,7 +126,7 @@
 	<xsl:template match="@ref | @id" mode="ReplaceIds">
 		<xsl:param name="IdMap"/>
 		<xsl:attribute name="{local-name()}">
-			<xsl:value-of select="$IdMap[@oldId=current()]/@newId"/>
+			<xsl:value-of select="$IdMap[@oldId = current()]/@newId"/>
 		</xsl:attribute>
 	</xsl:template>
 	<!-- Match conceptTypeRef or informationType and generate the appropriate FactType -->
@@ -188,7 +186,7 @@
 			<orm:InternalConstraints>
 				<xsl:variable name="CurrentName" select="@name"/>
 				<orm:UniquenessConstraint ref="{$NameDecorator}_IUC"/>
-				<xsl:if test="@mandatory='alethic'">
+				<xsl:if test="@mandatory = 'alethic'">
 					<orm:MandatoryConstraint ref="{$NameDecorator}_MandatoryConstraint" />
 				</xsl:if>
 				<xsl:if test="boolean(oil:singleRoleUniquenessConstraint)">
@@ -201,27 +199,38 @@
 	<!-- Match each conceptType to generate EntityTypes and cascade down to each child informationType -->
 	<xsl:template mode="GenerateObjectTypes" match="*"/>
 	<xsl:template mode="GenerateObjectTypes" match="oil:conceptType">
+		<xsl:param name="allConceptTypes"/>
+		<xsl:param name="allFormats"/>
+		<xsl:param name="allInformationTypes"/>
 		<orm:EntityType id="{@sourceRef}Entity" Name="{@name}" _ReferenceMode="" />
-		<xsl:apply-templates select="oil:informationType" mode="GenerateObjectTypes"/>
+		<xsl:apply-templates select="oil:informationType" mode="GenerateObjectTypes">
+			<xsl:with-param name="allConceptTypes" select="$allConceptTypes"/>
+			<xsl:with-param name="allFormats" select="$allFormats"/>
+			<xsl:with-param name="allInformationTypes" select="$allInformationTypes"/>
+		</xsl:apply-templates>
 	</xsl:template>
 	<xsl:template mode="GenerateObjectTypes" match="oil:informationType">
+		<xsl:param name="allConceptTypes"/>
+		<xsl:param name="allFormats"/>
+		<xsl:param name="allInformationTypes"/>
 		<xsl:variable name="CurrentName" select="concat(../@name, concat('_', @name))"/>
 		<orm:ValueType id="{../@sourceRef}_has_{@sourceRef}ValueType">
 			<xsl:attribute name="Name">
-				<xsl:if test="count(//oil:informationType[@name = current()/@name]) > 1">
+				<xsl:if test="(count($allInformationTypes[@name = current()/@name]) + count($allConceptTypes[@name = current()/@name])) > 1">
 					<xsl:value-of select="../@name"/>
 					<xsl:text>_</xsl:text>
 				</xsl:if>
 				<xsl:value-of select="@name"/>
 			</xsl:attribute>
 			<orm:ConceptualDataType id="ConceptualDataType{../@name}_has_{@name}">
+				<xsl:variable name="targetFormat" select="$allFormats[@name = $CurrentName]"/>
 				<xsl:choose>
-					<xsl:when test="boolean(../../oil:informationTypeFormats/odt:boolean[@name = $CurrentName])">
+					<xsl:when test="$targetFormat[self::odt:boolean]">
 						<xsl:attribute name="ref">
 							<xsl:text>TrueOrFalseLogicalDataType</xsl:text>
 						</xsl:attribute>
 					</xsl:when>
-					<xsl:when test="boolean(../../oil:informationTypeFormats/odt:string[@name = $CurrentName])">
+					<xsl:when test="$targetFormat[self::odt:string]">
 						<xsl:attribute name="ref">
 							<xsl:text>VariableLengthTextDataType</xsl:text>
 						</xsl:attribute>
@@ -234,12 +243,12 @@
 							<xsl:text>0</xsl:text>
 						</xsl:attribute>
 					</xsl:when>
-					<xsl:when test="boolean(../../oil:informationTypeFormats/odt:decimalNumber[@name = $CurrentName]) or boolean(../../oil:informationTypeFormats/odt:floatingPointNumber[@name = $CurrentName])">
+					<xsl:when test="$targetFormat[self::odt:decimalNumber | self::odt:floatingPointNumber]">
 						<xsl:attribute name="ref">
 							<xsl:text>DecimalNumericDataType</xsl:text>
 						</xsl:attribute>
 					</xsl:when>
-					<xsl:when test="boolean(../../oil:informationTypeFormats/odt:binary[@name = $CurrentName])">
+					<xsl:when test="$targetFormat[self::odt:binary]">
 						<xsl:attribute name="ref">
 							<xsl:text>LargeLengthRawDataDataType</xsl:text>
 						</xsl:attribute>

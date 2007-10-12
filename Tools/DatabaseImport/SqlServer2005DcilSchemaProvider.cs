@@ -57,9 +57,14 @@ namespace Neumont.Tools.ORM.DatabaseImport
         public IList<string> GetAvailableSchemaNames()
         {
             IList<string> schemaNames = new List<string>();
+			bool opened = false;
             try
             {
-                _conn.Open();
+				if (_conn.State != ConnectionState.Open)
+				{
+					_conn.Open();
+					opened = true;
+				}
                 using (IDbCommand cmd = _conn.CreateCommand())
                 {
                     cmd.CommandType = CommandType.Text;
@@ -75,7 +80,7 @@ namespace Neumont.Tools.ORM.DatabaseImport
             }
             finally
             {
-                if (_conn.State == ConnectionState.Open)
+                if (opened && _conn.State == ConnectionState.Open)
                 {
                     _conn.Close();
                 }
@@ -98,9 +103,14 @@ namespace Neumont.Tools.ORM.DatabaseImport
 		public IList<DcilTable> LoadTables(string schemaName)
 		{
 			IList<DcilTable> tables = new List<DcilTable>();
+			bool opened = false;
 			try
 			{
-				_conn.Open();
+				if (_conn.State != ConnectionState.Open)
+				{
+					_conn.Open();
+					opened = true;
+				}
 				IDbCommand cmd = _conn.CreateCommand();
 				cmd.CommandType = CommandType.Text;
 				string commandText = "SELECT TABLE_SCHEMA, TABLE_NAME FROM INFORMATION_SCHEMA.TABLES WHERE TABLE_TYPE = 'BASE TABLE' AND TABLE_NAME <> 'sysdiagrams'";
@@ -123,7 +133,7 @@ namespace Neumont.Tools.ORM.DatabaseImport
 			}
 			finally
 			{
-				if (_conn.State == ConnectionState.Open)
+				if (opened && _conn.State == ConnectionState.Open)
 				{
 					_conn.Close();
 				}
@@ -138,9 +148,14 @@ namespace Neumont.Tools.ORM.DatabaseImport
 		public IList<DcilColumn> LoadColumns(string schemaName, string tableName)
 		{
 			IList<DcilColumn> columns = new List<DcilColumn>();
+			bool opened = false;
 			try
 			{
-				_conn.Open();
+				if (_conn.State != ConnectionState.Open)
+				{
+					_conn.Open();
+					opened = true;
+				}
 				IDbCommand cmd = _conn.CreateCommand();
 				cmd.CommandType = CommandType.Text;
 				bool haveSchema = !string.IsNullOrEmpty(schemaName);
@@ -168,7 +183,7 @@ namespace Neumont.Tools.ORM.DatabaseImport
 			}
 			finally
 			{
-				if (_conn.State == ConnectionState.Open)
+				if (opened && _conn.State == ConnectionState.Open)
 				{
 					_conn.Close();
 				}
@@ -233,9 +248,14 @@ namespace Neumont.Tools.ORM.DatabaseImport
 		public IList<DcilUniquenessConstraint> LoadIndexes(string schemaName, string tableName)
 		{
 			IList<DcilUniquenessConstraint> constraints = new List<DcilUniquenessConstraint>();
+			bool opened = false;
 			try
 			{
-				_conn.Open();
+				if (_conn.State != ConnectionState.Open)
+				{
+					_conn.Open();
+					opened = true;
+				}
 				IDbCommand cmd = _conn.CreateCommand();
 				cmd.CommandType = CommandType.Text;
 				string commandText = "SELECT CONSTRAINT_SCHEMA, CONSTRAINT_NAME, TABLE_SCHEMA, TABLE_NAME, CASE WHEN CONSTRAINT_TYPE = 'PRIMARY KEY' THEN 1 ELSE 0 END AS IS_PRIMARY FROM INFORMATION_SCHEMA.TABLE_CONSTRAINTS WHERE (CONSTRAINT_TYPE = 'PRIMARY KEY' OR CONSTRAINT_TYPE = 'UNIQUE')";
@@ -281,7 +301,7 @@ namespace Neumont.Tools.ORM.DatabaseImport
 			}
 			finally
 			{
-				if (_conn.State == ConnectionState.Open)
+				if (opened && _conn.State == ConnectionState.Open)
 				{
 					_conn.Close();
 				}
@@ -296,9 +316,14 @@ namespace Neumont.Tools.ORM.DatabaseImport
 		public IList<DcilReferenceConstraint> LoadForeignKeys(string schemaName, string tableName)
 		{
 			IList<DcilReferenceConstraint> constraints = new List<DcilReferenceConstraint>();
+			bool opened = false;
 			try
 			{
-				_conn.Open();
+				if (_conn.State != ConnectionState.Open)
+				{
+					_conn.Open();
+					opened = true;
+				}
 				IDbCommand cmd = _conn.CreateCommand();
 				cmd.CommandType = CommandType.Text;
 				string commandText = "SELECT CONSTRAINT_SCHEMA, CONSTRAINT_NAME, TABLE_SCHEMA, TABLE_NAME FROM INFORMATION_SCHEMA.TABLE_CONSTRAINTS WHERE CONSTRAINT_TYPE = 'FOREIGN KEY'";
@@ -357,7 +382,7 @@ namespace Neumont.Tools.ORM.DatabaseImport
 			}
 			finally
 			{
-				if (_conn.State == ConnectionState.Open)
+				if (opened && _conn.State == ConnectionState.Open)
 				{
 					_conn.Close();
 				}

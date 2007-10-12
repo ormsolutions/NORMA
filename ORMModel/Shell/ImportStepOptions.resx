@@ -118,101 +118,162 @@
     <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
   <assembly alias="mscorlib" name="mscorlib, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089" />
-  <data name="lblSelect.AutoSize" type="System.Boolean, mscorlib">
+  <data name="TransformsLabel.AutoSize" type="System.Boolean, mscorlib">
     <value>True</value>
   </data>
   <assembly alias="System.Drawing" name="System.Drawing, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a" />
-  <data name="lblSelect.Location" type="System.Drawing.Point, System.Drawing">
-    <value>13, 13</value>
+  <data name="TransformsLabel.Location" type="System.Drawing.Point, System.Drawing">
+    <value>5, 9</value>
   </data>
-  <data name="lblSelect.Size" type="System.Drawing.Size, System.Drawing">
-    <value>82, 13</value>
+  <data name="TransformsLabel.Size" type="System.Drawing.Size, System.Drawing">
+    <value>54, 13</value>
   </data>
-  <data name="lblSelect.TabIndex" type="System.Int32, mscorlib">
+  <data name="TransformsLabel.TabIndex" type="System.Int32, mscorlib">
     <value>0</value>
   </data>
-  <data name="lblSelect.Text" xml:space="preserve">
-    <value>&amp;Select Schema:</value>
+  <data name="TransformsLabel.Text" xml:space="preserve">
+    <value>&amp;Transform</value>
   </data>
-  <data name="&gt;&gt;lblSelect.Name" xml:space="preserve">
-    <value>lblSelect</value>
+  <data name="&gt;&gt;TransformsLabel.Name" xml:space="preserve">
+    <value>TransformsLabel</value>
   </data>
-  <data name="&gt;&gt;lblSelect.Type" xml:space="preserve">
+  <data name="&gt;&gt;TransformsLabel.Type" xml:space="preserve">
     <value>System.Windows.Forms.Label, System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </data>
-  <data name="&gt;&gt;lblSelect.Parent" xml:space="preserve">
+  <data name="&gt;&gt;TransformsLabel.Parent" xml:space="preserve">
     <value>$this</value>
   </data>
-  <data name="&gt;&gt;lblSelect.ZOrder" xml:space="preserve">
-    <value>3</value>
+  <data name="&gt;&gt;TransformsLabel.ZOrder" xml:space="preserve">
+    <value>5</value>
   </data>
-  <data name="cbxSelectSchema.Location" type="System.Drawing.Point, System.Drawing">
-    <value>13, 40</value>
+  <assembly alias="System.Windows.Forms" name="System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089" />
+  <data name="ctlTransformsCombo.Anchor" type="System.Windows.Forms.AnchorStyles, System.Windows.Forms">
+    <value>Top, Left, Right</value>
   </data>
-  <data name="cbxSelectSchema.Size" type="System.Drawing.Size, System.Drawing">
-    <value>267, 21</value>
+  <data name="ctlTransformsCombo.Location" type="System.Drawing.Point, System.Drawing">
+    <value>5, 25</value>
   </data>
-  <data name="cbxSelectSchema.TabIndex" type="System.Int32, mscorlib">
+  <data name="ctlTransformsCombo.Size" type="System.Drawing.Size, System.Drawing">
+    <value>291, 21</value>
+  </data>
+  <data name="ctlTransformsCombo.TabIndex" type="System.Int32, mscorlib">
     <value>1</value>
   </data>
-  <data name="&gt;&gt;cbxSelectSchema.Name" xml:space="preserve">
-    <value>cbxSelectSchema</value>
+  <data name="&gt;&gt;ctlTransformsCombo.Name" xml:space="preserve">
+    <value>ctlTransformsCombo</value>
   </data>
-  <data name="&gt;&gt;cbxSelectSchema.Type" xml:space="preserve">
+  <data name="&gt;&gt;ctlTransformsCombo.Type" xml:space="preserve">
     <value>System.Windows.Forms.ComboBox, System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </data>
-  <data name="&gt;&gt;cbxSelectSchema.Parent" xml:space="preserve">
+  <data name="&gt;&gt;ctlTransformsCombo.Parent" xml:space="preserve">
     <value>$this</value>
   </data>
-  <data name="&gt;&gt;cbxSelectSchema.ZOrder" xml:space="preserve">
+  <data name="&gt;&gt;ctlTransformsCombo.ZOrder" xml:space="preserve">
+    <value>4</value>
+  </data>
+  <data name="PropertiesLabel.AutoSize" type="System.Boolean, mscorlib">
+    <value>True</value>
+  </data>
+  <data name="PropertiesLabel.Location" type="System.Drawing.Point, System.Drawing">
+    <value>5, 61</value>
+  </data>
+  <data name="PropertiesLabel.Size" type="System.Drawing.Size, System.Drawing">
+    <value>54, 13</value>
+  </data>
+  <data name="PropertiesLabel.TabIndex" type="System.Int32, mscorlib">
     <value>2</value>
   </data>
-  <data name="btnSelect.Location" type="System.Drawing.Point, System.Drawing">
-    <value>124, 76</value>
+  <data name="PropertiesLabel.Text" xml:space="preserve">
+    <value>&amp;Properties</value>
   </data>
-  <data name="btnSelect.Size" type="System.Drawing.Size, System.Drawing">
-    <value>75, 23</value>
+  <data name="&gt;&gt;PropertiesLabel.Name" xml:space="preserve">
+    <value>PropertiesLabel</value>
   </data>
-  <data name="btnSelect.TabIndex" type="System.Int32, mscorlib">
-    <value>2</value>
+  <data name="&gt;&gt;PropertiesLabel.Type" xml:space="preserve">
+    <value>System.Windows.Forms.Label, System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </data>
-  <data name="btnSelect.Text" xml:space="preserve">
-    <value>Select</value>
-  </data>
-  <data name="&gt;&gt;btnSelect.Name" xml:space="preserve">
-    <value>btnSelect</value>
-  </data>
-  <data name="&gt;&gt;btnSelect.Type" xml:space="preserve">
-    <value>System.Windows.Forms.Button, System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
-  </data>
-  <data name="&gt;&gt;btnSelect.Parent" xml:space="preserve">
+  <data name="&gt;&gt;PropertiesLabel.Parent" xml:space="preserve">
     <value>$this</value>
   </data>
-  <data name="&gt;&gt;btnSelect.ZOrder" xml:space="preserve">
-    <value>1</value>
-  </data>
-  <data name="btnCancel.Location" type="System.Drawing.Point, System.Drawing">
-    <value>205, 76</value>
-  </data>
-  <data name="btnCancel.Size" type="System.Drawing.Size, System.Drawing">
-    <value>75, 23</value>
-  </data>
-  <data name="btnCancel.TabIndex" type="System.Int32, mscorlib">
+  <data name="&gt;&gt;PropertiesLabel.ZOrder" xml:space="preserve">
     <value>3</value>
   </data>
-  <data name="btnCancel.Text" xml:space="preserve">
-    <value>Cancel</value>
+  <data name="ctlTransformOptionsPropertyGrid.Anchor" type="System.Windows.Forms.AnchorStyles, System.Windows.Forms">
+    <value>Top, Bottom, Left, Right</value>
   </data>
-  <data name="&gt;&gt;btnCancel.Name" xml:space="preserve">
-    <value>btnCancel</value>
+  <data name="ctlTransformOptionsPropertyGrid.Location" type="System.Drawing.Point, System.Drawing">
+    <value>5, 77</value>
   </data>
-  <data name="&gt;&gt;btnCancel.Type" xml:space="preserve">
-    <value>System.Windows.Forms.Button, System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  <data name="ctlTransformOptionsPropertyGrid.Size" type="System.Drawing.Size, System.Drawing">
+    <value>291, 312</value>
   </data>
-  <data name="&gt;&gt;btnCancel.Parent" xml:space="preserve">
+  <data name="ctlTransformOptionsPropertyGrid.TabIndex" type="System.Int32, mscorlib">
+    <value>3</value>
+  </data>
+  <data name="&gt;&gt;ctlTransformOptionsPropertyGrid.Name" xml:space="preserve">
+    <value>ctlTransformOptionsPropertyGrid</value>
+  </data>
+  <data name="&gt;&gt;ctlTransformOptionsPropertyGrid.Type" xml:space="preserve">
+    <value>System.Windows.Forms.PropertyGrid, System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
+  <data name="&gt;&gt;ctlTransformOptionsPropertyGrid.Parent" xml:space="preserve">
     <value>$this</value>
   </data>
-  <data name="&gt;&gt;btnCancel.ZOrder" xml:space="preserve">
+  <data name="&gt;&gt;ctlTransformOptionsPropertyGrid.ZOrder" xml:space="preserve">
+    <value>2</value>
+  </data>
+  <data name="OKButton.Anchor" type="System.Windows.Forms.AnchorStyles, System.Windows.Forms">
+    <value>Bottom, Right</value>
+  </data>
+  <data name="OKButton.Location" type="System.Drawing.Point, System.Drawing">
+    <value>126, 395</value>
+  </data>
+  <data name="OKButton.Size" type="System.Drawing.Size, System.Drawing">
+    <value>75, 23</value>
+  </data>
+  <data name="OKButton.TabIndex" type="System.Int32, mscorlib">
+    <value>4</value>
+  </data>
+  <data name="OKButton.Text" xml:space="preserve">
+    <value>OK</value>
+  </data>
+  <data name="&gt;&gt;OKButton.Name" xml:space="preserve">
+    <value>OKButton</value>
+  </data>
+  <data name="&gt;&gt;OKButton.Type" xml:space="preserve">
+    <value>System.Windows.Forms.Button, System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
+  <data name="&gt;&gt;OKButton.Parent" xml:space="preserve">
+    <value>$this</value>
+  </data>
+  <data name="&gt;&gt;OKButton.ZOrder" xml:space="preserve">
+    <value>1</value>
+  </data>
+  <data name="AbortButton.Anchor" type="System.Windows.Forms.AnchorStyles, System.Windows.Forms">
+    <value>Bottom, Right</value>
+  </data>
+  <data name="AbortButton.Location" type="System.Drawing.Point, System.Drawing">
+    <value>207, 395</value>
+  </data>
+  <data name="AbortButton.Size" type="System.Drawing.Size, System.Drawing">
+    <value>75, 23</value>
+  </data>
+  <data name="AbortButton.TabIndex" type="System.Int32, mscorlib">
+    <value>5</value>
+  </data>
+  <data name="AbortButton.Text" xml:space="preserve">
+    <value>Cancel</value>
+  </data>
+  <data name="&gt;&gt;AbortButton.Name" xml:space="preserve">
+    <value>AbortButton</value>
+  </data>
+  <data name="&gt;&gt;AbortButton.Type" xml:space="preserve">
+    <value>System.Windows.Forms.Button, System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
+  <data name="&gt;&gt;AbortButton.Parent" xml:space="preserve">
+    <value>$this</value>
+  </data>
+  <data name="&gt;&gt;AbortButton.ZOrder" xml:space="preserve">
     <value>0</value>
   </data>
   <metadata name="$this.Localizable" type="System.Boolean, mscorlib, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089">
@@ -222,22 +283,21 @@
     <value>6, 13</value>
   </data>
   <data name="$this.ClientSize" type="System.Drawing.Size, System.Drawing">
-    <value>292, 111</value>
+    <value>299, 424</value>
   </data>
-  <assembly alias="System.Windows.Forms" name="System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089" />
+  <data name="$this.MinimumSize" type="System.Drawing.Size, System.Drawing">
+    <value>249, 238</value>
+  </data>
   <data name="$this.StartPosition" type="System.Windows.Forms.FormStartPosition, System.Windows.Forms">
     <value>CenterParent</value>
   </data>
   <data name="$this.Text" xml:space="preserve">
-    <value>Schema Selector</value>
+    <value>Import Step Options</value>
   </data>
   <data name="&gt;&gt;$this.Name" xml:space="preserve">
-    <value>SchemaSelector</value>
+    <value>ImportStepOptionsBase</value>
   </data>
   <data name="&gt;&gt;$this.Type" xml:space="preserve">
     <value>System.Windows.Forms.Form, System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
-  </data>
-  <data name="SchemaNotSelectedMessage" xml:space="preserve">
-    <value>You must select a schema to import an ORM file from a database.</value>
   </data>
 </root>
