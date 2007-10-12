@@ -1,0 +1,1 @@
+See ..\README.txt for information on the WIX version required to build this project.

@@ -9,6 +9,7 @@
 		<ProjectReference Include="RelationalModel\Dil.sln"/>
 		<ProjectReference Include="CustomProperties\CustomProperties.sln"/>
 		<ProjectReference Include="Tools\ORMCustomTool\ORMCustomTool.sln"/>
+		<ProjectReference Include="Tools\DatabaseImport\DatabaseImport.sln"/>
 	</ItemGroup>
 	<Import Project="Default.targets"/>
 </Project>
