@@ -25,6 +25,11 @@
 				<ComponentGroupRef Id="HelpFeatureComponents"/>
 			</Feature>
 
+			<Feature Id="DatabaseImportFeature" Title="!(loc.DatabaseImportFeatureTitle)" Description="!(loc.DatabaseImportFeatureDescription)"
+				Level="1" TypicalDefault="install" InstallDefault="followParent" AllowAdvertise="no">
+				<ComponentGroupRef Id="DatabaseImportFeatureComponents"/>
+			</Feature>
+
 			<Feature Id="GenerationFeature" Title="!(loc.GenerationFeatureTitle)" Description="!(loc.GenerationFeatureDescription)"
 				Level="1" TypicalDefault="install" InstallDefault="followParent" AllowAdvertise="no">
 				<ComponentGroupRef Id="GenerationFeatureComponents"/>

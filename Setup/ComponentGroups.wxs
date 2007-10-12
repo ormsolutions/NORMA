@@ -58,6 +58,18 @@
 			<ComponentRef Id="ORMSchemasLocalCatalogComponent"/>
 			<ComponentRef Id="ORMTransformsComponent"/>
 		</ComponentGroup>
+		<ComponentGroup Id="DatabaseImportFeatureComponents">
+			<ComponentRef Id="NORMADBImportComponent"/>
+			<ComponentRef Id="NORMADBImportGACComponent"/>
+			<ComponentRef Id="NORMADBImportProjectItemsGeneralComponent"/>
+			<ComponentRef Id="NORMADBImportProjectItemsVBasicComponent"/>
+			<ComponentRef Id="NORMADBImportProjectItemsVCSharpComponent"/>
+			<ComponentRef Id="NORMADBImportProjectItemsVJSharpComponent"/>
+			<ComponentRef Id="NORMADBImportProjectItemsVCPlusPlusComponent"/>
+			<ComponentRef Id="NORMADBImportProjectItemsVWebDevVBasicComponent"/>
+			<ComponentRef Id="NORMADBImportProjectItemsVWebDevCSharpComponent"/>
+			<ComponentRef Id="NORMADBImportProjectItemsVWebDevJSharpComponent"/>
+		</ComponentGroup>
 		<ComponentGroup Id="HelpFeatureComponents">
 			<ComponentRef Id="NORMAVSHelpComponent"/>
 		</ComponentGroup>

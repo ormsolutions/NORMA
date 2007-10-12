@@ -21,6 +21,8 @@
 	<String Id="MainFeatureDescription">Neumont ORM Architect for Visual Studio. Includes the Visual Studio Package.</String>
 	<String Id="HelpFeatureTitle">Help</String>
 	<String Id="HelpFeatureDescription">Help</String>
+	<String Id="DatabaseImportFeatureTitle">DatabaseImport</String>
+	<String Id="DatabaseImportFeatureDescription">DatabaseImport</String>
 	<String Id="GenerationFeatureTitle">Generation</String>
 	<String Id="GenerationFeatureDescription">Generation</String>
 	<String Id="ClassModelGenerationFeatureTitle">ClassGeneration</String>
