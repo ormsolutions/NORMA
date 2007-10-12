@@ -12,7 +12,7 @@
 
 	You must not remove this notice, or any other, from this software.
 -->
-<WixLocalization xmlns="http://schemas.microsoft.com/wix/2003/11/localization">
+<WixLocalization xmlns="http://schemas.microsoft.com/wix/2006/localization" Culture="en-US">
 	<String Id="Manufacturer">Neumont University</String>
 	<String Id="ProductName">Neumont ORM Architect for Visual Studio</String>
 	<String Id="PackageCommentsPrefix">This installer database contains the logic and data required to install&#x20;</String>

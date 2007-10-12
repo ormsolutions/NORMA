@@ -12,35 +12,35 @@
 
 	You must not remove this notice, or any other, from this software.
 -->
-<Wix xmlns="http://schemas.microsoft.com/wix/2003/01/wi">
+<Wix xmlns="http://schemas.microsoft.com/wix/2006/wi">
 	<?include Config.wxi?>
 	<Fragment>
 		
-		<Feature Id="MainFeature" Title="$(loc.ProductName)" Description="$(loc.MainFeatureDescription)"
+		<Feature Id="MainFeature" Title="!(loc.ProductName)" Description="!(loc.MainFeatureDescription)"
 			Level="1" Display="expand" TypicalDefault="install" InstallDefault="local" Absent="disallow" AllowAdvertise="no">
 			<ComponentGroupRef Id="MainFeatureComponents"/>
 
-			<Feature Id="HelpFeature" Title="$(loc.HelpFeatureTitle)" Description="$(loc.HelpFeatureDescription)"
+			<Feature Id="HelpFeature" Title="!(loc.HelpFeatureTitle)" Description="!(loc.HelpFeatureDescription)"
 				Level="1" TypicalDefault="install" InstallDefault="followParent" AllowAdvertise="no">
 				<ComponentGroupRef Id="HelpFeatureComponents"/>
 			</Feature>
 
-			<Feature Id="GenerationFeature" Title="$(loc.GenerationFeatureTitle)" Description="$(loc.GenerationFeatureDescription)"
+			<Feature Id="GenerationFeature" Title="!(loc.GenerationFeatureTitle)" Description="!(loc.GenerationFeatureDescription)"
 				Level="1" TypicalDefault="install" InstallDefault="followParent" AllowAdvertise="no">
 				<ComponentGroupRef Id="GenerationFeatureComponents"/>
 
-				<Feature Id="ClassModelGenerationFeature" Title="$(loc.ClassModelGenerationFeatureTitle)" Description="$(loc.ClassModelGenerationFeatureDescription)"
+				<Feature Id="ClassModelGenerationFeature" Title="!(loc.ClassModelGenerationFeatureTitle)" Description="!(loc.ClassModelGenerationFeatureDescription)"
 					Level="1" TypicalDefault="install" InstallDefault="followParent" AllowAdvertise="no">
 					<ComponentGroupRef Id="ClassModelGenerationFeatureComponents"/>
 					<!-- TODO: Once we have a PLiX installer, we should add a conditional to this feature so that PLiX must be installed first. -->
 				</Feature>
 
-				<Feature Id="XmlSchemaGenerationFeature" Title="$(loc.XmlSchemaGenerationFeatureTitle)" Description="$(loc.XmlSchemaGenerationFeatureDescription)"
+				<Feature Id="XmlSchemaGenerationFeature" Title="!(loc.XmlSchemaGenerationFeatureTitle)" Description="!(loc.XmlSchemaGenerationFeatureDescription)"
 					Level="1" TypicalDefault="install" InstallDefault="followParent" AllowAdvertise="no">
 					<ComponentGroupRef Id="XmlSchemaGenerationFeatureComponents"/>
 				</Feature>
 
-				<Feature Id="RelationalSchemaGenerationFeature" Title="$(loc.RelationalSchemaGenerationFeatureTitle)" Description="$(loc.RelationalSchemaGenerationFeatureDescription)"
+				<Feature Id="RelationalSchemaGenerationFeature" Title="!(loc.RelationalSchemaGenerationFeatureTitle)" Description="!(loc.RelationalSchemaGenerationFeatureDescription)"
 					Level="1" TypicalDefault="install" InstallDefault="followParent" AllowAdvertise="no">
 					<ComponentGroupRef Id="RelationalSchemaGenerationFeatureComponents"/>
 				</Feature>

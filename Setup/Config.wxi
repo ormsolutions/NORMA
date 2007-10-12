@@ -12,14 +12,22 @@
 
 	You must not remove this notice, or any other, from this software.
 -->
-<Include xmlns="http://schemas.microsoft.com/wix/2003/01/wi">
+<Include xmlns="http://schemas.microsoft.com/wix/2006/wi">
 	<!-- NOTE: All comments and instructions in this file are specifically for NORMA setup, and do not necessarily apply to setup packages in general. -->
 	<!-- The processor architecture of the product. Possible values (without quotes) are '32' for the 32-bit x86 (IA-32) architecture. Support for '64' for the 64-bit x86-64 (x64, AMD64, EM64T) architecture may be added in the future. -->
 	<?define Architecture="32"?>
 	<!-- Possible values (without quotes) are '0' for Release build or '1' for Debug build. -->
-	<?define Debug="1"?>
+	<?ifdef Debug?>
+		<?if $(var.Debug)!=0?>
+			<?define Debug="1"?>
+		<?endif?>
+	<?else?>
+		<?define Debug="0"?>
+	<?endif?>
 	<!-- Possible values (without quotes) are '0' for regular Visual Studio registry root or '1' for Exp ("Experimental") registry root. -->
-	<?define ExperimentalHive="0"?>
+	<?ifndef ExperimentalHive?>
+		<?define ExperimentalHive="0"?>
+	<?endif?>
 	<!-- These are now pulled in via the include. The syntax and meaning remains the same.
 	<!- - MAJOR and MINOR portions of ProductVersion, for use in assembly strong names. - ->
 	<?define MajorMinorVersion="1.0"?>

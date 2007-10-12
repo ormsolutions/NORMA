@@ -1,15 +1,18 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 9.00
 # Visual Studio 2005
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Setup", "Setup.csproj", "{EFDDC549-1646-4451-8AFF-FFFFFFFFFFFF}"
+Project("{930C7802-8A8C-48F9-8165-68863BCCD9DD}") = "Setup", "Setup.wixproj", "{EFDDC549-1646-4451-8AFF-FFFFFFFFFFFF}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
-		Setup|Any CPU = Setup|Any CPU
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(ProjectConfigurationPlatforms) = postSolution
-		{EFDDC549-1646-4451-8AFF-FFFFFFFFFFFF}.Setup|Any CPU.ActiveCfg = Debug|Any CPU
-		{EFDDC549-1646-4451-8AFF-FFFFFFFFFFFF}.Setup|Any CPU.Build.0 = Debug|Any CPU
+		{EFDDC549-1646-4451-8AFF-FFFFFFFFFFFF}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{EFDDC549-1646-4451-8AFF-FFFFFFFFFFFF}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{EFDDC549-1646-4451-8AFF-FFFFFFFFFFFF}.Release|Any CPU.ActiveCfg = Debug|Any CPU
+		{EFDDC549-1646-4451-8AFF-FFFFFFFFFFFF}.Release|Any CPU.Build.0 = Debug|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

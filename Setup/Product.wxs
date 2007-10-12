@@ -12,13 +12,13 @@
 
 	You must not remove this notice, or any other, from this software.
 -->
-<Wix xmlns="http://schemas.microsoft.com/wix/2003/01/wi">
+<Wix xmlns="http://schemas.microsoft.com/wix/2006/wi">
 	<!-- NOTE: All comments and instructions in this file are specifically for NORMA setup, and do not necessarily apply to setup packages in general. -->
 	<?include Config.wxi?>
 	
 	<Product
-		Name="$(loc.ProductName)"
-		Manufacturer="$(loc.Manufacturer)"
+		Name="!(loc.ProductName)"
+		Manufacturer="!(loc.Manufacturer)"
 		Language="$(var.DefaultLCID)"
 		Version="$(var.ProductVersion)"
 		Id="$(var.ProductCode)"
@@ -26,22 +26,22 @@
 
 		<Package
 			Id="$(var.PackageCode)"
-			Description="$(loc.ProductName) - $(var.ReleaseDescription)"
-			Comments="$(loc.PackageCommentsPrefix)$(loc.ProductName)$(loc.PackageCommentsSuffix)"
-			Manufacturer="$(loc.Manufacturer)"
+			Description="!(loc.ProductName) - $(var.ReleaseDescription)"
+			Comments="!(loc.PackageCommentsPrefix)!(loc.ProductName)!(loc.PackageCommentsSuffix)"
+			Manufacturer="!(loc.Manufacturer)"
 			InstallerVersion="300"
 			Compressed="yes"
 			ShortNames="no"
 			InstallPrivileges="elevated"/>
 
 		<Upgrade Id="$(var.UpgradeCode)">
-			<UpgradeVersion Minimum="0.0.0" Maximum="$(var.ProductVersion)" IncludeMinimum="yes" MigrateFeatures="yes"/>
+			<UpgradeVersion Minimum="0.0.0" Maximum="$(var.ProductVersion)" IncludeMinimum="yes" MigrateFeatures="yes" Property="UPGRADEPRODUCTCODES"/>
 		</Upgrade>
 
 		<!-- Our commit custom action DevEnvSetupCustomAction will not be run if rollback is disabled. Therefore, we require that rollback NOT be disabled. -->
-		<Condition Message="$(loc.RollbackMustNotBeDisabled)">NOT RollbackDisabled</Condition>
+		<Condition Message="!(loc.RollbackMustNotBeDisabled)">NOT RollbackDisabled</Condition>
 
-		<Condition Message="$(loc.Windows2000OrHigherRequired)">VersionNT >= 500</Condition>
+		<Condition Message="!(loc.Windows2000OrHigherRequired)">VersionNT >= 500</Condition>
 
 		<Property Id="VSPRODUCTDIR">
 			<RegistrySearch Id="VSProductDirRegistrySearch" Root="HKLM" Key="$(var.VSRegRoot)\Setup\VS" Name="ProductDir" Type="directory" Win64="$(var.Win64)"/>
@@ -54,18 +54,18 @@
 		</Property>
 		<!-- Make sure Visual Studio 2005 is installed. Since VS requires .NET, we don't need to check for it separately. -->
 		<!-- Technically, since DSL Tools requires VS, we don't even need to do this check, but since we have to get the properties anyway, we might as well. It gives the user a more appropriate error message, anyway. -->
-		<Condition Message="$(loc.VisualStudio2005Required)">(VSPRODUCTDIR AND VSTEMPLATEITEMDIR AND VSENVIRONMENTPATH) OR Installed</Condition>
+		<Condition Message="!(loc.VisualStudio2005Required)">(VSPRODUCTDIR AND VSTEMPLATEITEMDIR AND VSENVIRONMENTPATH) OR Installed</Condition>
 		
 		<Property Id="DSLTOOLSREDISTINSTALL">
 			<RegistrySearch Id="DSLToolsRedistInstallRegistrySearch" Root="HKLM" Key="$(var.DSLRegRoot)" Name="RedistInstall" Type="raw" Win64="$(var.Win64)"/>
 		</Property>
 		<!-- Make sure the DSL Tools redistributable or SDK is installed. -->
-		<Condition Message="$(loc.DSLToolsRequired)">DSLTOOLSREDISTINSTALL OR Installed</Condition>
+		<Condition Message="!(loc.DSLToolsRequired)">DSLTOOLSREDISTINSTALL OR Installed</Condition>
 
 		<Property Id="PLIXSCHEMAVERSION">
 			<RegistrySearch Id="PLiXSchemaVersionRegistrySearch" Root="HKLM" Key="$(var.PLiXRegRoot)" Name="SchemaVersion" Type="raw" Win64="$(var.Win64)"/>
 		</Property>
-		<Condition Message="$(loc.PLiXRequired)">(PLIXSCHEMAVERSION >= $(var.PLiXMinimumSchemaVersion)) OR Installed</Condition>
+		<Condition Message="!(loc.PLiXRequired)">(PLIXSCHEMAVERSION >= $(var.PLiXMinimumSchemaVersion)) OR Installed</Condition>
 		
 		<!-- Get the package GUIDs for the various VS packages. -->
 		<Property Id="VCSHARPPACKAGEGUID">
@@ -89,19 +89,19 @@
 		
 		<!-- Setup Add/Remove Programs functionality. -->
 		<Property Id="ARPNOMODIFY" Value="1"/>
-		<Property Id="ARPCONTACT">$(loc.Manufacturer)</Property>
+		<Property Id="ARPCONTACT">!(loc.Manufacturer)</Property>
 		<Property Id="ARPPRODUCTICON">AboutBox.ico</Property>
 		<Property Id="ARPURLINFOABOUT">$(var.NeumontWebsiteUrl)</Property>
 		<Property Id="ARPURLUPDATEINFO">$(var.NORMAWebsiteUrl)</Property>
 		
-		<Icon Id="AboutBox.ico" src="..\ORMModel\Resources\AboutBox.ico"/>
+		<Icon Id="AboutBox.ico" SourceFile="..\ORMModel\Resources\AboutBox.ico"/>
 		
 		<Media Id="1" Cabinet="NORMA_VS.cab" EmbedCab="yes" CompressionLevel="high"/>
 
 		<FeatureRef Id="MainFeature"/>
 		<DirectoryRef Id="TARGETDIR"/>
 
-		<Property Id="ADMINORADVERTISED">$(loc.AdminOrAdvertised)</Property>
+		<Property Id="ADMINORADVERTISED">!(loc.AdminOrAdvertised)</Property>
 		<CustomAction Id="AdminOrAdvertisedCustomAction" Return="check" Error="[ADMINORADVERTISED]"/>
 		<AdminExecuteSequence>
 			<Custom Before="CostInitialize" Action="AdminOrAdvertisedCustomAction"/>

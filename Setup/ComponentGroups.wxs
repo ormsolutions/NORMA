@@ -12,14 +12,13 @@
 
 	You must not remove this notice, or any other, from this software.
 -->
-<Wix xmlns="http://schemas.microsoft.com/wix/2003/01/wi">
+<Wix xmlns="http://schemas.microsoft.com/wix/2006/wi">
 	<?include Config.wxi?>
 	<Fragment>
 		<ComponentGroup Id="MainFeatureComponents">
 			<ComponentRef Id="LicenseFilesComponent"/>
 			<ComponentRef Id="NORMAVSPackageComponent"/>
 			<ComponentRef Id="NORMAVSPackageGACComponent"/>
-			<ComponentRef Id="NORMAVSPackageRemoveUserFontAndColorsComponent"/>
 			<ComponentRef Id="NORMAVSSchemaCatalogComponent"/>
 			<ComponentRef Id="NORMAVSSchemasLocalCatalogComponent"/>
 			<ComponentRef Id="NORMAVSSettingsSchemaComponent"/>

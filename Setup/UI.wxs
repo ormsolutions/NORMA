@@ -12,7 +12,7 @@
 
 	You must not remove this notice, or any other, from this software.
 -->
-<Wix xmlns="http://schemas.microsoft.com/wix/2003/01/wi">
+<Wix xmlns="http://schemas.microsoft.com/wix/2006/wi">
 	<Fragment>
 
 		<CustomAction Id="WixUIInstallModeCustomAction" Property="WixUI_InstallMode" Value="InstallTypical" />
@@ -21,7 +21,7 @@
 		</InstallUISequence>
 		
 		<UI Id="NORMAUI">
-			<ProgressText Action="DevEnvSetupCustomAction">$(loc.ProgressTextDevEnvSetupCustomAction)</ProgressText>
+			<ProgressText Action="DevEnvSetupCustomAction">!(loc.ProgressTextDevEnvSetupCustomAction)</ProgressText>
 			
 			<!--
 				First-time install dialog sequence:

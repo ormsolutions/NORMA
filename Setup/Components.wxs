@@ -12,7 +12,7 @@
 
 	You must not remove this notice, or any other, from this software.
 -->
-<Wix xmlns="http://schemas.microsoft.com/wix/2003/01/wi">
+<Wix xmlns="http://schemas.microsoft.com/wix/2006/wi">
 	<?include Config.wxi?>
 	<Fragment>
 		<Directory Id="TARGETDIR" Name="SourceDir">
@@ -20,37 +20,37 @@
 			<Directory Id="GAC">
 				<!-- Assemblies to be installed in the Global Assembly Cache go here -->
 				<Component Id="NORMAVSPackageGACComponent" Guid="C1621945-A277-4590-$(var.VersionGuidSuffix)" DiskId="1" Win64="$(var.Win64)">
-					<File Id="Neumont.Tools.ORM.dll_GAC" Name="ORM.dll" LongName="Neumont.Tools.ORM.dll" src="..\ORMModel\bin\$(var.BuildConfiguration)\Neumont.Tools.ORM.dll"
+					<File Id="Neumont.Tools.ORM.dll_GAC" ShortName="ORM.dll" Name="Neumont.Tools.ORM.dll" Source="..\ORMModel\bin\$(var.BuildConfiguration)\Neumont.Tools.ORM.dll"
 						DefaultVersion="$(var.ProductVersion)" DefaultLanguage="0" KeyPath="yes" Vital="yes" Assembly=".net" AssemblyManifest="Neumont.Tools.ORM.dll_GAC" ProcessorArchitecture="msil"/>
 				</Component>
 				<Component Id="NORMAVSCustomPropertiesGACComponent" Guid="0772D284-812E-4ECC-$(var.VersionGuidSuffix)" DiskId="1" Win64="$(var.Win64)">
-					<File Id="Neumont.Tools.ORM.CustomProperties.dll_GAC" Name="ORMCstPr.dll" LongName="Neumont.Tools.ORM.CustomProperties.dll" src="..\CustomProperties\bin\$(var.BuildConfiguration)\Neumont.Tools.ORM.CustomProperties.dll"
+					<File Id="Neumont.Tools.ORM.CustomProperties.dll_GAC" ShortName="ORMCstPr.dll" Name="Neumont.Tools.ORM.CustomProperties.dll" Source="..\CustomProperties\bin\$(var.BuildConfiguration)\Neumont.Tools.ORM.CustomProperties.dll"
 						DefaultVersion="$(var.ProductVersion)" DefaultLanguage="0" KeyPath="yes" Assembly=".net" AssemblyManifest="Neumont.Tools.ORM.CustomProperties.dll_GAC" ProcessorArchitecture="msil"/>
 				</Component>
 				<Component Id="NORMAVSORMAbstractionGACComponent" Guid="287179E2-73E9-4685-$(var.VersionGuidSuffix)" DiskId="1" Win64="$(var.Win64)">
-					<File Id="Neumont.Tools.ORMAbstraction.dll_GAC" Name="ORMAbstr.dll" LongName="Neumont.Tools.ORMAbstraction.dll" src="..\Oial\OialModel\bin\$(var.BuildConfiguration)\Neumont.Tools.ORMAbstraction.dll"
+					<File Id="Neumont.Tools.ORMAbstraction.dll_GAC" ShortName="ORMAbstr.dll" Name="Neumont.Tools.ORMAbstraction.dll" Source="..\Oial\OialModel\bin\$(var.BuildConfiguration)\Neumont.Tools.ORMAbstraction.dll"
 						DefaultVersion="$(var.ProductVersion)" DefaultLanguage="0" KeyPath="yes" Assembly=".net" AssemblyManifest="Neumont.Tools.ORMAbstraction.dll_GAC" ProcessorArchitecture="msil"/>
 				</Component>
 				<Component Id="NORMAVSORMToORMAbstractionGACComponent" Guid="83ACCC60-19F4-4BBE-$(var.VersionGuidSuffix)" DiskId="1" Win64="$(var.Win64)">
-					<File Id="Neumont.Tools.ORMToORMAbstractionBridge.dll_GAC" Name="ORMAbsBr.dll" LongName="Neumont.Tools.ORMToORMAbstractionBridge.dll" src="..\Oial\ORMOialBridge\bin\$(var.BuildConfiguration)\Neumont.Tools.ORMToORMAbstractionBridge.dll"
+					<File Id="Neumont.Tools.ORMToORMAbstractionBridge.dll_GAC" ShortName="ORMAbsBr.dll" Name="Neumont.Tools.ORMToORMAbstractionBridge.dll" Source="..\Oial\ORMOialBridge\bin\$(var.BuildConfiguration)\Neumont.Tools.ORMToORMAbstractionBridge.dll"
 						DefaultVersion="$(var.ProductVersion)" DefaultLanguage="0" KeyPath="yes" Assembly=".net" AssemblyManifest="Neumont.Tools.ORMToORMAbstractionBridge.dll_GAC" ProcessorArchitecture="msil"/>
 				</Component>
 				<Component Id="NORMAVSRelationalModelsGACComponent" Guid="8877E891-60A3-454C-$(var.VersionGuidSuffix)" DiskId="1" Win64="$(var.Win64)">
-					<File Id="Neumont.Tools.RelationalModels.dll_GAC" Name="RelMods.dll" LongName="Neumont.Tools.RelationalModels.dll" src="..\RelationalModel\DcilModel\bin\$(var.BuildConfiguration)\Neumont.Tools.RelationalModels.dll"
+					<File Id="Neumont.Tools.RelationalModels.dll_GAC" ShortName="RelMods.dll" Name="Neumont.Tools.RelationalModels.dll" Source="..\RelationalModel\DcilModel\bin\$(var.BuildConfiguration)\Neumont.Tools.RelationalModels.dll"
 						DefaultVersion="$(var.ProductVersion)" DefaultLanguage="0" KeyPath="yes" Assembly=".net" AssemblyManifest="Neumont.Tools.RelationalModels.dll_GAC" ProcessorArchitecture="msil"/>
 				</Component>
 				<Component Id="NORMAVSORMAbstractionToConceptualDatabaseGACComponent" Guid="B14BF95A-EC48-49EE-$(var.VersionGuidSuffix)" DiskId="1" Win64="$(var.Win64)">
-					<File Id="Neumont.Tools.ORMAbstractionToConceptualDatabaseBridge.dll_GAC" Name="CDBBr.dll" LongName="Neumont.Tools.ORMAbstractionToConceptualDatabaseBridge.dll" src="..\RelationalModel\OialDcilBridge\bin\$(var.BuildConfiguration)\Neumont.Tools.ORMAbstractionToConceptualDatabaseBridge.dll"
+					<File Id="Neumont.Tools.ORMAbstractionToConceptualDatabaseBridge.dll_GAC" ShortName="CDBBr.dll" Name="Neumont.Tools.ORMAbstractionToConceptualDatabaseBridge.dll" Source="..\RelationalModel\OialDcilBridge\bin\$(var.BuildConfiguration)\Neumont.Tools.ORMAbstractionToConceptualDatabaseBridge.dll"
 						DefaultVersion="$(var.ProductVersion)" DefaultLanguage="0" KeyPath="yes" Assembly=".net" AssemblyManifest="Neumont.Tools.ORMAbstractionToConceptualDatabaseBridge.dll_GAC" ProcessorArchitecture="msil"/>
 				</Component>
 			</Directory>
 
 			<Directory Id="$(var.ProgramFilesFolder)">
 				<Directory Id="$(var.DefaultCompanyDir)" Name="$(var.DefaultCompanyDir)">
-					<Directory Id="$(var.DefaultShortProductDir)" Name="$(var.DefaultShortProductDir)" LongName="$(var.DefaultProductDir)">
+					<Directory Id="$(var.DefaultShortProductDir)" ShortName="$(var.DefaultShortProductDir)" Name="$(var.DefaultProductDir)">
 
 						<Component Id="LicenseFilesComponent" Guid="8D623CBC-D6BC-40DA-$(var.VersionGuidSuffix)" DiskId="1" Win64="$(var.Win64)" KeyPath="yes">
-							<File Id="CPL.txt" Name="CPL.txt" src="..\CPL.txt"
+							<File Id="CPL.txt" Name="CPL.txt" Source="..\CPL.txt"
 								DefaultLanguage="0" CompanionFile="Neumont.Tools.ORM.dll"/>
 						</Component>
 
@@ -58,212 +58,208 @@
 
 							<!-- Executables and PDBs go here -->
 							<Component Id="NORMAVSPackageComponent" Guid="568F224E-9C2F-4A85-$(var.VersionGuidSuffix)" DiskId="1" Win64="$(var.Win64)">
-								<File Id="Neumont.Tools.ORM.dll" Name="ORM.dll" LongName="Neumont.Tools.ORM.dll" src="..\ORMModel\bin\$(var.BuildConfiguration)\Neumont.Tools.ORM.dll"
+								<File Id="Neumont.Tools.ORM.dll" ShortName="ORM.dll" Name="Neumont.Tools.ORM.dll" Source="..\ORMModel\bin\$(var.BuildConfiguration)\Neumont.Tools.ORM.dll"
 									DefaultVersion="$(var.ProductVersion)" DefaultLanguage="0" KeyPath="yes" Vital="yes" Assembly=".net" AssemblyManifest="Neumont.Tools.ORM.dll" ProcessorArchitecture="msil" AssemblyApplication="Neumont.Tools.ORM.dll"/>
-								<File Id="Neumont.Tools.ORM.pdb" Name="ORM.pdb" LongName="Neumont.Tools.ORM.pdb" src="..\ORMModel\bin\$(var.BuildConfiguration)\Neumont.Tools.ORM.pdb"
+								<File Id="Neumont.Tools.ORM.pdb" ShortName="ORM.pdb" Name="Neumont.Tools.ORM.pdb" Source="..\ORMModel\bin\$(var.BuildConfiguration)\Neumont.Tools.ORM.pdb"
 									DefaultLanguage="0" CompanionFile="Neumont.Tools.ORM.dll"/>
-								<File Id="Neumont.Tools.ORM.xml" Name="ORM.xml" LongName="Neumont.Tools.ORM.xml" src="..\ORMModel\bin\$(var.BuildConfiguration)\Neumont.Tools.ORM.xml"
+								<File Id="Neumont.Tools.ORM.xml" ShortName="ORM.xml" Name="Neumont.Tools.ORM.xml" Source="..\ORMModel\bin\$(var.BuildConfiguration)\Neumont.Tools.ORM.xml"
 									DefaultLanguage="0" CompanionFile="Neumont.Tools.ORM.dll"/>
 								<?include NORMAVSPackageRegistry.wxi?>
-								<ProgId Id="ormfile" Description="$(loc.ORMFileDescription)" Icon="[#Neumont.Tools.ORM.dll]" IconIndex="0">
+								<ProgId Id="ormfile" Description="!(loc.ORMFileDescription)" Icon="Neumont.Tools.ORM.dll" IconIndex="0">
 									<Extension Id="orm" ContentType="application/orm+xml">
 										<MIME ContentType="application/orm+xml" Default="yes"/>
-										<Verb Id="Open" Sequence="0" Command="$(loc.ORMFileOpenCommand)" Target="[VSENVIRONMENTPATH]" Argument="$(var.RootSuffixCmd)/dde &quot;%1&quot;"/>
+										<Verb Id="Open" Command="!(loc.ORMFileOpenCommand)" TargetProperty="[VSENVIRONMENTPATH]" Argument="$(var.RootSuffixCmd)/dde"/>
 									</Extension>
 								</ProgId>
-								<Registry Action="createKeyAndRemoveKeyOnUninstall" Root="HKCR" Key="ormfile\shell\open\ddeexec">
-									<Registry Type="string" Value="Open(&quot;%1&quot;)"/>
-									<Registry Key="application" Type="string" Value="VisualStudio.8.0"/>
-									<Registry Key="topic" Type="string" Value="system"/>
-								</Registry>
-								<Registry Action="createKeyAndRemoveKeyOnUninstall" Root="HKLM" Key="SOFTWARE\Microsoft\.NETFramework\v2.0.50727\AssemblyFoldersEx\NORMAVS">
-									<Registry Type="string" Value="[BINDIR]"/>
-								</Registry>
-								<Registry Action="createKeyAndRemoveKeyOnUninstall" Root="HKLM" Key="SOFTWARE\Microsoft\.NETFramework\v2.0.50727\AssemblyFoldersEx\NORMAVSExtensions">
-									<Registry Type="string" Value="[EXTENSIONSDIR]"/>
-								</Registry>
-								<Registry Action="createKeyAndRemoveKeyOnUninstall" Root="HKLM" Key="$(var.NORMARegRoot)">
-									<Registry Type="string" Name="InstallDir" Value="[$(var.DefaultShortProductDir)]"/>
-									<Registry Type="string" Name="ProductVersion" Value="$(var.ProductVersion)"/>
-								</Registry>
-							</Component>
+								<RegistryKey Action="createAndRemoveOnUninstall" Root="HKCR" Key="ormfile\shell\open\ddeexec">
+									<RegistryValue Type="string" Value="Open(&quot;%1&quot;)"/>
+									<RegistryValue Key="application" Type="string" Value="VisualStudio.8.0"/>
+									<RegistryValue Key="topic" Type="string" Value="system"/>
+								</RegistryKey>
+								<RegistryKey Action="createAndRemoveOnUninstall" Root="HKLM" Key="SOFTWARE\Microsoft\.NETFramework\v2.0.50727\AssemblyFoldersEx\NORMAVS">
+									<RegistryValue Type="string" Value="[BINDIR]"/>
+								</RegistryKey>
+								<RegistryKey Action="createAndRemoveOnUninstall" Root="HKLM" Key="SOFTWARE\Microsoft\.NETFramework\v2.0.50727\AssemblyFoldersEx\NORMAVSExtensions">
+									<RegistryValue Type="string" Value="[EXTENSIONSDIR]"/>
+								</RegistryKey>
+								<RegistryKey Action="createAndRemoveOnUninstall" Root="HKLM" Key="$(var.NORMARegRoot)">
+									<RegistryValue Type="string" Name="InstallDir" Value="[$(var.DefaultShortProductDir)]"/>
+									<RegistryValue Type="string" Name="ProductVersion" Value="$(var.ProductVersion)"/>
+								</RegistryKey>
 
-							<Component Id="NORMAVSPackageRemoveUserFontAndColorsComponent" Guid="EC20B922-0564-4988-$(var.VersionGuidSuffix)" DiskId="1" Win64="$(var.Win64)">
-								<Registry Root="HKCU" Key="$(var.VSRegRoot)">
-									<Registry Action="removeKeyOnInstall" Key="FontAndColors\{663DE24F-5A08-4490-80E7-EA332DFFE7F0}"/>
-									<Registry Action="removeKeyOnInstall" Key="FontAndColors\{663DE24F-8E3A-4C0F-A307-53053ED6C59B}"/>
-									<Registry Action="removeKeyOnInstall" Key="FontAndColors\Cache\{663DE24F-5A08-4490-80E7-EA332DFFE7F0}"/>
-									<Registry Action="removeKeyOnInstall" Key="FontAndColors\Cache\{663DE24F-8E3A-4C0F-A307-53053ED6C59B}"/>
-								</Registry>
+								<RemoveRegistryKey Action="removeOnInstall" Root="HKCU" Key="$(var.VSRegRoot)\FontAndColors\{663DE24F-5A08-4490-80E7-EA332DFFE7F0}"/>
+								<RemoveRegistryKey Action="removeOnInstall" Root="HKCU" Key="$(var.VSRegRoot)\FontAndColors\{663DE24F-8E3A-4C0F-A307-53053ED6C59B}"/>
+								<RemoveRegistryKey Action="removeOnInstall" Root="HKCU" Key="$(var.VSRegRoot)\FontAndColors\Cache\{663DE24F-5A08-4490-80E7-EA332DFFE7F0}"/>
+								<RemoveRegistryKey Action="removeOnInstall" Root="HKCU" Key="$(var.VSRegRoot)\FontAndColors\Cache\{663DE24F-8E3A-4C0F-A307-53053ED6C59B}"/>
 							</Component>
 
 							<Component Id="ORMCustomToolComponent" Guid="9B2F677A-1D14-4E9E-$(var.VersionGuidSuffix)" DiskId="1" Win64="$(var.Win64)">
-								<File Id="Neumont.Tools.ORM.ORMCustomTool.dll" Name="ORMCstTl.dll" LongName="Neumont.Tools.ORM.ORMCustomTool.dll" src="..\Tools\ORMCustomTool\bin\Neumont.Tools.ORM.ORMCustomTool.dll"
+								<File Id="Neumont.Tools.ORM.ORMCustomTool.dll" ShortName="ORMCstTl.dll" Name="Neumont.Tools.ORM.ORMCustomTool.dll" Source="..\Tools\ORMCustomTool\bin\Neumont.Tools.ORM.ORMCustomTool.dll"
 									DefaultVersion="$(var.ProductVersion)" DefaultLanguage="0" KeyPath="yes" Assembly=".net" AssemblyManifest="Neumont.Tools.ORM.ORMCustomTool.dll" AssemblyApplication="Neumont.Tools.ORM.ORMCustomTool.dll" ProcessorArchitecture="msil"/>
-								<File Id="Neumont.Tools.ORM.ORMCustomTool.pdb" Name="ORMCstTl.pdb" LongName="Neumont.Tools.ORM.ORMCustomTool.pdb" src="..\Tools\ORMCustomTool\bin\Neumont.Tools.ORM.ORMCustomTool.pdb"
+								<File Id="Neumont.Tools.ORM.ORMCustomTool.pdb" ShortName="ORMCstTl.pdb" Name="Neumont.Tools.ORM.ORMCustomTool.pdb" Source="..\Tools\ORMCustomTool\bin\Neumont.Tools.ORM.ORMCustomTool.pdb"
 									DefaultLanguage="0" CompanionFile="Neumont.Tools.ORM.ORMCustomTool.dll"/>
-								<File Id="Neumont.Tools.ORM.ORMCustomTool.xml" Name="ORMCstTl.xml" LongName="Neumont.Tools.ORM.ORMCustomTool.xml" src="..\Tools\ORMCustomTool\bin\Neumont.Tools.ORM.ORMCustomTool.xml"
+								<File Id="Neumont.Tools.ORM.ORMCustomTool.xml" ShortName="ORMCstTl.xml" Name="Neumont.Tools.ORM.ORMCustomTool.xml" Source="..\Tools\ORMCustomTool\bin\Neumont.Tools.ORM.ORMCustomTool.xml"
 									DefaultLanguage="0" CompanionFile="Neumont.Tools.ORM.ORMCustomTool.dll"/>
-								<Registry Action="createKeyAndRemoveKeyOnUninstall" Root="HKLM" Key="$(var.VSClsidRoot)\{$(var.ORMCustomToolGuid)}">
-									<Registry Type="string" Value="Neumont.Tools.ORM.ORMCustomTool.ORMCustomTool"/>
-									<Registry Action="createKey" Key="InprocServer32">
-										<Registry Type="string" Value="[$(var.SystemFolder)]mscoree.dll"/>
-										<Registry Type="string" Name="ThreadingModel" Value="Both"/>
-										<Registry Type="string" Name="Class" Value="Neumont.Tools.ORM.ORMCustomTool.ORMCustomTool"/>
-										<Registry Type="string" Name="Assembly" Value="$(var.ORMCustomToolAssemblyName)"/>
-										<Registry Type="string" Name="CodeBase" Value="[#Neumont.Tools.ORM.ORMCustomTool.dll]"/>
-									</Registry>
-								</Registry>
-								<Registry Action="createKeyAndRemoveKeyOnUninstall" Root="HKLM" Key="$(var.VSClsidRoot)\{$(var.ORMCustomToolExtenderGuid)}">
-									<Registry Type="string" Value="Neumont.Tools.ORM.ORMCustomTool.ExtenderProvider"/>
-									<Registry Action="createKey" Key="InprocServer32">
-										<Registry Type="string" Value="[$(var.SystemFolder)]mscoree.dll"/>
-										<Registry Type="string" Name="ThreadingModel" Value="Both"/>
-										<Registry Type="string" Name="Class" Value="Neumont.Tools.ORM.ORMCustomTool.ExtenderProvider"/>
-										<Registry Type="string" Name="Assembly" Value="$(var.ORMCustomToolAssemblyName)"/>
-										<Registry Type="string" Name="CodeBase" Value="[#Neumont.Tools.ORM.ORMCustomTool.dll]"/>
-										<Registry Action="createKey" Key="$(var.MajorMinorVersion).0.0">
-											<Registry Type="string" Name="Class" Value="Neumont.Tools.ORM.ORMCustomTool.ExtenderProvider"/>
-											<Registry Type="string" Name="Assembly" Value="$(var.ORMCustomToolAssemblyName)"/>
-											<Registry Type="string" Name="CodeBase" Value="[#Neumont.Tools.ORM.ORMCustomTool.dll]"/>
-										</Registry>
-									</Registry>
-								</Registry>
+								<RegistryKey Action="createAndRemoveOnUninstall" Root="HKLM" Key="$(var.VSClsidRoot)\{$(var.ORMCustomToolGuid)}">
+									<RegistryValue Type="string" Value="Neumont.Tools.ORM.ORMCustomTool.ORMCustomTool"/>
+									<RegistryKey Action="create" Key="InprocServer32">
+										<RegistryValue Type="string" Value="[$(var.SystemFolder)]mscoree.dll"/>
+										<RegistryValue Type="string" Name="ThreadingModel" Value="Both"/>
+										<RegistryValue Type="string" Name="Class" Value="Neumont.Tools.ORM.ORMCustomTool.ORMCustomTool"/>
+										<RegistryValue Type="string" Name="Assembly" Value="$(var.ORMCustomToolAssemblyName)"/>
+										<RegistryValue Type="string" Name="CodeBase" Value="[#Neumont.Tools.ORM.ORMCustomTool.dll]"/>
+									</RegistryKey>
+								</RegistryKey>
+								<RegistryKey Action="createAndRemoveOnUninstall" Root="HKLM" Key="$(var.VSClsidRoot)\{$(var.ORMCustomToolExtenderGuid)}">
+									<RegistryValue Type="string" Value="Neumont.Tools.ORM.ORMCustomTool.ExtenderProvider"/>
+									<RegistryKey Action="create" Key="InprocServer32">
+										<RegistryValue Type="string" Value="[$(var.SystemFolder)]mscoree.dll"/>
+										<RegistryValue Type="string" Name="ThreadingModel" Value="Both"/>
+										<RegistryValue Type="string" Name="Class" Value="Neumont.Tools.ORM.ORMCustomTool.ExtenderProvider"/>
+										<RegistryValue Type="string" Name="Assembly" Value="$(var.ORMCustomToolAssemblyName)"/>
+										<RegistryValue Type="string" Name="CodeBase" Value="[#Neumont.Tools.ORM.ORMCustomTool.dll]"/>
+										<RegistryKey Action="create" Key="$(var.MajorMinorVersion).0.0">
+											<RegistryValue Type="string" Name="Class" Value="Neumont.Tools.ORM.ORMCustomTool.ExtenderProvider"/>
+											<RegistryValue Type="string" Name="Assembly" Value="$(var.ORMCustomToolAssemblyName)"/>
+											<RegistryValue Type="string" Name="CodeBase" Value="[#Neumont.Tools.ORM.ORMCustomTool.dll]"/>
+										</RegistryKey>
+									</RegistryKey>
+								</RegistryKey>
 							</Component>
 							<Component Id="ORMCustomToolVBasicComponent" Guid="0B8DF8D8-7418-47F3-$(var.VersionGuidSuffix)" DiskId="1" Win64="$(var.Win64)">
 								<CreateFolder/>
 								<Condition>VBASICPACKAGEGUID OR Installed</Condition>
-								<Registry Action="createKeyAndRemoveKeyOnUninstall" Root="HKLM" Key="$(var.VSRegRoot)\Generators\[VBASICPACKAGEGUID]\ORMCustomTool">
-									<Registry Type="string" Value="$(loc.ORMCustomToolDescription)"/>
-									<Registry Type="string" Name="CLSID" Value="{$(var.ORMCustomToolGuid)}"/>
-								</Registry>
-								<Registry Action="createKeyAndRemoveKeyOnUninstall" Root="HKLM" Key="$(var.VSRegRoot)\Generators\[VBASICPACKAGEGUID]\.orm">
-									<Registry Type="string" Value="ORMCustomTool"/>
-								</Registry>
-								<Registry Action="createKeyAndRemoveKeyOnUninstall" Root="HKLM" Key="$(var.VSRegRoot)\Extenders\{EA5BD05D-3C72-40A5-95A0-28A2773311CA}\ORMCustomTool">
-									<Registry Type="string" Value="{$(var.ORMCustomToolExtenderGuid)}"/>
-								</Registry>
+								<RegistryKey Action="createAndRemoveOnUninstall" Root="HKLM" Key="$(var.VSRegRoot)\Generators\[VBASICPACKAGEGUID]\ORMCustomTool">
+									<RegistryValue Type="string" Value="!(loc.ORMCustomToolDescription)"/>
+									<RegistryValue Type="string" Name="CLSID" Value="{$(var.ORMCustomToolGuid)}"/>
+								</RegistryKey>
+									<RegistryKey Action="createAndRemoveOnUninstall" Root="HKLM" Key="$(var.VSRegRoot)\Generators\[VBASICPACKAGEGUID]\.orm">
+									<RegistryValue Type="string" Value="ORMCustomTool"/>
+								</RegistryKey>
+									<RegistryKey Action="createAndRemoveOnUninstall" Root="HKLM" Key="$(var.VSRegRoot)\Extenders\{EA5BD05D-3C72-40A5-95A0-28A2773311CA}\ORMCustomTool">
+									<RegistryValue Type="string" Value="{$(var.ORMCustomToolExtenderGuid)}"/>
+								</RegistryKey>
 							</Component>
 							<Component Id="ORMCustomToolVCSharpComponent" Guid="E42EF6E9-2EBD-4AA7-$(var.VersionGuidSuffix)" DiskId="1" Win64="$(var.Win64)">
 								<CreateFolder/>
 								<Condition>VCSHARPPACKAGEGUID OR Installed</Condition>
-								<Registry Action="createKeyAndRemoveKeyOnUninstall" Root="HKLM" Key="$(var.VSRegRoot)\Generators\[VCSHARPPACKAGEGUID]\ORMCustomTool">
-									<Registry Type="string" Value="$(loc.ORMCustomToolDescription)"/>
-									<Registry Type="string" Name="CLSID" Value="{$(var.ORMCustomToolGuid)}"/>
-								</Registry>
-								<Registry Action="createKeyAndRemoveKeyOnUninstall" Root="HKLM" Key="$(var.VSRegRoot)\Generators\[VCSHARPPACKAGEGUID]\.orm">
-									<Registry Type="string" Value="ORMCustomTool"/>
-								</Registry>
-								<Registry Action="createKeyAndRemoveKeyOnUninstall" Root="HKLM" Key="$(var.VSRegRoot)\Extenders\{8D58E6AF-ED4E-48B0-8C7B-C74EF0735451}\ORMCustomTool">
-									<Registry Type="string" Value="{$(var.ORMCustomToolExtenderGuid)}"/>
-								</Registry>
+								<RegistryKey Action="createAndRemoveOnUninstall" Root="HKLM" Key="$(var.VSRegRoot)\Generators\[VCSHARPPACKAGEGUID]\ORMCustomTool">
+									<RegistryValue Type="string" Value="!(loc.ORMCustomToolDescription)"/>
+									<RegistryValue Type="string" Name="CLSID" Value="{$(var.ORMCustomToolGuid)}"/>
+								</RegistryKey>
+									<RegistryKey Action="createAndRemoveOnUninstall" Root="HKLM" Key="$(var.VSRegRoot)\Generators\[VCSHARPPACKAGEGUID]\.orm">
+									<RegistryValue Type="string" Value="ORMCustomTool"/>
+								</RegistryKey>
+									<RegistryKey Action="createAndRemoveOnUninstall" Root="HKLM" Key="$(var.VSRegRoot)\Extenders\{8D58E6AF-ED4E-48B0-8C7B-C74EF0735451}\ORMCustomTool">
+									<RegistryValue Type="string" Value="{$(var.ORMCustomToolExtenderGuid)}"/>
+								</RegistryKey>
 							</Component>
 							<Component Id="ORMCustomToolVJSharpComponent" Guid="5E506A17-A87F-4B81-$(var.VersionGuidSuffix)" DiskId="1" Win64="$(var.Win64)">
 								<CreateFolder/>
 								<Condition>VJSHARPPACKAGEGUID OR Installed</Condition>
-								<Registry Action="createKeyAndRemoveKeyOnUninstall" Root="HKLM" Key="$(var.VSRegRoot)\Generators\[VJSHARPPACKAGEGUID]\ORMCustomTool">
-									<Registry Type="string" Value="$(loc.ORMCustomToolDescription)"/>
-									<Registry Type="string" Name="CLSID" Value="{$(var.ORMCustomToolGuid)}"/>
-								</Registry>
-								<Registry Action="createKeyAndRemoveKeyOnUninstall" Root="HKLM" Key="$(var.VSRegRoot)\Generators\[VJSHARPPACKAGEGUID]\.orm">
-									<Registry Type="string" Value="ORMCustomTool"/>
-								</Registry>
-								<Registry Action="createKeyAndRemoveKeyOnUninstall" Root="HKLM" Key="$(var.VSRegRoot)\Extenders\{E6FDF869-F3D1-11D4-8576-0002A516ECE8}\ORMCustomTool">
-									<Registry Type="string" Value="{$(var.ORMCustomToolExtenderGuid)}"/>
-								</Registry>
+								<RegistryKey Action="createAndRemoveOnUninstall" Root="HKLM" Key="$(var.VSRegRoot)\Generators\[VJSHARPPACKAGEGUID]\ORMCustomTool">
+									<RegistryValue Type="string" Value="!(loc.ORMCustomToolDescription)"/>
+									<RegistryValue Type="string" Name="CLSID" Value="{$(var.ORMCustomToolGuid)}"/>
+								</RegistryKey>
+								<RegistryKey Action="createAndRemoveOnUninstall" Root="HKLM" Key="$(var.VSRegRoot)\Generators\[VJSHARPPACKAGEGUID]\.orm">
+									<RegistryValue Type="string" Value="ORMCustomTool"/>
+								</RegistryKey>
+								<RegistryKey Action="createAndRemoveOnUninstall" Root="HKLM" Key="$(var.VSRegRoot)\Extenders\{E6FDF869-F3D1-11D4-8576-0002A516ECE8}\ORMCustomTool">
+									<RegistryValue Type="string" Value="{$(var.ORMCustomToolExtenderGuid)}"/>
+								</RegistryKey>
 							</Component>
 
-							<Directory Id="EXTENSIONSDIR" Name="Ext" LongName="Extensions">
+							<Directory Id="EXTENSIONSDIR" ShortName="Ext" Name="Extensions">
 								<Component Id="NORMAVSOIALModelExtensionComponent" Guid="27157B36-345A-4E11-$(var.VersionGuidSuffix)" DiskId="1" Win64="$(var.Win64)">
-									<File Id="Neumont.Tools.ORM.OIALModel.dll" Name="OIALModl.dll" LongName="Neumont.Tools.ORM.OIALModel.dll" src="..\OIALModel\bin\$(var.BuildConfiguration)\Neumont.Tools.ORM.OIALModel.dll"
+									<File Id="Neumont.Tools.ORM.OIALModel.dll" ShortName="OIALModl.dll" Name="Neumont.Tools.ORM.OIALModel.dll" Source="..\OIALModel\bin\$(var.BuildConfiguration)\Neumont.Tools.ORM.OIALModel.dll"
 										DefaultVersion="$(var.ProductVersion)" DefaultLanguage="0" KeyPath="yes" Assembly=".net" AssemblyManifest="Neumont.Tools.ORM.OIALModel.dll" AssemblyApplication="Neumont.Tools.ORM.OIALModel.dll" ProcessorArchitecture="msil"/>
-									<File Id="Neumont.Tools.ORM.OIALModel.pdb" Name="OIALModl.pdb" LongName="Neumont.Tools.ORM.OIALModel.pdb" src="..\OIALModel\bin\$(var.BuildConfiguration)\Neumont.Tools.ORM.OIALModel.pdb"
+									<File Id="Neumont.Tools.ORM.OIALModel.pdb" ShortName="OIALModl.pdb" Name="Neumont.Tools.ORM.OIALModel.pdb" Source="..\OIALModel\bin\$(var.BuildConfiguration)\Neumont.Tools.ORM.OIALModel.pdb"
 										DefaultLanguage="0" CompanionFile="Neumont.Tools.ORM.OIALModel.dll"/>
-									<Registry Action="createKeyAndRemoveKeyOnUninstall" Root="HKLM" Key="$(var.NORMAVSExtensionsRegRoot)\http://schemas.neumont.edu/ORM/2006-01/OIALModel">
-										<Registry Type="string" Name="Class" Value="Neumont.Tools.ORM.OIALModel.OIALDomainModel"/>
-										<Registry Type="string" Name="Assembly" Value="Neumont.Tools.ORM.OIALModel, $(var.BaseAssemblyName)"/>
-										<Registry Type="string" Name="CodeBase" Value="[#Neumont.Tools.ORM.OIALModel.dll]"/>
-									</Registry>
+									<RegistryKey Action="createAndRemoveOnUninstall" Root="HKLM" Key="$(var.NORMAVSExtensionsRegRoot)\http://schemas.neumont.edu/ORM/2006-01/OIALModel">
+										<RegistryValue Type="string" Name="Class" Value="Neumont.Tools.ORM.OIALModel.OIALDomainModel"/>
+										<RegistryValue Type="string" Name="Assembly" Value="Neumont.Tools.ORM.OIALModel, $(var.BaseAssemblyName)"/>
+										<RegistryValue Type="string" Name="CodeBase" Value="[#Neumont.Tools.ORM.OIALModel.dll]"/>
+									</RegistryKey>
 								</Component>
 
 								<Component Id="NORMAVSRelationalViewExtensionComponent" Guid="EB966776-D5B5-4FFE-$(var.VersionGuidSuffix)" DiskId="1" Win64="$(var.Win64)">
-									<File Id="Neumont.Tools.ORM.Views.RelationalView.dll" Name="ReltnlVw.dll" LongName="Neumont.Tools.ORM.Views.RelationalView.dll" src="..\AlternateViews\RelationalView\bin\$(var.BuildConfiguration)\Neumont.Tools.ORM.Views.RelationalView.dll"
+									<File Id="Neumont.Tools.ORM.Views.RelationalView.dll" ShortName="ReltnlVw.dll" Name="Neumont.Tools.ORM.Views.RelationalView.dll" Source="..\AlternateViews\RelationalView\bin\$(var.BuildConfiguration)\Neumont.Tools.ORM.Views.RelationalView.dll"
 										DefaultVersion="$(var.ProductVersion)" DefaultLanguage="0" KeyPath="yes" Assembly=".net" AssemblyManifest="Neumont.Tools.ORM.Views.RelationalView.dll" AssemblyApplication="Neumont.Tools.ORM.Views.RelationalView.dll" ProcessorArchitecture="msil"/>
-									<File Id="Neumont.Tools.ORM.Views.RelationalView.pdb" Name="ReltnlVw.pdb" LongName="Neumont.Tools.ORM.Views.RelationalView.pdb" src="..\AlternateViews\RelationalView\bin\$(var.BuildConfiguration)\Neumont.Tools.ORM.Views.RelationalView.pdb"
+									<File Id="Neumont.Tools.ORM.Views.RelationalView.pdb" ShortName="ReltnlVw.pdb" Name="Neumont.Tools.ORM.Views.RelationalView.pdb" Source="..\AlternateViews\RelationalView\bin\$(var.BuildConfiguration)\Neumont.Tools.ORM.Views.RelationalView.pdb"
 										DefaultLanguage="0" CompanionFile="Neumont.Tools.ORM.Views.RelationalView.dll"/>
-									<Registry Action="createKeyAndRemoveKeyOnUninstall" Root="HKLM" Key="$(var.NORMAVSExtensionsRegRoot)\http://schemas.neumont.edu/ORM/Views/RelationalView">
-										<Registry Type="string" Name="Class" Value="Neumont.Tools.ORM.Views.RelationalView.RelationalShapeDomainModel"/>
-										<Registry Type="string" Name="Assembly" Value="Neumont.Tools.ORM.Views.RelationalView, $(var.BaseAssemblyName)"/>
-										<Registry Type="string" Name="CodeBase" Value="[#Neumont.Tools.ORM.Views.RelationalView.dll]"/>
-									</Registry>
+									<RegistryKey Action="createAndRemoveOnUninstall" Root="HKLM" Key="$(var.NORMAVSExtensionsRegRoot)\http://schemas.neumont.edu/ORM/Views/RelationalView">
+										<RegistryValue Type="string" Name="Class" Value="Neumont.Tools.ORM.Views.RelationalView.RelationalShapeDomainModel"/>
+										<RegistryValue Type="string" Name="Assembly" Value="Neumont.Tools.ORM.Views.RelationalView, $(var.BaseAssemblyName)"/>
+										<RegistryValue Type="string" Name="CodeBase" Value="[#Neumont.Tools.ORM.Views.RelationalView.dll]"/>
+									</RegistryKey>
 								</Component>
 
 								<Component Id="NORMAVSCustomPropertiesExtensionComponent" Guid="DE8C8B31-B391-44C3-$(var.VersionGuidSuffix)" DiskId="1" Win64="$(var.Win64)">
-									<File Id="Neumont.Tools.ORM.CustomProperties.dll" Name="ORMCstPr.dll" LongName="Neumont.Tools.ORM.CustomProperties.dll" src="..\CustomProperties\bin\$(var.BuildConfiguration)\Neumont.Tools.ORM.CustomProperties.dll"
+									<File Id="Neumont.Tools.ORM.CustomProperties.dll" ShortName="ORMCstPr.dll" Name="Neumont.Tools.ORM.CustomProperties.dll" Source="..\CustomProperties\bin\$(var.BuildConfiguration)\Neumont.Tools.ORM.CustomProperties.dll"
 										DefaultVersion="$(var.ProductVersion)" DefaultLanguage="0" KeyPath="yes" Assembly=".net" AssemblyManifest="Neumont.Tools.ORM.CustomProperties.dll" AssemblyApplication="Neumont.Tools.ORM.CustomProperties.dll" ProcessorArchitecture="msil"/>
-									<File Id="Neumont.Tools.ORM.CustomProperties.pdb" Name="ORMCstPr.pdb" LongName="Neumont.Tools.ORM.CustomProperties.pdb" src="..\CustomProperties\bin\$(var.BuildConfiguration)\Neumont.Tools.ORM.CustomProperties.pdb"
+									<File Id="Neumont.Tools.ORM.CustomProperties.pdb" ShortName="ORMCstPr.pdb" Name="Neumont.Tools.ORM.CustomProperties.pdb" Source="..\CustomProperties\bin\$(var.BuildConfiguration)\Neumont.Tools.ORM.CustomProperties.pdb"
 										DefaultLanguage="0" CompanionFile="Neumont.Tools.ORM.CustomProperties.dll"/>
-									<Registry Action="createKeyAndRemoveKeyOnUninstall" Root="HKLM" Key="$(var.NORMAVSExtensionsRegRoot)\http://schemas.neumont.edu/ORM/Preview/CustomProperties">
-										<Registry Type="string" Name="Class" Value="Neumont.Tools.ORM.CustomProperties.CustomPropertiesDomainModel"/>
-										<Registry Type="string" Name="Assembly" Value="Neumont.Tools.ORM.CustomProperties, $(var.BaseAssemblyName)"/>
-										<Registry Type="string" Name="CodeBase" Value="[#Neumont.Tools.ORM.CustomProperties.dll]"/>
-									</Registry>
+									<RegistryKey Action="createAndRemoveOnUninstall" Root="HKLM" Key="$(var.NORMAVSExtensionsRegRoot)\http://schemas.neumont.edu/ORM/Preview/CustomProperties">
+										<RegistryValue Type="string" Name="Class" Value="Neumont.Tools.ORM.CustomProperties.CustomPropertiesDomainModel"/>
+										<RegistryValue Type="string" Name="Assembly" Value="Neumont.Tools.ORM.CustomProperties, $(var.BaseAssemblyName)"/>
+										<RegistryValue Type="string" Name="CodeBase" Value="[#Neumont.Tools.ORM.CustomProperties.dll]"/>
+									</RegistryKey>
 								</Component>
 
 								<Component Id="NORMAVSORMAbstractionExtensionComponent" Guid="2AF4858D-43CC-4107-$(var.VersionGuidSuffix)" DiskId="1" Win64="$(var.Win64)">
-									<File Id="Neumont.Tools.ORMAbstraction.dll" Name="ORMAbstr.dll" LongName="Neumont.Tools.ORMAbstraction.dll" src="..\Oial\OialModel\bin\$(var.BuildConfiguration)\Neumont.Tools.ORMAbstraction.dll"
+									<File Id="Neumont.Tools.ORMAbstraction.dll" ShortName="ORMAbstr.dll" Name="Neumont.Tools.ORMAbstraction.dll" Source="..\Oial\OialModel\bin\$(var.BuildConfiguration)\Neumont.Tools.ORMAbstraction.dll"
 										DefaultVersion="$(var.ProductVersion)" DefaultLanguage="0" KeyPath="yes" Assembly=".net" AssemblyManifest="Neumont.Tools.ORMAbstraction.dll" AssemblyApplication="Neumont.Tools.ORMAbstraction.dll" ProcessorArchitecture="msil"/>
-									<File Id="Neumont.Tools.ORMAbstraction.pdb" Name="ORMAbstr.pdb" LongName="Neumont.Tools.ORMAbstraction.pdb" src="..\Oial\OialModel\bin\$(var.BuildConfiguration)\Neumont.Tools.ORMAbstraction.pdb"
+									<File Id="Neumont.Tools.ORMAbstraction.pdb" ShortName="ORMAbstr.pdb" Name="Neumont.Tools.ORMAbstraction.pdb" Source="..\Oial\OialModel\bin\$(var.BuildConfiguration)\Neumont.Tools.ORMAbstraction.pdb"
 										DefaultLanguage="0" CompanionFile="Neumont.Tools.ORMAbstraction.dll"/>
-									<File Id="Neumont.Tools.ORMAbstraction.xml" Name="ORMAbstr.xml" LongName="Neumont.Tools.ORMAbstraction.xml" src="..\Oial\OialModel\bin\$(var.BuildConfiguration)\Neumont.Tools.ORMAbstraction.xml"
+									<File Id="Neumont.Tools.ORMAbstraction.xml" ShortName="ORMAbstr.xml" Name="Neumont.Tools.ORMAbstraction.xml" Source="..\Oial\OialModel\bin\$(var.BuildConfiguration)\Neumont.Tools.ORMAbstraction.xml"
 										DefaultLanguage="0" CompanionFile="Neumont.Tools.ORMAbstraction.dll"/>
-									<Registry Action="createKeyAndRemoveKeyOnUninstall" Root="HKLM" Key="$(var.NORMAVSExtensionsRegRoot)\http://schemas.neumont.edu/ORM/Abstraction/2007-06/Core">
-										<Registry Type="string" Name="Class" Value="Neumont.Tools.ORMAbstraction.AbstractionDomainModel"/>
-										<Registry Type="string" Name="Assembly" Value="Neumont.Tools.ORMAbstraction, $(var.BaseAssemblyName)"/>
-										<Registry Type="string" Name="CodeBase" Value="[#Neumont.Tools.ORMAbstraction.dll]"/>
-									</Registry>
+									<RegistryKey Action="createAndRemoveOnUninstall" Root="HKLM" Key="$(var.NORMAVSExtensionsRegRoot)\http://schemas.neumont.edu/ORM/Abstraction/2007-06/Core">
+										<RegistryValue Type="string" Name="Class" Value="Neumont.Tools.ORMAbstraction.AbstractionDomainModel"/>
+										<RegistryValue Type="string" Name="Assembly" Value="Neumont.Tools.ORMAbstraction, $(var.BaseAssemblyName)"/>
+										<RegistryValue Type="string" Name="CodeBase" Value="[#Neumont.Tools.ORMAbstraction.dll]"/>
+									</RegistryKey>
 								</Component>
 
 								<Component Id="NORMAVSORMToORMAbstractionExtensionComponent" Guid="C6CED0EA-97CA-40AA-$(var.VersionGuidSuffix)" DiskId="1" Win64="$(var.Win64)">
-									<File Id="Neumont.Tools.ORMToORMAbstractionBridge.dll" Name="ORMAbsBr.dll" LongName="Neumont.Tools.ORMToORMAbstractionBridge.dll" src="..\Oial\ORMOialBridge\bin\$(var.BuildConfiguration)\Neumont.Tools.ORMToORMAbstractionBridge.dll"
+									<File Id="Neumont.Tools.ORMToORMAbstractionBridge.dll" ShortName="ORMAbsBr.dll" Name="Neumont.Tools.ORMToORMAbstractionBridge.dll" Source="..\Oial\ORMOialBridge\bin\$(var.BuildConfiguration)\Neumont.Tools.ORMToORMAbstractionBridge.dll"
 										DefaultVersion="$(var.ProductVersion)" DefaultLanguage="0" KeyPath="yes" Assembly=".net" AssemblyManifest="Neumont.Tools.ORMToORMAbstractionBridge.dll" AssemblyApplication="Neumont.Tools.ORMToORMAbstractionBridge.dll" ProcessorArchitecture="msil"/>
-									<File Id="Neumont.Tools.ORMToORMAbstractionBridge.pdb" Name="ORMAbsBr.pdb" LongName="Neumont.Tools.ORMToORMAbstractionBridge.pdb" src="..\Oial\ORMOialBridge\bin\$(var.BuildConfiguration)\Neumont.Tools.ORMToORMAbstractionBridge.pdb"
+									<File Id="Neumont.Tools.ORMToORMAbstractionBridge.pdb" ShortName="ORMAbsBr.pdb" Name="Neumont.Tools.ORMToORMAbstractionBridge.pdb" Source="..\Oial\ORMOialBridge\bin\$(var.BuildConfiguration)\Neumont.Tools.ORMToORMAbstractionBridge.pdb"
 										DefaultLanguage="0" CompanionFile="Neumont.Tools.ORMToORMAbstractionBridge.dll"/>
-									<File Id="Neumont.Tools.ORMToORMAbstractionBridge.xml" Name="ORMAbsBr.xml" LongName="Neumont.Tools.ORMToORMAbstractionBridge.xml" src="..\Oial\ORMOialBridge\bin\$(var.BuildConfiguration)\Neumont.Tools.ORMToORMAbstractionBridge.xml"
+									<File Id="Neumont.Tools.ORMToORMAbstractionBridge.xml" ShortName="ORMAbsBr.xml" Name="Neumont.Tools.ORMToORMAbstractionBridge.xml" Source="..\Oial\ORMOialBridge\bin\$(var.BuildConfiguration)\Neumont.Tools.ORMToORMAbstractionBridge.xml"
 										DefaultLanguage="0" CompanionFile="Neumont.Tools.ORMToORMAbstractionBridge.dll"/>
-									<Registry Action="createKeyAndRemoveKeyOnUninstall" Root="HKLM" Key="$(var.NORMAVSExtensionsRegRoot)\http://schemas.neumont.edu/ORM/Bridge/2007-06/ORMToORMAbstraction">
-										<Registry Type="string" Name="Class" Value="Neumont.Tools.ORMToORMAbstractionBridge.ORMToORMAbstractionBridgeDomainModel"/>
-										<Registry Type="string" Name="Assembly" Value="Neumont.Tools.ORMToORMAbstractionBridge, $(var.BaseAssemblyName)"/>
-										<Registry Type="string" Name="CodeBase" Value="[#Neumont.Tools.ORMToORMAbstractionBridge.dll]"/>
-									</Registry>
+									<RegistryKey Action="createAndRemoveOnUninstall" Root="HKLM" Key="$(var.NORMAVSExtensionsRegRoot)\http://schemas.neumont.edu/ORM/Bridge/2007-06/ORMToORMAbstraction">
+										<RegistryValue Type="string" Name="Class" Value="Neumont.Tools.ORMToORMAbstractionBridge.ORMToORMAbstractionBridgeDomainModel"/>
+										<RegistryValue Type="string" Name="Assembly" Value="Neumont.Tools.ORMToORMAbstractionBridge, $(var.BaseAssemblyName)"/>
+										<RegistryValue Type="string" Name="CodeBase" Value="[#Neumont.Tools.ORMToORMAbstractionBridge.dll]"/>
+									</RegistryKey>
 								</Component>
 
 								<Component Id="NORMAVSRelationalModelsExtensionComponent" Guid="8CA7B2DB-1669-427B-$(var.VersionGuidSuffix)" DiskId="1" Win64="$(var.Win64)">
-									<File Id="Neumont.Tools.RelationalModels.dll" Name="RelMods.dll" LongName="Neumont.Tools.RelationalModels.dll" src="..\RelationalModel\DcilModel\bin\$(var.BuildConfiguration)\Neumont.Tools.RelationalModels.dll"
+									<File Id="Neumont.Tools.RelationalModels.dll" ShortName="RelMods.dll" Name="Neumont.Tools.RelationalModels.dll" Source="..\RelationalModel\DcilModel\bin\$(var.BuildConfiguration)\Neumont.Tools.RelationalModels.dll"
 										DefaultVersion="$(var.ProductVersion)" DefaultLanguage="0" KeyPath="yes" Assembly=".net" AssemblyManifest="Neumont.Tools.RelationalModels.dll" AssemblyApplication="Neumont.Tools.RelationalModels.dll" ProcessorArchitecture="msil"/>
-									<File Id="Neumont.Tools.RelationalModels.pdb" Name="RelMods.pdb" LongName="Neumont.Tools.RelationalModels.pdb" src="..\RelationalModel\DcilModel\bin\$(var.BuildConfiguration)\Neumont.Tools.RelationalModels.pdb"
+									<File Id="Neumont.Tools.RelationalModels.pdb" ShortName="RelMods.pdb" Name="Neumont.Tools.RelationalModels.pdb" Source="..\RelationalModel\DcilModel\bin\$(var.BuildConfiguration)\Neumont.Tools.RelationalModels.pdb"
 										DefaultLanguage="0" CompanionFile="Neumont.Tools.RelationalModels.dll"/>
-									<File Id="Neumont.Tools.RelationalModels.xml" Name="RelMods.xml" LongName="Neumont.Tools.RelationalModels.xml" src="..\RelationalModel\DcilModel\bin\$(var.BuildConfiguration)\Neumont.Tools.RelationalModels.xml"
+									<File Id="Neumont.Tools.RelationalModels.xml" ShortName="RelMods.xml" Name="Neumont.Tools.RelationalModels.xml" Source="..\RelationalModel\DcilModel\bin\$(var.BuildConfiguration)\Neumont.Tools.RelationalModels.xml"
 										DefaultLanguage="0" CompanionFile="Neumont.Tools.RelationalModels.dll"/>
-									<Registry Action="createKeyAndRemoveKeyOnUninstall" Root="HKLM" Key="$(var.NORMAVSExtensionsRegRoot)\http://schemas.neumont.edu/ORM/Relational/2007-06/ConceptualDatabase">
-										<Registry Type="string" Name="Class" Value="Neumont.Tools.RelationalModels.ConceptualDatabase.ConceptualDatabaseDomainModel"/>
-										<Registry Type="string" Name="Assembly" Value="Neumont.Tools.RelationalModels, $(var.BaseAssemblyName)"/>
-										<Registry Type="string" Name="CodeBase" Value="[#Neumont.Tools.RelationalModels.dll]"/>
-									</Registry>
+									<RegistryKey Action="createAndRemoveOnUninstall" Root="HKLM" Key="$(var.NORMAVSExtensionsRegRoot)\http://schemas.neumont.edu/ORM/Relational/2007-06/ConceptualDatabase">
+										<RegistryValue Type="string" Name="Class" Value="Neumont.Tools.RelationalModels.ConceptualDatabase.ConceptualDatabaseDomainModel"/>
+										<RegistryValue Type="string" Name="Assembly" Value="Neumont.Tools.RelationalModels, $(var.BaseAssemblyName)"/>
+										<RegistryValue Type="string" Name="CodeBase" Value="[#Neumont.Tools.RelationalModels.dll]"/>
+									</RegistryKey>
 								</Component>
 
 								<Component Id="NORMAVSORMAbstractionToConceptualDatabaseExtensionComponent" Guid="2D11803B-91D7-446E-$(var.VersionGuidSuffix)" DiskId="1" Win64="$(var.Win64)">
-									<File Id="Neumont.Tools.ORMAbstractionToConceptualDatabaseBridge.dll" Name="CDBBr.dll" LongName="Neumont.Tools.ORMAbstractionToConceptualDatabaseBridge.dll" src="..\RelationalModel\OialDcilBridge\bin\$(var.BuildConfiguration)\Neumont.Tools.ORMAbstractionToConceptualDatabaseBridge.dll"
+									<File Id="Neumont.Tools.ORMAbstractionToConceptualDatabaseBridge.dll" ShortName="CDBBr.dll" Name="Neumont.Tools.ORMAbstractionToConceptualDatabaseBridge.dll" Source="..\RelationalModel\OialDcilBridge\bin\$(var.BuildConfiguration)\Neumont.Tools.ORMAbstractionToConceptualDatabaseBridge.dll"
 										DefaultVersion="$(var.ProductVersion)" DefaultLanguage="0" KeyPath="yes" Assembly=".net" AssemblyManifest="Neumont.Tools.ORMAbstractionToConceptualDatabaseBridge.dll" AssemblyApplication="Neumont.Tools.ORMAbstractionToConceptualDatabaseBridge.dll" ProcessorArchitecture="msil"/>
-									<File Id="Neumont.Tools.ORMAbstractionToConceptualDatabaseBridge.pdb" Name="CDBBr.pdb" LongName="Neumont.Tools.ORMAbstractionToConceptualDatabaseBridge.pdb" src="..\RelationalModel\OialDcilBridge\bin\$(var.BuildConfiguration)\Neumont.Tools.ORMAbstractionToConceptualDatabaseBridge.pdb"
+									<File Id="Neumont.Tools.ORMAbstractionToConceptualDatabaseBridge.pdb" ShortName="CDBBr.pdb" Name="Neumont.Tools.ORMAbstractionToConceptualDatabaseBridge.pdb" Source="..\RelationalModel\OialDcilBridge\bin\$(var.BuildConfiguration)\Neumont.Tools.ORMAbstractionToConceptualDatabaseBridge.pdb"
 										DefaultLanguage="0" CompanionFile="Neumont.Tools.ORMAbstractionToConceptualDatabaseBridge.dll"/>
-									<File Id="Neumont.Tools.ORMAbstractionToConceptualDatabaseBridge.xml" Name="CDBBr.xml" LongName="Neumont.Tools.ORMAbstractionToConceptualDatabaseBridge.xml" src="..\RelationalModel\OialDcilBridge\bin\$(var.BuildConfiguration)\Neumont.Tools.ORMAbstractionToConceptualDatabaseBridge.xml"
+									<File Id="Neumont.Tools.ORMAbstractionToConceptualDatabaseBridge.xml" ShortName="CDBBr.xml" Name="Neumont.Tools.ORMAbstractionToConceptualDatabaseBridge.xml" Source="..\RelationalModel\OialDcilBridge\bin\$(var.BuildConfiguration)\Neumont.Tools.ORMAbstractionToConceptualDatabaseBridge.xml"
 										DefaultLanguage="0" CompanionFile="Neumont.Tools.ORMAbstractionToConceptualDatabaseBridge.dll"/>
-									<Registry Action="createKeyAndRemoveKeyOnUninstall" Root="HKLM" Key="$(var.NORMAVSExtensionsRegRoot)\http://schemas.neumont.edu/ORM/Bridge/2007-06/ORMAbstractionToConceptualDatabase">
-										<Registry Type="string" Name="Class" Value="Neumont.Tools.ORMAbstractionToConceptualDatabaseBridge.ORMAbstractionToConceptualDatabaseBridgeDomainModel"/>
-										<Registry Type="string" Name="Assembly" Value="Neumont.Tools.ORMAbstractionToConceptualDatabaseBridge, $(var.BaseAssemblyName)"/>
-										<Registry Type="string" Name="CodeBase" Value="[#Neumont.Tools.ORMAbstractionToConceptualDatabaseBridge.dll]"/>
-									</Registry>
+									<RegistryKey Action="createAndRemoveOnUninstall" Root="HKLM" Key="$(var.NORMAVSExtensionsRegRoot)\http://schemas.neumont.edu/ORM/Bridge/2007-06/ORMAbstractionToConceptualDatabase">
+										<RegistryValue Type="string" Name="Class" Value="Neumont.Tools.ORMAbstractionToConceptualDatabaseBridge.ORMAbstractionToConceptualDatabaseBridgeDomainModel"/>
+										<RegistryValue Type="string" Name="Assembly" Value="Neumont.Tools.ORMAbstractionToConceptualDatabaseBridge, $(var.BaseAssemblyName)"/>
+										<RegistryValue Type="string" Name="CodeBase" Value="[#Neumont.Tools.ORMAbstractionToConceptualDatabaseBridge.dll]"/>
+									</RegistryKey>
 								</Component>
 							</Directory>
 
@@ -272,7 +268,7 @@
 						<Directory Id="Help" Name="Help">
 							<!-- Help files go here -->
 							<Component Id="NORMAVSHelpComponent" Guid="31ED0AEA-D66C-4AD0-$(var.VersionGuidSuffix)" DiskId="1" Win64="$(var.Win64)" KeyPath="yes">
-								<File Id="Creating_ORM_Schemas.doc" Name="CrORMSch.doc" LongName="Creating ORM Schemas.doc" src="..\Documentation\Creating ORM Schemas.doc"
+								<File Id="Creating_ORM_Schemas.doc" ShortName="CrORMSch.doc" Name="Creating ORM Schemas.doc" Source="..\Documentation\Creating ORM Schemas.doc"
 									DefaultLanguage="$(var.DefaultLCID)" CompanionFile="Neumont.Tools.ORM.dll"/>
 							</Component>
 						</Directory>
@@ -281,91 +277,91 @@
 							<Directory Id="Schemas" Name="Schemas">
 								<!-- XSDs specific to NORMA for VS go here. Anything potentially applicable to other programs should go under ORMCOMMONSCHEMASDIR or DILCOMMONSCHEMASDIR. -->
 								<Component Id="NORMAVSSchemasLocalCatalogComponent" Guid="BCC47EB8-CEFC-421F-$(var.VersionGuidSuffix)" DiskId="1" Win64="$(var.Win64)" KeyPath="yes">
-									<File Id="NORMAcatalog.xml" Name="catalog.xml" src="..\ORMModel\Shell\catalog.xml"
+									<File Id="NORMAcatalog.xml" Name="catalog.xml" Source="..\ORMModel\Shell\catalog.xml"
 										DefaultLanguage="0" CompanionFile="NORMASchemaCatalog.xml"/>
 								</Component>
 								<Component Id="NORMAVSSettingsSchemaComponent" Guid="B2DEF872-436C-4BED-$(var.VersionGuidSuffix)" DiskId="1" Win64="$(var.Win64)" KeyPath="yes">
-									<File Id="ORMDesignerSettings.xsd" Name="DsgnrStg.xsd" LongName="ORMDesignerSettings.xsd" src="..\ORMModel\Shell\ORMDesignerSettings.xsd"
+									<File Id="ORMDesignerSettings.xsd" ShortName="DsgnrStg.xsd" Name="ORMDesignerSettings.xsd" Source="..\ORMModel\Shell\ORMDesignerSettings.xsd"
 										DefaultLanguage="0" CompanionFile="Neumont.Tools.ORM.dll"/>
 								</Component>
 								<Component Id="NORMAVSCustomPropertiesSchemaComponent" Guid="27EB4413-1888-4038-$(var.VersionGuidSuffix)" DiskId="1" Win64="$(var.Win64)" KeyPath="yes">
-									<File Id="CustomProperties.xsd" Name="ORMCstPr.xsd" LongName="CustomProperties.xsd" src="..\CustomProperties\CustomProperties.xsd"
+									<File Id="CustomProperties.xsd" ShortName="ORMCstPr.xsd" Name="CustomProperties.xsd" Source="..\CustomProperties\CustomProperties.xsd"
 										DefaultLanguage="0" CompanionFile="Neumont.Tools.ORM.CustomProperties.dll"/>
 								</Component>
 								<Component Id="NORMAVSORMAbstractionSchemaComponent" Guid="1AFB3357-16AC-4A2B-$(var.VersionGuidSuffix)" DiskId="1" Win64="$(var.Win64)" KeyPath="yes">
-									<File Id="ORMAbstraction.xsd" Name="ORMAbstr.xsd" LongName="ORMAbstraction.xsd" src="..\Oial\OialModel\OIAL.xsd"
+									<File Id="ORMAbstraction.xsd" ShortName="ORMAbstr.xsd" Name="ORMAbstraction.xsd" Source="..\Oial\OialModel\OIAL.xsd"
 										DefaultLanguage="0" CompanionFile="Neumont.Tools.ORMAbstraction.dll"/>
-									<File Id="ORMAbstractionDataTypes.xsd" Name="ORMAbsDT.xsd" LongName="ORMAbstractionDataTypes.xsd" src="..\Oial\OialModel\OIALDatatypes.xsd"
+									<File Id="ORMAbstractionDataTypes.xsd" ShortName="ORMAbsDT.xsd" Name="ORMAbstractionDataTypes.xsd" Source="..\Oial\OialModel\OIALDatatypes.xsd"
 										DefaultLanguage="0" CompanionFile="Neumont.Tools.ORMAbstraction.dll"/>
 								</Component>
 								<Component Id="NORMAVSORMToORMAbstractionSchemaComponent" Guid="D79F2881-1707-4499-$(var.VersionGuidSuffix)" DiskId="1" Win64="$(var.Win64)" KeyPath="yes">
-									<File Id="ORMToORMAbstraction.xsd" Name="ORMAbsBr.xsd" LongName="ORMToORMAbstraction.xsd" src="..\Oial\ORMOialBridge\ORMToORMAbstraction.xsd"
+									<File Id="ORMToORMAbstraction.xsd" ShortName="ORMAbsBr.xsd" Name="ORMToORMAbstraction.xsd" Source="..\Oial\ORMOialBridge\ORMToORMAbstraction.xsd"
 										DefaultLanguage="0" CompanionFile="Neumont.Tools.ORMToORMAbstractionBridge.dll"/>
 								</Component>
 								<Component Id="NORMAVSRelationalModelsSchemaComponent" Guid="5D8B0055-6336-4226-$(var.VersionGuidSuffix)" DiskId="1" Win64="$(var.Win64)" KeyPath="yes">
-									<File Id="ConceptualDatabase.xsd" Name="CDB.xsd" LongName="ConceptualDatabase.xsd" src="..\RelationalModel\DcilModel\ConceptualDatabase.xsd"
+									<File Id="ConceptualDatabase.xsd" ShortName="CDB.xsd" Name="ConceptualDatabase.xsd" Source="..\RelationalModel\DcilModel\ConceptualDatabase.xsd"
 										DefaultLanguage="0" CompanionFile="Neumont.Tools.RelationalModels.dll"/>
 								</Component>
 								<Component Id="NORMAVSORMAbstractionToConceptualDatabaseSchemaComponent" Guid="F3ECE70B-A746-4FDA-$(var.VersionGuidSuffix)" DiskId="1" Win64="$(var.Win64)" KeyPath="yes">
-									<File Id="ORMAbstractionToConceptualDatabase.xsd" Name="CDBBr.xsd" LongName="ORMAbstractionToConceptualDatabase.xsd" src="..\RelationalModel\OialDcilBridge\ORMAbstractionToConceptualDatabase.xsd"
+									<File Id="ORMAbstractionToConceptualDatabase.xsd" ShortName="CDBBr.xsd" Name="ORMAbstractionToConceptualDatabase.xsd" Source="..\RelationalModel\OialDcilBridge\ORMAbstractionToConceptualDatabase.xsd"
 										DefaultLanguage="0" CompanionFile="Neumont.Tools.ORMAbstractionToConceptualDatabaseBridge.dll"/>
 								</Component>
 							</Directory>
-							<Directory Id="Transforms" Name="Trnsfrms" LongName="Transforms">
+							<Directory Id="Transforms" ShortName="Trnsfrms" Name="Transforms">
 								<!-- XSLTs specific to NORMA for VS go here. Anything potentially applicable to other programs should go under ORMCOMMONTRANSFORMSDIR or DILCOMMONTRANSFORMSDIR. -->
-								<Directory Id="Converters" Name="Cnvrtrs" LongName="Converters">
+								<Directory Id="Converters" ShortName="Cnvrtrs" Name="Converters">
 									<Component Id="NORMAVSConvertersComponent" Guid="588FBA11-2175-4084-$(var.VersionGuidSuffix)" DiskId="1" Win64="$(var.Win64)" KeyPath="yes">
-										<File Id="CoreModelImport.xslt" Name="CrMdlImp.xsl" LongName="CoreModelImport.xslt" src="..\ORMModel\Shell\Converters\CoreModelImport.xslt"
+										<File Id="CoreModelImport.xslt" ShortName="CrMdlImp.xsl" Name="CoreModelImport.xslt" Source="..\ORMModel\Shell\Converters\CoreModelImport.xslt"
 											DefaultLanguage="0" CompanionFile="Neumont.Tools.ORM.dll"/>
-										<File Id="CoreUpgradeTo2006_01.xslt" Name="CUTo0601.xsl" LongName="CoreUpgradeTo2006-01.xslt" src="..\ORMModel\Shell\Converters\CoreUpgradeTo2006-01.xslt"
+										<File Id="CoreUpgradeTo2006_01.xslt" ShortName="CUTo0601.xsl" Name="CoreUpgradeTo2006-01.xslt" Source="..\ORMModel\Shell\Converters\CoreUpgradeTo2006-01.xslt"
 											DefaultLanguage="0" CompanionFile="Neumont.Tools.ORM.dll"/>
-										<File Id="RootUpgradeTo2006_01.xslt" Name="RUTo0601.xsl" LongName="RootUpgradeTo2006-01.xslt" src="..\ORMModel\Shell\Converters\RootUpgradeTo2006-01.xslt"
+										<File Id="RootUpgradeTo2006_01.xslt" ShortName="RUTo0601.xsl" Name="RootUpgradeTo2006-01.xslt" Source="..\ORMModel\Shell\Converters\RootUpgradeTo2006-01.xslt"
 											DefaultLanguage="0" CompanionFile="Neumont.Tools.ORM.dll"/>
-										<File Id="CoreUpgradeTo2006_04.xslt" Name="CUTo0604.xsl" LongName="CoreUpgradeTo2006-04.xslt" src="..\ORMModel\Shell\Converters\CoreUpgradeTo2006-04.xslt"
+										<File Id="CoreUpgradeTo2006_04.xslt" ShortName="CUTo0604.xsl" Name="CoreUpgradeTo2006-04.xslt" Source="..\ORMModel\Shell\Converters\CoreUpgradeTo2006-04.xslt"
 											DefaultLanguage="0" CompanionFile="Neumont.Tools.ORM.dll"/>
-										<File Id="RootUpgradeTo2006_04.xslt" Name="RUTo0604.xsl" LongName="RootUpgradeTo2006-04.xslt" src="..\ORMModel\Shell\Converters\RootUpgradeTo2006-04.xslt"
+										<File Id="RootUpgradeTo2006_04.xslt" ShortName="RUTo0604.xsl" Name="RootUpgradeTo2006-04.xslt" Source="..\ORMModel\Shell\Converters\RootUpgradeTo2006-04.xslt"
 											DefaultLanguage="0" CompanionFile="Neumont.Tools.ORM.dll"/>
-										<File Id="VisioToCoreModelImport.xslt" Name="VsCrMdl.xsl" LongName="VisioToCoreModelImport.xslt" src="..\ORMModel\Shell\Converters\VisioToCoreModelImport.xslt"
+										<File Id="VisioToCoreModelImport.xslt" ShortName="VsCrMdl.xsl" Name="VisioToCoreModelImport.xslt" Source="..\ORMModel\Shell\Converters\VisioToCoreModelImport.xslt"
 											DefaultLanguage="0" CompanionFile="Neumont.Tools.ORM.dll"/>
-										<File Id="DCILtoOIAL.xslt" Name="DclToOil.xsl" LongName="DCILtoOIAL.xslt" src="..\ORMModel\Shell\Converters\DCILtoOIAL.xslt"
+										<File Id="DCILtoOIAL.xslt" ShortName="DclToOil.xsl" Name="DCILtoOIAL.xslt" Source="..\ORMModel\Shell\Converters\DCILtoOIAL.xslt"
 											DefaultLanguage="0" CompanionFile="Neumont.Tools.ORM.dll"/>
-										<File Id="OIALtoORM.xslt" Name="OilToOrm.xsl" LongName="OIALtoORM.xslt" src="..\ORMModel\Shell\Converters\OIALtoORM.xslt"
+										<File Id="OIALtoORM.xslt" ShortName="OilToOrm.xsl" Name="OIALtoORM.xslt" Source="..\ORMModel\Shell\Converters\OIALtoORM.xslt"
 											DefaultLanguage="0" CompanionFile="Neumont.Tools.ORM.dll"/>
-										<Registry Root="HKLM" Key="$(var.NORMAVSRegRoot)" Type="string" Name="ConvertersDir" Value="[Converters]"/>
+										<RegistryValue Root="HKLM" Key="$(var.NORMAVSRegRoot)" Type="string" Name="ConvertersDir" Value="[Converters]"/>
 									</Component>
 								</Directory>
 							</Directory>
-							<Directory Id="Verbalization" Name="Verbaliz" LongName="Verbalization">
+							<Directory Id="Verbalization" ShortName="Verbaliz" Name="Verbalization">
 								<Component Id="NORMAVSVerbalizationComponent"  Guid="C39EDC6D-03BA-4519-$(var.VersionGuidSuffix)" DiskId="1" Win64="$(var.Win64)" KeyPath="yes">
-									<File Id="VerbalizationUntypedSnippets.xsd" Name="VrbUnSnp.xsd" LongName="VerbalizationUntypedSnippets.xsd" src="..\ORMModel\ObjectModel\VerbalizationUntypedSnippets.xsd"
+									<File Id="VerbalizationUntypedSnippets.xsd" ShortName="VrbUnSnp.xsd" Name="VerbalizationUntypedSnippets.xsd" Source="..\ORMModel\ObjectModel\VerbalizationUntypedSnippets.xsd"
 										DefaultLanguage="0" CompanionFile="Neumont.Tools.ORM.dll"/>
-									<Registry Root="HKLM" Key="$(var.NORMAVSRegRoot)" Type="string" Name="VerbalizationDir" Value="[Verbalization]"/>
+									<RegistryValue Root="HKLM" Key="$(var.NORMAVSRegRoot)" Type="string" Name="VerbalizationDir" Value="[Verbalization]"/>
 								</Component>
 								<Directory Id="CoreVerbalization" Name="Core">
 									<Component Id="NORMAVSVerbalizationCoreComponent" Guid="45D2041A-3025-41E6-$(var.VersionGuidSuffix)" DiskId="1" Win64="$(var.Win64)" KeyPath="yes">
-										<File Id="VrbCrDef.xml" Name="_default.xml" src="..\ORMModel\ObjectModel\VerbalizationCoreSnippets\VerbalizationCoreSnippets.xml"
+										<File Id="VrbCrDef.xml" Name="_default.xml" Source="..\ORMModel\ObjectModel\VerbalizationCoreSnippets\VerbalizationCoreSnippets.xml"
 											DefaultLanguage="0" CompanionFile="Neumont.Tools.ORM.dll"/>
-										<File Id="VrbCrRep.xml" Name="VrbCrRep.xml" LongName="DefaultReportSnippets.xml"  src="..\ORMModel\ObjectModel\VerbalizationCoreSnippets\VerbalizationCoreReportSnippets.xml"
+										<File Id="VrbCrRep.xml" ShortName="VrbCrRep.xml" Name="DefaultReportSnippets.xml"  Source="..\ORMModel\ObjectModel\VerbalizationCoreSnippets\VerbalizationCoreReportSnippets.xml"
 											DefaultLanguage="0" CompanionFile="Neumont.Tools.ORM.dll"/>
-										<File Id="VerbalizationCoreSnippets.xsd" Name="VrbCrSnp.xsd" LongName="VerbalizationCoreSnippets.xsd" src="..\ORMModel\ObjectModel\VerbalizationCoreSnippets\VerbalizationCoreSnippets.xsd"
+										<File Id="VerbalizationCoreSnippets.xsd" ShortName="VrbCrSnp.xsd" Name="VerbalizationCoreSnippets.xsd" Source="..\ORMModel\ObjectModel\VerbalizationCoreSnippets\VerbalizationCoreSnippets.xsd"
 											DefaultLanguage="0" CompanionFile="Neumont.Tools.ORM.dll"/>
-										<File Id="VerbalizationCoreSnippetsDocumentation.html" Name="VrbCrSnD.htm" LongName="VerbalizationCoreSnippetsDocumentation.html"  src="..\ORMModel\ObjectModel\VerbalizationCoreSnippetsDocumentation.html"
+										<File Id="VerbalizationCoreSnippetsDocumentation.html" ShortName="VrbCrSnD.htm" Name="VerbalizationCoreSnippetsDocumentation.html"  Source="..\ORMModel\ObjectModel\VerbalizationCoreSnippetsDocumentation.html"
 											DefaultLanguage="0" CompanionFile="Neumont.Tools.ORM.dll"/>
 									</Component>
 								</Directory>
-								<Directory Id="ReportVerbalization" Name="HtmlRprt" LongName="HtmlReport">
+								<Directory Id="ReportVerbalization" ShortName="HtmlRprt" Name="HtmlReport">
 									<Component Id="NORMAVSVerbalizationReportComponent" Guid="6F50F477-F95B-45AE-$(var.VersionGuidSuffix)" DiskId="1" Win64="$(var.Win64)" KeyPath="yes">
-										<File Id="VrbReDef.xml" Name="_default.xml" src="..\ORMModel\ObjectModel\VerbalizationReportSnippets\VerbalizationReportSnippets.xml"
+										<File Id="VrbReDef.xml" Name="_default.xml" Source="..\ORMModel\ObjectModel\VerbalizationReportSnippets\VerbalizationReportSnippets.xml"
 											DefaultLanguage="0" CompanionFile="Neumont.Tools.ORM.dll"/>
-										<File Id="VerbalizationReportSnippets.xsd" Name="VrbReSnp.xsd" LongName="VerbalizationReportSnippets.xsd" src="..\ORMModel\ObjectModel\VerbalizationReportSnippets\VerbalizationReportSnippets.xsd"
+										<File Id="VerbalizationReportSnippets.xsd" ShortName="VrbReSnp.xsd" Name="VerbalizationReportSnippets.xsd" Source="..\ORMModel\ObjectModel\VerbalizationReportSnippets\VerbalizationReportSnippets.xsd"
 											DefaultLanguage="0" CompanionFile="Neumont.Tools.ORM.dll"/>
 									</Component>
 								</Directory>
-								<Directory Id="CustomPropertiesVerbalization"  Name="CustProp" LongName="CustomProperties">
+								<Directory Id="CustomPropertiesVerbalization" ShortName="CustProp" Name="CustomProperties">
 									<Component Id="NORMAVSCustomPropertiesVerbalizationComponent" Guid="513D5A05-8FAC-4614-$(var.VersionGuidSuffix)" DiskId="1" Win64="$(var.Win64)" KeyPath="yes">
-										<File Id="CpVrbDef.xml" Name="_default.xml" src="..\CustomProperties\VerbalizationSnippets\CustomPropertyVerbalizationSnippets.xml"
+										<File Id="CpVrbDef.xml" Name="_default.xml" Source="..\CustomProperties\VerbalizationSnippets\CustomPropertyVerbalizationSnippets.xml"
 											DefaultLanguage="0" CompanionFile="Neumont.Tools.ORM.CustomProperties.dll"/>
-										<File Id="CustomPropertyVerbalizationSnippets.xsd" Name="CpVrbSnp.xsd" LongName="CustomPropertyVerbalizationSnippets.xsd" src="..\CustomProperties\VerbalizationSnippets\CustomPropertyVerbalizationSnippets.xsd"
+										<File Id="CustomPropertyVerbalizationSnippets.xsd" ShortName="CpVrbSnp.xsd" Name="CustomPropertyVerbalizationSnippets.xsd" Source="..\CustomProperties\VerbalizationSnippets\CustomPropertyVerbalizationSnippets.xsd"
 											DefaultLanguage="0" CompanionFile="Neumont.Tools.ORM.CustomProperties.dll"/>
 									</Component>
 								</Directory>
@@ -373,9 +369,9 @@
 						</Directory>
 
 						<Component Id="NORMAVSSettingsComponent" Guid="956063F7-13D9-4083-$(var.VersionGuidSuffix)" DiskId="1" Win64="$(var.Win64)">
-							<File Id="ORMDesignerSettings.xml" Name="DsgnrStg.xml" LongName="ORMDesignerSettings.xml" src="..\ORMModel\Shell\ORMDesignerSettings.xml"
+							<File Id="ORMDesignerSettings.xml" ShortName="DsgnrStg.xml" Name="ORMDesignerSettings.xml" Source="..\ORMModel\Shell\ORMDesignerSettings.xml"
 								DefaultLanguage="0" KeyPath="yes"/>
-							<Registry Root="HKLM" Key="$(var.NORMAVSRegRoot)" Type="string" Name="SettingsPath" Value="[#ORMDesignerSettings.xml]"/>
+							<RegistryValue Root="HKLM" Key="$(var.NORMAVSRegRoot)" Type="string" Name="SettingsPath" Value="[#ORMDesignerSettings.xml]"/>
 						</Component>
 
 					</Directory>
@@ -387,394 +383,394 @@
 					<Directory Id="ORMCOMMONFILESDIR" Name="ORM">
 						<Directory Id="ORMCOMMONSCHEMASDIR" Name="Schemas">
 							<Component Id="ORMSchemasLocalCatalogComponent" Guid="CA6158D1-A87F-413B-$(var.VersionGuidSuffix)" DiskId="1" Win64="$(var.Win64)" KeyPath="yes">
-								<File Id="ORMcatalog.xml" Name="catalog.xml" src="..\catalog.xml"
+								<File Id="ORMcatalog.xml" Name="catalog.xml" Source="..\catalog.xml"
 									DefaultLanguage="0" CompanionFile="ORMSchemaCatalog.xml"/>
 							</Component>
 							<Component Id="ORMSchemasComponent" Guid="55B51F55-EB34-4AC4-$(var.VersionGuidSuffix)" DiskId="1" Win64="$(var.Win64)" KeyPath="yes">
-								<File Id="ORM2Core.xsd" Name="ORM2Core.xsd" src="..\ORMModel\ObjectModel\ORM2Core.xsd"
+								<File Id="ORM2Core.xsd" Name="ORM2Core.xsd" Source="..\ORMModel\ObjectModel\ORM2Core.xsd"
 									DefaultLanguage="0" CompanionFile="Neumont.Tools.ORM.dll"/>
-								<File Id="ORM2Diagram.xsd" Name="ORM2Diag.xsd" LongName="ORM2Diagram.xsd" src="..\ORMModel\ShapeModel\ORM2Diagram.xsd"
+								<File Id="ORM2Diagram.xsd" ShortName="ORM2Diag.xsd" Name="ORM2Diagram.xsd" Source="..\ORMModel\ShapeModel\ORM2Diagram.xsd"
 									DefaultLanguage="0" CompanionFile="ORM2Core.xsd"/>
-								<File Id="ORM2Root.xsd" Name="ORM2Root.xsd" src="..\ORMModel\Shell\ORM2Root.xsd"
+								<File Id="ORM2Root.xsd" Name="ORM2Root.xsd" Source="..\ORMModel\Shell\ORM2Root.xsd"
 									DefaultLanguage="0" CompanionFile="ORM2Core.xsd"/>
 							</Component>
 							<Component Id="OIALSchemasComponent" Guid="D5543428-F53D-42D3-$(var.VersionGuidSuffix)" DiskId="1" Win64="$(var.Win64)" KeyPath="yes">
-								<File Id="OIAL.xsd" Name="OIAL.xsd" src="..\XML\OIAL\OIAL.xsd"
+								<File Id="OIAL.xsd" Name="OIAL.xsd" Source="..\XML\OIAL\OIAL.xsd"
 									DefaultLanguage="0" CompanionFile="Neumont.Tools.ORM.dll"/>
-								<File Id="ORMDataTypes.xsd" Name="ORMDT.xsd" LongName="ORMDataTypes.xsd" src="..\XML\OIAL\ORMDataTypes.xsd"
+								<File Id="ORMDataTypes.xsd" ShortName="ORMDT.xsd" Name="ORMDataTypes.xsd" Source="..\XML\OIAL\ORMDataTypes.xsd"
 									DefaultLanguage="0" CompanionFile="OIAL.xsd"/>
-								<File Id="ORMDataTypes_Temporal.xsd" Name="ORMDT-T.xsd" LongName="ORMDataTypes-Temporal.xsd" src="..\XML\OIAL\ORMDataTypes-Temporal.xsd"
+								<File Id="ORMDataTypes_Temporal.xsd" ShortName="ORMDT-T.xsd" Name="ORMDataTypes-Temporal.xsd" Source="..\XML\OIAL\ORMDataTypes-Temporal.xsd"
 									DefaultLanguage="0" CompanionFile="OIAL.xsd"/>
 							</Component>
 							<Component Id="ORMClassModelSchemasComponent" Guid="9C7D3F0F-0EC5-4933-$(var.VersionGuidSuffix)" DiskId="1" Win64="$(var.Win64)" KeyPath="yes">
-								<File Id="OIALtoPLiX_Properties.xsd" Name="O2P_Prop.xsd" LongName="OIALtoPLiX_Properties.xsd" src="..\XML\OIALtoPLiX\OIALtoPLiX_Properties.xsd"
+								<File Id="OIALtoPLiX_Properties.xsd" ShortName="O2P_Prop.xsd" Name="OIALtoPLiX_Properties.xsd" Source="..\XML\OIALtoPLiX\OIALtoPLiX_Properties.xsd"
 									DefaultLanguage="0" CompanionFile="Neumont.Tools.ORM.dll"/>
 							</Component>
 						</Directory>
-						<Directory Id="ORMCOMMONTRANSFORMSDIR" Name="Trnsfrms" LongName="Transforms">
+						<Directory Id="ORMCOMMONTRANSFORMSDIR" ShortName="Trnsfrms" Name="Transforms">
 
 							<Component Id="ORMTransformsComponent" Guid="92A82A59-CC06-4850-$(var.VersionGuidSuffix)" DiskId="1" Win64="$(var.Win64)" KeyPath="yes">
-								<File Id="CoRefORM.xslt" Name="CoRefORM.xsl" LongName="CoRefORM.xslt" src="..\XML\OIAL\CoRefORM.xslt"
+								<File Id="CoRefORM.xslt" ShortName="CoRefORM.xsl" Name="CoRefORM.xslt" Source="..\XML\OIAL\CoRefORM.xslt"
 									DefaultLanguage="0" CompanionFile="Neumont.Tools.ORM.dll"/>
-								<Registry Action="createKeyAndRemoveKeyOnUninstall" Root="HKLM" Key="$(var.NORMARegRoot)\Generators\CoRefORM">
-									<Registry Type="string" Name="Type" Value="XSLT"/>
-									<Registry Type="string" Name="OfficialName" Value="CoRefORM"/>
-									<Registry Type="string" Name="DisplayName" Value="ORM Co-Referencer"/>
-									<Registry Type="string" Name="DisplayDescription" Value="Co-references (binarizes) an ORM file."/>
-									<Registry Type="string" Name="FileExtension" Value=".CoRef.orm"/>
-									<Registry Type="string" Name="SourceInputFormat" Value="ORM"/>
-									<Registry Type="string" Name="ProvidesOutputFormat" Value="CoRefORM"/>
-									<Registry Type="string" Name="TransformUri" Value="[#CoRefORM.xslt]"/>
-									<Registry Type="integer" Name="GeneratesSupportFile" Value="1"/>
-								</Registry>
+								<RegistryKey Action="createAndRemoveOnUninstall" Root="HKLM" Key="$(var.NORMARegRoot)\Generators\CoRefORM">
+									<RegistryValue Type="string" Name="Type" Value="XSLT"/>
+									<RegistryValue Type="string" Name="OfficialName" Value="CoRefORM"/>
+									<RegistryValue Type="string" Name="DisplayName" Value="ORM Co-Referencer"/>
+									<RegistryValue Type="string" Name="DisplayDescription" Value="Co-references (binarizes) an ORM file."/>
+									<RegistryValue Type="string" Name="FileExtension" Value=".CoRef.orm"/>
+									<RegistryValue Type="string" Name="SourceInputFormat" Value="ORM"/>
+									<RegistryValue Type="string" Name="ProvidesOutputFormat" Value="CoRefORM"/>
+									<RegistryValue Type="string" Name="TransformUri" Value="[#CoRefORM.xslt]"/>
+									<RegistryValue Type="integer" Name="GeneratesSupportFile" Value="1"/>
+								</RegistryKey>
 							</Component>
 
 							<Component Id="OIALTransformsComponent" Guid="165ED455-31BE-4E30-$(var.VersionGuidSuffix)" DiskId="1" Win64="$(var.Win64)" KeyPath="yes">
-								<File Id="ORMtoOIAL.xslt" Name="ORM2OIAL.xsl" LongName="ORMtoOIAL.xslt" src="..\XML\OIAL\ORMtoOIAL.xslt"
+								<File Id="ORMtoOIAL.xslt" ShortName="ORM2OIAL.xsl" Name="ORMtoOIAL.xslt" Source="..\XML\OIAL\ORMtoOIAL.xslt"
 									DefaultLanguage="0" CompanionFile="Neumont.Tools.ORM.dll"/>
-								<Registry Action="createKeyAndRemoveKeyOnUninstall" Root="HKLM" Key="$(var.NORMARegRoot)\Generators\ORMtoOIAL">
-									<Registry Type="string" Name="Type" Value="XSLT"/>
-									<Registry Type="string" Name="OfficialName" Value="ORMtoOIAL"/>
-									<Registry Type="string" Name="DisplayName" Value="ORM to OIAL"/>
-									<Registry Type="string" Name="DisplayDescription" Value="Transforms a coreferenced ORM file to OIAL."/>
-									<Registry Type="string" Name="FileExtension" Value=".OIAL.xml"/>
-									<Registry Type="string" Name="SourceInputFormat" Value="CoRefORM"/>
-									<Registry Type="string" Name="ProvidesOutputFormat" Value="OIAL"/>
-									<Registry Type="string" Name="TransformUri" Value="[#ORMtoOIAL.xslt]"/>
-									<Registry Type="integer" Name="GeneratesSupportFile" Value="1"/>
-								</Registry>
+								<RegistryKey Action="createAndRemoveOnUninstall" Root="HKLM" Key="$(var.NORMARegRoot)\Generators\ORMtoOIAL">
+									<RegistryValue Type="string" Name="Type" Value="XSLT"/>
+									<RegistryValue Type="string" Name="OfficialName" Value="ORMtoOIAL"/>
+									<RegistryValue Type="string" Name="DisplayName" Value="ORM to OIAL"/>
+									<RegistryValue Type="string" Name="DisplayDescription" Value="Transforms a coreferenced ORM file to OIAL."/>
+									<RegistryValue Type="string" Name="FileExtension" Value=".OIAL.xml"/>
+									<RegistryValue Type="string" Name="SourceInputFormat" Value="CoRefORM"/>
+									<RegistryValue Type="string" Name="ProvidesOutputFormat" Value="OIAL"/>
+									<RegistryValue Type="string" Name="TransformUri" Value="[#ORMtoOIAL.xslt]"/>
+									<RegistryValue Type="integer" Name="GeneratesSupportFile" Value="1"/>
+								</RegistryKey>
 							</Component>
 
 							<Component Id="ORMClassModelTransformsComponent" Guid="82A94F1B-CC68-4924-$(var.VersionGuidSuffix)" DiskId="1" Win64="$(var.Win64)" KeyPath="yes">
-								<File Id="OIALtoCLIProperties.xslt" Name="OIL2CLIP.xsl" LongName="OIALtoCLIProperties.xslt" src="..\XML\OIALtoPLiX\OIALtoCLIProperties.xslt"
+								<File Id="OIALtoCLIProperties.xslt" ShortName="OIL2CLIP.xsl" Name="OIALtoCLIProperties.xslt" Source="..\XML\OIALtoPLiX\OIALtoCLIProperties.xslt"
 									DefaultLanguage="0" CompanionFile="Neumont.Tools.ORM.dll"/>
-								<Registry Action="createKeyAndRemoveKeyOnUninstall" Root="HKLM" Key="$(var.NORMARegRoot)\Generators\OIALtoCLIProperties">
-									<Registry Type="string" Name="Type" Value="XSLT"/>
-									<Registry Type="string" Name="OfficialName" Value="OIALtoCLIProperties"/>
-									<Registry Type="string" Name="DisplayName" Value="OIAL to CLI Properties"/>
-									<Registry Type="string" Name="DisplayDescription" Value="Transforms an OIAL file to CLI (Common Language Infrastructure) Properties"/>
-									<Registry Type="string" Name="FileExtension" Value=".CLIProperties.xml"/>
-									<Registry Type="string" Name="SourceInputFormat" Value="OIAL"/>
-									<Registry Type="string" Name="ProvidesOutputFormat" Value="CLIProperties"/>
-									<Registry Type="string" Name="TransformUri" Value="[#OIALtoCLIProperties.xslt]"/>
-									<Registry Type="integer" Name="GeneratesSupportFile" Value="1"/>
-								</Registry>
+								<RegistryKey Action="createAndRemoveOnUninstall" Root="HKLM" Key="$(var.NORMARegRoot)\Generators\OIALtoCLIProperties">
+									<RegistryValue Type="string" Name="Type" Value="XSLT"/>
+									<RegistryValue Type="string" Name="OfficialName" Value="OIALtoCLIProperties"/>
+									<RegistryValue Type="string" Name="DisplayName" Value="OIAL to CLI Properties"/>
+									<RegistryValue Type="string" Name="DisplayDescription" Value="Transforms an OIAL file to CLI (Common Language Infrastructure) Properties"/>
+									<RegistryValue Type="string" Name="FileExtension" Value=".CLIProperties.xml"/>
+									<RegistryValue Type="string" Name="SourceInputFormat" Value="OIAL"/>
+									<RegistryValue Type="string" Name="ProvidesOutputFormat" Value="CLIProperties"/>
+									<RegistryValue Type="string" Name="TransformUri" Value="[#OIALtoCLIProperties.xslt]"/>
+									<RegistryValue Type="integer" Name="GeneratesSupportFile" Value="1"/>
+								</RegistryKey>
 
-								<File Id="OIALtoPLiX_GenerateTuple.xslt" Name="O2P_GTup.xsl" LongName="OIALtoPLiX_GenerateTuple.xslt" src="..\XML\OIALtoPLiX\OIALtoPLiX_GenerateTuple.xslt"
+								<File Id="OIALtoPLiX_GenerateTuple.xslt" ShortName="O2P_GTup.xsl" Name="OIALtoPLiX_GenerateTuple.xslt" Source="..\XML\OIALtoPLiX\OIALtoPLiX_GenerateTuple.xslt"
 									DefaultLanguage="0" CompanionFile="OIALtoCLIProperties.xslt"/>
-								<File Id="OIALtoPLiX_GlobalSupportFunctions.xslt" Name="O2P_GSF.xsl" LongName="OIALtoPLiX_GlobalSupportFunctions.xslt" src="..\XML\OIALtoPLiX\OIALtoPLiX_GlobalSupportFunctions.xslt"
+								<File Id="OIALtoPLiX_GlobalSupportFunctions.xslt" ShortName="O2P_GSF.xsl" Name="OIALtoPLiX_GlobalSupportFunctions.xslt" Source="..\XML\OIALtoPLiX\OIALtoPLiX_GlobalSupportFunctions.xslt"
 									DefaultLanguage="0" CompanionFile="OIALtoCLIProperties.xslt"/>
-								<File Id="OIALtoPLiX_GlobalSupportParameters.xslt" Name="O2P_GSP.xsl" LongName="OIALtoPLiX_GlobalSupportParameters.xslt" src="..\XML\OIALtoPLiX\OIALtoPLiX_GlobalSupportParameters.xslt"
+								<File Id="OIALtoPLiX_GlobalSupportParameters.xslt" ShortName="O2P_GSP.xsl" Name="OIALtoPLiX_GlobalSupportParameters.xslt" Source="..\XML\OIALtoPLiX\OIALtoPLiX_GlobalSupportParameters.xslt"
 									DefaultLanguage="0" CompanionFile="OIALtoCLIProperties.xslt"/>
 
-								<File Id="OIALtoPLiX_GenerateGlobalSupportClasses.xslt" Name="O2P_GGSC.xsl" LongName="OIALtoPLiX_GenerateGlobalSupportClasses.xslt" src="..\XML\OIALtoPLiX\OIALtoPLiX_GenerateGlobalSupportClasses.xslt"
+								<File Id="OIALtoPLiX_GenerateGlobalSupportClasses.xslt" ShortName="O2P_GGSC.xsl" Name="OIALtoPLiX_GenerateGlobalSupportClasses.xslt" Source="..\XML\OIALtoPLiX\OIALtoPLiX_GenerateGlobalSupportClasses.xslt"
 									DefaultLanguage="0" CompanionFile="OIALtoCLIProperties.xslt"/>
-								<Registry Action="createKeyAndRemoveKeyOnUninstall" Root="HKLM" Key="$(var.NORMARegRoot)\Generators\PLiXSupport">
-									<Registry Type="string" Name="Type" Value="XSLT"/>
-									<Registry Type="string" Name="OfficialName" Value="PLiXSupport"/>
-									<Registry Type="string" Name="DisplayName" Value="PLiX Support"/>
-									<Registry Type="string" Name="DisplayDescription" Value="Transforms nothing to SupportClasses PLiX."/>
-									<Registry Type="string" Name="FileExtension" Value=".Support.PLiX.xml"/>
-									<Registry Type="string" Name="SourceInputFormat" Value="OIAL"/>
-									<Registry Type="string" Name="ProvidesOutputFormat" Value="PLiX_Support"/>
-									<Registry Type="string" Name="TransformUri" Value="[#OIALtoPLiX_GenerateGlobalSupportClasses.xslt]"/>
-									<Registry Type="string" Name="CustomTool" Value="NUPlixLoader"/>
-								</Registry>
+								<RegistryKey Action="createAndRemoveOnUninstall" Root="HKLM" Key="$(var.NORMARegRoot)\Generators\PLiXSupport">
+									<RegistryValue Type="string" Name="Type" Value="XSLT"/>
+									<RegistryValue Type="string" Name="OfficialName" Value="PLiXSupport"/>
+									<RegistryValue Type="string" Name="DisplayName" Value="PLiX Support"/>
+									<RegistryValue Type="string" Name="DisplayDescription" Value="Transforms nothing to SupportClasses PLiX."/>
+									<RegistryValue Type="string" Name="FileExtension" Value=".Support.PLiX.xml"/>
+									<RegistryValue Type="string" Name="SourceInputFormat" Value="OIAL"/>
+									<RegistryValue Type="string" Name="ProvidesOutputFormat" Value="PLiX_Support"/>
+									<RegistryValue Type="string" Name="TransformUri" Value="[#OIALtoPLiX_GenerateGlobalSupportClasses.xslt]"/>
+									<RegistryValue Type="string" Name="CustomTool" Value="NUPlixLoader"/>
+								</RegistryKey>
 
-								<File Id="OIALtoPLiX_Abstract.xslt" Name="O2P_Abst.xsl" LongName="OIALtoPLiX_Abstract.xslt" src="..\XML\OIALtoPLiX\OIALtoPLiX_Abstract.xslt"
+								<File Id="OIALtoPLiX_Abstract.xslt" ShortName="O2P_Abst.xsl" Name="OIALtoPLiX_Abstract.xslt" Source="..\XML\OIALtoPLiX\OIALtoPLiX_Abstract.xslt"
 									DefaultLanguage="0" CompanionFile="OIALtoCLIProperties.xslt"/>
-								<Registry Action="createKeyAndRemoveKeyOnUninstall" Root="HKLM" Key="$(var.NORMARegRoot)\Generators\CLIPropertiesToPLiXAbstract">
-									<Registry Type="string" Name="Type" Value="XSLT"/>
-									<Registry Type="string" Name="OfficialName" Value="CLIPropertiesToPLiXAbstract"/>
-									<Registry Type="string" Name="DisplayName" Value="CLIProperties to PLiX Abstract"/>
-									<Registry Type="string" Name="DisplayDescription" Value="Transforms a CLI Properties file to Abstract PLiX"/>
-									<Registry Type="string" Name="FileExtension" Value=".Abstract.PLiX.xml"/>
-									<Registry Type="string" Name="SourceInputFormat" Value="CLIProperties"/>
-									<Registry Type="string" Name="ProvidesOutputFormat" Value="PLiX_Abstract"/>
-									<Registry Type="string" Name="TransformUri" Value="[#OIALtoPLiX_Abstract.xslt]"/>
-									<Registry Type="string" Name="CustomTool" Value="NUPlixLoader"/>
-									<Registry Type="integer" Name="GeneratesSupportFile" Value="1"/>
-									<Registry Type="multiString" Name="ReferenceInputFormats">
-										<RegistryValue>OIAL</RegistryValue>
-									</Registry>
-								</Registry>
+								<RegistryKey Action="createAndRemoveOnUninstall" Root="HKLM" Key="$(var.NORMARegRoot)\Generators\CLIPropertiesToPLiXAbstract">
+									<RegistryValue Type="string" Name="Type" Value="XSLT"/>
+									<RegistryValue Type="string" Name="OfficialName" Value="CLIPropertiesToPLiXAbstract"/>
+									<RegistryValue Type="string" Name="DisplayName" Value="CLIProperties to PLiX Abstract"/>
+									<RegistryValue Type="string" Name="DisplayDescription" Value="Transforms a CLI Properties file to Abstract PLiX"/>
+									<RegistryValue Type="string" Name="FileExtension" Value=".Abstract.PLiX.xml"/>
+									<RegistryValue Type="string" Name="SourceInputFormat" Value="CLIProperties"/>
+									<RegistryValue Type="string" Name="ProvidesOutputFormat" Value="PLiX_Abstract"/>
+									<RegistryValue Type="string" Name="TransformUri" Value="[#OIALtoPLiX_Abstract.xslt]"/>
+									<RegistryValue Type="string" Name="CustomTool" Value="NUPlixLoader"/>
+									<RegistryValue Type="integer" Name="GeneratesSupportFile" Value="1"/>
+									<RegistryValue Type="multiString" Name="ReferenceInputFormats">
+										<MultiStringValue>OIAL</MultiStringValue>
+									</RegistryValue>
+								</RegistryKey>
 
-								<!--<File Id="OIALtoPLiX_DataLayer_Implementation.xslt" Name="O2P_DLS.xsl" LongName="OIALtoPLiX_DataLayer_Implementation.xslt" src="..\XML\OIALtoPLiX\OIALtoPLiX_DataLayer_Implementation.xslt"
+								<!--<File Id="OIALtoPLiX_DataLayer_Implementation.xslt" ShortName="O2P_DLS.xsl" Name="OIALtoPLiX_DataLayer_Implementation.xslt" Source="..\XML\OIALtoPLiX\OIALtoPLiX_DataLayer_Implementation.xslt"
 									DefaultLanguage="0" CompanionFile="OIALtoCLIProperties.xslt"/>
-								<Registry Action="createKeyAndRemoveKeyOnUninstall" Root="HKLM" Key="$(var.NORMARegRoot)\Generators\CLIPropertiesToPLiXDataLayerWithSproc">
-									<Registry Type="string" Name="Type" Value="XSLT"/>
-									<Registry Type="string" Name="OfficialName" Value="CLIPropertiesToPLiXDataLayerWithSproc"/>
-									<Registry Type="string" Name="DisplayName" Value="CLIProperties to PLiX Data Layer with Sprocs"/>
-									<Registry Type="string" Name="DisplayDescription" Value="Transforms a CLI Properties file to DataLayer PLiX"/>
-									<Registry Type="string" Name="FileExtension" Value=".Implementation.PLiX.xml"/>
-									<Registry Type="string" Name="SourceInputFormat" Value="CLIProperties"/>
-									<Registry Type="string" Name="ProvidesOutputFormat" Value="PLiX_Implementation"/>
-									<Registry Type="string" Name="TransformUri" Value="[#OIALtoPLiX_DataLayer_Implementation.xslt]"/>
-									<Registry Type="string" Name="CustomTool" Value="NUPlixLoader"/>
-									<Registry Type="multiString" Name="ReferenceInputFormats">
-										<RegistryValue>OIAL</RegistryValue>
-									</Registry>
-									<Registry Type="multiString" Name="PrerequisiteInputFormats">
-										<RegistryValue>PLiX_Abstract</RegistryValue>
-									</Registry>
-								</Registry>
+								<RegistryKey Action="createAndRemoveOnUninstall" Root="HKLM" Key="$(var.NORMARegRoot)\Generators\CLIPropertiesToPLiXDataLayerWithSproc">
+									<RegistryValue Type="string" Name="Type" Value="XSLT"/>
+									<RegistryValue Type="string" Name="OfficialName" Value="CLIPropertiesToPLiXDataLayerWithSproc"/>
+									<RegistryValue Type="string" Name="DisplayName" Value="CLIProperties to PLiX Data Layer with Sprocs"/>
+									<RegistryValue Type="string" Name="DisplayDescription" Value="Transforms a CLI Properties file to DataLayer PLiX"/>
+									<RegistryValue Type="string" Name="FileExtension" Value=".Implementation.PLiX.xml"/>
+									<RegistryValue Type="string" Name="SourceInputFormat" Value="CLIProperties"/>
+									<RegistryValue Type="string" Name="ProvidesOutputFormat" Value="PLiX_Implementation"/>
+									<RegistryValue Type="string" Name="TransformUri" Value="[#OIALtoPLiX_DataLayer_Implementation.xslt]"/>
+									<RegistryValue Type="string" Name="CustomTool" Value="NUPlixLoader"/>
+									<RegistryValue Type="multiString" Name="ReferenceInputFormats">
+										<MultiStringValue>OIAL</MultiStringValue>
+									</RegistryKey>
+									<RegistryValue Type="multiString" Name="PrerequisiteInputFormats">
+										<MultiStringValue>PLiX_Abstract</MultiStringValue>
+									</RegistryValue>
+								</RegistryKey>
 								
-								<File Id="OIALtoPLiX_DataLayer_SprocFree_Implementation.xslt" Name="O2P_DLSF.xsl" LongName="OIALtoPLiX_DataLayer_SprocFree_Implementation.xslt" src="..\XML\OIALtoPLiX\OIALtoPLiX_DataLayer_SprocFree_Implementation.xslt"
+								<File Id="OIALtoPLiX_DataLayer_SprocFree_Implementation.xslt" ShortName="O2P_DLSF.xsl" Name="OIALtoPLiX_DataLayer_SprocFree_Implementation.xslt" Source="..\XML\OIALtoPLiX\OIALtoPLiX_DataLayer_SprocFree_Implementation.xslt"
 									DefaultLanguage="0" CompanionFile="OIALtoCLIProperties.xslt"/>
-								<Registry Action="createKeyAndRemoveKeyOnUninstall" Root="HKLM" Key="$(var.NORMARegRoot)\Generators\CLIPropertiesToPliXDataLayerSprocFree">
-									<Registry Type="string" Name="Type" Value="XSLT"/>
-									<Registry Type="string" Name="OfficialName" Value="CLIPropertiesToPliXDataLayerSprocFree"/>
-									<Registry Type="string" Name="DisplayName" Value="CLIProperties to PLiX Sproc Free Data Layer"/>
-									<Registry Type="string" Name="DisplayDescription" Value="Transforms a CLI Properties file to Sproc Free Data Layer PLiX"/>
-									<Registry Type="string" Name="FileExtension" Value=".Implementation.PLiX.xml"/>
-									<Registry Type="string" Name="SourceInputFormat" Value="CLIProperties"/>
-									<Registry Type="string" Name="ProvidesOutputFormat" Value="PLiX_Implementation"/>
-									<Registry Type="string" Name="TransformUri" Value="[#OIALtoPLiX_DataLayer_SprocFree_Implementation.xslt]"/>
-									<Registry Type="string" Name="CustomTool" Value="NUPlixLoader"/>
-									<Registry Type="multiString" Name="ReferenceInputFormats">
-										<RegistryValue>OIAL</RegistryValue>
-									</Registry>
-									<Registry Type="multiString" Name="PrerequisiteInputFormats">
-										<RegistryValue>PLiX_Abstract</RegistryValue>
-									</Registry>
-								</Registry>-->
+								<RegistryValue Action="createKeyAndRemoveKeyOnUninstall" Root="HKLM" Key="$(var.NORMARegRoot)\Generators\CLIPropertiesToPliXDataLayerSprocFree">
+									<RegistryValue Type="string" Name="Type" Value="XSLT"/>
+									<RegistryValue Type="string" Name="OfficialName" Value="CLIPropertiesToPliXDataLayerSprocFree"/>
+									<RegistryValue Type="string" Name="DisplayName" Value="CLIProperties to PLiX Sproc Free Data Layer"/>
+									<RegistryValue Type="string" Name="DisplayDescription" Value="Transforms a CLI Properties file to Sproc Free Data Layer PLiX"/>
+									<RegistryValue Type="string" Name="FileExtension" Value=".Implementation.PLiX.xml"/>
+									<RegistryValue Type="string" Name="SourceInputFormat" Value="CLIProperties"/>
+									<RegistryValue Type="string" Name="ProvidesOutputFormat" Value="PLiX_Implementation"/>
+									<RegistryValue Type="string" Name="TransformUri" Value="[#OIALtoPLiX_DataLayer_SprocFree_Implementation.xslt]"/>
+									<RegistryValue Type="string" Name="CustomTool" Value="NUPlixLoader"/>
+									<RegistryValue Type="multiString" Name="ReferenceInputFormats">
+										<MultiStringValue>OIAL</MultiStringValue>
+									</RegistryValue>
+									<RegistryValue Type="multiString" Name="PrerequisiteInputFormats">
+										<MultiStringValue>PLiX_Abstract</MultiStringValue>
+									</RegistryValue>
+								</RegistryKey>-->
 
-								<File Id="OIALtoPLiX_InMemory_Implementation.xslt" Name="O2P_IM.xsl" LongName="OIALtoPLiX_InMemory_Implementation.xslt" src="..\XML\OIALtoPLiX\OIALtoPLiX_InMemory_Implementation.xslt"
+								<File Id="OIALtoPLiX_InMemory_Implementation.xslt" ShortName="O2P_IM.xsl" Name="OIALtoPLiX_InMemory_Implementation.xslt" Source="..\XML\OIALtoPLiX\OIALtoPLiX_InMemory_Implementation.xslt"
 									DefaultLanguage="0" CompanionFile="OIALtoCLIProperties.xslt"/>
-								<Registry Action="createKeyAndRemoveKeyOnUninstall" Root="HKLM" Key="$(var.NORMARegRoot)\Generators\CLIPropertiesToPLiXInMemory">
-									<Registry Type="string" Name="Type" Value="XSLT"/>
-									<Registry Type="string" Name="OfficialName" Value="CLIPropertiesToPLiXInMemory"/>
-									<Registry Type="string" Name="DisplayName" Value="CLIProperties to PLiX In Memory"/>
-									<Registry Type="string" Name="DisplayDescription" Value="Transforms a CLI Properties file to InMemory PLiX"/>
-									<Registry Type="string" Name="FileExtension" Value=".Implementation.PLiX.xml"/>
-									<Registry Type="string" Name="SourceInputFormat" Value="CLIProperties"/>
-									<Registry Type="string" Name="ProvidesOutputFormat" Value="PLiX_Implementation"/>
-									<Registry Type="string" Name="TransformUri" Value="[#OIALtoPLiX_InMemory_Implementation.xslt]"/>
-									<Registry Type="string" Name="CustomTool" Value="NUPlixLoader"/>
-									<Registry Type="multiString" Name="ReferenceInputFormats">
-										<RegistryValue>OIAL</RegistryValue>
-									</Registry>
-									<Registry Type="multiString" Name="PrerequisiteInputFormats">
-										<RegistryValue>PLiX_Abstract</RegistryValue>
-									</Registry>
-								</Registry>
+								<RegistryKey Action="createAndRemoveOnUninstall" Root="HKLM" Key="$(var.NORMARegRoot)\Generators\CLIPropertiesToPLiXInMemory">
+									<RegistryValue Type="string" Name="Type" Value="XSLT"/>
+									<RegistryValue Type="string" Name="OfficialName" Value="CLIPropertiesToPLiXInMemory"/>
+									<RegistryValue Type="string" Name="DisplayName" Value="CLIProperties to PLiX In Memory"/>
+									<RegistryValue Type="string" Name="DisplayDescription" Value="Transforms a CLI Properties file to InMemory PLiX"/>
+									<RegistryValue Type="string" Name="FileExtension" Value=".Implementation.PLiX.xml"/>
+									<RegistryValue Type="string" Name="SourceInputFormat" Value="CLIProperties"/>
+									<RegistryValue Type="string" Name="ProvidesOutputFormat" Value="PLiX_Implementation"/>
+									<RegistryValue Type="string" Name="TransformUri" Value="[#OIALtoPLiX_InMemory_Implementation.xslt]"/>
+									<RegistryValue Type="string" Name="CustomTool" Value="NUPlixLoader"/>
+									<RegistryValue Type="multiString" Name="ReferenceInputFormats">
+										<MultiStringValue>OIAL</MultiStringValue>
+									</RegistryValue>
+									<RegistryValue Type="multiString" Name="PrerequisiteInputFormats">
+										<MultiStringValue>PLiX_Abstract</MultiStringValue>
+									</RegistryValue>
+								</RegistryKey>
 
 							</Component>
 
 							<Directory Id="ORMCOMMONTRANSFORMSPHPDIR" Name="PHP">
 								<Component Id="ORMClassModelPHPTransformsComponent" Guid="63811A03-EFFD-4991-$(var.VersionGuidSuffix)" DiskId="1" Win64="$(var.Win64)" KeyPath="yes">
 
-									<File Id="PHP_PHPEntities.xslt" Name="PHPEnt.xsl" LongName="PHPEntities.xslt" src="..\XML\OIALtoPLiX\PHP\PHPEntities.xslt"
+									<File Id="PHP_PHPEntities.xslt" ShortName="PHPEnt.xsl" Name="PHPEntities.xslt" Source="..\XML\OIALtoPLiX\PHP\PHPEntities.xslt"
 										DefaultLanguage="0" CompanionFile="Neumont.Tools.ORM.dll"/>
-									<Registry Action="createKeyAndRemoveKeyOnUninstall" Root="HKLM" Key="$(var.NORMARegRoot)\Generators\OIALtoPHPEntitiesPLiX">
-										<Registry Type="string" Name="Type" Value="XSLT"/>
-										<Registry Type="string" Name="OfficialName" Value="OIALtoPHPEntitiesPLiX"/>
-										<Registry Type="string" Name="DisplayName" Value="OIAL to PHP Entities PLiX"/>
-										<Registry Type="string" Name="DisplayDescription" Value="Transforms OIAL to PHP Entities PLiX."/>
-										<Registry Type="string" Name="FileExtension" Value=".Entities.php.xml"/>
-										<Registry Type="string" Name="SourceInputFormat" Value="OIAL"/>
-										<Registry Type="string" Name="ProvidesOutputFormat" Value="PHPEntitiesPLiX"/>
-										<Registry Type="string" Name="TransformUri" Value="[#PHP_PHPEntities.xslt]"/>
-										<Registry Type="integer" Name="GeneratesSupportFile" Value="1"/>
-										<Registry Type="multiString" Name="PrerequisiteInputFormats">
-											<RegistryValue>PHPProxiesPLiX</RegistryValue>
-											<RegistryValue>PHPServicesPLiX</RegistryValue>
-											<RegistryValue>PHPDataLayerPLiX</RegistryValue>
-										</Registry>
-									</Registry>
-									<Registry Action="createKeyAndRemoveKeyOnUninstall" Root="HKLM" Key="$(var.NORMARegRoot)\Generators\PHPEntitiesPLiXtoPHP">
-										<Registry Type="string" Name="Type" Value="XSLT"/>
-										<Registry Type="string" Name="OfficialName" Value="PHPEntitiesPLiXtoPHP"/>
-										<Registry Type="string" Name="DisplayName" Value="PHP Entities PLiX to PHP"/>
-										<Registry Type="string" Name="DisplayDescription" Value="Transforms PLiX Entities TO PHP."/>
-										<Registry Type="string" Name="FileExtension" Value=".Entities.php"/>
-										<Registry Type="string" Name="SourceInputFormat" Value="PHPEntitiesPLiX"/>
-										<Registry Type="string" Name="ProvidesOutputFormat" Value="PHPEntitiesImplementation"/>
-										<Registry Type="string" Name="TransformUri" Value="[NEUMONTCOMMONFILESDIR]\PLiX\Formatters\PLiXPHP.xslt"/>
-										<Registry Type="multiString" Name="PrerequisiteInputFormats">
-											<RegistryValue>PHPProxiesImplementation</RegistryValue>
-											<RegistryValue>PHPServicesImplementation</RegistryValue>
-											<RegistryValue>PHPDataLayerImplementation</RegistryValue>
-										</Registry>
-									</Registry>
+									<RegistryKey Action="createAndRemoveOnUninstall" Root="HKLM" Key="$(var.NORMARegRoot)\Generators\OIALtoPHPEntitiesPLiX">
+										<RegistryValue Type="string" Name="Type" Value="XSLT"/>
+										<RegistryValue Type="string" Name="OfficialName" Value="OIALtoPHPEntitiesPLiX"/>
+										<RegistryValue Type="string" Name="DisplayName" Value="OIAL to PHP Entities PLiX"/>
+										<RegistryValue Type="string" Name="DisplayDescription" Value="Transforms OIAL to PHP Entities PLiX."/>
+										<RegistryValue Type="string" Name="FileExtension" Value=".Entities.php.xml"/>
+										<RegistryValue Type="string" Name="SourceInputFormat" Value="OIAL"/>
+										<RegistryValue Type="string" Name="ProvidesOutputFormat" Value="PHPEntitiesPLiX"/>
+										<RegistryValue Type="string" Name="TransformUri" Value="[#PHP_PHPEntities.xslt]"/>
+										<RegistryValue Type="integer" Name="GeneratesSupportFile" Value="1"/>
+										<RegistryValue Type="multiString" Name="PrerequisiteInputFormats">
+											<MultiStringValue>PHPProxiesPLiX</MultiStringValue>
+											<MultiStringValue>PHPServicesPLiX</MultiStringValue>
+											<MultiStringValue>PHPDataLayerPLiX</MultiStringValue>
+										</RegistryValue>
+									</RegistryKey>
+									<RegistryKey Action="createAndRemoveOnUninstall" Root="HKLM" Key="$(var.NORMARegRoot)\Generators\PHPEntitiesPLiXtoPHP">
+										<RegistryValue Type="string" Name="Type" Value="XSLT"/>
+										<RegistryValue Type="string" Name="OfficialName" Value="PHPEntitiesPLiXtoPHP"/>
+										<RegistryValue Type="string" Name="DisplayName" Value="PHP Entities PLiX to PHP"/>
+										<RegistryValue Type="string" Name="DisplayDescription" Value="Transforms PLiX Entities TO PHP."/>
+										<RegistryValue Type="string" Name="FileExtension" Value=".Entities.php"/>
+										<RegistryValue Type="string" Name="SourceInputFormat" Value="PHPEntitiesPLiX"/>
+										<RegistryValue Type="string" Name="ProvidesOutputFormat" Value="PHPEntitiesImplementation"/>
+										<RegistryValue Type="string" Name="TransformUri" Value="[NEUMONTCOMMONFILESDIR]\PLiX\Formatters\PLiXPHP.xslt"/>
+										<RegistryValue Type="multiString" Name="PrerequisiteInputFormats">
+											<MultiStringValue>PHPProxiesImplementation</MultiStringValue>
+											<MultiStringValue>PHPServicesImplementation</MultiStringValue>
+											<MultiStringValue>PHPDataLayerImplementation</MultiStringValue>
+										</RegistryValue>
+									</RegistryKey>
 
-									<File Id="PHP_PHPProxies.xslt" Name="PHPProx.xsl" LongName="PHPProxies.xslt" src="..\XML\OIALtoPLiX\PHP\PHPProxies.xslt"
+									<File Id="PHP_PHPProxies.xslt" ShortName="PHPProx.xsl" Name="PHPProxies.xslt" Source="..\XML\OIALtoPLiX\PHP\PHPProxies.xslt"
 										DefaultLanguage="0" CompanionFile="PHP_PHPEntities.xslt"/>
-									<Registry Action="createKeyAndRemoveKeyOnUninstall" Root="HKLM" Key="$(var.NORMARegRoot)\Generators\OIALtoPHPProxiesPLiX">
-										<Registry Type="string" Name="Type" Value="XSLT"/>
-										<Registry Type="string" Name="OfficialName" Value="OIALtoPHPProxiesPLiX"/>
-										<Registry Type="string" Name="DisplayName" Value="OIAL to PHP Proxies PLiX"/>
-										<Registry Type="string" Name="DisplayDescription" Value="Transforms OIAL to PHP Proxies PLiX."/>
-										<Registry Type="string" Name="FileExtension" Value=".Proxies.php.xml"/>
-										<Registry Type="string" Name="SourceInputFormat" Value="OIAL"/>
-										<Registry Type="string" Name="ProvidesOutputFormat" Value="PHPProxiesPLiX"/>
-										<Registry Type="string" Name="TransformUri" Value="[#PHP_PHPProxies.xslt]"/>
-										<Registry Type="integer" Name="GeneratesSupportFile" Value="1"/>
-									</Registry>
-									<Registry Action="createKeyAndRemoveKeyOnUninstall" Root="HKLM" Key="$(var.NORMARegRoot)\Generators\PHPProxiesPLiXtoPHP">
-										<Registry Type="string" Name="Type" Value="XSLT"/>
-										<Registry Type="string" Name="OfficialName" Value="PHPProxiesPLiXtoPHP"/>
-										<Registry Type="string" Name="DisplayName" Value="PHP Proxies PLiX to PHP"/>
-										<Registry Type="string" Name="DisplayDescription" Value="Transforms PLiX Proxies TO PHP."/>
-										<Registry Type="string" Name="FileExtension" Value=".Proxies.php"/>
-										<Registry Type="string" Name="SourceInputFormat" Value="PHPProxiesPLiX"/>
-										<Registry Type="string" Name="ProvidesOutputFormat" Value="PHPProxiesImplementation"/>
-										<Registry Type="string" Name="TransformUri" Value="[NEUMONTCOMMONFILESDIR]\PLiX\Formatters\PLiXPHP.xslt"/>
-										<Registry Type="integer" Name="GeneratesSupportFile" Value="1"/>
-									</Registry>
+									<RegistryKey Action="createAndRemoveOnUninstall" Root="HKLM" Key="$(var.NORMARegRoot)\Generators\OIALtoPHPProxiesPLiX">
+										<RegistryValue Type="string" Name="Type" Value="XSLT"/>
+										<RegistryValue Type="string" Name="OfficialName" Value="OIALtoPHPProxiesPLiX"/>
+										<RegistryValue Type="string" Name="DisplayName" Value="OIAL to PHP Proxies PLiX"/>
+										<RegistryValue Type="string" Name="DisplayDescription" Value="Transforms OIAL to PHP Proxies PLiX."/>
+										<RegistryValue Type="string" Name="FileExtension" Value=".Proxies.php.xml"/>
+										<RegistryValue Type="string" Name="SourceInputFormat" Value="OIAL"/>
+										<RegistryValue Type="string" Name="ProvidesOutputFormat" Value="PHPProxiesPLiX"/>
+										<RegistryValue Type="string" Name="TransformUri" Value="[#PHP_PHPProxies.xslt]"/>
+										<RegistryValue Type="integer" Name="GeneratesSupportFile" Value="1"/>
+									</RegistryKey>
+									<RegistryKey Action="createAndRemoveOnUninstall" Root="HKLM" Key="$(var.NORMARegRoot)\Generators\PHPProxiesPLiXtoPHP">
+										<RegistryValue Type="string" Name="Type" Value="XSLT"/>
+										<RegistryValue Type="string" Name="OfficialName" Value="PHPProxiesPLiXtoPHP"/>
+										<RegistryValue Type="string" Name="DisplayName" Value="PHP Proxies PLiX to PHP"/>
+										<RegistryValue Type="string" Name="DisplayDescription" Value="Transforms PLiX Proxies TO PHP."/>
+										<RegistryValue Type="string" Name="FileExtension" Value=".Proxies.php"/>
+										<RegistryValue Type="string" Name="SourceInputFormat" Value="PHPProxiesPLiX"/>
+										<RegistryValue Type="string" Name="ProvidesOutputFormat" Value="PHPProxiesImplementation"/>
+										<RegistryValue Type="string" Name="TransformUri" Value="[NEUMONTCOMMONFILESDIR]\PLiX\Formatters\PLiXPHP.xslt"/>
+										<RegistryValue Type="integer" Name="GeneratesSupportFile" Value="1"/>
+									</RegistryKey>
 
-									<File Id="PHP_PHPServices.xslt" Name="PHPServ.xsl" LongName="PHPServices.xslt" src="..\XML\OIALtoPLiX\PHP\PHPServices.xslt"
+									<File Id="PHP_PHPServices.xslt" ShortName="PHPServ.xsl" Name="PHPServices.xslt" Source="..\XML\OIALtoPLiX\PHP\PHPServices.xslt"
 										DefaultLanguage="0" CompanionFile="PHP_PHPEntities.xslt"/>
-									<Registry Action="createKeyAndRemoveKeyOnUninstall" Root="HKLM" Key="$(var.NORMARegRoot)\Generators\OIALtoPHPServicesPLiX">
-										<Registry Type="string" Name="Type" Value="XSLT"/>
-										<Registry Type="string" Name="OfficialName" Value="OIALtoPHPServicesPLiX"/>
-										<Registry Type="string" Name="DisplayName" Value="OIAL to PHP Services PLiX"/>
-										<Registry Type="string" Name="DisplayDescription" Value="Transforms OIAL to PHP Services PLiX."/>
-										<Registry Type="string" Name="FileExtension" Value=".Services.php.xml"/>
-										<Registry Type="string" Name="SourceInputFormat" Value="OIAL"/>
-										<Registry Type="string" Name="ProvidesOutputFormat" Value="PHPServicesPLiX"/>
-										<Registry Type="string" Name="TransformUri" Value="[#PHP_PHPServices.xslt]"/>
-										<Registry Type="integer" Name="GeneratesSupportFile" Value="1"/>
-									</Registry>
-									<Registry Action="createKeyAndRemoveKeyOnUninstall" Root="HKLM" Key="$(var.NORMARegRoot)\Generators\PHPServicesPLiXtoPHP">
-										<Registry Type="string" Name="Type" Value="XSLT"/>
-										<Registry Type="string" Name="OfficialName" Value="PHPServicesPLiXtoPHP"/>
-										<Registry Type="string" Name="DisplayName" Value="PHP Services PLiX to PHP"/>
-										<Registry Type="string" Name="DisplayDescription" Value="Transforms PLiX Services TO PHP."/>
-										<Registry Type="string" Name="FileExtension" Value=".Services.php"/>
-										<Registry Type="string" Name="SourceInputFormat" Value="PHPServicesPLiX"/>
-										<Registry Type="string" Name="ProvidesOutputFormat" Value="PHPServicesImplementation"/>
-										<Registry Type="string" Name="TransformUri" Value="[NEUMONTCOMMONFILESDIR]\PLiX\Formatters\PLiXPHP.xslt"/>
-										<Registry Type="integer" Name="GeneratesSupportFile" Value="1"/>
-									</Registry>
+									<RegistryKey Action="createAndRemoveOnUninstall" Root="HKLM" Key="$(var.NORMARegRoot)\Generators\OIALtoPHPServicesPLiX">
+										<RegistryValue Type="string" Name="Type" Value="XSLT"/>
+										<RegistryValue Type="string" Name="OfficialName" Value="OIALtoPHPServicesPLiX"/>
+										<RegistryValue Type="string" Name="DisplayName" Value="OIAL to PHP Services PLiX"/>
+										<RegistryValue Type="string" Name="DisplayDescription" Value="Transforms OIAL to PHP Services PLiX."/>
+										<RegistryValue Type="string" Name="FileExtension" Value=".Services.php.xml"/>
+										<RegistryValue Type="string" Name="SourceInputFormat" Value="OIAL"/>
+										<RegistryValue Type="string" Name="ProvidesOutputFormat" Value="PHPServicesPLiX"/>
+										<RegistryValue Type="string" Name="TransformUri" Value="[#PHP_PHPServices.xslt]"/>
+										<RegistryValue Type="integer" Name="GeneratesSupportFile" Value="1"/>
+									</RegistryKey>
+									<RegistryKey Action="createAndRemoveOnUninstall" Root="HKLM" Key="$(var.NORMARegRoot)\Generators\PHPServicesPLiXtoPHP">
+										<RegistryValue Type="string" Name="Type" Value="XSLT"/>
+										<RegistryValue Type="string" Name="OfficialName" Value="PHPServicesPLiXtoPHP"/>
+										<RegistryValue Type="string" Name="DisplayName" Value="PHP Services PLiX to PHP"/>
+										<RegistryValue Type="string" Name="DisplayDescription" Value="Transforms PLiX Services TO PHP."/>
+										<RegistryValue Type="string" Name="FileExtension" Value=".Services.php"/>
+										<RegistryValue Type="string" Name="SourceInputFormat" Value="PHPServicesPLiX"/>
+										<RegistryValue Type="string" Name="ProvidesOutputFormat" Value="PHPServicesImplementation"/>
+										<RegistryValue Type="string" Name="TransformUri" Value="[NEUMONTCOMMONFILESDIR]\PLiX\Formatters\PLiXPHP.xslt"/>
+										<RegistryValue Type="integer" Name="GeneratesSupportFile" Value="1"/>
+									</RegistryKey>
 
-									<File Id="PHP_PHPDataLayer.xslt" Name="PHPDL.xsl" LongName="PHPDataLayer.xslt" src="..\XML\OIALtoPLiX\PHP\PHPDataLayer.xslt"
+									<File Id="PHP_PHPDataLayer.xslt" ShortName="PHPDL.xsl" Name="PHPDataLayer.xslt" Source="..\XML\OIALtoPLiX\PHP\PHPDataLayer.xslt"
 										DefaultLanguage="0" CompanionFile="PHP_PHPEntities.xslt"/>
-									<Registry Action="createKeyAndRemoveKeyOnUninstall" Root="HKLM" Key="$(var.NORMARegRoot)\Generators\OIALtoPHPDataLayerPLiX">
-										<Registry Type="string" Name="Type" Value="XSLT"/>
-										<Registry Type="string" Name="OfficialName" Value="OIALtoPHPDataLayerPLiX"/>
-										<Registry Type="string" Name="DisplayName" Value="OIAL to PHP Data Layer PLiX"/>
-										<Registry Type="string" Name="DisplayDescription" Value="Transforms OIAL to PHP Data Layer PLiX."/>
-										<Registry Type="string" Name="FileExtension" Value=".DataLayer.php.xml"/>
-										<Registry Type="string" Name="SourceInputFormat" Value="OIAL"/>
-										<Registry Type="string" Name="ProvidesOutputFormat" Value="PHPDataLayerPLiX"/>
-										<Registry Type="string" Name="TransformUri" Value="[#PHP_PHPDataLayer.xslt]"/>
-										<Registry Type="integer" Name="GeneratesSupportFile" Value="1"/>
-									</Registry>
-									<Registry Action="createKeyAndRemoveKeyOnUninstall" Root="HKLM" Key="$(var.NORMARegRoot)\Generators\PHPDataLayerPLiXtoPHP">
-										<Registry Type="string" Name="Type" Value="XSLT"/>
-										<Registry Type="string" Name="OfficialName" Value="PHPDataLayerPLiXtoPHP"/>
-										<Registry Type="string" Name="DisplayName" Value="PHP DataLayer PLiX to PHP"/>
-										<Registry Type="string" Name="DisplayDescription" Value="Transforms PLiX Data Layer TO PHP."/>
-										<Registry Type="string" Name="FileExtension" Value=".DataLayer.php"/>
-										<Registry Type="string" Name="SourceInputFormat" Value="PHPDataLayerPLiX"/>
-										<Registry Type="string" Name="ProvidesOutputFormat" Value="PHPDataLayerImplementation"/>
-										<Registry Type="string" Name="TransformUri" Value="[NEUMONTCOMMONFILESDIR]\PLiX\Formatters\PLiXPHP.xslt"/>
-										<Registry Type="integer" Name="GeneratesSupportFile" Value="1"/>
-									</Registry>
+									<RegistryKey Action="createAndRemoveOnUninstall" Root="HKLM" Key="$(var.NORMARegRoot)\Generators\OIALtoPHPDataLayerPLiX">
+										<RegistryValue Type="string" Name="Type" Value="XSLT"/>
+										<RegistryValue Type="string" Name="OfficialName" Value="OIALtoPHPDataLayerPLiX"/>
+										<RegistryValue Type="string" Name="DisplayName" Value="OIAL to PHP Data Layer PLiX"/>
+										<RegistryValue Type="string" Name="DisplayDescription" Value="Transforms OIAL to PHP Data Layer PLiX."/>
+										<RegistryValue Type="string" Name="FileExtension" Value=".DataLayer.php.xml"/>
+										<RegistryValue Type="string" Name="SourceInputFormat" Value="OIAL"/>
+										<RegistryValue Type="string" Name="ProvidesOutputFormat" Value="PHPDataLayerPLiX"/>
+										<RegistryValue Type="string" Name="TransformUri" Value="[#PHP_PHPDataLayer.xslt]"/>
+										<RegistryValue Type="integer" Name="GeneratesSupportFile" Value="1"/>
+									</RegistryKey>
+									<RegistryKey Action="createAndRemoveOnUninstall" Root="HKLM" Key="$(var.NORMARegRoot)\Generators\PHPDataLayerPLiXtoPHP">
+										<RegistryValue Type="string" Name="Type" Value="XSLT"/>
+										<RegistryValue Type="string" Name="OfficialName" Value="PHPDataLayerPLiXtoPHP"/>
+										<RegistryValue Type="string" Name="DisplayName" Value="PHP DataLayer PLiX to PHP"/>
+										<RegistryValue Type="string" Name="DisplayDescription" Value="Transforms PLiX Data Layer TO PHP."/>
+										<RegistryValue Type="string" Name="FileExtension" Value=".DataLayer.php"/>
+										<RegistryValue Type="string" Name="SourceInputFormat" Value="PHPDataLayerPLiX"/>
+										<RegistryValue Type="string" Name="ProvidesOutputFormat" Value="PHPDataLayerImplementation"/>
+										<RegistryValue Type="string" Name="TransformUri" Value="[NEUMONTCOMMONFILESDIR]\PLiX\Formatters\PLiXPHP.xslt"/>
+										<RegistryValue Type="integer" Name="GeneratesSupportFile" Value="1"/>
+									</RegistryKey>
 
 								</Component>
 							</Directory>
 
-							<!--<Directory Id="ORMDataLayerTestFormDIR" Name="DtaTstFm" LongName="DataLayerTestForm">
+							<!--<Directory Id="ORMDataLayerTestFormDIR" ShortName="DtaTstFm" Name="DataLayerTestForm">
 								<Component Id="ORMClassModelTransformsTestFormComponent" Guid="870B6A5C-543A-416a-$(var.VersionGuidSuffix)" DiskId="1" Win64="$(var.Win64)" KeyPath="yes">
-									<File Id="OIALtoPLiX_DataLayerTestForm.xslt" Name="OIL2DLTF.xsl" LongName="OIALtoPLiX_DataLayerTestForm.xslt" src="..\XML\OIALtoPLiX\DataLayerTestForm\OIALtoPLiX_DataLayerTestForm.xslt"
+									<File Id="OIALtoPLiX_DataLayerTestForm.xslt" ShortName="OIL2DLTF.xsl" Name="OIALtoPLiX_DataLayerTestForm.xslt" Source="..\XML\OIALtoPLiX\DataLayerTestForm\OIALtoPLiX_DataLayerTestForm.xslt"
 										DefaultLanguage="0" CompanionFile="Neumont.Tools.ORM.dll"/>
-									<Registry Action="createKeyAndRemoveKeyOnUninstall" Root="HKLM" Key="$(var.NORMARegRoot)\Generators\DataLayerTestForm">
-										<Registry Type="string" Name="Type" Value="XSLT"/>
-										<Registry Type="string" Name="OfficialName" Value="DataLayerTestForm"/>
-										<Registry Type="string" Name="DisplayName" Value="Data Layer Test Form"/>
-										<Registry Type="string" Name="DisplayDescription" Value="Generates a Windows Form with custom controls for testing and manipulating data using the generated data access layer and database."/>
-										<Registry Type="string" Name="FileExtension" Value=".DataLayerTestForm.PLiX.xml"/>
-										<Registry Type="string" Name="SourceInputFormat" Value="PLiX_Implementation"/>
-										<Registry Type="string" Name="ProvidesOutputFormat" Value="DataLayerTestForm"/>
-										<Registry Type="string" Name="TransformUri" Value="[#OIALtoPLiX_DataLayerTestForm.xslt]"/>
-										<Registry Type="string" Name="CustomTool" Value="NUPlixLoader"/>
-										<Registry Type="multiString" Name="PrerequisiteInputFormats">
-											<RegistryValue>DataLayerTestFormInputControl</RegistryValue>
-										</Registry>
-									</Registry>
-									<File Id="OIALtoPLiX_InputControl.xslt" Name="OIL2IC.xsl" LongName="OIALtoPLiX_InputControl.xslt" src="..\XML\OIALtoPLiX\DataLayerTestForm\OIALtoPLiX_InputControl.xslt"
+									<RegistryKey Action="createAndRemoveOnUninstall" Root="HKLM" Key="$(var.NORMARegRoot)\Generators\DataLayerTestForm">
+										<RegistryValue Type="string" Name="Type" Value="XSLT"/>
+										<RegistryValue Type="string" Name="OfficialName" Value="DataLayerTestForm"/>
+										<RegistryValue Type="string" Name="DisplayName" Value="Data Layer Test Form"/>
+										<RegistryValue Type="string" Name="DisplayDescription" Value="Generates a Windows Form with custom controls for testing and manipulating data using the generated data access layer and database."/>
+										<RegistryValue Type="string" Name="FileExtension" Value=".DataLayerTestForm.PLiX.xml"/>
+										<RegistryValue Type="string" Name="SourceInputFormat" Value="PLiX_Implementation"/>
+										<RegistryValue Type="string" Name="ProvidesOutputFormat" Value="DataLayerTestForm"/>
+										<RegistryValue Type="string" Name="TransformUri" Value="[#OIALtoPLiX_DataLayerTestForm.xslt]"/>
+										<RegistryValue Type="string" Name="CustomTool" Value="NUPlixLoader"/>
+										<RegistryValue Type="multiString" Name="PrerequisiteInputFormats">
+											<MultiStringValue>DataLayerTestFormInputControl</MultiStringValue>
+										</RegistryValue>
+									</RegistryKey>
+									<File Id="OIALtoPLiX_InputControl.xslt" ShortName="OIL2IC.xsl" Name="OIALtoPLiX_InputControl.xslt" Source="..\XML\OIALtoPLiX\DataLayerTestForm\OIALtoPLiX_InputControl.xslt"
 										DefaultLanguage="0" CompanionFile="Neumont.Tools.ORM.dll"/>
-									<Registry Action="createKeyAndRemoveKeyOnUninstall" Root="HKLM" Key="$(var.NORMARegRoot)\Generators\DataLayerTestFormInputControl">
-										<Registry Type="string" Name="Type" Value="XSLT"/>
-										<Registry Type="string" Name="OfficialName" Value="DataLayerTestFormInputControl"/>
-										<Registry Type="string" Name="DisplayName" Value="Data Layer Test Form Input Control"/>
-										<Registry Type="string" Name="DisplayDescription" Value="Generates a custom controls to be used on the generated form for testing and manipulating data using the generated data access layer and database."/>
-										<Registry Type="string" Name="FileExtension" Value=".DataLayerTestFormInputControl.PLiX.xml"/>
-										<Registry Type="string" Name="SourceInputFormat" Value="PLiX_Implementation"/>
-										<Registry Type="string" Name="ProvidesOutputFormat" Value="DataLayerTestFormInputControl"/>
-										<Registry Type="string" Name="TransformUri" Value="[#OIALtoPLiX_InputControl.xslt]"/>
-										<Registry Type="string" Name="CustomTool" Value="NUPlixLoader"/>
-										<Registry Type="multiString" Name="ReferenceInputFormats">
-											<RegistryValue>OIAL</RegistryValue>
-										</Registry>
-										<Registry Type="multiString" Name="PrerequisiteInputFormats">
-											<RegistryValue>DataLayerTestFormInputControlDesigner</RegistryValue>
-										</Registry>
-									</Registry>
-									<File Id="OIALtoPLiX_InputControl_Designer.xslt" Name="OIL2ICD.xsl" LongName="OIALtoPLiX_InputControl_Designer.xslt" src="..\XML\OIALtoPLiX\DataLayerTestForm\OIALtoPLiX_InputControl_Designer.xslt"
+									<RegistryKey Action="createAndRemoveOnUninstall" Root="HKLM" Key="$(var.NORMARegRoot)\Generators\DataLayerTestFormInputControl">
+										<RegistryValue Type="string" Name="Type" Value="XSLT"/>
+										<RegistryValue Type="string" Name="OfficialName" Value="DataLayerTestFormInputControl"/>
+										<RegistryValue Type="string" Name="DisplayName" Value="Data Layer Test Form Input Control"/>
+										<RegistryValue Type="string" Name="DisplayDescription" Value="Generates a custom controls to be used on the generated form for testing and manipulating data using the generated data access layer and database."/>
+										<RegistryValue Type="string" Name="FileExtension" Value=".DataLayerTestFormInputControl.PLiX.xml"/>
+										<RegistryValue Type="string" Name="SourceInputFormat" Value="PLiX_Implementation"/>
+										<RegistryValue Type="string" Name="ProvidesOutputFormat" Value="DataLayerTestFormInputControl"/>
+										<RegistryValue Type="string" Name="TransformUri" Value="[#OIALtoPLiX_InputControl.xslt]"/>
+										<RegistryValue Type="string" Name="CustomTool" Value="NUPlixLoader"/>
+										<RegistryValue Type="multiString" Name="ReferenceInputFormats">
+											<MultiStringValue>OIAL</MultiStringValue>
+										</RegistryValue>
+										<RegistryValue Type="multiString" Name="PrerequisiteInputFormats">
+											<MultiStringValue>DataLayerTestFormInputControlDesigner</MultiStringValue>
+										</RegistryValue>
+									</RegistryKey>
+									<File Id="OIALtoPLiX_InputControl_Designer.xslt" ShortName="OIL2ICD.xsl" Name="OIALtoPLiX_InputControl_Designer.xslt" Source="..\XML\OIALtoPLiX\DataLayerTestForm\OIALtoPLiX_InputControl_Designer.xslt"
 										DefaultLanguage="0" CompanionFile="Neumont.Tools.ORM.dll"/>
-									<Registry Action="createKeyAndRemoveKeyOnUninstall" Root="HKLM" Key="$(var.NORMARegRoot)\Generators\DataLayerTestFormInputControlDesigner">
-										<Registry Type="string" Name="Type" Value="XSLT"/>
-										<Registry Type="string" Name="OfficialName" Value="DataLayerTestFormInputControlDesigner"/>
-										<Registry Type="string" Name="DisplayName" Value="Data Layer Test Form Input Control Designer"/>
-										<Registry Type="string" Name="DisplayDescription" Value="Generates a custom controls to be used on the generated form for testing and manipulating data using the generated data access layer and database."/>
-										<Registry Type="string" Name="FileExtension" Value=".DataLayerTestFormInputControl.Designer.PLiX.xml"/>
-										<Registry Type="string" Name="SourceInputFormat" Value="PLiX_Implementation"/>
-										<Registry Type="string" Name="ProvidesOutputFormat" Value="DataLayerTestFormInputControlDesigner"/>
-										<Registry Type="string" Name="TransformUri" Value="[#OIALtoPLiX_InputControl_Designer.xslt]"/>
-										<Registry Type="string" Name="CustomTool" Value="NUPlixLoader"/>
-										<Registry Type="integer" Name="GeneratesSupportFile" Value="1"/>
-										<Registry Type="multiString" Name="ReferenceInputFormats">
-											<RegistryValue>OIAL</RegistryValue>
-										</Registry>
-									</Registry>
+									<RegistryKey Action="createAndRemoveOnUninstall" Root="HKLM" Key="$(var.NORMARegRoot)\Generators\DataLayerTestFormInputControlDesigner">
+										<RegistryValue Type="string" Name="Type" Value="XSLT"/>
+										<RegistryValue Type="string" Name="OfficialName" Value="DataLayerTestFormInputControlDesigner"/>
+										<RegistryValue Type="string" Name="DisplayName" Value="Data Layer Test Form Input Control Designer"/>
+										<RegistryValue Type="string" Name="DisplayDescription" Value="Generates a custom controls to be used on the generated form for testing and manipulating data using the generated data access layer and database."/>
+										<RegistryValue Type="string" Name="FileExtension" Value=".DataLayerTestFormInputControl.Designer.PLiX.xml"/>
+										<RegistryValue Type="string" Name="SourceInputFormat" Value="PLiX_Implementation"/>
+										<RegistryValue Type="string" Name="ProvidesOutputFormat" Value="DataLayerTestFormInputControlDesigner"/>
+										<RegistryValue Type="string" Name="TransformUri" Value="[#OIALtoPLiX_InputControl_Designer.xslt]"/>
+										<RegistryValue Type="string" Name="CustomTool" Value="NUPlixLoader"/>
+										<RegistryValue Type="integer" Name="GeneratesSupportFile" Value="1"/>
+										<RegistryValue Type="multiString" Name="ReferenceInputFormats">
+											<MultiStringValue>OIAL</MultiStringValue>
+										</RegistryValue>
+									</RegistryKey>
 								</Component>
 							</Directory>-->
 
 							<Component Id="ORMXmlSchemaTransformsComponent" Guid="E9166531-A29B-49B6-$(var.VersionGuidSuffix)" DiskId="1" Win64="$(var.Win64)" KeyPath="yes">
-								<File Id="OIALtoXSD.xslt" Name="OIAL2XSD.xsl" LongName="OIALtoXSD.xslt" src="..\XML\OIALtoXSD\OIALtoXSD.xslt"
+								<File Id="OIALtoXSD.xslt" ShortName="OIAL2XSD.xsl" Name="OIALtoXSD.xslt" Source="..\XML\OIALtoXSD\OIALtoXSD.xslt"
 									DefaultLanguage="0" CompanionFile="Neumont.Tools.ORM.dll"/>
-								<Registry Action="createKeyAndRemoveKeyOnUninstall" Root="HKLM" Key="$(var.NORMARegRoot)\Generators\OIALtoXSD">
-									<Registry Type="string" Name="Type" Value="XSLT"/>
-									<Registry Type="string" Name="OfficialName" Value="OIALtoXSD"/>
-									<Registry Type="string" Name="DisplayName" Value="OIAL to XSD"/>
-									<Registry Type="string" Name="DisplayDescription" Value="Transforms an OIAL file to XML Schema."/>
-									<Registry Type="string" Name="FileExtension" Value=".xsd"/>
-									<Registry Type="string" Name="SourceInputFormat" Value="OIAL"/>
-									<Registry Type="string" Name="ProvidesOutputFormat" Value="XSD"/>
-									<Registry Type="string" Name="TransformUri" Value="[#OIALtoXSD.xslt]"/>
-								</Registry>
+								<RegistryKey Action="createAndRemoveOnUninstall" Root="HKLM" Key="$(var.NORMARegRoot)\Generators\OIALtoXSD">
+									<RegistryValue Type="string" Name="Type" Value="XSLT"/>
+									<RegistryValue Type="string" Name="OfficialName" Value="OIALtoXSD"/>
+									<RegistryValue Type="string" Name="DisplayName" Value="OIAL to XSD"/>
+									<RegistryValue Type="string" Name="DisplayDescription" Value="Transforms an OIAL file to XML Schema."/>
+									<RegistryValue Type="string" Name="FileExtension" Value=".xsd"/>
+									<RegistryValue Type="string" Name="SourceInputFormat" Value="OIAL"/>
+									<RegistryValue Type="string" Name="ProvidesOutputFormat" Value="XSD"/>
+									<RegistryValue Type="string" Name="TransformUri" Value="[#OIALtoXSD.xslt]"/>
+								</RegistryKey>
 							</Component>
 
 							<Component Id="ORMRelationalSchemaTransformsComponent" Guid="2A455908-5BB2-48A3-$(var.VersionGuidSuffix)" DiskId="1" Win64="$(var.Win64)" KeyPath="yes">
-								<File Id="ConceptualDBtoDCIL.xslt" Name="CDB2DCIL.xsl" LongName="ConceptualDBtoDCIL.xslt" src="..\XML\ConceptualDBtoDCIL\ConceptualDBtoDCIL.xslt"
+								<File Id="ConceptualDBtoDCIL.xslt" ShortName="CDB2DCIL.xsl" Name="ConceptualDBtoDCIL.xslt" Source="..\XML\ConceptualDBtoDCIL\ConceptualDBtoDCIL.xslt"
 									DefaultLanguage="0" CompanionFile="Neumont.Tools.ORM.dll"/>
-								<Registry Action="createKeyAndRemoveKeyOnUninstall" Root="HKLM" Key="$(var.NORMARegRoot)\Generators\ConceptualDBtoDCL">
-									<Registry Type="string" Name="Type" Value="XSLT"/>
-									<Registry Type="string" Name="OfficialName" Value="ConceptualDBtoDCL"/>
-									<Registry Type="string" Name="DisplayName" Value="ConceptualDB to DCIL"/>
-									<Registry Type="string" Name="DisplayDescription" Value="Transforms an ORM file with the ConceptualDB extension to DCIL."/>
-									<Registry Type="string" Name="FileExtension" Value=".DCIL.xml"/>
-									<Registry Type="string" Name="SourceInputFormat" Value="ORM http://schemas.neumont.edu/ORM/Relational/2007-06/ConceptualDatabase http://schemas.neumont.edu/ORM/Bridge/2007-06/ORMAbstractionToConceptualDatabase http://schemas.neumont.edu/ORM/Abstraction/2007-06/Core http://schemas.neumont.edu/ORM/Bridge/2007-06/ORMToORMAbstraction"/>
-									<Registry Type="string" Name="ProvidesOutputFormat" Value="DCIL"/>
-									<Registry Type="string" Name="TransformUri" Value="[#ConceptualDBtoDCIL.xslt]"/>
-									<Registry Type="integer" Name="GeneratesSupportFile" Value="1"/>
-								</Registry>
-								<File Id="OIALtoDCIL.xslt" Name="OIL2DCIL.xsl" LongName="OIALtoDCIL.xslt" src="..\XML\OIALtoDCIL\OIALtoDCIL.xslt"
+								<RegistryKey Action="createAndRemoveOnUninstall" Root="HKLM" Key="$(var.NORMARegRoot)\Generators\ConceptualDBtoDCL">
+									<RegistryValue Type="string" Name="Type" Value="XSLT"/>
+									<RegistryValue Type="string" Name="OfficialName" Value="ConceptualDBtoDCL"/>
+									<RegistryValue Type="string" Name="DisplayName" Value="ConceptualDB to DCIL"/>
+									<RegistryValue Type="string" Name="DisplayDescription" Value="Transforms an ORM file with the ConceptualDB extension to DCIL."/>
+									<RegistryValue Type="string" Name="FileExtension" Value=".DCIL.xml"/>
+									<RegistryValue Type="string" Name="SourceInputFormat" Value="ORM http://schemas.neumont.edu/ORM/Relational/2007-06/ConceptualDatabase http://schemas.neumont.edu/ORM/Bridge/2007-06/ORMAbstractionToConceptualDatabase http://schemas.neumont.edu/ORM/Abstraction/2007-06/Core http://schemas.neumont.edu/ORM/Bridge/2007-06/ORMToORMAbstraction"/>
+									<RegistryValue Type="string" Name="ProvidesOutputFormat" Value="DCIL"/>
+									<RegistryValue Type="string" Name="TransformUri" Value="[#ConceptualDBtoDCIL.xslt]"/>
+									<RegistryValue Type="integer" Name="GeneratesSupportFile" Value="1"/>
+								</RegistryKey>
+								<File Id="OIALtoDCIL.xslt" ShortName="OIL2DCIL.xsl" Name="OIALtoDCIL.xslt" Source="..\XML\OIALtoDCIL\OIALtoDCIL.xslt"
 									DefaultLanguage="0" CompanionFile="Neumont.Tools.ORM.dll"/>
-								<Registry Action="createKeyAndRemoveKeyOnUninstall" Root="HKLM" Key="$(var.NORMARegRoot)\Generators\OIALtoDCIL">
-									<Registry Type="string" Name="Type" Value="XSLT"/>
-									<Registry Type="string" Name="OfficialName" Value="OIALtoDCIL"/>
-									<Registry Type="string" Name="DisplayName" Value="OIAL to DCIL"/>
-									<Registry Type="string" Name="DisplayDescription" Value="Transforms an OIAL file to DCIL."/>
-									<Registry Type="string" Name="FileExtension" Value=".DCIL.xml"/>
-									<Registry Type="string" Name="SourceInputFormat" Value="OIAL"/>
-									<Registry Type="string" Name="ProvidesOutputFormat" Value="DCIL"/>
-									<Registry Type="string" Name="TransformUri" Value="[#OIALtoDCIL.xslt]"/>
-									<Registry Type="integer" Name="GeneratesSupportFile" Value="1"/>
-								</Registry>
+								<RegistryKey Action="createAndRemoveOnUninstall" Root="HKLM" Key="$(var.NORMARegRoot)\Generators\OIALtoDCIL">
+									<RegistryValue Type="string" Name="Type" Value="XSLT"/>
+									<RegistryValue Type="string" Name="OfficialName" Value="OIALtoDCIL"/>
+									<RegistryValue Type="string" Name="DisplayName" Value="OIAL to DCIL"/>
+									<RegistryValue Type="string" Name="DisplayDescription" Value="Transforms an OIAL file to DCIL."/>
+									<RegistryValue Type="string" Name="FileExtension" Value=".DCIL.xml"/>
+									<RegistryValue Type="string" Name="SourceInputFormat" Value="OIAL"/>
+									<RegistryValue Type="string" Name="ProvidesOutputFormat" Value="DCIL"/>
+									<RegistryValue Type="string" Name="TransformUri" Value="[#OIALtoDCIL.xslt]"/>
+									<RegistryValue Type="integer" Name="GeneratesSupportFile" Value="1"/>
+								</RegistryKey>
 							</Component>
 
 						</Directory>
@@ -783,145 +779,145 @@
 					<Directory Id="DILCOMMONFILESDIR" Name="DIL">
 						<Directory Id="DILCOMMONSCHEMASDIR" Name="Schemas">
 							<Component Id="DILSchemasComponent" Guid="BC36206D-B106-42E0-$(var.VersionGuidSuffix)" DiskId="1" Win64="$(var.Win64)" KeyPath="yes">
-								<File Id="DILcatalog.xml" Name="catalog.xml" src="..\XML\DIL\catalog.xml"
+								<File Id="DILcatalog.xml" Name="catalog.xml" Source="..\XML\DIL\catalog.xml"
 									DefaultLanguage="0" CompanionFile="DILSchemaCatalog.xml"/>
-								<File Id="DIL.xsd" Name="DIL.xsd" src="..\XML\DIL\DIL.xsd"
+								<File Id="DIL.xsd" Name="DIL.xsd" Source="..\XML\DIL\DIL.xsd"
 									DefaultLanguage="0" CompanionFile="DILcatalog.xml"/>
-								<File Id="DCIL.xsd" Name="DCIL.xsd" src="..\XML\DIL\DCIL.xsd"
+								<File Id="DCIL.xsd" Name="DCIL.xsd" Source="..\XML\DIL\DCIL.xsd"
 									DefaultLanguage="0" CompanionFile="DIL.xsd"/>
-								<File Id="DDIL.xsd" Name="DDIL.xsd" src="..\XML\DIL\DDIL.xsd"
+								<File Id="DDIL.xsd" Name="DDIL.xsd" Source="..\XML\DIL\DDIL.xsd"
 									DefaultLanguage="0" CompanionFile="DIL.xsd"/>
-								<File Id="DMIL.xsd" Name="DMIL.xsd" src="..\XML\DIL\DMIL.xsd"
+								<File Id="DMIL.xsd" Name="DMIL.xsd" Source="..\XML\DIL\DMIL.xsd"
 									DefaultLanguage="0" CompanionFile="DIL.xsd"/>
-								<File Id="DILDT.xsd" Name="DILDT.xsd" src="..\XML\DIL\DILDT.xsd"
+								<File Id="DILDT.xsd" Name="DILDT.xsd" Source="..\XML\DIL\DILDT.xsd"
 									DefaultLanguage="0" CompanionFile="DIL.xsd"/>
-								<File Id="DILEP.xsd" Name="DILEP.xsd" src="..\XML\DIL\DILEP.xsd"
+								<File Id="DILEP.xsd" Name="DILEP.xsd" Source="..\XML\DIL\DILEP.xsd"
 									DefaultLanguage="0" CompanionFile="DIL.xsd"/>
-								<File Id="DILMS.xsd" Name="DILMS.xsd" src="..\XML\DIL\DILMS.xsd"
+								<File Id="DILMS.xsd" Name="DILMS.xsd" Source="..\XML\DIL\DILMS.xsd"
 									DefaultLanguage="0" CompanionFile="DIL.xsd"/>
 							</Component>
 						</Directory>
-						<Directory Id="DILCOMMONTRANSFORMSDIR" Name="Trnsfrms" LongName="Transforms">
+						<Directory Id="DILCOMMONTRANSFORMSDIR" ShortName="Trnsfrms" Name="Transforms">
 							<Component Id="DILTransformsComponent" Guid="E0653834-4F4F-426B-$(var.VersionGuidSuffix)" DiskId="1" Win64="$(var.Win64)" KeyPath="yes">
-								<File Id="DILSupportFunctions.xslt" Name="DILSF.xsl" LongName="DILSupportFunctions.xslt" src="..\XML\DIL\DILSupportFunctions.xslt"
+								<File Id="DILSupportFunctions.xslt" ShortName="DILSF.xsl" Name="DILSupportFunctions.xslt" Source="..\XML\DIL\DILSupportFunctions.xslt"
 									DefaultLanguage="0" CompanionFile="Neumont.Tools.ORM.dll"/>
-								<File Id="DDILtoSQLStandard.xslt" Name="DIL2Stnd.xsl" LongName="DDILtoSQLStandard.xslt" src="..\XML\DILtoSQL\DDILtoSQLStandard.xslt"
+								<File Id="DDILtoSQLStandard.xslt" ShortName="DIL2Stnd.xsl" Name="DDILtoSQLStandard.xslt" Source="..\XML\DILtoSQL\DDILtoSQLStandard.xslt"
 									DefaultLanguage="0" CompanionFile="DILSupportFunctions.xslt"/>
-								<Registry Action="createKeyAndRemoveKeyOnUninstall" Root="HKLM" Key="$(var.NORMARegRoot)\Generators\DDILtoSQLStandard">
-									<Registry Type="string" Name="Type" Value="XSLT"/>
-									<Registry Type="string" Name="OfficialName" Value="DDILtoSQLStandard"/>
-									<Registry Type="string" Name="DisplayName" Value="DDIL to SQL Standard"/>
-									<Registry Type="string" Name="DisplayDescription" Value="Transforms DDIL to Standard-dialect SQL."/>
-									<Registry Type="string" Name="FileExtension" Value=".SQLStandard.sql"/>
-									<Registry Type="string" Name="SourceInputFormat" Value="DDIL"/>
-									<Registry Type="string" Name="ProvidesOutputFormat" Value="SQL_SQLStandard"/>
-									<Registry Type="string" Name="TransformUri" Value="[#DDILtoSQLStandard.xslt]"/>
-								</Registry>
-								<File Id="DDILtoDB2.xslt" Name="DIL2DB2.xsl" LongName="DDILtoDB2.xslt" src="..\XML\DILtoSQL\DDILtoDB2.xslt"
+								<RegistryKey Action="createAndRemoveOnUninstall" Root="HKLM" Key="$(var.NORMARegRoot)\Generators\DDILtoSQLStandard">
+									<RegistryValue Type="string" Name="Type" Value="XSLT"/>
+									<RegistryValue Type="string" Name="OfficialName" Value="DDILtoSQLStandard"/>
+									<RegistryValue Type="string" Name="DisplayName" Value="DDIL to SQL Standard"/>
+									<RegistryValue Type="string" Name="DisplayDescription" Value="Transforms DDIL to Standard-dialect SQL."/>
+									<RegistryValue Type="string" Name="FileExtension" Value=".SQLStandard.sql"/>
+									<RegistryValue Type="string" Name="SourceInputFormat" Value="DDIL"/>
+									<RegistryValue Type="string" Name="ProvidesOutputFormat" Value="SQL_SQLStandard"/>
+									<RegistryValue Type="string" Name="TransformUri" Value="[#DDILtoSQLStandard.xslt]"/>
+								</RegistryKey>
+								<File Id="DDILtoDB2.xslt" ShortName="DIL2DB2.xsl" Name="DDILtoDB2.xslt" Source="..\XML\DILtoSQL\DDILtoDB2.xslt"
 									DefaultLanguage="0" CompanionFile="DILSupportFunctions.xslt"/>
-								<Registry Action="createKeyAndRemoveKeyOnUninstall" Root="HKLM" Key="$(var.NORMARegRoot)\Generators\DDILtoDB2">
-									<Registry Type="string" Name="Type" Value="XSLT"/>
-									<Registry Type="string" Name="OfficialName" Value="DDILtoDB2"/>
-									<Registry Type="string" Name="DisplayName" Value="DDIL to DB2"/>
-									<Registry Type="string" Name="DisplayDescription" Value="Transforms DDIL to DB2-dialect SQL."/>
-									<Registry Type="string" Name="FileExtension" Value=".DB2.sql"/>
-									<Registry Type="string" Name="SourceInputFormat" Value="DDIL"/>
-									<Registry Type="string" Name="ProvidesOutputFormat" Value="SQL_DB2"/>
-									<Registry Type="string" Name="TransformUri" Value="[#DDILtoDB2.xslt]"/>
-								</Registry>
-								<File Id="DDILtoPostgreSQL.xslt" Name="DIL2Post.xsl" LongName="DDILtoPostgreSQL.xslt" src="..\XML\DILtoSQL\DDILtoPostgreSQL.xslt"
+								<RegistryKey Action="createAndRemoveOnUninstall" Root="HKLM" Key="$(var.NORMARegRoot)\Generators\DDILtoDB2">
+									<RegistryValue Type="string" Name="Type" Value="XSLT"/>
+									<RegistryValue Type="string" Name="OfficialName" Value="DDILtoDB2"/>
+									<RegistryValue Type="string" Name="DisplayName" Value="DDIL to DB2"/>
+									<RegistryValue Type="string" Name="DisplayDescription" Value="Transforms DDIL to DB2-dialect SQL."/>
+									<RegistryValue Type="string" Name="FileExtension" Value=".DB2.sql"/>
+									<RegistryValue Type="string" Name="SourceInputFormat" Value="DDIL"/>
+									<RegistryValue Type="string" Name="ProvidesOutputFormat" Value="SQL_DB2"/>
+									<RegistryValue Type="string" Name="TransformUri" Value="[#DDILtoDB2.xslt]"/>
+								</RegistryKey>
+								<File Id="DDILtoPostgreSQL.xslt" ShortName="DIL2Post.xsl" Name="DDILtoPostgreSQL.xslt" Source="..\XML\DILtoSQL\DDILtoPostgreSQL.xslt"
 									DefaultLanguage="0" CompanionFile="DILSupportFunctions.xslt"/>
-								<Registry Action="createKeyAndRemoveKeyOnUninstall" Root="HKLM" Key="$(var.NORMARegRoot)\Generators\DDILtoPostgreSQL">
-									<Registry Type="string" Name="Type" Value="XSLT"/>
-									<Registry Type="string" Name="OfficialName" Value="DDILtoPostgreSQL"/>
-									<Registry Type="string" Name="DisplayName" Value="DDIL to PostgreSQL"/>
-									<Registry Type="string" Name="DisplayDescription" Value="Transforms DDIL to PostgreSQL-dialect SQL."/>
-									<Registry Type="string" Name="FileExtension" Value=".PostgreSQL.sql"/>
-									<Registry Type="string" Name="SourceInputFormat" Value="DDIL"/>
-									<Registry Type="string" Name="ProvidesOutputFormat" Value="SQL_PostgreSQL"/>
-									<Registry Type="string" Name="TransformUri" Value="[#DDILtoPostgreSQL.xslt]"/>
-								</Registry>
-								<File Id="DDILtoSQLServer.xslt" Name="DIL2MS.xsl" LongName="DDILtoSQLServer.xslt" src="..\XML\DILtoSQL\DDILtoSQLServer.xslt"
+								<RegistryKey Action="createAndRemoveOnUninstall" Root="HKLM" Key="$(var.NORMARegRoot)\Generators\DDILtoPostgreSQL">
+									<RegistryValue Type="string" Name="Type" Value="XSLT"/>
+									<RegistryValue Type="string" Name="OfficialName" Value="DDILtoPostgreSQL"/>
+									<RegistryValue Type="string" Name="DisplayName" Value="DDIL to PostgreSQL"/>
+									<RegistryValue Type="string" Name="DisplayDescription" Value="Transforms DDIL to PostgreSQL-dialect SQL."/>
+									<RegistryValue Type="string" Name="FileExtension" Value=".PostgreSQL.sql"/>
+									<RegistryValue Type="string" Name="SourceInputFormat" Value="DDIL"/>
+									<RegistryValue Type="string" Name="ProvidesOutputFormat" Value="SQL_PostgreSQL"/>
+									<RegistryValue Type="string" Name="TransformUri" Value="[#DDILtoPostgreSQL.xslt]"/>
+								</RegistryKey>
+								<File Id="DDILtoSQLServer.xslt" ShortName="DIL2MS.xsl" Name="DDILtoSQLServer.xslt" Source="..\XML\DILtoSQL\DDILtoSQLServer.xslt"
 									DefaultLanguage="0" CompanionFile="DILSupportFunctions.xslt"/>
-								<Registry Action="createKeyAndRemoveKeyOnUninstall" Root="HKLM" Key="$(var.NORMARegRoot)\Generators\DDILtoSQLServer">
-									<Registry Type="string" Name="Type" Value="XSLT"/>
-									<Registry Type="string" Name="OfficialName" Value="DDILtoSQLServer"/>
-									<Registry Type="string" Name="DisplayName" Value="DDIL to SQL Server"/>
-									<Registry Type="string" Name="DisplayDescription" Value="Transforms DDIL to SQL Server-dialect SQL."/>
-									<Registry Type="string" Name="FileExtension" Value=".SQLServer.sql"/>
-									<Registry Type="string" Name="SourceInputFormat" Value="DDIL"/>
-									<Registry Type="string" Name="ProvidesOutputFormat" Value="SQL_SQLServer"/>
-									<Registry Type="string" Name="TransformUri" Value="[#DDILtoSQLServer.xslt]"/>
-								</Registry>
-								<File Id="DDILtoOracle.xslt" Name="DIL2Orac.xsl" LongName="DDILtoOracle.xslt" src="..\XML\DILtoSQL\DDILtoOracle.xslt"
+								<RegistryKey Action="createAndRemoveOnUninstall" Root="HKLM" Key="$(var.NORMARegRoot)\Generators\DDILtoSQLServer">
+									<RegistryValue Type="string" Name="Type" Value="XSLT"/>
+									<RegistryValue Type="string" Name="OfficialName" Value="DDILtoSQLServer"/>
+									<RegistryValue Type="string" Name="DisplayName" Value="DDIL to SQL Server"/>
+									<RegistryValue Type="string" Name="DisplayDescription" Value="Transforms DDIL to SQL Server-dialect SQL."/>
+									<RegistryValue Type="string" Name="FileExtension" Value=".SQLServer.sql"/>
+									<RegistryValue Type="string" Name="SourceInputFormat" Value="DDIL"/>
+									<RegistryValue Type="string" Name="ProvidesOutputFormat" Value="SQL_SQLServer"/>
+									<RegistryValue Type="string" Name="TransformUri" Value="[#DDILtoSQLServer.xslt]"/>
+								</RegistryKey>
+								<File Id="DDILtoOracle.xslt" ShortName="DIL2Orac.xsl" Name="DDILtoOracle.xslt" Source="..\XML\DILtoSQL\DDILtoOracle.xslt"
 									DefaultLanguage="0" CompanionFile="DILSupportFunctions.xslt"/>
-								<Registry Action="createKeyAndRemoveKeyOnUninstall" Root="HKLM" Key="$(var.NORMARegRoot)\Generators\DDILtoOracle">
-									<Registry Type="string" Name="Type" Value="XSLT"/>
-									<Registry Type="string" Name="OfficialName" Value="DDILtoOracle"/>
-									<Registry Type="string" Name="DisplayName" Value="DDIL to Oracle"/>
-									<Registry Type="string" Name="DisplayDescription" Value="Transforms DDIL to Oracle-dialect SQL."/>
-									<Registry Type="string" Name="FileExtension" Value=".Oracle.sql"/>
-									<Registry Type="string" Name="SourceInputFormat" Value="DDIL"/>
-									<Registry Type="string" Name="ProvidesOutputFormat" Value="SQL_Oracle"/>
-									<Registry Type="string" Name="TransformUri" Value="[#DDILtoOracle.xslt]"/>
-								</Registry>
-								<File Id="DDILtoMySQL.xslt" Name="DIL2MySQ.xsl" LongName="DDILtoMySQL.xslt" src="..\XML\DILtoSQL\DDILtoMySQL.xslt"
+								<RegistryKey Action="createAndRemoveOnUninstall" Root="HKLM" Key="$(var.NORMARegRoot)\Generators\DDILtoOracle">
+									<RegistryValue Type="string" Name="Type" Value="XSLT"/>
+									<RegistryValue Type="string" Name="OfficialName" Value="DDILtoOracle"/>
+									<RegistryValue Type="string" Name="DisplayName" Value="DDIL to Oracle"/>
+									<RegistryValue Type="string" Name="DisplayDescription" Value="Transforms DDIL to Oracle-dialect SQL."/>
+									<RegistryValue Type="string" Name="FileExtension" Value=".Oracle.sql"/>
+									<RegistryValue Type="string" Name="SourceInputFormat" Value="DDIL"/>
+									<RegistryValue Type="string" Name="ProvidesOutputFormat" Value="SQL_Oracle"/>
+									<RegistryValue Type="string" Name="TransformUri" Value="[#DDILtoOracle.xslt]"/>
+								</RegistryKey>
+								<File Id="DDILtoMySQL.xslt" ShortName="DIL2MySQ.xsl" Name="DDILtoMySQL.xslt" Source="..\XML\DILtoSQL\DDILtoMySQL.xslt"
 									DefaultLanguage="0" CompanionFile="DILSupportFunctions.xslt"/>
-								<Registry Action="createKeyAndRemoveKeyOnUninstall" Root="HKLM" Key="$(var.NORMARegRoot)\Generators\DDILtoMySQL">
-									<Registry Type="string" Name="Type" Value="XSLT"/>
-									<Registry Type="string" Name="OfficialName" Value="DDILtoMySQL"/>
-									<Registry Type="string" Name="DisplayName" Value="DDIL to MySQL"/>
-									<Registry Type="string" Name="DisplayDescription" Value="Transforms DDIL to MySQL-dialect SQL."/>
-									<Registry Type="string" Name="FileExtension" Value=".MySQL.sql"/>
-									<Registry Type="string" Name="SourceInputFormat" Value="DDIL"/>
-									<Registry Type="string" Name="ProvidesOutputFormat" Value="SQL_MySQL"/>
-									<Registry Type="string" Name="TransformUri" Value="[#DDILtoMySQL.xslt]"/>
-								</Registry>
+								<RegistryKey Action="createAndRemoveOnUninstall" Root="HKLM" Key="$(var.NORMARegRoot)\Generators\DDILtoMySQL">
+									<RegistryValue Type="string" Name="Type" Value="XSLT"/>
+									<RegistryValue Type="string" Name="OfficialName" Value="DDILtoMySQL"/>
+									<RegistryValue Type="string" Name="DisplayName" Value="DDIL to MySQL"/>
+									<RegistryValue Type="string" Name="DisplayDescription" Value="Transforms DDIL to MySQL-dialect SQL."/>
+									<RegistryValue Type="string" Name="FileExtension" Value=".MySQL.sql"/>
+									<RegistryValue Type="string" Name="SourceInputFormat" Value="DDIL"/>
+									<RegistryValue Type="string" Name="ProvidesOutputFormat" Value="SQL_MySQL"/>
+									<RegistryValue Type="string" Name="TransformUri" Value="[#DDILtoMySQL.xslt]"/>
+								</RegistryKey>
 
-								<File Id="DomainInliner.xslt" Name="DmnInlnr.xsl" LongName="DomainInliner.xslt" src="..\XML\DILtoSQL\DomainInliner.xslt"
+								<File Id="DomainInliner.xslt" ShortName="DmnInlnr.xsl" Name="DomainInliner.xslt" Source="..\XML\DILtoSQL\DomainInliner.xslt"
 									DefaultLanguage="0" CompanionFile="DILSupportFunctions.xslt"/>
-								<File Id="TruthValueTestRemover.xslt" Name="TVTRmvr.xsl" LongName="TruthValueTestRemover.xslt" src="..\XML\DILtoSQL\TruthValueTestRemover.xslt"
+								<File Id="TruthValueTestRemover.xslt" ShortName="TVTRmvr.xsl" Name="TruthValueTestRemover.xslt" Source="..\XML\DILtoSQL\TruthValueTestRemover.xslt"
 									DefaultLanguage="0" CompanionFile="DILSupportFunctions.xslt"/>
 
-								<File Id="DCILtoDDIL.xslt" Name="DCIL2DDL.xsl" LongName="DCILtoDDIL.xslt" src="..\XML\DILtoSQL\DCILtoDDIL.xslt"
+								<File Id="DCILtoDDIL.xslt" ShortName="DCIL2DDL.xsl" Name="DCILtoDDIL.xslt" Source="..\XML\DILtoSQL\DCILtoDDIL.xslt"
 									DefaultLanguage="0" CompanionFile="DILSupportFunctions.xslt"/>
-								<Registry Action="createKeyAndRemoveKeyOnUninstall" Root="HKLM" Key="$(var.NORMARegRoot)\Generators\DCILtoDDIL">
-									<Registry Type="string" Name="Type" Value="XSLT"/>
-									<Registry Type="string" Name="OfficialName" Value="DCILtoDDIL"/>
-									<Registry Type="string" Name="DisplayName" Value="DCIL to DDIL"/>
-									<Registry Type="string" Name="DisplayDescription" Value="Transforms DCIL to DDIL."/>
-									<Registry Type="string" Name="FileExtension" Value=".DDIL.xml"/>
-									<Registry Type="string" Name="SourceInputFormat" Value="DCIL"/>
-									<Registry Type="string" Name="ProvidesOutputFormat" Value="DDIL"/>
-									<Registry Type="string" Name="TransformUri" Value="[#DCILtoDDIL.xslt]"/>
-									<Registry Type="integer" Name="GeneratesSupportFile" Value="1"/>
-								</Registry>
+								<RegistryKey Action="createAndRemoveOnUninstall" Root="HKLM" Key="$(var.NORMARegRoot)\Generators\DCILtoDDIL">
+									<RegistryValue Type="string" Name="Type" Value="XSLT"/>
+									<RegistryValue Type="string" Name="OfficialName" Value="DCILtoDDIL"/>
+									<RegistryValue Type="string" Name="DisplayName" Value="DCIL to DDIL"/>
+									<RegistryValue Type="string" Name="DisplayDescription" Value="Transforms DCIL to DDIL."/>
+									<RegistryValue Type="string" Name="FileExtension" Value=".DDIL.xml"/>
+									<RegistryValue Type="string" Name="SourceInputFormat" Value="DCIL"/>
+									<RegistryValue Type="string" Name="ProvidesOutputFormat" Value="DDIL"/>
+									<RegistryValue Type="string" Name="TransformUri" Value="[#DCILtoDDIL.xslt]"/>
+									<RegistryValue Type="integer" Name="GeneratesSupportFile" Value="1"/>
+								</RegistryKey>
 
-								<File Id="DCILtoTV.xslt" Name="DCIL2TV.xsl" LongName="DCILtoTV.xslt" src="..\XML\DCILtoHTML\DCILtoTV.xslt"
+								<File Id="DCILtoTV.xslt" ShortName="DCIL2TV.xsl" Name="DCILtoTV.xslt" Source="..\XML\DCILtoHTML\DCILtoTV.xslt"
 									DefaultLanguage="0" CompanionFile="DILSupportFunctions.xslt"/>
-								<Registry Action="createKeyAndRemoveKeyOnUninstall" Root="HKLM" Key="$(var.NORMARegRoot)\Generators\DCILtoTV">
-									<Registry Type="string" Name="Type" Value="XSLT"/>
-									<Registry Type="string" Name="OfficialName" Value="DCILtoTV"/>
-									<Registry Type="string" Name="DisplayName" Value="DCIL to TableView"/>
-									<Registry Type="string" Name="DisplayDescription" Value="Transforms DCIL to TableView."/>
-									<Registry Type="string" Name="FileExtension" Value=".TableView.xml"/>
-									<Registry Type="string" Name="SourceInputFormat" Value="DCIL"/>
-									<Registry Type="string" Name="ProvidesOutputFormat" Value="TV"/>
-									<Registry Type="string" Name="TransformUri" Value="[#DCILtoTV.xslt]"/>
-									<Registry Type="integer" Name="GeneratesSupportFile" Value="1"/>
-								</Registry>
-								<File Id="TVtoHTML.xslt" Name="TV2HTML.xsl" LongName="TVtoHTML.xslt" src="..\XML\DCILtoHTML\TVtoHTML.xslt"
+								<RegistryKey Action="createAndRemoveOnUninstall" Root="HKLM" Key="$(var.NORMARegRoot)\Generators\DCILtoTV">
+									<RegistryValue Type="string" Name="Type" Value="XSLT"/>
+									<RegistryValue Type="string" Name="OfficialName" Value="DCILtoTV"/>
+									<RegistryValue Type="string" Name="DisplayName" Value="DCIL to TableView"/>
+									<RegistryValue Type="string" Name="DisplayDescription" Value="Transforms DCIL to TableView."/>
+									<RegistryValue Type="string" Name="FileExtension" Value=".TableView.xml"/>
+									<RegistryValue Type="string" Name="SourceInputFormat" Value="DCIL"/>
+									<RegistryValue Type="string" Name="ProvidesOutputFormat" Value="TV"/>
+									<RegistryValue Type="string" Name="TransformUri" Value="[#DCILtoTV.xslt]"/>
+									<RegistryValue Type="integer" Name="GeneratesSupportFile" Value="1"/>
+								</RegistryKey>
+								<File Id="TVtoHTML.xslt" ShortName="TV2HTML.xsl" Name="TVtoHTML.xslt" Source="..\XML\DCILtoHTML\TVtoHTML.xslt"
 									DefaultLanguage="0" CompanionFile="DILSupportFunctions.xslt"/>
-								<Registry Action="createKeyAndRemoveKeyOnUninstall" Root="HKLM" Key="$(var.NORMARegRoot)\Generators\TVtoHTML">
-									<Registry Type="string" Name="Type" Value="XSLT"/>
-									<Registry Type="string" Name="OfficialName" Value="TVtoHTML"/>
-									<Registry Type="string" Name="DisplayName" Value="TableView to HTML"/>
-									<Registry Type="string" Name="DisplayDescription" Value="Transforms TableView to HTML."/>
-									<Registry Type="string" Name="FileExtension" Value=".TableView.html"/>
-									<Registry Type="string" Name="SourceInputFormat" Value="TV"/>
-									<Registry Type="string" Name="ProvidesOutputFormat" Value="TableViewHTML"/>
-									<Registry Type="string" Name="TransformUri" Value="[#TVtoHTML.xslt]"/>
-								</Registry>
+								<RegistryKey Action="createAndRemoveOnUninstall" Root="HKLM" Key="$(var.NORMARegRoot)\Generators\TVtoHTML">
+									<RegistryValue Type="string" Name="Type" Value="XSLT"/>
+									<RegistryValue Type="string" Name="OfficialName" Value="TVtoHTML"/>
+									<RegistryValue Type="string" Name="DisplayName" Value="TableView to HTML"/>
+									<RegistryValue Type="string" Name="DisplayDescription" Value="Transforms TableView to HTML."/>
+									<RegistryValue Type="string" Name="FileExtension" Value=".TableView.html"/>
+									<RegistryValue Type="string" Name="SourceInputFormat" Value="TV"/>
+									<RegistryValue Type="string" Name="ProvidesOutputFormat" Value="TableViewHTML"/>
+									<RegistryValue Type="string" Name="TransformUri" Value="[#TVtoHTML.xslt]"/>
+								</RegistryKey>
 							</Component>
 						</Directory>
 					</Directory>
@@ -931,57 +927,57 @@
 			<Directory Id="VSTEMPLATEITEMDIR">
 				<Directory Id="General" Name="General">
 					<Component Id="NORMAVSProjectItemsGeneralComponent" Guid="26D96FE1-69F2-46ED-$(var.VersionGuidSuffix)" DiskId="1" Win64="$(var.Win64)" KeyPath="yes">
-						<File Id="General.zip" Name="ORMModel.zip" src="..\ORMModel\Shell\ProjectItems\General.zip"
+						<File Id="General.zip" Name="ORMModel.zip" Source="..\ORMModel\Shell\ProjectItems\General.zip"
 							DefaultLanguage="0" CompanionFile="Neumont.Tools.ORM.dll"/>
 					</Component>
 				</Directory>
-				<Directory Id="VisualBasic" Name="VBasic" LongName="VisualBasic">
+				<Directory Id="VisualBasic" ShortName="VBasic" Name="VisualBasic">
 					<Component Id="NORMAVSProjectItemsVBasicComponent" Guid="5D140A94-9C4A-4B60-$(var.VersionGuidSuffix)" DiskId="1" Win64="$(var.Win64)" KeyPath="yes">
 						<Condition>VBASICPACKAGEGUID OR Installed</Condition>
-						<File Id="VisualBasic.zip" Name="ORMModel.zip" src="..\ORMModel\Shell\ProjectItems\VisualBasic.zip"
+						<File Id="VisualBasic.zip" Name="ORMModel.zip" Source="..\ORMModel\Shell\ProjectItems\VisualBasic.zip"
 							DefaultLanguage="0" CompanionFile="Neumont.Tools.ORM.dll"/>
 					</Component>
 				</Directory>
 				<Directory Id="CSharp" Name="CSharp">
 					<Component Id="NORMAVSProjectItemsVCSharpComponent" Guid="C1AAAF79-FA94-45C0-$(var.VersionGuidSuffix)" DiskId="1" Win64="$(var.Win64)" KeyPath="yes">
 						<Condition>VCSHARPPACKAGEGUID OR Installed</Condition>
-						<File Id="CSharp.zip" Name="ORMModel.zip" src="..\ORMModel\Shell\ProjectItems\CSharp.zip"
+						<File Id="CSharp.zip" Name="ORMModel.zip" Source="..\ORMModel\Shell\ProjectItems\CSharp.zip"
 							DefaultLanguage="0" CompanionFile="Neumont.Tools.ORM.dll"/>
 					</Component>
 				</Directory>
 				<Directory Id="JSharp" Name="JSharp">
 					<Component Id="NORMAVSProjectItemsVJSharpComponent" Guid="B6ACBD38-3FAD-4C24-$(var.VersionGuidSuffix)" DiskId="1" Win64="$(var.Win64)" KeyPath="yes">
 						<Condition>VJSHARPPACKAGEGUID OR Installed</Condition>
-						<File Id="JSharp.zip" Name="ORMModel.zip" src="..\ORMModel\Shell\ProjectItems\JSharp.zip"
+						<File Id="JSharp.zip" Name="ORMModel.zip" Source="..\ORMModel\Shell\ProjectItems\JSharp.zip"
 							DefaultLanguage="0" CompanionFile="Neumont.Tools.ORM.dll"/>
 					</Component>
 				</Directory>
 				<Directory Id="VisualC" Name="VisualC">
 					<Component Id="NORMAVSProjectItemsVCPlusPlusComponent" Guid="16B28893-FE72-4BBF-$(var.VersionGuidSuffix)" DiskId="1" Win64="$(var.Win64)" KeyPath="yes">
 						<Condition>VCPLUSPLUSPACKAGEGUID OR Installed</Condition>
-						<File Id="VisualC.zip" Name="ORMModel.zip" src="..\ORMModel\Shell\ProjectItems\VisualC.zip"
+						<File Id="VisualC.zip" Name="ORMModel.zip" Source="..\ORMModel\Shell\ProjectItems\VisualC.zip"
 							DefaultLanguage="0" CompanionFile="Neumont.Tools.ORM.dll"/>
 					</Component>
 				</Directory>
 				<Directory Id="Web" Name="Web">
-					<Directory Id="WebVisualBasic" Name="VBasic" LongName="VisualBasic">
+					<Directory Id="WebVisualBasic" ShortName="VBasic" Name="VisualBasic">
 						<Component Id="NORMAVSProjectItemsVWebDevVBasicComponent" Guid="4EC6EE56-3F04-4F0F-$(var.VersionGuidSuffix)" DiskId="1" Win64="$(var.Win64)" KeyPath="yes">
 							<Condition>VWEBDEVPACKAGEGUID OR Installed</Condition>
-							<File Id="WebVisualBasic.zip" Name="ORMModel.zip" src="..\ORMModel\Shell\ProjectItems\Web\VisualBasic.zip"
+							<File Id="WebVisualBasic.zip" Name="ORMModel.zip" Source="..\ORMModel\Shell\ProjectItems\Web\VisualBasic.zip"
 								DefaultLanguage="0" CompanionFile="Neumont.Tools.ORM.dll"/>
 						</Component>
 					</Directory>
 					<Directory Id="WebCSharp" Name="CSharp">
 						<Component Id="NORMAVSProjectItemsVWebDevCSharpComponent" Guid="7E4BA3AB-3831-4520-$(var.VersionGuidSuffix)" DiskId="1" Win64="$(var.Win64)" KeyPath="yes">
 							<Condition>VWEBDEVPACKAGEGUID OR Installed</Condition>
-							<File Id="WebCSharp.zip" Name="ORMModel.zip" src="..\ORMModel\Shell\ProjectItems\Web\CSharp.zip"
+							<File Id="WebCSharp.zip" Name="ORMModel.zip" Source="..\ORMModel\Shell\ProjectItems\Web\CSharp.zip"
 								DefaultLanguage="0" CompanionFile="Neumont.Tools.ORM.dll"/>
 						</Component>
 					</Directory>
 					<Directory Id="WebJSharp" Name="JSharp">
 						<Component Id="NORMAVSProjectItemsVWebDevJSharpComponent" Guid="E68504E4-D956-4A87-$(var.VersionGuidSuffix)" DiskId="1" Win64="$(var.Win64)" KeyPath="yes">
 							<Condition>VWEBDEVPACKAGEGUID OR Installed</Condition>
-							<File Id="WebJSharp.zip" Name="ORMModel.zip" src="..\ORMModel\Shell\ProjectItems\Web\JSharp.zip"
+							<File Id="WebJSharp.zip" Name="ORMModel.zip" Source="..\ORMModel\Shell\ProjectItems\Web\JSharp.zip"
 								DefaultLanguage="0" CompanionFile="Neumont.Tools.ORM.dll"/>
 						</Component>
 					</Directory>
@@ -993,15 +989,15 @@
 					<Directory Id="VSXMLSCHEMASDIR" Name="Schemas">
 						<!-- Point Visual Studio to additional XML Schema Catalog directories. -->
 						<Component Id="NORMAVSSchemaCatalogComponent" Guid="5E3279C3-FEC1-48C7-$(var.VersionGuidSuffix)" DiskId="1" Win64="$(var.Win64)">
-							<File Id="NORMASchemaCatalog.xml" Name="NORMACat.xml" LongName="NORMASchemaCatalog.xml" src="NORMASchemaCatalog.xml"
+							<File Id="NORMASchemaCatalog.xml" ShortName="NORMACat.xml" Name="NORMASchemaCatalog.xml" Source="NORMASchemaCatalog.xml"
 								DefaultLanguage="0" KeyPath="yes"/>
 						</Component>
 						<Component Id="ORMSchemaCatalogComponent" Guid="3571DCC0-D86B-4705-$(var.VersionGuidSuffix)" DiskId="1" Win64="$(var.Win64)">
-							<File Id="ORMSchemaCatalog.xml" Name="ORMCat.xml" LongName="ORMSchemaCatalog.xml" src="ORMSchemaCatalog.xml"
+							<File Id="ORMSchemaCatalog.xml" ShortName="ORMCat.xml" Name="ORMSchemaCatalog.xml" Source="ORMSchemaCatalog.xml"
 								DefaultLanguage="0" KeyPath="yes"/>
 						</Component>
 						<Component Id="DILSchemaCatalogComponent" Guid="67E1A72B-7FEE-483C-$(var.VersionGuidSuffix)" DiskId="1" Win64="$(var.Win64)">
-							<File Id="DILSchemaCatalog.xml" Name="DILCat.xml" LongName="DILSchemaCatalog.xml" src="DILSchemaCatalog.xml"
+							<File Id="DILSchemaCatalog.xml" ShortName="DILCat.xml" Name="DILSchemaCatalog.xml" Source="DILSchemaCatalog.xml"
 								DefaultLanguage="0" KeyPath="yes"/>
 						</Component>
 					</Directory>
