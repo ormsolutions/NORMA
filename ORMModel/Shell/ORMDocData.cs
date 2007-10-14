@@ -187,7 +187,7 @@ namespace Neumont.Tools.ORM.Shell
 
 			if (isReload)
 			{
-				this.RemoveModelingEventHandlers();
+				this.RemoveModelingEventHandlers(isReload);
 
 				IDisposable propertyProviderService = this.myPropertyProviderService as IDisposable;
 				if (propertyProviderService != null)
@@ -294,7 +294,7 @@ namespace Neumont.Tools.ORM.Shell
 				IVsRunningDocumentTable docTable = (IVsRunningDocumentTable)ServiceProvider.GetService(typeof(IVsRunningDocumentTable));
 				docTable.ModifyDocumentFlags(Cookie, (uint)_VSRDTFLAGS.RDT_DontSave, 1);
 			}
-			this.AddPostLoadModelingEventHandlers();
+			this.AddPostLoadModelingEventHandlers(isReload);
 			return retVal;
 		}
 		/// <summary>
@@ -330,7 +330,7 @@ namespace Neumont.Tools.ORM.Shell
 				return;
 			}
 
-			this.AddPreLoadModelingEventHandlers();
+			this.AddPreLoadModelingEventHandlers(isReload);
 
 			Debug.Assert(myFileStream != null);
 			Stream stream = myFileStream;
@@ -453,13 +453,13 @@ namespace Neumont.Tools.ORM.Shell
 		/// <summary>
 		/// Defer event handling to the loaded models
 		/// </summary>
-		protected virtual void AddPreLoadModelingEventHandlers()
+		protected virtual void AddPreLoadModelingEventHandlers(bool isReload)
 		{
 			Store store = Store;
 			ModelingEventManager eventManager = ModelingEventManager.GetModelingEventManager(store);
 			foreach (IModelingEventSubscriber subscriber in Utility.EnumerateDomainModels<IModelingEventSubscriber>(Store.DomainModels))
 			{
-				subscriber.ManagePreLoadModelingEventHandlers(eventManager, EventHandlerAction.Add);
+				subscriber.ManagePreLoadModelingEventHandlers(eventManager, isReload, EventHandlerAction.Add);
 			}
 			SetFlag(PrivateFlags.AddedPreLoadEvents, true);
 		}
@@ -467,15 +467,15 @@ namespace Neumont.Tools.ORM.Shell
 		/// Attach model events. Adds NamedElementDictionary handling
 		/// to the document's primary store.
 		/// </summary>
-		protected virtual void AddPostLoadModelingEventHandlers()
+		protected virtual void AddPostLoadModelingEventHandlers(bool isReload)
 		{
 			Store store = Store;
 			ModelingEventManager eventManager = ModelingEventManager.GetModelingEventManager(store);
 			foreach (IModelingEventSubscriber subscriber in Utility.EnumerateDomainModels<IModelingEventSubscriber>(Store.DomainModels))
 			{
-				subscriber.ManagePostLoadModelingEventHandlers(eventManager, EventHandlerAction.Add);
+				subscriber.ManagePostLoadModelingEventHandlers(eventManager, isReload, EventHandlerAction.Add);
 			}
-			ReloadSurveyTree();
+			ReloadSurveyTree(isReload);
 			ManageErrorReportingEvents(eventManager, EventHandlerAction.Add);
 			ManageTabRestoreEvents(eventManager, EventHandlerAction.Add);
 			SetFlag(PrivateFlags.AddedPostLoadEvents, true);
@@ -484,7 +484,7 @@ namespace Neumont.Tools.ORM.Shell
 		/// Detach model events. Adds NamedElementDictionary handling
 		/// to the document's primary store.
 		/// </summary>
-		protected virtual void RemoveModelingEventHandlers()
+		protected virtual void RemoveModelingEventHandlers(bool isReload)
 		{
 			bool addedPreLoad = GetFlag(PrivateFlags.AddedPreLoadEvents);
 			bool addedPostLoad = GetFlag(PrivateFlags.AddedPostLoadEvents);
@@ -500,15 +500,15 @@ namespace Neumont.Tools.ORM.Shell
 			{
 				if (addedPreLoad)
 				{
-					subscriber.ManagePreLoadModelingEventHandlers(eventManager, EventHandlerAction.Remove);
+					subscriber.ManagePreLoadModelingEventHandlers(eventManager, isReload, EventHandlerAction.Remove);
 				}
 				if (addedPostLoad)
 				{
-					subscriber.ManagePostLoadModelingEventHandlers(eventManager, EventHandlerAction.Remove);
+					subscriber.ManagePostLoadModelingEventHandlers(eventManager, isReload, EventHandlerAction.Remove);
 				}
 				if (addedSurveyQuestion)
 				{
-					subscriber.ManageSurveyQuestionModelingEventHandlers(eventManager, EventHandlerAction.Remove);
+					subscriber.ManageSurveyQuestionModelingEventHandlers(eventManager, isReload, EventHandlerAction.Remove);
 				}
 			}
 			UnloadSurveyTree();
@@ -531,7 +531,7 @@ namespace Neumont.Tools.ORM.Shell
 					myTaskProvider.RemoveAllTasks();
 					myTaskProvider = null;
 				}
-				this.RemoveModelingEventHandlers();
+				this.RemoveModelingEventHandlers(false);
 			}
 			finally
 			{

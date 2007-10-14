@@ -192,41 +192,9 @@ namespace Neumont.Tools.ORM.ShapeModel
 		/// </summary>
 		protected bool ActivateModelError(ModelError error)
 		{
-			MaxValueMismatchError maxValueMismatchError;
-			MinValueMismatchError minValueMismatchError;
-			ValueRangeOverlapError overlapError;
-			ConstraintDuplicateNameError duplicateName;
-			ValueConstraint errorValueConstraint = null;
-			bool retVal = true;
-			if (null != (maxValueMismatchError = error as MaxValueMismatchError))
-			{
-				errorValueConstraint = maxValueMismatchError.ValueRange.ValueConstraint;
-			}
-			else if (null != (minValueMismatchError = error as MinValueMismatchError))
-			{
-				errorValueConstraint = minValueMismatchError.ValueRange.ValueConstraint;
-			}
-			else if (null != (overlapError = error as ValueRangeOverlapError))
-			{
-				errorValueConstraint = overlapError.ValueConstraint;
-			}
-			else if (null != (duplicateName = error as ConstraintDuplicateNameError))
-			{
-				ActivateNameProperty(duplicateName.ConstraintCollection[0]);
-			}
-			else
-			{
-				retVal = false;
-			}
-			if (errorValueConstraint != null)
-			{
-				Store store = Store;
-				EditorUtility.ActivatePropertyEditor(
-					(store as IORMToolServices).ServiceProvider,
-					DomainTypeDescriptor.CreatePropertyDescriptor(this, ValueConstraint.TextDomainPropertyId),
-					false);
-			}
-			return retVal;
+			// UNDONE: Automatically defer IModelErrorActivation to ModelErrorActivationService without explicit implementation
+			IORMModelErrorActivationService activationService = (Store as IORMToolServices).ModelErrorActivationService;
+			return activationService != null && activationService.ActivateError(ModelElement, error);
 		}
 		bool IModelErrorActivation.ActivateModelError(ModelError error)
 		{

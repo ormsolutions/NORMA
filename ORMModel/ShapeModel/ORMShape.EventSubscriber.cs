@@ -27,13 +27,13 @@ namespace Neumont.Tools.ORM.ShapeModel
 		/// Implements <see cref="IModelingEventSubscriber.ManagePreLoadModelingEventHandlers"/>.
 		/// This implementation does nothing and does not need to be called.
 		/// </summary>
-		void IModelingEventSubscriber.ManagePreLoadModelingEventHandlers(ModelingEventManager eventManager, EventHandlerAction action)
+		void IModelingEventSubscriber.ManagePreLoadModelingEventHandlers(ModelingEventManager eventManager, bool isReload, EventHandlerAction action)
 		{
 		}
 		/// <summary>
 		/// Implements <see cref="IModelingEventSubscriber.ManagePostLoadModelingEventHandlers"/>.
 		/// </summary>
-		protected void ManagePostLoadModelingEventHandlers(ModelingEventManager eventManager, EventHandlerAction action)
+		protected void ManagePostLoadModelingEventHandlers(ModelingEventManager eventManager, bool isReload, EventHandlerAction action)
 		{
 			Store store = Store;
 			ORMBaseShape.ManageEventHandlers(store, eventManager, action);
@@ -44,15 +44,15 @@ namespace Neumont.Tools.ORM.ShapeModel
 			FactTypeShape.ManageEventHandlers(store, eventManager, action);
 			SubtypeLink.ManageEventHandlers(store, eventManager, action);
 		}
-		void IModelingEventSubscriber.ManagePostLoadModelingEventHandlers(ModelingEventManager eventManager, EventHandlerAction action)
+		void IModelingEventSubscriber.ManagePostLoadModelingEventHandlers(ModelingEventManager eventManager, bool isReload, EventHandlerAction action)
 		{
-			ManagePostLoadModelingEventHandlers(eventManager, action);
+			ManagePostLoadModelingEventHandlers(eventManager, isReload, action);
 		}
 		/// <summary>
 		/// Implements <see cref="IModelingEventSubscriber.ManageSurveyQuestionModelingEventHandlers"/>.
 		/// This implementation does nothing and does not need to be called.
 		/// </summary>
-		void IModelingEventSubscriber.ManageSurveyQuestionModelingEventHandlers(ModelingEventManager eventManager, EventHandlerAction action)
+		void IModelingEventSubscriber.ManageSurveyQuestionModelingEventHandlers(ModelingEventManager eventManager, bool isReload, EventHandlerAction action)
 		{
 			//currently unimplemented as the survey doesn't care about shape model changes
 		}

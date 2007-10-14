@@ -51,6 +51,10 @@ namespace Neumont.Tools.ORM.ObjectModel
 		/// </summary>
 		IORMPropertyProviderService PropertyProviderService { get;}
 		/// <summary>
+		/// Retrieve the <see cref="IORMModelErrorActivationService">service</see> for managing model error activation.
+		/// </summary>
+		IORMModelErrorActivationService ModelErrorActivationService { get;}
+		/// <summary>
 		/// Retrieve the context service provider. Can be null in some situations,
 		/// such as when the model is being loaded outside the Visual Studio environment.
 		/// </summary>
@@ -89,6 +93,45 @@ namespace Neumont.Tools.ORM.ObjectModel
 		bool ActivateShape(ShapeElement shape);
 	}
 	#endregion // IORMToolServices interface
+	#region ORMModelErrorActivation delegate
+	/// <summary>
+	/// Activate the provided <paramref name="error"/> using the provided <paramref name="services"/>.
+	/// Used with the <see cref="IORMModelErrorActivationService"/> interface.
+	/// </summary>
+	/// <param name="services">The context <see cref="IORMToolServices"/></param>
+	/// <param name="selectedElement">The currently selected element</param>
+	/// <param name="error">The model error to activate</param>
+	/// <returns><see langword="true"/> if the activation succeeded.</returns>
+	public delegate bool ORMModelErrorActivator(IORMToolServices services, ModelElement selectedElement, ModelError error);
+	#endregion // ORMModelErrorActivation delegate
+	#region IORMModelErrorActivationService
+	/// <summary>
+	/// Manage delegates for model error activation. IORMModelErrorActivateService
+	/// provides shared activation for different selections of the same element.
+	/// Explicit activation on shape representations should be done by implementing
+	/// the <see cref="IModelErrorActivation"/> interface on the shape, not by registering
+	/// a <see cref="ORMModelErrorActivator"/> with this interface.
+	/// </summary>
+	public interface IORMModelErrorActivationService
+	{
+		/// <summary>
+		/// Activate a specific <paramref name="error"/> for a given <paramref name="selectedElement"/>
+		/// </summary>
+		/// <param name="selectedElement">An element that has already been selected in the UI.</param>
+		/// <param name="error">The <see cref="ModelError"/> instance to activate</param>
+		/// <returns><see langword="true"/> if the activation succeeded.</returns>
+		bool ActivateError(ModelElement selectedElement, ModelError error);
+		/// <summary>
+		/// Register a handler for a specific type of error. Error activators should be registered
+		/// during the initial call (isReload is false) of <see cref="IModelingEventSubscriber.ManagePostLoadModelingEventHandlers"/>
+		/// </summary>
+		/// <param name="elementType">The type of element to handle</param>
+		/// <param name="registerDerivedTypes">Specify <see langword="true"/> to register derived types in addition to the specified type.
+		/// The final registration for a given type wins, so you can explicitly override some derived types even if this is <see langword="true"/></param>
+		/// <param name="activator">The delegate callback used for error activation.</param>
+		void RegisterErrorActivator(Type elementType, bool registerDerivedTypes, ORMModelErrorActivator activator);
+	}
+	#endregion // IORMModelErrorActivationService
 	#region ORMPropertyProvisioning delegate
 	/// <summary>
 	/// Adds extension <see cref="PropertyDescriptor"/>s for the <see cref="IORMExtendableElement"/> specified

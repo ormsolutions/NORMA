@@ -23,6 +23,8 @@ using Microsoft.VisualStudio.Modeling.Diagrams;
 using Microsoft.VisualStudio.Shell.Interop;
 using Neumont.Tools.Modeling.Design;
 using Neumont.Tools.ORM.ObjectModel;
+using Neumont.Tools.ORM.Shell;
+using System.Windows.Forms;
 
 namespace Neumont.Tools.ORM.ObjectModel.Design
 {
@@ -94,6 +96,263 @@ namespace Neumont.Tools.ORM.ObjectModel.Design
 			}
 			// Handle weird teardown scenarios where the Store is going away
 			return (retval != null && retval.Store != null) ? retval : null;
+		}
+		/// <summary>
+		/// Add shared model error activation handlers. Activation handlers are
+		/// static, this is called once during intitial load.
+		/// </summary>
+		/// <param name="store">The <see cref="Store"/></param>
+		public static void RegisterModelErrorActivators(Store store)
+		{
+			IORMToolServices toolServices;
+			IORMModelErrorActivationService activationService;
+			if (null != (toolServices = store as IORMToolServices) &&
+				null != (activationService = toolServices.ModelErrorActivationService))
+			{
+				#region Role error activation
+				activationService.RegisterErrorActivator(
+					typeof(Role),
+					true,
+					delegate(IORMToolServices services, ModelElement selectedElement, ModelError error)
+					{
+						bool retVal = true;
+						if (error is RolePlayerRequiredError)
+						{
+							EditorUtility.ActivatePropertyEditor(
+								services.ServiceProvider,
+								DomainTypeDescriptor.CreatePropertyDescriptor(selectedElement, Role.RolePlayerDisplayDomainPropertyId),
+								true);
+						}
+						else if (error is ValueMismatchError || error is ValueRangeOverlapError)
+						{
+							EditorUtility.ActivatePropertyEditor(
+								services.ServiceProvider,
+								DomainTypeDescriptor.CreatePropertyDescriptor(selectedElement, Role.ValueRangeTextDomainPropertyId),
+								false);
+						}
+						else
+						{
+							retVal = false;
+						}
+						return retVal;
+					});
+				#endregion // Role error activation
+				#region ValueConstraint error activation
+				activationService.RegisterErrorActivator(
+					typeof(ValueConstraint),
+					true,
+					delegate(IORMToolServices services, ModelElement selectedElement, ModelError error)
+					{
+						bool retVal = true;
+						if (error is ValueMismatchError || error is ValueRangeOverlapError)
+						{
+							EditorUtility.ActivatePropertyEditor(
+								services.ServiceProvider,
+								DomainTypeDescriptor.CreatePropertyDescriptor(selectedElement, ValueConstraint.TextDomainPropertyId),
+								false);
+						}
+						else if (error is ConstraintDuplicateNameError)
+						{
+							ActivateNameProperty(selectedElement);
+						}
+						else
+						{
+							retVal = false;
+						}
+						return retVal;
+					});
+				#endregion // ValueConstraint error activation
+				#region SetConstraint error activation
+				activationService.RegisterErrorActivator(
+					typeof(SetConstraint),
+					true,
+					delegate(IORMToolServices services, ModelElement selectedElement, ModelError error)
+					{
+						bool retVal = true;
+						if (error is ConstraintDuplicateNameError)
+						{
+							ActivateNameProperty(selectedElement);
+						}
+						else
+						{
+							retVal = false;
+						}
+						return retVal;
+					});
+				#endregion // SetConstraint error activation
+				#region RingConstraint error activation
+				activationService.RegisterErrorActivator(
+					typeof(RingConstraint),
+					false,
+					delegate(IORMToolServices services, ModelElement selectedElement, ModelError error)
+					{
+						bool retVal = true;
+						if (error is RingConstraintTypeNotSpecifiedError)
+						{
+							EditorUtility.ActivatePropertyEditor(
+								services.ServiceProvider,
+								DomainTypeDescriptor.CreatePropertyDescriptor(selectedElement, RingConstraint.RingTypeDomainPropertyId),
+								true);
+						}
+						else
+						{
+							retVal = false;
+						}
+						return retVal;
+					});
+				#endregion // RingConstraint error activation
+				#region SetComparisonConstraint error activation
+				activationService.RegisterErrorActivator(
+					typeof(SetComparisonConstraint),
+					true,
+					delegate(IORMToolServices services, ModelElement selectedElement, ModelError error)
+					{
+						bool retVal = true;
+						ConstraintDuplicateNameError duplicateName;
+						if (null != (duplicateName = error as ConstraintDuplicateNameError))
+						{
+							ActivateNameProperty(selectedElement);
+						}
+						else
+						{
+							retVal = false;
+						}
+						return retVal;
+					});
+				#endregion // SetComparisonConstraint error activation
+				#region ObjectType error activation
+				activationService.RegisterErrorActivator(
+					typeof(ObjectType),
+					false,
+					delegate(IORMToolServices services, ModelElement selectedElement, ModelError error)
+					{
+						bool retVal = true;
+						if (error is DataTypeNotSpecifiedError)
+						{
+							EditorUtility.ActivatePropertyEditor(
+								services.ServiceProvider,
+								DomainTypeDescriptor.CreatePropertyDescriptor(selectedElement, ObjectType.DataTypeDisplayDomainPropertyId),
+								true);
+						}
+						else if (error is EntityTypeRequiresReferenceSchemeError)
+						{
+							EditorUtility.ActivatePropertyEditor(
+								services.ServiceProvider,
+								DomainTypeDescriptor.CreatePropertyDescriptor(selectedElement, ObjectType.ReferenceModeDisplayDomainPropertyId),
+								true);
+						}
+						else if (error is ValueMismatchError || error is ValueRangeOverlapError)
+						{
+							EditorUtility.ActivatePropertyEditor(
+								services.ServiceProvider,
+								DomainTypeDescriptor.CreatePropertyDescriptor(selectedElement, ObjectType.ValueRangeTextDomainPropertyId),
+								false);
+						}
+						else if (error is ObjectTypeDuplicateNameError)
+						{
+							ActivateNameProperty(selectedElement);
+						}
+						else
+						{
+							retVal = false;
+						}
+						return retVal;
+					});
+				#endregion // ObjectType error activation
+				#region FactType error activation
+				activationService.RegisterErrorActivator(
+					typeof(FactType),
+					true,
+					delegate(IORMToolServices services, ModelElement selectedElement, ModelError error)
+					{
+						PopulationMandatoryError mandatory;
+						TooFewReadingRolesError tooFew;
+						TooManyReadingRolesError tooMany;
+						ReadingRequiresUserModificationError userModification;
+						FactTypeRequiresReadingError noReading;
+						FactType factType;
+						ImpliedInternalUniquenessConstraintError implConstraint;
+						Reading reading = null;
+						bool retVal = true;
+						if (null != (mandatory = error as PopulationMandatoryError))
+						{
+							ORMSamplePopulationToolWindow window = ORMDesignerPackage.SamplePopulationEditorWindow;
+							window.AutoCorrectMandatoryError(mandatory);
+						}
+						else if (null != (tooFew = error as TooFewReadingRolesError))
+						{
+							reading = tooFew.Reading;
+						}
+						else if (null != (tooMany = error as TooManyReadingRolesError))
+						{
+							reading = tooMany.Reading;
+						}
+						else if (null != (noReading = error as FactTypeRequiresReadingError))
+						{
+							factType = noReading.FactType;
+							Debug.Assert(factType != null);
+							ORMReadingEditorToolWindow newWindow = ORMDesignerPackage.ReadingEditorWindow;
+							newWindow.Show();
+							newWindow.ActivateReading(factType);
+						}
+						else if (null != (userModification = error as ReadingRequiresUserModificationError))
+						{
+							reading = userModification.Reading;
+						}
+						else if (null != (implConstraint = error as ImpliedInternalUniquenessConstraintError))
+						{
+							IServiceProvider provider;
+							IVsUIShell shell;
+							if (null != (provider = services.ServiceProvider) &&
+								null != (shell = (IVsUIShell)provider.GetService(typeof(IVsUIShell))))
+							{
+								Guid g = new Guid();
+								int pnResult;
+								shell.ShowMessageBox(0, ref g, ResourceStrings.PackageOfficialName,
+									ResourceStrings.ImpliedInternalConstraintFixMessage,
+									"", 0, OLEMSGBUTTON.OLEMSGBUTTON_YESNO,
+									OLEMSGDEFBUTTON.OLEMSGDEFBUTTON_FIRST, OLEMSGICON.OLEMSGICON_QUERY, 0, out pnResult);
+								if (pnResult == (int)DialogResult.Yes)
+								{
+									implConstraint.FactType.RemoveImpliedInternalUniquenessConstraints();
+								}
+							}
+						}
+						else if (error is ValueMismatchError || error is ValueRangeOverlapError)
+						{
+							EditorUtility.ActivatePropertyEditor(
+								services.ServiceProvider,
+								DomainTypeDescriptor.CreatePropertyDescriptor(selectedElement, ObjectType.ValueRangeTextDomainPropertyId),
+								false);
+						}
+						else
+						{
+							retVal = false;
+						}
+
+						if (reading != null)
+						{
+							// Open the reading editor window and activate the reading  
+							ORMReadingEditorToolWindow window = ORMDesignerPackage.ReadingEditorWindow;
+							window.Show();
+							window.ActivateReading(reading);
+						}
+						return retVal;
+					});
+				#endregion // FactType error activation
+			}
+		}
+		/// <summary>
+		/// Activate the Name property in the Properties Window for the specified element
+		/// </summary>
+		/// <param name="targetElement">The underlying model element with a name property</param>
+		private static void ActivateNameProperty(ModelElement targetElement)
+		{
+			Store store = targetElement.Store;
+			EditorUtility.ActivatePropertyEditor(
+				(store as IORMToolServices).ServiceProvider,
+				DomainTypeDescriptor.CreateNamePropertyDescriptor(targetElement),
+				false);
 		}
 	}
 	#endregion // ORMEditorUtility class

@@ -43,6 +43,13 @@ namespace Neumont.Tools.ORM.SDK.TestEngine
 					return this;
 				}
 			}
+			IORMModelErrorActivationService IORMToolServices.ModelErrorActivationService
+			{
+				get
+				{
+					return null;
+				}
+			}
 			IORMFontAndColorService IORMToolServices.FontAndColorService
 			{
 				get

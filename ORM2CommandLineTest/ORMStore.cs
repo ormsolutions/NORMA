@@ -45,6 +45,13 @@ namespace Neumont.Tools.ORM.SDK.TestEngine
 					return myServices.PropertyProviderService;
 				}
 			}
+			IORMModelErrorActivationService IORMToolServices.ModelErrorActivationService
+			{
+				get
+				{
+					return myServices.ModelErrorActivationService;
+				}
+			}
 			IORMToolTaskProvider IORMToolServices.TaskProvider
 			{
 				get

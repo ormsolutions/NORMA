@@ -956,17 +956,17 @@ namespace Neumont.Tools.ORM.Views.RelationalView
 		/// a lot of hoops, so we do it here, which fires after the rules are created and
 		/// before the model loads.
 		/// </summary>
-		void IModelingEventSubscriber.ManagePreLoadModelingEventHandlers(ModelingEventManager eventManager, EventHandlerAction action)
+		void IModelingEventSubscriber.ManagePreLoadModelingEventHandlers(ModelingEventManager eventManager, bool isReload, EventHandlerAction action)
 		{
 			if (action == EventHandlerAction.Add)
 			{
 				Store.RuleManager.EnableRule(typeof(FixUpDiagram));
 			}
 		}
-		void IModelingEventSubscriber.ManagePostLoadModelingEventHandlers(ModelingEventManager eventManager, EventHandlerAction action)
+		void IModelingEventSubscriber.ManagePostLoadModelingEventHandlers(ModelingEventManager eventManager, bool isReload, EventHandlerAction action)
 		{
 		}
-		void IModelingEventSubscriber.ManageSurveyQuestionModelingEventHandlers(ModelingEventManager eventManager, EventHandlerAction action)
+		void IModelingEventSubscriber.ManageSurveyQuestionModelingEventHandlers(ModelingEventManager eventManager, bool isReload, EventHandlerAction action)
 		{
 		}
 		#endregion // IModelingEventSubscriber Implementation

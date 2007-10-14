@@ -26,7 +26,7 @@ using System.Diagnostics;
 
 namespace Neumont.Tools.ORM.ObjectModel
 {
-	public partial class RoleBase : IAnswerSurveyQuestion<SurveyFactTypeDetailType>, ISurveyNode, ICustomComparableSurveyNode
+	public partial class RoleBase : IAnswerSurveyQuestion<SurveyFactTypeDetailType>, ISurveyNode, ISurveyNodeContext, ICustomComparableSurveyNode
 	{
 		#region ISurveyNode Members
 		bool ISurveyNode.IsSurveyNameEditable
@@ -189,5 +189,25 @@ namespace Neumont.Tools.ORM.ObjectModel
 			return 0;
 		}
 		#endregion
+		#region ISurveyNodeContext Implementation
+		/// <summary>
+		/// The survey node context for a <see cref="Role"/> is
+		/// its parent <see cref="FactType"/>
+		/// </summary>
+		protected object SurveyNodeContext
+		{
+			get
+			{
+				return FactType;
+			}
+		}
+		object ISurveyNodeContext.SurveyNodeContext
+		{
+			get
+			{
+				return SurveyNodeContext;
+			}
+		}
+		#endregion // ISurveyNodeContext Implementation
 	}
 }

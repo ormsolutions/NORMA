@@ -484,11 +484,36 @@ namespace Neumont.Tools.Modeling.Shell.DynamicSurveyTreeGrid
 				{
 					NodeLocation location;
 					int nodeIndex;
-					if (mySurveyTree.myNodeDictionary.TryGetValue(obj, out location) &&
-						location.MainList == this &&
-						0 <= (nodeIndex = myNodes.BinarySearch(location.ElementNode, myNodeComparer)))
+					ISurveyNodeContext nodeContext;
+					object contextElement = null;
+					if (mySurveyTree.myNodeDictionary.TryGetValue(obj, out location))
 					{
-						return new LocateObjectData(nodeIndex, 0, (int)TrackingObjectAction.ThisLevel);
+						MainList locatedList = location.MainList;
+						if (locatedList == this)
+						{
+							if (0 <= (nodeIndex = myNodes.BinarySearch(location.ElementNode, myNodeComparer)))
+							{
+								return new LocateObjectData(nodeIndex, 0, (int)TrackingObjectAction.ThisLevel);
+							}
+						}
+						else
+						{
+							contextElement = locatedList.myContextElement;
+						}
+					}
+					else if (null != (nodeContext = obj as ISurveyNodeContext))
+					{
+						contextElement = nodeContext.SurveyNodeContext;
+					}
+					if (contextElement != null)
+					{
+						// This item is in an expansion, see if we can find the context element at this level
+						LocateObjectData contextData = LocateObject(contextElement, style, locateOptions);
+						if (contextData.Row != VirtualTreeConstant.NullIndex)
+						{
+							contextData.Options = (int)TrackingObjectAction.NextLevel;
+							return contextData;
+						}
 					}
 				}
 				return new LocateObjectData(VirtualTreeConstant.NullIndex, VirtualTreeConstant.NullIndex, 0);

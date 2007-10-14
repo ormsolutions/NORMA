@@ -289,7 +289,7 @@ namespace Neumont.Tools.RelationalModels.ConceptualDatabase
 	}
 	#endregion // Schema answers
 	#region Table answers
-	partial class Table : IAnswerSurveyQuestion<SurveySchemaChildType>, ISurveyNode
+	partial class Table : IAnswerSurveyQuestion<SurveySchemaChildType>, ISurveyNode, ISurveyNodeContext
 	{
 		#region IAnswerSurveyQuestion<SurveySchemaChildType> Implementation
 		int IAnswerSurveyQuestion<SurveySchemaChildType>.AskQuestion()
@@ -405,10 +405,30 @@ namespace Neumont.Tools.RelationalModels.ConceptualDatabase
 			}
 		}
 		#endregion // ISurveyNode Implementation
+		#region ISurveyNodeContext Implementation
+		/// <summary>
+		/// The survey node context for a <see cref="Table"/> is
+		/// the <see cref="Schema"/>
+		/// </summary>
+		protected object SurveyNodeContext
+		{
+			get
+			{
+				return Schema;
+			}
+		}
+		object ISurveyNodeContext.SurveyNodeContext
+		{
+			get
+			{
+				return SurveyNodeContext;
+			}
+		}
+		#endregion // ISurveyNodeContext Implementation
 	}
 	#endregion // Table answers
 	#region Column answers
-	partial class Column : IAnswerSurveyQuestion<SurveyTableChildType>, IAnswerSurveyQuestion<SurveyTableChildGlyphType>, IAnswerSurveyQuestion<SurveyColumnClassificationType>, ISurveyNode, ICustomComparableSurveyNode
+	partial class Column : IAnswerSurveyQuestion<SurveyTableChildType>, IAnswerSurveyQuestion<SurveyTableChildGlyphType>, IAnswerSurveyQuestion<SurveyColumnClassificationType>, ISurveyNode, ISurveyNodeContext, ICustomComparableSurveyNode
 	{
 		#region IAnswerSurveyQuestion<SurveyTableChildType> Implementation
 		int IAnswerSurveyQuestion<SurveyTableChildType>.AskQuestion()
@@ -548,6 +568,26 @@ namespace Neumont.Tools.RelationalModels.ConceptualDatabase
 			}
 		}
 		#endregion // ISurveyNode Implementation
+		#region ISurveyNodeContext Implementation
+		/// <summary>
+		/// The survey node context for a <see cref="Column"/> is
+		/// the <see cref="Table"/>
+		/// </summary>
+		protected object SurveyNodeContext
+		{
+			get
+			{
+				return Table;
+			}
+		}
+		object ISurveyNodeContext.SurveyNodeContext
+		{
+			get
+			{
+				return SurveyNodeContext;
+			}
+		}
+		#endregion // ISurveyNodeContext Implementation
 		#region ICustomComparableSurveyNode Implementation
 		int ICustomComparableSurveyNode.CompareToSurveyNode(object other)
 		{
@@ -593,7 +633,7 @@ namespace Neumont.Tools.RelationalModels.ConceptualDatabase
 	}
 	#endregion // Column answers
 	#region ReferenceConstraint answers
-	partial class ReferenceConstraint : IAnswerSurveyQuestion<SurveyTableChildType>, IAnswerSurveyQuestion<SurveyTableChildGlyphType>, ISurveyNode
+	partial class ReferenceConstraint : IAnswerSurveyQuestion<SurveyTableChildType>, IAnswerSurveyQuestion<SurveyTableChildGlyphType>, ISurveyNode, ISurveyNodeContext
 	{
 		#region IAnswerSurveyQuestion<SurveyTableChildType> Implementation
 		int IAnswerSurveyQuestion<SurveyTableChildType>.AskQuestion()
@@ -722,10 +762,30 @@ namespace Neumont.Tools.RelationalModels.ConceptualDatabase
 			}
 		}
 		#endregion // ISurveyNode Implementation
+		#region ISurveyNodeContext Implementation
+		/// <summary>
+		/// The survey node context for a <see cref="ReferenceConstraint"/> is
+		/// the <see cref="SourceTable"/>
+		/// </summary>
+		protected object SurveyNodeContext
+		{
+			get
+			{
+				return SourceTable;
+			}
+		}
+		object ISurveyNodeContext.SurveyNodeContext
+		{
+			get
+			{
+				return SurveyNodeContext;
+			}
+		}
+		#endregion // ISurveyNodeContext Implementation
 	}
 	#endregion // ReferenceConstraint answers
 	#region UniquenessConstraint answers
-	partial class UniquenessConstraint : IAnswerSurveyQuestion<SurveyTableChildType>, IAnswerSurveyQuestion<SurveyTableChildGlyphType>, ISurveyNode
+	partial class UniquenessConstraint : IAnswerSurveyQuestion<SurveyTableChildType>, IAnswerSurveyQuestion<SurveyTableChildGlyphType>, ISurveyNode, ISurveyNodeContext
 	{
 		#region IAnswerSurveyQuestion<SurveyTableChildType> Implementation
 		int IAnswerSurveyQuestion<SurveyTableChildType>.AskQuestion()
@@ -854,10 +914,30 @@ namespace Neumont.Tools.RelationalModels.ConceptualDatabase
 			}
 		}
 		#endregion // ISurveyNode Implementation
+		#region ISurveyNodeContext Implementation
+		/// <summary>
+		/// The survey node context for a <see cref="UniquenessConstraint"/> is
+		/// the <see cref="Table"/>
+		/// </summary>
+		protected object SurveyNodeContext
+		{
+			get
+			{
+				return Table;
+			}
+		}
+		object ISurveyNodeContext.SurveyNodeContext
+		{
+			get
+			{
+				return SurveyNodeContext;
+			}
+		}
+		#endregion // ISurveyNodeContext Implementation
 	}
 	#endregion // UniquenessConstraint answers
 	#region ReferenceConstraintTargetsTable answers
-	partial class ReferenceConstraintTargetsTable : IAnswerSurveyQuestion<SurveyReferenceConstraintChildType>, ISurveyNode
+	partial class ReferenceConstraintTargetsTable : IAnswerSurveyQuestion<SurveyReferenceConstraintChildType>, ISurveyNode, ISurveyNodeContext
 	{
 		#region IAnswerSurveyQuestion<SurveyReferenceConstraintChildType> Implementation
 		int IAnswerSurveyQuestion<SurveyReferenceConstraintChildType>.AskQuestion()
@@ -970,10 +1050,30 @@ namespace Neumont.Tools.RelationalModels.ConceptualDatabase
 			}
 		}
 		#endregion // ISurveyNode Implementation
+		#region ISurveyNodeContext Implementation
+		/// <summary>
+		/// The survey node context for a <see cref="ReferenceConstraintTargetsTable"/> is
+		/// the <see cref="ReferenceConstraint"/>
+		/// </summary>
+		protected object SurveyNodeContext
+		{
+			get
+			{
+				return ReferenceConstraint;
+			}
+		}
+		object ISurveyNodeContext.SurveyNodeContext
+		{
+			get
+			{
+				return SurveyNodeContext;
+			}
+		}
+		#endregion // ISurveyNodeContext Implementation
 	}
 	#endregion // ReferenceConstraintTargetsTable answers
 	#region ColumnReference answers
-	partial class ColumnReference : IAnswerSurveyQuestion<SurveyReferenceConstraintChildType>, ISurveyNode
+	partial class ColumnReference : IAnswerSurveyQuestion<SurveyReferenceConstraintChildType>, ISurveyNode, ISurveyNodeContext
 	{
 		#region IAnswerSurveyQuestion<SurveyReferenceConstraintChildType> Implementation
 		int IAnswerSurveyQuestion<SurveyReferenceConstraintChildType>.AskQuestion()
@@ -1086,10 +1186,30 @@ namespace Neumont.Tools.RelationalModels.ConceptualDatabase
 			}
 		}
 		#endregion // ISurveyNode Implementation
+		#region ISurveyNodeContext Implementation
+		/// <summary>
+		/// The survey node context for a <see cref="ColumnReference"/> is
+		/// the <see cref="ReferenceConstraint"/>
+		/// </summary>
+		protected object SurveyNodeContext
+		{
+			get
+			{
+				return ReferenceConstraint;
+			}
+		}
+		object ISurveyNodeContext.SurveyNodeContext
+		{
+			get
+			{
+				return SurveyNodeContext;
+			}
+		}
+		#endregion // ISurveyNodeContext Implementation
 	}
 	#endregion // ColumnReference answers
 	#region UniquenessConstraintIncludesColumn answers
-	partial class UniquenessConstraintIncludesColumn : IAnswerSurveyQuestion<SurveyUniquenessConstraintChildType>, ISurveyNode
+	partial class UniquenessConstraintIncludesColumn : IAnswerSurveyQuestion<SurveyUniquenessConstraintChildType>, ISurveyNode, ISurveyNodeContext
 	{
 		#region IAnswerSurveyQuestion<SurveyUniquenessConstraintChildType> Implementation
 		int IAnswerSurveyQuestion<SurveyUniquenessConstraintChildType>.AskQuestion()
@@ -1202,6 +1322,26 @@ namespace Neumont.Tools.RelationalModels.ConceptualDatabase
 			}
 		}
 		#endregion // ISurveyNode Implementation
+		#region ISurveyNodeContext Implementation
+		/// <summary>
+		/// The survey node context for a <see cref="UniquenessConstraintIncludesColumn"/> is
+		/// the <see cref="UniquenessConstraint"/>
+		/// </summary>
+		protected object SurveyNodeContext
+		{
+			get
+			{
+				return UniquenessConstraint;
+			}
+		}
+		object ISurveyNodeContext.SurveyNodeContext
+		{
+			get
+			{
+				return SurveyNodeContext;
+			}
+		}
+		#endregion // ISurveyNodeContext Implementation
 	}
 	#endregion // ReferenceConstraintTargetsTable answers
 	#region ISurveyNodeProvider Implementation
@@ -1290,29 +1430,29 @@ namespace Neumont.Tools.RelationalModels.ConceptualDatabase
 		/// <summary>
 		/// Implements <see cref="IModelingEventSubscriber.ManagePostLoadModelingEventHandlers"/>
 		/// </summary>
-		protected static void ManagePostLoadModelingEventHandlers(ModelingEventManager eventManager, EventHandlerAction action)
+		protected static void ManagePostLoadModelingEventHandlers(ModelingEventManager eventManager, bool isReload, EventHandlerAction action)
 		{
 			// Nothing to do
 		}
-		void IModelingEventSubscriber.ManagePostLoadModelingEventHandlers(ModelingEventManager eventManager, EventHandlerAction action)
+		void IModelingEventSubscriber.ManagePostLoadModelingEventHandlers(ModelingEventManager eventManager, bool isReload, EventHandlerAction action)
 		{
-			ManagePostLoadModelingEventHandlers(eventManager, action);
+			ManagePostLoadModelingEventHandlers(eventManager, isReload, action);
 		}
 		/// <summary>
 		/// Implements <see cref="IModelingEventSubscriber.ManagePreLoadModelingEventHandlers"/>
 		/// </summary>
-		protected static void ManagePreLoadModelingEventHandlers(ModelingEventManager eventManager, EventHandlerAction action)
+		protected static void ManagePreLoadModelingEventHandlers(ModelingEventManager eventManager, bool isReload, EventHandlerAction action)
 		{
 			// Nothing to do
 		}
-		void IModelingEventSubscriber.ManagePreLoadModelingEventHandlers(ModelingEventManager eventManager, EventHandlerAction action)
+		void IModelingEventSubscriber.ManagePreLoadModelingEventHandlers(ModelingEventManager eventManager, bool isReload, EventHandlerAction action)
 		{
-			ManagePreLoadModelingEventHandlers(eventManager, action);
+			ManagePreLoadModelingEventHandlers(eventManager, isReload, action);
 		}
 		/// <summary>
 		/// Implements <see cref="IModelingEventSubscriber.ManageSurveyQuestionModelingEventHandlers"/>
 		/// </summary>
-		protected void ManageSurveyQuestionModelingEventHandlers(ModelingEventManager eventManager, EventHandlerAction action)
+		protected void ManageSurveyQuestionModelingEventHandlers(ModelingEventManager eventManager, bool isReload, EventHandlerAction action)
 		{
 			Store store = this.Store;
 			DomainDataDirectory dataDir = store.DomainDataDirectory;
@@ -1358,9 +1498,9 @@ namespace Neumont.Tools.RelationalModels.ConceptualDatabase
 			eventManager.AddOrRemoveHandler(classInfo, new EventHandler<ElementAddedEventArgs>(UniquenessConstraintColumnAdded), action);
 			eventManager.AddOrRemoveHandler(classInfo, new EventHandler<ElementDeletedEventArgs>(ElementRemoved), action);
 		}
-		void IModelingEventSubscriber.ManageSurveyQuestionModelingEventHandlers(ModelingEventManager eventManager, EventHandlerAction action)
+		void IModelingEventSubscriber.ManageSurveyQuestionModelingEventHandlers(ModelingEventManager eventManager, bool isReload, EventHandlerAction action)
 		{
-			ManageSurveyQuestionModelingEventHandlers(eventManager, action);
+			ManageSurveyQuestionModelingEventHandlers(eventManager, isReload, action);
 		}
 		#endregion // IModelingEventSubscriber Implementation
 		#region SurveyQuestion event handlers

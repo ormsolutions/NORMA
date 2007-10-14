@@ -225,11 +225,29 @@ namespace Neumont.Tools.Modeling.Shell.DynamicSurveyTreeGrid
 		object SurveyNodeDataObject { get;}
 		/// <summary>
 		/// Return an object to use as the identifier for elements used
-		/// as the expansion for this element.
+		/// as the expansion for this element. Elements returned as part
+		/// of this expansion should implement <see cref="ISurveyNodeContext"/>
+		/// to be able to find this element.
 		/// </summary>
 		object SurveyNodeExpansionKey { get;}
 	}
 	#endregion // ISurveyNode interface
+	#region ISurveyNodeContext interface
+	/// <summary>
+	/// Implement on elements that are displayed as expansions in
+	/// the survey tree. Used to locate context elements when an
+	/// item has not yet been expanded and needs to be located in the tree.
+	/// </summary>
+	public interface ISurveyNodeContext
+	{
+		/// <summary>
+		/// Return the survey context object for this object.
+		/// A context object will return this element from
+		/// <see cref="ISurveyNodeProvider.GetSurveyNodes"/>.
+		/// </summary>
+		object SurveyNodeContext { get;}
+	}
+	#endregion // ISurveyNodeContext interface
 	#region ICustomComparableSurveyNode interface
 	/// <summary>
 	/// Provide a custom comparison to do before the sort falls back

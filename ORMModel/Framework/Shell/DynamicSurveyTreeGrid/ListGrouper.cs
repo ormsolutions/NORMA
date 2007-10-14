@@ -78,6 +78,13 @@ namespace Neumont.Tools.Modeling.Shell.DynamicSurveyTreeGrid
 						}
 						return branch;
 					}
+					/// <summary>
+					/// Returns true if the index is in range for this subbranch
+					/// </summary>
+					public bool IsInRange(int index)
+					{
+						return Start <= index && End >= index;
+					}
 					#region Adjust Methods
 					#region AdjustDelete method
 					/// <summary>
@@ -343,8 +350,6 @@ namespace Neumont.Tools.Modeling.Shell.DynamicSurveyTreeGrid
 				private readonly IBranch myBaseBranch;
 				private readonly SurveyQuestion myQuestion;
 				private readonly Survey mySurvey;
-				private readonly int myStartIndex;
-				private readonly int myEndIndex;
 				private readonly bool myNeutralOnTop;
 				private readonly SubBranchMetaData[] mySubBranches;
 				private readonly int[] mySubBranchOrder;
@@ -366,14 +371,12 @@ namespace Neumont.Tools.Modeling.Shell.DynamicSurveyTreeGrid
 					myQuestion = question;
 					mySurvey = myQuestion.QuestionList;
 					Debug.Assert(mySurvey != null); //questions should only be accessible through a survey in which case their question list must be set
-					myStartIndex = startIndex;
-					myEndIndex = endIndex;
 					myVisibleSubBranchCount = 0;
 					myNeutralOnTop = neutralOnTop;
 					int categoryCount = question.CategoryCount;
 					mySubBranches = new SubBranchMetaData[categoryCount];
 					mySubBranchOrder = new int[categoryCount];
-					BuildMetaData(startIndex);
+					BuildMetaData(startIndex, endIndex);
 				}
 				#endregion //constructor and variable declaration
 				#region tree creation
@@ -381,16 +384,15 @@ namespace Neumont.Tools.Modeling.Shell.DynamicSurveyTreeGrid
 				/// helper method to call handling neutral and building the meta data in order based on whether
 				/// the list was sorted with neutral on top
 				/// </summary>
-				/// <param name="startIndex"></param>
-				private void BuildMetaData(int startIndex)
+				private void BuildMetaData(int startIndex, int endIndex)
 				{
 					if (myNeutralOnTop)
 					{
-						CreateSubBranchMetaData(HandleNeutral(startIndex));
+						CreateSubBranchMetaData(HandleNeutral(startIndex, endIndex), endIndex);
 					}
 					else
 					{
-						HandleNeutral(CreateSubBranchMetaData(startIndex));
+						HandleNeutral(CreateSubBranchMetaData(startIndex, endIndex), endIndex);
 					}
 				}
 				/// <summary>
@@ -398,15 +400,16 @@ namespace Neumont.Tools.Modeling.Shell.DynamicSurveyTreeGrid
 				/// or not myQuestion is the last question in the survey.
 				/// </summary>
 				/// <param name="startIndex"></param>
+				/// <param name="endIndex"></param>
 				/// <returns>either startIndex that was passed if no neutrals were found or the index after the last neutral node</returns>
-				private int HandleNeutral(int startIndex)
+				private int HandleNeutral(int startIndex, int endIndex)
 				{
 					List<SampleDataElementNode> nodes = ((MainList)myBaseBranch).myNodes;
 					int index;
 					int startNeutralIndex = index = startIndex;
 					int currentAnswer = -1;
 					SampleDataElementNode currentNode;
-					int indexBound = myEndIndex + 1;
+					int indexBound = endIndex + 1;
 					for (; index < indexBound; ++index)
 					{
 						currentNode = nodes[index];
@@ -452,8 +455,9 @@ namespace Neumont.Tools.Modeling.Shell.DynamicSurveyTreeGrid
 				/// build meta data for sub branches
 				/// </summary>
 				/// <param name="startIndex"></param>
+				/// <param name="endIndex"></param>
 				/// <returns>index that the method started with if there are no sub branches, otherwise the next index after the one the method completed on</returns>
-				private int CreateSubBranchMetaData(int startIndex)
+				private int CreateSubBranchMetaData(int startIndex, int endIndex)
 				{
 					int index = startIndex;
 					SurveyQuestion question = myQuestion;
@@ -462,7 +466,7 @@ namespace Neumont.Tools.Modeling.Shell.DynamicSurveyTreeGrid
 					int currentAnswer = lastAnswer = -2;
 					SubBranchMetaData[] subBranchData = mySubBranches;
 					SubBranchMetaData currentSubBranch = default(SubBranchMetaData);
-					int itemCount = myEndIndex + 1;
+					int itemCount = endIndex + 1;
 					int dataIndex;
 					List<SampleDataElementNode> nodes = ((MainList)myBaseBranch).myNodes;
 					for (; index < itemCount; ++index)
@@ -557,7 +561,7 @@ namespace Neumont.Tools.Modeling.Shell.DynamicSurveyTreeGrid
 						}
 					}
 
-					return (index < myEndIndex || index == 0) ? index : myEndIndex;
+					return (index < endIndex || index == 0) ? index : endIndex;
 				}
 				#endregion //tree creation
 				#region IBranch Members
@@ -690,8 +694,52 @@ namespace Neumont.Tools.Modeling.Shell.DynamicSurveyTreeGrid
 				/// </summary>
 				public LocateObjectData LocateObject(object obj, ObjectStyle style, int locateOptions)
 				{
-					//TODO: ask matt about locating objects when I'm not storing references to my subbranches that are created
-					return myBaseBranch.LocateObject(obj, style, locateOptions);
+					if (style == ObjectStyle.TrackingObject)
+					{
+						LocateObjectData baseData = myBaseBranch.LocateObject(obj, style, locateOptions);
+						int row = baseData.Row;
+						if (row != VirtualTreeConstant.NullIndex)
+						{
+							// See if this item is contained in one of our subbranches. If it
+							// is in a subbranch, then we return control to the calling tree to
+							// manage branch expansion. Otherwise, we need to forward the request
+							// to the neutral branch directly.
+							int subBranchCount = myVisibleSubBranchCount;
+							for (int i = 0; i < subBranchCount; ++i)
+							{
+								if (mySubBranches[i].IsInRange(row))
+								{
+									int adjustedIndex = i;
+									if (myNeutralOnTop)
+									{
+										IBranch neutral = myNeutralBranch;
+										adjustedIndex += (neutral != null) ? neutral.VisibleItemCount : 0;
+									}
+									return new LocateObjectData(adjustedIndex, 0, (int)TrackingObjectAction.NextLevel);
+								}
+							}
+							IBranch neutralBranch = myNeutralBranch;
+							if (neutralBranch != null && neutralBranch.VisibleItemCount != 0)
+							{
+								// If we get here, we either have no match or the match is in the neutral branch
+								LocateObjectData neutralData = neutralBranch.LocateObject(obj, style, locateOptions);
+								if (neutralData.Row != VirtualTreeConstant.NullIndex)
+								{
+									if (!myNeutralOnTop)
+									{
+										neutralData.Row += subBranchCount;
+									}
+									if (baseData.Options == (int)TrackingObjectAction.NextLevel &&
+										neutralData.Options == (int)TrackingObjectAction.ThisLevel)
+									{
+										neutralData.Options = (int)TrackingObjectAction.NextLevel;
+									}
+									return neutralData;
+								}
+							}
+						}
+					}
+					return new LocateObjectData(VirtualTreeConstant.NullIndex, VirtualTreeConstant.NullIndex, 0);
 				}
 				public event BranchModificationEventHandler OnBranchModification
 				{

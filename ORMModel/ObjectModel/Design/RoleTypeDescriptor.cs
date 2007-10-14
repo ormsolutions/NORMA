@@ -81,7 +81,6 @@ namespace Neumont.Tools.ORM.ObjectModel.Design
 				return !ModelElement.IsValueRole;
 			}
 			else if (propertyId == Role.IsMandatoryDomainPropertyId ||
-				propertyId == Role.RolePlayerDisplayDomainPropertyId ||
 				propertyId == Role.MandatoryConstraintModalityDomainPropertyId ||
 				propertyId == Role.MultiplicityDomainPropertyId)
 			{
@@ -89,6 +88,17 @@ namespace Neumont.Tools.ORM.ObjectModel.Design
 				if (role is SubtypeMetaRole ||
 					role is SupertypeMetaRole ||
 					null != role.FactType.UnaryRole)
+				{
+					return true;
+				}
+			}
+			else if (propertyId == Role.RolePlayerDisplayDomainPropertyId)
+			{
+				Role role = ModelElement;
+				ObjectType rolePlayer;
+				if (role is SubtypeMetaRole ||
+					role is SupertypeMetaRole ||
+					(null != (rolePlayer = role.RolePlayer) && rolePlayer.IsImplicitBooleanValue))
 				{
 					return true;
 				}

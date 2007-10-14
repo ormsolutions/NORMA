@@ -26,7 +26,7 @@ using System.Diagnostics;
 
 namespace Neumont.Tools.ORM.ObjectModel
 {
-	public partial class FactType : IAnswerSurveyQuestion<SurveyElementType>, IAnswerSurveyQuestion<SurveyErrorState>, IAnswerSurveyQuestion<SurveyQuestionGlyph>, IAnswerSurveyQuestion<SurveyFactTypeDetailType>, ISurveyNode
+	public partial class FactType : IAnswerSurveyQuestion<SurveyElementType>, IAnswerSurveyQuestion<SurveyErrorState>, IAnswerSurveyQuestion<SurveyQuestionGlyph>, IAnswerSurveyQuestion<SurveyFactTypeDetailType>, ISurveyNode, ISurveyNodeContext
 	{
 		#region IAnswerSurveyQuestion<ErrorState> Implementation
 		int IAnswerSurveyQuestion<SurveyErrorState>.AskQuestion()
@@ -41,11 +41,11 @@ namespace Neumont.Tools.ORM.ObjectModel
 		{
 			if (Model == null)
 				return -1;
-            return (int)(ModelError.HasErrors(this, ModelErrorUses.DisplayPrimary, Model.ModelErrorDisplayFilter) ? SurveyErrorState.HasError : SurveyErrorState.NoError);
-        }
-        #endregion // IAnswerSurveyQuestion<ErrorState> Implementation
-        #region IAnswerSurveyQuestion<ElementType> Members
-        int IAnswerSurveyQuestion<SurveyElementType>.AskQuestion()
+			return (int)(ModelError.HasErrors(this, ModelErrorUses.DisplayPrimary, Model.ModelErrorDisplayFilter) ? SurveyErrorState.HasError : SurveyErrorState.NoError);
+		}
+		#endregion // IAnswerSurveyQuestion<ErrorState> Implementation
+		#region IAnswerSurveyQuestion<ElementType> Members
+		int IAnswerSurveyQuestion<SurveyElementType>.AskQuestion()
 		{
 			return AskElementQuestion();
 		}
@@ -176,6 +176,27 @@ namespace Neumont.Tools.ORM.ObjectModel
 			}
 		}
 		#endregion
+		#region ISurveyNodeContext Implementation
+		/// <summary>
+		/// The survey node context for an implied <see cref="FactType"/> is
+		/// the FactType associated with the objectification.
+		/// </summary>
+		protected object SurveyNodeContext
+		{
+			get
+			{
+				Objectification objectification = ImpliedByObjectification;
+				return (objectification != null) ? objectification.NestedFactType : null;
+			}
+		}
+		object ISurveyNodeContext.SurveyNodeContext
+		{
+			get
+			{
+				return SurveyNodeContext;
+			}
+		}
+		#endregion // ISurveyNodeContext Implementation
 		#region IAnswerSurveyQuestion<SurveyQuestionGlyph> Members
 
 		int IAnswerSurveyQuestion<SurveyQuestionGlyph>.AskQuestion()

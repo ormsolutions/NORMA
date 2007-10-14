@@ -404,7 +404,7 @@ namespace Neumont.Tools.ORM.ShapeModel
 			}
 			else if (null != (duplicateName = error as ConstraintDuplicateNameError))
 			{
-				ActivateNameProperty((ModelElement)duplicateName.ConstraintCollection[0]);
+				ActivateNameProperty(ModelElement);
 			}
 			else
 			{

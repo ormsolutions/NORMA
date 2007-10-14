@@ -26,10 +26,10 @@ using System.Diagnostics;
 
 namespace Neumont.Tools.ORM.ObjectModel
 {
-	public partial class SetConstraint : IAnswerSurveyQuestion<SurveyElementType>, IAnswerSurveyQuestion<SurveyErrorState>, IAnswerSurveyQuestion<SurveyQuestionGlyph>, IAnswerSurveyQuestion<SurveyFactTypeDetailType>, ISurveyNode
-    {
-        #region IAnswerSurveyQuestion<ErrorState> Implementation
-        int IAnswerSurveyQuestion<SurveyErrorState>.AskQuestion()
+	public partial class SetConstraint : IAnswerSurveyQuestion<SurveyElementType>, IAnswerSurveyQuestion<SurveyErrorState>, IAnswerSurveyQuestion<SurveyQuestionGlyph>, IAnswerSurveyQuestion<SurveyFactTypeDetailType>, ISurveyNode, ISurveyNodeContext
+	{
+		#region IAnswerSurveyQuestion<ErrorState> Implementation
+		int IAnswerSurveyQuestion<SurveyErrorState>.AskQuestion()
 		{
 			return AskErrorQuestion();
 		}
@@ -41,11 +41,11 @@ namespace Neumont.Tools.ORM.ObjectModel
 		{
 			if (Model == null)
 				return -1;
-            return (int)(ModelError.HasErrors(this, ModelErrorUses.DisplayPrimary, Model.ModelErrorDisplayFilter) ? SurveyErrorState.HasError : SurveyErrorState.NoError);
-        }
-        #endregion // IAnswerSurveyQuestion<ErrorState> Implementation
-        #region IAnswerSurveyQuestion<ElementType> Members
-        int IAnswerSurveyQuestion<SurveyElementType>.AskQuestion()
+			return (int)(ModelError.HasErrors(this, ModelErrorUses.DisplayPrimary, Model.ModelErrorDisplayFilter) ? SurveyErrorState.HasError : SurveyErrorState.NoError);
+		}
+		#endregion // IAnswerSurveyQuestion<ErrorState> Implementation
+		#region IAnswerSurveyQuestion<ElementType> Members
+		int IAnswerSurveyQuestion<SurveyElementType>.AskQuestion()
 		{
 			return AskElementQuestion();
 		}
@@ -101,13 +101,37 @@ namespace Neumont.Tools.ORM.ObjectModel
 			}
 		}
 		#endregion
+		#region ISurveyNodeContext Implementation
+		/// <summary>
+		/// The survey node context for an internal <see cref="SetConstraint"/> is
+		/// the associated <see cref="FactType"/>
+		/// </summary>
+		protected object SurveyNodeContext
+		{
+			get
+			{
+				LinkedElementCollection<FactType> factTypes;
+				if (((IConstraint)this).ConstraintIsInternal &&
+					(factTypes = FactTypeCollection).Count == 1)
+				{
+					return factTypes[0];
+				}
+				return null;
+			}
+		}
+		object ISurveyNodeContext.SurveyNodeContext
+		{
+			get
+			{
+				return SurveyNodeContext;
+			}
+		}
+		#endregion // ISurveyNodeContext Implementation
 		#region IAnswerSurveyQuestion<SurveyQuestionGlyph> Members
-
 		int IAnswerSurveyQuestion<SurveyQuestionGlyph>.AskQuestion()
 		{
 			return AskGlyphQuestion();
 		}
-
 		#region AskGlyphQuestion
 		/// <summary>
 		/// Answers the glyph question.
@@ -259,15 +283,15 @@ namespace Neumont.Tools.ORM.ObjectModel
 				}
 			}
 
-		} 
+		}
 		#endregion
 
 		#endregion
 	}
 	public partial class SetComparisonConstraint : IAnswerSurveyQuestion<SurveyElementType>, IAnswerSurveyQuestion<SurveyErrorState>, IAnswerSurveyQuestion<SurveyQuestionGlyph>, ISurveyNode
-    {
-        #region IAnswerSurveyQuestion<ErrorState> Implementation
-        int IAnswerSurveyQuestion<SurveyErrorState>.AskQuestion()
+	{
+		#region IAnswerSurveyQuestion<ErrorState> Implementation
+		int IAnswerSurveyQuestion<SurveyErrorState>.AskQuestion()
 		{
 			return AskErrorQuestion();
 		}
@@ -280,10 +304,10 @@ namespace Neumont.Tools.ORM.ObjectModel
 			if (Model == null)
 				return -1;
 			return (int)(ModelError.HasErrors(this, ModelErrorUses.DisplayPrimary, Model.ModelErrorDisplayFilter) ? SurveyErrorState.HasError : SurveyErrorState.NoError);
-        }
-        #endregion // IAnswerSurveyQuestion<ErrorState> Implementation
-        #region IAnswerSurveyQuestion<ElementType> Members
-        int IAnswerSurveyQuestion<SurveyElementType>.AskQuestion()
+		}
+		#endregion // IAnswerSurveyQuestion<ErrorState> Implementation
+		#region IAnswerSurveyQuestion<ElementType> Members
+		int IAnswerSurveyQuestion<SurveyElementType>.AskQuestion()
 		{
 			return AskElementQuestion();
 		}
@@ -357,7 +381,7 @@ namespace Neumont.Tools.ORM.ObjectModel
 
 				}
 			}
-		} 
+		}
 		#endregion
 		#endregion
 		#region ISurveyNode Members

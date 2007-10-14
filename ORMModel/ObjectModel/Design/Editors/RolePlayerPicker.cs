@@ -55,8 +55,9 @@ namespace Neumont.Tools.ORM.ObjectModel.Design
 				case 1:
 					{
 						ObjectType objType = candidates[0]; 
-						Objectification objectification = objType.Objectification;
-						if (objectification != null && !objectification.IsImplied && objectification == instance.FactType.Objectification)
+						Objectification objectification;
+						if (objType.IsImplicitBooleanValue ||
+							(null != (objectification = objType.Objectification) && !objectification.IsImplied && objectification == instance.FactType.Objectification))
 						{
 							candidates = null;
 						}
@@ -70,7 +71,8 @@ namespace Neumont.Tools.ORM.ObjectModel.Design
 						foreach (ObjectType objType in candidates)
 						{
 							Objectification objectification = objType.Objectification;
-							if (objectification == null || (objectification != thisObjectification && !objectification.IsImplied))
+							if (!objType.IsImplicitBooleanValue && 
+								(null == (objectification = objType.Objectification) || (objectification != thisObjectification && !objectification.IsImplied)))
 							{
 								types.Add(objType);
 							}

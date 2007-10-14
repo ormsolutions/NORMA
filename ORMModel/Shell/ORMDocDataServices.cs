@@ -57,7 +57,7 @@ namespace Neumont.Tools.ORM.Shell
 				if (myVirtualTree == null)
 				{
 					myVirtualTree = new VirtualTree();
-					ReloadSurveyTree();
+					ReloadSurveyTree(false);
 				}
 				return myVirtualTree;
 			}
@@ -77,7 +77,7 @@ namespace Neumont.Tools.ORM.Shell
 		/// <summary>
 		/// Force the survey tree to recreate its root branch if it has already been shown
 		/// </summary>
-		private void ReloadSurveyTree()
+		private void ReloadSurveyTree(bool isReload)
 		{
 			ITree tree = myVirtualTree;
 			if (tree != null)
@@ -92,7 +92,7 @@ namespace Neumont.Tools.ORM.Shell
 					Utility.EnumerateDomainModels<ISurveyQuestionProvider>(domainModels));
 				foreach (IModelingEventSubscriber eventSubscriber in Utility.EnumerateDomainModels<IModelingEventSubscriber>(domainModels))
 				{
-					eventSubscriber.ManageSurveyQuestionModelingEventHandlers(eventManager, EventHandlerAction.Add);
+					eventSubscriber.ManageSurveyQuestionModelingEventHandlers(eventManager, isReload, EventHandlerAction.Add);
 				}
 				SetFlag(PrivateFlags.AddedSurveyQuestionEvents, true);
 				mySurveyTree = rootBranch;
@@ -148,6 +148,23 @@ namespace Neumont.Tools.ORM.Shell
 				get
 				{
 					return PropertyProviderService;
+				}
+			}
+			/// <summary>
+			/// Defer to <see cref="IORMToolServices.ModelErrorActivationService"/> on the document.
+			/// </summary>
+			protected IORMModelErrorActivationService ModelErrorActivationService
+			{
+				get
+				{
+					return myServices.ModelErrorActivationService;
+				}
+			}
+			IORMModelErrorActivationService IORMToolServices.ModelErrorActivationService
+			{
+				get
+				{
+					return ModelErrorActivationService;
 				}
 			}
 			/// <summary>
@@ -1004,6 +1021,70 @@ namespace Neumont.Tools.ORM.Shell
 			}
 		}
 		#endregion // ORMPropertyProvisioningService class
+		#region ORMModelErrorActivationService class
+		private sealed class ORMModelErrorActivationService : IORMModelErrorActivationService
+		{
+			#region Member variables and constructor
+			private Store myStore;
+			private Dictionary<Type, ORMModelErrorActivator> myActivators;
+			public ORMModelErrorActivationService(Store store)
+			{
+				myStore = store;
+				myActivators = new Dictionary<Type, ORMModelErrorActivator>();
+			}
+			#endregion // Member variables and constructor
+			#region IORMModelErrorActivationService Implementation
+			private bool ActivateError(ModelElement selectedElement, ModelError error, DomainClassInfo domainClass)
+			{
+				ORMModelErrorActivator activator;
+				if (myActivators.TryGetValue(domainClass.ImplementationClass, out activator))
+				{
+					if (activator((IORMToolServices)myStore, selectedElement, error))
+					{
+						return true;
+					}
+				}
+				// See if anything on a base type can handle it. This maximizes the chances of finding a handler.
+				// UNDONE: Do we want both the 'registerDerivedTypes' parameter on RegisterErrorActivator and this recursion?
+				domainClass = domainClass.BaseDomainClass;
+				if (domainClass != null)
+				{
+					return ActivateError(selectedElement, error, domainClass);
+				}
+				return false;
+			}
+			bool IORMModelErrorActivationService.ActivateError(ModelElement selectedElement, ModelError error)
+			{
+				return ActivateError(selectedElement, error, selectedElement.GetDomainClass());
+			}
+			/// <summary>
+			/// Recursively register the given <paramref name="activator"/> for the <paramref name="domainClass"/>
+			/// </summary>
+			/// <param name="domainClass">The <see cref="DomainClassInfo"/> for the type to register</param>
+			/// <param name="activator">A delegate callback for when an element of this type is selected</param>
+			private void RegisterErrorActivator(DomainClassInfo domainClass, ORMModelErrorActivator activator)
+			{
+				myActivators[domainClass.ImplementationClass] = activator;
+				foreach (DomainClassInfo derivedClassInfo in domainClass.AllDescendants)
+				{
+					RegisterErrorActivator(derivedClassInfo, activator);
+				}
+			}
+			void IORMModelErrorActivationService.RegisterErrorActivator(Type elementType, bool registerDerivedTypes, ORMModelErrorActivator activator)
+			{
+				if (registerDerivedTypes)
+				{
+					DomainDataDirectory dataDirectory = myStore.DomainDataDirectory;
+					RegisterErrorActivator(elementType.IsSubclassOf(typeof(ElementLink)) ? dataDirectory.GetDomainRelationship(elementType) : dataDirectory.GetDomainClass(elementType), activator);
+				}
+				else
+				{
+					myActivators[elementType] = activator;
+				}
+			}
+			#endregion // IORMModelErrorActivationService Implementation
+		}
+		#endregion // ORMModelErrorActivationService class
 		#region IORMToolServices Implementation
 		private IORMToolTaskProvider myTaskProvider;
 		private string myLastVerbalizationSnippetsOptions;
@@ -1012,6 +1093,7 @@ namespace Neumont.Tools.ORM.Shell
 		private IDictionary<Type, LayoutEngineData> myLayoutEngines;
 		private int myCustomBlockCanAddTransactionCount;
 		private IORMPropertyProviderService myPropertyProviderService;
+		private IORMModelErrorActivationService myModelErrorActivatorService;
 
 		/// <summary>
 		/// Retrieve the <see cref="IORMPropertyProviderService"/> for this document.
@@ -1029,6 +1111,25 @@ namespace Neumont.Tools.ORM.Shell
 			get
 			{
 				return PropertyProviderService;
+			}
+		}
+
+		/// <summary>
+		/// Retrieve the <see cref="IORMModelErrorActivationService"/> for this document.
+		/// Implements <see cref="IORMToolServices.ModelErrorActivationService"/>.
+		/// </summary>
+		protected IORMModelErrorActivationService ModelErrorActivationService
+		{
+			get
+			{
+				return myModelErrorActivatorService ?? (myModelErrorActivatorService = new ORMModelErrorActivationService(Store));
+			}
+		}
+		IORMModelErrorActivationService IORMToolServices.ModelErrorActivationService
+		{
+			get
+			{
+				return ModelErrorActivationService;
 			}
 		}
 
@@ -1630,6 +1731,66 @@ namespace Neumont.Tools.ORM.Shell
 								Debug.Assert(parents.Count == 1); // The aggregating side of a relationship should have multiplicity==1
 								element = parents[0];
 								break;
+							}
+						}
+					}
+				}
+
+				// We couldn't find this on the shapes, attempt to find the item in the model browser
+				if (startElement != null)
+				{
+
+					element = startElement;
+					VirtualTreeControl treeControl = null;
+					while (element != null)
+					{
+						if (element is ISurveyNode)
+						{
+							// Assume if we're a SurveyNode that it is possible to select the item in the survey tree
+							if (treeControl == null)
+							{
+								// UNDONE: See if we can get the tree control without forcing the window to show
+								// This is safe, but gives weird results if the initial item cannot be found.
+								ORMModelBrowserToolWindow browserWindow;
+								SurveyTreeContainer treeContainer;
+								if (null != (browserWindow = ORMDesignerPackage.ORMModelBrowserWindow))
+								{
+									browserWindow.Show();
+									if (null != (treeContainer = browserWindow.Window as SurveyTreeContainer))
+									{
+										treeControl = treeContainer.TreeControl;
+									}
+								}
+								if (null == treeControl)
+								{
+									return false;
+								}
+							}
+							if (treeControl.SelectObject(null, element, (int)ObjectStyle.TrackingObject, 0))
+							{
+								ModelError error;
+								if (null != (error = locator as ModelError))
+								{
+									((IORMToolServices)myDocument).ModelErrorActivationService.ActivateError(element, error);
+								}
+								return true;
+							}
+						}
+						ModelElement currentElement = element;
+						element = null;
+						// If we could not select the current element, then go up the aggregation chain
+						foreach (DomainRoleInfo role in currentElement.GetDomainClass().AllDomainRolesPlayed)
+						{
+							DomainRoleInfo oppositeRole = role.OppositeDomainRole;
+							if (oppositeRole.IsEmbedding)
+							{
+								LinkedElementCollection<ModelElement> parents = role.GetLinkedElements(currentElement);
+								if (parents.Count > 0)
+								{
+									Debug.Assert(parents.Count == 1); // The aggregating side of a relationship should have multiplicity==1
+									element = parents[0];
+									break;
+								}
 							}
 						}
 					}

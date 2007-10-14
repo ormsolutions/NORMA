@@ -44,24 +44,28 @@ namespace Neumont.Tools.ORM.ObjectModel
 		/// Implements <see cref="IModelingEventSubscriber.ManagePreLoadModelingEventHandlers"/>.
 		/// This implementation does nothing and does not need to be called.
 		/// </summary>
-		void IModelingEventSubscriber.ManagePreLoadModelingEventHandlers(ModelingEventManager eventManager, EventHandlerAction action)
+		void IModelingEventSubscriber.ManagePreLoadModelingEventHandlers(ModelingEventManager eventManager, bool isReload, EventHandlerAction action)
 		{
 		}
 		/// <summary>
 		/// Implements <see cref="IModelingEventSubscriber.ManagePostLoadModelingEventHandlers"/>.
 		/// </summary>
-		protected void ManagePostLoadModelingEventHandlers(ModelingEventManager eventManager, EventHandlerAction action)
+		protected void ManagePostLoadModelingEventHandlers(ModelingEventManager eventManager, bool isReload, EventHandlerAction action)
 		{
 			NamedElementDictionary.ManageEventHandlers(Store, eventManager, action);
+			if (!isReload && action == EventHandlerAction.Add)
+			{
+				Design.ORMEditorUtility.RegisterModelErrorActivators(Store);
+			}
 		}
-		void IModelingEventSubscriber.ManagePostLoadModelingEventHandlers(ModelingEventManager eventManager, EventHandlerAction action)
+		void IModelingEventSubscriber.ManagePostLoadModelingEventHandlers(ModelingEventManager eventManager, bool isReload, EventHandlerAction action)
 		{
-			this.ManagePostLoadModelingEventHandlers(eventManager, action);
+			this.ManagePostLoadModelingEventHandlers(eventManager, isReload, action);
 		}
 		/// <summary>
 		/// Implementes <see cref="IModelingEventSubscriber.ManageSurveyQuestionModelingEventHandlers"/>.
 		/// </summary>
-		protected void ManageSurveyQuestionModelingEventHandlers(ModelingEventManager eventManager, EventHandlerAction action)
+		protected void ManageSurveyQuestionModelingEventHandlers(ModelingEventManager eventManager, bool isReload, EventHandlerAction action)
 		{
 			DomainDataDirectory directory = this.Store.DomainDataDirectory;
 			//Object Type
@@ -145,9 +149,9 @@ namespace Neumont.Tools.ORM.ObjectModel
 			eventManager.AddOrRemoveHandler(info, new EventHandler<ElementPropertyChangedEventArgs>(SubtypeFactIsPrimaryChanged), action);
 		}
 
-		void IModelingEventSubscriber.ManageSurveyQuestionModelingEventHandlers(ModelingEventManager eventManager, EventHandlerAction action)
+		void IModelingEventSubscriber.ManageSurveyQuestionModelingEventHandlers(ModelingEventManager eventManager, bool isReload, EventHandlerAction action)
 		{
-			this.ManageSurveyQuestionModelingEventHandlers(eventManager, action);
+			this.ManageSurveyQuestionModelingEventHandlers(eventManager, isReload, action);
 		}
 		#endregion // IModelingEventSubscriber Implementation
 		#region IVerbalizationTargetProvider implementation
@@ -215,7 +219,10 @@ namespace Neumont.Tools.ORM.ObjectModel
 				}
 				foreach (ObjectType element in elementDirectory.FindElements<ObjectType>(true))
 				{
-					yield return element;
+					if (!element.IsImplicitBooleanValue)
+					{
+						yield return element;
+					}
 				}
 
 				foreach (SetConstraint element in elementDirectory.FindElements<SetConstraint>(true))
