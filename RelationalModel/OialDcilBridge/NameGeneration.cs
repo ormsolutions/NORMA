@@ -55,13 +55,22 @@ namespace Neumont.Tools.ORMAbstractionToConceptualDatabaseBridge
 		private static class NameGeneration
 		{
 			#region GenerateAllNames method
-			private static IDatabaseNameGenerator nameGenerator;
+			private static IDatabaseNameGenerator myNameGenerator;
+			private static IDatabaseNameGenerator NameGenerator
+			{
+				get
+				{
+					IDatabaseNameGenerator retVal = myNameGenerator;
+					if (null == retVal)
+					{
+						myNameGenerator = retVal = new DefaultDatabaseNameGenerator();
+					}
+					return retVal;
+				}
+			}
 			public static void GenerateAllNames(Schema schema)
 			{
-				if (null == nameGenerator)
-				{
-					nameGenerator = new DefaultDatabaseNameGenerator();
-				}
+				IDatabaseNameGenerator nameGenerator = NameGenerator;
 				UniqueNameGenerator uniqueChecker = new UniqueNameGenerator();
 
 				LinkedElementCollection<Table> tables = schema.TableCollection;
@@ -571,6 +580,22 @@ namespace Neumont.Tools.ORMAbstractionToConceptualDatabaseBridge
 									if (createRoleName && !createRoleNameSecond)
 									{
 										//generate a role name from the predicate text and prepend it
+
+										// UNDONE: Matt Curland (Oct 13, 2007)
+										// The predicate text can be used to generate a much better name
+										// than just prepending it. There are several things to consider here.
+										// This is not a spec, just things we should look at.
+										// 1) If we do generate a role name that ends up being unique, then there
+										// really is no reason to use the role player name at all if we use a reading
+										// that ends with the opposite role.
+										// 2) The generated text here should use the opposite role as a predicate
+										// replacement if it starts the format string and the near role ends the format
+										// string. In other words, we prefer to find a reading that is the forward reading
+										// for the near role, but we need to respect the order if we don't find it.
+										// 3) The 'longerThan' approach may be too simplistic. We may look at other ways
+										// to track 'refinement level' that allows us to know what we have tried already
+										// and to jump immediately to other alternatives. Refinements are not necessary longer.
+
 										AddToNameCollection(ref singleName, ref nameCollection,
 											GetRoleNameFromPredicateText(mainFactType, towardsRole, oppositeRole, isUnary, columnSpace),
 											0);
@@ -939,8 +964,8 @@ namespace Neumont.Tools.ORMAbstractionToConceptualDatabaseBridge
 						//get rid of string replace fields
 						string text = myReplaceFieldsPattern.Replace(reading.Text, " ");
 						text = " " + CultureInfo.CurrentCulture.TextInfo.ToLower(text) + " ";
-						//remove articles
-						text = text.Replace(" a ", " ").Replace(" an ", " ").Replace(" the ", " ");
+						//remove articles and hyphens
+						text = text.Replace(" a ", " ").Replace(" an ", " ").Replace(" the ", " ").Replace("- ", " ").Replace(" -", " ");
 						if (!isUnary && text.Trim() != "has")
 						{
 							text = text.Replace(" has ", " ");
