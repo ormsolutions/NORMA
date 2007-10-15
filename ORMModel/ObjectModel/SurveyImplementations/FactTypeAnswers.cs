@@ -91,15 +91,23 @@ namespace Neumont.Tools.ORM.ObjectModel
 		{
 			get
 			{
-				string retVal = this.Name;
-				if (string.IsNullOrEmpty(retVal))
+				string retVal;
+				if (Objectification != null)
 				{
-					// UNDONE: MattCurland: We're getting this during redo scenarios on objectified facts.
-					// This is a bug in the Name propery implementation, which should handle
-					// this transparently. The sequencing here is very tricky because it involves
-					// synchronizing the FactType and ObjectType namds. I don't want to destabilize
-					// that scenario for this case, so I'm just regenerating the name.
-					retVal = GenerateName();
+					retVal = this.GenerateName();
+				}
+				else
+				{
+					retVal = this.Name;
+					if (string.IsNullOrEmpty(retVal))
+					{
+						// UNDONE: MattCurland: We're getting this during redo scenarios on objectified facts.
+						// This is a bug in the Name propery implementation, which should handle
+						// this transparently. The sequencing here is very tricky because it involves
+						// synchronizing the FactType and ObjectType namds. I don't want to destabilize
+						// that scenario for this case, so I'm just regenerating the name.
+						retVal = GenerateName();
+					}
 				}
 				return retVal;
 			}
