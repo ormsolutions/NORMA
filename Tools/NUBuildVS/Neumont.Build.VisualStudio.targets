@@ -23,7 +23,7 @@
 		<NUBuildVSTasksAssemblyName>Neumont.Build.VisualStudio, Version=1.0.0.0, Culture=neutral, PublicKeyToken=957d5b7d5e79e25f</NUBuildVSTasksAssemblyName>
 	</PropertyGroup>
 	
-	<UsingTask TaskName="VsSDKLocator" AssemblyName="$(NUBuildVSTasksAssemblyName)"/>
+	<UsingTask TaskName="VsSdkLocator" AssemblyName="$(NUBuildVSTasksAssemblyName)"/>
 
 
 	<PropertyGroup Condition="Exists('$(MSBuildExtensionsPath)\Neumont\VisualStudio\Neumont.Build.VisualStudio.targets')">
@@ -43,11 +43,12 @@
 		Name="LocateVisualStudioSDK"
 		DependsOnTargets="$(LocateVisualStudioSDKDependsOn)">
 
-		<VsSDKLocator>
+		<VsSdkLocator RequestedVersion="$(TargetVisualStudioVersion)">
 			<Output TaskParameter="InstallationDirectory" PropertyName="VsSDKInstallationDir"/>
 			<Output TaskParameter="ToolsDirectory" PropertyName="VsSDKToolsDir"/>
 			<Output TaskParameter="IncludesDirectory" PropertyName="VsSDKIncludesDir"/>
-		</VsSDKLocator>
+			<Output TaskParameter="RedistributablesDirectory" PropertyName="VsSDKRedistributablesDir"/>
+		</VsSdkLocator>
 
 	</Target>
 

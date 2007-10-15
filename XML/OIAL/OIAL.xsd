@@ -3,6 +3,7 @@
 	targetNamespace="http://schemas.orm.net/OIAL"
 	xmlns:oil="http://schemas.orm.net/OIAL"
 	xmlns:odt="http://schemas.orm.net/ORMDataTypes"
+	xmlns:kl="http://schemas.orm.net/ORM/KnowledgeLanguage" 
 	xmlns:xs="http://www.w3.org/2001/XMLSchema"
 	elementFormDefault="qualified"
 	attributeFormDefault="unqualified"
@@ -17,10 +18,11 @@
 			2. Altered source versions must be plainly marked as such, and must not be misrepresented as being the original software.
 			3. This notice may not be removed or altered from any source distribution.
 		</xs:appinfo>
-		<xs:appinfo source="Contributors">Kevin M. Owen, Corey Kaylor, Korvyn Dornseif</xs:appinfo>
+		<xs:appinfo source="Contributors">Kevin M. Owen, Corey Kaylor, Korvyn Dornseif, Jaron Briggs, Terry Halpin</xs:appinfo>
 	</xs:annotation>
 
 	<xs:import namespace="http://schemas.orm.net/ORMDataTypes"/>
+	<xs:import namespace="http://schemas.orm.net/ORM/KnowledgeLanguage"/>
 
 	<xs:simpleType name="sourceRef">
 		<xs:restriction base="xs:string"/>
@@ -143,7 +145,7 @@
 		<xs:attribute name="sourceRoleRef" use="optional" type="oil:sourceRef">
 			<xs:annotation>
 				<xs:documentation>@sourceRoleRef is the @id of the role that led to the creation of this oil:informationType.</xs:documentation>
-				<xs:documentation>It will always be present, except for a single oil:informationType inside each conceptType created for an orm:ValueType.</xs:documentation>
+				<xs:documentation>It will always be present, except for a single oil:informationType inside each oil:conceptType created for an orm:ValueType.</xs:documentation>
 			</xs:annotation>
 		</xs:attribute>
 	</xs:complexType>

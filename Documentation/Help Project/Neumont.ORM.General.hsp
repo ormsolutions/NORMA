@@ -1,5 +1,5 @@
-<?xml version="1.0" encoding="UTF-8" standalone="yes"?>
-<HSProject ProjectType="0" Version="2.0.26" SaveDateTime="01/03/2007 14:13:19" DXPFileName="" TemplateName="HelpStudio Lite 2005 Style" SpellLastCheckDateTime="12:00:00 AM" Title="Neumont ORM Architect (NORMA)" SCCActivated="False" SCCProject="" HelpContextIDHeaderFile="" OutputDirectory="" AutoGenerateIndexEntries="True" AutoGenerateCategoryIndex="False" BuildDXProject="False" DefaultTopic="{12E9716E-59AA-4178-9EE7-A0743AE78E24}" Lite="True">
+﻿<?xml version="1.0" encoding="UTF-8" standalone="yes"?>
+<HSProject ProjectType="0" Version="2.0.28" SaveDateTime="14-10-2007 15:04:51" DXPFileName="" TemplateName="HelpStudio Lite 2005 Style" SpellLastCheckDateTime="12:00:00 AM" Title="Neumont ORM Architect (NORMA)" SCCActivated="False" SCCProject="" HelpContextIDHeaderFile="" OutputDirectory="" AutoGenerateIndexEntries="True" AutoGenerateCategoryIndex="True" BuildDXProject="False" DefaultTopic="{12E9716E-59AA-4178-9EE7-A0743AE78E24}" Lite="True">
     <SpellIgnoreAllWordList/>
     <cat Name="Getting Started" Key="C1" AutoIndex="True"/>
     <cat Name="Tutorials" Key="C2" AutoIndex="True"/>
@@ -8,7 +8,8 @@
     <cat Name="Microsoft Help 2.x Error Pages" Key="C5" AutoIndex="True"/>
     <cat Name="Dev Docs" Key="{69564419-AA92-4F5A-AEC7-E3054C4CA000}" AutoIndex="True"/>
     <cat Name="ORM TECH RPT 2" Key="{7B6F520C-C1B9-4D50-A678-EE1D9BB17AF7}" AutoIndex="True"/>
-    <VariableValue Name="CopyrightNotice"><![CDATA[&copy; Neumont University. All Rights Reserved.]]></VariableValue>
+    <VariableValue Name="CopyrightNotice">Copyright © Neumont University. All rights reserved.</VariableValue>
+    <VariableValue Name="FeedbackLink"/>
     <file FileName="stopwordlist.txt" CaptureInfo="" IncludeInOutput="True"/>
     <file FileName="images\Image001.gif" CaptureInfo="" IncludeInOutput="True"/>
     <file FileName="images\Image002.gif" CaptureInfo="" IncludeInOutput="True"/>
@@ -704,7 +705,7 @@ URL: <span id="urlSpan"></span></p>
 <P class=""><FONT face="Times New Roman">&nbsp;</FONT></P>
 <P class=""><FONT face="Times New Roman"><IMG class="" height=285 src="Images/Image025.gif" width=460></FONT></P></DIV>]]></s>
     </Topic>
-    <Topic Key="{12E9716E-59AA-4178-9EE7-A0743AE78E24}" Name="Neumont ORM Architect" Title="Title Page" ContentsTitle="Title Page" Status="Waiting Review" CreatedOn="15-02-2007 13:48:50" ModifiedOn="16-02-2007 14:54:27" LayoutName="" AllStyleSheets="True" AllScripts="True" AutoGenerateIndexEntry="False" IncludeInHelpFile="True" HelpContextIDs="" Category="C4">
+    <Topic Key="{12E9716E-59AA-4178-9EE7-A0743AE78E24}" Name="Neumont ORM Architect" Title="Title Page" ContentsTitle="Title Page" Status="Waiting Review" CreatedOn="15-02-2007 13:48:50" ModifiedOn="12-10-2007 12:09:38" LayoutName="" AllStyleSheets="True" AllScripts="True" AutoGenerateIndexEntry="False" IncludeInHelpFile="True" HelpContextIDs="" Category="C4">
         <Notes/>
         <s k="BodyText"><![CDATA[<DIV class=Section1>
 <P class=MsoNoSpacing align=center><IMG id="Picture 1" height=120 src="Images/Image001.jpg" width=431></P>
@@ -712,15 +713,15 @@ URL: <span id="urlSpan"></span></p>
 <P class=MsoNoSpacing align=center>for Visual Studio® 2005</P>
 <P class=MsoNoSpacing align=center>&nbsp;</P>
 <P class=MsoNoSpacing align=center>Revision 1.0</P>
-<P class=MsoNoSpacing align=center>3/2007</P>
+<P class=MsoNoSpacing align=center>October 2007</P>
 <P class=MsoNoSpacing align=center>&nbsp;</P>
 <P class=MsoNoSpacing align=center>The Neumont ORM Architect (NORMA) tool is an ongoing development project by Faculty and Students at Neumont University, South Jordan, Utah</P>
 <P class=MsoNoSpacing align=center>&nbsp;</P>
 <P class=MsoNoSpacing align=center><A href="http://www.neumont.edu">http://www.neumont.edu</A></P>
-<P class=MsoNoSpacing align=center><A href="http://sourceforge.net/projects/orm">http://sourceforge.net/projects/orm</A></P>
+<P class=MsoNoSpacing align=center><A href="http://orm.sourceforge.net">http://orm.sourceforge.net</A></P>
 <P class=MsoNoSpacing align=center>&nbsp;</P>
 <P class=MsoNoSpacing align=center>&nbsp;</P>
-<P class=MsoNoSpacing align=center>©2007, Neumont University</P>
+<P class=MsoNoSpacing align=center>Copyright © Neumont University. All rights reserved.</P>
 <P class=MsoNoSpacing>&nbsp;</P>
 <P class=MsoNoSpacing>&nbsp;</P>
 <P class=MsoNormal>&nbsp;</P></DIV>]]></s>
@@ -811,18 +812,18 @@ URL: <span id="urlSpan"></span></p>
 <P class=MsoNoSpacing>To add a predicate Reading, select the unary predicate shape and double-click it to open the ORM Reading Editor". </P>
 <P class=MsoNoSpacing>&nbsp;<IMG height=72 src="Images/Image015.jpg" width=143></P>
 <P class=MsoNoSpacing>&nbsp;</P>
-<P class=MsoNoSpacing>Type Ssmokes⬝ after Patient and press the Enter key.&nbsp; The predicate reading should now appear next to the role.</P>
+<P class=MsoNoSpacing>Type “smokes” after Patient and press the Enter key.&nbsp; The predicate reading should now appear next to the role.</P>
 <P class=MsoNoSpacing><IMG height=72 src="Images/Image016.jpg" width=374></P>
 <P class=MsoNoSpacing>To reposition a predicate reading in the document window select it then drag it to where you want.&nbsp; Use Format &gt; Align &gt; Middles to align the shapes horizontally.</P>
 <P class=MsoNoSpacing>&nbsp;</P>
 <P class=MsoNoSpacing>To change a predicate reading, select the reading on the predicate shape, then select the reading in the Reading Editor, and then edit as needed.</P>
 <P class=MsoNoSpacing>&nbsp;</P>
 <P class=MsoNoSpacing>To add the Drug entity type,&nbsp; drag the Entity Type shape from the Toolbox to the document window.</P>
-<P class=MsoNoSpacing>It initially displays with a default name, e.g. SEntityType1⬝. </P>
+<P class=MsoNoSpacing>It initially displays with a default name, e.g. “EntityType1”. </P>
 <P class=MsoNoSpacing><IMG height=204 src="Images/Image017.jpg" width=584></P>
-<P class=MsoNoSpacing>Change the name to SDrug⬝, either by editing it inplace or by editing the Name entry in the Properties window.</P>
+<P class=MsoNoSpacing>Change the name to “Drug”, either by editing it inplace or by editing the Name entry in the Properties window.</P>
 <P class=MsoNoSpacing><IMG height=133 src="Images/Image018.jpg" width=293><IMG height=173 src="Images/Image019.jpg" width=190></P>
-<P class=MsoNoSpacing>Add the reference mode Sname⬝ in the RefMode property either by typing it and hitting Enter <I>or </I>&nbsp;by selecting it from the drop-down list of pre-defined reference modes.&nbsp; The reference mode is then displayed on the diagram.</P>
+<P class=MsoNoSpacing>Add the reference mode “name” in the RefMode property either by typing it and hitting Enter <I>or </I>&nbsp;by selecting it from the drop-down list of pre-defined reference modes.&nbsp; The reference mode is then displayed on the diagram.</P>
 <P class=MsoNoSpacing><IMG height=282 src="Images/Image020.jpg" width=247><IMG id="Picture 18" height=59 src="Images/Image021.jpg" width=86></P>
 <P class=MsoNoSpacing>&nbsp;</P>
 <P class=MsoNoSpacing>Click the Binary Fact Type shape in the Toolbox,&nbsp; and then click where you want to position it.&nbsp; Alternatively, you can drag the shape from the Toolbox to the document window.</P>
@@ -833,12 +834,12 @@ URL: <span id="urlSpan"></span></p>
 <P class=MsoNoSpacing><IMG id="Picture 21" height=141 src="Images/Image024.jpg" width=296></P>
 <P class=MsoNoSpacing>To add a reading for the new predicate, first select it (click its border so that the mouse pointer displays as: <IMG id="Picture 22" height=21 src="Images/Image034.gif" width=22>).</P>
 <P class=MsoNoSpacing><IMG id="Picture 23" height=70 src="Images/Image025.jpg" width=164></P>
-<P class=MsoNoSpacing>Double-Click the predicate, to invoke the ORM Reading Editor and then enter forward predicate reading Sis allergic to⬝ between SPatient⬝ and SDrug⬝.</P>
+<P class=MsoNoSpacing>Double-Click the predicate, to invoke the ORM Reading Editor and then enter forward predicate reading “is allergic to” between “Patient” and “Drug”.</P>
 <P class=MsoNoSpacing><IMG id="Picture 24" height=76 src="Images/Image026.jpg" width=232></P>
 <P class=MsoNoSpacing>The reading now displays on the diagram.</P>
 <P class=MsoNoSpacing><IMG id="Picture 25" height=144 src="Images/Image027.jpg" width=361></P>
 <P class=MsoNoSpacing>&nbsp;</P>
-<P class=MsoNoSpacing>Select the left role of the patient name fact type, and then right-click to open its context menu and click Add Uniqueness Constraint⬝.</P>
+<P class=MsoNoSpacing>Select the left role of the patient name fact type, and then right-click to open its context menu and click “Add Uniqueness Constraint”.</P>
 <P class=MsoNoSpacing><IMG id="Picture 26" height=119 src="Images/Image028.jpg" width=306></P>
 <P class=MsoNoSpacing>The constraint is then displayed.</P>
 <P class=MsoNoSpacing><IMG id="Picture 27" height=66 src="Images/Image029.jpg" width=307></P>
@@ -847,7 +848,7 @@ URL: <span id="urlSpan"></span></p>
 <P class=MsoNoSpacing>Click the <IMG id="Picture 29" height=24 src="Images/Image035.gif" width=29>&nbsp;button to see the negative verbalization.</P>
 <P class=MsoNoSpacing><IMG id="Picture 30" height=119 src="Images/Image031.jpg" width=624></P>
 <P class=MsoNoSpacing>&nbsp;</P>
-<P class=MsoNoSpacing>Select the left role of the name fact type,&nbsp; and then right-click to open its context menu.&nbsp; Click SIs Mandatory⬝.</P>
+<P class=MsoNoSpacing>Select the left role of the name fact type,&nbsp; and then right-click to open its context menu.&nbsp; Click “Is Mandatory”.</P>
 <P class=MsoNoSpacing><IMG id="Picture 31" height=104 src="Images/Image032.jpg" width=309></P>
 <P class=MsoNoSpacing>The mandatory role constraint is now displayed and its verbalization is added.</P>
 <P class=MsoNoSpacing><IMG id="Picture 32" height=163 src="Images/Image033.jpg" width=379></P>
@@ -893,13 +894,13 @@ URL: <span id="urlSpan"></span></p>
 <P class=MsoNoSpacing><IMG id="Picture 2" height=271 src="Images/Image051.jpg" width=336></P>
 <P class=MsoNoSpacing>The pink error fill disappears, since the data type is set.&nbsp; <IMG id="Picture 3" height=31 src="Images/Image052.jpg" width=88></P>
 <P class=MsoNoSpacing>&nbsp;</P>
-<P class=MsoNoSpacing>If you earlier selected the Snr⬝ refmode for Patient from the drop-down list, its data type is already set to unsigned integer.&nbsp; If not, change its data type to that now.</P>
+<P class=MsoNoSpacing>If you earlier selected the “nr” refmode for Patient from the drop-down list, its data type is already set to unsigned integer.&nbsp; If not, change its data type to that now.</P>
 <P class=MsoNoSpacing><IMG id="Picture 4" height=115 src="Images/Image053.jpg" width=276><IMG id="Picture 5" height=109 src="Images/Image054.jpg" width=338></P>
-<P class=MsoNoSpacing>If you earlier selected the Sname⬝ refmode for Drug from the drop-down list, its data type is already set to variable length text.&nbsp; If not, change its data type to that now.&nbsp; Regardless, you still need to set the data type length (e.g. to 20).</P>
+<P class=MsoNoSpacing>If you earlier selected the “name” refmode for Drug from the drop-down list, its data type is already set to variable length text.&nbsp; If not, change its data type to that now.&nbsp; Regardless, you still need to set the data type length (e.g. to 20).</P>
 <P class=MsoNoSpacing><IMG id="Picture 6" height=196 src="Images/Image055.jpg" width=298></P>
 <P class=MsoNoSpacing><B>Note</B>: Currently, NORMA uses the same portable data types as Visio.&nbsp; A later version will provide an improved set of data types that may be used with a wider range of targets.</P>
 <P class=MsoNoSpacing>&nbsp;</P>
-<P class=MsoNoSpacing>Let"s add the role name Sallergy⬝ to the role played here by Drug.</P>
+<P class=MsoNoSpacing>Let"s add the role name “allergy” to the role played here by Drug.</P>
 <P class=MsoNoSpacing><IMG id="Picture 7" height=69 src="Images/Image056.jpg" width=184></P>
 <P class=MsoNoSpacing>To add a role name, select the role and then add the role name in the Name property in the Properties window.</P>
 <P class=MsoNoSpacing><IMG id="Picture 8" height=173 src="Images/Image057.jpg" width=216></P>
@@ -911,9 +912,9 @@ URL: <span id="urlSpan"></span></p>
 <P class=MsoNoSpacing><IMG id="Picture 12" height=125 src="Images/Image041.gif" width=314></P>
 <P class=MsoNoSpacing><B>Note</B>: You may toggle display of role names on/off using the options dialog.</P>
 <P class=MsoNoSpacing>&nbsp;</P>
-<P class=MsoNoSpacing>The allergy fact type is m:n, so it will map to a table by itself when we generate a relational schema.&nbsp; The table name will be the name of the fact type, which by default is the fact type"s primary reading SPatientIsAllergicToDrug⬝.&nbsp; Select the fact type, and look at its name in the Properties window.</P>
+<P class=MsoNoSpacing>The allergy fact type is m:n, so it will map to a table by itself when we generate a relational schema.&nbsp; The table name will be the name of the fact type, which by default is the fact type’s primary reading “PatientIsAllergicToDrug”.&nbsp; Select the fact type, and look at its name in the Properties window.</P>
 <P class=MsoNoSpacing><IMG id="Picture 13" height=153 src="Images/Image060.jpg" width=336><IMG id="Picture 14" height=134 src="Images/Image061.jpg" width=224></P>
-<P class=MsoNoSpacing>Edit the Name to SDrugAllergy⬝.&nbsp; This will now be used as the generated table name.</P>
+<P class=MsoNoSpacing>Edit the Name to “DrugAllergy”.&nbsp; This will now be used as the generated table name.</P>
 <P class=MsoNoSpacing><IMG id="Picture 15" height=123 src="Images/Image062.jpg" width=207></P>
 <P class=MsoNoSpacing>&nbsp;</P>
 <P class=MsoNoSpacing>Next, make any adjustments to the figure and then save the file.&nbsp; Saving the file can be done in two ways.&nbsp; 1) By pressing the save (<IMG id="Picture 16" height=13 src="Images/Image042.gif" width=14>) icon on the main menu, or 2) by choosing the relevant Save option from the File menu.&nbsp; </P>
@@ -942,7 +943,7 @@ URL: <span id="urlSpan"></span></p>
 <P class=MsoNoSpacing>Prerequisites:</P>
 <P class=MsoNoSpacing>-&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; You must have already installed Visual Studio 2005 and the NORMA tool for Visual Studio.</P>
 <P class=MsoNoSpacing>-&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; You must have a schema created using NORMA.</P>
-<P class=MsoNoSpacing>·&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; See document SCreating a simple schema⬝ to learn how to create a simple schema.</P>
+<P class=MsoNoSpacing>·&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; See document “Creating a simple schema” to learn how to create a simple schema.</P>
 <P class=MsoNoSpacing>&nbsp;</P>
 <P class=MsoNoSpacing>Open your ORM file using the NORMA tool within a solution in Visual Studio 2005.&nbsp; Use a C# or VB template (e.g. Windows App, Console App, or Class Library).</P>
 <P class=MsoNoSpacing>&nbsp;</P>
@@ -960,7 +961,7 @@ URL: <span id="urlSpan"></span></p>
 <P class=MsoNoSpacing>Select the ORM model file in the solution explorer.</P>
 <P class=MsoNoSpacing><IMG id="Picture 6" height=160 src="Images/Image067.jpg" width=253></P>
 <P class=MsoNoSpacing>&nbsp;</P>
-<P class=MsoNoSpacing>In the properties window, check that SORMCustomTool⬝ is the value for the CustomTool property.&nbsp; (This should be set by default)</P>
+<P class=MsoNoSpacing>In the properties window, check that “ORMCustomTool” is the value for the CustomTool property.&nbsp; (This should be set by default)</P>
 <P class=MsoNoSpacing><IMG id="Picture 7" height=139 src="Images/Image068.jpg" width=310></P>
 <P class=MsoNoSpacing>&nbsp;</P>
 <P class=MsoNoSpacing>The ORMGeneratorSettings property should be visible in the dialog (if not, click a different item in Solution Explorer and reselect your ORM file).</P>
@@ -1004,7 +1005,7 @@ URL: <span id="urlSpan"></span></p>
 <P class=MsoNoSpacing>Prerequisites:</P>
 <P class=MsoNoSpacing>-&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; You must have already installed Visual Studio 2005 and the NORMA tool for Visual Studio.</P>
 <P class=MsoNoSpacing>-&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; You must have a schema created using NORMA.</P>
-<P class=MsoNoSpacing>·&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; See document SCreating a simple schema⬝ to learn how to create a simple schema.</P>
+<P class=MsoNoSpacing>·&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; See document “Creating a simple schema” to learn how to create a simple schema.</P>
 <P class=MsoNoSpacing>&nbsp;</P>
 <P class=MsoNoSpacing>Open your ORM file using the NORMA tool within a solution in Visual Studio 2005.&nbsp; Use a C# or VB template (e.g. Windows App, Console App, or Class Library).&nbsp; <B>Note</B>: If you are going to generate C# or VB code, your project must be in the chosen language.&nbsp; This example will use C#.</P>
 <P class=MsoNoSpacing>&nbsp;</P>
@@ -1022,7 +1023,7 @@ URL: <span id="urlSpan"></span></p>
 <P class=MsoNoSpacing>Select the ORM model file in the solution explorer.</P>
 <P class=MsoNoSpacing><IMG id="Picture 6" height=160 src="Images/Image076.jpg" width=253></P>
 <P class=MsoNoSpacing>&nbsp;</P>
-<P class=MsoNoSpacing>In the properties window, check that SORMCustomTool⬝ is the value for the CustomTool property.&nbsp; (This should be set by default)</P>
+<P class=MsoNoSpacing>In the properties window, check that “ORMCustomTool” is the value for the CustomTool property.&nbsp; (This should be set by default)</P>
 <P class=MsoNoSpacing><IMG id="Picture 7" height=139 src="Images/Image077.jpg" width=310></P>
 <P class=MsoNoSpacing>&nbsp;</P>
 <P class=MsoNoSpacing>The ORMGeneratorSettings property should be visible in the dialog (if not, click a different item in Solution Explorer and reselect your ORM file).</P>
@@ -1066,7 +1067,7 @@ URL: <span id="urlSpan"></span></p>
 <P class=MsoNoSpacing>Prerequisites:</P>
 <P class=MsoNoSpacing>-&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; You must have already installed Visual Studio 2005, and the NORMA tool for Visual Studio.</P>
 <P class=MsoNoSpacing>-&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; You must have a schema created using NORMA.</P>
-<P class=MsoNoSpacing>o&nbsp;&nbsp; See document SCreating a simple schema⬝ to learn how to create a simple schema.</P>
+<P class=MsoNoSpacing>o&nbsp;&nbsp; See document “Creating a simple schema” to learn how to create a simple schema.</P>
 <P class=MsoNoSpacing>&nbsp;</P>
 <P class=MsoNoSpacing>Open your ORM file using the NORMA tool.</P>
 <P class=MsoNoSpacing>&nbsp;</P>
@@ -3005,7 +3006,7 @@ public const string ToolboxFrequencyConstraintItemId = "Toolbox.FrequencyConstra
 <P class=MsoNormal>&nbsp;</P>
 <P class=MsoNormal><IMG height=117 src="Images/Image196.gif" width=427></P>
 <P class=MsoNormal>&nbsp;</P>
-<P class=MsoNormal>This pattern is used so long as at least one of the constrained roles does not start a predicate reading, and no predicate has front text. The diagram illustrates just one case. For binary fact types, if a predicate reading <I>R<SUB>i</SUB></I> from the constrained role is available, use it to form the disjunct "<B>that</B><I>A R<SUB>i</SUB></I> <B>some</B> <I>B<SUB>i</SUB></I>"; otherwise use the alternate predicate reading <I>S<SUB>i</SUB> </I>to form the disjunct "<B>some</B><I>B<SUB>i</SUB></I><B> </B><I>S<SUB>i</SUB></I><B> that</B> <I>A</I>". For each unary predicate <I>R<SUB>i</SUB></I>, use the disjunct "<B>that</B><I>A R<SUB>i</SUB></I>". Verbalize all the binaries before all the unaries. The <I>positive, alethic, relational</I> pattern is shown above. No negative or attribute versions are supported, as these are awkward or add no clarity. The deontic version prepends "<B>It is obligatory that</B>", making it clear that the scope of the modal operator includes the whole disjunction (placing the modal operator after the For-list would result in ambiguity, since the scope might be incorrectly be taken to exclude the second disjunct  consider the second example<I> </I>below with the obligation operator placed at the end of the first line instead of the start).</P>
+<P class=MsoNormal>This pattern is used so long as at least one of the constrained roles does not start a predicate reading, and no predicate has front text. The diagram illustrates just one case. For binary fact types, if a predicate reading <I>R<SUB>i</SUB></I> from the constrained role is available, use it to form the disjunct "<B>that</B><I>A R<SUB>i</SUB></I> <B>some</B> <I>B<SUB>i</SUB></I>"; otherwise use the alternate predicate reading <I>S<SUB>i</SUB> </I>to form the disjunct "<B>some</B><I>B<SUB>i</SUB></I><B> </B><I>S<SUB>i</SUB></I><B> that</B> <I>A</I>". For each unary predicate <I>R<SUB>i</SUB></I>, use the disjunct "<B>that</B><I>A R<SUB>i</SUB></I>". Verbalize all the binaries before all the unaries. The <I>positive, alethic, relational</I> pattern is shown above. No negative or attribute versions are supported, as these are awkward or add no clarity. The deontic version prepends "<B>It is obligatory that</B>", making it clear that the scope of the modal operator includes the whole disjunction (placing the modal operator after the For-list would result in ambiguity, since the scope might be incorrectly be taken to exclude the second disjunct consider the second example<I> </I>below with the obligation operator placed at the end of the first line instead of the start).</P>
 <P class=MsoNormal>&nbsp;</P>
 <P class=MsoNormal>Examples:&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; <B>For each</B>Lecturer,</P>
 <P class=MsoNormal><B>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; some</B>Date is the contract-expiry date for <B>that</B> Lecturer</P>
@@ -3241,26 +3242,26 @@ public const string ToolboxFrequencyConstraintItemId = "Toolbox.FrequencyConstra
 <P class=Body style="MARGIN: 0in 0in 0pt 0.25in; TEXT-INDENT: -0.25in; TEXT-ALIGN: justify; tab-stops: list .25in; mso-list: l0 level1 lfo1"><A name=_Ref131996835><FONT color=#000000><SPAN style="FONT-SIZE: 10pt; FONT-FAMILY: 'Times New Roman','serif'"><SPAN style="mso-list: Ignore">18.<SPAN style="FONT: 7pt 'Times New Roman'">&nbsp;&nbsp;&nbsp; </SPAN></SPAN></SPAN><SPAN style="FONT-SIZE: 10pt; FONT-FAMILY: 'Times New Roman','serif'">Halpin, T. 2006, 'Verbalizing Business Rules: Part 15', <I>Business Rules Journal</I>, (in press).</SPAN></FONT></A><SPAN style="FONT-SIZE: 10pt; FONT-FAMILY: 'Times New Roman','serif'"><o:p></o:p></SPAN></P>
 <P class=Body style="MARGIN: 0in 0in 0pt 0.25in; TEXT-INDENT: -0.25in; TEXT-ALIGN: justify; tab-stops: list .25in; mso-list: l0 level1 lfo1"><A name=_Ref112570815><FONT color=#000000><SPAN lang=DA style="FONT-SIZE: 10pt; FONT-FAMILY: 'Times New Roman','serif'; mso-ansi-language: DA"><SPAN style="mso-list: Ignore">19.<SPAN style="FONT: 7pt 'Times New Roman'">&nbsp;&nbsp;&nbsp; </SPAN></SPAN></SPAN><SPAN style="FONT-SIZE: 10pt; FONT-FAMILY: 'Times New Roman','serif'">Halpin, T. 2005, </SPAN></FONT></A><SPAN style="FONT-SIZE: 10pt; FONT-FAMILY: 'Times New Roman','serif'">'ORM 2', <I>On the Move to Meaningful Internet Systems 2005: OTM 2005 Workshops</I>, eds. </SPAN><SPAN lang=DA style="FONT-SIZE: 10pt; FONT-FAMILY: 'Times New Roman','serif'; mso-ansi-language: DA">R. Meersman, Z. Tari, P. Herrero et al., Cyprus. Springer LNCS 3762, pp 676-87.<o:p></o:p></SPAN></P>]]></s>
     </Topic>
-    <Topic Key="{5172E870-4B5D-4F30-B839-7F42BE385AEB}" Name="Dev Docs Title" Title="Development Documentation" ContentsTitle="Development Documentation" Status="In Progress" CreatedOn="26-02-2007 14:09:12" ModifiedOn="26-02-2007 14:12:05" LayoutName="" AllStyleSheets="True" AllScripts="True" AutoGenerateIndexEntry="True" IncludeInHelpFile="True" HelpContextIDs="" Category="{69564419-AA92-4F5A-AEC7-E3054C4CA000}">
+    <Topic Key="{5172E870-4B5D-4F30-B839-7F42BE385AEB}" Name="Dev Docs Title" Title="Development Documentation" ContentsTitle="Development Documentation" Status="In Progress" CreatedOn="26-02-2007 14:09:12" ModifiedOn="12-10-2007 11:35:54" LayoutName="" AllStyleSheets="True" AllScripts="True" AutoGenerateIndexEntry="True" IncludeInHelpFile="True" HelpContextIDs="" Category="{69564419-AA92-4F5A-AEC7-E3054C4CA000}">
         <Notes/>
         <s k="BodyText"><![CDATA[<P align=center><IMG alt="" src="images\Image001.jpg" border=0></P>
 <P align=center>Development Documentation</P>
 <P align=center>&nbsp;</P>
 <P align=center>This documentation is currently under compilation.</P>
 <P align=center>Please visit NORMA project site on Sourceforge.net for development information and FAQ.</P>
-<P align=center><A href="http://sourceforge.net/projects/orm">http://sourceforge.net/projects/orm</A></P>]]></s>
+<P align=center><A href="http://orm.sourceforge.net">http://orm.sourceforge.net</A></P>]]></s>
     </Topic>
-    <Topic Key="{874017A5-F3F4-43BD-BF4D-20B301C9C4CA}" Name="FAQ Title page" Title="FAQ" ContentsTitle="FAQ" Status="In Progress" CreatedOn="26-02-2007 14:13:23" ModifiedOn="26-02-2007 14:15:08" LayoutName="" AllStyleSheets="True" AllScripts="True" AutoGenerateIndexEntry="True" IncludeInHelpFile="True" HelpContextIDs="" Category="C4">
+    <Topic Key="{874017A5-F3F4-43BD-BF4D-20B301C9C4CA}" Name="FAQ Title page" Title="FAQ" ContentsTitle="FAQ" Status="In Progress" CreatedOn="26-02-2007 14:13:23" ModifiedOn="12-10-2007 11:35:54" LayoutName="" AllStyleSheets="True" AllScripts="True" AutoGenerateIndexEntry="True" IncludeInHelpFile="True" HelpContextIDs="" Category="C4">
         <Notes/>
         <s k="BodyText"><![CDATA[<P align=center><IMG alt="" src="images\Image001.jpg" border=0></P>
 <P align=center>Frequently Asked Questions</P>
 <P align=center>&nbsp;</P>
 <P align=center>This documentation is currently under compilation.</P>
 <P align=center>Please visit NORMA project site on Sourceforge.net for and FAQ.</P>
-<P align=center><A href="http://sourceforge.net/projects/orm">http://sourceforge.net/projects/orm</A></P>
+<P align=center><A href="http://orm.sourceforge.net">http://orm.sourceforge.net</A></P>
 <P align=center>NORMA Forum: <A href="http://sourceforge.net/forum/?group_id=158881">http://sourceforge.net/forum/?group_id=158881</A></P>]]></s>
     </Topic>
-    <Topic Key="{146A422E-53CB-4B28-9389-E45CD52C6F9B}" Name="Tutorials" Title="Title Page" ContentsTitle="Title Page" Status="In Progress" CreatedOn="01-03-2007 14:08:40" ModifiedOn="01-03-2007 14:11:44" LayoutName="" AllStyleSheets="True" AllScripts="True" AutoGenerateIndexEntry="False" IncludeInHelpFile="True" HelpContextIDs="" Category="C4">
+    <Topic Key="{146A422E-53CB-4B28-9389-E45CD52C6F9B}" Name="Tutorials" Title="Title Page" ContentsTitle="Title Page" Status="In Progress" CreatedOn="01-03-2007 14:08:40" ModifiedOn="12-10-2007 11:35:54" LayoutName="" AllStyleSheets="True" AllScripts="True" AutoGenerateIndexEntry="False" IncludeInHelpFile="True" HelpContextIDs="" Category="C4">
         <Notes/>
         <s k="BodyText"><![CDATA[<P align=center><IMG alt="" src="images\Image001.jpg" border=0></P>
 <P align=center><FONT size=3><U>Available Tutorials</U></FONT></P>
@@ -3270,59 +3271,58 @@ public const string ToolboxFrequencyConstraintItemId = "Toolbox.FrequencyConstra
 <P align=center>- <A href="Generating a other code types using an ORM schema in NORMA.html">Generating other code types using an ORM schema</A>&nbsp;</P>
 <P align=center>&nbsp;</P>
 <P align=center>Please visit NORMA project site on Sourceforge.net for and FAQ.</P>
-<P align=center><A href="http://sourceforge.net/projects/orm">http://sourceforge.net/projects/orm</A></P>
+<P align=center><A href="http://orm.sourceforge.net">http://orm.sourceforge.net</A></P>
 <P align=center>NORMA Forum: </P>
 <P align=center><A href="http://sourceforge.net/forum/?group_id=158881">http://sourceforge.net/forum/?group_id=158881</A></P>]]></s>
     </Topic>
     <GlossaryItems/>
     <Nodes>
-        <n key="{E17D6A99-A9A8-4B39-94AE-3619589E96A0}" nt="1" ct="1" c="Introduction" i="-1" cfn="" tid="{12E9716E-59AA-4178-9EE7-A0743AE78E24}" url=""/>
-        <n key="{6B67E0C1-C2A5-44FF-B08C-26999C0E7B71}" nt="1" ct="1" c="ORM Reference Tech Report 1" i="-1" cfn="" tid="{C63D3736-E030-4720-B7BA-324FE505472F}" url="">
-            <n key="{1A72DF72-578B-4BF1-8DED-C6CC5CB1BDC4}" nt="1" ct="1" c="Abstract Introduction" i="-1" cfn="" tid="{624EC9C9-67AF-4A21-AA61-F6BC03BF8B04}" url=""/>
-            <n key="{40060FDC-C718-4967-B715-15E7A82FA31B}" nt="1" ct="1" c="" i="-1" cfn="" tid="{01AA4BA5-22D1-4FFA-AC93-51E5D76D44A8}" url=""/>
-            <n key="{17EA19FD-8106-4F08-9B73-0EB2D3ABF86A}" nt="1" ct="1" c="" i="-1" cfn="" tid="{5508619A-6B53-4B9F-9059-013534449D2E}" url=""/>
-            <n key="{61CA3041-EFC1-4744-AB6E-4F08B73DF04C}" nt="1" ct="1" c="" i="-1" cfn="" tid="{F6FFBF05-60FD-4EB9-AF27-63EF585238D3}" url=""/>
-            <n key="{3003AC24-F46C-4B8A-9EE2-9A8C7232671C}" nt="1" ct="1" c="" i="-1" cfn="" tid="{FE7AE1A2-DA17-44E3-AE59-DC175FF28734}" url=""/>
-            <n key="{13E9DE94-0A86-4C43-9FF8-D3E09AF6030F}" nt="1" ct="1" c="" i="-1" cfn="" tid="{FB12E246-850C-4AA0-A984-3E568E335AD0}" url=""/>
-            <n key="{744555F5-228E-4D10-A9B5-6A1805A788A9}" nt="1" ct="1" c="" i="-1" cfn="" tid="{A78030FE-BE6B-4CD0-8040-25223A62B5F9}" url=""/>
-            <n key="{83539395-47D9-4A78-B20D-63283792250F}" nt="1" ct="1" c="" i="-1" cfn="" tid="{C9DA5D6B-4823-424A-81A4-1A435EAE3AC0}" url=""/>
-            <n key="{82477E61-4B20-4BB2-B467-99542D39BC54}" nt="1" ct="1" c="" i="-1" cfn="" tid="{9B1BFC60-303C-4F6A-8C02-1547EB66D316}" url=""/>
-            <n key="{8E277103-371E-412B-8F67-BE6F1288ECC2}" nt="1" ct="1" c="" i="-1" cfn="" tid="{0529912A-C93A-4E92-9E8A-054C7B5BF86A}" url=""/>
-            <n key="{6D8F782C-F44E-4FAA-A8AC-846C708CA474}" nt="1" ct="1" c="" i="-1" cfn="" tid="{2EFFE887-032E-435E-8C35-024C9B53D834}" url=""/>
-            <n key="{3CD2CA4D-D3E6-4A36-A02B-24B12001CAD3}" nt="1" ct="1" c="" i="-1" cfn="" tid="{294E0A64-6E56-4003-B089-0366435C3BDB}" url=""/>
-            <n key="{7F8839EE-6CDB-438C-9811-23045C881AAE}" nt="1" ct="1" c="" i="-1" cfn="" tid="{3BE21BA4-1546-4F9E-9D14-A4745337D2FD}" url=""/>
-            <n key="{7D0D9079-6E77-4734-B06B-26F4666BBB94}" nt="1" ct="1" c="" i="-1" cfn="" tid="{7F36ED66-2FA4-4ED9-A04F-9C1EEFF82A22}" url=""/>
-            <n key="{BD4C1B98-C681-4973-9AD3-91F09B26F0DA}" nt="1" ct="1" c="" i="-1" cfn="" tid="{D63EA8A1-D1FD-4A41-A5F8-6C714A5E5117}" url=""/>
-            <n key="{43C5D7E3-2A56-40ED-A25E-C8C428983FA9}" nt="1" ct="1" c="" i="-1" cfn="" tid="{099EE617-CA80-4DDD-A273-4D409DE40844}" url=""/>
-            <n key="{9FF3A957-8C01-4B3E-B39A-970D3B9A2E24}" nt="1" ct="1" c="" i="-1" cfn="" tid="{345D5D6A-D2F2-4250-883C-4B7A871C0407}" url=""/>
-            <n key="{806303CB-312C-4BF2-830D-B22A2C9CC594}" nt="1" ct="1" c="" i="-1" cfn="" tid="{54634E52-02AC-4379-94EF-FA9B84F786F6}" url=""/>
-            <n key="{6C376BBA-9F90-4D34-9315-B7DE66EAF646}" nt="1" ct="1" c="" i="-1" cfn="" tid="{ACB37F39-F0B3-4869-9121-633769C567CF}" url=""/>
+        <n key="{E17D6A99-A9A8-4B39-94AE-3619589E96A0}" nt="1" ct="1" c="Introduction" i="-1" cfn="" tid="{12E9716E-59AA-4178-9EE7-A0743AE78E24}" url="" tb=""/>
+        <n key="{6B67E0C1-C2A5-44FF-B08C-26999C0E7B71}" nt="1" ct="1" c="ORM Reference Tech Report 1" i="-1" cfn="" tid="{C63D3736-E030-4720-B7BA-324FE505472F}" url="" tb="">
+            <n key="{1A72DF72-578B-4BF1-8DED-C6CC5CB1BDC4}" nt="1" ct="1" c="Abstract Introduction" i="-1" cfn="" tid="{624EC9C9-67AF-4A21-AA61-F6BC03BF8B04}" url="" tb=""/>
+            <n key="{40060FDC-C718-4967-B715-15E7A82FA31B}" nt="1" ct="1" c="" i="-1" cfn="" tid="{01AA4BA5-22D1-4FFA-AC93-51E5D76D44A8}" url="" tb=""/>
+            <n key="{17EA19FD-8106-4F08-9B73-0EB2D3ABF86A}" nt="1" ct="1" c="" i="-1" cfn="" tid="{5508619A-6B53-4B9F-9059-013534449D2E}" url="" tb=""/>
+            <n key="{61CA3041-EFC1-4744-AB6E-4F08B73DF04C}" nt="1" ct="1" c="" i="-1" cfn="" tid="{F6FFBF05-60FD-4EB9-AF27-63EF585238D3}" url="" tb=""/>
+            <n key="{3003AC24-F46C-4B8A-9EE2-9A8C7232671C}" nt="1" ct="1" c="" i="-1" cfn="" tid="{FE7AE1A2-DA17-44E3-AE59-DC175FF28734}" url="" tb=""/>
+            <n key="{13E9DE94-0A86-4C43-9FF8-D3E09AF6030F}" nt="1" ct="1" c="" i="-1" cfn="" tid="{FB12E246-850C-4AA0-A984-3E568E335AD0}" url="" tb=""/>
+            <n key="{744555F5-228E-4D10-A9B5-6A1805A788A9}" nt="1" ct="1" c="" i="-1" cfn="" tid="{A78030FE-BE6B-4CD0-8040-25223A62B5F9}" url="" tb=""/>
+            <n key="{83539395-47D9-4A78-B20D-63283792250F}" nt="1" ct="1" c="" i="-1" cfn="" tid="{C9DA5D6B-4823-424A-81A4-1A435EAE3AC0}" url="" tb=""/>
+            <n key="{82477E61-4B20-4BB2-B467-99542D39BC54}" nt="1" ct="1" c="" i="-1" cfn="" tid="{9B1BFC60-303C-4F6A-8C02-1547EB66D316}" url="" tb=""/>
+            <n key="{8E277103-371E-412B-8F67-BE6F1288ECC2}" nt="1" ct="1" c="" i="-1" cfn="" tid="{0529912A-C93A-4E92-9E8A-054C7B5BF86A}" url="" tb=""/>
+            <n key="{6D8F782C-F44E-4FAA-A8AC-846C708CA474}" nt="1" ct="1" c="" i="-1" cfn="" tid="{2EFFE887-032E-435E-8C35-024C9B53D834}" url="" tb=""/>
+            <n key="{3CD2CA4D-D3E6-4A36-A02B-24B12001CAD3}" nt="1" ct="1" c="" i="-1" cfn="" tid="{294E0A64-6E56-4003-B089-0366435C3BDB}" url="" tb=""/>
+            <n key="{7F8839EE-6CDB-438C-9811-23045C881AAE}" nt="1" ct="1" c="" i="-1" cfn="" tid="{3BE21BA4-1546-4F9E-9D14-A4745337D2FD}" url="" tb=""/>
+            <n key="{7D0D9079-6E77-4734-B06B-26F4666BBB94}" nt="1" ct="1" c="" i="-1" cfn="" tid="{7F36ED66-2FA4-4ED9-A04F-9C1EEFF82A22}" url="" tb=""/>
+            <n key="{BD4C1B98-C681-4973-9AD3-91F09B26F0DA}" nt="1" ct="1" c="" i="-1" cfn="" tid="{D63EA8A1-D1FD-4A41-A5F8-6C714A5E5117}" url="" tb=""/>
+            <n key="{43C5D7E3-2A56-40ED-A25E-C8C428983FA9}" nt="1" ct="1" c="" i="-1" cfn="" tid="{099EE617-CA80-4DDD-A273-4D409DE40844}" url="" tb=""/>
+            <n key="{9FF3A957-8C01-4B3E-B39A-970D3B9A2E24}" nt="1" ct="1" c="" i="-1" cfn="" tid="{345D5D6A-D2F2-4250-883C-4B7A871C0407}" url="" tb=""/>
+            <n key="{806303CB-312C-4BF2-830D-B22A2C9CC594}" nt="1" ct="1" c="" i="-1" cfn="" tid="{54634E52-02AC-4379-94EF-FA9B84F786F6}" url="" tb=""/>
+            <n key="{6C376BBA-9F90-4D34-9315-B7DE66EAF646}" nt="1" ct="1" c="" i="-1" cfn="" tid="{ACB37F39-F0B3-4869-9121-633769C567CF}" url="" tb=""/>
         </n>
-        <n key="{73262F11-99EA-455B-A69A-53FE56D6DC59}" nt="1" ct="1" c="ORM 2 Constraint Verbalization" i="-1" cfn="" tid="{0E43E58B-4598-418A-AF6E-7AE6214EAFA2}" url="">
-            <n key="{DA895A9B-2233-4091-9905-AA0E3CE41250}" nt="1" ct="1" c="Contents" i="-1" cfn="" tid="{A83F3A92-5CEA-4677-8E88-4C62535D78A3}" url=""/>
-            <n key="{E1A537E9-4191-44EA-8601-26415DCF9CEE}" nt="1" ct="1" c="Introduction" i="-1" cfn="" tid="{2766F2D8-6CF1-4792-8350-E9CB0F35481C}" url=""/>
-            <n key="{F273B4A3-BDCD-42D0-99E7-D309F109FE89}" nt="1" ct="1" c="Uniqueness Constraints" i="-1" cfn="" tid="{CD615016-64F2-4319-AC31-F73F59B1C829}" url=""/>
-            <n key="{237F8299-0CDF-411C-B907-AE6BB55FB97B}" nt="1" ct="1" c="Mandatory Constraints" i="-1" cfn="" tid="{C1659E4B-F2AD-4D12-A92A-B858A2405F76}" url=""/>
-            <n key="{A0409E4C-8451-4BAE-AAB8-9669871548B4}" nt="1" ct="1" c="Implementation" i="-1" cfn="" tid="{9EAD38AF-9937-4BB8-8D17-157BA2ABCD43}" url=""/>
-            <n key="{19D969E1-0EF5-48DD-B425-CD6FA377E48F}" nt="1" ct="1" c="References" i="-1" cfn="" tid="{26E407A8-488A-4981-9AC0-5307464E7931}" url=""/>
+        <n key="{73262F11-99EA-455B-A69A-53FE56D6DC59}" nt="1" ct="1" c="ORM 2 Constraint Verbalization" i="-1" cfn="" tid="{0E43E58B-4598-418A-AF6E-7AE6214EAFA2}" url="" tb="">
+            <n key="{DA895A9B-2233-4091-9905-AA0E3CE41250}" nt="1" ct="1" c="Contents" i="-1" cfn="" tid="{A83F3A92-5CEA-4677-8E88-4C62535D78A3}" url="" tb=""/>
+            <n key="{E1A537E9-4191-44EA-8601-26415DCF9CEE}" nt="1" ct="1" c="Introduction" i="-1" cfn="" tid="{2766F2D8-6CF1-4792-8350-E9CB0F35481C}" url="" tb=""/>
+            <n key="{F273B4A3-BDCD-42D0-99E7-D309F109FE89}" nt="1" ct="1" c="Uniqueness Constraints" i="-1" cfn="" tid="{CD615016-64F2-4319-AC31-F73F59B1C829}" url="" tb=""/>
+            <n key="{237F8299-0CDF-411C-B907-AE6BB55FB97B}" nt="1" ct="1" c="Mandatory Constraints" i="-1" cfn="" tid="{C1659E4B-F2AD-4D12-A92A-B858A2405F76}" url="" tb=""/>
+            <n key="{A0409E4C-8451-4BAE-AAB8-9669871548B4}" nt="1" ct="1" c="Implementation" i="-1" cfn="" tid="{9EAD38AF-9937-4BB8-8D17-157BA2ABCD43}" url="" tb=""/>
+            <n key="{19D969E1-0EF5-48DD-B425-CD6FA377E48F}" nt="1" ct="1" c="References" i="-1" cfn="" tid="{26E407A8-488A-4981-9AC0-5307464E7931}" url="" tb=""/>
         </n>
-        <n key="{8AD29060-429B-4ED4-B754-8C337523D348}" nt="1" ct="1" c="Tutorials" i="-1" cfn="" tid="{146A422E-53CB-4B28-9389-E45CD52C6F9B}" url="">
-            <n key="{098248E2-C2A4-479E-BD53-B6DCBF20C468}" nt="1" ct="1" c="Creating a Simple Diagram" i="-1" cfn="" tid="{65F9333D-A2CC-416E-BD6A-ED0E91460E58}" url=""/>
-            <n key="{6A9056A1-6AE7-4305-B9DE-82B961541589}" nt="1" ct="1" c="DDL Code Generation" i="-1" cfn="" tid="{9F0DB88C-853E-4678-9478-226F220AE040}" url=""/>
-            <n key="{E0AD5E80-23CE-4547-AC52-49DC3F981DB4}" nt="1" ct="1" c="Other Code Generation" i="-1" cfn="" tid="{C8E88885-885D-4FE4-BEAE-DEAA34D46DF0}" url=""/>
-            <n key="{066DC30B-215C-4276-9C52-9E1B62690277}" nt="1" ct="1" c="" i="-1" cfn="" tid="{01E56D06-3F64-47C1-A5BA-9100ABD6C077}" url=""/>
+        <n key="{8AD29060-429B-4ED4-B754-8C337523D348}" nt="1" ct="1" c="Tutorials" i="-1" cfn="" tid="{146A422E-53CB-4B28-9389-E45CD52C6F9B}" url="" tb="">
+            <n key="{098248E2-C2A4-479E-BD53-B6DCBF20C468}" nt="1" ct="1" c="Creating a Simple Diagram" i="-1" cfn="" tid="{65F9333D-A2CC-416E-BD6A-ED0E91460E58}" url="" tb=""/>
+            <n key="{6A9056A1-6AE7-4305-B9DE-82B961541589}" nt="1" ct="1" c="DDL Code Generation" i="-1" cfn="" tid="{9F0DB88C-853E-4678-9478-226F220AE040}" url="" tb=""/>
+            <n key="{E0AD5E80-23CE-4547-AC52-49DC3F981DB4}" nt="1" ct="1" c="Other Code Generation" i="-1" cfn="" tid="{C8E88885-885D-4FE4-BEAE-DEAA34D46DF0}" url="" tb=""/>
+            <n key="{066DC30B-215C-4276-9C52-9E1B62690277}" nt="1" ct="1" c="" i="-1" cfn="" tid="{01E56D06-3F64-47C1-A5BA-9100ABD6C077}" url="" tb=""/>
         </n>
-        <n key="{89DDC6C4-03D2-402F-AB5F-FDA76E5608BA}" nt="1" ct="1" c="Development Documentation" i="-1" cfn="" tid="{5172E870-4B5D-4F30-B839-7F42BE385AEB}" url=""/>
-        <n key="{C4407534-5A03-4ED7-9EE5-C59833EB05AC}" nt="1" ct="1" c="FAQ" i="-1" cfn="" tid="{874017A5-F3F4-43BD-BF4D-20B301C9C4CA}" url="">
-            <n key="{BC5D249D-4F0A-4C92-B1DD-47C8A72BE779}" nt="0" ct="2" c="Sourceforge" i="-1" cfn="" tid="" url="http://sourceforge.net/projects/orm"/>
+        <n key="{89DDC6C4-03D2-402F-AB5F-FDA76E5608BA}" nt="1" ct="1" c="Development Documentation" i="-1" cfn="" tid="{5172E870-4B5D-4F30-B839-7F42BE385AEB}" url="" tb=""/>
+        <n key="{C4407534-5A03-4ED7-9EE5-C59833EB05AC}" nt="1" ct="1" c="FAQ" i="-1" cfn="" tid="{874017A5-F3F4-43BD-BF4D-20B301C9C4CA}" url="" tb="">
+            <n key="{BC5D249D-4F0A-4C92-B1DD-47C8A72BE779}" nt="0" ct="2" c="Sourceforge" i="-1" cfn="" tid="" url="http://sourceforge.net/projects/orm" tb=""/>
         </n>
     </Nodes>
     <Tasks/>
     <BuildProfiles>
-        <BuildProfile ID="{ED61CAAF-B217-429E-92BD-C78484CA18E6}" Name="Default" OutputDirectory="Build\Default\" CompileHelpFile="True" HTMLHelpVersion="2" H2Namespace="NeumontORMArchitect" H2FileID="NeumontORMArchitect" H2PlugIn="Neumont.Tools.ORM" HelpFileName="Build\vs_NormA.hxs" UseBuildFlags="False" ProjectTitle="Neumont ORM Architect" RemoveOutputFiles="False" BuildFlags="" IncludeInBuild="True" DefaultTopicID="" LocaleID="0">
-            <TemplateProperty Name="CopyrightNotice">(c)2005, Neumont University.  All rights reserved.</TemplateProperty>
+        <BuildProfile ID="{ED61CAAF-B217-429E-92BD-C78484CA18E6}" Name="Default" OutputDirectory="Build\Default\" CompileHelpFile="True" HTMLHelpVersion="2" H2Namespace="Neumont.ORM.General" H2FileID="Neumont.ORM.General" H2PlugIn="MS.VSIPCC.v80" HelpFileName="Build\Neumont.ORM.General.hxs" UseBuildFlags="False" ProjectTitle="Neumont ORM Architect" RemoveOutputFiles="True" BuildFlags="" IncludeInBuild="True" DefaultTopicID="" LocaleID="0">
+            <TemplateProperty Name="CopyrightNotice">Copyright © Neumont University. All rights reserved.</TemplateProperty>
         </BuildProfile>
     </BuildProfiles>
     <ProjectProperties/>
 </HSProject>
-

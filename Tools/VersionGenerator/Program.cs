@@ -48,26 +48,6 @@ namespace Neumont.Tools.ORM.SDK
 			string quotedProductVersion = string.Format("\"{0}.{1}.0.0\"", Config.MajorVersion, Config.MinorVersion);
 			string quotedReleaseDescription = string.Format("\"{0:yyyy-MM} {1}\"", Config.ReleaseYearMonth, Config.ReleaseType);
 
-			#region Version.h
-			FileInfo versionH = new FileInfo("Version.h");
-			if (!versionH.Exists || versionH.LastWriteTime.Date != today || versionH.LastWriteTime < versionConfigLastModified)
-			{
-				using (StreamWriter writer = versionH.CreateText())
-				{
-					writer.WriteLine("/*" + generatedWarning + "*/");
-					writer.WriteLine("#define NORMA_FILEVERSION	" + unquotedFileVersion);
-					writer.WriteLine("#define NORMA_FILEVERSION_STRING	" + quotedInformationalVersion);
-					writer.WriteLine("#define NORMA_PRODUCTVERSION	{0},{1},0,0", Config.MajorVersion, Config.MinorVersion);
-					writer.WriteLine("#define NORMA_PRODUCTVERSION_STRING	" + quotedProductVersion);
-				}
-				Console.WriteLine(statusPrefix + "Generated Version.h.");
-			}
-			else
-			{
-				Console.WriteLine(statusPrefix + "Version.h already up to date.");
-			}
-			#endregion
-
 			#region Version.cs
 			FileInfo versionCS = new FileInfo("Version.cs");
 			if (!versionCS.Exists || versionCS.LastWriteTime.Date != today || versionCS.LastWriteTime < versionConfigLastModified)
@@ -106,7 +86,7 @@ namespace Neumont.Tools.ORM.SDK
 				{
 					writer.WriteStartDocument();
 					writer.WriteComment(generatedWarning);
-					writer.WriteStartElement("Include", "http://schemas.microsoft.com/wix/2003/01/wi");
+					writer.WriteStartElement("Include", "http://schemas.microsoft.com/wix/2006/wi");
 					writer.WriteProcessingInstruction("define", string.Format("MajorMinorVersion=\"{0}.{1}\"", Config.MajorVersion, Config.MinorVersion));
 					writer.WriteProcessingInstruction("define", string.Format("MajorVersionHexits=\"{0:d2}\"", Config.MajorVersion));
 					writer.WriteProcessingInstruction("define", string.Format("ProductVersion=\"{0}\"", unquotedFileVersion));

@@ -111,4 +111,8 @@
 	<?define VSLogicalViewDesignerGuid="7651A702-06E5-11D1-8EBD-00A0C90F26EA"?>
 	<?define VSOutputWindowGuid="34E76E81-EE4A-11D0-AE2E-00A0C90FFFC3"?>
 	<?define VSSolutionExplorerWindowGuid="3AE79031-E1BC-11D0-8F78-00A0C9110057"?>
+
+	<!-- Define "HxMergeVSHelpCollection" in order to include custom actions that merge the VS Combined Help Collection. -->
+	<!-- This bypasses the "Help is updating to reflect your recent changes" message the next time Document Explorer is opened, but it also significantly increaseses install time. -->
+	<!--<?define HxMergeVSHelpCollection?>-->
 </Include>

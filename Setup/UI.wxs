@@ -22,7 +22,28 @@
 		
 		<UI Id="NORMAUI">
 			<ProgressText Action="DevEnvSetupCustomAction">!(loc.ProgressTextDevEnvSetupCustomAction)</ProgressText>
-			
+
+			<ProgressText Action="CA_ExportTempHxDs.3643236F_FC70_11D3_A536_0090278A1BB8">!(loc.ProgressTextExportTempHxDs)</ProgressText>
+			<ProgressText Action="CA_RollbackHelpTransaction.3643236F_FC70_11D3_A536_0090278A1BB8">!(loc.ProgressTextRollbackHelpTransaction)</ProgressText>
+			<ProgressText Action="CA_BeginHelpTransaction.3643236F_FC70_11D3_A536_0090278A1BB8">!(loc.ProgressTextBeginHelpTransaction)</ProgressText>
+			<ProgressText Action="CA_UnRegisterMicrosoftHelp.3643236F_FC70_11D3_A536_0090278A1BB8">!(loc.ProgressTextUnRegisterMicrosoftHelp)</ProgressText>
+			<ProgressText Action="CA_RegisterMicrosoftHelp.3643236F_FC70_11D3_A536_0090278A1BB8">!(loc.ProgressTextRegisterMicrosoftHelp)</ProgressText>
+			<ProgressText Action="CA_CommitHelpTransaction.3643236F_FC70_11D3_A536_0090278A1BB8">!(loc.ProgressTextCommitHelpTransaction)</ProgressText>
+			<ProgressText Action="CA_CommitHelpTransactionNoRB.3643236F_FC70_11D3_A536_0090278A1BB8">!(loc.ProgressTextCommitHelpTransaction)</ProgressText>
+			<ProgressText Action="CA_RemoveTempHxDs.3643236F_FC70_11D3_A536_0090278A1BB8">!(loc.ProgressTextRemoveTempHxDs)</ProgressText>
+			<ProgressText Action="CA_DummyForHXDS_DLL.3643236F_FC70_11D3_A536_0090278A1BB8">!(loc.ProgressTextDummyForHxDsDLL)</ProgressText>
+			<ProgressText Action="CA_RegisterFilter.3643236F_FC70_11D3_A536_0090278A1BB8">!(loc.ProgressTextRegisterHelpFilter)</ProgressText>
+			<ProgressText Action="CA_RegisterHelpFile.3643236F_FC70_11D3_A536_0090278A1BB8">!(loc.ProgressTextRegisterHelpFile)</ProgressText>
+			<ProgressText Action="CA_RegisterNamespace.3643236F_FC70_11D3_A536_0090278A1BB8">!(loc.ProgressTextRegisterHelpNamespace)</ProgressText>
+			<ProgressText Action="CA_RegisterPlugIn.3643236F_FC70_11D3_A536_0090278A1BB8">!(loc.ProgressTextRegisterHelpPlugIn)</ProgressText>
+			<ProgressText Action="CA_RemoveHelpFile.3643236F_FC70_11D3_A536_0090278A1BB8">!(loc.ProgressTextRemoveHelpFile)</ProgressText>
+			<ProgressText Action="CA_RemoveNamespace.3643236F_FC70_11D3_A536_0090278A1BB8">!(loc.ProgressTextRemoveHelpNamespace)</ProgressText>
+			<ProgressText Action="CA_RollbackTempHxDs.3643236F_FC70_11D3_A536_0090278A1BB8">!(loc.ProgressTextRollbackTempHxDs)</ProgressText>
+			<?ifdef HxMergeVSHelpCollection?>
+				<ProgressText Action="CA_HxMerge_VSIPCC_VSCC.3643236F_FC70_11D3_A536_0090278A1BB8">!(loc.ProgressTextHxMergeVSCC)</ProgressText>
+				<ProgressText Action="CA_HxMerge_VSIPCC_VSExpCC.3643236F_FC70_11D3_A536_0090278A1BB8">!(loc.ProgressTextHxMergeVSExpCC)</ProgressText>
+			<?endif?>
+
 			<!--
 				First-time install dialog sequence:
 					WixUI_WelcomeDlg, WixUI_VerifyReadyDlg

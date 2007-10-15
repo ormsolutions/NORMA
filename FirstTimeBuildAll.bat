@@ -4,8 +4,7 @@ SET RootDir=%~dp0.
 CALL "%RootDir%\SetupEnvironment.bat" %*
 
 CALL "%RootDir%\BuildDevTools.bat" %*
-CALL "%RootDir%\BuildSetup.bat" %*
-CALL "%RootDir%\BuildTests.bat" %*
+CALL "%RootDir%\BuildAll.bat" %*
 
 ECHO.
 ECHO Running 'devenv.exe /RootSuffix "%VSRegistryRootSuffix%" /Setup'... This may take a few minutes...

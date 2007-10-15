@@ -23,6 +23,10 @@
 			<Feature Id="HelpFeature" Title="!(loc.HelpFeatureTitle)" Description="!(loc.HelpFeatureDescription)"
 				Level="1" TypicalDefault="install" InstallDefault="followParent" AllowAdvertise="no">
 				<ComponentGroupRef Id="HelpFeatureComponents"/>
+				<MergeRef Id="MSHelpRegistration"/>
+				<?ifdef HxMergeVSHelpCollection?>
+					<MergeRef Id="VSHelpCollection"/>
+				<?endif?>
 			</Feature>
 
 			<Feature Id="DatabaseImportFeature" Title="!(loc.DatabaseImportFeatureTitle)" Description="!(loc.DatabaseImportFeatureDescription)"

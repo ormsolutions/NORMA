@@ -116,6 +116,8 @@
 			<RemoveExistingProducts Before="ArpInstallLocationCustomAction"/>
 			<Custom Before="InstallInitialize" Action="ArpInstallLocationCustomAction"/>
 			<Custom Before="InstallFinalize" Action="DevEnvSetupCustomAction"/>
+			<!-- We need to move InstallFinalize back from its normal point in the sequence, since the MSHelp2 merge modules expect it to occur later. -->
+			<InstallFinalize Sequence="8000"/>
 		</InstallExecuteSequence>
 
 		<UIRef Id="NORMAUI"/>

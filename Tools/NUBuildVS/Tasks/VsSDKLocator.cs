@@ -37,60 +37,42 @@ using Microsoft.Win32;
 namespace Neumont.Build.Tasks
 {
 	/// <summary>
-	/// Obtains installation information and locations for the latest installed version of the Visual Studio SDK.
+	/// Obtains installation information and locations for the specified version of the Visual Studio SDK.
 	/// </summary>
-	public class VsSDKLocator : Task
+	public class VsSdkLocator : Task
 	{
 		#region Execute method
 		/// <summary>See <see cref="Task.Execute"/>.</summary>
 		public override bool Execute()
 		{
-			const string VsSDKInstallDirEnvironmentVariable = "VsSDKInstall";
-			const string VsSDKVersionsRegistryPath = @"SOFTWARE\Microsoft\VisualStudio\VSIP";
-			const string VsSDKInstallDirRegistryValue = "InstallDir";
-			const string VsSDKIncludeFilesSubdirectory = @"VisualStudioIntegration\Common\Inc";
-			const string VsSDKToolsSubdirectory = @"VisualStudioIntegration\Tools\Bin";
+			const string VsSdkInstallDirEnvironmentVariable = "VsSDKInstall";
+			const string VsSdkVersionsRegistryPath = @"SOFTWARE\Microsoft\VisualStudio\VSIP";
+			const string VsSdkInstallDirRegistryValue = "InstallDir";
+			const string VsSdkIncludeFilesSubdirectory = @"VisualStudioIntegration\Common\Inc";
+			const string VsSdkToolsSubdirectory = @"VisualStudioIntegration\Tools\Bin";
+			const string VsSdkRedistributablesSubdirectory = @"VisualStudioIntegration\Redistributables";
 
 			TaskLoggingHelper log = base.Log;
 
-			// Try to find the VsSDK installation directory by first checking the environment variable, and then by checking the latest version listed in the registry.
-			string installDir = Environment.GetEnvironmentVariable(VsSDKInstallDirEnvironmentVariable);
+			// Try to find the VsSDK installation directory by first checking the environment variable, and then by checking the specified version listed in the registry.
+			string installDir = Environment.GetEnvironmentVariable(VsSdkInstallDirEnvironmentVariable);
 			if (!string.IsNullOrEmpty(installDir))
 			{
-				log.LogMessage(MessageImportance.Low, "Using Visual Studio SDK installation directory from \"" + VsSDKInstallDirEnvironmentVariable + "\" environment variable: \"{0}\"", installDir);
+				log.LogMessage(MessageImportance.Low, "Using Visual Studio SDK installation directory from \"" + VsSdkInstallDirEnvironmentVariable + "\" environment variable: \"{0}\"", installDir);
 			}
 			else
 			{
-				using (RegistryKey vsipRegistryKey = Registry.LocalMachine.OpenSubKey(VsSDKVersionsRegistryPath, RegistryKeyPermissionCheck.ReadSubTree))
+				using (RegistryKey vsipRegistryKey = Registry.LocalMachine.OpenSubKey(VsSdkVersionsRegistryPath, RegistryKeyPermissionCheck.ReadSubTree))
 				{
 					if (vsipRegistryKey != null)
 					{
-						string[] subKeyNames = vsipRegistryKey.GetSubKeyNames();
-						SortedList<Version, string> vsipVersions = new SortedList<Version, string>(subKeyNames.Length);
-						foreach (string versionSubKeyName in subKeyNames)
+						string requestedVersionSubKeyName = this.RequestedVersion;
+						using (RegistryKey requestedVersionRegistryKey = vsipRegistryKey.OpenSubKey(requestedVersionSubKeyName, RegistryKeyPermissionCheck.ReadSubTree))
 						{
-							try
+							if (requestedVersionRegistryKey != null)
 							{
-								Version version = new Version(versionSubKeyName);
-								vsipVersions.Add(version, versionSubKeyName);
-							}
-							// Ignore any ArgumentExceptions and FormatExceptions, since Version doesn't have a TryParse method.
-							catch (ArgumentException) { }
-							catch (FormatException) { }
-						}
-
-						int latestVersionIndex = vsipVersions.Count - 1;
-						if (latestVersionIndex >= 0)
-						{
-							string latestVersionSubKeyName = vsipVersions.Values[latestVersionIndex];
-							using (RegistryKey latestVersionRegistryKey = vsipRegistryKey.OpenSubKey(latestVersionSubKeyName, RegistryKeyPermissionCheck.ReadSubTree))
-							{
-								// This will only ever be null if somebody has deleted it since we initially got the list of subkey names, but just in case...
-								if (latestVersionRegistryKey != null)
-								{
-									installDir = latestVersionRegistryKey.GetValue(VsSDKInstallDirRegistryValue, null) as string;
-									log.LogMessage(MessageImportance.Low, "Using Visual Studio SDK installation directory from registry for version \"{0}\": \"{1}\"", latestVersionSubKeyName, installDir);
-								}
+								installDir = requestedVersionRegistryKey.GetValue(VsSdkInstallDirRegistryValue, null) as string;
+								log.LogMessage(MessageImportance.Low, "Using Visual Studio SDK installation directory from registry for version \"{0}\": \"{1}\"", requestedVersionSubKeyName, installDir);
 							}
 						}
 					}
@@ -112,7 +94,7 @@ namespace Neumont.Build.Tasks
 			installDir = this._installationDirectory = installDirInfo.FullName;
 
 			// Get the include files directory
-			DirectoryInfo includesDirInfo = new DirectoryInfo(Path.Combine(installDir, VsSDKIncludeFilesSubdirectory));
+			DirectoryInfo includesDirInfo = new DirectoryInfo(Path.Combine(installDir, VsSdkIncludeFilesSubdirectory));
 			if (includesDirInfo.Exists)
 			{
 				string includesDir = this._includesDirectory = includesDirInfo.FullName;
@@ -124,7 +106,7 @@ namespace Neumont.Build.Tasks
 			}
 
 			// Get the tools directory
-			DirectoryInfo toolsDirInfo = new DirectoryInfo(Path.Combine(installDir, VsSDKToolsSubdirectory));
+			DirectoryInfo toolsDirInfo = new DirectoryInfo(Path.Combine(installDir, VsSdkToolsSubdirectory));
 			if (toolsDirInfo.Exists)
 			{
 				string toolsDir = this._toolsDirectory = toolsDirInfo.FullName;
@@ -135,14 +117,58 @@ namespace Neumont.Build.Tasks
 				log.LogWarning("Visual Studio SDK tools directory \"{0}\" does not exist.", toolsDirInfo.FullName);
 			}
 
+			// Get the redistributables directory
+			DirectoryInfo redistributablesDirInfo = new DirectoryInfo(Path.Combine(installDir, VsSdkRedistributablesSubdirectory));
+			if (redistributablesDirInfo.Exists)
+			{
+				string redistributablesDir = this._redistributablesDirectory = redistributablesDirInfo.FullName;
+				log.LogMessage(MessageImportance.Low, "Visual Studio SDK redistributables directory found at \"{0}\".", redistributablesDir);
+			}
+			else
+			{
+				log.LogWarning("Visual Studio SDK redistributables directory \"{0}\" does not exist.", redistributablesDirInfo.FullName);
+			}
+
 			return true;
 		}
 		#endregion // Execute method
 
 		#region Properties
+		private Version _requestedVersion;
+		/// <summary>
+		/// The version of the Visual Studio SDK for which information should be obtained.
+		/// </summary>
+		[Required]
+		public string RequestedVersion
+		{
+			get
+			{
+				if ((object)this._requestedVersion == null)
+				{
+					return string.Empty;
+				}
+				return this._requestedVersion.ToString(2);
+			}
+			set
+			{
+				if ((object)value == null)
+				{
+					throw new ArgumentNullException("value");
+				}
+				if (value.StartsWith("v", StringComparison.OrdinalIgnoreCase))
+				{
+					this._requestedVersion = new Version(value.Substring(1));
+				}
+				else
+				{
+					this._requestedVersion = new Version(value);
+				}
+			}
+		}
+
 		private string _installationDirectory;
 		/// <summary>
-		/// The directory into which the latest version of the Visual Studio SDK is installed.
+		/// The directory into which the specified version of the Visual Studio SDK is installed.
 		/// </summary>
 		[Output]
 		public string InstallationDirectory
@@ -155,7 +181,7 @@ namespace Neumont.Build.Tasks
 
 		private string _toolsDirectory;
 		/// <summary>
-		/// The tools directory for the latest installed version of the Visual Studio SDK.
+		/// The tools directory for the specified version of the Visual Studio SDK.
 		/// </summary>
 		[Output]
 		public string ToolsDirectory
@@ -168,7 +194,7 @@ namespace Neumont.Build.Tasks
 
 		private string _includesDirectory;
 		/// <summary>
-		/// The include files directory for the latest installed version of the Visual Studio SDK.
+		/// The include files directory for the specified version of the Visual Studio SDK.
 		/// </summary>
 		[Output]
 		public string IncludesDirectory
@@ -176,6 +202,19 @@ namespace Neumont.Build.Tasks
 			get
 			{
 				return this._includesDirectory;
+			}
+		}
+
+		private string _redistributablesDirectory;
+		/// <summary>
+		/// The redistributables directory for the specified version of the Visual Studio SDK.
+		/// </summary>
+		[Output]
+		public string RedistributablesDirectory
+		{
+			get
+			{
+				return this._redistributablesDirectory;
 			}
 		}
 		#endregion // Properties

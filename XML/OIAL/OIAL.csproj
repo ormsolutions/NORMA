@@ -11,6 +11,9 @@
   <ItemGroup>
   </ItemGroup>
   <ItemGroup>
+    <None Include="KnowledgeLanguage.xsd">
+      <SubType>Designer</SubType>
+    </None>
     <None Include="ORMDataTypes-Temporal.xsd">
       <SubType>Designer</SubType>
     </None>

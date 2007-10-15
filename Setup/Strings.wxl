@@ -37,6 +37,8 @@
 
 	<String Id="ORMCustomToolDescription">ORM Custom Tool</String>
 
+	<String Id="NORMAHelpCollectionDescription">Neumont ORM Architect</String>
+
 	<!-- Custom Error Strings -->
 	<String Id="Windows2000OrHigherRequired">This setup requires Microsoft Windows 2000 or later.</String>
 	<String Id="NetFrameworkRequired">This setup requires the Microsoft .NET Framework 2.0. Please install the .NET Framework and run this setup again.</String>
@@ -52,7 +54,26 @@
 	<!-- HACK: DevEnvSetupCustomAction runs as a commit custom action, which makes it hard to show UI for it. -->
 	<!-- Instead, we hijack the ProgressTextRollbackCleanup string, since it is the last string normally shown before the custom action executes. -->
 	<String Id="ProgressTextRollbackCleanup">Running Visual Studio "/Setup" command. This may take several minutes...</String>
-	
+
+	<String Id="ProgressTextExportTempHxDs">MSHelp2: Exporting temporary HxDs</String>
+	<String Id="ProgressTextRollbackHelpTransaction">MSHelp2: Rolling back transaction</String>
+	<String Id="ProgressTextBeginHelpTransaction">MSHelp2: Beginning transaction</String>
+	<String Id="ProgressTextUnRegisterMicrosoftHelp">MSHelp2: Unregistering Microsoft Help</String>
+	<String Id="ProgressTextRegisterMicrosoftHelp">MSHelp2: Registering Microsoft Help</String>
+	<String Id="ProgressTextCommitHelpTransaction">MSHelp2: Committing transaction</String>
+	<String Id="ProgressTextRemoveTempHxDs">MSHelp2: Removing temporary HxDs</String>
+	<String Id="ProgressTextDummyForHxDsDLL">MSHelp2: Dummy for HxDs DLL</String>
+	<String Id="ProgressTextRegisterHelpFilter">MSHelp2: Registering filter</String>
+	<String Id="ProgressTextRegisterHelpFile">MSHelp2: Registering help file</String>
+	<String Id="ProgressTextRegisterHelpNamespace">MSHelp2: Registering namespace</String>
+	<String Id="ProgressTextRegisterHelpPlugIn">MSHelp2: Registering plugin</String>
+	<String Id="ProgressTextRemoveHelpFile">MSHelp2: Removing help file</String>
+	<String Id="ProgressTextRemoveHelpNamespace">MSHelp2: Removing namespace</String>
+	<String Id="ProgressTextRollbackTempHxDs">MSHelp2: Rolling back temporary HxDs</String>
+	<String Id="ProgressTextHxMergeVSCC">MSHelp2: Merging Visual Studio Combined Help Collection</String>
+	<String Id="ProgressTextHxMergeVSExpCC">MSHelp2: Merging Visual Studio Express Combined Help Collection</String>	
+
+
 	<!-- WiX UI & Error Strings - Taken from WixUI_en-us.wxl v2.0.4103.0 -->
 	<String Id="WixUIBack">&amp;Back</String>
 	<String Id="WixUINext">&amp;Next</String>

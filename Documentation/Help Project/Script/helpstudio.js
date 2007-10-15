@@ -1,5 +1,28 @@
+/* Wire up the bodyload handler (set here rather than in the body element
+    in order to avoid a HTML Help viewer bug with printing multiple topics */
+window.onload = hsBodyLoad;
+
+/* Set body initially hidden unless we are printing */
+document.write("<style media='screen'>div#hsbody{display: none}</style>");
+
+/* This is required for user data support in .chms */
+var curURL = document.location + ".";
+var pos = curURL.indexOf("mk:@MSITStore");
+var scrollPos = null;
+if( pos == 0 )
+{
+    curURL = "ms-its:" + curURL.substring(14,curURL.length-1);
+    document.location.replace(curURL);
+}
+
 function hsBodyLoad()
 {
+	if (scrollPos == null && curURL.indexOf("#") != -1)
+	{
+		var oBanner= documentElement("pagetop");
+		scrollPos = document.body.scrollTop - oBanner.offsetHeight;
+	}
+
 	resizeBan();	
 		
 	document.body.onclick = resizeBan;
@@ -100,9 +123,14 @@ function hsBeforePrint(){
 			allElements[i].style.width = "100%";
 			allElements[i].style.padding = "0px 10px 0px 30px";
 			}
-		if (allElements[i].id == "seealsobutton") {
+        if (allElements[i].id == "pagetoptable1row2" || allElements[i].id == "pagetoptable2row1" || allElements[i].id == "feedbacklink")
+        {
 			allElements[i].style.display = "none";
 			}
+        if (allElements[i].className == "LanguageSpecific")
+        {
+            allElements[i].style.display = "block";
+        }
 		}
 }
 

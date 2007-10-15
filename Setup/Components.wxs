@@ -12,7 +12,7 @@
 
 	You must not remove this notice, or any other, from this software.
 -->
-<Wix xmlns="http://schemas.microsoft.com/wix/2006/wi">
+<Wix xmlns="http://schemas.microsoft.com/wix/2006/wi" xmlns:vs="http://schemas.microsoft.com/wix/VSExtension">
 	<?include Config.wxi?>
 	<Fragment>
 		<Directory Id="TARGETDIR" Name="SourceDir">
@@ -278,7 +278,36 @@
 							<Component Id="NORMAVSHelpComponent" Guid="31ED0AEA-D66C-4AD0-$(var.VersionGuidSuffix)" DiskId="1" Win64="$(var.Win64)" KeyPath="yes">
 								<File Id="Creating_ORM_Schemas.doc" ShortName="CrORMSch.doc" Name="Creating ORM Schemas.doc" Source="..\Documentation\Creating ORM Schemas.doc"
 									DefaultLanguage="$(var.DefaultLCID)" CompanionFile="Neumont.Tools.ORM.dll"/>
+								
+								<File Id="Neumont.ORM.General.hxs" ShortName="ORMGnrl.hxs" Name="Neumont.ORM.General.hxs" Source="..\Documentation\Help Project\Build\Neumont.ORM.General.hxs"
+									DefaultLanguage="$(var.DefaultLCID)" CompanionFile="Neumont.Tools.ORM.dll">
+									<vs:HelpFile Id="Neumont.ORM.General" Name="Neumont.ORM.General"/>
+								</File>
+								<File Id="COL_Neumont.ORM.General.HxC" ShortName="ORMGnrl.HxC" Name="COL_Neumont.ORM.General.HxC" Source="..\Documentation\Help Project\Build\COL_Neumont.ORM.General.HxC"
+									DefaultLanguage="$(var.DefaultLCID)" CompanionFile="Neumont.ORM.General.hxs">
+									<vs:HelpCollection Id="Neumont.ORM.General" Description="!(loc.NORMAHelpCollectionDescription)" Name="Neumont.ORM.General">
+										<vs:HelpFileRef Id="Neumont.ORM.General"/>
+										<vs:PlugCollectionInto TargetCollection="MS_VSIPCC_v80" TableOfContents="COL_Neumont.ORM.General.HxT"/>
+									</vs:HelpCollection>
+								</File>
+								<File Id="COL_Neumont.ORM.General.HxT" ShortName="ORMGnrl.HxT" Name="COL_Neumont.ORM.General.HxT" Source="..\Documentation\Help Project\Build\COL_Neumont.ORM.General.HxT"
+									DefaultLanguage="$(var.DefaultLCID)" CompanionFile="Neumont.ORM.General.hxs"/>
+								<File Id="COL_Neumont.ORM.General_A.HxK" ShortName="ORMGnrlA.HxK" Name="COL_Neumont.ORM.General_A.HxK" Source="..\Documentation\Help Project\Build\COL_Neumont.ORM.General_A.HxK"
+									DefaultLanguage="$(var.DefaultLCID)" CompanionFile="Neumont.ORM.General.hxs"/>
+								<File Id="COL_Neumont.ORM.General_D.HxK" ShortName="ORMGnrlD.HxK" Name="COL_Neumont.ORM.General_D.HxK" Source="..\Documentation\Help Project\Build\COL_Neumont.ORM.General_D.HxK"
+									DefaultLanguage="$(var.DefaultLCID)" CompanionFile="Neumont.ORM.General.hxs"/>
+								<File Id="COL_Neumont.ORM.General_F.HxK" ShortName="ORMGnrlF.HxK" Name="COL_Neumont.ORM.General_F.HxK" Source="..\Documentation\Help Project\Build\COL_Neumont.ORM.General_F.HxK"
+									DefaultLanguage="$(var.DefaultLCID)" CompanionFile="Neumont.ORM.General.hxs"/>
+								<File Id="COL_Neumont.ORM.General_K.HxK" ShortName="ORMGnrlK.HxK" Name="COL_Neumont.ORM.General_K.HxK" Source="..\Documentation\Help Project\Build\COL_Neumont.ORM.General_K.HxK"
+									DefaultLanguage="$(var.DefaultLCID)" CompanionFile="Neumont.ORM.General.hxs"/>
+								<File Id="COL_Neumont.ORM.General_N.HxK" ShortName="ORMGnrlN.HxK" Name="COL_Neumont.ORM.General_N.HxK" Source="..\Documentation\Help Project\Build\COL_Neumont.ORM.General_N.HxK"
+									DefaultLanguage="$(var.DefaultLCID)" CompanionFile="Neumont.ORM.General.hxs"/>
 							</Component>
+
+							<Merge Id="MSHelpRegistration" Language="$(var.DefaultLCID)" DiskId="1" SourceFile="$(var.VsSDKRedistributablesDir)\HTML_Help_Registration__RTL_X86_---.msm"/>
+							<?ifdef HxMergeVSHelpCollection?>
+								<Merge Id="VSHelpCollection" Language="$(var.DefaultLCID)" DiskId="1" SourceFile="$(var.VsSDKRedistributablesDir)\VSIPCC_Collection_Files_RTL_---_---.msm"/>
+							<?endif?>
 						</Directory>
 
 						<Directory Id="Xml" Name="Xml">

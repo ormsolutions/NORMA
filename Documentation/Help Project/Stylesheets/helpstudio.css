@@ -13,6 +13,7 @@
 div.saveHistory
 {
 	behavior:url(#default#saveHistory);
+	display: 	none;
 }
 
 /***********************************************************

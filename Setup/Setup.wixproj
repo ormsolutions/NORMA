@@ -12,12 +12,14 @@
     <TreatWarningsAsErrors>true</TreatWarningsAsErrors>
     <DefineSolutionProperties>false</DefineSolutionProperties>
     <SuppressSpecificWarnings>1091</SuppressSpecificWarnings>
+    <SuppressIces>ICE03;ICE82</SuppressIces>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)' == 'Debug' ">
     <DefineConstants>Debug</DefineConstants>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)' == 'Release' ">
   </PropertyGroup>
+  <Import Project="$(MSBuildExtensionsPath)\Neumont\VisualStudio\Neumont.Build.VisualStudio.Multitargeting.targets" />
   <ItemGroup>
     <Folder Include="Bitmaps\" />
     <Folder Include="UI\" />
@@ -64,5 +66,20 @@
     <Compile Include="UI\WaitForCostingDlg.wxs" />
     <Compile Include="UI\WelcomeDlg.wxs" />
   </ItemGroup>
+  <ItemGroup>
+    <WixExtension Include="WixVSExtension, Culture=neutral, PublicKeyToken=ce35f76fcda82bad">
+      <Class>Microsoft.Tools.WindowsInstallerXml.Extensions.VSExtension</Class>
+      <Private>False</Private>
+    </WixExtension>
+  </ItemGroup>
   <Import Project="$(MSBuildExtensionsPath)\Microsoft\WiX\v3.0\Wix.targets" />
+  <Import Project="$(MSBuildExtensionsPath)\Neumont\VisualStudio\Neumont.Build.VisualStudio.targets" />
+  <PropertyGroup>
+    <CompileAndLinkDependsOn>LocateVisualStudioSDKRedistributablesDir;$(CompileAndLinkDependsOn)</CompileAndLinkDependsOn>
+  </PropertyGroup>
+  <Target Name="LocateVisualStudioSDKRedistributablesDir" DependsOnTargets="LocateVisualStudioSDK">
+    <CreateProperty Value="$(DefineConstants);VsSDKRedistributablesDir=$(VsSDKRedistributablesDir)">
+      <Output TaskParameter="Value" PropertyName="DefineConstants"/>
+    </CreateProperty>
+  </Target>
 </Project>
