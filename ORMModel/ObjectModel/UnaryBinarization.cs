@@ -275,6 +275,8 @@ namespace Neumont.Tools.ORM.ObjectModel
 					{
 						Role unaryRole = implicitBooleanRole.OppositeRole.Role;
 						Debug.Assert(unaryRole != null);
+						// Make sure the implicit boolean role has the same name as the unary role
+						implicitBooleanRole.Name = unaryRole.Name;
 						string implicitBooleanValueTypeName = GetImplicitBooleanValueTypeName(unaryRole);
 						if (implicitBooleanRole.RolePlayer.Name != implicitBooleanValueTypeName)
 						{
@@ -333,7 +335,7 @@ namespace Neumont.Tools.ORM.ObjectModel
 
 			/// <summary>
 			/// Checks the <see cref="IConstraint"/>s on the binarized unary <see cref="FactType"/> as specified by
-			/// the <see cref="FactType"/>'s <paramref name="unaryRole"/> and the <paramref name="unaryRole"/>.
+			/// the <see cref="FactType"/>'s <paramref name="unaryRole"/> and the <paramref name="implicitBooleanRole"/>.
 			/// </summary>
 			private static bool ValidateConstraints(Role unaryRole, Role implicitBooleanRole)
 			{
@@ -426,6 +428,20 @@ namespace Neumont.Tools.ORM.ObjectModel
 				if (e.DomainProperty.Id == FactType.NameChangedDomainPropertyId)
 				{
 					FrameworkDomainModel.DelayValidateElement(e.ModelElement, DelayValidateUnaryBinarization);
+				}
+			}
+			/// <summary>
+			/// ChangeRule: typeof(Role)
+			/// </summary>
+			private static void RoleNameChangedRule(ElementPropertyChangedEventArgs e)
+			{
+				if (e.DomainProperty.Id == Role.NameDomainPropertyId)
+				{
+					FactType factType = ((Role)e.ModelElement).FactType;
+					if (factType != null)
+					{
+						FrameworkDomainModel.DelayValidateElement(factType, DelayValidateUnaryBinarization);
+					}
 				}
 			}
 			/// <summary>

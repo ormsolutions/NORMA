@@ -247,6 +247,9 @@
 			<arg:RolePlayerChangeRule methodName="ObjectTypePlaysRoleRolePlayerChangedRule">
 				<arg:RuleOn targetType="ObjectTypePlaysRole"/>
 			</arg:RolePlayerChangeRule>
+			<arg:ChangeRule methodName="RoleNameChangedRule">
+				<arg:RuleOn targetType="Role"/>
+			</arg:ChangeRule>
 		</arg:RuleContainer>
 		<arg:RuleContainer class="FactTypeDerivationExpression">
 			<arg:ChangeRule methodName="FactTypeDerivationExpressionChangeRule">
