@@ -1,0 +1,68 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<se:databaseSchema xmlns:se="http://NetTiers/2.2/SchemaExplorer" name="SampleSchema">
+	<se:tables>
+		<se:table name="Address" owner="Person">
+			<se:columns>
+				<se:column name="AddressID" nativeType="int">
+					<se:description>Primary key</se:description>
+				</se:column>
+				<se:column name="AddressLine1" nativeType="nvarchar" size="60"/>
+				<se:column name="AddressLine2" nativeType="nvarchar" size="60" nullable="true"/>
+				<se:column name="City" nativeType="nvarchar" size="30"/>
+				<se:column name="StateProvinceID" nativeType="int"/>
+			</se:columns>
+			<se:indexes>
+				<se:index name="PK_Address" isPrimary="true">
+					<se:column ref="AddressID"/>
+				</se:index>
+			</se:indexes>
+			<se:keys>
+				<se:key name="FK_StateProvinceID" targetTable="StateProvince" targetOwner="Person">
+					<se:columnReference column="StateProvinceID" targetColumn="StateProvinceID"/>
+				</se:key>
+			</se:keys>
+		</se:table>
+		<se:table name="Vendor" owner="Purchasing">
+			<se:columns>
+				<se:column name="VendorID" nativeType="int"/>
+			</se:columns>
+			<se:indexes>
+				<se:index name="PK_Vendor" isPrimary="true">
+					<se:column ref="VendorID"/>
+				</se:index>
+			</se:indexes>
+		</se:table>
+		<se:table name="VendorAddress" owner="Purchasing">
+			<se:columns>
+				<se:column name="VendorIDRef" nativeType="int">
+					<se:description>Primary key. Foreign key to Vendor.VendorID.</se:description>
+				</se:column>
+				<se:column name="AddressIDRef" nativeType="int"/>
+			</se:columns>
+			<se:indexes>
+				<se:index name="PK_VendorAddress" isPrimary="true">
+					<se:column ref="VendorIDRef"/>
+					<se:column ref="AddressIDRef"/>
+				</se:index>
+			</se:indexes>
+			<se:keys>
+				<se:key name="FK_AddressID" targetTable="Address" targetOwner="Person">
+					<se:columnReference column="AddressIDRef" targetColumn="AddressID"/>
+				</se:key>
+				<se:key name="FK_VendorID" targetTable="Vendor" targetOwner="Purchasing">
+					<se:columnReference column="VendorIDRef" targetColumn="VendorID"/>
+				</se:key>
+			</se:keys>
+		</se:table>
+		<se:table name="StateProvince" owner="Person">
+			<se:columns>
+				<se:column name="StateProvinceID" nativeType="int"/>
+			</se:columns>
+			<se:indexes>
+				<se:index name="StateProvince" isPrimary="true">
+					<se:column ref="StateProvinceID"/>
+				</se:index>
+			</se:indexes>
+		</se:table>
+	</se:tables>
+</se:databaseSchema>

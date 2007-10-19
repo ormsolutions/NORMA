@@ -1,0 +1,4 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<sourceFiles xmlns="http://schemas.neumont.edu/CodeGeneration/PLiXLoader">
+	<sourceFile file="SampleDatabaseSchema.xml" transformFile="EntityProvider.xslt"/>
+</sourceFiles>

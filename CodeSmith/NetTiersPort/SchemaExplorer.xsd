@@ -1,0 +1,179 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<xs:schema id="SchemaExplorer"
+		targetNamespace="http://NetTiers/2.2/SchemaExplorer"
+		elementFormDefault="qualified"
+		xmlns="http://NetTiers/2.2/SchemaExplorer"
+		xmlns:se="http://NetTiers/2.2/SchemaExplorer"
+		xmlns:xs="http://www.w3.org/2001/XMLSchema">
+	<xs:element name="databaseSchema" type="databaseSchemaType">
+		<xs:key name="tableKey">
+			<xs:selector xpath="se:tables/se:table"/>
+			<xs:field xpath="@name"/>
+			<xs:field xpath="@owner"/>
+		</xs:key>
+		<xs:key name="indexKey">
+			<xs:selector xpath="se:tables/se:table/se:indexes/se:index"/>
+			<xs:field xpath="@name"/>
+		</xs:key>
+		<xs:key name="keyKey">
+			<xs:selector xpath="se:tables/se:table/se:keys/se:key"/>
+			<xs:field xpath="@name"/>
+		</xs:key>
+		<xs:keyref name="targetTableKeyRef" refer="tableKey">
+			<xs:selector xpath="se:tables/se:table/se:keys/se:key"/>
+			<xs:field xpath="@targetTable"/>
+			<xs:field xpath="@targetOwner"/>
+		</xs:keyref>
+	</xs:element>
+	<xs:complexType name="databaseSchemaType">
+		<xs:complexContent>
+			<xs:extension base="schemaObjectType">
+				<xs:sequence>
+					<xs:element name="tables" minOccurs="0">
+						<xs:complexType>
+							<xs:sequence>
+								<xs:element name="table" minOccurs="0" maxOccurs="unbounded" type="tableType">
+									<xs:key name="localColumnKey">
+										<xs:selector xpath="se:columns/se:column"/>
+										<xs:field xpath="@name"/>
+									</xs:key>
+									<xs:keyref name="indexColumnKeyRef" refer="localColumnKey">
+										<xs:selector xpath="se:indexes/se:index/se:column"/>
+										<xs:field xpath="@ref"/>
+									</xs:keyref>
+								</xs:element>
+							</xs:sequence>
+						</xs:complexType>
+					</xs:element>
+				</xs:sequence>
+			</xs:extension>
+		</xs:complexContent>
+	</xs:complexType>
+	<xs:complexType name="tableType">
+		<xs:complexContent>
+			<xs:extension base="schemaObjectType">
+				<xs:sequence>
+					<xs:element name="columns" minOccurs="0">
+						<xs:complexType>
+							<xs:sequence>
+								<xs:element name="column" type="columnType" minOccurs="0" maxOccurs="unbounded"/>
+							</xs:sequence>
+						</xs:complexType>
+					</xs:element>
+					<xs:element name="indexes" minOccurs="0">
+						<xs:complexType>
+							<xs:sequence>
+								<xs:element name="index" type="indexType" minOccurs="0" maxOccurs="unbounded">
+									<xs:unique name="indexColumnsUnique">
+										<xs:selector xpath="se:column"/>
+										<xs:field xpath="@ref"/>
+									</xs:unique>
+								</xs:element>
+							</xs:sequence>
+						</xs:complexType>
+					</xs:element>
+					<xs:element name="keys" minOccurs="0">
+						<xs:complexType>
+							<xs:sequence>
+								<xs:element name="key" type="keyType" minOccurs="0" maxOccurs="unbounded">
+									<xs:unique name="keyColumnsUnique">
+										<xs:selector xpath="se:column"/>
+										<xs:field xpath="@column"/>
+									</xs:unique>
+								</xs:element>
+							</xs:sequence>
+						</xs:complexType>
+					</xs:element>
+				</xs:sequence>
+				<xs:attribute name="owner" type="xs:token" use="required"/>
+			</xs:extension>
+		</xs:complexContent>
+	</xs:complexType>
+	<xs:complexType name="dataObjectType">
+		<xs:complexContent>
+			<xs:extension base="schemaObjectType">
+				<xs:attribute name="nativeType" type="nativeTypeValues" use="required"/>
+				<xs:attribute name="nullable" type="xs:boolean" default="false"/>
+				<xs:attribute name="size" type="xs:unsignedInt"/>
+				<xs:attribute name="scale" type="xs:unsignedInt"/>
+				<xs:attribute name="precision" type="xs:unsignedByte"/>
+			</xs:extension>
+		</xs:complexContent>
+	</xs:complexType>
+	<xs:simpleType name="nativeTypeValues">
+		<xs:restriction base="xs:token">
+			<xs:enumeration value="bigint"/>
+			<xs:enumeration value="binary"/>
+			<xs:enumeration value="bit"/>
+			<xs:enumeration value="char"/>
+			<xs:enumeration value="character varying"/>
+			<xs:enumeration value="datetime"/>
+			<xs:enumeration value="decimal"/>
+			<xs:enumeration value="double precision"/>
+			<xs:enumeration value="float"/>
+			<xs:enumeration value="image"/>
+			<xs:enumeration value="int"/>
+			<xs:enumeration value="integer"/>
+			<xs:enumeration value="interval"/>
+			<xs:enumeration value="money"/>
+			<xs:enumeration value="nchar"/>
+			<xs:enumeration value="ntext"/>
+			<xs:enumeration value="numeric"/>
+			<xs:enumeration value="nvarchar"/>
+			<xs:enumeration value="real"/>
+			<xs:enumeration value="smalldatetime"/>
+			<xs:enumeration value="smallint"/>
+			<xs:enumeration value="smallmoney"/>
+			<xs:enumeration value="text"/>
+			<xs:enumeration value="timestamp"/>
+			<xs:enumeration value="tinyint"/>
+			<xs:enumeration value="uniqueidentifier"/>
+			<xs:enumeration value="varbinary"/>
+			<xs:enumeration value="varchar"/>
+			<xs:enumeration value="xml"/>
+			<xs:enumeration value="sql_variant"/>
+			<!-- UNDONE: character large object, binary large object -->
+		</xs:restriction>
+	</xs:simpleType>
+	<xs:complexType name="columnType">
+		<xs:complexContent>
+			<xs:extension base="dataObjectType">
+			</xs:extension>
+		</xs:complexContent>
+	</xs:complexType>
+	<xs:complexType name="columnRefType">
+		<xs:attribute name="ref" type="xs:token" use="required"/>
+	</xs:complexType>
+	<xs:complexType name="indexType">
+		<xs:complexContent>
+			<xs:extension base="schemaObjectType">
+				<xs:sequence>
+					<xs:element name="column" type="columnRefType" maxOccurs="unbounded"/>
+				</xs:sequence>
+				<xs:attribute name="isPrimary" type="xs:boolean" use="optional"/>
+			</xs:extension>
+		</xs:complexContent>
+	</xs:complexType>
+	<xs:complexType name="keyType">
+		<xs:complexContent>
+			<xs:extension base="schemaObjectType">
+				<xs:sequence>
+					<xs:element name="columnReference" maxOccurs="unbounded">
+						<xs:complexType>
+							<xs:attribute name="column" type="xs:token" use="required"/>
+							<xs:attribute name="targetColumn" type="xs:token" use="required"/>
+						</xs:complexType>
+					</xs:element>
+				</xs:sequence>
+				<xs:attribute name="targetTable" type="xs:token" use="required"/>
+				<xs:attribute name="targetOwner" type="xs:token" use="required"/>
+			</xs:extension>
+		</xs:complexContent>
+	</xs:complexType>
+	<xs:complexType name="schemaObjectType" abstract="true">
+		<xs:sequence>
+			<xs:element name="description" type="xs:string" minOccurs="0"/>
+		</xs:sequence>
+		<xs:attribute name="name" type="xs:token" use="required"/>
+	</xs:complexType>
+</xs:schema>
