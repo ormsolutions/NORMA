@@ -7,7 +7,7 @@
 	xmlns:exsl="http://exslt.org/common"
 	xmlns:msxsl="urn:schemas-microsoft-com:xslt"
 	xmlns:csc="urn:nettiers:CommonSqlCode"
-	xmlns:tmp="urn:temporary" 
+	xmlns:tmp="urn:temporary"
 	extension-element-prefixes="exsl msxsl csc"
 	exclude-result-prefixes="se xsl tmp">
 	<!-- DEBUG: indent="yes" is for debugging only, has sideeffects on docComment output. -->
@@ -821,7 +821,7 @@ Gets rows from the datasource based on the <xsl:value-of select="@name"/> key.
 				</xsl:for-each>
 				<plx:pragma type="closeRegion" data="Get By Foreign Key Functions"/>
 			</xsl:if>
-			
+
 			<!-- Start Mike/Tommy code -->
 			<xsl:if test="$settings['IncludeGetListByIX']">
 				<plx:pragma type="region" data="Get By Index Functions"/>
@@ -906,6 +906,8 @@ Gets a row from the DataSource based on its primary key.
 						</plx:function>
 					</xsl:if>
 					<xsl:variable name="FullReturnType" select="concat($BLLNamespace,'.',$entityClassName)"/>
+
+					<!-- Method starting on line 16 -->
 					<plx:function name="GetBy{$keysName}" visibility="public">
 						<plx:leadingInfo>
 							<plx:docComment>
@@ -941,11 +943,196 @@ Gets rows from the datasource based on the primary key <xsl:value-of select="@na
 							</plx:callThis>
 						</plx:return>
 					</plx:function>
+
+					<!-- Method Starting on Line 28 -->
+					<plx:function name="GetBy{$keysName}" visibility="public">
+						<plx:leadingInfo>
+							<plx:docComment>
+								<summary>
+Gets rows from the datasource based on the primary key <xsl:value-of select="@name" /> index.
+</summary>
+								<xsl:copy-of select="$docCommentColumnParamsFragment"/>
+								<param name="start">Row number at which to start reading, the first row is 0.</param>
+								<param name="pageLength">Number of rows to return.</param>
+								<returns>Returns an instance of the &lt;see cref="<xsl:value-of select="$FullReturnType"/>"/&gt; class.</returns>
+							</plx:docComment>
+						</plx:leadingInfo>
+						<xsl:copy-of select="$columnParamsFragment"/>
+						<plx:param name="start" dataTypeName=".i4"/>
+						<plx:param name="pageLength" dataTypeName=".i4"/>
+						<plx:returns dataTypeName="{$entityClassName}" dataTypeQualifier="{$BLLNamespace}" />
+						<plx:local name="count" dataTypeName=".i4">
+							<plx:initialize>
+								<plx:value data="-1" type="i4" />
+							</plx:initialize>
+						</plx:local>
+						<plx:return>
+							<plx:callThis name="GetBy{$keysName}">
+								<plx:passParam>
+									<plx:nullKeyword />
+								</plx:passParam>
+								<xsl:copy-of select="$forwardColumnParamsFragment"/>
+								<plx:passParam>
+									<plx:nameRef name="start" type="parameter"/>
+								</plx:passParam>
+								<plx:passParam>
+									<plx:nameRef name="pageLength" type="parameter"/>
+								</plx:passParam>
+								<plx:passParam type="out">
+									<plx:nameRef name="count"/>
+								</plx:passParam>
+							</plx:callThis>
+						</plx:return>
+					</plx:function>
+
+					<!-- Method Starting on Line 43 -->
+					<plx:function name="GetBy{$keysName}" visibility="public">
+						<plx:leadingInfo>
+							<plx:docComment>
+								<summary>
+Gets rows from the datasource based on the primary key <xsl:value-of select="@name" /> index.
+</summary>
+								<param name="transactionManager">A <see cref="TransactionManager"/> object.</param>
+								<xsl:copy-of select="$docCommentColumnParamsFragment"/>
+								<returns>Returns an instance of the &lt;see cref="<xsl:value-of select="$FullReturnType"/>"/&gt; class.</returns>
+							</plx:docComment>
+						</plx:leadingInfo>
+						<plx:param name="transactionManager" dataTypeName="TransactionManager"/>
+						<xsl:copy-of select="$columnParamsFragment"/>
+						<plx:returns dataTypeName="{$entityClassName}" dataTypeQualifier="{$BLLNamespace}" />
+						<plx:local name="count" dataTypeName=".i4">
+							<plx:initialize>
+								<plx:value data="-1" type="i4" />
+							</plx:initialize>
+						</plx:local>
+						<plx:return>
+							<plx:callThis name="GetBy{$keysName}">
+								<plx:passParam>
+									<plx:nameRef name="transactionManager" type="parameter"/>
+								</plx:passParam>
+								<xsl:copy-of select="$forwardColumnParamsFragment"/>
+								<plx:passParam>
+									<plx:value data="0" type="i4" />
+								</plx:passParam>
+								<plx:passParam>
+									<plx:callStatic name="MaxValue" dataTypeName=".i4"/>
+								</plx:passParam>
+								<plx:passParam type="out">
+									<plx:nameRef name="count"/>
+								</plx:passParam>
+							</plx:callThis>
+						</plx:return>
+					</plx:function>
+
+					<!-- Method starting on line 57 -->
+					<plx:function name="GetBy{$keysName}" visibility="public">
+						<plx:leadingInfo>
+							<plx:docComment>
+								<summary>
+Gets a row from the DataSource based on its primary key.
+</summary>
+								<param name="transactionManager">A <see cref="TransactionManager"/> object.</param>
+								<xsl:copy-of select="$docCommentColumnParamsFragment"/>
+								<param name="start">Row number at which to start reading, the first row is 0.</param>
+								<param name="pageLength">Number of rows to return.</param>
+								<returns>Returns an instance of the &lt;see cref="<xsl:value-of select="$FullReturnType"/>"/&gt; class.</returns>
+							</plx:docComment>
+						</plx:leadingInfo>
+						<plx:param name="transactionManager" dataTypeName="TransactionManager"/>
+						<xsl:copy-of select="$columnParamsFragment"/>
+						<plx:param name="start" dataTypeName=".i4"/>
+						<plx:param name="pageLength" dataTypeName=".i4"/>
+						<plx:returns dataTypeName="{$entityClassName}" dataTypeQualifier="{$BLLNamespace}" />
+						<plx:local name="count" dataTypeName=".i4">
+							<plx:initialize>
+								<plx:value data="-1" type="i4" />
+							</plx:initialize>
+						</plx:local>
+						<plx:return>
+							<plx:callThis name="GetBy{$keysName}">
+								<plx:passParam>
+									<plx:nameRef name="transactionManager" type="parameter"/>
+								</plx:passParam>
+								<xsl:copy-of select="$forwardColumnParamsFragment"/>
+								<plx:passParam>
+									<plx:nameRef name="start" type="parameter"/>
+								</plx:passParam>
+								<plx:passParam>
+									<plx:nameRef name="pageLength" type="parameter"/>
+								</plx:passParam>
+								<plx:passParam type="out">
+									<plx:nameRef name="count"/>
+								</plx:passParam>
+							</plx:callThis>
+						</plx:return>
+					</plx:function>
+
+					<!-- Method starting on line 74 -->
+					<plx:function name="GetBy{$keysName}" visibility="public">
+						<plx:leadingInfo>
+							<plx:docComment>
+								<summary>
+Gets a row from the DataSource based on its primary key.
+</summary>
+								<xsl:copy-of select="$docCommentColumnParamsFragment"/>
+								<param name="start">Row number at which to start reading, the first row is 0.</param>
+								<param name="pageLength">Number of rows to return.</param>
+								<param name="count">out parameter to get total records for query.</param>
+								<returns>Returns an instance of the &lt;see cref="<xsl:value-of select="$FullReturnType"/>"/&gt; class.</returns>
+							</plx:docComment>
+						</plx:leadingInfo>
+						<xsl:copy-of select="$columnParamsFragment"/>
+						<plx:param name="start" dataTypeName=".i4"/>
+						<plx:param name="pageLength" dataTypeName=".i4"/>
+						<plx:param name="count" dataTypeName=".i4" type="out" />
+						<plx:returns dataTypeName="{$entityClassName}" dataTypeQualifier="{$BLLNamespace}" />
+						<plx:return>
+							<plx:callThis name="GetBy{$keysName}">
+								<plx:passParam>
+									<plx:nullKeyword/>
+								</plx:passParam>
+								<xsl:copy-of select="$forwardColumnParamsFragment"/>
+								<plx:passParam>
+									<plx:nameRef name="start" type="parameter"/>
+								</plx:passParam>
+								<plx:passParam>
+									<plx:nameRef name="pageLength" type="parameter"/>
+								</plx:passParam>
+								<plx:passParam type="out">
+									<plx:nameRef name="count"/>
+								</plx:passParam>
+							</plx:callThis>
+						</plx:return>
+					</plx:function>
+
+					<!-- Method starting on line 89 -->
+					<plx:function name="GetBy{$keysName}" visibility="public" modifier="abstract">
+						<plx:leadingInfo>
+							<plx:docComment>
+								<summary>
+Gets a row from the DataSource based on its primary key.
+</summary>
+								<param name="transactionManager">A <see cref="TransactionManager"/> object.</param>
+								<xsl:copy-of select="$docCommentColumnParamsFragment"/>
+								<param name="start">Row number at which to start reading, the first row is 0.</param>
+								<param name="pageLength">Number of rows to return.</param>
+								<param name="count">The total number of records.</param>
+								<returns>Returns an instance of the &lt;see cref="<xsl:value-of select="$FullReturnType"/>"/&gt; class.</returns>
+							</plx:docComment>
+						</plx:leadingInfo>
+						<plx:param name="transactionManager" dataTypeName="TransactionManager"/>
+						<xsl:copy-of select="$columnParamsFragment"/>
+						<plx:param name="start" dataTypeName=".i4"/>
+						<plx:param name="pageLength" dataTypeName=".i4"/>
+						<plx:param name="count" dataTypeName=".i4" type="out" />
+						<plx:returns dataTypeName="{$entityClassName}" dataTypeQualifier="{$BLLNamespace}" />
+					</plx:function>
+
 				</xsl:for-each>
 				<plx:pragma type="closeRegion" data="Get By Index Functions"/>
 			</xsl:if>
 			<!-- End Mike/Tommy code -->
-			
+
 		</plx:class>
 		<plx:pragma type="closeRegion" data="Classes for {@name}"/>
 	</xsl:template>
