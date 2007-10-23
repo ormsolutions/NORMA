@@ -212,15 +212,16 @@ namespace Neumont.Tools.ORM.ShapeModel
 					1 < (edgePointCount = edgePoints.Count))
 				{
 					float rotationAngle = 0f;
-					if (hostData.GeometryDecoratorFrom != null)
+					LinkDecorator decorator;
+					if (null != (decorator = hostData.GeometryDecoratorFrom))
 					{
 						rotationAngle = CalculateRotationAngle(edgePoints[0].Point, edgePoints[1].Point);
-						DrawDecorator(e, geometryHost, rotationAngle, edgePoints[0].Point, hostData.GeometryDecoratorFrom);
+						DrawDecorator(e, geometryHost, rotationAngle, edgePoints[0].Point, decorator);
 					}
-					if ((hostData.GeometryDecoratorTo != null) && (hostData.GeometryEdgePoints.Count > 1))
+					if (null != (decorator = hostData.GeometryDecoratorTo))
 					{
 						rotationAngle = CalculateRotationAngle(edgePoints[edgePointCount - 1].Point, edgePoints[edgePointCount - 2].Point);
-						DrawDecorator(e, geometryHost, rotationAngle, edgePoints[edgePointCount - 1].Point, hostData.GeometryDecoratorTo);
+						DrawDecorator(e, geometryHost, rotationAngle, edgePoints[edgePointCount - 1].Point, decorator);
 					}
 				}
 			}

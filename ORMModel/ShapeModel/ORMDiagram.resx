@@ -526,6 +526,10 @@
     <value xml:space="preserve">Diagnostics</value>
     <comment xml:space="preserve">This is the title of the category on the options page (diagnostics).</comment>
   </data>
+  <data name="OptionsPage.Category.EntityRelationshipLearningMode">
+    <value xml:space="preserve">Entity Relationship Learning Mode</value>
+    <comment xml:space="preserve">This is the title of the category on the options page (ER learning mode).</comment>
+  </data>
   <data name="OptionsPage.Category.VerbalizationBehavior">
     <value xml:space="preserve">Verbalization</value>
     <comment xml:space="preserve">This is the title of the category on the options page (verbalization).</comment>
@@ -581,6 +585,14 @@
   <data name="OptionsPage.Property.DataType.DisplayName">
     <value xml:space="preserve">Initial Data Type</value>
     <comment xml:space="preserve">The display name for the data type property.</comment>
+  </data>
+  <data name="OptionsPage.Property.EntityRelationshipBinaryMultiplicityDisplay.Description">
+    <value xml:space="preserve">The display mode for overlaying Entity Relationship multiplicity display on role connectors attached to binary fact types. The 'Mandatory Dot Placement' option is ignored if this is enabled.</value>
+    <comment xml:space="preserve">The description for the entity relationship binary multiplicity display property</comment>
+  </data>
+  <data name="OptionsPage.Property.EntityRelationshipBinaryMultiplicityDisplay.DisplayName">
+    <value xml:space="preserve">Binary FactType Multiplicity Display</value>
+    <comment xml:space="preserve">The display name for the entity relationship binary multiplicity display property</comment>
   </data>
   <data name="OptionsPage.Property.ExternalConstraintRoleBarDisplay.Description">
     <value xml:space="preserve">The style used to draw external constraint role bars. Role bars appear at the end of lines attaching an external constraint to roles in a fact.</value>

@@ -257,6 +257,10 @@ namespace Neumont.Tools.ORM
 		/// </summary>
 		public const string OptionsPageCategoryVerbalizationBehaviorId = "OptionsPage.Category.VerbalizationBehavior";
 		/// <summary>
+		/// Category name for options page (ER learning mode)
+		/// </summary>
+		public const string OptionsPageCategoryEntityRelationshipLearningModeId = "OptionsPage.Category.EntityRelationshipLearningMode";
+		/// <summary>
 		/// Category name for options page (diagnostics)
 		/// </summary>
 		public const string OptionsPageCategoryDiagnosticsId = "OptionsPage.Category.Diagnostics";
@@ -276,6 +280,14 @@ namespace Neumont.Tools.ORM
 		/// Display Name of the default data type option
 		/// </summary>
 		public const string OptionsPagePropertyDataTypeDisplayNameId = "OptionsPage.Property.DataType.DisplayName";
+		/// <summary>
+		/// Description of the entity relationship binary multiplicity display option
+		/// </summary>
+		public const string OptionsPagePropertyEntityRelationshipBinaryMultiplicityDisplayDescriptionId = "OptionsPage.Property.EntityRelationshipBinaryMultiplicityDisplay.Description";
+		/// <summary>
+		/// Display name of the entity relationship binary multiplicity display option
+		/// </summary>
+		public const string OptionsPagePropertyEntityRelationshipBinaryMultiplicityDisplayDisplayNameId = "OptionsPage.Property.EntityRelationshipBinaryMultiplicityDisplay.DisplayName";
 		/// <summary>
 		/// Description of the external constraint role bar display option
 		/// </summary>

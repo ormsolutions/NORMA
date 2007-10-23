@@ -212,13 +212,15 @@ namespace Neumont.Tools.ORM.ShapeModel
 		{
 			get
 			{
-				if (OptionsPage.CurrentMandatoryDotPlacement != MandatoryDotPlacement.ObjectShapeEnd &&
+				if ((OptionsPage.CurrentMandatoryDotPlacement != MandatoryDotPlacement.ObjectShapeEnd ||
+					OptionsPage.CurrentEntityRelationshipBinaryMultiplicityDisplay != EntityRelationshipBinaryMultiplicityDisplay.Off) &&
 					DrawMandatoryDot)
 				{
 					return MandatoryDotDecorator.Decorator;
 				}
 #if IMPLIEDJOINPATH
-				else if (OptionsPage.CurrentMandatoryDotPlacement == MandatoryDotPlacement.ObjectShapeEnd)
+				else if (OptionsPage.CurrentMandatoryDotPlacement == MandatoryDotPlacement.ObjectShapeEnd &&
+						OptionsPage.CurrentEntityRelationshipBinaryMultiplicityDisplay == EntityRelationshipBinaryMultiplicityDisplay.Off)
 				{
 					return new ImpliedFactJoinPathDecorator(this);
 				}
@@ -238,12 +240,14 @@ namespace Neumont.Tools.ORM.ShapeModel
 			get
 			{
 				if (OptionsPage.CurrentMandatoryDotPlacement != MandatoryDotPlacement.RoleBoxEnd &&
+					OptionsPage.CurrentEntityRelationshipBinaryMultiplicityDisplay == EntityRelationshipBinaryMultiplicityDisplay.Off &&
 					DrawMandatoryDot)
 				{
 					return MandatoryDotDecorator.Decorator;
 				}
 #if IMPLIEDJOINPATH
-				else if (OptionsPage.CurrentMandatoryDotPlacement == MandatoryDotPlacement.RoleBoxEnd)
+				else if (OptionsPage.CurrentMandatoryDotPlacement == MandatoryDotPlacement.RoleBoxEnd ||
+						OptionsPage.CurrentEntityRelationshipBinaryMultiplicityDisplay != EntityRelationshipBinaryMultiplicityDisplay.Off)
 				{
 					return new ImpliedFactJoinPathDecorator(this);
 				}
@@ -300,6 +304,10 @@ namespace Neumont.Tools.ORM.ShapeModel
 			}
 		}
 		/// <summary>
+		/// Pen to draw dotted line on optional ER roles
+		/// </summary>
+		private static readonly StyleSetResourceId BarkerEROptionalPen = new StyleSetResourceId("Neumont", "BarkerEROptionalPen");
+		/// <summary>
 		/// Change the outline pen to a thin black line for all instances
 		/// of this shape.
 		/// </summary>
@@ -311,6 +319,8 @@ namespace Neumont.Tools.ORM.ShapeModel
 			penSettings.Width = 1.2F / 72.0F; // 1.2 Point. 0 Means 1 pixel, but should only be used for non-printed items
 			penSettings.Alignment = PenAlignment.Center;
 			classStyleSet.OverridePen(DiagramPens.ConnectionLine, penSettings);
+			penSettings.DashStyle = DashStyle.Dash;
+			classStyleSet.AddPen(BarkerEROptionalPen, DiagramPens.ConnectionLine, penSettings);
 			IORMFontAndColorService fontsAndColors = (Store as IORMToolServices).FontAndColorService;
 			Color constraintForeColor = fontsAndColors.GetForeColor(ORMDesignerColor.Constraint);
 			penSettings = new PenSettings();
@@ -350,6 +360,405 @@ namespace Neumont.Tools.ORM.ShapeModel
 			}
 		}
 		#endregion // Customize appearance
+		#region EntityRelationship learning mode support
+		private const double CrowsFootHeight = .12;
+		private const double CrowsFootHalfWidth = .05;
+		private const double InfEngOuterOneMarkOffset = .03;
+		private const double InfEngInnerOneMarkOffset = .06;
+		private const double InfEngMarkerHalfWidth = .04;
+		private const bool CrowsFootParallelMode = true;
+		#region EntityRelationshipShapeGeometry class
+		private sealed class EntityRelationshipShapeGeometry : ClickThroughObliqueBinaryLinkShapeGeometry
+		{
+			#region Constructor and singleton
+			/// <summary>
+			/// Singleton EntityRelationshipShapeGeometry instance
+			/// </summary>
+			public static new readonly ShapeGeometry ShapeGeometry = new EntityRelationshipShapeGeometry();
+			/// <summary>
+			/// Protected default constructor. The class should be used
+			/// as a singleton instead of being publicly constructed.
+			/// </summary>
+			private EntityRelationshipShapeGeometry()
+			{
+			}
+			#endregion // Constructor and singleton
+			/// <summary>
+			/// Paint the solid crowsfoot on the end of an optional line
+			/// </summary>
+			protected override void DoPaintGeometry(DiagramPaintEventArgs e, IGeometryHost geometryHost)
+			{
+				EntityRelationshipBinaryMultiplicityDisplay displaySetting = OptionsPage.CurrentEntityRelationshipBinaryMultiplicityDisplay;
+				RolePlayerLink connector;
+				EdgePointCollection edgePoints;
+				int edgePointCount;
+				Pen pen;
+				ShapeElement shapeHost;
+				IOffsetBorderPoint offsetPointProvider;
+				if (displaySetting == EntityRelationshipBinaryMultiplicityDisplay.Barker &&
+					RoleMultiplicity.ZeroToMany == (connector = (RolePlayerLink)geometryHost).GetDisplayRoleMultiplicity(displaySetting) &&
+					null != (edgePoints = connector.EdgePoints) &&
+					1 < (edgePointCount = edgePoints.Count) &&
+					null != (shapeHost = connector.ToShape) &&
+					null != (offsetPointProvider = shapeHost.ShapeGeometry as IOffsetBorderPoint) &&
+					null != (pen = geometryHost.GeometryStyleSet.GetPen(DiagramPens.ConnectionLine)))
+				{
+					Color restoreColor = pen.Color;
+					pen.Color = geometryHost.UpdateGeometryLuminosity(e.View, pen);
+					PointD pointOnBorder = edgePoints[edgePointCount - 1].Point;
+					double angle = GeometryUtility.CalculateRadiansRotationAngle(edgePoints[0].Point, pointOnBorder);
+					PointD vertexPoint = pointOnBorder;
+					vertexPoint.Offset(CrowsFootHeight * Math.Cos(angle), CrowsFootHeight * Math.Sin(angle));
+					e.Graphics.DrawLine(pen, PointD.ToPointF(vertexPoint), PointD.ToPointF(pointOnBorder));
+					PointD? offsetBorderPoint = offsetPointProvider.OffsetBorderPoint(shapeHost, pointOnBorder, vertexPoint, CrowsFootHalfWidth, CrowsFootParallelMode);
+					if (offsetBorderPoint.HasValue)
+					{
+						e.Graphics.DrawLine(pen, PointD.ToPointF(vertexPoint), PointD.ToPointF(offsetBorderPoint.Value));
+					}
+					offsetBorderPoint = offsetPointProvider.OffsetBorderPoint(shapeHost, pointOnBorder, vertexPoint, -CrowsFootHalfWidth, CrowsFootParallelMode);
+					if (offsetBorderPoint.HasValue)
+					{
+						e.Graphics.DrawLine(pen, PointD.ToPointF(vertexPoint), PointD.ToPointF(offsetBorderPoint.Value));
+					}
+					pen.Color = restoreColor;
+				}
+				base.DoPaintGeometry(e, geometryHost);
+			}
+			/// <summary>
+			/// Return a path modified to include any ER multiplicity decorators
+			/// </summary>
+			public override GraphicsPath GetPath(IGeometryHost geometryHost)
+			{
+				EntityRelationshipBinaryMultiplicityDisplay displaySetting = OptionsPage.CurrentEntityRelationshipBinaryMultiplicityDisplay;
+				if (displaySetting == EntityRelationshipBinaryMultiplicityDisplay.Off)
+				{
+					return base.GetPath(geometryHost);
+				}
+				RolePlayerLink connector = (RolePlayerLink)geometryHost;
+				EdgePointCollection edgePoints;
+				int edgePointCount;
+				RoleMultiplicity multiplicity;
+				if (RoleMultiplicity.Unspecified != (multiplicity = connector.GetDisplayRoleMultiplicity(displaySetting)) &&
+					1 < (edgePointCount = (edgePoints = connector.EdgePoints).Count))
+				{
+					switch (displaySetting)
+					{
+						case EntityRelationshipBinaryMultiplicityDisplay.CrowsFootOnly:
+						CrowsFootOnly:
+							switch (multiplicity)
+							{
+								case RoleMultiplicity.OneToMany:
+								case RoleMultiplicity.ZeroToMany:
+									{
+										PointD objectTypeEndPoint = edgePoints[edgePointCount - 1].Point;
+										PointD roleBoxEndPoint = edgePoints[0].Point;
+										double angle = GeometryUtility.CalculateRadiansRotationAngle(roleBoxEndPoint, objectTypeEndPoint);
+										GraphicsPath path = base.UninitializedPath;
+										path.Reset();
+										path.AddLine(PointD.ToPointF(roleBoxEndPoint), PointD.ToPointF(objectTypeEndPoint));
+										PointD vertexPoint = objectTypeEndPoint;
+										vertexPoint.Offset(CrowsFootHeight * Math.Cos(angle), CrowsFootHeight * Math.Sin(angle));
+										ShapeElement shapeHost;
+										IOffsetBorderPoint offsetPointProvider;
+										if (null != (shapeHost = connector.ToShape) &&
+											null != (offsetPointProvider = shapeHost.ShapeGeometry as IOffsetBorderPoint))
+										{
+											PointD? offsetBorderPoint = offsetPointProvider.OffsetBorderPoint(shapeHost, objectTypeEndPoint, vertexPoint, CrowsFootHalfWidth, CrowsFootParallelMode);
+											if (offsetBorderPoint.HasValue)
+											{
+												path.StartFigure();
+												path.AddLine(PointD.ToPointF(vertexPoint), PointD.ToPointF(offsetBorderPoint.Value));
+											}
+											offsetBorderPoint = offsetPointProvider.OffsetBorderPoint(shapeHost, objectTypeEndPoint, vertexPoint, -CrowsFootHalfWidth, CrowsFootParallelMode);
+											if (offsetBorderPoint.HasValue)
+											{
+												path.StartFigure();
+												path.AddLine(PointD.ToPointF(vertexPoint), PointD.ToPointF(offsetBorderPoint.Value));
+											}
+										}
+										return path;
+									}
+							}
+							break;
+						case EntityRelationshipBinaryMultiplicityDisplay.Barker:
+							// Stop short of the crows foot if optional, draw the broken line under the solid crows foot
+							switch (multiplicity)
+							{
+								case RoleMultiplicity.OneToMany:
+									// Single pen only, include the crowsfoot as part of the path
+									goto CrowsFootOnly;
+								case RoleMultiplicity.ZeroToMany:
+									// Stop the path at the vertex point, use a different pen for the crowsfoot in DoPaintGeometry
+									{
+										PointD objectTypeEndPoint = edgePoints[edgePointCount - 1].Point;
+										PointD roleBoxEndPoint = edgePoints[0].Point;
+										double angle = GeometryUtility.CalculateRadiansRotationAngle(roleBoxEndPoint, objectTypeEndPoint);
+										GraphicsPath path = base.UninitializedPath;
+										path.Reset();
+										objectTypeEndPoint.Offset(CrowsFootHeight * Math.Cos(angle), CrowsFootHeight * Math.Sin(angle));
+										path.AddLine(PointD.ToPointF(roleBoxEndPoint), PointD.ToPointF(objectTypeEndPoint));
+										return path;
+									}
+							}
+							break;
+						case EntityRelationshipBinaryMultiplicityDisplay.InformationEngineering:
+							{
+								PointD objectTypeEndPoint = edgePoints[edgePointCount - 1].Point;
+								PointD roleBoxEndPoint = edgePoints[0].Point;
+								double angle = GeometryUtility.CalculateRadiansRotationAngle(roleBoxEndPoint, objectTypeEndPoint);
+								double cosAngle = Math.Cos(angle);
+								double sinAngle = Math.Sin(angle);
+								GraphicsPath path = base.UninitializedPath;
+								path.Reset();
+								switch (multiplicity)
+								{
+									case RoleMultiplicity.ExactlyOne:
+										{
+											path.AddLine(PointD.ToPointF(roleBoxEndPoint), PointD.ToPointF(objectTypeEndPoint));
+											path.StartFigure();
+											PointD oneMarkLeft = objectTypeEndPoint;
+											oneMarkLeft.Offset(InfEngInnerOneMarkOffset * cosAngle, InfEngInnerOneMarkOffset * sinAngle);
+											PointD oneMarkRight = oneMarkLeft;
+											oneMarkLeft.Offset(-InfEngMarkerHalfWidth * sinAngle, InfEngMarkerHalfWidth * cosAngle);
+											oneMarkRight.Offset(InfEngMarkerHalfWidth * sinAngle, -InfEngMarkerHalfWidth * cosAngle);
+											path.AddLine(PointD.ToPointF(oneMarkLeft), PointD.ToPointF(oneMarkRight));
+											oneMarkLeft.Offset(InfEngOuterOneMarkOffset * cosAngle, InfEngOuterOneMarkOffset * sinAngle);
+											oneMarkRight.Offset(InfEngOuterOneMarkOffset * cosAngle, InfEngOuterOneMarkOffset * sinAngle);
+											path.StartFigure();
+											path.AddLine(PointD.ToPointF(oneMarkLeft), PointD.ToPointF(oneMarkRight));
+											break;
+										}
+									case RoleMultiplicity.ZeroToOne:
+										{
+											PointD circleStart = objectTypeEndPoint;
+											circleStart.Offset((InfEngInnerOneMarkOffset + InfEngOuterOneMarkOffset + InfEngMarkerHalfWidth + InfEngMarkerHalfWidth) * cosAngle, (InfEngInnerOneMarkOffset + InfEngOuterOneMarkOffset + InfEngMarkerHalfWidth + InfEngMarkerHalfWidth) * sinAngle);
+											path.AddLine(PointD.ToPointF(roleBoxEndPoint), PointD.ToPointF(circleStart));
+											circleStart.Offset(-InfEngMarkerHalfWidth * cosAngle, -InfEngMarkerHalfWidth * sinAngle);
+											path.StartFigure();
+											path.AddArc(
+												(float)(circleStart.X - InfEngMarkerHalfWidth),
+												(float)(circleStart.Y - InfEngMarkerHalfWidth),
+												(float)(InfEngMarkerHalfWidth + InfEngMarkerHalfWidth),
+												(float)(InfEngMarkerHalfWidth + InfEngMarkerHalfWidth),
+												0,
+												360);
+											circleStart.Offset(-InfEngMarkerHalfWidth * cosAngle, -InfEngMarkerHalfWidth * sinAngle);
+											path.StartFigure();
+											path.AddLine(PointD.ToPointF(circleStart), PointD.ToPointF(objectTypeEndPoint));
+											circleStart.Offset(-InfEngOuterOneMarkOffset * cosAngle, -InfEngOuterOneMarkOffset * sinAngle);
+											PointD oneMarkRight = circleStart;
+											circleStart.Offset(-InfEngMarkerHalfWidth * sinAngle, InfEngMarkerHalfWidth * cosAngle);
+											oneMarkRight.Offset(InfEngMarkerHalfWidth * sinAngle, -InfEngMarkerHalfWidth * cosAngle);
+											path.StartFigure();
+											path.AddLine(PointD.ToPointF(circleStart), PointD.ToPointF(oneMarkRight));
+											break;
+										}
+									case RoleMultiplicity.ZeroToMany:
+										{
+											PointD circleStart = objectTypeEndPoint;
+											circleStart.Offset((CrowsFootHeight + InfEngMarkerHalfWidth + InfEngMarkerHalfWidth) * cosAngle, (CrowsFootHeight + InfEngMarkerHalfWidth + InfEngMarkerHalfWidth) * sinAngle);
+											path.AddLine(PointD.ToPointF(roleBoxEndPoint), PointD.ToPointF(circleStart));
+											circleStart.Offset(-InfEngMarkerHalfWidth * cosAngle, -InfEngMarkerHalfWidth * sinAngle);
+											path.StartFigure();
+											path.AddArc(
+												(float)(circleStart.X - InfEngMarkerHalfWidth),
+												(float)(circleStart.Y - InfEngMarkerHalfWidth),
+												(float)(InfEngMarkerHalfWidth + InfEngMarkerHalfWidth),
+												(float)(InfEngMarkerHalfWidth + InfEngMarkerHalfWidth),
+												0,
+												360);
+											circleStart.Offset(-InfEngMarkerHalfWidth * cosAngle, -InfEngMarkerHalfWidth * sinAngle);
+											path.StartFigure();
+											path.AddLine(PointD.ToPointF(circleStart), PointD.ToPointF(objectTypeEndPoint));
+
+											ShapeElement shapeHost;
+											IOffsetBorderPoint offsetPointProvider;
+											if (null != (shapeHost = connector.ToShape) &&
+												null != (offsetPointProvider = shapeHost.ShapeGeometry as IOffsetBorderPoint))
+											{
+												path.StartFigure();
+												path.AddLine(PointD.ToPointF(circleStart), PointD.ToPointF(objectTypeEndPoint));
+												PointD? offsetBorderPoint = offsetPointProvider.OffsetBorderPoint(shapeHost, objectTypeEndPoint, circleStart, CrowsFootHalfWidth, CrowsFootParallelMode);
+												if (offsetBorderPoint.HasValue)
+												{
+													path.StartFigure();
+													path.AddLine(PointD.ToPointF(circleStart), PointD.ToPointF(offsetBorderPoint.Value));
+												}
+												offsetBorderPoint = offsetPointProvider.OffsetBorderPoint(shapeHost, objectTypeEndPoint, circleStart, -CrowsFootHalfWidth, CrowsFootParallelMode);
+												if (offsetBorderPoint.HasValue)
+												{
+													path.StartFigure();
+													path.AddLine(PointD.ToPointF(circleStart), PointD.ToPointF(offsetBorderPoint.Value));
+												}
+											}
+											break;
+										}
+									case RoleMultiplicity.OneToMany:
+										{
+											path.AddLine(PointD.ToPointF(roleBoxEndPoint), PointD.ToPointF(objectTypeEndPoint));
+											PointD vertexPoint = objectTypeEndPoint;
+											vertexPoint.Offset(CrowsFootHeight * cosAngle, CrowsFootHeight * sinAngle);
+
+											// Add the one mark
+											PointD oneMarkLeft = vertexPoint;
+											oneMarkLeft.Offset(InfEngOuterOneMarkOffset * cosAngle, InfEngOuterOneMarkOffset * sinAngle);
+											PointD oneMarkRight = oneMarkLeft;
+											oneMarkLeft.Offset(-InfEngMarkerHalfWidth * sinAngle, InfEngMarkerHalfWidth * cosAngle);
+											oneMarkRight.Offset(InfEngMarkerHalfWidth * sinAngle, -InfEngMarkerHalfWidth * cosAngle);
+											path.StartFigure();
+											path.AddLine(PointD.ToPointF(oneMarkLeft), PointD.ToPointF(oneMarkRight));
+
+											ShapeElement shapeHost;
+											IOffsetBorderPoint offsetPointProvider;
+											if (null != (shapeHost = connector.ToShape) &&
+												null != (offsetPointProvider = shapeHost.ShapeGeometry as IOffsetBorderPoint))
+											{
+												PointD? offsetBorderPoint = offsetPointProvider.OffsetBorderPoint(shapeHost, objectTypeEndPoint, vertexPoint, CrowsFootHalfWidth, CrowsFootParallelMode);
+												if (offsetBorderPoint.HasValue)
+												{
+													path.StartFigure();
+													path.AddLine(PointD.ToPointF(vertexPoint), PointD.ToPointF(offsetBorderPoint.Value));
+												}
+												offsetBorderPoint = offsetPointProvider.OffsetBorderPoint(shapeHost, objectTypeEndPoint, vertexPoint, -CrowsFootHalfWidth, CrowsFootParallelMode);
+												if (offsetBorderPoint.HasValue)
+												{
+													path.StartFigure();
+													path.AddLine(PointD.ToPointF(vertexPoint), PointD.ToPointF(offsetBorderPoint.Value));
+												}
+											}
+											break;
+										}
+								}
+								return path;
+							}
+					}
+				}
+				return base.GetPath(geometryHost);
+			}
+		}
+		#endregion // EntityRelationshipShapeGeometry class
+		/// <summary>
+		/// Add crowsfoot area to excluded clipregion if it is not included in the path. This
+		/// is synchronized with EntityRelationshipShapeGeometry.DoPaintGeometry
+		/// </summary>
+		public override void ExcludeFromClipRegion(Graphics g, Matrix matrix, GraphicsPath perimeter)
+		{
+			base.ExcludeFromClipRegion(g, matrix, perimeter);
+			EntityRelationshipBinaryMultiplicityDisplay displaySetting = OptionsPage.CurrentEntityRelationshipBinaryMultiplicityDisplay;
+			EdgePointCollection edgePoints;
+			int edgePointCount;
+			ShapeElement shapeHost;
+			IOffsetBorderPoint offsetPointProvider;
+			if (displaySetting == EntityRelationshipBinaryMultiplicityDisplay.Barker &&
+				RoleMultiplicity.ZeroToMany == GetDisplayRoleMultiplicity(displaySetting) &&
+				null != (edgePoints = EdgePoints) &&
+				1 < (edgePointCount = edgePoints.Count) &&
+				null != (shapeHost = ToShape) &&
+				null != (offsetPointProvider = shapeHost.ShapeGeometry as IOffsetBorderPoint))
+			{
+				PointD pointOnBorder = edgePoints[edgePointCount - 1].Point;
+				double angle = GeometryUtility.CalculateRadiansRotationAngle(edgePoints[0].Point, pointOnBorder);
+				PointD vertexPoint = pointOnBorder;
+				vertexPoint.Offset(CrowsFootHeight * Math.Cos(angle), CrowsFootHeight * Math.Sin(angle));
+				GraphicsPath path = ExcludePath;
+				PointD? offsetBorderPoint = offsetPointProvider.OffsetBorderPoint(shapeHost, pointOnBorder, vertexPoint, CrowsFootHalfWidth, CrowsFootParallelMode);
+				if (offsetBorderPoint.HasValue)
+				{
+					path.AddLine(PointD.ToPointF(pointOnBorder), PointD.ToPointF(offsetBorderPoint.Value));
+					path.AddLine(PointD.ToPointF(offsetBorderPoint.Value), PointD.ToPointF(vertexPoint));
+				}
+				else
+				{
+					path.AddLine(PointD.ToPointF(pointOnBorder), PointD.ToPointF(vertexPoint));
+				}
+				offsetBorderPoint = offsetPointProvider.OffsetBorderPoint(shapeHost, pointOnBorder, vertexPoint, -CrowsFootHalfWidth, CrowsFootParallelMode);
+				if (offsetBorderPoint.HasValue)
+				{
+					path.AddLine(PointD.ToPointF(vertexPoint), PointD.ToPointF(offsetBorderPoint.Value));
+				}
+				path.CloseFigure();
+				g.SetClip(path, CombineMode.Exclude);
+			}
+		}
+		/// <summary>
+		/// Change the geometry if we're drawing any Entity Relationship options
+		/// </summary>
+		public override ShapeGeometry ShapeGeometry
+		{
+			get
+			{
+				EntityRelationshipBinaryMultiplicityDisplay displaySetting = OptionsPage.CurrentEntityRelationshipBinaryMultiplicityDisplay;
+				RoleMultiplicity multiplicity = GetDisplayRoleMultiplicity(displaySetting);
+				if (multiplicity != RoleMultiplicity.Unspecified)
+				{
+					if (displaySetting != EntityRelationshipBinaryMultiplicityDisplay.CrowsFootOnly ||
+						multiplicity == RoleMultiplicity.OneToMany ||
+						multiplicity == RoleMultiplicity.ZeroToMany)
+					{
+						return EntityRelationshipShapeGeometry.ShapeGeometry;
+					}
+				}
+				return base.ShapeGeometry;
+			}
+		}
+		/// <summary>
+		/// Return the display role multiplicity for this link. If the options
+		/// page settings do not display multiplicity then we always return Unspecified.
+		/// Note that Information Engineering and UML fold multiplicity and cardinality the
+		/// the same, but the Barker solid line (mandatory) is on the same side as the ORM
+		/// mandatory dot. This will monkey with the multiplicity for Barker mode to reflect
+		/// the mandatory on the near side.
+		/// </summary>
+		private RoleMultiplicity GetDisplayRoleMultiplicity(EntityRelationshipBinaryMultiplicityDisplay displaySetting)
+		{
+			ObjectTypePlaysRole link;
+			Role role;
+			RoleMultiplicity multiplicity;
+			if (displaySetting != EntityRelationshipBinaryMultiplicityDisplay.Off &&
+				null != (link = AssociatedRolePlayerLink) &&
+				null != (role = link.PlayedRole) &&
+				RoleMultiplicity.Indeterminate != (multiplicity = role.Multiplicity))
+			{
+				if (displaySetting == EntityRelationshipBinaryMultiplicityDisplay.Barker)
+				{
+					bool mandatory = role.IsMandatory;
+					switch (multiplicity)
+					{
+						case RoleMultiplicity.ZeroToMany:
+						case RoleMultiplicity.OneToMany:
+							multiplicity = mandatory ? RoleMultiplicity.OneToMany : RoleMultiplicity.ZeroToMany;
+							break;
+						case RoleMultiplicity.ZeroToOne:
+						case RoleMultiplicity.ExactlyOne:
+							multiplicity = mandatory ? RoleMultiplicity.ExactlyOne : RoleMultiplicity.ZeroToOne;
+							break;
+					}
+				}
+				return multiplicity;
+			}
+			return RoleMultiplicity.Unspecified;
+		}
+		/// <summary>
+		/// Return a dashed pen if we're optional and doing BarkerER compatibility
+		/// </summary>
+		public override StyleSetResourceId OutlinePenId
+		{
+			get
+			{
+				EntityRelationshipBinaryMultiplicityDisplay displaySetting = OptionsPage.CurrentEntityRelationshipBinaryMultiplicityDisplay;
+				if (displaySetting == EntityRelationshipBinaryMultiplicityDisplay.Barker)
+				{
+					switch (GetDisplayRoleMultiplicity(displaySetting))
+					{
+						case RoleMultiplicity.ZeroToMany:
+						case RoleMultiplicity.ZeroToOne:
+							return BarkerEROptionalPen;
+					}
+				}
+				return base.OutlinePenId;
+			}
+		}
+		#endregion // EntityRelationship learning mode support
 		#region RolePlayerLink specific
 		/// <summary>
 		/// Get the ObjectTypePlaysRole link associated with this link shape
@@ -457,7 +866,7 @@ namespace Neumont.Tools.ORM.ShapeModel
 		/// <param name="store">The <see cref="Store"/> for which the <see cref="EventHandler{TEventArgs}"/>s should be managed.</param>
 		/// <param name="eventManager">The <see cref="ModelingEventManager"/> used to manage the <see cref="EventHandler{TEventArgs}"/>s.</param>
 		/// <param name="action">The <see cref="EventHandlerAction"/> that should be taken for the <see cref="EventHandler{TEventArgs}"/>s.</param>
-		public static void ManageEventHandlers(Store store, ModelingEventManager eventManager, EventHandlerAction action)
+		public static new void ManageEventHandlers(Store store, ModelingEventManager eventManager, EventHandlerAction action)
 		{
 			DomainDataDirectory dataDirectory = store.DomainDataDirectory;
 

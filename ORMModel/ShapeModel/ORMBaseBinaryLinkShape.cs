@@ -37,6 +37,7 @@ using Microsoft.VisualStudio.Modeling.Diagrams.GraphObject;
 using Neumont.Tools.Modeling.Design;
 using Neumont.Tools.Modeling.Diagrams;
 using Neumont.Tools.ORM.ObjectModel;
+using Neumont.Tools.Modeling;
 
 namespace Neumont.Tools.ORM.ShapeModel
 {
@@ -125,6 +126,77 @@ namespace Neumont.Tools.ORM.ShapeModel
 		/// </summary>
 		public abstract void ConfiguringAsChildOf(ORMDiagram diagram, bool createdDuringViewFixup);
 		#endregion Customize appearance
+		#region Auto-invalidate tracking
+		/// <summary>
+		/// Call to automatically invalidate the shape during events.
+		/// Invalidates during the original event sequence as well as undo and redo.
+		/// </summary>
+		public void InvalidateRequired()
+		{
+			InvalidateRequired(false);
+		}
+		/// <summary>
+		/// Call to automatically invalidate the shape during events.
+		/// Invalidates during the original event sequence as well as undo and redo.
+		/// </summary>
+		/// <param name="refreshBitmap">Value to forward to the Invalidate method's refreshBitmap property during event playback</param>
+		public void InvalidateRequired(bool refreshBitmap)
+		{
+			TransactionManager tmgr = Store.TransactionManager;
+			if (tmgr.InTransaction)
+			{
+				UpdateCounter = unchecked(tmgr.CurrentTransaction.SequenceNumber - (refreshBitmap ? 0L : 1L));
+			}
+		}
+		/// <summary>
+		/// Called during event playback before an <see cref="ShapeElement.Invalidate()"/> call triggered
+		/// via the <see cref="InvalidateRequired()"/> mechanism is called. The default implementation
+		/// does nothing.
+		/// </summary>
+		protected virtual void BeforeInvalidate()
+		{
+		}
+		private long GetUpdateCounterValue()
+		{
+			TransactionManager tmgr = Store.TransactionManager;
+			if (tmgr.InTransaction)
+			{
+				// Using subtract 2 and set to 1 under to indicate
+				// the difference between an Invalidate(true) and
+				// and Invalidate(false)
+				return unchecked(tmgr.CurrentTransaction.SequenceNumber - 2);
+			}
+			else
+			{
+				return 0L;
+			}
+		}
+		private void SetUpdateCounterValue(long newValue)
+		{
+			// Nothing to do, we're just trying to create a transaction log
+		}
+		/// <summary>
+		/// Manages <see cref="EventHandler{TEventArgs}"/>s in the <see cref="Store"/> for <see cref="ORMBaseShape"/>s.
+		/// </summary>
+		/// <param name="store">The <see cref="Store"/> for which the <see cref="EventHandler{TEventArgs}"/>s should be managed.</param>
+		/// <param name="eventManager">The <see cref="ModelingEventManager"/> used to manage the <see cref="EventHandler{TEventArgs}"/>s.</param>
+		/// <param name="action">The <see cref="EventHandlerAction"/> that should be taken for the <see cref="EventHandler{TEventArgs}"/>s.</param>
+		public static void ManageEventHandlers(Store store, ModelingEventManager eventManager, EventHandlerAction action)
+		{
+			DomainDataDirectory dataDirectory = store.DomainDataDirectory;
+			DomainPropertyInfo propertyInfo = dataDirectory.FindDomainProperty(ORMBaseBinaryLinkShape.UpdateCounterDomainPropertyId);
+			eventManager.AddOrRemoveHandler(propertyInfo, new EventHandler<ElementPropertyChangedEventArgs>(UpdateRequiredEvent), action);
+		}
+		private static void UpdateRequiredEvent(object sender, ElementPropertyChangedEventArgs e)
+		{
+			ORMBaseBinaryLinkShape shape = (ORMBaseBinaryLinkShape)e.ModelElement;
+			if (!shape.IsDeleted)
+			{
+				shape.BeforeInvalidate();
+				shape.Invalidate(Math.Abs(unchecked((long)e.OldValue - (long)e.NewValue)) != 1L);
+			}
+		}
+		#endregion // Auto-invalidate tracking
 		#region DuplicateNameError Activation Helper
 		/// <summary>
 		/// Activate the Name property in the Properties Window

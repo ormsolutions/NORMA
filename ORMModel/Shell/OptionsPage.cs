@@ -181,6 +181,35 @@ namespace Neumont.Tools.ORM.Shell
 		/// </summary>
 		Always,
 	}
+	/// <summary>
+	/// Options for overlaying EntityRelationship (ER) multiplicity
+	/// display on top of ORM binary fact types. Meant as a temporary
+	/// help for users with ER experience who are learning ORM.
+	/// </summary>
+	public enum EntityRelationshipBinaryMultiplicityDisplay
+	{
+		/// <summary>
+		/// Normal ORM display, no ER overlay
+		/// </summary>
+		Off,
+		/// <summary>
+		/// Display just the crows foot only, indicating
+		/// a 'many' multiplicity.
+		/// </summary>
+		CrowsFootOnly,
+		/// <summary>
+		/// Display Barker ER notation on role connectors for binary fact types.
+		/// Optional roles use dotted lines, mandatory uses solid, and many
+		/// is indicated by the crowsfoot.
+		/// </summary>
+		Barker,
+		/// <summary>
+		/// Display Information Engineering notation on binary fact types. Optional
+		/// roles get an 0 on the line, mandatory roles get a 1, many is indicated
+		/// by the crowsfoot.
+		/// </summary>
+		InformationEngineering,
+	}
 	#endregion // Shape enums
 	#region Other Options Enums
 	/// <summary>
@@ -349,6 +378,10 @@ namespace Neumont.Tools.ORM.Shell
 #endif
 		private static bool myCurrentShowDebugCommands = ShowDebugCommands_Default;
 		private bool myShowDebugCommands = ShowDebugCommands_Default;
+
+		private const EntityRelationshipBinaryMultiplicityDisplay EntityRelationshipBinaryMultiplicityDisplay_Default = EntityRelationshipBinaryMultiplicityDisplay.Off;
+		private static EntityRelationshipBinaryMultiplicityDisplay myCurrentEntityRelationshipBinaryMultiplicityDisplay = EntityRelationshipBinaryMultiplicityDisplay_Default;
+		private EntityRelationshipBinaryMultiplicityDisplay myEntityRelationshipBinaryMultiplicityDisplay = EntityRelationshipBinaryMultiplicityDisplay_Default;
 		#endregion // Member variables
 		#region Base overrides
 		/// <summary>
@@ -372,6 +405,7 @@ namespace Neumont.Tools.ORM.Shell
 			myCurrentPreferredInternalUniquenessConstraintDisplay = myPreferredInternalUniquenessConstraintDisplay;
 			myCurrentReadingDirectionIndicatorDisplay = myReadingDirectionIndicatorDisplay;
 			myCurrentShowDebugCommands = myShowDebugCommands;
+			myCurrentEntityRelationshipBinaryMultiplicityDisplay = myEntityRelationshipBinaryMultiplicityDisplay;
 		}
 		/// <summary>
 		/// Set local values for the current settings to determine later if the
@@ -394,6 +428,7 @@ namespace Neumont.Tools.ORM.Shell
 			myPreferredInternalUniquenessConstraintDisplay = myCurrentPreferredInternalUniquenessConstraintDisplay;
 			myReadingDirectionIndicatorDisplay = myCurrentReadingDirectionIndicatorDisplay;
 			myShowDebugCommands = myCurrentShowDebugCommands;
+			myEntityRelationshipBinaryMultiplicityDisplay = myCurrentEntityRelationshipBinaryMultiplicityDisplay;
 		}
 
 		/// <summary>
@@ -413,7 +448,8 @@ namespace Neumont.Tools.ORM.Shell
 				myCurrentRoleNameDisplay == myRoleNameDisplay &&
 				myCurrentExternalConstraintRoleBarDisplay == myExternalConstraintRoleBarDisplay &&
 				myCurrentPreferredInternalUniquenessConstraintDisplay == myPreferredInternalUniquenessConstraintDisplay &&
-				myCurrentReadingDirectionIndicatorDisplay == myReadingDirectionIndicatorDisplay)
+				myCurrentReadingDirectionIndicatorDisplay == myReadingDirectionIndicatorDisplay &&
+				myCurrentEntityRelationshipBinaryMultiplicityDisplay == myEntityRelationshipBinaryMultiplicityDisplay)
 			{
 				// Non-displayed setting, don't notify
 				myCurrentDefaultDataType = myDefaultDataType;
@@ -450,6 +486,7 @@ namespace Neumont.Tools.ORM.Shell
 			myCurrentPreferredInternalUniquenessConstraintDisplay = myPreferredInternalUniquenessConstraintDisplay;
 			myCurrentReadingDirectionIndicatorDisplay = myReadingDirectionIndicatorDisplay;
 			myCurrentShowDebugCommands = myShowDebugCommands;
+			myCurrentEntityRelationshipBinaryMultiplicityDisplay = myEntityRelationshipBinaryMultiplicityDisplay;
 
 			// Walk all the documents and invalidate ORM diagrams if the options have changed
 			NotifySettingsChange(
@@ -863,6 +900,28 @@ namespace Neumont.Tools.ORM.Shell
 		{
 			get { return myCurrentShowDebugCommands; }
 		}
+
+		/// <summary>
+		/// Entity Relationship Binary Multiplicity Display option
+		/// </summary>
+		[DefaultValue(EntityRelationshipBinaryMultiplicityDisplay_Default)]
+		[LocalizedCategory(ResourceStrings.OptionsPageCategoryEntityRelationshipLearningModeId)]
+		[LocalizedDescription(ResourceStrings.OptionsPagePropertyEntityRelationshipBinaryMultiplicityDisplayDescriptionId)]
+		[LocalizedDisplayName(ResourceStrings.OptionsPagePropertyEntityRelationshipBinaryMultiplicityDisplayDisplayNameId)]
+		public EntityRelationshipBinaryMultiplicityDisplay EntityRelationshipBinaryMultiplicityDisplay
+		{
+			get { return myEntityRelationshipBinaryMultiplicityDisplay; }
+			set { myEntityRelationshipBinaryMultiplicityDisplay = value; }
+		}
+
+		/// <summary>
+		/// Current VS session-wide setting for EntityRelationshipBinaryMultiplicityDisplay
+		/// </summary>
+		public static EntityRelationshipBinaryMultiplicityDisplay CurrentEntityRelationshipBinaryMultiplicityDisplay
+		{
+			get { return myCurrentEntityRelationshipBinaryMultiplicityDisplay; }
+		}
+
 		#endregion // Accessor properties
 		#region Custom dropdown for CustomVerbalizationSnippets option
 		/// <summary>

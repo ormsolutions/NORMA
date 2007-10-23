@@ -474,7 +474,7 @@ namespace Neumont.Tools.ORM.ShapeModel
 		/// <param name="store">The <see cref="Store"/> for which the <see cref="EventHandler{TEventArgs}"/>s should be managed.</param>
 		/// <param name="eventManager">The <see cref="ModelingEventManager"/> used to manage the <see cref="EventHandler{TEventArgs}"/>s.</param>
 		/// <param name="action">The <see cref="EventHandlerAction"/> that should be taken for the <see cref="EventHandler{TEventArgs}"/>s.</param>
-		public static void ManageEventHandlers(Store store, ModelingEventManager eventManager, EventHandlerAction action)
+		public static new void ManageEventHandlers(Store store, ModelingEventManager eventManager, EventHandlerAction action)
 		{
 			eventManager.AddOrRemoveHandler(store.DomainDataDirectory.FindDomainProperty(SubtypeFact.IsPrimaryDomainPropertyId), new EventHandler<ElementPropertyChangedEventArgs>(IsPrimaryChangedEvent), action);
 		}

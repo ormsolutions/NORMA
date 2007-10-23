@@ -42,6 +42,32 @@ namespace Neumont.Tools.Modeling.Diagrams
 		PointD CalculateConnectionPoint(NodeShape oppositeShape);
 	}
 	#endregion // ICustomShapeFolding interface
+	#region IOffsetBorderPoint
+	/// <summary>
+	/// Interface implemented on a <see cref="ShapeGeometry"/> to support
+	/// calculating a secondary border point offset from a known border point.
+	/// </summary>
+	public interface IOffsetBorderPoint
+	{
+		/// <summary>
+		/// Offset a border point coming into the shape by a given offset, with
+		/// the offset measured orthogonal to the incoming line. The goal is to find another
+		/// point on the border close to the original border point. All coordinates are
+		/// assumed to be absolute.
+		/// </summary>
+		/// <param name="geometryHost">The <see cref="IGeometryHost"/> to calculate</param>
+		/// <param name="borderPoint">An existing point on the border</param>
+		/// <param name="outsidePoint">A point outside the shape. The returned point will point
+		/// to this value unless <paramref name="parallelVector"/> is set, in which case this
+		/// point is used to determine the direction and angle of the reference vector</param>
+		/// <param name="offset">The offset to take. Positive values move counterclockwise (increasing angle), negative values move clockwise (decreasing angle)
+		/// moving from the outsidePoint to the borderPoint.</param>
+		/// <param name="parallelVector">If this is <see langword="true"/>, then the returned point will be parallel to the
+		/// incoming line</param>
+		/// <returns>A <see cref="Nullable{PointD}"/> either on the border, or <see langword="null"/>.</returns>
+		PointD? OffsetBorderPoint(IGeometryHost geometryHost, PointD borderPoint, PointD outsidePoint, double offset, bool parallelVector);
+	}
+	#endregion // IOffsetBorderPoint
 	#region GeometryUtility class
 	/// <summary>
 	/// Helper functions for custom shape folding
@@ -62,6 +88,31 @@ namespace Neumont.Tools.Modeling.Diagrams
 		{
 			NodeShape oppositeShape;
 			return AdjustVectorEndPoint(geometryHost, vectorEndPoint, out oppositeShape);
+		}
+		/// <summary>
+		/// Calculate the rotation angle in radians
+		/// </summary>
+		/// <param name="sourcePoint">The point to move from</param>
+		/// <param name="targetPoint">The point to move towards</param>
+		/// <returns>Rotation angle in radians</returns>
+		public static double CalculateRadiansRotationAngle(PointD sourcePoint, PointD targetPoint)
+		{
+			if (VGConstants.FuzzEqual(sourcePoint.X, targetPoint.X, VGConstants.FuzzDistance))
+			{
+				// Vertical line, get angle by comparing y
+				return (sourcePoint.Y > targetPoint.Y) ? Math.PI / 2 : Math.PI / -2;
+			}
+			else
+			{
+				double retVal;
+				double xDif = targetPoint.X - sourcePoint.X;
+				retVal = Math.Atan((targetPoint.Y - sourcePoint.Y) / xDif);
+				if (xDif > 0d)
+				{
+					retVal += Math.PI;
+				}
+				return retVal;
+			}
 		}
 		/// <summary>
 		/// Locate the opposite shape based on the given points and
@@ -317,7 +368,7 @@ namespace Neumont.Tools.Modeling.Diagrams
 	/// Attach connection lines correctly to an ellipse border. Designed
 	/// to work with CenterToCenter routing.
 	/// </summary>
-	public class CustomFoldEllipseShapeGeometry : EllipseShapeGeometry
+	public class CustomFoldEllipseShapeGeometry : EllipseShapeGeometry, IOffsetBorderPoint
 	{
 		/// <summary>
 		/// Singleton CustomFoldEllipseShapeGeometry instance
@@ -407,6 +458,146 @@ namespace Neumont.Tools.Modeling.Diagrams
 				return new PointD(x + xRadius, y + yRadius);
 			}
 		}
+
+		#region IOffsetBorderPoint Implementation
+		/// <summary>
+		/// Implements <see cref="IOffsetBorderPoint.OffsetBorderPoint"/>
+		/// </summary>
+		protected PointD? OffsetBorderPoint(IGeometryHost geometryHost, PointD borderPoint, PointD outsidePoint, double offset, bool parallelVector)
+		{
+			double angle = GeometryUtility.CalculateRadiansRotationAngle(outsidePoint, borderPoint);
+
+			// Get the sample point
+			PointD samplePoint = borderPoint;
+			samplePoint.Offset(-offset * Math.Sin(angle), offset * Math.Cos(angle));
+
+			// Figure out the slope, either parallel to the incoming line, or pointed at the outside point
+			PointD slopeThrough = parallelVector ? borderPoint : samplePoint;
+
+			// Translate the ellipse to the origin
+			RectangleD bounds = geometryHost.GeometryBoundingBox;
+			PointD hostCenter = bounds.Center;
+			samplePoint.Offset(-hostCenter.X, -hostCenter.Y);
+
+			double px = samplePoint.X;
+			double py = samplePoint.Y;
+			double solvedX;
+			double solvedY;
+			bool checkAlternate = false;
+			double solvedXAlternate = 0;
+			double solvedYAlternate = 0;
+
+			if (VGConstants.FuzzEqual(slopeThrough.X, outsidePoint.X, VGConstants.FuzzDistance))
+			{
+				// Vertical line, can't get slope, y = +/-b * sqrt(1-(x0/a)^2)
+				double discriminant = px / (bounds.Width / 2);
+				discriminant = 1 - discriminant * discriminant;
+				if (VGConstants.FuzzZero(discriminant, VGConstants.FuzzGeneral))
+				{
+					solvedX = px;
+					solvedY = 0;
+				}
+				else if (discriminant < 0)
+				{
+					// Equation is not solvable
+					return null;
+				}
+				else
+				{
+					solvedX = px;
+					solvedY = (bounds.Height / 2) * Math.Sqrt(discriminant);
+					solvedXAlternate = px;
+					solvedYAlternate = -solvedY;
+					checkAlternate = true;
+				}
+			}
+			else if (VGConstants.FuzzEqual(slopeThrough.Y, outsidePoint.Y, VGConstants.FuzzDistance))
+			{
+				// Horizontal line, main equation works, but this is a lot cleaner.
+				// Switch axes from vertical block
+				double discriminant = py / (bounds.Height / 2);
+				discriminant = 1 - discriminant * discriminant;
+				if (VGConstants.FuzzZero(discriminant, VGConstants.FuzzGeneral))
+				{
+					solvedY = py;
+					solvedX = 0;
+				}
+				else if (discriminant < 0)
+				{
+					// Equation is not solvable
+					return null;
+				}
+				else
+				{
+					solvedY = py;
+					solvedX = (bounds.Width / 2) * Math.Sqrt(discriminant);
+					solvedYAlternate = py;
+					solvedXAlternate = -solvedX;
+					checkAlternate = true;
+				}
+			}
+			else
+			{
+				double slope = (outsidePoint.Y - slopeThrough.Y) / (outsidePoint.X - slopeThrough.X);
+				double xRadiusSquared = bounds.Width / 2;
+				xRadiusSquared *= xRadiusSquared;
+				double yRadiusSquared = bounds.Height / 2;
+				yRadiusSquared *= yRadiusSquared;
+				// The A/B/C below refer to the quadratic equation (Ax^2 + Bx + C = 0) gives
+				// The equations involved are
+				// Ellipse equation: x^2/a^2 + y^2/b^2 = 1 for the ellipse (a = width/2, b = height/2, centered at 0,0)
+				// Line equation: x = m(x - x0) + y0 (m = slope, x0 = px above, y0 = py above). Solving into
+				// quadratic form gives the following equations:
+				double quadA = yRadiusSquared / xRadiusSquared + slope * slope;
+				double sharedQuadPart = py - slope * px;
+				double quadB = (slope + slope) * sharedQuadPart;
+				double quadC = sharedQuadPart * sharedQuadPart - yRadiusSquared;
+				double discriminant = quadB * quadB - 4 * quadA * quadC;
+				if (VGConstants.FuzzZero(discriminant, VGConstants.FuzzGeneral))
+				{
+					// Tangential line, one possibility only
+					solvedX = -quadB / (quadA + quadA);
+					solvedY = slope * (solvedX - px) + py;
+				}
+				else if (discriminant < 0)
+				{
+					// Equation is not solvable
+					return null;
+				}
+				else
+				{
+					// We want the point that is closest to the sample point.
+					discriminant = Math.Sqrt(discriminant);
+					solvedX = (-quadB + discriminant) / (quadA + quadA);
+					solvedY = slope * (solvedX - px) + py;
+					solvedXAlternate = (-quadB - discriminant) / (quadA + quadA);
+					solvedYAlternate = slope * (solvedXAlternate - px) + py;
+					checkAlternate = true;
+				}
+			}
+
+			// Choose the best match and translate the point back out
+			if (checkAlternate)
+			{
+				// Note that simple quadrant checks are no sufficient here, we must
+				// find the closest solution to the starting point
+				double xDif = px - solvedX;
+				double yDif = py - solvedY;
+				double xDifAlternate = px - solvedXAlternate;
+				double yDifAlternate = py - solvedYAlternate;
+				if ((xDif * xDif + yDif * yDif) > (xDifAlternate * xDifAlternate + yDifAlternate * yDifAlternate))
+				{
+					solvedX = solvedXAlternate;
+					solvedY = solvedYAlternate;
+				}
+			}
+			return new PointD(solvedX + hostCenter.X, solvedY + hostCenter.Y);
+		}
+		PointD? IOffsetBorderPoint.OffsetBorderPoint(IGeometryHost geometryHost, PointD borderPoint, PointD outsidePoint, double offset, bool parallelVector)
+		{
+			return OffsetBorderPoint(geometryHost, borderPoint, outsidePoint, offset, parallelVector);
+		}
+		#endregion // IOffsetBorderPoint Implementation
 	}
 	#endregion // CustomFoldEllipseShapeGeometry class
 	#region CustomFoldCircleShapeGeometry class
@@ -510,7 +701,7 @@ namespace Neumont.Tools.Modeling.Diagrams
 	/// A geometry shape for custom shape folding on rectangles.
 	/// Designed to work with CenterToCenter routing.
 	/// </summary>
-	public class CustomFoldRectangleShapeGeometry : RectangleShapeGeometry
+	public class CustomFoldRectangleShapeGeometry : RectangleShapeGeometry, IOffsetBorderPoint
 	{
 		/// <summary>
 		/// Singleton CustomFoldRectangleShapeGeometry instance
@@ -594,6 +785,166 @@ namespace Neumont.Tools.Modeling.Diagrams
 				return new PointD(x + bounds.Width / 2, y + bounds.Height / 2);
 			}
 		}
+		#region IOffsetBorderPoint Implementation
+		/// <summary>
+		/// Implements <see cref="IOffsetBorderPoint.OffsetBorderPoint"/>
+		/// </summary>
+		protected PointD? OffsetBorderPoint(IGeometryHost geometryHost, PointD borderPoint, PointD outsidePoint, double offset, bool parallelVector)
+		{
+			double angle = GeometryUtility.CalculateRadiansRotationAngle(outsidePoint, borderPoint);
+
+			// Get the sample point
+			PointD samplePoint = borderPoint;
+			samplePoint.Offset(-offset * Math.Sin(angle), offset * Math.Cos(angle));
+
+			// Figure out the slope, either parallel to the incoming line, or pointed at the outside point
+			PointD slopeThrough = parallelVector ? borderPoint : samplePoint;
+
+			// Translate the rectangle to the origin
+			RectangleD bounds = geometryHost.GeometryBoundingBox;
+			PointD hostCenter = bounds.Center;
+			samplePoint.Offset(-hostCenter.X, -hostCenter.Y);
+
+			double px = samplePoint.X;
+			double py = samplePoint.Y;
+			double solvedX;
+			double solvedY;
+
+			if (VGConstants.FuzzEqual(slopeThrough.X, outsidePoint.X, VGConstants.FuzzDistance))
+			{
+				// Vertical line, hit the same edge as the border point
+				if (Math.Abs(px) > (bounds.Width / 2 + VGConstants.FuzzDistance))
+				{
+					// Line hits outside rectangle
+					return null;
+				}
+				solvedX = px;
+				solvedY = borderPoint.Y - hostCenter.Y;
+			}
+			else if (VGConstants.FuzzEqual(slopeThrough.Y, outsidePoint.Y, VGConstants.FuzzDistance))
+			{
+				// Horizontal line, hit the same edge as the border point
+				if (Math.Abs(py) > (bounds.Height / 2 + VGConstants.FuzzDistance))
+				{
+					// Line hits outside rectangle
+					return null;
+				}
+				solvedY = py;
+				solvedX = borderPoint.X - hostCenter.X;
+			}
+			else
+			{
+				int hitCount = 0;
+				solvedX = 0;
+				solvedY = 0;
+				double solvedXAlternate = 0;
+				double solvedYAlternate = 0;
+
+				// We've already checked vertical and horizontal lines, so we know the lines will intersect either
+				// zero or two sides of the rectangle. Find the two sides.
+				// The intersecting line equation is y = m(x - px) + py (solved for y) or x = 1/m(y-py) + px (solved for x)
+				// The rectangle borders are y = halfHeight, y = -halfHeight, x = halfWidth, x = -halfWidth
+				double halfWidth = bounds.Width / 2;
+				double halfHeight = bounds.Height / 2;
+
+				double slope = (outsidePoint.Y - slopeThrough.Y) / (outsidePoint.X - slopeThrough.X);
+				double inverseSlope = 1 / slope;
+
+				double testIntersect;
+				
+				// Top edge
+				testIntersect = inverseSlope * (halfHeight - py) + px;
+				if (Math.Abs(testIntersect) < (halfWidth + VGConstants.FuzzDistance))
+				{
+					solvedX = testIntersect;
+					solvedY = halfHeight;
+					hitCount = 1;
+				}
+
+				// Bottom edge
+				testIntersect = inverseSlope * (-halfHeight - py) + px;
+				if (Math.Abs(testIntersect) < (halfWidth + VGConstants.FuzzDistance))
+				{
+					if (hitCount == 1)
+					{
+						solvedXAlternate = testIntersect;
+						solvedYAlternate = -halfHeight;
+					}
+					else
+					{
+						solvedX = testIntersect;
+						solvedY = -halfHeight;
+					}
+					++hitCount;
+				}
+
+				// Right edge
+				if (hitCount != 2)
+				{
+					testIntersect = slope * (halfWidth - px) + py;
+					if (Math.Abs(testIntersect) < (halfHeight + VGConstants.FuzzDistance))
+					{
+						if (hitCount == 1)
+						{
+							solvedYAlternate = testIntersect;
+							solvedXAlternate = halfWidth;
+						}
+						else
+						{
+							solvedY = testIntersect;
+							solvedX = halfWidth;
+						}
+						++hitCount;
+					}
+				}
+
+				// Left edge
+				if (hitCount != 2)
+				{
+					testIntersect = slope * (-halfWidth - px) + py;
+					if (Math.Abs(testIntersect) < (halfHeight + VGConstants.FuzzDistance))
+					{
+						if (hitCount == 1)
+						{
+							solvedYAlternate = testIntersect;
+							solvedXAlternate = -halfWidth;
+						}
+						else
+						{
+							solvedY = testIntersect;
+							solvedX = -halfWidth;
+						}
+						++hitCount;
+					}
+				}
+
+				// Choose the best match and translate the point back out
+				if (hitCount == 2)
+				{
+					// Find the point closest to the sample point
+					double xDif = px - solvedX;
+					double yDif = py - solvedY;
+					double xDifAlternate = px - solvedXAlternate;
+					double yDifAlternate = py - solvedYAlternate;
+					if ((xDif * xDif + yDif * yDif) > (xDifAlternate * xDifAlternate + yDifAlternate * yDifAlternate))
+					{
+						solvedX = solvedXAlternate;
+						solvedY = solvedYAlternate;
+					}
+				}
+				else
+				{
+					// Unsolvable
+					return null;
+				}
+			}
+			return new PointD(solvedX + hostCenter.X, solvedY + hostCenter.Y);
+		}
+		PointD? IOffsetBorderPoint.OffsetBorderPoint(IGeometryHost geometryHost, PointD borderPoint, PointD outsidePoint, double offset, bool parallelVector)
+		{
+			return OffsetBorderPoint(geometryHost, borderPoint, outsidePoint, offset, parallelVector);
+		}
+		#endregion // IOffsetBorderPoint Implementation
 	}
 	#endregion // CustomFoldRectangleShapeGeometry class
 	#region CustomFoldRoundedRectangleShapeGeometry class
@@ -601,7 +952,7 @@ namespace Neumont.Tools.Modeling.Diagrams
 	/// A geometry shape for custom shape folding on rectangles
 	/// Designed to work with CenterToCenter routing.
 	/// </summary>
-	public class CustomFoldRoundedRectangleShapeGeometry : RoundedRectangleShapeGeometry
+	public class CustomFoldRoundedRectangleShapeGeometry : RoundedRectangleShapeGeometry, IOffsetBorderPoint
 	{
 		/// <summary>
 		/// Singleton CustomFoldRoundedRectangleShapeGeometry instance
@@ -737,6 +1088,358 @@ namespace Neumont.Tools.Modeling.Diagrams
 				return new PointD(x + halfWidth, y + halfHeight);
 			}
 		}
+		#region IOffsetBorderPoint Implementation
+		/// <summary>
+		/// Implements <see cref="IOffsetBorderPoint.OffsetBorderPoint"/>
+		/// </summary>
+		protected PointD? OffsetBorderPoint(IGeometryHost geometryHost, PointD borderPoint, PointD outsidePoint, double offset, bool parallelVector)
+		{
+			double angle = GeometryUtility.CalculateRadiansRotationAngle(outsidePoint, borderPoint);
+
+			// Get the sample point
+			PointD samplePoint = borderPoint;
+			samplePoint.Offset(-offset * Math.Sin(angle), offset * Math.Cos(angle));
+
+			// Figure out the slope, either parallel to the incoming line, or pointed at the outside point
+			PointD slopeThrough = parallelVector ? borderPoint : samplePoint;
+
+			// Translate the rectangle to the origin
+			RectangleD bounds = geometryHost.GeometryBoundingBox;
+			PointD hostCenter = bounds.Center;
+			double hcx = hostCenter.X;
+			double hcy = hostCenter.Y;
+			samplePoint.Offset(-hcx, -hcy);
+			borderPoint.Offset(-hcx, -hcy);
+
+			double px = samplePoint.X;
+			double py = samplePoint.Y;
+			double solvedX;
+			double solvedY;
+
+			double halfWidth = bounds.Width / 2;
+			double halfHeight = bounds.Height / 2;
+			double r = Radius;
+			if (VGConstants.FuzzEqual(slopeThrough.X, outsidePoint.X, VGConstants.FuzzDistance))
+			{
+				double absX = Math.Abs(px);
+				// Vertical line, hit the same edge as the border point
+				if (absX > (halfWidth + VGConstants.FuzzDistance))
+				{
+					// Line hits outside rectangle
+					return null;
+				}
+
+				solvedX = px;
+				solvedY = halfHeight;
+				absX = halfWidth - absX;
+				if (absX < r)
+				{
+					// We're on the rounded corner. Figure out how far down the circle we need to go.
+					solvedY -= r - Math.Sqrt(absX * (r + r - absX));
+				}
+				if (borderPoint.Y < 0)
+				{
+					solvedY = -solvedY;
+				}
+			}
+			else if (VGConstants.FuzzEqual(slopeThrough.Y, outsidePoint.Y, VGConstants.FuzzDistance))
+			{
+				double absY = Math.Abs(py);
+				// Horizontal line, hit the same edge as the border point
+				if (absY > (halfHeight + VGConstants.FuzzDistance))
+				{
+					// Line hits outside rectangle
+					return null;
+				}
+				solvedY = py;
+				solvedX = halfWidth;
+				absY = halfHeight - absY;
+				if (absY < r)
+				{
+					// We're on the rounded corner. Figure out how far down the circle we need to go.
+					solvedX -= r - Math.Sqrt(absY * (r + r - absY));
+				}
+				if (borderPoint.X < 0)
+				{
+					solvedX = -solvedX;
+				}
+			}
+			else
+			{
+				int hitCount = 0;
+				solvedX = 0;
+				solvedY = 0;
+				double solvedXAlternate = 0;
+				double solvedYAlternate = 0;
+				PointD? corner; // Use for corner tracking (both the center and the hit points)
+				CornerQuadrant quadrant = 0;
+
+				// We've already checked vertical and horizontal lines, so we know the lines will intersect either
+				// zero or two sides of the rectangle. Find the two sides.
+				// The intersecting line equation is y = m(x - px) + py (solved for y) or x = 1/m(y-py) + px (solved for x)
+				// The rectangle borders are y = halfHeight, y = -halfHeight, x = halfWidth, x = -halfWidth
+				double slope = (outsidePoint.Y - slopeThrough.Y) / (outsidePoint.X - slopeThrough.X);
+				double inverseSlope = 1 / slope;
+
+				double testIntersect;
+
+				// Bottom edge
+				testIntersect = inverseSlope * (halfHeight - py) + px;
+				if (Math.Abs(testIntersect) < (halfWidth + VGConstants.FuzzDistance))
+				{
+					solvedX = testIntersect;
+					solvedY = halfHeight;
+					corner = null;
+					if (solvedX > 0)
+					{
+						if (r > (halfWidth - solvedX))
+						{
+							corner = new PointD(halfWidth - r, halfHeight - r);
+							quadrant = CornerQuadrant.LowerRight;
+						}
+					}
+					else if (r > (halfWidth + solvedX))
+					{
+						corner = new PointD(-halfWidth + r, halfHeight - r);
+						quadrant = CornerQuadrant.LowerLeft;
+					}
+
+					if (corner.HasValue)
+					{
+						corner = FindCornerHit(corner.Value, samplePoint, slope, r, quadrant);
+						if (!corner.HasValue)
+						{
+							return null;
+						}
+						solvedX = corner.Value.X;
+						solvedY = corner.Value.Y;
+					}
+					hitCount = 1;
+				}
+
+				// Top edge
+				testIntersect = inverseSlope * (-halfHeight - py) + px;
+				if (Math.Abs(testIntersect) < (halfWidth + VGConstants.FuzzDistance))
+				{
+					solvedXAlternate = testIntersect;
+					solvedYAlternate = -halfHeight;
+					corner = null;
+					if (solvedXAlternate > 0)
+					{
+						if (r > (halfWidth - solvedXAlternate))
+						{
+							corner = new PointD(halfWidth - r, -halfHeight + r);
+							quadrant = CornerQuadrant.UpperRight;
+						}
+					}
+					else if (r > (halfWidth + solvedXAlternate))
+					{
+						corner = new PointD(-halfWidth + r, -halfHeight + r);
+						quadrant = CornerQuadrant.UpperLeft;
+					}
+					if (corner.HasValue)
+					{
+						corner = FindCornerHit(corner.Value, samplePoint, slope, r, quadrant);
+						if (!corner.HasValue)
+						{
+							return null;
+						}
+						solvedXAlternate = corner.Value.X;
+						solvedYAlternate = corner.Value.Y;
+					}
+					if (hitCount == 0)
+					{
+						solvedX = solvedXAlternate;
+						solvedY = solvedYAlternate;
+					}
+					++hitCount;
+				}
+
+				// Right edge
+				if (hitCount != 2)
+				{
+					testIntersect = slope * (halfWidth - px) + py;
+					if (Math.Abs(testIntersect) < (halfHeight + VGConstants.FuzzDistance))
+					{
+						solvedYAlternate = testIntersect;
+						solvedXAlternate = halfWidth;
+						corner = null;
+						if (solvedYAlternate > 0)
+						{
+							if (r > (halfHeight - solvedYAlternate))
+							{
+								corner = new PointD(halfWidth - r, halfHeight - r);
+								quadrant = CornerQuadrant.LowerRight;
+							}
+						}
+						else if (r > (halfHeight + solvedYAlternate))
+						{
+							corner = new PointD(halfWidth - r, -halfHeight + r);
+							quadrant = CornerQuadrant.UpperRight;
+						}
+						if (corner.HasValue)
+						{
+							corner = FindCornerHit(corner.Value, samplePoint, slope, r, quadrant);
+							if (!corner.HasValue)
+							{
+								return null;
+							}
+							solvedXAlternate = corner.Value.X;
+							solvedYAlternate = corner.Value.Y;
+						}
+						if (hitCount == 0)
+						{
+							solvedX = solvedXAlternate;
+							solvedY = solvedYAlternate;
+						}
+						++hitCount;
+					}
+				}
+
+				// Left edge
+				if (hitCount == 1)
+				{
+					testIntersect = slope * (-halfWidth - px) + py;
+					if (Math.Abs(testIntersect) < (halfHeight + VGConstants.FuzzDistance))
+					{
+						solvedYAlternate = testIntersect;
+						solvedXAlternate = -halfWidth;
+						corner = null;
+						if (solvedYAlternate > 0)
+						{
+							if (r > (halfHeight - solvedYAlternate))
+							{
+								corner = new PointD(-halfWidth + r, halfHeight - r);
+								quadrant = CornerQuadrant.LowerLeft;
+							}
+						}
+						else if (r > (halfHeight + solvedYAlternate))
+						{
+							corner = new PointD(-halfWidth + r, -halfHeight + r);
+							quadrant = CornerQuadrant.UpperLeft;
+						}
+						if (corner.HasValue)
+						{
+							corner = FindCornerHit(corner.Value, samplePoint, slope, r, quadrant);
+							if (!corner.HasValue)
+							{
+								return null;
+							}
+							solvedXAlternate = corner.Value.X;
+							solvedYAlternate = corner.Value.Y;
+						}
+						++hitCount;
+					}
+				}
+
+				// Choose the best match and translate the point back out
+				if (hitCount == 2)
+				{
+					// Find the point closest to the sample point
+					double xDif = px - solvedX;
+					double yDif = py - solvedY;
+					double xDifAlternate = px - solvedXAlternate;
+					double yDifAlternate = py - solvedYAlternate;
+					if ((xDif * xDif + yDif * yDif) > (xDifAlternate * xDifAlternate + yDifAlternate * yDifAlternate))
+					{
+						solvedX = solvedXAlternate;
+						solvedY = solvedYAlternate;
+					}
+				}
+				else
+				{
+					// Unsolvable
+					return null;
+				}
+			}
+			return new PointD(solvedX + hcx, solvedY + hcy);
+		}
+		private enum CornerQuadrant
+		{
+			UpperRight,
+			UpperLeft,
+			LowerLeft,
+			LowerRight,
+		}
+		private static PointD? FindCornerHit(PointD cornerCenter, PointD samplePoint, double slope, double radius, CornerQuadrant quadrant)
+		{
+			double ccx = cornerCenter.X;
+			double ccy = cornerCenter.Y;
+			double px = samplePoint.X - ccx;
+			double py = samplePoint.Y - ccy;
+			double quadA = 1 + slope * slope;
+			double sharedQuadPart = py - slope * px;
+			double quadB = (slope + slope) * sharedQuadPart;
+			double quadC = sharedQuadPart * sharedQuadPart - radius * radius;
+			double discriminant = quadB * quadB - 4 * quadA * quadC;
+			double solvedX;
+			double solvedY;
+			if (VGConstants.FuzzZero(discriminant, VGConstants.FuzzGeneral))
+			{
+				solvedX = -quadB / (quadA + quadA);
+				solvedY = slope * (solvedX - px) + py;
+				return TestQuadrant(quadrant, solvedX, solvedY) ? new PointD(solvedX + ccx, solvedY + ccy) : new PointD?();
+			}
+			else if (discriminant < 0)
+			{
+				return null;
+			}
+			else
+			{
+				discriminant = Math.Sqrt(discriminant);
+				solvedX = (-quadB + discriminant) / (quadA + quadA);
+				solvedY = slope * (solvedX - px) + py;
+				bool solvedInQuadrant = TestQuadrant(quadrant, solvedX, solvedY);
+				double solvedXAlternate = (-quadB - discriminant) / (quadA + quadA);
+				double solvedYAlternate = slope * (solvedXAlternate - px) + py;
+				bool solvedInQuadrantAlternate = TestQuadrant(quadrant, solvedXAlternate, solvedYAlternate);
+				if (solvedInQuadrant)
+				{
+					if (solvedInQuadrantAlternate)
+					{
+						double xDif = px - solvedX;
+						double yDif = py - solvedY;
+						double xDifAlternate = px - solvedXAlternate;
+						double yDifAlternate = py - solvedYAlternate;
+						if ((xDif * xDif + yDif * yDif) > (xDifAlternate * xDifAlternate + yDifAlternate * yDifAlternate))
+						{
+							solvedX = solvedXAlternate;
+							solvedY = solvedYAlternate;
+						}
+					}
+				}
+				else if (solvedInQuadrantAlternate)
+				{
+					solvedX = solvedXAlternate;
+					solvedY = solvedYAlternate;
+				}
+				else
+				{
+					return null;
+				}
+			}
+			return new PointD(solvedX + ccx, solvedY + ccy);
+		}
+		private static bool TestQuadrant(CornerQuadrant quadrant, double x, double y)
+		{
+			switch (quadrant)
+			{
+				case CornerQuadrant.UpperRight:
+					return x > -VGConstants.FuzzGeneral && y < VGConstants.FuzzGeneral;
+				case CornerQuadrant.UpperLeft:
+					return x < VGConstants.FuzzGeneral && y < VGConstants.FuzzGeneral;
+				case CornerQuadrant.LowerLeft:
+					return x < VGConstants.FuzzGeneral && y > -VGConstants.FuzzGeneral;
+				//case CornerQuadrant.LowerRight:
+				default:
+					return x > -VGConstants.FuzzGeneral && y > -VGConstants.FuzzGeneral;
+			}
+		}
+		PointD? IOffsetBorderPoint.OffsetBorderPoint(IGeometryHost geometryHost, PointD borderPoint, PointD outsidePoint, double offset, bool parallelVector)
+		{
+			return OffsetBorderPoint(geometryHost, borderPoint, outsidePoint, offset, parallelVector);
+		}
+		#endregion // IOffsetBorderPoint Implementation
 	}
 	#endregion // CustomFoldRoundedRectangleShapeGeometry class
 	#region CustomFoldTriangleShapeGeometry class

@@ -3269,6 +3269,7 @@ namespace Neumont.Tools.ORM.ShapeModel
 		{
 			bool resize = false;
 			bool redraw = false;
+			FactType factType;
 			switch (constraint.ConstraintType)
 			{
 				case ConstraintType.InternalUniqueness:
@@ -3280,6 +3281,26 @@ namespace Neumont.Tools.ORM.ShapeModel
 					else
 					{
 						resize = true;
+					}
+					break;
+				case ConstraintType.SimpleMandatory:
+					switch (OptionsPage.CurrentEntityRelationshipBinaryMultiplicityDisplay)
+					{
+						case EntityRelationshipBinaryMultiplicityDisplay.Barker:
+						case EntityRelationshipBinaryMultiplicityDisplay.InformationEngineering:
+							if ((factType = AssociatedFactType).RoleCollection.Count == 2 &&
+								factType.UnaryRole == null)
+							{
+								foreach (LinkConnectsToNode connection in DomainRoleInfo.GetElementLinks<LinkConnectsToNode>(this, LinkConnectsToNode.NodesDomainRoleId))
+								{
+									RolePlayerLink rolePlayerLink = connection.Link as RolePlayerLink;
+									if (rolePlayerLink != null)
+									{
+										rolePlayerLink.InvalidateRequired(true);
+									}
+								}
+							}
+							break;
 					}
 					break;
 				case ConstraintType.ExternalUniqueness:

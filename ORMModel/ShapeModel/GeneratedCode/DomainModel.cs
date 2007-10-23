@@ -101,6 +101,7 @@ namespace Neumont.Tools.ORM.ShapeModel
 			return new DomainMemberInfo[]
 			{
 				new DomainMemberInfo(typeof(ORMDiagram), "AutoPopulateShapes", ORMDiagram.AutoPopulateShapesDomainPropertyId, typeof(ORMDiagram.AutoPopulateShapesPropertyHandler)),
+				new DomainMemberInfo(typeof(ORMBaseBinaryLinkShape), "UpdateCounter", ORMBaseBinaryLinkShape.UpdateCounterDomainPropertyId, typeof(ORMBaseBinaryLinkShape.UpdateCounterPropertyHandler)),
 				new DomainMemberInfo(typeof(ORMBaseShape), "UpdateCounter", ORMBaseShape.UpdateCounterDomainPropertyId, typeof(ORMBaseShape.UpdateCounterPropertyHandler)),
 				new DomainMemberInfo(typeof(ObjectTypeShape), "ExpandRefMode", ObjectTypeShape.ExpandRefModeDomainPropertyId, typeof(ObjectTypeShape.ExpandRefModePropertyHandler)),
 				new DomainMemberInfo(typeof(FactTypeShape), "ConstraintDisplayPosition", FactTypeShape.ConstraintDisplayPositionDomainPropertyId, typeof(FactTypeShape.ConstraintDisplayPositionPropertyHandler)),

@@ -41,6 +41,7 @@ namespace Neumont.Tools.ORM.ShapeModel
 			ExternalConstraintShape.ManageEventHandlers(store, eventManager, action);
 			RolePlayerLink.ManageEventHandlers(store, eventManager, action);
 			ObjectTypeShape.ManageEventHandlers(store, eventManager, action);
+			ORMBaseBinaryLinkShape.ManageEventHandlers(store, eventManager, action);
 			FactTypeShape.ManageEventHandlers(store, eventManager, action);
 			SubtypeLink.ManageEventHandlers(store, eventManager, action);
 		}

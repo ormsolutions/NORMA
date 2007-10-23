@@ -405,6 +405,14 @@
     <value>ORMBase Binary Link Shape</value>
     <comment>DisplayName for DomainClass &apos;ORMBaseBinaryLinkShape&apos;</comment>
   </data>
+  <data name="Neumont.Tools.ORM.ShapeModel.ORMBaseBinaryLinkShape/UpdateCounter.Description" xml:space="preserve">
+    <value>Description for Neumont.Tools.ORM.ShapeModel.ORMBaseBinaryLinkShape.Update Counter</value>
+    <comment>Description for DomainProperty &apos;UpdateCounter&apos; on DomainClass &apos;ORMBaseBinaryLinkShape&apos;</comment>
+  </data>
+  <data name="Neumont.Tools.ORM.ShapeModel.ORMBaseBinaryLinkShape/UpdateCounter.DisplayName" xml:space="preserve">
+    <value>Update Counter</value>
+    <comment>DisplayName for DomainProperty &apos;UpdateCounter&apos; on DomainClass &apos;ORMBaseBinaryLinkShape&apos;</comment>
+  </data>
   <data name="Neumont.Tools.ORM.ShapeModel.RolePlayerLink.Description" xml:space="preserve">
     <value>Description for Neumont.Tools.ORM.ShapeModel.RolePlayerLink</value>
     <comment>Description for DomainClass &apos;RolePlayerLink&apos;</comment>

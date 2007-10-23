@@ -59,6 +59,99 @@ namespace Neumont.Tools.ORM.ShapeModel
 		{
 		}
 		#endregion
+		#region UpdateCounter domain property code
+		
+		/// <summary>
+		/// UpdateCounter domain property Id.
+		/// </summary>
+		public static readonly global::System.Guid UpdateCounterDomainPropertyId = new global::System.Guid(0xbfd06581, 0x3606, 0x4a9f, 0x9d, 0xd1, 0x8b, 0xa3, 0x01, 0x4b, 0xd5, 0xbc);
+		
+		/// <summary>
+		/// Gets or sets the value of UpdateCounter domain property.
+		/// Description for Neumont.Tools.ORM.ShapeModel.ORMBaseBinaryLinkShape.Update
+		/// Counter
+		/// </summary>
+		[DslDesign::DisplayNameResource("Neumont.Tools.ORM.ShapeModel.ORMBaseBinaryLinkShape/UpdateCounter.DisplayName", typeof(global::Neumont.Tools.ORM.ShapeModel.ORMShapeDomainModel), "Neumont.Tools.ORM.GeneratedCode.ShapeDomainModelResx")]
+		[DslDesign::DescriptionResource("Neumont.Tools.ORM.ShapeModel.ORMBaseBinaryLinkShape/UpdateCounter.Description", typeof(global::Neumont.Tools.ORM.ShapeModel.ORMShapeDomainModel), "Neumont.Tools.ORM.GeneratedCode.ShapeDomainModelResx")]
+		[global::System.ComponentModel.Browsable(false)]
+		[global::System.ComponentModel.ReadOnly(true)]
+		[DslModeling::DomainProperty(Kind = DslModeling::DomainPropertyKind.CustomStorage)]
+		[DslModeling::DomainObjectId("bfd06581-3606-4a9f-9dd1-8ba3014bd5bc")]
+		private global::System.Int64 UpdateCounter
+		{
+			[global::System.Diagnostics.DebuggerStepThrough]
+			get
+			{
+				return UpdateCounterPropertyHandler.Instance.GetValue(this);
+			}
+			[global::System.Diagnostics.DebuggerStepThrough]
+			set
+			{
+				UpdateCounterPropertyHandler.Instance.SetValue(this, value);
+			}
+		}
+		/// <summary>
+		/// Value handler for the ORMBaseBinaryLinkShape.UpdateCounter domain property.
+		/// </summary>
+		internal sealed partial class UpdateCounterPropertyHandler : DslModeling::DomainPropertyValueHandler<ORMBaseBinaryLinkShape, global::System.Int64>
+		{
+			private UpdateCounterPropertyHandler() { }
+		
+			/// <summary>
+			/// Gets the singleton instance of the ORMBaseBinaryLinkShape.UpdateCounter domain property value handler.
+			/// </summary>
+			public static readonly UpdateCounterPropertyHandler Instance = new UpdateCounterPropertyHandler();
+		
+			/// <summary>
+			/// Gets the Id of the ORMBaseBinaryLinkShape.UpdateCounter domain property.
+			/// </summary>
+			public sealed override global::System.Guid DomainPropertyId
+			{
+				[global::System.Diagnostics.DebuggerStepThrough]
+				get
+				{
+					return UpdateCounterDomainPropertyId;
+				}
+			}
+			
+			/// <summary>
+			/// Gets a strongly-typed value of the property on specified element.
+			/// </summary>
+			/// <param name="element">Element which owns the property.</param>
+			/// <returns>Property value.</returns>
+			public override sealed global::System.Int64 GetValue(ORMBaseBinaryLinkShape element)
+			{
+				if (element == null) throw new global::System.ArgumentNullException("element");
+				// There is no storage for UpdateCounter because its Kind is
+				// set to CustomStorage. Please provide the GetUpdateCounterValue()
+				// method on the domain class.
+				return element.GetUpdateCounterValue();
+			}
+		
+			/// <summary>
+			/// Sets property value on an element.
+			/// </summary>
+			/// <param name="element">Element which owns the property.</param>
+			/// <param name="newValue">New property value.</param>
+			public override sealed void SetValue(ORMBaseBinaryLinkShape element, global::System.Int64 newValue)
+			{
+				if (element == null) throw new global::System.ArgumentNullException("element");
+		
+				global::System.Int64 oldValue = GetValue(element);
+				if (newValue != oldValue)
+				{
+					ValueChanging(element, oldValue, newValue);
+					// There is no storage for UpdateCounter because its Kind is
+					// set to CustomStorage. Please provide the SetUpdateCounterValue()
+					// method on the domain class.
+					element.SetUpdateCounterValue(newValue);
+					//ValueChanged(element, oldValue, GetValue(element));
+					ValueChanged(element, oldValue, newValue);
+				}
+			}
+		}
+		
+		#endregion
 	}
 }
 namespace Neumont.Tools.ORM.ShapeModel

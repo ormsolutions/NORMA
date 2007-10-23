@@ -245,6 +245,13 @@
 					</Parameters>
 				</ClrAttribute>
 			</Attributes>
+			<Properties>
+				<DomainProperty Name="UpdateCounter" Id="BFD06581-3606-4A9F-9DD1-8BA3014BD5BC" GetterAccessModifier="Private" SetterAccessModifier="Private" Kind="CustomStorage" IsBrowsable="false">
+					<Type>
+						<ExternalTypeMoniker Name="/System/Int64"/>
+					</Type>
+				</DomainProperty>
+			</Properties>
 		</Connector>
 		<Connector Name="RolePlayerLink" Namespace="Neumont.Tools.ORM.ShapeModel" Id="2B3F0AAE-B1B1-4727-8862-5C34B494B499">
 			<BaseConnector>
