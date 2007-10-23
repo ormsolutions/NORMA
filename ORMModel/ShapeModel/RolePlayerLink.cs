@@ -721,7 +721,8 @@ namespace Neumont.Tools.ORM.ShapeModel
 			{
 				if (displaySetting == EntityRelationshipBinaryMultiplicityDisplay.Barker)
 				{
-					bool mandatory = role.IsMandatory;
+					MandatoryConstraint constraint = role.SimpleMandatoryConstraint;
+					bool mandatory = constraint != null && constraint.Modality == ConstraintModality.Alethic;
 					switch (multiplicity)
 					{
 						case RoleMultiplicity.ZeroToMany:
@@ -848,6 +849,22 @@ namespace Neumont.Tools.ORM.ShapeModel
 		/// </summary>
 		private static void UpdateDotDisplayOnMandatoryConstraintChange(Role role)
 		{
+			InvalidateRolePlayerLinks(role);
+			if (OptionsPage.CurrentEntityRelationshipBinaryMultiplicityDisplay == EntityRelationshipBinaryMultiplicityDisplay.InformationEngineering)
+			{
+				// The opposite links also need updating
+				RoleBase oppositeRole = role.OppositeRole;
+				if (oppositeRole != null)
+				{
+					InvalidateRolePlayerLinks(oppositeRole.Role);
+				}
+			}
+		}
+		/// <summary>
+		/// Helper function to invalidate roles
+		/// </summary>
+		private static void InvalidateRolePlayerLinks(Role role)
+		{
 			foreach (ObjectTypePlaysRole objectTypePlaysRole in DomainRoleInfo.GetElementLinks<ObjectTypePlaysRole>(role, ObjectTypePlaysRole.PlayedRoleDomainRoleId))
 			{
 				foreach (PresentationElement pel in PresentationViewsSubject.GetPresentation(objectTypePlaysRole))
@@ -870,22 +887,43 @@ namespace Neumont.Tools.ORM.ShapeModel
 		{
 			DomainDataDirectory dataDirectory = store.DomainDataDirectory;
 
-			eventManager.AddOrRemoveHandler(dataDirectory.FindDomainProperty(MandatoryConstraint.ModalityDomainPropertyId), new EventHandler<ElementPropertyChangedEventArgs>(InternalConstraintChangedEvent), action);
+			eventManager.AddOrRemoveHandler(dataDirectory.FindDomainProperty(MandatoryConstraint.ModalityDomainPropertyId), new EventHandler<ElementPropertyChangedEventArgs>(InternalConstraintModalityChangedEvent), action);
 			eventManager.AddOrRemoveHandler(dataDirectory.FindDomainRelationship(FactSetConstraint.DomainClassId), new EventHandler<ElementAddedEventArgs>(InternalConstraintRoleSequenceAddedEvent), action);
 			eventManager.AddOrRemoveHandler(dataDirectory.FindDomainRelationship(ConstraintRoleSequenceHasRole.DomainClassId), new EventHandler<ElementDeletedEventArgs>(InternalConstraintRoleSequenceRoleRemovedEvent), action);
 		}
 		/// <summary>
 		/// Update the link displays when the modality of a simple mandatory constraint changes
 		/// </summary>
-		private static void InternalConstraintChangedEvent(object sender, ElementPropertyChangedEventArgs e)
+		private static void InternalConstraintModalityChangedEvent(object sender, ElementPropertyChangedEventArgs e)
 		{
-			MandatoryConstraint smc = e.ModelElement as MandatoryConstraint;
-			if (smc != null && !smc.IsDeleted && smc.IsSimple)
+			ModelElement mel = e.ModelElement;
+			if (!mel.IsDeleted)
 			{
-				LinkedElementCollection<Role> roles = smc.RoleCollection;
-				if (roles.Count != 0)
+				switch (((IConstraint)mel).ConstraintType)
 				{
-					UpdateDotDisplayOnMandatoryConstraintChange(roles[0]);
+					case ConstraintType.SimpleMandatory:
+						LinkedElementCollection<Role> roles = ((SetConstraint)mel).RoleCollection;
+						if (roles.Count != 0)
+						{
+							UpdateDotDisplayOnMandatoryConstraintChange(roles[0]);
+						}
+						break;
+					case ConstraintType.InternalUniqueness:
+						if (OptionsPage.CurrentEntityRelationshipBinaryMultiplicityDisplay != EntityRelationshipBinaryMultiplicityDisplay.Off)
+						{
+							foreach (FactType factType in ((SetConstraint)mel).FactTypeCollection)
+							{
+								LinkedElementCollection<RoleBase> roleBases = factType.RoleCollection;
+								if (roleBases.Count == 2)
+								{
+									foreach (RoleBase roleBase in roleBases)
+									{
+										InvalidateRolePlayerLinks(roleBase.Role);
+									}
+								}
+							}
+						}
+						break;
 				}
 			}
 		}
