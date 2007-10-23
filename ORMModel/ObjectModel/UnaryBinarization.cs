@@ -37,6 +37,14 @@ namespace Neumont.Tools.ORM.ObjectModel
 		}
 
 		/// <summary>
+		/// Get the implicit boolean <see cref="Role"/> on a binarized unary <see cref="FactType"/>.
+		/// </summary>
+		public Role ImplicitBooleanRole
+		{
+			get { return UnaryBinarizationUtility.GetImplicitBooleanRole(this.RoleCollection); }
+		}
+
+		/// <summary>
 		/// Get the index of the unary role in this role collection. Returns -1 if none
 		/// of the roles are unary.
 		/// </summary>

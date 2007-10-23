@@ -3441,6 +3441,7 @@ namespace Neumont.Tools.ORM.ShapeModel
 					|| (element is ReadingOrder && ((ReadingOrder)element).FactType == AssociatedFactType)
 					|| (element is RoleValueConstraint && ((RoleValueConstraint)element).Role.FactType == AssociatedFactType)
 				);
+			Role role;
 			if (element is ReadingOrder)
 			{
 				foreach (ShapeElement shape in this.RelativeChildShapes)
@@ -3452,21 +3453,13 @@ namespace Neumont.Tools.ORM.ShapeModel
 					}
 				}
 			}
-			else if (element is Role)
+			else if ((role = element as Role) != null)
 			{
-				Role role = element as Role;
-				foreach (PresentationElement pElement in PresentationViewsSubject.GetPresentation(role.FactType))
+				if (this.DisplayRoleNames == DisplayRoleNames.Off)
 				{
-					FactTypeShape fts = pElement as FactTypeShape;
-					if (fts != null)
-					{
-						if (fts.DisplayRoleNames == DisplayRoleNames.Off)
-						{
-							return false;
-						}
-					}
+					return false;
 				}
-				return !string.IsNullOrEmpty(role.Name);
+				return !string.IsNullOrEmpty(role.Name) && (role != AssociatedFactType.ImplicitBooleanRole);
 			}
 			return true;
 		}
