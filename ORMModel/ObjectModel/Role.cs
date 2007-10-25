@@ -388,11 +388,16 @@ namespace Neumont.Tools.ORM.ObjectModel
 		private static bool GetValueRoles(Role currentRole, ObjectType rolePlayer, int depth, out Role[] roles)
 		{
 			roles = null;
+			if (depth == 100 || depth == -101)
+			{
+				// Cycling
+				return false;
+			}
 			if (rolePlayer != null)
 			{
 				if (rolePlayer.IsValueType)
 				{
-					if (depth == -1)
+					if (depth < 0)
 					{
 						return true;
 					}
@@ -410,9 +415,9 @@ namespace Neumont.Tools.ORM.ObjectModel
 						(identifierRoles = preferredIdentifier.RoleCollection).Count == 1 &&
 						(nextRole = identifierRoles[0]).FactType != currentRole.FactType)
 					{
-						if (depth == -1)
+						if (depth < 0)
 						{
-							return GetValueRoles(nextRole, nextRole.RolePlayer, -1, out roles);
+							return GetValueRoles(nextRole, nextRole.RolePlayer, depth - 1, out roles);
 						}
 						if (GetValueRoles(nextRole, nextRole.RolePlayer, depth + 1, out roles))
 						{
