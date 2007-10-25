@@ -712,6 +712,7 @@ namespace Neumont.Tools.ORM.ShapeModel
 					// diagram in the non-active window.
 					IServiceProvider serviceProvider;
 					IMonitorSelectionService selectionService;
+					object selectionContainer;
 					DiagramDocView currentView;
 					Store store = Store;
 					TransactionManager transactionManager = store.TransactionManager;
@@ -720,7 +721,8 @@ namespace Neumont.Tools.ORM.ShapeModel
 						((null == (serviceProvider = (store as IORMToolServices).ServiceProvider) ||
 						null == (selectionService = (IMonitorSelectionService)serviceProvider.GetService(typeof(IMonitorSelectionService))) ||
 						null == (currentView = selectionService.CurrentDocumentView as DiagramDocView) ||
-						currentView.CurrentDesigner != activeDiagramView) ||
+						currentView.CurrentDesigner != activeDiagramView ||
+						((selectionContainer = selectionService.CurrentSelectionContainer) != currentView && selectionContainer is IORMSelectionContainer)) ||
 						((diagramDropTargetId = DropTargetContext.GetTargetDiagramId(transactionManager.CurrentTransaction.TopLevelTransaction)) != Guid.Empty &&
 						diagramDropTargetId != this.Id)))
 					{
