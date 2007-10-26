@@ -240,7 +240,7 @@ namespace Neumont.Tools.ORM.ObjectModel
 				if (objectification.IsImplied)
 				{
 					ObjectType nestingType = objectification.NestingType;
-					if (nestingType != null && ((nestingType.AllowIsIndependent(false) && !nestingType.IsIndependent) || nestingType.PlayedRoleCollection.Count != objectification.ImpliedFactTypeCollection.Count))
+					if (nestingType != null && ((!nestingType.IsIndependent && nestingType.AllowIsIndependent()) || nestingType.PlayedRoleCollection.Count != objectification.ImpliedFactTypeCollection.Count))
 					{
 						throw InvalidImpliedObjectificationException();
 					}

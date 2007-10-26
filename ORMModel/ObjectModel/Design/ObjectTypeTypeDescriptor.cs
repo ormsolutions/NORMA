@@ -161,7 +161,7 @@ namespace Neumont.Tools.ORM.ObjectModel.Design
 		/// Ensure that the <see cref="ObjectType.IsIndependent"/> property is read-only when
 		/// when <see cref="ObjectType.Objectification"/> is not <see langword="null"/> and
 		/// <see cref="Objectification.IsImplied"/> is <see langword="true"/>, or
-		/// <see cref="ObjectType.AllowIsIndependent"/> returns <see langword="false"/>
+		/// <see cref="ObjectType.AllowIsIndependent()"/> returns <see langword="false"/>
 		/// Ensure that the <see cref="ObjectType.ReferenceModeDisplay"/> property is read-only
 		/// when <see cref="ObjectType.Objectification"/> is not <see langword="null"/> and
 		/// <see cref="Objectification.IsImplied"/> is <see langword="true"/>.
@@ -191,7 +191,7 @@ namespace Neumont.Tools.ORM.ObjectModel.Design
 				}
 				else
 				{
-					return !objectType.AllowIsIndependent(false);
+					return !objectType.AllowIsIndependent();
 				}
 			}
 			else if (propertyId.Equals(ObjectType.ReferenceModeDisplayDomainPropertyId))

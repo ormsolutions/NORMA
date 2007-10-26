@@ -1121,7 +1121,12 @@ namespace Neumont.Tools.ORM.ObjectModel
 			{
 				if ((bool)e.NewValue)
 				{
-					(e.ModelElement as ObjectType).AllowIsIndependent(true);
+					objectType.AllowIsIndependent(true);
+					objectType.ImpliedMandatoryConstraint = null;
+				}
+				else
+				{
+					FrameworkDomainModel.DelayValidateElement(objectType, DelayValidateIsIndependent);
 				}
 			}
 			else if (attributeGuid == ObjectType.IsImplicitBooleanValueDomainPropertyId && e.ChangeSource != ChangeSource.Rule)
@@ -1367,6 +1372,7 @@ namespace Neumont.Tools.ORM.ObjectModel
 		private void ValidateIsIndependent(INotifyElementAdded notifyAdded)
 		{
 			bool canBeIndependent = true;
+			bool currentIsIndependent = IsIndependent;
 			LinkedElementCollection<Role> preferredIdentifierRoles = null;
 			bool checkedPreferredRoles = false;
 			LinkedElementCollection<Role> playedRoles = PlayedRoleCollection;
@@ -1503,7 +1509,7 @@ namespace Neumont.Tools.ORM.ObjectModel
 			}
 			if (canBeIndependent)
 			{
-				if (seenNonMandatoryRole)
+				if (seenNonMandatoryRole && !currentIsIndependent)
 				{
 					if (impliedMandatory == null)
 					{
@@ -1563,9 +1569,20 @@ namespace Neumont.Tools.ORM.ObjectModel
 			}
 
 			// Finally, turn off IsIndependent if it is no longer needed
-			if (!canBeIndependent && IsIndependent)
+			if (!canBeIndependent && currentIsIndependent)
 			{
-				IsIndependent = false;
+				RuleManager ruleManager = Store.RuleManager;
+				Type ruleType = typeof(ObjectTypeChangeRuleClass);
+				try
+				{
+					// Disable the rule so this does not recurse to this routine
+					ruleManager.DisableRule(ruleType);
+					IsIndependent = false;
+				}
+				finally
+				{
+					ruleManager.EnableRule(ruleType);
+				}
 			}
 		}
 		/// <summary>
@@ -1580,11 +1597,19 @@ namespace Neumont.Tools.ORM.ObjectModel
 			}
 		}
 		/// <summary>
+		/// Test if the <see cref="IsIndependent"/> property is true or can be set to true.
+		/// </summary>
+		/// <returns><see langword="true"/> if <see cref="IsIndependent"/> can be turned on.</returns>
+		public bool AllowIsIndependent()
+		{
+			return IsIndependent || AllowIsIndependent(false);
+		}
+		/// <summary>
 		/// Test if the <see cref="IsIndependent"/> property can be set to true.
 		/// </summary>
 		/// <param name="throwIfFalse">Set to <see langword="true"/> to throw an exception instead of returning false.</param>
 		/// <returns><see langword="true"/> if <see cref="IsIndependent"/> can be turned on.</returns>
-		public bool AllowIsIndependent(bool throwIfFalse)
+		private bool AllowIsIndependent(bool throwIfFalse)
 		{
 			bool retVal = true;
 			LinkedElementCollection<Role> preferredIdentifierRoles = null;
