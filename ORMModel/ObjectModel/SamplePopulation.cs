@@ -175,7 +175,7 @@ namespace Neumont.Tools.ORM.ObjectModel
 			string modelName = Model.Name;
 			string objectTypeName = commonRole.RolePlayer.Name;
 			string currentText = ErrorText;
-			string newText = String.Format(formatString, objectTypeName, instanceDisplayString, modelName, typeName);
+			string newText = String.Format(CultureInfo.CurrentCulture, formatString, objectTypeName, instanceDisplayString, modelName, typeName);
 			if (currentText != newText)
 			{
 				ErrorText = newText;
@@ -275,12 +275,24 @@ namespace Neumont.Tools.ORM.ObjectModel
 		public override void GenerateErrorText()
 		{
 			ObjectTypeInstance objectInstance = ObjectTypeInstance;
-			//UNDONE: Should handle mandatory constraints which constraint multiple roles
-			Role role = MandatoryConstraint.RoleCollection[0];
+			LinkedElementCollection<Role> roles = MandatoryConstraint.RoleCollection;
+			string additionalFactTypes = null;
+			int roleCount = roles.Count;
+			IFormatProvider formatProvider = CultureInfo.CurrentCulture;
+			if (roleCount > 1)
+			{
+				string additionalFactTypeFormatString = ResourceStrings.ModelErrorModelHasPopulationMandatoryErrorAdditionalFactType;
+				for (int i = roleCount - 1; i > 0; --i)
+				{
+					additionalFactTypes = string.Format(formatProvider, additionalFactTypeFormatString, roles[i].FactType.Name, additionalFactTypes);
+				}
+			}
+			Role role = roles[0];
 			string instanceDisplayString = objectInstance.Name;
 			string modelName = Model.Name;
 			string currentText = ErrorText;
-			string newText = String.Format(ResourceStrings.ModelErrorModelHasPopulationMandatoryError, role.RolePlayer.Name, instanceDisplayString, modelName, role.FactType.Name);
+			ObjectType rolePlayer = role.RolePlayer;
+			string newText = String.Format(formatProvider, ResourceStrings.ModelErrorModelHasPopulationMandatoryError, rolePlayer != null ? rolePlayer.Name : "", instanceDisplayString, modelName, role.FactType.Name, additionalFactTypes);
 			if (currentText != newText)
 			{
 				ErrorText = newText;
@@ -298,22 +310,13 @@ namespace Neumont.Tools.ORM.ObjectModel
 		}
 		#endregion // Base overrides
 		#region IRepresentModelElements Members
-		private ModelElement[] GetRepresentedElements()
+		/// <summary>
+		/// Implements <see cref="IRepresentModelElements.GetRepresentedElements"/>. Returns all <see cref="FactType"/>s
+		/// associated with the error constraint.
+		/// </summary>
+		protected new ModelElement[] GetRepresentedElements()
 		{
-			List<ModelElement> modelElements = new List<ModelElement>();
-			LinkedElementCollection<Role> roles = this.MandatoryConstraint.RoleCollection;
-			int roleCount = roles.Count;
-			for (int i = 0; i < roleCount; ++i)
-			{
-				FactType factType = roles[i].FactType;
-				int index = modelElements.BinarySearch(factType, HashCodeComparer<ModelElement>.Instance);
-				if (index < 0)
-				{
-					modelElements.Insert(0, factType);
-					modelElements.Sort(HashCodeComparer<ModelElement>.Instance);
-				}
-			}
-			return modelElements.ToArray();
+			return MandatoryConstraint.FactTypeCollection.ToArray();
 		}
 
 		ModelElement[] IRepresentModelElements.GetRepresentedElements()
@@ -324,7 +327,7 @@ namespace Neumont.Tools.ORM.ObjectModel
 	}
 	#endregion
 
-	public partial class FactTypeInstance : IModelErrorOwner
+	public partial class FactTypeInstance : IModelErrorOwner, IHasIndirectModelErrorOwner
 	{
 		#region Helper Methods
 		/// <summary>
@@ -358,7 +361,7 @@ namespace Neumont.Tools.ORM.ObjectModel
 			{
 				filter = (ModelErrorUses)(-1);
 			}
-			if (0 != (filter & ModelErrorUses.Verbalize))
+			if (0 != (filter & (ModelErrorUses.Verbalize | ModelErrorUses.DisplayPrimary)))
 			{
 				TooFewFactTypeRoleInstancesError tooFew = TooFewFactTypeRoleInstancesError;
 				if (tooFew != null)
@@ -417,6 +420,27 @@ namespace Neumont.Tools.ORM.ObjectModel
 			DelayValidateErrors();
 		}
 		#endregion // IModelErrorOwner Implementation
+		#region IHasIndirectModelErrorOwner Implementation
+		private static Guid[] myIndirectModelErrorOwnerLinkRoles;
+		/// <summary>
+		/// Implements IHasIndirectModelErrorOwner.GetIndirectModelErrorOwnerLinkRoles()
+		/// </summary>
+		protected Guid[] GetIndirectModelErrorOwnerLinkRoles()
+		{
+			// Creating a static readonly guid array is causing static field initialization
+			// ordering issues with the partial classes. Defer initialization.
+			Guid[] linkRoles = myIndirectModelErrorOwnerLinkRoles;
+			if (linkRoles == null)
+			{
+				myIndirectModelErrorOwnerLinkRoles = linkRoles = new Guid[] { FactTypeHasFactTypeInstance.FactTypeInstanceDomainRoleId };
+			}
+			return linkRoles;
+		}
+		Guid[] IHasIndirectModelErrorOwner.GetIndirectModelErrorOwnerLinkRoles()
+		{
+			return GetIndirectModelErrorOwnerLinkRoles();
+		}
+		#endregion // IHasIndirectModelErrorOwner Implementation
 		#region TooFewFactTypeRoleInstancesError Validation
 		/// <summary>
 		/// Validator callback for TooFewFactTypeRoleInstancesError
@@ -650,7 +674,7 @@ namespace Neumont.Tools.ORM.ObjectModel
 		#endregion
 	}
 
-	public partial class EntityTypeInstance : IModelErrorOwner
+	public partial class EntityTypeInstance : IModelErrorOwner, IHasIndirectModelErrorOwner
 	{
 		#region Helper Methods
 		/// <summary>
@@ -684,7 +708,7 @@ namespace Neumont.Tools.ORM.ObjectModel
 			{
 				filter = (ModelErrorUses)(-1);
 			}
-			if (0 != (filter & ModelErrorUses.Verbalize))
+			if (0 != (filter & (ModelErrorUses.Verbalize | ModelErrorUses.DisplayPrimary)))
 			{
 				TooFewEntityTypeRoleInstancesError tooFew = TooFewEntityTypeRoleInstancesError;
 				if (tooFew != null)
@@ -710,6 +734,7 @@ namespace Neumont.Tools.ORM.ObjectModel
 		/// </summary>
 		protected new void ValidateErrors(INotifyElementAdded notifyAdded)
 		{
+			base.ValidateErrors(notifyAdded);
 			// Calls added here need corresponding delayed calls in DelayValidateErrors
 			ValidateTooFewEntityTypeRoleInstancesError(notifyAdded);
 		}
@@ -724,6 +749,7 @@ namespace Neumont.Tools.ORM.ObjectModel
 		/// </summary>
 		protected new void DelayValidateErrors()
 		{
+			base.DelayValidateErrors();
 			FrameworkDomainModel.DelayValidateElement(this, DelayValidateTooFewEntityTypeRoleInstancesError);
 		}
 
@@ -807,33 +833,49 @@ namespace Neumont.Tools.ORM.ObjectModel
 			}
 		}
 		#endregion
+		#region IHasIndirectModelErrorOwner Implementation
+		private static Guid[] myIndirectModelErrorOwnerLinkRoles;
+		/// <summary>
+		/// Implements IHasIndirectModelErrorOwner.GetIndirectModelErrorOwnerLinkRoles()
+		/// </summary>
+		protected Guid[] GetIndirectModelErrorOwnerLinkRoles()
+		{
+			// Creating a static readonly guid array is causing static field initialization
+			// ordering issues with the partial classes. Defer initialization.
+			Guid[] linkRoles = myIndirectModelErrorOwnerLinkRoles;
+			if (linkRoles == null)
+			{
+				myIndirectModelErrorOwnerLinkRoles = linkRoles = new Guid[] { EntityTypeHasEntityTypeInstance.EntityTypeInstanceDomainRoleId };
+			}
+			return linkRoles;
+		}
+		Guid[] IHasIndirectModelErrorOwner.GetIndirectModelErrorOwnerLinkRoles()
+		{
+			return GetIndirectModelErrorOwnerLinkRoles();
+		}
+		#endregion // IHasIndirectModelErrorOwner Implementation
 		#region Inline Error Helper Methods
 		private void EnsureConsistentRoleCollections(ObjectType currentEntityType, Role role)
 		{
-			if (currentEntityType != null && currentEntityType.PreferredIdentifier != null)
+			UniquenessConstraint preferredIdentifier;
+			if (currentEntityType != null &&
+				null != (preferredIdentifier = currentEntityType.PreferredIdentifier))
 			{
-				UniquenessConstraint identifierRoleSequence = currentEntityType.PreferredIdentifier;
-				LinkedElementCollection<Role> identifierRoles = identifierRoleSequence.RoleCollection;
-				int identifierRolesCount = identifierRoles.Count;
-				for (int i = 0; i < identifierRolesCount; ++i)
+				if (!preferredIdentifier.RoleCollection.Contains(role))
 				{
-					// If role is in the identifier collection, all done
-					if (role == identifierRoles[i])
-					{
-						return;
-					}
+					// If the role didn't match any of the identifiers, throw an error
+					throw new InvalidOperationException(ResourceStrings.ModelExceptionEntityTypeInstanceInvalidRolesPreferredIdentifier);
 				}
-				// If the role didn't match any of the identifiers, throw an error
-				throw new InvalidOperationException(ResourceStrings.ModelExceptionEntityTypeInstanceInvalidRolesPreferredIdentifier);
 			}
 			// If the role is hooked to an entity type but the entityTypeInstance isn't,
 			// hook up the entityTypeInstance to the same entityType
 			else
 			{
 				// Make sure the role is actually hooked up to an EntityType
-				if (role.RolePlayer != null && !role.RolePlayer.IsValueType)
+				ObjectType rolePlayer;
+				if (null != (rolePlayer = role.RolePlayer) && !rolePlayer.IsValueType)
 				{
-					this.EntityType = role.RolePlayer;
+					this.EntityType = rolePlayer;
 				}
 			}
 		}
@@ -860,25 +902,31 @@ namespace Neumont.Tools.ORM.ObjectModel
 		#region EntityTypeInstance Rules
 		/// <summary>
 		/// DeletingRule: typeof(EntityTypeInstance)
+		/// If an implied EntityTypeInstance is deleted, then also delete the opposite
+		/// ObjectTypeInstance it is associated with for some patterns.
 		/// </summary>
 		private static void EntityTypeInstanceDeletingRule(ElementDeletingEventArgs e)
 		{
 			EntityTypeInstance instance = e.ModelElement as EntityTypeInstance;
 			ObjectType parent = instance.EntityType;
-			UniquenessConstraint identifier = parent.PreferredIdentifier;
-			if (identifier != null)
+			UniquenessConstraint identifier;
+			LinkedElementCollection<Role> roles;
+			Role identifierRole;
+			ObjectType identifierPlayer;
+			if (null != (identifier = parent.PreferredIdentifier) &&
+				identifier.IsInternal &&
+				1 == (roles = identifier.RoleCollection).Count &&
+				null != (identifierPlayer = (identifierRole = roles[0]).RolePlayer))
 			{
-				LinkedElementCollection<Role> roles = identifier.RoleCollection;
-				if (roles.Count == 1)
+				if (identifierRole.SingleRoleAlethicMandatoryConstraint != null)
 				{
-					ObjectType identifierPlayer = roles[0].RolePlayer;
 					int allowedRoleCount = 1;
 					if (!identifierPlayer.IsValueType)
 					{
 						UniquenessConstraint playerIdentifier = identifierPlayer.PreferredIdentifier;
 						if (playerIdentifier != null)
 						{
-							if (playerIdentifier.RoleCollection.Count == 1)
+							if (playerIdentifier.IsInternal && playerIdentifier.RoleCollection.Count == 1)
 							{
 								allowedRoleCount = 2;
 							}
@@ -888,10 +936,27 @@ namespace Neumont.Tools.ORM.ObjectModel
 					{
 						LinkedElementCollection<EntityTypeRoleInstance> roleInstances = instance.RoleInstanceCollection;
 						int roleInstanceCount = roleInstances.Count;
-						for (int i = 0; i < roleInstanceCount; ++i)
+						for (int i = roleInstanceCount - 1; i >= 0; --i)
 						{
-							EntityTypeRoleInstance roleInstance = roleInstances[0];
-							roleInstance.ObjectTypeInstance.Delete();
+							EntityTypeRoleInstance roleInstance = roleInstances[i];
+							ObjectTypeInstance oppositeInstance = roleInstance.ObjectTypeInstance;
+							if (!oppositeInstance.IsDeleting && oppositeInstance.ObjectType == identifierPlayer)
+							{
+								oppositeInstance.Delete();
+							}
+						}
+					}
+				}
+				else
+				{
+					// The opposite identifier role is optional, so there population mandatory errors
+					// are possible. Validate the opposite instances.
+					foreach (EntityTypeRoleInstance roleInstance in instance.RoleInstanceCollection)
+					{
+						ObjectTypeInstance oppositeInstance = roleInstance.ObjectTypeInstance;
+						if (!oppositeInstance.IsDeleting && oppositeInstance.ObjectType == identifierPlayer)
+						{
+							FrameworkDomainModel.DelayValidateElement(oppositeInstance, ObjectTypeInstance.DelayValidateInstancePopulationMandatoryError);
 						}
 					}
 				}
@@ -910,10 +975,121 @@ namespace Neumont.Tools.ORM.ObjectModel
 		/// </summary>
 		private static void ProcessEntityTypeHasPreferredIdentifierAdded(EntityTypeHasPreferredIdentifier link)
 		{
-			ObjectType entityType = link.PreferredIdentifierFor;
-			if (!entityType.IsValueType)
+			UniquenessConstraint pid = link.PreferredIdentifier;
+			if (pid.IsInternal)
 			{
-				entityType.ValueTypeInstanceCollection.Clear();
+				FrameworkDomainModel.DelayValidateElement(link.PreferredIdentifier, DelayValidatePreferredIdentifier);
+			}
+		}
+		[DelayValidatePriority(1)] // Needs to run after implied mandatory validation on the role players
+		private static void DelayValidatePreferredIdentifier(ModelElement element)
+		{
+			if (!element.IsDeleted)
+			{
+				UniquenessConstraint preferredIdentifier = (UniquenessConstraint)element;
+				LinkedElementCollection<Role> roles;
+				Role identifierRole;
+				Role identifiedRole;
+				ObjectType identifiedObjectType;
+				ObjectType identifyingObjectType;
+				if (preferredIdentifier.IsInternal &&
+					1 == (roles = preferredIdentifier.RoleCollection).Count &&
+					null != (identifyingObjectType = (identifierRole = roles[0]).RolePlayer) &&
+					null != (identifiedRole = identifierRole.OppositeRole as Role) &&
+					(identifiedObjectType = identifiedRole.RolePlayer) == preferredIdentifier.PreferredIdentifierFor)
+				{
+					// This is a simple reference scheme preferred identifier. All FactTypeInstance
+					// populations for this pattern are implicit, so the fact type instances should
+					// not be populated. If the preferred identifier role is also mandatory (implied
+					// or explicit), then all instances for the role player on that role should be referenced
+					// by corresponding EntityTypeInstances on the identified role. All population mandatory
+					// errors should be cleared for mandatory constraints on the identified role, and the
+					// identifier role should have no population mandatory errors if it is mandatory or if the
+					// identified role has any implied populated.
+					identifierRole.FactType.FactTypeInstanceCollection.Clear();
+					foreach (ConstraintRoleSequence sequence in identifiedRole.ConstraintRoleSequenceCollection)
+					{
+						MandatoryConstraint constraint = sequence as MandatoryConstraint;
+						if (constraint != null && constraint.Modality == ConstraintModality.Alethic)
+						{
+							constraint.PopulationMandatoryErrorCollection.Clear();
+						}
+					}
+					LinkedElementCollection<ConstraintRoleSequence> identifierConstraintSequences = identifierRole.ConstraintRoleSequenceCollection;
+					if (identifierRole.SingleRoleAlethicMandatoryConstraint != null)
+					{
+						// Full population is implied, clear any population mandatory errors and synchronize the sets
+						foreach (ConstraintRoleSequence sequence in identifierConstraintSequences)
+						{
+							MandatoryConstraint constraint = sequence as MandatoryConstraint;
+							if (constraint != null && constraint.Modality == ConstraintModality.Alethic)
+							{
+								constraint.PopulationMandatoryErrorCollection.Clear();
+							}
+						}
+						EnsureImpliedEntityTypeInstances(identifiedObjectType, identifierRole);
+					}
+					else
+					{
+						foreach (ObjectTypeInstance identifyingInstance in identifyingObjectType.ObjectTypeInstanceCollection)
+						{
+							bool requireError = true;
+							bool checkedError = false;
+							bool haveMandatoryConstraints = false;
+
+							// Find disjunctive mandatory roles
+							foreach (ConstraintRoleSequence sequence in identifierConstraintSequences)
+							{
+								MandatoryConstraint constraint = sequence as MandatoryConstraint;
+								if (constraint != null && constraint.Modality == ConstraintModality.Alethic)
+								{
+									if (!checkedError)
+									{
+										checkedError = true;
+										haveMandatoryConstraints = true;
+										foreach (EntityTypeRoleInstance roleInstance in EntityTypeRoleInstance.GetLinksToRoleCollection(identifyingInstance))
+										{
+											if (roleInstance.Role == identifierRole)
+											{
+												requireError = false;
+												break;
+											}
+										}
+									}
+									LinkedElementCollection<PopulationMandatoryError> errors = constraint.PopulationMandatoryErrorCollection;
+									PopulationMandatoryError error = null;
+									foreach (PopulationMandatoryError testError in errors)
+									{
+										if (testError.ObjectTypeInstance == identifyingInstance)
+										{
+											error = testError;
+											break;
+										}
+									}
+									if (requireError)
+									{
+										if (error == null)
+										{
+											error = new PopulationMandatoryError(element.Store);
+											error.ObjectTypeInstance = identifyingInstance;
+											error.MandatoryConstraint = constraint;
+											error.Model = constraint.Model;
+										}
+										error.GenerateErrorText();
+									}
+									else if (error != null)
+									{
+										error.Delete();
+									}
+								}
+							}
+							if (!haveMandatoryConstraints)
+							{
+								break;
+							}
+						}
+					}
+				}
 			}
 		}
 		/// <summary>
@@ -933,7 +1109,7 @@ namespace Neumont.Tools.ORM.ObjectModel
 			{
 				objectType = link.PreferredIdentifierFor;
 			}
-			if (objectType.IsValueType)
+			if (!objectType.IsDeleted)
 			{
 				objectType.EntityTypeInstanceCollection.Clear();
 			}
@@ -1055,6 +1231,7 @@ namespace Neumont.Tools.ORM.ObjectModel
 			{
 				entityTypeInstance.EnsureConsistentRoleCollections(entity, entityTypeRoleInstances[i]);
 			}
+			FrameworkDomainModel.DelayValidateElement(entityTypeInstance, ObjectTypeInstance.DelayValidateInstancePopulationMandatoryError);
 		}
 		/// <summary>
 		/// AddRule: typeof(EntityTypeInstanceHasRoleInstance)
@@ -1073,25 +1250,28 @@ namespace Neumont.Tools.ORM.ObjectModel
 			FrameworkDomainModel.DelayValidateElement(entityTypeInstance, DelayValidateTooFewEntityTypeRoleInstancesError);
 		}
 		/// <summary>
-		/// DeleteRule: typeof(EntityTypeInstanceHasRoleInstance)
+		/// DeletingRule: typeof(EntityTypeInstanceHasRoleInstance)
 		/// Revalidate the EntityTypeInstance when it loses one of its RoleInstances,
 		/// to ensure that the EntityTypeInstance is fully populated.  If the EntityTypeRoleInstance
 		/// removed is the last one, remove the parent EntityTypeInstance.
 		/// </summary>
-		private static void EntityTypeInstanceHasRoleInstanceDeletedRule(ElementDeletedEventArgs e)
+		private static void EntityTypeInstanceHasRoleInstanceDeletingRule(ElementDeletingEventArgs e)
 		{
 			EntityTypeInstanceHasRoleInstance link = e.ModelElement as EntityTypeInstanceHasRoleInstance;
 			EntityTypeInstance instance = link.EntityTypeInstance;
-			if (!instance.IsDeleted)
+			if (!instance.IsDeleting)
 			{
-				if (instance.RoleInstanceCollection.Count == 0)
+				// We're in a Deleting, so we can't trust the count. Get an accurate count to
+				// see if the last element is being deleted.
+				foreach (EntityTypeInstanceHasRoleInstance remainingRoleInstance in EntityTypeInstanceHasRoleInstance.GetLinksToRoleInstanceCollection(instance))
 				{
-					instance.Delete();
+					if (!remainingRoleInstance.IsDeleting)
+					{
+						FrameworkDomainModel.DelayValidateElement(instance, DelayValidateTooFewEntityTypeRoleInstancesError);
+						return;
+					}
 				}
-				else
-				{
-					FrameworkDomainModel.DelayValidateElement(instance, DelayValidateTooFewEntityTypeRoleInstancesError);
-				}
+				instance.Delete();
 			}
 		}
 		/// <summary>
@@ -1156,6 +1336,7 @@ namespace Neumont.Tools.ORM.ObjectModel
 		/// </summary>
 		protected new void ValidateErrors(INotifyElementAdded notifyAdded)
 		{
+			base.ValidateErrors(notifyAdded);
 			// Calls added here need corresponding delayed calls in DelayValidateErrors
 			ValidateCompatibleValueTypeInstanceValueError(notifyAdded);
 		}
@@ -1170,6 +1351,7 @@ namespace Neumont.Tools.ORM.ObjectModel
 		/// </summary>
 		protected new void DelayValidateErrors()
 		{
+			base.DelayValidateErrors();
 			FrameworkDomainModel.DelayValidateElement(this, DelayValidateCompatibleValueTypeInstanceValueError);
 		}
 
@@ -1250,6 +1432,23 @@ namespace Neumont.Tools.ORM.ObjectModel
 			ProcessValueTypeHasDataTypeAdded(e.ModelElement as ValueTypeHasDataType);
 		}
 		/// <summary>
+		/// DeleteRule: typeof(ValueTypeHasDataType)
+		/// Get rid of all instance values when we're no longer a value type
+		/// </summary>
+		private static void ValueTypeHasDataTypeDeletedRule(ElementDeletedEventArgs e)
+		{
+			ObjectType valueType = (e.ModelElement as ValueTypeHasDataType).ValueType;
+			if (!valueType.IsDeleted)
+			{
+				// UNDONE: Consider allowing 'value' instances to be entered
+				// for entity types with no preferred identifier, then merging
+				// these values into the value instances for an identifying value
+				// type if a single-role internal pid resolves directly (?indirectly)
+				// to a single value type
+				valueType.ValueTypeInstanceCollection.Clear();
+			}
+		}
+		/// <summary>
 		/// Process a data type change for the given value type
 		/// </summary>
 		/// <param name="link">The ValueTypeHasType relationship instance</param>
@@ -1310,14 +1509,13 @@ namespace Neumont.Tools.ORM.ObjectModel
 			}
 			ValueTypeInstance valueTypeInstance = link.ValueTypeInstance;
 			FrameworkDomainModel.DelayValidateElement(valueTypeInstance, DelayValidateCompatibleValueTypeInstanceValueError);
+			FrameworkDomainModel.DelayValidateElement(valueTypeInstance, ObjectTypeInstance.DelayValidateInstancePopulationMandatoryError);
 		}
 		#endregion // ValueTypeInstance Rules
 	}
 
 	public partial class Role : IModelErrorOwner
 	{
-		private HashSet<ObjectTypeInstance, RoleInstance> myPopulation;
-
 		#region PopulationUniquenessError Validation
 		/// <summary>
 		/// Validator callback for PopulationUniquenessError
@@ -1354,44 +1552,58 @@ namespace Neumont.Tools.ORM.ObjectModel
 		/// <param name="notifyAdded">Element notification, set during deserialization</param>
 		private void ValidatePopulationUniquenessError(INotifyElementAdded notifyAdded)
 		{
+			// UNDONE: There is a major amount of work to do in population uniqueness validation
+			// of sample populations.
+			// 1) The error is modeled incorrectly for anything other than single-role validation. Any
+			// population errors should have a relationship to the constraint being violated.
+			// 2) If we're building a dictionary to do this, it should be maintained dynamically
+			// as events add and remove elements. This is always tricky to do.
+			// 3) Extending this to multi-column internal constraint is difficult because the unique
+			// element corresponds to an entire FactTypeInstance row (complete ones only) for spanning
+			// constraints, or a subset of that population for non-spanning constraints.
+			// 4) Extending this to external constraints requires even more work as we would need
+			// to synthesize a joined view on the roles/roleinstances (not just use a subset of rows
+			// from the FactTypeInstance population). We would also require full join path and join type
+			// semantics to be able to handle distributed uniqueness constraints in general, and optional
+			// roles for even the simple join case.
+			//
+			// Basically, to properly hand population validation for uniqueness (not to mention set comparison
+			// and other advanced constraints), we need both join path semantics in place as well as live
+			// indexed views on the joined sample populations for most of the constraints. Obviously, there
+			// is a lot of work to do in this area, but we need to get the join prerequisites in place first.
 			if (!IsDeleted)
 			{
-				HashSet<ObjectTypeInstance, RoleInstance> population = myPopulation;
 				UniquenessConstraint singleRoleConstraint = this.SingleRoleAlethicUniquenessConstraint;
 				ReadOnlyCollection<RoleInstance> roleInstances = RoleInstance.GetLinksToObjectTypeInstanceCollection(this);
 				int roleInstanceCount = roleInstances.Count;
 				if (singleRoleConstraint != null)
 				{
-					//if (population == null)
-					//{
-						myPopulation = population = new HashSet<ObjectTypeInstance, RoleInstance>(RoleInstanceKeyProvider.ProviderInstance);
-						for (int i = 0; i < roleInstanceCount; ++i)
+					HashSet<ObjectTypeInstance, RoleInstance> population = null;
+					for (int i = 0; i < roleInstanceCount; ++i)
+					{
+						if (population == null)
 						{
-							AddRoleInstance(roleInstances[i], notifyAdded);
+							population = new HashSet<ObjectTypeInstance, RoleInstance>(RoleInstanceKeyProvider.ProviderInstance);
 						}
-					//}
+						AddRoleInstance(population, roleInstances[i], notifyAdded);
+					}
 				}
 				else
 				{
-					if (population != null)
+					for (int i = 0; i < roleInstanceCount; ++i)
 					{
-						for (int i = 0; i < roleInstanceCount; ++i)
+						PopulationUniquenessError error = roleInstances[i].PopulationUniquenessError;
+						if (error != null)
 						{
-							PopulationUniquenessError error = roleInstances[i].PopulationUniquenessError;
-							if (error != null)
-							{
-								error.Delete();
-							}
+							error.Delete();
 						}
-						myPopulation = null;
 					}
 				}
 			}
 		}
 
-		private void AddRoleInstance(RoleInstance roleInstance, INotifyElementAdded notifyAdded)
+		private static void AddRoleInstance(HashSet<ObjectTypeInstance, RoleInstance> population, RoleInstance roleInstance, INotifyElementAdded notifyAdded)
 		{
-			HashSet<ObjectTypeInstance, RoleInstance> population = myPopulation;
 			bool duplicate = !population.Add(roleInstance);
 			IList<RoleInstance> knownInstances = population.GetValues(roleInstance.ObjectTypeInstance);
 			int knownInstanceCount = knownInstances.Count;
@@ -1427,7 +1639,7 @@ namespace Neumont.Tools.ORM.ObjectModel
 			}
 			else if (duplicate)
 			{
-				error = new PopulationUniquenessError(this.Store);
+				error = new PopulationUniquenessError(roleInstance.Store);
 				for (int i = 0; i < knownInstanceCount; ++i)
 				{
 					RoleInstance knownInstance = knownInstances[i];
@@ -1441,115 +1653,11 @@ namespace Neumont.Tools.ORM.ObjectModel
 					}
 				}
 				//error.RoleInstanceCollection.AddRange(knownInstances);
-				error.Model = this.FactType.Model;
+				error.Model = roleInstance.Role.FactType.Model;
 				error.GenerateErrorText();
 				if (notifyAdded != null)
 				{
 					notifyAdded.ElementAdded(error, true);
-				}
-			}
-		}
-		#endregion
-		#region PopulationMandatoryError Validation
-		/// <summary>
-		/// Validator callback for PopulationMandatoryError
-		/// </summary>
-		private static void DelayValidatePopulationMandatoryError(ModelElement element)
-		{
-			(element as Role).ValidatePopulationMandatoryError(null);
-		}
-
-		/// <summary>
-		/// Rule helper for verifying mandatory constraints on constraint changes
-		/// </summary>
-		/// <param name="notifyAdded">Element notification, set during deserialization</param>
-		private void ValidatePopulationMandatoryError(INotifyElementAdded notifyAdded)
-		{
-			if (!IsDeleted)
-			{
-				ObjectType parentType;
-				MandatoryConstraint constraint;
-				if (null != (parentType = this.RolePlayer) &&
-					null != (constraint = this.SingleRoleAlethicMandatoryConstraint))
-				{
-					List<ObjectTypeInstance> instances = new List<ObjectTypeInstance>(RoleInstance.GetObjectTypeInstanceCollection(this));
-					instances.Sort(HashCodeComparer<ObjectTypeInstance>.Instance);
-					List<ObjectTypeInstance> invalidInstances = new List<ObjectTypeInstance>();
-					if (parentType.IsValueType)
-					{
-						if (parentType.PlayedRoleCollection.Count != 1)
-						{
-							LinkedElementCollection<ValueTypeInstance> valueInstances = parentType.ValueTypeInstanceCollection;
-							int valueInstanceCount = valueInstances.Count;
-							for (int i = 0; i < valueInstanceCount; ++i)
-							{
-								ValueTypeInstance valueInstance = valueInstances[i];
-								int index = instances.BinarySearch(valueInstance, HashCodeComparer<ObjectTypeInstance>.Instance);
-								if (index < 0)
-								{
-									invalidInstances.Add(valueInstance);
-								}
-							}
-						}
-					}
-					else
-					{
-						ConstraintRoleSequence identifier = parentType.PreferredIdentifier;
-						RoleBase oppositeRole = this.OppositeRole;
-						if (identifier != null && oppositeRole != null && !identifier.RoleCollection.Contains(oppositeRole.Role))
-						{
-							LinkedElementCollection<EntityTypeInstance> entityInstances = parentType.EntityTypeInstanceCollection;
-							int entityInstanceCount = entityInstances.Count;
-							for (int i = 0; i < entityInstanceCount; ++i)
-							{
-								EntityTypeInstance entityInstance = entityInstances[i];
-								int index = instances.BinarySearch(entityInstance, HashCodeComparer<ObjectTypeInstance>.Instance);
-								if (index < 0)
-								{
-									invalidInstances.Add(entityInstance);
-								}
-							}
-						}
-					}
-					LinkedElementCollection<PopulationMandatoryError> errors = constraint.PopulationMandatoryErrorCollection;
-					int errorCount = errors.Count;
-					int invalidInstanceCount = invalidInstances.Count;
-					if (invalidInstanceCount > 0)
-					{
-						int instanceIndex;
-						for (int i = 0; i < errorCount; ++i)
-						{
-							PopulationMandatoryError error = errors[i];
-							if (-1 != (instanceIndex = invalidInstances.IndexOf(error.ObjectTypeInstance)))
-							{
-								invalidInstances.RemoveAt(instanceIndex);
-							}
-							else
-							{
-								error.Delete();
-							}
-						}
-						invalidInstanceCount = invalidInstances.Count;
-						for (int i = 0; i < invalidInstanceCount; ++i)
-						{
-							PopulationMandatoryError error = new PopulationMandatoryError(this.Store);
-							error.ObjectTypeInstance = invalidInstances[i];
-							error.MandatoryConstraint = constraint;
-							error.Model = constraint.Model;
-							error.GenerateErrorText();
-							if (notifyAdded != null)
-							{
-								notifyAdded.ElementAdded(error);
-							}
-						}
-					}
-					else
-					{
-						for (int i = errorCount - 1; i >= 0; --i)
-						{
-							errors[i].Delete();
-						}
-					}
 				}
 			}
 		}
@@ -1569,10 +1677,6 @@ namespace Neumont.Tools.ORM.ObjectModel
 				{
 					case ConstraintType.InternalUniqueness:
 						FrameworkDomainModel.DelayValidateElement(link.Role, DelayValidatePopulationUniquenessError);
-						break;
-					case ConstraintType.SimpleMandatory:
-					case ConstraintType.ImpliedMandatory:
-						FrameworkDomainModel.DelayValidateElement(link.Role, DelayValidatePopulationMandatoryError);
 						break;
 				}
 			}
@@ -1596,67 +1700,43 @@ namespace Neumont.Tools.ORM.ObjectModel
 							FrameworkDomainModel.DelayValidateElement(role, DelayValidatePopulationUniquenessError);
 						}
 						break;
-					case ConstraintType.SimpleMandatory:
-					case ConstraintType.ImpliedMandatory:
-						if (!(role = link.Role).IsDeleted)
-						{
-							FrameworkDomainModel.DelayValidateElement(role, DelayValidatePopulationMandatoryError);
-						}
-						break;
 				}
 			}
 		}
 		/// <summary>
-		/// ChangeRule: typeof(SetConstraint)
-		/// Validate population uniqueness and mandatory errors when the modality of an internal or implied constraint changes
+		/// ChangeRule: typeof(UniquenessConstraint)
+		/// Validate population uniqueness errors when the modality of a uniqueness constraint changes
 		/// </summary>
-		private static void ConstraintChangedRule(ElementPropertyChangedEventArgs e)
+		private static void UniquenessConstraintChangedRule(ElementPropertyChangedEventArgs e)
 		{
 			if (e.DomainProperty.Id == SetConstraint.ModalityDomainPropertyId)
 			{
-				SetConstraint constraint = (SetConstraint)e.ModelElement;
-				ElementValidation validation = null;
-				switch (constraint.Constraint.ConstraintType)
+				UniquenessConstraint constraint = (UniquenessConstraint)e.ModelElement;
+				LinkedElementCollection<Role> roles = constraint.RoleCollection;
+				if (constraint.IsInternal && roles.Count == 1)
 				{
-					case ConstraintType.InternalUniqueness:
-						validation = DelayValidatePopulationMandatoryError;
-						break;
-					case ConstraintType.SimpleMandatory:
-					// case ConstraintType.ImpliedMandatory: // Implied mandatory constraints cannot change their modality
-						validation = DelayValidatePopulationUniquenessError;
-						break;
-				}
-				if (validation != null)
-				{
-					foreach (Role role in constraint.RoleCollection)
-					{
-						FrameworkDomainModel.DelayValidateElement(role, validation);
-					}
+					FrameworkDomainModel.DelayValidateElement(roles[0], DelayValidatePopulationUniquenessError);
 				}
 			}
 		}
 		/// <summary>
 		/// AddRule: typeof(RoleInstance)
-		/// Validation population uniquqness when a RoleInstance is added
+		/// Validation population uniqueness when a RoleInstance is added
 		/// </summary>
 		private static void RoleInstanceAddedRule(ElementAddedEventArgs e)
 		{
 			RoleInstance roleInstance = e.ModelElement as RoleInstance;
-			Role role = roleInstance.Role;
-			if (!roleInstance.IsDeleted)
-			{
-				FrameworkDomainModel.DelayValidateElement(role, DelayValidatePopulationUniquenessError);
-			}
+			FrameworkDomainModel.DelayValidateElement(roleInstance.Role, DelayValidatePopulationUniquenessError);
 		}
 		/// <summary>
 		/// DeleteRule: typeof(RoleInstance)
-		/// Validation population uniquqness when a RoleInstance is deleted
+		/// Validation population uniqueness when a RoleInstance is deleted
 		/// </summary>
 		private static void RoleInstanceDeletedRule(ElementDeletedEventArgs e)
 		{
 			RoleInstance roleInstance = e.ModelElement as RoleInstance;
 			Role role = roleInstance.Role;
-			if (!roleInstance.IsDeleted)
+			if (!role.IsDeleted)
 			{
 				FrameworkDomainModel.DelayValidateElement(role, DelayValidatePopulationUniquenessError);
 			}
@@ -1686,7 +1766,7 @@ namespace Neumont.Tools.ORM.ObjectModel
 				FrameworkDomainModel.DelayValidateElement(newRole, DelayValidatePopulationUniquenessError);
 			}
 		}
-		#endregion
+		#endregion // Role Rules
 	}
 
 	public partial class ObjectTypeInstance : IModelErrorOwner
@@ -1703,16 +1783,6 @@ namespace Neumont.Tools.ORM.ObjectModel
 			}
 			if (0 != (filter & (ModelErrorUses.Verbalize | ModelErrorUses.DisplayPrimary)))
 			{
-				LinkedElementCollection<PopulationMandatoryError> mandatoryErrorCollection;
-				if (null != (mandatoryErrorCollection = PopulationMandatoryErrorCollection))
-				{
-					int errorCount = mandatoryErrorCollection.Count;
-					for (int i = 0; i < errorCount; ++i)
-					{
-						yield return mandatoryErrorCollection[i];
-					}
-				}
-
 				ReadOnlyCollection<RoleInstance> roleInstances = RoleInstance.GetLinksToRoleCollection(this);
 				int roleInstanceCount = roleInstances.Count;
 				for (int i = 0; i < roleInstanceCount; ++i)
@@ -1724,6 +1794,14 @@ namespace Neumont.Tools.ORM.ObjectModel
 					}
 				}
 			}
+			if (filter == (ModelErrorUses)(-1))
+			{
+				foreach (PopulationMandatoryError populationMandatoryError in PopulationMandatoryErrorCollection)
+				{
+					yield return populationMandatoryError;
+				}
+			}
+
 			// Get errors off the base
 			foreach (ModelErrorUsage baseError in base.GetErrorCollection(filter))
 			{
@@ -1745,7 +1823,7 @@ namespace Neumont.Tools.ORM.ObjectModel
 		protected new void ValidateErrors(INotifyElementAdded notifyAdded)
 		{
 			// Calls added here need corresponding delayed calls in DelayValidateErrors
-			ValidatePopulationMandatoryError(notifyAdded);
+			ValidateInstancePopulationMandatoryError(notifyAdded);
 		}
 		void IModelErrorOwner.ValidateErrors(INotifyElementAdded notifyAdded)
 		{
@@ -1756,7 +1834,7 @@ namespace Neumont.Tools.ORM.ObjectModel
 		/// </summary>
 		protected new void DelayValidateErrors()
 		{
-			FrameworkDomainModel.DelayValidateElement(this, DelayValidatePopulationMandatoryError);
+			FrameworkDomainModel.DelayValidateElement(this, DelayValidateInstancePopulationMandatoryError);
 		}
 		void IModelErrorOwner.DelayValidateErrors()
 		{
@@ -2117,125 +2195,545 @@ namespace Neumont.Tools.ORM.ObjectModel
 		#region PopulationMandatoryError Validation
 		/// <summary>
 		/// Validator callback for PopulationMandatoryError
+		/// <remarks>DelayValidatePriority is set to run after implied mandatory constraint creation</remarks>
 		/// </summary>
-		private static void DelayValidatePopulationMandatoryError(ModelElement element)
+		[DelayValidatePriority(2)]
+		protected static void DelayValidateInstancePopulationMandatoryError(ModelElement element)
 		{
-			(element as ObjectTypeInstance).ValidatePopulationMandatoryError(null);
+			(element as ObjectTypeInstance).ValidateInstancePopulationMandatoryError(null);
 		}
-
 		/// <summary>
-		/// Rule helper for validating the given instance
+		/// Return values for the <see cref="ObjectTypeInstance.GetSimpleReferenceSchemePattern"/>
 		/// </summary>
-		/// <param name="notifyAdded">Element notification, set during deserialization</param>
-		private void ValidatePopulationMandatoryError(INotifyElementAdded notifyAdded)
+		private enum SimpleReferenceSchemeRolePattern
 		{
-			if (!IsDeleted)
+			/// <summary>
+			/// The <see cref="Role"/> is not part of a <see cref="FactType"/> that
+			/// matches the simple reference scheme pattern.
+			/// </summary>
+			None,
+			/// <summary>
+			/// The <see cref="Role"/> is the non-identifying role of a <see cref="FactType"/> that
+			/// matches the simple reference scheme pattern. The non-identifying role has a simple
+			/// mandatory constraint and non-preferred single-role uniqueness constraint. The
+			/// role player is identified by a preferred single-role uniqueness constraint on
+			/// the optional opposite role.
+			/// </summary>
+			OptionalIdentifiedRole,
+			/// <summary>
+			/// The <see cref="Role"/> is the non-identifying role of a <see cref="FactType"/> that
+			/// matches the simple reference scheme pattern. The non-identifying role has a simple
+			/// mandatory constraint and non-preferred single-role uniqueness constraint. The
+			/// role player is identified by a preferred single-role uniqueness constraint on
+			/// the mandatory opposite role.
+			/// </summary>
+			MandatoryIdentifiedRole,
+			/// <summary>
+			/// The <see cref="Role"/> is an optional identifying role of a <see cref="FactType"/> that
+			/// matches the simple reference scheme pattern. The identifying preferred single-role
+			/// uniqueness constraint that is the preferred identifier for the role player of the
+			/// opposite role.
+			/// </summary>
+			OptionalIdentifierRole,
+			/// <summary>
+			/// The <see cref="Role"/> is a mandatory identifying role of a <see cref="FactType"/> that
+			/// matches the simple reference scheme pattern. The identifying preferred single-role
+			/// uniqueness constraint that is the preferred identifier for the role player of the
+			/// opposite role.
+			/// </summary>
+			MandatoryIdentifierRole,
+		}
+		/// <summary>
+		/// Determine if the role is part of a <see cref="FactType"/> that matches
+		/// the simple reference scheme pattern, namely a single-role preferred identifier
+		/// for the opposite role player on one of the roles.
+		/// </summary>
+		/// <param name="role">The <see cref="Role"/> to test</param>
+		/// <param name="identifiedEntityType">The <see cref="ObjectType"/> that is identified by the reference scheme pattern.</param>
+		/// <returns>A <see cref="SimpleReferenceSchemeRolePattern"/> value</returns>
+		private static SimpleReferenceSchemeRolePattern GetSimpleReferenceSchemePattern(Role role, out ObjectType identifiedEntityType)
+		{
+			UniquenessConstraint uniqueness;
+			Role oppositeRole;
+			identifiedEntityType = null;
+			if (null != (uniqueness = role.SingleRoleAlethicUniquenessConstraint) &&
+				null != (oppositeRole = role.OppositeRole as Role))
 			{
-				EntityTypeInstance entityTypeInstance;
-				ValueTypeInstance valueTypeInstance;
-				ObjectType parent = null;
-				List<Role> playedRoles = null;
-				if (null != (entityTypeInstance = this as EntityTypeInstance))
+				ObjectType preferredFor = uniqueness.PreferredIdentifierFor;
+
+				if (preferredFor != null)
 				{
-					parent = entityTypeInstance.EntityType;
-					if (parent != null)
+					// We're on the preferred end of a binary fact type that
+					// matches the simple reference scheme pattern
+					if (oppositeRole.RolePlayer == preferredFor)
 					{
-						playedRoles = new List<Role>(parent.PlayedRoleCollection);
-						ConstraintRoleSequence identifier = parent.PreferredIdentifier;
-						if (identifier != null)
-						{
-							LinkedElementCollection<Role> identifierRoles = identifier.RoleCollection;
-							int identifierRoleCount = identifierRoles.Count;
-							for (int i = 0; i < identifierRoleCount; ++i)
-							{
-								FactType parentFactType = identifierRoles[i].FactType;
-								LinkedElementCollection<RoleBase> factTypeRoles = parentFactType.RoleCollection;
-								Role playerRole = null;
-								int roleCount = factTypeRoles.Count;
-								for (int j = 0; j < roleCount; ++j)
-								{
-									if (factTypeRoles[j].Role.RolePlayer == parent)
-									{
-										playerRole = factTypeRoles[j].Role;
-										break;
-									}
-								}
-								// If this FactType is connect by a uniqueness constraint, it should contain a role played by
-								// the parent ObjectType
-								Debug.Assert(playerRole != null);
-								playedRoles.Remove(playerRole);
-							}
-						}
-					}
-				}
-				else if (null != (valueTypeInstance = this as ValueTypeInstance))
-				{
-					parent = valueTypeInstance.ValueType;
-					playedRoles = new List<Role>(parent.PlayedRoleCollection);
-				}
-				LinkedElementCollection<PopulationMandatoryError> errors = this.PopulationMandatoryErrorCollection;
-				List<MandatoryConstraint> violatedConstraints = new List<MandatoryConstraint>();
-				if (playedRoles != null)
-				{
-					List<Role> instanceRoles = new List<Role>(RoleInstance.GetRoleCollection(this));
-					instanceRoles.Sort(HashCodeComparer<Role>.Instance);
-					int playedRoleCount = playedRoles.Count;
-					for (int i = 0; i < playedRoleCount; ++i)
-					{
-						Role selectedRole = playedRoles[i];
-						MandatoryConstraint simpleMandatory = selectedRole.SingleRoleAlethicMandatoryConstraint;
-						if (simpleMandatory != null)
-						{
-							int index = instanceRoles.BinarySearch(playedRoles[i], HashCodeComparer<Role>.Instance);
-							if (index < 0)
-							{
-								violatedConstraints.Add(simpleMandatory);
-							}
-						}
-					}
-				}
-				int violatedConstraintCount = violatedConstraints.Count;
-				int errorCount = errors.Count;
-				if (violatedConstraintCount > 0)
-				{
-					int constraintIndex;
-					for (int i = 0; i < errorCount; ++i)
-					{
-						PopulationMandatoryError error = errors[i];
-						if (-1 != (constraintIndex = violatedConstraints.IndexOf(error.MandatoryConstraint as MandatoryConstraint)))
-						{
-							violatedConstraints.RemoveAt(constraintIndex);
-						}
-						else
-						{
-							error.Delete();
-						}
-					}
-					violatedConstraintCount = violatedConstraints.Count;
-					for (int i = 0; i < violatedConstraintCount; ++i)
-					{
-						PopulationMandatoryError error = new PopulationMandatoryError(this.Store);
-						error.ObjectTypeInstance = this;
-						MandatoryConstraint constraint = violatedConstraints[i];
-						error.MandatoryConstraint = constraint;
-						error.Model = constraint.Model;
-						error.GenerateErrorText();
-						if (notifyAdded != null)
-						{
-							notifyAdded.ElementAdded(error);
-						}
+						identifiedEntityType = preferredFor;
+						return role.SingleRoleAlethicMandatoryConstraint == null ?
+							SimpleReferenceSchemeRolePattern.OptionalIdentifierRole :
+							SimpleReferenceSchemeRolePattern.MandatoryIdentifierRole;
 					}
 				}
 				else
 				{
-					for (int i = 0; i < errorCount; ++i)
+					preferredFor = role.RolePlayer;
+					LinkedElementCollection<Role> uniquenessRoles;
+					if (preferredFor != null &&
+						null != (uniqueness = preferredFor.PreferredIdentifier) &&
+						1 == (uniquenessRoles = uniqueness.RoleCollection).Count &&
+						uniquenessRoles[0] == oppositeRole)
 					{
-						errors[i].Delete();
+						identifiedEntityType = preferredFor;
+						return oppositeRole.SingleRoleAlethicMandatoryConstraint == null ?
+							SimpleReferenceSchemeRolePattern.OptionalIdentifiedRole :
+							SimpleReferenceSchemeRolePattern.MandatoryIdentifiedRole;
+					}
+				}
+			}
+			return SimpleReferenceSchemeRolePattern.None;
+		}
+		/// <summary>
+		/// Rule helper for validating the current <see cref="ObjectTypeInstance"/>
+		/// </summary>
+		/// <param name="notifyAdded">Element notification, set during deserialization</param>
+		private void ValidateInstancePopulationMandatoryError(INotifyElementAdded notifyAdded)
+		{
+			if (!IsDeleted)
+			{
+				ObjectType objectType;
+				if (null != (objectType = this.ObjectType))
+				{
+					LinkedElementCollection<Role> playedRoles = objectType.PlayedRoleCollection;
+					int playedRoleCount = playedRoles.Count;
+					LinkedElementCollection<PopulationMandatoryError> errors = this.PopulationMandatoryErrorCollection;
+					if (playedRoleCount == 0)
+					{
+						errors.Clear();
+					}
+					else
+					{
+						ObjectTypeInstance identifyingInstance = null;
+						bool retrievedIdentifyingInstance = false;
+						for (int i = 0; i < playedRoleCount; ++i)
+						{
+							Role currentRole = playedRoles[i];
+							ReadOnlyLinkedElementCollection<ObjectTypeInstance> currentRoleInstances = null;
+							ObjectType identifiedEntityType;
+							switch (GetSimpleReferenceSchemePattern(currentRole, out identifiedEntityType))
+							{
+								//case SimpleReferenceSchemeRolePattern.None:
+								//    break;
+								case SimpleReferenceSchemeRolePattern.OptionalIdentifiedRole:
+									// This one is tricky. The implied FactTypeRoleInstance population
+									// for the opposite (identifier) role is based on the set of EntityTypeInstances
+									// on this role. Because the opposite role is optional, the population
+									// for this role is not automatically filled in, so it is possible to
+									// have PopulationMandatoryErrors on any disjunctive mandatory constraint
+									// intersecting the opposite role.
+									// Note that we always have an opposite role. Otherwise, the simple reference scheme
+									// pattern would not hold.
+									foreach (ConstraintRoleSequence sequence in currentRole.OppositeRole.Role.ConstraintRoleSequenceCollection)
+									{
+										MandatoryConstraint constraint = sequence as MandatoryConstraint;
+										if (constraint != null && constraint.Modality == ConstraintModality.Alethic)
+										{
+											if (!retrievedIdentifyingInstance)
+											{
+												retrievedIdentifyingInstance = true;
+												LinkedElementCollection<EntityTypeRoleInstance> identifyingInstances = (this as EntityTypeInstance).RoleInstanceCollection;
+												if (identifyingInstances.Count == 1)
+												{
+													identifyingInstance = identifyingInstances[0].ObjectTypeInstance;
+												}
+											}
+											if (identifyingInstance == null)
+											{
+												break;
+											}
+											LinkedElementCollection<PopulationMandatoryError> oppositeErrors = constraint.PopulationMandatoryErrorCollection;
+											int errorCount = oppositeErrors.Count;
+											for (int j = errorCount - 1; j >= 0; --j)
+											{
+												PopulationMandatoryError error = oppositeErrors[j];
+												if (error.ObjectTypeInstance == identifyingInstance)
+												{
+													error.Delete();
+												}
+											}
+										}
+									}
+									continue;
+								case SimpleReferenceSchemeRolePattern.MandatoryIdentifierRole:
+									// Synchronize the EntityTypeInstances on the opposite role with the identifying object
+									// Note that this will trigger the MandatoryIdentifiedRole case on another call.
+									EnsureImpliedEntityTypeInstance(this, identifiedEntityType, currentRole);
+									continue;
+								case SimpleReferenceSchemeRolePattern.MandatoryIdentifiedRole:
+									// Nothing to do here. These are populated automatically when instances
+									// are added to the opposite role.
+								case SimpleReferenceSchemeRolePattern.OptionalIdentifierRole:
+									// There is nothing to do here. The implied FactTypeInstance
+									// population for this FactType is controlled by the opposite EntityTypeInstance
+									// population.
+									continue;
+							}
+							foreach (ConstraintRoleSequence sequence in currentRole.ConstraintRoleSequenceCollection)
+							{
+								MandatoryConstraint constraint = sequence as MandatoryConstraint;
+								if (constraint != null && constraint.Modality == ConstraintModality.Alethic)
+								{
+									if (currentRoleInstances == null)
+									{
+										currentRoleInstances = currentRole.ObjectTypeInstanceCollection;
+									}
+									LinkedElementCollection<Role> constraintRoles = constraint.RoleCollection;
+									int constraintRoleCount = constraintRoles.Count;
+									int j = 0;
+									for (; j < constraintRoleCount; ++j)
+									{
+										Role constraintRole = constraintRoles[j];
+										ReadOnlyLinkedElementCollection<ObjectTypeInstance> roleInstances = (currentRole == constraintRole) ? currentRoleInstances : constraintRole.ObjectTypeInstanceCollection;
+										if (roleInstances.Contains(this))
+										{
+											break;
+										}
+									}
+									if (j == constraintRoleCount)
+									{
+										// Make sure we have an error
+										int errorCount = errors.Count;
+										int k = 0;
+										for (; k < errorCount; ++k)
+										{
+											if (errors[k].MandatoryConstraint == constraint)
+											{
+												break;
+											}
+										}
+										if (k == errorCount)
+										{
+											PopulationMandatoryError error = new PopulationMandatoryError(this.Store);
+											error.ObjectTypeInstance = this;
+											error.MandatoryConstraint = constraint;
+											error.Model = constraint.Model;
+											error.GenerateErrorText();
+											if (notifyAdded != null)
+											{
+												notifyAdded.ElementAdded(error);
+											}
+										}
+									}
+									else
+									{
+										// Make sure we have no error for this constraint
+										int errorCount = errors.Count;
+										for (int k = 0; k < errorCount; ++k)
+										{
+											if (errors[k].MandatoryConstraint == constraint)
+											{
+												errors[k].Delete();
+												break;
+											}
+										}
+									}
+								}
+							}
+						}
 					}
 				}
 			}
 		}
-		#endregion
+		/// <summary>
+		/// Make sure there is an <see cref="EntityTypeInstance"/> associated with the
+		/// <paramref name="entityType"/> for each instance associated with the role player
+		/// of <paramref name="identifierRole"/>.
+		/// </summary>
+		/// <param name="identifiedEntityType">The <see cref="ObjectType">entity type</see> being identified</param>
+		/// <param name="identifierRole">The role from the preferred identifier constraint associated with the <paramref name="entityType"/></param>
+		protected static void EnsureImpliedEntityTypeInstances(ObjectType identifiedEntityType, Role identifierRole)
+		{
+			ObjectType identifierObjectType = identifierRole.RolePlayer;
+			if (identifierObjectType != null)
+			{
+				// Synchronize the opposite EntityTypeInstance collection
+				foreach (ObjectTypeInstance identifierInstance in identifierObjectType.ObjectTypeInstanceCollection)
+				{
+					EnsureImpliedEntityTypeInstance(identifierInstance, identifiedEntityType, identifierRole);
+				}
+			}
+		}
+		/// <summary>
+		/// Verify that there is an <see cref="EntityTypeInstance"/> associated with the
+		/// <paramref name="entityType"/> that references the specified <paramref name="instance"/>
+		/// through the provided <paramref name="identifierRole"/>. Used to create consistent
+		/// implicit populations for any <see cref="FactType"/> matching the simple reference scheme
+		/// pattern.
+		/// </summary>
+		/// <param name="instance">The <see cref="ObjectTypeInstance"/> from the identifier role</param>
+		/// <param name="identifiedEntityType">The <see cref="ObjectType">entity type</see> being identified</param>
+		/// <param name="identifierRole">The role from the preferred identifier constraint associated with the <paramref name="entityType"/></param>
+		private static void EnsureImpliedEntityTypeInstance(ObjectTypeInstance instance, ObjectType identifiedEntityType, Role identifierRole)
+		{
+			bool existingInstance = false;
+			foreach (EntityTypeRoleInstance roleInstanceLink in EntityTypeRoleInstance.GetLinksToRoleCollection(instance))
+			{
+				if (roleInstanceLink.EntityTypeInstance.EntityType == identifiedEntityType)
+				{
+					existingInstance = true;
+					break;
+				}
+			}
+			if (!existingInstance)
+			{
+				EntityTypeInstance newInstance = new EntityTypeInstance(identifiedEntityType.Store);
+				newInstance.EntityType = identifiedEntityType;
+				new EntityTypeRoleInstance(identifierRole, instance).EntityTypeInstance = newInstance;
+			}
+		}
+		[DelayValidatePriority(1)]
+		private static void DelayValidateRemovePopulationMandatoryError(ModelElement element)
+		{
+			if (!element.IsDeleted)
+			{
+				RoleInstance roleInstance = (RoleInstance)element;
+				Role role = roleInstance.Role;
+				ObjectTypeInstance objectTypeInstance = roleInstance.ObjectTypeInstance;
+				foreach (ConstraintRoleSequence sequence in role.ConstraintRoleSequenceCollection)
+				{
+					MandatoryConstraint mandatory = sequence as MandatoryConstraint;
+					if (mandatory != null && mandatory.Modality == ConstraintModality.Alethic)
+					{
+						LinkedElementCollection<PopulationMandatoryError> populationErrors = mandatory.PopulationMandatoryErrorCollection;
+						int populationErrorCount = populationErrors.Count;
+						for (int i = populationErrorCount - 1; i >= 0; --i)
+						{
+							PopulationMandatoryError error = populationErrors[i];
+							if (error.ObjectTypeInstance == objectTypeInstance)
+							{
+								error.Delete();
+							}
+						}
+					}
+				}
+			}
+		}
+		/// <summary>
+		/// Validator callback for PopulationMandatoryError. Runs after the much cheaper <see cref="DelayValidateRemovePopulationMandatoryError"/>
+		/// </summary>
+		[DelayValidatePriority(2)]
+		private static void DelayValidateRolePopulationMandatoryError(ModelElement element)
+		{
+			ValidateRolePopulationMandatoryError((Role)element, null);
+		}
+
+		/// <summary>
+		/// Rule helper for verifying mandatory constraints on constraint changes
+		/// </summary>
+		/// <param name="role">The <see cref="Role"/> to verify population for.</param>
+		/// <param name="notifyAdded">Element notification, set during deserialization</param>
+		private static void ValidateRolePopulationMandatoryError(Role role, INotifyElementAdded notifyAdded)
+		{
+			if (!role.IsDeleted)
+			{
+				ObjectType rolePlayer;
+				if (null != (rolePlayer = role.RolePlayer))
+				{
+					ObjectType identifiedEntityType;
+					switch (GetSimpleReferenceSchemePattern(role, out identifiedEntityType))
+					{
+						case SimpleReferenceSchemeRolePattern.None:
+							{
+								int instanceCount = 0;
+								ObjectTypeInstance[] instances = null;
+								bool[] seenInstances = null;
+								MandatoryConstraint constraint;
+								IComparer<ObjectTypeInstance> comparer = HashCodeComparer<ObjectTypeInstance>.Instance;
+								ReadOnlyLinkedElementCollection<ObjectTypeInstance> thisRoleObjectTypeInstances = null;
+								foreach (ConstraintRoleSequence sequence in role.ConstraintRoleSequenceCollection)
+								{
+									constraint = sequence as MandatoryConstraint;
+									if (constraint != null && constraint.Modality == ConstraintModality.Alethic)
+									{
+										int seenInstanceCount = 0;
+										// Get repeated stuff once
+										if (instances == null)
+										{
+											instances = rolePlayer.ObjectTypeInstanceCollection.ToArray();
+											instanceCount = instances.Length;
+											if (instanceCount == 0)
+											{
+												break;
+											}
+											Array.Sort<ObjectTypeInstance>(instances, comparer);
+											seenInstances = new bool[instanceCount];
+											thisRoleObjectTypeInstances = role.ObjectTypeInstanceCollection;
+										}
+										else
+										{
+											seenInstances.Initialize();
+										}
+
+										// Intersect each role with the instances on the current role player.
+										// Note that a disjunctive mandatory constraint with incompatible roles
+										// will clearly not intersect, but is still a population error. We do
+										// not make role compatibility a prerequisite for checking population
+										// mandatory errors.
+										LinkedElementCollection<Role> constraintRoles = sequence.RoleCollection;
+										int constraintRoleCount = constraintRoles.Count;
+										for (int i = 0; i < constraintRoleCount && seenInstanceCount < instanceCount; ++i)
+										{
+											Role currentRole = constraintRoles[i];
+											ReadOnlyLinkedElementCollection<ObjectTypeInstance> roleInstances = (currentRole == role) ? thisRoleObjectTypeInstances : currentRole.ObjectTypeInstanceCollection;
+											int roleInstanceCount = roleInstances.Count;
+											for (int j = 0; j < roleInstanceCount; ++j)
+											{
+												int index = Array.BinarySearch<ObjectTypeInstance>(instances, roleInstances[j], comparer);
+												if (index >= 0 && !seenInstances[index])
+												{
+													++seenInstanceCount;
+													seenInstances[index] = true;
+													if (seenInstanceCount == instanceCount)
+													{
+														break;
+													}
+												}
+											}
+										}
+
+										// We now have all instances that are covered and not covered. Synchronize
+										// the error collection on the mandatory constraint
+										LinkedElementCollection<PopulationMandatoryError> errors = constraint.PopulationMandatoryErrorCollection;
+										int errorCount = errors.Count;
+										if (seenInstanceCount == instanceCount)
+										{
+											if (constraintRoleCount == 1)
+											{
+												errors.Clear();
+											}
+											else
+											{
+												// Because we check this without first enforcing role compatibility, we should not
+												// clear the errors that are not involved with the current role player
+												for (int i = errorCount - 1; i >= 0; --i)
+												{
+													PopulationMandatoryError error = errors[i];
+													if (error.ObjectTypeInstance.ObjectType == rolePlayer)
+													{
+														error.Delete();
+													}
+												}
+											}
+										}
+										else
+										{
+											// Remove errors we no longer need
+											for (int i = errorCount - 1; i >= 0; --i)
+											{
+												PopulationMandatoryError error = errors[i];
+												int index = Array.BinarySearch<ObjectTypeInstance>(instances, error.ObjectTypeInstance, comparer);
+												if (index >= 0)
+												{
+													if (seenInstances[index])
+													{
+														error.Delete();
+													}
+													else
+													{
+														// Make sure the error text is up to date
+														error.GenerateErrorText();
+														// Use to indicate that we already have an error
+														seenInstances[index] = true;
+														++seenInstanceCount;
+													}
+												}
+											}
+
+											// Add new errors
+											for (int i = 0; i < instanceCount && seenInstanceCount < instanceCount; ++i)
+											{
+												if (!seenInstances[i])
+												{
+													++seenInstanceCount;
+													PopulationMandatoryError error = new PopulationMandatoryError(role.Store);
+													error.ObjectTypeInstance = instances[i];
+													error.MandatoryConstraint = constraint;
+													error.Model = constraint.Model;
+													error.GenerateErrorText();
+													if (notifyAdded != null)
+													{
+														notifyAdded.ElementAdded(error);
+													}
+												}
+											}
+										}
+									}
+								}
+							}
+							break;
+						case SimpleReferenceSchemeRolePattern.OptionalIdentifiedRole:
+							// This one is tricky. The implied FactTypeRoleInstance population
+							// for the opposite (identifier) role is based on the set of EntityTypeInstances
+							// on this role. Because the opposite role is optional, the population
+							// for this role is not automatically filled in, so it is possible to
+							// have PopulationMandatoryErrors on any disjunctive mandatory constraint
+							// intersecting the opposite role.
+							// Note that we always have an opposite role. Otherwise, the simple reference scheme
+							// pattern would not hold.
+							LinkedElementCollection<ObjectTypeInstance> rolePlayerInstances = null;
+							foreach (ConstraintRoleSequence sequence in role.OppositeRole.Role.ConstraintRoleSequenceCollection)
+							{
+								MandatoryConstraint constraint = sequence as MandatoryConstraint;
+								if (constraint != null)
+								{
+									if (rolePlayerInstances == null)
+									{
+										rolePlayerInstances = rolePlayer.ObjectTypeInstanceCollection;
+									}
+									LinkedElementCollection<PopulationMandatoryError> oppositeErrors = constraint.PopulationMandatoryErrorCollection;
+									int errorCount = oppositeErrors.Count;
+									for (int j = errorCount - 1; j >= 0; --j)
+									{
+										PopulationMandatoryError error = oppositeErrors[j];
+										if (rolePlayerInstances.Contains(error.ObjectTypeInstance))
+										{
+											error.Delete();
+										}
+										else
+										{
+											error.GenerateErrorText();
+										}
+									}
+								}
+							}
+							break;
+						case SimpleReferenceSchemeRolePattern.MandatoryIdentifierRole:
+							// Full population is implied, clear any population mandatory errors and synchronize the sets
+							EnsureImpliedEntityTypeInstances(identifiedEntityType, role);
+							break;
+						case SimpleReferenceSchemeRolePattern.MandatoryIdentifiedRole:
+							// Nothing to do here. These are populated automatically when instances
+							// are added to the opposite role.
+							break;
+						case SimpleReferenceSchemeRolePattern.OptionalIdentifierRole:
+							// There is nothing to do here. The implied FactTypeInstance
+							// population for this FactType is controlled by the opposite EntityTypeInstance
+							// population. However, we need to regenerate text for existing mandatory errors.
+							foreach (ConstraintRoleSequence sequence in role.ConstraintRoleSequenceCollection)
+							{
+								MandatoryConstraint constraint = sequence as MandatoryConstraint;
+								if (constraint != null)
+								{
+									foreach (PopulationMandatoryError error in constraint.PopulationMandatoryErrorCollection)
+									{
+										error.GenerateErrorText();
+									}
+								}
+							}
+							break;
+					}
+				}
+			}
+		}
+		#endregion // PopulationMandatoryError Validation
 		#region ObjectTypeInstance Rules
 		/// <summary>
 		/// AddRule: typeof(ConstraintRoleSequenceHasRole)
@@ -2243,35 +2741,33 @@ namespace Neumont.Tools.ORM.ObjectModel
 		private static void ConstraintRoleSequenceHasRoleAddedRule(ElementAddedEventArgs e)
 		{
 			ConstraintRoleSequenceHasRole link = e.ModelElement as ConstraintRoleSequenceHasRole;
-			UniquenessConstraint uniConstraint;
-			if (null != (uniConstraint = link.ConstraintRoleSequence as UniquenessConstraint))
+			SetConstraint constraint = link.ConstraintRoleSequence as SetConstraint;
+			if (constraint == null)
 			{
-				RoleBase oppositeRoleBase;
-				Role oppositeRole;
-				ObjectType rolePlayer;
-				if (null != (oppositeRoleBase = link.Role.OppositeRole) &&
-					null != (oppositeRole = oppositeRoleBase.Role) &&
-					null != (rolePlayer = oppositeRole.RolePlayer))
-				{
-					if (rolePlayer.IsValueType)
+				return;
+			}
+			switch (constraint.Constraint.ConstraintType)
+			{
+				case ConstraintType.InternalUniqueness:
+				case ConstraintType.ExternalUniqueness:
+					RoleBase oppositeRoleBase;
+					Role oppositeRole;
+					ObjectType rolePlayer;
+					if (null != (oppositeRoleBase = link.Role.OppositeRole) &&
+						null != (oppositeRole = oppositeRoleBase.Role) &&
+						null != (rolePlayer = oppositeRole.RolePlayer))
 					{
-						LinkedElementCollection<ValueTypeInstance> instances = rolePlayer.ValueTypeInstanceCollection;
-						int instanceCount = instances.Count;
-						for (int i = 0; i < instanceCount; ++i)
+						foreach (ObjectTypeInstance instance in rolePlayer.ObjectTypeInstanceCollection)
 						{
-							FrameworkDomainModel.DelayValidateElement(instances[i], DelayValidateObjectTypeInstanceNamePartChanged);
+							FrameworkDomainModel.DelayValidateElement(instance, DelayValidateObjectTypeInstanceNamePartChanged);
 						}
 					}
-					else
-					{
-						LinkedElementCollection<EntityTypeInstance> instances = rolePlayer.EntityTypeInstanceCollection;
-						int instanceCount = instances.Count;
-						for (int i = 0; i < instanceCount; ++i)
-						{
-							FrameworkDomainModel.DelayValidateElement(instances[i], DelayValidateObjectTypeInstanceNamePartChanged);
-						}
-					}
-				}
+					break;
+				case ConstraintType.SimpleMandatory:
+				case ConstraintType.DisjunctiveMandatory:
+				case ConstraintType.ImpliedMandatory:
+					FrameworkDomainModel.DelayValidateElement(link.Role, DelayValidateRolePopulationMandatoryError);
+					break;
 			}
 		}
 
@@ -2281,35 +2777,45 @@ namespace Neumont.Tools.ORM.ObjectModel
 		private static void ConstraintRoleSequenceHasRoleDeletedRule(ElementDeletedEventArgs e)
 		{
 			ConstraintRoleSequenceHasRole link = e.ModelElement as ConstraintRoleSequenceHasRole;
-			UniquenessConstraint uniConstraint;
-			if (null != (uniConstraint = link.ConstraintRoleSequence as UniquenessConstraint))
+			SetConstraint constraint = link.ConstraintRoleSequence as SetConstraint;
+			if (constraint == null)
 			{
-				RoleBase oppositeRoleBase;
-				Role oppositeRole;
-				ObjectType rolePlayer;
-				if (null != (oppositeRoleBase = link.Role.OppositeRole) &&
-					null != (oppositeRole = oppositeRoleBase.Role) &&
-					null != (rolePlayer = oppositeRole.RolePlayer))
-				{
-					if (rolePlayer.IsValueType)
+				return;
+			}
+			switch (constraint.Constraint.ConstraintType)
+			{
+				case ConstraintType.InternalUniqueness:
+				case ConstraintType.ExternalUniqueness:
+					Role role;
+					RoleBase oppositeRoleBase;
+					Role oppositeRole;
+					ObjectType rolePlayer;
+					if (!(role = link.Role).IsDeleted &&
+						null != (oppositeRoleBase = role.OppositeRole) &&
+						null != (oppositeRole = oppositeRoleBase.Role) &&
+						null != (rolePlayer = oppositeRole.RolePlayer))
 					{
-						LinkedElementCollection<ValueTypeInstance> instances = rolePlayer.ValueTypeInstanceCollection;
-						int instanceCount = instances.Count;
-						for (int i = 0; i < instanceCount; ++i)
+						foreach (ObjectTypeInstance instance in rolePlayer.ObjectTypeInstanceCollection)
 						{
-							FrameworkDomainModel.DelayValidateElement(instances[i], DelayValidateObjectTypeInstanceNamePartChanged);
+							FrameworkDomainModel.DelayValidateElement(instance, DelayValidateObjectTypeInstanceNamePartChanged);
 						}
 					}
-					else
+					break;
+				case ConstraintType.SimpleMandatory:
+				case ConstraintType.ImpliedMandatory:
+				case ConstraintType.DisjunctiveMandatory:
+					if (!constraint.IsDeleted)
 					{
-						LinkedElementCollection<EntityTypeInstance> instances = rolePlayer.EntityTypeInstanceCollection;
-						int instanceCount = instances.Count;
-						for (int i = 0; i < instanceCount; ++i)
+						if (!(role = link.Role).IsDeleted)
 						{
-							FrameworkDomainModel.DelayValidateElement(instances[i], DelayValidateObjectTypeInstanceNamePartChanged);
+							FrameworkDomainModel.DelayValidateElement(role, DelayValidateRolePopulationMandatoryError);
+						}
+						foreach (Role remainingRole in constraint.RoleCollection)
+						{
+							FrameworkDomainModel.DelayValidateElement(remainingRole, DelayValidateRolePopulationMandatoryError);
 						}
 					}
-				}
+					break;
 			}
 		}
 		/// <summary>
@@ -2317,9 +2823,7 @@ namespace Neumont.Tools.ORM.ObjectModel
 		/// </summary>
 		private static void EntityTypeInstanceHasRoleInstanceAddedRule(ElementAddedEventArgs e)
 		{
-			EntityTypeInstanceHasRoleInstance link = e.ModelElement as EntityTypeInstanceHasRoleInstance;
-			EntityTypeInstance instance = link.EntityTypeInstance;
-			FrameworkDomainModel.DelayValidateElement(instance, DelayValidateObjectTypeInstanceNamePartChanged);
+			FrameworkDomainModel.DelayValidateElement(((EntityTypeInstanceHasRoleInstance)e.ModelElement).EntityTypeInstance, DelayValidateObjectTypeInstanceNamePartChanged);
 		}
 		/// <summary>
 		/// DeleteRule: typeof(EntityTypeInstanceHasRoleInstance)
@@ -2328,7 +2832,10 @@ namespace Neumont.Tools.ORM.ObjectModel
 		{
 			EntityTypeInstanceHasRoleInstance link = e.ModelElement as EntityTypeInstanceHasRoleInstance;
 			EntityTypeInstance instance = link.EntityTypeInstance;
-			FrameworkDomainModel.DelayValidateElement(instance, DelayValidateObjectTypeInstanceNamePartChanged);
+			if (!instance.IsDeleted)
+			{
+				FrameworkDomainModel.DelayValidateElement(instance, DelayValidateObjectTypeInstanceNamePartChanged);
+			}
 		}
 		// UNDONE: This rule is garbage, it's comparing DomainRoleId values to DomainClassId values
 		// The rule should probably be a RolePlayerPositionChangeRule, not a RolePlayerChangeRule
@@ -2367,6 +2874,107 @@ namespace Neumont.Tools.ORM.ObjectModel
 				FrameworkDomainModel.DelayValidateElement(instance, DelayValidateObjectTypeInstanceNamePartChanged);
 			}
 		}
-		#endregion
+		/// <summary>
+		/// ChangeRule: typeof(MandatoryConstraint)
+		/// Validate population mandatory errors when the <see cref="SetConstraint.Modality"/> of a
+		/// <see cref="MandatoryConstraint"/> changes
+		/// </summary>
+		private static void MandatoryConstraintChangedRule(ElementPropertyChangedEventArgs e)
+		{
+			if (e.DomainProperty.Id == SetConstraint.ModalityDomainPropertyId)
+			{
+				foreach (Role role in ((SetConstraint)e.ModelElement).RoleCollection)
+				{
+					FrameworkDomainModel.DelayValidateElement(role, DelayValidateRolePopulationMandatoryError);
+				}
+			}
+		}
+		/// <summary>
+		/// AddRule: typeof(RoleInstance)
+		/// Validation population mandatory conditions when a RoleInstance is added
+		/// </summary>
+		private static void RoleInstanceAddedRule(ElementAddedEventArgs e)
+		{
+			RoleInstance roleInstance = e.ModelElement as RoleInstance;
+			FrameworkDomainModel.DelayValidateElement(roleInstance, DelayValidateRemovePopulationMandatoryError);
+		}
+		/// <summary>
+		/// DeleteRule: typeof(RoleInstance)
+		/// Validation population mandatory conditions when a RoleInstance is deleted
+		/// </summary>
+		private static void RoleInstanceDeletedRule(ElementDeletedEventArgs e)
+		{
+			RoleInstance roleInstance = e.ModelElement as RoleInstance;
+			Role role = roleInstance.Role;
+			if (!role.IsDeleted)
+			{
+				FrameworkDomainModel.DelayValidateElement(role, DelayValidateRolePopulationMandatoryError);
+			}
+		}
+		/// <summary>
+		/// AddRule: typeof(ObjectTypePlaysRole)
+		/// Connecting an ObjectType needs to 
+		/// </summary>
+		private static void RolePlayerAddedRule(ElementAddedEventArgs e)
+		{
+			ProcessRolePlayerAdded((ObjectTypePlaysRole)e.ModelElement);
+		}
+		private static void ProcessRolePlayerAdded(ObjectTypePlaysRole link)
+		{
+			FrameworkDomainModel.DelayValidateElement(link.PlayedRole, DelayValidateRolePopulationMandatoryError);
+		}
+		/// <summary>
+		/// DeleteRule: typeof(ObjectTypePlaysRole)
+		/// If a roleplayer link is deleted but the role and roleplayer remain,
+		/// then we need to explicitly clear all role instances.
+		/// </summary>
+		private static void RolePlayerDeletedRule(ElementDeletedEventArgs e)
+		{
+			ProcessRolePlayerDeleted((ObjectTypePlaysRole)e.ModelElement, null, null);
+		}
+		/// <summary>
+		/// RolePlayerChangeRule: typeof(ObjectTypePlaysRole)
+		/// Treat a role player change on the played role as both an add and delete
+		/// </summary>
+		private static void RolePlayerRolePlayerChangedRule(RolePlayerChangedEventArgs e)
+		{
+			ObjectTypePlaysRole link = e.ElementLink as ObjectTypePlaysRole;
+			if (link.IsDeleted)
+			{
+				return;
+			}
+			if (e.DomainRole.Id == ObjectTypePlaysRole.PlayedRoleDomainRoleId)
+			{
+				ProcessRolePlayerDeleted(link, (Role)e.OldRolePlayer, null);
+			}
+			else
+			{
+				ProcessRolePlayerDeleted(link, null, (ObjectType)e.OldRolePlayer);
+			}
+			ProcessRolePlayerAdded(link);
+		}
+		private static void ProcessRolePlayerDeleted(ObjectTypePlaysRole link, Role role, ObjectType rolePlayer)
+		{
+			if (role == null)
+			{
+				role = link.PlayedRole;
+			}
+			if (rolePlayer == null)
+			{
+				rolePlayer = link.RolePlayer;
+			}
+			if (!role.IsDeleted &&
+				!rolePlayer.IsDeleted)
+			{
+				ReadOnlyCollection<RoleInstance> instances = RoleInstance.GetLinksToObjectTypeInstanceCollection(role);
+				int instanceCount = instances.Count;
+				for (int i = instanceCount - 1; i >= 0; --i)
+				{
+					Debug.Assert(instances[i].ObjectTypeInstance.ObjectType == rolePlayer);
+					instances[i].Delete();
+				}
+			}
+		}
+		#endregion // ObjectTypeInstance Rules
 	}
 }

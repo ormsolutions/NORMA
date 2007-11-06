@@ -725,7 +725,7 @@ namespace Neumont.Tools.ORM.ObjectModel
 				}
 			}
 
-			if (filter == (ModelErrorUses)(-1))
+			if (0 != (filter & ModelErrorUses.DisplayPrimary))
 			{
 				LinkedElementCollection<FactTypeInstance> factTypeInstances = this.FactTypeInstanceCollection;
 				int factTypeInstanceCount = factTypeInstances.Count;
@@ -735,16 +735,6 @@ namespace Neumont.Tools.ORM.ObjectModel
 					foreach (ModelErrorUsage usage in (factTypeInstance as IModelErrorOwner).GetErrorCollection(filter))
 					{
 						yield return usage;
-					}
-					LinkedElementCollection<FactTypeRoleInstance> roleInstances = factTypeInstance.RoleInstanceCollection;
-					int roleInstanceCount = roleInstances.Count;
-					for (int j = 0; j < roleInstanceCount; ++j)
-					{
-						PopulationUniquenessError populationError = roleInstances[j].PopulationUniquenessError;
-						if (populationError != null)
-						{
-							yield return populationError;
-						}
 					}
 				}
 			}
@@ -2567,7 +2557,7 @@ namespace Neumont.Tools.ORM.ObjectModel
 
 	#region class FactTypeRequiresReadingError
 	[ModelErrorDisplayFilter(typeof(FactTypeDefinitionErrorCategory))]
-	partial class FactTypeRequiresReadingError : IRepresentModelElements
+	partial class FactTypeRequiresReadingError
 	{
 		#region overrides
 
@@ -2595,27 +2585,11 @@ namespace Neumont.Tools.ORM.ObjectModel
 		}
 
 		#endregion
-
-		#region IRepresentModelElements Members
-
-		/// <summary>
-		/// The fact the error belongs to
-		/// </summary>
-		protected ModelElement[] GetRepresentedElements()
-		{
-			return new ModelElement[] { this.FactType };
-		}
-
-		ModelElement[] IRepresentModelElements.GetRepresentedElements()
-		{
-			return GetRepresentedElements();
-		}
-		#endregion
 	}
 	#endregion // class FactTypeRequiresReadingError
 	#region class FactTypeRequiresInternalUniquenessConstraintError
 	[ModelErrorDisplayFilter(typeof(FactTypeDefinitionErrorCategory))]
-	partial class FactTypeRequiresInternalUniquenessConstraintError : IRepresentModelElements
+	partial class FactTypeRequiresInternalUniquenessConstraintError
 	{
 		#region overrides
 
@@ -2642,29 +2616,12 @@ namespace Neumont.Tools.ORM.ObjectModel
 			}
 		}
 		#endregion
-
-		#region IRepresentModelElements Members
-
-		/// <summary>
-		/// The fact the error belongs to
-		/// </summary>
-		protected ModelElement[] GetRepresentedElements()
-		{
-			return new ModelElement[] { this.FactType };
-		}
-
-		ModelElement[] IRepresentModelElements.GetRepresentedElements()
-		{
-			return GetRepresentedElements();
-		}
-
-		#endregion
 	}
 	#endregion // class FactTypeRequiresInternalUniquenessConstraintError
 	#region class NMinusOneError
 
 	[ModelErrorDisplayFilter(typeof(FactTypeDefinitionErrorCategory))]
-	public partial class NMinusOneError : IRepresentModelElements
+	public partial class NMinusOneError
 	{
 		#region Base overrides
 		/// <summary>
@@ -2691,20 +2648,6 @@ namespace Neumont.Tools.ORM.ObjectModel
 			}
 		}
 		#endregion // Base overrides
-		#region IRepresentModelElements Implementation
-		/// <summary>
-		/// Implements IRepresentModelElements.GetRepresentedElements
-		/// </summary>
-		/// <returns></returns>
-		protected ModelElement[] GetRepresentedElements()
-		{
-			return new ModelElement[] { Constraint };
-		}
-		ModelElement[] IRepresentModelElements.GetRepresentedElements()
-		{
-			return GetRepresentedElements();
-		}
-		#endregion // IRepresentModelElements Implementation
 	}
 	#endregion //class NMinusOneError
 

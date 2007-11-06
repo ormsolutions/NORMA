@@ -609,7 +609,7 @@ namespace Neumont.Tools.ORM.ShapeModel
 			ModelError error = errorLink.Error;
 			// Give the error itself a change to have an indirect owner.
 			// A ModelError can own itself.
-			InvalidateIndirectErrorOwnerDisplay(error, null);
+			InvalidateIndirectErrorOwnerDisplay(error, null, null);
 			DomainClassInfo classInfo = error.GetDomainClass();
 			ReadOnlyCollection<DomainRoleInfo> playedMetaRoles = classInfo.AllDomainRolesPlayed;
 			int playedMetaRoleCount = playedMetaRoles.Count;
@@ -624,7 +624,7 @@ namespace Neumont.Tools.ORM.ShapeModel
 					{
 						ModelElement rolePlayer = rolePlayers[j];
 						InvalidateErrorOwnerDisplay(rolePlayer);
-						InvalidateIndirectErrorOwnerDisplay(rolePlayer, null);
+						InvalidateIndirectErrorOwnerDisplay(rolePlayer, null, null);
 					}
 				}
 			}
@@ -645,7 +645,7 @@ namespace Neumont.Tools.ORM.ShapeModel
 				}
 			}
 		}
-		private static void InvalidateIndirectErrorOwnerDisplay(ModelElement element, DomainDataDirectory domainDataDirectory)
+		private static void InvalidateIndirectErrorOwnerDisplay(ModelElement element, DomainDataDirectory domainDataDirectory, Predicate<ModelElement> filter)
 		{
 			IHasIndirectModelErrorOwner indirectOwner = element as IHasIndirectModelErrorOwner;
 			if (indirectOwner != null)
@@ -670,11 +670,22 @@ namespace Neumont.Tools.ORM.ShapeModel
 							for (int j = 0; j < counterpartCount; ++j)
 							{
 								ModelElement counterpart = counterparts[j];
+								if (filter != null && filter(counterpart))
+								{
+									continue;
+								}
 								if (counterpart is IModelErrorOwner)
 								{
 									InvalidateErrorOwnerDisplay(counterpart);
 								}
-								InvalidateIndirectErrorOwnerDisplay(counterpart, domainDataDirectory);
+								InvalidateIndirectErrorOwnerDisplay(
+									counterpart,
+									domainDataDirectory,
+									delegate(ModelElement testElement)
+									{
+										return testElement == element ||
+											(filter != null && filter(testElement));
+									});
 							}
 						}
 					}
@@ -701,11 +712,22 @@ namespace Neumont.Tools.ORM.ShapeModel
 						if (metaRole != null)
 						{
 							ModelElement rolePlayer = metaRole.GetRolePlayer(elementLink);
+							if (filter != null && filter(rolePlayer))
+							{
+								continue;
+							}
 							if (rolePlayer is IModelErrorOwner)
 							{
 								InvalidateErrorOwnerDisplay(rolePlayer);
 							}
-							InvalidateIndirectErrorOwnerDisplay(rolePlayer, domainDataDirectory);
+							InvalidateIndirectErrorOwnerDisplay(
+								rolePlayer,
+								domainDataDirectory,
+								delegate(ModelElement testElement)
+								{
+									return testElement == element ||
+										(filter != null && filter(testElement));
+								});
 						}
 					}
 				}

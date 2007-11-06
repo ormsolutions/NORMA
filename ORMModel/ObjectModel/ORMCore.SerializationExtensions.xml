@@ -35,6 +35,7 @@
 			<se:OmitRelationship Class="ORMModelElementHasJoinPath"/>
 			<se:OmitRelationship Class="ModelHasModelErrorDisplayFilter"/>
 			<se:OmitRelationship Class="ElementAssociatedWithModelError"/>
+			<se:OmitRelationship Class="ObjectTypeHasObjectTypeInstance"/>
 			<se:OmitClass Class="IntrinsicReferenceMode"/>
 			<!-- Omitting links to the presentation layers is not strictly required because all
 				 links to external models do not serialize by default, but this one is very common,

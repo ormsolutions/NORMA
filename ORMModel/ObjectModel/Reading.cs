@@ -715,7 +715,7 @@ namespace Neumont.Tools.ORM.ObjectModel
 	#endregion // Reading class
 	#region TooFewReadingRolesError class
 	[ModelErrorDisplayFilter(typeof(FactTypeDefinitionErrorCategory))]
-	public partial class TooFewReadingRolesError : IRepresentModelElements
+	public partial class TooFewReadingRolesError
 	{
 		#region overrides
 		/// <summary>
@@ -745,26 +745,11 @@ namespace Neumont.Tools.ORM.ObjectModel
 		}
 
 		#endregion // overrides
-		#region IRepresentModelElements Members
-		/// <summary>
-		/// The reading the error belongs to
-		/// </summary>
-		protected ModelElement[] GetRepresentedElements()
-		{
-			return new ModelElement[] { this.Reading };
-		}
-
-		ModelElement[] IRepresentModelElements.GetRepresentedElements()
-		{
-			return GetRepresentedElements();
-		}
-
-		#endregion
 	}
 	#endregion // TooFewReadingRolesError class
 	#region TooManyReadingRolesError class
 	[ModelErrorDisplayFilter(typeof(FactTypeDefinitionErrorCategory))]
-	public partial class TooManyReadingRolesError : IRepresentModelElements
+	public partial class TooManyReadingRolesError
 	{
 		#region overrides
 		/// <summary>
@@ -794,25 +779,11 @@ namespace Neumont.Tools.ORM.ObjectModel
 		}
 
 		#endregion // overrides
-		#region IRepresentModelElements Implementation
-		/// <summary>
-		/// The Reading the error belongs too.
-		/// </summary>
-		protected ModelElement[] GetRepresentedElements()
-		{
-			return new ModelElement[] { this.Reading };
-		}
-
-		ModelElement[] IRepresentModelElements.GetRepresentedElements()
-		{
-			return GetRepresentedElements();
-		}
-		#endregion // IRepresentModelElements Implementation
 	}
 	#endregion // TooManyReadingRolesError class
 	#region ReadingRequiresUserModificationError class
 	[ModelErrorDisplayFilter(typeof(FactTypeDefinitionErrorCategory))]
-	public partial class ReadingRequiresUserModificationError : IRepresentModelElements
+	public partial class ReadingRequiresUserModificationError
 	{
 		#region Base overrides
 		/// <summary>
@@ -865,19 +836,6 @@ namespace Neumont.Tools.ORM.ObjectModel
 				});
 		}
 		#endregion // Base overrides
-		#region IRepresentModelElements Implementation
-		/// <summary>
-		/// Implements <see cref="IRepresentModelElements.GetRepresentedElements"/>
-		/// </summary>
-		protected ModelElement[] GetRepresentedElements()
-		{
-			return new ModelElement[] { Reading };
-		}
-		ModelElement[] IRepresentModelElements.GetRepresentedElements()
-		{
-			return GetRepresentedElements();
-		}
-		#endregion // IRepresentModelElements Implementation
 	}
 	#endregion // ReadingHasReadingRequiresUserModificationError class
 }

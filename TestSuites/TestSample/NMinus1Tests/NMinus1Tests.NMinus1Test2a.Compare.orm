@@ -407,7 +407,7 @@
 			<orm:VariableLengthTextDataType id="_616B99E0-CF14-4A74-A0CE-285D6E118BD6" />
 		</orm:DataTypes>
 		<orm:ModelErrors>
-			<orm:NMinusOneError Name="Uniqueness constraint 'InternalUniquenessConstraint7' on fact type 'PersonPlayedSportForCountry' in model 'NewModel' must span at least 2 roles." id="_A70D751F-ABD1-4D0B-A058-90D278699621">
+			<orm:NMinusOneError id="_A70D751F-ABD1-4D0B-A058-90D278699621" Name="Uniqueness constraint 'InternalUniquenessConstraint7' on FactType 'PersonPlayedSportForCountry' in model 'NewModel' must span at least 2 roles.">
 				<orm:UniquenessConstraint ref="_3CCAC4FA-F704-42D5-9E2D-E57931DF375F" />
 			</orm:NMinusOneError>
 		</orm:ModelErrors>

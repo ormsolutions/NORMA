@@ -236,6 +236,7 @@
 	<ResourceString name="ModelErrorModelHasPopulationUniquenessErrorWithNamedRole" model="Model" resourceName="ModelError.Model.PopulationUniquenessError.Role.Text"/>
 	<ResourceString name="ModelErrorModelHasPopulationUniquenessErrorWithUnnamedRole" model="Model" resourceName="ModelError.Model.PopulationUniquenessError.FactType.Text"/>
 	<ResourceString name="ModelErrorModelHasPopulationMandatoryError" model="Model" resourceName="ModelError.Model.PopulationMandatoryError.Text"/>
+	<ResourceString name="ModelErrorModelHasPopulationMandatoryErrorAdditionalFactType" model="Model" resourceName="ModelError.Model.PopulationMandatoryError.AdditionalFactTypeText"/>
 	<ResourceString name="ModelErrorRoleValueRangeMaxValueMismatchError" model="Model" resourceName="ModelError.ValueRange.MaxValueMismatchError.Role.Message"/>
 	<ResourceString name="ModelErrorRoleValueRangeMinValueMismatchError" model="Model" resourceName="ModelError.ValueRange.MinValueMismatchError.Role.Message"/>
 	<ResourceString name="ModelErrorValueRangeMaxValueMismatchError" model="Model" resourceName="ModelError.ValueRange.MaxValueMismatchError.ValueType.Message"/>

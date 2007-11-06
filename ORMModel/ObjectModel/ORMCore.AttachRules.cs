@@ -59,7 +59,7 @@ namespace Neumont.Tools.ORM.ObjectModel
 						typeof(EntityTypeInstance).GetNestedType("EntityTypeHasPreferredIdentifierRolePlayerChangedRuleClass", BindingFlags.Public | BindingFlags.NonPublic),
 						typeof(EntityTypeInstance).GetNestedType("EntityTypeInstanceDeletingRuleClass", BindingFlags.Public | BindingFlags.NonPublic),
 						typeof(EntityTypeInstance).GetNestedType("EntityTypeInstanceHasRoleInstanceAddedRuleClass", BindingFlags.Public | BindingFlags.NonPublic),
-						typeof(EntityTypeInstance).GetNestedType("EntityTypeInstanceHasRoleInstanceDeletedRuleClass", BindingFlags.Public | BindingFlags.NonPublic),
+						typeof(EntityTypeInstance).GetNestedType("EntityTypeInstanceHasRoleInstanceDeletingRuleClass", BindingFlags.Public | BindingFlags.NonPublic),
 						typeof(EntityTypeInstance).GetNestedType("RoleInstanceHasPopulationUniquenessErrorDeletedRuleClass", BindingFlags.Public | BindingFlags.NonPublic),
 						typeof(EqualityConstraint).GetNestedType("ConstraintRoleSequenceHasRoleAddedRuleClass", BindingFlags.Public | BindingFlags.NonPublic),
 						typeof(EqualityConstraint).GetNestedType("ConstraintRoleSequenceHasRoleDeletingRuleClass", BindingFlags.Public | BindingFlags.NonPublic),
@@ -168,6 +168,12 @@ namespace Neumont.Tools.ORM.ObjectModel
 						typeof(ObjectTypeInstance).GetNestedType("EntityTypeInstanceHasRoleInstanceAddedRuleClass", BindingFlags.Public | BindingFlags.NonPublic),
 						typeof(ObjectTypeInstance).GetNestedType("EntityTypeInstanceHasRoleInstanceDeletedRuleClass", BindingFlags.Public | BindingFlags.NonPublic),
 						typeof(ObjectTypeInstance).GetNestedType("EntityTypeInstanceHasRoleInstanceRolePlayerChangedRuleClass", BindingFlags.Public | BindingFlags.NonPublic),
+						typeof(ObjectTypeInstance).GetNestedType("MandatoryConstraintChangedRuleClass", BindingFlags.Public | BindingFlags.NonPublic),
+						typeof(ObjectTypeInstance).GetNestedType("RoleInstanceAddedRuleClass", BindingFlags.Public | BindingFlags.NonPublic),
+						typeof(ObjectTypeInstance).GetNestedType("RoleInstanceDeletedRuleClass", BindingFlags.Public | BindingFlags.NonPublic),
+						typeof(ObjectTypeInstance).GetNestedType("RolePlayerAddedRuleClass", BindingFlags.Public | BindingFlags.NonPublic),
+						typeof(ObjectTypeInstance).GetNestedType("RolePlayerDeletedRuleClass", BindingFlags.Public | BindingFlags.NonPublic),
+						typeof(ObjectTypeInstance).GetNestedType("RolePlayerRolePlayerChangedRuleClass", BindingFlags.Public | BindingFlags.NonPublic),
 						typeof(ObjectTypeInstance).GetNestedType("ValueTypeInstanceValueChangedRuleClass", BindingFlags.Public | BindingFlags.NonPublic),
 						typeof(ORMModel).GetNestedType("DuplicateConstraintNameConstraintDeleteRuleClass", BindingFlags.Public | BindingFlags.NonPublic),
 						typeof(ORMModel).GetNestedType("DuplicateObjectTypeNameObjectTypeDeleteRuleClass", BindingFlags.Public | BindingFlags.NonPublic),
@@ -185,7 +191,6 @@ namespace Neumont.Tools.ORM.ObjectModel
 						typeof(RingConstraint).GetNestedType("RingConstraintTypeChangeRuleClass", BindingFlags.Public | BindingFlags.NonPublic),
 						typeof(Role).GetNestedType("ConstraintRoleSequenceHasRoleAddedRuleClass", BindingFlags.Public | BindingFlags.NonPublic),
 						typeof(Role).GetNestedType("ConstraintRoleSequenceHasRoleDeletedRuleClass", BindingFlags.Public | BindingFlags.NonPublic),
-						typeof(Role).GetNestedType("ConstraintChangedRuleClass", BindingFlags.Public | BindingFlags.NonPublic),
 						typeof(Role).GetNestedType("RoleChangeRuleClass", BindingFlags.Public | BindingFlags.NonPublic),
 						typeof(Role).GetNestedType("RoleInstanceAddedRuleClass", BindingFlags.Public | BindingFlags.NonPublic),
 						typeof(Role).GetNestedType("RoleInstanceDeletedRuleClass", BindingFlags.Public | BindingFlags.NonPublic),
@@ -194,6 +199,7 @@ namespace Neumont.Tools.ORM.ObjectModel
 						typeof(Role).GetNestedType("RolePlayerRequiredDeleteRuleClass", BindingFlags.Public | BindingFlags.NonPublic),
 						typeof(Role).GetNestedType("RolePlayerRequiredForNewRoleAddRuleClass", BindingFlags.Public | BindingFlags.NonPublic),
 						typeof(Role).GetNestedType("UpdatedRolePlayerRequiredErrorsDeleteRuleClass", BindingFlags.Public | BindingFlags.NonPublic),
+						typeof(Role).GetNestedType("UniquenessConstraintChangedRuleClass", BindingFlags.Public | BindingFlags.NonPublic),
 						typeof(SetComparisonConstraint).GetNestedType("ConstraintHasRoleSequenceAddedRuleClass", BindingFlags.Public | BindingFlags.NonPublic),
 						typeof(SetComparisonConstraint).GetNestedType("ConstraintRoleSequenceHasRoleAddedRuleClass", BindingFlags.Public | BindingFlags.NonPublic),
 						typeof(SetComparisonConstraint).GetNestedType("EnforceRoleSequenceCardinalityForConstraintAddRuleClass", BindingFlags.Public | BindingFlags.NonPublic),
@@ -257,6 +263,7 @@ namespace Neumont.Tools.ORM.ObjectModel
 						typeof(ValueConstraint).GetNestedType("ValueRangeChangeRuleClass", BindingFlags.Public | BindingFlags.NonPublic),
 						typeof(ValueRange).GetNestedType("ValueRangeChangeRuleClass", BindingFlags.Public | BindingFlags.NonPublic),
 						typeof(ValueTypeInstance).GetNestedType("ValueTypeHasDataTypeAddedRuleClass", BindingFlags.Public | BindingFlags.NonPublic),
+						typeof(ValueTypeInstance).GetNestedType("ValueTypeHasDataTypeDeletedRuleClass", BindingFlags.Public | BindingFlags.NonPublic),
 						typeof(ValueTypeInstance).GetNestedType("ValueTypeHasDataTypeRolePlayerChangeRuleClass", BindingFlags.Public | BindingFlags.NonPublic),
 						typeof(ValueTypeInstance).GetNestedType("ValueTypeInstanceValueChangedRuleClass", BindingFlags.Public | BindingFlags.NonPublic),
 						typeof(ValueTypeInstance).GetNestedType("ValueTypeHasValueTypeInstanceAddedRuleClass", BindingFlags.Public | BindingFlags.NonPublic)};
@@ -293,7 +300,7 @@ namespace Neumont.Tools.ORM.ObjectModel
 		{
 			Microsoft.VisualStudio.Modeling.RuleManager ruleManager = store.RuleManager;
 			Type[] disabledRuleTypes = ORMCoreDomainModel.CustomDomainModelTypes;
-			for (int i = 0; i < 226; ++i)
+			for (int i = 0; i < 233; ++i)
 			{
 				ruleManager.EnableRule(disabledRuleTypes[i]);
 			}
@@ -989,10 +996,10 @@ namespace Neumont.Tools.ORM.ObjectModel
 			}
 		}
 		[Microsoft.VisualStudio.Modeling.RuleOn(typeof(EntityTypeInstanceHasRoleInstance), Priority=Neumont.Tools.Modeling.FrameworkDomainModel.InlineRulePriority)]
-		private sealed class EntityTypeInstanceHasRoleInstanceDeletedRuleClass : Microsoft.VisualStudio.Modeling.DeleteRule
+		private sealed class EntityTypeInstanceHasRoleInstanceDeletingRuleClass : Microsoft.VisualStudio.Modeling.DeletingRule
 		{
 			[System.Diagnostics.DebuggerStepThrough()]
-			public EntityTypeInstanceHasRoleInstanceDeletedRuleClass()
+			public EntityTypeInstanceHasRoleInstanceDeletingRuleClass()
 			{
 				base.IsEnabled = false;
 			}
@@ -1000,18 +1007,18 @@ namespace Neumont.Tools.ORM.ObjectModel
 			/// Provide the following method in class: 
 			/// Neumont.Tools.ORM.ObjectModel.EntityTypeInstance
 			/// /// <summary>
-			/// /// DeleteRule: typeof(EntityTypeInstanceHasRoleInstance)
+			/// /// DeletingRule: typeof(EntityTypeInstanceHasRoleInstance)
 			/// /// </summary>
-			/// private static void EntityTypeInstanceHasRoleInstanceDeletedRule(ElementDeletedEventArgs e)
+			/// private static void EntityTypeInstanceHasRoleInstanceDeletingRule(ElementDeletingEventArgs e)
 			/// {
 			/// }
 			/// </summary>
 			[System.Diagnostics.DebuggerStepThrough()]
-			public override void ElementDeleted(Microsoft.VisualStudio.Modeling.ElementDeletedEventArgs e)
+			public override void ElementDeleting(Microsoft.VisualStudio.Modeling.ElementDeletingEventArgs e)
 			{
-				Neumont.Tools.Modeling.Diagnostics.TraceUtility.TraceRuleStart(e.ModelElement.Store, "Neumont.Tools.ORM.ObjectModel.EntityTypeInstance.EntityTypeInstanceHasRoleInstanceDeletedRule");
-				EntityTypeInstance.EntityTypeInstanceHasRoleInstanceDeletedRule(e);
-				Neumont.Tools.Modeling.Diagnostics.TraceUtility.TraceRuleEnd(e.ModelElement.Store, "Neumont.Tools.ORM.ObjectModel.EntityTypeInstance.EntityTypeInstanceHasRoleInstanceDeletedRule");
+				Neumont.Tools.Modeling.Diagnostics.TraceUtility.TraceRuleStart(e.ModelElement.Store, "Neumont.Tools.ORM.ObjectModel.EntityTypeInstance.EntityTypeInstanceHasRoleInstanceDeletingRule");
+				EntityTypeInstance.EntityTypeInstanceHasRoleInstanceDeletingRule(e);
+				Neumont.Tools.Modeling.Diagnostics.TraceUtility.TraceRuleEnd(e.ModelElement.Store, "Neumont.Tools.ORM.ObjectModel.EntityTypeInstance.EntityTypeInstanceHasRoleInstanceDeletingRule");
 			}
 		}
 		[Microsoft.VisualStudio.Modeling.RuleOn(typeof(RoleInstanceHasPopulationUniquenessError), Priority=Neumont.Tools.Modeling.FrameworkDomainModel.InlineRulePriority)]
@@ -3855,6 +3862,162 @@ namespace Neumont.Tools.ORM.ObjectModel
 				Neumont.Tools.Modeling.Diagnostics.TraceUtility.TraceRuleEnd(e.ElementLink.Store, "Neumont.Tools.ORM.ObjectModel.ObjectTypeInstance.EntityTypeInstanceHasRoleInstanceRolePlayerChangedRule");
 			}
 		}
+		[Microsoft.VisualStudio.Modeling.RuleOn(typeof(MandatoryConstraint), Priority=Neumont.Tools.Modeling.FrameworkDomainModel.InlineRulePriority)]
+		private sealed class MandatoryConstraintChangedRuleClass : Microsoft.VisualStudio.Modeling.ChangeRule
+		{
+			[System.Diagnostics.DebuggerStepThrough()]
+			public MandatoryConstraintChangedRuleClass()
+			{
+				base.IsEnabled = false;
+			}
+			/// <summary>
+			/// Provide the following method in class: 
+			/// Neumont.Tools.ORM.ObjectModel.ObjectTypeInstance
+			/// /// <summary>
+			/// /// ChangeRule: typeof(MandatoryConstraint)
+			/// /// </summary>
+			/// private static void MandatoryConstraintChangedRule(ElementPropertyChangedEventArgs e)
+			/// {
+			/// }
+			/// </summary>
+			[System.Diagnostics.DebuggerStepThrough()]
+			public override void ElementPropertyChanged(Microsoft.VisualStudio.Modeling.ElementPropertyChangedEventArgs e)
+			{
+				Neumont.Tools.Modeling.Diagnostics.TraceUtility.TraceRuleStart(e.ModelElement.Store, "Neumont.Tools.ORM.ObjectModel.ObjectTypeInstance.MandatoryConstraintChangedRule");
+				ObjectTypeInstance.MandatoryConstraintChangedRule(e);
+				Neumont.Tools.Modeling.Diagnostics.TraceUtility.TraceRuleEnd(e.ModelElement.Store, "Neumont.Tools.ORM.ObjectModel.ObjectTypeInstance.MandatoryConstraintChangedRule");
+			}
+		}
+		[Microsoft.VisualStudio.Modeling.RuleOn(typeof(RoleInstance), Priority=Neumont.Tools.Modeling.FrameworkDomainModel.InlineRulePriority)]
+		private sealed class RoleInstanceAddedRuleClass : Microsoft.VisualStudio.Modeling.AddRule
+		{
+			[System.Diagnostics.DebuggerStepThrough()]
+			public RoleInstanceAddedRuleClass()
+			{
+				base.IsEnabled = false;
+			}
+			/// <summary>
+			/// Provide the following method in class: 
+			/// Neumont.Tools.ORM.ObjectModel.ObjectTypeInstance
+			/// /// <summary>
+			/// /// AddRule: typeof(RoleInstance)
+			/// /// </summary>
+			/// private static void RoleInstanceAddedRule(ElementAddedEventArgs e)
+			/// {
+			/// }
+			/// </summary>
+			[System.Diagnostics.DebuggerStepThrough()]
+			public override void ElementAdded(Microsoft.VisualStudio.Modeling.ElementAddedEventArgs e)
+			{
+				Neumont.Tools.Modeling.Diagnostics.TraceUtility.TraceRuleStart(e.ModelElement.Store, "Neumont.Tools.ORM.ObjectModel.ObjectTypeInstance.RoleInstanceAddedRule");
+				ObjectTypeInstance.RoleInstanceAddedRule(e);
+				Neumont.Tools.Modeling.Diagnostics.TraceUtility.TraceRuleEnd(e.ModelElement.Store, "Neumont.Tools.ORM.ObjectModel.ObjectTypeInstance.RoleInstanceAddedRule");
+			}
+		}
+		[Microsoft.VisualStudio.Modeling.RuleOn(typeof(RoleInstance), Priority=Neumont.Tools.Modeling.FrameworkDomainModel.InlineRulePriority)]
+		private sealed class RoleInstanceDeletedRuleClass : Microsoft.VisualStudio.Modeling.DeleteRule
+		{
+			[System.Diagnostics.DebuggerStepThrough()]
+			public RoleInstanceDeletedRuleClass()
+			{
+				base.IsEnabled = false;
+			}
+			/// <summary>
+			/// Provide the following method in class: 
+			/// Neumont.Tools.ORM.ObjectModel.ObjectTypeInstance
+			/// /// <summary>
+			/// /// DeleteRule: typeof(RoleInstance)
+			/// /// </summary>
+			/// private static void RoleInstanceDeletedRule(ElementDeletedEventArgs e)
+			/// {
+			/// }
+			/// </summary>
+			[System.Diagnostics.DebuggerStepThrough()]
+			public override void ElementDeleted(Microsoft.VisualStudio.Modeling.ElementDeletedEventArgs e)
+			{
+				Neumont.Tools.Modeling.Diagnostics.TraceUtility.TraceRuleStart(e.ModelElement.Store, "Neumont.Tools.ORM.ObjectModel.ObjectTypeInstance.RoleInstanceDeletedRule");
+				ObjectTypeInstance.RoleInstanceDeletedRule(e);
+				Neumont.Tools.Modeling.Diagnostics.TraceUtility.TraceRuleEnd(e.ModelElement.Store, "Neumont.Tools.ORM.ObjectModel.ObjectTypeInstance.RoleInstanceDeletedRule");
+			}
+		}
+		[Microsoft.VisualStudio.Modeling.RuleOn(typeof(ObjectTypePlaysRole), Priority=Neumont.Tools.Modeling.FrameworkDomainModel.InlineRulePriority)]
+		private sealed class RolePlayerAddedRuleClass : Microsoft.VisualStudio.Modeling.AddRule
+		{
+			[System.Diagnostics.DebuggerStepThrough()]
+			public RolePlayerAddedRuleClass()
+			{
+				base.IsEnabled = false;
+			}
+			/// <summary>
+			/// Provide the following method in class: 
+			/// Neumont.Tools.ORM.ObjectModel.ObjectTypeInstance
+			/// /// <summary>
+			/// /// AddRule: typeof(ObjectTypePlaysRole)
+			/// /// </summary>
+			/// private static void RolePlayerAddedRule(ElementAddedEventArgs e)
+			/// {
+			/// }
+			/// </summary>
+			[System.Diagnostics.DebuggerStepThrough()]
+			public override void ElementAdded(Microsoft.VisualStudio.Modeling.ElementAddedEventArgs e)
+			{
+				Neumont.Tools.Modeling.Diagnostics.TraceUtility.TraceRuleStart(e.ModelElement.Store, "Neumont.Tools.ORM.ObjectModel.ObjectTypeInstance.RolePlayerAddedRule");
+				ObjectTypeInstance.RolePlayerAddedRule(e);
+				Neumont.Tools.Modeling.Diagnostics.TraceUtility.TraceRuleEnd(e.ModelElement.Store, "Neumont.Tools.ORM.ObjectModel.ObjectTypeInstance.RolePlayerAddedRule");
+			}
+		}
+		[Microsoft.VisualStudio.Modeling.RuleOn(typeof(ObjectTypePlaysRole), Priority=Neumont.Tools.Modeling.FrameworkDomainModel.InlineRulePriority)]
+		private sealed class RolePlayerDeletedRuleClass : Microsoft.VisualStudio.Modeling.DeleteRule
+		{
+			[System.Diagnostics.DebuggerStepThrough()]
+			public RolePlayerDeletedRuleClass()
+			{
+				base.IsEnabled = false;
+			}
+			/// <summary>
+			/// Provide the following method in class: 
+			/// Neumont.Tools.ORM.ObjectModel.ObjectTypeInstance
+			/// /// <summary>
+			/// /// DeleteRule: typeof(ObjectTypePlaysRole)
+			/// /// </summary>
+			/// private static void RolePlayerDeletedRule(ElementDeletedEventArgs e)
+			/// {
+			/// }
+			/// </summary>
+			[System.Diagnostics.DebuggerStepThrough()]
+			public override void ElementDeleted(Microsoft.VisualStudio.Modeling.ElementDeletedEventArgs e)
+			{
+				Neumont.Tools.Modeling.Diagnostics.TraceUtility.TraceRuleStart(e.ModelElement.Store, "Neumont.Tools.ORM.ObjectModel.ObjectTypeInstance.RolePlayerDeletedRule");
+				ObjectTypeInstance.RolePlayerDeletedRule(e);
+				Neumont.Tools.Modeling.Diagnostics.TraceUtility.TraceRuleEnd(e.ModelElement.Store, "Neumont.Tools.ORM.ObjectModel.ObjectTypeInstance.RolePlayerDeletedRule");
+			}
+		}
+		[Microsoft.VisualStudio.Modeling.RuleOn(typeof(ObjectTypePlaysRole), Priority=Neumont.Tools.Modeling.FrameworkDomainModel.InlineRulePriority)]
+		private sealed class RolePlayerRolePlayerChangedRuleClass : Microsoft.VisualStudio.Modeling.RolePlayerChangeRule
+		{
+			[System.Diagnostics.DebuggerStepThrough()]
+			public RolePlayerRolePlayerChangedRuleClass()
+			{
+				base.IsEnabled = false;
+			}
+			/// <summary>
+			/// Provide the following method in class: 
+			/// Neumont.Tools.ORM.ObjectModel.ObjectTypeInstance
+			/// /// <summary>
+			/// /// RolePlayerChangeRule: typeof(ObjectTypePlaysRole)
+			/// /// </summary>
+			/// private static void RolePlayerRolePlayerChangedRule(RolePlayerChangedEventArgs e)
+			/// {
+			/// }
+			/// </summary>
+			[System.Diagnostics.DebuggerStepThrough()]
+			public override void RolePlayerChanged(Microsoft.VisualStudio.Modeling.RolePlayerChangedEventArgs e)
+			{
+				Neumont.Tools.Modeling.Diagnostics.TraceUtility.TraceRuleStart(e.ElementLink.Store, "Neumont.Tools.ORM.ObjectModel.ObjectTypeInstance.RolePlayerRolePlayerChangedRule");
+				ObjectTypeInstance.RolePlayerRolePlayerChangedRule(e);
+				Neumont.Tools.Modeling.Diagnostics.TraceUtility.TraceRuleEnd(e.ElementLink.Store, "Neumont.Tools.ORM.ObjectModel.ObjectTypeInstance.RolePlayerRolePlayerChangedRule");
+			}
+		}
 		[Microsoft.VisualStudio.Modeling.RuleOn(typeof(ValueTypeInstance), Priority=Neumont.Tools.Modeling.FrameworkDomainModel.InlineRulePriority)]
 		private sealed class ValueTypeInstanceValueChangedRuleClass : Microsoft.VisualStudio.Modeling.ChangeRule
 		{
@@ -4341,32 +4504,6 @@ namespace Neumont.Tools.ORM.ObjectModel
 				Neumont.Tools.Modeling.Diagnostics.TraceUtility.TraceRuleEnd(e.ModelElement.Store, "Neumont.Tools.ORM.ObjectModel.Role.ConstraintRoleSequenceHasRoleDeletedRule");
 			}
 		}
-		[Microsoft.VisualStudio.Modeling.RuleOn(typeof(SetConstraint), Priority=Neumont.Tools.Modeling.FrameworkDomainModel.InlineRulePriority)]
-		private sealed class ConstraintChangedRuleClass : Microsoft.VisualStudio.Modeling.ChangeRule
-		{
-			[System.Diagnostics.DebuggerStepThrough()]
-			public ConstraintChangedRuleClass()
-			{
-				base.IsEnabled = false;
-			}
-			/// <summary>
-			/// Provide the following method in class: 
-			/// Neumont.Tools.ORM.ObjectModel.Role
-			/// /// <summary>
-			/// /// ChangeRule: typeof(SetConstraint)
-			/// /// </summary>
-			/// private static void ConstraintChangedRule(ElementPropertyChangedEventArgs e)
-			/// {
-			/// }
-			/// </summary>
-			[System.Diagnostics.DebuggerStepThrough()]
-			public override void ElementPropertyChanged(Microsoft.VisualStudio.Modeling.ElementPropertyChangedEventArgs e)
-			{
-				Neumont.Tools.Modeling.Diagnostics.TraceUtility.TraceRuleStart(e.ModelElement.Store, "Neumont.Tools.ORM.ObjectModel.Role.ConstraintChangedRule");
-				Role.ConstraintChangedRule(e);
-				Neumont.Tools.Modeling.Diagnostics.TraceUtility.TraceRuleEnd(e.ModelElement.Store, "Neumont.Tools.ORM.ObjectModel.Role.ConstraintChangedRule");
-			}
-		}
 		[Microsoft.VisualStudio.Modeling.RuleOn(typeof(Role), Priority=Neumont.Tools.Modeling.FrameworkDomainModel.InlineRulePriority)]
 		private sealed class RoleChangeRuleClass : Microsoft.VisualStudio.Modeling.ChangeRule
 		{
@@ -4573,6 +4710,32 @@ namespace Neumont.Tools.ORM.ObjectModel
 				Neumont.Tools.Modeling.Diagnostics.TraceUtility.TraceRuleStart(e.ModelElement.Store, "Neumont.Tools.ORM.ObjectModel.Role.UpdatedRolePlayerRequiredErrorsDeleteRule");
 				Role.UpdatedRolePlayerRequiredErrorsDeleteRule(e);
 				Neumont.Tools.Modeling.Diagnostics.TraceUtility.TraceRuleEnd(e.ModelElement.Store, "Neumont.Tools.ORM.ObjectModel.Role.UpdatedRolePlayerRequiredErrorsDeleteRule");
+			}
+		}
+		[Microsoft.VisualStudio.Modeling.RuleOn(typeof(UniquenessConstraint), Priority=Neumont.Tools.Modeling.FrameworkDomainModel.InlineRulePriority)]
+		private sealed class UniquenessConstraintChangedRuleClass : Microsoft.VisualStudio.Modeling.ChangeRule
+		{
+			[System.Diagnostics.DebuggerStepThrough()]
+			public UniquenessConstraintChangedRuleClass()
+			{
+				base.IsEnabled = false;
+			}
+			/// <summary>
+			/// Provide the following method in class: 
+			/// Neumont.Tools.ORM.ObjectModel.Role
+			/// /// <summary>
+			/// /// ChangeRule: typeof(UniquenessConstraint)
+			/// /// </summary>
+			/// private static void UniquenessConstraintChangedRule(ElementPropertyChangedEventArgs e)
+			/// {
+			/// }
+			/// </summary>
+			[System.Diagnostics.DebuggerStepThrough()]
+			public override void ElementPropertyChanged(Microsoft.VisualStudio.Modeling.ElementPropertyChangedEventArgs e)
+			{
+				Neumont.Tools.Modeling.Diagnostics.TraceUtility.TraceRuleStart(e.ModelElement.Store, "Neumont.Tools.ORM.ObjectModel.Role.UniquenessConstraintChangedRule");
+				Role.UniquenessConstraintChangedRule(e);
+				Neumont.Tools.Modeling.Diagnostics.TraceUtility.TraceRuleEnd(e.ModelElement.Store, "Neumont.Tools.ORM.ObjectModel.Role.UniquenessConstraintChangedRule");
 			}
 		}
 	}
@@ -6270,6 +6433,32 @@ namespace Neumont.Tools.ORM.ObjectModel
 				Neumont.Tools.Modeling.Diagnostics.TraceUtility.TraceRuleStart(e.ModelElement.Store, "Neumont.Tools.ORM.ObjectModel.ValueTypeInstance.ValueTypeHasDataTypeAddedRule");
 				ValueTypeInstance.ValueTypeHasDataTypeAddedRule(e);
 				Neumont.Tools.Modeling.Diagnostics.TraceUtility.TraceRuleEnd(e.ModelElement.Store, "Neumont.Tools.ORM.ObjectModel.ValueTypeInstance.ValueTypeHasDataTypeAddedRule");
+			}
+		}
+		[Microsoft.VisualStudio.Modeling.RuleOn(typeof(ValueTypeHasDataType), Priority=Neumont.Tools.Modeling.FrameworkDomainModel.InlineRulePriority)]
+		private sealed class ValueTypeHasDataTypeDeletedRuleClass : Microsoft.VisualStudio.Modeling.DeleteRule
+		{
+			[System.Diagnostics.DebuggerStepThrough()]
+			public ValueTypeHasDataTypeDeletedRuleClass()
+			{
+				base.IsEnabled = false;
+			}
+			/// <summary>
+			/// Provide the following method in class: 
+			/// Neumont.Tools.ORM.ObjectModel.ValueTypeInstance
+			/// /// <summary>
+			/// /// DeleteRule: typeof(ValueTypeHasDataType)
+			/// /// </summary>
+			/// private static void ValueTypeHasDataTypeDeletedRule(ElementDeletedEventArgs e)
+			/// {
+			/// }
+			/// </summary>
+			[System.Diagnostics.DebuggerStepThrough()]
+			public override void ElementDeleted(Microsoft.VisualStudio.Modeling.ElementDeletedEventArgs e)
+			{
+				Neumont.Tools.Modeling.Diagnostics.TraceUtility.TraceRuleStart(e.ModelElement.Store, "Neumont.Tools.ORM.ObjectModel.ValueTypeInstance.ValueTypeHasDataTypeDeletedRule");
+				ValueTypeInstance.ValueTypeHasDataTypeDeletedRule(e);
+				Neumont.Tools.Modeling.Diagnostics.TraceUtility.TraceRuleEnd(e.ModelElement.Store, "Neumont.Tools.ORM.ObjectModel.ValueTypeInstance.ValueTypeHasDataTypeDeletedRule");
 			}
 		}
 		[Microsoft.VisualStudio.Modeling.RuleOn(typeof(ValueTypeHasDataType), Priority=Neumont.Tools.Modeling.FrameworkDomainModel.InlineRulePriority)]

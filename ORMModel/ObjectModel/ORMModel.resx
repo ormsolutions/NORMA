@@ -226,7 +226,7 @@
 		<comment>Model validation error text when two roles played by the same object have an external equality constrant and also have both roles identified as mandatory. {0}=constraint name {1}=model name</comment>
 	</data>
 	<data name="ModelError.Constraint.FrequencyConstraintContradictsInternalUniquenessConstraintError.Text" xml:space="preserve">
-		<value>Frequency constraint '{0}' in model '{2}' contradicts one or more internal uniqueness constraints on fact '{1}'.</value>
+		<value>Frequency constraint '{0}' in model '{2}' contradicts one or more internal uniqueness constraints on FactType '{1}'.</value>
 		<comment>Model validation error text used when a frequency constraint contradicts an internal uniqueness constraint</comment>
 	</data>
 	<data name="ModelError.Constraint.FrequencyConstraintMinMaxError.Text" xml:space="preserve">
@@ -266,19 +266,19 @@
 		<comment>Text used in the ImpliedInternalUniquenessConstraintError' {0}=fact type name {2}=model name</comment>
 	</data>
 	<data name="ModelError.FactType.NMinusOneRule.Text" xml:space="preserve">
-		<value>Uniqueness constraint '{0}' on fact type '{1}' in model '{2}' must span at least {3} roles.</value>
+		<value>Uniqueness constraint '{0}' on FactType '{1}' in model '{2}' must span at least {3} roles.</value>
 		<comment>Text diplayed in the Model Error when the span of the internal constraint is less than the span of the Fact Type - 1. {0}=constraint name, {1}=fact name, {2}=model name, {3}=factarity-1</comment>
 	</data>
 	<data name="ModelError.FactType.RequiresInternalUniquenessConstraint.Message" xml:space="preserve">
-		<value>Fact '{0}' in model '{1}' requires an internal uniqueness constraint with alethic modality.</value>
+		<value>FactType '{0}' in model '{1}' requires an internal uniqueness constraint with alethic modality.</value>
 		<comment>Text displayed in the text of the FactTypeRequiresInternalUniquenessContraintError</comment>
 	</data>
 	<data name="ModelError.FactType.RequiresReading.Message" xml:space="preserve">
-		<value>At least one reading is required for fact type '{0}' in model '{1}'.</value>
+		<value>At least one reading is required for FactType '{0}' in model '{1}'.</value>
 		<comment>Text displayed in the text of the FactTypeRequiresReadingError</comment>
 	</data>
 	<data name="ModelError.FactTypeInstance.TooFewFactTypeRoleInstances.Message" xml:space="preserve">
-		<value>Fact type '{0}' in model '{1}' is missing instance data to completely identify a sample instance.</value>
+		<value>FactType '{0}' in model '{1}' is missing instance data to completely identify a sample instance.</value>
 		<comment>Text displayed when there aren't enough fact type role instances to completely fill a single fact type population row. {0}=facttype {1}=model.</comment>
 	</data>
 	<data name="ModelError.Model.DuplicateConstraintNames.Text" xml:space="preserve">
@@ -290,8 +290,12 @@
 		<comment>Model validation error text used when multiple object types with the same name are loaded into a model.Field 0 is the model name, field 1 is the element name.This is an uncommon condition that should only occur with a hand edit to a model file.</comment>
 	</data>
 	<data name="ModelError.Model.PopulationMandatoryError.Text" xml:space="preserve">
-		<value>'{0}' instance '{1}' in model '{2}' does not participate in required fact type '{3}'.</value>
-		<comment>Model validation error shown when a population violates a mandatory constraint.  Field 0 is the derived name of the instance, field 1 is the model name, field 2 is the facttype name.</comment>
+		<value>'{0}' instance '{1}' in model '{2}' must participate in FactType '{3}'{4}.</value>
+		<comment>Model validation error shown when a population violates a mandatory constraint. Field 0 is the name of the role player, field 1 is the derived name of the instance, field 2 is the model name, field 3 is the name of the first facttype name, field 4 is a placeholder for additional fact types.</comment>
+	</data>
+	<data name="ModelError.Model.PopulationMandatoryError.AdditionalFactTypeText" xml:space="preserve">
+		<value> or FactType '{0}'{1}</value>
+		<comment>Model validation error shown when a population violates a mandatory constraint (additional fact types). Field 0 is the name of the fact type, field 1 is the following fact type (replaced by yet another trailing fact type, if available).</comment>
 	</data>
 	<data name="ModelError.Model.PopulationUniquenessError.FactType.Text" xml:space="preserve">
 		<value>'{0}'  instance '{1}' in model '{2}' violates a uniqueness constraint on FactType '{3}'.</value>
@@ -314,19 +318,19 @@
 		<comment>Text displayed in the text of the PreferredIdentifierRequiresMandatoryError. {0}=ObjectType name {1}=model name</comment>
 	</data>
 	<data name="ModelError.Reading.RequiresUserModification.Message" xml:space="preserve">
-		<value>Fact type '{0}' in model '{1}' requires user modification of the reading text '{2}'.</value>
+		<value>FactType '{0}' in model '{1}' requires user modification of the reading text '{2}'.</value>
 		<comment>Text displayed in the text of the ReadingRequiresUserModificationError. {0}=fact name,{1}=model name,{2}=reading text</comment>
 	</data>
 	<data name="ModelError.Reading.TooFewRoles.Message" xml:space="preserve">
-		<value>Fact '{0}' in model '{1}' has too few roles for the reading with text '{2}'.</value>
+		<value>FactType '{0}' in model '{1}' has too few roles for the reading with text '{2}'.</value>
 		<comment>Text displayed in the text of the TooFewRolesError. {0}=fact name,{1}=model name,{2}=reading text</comment>
 	</data>
 	<data name="ModelError.Reading.TooManyRoles.Message" xml:space="preserve">
-		<value>Fact '{0}' in model '{1}' has too many roles for the reading with text '{2}'.</value>
+		<value>FactType '{0}' in model '{1}' has too many roles for the reading with text '{2}'.</value>
 		<comment>Text displayed in the text of the TooManyRolesError. {0}=fact name,{1}=model name,{2}=reading text</comment>
 	</data>
 	<data name="ModelError.Role.RolePlayerRequired.Message" xml:space="preserve">
-		<value>Role '{0}' in fact '{1}' in model '{2}' requires a role player.</value>
+		<value>Role '{0}' in FactType '{1}' in model '{2}' requires a role player.</value>
 		<comment>Text displayed in the text of the RoleRequiresRolePlayerError. {0} is the (1-based) role number, {1} is the name of the fact, and {2} is the name of the model.</comment>
 	</data>
 	<data name="ModelError.UncategorizedModelError.CategoryDisplayName" xml:space="preserve">
@@ -334,7 +338,7 @@
 		<comment>Category name to display for uncategorized model errors.</comment>
 	</data>
 	<data name="ModelError.ValueConstraint.ValueRangeOverlapError.Role.Message" xml:space="preserve">
-		<value>Role '{2}' of fact '{1}' in model '{0}' has a value constraint with overlapping values.</value>
+		<value>Role '{2}' of FactType '{1}' in model '{0}' has a value constraint with overlapping values.</value>
 		<comment>ValueRangeOverlapError text for a RoleValueConstraint. {0}=model {1}=facttype {2}=role number.</comment>
 	</data>
 	<data name="ModelError.ValueConstraint.ValueRangeOverlapError.ValueType.Message" xml:space="preserve">
@@ -342,7 +346,7 @@
 		<comment>ValueRangeOverlapError text for a ValueTypeConstraint. {0}=valuetype {1}=model.</comment>
 	</data>
 	<data name="ModelError.ValueRange.MaxValueMismatchError.Role.Message" xml:space="preserve">
-		<value>Role '{2}' of fact '{1}' in model '{0}' has a max value that does not match the specified data type.</value>
+		<value>Role '{2}' of FactType '{1}' in model '{0}' has a max value that does not match the specified data type.</value>
 		<comment>Role data type does not match max inclusion. {0}=model {1}=facttype {2}=role number.</comment>
 	</data>
 	<data name="ModelError.ValueRange.MaxValueMismatchError.ValueType.Message" xml:space="preserve">
@@ -350,7 +354,7 @@
 		<comment>data type does not match max inclusion. {0}=valuetype {1}=model.</comment>
 	</data>
 	<data name="ModelError.ValueRange.MinValueMismatchError.Role.Message" xml:space="preserve">
-		<value>Role '{2}' of fact '{1}' in model '{0}' has a min value that does not match the specified data type.</value>
+		<value>Role '{2}' of FactType '{1}' in model '{0}' has a min value that does not match the specified data type.</value>
 		<comment>Role data type does not match min inclusion. {0}=model {1}=facttype {2}=role number.</comment>
 	</data>
 	<data name="ModelError.ValueRange.MinValueMismatchError.ValueType.Message" xml:space="preserve">
@@ -370,12 +374,12 @@
 		<comment>Text to display for the property for the ModelErrorDisplayFilter when it is filtered.</comment>
 	</data>
 	<data name="ModelException.Constraint.EnforceNoForeignFactTypes" xml:space="preserve">
-		<value>A constraint must be attached to a fact in the same model as the constraint.</value>
+		<value>A constraint must be attached to a fact type in the same model as the constraint.</value>
 		<comment>Exception message when an attempt is made to attached facts from an external model to a constraint.</comment>
 	</data>
 	<data name="ModelException.Constraint.EnforceSingleFactTypeForInternalConstraint" xml:space="preserve">
-		<value>Internal constraint can only have one associated fact. The IsInternal property must be cleared before adding roles from a second fact to the constraint.</value>
-		<comment>Exception message when an attempt is made to attached more than one fact to an internal constraint.</comment>
+		<value>Internal constraint can only have one associated fact. The IsInternal property must be cleared before adding roles from a second fact type to the constraint.</value>
+		<comment>Exception message when an attempt is made to attached more than one fact type to an internal constraint.</comment>
 	</data>
 	<data name="ModelException.ConstraintRoleSequenceHasRole.EnforceNoRolePlayerChange" xml:space="preserve">
 		<value>Direct modification of role players on a ConstraintRoleSequenceHasRole relationship is not supported. As an alternative, first delete the link then add a new one.</value>
@@ -399,7 +403,7 @@
 	</data>
 	<data name="ModelException.Fact.AddReading.InvalidReadingText" xml:space="preserve">
 		<value>Reading text is not in a valid format.</value>
-		<comment>The error message that is returned when attempting to add a new reading to a fact and the text is not valid. Validate reading text must have the number of placeholders equal to the number of roles in the FactType. The replacement fields must be ordered and identified using String.Format replacement syntax. For example: "{0} has {1}".</comment>
+		<comment>The error message that is returned when attempting to add a new reading to a fact type and the text is not valid. Validate reading text must have the number of placeholders equal to the number of roles in the FactType. The replacement fields must be ordered and identified using String.Format replacement syntax. For example: "{0} has {1}".</comment>
 	</data>
 	<data name="ModelException.FactType.EnforceNoImplicitBooleanValueTypeRolePlayerChange" xml:space="preserve">
 		<value>The role associated with an implicit boolean value type cannot be changed.</value>
@@ -431,7 +435,7 @@
 	</data>
 	<data name="ModelException.Objectification.ImpliedFactTypesCannotBeObjectified" xml:space="preserve">
 		<value>A FactType that is implied by an Objectification cannot be objectified.</value>
-		<comment>Exception message when an attempt is made to objectify a fact that is implied by another objectification.</comment>
+		<comment>Exception message when an attempt is made to objectify a fact type that is implied by another objectification.</comment>
 	</data>
 	<data name="ModelException.Objectification.ImpliedMustBeImpliedAndIndependentAndCannotPlayRoleInNonImpliedFact" xml:space="preserve">
 		<value>Implied objectifications must be implied, must be independent (if possible), and must only play roles in implied fact types.</value>
@@ -479,7 +483,7 @@
 	</data>
 	<data name="ModelException.Role.IsMandatoryRequiresAttachedFactType" xml:space="preserve">
 		<value>A Role must be owned by a FactType to set the IsMandatory property.</value>
-		<comment>Exception message when an attempt is made to set the IsMandatory property on an unattached role. IsMandatory creates an internal constraint, which is owned by an FactType, so cannot be realized if the parent fact is unknown.</comment>
+		<comment>Exception message when an attempt is made to set the IsMandatory property on an unattached role. IsMandatory creates an internal constraint, which is owned by an FactType, so cannot be realized if the parent FactType is unknown.</comment>
 	</data>
 	<data name="ModelException.SubtypeFact.ConstraintAndRolePatternFixed" xml:space="preserve">
 		<value>The role and constraint patterns of a subtype relationship cannot be modified.</value>

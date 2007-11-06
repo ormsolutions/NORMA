@@ -2920,6 +2920,21 @@ namespace Neumont.Tools.ORM.ObjectModel
 			}
 		}
 		#endregion
+		#region ObjectTypeInstanceCollection opposite domain role accessor
+		/// <summary>
+		/// Gets a list of ObjectTypeInstanceCollection.
+		/// Description for
+		/// Neumont.Tools.ORM.ObjectModel.ObjectTypeHasObjectTypeInstance.ObjectType
+		/// </summary>
+		public virtual DslModeling::LinkedElementCollection<ObjectTypeInstance> ObjectTypeInstanceCollection
+		{
+			[global::System.Diagnostics.DebuggerStepThrough]
+			get
+			{
+				return new DslModeling::LinkedElementCollection<ObjectTypeInstance>(this, global::Neumont.Tools.ORM.ObjectModel.ObjectTypeHasObjectTypeInstance.ObjectTypeDomainRoleId);
+			}
+		}
+		#endregion
 		#region EntityTypeInstanceCollection opposite domain role accessor
 		/// <summary>
 		/// Gets a list of EntityTypeInstanceCollection.
@@ -7074,6 +7089,21 @@ namespace Neumont.Tools.ORM.ObjectModel
 			}
 		}
 		#endregion
+		#region PopulationMandatoryErrorCollection opposite domain role accessor
+		/// <summary>
+		/// Gets a list of PopulationMandatoryErrorCollection.
+		/// Description for
+		/// Neumont.Tools.ORM.ObjectModel.MandatoryConstraintHasPopulationMandatoryError.MandatoryConstraint
+		/// </summary>
+		public virtual DslModeling::LinkedElementCollection<PopulationMandatoryError> PopulationMandatoryErrorCollection
+		{
+			[global::System.Diagnostics.DebuggerStepThrough]
+			get
+			{
+				return new DslModeling::LinkedElementCollection<PopulationMandatoryError>(this, global::Neumont.Tools.ORM.ObjectModel.MandatoryConstraintHasPopulationMandatoryError.MandatoryConstraintDomainRoleId);
+			}
+		}
+		#endregion
 	}
 }
 namespace Neumont.Tools.ORM.ObjectModel
@@ -7414,21 +7444,6 @@ namespace Neumont.Tools.ORM.ObjectModel
 			get
 			{
 				return new DslModeling::LinkedElementCollection<Role>(this, global::Neumont.Tools.ORM.ObjectModel.ConstraintRoleSequenceHasRole.ConstraintRoleSequenceDomainRoleId);
-			}
-		}
-		#endregion
-		#region PopulationMandatoryErrorCollection opposite domain role accessor
-		/// <summary>
-		/// Gets a list of PopulationMandatoryErrorCollection.
-		/// Description for
-		/// Neumont.Tools.ORM.ObjectModel.MandatoryConstraintHasPopulationMandatoryError.MandatoryConstraint
-		/// </summary>
-		public virtual DslModeling::LinkedElementCollection<PopulationMandatoryError> PopulationMandatoryErrorCollection
-		{
-			[global::System.Diagnostics.DebuggerStepThrough]
-			get
-			{
-				return new DslModeling::LinkedElementCollection<PopulationMandatoryError>(this, global::Neumont.Tools.ORM.ObjectModel.MandatoryConstraintHasPopulationMandatoryError.MandatoryConstraintDomainRoleId);
 			}
 		}
 		#endregion
@@ -8340,12 +8355,12 @@ namespace Neumont.Tools.ORM.ObjectModel
 		/// Description for
 		/// Neumont.Tools.ORM.ObjectModel.MandatoryConstraintHasPopulationMandatoryError.PopulationMandatoryError
 		/// </summary>
-		public virtual ConstraintRoleSequence MandatoryConstraint
+		public virtual MandatoryConstraint MandatoryConstraint
 		{
 			[global::System.Diagnostics.DebuggerStepThrough]
 			get
 			{
-				return DslModeling::DomainRoleInfo.GetLinkedElement(this, global::Neumont.Tools.ORM.ObjectModel.MandatoryConstraintHasPopulationMandatoryError.PopulationMandatoryErrorDomainRoleId) as ConstraintRoleSequence;
+				return DslModeling::DomainRoleInfo.GetLinkedElement(this, global::Neumont.Tools.ORM.ObjectModel.MandatoryConstraintHasPopulationMandatoryError.PopulationMandatoryErrorDomainRoleId) as MandatoryConstraint;
 			}
 			[global::System.Diagnostics.DebuggerStepThrough]
 			set
@@ -14867,6 +14882,26 @@ namespace Neumont.Tools.ORM.ObjectModel
 			get
 			{
 				return new DslModeling::LinkedElementCollection<PopulationMandatoryError>(this, global::Neumont.Tools.ORM.ObjectModel.ObjectTypeInstanceHasPopulationMandatoryError.ObjectTypeInstanceDomainRoleId);
+			}
+		}
+		#endregion
+		#region ObjectType opposite domain role accessor
+		/// <summary>
+		/// Gets or sets ObjectType.
+		/// Description for
+		/// Neumont.Tools.ORM.ObjectModel.ObjectTypeHasObjectTypeInstance.ObjectTypeInstance
+		/// </summary>
+		public virtual ObjectType ObjectType
+		{
+			[global::System.Diagnostics.DebuggerStepThrough]
+			get
+			{
+				return DslModeling::DomainRoleInfo.GetLinkedElement(this, global::Neumont.Tools.ORM.ObjectModel.ObjectTypeHasObjectTypeInstance.ObjectTypeInstanceDomainRoleId) as ObjectType;
+			}
+			[global::System.Diagnostics.DebuggerStepThrough]
+			set
+			{
+				DslModeling::DomainRoleInfo.SetLinkedElement(this, global::Neumont.Tools.ORM.ObjectModel.ObjectTypeHasObjectTypeInstance.ObjectTypeInstanceDomainRoleId, value);
 			}
 		}
 		#endregion

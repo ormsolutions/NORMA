@@ -104,9 +104,9 @@
 			<arg:AddRule methodName="EntityTypeInstanceHasRoleInstanceAddedRule">
 				<arg:RuleOn targetType="EntityTypeInstanceHasRoleInstance"/>
 			</arg:AddRule>
-			<arg:DeleteRule methodName="EntityTypeInstanceHasRoleInstanceDeletedRule">
+			<arg:DeletingRule methodName="EntityTypeInstanceHasRoleInstanceDeletingRule">
 				<arg:RuleOn targetType="EntityTypeInstanceHasRoleInstance"/>
-			</arg:DeleteRule>
+			</arg:DeletingRule>
 			<arg:DeleteRule methodName="RoleInstanceHasPopulationUniquenessErrorDeletedRule">
 				<arg:RuleOn targetType="RoleInstanceHasPopulationUniquenessError"/>
 			</arg:DeleteRule>
@@ -484,6 +484,24 @@
 			<arg:RolePlayerChangeRule methodName="EntityTypeInstanceHasRoleInstanceRolePlayerChangedRule">
 				<arg:RuleOn targetType="EntityTypeInstanceHasRoleInstance"/>
 			</arg:RolePlayerChangeRule>
+			<arg:ChangeRule methodName="MandatoryConstraintChangedRule">
+				<arg:RuleOn targetType="MandatoryConstraint"/>
+			</arg:ChangeRule>
+			<arg:AddRule methodName="RoleInstanceAddedRule">
+				<arg:RuleOn targetType="RoleInstance"/>
+			</arg:AddRule>
+			<arg:DeleteRule methodName="RoleInstanceDeletedRule">
+				<arg:RuleOn targetType="RoleInstance"/>
+			</arg:DeleteRule>
+			<arg:AddRule methodName="RolePlayerAddedRule">
+				<arg:RuleOn targetType="ObjectTypePlaysRole"/>
+			</arg:AddRule>
+			<arg:DeleteRule methodName="RolePlayerDeletedRule">
+				<arg:RuleOn targetType="ObjectTypePlaysRole"/>
+			</arg:DeleteRule>
+			<arg:RolePlayerChangeRule methodName="RolePlayerRolePlayerChangedRule">
+				<arg:RuleOn targetType="ObjectTypePlaysRole"/>
+			</arg:RolePlayerChangeRule>
 			<arg:ChangeRule methodName="ValueTypeInstanceValueChangedRule">
 				<arg:RuleOn targetType="ValueTypeInstance"/>
 			</arg:ChangeRule>
@@ -553,9 +571,6 @@
 			<arg:DeleteRule methodName="ConstraintRoleSequenceHasRoleDeletedRule">
 				<arg:RuleOn targetType="ConstraintRoleSequenceHasRole"/>
 			</arg:DeleteRule>
-			<arg:ChangeRule methodName="ConstraintChangedRule">
-				<arg:RuleOn targetType="SetConstraint"/>
-			</arg:ChangeRule>
 			<arg:ChangeRule methodName="RoleChangeRule">
 				<arg:RuleOn targetType="Role"/>
 			</arg:ChangeRule>
@@ -580,6 +595,9 @@
 			<arg:DeleteRule methodName="UpdatedRolePlayerRequiredErrorsDeleteRule">
 				<arg:RuleOn targetType="FactTypeHasRole"/>
 			</arg:DeleteRule>
+			<arg:ChangeRule methodName="UniquenessConstraintChangedRule">
+				<arg:RuleOn targetType="UniquenessConstraint"/>
+			</arg:ChangeRule>
 		</arg:RuleContainer>
 		<arg:RuleContainer class="SetComparisonConstraint">
 			<arg:AddRule methodName="ConstraintHasRoleSequenceAddedRule" fireBefore="true">
@@ -787,6 +805,9 @@
 			<arg:AddRule methodName="ValueTypeHasDataTypeAddedRule">
 				<arg:RuleOn targetType="ValueTypeHasDataType"/>
 			</arg:AddRule>
+			<arg:DeleteRule methodName="ValueTypeHasDataTypeDeletedRule">
+				<arg:RuleOn targetType="ValueTypeHasDataType"/>
+			</arg:DeleteRule>
 			<arg:RolePlayerChangeRule methodName="ValueTypeHasDataTypeRolePlayerChangeRule">
 				<arg:RuleOn targetType="ValueTypeHasDataType"/>
 			</arg:RolePlayerChangeRule>

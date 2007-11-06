@@ -1193,10 +1193,9 @@ namespace Neumont.Tools.ORM.ObjectModel
 		#endregion // Base overrides
 		#region IRepresentModelElements Implementation
 		/// <summary>
-		/// Implements IRepresentModelElements.GetRepresentedElements
+		/// Implements <see cref="IRepresentModelElements.GetRepresentedElements"/>
 		/// </summary>
-		/// <returns></returns>
-		protected ORMNamedElement[] GetRepresentedElements()
+		protected new ORMNamedElement[] GetRepresentedElements()
 		{
 			// Pick up all roles played directly by this element. This
 			// will get ObjectTypeCollection, FactTypeCollection, etc, but

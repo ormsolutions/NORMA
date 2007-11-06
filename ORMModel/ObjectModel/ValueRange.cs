@@ -1404,10 +1404,11 @@ namespace Neumont.Tools.ORM.ObjectModel
 			}
 		}
 		/// <summary>
-		/// Implements IRepresentModelElements.GetRepresentedElements
+		/// Implements <see cref="IRepresentModelElements.GetRepresentedElements"/>
 		/// </summary>
-		protected ModelElement[] GetRepresentedElements()
+		protected new ModelElement[] GetRepresentedElements()
 		{
+			// Reimplement to get the grandparent ValueConstraint instead of the parent ValueRange
 			return new ModelElement[] { this.ValueRange.ValueConstraint };
 		}
 		ModelElement[] IRepresentModelElements.GetRepresentedElements()
@@ -1455,10 +1456,11 @@ namespace Neumont.Tools.ORM.ObjectModel
 			}
 		}
 		/// <summary>
-		/// Implements IRepresentModelElements.GetRepresentedElements
+		/// Implements <see cref="IRepresentModelElements.GetRepresentedElements"/>
 		/// </summary>
-		protected ModelElement[] GetRepresentedElements()
+		protected new ModelElement[] GetRepresentedElements()
 		{
+			// Reimplement to get the grandparent ValueConstraint instead of the parent ValueRange
 			return new ModelElement[] { this.ValueRange.ValueConstraint };
 		}
 		ModelElement[] IRepresentModelElements.GetRepresentedElements()
@@ -1472,8 +1474,9 @@ namespace Neumont.Tools.ORM.ObjectModel
 	/// This is the model error message for value ranges that overlap
 	/// </summary>
 	[ModelErrorDisplayFilter(typeof(DataTypeAndValueErrorCategory))]
-	public partial class ValueRangeOverlapError : IRepresentModelElements
+	public partial class ValueRangeOverlapError
 	{
+		#region Base overrides
 		/// <summary>
 		/// GenerateErrorText
 		/// </summary>
@@ -1515,21 +1518,7 @@ namespace Neumont.Tools.ORM.ObjectModel
 				return RegenerateErrorTextEvents.OwnerNameChange | RegenerateErrorTextEvents.ModelNameChange;
 			}
 		}
-		#region IRepresentModelElements Members
-		/// <summary>
-		/// GetRepresentedElements
-		/// </summary>
-		/// <returns></returns>
-
-		public ModelElement[] GetRepresentedElements()
-		{
-			return new ModelElement[] { this.ValueConstraint };
-		}
-		ModelElement[] IRepresentModelElements.GetRepresentedElements()
-		{
-			return GetRepresentedElements();
-		}
-		#endregion // IRepresentModelElements Members
+		#endregion // Base overrides
 	}
 	#endregion // ValueRangeOverlapError
 }

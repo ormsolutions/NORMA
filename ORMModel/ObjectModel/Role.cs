@@ -972,6 +972,20 @@ namespace Neumont.Tools.ORM.ObjectModel
 					yield return requiredError;
 				}
 			}
+			if (0 != (filter & (ModelErrorUses.DisplayPrimary)))
+			{
+				foreach (ConstraintRoleSequence sequence in ConstraintRoleSequenceCollection)
+				{
+					MandatoryConstraint mandatoryConstraint = sequence as MandatoryConstraint;
+					if (mandatoryConstraint != null)
+					{
+						foreach (PopulationMandatoryError populationMandatoryError in mandatoryConstraint.PopulationMandatoryErrorCollection)
+						{
+							yield return populationMandatoryError;
+						}
+					}
+				}
+			}
 			if (filter == (ModelErrorUses)(-1))
 			{
 				ReadOnlyCollection<RoleInstance> roleInstances = RoleInstance.GetLinksToObjectTypeInstanceCollection(this);
@@ -1007,7 +1021,6 @@ namespace Neumont.Tools.ORM.ObjectModel
 		{
 			// Calls added here need corresponding delayed calls in DelayValidateErrors
 			VerifyRolePlayerRequiredForRule(notifyAdded);
-			ValidatePopulationMandatoryError(notifyAdded);
 			ValidatePopulationUniquenessError(notifyAdded);
 		}
 		void IModelErrorOwner.ValidateErrors(INotifyElementAdded notifyAdded)
@@ -1020,7 +1033,6 @@ namespace Neumont.Tools.ORM.ObjectModel
 		protected new void DelayValidateErrors()
 		{
 			FrameworkDomainModel.DelayValidateElement(this, DelayValidateRolePlayerRequiredError);
-			FrameworkDomainModel.DelayValidateElement(this, DelayValidatePopulationMandatoryError);
 			FrameworkDomainModel.DelayValidateElement(this, DelayValidatePopulationUniquenessError);
 		}
 		void IModelErrorOwner.DelayValidateErrors()
@@ -1498,7 +1510,7 @@ namespace Neumont.Tools.ORM.ObjectModel
 		}
 	}
 	[ModelErrorDisplayFilter(typeof(FactTypeDefinitionErrorCategory))]
-	public partial class RolePlayerRequiredError : IRepresentModelElements
+	public partial class RolePlayerRequiredError
 	{
 		#region Base overrides
 		/// <summary>
@@ -1542,19 +1554,5 @@ namespace Neumont.Tools.ORM.ObjectModel
 			}
 		}
 		#endregion // Base overrides
-		#region IRepresentModelElements Implementation
-		/// <summary>
-		/// Implements IRepresentModelElements.GetRepresentedElements
-		/// </summary>
-		/// <returns></returns>
-		protected ModelElement[] GetRepresentedElements()
-		{
-			return new ModelElement[] { Role };
-		}
-		ModelElement[] IRepresentModelElements.GetRepresentedElements()
-		{
-			return GetRepresentedElements();
-		}
-		#endregion // IRepresentModelElements Implementation
 	}
 }

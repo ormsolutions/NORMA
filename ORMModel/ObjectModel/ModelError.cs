@@ -314,7 +314,7 @@ namespace Neumont.Tools.ORM.ObjectModel
 	public delegate void AssociatedErrorElementCallback(ModelElement associatedElement);
 	#endregion // AssociatedErrorElementCallback
 	#region ModelError class
-	public abstract partial class ModelError
+	public abstract partial class ModelError : IRepresentModelElements
 	{
 		#region Member Variables
 		private object myTaskData;
@@ -488,7 +488,7 @@ namespace Neumont.Tools.ORM.ObjectModel
 		/// <param name="callback"><see cref="AssociatedErrorElementCallback"/> delegate</param>
 		public static void WalkAssociatedElements(ModelElement associatedElement, AssociatedErrorElementCallback callback)
 		{
-			callback(associatedElement);
+			WalkAssociatedElementsHelper(associatedElement, callback, null);
 
 			ElementLink elementLink;
 			IElementLinkRoleHasIndirectModelErrorOwner indirectOwnerLink;
@@ -502,12 +502,12 @@ namespace Neumont.Tools.ORM.ObjectModel
 				{
 					for (int i = 0; i < roleCount; ++i)
 					{
-						WalkAssociatedElementsHelper(DomainRoleInfo.GetRolePlayer(elementLink, guids[i]), callback);
+						WalkAssociatedElementsHelper(DomainRoleInfo.GetRolePlayer(elementLink, guids[i]), callback, null);
 					}
 				}
 			}
 		}
-		private static void WalkAssociatedElementsHelper(ModelElement element, AssociatedErrorElementCallback callback)
+		private static void WalkAssociatedElementsHelper(ModelElement element, AssociatedErrorElementCallback callback, Predicate<ModelElement> filter)
 		{
 			if (element is IModelErrorOwner)
 			{
@@ -525,7 +525,18 @@ namespace Neumont.Tools.ORM.ObjectModel
 					{
 						foreach (ModelElement linkedElement in element.Store.DomainDataDirectory.FindDomainRole(indirectRoles[i]).GetLinkedElements(element))
 						{
-							WalkAssociatedElementsHelper(linkedElement, callback);
+							if (filter != null && filter(linkedElement))
+							{
+								continue;
+							}
+							WalkAssociatedElementsHelper(
+								linkedElement,
+								callback,
+								delegate(ModelElement testElement)
+								{
+									return testElement == element ||
+										(filter != null && filter(testElement));
+								});
 						}
 					}
 				}
@@ -578,6 +589,20 @@ namespace Neumont.Tools.ORM.ObjectModel
 			return hasError;
 		}
 		#endregion //Has Errors Static Function
+		#region IRepresentModelElements Implementation
+		/// <summary>
+		/// Default implementation of <see cref="IRepresentModelElements.GetRepresentedElements"/>
+		/// based on the <see cref="ElementAssociatedWithModelError"/> relationship.
+		/// </summary>
+		protected ModelElement[] GetRepresentedElements()
+		{
+			return ElementAssociatedWithModelError.GetAssociatedElementCollection(this).ToArray();
+		}
+		ModelElement[] IRepresentModelElements.GetRepresentedElements()
+		{
+			return GetRepresentedElements();
+		}
+		#endregion // IRepresentModelElements Implementation
 	}
 	#endregion // ModelError class
 }

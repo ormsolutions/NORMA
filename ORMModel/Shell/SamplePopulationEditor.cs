@@ -261,7 +261,6 @@ namespace Neumont.Tools.ORM.Shell
 				tree.Root = null;
 				if (myInEvents)
 				{
-					myInEvents = false;
 					tree.DelayRedraw = false;
 				}
 				this.vtrSamplePopulation.Tree = null;
@@ -270,6 +269,10 @@ namespace Neumont.Tools.ORM.Shell
 
 		private void ConnectTree()
 		{
+			if (myInEvents && myRepopulated)
+			{
+				return;
+			}
 			SamplePopulationVirtualTree spvt = new SamplePopulationVirtualTree(myBranch, (myBranch as IMultiColumnBranch).ColumnCount);
 			this.vtrSamplePopulation.MultiColumnTree = spvt;
 		}
@@ -424,6 +427,7 @@ namespace Neumont.Tools.ORM.Shell
 			classInfo = dataDirectory.FindDomainRelationship(EntityTypeHasPreferredIdentifier.DomainClassId);
 			eventManager.AddOrRemoveHandler(classInfo, new EventHandler<ElementAddedEventArgs>(EntityTypeHasPreferredIdentifierAddedEvent), action);
 			eventManager.AddOrRemoveHandler(classInfo, new EventHandler<ElementDeletedEventArgs>(EntityTypeHasPreferredIdentifierRemovedEvent), action);
+			eventManager.AddOrRemoveHandler(classInfo, new EventHandler<RolePlayerChangedEventArgs>(EntityTypeHasPreferredIdentifierRolePlayerChangedEvent), action);
 
 			classInfo = dataDirectory.FindDomainRelationship(ConstraintRoleSequenceHasRole.DomainClassId);
 			eventManager.AddOrRemoveHandler(classInfo, new EventHandler<ElementAddedEventArgs>(EntityTypeHasPreferredIdentifierRoleAddedEvent), action);
@@ -450,7 +454,7 @@ namespace Neumont.Tools.ORM.Shell
 				if (tree != null)
 				{
 					myInEvents = true;
-					this.vtrSamplePopulation.Tree.DelayRedraw = true;
+					tree.DelayRedraw = true;
 				}
 			}
 		}
@@ -460,7 +464,16 @@ namespace Neumont.Tools.ORM.Shell
 			if (myInEvents)
 			{
 				myInEvents = false;
-				this.vtrSamplePopulation.Tree.DelayRedraw = false;
+				VirtualTreeControl treeControl = this.vtrSamplePopulation;
+				ITree tree = treeControl.Tree;
+				if (tree != null)
+				{
+					tree.DelayRedraw = false;
+				}
+				if (myRepopulated && treeControl.Visible)
+				{
+					ConnectTree();
+				}
 			}
 		}
 
@@ -471,7 +484,7 @@ namespace Neumont.Tools.ORM.Shell
 				return;
 			}
 			FactType factType = (e.ModelElement as FactTypeHasRole).FactType;
-			if (factType != null && factType == mySelectedFactType)
+			if (!factType.IsDeleted && factType == mySelectedFactType)
 			{
 				PopulateControlForFactType();
 			}
@@ -483,25 +496,56 @@ namespace Neumont.Tools.ORM.Shell
 				return;
 			}
 			FactType factType = (e.ModelElement as FactTypeHasRole).FactType;
-			if (factType != null && !factType.IsDeleted && factType == mySelectedFactType)
+			if (!factType.IsDeleted && factType == mySelectedFactType)
 			{
 				PopulateControlForFactType();
 			}
 		}
 		#endregion
 		#region Entity Type Instance Event Handlers
+		private void ProcessPreferredIdentifierEvent(EntityTypeHasPreferredIdentifier link, ObjectType entityType, UniquenessConstraint preferredIdentifier)
+		{
+			Debug.Assert(!myRepopulated);
+			ObjectType selectedEntityType;
+			FactType selectedFactType;
+			if (entityType == null)
+			{
+				entityType = link.PreferredIdentifierFor;
+			}
+			if (null != (selectedEntityType = mySelectedEntityType))
+			{
+				if (!entityType.IsDeleted && entityType == selectedEntityType)
+				{
+					PopulateControlForEntityType();
+				}
+			}
+			else if (null != (selectedFactType = mySelectedFactType))
+			{
+				if (preferredIdentifier == null)
+				{
+					preferredIdentifier = link.PreferredIdentifier;
+				}
+				Role identifierRole;
+				Role identifiedRole;
+				LinkedElementCollection<Role> roles;
+				if (!preferredIdentifier.IsDeleted &&
+					preferredIdentifier.IsInternal &&
+					(roles = preferredIdentifier.RoleCollection).Count == 1 &&
+					(identifierRole = roles[0]).FactType == selectedFactType &&
+					null != (identifiedRole = identifierRole.OppositeRole as Role) &&
+					entityType == identifiedRole.RolePlayer)
+				{
+					PopulateControlForFactType();
+				}
+			}
+		}
 		private void EntityTypeHasPreferredIdentifierAddedEvent(object sender, ElementAddedEventArgs e)
 		{
 			if (myRepopulated)
 			{
 				return;
 			}
-			EntityTypeHasPreferredIdentifier link = e.ModelElement as EntityTypeHasPreferredIdentifier;
-			ObjectType entityType = link.PreferredIdentifierFor;
-			if(entityType != null && entityType == mySelectedEntityType)
-			{
-				PopulateControlForEntityType();
-			}
+			ProcessPreferredIdentifierEvent((EntityTypeHasPreferredIdentifier)e.ModelElement, null, null);
 		}
 
 		private void EntityTypeHasPreferredIdentifierRemovedEvent(object sender, ElementDeletedEventArgs e)
@@ -510,11 +554,30 @@ namespace Neumont.Tools.ORM.Shell
 			{
 				return;
 			}
-			EntityTypeHasPreferredIdentifier link = e.ModelElement as EntityTypeHasPreferredIdentifier;
-			ObjectType entityType = link.PreferredIdentifierFor;
-			if (entityType != null && entityType == mySelectedEntityType)
+			ProcessPreferredIdentifierEvent((EntityTypeHasPreferredIdentifier)e.ModelElement, null, null);
+		}
+
+		private void EntityTypeHasPreferredIdentifierRolePlayerChangedEvent(object sender, RolePlayerChangedEventArgs e)
+		{
+			if (myRepopulated)
 			{
-				PopulateControlForEntityType();
+				return;
+			}
+			EntityTypeHasPreferredIdentifier link = (EntityTypeHasPreferredIdentifier)e.ElementLink;
+			ObjectType entityType = null;
+			UniquenessConstraint preferredIdentifier = null;
+			if (e.DomainRole.Id == EntityTypeHasPreferredIdentifier.PreferredIdentifierForDomainRoleId)
+			{
+				entityType = (ObjectType)e.OldRolePlayer;
+			}
+			else
+			{
+				preferredIdentifier = (UniquenessConstraint)e.OldRolePlayer;
+			}
+			ProcessPreferredIdentifierEvent(link, entityType, preferredIdentifier);
+			if (!myRepopulated)
+			{
+				ProcessPreferredIdentifierEvent(link, null, null);
 			}
 		}
 
@@ -639,6 +702,7 @@ namespace Neumont.Tools.ORM.Shell
 			private int myColumnCount;
 			private Store myStore;
 			private bool myIsReadOnly;
+			private bool myIgnoreEvents;
 			private BranchModificationEventHandler myModificationEvents;
 			#endregion // Member Variables
 			#region Construction
@@ -705,12 +769,12 @@ namespace Neumont.Tools.ORM.Shell
 							ObjectType rolePlayer = role.RolePlayer;
 							if (rolePlayer != null)
 							{
-								IList instances = rolePlayer.IsValueType ? (IList)rolePlayer.ValueTypeInstanceCollection : rolePlayer.EntityTypeInstanceCollection;
+								LinkedElementCollection<ObjectTypeInstance> instances = rolePlayer.ObjectTypeInstanceCollection;
 								int instanceCount = instances.Count;
 								string[] strings = new string[instanceCount];
 								for (int i = 0; i < instanceCount; ++i)
 								{
-									strings[i] = (instances[i] as ObjectTypeInstance).Name;
+									strings[i] = instances[i].Name;
 								}
 								myInstances = instances;
 								return strings;
@@ -1002,7 +1066,10 @@ namespace Neumont.Tools.ORM.Shell
 			}
 			#endregion // CellEditContext class, used for label editing
 			#region IBranch Interface Members
-			public virtual VirtualTreeLabelEditData BeginLabelEdit(int row, int column, VirtualTreeLabelEditActivationStyles activationStyle)
+			/// <summary>
+			/// Implements <see cref="IBranch.BeginLabelEdit"/>
+			/// </summary>
+			protected VirtualTreeLabelEditData BeginLabelEdit(int row, int column, VirtualTreeLabelEditActivationStyles activationStyle)
 			{
 				if (IsFullRowSelectColumn(column) || row < 0)
 				{
@@ -1012,13 +1079,25 @@ namespace Neumont.Tools.ORM.Shell
 				}
 				return VirtualTreeLabelEditData.Default;
 			}
-
-			public virtual LabelEditResult CommitLabelEdit(int row, int column, string newText)
+			VirtualTreeLabelEditData IBranch.BeginLabelEdit(int row, int column, VirtualTreeLabelEditActivationStyles activationStyle)
+			{
+				return BeginLabelEdit(row, column, activationStyle);
+			}
+			/// <summary>
+			/// Implements <see cref="IBranch.CommitLabelEdit"/>
+			/// </summary>
+			protected static LabelEditResult CommitLabelEdit(int row, int column, string newText)
 			{
 				return LabelEditResult.CancelEdit;
 			}
-
-			public virtual BranchFeatures Features
+			LabelEditResult IBranch.CommitLabelEdit(int row, int column, string newText)
+			{
+				return CommitLabelEdit(row, column, newText);
+			}
+			/// <summary>
+			/// Implements <see cref="IBranch.Features"/>
+			/// </summary>
+			protected BranchFeatures Features
 			{
 				get
 				{
@@ -1026,13 +1105,28 @@ namespace Neumont.Tools.ORM.Shell
 					return myIsReadOnly ? features : features | BranchFeatures.DelayedLabelEdits | BranchFeatures.ExplicitLabelEdits | BranchFeatures.InsertsAndDeletes;
 				}
 			}
-
-			public virtual VirtualTreeAccessibilityData GetAccessibilityData(int row, int column)
+			BranchFeatures IBranch.Features
+			{
+				get
+				{
+					return Features;
+				}
+			}
+			/// <summary>
+			/// Implements <see cref="IBranch.GetAccessibilityData"/>
+			/// </summary>
+			protected static VirtualTreeAccessibilityData GetAccessibilityData(int row, int column)
 			{
 				return VirtualTreeAccessibilityData.Empty;
 			}
-			
-			public virtual VirtualTreeDisplayData GetDisplayData(int row, int column, VirtualTreeDisplayDataMasks requiredData)
+			VirtualTreeAccessibilityData IBranch.GetAccessibilityData(int row, int column)
+			{
+				return GetAccessibilityData(row, column);
+			}
+			/// <summary>
+			/// Implements <see cref="IBranch.GetDisplayData"/>
+			/// </summary>
+			protected VirtualTreeDisplayData GetDisplayData(int row, int column, VirtualTreeDisplayDataMasks requiredData)
 			{
 				VirtualTreeDisplayData retVal = VirtualTreeDisplayData.Empty;
 				if (myIsReadOnly)
@@ -1045,13 +1139,25 @@ namespace Neumont.Tools.ORM.Shell
 				}
 				return retVal;
 			}
-			
-			public virtual object GetObject(int row, int column, ObjectStyle style, ref int options)
+			VirtualTreeDisplayData IBranch.GetDisplayData(int row, int column, VirtualTreeDisplayDataMasks requiredData)
+			{
+				return GetDisplayData(row, column, requiredData);
+			}
+			/// <summary>
+			/// Implements <see cref="IBranch.GetObject"/>
+			/// </summary>
+			protected static object GetObject(int row, int column, ObjectStyle style, ref int options)
 			{
 				return null;
 			}
-
-			public virtual string GetText(int row, int column)
+			object IBranch.GetObject(int row, int column, ObjectStyle style, ref int options)
+			{
+				return GetObject(row, column, style, ref options);
+			}
+			/// <summary>
+			/// Implements <see cref="IBranch.GetText"/>
+			/// </summary>
+			protected string GetText(int row, int column)
 			{
 				if (IsFullRowSelectColumn(column))
 				{
@@ -1067,22 +1173,43 @@ namespace Neumont.Tools.ORM.Shell
 					return string.Empty;
 				}
 			}
-
-			public virtual string GetTipText(int row, int column, ToolTipType tipType)
+			string IBranch.GetText(int row, int column)
+			{
+				return GetText(row, column);
+			}
+			/// <summary>
+			/// Implements <see cref="IBranch.GetTipText"/>
+			/// </summary>
+			protected static string GetTipText(int row, int column, ToolTipType tipType)
 			{
 				return null;
 			}
-
-			public virtual bool IsExpandable(int row, int column)
+			string IBranch.GetTipText(int row, int column, ToolTipType tipType)
+			{
+				return GetTipText(row, column, tipType);
+			}
+			/// <summary>
+			/// Implements <see cref="IBranch.IsExpandable"/>
+			/// </summary>
+			protected bool IsExpandable(int row, int column)
 			{
 				return !IsFullRowSelectColumn(column);
 			}
-
-			public virtual LocateObjectData LocateObject(object obj, ObjectStyle style, int locateOptions)
+			bool IBranch.IsExpandable(int row, int column)
+			{
+				return IsExpandable(row, column);
+			}
+			/// <summary>
+			/// Implements <see cref="IBranch.LocateObject"/>
+			/// </summary>
+			protected static LocateObjectData LocateObject(object obj, ObjectStyle style, int locateOptions)
 			{
 				return new LocateObjectData();
 			}
-
+			LocateObjectData IBranch.LocateObject(object obj, ObjectStyle style, int locateOptions)
+			{
+				return LocateObject(obj, style, locateOptions);
+			}
 			/// <summary>
 			/// Manages <see cref="EventHandler{TEventArgs}"/>s in the <see cref="Store"/> needed to listen on changes to a specific <see cref="IBranch"/> type.
 			/// </summary>
@@ -1101,8 +1228,10 @@ namespace Neumont.Tools.ORM.Shell
 				}
 				this.ManageEventHandlers(store, ModelingEventManager.GetModelingEventManager(store), action);
 			}
-
-			public event BranchModificationEventHandler OnBranchModification
+			/// <summary>
+			/// Implements <see cref="IBranch.OnBranchModification"/>
+			/// </summary>
+			protected event BranchModificationEventHandler OnBranchModification
 			{
 				add
 				{
@@ -1126,48 +1255,113 @@ namespace Neumont.Tools.ORM.Shell
 					}
 				}
 			}
-			
-			public virtual void OnDragEvent(object sender, int row, int column, DragEventType eventType, DragEventArgs args)
+			event BranchModificationEventHandler IBranch.OnBranchModification
+			{
+				add
+				{
+					OnBranchModification += value;
+				}
+				remove
+				{
+					OnBranchModification -= value;
+				}
+			}
+			/// <summary>
+			/// Implements <see cref="IBranch.OnDragEvent"/>
+			/// </summary>
+			protected static void OnDragEvent(object sender, int row, int column, DragEventType eventType, DragEventArgs args)
 			{
 			}
-
-			public virtual void OnGiveFeedback(GiveFeedbackEventArgs args, int row, int column)
+			void IBranch.OnDragEvent(object sender, int row, int column, DragEventType eventType, DragEventArgs args)
+			{
+				OnDragEvent(sender, row, column, eventType, args);
+			}
+			/// <summary>
+			/// Implements <see cref="IBranch.OnGiveFeedback"/>
+			/// </summary>
+			protected static void OnGiveFeedback(GiveFeedbackEventArgs args, int row, int column)
 			{
 			}
-
-			public virtual void OnQueryContinueDrag(QueryContinueDragEventArgs args, int row, int column)
+			void IBranch.OnGiveFeedback(GiveFeedbackEventArgs args, int row, int column)
+			{
+				OnGiveFeedback(args, row, column);
+			}
+			/// <summary>
+			/// Implements <see cref="IBranch.OnQueryContinueDrag"/>
+			/// </summary>
+			protected static void OnQueryContinueDrag(QueryContinueDragEventArgs args, int row, int column)
 			{
 			}
-
-			public virtual VirtualTreeStartDragData OnStartDrag(object sender, int row, int column, DragReason reason)
+			void IBranch.OnQueryContinueDrag(QueryContinueDragEventArgs args, int row, int column)
+			{
+				OnQueryContinueDrag(args, row, column);
+			}
+			/// <summary>
+			/// Implements <see cref="IBranch.OnStartDrag"/>
+			/// </summary>
+			protected static VirtualTreeStartDragData OnStartDrag(object sender, int row, int column, DragReason reason)
 			{
 				return VirtualTreeStartDragData.Empty;
 			}
-
-			public virtual StateRefreshChanges ToggleState(int row, int column)
+			VirtualTreeStartDragData IBranch.OnStartDrag(object sender, int row, int column, DragReason reason)
+			{
+				return OnStartDrag(sender, row, column, reason);
+			}
+			/// <summary>
+			/// Implements <see cref="IBranch.ToggleState"/>
+			/// </summary>
+			protected static StateRefreshChanges ToggleState(int row, int column)
 			{
 				return StateRefreshChanges.None;
 			}
-
-			public virtual StateRefreshChanges SynchronizeState(int row, int column, IBranch matchBranch, int matchRow, int matchColumn)
+			StateRefreshChanges IBranch.ToggleState(int row, int column)
+			{
+				return ToggleState(row, column);
+			}
+			/// <summary>
+			/// Implements <see cref="IBranch.SynchronizeState"/>
+			/// </summary>
+			protected static StateRefreshChanges SynchronizeState(int row, int column, IBranch matchBranch, int matchRow, int matchColumn)
 			{
 				return StateRefreshChanges.None;
 			}
-
-			public virtual int UpdateCounter
+			StateRefreshChanges IBranch.SynchronizeState(int row, int column, IBranch matchBranch, int matchRow, int matchColumn)
+			{
+				return SynchronizeState(row, column, matchBranch, matchRow, matchColumn);
+			}
+			/// <summary>
+			/// Implements <see cref="IBranch.UpdateCounter"/>
+			/// </summary>
+			protected static int UpdateCounter
 			{
 				get
 				{
 					return 0;
 				}
 			}
-
-			public virtual int VisibleItemCount
+			int IBranch.UpdateCounter
+			{
+				get
+				{
+					return UpdateCounter;
+				}
+			}
+			/// <summary>
+			/// Implements <see cref="IBranch.VisibleItemCount"/>
+			/// </summary>
+			protected static int VisibleItemCount
 			{
 				get
 				{
 					// Represents the new row
 					return 1;
+				}
+			}
+			int IBranch.VisibleItemCount
+			{
+				get
+				{
+					return VisibleItemCount;
 				}
 			}
 
@@ -1178,27 +1372,49 @@ namespace Neumont.Tools.ORM.Shell
 			{
 				get
 				{
-					return this.VisibleItemCount - 1;
+					return (this as IBranch).VisibleItemCount - 1;
 				}
 			}
 			#endregion // IBranch Interface Members
 			#region IMultiColumnBranch Interface Members
-			public virtual int ColumnCount
+			/// <summary>
+			/// Implements <see cref="IMultiColumnBranch.ColumnCount"/>
+			/// </summary>
+			protected int ColumnCount
 			{
 				get
 				{
 					return this.myColumnCount;
 				}
 			}
-
-			public virtual SubItemCellStyles ColumnStyles(int column)
+			int IMultiColumnBranch.ColumnCount
+			{
+				get
+				{
+					return ColumnCount;
+				}
+			}
+			/// <summary>
+			/// Implements <see cref="IMultiColumnBranch.ColumnStyles"/>
+			/// </summary>
+			protected static SubItemCellStyles ColumnStyles(int column)
 			{
 				return SubItemCellStyles.Simple;
 			}
-
-			public virtual int GetJaggedColumnCount(int row)
+			SubItemCellStyles IMultiColumnBranch.ColumnStyles(int column)
+			{
+				return ColumnStyles(column);
+			}
+			/// <summary>
+			/// Impelements <see cref="IMultiColumnBranch.GetJaggedColumnCount"/>
+			/// </summary>
+			protected int GetJaggedColumnCount(int row)
 			{
 				return ColumnCount;
+			}
+			int IMultiColumnBranch.GetJaggedColumnCount(int row)
+			{
+				return GetJaggedColumnCount(row);
 			}
 			#endregion // IMultiColumnBranch Interface Members
 			#region Accessor Properties
@@ -1225,6 +1441,26 @@ namespace Neumont.Tools.ORM.Shell
 				set
 				{
 					myIsReadOnly = value;
+				}
+			}
+
+			/// <summary>
+			/// Whether or not the branch is newly repopulated and should ignore events.
+			/// Managed by the outer editor when it is repopulated.
+			/// </summary>
+			public bool IgnoreEvents
+			{
+				get
+				{
+					return myIgnoreEvents;
+				}
+				set
+				{
+					// Note that this could also be done by explicitly disconnecting
+					// events, but this is a relatively expensive process. We may
+					// reconsider this in the future, as well as the possibility of
+					// simply not reconnecting the new branch until events are completed.
+					myIgnoreEvents = value;
 				}
 			}
 			#endregion // Accessor Properties
@@ -1282,9 +1518,12 @@ namespace Neumont.Tools.ORM.Shell
 					{
 						listSeparator = CultureInfo.CurrentCulture.TextInfo.ListSeparator + " ";
 					}
-					if (identifierCount == 1)
+					string refModeString;
+					if (identifier.IsInternal &&
+						identifierCount == 1 &&
+						!string.IsNullOrEmpty((refModeString = rolePlayer.ReferenceModeString)))
 					{
-						outputText.Append(rolePlayer.ReferenceModeString);
+						outputText.Append(refModeString);
 					}
 					else
 					{
@@ -1444,6 +1683,26 @@ namespace Neumont.Tools.ORM.Shell
 				}
 			}
 
+			/// <summary>
+			/// Remove existing items from the branch and add new items based on the current VisibleItemCount.
+			/// </summary>
+			/// <param name="oldItemCount">The number of items previously in the branch</param>
+			protected void Repopulate(int oldItemCount)
+			{
+				if (myModificationEvents != null)
+				{
+					if (oldItemCount != 0)
+					{
+						myModificationEvents(this, BranchModificationEventArgs.DeleteItems(this, 0, oldItemCount));
+					}
+					int newCount = (this as IBranch).VisibleItemCount;
+					if (newCount != 0)
+					{
+						myModificationEvents(this, BranchModificationEventArgs.InsertItems(this, -1, newCount));
+					}
+				}
+			}
+
 			public void RealignDisplay()
 			{
 				if (myModificationEvents != null)
@@ -1491,8 +1750,8 @@ namespace Neumont.Tools.ORM.Shell
 			/// <returns></returns>
 			public virtual Point MoveSelectionForward(int currentCol, int currentRow)
 			{
-				int numCol = this.ColumnCount;
-				int numRow = this.VisibleItemCount;
+				int numCol = (this as IMultiColumnBranch).ColumnCount;
+				int numRow = (this as IBranch).VisibleItemCount;
 				if(currentCol < numCol - 1)
 				{
 					++currentCol;
@@ -1509,7 +1768,7 @@ namespace Neumont.Tools.ORM.Shell
 			public abstract void DeleteInstance(int row, int column);
 			#endregion // Branch Update Methods
 		}
-		private sealed class SamplePopulationValueTypeBranch : SamplePopulationBaseBranch
+		private sealed class SamplePopulationValueTypeBranch : SamplePopulationBaseBranch, IBranch, IMultiColumnBranch
 		{
 			#region Member Variables
 			private readonly List<ValueTypeInstance> myCachedInstances;
@@ -1526,7 +1785,7 @@ namespace Neumont.Tools.ORM.Shell
 			}
 			#endregion
 			#region IBranch Interface Members
-			public sealed override LabelEditResult CommitLabelEdit(int row, int column, string newText)
+			LabelEditResult IBranch.CommitLabelEdit(int row, int column, string newText)
 			{
 				bool isNewRow = (row == NewRowIndex);
 				bool textIsEmpty = String.IsNullOrEmpty(newText);
@@ -1570,7 +1829,7 @@ namespace Neumont.Tools.ORM.Shell
 			/// <summary>
 			/// Set up immediate label edits
 			/// </summary>
-			public sealed override BranchFeatures Features
+			BranchFeatures IBranch.Features
 			{
 				get
 				{
@@ -1578,7 +1837,7 @@ namespace Neumont.Tools.ORM.Shell
 				}
 			}
 
-			public sealed override object GetObject(int row, int column, ObjectStyle style, ref int options)
+			object IBranch.GetObject(int row, int column, ObjectStyle style, ref int options)
 			{
 				if (row == NewRowIndex)
 				{
@@ -1587,7 +1846,7 @@ namespace Neumont.Tools.ORM.Shell
 				return myCachedInstances[row];
 			}
 
-			public sealed override string GetText(int row, int column)
+			string IBranch.GetText(int row, int column)
 			{
 				string text = base.GetText(row, column);
 				if (text != null && text.Length == 0)
@@ -1596,12 +1855,18 @@ namespace Neumont.Tools.ORM.Shell
 				}
 				return text;
 			}
-
-			public sealed override int VisibleItemCount
+			private new int VisibleItemCount
 			{
 				get
 				{
-					return myCachedInstances.Count + base.VisibleItemCount;
+					return myCachedInstances.Count + SamplePopulationBaseBranch.VisibleItemCount;
+				}
+			}
+			int IBranch.VisibleItemCount
+			{
+				get
+				{
+					return VisibleItemCount;
 				}
 			}
 			#endregion // IBranch Interface Members
@@ -1615,8 +1880,8 @@ namespace Neumont.Tools.ORM.Shell
 				eventManager.AddOrRemoveHandler(classInfo, new EventHandler<ElementAddedEventArgs>(ValueTypeHasValueTypeInstanceAddedEvent), action);
 				eventManager.AddOrRemoveHandler(classInfo, new EventHandler<ElementDeletedEventArgs>(ValueTypeHasValueTypeInstanceDeletedEvent), action);
 
-				classInfo = dataDirectory.FindDomainClass(ValueTypeInstance.DomainClassId);
-				eventManager.AddOrRemoveHandler(classInfo, new EventHandler<ElementPropertyChangedEventArgs>(ValueTypeInstanceValueChangedEvent), action);
+				DomainPropertyInfo propertyInfo = dataDirectory.FindDomainProperty(ValueTypeInstance.ValueDomainPropertyId);
+				eventManager.AddOrRemoveHandler(propertyInfo, new EventHandler<ElementPropertyChangedEventArgs>(ValueTypeInstanceValueChangedEvent), action);
 			}
 			private void ValueTypeHasValueTypeInstanceAddedEvent(object sender, ElementAddedEventArgs e)
 			{
@@ -1668,7 +1933,7 @@ namespace Neumont.Tools.ORM.Shell
 				}
 			}
 		}
-		private sealed class SamplePopulationEntityTypeBranch : SamplePopulationBaseBranch
+		private sealed class SamplePopulationEntityTypeBranch : SamplePopulationBaseBranch, IBranch, IMultiColumnBranch
 		{
 			#region Member Variables
 			private readonly List<EntityTypeInstance> myCachedInstances;
@@ -1685,14 +1950,14 @@ namespace Neumont.Tools.ORM.Shell
 			}
 			#endregion
 			#region IBranch Interface Members
-			public sealed override VirtualTreeLabelEditData BeginLabelEdit(int row, int column, VirtualTreeLabelEditActivationStyles activationStyle)
+			VirtualTreeLabelEditData IBranch.BeginLabelEdit(int row, int column, VirtualTreeLabelEditActivationStyles activationStyle)
 			{
 				VirtualTreeLabelEditData retVal = base.BeginLabelEdit(row, column, activationStyle);
 				if (retVal.IsValid)
 				{
 					ObjectType entityType = myEntityType;
 					ObjectType columnRolePlayer = entityType.PreferredIdentifier.RoleCollection[column - 1].RolePlayer;
-					if (columnRolePlayer.IsValueType || columnRolePlayer.PreferredIdentifier != null)
+					if (columnRolePlayer != null && (columnRolePlayer.IsValueType || columnRolePlayer.PreferredIdentifier != null))
 					{
 						LinkedElementCollection<EntityTypeInstance> instances = entityType.EntityTypeInstanceCollection;
 						retVal.CustomInPlaceEdit = new CellEditContext(entityType, entityType.PreferredIdentifier.RoleCollection[column - 1], (row < instances.Count) ? instances[row] : null).CreateInPlaceEditControl();
@@ -1710,7 +1975,7 @@ namespace Neumont.Tools.ORM.Shell
 				return retVal;
 			}
 
-			public sealed override LabelEditResult CommitLabelEdit(int row, int column, string newText)
+			LabelEditResult IBranch.CommitLabelEdit(int row, int column, string newText)
 			{
 				bool delete = newText.Length == 0;
 				Store store = Store;
@@ -1784,7 +2049,7 @@ namespace Neumont.Tools.ORM.Shell
 				return LabelEditResult.CancelEdit;
 			}
 
-			public sealed override object GetObject(int row, int column, ObjectStyle style, ref int options)
+			object IBranch.GetObject(int row, int column, ObjectStyle style, ref int options)
 			{
 				if (style == ObjectStyle.SubItemExpansion)
 				{
@@ -1812,7 +2077,7 @@ namespace Neumont.Tools.ORM.Shell
 				return null;
 			}
 
-			public sealed override string GetText(int row, int column)
+			string IBranch.GetText(int row, int column)
 			{
 				string text = base.GetText(row, column);
 				if (text == null)
@@ -1840,7 +2105,7 @@ namespace Neumont.Tools.ORM.Shell
 				return text;
 			}
 
-			public sealed override bool IsExpandable(int row, int column)
+			bool IBranch.IsExpandable(int row, int column)
 			{
 				if (!base.IsFullRowSelectColumn(column))
 				{
@@ -1854,17 +2119,23 @@ namespace Neumont.Tools.ORM.Shell
 				}
 				return false;
 			}
-
-			public sealed override int VisibleItemCount
+			private new int VisibleItemCount
 			{
 				get
 				{
-					return myCachedInstances.Count + base.VisibleItemCount;
+					return myCachedInstances.Count + SamplePopulationBaseBranch.VisibleItemCount;
+				}
+			}
+			int IBranch.VisibleItemCount
+			{
+				get
+				{
+					return VisibleItemCount;
 				}
 			}
 			#endregion // IBranch Interface Members
 			#region IMultiColumnBranch Interface Members
-			public sealed override SubItemCellStyles ColumnStyles(int column)
+			SubItemCellStyles IMultiColumnBranch.ColumnStyles(int column)
 			{
 				switch (column)
 				{
@@ -1894,30 +2165,34 @@ namespace Neumont.Tools.ORM.Shell
 				eventManager.AddOrRemoveHandler(classInfo, new EventHandler<ElementAddedEventArgs>(EntityTypeHasEntityTypeInstanceAddedEvent), action);
 				eventManager.AddOrRemoveHandler(classInfo, new EventHandler<ElementDeletedEventArgs>(EntityTypeHasEntityTypeInstanceRemovedEvent), action);
 
-				classInfo = dataDirectory.FindDomainClass(ObjectTypeInstance.DomainClassId);
-				eventManager.AddOrRemoveHandler(classInfo, new EventHandler<ElementPropertyChangedEventArgs>(ObjectTypeInstanceNameChangedEvent), action);
+				DomainPropertyInfo propertyInfo = dataDirectory.FindDomainProperty(ObjectTypeInstance.NameChangedDomainPropertyId);
+				eventManager.AddOrRemoveHandler(propertyInfo, new EventHandler<ElementPropertyChangedEventArgs>(ObjectTypeInstanceNameChangedEvent), action);
 
-				classInfo = dataDirectory.FindDomainClass(Role.DomainClassId);
-				eventManager.AddOrRemoveHandler(classInfo, new EventHandler<ElementPropertyChangedEventArgs>(RoleNameChangedEvent), action);
+				propertyInfo = dataDirectory.FindDomainProperty(Role.NameDomainPropertyId);
+				eventManager.AddOrRemoveHandler(propertyInfo, new EventHandler<ElementPropertyChangedEventArgs>(RoleNameChangedEvent), action);
 
 				classInfo = dataDirectory.FindDomainClass(ObjectType.DomainClassId);
-				eventManager.AddOrRemoveHandler(classInfo, new EventHandler<ElementPropertyChangedEventArgs>(ObjectTypeNameChangedEvent), action);
+				propertyInfo = dataDirectory.FindDomainProperty(ObjectType.NameDomainPropertyId);
+				eventManager.AddOrRemoveHandler(classInfo, propertyInfo, new EventHandler<ElementPropertyChangedEventArgs>(ObjectTypeNameChangedEvent), action);
 			}
-
 			private void EntityTypeHasPreferredIdentifierAddedEvent(object sender, ElementAddedEventArgs e)
 			{
 				EntityTypeHasPreferredIdentifier link = e.ModelElement as EntityTypeHasPreferredIdentifier;
 				ObjectType entityType = link.PreferredIdentifierFor;
 				if (entityType != null && !entityType.IsDeleted)
 				{
-					LinkedElementCollection<Role> identifierRoles = myEntityType.PreferredIdentifier.RoleCollection;
-					int identifierCount = identifierRoles.Count;
-					for (int i = 0; i < identifierCount; ++i)
+					UniquenessConstraint currentPreferredIdentifier = myEntityType.PreferredIdentifier;
+					if (currentPreferredIdentifier != null)
 					{
-						if (entityType == identifierRoles[i].RolePlayer)
+						LinkedElementCollection<Role> identifierRoles = currentPreferredIdentifier.RoleCollection;
+						int identifierCount = identifierRoles.Count;
+						for (int i = 0; i < identifierCount; ++i)
 						{
-							EditColumnHeader(i + 1, identifierRoles[i]);
-							EditColumnDisplay(i + 1);
+							if (entityType == identifierRoles[i].RolePlayer)
+							{
+								EditColumnHeader(i + 1, identifierRoles[i]);
+								EditColumnDisplay(i + 1);
+							}
 						}
 					}
 				}
@@ -2002,7 +2277,7 @@ namespace Neumont.Tools.ORM.Shell
 			{
 				EntityTypeHasEntityTypeInstance link = e.ModelElement as EntityTypeHasEntityTypeInstance;
 				ObjectType entityType = link.EntityType;
-				if (entityType != null && !entityType.IsDeleted && entityType == myEntityType)
+				if (entityType != null && !entityType.IsDeleted && entityType == myEntityType && entityType.PreferredIdentifier != null)
 				{
 					myCachedInstances.Add(link.EntityTypeInstance);
 					AddEntityInstanceDisplay(link.EntityTypeInstance);
@@ -2013,7 +2288,7 @@ namespace Neumont.Tools.ORM.Shell
 			{
 				EntityTypeHasEntityTypeInstance link = e.ModelElement as EntityTypeHasEntityTypeInstance;
 				ObjectType entityType = link.EntityType;
-				if (entityType != null && !entityType.IsDeleted && entityType == myEntityType)
+				if (entityType != null && !entityType.IsDeleted && entityType == myEntityType && entityType.PreferredIdentifier != null)
 				{
 					List<EntityTypeInstance> instances = myCachedInstances;
 					int instanceLocation = instances.IndexOf(link.EntityTypeInstance);
@@ -2181,11 +2456,12 @@ namespace Neumont.Tools.ORM.Shell
 				}
 			}
 		}
-		private sealed class SamplePopulationFactTypeBranch : SamplePopulationBaseBranch
+		private sealed class SamplePopulationFactTypeBranch : SamplePopulationBaseBranch, IBranch, IMultiColumnBranch
 		{
 			#region Member Variables
-			private readonly List<FactTypeInstance> myCachedInstances;
 			private readonly FactType myFactType;
+			private List<FactTypeInstance> myCachedFactTypeInstances;
+			private List<EntityTypeInstance> myCachedEntityTypeInstances;
 			private ObjectType myProxyObjectType;
 			#endregion
 			#region Construction
@@ -2193,14 +2469,20 @@ namespace Neumont.Tools.ORM.Shell
 				: base(numColumns, selectedFactType.Store)
 			{
 				myFactType = selectedFactType;
-				ObjectType proxyObjectType;
-				myProxyObjectType = proxyObjectType = ValidateReadOnly();
-				myCachedInstances = new List<FactTypeInstance>();
-				myCachedInstances.AddRange(selectedFactType.FactTypeInstanceCollection);
+				ValidateReadOnlyProxyObject();
+				ObjectType proxyObjectType = myProxyObjectType;
+				if (proxyObjectType != null)
+				{
+					myCachedEntityTypeInstances = new List<EntityTypeInstance>(proxyObjectType.EntityTypeInstanceCollection);
+				}
+				else
+				{
+					myCachedFactTypeInstances = new List<FactTypeInstance>(selectedFactType.FactTypeInstanceCollection);
+				}
 			}
 			#endregion
 			#region IBranch Interface Members
-			public sealed override VirtualTreeLabelEditData BeginLabelEdit(int row, int column, VirtualTreeLabelEditActivationStyles activationStyle)
+			VirtualTreeLabelEditData IBranch.BeginLabelEdit(int row, int column, VirtualTreeLabelEditActivationStyles activationStyle)
 			{
 				VirtualTreeLabelEditData retVal = base.BeginLabelEdit(row, column, activationStyle);
 				if (retVal.IsValid)
@@ -2212,7 +2494,7 @@ namespace Neumont.Tools.ORM.Shell
 					}
 					else
 					{
-						LinkedElementCollection<FactTypeInstance> instances = myFactType.FactTypeInstanceCollection;
+						List<FactTypeInstance> instances = myCachedFactTypeInstances;
 						retVal.CustomInPlaceEdit = new CellEditContext(myFactType.RoleCollection[column - 1].Role, (row < instances.Count) ? instances[row] : null).CreateInPlaceEditControl();
 						retVal.CustomCommit = delegate(VirtualTreeItemInfo itemInfo, Control editControl)
 						{
@@ -2223,7 +2505,7 @@ namespace Neumont.Tools.ORM.Shell
 				}
 				return retVal;
 			}
-			public sealed override LabelEditResult CommitLabelEdit(int row, int column, string newText)
+			LabelEditResult IBranch.CommitLabelEdit(int row, int column, string newText)
 			{
 				bool delete = newText.Length == 0;
 				Store store = Store;
@@ -2231,7 +2513,7 @@ namespace Neumont.Tools.ORM.Shell
 				if (row != NewRowIndex)
 				{
 					FactType selectedFactType = myFactType;
-					FactTypeInstance editInstance = selectedFactType.FactTypeInstanceCollection[row];
+					FactTypeInstance editInstance = myCachedFactTypeInstances[row];
 					FactTypeRoleInstance editRoleInstance = null;
 					LinkedElementCollection<FactTypeRoleInstance> roleInstances = editInstance.RoleInstanceCollection;
 					int instanceCount = roleInstances.Count;
@@ -2268,7 +2550,7 @@ namespace Neumont.Tools.ORM.Shell
 						{
 							using (Transaction t = store.TransactionManager.BeginTransaction(String.Format(ResourceStrings.ModelSamplePopulationEditorEditInstanceTransactionText, "")))
 							{
-								myCachedInstances[row].FindRoleInstance(myFactType.RoleCollection[column-1].Role).Delete();
+								myCachedFactTypeInstances[row].FindRoleInstance(myFactType.RoleCollection[column-1].Role).Delete();
 								ObjectTypeInstance result = RecurseValueTypeInstance(editRoleInstance.ObjectTypeInstance, editRoleInstance.Role.RolePlayer, newText, ref instance, true);
 								ConnectInstance(ref editInstance, result, factRole);
 								t.Commit();
@@ -2312,14 +2594,14 @@ namespace Neumont.Tools.ORM.Shell
 				return LabelEditResult.CancelEdit;
 			}
 
-			public sealed override object GetObject(int row, int column, ObjectStyle style, ref int options)
+			object IBranch.GetObject(int row, int column, ObjectStyle style, ref int options)
 			{
 				if (style == ObjectStyle.SubItemExpansion)
 				{
 					if (IsReadOnly)
 					{
 						ObjectType selectedEntityType = myProxyObjectType;
-						LinkedElementCollection<EntityTypeInstance> instances = selectedEntityType.EntityTypeInstanceCollection;
+						List<EntityTypeInstance> instances = myCachedEntityTypeInstances;
 						Role identifierRole = myFactType.RoleCollection[column - 1].Role;
 						EntityTypeInstance parentInstance = instances[row];
 						EntityTypeInstance editInstance = null;
@@ -2346,7 +2628,7 @@ namespace Neumont.Tools.ORM.Shell
 					else
 					{
 						FactType selectedFactType = myFactType;
-						List<FactTypeInstance> instances = myCachedInstances;
+						List<FactTypeInstance> instances = myCachedFactTypeInstances;
 						Role selectedRole = selectedFactType.RoleCollection[column - 1].Role;
 						FactTypeInstance parentInstance = (row < instances.Count) ? instances[row] : null;
 						EntityTypeInstance editInstance = null;
@@ -2370,7 +2652,7 @@ namespace Neumont.Tools.ORM.Shell
 				return null;
 			}
 
-			public sealed override string GetText(int row, int column)
+			string IBranch.GetText(int row, int column)
 			{
 				string text = base.GetText(row, column);
 				if (text == null)
@@ -2386,13 +2668,13 @@ namespace Neumont.Tools.ORM.Shell
 						ObjectTypeInstance instance = null;
 						if (myProxyObjectType != null && rolePlayer == myProxyObjectType)
 						{
-							instance = myProxyObjectType.EntityTypeInstanceCollection[row];
+							instance = myCachedEntityTypeInstances[row];
 						}
 						else
 						{
 							if (myProxyObjectType != null)
 							{
-								LinkedElementCollection<EntityTypeRoleInstance> roleInstances = myProxyObjectType.EntityTypeInstanceCollection[row].RoleInstanceCollection;
+								LinkedElementCollection<EntityTypeRoleInstance> roleInstances = myCachedEntityTypeInstances[row].RoleInstanceCollection;
 								int roleInstanceCount = roleInstances.Count;
 								for (int i = 0; i < roleInstanceCount; ++i)
 								{
@@ -2408,7 +2690,7 @@ namespace Neumont.Tools.ORM.Shell
 					}
 					else
 					{
-						FactTypeInstance factTypeInstance = myCachedInstances[row];
+						FactTypeInstance factTypeInstance = myCachedFactTypeInstances[row];
 						LinkedElementCollection<FactTypeRoleInstance> factTypeRoleInstances = factTypeInstance.RoleInstanceCollection;
 						int roleInstanceCount = factTypeRoleInstances.Count;
 						FactTypeRoleInstance instance;
@@ -2426,9 +2708,9 @@ namespace Neumont.Tools.ORM.Shell
 				return text;
 			}
 
-			public sealed override bool IsExpandable(int row, int column)
+			bool IBranch.IsExpandable(int row, int column)
 			{
-				if (!base.IsFullRowSelectColumn(column))
+				if (!IsReadOnly && !base.IsFullRowSelectColumn(column))
 				{
 					Role factRole = myFactType.RoleCollection[column - 1].Role;
 					ObjectType rolePlayer = factRole.RolePlayer;
@@ -2440,8 +2722,7 @@ namespace Neumont.Tools.ORM.Shell
 				}
 				return false;
 			}
-
-			public sealed override int VisibleItemCount
+			private new int VisibleItemCount
 			{
 				get
 				{
@@ -2449,19 +2730,26 @@ namespace Neumont.Tools.ORM.Shell
 					{
 						if (myProxyObjectType != null)
 						{
-							return myProxyObjectType.EntityTypeInstanceCollection.Count;
+							return myCachedEntityTypeInstances.Count;
 						}
 					}
 					else
 					{
-						return myCachedInstances.Count + base.VisibleItemCount;
+						return myCachedFactTypeInstances.Count + SamplePopulationBaseBranch.VisibleItemCount;
 					}
 					return 0;
 				}
 			}
+			int IBranch.VisibleItemCount
+			{
+				get
+				{
+					return VisibleItemCount;
+				}
+			}
 			#endregion // IBranch Interface Members
 			#region IMultiColumnBranch Interface Members
-			public sealed override SubItemCellStyles ColumnStyles(int column)
+			SubItemCellStyles IMultiColumnBranch.ColumnStyles(int column)
 			{
 				switch (column)
 				{
@@ -2483,6 +2771,10 @@ namespace Neumont.Tools.ORM.Shell
 				eventManager.AddOrRemoveHandler(classInfo, new EventHandler<ElementAddedEventArgs>(EntityTypeHasPreferredIdentifierAddedEvent), action);
 				eventManager.AddOrRemoveHandler(classInfo, new EventHandler<ElementDeletedEventArgs>(EntityTypeHasPreferredIdentifierRemovedEvent), action);
 
+				classInfo = dataDirectory.FindDomainRelationship(EntityTypeHasEntityTypeInstance.DomainClassId);
+				eventManager.AddOrRemoveHandler(classInfo, new EventHandler<ElementAddedEventArgs>(EntityTypeHasEntityTypeInstanceAddedEvent), action);
+				eventManager.AddOrRemoveHandler(classInfo, new EventHandler<ElementDeletedEventArgs>(EntityTypeHasEntityTypeInstanceRemovedEvent), action);
+
 				classInfo = dataDirectory.FindDomainRelationship(ConstraintRoleSequenceHasRole.DomainClassId);
 				eventManager.AddOrRemoveHandler(classInfo, new EventHandler<ElementAddedEventArgs>(EntityTypeHasPreferredIdentifierRoleAddedEvent), action);
 				eventManager.AddOrRemoveHandler(classInfo, new EventHandler<ElementDeletedEventArgs>(EntityTypeHasPreferredIdentifierRoleRemovedEvent), action);
@@ -2496,19 +2788,20 @@ namespace Neumont.Tools.ORM.Shell
 				eventManager.AddOrRemoveHandler(classInfo, new EventHandler<ElementAddedEventArgs>(FactTypeInstanceHasRoleInstanceAddedEvent), action);
 				eventManager.AddOrRemoveHandler(classInfo, new EventHandler<ElementDeletedEventArgs>(FactTypeInstanceHasRoleInstanceRemovedEvent), action);
 
-				classInfo = dataDirectory.FindDomainClass(Role.DomainClassId);
-				eventManager.AddOrRemoveHandler(classInfo, new EventHandler<ElementPropertyChangedEventArgs>(RoleNameChangedEvent), action);
+				DomainPropertyInfo propertyInfo = dataDirectory.FindDomainProperty(Role.NameDomainPropertyId);
+				eventManager.AddOrRemoveHandler(propertyInfo, new EventHandler<ElementPropertyChangedEventArgs>(RoleNameChangedEvent), action);
 
 				classInfo = dataDirectory.FindDomainRelationship(ObjectTypePlaysRole.DomainClassId);
 				eventManager.AddOrRemoveHandler(classInfo, new EventHandler<ElementAddedEventArgs>(ObjectTypePlaysRoleAddedEvent), action);
 				eventManager.AddOrRemoveHandler(classInfo, new EventHandler<ElementDeletedEventArgs>(ObjectTypePlaysRoleRemovedEvent), action);
 				eventManager.AddOrRemoveHandler(classInfo, new EventHandler<RolePlayerChangedEventArgs>(ObjectTypeRolePlayerChangedEvent), action);
 
-				classInfo = dataDirectory.FindDomainClass(ObjectTypeInstance.DomainClassId);
-				eventManager.AddOrRemoveHandler(classInfo, new EventHandler<ElementPropertyChangedEventArgs>(ObjectTypeInstanceNameChangedEvent), action);
+				propertyInfo = dataDirectory.FindDomainProperty(ObjectTypeInstance.NameChangedDomainPropertyId);
+				eventManager.AddOrRemoveHandler(propertyInfo, new EventHandler<ElementPropertyChangedEventArgs>(ObjectTypeInstanceNameChangedEvent), action);
 
 				classInfo = dataDirectory.FindDomainClass(ObjectType.DomainClassId);
-				eventManager.AddOrRemoveHandler(classInfo, new EventHandler<ElementPropertyChangedEventArgs>(ObjectTypeNameChangedEvent), action);
+				propertyInfo = dataDirectory.FindDomainProperty(ObjectType.NameDomainPropertyId);
+				eventManager.AddOrRemoveHandler(classInfo, propertyInfo, new EventHandler<ElementPropertyChangedEventArgs>(ObjectTypeNameChangedEvent), action);
 			}
 
 			private void ObjectTypeInstanceNameChangedEvent(object sender, ElementPropertyChangedEventArgs e)
@@ -2516,7 +2809,7 @@ namespace Neumont.Tools.ORM.Shell
 				ObjectTypeInstance objectTypeInstance = e.ModelElement as ObjectTypeInstance;
 				if (IsReadOnly)
 				{
-					LinkedElementCollection<EntityTypeInstance> instances = myProxyObjectType.EntityTypeInstanceCollection;
+					List<EntityTypeInstance> instances = myCachedEntityTypeInstances;
 					int instanceCount = instances.Count;
 					for (int i = 0; i < instanceCount; ++i)
 					{
@@ -2534,7 +2827,7 @@ namespace Neumont.Tools.ORM.Shell
 				}
 				else
 				{
-					List<FactTypeInstance> instances = myCachedInstances;
+					List<FactTypeInstance> instances = myCachedFactTypeInstances;
 					int instanceCount = instances.Count;
 					for (int i = 0; i < instanceCount; ++i)
 					{
@@ -2570,20 +2863,7 @@ namespace Neumont.Tools.ORM.Shell
 				}
 				if (!IsReadOnly)
 				{
-					UniquenessConstraint identifier = link.PreferredIdentifier;
-					if (identifier != null && !identifier.IsDeleted)
-					{
-						LinkedElementCollection<Role> identifierRoles = identifier.RoleCollection;
-						int identifierRoleCount = identifierRoles.Count;
-						for (int i = 0; i < identifierRoleCount; ++i)
-						{
-							if (identifierRoles[i].FactType == myFactType)
-							{
-								IsReadOnly = true;
-								break;
-							}
-						}
-					}
+					ValidateReadOnlyProxyObject();
 				}
 			}
 
@@ -2608,7 +2888,7 @@ namespace Neumont.Tools.ORM.Shell
 				}
 				if (IsReadOnly)
 				{
-					ValidateReadOnly();
+					ValidateReadOnlyProxyObject();
 				}
 			}
 
@@ -2639,8 +2919,34 @@ namespace Neumont.Tools.ORM.Shell
 					Role selectedRole = link.Role;
 					if (selectedRole.FactType == myFactType)
 					{
-						IsReadOnly = true;
+						ValidateReadOnlyProxyObject();
 					}
+				}
+			}
+
+			private void EntityTypeHasEntityTypeInstanceAddedEvent(object sender, ElementAddedEventArgs e)
+			{
+				EntityTypeHasEntityTypeInstance link = e.ModelElement as EntityTypeHasEntityTypeInstance;
+				ObjectType entityType = link.EntityType;
+				if (entityType != null && !entityType.IsDeleted && entityType == myProxyObjectType && entityType.PreferredIdentifier != null)
+				{
+					List<EntityTypeInstance> instances = myCachedEntityTypeInstances;
+					instances.Add(link.EntityTypeInstance);
+					base.AddInstanceDisplay(instances.Count - 1);
+				}
+			}
+
+			private void EntityTypeHasEntityTypeInstanceRemovedEvent(object sender, ElementDeletedEventArgs e)
+			{
+				EntityTypeHasEntityTypeInstance link = e.ModelElement as EntityTypeHasEntityTypeInstance;
+				ObjectType entityType = link.EntityType;
+				if (entityType != null && !entityType.IsDeleted && entityType == myProxyObjectType && entityType.PreferredIdentifier != null)
+				{
+					List<EntityTypeInstance> instances = myCachedEntityTypeInstances;
+					int instanceLocation = instances.IndexOf(link.EntityTypeInstance);
+					Debug.Assert(instanceLocation != -1);
+					instances.RemoveAt(instanceLocation);
+					base.RemoveInstanceDisplay(instanceLocation);
 				}
 			}
 
@@ -2668,7 +2974,7 @@ namespace Neumont.Tools.ORM.Shell
 				}
 				if (IsReadOnly)
 				{
-					ValidateReadOnly();
+					ValidateReadOnlyProxyObject();
 				}
 			}
 
@@ -2676,11 +2982,19 @@ namespace Neumont.Tools.ORM.Shell
 			{
 				FactTypeHasFactTypeInstance link = e.ModelElement as FactTypeHasFactTypeInstance;
 				FactType factType = link.FactType;
-				if (!factType.IsDeleted && factType == myFactType)
+				List<FactTypeInstance> instances;
+				if (!factType.IsDeleted &&
+					factType == myFactType &&
+					null != (instances = myCachedFactTypeInstances))
 				{
 					FactTypeInstance factTypeInstance = link.FactTypeInstance;
-					myCachedInstances.Add(factTypeInstance);
-					AddFactInstanceDisplay(factTypeInstance);
+					instances.Add(factTypeInstance);
+					int instanceCount = instances.Count;
+					if (instanceCount > 1)
+					{
+						base.EditInstanceDisplay(instanceCount - 1);
+					}
+					base.AddInstanceDisplay(instanceCount);
 				}
 			}
 
@@ -2688,9 +3002,11 @@ namespace Neumont.Tools.ORM.Shell
 			{
 				FactTypeHasFactTypeInstance link = e.ModelElement as FactTypeHasFactTypeInstance;
 				FactType factType = link.FactType;
-				if (!factType.IsDeleted && factType == myFactType)
+				List<FactTypeInstance> instances;
+				if (!factType.IsDeleted &&
+					factType == myFactType &&
+					null != (instances = myCachedFactTypeInstances))
 				{
-					List<FactTypeInstance> instances = myCachedInstances;
 					int instanceLocation = instances.IndexOf(link.FactTypeInstance);
 					Debug.Assert(instanceLocation != -1);
 					instances.RemoveAt(instanceLocation);
@@ -2769,49 +3085,70 @@ namespace Neumont.Tools.ORM.Shell
 						if (factRole == factRoles[i].Role)
 						{
 							base.EditColumnHeader(i + 1, factRole);
+							if (myProxyObjectType != null)
+							{
+								Debug.Assert(roleCount == 2);
+								int oppositeIndex = (i + 1) % 2;
+								base.EditColumnHeader(oppositeIndex + 1, factRoles[oppositeIndex].Role);
+								break;
+							}
 						}
 					}
 				}
 			}
 
 			/// <summary>
-			/// Checks if the branch should be ReadOnly
+			/// Checks if the branch should be ReadOnly, which happens when
+			/// we have a 1-1 identifying FactType
 			/// </summary>
-			/// <returns>If branch is readonly, returns the proxy ObjectType who's population represents the branch</returns>
-			private ObjectType ValidateReadOnly()
+			private void ValidateReadOnlyProxyObject()
 			{
-				LinkedElementCollection<RoleBase> roles = myFactType.RoleCollection;
-				int roleCount = roles.Count;
-				bool readOnly = false;
-				ObjectType proxyObjectType = null;
-				for (int i = 0; i < roleCount; ++i)
+				ObjectType proxyObject = null;
+				if (myFactType != null && myFactType.Objectification == null)
 				{
-					ObjectType rolePlayer = roles[i].Role.RolePlayer;
-					if (rolePlayer != null && !rolePlayer.IsValueType)
+					foreach (UniquenessConstraint iuc in myFactType.GetInternalConstraints<UniquenessConstraint>())
 					{
-						UniquenessConstraint identifier = rolePlayer.PreferredIdentifier;
-						if (identifier != null)
+						ObjectType preferredFor;
+						LinkedElementCollection<Role> roles;
+						if (null != (preferredFor = iuc.PreferredIdentifierFor) &&
+							1 == (roles = iuc.RoleCollection).Count)
 						{
-							LinkedElementCollection<Role> identifierRoles = identifier.RoleCollection;
-							int identifierRoleCount = identifierRoles.Count;
-							for (int j = 0; j < identifierRoleCount; ++j)
-							{
-								if (roles.Contains(identifierRoles[j]))
-								{
-									proxyObjectType = rolePlayer;
-									readOnly = true;
-									break;
-								}
-							}
+							proxyObject = preferredFor;
+							break;
 						}
 					}
-					if (readOnly)
+				}
+				int oldItemCount = -1;
+				ObjectType oldProxyObject = myProxyObjectType;
+				if (oldProxyObject != null)
+				{
+					if (oldProxyObject != proxyObject)
 					{
-						break;
+						oldItemCount = VisibleItemCount;
+						if (proxyObject == null)
+						{
+							myCachedEntityTypeInstances = null;
+							myCachedFactTypeInstances = new List<FactTypeInstance>(myFactType.FactTypeInstanceCollection);
+						}
+						else
+						{
+							myCachedFactTypeInstances = null;
+							myCachedEntityTypeInstances = new List<EntityTypeInstance>(proxyObject.EntityTypeInstanceCollection);
+						}
 					}
 				}
-				IsReadOnly = readOnly;
-				return proxyObjectType;
+				else if (myCachedFactTypeInstances != null && proxyObject != null)
+				{
+					oldItemCount = VisibleItemCount;
+					myCachedFactTypeInstances = null;
+					myCachedEntityTypeInstances = new List<EntityTypeInstance>(proxyObject.EntityTypeInstanceCollection);
+				}
+				myProxyObjectType = proxyObject;
+				IsReadOnly = proxyObject != null;
+				if (oldItemCount != -1)
+				{
+					base.Repopulate(oldItemCount);
+				}
 			}
 
 			private void ObjectTypeNameChangedEvent(object sender, ElementPropertyChangedEventArgs e)
@@ -2853,20 +3190,12 @@ namespace Neumont.Tools.ORM.Shell
 			}
 			#endregion // Helper Methods
 			#region Branch Update Methods
-			private void AddFactInstanceDisplay(FactTypeInstance factTypeInstance)
-			{
-				int location = myCachedInstances.IndexOf(factTypeInstance);
-				if (location != -1)
-				{
-					base.EditInstanceDisplay(location);
-					base.AddInstanceDisplay(myCachedInstances.Count);
-				}
-			}
-
 			private void EditFactInstanceDisplay(FactTypeInstance factTypeInstance)
 			{
-				int location = myFactType.FactTypeInstanceCollection.IndexOf(factTypeInstance);
-				if (location != -1)
+				List<FactTypeInstance> instances;
+				int location;
+				if (null != (instances = myCachedFactTypeInstances) &&
+					-1 != (location = instances.IndexOf(factTypeInstance)))
 				{
 					base.EditInstanceDisplay(location);
 				}
@@ -2874,17 +3203,21 @@ namespace Neumont.Tools.ORM.Shell
 			#endregion // Branch Update Methods
 			public sealed override void DeleteInstance(int row, int column)
 			{
-				if (base.IsFullRowSelectColumn(column) && row < myCachedInstances.Count)
+				if (base.IsFullRowSelectColumn(column))
 				{
-					using (Transaction t = Store.TransactionManager.BeginTransaction(String.Format(ResourceStrings.ModelSamplePopulationEditorRemoveInstanceTransactionText, myFactType.Name)))
+					IList elements = (myProxyObjectType != null) ? (IList)myCachedEntityTypeInstances : myCachedFactTypeInstances;
+					if (elements != null && row < elements.Count)
 					{
-						myFactType.FactTypeInstanceCollection[row].Delete();
-						t.Commit();
+						using (Transaction t = Store.TransactionManager.BeginTransaction(String.Format(ResourceStrings.ModelSamplePopulationEditorRemoveInstanceTransactionText, myFactType.Name)))
+						{
+							((ModelElement)elements[row]).Delete();
+							t.Commit();
+						}
 					}
 				}
 			}
 		}
-		private sealed class SamplePopulationEntityEditorBranch : SamplePopulationBaseBranch
+		private sealed class SamplePopulationEntityEditorBranch : SamplePopulationBaseBranch, IBranch, IMultiColumnBranch
 		{
 			#region Member Variables
 			private readonly SamplePopulationBaseBranch myParentBranch;
@@ -2945,7 +3278,7 @@ namespace Neumont.Tools.ORM.Shell
 			/// <summary>
 			/// Make this an expandable branch
 			/// </summary>
-			public sealed override BranchFeatures Features
+			BranchFeatures IBranch.Features
 			{
 				get
 				{
@@ -2953,7 +3286,7 @@ namespace Neumont.Tools.ORM.Shell
 				}
 			}
 
-			public sealed override VirtualTreeLabelEditData BeginLabelEdit(int row, int column, VirtualTreeLabelEditActivationStyles activationStyle)
+			VirtualTreeLabelEditData IBranch.BeginLabelEdit(int row, int column, VirtualTreeLabelEditActivationStyles activationStyle)
 			{
 				VirtualTreeLabelEditData retVal = base.BeginLabelEdit(row, column, activationStyle);
 				if (retVal.IsValid)
@@ -2969,7 +3302,7 @@ namespace Neumont.Tools.ORM.Shell
 				return retVal;
 			}
 
-			public sealed override LabelEditResult CommitLabelEdit(int row, int column, string newText)
+			LabelEditResult IBranch.CommitLabelEdit(int row, int column, string newText)
 			{
 				ObjectType instanceType = myEditRole.RolePlayer;
 				Role identifierRole = instanceType.PreferredIdentifier.RoleCollection[row];
@@ -3001,7 +3334,7 @@ namespace Neumont.Tools.ORM.Shell
 				return LabelEditResult.CancelEdit;
 			}
 
-			public sealed override VirtualTreeDisplayData GetDisplayData(int row, int column, VirtualTreeDisplayDataMasks requiredData)
+			VirtualTreeDisplayData IBranch.GetDisplayData(int row, int column, VirtualTreeDisplayDataMasks requiredData)
 			{
 				VirtualTreeDisplayData retval = VirtualTreeDisplayData.Empty;
 				retval.Image = 0;
@@ -3009,7 +3342,7 @@ namespace Neumont.Tools.ORM.Shell
 				return retval;
 			}
 
-			public sealed override object GetObject(int row, int column, ObjectStyle style, ref int options)
+			object IBranch.GetObject(int row, int column, ObjectStyle style, ref int options)
 			{
 				if (style == ObjectStyle.ExpandedBranch)
 				{
@@ -3032,7 +3365,7 @@ namespace Neumont.Tools.ORM.Shell
 				return null;
 			}
 
-			public sealed override string GetText(int row, int column)
+			string IBranch.GetText(int row, int column)
 			{
 				EntityTypeInstance editInstance = myEditInstance;
 				ObjectType instanceType = myEditRole.RolePlayer;
@@ -3049,7 +3382,7 @@ namespace Neumont.Tools.ORM.Shell
 				return ObjectTypeInstance.GetDisplayString(null, identifierType);
 			}
 
-			public sealed override string GetTipText(int row, int column, ToolTipType tipType)
+			string IBranch.GetTipText(int row, int column, ToolTipType tipType)
 			{
 				if (tipType == ToolTipType.Icon)
 				{
@@ -3058,7 +3391,7 @@ namespace Neumont.Tools.ORM.Shell
 				return null;
 			}
 
-			public sealed override bool IsExpandable(int row, int column)
+			bool IBranch.IsExpandable(int row, int column)
 			{
 				ObjectType instanceType = myEditRole.RolePlayer;
 				Role identifierRole = instanceType.PreferredIdentifier.RoleCollection[row];
@@ -3066,15 +3399,20 @@ namespace Neumont.Tools.ORM.Shell
 				UniquenessConstraint roleIdentifier = rolePlayer.PreferredIdentifier;
 				return (roleIdentifier != null) && (roleIdentifier.RoleCollection.Count > 1);
 			}
-
-			public sealed override int VisibleItemCount
+			private new int VisibleItemCount
 			{
 				get
 				{
 					return myItemCountCache;
 				}
 			}
-
+			int IBranch.VisibleItemCount
+			{
+				get
+				{
+					return VisibleItemCount;
+				}
+			}
 			#endregion // IBranch Interface Members
 			#region Event Handlers
 			protected sealed override void ManageEventHandlers(Store store, ModelingEventManager eventManager, EventHandlerAction action)
@@ -3097,8 +3435,8 @@ namespace Neumont.Tools.ORM.Shell
 				eventManager.AddOrRemoveHandler(classInfo, new EventHandler<ElementAddedEventArgs>(FactTypeInstanceHasRoleInstanceAddedEvent), action);
 				eventManager.AddOrRemoveHandler(classInfo, new EventHandler<ElementDeletedEventArgs>(FactTypeInstanceHasRoleInstanceRemovedEvent), action);
 
-				classInfo = dataDirectory.FindDomainClass(ObjectTypeInstance.DomainClassId);
-				eventManager.AddOrRemoveHandler(classInfo, new EventHandler<ElementPropertyChangedEventArgs>(ObjectTypeInstanceNameChangedEvent), action);
+				DomainPropertyInfo propertyInfo = dataDirectory.FindDomainProperty(ObjectTypeInstance.NameChangedDomainPropertyId);
+				eventManager.AddOrRemoveHandler(propertyInfo, new EventHandler<ElementPropertyChangedEventArgs>(ObjectTypeInstanceNameChangedEvent), action);
 			}
 
 			private void EntityTypeHasEntityTypeInstanceAddedEvent(object sender, ElementAddedEventArgs e)

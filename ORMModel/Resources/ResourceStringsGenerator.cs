@@ -700,7 +700,7 @@ namespace Neumont.Tools.ORM
 				return ResourceStrings.GetString(ResourceManagers.Model, "ModelException.Objectification.DirectModificationOfImpliedElement");
 			}
 		}
-		/// <summary>Exception message when an attempt is made to objectify a fact that is implied by another objectification.</summary>
+		/// <summary>Exception message when an attempt is made to objectify a fact type that is implied by another objectification.</summary>
 		public static string ModelExceptionObjectificationImpliedFactObjectified
 		{
 			get
@@ -732,7 +732,7 @@ namespace Neumont.Tools.ORM
 				return ResourceStrings.GetString(ResourceManagers.Model, "ModelException.Reading.IsPrimary.ReadOnlyWhenFalse");
 			}
 		}
-		/// <summary>The error message that is returned when attempting to add a new reading to a fact and the text is not valid. Validate reading text must have the number of placeholders equal to the number of roles in the FactType. The replacement fields must be ordered and identified using String.Format replacement syntax. For example: "{0} has {1}".</summary>
+		/// <summary>The error message that is returned when attempting to add a new reading to a fact type and the text is not valid. Validate reading text must have the number of placeholders equal to the number of roles in the FactType. The replacement fields must be ordered and identified using String.Format replacement syntax. For example: "{0} has {1}".</summary>
 		public static string ModelExceptionFactAddReadingInvalidReadingText
 		{
 			get
@@ -836,12 +836,20 @@ namespace Neumont.Tools.ORM
 				return ResourceStrings.GetString(ResourceManagers.Model, "ModelError.Model.PopulationUniquenessError.FactType.Text");
 			}
 		}
-		/// <summary>Model validation error shown when a population violates a mandatory constraint.  Field 0 is the derived name of the instance, field 1 is the model name, field 2 is the facttype name.</summary>
+		/// <summary>Model validation error shown when a population violates a mandatory constraint. Field 0 is the name of the role player, field 1 is the derived name of the instance, field 2 is the model name, field 3 is the name of the first facttype name, field 4 is a placeholder for additional fact types.</summary>
 		public static string ModelErrorModelHasPopulationMandatoryError
 		{
 			get
 			{
 				return ResourceStrings.GetString(ResourceManagers.Model, "ModelError.Model.PopulationMandatoryError.Text");
+			}
+		}
+		/// <summary>Model validation error shown when a population violates a mandatory constraint (additional fact types). Field 0 is the name of the fact type, field 1 is the following fact type (replaced by yet another trailing fact type, if available).</summary>
+		public static string ModelErrorModelHasPopulationMandatoryErrorAdditionalFactType
+		{
+			get
+			{
+				return ResourceStrings.GetString(ResourceManagers.Model, "ModelError.Model.PopulationMandatoryError.AdditionalFactTypeText");
 			}
 		}
 		/// <summary>Role data type does not match max inclusion. {0}=model {1}=facttype {2}=role number.</summary>
@@ -972,7 +980,7 @@ namespace Neumont.Tools.ORM
 				return ResourceStrings.GetString(ResourceManagers.Model, "ModelException.ExclusiveOrConstraintCoupler.DirectExclusionConstraintEdit");
 			}
 		}
-		/// <summary>Exception message when an attempt is made to set the IsMandatory property on an unattached role. IsMandatory creates an internal constraint, which is owned by an FactType, so cannot be realized if the parent fact is unknown.</summary>
+		/// <summary>Exception message when an attempt is made to set the IsMandatory property on an unattached role. IsMandatory creates an internal constraint, which is owned by an FactType, so cannot be realized if the parent FactType is unknown.</summary>
 		public static string ModelExceptionIsMandatoryRequiresAttachedFactType
 		{
 			get
@@ -996,7 +1004,7 @@ namespace Neumont.Tools.ORM
 				return ResourceStrings.GetString(ResourceManagers.Model, "ModelException.Constraint.EnforceNoForeignFactTypes");
 			}
 		}
-		/// <summary>Exception message when an attempt is made to attached more than one fact to an internal constraint.</summary>
+		/// <summary>Exception message when an attempt is made to attached more than one fact type to an internal constraint.</summary>
 		public static string ModelExceptionConstraintEnforceSingleFactTypeForInternalConstraint
 		{
 			get

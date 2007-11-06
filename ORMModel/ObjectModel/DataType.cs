@@ -331,10 +331,11 @@ namespace Neumont.Tools.ORM.ObjectModel
 		#endregion
 		#region IRepresentModelElements Implementation
 		/// <summary>
-		/// Implements IRepresentModelElements.GetRepresentedElements
+		/// Implements <see cref="IRepresentModelElements.GetRepresentedElements"/>
 		/// </summary>
-		protected ModelElement[] GetRepresentedElements()
+		protected new ModelElement[] GetRepresentedElements()
 		{
+			// Reimplement to go to the ValueType instead of the default link
 			ObjectType valueType = AssociatedValueType;
 			return (valueType != null) ? new ModelElement[] { valueType } : null;
 		}

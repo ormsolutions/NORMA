@@ -843,9 +843,35 @@ namespace Neumont.Tools.ORM.ObjectModel
 		/// Return an ObjectType array containing the nearest compatible
 		/// types for the given role collection.
 		/// </summary>
+		/// <param name="roleCollectionCollection">Set of collections of roles to walk</param>
+		/// <param name="column">The column to test</param>
+		/// <returns>ObjectType[]</returns>
+		public static ObjectType[] GetNearestCompatibleTypes(IEnumerable<IEnumerable<Role>> roleCollectionCollection, int column)
+		{
+			return GetNearestCompatibleTypes(GetColumnRoleCollection(roleCollectionCollection, column));
+		}
+		private static IEnumerable<Role> GetColumnRoleCollection(IEnumerable<IEnumerable<Role>> roleCollectionCollection, int column)
+		{
+			foreach (IEnumerable<Role> row in roleCollectionCollection)
+			{
+				int currentColumn = 0;
+				foreach (Role role in row)
+				{
+					if (currentColumn == column)
+					{
+						yield return role;
+					}
+					++currentColumn;
+				}
+			}
+		}
+		/// <summary>
+		/// Return an ObjectType array containing the nearest compatible
+		/// types for the given role collection.
+		/// </summary>
 		/// <param name="roleCollection">Set of roles to walk</param>
 		/// <returns>ObjectType[]</returns>
-		public static ObjectType[] GetNearestCompatibleTypes(IEnumerable roleCollection)
+		public static ObjectType[] GetNearestCompatibleTypes(IEnumerable<Role> roleCollection)
 		{
 			int currentRoleIndex = 0;
 			int expectedVisitCount = 0;
@@ -2796,20 +2822,11 @@ namespace Neumont.Tools.ORM.ObjectModel
 				}
 
 				//UNDONE: Eventually this shouldn't be verbalizing
-				foreach (IModelErrorOwner valueTypeInstance in this.ValueTypeInstanceCollection)
+				foreach (IModelErrorOwner objectTypeInstance in this.ObjectTypeInstanceCollection)
 				{
-					foreach (ModelErrorUsage valueTypeInstanceError in valueTypeInstance.GetErrorCollection(filter))
+					foreach (ModelErrorUsage objectTypeInstanceError in objectTypeInstance.GetErrorCollection(filter))
 					{
-						yield return valueTypeInstanceError;
-					}
-				}
-
-				//UNDONE: Eventually this shouldn't be verbalizing
-				foreach (IModelErrorOwner entityTypeInstance in this.EntityTypeInstanceCollection)
-				{
-					foreach (ModelErrorUsage entityTypeInstanceError in entityTypeInstance.GetErrorCollection(filter))
-					{
-						yield return entityTypeInstanceError;
+						yield return objectTypeInstanceError;
 					}
 				}
 			}
@@ -3205,7 +3222,7 @@ namespace Neumont.Tools.ORM.ObjectModel
 	#endregion // ValueTypeHasDataType class
 	#region EntityTypeRequiresReferenceSchemeError class
 	[ModelErrorDisplayFilter(typeof(ReferenceSchemeErrorCategory))]
-	partial class EntityTypeRequiresReferenceSchemeError : IRepresentModelElements
+	partial class EntityTypeRequiresReferenceSchemeError
 	{
 		#region Base Overrides
 		/// <summary>
@@ -3231,24 +3248,11 @@ namespace Neumont.Tools.ORM.ObjectModel
 			}
 		}
 		#endregion // Base Overrides
-		#region IRepresentModelElements Members
-		/// <summary>
-		/// The EntityType to which the error belongs
-		/// </summary>
-		protected ModelElement[] GetRepresentedElements()
-		{
-			return new ModelElement[] { this.ObjectType };
-		}
-		ModelElement[] IRepresentModelElements.GetRepresentedElements()
-		{
-			return GetRepresentedElements();
-		}
-		#endregion
 	}
 	#endregion // EntityTypeRequiresReferenceSchemeError class
 	#region ObjectTypeRequiresPrimarySupertypeError class
 	[ModelErrorDisplayFilter(typeof(ReferenceSchemeErrorCategory))]
-	public partial class ObjectTypeRequiresPrimarySupertypeError : IRepresentModelElements
+	public partial class ObjectTypeRequiresPrimarySupertypeError
 	{
 		#region Base Overrides
 		/// <summary>
@@ -3270,25 +3274,11 @@ namespace Neumont.Tools.ORM.ObjectModel
 			get { return RegenerateErrorTextEvents.OwnerNameChange | RegenerateErrorTextEvents.ModelNameChange; }
 		}
 		#endregion //Base Overrides
-		#region IRepresentModelElements Implementation
-		/// <summary>
-		/// Returns object associated with this error
-		/// </summary>
-		/// <returns></returns>
-		protected ModelElement[] GetRepresentedElements()
-		{
-			return new ModelElement[] { this.ObjectType };
-		}
-		ModelElement[] IRepresentModelElements.GetRepresentedElements()
-		{
-			return GetRepresentedElements();
-		}
-		#endregion // IRepresentModelElements Implementation
 	}
 	#endregion // ObjectTypeRequiresPrimarySupertypeError class
 	#region PreferredIdentifierRequiresMandatoryError class
 	[ModelErrorDisplayFilter(typeof(ReferenceSchemeErrorCategory))]
-	public partial class PreferredIdentifierRequiresMandatoryError : IRepresentModelElements
+	public partial class PreferredIdentifierRequiresMandatoryError
 	{
 		#region Base Overrides
 		/// <summary>
@@ -3306,25 +3296,11 @@ namespace Neumont.Tools.ORM.ObjectModel
 			get { return RegenerateErrorTextEvents.OwnerNameChange | RegenerateErrorTextEvents.ModelNameChange; }
 		}
 		#endregion //Base Overrides
-		#region IRepresentModelElements Implementation
-		/// <summary>
-		/// Returns object associated with this error
-		/// </summary>
-		/// <returns></returns>
-		protected ModelElement[] GetRepresentedElements()
-		{
-			return new ModelElement[] { this.ObjectType };
-		}
-		ModelElement[] IRepresentModelElements.GetRepresentedElements()
-		{
-			return GetRepresentedElements();
-		}
-		#endregion // IRepresentModelElements Implementation
 	}
 	#endregion // PreferredIdentifierRequiresMandatoryError class
 	#region CompatibleSupertypesError class
 	[ModelErrorDisplayFilter(typeof(ReferenceSchemeErrorCategory))]
-	public partial class CompatibleSupertypesError : IRepresentModelElements
+	public partial class CompatibleSupertypesError
 	{
 		#region Base Overrides
 		/// <summary>
@@ -3342,20 +3318,6 @@ namespace Neumont.Tools.ORM.ObjectModel
 			get { return RegenerateErrorTextEvents.OwnerNameChange | RegenerateErrorTextEvents.ModelNameChange; }
 		}
 		#endregion //Base Overrides
-		#region IRepresentModelElements Implementation
-		/// <summary>
-		/// Returns object associated with this error
-		/// </summary>
-		/// <returns></returns>
-		protected ModelElement[] GetRepresentedElements()
-		{
-			return new ModelElement[] { this.ObjectType };
-		}
-		ModelElement[] IRepresentModelElements.GetRepresentedElements()
-		{
-			return GetRepresentedElements();
-		}
-		#endregion // IRepresentModelElements Implementation
 	}
 	#endregion // CompatibleSupertypesError class
 }

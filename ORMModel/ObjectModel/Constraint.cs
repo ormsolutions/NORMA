@@ -5485,7 +5485,7 @@ namespace Neumont.Tools.ORM.ObjectModel
 	}
 	#endregion // UniquenessConstraint class
 	#region MandatoryConstraint class
-	public partial class MandatoryConstraint : IModelErrorOwner, IRedirectVerbalization
+	public partial class MandatoryConstraint : IModelErrorOwner, IRedirectVerbalization, IHasIndirectModelErrorOwner
 	{
 		#region IModelErrorOwner Implementation
 		/// <summary>
@@ -5512,6 +5512,10 @@ namespace Neumont.Tools.ORM.ObjectModel
 				if (exclusionConstradictsMandatory != null)
 				{
 					yield return exclusionConstradictsMandatory;
+				}
+				foreach (PopulationMandatoryError populationMandatory in PopulationMandatoryErrorCollection)
+				{
+					yield return populationMandatory;
 				}
 			}
 		}
@@ -5547,7 +5551,31 @@ namespace Neumont.Tools.ORM.ObjectModel
 			DelayValidateErrors();
 		}
 		#endregion // IModelErrorOwner Implementation
-
+		#region IHasIndirectModelErrorOwner Implementation
+		private static Guid[] myIndirectModelErrorOwnerLinkRoles;
+		/// <summary>
+		/// Implements <see cref="IHasIndirectModelErrorOwner.GetIndirectModelErrorOwnerLinkRoles"/>
+		/// </summary>
+		protected Guid[] GetIndirectModelErrorOwnerLinkRoles()
+		{
+			if (PopulationMandatoryErrorCollection.Count != 0)
+			{
+				// Creating a static readonly guid array is causing static field initialization
+				// ordering issues with the partial classes. Defer initialization.
+				Guid[] linkRoles = myIndirectModelErrorOwnerLinkRoles;
+				if (linkRoles == null)
+				{
+					myIndirectModelErrorOwnerLinkRoles = linkRoles = new Guid[] { ConstraintRoleSequenceHasRole.ConstraintRoleSequenceDomainRoleId };
+				}
+				return linkRoles;
+			}
+			return null;
+		}
+		Guid[] IHasIndirectModelErrorOwner.GetIndirectModelErrorOwnerLinkRoles()
+		{
+			return GetIndirectModelErrorOwnerLinkRoles();
+		}
+		#endregion // IHasIndirectModelErrorOwner Implementation
 		#region Simple mandatory constraint handling
 		private static PropertyAssignment[] myInitialInternalAttributes;
 		/// <summary>
@@ -6497,7 +6525,7 @@ namespace Neumont.Tools.ORM.ObjectModel
 	#region ModelError classes
 	#region TooManyRoleSequencesError class
 	[ModelErrorDisplayFilter(typeof(ConstraintStructureErrorCategory))]
-	public partial class TooManyRoleSequencesError : IRepresentModelElements
+	public partial class TooManyRoleSequencesError
 	{
 		#region Base overrides
 		/// <summary>
@@ -6530,32 +6558,11 @@ namespace Neumont.Tools.ORM.ObjectModel
 			}
 		}
 		#endregion // Base overrides
-		#region IRepresentModelElements Implementation
-		/// <summary>
-		/// Implements IRepresentModelElements.GetRepresentedElements
-		/// </summary>
-		/// <returns></returns>
-		protected ModelElement[] GetRepresentedElements()
-		{
-			ModelElement mel = SetConstraint;
-			if (mel == null)
-			{
-				mel = SetComparisonConstraint;
-			}
-			// it must be either a single or a multi column constraint
-			Debug.Assert(mel != null);
-			return new ModelElement[] { mel };
-		}
-		ModelElement[] IRepresentModelElements.GetRepresentedElements()
-		{
-			return GetRepresentedElements();
-		}
-		#endregion // IRepresentModelElements Implementation
 	}
 	#endregion // TooManyRoleSequencesError class
 	#region TooFewRoleSequencesError class
 	[ModelErrorDisplayFilter(typeof(ConstraintStructureErrorCategory))]
-	public partial class TooFewRoleSequencesError : IRepresentModelElements
+	public partial class TooFewRoleSequencesError
 	{
 		#region Base overrides
 		/// <summary>
@@ -6588,36 +6595,11 @@ namespace Neumont.Tools.ORM.ObjectModel
 			}
 		}
 		#endregion // Base overrides
-		#region IRepresentModelElements Implementation
-		/// <summary>
-		/// Implements IRepresentModelElements.GetRepresentedElements
-		/// </summary>
-		/// <returns></returns>
-		protected ModelElement[] GetRepresentedElements()
-		{
-			SetComparisonConstraint multi = SetComparisonConstraint;
-			SetConstraint sing = SetConstraint;
-			// it must be either a single or a multi column constraint
-			Debug.Assert(multi != null || sing != null);
-			if (SetComparisonConstraint != null)
-			{
-				return new ModelElement[] { multi };
-			}
-			else
-			{
-				return new ModelElement[] { sing };
-			}
-		}
-		ModelElement[] IRepresentModelElements.GetRepresentedElements()
-		{
-			return GetRepresentedElements();
-		}
-		#endregion // IRepresentModelElements Implementation
 	}
 	#endregion // TooFewRoleSequencesError class
 	#region ExternalConstraintRoleSequenceArityMismatchError class
 	[ModelErrorDisplayFilter(typeof(ConstraintStructureErrorCategory))]
-	public partial class ExternalConstraintRoleSequenceArityMismatchError : IRepresentModelElements
+	public partial class ExternalConstraintRoleSequenceArityMismatchError
 	{
 		#region Base overrides
 		/// <summary>
@@ -6645,25 +6627,11 @@ namespace Neumont.Tools.ORM.ObjectModel
 			}
 		}
 		#endregion // Base overrides
-		#region IRepresentModelElements Implementation
-		/// <summary>
-		/// Implements IRepresentModelElements.GetRepresentedElements
-		/// </summary>
-		/// <returns></returns>
-		protected ModelElement[] GetRepresentedElements()
-		{
-			return new ModelElement[] { Constraint };
-		}
-		ModelElement[] IRepresentModelElements.GetRepresentedElements()
-		{
-			return GetRepresentedElements();
-		}
-		#endregion // IRepresentModelElements Implementation
 	}
 	#endregion // ExternalConstraintRoleSequenceArityMismatchError class
 	#region CompatibleRolePlayerTypeError class
 	[ModelErrorDisplayFilter(typeof(ConstraintStructureErrorCategory))]
-	public partial class CompatibleRolePlayerTypeError : IRepresentModelElements
+	public partial class CompatibleRolePlayerTypeError
 	{
 		#region Base overrides
 		/// <summary>
@@ -6707,20 +6675,6 @@ namespace Neumont.Tools.ORM.ObjectModel
 			}
 		}
 		#endregion // Base overrides
-		#region IRepresentModelElements Implementation
-		/// <summary>
-		/// Implements IRepresentModelElements.GetRepresentedElements
-		/// </summary>
-		/// <returns></returns>
-		protected ModelElement[] GetRepresentedElements()
-		{
-			return new ModelElement[] { ParentConstraint };
-		}
-		ModelElement[] IRepresentModelElements.GetRepresentedElements()
-		{
-			return GetRepresentedElements();
-		}
-		#endregion // IRepresentModelElements Implementation
 		#region Accessor Properties
 		/// <summary>
 		/// Return either the single column or multi column
@@ -6738,7 +6692,7 @@ namespace Neumont.Tools.ORM.ObjectModel
 	#endregion // CompatibleRolePlayerTypeError class
 	#region FrequencyConstraintMinMaxError class
 	[ModelErrorDisplayFilter(typeof(ConstraintStructureErrorCategory))]
-	public partial class FrequencyConstraintMinMaxError : IRepresentModelElements
+	public partial class FrequencyConstraintMinMaxError
 	{
 		#region Base overrides
 		/// <summary>
@@ -6766,20 +6720,6 @@ namespace Neumont.Tools.ORM.ObjectModel
 			}
 		}
 		#endregion // Base overrides
-		#region IRepresentModelElements Implementation
-		/// <summary>
-		/// Implements IRepresentModelElements.GetRepresentedElements
-		/// </summary>
-		/// <returns></returns>
-		protected ModelElement[] GetRepresentedElements()
-		{
-			return new ModelElement[] { FrequencyConstraint };
-		}
-		ModelElement[] IRepresentModelElements.GetRepresentedElements()
-		{
-			return GetRepresentedElements();
-		}
-		#endregion // IRepresentModelElements Implementation
 	}
 	#endregion // FrequencyConstraintMinMaxError class
 	#region FrequencyConstraintContradictsInternalUniquenessConstraintError class
@@ -6816,10 +6756,12 @@ namespace Neumont.Tools.ORM.ObjectModel
 		#endregion// Base overrides
 		#region IRepresentModelElements Implementation
 		/// <summary>
-		/// Implements IRepresentModelElements.GetRepresentedElements
+		/// Implements <see cref="IRepresentModelElements.GetRepresentedElements"/>
 		/// </summary>
-		protected ModelElement[] GetRepresentedElements()
+		protected new ModelElement[] GetRepresentedElements()
 		{
+			// The base implementation returns the same set of elements, but
+			// order is not guaranteed.
 			return new ModelElement[] { FrequencyConstraint, FactType };
 		}
 		ModelElement[] IRepresentModelElements.GetRepresentedElements()
@@ -6831,7 +6773,7 @@ namespace Neumont.Tools.ORM.ObjectModel
 	#endregion // FrequencyConstraintContradictsInternalUniquenessConstraintError class
 	#region ImpliedInternalUniquenessConstraintError class
 	[ModelErrorDisplayFilter(typeof(FactTypeDefinitionErrorCategory))]
-	public partial class ImpliedInternalUniquenessConstraintError : IRepresentModelElements
+	public partial class ImpliedInternalUniquenessConstraintError
 	{
 		#region Base Overrides
 		/// <summary>
@@ -6870,26 +6812,11 @@ namespace Neumont.Tools.ORM.ObjectModel
 			}
 		}
 		#endregion
-		#region IRepresentModelElements Members
-
-		/// <summary>
-		/// Implements IRepresentNodelElements.GetRepresentedElements
-		/// </summary>
-		/// <returns></returns>
-		public ModelElement[] GetRepresentedElements()
-		{
-			return new ModelElement[] { FactType };
-		}
-		ModelElement[] IRepresentModelElements.GetRepresentedElements()
-		{
-			return GetRepresentedElements();
-		}
-		#endregion
 	}
 	#endregion // ImpliedInternalUniquenessConstraintError class
 	#region EqualityImpliedByMandatoryError class
 	[ModelErrorDisplayFilter(typeof(ConstraintImplicationAndContradictionErrorCategory))]
-	public partial class EqualityImpliedByMandatoryError : IRepresentModelElements
+	public partial class EqualityImpliedByMandatoryError
 	{
 		#region Base overrides
 		/// <summary>
@@ -6917,25 +6844,11 @@ namespace Neumont.Tools.ORM.ObjectModel
 			}
 		}
 		#endregion //Base overrides
-		#region IRepresentModelElements Implementation
-		/// <summary>
-		/// Implements IRepresentModelElements.GetRepresentedElements
-		/// </summary>
-		/// <returns></returns>
-		protected ModelElement[] GetRepresentedElements()
-		{
-			return new ModelElement[] { EqualityConstraint };
-		}
-		ModelElement[] IRepresentModelElements.GetRepresentedElements()
-		{
-			return GetRepresentedElements();
-		}
-		#endregion //IRepresentModelElements Implementation
 	}
 	#endregion // EqualityImpliedByMandatoryError class
 	#region RingConstraintTypeNotSpecifiedError class
 	[ModelErrorDisplayFilter(typeof(ConstraintStructureErrorCategory))]
-	public partial class RingConstraintTypeNotSpecifiedError : IRepresentModelElements
+	public partial class RingConstraintTypeNotSpecifiedError
 	{
 		#region Base overrides
 		/// <summary>
@@ -6964,30 +6877,11 @@ namespace Neumont.Tools.ORM.ObjectModel
 			}
 		}
 		#endregion //Base overrides
-		#region IRepresentModelElementsImplementation
-		/// <summary>
-		/// Returns the ring constraint associated with this ring constraint error
-		/// </summary>
-		/// <returns>ModelElement[]</returns>
-		protected ModelElement[] GetRepresentedElements()
-		{
-			return new ModelElement[] { this.RingConstraint };
-		}
-		/// <summary>
-		/// Returns the ring constraint associated with this ring constraint error
-		/// </summary>
-		/// <returns>ModelElement[]</returns>
-		ModelElement[] IRepresentModelElements.GetRepresentedElements()
-		{
-			return GetRepresentedElements();
-		}
-
-		#endregion //IRepresentModelElements Implementation
 	}
 	#endregion // RingConstraintTypeNotSpecifiedError class
 	#region ImplicationError
 	[ModelErrorDisplayFilter(typeof(ConstraintImplicationAndContradictionErrorCategory))]
-	public partial class ImplicationError : IRepresentModelElements
+	public partial class ImplicationError
 	{
 		#region Base Overrides
 		/// <summary>
@@ -7026,27 +6920,6 @@ namespace Neumont.Tools.ORM.ObjectModel
 			}
 		}
 		#endregion //Base Overrides
-		#region IRepresentModelElements Implementation
-		/// <summary>
-		/// Implements IRepresentModelElements.GetRepresentedElements
-		/// </summary>
-		/// <returns></returns>
-		protected ModelElement[] GetRepresentedElements()
-		{
-			ModelElement mel = SetConstraint;
-			if (mel == null)
-			{
-				mel = SetComparisonConstraint;
-			}
-			// it must be either a single or a multi column constraint
-			Debug.Assert(mel != null);
-			return new ModelElement[] { mel };
-		}
-		ModelElement[] IRepresentModelElements.GetRepresentedElements()
-		{
-			return GetRepresentedElements();
-		}
-		#endregion // IRepresentModelElements Implementation
 	}
 	[ModelErrorDisplayFilter(typeof(ConstraintImplicationAndContradictionErrorCategory))]
 	public partial class EqualityOrSubsetImpliedByMandatoryError
@@ -7081,7 +6954,7 @@ namespace Neumont.Tools.ORM.ObjectModel
 	#endregion
 	#region ContradictionError
 	[ModelErrorDisplayFilter(typeof(ConstraintImplicationAndContradictionErrorCategory))]
-	public partial class ContradictionError : IRepresentModelElements
+	public partial class ContradictionError
 	{
 		#region Base overrides
 		/// <summary>
@@ -7129,27 +7002,6 @@ namespace Neumont.Tools.ORM.ObjectModel
 			}
 		}
 		#endregion // Base overrides
-		#region IRepresentModelElements Implementation
-		/// <summary>
-		/// Implements IRepresentModelElements.GetRepresentedElements
-		/// </summary>
-		/// <returns></returns>
-		protected ModelElement[] GetRepresentedElements()
-		{
-			ReadOnlyLinkedElementCollection<SetComparisonConstraint> constraints = SetComparisonConstraintCollection;
-			int constraintCount = constraints.Count;
-			ModelElement[] retVal = new ModelElement[constraintCount];
-			for (int i = 0; i < constraintCount; ++i)
-			{
-				retVal[i] = constraints[i];
-			}
-			return retVal;
-		}
-		ModelElement[] IRepresentModelElements.GetRepresentedElements()
-		{
-			return GetRepresentedElements();
-		}
-		#endregion // IRepresentModelElements Implementation
 	}
 	[ModelErrorDisplayFilter(typeof(ConstraintImplicationAndContradictionErrorCategory))]
 	public partial class ExclusionContradictsMandatoryError : IRepresentModelElements
@@ -7217,11 +7069,11 @@ namespace Neumont.Tools.ORM.ObjectModel
 		#endregion // Base overrides
 		#region IRepresentModelElements Implementation
 		/// <summary>
-		/// Implements IRepresentModelElements.GetRepresentedElements
+		/// Implements <see cref="IRepresentModelElements.GetRepresentedElements"/>
 		/// </summary>
-		/// <returns></returns>
 		protected new ModelElement[] GetRepresentedElements()
 		{
+			// Reimplement to ensure order. Put the ExclusionConstraints first.
 			LinkedElementCollection<ExclusionConstraint> exclusionConstraints = ExclusionConstraint;
 			int exclusionCount = exclusionConstraints.Count;
 			LinkedElementCollection<MandatoryConstraint> mandatoryConstraints = MandatoryConstraint;

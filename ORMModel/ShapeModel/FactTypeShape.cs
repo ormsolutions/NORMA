@@ -5197,6 +5197,7 @@ namespace Neumont.Tools.ORM.ShapeModel
 			DomainClassInfo classInfo = dataDirectory.FindDomainRelationship(EntityTypeHasPreferredIdentifier.DomainClassId);
 			eventManager.AddOrRemoveHandler(classInfo, new EventHandler<ElementAddedEventArgs>(PreferredIdentifierAddedEvent), action);
 			eventManager.AddOrRemoveHandler(classInfo, new EventHandler<ElementDeletedEventArgs>(PreferredIdentifierRemovedEvent), action);
+			eventManager.AddOrRemoveHandler(classInfo, new EventHandler<RolePlayerChangedEventArgs>(PreferredIdentifierRolePlayerChangedEvent), action);
 		}
 		/// <summary>
 		/// Update the link displays when the modality of an internal uniqueness constraint changes
@@ -5225,16 +5226,15 @@ namespace Neumont.Tools.ORM.ShapeModel
 			}
 		}
 		/// <summary>
-		/// Event handler that listens for preferred identifiers being added.
+		/// Helper function for internal preferred identifier invalidation
 		/// </summary>
-		public static void PreferredIdentifierAddedEvent(object sender, ElementAddedEventArgs e)
+		private static void InvalidateForPreferredIdentifier(UniquenessConstraint preferredIdentifier)
 		{
-			EntityTypeHasPreferredIdentifier link = e.ModelElement as EntityTypeHasPreferredIdentifier;
-			UniquenessConstraint constraint = link.PreferredIdentifier;
 			LinkedElementCollection<FactType> factTypes;
 			FactType factType;
-			if (constraint.IsInternal &&
-				1 == (factTypes = constraint.FactTypeCollection).Count &&
+			if (!preferredIdentifier.IsDeleted &&
+				preferredIdentifier.IsInternal &&
+				1 == (factTypes = preferredIdentifier.FactTypeCollection).Count &&
 				null != (factType = factTypes[0]))
 			{
 				foreach (PresentationElement pel in PresentationViewsSubject.GetPresentation(factType))
@@ -5248,26 +5248,28 @@ namespace Neumont.Tools.ORM.ShapeModel
 			}
 		}
 		/// <summary>
+		/// Event handler that listens for preferred identifiers being added.
+		/// </summary>
+		public static void PreferredIdentifierAddedEvent(object sender, ElementAddedEventArgs e)
+		{
+			InvalidateForPreferredIdentifier(((EntityTypeHasPreferredIdentifier)e.ModelElement).PreferredIdentifier);
+		}
+		/// <summary>
 		/// Event handler that listens for preferred identifiers being removed.
 		/// </summary>
 		public static void PreferredIdentifierRemovedEvent(object sender, ElementDeletedEventArgs e)
 		{
-			EntityTypeHasPreferredIdentifier link = e.ModelElement as EntityTypeHasPreferredIdentifier;
-			UniquenessConstraint constraint = link.PreferredIdentifier;
-			LinkedElementCollection<FactType> factTypes;
-			FactType factType;
-			if (!constraint.IsDeleted &&
-				1 == (factTypes = constraint.FactTypeCollection).Count &&
-				null != (factType = factTypes[0]))
+			InvalidateForPreferredIdentifier(((EntityTypeHasPreferredIdentifier)e.ModelElement).PreferredIdentifier);
+		}
+		/// <summary>
+		/// Event handler that listens for preferred identifiers role player changes.
+		/// </summary>
+		public static void PreferredIdentifierRolePlayerChangedEvent(object sender, RolePlayerChangedEventArgs e)
+		{
+			if (e.DomainRole.Id == EntityTypeHasPreferredIdentifier.PreferredIdentifierDomainRoleId)
 			{
-				foreach (PresentationElement pel in PresentationViewsSubject.GetPresentation(factType))
-				{
-					FactTypeShape factShape = pel as FactTypeShape;
-					if (factShape != null)
-					{
-						factShape.Invalidate(true);
-					}
-				}
+				InvalidateForPreferredIdentifier((UniquenessConstraint)e.OldRolePlayer);
+				InvalidateForPreferredIdentifier((UniquenessConstraint)e.NewRolePlayer);
 			}
 		}
 		#endregion // Store Event Handlers

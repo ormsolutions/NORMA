@@ -2244,7 +2244,7 @@
 			<Source>
 				<DomainRole Name="MandatoryConstraint" PropertyName="PopulationMandatoryErrorCollection" Multiplicity="ZeroMany" PropagatesDelete="false" IsPropertyGenerator="true" DisplayName="MandatoryConstraint" Id="AF065878-27B3-456A-9CD4-E1B81DFFAD2D">
 					<RolePlayer>
-						<DomainClassMoniker Name="ConstraintRoleSequence"/>
+						<DomainClassMoniker Name="MandatoryConstraint"/>
 					</RolePlayer>
 				</DomainRole>
 			</Source>
@@ -2258,9 +2258,6 @@
 		</DomainRelationship>
 
 		<DomainRelationship Name="ObjectTypeInstanceHasPopulationMandatoryError" Namespace="Neumont.Tools.ORM.ObjectModel" Id="E0F0750E-47CB-44C6-B348-A9A1101475A7">
-			<BaseRelationship>
-				<DomainRelationshipMoniker Name="ElementAssociatedWithModelError"/>
-			</BaseRelationship>
 			<Source>
 				<DomainRole Name="ObjectTypeInstance" PropertyName="PopulationMandatoryErrorCollection" Multiplicity="ZeroMany" PropagatesDelete="false" IsPropertyGenerator="true" DisplayName="ObjectTypeInstance" Id="4A0B3B52-B579-4E07-972C-59F4F98BEAC3">
 					<RolePlayer>
@@ -3297,10 +3294,30 @@
 			</Target>
 		</DomainRelationship>
 
-		<DomainRelationship Name="EntityTypeHasEntityTypeInstance" Namespace="Neumont.Tools.ORM.ObjectModel" IsEmbedding="true" Id="0F9CDA9D-88CE-47DD-B202-93B1455E08C3">
+		<DomainRelationship Name="ObjectTypeHasObjectTypeInstance" Namespace="Neumont.Tools.ORM.ObjectModel" IsEmbedding="true" Id="F4343CDE-A3C7-402C-AF81-CBDC8F092C9E">
 			<!--<BaseRelationship>
 				<DomainRelationshipMoniker Name="ORMElementLink"/>
 			</BaseRelationship>-->
+			<Source>
+				<DomainRole Name="ObjectType" PropertyName="ObjectTypeInstanceCollection" Multiplicity="ZeroMany" PropagatesDelete="false" IsPropertyGenerator="true" DisplayName="ObjectType" Id="4BA85C9E-99D0-4F84-864B-B8E8C305B2C4">
+					<RolePlayer>
+						<DomainClassMoniker Name="ObjectType"/>
+					</RolePlayer>
+				</DomainRole>
+			</Source>
+			<Target>
+				<DomainRole Name="ObjectTypeInstance" PropertyName="ObjectType" Multiplicity="One" PropagatesDelete="true" IsPropertyGenerator="true" DisplayName="ObjectTypeInstance" Id="9DFF9164-DC48-46B8-A244-7B9FAB8598DB">
+					<RolePlayer>
+						<DomainClassMoniker Name="ObjectTypeInstance"/>
+					</RolePlayer>
+				</DomainRole>
+			</Target>
+		</DomainRelationship>
+
+		<DomainRelationship Name="EntityTypeHasEntityTypeInstance" Namespace="Neumont.Tools.ORM.ObjectModel" IsEmbedding="true" Id="0F9CDA9D-88CE-47DD-B202-93B1455E08C3">
+			<BaseRelationship>
+				<DomainRelationshipMoniker Name="ObjectTypeHasObjectTypeInstance"/>
+			</BaseRelationship>
 			<Source>
 				<DomainRole Name="EntityType" PropertyName="EntityTypeInstanceCollection" Multiplicity="ZeroMany" PropagatesDelete="false" IsPropertyGenerator="true" DisplayName="EntityType" Id="5A293722-12D6-4B42-A336-3281A404E785">
 					<RolePlayer>
@@ -3318,9 +3335,9 @@
 		</DomainRelationship>
 
 		<DomainRelationship Name="ValueTypeHasValueTypeInstance" Namespace="Neumont.Tools.ORM.ObjectModel" IsEmbedding="true" Id="E01B8EC6-F3BF-4963-92DB-7E352501C04D">
-			<!--<BaseRelationship>
-				<DomainRelationshipMoniker Name="ORMElementLink"/>
-			</BaseRelationship>-->
+			<BaseRelationship>
+				<DomainRelationshipMoniker Name="ObjectTypeHasObjectTypeInstance"/>
+			</BaseRelationship>
 			<Source>
 				<DomainRole Name="ValueType" PropertyName="ValueTypeInstanceCollection" Multiplicity="ZeroMany" PropagatesDelete="false" IsPropertyGenerator="true" DisplayName="ValueType" Id="9558751B-6AE9-424D-8B62-66B71F01A207">
 					<RolePlayer>
