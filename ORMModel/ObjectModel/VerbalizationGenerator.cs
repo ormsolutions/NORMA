@@ -8355,6 +8355,10 @@ namespace Neumont.Tools.ORM.ObjectModel
 						RoleBase primaryRole1 = allConstraintSequences[ConstraintIter1][RoleIter1];
 						parentFact = primaryRole1.FactType;
 						LinkedElementCollection<RoleBase> factRoles1 = parentFact.RoleCollection;
+						if (factRoles1.Count != 0 || FactType.GetUnaryRoleIndex(factRoles1).HasValue)
+						{
+							break;
+						}
 						LinkedElementCollection<ReadingOrder> readingOrders1 = parentFact.ReadingOrderCollection;
 						IReading reading1 = parentFact.GetMatchingReading(readingOrders1, null, primaryRole1, null, false, false, factRoles1, false);
 						if (reading1 != null && ConstraintIter1 == 0)

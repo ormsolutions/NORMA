@@ -3199,6 +3199,38 @@
 							</plx:callInstance>
 						</plx:initialize>
 					</plx:local>
+					<plx:branch>
+						<plx:condition>
+							<plx:binaryOperator type="booleanOr">
+								<plx:left>
+									<plx:binaryOperator type="inequality">
+										<plx:left>
+											<plx:callInstance name="Count" type="property">
+												<plx:callObject>
+													<plx:nameRef name="factRoles1"/>
+												</plx:callObject>
+											</plx:callInstance>
+										</plx:left>
+										<plx:right>
+											<plx:value data="0" type="i4"/>
+										</plx:right>
+									</plx:binaryOperator>
+								</plx:left>
+								<plx:right>
+									<plx:callInstance name="HasValue" type="property">
+										<plx:callObject>
+											<plx:callStatic name="GetUnaryRoleIndex"  dataTypeName="FactType">
+												<plx:passParam>
+													<plx:nameRef name="factRoles1"/>
+												</plx:passParam>
+											</plx:callStatic>
+										</plx:callObject>
+									</plx:callInstance>
+								</plx:right>
+							</plx:binaryOperator>
+						</plx:condition>
+						<plx:break/>
+					</plx:branch>
 					<plx:local name="readingOrders1" dataTypeName="LinkedElementCollection">
 						<plx:passTypeParam dataTypeName="ReadingOrder"/>
 						<plx:initialize>
