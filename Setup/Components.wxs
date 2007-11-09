@@ -364,6 +364,8 @@
 											DefaultLanguage="0" CompanionFile="Neumont.Tools.ORM.dll"/>
 										<File Id="OIALtoORM.xslt" ShortName="OilToOrm.xsl" Name="OIALtoORM.xslt" Source="..\ORMModel\Shell\Converters\OIALtoORM.xslt"
 											DefaultLanguage="0" CompanionFile="Neumont.Tools.ORM.dll"/>
+										<File Id="CustomPropertiesPreviewTo2007_11.xslt" ShortName="CPTo0711.xsl" Name="CustomPropertiesPreviewTo2007-11.xslt" Source="..\ORMModel\Shell\Converters\CustomPropertiesPreviewTo2007-11.xslt"
+											DefaultLanguage="0" CompanionFile="Neumont.Tools.ORM.dll"/>
 										<RegistryValue Root="HKLM" Key="$(var.NORMAVSRegRoot)" Type="string" Name="ConvertersDir" Value="[Converters]"/>
 									</Component>
 								</Directory>

@@ -24,11 +24,11 @@ using Neumont.Tools.Modeling.Shell;
 namespace Neumont.Tools.ORM.CustomProperties
 {
 	#region CustomPropertiesDomainModel model serialization
-	[CustomSerializedXmlNamespaces("http://schemas.neumont.edu/ORM/Preview/CustomProperties")]
+	[CustomSerializedXmlNamespaces("http://schemas.neumont.edu/ORM/2007-11/CustomProperties")]
 	sealed partial class CustomPropertiesDomainModel : ICustomSerializedDomainModel
 	{
 		/// <summary>The default XmlNamespace associated with the 'CustomPropertiesDomainModel' extension model</summary>
-		public static readonly string XmlNamespace = "http://schemas.neumont.edu/ORM/Preview/CustomProperties";
+		public static readonly string XmlNamespace = "http://schemas.neumont.edu/ORM/2007-11/CustomProperties";
 		/// <summary>Implements ICustomSerializedDomainModel.DefaultElementPrefix</summary>
 		private static string DefaultElementPrefix
 		{
@@ -49,7 +49,7 @@ namespace Neumont.Tools.ORM.CustomProperties
 		{
 			string[,] ret = new string[1, 3];
 			ret[0, 0] = "cp";
-			ret[0, 1] = "http://schemas.neumont.edu/ORM/Preview/CustomProperties";
+			ret[0, 1] = "http://schemas.neumont.edu/ORM/2007-11/CustomProperties";
 			ret[0, 2] = "CustomProperties.xsd";
 			return ret;
 		}
@@ -86,7 +86,7 @@ namespace Neumont.Tools.ORM.CustomProperties
 		/// <summary>Implements ICustomSerializedDomainModel.MapRootElement</summary>
 		private static Guid MapRootElement(string xmlNamespace, string elementName)
 		{
-			if (elementName == "CustomPropertyGroup" && xmlNamespace == "http://schemas.neumont.edu/ORM/Preview/CustomProperties")
+			if (elementName == "CustomPropertyGroup" && xmlNamespace == "http://schemas.neumont.edu/ORM/2007-11/CustomProperties")
 			{
 				return CustomPropertyGroup.DomainClassId;
 			}
@@ -104,14 +104,14 @@ namespace Neumont.Tools.ORM.CustomProperties
 			if (validNamespaces == null)
 			{
 				validNamespaces = new Collection<string>();
-				validNamespaces.Add("http://schemas.neumont.edu/ORM/Preview/CustomProperties");
+				validNamespaces.Add("http://schemas.neumont.edu/ORM/2007-11/CustomProperties");
 				CustomPropertiesDomainModel.myValidNamespaces = validNamespaces;
 			}
 			if (classNameMap == null)
 			{
 				classNameMap = new Dictionary<string, Guid>();
 				classNameMap.Add("CustomPropertyGroup", CustomPropertyGroup.DomainClassId);
-				classNameMap.Add("CustomPropertyDefinition", CustomPropertyDefinition.DomainClassId);
+				classNameMap.Add("Definition", CustomPropertyDefinition.DomainClassId);
 				classNameMap.Add("CustomProperty", CustomProperty.DomainClassId);
 				CustomPropertiesDomainModel.myClassNameMap = classNameMap;
 			}
@@ -146,7 +146,7 @@ namespace Neumont.Tools.ORM.CustomProperties
 			if (ret == null)
 			{
 				ret = new CustomSerializedContainerElementInfo[1];
-				ret[0] = new CustomSerializedContainerElementInfo(null, "CustomPropertyDefinitions", null, CustomSerializedElementWriteStyle.Element, null, CustomPropertyGroupContainsCustomPropertyDefinition.CustomPropertyDefinitionDomainRoleId);
+				ret[0] = new CustomSerializedContainerElementInfo(null, "PropertyDefinitions", null, CustomSerializedElementWriteStyle.Element, null, CustomPropertyGroupContainsCustomPropertyDefinition.CustomPropertyDefinitionDomainRoleId);
 				CustomPropertyGroup.myCustomSerializedChildElementInfo = ret;
 			}
 			return ret;
@@ -203,7 +203,7 @@ namespace Neumont.Tools.ORM.CustomProperties
 				childElementMappings = new Dictionary<string, CustomSerializedElementMatch>();
 				CustomSerializedElementMatch match = new CustomSerializedElementMatch();
 				match.InitializeRoles(CustomPropertyGroupContainsCustomPropertyDefinition.CustomPropertyDefinitionDomainRoleId);
-				childElementMappings.Add("||http://schemas.neumont.edu/ORM/Preview/CustomProperties|CustomPropertyDefinitions||", match);
+				childElementMappings.Add("||http://schemas.neumont.edu/ORM/2007-11/CustomProperties|PropertyDefinitions||", match);
 				CustomPropertyGroup.myChildElementMappings = childElementMappings;
 			}
 			CustomSerializedElementMatch rVal;
@@ -251,7 +251,7 @@ namespace Neumont.Tools.ORM.CustomProperties
 		{
 			get
 			{
-				return CustomSerializedElementSupportedOperations.PropertyInfo | CustomSerializedElementSupportedOperations.LinkInfo;
+				return CustomSerializedElementSupportedOperations.ElementInfo | CustomSerializedElementSupportedOperations.PropertyInfo | CustomSerializedElementSupportedOperations.LinkInfo;
 			}
 		}
 		/// <summary>Implements ICustomSerializedElement.GetCustomSerializedChildElementInfo</summary>
@@ -264,7 +264,7 @@ namespace Neumont.Tools.ORM.CustomProperties
 		{
 			get
 			{
-				throw new NotSupportedException();
+				return new CustomSerializedElementInfo(null, "Definition", null, CustomSerializedElementWriteStyle.Element, null);
 			}
 		}
 		/// <summary>Implements ICustomSerializedElement.GetCustomSerializedPropertyInfo</summary>
@@ -415,7 +415,7 @@ namespace Neumont.Tools.ORM.CustomProperties
 			Guid roleId = rolePlayedInfo.Id;
 			if (roleId == CustomPropertyHasCustomPropertyDefinition.CustomPropertyDefinitionDomainRoleId)
 			{
-				return new CustomSerializedElementInfo(null, "CustomPropertyDefinition", null, CustomSerializedElementWriteStyle.Element, null);
+				return new CustomSerializedElementInfo(null, "Definition", null, CustomSerializedElementWriteStyle.Element, null);
 			}
 			return CustomSerializedElementInfo.Default;
 		}
@@ -437,7 +437,7 @@ namespace Neumont.Tools.ORM.CustomProperties
 				childElementMappings = new Dictionary<string, CustomSerializedElementMatch>();
 				CustomSerializedElementMatch match = new CustomSerializedElementMatch();
 				match.InitializeRoles(CustomPropertyHasCustomPropertyDefinition.CustomPropertyDefinitionDomainRoleId);
-				childElementMappings.Add("||||http://schemas.neumont.edu/ORM/Preview/CustomProperties|CustomPropertyDefinition", match);
+				childElementMappings.Add("||||http://schemas.neumont.edu/ORM/2007-11/CustomProperties|Definition", match);
 				CustomProperty.myChildElementMappings = childElementMappings;
 			}
 			CustomSerializedElementMatch rVal;

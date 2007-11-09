@@ -48,9 +48,12 @@ namespace Neumont.Tools.ORM.Shell
 
 			public const string XmlConvertersElement = "xmlConverters";
 			public const string XmlConverterElement = "xmlConverter";
+			public const string XmlExtensionConverter = "xmlExtensionConverter";
 			public const string TransformFileAttribute = "transformFile";
 			public const string SourceElementAttribute = "sourceElement";
+			public const string SourceNamespaceAttribute = "sourceNamespace";
 			public const string TargetElementAttribute = "targetElement";
+			public const string TargetNamespaceAttribute = "targetNamespace";
 			public const string DescriptionAttribute = "description";
 
 			public const string TransformParameterElement = "transformParameter";
@@ -62,6 +65,7 @@ namespace Neumont.Tools.ORM.Shell
 			public const string DynamicValueElement = "dynamicValue";
 
 			public const string ExtensionClassElement = "extensionClass";
+			public const string RunsWithAttribute = "runsWithSourceNamespace";
 			public const string XslNamespaceAttribute = "xslNamespace";
 			public const string ClassNameAttribute = "className";
 			#endregion // String Constants
@@ -119,9 +123,12 @@ namespace Neumont.Tools.ORM.Shell
 			public readonly string SettingsElement;
 			public readonly string XmlConvertersElement;
 			public readonly string XmlConverterElement;
+			public readonly string XmlExtensionConverterElement;
 			public readonly string TransformFileAttribute;
 			public readonly string SourceElementAttribute;
+			public readonly string SourceNamespaceAttribute;
 			public readonly string TargetElementAttribute;
+			public readonly string TargetNamespaceAttribute;
 			public readonly string DescriptionAttribute;
 			public readonly string TransformParameterElement;
 			public readonly string NameAttribute;
@@ -130,6 +137,7 @@ namespace Neumont.Tools.ORM.Shell
 			public readonly string DynamicValuesExclusiveAttribute;
 			public readonly string DynamicValueElement;
 			public readonly string ExtensionClassElement;
+			public readonly string RunsWithAttribute;
 			public readonly string XslNamespaceAttribute;
 			public readonly string ClassNameAttribute;
 
@@ -140,14 +148,18 @@ namespace Neumont.Tools.ORM.Shell
 				SettingsElement = Add(ORMDesignerSchema.SettingsElement);
 				XmlConvertersElement = Add(ORMDesignerSchema.XmlConvertersElement);
 				XmlConverterElement = Add(ORMDesignerSchema.XmlConverterElement);
+				XmlExtensionConverterElement = Add(ORMDesignerSchema.XmlExtensionConverter);
 				TransformFileAttribute = Add(ORMDesignerSchema.TransformFileAttribute);
 				SourceElementAttribute = Add(ORMDesignerSchema.SourceElementAttribute);
+				SourceNamespaceAttribute = Add(ORMDesignerSchema.SourceNamespaceAttribute);
 				TargetElementAttribute = Add(ORMDesignerSchema.TargetElementAttribute);
+				TargetNamespaceAttribute = Add(ORMDesignerSchema.TargetNamespaceAttribute);
 				DescriptionAttribute = Add(ORMDesignerSchema.DescriptionAttribute);
 				TransformParameterElement = Add(ORMDesignerSchema.TransformParameterElement);
 				NameAttribute = Add(ORMDesignerSchema.NameAttribute);
 				ValueAttribute = Add(ORMDesignerSchema.ValueAttribute);
 				ExtensionClassElement = Add(ORMDesignerSchema.ExtensionClassElement);
+				RunsWithAttribute = Add(ORMDesignerSchema.RunsWithAttribute);
 				DynamicTypeAttribute = Add(ORMDesignerSchema.DynamicTypeAttribute);
 				DynamicValuesExclusiveAttribute = Add(ORMDesignerSchema.DynamicValuesExclusiveAttribute);
 				DynamicValueElement = Add(ORMDesignerSchema.DynamicValueElement);
@@ -218,8 +230,7 @@ namespace Neumont.Tools.ORM.Shell
 			{
 				XmlReaderSettings readerSettings = new XmlReaderSettings();
 				readerSettings.CloseInput = false;
-				TransformNode node = null;
-				bool haveTransform = false;
+				LinkedList<TransformNode> nodes = null;
 				using (XmlReader reader = XmlReader.Create(stream, readerSettings))
 				{
 					reader.MoveToContent();
@@ -229,34 +240,53 @@ namespace Neumont.Tools.ORM.Shell
 						string localName = reader.LocalName;
 						if (namespaceURI != ORMSerializationEngine.RootXmlNamespace || localName != ORMSerializationEngine.RootXmlElementName)
 						{
-							XmlElementIdentifier sourceId = new XmlElementIdentifier(namespaceURI, localName);
-							if (myXmlConverters != null)
+							myXmlConverters.TryGetValue(new XmlElementIdentifier(namespaceURI, localName), out nodes);
+						}
+						else
+						{
+							if (reader.MoveToFirstAttribute())
 							{
-								LinkedList<TransformNode> nodes;
-								if (myXmlConverters.TryGetValue(sourceId, out nodes))
+								do
 								{
-									node = nodes.First.Value;
-									if (nodes.Count > 1 || node.HasDynamicParameters)
+									string prefix = reader.Prefix;
+									if ("xmlns" == (string.IsNullOrEmpty(prefix) ? reader.Value : prefix))
 									{
-										IUIService uiService;
-										if (null != serviceProvider &&
-											null != (uiService = (IUIService)serviceProvider.GetService(typeof(IUIService))))
+										//test for any extension Converters to be run
+										if (myXmlConverters.TryGetValue(new XmlElementIdentifier(reader.Value), out nodes))
 										{
-											node = ImportStepOptions.GetTransformOptions(uiService, nodes);
-											if (node == null)
-											{
-												throw new OperationCanceledException();
-											}
+											break;
 										}
 									}
-									haveTransform = true;
-								}
+								} while (reader.MoveToNextAttribute());
 							}
 						}
 					}
 				}
-				if (haveTransform)
+				if (nodes != null)
 				{
+					TransformNode node = nodes.First.Value;
+					if (nodes.Count > 1 || node.HasDynamicParameters)
+					{
+						IUIService uiService;
+						if (null != serviceProvider &&
+							null != (uiService = (IUIService)serviceProvider.GetService(typeof(IUIService))))
+						{
+							node = ImportStepOptions.GetTransformOptions(uiService, nodes);
+							if (node == null)
+							{
+								throw new OperationCanceledException();
+							}
+						}
+					}
+#if RUNSWITHSOURCEIDENTIFIER
+					// UNDONE: Support RunsWithSourceIdentifier option for import
+					XmlElementIdentifier runsWithSource = node.RunsWithSourceIdentifier;
+					//if needs to be run with another converter then keep track of the source element.
+					if (!string.IsNullOrEmpty(runsWithSource.NamespaceURI))
+					{
+						//logic if needs to be run with another converter
+					}
+#endif // RUNSWITHSOURCEIDENTIFIER
 					stream.Position = startingPosition;
 					using (XmlReader reader = XmlReader.Create(stream, readerSettings))
 					{
@@ -345,7 +375,8 @@ namespace Neumont.Tools.ORM.Shell
 				XmlNodeType nodeType = reader.NodeType;
 				if (nodeType == XmlNodeType.Element)
 				{
-					if (TestElementName(reader.LocalName, names.XmlConverterElement))
+					if (TestElementName(reader.LocalName, names.XmlConverterElement) ||
+						TestElementName(reader.LocalName, names.XmlExtensionConverterElement))
 					{
 						ProcessXmlConverter(reader, names);
 					}
@@ -376,6 +407,15 @@ namespace Neumont.Tools.ORM.Shell
 			private string myLocalName;
 			#endregion // Member Variables
 			#region Constructors
+			/// <summary>
+			/// Create an element identifier based on a known namespace without an ElementName (String.Empty)
+			/// </summary>
+			/// <param name="namespaceURI">The namespace for the element. Can be an empty string.</param>
+			public XmlElementIdentifier(string namespaceURI)
+			{
+				myNamespaceURI = namespaceURI;
+				myLocalName = String.Empty;
+			}
 			/// <summary>
 			/// Create an element identifier based on a known namespace and unqualified element name
 			/// </summary>
@@ -716,6 +756,7 @@ namespace Neumont.Tools.ORM.Shell
 		{
 			#region Member Variables
 			private string myDescription;
+			private XmlElementIdentifier myRunsWithSourceIdentifier;
 			private XslCompiledTransform myTransform;
 			private string myTransformFile;
 			private XsltArgumentList myArguments;
@@ -723,7 +764,7 @@ namespace Neumont.Tools.ORM.Shell
 			private IList<DynamicParameter> myDynamicParameters;
 			#endregion // Member Variables
 			#region Constructors
-			public TransformNode(XmlElementIdentifier targetElement, string description, string transformFile, XsltArgumentList arguments, IList<DynamicParameter> dynamicParameters)
+			public TransformNode(XmlElementIdentifier targetElement, string description, string transformFile, XsltArgumentList arguments, IList<DynamicParameter> dynamicParameters, XmlElementIdentifier runsWithSourceIdentifier)
 			{
 				myTargetElement = targetElement;
 				myDescription = description;
@@ -731,6 +772,7 @@ namespace Neumont.Tools.ORM.Shell
 				myTransformFile = transformFile;
 				myArguments = arguments;
 				myDynamicParameters = dynamicParameters;
+				myRunsWithSourceIdentifier = runsWithSourceIdentifier;
 			}
 			#endregion // Constructors
 			#region Accessor Functions
@@ -793,6 +835,17 @@ namespace Neumont.Tools.ORM.Shell
 				get
 				{
 					return myDynamicParameters != null;
+				}
+			}
+			/// <summary>
+			/// The source namespace of the xmlExtensionConverter to include
+			/// this xmlExtensionConverter in
+			/// </summary>
+			public XmlElementIdentifier RunsWithSourceIdentifier
+			{
+				get
+				{
+					return myRunsWithSourceIdentifier;
 				}
 			}
 			#endregion // Accessor Functions
@@ -905,15 +958,35 @@ namespace Neumont.Tools.ORM.Shell
 			{
 				myXmlConverters = new Dictionary<XmlElementIdentifier, LinkedList<TransformNode>>();
 			}
-			string sourceElement = reader.GetAttribute(names.SourceElementAttribute);
-			string targetElement = reader.GetAttribute(names.TargetElementAttribute);
 			string transformFile = reader.GetAttribute(names.TransformFileAttribute);
 			string description = reader.GetAttribute(names.DescriptionAttribute);
 
-			XmlElementIdentifier sourceIdentifier = new XmlElementIdentifier(sourceElement, reader);
-			XmlElementIdentifier targetIdentifier = new XmlElementIdentifier(targetElement, reader);
+			XmlElementIdentifier sourceIdentifier;
+			XmlElementIdentifier targetIdentifier;
+			XmlElementIdentifier runsWithSourceIdentifier;
 			XsltArgumentList arguments = null;
 			IList<DynamicParameter> dynamicParameters = null;
+
+			if (TestElementName(reader.LocalName, names.XmlConverterElement))
+			{
+				string sourceElement = reader.GetAttribute(names.SourceElementAttribute);
+				string targetElement = reader.GetAttribute(names.TargetElementAttribute);
+
+				sourceIdentifier = new XmlElementIdentifier(sourceElement, reader);
+				targetIdentifier = new XmlElementIdentifier(targetElement, reader);
+				runsWithSourceIdentifier = default(XmlElementIdentifier);
+
+			}
+			else // XmlExtensionConverterElement
+			{
+				string sourceNamespace = reader.GetAttribute(names.SourceNamespaceAttribute);
+				string targetNamespace = reader.GetAttribute(names.TargetNamespaceAttribute);
+				string runsWith = reader.GetAttribute(names.RunsWithAttribute);
+
+				sourceIdentifier = new XmlElementIdentifier(sourceNamespace);
+				targetIdentifier = new XmlElementIdentifier(targetNamespace);
+				runsWithSourceIdentifier = !string.IsNullOrEmpty(runsWith) ? new XmlElementIdentifier(runsWith) : default(XmlElementIdentifier);
+			}
 
 			if (!reader.IsEmptyElement)
 			{
@@ -975,7 +1048,7 @@ namespace Neumont.Tools.ORM.Shell
 					}
 				}
 			}
-			TransformNode transformNode = new TransformNode(targetIdentifier, description, Path.Combine(XmlConvertersDirectory, transformFile), arguments, dynamicParameters);
+			TransformNode transformNode = new TransformNode(targetIdentifier, description, Path.Combine(XmlConvertersDirectory, transformFile), arguments, dynamicParameters, runsWithSourceIdentifier);
 			LinkedList<TransformNode> nodes;
 			if (myXmlConverters.TryGetValue(sourceIdentifier, out nodes))
 			{

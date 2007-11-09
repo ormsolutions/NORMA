@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
-<xs:schema xmlns:xs="http://www.w3.org/2001/XMLSchema" xmlns:cp="http://schemas.neumont.edu/ORM/Preview/CustomProperties" targetNamespace="http://schemas.neumont.edu/ORM/Preview/CustomProperties" elementFormDefault="qualified" attributeFormDefault="unqualified" version="1.0">
+<xs:schema xmlns:xs="http://www.w3.org/2001/XMLSchema" xmlns:cp="http://schemas.neumont.edu/ORM/2007-11/CustomProperties" targetNamespace="http://schemas.neumont.edu/ORM/2007-11/CustomProperties" elementFormDefault="qualified" attributeFormDefault="unqualified" version="1.0">
 	<xs:annotation>
 		<xs:appinfo source="zlib/libpng License Copyright Notice">
 			Copyright © Neumont University. All rights reserved.
@@ -15,7 +15,7 @@
 	<xs:element name="CustomProperty">
 		<xs:complexType>
 			<xs:sequence>
-				<xs:element name="CustomPropertyDefinition">
+				<xs:element name="Definition">
 					<xs:complexType>
 						<xs:attribute name="ref" use="required" type="xs:IDREF"/>
 					</xs:complexType>
@@ -49,10 +49,10 @@
 		</xs:annotation>
 		<xs:complexType>
 			<xs:sequence>
-				<xs:element name="CustomPropertyDefinitions">
+				<xs:element name="PropertyDefinitions">
 					<xs:complexType>
 						<xs:sequence>
-							<xs:element ref="cp:CustomPropertyDefinition" maxOccurs="unbounded" minOccurs="1"/>
+							<xs:element ref="cp:Definition" maxOccurs="unbounded" minOccurs="1"/>
 						</xs:sequence>
 					</xs:complexType>
 				</xs:element>
@@ -89,12 +89,12 @@
 			<xs:annotation>
 				<xs:documentation>Custom property's name is unique and primary identifier</xs:documentation>
 			</xs:annotation>
-			<xs:selector xpath="cp:CustomPropertyDefinition"/>
+			<xs:selector xpath="cp:Definition"/>
 			<xs:field xpath="@name"/>
 		</xs:key>
 	</xs:element>
 	
-	<xs:element name="CustomPropertyDefinition">
+	<xs:element name="Definition">
 		<xs:annotation>
 			<xs:documentation>A custom property associated with a group</xs:documentation>
 		</xs:annotation>

@@ -28,21 +28,18 @@
 			<xs:element name="xmlConverters" minOccurs="0">
 				<xs:complexType>
 					<xs:sequence minOccurs="0" maxOccurs="unbounded">
-						<xs:element ref="xmlConverter"/>
+						<xs:element ref="xmlConverterBase"/>
 					</xs:sequence>
 				</xs:complexType>
 				<xs:key name="ConverterDescriptionKey">
-					<xs:selector xpath="ds:xmlConverter"/>
+					<xs:selector xpath="ds:*"/>
 					<xs:field xpath="@description"/>
 				</xs:key>
 			</xs:element>
 		</xs:all>
 	</xs:complexType>
-	<xs:element name="xmlConverter" type="xmlConverterType"/>
-	<xs:complexType name="xmlConverterType">
-		<xs:annotation>
-			<xs:documentation>Specify a transform to run to convert a document with a root element of the specified sourceElement type to a document with the specified targetElement type.</xs:documentation>
-		</xs:annotation>
+	<xs:element name="xmlConverterBase" type="xmlConverterTypeBase" abstract="true"/>
+	<xs:complexType name="xmlConverterTypeBase" abstract="true">
 		<xs:choice minOccurs="0" maxOccurs="unbounded">
 			<xs:element name="extensionClass">
 				<xs:annotation>
@@ -132,21 +129,56 @@
 				<xs:documentation>A short description of the converter. Used for conflict resolution if	multiple converters are specified for the same element.</xs:documentation>
 			</xs:annotation>
 		</xs:attribute>
-		<xs:attribute name="sourceElement" type="elementName" use="required">
-			<xs:annotation>
-				<xs:documentation>The type of document to convert from.</xs:documentation>
-			</xs:annotation>
-		</xs:attribute>
-		<xs:attribute name="targetElement" type="elementName" use="required">
-			<xs:annotation>
-				<xs:documentation>The type of document to convert to.</xs:documentation>
-			</xs:annotation>
-		</xs:attribute>
 		<xs:attribute name="transformFile" type="xs:string" use="required">
 			<xs:annotation>
 				<xs:documentation>The transform file to load. Paths are relative to the XmlConverters directory.</xs:documentation>
 			</xs:annotation>
 		</xs:attribute>
+	</xs:complexType>
+	<xs:element name="xmlConverter" type="xmlConverterType" substitutionGroup="xmlConverterBase"/>
+	<xs:element name="xmlExtensionConverter" type="xmlExtensionConverterType" substitutionGroup="xmlConverterBase"/>
+	<xs:complexType name="xmlConverterType">
+		<xs:annotation>
+			<xs:documentation>Specify a transform to run to convert a document with a root element of the specified sourceElement type to a document with the specified targetElement type.</xs:documentation>
+		</xs:annotation>
+		<xs:complexContent>
+			<xs:extension base="xmlConverterTypeBase">
+				<xs:attribute name="sourceElement" type="elementName" use="required">
+					<xs:annotation>
+						<xs:documentation>The type of document to convert from.</xs:documentation>
+					</xs:annotation>
+				</xs:attribute>
+				<xs:attribute name="targetElement" type="elementName" use="required">
+					<xs:annotation>
+						<xs:documentation>The type of document to convert to.</xs:documentation>
+					</xs:annotation>
+				</xs:attribute>
+			</xs:extension>
+		</xs:complexContent>
+	</xs:complexType>
+	<xs:complexType name="xmlExtensionConverterType">
+		<xs:annotation>
+			<xs:documentation>Specify a transform to run to convert the extensions with a namespace of the specified sourceNamespace to the new namespace specified by targetNamespace.</xs:documentation>
+		</xs:annotation>
+		<xs:complexContent>
+			<xs:extension base="xmlConverterTypeBase">
+				<xs:attribute name="sourceNamespace" type="xs:anyURI" use="required">
+					<xs:annotation>
+						<xs:documentation>The type of document to convert from. The xml namespace associated with the old extension dll and xml elements.</xs:documentation>
+					</xs:annotation>
+				</xs:attribute>
+				<xs:attribute name="targetNamespace" type="xs:anyURI" use="required">
+					<xs:annotation>
+						<xs:documentation>The type of document to convert to. The xml namespace associated with the new extension dll and xml elements.</xs:documentation>
+					</xs:annotation>
+				</xs:attribute>
+				<xs:attribute name="runsWithSourceNamespace" type="xs:anyURI">
+					<xs:annotation>
+						<xs:documentation>The source namespace this should run with. The specified transform file will be automatically included in the transform file that upgrades the target namespace.</xs:documentation>
+					</xs:annotation>
+				</xs:attribute>
+			</xs:extension>
+		</xs:complexContent>
 	</xs:complexType>
 	<xs:simpleType name="elementName">
 		<xs:annotation>

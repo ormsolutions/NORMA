@@ -19,7 +19,7 @@
 	</se:Copyright>
 	<se:DomainModel Class="CustomPropertiesDomainModel" Sealed="true">
 		<se:Namespaces>
-			<se:Namespace Prefix="cp" URI="http://schemas.neumont.edu/ORM/Preview/CustomProperties" SchemaFile="CustomProperties.xsd" DefaultPrefix="true"/>
+			<se:Namespace Prefix="cp" URI="http://schemas.neumont.edu/ORM/2007-11/CustomProperties" SchemaFile="CustomProperties.xsd" DefaultPrefix="true"/>
 		</se:Namespaces>
 		<se:RootElements>
 			<se:RootElement Class="CustomPropertyGroup" Name="CustomPropertyGroup"/>
@@ -37,11 +37,11 @@
 			</se:Condition>
 		</se:Attribute>
 		<se:Attribute ID="IsDefault" Name="isDefault"/>
-		<se:Container Name="CustomPropertyDefinitions">
+		<se:Container Name="PropertyDefinitions">
 			<se:Embed RelationshipName="CustomPropertyGroupContainsCustomPropertyDefinition" RoleName="CustomPropertyDefinition"/>
 		</se:Container>
 	</se:Element>
-	<se:Element Class="CustomPropertyDefinition" Sealed="true">
+	<se:Element Class="CustomPropertyDefinition" Sealed="true" Name="Definition">
 		<se:Attribute ID="Name" Name="name"/>
 		<se:Attribute ID="Description" Name="description">
 			<se:Condition WriteStyle="NotWritten">
@@ -105,6 +105,6 @@
 	<!--CustomProperty per Model element node-->
 	<se:Element Class="CustomProperty" Sealed="true">
 		<se:Attribute ID="Value" Name="value"/>
-		<se:Link RelationshipName="CustomPropertyHasCustomPropertyDefinition" RoleName="CustomPropertyDefinition" Name="CustomPropertyDefinition"/>
+		<se:Link RelationshipName="CustomPropertyHasCustomPropertyDefinition" RoleName="CustomPropertyDefinition" Name="Definition"/>
 	</se:Element>
 </se:CustomSerializedElements>

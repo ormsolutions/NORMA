@@ -8,7 +8,10 @@
 		xmlns:unversionedOrmRoot="http://schemas.neumont.edu/ORM/ORMRoot"
 		xmlns:unversionedOrmCore="http://schemas.neumont.edu/ORM/ORMCore"
 		xmlns:dcl="http://schemas.orm.net/DIL/DCIL"
-		xmlns:oil="http://schemas.orm.net/OIAL">
+		xmlns:oil="http://schemas.orm.net/OIAL"
+		xmlns:testOld="http://schemas.neumont.edu/ORM/Preview/CustomProperties"
+		xmlns:testNew="http://schemas.neumont.edu/ORM/2007-11/CustomProperties"
+		>
 		<ds:xmlConverter description="Import standalone core model file" sourceElement="ormCore2006-04:ORMModel" targetElement="ormRoot2006-04:ORM2" transformFile="CoreModelImport.xslt">
 			<ds:transformParameter name="AutoPopulateShapes" value="true" description="Automatically add all shapes to the default diagram. If this is false, then shapes can be added by dragging from the 'ORM Model Brower' or 'ORM Context Window' windows." dynamicType="boolean"/>
 		</ds:xmlConverter>
@@ -21,5 +24,6 @@
 		<ds:xmlConverter description="Upgrade root model to 2006-01 schema" sourceElement="unversionedOrmRoot:ORM2" targetElement="ormRoot2006-01:ORM2" transformFile="RootUpgradeTo2006-01.xslt"/>
 		<ds:xmlConverter description="Upgrade core model to 2006-04 schema" sourceElement="ormCore2006-01:ORMModel" targetElement="ormCore2006-04:ORMModel" transformFile="CoreUpgradeTo2006-04.xslt"/>
 		<ds:xmlConverter description="Upgrade root model to 2006-04 schema" sourceElement="ormRoot2006-01:ORM2" targetElement="ormRoot2006-04:ORM2" transformFile="RootUpgradeTo2006-04.xslt"/>
+		<ds:xmlExtensionConverter description="Upgrade CustomProperty extensions to 2007-11 schema" sourceNamespace="http://schemas.neumont.edu/ORM/Preview/CustomProperties" targetNamespace="http://schemas.neumont.edu/ORM/2007-11/CustomProperties" transformFile="CustomPropertiesPreviewTo2007-11.xslt"/>
 	</ds:xmlConverters>
 </ds:settings>
