@@ -396,6 +396,10 @@ namespace Neumont.Tools.ORM.ObjectModel
 		{
 			// Handled by FactTypeChangeRule
 		}
+		private void SetDefinitionTextValue(string newValue)
+		{
+			// Handled by FactTypeChangeRule
+		}
 		private void SetNoteTextValue(string newValue)
 		{
 			// Handled by FactTypeChangeRule
@@ -429,6 +433,11 @@ namespace Neumont.Tools.ORM.ObjectModel
 		{
 			FactTypeDerivationExpression derivation = DerivationRule;
 			return (derivation == null || derivation.IsDeleted) ? DerivationStorageType.Derived : derivation.DerivationStorage;
+		}
+		private string GetDefinitionTextValue()
+		{
+			Definition currentDefinition = Definition;
+			return (currentDefinition != null) ? currentDefinition.Text : String.Empty;
 		}
 		private string GetNoteTextValue()
 		{
@@ -569,6 +578,27 @@ namespace Neumont.Tools.ORM.ObjectModel
 					factType.DerivationRule.DerivationStorage = (DerivationStorageType)e.NewValue;
 				}
 			}
+			else if (attributeGuid == FactType.DefinitionTextDomainPropertyId)
+			{
+				// cache the text.
+				string newText = (string)e.NewValue;
+				FactType factType = e.ModelElement as FactType;
+				// Get the definition if it exists
+				Definition definition = factType.Definition;
+				if (definition != null)
+				{
+					// and try to set the text to the cached value.
+					definition.Text = newText;
+				}
+				else if (!string.IsNullOrEmpty(newText))
+				{
+					// Otherwise, create the definition and set the text,
+					definition = new Definition(factType.Store);
+					definition.Text = newText;
+					// then attach the definition to the FactType
+					factType.Definition = definition;
+				}
+			}
 			else if (attributeGuid == FactType.NoteTextDomainPropertyId)
 			{
 				// cache the text.
@@ -586,7 +616,7 @@ namespace Neumont.Tools.ORM.ObjectModel
 					// Otherwise, create the note and set the text,
 					note = new Note(factType.Store);
 					note.Text = newText;
-					// then attach the note to the RootType.
+					// then attach the note to the FactType.
 					factType.Note = note;
 				}
 			}

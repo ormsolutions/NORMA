@@ -19425,6 +19425,520 @@ namespace Neumont.Tools.ORM.ObjectModel
 namespace Neumont.Tools.ORM.ObjectModel
 {
 	/// <summary>
+	/// DomainRelationship ObjectTypeHasDefinition
+	/// Description for Neumont.Tools.ORM.ObjectModel.ObjectTypeHasDefinition
+	/// </summary>
+	[DslDesign::DisplayNameResource("Neumont.Tools.ORM.ObjectModel.ObjectTypeHasDefinition.DisplayName", typeof(global::Neumont.Tools.ORM.ObjectModel.ORMCoreDomainModel), "Neumont.Tools.ORM.GeneratedCode.CoreDomainModelResx")]
+	[DslDesign::DescriptionResource("Neumont.Tools.ORM.ObjectModel.ObjectTypeHasDefinition.Description", typeof(global::Neumont.Tools.ORM.ObjectModel.ORMCoreDomainModel), "Neumont.Tools.ORM.GeneratedCode.CoreDomainModelResx")]
+	[global::System.CLSCompliant(true)]
+	[DslModeling::DomainRelationship(IsEmbedding=true)]
+	[DslModeling::DomainObjectId("cc5801e2-dc99-4927-8924-f3e451f61e60")]
+	public partial class ObjectTypeHasDefinition : DslModeling::ElementLink
+	{
+		#region Constructors, domain class Id
+		
+		/// <summary>
+		/// ObjectTypeHasDefinition domain class Id.
+		/// </summary>
+		public static readonly new global::System.Guid DomainClassId = new global::System.Guid(0xcc5801e2, 0xdc99, 0x4927, 0x89, 0x24, 0xf3, 0xe4, 0x51, 0xf6, 0x1e, 0x60);
+	
+				
+		/// <summary>
+		/// Constructor
+		/// Creates a ObjectTypeHasDefinition link in the same Partition as the given ObjectType
+		/// </summary>
+		/// <param name="source">ObjectType to use as the source of the relationship.</param>
+		/// <param name="target">Definition to use as the target of the relationship.</param>
+		public ObjectTypeHasDefinition(ObjectType source, Definition target)
+			: base((source != null ? source.Partition : null), new DslModeling::RoleAssignment[]{new DslModeling::RoleAssignment(ObjectTypeHasDefinition.ObjectTypeDomainRoleId, source), new DslModeling::RoleAssignment(ObjectTypeHasDefinition.DefinitionDomainRoleId, target)}, null)
+		{
+		}
+		
+		/// <summary>
+		/// Constructor
+		/// </summary>
+		/// <param name="store">Store where new link is to be created.</param>
+		/// <param name="roleAssignments">List of relationship role assignments.</param>
+		public ObjectTypeHasDefinition(DslModeling::Store store, params DslModeling::RoleAssignment[] roleAssignments)
+			: base(store != null ? store.DefaultPartition : null, roleAssignments, null)
+		{
+		}
+		
+		/// <summary>
+		/// Constructor
+		/// </summary>
+		/// <param name="store">Store where new link is to be created.</param>
+		/// <param name="roleAssignments">List of relationship role assignments.</param>
+		/// <param name="propertyAssignments">List of properties assignments to set on the new link.</param>
+		public ObjectTypeHasDefinition(DslModeling::Store store, DslModeling::RoleAssignment[] roleAssignments, DslModeling::PropertyAssignment[] propertyAssignments)
+			: base(store != null ? store.DefaultPartition : null, roleAssignments, propertyAssignments)
+		{
+		}
+		
+		/// <summary>
+		/// Constructor
+		/// </summary>
+		/// <param name="partition">Partition where new link is to be created.</param>
+		/// <param name="roleAssignments">List of relationship role assignments.</param>
+		public ObjectTypeHasDefinition(DslModeling::Partition partition, params DslModeling::RoleAssignment[] roleAssignments)
+			: base(partition, roleAssignments, null)
+		{
+		}
+		
+		/// <summary>
+		/// Constructor
+		/// </summary>
+		/// <param name="partition">Partition where new link is to be created.</param>
+		/// <param name="roleAssignments">List of relationship role assignments.</param>
+		/// <param name="propertyAssignments">List of properties assignments to set on the new link.</param>
+		public ObjectTypeHasDefinition(DslModeling::Partition partition, DslModeling::RoleAssignment[] roleAssignments, DslModeling::PropertyAssignment[] propertyAssignments)
+			: base(partition, roleAssignments, propertyAssignments)
+		{
+		}
+		#endregion
+		#region ObjectType domain role code
+		
+		/// <summary>
+		/// ObjectType domain role Id.
+		/// </summary>
+		public static readonly global::System.Guid ObjectTypeDomainRoleId = new global::System.Guid(0x0d5ca68c, 0x3576, 0x4e90, 0xa9, 0x98, 0xe3, 0x74, 0x5c, 0xd2, 0x45, 0xb6);
+		
+		/// <summary>
+		/// DomainRole ObjectType
+		/// Description for Neumont.Tools.ORM.ObjectModel.ObjectTypeHasDefinition.ObjectType
+		/// </summary>
+		[DslDesign::DisplayNameResource("Neumont.Tools.ORM.ObjectModel.ObjectTypeHasDefinition/ObjectType.DisplayName", typeof(global::Neumont.Tools.ORM.ObjectModel.ORMCoreDomainModel), "Neumont.Tools.ORM.GeneratedCode.CoreDomainModelResx")]
+		[DslDesign::DescriptionResource("Neumont.Tools.ORM.ObjectModel.ObjectTypeHasDefinition/ObjectType.Description", typeof(global::Neumont.Tools.ORM.ObjectModel.ORMCoreDomainModel), "Neumont.Tools.ORM.GeneratedCode.CoreDomainModelResx")]
+		[DslModeling::DomainRole(DslModeling::DomainRoleOrder.Source, PropertyName = "Definition", PropertyDisplayNameKey="Neumont.Tools.ORM.ObjectModel.ObjectTypeHasDefinition/ObjectType.PropertyDisplayName", Multiplicity = DslModeling::Multiplicity.ZeroOne)]
+		[DslModeling::DomainObjectId("0d5ca68c-3576-4e90-a998-e3745cd245b6")]
+		public virtual ObjectType ObjectType
+		{
+			[global::System.Diagnostics.DebuggerStepThrough]
+			get
+			{
+				return (ObjectType)DslModeling::DomainRoleInfo.GetRolePlayer(this, ObjectTypeDomainRoleId);
+			}
+			[global::System.Diagnostics.DebuggerStepThrough]
+			set
+			{
+				DslModeling::DomainRoleInfo.SetRolePlayer(this, ObjectTypeDomainRoleId, value);
+			}
+		}
+				
+		#endregion
+		#region Static methods to access ObjectType of a Definition
+		/// <summary>
+		/// Gets ObjectType.
+		/// </summary>
+		[global::System.Diagnostics.DebuggerStepThrough]
+		[global::System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Design", "CA1011")]
+		public static ObjectType GetObjectType(Definition element)
+		{
+			return DslModeling::DomainRoleInfo.GetLinkedElement(element, DefinitionDomainRoleId) as ObjectType;
+		}
+		
+		/// <summary>
+		/// Sets ObjectType.
+		/// </summary>
+		[global::System.Diagnostics.DebuggerStepThrough]
+		[global::System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Design", "CA1011")]
+		public static void SetObjectType(Definition element, ObjectType newObjectType)
+		{
+			DslModeling::DomainRoleInfo.SetLinkedElement(element, DefinitionDomainRoleId, newObjectType);
+		}
+		#endregion
+		#region Definition domain role code
+		
+		/// <summary>
+		/// Definition domain role Id.
+		/// </summary>
+		public static readonly global::System.Guid DefinitionDomainRoleId = new global::System.Guid(0x3a176f2b, 0xd5ad, 0x485f, 0xbe, 0xc3, 0xbe, 0x61, 0x92, 0xfd, 0x6d, 0x65);
+		
+		/// <summary>
+		/// DomainRole Definition
+		/// Description for Neumont.Tools.ORM.ObjectModel.ObjectTypeHasDefinition.Definition
+		/// </summary>
+		[DslDesign::DisplayNameResource("Neumont.Tools.ORM.ObjectModel.ObjectTypeHasDefinition/Definition.DisplayName", typeof(global::Neumont.Tools.ORM.ObjectModel.ORMCoreDomainModel), "Neumont.Tools.ORM.GeneratedCode.CoreDomainModelResx")]
+		[DslDesign::DescriptionResource("Neumont.Tools.ORM.ObjectModel.ObjectTypeHasDefinition/Definition.Description", typeof(global::Neumont.Tools.ORM.ObjectModel.ORMCoreDomainModel), "Neumont.Tools.ORM.GeneratedCode.CoreDomainModelResx")]
+		[DslModeling::DomainRole(DslModeling::DomainRoleOrder.Target, PropertyName = "ObjectType", PropertyDisplayNameKey="Neumont.Tools.ORM.ObjectModel.ObjectTypeHasDefinition/Definition.PropertyDisplayName", PropagatesDelete = true, Multiplicity = DslModeling::Multiplicity.ZeroOne)]
+		[DslModeling::DomainObjectId("3a176f2b-d5ad-485f-bec3-be6192fd6d65")]
+		public virtual Definition Definition
+		{
+			[global::System.Diagnostics.DebuggerStepThrough]
+			get
+			{
+				return (Definition)DslModeling::DomainRoleInfo.GetRolePlayer(this, DefinitionDomainRoleId);
+			}
+			[global::System.Diagnostics.DebuggerStepThrough]
+			set
+			{
+				DslModeling::DomainRoleInfo.SetRolePlayer(this, DefinitionDomainRoleId, value);
+			}
+		}
+				
+		#endregion
+		#region Static methods to access Definition of a ObjectType
+		/// <summary>
+		/// Gets Definition.
+		/// </summary>
+		[global::System.Diagnostics.DebuggerStepThrough]
+		[global::System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Design", "CA1011")]
+		public static Definition GetDefinition(ObjectType element)
+		{
+			return DslModeling::DomainRoleInfo.GetLinkedElement(element, ObjectTypeDomainRoleId) as Definition;
+		}
+		
+		/// <summary>
+		/// Sets Definition.
+		/// </summary>
+		[global::System.Diagnostics.DebuggerStepThrough]
+		[global::System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Design", "CA1011")]
+		public static void SetDefinition(ObjectType element, Definition newDefinition)
+		{
+			DslModeling::DomainRoleInfo.SetLinkedElement(element, ObjectTypeDomainRoleId, newDefinition);
+		}
+		#endregion
+		#region ObjectType link accessor
+		/// <summary>
+		/// Get the ObjectTypeHasDefinition link to a ObjectType.
+		/// </summary>
+		[global::System.Diagnostics.DebuggerStepThrough]
+		[global::System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Design", "CA1011")]
+		public static global::Neumont.Tools.ORM.ObjectModel.ObjectTypeHasDefinition GetLinkToDefinition (global::Neumont.Tools.ORM.ObjectModel.ObjectType objectTypeInstance)
+		{
+			global::System.Collections.Generic.IList<global::Neumont.Tools.ORM.ObjectModel.ObjectTypeHasDefinition> links = DslModeling::DomainRoleInfo.GetElementLinks<global::Neumont.Tools.ORM.ObjectModel.ObjectTypeHasDefinition>(objectTypeInstance, global::Neumont.Tools.ORM.ObjectModel.ObjectTypeHasDefinition.ObjectTypeDomainRoleId);
+			global::System.Diagnostics.Debug.Assert(links.Count <= 1, "Multiplicity of ObjectType not obeyed.");
+			if ( links.Count == 0 )
+			{
+				return null;
+			}
+			else
+			{
+				return links[0];
+			}
+		}
+		#endregion
+		#region Definition link accessor
+		/// <summary>
+		/// Get the ObjectTypeHasDefinition link to a Definition.
+		/// </summary>
+		[global::System.Diagnostics.DebuggerStepThrough]
+		[global::System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Design", "CA1011")]
+		public static global::Neumont.Tools.ORM.ObjectModel.ObjectTypeHasDefinition GetLinkToObjectType (global::Neumont.Tools.ORM.ObjectModel.Definition definitionInstance)
+		{
+			global::System.Collections.Generic.IList<global::Neumont.Tools.ORM.ObjectModel.ObjectTypeHasDefinition> links = DslModeling::DomainRoleInfo.GetElementLinks<global::Neumont.Tools.ORM.ObjectModel.ObjectTypeHasDefinition>(definitionInstance, global::Neumont.Tools.ORM.ObjectModel.ObjectTypeHasDefinition.DefinitionDomainRoleId);
+			global::System.Diagnostics.Debug.Assert(links.Count <= 1, "Multiplicity of Definition not obeyed.");
+			if ( links.Count == 0 )
+			{
+				return null;
+			}
+			else
+			{
+				return links[0];
+			}
+		}
+		#endregion
+		#region ObjectTypeHasDefinition instance accessors
+		
+		/// <summary>
+		/// Get any ObjectTypeHasDefinition links between a given ObjectType and a Definition.
+		/// </summary>
+		[global::System.Diagnostics.DebuggerStepThrough]
+		[global::System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Design", "CA1011")]
+		public static global::System.Collections.ObjectModel.ReadOnlyCollection<global::Neumont.Tools.ORM.ObjectModel.ObjectTypeHasDefinition> GetLinks( global::Neumont.Tools.ORM.ObjectModel.ObjectType source, global::Neumont.Tools.ORM.ObjectModel.Definition target )
+		{
+			global::System.Collections.Generic.List<global::Neumont.Tools.ORM.ObjectModel.ObjectTypeHasDefinition> outLinks = new global::System.Collections.Generic.List<global::Neumont.Tools.ORM.ObjectModel.ObjectTypeHasDefinition>();
+			global::System.Collections.Generic.IList<global::Neumont.Tools.ORM.ObjectModel.ObjectTypeHasDefinition> links = DslModeling::DomainRoleInfo.GetElementLinks<global::Neumont.Tools.ORM.ObjectModel.ObjectTypeHasDefinition>(source, global::Neumont.Tools.ORM.ObjectModel.ObjectTypeHasDefinition.ObjectTypeDomainRoleId);
+			foreach ( global::Neumont.Tools.ORM.ObjectModel.ObjectTypeHasDefinition link in links )
+			{
+				if ( target.Equals(link.Definition) )
+				{
+					outLinks.Add(link);
+				}
+			}
+			return outLinks.AsReadOnly();
+		}
+		/// <summary>
+		/// Get the one ObjectTypeHasDefinition link between a given ObjectTypeand a Definition.
+		/// </summary>
+		[global::System.Diagnostics.DebuggerStepThrough]
+		[global::System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Design", "CA1011")]
+		public static global::Neumont.Tools.ORM.ObjectModel.ObjectTypeHasDefinition GetLink( global::Neumont.Tools.ORM.ObjectModel.ObjectType source, global::Neumont.Tools.ORM.ObjectModel.Definition target )
+		{
+			global::System.Collections.Generic.IList<global::Neumont.Tools.ORM.ObjectModel.ObjectTypeHasDefinition> links = DslModeling::DomainRoleInfo.GetElementLinks<global::Neumont.Tools.ORM.ObjectModel.ObjectTypeHasDefinition>(source, global::Neumont.Tools.ORM.ObjectModel.ObjectTypeHasDefinition.ObjectTypeDomainRoleId);
+			foreach ( global::Neumont.Tools.ORM.ObjectModel.ObjectTypeHasDefinition link in links )
+			{
+				if ( target.Equals(link.Definition) )
+				{
+					return link;
+				}
+			}
+			return null;
+		}
+		
+		#endregion
+	}
+}
+namespace Neumont.Tools.ORM.ObjectModel
+{
+	/// <summary>
+	/// DomainRelationship FactTypeHasDefinition
+	/// Description for Neumont.Tools.ORM.ObjectModel.FactTypeHasDefinition
+	/// </summary>
+	[DslDesign::DisplayNameResource("Neumont.Tools.ORM.ObjectModel.FactTypeHasDefinition.DisplayName", typeof(global::Neumont.Tools.ORM.ObjectModel.ORMCoreDomainModel), "Neumont.Tools.ORM.GeneratedCode.CoreDomainModelResx")]
+	[DslDesign::DescriptionResource("Neumont.Tools.ORM.ObjectModel.FactTypeHasDefinition.Description", typeof(global::Neumont.Tools.ORM.ObjectModel.ORMCoreDomainModel), "Neumont.Tools.ORM.GeneratedCode.CoreDomainModelResx")]
+	[global::System.CLSCompliant(true)]
+	[DslModeling::DomainRelationship(IsEmbedding=true)]
+	[DslModeling::DomainObjectId("a2b92b06-ba59-4659-905e-d1a68b5f7865")]
+	public partial class FactTypeHasDefinition : DslModeling::ElementLink
+	{
+		#region Constructors, domain class Id
+		
+		/// <summary>
+		/// FactTypeHasDefinition domain class Id.
+		/// </summary>
+		public static readonly new global::System.Guid DomainClassId = new global::System.Guid(0xa2b92b06, 0xba59, 0x4659, 0x90, 0x5e, 0xd1, 0xa6, 0x8b, 0x5f, 0x78, 0x65);
+	
+				
+		/// <summary>
+		/// Constructor
+		/// Creates a FactTypeHasDefinition link in the same Partition as the given FactType
+		/// </summary>
+		/// <param name="source">FactType to use as the source of the relationship.</param>
+		/// <param name="target">Definition to use as the target of the relationship.</param>
+		public FactTypeHasDefinition(FactType source, Definition target)
+			: base((source != null ? source.Partition : null), new DslModeling::RoleAssignment[]{new DslModeling::RoleAssignment(FactTypeHasDefinition.FactTypeDomainRoleId, source), new DslModeling::RoleAssignment(FactTypeHasDefinition.DefinitionDomainRoleId, target)}, null)
+		{
+		}
+		
+		/// <summary>
+		/// Constructor
+		/// </summary>
+		/// <param name="store">Store where new link is to be created.</param>
+		/// <param name="roleAssignments">List of relationship role assignments.</param>
+		public FactTypeHasDefinition(DslModeling::Store store, params DslModeling::RoleAssignment[] roleAssignments)
+			: base(store != null ? store.DefaultPartition : null, roleAssignments, null)
+		{
+		}
+		
+		/// <summary>
+		/// Constructor
+		/// </summary>
+		/// <param name="store">Store where new link is to be created.</param>
+		/// <param name="roleAssignments">List of relationship role assignments.</param>
+		/// <param name="propertyAssignments">List of properties assignments to set on the new link.</param>
+		public FactTypeHasDefinition(DslModeling::Store store, DslModeling::RoleAssignment[] roleAssignments, DslModeling::PropertyAssignment[] propertyAssignments)
+			: base(store != null ? store.DefaultPartition : null, roleAssignments, propertyAssignments)
+		{
+		}
+		
+		/// <summary>
+		/// Constructor
+		/// </summary>
+		/// <param name="partition">Partition where new link is to be created.</param>
+		/// <param name="roleAssignments">List of relationship role assignments.</param>
+		public FactTypeHasDefinition(DslModeling::Partition partition, params DslModeling::RoleAssignment[] roleAssignments)
+			: base(partition, roleAssignments, null)
+		{
+		}
+		
+		/// <summary>
+		/// Constructor
+		/// </summary>
+		/// <param name="partition">Partition where new link is to be created.</param>
+		/// <param name="roleAssignments">List of relationship role assignments.</param>
+		/// <param name="propertyAssignments">List of properties assignments to set on the new link.</param>
+		public FactTypeHasDefinition(DslModeling::Partition partition, DslModeling::RoleAssignment[] roleAssignments, DslModeling::PropertyAssignment[] propertyAssignments)
+			: base(partition, roleAssignments, propertyAssignments)
+		{
+		}
+		#endregion
+		#region FactType domain role code
+		
+		/// <summary>
+		/// FactType domain role Id.
+		/// </summary>
+		public static readonly global::System.Guid FactTypeDomainRoleId = new global::System.Guid(0xa28e8432, 0x212e, 0x4723, 0xae, 0xa8, 0x5b, 0xbd, 0x20, 0x3b, 0x9b, 0xc0);
+		
+		/// <summary>
+		/// DomainRole FactType
+		/// Description for Neumont.Tools.ORM.ObjectModel.FactTypeHasDefinition.FactType
+		/// </summary>
+		[DslDesign::DisplayNameResource("Neumont.Tools.ORM.ObjectModel.FactTypeHasDefinition/FactType.DisplayName", typeof(global::Neumont.Tools.ORM.ObjectModel.ORMCoreDomainModel), "Neumont.Tools.ORM.GeneratedCode.CoreDomainModelResx")]
+		[DslDesign::DescriptionResource("Neumont.Tools.ORM.ObjectModel.FactTypeHasDefinition/FactType.Description", typeof(global::Neumont.Tools.ORM.ObjectModel.ORMCoreDomainModel), "Neumont.Tools.ORM.GeneratedCode.CoreDomainModelResx")]
+		[DslModeling::DomainRole(DslModeling::DomainRoleOrder.Source, PropertyName = "Definition", PropertyDisplayNameKey="Neumont.Tools.ORM.ObjectModel.FactTypeHasDefinition/FactType.PropertyDisplayName", Multiplicity = DslModeling::Multiplicity.ZeroOne)]
+		[DslModeling::DomainObjectId("a28e8432-212e-4723-aea8-5bbd203b9bc0")]
+		public virtual FactType FactType
+		{
+			[global::System.Diagnostics.DebuggerStepThrough]
+			get
+			{
+				return (FactType)DslModeling::DomainRoleInfo.GetRolePlayer(this, FactTypeDomainRoleId);
+			}
+			[global::System.Diagnostics.DebuggerStepThrough]
+			set
+			{
+				DslModeling::DomainRoleInfo.SetRolePlayer(this, FactTypeDomainRoleId, value);
+			}
+		}
+				
+		#endregion
+		#region Static methods to access FactType of a Definition
+		/// <summary>
+		/// Gets FactType.
+		/// </summary>
+		[global::System.Diagnostics.DebuggerStepThrough]
+		[global::System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Design", "CA1011")]
+		public static FactType GetFactType(Definition element)
+		{
+			return DslModeling::DomainRoleInfo.GetLinkedElement(element, DefinitionDomainRoleId) as FactType;
+		}
+		
+		/// <summary>
+		/// Sets FactType.
+		/// </summary>
+		[global::System.Diagnostics.DebuggerStepThrough]
+		[global::System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Design", "CA1011")]
+		public static void SetFactType(Definition element, FactType newFactType)
+		{
+			DslModeling::DomainRoleInfo.SetLinkedElement(element, DefinitionDomainRoleId, newFactType);
+		}
+		#endregion
+		#region Definition domain role code
+		
+		/// <summary>
+		/// Definition domain role Id.
+		/// </summary>
+		public static readonly global::System.Guid DefinitionDomainRoleId = new global::System.Guid(0x4eebed3e, 0x8b32, 0x4fd7, 0xaa, 0x5c, 0x00, 0x9a, 0xe0, 0x61, 0xec, 0x71);
+		
+		/// <summary>
+		/// DomainRole Definition
+		/// Description for Neumont.Tools.ORM.ObjectModel.FactTypeHasDefinition.Definition
+		/// </summary>
+		[DslDesign::DisplayNameResource("Neumont.Tools.ORM.ObjectModel.FactTypeHasDefinition/Definition.DisplayName", typeof(global::Neumont.Tools.ORM.ObjectModel.ORMCoreDomainModel), "Neumont.Tools.ORM.GeneratedCode.CoreDomainModelResx")]
+		[DslDesign::DescriptionResource("Neumont.Tools.ORM.ObjectModel.FactTypeHasDefinition/Definition.Description", typeof(global::Neumont.Tools.ORM.ObjectModel.ORMCoreDomainModel), "Neumont.Tools.ORM.GeneratedCode.CoreDomainModelResx")]
+		[DslModeling::DomainRole(DslModeling::DomainRoleOrder.Target, PropertyName = "FactType", PropertyDisplayNameKey="Neumont.Tools.ORM.ObjectModel.FactTypeHasDefinition/Definition.PropertyDisplayName", PropagatesDelete = true, Multiplicity = DslModeling::Multiplicity.ZeroOne)]
+		[DslModeling::DomainObjectId("4eebed3e-8b32-4fd7-aa5c-009ae061ec71")]
+		public virtual Definition Definition
+		{
+			[global::System.Diagnostics.DebuggerStepThrough]
+			get
+			{
+				return (Definition)DslModeling::DomainRoleInfo.GetRolePlayer(this, DefinitionDomainRoleId);
+			}
+			[global::System.Diagnostics.DebuggerStepThrough]
+			set
+			{
+				DslModeling::DomainRoleInfo.SetRolePlayer(this, DefinitionDomainRoleId, value);
+			}
+		}
+				
+		#endregion
+		#region Static methods to access Definition of a FactType
+		/// <summary>
+		/// Gets Definition.
+		/// </summary>
+		[global::System.Diagnostics.DebuggerStepThrough]
+		[global::System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Design", "CA1011")]
+		public static Definition GetDefinition(FactType element)
+		{
+			return DslModeling::DomainRoleInfo.GetLinkedElement(element, FactTypeDomainRoleId) as Definition;
+		}
+		
+		/// <summary>
+		/// Sets Definition.
+		/// </summary>
+		[global::System.Diagnostics.DebuggerStepThrough]
+		[global::System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Design", "CA1011")]
+		public static void SetDefinition(FactType element, Definition newDefinition)
+		{
+			DslModeling::DomainRoleInfo.SetLinkedElement(element, FactTypeDomainRoleId, newDefinition);
+		}
+		#endregion
+		#region FactType link accessor
+		/// <summary>
+		/// Get the FactTypeHasDefinition link to a FactType.
+		/// </summary>
+		[global::System.Diagnostics.DebuggerStepThrough]
+		[global::System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Design", "CA1011")]
+		public static global::Neumont.Tools.ORM.ObjectModel.FactTypeHasDefinition GetLinkToDefinition (global::Neumont.Tools.ORM.ObjectModel.FactType factTypeInstance)
+		{
+			global::System.Collections.Generic.IList<global::Neumont.Tools.ORM.ObjectModel.FactTypeHasDefinition> links = DslModeling::DomainRoleInfo.GetElementLinks<global::Neumont.Tools.ORM.ObjectModel.FactTypeHasDefinition>(factTypeInstance, global::Neumont.Tools.ORM.ObjectModel.FactTypeHasDefinition.FactTypeDomainRoleId);
+			global::System.Diagnostics.Debug.Assert(links.Count <= 1, "Multiplicity of FactType not obeyed.");
+			if ( links.Count == 0 )
+			{
+				return null;
+			}
+			else
+			{
+				return links[0];
+			}
+		}
+		#endregion
+		#region Definition link accessor
+		/// <summary>
+		/// Get the FactTypeHasDefinition link to a Definition.
+		/// </summary>
+		[global::System.Diagnostics.DebuggerStepThrough]
+		[global::System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Design", "CA1011")]
+		public static global::Neumont.Tools.ORM.ObjectModel.FactTypeHasDefinition GetLinkToFactType (global::Neumont.Tools.ORM.ObjectModel.Definition definitionInstance)
+		{
+			global::System.Collections.Generic.IList<global::Neumont.Tools.ORM.ObjectModel.FactTypeHasDefinition> links = DslModeling::DomainRoleInfo.GetElementLinks<global::Neumont.Tools.ORM.ObjectModel.FactTypeHasDefinition>(definitionInstance, global::Neumont.Tools.ORM.ObjectModel.FactTypeHasDefinition.DefinitionDomainRoleId);
+			global::System.Diagnostics.Debug.Assert(links.Count <= 1, "Multiplicity of Definition not obeyed.");
+			if ( links.Count == 0 )
+			{
+				return null;
+			}
+			else
+			{
+				return links[0];
+			}
+		}
+		#endregion
+		#region FactTypeHasDefinition instance accessors
+		
+		/// <summary>
+		/// Get any FactTypeHasDefinition links between a given FactType and a Definition.
+		/// </summary>
+		[global::System.Diagnostics.DebuggerStepThrough]
+		[global::System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Design", "CA1011")]
+		public static global::System.Collections.ObjectModel.ReadOnlyCollection<global::Neumont.Tools.ORM.ObjectModel.FactTypeHasDefinition> GetLinks( global::Neumont.Tools.ORM.ObjectModel.FactType source, global::Neumont.Tools.ORM.ObjectModel.Definition target )
+		{
+			global::System.Collections.Generic.List<global::Neumont.Tools.ORM.ObjectModel.FactTypeHasDefinition> outLinks = new global::System.Collections.Generic.List<global::Neumont.Tools.ORM.ObjectModel.FactTypeHasDefinition>();
+			global::System.Collections.Generic.IList<global::Neumont.Tools.ORM.ObjectModel.FactTypeHasDefinition> links = DslModeling::DomainRoleInfo.GetElementLinks<global::Neumont.Tools.ORM.ObjectModel.FactTypeHasDefinition>(source, global::Neumont.Tools.ORM.ObjectModel.FactTypeHasDefinition.FactTypeDomainRoleId);
+			foreach ( global::Neumont.Tools.ORM.ObjectModel.FactTypeHasDefinition link in links )
+			{
+				if ( target.Equals(link.Definition) )
+				{
+					outLinks.Add(link);
+				}
+			}
+			return outLinks.AsReadOnly();
+		}
+		/// <summary>
+		/// Get the one FactTypeHasDefinition link between a given FactTypeand a Definition.
+		/// </summary>
+		[global::System.Diagnostics.DebuggerStepThrough]
+		[global::System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Design", "CA1011")]
+		public static global::Neumont.Tools.ORM.ObjectModel.FactTypeHasDefinition GetLink( global::Neumont.Tools.ORM.ObjectModel.FactType source, global::Neumont.Tools.ORM.ObjectModel.Definition target )
+		{
+			global::System.Collections.Generic.IList<global::Neumont.Tools.ORM.ObjectModel.FactTypeHasDefinition> links = DslModeling::DomainRoleInfo.GetElementLinks<global::Neumont.Tools.ORM.ObjectModel.FactTypeHasDefinition>(source, global::Neumont.Tools.ORM.ObjectModel.FactTypeHasDefinition.FactTypeDomainRoleId);
+			foreach ( global::Neumont.Tools.ORM.ObjectModel.FactTypeHasDefinition link in links )
+			{
+				if ( target.Equals(link.Definition) )
+				{
+					return link;
+				}
+			}
+			return null;
+		}
+		
+		#endregion
+	}
+}
+namespace Neumont.Tools.ORM.ObjectModel
+{
+	/// <summary>
 	/// DomainRelationship FactTypeHasNote
 	/// Description for Neumont.Tools.ORM.ObjectModel.FactTypeHasNote
 	/// </summary>

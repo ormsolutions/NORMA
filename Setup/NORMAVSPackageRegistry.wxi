@@ -142,6 +142,15 @@
 				<RegistryValue Name="DontForceCreate" Value="1" Type="integer"/>
 				<RegistryValue Key="Visibility" Name="{$(var.NORMAVSEditorGuid)}" Value="0" Type="integer"/>
 			</RegistryKey>
+			<RegistryKey Action="createAndRemoveOnUninstall" Key="{FC6D8343-48D1-4294-915F-01B6350E0E12}">
+				<RegistryValue Value="{$(var.NORMAVSPackageGuid)}" Type="string"/>
+				<RegistryValue Name="Name" Value="Neumont.Tools.ORM.Shell.ORMDefinitionToolWindow" Type="string"/>
+				<RegistryValue Name="Style" Value="Tabbed" Type="string"/>
+				<RegistryValue Name="Orientation" Value="Right" Type="string"/>
+				<RegistryValue Name="Window" Value="{$(var.VSOutputWindowGuid)}" Type="string"/>
+				<RegistryValue Name="DontForceCreate" Value="1" Type="integer"/>
+				<RegistryValue Key="Visibility" Name="{$(var.NORMAVSEditorGuid)}" Value="0" Type="integer"/>
+			</RegistryKey>
 			<RegistryKey Action="createAndRemoveOnUninstall" Key="{A7C9E14E-9EEE-4D79-A7F4-9E9D1A567498}">
 				<RegistryValue Value="{$(var.NORMAVSPackageGuid)}" Type="string"/>
 				<RegistryValue Name="Name" Value="Neumont.Tools.ORM.Shell.ORMNotesToolWindow" Type="string"/>

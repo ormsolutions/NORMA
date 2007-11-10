@@ -41,8 +41,8 @@ using Neumont.Tools.ORM.ShapeModel;
 namespace Neumont.Tools.ORM.Shell
 {
 	/// <summary>
-	/// The ToolWindow which is responsible for displaying and allowing
-	/// the update of notes on elements implementing INoteOwner.
+	/// The ToolWindow which is responsible for displaying and temporary,
+	/// auto-generated diagram corresponding to the current selection.
 	/// </summary>
 	[Guid("2B93A7CC-1F28-4347-8A22-644FB7B92090")]
 	[CLSCompliant(false)]

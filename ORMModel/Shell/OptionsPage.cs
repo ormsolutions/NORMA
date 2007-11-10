@@ -382,6 +382,10 @@ namespace Neumont.Tools.ORM.Shell
 		private const EntityRelationshipBinaryMultiplicityDisplay EntityRelationshipBinaryMultiplicityDisplay_Default = EntityRelationshipBinaryMultiplicityDisplay.Off;
 		private static EntityRelationshipBinaryMultiplicityDisplay myCurrentEntityRelationshipBinaryMultiplicityDisplay = EntityRelationshipBinaryMultiplicityDisplay_Default;
 		private EntityRelationshipBinaryMultiplicityDisplay myEntityRelationshipBinaryMultiplicityDisplay = EntityRelationshipBinaryMultiplicityDisplay_Default;
+
+		private const bool DisplayDefinitionTooltips_Default = false;
+		private static bool myCurrentDisplayDefinitionTooltips = DisplayDefinitionTooltips_Default;
+		private bool myDisplayDefinitionTooltips = DisplayDefinitionTooltips_Default;
 		#endregion // Member variables
 		#region Base overrides
 		/// <summary>
@@ -406,6 +410,7 @@ namespace Neumont.Tools.ORM.Shell
 			myCurrentReadingDirectionIndicatorDisplay = myReadingDirectionIndicatorDisplay;
 			myCurrentShowDebugCommands = myShowDebugCommands;
 			myCurrentEntityRelationshipBinaryMultiplicityDisplay = myEntityRelationshipBinaryMultiplicityDisplay;
+			myCurrentDisplayDefinitionTooltips = myDisplayDefinitionTooltips;
 		}
 		/// <summary>
 		/// Set local values for the current settings to determine later if the
@@ -429,6 +434,7 @@ namespace Neumont.Tools.ORM.Shell
 			myReadingDirectionIndicatorDisplay = myCurrentReadingDirectionIndicatorDisplay;
 			myShowDebugCommands = myCurrentShowDebugCommands;
 			myEntityRelationshipBinaryMultiplicityDisplay = myCurrentEntityRelationshipBinaryMultiplicityDisplay;
+			myDisplayDefinitionTooltips = myCurrentDisplayDefinitionTooltips;
 		}
 
 		/// <summary>
@@ -459,6 +465,7 @@ namespace Neumont.Tools.ORM.Shell
 				myCurrentShowDefaultConstraintVerbalization = myShowDefaultConstraintVerbalization;
 				myCurrentCustomVerbalizationSnippets = myCustomVerbalizationSnippets;
 				myCurrentShowDebugCommands = myShowDebugCommands;
+				myCurrentDisplayDefinitionTooltips = myDisplayDefinitionTooltips;
 				if (updateVerbalizer)
 				{
 					ORMDesignerPackage.VerbalizationWindowGlobalSettingsChanged();
@@ -487,6 +494,7 @@ namespace Neumont.Tools.ORM.Shell
 			myCurrentReadingDirectionIndicatorDisplay = myReadingDirectionIndicatorDisplay;
 			myCurrentShowDebugCommands = myShowDebugCommands;
 			myCurrentEntityRelationshipBinaryMultiplicityDisplay = myEntityRelationshipBinaryMultiplicityDisplay;
+			myCurrentDisplayDefinitionTooltips = myDisplayDefinitionTooltips;
 
 			// Walk all the documents and invalidate ORM diagrams if the options have changed
 			NotifySettingsChange(
@@ -922,6 +930,26 @@ namespace Neumont.Tools.ORM.Shell
 			get { return myCurrentEntityRelationshipBinaryMultiplicityDisplay; }
 		}
 
+		/// <summary>
+		/// Display Definition Tooltip option
+		/// </summary>
+		[DefaultValue(DisplayDefinitionTooltips_Default)]
+		[LocalizedCategory(ResourceStrings.OptionsPageCategoryAppearanceId)]
+		[LocalizedDescription(ResourceStrings.OptionsPagePropertyDisplayDefinitionTooltipsDescriptionId)]
+		[LocalizedDisplayName(ResourceStrings.OptionsPagePropertyDisplayDefinitionTooltipsDisplayNameId)]
+		public bool DisplayDefinitionTooltips
+		{
+			get { return myDisplayDefinitionTooltips; }
+			set { myDisplayDefinitionTooltips = value; }
+		}
+
+		/// <summary>
+		/// Current VS session-wide setting for DisplayDefinitionTooltips
+		/// </summary>
+		public static bool CurrentDisplayDefinitionTooltips
+		{
+			get { return myCurrentDisplayDefinitionTooltips; }
+		}
 		#endregion // Accessor properties
 		#region Custom dropdown for CustomVerbalizationSnippets option
 		/// <summary>

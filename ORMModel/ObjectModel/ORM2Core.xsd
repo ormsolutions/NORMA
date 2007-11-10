@@ -46,6 +46,17 @@
 		</xs:choice>
 		<xs:anyAttribute namespace="##any" processContents="skip"/>
 	</xs:complexType>
+	<xs:complexType name="DefinitionsType">
+		<xs:sequence minOccurs="0">
+			<xs:element name="Definition" type="DefinitionType"/>
+		</xs:sequence>
+	</xs:complexType>
+	<xs:complexType name="DefinitionType">
+		<xs:sequence>
+			<xs:element name="Text" type="xs:string" minOccurs="0"/>
+		</xs:sequence>
+		<xs:attribute name="id" type="xs:ID"/>
+	</xs:complexType>
 	<xs:complexType name="NotesType">
 		<xs:sequence minOccurs="0">
 			<xs:element name="Note" type="NoteType"/>
@@ -90,6 +101,7 @@
 	</xs:complexType>
 	<xs:complexType name="ObjectType" abstract="true">
 		<xs:sequence>
+			<xs:element name="Definitions" type="DefinitionsType" minOccurs="0"/>
 			<xs:element name="Notes" type="NotesType" minOccurs="0"/>
 			<xs:element name="PlayedRoles" type="PlayedRoles" minOccurs="0"/>
 		</xs:sequence>
@@ -573,6 +585,7 @@
 	<xs:complexType name="Fact">
 		<!-- These are duplicated in ImpliedFact and SubtypeFact without type extension -->
 		<xs:sequence minOccurs="0">
+			<xs:element name="Definitions" type="DefinitionsType" minOccurs="0"/>
 			<xs:element name="Notes" type="NotesType" minOccurs="0"/>
 			<xs:element name="FactRoles" type="Roles" minOccurs="0"/>
 			<xs:element name="ReadingOrders" type="ReadingOrders" minOccurs="0"/>

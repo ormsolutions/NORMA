@@ -66,6 +66,11 @@
 				<PortableDataType/>
 			</Snippet>
 		</ObjectType>
+		<Definition>
+			<Snippet ref="DefinitionVerbalization">
+				<NoteText/>
+			</Snippet>
+		</Definition>
 		<Note>
 			<Snippet ref="NotesVerbalization">
 				<NoteText/>

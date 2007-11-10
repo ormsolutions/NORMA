@@ -27,7 +27,8 @@ namespace Neumont.Tools.ORM.ObjectModel
 	/// <summary>
 	/// An interface to implement for any Note owner
 	/// </summary>
-	public interface INoteOwner
+	/// <typeparam name="NoteType">The type of a DomainClass with a domain property called Text.</typeparam>
+	public interface INoteOwner<NoteType> where NoteType : ModelElement
 	{
 		/// <summary>
 		/// Return the name of the note owner
@@ -70,11 +71,11 @@ namespace Neumont.Tools.ORM.ObjectModel
 		}
 		#endregion // NoteChangeRule
 	}
-	public partial class FactType : INoteOwner
+	public partial class FactType : INoteOwner<Note>, INoteOwner<Definition>
 	{
-		#region INoteOwner Implementation
+		#region INoteOwner<Note> Implementation
 		/// <summary>
-		/// Implements INoteOwner.NoteTextPropertyDescriptor
+		/// Implements <see cref="INoteOwner{Note}.NoteTextPropertyDescriptor"/>
 		/// </summary>
 		protected PropertyDescriptor NoteTextPropertyDescriptor
 		{
@@ -83,20 +84,46 @@ namespace Neumont.Tools.ORM.ObjectModel
 				return DomainTypeDescriptor.CreatePropertyDescriptor(this, NoteTextDomainPropertyId);
 			}
 		}
-		PropertyDescriptor INoteOwner.NoteTextPropertyDescriptor
+		PropertyDescriptor INoteOwner<Note>.NoteTextPropertyDescriptor
 		{
 			get
 			{
 				return NoteTextPropertyDescriptor;
 			}
 		}
-		#endregion // INoteOwner Implementation
-	}
-	public partial class ObjectType : INoteOwner
-	{
-		#region INoteOwner Implementation
+		#endregion // INoteOwner<Note> Implementation
+		#region INoteOwner<Definition> Implementation
 		/// <summary>
-		/// Implements INoteOwner.NoteTextPropertyDescriptor
+		/// Implements <see cref="INoteOwner{Definition}.NoteTextPropertyDescriptor"/>
+		/// </summary>
+		protected PropertyDescriptor DefinitionTextPropertyDescriptor
+		{
+			get
+			{
+				return DomainTypeDescriptor.CreatePropertyDescriptor(this, DefinitionTextDomainPropertyId);
+			}
+		}
+		PropertyDescriptor INoteOwner<Definition>.NoteTextPropertyDescriptor
+		{
+			get
+			{
+				return DefinitionTextPropertyDescriptor;
+			}
+		}
+		string INoteOwner<Definition>.NoteText
+		{
+			get
+			{
+				return DefinitionText;
+			}
+		}
+		#endregion // INoteOwner<Definition> Implementation
+	}
+	public partial class ObjectType : INoteOwner<Note>, INoteOwner<Definition>
+	{
+		#region INoteOwner<Note> Implementation
+		/// <summary>
+		/// Implements <see cref="INoteOwner{Note}.NoteTextPropertyDescriptor"/>
 		/// </summary>
 		protected PropertyDescriptor NoteTextPropertyDescriptor
 		{
@@ -105,20 +132,46 @@ namespace Neumont.Tools.ORM.ObjectModel
 				return DomainTypeDescriptor.CreatePropertyDescriptor(this, NoteTextDomainPropertyId);
 			}
 		}
-		PropertyDescriptor INoteOwner.NoteTextPropertyDescriptor
+		PropertyDescriptor INoteOwner<Note>.NoteTextPropertyDescriptor
 		{
 			get
 			{
 				return NoteTextPropertyDescriptor;
 			}
 		}
-		#endregion // INoteOwner Implementation
+		#endregion // INoteOwner<Note> Implementation
+		#region INoteOwner<Definition> Implementation
+		/// <summary>
+		/// Implements <see cref="INoteOwner{Definition}.NoteTextPropertyDescriptor"/>
+		/// </summary>
+		protected PropertyDescriptor DefinitionTextPropertyDescriptor
+		{
+			get
+			{
+				return DomainTypeDescriptor.CreatePropertyDescriptor(this, DefinitionTextDomainPropertyId);
+			}
+		}
+		PropertyDescriptor INoteOwner<Definition>.NoteTextPropertyDescriptor
+		{
+			get
+			{
+				return DefinitionTextPropertyDescriptor;
+			}
+		}
+		string INoteOwner<Definition>.NoteText
+		{
+			get
+			{
+				return DefinitionText;
+			}
+		}
+		#endregion // INoteOwner<Definition> Implementation
 	}
-	public partial class ModelNote : INoteOwner
+	public partial class ModelNote : INoteOwner<Note>
 	{
 		#region INoteOwner Implementation
 		/// <summary>
-		/// Implements INoteOwner.NoteText
+		/// Implements <see cref="INoteOwner{Note}.Name"/>
 		/// </summary>
 		protected string Name
 		{
@@ -128,7 +181,7 @@ namespace Neumont.Tools.ORM.ObjectModel
 				return TypeDescriptor.GetClassName(this);
 			}
 		}
-		string INoteOwner.Name
+		string INoteOwner<Note>.Name
 		{
 			get
 			{
@@ -136,7 +189,7 @@ namespace Neumont.Tools.ORM.ObjectModel
 			}
 		}
 		/// <summary>
-		/// Implements INoteOwner.NoteText
+		/// Implements <see cref="INoteOwner{Note}.NoteText"/>
 		/// </summary>
 		protected string NoteText
 		{
@@ -145,7 +198,7 @@ namespace Neumont.Tools.ORM.ObjectModel
 				return Text;
 			}
 		}
-		string INoteOwner.NoteText
+		string INoteOwner<Note>.NoteText
 		{
 			get
 			{
@@ -153,7 +206,7 @@ namespace Neumont.Tools.ORM.ObjectModel
 			}
 		}
 		/// <summary>
-		/// Implements INoteOwner.NoteTextPropertyDescriptor
+		/// Implements <see cref="INoteOwner{Note}.NoteTextPropertyDescriptor"/>
 		/// </summary>
 		protected PropertyDescriptor NoteTextPropertyDescriptor
 		{
@@ -162,7 +215,7 @@ namespace Neumont.Tools.ORM.ObjectModel
 				return DomainTypeDescriptor.CreatePropertyDescriptor(this, TextDomainPropertyId);
 			}
 		}
-		PropertyDescriptor INoteOwner.NoteTextPropertyDescriptor
+		PropertyDescriptor INoteOwner<Note>.NoteTextPropertyDescriptor
 		{
 			get
 			{

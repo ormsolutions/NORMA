@@ -3348,15 +3348,14 @@ namespace Neumont.Tools.ORM.ShapeModel
 		}
 		/// <summary>
 		/// Show a tooltip explaining the numbering for sticky multi-column
-		/// external constraint roles.
+		/// external constraint roles, or (optionally) the definition text.
 		/// </summary>
 		public override string GetToolTipText(DiagramItem item)
 		{
 			string retVal = null;
 			ShapeSubField subField = item.SubField;
 			RoleSubField roleField;
-			if ((null != subField) &&
-				(null != (roleField = subField as RoleSubField)))
+			if (null != (roleField = subField as RoleSubField))
 			{
 				IStickyObject stickyObject;
 				ExternalConstraintShape shape;
@@ -3392,6 +3391,16 @@ namespace Neumont.Tools.ORM.ShapeModel
 							}
 						}
 					}
+				}
+			}
+			if (retVal == null &&
+				OptionsPage.CurrentDisplayDefinitionTooltips &&
+				(subField == null || roleField != null))
+			{
+				retVal = AssociatedFactType.DefinitionText;
+				if (retVal.Length == 0)
+				{
+					retVal = null;
 				}
 			}
 			return retVal;
@@ -5445,6 +5454,31 @@ namespace Neumont.Tools.ORM.ShapeModel
 			{
 				return CustomFoldRectangleShapeGeometry.ShapeGeometry;
 			}
+		}
+		/// <summary>
+		/// Indicate that we support tool tips. Used for showing
+		/// definition information.
+		/// </summary>
+		public override bool HasToolTip
+		{
+			get
+			{
+				return OptionsPage.CurrentDisplayDefinitionTooltips;
+			}
+		}
+		/// <summary>
+		/// Show a tooltip containing the <see cref="ObjectType"/> definition text.
+		/// </summary>
+		public override string GetToolTipText(DiagramItem item)
+		{
+			string retVal = null;
+			// Show for all shapes and fields in item
+			retVal = AssociatedObjectType.DefinitionText;
+			if (retVal.Length == 0)
+			{
+				retVal = null;
+			}
+			return retVal;
 		}
 		#endregion // Customize appearance
 		#region IModelErrorActivation Implementation

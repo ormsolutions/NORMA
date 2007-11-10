@@ -36,23 +36,144 @@ using Neumont.Tools.Modeling;
 
 namespace Neumont.Tools.ORM.Shell
 {
+	#region ORMNotesToolWindow class
 	/// <summary>
 	/// The ToolWindow which is responsible for displaying and allowing
-	/// the update of notes on elements implementing INoteOwner.
+	/// the update of notes on elements implementing <see cref="INoteOwner{Note}"/>.
 	/// </summary>
 	[Guid("A7C9E14E-9EEE-4D79-A7F4-9E9D1A567498")]
 	[CLSCompliant(false)]
-	public class ORMNotesToolWindow : ORMToolWindow, MSOLE.IOleCommandTarget
+	public class ORMNotesToolWindow : ORMBaseNoteToolWindow<Note>
+	{
+		#region Constructor
+		/// <summary>
+		/// Returns a new <see cref="ORMNotesToolWindow"/>
+		/// </summary>
+		public ORMNotesToolWindow(IServiceProvider serviceProvider)
+			: base(serviceProvider)
+		{
+		}
+		#endregion // Constructor
+		#region Base overrides
+		private static readonly Guid[] myNoteRoleIdentifiers = { ObjectTypeHasNote.NoteDomainRoleId, FactTypeHasNote.NoteDomainRoleId, ModelHasModelNote.NoteDomainRoleId };
+		/// <summary>
+		/// Return role identifiers for <see cref="ObjectType"/>, <see cref="FactType"/> and <see cref="ModelNote"/> <see cref="Note"/>s
+		/// </summary>
+		protected override Guid[] GetNoteRoleIdentifiers()
+		{
+			return myNoteRoleIdentifiers;
+		}
+		/// <summary>
+		/// Returns the title of the window.
+		/// </summary>
+		public override string WindowTitle
+		{
+			get
+			{
+				return ResourceStrings.ModelNotesWindowTitle;
+			}
+		}
+		/// <summary>
+		/// See <see cref="ToolWindow.BitmapResource"/>.
+		/// </summary>
+		protected override int BitmapResource
+		{
+			get
+			{
+				return PackageResources.Id.ToolWindowIcons;
+			}
+		}
+		/// <summary>
+		/// See <see cref="ToolWindow.BitmapIndex"/>.
+		/// </summary>
+		protected override int BitmapIndex
+		{
+			get
+			{
+				return PackageResources.ToolWindowIconIndex.NotesEditor;
+			}
+		}
+		#endregion // Base overrides
+	}
+	#endregion // ORMNotesToolWindow class
+	#region ORMDefinitionToolWindow class
+	/// <summary>
+	/// The ToolWindow which is responsible for displaying and allowing
+	/// the update of definitions on elements implementing <see cref="INoteOwner{Definition}"/>.
+	/// </summary>
+	[Guid("FC6D8343-48D1-4294-915F-01B6350E0E12")]
+	[CLSCompliant(false)]
+	public class ORMDefinitionToolWindow : ORMBaseNoteToolWindow<Definition>
+	{
+		#region Constructor
+		/// <summary>
+		/// Returns a new <see cref="ORMDefinitionToolWindow"/>
+		/// </summary>
+		public ORMDefinitionToolWindow(IServiceProvider serviceProvider)
+			: base(serviceProvider)
+		{
+		}
+		#endregion // Constructor
+		#region Base overrides
+		private static readonly Guid[] myNoteRoleIdentifiers = { ObjectTypeHasDefinition.DefinitionDomainRoleId, FactTypeHasDefinition.DefinitionDomainRoleId };
+		/// <summary>
+		/// Return role identifiers for <see cref="ObjectType"/> and <see cref="FactType"/> <see cref="Definition"/>s
+		/// </summary>
+		protected override Guid[] GetNoteRoleIdentifiers()
+		{
+			return myNoteRoleIdentifiers;
+		}
+		/// <summary>
+		/// Returns the title of the window.
+		/// </summary>
+		public override string WindowTitle
+		{
+			get
+			{
+				return ResourceStrings.ModelDefinitionWindowTitle;
+			}
+		}
+		/// <summary>
+		/// See <see cref="ToolWindow.BitmapResource"/>.
+		/// </summary>
+		protected override int BitmapResource
+		{
+			get
+			{
+				return PackageResources.Id.ToolWindowIcons;
+			}
+		}
+		/// <summary>
+		/// See <see cref="ToolWindow.BitmapIndex"/>.
+		/// </summary>
+		protected override int BitmapIndex
+		{
+			get
+			{
+				return PackageResources.ToolWindowIconIndex.None;
+			}
+		}
+		#endregion // Base overrides
+	}
+	#endregion // ORMDefinitionToolWindow class
+	#region ORMBaseNoteToolWindow class
+	/// <summary>
+	/// A base class for any ToolWindow that is used to display a note type field. Notes
+	/// are assumed to be multiline string fields.
+	/// </summary>
+	/// <typeparam name="NoteType">The type of a DomainClass with a domain property called Text.</typeparam>
+	[CLSCompliant(false)]
+	public abstract class ORMBaseNoteToolWindow<NoteType> : ORMToolWindow, MSOLE.IOleCommandTarget where NoteType : ModelElement
 	{
 		#region Private data members
 		private TextBox myTextBox;
-		private List<INoteOwner> mySelectedNoteOwners;
+		private List<INoteOwner<NoteType>> mySelectedNoteOwners;
 		#endregion // Private data members
 		#region Construction
 		/// <summary>
-		/// Returns the ORM Notes Window.
+		/// Returns a new <see cref="ORMBaseNoteToolWindow{NoteType}"/>
 		/// </summary>
-		public ORMNotesToolWindow(IServiceProvider serviceProvider)
+		protected ORMBaseNoteToolWindow(IServiceProvider serviceProvider)
 			: base(serviceProvider)
 		{
 		}
@@ -85,48 +206,38 @@ namespace Neumont.Tools.ORM.Shell
 		/// </summary>
 		private void NoteAlteredEventHandler(object sender, ElementPropertyChangedEventArgs e)
 		{
-			if (e.DomainProperty.Id == Note.TextDomainPropertyId)
+			ModelElement element = e.ModelElement;
+			Store store = element.Store;
+			if (e.DomainProperty.Id == GetNoteTextPropertyId(store))
 			{
-				Note note = e.ModelElement as Note;
-				INoteOwner noteOwner = note as INoteOwner;
-				if (noteOwner == null)
+				// First, see if the note element implements INoteOwner directly
+				INoteOwner<NoteType> noteOwner = element as INoteOwner<NoteType>;
+				if (noteOwner != null)
 				{
-					noteOwner = note.FactType as INoteOwner;
-					if (noteOwner == null)
+					NoteAlteredEventHandler(noteOwner);
+				}
+				else
+				{
+					// If note, find the owning element
+					Guid[] ownerRoles = GetNoteRoleIdentifiers();
+					for (int i = 0; i < ownerRoles.Length; ++i)
 					{
-						noteOwner = note.ObjectType as INoteOwner;
+						noteOwner = DomainRoleInfo.GetLinkedElement(element, ownerRoles[i]) as INoteOwner<NoteType>;
+						if (noteOwner != null)
+						{
+							NoteAlteredEventHandler(noteOwner);
+							break;
+						}
 					}
 				}
-				NoteAlteredEventHandler(noteOwner);
 			}
-		}
-		/// <summary>
-		/// Handles note added and removed events for ObjectType
-		/// </summary>
-		private void ObjectTypeNoteAlteredEventHandler(object sender, ElementEventArgs e)
-		{
-			NoteAlteredEventHandler((e.ModelElement as ObjectTypeHasNote).ObjectType as INoteOwner);
-		}
-		/// <summary>
-		/// Handles note added and removed events for FactType
-		/// </summary>
-		private void FactTypeNoteAlteredEventHandler(object sender, ElementEventArgs e)
-		{
-			NoteAlteredEventHandler((e.ModelElement as FactTypeHasNote).FactType as INoteOwner);
-		}
-		/// <summary>
-		/// Handles note added and removed events for ModelNote
-		/// </summary>
-		private void ModelNoteAlteredEventHandler(object sender, ElementEventArgs e)
-		{
-			NoteAlteredEventHandler((e.ModelElement as ModelHasModelNote).Note as INoteOwner);
 		}
 		/// <summary>
 		/// Helper function to handler a note change event
 		/// </summary>
-		private void NoteAlteredEventHandler(INoteOwner noteOwner)
+		private void NoteAlteredEventHandler(INoteOwner<NoteType> noteOwner)
 		{
-			List<INoteOwner> currentOwners;
+			List<INoteOwner<NoteType>> currentOwners;
 			if (null != noteOwner &&
 				null != (currentOwners = mySelectedNoteOwners) &&
 				currentOwners.Count != 0 &&
@@ -141,7 +252,7 @@ namespace Neumont.Tools.ORM.Shell
 		/// </summary>
 		void myTextBox_LostFocus(object sender, EventArgs e)
 		{
-			List<INoteOwner> owners = mySelectedNoteOwners;
+			List<INoteOwner<NoteType>> owners = mySelectedNoteOwners;
 			if (owners != null && owners.Count == 1 && myTextBox.Enabled)	// If we only have one selected note and the textbox is enabled,
 			{
 				SetNote(owners[0], myTextBox.Text);	// try to set the note.
@@ -154,7 +265,7 @@ namespace Neumont.Tools.ORM.Shell
 		/// </summary>
 		/// <param name="owner">The INoteOwner on which the note should be set.</param>
 		/// <param name="text">The text of the note.</param>
-		private void SetNote(INoteOwner owner, string text)
+		private void SetNote(INoteOwner<NoteType> owner, string text)
 		{
 			PropertyDescriptor descriptor;
 			ORMDesignerDocData currentDoc;
@@ -177,10 +288,10 @@ namespace Neumont.Tools.ORM.Shell
 		/// </summary>
 		private void PopulateSelectedNoteOwners()
 		{
-			List<INoteOwner> selectedTypes = mySelectedNoteOwners;
+			List<INoteOwner<NoteType>> selectedTypes = mySelectedNoteOwners;
 			if (selectedTypes == null)
 			{
-				selectedTypes = new List<INoteOwner>();
+				selectedTypes = new List<INoteOwner<NoteType>>();
 				mySelectedNoteOwners = selectedTypes;
 			}
 			selectedTypes.Clear();	// Clear the list of selected root types.
@@ -193,7 +304,7 @@ namespace Neumont.Tools.ORM.Shell
 				{
 					foreach (object o in objects)
 					{
-						INoteOwner owner = EditorUtility.ResolveContextInstance(o, false) as INoteOwner;	// and if they are an INoteOwner,
+						INoteOwner<NoteType> owner = EditorUtility.ResolveContextInstance(o, false) as INoteOwner<NoteType>;	// and if they are an INoteOwner,
 						if (owner != null)
 						{
 							selectedTypes.Add(owner);	// add them to the list of selected owners.
@@ -208,7 +319,7 @@ namespace Neumont.Tools.ORM.Shell
 		/// </summary>
 		private void DisplayNotes()
 		{
-			List<INoteOwner> selectedNoteOwners = mySelectedNoteOwners; // Cache the list of selected note owners.
+			List<INoteOwner<NoteType>> selectedNoteOwners = mySelectedNoteOwners; // Cache the list of selected note owners.
 			int selectedNoteOwnersCount = selectedNoteOwners.Count; // Cache the count of selected note owners.
 			TextBox textBox = myTextBox; // Cache the text box.
 			if (textBox != null) // If the text box is not null,
@@ -232,7 +343,7 @@ namespace Neumont.Tools.ORM.Shell
 					bool first = true;
 					for (int i = 0; i < selectedNoteOwnersCount; ++i) // Loop through the selected root types,
 					{
-						INoteOwner noteOwner = selectedNoteOwners[i]; // cache them locally,
+						INoteOwner<NoteType> noteOwner = selectedNoteOwners[i]; // cache them locally,
 						string noteText = noteOwner.NoteText; // and cache their note text.
 						if (!string.IsNullOrEmpty(noteText)) // If there is note text on the note owner,
 						{
@@ -408,6 +519,55 @@ namespace Neumont.Tools.ORM.Shell
 			}
 		}
 		/// <summary>
+		/// Return the role ids of the note end of all relationship that
+		/// own this kind of note. This must return the same set of identifiers
+		/// regardless of store instance.
+		/// </summary>
+		protected abstract Guid[] GetNoteRoleIdentifiers();
+		private static EventHandler<ElementEventArgs>[] myOwningRelationshipHandlers = null;
+		/// <summary>
+		/// We cannot use anonymous delegates in ManageEventHandlers to respond to add/remove
+		/// of relationships because the instance would change each time, making it impossible
+		/// to remove the event handler from the watch list on a store. So, we build these
+		/// once here. Note that this assumes that GetNoteRoleIdentifiers() returns a fixed
+		/// set of identifiers and cannot change from store to store.
+		/// </summary>
+		private EventHandler<ElementEventArgs>[] GetOwningRelationshipHandlers(Store store)
+		{
+			EventHandler<ElementEventArgs>[] handlers = myOwningRelationshipHandlers;
+			if (handlers == null)
+			{
+				Guid[] noteRoleIdentifiers = GetNoteRoleIdentifiers();
+				handlers = new EventHandler<ElementEventArgs>[noteRoleIdentifiers.Length];
+				for (int i = 0; i < noteRoleIdentifiers.Length; ++i)
+				{
+					DomainDataDirectory dataDirectory = store.DomainDataDirectory;
+					DomainRoleInfo role = dataDirectory.FindDomainRole(noteRoleIdentifiers[i]);
+					Guid oppositeRoleId = role.OppositeDomainRole.Id;
+					handlers[i] = delegate(object sender, ElementEventArgs e)
+					{
+						NoteAlteredEventHandler(DomainRoleInfo.GetRolePlayer((ElementLink)e.ModelElement, oppositeRoleId) as INoteOwner<NoteType>);
+					};
+				}
+				System.Threading.Interlocked.CompareExchange<EventHandler<ElementEventArgs>[]>(ref myOwningRelationshipHandlers, handlers, null);
+				handlers = myOwningRelationshipHandlers;
+			}
+			return handlers;
+		}
+		private static Guid[] myNoteTextPropertyId; // Defined as an array so we can statically initialize without locking
+		private Guid GetNoteTextPropertyId(Store store)
+		{
+			Guid[] propertyId = myNoteTextPropertyId;
+			if (propertyId == null)
+			{
+				DomainDataDirectory dataDirectory = store.DomainDataDirectory;
+				propertyId = new Guid[] { store.DomainDataDirectory.GetDomainClass(typeof(NoteType)).FindDomainProperty("Text", false).Id };
+				System.Threading.Interlocked.CompareExchange<Guid[]>(ref myNoteTextPropertyId, propertyId, null);
+				propertyId = myNoteTextPropertyId;
+			}
+			return propertyId[0];
+		}
+		/// <summary>
 		/// Manages <see cref="EventHandler{TEventArgs}"/>s in the <see cref="Store"/> so that the <see cref="ORMNotesToolWindow"/>
 		/// contents can be updated to reflect any model changes.
 		/// </summary>
@@ -423,49 +583,20 @@ namespace Neumont.Tools.ORM.Shell
 			DomainDataDirectory dataDirectory = store.DomainDataDirectory;
 
 			// Track Note additions and deletions changes
-			DomainClassInfo classInfo = dataDirectory.FindDomainRelationship(ObjectTypeHasNote.DomainClassId);
-			eventManager.AddOrRemoveHandler(classInfo, new EventHandler<ElementAddedEventArgs>(ObjectTypeNoteAlteredEventHandler), action);
-			eventManager.AddOrRemoveHandler(classInfo, new EventHandler<ElementDeletedEventArgs>(ObjectTypeNoteAlteredEventHandler), action);
-			classInfo = dataDirectory.FindDomainRelationship(FactTypeHasNote.DomainClassId);
-			eventManager.AddOrRemoveHandler(classInfo, new EventHandler<ElementAddedEventArgs>(FactTypeNoteAlteredEventHandler), action);
-			eventManager.AddOrRemoveHandler(classInfo, new EventHandler<ElementDeletedEventArgs>(FactTypeNoteAlteredEventHandler), action);
-			classInfo = dataDirectory.FindDomainRelationship(ModelHasModelNote.DomainClassId);
-			eventManager.AddOrRemoveHandler(classInfo, new EventHandler<ElementAddedEventArgs>(ModelNoteAlteredEventHandler), action);
-			eventManager.AddOrRemoveHandler(classInfo, new EventHandler<ElementDeletedEventArgs>(ModelNoteAlteredEventHandler), action);
+			Guid[] noteRoleIdentifiers = GetNoteRoleIdentifiers();
+			EventHandler<ElementEventArgs>[] handlers = GetOwningRelationshipHandlers(store);
+			for (int i = 0; i < noteRoleIdentifiers.Length; ++i)
+			{
+				EventHandler<ElementEventArgs> handler = handlers[i];
+				DomainClassInfo classInfo = dataDirectory.FindDomainRole(noteRoleIdentifiers[i]).DomainRelationship;
+				eventManager.AddOrRemoveHandler(classInfo, new EventHandler<ElementAddedEventArgs>(handler), action);
+				eventManager.AddOrRemoveHandler(classInfo, new EventHandler<ElementDeletedEventArgs>(handler), action);
+			}
 
 			// Track Note.Text changes
-			eventManager.AddOrRemoveHandler(dataDirectory.FindDomainProperty(Note.TextDomainPropertyId), new EventHandler<ElementPropertyChangedEventArgs>(NoteAlteredEventHandler), action);
-		}
-		/// <summary>
-		/// Returns the title of the window.
-		/// </summary>
-		public override string WindowTitle
-		{
-			get
-			{
-				return ResourceStrings.ModelNotesWindowTitle;
-			}
-		}
-		/// <summary>
-		/// See <see cref="ToolWindow.BitmapResource"/>.
-		/// </summary>
-		protected override int BitmapResource
-		{
-			get
-			{
-				return PackageResources.Id.ToolWindowIcons;
-			}
-		}
-		/// <summary>
-		/// See <see cref="ToolWindow.BitmapIndex"/>.
-		/// </summary>
-		protected override int BitmapIndex
-		{
-			get
-			{
-				return PackageResources.ToolWindowIconIndex.NotesEditor;
-			}
+			eventManager.AddOrRemoveHandler(dataDirectory.FindDomainProperty(GetNoteTextPropertyId(store)), new EventHandler<ElementPropertyChangedEventArgs>(NoteAlteredEventHandler), action);
 		}
 		#endregion // ORMToolWindow Implementation
 	}
+	#endregion // ORMBaseNoteToolWindow class
 }

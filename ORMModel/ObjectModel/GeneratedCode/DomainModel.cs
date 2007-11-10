@@ -176,6 +176,7 @@ namespace Neumont.Tools.ORM.ObjectModel
 				typeof(SubtypeMetaRole),
 				typeof(SupertypeMetaRole),
 				typeof(ObjectTypeRequiresPrimarySupertypeError),
+				typeof(Definition),
 				typeof(Note),
 				typeof(ModelNote),
 				typeof(CompatibleSupertypesError),
@@ -262,6 +263,8 @@ namespace Neumont.Tools.ORM.ObjectModel
 				typeof(RingConstraintHasRingConstraintTypeNotSpecifiedError),
 				typeof(ValueConstraintHasDuplicateNameError),
 				typeof(ObjectTypeHasObjectTypeRequiresPrimarySupertypeError),
+				typeof(ObjectTypeHasDefinition),
+				typeof(FactTypeHasDefinition),
 				typeof(FactTypeHasNote),
 				typeof(ObjectTypeHasNote),
 				typeof(ModelHasModelNote),
@@ -313,6 +316,7 @@ namespace Neumont.Tools.ORM.ObjectModel
 				new DomainMemberInfo(typeof(ORMNamedElement), "Name", ORMNamedElement.NameDomainPropertyId, typeof(ORMNamedElement.NamePropertyHandler)),
 				new DomainMemberInfo(typeof(ORMModel), "ModelErrorDisplayFilterDisplay", ORMModel.ModelErrorDisplayFilterDisplayDomainPropertyId, typeof(ORMModel.ModelErrorDisplayFilterDisplayPropertyHandler)),
 				new DomainMemberInfo(typeof(ObjectType), "IsExternal", ObjectType.IsExternalDomainPropertyId, typeof(ObjectType.IsExternalPropertyHandler)),
+				new DomainMemberInfo(typeof(ObjectType), "DefinitionText", ObjectType.DefinitionTextDomainPropertyId, typeof(ObjectType.DefinitionTextPropertyHandler)),
 				new DomainMemberInfo(typeof(ObjectType), "NoteText", ObjectType.NoteTextDomainPropertyId, typeof(ObjectType.NoteTextPropertyHandler)),
 				new DomainMemberInfo(typeof(ObjectType), "IsIndependent", ObjectType.IsIndependentDomainPropertyId, typeof(ObjectType.IsIndependentPropertyHandler)),
 				new DomainMemberInfo(typeof(ObjectType), "IsValueType", ObjectType.IsValueTypeDomainPropertyId, typeof(ObjectType.IsValueTypePropertyHandler)),
@@ -327,6 +331,7 @@ namespace Neumont.Tools.ORM.ObjectModel
 				new DomainMemberInfo(typeof(ObjectType), "IsPersonal", ObjectType.IsPersonalDomainPropertyId, typeof(ObjectType.IsPersonalPropertyHandler)),
 				new DomainMemberInfo(typeof(ObjectType), "IsImplicitBooleanValue", ObjectType.IsImplicitBooleanValueDomainPropertyId, typeof(ObjectType.IsImplicitBooleanValuePropertyHandler)),
 				new DomainMemberInfo(typeof(FactType), "IsExternal", FactType.IsExternalDomainPropertyId, typeof(FactType.IsExternalPropertyHandler)),
+				new DomainMemberInfo(typeof(FactType), "DefinitionText", FactType.DefinitionTextDomainPropertyId, typeof(FactType.DefinitionTextPropertyHandler)),
 				new DomainMemberInfo(typeof(FactType), "NoteText", FactType.NoteTextDomainPropertyId, typeof(FactType.NoteTextPropertyHandler)),
 				new DomainMemberInfo(typeof(FactType), "Name", FactType.NameDomainPropertyId, typeof(FactType.NamePropertyHandler)),
 				new DomainMemberInfo(typeof(FactType), "GeneratedName", FactType.GeneratedNameDomainPropertyId, typeof(FactType.GeneratedNamePropertyHandler)),
@@ -372,6 +377,7 @@ namespace Neumont.Tools.ORM.ObjectModel
 				new DomainMemberInfo(typeof(ValueRange), "MaxInclusion", ValueRange.MaxInclusionDomainPropertyId, typeof(ValueRange.MaxInclusionPropertyHandler)),
 				new DomainMemberInfo(typeof(ValueConstraint), "Text", ValueConstraint.TextDomainPropertyId, typeof(ValueConstraint.TextPropertyHandler)),
 				new DomainMemberInfo(typeof(ValueConstraint), "TextChanged", ValueConstraint.TextChangedDomainPropertyId, typeof(ValueConstraint.TextChangedPropertyHandler)),
+				new DomainMemberInfo(typeof(Definition), "Text", Definition.TextDomainPropertyId, typeof(Definition.TextPropertyHandler)),
 				new DomainMemberInfo(typeof(Note), "Text", Note.TextDomainPropertyId, typeof(Note.TextPropertyHandler)),
 				new DomainMemberInfo(typeof(FactTypeDerivationExpression), "DerivationStorage", FactTypeDerivationExpression.DerivationStorageDomainPropertyId, typeof(FactTypeDerivationExpression.DerivationStoragePropertyHandler)),
 				new DomainMemberInfo(typeof(ObjectTypeInstance), "Name", ObjectTypeInstance.NameDomainPropertyId, typeof(ObjectTypeInstance.NamePropertyHandler)),
@@ -532,6 +538,10 @@ namespace Neumont.Tools.ORM.ObjectModel
 				new DomainRolePlayerInfo(typeof(ValueConstraintHasDuplicateNameError), "DuplicateNameError", ValueConstraintHasDuplicateNameError.DuplicateNameErrorDomainRoleId),
 				new DomainRolePlayerInfo(typeof(ObjectTypeHasObjectTypeRequiresPrimarySupertypeError), "ObjectType", ObjectTypeHasObjectTypeRequiresPrimarySupertypeError.ObjectTypeDomainRoleId),
 				new DomainRolePlayerInfo(typeof(ObjectTypeHasObjectTypeRequiresPrimarySupertypeError), "ObjectTypeRequiresPrimarySupertypeError", ObjectTypeHasObjectTypeRequiresPrimarySupertypeError.ObjectTypeRequiresPrimarySupertypeErrorDomainRoleId),
+				new DomainRolePlayerInfo(typeof(ObjectTypeHasDefinition), "ObjectType", ObjectTypeHasDefinition.ObjectTypeDomainRoleId),
+				new DomainRolePlayerInfo(typeof(ObjectTypeHasDefinition), "Definition", ObjectTypeHasDefinition.DefinitionDomainRoleId),
+				new DomainRolePlayerInfo(typeof(FactTypeHasDefinition), "FactType", FactTypeHasDefinition.FactTypeDomainRoleId),
+				new DomainRolePlayerInfo(typeof(FactTypeHasDefinition), "Definition", FactTypeHasDefinition.DefinitionDomainRoleId),
 				new DomainRolePlayerInfo(typeof(FactTypeHasNote), "FactType", FactTypeHasNote.FactTypeDomainRoleId),
 				new DomainRolePlayerInfo(typeof(FactTypeHasNote), "Note", FactTypeHasNote.NoteDomainRoleId),
 				new DomainRolePlayerInfo(typeof(ObjectTypeHasNote), "ObjectType", ObjectTypeHasNote.ObjectTypeDomainRoleId),
@@ -622,7 +632,7 @@ namespace Neumont.Tools.ORM.ObjectModel
 	
 			if (createElementMap == null)
 			{
-				createElementMap = new global::System.Collections.Generic.Dictionary<global::System.Type, int>(127);
+				createElementMap = new global::System.Collections.Generic.Dictionary<global::System.Type, int>(128);
 				createElementMap.Add(typeof(ModelErrorDisplayFilter), 0);
 				createElementMap.Add(typeof(ORMModel), 1);
 				createElementMap.Add(typeof(ObjectType), 2);
@@ -707,20 +717,21 @@ namespace Neumont.Tools.ORM.ObjectModel
 				createElementMap.Add(typeof(SubtypeMetaRole), 81);
 				createElementMap.Add(typeof(SupertypeMetaRole), 82);
 				createElementMap.Add(typeof(ObjectTypeRequiresPrimarySupertypeError), 83);
-				createElementMap.Add(typeof(Note), 84);
-				createElementMap.Add(typeof(ModelNote), 85);
-				createElementMap.Add(typeof(CompatibleSupertypesError), 86);
-				createElementMap.Add(typeof(ImplicationError), 87);
-				createElementMap.Add(typeof(EqualityOrSubsetImpliedByMandatoryError), 88);
-				createElementMap.Add(typeof(PreferredIdentifierRequiresMandatoryError), 89);
-				createElementMap.Add(typeof(ValueRangeOverlapError), 90);
-				createElementMap.Add(typeof(FactTypeDerivationExpression), 91);
-				createElementMap.Add(typeof(EntityTypeInstance), 92);
-				createElementMap.Add(typeof(ValueTypeInstance), 93);
-				createElementMap.Add(typeof(FactTypeInstance), 94);
-				createElementMap.Add(typeof(TooFewEntityTypeRoleInstancesError), 95);
-				createElementMap.Add(typeof(TooFewFactTypeRoleInstancesError), 96);
-				createElementMap.Add(typeof(CompatibleValueTypeInstanceValueError), 97);
+				createElementMap.Add(typeof(Definition), 84);
+				createElementMap.Add(typeof(Note), 85);
+				createElementMap.Add(typeof(ModelNote), 86);
+				createElementMap.Add(typeof(CompatibleSupertypesError), 87);
+				createElementMap.Add(typeof(ImplicationError), 88);
+				createElementMap.Add(typeof(EqualityOrSubsetImpliedByMandatoryError), 89);
+				createElementMap.Add(typeof(PreferredIdentifierRequiresMandatoryError), 90);
+				createElementMap.Add(typeof(ValueRangeOverlapError), 91);
+				createElementMap.Add(typeof(FactTypeDerivationExpression), 92);
+				createElementMap.Add(typeof(EntityTypeInstance), 93);
+				createElementMap.Add(typeof(ValueTypeInstance), 94);
+				createElementMap.Add(typeof(FactTypeInstance), 95);
+				createElementMap.Add(typeof(TooFewEntityTypeRoleInstancesError), 96);
+				createElementMap.Add(typeof(TooFewFactTypeRoleInstancesError), 97);
+				createElementMap.Add(typeof(CompatibleValueTypeInstanceValueError), 98);
 			}
 			int index;
 			if (!createElementMap.TryGetValue(elementType, out index))
@@ -813,20 +824,21 @@ namespace Neumont.Tools.ORM.ObjectModel
 				case 81: return new SubtypeMetaRole(partition, propertyAssignments);
 				case 82: return new SupertypeMetaRole(partition, propertyAssignments);
 				case 83: return new ObjectTypeRequiresPrimarySupertypeError(partition, propertyAssignments);
-				case 84: return new Note(partition, propertyAssignments);
-				case 85: return new ModelNote(partition, propertyAssignments);
-				case 86: return new CompatibleSupertypesError(partition, propertyAssignments);
-				case 87: return new ImplicationError(partition, propertyAssignments);
-				case 88: return new EqualityOrSubsetImpliedByMandatoryError(partition, propertyAssignments);
-				case 89: return new PreferredIdentifierRequiresMandatoryError(partition, propertyAssignments);
-				case 90: return new ValueRangeOverlapError(partition, propertyAssignments);
-				case 91: return new FactTypeDerivationExpression(partition, propertyAssignments);
-				case 92: return new EntityTypeInstance(partition, propertyAssignments);
-				case 93: return new ValueTypeInstance(partition, propertyAssignments);
-				case 94: return new FactTypeInstance(partition, propertyAssignments);
-				case 95: return new TooFewEntityTypeRoleInstancesError(partition, propertyAssignments);
-				case 96: return new TooFewFactTypeRoleInstancesError(partition, propertyAssignments);
-				case 97: return new CompatibleValueTypeInstanceValueError(partition, propertyAssignments);
+				case 84: return new Definition(partition, propertyAssignments);
+				case 85: return new Note(partition, propertyAssignments);
+				case 86: return new ModelNote(partition, propertyAssignments);
+				case 87: return new CompatibleSupertypesError(partition, propertyAssignments);
+				case 88: return new ImplicationError(partition, propertyAssignments);
+				case 89: return new EqualityOrSubsetImpliedByMandatoryError(partition, propertyAssignments);
+				case 90: return new PreferredIdentifierRequiresMandatoryError(partition, propertyAssignments);
+				case 91: return new ValueRangeOverlapError(partition, propertyAssignments);
+				case 92: return new FactTypeDerivationExpression(partition, propertyAssignments);
+				case 93: return new EntityTypeInstance(partition, propertyAssignments);
+				case 94: return new ValueTypeInstance(partition, propertyAssignments);
+				case 95: return new FactTypeInstance(partition, propertyAssignments);
+				case 96: return new TooFewEntityTypeRoleInstancesError(partition, propertyAssignments);
+				case 97: return new TooFewFactTypeRoleInstancesError(partition, propertyAssignments);
+				case 98: return new CompatibleValueTypeInstanceValueError(partition, propertyAssignments);
 				default: return null;
 			}
 		}
@@ -849,7 +861,7 @@ namespace Neumont.Tools.ORM.ObjectModel
 	
 			if (createElementLinkMap == null)
 			{
-				createElementLinkMap = new global::System.Collections.Generic.Dictionary<global::System.Type, int>(106);
+				createElementLinkMap = new global::System.Collections.Generic.Dictionary<global::System.Type, int>(108);
 				createElementLinkMap.Add(typeof(FactSetComparisonConstraint), 0);
 				createElementLinkMap.Add(typeof(FactSetConstraint), 1);
 				createElementLinkMap.Add(typeof(ORMModelElementHasExtensionElement), 2);
@@ -918,37 +930,39 @@ namespace Neumont.Tools.ORM.ObjectModel
 				createElementLinkMap.Add(typeof(RingConstraintHasRingConstraintTypeNotSpecifiedError), 65);
 				createElementLinkMap.Add(typeof(ValueConstraintHasDuplicateNameError), 66);
 				createElementLinkMap.Add(typeof(ObjectTypeHasObjectTypeRequiresPrimarySupertypeError), 67);
-				createElementLinkMap.Add(typeof(FactTypeHasNote), 68);
-				createElementLinkMap.Add(typeof(ObjectTypeHasNote), 69);
-				createElementLinkMap.Add(typeof(ModelHasModelNote), 70);
-				createElementLinkMap.Add(typeof(ModelNoteReferencesFactType), 71);
-				createElementLinkMap.Add(typeof(ModelNoteReferencesObjectType), 72);
-				createElementLinkMap.Add(typeof(ObjectTypeHasCompatibleSupertypesError), 73);
-				createElementLinkMap.Add(typeof(SetConstraintHasImplicationError), 74);
-				createElementLinkMap.Add(typeof(SetComparisonConstraintHasImplicationError), 75);
-				createElementLinkMap.Add(typeof(SetComparisonConstraintHasEqualityOrSubsetImpliedByMandatoryError), 76);
-				createElementLinkMap.Add(typeof(ObjectTypeHasPreferredIdentifierRequiresMandatoryError), 77);
-				createElementLinkMap.Add(typeof(ValueConstraintHasValueRangeOverlapError), 78);
-				createElementLinkMap.Add(typeof(FactTypeHasRole), 79);
-				createElementLinkMap.Add(typeof(ReadingOrderHasRole), 80);
-				createElementLinkMap.Add(typeof(RoleProxyHasRole), 81);
-				createElementLinkMap.Add(typeof(FactTypeHasDerivationExpression), 82);
-				createElementLinkMap.Add(typeof(ObjectTypeHasObjectTypeInstance), 83);
-				createElementLinkMap.Add(typeof(EntityTypeHasEntityTypeInstance), 84);
-				createElementLinkMap.Add(typeof(ValueTypeHasValueTypeInstance), 85);
-				createElementLinkMap.Add(typeof(EntityTypeRoleInstance), 86);
-				createElementLinkMap.Add(typeof(FactTypeRoleInstance), 87);
-				createElementLinkMap.Add(typeof(EntityTypeInstanceHasRoleInstance), 88);
-				createElementLinkMap.Add(typeof(FactTypeHasFactTypeInstance), 89);
-				createElementLinkMap.Add(typeof(FactTypeInstanceHasRoleInstance), 90);
-				createElementLinkMap.Add(typeof(EntityTypeInstanceHasTooFewEntityTypeRoleInstancesError), 91);
-				createElementLinkMap.Add(typeof(FactTypeInstanceHasTooFewFactTypeRoleInstancesError), 92);
-				createElementLinkMap.Add(typeof(ValueTypeInstanceHasCompatibleValueTypeInstanceValueError), 93);
-				createElementLinkMap.Add(typeof(JoinHasInputRole), 94);
-				createElementLinkMap.Add(typeof(JoinHasOutputRole), 95);
-				createElementLinkMap.Add(typeof(ConstraintRoleSequenceHasJoinPath), 96);
-				createElementLinkMap.Add(typeof(ConstraintRoleSequenceHasRoleHasProjectionJoin), 97);
-				createElementLinkMap.Add(typeof(ModelHasModelErrorDisplayFilter), 98);
+				createElementLinkMap.Add(typeof(ObjectTypeHasDefinition), 68);
+				createElementLinkMap.Add(typeof(FactTypeHasDefinition), 69);
+				createElementLinkMap.Add(typeof(FactTypeHasNote), 70);
+				createElementLinkMap.Add(typeof(ObjectTypeHasNote), 71);
+				createElementLinkMap.Add(typeof(ModelHasModelNote), 72);
+				createElementLinkMap.Add(typeof(ModelNoteReferencesFactType), 73);
+				createElementLinkMap.Add(typeof(ModelNoteReferencesObjectType), 74);
+				createElementLinkMap.Add(typeof(ObjectTypeHasCompatibleSupertypesError), 75);
+				createElementLinkMap.Add(typeof(SetConstraintHasImplicationError), 76);
+				createElementLinkMap.Add(typeof(SetComparisonConstraintHasImplicationError), 77);
+				createElementLinkMap.Add(typeof(SetComparisonConstraintHasEqualityOrSubsetImpliedByMandatoryError), 78);
+				createElementLinkMap.Add(typeof(ObjectTypeHasPreferredIdentifierRequiresMandatoryError), 79);
+				createElementLinkMap.Add(typeof(ValueConstraintHasValueRangeOverlapError), 80);
+				createElementLinkMap.Add(typeof(FactTypeHasRole), 81);
+				createElementLinkMap.Add(typeof(ReadingOrderHasRole), 82);
+				createElementLinkMap.Add(typeof(RoleProxyHasRole), 83);
+				createElementLinkMap.Add(typeof(FactTypeHasDerivationExpression), 84);
+				createElementLinkMap.Add(typeof(ObjectTypeHasObjectTypeInstance), 85);
+				createElementLinkMap.Add(typeof(EntityTypeHasEntityTypeInstance), 86);
+				createElementLinkMap.Add(typeof(ValueTypeHasValueTypeInstance), 87);
+				createElementLinkMap.Add(typeof(EntityTypeRoleInstance), 88);
+				createElementLinkMap.Add(typeof(FactTypeRoleInstance), 89);
+				createElementLinkMap.Add(typeof(EntityTypeInstanceHasRoleInstance), 90);
+				createElementLinkMap.Add(typeof(FactTypeHasFactTypeInstance), 91);
+				createElementLinkMap.Add(typeof(FactTypeInstanceHasRoleInstance), 92);
+				createElementLinkMap.Add(typeof(EntityTypeInstanceHasTooFewEntityTypeRoleInstancesError), 93);
+				createElementLinkMap.Add(typeof(FactTypeInstanceHasTooFewFactTypeRoleInstancesError), 94);
+				createElementLinkMap.Add(typeof(ValueTypeInstanceHasCompatibleValueTypeInstanceValueError), 95);
+				createElementLinkMap.Add(typeof(JoinHasInputRole), 96);
+				createElementLinkMap.Add(typeof(JoinHasOutputRole), 97);
+				createElementLinkMap.Add(typeof(ConstraintRoleSequenceHasJoinPath), 98);
+				createElementLinkMap.Add(typeof(ConstraintRoleSequenceHasRoleHasProjectionJoin), 99);
+				createElementLinkMap.Add(typeof(ModelHasModelErrorDisplayFilter), 100);
 			}
 			int index;
 			if (!createElementLinkMap.TryGetValue(elementLinkType, out index))
@@ -1025,37 +1039,39 @@ namespace Neumont.Tools.ORM.ObjectModel
 				case 65: return new RingConstraintHasRingConstraintTypeNotSpecifiedError(partition, roleAssignments, propertyAssignments);
 				case 66: return new ValueConstraintHasDuplicateNameError(partition, roleAssignments, propertyAssignments);
 				case 67: return new ObjectTypeHasObjectTypeRequiresPrimarySupertypeError(partition, roleAssignments, propertyAssignments);
-				case 68: return new FactTypeHasNote(partition, roleAssignments, propertyAssignments);
-				case 69: return new ObjectTypeHasNote(partition, roleAssignments, propertyAssignments);
-				case 70: return new ModelHasModelNote(partition, roleAssignments, propertyAssignments);
-				case 71: return new ModelNoteReferencesFactType(partition, roleAssignments, propertyAssignments);
-				case 72: return new ModelNoteReferencesObjectType(partition, roleAssignments, propertyAssignments);
-				case 73: return new ObjectTypeHasCompatibleSupertypesError(partition, roleAssignments, propertyAssignments);
-				case 74: return new SetConstraintHasImplicationError(partition, roleAssignments, propertyAssignments);
-				case 75: return new SetComparisonConstraintHasImplicationError(partition, roleAssignments, propertyAssignments);
-				case 76: return new SetComparisonConstraintHasEqualityOrSubsetImpliedByMandatoryError(partition, roleAssignments, propertyAssignments);
-				case 77: return new ObjectTypeHasPreferredIdentifierRequiresMandatoryError(partition, roleAssignments, propertyAssignments);
-				case 78: return new ValueConstraintHasValueRangeOverlapError(partition, roleAssignments, propertyAssignments);
-				case 79: return new FactTypeHasRole(partition, roleAssignments, propertyAssignments);
-				case 80: return new ReadingOrderHasRole(partition, roleAssignments, propertyAssignments);
-				case 81: return new RoleProxyHasRole(partition, roleAssignments, propertyAssignments);
-				case 82: return new FactTypeHasDerivationExpression(partition, roleAssignments, propertyAssignments);
-				case 83: return new ObjectTypeHasObjectTypeInstance(partition, roleAssignments, propertyAssignments);
-				case 84: return new EntityTypeHasEntityTypeInstance(partition, roleAssignments, propertyAssignments);
-				case 85: return new ValueTypeHasValueTypeInstance(partition, roleAssignments, propertyAssignments);
-				case 86: return new EntityTypeRoleInstance(partition, roleAssignments, propertyAssignments);
-				case 87: return new FactTypeRoleInstance(partition, roleAssignments, propertyAssignments);
-				case 88: return new EntityTypeInstanceHasRoleInstance(partition, roleAssignments, propertyAssignments);
-				case 89: return new FactTypeHasFactTypeInstance(partition, roleAssignments, propertyAssignments);
-				case 90: return new FactTypeInstanceHasRoleInstance(partition, roleAssignments, propertyAssignments);
-				case 91: return new EntityTypeInstanceHasTooFewEntityTypeRoleInstancesError(partition, roleAssignments, propertyAssignments);
-				case 92: return new FactTypeInstanceHasTooFewFactTypeRoleInstancesError(partition, roleAssignments, propertyAssignments);
-				case 93: return new ValueTypeInstanceHasCompatibleValueTypeInstanceValueError(partition, roleAssignments, propertyAssignments);
-				case 94: return new JoinHasInputRole(partition, roleAssignments, propertyAssignments);
-				case 95: return new JoinHasOutputRole(partition, roleAssignments, propertyAssignments);
-				case 96: return new ConstraintRoleSequenceHasJoinPath(partition, roleAssignments, propertyAssignments);
-				case 97: return new ConstraintRoleSequenceHasRoleHasProjectionJoin(partition, roleAssignments, propertyAssignments);
-				case 98: return new ModelHasModelErrorDisplayFilter(partition, roleAssignments, propertyAssignments);
+				case 68: return new ObjectTypeHasDefinition(partition, roleAssignments, propertyAssignments);
+				case 69: return new FactTypeHasDefinition(partition, roleAssignments, propertyAssignments);
+				case 70: return new FactTypeHasNote(partition, roleAssignments, propertyAssignments);
+				case 71: return new ObjectTypeHasNote(partition, roleAssignments, propertyAssignments);
+				case 72: return new ModelHasModelNote(partition, roleAssignments, propertyAssignments);
+				case 73: return new ModelNoteReferencesFactType(partition, roleAssignments, propertyAssignments);
+				case 74: return new ModelNoteReferencesObjectType(partition, roleAssignments, propertyAssignments);
+				case 75: return new ObjectTypeHasCompatibleSupertypesError(partition, roleAssignments, propertyAssignments);
+				case 76: return new SetConstraintHasImplicationError(partition, roleAssignments, propertyAssignments);
+				case 77: return new SetComparisonConstraintHasImplicationError(partition, roleAssignments, propertyAssignments);
+				case 78: return new SetComparisonConstraintHasEqualityOrSubsetImpliedByMandatoryError(partition, roleAssignments, propertyAssignments);
+				case 79: return new ObjectTypeHasPreferredIdentifierRequiresMandatoryError(partition, roleAssignments, propertyAssignments);
+				case 80: return new ValueConstraintHasValueRangeOverlapError(partition, roleAssignments, propertyAssignments);
+				case 81: return new FactTypeHasRole(partition, roleAssignments, propertyAssignments);
+				case 82: return new ReadingOrderHasRole(partition, roleAssignments, propertyAssignments);
+				case 83: return new RoleProxyHasRole(partition, roleAssignments, propertyAssignments);
+				case 84: return new FactTypeHasDerivationExpression(partition, roleAssignments, propertyAssignments);
+				case 85: return new ObjectTypeHasObjectTypeInstance(partition, roleAssignments, propertyAssignments);
+				case 86: return new EntityTypeHasEntityTypeInstance(partition, roleAssignments, propertyAssignments);
+				case 87: return new ValueTypeHasValueTypeInstance(partition, roleAssignments, propertyAssignments);
+				case 88: return new EntityTypeRoleInstance(partition, roleAssignments, propertyAssignments);
+				case 89: return new FactTypeRoleInstance(partition, roleAssignments, propertyAssignments);
+				case 90: return new EntityTypeInstanceHasRoleInstance(partition, roleAssignments, propertyAssignments);
+				case 91: return new FactTypeHasFactTypeInstance(partition, roleAssignments, propertyAssignments);
+				case 92: return new FactTypeInstanceHasRoleInstance(partition, roleAssignments, propertyAssignments);
+				case 93: return new EntityTypeInstanceHasTooFewEntityTypeRoleInstancesError(partition, roleAssignments, propertyAssignments);
+				case 94: return new FactTypeInstanceHasTooFewFactTypeRoleInstancesError(partition, roleAssignments, propertyAssignments);
+				case 95: return new ValueTypeInstanceHasCompatibleValueTypeInstanceValueError(partition, roleAssignments, propertyAssignments);
+				case 96: return new JoinHasInputRole(partition, roleAssignments, propertyAssignments);
+				case 97: return new JoinHasOutputRole(partition, roleAssignments, propertyAssignments);
+				case 98: return new ConstraintRoleSequenceHasJoinPath(partition, roleAssignments, propertyAssignments);
+				case 99: return new ConstraintRoleSequenceHasRoleHasProjectionJoin(partition, roleAssignments, propertyAssignments);
+				case 100: return new ModelHasModelErrorDisplayFilter(partition, roleAssignments, propertyAssignments);
 				default: return null;
 			}
 		}
@@ -1237,6 +1253,8 @@ namespace Neumont.Tools.ORM.ObjectModel
 			DomainRoles.Add(global::Neumont.Tools.ORM.ObjectModel.FactTypeHasFrequencyConstraintContradictsInternalUniquenessConstraintError.FrequencyConstraintContradictsInternalUniquenessConstraintErrorDomainRoleId, true);
 			DomainRoles.Add(global::Neumont.Tools.ORM.ObjectModel.RingConstraintHasRingConstraintTypeNotSpecifiedError.RingConstraintTypeNotSpecifiedErrorDomainRoleId, true);
 			DomainRoles.Add(global::Neumont.Tools.ORM.ObjectModel.ObjectTypeHasObjectTypeRequiresPrimarySupertypeError.ObjectTypeRequiresPrimarySupertypeErrorDomainRoleId, true);
+			DomainRoles.Add(global::Neumont.Tools.ORM.ObjectModel.ObjectTypeHasDefinition.DefinitionDomainRoleId, true);
+			DomainRoles.Add(global::Neumont.Tools.ORM.ObjectModel.FactTypeHasDefinition.DefinitionDomainRoleId, true);
 			DomainRoles.Add(global::Neumont.Tools.ORM.ObjectModel.FactTypeHasNote.NoteDomainRoleId, true);
 			DomainRoles.Add(global::Neumont.Tools.ORM.ObjectModel.ObjectTypeHasNote.NoteDomainRoleId, true);
 			DomainRoles.Add(global::Neumont.Tools.ORM.ObjectModel.ModelHasModelNote.NoteDomainRoleId, true);

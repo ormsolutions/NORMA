@@ -300,6 +300,13 @@
       <constraint name="UniquenessConstraint" />
     </usedBy>
   </snippet>
+  <snippet name="DefinitionVerbalization" replacementCount="1">
+    <statement>Description: Verbalizes the text specified for a n element definition.  Format: Definition: {0}</statement>
+    <unformattedSnippet>Definition: {0}</unformattedSnippet>
+    <contains />
+    <containedIn />
+    <usedBy />
+  </snippet>
   <snippet name="EachInstanceQuantifier" replacementCount="1">
     <statement>
 							Description: Verbalizes an instance of the specified object may occur at most one time.  Format: each instance of {0} occurs only once
@@ -1810,6 +1817,7 @@
 		.listSeparator {{ color: windowtext; font-weight: 200;}}
 		.logicalOperator {{ color: {6}; {7}}}
 		.note {{ color: {8}; font-style: italic; {9} }}
+		.definition {{ color: {8}; font-style: italic; {9} }}
 		.notAvailable {{ font-style: italic; }}
 		.instance {{ color: {12}; {13} }}
 	

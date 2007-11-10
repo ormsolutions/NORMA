@@ -1037,6 +1037,7 @@
 							<xs:element name="Constraints" type="ConstraintsConstructType"/>
 							<xs:element name="SampleInstances" type="SampleInstancesConstructType"/>
 							<xs:element name="ObjectType" type="ObjectConstructType" />
+							<xs:element name="Definition" type="NoteConstructType" />
 							<xs:element name="Note" type="NoteConstructType" />
 						</xs:all>
 					</xs:complexType>

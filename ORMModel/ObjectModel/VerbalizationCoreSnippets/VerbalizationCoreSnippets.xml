@@ -23,6 +23,7 @@ You must not remove this notice, or any other, from this software.
 			<Snippet type="EntityTypeVerbalization"><![CDATA[{0} <span class="quantifier">is an entity type</span>]]></Snippet>
 			<Snippet type="ValueTypeVerbalization"><![CDATA[{0} <span class="quantifier">is a value type</span>]]></Snippet>
 			<Snippet type="NotesVerbalization"><![CDATA[<span class="quantifier">Notes:</span> <span class="note">{0}</span>]]></Snippet>
+			<Snippet type="DefinitionVerbalization"><![CDATA[<span class="quantifier">Definition:</span> <span class="definition">{0}</span>]]></Snippet>
 			<Snippet type="ConstraintProvidesPreferredIdentifier"><![CDATA[<span class="quantifier">this association with</span> {0} <span class="quantifier">provides the preferred identification scheme for</span> {1}]]></Snippet>
  
 			<!-- All object type names are wrapped with this style automatically.
@@ -189,6 +190,7 @@ You must not remove this notice, or any other, from this software.
 		.listSeparator {{ color: windowtext; font-weight: 200;}}
 		.logicalOperator {{ color: {6}; {7}}}
 		.note {{ color: {8}; font-style: italic; {9} }}
+		.definition {{ color: {8}; font-style: italic; {9} }}
 		.notAvailable {{ font-style: italic; }}
 		.instance {{ color: {12}; {13} }}
 	</style>

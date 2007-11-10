@@ -281,6 +281,14 @@ namespace Neumont.Tools.ORM
 		/// </summary>
 		public const string OptionsPagePropertyDataTypeDisplayNameId = "OptionsPage.Property.DataType.DisplayName";
 		/// <summary>
+		/// Description of the display definition tooltips option
+		/// </summary>
+		public const string OptionsPagePropertyDisplayDefinitionTooltipsDescriptionId = "OptionsPage.Property.DisplayDefinitionTooltips.Description";
+		/// <summary>
+		/// Display name of the display definition tooltips option
+		/// </summary>
+		public const string OptionsPagePropertyDisplayDefinitionTooltipsDisplayNameId = "OptionsPage.Property.DisplayDefinitionTooltips.DisplayName";
+		/// <summary>
 		/// Description of the entity relationship binary multiplicity display option
 		/// </summary>
 		public const string OptionsPagePropertyEntityRelationshipBinaryMultiplicityDisplayDescriptionId = "OptionsPage.Property.EntityRelationshipBinaryMultiplicityDisplay.Description";

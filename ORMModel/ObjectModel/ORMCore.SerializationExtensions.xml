@@ -80,6 +80,9 @@
 			<se:Embed RelationshipName="ModelHasReferenceModeKind" RoleName="ReferenceModeKind" />
 		</se:Container>
 	</se:Element>
+	<se:Element Class="Definition" Override="true">
+		<se:Attribute ID="Text" WriteStyle="Element"/>
+	</se:Element>
 	<se:Element Class="Note" Override="true">
 		<se:Attribute ID="Text" WriteStyle="Element"/>
 	</se:Element>
@@ -139,6 +142,9 @@
 				</plx:unaryOperator>
 			</se:Condition>
 		</se:Attribute>
+		<se:Container Name="Definitions">
+			<se:Embed RelationshipName="ObjectTypeHasDefinition" RoleName="Definition"/>
+		</se:Container>
 		<se:Container Name="Notes">
 			<se:Embed RelationshipName="ObjectTypeHasNote" RoleName="Note"/>
 		</se:Container>
@@ -295,6 +301,9 @@
 				</plx:unaryOperator>
 			</se:Condition>
 		</se:Attribute>
+		<se:Container Name="Definitions">
+			<se:Embed RelationshipName="FactTypeHasDefinition" RoleName="Definition"/>
+		</se:Container>
 		<se:Container Name="Notes">
 			<se:Embed RelationshipName="FactTypeHasNote" RoleName="Note"/>
 		</se:Container>

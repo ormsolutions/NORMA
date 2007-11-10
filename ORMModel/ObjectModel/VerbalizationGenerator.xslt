@@ -102,7 +102,7 @@
 			</plx:right>
 		</plx:assign>
 	</xsl:template>
-	<xsl:template match="cvg:Note" mode="GenerateClasses">
+	<xsl:template match="cvg:Note|cvg:Definition" mode="GenerateClasses">
 		<xsl:variable name="className" select="name()"/>
 		<plx:class name="{$className}" visibility="public" partial="true">
 			<plx:leadingInfo>

@@ -29,6 +29,7 @@ using Neumont.Tools.ORM;
 using Neumont.Tools.ORM.ObjectModel;
 using Neumont.Tools.Modeling;
 using Neumont.Tools.Modeling.Diagrams;
+using Neumont.Tools.ORM.Shell;
 namespace Neumont.Tools.ORM.ShapeModel
 {
 	public partial class ObjectTypeShape : IModelErrorActivation
@@ -260,6 +261,31 @@ namespace Neumont.Tools.ORM.ShapeModel
 			);
 #endif // DEBUG
 			return true;
+		}
+		/// <summary>
+		/// Indicate that we support tool tips. Used for showing
+		/// definition information.
+		/// </summary>
+		public override bool HasToolTip
+		{
+			get
+			{
+				return OptionsPage.CurrentDisplayDefinitionTooltips;
+			}
+		}
+		/// <summary>
+		/// Show a tooltip containing the element definition text.
+		/// </summary>
+		public override string GetToolTipText(DiagramItem item)
+		{
+			string retVal = null;
+			// Show for all shapes and fields in item
+			retVal = AssociatedObjectType.DefinitionText;
+			if (retVal.Length == 0)
+			{
+				retVal = null;
+			}
+			return retVal;
 		}
 		#endregion // Customize appearance
 		#region ObjectTypeShape specific

@@ -80,6 +80,10 @@ namespace Neumont.Tools.ORM.Shell
 						ORMDesignerCommandIds.ViewReferenceModeEditor)
 						,new DynamicStatusMenuCommand(
 						new EventHandler(OnStatusStandardWindow),
+						new EventHandler(OnMenuDefinitionWindow),
+						ORMDesignerCommandIds.ViewDefinitionWindow)
+						,new DynamicStatusMenuCommand(
+						new EventHandler(OnStatusStandardWindow),
 						new EventHandler(OnMenuNotesWindow),
 						ORMDesignerCommandIds.ViewNotesWindow)
 						,new DynamicStatusMenuCommand(
@@ -1060,12 +1064,19 @@ namespace Neumont.Tools.ORM.Shell
 			/// <summary>
 			/// Menu handler
 			/// </summary>
+			protected void OnMenuDefinitionWindow(object sender, EventArgs e)
+			{
+				ORMDefinitionToolWindow definitionWindow = ORMDesignerPackage.DefinitionWindow;
+				definitionWindow.Show();
+			}
+			/// <summary>
+			/// Menu handler
+			/// </summary>
 			protected void OnMenuNotesWindow(object sender, EventArgs e)
 			{
 				ORMNotesToolWindow notesWindow = ORMDesignerPackage.NotesWindow;
 				notesWindow.Show();
 			}
-
 			/// <summary>
 			/// Context window menu handler
 			/// </summary>
@@ -1306,6 +1317,10 @@ namespace Neumont.Tools.ORM.Shell
 			/// The sample population editor item on the context menu
 			/// </summary>
 			public static readonly CommandID ViewSamplePopulationEditor = new CommandID(guidORMDesignerCommandSet, cmdIdViewSamplePopulationEditor);
+			/// <summary>
+			/// The ORM Definition Window item on the context menu
+			/// </summary>
+			public static readonly CommandID ViewDefinitionWindow = new CommandID(guidORMDesignerCommandSet, cmdIdViewDefinitionWindow);
 			/// <summary>
 			/// The ORM Note Window item on the context menu
 			/// </summary>
@@ -1723,6 +1738,10 @@ namespace Neumont.Tools.ORM.Shell
 			/// Unobjectifies the fact type.
 			/// </summary>
 			private const int cmdIdUnobjectifyFactType = 0x2929;
+			/// <summary>
+			/// The ORM Definition Window item on the context menu
+			/// </summary>
+			private const int cmdIdViewDefinitionWindow = 0x292a;
 			#endregion
 		}
 	}

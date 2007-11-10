@@ -586,6 +586,14 @@
     <value xml:space="preserve">Initial Data Type</value>
     <comment xml:space="preserve">The display name for the data type property.</comment>
   </data>
+  <data name="OptionsPage.Property.DisplayDefinitionTooltips.Description">
+    <value xml:space="preserve">Show the current Definition text in a tooltip for ObjectType and FactType shapes with a populated Definition field.</value>
+    <comment xml:space="preserve">The display definition tooltips property description.</comment>
+  </data>
+  <data name="OptionsPage.Property.DisplayDefinitionTooltips.DisplayName">
+    <value xml:space="preserve">Show Definition Tooltips</value>
+    <comment xml:space="preserve">The display name for the display definition tooltips property.</comment>
+  </data>
   <data name="OptionsPage.Property.EntityRelationshipBinaryMultiplicityDisplay.Description">
     <value xml:space="preserve">The display mode for overlaying Entity Relationship multiplicity display on role connectors attached to binary fact types. The 'Mandatory Dot Placement' option is ignored if this is enabled.</value>
     <comment xml:space="preserve">The description for the entity relationship binary multiplicity display property</comment>

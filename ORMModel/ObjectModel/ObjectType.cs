@@ -116,6 +116,10 @@ namespace Neumont.Tools.ORM.ObjectModel
 		{
 			// Handled by ObjectTypeChangeRule
 		}
+		private void SetDefinitionTextValue(string newValue)
+		{
+			// Handled by ObjectTypeChangeRule
+		}
 		private void SetNoteTextValue(string newValue)
 		{
 			// Handled by ObjectTypeChangeRule
@@ -205,6 +209,11 @@ namespace Neumont.Tools.ORM.ObjectModel
 		{
 			ValueConstraint valueConstraint = FindValueTypeValueConstraint(false);
 			return (valueConstraint != null) ? valueConstraint.Text : String.Empty;
+		}
+		private string GetDefinitionTextValue()
+		{
+			Definition currentDefinition = Definition;
+			return (currentDefinition != null) ? currentDefinition.Text : String.Empty;
 		}
 		private string GetNoteTextValue()
 		{
@@ -1123,6 +1132,26 @@ namespace Neumont.Tools.ORM.ObjectModel
 					valueConstraint.Text = (string)e.NewValue;
 				}
 			}
+			else if (attributeGuid == ObjectType.DefinitionTextDomainPropertyId)
+			{
+				// cache the text.
+				string newText = (string)e.NewValue;
+				// Get the definition if it exists
+				Definition definition = objectType.Definition;
+				if (definition != null)
+				{
+					// and try to set the text to the cached value.
+					definition.Text = newText;
+				}
+				else if (!string.IsNullOrEmpty(newText))
+				{
+					// Otherwise, create the definition and set the text,
+					definition = new Definition(objectType.Store);
+					definition.Text = newText;
+					// then attach the definition to the ObjectType
+					objectType.Definition = definition;
+				}
+			}
 			else if (attributeGuid == ObjectType.NoteTextDomainPropertyId)
 			{
 				// cache the text.
@@ -1139,7 +1168,7 @@ namespace Neumont.Tools.ORM.ObjectModel
 					// Otherwise, create the note and set the text,
 					note = new Note(objectType.Store);
 					note.Text = newText;
-					// then attach the note to the RootType.
+					// then attach the note to the ObjectType.
 					objectType.Note = note;
 				}
 			}

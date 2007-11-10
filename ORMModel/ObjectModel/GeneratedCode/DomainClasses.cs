@@ -1375,6 +1375,99 @@ namespace Neumont.Tools.ORM.ObjectModel
 		}
 		
 		#endregion
+		#region DefinitionText domain property code
+		
+		/// <summary>
+		/// DefinitionText domain property Id.
+		/// </summary>
+		public static readonly global::System.Guid DefinitionTextDomainPropertyId = new global::System.Guid(0x431a8a8f, 0xe8ec, 0x4014, 0xb1, 0xa1, 0x84, 0x3e, 0x55, 0x75, 0x1a, 0x55);
+		
+		/// <summary>
+		/// Gets or sets the value of DefinitionText domain property.
+		/// A definition of this ObjectType. To insert new lines, use Control-Enter in the
+		/// dropdown editor, or open the 'ORM Notes Editor' toolwindow.
+		/// </summary>
+		[global::System.ComponentModel.Editor(typeof(global::Neumont.Tools.Modeling.Design.MultilineTextEditor<global::Neumont.Tools.ORM.ObjectModel.Definition>), typeof(global::System.Drawing.Design.UITypeEditor))]
+		[global::System.ComponentModel.MergableProperty(false)]
+		[DslDesign::DisplayNameResource("Neumont.Tools.ORM.ObjectModel.ObjectType/DefinitionText.DisplayName", typeof(global::Neumont.Tools.ORM.ObjectModel.ORMCoreDomainModel), "Neumont.Tools.ORM.GeneratedCode.CoreDomainModelResx")]
+		[DslDesign::DescriptionResource("Neumont.Tools.ORM.ObjectModel.ObjectType/DefinitionText.Description", typeof(global::Neumont.Tools.ORM.ObjectModel.ORMCoreDomainModel), "Neumont.Tools.ORM.GeneratedCode.CoreDomainModelResx")]
+		[DslModeling::DomainProperty(Kind = DslModeling::DomainPropertyKind.CustomStorage)]
+		[DslModeling::DomainObjectId("431a8a8f-e8ec-4014-b1a1-843e55751a55")]
+		public global::System.String DefinitionText
+		{
+			[global::System.Diagnostics.DebuggerStepThrough]
+			get
+			{
+				return DefinitionTextPropertyHandler.Instance.GetValue(this);
+			}
+			[global::System.Diagnostics.DebuggerStepThrough]
+			set
+			{
+				DefinitionTextPropertyHandler.Instance.SetValue(this, value);
+			}
+		}
+		/// <summary>
+		/// Value handler for the ObjectType.DefinitionText domain property.
+		/// </summary>
+		internal sealed partial class DefinitionTextPropertyHandler : DslModeling::DomainPropertyValueHandler<ObjectType, global::System.String>
+		{
+			private DefinitionTextPropertyHandler() { }
+		
+			/// <summary>
+			/// Gets the singleton instance of the ObjectType.DefinitionText domain property value handler.
+			/// </summary>
+			public static readonly DefinitionTextPropertyHandler Instance = new DefinitionTextPropertyHandler();
+		
+			/// <summary>
+			/// Gets the Id of the ObjectType.DefinitionText domain property.
+			/// </summary>
+			public sealed override global::System.Guid DomainPropertyId
+			{
+				[global::System.Diagnostics.DebuggerStepThrough]
+				get
+				{
+					return DefinitionTextDomainPropertyId;
+				}
+			}
+			
+			/// <summary>
+			/// Gets a strongly-typed value of the property on specified element.
+			/// </summary>
+			/// <param name="element">Element which owns the property.</param>
+			/// <returns>Property value.</returns>
+			public override sealed global::System.String GetValue(ObjectType element)
+			{
+				if (element == null) throw new global::System.ArgumentNullException("element");
+				// There is no storage for DefinitionText because its Kind is
+				// set to CustomStorage. Please provide the GetDefinitionTextValue()
+				// method on the domain class.
+				return element.GetDefinitionTextValue();
+			}
+		
+			/// <summary>
+			/// Sets property value on an element.
+			/// </summary>
+			/// <param name="element">Element which owns the property.</param>
+			/// <param name="newValue">New property value.</param>
+			public override sealed void SetValue(ObjectType element, global::System.String newValue)
+			{
+				if (element == null) throw new global::System.ArgumentNullException("element");
+		
+				global::System.String oldValue = GetValue(element);
+				if (newValue != oldValue)
+				{
+					ValueChanging(element, oldValue, newValue);
+					// There is no storage for DefinitionText because its Kind is
+					// set to CustomStorage. Please provide the SetDefinitionTextValue()
+					// method on the domain class.
+					element.SetDefinitionTextValue(newValue);
+					//ValueChanged(element, oldValue, GetValue(element));
+					ValueChanged(element, oldValue, newValue);
+				}
+			}
+		}
+		
+		#endregion
 		#region NoteText domain property code
 		
 		/// <summary>
@@ -2810,6 +2903,37 @@ namespace Neumont.Tools.ORM.ObjectModel
 			}
 		}
 		#endregion
+		#region Definition opposite domain role accessor
+		/// <summary>
+		/// Gets or sets Definition.
+		/// Description for Neumont.Tools.ORM.ObjectModel.ObjectTypeHasDefinition.ObjectType
+		/// </summary>
+		public virtual Definition Definition
+		{
+			[global::System.Diagnostics.DebuggerStepThrough]
+			get
+			{
+				return DslModeling::DomainRoleInfo.GetLinkedElement(this, global::Neumont.Tools.ORM.ObjectModel.ObjectTypeHasDefinition.ObjectTypeDomainRoleId) as Definition;
+			}
+			[global::System.Diagnostics.DebuggerStepThrough]
+			set
+			{
+				DslModeling::ModelElement existingSource;
+				if (null != value &&
+					null != (existingSource = DslModeling::DomainRoleInfo.GetLinkedElement(value, global::Neumont.Tools.ORM.ObjectModel.ObjectTypeHasDefinition.DefinitionDomainRoleId)))
+				{
+					if (existingSource != value)
+					{
+						DslModeling::DomainRoleInfo.SetLinkedElement(value, global::Neumont.Tools.ORM.ObjectModel.ObjectTypeHasDefinition.DefinitionDomainRoleId, this);
+					}
+				}
+				else
+				{
+					DslModeling::DomainRoleInfo.SetLinkedElement(this, global::Neumont.Tools.ORM.ObjectModel.ObjectTypeHasDefinition.ObjectTypeDomainRoleId, value);
+				}
+			}
+		}
+		#endregion
 		#region Note opposite domain role accessor
 		/// <summary>
 		/// Gets or sets Note.
@@ -3087,6 +3211,99 @@ namespace Neumont.Tools.ORM.ObjectModel
 				{
 					ValueChanging(element, oldValue, newValue);
 					element.isExternalPropertyStorage = newValue;
+					ValueChanged(element, oldValue, newValue);
+				}
+			}
+		}
+		
+		#endregion
+		#region DefinitionText domain property code
+		
+		/// <summary>
+		/// DefinitionText domain property Id.
+		/// </summary>
+		public static readonly global::System.Guid DefinitionTextDomainPropertyId = new global::System.Guid(0x3f58e4d1, 0x4562, 0x478a, 0xa3, 0xfe, 0x08, 0x71, 0x5e, 0x45, 0x5c, 0xd8);
+		
+		/// <summary>
+		/// Gets or sets the value of DefinitionText domain property.
+		/// A definition of this FactType. To insert new lines, use Control-Enter in the
+		/// dropdown editor, or open the 'ORM Notes Editor' toolwindow.
+		/// </summary>
+		[global::System.ComponentModel.Editor(typeof(global::Neumont.Tools.Modeling.Design.MultilineTextEditor<global::Neumont.Tools.ORM.ObjectModel.Definition>), typeof(global::System.Drawing.Design.UITypeEditor))]
+		[global::System.ComponentModel.MergableProperty(false)]
+		[DslDesign::DisplayNameResource("Neumont.Tools.ORM.ObjectModel.FactType/DefinitionText.DisplayName", typeof(global::Neumont.Tools.ORM.ObjectModel.ORMCoreDomainModel), "Neumont.Tools.ORM.GeneratedCode.CoreDomainModelResx")]
+		[DslDesign::DescriptionResource("Neumont.Tools.ORM.ObjectModel.FactType/DefinitionText.Description", typeof(global::Neumont.Tools.ORM.ObjectModel.ORMCoreDomainModel), "Neumont.Tools.ORM.GeneratedCode.CoreDomainModelResx")]
+		[DslModeling::DomainProperty(Kind = DslModeling::DomainPropertyKind.CustomStorage)]
+		[DslModeling::DomainObjectId("3f58e4d1-4562-478a-a3fe-08715e455cd8")]
+		public global::System.String DefinitionText
+		{
+			[global::System.Diagnostics.DebuggerStepThrough]
+			get
+			{
+				return DefinitionTextPropertyHandler.Instance.GetValue(this);
+			}
+			[global::System.Diagnostics.DebuggerStepThrough]
+			set
+			{
+				DefinitionTextPropertyHandler.Instance.SetValue(this, value);
+			}
+		}
+		/// <summary>
+		/// Value handler for the FactType.DefinitionText domain property.
+		/// </summary>
+		internal sealed partial class DefinitionTextPropertyHandler : DslModeling::DomainPropertyValueHandler<FactType, global::System.String>
+		{
+			private DefinitionTextPropertyHandler() { }
+		
+			/// <summary>
+			/// Gets the singleton instance of the FactType.DefinitionText domain property value handler.
+			/// </summary>
+			public static readonly DefinitionTextPropertyHandler Instance = new DefinitionTextPropertyHandler();
+		
+			/// <summary>
+			/// Gets the Id of the FactType.DefinitionText domain property.
+			/// </summary>
+			public sealed override global::System.Guid DomainPropertyId
+			{
+				[global::System.Diagnostics.DebuggerStepThrough]
+				get
+				{
+					return DefinitionTextDomainPropertyId;
+				}
+			}
+			
+			/// <summary>
+			/// Gets a strongly-typed value of the property on specified element.
+			/// </summary>
+			/// <param name="element">Element which owns the property.</param>
+			/// <returns>Property value.</returns>
+			public override sealed global::System.String GetValue(FactType element)
+			{
+				if (element == null) throw new global::System.ArgumentNullException("element");
+				// There is no storage for DefinitionText because its Kind is
+				// set to CustomStorage. Please provide the GetDefinitionTextValue()
+				// method on the domain class.
+				return element.GetDefinitionTextValue();
+			}
+		
+			/// <summary>
+			/// Sets property value on an element.
+			/// </summary>
+			/// <param name="element">Element which owns the property.</param>
+			/// <param name="newValue">New property value.</param>
+			public override sealed void SetValue(FactType element, global::System.String newValue)
+			{
+				if (element == null) throw new global::System.ArgumentNullException("element");
+		
+				global::System.String oldValue = GetValue(element);
+				if (newValue != oldValue)
+				{
+					ValueChanging(element, oldValue, newValue);
+					// There is no storage for DefinitionText because its Kind is
+					// set to CustomStorage. Please provide the SetDefinitionTextValue()
+					// method on the domain class.
+					element.SetDefinitionTextValue(newValue);
+					//ValueChanged(element, oldValue, GetValue(element));
 					ValueChanged(element, oldValue, newValue);
 				}
 			}
@@ -3864,6 +4081,37 @@ namespace Neumont.Tools.ORM.ObjectModel
 			get
 			{
 				return new DslModeling::LinkedElementCollection<FrequencyConstraintContradictsInternalUniquenessConstraintError>(this, global::Neumont.Tools.ORM.ObjectModel.FactTypeHasFrequencyConstraintContradictsInternalUniquenessConstraintError.FactTypeDomainRoleId);
+			}
+		}
+		#endregion
+		#region Definition opposite domain role accessor
+		/// <summary>
+		/// Gets or sets Definition.
+		/// Description for Neumont.Tools.ORM.ObjectModel.FactTypeHasDefinition.FactType
+		/// </summary>
+		public virtual Definition Definition
+		{
+			[global::System.Diagnostics.DebuggerStepThrough]
+			get
+			{
+				return DslModeling::DomainRoleInfo.GetLinkedElement(this, global::Neumont.Tools.ORM.ObjectModel.FactTypeHasDefinition.FactTypeDomainRoleId) as Definition;
+			}
+			[global::System.Diagnostics.DebuggerStepThrough]
+			set
+			{
+				DslModeling::ModelElement existingSource;
+				if (null != value &&
+					null != (existingSource = DslModeling::DomainRoleInfo.GetLinkedElement(value, global::Neumont.Tools.ORM.ObjectModel.FactTypeHasDefinition.DefinitionDomainRoleId)))
+				{
+					if (existingSource != value)
+					{
+						DslModeling::DomainRoleInfo.SetLinkedElement(value, global::Neumont.Tools.ORM.ObjectModel.FactTypeHasDefinition.DefinitionDomainRoleId, this);
+					}
+				}
+				else
+				{
+					DslModeling::DomainRoleInfo.SetLinkedElement(this, global::Neumont.Tools.ORM.ObjectModel.FactTypeHasDefinition.FactTypeDomainRoleId, value);
+				}
 			}
 		}
 		#endregion
@@ -13839,6 +14087,197 @@ namespace Neumont.Tools.ORM.ObjectModel
 				else
 				{
 					DslModeling::DomainRoleInfo.SetLinkedElement(this, global::Neumont.Tools.ORM.ObjectModel.ObjectTypeHasObjectTypeRequiresPrimarySupertypeError.ObjectTypeRequiresPrimarySupertypeErrorDomainRoleId, value);
+				}
+			}
+		}
+		#endregion
+	}
+}
+namespace Neumont.Tools.ORM.ObjectModel
+{
+	/// <summary>
+	/// DomainClass Definition
+	/// </summary>
+	[DslDesign::DisplayNameResource("Neumont.Tools.ORM.ObjectModel.Definition.DisplayName", typeof(global::Neumont.Tools.ORM.ObjectModel.ORMCoreDomainModel), "Neumont.Tools.ORM.GeneratedCode.CoreDomainModelResx")]
+	[DslDesign::DescriptionResource("Neumont.Tools.ORM.ObjectModel.Definition.Description", typeof(global::Neumont.Tools.ORM.ObjectModel.ORMCoreDomainModel), "Neumont.Tools.ORM.GeneratedCode.CoreDomainModelResx")]
+	[global::System.CLSCompliant(true)]
+	[DslModeling::DomainObjectId("25d3235c-76e2-4095-8efd-847057937a00")]
+	public partial class Definition : ORMModelElement
+	{
+		#region Constructors, domain class Id
+	
+		/// <summary>
+		/// Definition domain class Id.
+		/// </summary>
+		public static readonly new global::System.Guid DomainClassId = new global::System.Guid(0x25d3235c, 0x76e2, 0x4095, 0x8e, 0xfd, 0x84, 0x70, 0x57, 0x93, 0x7a, 0x00);
+		/// <summary>
+		/// Constructor
+		/// </summary>
+		/// <param name="store">Store where new element is to be created.</param>
+		/// <param name="propertyAssignments">List of domain property id/value pairs to set once the element is created.</param>
+		public Definition(DslModeling::Store store, params DslModeling::PropertyAssignment[] propertyAssignments)
+			: this(store != null ? store.DefaultPartition : null, propertyAssignments)
+		{
+		}
+		
+		/// <summary>
+		/// Constructor
+		/// </summary>
+		/// <param name="partition">Partition where new element is to be created.</param>
+		/// <param name="propertyAssignments">List of domain property id/value pairs to set once the element is created.</param>
+		public Definition(DslModeling::Partition partition, params DslModeling::PropertyAssignment[] propertyAssignments)
+			: base(partition, propertyAssignments)
+		{
+		}
+		#endregion
+		#region Text domain property code
+		
+		/// <summary>
+		/// Text domain property Id.
+		/// </summary>
+		public static readonly global::System.Guid TextDomainPropertyId = new global::System.Guid(0xb68867a8, 0x4b52, 0x4de1, 0x8b, 0x39, 0x7e, 0xee, 0x5e, 0xcb, 0x60, 0xa4);
+		
+		/// <summary>
+		/// Storage for Text
+		/// </summary>
+		private global::System.String textPropertyStorage = string.Empty;
+		
+		/// <summary>
+		/// Gets or sets the value of Text domain property.
+		/// The definition contents. To insert new lines, use Control-Enter in the dropdown
+		/// editor, or open the 'ORM Notes Editor' toolwindow.
+		/// </summary>
+		[global::System.ComponentModel.Editor(typeof(global::Neumont.Tools.Modeling.Design.MultilineTextEditor<global::Neumont.Tools.ORM.ObjectModel.Definition>), typeof(global::System.Drawing.Design.UITypeEditor))]
+		[global::System.ComponentModel.MergableProperty(false)]
+		[DslDesign::DisplayNameResource("Neumont.Tools.ORM.ObjectModel.Definition/Text.DisplayName", typeof(global::Neumont.Tools.ORM.ObjectModel.ORMCoreDomainModel), "Neumont.Tools.ORM.GeneratedCode.CoreDomainModelResx")]
+		[DslDesign::DescriptionResource("Neumont.Tools.ORM.ObjectModel.Definition/Text.Description", typeof(global::Neumont.Tools.ORM.ObjectModel.ORMCoreDomainModel), "Neumont.Tools.ORM.GeneratedCode.CoreDomainModelResx")]
+		[DslModeling::DomainObjectId("b68867a8-4b52-4de1-8b39-7eee5ecb60a4")]
+		public global::System.String Text
+		{
+			[global::System.Diagnostics.DebuggerStepThrough]
+			get
+			{
+				return textPropertyStorage;
+			}
+			[global::System.Diagnostics.DebuggerStepThrough]
+			set
+			{
+				TextPropertyHandler.Instance.SetValue(this, value);
+			}
+		}
+		/// <summary>
+		/// Value handler for the Definition.Text domain property.
+		/// </summary>
+		internal sealed partial class TextPropertyHandler : DslModeling::DomainPropertyValueHandler<Definition, global::System.String>
+		{
+			private TextPropertyHandler() { }
+		
+			/// <summary>
+			/// Gets the singleton instance of the Definition.Text domain property value handler.
+			/// </summary>
+			public static readonly TextPropertyHandler Instance = new TextPropertyHandler();
+		
+			/// <summary>
+			/// Gets the Id of the Definition.Text domain property.
+			/// </summary>
+			public sealed override global::System.Guid DomainPropertyId
+			{
+				[global::System.Diagnostics.DebuggerStepThrough]
+				get
+				{
+					return TextDomainPropertyId;
+				}
+			}
+			
+			/// <summary>
+			/// Gets a strongly-typed value of the property on specified element.
+			/// </summary>
+			/// <param name="element">Element which owns the property.</param>
+			/// <returns>Property value.</returns>
+			public override sealed global::System.String GetValue(Definition element)
+			{
+				if (element == null) throw new global::System.ArgumentNullException("element");
+				return element.textPropertyStorage;
+			}
+		
+			/// <summary>
+			/// Sets property value on an element.
+			/// </summary>
+			/// <param name="element">Element which owns the property.</param>
+			/// <param name="newValue">New property value.</param>
+			public override sealed void SetValue(Definition element, global::System.String newValue)
+			{
+				if (element == null) throw new global::System.ArgumentNullException("element");
+		
+				global::System.String oldValue = GetValue(element);
+				if (newValue != oldValue)
+				{
+					ValueChanging(element, oldValue, newValue);
+					element.textPropertyStorage = newValue;
+					ValueChanged(element, oldValue, newValue);
+				}
+			}
+		}
+		
+		#endregion
+		#region ObjectType opposite domain role accessor
+		/// <summary>
+		/// Gets or sets ObjectType.
+		/// Description for Neumont.Tools.ORM.ObjectModel.ObjectTypeHasDefinition.Definition
+		/// </summary>
+		public virtual ObjectType ObjectType
+		{
+			[global::System.Diagnostics.DebuggerStepThrough]
+			get
+			{
+				return DslModeling::DomainRoleInfo.GetLinkedElement(this, global::Neumont.Tools.ORM.ObjectModel.ObjectTypeHasDefinition.DefinitionDomainRoleId) as ObjectType;
+			}
+			[global::System.Diagnostics.DebuggerStepThrough]
+			set
+			{
+				DslModeling::ModelElement existingSource;
+				if (null != value &&
+					null != (existingSource = DslModeling::DomainRoleInfo.GetLinkedElement(value, global::Neumont.Tools.ORM.ObjectModel.ObjectTypeHasDefinition.ObjectTypeDomainRoleId)))
+				{
+					if (existingSource != value)
+					{
+						DslModeling::DomainRoleInfo.SetLinkedElement(value, global::Neumont.Tools.ORM.ObjectModel.ObjectTypeHasDefinition.ObjectTypeDomainRoleId, this);
+					}
+				}
+				else
+				{
+					DslModeling::DomainRoleInfo.SetLinkedElement(this, global::Neumont.Tools.ORM.ObjectModel.ObjectTypeHasDefinition.DefinitionDomainRoleId, value);
+				}
+			}
+		}
+		#endregion
+		#region FactType opposite domain role accessor
+		/// <summary>
+		/// Gets or sets FactType.
+		/// Description for Neumont.Tools.ORM.ObjectModel.FactTypeHasDefinition.Definition
+		/// </summary>
+		public virtual FactType FactType
+		{
+			[global::System.Diagnostics.DebuggerStepThrough]
+			get
+			{
+				return DslModeling::DomainRoleInfo.GetLinkedElement(this, global::Neumont.Tools.ORM.ObjectModel.FactTypeHasDefinition.DefinitionDomainRoleId) as FactType;
+			}
+			[global::System.Diagnostics.DebuggerStepThrough]
+			set
+			{
+				DslModeling::ModelElement existingSource;
+				if (null != value &&
+					null != (existingSource = DslModeling::DomainRoleInfo.GetLinkedElement(value, global::Neumont.Tools.ORM.ObjectModel.FactTypeHasDefinition.FactTypeDomainRoleId)))
+				{
+					if (existingSource != value)
+					{
+						DslModeling::DomainRoleInfo.SetLinkedElement(value, global::Neumont.Tools.ORM.ObjectModel.FactTypeHasDefinition.FactTypeDomainRoleId, this);
+					}
+				}
+				else
+				{
+					DslModeling::DomainRoleInfo.SetLinkedElement(this, global::Neumont.Tools.ORM.ObjectModel.FactTypeHasDefinition.DefinitionDomainRoleId, value);
 				}
 			}
 		}

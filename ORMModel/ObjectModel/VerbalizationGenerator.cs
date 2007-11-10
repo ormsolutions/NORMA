@@ -67,6 +67,8 @@ namespace Neumont.Tools.ORM.ObjectModel
 		ContextScopeReference,
 		/// <summary>The 'DefiniteArticle' format string snippet. Contains 1 replacement field.</summary>
 		DefiniteArticle,
+		/// <summary>The 'DefinitionVerbalization' format string snippet. Contains 1 replacement field.</summary>
+		DefinitionVerbalization,
 		/// <summary>The 'EachInstanceQuantifier' format string snippet. Contains 1 replacement field.</summary>
 		EachInstanceQuantifier,
 		/// <summary>The 'EntityTypeVerbalization' format string snippet. Contains 1 replacement field.</summary>
@@ -358,6 +360,7 @@ namespace Neumont.Tools.ORM.ObjectModel
 				@"<span class=""quantifier"">context: </span>{0}",
 				@"<span class=""quantifier"">in this context,</span> {0}",
 				@"<span class=""quantifier"">that</span> {0}",
+				@"<span class=""quantifier"">Definition:</span> <span class=""definition"">{0}</span>",
 				@"<span class=""quantifier"">each instance of</span> {0} <span class=""quantifier"">occurs only once</span>",
 				@"{0} <span class=""quantifier"">is an entity type</span>",
 				@"{0}<span class=""quantifier""> if and only if </span>{1}",
@@ -499,6 +502,7 @@ namespace Neumont.Tools.ORM.ObjectModel
 		.listSeparator {{ color: windowtext; font-weight: 200;}}
 		.logicalOperator {{ color: {6}; {7}}}
 		.note {{ color: {8}; font-style: italic; {9} }}
+		.definition {{ color: {8}; font-style: italic; {9} }}
 		.notAvailable {{ font-style: italic; }}
 		.instance {{ color: {12}; {13} }}
 	</style>
@@ -531,6 +535,7 @@ namespace Neumont.Tools.ORM.ObjectModel
 				@"<span class=""quantifier"">context: </span>{0}",
 				@"<span class=""quantifier"">in this context,</span> {0}",
 				@"<span class=""quantifier"">that</span> {0}",
+				@"<span class=""quantifier"">Definition:</span> <span class=""definition"">{0}</span>",
 				@"<span class=""quantifier"">each instance of</span> {0} <span class=""quantifier"">occurs only once</span>",
 				@"{0} <span class=""quantifier"">is an entity type</span>",
 				@"{0}<span class=""quantifier""> if and only if </span>{1}",
@@ -672,6 +677,7 @@ namespace Neumont.Tools.ORM.ObjectModel
 		.listSeparator {{ color: windowtext; font-weight: 200;}}
 		.logicalOperator {{ color: {6}; {7}}}
 		.note {{ color: {8}; font-style: italic; {9} }}
+		.definition {{ color: {8}; font-style: italic; {9} }}
 		.notAvailable {{ font-style: italic; }}
 		.instance {{ color: {12}; {13} }}
 	</style>
@@ -704,6 +710,7 @@ namespace Neumont.Tools.ORM.ObjectModel
 				@"<span class=""quantifier"">context: </span>{0}",
 				@"<span class=""quantifier"">in this context,</span> {0}",
 				@"<span class=""quantifier"">that</span> {0}",
+				@"<span class=""quantifier"">Definition:</span> <span class=""definition"">{0}</span>",
 				@"<span class=""quantifier"">each instance of</span> {0} <span class=""quantifier"">occurs only once</span>",
 				@"{0} <span class=""quantifier"">is an entity type</span>",
 				@"{0}<span class=""quantifier""> if and only if </span>{1}",
@@ -845,6 +852,7 @@ namespace Neumont.Tools.ORM.ObjectModel
 		.listSeparator {{ color: windowtext; font-weight: 200;}}
 		.logicalOperator {{ color: {6}; {7}}}
 		.note {{ color: {8}; font-style: italic; {9} }}
+		.definition {{ color: {8}; font-style: italic; {9} }}
 		.notAvailable {{ font-style: italic; }}
 		.instance {{ color: {12}; {13} }}
 	</style>
@@ -877,6 +885,7 @@ namespace Neumont.Tools.ORM.ObjectModel
 				@"<span class=""quantifier"">context: </span>{0}",
 				@"<span class=""quantifier"">in this context,</span> {0}",
 				@"<span class=""quantifier"">that</span> {0}",
+				@"<span class=""quantifier"">Definition:</span> <span class=""definition"">{0}</span>",
 				@"<span class=""quantifier"">each instance of</span> {0} <span class=""quantifier"">occurs only once</span>",
 				@"{0} <span class=""quantifier"">is an entity type</span>",
 				@"{0}<span class=""quantifier""> if and only if </span>{1}",
@@ -1018,6 +1027,7 @@ namespace Neumont.Tools.ORM.ObjectModel
 		.listSeparator {{ color: windowtext; font-weight: 200;}}
 		.logicalOperator {{ color: {6}; {7}}}
 		.note {{ color: {8}; font-style: italic; {9} }}
+		.definition {{ color: {8}; font-style: italic; {9} }}
 		.notAvailable {{ font-style: italic; }}
 		.instance {{ color: {12}; {13} }}
 	</style>
@@ -1517,6 +1527,103 @@ namespace Neumont.Tools.ORM.ObjectModel
 		}
 	}
 	#endregion // ObjectType verbalization
+	#region Definition verbalization
+	public partial class Definition : IVerbalize
+	{
+		/// <summary>IVerbalize.GetVerbalization implementation</summary>
+		protected bool GetVerbalization(TextWriter writer, IDictionary<Type, IVerbalizationSets> snippetsDictionary, IVerbalizationContext verbalizationContext, bool isNegative)
+		{
+			IVerbalizationSets<CoreVerbalizationSnippetType> snippets = (IVerbalizationSets<CoreVerbalizationSnippetType>)snippetsDictionary[typeof(CoreVerbalizationSnippetType)];
+			IModelErrorOwner errorOwner = this as IModelErrorOwner;
+			bool firstErrorPending;
+			if (errorOwner != null)
+			{
+				firstErrorPending = true;
+				foreach (ModelError error in errorOwner.GetErrorCollection(ModelErrorUses.BlockVerbalization))
+				{
+					if (firstErrorPending)
+					{
+						firstErrorPending = false;
+						verbalizationContext.BeginVerbalization(VerbalizationContent.ErrorReport);
+						writer.Write(snippets.GetSnippet(CoreVerbalizationSnippetType.ErrorOpenPrimaryReport, false, false));
+					}
+					else
+					{
+						writer.WriteLine();
+					}
+					writer.Write(string.Format(writer.FormatProvider, snippets.GetSnippet(CoreVerbalizationSnippetType.ErrorPrimary, false, false), error.ErrorText));
+				}
+				if (!firstErrorPending)
+				{
+					writer.Write(snippets.GetSnippet(CoreVerbalizationSnippetType.ErrorClosePrimaryReport, false, false));
+					firstErrorPending = true;
+					foreach (ModelError error in errorOwner.GetErrorCollection(ModelErrorUses.Verbalize))
+					{
+						ModelErrorDisplayFilter errorDisplayFilter = error.Model.ModelErrorDisplayFilter;
+						if (errorDisplayFilter != null && !errorDisplayFilter.ShouldDisplay(error))
+						{
+							continue;
+						}
+						if (firstErrorPending)
+						{
+							firstErrorPending = false;
+							writer.WriteLine();
+							writer.Write(snippets.GetSnippet(CoreVerbalizationSnippetType.ErrorOpenSecondaryReport, false, false));
+						}
+						else
+						{
+							writer.WriteLine();
+						}
+						writer.Write(string.Format(writer.FormatProvider, snippets.GetSnippet(CoreVerbalizationSnippetType.ErrorSecondary, false, false), error.ErrorText));
+					}
+					if (!firstErrorPending)
+					{
+						writer.Write(snippets.GetSnippet(CoreVerbalizationSnippetType.ErrorCloseSecondaryReport, false, false));
+					}
+					return true;
+				}
+			}
+			const bool isDeontic = false;
+			verbalizationContext.BeginVerbalization(VerbalizationContent.Normal);
+			string snippetFormat1 = snippets.GetSnippet(CoreVerbalizationSnippetType.DefinitionVerbalization, isDeontic, isNegative);
+			string snippet1Replace1 = null;
+			snippet1Replace1 = this.Text;
+			FactType.WriteVerbalizerSentence(writer, string.Format(writer.FormatProvider, snippetFormat1, snippet1Replace1), snippets.GetSnippet(CoreVerbalizationSnippetType.CloseVerbalizationSentence, isDeontic, isNegative));
+			if (errorOwner != null)
+			{
+				firstErrorPending = true;
+				foreach (ModelError error in errorOwner.GetErrorCollection(ModelErrorUses.Verbalize))
+				{
+					ModelErrorDisplayFilter errorDisplayFilter = error.Model.ModelErrorDisplayFilter;
+					if (errorDisplayFilter != null && !errorDisplayFilter.ShouldDisplay(error))
+					{
+						continue;
+					}
+					if (firstErrorPending)
+					{
+						firstErrorPending = false;
+						writer.WriteLine();
+						writer.Write(snippets.GetSnippet(CoreVerbalizationSnippetType.ErrorOpenSecondaryReport, false, false));
+					}
+					else
+					{
+						writer.WriteLine();
+					}
+					writer.Write(string.Format(writer.FormatProvider, snippets.GetSnippet(CoreVerbalizationSnippetType.ErrorSecondary, false, false), error.ErrorText));
+				}
+				if (!firstErrorPending)
+				{
+					writer.Write(snippets.GetSnippet(CoreVerbalizationSnippetType.ErrorCloseSecondaryReport, false, false));
+				}
+			}
+			return true;
+		}
+		bool IVerbalize.GetVerbalization(TextWriter writer, IDictionary<Type, IVerbalizationSets> snippetsDictionary, IVerbalizationContext verbalizationContext, bool isNegative)
+		{
+			return this.GetVerbalization(writer, snippetsDictionary, verbalizationContext, isNegative);
+		}
+	}
+	#endregion // Definition verbalization
 	#region Note verbalization
 	public partial class Note : IVerbalize
 	{

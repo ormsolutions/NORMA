@@ -1340,6 +1340,14 @@ namespace Neumont.Tools.ORM
 				return ResourceStrings.GetString(ResourceManagers.Model, "ModelReadingEditor.PrimaryFactTypeReadingsText");
 			}
 		}
+		/// <summary>Text to place in the title bar of the description editor tool window.</summary>
+		public static string ModelDefinitionWindowTitle
+		{
+			get
+			{
+				return ResourceStrings.GetString(ResourceManagers.Model, "ModelDefinitionWindow.WindowTitle");
+			}
+		}
 		/// <summary>Text to place in the title bar of the notes editor tool window.</summary>
 		public static string ModelNotesWindowTitle
 		{
