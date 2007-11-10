@@ -903,6 +903,12 @@
 			</BaseClass>
 		</DomainClass>
 
+		<DomainClass Name="FrequencyConstraintExactlyOneError" Namespace="Neumont.Tools.ORM.ObjectModel" Id="9BBFF3C2-329B-4956-8FFA-1C6F305CF601" DisplayName="Represent Frequency Constraint of Exactly One as Uniqueneness" Description="">
+			<BaseClass>
+				<DomainClassMoniker Name="ModelError"/>
+			</BaseClass>
+		</DomainClass>
+
 		<DomainClass Name="ReadingRequiresUserModificationError" Namespace="Neumont.Tools.ORM.ObjectModel" Id="56D0B016-EAF3-4E4F-B17A-7F7987EBC0CB" DisplayName="Reading Text Automatically Modified" Description="">
 			<BaseClass>
 				<DomainClassMoniker Name="ModelError"/>
@@ -2811,6 +2817,26 @@
 				<DomainRole Name="FrequencyConstraintMinMaxError" PropertyName="FrequencyConstraint" Multiplicity="One" PropagatesDelete="true" IsPropertyGenerator="true" DisplayName="FrequencyConstraintMinMaxError" Id="E25CA8CB-1265-4F7E-AF04-36DEC1D314E1">
 					<RolePlayer>
 						<DomainClassMoniker Name="FrequencyConstraintMinMaxError"/>
+					</RolePlayer>
+				</DomainRole>
+			</Target>
+		</DomainRelationship>
+
+		<DomainRelationship Name="FrequencyConstraintHasFrequencyConstraintExactlyOneError" Namespace="Neumont.Tools.ORM.ObjectModel" Id="5A820704-A594-48C8-9C56-AF2567C92D91">
+			<BaseRelationship>
+				<DomainRelationshipMoniker Name="ElementAssociatedWithModelError"/>
+			</BaseRelationship>
+			<Source>
+				<DomainRole Name="FrequencyConstraint" PropertyName="FrequencyConstraintExactlyOneError" Multiplicity="ZeroOne" PropagatesDelete="false" IsPropertyGenerator="true" DisplayName="FrequencyConstraint" Id="4F690891-F7A0-4C47-B890-F0F6121EBA3F">
+					<RolePlayer>
+						<DomainClassMoniker Name="FrequencyConstraint"/>
+					</RolePlayer>
+				</DomainRole>
+			</Source>
+			<Target>
+				<DomainRole Name="FrequencyConstraintExactlyOneError" PropertyName="FrequencyConstraint" Multiplicity="One" PropagatesDelete="true" IsPropertyGenerator="true" DisplayName="FrequencyConstraintExactlyOneError" Id="05D223BC-A180-44EF-9E87-E4BB3C3F4B03">
+					<RolePlayer>
+						<DomainClassMoniker Name="FrequencyConstraintExactlyOneError"/>
 					</RolePlayer>
 				</DomainRole>
 			</Target>

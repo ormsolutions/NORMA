@@ -180,6 +180,24 @@ namespace Neumont.Tools.ORM.ObjectModel.Design
 						return retVal;
 					});
 				#endregion // SetConstraint error activation
+				#region FrequencyConstraint error activation
+				activationService.RegisterErrorActivator(
+					typeof(FrequencyConstraint),
+					true,
+					delegate(IORMToolServices services, ModelElement selectedElement, ModelError error)
+					{
+						bool retVal = true;
+						if (error is FrequencyConstraintExactlyOneError)
+						{
+							((FrequencyConstraint)selectedElement).ConvertToUniquenessConstraint();
+						}
+						else
+						{
+							retVal = false;
+						}
+						return retVal;
+					});
+				#endregion // FrequencyConstraint error activation
 				#region RingConstraint error activation
 				activationService.RegisterErrorActivator(
 					typeof(RingConstraint),

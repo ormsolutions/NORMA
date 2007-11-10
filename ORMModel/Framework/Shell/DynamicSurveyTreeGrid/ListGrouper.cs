@@ -704,12 +704,12 @@ namespace Neumont.Tools.Modeling.Shell.DynamicSurveyTreeGrid
 							// is in a subbranch, then we return control to the calling tree to
 							// manage branch expansion. Otherwise, we need to forward the request
 							// to the neutral branch directly.
-							int subBranchCount = myVisibleSubBranchCount;
-							for (int i = 0; i < subBranchCount; ++i)
+							SubBranchMetaData[] branches = mySubBranches;
+							for (int i = 0; i < branches.Length; ++i)
 							{
-								if (mySubBranches[i].IsInRange(row))
+								if (branches[i].IsInRange(row))
 								{
-									int adjustedIndex = i;
+									int adjustedIndex = Array.IndexOf<int>(mySubBranchOrder, i);
 									if (myNeutralOnTop)
 									{
 										IBranch neutral = myNeutralBranch;
@@ -727,7 +727,7 @@ namespace Neumont.Tools.Modeling.Shell.DynamicSurveyTreeGrid
 								{
 									if (!myNeutralOnTop)
 									{
-										neutralData.Row += subBranchCount;
+										neutralData.Row += myVisibleSubBranchCount;
 									}
 									if (baseData.Options == (int)TrackingObjectAction.NextLevel &&
 										neutralData.Options == (int)TrackingObjectAction.ThisLevel)

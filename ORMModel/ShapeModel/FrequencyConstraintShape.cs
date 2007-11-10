@@ -28,7 +28,7 @@ using Neumont.Tools.ORM.ObjectModel;
 using Neumont.Tools.ORM.Shell;
 namespace Neumont.Tools.ORM.ShapeModel
 {
-	public partial class FrequencyConstraintShape : ExternalConstraintShape
+	public partial class FrequencyConstraintShape : ExternalConstraintShape, IModelErrorActivation
 	{
 		#region Customize appearance
 		[DllImport("user32.dll", ExactSpelling = true, CharSet = CharSet.Auto)]
@@ -193,6 +193,45 @@ namespace Neumont.Tools.ORM.ShapeModel
 			}
 		}
 		#endregion // FrequencyConstraintPropertyChangeRule
+		#region FrequencyConstraintConversionDeletingRule
+		/// <summary>
+		/// DeletingRule: typeof(FrequencyConstraintShape)
+		/// If the FrequencyConstraintShape is being deleted as a result of conversion to a uniqueness constraint
+		/// </summary>
+		private static void FrequencyConstraintConversionDeletingRule(ElementDeletingEventArgs e)
+		{
+			FrequencyConstraintShape shape;
+			UniquenessConstraint convertingTo;
+			IDictionary<object, object> contextInfo;
+			if (e.ChangeSource == ChangeSource.Propagate &&
+				(contextInfo = (shape = (FrequencyConstraintShape)e.ModelElement).Store.TransactionManager.CurrentTransaction.TopLevelTransaction.Context.ContextInfo).ContainsKey(FrequencyConstraint.ConvertingToUniquenessConstraintKey) &&
+				!(convertingTo = (UniquenessConstraint)contextInfo[FrequencyConstraint.ConvertingToUniquenessConstraintKey]).IsInternal &&
+				shape.ModelElement == contextInfo[FrequencyConstraint.ConvertingFromFrequencyConstraintKey])
+			{
+				((ORMDiagram)shape.Diagram).PlaceORMElementOnDiagram(null, convertingTo, shape.Location, ORMPlacementOption.AllowMultipleShapes);
+			}
+		}
+		#endregion // FrequencyConstraintConversionDeletingRule
 		#endregion // Shape display update rules
+		#region IModelErrorActivation Implementation
+		/// <summary>
+		/// Implements <see cref="IModelErrorActivation.ActivateModelError"/> for
+		/// the <see cref="FrequencyConstraintExactlyOneError"/>
+		/// </summary>
+		protected new bool ActivateModelError(ModelError error)
+		{
+			FrequencyConstraintExactlyOneError exactlyOneError;
+			bool retVal = false;
+			if (null != (exactlyOneError = error as FrequencyConstraintExactlyOneError))
+			{
+				retVal = ((FrequencyConstraint)AssociatedConstraint).ConvertToUniquenessConstraint();
+			}
+			return retVal ? true : base.ActivateModelError(error);
+		}
+		bool IModelErrorActivation.ActivateModelError(ModelError error)
+		{
+			return ActivateModelError(error);
+		}
+		#endregion // IModelErrorActivation Implementation
 	}
 }

@@ -887,6 +887,7 @@
 			<xs:element name="EqualityImpliedByMandatoryError" type="EqualityImpliedByMandatoryError"/>
 			<xs:element name="EntityTypeRequiresReferenceSchemeError" type="EntityTypeRequiresReferenceSchemeError"/>
 			<xs:element name="FrequencyConstraintMinMaxError" type="FrequencyConstraintMinMaxError"/>
+			<xs:element name="FrequencyConstraintExactlyOneError" type="FrequencyConstraintExactlyOneError"/>
 			<xs:element name="FrequencyConstraintContradictsInternalUniquenessConstraintError" type="FrequencyConstraintContradictsInternalUniquenessConstraintError"/>
 			<xs:element name="MinValueMismatchError" type="MinValueMismatchError"/>
 			<xs:element name="MaxValueMismatchError" type="MaxValueMismatchError"/>
@@ -1052,6 +1053,15 @@
 		</xs:complexContent>
 	</xs:complexType>
 	<xs:complexType name="FrequencyConstraintMinMaxError">
+		<xs:complexContent>
+			<xs:extension base="ModelError">
+				<xs:sequence>
+					<xs:element name="FrequencyConstraint" type="FrequencyConstraintRef"/>
+				</xs:sequence>
+			</xs:extension>
+		</xs:complexContent>
+	</xs:complexType>
+	<xs:complexType name="FrequencyConstraintExactlyOneError">
 		<xs:complexContent>
 			<xs:extension base="ModelError">
 				<xs:sequence>

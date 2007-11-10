@@ -556,6 +556,7 @@
 		<se:Link RelationshipName="MandatoryConstraintHasNotWellModeledSubsetAndMandatoryError" RoleName="NotWellModeledSubsetAndMandatoryError" WriteStyle="NotWritten"/>
 	</se:Element>
 	<se:Element Class="FrequencyConstraint" Override="true">
+		<se:Link RelationshipName="FrequencyConstraintHasFrequencyConstraintExactlyOneError" RoleName="FrequencyConstraintExactlyOneError" WriteStyle="NotWritten"/>
 		<se:Link RelationshipName="FrequencyConstraintHasFrequencyConstraintMinMaxError" RoleName="FrequencyConstraintMinMaxError" WriteStyle="NotWritten"/>
 		<se:Link RelationshipName="FrequencyConstraintHasFrequencyConstraintInvalidatedByInternalUniquenessConstraintError" RoleName="FrequencyConstraintContradictsInternalUniquenessConstraintError" WriteStyle="NotWritten"/>
 	</se:Element>
@@ -639,6 +640,9 @@
 	</se:Element>
 	<se:Element Class="FactTypeRequiresReadingError" Override="true">
 		<se:Link RelationshipName="FactTypeHasFactTypeRequiresReadingError" RoleName="FactType" Name="Fact"/>
+	</se:Element>
+	<se:Element Class="FrequencyConstraintExactlyOneError" Override="true">
+		<se:Link RelationshipName="FrequencyConstraintHasFrequencyConstraintExactlyOneError" RoleName="FrequencyConstraint" Name="FrequencyConstraint"/>
 	</se:Element>
 	<se:Element Class="FrequencyConstraintMinMaxError" Override="true">
 		<se:Link RelationshipName="FrequencyConstraintHasFrequencyConstraintMinMaxError" RoleName="FrequencyConstraint" Name="FrequencyConstraint"/>

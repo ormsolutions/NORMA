@@ -90,6 +90,9 @@
 			<arg:ChangeRule methodName="FrequencyConstraintPropertyChangeRule">
 				<arg:RuleOn targetType="FrequencyConstraint" targetTypeQualifier="Neumont.Tools.ORM.ObjectModel" fireTime="TopLevelCommit" priority="DiagramFixupConstants.AddShapeRulePriority"/>
 			</arg:ChangeRule>
+			<arg:DeletingRule methodName="FrequencyConstraintConversionDeletingRule">
+				<arg:RuleOn targetType="FrequencyConstraintShape"/>
+			</arg:DeletingRule>
 		</arg:RuleContainer>
 		<arg:RuleContainer class="ModelNoteShape">
 			<arg:ChangeRule methodName="NoteChangeRule">

@@ -618,19 +618,22 @@ namespace Neumont.Tools.ORM.ShapeModel
 				// again.  If you want to do any fun tricks after a user's committed the action,
 				// this would be the place to do it.
 				IConstraint constraint = chainOnShape.AssociatedConstraint;
-				switch (constraint.ConstraintStorageStyle)
+				if (constraint != null)
 				{
-					case ConstraintStorageStyle.SetComparisonConstraint:
-						if (!editingSubtypeFact)
-						{
-							IConstraint editConstraint = chainOnShape.AssociatedConstraint;
-							int maximum = ConstraintUtility.RoleSequenceCountMaximum(editConstraint);
-							if (maximum < 0 || ((SetComparisonConstraint)editConstraint).RoleSequenceCollection.Count < maximum)
+					switch (constraint.ConstraintStorageStyle)
+					{
+						case ConstraintStorageStyle.SetComparisonConstraint:
+							if (!editingSubtypeFact)
 							{
-								ChainMouseAction(chainOnShape, e.DiagramClientView);
+								IConstraint editConstraint = chainOnShape.AssociatedConstraint;
+								int maximum = ConstraintUtility.RoleSequenceCountMaximum(editConstraint);
+								if (maximum < 0 || ((SetComparisonConstraint)editConstraint).RoleSequenceCollection.Count < maximum)
+								{
+									ChainMouseAction(chainOnShape, e.DiagramClientView);
+								}
 							}
-						}
-						break;
+							break;
+					}
 				}
 			}
 		}

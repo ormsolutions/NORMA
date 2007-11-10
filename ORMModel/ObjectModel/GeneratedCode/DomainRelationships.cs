@@ -16204,6 +16204,310 @@ namespace Neumont.Tools.ORM.ObjectModel
 namespace Neumont.Tools.ORM.ObjectModel
 {
 	/// <summary>
+	/// DomainRelationship FrequencyConstraintHasFrequencyConstraintExactlyOneError
+	/// Description for
+	/// Neumont.Tools.ORM.ObjectModel.FrequencyConstraintHasFrequencyConstraintExactlyOneError
+	/// </summary>
+	[DslDesign::DisplayNameResource("Neumont.Tools.ORM.ObjectModel.FrequencyConstraintHasFrequencyConstraintExactlyOneError.DisplayName", typeof(global::Neumont.Tools.ORM.ObjectModel.ORMCoreDomainModel), "Neumont.Tools.ORM.GeneratedCode.CoreDomainModelResx")]
+	[DslDesign::DescriptionResource("Neumont.Tools.ORM.ObjectModel.FrequencyConstraintHasFrequencyConstraintExactlyOneError.Description", typeof(global::Neumont.Tools.ORM.ObjectModel.ORMCoreDomainModel), "Neumont.Tools.ORM.GeneratedCode.CoreDomainModelResx")]
+	[global::System.CLSCompliant(true)]
+	[DslModeling::DomainRelationship()]
+	[DslModeling::DomainObjectId("5a820704-a594-48c8-9c56-af2567c92d91")]
+	public partial class FrequencyConstraintHasFrequencyConstraintExactlyOneError : ElementAssociatedWithModelError
+	{
+		#region Constructors, domain class Id
+		
+		/// <summary>
+		/// FrequencyConstraintHasFrequencyConstraintExactlyOneError domain class Id.
+		/// </summary>
+		public static readonly new global::System.Guid DomainClassId = new global::System.Guid(0x5a820704, 0xa594, 0x48c8, 0x9c, 0x56, 0xaf, 0x25, 0x67, 0xc9, 0x2d, 0x91);
+	
+				
+		/// <summary>
+		/// Constructor
+		/// Creates a FrequencyConstraintHasFrequencyConstraintExactlyOneError link in the same Partition as the given FrequencyConstraint
+		/// </summary>
+		/// <param name="source">FrequencyConstraint to use as the source of the relationship.</param>
+		/// <param name="target">FrequencyConstraintExactlyOneError to use as the target of the relationship.</param>
+		public FrequencyConstraintHasFrequencyConstraintExactlyOneError(FrequencyConstraint source, FrequencyConstraintExactlyOneError target)
+			: base((source != null ? source.Partition : null), new DslModeling::RoleAssignment[]{new DslModeling::RoleAssignment(FrequencyConstraintHasFrequencyConstraintExactlyOneError.FrequencyConstraintDomainRoleId, source), new DslModeling::RoleAssignment(FrequencyConstraintHasFrequencyConstraintExactlyOneError.FrequencyConstraintExactlyOneErrorDomainRoleId, target)}, null)
+		{
+		}
+		
+		/// <summary>
+		/// Constructor
+		/// </summary>
+		/// <param name="store">Store where new link is to be created.</param>
+		/// <param name="roleAssignments">List of relationship role assignments.</param>
+		public FrequencyConstraintHasFrequencyConstraintExactlyOneError(DslModeling::Store store, params DslModeling::RoleAssignment[] roleAssignments)
+			: base(store != null ? store.DefaultPartition : null, roleAssignments, null)
+		{
+		}
+		
+		/// <summary>
+		/// Constructor
+		/// </summary>
+		/// <param name="store">Store where new link is to be created.</param>
+		/// <param name="roleAssignments">List of relationship role assignments.</param>
+		/// <param name="propertyAssignments">List of properties assignments to set on the new link.</param>
+		public FrequencyConstraintHasFrequencyConstraintExactlyOneError(DslModeling::Store store, DslModeling::RoleAssignment[] roleAssignments, DslModeling::PropertyAssignment[] propertyAssignments)
+			: base(store != null ? store.DefaultPartition : null, roleAssignments, propertyAssignments)
+		{
+		}
+		
+		/// <summary>
+		/// Constructor
+		/// </summary>
+		/// <param name="partition">Partition where new link is to be created.</param>
+		/// <param name="roleAssignments">List of relationship role assignments.</param>
+		public FrequencyConstraintHasFrequencyConstraintExactlyOneError(DslModeling::Partition partition, params DslModeling::RoleAssignment[] roleAssignments)
+			: base(partition, roleAssignments, null)
+		{
+		}
+		
+		/// <summary>
+		/// Constructor
+		/// </summary>
+		/// <param name="partition">Partition where new link is to be created.</param>
+		/// <param name="roleAssignments">List of relationship role assignments.</param>
+		/// <param name="propertyAssignments">List of properties assignments to set on the new link.</param>
+		public FrequencyConstraintHasFrequencyConstraintExactlyOneError(DslModeling::Partition partition, DslModeling::RoleAssignment[] roleAssignments, DslModeling::PropertyAssignment[] propertyAssignments)
+			: base(partition, roleAssignments, propertyAssignments)
+		{
+		}
+		#endregion
+		#region FrequencyConstraint domain role code
+		
+		/// <summary>
+		/// FrequencyConstraint domain role Id.
+		/// </summary>
+		public static readonly global::System.Guid FrequencyConstraintDomainRoleId = new global::System.Guid(0x4f690891, 0xf7a0, 0x4c47, 0xb8, 0x90, 0xf0, 0xf6, 0x12, 0x1e, 0xba, 0x3f);
+		
+		/// <summary>
+		/// DomainRole FrequencyConstraint
+		/// Description for
+		/// Neumont.Tools.ORM.ObjectModel.FrequencyConstraintHasFrequencyConstraintExactlyOneError.FrequencyConstraint
+		/// </summary>
+		[DslDesign::DisplayNameResource("Neumont.Tools.ORM.ObjectModel.FrequencyConstraintHasFrequencyConstraintExactlyOneError/FrequencyConstraint.DisplayName", typeof(global::Neumont.Tools.ORM.ObjectModel.ORMCoreDomainModel), "Neumont.Tools.ORM.GeneratedCode.CoreDomainModelResx")]
+		[DslDesign::DescriptionResource("Neumont.Tools.ORM.ObjectModel.FrequencyConstraintHasFrequencyConstraintExactlyOneError/FrequencyConstraint.Description", typeof(global::Neumont.Tools.ORM.ObjectModel.ORMCoreDomainModel), "Neumont.Tools.ORM.GeneratedCode.CoreDomainModelResx")]
+		[DslModeling::DomainRole(DslModeling::DomainRoleOrder.Source, PropertyName = "FrequencyConstraintExactlyOneError", PropertyDisplayNameKey="Neumont.Tools.ORM.ObjectModel.FrequencyConstraintHasFrequencyConstraintExactlyOneError/FrequencyConstraint.PropertyDisplayName", Multiplicity = DslModeling::Multiplicity.ZeroOne)]
+		[DslModeling::DomainObjectId("4f690891-f7a0-4c47-b890-f0f6121eba3f")]
+		public virtual FrequencyConstraint FrequencyConstraint
+		{
+			[global::System.Diagnostics.DebuggerStepThrough]
+			get
+			{
+				return (FrequencyConstraint)DslModeling::DomainRoleInfo.GetRolePlayer(this, FrequencyConstraintDomainRoleId);
+			}
+			[global::System.Diagnostics.DebuggerStepThrough]
+			set
+			{
+				DslModeling::DomainRoleInfo.SetRolePlayer(this, FrequencyConstraintDomainRoleId, value);
+			}
+		}
+				
+		#endregion
+		#region Static methods to access FrequencyConstraint of a FrequencyConstraintExactlyOneError
+		/// <summary>
+		/// Gets FrequencyConstraint.
+		/// </summary>
+		[global::System.Diagnostics.DebuggerStepThrough]
+		[global::System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Design", "CA1011")]
+		public static FrequencyConstraint GetFrequencyConstraint(FrequencyConstraintExactlyOneError element)
+		{
+			return DslModeling::DomainRoleInfo.GetLinkedElement(element, FrequencyConstraintExactlyOneErrorDomainRoleId) as FrequencyConstraint;
+		}
+		
+		/// <summary>
+		/// Sets FrequencyConstraint.
+		/// </summary>
+		[global::System.Diagnostics.DebuggerStepThrough]
+		[global::System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Design", "CA1011")]
+		public static void SetFrequencyConstraint(FrequencyConstraintExactlyOneError element, FrequencyConstraint newFrequencyConstraint)
+		{
+			DslModeling::DomainRoleInfo.SetLinkedElement(element, FrequencyConstraintExactlyOneErrorDomainRoleId, newFrequencyConstraint);
+		}
+		#endregion
+		#region AssociatedElement domain role override
+		
+		/// <summary>
+		/// Gets the element playing FrequencyConstraint domain role.
+		/// Description for
+		/// Neumont.Tools.ORM.ObjectModel.ElementAssociatedWithModelError.AssociatedElement
+		/// </summary>
+		public override global::Microsoft.VisualStudio.Modeling.ModelElement AssociatedElement
+		{
+			[global::System.Diagnostics.DebuggerStepThrough]
+			get
+			{
+				return this.FrequencyConstraint;
+			}
+			[global::System.Diagnostics.DebuggerStepThrough]
+			set
+			{
+				this.FrequencyConstraint = (FrequencyConstraint)value;
+			}
+		}
+		
+		#endregion
+		#region FrequencyConstraintExactlyOneError domain role code
+		
+		/// <summary>
+		/// FrequencyConstraintExactlyOneError domain role Id.
+		/// </summary>
+		public static readonly global::System.Guid FrequencyConstraintExactlyOneErrorDomainRoleId = new global::System.Guid(0x05d223bc, 0xa180, 0x44ef, 0x9e, 0x87, 0xe4, 0xbb, 0x3c, 0x3f, 0x4b, 0x03);
+		
+		/// <summary>
+		/// DomainRole FrequencyConstraintExactlyOneError
+		/// Description for
+		/// Neumont.Tools.ORM.ObjectModel.FrequencyConstraintHasFrequencyConstraintExactlyOneError.FrequencyConstraintExactlyOneError
+		/// </summary>
+		[DslDesign::DisplayNameResource("Neumont.Tools.ORM.ObjectModel.FrequencyConstraintHasFrequencyConstraintExactlyOneError/FrequencyConstraintExactlyOneError.DisplayName", typeof(global::Neumont.Tools.ORM.ObjectModel.ORMCoreDomainModel), "Neumont.Tools.ORM.GeneratedCode.CoreDomainModelResx")]
+		[DslDesign::DescriptionResource("Neumont.Tools.ORM.ObjectModel.FrequencyConstraintHasFrequencyConstraintExactlyOneError/FrequencyConstraintExactlyOneError.Description", typeof(global::Neumont.Tools.ORM.ObjectModel.ORMCoreDomainModel), "Neumont.Tools.ORM.GeneratedCode.CoreDomainModelResx")]
+		[DslModeling::DomainRole(DslModeling::DomainRoleOrder.Target, PropertyName = "FrequencyConstraint", PropertyDisplayNameKey="Neumont.Tools.ORM.ObjectModel.FrequencyConstraintHasFrequencyConstraintExactlyOneError/FrequencyConstraintExactlyOneError.PropertyDisplayName", PropagatesDelete = true, Multiplicity = DslModeling::Multiplicity.One)]
+		[DslModeling::DomainObjectId("05d223bc-a180-44ef-9e87-e4bb3c3f4b03")]
+		public virtual FrequencyConstraintExactlyOneError FrequencyConstraintExactlyOneError
+		{
+			[global::System.Diagnostics.DebuggerStepThrough]
+			get
+			{
+				return (FrequencyConstraintExactlyOneError)DslModeling::DomainRoleInfo.GetRolePlayer(this, FrequencyConstraintExactlyOneErrorDomainRoleId);
+			}
+			[global::System.Diagnostics.DebuggerStepThrough]
+			set
+			{
+				DslModeling::DomainRoleInfo.SetRolePlayer(this, FrequencyConstraintExactlyOneErrorDomainRoleId, value);
+			}
+		}
+				
+		#endregion
+		#region Static methods to access FrequencyConstraintExactlyOneError of a FrequencyConstraint
+		/// <summary>
+		/// Gets FrequencyConstraintExactlyOneError.
+		/// </summary>
+		[global::System.Diagnostics.DebuggerStepThrough]
+		[global::System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Design", "CA1011")]
+		public static FrequencyConstraintExactlyOneError GetFrequencyConstraintExactlyOneError(FrequencyConstraint element)
+		{
+			return DslModeling::DomainRoleInfo.GetLinkedElement(element, FrequencyConstraintDomainRoleId) as FrequencyConstraintExactlyOneError;
+		}
+		
+		/// <summary>
+		/// Sets FrequencyConstraintExactlyOneError.
+		/// </summary>
+		[global::System.Diagnostics.DebuggerStepThrough]
+		[global::System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Design", "CA1011")]
+		public static void SetFrequencyConstraintExactlyOneError(FrequencyConstraint element, FrequencyConstraintExactlyOneError newFrequencyConstraintExactlyOneError)
+		{
+			DslModeling::DomainRoleInfo.SetLinkedElement(element, FrequencyConstraintDomainRoleId, newFrequencyConstraintExactlyOneError);
+		}
+		#endregion
+		#region ModelError domain role override
+		
+		/// <summary>
+		/// Gets the element playing FrequencyConstraintExactlyOneError domain role.
+		/// Description for
+		/// Neumont.Tools.ORM.ObjectModel.ElementAssociatedWithModelError.ModelError
+		/// </summary>
+		public override ModelError ModelError
+		{
+			[global::System.Diagnostics.DebuggerStepThrough]
+			get
+			{
+				return this.FrequencyConstraintExactlyOneError;
+			}
+			[global::System.Diagnostics.DebuggerStepThrough]
+			set
+			{
+				this.FrequencyConstraintExactlyOneError = (FrequencyConstraintExactlyOneError)value;
+			}
+		}
+		
+		#endregion
+		#region FrequencyConstraint link accessor
+		/// <summary>
+		/// Get the FrequencyConstraintHasFrequencyConstraintExactlyOneError link to a FrequencyConstraint.
+		/// </summary>
+		[global::System.Diagnostics.DebuggerStepThrough]
+		[global::System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Design", "CA1011")]
+		public static global::Neumont.Tools.ORM.ObjectModel.FrequencyConstraintHasFrequencyConstraintExactlyOneError GetLinkToFrequencyConstraintExactlyOneError (global::Neumont.Tools.ORM.ObjectModel.FrequencyConstraint frequencyConstraintInstance)
+		{
+			global::System.Collections.Generic.IList<global::Neumont.Tools.ORM.ObjectModel.FrequencyConstraintHasFrequencyConstraintExactlyOneError> links = DslModeling::DomainRoleInfo.GetElementLinks<global::Neumont.Tools.ORM.ObjectModel.FrequencyConstraintHasFrequencyConstraintExactlyOneError>(frequencyConstraintInstance, global::Neumont.Tools.ORM.ObjectModel.FrequencyConstraintHasFrequencyConstraintExactlyOneError.FrequencyConstraintDomainRoleId);
+			global::System.Diagnostics.Debug.Assert(links.Count <= 1, "Multiplicity of FrequencyConstraint not obeyed.");
+			if ( links.Count == 0 )
+			{
+				return null;
+			}
+			else
+			{
+				return links[0];
+			}
+		}
+		#endregion
+		#region FrequencyConstraintExactlyOneError link accessor
+		/// <summary>
+		/// Get the FrequencyConstraintHasFrequencyConstraintExactlyOneError link to a FrequencyConstraintExactlyOneError.
+		/// </summary>
+		[global::System.Diagnostics.DebuggerStepThrough]
+		[global::System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Design", "CA1011")]
+		public static global::Neumont.Tools.ORM.ObjectModel.FrequencyConstraintHasFrequencyConstraintExactlyOneError GetLinkToFrequencyConstraint (global::Neumont.Tools.ORM.ObjectModel.FrequencyConstraintExactlyOneError frequencyConstraintExactlyOneErrorInstance)
+		{
+			global::System.Collections.Generic.IList<global::Neumont.Tools.ORM.ObjectModel.FrequencyConstraintHasFrequencyConstraintExactlyOneError> links = DslModeling::DomainRoleInfo.GetElementLinks<global::Neumont.Tools.ORM.ObjectModel.FrequencyConstraintHasFrequencyConstraintExactlyOneError>(frequencyConstraintExactlyOneErrorInstance, global::Neumont.Tools.ORM.ObjectModel.FrequencyConstraintHasFrequencyConstraintExactlyOneError.FrequencyConstraintExactlyOneErrorDomainRoleId);
+			global::System.Diagnostics.Debug.Assert(links.Count <= 1, "Multiplicity of FrequencyConstraintExactlyOneError not obeyed.");
+			if ( links.Count == 0 )
+			{
+				return null;
+			}
+			else
+			{
+				return links[0];
+			}
+		}
+		#endregion
+		#region FrequencyConstraintHasFrequencyConstraintExactlyOneError instance accessors
+		
+		/// <summary>
+		/// Get any FrequencyConstraintHasFrequencyConstraintExactlyOneError links between a given FrequencyConstraint and a FrequencyConstraintExactlyOneError.
+		/// </summary>
+		[global::System.Diagnostics.DebuggerStepThrough]
+		[global::System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Design", "CA1011")]
+		public static global::System.Collections.ObjectModel.ReadOnlyCollection<global::Neumont.Tools.ORM.ObjectModel.FrequencyConstraintHasFrequencyConstraintExactlyOneError> GetLinks( global::Neumont.Tools.ORM.ObjectModel.FrequencyConstraint source, global::Neumont.Tools.ORM.ObjectModel.FrequencyConstraintExactlyOneError target )
+		{
+			global::System.Collections.Generic.List<global::Neumont.Tools.ORM.ObjectModel.FrequencyConstraintHasFrequencyConstraintExactlyOneError> outLinks = new global::System.Collections.Generic.List<global::Neumont.Tools.ORM.ObjectModel.FrequencyConstraintHasFrequencyConstraintExactlyOneError>();
+			global::System.Collections.Generic.IList<global::Neumont.Tools.ORM.ObjectModel.FrequencyConstraintHasFrequencyConstraintExactlyOneError> links = DslModeling::DomainRoleInfo.GetElementLinks<global::Neumont.Tools.ORM.ObjectModel.FrequencyConstraintHasFrequencyConstraintExactlyOneError>(source, global::Neumont.Tools.ORM.ObjectModel.FrequencyConstraintHasFrequencyConstraintExactlyOneError.FrequencyConstraintDomainRoleId);
+			foreach ( global::Neumont.Tools.ORM.ObjectModel.FrequencyConstraintHasFrequencyConstraintExactlyOneError link in links )
+			{
+				if ( target.Equals(link.FrequencyConstraintExactlyOneError) )
+				{
+					outLinks.Add(link);
+				}
+			}
+			return outLinks.AsReadOnly();
+		}
+		/// <summary>
+		/// Get the one FrequencyConstraintHasFrequencyConstraintExactlyOneError link between a given FrequencyConstraintand a FrequencyConstraintExactlyOneError.
+		/// </summary>
+		[global::System.Diagnostics.DebuggerStepThrough]
+		[global::System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Design", "CA1011")]
+		public static global::Neumont.Tools.ORM.ObjectModel.FrequencyConstraintHasFrequencyConstraintExactlyOneError GetLink( global::Neumont.Tools.ORM.ObjectModel.FrequencyConstraint source, global::Neumont.Tools.ORM.ObjectModel.FrequencyConstraintExactlyOneError target )
+		{
+			global::System.Collections.Generic.IList<global::Neumont.Tools.ORM.ObjectModel.FrequencyConstraintHasFrequencyConstraintExactlyOneError> links = DslModeling::DomainRoleInfo.GetElementLinks<global::Neumont.Tools.ORM.ObjectModel.FrequencyConstraintHasFrequencyConstraintExactlyOneError>(source, global::Neumont.Tools.ORM.ObjectModel.FrequencyConstraintHasFrequencyConstraintExactlyOneError.FrequencyConstraintDomainRoleId);
+			foreach ( global::Neumont.Tools.ORM.ObjectModel.FrequencyConstraintHasFrequencyConstraintExactlyOneError link in links )
+			{
+				if ( target.Equals(link.FrequencyConstraintExactlyOneError) )
+				{
+					return link;
+				}
+			}
+			return null;
+		}
+		
+		#endregion
+	}
+}
+namespace Neumont.Tools.ORM.ObjectModel
+{
+	/// <summary>
 	/// DomainRelationship ObjectificationImpliesFactType
 	/// Description for Neumont.Tools.ORM.ObjectModel.ObjectificationImpliesFactType
 	/// </summary>

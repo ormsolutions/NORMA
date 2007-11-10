@@ -55,6 +55,7 @@ namespace Neumont.Tools.ORM.ShapeModel
 						typeof(FactTypeShape).GetNestedType("SwitchFromNestedFactTypeRuleClass", BindingFlags.Public | BindingFlags.NonPublic),
 						typeof(FactTypeShape).GetNestedType("SwitchToNestedFactTypeRuleClass", BindingFlags.Public | BindingFlags.NonPublic),
 						typeof(FrequencyConstraintShape).GetNestedType("FrequencyConstraintPropertyChangeRuleClass", BindingFlags.Public | BindingFlags.NonPublic),
+						typeof(FrequencyConstraintShape).GetNestedType("FrequencyConstraintConversionDeletingRuleClass", BindingFlags.Public | BindingFlags.NonPublic),
 						typeof(ModelNoteShape).GetNestedType("NoteChangeRuleClass", BindingFlags.Public | BindingFlags.NonPublic),
 						typeof(ObjectTypeShape).GetNestedType("DataTypeAddedRuleClass", BindingFlags.Public | BindingFlags.NonPublic),
 						typeof(ObjectTypeShape).GetNestedType("DataTypeDeleteRuleClass", BindingFlags.Public | BindingFlags.NonPublic),
@@ -136,7 +137,7 @@ namespace Neumont.Tools.ORM.ShapeModel
 		{
 			Microsoft.VisualStudio.Modeling.RuleManager ruleManager = store.RuleManager;
 			Type[] disabledRuleTypes = ORMShapeDomainModel.CustomDomainModelTypes;
-			for (int i = 0; i < 69; ++i)
+			for (int i = 0; i < 70; ++i)
 			{
 				ruleManager.EnableRule(disabledRuleTypes[i]);
 			}
@@ -710,6 +711,32 @@ namespace Neumont.Tools.ORM.ShapeModel
 				Neumont.Tools.Modeling.Diagnostics.TraceUtility.TraceRuleStart(e.ModelElement.Store, "Neumont.Tools.ORM.ShapeModel.FrequencyConstraintShape.FrequencyConstraintPropertyChangeRule");
 				FrequencyConstraintShape.FrequencyConstraintPropertyChangeRule(e);
 				Neumont.Tools.Modeling.Diagnostics.TraceUtility.TraceRuleEnd(e.ModelElement.Store, "Neumont.Tools.ORM.ShapeModel.FrequencyConstraintShape.FrequencyConstraintPropertyChangeRule");
+			}
+		}
+		[Microsoft.VisualStudio.Modeling.RuleOn(typeof(FrequencyConstraintShape), Priority=Neumont.Tools.Modeling.FrameworkDomainModel.InlineRulePriority)]
+		private sealed class FrequencyConstraintConversionDeletingRuleClass : Microsoft.VisualStudio.Modeling.DeletingRule
+		{
+			[System.Diagnostics.DebuggerStepThrough()]
+			public FrequencyConstraintConversionDeletingRuleClass()
+			{
+				base.IsEnabled = false;
+			}
+			/// <summary>
+			/// Provide the following method in class: 
+			/// Neumont.Tools.ORM.ShapeModel.FrequencyConstraintShape
+			/// /// <summary>
+			/// /// DeletingRule: typeof(FrequencyConstraintShape)
+			/// /// </summary>
+			/// private static void FrequencyConstraintConversionDeletingRule(ElementDeletingEventArgs e)
+			/// {
+			/// }
+			/// </summary>
+			[System.Diagnostics.DebuggerStepThrough()]
+			public override void ElementDeleting(Microsoft.VisualStudio.Modeling.ElementDeletingEventArgs e)
+			{
+				Neumont.Tools.Modeling.Diagnostics.TraceUtility.TraceRuleStart(e.ModelElement.Store, "Neumont.Tools.ORM.ShapeModel.FrequencyConstraintShape.FrequencyConstraintConversionDeletingRule");
+				FrequencyConstraintShape.FrequencyConstraintConversionDeletingRule(e);
+				Neumont.Tools.Modeling.Diagnostics.TraceUtility.TraceRuleEnd(e.ModelElement.Store, "Neumont.Tools.ORM.ShapeModel.FrequencyConstraintShape.FrequencyConstraintConversionDeletingRule");
 			}
 		}
 	}

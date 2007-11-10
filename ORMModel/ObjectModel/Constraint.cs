@@ -6137,6 +6137,11 @@ namespace Neumont.Tools.ORM.ObjectModel
 				{
 					yield return minMaxError;
 				}
+				FrequencyConstraintExactlyOneError exactlyOneError = FrequencyConstraintExactlyOneError;
+				if (exactlyOneError != null)
+				{
+					yield return exactlyOneError;
+				}
 				foreach (FrequencyConstraintContradictsInternalUniquenessConstraintError contradictionError in FrequencyConstraintContradictsInternalUniquenessConstraintErrorCollection)
 				{
 					yield return contradictionError;
@@ -6316,6 +6321,7 @@ namespace Neumont.Tools.ORM.ObjectModel
 			}
 
 			FrequencyConstraintMinMaxError minMaxError = FrequencyConstraintMinMaxError;
+			FrequencyConstraintExactlyOneError exactlyOneError = FrequencyConstraintExactlyOneError;
 			int min = MinFrequency;
 			int max = MaxFrequency;
 			if (max > 0 && min > max)
@@ -6332,10 +6338,35 @@ namespace Neumont.Tools.ORM.ObjectModel
 						notifyAdded.ElementAdded(minMaxError, true);
 					}
 				}
+				if (exactlyOneError != null)
+				{
+					exactlyOneError.Delete();
+				}
 			}
-			else if (minMaxError != null)
+			else 
 			{
-				minMaxError.Delete();
+				if (minMaxError != null)
+				{
+					minMaxError.Delete();
+				}
+				if (min == 1 && max == 1)
+				{
+					if (exactlyOneError == null)
+					{
+						exactlyOneError = new FrequencyConstraintExactlyOneError(Store);
+						exactlyOneError.FrequencyConstraint = this;
+						exactlyOneError.Model = Model;
+						exactlyOneError.GenerateErrorText();
+						if (notifyAdded != null)
+						{
+							notifyAdded.ElementAdded(exactlyOneError, true);
+						}
+					}
+				}
+				else if (exactlyOneError != null)
+				{
+					exactlyOneError.Delete();
+				}
 			}
 		}
 		#endregion // MinMaxError Validation
@@ -6357,6 +6388,65 @@ namespace Neumont.Tools.ORM.ObjectModel
 			}
 		}
 		#endregion // FrequencyConstraintMinMaxRule
+		#region ConvertToUniquenessConstraint method
+		/// <summary>
+		/// The key for a value placed in the top level transaction context info
+		/// to indicate that a frequency constraint is being converted to a uniqueness
+		/// constraint. Used with <see cref="ConvertingToUniquenessConstraintKey"/>
+		/// to facilitate shape conversion.
+		/// </summary>
+		public static readonly object ConvertingFromFrequencyConstraintKey = new object();
+		/// <summary>
+		/// The key for a value placed in the top level transaction context info
+		/// to indicate the uniquqness constraint that is being created from a frequency
+		/// constraint conversion. Used with <see cref="ConvertingFromFrequencyConstraintKey"/>
+		/// to facilitate shape conversion.
+		/// </summary>
+		public static readonly object ConvertingToUniquenessConstraintKey = new object();
+		/// <summary>
+		/// Convert this <see cref="FrequencyConstraint"/> to an equivalent <see cref="UniquenessConstraint"/>
+		/// Should be called only when the <see cref="MinFrequency"/> and <see cref="MaxFrequency"/> are both one.
+		/// </summary>
+		/// <returns><see langword="true"/> if conversion successful</returns>
+		public bool ConvertToUniquenessConstraint()
+		{
+			int min = MinFrequency;
+			int max = MaxFrequency;
+			Debug.Assert(min == 1 && max == 1, "Only convert frequency constraints with a min/max of exactly one to uniqueness");
+			bool retVal = false;
+			if (min == 1 && max == 1)
+			{
+				Store store = Store;
+				using (Transaction t = store.TransactionManager.BeginTransaction(ResourceStrings.ConvertFrequencyToUniquenessTransactionName))
+				{
+					UniquenessConstraint uniqueness = (FactTypeCollection.Count == 1) ?
+						UniquenessConstraint.CreateInternalUniquenessConstraint(store) :
+						new UniquenessConstraint(store);
+					uniqueness.Modality = Modality;
+					uniqueness.Model = Model;
+					// UNDONE: MULTISHAPE I should be able to do the following line before
+					// deleting the frequency constraint, but adding a shape with fixups 
+					// such as done by the FrequencyConstraintShape to place a new external
+					// uniqueness shape) is having nasty side-effects with later validation
+					// by the multishape code and ends up leaving new links dangling
+					// and eventually deleting the new shape. The workaround is to add no
+					// roles and facttypes (hence not passing facttypes[0] to CreateInternalUniquenessConstraint)
+					//uniqueness.RoleCollection.AddRange(RoleCollection);
+					Role[] roles = RoleCollection.ToArray();
+					IDictionary<object, object> contextInfo = t.TopLevelTransaction.Context.ContextInfo;
+					contextInfo[ConvertingFromFrequencyConstraintKey] = this;
+					contextInfo[ConvertingToUniquenessConstraintKey] = uniqueness;
+					Delete();
+					contextInfo.Remove(ConvertingFromFrequencyConstraintKey);
+					contextInfo.Remove(ConvertingToUniquenessConstraintKey);
+					uniqueness.RoleCollection.AddRange(roles);
+					t.Commit();
+					retVal = true;
+				}
+			}
+			return retVal;
+		}
+		#endregion // ConvertToUniquenessConstraint method
 		#region RemoveContradictionErrorsWithFactTypeRule
 		/// <summary>
 		/// DeleteRule: typeof(FactSetConstraint)
@@ -6722,6 +6812,38 @@ namespace Neumont.Tools.ORM.ObjectModel
 		#endregion // Base overrides
 	}
 	#endregion // FrequencyConstraintMinMaxError class
+	#region FrequencyConstraintExactlyOneError class
+	[ModelErrorDisplayFilter(typeof(ConstraintStructureErrorCategory))]
+	public partial class FrequencyConstraintExactlyOneError
+	{
+		#region Base overrides
+		/// <summary>
+		/// Generate text for the error
+		/// </summary>
+		public override void GenerateErrorText()
+		{
+			FrequencyConstraint parent = this.FrequencyConstraint;
+			string parentName = (parent != null) ? parent.Name : "";
+			string currentText = ErrorText;
+			string newText = string.Format(CultureInfo.InvariantCulture, ResourceStrings.ModelErrorFrequencyConstraintExactlyOneError, parentName, Model.Name);
+			if (currentText != newText)
+			{
+				ErrorText = newText;
+			}
+		}
+		/// <summary>
+		/// Regenerate the error text when the constraint name changes
+		/// </summary>
+		public override RegenerateErrorTextEvents RegenerateEvents
+		{
+			get
+			{
+				return RegenerateErrorTextEvents.OwnerNameChange | RegenerateErrorTextEvents.ModelNameChange;
+			}
+		}
+		#endregion // Base overrides
+	}
+	#endregion // FrequencyConstraintExactlyOneError class
 	#region FrequencyConstraintContradictsInternalUniquenessConstraintError class
 	[ModelErrorDisplayFilter(typeof(ConstraintImplicationAndContradictionErrorCategory))]
 	public partial class FrequencyConstraintContradictsInternalUniquenessConstraintError : IRepresentModelElements

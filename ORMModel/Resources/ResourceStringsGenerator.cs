@@ -2036,6 +2036,14 @@ namespace Neumont.Tools.ORM
 				return ResourceStrings.GetString(ResourceManagers.Model, "ModelError.Constraint.FrequencyConstraintMinMaxError.Text");
 			}
 		}
+		/// <summary>The frequency constraint has minimum and maximum values of exactly one, should be represented as a uniqueness constraint. {0}=constraint name {1}=model name</summary>
+		public static string ModelErrorFrequencyConstraintExactlyOneError
+		{
+			get
+			{
+				return ResourceStrings.GetString(ResourceManagers.Model, "ModelError.Constraint.FrequencyConstraintExactlyOneError.Text");
+			}
+		}
 		/// <summary>Text to place in the title of the verbalization tool window.</summary>
 		public static string ModelVerbalizationWindowTitle
 		{
@@ -2290,6 +2298,14 @@ namespace Neumont.Tools.ORM
 			get
 			{
 				return ResourceStrings.GetString(ResourceManagers.Model, "FrequencyConstraint.UnboundedMaxValueText");
+			}
+		}
+		/// <summary>The name of the transaction that converts a frequency constraint to a uniqueness.</summary>
+		public static string ConvertFrequencyToUniquenessTransactionName
+		{
+			get
+			{
+				return ResourceStrings.GetString(ResourceManagers.Model, "FrequencyConstraint.ConvertToUniquenessConstraint.TransactionName");
 			}
 		}
 		/// <summary>Description for target HtmlReport customizations. Displays in the verbalization customizations dropdown in the options page.</summary>

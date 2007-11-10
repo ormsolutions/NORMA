@@ -6707,6 +6707,38 @@ namespace Neumont.Tools.ORM.ObjectModel
 			}
 		}
 		#endregion
+		#region FrequencyConstraintExactlyOneError opposite domain role accessor
+		/// <summary>
+		/// Gets or sets FrequencyConstraintExactlyOneError.
+		/// Description for
+		/// Neumont.Tools.ORM.ObjectModel.FrequencyConstraintHasFrequencyConstraintExactlyOneError.FrequencyConstraint
+		/// </summary>
+		public virtual FrequencyConstraintExactlyOneError FrequencyConstraintExactlyOneError
+		{
+			[global::System.Diagnostics.DebuggerStepThrough]
+			get
+			{
+				return DslModeling::DomainRoleInfo.GetLinkedElement(this, global::Neumont.Tools.ORM.ObjectModel.FrequencyConstraintHasFrequencyConstraintExactlyOneError.FrequencyConstraintDomainRoleId) as FrequencyConstraintExactlyOneError;
+			}
+			[global::System.Diagnostics.DebuggerStepThrough]
+			set
+			{
+				DslModeling::ModelElement existingSource;
+				if (null != value &&
+					null != (existingSource = DslModeling::DomainRoleInfo.GetLinkedElement(value, global::Neumont.Tools.ORM.ObjectModel.FrequencyConstraintHasFrequencyConstraintExactlyOneError.FrequencyConstraintExactlyOneErrorDomainRoleId)))
+				{
+					if (existingSource != value)
+					{
+						DslModeling::DomainRoleInfo.SetLinkedElement(value, global::Neumont.Tools.ORM.ObjectModel.FrequencyConstraintHasFrequencyConstraintExactlyOneError.FrequencyConstraintExactlyOneErrorDomainRoleId, this);
+					}
+				}
+				else
+				{
+					DslModeling::DomainRoleInfo.SetLinkedElement(this, global::Neumont.Tools.ORM.ObjectModel.FrequencyConstraintHasFrequencyConstraintExactlyOneError.FrequencyConstraintDomainRoleId, value);
+				}
+			}
+		}
+		#endregion
 		#region FrequencyConstraintContradictsInternalUniquenessConstraintErrorCollection opposite domain role accessor
 		/// <summary>
 		/// Gets a list of FrequencyConstraintContradictsInternalUniquenessConstraintErrorCollection.
@@ -9706,6 +9738,77 @@ namespace Neumont.Tools.ORM.ObjectModel
 				else
 				{
 					DslModeling::DomainRoleInfo.SetLinkedElement(this, global::Neumont.Tools.ORM.ObjectModel.FrequencyConstraintHasFrequencyConstraintMinMaxError.FrequencyConstraintMinMaxErrorDomainRoleId, value);
+				}
+			}
+		}
+		#endregion
+	}
+}
+namespace Neumont.Tools.ORM.ObjectModel
+{
+	/// <summary>
+	/// DomainClass FrequencyConstraintExactlyOneError
+	/// </summary>
+	[DslDesign::DisplayNameResource("Neumont.Tools.ORM.ObjectModel.FrequencyConstraintExactlyOneError.DisplayName", typeof(global::Neumont.Tools.ORM.ObjectModel.ORMCoreDomainModel), "Neumont.Tools.ORM.GeneratedCode.CoreDomainModelResx")]
+	[DslDesign::DescriptionResource("Neumont.Tools.ORM.ObjectModel.FrequencyConstraintExactlyOneError.Description", typeof(global::Neumont.Tools.ORM.ObjectModel.ORMCoreDomainModel), "Neumont.Tools.ORM.GeneratedCode.CoreDomainModelResx")]
+	[global::System.CLSCompliant(true)]
+	[DslModeling::DomainObjectId("9bbff3c2-329b-4956-8ffa-1c6f305cf601")]
+	public partial class FrequencyConstraintExactlyOneError : ModelError
+	{
+		#region Constructors, domain class Id
+	
+		/// <summary>
+		/// FrequencyConstraintExactlyOneError domain class Id.
+		/// </summary>
+		public static readonly new global::System.Guid DomainClassId = new global::System.Guid(0x9bbff3c2, 0x329b, 0x4956, 0x8f, 0xfa, 0x1c, 0x6f, 0x30, 0x5c, 0xf6, 0x01);
+		/// <summary>
+		/// Constructor
+		/// </summary>
+		/// <param name="store">Store where new element is to be created.</param>
+		/// <param name="propertyAssignments">List of domain property id/value pairs to set once the element is created.</param>
+		public FrequencyConstraintExactlyOneError(DslModeling::Store store, params DslModeling::PropertyAssignment[] propertyAssignments)
+			: this(store != null ? store.DefaultPartition : null, propertyAssignments)
+		{
+		}
+		
+		/// <summary>
+		/// Constructor
+		/// </summary>
+		/// <param name="partition">Partition where new element is to be created.</param>
+		/// <param name="propertyAssignments">List of domain property id/value pairs to set once the element is created.</param>
+		public FrequencyConstraintExactlyOneError(DslModeling::Partition partition, params DslModeling::PropertyAssignment[] propertyAssignments)
+			: base(partition, propertyAssignments)
+		{
+		}
+		#endregion
+		#region FrequencyConstraint opposite domain role accessor
+		/// <summary>
+		/// Gets or sets FrequencyConstraint.
+		/// Description for
+		/// Neumont.Tools.ORM.ObjectModel.FrequencyConstraintHasFrequencyConstraintExactlyOneError.FrequencyConstraintExactlyOneError
+		/// </summary>
+		public virtual FrequencyConstraint FrequencyConstraint
+		{
+			[global::System.Diagnostics.DebuggerStepThrough]
+			get
+			{
+				return DslModeling::DomainRoleInfo.GetLinkedElement(this, global::Neumont.Tools.ORM.ObjectModel.FrequencyConstraintHasFrequencyConstraintExactlyOneError.FrequencyConstraintExactlyOneErrorDomainRoleId) as FrequencyConstraint;
+			}
+			[global::System.Diagnostics.DebuggerStepThrough]
+			set
+			{
+				DslModeling::ModelElement existingSource;
+				if (null != value &&
+					null != (existingSource = DslModeling::DomainRoleInfo.GetLinkedElement(value, global::Neumont.Tools.ORM.ObjectModel.FrequencyConstraintHasFrequencyConstraintExactlyOneError.FrequencyConstraintDomainRoleId)))
+				{
+					if (existingSource != value)
+					{
+						DslModeling::DomainRoleInfo.SetLinkedElement(value, global::Neumont.Tools.ORM.ObjectModel.FrequencyConstraintHasFrequencyConstraintExactlyOneError.FrequencyConstraintDomainRoleId, this);
+					}
+				}
+				else
+				{
+					DslModeling::DomainRoleInfo.SetLinkedElement(this, global::Neumont.Tools.ORM.ObjectModel.FrequencyConstraintHasFrequencyConstraintExactlyOneError.FrequencyConstraintExactlyOneErrorDomainRoleId, value);
 				}
 			}
 		}

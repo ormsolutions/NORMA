@@ -163,6 +163,10 @@
 		<value>Remove Implied Internal Uniqueness Constraints</value>
 		<comment>The name of the transaction that auto-fixes implied and duplicate internal constraints.</comment>
 	</data>
+	<data name="FrequencyConstraint.ConvertToUniquenessConstraint.TransactionName" xml:space="preserve">
+		<value>Convert Frequency Constraint To Uniqueness</value>
+		<comment>The name of the transaction that converts a frequency constraint to a uniqueness.</comment>
+	</data>
 	<data name="FrequencyConstraint.UnboundedMaxValueText" xml:space="preserve">
 		<value>Unbounded</value>
 		<comment>Text used in the dropdown editor and type converter for the frequency constraint max value. Correspond to the 0 value in the object model.</comment>
@@ -228,6 +232,10 @@
 	<data name="ModelError.Constraint.FrequencyConstraintContradictsInternalUniquenessConstraintError.Text" xml:space="preserve">
 		<value>Frequency constraint '{0}' in model '{2}' contradicts one or more internal uniqueness constraints on FactType '{1}'.</value>
 		<comment>Model validation error text used when a frequency constraint contradicts an internal uniqueness constraint</comment>
+	</data>
+	<data name="ModelError.Constraint.FrequencyConstraintExactlyOneError.Text" xml:space="preserve">
+		<value>Constraint '{0}' in model '{1}' has a range of exactly one, should be a Uniqueness constraint.</value>
+		<comment>The frequency constraint has minimum and maximum values of exactly one, should be represented as a uniqueness constraint. {0}=constraint name {1}=model name</comment>
 	</data>
 	<data name="ModelError.Constraint.FrequencyConstraintMinMaxError.Text" xml:space="preserve">
 		<value>Maximum value for constraint '{0}' in model '{1}' cannot be less than the minimum value.</value>

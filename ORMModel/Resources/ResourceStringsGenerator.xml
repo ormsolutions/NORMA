@@ -397,6 +397,7 @@
 	<ResourceString name="ModelErrorEntityTypeRequiresReferenceSchemeMessage" model="Model" resourceName="ModelError.EntityType.RequiresReferenceScheme.Message"/>
 	<ResourceString name="RingConstraintTypeNotSpecifiedError" model ="Model" resourceName="ModelError.Constraint.RingConstraintTypeNotSpecifiedError.Message"/>
 	<ResourceString name="ModelErrorFrequencyConstraintMinMaxError" model="Model" resourceName="ModelError.Constraint.FrequencyConstraintMinMaxError.Text"/>
+	<ResourceString name="ModelErrorFrequencyConstraintExactlyOneError" model="Model" resourceName="ModelError.Constraint.FrequencyConstraintExactlyOneError.Text"/>
 	<ResourceString name="ModelVerbalizationWindowTitle" model="Model" resourceName="ModelVerbalization.WindowTitle"/>
 	<ResourceString name="ModelErrorImpliedInternalUniquenessConstraintError" model="Model" resourceName="ModelError.FactType.ImpliedInternalUniquenessConstraintError.Text"/>
 	<ResourceString name="ImpliedInternalConstraintFixMessage" model="Diagram" resourceName="MessageBox.ImpliedInternalUniquenessConstraint.Message"/>
@@ -429,6 +430,7 @@
 	<ResourceString name="ImplicitBooleanValueTypePropertyRestriction" model="Model" resourceName="ImplicitBooleanValueType.PropertyRestriction"/>
 	<ResourceString name="ImplicitBooleanValueTypeNoReadingFormatString" model="Model" resourceName="ImplicitBooleanValueType.NoReadingFormatString"/>
 	<ResourceString name="FrequencyConstraintUnboundedMaxValueText" model="Model" resourceName="FrequencyConstraint.UnboundedMaxValueText"/>
+	<ResourceString name="ConvertFrequencyToUniquenessTransactionName" model="Model" resourceName="FrequencyConstraint.ConvertToUniquenessConstraint.TransactionName"/>
 	<ResourceString name="VerbalizationTargetHtmlReportDisplayName" model="Model" resourceName="VerbalizationTarget.HtmlReport.DisplayName"/>
 	<ResourceString name="VerbalizationTargetHtmlReportCommandName" model="Model" resourceName="VerbalizationTarget.HtmlReport.CommandName"/>
 	<ResourceString name="VerbalizationTargetVerbalizationBrowserDisplayName" model="Model" resourceName="VerbalizationTarget.VerbalizationBrowser.DisplayName"/>

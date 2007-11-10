@@ -609,6 +609,7 @@ namespace Neumont.Tools.ORM.ShapeModel
 			DomainClassInfo classInfo = dataDirectory.FindDomainRelationship(EntityTypeHasPreferredIdentifier.DomainClassId);
 			eventManager.AddOrRemoveHandler(classInfo, new EventHandler<ElementAddedEventArgs>(PreferredIdentifierAddedEvent), action);
 			eventManager.AddOrRemoveHandler(classInfo, new EventHandler<ElementDeletedEventArgs>(PreferredIdentifierRemovedEvent), action);
+			eventManager.AddOrRemoveHandler(classInfo, new EventHandler<RolePlayerChangedEventArgs>(PreferredIdentifierRolePlayerChangedEvent), action);
 		}
 		private static void RolePlayerOrderChangedEvent(object sender, RolePlayerOrderChangedEventArgs e)
 		{
@@ -668,13 +669,12 @@ namespace Neumont.Tools.ORM.ShapeModel
 			}
 		}
 		/// <summary>
-		/// Event handler that listens for preferred identifiers being added.
+		/// Helper function for preferred identifier validation
 		/// </summary>
-		public static void PreferredIdentifierAddedEvent(object sender, ElementAddedEventArgs e)
+		private static void InvalidateForPreferredIdentifier(UniquenessConstraint constraint)
 		{
-			EntityTypeHasPreferredIdentifier link = e.ModelElement as EntityTypeHasPreferredIdentifier;
-			UniquenessConstraint constraint = link.PreferredIdentifier;
-			if (!constraint.IsInternal)
+			if (!constraint.IsInternal &&
+				!constraint.IsDeleted)
 			{
 				foreach (PresentationElement pel in PresentationViewsSubject.GetPresentation(constraint))
 				{
@@ -687,23 +687,25 @@ namespace Neumont.Tools.ORM.ShapeModel
 			}
 		}
 		/// <summary>
+		/// Event handler that listens for preferred identifiers being added.
+		/// </summary>
+		private static void PreferredIdentifierAddedEvent(object sender, ElementAddedEventArgs e)
+		{
+			InvalidateForPreferredIdentifier(((EntityTypeHasPreferredIdentifier)e.ModelElement).PreferredIdentifier);
+		}
+		/// <summary>
 		/// Event handler that listens for preferred identifiers being removed.
 		/// </summary>
-		public static void PreferredIdentifierRemovedEvent(object sender, ElementDeletedEventArgs e)
+		private static void PreferredIdentifierRemovedEvent(object sender, ElementDeletedEventArgs e)
 		{
-			EntityTypeHasPreferredIdentifier link = e.ModelElement as EntityTypeHasPreferredIdentifier;
-			UniquenessConstraint constraint = link.PreferredIdentifier;
-			if (!constraint.IsInternal &&
-				!constraint.IsDeleted)
+			InvalidateForPreferredIdentifier(((EntityTypeHasPreferredIdentifier)e.ModelElement).PreferredIdentifier);
+		}
+		private static void PreferredIdentifierRolePlayerChangedEvent(object sender, RolePlayerChangedEventArgs e)
+		{
+			if (e.DomainRole.Id == EntityTypeHasPreferredIdentifier.PreferredIdentifierDomainRoleId)
 			{
-				foreach (PresentationElement pel in PresentationViewsSubject.GetPresentation(constraint))
-				{
-					ExternalConstraintShape constraintShape = pel as ExternalConstraintShape;
-					if (constraintShape != null)
-					{
-						constraintShape.Invalidate(true);
-					}
-				}
+				InvalidateForPreferredIdentifier((UniquenessConstraint)e.OldRolePlayer);
+				InvalidateForPreferredIdentifier((UniquenessConstraint)e.NewRolePlayer);
 			}
 		}
 		#endregion // Store Event Handlers

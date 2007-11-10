@@ -965,6 +965,14 @@
     <value>Inconsistent Frequency Constraint Minimum and Maximum Values</value>
     <comment>DisplayName for DomainClass &apos;FrequencyConstraintMinMaxError&apos;</comment>
   </data>
+  <data name="Neumont.Tools.ORM.ObjectModel.FrequencyConstraintExactlyOneError.Description" xml:space="preserve">
+    <value></value>
+    <comment>Description for DomainClass &apos;FrequencyConstraintExactlyOneError&apos;</comment>
+  </data>
+  <data name="Neumont.Tools.ORM.ObjectModel.FrequencyConstraintExactlyOneError.DisplayName" xml:space="preserve">
+    <value>Represent Frequency Constraint of Exactly One as Uniqueneness</value>
+    <comment>DisplayName for DomainClass &apos;FrequencyConstraintExactlyOneError&apos;</comment>
+  </data>
   <data name="Neumont.Tools.ORM.ObjectModel.ReadingRequiresUserModificationError.Description" xml:space="preserve">
     <value></value>
     <comment>Description for DomainClass &apos;ReadingRequiresUserModificationError&apos;</comment>
@@ -3676,6 +3684,38 @@
   <data name="Neumont.Tools.ORM.ObjectModel.FrequencyConstraintHasFrequencyConstraintMinMaxError/FrequencyConstraintMinMaxError.PropertyDisplayName" xml:space="preserve">
     <value>Frequency Constraint</value>
     <comment>PropertyDisplayName for DomainRole &apos;FrequencyConstraintMinMaxError&apos; on DomainRelationship &apos;FrequencyConstraintHasFrequencyConstraintMinMaxError&apos;</comment>
+  </data>
+  <data name="Neumont.Tools.ORM.ObjectModel.FrequencyConstraintHasFrequencyConstraintExactlyOneError.Description" xml:space="preserve">
+    <value>Description for Neumont.Tools.ORM.ObjectModel.FrequencyConstraintHasFrequencyConstraintExactlyOneError</value>
+    <comment>Description for DomainClass &apos;FrequencyConstraintHasFrequencyConstraintExactlyOneError&apos;</comment>
+  </data>
+  <data name="Neumont.Tools.ORM.ObjectModel.FrequencyConstraintHasFrequencyConstraintExactlyOneError.DisplayName" xml:space="preserve">
+    <value>Frequency Constraint Has Frequency Constraint Exactly One Error</value>
+    <comment>DisplayName for DomainClass &apos;FrequencyConstraintHasFrequencyConstraintExactlyOneError&apos;</comment>
+  </data>
+  <data name="Neumont.Tools.ORM.ObjectModel.FrequencyConstraintHasFrequencyConstraintExactlyOneError/FrequencyConstraint.Description" xml:space="preserve">
+    <value>Description for Neumont.Tools.ORM.ObjectModel.FrequencyConstraintHasFrequencyConstraintExactlyOneError.FrequencyConstraint</value>
+    <comment>Description for DomainRole &apos;FrequencyConstraint&apos; on DomainRelationship &apos;FrequencyConstraintHasFrequencyConstraintExactlyOneError&apos;</comment>
+  </data>
+  <data name="Neumont.Tools.ORM.ObjectModel.FrequencyConstraintHasFrequencyConstraintExactlyOneError/FrequencyConstraint.DisplayName" xml:space="preserve">
+    <value>FrequencyConstraint</value>
+    <comment>DisplayName for DomainRole &apos;FrequencyConstraint&apos; on DomainRelationship &apos;FrequencyConstraintHasFrequencyConstraintExactlyOneError&apos;</comment>
+  </data>
+  <data name="Neumont.Tools.ORM.ObjectModel.FrequencyConstraintHasFrequencyConstraintExactlyOneError/FrequencyConstraint.PropertyDisplayName" xml:space="preserve">
+    <value>Frequency Constraint Exactly One Error</value>
+    <comment>PropertyDisplayName for DomainRole &apos;FrequencyConstraint&apos; on DomainRelationship &apos;FrequencyConstraintHasFrequencyConstraintExactlyOneError&apos;</comment>
+  </data>
+  <data name="Neumont.Tools.ORM.ObjectModel.FrequencyConstraintHasFrequencyConstraintExactlyOneError/FrequencyConstraintExactlyOneError.Description" xml:space="preserve">
+    <value>Description for Neumont.Tools.ORM.ObjectModel.FrequencyConstraintHasFrequencyConstraintExactlyOneError.FrequencyConstraintExactlyOneError</value>
+    <comment>Description for DomainRole &apos;FrequencyConstraintExactlyOneError&apos; on DomainRelationship &apos;FrequencyConstraintHasFrequencyConstraintExactlyOneError&apos;</comment>
+  </data>
+  <data name="Neumont.Tools.ORM.ObjectModel.FrequencyConstraintHasFrequencyConstraintExactlyOneError/FrequencyConstraintExactlyOneError.DisplayName" xml:space="preserve">
+    <value>FrequencyConstraintExactlyOneError</value>
+    <comment>DisplayName for DomainRole &apos;FrequencyConstraintExactlyOneError&apos; on DomainRelationship &apos;FrequencyConstraintHasFrequencyConstraintExactlyOneError&apos;</comment>
+  </data>
+  <data name="Neumont.Tools.ORM.ObjectModel.FrequencyConstraintHasFrequencyConstraintExactlyOneError/FrequencyConstraintExactlyOneError.PropertyDisplayName" xml:space="preserve">
+    <value>Frequency Constraint</value>
+    <comment>PropertyDisplayName for DomainRole &apos;FrequencyConstraintExactlyOneError&apos; on DomainRelationship &apos;FrequencyConstraintHasFrequencyConstraintExactlyOneError&apos;</comment>
   </data>
   <data name="Neumont.Tools.ORM.ObjectModel.ObjectificationImpliesFactType.Description" xml:space="preserve">
     <value>Description for Neumont.Tools.ORM.ObjectModel.ObjectificationImpliesFactType</value>
