@@ -48,7 +48,10 @@
     </Compile>
   </ItemGroup>
   <ItemGroup>
+    <Content Include="EntityScript.xslt" />
+    <Content Include="Entities.xslt" />
     <Content Include="EntityProvider.xslt" />
+    <Content Include="NETTiersSettings.xml" />
     <Content Include="PLiX.xml" />
     <Content Include="SampleDatabaseSchema.xml">
       <Generator>NUPlixLoader</Generator>
