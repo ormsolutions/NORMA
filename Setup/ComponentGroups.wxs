@@ -35,8 +35,8 @@
 			<ComponentRef Id="NORMAVSVerbalizationComponent"/>
 			<ComponentRef Id="NORMAVSVerbalizationCoreComponent"/>
 			<ComponentRef Id="NORMAVSVerbalizationReportComponent"/>
-			<ComponentRef Id="NORMAVSOIALModelExtensionComponent"/>
 			<ComponentRef Id="NORMAVSRelationalViewExtensionComponent"/>
+			<ComponentRef Id="NORMAVSRelationalViewSchemaComponent"/>
 			<ComponentRef Id="NORMAVSCustomPropertiesExtensionComponent"/>
 			<ComponentRef Id="NORMAVSCustomPropertiesGACComponent"/>
 			<ComponentRef Id="NORMAVSCustomPropertiesSchemaComponent"/>

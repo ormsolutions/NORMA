@@ -306,7 +306,7 @@ namespace Neumont.Tools.ORM.Views.RelationalView
 				{
 					// First we get the mappings defined for the base shape, and add on any mappings defined for this
 					// shape. 
-					DslDiagrams::CompartmentMapping[] baseMappings = base.GetCompartmentMappings(typeof(global::Neumont.Tools.ORM.Views.RelationalView.Table));
+					DslDiagrams::CompartmentMapping[] baseMappings = base.GetCompartmentMappings(typeof(global::Neumont.Tools.RelationalModels.ConceptualDatabase.Table));
 					int localCompartmentMappingsOffset = 0;
 					if(baseMappings!=null)
 					{
@@ -320,13 +320,13 @@ namespace Neumont.Tools.ORM.Views.RelationalView
 					}
 					mappings[localCompartmentMappingsOffset+0] = new DslDiagrams::ElementListCompartmentMapping(
 																				"ColumnsCompartment", 
-																				global::Neumont.Tools.ORM.Views.RelationalView.RelationalNamedElement.NameDomainPropertyId, 
-																				global::Neumont.Tools.ORM.Views.RelationalView.Column.DomainClassId, 
+																				global::Neumont.Tools.RelationalModels.ConceptualDatabase.Column.NameDomainPropertyId, 
+																				global::Neumont.Tools.RelationalModels.ConceptualDatabase.Column.DomainClassId, 
 																				GetElementsFromTableForColumnsCompartment,
 																				null,
 																				null,
 																				null);
-					compartmentMappings.Add(typeof(global::Neumont.Tools.ORM.Views.RelationalView.Table), mappings);
+					compartmentMappings.Add(typeof(global::Neumont.Tools.RelationalModels.ConceptualDatabase.Table), mappings);
 				}
 			}
 			
@@ -357,9 +357,9 @@ namespace Neumont.Tools.ORM.Views.RelationalView
 			#region DomainPath traversal methods to get the list of elements to display in a compartment.
 			internal static global::System.Collections.IList GetElementsFromTableForColumnsCompartment(DslModeling::ModelElement element)
 			{
-				global::Neumont.Tools.ORM.Views.RelationalView.Table root = (global::Neumont.Tools.ORM.Views.RelationalView.Table)element;
+				global::Neumont.Tools.RelationalModels.ConceptualDatabase.Table root = (global::Neumont.Tools.RelationalModels.ConceptualDatabase.Table)element;
 					// Segments 0 and 1
-					DslModeling::LinkedElementCollection<global::Neumont.Tools.ORM.Views.RelationalView.Column> result = root.ColumnCollection;
+					DslModeling::LinkedElementCollection<global::Neumont.Tools.RelationalModels.ConceptualDatabase.Column> result = root.ColumnCollection;
 				return result;
 			}
 			#endregion
@@ -390,27 +390,25 @@ namespace Neumont.Tools.ORM.Views.RelationalView
 	internal partial class TableShape : TableShapeBase
 	{
 		#region Constructors
-		// Constructors were not generated for this class because it had HasCustomConstructor
-		// set to true. Please provide the constructors below in a partial class.
-		///// <summary>
-		///// Constructor
-		///// </summary>
-		///// <param name="store">Store where new element is to be created.</param>
-		///// <param name="propertyAssignments">List of domain property id/value pairs to set once the element is created.</param>
-		//public TableShape(DslModeling::Store store, params DslModeling::PropertyAssignment[] propertyAssignments)
-		//	: this(store != null ? store.DefaultPartition : null, propertyAssignments)
-		//{
-		//}
-		//
-		///// <summary>
-		///// Constructor
-		///// </summary>
-		///// <param name="partition">Partition where new element is to be created.</param>
-		///// <param name="propertyAssignments">List of domain property id/value pairs to set once the element is created.</param>
-		//public TableShape(DslModeling::Partition partition, params DslModeling::PropertyAssignment[] propertyAssignments)
-		//	: base(partition, propertyAssignments)
-		//{
-		//}
+		/// <summary>
+		/// Constructor
+		/// </summary>
+		/// <param name="store">Store where new element is to be created.</param>
+		/// <param name="propertyAssignments">List of domain property id/value pairs to set once the element is created.</param>
+		public TableShape(DslModeling::Store store, params DslModeling::PropertyAssignment[] propertyAssignments)
+			: this(store != null ? store.DefaultPartition : null, propertyAssignments)
+		{
+		}
+		
+		/// <summary>
+		/// Constructor
+		/// </summary>
+		/// <param name="partition">Partition where new element is to be created.</param>
+		/// <param name="propertyAssignments">List of domain property id/value pairs to set once the element is created.</param>
+		public TableShape(DslModeling::Partition partition, params DslModeling::PropertyAssignment[] propertyAssignments)
+			: base(partition, propertyAssignments)
+		{
+		}
 		#endregion
 	}
 }

@@ -159,7 +159,7 @@ namespace Neumont.Tools.ORMAbstractionToConceptualDatabaseBridge
 		/// The generation of the Conceptual Database Model includes the population of all tables with 
 		/// Columns, Uniquenesses, Foreign Keys, and Mandatory restrictions.
 		/// </summary>
-		private static void FullyGenerateConceptualDatabaseModel(Schema schema, AbstractionModel sourceModel)
+		private static void FullyGenerateConceptualDatabaseModel(Schema schema, AbstractionModel sourceModel, INotifyElementAdded notifyAdded)
 		{
 			LinkedElementCollection<Table> tables = schema.TableCollection;
 			LinkedElementCollection<ConceptType> conceptTypes = sourceModel.ConceptTypeCollection;
@@ -214,6 +214,11 @@ namespace Neumont.Tools.ORMAbstractionToConceptualDatabaseBridge
 					new TableIsPrimarilyForConceptType(conceptTypeTable, conceptType);
 
 					tables.Add(conceptTypeTable);
+					if (notifyAdded != null)
+					{
+						notifyAdded.ElementAdded(conceptTypeTable, true);
+						// UNDONE: notifyAdded should be passed through to other relationships as well
+					}
 				}
 			}
 
@@ -1712,7 +1717,7 @@ namespace Neumont.Tools.ORMAbstractionToConceptualDatabaseBridge
 					schema.Catalog = catalog;
 					notifyAdded.ElementAdded(schema, true);
 
-					FullyGenerateConceptualDatabaseModel(schema, element);
+					FullyGenerateConceptualDatabaseModel(schema, element, notifyAdded);
 				}
 			}
 		}

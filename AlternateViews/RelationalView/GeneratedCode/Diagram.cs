@@ -29,13 +29,13 @@ using DslDiagrams = global::Microsoft.VisualStudio.Modeling.Diagrams;
 namespace Neumont.Tools.ORM.Views.RelationalView
 {
 	/// <summary>
-	/// DomainClass RelationalDiagram
-	/// Description for Neumont.Tools.ORM.Views.RelationalView.RelationalDiagram
+	/// Double-derived base class for DomainClass RelationalDiagram
 	/// </summary>
+	[global::System.ComponentModel.TypeDescriptionProvider(typeof(global::Neumont.Tools.Modeling.Design.ElementTypeDescriptionProvider<RelationalDiagram, global::Neumont.Tools.Modeling.Design.ElementTypeDescriptor<RelationalDiagram>>))]
 	[DslDesign::DisplayNameResource("Neumont.Tools.ORM.Views.RelationalView.RelationalDiagram.DisplayName", typeof(global::Neumont.Tools.ORM.Views.RelationalView.RelationalShapeDomainModel), "Neumont.Tools.ORM.Views.RelationalView.GeneratedCode.DomainModelResx")]
 	[DslDesign::DescriptionResource("Neumont.Tools.ORM.Views.RelationalView.RelationalDiagram.Description", typeof(global::Neumont.Tools.ORM.Views.RelationalView.RelationalShapeDomainModel), "Neumont.Tools.ORM.Views.RelationalView.GeneratedCode.DomainModelResx")]
 	[DslModeling::DomainObjectId("9dd5afce-2b3c-4854-ae9f-8ff5d5b7bf08")]
-	internal partial class RelationalDiagram : DslDiagrams::Diagram
+	internal abstract partial class RelationalDiagramBase : DslDiagrams::Diagram
 	{
 		#region Diagram boilerplate
 		private static DslDiagrams::StyleSet classStyleSet;
@@ -185,90 +185,21 @@ namespace Neumont.Tools.ORM.Views.RelationalView
 			return true;
 		}
 		
-		/// <summary>
-		/// Called during view fixup to configure the given child element, after it has been created.
-		/// </summary>
-		/// <remarks>
-		/// Custom code for choosing the shapes attached to either end of a connector is called from here.
-		/// </remarks>
-		protected override void OnChildConfiguring(DslDiagrams::ShapeElement child, bool createdDuringViewFixup)
-		{
-			DslDiagrams::NodeShape sourceShape;
-			DslDiagrams::NodeShape targetShape;
-			DslDiagrams::BinaryLinkShape connector = child as DslDiagrams::BinaryLinkShape;
-			if(connector == null)
-			{
-				base.OnChildConfiguring(child, createdDuringViewFixup);
-				return;
-			}
-			this.GetSourceAndTargetForConnector(connector, out sourceShape, out targetShape);
-			
-			global::System.Diagnostics.Debug.Assert(sourceShape != null && targetShape != null, "Unable to find source and target shapes for connector.");
-			connector.Connect(sourceShape, targetShape);
-		}
 		
 		/// <summary>
-		/// helper method to find the shapes for either end of a connector, including calling the user's custom code
+		/// Most connectors are mapped to element links, but there can be exceptions. This method tell if a connector should be
+		/// mapped to an element link.
 		/// </summary>
-		[global::System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Performance", "CA1800:DoNotCastUnnecessarily")]
-		internal void GetSourceAndTargetForConnector(DslDiagrams::BinaryLinkShape connector, out DslDiagrams::NodeShape sourceShape, out DslDiagrams::NodeShape targetShape)
+		public override bool IsConnectorMappedToLink(DslDiagrams::BinaryLinkShape connector)
 		{
-			sourceShape = null;
-			targetShape = null;
-			
-			if (sourceShape == null || targetShape == null)
-			{
-				DslDiagrams::NodeShape[] endShapes = GetEndShapesForConnector(connector);
-				if(sourceShape == null)
-				{
-					sourceShape = endShapes[0];
-				}
-				if(targetShape == null)
-				{
-					targetShape = endShapes[1];
-				}
-			}
-		}
-		
-		/// <summary>
-		/// Helper method to find shapes for either end of a connector by looking for shapes associated with either end of the relationship mapped to the connector.
-		/// </summary>
-		private DslDiagrams::NodeShape[] GetEndShapesForConnector(DslDiagrams::BinaryLinkShape connector)
-		{
-			DslModeling::ElementLink link = connector.ModelElement as DslModeling::ElementLink;
-			DslDiagrams::NodeShape sourceShape = null, targetShape = null;
-			if (link != null)
-			{
-				global::System.Collections.ObjectModel.ReadOnlyCollection<DslModeling::ModelElement> linkedElements = link.LinkedElements;
-				if (linkedElements.Count == 2)
-				{
-					DslDiagrams::Diagram currentDiagram = this.Diagram;
-					DslModeling::LinkedElementCollection<DslDiagrams::PresentationElement> presentationElements = DslDiagrams::PresentationViewsSubject.GetPresentation(linkedElements[0]);
-					foreach (DslDiagrams::PresentationElement presentationElement in presentationElements)
-					{
-						DslDiagrams::NodeShape shape = presentationElement as DslDiagrams::NodeShape;
-						if (shape != null && shape.Diagram == currentDiagram)
-						{
-							sourceShape = shape;
-							break;
-						}
-					}
-					
-					presentationElements = DslDiagrams::PresentationViewsSubject.GetPresentation(linkedElements[1]);
-					foreach (DslDiagrams::PresentationElement presentationElement in presentationElements)
-					{
-						DslDiagrams::NodeShape shape = presentationElement as DslDiagrams::NodeShape;
-						if (shape != null && shape.Diagram == currentDiagram)
-						{
-							targetShape = shape;
-							break;
-						}
-					}
-		
-				}
-			}
-			
-			return new DslDiagrams::NodeShape[] { sourceShape, targetShape };
+			#region Check Parameters
+			global::System.Diagnostics.Debug.Assert(connector != null);
+			if (connector == null)
+				throw new global::System.ArgumentNullException("connector");
+			#endregion
+			if (connector is global::Neumont.Tools.ORM.Views.RelationalView.ForeignKeyConnector)
+				return false;
+			return base.IsConnectorMappedToLink(connector);
 		}
 		
 		/// <summary>
@@ -277,15 +208,10 @@ namespace Neumont.Tools.ORM.Views.RelationalView
 		[global::System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Performance", "CA1800:DoNotCastUnnecessarily", Justification = "Generated code.")]
 		protected override DslDiagrams::ShapeElement CreateChildShape(DslModeling::ModelElement element)
 		{
-			if(element is global::Neumont.Tools.ORM.Views.RelationalView.Table)
+			if(element is global::Neumont.Tools.RelationalModels.ConceptualDatabase.Table)
 			{
 				global::Neumont.Tools.ORM.Views.RelationalView.TableShape newShape = new global::Neumont.Tools.ORM.Views.RelationalView.TableShape(this.Partition);
 				if(newShape != null) newShape.Size = newShape.DefaultSize; // set default shape size
-				return newShape;
-			}
-			if(element is global::Neumont.Tools.ORM.Views.RelationalView.TableReferencesTable)
-			{
-				global::Neumont.Tools.ORM.Views.RelationalView.ForeignKeyConnector newShape = new global::Neumont.Tools.ORM.Views.RelationalView.ForeignKeyConnector(this.Partition);
 				return newShape;
 			}
 			return base.CreateChildShape(element);
@@ -315,7 +241,7 @@ namespace Neumont.Tools.ORM.Views.RelationalView
 				DslDiagrams::ShapeElement shape = (DslDiagrams::ShapeElement)sender;
 				DslDiagrams::AssociatedPropertyInfo propertyInfo;
 				
-				propertyInfo = new DslDiagrams::AssociatedPropertyInfo(global::Neumont.Tools.ORM.Views.RelationalView.RelationalNamedElement.NameDomainPropertyId);
+				propertyInfo = new DslDiagrams::AssociatedPropertyInfo(global::Neumont.Tools.RelationalModels.ConceptualDatabase.Table.NameDomainPropertyId);
 				DslDiagrams::ShapeElement.FindDecorator(shape.Decorators, "TableNameDecorator").AssociateValueWith(shape.Store, propertyInfo);
 			}
 		}
@@ -327,6 +253,113 @@ namespace Neumont.Tools.ORM.Views.RelationalView
 		/// RelationalDiagram domain class Id.
 		/// </summary>
 		public static readonly new global::System.Guid DomainClassId = new global::System.Guid(0x9dd5afce, 0x2b3c, 0x4854, 0xae, 0x9f, 0x8f, 0xf5, 0xd5, 0xb7, 0xbf, 0x08);
+		/// <summary>
+		/// Constructor.
+		/// </summary>
+		/// <param name="partition">Partition where new element is to be created.</param>
+		/// <param name="propertyAssignments">List of domain property id/value pairs to set once the element is created.</param>
+		protected RelationalDiagramBase(DslModeling::Partition partition, DslModeling::PropertyAssignment[] propertyAssignments)
+			: base(partition, propertyAssignments)
+		{
+		}
+		#endregion
+		#region DisplayDataTypes domain property code
+		
+		/// <summary>
+		/// DisplayDataTypes domain property Id.
+		/// </summary>
+		public static readonly global::System.Guid DisplayDataTypesDomainPropertyId = new global::System.Guid(0x7ad94a1d, 0x9a17, 0x408b, 0x83, 0xd4, 0x28, 0xc1, 0xb8, 0x27, 0x0c, 0xd5);
+		
+		/// <summary>
+		/// Storage for DisplayDataTypes
+		/// </summary>
+		private global::System.Boolean displayDataTypesPropertyStorage = true;
+		
+		/// <summary>
+		/// Gets or sets the value of DisplayDataTypes domain property.
+		/// Specifies whether data types should be shown or not.
+		/// </summary>
+		[DslDesign::DisplayNameResource("Neumont.Tools.ORM.Views.RelationalView.RelationalDiagram/DisplayDataTypes.DisplayName", typeof(global::Neumont.Tools.ORM.Views.RelationalView.RelationalShapeDomainModel), "Neumont.Tools.ORM.Views.RelationalView.GeneratedCode.DomainModelResx")]
+		[DslDesign::DescriptionResource("Neumont.Tools.ORM.Views.RelationalView.RelationalDiagram/DisplayDataTypes.Description", typeof(global::Neumont.Tools.ORM.Views.RelationalView.RelationalShapeDomainModel), "Neumont.Tools.ORM.Views.RelationalView.GeneratedCode.DomainModelResx")]
+		[global::System.ComponentModel.DefaultValue(true)]
+		[DslModeling::DomainObjectId("7ad94a1d-9a17-408b-83d4-28c1b8270cd5")]
+		public global::System.Boolean DisplayDataTypes
+		{
+			[global::System.Diagnostics.DebuggerStepThrough]
+			get
+			{
+				return displayDataTypesPropertyStorage;
+			}
+			[global::System.Diagnostics.DebuggerStepThrough]
+			set
+			{
+				DisplayDataTypesPropertyHandler.Instance.SetValue(this, value);
+			}
+		}
+		/// <summary>
+		/// Value handler for the RelationalDiagram.DisplayDataTypes domain property.
+		/// </summary>
+		internal sealed partial class DisplayDataTypesPropertyHandler : DslModeling::DomainPropertyValueHandler<RelationalDiagramBase, global::System.Boolean>
+		{
+			private DisplayDataTypesPropertyHandler() { }
+		
+			/// <summary>
+			/// Gets the singleton instance of the RelationalDiagram.DisplayDataTypes domain property value handler.
+			/// </summary>
+			public static readonly DisplayDataTypesPropertyHandler Instance = new DisplayDataTypesPropertyHandler();
+		
+			/// <summary>
+			/// Gets the Id of the RelationalDiagram.DisplayDataTypes domain property.
+			/// </summary>
+			public sealed override global::System.Guid DomainPropertyId
+			{
+				[global::System.Diagnostics.DebuggerStepThrough]
+				get
+				{
+					return DisplayDataTypesDomainPropertyId;
+				}
+			}
+			
+			/// <summary>
+			/// Gets a strongly-typed value of the property on specified element.
+			/// </summary>
+			/// <param name="element">Element which owns the property.</param>
+			/// <returns>Property value.</returns>
+			public override sealed global::System.Boolean GetValue(RelationalDiagramBase element)
+			{
+				if (element == null) throw new global::System.ArgumentNullException("element");
+				return element.displayDataTypesPropertyStorage;
+			}
+		
+			/// <summary>
+			/// Sets property value on an element.
+			/// </summary>
+			/// <param name="element">Element which owns the property.</param>
+			/// <param name="newValue">New property value.</param>
+			public override sealed void SetValue(RelationalDiagramBase element, global::System.Boolean newValue)
+			{
+				if (element == null) throw new global::System.ArgumentNullException("element");
+		
+				global::System.Boolean oldValue = GetValue(element);
+				if (newValue != oldValue)
+				{
+					ValueChanging(element, oldValue, newValue);
+					element.displayDataTypesPropertyStorage = newValue;
+					ValueChanged(element, oldValue, newValue);
+				}
+			}
+		}
+		
+		#endregion
+	}
+	/// <summary>
+	/// DomainClass RelationalDiagram
+	/// Description for Neumont.Tools.ORM.Views.RelationalView.RelationalDiagram
+	/// </summary>
+			
+	internal partial class RelationalDiagram : RelationalDiagramBase
+	{
+		#region Constructors
 		// Constructors were not generated for this class because it had HasCustomConstructor
 		// set to true. Please provide the constructors below in a partial class.
 		///// <summary>
@@ -356,8 +389,7 @@ namespace Neumont.Tools.ORM.Views.RelationalView
 		/// <summary>
 		/// Rule that initiates view fixup when an element that has an associated shape is added to the model. 
 		/// </summary>
-		[DslModeling::RuleOn(typeof(global::Neumont.Tools.ORM.Views.RelationalView.Table), FireTime = DslModeling::TimeToFire.TopLevelCommit, Priority = DslDiagrams::DiagramFixupConstants.AddShapeParentExistRulePriority, InitiallyDisabled=true)]
-		[DslModeling::RuleOn(typeof(global::Neumont.Tools.ORM.Views.RelationalView.TableReferencesTable), FireTime = DslModeling::TimeToFire.TopLevelCommit, Priority = DslDiagrams::DiagramFixupConstants.AddConnectionRulePriority, InitiallyDisabled=true)]
+		[DslModeling::RuleOn(typeof(global::Neumont.Tools.RelationalModels.ConceptualDatabase.Table), FireTime = DslModeling::TimeToFire.TopLevelCommit, Priority = DslDiagrams::DiagramFixupConstants.AddShapeParentExistRulePriority, InitiallyDisabled=true)]
 		internal sealed partial class FixUpDiagram : DslModeling::AddRule
 		{
 			[global::System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Performance", "CA1800:DoNotCastUnnecessarily")]
@@ -369,13 +401,9 @@ namespace Neumont.Tools.ORM.Views.RelationalView
 				if (childElement.IsDeleted)
 					return;
 				DslModeling::ModelElement parentElement;
-				if(childElement is DslModeling::ElementLink)
+				if(childElement is global::Neumont.Tools.RelationalModels.ConceptualDatabase.Table)
 				{
-					parentElement = GetParentForRelationship((DslModeling::ElementLink)childElement);
-				} else
-				if(childElement is global::Neumont.Tools.ORM.Views.RelationalView.Table)
-				{
-					parentElement = GetParentForTable((global::Neumont.Tools.ORM.Views.RelationalView.Table)childElement);
+					parentElement = GetParentForTable((global::Neumont.Tools.RelationalModels.ConceptualDatabase.Table)childElement);
 				} else
 				{
 					parentElement = null;
@@ -386,102 +414,22 @@ namespace Neumont.Tools.ORM.Views.RelationalView
 					DslDiagrams::Diagram.FixUpDiagram(parentElement, childElement);
 				}
 			}
-			public static global::Neumont.Tools.ORM.Views.RelationalView.RelationalModel GetParentForTable( global::Neumont.Tools.ORM.Views.RelationalView.Table root )
+			public static global::Neumont.Tools.RelationalModels.ConceptualDatabase.Catalog GetParentForTable( global::Neumont.Tools.RelationalModels.ConceptualDatabase.Table root )
 			{
 				// Segments 0 and 1
-				global::Neumont.Tools.ORM.Views.RelationalView.RelationalModel result = root.RelationalModel;
+				global::Neumont.Tools.RelationalModels.ConceptualDatabase.Schema root2 = root.Schema;
+				if ( root2 == null ) return null;
+				// Segments 2 and 3
+				global::Neumont.Tools.RelationalModels.ConceptualDatabase.Catalog result = root2.Catalog;
 				if ( result == null ) return null;
 				return result;
-			}
-			private static DslModeling::ModelElement GetParentForRelationship(DslModeling::ElementLink elementLink)
-			{
-				global::System.Collections.ObjectModel.ReadOnlyCollection<DslModeling::ModelElement> linkedElements = elementLink.LinkedElements;
-	
-				if (linkedElements.Count == 2)
-				{
-					DslDiagrams::ShapeElement sourceShape = linkedElements[0] as DslDiagrams::ShapeElement;
-					DslDiagrams::ShapeElement targetShape = linkedElements[1] as DslDiagrams::ShapeElement;
-	
-					if(sourceShape == null)
-					{
-						DslModeling::LinkedElementCollection<DslDiagrams::PresentationElement> presentationElements = DslDiagrams::PresentationViewsSubject.GetPresentation(linkedElements[0]);
-						foreach (DslDiagrams::PresentationElement presentationElement in presentationElements)
-						{
-							DslDiagrams::ShapeElement shape = presentationElement as DslDiagrams::ShapeElement;
-							if (shape != null)
-							{
-								sourceShape = shape;
-								break;
-							}
-						}
-					}
-					
-					if(targetShape == null)
-					{
-						DslModeling::LinkedElementCollection<DslDiagrams::PresentationElement> presentationElements = DslDiagrams::PresentationViewsSubject.GetPresentation(linkedElements[1]);
-						foreach (DslDiagrams::PresentationElement presentationElement in presentationElements)
-						{
-							DslDiagrams::ShapeElement shape = presentationElement as DslDiagrams::ShapeElement;
-							if (shape != null)
-							{
-								targetShape = shape;
-								break;
-							}
-						}
-					}
-					
-					if(sourceShape == null || targetShape == null)
-					{
-						global::System.Diagnostics.Debug.Fail("Unable to find source and/or target shape for view fixup.");
-						return null;
-					}
-	
-					DslDiagrams::ShapeElement sourceParent = sourceShape.ParentShape;
-					DslDiagrams::ShapeElement targetParent = targetShape.ParentShape;
-	
-					while (sourceParent != targetParent && sourceParent != null)
-					{
-						DslDiagrams::ShapeElement curParent = targetParent;
-						while (sourceParent != curParent && curParent != null)
-						{
-							curParent = curParent.ParentShape;
-						}
-	
-						if(sourceParent == curParent)
-						{
-							break;
-						}
-						else
-						{
-							sourceParent = sourceParent.ParentShape;
-						}
-					}
-	
-					while (sourceParent != null)
-					{
-						// ensure that the parent can parent connectors (i.e., a diagram or a swimlane).
-						if(sourceParent is DslDiagrams::Diagram || sourceParent is DslDiagrams::SwimlaneShape)
-						{
-							break;
-						}
-						else
-						{
-							sourceParent = sourceParent.ParentShape;
-						}
-					}
-	
-					global::System.Diagnostics.Debug.Assert(sourceParent != null && sourceParent.ModelElement != null, "Unable to find common parent for view fixup.");
-					return sourceParent.ModelElement;
-				}
-	
-				return null;
 			}
 		}
 		
 		/// <summary>
 		/// Rule to update compartments when an item is added to the list
 		/// </summary>
-		[DslModeling::RuleOn(typeof(global::Neumont.Tools.ORM.Views.RelationalView.TableHasColumn), FireTime=DslModeling::TimeToFire.TopLevelCommit, InitiallyDisabled=true)]
+		[DslModeling::RuleOn(typeof(global::Neumont.Tools.RelationalModels.ConceptualDatabase.TableContainsColumn), FireTime=DslModeling::TimeToFire.TopLevelCommit, InitiallyDisabled=true)]
 		internal sealed class CompartmentItemAddRule : DslModeling::AddRule
 		{
 			/// <summary>
@@ -498,25 +446,25 @@ namespace Neumont.Tools.ORM.Views.RelationalView
 				if(e==null) throw new global::System.ArgumentNullException("e");
 				if (e.ModelElement.IsDeleted)
 					return;
-				if(e.ModelElement is global::Neumont.Tools.ORM.Views.RelationalView.TableHasColumn)
+				if(e.ModelElement is global::Neumont.Tools.RelationalModels.ConceptualDatabase.TableContainsColumn)
 				{
-					global::System.Collections.IEnumerable elements = GetTableForTableShapeColumnsCompartmentFromLastLink((global::Neumont.Tools.ORM.Views.RelationalView.TableHasColumn)e.ModelElement);
+					global::System.Collections.IEnumerable elements = GetTableForTableShapeColumnsCompartmentFromLastLink((global::Neumont.Tools.RelationalModels.ConceptualDatabase.TableContainsColumn)e.ModelElement);
 					UpdateCompartments(elements, typeof(global::Neumont.Tools.ORM.Views.RelationalView.TableShape), "ColumnsCompartment", repaintOnly);
 				}
 			}
 			
 			#region static DomainPath traversal methods to get the list of compartments to update
-			internal static global::System.Collections.ICollection GetTableForTableShapeColumnsCompartmentFromLastLink(global::Neumont.Tools.ORM.Views.RelationalView.TableHasColumn root)
+			internal static global::System.Collections.ICollection GetTableForTableShapeColumnsCompartmentFromLastLink(global::Neumont.Tools.RelationalModels.ConceptualDatabase.TableContainsColumn root)
 			{
 				// Segment 0
-				global::Neumont.Tools.ORM.Views.RelationalView.Table result = root.Table;
+				global::Neumont.Tools.RelationalModels.ConceptualDatabase.Table result = root.Table;
 				if ( result == null ) return new DslModeling::ModelElement[0];
 				return new DslModeling::ModelElement[] {result};
 			}
-			internal static global::System.Collections.ICollection GetTableForTableShapeColumnsCompartment(global::Neumont.Tools.ORM.Views.RelationalView.Column root)
+			internal static global::System.Collections.ICollection GetTableForTableShapeColumnsCompartment(global::Neumont.Tools.RelationalModels.ConceptualDatabase.Column root)
 			{
 				// Segments 1 and 0
-				global::Neumont.Tools.ORM.Views.RelationalView.Table result = root.Table;
+				global::Neumont.Tools.RelationalModels.ConceptualDatabase.Table result = root.Table;
 				if ( result == null ) return new DslModeling::ModelElement[0];
 				return new DslModeling::ModelElement[] {result};
 			}
@@ -565,7 +513,7 @@ namespace Neumont.Tools.ORM.Views.RelationalView
 		/// <summary>
 		/// Rule to update compartments when an items is removed from the list
 		/// </summary>
-		[DslModeling::RuleOn(typeof(global::Neumont.Tools.ORM.Views.RelationalView.TableHasColumn), FireTime=DslModeling::TimeToFire.TopLevelCommit, InitiallyDisabled=true)]
+		[DslModeling::RuleOn(typeof(global::Neumont.Tools.RelationalModels.ConceptualDatabase.TableContainsColumn), FireTime=DslModeling::TimeToFire.TopLevelCommit, InitiallyDisabled=true)]
 		internal sealed class CompartmentItemDeleteRule : DslModeling::DeleteRule
 		{
 			/// <summary>
@@ -580,9 +528,9 @@ namespace Neumont.Tools.ORM.Views.RelationalView
 			internal static void ElementDeleted(DslModeling::ElementDeletedEventArgs e, bool repaintOnly)
 			{
 				if(e==null) throw new global::System.ArgumentNullException("e");
-				if(e.ModelElement is global::Neumont.Tools.ORM.Views.RelationalView.TableHasColumn)
+				if(e.ModelElement is global::Neumont.Tools.RelationalModels.ConceptualDatabase.TableContainsColumn)
 				{
-					global::System.Collections.ICollection elements = CompartmentItemAddRule.GetTableForTableShapeColumnsCompartmentFromLastLink((global::Neumont.Tools.ORM.Views.RelationalView.TableHasColumn)e.ModelElement);
+					global::System.Collections.ICollection elements = CompartmentItemAddRule.GetTableForTableShapeColumnsCompartmentFromLastLink((global::Neumont.Tools.RelationalModels.ConceptualDatabase.TableContainsColumn)e.ModelElement);
 					CompartmentItemAddRule.UpdateCompartments(elements, typeof(global::Neumont.Tools.ORM.Views.RelationalView.TableShape), "ColumnsCompartment", repaintOnly);
 				}
 			}
@@ -591,7 +539,7 @@ namespace Neumont.Tools.ORM.Views.RelationalView
 		/// <summary>
 		/// Rule to update compartments when the property on an item being displayed changes.
 		/// </summary>
-		[DslModeling::RuleOn(typeof(global::Neumont.Tools.ORM.Views.RelationalView.Column), FireTime=DslModeling::TimeToFire.TopLevelCommit, InitiallyDisabled=true)]
+		[DslModeling::RuleOn(typeof(global::Neumont.Tools.RelationalModels.ConceptualDatabase.Column), FireTime=DslModeling::TimeToFire.TopLevelCommit, InitiallyDisabled=true)]
 		internal sealed class CompartmentItemChangeRule : DslModeling::ChangeRule 
 		{
 			/// <summary>
@@ -606,9 +554,9 @@ namespace Neumont.Tools.ORM.Views.RelationalView
 			internal static void ElementPropertyChanged(DslModeling::ElementPropertyChangedEventArgs e, bool repaintOnly)
 			{
 				if(e==null) throw new global::System.ArgumentNullException("e");
-				if(e.ModelElement is global::Neumont.Tools.ORM.Views.RelationalView.Column && e.DomainProperty.Id == global::Neumont.Tools.ORM.Views.RelationalView.Column.NameDomainPropertyId)
+				if(e.ModelElement is global::Neumont.Tools.RelationalModels.ConceptualDatabase.Column && e.DomainProperty.Id == global::Neumont.Tools.RelationalModels.ConceptualDatabase.Column.NameDomainPropertyId)
 				{
-					global::System.Collections.IEnumerable elements = CompartmentItemAddRule.GetTableForTableShapeColumnsCompartment((global::Neumont.Tools.ORM.Views.RelationalView.Column)e.ModelElement);
+					global::System.Collections.IEnumerable elements = CompartmentItemAddRule.GetTableForTableShapeColumnsCompartment((global::Neumont.Tools.RelationalModels.ConceptualDatabase.Column)e.ModelElement);
 					CompartmentItemAddRule.UpdateCompartments(elements, typeof(global::Neumont.Tools.ORM.Views.RelationalView.TableShape), "ColumnsCompartment", repaintOnly);
 				}
 			}
@@ -617,7 +565,7 @@ namespace Neumont.Tools.ORM.Views.RelationalView
 		/// <summary>
 		/// Rule to update compartments when a roleplayer change happens
 		/// </summary>
-		[DslModeling::RuleOn(typeof(global::Neumont.Tools.ORM.Views.RelationalView.TableHasColumn), FireTime=DslModeling::TimeToFire.TopLevelCommit, InitiallyDisabled=true)]
+		[DslModeling::RuleOn(typeof(global::Neumont.Tools.RelationalModels.ConceptualDatabase.TableContainsColumn), FireTime=DslModeling::TimeToFire.TopLevelCommit, InitiallyDisabled=true)]
 		internal sealed class CompartmentItemRolePlayerChangeRule : DslModeling::RolePlayerChangeRule 
 		{
 			/// <summary>
@@ -632,11 +580,11 @@ namespace Neumont.Tools.ORM.Views.RelationalView
 			internal static void RolePlayerChanged(DslModeling::RolePlayerChangedEventArgs e, bool repaintOnly)
 			{
 				if(e==null) throw new global::System.ArgumentNullException("e");
-				if(typeof(global::Neumont.Tools.ORM.Views.RelationalView.TableHasColumn).IsAssignableFrom(e.DomainRelationship.ImplementationClass))
+				if(typeof(global::Neumont.Tools.RelationalModels.ConceptualDatabase.TableContainsColumn).IsAssignableFrom(e.DomainRelationship.ImplementationClass))
 				{
 					if(e.DomainRole.IsSource)
 					{
-						//global::System.Collections.IEnumerable oldElements = CompartmentItemAddRule.GetTableForTableShapeColumnsCompartmentFromLastLink((global::Neumont.Tools.ORM.Views.RelationalView.Column)e.OldRolePlayer);
+						//global::System.Collections.IEnumerable oldElements = CompartmentItemAddRule.GetTableForTableShapeColumnsCompartmentFromLastLink((global::Neumont.Tools.RelationalModels.ConceptualDatabase.Column)e.OldRolePlayer);
 						//foreach(DslModeling::ModelElement element in oldElements)
 						//{
 						//	DslModeling::LinkedElementCollection<DslDiagrams::PresentationElement> pels = DslDiagrams::PresentationViewsSubject.GetPresentation(element);
@@ -650,12 +598,12 @@ namespace Neumont.Tools.ORM.Views.RelationalView
 						//	}
 						//}
 						
-						global::System.Collections.IEnumerable elements = CompartmentItemAddRule.GetTableForTableShapeColumnsCompartmentFromLastLink((global::Neumont.Tools.ORM.Views.RelationalView.TableHasColumn)e.ElementLink);
+						global::System.Collections.IEnumerable elements = CompartmentItemAddRule.GetTableForTableShapeColumnsCompartmentFromLastLink((global::Neumont.Tools.RelationalModels.ConceptualDatabase.TableContainsColumn)e.ElementLink);
 						CompartmentItemAddRule.UpdateCompartments(elements, typeof(global::Neumont.Tools.ORM.Views.RelationalView.TableShape), "ColumnsCompartment", repaintOnly);
 					}
 					else 
 					{
-						global::System.Collections.IEnumerable elements = CompartmentItemAddRule.GetTableForTableShapeColumnsCompartment((global::Neumont.Tools.ORM.Views.RelationalView.Column)e.NewRolePlayer);
+						global::System.Collections.IEnumerable elements = CompartmentItemAddRule.GetTableForTableShapeColumnsCompartment((global::Neumont.Tools.RelationalModels.ConceptualDatabase.Column)e.NewRolePlayer);
 						CompartmentItemAddRule.UpdateCompartments(elements, typeof(global::Neumont.Tools.ORM.Views.RelationalView.TableShape), "ColumnsCompartment", repaintOnly);
 					}
 				}
@@ -665,7 +613,7 @@ namespace Neumont.Tools.ORM.Views.RelationalView
 		/// <summary>
 		/// Rule to update compartments when the order of items in the list changes.
 		/// </summary>
-		[DslModeling::RuleOn(typeof(global::Neumont.Tools.ORM.Views.RelationalView.TableHasColumn), FireTime=DslModeling::TimeToFire.TopLevelCommit, InitiallyDisabled=true)]
+		[DslModeling::RuleOn(typeof(global::Neumont.Tools.RelationalModels.ConceptualDatabase.TableContainsColumn), FireTime=DslModeling::TimeToFire.TopLevelCommit, InitiallyDisabled=true)]
 		internal sealed class CompartmentItemRolePlayerPositionChangeRule : DslModeling::RolePlayerPositionChangeRule 
 		{
 			/// <summary>
@@ -680,71 +628,16 @@ namespace Neumont.Tools.ORM.Views.RelationalView
 			internal static void RolePlayerPositionChanged(DslModeling::RolePlayerOrderChangedEventArgs e, bool repaintOnly)
 			{
 				if(e==null) throw new global::System.ArgumentNullException("e");
-				if(typeof(global::Neumont.Tools.ORM.Views.RelationalView.TableHasColumn).IsAssignableFrom(e.DomainRelationship.ImplementationClass))
+				if(typeof(global::Neumont.Tools.RelationalModels.ConceptualDatabase.TableContainsColumn).IsAssignableFrom(e.DomainRelationship.ImplementationClass))
 				{
 					if(!e.CounterpartDomainRole.IsSource)
 					{
-						global::System.Collections.IEnumerable elements = CompartmentItemAddRule.GetTableForTableShapeColumnsCompartment((global::Neumont.Tools.ORM.Views.RelationalView.Column)e.CounterpartRolePlayer);
+						global::System.Collections.IEnumerable elements = CompartmentItemAddRule.GetTableForTableShapeColumnsCompartment((global::Neumont.Tools.RelationalModels.ConceptualDatabase.Column)e.CounterpartRolePlayer);
 						CompartmentItemAddRule.UpdateCompartments(elements, typeof(global::Neumont.Tools.ORM.Views.RelationalView.TableShape), "ColumnsCompartment", repaintOnly);
 					}
 				}
 			}
 		}
 	
-		/// <summary>
-		/// Reroute a connector when the role players of its underlying relationship change
-		/// </summary>
-		[DslModeling::RuleOn(typeof(global::Neumont.Tools.ORM.Views.RelationalView.TableReferencesTable), FireTime = DslModeling::TimeToFire.TopLevelCommit, Priority = DslDiagrams::DiagramFixupConstants.AddConnectionRulePriority, InitiallyDisabled=true)]
-		internal sealed class ConnectorRolePlayerChanged : DslModeling::RolePlayerChangeRule
-		{
-			/// <summary>
-			/// Reroute a connector when the role players of its underlying relationship change
-			/// </summary>
-			public override void RolePlayerChanged(DslModeling::RolePlayerChangedEventArgs e)
-			{
-				if (e == null) throw new global::System.ArgumentNullException("e");
-	
-				global::System.Collections.ObjectModel.ReadOnlyCollection<DslDiagrams::PresentationViewsSubject> connectorLinks = DslDiagrams::PresentationViewsSubject.GetLinksToPresentation(e.ElementLink);
-				foreach (DslDiagrams::PresentationViewsSubject connectorLink in connectorLinks)
-				{
-					// Fix up any binary link shapes attached to the element link.
-					DslDiagrams::BinaryLinkShape linkShape = connectorLink.Presentation as DslDiagrams::BinaryLinkShape;
-					if (linkShape != null)
-					{
-						global::Neumont.Tools.ORM.Views.RelationalView.RelationalDiagram diagram = linkShape.Diagram as global::Neumont.Tools.ORM.Views.RelationalView.RelationalDiagram;
-						if (diagram != null)
-						{
-							if (e.NewRolePlayer != null)
-							{
-								DslDiagrams::NodeShape fromShape;
-								DslDiagrams::NodeShape toShape;
-								diagram.GetSourceAndTargetForConnector(linkShape, out fromShape, out toShape);
-								if (fromShape != null && toShape != null)
-								{
-									if (!object.Equals(fromShape, linkShape.FromShape))
-									{
-										linkShape.FromShape = fromShape;
-									}
-									if (!object.Equals(linkShape.ToShape, toShape))
-									{
-										linkShape.ToShape = toShape;
-									}
-								}
-								else
-								{
-									// delete the connector if we cannot find an appropriate target shape.
-									linkShape.Delete();
-								}
-							}
-							else
-							{
-								// delete the connector if the new role player is null.
-								linkShape.Delete();
-							}
-						}
-					}
-				}
-			}
-		}
 	}
 	

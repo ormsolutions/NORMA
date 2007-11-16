@@ -22,14 +22,17 @@ using System.Diagnostics;
 using Microsoft.VisualStudio.Modeling;
 using Microsoft.VisualStudio.Modeling.Diagrams;
 using Neumont.Tools.ORM.ObjectModel;
-using Neumont.Tools.ORM.OIALModel;
 using Neumont.Tools.Modeling;
 using Neumont.Tools.Modeling.Shell;
+using Neumont.Tools.RelationalModels.ConceptualDatabase;
+using Neumont.Tools.ORMAbstraction;
+using Neumont.Tools.ORMAbstractionToConceptualDatabaseBridge;
+using Neumont.Tools.ORMToORMAbstractionBridge;
 
 namespace Neumont.Tools.ORM.Views.RelationalView
 {
 	[DiagramMenuDisplay(DiagramMenuDisplayOptions.BlockRename | DiagramMenuDisplayOptions.Required, typeof(RelationalDiagram), RelationalDiagram.NameResourceName, "Diagram.TabImage")]
-	internal partial class RelationalDiagram
+	partial class RelationalDiagram
 	{
 		private const string NameResourceName = "Diagram.MenuDisplayName";
 
@@ -58,12 +61,43 @@ namespace Neumont.Tools.ORM.Views.RelationalView
 			base.OnInitialize();
 			if (this.Subject == null)
 			{
-				ReadOnlyCollection<RelationalModel> modelElements = this.Store.DefaultPartition.ElementDirectory.FindElements<RelationalModel>();
-				if (modelElements.Count > 0)
+				ReadOnlyCollection<Catalog> modelElements = this.Store.DefaultPartition.ElementDirectory.FindElements<Catalog>();
+				if (modelElements.Count != 0)
 				{
 					this.Associate(modelElements[0]);
 				}
 			}
+		}
+		/// <summary>
+		/// Customize childshape create to set an initial location for a <see cref="TableShape"/>
+		/// </summary>
+		protected override ShapeElement CreateChildShape(ModelElement element)
+		{
+			object tablePositionsObject;
+			Dictionary<Guid, PointD> tablePositions;
+			PointD initialLocation;
+			ReferenceConstraintTargetsTable referenceConstraintTargetsTable;
+			Table table;
+			ConceptType conceptType;
+			ObjectType objectType;
+			if (null != (table = element as Table))
+			{
+				if (element.Store.TransactionManager.CurrentTransaction.TopLevelTransaction.Context.ContextInfo.TryGetValue(TablePositionDictionaryKey, out tablePositionsObject) &&
+					null != (tablePositions = tablePositionsObject as Dictionary<Guid, PointD>) &&
+					null != (conceptType = TableIsPrimarilyForConceptType.GetConceptType(table)) &&
+					null != (objectType = ConceptTypeIsForObjectType.GetObjectType(conceptType)) &&
+					tablePositions.TryGetValue(objectType.Id, out initialLocation))
+				{
+					return new TableShape(
+						this.Partition,
+						new PropertyAssignment(TableShape.AbsoluteBoundsDomainPropertyId, new RectangleD(initialLocation, new SizeD(1, 0.3))));
+				}
+			}
+			else if (null != (referenceConstraintTargetsTable = element as ReferenceConstraintTargetsTable))
+			{
+				return new ForeignKeyConnector(Partition);
+			}
+			return base.CreateChildShape(element);
 		}
 		/// <summary>
 		/// Stop all auto shape selection on transaction commit except when
@@ -78,28 +112,134 @@ namespace Neumont.Tools.ORM.Views.RelationalView
 			return null;
 		}
 		/// <summary>
+		/// ChangeRule: typeof(RelationalDiagram)
 		/// Disallows changing the name of the Relational Diagram
+		/// Changes the name of the <see cref="T:Neumont.Tools.ORM.Views.RelationalDiagram"/> to
+		/// its default name if changed by a user.
 		/// </summary>
-		[RuleOn(typeof(RelationalDiagram))]
-		private sealed partial class NameChangeRule : ChangeRule
+		private static void NameChangedRule(ElementPropertyChangedEventArgs e)
 		{
-			/// <summary>
-			/// Changes the name of the <see cref="T:Neumont.Tools.ORM.Views.RelationalDiagram"/> to
-			/// its default name if changed by a user.
-			/// </summary>
-			/// <param name="e"><see cref="Microsoft.VisualStudio.Modeling.ElementPropertyChangedEventArgs"/>.</param>
-			public override void ElementPropertyChanged(ElementPropertyChangedEventArgs e)
+			Guid attributeId = e.DomainProperty.Id;
+			if (attributeId == Diagram.NameDomainPropertyId)
 			{
-				if (e.DomainProperty.Id == Diagram.NameDomainPropertyId)
+				RelationalDiagram diagram = e.ModelElement as RelationalDiagram;
+				string name = Neumont.Tools.Modeling.Design.ResourceAccessor<RelationalDiagram>.ResourceManager.GetString(NameResourceName);
+				if (diagram != null && diagram.Name != name)
 				{
-					RelationalDiagram diagram = e.ModelElement as RelationalDiagram;
-					string name = Neumont.Tools.Modeling.Design.ResourceAccessor<RelationalDiagram>.ResourceManager.GetString(NameResourceName);
-					if (diagram != null && diagram.Name != name)
+					diagram.Name = name;
+				}
+			}
+			else if (attributeId == RelationalDiagram.DisplayDataTypesDomainPropertyId)
+			{
+				foreach (PresentationElement pel in ((RelationalDiagram)e.ModelElement).NestedChildShapes)
+				{
+					TableShape shape;
+					Compartment compartment;
+					if (null != (shape = pel as TableShape) &&
+						null != (compartment = shape.FindCompartment("ColumnsCompartment")))
 					{
-						diagram.Name = name;
+						compartment.UpdateSize();
 					}
 				}
 			}
+		}
+		/// <summary>
+		/// ChangeRule: typeof(Neumont.Tools.RelationalModels.ConceptualDatabase.Column)
+		/// Update table size when <see cref="Column.IsNullable"/> changes.
+		/// </summary>
+		private static void IsNullableChangedRule(ElementPropertyChangedEventArgs e)
+		{
+			if (e.DomainProperty.Id == Column.IsNullableDomainPropertyId)
+			{
+				Table table = ((Column)e.ModelElement).Table;
+				if (table != null)
+				{
+					foreach (PresentationElement pel in PresentationViewsSubject.GetPresentation(table))
+					{
+						TableShape shape;
+						Compartment compartment;
+						if (null != (shape = pel as TableShape) &&
+							null != (compartment = shape.FindCompartment("ColumnsCompartment")))
+						{
+							compartment.UpdateSize();
+						}
+					}
+				}
+			}
+		}
+		/// <summary>
+		/// AddRule: typeof(Neumont.Tools.RelationalModels.ConceptualDatabase.ReferenceConstraintTargetsTable), FireTime=TopLevelCommit, Priority=DiagramFixupConstants.AddConnectionRulePriority;
+		/// Add a <see cref="ForeignKeyConnector"/> to the diagram
+		/// </summary>
+		private static void ReferenceConstraintAddedRule(ElementAddedEventArgs e)
+		{
+			ReferenceConstraintTargetsTable link = (ReferenceConstraintTargetsTable)e.ModelElement;
+			Table sourceTable;
+			Schema schema;
+			Catalog catalog;
+			if (null != (sourceTable = link.ReferenceConstraint.SourceTable) &&
+				null != (schema = sourceTable.Schema) &&
+				null != (catalog = schema.Catalog))
+			{
+				FixUpDiagram(catalog, link);
+			}
+		}
+		/// <summary>
+		/// Stop the DSLTools framework from placing a shape that has a non-empty location
+		/// </summary>
+		protected override void OnChildConfigured(ShapeElement child, bool childWasPlaced, bool createdDuringViewFixup)
+		{
+			if (!childWasPlaced)
+			{
+				TableShape shape = child as TableShape;
+				if (shape != null && shape.Location != BoundsRules.GetCompliantBounds(child, RectangleD.Empty).Location)
+				{
+					IDictionary unplacedShapes = UnplacedShapesContext.GetUnplacedShapesMap(Store.TransactionManager.CurrentTransaction.TopLevelTransaction, this.Id);
+					if (unplacedShapes.Contains(child))
+					{
+						unplacedShapes.Remove(child);
+					}
+				}
+			}
+			base.OnChildConfigured(child, childWasPlaced, createdDuringViewFixup);
+		}
+		/// <summary>
+		/// Correctly connect a <see cref="ForeignKeyConnector"/>
+		/// </summary>
+		protected override void OnChildConfiguring(ShapeElement child, bool createdDuringViewFixup)
+		{
+			ForeignKeyConnector foreignKeyConnector;
+			if (null != (foreignKeyConnector = child as ForeignKeyConnector))
+			{
+				ReferenceConstraintTargetsTable link = (ReferenceConstraintTargetsTable)child.ModelElement;
+				TableShape sourceShape = null;
+				Table sourceTable;
+				if (null != (sourceTable = link.ReferenceConstraint.SourceTable))
+				{
+					foreach (PresentationElement pel in PresentationViewsSubject.GetPresentation(sourceTable))
+					{
+						TableShape testShape = pel as TableShape;
+						if (testShape != null && testShape.Diagram == this)
+						{
+							sourceShape = testShape;
+							break;
+						}
+					}
+				}
+				if (null != sourceShape)
+				{
+					foreach (PresentationElement pel in PresentationViewsSubject.GetPresentation(link.TargetTable))
+					{
+						TableShape targetShape = pel as TableShape;
+						if (targetShape != null && targetShape.Diagram == this)
+						{
+							foreignKeyConnector.Connect(sourceShape, targetShape);
+							return;
+						}
+					}
+				}
+			}
+			base.OnChildConfiguring(child, createdDuringViewFixup);
 		}
 	}
 }

@@ -42,6 +42,7 @@ XCOPY /Y /D /V /Q "%RootDir%\catalog.xml" "%ORMDir%\Schemas\"
 
 XCOPY /Y /D /V /Q "%RootDir%\ORMModel\Shell\ORMDesignerSettings.xsd" "%NORMADir%\Xml\Schemas\"
 XCOPY /Y /D /V /Q "%RootDir%\CustomProperties\CustomProperties.xsd" "%NORMADir%\Xml\Schemas\"
+XCOPY /Y /D /V /Q "%RootDir%\AlternateViews\RelationalView\RelationalView.xsd" "%NORMADir%\Xml\Schemas\"
 ECHO F | XCOPY /Y /D /V /Q "%RootDir%\Oial\OialModel\OIAL.xsd" "%NORMADir%\Xml\Schemas\ORMAbstraction.xsd"
 ECHO F | XCOPY /Y /D /V /Q "%RootDir%\Oial\OialModel\OIALDatatypes.xsd" "%NORMADir%\Xml\Schemas\ORMAbstractionDataTypes.xsd"
 XCOPY /Y /D /V /Q "%RootDir%\Oial\ORMOialBridge\ORMToORMAbstraction.xsd" "%NORMADir%\Xml\Schemas\"

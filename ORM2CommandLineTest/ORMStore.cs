@@ -1,5 +1,4 @@
 ﻿#region Using directives
-
 using System;
 using System.Collections.Generic;
 using System.Text;
@@ -12,15 +11,14 @@ using Neumont.Tools.Modeling.Shell.DynamicSurveyTreeGrid;
 using Neumont.Tools.Modeling;
 using Neumont.Tools.Modeling.Diagrams;
 using Microsoft.VisualStudio.Modeling.Diagrams;
-
-
+using Neumont.Tools.Modeling.Shell;
 #endregion
 
 namespace Neumont.Tools.ORM.SDK.TestEngine
 {
 	public partial struct Suite
 	{
-		private class ORMStore : Store, IORMToolServices, IModelingEventManagerProvider
+		private class ORMStore : Store, IORMToolServices, IModelingEventManagerProvider, ISerializationContextHost
 		{
 			#region Member Variables
 			private readonly IORMToolServices myServices;
@@ -152,6 +150,34 @@ namespace Neumont.Tools.ORM.SDK.TestEngine
 				}
 			}
 			#endregion // ModelingEventManagerImpl class
+			#region ISerializationContextHost Implementation
+			private ISerializationContext mySerializationContext;
+			/// <summary>
+			/// Implements <see cref="ISerializationContextHost.SerializationContext"/>
+			/// </summary>
+			protected ISerializationContext SerializationContext
+			{
+				get
+				{
+					return mySerializationContext;
+				}
+				set
+				{
+					mySerializationContext = value;
+				}
+			}
+			ISerializationContext ISerializationContextHost.SerializationContext
+			{
+				get
+				{
+					return SerializationContext;
+				}
+				set
+				{
+					SerializationContext = value;
+				}
+			}
+			#endregion // ISerializationContextHost Implementation
 		}
 	}
 }

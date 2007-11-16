@@ -22,6 +22,10 @@ using System.Runtime.InteropServices;
 using System.Text;
 using Microsoft.VisualStudio.Modeling;
 using Microsoft.VisualStudio.Modeling.Diagrams;
+using Neumont.Tools.RelationalModels.ConceptualDatabase;
+using System.Collections.ObjectModel;
+using Neumont.Tools.ORM.ObjectModel;
+using UniquenessConstraint = Neumont.Tools.RelationalModels.ConceptualDatabase.UniquenessConstraint;
 
 namespace Neumont.Tools.ORM.Views.RelationalView
 {
@@ -29,8 +33,20 @@ namespace Neumont.Tools.ORM.Views.RelationalView
 	/// A custom compartment element used to customize how individual compartment items are drawn.
 	/// </summary>
 	[DomainObjectId("A31CDD05-E36A-4CBC-A1B3-86927BA21E08")]
-	internal partial class ColumnElementListCompartment : ElementListCompartment
+	partial class ColumnElementListCompartment : ElementListCompartment
 	{
+		/// <summary>
+		/// The string that denotes a primary key.
+		/// </summary>
+		private const string PrimaryKeyString = "PK";
+		/// <summary>
+		/// The string that prepends an alternate key.
+		/// </summary>
+		private const string AlternateKeyString = "U{0}";
+		/// <summary>
+		/// The string that prepends a foreign key.
+		/// </summary>
+		private const string ForeignKeyString = "FK{0}";
 		/// <summary>
 		/// A font used to format the name of mandatory columns.
 		/// </summary>
@@ -104,35 +120,160 @@ namespace Neumont.Tools.ORM.Views.RelationalView
 			Column currentColumn = this.Items[row] as Column;
 			Debug.Assert(currentColumn != null, "An item in the ColumnElementListCompartment is not a column.");
 
-			if (currentColumn.IsMandatory)
+			if (!currentColumn.IsNullable)
 			{
 				itemDrawInfo.AlternateFont = true;
 			}
 
-			StringBuilder constraintsString = new StringBuilder();
-			LinkedElementCollection<Constraint> columnConstraints = currentColumn.ConstraintCollection;
-			int constraintCount = columnConstraints.Count;
-			int colonIndex = constraintCount - 1;
-			for (int i = 0; i < constraintCount; ++i)
+			StringBuilder columnText = new StringBuilder();
+			bool seenConstraint = false;
+			LinkedElementCollection<UniquenessConstraint> tableUniquenessConstraints = null;
+			Table currentTable = null;
+			foreach (UniquenessConstraint constraint in UniquenessConstraintIncludesColumn.GetUniquenessConstraints(currentColumn))
 			{
-				Constraint constraint = columnConstraints[i];
-				constraintsString.Append(constraint.Name);
-				if (i != colonIndex)
+				if (seenConstraint)
 				{
-					constraintsString.Append(CommaString);
+					columnText.Append(CommaString);
+				}
+				if (constraint.IsPrimary)
+				{
+					columnText.Append(PrimaryKeyString);
 				}
 				else
 				{
-					constraintsString.Append(ColonString);
+					if (tableUniquenessConstraints == null)
+					{
+						currentTable = currentColumn.Table;
+						tableUniquenessConstraints = currentTable.UniquenessConstraintCollection;
+					}
+					int constraintNumber = 0;
+					foreach (UniquenessConstraint tableConstraint in tableUniquenessConstraints)
+					{
+						if (!tableConstraint.IsPrimary)
+						{
+							++constraintNumber;
+							if (tableConstraint == constraint)
+							{
+								break;
+							}
+						}
+					}
+					columnText.AppendFormat(AlternateKeyString, constraintNumber);
+				}
+				seenConstraint = true;
+			}
+			LinkedElementCollection<ReferenceConstraint> tableReferenceConstraints = null;
+			foreach (ColumnReference columnReference in ColumnReference.GetLinksToTargetColumnCollection(currentColumn))
+			{
+				if (seenConstraint)
+				{
+					columnText.Append(CommaString);
+				}
+				if (tableReferenceConstraints == null)
+				{
+					if (currentTable == null)
+					{
+						currentTable = currentColumn.Table;
+					}
+					tableReferenceConstraints = currentTable.ReferenceConstraintCollection;
+				}
+				columnText.AppendFormat(ForeignKeyString, tableReferenceConstraints.IndexOf(columnReference.ReferenceConstraint) + 1);
+				seenConstraint = true;
+			}
+			if (seenConstraint)
+			{
+				columnText.Append(ColonString);
+			}
+			columnText.Append(currentColumn.Name);
+			if (((RelationalDiagram)this.Diagram).DisplayDataTypes)
+			{
+				columnText.Append(ColonString);
+				columnText.Append(GetDataType(currentColumn.AssociatedValueType));
+			}
+			itemDrawInfo.Text = columnText.ToString();
+		}
+		#region DataType Helper Methods
+		/// <summary>
+		/// Gets the SQL-Server compliant data type for the <see cref="T:Neumont.Tools.ORM.ObjectModel.ObjectType"/>.
+		/// </summary>
+		/// <param name="valueType">The <see cref="T:Neumont.Tools.ORM.ObjectModel.ObjectType"/> whose data type is of interest.</param>
+		/// <returns>The data type, a <see cref="T:System.String"/>.</returns>
+		private static string GetDataType(ObjectType valueType)
+		{
+			return GetDataTypeInternal(valueType).ToLowerInvariant();
+		}
+		/// <summary>
+		/// Gets the SQL-Server compliant data type for the <see cref="T:Neumont.Tools.ORM.ObjectModel.ObjectType"/>.
+		/// </summary>
+		/// <param name="valueType">The <see cref="T:Neumont.Tools.ORM.ObjectModel.ObjectType"/> whose data type is of interest.</param>
+		/// <returns>The data type, a <see cref="T:System.String"/>.</returns>
+		private static string GetDataTypeInternal(ObjectType valueType)
+		{
+			// A boolean data type for unaries will not have an associated value type
+			if (valueType == null)
+			{
+				return "BIT";
+			}
+			DataType dataType = valueType.DataType;
+			int precision = valueType.Length;
+			int scale = valueType.Scale;
+			if (dataType is NumericDataType || dataType is OtherDataType)
+			{
+				if (dataType is AutoCounterNumericDataType || dataType is SignedIntegerNumericDataType || dataType is UnsignedIntegerNumericDataType)
+				{
+					return "INT";
+				}
+				else if (dataType is SignedSmallIntegerNumericDataType || dataType is UnsignedSmallIntegerNumericDataType)
+				{
+					return "SMALLINT";
+				}
+				else if (dataType is OtherDataType || dataType is SignedLargeIntegerNumericDataType || dataType is UnsignedLargeIntegerNumericDataType)
+				{
+					return "BIGINT";
+				}
+				else if (dataType is DoublePrecisionFloatingPointNumericDataType)
+				{
+					return "DOUBLE PRECISION";
+				}
+				else if (dataType is SinglePrecisionFloatingPointNumericDataType)
+				{
+					return "REAL";
+				}
+				else if (dataType is FloatingPointNumericDataType)
+				{
+					return "FLOAT" + (precision > 0 ? "(" + precision + ")" : string.Empty);
+				}
+				else
+				{
+					return "DECIMAL(" + Math.Max(precision, 0) + ", " + Math.Max(scale, 0) + ")";
 				}
 			}
-			string constraintColumnText = string.Concat(constraintsString.ToString(), currentColumn.Name);
-			if (currentColumn.Table.RelationalModel.DisplayDataTypes)
+			else if (dataType is LogicalDataType)
 			{
-				constraintColumnText = string.Concat(constraintColumnText, ColonString, currentColumn.DataType);
+				return "BIT";
 			}
-			itemDrawInfo.Text = constraintColumnText;
+			else if (dataType is VariableLengthTextDataType || dataType is LargeLengthTextDataType)
+			{
+				return "NVARCHAR(" + (precision <= 0 ? "MAX" : precision.ToString()) + ")";
+			}
+			else if (dataType is FixedLengthTextDataType)
+			{
+				return "NCHAR(" + (precision <= 0 ? "MAX" : precision.ToString()) + ")";
+			}
+			else if (dataType is RawDataDataType)
+			{
+				return "VARBINARY(" + (precision <= 0 ? "MAX" : precision.ToString()) + ")";
+			}
+			else if (dataType is TemporalDataType)
+			{
+				return "DATETIME";
+			}
+			else
+			{
+				return "UNSPECIFIED";
+			}
 		}
+		#endregion // DataType Helper Methods
 		/// <summary>
 		/// Overridden to allow a read-only <see cref="T:Microsoft.VisualStudio.Modeling.Diagrams.ListField"/> to be added
 		/// to the collection of <see cref="T:Microsoft.VisualStudio.Modeling.Diagrams.ShapeField"/> objects.
@@ -142,21 +283,8 @@ namespace Neumont.Tools.ORM.Views.RelationalView
 		protected override void InitializeShapeFields(IList<ShapeField> shapeFields)
 		{
 			base.InitializeShapeFields(shapeFields);
-			// Removes the PlusMinusButtonField and the ListCompartmentListField.
-			// The first is removed because we don't want the compartment expanded and collapsed.
-			// The second is replaced by our custom list field, the ColumnListField.
+			// Removes the PlusMinusButtonField because we don't want the compartment expanded and collapsed.
 			shapeFields.RemoveAt(2);
-			shapeFields.RemoveAt(3);
-			ColumnListField listField = new ColumnListField("MainListField");
-			AnchoringBehavior listFieldAnchoringBehavior = listField.AnchoringBehavior;
-			listFieldAnchoringBehavior.SetLeftAnchor(AnchoringBehavior.Edge.Left, 0);
-			listFieldAnchoringBehavior.SetTopAnchor(base.HeaderBackgroundField, AnchoringBehavior.Edge.Bottom, 0);
-			listFieldAnchoringBehavior.SetRightAnchor(AnchoringBehavior.Edge.Right, 0);
-			AssociatedPropertyInfo propertyInfo = new AssociatedPropertyInfo(NodeShape.IsExpandedDomainPropertyId);
-			propertyInfo.IsShapeProperty = true;
-			listField.AssociateVisibilityWith(base.Store, propertyInfo);
-
-			shapeFields.Add(listField);
 		}
 		/// <summary>
 		/// Gets a handle to the desktop window.
@@ -185,7 +313,7 @@ namespace Neumont.Tools.ORM.Views.RelationalView
 			base.UpdateSize();
 			SizeD baseSize = Size;
 			double height = baseSize.Height;
-			double width = baseSize.Width;
+			double width = 0; // baseSize.Width;
 			ListField listField = ListField;
 			int count = this.GetItemCount(listField);
 			TableShape tableShape = ParentShape as TableShape;
@@ -212,7 +340,7 @@ namespace Neumont.Tools.ORM.Views.RelationalView
 				{
 					ItemDrawInfo itemDrawInfo = new ItemDrawInfo();
 					GetItemDrawInfo(listField, i, itemDrawInfo);
-					bool isMandatory = (this.Items[i] as Column).IsMandatory;
+					bool isMandatory = !(this.Items[i] as Column).IsNullable;
 					string text = itemDrawInfo.Text;
 
 					// Gets the size of the column name in the context of the compartment
@@ -259,51 +387,9 @@ namespace Neumont.Tools.ORM.Views.RelationalView
 		}
 	}
 	/// <summary>
-	/// A custom <see cref="T:Microsoft.VisualStudio.Modeling.Diagrams.ListField"/> that disallows selection of each
-	/// element in the list.
-	/// </summary>
-	internal partial class ColumnListField : ListField
-	{
-		/// <summary>
-		/// Disallows selecting the columns
-		/// </summary>
-		/// <returns><see langword="false"/>.</returns>
-		public override bool GetItemSelectable(ShapeElement parentShape, ListItemSubField listItem)
-		{
-			return false;
-		}
-		/// <summary>
-		/// Disallows setting focus on the columns
-		/// </summary>
-		/// <returns><see langword="false" />.</returns>
-		public override bool GetItemFocusable(ShapeElement parentShape, ListItemSubField listItem)
-		{
-			return false;
-		}
-		/// <summary>
-		/// Initializes a new instance of the <see cref="T:Neumont.Tools.ORM.Views.RelationalView.ColumnListField" /> class.	
-		/// </summary>
-		/// <param name="fieldName">The name of the field.</param>
-	    public ColumnListField(string fieldName)
-	        : base(fieldName)
-	    {
-	    }
-		/// <summary>
-		/// Initializes a new instance of the <see cref="T:Neumont.Tools.ORM.Views.RelationalView.ColumnListField" /> class.	
-		/// </summary>
-		/// <param name="fieldName">The name of the field.</param>
-		/// <param name="snakedList">snakedList</param>
-		/// <param name="moreText">moreText</param>
-		/// <param name="watermarkText">watermarkText</param>
-		public ColumnListField(string fieldName, bool snakedList, string moreText, string watermarkText)
-			: base(fieldName, snakedList, moreText, watermarkText)
-		{
-		}
-	}
-	/// <summary>
 	/// A custom element list compartment description from which a <see cref="ColumnElementListCompartment"/> is created.
 	/// </summary>
-	internal partial class ColumnElementListCompartmentDescription : ElementListCompartmentDescription
+	partial class ColumnElementListCompartmentDescription : ElementListCompartmentDescription
 	{
 		/// <summary>
 		/// Initializes a new instance of the <see cref="T:Neumont.Tools.ORM.Views.RelationalView.ColumnElementListCompartmentDescription" /> class.
@@ -339,30 +425,31 @@ namespace Neumont.Tools.ORM.Views.RelationalView
 		}
 	}
 
-	internal partial class TableShape
+	partial class TableShape
 	{
 		/// <summary>
-		/// Holds the <see cref="CompartmentDescriptions"/>s for this <see cref="TableShape"/>.
+		/// Holds the <see cref="CompartmentDescription"/>s for this <see cref="TableShape"/>.
 		/// </summary>
-		private static CompartmentDescription[] CompartmentDescriptions;
+		private static CompartmentDescription[] myCompartmentDescriptions;
 		/// <summary>
 		/// Gets the <see cref="CompartmentDescription"/>s which will create the compartments in this <see cref="TableShape"/>.
 		/// </summary>
 		/// <returns>CompartmentDescription[]</returns>
 		public override CompartmentDescription[] GetCompartmentDescriptions()
 		{
-			if (CompartmentDescriptions == null)
+			CompartmentDescription[] retVal = myCompartmentDescriptions;
+			if (retVal == null)
 			{
-				CompartmentDescriptions = new CompartmentDescription[1];
+				myCompartmentDescriptions = retVal = new CompartmentDescription[1];
 				string title = RelationalShapeDomainModel.SingletonResourceManager.GetString("TableShapeColumnsCompartmentTitle");
-				CompartmentDescriptions[0] = new ColumnElementListCompartmentDescription("ColumnsCompartment", title,
+				retVal[0] = new ColumnElementListCompartmentDescription("ColumnsCompartment", title,
 					Color.FromKnownColor(KnownColor.LightGray), false,
 					Color.FromKnownColor(KnownColor.White), false,
 					null, null,
 					false);
 			}
 
-			return CompartmentDescriptions;
+			return myCompartmentDescriptions;
 		}
 	}
 }

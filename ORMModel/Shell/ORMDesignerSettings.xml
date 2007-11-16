@@ -24,6 +24,8 @@
 		<ds:xmlConverter description="Upgrade root model to 2006-01 schema" sourceElement="unversionedOrmRoot:ORM2" targetElement="ormRoot2006-01:ORM2" transformFile="RootUpgradeTo2006-01.xslt"/>
 		<ds:xmlConverter description="Upgrade core model to 2006-04 schema" sourceElement="ormCore2006-01:ORMModel" targetElement="ormCore2006-04:ORMModel" transformFile="CoreUpgradeTo2006-04.xslt"/>
 		<ds:xmlConverter description="Upgrade root model to 2006-04 schema" sourceElement="ormRoot2006-01:ORM2" targetElement="ormRoot2006-04:ORM2" transformFile="RootUpgradeTo2006-04.xslt"/>
-		<ds:xmlExtensionConverter description="Upgrade CustomProperty extensions to 2007-11 schema" sourceNamespace="http://schemas.neumont.edu/ORM/Preview/CustomProperties" targetNamespace="http://schemas.neumont.edu/ORM/2007-11/CustomProperties" transformFile="CustomPropertiesPreviewTo2007-11.xslt"/>
+		<ds:xmlExtensionConverter description="Upgrade CustomProperty extension to 2007-11 schema" sourceNamespace="http://schemas.neumont.edu/ORM/Preview/CustomProperties" targetNamespace="http://schemas.neumont.edu/ORM/2007-11/CustomProperties" transformFile="CustomPropertiesPreviewTo2007-11.xslt"/>
+		<ds:xmlExtensionConverter description="Remove OIAL 2006-01 extensions" sourceNamespace="http://schemas.neumont.edu/ORM/2006-01/OIALModel" targetNamespace="" transformFile="RemoveOIAL2006-01.xslt"/>
+		<ds:xmlExtensionConverter description="Upgrade Relational View extension to 2007-11 schema" sourceNamespace="http://schemas.neumont.edu/ORM/Views/RelationalView" targetNamespace="http://schemas.neumont.edu/ORM/2007-11/RelationalView" transformFile="RelationalViewUpgradeTo2007-11.xslt"/>
 	</ds:xmlConverters>
 </ds:settings>

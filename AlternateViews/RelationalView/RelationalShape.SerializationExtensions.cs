@@ -24,11 +24,11 @@ using Neumont.Tools.Modeling.Shell;
 namespace Neumont.Tools.ORM.Views.RelationalView
 {
 	#region RelationalShapeDomainModel model serialization
-	[CustomSerializedXmlNamespaces("http://schemas.neumont.edu/ORM/Views/RelationalView")]
+	[CustomSerializedXmlNamespaces("http://schemas.neumont.edu/ORM/2007-11/RelationalView")]
 	partial class RelationalShapeDomainModel : ICustomSerializedDomainModel
 	{
 		/// <summary>The default XmlNamespace associated with the 'RelationalShapeDomainModel' extension model</summary>
-		public static readonly string XmlNamespace = "http://schemas.neumont.edu/ORM/Views/RelationalView";
+		public static readonly string XmlNamespace = "http://schemas.neumont.edu/ORM/2007-11/RelationalView";
 		/// <summary>Implements ICustomSerializedDomainModel.DefaultElementPrefix</summary>
 		protected static string DefaultElementPrefix
 		{
@@ -49,8 +49,8 @@ namespace Neumont.Tools.ORM.Views.RelationalView
 		{
 			string[,] ret = new string[1, 3];
 			ret[0, 0] = "rvw";
-			ret[0, 1] = "http://schemas.neumont.edu/ORM/Views/RelationalView";
-			ret[0, 2] = "RelationalShape.xsd";
+			ret[0, 1] = "http://schemas.neumont.edu/ORM/2007-11/RelationalView";
+			ret[0, 2] = "RelationalView.xsd";
 			return ret;
 		}
 		string[,] ICustomSerializedDomainModel.GetCustomElementNamespaces()
@@ -62,10 +62,9 @@ namespace Neumont.Tools.ORM.Views.RelationalView
 		{
 			Dictionary<DomainClassInfo, object> retVal = new Dictionary<DomainClassInfo, object>();
 			DomainDataDirectory dataDir = store.DomainDataDirectory;
-			retVal[dataDir.FindDomainRelationship(RelationalModelHasTable.DomainClassId)] = null;
 			retVal[dataDir.FindDomainRelationship(ParentShapeContainsNestedChildShapes.DomainClassId)] = null;
 			retVal[dataDir.FindDomainRelationship(PresentationViewsSubject.DomainClassId)] = null;
-			retVal[dataDir.FindDomainClass(Neumont.Tools.ORM.Views.RelationalView.TableShape.DomainClassId)] = null;
+			retVal[dataDir.FindDomainClass(TableShape.DomainClassId)] = null;
 			return retVal;
 		}
 		private static Dictionary<string, Guid> myClassNameMap;
@@ -89,7 +88,6 @@ namespace Neumont.Tools.ORM.Views.RelationalView
 		protected static Guid[] GetRootElementClasses()
 		{
 			return new Guid[]{
-				RelationalModel.DomainClassId,
 				RelationalDiagram.DomainClassId};
 		}
 		Guid[] ICustomSerializedDomainModel.GetRootElementClasses()
@@ -108,11 +106,7 @@ namespace Neumont.Tools.ORM.Views.RelationalView
 		/// <summary>Implements ICustomSerializedDomainModel.MapRootElement</summary>
 		protected static Guid MapRootElement(string xmlNamespace, string elementName)
 		{
-			if (elementName == "RelationalModel" && xmlNamespace == "http://schemas.neumont.edu/ORM/Views/RelationalView")
-			{
-				return RelationalModel.DomainClassId;
-			}
-			if (elementName == "RelationalDiagram" && xmlNamespace == "http://schemas.neumont.edu/ORM/Views/RelationalView")
+			if (elementName == "RelationalDiagram" && xmlNamespace == "http://schemas.neumont.edu/ORM/2007-11/RelationalView")
 			{
 				return RelationalDiagram.DomainClassId;
 			}
@@ -130,14 +124,13 @@ namespace Neumont.Tools.ORM.Views.RelationalView
 			if (validNamespaces == null)
 			{
 				validNamespaces = new Collection<string>();
-				validNamespaces.Add("http://schemas.neumont.edu/ORM/Views/RelationalView");
+				validNamespaces.Add("http://schemas.neumont.edu/ORM/2007-11/RelationalView");
 				RelationalShapeDomainModel.myValidNamespaces = validNamespaces;
 			}
 			if (classNameMap == null)
 			{
 				classNameMap = new Dictionary<string, Guid>();
 				classNameMap.Add("RelationalDiagram", RelationalDiagram.DomainClassId);
-				classNameMap.Add("RelationalModel", RelationalModel.DomainClassId);
 				RelationalShapeDomainModel.myClassNameMap = classNameMap;
 			}
 			if (validNamespaces.Contains(xmlNamespace) && classNameMap.ContainsKey(elementName))
@@ -296,137 +289,4 @@ namespace Neumont.Tools.ORM.Views.RelationalView
 		}
 	}
 	#endregion // RelationalDiagram serialization
-	#region RelationalModel serialization
-	partial class RelationalModel : ICustomSerializedElement
-	{
-		/// <summary>Implements ICustomSerializedElement.SupportedCustomSerializedOperations</summary>
-		protected CustomSerializedElementSupportedOperations SupportedCustomSerializedOperations
-		{
-			get
-			{
-				return CustomSerializedElementSupportedOperations.PropertyInfo | CustomSerializedElementSupportedOperations.LinkInfo;
-			}
-		}
-		CustomSerializedElementSupportedOperations ICustomSerializedElement.SupportedCustomSerializedOperations
-		{
-			get
-			{
-				return this.SupportedCustomSerializedOperations;
-			}
-		}
-		/// <summary>Implements ICustomSerializedElement.GetCustomSerializedChildElementInfo</summary>
-		protected CustomSerializedContainerElementInfo[] GetCustomSerializedChildElementInfo()
-		{
-			throw new NotSupportedException();
-		}
-		CustomSerializedContainerElementInfo[] ICustomSerializedElement.GetCustomSerializedChildElementInfo()
-		{
-			return this.GetCustomSerializedChildElementInfo();
-		}
-		/// <summary>Implements ICustomSerializedElement.CustomSerializedElementInfo</summary>
-		protected CustomSerializedElementInfo CustomSerializedElementInfo
-		{
-			get
-			{
-				throw new NotSupportedException();
-			}
-		}
-		CustomSerializedElementInfo ICustomSerializedElement.CustomSerializedElementInfo
-		{
-			get
-			{
-				return this.CustomSerializedElementInfo;
-			}
-		}
-		/// <summary>Implements ICustomSerializedElement.GetCustomSerializedPropertyInfo</summary>
-		protected CustomSerializedPropertyInfo GetCustomSerializedPropertyInfo(DomainPropertyInfo domainPropertyInfo, DomainRoleInfo rolePlayedInfo)
-		{
-			if (domainPropertyInfo.Id == RelationalModel.NameDomainPropertyId)
-			{
-				return new CustomSerializedPropertyInfo(null, null, null, false, CustomSerializedAttributeWriteStyle.NotWritten, null);
-			}
-			return CustomSerializedPropertyInfo.Default;
-		}
-		CustomSerializedPropertyInfo ICustomSerializedElement.GetCustomSerializedPropertyInfo(DomainPropertyInfo domainPropertyInfo, DomainRoleInfo rolePlayedInfo)
-		{
-			return this.GetCustomSerializedPropertyInfo(domainPropertyInfo, rolePlayedInfo);
-		}
-		/// <summary>Implements ICustomSerializedElement.GetCustomSerializedLinkInfo</summary>
-		protected CustomSerializedElementInfo GetCustomSerializedLinkInfo(DomainRoleInfo rolePlayedInfo, ElementLink elementLink)
-		{
-			Guid roleId = rolePlayedInfo.Id;
-			if (roleId == RelationalModelHasOIALModel.OIALModelDomainRoleId)
-			{
-				return new CustomSerializedElementInfo(null, "OIALModel", null, CustomSerializedElementWriteStyle.Element, null);
-			}
-			if (roleId == RelationalModelHasTable.TableDomainRoleId)
-			{
-				return new CustomSerializedElementInfo(null, null, null, CustomSerializedElementWriteStyle.NotWritten, null);
-			}
-			if (roleId == PresentationViewsSubject.PresentationDomainRoleId)
-			{
-				return new CustomSerializedElementInfo(null, null, null, CustomSerializedElementWriteStyle.NotWritten, null);
-			}
-			return CustomSerializedElementInfo.Default;
-		}
-		CustomSerializedElementInfo ICustomSerializedElement.GetCustomSerializedLinkInfo(DomainRoleInfo rolePlayedInfo, ElementLink elementLink)
-		{
-			return this.GetCustomSerializedLinkInfo(rolePlayedInfo, elementLink);
-		}
-		/// <summary>Implements ICustomSerializedElement.CustomSerializedChildRoleComparer</summary>
-		protected IComparer<DomainRoleInfo> CustomSerializedChildRoleComparer
-		{
-			get
-			{
-				return null;
-			}
-		}
-		IComparer<DomainRoleInfo> ICustomSerializedElement.CustomSerializedChildRoleComparer
-		{
-			get
-			{
-				return this.CustomSerializedChildRoleComparer;
-			}
-		}
-		private static Dictionary<string, CustomSerializedElementMatch> myChildElementMappings;
-		/// <summary>Implements ICustomSerializedElement.MapChildElement</summary>
-		protected CustomSerializedElementMatch MapChildElement(string elementNamespace, string elementName, string containerNamespace, string containerName, string outerContainerNamespace, string outerContainerName)
-		{
-			Dictionary<string, CustomSerializedElementMatch> childElementMappings = RelationalModel.myChildElementMappings;
-			if (childElementMappings == null)
-			{
-				childElementMappings = new Dictionary<string, CustomSerializedElementMatch>();
-				CustomSerializedElementMatch match = new CustomSerializedElementMatch();
-				match.InitializeRoles(RelationalModelHasOIALModel.OIALModelDomainRoleId);
-				childElementMappings.Add("||||http://schemas.neumont.edu/ORM/Views/RelationalView|OIALModel", match);
-				RelationalModel.myChildElementMappings = childElementMappings;
-			}
-			CustomSerializedElementMatch rVal;
-			childElementMappings.TryGetValue(string.Concat(outerContainerNamespace, "|", outerContainerName, "|", (object)containerNamespace != (object)outerContainerNamespace ? containerNamespace : null, "|", containerName, "|", (object)elementNamespace != (object)containerNamespace ? elementNamespace : null, "|", elementName), out rVal);
-			return rVal;
-		}
-		CustomSerializedElementMatch ICustomSerializedElement.MapChildElement(string elementNamespace, string elementName, string containerNamespace, string containerName, string outerContainerNamespace, string outerContainerName)
-		{
-			return this.MapChildElement(elementNamespace, elementName, containerNamespace, containerName, outerContainerNamespace, outerContainerName);
-		}
-		/// <summary>Implements ICustomSerializedElement.MapAttribute</summary>
-		protected Guid MapAttribute(string xmlNamespace, string attributeName)
-		{
-			return default(Guid);
-		}
-		Guid ICustomSerializedElement.MapAttribute(string xmlNamespace, string attributeName)
-		{
-			return this.MapAttribute(xmlNamespace, attributeName);
-		}
-		/// <summary>Implements ICustomSerializedElement.ShouldSerialize</summary>
-		protected static bool ShouldSerialize()
-		{
-			return true;
-		}
-		bool ICustomSerializedElement.ShouldSerialize()
-		{
-			return ShouldSerialize();
-		}
-	}
-	#endregion // RelationalModel serialization
 }

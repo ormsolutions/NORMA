@@ -137,7 +137,7 @@ namespace Neumont.Tools.ORMAbstractionToConceptualDatabaseBridge
 					{
 						schema.TableCollection.Clear();
 						schema.DomainCollection.Clear();
-						FullyGenerateConceptualDatabaseModel(schema, model);
+						FullyGenerateConceptualDatabaseModel(schema, model, null);
 					}
 				}
 			}

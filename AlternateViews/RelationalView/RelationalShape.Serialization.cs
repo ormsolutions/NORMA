@@ -7,11 +7,16 @@ using Microsoft.VisualStudio.Modeling.Diagrams;
 using Neumont.Tools.Modeling.Design;
 using System.ComponentModel;
 using Neumont.Tools.ORM.ObjectModel;
-using Neumont.Tools.ORM.OIALModel;
+using Microsoft.VisualStudio.Modeling;
+using Neumont.Tools.RelationalModels.ConceptualDatabase;
+using Neumont.Tools.ORMAbstraction;
+using Neumont.Tools.ORMAbstractionToConceptualDatabaseBridge;
+using Neumont.Tools.ORMToORMAbstractionBridge;
+using Neumont.Tools.Modeling.Shell;
 
 namespace Neumont.Tools.ORM.Views.RelationalView
 {
-	internal partial class RelationalDiagram : IXmlSerializable
+	partial class RelationalDiagram : IXmlSerializable
 	{
 		/// <summary>
 		/// The local name of a TableShape element.
@@ -30,13 +35,17 @@ namespace Neumont.Tools.ORM.Views.RelationalView
 		/// </summary>
 		private const string IdAttributeName = "id";
 		/// <summary>
-		/// The local name of a SubjectRef element
+		/// The local name of a SubjectRef attribute
 		/// </summary>
-		private const string SubjectRefElementName = "SubjectRef";
+		private const string SubjectRefAttributeName = "SubjectRef";
 		/// <summary>
 		/// The local name of a RelationalDiagram element.
 		/// </summary>
 		private const string RelationalDiagramElementName = "RelationalDiagram";
+		/// <summary>
+		/// DisplayDataTypes attribute name.
+		/// </summary>
+		private const string DisplayDataTypesAttributeName = "DisplayDataTypes";
 		/// <summary>
 		/// Gets the <see cref="T:System.Xml.Schema.XmlSchema"/> that the custom serialization should conform to.
 		/// </summary>
@@ -56,23 +65,30 @@ namespace Neumont.Tools.ORM.Views.RelationalView
 			string rvNamespace = RelationalShapeDomainModel.XmlNamespace;
 
 			Dictionary<object, object> context = Store.TransactionManager.CurrentTransaction.TopLevelTransaction.Context.ContextInfo;
+			ISerializationContext serializationContext = ((ISerializationContextHost)Store).SerializationContext;
 			object tablePositionsObject;
-			Dictionary<ObjectType, PointD> tablePositions;
-			if (!context.TryGetValue(RelationalModel.TablePositionDictionaryKey, out tablePositionsObject) ||
-				(tablePositions = tablePositionsObject as Dictionary<ObjectType, PointD>) == null)
+			Dictionary<Guid, PointD> tablePositions;
+			if (!context.TryGetValue(TablePositionDictionaryKey, out tablePositionsObject) ||
+				(tablePositions = tablePositionsObject as Dictionary<Guid, PointD>) == null)
 			{
-				context[RelationalModel.TablePositionDictionaryKey] = tablePositions = new Dictionary<ObjectType, PointD>();
+				context[TablePositionDictionaryKey] = tablePositions = new Dictionary<Guid, PointD>();
 			}
 			while (reader.NodeType != XmlNodeType.Element && reader.Read()) ;
-			if (this.Subject == null)
+			if (Subject == null)
 			{
-				this.Associate(Store.ElementDirectory.GetElement(FromXml(reader.GetAttribute("SubjectRef"))));
+				serializationContext.RealizeElementLink(
+					null,
+					this,
+					serializationContext.RealizeElement(reader.GetAttribute(SubjectRefAttributeName), Catalog.DomainClassId, true),
+					PresentationViewsSubject.SubjectDomainRoleId,
+					null);
 			}
+			this.DisplayDataTypes = XmlConvert.ToBoolean(reader.GetAttribute(DisplayDataTypesAttributeName));
 
 			TypeConverter pointConverter = TypeDescriptor.GetConverter(typeof(PointD));
 			while (reader.Read())
 			{
-				ObjectType objectType = null;
+				string objectType = null;
 				PointD? location = null;
 				if (reader.NodeType == XmlNodeType.Element)
 				{
@@ -82,7 +98,7 @@ namespace Neumont.Tools.ORM.Views.RelationalView
 						{
 							if (reader.LocalName == ObjectTypeRefAttributeName)
 							{
-								objectType = (ObjectType)Store.ElementDirectory.GetElement(FromXml(reader.Value));
+								objectType = reader.Value;
 							}
 							else if (reader.LocalName == LocationAttributeName)
 							{
@@ -93,7 +109,7 @@ namespace Neumont.Tools.ORM.Views.RelationalView
 						{
 							throw new InvalidOperationException();
 						}
-						tablePositions[objectType] = location.Value;
+						tablePositions[serializationContext.ResolveElementIdentifier(objectType)] = location.Value;
 					}
 				}
 			}
@@ -109,50 +125,30 @@ namespace Neumont.Tools.ORM.Views.RelationalView
 			//    <TableShape ObjectTypeRef="" Location="x, y" />
 			//    ...
 			// </RelationalDiagram>
+			ISerializationContext serializationContext = ((ISerializationContextHost)Store).SerializationContext;
 			writer.WriteStartElement(RelationalDiagramElementName, rvNamespace);
-			writer.WriteAttributeString(IdAttributeName, ToXml(Id));
-			writer.WriteAttributeString(SubjectRefElementName, ToXml(this.ModelElement.Id));
+			writer.WriteAttributeString(IdAttributeName, serializationContext.GetIdentifierString(Id));
+			writer.WriteAttributeString(DisplayDataTypesAttributeName, XmlConvert.ToString(DisplayDataTypes));
+			writer.WriteAttributeString(SubjectRefAttributeName, serializationContext.GetIdentifierString(this.ModelElement.Id));
 			TypeConverter typeConverter = TypeDescriptor.GetConverter(typeof(PointD));
 			foreach (ShapeElement shapeElement in this.NestedChildShapes)
 			{
 				TableShape tableShape = shapeElement as TableShape;
 				if (tableShape != null)
 				{
-					ConceptType conceptType = ((Table)tableShape.ModelElement).ConceptType;
-					if (conceptType == null)
+					ConceptType conceptType;
+					ObjectType objectType;
+					if (null != (conceptType = TableIsPrimarilyForConceptType.GetConceptType((Table)tableShape.ModelElement)) &&
+						null != (objectType = ConceptTypeIsForObjectType.GetObjectType(conceptType)))
 					{
-						continue;
+						writer.WriteStartElement(TableShapeElementName, rvNamespace);
+						writer.WriteAttributeString(ObjectTypeRefAttributeName, serializationContext.GetIdentifierString(objectType.Id));
+						writer.WriteAttributeString(LocationAttributeName, typeConverter.ConvertToInvariantString(tableShape.Location));
+						writer.WriteEndElement();
 					}
-					ObjectType conceptObjectType = conceptType.ObjectType;
-					if (conceptObjectType == null)
-					{
-						continue;
-					}
-					writer.WriteStartElement(TableShapeElementName, rvNamespace);
-					writer.WriteAttributeString(ObjectTypeRefAttributeName, ToXml(conceptType.ObjectType.Id));
-					writer.WriteAttributeString(LocationAttributeName, typeConverter.ConvertToInvariantString(tableShape.Location));
-					writer.WriteEndElement();
 				}
 			}
 			writer.WriteEndElement();
-		}
-		/// <summary>
-		/// Converts a <see cref="T:System.Guid"/> to a <see cref="T:System.String"/>.
-		/// </summary>
-		/// <param name="guid">The <see cref="T:System.Guid"/> to convert.</param>
-		/// <returns>The <see cref="T:System.String"/> representation of the <see cref="T:System.Guid"/>.</returns>
-		private static string ToXml(Guid guid)
-		{
-			return '_' + XmlConvert.ToString(guid).ToUpperInvariant();
-		}
-		/// <summary>
-		/// Converts a <see cref="T:System.String"/> to a <see cref="T:System.Guid"/>.
-		/// </summary>
-		/// <param name="guidString">The <see cref="T:System.String"/> to convert.</param>
-		/// <returns>The <see cref="T:System.Guid"/> representation of the <see cref="T:System.String"/>.</returns>
-		private static Guid FromXml(string guidString)
-		{
-			return XmlConvert.ToGuid(guidString.Substring(1));
 		}
 	}
 }

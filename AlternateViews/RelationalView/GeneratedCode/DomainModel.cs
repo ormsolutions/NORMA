@@ -31,8 +31,8 @@ namespace Neumont.Tools.ORM.Views.RelationalView
 	/// DomainModel RelationalShapeDomainModel
 	/// Relational View of ORM Model
 	/// </summary>
-	[DslModeling::ExtendsDomainModel("3EAE649F-E654-4D04-8289-C25D2C0322D8"/*Neumont.Tools.ORM.ObjectModel.ORMCoreDomainModel*/)]
-	[DslModeling::ExtendsDomainModel("CD96AA55-FCBC-47D0-93F8-30D3DACC5FF7"/*Neumont.Tools.ORM.OIALModel.OIALMetaModel*/)]
+	[DslModeling::ExtendsDomainModel("005CBD56-3BA5-4947-9F46-5608BD563CED"/*Neumont.Tools.ORMAbstractionToConceptualDatabaseBridge.ORMAbstractionToConceptualDatabaseBridgeDomainModel*/)]
+	[DslModeling::ExtendsDomainModel("1F394F03-8A41-48BC-BDED-2268E131B4A3"/*Neumont.Tools.ORMToORMAbstractionBridge.ORMToORMAbstractionBridgeDomainModel*/)]
 	[DslDesign::DisplayNameResource("Neumont.Tools.ORM.Views.RelationalView.RelationalShapeDomainModel.DisplayName", typeof(global::Neumont.Tools.ORM.Views.RelationalView.RelationalShapeDomainModel), "Neumont.Tools.ORM.Views.RelationalView.GeneratedCode.DomainModelResx")]
 	[DslDesign::DescriptionResource("Neumont.Tools.ORM.Views.RelationalView.RelationalShapeDomainModel.Description", typeof(global::Neumont.Tools.ORM.Views.RelationalView.RelationalShapeDomainModel), "Neumont.Tools.ORM.Views.RelationalView.GeneratedCode.DomainModelResx")]
 	[DslModeling::DomainObjectId("0144a831-92d5-4c42-b7c5-99a5fa9d79df")]
@@ -65,26 +65,10 @@ namespace Neumont.Tools.ORM.Views.RelationalView
 		{
 			return new global::System.Type[]
 			{
-				typeof(RelationalNamedElement),
-				typeof(RelationalModel),
-				typeof(Table),
-				typeof(Column),
-				typeof(Constraint),
-				typeof(ForeignKey),
-				typeof(UniquenessConstraint),
-				typeof(RelationalModelHasTable),
-				typeof(TableHasColumn),
-				typeof(TableHasConstraint),
-				typeof(ConstraintReferencesColumn),
-				typeof(TableReferencesTable),
-				typeof(TableReferenceHasForeignKey),
-				typeof(TableReferencesConceptType),
-				typeof(RelationalModelHasOIALModel),
 				typeof(RelationalDiagram),
 				typeof(ForeignKeyConnector),
 				typeof(TableShape),
 				typeof(global::Neumont.Tools.ORM.Views.RelationalView.FixUpDiagram),
-				typeof(global::Neumont.Tools.ORM.Views.RelationalView.ConnectorRolePlayerChanged),
 				typeof(global::Neumont.Tools.ORM.Views.RelationalView.CompartmentItemAddRule),
 				typeof(global::Neumont.Tools.ORM.Views.RelationalView.CompartmentItemDeleteRule),
 				typeof(global::Neumont.Tools.ORM.Views.RelationalView.CompartmentItemRolePlayerChangeRule),
@@ -100,37 +84,7 @@ namespace Neumont.Tools.ORM.Views.RelationalView
 		{
 			return new DomainMemberInfo[]
 			{
-				new DomainMemberInfo(typeof(RelationalNamedElement), "Name", RelationalNamedElement.NameDomainPropertyId, typeof(RelationalNamedElement.NamePropertyHandler)),
-				new DomainMemberInfo(typeof(RelationalModel), "DisplayDataTypes", RelationalModel.DisplayDataTypesDomainPropertyId, typeof(RelationalModel.DisplayDataTypesPropertyHandler)),
-				new DomainMemberInfo(typeof(Column), "IsMandatory", Column.IsMandatoryDomainPropertyId, typeof(Column.IsMandatoryPropertyHandler)),
-				new DomainMemberInfo(typeof(Column), "DataType", Column.DataTypeDomainPropertyId, typeof(Column.DataTypePropertyHandler)),
-				new DomainMemberInfo(typeof(UniquenessConstraint), "IsPreferred", UniquenessConstraint.IsPreferredDomainPropertyId, typeof(UniquenessConstraint.IsPreferredPropertyHandler)),
-			};
-		}
-		/// <summary>
-		/// Gets the list of generated domain roles.
-		/// </summary>
-		/// <returns>List of role data.</returns>
-		protected sealed override DomainRolePlayerInfo[] GetGeneratedDomainRoles()
-		{
-			return new DomainRolePlayerInfo[]
-			{
-				new DomainRolePlayerInfo(typeof(RelationalModelHasTable), "RelationalModel", RelationalModelHasTable.RelationalModelDomainRoleId),
-				new DomainRolePlayerInfo(typeof(RelationalModelHasTable), "Table", RelationalModelHasTable.TableDomainRoleId),
-				new DomainRolePlayerInfo(typeof(TableHasColumn), "Table", TableHasColumn.TableDomainRoleId),
-				new DomainRolePlayerInfo(typeof(TableHasColumn), "Column", TableHasColumn.ColumnDomainRoleId),
-				new DomainRolePlayerInfo(typeof(TableHasConstraint), "Table", TableHasConstraint.TableDomainRoleId),
-				new DomainRolePlayerInfo(typeof(TableHasConstraint), "Constraint", TableHasConstraint.ConstraintDomainRoleId),
-				new DomainRolePlayerInfo(typeof(ConstraintReferencesColumn), "Constraint", ConstraintReferencesColumn.ConstraintDomainRoleId),
-				new DomainRolePlayerInfo(typeof(ConstraintReferencesColumn), "Column", ConstraintReferencesColumn.ColumnDomainRoleId),
-				new DomainRolePlayerInfo(typeof(TableReferencesTable), "Table", TableReferencesTable.TableDomainRoleId),
-				new DomainRolePlayerInfo(typeof(TableReferencesTable), "ReferencedTable", TableReferencesTable.ReferencedTableDomainRoleId),
-				new DomainRolePlayerInfo(typeof(TableReferenceHasForeignKey), "TableReferencesTable", TableReferenceHasForeignKey.TableReferencesTableDomainRoleId),
-				new DomainRolePlayerInfo(typeof(TableReferenceHasForeignKey), "ForeignKey", TableReferenceHasForeignKey.ForeignKeyDomainRoleId),
-				new DomainRolePlayerInfo(typeof(TableReferencesConceptType), "Table", TableReferencesConceptType.TableDomainRoleId),
-				new DomainRolePlayerInfo(typeof(TableReferencesConceptType), "ConceptType", TableReferencesConceptType.ConceptTypeDomainRoleId),
-				new DomainRolePlayerInfo(typeof(RelationalModelHasOIALModel), "RelationalModel", RelationalModelHasOIALModel.RelationalModelDomainRoleId),
-				new DomainRolePlayerInfo(typeof(RelationalModelHasOIALModel), "OIALModel", RelationalModelHasOIALModel.OIALModelDomainRoleId),
+				new DomainMemberInfo(typeof(RelationalDiagram), "DisplayDataTypes", RelationalDiagram.DisplayDataTypesDomainPropertyId, typeof(RelationalDiagram.DisplayDataTypesPropertyHandler)),
 			};
 		}
 		#endregion
@@ -151,15 +105,10 @@ namespace Neumont.Tools.ORM.Views.RelationalView
 	
 			if (createElementMap == null)
 			{
-				createElementMap = new global::System.Collections.Generic.Dictionary<global::System.Type, int>(10);
-				createElementMap.Add(typeof(RelationalModel), 0);
-				createElementMap.Add(typeof(Table), 1);
-				createElementMap.Add(typeof(Column), 2);
-				createElementMap.Add(typeof(ForeignKey), 3);
-				createElementMap.Add(typeof(UniquenessConstraint), 4);
-				createElementMap.Add(typeof(RelationalDiagram), 5);
-				createElementMap.Add(typeof(ForeignKeyConnector), 6);
-				createElementMap.Add(typeof(TableShape), 7);
+				createElementMap = new global::System.Collections.Generic.Dictionary<global::System.Type, int>(3);
+				createElementMap.Add(typeof(RelationalDiagram), 0);
+				createElementMap.Add(typeof(ForeignKeyConnector), 1);
+				createElementMap.Add(typeof(TableShape), 2);
 			}
 			int index;
 			if (!createElementMap.TryGetValue(elementType, out index))
@@ -168,18 +117,11 @@ namespace Neumont.Tools.ORM.Views.RelationalView
 			}
 			switch (index)
 			{
-				case 0: return new RelationalModel(partition, propertyAssignments);
-				case 1: return new Table(partition, propertyAssignments);
-				case 2: return new Column(partition, propertyAssignments);
-				case 3: return new ForeignKey(partition, propertyAssignments);
-				case 4: return new UniquenessConstraint(partition, propertyAssignments);
 				// A constructor was not generated for RelationalDiagram because it had HasCustomConstructor
 				// set to true. Please provide the constructor below.
-				case 5: return new RelationalDiagram(partition, propertyAssignments);
-				case 6: return new ForeignKeyConnector(partition, propertyAssignments);
-				// A constructor was not generated for TableShape because it had HasCustomConstructor
-				// set to true. Please provide the constructor below.
-				case 7: return new TableShape(partition, propertyAssignments);
+				case 0: return new RelationalDiagram(partition, propertyAssignments);
+				case 1: return new ForeignKeyConnector(partition, propertyAssignments);
+				case 2: return new TableShape(partition, propertyAssignments);
 				default: return null;
 			}
 		}
@@ -202,15 +144,7 @@ namespace Neumont.Tools.ORM.Views.RelationalView
 	
 			if (createElementLinkMap == null)
 			{
-				createElementLinkMap = new global::System.Collections.Generic.Dictionary<global::System.Type, int>(8);
-				createElementLinkMap.Add(typeof(RelationalModelHasTable), 0);
-				createElementLinkMap.Add(typeof(TableHasColumn), 1);
-				createElementLinkMap.Add(typeof(TableHasConstraint), 2);
-				createElementLinkMap.Add(typeof(ConstraintReferencesColumn), 3);
-				createElementLinkMap.Add(typeof(TableReferencesTable), 4);
-				createElementLinkMap.Add(typeof(TableReferenceHasForeignKey), 5);
-				createElementLinkMap.Add(typeof(TableReferencesConceptType), 6);
-				createElementLinkMap.Add(typeof(RelationalModelHasOIALModel), 7);
+				createElementLinkMap = new global::System.Collections.Generic.Dictionary<global::System.Type, int>(0);
 			}
 			int index;
 			if (!createElementLinkMap.TryGetValue(elementLinkType, out index))
@@ -219,14 +153,6 @@ namespace Neumont.Tools.ORM.Views.RelationalView
 			}
 			switch (index)
 			{
-				case 0: return new RelationalModelHasTable(partition, roleAssignments, propertyAssignments);
-				case 1: return new TableHasColumn(partition, roleAssignments, propertyAssignments);
-				case 2: return new TableHasConstraint(partition, roleAssignments, propertyAssignments);
-				case 3: return new ConstraintReferencesColumn(partition, roleAssignments, propertyAssignments);
-				case 4: return new TableReferencesTable(partition, roleAssignments, propertyAssignments);
-				case 5: return new TableReferenceHasForeignKey(partition, roleAssignments, propertyAssignments);
-				case 6: return new TableReferencesConceptType(partition, roleAssignments, propertyAssignments);
-				case 7: return new RelationalModelHasOIALModel(partition, roleAssignments, propertyAssignments);
 				default: return null;
 			}
 		}
@@ -345,7 +271,6 @@ namespace Neumont.Tools.ORM.Views.RelationalView
 			
 			DslModeling::RuleManager ruleManager = store.RuleManager;
 			ruleManager.EnableRule(typeof(global::Neumont.Tools.ORM.Views.RelationalView.FixUpDiagram));
-			ruleManager.EnableRule(typeof(global::Neumont.Tools.ORM.Views.RelationalView.ConnectorRolePlayerChanged));
 			ruleManager.EnableRule(typeof(global::Neumont.Tools.ORM.Views.RelationalView.CompartmentItemAddRule));
 			ruleManager.EnableRule(typeof(global::Neumont.Tools.ORM.Views.RelationalView.CompartmentItemDeleteRule));
 			ruleManager.EnableRule(typeof(global::Neumont.Tools.ORM.Views.RelationalView.CompartmentItemRolePlayerChangeRule));
@@ -362,7 +287,6 @@ namespace Neumont.Tools.ORM.Views.RelationalView
 			
 			DslModeling::RuleManager ruleManager = store.RuleManager;
 			ruleManager.DisableRule(typeof(global::Neumont.Tools.ORM.Views.RelationalView.FixUpDiagram));
-			ruleManager.DisableRule(typeof(global::Neumont.Tools.ORM.Views.RelationalView.ConnectorRolePlayerChanged));
 			ruleManager.DisableRule(typeof(global::Neumont.Tools.ORM.Views.RelationalView.CompartmentItemAddRule));
 			ruleManager.DisableRule(typeof(global::Neumont.Tools.ORM.Views.RelationalView.CompartmentItemDeleteRule));
 			ruleManager.DisableRule(typeof(global::Neumont.Tools.ORM.Views.RelationalView.CompartmentItemRolePlayerChangeRule));
@@ -401,13 +325,6 @@ namespace Neumont.Tools.ORM.Views.RelationalView
 		public RelationalShapeDeleteClosureBase()
 		{
 			#region Initialize DomainData Table
-			DomainRoles.Add(global::Neumont.Tools.ORM.Views.RelationalView.RelationalModelHasTable.TableDomainRoleId, true);
-			DomainRoles.Add(global::Neumont.Tools.ORM.Views.RelationalView.TableHasColumn.ColumnDomainRoleId, true);
-			DomainRoles.Add(global::Neumont.Tools.ORM.Views.RelationalView.TableHasConstraint.ConstraintDomainRoleId, true);
-			DomainRoles.Add(global::Neumont.Tools.ORM.Views.RelationalView.TableReferencesTable.TableDomainRoleId, true);
-			DomainRoles.Add(global::Neumont.Tools.ORM.Views.RelationalView.TableReferenceHasForeignKey.TableReferencesTableDomainRoleId, true);
-			DomainRoles.Add(global::Neumont.Tools.ORM.Views.RelationalView.TableReferencesConceptType.TableDomainRoleId, true);
-			DomainRoles.Add(global::Neumont.Tools.ORM.Views.RelationalView.RelationalModelHasOIALModel.RelationalModelDomainRoleId, true);
 			#endregion
 		}
 		/// <summary>

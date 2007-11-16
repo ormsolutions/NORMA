@@ -16,12 +16,23 @@
 		<arg:CopyrightLine>\**************************************************************************/</arg:CopyrightLine>
 	</arg:Copyright>
 	<arg:Model class="RelationalShapeDomainModel" enableDiagramRules="true">
-		<arg:Rule class="RelationalModel.DelayedOIALModelAddedRule" alwaysOn="true"/>
-		<arg:Rule class="RelationalModel.DelayedConceptTypeAddedRule" alwaysOn="true"/>
-		<arg:Rule class="RelationalModel.DelayedRelationalDiagramAddRule" alwaysOn="true"/>
-		<arg:Rule class="RelationalModel.OIALModelRegenerating" alwaysOn="true"/>
-		<arg:Rule class="RelationalModel.TableShapeAddRule" alwaysOn="true"/>
-		<arg:Rule class="RelationalDiagram.NameChangeRule"/>
+		<arg:RuleContainer class="RelationalDiagram">
+			<arg:ChangeRule methodName="IsNullableChangedRule">
+				<arg:RuleOn targetType="Column" targetTypeQualifier="Neumont.Tools.RelationalModels.ConceptualDatabase"/>
+			</arg:ChangeRule>
+			<arg:ChangeRule methodName="NameChangedRule">
+				<arg:RuleOn targetType="RelationalDiagram"/>
+			</arg:ChangeRule>
+			<arg:AddRule methodName="ReferenceConstraintAddedRule" alwaysOn="true">
+				<arg:RuleOn targetType="ReferenceConstraintTargetsTable" targetTypeQualifier="Neumont.Tools.RelationalModels.ConceptualDatabase" fireTime="TopLevelCommit" priority="DiagramFixupConstants.AddConnectionRulePriority"/>
+			</arg:AddRule>
+			<arg:DeletingRule methodName="ConceptTypeDetachingFromTableRule">
+				<arg:RuleOn targetType="TableIsPrimarilyForConceptType" targetTypeQualifier="Neumont.Tools.ORMAbstractionToConceptualDatabaseBridge"/>
+			</arg:DeletingRule>
+			<arg:DeletingRule methodName="ConceptTypeDetachingFromObjectTypeRule">
+				<arg:RuleOn targetType="ConceptTypeIsForObjectType" targetTypeQualifier="Neumont.Tools.ORMToORMAbstractionBridge"/>
+			</arg:DeletingRule>
+		</arg:RuleContainer>
 		<!-- This is not really a rule, but an element that we want to add to the directory. -->
 		<arg:ReflectedType class="ColumnElementListCompartment"/>
 	</arg:Model>

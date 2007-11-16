@@ -178,24 +178,12 @@
 							</Component>
 
 							<Directory Id="EXTENSIONSDIR" ShortName="Ext" Name="Extensions">
-								<Component Id="NORMAVSOIALModelExtensionComponent" Guid="27157B36-345A-4E11-$(var.VersionGuidSuffix)" DiskId="1" Win64="$(var.Win64)">
-									<File Id="Neumont.Tools.ORM.OIALModel.dll" ShortName="OIALModl.dll" Name="Neumont.Tools.ORM.OIALModel.dll" Source="..\OIALModel\bin\$(var.BuildConfiguration)\Neumont.Tools.ORM.OIALModel.dll"
-										DefaultVersion="$(var.ProductVersion)" DefaultLanguage="0" KeyPath="yes" Assembly=".net" AssemblyManifest="Neumont.Tools.ORM.OIALModel.dll" AssemblyApplication="Neumont.Tools.ORM.OIALModel.dll" ProcessorArchitecture="msil"/>
-									<File Id="Neumont.Tools.ORM.OIALModel.pdb" ShortName="OIALModl.pdb" Name="Neumont.Tools.ORM.OIALModel.pdb" Source="..\OIALModel\bin\$(var.BuildConfiguration)\Neumont.Tools.ORM.OIALModel.pdb"
-										DefaultLanguage="0" CompanionFile="Neumont.Tools.ORM.OIALModel.dll"/>
-									<RegistryKey Action="createAndRemoveOnUninstall" Root="HKLM" Key="$(var.NORMAVSExtensionsRegRoot)\http://schemas.neumont.edu/ORM/2006-01/OIALModel">
-										<RegistryValue Type="string" Name="Class" Value="Neumont.Tools.ORM.OIALModel.OIALDomainModel"/>
-										<RegistryValue Type="string" Name="Assembly" Value="Neumont.Tools.ORM.OIALModel, $(var.BaseAssemblyName)"/>
-										<RegistryValue Type="string" Name="CodeBase" Value="[#Neumont.Tools.ORM.OIALModel.dll]"/>
-									</RegistryKey>
-								</Component>
-
 								<Component Id="NORMAVSRelationalViewExtensionComponent" Guid="EB966776-D5B5-4FFE-$(var.VersionGuidSuffix)" DiskId="1" Win64="$(var.Win64)">
 									<File Id="Neumont.Tools.ORM.Views.RelationalView.dll" ShortName="ReltnlVw.dll" Name="Neumont.Tools.ORM.Views.RelationalView.dll" Source="..\AlternateViews\RelationalView\bin\$(var.BuildConfiguration)\Neumont.Tools.ORM.Views.RelationalView.dll"
 										DefaultVersion="$(var.ProductVersion)" DefaultLanguage="0" KeyPath="yes" Assembly=".net" AssemblyManifest="Neumont.Tools.ORM.Views.RelationalView.dll" AssemblyApplication="Neumont.Tools.ORM.Views.RelationalView.dll" ProcessorArchitecture="msil"/>
 									<File Id="Neumont.Tools.ORM.Views.RelationalView.pdb" ShortName="ReltnlVw.pdb" Name="Neumont.Tools.ORM.Views.RelationalView.pdb" Source="..\AlternateViews\RelationalView\bin\$(var.BuildConfiguration)\Neumont.Tools.ORM.Views.RelationalView.pdb"
 										DefaultLanguage="0" CompanionFile="Neumont.Tools.ORM.Views.RelationalView.dll"/>
-									<RegistryKey Action="createAndRemoveOnUninstall" Root="HKLM" Key="$(var.NORMAVSExtensionsRegRoot)\http://schemas.neumont.edu/ORM/Views/RelationalView">
+									<RegistryKey Action="createAndRemoveOnUninstall" Root="HKLM" Key="$(var.NORMAVSExtensionsRegRoot)\http://schemas.neumont.edu/ORM/2007-11/RelationalView">
 										<RegistryValue Type="string" Name="Class" Value="Neumont.Tools.ORM.Views.RelationalView.RelationalShapeDomainModel"/>
 										<RegistryValue Type="string" Name="Assembly" Value="Neumont.Tools.ORM.Views.RelationalView, $(var.BaseAssemblyName)"/>
 										<RegistryValue Type="string" Name="CodeBase" Value="[#Neumont.Tools.ORM.Views.RelationalView.dll]"/>
@@ -343,6 +331,10 @@
 									<File Id="ORMAbstractionToConceptualDatabase.xsd" ShortName="CDBBr.xsd" Name="ORMAbstractionToConceptualDatabase.xsd" Source="..\RelationalModel\OialDcilBridge\ORMAbstractionToConceptualDatabase.xsd"
 										DefaultLanguage="0" CompanionFile="Neumont.Tools.ORMAbstractionToConceptualDatabaseBridge.dll"/>
 								</Component>
+								<Component Id="NORMAVSRelationalViewSchemaComponent" Guid="18A6CF00-ECD7-4FDA-$(var.VersionGuidSuffix)" DiskId="1" Win64="$(var.Win64)" KeyPath="yes">
+									<File Id="RelationalView.xsd" ShortName="ReltnlVw.xsd" Name="RelationalView.xsd" Source="..\AlternateViews\RelationalView\RelationalView.xsd"
+										DefaultLanguage="0" CompanionFile="Neumont.Tools.ORM.Views.RelationalView.dll"/>
+								</Component>
 							</Directory>
 							<Directory Id="Transforms" ShortName="Trnsfrms" Name="Transforms">
 								<!-- XSLTs specific to NORMA for VS go here. Anything potentially applicable to other programs should go under ORMCOMMONTRANSFORMSDIR or DILCOMMONTRANSFORMSDIR. -->
@@ -365,6 +357,10 @@
 										<File Id="OIALtoORM.xslt" ShortName="OilToOrm.xsl" Name="OIALtoORM.xslt" Source="..\ORMModel\Shell\Converters\OIALtoORM.xslt"
 											DefaultLanguage="0" CompanionFile="Neumont.Tools.ORM.dll"/>
 										<File Id="CustomPropertiesPreviewTo2007_11.xslt" ShortName="CPTo0711.xsl" Name="CustomPropertiesPreviewTo2007-11.xslt" Source="..\ORMModel\Shell\Converters\CustomPropertiesPreviewTo2007-11.xslt"
+											DefaultLanguage="0" CompanionFile="Neumont.Tools.ORM.dll"/>
+										<File Id="RelationalViewUpgradeTo2007_11.xslt" ShortName="RVTo0711.xsl" Name="RelationalViewUpgradeTo2007-11.xslt" Source="..\ORMModel\Shell\Converters\RelationalViewUpgradeTo2007-11.xslt"
+											DefaultLanguage="0" CompanionFile="Neumont.Tools.ORM.dll"/>
+										<File Id="RemoveOIAL2006_01.xslt" ShortName="ROil0601.xsl" Name="RemoveOIAL2006-01.xslt" Source="..\ORMModel\Shell\Converters\RemoveOIAL2006-01.xslt"
 											DefaultLanguage="0" CompanionFile="Neumont.Tools.ORM.dll"/>
 										<RegistryValue Root="HKLM" Key="$(var.NORMAVSRegRoot)" Type="string" Name="ConvertersDir" Value="[Converters]"/>
 									</Component>

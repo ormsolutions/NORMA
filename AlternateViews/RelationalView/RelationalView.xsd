@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <xs:schema
-	targetNamespace="http://schemas.neumont.edu/ORM/Views/RelationalView"
-	xmlns="http://schemas.neumont.edu/ORM/Views/RelationalView"
+	targetNamespace="http://schemas.neumont.edu/ORM/2007-11/RelationalView"
+	xmlns="http://schemas.neumont.edu/ORM/2007-11/RelationalView"
 	xmlns:xs="http://www.w3.org/2001/XMLSchema"
 	elementFormDefault="qualified"
 	attributeFormDefault="unqualified"
@@ -17,19 +17,6 @@
 			3. This notice may not be removed or altered from any source distribution.
 		</xs:appinfo>
 	</xs:annotation>
-	<xs:element name="RelationalModel">
-		<xs:complexType>
-			<xs:sequence>
-				<xs:element name="OIALModel">
-					<xs:complexType>
-						<xs:attribute name="ref" type="xs:IDREF" use="required" />
-					</xs:complexType>
-				</xs:element>
-			</xs:sequence>
-			<xs:attribute name="id" type="xs:ID" use="required"/>
-			<xs:attribute name="DisplayDataTypes" type="xs:boolean" use="required"/>
-		</xs:complexType>
-	</xs:element>
 	<xs:element name="RelationalDiagram">
 		<xs:complexType>
 			<xs:sequence>
@@ -42,6 +29,7 @@
 			</xs:sequence>
 			<xs:attribute name="id" type="xs:ID" use="required"/>
 			<xs:attribute name="SubjectRef" type="xs:IDREF" use="required"/>
+			<xs:attribute name="DisplayDataTypes" type="xs:boolean" use="required"/>
 		</xs:complexType>
 	</xs:element>
 </xs:schema>

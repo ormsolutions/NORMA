@@ -102,7 +102,7 @@ namespace Neumont.Tools.ORM.Shell
 		#endregion //SurveyTreeSetup
 		#region Store services passthrough
 		/// <summary>
-		/// Create a store that implements IORMToolServices by deferring
+		/// Create a store that implements <see cref="IORMToolServices"/> by deferring
 		/// all methods to this document.
 		/// </summary>
 		protected override Store CreateStore()
@@ -113,7 +113,7 @@ namespace Neumont.Tools.ORM.Shell
 		/// A store implementation that defers all services to the
 		/// owning document.
 		/// </summary>
-		protected class ORMStore : Store, IORMToolServices, IModelingEventManagerProvider
+		protected class ORMStore : Store, IORMToolServices, IModelingEventManagerProvider, ISerializationContextHost
 		{
 			#region Member Variables
 			private readonly IORMToolServices myServices;
@@ -169,7 +169,7 @@ namespace Neumont.Tools.ORM.Shell
 			}
 			/// <summary>
 			/// Defer to TaskProvider on the document. Implements
-			/// IORMToolServices.TaskProvider
+			/// <see cref="IORMToolServices.TaskProvider"/>
 			/// </summary>
 			protected IORMToolTaskProvider TaskProvider
 			{
@@ -187,7 +187,7 @@ namespace Neumont.Tools.ORM.Shell
 			}
 			/// <summary>
 			/// Defer to ColorService on the document. Implements
-			/// IORMToolServices.ColorService
+			/// <see cref="IORMToolServices.FontAndColorService"/>
 			/// </summary>
 			protected IORMFontAndColorService FontAndColorService
 			{
@@ -205,7 +205,7 @@ namespace Neumont.Tools.ORM.Shell
 			}
 			/// <summary>
 			/// Defer to ServiceProvider on the document. Implements
-			/// IORMToolServices.ServiceProvider
+			/// <see cref="IORMToolServices.ServiceProvider"/>
 			/// </summary>
 			protected IServiceProvider ServiceProvider
 			{
@@ -223,7 +223,7 @@ namespace Neumont.Tools.ORM.Shell
 			}
 			/// <summary>
 			/// Defer to GetVerbalizationSnippetsDictionary on the document. Implements
-			/// IORMToolServices.GetVerbalizationSnippetsDictionary
+			/// <see cref="IORMToolServices.GetVerbalizationSnippetsDictionary"/>
 			/// </summary>
 			protected IDictionary<Type, IVerbalizationSets> GetVerbalizationSnippetsDictionary(string target)
 			{
@@ -235,7 +235,7 @@ namespace Neumont.Tools.ORM.Shell
 			}
 			/// <summary>
 			/// Defer to VerbalizationTargets on the document. Implements
-			/// IORMToolServices.VerbalizationTargets
+			/// <see cref="IORMToolServices.VerbalizationTargets"/>
 			/// </summary>
 			protected IDictionary<string, VerbalizationTargetData> VerbalizationTargets
 			{
@@ -283,7 +283,7 @@ namespace Neumont.Tools.ORM.Shell
 			}
 			/// <summary>
 			/// Defer to CanAddTransaction on the document. Implements
-			/// IORMToolServices.CanAddTransaction
+			/// <see cref="IORMToolServices.CanAddTransaction"/>
 			/// </summary>
 			protected bool CanAddTransaction
 			{
@@ -309,7 +309,7 @@ namespace Neumont.Tools.ORM.Shell
 			}
 			/// <summary>
 			/// Defer to ActivateShape on the document. Implements
-			/// IORMToolServices.ActivateShape
+			/// <see cref="IORMToolServices.ActivateShape"/>
 			/// </summary>
 			protected bool ActivateShape(ShapeElement shape)
 			{
@@ -322,7 +322,7 @@ namespace Neumont.Tools.ORM.Shell
 			#endregion // IORMToolServices Implementation
 			#region IModelingEventManagerProvider Implementation
 			/// <summary>  
-			/// Implements IModelingEventManagerProvider.ModelingEventManager  
+			/// Implements <see cref="IModelingEventManagerProvider.ModelingEventManager"/>
 			/// </summary>  
 			protected ModelingEventManager ModelingEventManager
 			{
@@ -339,6 +339,34 @@ namespace Neumont.Tools.ORM.Shell
 				}
 			}
 			#endregion // IModelingEventManagerProvider Implementation
+			#region ISerializationContextHost Implementation
+			private ISerializationContext mySerializationContext;
+			/// <summary>
+			/// Implements <see cref="ISerializationContextHost.SerializationContext"/>
+			/// </summary>
+			protected ISerializationContext SerializationContext
+			{
+				get
+				{
+					return mySerializationContext;
+				}
+				set
+				{
+					mySerializationContext = value;
+				}
+			}
+			ISerializationContext ISerializationContextHost.SerializationContext
+			{
+				get
+				{
+					return SerializationContext;
+				}
+				set
+				{
+					SerializationContext = value;
+				}
+			}
+			#endregion // ISerializationContextHost Implementation
 		}
 		/// <summary>See <see cref="ModelingDocData.CreateModelingDocStore"/>.</summary>
 		protected override ModelingDocStore CreateModelingDocStore(Store store)
@@ -776,7 +804,7 @@ namespace Neumont.Tools.ORM.Shell
 			#endregion // Dynamic Microsoft.VisualStudio.Modeling.UndoManager.TopmostRedoableTransaction implementation
 			#region IOleUndoUnit Implementation
 			/// <summary>
-			/// Implements IOleUndoUnit.Do
+			/// Implements <see cref="Microsoft.VisualStudio.OLE.Interop.IOleUndoUnit.Do"/>
 			/// </summary>
 			protected new void Do(MSOLE.IOleUndoManager undoManager)
 			{
@@ -879,7 +907,7 @@ namespace Neumont.Tools.ORM.Shell
 				Do(undoManager);
 			}
 			/// <summary>
-			/// Implements IOleUndoUnit.GetDescription
+			/// Implements <see cref="Microsoft.VisualStudio.OLE.Interop.IOleUndoUnit.GetDescription"/>
 			/// </summary>
 			protected new void GetDescription(out string description)
 			{
@@ -895,7 +923,7 @@ namespace Neumont.Tools.ORM.Shell
 				GetDescription(out description);
 			}
 			/// <summary>
-			/// Implements IOleUndoUnit.GetUnitType
+			/// Implements <see cref="Microsoft.VisualStudio.OLE.Interop.IOleUndoUnit.GetUnitType"/>
 			/// </summary>
 			protected new static void GetUnitType(out Guid unitGuid, out int unitId)
 			{
@@ -907,7 +935,7 @@ namespace Neumont.Tools.ORM.Shell
 				GetUnitType(out unitGuid, out unitId);
 			}
 			/// <summary>
-			/// Implements IOleUndoUnit.OnNextAdd
+			/// Implements <see cref="Microsoft.VisualStudio.OLE.Interop.IOleUndoUnit.OnNextAdd"/>
 			/// </summary>
 			protected new static void OnNextAdd()
 			{
@@ -1136,7 +1164,7 @@ namespace Neumont.Tools.ORM.Shell
 		/// <summary>
 		/// Retrieve the task provider for this document. Created
 		/// on demand using the CreateTaskProvider method. Implements
-		/// IORMToolServices.TaskProvider.
+		/// <see cref="IORMToolServices.TaskProvider"/>
 		/// </summary>
 		protected IORMToolTaskProvider TaskProvider
 		{
@@ -1160,7 +1188,7 @@ namespace Neumont.Tools.ORM.Shell
 		/// <summary>
 		/// Get the color service for this document Defers to
 		/// the packages color service. Implements
-		/// IORMToolServices.ColorService
+		/// <see cref="IORMToolServices.FontAndColorService"/>
 		/// </summary>
 		protected static IORMFontAndColorService FontAndColorService
 		{
@@ -1507,7 +1535,7 @@ namespace Neumont.Tools.ORM.Shell
 			#endregion // Constructors
 			#region IORMToolTaskProvider Implementation
 			/// <summary>
-			/// Implements IORMToolTaskProvider.CreateTask
+			/// Implements <see cref="IORMToolTaskProvider.CreateTask"/>
 			/// </summary>
 			/// <returns>IORMToolTaskItem</returns>
 			protected IORMToolTaskItem CreateTask()
@@ -1534,7 +1562,7 @@ namespace Neumont.Tools.ORM.Shell
 			}
 
 			/// <summary>
-			/// Implements IORMToolTaskProvider.AddTask
+			/// Implements <see cref="IORMToolTaskProvider.AddTask"/>
 			/// </summary>
 			/// <param name="task">IORMToolTaskItem created by CreateTask</param>
 			protected void AddTask(IORMToolTaskItem task)
@@ -1547,7 +1575,7 @@ namespace Neumont.Tools.ORM.Shell
 			}
 
 			/// <summary>
-			/// Implements IORMToolTaskProvider.RemoveTask
+			/// Implements <see cref="IORMToolTaskProvider.RemoveTask"/>
 			/// </summary>
 			/// <param name="task">IORMToolTaskItem previously added by AddTask</param>
 			protected void RemoveTask(IORMToolTaskItem task)
@@ -1560,7 +1588,7 @@ namespace Neumont.Tools.ORM.Shell
 			}
 
 			/// <summary>
-			/// Implements IORMToolTaskProvider.RemoveAllTasks
+			/// Implements <see cref="IORMToolTaskProvider.RemoveAllTasks"/>
 			/// </summary>
 			protected void RemoveAllTasks()
 			{
@@ -1571,7 +1599,7 @@ namespace Neumont.Tools.ORM.Shell
 				RemoveAllTasks();
 			}
 			/// <summary>
-			/// Implements IORMToolTaskProvider.NavigateTo;
+			/// Implements <see cref="IORMToolTaskProvider.NavigateTo"/>
 			/// </summary>
 			/// <param name="task"></param>
 			/// <returns></returns>
@@ -1828,7 +1856,7 @@ namespace Neumont.Tools.ORM.Shell
 			#endregion // Constructors
 			#region IORMToolTaskItem Implementation
 			/// <summary>
-			/// Implements IORMToolTaskItem.ElementLocator property
+			/// Implements <see cref="IORMToolTaskItem.ElementLocator"/> property
 			/// </summary>
 			protected IRepresentModelElements ElementLocator
 			{
@@ -1841,7 +1869,7 @@ namespace Neumont.Tools.ORM.Shell
 				set { ElementLocator = value; }
 			}
 			/// <summary>
-			/// Implements IORMToolTaskItem.Text property
+			/// Implements <see cref="IORMToolTaskItem.Text"/> property
 			/// </summary>
 			protected new string Text
 			{

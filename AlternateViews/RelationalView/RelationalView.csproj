@@ -50,9 +50,24 @@
       <HintPath>$(ProgramFiles)\Neumont\ORM Architect for Visual Studio\bin\Neumont.Tools.ORM.dll</HintPath>
       <Private>False</Private>
     </Reference>
-    <Reference Include="Neumont.Tools.ORM.OIALModel, Version=1.0.0.0, Culture=neutral, PublicKeyToken=957d5b7d5e79e25f, processorArchitecture=MSIL">
+    <Reference Include="Neumont.Tools.RelationalModels, Version=1.0.0.0, Culture=neutral, PublicKeyToken=957d5b7d5e79e25f, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
-      <HintPath>$(ProgramFiles)\Neumont\ORM Architect for Visual Studio\bin\Extensions\Neumont.Tools.ORM.OIALModel.dll</HintPath>
+      <HintPath>$(ProgramFiles)\Neumont\ORM Architect for Visual Studio\bin\Extensions\Neumont.Tools.RelationalModels.dll</HintPath>
+      <Private>False</Private>
+    </Reference>
+    <Reference Include="Neumont.Tools.ORMAbstraction, Version=1.0.0.0, Culture=neutral, PublicKeyToken=957d5b7d5e79e25f, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>$(ProgramFiles)\Neumont\ORM Architect for Visual Studio\bin\Extensions\Neumont.Tools.ORMAbstraction.dll</HintPath>
+      <Private>False</Private>
+    </Reference>
+    <Reference Include="Neumont.Tools.ORMAbstractionToConceptualDatabaseBridge, Version=1.0.0.0, Culture=neutral, PublicKeyToken=957d5b7d5e79e25f, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>$(ProgramFiles)\Neumont\ORM Architect for Visual Studio\bin\Extensions\Neumont.Tools.ORMAbstractionToConceptualDatabaseBridge.dll</HintPath>
+      <Private>False</Private>
+    </Reference>
+    <Reference Include="Neumont.Tools.ORMToORMAbstractionBridge, Version=1.0.0.0, Culture=neutral, PublicKeyToken=957d5b7d5e79e25f, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>$(ProgramFiles)\Neumont\ORM Architect for Visual Studio\bin\Extensions\Neumont.Tools.ORMToORMAbstractionBridge.dll</HintPath>
       <Private>False</Private>
     </Reference>
     <Reference Include="System" />
@@ -68,7 +83,7 @@
       <SubType>Designer</SubType>
       <DesignTime>True</DesignTime>
     </EmbeddedResource>
-    <EmbeddedResource Include="RelationalShape.xsd">
+    <EmbeddedResource Include="RelationalView.xsd">
       <SubType>Designer</SubType>
     </EmbeddedResource>
     <EmbeddedResource Include="ShapeModel\RelationalDiagram.resx">
@@ -118,8 +133,6 @@
     </None>
     <None Include="RelationalShape.dsl" />
     <None Include="Plix.xml">
-      <Generator>NUPlixLoader</Generator>
-      <LastGenOutput>Plix.cs</LastGenOutput>
     </None>
     <Content Include="RelationalShape.AttachRules.xml">
       <Generator>NUPlixLoader</Generator>
@@ -175,10 +188,6 @@
       <AutoGen>True</AutoGen>
       <DesignTime>True</DesignTime>
       <DependentUpon>ToolboxHelper.tt</DependentUpon>
-    </Compile>
-    <Compile Include="Plix.cs">
-      <AutoGen>True</AutoGen>
-      <DependentUpon>Plix.xml</DependentUpon>
     </Compile>
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="RelationalShape.AttachRules.cs">

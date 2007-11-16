@@ -380,6 +380,7 @@ namespace Neumont.Tools.ORM.ObjectModel
 		void IXmlSerializable.ReadXml(XmlReader reader)
 		{
 			string XmlNamespace = ORMCoreDomainModel.XmlNamespace;
+			ISerializationContext serializationContext = ((ISerializationContextHost)Store).SerializationContext;
 
 			while (reader.Read())
 			{
@@ -388,7 +389,7 @@ namespace Neumont.Tools.ORM.ObjectModel
 				{
 					if (reader.LocalName == XMLElement && reader.NamespaceURI == XmlNamespace)
 					{
-						Model = (ORMModel)Store.ElementDirectory.FindElement(new Guid(reader.GetAttribute(XMLModelReferenceAttribute).Substring(1)));
+						Model = (ORMModel)serializationContext.RealizeElement(reader.GetAttribute(XMLModelReferenceAttribute), ORMModel.DomainClassId, true);
 						if (!reader.IsEmptyElement)
 						{
 							Dictionary<string, string> namespaces = null;

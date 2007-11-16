@@ -7,4 +7,5 @@
 	<Schema targetNamespace="http://schemas.neumont.edu/ORM/Bridge/2007-06/ORMToORMAbstraction" href="ORMToORMAbstraction.xsd"/>
 	<Schema targetNamespace="http://schemas.neumont.edu/ORM/Relational/2007-06/ConceptualDatabase" href="ConceptualDatabase.xsd"/>
 	<Schema targetNamespace="http://schemas.neumont.edu/ORM/Bridge/2007-06/ORMAbstractionToConceptualDatabase" href="ORMAbstractionToConceptualDatabase.xsd"/>
+	<Schema targetNamespace="http://schemas.neumont.edu/ORM/2007-11/RelationalView" href="RelationalView.xsd"/>
 </SchemaCatalog>

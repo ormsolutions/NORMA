@@ -18,39 +18,15 @@ using System;
 using System.Collections.Generic;
 using Microsoft.VisualStudio.Modeling;
 using Microsoft.VisualStudio.Modeling.Diagrams;
+using Neumont.Tools.RelationalModels.ConceptualDatabase;
+using Neumont.Tools.ORM.ObjectModel;
+using Neumont.Tools.Modeling;
 
 namespace Neumont.Tools.ORM.Views.RelationalView
 {
-	internal partial class TableShape
+	partial class TableShape
 	{
-		/// <summary>
-		/// Constructor
-		/// </summary>
-		/// <param name="store">Store where new element is to be created.</param>
-		/// <param name="propertyAssignments">List of domain property id/value pairs to set once the element is created.</param>
-		public TableShape(Store store, params PropertyAssignment[] propertyAssignments)
-			: this(store != null ? store.DefaultPartition : null, propertyAssignments)
-		{
-		}
-		/// <summary>
-		/// Constructor
-		/// </summary>
-		/// <param name="partition">Partition where new element is to be created.</param>
-		/// <param name="propertyAssignments">List of domain property id/value pairs to set once the element is created.</param>
-		public TableShape(Partition partition, params PropertyAssignment[] propertyAssignments)
-			: base(partition, propertyAssignments)
-		{
-			// HACK: At this point in the transaction, the commit time rules have been fired, which
-			// includes the Microsoft.VisualStudio.Modeling.Diagrams.ShapeSizeChangeRule. This rule
-			// checks whether the Diagram of the current shape support ports. However, the diagram
-			// for this shape does not get initialized until after the size has been set. We temporarily
-			// disable this rule until a better solution can be found.
-			RuleManager ruleManager = partition.Store.RuleManager;
-			Type shapeSizeChangeRuleType = typeof(ShapeElement).Assembly.GetType("Microsoft.VisualStudio.Modeling.Diagrams.ShapeSizeChangeRule", true, false);
-			ruleManager.DisableRule(shapeSizeChangeRuleType);
-			AbsoluteBounds = new RectangleD(PointD.Empty, DefaultSize);
-			ruleManager.EnableRule(shapeSizeChangeRuleType);
-		}
+		#region Customize Appearance
 		/// <summary>
 		/// Gets whether the <see cref="T:Neumont.Tools.ORM.Views.RelationalView.TableShape"/> can be expanded or collapsed.
 		/// </summary>
@@ -103,10 +79,12 @@ namespace Neumont.Tools.ORM.Views.RelationalView
 				return NodeSides.None;
 			}
 		}
+		#endregion // Customize Appearance
+		#region TableTextField class
 		/// <summary>
 		/// A custom <see cref="T:Microsoft.VisualStudio.Modeling.Diagrams.TextField"/> that disallows selection and focus of the element.
 		/// </summary>
-		private class TableTextField : TextField
+		private sealed class TableTextField : TextField
 		{
 			/// <summary>
 			/// Gets whether the <see cref="T:Neumont.Tools.ORM.Views.RelationalView.TableTextField" /> is selectable.
@@ -136,5 +114,6 @@ namespace Neumont.Tools.ORM.Views.RelationalView
 
 			}
 		}
+		#endregion // TableTextField class
 	}
 }

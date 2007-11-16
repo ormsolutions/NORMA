@@ -14,10 +14,17 @@
 \**************************************************************************/
 #endregion
 
+using Microsoft.VisualStudio.Modeling.Diagrams;
+using Neumont.Tools.RelationalModels.ConceptualDatabase;
+using System.Text;
+using Neumont.Tools.ORM.ObjectModel;
+using Microsoft.VisualStudio.Modeling;
+using Neumont.Tools.Modeling;
 namespace Neumont.Tools.ORM.Views.RelationalView
 {
-	internal partial class ForeignKeyConnector
+	partial class ForeignKeyConnector
 	{
+		#region Customize appearance
 		/// <summary>
 		/// Overridden to disallow selection of this <see cref="T:Neumont.Tools.ORM.Views.RelationalView.ForeignKeyConnector"/>.
 		/// </summary>
@@ -42,5 +49,35 @@ namespace Neumont.Tools.ORM.Views.RelationalView
 				return false;
 			}
 		}
+		/// <summary>
+		/// Turn on tooltips to show column relationships
+		/// </summary>
+		public override bool HasToolTip
+		{
+			get
+			{
+				return true;
+			}
+		}
+		/// <summary>
+		/// Indicate the source/target columns for the foreign key connector
+		/// </summary>
+		public override string GetToolTipText(DiagramItem item)
+		{
+			ReferenceConstraint constraint = ((ReferenceConstraintTargetsTable)ModelElement).ReferenceConstraint;
+			StringBuilder sb = new StringBuilder();
+			foreach (ColumnReference columRef in constraint.ColumnReferenceCollection)
+			{
+				if (sb.Length != 0)
+				{
+					sb.AppendLine();
+				}
+				sb.Append(columRef.SourceColumn.Name);
+				sb.Append(" -> ");
+				sb.Append(columRef.TargetColumn.Name);
+			}
+			return sb.ToString();
+		}
+		#endregion // Customize appearance
 	}
 }

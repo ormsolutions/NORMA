@@ -36,8 +36,7 @@ using System.Text;
 using System.Threading;
 using System.Xml;
 using System.Xml.Schema;
-using System.Xml.XPath;
-using System.Xml.Xsl;
+using System.Xml.Serialization;
 using Microsoft.VisualStudio.Modeling;
 using Microsoft.VisualStudio.Modeling.Design;
 using Microsoft.VisualStudio.Modeling.Diagrams;
@@ -1194,6 +1193,73 @@ namespace Neumont.Tools.Modeling.Shell
 	#endregion // CustomSerializedStandaloneRelationship struct
 	#endregion // Public Structures
 	#region Public Interfaces
+	#region ISerializationContext interface
+	/// <summary>
+	/// A service interface used to enable custom implementations
+	/// of <see cref="IXmlSerializable"/> to cleanly participate in order-independent
+	/// single-pass loading where the status (created or not yet created)
+	/// of referenced elements is not known. The context store for this serializer
+	/// must implement <see cref="ISerializationContextHost"/> to make this
+	/// information available.
+	/// </summary>
+	public interface ISerializationContext
+	{
+		/// <summary>
+		/// Get a normalized string form of the provided <see cref="Guid"/> identifier.
+		/// May be used during serialization.
+		/// </summary>
+		string GetIdentifierString(Guid id);
+		/// <summary>
+		/// Get the <see cref="Guid"/> identifier that corresponds to the
+		/// provided <paramref name="idValue"/>. Used during deserialization.
+		/// </summary>
+		/// <param name="idValue">The string identifier. This may or may not
+		/// be a Guid value. Any identifier unique across the file will do.</param>
+		/// <returns>The same <see cref="Guid"/> for all requests of this <paramref name="idValue"/></returns>
+		Guid ResolveElementIdentifier(string idValue);
+		/// <summary>
+		/// Get an element of the specified type and identifier. If the element
+		/// is created as a reference, then there is no guarantee that the returned
+		/// element will be the final form of this element or that the <see cref="ModelElement.Id"/>
+		/// of the returned element matches the requested <paramref name="idValue"/>.
+		/// May be used during deserialization.
+		/// </summary>
+		/// <param name="idValue">An identifier value unique across the file.</param>
+		/// <param name="domainClassIdentifier">The identifier of the <see cref="DomainClassInfo"/> for
+		/// the element to create.</param>
+		/// <param name="isReference">Determine if the element is being primarily created or referenced.</param>
+		/// <returns>A corresponding <see cref="ModelElement"/>. If <paramref name="isReference"/> is <see langword="true"/>,
+		/// then the returned element should never be cached. A subsequent call with the same parameter values
+		/// can be made at any time to efficiently retrieve the current element for this identifier.</returns>
+		ModelElement RealizeElement(string idValue, Guid domainClassIdentifier, bool isReference);
+		/// <summary>
+		/// Create an element link after verifying that the link needs to be created. May be
+		/// used during deserialization.
+		/// </summary>
+		/// <param name="idValue">The value of the id for the link, or null</param>
+		/// <param name="rolePlayer">The near role player</param>
+		/// <param name="oppositeRolePlayer">The opposite role player</param>
+		/// <param name="oppositeDomainRoleInfoId">The identifier for the opposite <see cref="DomainRoleInfo"/></param>
+		/// <param name="explicitDomainRelationshipInfoId">The relationship type to create.
+		/// Derived from <paramref name="oppositeDomainRoleInfoId"/> if not specified.</param>
+		/// <returns>The newly created element link</returns>
+		ElementLink RealizeElementLink(string idValue, ModelElement rolePlayer, ModelElement oppositeRolePlayer, Guid oppositeDomainRoleInfoId, Guid? explicitDomainRelationshipInfoId);
+	}
+	#endregion // ISerializationContext interface
+	#region ISerializationContextHost interface
+	/// <summary>
+	/// Implement on the context <see cref="Store"/> passed to the <see cref="SerializationEngine"/>
+	/// constructor to enable <see cref="IXmlSerializable"/> elements to participate in order-independent
+	/// single-pass loading.
+	/// </summary>
+	public interface ISerializationContextHost
+	{
+		/// <summary>
+		/// The current serialization context
+		/// </summary>
+		ISerializationContext SerializationContext { get; set;}
+	}
+	#endregion // ISerializationContextHost interface
 	#region IDomainModelEnablesRulesAfterDeserialization interface
 	/// <summary>
 	/// Interface implemented on a DomainModel to enable
@@ -2445,8 +2511,63 @@ namespace Neumont.Tools.Modeling.Shell
 			SerializeElement(file, element, null, null, serializeExtraAttributes, ref containerName);
 			return;
 		}
+		#region SaveSerializationContext class
+		private sealed class SaveSerializationContext : ISerializationContext, IDisposable
+		{
+			#region Public initialization
+			/// <summary>
+			/// Create a serialization context if it is supported by the current store
+			/// </summary>
+			/// <param name="engine">The parent <see cref="SerializationEngine"/></param>
+			/// <returns>A <see cref="ISerializationContext"/> implementation if the host <see cref="Store"/>
+			/// supports <see cref="ISerializationContextHost"/>. Otherwise <see langword="null"/></returns>
+			public static SaveSerializationContext InitializeContext(SerializationEngine engine)
+			{
+				ISerializationContextHost host = engine.myStore as ISerializationContextHost;
+				return (host != null) ? new SaveSerializationContext(engine, host) : null;
+			}
+			#endregion // Public initialization
+			#region Member variables and constructors
+			private SerializationEngine myEngine;
+			private ISerializationContextHost myHost;
+			private SaveSerializationContext(SerializationEngine engine, ISerializationContextHost host)
+			{
+				myEngine = engine;
+				myHost = host;
+				host.SerializationContext = this;
+			}
+			#endregion // Member variables and constructors
+			#region IDisposable Implementation
+			void IDisposable.Dispose()
+			{
+				myHost.SerializationContext = null;
+			}
+			#endregion // IDisposable Implementation
+			#region ISerializationContext Implementation
+			string ISerializationContext.GetIdentifierString(Guid id)
+			{
+				return ToXml(id);
+			}
+			Guid ISerializationContext.ResolveElementIdentifier(string idValue)
+			{
+				// Only support during load, not save
+				throw new InvalidOperationException();
+			}
+			ModelElement ISerializationContext.RealizeElement(string idValue, Guid domainClassIdentifier, bool isReference)
+			{
+				// Only support during load, not save
+				throw new InvalidOperationException();
+			}
+			ElementLink ISerializationContext.RealizeElementLink(string idValue, ModelElement rolePlayer, ModelElement oppositeRolePlayer, Guid oppositeDomainRoleInfoId, Guid? explicitDomainRelationshipInfoId)
+			{
+				// Only support during load, not save
+				throw new InvalidOperationException();
+			}
+			#endregion // ISerializationContext Implementation
+		}
+		#endregion // LoadSerializationContext class
 		/// <summary>
-		/// New XML Serialization
+		/// Save the store contents to the provided <see cref="Stream"/>
 		/// </summary>
 		public void Save(Stream stream)
 		{
@@ -2473,127 +2594,130 @@ namespace Neumont.Tools.Modeling.Shell
 				}
 			}
 
-			//serialize all root elements
-			IElementDirectory elementDir = myStore.ElementDirectory;
-			DomainDataDirectory dataDir = myStore.DomainDataDirectory;
-			foreach (ICustomSerializedDomainModel ns in Utility.EnumerateDomainModels<ICustomSerializedDomainModel>(values))
+			using (SaveSerializationContext serializationContext = SaveSerializationContext.InitializeContext(this))
 			{
-				Guid[] metaClasses = ns.GetRootElementClasses();
-				if (metaClasses != null)
+				//serialize all root elements
+				IElementDirectory elementDir = myStore.ElementDirectory;
+				DomainDataDirectory dataDir = myStore.DomainDataDirectory;
+				foreach (ICustomSerializedDomainModel ns in Utility.EnumerateDomainModels<ICustomSerializedDomainModel>(values))
 				{
-					for (int i = 0; i < metaClasses.Length; ++i)
+					Guid[] metaClasses = ns.GetRootElementClasses();
+					if (metaClasses != null)
 					{
-						DomainClassInfo classInfo = dataDir.GetDomainClass(metaClasses[i]);
-						ReadOnlyCollection<ModelElement> elements = elementDir.FindElements(classInfo);
-						int elementCount = elements.Count;
-						for (int j = 0; j < elementCount; ++j)
+						for (int i = 0; i < metaClasses.Length; ++i)
 						{
-							ModelElement element = elements[j];
-							System.Xml.Serialization.IXmlSerializable serializableElement = element as System.Xml.Serialization.IXmlSerializable;
-							if (serializableElement != null)
+							DomainClassInfo classInfo = dataDir.GetDomainClass(metaClasses[i]);
+							ReadOnlyCollection<ModelElement> elements = elementDir.FindElements(classInfo);
+							int elementCount = elements.Count;
+							for (int j = 0; j < elementCount; ++j)
 							{
-								serializableElement.WriteXml(file);
-							}
-							else
-							{
-								SerializeElement(file, element);
+								ModelElement element = elements[j];
+								IXmlSerializable serializableElement = element as IXmlSerializable;
+								if (serializableElement != null)
+								{
+									serializableElement.WriteXml(file);
+								}
+								else
+								{
+									SerializeElement(file, element);
+								}
 							}
 						}
 					}
-				}
-				CustomSerializedRootRelationshipContainer[] rootContainers = ns.GetRootRelationshipContainers();
-				if (rootContainers != null)
-				{
-					Dictionary<ModelElement, ModelElement> linksBySource = null;
-					for (int i = 0; i < rootContainers.Length; ++i)
+					CustomSerializedRootRelationshipContainer[] rootContainers = ns.GetRootRelationshipContainers();
+					if (rootContainers != null)
 					{
-						CustomSerializedRootRelationshipContainer container = rootContainers[i];
-						file.WriteStartElement(container.ContainerPrefix, container.ContainerName, container.ContainerNamespace);
-
-						CustomSerializedStandaloneRelationship[] relationships = container.GetRelationshipClasses();
-						for (int j = 0; j < relationships.Length; ++j)
+						Dictionary<ModelElement, ModelElement> linksBySource = null;
+						for (int i = 0; i < rootContainers.Length; ++i)
 						{
-							CustomSerializedStandaloneRelationship relationship = relationships[j];
-							DomainRelationshipInfo relationshipInfo = dataDir.GetDomainClass(relationship.DomainClassId) as DomainRelationshipInfo;
-							ReadOnlyCollection<ModelElement> allRelationshipElements = elementDir.FindElements(relationshipInfo);
+							CustomSerializedRootRelationshipContainer container = rootContainers[i];
+							file.WriteStartElement(container.ContainerPrefix, container.ContainerName, container.ContainerNamespace);
 
-							// This collection is very randomly order. To maintain order within the relationship, find
-							// all of the unique source elements and requery to get the ordered targets for that element.
-							// UNDONE: Do we want to specify if we should key off the source, target, or not at all in
-							// the serialization specs?
-							int allElementCount = allRelationshipElements.Count;
-							if (allElementCount == 0)
+							CustomSerializedStandaloneRelationship[] relationships = container.GetRelationshipClasses();
+							for (int j = 0; j < relationships.Length; ++j)
 							{
-								continue;
-							}
-							if (linksBySource == null)
-							{
-								linksBySource = new Dictionary<ModelElement, ModelElement>();
-							}
-							else
-							{
-								linksBySource.Clear();
-							}
-							for (int k = 0; k < allElementCount; ++k)
-							{
-								ModelElement sourceElement = DomainRoleInfo.GetSourceRolePlayer((ElementLink)allRelationshipElements[k]);
-								if (!linksBySource.ContainsKey(sourceElement))
+								CustomSerializedStandaloneRelationship relationship = relationships[j];
+								DomainRelationshipInfo relationshipInfo = dataDir.GetDomainClass(relationship.DomainClassId) as DomainRelationshipInfo;
+								ReadOnlyCollection<ModelElement> allRelationshipElements = elementDir.FindElements(relationshipInfo);
+
+								// This collection is very randomly order. To maintain order within the relationship, find
+								// all of the unique source elements and requery to get the ordered targets for that element.
+								// UNDONE: Do we want to specify if we should key off the source, target, or not at all in
+								// the serialization specs?
+								int allElementCount = allRelationshipElements.Count;
+								if (allElementCount == 0)
 								{
-									linksBySource[sourceElement] = sourceElement;
+									continue;
 								}
-							}
-							IList<DomainRoleInfo> roleInfos = relationshipInfo.DomainRoles;
-							DomainRoleInfo sourceRoleInfo = roleInfos[0];
-							if (!sourceRoleInfo.IsSource)
-							{
-								sourceRoleInfo = roleInfos[1];
-								Debug.Assert(sourceRoleInfo.IsSource);
-							}
-							CustomSerializedStandaloneRelationshipRole[] customRelationshipRoles = relationship.GetRoles();
-
-							// The values collection is officially randomly ordered and may change over time.
-							// Sort the elements by Id to get a stable XML file
-							ICollection<ModelElement> sourceValues = linksBySource.Values;
-							int sourceCount = sourceValues.Count;
-							if (sourceCount > 1)
-							{
-								ModelElement[] sortedSources = new ModelElement[sourceCount];
-								sourceValues.CopyTo(sortedSources, 0);
-								Array.Sort<ModelElement>(sortedSources, ModelElementGuidComparer.Instance);
-								sourceValues = sortedSources;
-							}
-							foreach (ModelElement element in sourceValues)
-							{
-								ReadOnlyCollection<ElementLink> relationshipElements = sourceRoleInfo.GetElementLinks(element);
-								int linkCount = relationshipElements.Count;
-								for (int k = 0; k < linkCount; ++k)
+								if (linksBySource == null)
 								{
-									ElementLink link = relationshipElements[k] as ElementLink;
-									if (relationship.IsPrimaryLinkElement)
+									linksBySource = new Dictionary<ModelElement, ModelElement>();
+								}
+								else
+								{
+									linksBySource.Clear();
+								}
+								for (int k = 0; k < allElementCount; ++k)
+								{
+									ModelElement sourceElement = DomainRoleInfo.GetSourceRolePlayer((ElementLink)allRelationshipElements[k]);
+									if (!linksBySource.ContainsKey(sourceElement))
 									{
-										SerializeElement(file, link, new SerializeExtraAttributesCallback(delegate(XmlWriter xmlFile)
+										linksBySource[sourceElement] = sourceElement;
+									}
+								}
+								IList<DomainRoleInfo> roleInfos = relationshipInfo.DomainRoles;
+								DomainRoleInfo sourceRoleInfo = roleInfos[0];
+								if (!sourceRoleInfo.IsSource)
+								{
+									sourceRoleInfo = roleInfos[1];
+									Debug.Assert(sourceRoleInfo.IsSource);
+								}
+								CustomSerializedStandaloneRelationshipRole[] customRelationshipRoles = relationship.GetRoles();
+
+								// The values collection is officially randomly ordered and may change over time.
+								// Sort the elements by Id to get a stable XML file
+								ICollection<ModelElement> sourceValues = linksBySource.Values;
+								int sourceCount = sourceValues.Count;
+								if (sourceCount > 1)
+								{
+									ModelElement[] sortedSources = new ModelElement[sourceCount];
+									sourceValues.CopyTo(sortedSources, 0);
+									Array.Sort<ModelElement>(sortedSources, ModelElementGuidComparer.Instance);
+									sourceValues = sortedSources;
+								}
+								foreach (ModelElement element in sourceValues)
+								{
+									ReadOnlyCollection<ElementLink> relationshipElements = sourceRoleInfo.GetElementLinks(element);
+									int linkCount = relationshipElements.Count;
+									for (int k = 0; k < linkCount; ++k)
+									{
+										ElementLink link = relationshipElements[k] as ElementLink;
+										if (relationship.IsPrimaryLinkElement)
 										{
+											SerializeElement(file, link, new SerializeExtraAttributesCallback(delegate(XmlWriter xmlFile)
+											{
+												for (int l = 0; l < customRelationshipRoles.Length; ++l)
+												{
+													CustomSerializedStandaloneRelationshipRole role = customRelationshipRoles[l];
+													xmlFile.WriteAttributeString(role.AttributeName, ToXml(DomainRoleInfo.GetRolePlayer(link, role.DomainRoleId).Id));
+												}
+											}));
+										}
+										else
+										{
+											file.WriteStartElement(relationship.ElementPrefix, relationship.ElementName, relationship.ElementNamespace);
 											for (int l = 0; l < customRelationshipRoles.Length; ++l)
 											{
 												CustomSerializedStandaloneRelationshipRole role = customRelationshipRoles[l];
-												xmlFile.WriteAttributeString(role.AttributeName, ToXml(DomainRoleInfo.GetRolePlayer(link, role.DomainRoleId).Id));
+												file.WriteAttributeString(role.AttributeName, ToXml(DomainRoleInfo.GetRolePlayer(link, role.DomainRoleId).Id));
 											}
-										}));
-									}
-									else
-									{
-										file.WriteStartElement(relationship.ElementPrefix, relationship.ElementName, relationship.ElementNamespace);
-										for (int l = 0; l < customRelationshipRoles.Length; ++l)
-										{
-											CustomSerializedStandaloneRelationshipRole role = customRelationshipRoles[l];
-											file.WriteAttributeString(role.AttributeName, ToXml(DomainRoleInfo.GetRolePlayer(link, role.DomainRoleId).Id));
+											file.WriteEndElement();
 										}
-										file.WriteEndElement();
 									}
 								}
 							}
+							file.WriteEndElement();
 						}
-						file.WriteEndElement();
 					}
 				}
 			}
@@ -3073,6 +3197,79 @@ namespace Neumont.Tools.Modeling.Shell
 			myStore = store;
 		}
 		#endregion // Constructor
+		#region LoadSerializationContext class
+		private sealed class LoadSerializationContext : ISerializationContext, IDisposable
+		{
+			#region Public initialization
+			/// <summary>
+			/// Create a serialization context if it is supported by the current store
+			/// </summary>
+			/// <param name="engine">The parent <see cref="SerializationEngine"/></param>
+			/// <returns>A <see cref="ISerializationContext"/> implementation if the host <see cref="Store"/>
+			/// supports <see cref="ISerializationContextHost"/>. Otherwise <see langword="null"/></returns>
+			public static LoadSerializationContext InitializeContext(SerializationEngine engine)
+			{
+				ISerializationContextHost host = engine.myStore as ISerializationContextHost;
+				return (host != null) ? new LoadSerializationContext(engine, host) : null;
+			}
+			#endregion // Public initialization
+			#region Member variables and constructors
+			private SerializationEngine myEngine;
+			private ISerializationContextHost myHost;
+			private LoadSerializationContext(SerializationEngine engine, ISerializationContextHost host)
+			{
+				myEngine = engine;
+				myHost = host;
+				host.SerializationContext = this;
+			}
+			#endregion // Member variables and constructors
+			#region IDisposable Implementation
+			void IDisposable.Dispose()
+			{
+				myHost.SerializationContext = null;
+			}
+			#endregion // IDisposable Implementation
+			#region ISerializationContext Implementation
+			string ISerializationContext.GetIdentifierString(Guid id)
+			{
+				return ToXml(id);
+			}
+			Guid ISerializationContext.ResolveElementIdentifier(string idValue)
+			{
+				return myEngine.GetElementId(idValue);
+			}
+			ModelElement ISerializationContext.RealizeElement(string idValue, Guid domainClassIdentifier, bool isReference)
+			{
+				SerializationEngine engine = myEngine;
+				Store store = engine.myStore;
+				bool createAsPlaceHolder = false;
+				DomainClassInfo classInfo = null;
+				if (isReference)
+				{
+					classInfo = store.DomainDataDirectory.GetDomainClass(domainClassIdentifier);
+					if (classInfo.LocalDescendants.Count != 0)
+					{
+						createAsPlaceHolder = true;
+					}
+				}
+				bool isNewElementDummy;
+				return myEngine.CreateElement(idValue, classInfo, domainClassIdentifier, createAsPlaceHolder, out isNewElementDummy);
+			}
+			ElementLink ISerializationContext.RealizeElementLink(string idValue, ModelElement rolePlayer, ModelElement oppositeRolePlayer, Guid oppositeDomainRoleInfoId, Guid? explicitDomainRelationshipInfoId)
+			{
+				SerializationEngine engine = myEngine;
+				DomainDataDirectory dataDirectory = engine.myStore.DomainDataDirectory;
+				return engine.CreateElementLink(
+					idValue,
+					rolePlayer,
+					oppositeRolePlayer,
+					dataDirectory.FindDomainRole(oppositeDomainRoleInfoId),
+					explicitDomainRelationshipInfoId.HasValue ? dataDirectory.FindDomainRelationship(explicitDomainRelationshipInfoId.Value) : null);
+
+			}
+			#endregion // ISerializationContext Implementation
+		}
+		#endregion // LoadSerializationContext class
 		/// <summary>
 		/// Load the stream contents into the current store
 		/// </summary>
@@ -3119,205 +3316,207 @@ namespace Neumont.Tools.Modeling.Shell
 #if DEBUG
 			}
 #endif // DEBUG
-			// UNDONE: MSBUG Figure out why this transaction is needed. If it is ommitted then the EdgePointCollection
-			// for each of the lines on the diagram is not initialized during Diagram.HandleLineRouting and none of the lines
-			// are drawn. This behavior appears to be related to the diagram.GraphWrapper.IsLoading setting, which changes with
-			// an extra transaction. However, the interactions between deserialization and diagram initialization are extremely
-			// complex, so I'm not sure exactly what is happening here.
-			Store store = myStore;
-			DomainDataDirectory dataDirectory = store.DomainDataDirectory;
-			using (Transaction t = store.TransactionManager.BeginTransaction())
+			using (LoadSerializationContext context = LoadSerializationContext.InitializeContext(this))
 			{
-				using (XmlTextReader xmlReader = new XmlTextReader(new StreamReader(stream), nameTable))
+				// UNDONE: MSBUG Figure out why this transaction is needed. If it is ommitted then the EdgePointCollection
+				// for each of the lines on the diagram is not initialized during Diagram.HandleLineRouting and none of the lines
+				// are drawn. This behavior appears to be related to the diagram.GraphWrapper.IsLoading setting, which changes with
+				// an extra transaction. However, the interactions between deserialization and diagram initialization are extremely
+				// complex, so I'm not sure exactly what is happening here.
+				Store store = myStore;
+				DomainDataDirectory dataDirectory = store.DomainDataDirectory;
+				using (Transaction t = store.TransactionManager.BeginTransaction())
 				{
-					using (XmlReader reader = XmlReader.Create(xmlReader, settings))
+					using (XmlTextReader xmlReader = new XmlTextReader(new StreamReader(stream), nameTable))
 					{
-						while (reader.Read())
+						using (XmlReader reader = XmlReader.Create(xmlReader, settings))
 						{
-							if (reader.NodeType == XmlNodeType.Element)
+							while (reader.Read())
 							{
-								if (!reader.IsEmptyElement && reader.NamespaceURI == GetRootXmlNamespace() && reader.LocalName == GetRootXmlElementName())
+								if (reader.NodeType == XmlNodeType.Element)
 								{
-									while (reader.Read())
+									if (!reader.IsEmptyElement && reader.NamespaceURI == GetRootXmlNamespace() && reader.LocalName == GetRootXmlElementName())
 									{
-										XmlNodeType nodeType = reader.NodeType;
-										if (nodeType == XmlNodeType.Element)
+										while (reader.Read())
 										{
-											bool processedRootElement = false;
-											ICustomSerializedDomainModel metaModel;
-											if (namespaceToModelMap.TryGetValue(reader.NamespaceURI, out metaModel))
+											XmlNodeType nodeType = reader.NodeType;
+											if (nodeType == XmlNodeType.Element)
 											{
-												string id = reader.GetAttribute("id");
-												if (id != null)
+												bool processedRootElement = false;
+												ICustomSerializedDomainModel metaModel;
+												if (namespaceToModelMap.TryGetValue(reader.NamespaceURI, out metaModel))
 												{
-													Guid classGuid = metaModel.MapRootElement(reader.NamespaceURI, reader.LocalName);
-													if (!classGuid.Equals(Guid.Empty))
+													string id = reader.GetAttribute("id");
+													if (id != null)
 													{
-														processedRootElement = true;
-														ModelElement rootElement = CreateElement(id, null, classGuid);
-														System.Xml.Serialization.IXmlSerializable serializableRootElement = rootElement as System.Xml.Serialization.IXmlSerializable;
-														if (serializableRootElement != null)
-														{
-															using (XmlReader subtreeReader = reader.ReadSubtree())
-															{
-																serializableRootElement.ReadXml(subtreeReader);
-															}
-														}
-														else
-														{
-															ProcessClassElement(reader, metaModel, rootElement, null, null);
-														}
-													}
-												}
-												else if (!reader.IsEmptyElement)
-												{
-													CustomSerializedRootRelationshipContainer[] containers = metaModel.GetRootRelationshipContainers();
-													if (containers != null)
-													{
-														CustomSerializedRootRelationshipContainer? container = CustomSerializedRootRelationshipContainer.Find(containers, reader.LocalName, reader.NamespaceURI);
-														if (container.HasValue)
+														Guid classGuid = metaModel.MapRootElement(reader.NamespaceURI, reader.LocalName);
+														if (!classGuid.Equals(Guid.Empty))
 														{
 															processedRootElement = true;
-															// this is a relationsip container element
-															while (reader.Read())
+															ModelElement rootElement = CreateElement(id, null, classGuid);
+															IXmlSerializable serializableRootElement = rootElement as IXmlSerializable;
+															if (serializableRootElement != null)
 															{
-																if (reader.NodeType == XmlNodeType.Element)
+																using (XmlReader subtreeReader = reader.ReadSubtree())
 																{
-																	bool processedLinkElement = false;
-																	string linkNamespace = reader.NamespaceURI;
-																	string linkName = reader.LocalName;
+																	serializableRootElement.ReadXml(subtreeReader);
+																}
+															}
+															else
+															{
+																ProcessClassElement(reader, metaModel, rootElement, null, null);
+															}
+														}
+													}
+													else if (!reader.IsEmptyElement)
+													{
+														CustomSerializedRootRelationshipContainer[] containers = metaModel.GetRootRelationshipContainers();
+														if (containers != null)
+														{
+															CustomSerializedRootRelationshipContainer? container = CustomSerializedRootRelationshipContainer.Find(containers, reader.LocalName, reader.NamespaceURI);
+															if (container.HasValue)
+															{
+																processedRootElement = true;
+																// this is a relationsip container element
+																while (reader.Read())
+																{
+																	if (reader.NodeType == XmlNodeType.Element)
+																	{
+																		bool processedLinkElement = false;
+																		string linkNamespace = reader.NamespaceURI;
+																		string linkName = reader.LocalName;
 
-																	CustomSerializedStandaloneRelationship[] relationships = container.Value.GetRelationshipClasses();
-																	DomainRelationshipInfo relationshipInfo = null;
-																	CustomSerializedStandaloneRelationship? relationship = CustomSerializedStandaloneRelationship.Find(relationships, linkName, linkNamespace);
-																	if (relationship.HasValue)
-																	{
-																		relationshipInfo = dataDirectory.FindDomainRelationship(relationship.Value.DomainClassId);
-																	}
-																	else
-																	{
-																		Guid domainClassId = metaModel.MapClassName(linkNamespace, linkName);
-																		if (!domainClassId.Equals(Guid.Empty))
+																		CustomSerializedStandaloneRelationship[] relationships = container.Value.GetRelationshipClasses();
+																		DomainRelationshipInfo relationshipInfo = null;
+																		CustomSerializedStandaloneRelationship? relationship = CustomSerializedStandaloneRelationship.Find(relationships, linkName, linkNamespace);
+																		if (relationship.HasValue)
 																		{
-																			relationshipInfo = dataDirectory.FindDomainRelationship(domainClassId);
+																			relationshipInfo = dataDirectory.FindDomainRelationship(relationship.Value.DomainClassId);
 																		}
-																		if (relationshipInfo == null)
+																		else
 																		{
-																			relationshipInfo = dataDirectory.FindDomainRelationship(string.Concat(metaModel.GetType().Namespace, ".", linkName));
-																		}
-																	}
-																	if (relationshipInfo != null &&
-																		(relationship = CustomSerializedStandaloneRelationship.Find(relationships, relationshipInfo.Id)).HasValue)
-																	{
-																		CustomSerializedStandaloneRelationshipRole[] roles = relationship.Value.GetRoles();
-																		if (roles.Length == 2)
-																		{
-																			string[] rolePlayerIds = new string[2];
-																			DomainClassInfo[] rolePlayerDomainClasses = new DomainClassInfo[2];
-																			DomainRoleInfo oppositeRoleInfo = null;
-																			for (int i = 0; i < 2; ++i)
+																			Guid domainClassId = metaModel.MapClassName(linkNamespace, linkName);
+																			if (!domainClassId.Equals(Guid.Empty))
 																			{
-																				CustomSerializedStandaloneRelationshipRole currentRole = roles[i];
-																				string rolePlayerId;
-																				DomainRoleInfo domainRoleInfo;
-																				DomainClassInfo domainClassInfo;
-																				if (null == (rolePlayerId = reader.GetAttribute(currentRole.AttributeName)) ||
-																					null == (domainRoleInfo = dataDirectory.FindDomainRole(roles[i].DomainRoleId)) ||
-																					null == (domainClassInfo = domainRoleInfo.RolePlayer))
-																				{
-																					break;
-																				}
-																				rolePlayerIds[i] = rolePlayerId;
-																				rolePlayerDomainClasses[i] = domainClassInfo;
-																				if (i == 1)
-																				{
-																					oppositeRoleInfo = domainRoleInfo;
-																				}
+																				relationshipInfo = dataDirectory.FindDomainRelationship(domainClassId);
 																			}
-																			if (oppositeRoleInfo != null)
+																			if (relationshipInfo == null)
 																			{
-																				bool isNewElementDummy;
-																				ElementLink newElementLink = CreateElementLink(
-																						reader.GetAttribute("id"),
-																						CreateElement(
-																							rolePlayerIds[0],
-																							rolePlayerDomainClasses[0],
-																							Guid.Empty,
-																							rolePlayerDomainClasses[0].AllDescendants.Count == 0,
-																							out isNewElementDummy),
-																						CreateElement(
-																							rolePlayerIds[1],
-																							rolePlayerDomainClasses[1],
-																							Guid.Empty,
-																							rolePlayerDomainClasses[1].AllDescendants.Count == 0,
-																							out isNewElementDummy),
-																						oppositeRoleInfo,
-																						relationshipInfo);
-																				if (relationship.Value.IsPrimaryLinkElement)
+																				relationshipInfo = dataDirectory.FindDomainRelationship(string.Concat(metaModel.GetType().Namespace, ".", linkName));
+																			}
+																		}
+																		if (relationshipInfo != null &&
+																			(relationship = CustomSerializedStandaloneRelationship.Find(relationships, relationshipInfo.Id)).HasValue)
+																		{
+																			CustomSerializedStandaloneRelationshipRole[] roles = relationship.Value.GetRoles();
+																			if (roles.Length == 2)
+																			{
+																				string[] rolePlayerIds = new string[2];
+																				DomainClassInfo[] rolePlayerDomainClasses = new DomainClassInfo[2];
+																				DomainRoleInfo oppositeRoleInfo = null;
+																				for (int i = 0; i < 2; ++i)
 																				{
-																					processedLinkElement = true;
-																					int blockedAttributeCount = 0;
-																					ProcessClassElement(
-																						reader,
-																						metaModel,
-																						newElementLink,
-																						null,
-																						delegate(string attributeNamespace, string attributeName)
-																						{
-																							if (blockedAttributeCount < 2)
+																					CustomSerializedStandaloneRelationshipRole currentRole = roles[i];
+																					string rolePlayerId;
+																					DomainRoleInfo domainRoleInfo;
+																					DomainClassInfo domainClassInfo;
+																					if (null == (rolePlayerId = reader.GetAttribute(currentRole.AttributeName)) ||
+																						null == (domainRoleInfo = dataDirectory.FindDomainRole(roles[i].DomainRoleId)) ||
+																						null == (domainClassInfo = domainRoleInfo.RolePlayer))
+																					{
+																						break;
+																					}
+																					rolePlayerIds[i] = rolePlayerId;
+																					rolePlayerDomainClasses[i] = domainClassInfo;
+																					if (i == 1)
+																					{
+																						oppositeRoleInfo = domainRoleInfo;
+																					}
+																				}
+																				if (oppositeRoleInfo != null)
+																				{
+																					bool isNewElementDummy;
+																					ElementLink newElementLink = CreateElementLink(
+																							reader.GetAttribute("id"),
+																							CreateElement(
+																								rolePlayerIds[0],
+																								rolePlayerDomainClasses[0],
+																								Guid.Empty,
+																								rolePlayerDomainClasses[0].AllDescendants.Count == 0,
+																								out isNewElementDummy),
+																							CreateElement(
+																								rolePlayerIds[1],
+																								rolePlayerDomainClasses[1],
+																								Guid.Empty,
+																								rolePlayerDomainClasses[1].AllDescendants.Count == 0,
+																								out isNewElementDummy),
+																							oppositeRoleInfo,
+																							relationshipInfo);
+																					if (relationship.Value.IsPrimaryLinkElement)
+																					{
+																						processedLinkElement = true;
+																						int blockedAttributeCount = 0;
+																						ProcessClassElement(
+																							reader,
+																							metaModel,
+																							newElementLink,
+																							null,
+																							delegate(string attributeNamespace, string attributeName)
 																							{
-																								if (string.IsNullOrEmpty(attributeNamespace))
+																								if (blockedAttributeCount < 2)
 																								{
-																									if (attributeName == roles[0].AttributeName ||
-																										attributeName == roles[1].AttributeName)
+																									if (string.IsNullOrEmpty(attributeNamespace))
 																									{
-																										++blockedAttributeCount;
-																										return false;
+																										if (attributeName == roles[0].AttributeName ||
+																											attributeName == roles[1].AttributeName)
+																										{
+																											++blockedAttributeCount;
+																											return false;
+																										}
 																									}
 																								}
-																							}
-																							return true;
-																						});
+																								return true;
+																							});
+																					}
 																				}
-
 																			}
 																		}
-																	}
 
-																	if (!processedLinkElement)
-																	{
-																		PassEndElement(reader);
+																		if (!processedLinkElement)
+																		{
+																			PassEndElement(reader);
+																		}
 																	}
-																}
-																else if (reader.NodeType == XmlNodeType.EndElement)
-																{
-																	break;
+																	else if (reader.NodeType == XmlNodeType.EndElement)
+																	{
+																		break;
+																	}
 																}
 															}
 														}
 													}
 												}
+												if (!processedRootElement)
+												{
+													PassEndElement(reader);
+												}
 											}
-											if (!processedRootElement)
+											else if (nodeType == XmlNodeType.EndElement)
 											{
-												PassEndElement(reader);
+												break;
 											}
-										}
-										else if (nodeType == XmlNodeType.EndElement)
-										{
-											break;
 										}
 									}
 								}
 							}
 						}
 					}
+					if (fixupManager != null)
+					{
+						fixupManager.DeserializationComplete();
+					}
+					t.Commit();
 				}
-				if (fixupManager != null)
-				{
-					fixupManager.DeserializationComplete();
-				}
-				t.Commit();
 			}
 			foreach (DomainModel loadedModel in domainModels)
 			{
