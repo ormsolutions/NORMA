@@ -266,11 +266,19 @@
     <value xml:space="preserve">Extension Load Failure</value>
     <comment xml:space="preserve">The title of the message shown when a registered extension fails to load.</comment>
   </data>
-  <data name="ExternalConstraintConnectAction.Instructions">
+  <data name="ExternalConstraintConnectAction.SetComparisonConstraint.Instructions">
     <value xml:space="preserve">To select role sequences to populate the constraint:
--Click a role to add it to an argument set
--Control-Click a role to remove it from the active set
--Double-Click a role to commit and move to the next set
+-Click a role to add it to the active role sequence
+-Control-Click a role to remove it from the active role sequence
+-Double-Click a role to commit the active role sequence and open a new role sequence
+-Click the diagram background or press Escape when you're finish connecting roles</value>
+    <comment xml:space="preserve">The text shown to explain how to hook up an external constraint to its associated roles.</comment>
+  </data>
+  <data name="ExternalConstraintConnectAction.SetConstraint.Instructions">
+    <value xml:space="preserve">To select role sequences to populate the constraint:
+-Click a role to add it to the constraint
+-Control-Click a role to remove it from the constaint
+-Double-Click a role to commit
 -Click the diagram background or press Escape when you're finish connecting roles</value>
     <comment xml:space="preserve">The text shown to explain how to hook up an external constraint to its associated roles.</comment>
   </data>

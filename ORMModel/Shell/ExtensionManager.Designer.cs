@@ -123,7 +123,7 @@ namespace Neumont.Tools.ORM.Shell
 			this.MinimumSize = new System.Drawing.Size(321, 371);
 			this.Name = "ExtensionManager";
 			this.StartPosition = System.Windows.Forms.FormStartPosition.CenterParent;
-			this.Text = "ExtensionManager";
+			this.Text = "Extension Manager";
 			this.ResumeLayout(false);
 
 		}

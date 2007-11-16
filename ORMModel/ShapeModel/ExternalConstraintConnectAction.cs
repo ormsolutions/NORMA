@@ -109,7 +109,9 @@ namespace Neumont.Tools.ORM.ShapeModel
 					else
 					{
 						Debug.Assert(IsValidSourceAndTarget(sourceShapeElement, targetShapeElement)); // The condition that got us here
-						connectionWarning = ResourceStrings.ExternalConstraintConnectActionInstructions;
+						connectionWarning = (sourceShapeElement.ModelElement is SetComparisonConstraint) ?
+							ResourceStrings.ExternalConstraintConnectActionSetComparisonConstraintInstructions :
+							ResourceStrings.ExternalConstraintConnectActionSetConstraintInstructions;
 					}
 				}
 				return retVal;

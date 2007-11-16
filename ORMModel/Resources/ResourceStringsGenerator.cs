@@ -501,11 +501,19 @@ namespace Neumont.Tools.ORM
 			}
 		}
 		/// <summary>The text shown to explain how to hook up an external constraint to its associated roles.</summary>
-		public static string ExternalConstraintConnectActionInstructions
+		public static string ExternalConstraintConnectActionSetComparisonConstraintInstructions
 		{
 			get
 			{
-				return ResourceStrings.GetString(ResourceManagers.Diagram, "ExternalConstraintConnectAction.Instructions");
+				return ResourceStrings.GetString(ResourceManagers.Diagram, "ExternalConstraintConnectAction.SetComparisonConstraint.Instructions");
+			}
+		}
+		/// <summary>The text shown to explain how to hook up an external constraint to its associated roles.</summary>
+		public static string ExternalConstraintConnectActionSetConstraintInstructions
+		{
+			get
+			{
+				return ResourceStrings.GetString(ResourceManagers.Diagram, "ExternalConstraintConnectAction.SetConstraint.Instructions");
 			}
 		}
 		/// <summary>The transaction name used by the external constraint connect action. The text appears in the undo dropdown in the VS IDE.</summary>

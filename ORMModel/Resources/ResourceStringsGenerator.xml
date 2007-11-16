@@ -193,7 +193,8 @@
 	<ResourceString name="ExclusiveOrCouplerTransactionName" model="Diagram" resourceName="ExclusiveOrCoupler.TransactionName"/>
 	<ResourceString name="ExclusiveOrDecouplerTransactionName" model="Diagram" resourceName="ExclusiveOrDecoupler.TransactionName"/>
 	<ResourceString name="DropShapeTransactionName" model="Diagram" resourceName="DropShape.TransactionName"/>
-	<ResourceString name="ExternalConstraintConnectActionInstructions" model="Diagram" resourceName="ExternalConstraintConnectAction.Instructions"/>
+	<ResourceString name="ExternalConstraintConnectActionSetComparisonConstraintInstructions" model="Diagram" resourceName="ExternalConstraintConnectAction.SetComparisonConstraint.Instructions"/>
+	<ResourceString name="ExternalConstraintConnectActionSetConstraintInstructions" model="Diagram" resourceName="ExternalConstraintConnectAction.SetConstraint.Instructions"/>
 	<ResourceString name="ExternalConstraintConnectActionTransactionName" model="Diagram" resourceName="ExternalConstraintConnectAction.TransactionName"/>
 	<ResourceString name="FrequencyConstraintMinimumFormatString" model="Diagram" resourceName="FrequencyConstraint.Minimum.FormatString"/>
 	<ResourceString name="FrequencyConstraintMinimumOneFormatString" model="Diagram" resourceName="FrequencyConstraint.MinimumOne.FormatString"/>
