@@ -1,4 +1,6 @@
 using System;
+using Microsoft.VisualStudio.Modeling;
+using System.Collections.Generic;
 
 namespace Neumont.Tools.ORM.Shell
 {
@@ -9,15 +11,35 @@ namespace Neumont.Tools.ORM.Shell
 	{
 		private readonly string myNamespaceUri;
 		private readonly Type myType;
+		private readonly ICollection<Guid> myExtendsIds;
+		private readonly Guid myDomainModelId;
+		private readonly bool myIsSecondary;
+		private readonly bool myIsAutoLoad;
 		/// <summary>
 		/// Initializes a new instance of <see cref="ORMExtensionType"/>.
 		/// </summary>
 		/// <param name="namespaceUri">The XML namespace URI of the <see cref="ORMExtensionType"/>.</param>
 		/// <param name="type">The <see cref="Type"/> of the <see cref="ORMExtensionType"/>.</param>
-		public ORMExtensionType(string namespaceUri, Type type)
+		/// <param name="isSecondary">The extension is secondary, meaning that it is not visible
+		/// in the Extension Manager dialog and automatically turned off by the Extension Manager when all
+		/// non-secondary extensions that use it are turned off.</param>
+		/// <param name="isAutoLoad">True if the extension is always loaded. Generally used for extensions
+		/// that contribute services but not elements.</param>
+		public ORMExtensionType(string namespaceUri, Type type, bool isSecondary, bool isAutoLoad)
 		{
 			this.myNamespaceUri = namespaceUri;
 			this.myType = type;
+			object[] extendsAttributes = type.GetCustomAttributes(typeof(ExtendsDomainModelAttribute), false);
+			Guid[] extendsIds = new Guid[extendsAttributes.Length];
+			for (int i = 0; i < extendsAttributes.Length; ++i)
+			{
+				extendsIds[i] = ((ExtendsDomainModelAttribute)extendsAttributes[i]).ExtendedModelId;
+			}
+			myExtendsIds = Array.AsReadOnly(extendsIds);
+			object[] domainObjectIdAttributes = type.GetCustomAttributes(typeof(DomainObjectIdAttribute), false);
+			myDomainModelId = (domainObjectIdAttributes.Length != 0) ? ((DomainObjectIdAttribute)domainObjectIdAttributes[0]).Id : Guid.Empty;
+			myIsSecondary = isSecondary;
+			myIsAutoLoad = isAutoLoad;
 		}
 		/// <summary>
 		/// The XML namespace URI of this <see cref="ORMExtensionType"/>.
@@ -37,6 +59,61 @@ namespace Neumont.Tools.ORM.Shell
 			get
 			{
 				return this.myType;
+			}
+		}
+		/// <summary>
+		/// The identifiers for the <see cref="DomainClassInfo"/> models
+		/// extended by this extension.
+		/// </summary>
+		public ICollection<Guid> ExtendsDomainModelIds
+		{
+			get
+			{
+				return myExtendsIds;
+			}
+		}
+		/// <summary>
+		/// The identifer for the <see cref="DomainClassInfo"/> associated
+		/// with this extension model
+		/// </summary>
+		public Guid DomainModelId
+		{
+			get
+			{
+				return myDomainModelId;
+			}
+		}
+		/// <summary>
+		/// Returns <see langword="true"/> if the extension has complete information
+		/// </summary>
+		public bool IsValidExtension
+		{
+			get
+			{
+				return myType != null && myDomainModelId != Guid.Empty;
+			}
+		}
+		/// <summary>
+		/// Returns <see langword="true"/> if the  extension is secondary, meaning that it is not visible
+		/// in the Extension Manager dialog and automatically turned off by the Extension Manager when all
+		/// non-secondary extensions that use it are turned off.
+		/// </summary>
+		public bool IsSecondary
+		{
+			get
+			{
+				return myIsSecondary;
+			}
+		}
+		/// <summary>
+		/// True if the extension is always loaded. Generally used for extensions
+		/// that contribute services but not elements.
+		/// </summary>
+		public bool IsAutoLoad
+		{
+			get
+			{
+				return myIsAutoLoad;
 			}
 		}
 		/// <summary>See <see cref="Object.Equals(Object)"/>.</summary>

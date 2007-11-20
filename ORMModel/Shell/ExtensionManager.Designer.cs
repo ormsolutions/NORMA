@@ -31,6 +31,7 @@ namespace Neumont.Tools.ORM.Shell
 		/// </summary>
 		private void InitializeComponent()
 		{
+			System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(ExtensionManager));
 			this.lvExtensions = new System.Windows.Forms.ListView();
 			this.columnHeader4 = new System.Windows.Forms.ColumnHeader();
 			this.columnHeader5 = new System.Windows.Forms.ColumnHeader();
@@ -42,88 +43,60 @@ namespace Neumont.Tools.ORM.Shell
 			// 
 			// lvExtensions
 			// 
-			this.lvExtensions.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom)
-						| System.Windows.Forms.AnchorStyles.Left)
-						| System.Windows.Forms.AnchorStyles.Right)));
+			resources.ApplyResources(this.lvExtensions, "lvExtensions");
 			this.lvExtensions.CheckBoxes = true;
 			this.lvExtensions.Columns.AddRange(new System.Windows.Forms.ColumnHeader[] {
 			this.columnHeader4,
 			this.columnHeader5,
 			this.columnHeader6});
-			this.lvExtensions.Location = new System.Drawing.Point(12, 57);
 			this.lvExtensions.Name = "lvExtensions";
-			this.lvExtensions.Size = new System.Drawing.Size(510, 249);
-			this.lvExtensions.TabIndex = 0;
 			this.lvExtensions.UseCompatibleStateImageBehavior = false;
 			this.lvExtensions.View = System.Windows.Forms.View.Details;
 			// 
 			// columnHeader4
 			// 
-			this.columnHeader4.Text = "Load";
-			this.columnHeader4.Width = 25;
+			resources.ApplyResources(this.columnHeader4, "columnHeader4");
 			// 
 			// columnHeader5
 			// 
-			this.columnHeader5.Text = "Name";
-			this.columnHeader5.Width = 215;
+			resources.ApplyResources(this.columnHeader5, "columnHeader5");
 			// 
 			// columnHeader6
 			// 
-			this.columnHeader6.Text = "Description";
-			this.columnHeader6.Width = 266;
+			resources.ApplyResources(this.columnHeader6, "columnHeader6");
 			// 
 			// label1
 			// 
-			this.label1.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left)
-						| System.Windows.Forms.AnchorStyles.Right)));
+			resources.ApplyResources(this.label1, "label1");
 			this.label1.FlatStyle = System.Windows.Forms.FlatStyle.System;
-			this.label1.Location = new System.Drawing.Point(13, 13);
 			this.label1.Name = "label1";
-			this.label1.Size = new System.Drawing.Size(509, 41);
-			this.label1.TabIndex = 1;
-			this.label1.Text = "Available extensions are listed below.  To load individual extensions, make sure " +
-				"the checkbox in the column \'Load\' is checked for that specific extension.";
 			// 
 			// btnOK
 			// 
-			this.btnOK.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Right)));
+			resources.ApplyResources(this.btnOK, "btnOK");
 			this.btnOK.DialogResult = System.Windows.Forms.DialogResult.OK;
-			this.btnOK.FlatStyle = System.Windows.Forms.FlatStyle.System;
-			this.btnOK.Location = new System.Drawing.Point(366, 312);
 			this.btnOK.Name = "btnOK";
-			this.btnOK.Size = new System.Drawing.Size(75, 23);
-			this.btnOK.TabIndex = 2;
-			this.btnOK.Text = "OK";
 			this.btnOK.UseVisualStyleBackColor = true;
 			// 
 			// btnCancel
 			// 
-			this.btnCancel.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Right)));
+			resources.ApplyResources(this.btnCancel, "btnCancel");
 			this.btnCancel.DialogResult = System.Windows.Forms.DialogResult.Cancel;
-			this.btnCancel.FlatStyle = System.Windows.Forms.FlatStyle.System;
-			this.btnCancel.Location = new System.Drawing.Point(447, 312);
 			this.btnCancel.Name = "btnCancel";
-			this.btnCancel.Size = new System.Drawing.Size(75, 23);
-			this.btnCancel.TabIndex = 3;
-			this.btnCancel.Text = "Cancel";
 			this.btnCancel.UseVisualStyleBackColor = true;
 			// 
 			// ExtensionManager
 			// 
 			this.AcceptButton = this.btnOK;
-			this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
+			resources.ApplyResources(this, "$this");
 			this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
 			this.CancelButton = this.btnCancel;
-			this.ClientSize = new System.Drawing.Size(534, 339);
 			this.Controls.Add(this.btnCancel);
 			this.Controls.Add(this.btnOK);
 			this.Controls.Add(this.label1);
 			this.Controls.Add(this.lvExtensions);
 			this.MinimizeBox = false;
-			this.MinimumSize = new System.Drawing.Size(321, 371);
 			this.Name = "ExtensionManager";
-			this.StartPosition = System.Windows.Forms.FormStartPosition.CenterParent;
-			this.Text = "Extension Manager";
 			this.ResumeLayout(false);
 
 		}

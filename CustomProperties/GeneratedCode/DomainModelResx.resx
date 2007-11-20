@@ -118,7 +118,7 @@
     <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
   <data name="Neumont.Tools.ORM.CustomProperties.CustomPropertiesDomainModel.Description" xml:space="preserve">
-    <value>The extension created for model element custom properties</value>
+    <value>Add custom properties to ORM model elements</value>
     <comment>Description for DslLibrary &apos;CustomProperties&apos;</comment>
   </data>
   <data name="Neumont.Tools.ORM.CustomProperties.CustomPropertiesDomainModel.DisplayName" xml:space="preserve">

@@ -39,8 +39,6 @@ namespace Neumont.Tools.ORM.Shell
 	public sealed partial class ExtensionManager : Form
 	{
 		private readonly Store _store;
-		private readonly List<Type> _loadedDomainModelTypes;
-		private readonly IList<ORMExtensionType> _allExtensionTypes;
 
 		/// <summary>
 		/// Initialize the ExtensionManager form
@@ -49,13 +47,6 @@ namespace Neumont.Tools.ORM.Shell
 		{
 			InitializeComponent();
 			this._store = store;
-			this._allExtensionTypes = ORMDesignerPackage.GetAvailableCustomExtensions();
-			ICollection<DomainModel> domainModels = store.DomainModels;
-			this._loadedDomainModelTypes = new List<Type>(domainModels.Count);
-			foreach (DomainModel domainModel in domainModels)
-			{
-				this._loadedDomainModelTypes.Add(domainModel.GetType());
-			}
 		}
 		/// <summary>
 		/// This method shows the ExtensionManager form.
@@ -71,13 +62,17 @@ namespace Neumont.Tools.ORM.Shell
 				// TODO: Prompt the user to make sure they really want us to start deleting stuff...
 
 				ListView.CheckedListViewItemCollection checkedItems = extensionManager.lvExtensions.CheckedItems;
-				List<ORMExtensionType> checkedTypes = new List<ORMExtensionType>(checkedItems.Count);
+				IDictionary<string, ORMExtensionType> availableExtensions = ORMDesignerPackage.GetAvailableCustomExtensions();
+				Dictionary<string, ORMExtensionType> checkedTypes = new Dictionary<string, ORMExtensionType>(availableExtensions.Count);
 				foreach (ListViewItem listViewItem in checkedItems)
 				{
-					checkedTypes.Add((ORMExtensionType)listViewItem.Tag);
+					string extensionNamespace = (string)listViewItem.Tag;
+					checkedTypes.Add(extensionNamespace, availableExtensions[extensionNamespace]);
 				}
 
-				AddRequiredExtensions(checkedTypes, extensionManager._allExtensionTypes);
+				// Make sure all required extensions are turned on. This will turn previously ignored
+				// secondary extensions back on.
+				ORMDesignerPackage.VerifyRequiredExtensions(checkedTypes);
 
 				Stream stream = null;
 				try
@@ -88,7 +83,7 @@ namespace Neumont.Tools.ORM.Shell
 
 					Debug.Assert(stream != null);
 
-					stream = CleanupStream(stream, checkedTypes);
+					stream = CleanupStream(stream, checkedTypes.Values);
 					docData.ReloadFromStream(stream);
 				}
 				finally
@@ -96,50 +91,6 @@ namespace Neumont.Tools.ORM.Shell
 					if (stream != null)
 					{
 						stream.Dispose();
-					}
-				}
-			}
-		}
-		/// <summary>
-		/// Given a current list of extensions and all available extensions, add additional required extensions to the list
-		/// </summary>
-		public static void AddRequiredExtensions(IList<ORMExtensionType> extensions, IList<ORMExtensionType> allExtensions)
-		{
-			Dictionary<Guid, object> loadedDomainModelIds = new Dictionary<Guid, object>(4 + allExtensions.Count);
-			loadedDomainModelIds.Add(CoreDomainModel.DomainModelId, null);
-			loadedDomainModelIds.Add(Microsoft.VisualStudio.Modeling.Diagrams.CoreDesignSurfaceDomainModel.DomainModelId, null);
-			loadedDomainModelIds.Add(ObjectModel.ORMCoreDomainModel.DomainModelId, null);
-			loadedDomainModelIds.Add(ShapeModel.ORMShapeDomainModel.DomainModelId, null);
-			foreach (ORMExtensionType extensionType in extensions)
-			{
-				loadedDomainModelIds.Add(extensionType.Type.GUID, null);
-			}
-
-			for (int i = 0; i < extensions.Count; i++) // The count check here is correct, we're growing the list as we go
-			{
-				foreach (ExtendsDomainModelAttribute extendsDomainModelAttribute in extensions[i].Type.GetCustomAttributes(typeof(ExtendsDomainModelAttribute), false))
-				{
-					Guid extendedModelId = extendsDomainModelAttribute.ExtendedModelId;
-					if (!loadedDomainModelIds.ContainsKey(extendedModelId))
-					{
-						// Find the missing domain model
-						foreach (ORMExtensionType candidateExtensionType in allExtensions)
-						{
-							object[] domainObjectIdAttributes = candidateExtensionType.Type.GetCustomAttributes(typeof(DomainObjectIdAttribute), false);
-							if (domainObjectIdAttributes.Length <= 0)
-							{
-								continue;
-							}
-							Guid candidateModelId = ((DomainObjectIdAttribute)domainObjectIdAttributes[0]).Id;
-							if (extendedModelId.Equals(candidateModelId))
-							{
-								loadedDomainModelIds.Add(candidateModelId, null);
-								extensions.Add(candidateExtensionType);
-								break;
-							}
-						}
-						// If we didn't find the requested domain model, we don't need to worry about doing anything here,
-						// since the Store will throw later when they try to load the requesting domain model.
 					}
 				}
 			}
@@ -228,9 +179,9 @@ namespace Neumont.Tools.ORM.Shell
 		/// This method is responsible for cleaning the streamed ORM file.
 		/// </summary>
 		/// <param name="stream">The file stream that contains the ORM file.</param>
-		/// <param name="extensionTypes">A list of extension types.</param>
+		/// <param name="extensionTypes">A collection of extension types.</param>
 		/// <returns>The cleaned stream.</returns>
-		public static Stream CleanupStream(Stream stream, IList<ORMExtensionType> extensionTypes)
+		public static Stream CleanupStream(Stream stream, ICollection<ORMExtensionType> extensionTypes)
 		{
 			MemoryStream outputStream = new MemoryStream((int)stream.Length);
 			XsltArgumentList argList = new XsltArgumentList();
@@ -238,9 +189,11 @@ namespace Neumont.Tools.ORM.Shell
 			int extensionsCount = extensionTypes.Count;
 			CustomSerializedXmlNamespacesAttribute[] namespaceAttributes = new CustomSerializedXmlNamespacesAttribute[extensionsCount];
 			int totalNamespaceCount = 0;
-			for (int i = 0; i < extensionsCount; ++i)
+			int i = -1;
+			foreach (ORMExtensionType extensionType in extensionTypes)
 			{
-				object[] attributes = extensionTypes[i].Type.GetCustomAttributes(typeof(CustomSerializedXmlNamespacesAttribute), false);
+				++i;
+				object[] attributes = extensionType.Type.GetCustomAttributes(typeof(CustomSerializedXmlNamespacesAttribute), false);
 				CustomSerializedXmlNamespacesAttribute currentAttribute;
 				int currentNamespaceCount;
 				if (attributes != null &&
@@ -258,8 +211,10 @@ namespace Neumont.Tools.ORM.Shell
 			}
 			string[] namespaces = new string[totalNamespaceCount];
 			int nextNamespaceIndex = 0;
-			for (int i = 0; i < extensionsCount; ++i)
+			i = -1;
+			foreach (ORMExtensionType extensionType in extensionTypes)
 			{
+				++i;
 				CustomSerializedXmlNamespacesAttribute currentAttribute;
 				if (null != (currentAttribute = namespaceAttributes[i]))
 				{
@@ -272,7 +227,7 @@ namespace Neumont.Tools.ORM.Shell
 				}
 				else
 				{
-					namespaces[nextNamespaceIndex] = extensionTypes[i].NamespaceUri;
+					namespaces[nextNamespaceIndex] = extensionType.NamespaceUri;
 					++nextNamespaceIndex;
 				}
 			}
@@ -296,11 +251,15 @@ namespace Neumont.Tools.ORM.Shell
 		{
 			base.OnLoad(e);
 			lvExtensions.Items.Clear();
-			foreach (ORMExtensionType type in this._allExtensionTypes)
+			foreach (ORMExtensionType type in ORMDesignerPackage.GetAvailableCustomExtensions().Values)
 			{
-				AddItemToListView(type);
+				if (!type.IsSecondary)
+				{
+					AddItemToListView(type);
+				}
 			}
 			lvExtensions.ListViewItemSorter = ItemComparer.Instance;
+			lvExtensions.ItemChecked += new System.Windows.Forms.ItemCheckedEventHandler(lvExtensions_ItemChecked);
 		}
 
 		private sealed class ItemComparer : IComparer
@@ -325,8 +284,8 @@ namespace Neumont.Tools.ORM.Shell
 		{
 			Type type = ormExtensionType.Type;
 			ListViewItem lvi = new ListViewItem();
-			lvi.Tag = ormExtensionType;
-			if (this._loadedDomainModelTypes.Contains(type))
+			lvi.Tag = ormExtensionType.NamespaceUri;
+			if (null != _store.FindDomainModel(ormExtensionType.DomainModelId))
 			{
 				lvi.Checked = true;
 			}
@@ -376,6 +335,38 @@ namespace Neumont.Tools.ORM.Shell
 				}
 			}
 			return retVal;
+		}
+		/// <summary>
+		/// Check items required by a newly checked item
+		/// </summary>
+		/// <param name="sender"></param>
+		/// <param name="e"></param>
+		private static void lvExtensions_ItemChecked(object sender, ItemCheckedEventArgs e)
+		{
+			ListViewItem item = e.Item;
+			if (item.Checked)
+			{
+				ORMExtensionType checkedType = ORMDesignerPackage.GetAvailableCustomExtensions()[(string)item.Tag];
+				ListView.ListViewItemCollection items = item.ListView.Items;
+				foreach (Guid extendsModelId in checkedType.ExtendsDomainModelIds)
+				{
+					string extensionName = ORMDesignerPackage.MapExtensionDomainModelToName(extendsModelId);
+					if (extensionName != null)
+					{
+						foreach (ListViewItem requiresItem in items)
+						{
+							if ((string)requiresItem.Tag == extensionName)
+							{
+								if (!requiresItem.Checked)
+								{
+									requiresItem.Checked = true;
+								}
+								break;
+							}
+						}
+					}
+				}
+			}
 		}
 	}
 }

@@ -37,28 +37,10 @@
 					<xsl:with-param name="Prefix" select="$targetPrefix"/>
 					<xsl:with-param name="Namespace" select="$targetNamespace"/>
 				</xsl:call-template>
-				<xsl:if test="not(namespace::*[.='http://schemas.neumont.edu/ORM/Abstraction/2007-06/Core'])">
-					<xsl:call-template name="AddNamespacePrefix">
-						<xsl:with-param name="Prefix" select="'oial'"/>
-						<xsl:with-param name="Namespace" select="'http://schemas.neumont.edu/ORM/Abstraction/2007-06/Core'"/>
-					</xsl:call-template>
-				</xsl:if>
-				<xsl:if test="not(namespace::*[.='http://schemas.neumont.edu/ORM/Relational/2007-06/ConceptualDatabase'])">
-					<xsl:call-template name="AddNamespacePrefix">
-						<xsl:with-param name="Prefix" select="'rcd'"/>
-						<xsl:with-param name="Namespace" select="'http://schemas.neumont.edu/ORM/Relational/2007-06/ConceptualDatabase'"/>
-					</xsl:call-template>
-				</xsl:if>
 				<xsl:if test="not(namespace::*[.='http://schemas.neumont.edu/ORM/Bridge/2007-06/ORMAbstractionToConceptualDatabase'])">
 					<xsl:call-template name="AddNamespacePrefix">
 						<xsl:with-param name="Prefix" select="'oialtocdb'"/>
 						<xsl:with-param name="Namespace" select="'http://schemas.neumont.edu/ORM/Bridge/2007-06/ORMAbstractionToConceptualDatabase'"/>
-					</xsl:call-template>
-				</xsl:if>
-				<xsl:if test="not(namespace::*[.='http://schemas.neumont.edu/ORM/Bridge/2007-06/ORMToORMAbstraction'])">
-					<xsl:call-template name="AddNamespacePrefix">
-						<xsl:with-param name="Prefix" select="'ormtooial'"/>
-						<xsl:with-param name="Namespace" select="'http://schemas.neumont.edu/ORM/Bridge/2007-06/ORMToORMAbstraction'"/>
 					</xsl:call-template>
 				</xsl:if>
 				<xsl:apply-templates select="@*|*|text()|comment()"/>

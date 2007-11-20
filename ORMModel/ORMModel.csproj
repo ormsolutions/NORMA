@@ -528,18 +528,18 @@
     <EmbeddedResource Include="ShapeModel\ConnectModelNoteAllowed.cur" />
     <EmbeddedResource Include="ShapeModel\ConnectModelNoteSearching.cur" />
     <None Include="Resources\SurveyTree.ImageStrip.png" />
-    <Content Include="Shell\Converters\RelationalViewUpgradeTo2007-11.xslt" />
-    <Content Include="Shell\Converters\RemoveOIAL2006-01.xslt" />
-    <Content Include="Shell\Converters\DCILtoOIAL.xslt" />
-    <Content Include="Shell\Converters\OIALtoORM.xslt" />
-    <Content Include="Shell\Converters\RootUpgradeTo2006-04.xslt" />
-    <Content Include="Shell\Converters\CoreUpgradeTo2006-04.xslt" />
-    <Content Include="Shell\Converters\CoreModelImport.xslt" />
-    <Content Include="Shell\Converters\CoreUpgradeTo2006-01.xslt" />
-    <Content Include="Shell\Converters\RootUpgradeTo2006-01.xslt" />
-    <Content Include="Shell\Converters\VisioToCoreModelImport.xslt" />
+    <None Include="Shell\Converters\RelationalViewUpgradeTo2007-11.xslt" />
+    <None Include="Shell\Converters\RemoveOIAL2006-01.xslt" />
+    <None Include="Shell\Converters\DCILtoOIAL.xslt" />
+    <None Include="Shell\Converters\OIALtoORM.xslt" />
+    <None Include="Shell\Converters\RootUpgradeTo2006-04.xslt" />
+    <None Include="Shell\Converters\CoreUpgradeTo2006-04.xslt" />
+    <None Include="Shell\Converters\CoreModelImport.xslt" />
+    <None Include="Shell\Converters\CoreUpgradeTo2006-01.xslt" />
+    <None Include="Shell\Converters\RootUpgradeTo2006-01.xslt" />
+    <None Include="Shell\Converters\VisioToCoreModelImport.xslt" />
     <EmbeddedResource Include="Shell\ExtensionStripper.xslt" />
-    <Content Include="Shell\Converters\CustomPropertiesPreviewTo2007-11.xslt" />
+    <None Include="Shell\Converters\CustomPropertiesPreviewTo2007-11.xslt" />
     <Content Include="Shell\ORMDesignerSettings.xml" />
     <None Include="Transforms\ResourceStringsGenerator.xslt" />
     <None Include="Transforms\SurveyQuestionProvider.xslt" />
@@ -723,6 +723,10 @@
       <AutoGen>True</AutoGen>
       <SubType>Designer</SubType>
       <DesignTime>True</DesignTime>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Shell\ExtensionManager.resx">
+      <SubType>Designer</SubType>
+      <DependentUpon>ExtensionManager.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="Shell\ImportStepOptions.resx">
       <SubType>Designer</SubType>

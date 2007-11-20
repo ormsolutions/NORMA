@@ -78,8 +78,7 @@ namespace Neumont.Tools.ORM.Shell
 		#endregion // Private flags
 		#region Member variables
 		private Stream myFileStream;
-		private IDictionary<string, Type> myExtensionDomainModels;
-		private static readonly Dictionary<string, Type> myStandardDomainModels = InitializeStandardDomainModels();
+		private IDictionary<string, ORMExtensionType> myExtensionDomainModels;
 		private delegate void StoreDiagramMappingDataClearChangesDelegate();
 		private static readonly StoreDiagramMappingDataClearChangesDelegate myStoreDiagramMappingDataClearChanges = InitializeStoreDiagramMappingDataClearChanges();
 		#endregion // Member variables
@@ -90,19 +89,6 @@ namespace Neumont.Tools.ORM.Shell
 		public ORMDesignerDocData(IServiceProvider serviceProvider, Guid editorId)
 			: base(serviceProvider, editorId)
 		{
-		}
-		/// <summary>
-		/// Initialize the dictionary of standard <see cref="DomainModel"/>s needed for the tool.
-		/// </summary>
-		private static Dictionary<string, Type> InitializeStandardDomainModels()
-		{
-			Dictionary<string, Type> standardDomainModels = new Dictionary<string, Type>();
-			standardDomainModels.Add(typeof(FrameworkDomainModel).FullName, typeof(FrameworkDomainModel));
-			standardDomainModels.Add(ORMCoreDomainModel.XmlNamespace, typeof(ORMCoreDomainModel));
-			standardDomainModels.Add(ORMShapeDomainModel.XmlNamespace, typeof(ORMShapeDomainModel));
-			// UNDONE: Temporary until the report validation is moved into a separate dll. See https://projects.neumont.edu/orm2/ticket/315
-			standardDomainModels.Add(typeof(Neumont.Tools.ORM.ObjectModel.Verbalization.HtmlReport).FullName, typeof(Neumont.Tools.ORM.ObjectModel.Verbalization.HtmlReport));
-			return standardDomainModels;
 		}
 		private static StoreDiagramMappingDataClearChangesDelegate InitializeStoreDiagramMappingDataClearChanges()
 		{
@@ -136,21 +122,23 @@ namespace Neumont.Tools.ORM.Shell
 		/// </summary>
 		protected override IList<Type> GetDomainModels()
 		{
-			Dictionary<string, Type> standardDomainModels = myStandardDomainModels;
-			// Always have 1 for the CoreDesignSurface. Note that the framework automatically
-			// loads CoreDomainModel (which contains ModelElement, ElementLink, and ElementDeserializedRule).
-			int count = standardDomainModels.Count + 1;
-			IDictionary<string, Type> extensionDomainModels = myExtensionDomainModels;
+			ICollection<Type> standardDomainModels = ORMDesignerPackage.GetStandardDomainModels();
+			int standardCount = standardDomainModels.Count;
+			int count = standardCount;
+			IDictionary<string, ORMExtensionType> extensionDomainModels = myExtensionDomainModels;
 			if (extensionDomainModels != null)
 			{
 				count += extensionDomainModels.Count;
 			}
-			List<Type> retVal = new List<Type>(count);
-			retVal.Add(typeof(CoreDesignSurfaceDomainModel));
-			retVal.AddRange(standardDomainModels.Values);
+			Type[] retVal = new Type[count];
+			standardDomainModels.CopyTo(retVal, 0);
 			if (extensionDomainModels != null)
 			{
-				retVal.AddRange(extensionDomainModels.Values);
+				int i = standardCount - 1;
+				foreach (ORMExtensionType extensionType in extensionDomainModels.Values)
+				{
+					retVal[++i] = extensionType.Type;
+				}
 			}
 			return retVal;
 		}
@@ -234,7 +222,7 @@ namespace Neumont.Tools.ORM.Shell
 				{
 					XmlReaderSettings readerSettings = new XmlReaderSettings();
 					readerSettings.CloseInput = false;
-					IDictionary<string, Type> documentExtensions = ORMDesignerPackage.GetAutoLoadExtensions();
+					IDictionary<string, ORMExtensionType> documentExtensions = null;
 					using (XmlReader reader = XmlReader.Create(stream, readerSettings))
 					{
 						reader.MoveToContent();
@@ -251,14 +239,14 @@ namespace Neumont.Tools.ORM.Shell
 											!string.Equals(URI, ORMShapeDomainModel.XmlNamespace, StringComparison.Ordinal) &&
 											!string.Equals(URI, ORMSerializationEngine.RootXmlNamespace, StringComparison.Ordinal))
 										{
-											Type extensionType = ORMDesignerPackage.GetExtensionDomainModel(URI);
-											if (extensionType != null)
+											ORMExtensionType? extensionType = ORMDesignerPackage.GetExtensionDomainModel(URI);
+											if (extensionType.HasValue)
 											{
 												if (documentExtensions == null)
 												{
-													documentExtensions = new Dictionary<string, Type>();
+													documentExtensions = new Dictionary<string, ORMExtensionType>();
 												}
-												documentExtensions[URI] = extensionType;
+												documentExtensions[URI] = extensionType.Value;
 											}
 										}
 									}
@@ -266,6 +254,7 @@ namespace Neumont.Tools.ORM.Shell
 							}
 						}
 					}
+					ORMDesignerPackage.VerifyRequiredExtensions(documentExtensions);
 					myExtensionDomainModels = documentExtensions;
 					stream.Position = 0;
 
@@ -716,7 +705,7 @@ namespace Neumont.Tools.ORM.Shell
 			/// </summary>
 			public string[] GetLoadedExtensions()
 			{
-				IList<ORMExtensionType> availableExtensions = ORMDesignerPackage.GetAvailableCustomExtensions();
+				ICollection<ORMExtensionType> availableExtensions = ORMDesignerPackage.GetAvailableCustomExtensions().Values;
 				List<string> extensionNames = new List<string>();
 				foreach (DomainModel domainModel in myDocData.Store.DomainModels)
 				{
@@ -741,12 +730,13 @@ namespace Neumont.Tools.ORM.Shell
 				if (extensions != null && (ensureCount = extensions.Length) != 0)
 				{
 					string[] clonedExtensions = (string[])extensions.Clone();
-					IList<ORMExtensionType> availableExtensions = ORMDesignerPackage.GetAvailableCustomExtensions();
-					List<ORMExtensionType> loadedExtensions = null;
+					IDictionary<string, ORMExtensionType> availableExtensions = ORMDesignerPackage.GetAvailableCustomExtensions();
+					ICollection<ORMExtensionType> availableExtensionsCollection = availableExtensions.Values;
+					Dictionary<string, ORMExtensionType> loadedExtensions = null;
 					foreach (DomainModel domainModel in myDocData.Store.DomainModels)
 					{
 						Type domainModelType = domainModel.GetType();
-						foreach (ORMExtensionType extensionInfo in availableExtensions)
+						foreach (ORMExtensionType extensionInfo in availableExtensionsCollection)
 						{
 							if (extensionInfo.Type == domainModelType)
 							{
@@ -762,9 +752,9 @@ namespace Neumont.Tools.ORM.Shell
 										}
 										if (loadedExtensions == null)
 										{
-											loadedExtensions = new List<ORMExtensionType>();
+											loadedExtensions = new Dictionary<string, ORMExtensionType>();
 										}
-										loadedExtensions.Add(extensionInfo);
+										loadedExtensions.Add(extensionInfo.NamespaceUri, extensionInfo);
 										clonedExtensions[i] = null;
 									}
 								}
@@ -778,17 +768,14 @@ namespace Neumont.Tools.ORM.Shell
 						if (newExtension != null)
 						{
 							--ensureCount;
-							foreach (ORMExtensionType extensionInfo in availableExtensions)
+							ORMExtensionType extensionInfo;
+							if (availableExtensions.TryGetValue(newExtension, out extensionInfo))
 							{
-								if (extensionInfo.NamespaceUri == newExtension)
+								if (loadedExtensions == null)
 								{
-									if (loadedExtensions == null)
-									{
-										loadedExtensions = new List<ORMExtensionType>();
-									}
-									loadedExtensions.Add(extensionInfo);
-									break;
+									loadedExtensions = new Dictionary<string, ORMExtensionType>();
 								}
+								loadedExtensions.Add(extensionInfo.NamespaceUri, extensionInfo);
 							}
 							if (ensureCount == 0)
 							{
@@ -802,8 +789,8 @@ namespace Neumont.Tools.ORM.Shell
 
 					Debug.Assert(stream != null);
 
-					ExtensionManager.AddRequiredExtensions(loadedExtensions, availableExtensions);
-					stream = ExtensionManager.CleanupStream(stream, loadedExtensions);
+					ORMDesignerPackage.VerifyRequiredExtensions(loadedExtensions);
+					stream = ExtensionManager.CleanupStream(stream, loadedExtensions.Values);
 					myDocData.ReloadFromStream(stream);
 				}
 			}

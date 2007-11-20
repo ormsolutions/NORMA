@@ -118,11 +118,11 @@
     <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
   <data name="Neumont.Tools.ORMAbstraction.AbstractionDomainModel.Description" xml:space="preserve">
-    <value>Intermediate ORM Mapping to Attribute-based Models</value>
+    <value>Intermediate Attribute-centric View of ORM Model</value>
     <comment>Description for DslLibrary &apos;Abstraction&apos;</comment>
   </data>
   <data name="Neumont.Tools.ORMAbstraction.AbstractionDomainModel.DisplayName" xml:space="preserve">
-    <value>(Preview) ORM Abstraction</value>
+    <value>ORM Abstraction Model</value>
     <comment>DisplayName for DslLibrary &apos;Abstraction&apos;</comment>
   </data>
   <data name="Neumont.Tools.ORMAbstraction.AbstractionModel.Description" xml:space="preserve">

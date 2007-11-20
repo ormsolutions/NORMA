@@ -28,7 +28,7 @@ namespace Neumont.Tools.ORMAbstraction
 {
 	/// <summary>
 	/// DomainModel AbstractionDomainModel
-	/// Intermediate ORM Mapping to Attribute-based Models
+	/// Intermediate Attribute-centric View of ORM Model
 	/// </summary>
 	[DslDesign::DisplayNameResource("Neumont.Tools.ORMAbstraction.AbstractionDomainModel.DisplayName", typeof(global::Neumont.Tools.ORMAbstraction.AbstractionDomainModel), "Neumont.Tools.ORMAbstraction.GeneratedCode.AbstractionDomainModelResx")]
 	[DslDesign::DescriptionResource("Neumont.Tools.ORMAbstraction.AbstractionDomainModel.Description", typeof(global::Neumont.Tools.ORMAbstraction.AbstractionDomainModel), "Neumont.Tools.ORMAbstraction.GeneratedCode.AbstractionDomainModelResx")]

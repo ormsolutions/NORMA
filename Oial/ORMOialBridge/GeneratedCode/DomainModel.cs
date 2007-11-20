@@ -28,7 +28,7 @@ namespace Neumont.Tools.ORMToORMAbstractionBridge
 {
 	/// <summary>
 	/// DomainModel ORMToORMAbstractionBridgeDomainModel
-	/// Bridges ORM and and ORM Intermediate Abstraction Language.
+	/// Bridge ORM and attribute-centric ORM Abstraction Model
 	/// </summary>
 	[DslModeling::ExtendsDomainModel("3EAE649F-E654-4D04-8289-C25D2C0322D8"/*Neumont.Tools.ORM.ObjectModel.ORMCoreDomainModel*/)]
 	[DslModeling::ExtendsDomainModel("F7BC82F4-83D1-408C-BA42-607E90B23BEA"/*Neumont.Tools.ORMAbstraction.AbstractionDomainModel*/)]

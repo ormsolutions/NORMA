@@ -19,4 +19,4 @@ REG DELETE "HKLM\%VSRegistryRoot%\Neumont\ORM Architect\Extensions\http://schema
 REG ADD "HKLM\%VSRegistryRoot%\Neumont\ORM Architect\Extensions\http://schemas.neumont.edu/ORM/2007-11/CustomProperties" /v "Class" /d "Neumont.Tools.ORM.CustomProperties.CustomPropertiesDomainModel" /f 1>NUL
 REG ADD "HKLM\%VSRegistryRoot%\Neumont\ORM Architect\Extensions\http://schemas.neumont.edu/ORM/2007-11/CustomProperties" /v "CodeBase" /d "%NORMAExtensionsDir%\Neumont.Tools.ORM.CustomProperties.dll" /f 1>NUL
 REG ADD "HKLM\%VSRegistryRoot%\Neumont\ORM Architect\Extensions\http://schemas.neumont.edu/ORM/2007-11/CustomProperties" /v "Assembly" /d "Neumont.Tools.ORM.CustomProperties, Version=1.0.0.0, Culture=neutral, PublicKeyToken=957d5b7d5e79e25f" /f 1>NUL
-:: REG ADD "HKLM\%VSRegistryRoot%\Neumont\ORM Architect\Extensions" /v "AutoLoadNamespaces" /t REG_MULTI_SZ /d "http://schemas.neumont.edu/ORM/2007-11/CustomProperties\0" /f 1>NUL
+:: REG ADD "HKLM\%VSRegistryRoot%\Neumont\ORM Architect\Extensions\http://schemas.neumont.edu/ORM/2007-11/CustomProperties" /v "AutoLoadNamespace" /t REG_DWORD /d "1" /f 1>NUL

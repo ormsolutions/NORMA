@@ -118,11 +118,11 @@
     <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
   <data name="Neumont.Tools.ORMToORMAbstractionBridge.ORMToORMAbstractionBridgeDomainModel.Description" xml:space="preserve">
-    <value>Bridges ORM and and ORM Intermediate Abstraction Language.</value>
+    <value>Bridge ORM and attribute-centric ORM Abstraction Model</value>
     <comment>Description for DslLibrary &apos;ORMToORMAbstractionBridge&apos;</comment>
   </data>
   <data name="Neumont.Tools.ORMToORMAbstractionBridge.ORMToORMAbstractionBridgeDomainModel.DisplayName" xml:space="preserve">
-    <value>(Preview) ORM/ORMAbstraction Bridge</value>
+    <value>Map to Abstraction Model</value>
     <comment>DisplayName for DslLibrary &apos;ORMToORMAbstractionBridge&apos;</comment>
   </data>
   <data name="Neumont.Tools.ORMToORMAbstractionBridge.FactTypeMapsTowardsRole.Description" xml:space="preserve">

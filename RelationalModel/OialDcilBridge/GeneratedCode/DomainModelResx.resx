@@ -118,11 +118,11 @@
     <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
   <data name="Neumont.Tools.ORMAbstractionToConceptualDatabaseBridge.ORMAbstractionToConceptualDatabaseBridgeDomainModel.Description" xml:space="preserve">
-    <value>Description for Neumont.Tools.ORMAbstractionToConceptualDatabaseBridge.ORMAbstractionToConceptualDatabaseBridge</value>
+    <value>Bridge ORM Abstraction Model and Relational Database Model</value>
     <comment>Description for DslLibrary &apos;ORMAbstractionToConceptualDatabaseBridge&apos;</comment>
   </data>
   <data name="Neumont.Tools.ORMAbstractionToConceptualDatabaseBridge.ORMAbstractionToConceptualDatabaseBridgeDomainModel.DisplayName" xml:space="preserve">
-    <value>(Preview) ORMAbstraction/ConceptualDatabase Bridge</value>
+    <value>Map to Relational Model</value>
     <comment>DisplayName for DslLibrary &apos;ORMAbstractionToConceptualDatabaseBridge&apos;</comment>
   </data>
   <data name="Neumont.Tools.ORMAbstractionToConceptualDatabaseBridge.MappingCustomizationModel.Description" xml:space="preserve">

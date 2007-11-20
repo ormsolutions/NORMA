@@ -29,10 +29,9 @@ namespace Neumont.Tools.ORM.Views.RelationalView
 {
 	/// <summary>
 	/// DomainModel RelationalShapeDomainModel
-	/// Relational View of ORM Model
+	/// Graphical View of Relational Model (slow and temporary)
 	/// </summary>
 	[DslModeling::ExtendsDomainModel("005CBD56-3BA5-4947-9F46-5608BD563CED"/*Neumont.Tools.ORMAbstractionToConceptualDatabaseBridge.ORMAbstractionToConceptualDatabaseBridgeDomainModel*/)]
-	[DslModeling::ExtendsDomainModel("1F394F03-8A41-48BC-BDED-2268E131B4A3"/*Neumont.Tools.ORMToORMAbstractionBridge.ORMToORMAbstractionBridgeDomainModel*/)]
 	[DslDesign::DisplayNameResource("Neumont.Tools.ORM.Views.RelationalView.RelationalShapeDomainModel.DisplayName", typeof(global::Neumont.Tools.ORM.Views.RelationalView.RelationalShapeDomainModel), "Neumont.Tools.ORM.Views.RelationalView.GeneratedCode.DomainModelResx")]
 	[DslDesign::DescriptionResource("Neumont.Tools.ORM.Views.RelationalView.RelationalShapeDomainModel.Description", typeof(global::Neumont.Tools.ORM.Views.RelationalView.RelationalShapeDomainModel), "Neumont.Tools.ORM.Views.RelationalView.GeneratedCode.DomainModelResx")]
 	[DslModeling::DomainObjectId("0144a831-92d5-4c42-b7c5-99a5fa9d79df")]

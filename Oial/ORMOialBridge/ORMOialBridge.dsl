@@ -19,8 +19,8 @@
 	Id="1F394F03-8A41-48BC-BDED-2268E131B4A3"
 	Namespace="Neumont.Tools.ORMToORMAbstractionBridge"
 	Name="ORMToORMAbstractionBridge"
-	DisplayName="(Preview) ORM/ORMAbstraction Bridge"
-	Description="Bridges ORM and and ORM Intermediate Abstraction Language."
+	DisplayName="Map to Abstraction Model"
+	Description="Bridge ORM and attribute-centric ORM Abstraction Model"
 	CompanyName="Neumont University"
 	ProductName="Neumont ORM Architect for Visual Studio"
 	MajorVersion="1" MinorVersion="0" Build="0" Revision="0">

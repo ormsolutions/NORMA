@@ -20,7 +20,7 @@
 	Namespace="Neumont.Tools.ORM.Views.RelationalView"
 	Name="RelationalShape"
 	DisplayName="Relational View"
-	Description="Relational View of ORM Model"
+	Description="Graphical View of Relational Model (slow and temporary)"
 	CompanyName="Neumont University"
 	ProductName="Neumont ORM Architect for Visual Studio"
 	MajorVersion="1" MinorVersion="0" Build="0" Revision="0"
@@ -29,11 +29,6 @@
 		<ClrAttribute Name="DslModeling::ExtendsDomainModel">
 			<Parameters>
 				<AttributeParameter Value="&quot;005CBD56-3BA5-4947-9F46-5608BD563CED&quot;/*Neumont.Tools.ORMAbstractionToConceptualDatabaseBridge.ORMAbstractionToConceptualDatabaseBridgeDomainModel*/"/>
-			</Parameters>
-		</ClrAttribute>
-		<ClrAttribute Name="DslModeling::ExtendsDomainModel">
-			<Parameters>
-				<AttributeParameter Value="&quot;1F394F03-8A41-48BC-BDED-2268E131B4A3&quot;/*Neumont.Tools.ORMToORMAbstractionBridge.ORMToORMAbstractionBridgeDomainModel*/"/>
 			</Parameters>
 		</ClrAttribute>
 	</Attributes>

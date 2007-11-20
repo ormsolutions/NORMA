@@ -19,8 +19,8 @@
 	Id="F7BC82F4-83D1-408C-BA42-607E90B23BEA"
 	Namespace="Neumont.Tools.ORMAbstraction"
 	Name="Abstraction"
-	DisplayName="(Preview) ORM Abstraction"
-	Description="Intermediate ORM Mapping to Attribute-based Models"
+	DisplayName="ORM Abstraction Model"
+	Description="Intermediate Attribute-centric View of ORM Model"
 	CompanyName="Neumont University"
 	ProductName="Neumont ORM Architect for Visual Studio"
 	MajorVersion="1" MinorVersion="0" Build="0" Revision="0">

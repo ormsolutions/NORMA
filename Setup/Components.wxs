@@ -213,6 +213,7 @@
 										<RegistryValue Type="string" Name="Class" Value="Neumont.Tools.ORMAbstraction.AbstractionDomainModel"/>
 										<RegistryValue Type="string" Name="Assembly" Value="Neumont.Tools.ORMAbstraction, $(var.BaseAssemblyName)"/>
 										<RegistryValue Type="string" Name="CodeBase" Value="[#Neumont.Tools.ORMAbstraction.dll]"/>
+										<RegistryValue Type="integer" Name="SecondaryNamespace" Value="1"/>
 									</RegistryKey>
 								</Component>
 
@@ -241,6 +242,7 @@
 										<RegistryValue Type="string" Name="Class" Value="Neumont.Tools.RelationalModels.ConceptualDatabase.ConceptualDatabaseDomainModel"/>
 										<RegistryValue Type="string" Name="Assembly" Value="Neumont.Tools.RelationalModels, $(var.BaseAssemblyName)"/>
 										<RegistryValue Type="string" Name="CodeBase" Value="[#Neumont.Tools.RelationalModels.dll]"/>
+										<RegistryValue Type="integer" Name="SecondaryNamespace" Value="1"/>
 									</RegistryKey>
 								</Component>
 

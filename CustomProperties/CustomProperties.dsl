@@ -21,7 +21,7 @@
 	Name="CustomProperties"
 	AccessModifier="Assembly"
 	DisplayName="Custom Properties"
-	Description="The extension created for model element custom properties"
+	Description="Add custom properties to ORM model elements"
 	CompanyName="Neumont University"
 	ProductName="Neumont ORM Architect for Visual Studio"
 	MajorVersion="1" MinorVersion="0" Build="0" Revision="0">

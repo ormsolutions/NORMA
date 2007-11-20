@@ -18,7 +18,8 @@
 	Id="005CBD56-3BA5-4947-9F46-5608BD563CED"
 	Namespace="Neumont.Tools.ORMAbstractionToConceptualDatabaseBridge"
 	Name="ORMAbstractionToConceptualDatabaseBridge"
-	DisplayName="(Preview) ORMAbstraction/ConceptualDatabase Bridge"
+	DisplayName="Map to Relational Model"
+	Description="Bridge ORM Abstraction Model and Relational Database Model"
 	CompanyName="Neumont University"
 	ProductName="Neumont ORM Architect for Visual Studio"
 	MajorVersion="1" MinorVersion="0" Build="0" Revision="0">
@@ -42,6 +43,11 @@
 		<ClrAttribute Name="DslModeling::ExtendsDomainModel">
 			<Parameters>
 				<AttributeParameter Value="&quot;CEDE46B1-9CA1-4C55-BC88-3DACFADD70EA&quot;/*Neumont.Tools.RelationalModels.ConceptualDatabase.ConceptualDatabaseDomainModel*/"/>
+			</Parameters>
+		</ClrAttribute>
+		<ClrAttribute Name="DslModeling::ExtendsDomainModel">
+			<Parameters>
+				<AttributeParameter Value="&quot;1F394F03-8A41-48BC-BDED-2268E131B4A3&quot;/*Neumont.Tools.ORMToORMAbstractionBridge.ORMToORMAbstractionBridgeDomainModel*/"/>
 			</Parameters>
 		</ClrAttribute>
 	</Attributes>

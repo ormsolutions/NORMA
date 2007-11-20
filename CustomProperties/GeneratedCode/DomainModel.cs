@@ -28,7 +28,7 @@ namespace Neumont.Tools.ORM.CustomProperties
 {
 	/// <summary>
 	/// DomainModel CustomPropertiesDomainModel
-	/// The extension created for model element custom properties
+	/// Add custom properties to ORM model elements
 	/// </summary>
 	[DslModeling::ExtendsDomainModel("3EAE649F-E654-4D04-8289-C25D2C0322D8"/*Neumont.Tools.ORM.ObjectModel.ORMCoreDomainModel*/)]
 	[DslDesign::DisplayNameResource("Neumont.Tools.ORM.CustomProperties.CustomPropertiesDomainModel.DisplayName", typeof(global::Neumont.Tools.ORM.CustomProperties.CustomPropertiesDomainModel), "Neumont.Tools.ORM.CustomProperties.GeneratedCode.DomainModelResx")]

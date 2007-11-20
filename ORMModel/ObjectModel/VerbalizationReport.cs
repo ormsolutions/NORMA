@@ -46,6 +46,11 @@ namespace Neumont.Tools.ORM.ObjectModel.Verbalization
 	{
 		#region Public constants
 		/// <summary>
+		/// HtmlReport domain model Id.
+		/// </summary>
+		public static readonly global::System.Guid DomainModelId = new global::System.Guid(0x8532fb7f, 0x8f25, 0x4e0e, 0xa6, 0xb5, 0x37, 0x0e, 0xbe, 0x89, 0xe4, 0x55);
+
+		/// <summary>
 		/// The unique name of the HtmlReport verbalization target. Used in the Xml files and in code to identify this target provider.
 		/// </summary>
 		public const string HtmlReportTargetName = "HtmlReport";
