@@ -21,7 +21,7 @@ GOTO:EOF
 
 :_SetupExpHive
 CALL "%RootDir%\SetFromRegistry.bat" "VSIPDir" "HKLM\Software\Microsoft\VisualStudio\VSIP\9.0" "InstallDir" "f"
-IF ERRORLEVEL 1 (ECHO Please install the Microsoft Visual Studio 2008 SDK. See README.txt. && PAUSE && EXIT)
+IF "%VSIPDir%"=="" (ECHO Please install the Microsoft Visual Studio 2008 SDK. See README.txt. && PAUSE && EXIT)
 ECHO Setting up machine-level experimental registry hive for Visual Studio 2008... This may take a few minutes...
 "%VSIPDir%\VisualStudioIntegration\Tools\Bin\VSRegEx.exe" GetOrig 9.0 Exp
 GOTO:EOF
