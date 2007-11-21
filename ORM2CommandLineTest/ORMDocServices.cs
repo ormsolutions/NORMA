@@ -188,7 +188,7 @@ namespace Neumont.Tools.ORM.SDK.TestEngine
 					return retVal;
 				}
 			}
-			Store IORMToolTestServices.Load(MethodInfo testMethod, string referenceName, IList<SuiteExtension> extensions)
+			Store IORMToolTestServices.Load(MethodInfo testMethod, string referenceName, IList<SuiteExtension> availableExtensions)
 			{
 				Store retVal = null;
 				Type testType = testMethod.ReflectedType;
@@ -215,7 +215,7 @@ namespace Neumont.Tools.ORM.SDK.TestEngine
 					}
 					if (resourceStream != null)
 					{
-						retVal = LoadFileStream(resourceStream, extensions);
+						retVal = LoadFileStream(resourceStream, availableExtensions);
 					}
 				}
 				finally
@@ -227,7 +227,7 @@ namespace Neumont.Tools.ORM.SDK.TestEngine
 				}
 				return retVal;
 			}
-			private Store LoadFileStream(Stream stream, IList<SuiteExtension> extensions)
+			private Store LoadFileStream(Stream stream, IList<SuiteExtension> availableExtensions)
 			{
 				if (stream == null)
 				{
@@ -236,23 +236,60 @@ namespace Neumont.Tools.ORM.SDK.TestEngine
 				ORMStore store = new ORMStore(this);
 				store.UndoManager.UndoState = UndoState.Disabled;
 
-				Type[] domainModels = new Type[5] { typeof(CoreDomainModel), typeof(CoreDesignSurfaceDomainModel), typeof(FrameworkDomainModel), typeof(ORMCoreDomainModel), typeof(ORMShapeDomainModel) };
-				store.LoadDomainModels(domainModels);
-
-				if (extensions != null)
+				// Peek ahead in the file to find the extension elements to actually load. The
+				// available extensions indicate the extensions that are available, which will
+				// be a superset of the extension models we actually load.
+				Dictionary<Guid, Type> keyedDomainModels = new Dictionary<Guid, Type>();
+				keyedDomainModels.Add(CoreDomainModel.DomainModelId, typeof(CoreDomainModel));
+				keyedDomainModels.Add(CoreDesignSurfaceDomainModel.DomainModelId, typeof(CoreDesignSurfaceDomainModel));
+				keyedDomainModels.Add(FrameworkDomainModel.DomainModelId, typeof(FrameworkDomainModel));
+				keyedDomainModels.Add(ORMCoreDomainModel.DomainModelId, typeof(ORMCoreDomainModel));
+				keyedDomainModels.Add(ORMShapeDomainModel.DomainModelId, typeof(ORMShapeDomainModel));
+				int availableExtensionCount = availableExtensions == null ? 0 : availableExtensions.Count;
+				if (availableExtensionCount != 0)
 				{
-					Type[] extensionTypes = new Type[extensions.Count];
-					for (int i = 0; i < extensionTypes.Length; ++i)
+					Dictionary<string, SuiteExtension> keyedExtensions = new Dictionary<string, SuiteExtension>(availableExtensionCount);
+					Dictionary<Guid, string> idToNameMap = new Dictionary<Guid, string>(availableExtensionCount);
+					foreach (SuiteExtension extension in availableExtensions)
 					{
-						SuiteExtension extension = extensions[i];
-						if (extension.Assembly != null)
+						string extensionNamespace = extension.NamespaceUri;
+						keyedExtensions.Add(extensionNamespace, extension);
+						idToNameMap.Add(extension.DomainModelId, extensionNamespace);
+					}
+					XmlReaderSettings readerSettings = new XmlReaderSettings();
+					readerSettings.CloseInput = false;
+					using (XmlReader reader = XmlReader.Create(stream, readerSettings))
+					{
+						reader.MoveToContent();
+						if (reader.NodeType == XmlNodeType.Element)
 						{
-							Type domainModelType = extension.Assembly.GetType(extension.DomainType);
-							extensionTypes[i] = domainModelType;
+							if (reader.MoveToFirstAttribute())
+							{
+								do
+								{
+									if (reader.Prefix == "xmlns")
+									{
+										string URI = reader.Value;
+										if (!string.Equals(URI, ORMCoreDomainModel.XmlNamespace, StringComparison.Ordinal) &&
+											!string.Equals(URI, ORMShapeDomainModel.XmlNamespace, StringComparison.Ordinal) &&
+											!string.Equals(URI, ORMSerializationEngine.RootXmlNamespace, StringComparison.Ordinal))
+										{
+											SuiteExtension extension;
+											if (keyedExtensions.TryGetValue(URI, out extension))
+											{
+												EnsureExtensions(extension, keyedDomainModels, keyedExtensions, idToNameMap); 
+											}
+										}
+									}
+								} while (reader.MoveToNextAttribute());
+							}
 						}
 					}
-					store.LoadDomainModels(extensionTypes);
+					stream.Seek(0, SeekOrigin.Begin);
 				}
+				Type[] domainModels = new Type[keyedDomainModels.Count];
+				keyedDomainModels.Values.CopyTo(domainModels, 0);
+				store.LoadDomainModels(domainModels);
 
 				using (Transaction t = store.TransactionManager.BeginTransaction("File load and fixup"))
 				{
@@ -265,6 +302,26 @@ namespace Neumont.Tools.ORM.SDK.TestEngine
 				AddErrorReportingEvents(store);
 				store.UndoManager.UndoState = UndoState.Enabled;
 				return store;
+			}
+			private static void EnsureExtensions(SuiteExtension extension, Dictionary<Guid, Type> keyedDomainModels, Dictionary<string, SuiteExtension> keyedExtensions, Dictionary<Guid, string> extensionIdToNameMap)
+			{
+				Guid extensionId = extension.DomainModelId;
+				if (!keyedDomainModels.ContainsKey(extensionId))
+				{
+					keyedDomainModels.Add(extensionId, extension.DomainModelType);
+					ICollection<Guid> extendsModels = extension.ExtendsDomainModelIds;
+					if (extendsModels.Count != 0)
+					{
+						foreach (Guid recurseExtensionId in extendsModels)
+						{
+							string extensionUri;
+							if (extensionIdToNameMap.TryGetValue(recurseExtensionId, out extensionUri))
+							{
+								EnsureExtensions(keyedExtensions[extensionUri], keyedDomainModels, keyedExtensions, extensionIdToNameMap);
+							}
+						}
+					}
+				}
 			}
 			void IORMToolTestServices.Compare(Store store, MethodInfo testMethod, string referenceName)
 			{

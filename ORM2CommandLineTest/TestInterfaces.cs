@@ -29,9 +29,9 @@ namespace Neumont.Tools.ORM.SDK.TestEngine
 		/// stream cannot be found, then a new Store is created and
 		/// the default 'ORM Model File' template is loaded into the
 		/// store.</param>
-		/// <param name="extensions">An optional list of <see cref="SuiteExtension"/>s to support with the load.</param>
+		/// <param name="availableExtensions">An optional list of <see cref="SuiteExtension"/>s to support with the load.</param>
 		/// <returns>Newly created store with the file loaded into it.</returns>
-		Store Load(MethodInfo testMethod, string referenceName, IList<SuiteExtension> extensions);
+		Store Load(MethodInfo testMethod, string referenceName, IList<SuiteExtension> availableExtensions);
 		/// <summary>
 		/// Compare an .orm file to the current contents of the
 		/// specified store. This involves saving the current

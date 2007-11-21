@@ -12,20 +12,4 @@
 			<TestAssembly location="TestSample\TestSample.dll"/>
 		</TestAssemblies>
 	</Suite>
-	<!--
-	<Suite name="SampleExtension">
-		<Categories>
-			<IncludeCategory name="OialTests"/>
-		</Categories>
-		<Extensions path="%ProgramFiles%\Neumont\ORM Architect for Visual Studio\bin">
-			<Extension location="Extensions\Neumont.Tools.ORMAbstraction.dll" domain="Neumont.Tools.ORMAbstraction.AbstractionDomainModel"/>
-			<Extension location="Extensions\Neumont.Tools.ORMAbstractionToConceptualDatabaseBridge.dll" domain="Neumont.Tools.ORMAbstractionToConceptualDatabaseBridge.ORMAbstractionToConceptualDatabaseBridgeDomainModel"/>
-			<Extension location="Extensions\Neumont.Tools.ORMToORMAbstractionBridge.dll" domain="Neumont.Tools.ORMToORMAbstractionBridge.ORMToORMAbstractionBridgeDomainModel"/>
-			<Extension location="Extensions\Neumont.Tools.RelationalModels.dll" domain="Neumont.Tools.RelationalModels.ConceptualDatabase.ConceptualDatabaseDomainModel"/>
-		</Extensions>
-		<TestAssemblies>
-			<TestAssembly location="TestSample\TestSample.dll"/>
-		</TestAssemblies>
-	</Suite>
-	 -->
 </Suites>

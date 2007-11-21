@@ -9,7 +9,6 @@ using Neumont.Tools.ORM.ObjectModel;
 using Microsoft.VisualStudio.Modeling;
 using Microsoft.XmlDiffPatch;
 
-
 namespace Neumont.Tools.ORM.SDK.TestEngine
 {
 	#region SuiteCategory structure
@@ -74,9 +73,12 @@ namespace Neumont.Tools.ORM.SDK.TestEngine
 	/// </summary>
 	public struct SuiteExtension
 	{
-		private string myDomainType;
-		private Assembly myAssembly;
-		private string myLocation;
+		private readonly Type myDomainModelType;
+		private readonly Assembly myAssembly;
+		private readonly string myLocation;
+		private readonly string myNamespaceUri;
+		private readonly Guid myDomainModelId;
+		private readonly ICollection<Guid> myExtendsIds;
 		/// <summary>
 		/// Creates a SuiteExtension structure.
 		/// </summary>
@@ -84,13 +86,25 @@ namespace Neumont.Tools.ORM.SDK.TestEngine
 		/// suite file to the assembly location.</param>
 		/// <param name="assembly">The resolved assembly, or 
 		/// null if the assembly could not be loaded.</param>
-		/// <param name="domainType">The fully qualified domain model 
+		/// <param name="domainModelType">The fully qualified domain model 
 		/// named type associated with the extension.</param>
-		public SuiteExtension(string location, Assembly assembly, string domainType)
+		/// <param name="namespaceUri">The URI used to identify this extension
+		/// in an ORM file.</param>
+		public SuiteExtension(string location, Assembly assembly, string domainModelType, string namespaceUri)
 		{
+			Type type = assembly.GetType(domainModelType, true, false);
+			myDomainModelId = ((DomainObjectIdAttribute)type.GetCustomAttributes(typeof(DomainObjectIdAttribute), false)[0]).Id;
 			myLocation = location;
 			myAssembly = assembly;
-			myDomainType = domainType;
+			myDomainModelType = type;
+			myNamespaceUri = namespaceUri;
+			object[] extendsAttributes = type.GetCustomAttributes(typeof(ExtendsDomainModelAttribute), false);
+			Guid[] extendsIds = new Guid[extendsAttributes.Length];
+			for (int i = 0; i < extendsAttributes.Length; ++i)
+			{
+				extendsIds[i] = ((ExtendsDomainModelAttribute)extendsAttributes[i]).ExtendedModelId;
+			}
+			myExtendsIds = Array.AsReadOnly<Guid>(extendsIds);
 		}
 		/// <summary>
 		/// The relative path from
@@ -117,11 +131,43 @@ namespace Neumont.Tools.ORM.SDK.TestEngine
 		/// <summary>
 		/// The fully qualified name of the domain model type.
 		/// </summary>
-		public string DomainType
+		public Type DomainModelType
 		{
 			get
 			{
-				return myDomainType;
+				return myDomainModelType;
+			}
+		}
+		/// <summary>
+		/// The URI used to identify this extension in an ORM file
+		/// </summary>
+		public string NamespaceUri
+		{
+			get
+			{
+				return myNamespaceUri;
+			}
+		}
+		/// <summary>
+		/// The identifiers for the <see cref="DomainClassInfo"/> models
+		/// extended by this extension.
+		/// </summary>
+		public ICollection<Guid> ExtendsDomainModelIds
+		{
+			get
+			{
+				return myExtendsIds;
+			}
+		}
+		/// <summary>
+		/// The identifer for the <see cref="DomainClassInfo"/> associated
+		/// with this extension model
+		/// </summary>
+		public Guid DomainModelId
+		{
+			get
+			{
+				return myDomainModelId;
 			}
 		}
 	}
@@ -183,20 +229,20 @@ namespace Neumont.Tools.ORM.SDK.TestEngine
 		private string myName;
 		private IList<SuiteAssembly> myAssemblies;
 		private IList<SuiteCategory> myCategories;
-		private IList<SuiteExtension> myExtensions;
+		private IList<SuiteExtension> myAvailableExtensions;
 		/// <summary>
 		/// Suite constructor
 		/// </summary>
 		/// <param name="name">The suite name</param>
 		/// <param name="assemblies">A list of assemblies to search for test classes</param>
 		/// <param name="categories">An (optional) list of categories to include/exclude</param>
-		/// <param name="extensions">An (optional) list of enabled extensions</param>
-		public Suite(string name, IList<SuiteAssembly> assemblies, IList<SuiteCategory> categories, IList<SuiteExtension> extensions)
+		/// <param name="availableExtensions">An (optional) list of enabled extensions</param>
+		public Suite(string name, IList<SuiteAssembly> assemblies, IList<SuiteCategory> categories, IList<SuiteExtension> availableExtensions)
 		{
 			myName = name;
 			myAssemblies = assemblies;
 			myCategories = categories;
-			myExtensions = extensions;
+			myAvailableExtensions = availableExtensions;
 		}
 		/// <summary>
 		/// The suite name
@@ -229,13 +275,15 @@ namespace Neumont.Tools.ORM.SDK.TestEngine
 			}
 		}
 		/// <summary>
-		/// A list of assemblies to load in the domain model.
+		/// A list of extensions available for loading into a domain model.
+		/// The actual extensions loaded will be determined by the file
+		/// being loaded.
 		/// </summary>
-		public IList<SuiteExtension> Extensions
+		public IList<SuiteExtension> AvailableExtensions
 		{
 			get
 			{
-				return myExtensions;
+				return myAvailableExtensions;
 			}
 		}
 		#endregion // Instance data and accessors
@@ -307,7 +355,8 @@ namespace Neumont.Tools.ORM.SDK.TestEngine
 			public const string LocationAttribute = "location";
 			public const string NameAttribute = "name";
 			public const string PathAttribute = "path";
-			public const string DomainAttribute = "domain";
+			public const string DomainModelAttribute = "domainModel";
+			public const string ExtensionURIAttribute = "extensionURI";
 			#endregion // String Constants
 			#region Static properties
 			private static SuiteLoaderNameTable myNames;
@@ -372,7 +421,8 @@ namespace Neumont.Tools.ORM.SDK.TestEngine
 			public readonly string LocationAttribute;
 			public readonly string NameAttribute;
 			public readonly string PathAttribute;
-			public readonly string DomainAttribute;
+			public readonly string DomainModelAttribute;
+			public readonly string ExtensionURIAttribute;
 			public SuiteLoaderNameTable()
 				: base()
 			{
@@ -389,7 +439,8 @@ namespace Neumont.Tools.ORM.SDK.TestEngine
 				LocationAttribute = Add(SuiteLoaderSchema.LocationAttribute);
 				NameAttribute = Add(SuiteLoaderSchema.NameAttribute);
 				PathAttribute = Add(SuiteLoaderSchema.PathAttribute);
-				DomainAttribute = Add(SuiteLoaderSchema.DomainAttribute);
+				DomainModelAttribute = Add(SuiteLoaderSchema.DomainModelAttribute);
+				ExtensionURIAttribute = Add(SuiteLoaderSchema.ExtensionURIAttribute);
 			}
 		}
 		#endregion // SuiteLoaderNameTable class
@@ -430,7 +481,7 @@ namespace Neumont.Tools.ORM.SDK.TestEngine
 											string suiteName = reader.GetAttribute(names.NameAttribute);
 											IList<SuiteAssembly> assemblies = null;
 											IList<SuiteCategory> categories = null;
-											IList<SuiteExtension> extensions = null;
+											IList<SuiteExtension> availableExtensions = null;
 											if (!reader.IsEmptyElement)
 											{
 												while (reader.Read())
@@ -441,7 +492,15 @@ namespace Neumont.Tools.ORM.SDK.TestEngine
 														string localName = reader.LocalName;
 														if (TestElementName(localName, names.TestAssembliesElement))
 														{
-															assemblies = ProcessAssemblies<SuiteAssembly>(reader, names, baseDirectory, names.TestAssemblyElement);
+															assemblies = ProcessAssemblies<SuiteAssembly>(
+																reader,
+																names,
+																baseDirectory,
+																names.TestAssemblyElement,
+																delegate(XmlReader innerReader, SuiteLoaderNameTable innerNames, string location, Assembly assembly)
+																{
+																	return new SuiteAssembly(location, assembly);
+																});
 														}
 														else if (TestElementName(localName, names.CategoriesElement))
 														{
@@ -449,8 +508,19 @@ namespace Neumont.Tools.ORM.SDK.TestEngine
 														}
 														else if (TestElementName(localName, names.ExtensionsElement))
 														{
-															string path = reader.GetAttribute(names.PathAttribute);
-															extensions = ProcessAssemblies<SuiteExtension>(reader, names, path, names.ExtensionElement);
+															availableExtensions = ProcessAssemblies<SuiteExtension>(
+																reader,
+																names,
+																reader.GetAttribute(names.PathAttribute) ?? baseDirectory,
+																names.ExtensionElement,
+																delegate(XmlReader innerReader, SuiteLoaderNameTable innerNames, string location, Assembly assembly)
+																{
+																	return new SuiteExtension(
+																		location,
+																		assembly,
+																		innerReader.GetAttribute(innerNames.DomainModelAttribute),
+																		innerReader.GetAttribute(innerNames.ExtensionURIAttribute));
+																});
 														}
 														else
 														{
@@ -468,7 +538,7 @@ namespace Neumont.Tools.ORM.SDK.TestEngine
 											{
 												retVal = new List<Suite>();
 											}
-											retVal.Add(new Suite(suiteName, assemblies, categories, extensions));
+											retVal.Add(new Suite(suiteName, assemblies, categories, availableExtensions));
 										}
 										else if (nodeType1 == XmlNodeType.EndElement)
 										{
@@ -483,7 +553,8 @@ namespace Neumont.Tools.ORM.SDK.TestEngine
 			}
 			return retVal;
 		}
-		private static IList<T> ProcessAssemblies<T>(XmlReader reader, SuiteLoaderNameTable names, string baseDirectory, string elementName)
+		private delegate T CreateAssemblyRecord<T>(XmlReader reader, SuiteLoaderNameTable names, string location, Assembly assembly) where T : struct;
+		private static IList<T> ProcessAssemblies<T>(XmlReader reader, SuiteLoaderNameTable names, string baseDirectory, string elementName, CreateAssemblyRecord<T> createRecord) where T : struct
 		{
 			if (reader.IsEmptyElement)
 			{
@@ -502,11 +573,11 @@ namespace Neumont.Tools.ORM.SDK.TestEngine
 						{
 							retVal = new List<T>();
 						}
-						retVal.Add(ProcessAssembly<T>(reader, names, baseDirectory));
+						retVal.Add(ProcessAssembly<T>(reader, names, baseDirectory, createRecord));
 					}
 					else
 					{
-						Debug.Fail("Element should have been blocked by validing reader.");
+						Debug.Fail("Element should have been blocked by validating reader.");
 						PassEndElement(reader);
 					}
 				}
@@ -517,18 +588,17 @@ namespace Neumont.Tools.ORM.SDK.TestEngine
 			}
 			return retVal;
 		}
-		private static T ProcessAssembly<T>(XmlReader reader, SuiteLoaderNameTable names, string baseDirectory)
+		private static T ProcessAssembly<T>(XmlReader reader, SuiteLoaderNameTable names, string baseDirectory, CreateAssemblyRecord<T> createRecord) where T : struct
 		{
-			Assembly retVal = null;
+			Assembly assembly = null;
 			string location = reader.GetAttribute(names.LocationAttribute);
-			string domain = reader.GetAttribute(names.DomainAttribute);
 			baseDirectory = Environment.ExpandEnvironmentVariables(baseDirectory);
 			string fullAssemblyPath = string.Concat(baseDirectory, @"\", location);
 			if (File.Exists(fullAssemblyPath))
 			{
 				try
 				{
-					retVal = Assembly.LoadFile(fullAssemblyPath);
+					assembly = Assembly.LoadFile(fullAssemblyPath);
 				}
 				catch (SystemException)
 				{
@@ -536,20 +606,12 @@ namespace Neumont.Tools.ORM.SDK.TestEngine
 					throw;
 				}
 			}
+			T retVal = createRecord(reader, names, location, assembly);
 			if (!reader.IsEmptyElement)
 			{
 				PassEndElement(reader);
 			}
-			if (typeof(T).Equals(typeof(SuiteAssembly)))
-			{
-				return (T)typeof(T).GetConstructor(new Type[2] { typeof(string), typeof(Assembly) }).Invoke(
-					new object[2] { location, retVal });
-			}
-			else
-			{
-				return (T)typeof(T).GetConstructor(new Type[3] { typeof(string), typeof(Assembly), typeof(string) }).Invoke(
-					new object[3] { location, retVal, domain });
-			}
+			return retVal;
 		}
 		private static IList<SuiteCategory> ProcessCategories(XmlReader reader, SuiteLoaderNameTable names)
 		{
@@ -764,7 +826,7 @@ namespace Neumont.Tools.ORM.SDK.TestEngine
 
 						// Populate a store. Automatically loads the starting
 						// file from the test assembly if one is provided
-						store = testServices.Load(method, null, Extensions);
+						store = testServices.Load(method, null, AvailableExtensions);
 
 						// Run the method
 						methodParams[0] = store;

@@ -14,9 +14,10 @@
 		</xsl:copy>
 	</xsl:template>
 	<xsl:template match="@*">
-		<xsl:copy-of select="."/>
-	</xsl:template>
-	<xsl:template match="@ref | @id">
+		<!-- Run all attributes through here to handle referencing attributes
+		other than @ref. This was originally @id | @ref, but that does not
+		work with top-level serialized links, which use attribute names
+		other than @ref to refer to @id attributes. -->
 		<xsl:attribute name="{name()}">
 			<xsl:value-of select="idMap:Map(.)"/>
 		</xsl:attribute>

@@ -4,6 +4,7 @@
 	attributeFormDefault="unqualified"
 	targetNamespace="http://schemas.neumont.edu/ORM/SDK/TestSuite"
 	xmlns="http://schemas.neumont.edu/ORM/SDK/TestSuite"
+	xmlns:ts="http://schemas.neumont.edu/ORM/SDK/TestSuite"
 	xmlns:xs="http://www.w3.org/2001/XMLSchema"
 	>
 	<xs:element name="Suites" type="SuitesType"/>
@@ -20,7 +21,12 @@
 			<xs:documentation>A single suite. A suite consists of a name, category settings and test assemblies. Corresponds to the Suite element in the SuiteReport file.</xs:documentation>
 		</xs:annotation>
 		<xs:all>
-			<xs:element name="Extensions" type="ExtensionsType" minOccurs="0"/>
+			<xs:element name="Extensions" type="ExtensionsType" minOccurs="0">
+				<xs:unique name="UniqueExtensionURI">
+					<xs:selector xpath="ts:Extension"/>
+					<xs:field xpath="@extensionURI"/>
+				</xs:unique>
+			</xs:element>
 			<xs:element name="TestAssemblies" type="TestAssembliesType"/>
 			<xs:element name="Categories" minOccurs="0">
 				<xs:complexType>
@@ -82,12 +88,17 @@
 		</xs:annotation>
 		<xs:attribute name="location" type="xs:string" use="required">
 			<xs:annotation>
-				<xs:documentation>The location of the extension assembly, relative to the suite file or full path.</xs:documentation>
+				<xs:documentation>The location of the extension assembly, relative to the path provided in the Extensions element.</xs:documentation>
 			</xs:annotation>
 		</xs:attribute>
-		<xs:attribute name="domain" type="xs:string" use="required">
+		<xs:attribute name="domainModel" type="xs:string" use="required">
 			<xs:annotation>
 				<xs:documentation>Each extension must come with an appropriate domain model to load. Provide the fully qualified name of said DomainModel type.</xs:documentation>
+			</xs:annotation>
+		</xs:attribute>
+		<xs:attribute name="extensionURI" type="xs:anyURI" use="required">
+			<xs:annotation>
+				<xs:documentation>Extensions are reference via a corresponding URI in an ORM file. Indicate the URI.</xs:documentation>
 			</xs:annotation>
 		</xs:attribute>
 	</xs:complexType>

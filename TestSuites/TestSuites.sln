@@ -5,6 +5,8 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "TestSample", "TestSample\Te
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "AutomationTestSample", "AutomationTestSample\AutomationTestSample.csproj", "{30BC16E5-AA07-4FA1-85A2-7DDE22D063DF}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "RelationalTests", "RelationalTests\RelationalTests.csproj", "{EC995B51-2ED4-4170-BF04-7248D0C6F206}"
+EndProject
 Global
 	GlobalSection(TextTemplating) = postSolution
 		TextTemplating = 1
@@ -22,6 +24,10 @@ Global
 		{30BC16E5-AA07-4FA1-85A2-7DDE22D063DF}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{30BC16E5-AA07-4FA1-85A2-7DDE22D063DF}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{30BC16E5-AA07-4FA1-85A2-7DDE22D063DF}.Release|Any CPU.Build.0 = Release|Any CPU
+		{EC995B51-2ED4-4170-BF04-7248D0C6F206}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{EC995B51-2ED4-4170-BF04-7248D0C6F206}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{EC995B51-2ED4-4170-BF04-7248D0C6F206}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{EC995B51-2ED4-4170-BF04-7248D0C6F206}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

@@ -2675,14 +2675,33 @@ namespace Neumont.Tools.Modeling.Shell
 								CustomSerializedStandaloneRelationshipRole[] customRelationshipRoles = relationship.GetRoles();
 
 								// The values collection is officially randomly ordered and may change over time.
-								// Sort the elements by Id to get a stable XML file
+								// Sort the elements by name to get a more stable XML file over time.
+								// Note that doing a guid comparison here is also theoretically stable,
+								// but wreaks havoc with unit test baselines, so we sort by name instead.
 								ICollection<ModelElement> sourceValues = linksBySource.Values;
 								int sourceCount = sourceValues.Count;
-								if (sourceCount > 1)
+								DomainPropertyInfo nameDomainProperty;
+								if (sourceCount > 1 &&
+									null != (nameDomainProperty = sourceRoleInfo.RolePlayer.NameDomainProperty))
 								{
 									ModelElement[] sortedSources = new ModelElement[sourceCount];
 									sourceValues.CopyTo(sortedSources, 0);
-									Array.Sort<ModelElement>(sortedSources, ModelElementGuidComparer.Instance);
+									Array.Sort<ModelElement>(
+										sortedSources,
+										delegate(ModelElement x, ModelElement y)
+										{
+											if ((object)x == (object)y)
+											{
+												return 0;
+											}
+											int retVal = string.Compare(nameDomainProperty.GetValue(x) as string, nameDomainProperty.GetValue(y) as string, StringComparison.Ordinal);
+											// At this point we could do a guid comparison, but this
+											// ends up with different element orders when attempting
+											// to write baselined unit tests, so we just make an arbitrary
+											// decision here to give the same order for the same set of
+											// data, regardless of guid.
+											return (retVal == 0) ? -1 : retVal;
+										});
 									sourceValues = sortedSources;
 								}
 								foreach (ModelElement element in sourceValues)
@@ -2727,25 +2746,6 @@ namespace Neumont.Tools.Modeling.Shell
 
 			return;
 		}
-		#region ModelElementGuidComparer class
-		/// <summary>
-		/// Helper class used to impose a reproducible order on a randomly
-		/// ordered set of model elements
-		/// </summary>
-		private class ModelElementGuidComparer : IComparer<ModelElement>
-		{
-			public static readonly IComparer<ModelElement> Instance = new ModelElementGuidComparer();
-			private ModelElementGuidComparer()
-			{
-			}
-			#region IComparer<ModelElement> Implementation
-			public int Compare(ModelElement x, ModelElement y)
-			{
-				return x.Id.CompareTo(y.Id); ;
-			}
-			#endregion // IComparer<ModelElement> Implementation
-		}
-		#endregion // ModelElementGuidComparer class
 	}
 	#endregion // Serialization Routines
 	#region Deserialization Routines

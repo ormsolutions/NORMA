@@ -1,0 +1,17 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<Suites xmlns="http://schemas.neumont.edu/ORM/SDK/TestSuite">
+	<Suite name="RelationalExtensions">
+		<Categories>
+			<IncludeCategory name="Relational"/>
+		</Categories>
+		<Extensions path="%ProgramFiles%\Neumont\ORM Architect for Visual Studio\bin\Extensions">
+			<Extension location="Neumont.Tools.ORMAbstraction.dll" domainModel="Neumont.Tools.ORMAbstraction.AbstractionDomainModel" extensionURI="http://schemas.neumont.edu/ORM/Abstraction/2007-06/Core"/>
+			<Extension location="Neumont.Tools.ORMAbstractionToConceptualDatabaseBridge.dll" domainModel="Neumont.Tools.ORMAbstractionToConceptualDatabaseBridge.ORMAbstractionToConceptualDatabaseBridgeDomainModel" extensionURI="http://schemas.neumont.edu/ORM/Bridge/2007-06/ORMAbstractionToConceptualDatabase"/>
+			<Extension location="Neumont.Tools.ORMToORMAbstractionBridge.dll" domainModel="Neumont.Tools.ORMToORMAbstractionBridge.ORMToORMAbstractionBridgeDomainModel" extensionURI="http://schemas.neumont.edu/ORM/Bridge/2007-06/ORMToORMAbstraction"/>
+			<Extension location="Neumont.Tools.RelationalModels.dll" domainModel="Neumont.Tools.RelationalModels.ConceptualDatabase.ConceptualDatabaseDomainModel" extensionURI="http://schemas.neumont.edu/ORM/Relational/2007-06/ConceptualDatabase"/>
+		</Extensions>
+		<TestAssemblies>
+			<TestAssembly location="RelationalTests\RelationalTests.dll"/>
+		</TestAssemblies>
+	</Suite>
+</Suites>
