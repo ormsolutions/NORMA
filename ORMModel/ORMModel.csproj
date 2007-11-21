@@ -22,7 +22,7 @@
     <DebugType>full</DebugType>
     <Optimize>true</Optimize>
     <OutputPath>bin\Debug\</OutputPath>
-    <DefineConstants>TRACE;DEBUG;NET_2_0</DefineConstants>
+    <DefineConstants>TRACE;DEBUG</DefineConstants>
     <DocumentationFile>bin\Debug\Neumont.Tools.ORM.xml</DocumentationFile>
     <ErrorReport>prompt</ErrorReport>
     <NoWarn>1607</NoWarn>
@@ -53,14 +53,13 @@
       <Private>False</Private>
     </Reference>
     <Reference Include="Microsoft.VisualStudio.Modeling.Sdk.Shell, Version=$(TargetDslToolsAssemblyVersion), Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a, processorArchitecture=MSIL" />
-    <Reference Include="Microsoft.VisualStudio.Modeling.Sdk.Utilities, Version=$(TargetDslToolsAssemblyVersion), Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a, processorArchitecture=MSIL" />
     <Reference Include="Microsoft.VisualStudio.OLE.Interop, Version=7.1.40304.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a">
       <SpecificVersion>False</SpecificVersion>
     </Reference>
     <Reference Include="Microsoft.VisualStudio.Package.LanguageService$(TargetVisualStudioFrameworkAssemblySuffix), Version=$(TargetVisualStudioFrameworkAssemblyVersion), Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
     </Reference>
-    <!-- As of Visual Studio 2008 Beta 2, Microsoft.VisualStudio.Shell.9.0 is still versioned as 2.0.0.0. -->
+    <!-- As of Visual Studio 2008, Microsoft.VisualStudio.Shell.9.0 is still versioned as 2.0.0.0. -->
     <Reference Include="Microsoft.VisualStudio.Shell$(TargetVisualStudioFrameworkAssemblySuffix), Version=2.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
     </Reference>

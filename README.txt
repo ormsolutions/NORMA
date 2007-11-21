@@ -12,9 +12,10 @@ they can be obtained, are as follows:
 PLiX - Programming Language in XML
 	Homepage: https://sourceforge.net/projects/plix
 
-Microsoft Visual Studio 2005 SDK (v4.0 or later)
+Microsoft Visual Studio SDK
 	Homepage: http://www.microsoft.com/extendvs
-	Download: http://go.microsoft.com/fwlink/?LinkId=73702
+	Download (Visual Studio 2005): http://go.microsoft.com/fwlink/?LinkId=73702
+	Download (Visual Studio 2008): http://www.microsoft.com/downloads/details.aspx?familyid=30402623-93ca-479a-867c-04dc45164f5b&displaylang=en
 
 
 Additional components used by other portions of this software include:

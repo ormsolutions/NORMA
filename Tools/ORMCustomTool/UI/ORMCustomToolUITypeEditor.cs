@@ -67,7 +67,12 @@ namespace Neumont.Tools.ORM.ORMCustomTool
 							IMoniker moniker;
 							ErrorHandler.ThrowOnFailure(CreateItemMoniker(
 								"!",
-								"VisualStudio.DTE.8.0:" + procId.ToString(),
+#if VISUALSTUDIO_9_0
+								"VisualStudio.DTE.9.0:" +
+#else //!VISUALSTUDIO_9_0
+								"VisualStudio.DTE.8.0:" + 
+#endif //!VISUALSTUDIO_9_0
+								procId.ToString(),
 								out moniker));
 							object objDTE;
 							ErrorHandler.ThrowOnFailure(rot.GetObject(moniker, out objDTE));
