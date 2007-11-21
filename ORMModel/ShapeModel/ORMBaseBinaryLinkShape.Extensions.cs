@@ -346,7 +346,9 @@ namespace Neumont.Tools.ORM.ShapeModel
 			bool retVal = false;
 			LineSegment hitSegment = null;
 			AnchorPoint anchorPoint = null;
-			SizeD tolerance = base.GetHitTestTolerance(hitTestInfo);
+			// In DSL Tools v8.2, GetHitTestTolerance is an instance method, but in DSL Tools v9.0, it is a static method.
+			// We call it without a qualifier here so that it will compile against both versions.
+			SizeD tolerance = GetHitTestTolerance(hitTestInfo);
 			RectangleD perimeter = this.GetPerimeterBoundingBox(geometryHost);
 			perimeter.Inflate(tolerance);
 			if (perimeter.Contains(hitPoint))
@@ -384,7 +386,9 @@ namespace Neumont.Tools.ORM.ShapeModel
 				{
 					if (anchorPoint == null)
 					{
-						diagramItem = this.CreateDiagramItem(geometryHost, hitSegment);
+						// In DSL Tools v8.2, CreateDiagramItem is an instance method, but in DSL Tools v9.0, it is a static method.
+						// We call it without a qualifier here so that it will compile against both versions.
+						diagramItem = CreateDiagramItem(geometryHost, hitSegment);
 					}
 					else
 					{
@@ -456,7 +460,9 @@ namespace Neumont.Tools.ORM.ShapeModel
 				for (int num1 = 0; num1 < (collection1.Count - 1); num1++)
 				{
 					RectangleD ed1 = GeometryHelpers.RectangleDFrom2Pts(collection1[num1].Point, collection1[num1 + 1].Point);
-					SizeD ed2 = base.GetHitTestTolerance(hitTestInfo);
+					// In DSL Tools v8.2, GetHitTestTolerance is an instance method, but in DSL Tools v9.0, it is a static method.
+					// We call it without a qualifier here so that it will compile against both versions.
+					SizeD ed2 = GetHitTestTolerance(hitTestInfo);
 					if (ed1.Height < ed2.Height)
 					{
 						ed1.Inflate(0, (pen1.Width / 2f) + ed2.Height);
