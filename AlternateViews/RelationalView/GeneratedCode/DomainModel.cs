@@ -84,6 +84,7 @@ namespace Neumont.Tools.ORM.Views.RelationalView
 			return new DomainMemberInfo[]
 			{
 				new DomainMemberInfo(typeof(RelationalDiagram), "DisplayDataTypes", RelationalDiagram.DisplayDataTypesDomainPropertyId, typeof(RelationalDiagram.DisplayDataTypesPropertyHandler)),
+				new DomainMemberInfo(typeof(TableShape), "UpdateCounter", TableShape.UpdateCounterDomainPropertyId, typeof(TableShape.UpdateCounterPropertyHandler)),
 			};
 		}
 		#endregion

@@ -34,11 +34,13 @@ namespace Neumont.Tools.ORM.Views.RelationalView
 					// This would have a slightly negative impact on performance, but the result would still be correct.
 					// Given the low likelihood of this ever happening, the extra overhead of synchronization would outweigh any possible gain from it.
 					retVal = new Type[]{
+						typeof(RelationalDiagram).GetNestedType("ConceptTypeDetachingFromTableRuleClass", BindingFlags.Public | BindingFlags.NonPublic),
+						typeof(RelationalDiagram).GetNestedType("ConceptTypeDetachingFromObjectTypeRuleClass", BindingFlags.Public | BindingFlags.NonPublic),
+						typeof(RelationalDiagram).GetNestedType("DataTypeChangedRuleClass", BindingFlags.Public | BindingFlags.NonPublic),
+						typeof(RelationalDiagram).GetNestedType("DataTypeFacetChangedRuleClass", BindingFlags.Public | BindingFlags.NonPublic),
 						typeof(RelationalDiagram).GetNestedType("IsNullableChangedRuleClass", BindingFlags.Public | BindingFlags.NonPublic),
 						typeof(RelationalDiagram).GetNestedType("NameChangedRuleClass", BindingFlags.Public | BindingFlags.NonPublic),
 						typeof(RelationalDiagram).GetNestedType("ReferenceConstraintAddedRuleClass", BindingFlags.Public | BindingFlags.NonPublic),
-						typeof(RelationalDiagram).GetNestedType("ConceptTypeDetachingFromTableRuleClass", BindingFlags.Public | BindingFlags.NonPublic),
-						typeof(RelationalDiagram).GetNestedType("ConceptTypeDetachingFromObjectTypeRuleClass", BindingFlags.Public | BindingFlags.NonPublic),
 						typeof(ColumnElementListCompartment)};
 					RelationalShapeDomainModel.myCustomDomainModelTypes = retVal;
 					System.Diagnostics.Debug.Assert(Array.IndexOf<Type>(retVal, null) < 0, "One or more rule types failed to resolve. The file and/or package will fail to load.");
@@ -58,8 +60,10 @@ namespace Neumont.Tools.ORM.Views.RelationalView
 					retVal = new Type[]{
 						customDomainModelTypes[0],
 						customDomainModelTypes[1],
+						customDomainModelTypes[2],
 						customDomainModelTypes[3],
-						customDomainModelTypes[4]};
+						customDomainModelTypes[4],
+						customDomainModelTypes[5]};
 					RelationalShapeDomainModel.myInitiallyDisabledRuleTypes = retVal;
 				}
 				return retVal;
@@ -93,7 +97,7 @@ namespace Neumont.Tools.ORM.Views.RelationalView
 			RelationalShapeDomainModel.EnableDiagramRules(store);
 			Microsoft.VisualStudio.Modeling.RuleManager ruleManager = store.RuleManager;
 			Type[] disabledRuleTypes = RelationalShapeDomainModel.InitiallyDisabledRuleTypes;
-			for (int i = 0; i < 4; ++i)
+			for (int i = 0; i < 6; ++i)
 			{
 				ruleManager.EnableRule(disabledRuleTypes[i]);
 			}
@@ -108,6 +112,110 @@ namespace Neumont.Tools.ORM.Views.RelationalView
 	#region Rule classes for RelationalDiagram
 	partial class RelationalDiagram
 	{
+		[Microsoft.VisualStudio.Modeling.RuleOn(typeof(Neumont.Tools.ORMAbstractionToConceptualDatabaseBridge.TableIsPrimarilyForConceptType), Priority=Neumont.Tools.Modeling.FrameworkDomainModel.InlineRulePriority)]
+		private sealed class ConceptTypeDetachingFromTableRuleClass : Microsoft.VisualStudio.Modeling.DeletingRule
+		{
+			[System.Diagnostics.DebuggerStepThrough()]
+			public ConceptTypeDetachingFromTableRuleClass()
+			{
+				base.IsEnabled = false;
+			}
+			/// <summary>
+			/// Provide the following method in class: 
+			/// Neumont.Tools.ORM.Views.RelationalView.RelationalDiagram
+			/// /// <summary>
+			/// /// DeletingRule: typeof(Neumont.Tools.ORMAbstractionToConceptualDatabaseBridge.TableIsPrimarilyForConceptType)
+			/// /// </summary>
+			/// private static void ConceptTypeDetachingFromTableRule(ElementDeletingEventArgs e)
+			/// {
+			/// }
+			/// </summary>
+			[System.Diagnostics.DebuggerStepThrough()]
+			public override void ElementDeleting(Microsoft.VisualStudio.Modeling.ElementDeletingEventArgs e)
+			{
+				Neumont.Tools.Modeling.Diagnostics.TraceUtility.TraceRuleStart(e.ModelElement.Store, "Neumont.Tools.ORM.Views.RelationalView.RelationalDiagram.ConceptTypeDetachingFromTableRule");
+				RelationalDiagram.ConceptTypeDetachingFromTableRule(e);
+				Neumont.Tools.Modeling.Diagnostics.TraceUtility.TraceRuleEnd(e.ModelElement.Store, "Neumont.Tools.ORM.Views.RelationalView.RelationalDiagram.ConceptTypeDetachingFromTableRule");
+			}
+		}
+		[Microsoft.VisualStudio.Modeling.RuleOn(typeof(Neumont.Tools.ORMToORMAbstractionBridge.ConceptTypeIsForObjectType), Priority=Neumont.Tools.Modeling.FrameworkDomainModel.InlineRulePriority)]
+		private sealed class ConceptTypeDetachingFromObjectTypeRuleClass : Microsoft.VisualStudio.Modeling.DeletingRule
+		{
+			[System.Diagnostics.DebuggerStepThrough()]
+			public ConceptTypeDetachingFromObjectTypeRuleClass()
+			{
+				base.IsEnabled = false;
+			}
+			/// <summary>
+			/// Provide the following method in class: 
+			/// Neumont.Tools.ORM.Views.RelationalView.RelationalDiagram
+			/// /// <summary>
+			/// /// DeletingRule: typeof(Neumont.Tools.ORMToORMAbstractionBridge.ConceptTypeIsForObjectType)
+			/// /// </summary>
+			/// private static void ConceptTypeDetachingFromObjectTypeRule(ElementDeletingEventArgs e)
+			/// {
+			/// }
+			/// </summary>
+			[System.Diagnostics.DebuggerStepThrough()]
+			public override void ElementDeleting(Microsoft.VisualStudio.Modeling.ElementDeletingEventArgs e)
+			{
+				Neumont.Tools.Modeling.Diagnostics.TraceUtility.TraceRuleStart(e.ModelElement.Store, "Neumont.Tools.ORM.Views.RelationalView.RelationalDiagram.ConceptTypeDetachingFromObjectTypeRule");
+				RelationalDiagram.ConceptTypeDetachingFromObjectTypeRule(e);
+				Neumont.Tools.Modeling.Diagnostics.TraceUtility.TraceRuleEnd(e.ModelElement.Store, "Neumont.Tools.ORM.Views.RelationalView.RelationalDiagram.ConceptTypeDetachingFromObjectTypeRule");
+			}
+		}
+		[Microsoft.VisualStudio.Modeling.RuleOn(typeof(Neumont.Tools.ORM.ObjectModel.ValueTypeHasDataType), Priority=Neumont.Tools.Modeling.FrameworkDomainModel.InlineRulePriority)]
+		private sealed class DataTypeChangedRuleClass : Microsoft.VisualStudio.Modeling.RolePlayerChangeRule
+		{
+			[System.Diagnostics.DebuggerStepThrough()]
+			public DataTypeChangedRuleClass()
+			{
+				base.IsEnabled = false;
+			}
+			/// <summary>
+			/// Provide the following method in class: 
+			/// Neumont.Tools.ORM.Views.RelationalView.RelationalDiagram
+			/// /// <summary>
+			/// /// RolePlayerChangeRule: typeof(Neumont.Tools.ORM.ObjectModel.ValueTypeHasDataType)
+			/// /// </summary>
+			/// private static void DataTypeChangedRule(RolePlayerChangedEventArgs e)
+			/// {
+			/// }
+			/// </summary>
+			[System.Diagnostics.DebuggerStepThrough()]
+			public override void RolePlayerChanged(Microsoft.VisualStudio.Modeling.RolePlayerChangedEventArgs e)
+			{
+				Neumont.Tools.Modeling.Diagnostics.TraceUtility.TraceRuleStart(e.ElementLink.Store, "Neumont.Tools.ORM.Views.RelationalView.RelationalDiagram.DataTypeChangedRule");
+				RelationalDiagram.DataTypeChangedRule(e);
+				Neumont.Tools.Modeling.Diagnostics.TraceUtility.TraceRuleEnd(e.ElementLink.Store, "Neumont.Tools.ORM.Views.RelationalView.RelationalDiagram.DataTypeChangedRule");
+			}
+		}
+		[Microsoft.VisualStudio.Modeling.RuleOn(typeof(Neumont.Tools.ORM.ObjectModel.ValueTypeHasDataType), Priority=Neumont.Tools.Modeling.FrameworkDomainModel.InlineRulePriority)]
+		private sealed class DataTypeFacetChangedRuleClass : Microsoft.VisualStudio.Modeling.ChangeRule
+		{
+			[System.Diagnostics.DebuggerStepThrough()]
+			public DataTypeFacetChangedRuleClass()
+			{
+				base.IsEnabled = false;
+			}
+			/// <summary>
+			/// Provide the following method in class: 
+			/// Neumont.Tools.ORM.Views.RelationalView.RelationalDiagram
+			/// /// <summary>
+			/// /// ChangeRule: typeof(Neumont.Tools.ORM.ObjectModel.ValueTypeHasDataType)
+			/// /// </summary>
+			/// private static void DataTypeFacetChangedRule(ElementPropertyChangedEventArgs e)
+			/// {
+			/// }
+			/// </summary>
+			[System.Diagnostics.DebuggerStepThrough()]
+			public override void ElementPropertyChanged(Microsoft.VisualStudio.Modeling.ElementPropertyChangedEventArgs e)
+			{
+				Neumont.Tools.Modeling.Diagnostics.TraceUtility.TraceRuleStart(e.ModelElement.Store, "Neumont.Tools.ORM.Views.RelationalView.RelationalDiagram.DataTypeFacetChangedRule");
+				RelationalDiagram.DataTypeFacetChangedRule(e);
+				Neumont.Tools.Modeling.Diagnostics.TraceUtility.TraceRuleEnd(e.ModelElement.Store, "Neumont.Tools.ORM.Views.RelationalView.RelationalDiagram.DataTypeFacetChangedRule");
+			}
+		}
 		[Microsoft.VisualStudio.Modeling.RuleOn(typeof(Neumont.Tools.RelationalModels.ConceptualDatabase.Column), Priority=Neumont.Tools.Modeling.FrameworkDomainModel.InlineRulePriority)]
 		private sealed class IsNullableChangedRuleClass : Microsoft.VisualStudio.Modeling.ChangeRule
 		{
@@ -179,58 +287,6 @@ namespace Neumont.Tools.ORM.Views.RelationalView
 				Neumont.Tools.Modeling.Diagnostics.TraceUtility.TraceRuleStart(e.ModelElement.Store, "Neumont.Tools.ORM.Views.RelationalView.RelationalDiagram.ReferenceConstraintAddedRule");
 				RelationalDiagram.ReferenceConstraintAddedRule(e);
 				Neumont.Tools.Modeling.Diagnostics.TraceUtility.TraceRuleEnd(e.ModelElement.Store, "Neumont.Tools.ORM.Views.RelationalView.RelationalDiagram.ReferenceConstraintAddedRule");
-			}
-		}
-		[Microsoft.VisualStudio.Modeling.RuleOn(typeof(Neumont.Tools.ORMAbstractionToConceptualDatabaseBridge.TableIsPrimarilyForConceptType), Priority=Neumont.Tools.Modeling.FrameworkDomainModel.InlineRulePriority)]
-		private sealed class ConceptTypeDetachingFromTableRuleClass : Microsoft.VisualStudio.Modeling.DeletingRule
-		{
-			[System.Diagnostics.DebuggerStepThrough()]
-			public ConceptTypeDetachingFromTableRuleClass()
-			{
-				base.IsEnabled = false;
-			}
-			/// <summary>
-			/// Provide the following method in class: 
-			/// Neumont.Tools.ORM.Views.RelationalView.RelationalDiagram
-			/// /// <summary>
-			/// /// DeletingRule: typeof(Neumont.Tools.ORMAbstractionToConceptualDatabaseBridge.TableIsPrimarilyForConceptType)
-			/// /// </summary>
-			/// private static void ConceptTypeDetachingFromTableRule(ElementDeletingEventArgs e)
-			/// {
-			/// }
-			/// </summary>
-			[System.Diagnostics.DebuggerStepThrough()]
-			public override void ElementDeleting(Microsoft.VisualStudio.Modeling.ElementDeletingEventArgs e)
-			{
-				Neumont.Tools.Modeling.Diagnostics.TraceUtility.TraceRuleStart(e.ModelElement.Store, "Neumont.Tools.ORM.Views.RelationalView.RelationalDiagram.ConceptTypeDetachingFromTableRule");
-				RelationalDiagram.ConceptTypeDetachingFromTableRule(e);
-				Neumont.Tools.Modeling.Diagnostics.TraceUtility.TraceRuleEnd(e.ModelElement.Store, "Neumont.Tools.ORM.Views.RelationalView.RelationalDiagram.ConceptTypeDetachingFromTableRule");
-			}
-		}
-		[Microsoft.VisualStudio.Modeling.RuleOn(typeof(Neumont.Tools.ORMToORMAbstractionBridge.ConceptTypeIsForObjectType), Priority=Neumont.Tools.Modeling.FrameworkDomainModel.InlineRulePriority)]
-		private sealed class ConceptTypeDetachingFromObjectTypeRuleClass : Microsoft.VisualStudio.Modeling.DeletingRule
-		{
-			[System.Diagnostics.DebuggerStepThrough()]
-			public ConceptTypeDetachingFromObjectTypeRuleClass()
-			{
-				base.IsEnabled = false;
-			}
-			/// <summary>
-			/// Provide the following method in class: 
-			/// Neumont.Tools.ORM.Views.RelationalView.RelationalDiagram
-			/// /// <summary>
-			/// /// DeletingRule: typeof(Neumont.Tools.ORMToORMAbstractionBridge.ConceptTypeIsForObjectType)
-			/// /// </summary>
-			/// private static void ConceptTypeDetachingFromObjectTypeRule(ElementDeletingEventArgs e)
-			/// {
-			/// }
-			/// </summary>
-			[System.Diagnostics.DebuggerStepThrough()]
-			public override void ElementDeleting(Microsoft.VisualStudio.Modeling.ElementDeletingEventArgs e)
-			{
-				Neumont.Tools.Modeling.Diagnostics.TraceUtility.TraceRuleStart(e.ModelElement.Store, "Neumont.Tools.ORM.Views.RelationalView.RelationalDiagram.ConceptTypeDetachingFromObjectTypeRule");
-				RelationalDiagram.ConceptTypeDetachingFromObjectTypeRule(e);
-				Neumont.Tools.Modeling.Diagnostics.TraceUtility.TraceRuleEnd(e.ModelElement.Store, "Neumont.Tools.ORM.Views.RelationalView.RelationalDiagram.ConceptTypeDetachingFromObjectTypeRule");
 			}
 		}
 	}

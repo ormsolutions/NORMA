@@ -134,11 +134,11 @@ namespace Neumont.Tools.ORM.Views.RelationalView
 				foreach (PresentationElement pel in ((RelationalDiagram)e.ModelElement).NestedChildShapes)
 				{
 					TableShape shape;
-					Compartment compartment;
+					ColumnElementListCompartment compartment;
 					if (null != (shape = pel as TableShape) &&
-						null != (compartment = shape.FindCompartment("ColumnsCompartment")))
+						null != (compartment = shape.FindCompartment("ColumnsCompartment") as ColumnElementListCompartment))
 					{
-						compartment.UpdateSize();
+						compartment.InvalidateOrUpdateSize();
 					}
 				}
 			}
@@ -151,20 +151,109 @@ namespace Neumont.Tools.ORM.Views.RelationalView
 		{
 			if (e.DomainProperty.Id == Column.IsNullableDomainPropertyId)
 			{
-				Table table = ((Column)e.ModelElement).Table;
-				if (table != null)
+				UpdateTablePresentationSize(((Column)e.ModelElement).Table);
+			}
+		}
+		private static void UpdateTablePresentationSize(Table table)
+		{
+			if (table != null)
+			{
+				foreach (PresentationElement pel in PresentationViewsSubject.GetPresentation(table))
 				{
-					foreach (PresentationElement pel in PresentationViewsSubject.GetPresentation(table))
+					TableShape shape;
+					ColumnElementListCompartment compartment;
+					if (null != (shape = pel as TableShape) &&
+						null != (compartment = shape.FindCompartment("ColumnsCompartment") as ColumnElementListCompartment))
 					{
-						TableShape shape;
-						Compartment compartment;
-						if (null != (shape = pel as TableShape) &&
-							null != (compartment = shape.FindCompartment("ColumnsCompartment")))
-						{
-							compartment.UpdateSize();
-						}
+						compartment.InvalidateOrUpdateSize();
 					}
 				}
+			}
+		}
+		/// <summary>
+		/// RolePlayerChangeRule: typeof(Neumont.Tools.ORM.ObjectModel.ValueTypeHasDataType)
+		/// Update table size when a column datatype is changed.
+		/// </summary>
+		private static void DataTypeChangedRule(RolePlayerChangedEventArgs e)
+		{
+			if (e.DomainRole.Id == ValueTypeHasDataType.DataTypeDomainRoleId)
+			{
+				UpdateTablesOnDataTypeChange((ValueTypeHasDataType)e.ElementLink);
+			}
+		}
+		private static void UpdateTablesOnDataTypeChange(ValueTypeHasDataType link)
+		{
+			InformationTypeFormat format;
+			LinkedElementCollection<ConceptType> conceptTypes;
+			if (null != (format = InformationTypeFormatIsForValueType.GetInformationTypeFormat(link.ValueType)) &&
+				0 != (conceptTypes = InformationType.GetConceptTypeCollection(format)).Count)
+			{
+				foreach (ConceptType conceptType in conceptTypes)
+				{
+					UpdateTablesForConceptType(conceptType, null, null);
+				}
+			}
+		}
+		private static void UpdateTablesForConceptType(ConceptType conceptType, Predicate<ConceptType> conceptTypeFilter, Predicate<Table> tableFilter)
+		{
+			Table primaryTable = TableIsPrimarilyForConceptType.GetTable(conceptType);
+			LinkedElementCollection<Table> secondaryTables = TableIsAlsoForConceptType.GetTable(conceptType);
+			if (primaryTable != null && (tableFilter == null || !tableFilter(primaryTable)))
+			{
+				UpdateTablePresentationSize(primaryTable);
+			}
+			foreach (Table secondaryTable in secondaryTables)
+			{
+				if (tableFilter == null || !tableFilter(secondaryTable))
+				{
+					UpdateTablePresentationSize(secondaryTable);
+				}
+			}
+			Predicate<ConceptType> recurseConceptTypeFilter =
+				delegate(ConceptType testConceptType)
+				{
+					return testConceptType == conceptType ||
+						(conceptTypeFilter != null && conceptTypeFilter(testConceptType));
+				};
+			Predicate<Table> recurseTableFilter =
+				delegate(Table testTable)
+				{
+					return testTable == primaryTable || secondaryTables.Contains(testTable);
+				};
+			foreach (ConceptType relatingConceptType in ConceptTypeRelatesToConceptType.GetRelatingConceptTypeCollection(conceptType))
+			{
+				if (relatingConceptType == conceptType || (conceptTypeFilter != null && conceptTypeFilter(relatingConceptType)))
+				{
+					continue;
+				}
+				UpdateTablesForConceptType(
+					relatingConceptType,
+					recurseConceptTypeFilter,
+					recurseTableFilter);
+			}
+			foreach (ConceptType assimilatedConceptType in ConceptTypeAssimilatesConceptType.GetAssimilatedConceptTypeCollection(conceptType))
+			{
+				if (assimilatedConceptType == conceptType || (conceptTypeFilter != null && conceptTypeFilter(assimilatedConceptType)))
+				{
+					continue;
+				}
+				UpdateTablesForConceptType(
+					assimilatedConceptType,
+					recurseConceptTypeFilter,
+					recurseTableFilter);
+			}
+		}
+		/// <summary>
+		/// ChangeRule: typeof(Neumont.Tools.ORM.ObjectModel.ValueTypeHasDataType)
+		/// Update table size when a column datatype facet is changed
+		/// </summary>
+		private static void DataTypeFacetChangedRule(ElementPropertyChangedEventArgs e)
+		{
+			Guid attributeId = e.DomainProperty.Id;
+			if (attributeId == ValueTypeHasDataType.ScaleDomainPropertyId ||
+				attributeId == ValueTypeHasDataType.LengthDomainPropertyId)
+			{
+				UpdateTablesOnDataTypeChange((ValueTypeHasDataType)e.ModelElement);
 			}
 		}
 		/// <summary>

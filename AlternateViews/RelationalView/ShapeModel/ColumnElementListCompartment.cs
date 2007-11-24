@@ -310,12 +310,39 @@ namespace Neumont.Tools.ORM.Views.RelationalView
 		/// </summary>
 		public override void UpdateSize()
 		{
-			base.UpdateSize();
-			SizeD baseSize = Size;
-			double height = baseSize.Height;
-			double width = 0; // baseSize.Width;
+			UpdateSize(CalculateSize());
+		}
+		/// <summary>
+		/// Change the size of the shape if the size has changed,
+		/// or force invalidation if the size has not changed.
+		/// </summary>
+		public void InvalidateOrUpdateSize()
+		{
+			SizeD oldSize = Size;
+			SizeD newSize = CalculateSize();
+			// The .03 adjustment here accounts for the .015 left and right margins applied in
+			// the CompartmentShape.AnchorAllCompartments
+			if (oldSize != new SizeD(newSize.Width - .03, newSize.Height))
+			{
+				UpdateSize(newSize);
+			}
+			else
+			{
+				((TableShape)ParentShape).InvalidateRequired(true);
+			}
+		}
+		private void UpdateSize(SizeD newSize)
+		{
+			Size = newSize;
+			TableShape parent = (TableShape)ParentShape;
+			parent.Size = new SizeD(newSize.Width, parent.Size.Height + newSize.Height);
+		}
+		private SizeD CalculateSize()
+		{
 			ListField listField = ListField;
 			int count = this.GetItemCount(listField);
+			double height = HeaderBounds.Height + listField.GetItemHeight(this) * count;
+			double width = 0;
 			TableShape tableShape = ParentShape as TableShape;
 
 			string tableName = tableShape.AccessibleName;
@@ -323,7 +350,6 @@ namespace Neumont.Tools.ORM.Views.RelationalView
 			Font defaultFont = styleSet.GetFont(listField.NormalFontId);
 			Font alternateFont = styleSet.GetFont(listField.AlternateFontId);
 			Font tableNameFont = tableShape.StyleSet.GetFont(new StyleSetResourceId(string.Empty, "ShapeTextBold10"));
-			bool increasedWidth = false;
 
 			using (Graphics g = Graphics.FromHwnd(GetDesktopWindow()))
 			{
@@ -333,7 +359,6 @@ namespace Neumont.Tools.ORM.Views.RelationalView
 				if (width < tableNameWidth)
 				{
 					width = tableNameWidth;
-					increasedWidth = true;
 				}
 				// Iterates through the column list to check the widths of the column names.
 				for (int i = 0; i < count; ++i)
@@ -350,24 +375,10 @@ namespace Neumont.Tools.ORM.Views.RelationalView
 					if (width < stringWidth)
 					{
 						width = stringWidth;
-						increasedWidth = true;
 					}
 				}
 			}
-			SizeD newSize = new SizeD();
-			newSize.Width = width;
-			newSize.Height = height;
-			if (newSize != baseSize)
-			{
-				Size = newSize;
-			}
-			newSize = tableShape.Size;
-			if (increasedWidth)
-			{
-				newSize.Width = width + .16; // Tweak a little wider, based on margins established on other shape files, imperically sufficient
-			}
-			newSize.Height += height;
-			tableShape.Size = newSize;
+			return new SizeD(width, height);
 		}
 		/// <summary>
 		/// Disallows expanding and collapsing of the compartment.

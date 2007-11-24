@@ -114,32 +114,11 @@ namespace Neumont.Tools.ORM.Views.RelationalView
 		}
 		void IModelingEventSubscriber.ManagePostLoadModelingEventHandlers(ModelingEventManager eventManager, bool isReload, EventHandlerAction action)
 		{
-			DomainDataDirectory dataDirectory = Store.DomainDataDirectory;
-			DomainPropertyInfo propertyInfo = dataDirectory.FindDomainProperty(Column.IsNullableDomainPropertyId);
-			// UNDONE: I'd like to do this with an InvalidateRequired implementation like in the core shape model.
-			// Do this for now.
-			eventManager.AddOrRemoveHandler(propertyInfo, new EventHandler<ElementPropertyChangedEventArgs>(ColumnNullableChangedEvent), action);
+			TableShape.ManageEventHandlers(Store, eventManager, action);
 		}
 		void IModelingEventSubscriber.ManageSurveyQuestionModelingEventHandlers(ModelingEventManager eventManager, bool isReload, EventHandlerAction action)
 		{
 		}
 		#endregion // IModelingEventSubscriber Implementation
-		#region Events
-		private static void ColumnNullableChangedEvent(object sender, ElementPropertyChangedEventArgs e)
-		{
-			Table table = ((Column)e.ModelElement).Table;
-			if (table != null)
-			{
-				foreach (PresentationElement pel in PresentationViewsSubject.GetPresentation(table))
-				{
-					TableShape shape;
-					if (null != (shape = pel as TableShape))
-					{
-						shape.Invalidate(true);
-					}
-				}
-			}
-		}
-		#endregion // Events
 	}
 }

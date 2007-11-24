@@ -35,6 +35,13 @@
 
 	<Shapes>
 		<CompartmentShape Name="TableShape" Id="50DABFCD-909C-418A-8895-172AADAAD4FB" Namespace="Neumont.Tools.ORM.Views.RelationalView" GeneratesDoubleDerived="true" InitialHeight="0.3" InitialWidth="1" OutlineThickness="0.015625" AccessModifier="Assembly">
+			<Properties>
+				<DomainProperty Name="UpdateCounter" Id="9D49FFBB-3BB3-4711-B88E-9DBBD984C63D" GetterAccessModifier="Private" SetterAccessModifier="Private" Kind="CustomStorage" IsBrowsable="false">
+					<Type>
+						<ExternalTypeMoniker Name="/System/Int64"/>
+					</Type>
+				</DomainProperty>
+			</Properties>
 			<ShapeHasDecorators Position="InnerTopCenter">
 				<TextDecorator FontSize="10" FontStyle="Bold" Name="TableNameDecorator"/>
 			</ShapeHasDecorators>

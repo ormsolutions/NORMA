@@ -133,6 +133,14 @@
     <value>Table Shape</value>
     <comment>DisplayName for DomainClass &apos;TableShape&apos;</comment>
   </data>
+  <data name="Neumont.Tools.ORM.Views.RelationalView.TableShape/UpdateCounter.Description" xml:space="preserve">
+    <value>Description for Neumont.Tools.ORM.Views.RelationalView.TableShape.Update Counter</value>
+    <comment>Description for DomainProperty &apos;UpdateCounter&apos; on DomainClass &apos;TableShape&apos;</comment>
+  </data>
+  <data name="Neumont.Tools.ORM.Views.RelationalView.TableShape/UpdateCounter.DisplayName" xml:space="preserve">
+    <value>Update Counter</value>
+    <comment>DisplayName for DomainProperty &apos;UpdateCounter&apos; on DomainClass &apos;TableShape&apos;</comment>
+  </data>
   <data name="TableShapeColumnsCompartmentTitle" xml:space="preserve">
     <value>Columns</value>
     <comment>Compartment title</comment>

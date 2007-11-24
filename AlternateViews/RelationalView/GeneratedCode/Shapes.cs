@@ -381,6 +381,98 @@ namespace Neumont.Tools.ORM.Views.RelationalView
 		{
 		}
 		#endregion
+		#region UpdateCounter domain property code
+		
+		/// <summary>
+		/// UpdateCounter domain property Id.
+		/// </summary>
+		public static readonly global::System.Guid UpdateCounterDomainPropertyId = new global::System.Guid(0x9d49ffbb, 0x3bb3, 0x4711, 0xb8, 0x8e, 0x9d, 0xbb, 0xd9, 0x84, 0xc6, 0x3d);
+		
+		/// <summary>
+		/// Gets or sets the value of UpdateCounter domain property.
+		/// Description for Neumont.Tools.ORM.Views.RelationalView.TableShape.Update Counter
+		/// </summary>
+		[DslDesign::DisplayNameResource("Neumont.Tools.ORM.Views.RelationalView.TableShape/UpdateCounter.DisplayName", typeof(global::Neumont.Tools.ORM.Views.RelationalView.RelationalShapeDomainModel), "Neumont.Tools.ORM.Views.RelationalView.GeneratedCode.DomainModelResx")]
+		[DslDesign::DescriptionResource("Neumont.Tools.ORM.Views.RelationalView.TableShape/UpdateCounter.Description", typeof(global::Neumont.Tools.ORM.Views.RelationalView.RelationalShapeDomainModel), "Neumont.Tools.ORM.Views.RelationalView.GeneratedCode.DomainModelResx")]
+		[global::System.ComponentModel.Browsable(false)]
+		[global::System.ComponentModel.ReadOnly(true)]
+		[DslModeling::DomainProperty(Kind = DslModeling::DomainPropertyKind.CustomStorage)]
+		[DslModeling::DomainObjectId("9d49ffbb-3bb3-4711-b88e-9dbbd984c63d")]
+		private global::System.Int64 UpdateCounter
+		{
+			[global::System.Diagnostics.DebuggerStepThrough]
+			get
+			{
+				return UpdateCounterPropertyHandler.Instance.GetValue(this);
+			}
+			[global::System.Diagnostics.DebuggerStepThrough]
+			set
+			{
+				UpdateCounterPropertyHandler.Instance.SetValue(this, value);
+			}
+		}
+		/// <summary>
+		/// Value handler for the TableShape.UpdateCounter domain property.
+		/// </summary>
+		internal sealed partial class UpdateCounterPropertyHandler : DslModeling::DomainPropertyValueHandler<TableShapeBase, global::System.Int64>
+		{
+			private UpdateCounterPropertyHandler() { }
+		
+			/// <summary>
+			/// Gets the singleton instance of the TableShape.UpdateCounter domain property value handler.
+			/// </summary>
+			public static readonly UpdateCounterPropertyHandler Instance = new UpdateCounterPropertyHandler();
+		
+			/// <summary>
+			/// Gets the Id of the TableShape.UpdateCounter domain property.
+			/// </summary>
+			public sealed override global::System.Guid DomainPropertyId
+			{
+				[global::System.Diagnostics.DebuggerStepThrough]
+				get
+				{
+					return UpdateCounterDomainPropertyId;
+				}
+			}
+			
+			/// <summary>
+			/// Gets a strongly-typed value of the property on specified element.
+			/// </summary>
+			/// <param name="element">Element which owns the property.</param>
+			/// <returns>Property value.</returns>
+			public override sealed global::System.Int64 GetValue(TableShapeBase element)
+			{
+				if (element == null) throw new global::System.ArgumentNullException("element");
+				// There is no storage for UpdateCounter because its Kind is
+				// set to CustomStorage. Please provide the GetUpdateCounterValue()
+				// method on the domain class.
+				return element.GetUpdateCounterValue();
+			}
+		
+			/// <summary>
+			/// Sets property value on an element.
+			/// </summary>
+			/// <param name="element">Element which owns the property.</param>
+			/// <param name="newValue">New property value.</param>
+			public override sealed void SetValue(TableShapeBase element, global::System.Int64 newValue)
+			{
+				if (element == null) throw new global::System.ArgumentNullException("element");
+		
+				global::System.Int64 oldValue = GetValue(element);
+				if (newValue != oldValue)
+				{
+					ValueChanging(element, oldValue, newValue);
+					// There is no storage for UpdateCounter because its Kind is
+					// set to CustomStorage. Please provide the SetUpdateCounterValue()
+					// method on the domain class.
+					element.SetUpdateCounterValue(newValue);
+					//ValueChanged(element, oldValue, GetValue(element));
+					ValueChanged(element, oldValue, newValue);
+				}
+			}
+		}
+		
+		#endregion
 	}
 	/// <summary>
 	/// DomainClass TableShape
