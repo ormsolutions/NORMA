@@ -289,6 +289,13 @@ namespace Neumont.Tools.ORM.SDK.TestEngine
 				}
 				Type[] domainModels = new Type[keyedDomainModels.Count];
 				keyedDomainModels.Values.CopyTo(domainModels, 0);
+				// See comments wrt/ordering in ORMDesignerDocData.GetDomainModels
+				Array.Sort<Type>(
+					domainModels,
+					delegate(Type x, Type y)
+					{
+						return x.FullName.CompareTo(y.FullName);
+					});
 				store.LoadDomainModels(domainModels);
 
 				using (Transaction t = store.TransactionManager.BeginTransaction("File load and fixup"))

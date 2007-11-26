@@ -140,6 +140,17 @@ namespace Neumont.Tools.ORM.Shell
 					retVal[++i] = extensionType.Type;
 				}
 			}
+			// Add a fixed sort order for all machines. The order here is based on
+			// attribute sets, which are unordered, and other factors. The result is
+			// that you get different orders here on different machines and builds,
+			// which causes large differences in the serialized file, breaks unit
+			// test baselines, etc.
+			Array.Sort<Type>(
+				retVal,
+				delegate(Type x, Type y)
+				{
+					return x.FullName.CompareTo(y.FullName);
+				});
 			return retVal;
 		}
 		/// <summary>
