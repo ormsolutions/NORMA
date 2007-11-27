@@ -114,7 +114,9 @@ namespace Neumont.Tools.ORM.Views.RelationalView
 		}
 		void IModelingEventSubscriber.ManagePostLoadModelingEventHandlers(ModelingEventManager eventManager, bool isReload, EventHandlerAction action)
 		{
-			TableShape.ManageEventHandlers(Store, eventManager, action);
+			Store store = Store;
+			TableShape.ManageEventHandlers(store, eventManager, action);
+			RelationalDiagram.ManageEventHandlers(store, eventManager, action);
 		}
 		void IModelingEventSubscriber.ManageSurveyQuestionModelingEventHandlers(ModelingEventManager eventManager, bool isReload, EventHandlerAction action)
 		{

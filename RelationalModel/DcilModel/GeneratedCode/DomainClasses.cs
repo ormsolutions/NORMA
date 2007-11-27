@@ -1423,6 +1423,7 @@ namespace Neumont.Tools.RelationalModels.ConceptualDatabase
 		[global::System.Xml.Serialization.XmlAttribute("isPrimary")]
 		[DslDesign::DisplayNameResource("Neumont.Tools.RelationalModels.ConceptualDatabase.UniquenessConstraint/IsPrimary.DisplayName", typeof(global::Neumont.Tools.RelationalModels.ConceptualDatabase.ConceptualDatabaseDomainModel), "Neumont.Tools.RelationalModels.ConceptualDatabase.GeneratedCode.DomainModelResx")]
 		[DslDesign::DescriptionResource("Neumont.Tools.RelationalModels.ConceptualDatabase.UniquenessConstraint/IsPrimary.Description", typeof(global::Neumont.Tools.RelationalModels.ConceptualDatabase.ConceptualDatabaseDomainModel), "Neumont.Tools.RelationalModels.ConceptualDatabase.GeneratedCode.DomainModelResx")]
+		[global::System.ComponentModel.ReadOnly(true)]
 		[DslModeling::DomainObjectId("f09ac57c-454b-48d7-be68-53a5ce64b8f9")]
 		public global::System.Boolean IsPrimary
 		{

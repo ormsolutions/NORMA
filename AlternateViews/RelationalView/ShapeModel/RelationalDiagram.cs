@@ -330,5 +330,26 @@ namespace Neumont.Tools.ORM.Views.RelationalView
 			}
 			base.OnChildConfiguring(child, createdDuringViewFixup);
 		}
+		/// <summary>
+		/// Manages <see cref="EventHandler{TEventArgs}"/>s in the <see cref="Store"/> for <see cref="RelationalDiagram"/>s.
+		/// </summary>
+		/// <param name="store">The <see cref="Store"/> for which the <see cref="EventHandler{TEventArgs}"/>s should be managed.</param>
+		/// <param name="eventManager">The <see cref="ModelingEventManager"/> used to manage the <see cref="EventHandler{TEventArgs}"/>s.</param>
+		/// <param name="action">The <see cref="EventHandlerAction"/> that should be taken for the <see cref="EventHandler{TEventArgs}"/>s.</param>
+		public static void ManageEventHandlers(Store store, ModelingEventManager eventManager, EventHandlerAction action)
+		{
+			foreach (RelationalDiagram diagram in store.ElementDirectory.FindElements<RelationalDiagram>(false))
+			{
+				switch (action)
+				{
+					case EventHandlerAction.Add:
+						diagram.SubscribeCompartmentItemsEvents();
+						break;
+					case EventHandlerAction.Remove:
+						diagram.UnsubscribeCompartmentItemsEvents();
+						break;
+				}
+			}
+		}
 	}
 }

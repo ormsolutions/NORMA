@@ -615,7 +615,7 @@ namespace Neumont.Tools.RelationalModels.ConceptualDatabase
 		/// <summary>
 		/// Is this column part of the primary identification scheme?
 		/// </summary>
-		private bool IsPartOfPrimaryIdentifier
+		public bool IsPartOfPrimaryIdentifier
 		{
 			get
 			{

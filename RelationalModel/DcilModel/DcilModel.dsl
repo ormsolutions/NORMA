@@ -197,7 +197,9 @@
 				<DomainClassMoniker Name="Constraint"/>
 			</BaseClass>
 			<Properties>
-				<DomainProperty Id="F09AC57C-454B-48D7-BE68-53A5CE64B8F9" Name="IsPrimary" DisplayName="IsPrimary" Description="Is this uniqueness constraint a PRIMARY KEY?">
+				<!-- Note that IsPrimary is readonly because the model browser and relational view are unprepared to respond
+				to direct changes to this property. -->
+				<DomainProperty Id="F09AC57C-454B-48D7-BE68-53A5CE64B8F9" Name="IsPrimary" DisplayName="IsPrimary" IsUIReadOnly="true" Description="Is this uniqueness constraint a PRIMARY KEY?">
 					<Attributes>
 						<ClrAttribute Name="global::System.Xml.Serialization.XmlAttribute">
 							<Parameters>
