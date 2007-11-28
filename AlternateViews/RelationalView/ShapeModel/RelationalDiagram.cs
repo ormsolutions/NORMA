@@ -145,13 +145,27 @@ namespace Neumont.Tools.ORM.Views.RelationalView
 		}
 		/// <summary>
 		/// ChangeRule: typeof(Neumont.Tools.RelationalModels.ConceptualDatabase.Column)
-		/// Update table size when <see cref="Column.IsNullable"/> changes.
+		/// Update table size when <see cref="Column.IsNullable"/> or <see cref="Column.Name"/> changes.
 		/// </summary>
-		private static void IsNullableChangedRule(ElementPropertyChangedEventArgs e)
+		private static void DisplayColumnPropertyChangedRule(ElementPropertyChangedEventArgs e)
 		{
-			if (e.DomainProperty.Id == Column.IsNullableDomainPropertyId)
+			Guid attributeId = e.DomainProperty.Id;
+			if (attributeId == Column.IsNullableDomainPropertyId ||
+				attributeId == Column.NameDomainPropertyId)
 			{
 				UpdateTablePresentationSize(((Column)e.ModelElement).Table);
+			}
+		}
+		/// <summary>
+		/// ChangeRule: typeof(Neumont.Tools.RelationalModels.ConceptualDatabase.Table)
+		/// Update table size when <see cref="Table.Name"/> changes.
+		/// </summary>
+		private static void DisplayTablePropertyChangedRule(ElementPropertyChangedEventArgs e)
+		{
+			Guid attributeId = e.DomainProperty.Id;
+			if (attributeId == Table.NameDomainPropertyId)
+			{
+				UpdateTablePresentationSize((Table)e.ModelElement);
 			}
 		}
 		private static void UpdateTablePresentationSize(Table table)

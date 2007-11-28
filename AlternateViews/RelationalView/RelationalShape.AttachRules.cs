@@ -38,7 +38,8 @@ namespace Neumont.Tools.ORM.Views.RelationalView
 						typeof(RelationalDiagram).GetNestedType("ConceptTypeDetachingFromObjectTypeRuleClass", BindingFlags.Public | BindingFlags.NonPublic),
 						typeof(RelationalDiagram).GetNestedType("DataTypeChangedRuleClass", BindingFlags.Public | BindingFlags.NonPublic),
 						typeof(RelationalDiagram).GetNestedType("DataTypeFacetChangedRuleClass", BindingFlags.Public | BindingFlags.NonPublic),
-						typeof(RelationalDiagram).GetNestedType("IsNullableChangedRuleClass", BindingFlags.Public | BindingFlags.NonPublic),
+						typeof(RelationalDiagram).GetNestedType("DisplayColumnPropertyChangedRuleClass", BindingFlags.Public | BindingFlags.NonPublic),
+						typeof(RelationalDiagram).GetNestedType("DisplayTablePropertyChangedRuleClass", BindingFlags.Public | BindingFlags.NonPublic),
 						typeof(RelationalDiagram).GetNestedType("NameChangedRuleClass", BindingFlags.Public | BindingFlags.NonPublic),
 						typeof(RelationalDiagram).GetNestedType("ReferenceConstraintAddedRuleClass", BindingFlags.Public | BindingFlags.NonPublic),
 						typeof(ColumnElementListCompartment)};
@@ -63,7 +64,8 @@ namespace Neumont.Tools.ORM.Views.RelationalView
 						customDomainModelTypes[2],
 						customDomainModelTypes[3],
 						customDomainModelTypes[4],
-						customDomainModelTypes[5]};
+						customDomainModelTypes[5],
+						customDomainModelTypes[6]};
 					RelationalShapeDomainModel.myInitiallyDisabledRuleTypes = retVal;
 				}
 				return retVal;
@@ -97,7 +99,7 @@ namespace Neumont.Tools.ORM.Views.RelationalView
 			RelationalShapeDomainModel.EnableDiagramRules(store);
 			Microsoft.VisualStudio.Modeling.RuleManager ruleManager = store.RuleManager;
 			Type[] disabledRuleTypes = RelationalShapeDomainModel.InitiallyDisabledRuleTypes;
-			for (int i = 0; i < 6; ++i)
+			for (int i = 0; i < 7; ++i)
 			{
 				ruleManager.EnableRule(disabledRuleTypes[i]);
 			}
@@ -217,10 +219,10 @@ namespace Neumont.Tools.ORM.Views.RelationalView
 			}
 		}
 		[Microsoft.VisualStudio.Modeling.RuleOn(typeof(Neumont.Tools.RelationalModels.ConceptualDatabase.Column), Priority=Neumont.Tools.Modeling.FrameworkDomainModel.InlineRulePriority)]
-		private sealed class IsNullableChangedRuleClass : Microsoft.VisualStudio.Modeling.ChangeRule
+		private sealed class DisplayColumnPropertyChangedRuleClass : Microsoft.VisualStudio.Modeling.ChangeRule
 		{
 			[System.Diagnostics.DebuggerStepThrough()]
-			public IsNullableChangedRuleClass()
+			public DisplayColumnPropertyChangedRuleClass()
 			{
 				base.IsEnabled = false;
 			}
@@ -230,16 +232,42 @@ namespace Neumont.Tools.ORM.Views.RelationalView
 			/// /// <summary>
 			/// /// ChangeRule: typeof(Neumont.Tools.RelationalModels.ConceptualDatabase.Column)
 			/// /// </summary>
-			/// private static void IsNullableChangedRule(ElementPropertyChangedEventArgs e)
+			/// private static void DisplayColumnPropertyChangedRule(ElementPropertyChangedEventArgs e)
 			/// {
 			/// }
 			/// </summary>
 			[System.Diagnostics.DebuggerStepThrough()]
 			public override void ElementPropertyChanged(Microsoft.VisualStudio.Modeling.ElementPropertyChangedEventArgs e)
 			{
-				Neumont.Tools.Modeling.Diagnostics.TraceUtility.TraceRuleStart(e.ModelElement.Store, "Neumont.Tools.ORM.Views.RelationalView.RelationalDiagram.IsNullableChangedRule");
-				RelationalDiagram.IsNullableChangedRule(e);
-				Neumont.Tools.Modeling.Diagnostics.TraceUtility.TraceRuleEnd(e.ModelElement.Store, "Neumont.Tools.ORM.Views.RelationalView.RelationalDiagram.IsNullableChangedRule");
+				Neumont.Tools.Modeling.Diagnostics.TraceUtility.TraceRuleStart(e.ModelElement.Store, "Neumont.Tools.ORM.Views.RelationalView.RelationalDiagram.DisplayColumnPropertyChangedRule");
+				RelationalDiagram.DisplayColumnPropertyChangedRule(e);
+				Neumont.Tools.Modeling.Diagnostics.TraceUtility.TraceRuleEnd(e.ModelElement.Store, "Neumont.Tools.ORM.Views.RelationalView.RelationalDiagram.DisplayColumnPropertyChangedRule");
+			}
+		}
+		[Microsoft.VisualStudio.Modeling.RuleOn(typeof(Neumont.Tools.RelationalModels.ConceptualDatabase.Table), Priority=Neumont.Tools.Modeling.FrameworkDomainModel.InlineRulePriority)]
+		private sealed class DisplayTablePropertyChangedRuleClass : Microsoft.VisualStudio.Modeling.ChangeRule
+		{
+			[System.Diagnostics.DebuggerStepThrough()]
+			public DisplayTablePropertyChangedRuleClass()
+			{
+				base.IsEnabled = false;
+			}
+			/// <summary>
+			/// Provide the following method in class: 
+			/// Neumont.Tools.ORM.Views.RelationalView.RelationalDiagram
+			/// /// <summary>
+			/// /// ChangeRule: typeof(Neumont.Tools.RelationalModels.ConceptualDatabase.Table)
+			/// /// </summary>
+			/// private static void DisplayTablePropertyChangedRule(ElementPropertyChangedEventArgs e)
+			/// {
+			/// }
+			/// </summary>
+			[System.Diagnostics.DebuggerStepThrough()]
+			public override void ElementPropertyChanged(Microsoft.VisualStudio.Modeling.ElementPropertyChangedEventArgs e)
+			{
+				Neumont.Tools.Modeling.Diagnostics.TraceUtility.TraceRuleStart(e.ModelElement.Store, "Neumont.Tools.ORM.Views.RelationalView.RelationalDiagram.DisplayTablePropertyChangedRule");
+				RelationalDiagram.DisplayTablePropertyChangedRule(e);
+				Neumont.Tools.Modeling.Diagnostics.TraceUtility.TraceRuleEnd(e.ModelElement.Store, "Neumont.Tools.ORM.Views.RelationalView.RelationalDiagram.DisplayTablePropertyChangedRule");
 			}
 		}
 		[Microsoft.VisualStudio.Modeling.RuleOn(typeof(RelationalDiagram), Priority=Neumont.Tools.Modeling.FrameworkDomainModel.InlineRulePriority)]

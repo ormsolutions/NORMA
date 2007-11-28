@@ -29,8 +29,11 @@
 			<arg:ChangeRule methodName="DataTypeFacetChangedRule">
 				<arg:RuleOn targetType="ValueTypeHasDataType" targetTypeQualifier="Neumont.Tools.ORM.ObjectModel"/>
 			</arg:ChangeRule>
-			<arg:ChangeRule methodName="IsNullableChangedRule">
+			<arg:ChangeRule methodName="DisplayColumnPropertyChangedRule">
 				<arg:RuleOn targetType="Column" targetTypeQualifier="Neumont.Tools.RelationalModels.ConceptualDatabase"/>
+			</arg:ChangeRule>
+			<arg:ChangeRule methodName="DisplayTablePropertyChangedRule">
+				<arg:RuleOn targetType="Table" targetTypeQualifier="Neumont.Tools.RelationalModels.ConceptualDatabase"/>
 			</arg:ChangeRule>
 			<arg:ChangeRule methodName="NameChangedRule">
 				<arg:RuleOn targetType="RelationalDiagram"/>

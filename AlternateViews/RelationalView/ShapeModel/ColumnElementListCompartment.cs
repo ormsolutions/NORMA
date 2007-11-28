@@ -26,6 +26,7 @@ using Neumont.Tools.RelationalModels.ConceptualDatabase;
 using System.Collections.ObjectModel;
 using Neumont.Tools.ORM.ObjectModel;
 using UniquenessConstraint = Neumont.Tools.RelationalModels.ConceptualDatabase.UniquenessConstraint;
+using System.Windows.Forms;
 
 namespace Neumont.Tools.ORM.Views.RelationalView
 {
@@ -385,6 +386,29 @@ namespace Neumont.Tools.ORM.Views.RelationalView
 		/// </summary>
 		public override void OnDoubleClick(DiagramPointEventArgs e)
 		{
+		}
+		/// <summary>
+		/// Disallows collapsing of the compartment with a left key
+		/// </summary>
+		public override void OnKeyDown(DiagramKeyEventArgs e)
+		{
+			if (e.KeyData == Keys.Left && !e.Handled)
+			{
+				e.Handled = true;
+			}
+			base.OnKeyDown(e);
+		}
+		/// <summary>
+		/// Disallows expanding and collapsing of the compartment. Unfortunately,
+		/// noone seems to respect this, or we wouldn't need to OnDoubleClick and OnKeyDown
+		/// overrides.
+		/// </summary>
+		public override bool CanExpandAndCollapse
+		{
+			get
+			{
+				return false;
+			}
 		}
 		/// <summary>
 		/// Disallows selection of the compartment.
