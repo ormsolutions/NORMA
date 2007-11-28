@@ -1,9 +1,16 @@
 @ECHO OFF
 SETLOCAL
 SET RootDir=%~dp0.
+IF NOT "%~2"=="" (SET TargetVisualStudioVersion=%~2)
 CALL "%RootDir%\SetupEnvironment.bat" %*
 
 IF EXIST "%NORMADir%\bin\Neumont.Tools.ORM.dll" (%RegPkg% /unregister "%NORMADir%\bin\Neumont.Tools.ORM.dll")
+CALL:_CleanupFile "%NORMADir%\bin\Neumont.Tools.ORM.dll"
+CALL:_CleanupFile "%NORMADir%\bin\Neumont.Tools.ORM.pdb"
+CALL:_CleanupFile "%NORMADir%\bin\Neumont.Tools.ORM.xml"
+
+SET TargetBaseName=Neumont.Tools.ORM.%TargetVisualStudioShortProductName%
+IF EXIST "%NORMADir%\bin\%TargetBaseName%.dll" (%RegPkg% /unregister "%NORMADir%\bin\%TargetBaseName%.dll")
 
 IF NOT EXIST "%NORMADir%" (SET RunDevEnvSetup=True)
 
@@ -23,13 +30,14 @@ CALL:_RemoveDir "%DILDir%\..\..\DIL"
 CALL:_MakeDir "%DILDir%\Schemas"
 CALL:_MakeDir "%DILDir%\Transforms"
 
-XCOPY /Y /D /V /Q "%RootDir%\ORMModel\%BuildOutDir%\Neumont.Tools.ORM.dll" "%NORMADir%\bin\"
-XCOPY /Y /D /V /Q "%RootDir%\ORMModel\%BuildOutDir%\Neumont.Tools.ORM.pdb" "%NORMADir%\bin\"
-XCOPY /Y /D /V /Q "%RootDir%\ORMModel\%BuildOutDir%\Neumont.Tools.ORM.xml" "%NORMADir%\bin\"
+XCOPY /Y /D /V /Q "%RootDir%\ORMModel\%BuildOutDir%\%TargetBaseName%.dll" "%NORMADir%\bin\"
+XCOPY /Y /D /V /Q "%RootDir%\ORMModel\%BuildOutDir%\%TargetBaseName%.pdb" "%NORMADir%\bin\"
+XCOPY /Y /D /V /Q "%RootDir%\ORMModel\%BuildOutDir%\%TargetBaseName%.xml" "%NORMADir%\bin\"
 CALL:_CleanupFile "%NORMADir%\bin\1033\Neumont.Tools.ORMUI.dll"
 
 FOR %%A IN ("%RootDir%\ORMModel\Shell\ProjectItems\*.zip") DO ECHO F | XCOPY /Y /D /V /Q "%%~fA" "%VSItemTemplatesDir%\%%~nA\ORMModel.zip"
 FOR %%A IN ("%RootDir%\ORMModel\Shell\ProjectItems\Web\*.zip") DO ECHO F | XCOPY /Y /D /V /Q "%%~fA" "%VSItemTemplatesDir%\Web\%%~nA\ORMModel.zip"
+FOR %%A IN ("%RootDir%\ORMModel\Shell\ProjectItems\%TargetVisualStudioShortProductName%\*.zip") DO ECHO F | XCOPY /Y /D /V /Q "%%~fA" "%VSItemTemplatesDir%\%%~nA\ORMModel.zip"
 
 XCOPY /Y /D /V /Q "%RootDir%\ORMModel\ObjectModel\ORM2Core.xsd" "%ORMDir%\Schemas\"
 XCOPY /Y /D /V /Q "%RootDir%\ORMModel\ShapeModel\ORM2Diagram.xsd" "%ORMDir%\Schemas\"
@@ -77,11 +85,11 @@ XCOPY /Y /D /V /Q "%RootDir%\XML\DIL\DCIL.xsd" "%DILDir%\Schemas\"
 XCOPY /Y /D /V /Q "%RootDir%\XML\DIL\DDIL.xsd" "%DILDir%\Schemas\"
 XCOPY /Y /D /V /Q "%RootDir%\XML\DIL\catalog.xml" "%DILDir%\Schemas\"
 
-XCOPY /Y /D /V /Q "%RootDir%\Setup\NORMASchemaCatalog.xml" "%VSDir%\Xml\Schemas\"
+XCOPY /Y /D /V /Q "%RootDir%\Setup\NORMASchemaCatalog.%TargetVisualStudioShortProductName%.xml" "%VSDir%\Xml\Schemas\NORMASchemaCatalog.xml"
 XCOPY /Y /D /V /Q "%RootDir%\Setup\ORMSchemaCatalog.xml" "%VSDir%\Xml\Schemas\"
 XCOPY /Y /D /V /Q "%RootDir%\Setup\DILSchemaCatalog.xml" "%VSDir%\Xml\Schemas\"
 
-%RegPkg% "%NORMADir%\bin\Neumont.Tools.ORM.dll"
+%RegPkg% "%NORMADir%\bin\%TargetBaseName%.dll"
 
 REG DELETE "HKLM\%VSRegistryRoot%\InstalledProducts\Neumont ORM Architect" /v "UseRegNameAsSplashName" /f 1>NUL
 
@@ -112,7 +120,7 @@ REG ADD "HKCR\MIME\Database\Content Type\application/orm+xml" /v "Extension" /d 
 REG ADD "HKCR\.orm" /ve /d "ormfile" /f 1>NUL
 REG ADD "HKCR\.orm" /v "Content Type" /d "application/orm+xml" /f 1>NUL
 REG ADD "HKCR\ormfile" /ve /d "Object-Role Modeling File" /f 1>NUL
-REG ADD "HKCR\ormfile\DefaultIcon" /ve /d "%NORMADir%\bin\Neumont.Tools.ORM.dll,0" /f 1>NUL
+REG ADD "HKCR\ormfile\DefaultIcon" /ve /d "%NORMADir%\bin\%TargetBaseName%.dll,0" /f 1>NUL
 REG ADD "HKCR\ormfile\shell\open" /ve /d "&Open" /f 1>NUL
 REG ADD "HKCR\ormfile\shell\open\command" /ve /d "\"%VSEnvironmentPath%\" /RootSuffix \"%VSRegistryRootSuffix%\" /dde" /f 1>NUL
 REG ADD "HKCR\ormfile\shell\open\ddeexec" /ve /d "Open(\"%%1\")" /f 1>NUL

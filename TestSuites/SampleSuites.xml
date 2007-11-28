@@ -9,7 +9,7 @@
 			<ExcludeCategory name="NotYet"/>
 		</Categories>
 		<TestAssemblies>
-			<TestAssembly location="TestSample\TestSample.dll"/>
+			<TestAssembly location="TestSample\TestSample.VS2005.dll"/>
 		</TestAssemblies>
 	</Suite>
 </Suites>

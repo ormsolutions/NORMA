@@ -53,7 +53,11 @@ namespace Neumont.Tools.ORM.ORMCustomTool
 		private const string DEFAULT_EXTENSION_DECORATOR = "._ORMCustomToolReport."; // Add the _ here to put it above other generators
 		private const string EXTENSION_ORM = ".orm";
 		private const string EXTENSION_XML = ".xml";
-		private const string GENERATORS_REGISTRYROOT = @"Software\Neumont\ORM Architect for Visual Studio\Generators";
+#if VISUALSTUDIO_9_0
+		private const string GENERATORS_REGISTRYROOT = @"Software\Neumont\ORM Architect for Visual Studio 2008\Generators";
+#else //!VISUALSTUDIO_9_0
+		private const string GENERATORS_REGISTRYROOT = @"Software\Neumont\ORM Architect for Visual Studio 2005\Generators";
+#endif //!VISUALSTUDIO_9_0
 		private const string ITEMMETADATA_DEPENDENTUPON = "DependentUpon";
 		private const string ITEMMETADATA_GENERATOR = "Generator";
 		private const string ITEMMETADATA_ORMGENERATOR = "ORMGenerator";

@@ -36,6 +36,8 @@
 				<TargetVisualStudioAssemblySuffix Condition=" '$(TargetVisualStudioAssemblySuffix)' == '' "></TargetVisualStudioAssemblySuffix>
 				<TargetVisualStudioFrameworkAssemblyVersion Condition=" '$(TargetVisualStudioFrameworkAssemblyVersion)' == '' ">2.0.0.0</TargetVisualStudioFrameworkAssemblyVersion>
 				<TargetVisualStudioFrameworkAssemblySuffix Condition=" '$(TargetVisualStudioFrameworkAssemblySuffix)' == '' "></TargetVisualStudioFrameworkAssemblySuffix>
+				<TargetVisualStudioLongProductName Condition=" '$(TargetVisualStudioLongProductName)' == '' ">Visual Studio 2005</TargetVisualStudioLongProductName>
+				<TargetVisualStudioShortProductName Condition=" '$(TargetVisualStudioShortProductName)' == '' ">VS2005</TargetVisualStudioShortProductName>
 				<TargetDslToolsAssemblyVersion Condition=" '$(TargetDslToolsAssemblyVersion)' == '' ">8.2.0.0</TargetDslToolsAssemblyVersion>
 			</PropertyGroup>
 		</When>
@@ -46,6 +48,8 @@
 				<TargetVisualStudioAssemblySuffix Condition=" '$(TargetVisualStudioAssemblySuffix)' == '' ">.9.0</TargetVisualStudioAssemblySuffix>
 				<TargetVisualStudioFrameworkAssemblyVersion Condition=" '$(TargetVisualStudioFrameworkAssemblyVersion)' == '' ">3.5.0.0</TargetVisualStudioFrameworkAssemblyVersion>
 				<TargetVisualStudioFrameworkAssemblySuffix Condition=" '$(TargetVisualStudioFrameworkAssemblySuffix)' == '' ">.9.0</TargetVisualStudioFrameworkAssemblySuffix>
+				<TargetVisualStudioLongProductName Condition=" '$(TargetVisualStudioLongProductName)' == '' ">Visual Studio 2008</TargetVisualStudioLongProductName>
+				<TargetVisualStudioShortProductName Condition=" '$(TargetVisualStudioShortProductName)' == '' ">VS2008</TargetVisualStudioShortProductName>
 				<TargetDslToolsAssemblyVersion Condition=" '$(TargetDslToolsAssemblyVersion)' == '' ">9.0.0.0</TargetDslToolsAssemblyVersion>
 			</PropertyGroup>
 		</When>
@@ -53,6 +57,7 @@
 			<PropertyGroup>
 				<TargetVisualStudioAssemblyVersion Condition=" '$(TargetVisualStudioAssemblyVersion)' == '' ">*Undefined*</TargetVisualStudioAssemblyVersion>
 				<TargetVisualStudioFrameworkAssemblyVersion Condition=" '$(TargetVisualStudioFrameworkAssemblyVersion)' == '' ">*Undefined*</TargetVisualStudioFrameworkAssemblyVersion>
+				<TargetVisualStudioShortProductName Condition=" '$(TargetVisualStudioShortProductName)' == '' ">*Undefined*</TargetVisualStudioShortProductName>
 				<TargetDslToolsAssemblyVersion Condition=" '$(TargetDslToolsAssemblyVersion)' == '' ">*Undefined*</TargetDslToolsAssemblyVersion>
 			</PropertyGroup>
 		</Otherwise>

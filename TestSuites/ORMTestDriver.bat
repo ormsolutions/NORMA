@@ -1,1 +1,1 @@
-@"C:\Program Files\Neumont\ORM Architect For Visual Studio\Bin\ORMTestDriver" %1 %2 %3 %4 %5 %6 %7 %8 %9
+@"C:\Program Files\Neumont\ORM Architect For Visual Studio 2005\Bin\ORMTestDriver.VS2005" %1 %2 %3 %4 %5 %6 %7 %8 %9

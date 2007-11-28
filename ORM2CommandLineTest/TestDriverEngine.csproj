@@ -1,4 +1,5 @@
 ﻿<Project DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <Import Project="$(MSBuildExtensionsPath)\Neumont\VisualStudio\Neumont.Build.VisualStudio.Multitargeting.targets" />
   <PropertyGroup>
     <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
     <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
@@ -7,7 +8,7 @@
     <ProjectGuid>{5DB17441-D264-4B37-88D5-98C3B1CF7D71}</ProjectGuid>
     <OutputType>Library</OutputType>
     <RootNamespace>Neumont.Tools.ORM.SDK.TestEngine</RootNamespace>
-    <AssemblyName>Neumont.Tools.ORM.SDK.TestEngine</AssemblyName>
+    <AssemblyName>Neumont.Tools.ORM.SDK.TestEngine.$(TargetVisualStudioShortProductName)</AssemblyName>
     <WarningLevel>4</WarningLevel>
     <IsWebBootstrapper>true</IsWebBootstrapper>
     <PublishUrl>http://localhost/ORM2CommandLineTest</PublishUrl>
@@ -35,7 +36,7 @@
     <Optimize>false</Optimize>
     <OutputPath>bin\Debug\TestEngine\</OutputPath>
     <DefineConstants>DEBUG;TRACE</DefineConstants>
-    <DocumentationFile>bin\Debug\TestEngine\Neumont.Tools.ORM.SDK.TestEngine.XML</DocumentationFile>
+    <DocumentationFile>bin\Debug\TestEngine\Neumont.Tools.ORM.SDK.TestEngine.$(TargetVisualStudioShortProductName).XML</DocumentationFile>
     <UseVSHostingProcess>true</UseVSHostingProcess>
     <NoWarn>1607</NoWarn>
   </PropertyGroup>
@@ -44,10 +45,9 @@
     <Optimize>true</Optimize>
     <OutputPath>bin\Release\TestEngine\</OutputPath>
     <DefineConstants>TRACE</DefineConstants>
-    <DocumentationFile>bin\Release\TestEngine\Neumont.Tools.ORM.SDK.TestEngine.XML</DocumentationFile>
+    <DocumentationFile>bin\Release\TestEngine\Neumont.Tools.ORM.SDK.TestEngine.$(TargetVisualStudioShortProductName).XML</DocumentationFile>
     <NoWarn>1607</NoWarn>
   </PropertyGroup>
-  <Import Project="$(MSBuildExtensionsPath)\Neumont\VisualStudio\Neumont.Build.VisualStudio.Multitargeting.targets" />
   <ItemGroup>
     <Reference Include="Microsoft.VisualStudio.Modeling.Sdk, Version=$(TargetDslToolsAssemblyVersion), Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a, processorArchitecture=MSIL" />
     <Reference Include="Microsoft.VisualStudio.Modeling.Sdk.Diagrams, Version=$(TargetDslToolsAssemblyVersion), Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a, processorArchitecture=MSIL" />
@@ -55,14 +55,10 @@
     <Reference Include="Microsoft.VisualStudio.TextManager.Interop, Version=7.1.40304.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a">
       <SpecificVersion>False</SpecificVersion>
     </Reference>
-    <Reference Include="Neumont.Tools.ORM, Version=1.0.0.0, Culture=neutral, PublicKeyToken=957d5b7d5e79e25f, processorArchitecture=MSIL">
-      <HintPath>$(ProgramFiles)\Neumont\ORM Architect for Visual Studio\bin\Neumont.Tools.ORM.dll</HintPath>
+    <Reference Include="Neumont.Tools.ORM.$(TargetVisualStudioShortProductName), Version=1.0.0.0, Culture=neutral, PublicKeyToken=957d5b7d5e79e25f, processorArchitecture=MSIL">
+      <HintPath>$(ProgramFiles)\Neumont\ORM Architect for $(TargetVisualStudioLongProductName)\bin\Neumont.Tools.ORM.$(TargetVisualStudioShortProductName).dll</HintPath>
       <SpecificVersion>False</SpecificVersion>
       <Private>False</Private>
-    </Reference>
-    <Reference Include="Neumont.Tools.ORM.OIALModel, Version=1.0.0.0, Culture=neutral, PublicKeyToken=957d5b7d5e79e25f, processorArchitecture=MSIL">
-      <SpecificVersion>False</SpecificVersion>
-      <HintPath>C:\Program Files\Neumont\ORM Architect for Visual Studio\bin\Extensions\Neumont.Tools.ORM.OIALModel.dll</HintPath>
     </Reference>
     <Reference Include="nunit.framework, Version=2.2.9.0, Culture=neutral, PublicKeyToken=96d09a1eb7f44a77, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
@@ -123,6 +119,6 @@
   <Import Project="$(MSBuildBinPath)\Microsoft.CSharp.targets" />
   <Import Project="$(MSBuildExtensionsPath)\Neumont\Neumont.Build.targets" />
   <PropertyGroup>
-    <PostBuildEvent>"$(ProjectDir)install.bat" "$(ProjectDir)" "$(OutDir)..\" "$(DevEnvDir)..\..\"</PostBuildEvent>
+    <PostBuildEvent>"$(ProjectDir)install.bat" "$(ProjectDir)" "$(OutDir)..\" "$(DevEnvDir)..\..\" "$(TargetVisualStudioShortProductName)" "$(TargetVisualStudioLongProductName)"</PostBuildEvent>
   </PropertyGroup>
 </Project>

@@ -38,23 +38,28 @@
 	<!- - VersionGuidSuffix should be distinct for every MSI. The last section of the GUID should match the product version (two hexits for MAJOR, two hexits for MINOR, two hexits for RELEASEYER, two hexits for RELEASEMONTH, four hexits for BUILD). The version number should NOT be translated into hexadecimal; that is, digits 10 should become hexits 10, not hexits 0A. - ->
 	<?define VersionGuidSuffix="$(var.Debug)$(var.ExperimentalHive)$(var.Architecture)-010006020130"?>
 	-->
+	<?if $(var.VSVer) = v8.0?>
+		<?define PackageGuidStart="EFDDC549-0000-5653"?>
+	<?elseif $(var.VSVer) = v9.0?>
+		<?define PackageGuidStart="24D571AB-0000-4FA4"?>
+	<?endif?>
 	<?include ../Version.wxi?>
-	<?define PackageCode="EFDDC549-0000-5653-$(var.VersionGuidSuffix)"?>
+	<?define PackageCode="$(var.PackageGuidStart)-$(var.VersionGuidSuffix)"?>
 	<!-- ProductCode should be changed for each MAJOR version. Specifically, the first and second hexits of the last section of the GUID should match the two digits of the major version.-->
-	<?define ProductCode="EFDDC549-0000-5653-$(var.Debug)$(var.ExperimentalHive)$(var.Architecture)-$(var.MajorVersionHexits)0000000000"?>
+	<?define ProductCode="$(var.PackageGuidStart)-$(var.Debug)$(var.ExperimentalHive)$(var.Architecture)-$(var.MajorVersionHexits)0000000000"?>
 	<!-- UpgradeCode should NOT be changed. -->
-	<?define UpgradeCode="EFDDC549-0000-5653-0000-000000000000"?>
+	<?define UpgradeCode="$(var.PackageGuidStart)-0000-000000000000"?>
 	<!-- Public token for NORMA strong name key. -->
 	<?define PublicKeyToken="957d5b7d5e79e25f"?>
 	<!-- GUID for NORMA Visual Studio Package (NOT MSI package!) -->
 	<?define NORMAVSPackageGuid="EFDDC549-1646-4451-8A51-E5A5E94D647C"?>
 	<?define BaseAssemblyName="Version=$(var.MajorMinorVersion).0.0, Culture=neutral, PublicKeyToken=$(var.PublicKeyToken)"?>
-	<?define NORMAVSPackageAssemblyName="Neumont.Tools.ORM, $(var.BaseAssemblyName)"?>
+	<?define NORMAVSPackageAssemblyName="Neumont.Tools.ORM$(var.VSExt), $(var.BaseAssemblyName)"?>
 	<?define NORMAVSEditorGuid="EDA9E282-8FC6-4AE4-AF2C-C224FD3AE49B"?>
 	<?define NORMAVSFontAndColorsServiceGuid="C5AA80F8-F730-4809-AAB1-8D925E36F9F5"?>
 	<?define ORMCustomToolGuid="977BD01E-F2B4-4341-9C47-459420624A20"?>
 	<?define ORMCustomToolExtenderGuid="6FDCC073-20C2-4435-9B2E-9E70451C81D8"?>
-	<?define ORMCustomToolAssemblyName="Neumont.Tools.ORM.ORMCustomTool, $(var.BaseAssemblyName)"?>
+	<?define ORMCustomToolAssemblyName="Neumont.Tools.ORM.ORMCustomTool$(var.VSExt), $(var.BaseAssemblyName)"?>
 	<!-- The LCID of the MSI and the fallback resources. This should NOT be changed. -->
 	<?define DefaultLCID="1033"?>
 	<!-- The Package Load Key information. -->
@@ -95,14 +100,14 @@
 	<?define NORMAVSRegRoot="$(var.VSRegRoot)\Neumont\ORM Architect"?>
 	<?define NORMAVSExtensionsRegRoot="$(var.NORMAVSRegRoot)\Extensions"?>
 	<?define NeumontRegRoot="SOFTWARE\Neumont"?>
-	<?define NORMARegRoot="$(var.NeumontRegRoot)\ORM Architect for Visual Studio"?>
+	<?define NORMARegRoot="$(var.NeumontRegRoot)\ORM Architect for $(var.VSLongName)"?>
 	<?define PLiXRegRoot="$(var.NeumontRegRoot)\PLiX for Visual Studio"?>
 	<?define PLiXMinimumSchemaVersion="4"?>
 	<!-- The default target directory for installation (under ProgramFilesFolder). -->
 	<!-- NOTE: This is intentionally not being localized, so that the installation location is constant. -->
 	<?define DefaultCompanyDir="Neumont"?>
 	<?define DefaultShortProductDir="NORMAVS"?>
-	<?define DefaultProductDir="ORM Architect for Visual Studio"?>
+	<?define DefaultProductDir="ORM Architect for $(var.VSLongName)"?>
 
 	<?define NORMAWebsiteUrl="http://norma.orm.net"?>
 	<?define NeumontWebsiteUrl="http://www.neumont.edu"?>

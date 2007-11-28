@@ -1,4 +1,5 @@
 ﻿<Project DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <Import Project="$(MSBuildExtensionsPath)\Neumont\VisualStudio\Neumont.Build.VisualStudio.Multitargeting.targets" />
   <PropertyGroup>
     <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
     <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
@@ -44,12 +45,12 @@
     <Reference Include="System.Data" />
     <Reference Include="System.Xml" />
     <Reference Include="Neumont.Tools.ORM.ORMCustomTool">
-      <HintPath>$(ProgramFiles)\Neumont\ORM Architect for Visual Studio\bin\Neumont.Tools.ORM.ORMCustomTool.dll</HintPath>
+      <HintPath>$(ProgramFiles)\Neumont\ORM Architect for $(TargetVisualStudioLongProductName)\bin\Neumont.Tools.ORM.ORMCustomTool.$(TargetVisualStudioShortProductName).dll</HintPath>
       <Private>False</Private>
     </Reference>
     <Reference Include="XmlDiffPatch, Version=1.1.51108.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35">
       <SpecificVersion>False</SpecificVersion>
-      <HintPath>..\..\..\..\..\..\..\..\Program Files\XmlDiffPatch11\Bin\XmlDiffPatch.dll</HintPath>
+      <HintPath>$(ProgramFiles)\XmlDiffPatch11\Bin\XmlDiffPatch.dll</HintPath>
       <Private>False</Private>
     </Reference>
   </ItemGroup>
@@ -83,7 +84,7 @@
   </ItemGroup>
   <Import Project="$(MSBuildBinPath)\Microsoft.CSharp.targets" />
   <PropertyGroup>
-    <PostBuildEvent>"$(SolutionDir)Install.bat"</PostBuildEvent>
+    <PostBuildEvent>"$(SolutionDir)Install.bat" "$(OutputPath)" "$(TargetVisualStudioVersion)"</PostBuildEvent>
     <PreBuildEvent>"$(SolutionDir)..\..\VersionGenerator.exe"</PreBuildEvent>
   </PropertyGroup>
 </Project>

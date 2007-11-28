@@ -4,9 +4,9 @@
 		<ProjectReference Include="ORMPackage.sln"/>
 		<ProjectReference Include="ExtensionExample\ExtensionExample.sln"/>
 		<ProjectReference Include="OIALModel\OIALModel.sln"/>
-		<ProjectReference Include="AlternateViews\RelationalView\RelationalView.sln"/>
 		<ProjectReference Include="Oial\Oial.sln"/>
 		<ProjectReference Include="RelationalModel\Dil.sln"/>
+		<ProjectReference Include="AlternateViews\RelationalView\RelationalView.sln"/>
 		<ProjectReference Include="CustomProperties\CustomProperties.sln"/>
 		<ProjectReference Include="Tools\ORMCustomTool\ORMCustomTool.sln"/>
 		<ProjectReference Include="Tools\DatabaseImport\DatabaseImport.sln"/>

@@ -1,11 +1,12 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
 <Project DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <Import Project="$(MSBuildExtensionsPath)\Neumont\VisualStudio\Neumont.Build.VisualStudio.Multitargeting.targets" />
   <PropertyGroup>
     <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
     <ProductVersion>3.0</ProductVersion>
     <ProjectGuid>{efddc549-1646-4451-8aff-ffffffffffff}</ProjectGuid>
     <SchemaVersion>2.0</SchemaVersion>
-    <OutputName>Neumont ORM Architect for Visual Studio</OutputName>
+    <OutputName>Neumont ORM Architect for $(TargetVisualStudioLongProductName)</OutputName>
     <OutputType>Package</OutputType>
     <NoLogo>true</NoLogo>
     <VerboseOutput>true</VerboseOutput>
@@ -19,7 +20,6 @@
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)' == 'Release' ">
   </PropertyGroup>
-  <Import Project="$(MSBuildExtensionsPath)\Neumont\VisualStudio\Neumont.Build.VisualStudio.Multitargeting.targets" />
   <ItemGroup>
     <Folder Include="Bitmaps\" />
     <Folder Include="UI\" />
@@ -36,7 +36,6 @@
   </ItemGroup>
   <ItemGroup>
     <None Include="DILSchemaCatalog.xml" />
-    <None Include="NORMASchemaCatalog.xml" />
     <None Include="ORMSchemaCatalog.xml" />
   </ItemGroup>
   <ItemGroup>
@@ -78,8 +77,8 @@
     <CompileAndLinkDependsOn>LocateVisualStudioSDKRedistributablesDir;$(CompileAndLinkDependsOn)</CompileAndLinkDependsOn>
   </PropertyGroup>
   <Target Name="LocateVisualStudioSDKRedistributablesDir" DependsOnTargets="LocateVisualStudioSDK">
-    <CreateProperty Value="$(DefineConstants);VsSDKRedistributablesDir=$(VsSDKRedistributablesDir)">
-      <Output TaskParameter="Value" PropertyName="DefineConstants"/>
+    <CreateProperty Value="$(DefineConstants);VsSDKRedistributablesDir=$(VsSDKRedistributablesDir);VSExt=.$(TargetVisualStudioShortProductName);VSShortName=$(TargetVisualStudioShortProductName);VSLongName=$(TargetVisualStudioLongProductName);VSVer=$(TargetVisualStudioVersion)">
+      <Output TaskParameter="Value" PropertyName="DefineConstants" />
     </CreateProperty>
   </Target>
 </Project>
