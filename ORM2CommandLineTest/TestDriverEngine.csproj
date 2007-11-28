@@ -35,7 +35,7 @@
     <DebugType>full</DebugType>
     <Optimize>false</Optimize>
     <OutputPath>bin\Debug\TestEngine\</OutputPath>
-    <DefineConstants>DEBUG;TRACE</DefineConstants>
+    <DefineConstants>$(DefineConstants);DEBUG;TRACE</DefineConstants>
     <DocumentationFile>bin\Debug\TestEngine\Neumont.Tools.ORM.SDK.TestEngine.$(TargetVisualStudioShortProductName).XML</DocumentationFile>
     <UseVSHostingProcess>true</UseVSHostingProcess>
     <NoWarn>1607</NoWarn>
@@ -44,7 +44,7 @@
     <DebugSymbols>false</DebugSymbols>
     <Optimize>true</Optimize>
     <OutputPath>bin\Release\TestEngine\</OutputPath>
-    <DefineConstants>TRACE</DefineConstants>
+    <DefineConstants>$(DefineConstants);TRACE</DefineConstants>
     <DocumentationFile>bin\Release\TestEngine\Neumont.Tools.ORM.SDK.TestEngine.$(TargetVisualStudioShortProductName).XML</DocumentationFile>
     <NoWarn>1607</NoWarn>
   </PropertyGroup>

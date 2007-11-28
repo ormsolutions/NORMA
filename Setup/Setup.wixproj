@@ -16,7 +16,7 @@
     <SuppressIces>ICE03;ICE82</SuppressIces>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)' == 'Debug' ">
-    <DefineConstants>Debug</DefineConstants>
+    <DefineConstants>$(DefineConstants);Debug</DefineConstants>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)' == 'Release' ">
   </PropertyGroup>
