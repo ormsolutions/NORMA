@@ -917,7 +917,7 @@ namespace Neumont.Tools.ORMToORMAbstractionBridge
 						UniquenessConstraint uninquenessConstraint = constraintRoleSequence as UniquenessConstraint;
 
 						// If it is a uniqueness constraint...
-						if (uninquenessConstraint != null)
+						if (uninquenessConstraint != null && uninquenessConstraint.Modality == ConstraintModality.Alethic)
 						{
 							if (UniquenessIsForUniquenessConstraint.GetUniqueness(uninquenessConstraint) != null)
 							{
@@ -956,29 +956,43 @@ namespace Neumont.Tools.ORMToORMAbstractionBridge
 							if (allChildrenMapTowardObjectType)
 							{
 								IList<ConceptTypeChild> conceptTypeChildren = new List<ConceptTypeChild>();
-								bool childWasAssimilation = false;
+								bool skipThisUniquenessConstraint = false;
 
 								foreach (FactType factType in factTypes)
 								{
-
+									bool childWasAssimilation = false;
+									bool missedChild = true;
 									foreach (ConceptTypeChild conceptTypeChild in ConceptTypeChildHasPathFactType.GetConceptTypeChild(factType))
 									{
+										if (conceptTypeChild.Parent != conceptType)
+										{
+											// This ConceptTypeChild is of a different ConceptType, so go on to the next ConceptTypeChild.
+											continue;
+										}
 										if (conceptTypeChild is ConceptTypeAssimilatesConceptType)
 										{
 											childWasAssimilation = true;
 											break;
 										}
 
+										missedChild = false;
 										conceptTypeChildren.Add(conceptTypeChild);
 									}
 
 									if (childWasAssimilation)
 									{
+										skipThisUniquenessConstraint = true;
+										break;
+									}
+									if (missedChild)
+									{
+										// We couldn't find a ConceptTypeChild for this FactType, so just bail out.
+										skipThisUniquenessConstraint = true;
 										break;
 									}
 								}
 
-								if (!childWasAssimilation)
+								if (!skipThisUniquenessConstraint)
 								{
 									PropertyAssignment name = new PropertyAssignment(Uniqueness.NameDomainPropertyId, uninquenessConstraint.Name);
 									PropertyAssignment isPreferred = new PropertyAssignment(Uniqueness.IsPreferredDomainPropertyId, uninquenessConstraint.IsPreferred);
