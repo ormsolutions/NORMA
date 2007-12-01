@@ -16,14 +16,14 @@ set envPath=C:\Program Files\Microsoft Visual Studio 8\
 set envPath=%~dp3
 )
 if '%4'=='' (
-set VSProduct=%~4
-) else (
 set VSProduct=VS2005
+) else (
+set VSProduct=%~4
 )
 if '%5'=='' (
-set VSLongProduct=%~5
-) else (
 set VSLongProduct=Visual Studio 2005
+) else (
+set VSLongProduct=%~5
 )
 
 SET NORMADir=%ProgramFiles%\Neumont\ORM Architect for %VSLongProduct%

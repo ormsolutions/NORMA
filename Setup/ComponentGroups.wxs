@@ -27,11 +27,15 @@
 			<ComponentRef Id="NORMAVSProjectItemsGeneralComponent"/>
 			<ComponentRef Id="NORMAVSProjectItemsVBasicComponent"/>
 			<ComponentRef Id="NORMAVSProjectItemsVCSharpComponent"/>
+			<?ifdef JSharpSupport?>
 			<ComponentRef Id="NORMAVSProjectItemsVJSharpComponent"/>
+			<?endif?>
 			<ComponentRef Id="NORMAVSProjectItemsVCPlusPlusComponent"/>
 			<ComponentRef Id="NORMAVSProjectItemsVWebDevVBasicComponent"/>
 			<ComponentRef Id="NORMAVSProjectItemsVWebDevCSharpComponent"/>
+			<?ifdef JSharpSupport?>
 			<ComponentRef Id="NORMAVSProjectItemsVWebDevJSharpComponent"/>
+			<?endif?>
 			<ComponentRef Id="NORMAVSVerbalizationComponent"/>
 			<ComponentRef Id="NORMAVSVerbalizationCoreComponent"/>
 			<ComponentRef Id="NORMAVSVerbalizationReportComponent"/>
@@ -64,11 +68,15 @@
 			<ComponentRef Id="NORMADBImportProjectItemsGeneralComponent"/>
 			<ComponentRef Id="NORMADBImportProjectItemsVBasicComponent"/>
 			<ComponentRef Id="NORMADBImportProjectItemsVCSharpComponent"/>
+			<?ifdef JSharpSupport?>
 			<ComponentRef Id="NORMADBImportProjectItemsVJSharpComponent"/>
+			<?endif?>
 			<ComponentRef Id="NORMADBImportProjectItemsVCPlusPlusComponent"/>
 			<ComponentRef Id="NORMADBImportProjectItemsVWebDevVBasicComponent"/>
 			<ComponentRef Id="NORMADBImportProjectItemsVWebDevCSharpComponent"/>
+			<?ifdef JSharpSupport?>
 			<ComponentRef Id="NORMADBImportProjectItemsVWebDevJSharpComponent"/>
+			<?endif?>
 		</ComponentGroup>
 		<ComponentGroup Id="HelpFeatureComponents">
 			<ComponentRef Id="NORMAVSHelpComponent"/>
@@ -80,7 +88,9 @@
 			<ComponentRef Id="ORMCustomToolComponent"/>
 			<ComponentRef Id="ORMCustomToolVBasicComponent"/>
 			<ComponentRef Id="ORMCustomToolVCSharpComponent"/>
+			<?ifdef JSharpSupport?>
 			<ComponentRef Id="ORMCustomToolVJSharpComponent"/>
+			<?endif?>
 		</ComponentGroup>
 		<ComponentGroup Id="ClassModelGenerationFeatureComponents">
 			<!-- OIAL-to-PLiX transforms go here. -->

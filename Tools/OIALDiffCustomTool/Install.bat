@@ -7,8 +7,8 @@ CALL "%RootDir%\..\..\SetupEnvironment.bat" %*
 SET NORMAGenerators=HKLM\SOFTWARE\Neumont\ORM Architect for %TargetVisualStudioLongProductName%\Generators
 
 :: Install Custom Tool DLL
-CALL:_AddCustomToolReg "8.0"
-CALL:_AddCustomToolReg "8.0Exp"
+CALL:_AddCustomToolReg "%TargetVisualStudioMajorMinorVersion%"
+CALL:_AddCustomToolReg "%TargetVisualStudioMajorMinorVersion%Exp"
 
 
 CALL:_AddXslORMGenerator "UndeadOIAL" "UndeadOIAL" "UndeadOIAL" ".UndeadOIAL.xml" "ORM" "UndeadOIAL" "%~dp0UndeadOIAL.xslt"

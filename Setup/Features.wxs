@@ -16,7 +16,7 @@
 	<?include Config.wxi?>
 	<Fragment>
 		
-		<Feature Id="MainFeature" Title="!(loc.ProductName)" Description="!(loc.MainFeatureDescription)"
+		<Feature Id="MainFeature" Title="!(loc.ProductName$(var.VSShortName))" Description="!(loc.MainFeatureDescription)"
 			Level="1" Display="expand" TypicalDefault="install" InstallDefault="local" Absent="disallow" AllowAdvertise="no">
 			<ComponentGroupRef Id="MainFeatureComponents"/>
 

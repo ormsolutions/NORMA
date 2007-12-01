@@ -11,7 +11,7 @@ IF ERRORLEVEL 1 (ECHO Could not find experimental registry hive for Visual Studi
 CALL "%RootDir%\SetupEnvironment.bat" %*
 
 CALL "%RootDir%\BuildDevTools.bat" %* /consoleloggerparameters:DisableMPLogging /toolsversion:3.5
-CALL "%RootDir%\Build.bat" %* /consoleloggerparameters:DisableMPLogging /toolsversion:3.5
+CALL "%RootDir%\BuildAll.bat" %* /consoleloggerparameters:DisableMPLogging /toolsversion:3.5
 
 ECHO.
 ECHO Running 'devenv.exe /RootSuffix "%VSRegistryRootSuffix%" /Setup'... This may take a few minutes...

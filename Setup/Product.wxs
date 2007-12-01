@@ -17,7 +17,7 @@
 	<?include Config.wxi?>
 	
 	<Product
-		Name="!(loc.ProductName)"
+		Name="!(loc.ProductName$(var.VSShortName))"
 		Manufacturer="!(loc.Manufacturer)"
 		Language="$(var.DefaultLCID)"
 		Version="$(var.ProductVersion)"
@@ -26,8 +26,8 @@
 
 		<Package
 			Id="$(var.PackageCode)"
-			Description="!(loc.ProductName) - $(var.ReleaseDescription)"
-			Comments="!(loc.PackageCommentsPrefix)!(loc.ProductName)!(loc.PackageCommentsSuffix)"
+			Description="!(loc.ProductName$(var.VSShortName)) - $(var.ReleaseDescription)"
+			Comments="!(loc.PackageCommentsPrefix)!(loc.ProductName$(var.VSShortName))!(loc.PackageCommentsSuffix)"
 			Manufacturer="!(loc.Manufacturer)"
 			InstallerVersion="300"
 			Compressed="yes"
@@ -74,9 +74,11 @@
 		<Property Id="VBASICPACKAGEGUID">
 			<RegistrySearch Id="VBasicPackageGUIDRegistrySearch" Root="HKLM" Key="$(var.VSRegRoot)\InstalledProducts\Microsoft Visual Basic" Name="Package" Type="raw" Win64="$(var.Win64)"/>
 		</Property>
+		<?ifdef JSharpSupport?>
 		<Property Id="VJSHARPPACKAGEGUID">
 			<RegistrySearch Id="VJSharpPackageGUIDRegistrySearch" Root="HKLM" Key="$(var.VSRegRoot)\InstalledProducts\Microsoft Visual J#" Name="Package" Type="raw" Win64="$(var.Win64)"/>
 		</Property>
+		<?endif?>
 		<Property Id="VCPLUSPLUSPACKAGEGUID">
 			<RegistrySearch Id="VCPlusPlusPackageGUIDRegistrySearch" Root="HKLM" Key="$(var.VSRegRoot)\InstalledProducts\Microsoft Visual C++" Name="Package" Type="raw" Win64="$(var.Win64)"/>
 		</Property>

@@ -130,6 +130,6 @@
   <Import Project="$(MSBuildBinPath)\Microsoft.CSharp.targets" />
   <Import Project="$(MSBuildExtensionsPath)\Neumont\Neumont.Build.targets" />
   <PropertyGroup>
-    <PostBuildEvent>"$(ProjectDir)install.bat" "$(ProjectDir)" "$(OutDir)" "$(DevEnvDir)..\..\" "$(TargetVisualStudioShortProductName)" "$(TargetVisualStudioLongProductName)"</PostBuildEvent>
+    <PostBuildEvent>"$(ProjectDir)install.bat" "$(ProjectDir)" "$(OutDir)" "$(DevEnvDir)\..\..\" "$(TargetVisualStudioShortProductName)" "$(TargetVisualStudioLongProductName)"</PostBuildEvent>
   </PropertyGroup>
 </Project>

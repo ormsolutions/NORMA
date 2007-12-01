@@ -162,6 +162,7 @@
 									<RegistryValue Type="string" Value="{$(var.ORMCustomToolExtenderGuid)}"/>
 								</RegistryKey>
 							</Component>
+							<?ifdef JSharpSupport?>
 							<Component Id="ORMCustomToolVJSharpComponent" Guid="5E506A17-A87F-4B81-$(var.VersionGuidSuffix)" DiskId="1" Win64="$(var.Win64)">
 								<CreateFolder/>
 								<Condition>VJSHARPPACKAGEGUID OR Installed</Condition>
@@ -176,6 +177,7 @@
 									<RegistryValue Type="string" Value="{$(var.ORMCustomToolExtenderGuid)}"/>
 								</RegistryKey>
 							</Component>
+							<?endif?>
 
 							<Directory Id="EXTENSIONSDIR" ShortName="Ext" Name="Extensions">
 								<Component Id="NORMAVSRelationalViewExtensionComponent" Guid="EB966776-D5B5-4FFE-$(var.VersionGuidSuffix)" DiskId="1" Win64="$(var.Win64)">
@@ -996,6 +998,7 @@
 							DefaultLanguage="0" CompanionFile="Neumont.Tools.ORM.DatabaseImport$(var.VSExt).dll"/>
 					</Component>
 				</Directory>
+				<?ifdef JSharpSupport?>
 				<Directory Id="JSharp" Name="JSharp">
 					<Component Id="NORMAVSProjectItemsVJSharpComponent" Guid="B6ACBD38-3FAD-4C24-$(var.VersionGuidSuffix)" DiskId="1" Win64="$(var.Win64)" KeyPath="yes">
 						<Condition>VJSHARPPACKAGEGUID OR Installed</Condition>
@@ -1008,6 +1011,7 @@
 							DefaultLanguage="0" CompanionFile="Neumont.Tools.ORM.DatabaseImport$(var.VSExt).dll"/>
 					</Component>
 				</Directory>
+				<?endif?>
 				<Directory Id="VisualC" Name="VisualC">
 					<Component Id="NORMAVSProjectItemsVCPlusPlusComponent" Guid="16B28893-FE72-4BBF-$(var.VersionGuidSuffix)" DiskId="1" Win64="$(var.Win64)" KeyPath="yes">
 						<Condition>VCPLUSPLUSPACKAGEGUID OR Installed</Condition>
@@ -1045,6 +1049,7 @@
 								DefaultLanguage="0" CompanionFile="Neumont.Tools.ORM.DatabaseImport$(var.VSExt).dll"/>
 						</Component>
 					</Directory>
+					<?ifdef JSharpSupport?>
 					<Directory Id="WebJSharp" Name="JSharp">
 						<Component Id="NORMAVSProjectItemsVWebDevJSharpComponent" Guid="E68504E4-D956-4A87-$(var.VersionGuidSuffix)" DiskId="1" Win64="$(var.Win64)" KeyPath="yes">
 							<Condition>VWEBDEVPACKAGEGUID OR Installed</Condition>
@@ -1057,6 +1062,7 @@
 								DefaultLanguage="0" CompanionFile="Neumont.Tools.ORM.DatabaseImport$(var.VSExt).dll"/>
 						</Component>
 					</Directory>
+					<?endif?>
 				</Directory>
 			</Directory>
 

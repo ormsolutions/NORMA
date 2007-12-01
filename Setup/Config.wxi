@@ -40,8 +40,11 @@
 	-->
 	<?if $(var.VSVer) = v8.0?>
 		<?define PackageGuidStart="EFDDC549-0000-5653"?>
+		<?define RootSuffixVersion="8.0"?>
+		<?define JSharpSupport=1 ?>
 	<?elseif $(var.VSVer) = v9.0?>
 		<?define PackageGuidStart="24D571AB-0000-4FA4"?>
+		<?define RootSuffixVersion="9.0"?>
 	<?endif?>
 	<?include ../Version.wxi?>
 	<?define PackageCode="$(var.PackageGuidStart)-$(var.VersionGuidSuffix)"?>
@@ -86,10 +89,10 @@
 		<?define BuildConfiguration="Release"?>
 	<?endif?>
 	<?if $(var.ExperimentalHive)=1?>
-		<?define RootSuffix="8.0Exp"?>
+		<?define RootSuffix="$(var.RootSuffixVersion)Exp"?>
 		<?define RootSuffixCmd="/RootSuffix Exp "?>
 	<?else?>
-		<?define RootSuffix="8.0"?>
+		<?define RootSuffix="$(var.RootSuffixVersion)"?>
 		<?define RootSuffixCmd=""?>
 	<?endif?>
 	<!-- The Visual Studio registry root used for installation. -->
