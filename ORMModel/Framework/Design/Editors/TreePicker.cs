@@ -163,6 +163,9 @@ namespace Neumont.Tools.Modeling.Design
 						}
 						else
 						{
+#if VISUALSTUDIO_9_0 // MSBUG: Hack workaround crashing bug in VirtualTreeControl.OnToggleExpansion
+							treeControl.ColumnPermutation = new ColumnPermutation(1, new int[]{0}, false);
+#endif
 							treeControl.Tree = tree;
 						}
 						editor.DropDownControl(treeControl);

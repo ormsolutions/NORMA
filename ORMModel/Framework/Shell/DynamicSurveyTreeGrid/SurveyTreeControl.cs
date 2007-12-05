@@ -42,6 +42,9 @@ namespace Neumont.Tools.Modeling.Shell.DynamicSurveyTreeGrid
 			this.myTreeControl.Dock = DockStyle.Fill;
 			this.myTreeControl.Name = "myTreeControl";
 			this.myTreeControl.TabIndex = 0;
+#if VISUALSTUDIO_9_0 // MSBUG: Hack workaround crashing bug in VirtualTreeControl.OnToggleExpansion
+			this.myTreeControl.ColumnPermutation = new ColumnPermutation(1, new int[]{0}, false);
+#endif
 			// 
 			// SurveyTreeControl
 			// 
@@ -72,7 +75,11 @@ namespace Neumont.Tools.Modeling.Shell.DynamicSurveyTreeGrid
 			}
 			set
 			{
+//#if VISUALSTUDIO_9_0
+//                myTreeControl.MultiColumnTree = (IMultiColumnTree)value;
+//#else
 				myTreeControl.Tree = value;
+//#endif
 			}
 		}
 	}

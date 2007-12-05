@@ -50,6 +50,9 @@ namespace Neumont.Tools.ORM.Shell
 			IBranch rootBranch = new InitialCategoriesBranch(myCategories, myErrors);
 			tree.Root = rootBranch;
 
+#if VISUALSTUDIO_9_0 // MSBUG: Hack workaround crashing bug in VirtualTreeControl.OnToggleExpansion
+			this.virtualTreeControl.ColumnPermutation = new ColumnPermutation(1, new int[]{0}, false);
+#endif
 			this.virtualTreeControl.Tree = tree;
 		}
 		#endregion //Form fields and constructor
