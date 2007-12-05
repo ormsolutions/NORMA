@@ -47,7 +47,7 @@
 	<?elseif $(var.VSVer) = v9.0?>
 		<?define PackageGuidStart="24D571AB-0000-4FA4"?>
 		<?define RootSuffixVersion="9.0"?>
-		<?define HelpFileTargetCollection="MS_VSIPCC_v90"?>
+		<?define HelpFileTargetCollection="MS.VSIPCC.v90"?>
 	<?endif?>
 	<?include ../Version.wxi?>
 	<?define PackageCode="$(var.PackageGuidStart)-$(var.VersionGuidSuffix)"?>
@@ -126,6 +126,6 @@
 	<?define VSSolutionExplorerWindowGuid="3AE79031-E1BC-11D0-8F78-00A0C9110057"?>
 
 	<!-- Define "HxMergeVSHelpCollection" in order to include custom actions that merge the VS Combined Help Collection. -->
-	<!-- This bypasses the "Help is updating to reflect your recent changes" message the next time Document Explorer is opened, but it also significantly increaseses install time. -->
-	<!--<?define HxMergeVSHelpCollection?>-->
+	<!-- Commenting this define bypasses the "Help is updating to reflect your recent changes" message the next time Document Explorer is opened, but it also significantly increaseses install time. -->
+	<?define HxMergeVSHelpCollection=1?>
 </Include>
