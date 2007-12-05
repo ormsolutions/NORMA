@@ -279,7 +279,7 @@
 									DefaultLanguage="$(var.DefaultLCID)" CompanionFile="Neumont.ORM.General.hxs">
 									<vs:HelpCollection Id="Neumont.ORM.General" Description="!(loc.NORMAHelpCollectionDescription)" Name="Neumont.ORM.General">
 										<vs:HelpFileRef Id="Neumont.ORM.General"/>
-										<vs:PlugCollectionInto TargetCollection="MS_VSIPCC_v80" TableOfContents="COL_Neumont.ORM.General.HxT"/>
+										<vs:PlugCollectionInto TargetCollection="$(var.HelpFileTargetCollection)" TableOfContents="COL_Neumont.ORM.General.HxT"/>
 									</vs:HelpCollection>
 								</File>
 								<File Id="COL_Neumont.ORM.General.HxT" ShortName="ORMGnrl.HxT" Name="COL_Neumont.ORM.General.HxT" Source="..\Documentation\Help Project\Build\COL_Neumont.ORM.General.HxT"

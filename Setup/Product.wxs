@@ -55,12 +55,14 @@
 		<!-- Make sure Visual Studio 2005 is installed. Since VS requires .NET, we don't need to check for it separately. -->
 		<!-- Technically, since DSL Tools requires VS, we don't even need to do this check, but since we have to get the properties anyway, we might as well. It gives the user a more appropriate error message, anyway. -->
 		<Condition Message="!(loc.VisualStudio2005Required)">(VSPRODUCTDIR AND VSTEMPLATEITEMDIR AND VSENVIRONMENTPATH) OR Installed</Condition>
-		
-		<Property Id="DSLTOOLSREDISTINSTALL">
-			<RegistrySearch Id="DSLToolsRedistInstallRegistrySearch" Root="HKLM" Key="$(var.DSLRegRoot)" Name="RedistInstall" Type="raw" Win64="$(var.Win64)"/>
-		</Property>
-		<!-- Make sure the DSL Tools redistributable or SDK is installed. -->
-		<Condition Message="!(loc.DSLToolsRequired)">DSLTOOLSREDISTINSTALL OR Installed</Condition>
+
+		<?ifdef RequireDSLRedist?>
+			<Property Id="DSLTOOLSREDISTINSTALL">
+				<RegistrySearch Id="DSLToolsRedistInstallRegistrySearch" Root="HKLM" Key="$(var.DSLRegRoot)" Name="RedistInstall" Type="raw" Win64="$(var.Win64)"/>
+			</Property>
+			<!-- Make sure the DSL Tools redistributable or SDK is installed. -->
+			<Condition Message="!(loc.DSLToolsRequired)">DSLTOOLSREDISTINSTALL OR Installed</Condition>
+		<?endif?>
 
 		<Property Id="PLIXSCHEMAVERSION">
 			<RegistrySearch Id="PLiXSchemaVersionRegistrySearch" Root="HKLM" Key="$(var.PLiXRegRoot)" Name="SchemaVersion" Type="raw" Win64="$(var.Win64)"/>
