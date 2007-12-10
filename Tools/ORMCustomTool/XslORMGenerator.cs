@@ -62,6 +62,7 @@ namespace Neumont.Tools.ORM.ORMCustomTool
 				Debug.Assert(this._providesOutputFormat != null);
 				this._compilable = Convert.ToBoolean((int)generatorKey.GetValue("Compilable", 0));
 				this._generatesSupportFile = Convert.ToBoolean((int)generatorKey.GetValue("GeneratesSupportFile", 0));
+				this._generatesOnce = Convert.ToBoolean((int)generatorKey.GetValue("GeneratesOnce", 0));
 				this._customTool = generatorKey.GetValue("CustomTool", null) as string;
 
 				Dictionary<string, IEnumerable<string>> extensions = null;
@@ -212,6 +213,12 @@ namespace Neumont.Tools.ORM.ORMCustomTool
 			public bool GeneratesSupportFile
 			{
 				get { return this._generatesSupportFile; }
+			}
+
+			private readonly bool _generatesOnce;
+			public bool GeneratesOnce
+			{
+				get { return this._generatesOnce; }
 			}
 
 			private readonly string _sourceInputFormat;

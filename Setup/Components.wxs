@@ -510,7 +510,7 @@
 									<RegistryValue Type="string" Name="DisplayName" Value="PLiX Support"/>
 									<RegistryValue Type="string" Name="DisplayDescription" Value="Transforms nothing to SupportClasses PLiX."/>
 									<RegistryValue Type="string" Name="FileExtension" Value=".Support.PLiX.xml"/>
-									<RegistryValue Type="string" Name="SourceInputFormat" Value="OIAL"/>
+									<RegistryValue Type="string" Name="SourceInputFormat" Value="ORM"/>
 									<RegistryValue Type="string" Name="ProvidesOutputFormat" Value="PLiX_Support"/>
 									<RegistryValue Type="string" Name="TransformUri" Value="[#OIALtoPLiX_GenerateGlobalSupportClasses.xslt]"/>
 									<RegistryValue Type="string" Name="CustomTool" Value="NUPlixLoader"/>

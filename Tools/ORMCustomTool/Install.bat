@@ -66,15 +66,15 @@ CALL:_AddXslORMGenerator "OIALtoDCIL" "OIAL to DCIL" "Transforms an OIAL file to
 CALL:_AddXslORMGenerator "ConceptualDBtoDCL" "ConceptualDB to DCIL" "Transforms an ORM file with the ConceptualDB extension to DCIL." ".DCIL.xml" "ORM http://schemas.neumont.edu/ORM/Relational/2007-06/ConceptualDatabase http://schemas.neumont.edu/ORM/Bridge/2007-06/ORMAbstractionToConceptualDatabase http://schemas.neumont.edu/ORM/Abstraction/2007-06/Core http://schemas.neumont.edu/ORM/Bridge/2007-06/ORMToORMAbstraction" "DCIL" "%ORMTransformsDir%\ConceptualDBtoDCIL.xslt" "" "1"
 
 CALL:_AddXslORMGenerator "OIALtoCLIProperties" "OIAL to CLI Properties" "Transforms an OIAL file to CLI (Common Language Infrastructure) Properties" ".CLIProperties.xml" "OIAL" "CLIProperties" "%ORMTransformsDir%\OIALtoCLIProperties.xslt" "" "1"
-CALL:_AddXslORMGenerator "PLiXSupport" "PLiX Support" "Transforms nothing to SupportClasses PLiX." ".Support.PLiX.xml" "OIAL" "PLiX_Support" "%ORMTransformsDir%\OIALtoPLiX_GenerateGlobalSupportClasses.xslt" "NUPlixLoader"
-CALL:_AddXslORMGenerator "CLIPropertiesToPLiXAbstract" "CLIProperties to PLiX Abstract" "Transforms a CLI Properties file to Abstract PLiX" ".Abstract.PLiX.xml" "CLIProperties" "PLiX_Abstract" "%ORMTransformsDir%\OIALtoPLiX_Abstract.xslt" "NUPlixLoader" "1" "" "OIAL\0"
-CALL:_AddXslORMGenerator "CLIPropertiesToPLiXDataLayerWithSproc" "CLIProperties to PLiX Data Layer with Sprocs" "Transforms a CLI Properties file to DataLayer PLiX" ".Implementation.PLiX.xml" "CLIProperties" "PLiX_Implementation" "%ORMTransformsDir%\OIALtoPLiX_DataLayer_Implementation.xslt" "NUPlixLoader" "" "" "OIAL\0" "PLiX_Abstract\0"
-CALL:_AddXslORMGenerator "CLIPropertiesToPliXDataLayerSprocFree" "CLIProperties to PLiX Sproc Free Data Layer" "Transforms a CLI Properties file to Sproc Free Data Layer PLiX" ".Implementation.PLiX.xml" "CLIProperties" "PLiX_Implementation" "%ORMTransformsDir%\OIALtoPLiX_DataLayer_SprocFree_Implementation.xslt" "NUPlixLoader" "" "" "OIAL\0" "PLiX_Abstract\0"
-CALL:_AddXslORMGenerator "CLIPropertiesToPLiXInMemory" "CLIProperties to PLiX In Memory" "Transforms a CLI Properties file to InMemory PLiX" ".Implementation.PLiX.xml" "CLIProperties" "PLiX_Implementation" "%ORMTransformsDir%\OIALtoPLiX_InMemory_Implementation.xslt" "NUPlixLoader" "" "" "OIAL\0" "PLiX_Abstract\0"
+CALL:_AddXslORMGenerator "PLiXSupport" "PLiX Support" "Transforms nothing to SupportClasses PLiX." ".Support.PLiX.xml" "ORM" "PLiX_Support" "%ORMTransformsDir%\OIALtoPLiX_GenerateGlobalSupportClasses.xslt" "NUPlixLoader"
+CALL:_AddXslORMGenerator "CLIPropertiesToPLiXAbstract" "CLIProperties to PLiX Abstract" "Transforms a CLI Properties file to Abstract PLiX" ".Abstract.PLiX.xml" "CLIProperties" "PLiX_Abstract" "%ORMTransformsDir%\OIALtoPLiX_Abstract.xslt" "NUPlixLoader" "1" "" "" "OIAL\0"
+CALL:_AddXslORMGenerator "CLIPropertiesToPLiXDataLayerWithSproc" "CLIProperties to PLiX Data Layer with Sprocs" "Transforms a CLI Properties file to DataLayer PLiX" ".Implementation.PLiX.xml" "CLIProperties" "PLiX_Implementation" "%ORMTransformsDir%\OIALtoPLiX_DataLayer_Implementation.xslt" "NUPlixLoader" "" "" "" "OIAL\0" "PLiX_Abstract\0"
+CALL:_AddXslORMGenerator "CLIPropertiesToPliXDataLayerSprocFree" "CLIProperties to PLiX Sproc Free Data Layer" "Transforms a CLI Properties file to Sproc Free Data Layer PLiX" ".Implementation.PLiX.xml" "CLIProperties" "PLiX_Implementation" "%ORMTransformsDir%\OIALtoPLiX_DataLayer_SprocFree_Implementation.xslt" "NUPlixLoader" "" "" "" "OIAL\0" "PLiX_Abstract\0"
+CALL:_AddXslORMGenerator "CLIPropertiesToPLiXInMemory" "CLIProperties to PLiX In Memory" "Transforms a CLI Properties file to InMemory PLiX" ".Implementation.PLiX.xml" "CLIProperties" "PLiX_Implementation" "%ORMTransformsDir%\OIALtoPLiX_InMemory_Implementation.xslt" "NUPlixLoader" "" "" "" "OIAL\0" "PLiX_Abstract\0"
 
-CALL:_AddXslORMGenerator "DataLayerTestForm" "Data Layer Test Form" "Generates a Windows Form with custom controls for testing and manipulating data using the generated data access layer and database." ".DataLayerTestForm.PLiX.xml" "PLiX_Implementation" "DataLayerTestForm" "%ORMTransformsDir%\DataLayerTestForm\OIALtoPLiX_DataLayerTestForm.xslt" "NUPlixLoader" "" "" "" "DataLayerTestFormInputControl\0"
-CALL:_AddXslORMGenerator "DataLayerTestFormInputControl" "Data Layer Test Form Input Control" "Generates a custom controls to be used on the generated form for testing and manipulating data using the generated data access layer and database." ".DataLayerTestFormInputControl.PLiX.xml" "PLiX_Implementation" "DataLayerTestFormInputControl" "%ORMTransformsDir%\DataLayerTestForm\OIALtoPLiX_InputControl.xslt" "NUPlixLoader" "" "" "OIAL\0" "DataLayerTestFormInputControlDesigner\0"
-CALL:_AddXslORMGenerator "DataLayerTestFormInputControlDesigner" "Data Layer Test Form Input Control Designer" "Generates a custom controls to be used on the generated form for testing and manipulating data using the generated data access layer and database." ".DataLayerTestFormInputControl.Designer.PLiX.xml" "PLiX_Implementation" "DataLayerTestFormInputControlDesigner" "%ORMTransformsDir%\DataLayerTestForm\OIALtoPLiX_InputControl_Designer.xslt" "NUPlixLoader" "1" "" "OIAL\0"
+CALL:_AddXslORMGenerator "DataLayerTestForm" "Data Layer Test Form" "Generates a Windows Form with custom controls for testing and manipulating data using the generated data access layer and database." ".DataLayerTestForm.PLiX.xml" "PLiX_Implementation" "DataLayerTestForm" "%ORMTransformsDir%\DataLayerTestForm\OIALtoPLiX_DataLayerTestForm.xslt" "NUPlixLoader" "" "" "" "" "DataLayerTestFormInputControl\0"
+CALL:_AddXslORMGenerator "DataLayerTestFormInputControl" "Data Layer Test Form Input Control" "Generates a custom controls to be used on the generated form for testing and manipulating data using the generated data access layer and database." ".DataLayerTestFormInputControl.PLiX.xml" "PLiX_Implementation" "DataLayerTestFormInputControl" "%ORMTransformsDir%\DataLayerTestForm\OIALtoPLiX_InputControl.xslt" "NUPlixLoader" "" "" "" "OIAL\0" "DataLayerTestFormInputControlDesigner\0"
+CALL:_AddXslORMGenerator "DataLayerTestFormInputControlDesigner" "Data Layer Test Form Input Control Designer" "Generates a custom controls to be used on the generated form for testing and manipulating data using the generated data access layer and database." ".DataLayerTestFormInputControl.Designer.PLiX.xml" "PLiX_Implementation" "DataLayerTestFormInputControlDesigner" "%ORMTransformsDir%\DataLayerTestForm\OIALtoPLiX_InputControl_Designer.xslt" "NUPlixLoader" "1" "" "" "OIAL\0"
 
 :: Install and register DIL Transforms
 XCOPY /Y /D /V /Q "%XMLDir%\DILtoSQL\DCILtoDDIL.xslt" "%DILTransformsDir%\"
@@ -119,8 +119,6 @@ CALL:_AddXslORMGenerator "PHPDataLayerPLiXtoPHP" "PHP DataLayer PLiX to PHP" "Tr
 GOTO:EOF
 
 :_InstallCustomToolReg
-REG QUERY "HKLM\%VSRegistryRootBase%\%~1\CLSID\{977BD01E-F2B4-4341-9C47-459420624A20}\InprocServer32" /v "CodeBase" 1>NUL 2>&1
-IF NOT ERRORLEVEL 1 (GOTO:EOF)
 CALL:_AddCustomToolReg "%~1"
 CALL:_AddRegGenerator "%~1" "{164b10b9-b200-11d0-8c61-00a0c91e29d5}"
 CALL:_AddRegGenerator "%~1" "{fae04ec1-301f-11d3-bf4b-00c04f79efbc}"
@@ -128,8 +126,6 @@ CALL:_AddRegGenerator "%~1" "{e6fdf8b0-f3d1-11d4-8576-0002a516ece8}"
 GOTO:EOF
 
 :_InstallExtenderReg
-REG QUERY "HKLM\%VSRegistryRootBase%\%~1\CLSID\{6FDCC073-20C2-4435-9B2E-9E70451C81D8}\InprocServer32" /v "CodeBase" 1>NUL 2>&1
-IF NOT ERRORLEVEL 1 (GOTO:EOF)
 CALL:_AddExtenderReg "%~1"
 CALL:_AddRegExtender "%~1" "{8D58E6AF-ED4E-48B0-8C7B-C74EF0735451}"
 CALL:_AddRegExtender "%~1" "{EA5BD05D-3C72-40A5-95A0-28A2773311CA}"
@@ -137,34 +133,34 @@ CALL:_AddRegExtender "%~1" "{E6FDF869-F3D1-11D4-8576-0002A516ECE8}"
 GOTO:EOF
 
 :_AddCustomToolReg
-REG ADD "HKLM\%VSRegistryRootBase%\%~1\CLSID\{977BD01E-F2B4-4341-9C47-459420624A20}" /f /ve /d "Neumont.Tools.ORM.ORMCustomTool.ORMCustomTool"
-REG ADD "HKLM\%VSRegistryRootBase%\%~1\CLSID\{977BD01E-F2B4-4341-9C47-459420624A20}\InprocServer32" /f /ve /d "%SystemRoot%\System32\mscoree.dll"
-REG ADD "HKLM\%VSRegistryRootBase%\%~1\CLSID\{977BD01E-F2B4-4341-9C47-459420624A20}\InprocServer32" /f /v "ThreadingModel" /d "Both"
-REG ADD "HKLM\%VSRegistryRootBase%\%~1\CLSID\{977BD01E-F2B4-4341-9C47-459420624A20}\InprocServer32" /f /v "Class" /d "Neumont.Tools.ORM.ORMCustomTool.ORMCustomTool"
-REG ADD "HKLM\%VSRegistryRootBase%\%~1\CLSID\{977BD01E-F2B4-4341-9C47-459420624A20}\InprocServer32" /f /v "CodeBase" /d "%NORMADir%\bin\%TargetBaseName%.dll"
-REG ADD "HKLM\%VSRegistryRootBase%\%~1\CLSID\{977BD01E-F2B4-4341-9C47-459420624A20}\InprocServer32" /f /v "Assembly" /d "%TargetBaseName%, Version=1.0.0.0, Culture=neutral, PublicKeyToken=957d5b7d5e79e25f"
+REG ADD "HKLM\%VSRegistryRootBase%\%~1\CLSID\{977BD01E-F2B4-4341-9C47-459420624A20}" /f /ve /d "Neumont.Tools.ORM.ORMCustomTool.ORMCustomTool" 1>NUL 2>&1
+REG ADD "HKLM\%VSRegistryRootBase%\%~1\CLSID\{977BD01E-F2B4-4341-9C47-459420624A20}\InprocServer32" /f /ve /d "%SystemRoot%\System32\mscoree.dll" 1>NUL 2>&1
+REG ADD "HKLM\%VSRegistryRootBase%\%~1\CLSID\{977BD01E-F2B4-4341-9C47-459420624A20}\InprocServer32" /f /v "ThreadingModel" /d "Both" 1>NUL 2>&1
+REG ADD "HKLM\%VSRegistryRootBase%\%~1\CLSID\{977BD01E-F2B4-4341-9C47-459420624A20}\InprocServer32" /f /v "Class" /d "Neumont.Tools.ORM.ORMCustomTool.ORMCustomTool" 1>NUL 2>&1
+REG ADD "HKLM\%VSRegistryRootBase%\%~1\CLSID\{977BD01E-F2B4-4341-9C47-459420624A20}\InprocServer32" /f /v "CodeBase" /d "%NORMADir%\bin\%TargetBaseName%.dll" 1>NUL 2>&1
+REG ADD "HKLM\%VSRegistryRootBase%\%~1\CLSID\{977BD01E-F2B4-4341-9C47-459420624A20}\InprocServer32" /f /v "Assembly" /d "%TargetBaseName%, Version=1.0.0.0, Culture=neutral, PublicKeyToken=957d5b7d5e79e25f" 1>NUL 2>&1
 GOTO:EOF
 
 :_AddExtenderReg
-REG ADD "HKLM\%VSRegistryRootBase%\%~1\CLSID\{6FDCC073-20C2-4435-9B2E-9E70451C81D8}" /f /ve /d "Neumont.Tools.ORM.ORMCustomTool.ExtenderProvider"
-REG ADD "HKLM\%VSRegistryRootBase%\%~1\CLSID\{6FDCC073-20C2-4435-9B2E-9E70451C81D8}\InprocServer32" /f /ve /d "%SystemRoot%\System32\mscoree.dll"
-REG ADD "HKLM\%VSRegistryRootBase%\%~1\CLSID\{6FDCC073-20C2-4435-9B2E-9E70451C81D8}\InprocServer32" /f /v "ThreadingModel" /d "Both"
-REG ADD "HKLM\%VSRegistryRootBase%\%~1\CLSID\{6FDCC073-20C2-4435-9B2E-9E70451C81D8}\InprocServer32" /f /v "Class" /d "Neumont.Tools.ORM.ORMCustomTool.ExtenderProvider"
-REG ADD "HKLM\%VSRegistryRootBase%\%~1\CLSID\{6FDCC073-20C2-4435-9B2E-9E70451C81D8}\InprocServer32" /f /v "CodeBase" /d "%NORMADir%\bin\%TargetBaseName%.dll"
-REG ADD "HKLM\%VSRegistryRootBase%\%~1\CLSID\{6FDCC073-20C2-4435-9B2E-9E70451C81D8}\InprocServer32" /f /v "Assembly" /d "%TargetBaseName%, Version=1.0.0.0, Culture=neutral, PublicKeyToken=957d5b7d5e79e25f"
-REG ADD "HKLM\%VSRegistryRootBase%\%~1\CLSID\{6FDCC073-20C2-4435-9B2E-9E70451C81D8}\InprocServer32\1.0.0.0" /f /v "Class" /d "Neumont.Tools.ORM.ORMCustomTool.ExtenderProvider"
-REG ADD "HKLM\%VSRegistryRootBase%\%~1\CLSID\{6FDCC073-20C2-4435-9B2E-9E70451C81D8}\InprocServer32\1.0.0.0" /f /v "CodeBase" /d "%TargetBaseName%.dll"
-REG ADD "HKLM\%VSRegistryRootBase%\%~1\CLSID\{6FDCC073-20C2-4435-9B2E-9E70451C81D8}\InprocServer32\1.0.0.0" /f /v "Assembly" /d "%TargetBaseName%, Version=1.0.0.0, Culture=neutral, PublicKeyToken=957d5b7d5e79e25f"
+REG ADD "HKLM\%VSRegistryRootBase%\%~1\CLSID\{6FDCC073-20C2-4435-9B2E-9E70451C81D8}" /f /ve /d "Neumont.Tools.ORM.ORMCustomTool.ExtenderProvider" 1>NUL 2>&1
+REG ADD "HKLM\%VSRegistryRootBase%\%~1\CLSID\{6FDCC073-20C2-4435-9B2E-9E70451C81D8}\InprocServer32" /f /ve /d "%SystemRoot%\System32\mscoree.dll" 1>NUL 2>&1
+REG ADD "HKLM\%VSRegistryRootBase%\%~1\CLSID\{6FDCC073-20C2-4435-9B2E-9E70451C81D8}\InprocServer32" /f /v "ThreadingModel" /d "Both" 1>NUL 2>&1
+REG ADD "HKLM\%VSRegistryRootBase%\%~1\CLSID\{6FDCC073-20C2-4435-9B2E-9E70451C81D8}\InprocServer32" /f /v "Class" /d "Neumont.Tools.ORM.ORMCustomTool.ExtenderProvider" 1>NUL 2>&1
+REG ADD "HKLM\%VSRegistryRootBase%\%~1\CLSID\{6FDCC073-20C2-4435-9B2E-9E70451C81D8}\InprocServer32" /f /v "CodeBase" /d "%NORMADir%\bin\%TargetBaseName%.dll" 1>NUL 2>&1
+REG ADD "HKLM\%VSRegistryRootBase%\%~1\CLSID\{6FDCC073-20C2-4435-9B2E-9E70451C81D8}\InprocServer32" /f /v "Assembly" /d "%TargetBaseName%, Version=1.0.0.0, Culture=neutral, PublicKeyToken=957d5b7d5e79e25f" 1>NUL 2>&1
+REG ADD "HKLM\%VSRegistryRootBase%\%~1\CLSID\{6FDCC073-20C2-4435-9B2E-9E70451C81D8}\InprocServer32\1.0.0.0" /f /v "Class" /d "Neumont.Tools.ORM.ORMCustomTool.ExtenderProvider" 1>NUL 2>&1
+REG ADD "HKLM\%VSRegistryRootBase%\%~1\CLSID\{6FDCC073-20C2-4435-9B2E-9E70451C81D8}\InprocServer32\1.0.0.0" /f /v "CodeBase" /d "%TargetBaseName%.dll" 1>NUL 2>&1
+REG ADD "HKLM\%VSRegistryRootBase%\%~1\CLSID\{6FDCC073-20C2-4435-9B2E-9E70451C81D8}\InprocServer32\1.0.0.0" /f /v "Assembly" /d "%TargetBaseName%, Version=1.0.0.0, Culture=neutral, PublicKeyToken=957d5b7d5e79e25f" 1>NUL 2>&1
 GOTO:EOF
 
 :_AddRegGenerator
-REG ADD "HKLM\%VSRegistryRootBase%\%~1\Generators\%~2\ORMCustomTool" /f /ve /d "ORM Custom Tool"
-REG ADD "HKLM\%VSRegistryRootBase%\%~1\Generators\%~2\ORMCustomTool" /f /v "CLSID" /d "{977BD01E-F2B4-4341-9C47-459420624A20}"
-REG ADD "HKLM\%VSRegistryRootBase%\%~1\Generators\%~2\.orm" /f /ve /d "ORMCustomTool"
+REG ADD "HKLM\%VSRegistryRootBase%\%~1\Generators\%~2\ORMCustomTool" /f /ve /d "ORM Custom Tool" 1>NUL 2>&1
+REG ADD "HKLM\%VSRegistryRootBase%\%~1\Generators\%~2\ORMCustomTool" /f /v "CLSID" /d "{977BD01E-F2B4-4341-9C47-459420624A20}" 1>NUL 2>&1
+REG ADD "HKLM\%VSRegistryRootBase%\%~1\Generators\%~2\.orm" /f /ve /d "ORMCustomTool" 1>NUL 2>&1
 GOTO:EOF
 
 :_AddRegExtender
-REG ADD "HKLM\%VSRegistryRootBase%\%~1\Extenders\%~2\ORMCustomTool" /f /ve /d "{6FDCC073-20C2-4435-9B2E-9E70451C81D8}"
+REG ADD "HKLM\%VSRegistryRootBase%\%~1\Extenders\%~2\ORMCustomTool" /f /ve /d "{6FDCC073-20C2-4435-9B2E-9E70451C81D8}" 1>NUL 2>&1
 GOTO:EOF
 
 :_AddXslORMGenerator
@@ -179,6 +175,8 @@ REG ADD "%NORMAGenerators%\%~1" /f /v "ProvidesOutputFormat" /d "%~6" 1>NUL
 REG ADD "%NORMAGenerators%\%~1" /f /v "TransformUri" /d "%~7" 1>NUL
 IF NOT "%~8"=="" (REG ADD "%NORMAGenerators%\%~1" /f /v "CustomTool" /d "%~8") 1>NUL
 IF NOT "%~9"=="" (REG ADD "%NORMAGenerators%\%~1" /f /v "GeneratesSupportFile" /t REG_DWORD /d "%~9") 1>NUL
+SHIFT /8
+IF NOT "%~9"=="" (REG ADD "%NORMAGenerators%\%~1" /f /v "GeneratesOnce" /t REG_DWORD /d "%~9") 1>NUL
 SHIFT /8
 IF NOT "%~9"=="" (REG ADD "%NORMAGenerators%\%~1" /f /v "Compilable" /t REG_DWORD /d "%~9") 1>NUL
 SHIFT /8

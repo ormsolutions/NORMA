@@ -578,47 +578,54 @@ namespace Neumont.Tools.ORM.ORMCustomTool
 							}
 							else
 							{
-								MemoryStream outputStream = new MemoryStream();
+								string fullItemPath = Path.Combine(Path.GetDirectoryName(projectPath), buildItem.FinalItemSpec);
+								FileInfo checkExisting;
+								bool useExisting = ormGenerator.GeneratesOnce && (checkExisting = new FileInfo(fullItemPath)).Exists && checkExisting.Length != 0;
 								Stream readonlyOutputStream = null;
-								try
+								MemoryStream outputStream = null;
+								int outputStreamLength = 0;
+								if (!useExisting)
 								{
-									// UNDONE: Extension checking should happen in the current generator
-									// going back to the generator that produced the input file. We're only
-									// extending ORM files right now, and the ORM file doesn't have a generator,
-									// so we just do it here.
-									bool extensionsSatisfied = true;
-									foreach (string extension in ormGenerator.GetRequiredExtensionsForInputFormat("ORM"))
+									outputStream = new MemoryStream();
+									try
 									{
-										if (null == ormExtensions)
+										// UNDONE: Extension checking should happen in the current generator
+										// going back to the generator that produced the input file. We're only
+										// extending ORM files right now, and the ORM file doesn't have a generator,
+										// so we just do it here.
+										bool extensionsSatisfied = true;
+										foreach (string extension in ormGenerator.GetRequiredExtensionsForInputFormat("ORM"))
 										{
-											ormExtensions = ormExtensionManager.GetLoadedExtensions();
+											if (null == ormExtensions)
+											{
+												ormExtensions = ormExtensionManager.GetLoadedExtensions();
+											}
+											if (Array.BinarySearch<string>(ormExtensions, extension) < 0)
+											{
+												extensionsSatisfied = false;
+												// UNDONE: Localize error messages.
+												message = string.Format(CultureInfo.InvariantCulture, "The extension '{0}' in the '{1}' is required for generation of the '{2}' file. The existing contents of '{3}' will not be modified. Open the 'ORM Generator Selection' dialog and choose 'Save Changes' to automatically add required extensions.", extension, "ORM", ormGenerator.OfficialName, buildItem.FinalItemSpec);
+												report(message, ReportType.Error, null);
+											}
 										}
-										if (Array.BinarySearch<string>(ormExtensions, extension) < 0)
+										if (extensionsSatisfied)
 										{
-											extensionsSatisfied = false;
-											// UNDONE: Localize error messages.
-											message = string.Format(CultureInfo.InvariantCulture, "The extension '{0}' in the '{1}' is required for generation of the '{2}' file. The existing contents of '{3}' will not be modified. Open the 'ORM Generator Selection' dialog and choose 'Save Changes' to automatically add required extensions.", extension, "ORM", ormGenerator.OfficialName, buildItem.FinalItemSpec);
-											report(message, ReportType.Error, null);
+											ormGenerator.GenerateOutput(buildItem, outputStream, readonlyOutputFormatStreams, wszDefaultNamespace);
+											readonlyOutputStream = new ReadOnlyStream(outputStream);
 										}
 									}
-									if (extensionsSatisfied)
+									catch (Exception ex)
 									{
-										ormGenerator.GenerateOutput(buildItem, outputStream, readonlyOutputFormatStreams, wszDefaultNamespace);
-										readonlyOutputStream = new ReadOnlyStream(outputStream);
+										// UNDONE: Localize error messages.
+										message = string.Format(CultureInfo.InvariantCulture, "Exception occurred while executing transform '{0}'. The existing contents of '{1}' will not be modified.", ormGenerator.OfficialName, buildItem.FinalItemSpec);
+										report(message, ReportType.Error, ex);
 									}
-								}
-								catch (Exception ex)
-								{
-									// UNDONE: Localize error messages.
-									message = string.Format(CultureInfo.InvariantCulture, "Exception occurred while executing transform '{0}'. The existing contents of '{1}' will not be modified.", ormGenerator.OfficialName, buildItem.FinalItemSpec);
-									report(message, ReportType.Error, ex);
+									outputStreamLength = (int)outputStream.Length;
 								}
 
-								string fullItemPath = Path.Combine(Path.GetDirectoryName(projectPath), buildItem.FinalItemSpec);
 								bool textLinesReloadRequired;
 								IVsTextLines textLines = GetTextLinesForDocument(fullItemPath, out textLinesReloadRequired);
 								// Write the result out to the appropriate file...
-								int outputStreamLength = (int)outputStream.Length;
 								if (textLines != null)
 								{
 									// Get edit points in the document to read the full file from
@@ -630,13 +637,13 @@ namespace Neumont.Tools.ORM.ORMCustomTool
 									EnvDTE.EditPoint editPointEnd = editPointStart.CreateEditPoint();
 									editPointEnd.EndOfDocument();
 
-									// Reset outputStream to the beginning of the stream...
-									outputStream.Seek(0, SeekOrigin.Begin);
-
 									if (readonlyOutputStream != null)
 									{
+										// Reset outputStream to the beginning of the stream...
+										outputStream.Seek(0, SeekOrigin.Begin);
+
 										// We're using the readonlyOutputStream here so that the StreamReader can't close the real stream
-										using (StreamReader streamReader = new StreamReader(readonlyOutputStream, Encoding.UTF8, true, (int)outputStream.Length))
+										using (StreamReader streamReader = new StreamReader(readonlyOutputStream, Encoding.UTF8, true, (int)outputStreamLength))
 										{
 											// We're not passing any flags to ReplaceText, because the output of the generators should
 											// be the same whether or not the user has the generated document open
@@ -666,6 +673,17 @@ namespace Neumont.Tools.ORM.ORMCustomTool
 									}
 									else
 									{
+										if (outputStream != null)
+										{
+											// Reset outputStream to the beginning of the stream...
+											outputStream.Seek(0, SeekOrigin.Begin);
+										}
+										else
+										{
+											// Handle the 'useExisting' case
+											outputStream = new MemoryStream();
+										}
+
 										// The file did not generate, use what we had before if it already exists
 										using (StreamWriter writer = new StreamWriter(new UncloseableStream(outputStream), Encoding.UTF8))
 										{
@@ -678,11 +696,14 @@ namespace Neumont.Tools.ORM.ORMCustomTool
 								}
 								else if (readonlyOutputStream == null)
 								{
-									// The transform failed and the file is not loaded in the
-									// environment. Attempt to load it from disk. The output
-									// stream is no longer needed, shut it down now.
-									outputStream.Close();
-									if (File.Exists(fullItemPath))
+									if (outputStream != null)
+									{
+										// The transform failed and the file is not loaded in the
+										// environment. Attempt to load it from disk. The output
+										// stream is no longer needed, shut it down now.
+										outputStream.Close();
+									}
+									if (useExisting || File.Exists(fullItemPath))
 									{
 										readonlyOutputStream = new ReadOnlyStream(new FileStream(fullItemPath, FileMode.Open, FileAccess.Read, FileShare.ReadWrite));
 									}
@@ -695,7 +716,7 @@ namespace Neumont.Tools.ORM.ORMCustomTool
 									try
 									{
 										fileStream = File.Create(fullItemPath, outputStreamLength, FileOptions.SequentialScan);
-										fileStream.Write(outputStream.GetBuffer(), 0, (int)outputStream.Length);
+										fileStream.Write(outputStream.GetBuffer(), 0, outputStreamLength);
 									}
 									catch (IOException)
 									{
