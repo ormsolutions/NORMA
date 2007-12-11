@@ -286,6 +286,9 @@
 					<xs:sequence minOccurs="0" maxOccurs="unbounded">
 						<xs:element name="RootElement">
 							<xs:complexType>
+								<xs:sequence>
+									<xs:element ref="ConditionalSerialization" minOccurs="0"/>
+								</xs:sequence>
 								<xs:attribute name="Class" type="xs:string" use="required">
 									<xs:annotation>
 										<xs:documentation>The name of a class that corresponds to an xml root element for this DomainModel</xs:documentation>
@@ -430,11 +433,11 @@
 						<xs:sequence>
 							<xs:element name="Condition" minOccurs="0" maxOccurs="unbounded">
 								<xs:annotation>
-									<xs:documentation>Use different attribute properties based on a PLIX condition.</xs:documentation>
+									<xs:documentation>Use different attribute properties based on a PLIX condition. The last PLiX element is assumed to be condition, other elements are preliminary code.</xs:documentation>
 								</xs:annotation>
 								<xs:complexType>
 									<xs:sequence>
-										<xs:any namespace="http://schemas.neumont.edu/CodeGeneration/PLiX" processContents="lax" minOccurs="1"  maxOccurs="1"/>
+										<xs:any namespace="http://schemas.neumont.edu/CodeGeneration/PLiX" processContents="lax" minOccurs="1"  maxOccurs="unbounded"/>
 									</xs:sequence>
 									<xs:attributeGroup ref="AttributeAttributes"/>
 								</xs:complexType>

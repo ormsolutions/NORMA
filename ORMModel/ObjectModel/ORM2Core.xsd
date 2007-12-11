@@ -57,6 +57,20 @@
 		</xs:sequence>
 		<xs:attribute name="id" type="xs:ID"/>
 	</xs:complexType>
+	<xs:complexType name="AliasesType">
+		<xs:sequence minOccurs="0">
+			<xs:element name="Alias" type="AliasType"/>
+		</xs:sequence>
+	</xs:complexType>
+	<xs:complexType name="AliasType">
+		<xs:attribute name="id" type="xs:ID"/>
+		<xs:attribute name="Name" type="xs:string" use="required"/>
+		<xs:attribute name="NameConsumer" type="xs:string" use="required"/>
+		<xs:attribute name="NameUsage" type="xs:string" use="required"/>
+	</xs:complexType>
+	<xs:complexType name="NameConsumer">
+		<xs:attribute name="NameUsage" type="xs:string" use="optional"/>
+	</xs:complexType>
 	<xs:complexType name="NotesType">
 		<xs:sequence minOccurs="0">
 			<xs:element name="Note" type="NoteType"/>
@@ -103,6 +117,7 @@
 		<xs:sequence>
 			<xs:element name="Definitions" type="DefinitionsType" minOccurs="0"/>
 			<xs:element name="Notes" type="NotesType" minOccurs="0"/>
+			<xs:element name="Aliases" type="AliasesType" minOccurs="0"/>
 			<xs:element name="PlayedRoles" type="PlayedRoles" minOccurs="0"/>
 		</xs:sequence>
 		<xs:attribute name="Name" use="required" type="xs:string"/>
@@ -1453,4 +1468,87 @@
 			<xs:enumeration value="Deontic"/>
 		</xs:restriction>
 	</xs:simpleType>
+	<xs:element name="NameGenerator" type="NameGeneratorType"/>
+	<xs:complexType name="NameGeneratorType">
+		<xs:annotation>
+			<xs:documentation>Name generation settings</xs:documentation>
+		</xs:annotation>
+		<xs:sequence>
+			<xs:element name="OmittedWords" minOccurs="0">
+				<xs:complexType>
+					<xs:sequence>
+						<xs:element name="OmittedWord" minOccurs="0" maxOccurs="unbounded">
+							<xs:complexType>
+								<xs:attribute name="Word" type="xs:string" use="required">
+									<xs:annotation>
+										<xs:documentation>A word to omit when generating names from multiple words. Generally a common word such as 'has' or 'the'.</xs:documentation>
+									</xs:annotation>
+								</xs:attribute>
+								<xs:attribute name="id" type="xs:ID"/>
+							</xs:complexType>
+						</xs:element>
+					</xs:sequence>
+				</xs:complexType>
+			</xs:element>
+			<xs:element name="Refinements" minOccurs="0">
+				<xs:complexType>
+					<xs:sequence>
+						<xs:element ref="NameGenerator" minOccurs="0" maxOccurs="unbounded"/>
+					</xs:sequence>
+				</xs:complexType>
+			</xs:element>
+		</xs:sequence>
+		<xs:attribute name="id" type="xs:ID"/>
+		<xs:attribute name="CasingOption" default="None">
+			<xs:annotation>
+				<xs:documentation>Specify casing modifications for name parts and combinations.</xs:documentation>
+			</xs:annotation>
+			<xs:simpleType>
+				<xs:restriction base="xs:token">
+					<xs:enumeration value="None"/>
+					<xs:enumeration value="Camel"/>
+					<xs:enumeration value="Pascal"/>
+					<xs:enumeration value="Upper"/>
+					<xs:enumeration value="Lower"/>
+				</xs:restriction>
+			</xs:simpleType>
+		</xs:attribute>
+		<xs:attribute name="SpacingFormat" default="Retain">
+			<xs:annotation>
+				<xs:documentation>Specify how name spaces are treated during name generation.</xs:documentation>
+			</xs:annotation>
+			<xs:simpleType>
+				<xs:restriction base="xs:token">
+					<xs:enumeration value="Retain"/>
+					<xs:enumeration value="Remove"/>
+					<xs:enumeration value="ReplaceWith"/>
+				</xs:restriction>
+			</xs:simpleType>
+		</xs:attribute>
+		<xs:attribute name="SpacingReplacement" default="" type="xs:string">
+			<xs:annotation>
+				<xs:documentation>The string used in place of spaces when @SpacingFormat is ReplaceWith</xs:documentation>
+			</xs:annotation>
+		</xs:attribute>
+		<xs:attribute name="NameUsage" type="xs:string" use="optional">
+			<xs:annotation>
+				<xs:documentation>The usage associated with this Name Generator</xs:documentation>
+			</xs:annotation>
+		</xs:attribute>
+		<xs:attribute name="AutomaticallyShortenNames" default="true" type="xs:boolean">
+			<xs:annotation>
+				<xs:documentation>Whether the namegeneration system should automatically shorten names if they exceed the max length</xs:documentation>
+			</xs:annotation>
+		</xs:attribute>
+		<xs:attribute name="UserDefinedMaximum" default="128" type="xs:integer">
+			<xs:annotation>
+				<xs:documentation>The maximum name length set by user</xs:documentation>
+			</xs:annotation>
+		</xs:attribute>
+		<xs:attribute name="UseTargetDefaultMaximum" default="true" type="xs:boolean">
+			<xs:annotation>
+				<xs:documentation>The maximum name length set by user</xs:documentation>
+			</xs:annotation>
+		</xs:attribute>
+	</xs:complexType>
 </xs:schema>

@@ -780,6 +780,39 @@
 		<value>Xml Schema validation of the .ORM file has failed.&#xd;&#xa;You can attempt to open the file without schema validation by reattempting the File/Open command while holding down the shift key.&#xd;&#xa;Detailed exception information:&#xd;&#xa;&#xd;&#xa;{0}</value>
 		<comment>Text used to display instructions when a load fails due to schema validation issues</comment>
 	</data>
+	<data name="NameGeneratorCasingOption.None" xml:space="preserve">
+		<value>None</value>
+	</data>
+	<data name="NameGeneratorCasingOption.Camel" xml:space="preserve">
+		<value>Camel</value>
+	</data>
+	<data name="NameGeneratorCasingOption.Pascal" xml:space="preserve">
+		<value>Pascal</value>
+	</data>
+	<data name="NameGeneratorCasingOption.Upper" xml:space="preserve">
+		<value>Upper</value>
+	</data>
+	<data name="NameGeneratorCasingOption.Lower" xml:space="preserve">
+		<value>Lower</value>
+	</data>
+	<data name="NameGeneratorSpacingFormat.Remove" xml:space="preserve">
+		<value>Remove</value>
+	</data>
+	<data name="NameGeneratorSpacingFormat.Retain" xml:space="preserve">
+		<value>Retain</value>
+	</data>
+	<data name="NameGeneratorSpacingFormat.ReplaceWith" xml:space="preserve">
+		<value>ReplaceWith</value>
+	</data>
+	<data name="NameGeneratorSubjectArea.None" xml:space="preserve">
+		<value>None</value>
+	</data>
+	<data name="NameGeneratorSubjectArea.Prefix" xml:space="preserve">
+		<value>Prefix</value>
+	</data>
+	<data name="NameGeneratorSubjectArea.Suffix" xml:space="preserve">
+		<value>Suffix</value>
+	</data>
 	<data name="SubtypeFact.ComponentNameFormat" xml:space="preserve">
 		<value>{0}-&gt;{1}</value>
 		<comment>String for generating a component name for a subtype. The {0} replacement field is used for the subtype component name; {1} for the supertype.</comment>
@@ -804,6 +837,9 @@
 	</data>
 	<data name="SurveyElementType.ObjectType" xml:space="preserve">
 		<value>Object Types</value>
+	</data>
+	<data name="SurveyElementType.NameGenerator" xml:space="preserve">
+		<value>Name Generation Settings</value>
 	</data>
 	<data name="SurveyFactTypeDetailType.Role" xml:space="preserve">
 		<value>Roles</value>

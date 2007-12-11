@@ -205,6 +205,30 @@
     <value>ReferenceModeTargetKind</value>
     <comment>DisplayName for DomainProperty &apos;ReferenceModeTargetKind&apos; on DomainClass &apos;DefaultReferenceModeNaming&apos;</comment>
   </data>
+  <data name="Neumont.Tools.ORMAbstractionToConceptualDatabaseBridge.RelationalNameGenerator.Description" xml:space="preserve">
+    <value></value>
+    <comment>Description for DomainClass &apos;RelationalNameGenerator&apos;</comment>
+  </data>
+  <data name="Neumont.Tools.ORMAbstractionToConceptualDatabaseBridge.RelationalNameGenerator.DisplayName" xml:space="preserve">
+    <value>Relational Names</value>
+    <comment>DisplayName for DomainClass &apos;RelationalNameGenerator&apos;</comment>
+  </data>
+  <data name="Neumont.Tools.ORMAbstractionToConceptualDatabaseBridge.ColumnNameUsage.Description" xml:space="preserve">
+    <value></value>
+    <comment>Description for DomainClass &apos;ColumnNameUsage&apos;</comment>
+  </data>
+  <data name="Neumont.Tools.ORMAbstractionToConceptualDatabaseBridge.ColumnNameUsage.DisplayName" xml:space="preserve">
+    <value>Column Specific</value>
+    <comment>DisplayName for DomainClass &apos;ColumnNameUsage&apos;</comment>
+  </data>
+  <data name="Neumont.Tools.ORMAbstractionToConceptualDatabaseBridge.TableNameUsage.Description" xml:space="preserve">
+    <value></value>
+    <comment>Description for DomainClass &apos;TableNameUsage&apos;</comment>
+  </data>
+  <data name="Neumont.Tools.ORMAbstractionToConceptualDatabaseBridge.TableNameUsage.DisplayName" xml:space="preserve">
+    <value>Table Specific</value>
+    <comment>DisplayName for DomainClass &apos;TableNameUsage&apos;</comment>
+  </data>
   <data name="Neumont.Tools.ORMAbstractionToConceptualDatabaseBridge.AssimilationMappingCustomizesFactType.Description" xml:space="preserve">
     <value>Description for Neumont.Tools.ORMAbstractionToConceptualDatabaseBridge.AssimilationMappingCustomizesFactType</value>
     <comment>Description for DomainClass &apos;AssimilationMappingCustomizesFactType&apos;</comment>

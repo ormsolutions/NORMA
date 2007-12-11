@@ -4432,6 +4432,924 @@ namespace Neumont.Tools.ORM.ObjectModel
 namespace Neumont.Tools.ORM.ObjectModel
 {
 	/// <summary>
+	/// DomainRelationship NameGeneratorRefinesNameGenerator
+	/// Description for Neumont.Tools.ORM.ObjectModel.NameGeneratorRefinesNameGenerator
+	/// </summary>
+	[DslDesign::DisplayNameResource("Neumont.Tools.ORM.ObjectModel.NameGeneratorRefinesNameGenerator.DisplayName", typeof(global::Neumont.Tools.ORM.ObjectModel.ORMCoreDomainModel), "Neumont.Tools.ORM.GeneratedCode.CoreDomainModelResx")]
+	[DslDesign::DescriptionResource("Neumont.Tools.ORM.ObjectModel.NameGeneratorRefinesNameGenerator.Description", typeof(global::Neumont.Tools.ORM.ObjectModel.ORMCoreDomainModel), "Neumont.Tools.ORM.GeneratedCode.CoreDomainModelResx")]
+	[global::System.CLSCompliant(true)]
+	[DslModeling::DomainRelationship(IsEmbedding=true)]
+	[DslModeling::DomainObjectId("6224ba97-f59f-4360-a159-7cd5ddb6493f")]
+	public partial class NameGeneratorRefinesNameGenerator : DslModeling::ElementLink
+	{
+		#region Constructors, domain class Id
+		
+		/// <summary>
+		/// NameGeneratorRefinesNameGenerator domain class Id.
+		/// </summary>
+		public static readonly new global::System.Guid DomainClassId = new global::System.Guid(0x6224ba97, 0xf59f, 0x4360, 0xa1, 0x59, 0x7c, 0xd5, 0xdd, 0xb6, 0x49, 0x3f);
+	
+				
+		/// <summary>
+		/// Constructor
+		/// Creates a NameGeneratorRefinesNameGenerator link in the same Partition as the given NameGenerator
+		/// </summary>
+		/// <param name="source">NameGenerator to use as the source of the relationship.</param>
+		/// <param name="target">NameGenerator to use as the target of the relationship.</param>
+		public NameGeneratorRefinesNameGenerator(NameGenerator source, NameGenerator target)
+			: base((source != null ? source.Partition : null), new DslModeling::RoleAssignment[]{new DslModeling::RoleAssignment(NameGeneratorRefinesNameGenerator.ParentDomainRoleId, source), new DslModeling::RoleAssignment(NameGeneratorRefinesNameGenerator.RefinementDomainRoleId, target)}, null)
+		{
+		}
+		
+		/// <summary>
+		/// Constructor
+		/// </summary>
+		/// <param name="store">Store where new link is to be created.</param>
+		/// <param name="roleAssignments">List of relationship role assignments.</param>
+		public NameGeneratorRefinesNameGenerator(DslModeling::Store store, params DslModeling::RoleAssignment[] roleAssignments)
+			: base(store != null ? store.DefaultPartition : null, roleAssignments, null)
+		{
+		}
+		
+		/// <summary>
+		/// Constructor
+		/// </summary>
+		/// <param name="store">Store where new link is to be created.</param>
+		/// <param name="roleAssignments">List of relationship role assignments.</param>
+		/// <param name="propertyAssignments">List of properties assignments to set on the new link.</param>
+		public NameGeneratorRefinesNameGenerator(DslModeling::Store store, DslModeling::RoleAssignment[] roleAssignments, DslModeling::PropertyAssignment[] propertyAssignments)
+			: base(store != null ? store.DefaultPartition : null, roleAssignments, propertyAssignments)
+		{
+		}
+		
+		/// <summary>
+		/// Constructor
+		/// </summary>
+		/// <param name="partition">Partition where new link is to be created.</param>
+		/// <param name="roleAssignments">List of relationship role assignments.</param>
+		public NameGeneratorRefinesNameGenerator(DslModeling::Partition partition, params DslModeling::RoleAssignment[] roleAssignments)
+			: base(partition, roleAssignments, null)
+		{
+		}
+		
+		/// <summary>
+		/// Constructor
+		/// </summary>
+		/// <param name="partition">Partition where new link is to be created.</param>
+		/// <param name="roleAssignments">List of relationship role assignments.</param>
+		/// <param name="propertyAssignments">List of properties assignments to set on the new link.</param>
+		public NameGeneratorRefinesNameGenerator(DslModeling::Partition partition, DslModeling::RoleAssignment[] roleAssignments, DslModeling::PropertyAssignment[] propertyAssignments)
+			: base(partition, roleAssignments, propertyAssignments)
+		{
+		}
+		#endregion
+		#region Parent domain role code
+		
+		/// <summary>
+		/// Parent domain role Id.
+		/// </summary>
+		public static readonly global::System.Guid ParentDomainRoleId = new global::System.Guid(0xa6585a27, 0xd26a, 0x49b0, 0xbb, 0xed, 0xca, 0x13, 0x3c, 0xc1, 0xe2, 0x61);
+		
+		/// <summary>
+		/// DomainRole Parent
+		/// Description for
+		/// Neumont.Tools.ORM.ObjectModel.NameGeneratorRefinesNameGenerator.Parent
+		/// </summary>
+		[DslDesign::DisplayNameResource("Neumont.Tools.ORM.ObjectModel.NameGeneratorRefinesNameGenerator/Parent.DisplayName", typeof(global::Neumont.Tools.ORM.ObjectModel.ORMCoreDomainModel), "Neumont.Tools.ORM.GeneratedCode.CoreDomainModelResx")]
+		[DslDesign::DescriptionResource("Neumont.Tools.ORM.ObjectModel.NameGeneratorRefinesNameGenerator/Parent.Description", typeof(global::Neumont.Tools.ORM.ObjectModel.ORMCoreDomainModel), "Neumont.Tools.ORM.GeneratedCode.CoreDomainModelResx")]
+		[DslModeling::DomainRole(DslModeling::DomainRoleOrder.Source, PropertyName = "RefinedByGeneratorCollection", PropertyDisplayNameKey="Neumont.Tools.ORM.ObjectModel.NameGeneratorRefinesNameGenerator/Parent.PropertyDisplayName", Multiplicity = DslModeling::Multiplicity.ZeroMany)]
+		[DslModeling::DomainObjectId("a6585a27-d26a-49b0-bbed-ca133cc1e261")]
+		public virtual NameGenerator Parent
+		{
+			[global::System.Diagnostics.DebuggerStepThrough]
+			get
+			{
+				return (NameGenerator)DslModeling::DomainRoleInfo.GetRolePlayer(this, ParentDomainRoleId);
+			}
+			[global::System.Diagnostics.DebuggerStepThrough]
+			set
+			{
+				DslModeling::DomainRoleInfo.SetRolePlayer(this, ParentDomainRoleId, value);
+			}
+		}
+				
+		#endregion
+		#region Static methods to access RefinesGenerator of a NameGenerator
+		/// <summary>
+		/// Gets RefinesGenerator.
+		/// </summary>
+		[global::System.Diagnostics.DebuggerStepThrough]
+		[global::System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Design", "CA1011")]
+		public static NameGenerator GetRefinesGenerator(NameGenerator element)
+		{
+			return DslModeling::DomainRoleInfo.GetLinkedElement(element, RefinementDomainRoleId) as NameGenerator;
+		}
+		
+		/// <summary>
+		/// Sets RefinesGenerator.
+		/// </summary>
+		[global::System.Diagnostics.DebuggerStepThrough]
+		[global::System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Design", "CA1011")]
+		public static void SetRefinesGenerator(NameGenerator element, NameGenerator newParent)
+		{
+			DslModeling::DomainRoleInfo.SetLinkedElement(element, RefinementDomainRoleId, newParent);
+		}
+		#endregion
+		#region Refinement domain role code
+		
+		/// <summary>
+		/// Refinement domain role Id.
+		/// </summary>
+		public static readonly global::System.Guid RefinementDomainRoleId = new global::System.Guid(0x05748872, 0xb408, 0x46eb, 0xab, 0x0c, 0x2b, 0xd0, 0x6e, 0x81, 0x98, 0x87);
+		
+		/// <summary>
+		/// DomainRole Refinement
+		/// Description for
+		/// Neumont.Tools.ORM.ObjectModel.NameGeneratorRefinesNameGenerator.Refinement
+		/// </summary>
+		[DslDesign::DisplayNameResource("Neumont.Tools.ORM.ObjectModel.NameGeneratorRefinesNameGenerator/Refinement.DisplayName", typeof(global::Neumont.Tools.ORM.ObjectModel.ORMCoreDomainModel), "Neumont.Tools.ORM.GeneratedCode.CoreDomainModelResx")]
+		[DslDesign::DescriptionResource("Neumont.Tools.ORM.ObjectModel.NameGeneratorRefinesNameGenerator/Refinement.Description", typeof(global::Neumont.Tools.ORM.ObjectModel.ORMCoreDomainModel), "Neumont.Tools.ORM.GeneratedCode.CoreDomainModelResx")]
+		[DslModeling::DomainRole(DslModeling::DomainRoleOrder.Target, PropertyName = "RefinesGenerator", PropertyDisplayNameKey="Neumont.Tools.ORM.ObjectModel.NameGeneratorRefinesNameGenerator/Refinement.PropertyDisplayName", PropagatesDelete = true, Multiplicity = DslModeling::Multiplicity.ZeroOne)]
+		[DslModeling::DomainObjectId("05748872-b408-46eb-ab0c-2bd06e819887")]
+		public virtual NameGenerator Refinement
+		{
+			[global::System.Diagnostics.DebuggerStepThrough]
+			get
+			{
+				return (NameGenerator)DslModeling::DomainRoleInfo.GetRolePlayer(this, RefinementDomainRoleId);
+			}
+			[global::System.Diagnostics.DebuggerStepThrough]
+			set
+			{
+				DslModeling::DomainRoleInfo.SetRolePlayer(this, RefinementDomainRoleId, value);
+			}
+		}
+				
+		#endregion
+		#region Static methods to access RefinedByGeneratorCollection of a NameGenerator
+		/// <summary>
+		/// Gets a list of RefinedByGeneratorCollection.
+		/// </summary>
+		[global::System.Diagnostics.DebuggerStepThrough]
+		[global::System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Design", "CA1011")]
+		public static DslModeling::LinkedElementCollection<NameGenerator> GetRefinedByGeneratorCollection(NameGenerator element)
+		{
+			return new DslModeling::LinkedElementCollection<NameGenerator>(element, ParentDomainRoleId);
+		}
+		#endregion
+		#region Parent link accessor
+		/// <summary>
+		/// Get the list of NameGeneratorRefinesNameGenerator links to a NameGenerator.
+		/// </summary>
+		[global::System.Diagnostics.DebuggerStepThrough]
+		[global::System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Design", "CA1011")]
+		public static global::System.Collections.ObjectModel.ReadOnlyCollection<global::Neumont.Tools.ORM.ObjectModel.NameGeneratorRefinesNameGenerator> GetLinksToRefinedByGeneratorCollection ( global::Neumont.Tools.ORM.ObjectModel.NameGenerator parentInstance )
+		{
+			return DslModeling::DomainRoleInfo.GetElementLinks<global::Neumont.Tools.ORM.ObjectModel.NameGeneratorRefinesNameGenerator>(parentInstance, global::Neumont.Tools.ORM.ObjectModel.NameGeneratorRefinesNameGenerator.ParentDomainRoleId);
+		}
+		#endregion
+		#region Refinement link accessor
+		/// <summary>
+		/// Get the NameGeneratorRefinesNameGenerator link to a NameGenerator.
+		/// </summary>
+		[global::System.Diagnostics.DebuggerStepThrough]
+		[global::System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Design", "CA1011")]
+		public static global::Neumont.Tools.ORM.ObjectModel.NameGeneratorRefinesNameGenerator GetLinkToRefinesGenerator (global::Neumont.Tools.ORM.ObjectModel.NameGenerator refinementInstance)
+		{
+			global::System.Collections.Generic.IList<global::Neumont.Tools.ORM.ObjectModel.NameGeneratorRefinesNameGenerator> links = DslModeling::DomainRoleInfo.GetElementLinks<global::Neumont.Tools.ORM.ObjectModel.NameGeneratorRefinesNameGenerator>(refinementInstance, global::Neumont.Tools.ORM.ObjectModel.NameGeneratorRefinesNameGenerator.RefinementDomainRoleId);
+			global::System.Diagnostics.Debug.Assert(links.Count <= 1, "Multiplicity of Refinement not obeyed.");
+			if ( links.Count == 0 )
+			{
+				return null;
+			}
+			else
+			{
+				return links[0];
+			}
+		}
+		#endregion
+		#region NameGeneratorRefinesNameGenerator instance accessors
+		
+		/// <summary>
+		/// Get any NameGeneratorRefinesNameGenerator links between a given NameGenerator and a NameGenerator.
+		/// </summary>
+		[global::System.Diagnostics.DebuggerStepThrough]
+		[global::System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Design", "CA1011")]
+		public static global::System.Collections.ObjectModel.ReadOnlyCollection<global::Neumont.Tools.ORM.ObjectModel.NameGeneratorRefinesNameGenerator> GetLinks( global::Neumont.Tools.ORM.ObjectModel.NameGenerator source, global::Neumont.Tools.ORM.ObjectModel.NameGenerator target )
+		{
+			global::System.Collections.Generic.List<global::Neumont.Tools.ORM.ObjectModel.NameGeneratorRefinesNameGenerator> outLinks = new global::System.Collections.Generic.List<global::Neumont.Tools.ORM.ObjectModel.NameGeneratorRefinesNameGenerator>();
+			global::System.Collections.Generic.IList<global::Neumont.Tools.ORM.ObjectModel.NameGeneratorRefinesNameGenerator> links = DslModeling::DomainRoleInfo.GetElementLinks<global::Neumont.Tools.ORM.ObjectModel.NameGeneratorRefinesNameGenerator>(source, global::Neumont.Tools.ORM.ObjectModel.NameGeneratorRefinesNameGenerator.ParentDomainRoleId);
+			foreach ( global::Neumont.Tools.ORM.ObjectModel.NameGeneratorRefinesNameGenerator link in links )
+			{
+				if ( target.Equals(link.Refinement) )
+				{
+					outLinks.Add(link);
+				}
+			}
+			return outLinks.AsReadOnly();
+		}
+		/// <summary>
+		/// Get the one NameGeneratorRefinesNameGenerator link between a given NameGeneratorand a NameGenerator.
+		/// </summary>
+		[global::System.Diagnostics.DebuggerStepThrough]
+		[global::System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Design", "CA1011")]
+		public static global::Neumont.Tools.ORM.ObjectModel.NameGeneratorRefinesNameGenerator GetLink( global::Neumont.Tools.ORM.ObjectModel.NameGenerator source, global::Neumont.Tools.ORM.ObjectModel.NameGenerator target )
+		{
+			global::System.Collections.Generic.IList<global::Neumont.Tools.ORM.ObjectModel.NameGeneratorRefinesNameGenerator> links = DslModeling::DomainRoleInfo.GetElementLinks<global::Neumont.Tools.ORM.ObjectModel.NameGeneratorRefinesNameGenerator>(source, global::Neumont.Tools.ORM.ObjectModel.NameGeneratorRefinesNameGenerator.ParentDomainRoleId);
+			foreach ( global::Neumont.Tools.ORM.ObjectModel.NameGeneratorRefinesNameGenerator link in links )
+			{
+				if ( target.Equals(link.Refinement) )
+				{
+					return link;
+				}
+			}
+			return null;
+		}
+		
+		#endregion
+	}
+}
+namespace Neumont.Tools.ORM.ObjectModel
+{
+	/// <summary>
+	/// DomainRelationship ElementHasAlias
+	/// Description for Neumont.Tools.ORM.ObjectModel.ElementHasAlias
+	/// </summary>
+	[DslDesign::DisplayNameResource("Neumont.Tools.ORM.ObjectModel.ElementHasAlias.DisplayName", typeof(global::Neumont.Tools.ORM.ObjectModel.ORMCoreDomainModel), "Neumont.Tools.ORM.GeneratedCode.CoreDomainModelResx")]
+	[DslDesign::DescriptionResource("Neumont.Tools.ORM.ObjectModel.ElementHasAlias.Description", typeof(global::Neumont.Tools.ORM.ObjectModel.ORMCoreDomainModel), "Neumont.Tools.ORM.GeneratedCode.CoreDomainModelResx")]
+	[global::System.CLSCompliant(true)]
+	[DslModeling::DomainRelationship()]
+	[DslModeling::DomainObjectId("94f76133-eacc-40d1-b61e-1ebd32c0f81f")]
+	public abstract partial class ElementHasAlias : DslModeling::ElementLink
+	{
+		#region Constructors, domain class Id
+		
+		/// <summary>
+		/// ElementHasAlias domain class Id.
+		/// </summary>
+		public static readonly new global::System.Guid DomainClassId = new global::System.Guid(0x94f76133, 0xeacc, 0x40d1, 0xb6, 0x1e, 0x1e, 0xbd, 0x32, 0xc0, 0xf8, 0x1f);
+	
+		/// <summary>
+		/// Constructor.
+		/// </summary>
+		/// <param name="partition">The Partition instance containing this ElementLink</param>
+		/// <param name="roleAssignments">A set of role assignments for roleplayer initialization</param>
+		/// <param name="propertyAssignments">A set of attribute assignments for attribute initialization</param>
+		protected ElementHasAlias(DslModeling::Partition partition, DslModeling::RoleAssignment[] roleAssignments, DslModeling::PropertyAssignment[] propertyAssignments)
+			: base(partition, roleAssignments, propertyAssignments)
+		{
+		}
+		#endregion
+		#region Element domain role code
+		
+		/// <summary>
+		/// Element domain role Id.
+		/// </summary>
+		public static readonly global::System.Guid ElementDomainRoleId = new global::System.Guid(0x4ccf4deb, 0xab2f, 0x402b, 0xaa, 0xf5, 0x55, 0xd5, 0x1a, 0xc0, 0xf6, 0xdb);
+		
+		/// <summary>
+		/// DomainRole Element
+		/// Description for Neumont.Tools.ORM.ObjectModel.ElementHasAlias.Element
+		/// </summary>
+		[DslDesign::DisplayNameResource("Neumont.Tools.ORM.ObjectModel.ElementHasAlias/Element.DisplayName", typeof(global::Neumont.Tools.ORM.ObjectModel.ORMCoreDomainModel), "Neumont.Tools.ORM.GeneratedCode.CoreDomainModelResx")]
+		[DslDesign::DescriptionResource("Neumont.Tools.ORM.ObjectModel.ElementHasAlias/Element.Description", typeof(global::Neumont.Tools.ORM.ObjectModel.ORMCoreDomainModel), "Neumont.Tools.ORM.GeneratedCode.CoreDomainModelResx")]
+		[DslModeling::DomainRole(DslModeling::DomainRoleOrder.Source, PropertyName = "AliasCollection", PropertyDisplayNameKey="Neumont.Tools.ORM.ObjectModel.ElementHasAlias/Element.PropertyDisplayName", Multiplicity = DslModeling::Multiplicity.ZeroMany)]
+		[DslModeling::DomainObjectId("4ccf4deb-ab2f-402b-aaf5-55d51ac0f6db")]
+		public abstract global::Microsoft.VisualStudio.Modeling.ModelElement Element
+		{
+			get;
+			set;
+		}
+				
+		#endregion
+		#region Static methods to access Element of a NameAlias
+		/// <summary>
+		/// Gets Element.
+		/// </summary>
+		[global::System.Diagnostics.DebuggerStepThrough]
+		[global::System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Design", "CA1011")]
+		public static global::Microsoft.VisualStudio.Modeling.ModelElement GetElement(NameAlias element)
+		{
+			return DslModeling::DomainRoleInfo.GetLinkedElement(element, AliasDomainRoleId) as global::Microsoft.VisualStudio.Modeling.ModelElement;
+		}
+		
+		/// <summary>
+		/// Sets Element.
+		/// </summary>
+		[global::System.Diagnostics.DebuggerStepThrough]
+		[global::System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Design", "CA1011")]
+		public static void SetElement(NameAlias element, global::Microsoft.VisualStudio.Modeling.ModelElement newElement)
+		{
+			DslModeling::DomainRoleInfo.SetLinkedElement(element, AliasDomainRoleId, newElement);
+		}
+		#endregion
+		#region Alias domain role code
+		
+		/// <summary>
+		/// Alias domain role Id.
+		/// </summary>
+		public static readonly global::System.Guid AliasDomainRoleId = new global::System.Guid(0xdae4d333, 0xa8b3, 0x448f, 0x94, 0xc2, 0x56, 0x28, 0x6f, 0xb6, 0x0a, 0x1f);
+		
+		/// <summary>
+		/// DomainRole Alias
+		/// Description for Neumont.Tools.ORM.ObjectModel.ElementHasAlias.Alias
+		/// </summary>
+		[DslDesign::DisplayNameResource("Neumont.Tools.ORM.ObjectModel.ElementHasAlias/Alias.DisplayName", typeof(global::Neumont.Tools.ORM.ObjectModel.ORMCoreDomainModel), "Neumont.Tools.ORM.GeneratedCode.CoreDomainModelResx")]
+		[DslDesign::DescriptionResource("Neumont.Tools.ORM.ObjectModel.ElementHasAlias/Alias.Description", typeof(global::Neumont.Tools.ORM.ObjectModel.ORMCoreDomainModel), "Neumont.Tools.ORM.GeneratedCode.CoreDomainModelResx")]
+		[DslModeling::DomainRole(DslModeling::DomainRoleOrder.Target, PropertyName = "Element", PropertyDisplayNameKey="Neumont.Tools.ORM.ObjectModel.ElementHasAlias/Alias.PropertyDisplayName", PropagatesDelete = true, Multiplicity = DslModeling::Multiplicity.ZeroOne)]
+		[DslModeling::DomainObjectId("dae4d333-a8b3-448f-94c2-56286fb60a1f")]
+		public abstract NameAlias Alias
+		{
+			get;
+			set;
+		}
+				
+		#endregion
+		#region Static methods to access AliasCollection of a ModelElement
+		/// <summary>
+		/// Gets a list of AliasCollection.
+		/// </summary>
+		[global::System.Diagnostics.DebuggerStepThrough]
+		[global::System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Design", "CA1011")]
+		public static DslModeling::ReadOnlyLinkedElementCollection<NameAlias> GetAliasCollection(global::Microsoft.VisualStudio.Modeling.ModelElement element)
+		{
+			return new DslModeling::ReadOnlyLinkedElementCollection<NameAlias>(element, ElementDomainRoleId);
+		}
+		#endregion
+		#region Element link accessor
+		/// <summary>
+		/// Get the list of ElementHasAlias links to a ModelElement.
+		/// </summary>
+		[global::System.Diagnostics.DebuggerStepThrough]
+		[global::System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Design", "CA1011")]
+		public static global::System.Collections.ObjectModel.ReadOnlyCollection<global::Neumont.Tools.ORM.ObjectModel.ElementHasAlias> GetLinksToAliasCollection ( global::Microsoft.VisualStudio.Modeling.ModelElement elementInstance )
+		{
+			return DslModeling::DomainRoleInfo.GetElementLinks<global::Neumont.Tools.ORM.ObjectModel.ElementHasAlias>(elementInstance, global::Neumont.Tools.ORM.ObjectModel.ElementHasAlias.ElementDomainRoleId);
+		}
+		#endregion
+		#region Alias link accessor
+		/// <summary>
+		/// Get the ElementHasAlias link to a NameAlias.
+		/// </summary>
+		[global::System.Diagnostics.DebuggerStepThrough]
+		[global::System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Design", "CA1011")]
+		public static global::Neumont.Tools.ORM.ObjectModel.ElementHasAlias GetLinkToElement (global::Neumont.Tools.ORM.ObjectModel.NameAlias aliasInstance)
+		{
+			global::System.Collections.Generic.IList<global::Neumont.Tools.ORM.ObjectModel.ElementHasAlias> links = DslModeling::DomainRoleInfo.GetElementLinks<global::Neumont.Tools.ORM.ObjectModel.ElementHasAlias>(aliasInstance, global::Neumont.Tools.ORM.ObjectModel.ElementHasAlias.AliasDomainRoleId);
+			global::System.Diagnostics.Debug.Assert(links.Count <= 1, "Multiplicity of Alias not obeyed.");
+			if ( links.Count == 0 )
+			{
+				return null;
+			}
+			else
+			{
+				return links[0];
+			}
+		}
+		#endregion
+		#region ElementHasAlias instance accessors
+		
+		/// <summary>
+		/// Get any ElementHasAlias links between a given ModelElement and a NameAlias.
+		/// </summary>
+		[global::System.Diagnostics.DebuggerStepThrough]
+		[global::System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Design", "CA1011")]
+		public static global::System.Collections.ObjectModel.ReadOnlyCollection<global::Neumont.Tools.ORM.ObjectModel.ElementHasAlias> GetLinks( global::Microsoft.VisualStudio.Modeling.ModelElement source, global::Neumont.Tools.ORM.ObjectModel.NameAlias target )
+		{
+			global::System.Collections.Generic.List<global::Neumont.Tools.ORM.ObjectModel.ElementHasAlias> outLinks = new global::System.Collections.Generic.List<global::Neumont.Tools.ORM.ObjectModel.ElementHasAlias>();
+			global::System.Collections.Generic.IList<global::Neumont.Tools.ORM.ObjectModel.ElementHasAlias> links = DslModeling::DomainRoleInfo.GetElementLinks<global::Neumont.Tools.ORM.ObjectModel.ElementHasAlias>(source, global::Neumont.Tools.ORM.ObjectModel.ElementHasAlias.ElementDomainRoleId);
+			foreach ( global::Neumont.Tools.ORM.ObjectModel.ElementHasAlias link in links )
+			{
+				if ( target.Equals(link.Alias) )
+				{
+					outLinks.Add(link);
+				}
+			}
+			return outLinks.AsReadOnly();
+		}
+		/// <summary>
+		/// Get the one ElementHasAlias link between a given ModelElementand a NameAlias.
+		/// </summary>
+		[global::System.Diagnostics.DebuggerStepThrough]
+		[global::System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Design", "CA1011")]
+		public static global::Neumont.Tools.ORM.ObjectModel.ElementHasAlias GetLink( global::Microsoft.VisualStudio.Modeling.ModelElement source, global::Neumont.Tools.ORM.ObjectModel.NameAlias target )
+		{
+			global::System.Collections.Generic.IList<global::Neumont.Tools.ORM.ObjectModel.ElementHasAlias> links = DslModeling::DomainRoleInfo.GetElementLinks<global::Neumont.Tools.ORM.ObjectModel.ElementHasAlias>(source, global::Neumont.Tools.ORM.ObjectModel.ElementHasAlias.ElementDomainRoleId);
+			foreach ( global::Neumont.Tools.ORM.ObjectModel.ElementHasAlias link in links )
+			{
+				if ( target.Equals(link.Alias) )
+				{
+					return link;
+				}
+			}
+			return null;
+		}
+		
+		#endregion
+	}
+}
+namespace Neumont.Tools.ORM.ObjectModel
+{
+	/// <summary>
+	/// DomainRelationship ObjectTypeHasAlias
+	/// Description for Neumont.Tools.ORM.ObjectModel.ObjectTypeHasAlias
+	/// </summary>
+	[DslDesign::DisplayNameResource("Neumont.Tools.ORM.ObjectModel.ObjectTypeHasAlias.DisplayName", typeof(global::Neumont.Tools.ORM.ObjectModel.ORMCoreDomainModel), "Neumont.Tools.ORM.GeneratedCode.CoreDomainModelResx")]
+	[DslDesign::DescriptionResource("Neumont.Tools.ORM.ObjectModel.ObjectTypeHasAlias.Description", typeof(global::Neumont.Tools.ORM.ObjectModel.ORMCoreDomainModel), "Neumont.Tools.ORM.GeneratedCode.CoreDomainModelResx")]
+	[global::System.CLSCompliant(true)]
+	[DslModeling::DomainRelationship(IsEmbedding=true)]
+	[DslModeling::DomainObjectId("6a85513c-747f-4a8c-b45a-b5cff88314e5")]
+	public partial class ObjectTypeHasAlias : ElementHasAlias
+	{
+		#region Constructors, domain class Id
+		
+		/// <summary>
+		/// ObjectTypeHasAlias domain class Id.
+		/// </summary>
+		public static readonly new global::System.Guid DomainClassId = new global::System.Guid(0x6a85513c, 0x747f, 0x4a8c, 0xb4, 0x5a, 0xb5, 0xcf, 0xf8, 0x83, 0x14, 0xe5);
+	
+				
+		/// <summary>
+		/// Constructor
+		/// Creates a ObjectTypeHasAlias link in the same Partition as the given ObjectType
+		/// </summary>
+		/// <param name="source">ObjectType to use as the source of the relationship.</param>
+		/// <param name="target">NameAlias to use as the target of the relationship.</param>
+		public ObjectTypeHasAlias(ObjectType source, NameAlias target)
+			: base((source != null ? source.Partition : null), new DslModeling::RoleAssignment[]{new DslModeling::RoleAssignment(ObjectTypeHasAlias.ObjectTypeDomainRoleId, source), new DslModeling::RoleAssignment(ObjectTypeHasAlias.AliasDomainRoleId, target)}, null)
+		{
+		}
+		
+		/// <summary>
+		/// Constructor
+		/// </summary>
+		/// <param name="store">Store where new link is to be created.</param>
+		/// <param name="roleAssignments">List of relationship role assignments.</param>
+		public ObjectTypeHasAlias(DslModeling::Store store, params DslModeling::RoleAssignment[] roleAssignments)
+			: base(store != null ? store.DefaultPartition : null, roleAssignments, null)
+		{
+		}
+		
+		/// <summary>
+		/// Constructor
+		/// </summary>
+		/// <param name="store">Store where new link is to be created.</param>
+		/// <param name="roleAssignments">List of relationship role assignments.</param>
+		/// <param name="propertyAssignments">List of properties assignments to set on the new link.</param>
+		public ObjectTypeHasAlias(DslModeling::Store store, DslModeling::RoleAssignment[] roleAssignments, DslModeling::PropertyAssignment[] propertyAssignments)
+			: base(store != null ? store.DefaultPartition : null, roleAssignments, propertyAssignments)
+		{
+		}
+		
+		/// <summary>
+		/// Constructor
+		/// </summary>
+		/// <param name="partition">Partition where new link is to be created.</param>
+		/// <param name="roleAssignments">List of relationship role assignments.</param>
+		public ObjectTypeHasAlias(DslModeling::Partition partition, params DslModeling::RoleAssignment[] roleAssignments)
+			: base(partition, roleAssignments, null)
+		{
+		}
+		
+		/// <summary>
+		/// Constructor
+		/// </summary>
+		/// <param name="partition">Partition where new link is to be created.</param>
+		/// <param name="roleAssignments">List of relationship role assignments.</param>
+		/// <param name="propertyAssignments">List of properties assignments to set on the new link.</param>
+		public ObjectTypeHasAlias(DslModeling::Partition partition, DslModeling::RoleAssignment[] roleAssignments, DslModeling::PropertyAssignment[] propertyAssignments)
+			: base(partition, roleAssignments, propertyAssignments)
+		{
+		}
+		#endregion
+		#region ObjectType domain role code
+		
+		/// <summary>
+		/// ObjectType domain role Id.
+		/// </summary>
+		public static readonly global::System.Guid ObjectTypeDomainRoleId = new global::System.Guid(0x2c863159, 0x2675, 0x4f32, 0xa3, 0x0d, 0x83, 0xc5, 0x73, 0xa2, 0x07, 0xc7);
+		
+		/// <summary>
+		/// DomainRole ObjectType
+		/// Description for Neumont.Tools.ORM.ObjectModel.ObjectTypeHasAlias.ObjectType
+		/// </summary>
+		[DslDesign::DisplayNameResource("Neumont.Tools.ORM.ObjectModel.ObjectTypeHasAlias/ObjectType.DisplayName", typeof(global::Neumont.Tools.ORM.ObjectModel.ORMCoreDomainModel), "Neumont.Tools.ORM.GeneratedCode.CoreDomainModelResx")]
+		[DslDesign::DescriptionResource("Neumont.Tools.ORM.ObjectModel.ObjectTypeHasAlias/ObjectType.Description", typeof(global::Neumont.Tools.ORM.ObjectModel.ORMCoreDomainModel), "Neumont.Tools.ORM.GeneratedCode.CoreDomainModelResx")]
+		[DslModeling::DomainRole(DslModeling::DomainRoleOrder.Source, PropertyName = "AliasCollection", PropertyDisplayNameKey="Neumont.Tools.ORM.ObjectModel.ObjectTypeHasAlias/ObjectType.PropertyDisplayName", Multiplicity = DslModeling::Multiplicity.ZeroMany)]
+		[DslModeling::DomainObjectId("2c863159-2675-4f32-a30d-83c573a207c7")]
+		public virtual ObjectType ObjectType
+		{
+			[global::System.Diagnostics.DebuggerStepThrough]
+			get
+			{
+				return (ObjectType)DslModeling::DomainRoleInfo.GetRolePlayer(this, ObjectTypeDomainRoleId);
+			}
+			[global::System.Diagnostics.DebuggerStepThrough]
+			set
+			{
+				DslModeling::DomainRoleInfo.SetRolePlayer(this, ObjectTypeDomainRoleId, value);
+			}
+		}
+				
+		#endregion
+		#region Static methods to access Element of a NameAlias
+		/// <summary>
+		/// Gets Element.
+		/// </summary>
+		[global::System.Diagnostics.DebuggerStepThrough]
+		[global::System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Design", "CA1011")]
+		public static new ObjectType GetElement(NameAlias element)
+		{
+			return DslModeling::DomainRoleInfo.GetLinkedElement(element, AliasDomainRoleId) as ObjectType;
+		}
+		
+		/// <summary>
+		/// Sets Element.
+		/// </summary>
+		[global::System.Diagnostics.DebuggerStepThrough]
+		[global::System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Design", "CA1011")]
+		public static void SetElement(NameAlias element, ObjectType newObjectType)
+		{
+			DslModeling::DomainRoleInfo.SetLinkedElement(element, AliasDomainRoleId, newObjectType);
+		}
+		#endregion
+		#region Element domain role override
+		
+		/// <summary>
+		/// Gets the element playing ObjectType domain role.
+		/// Description for Neumont.Tools.ORM.ObjectModel.ElementHasAlias.Element
+		/// </summary>
+		public override global::Microsoft.VisualStudio.Modeling.ModelElement Element
+		{
+			[global::System.Diagnostics.DebuggerStepThrough]
+			get
+			{
+				return this.ObjectType;
+			}
+			[global::System.Diagnostics.DebuggerStepThrough]
+			set
+			{
+				this.ObjectType = (ObjectType)value;
+			}
+		}
+		
+		#endregion
+		#region Alias domain role code
+		
+		/// <summary>
+		/// Alias domain role Id.
+		/// </summary>
+		public static readonly new global::System.Guid AliasDomainRoleId = new global::System.Guid(0x832e3923, 0xbbb7, 0x4a29, 0xa6, 0x0c, 0x66, 0xb0, 0x3e, 0x0a, 0x92, 0xda);
+		
+		/// <summary>
+		/// DomainRole Alias
+		/// Description for Neumont.Tools.ORM.ObjectModel.ObjectTypeHasAlias.Alias
+		/// </summary>
+		[DslDesign::DisplayNameResource("Neumont.Tools.ORM.ObjectModel.ObjectTypeHasAlias/Alias.DisplayName", typeof(global::Neumont.Tools.ORM.ObjectModel.ORMCoreDomainModel), "Neumont.Tools.ORM.GeneratedCode.CoreDomainModelResx")]
+		[DslDesign::DescriptionResource("Neumont.Tools.ORM.ObjectModel.ObjectTypeHasAlias/Alias.Description", typeof(global::Neumont.Tools.ORM.ObjectModel.ORMCoreDomainModel), "Neumont.Tools.ORM.GeneratedCode.CoreDomainModelResx")]
+		[DslModeling::DomainRole(DslModeling::DomainRoleOrder.Target, PropertyName = "Element", PropertyDisplayNameKey="Neumont.Tools.ORM.ObjectModel.ObjectTypeHasAlias/Alias.PropertyDisplayName", PropagatesDelete = true, Multiplicity = DslModeling::Multiplicity.ZeroOne)]
+		[DslModeling::DomainObjectId("832e3923-bbb7-4a29-a60c-66b03e0a92da")]
+		public override NameAlias Alias
+		{
+			[global::System.Diagnostics.DebuggerStepThrough]
+			get
+			{
+				return (NameAlias)DslModeling::DomainRoleInfo.GetRolePlayer(this, AliasDomainRoleId);
+			}
+			[global::System.Diagnostics.DebuggerStepThrough]
+			set
+			{
+				DslModeling::DomainRoleInfo.SetRolePlayer(this, AliasDomainRoleId, value);
+			}
+		}
+				
+		#endregion
+		#region Static methods to access AliasCollection of a ObjectType
+		/// <summary>
+		/// Gets a list of AliasCollection.
+		/// </summary>
+		[global::System.Diagnostics.DebuggerStepThrough]
+		[global::System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Design", "CA1011")]
+		public static DslModeling::LinkedElementCollection<NameAlias> GetAliasCollection(ObjectType element)
+		{
+			return new DslModeling::LinkedElementCollection<NameAlias>(element, ObjectTypeDomainRoleId);
+		}
+		#endregion
+		#region ObjectType link accessor
+		/// <summary>
+		/// Get the list of ObjectTypeHasAlias links to a ObjectType.
+		/// </summary>
+		[global::System.Diagnostics.DebuggerStepThrough]
+		[global::System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Design", "CA1011")]
+		public static global::System.Collections.ObjectModel.ReadOnlyCollection<global::Neumont.Tools.ORM.ObjectModel.ObjectTypeHasAlias> GetLinksToAliasCollection ( global::Neumont.Tools.ORM.ObjectModel.ObjectType objectTypeInstance )
+		{
+			return DslModeling::DomainRoleInfo.GetElementLinks<global::Neumont.Tools.ORM.ObjectModel.ObjectTypeHasAlias>(objectTypeInstance, global::Neumont.Tools.ORM.ObjectModel.ObjectTypeHasAlias.ObjectTypeDomainRoleId);
+		}
+		#endregion
+		#region Alias link accessor
+		/// <summary>
+		/// Get the ObjectTypeHasAlias link to a NameAlias.
+		/// </summary>
+		[global::System.Diagnostics.DebuggerStepThrough]
+		[global::System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Design", "CA1011")]
+		public static new global::Neumont.Tools.ORM.ObjectModel.ObjectTypeHasAlias GetLinkToElement (global::Neumont.Tools.ORM.ObjectModel.NameAlias aliasInstance)
+		{
+			global::System.Collections.Generic.IList<global::Neumont.Tools.ORM.ObjectModel.ObjectTypeHasAlias> links = DslModeling::DomainRoleInfo.GetElementLinks<global::Neumont.Tools.ORM.ObjectModel.ObjectTypeHasAlias>(aliasInstance, global::Neumont.Tools.ORM.ObjectModel.ObjectTypeHasAlias.AliasDomainRoleId);
+			global::System.Diagnostics.Debug.Assert(links.Count <= 1, "Multiplicity of Alias not obeyed.");
+			if ( links.Count == 0 )
+			{
+				return null;
+			}
+			else
+			{
+				return links[0];
+			}
+		}
+		#endregion
+		#region ObjectTypeHasAlias instance accessors
+		
+		/// <summary>
+		/// Get any ObjectTypeHasAlias links between a given ObjectType and a NameAlias.
+		/// </summary>
+		[global::System.Diagnostics.DebuggerStepThrough]
+		[global::System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Design", "CA1011")]
+		public static global::System.Collections.ObjectModel.ReadOnlyCollection<global::Neumont.Tools.ORM.ObjectModel.ObjectTypeHasAlias> GetLinks( global::Neumont.Tools.ORM.ObjectModel.ObjectType source, global::Neumont.Tools.ORM.ObjectModel.NameAlias target )
+		{
+			global::System.Collections.Generic.List<global::Neumont.Tools.ORM.ObjectModel.ObjectTypeHasAlias> outLinks = new global::System.Collections.Generic.List<global::Neumont.Tools.ORM.ObjectModel.ObjectTypeHasAlias>();
+			global::System.Collections.Generic.IList<global::Neumont.Tools.ORM.ObjectModel.ObjectTypeHasAlias> links = DslModeling::DomainRoleInfo.GetElementLinks<global::Neumont.Tools.ORM.ObjectModel.ObjectTypeHasAlias>(source, global::Neumont.Tools.ORM.ObjectModel.ObjectTypeHasAlias.ObjectTypeDomainRoleId);
+			foreach ( global::Neumont.Tools.ORM.ObjectModel.ObjectTypeHasAlias link in links )
+			{
+				if ( target.Equals(link.Alias) )
+				{
+					outLinks.Add(link);
+				}
+			}
+			return outLinks.AsReadOnly();
+		}
+		/// <summary>
+		/// Get the one ObjectTypeHasAlias link between a given ObjectTypeand a NameAlias.
+		/// </summary>
+		[global::System.Diagnostics.DebuggerStepThrough]
+		[global::System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Design", "CA1011")]
+		public static global::Neumont.Tools.ORM.ObjectModel.ObjectTypeHasAlias GetLink( global::Neumont.Tools.ORM.ObjectModel.ObjectType source, global::Neumont.Tools.ORM.ObjectModel.NameAlias target )
+		{
+			global::System.Collections.Generic.IList<global::Neumont.Tools.ORM.ObjectModel.ObjectTypeHasAlias> links = DslModeling::DomainRoleInfo.GetElementLinks<global::Neumont.Tools.ORM.ObjectModel.ObjectTypeHasAlias>(source, global::Neumont.Tools.ORM.ObjectModel.ObjectTypeHasAlias.ObjectTypeDomainRoleId);
+			foreach ( global::Neumont.Tools.ORM.ObjectModel.ObjectTypeHasAlias link in links )
+			{
+				if ( target.Equals(link.Alias) )
+				{
+					return link;
+				}
+			}
+			return null;
+		}
+		
+		#endregion
+	}
+}
+namespace Neumont.Tools.ORM.ObjectModel
+{
+	/// <summary>
+	/// DomainRelationship NameGeneratorContainsOmittedWord
+	/// Description for Neumont.Tools.ORM.ObjectModel.NameGeneratorContainsOmittedWord
+	/// </summary>
+	[DslDesign::DisplayNameResource("Neumont.Tools.ORM.ObjectModel.NameGeneratorContainsOmittedWord.DisplayName", typeof(global::Neumont.Tools.ORM.ObjectModel.ORMCoreDomainModel), "Neumont.Tools.ORM.GeneratedCode.CoreDomainModelResx")]
+	[DslDesign::DescriptionResource("Neumont.Tools.ORM.ObjectModel.NameGeneratorContainsOmittedWord.Description", typeof(global::Neumont.Tools.ORM.ObjectModel.ORMCoreDomainModel), "Neumont.Tools.ORM.GeneratedCode.CoreDomainModelResx")]
+	[global::System.CLSCompliant(true)]
+	[DslModeling::DomainRelationship(IsEmbedding=true)]
+	[DslModeling::DomainObjectId("3de59564-603c-48ed-8ea4-d51ae8e761f1")]
+	public partial class NameGeneratorContainsOmittedWord : DslModeling::ElementLink
+	{
+		#region Constructors, domain class Id
+		
+		/// <summary>
+		/// NameGeneratorContainsOmittedWord domain class Id.
+		/// </summary>
+		public static readonly new global::System.Guid DomainClassId = new global::System.Guid(0x3de59564, 0x603c, 0x48ed, 0x8e, 0xa4, 0xd5, 0x1a, 0xe8, 0xe7, 0x61, 0xf1);
+	
+				
+		/// <summary>
+		/// Constructor
+		/// Creates a NameGeneratorContainsOmittedWord link in the same Partition as the given NameGenerator
+		/// </summary>
+		/// <param name="source">NameGenerator to use as the source of the relationship.</param>
+		/// <param name="target">OmittedWord to use as the target of the relationship.</param>
+		public NameGeneratorContainsOmittedWord(NameGenerator source, OmittedWord target)
+			: base((source != null ? source.Partition : null), new DslModeling::RoleAssignment[]{new DslModeling::RoleAssignment(NameGeneratorContainsOmittedWord.NameGeneratorDomainRoleId, source), new DslModeling::RoleAssignment(NameGeneratorContainsOmittedWord.OmittedWordDomainRoleId, target)}, null)
+		{
+		}
+		
+		/// <summary>
+		/// Constructor
+		/// </summary>
+		/// <param name="store">Store where new link is to be created.</param>
+		/// <param name="roleAssignments">List of relationship role assignments.</param>
+		public NameGeneratorContainsOmittedWord(DslModeling::Store store, params DslModeling::RoleAssignment[] roleAssignments)
+			: base(store != null ? store.DefaultPartition : null, roleAssignments, null)
+		{
+		}
+		
+		/// <summary>
+		/// Constructor
+		/// </summary>
+		/// <param name="store">Store where new link is to be created.</param>
+		/// <param name="roleAssignments">List of relationship role assignments.</param>
+		/// <param name="propertyAssignments">List of properties assignments to set on the new link.</param>
+		public NameGeneratorContainsOmittedWord(DslModeling::Store store, DslModeling::RoleAssignment[] roleAssignments, DslModeling::PropertyAssignment[] propertyAssignments)
+			: base(store != null ? store.DefaultPartition : null, roleAssignments, propertyAssignments)
+		{
+		}
+		
+		/// <summary>
+		/// Constructor
+		/// </summary>
+		/// <param name="partition">Partition where new link is to be created.</param>
+		/// <param name="roleAssignments">List of relationship role assignments.</param>
+		public NameGeneratorContainsOmittedWord(DslModeling::Partition partition, params DslModeling::RoleAssignment[] roleAssignments)
+			: base(partition, roleAssignments, null)
+		{
+		}
+		
+		/// <summary>
+		/// Constructor
+		/// </summary>
+		/// <param name="partition">Partition where new link is to be created.</param>
+		/// <param name="roleAssignments">List of relationship role assignments.</param>
+		/// <param name="propertyAssignments">List of properties assignments to set on the new link.</param>
+		public NameGeneratorContainsOmittedWord(DslModeling::Partition partition, DslModeling::RoleAssignment[] roleAssignments, DslModeling::PropertyAssignment[] propertyAssignments)
+			: base(partition, roleAssignments, propertyAssignments)
+		{
+		}
+		#endregion
+		#region NameGenerator domain role code
+		
+		/// <summary>
+		/// NameGenerator domain role Id.
+		/// </summary>
+		public static readonly global::System.Guid NameGeneratorDomainRoleId = new global::System.Guid(0x965ff527, 0xa2d6, 0x4468, 0x94, 0xde, 0x46, 0x44, 0x89, 0xe3, 0x32, 0xe2);
+		
+		/// <summary>
+		/// DomainRole NameGenerator
+		/// Description for
+		/// Neumont.Tools.ORM.ObjectModel.NameGeneratorContainsOmittedWord.NameGenerator
+		/// </summary>
+		[DslDesign::DisplayNameResource("Neumont.Tools.ORM.ObjectModel.NameGeneratorContainsOmittedWord/NameGenerator.DisplayName", typeof(global::Neumont.Tools.ORM.ObjectModel.ORMCoreDomainModel), "Neumont.Tools.ORM.GeneratedCode.CoreDomainModelResx")]
+		[DslDesign::DescriptionResource("Neumont.Tools.ORM.ObjectModel.NameGeneratorContainsOmittedWord/NameGenerator.Description", typeof(global::Neumont.Tools.ORM.ObjectModel.ORMCoreDomainModel), "Neumont.Tools.ORM.GeneratedCode.CoreDomainModelResx")]
+		[DslModeling::DomainRole(DslModeling::DomainRoleOrder.Source, PropertyName = "OmittedWordCollection", PropertyDisplayNameKey="Neumont.Tools.ORM.ObjectModel.NameGeneratorContainsOmittedWord/NameGenerator.PropertyDisplayName", Multiplicity = DslModeling::Multiplicity.ZeroMany)]
+		[DslModeling::DomainObjectId("965ff527-a2d6-4468-94de-464489e332e2")]
+		public virtual NameGenerator NameGenerator
+		{
+			[global::System.Diagnostics.DebuggerStepThrough]
+			get
+			{
+				return (NameGenerator)DslModeling::DomainRoleInfo.GetRolePlayer(this, NameGeneratorDomainRoleId);
+			}
+			[global::System.Diagnostics.DebuggerStepThrough]
+			set
+			{
+				DslModeling::DomainRoleInfo.SetRolePlayer(this, NameGeneratorDomainRoleId, value);
+			}
+		}
+				
+		#endregion
+		#region Static methods to access NameGenerator of a OmittedWord
+		/// <summary>
+		/// Gets NameGenerator.
+		/// </summary>
+		[global::System.Diagnostics.DebuggerStepThrough]
+		[global::System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Design", "CA1011")]
+		public static NameGenerator GetNameGenerator(OmittedWord element)
+		{
+			return DslModeling::DomainRoleInfo.GetLinkedElement(element, OmittedWordDomainRoleId) as NameGenerator;
+		}
+		
+		/// <summary>
+		/// Sets NameGenerator.
+		/// </summary>
+		[global::System.Diagnostics.DebuggerStepThrough]
+		[global::System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Design", "CA1011")]
+		public static void SetNameGenerator(OmittedWord element, NameGenerator newNameGenerator)
+		{
+			DslModeling::DomainRoleInfo.SetLinkedElement(element, OmittedWordDomainRoleId, newNameGenerator);
+		}
+		#endregion
+		#region OmittedWord domain role code
+		
+		/// <summary>
+		/// OmittedWord domain role Id.
+		/// </summary>
+		public static readonly global::System.Guid OmittedWordDomainRoleId = new global::System.Guid(0x6d4f2b86, 0x2c27, 0x4f82, 0x84, 0xce, 0x8a, 0xa2, 0x3d, 0xcc, 0x0e, 0xf8);
+		
+		/// <summary>
+		/// DomainRole OmittedWord
+		/// Description for
+		/// Neumont.Tools.ORM.ObjectModel.NameGeneratorContainsOmittedWord.OmittedWord
+		/// </summary>
+		[DslDesign::DisplayNameResource("Neumont.Tools.ORM.ObjectModel.NameGeneratorContainsOmittedWord/OmittedWord.DisplayName", typeof(global::Neumont.Tools.ORM.ObjectModel.ORMCoreDomainModel), "Neumont.Tools.ORM.GeneratedCode.CoreDomainModelResx")]
+		[DslDesign::DescriptionResource("Neumont.Tools.ORM.ObjectModel.NameGeneratorContainsOmittedWord/OmittedWord.Description", typeof(global::Neumont.Tools.ORM.ObjectModel.ORMCoreDomainModel), "Neumont.Tools.ORM.GeneratedCode.CoreDomainModelResx")]
+		[DslModeling::DomainRole(DslModeling::DomainRoleOrder.Target, PropertyName = "NameGenerator", PropertyDisplayNameKey="Neumont.Tools.ORM.ObjectModel.NameGeneratorContainsOmittedWord/OmittedWord.PropertyDisplayName", PropagatesDelete = true, Multiplicity = DslModeling::Multiplicity.ZeroOne)]
+		[DslModeling::DomainObjectId("6d4f2b86-2c27-4f82-84ce-8aa23dcc0ef8")]
+		public virtual OmittedWord OmittedWord
+		{
+			[global::System.Diagnostics.DebuggerStepThrough]
+			get
+			{
+				return (OmittedWord)DslModeling::DomainRoleInfo.GetRolePlayer(this, OmittedWordDomainRoleId);
+			}
+			[global::System.Diagnostics.DebuggerStepThrough]
+			set
+			{
+				DslModeling::DomainRoleInfo.SetRolePlayer(this, OmittedWordDomainRoleId, value);
+			}
+		}
+				
+		#endregion
+		#region Static methods to access OmittedWordCollection of a NameGenerator
+		/// <summary>
+		/// Gets a list of OmittedWordCollection.
+		/// </summary>
+		[global::System.Diagnostics.DebuggerStepThrough]
+		[global::System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Design", "CA1011")]
+		public static DslModeling::LinkedElementCollection<OmittedWord> GetOmittedWordCollection(NameGenerator element)
+		{
+			return new DslModeling::LinkedElementCollection<OmittedWord>(element, NameGeneratorDomainRoleId);
+		}
+		#endregion
+		#region NameGenerator link accessor
+		/// <summary>
+		/// Get the list of NameGeneratorContainsOmittedWord links to a NameGenerator.
+		/// </summary>
+		[global::System.Diagnostics.DebuggerStepThrough]
+		[global::System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Design", "CA1011")]
+		public static global::System.Collections.ObjectModel.ReadOnlyCollection<global::Neumont.Tools.ORM.ObjectModel.NameGeneratorContainsOmittedWord> GetLinksToOmittedWordCollection ( global::Neumont.Tools.ORM.ObjectModel.NameGenerator nameGeneratorInstance )
+		{
+			return DslModeling::DomainRoleInfo.GetElementLinks<global::Neumont.Tools.ORM.ObjectModel.NameGeneratorContainsOmittedWord>(nameGeneratorInstance, global::Neumont.Tools.ORM.ObjectModel.NameGeneratorContainsOmittedWord.NameGeneratorDomainRoleId);
+		}
+		#endregion
+		#region OmittedWord link accessor
+		/// <summary>
+		/// Get the NameGeneratorContainsOmittedWord link to a OmittedWord.
+		/// </summary>
+		[global::System.Diagnostics.DebuggerStepThrough]
+		[global::System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Design", "CA1011")]
+		public static global::Neumont.Tools.ORM.ObjectModel.NameGeneratorContainsOmittedWord GetLinkToNameGenerator (global::Neumont.Tools.ORM.ObjectModel.OmittedWord omittedWordInstance)
+		{
+			global::System.Collections.Generic.IList<global::Neumont.Tools.ORM.ObjectModel.NameGeneratorContainsOmittedWord> links = DslModeling::DomainRoleInfo.GetElementLinks<global::Neumont.Tools.ORM.ObjectModel.NameGeneratorContainsOmittedWord>(omittedWordInstance, global::Neumont.Tools.ORM.ObjectModel.NameGeneratorContainsOmittedWord.OmittedWordDomainRoleId);
+			global::System.Diagnostics.Debug.Assert(links.Count <= 1, "Multiplicity of OmittedWord not obeyed.");
+			if ( links.Count == 0 )
+			{
+				return null;
+			}
+			else
+			{
+				return links[0];
+			}
+		}
+		#endregion
+		#region NameGeneratorContainsOmittedWord instance accessors
+		
+		/// <summary>
+		/// Get any NameGeneratorContainsOmittedWord links between a given NameGenerator and a OmittedWord.
+		/// </summary>
+		[global::System.Diagnostics.DebuggerStepThrough]
+		[global::System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Design", "CA1011")]
+		public static global::System.Collections.ObjectModel.ReadOnlyCollection<global::Neumont.Tools.ORM.ObjectModel.NameGeneratorContainsOmittedWord> GetLinks( global::Neumont.Tools.ORM.ObjectModel.NameGenerator source, global::Neumont.Tools.ORM.ObjectModel.OmittedWord target )
+		{
+			global::System.Collections.Generic.List<global::Neumont.Tools.ORM.ObjectModel.NameGeneratorContainsOmittedWord> outLinks = new global::System.Collections.Generic.List<global::Neumont.Tools.ORM.ObjectModel.NameGeneratorContainsOmittedWord>();
+			global::System.Collections.Generic.IList<global::Neumont.Tools.ORM.ObjectModel.NameGeneratorContainsOmittedWord> links = DslModeling::DomainRoleInfo.GetElementLinks<global::Neumont.Tools.ORM.ObjectModel.NameGeneratorContainsOmittedWord>(source, global::Neumont.Tools.ORM.ObjectModel.NameGeneratorContainsOmittedWord.NameGeneratorDomainRoleId);
+			foreach ( global::Neumont.Tools.ORM.ObjectModel.NameGeneratorContainsOmittedWord link in links )
+			{
+				if ( target.Equals(link.OmittedWord) )
+				{
+					outLinks.Add(link);
+				}
+			}
+			return outLinks.AsReadOnly();
+		}
+		/// <summary>
+		/// Get the one NameGeneratorContainsOmittedWord link between a given NameGeneratorand a OmittedWord.
+		/// </summary>
+		[global::System.Diagnostics.DebuggerStepThrough]
+		[global::System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Design", "CA1011")]
+		public static global::Neumont.Tools.ORM.ObjectModel.NameGeneratorContainsOmittedWord GetLink( global::Neumont.Tools.ORM.ObjectModel.NameGenerator source, global::Neumont.Tools.ORM.ObjectModel.OmittedWord target )
+		{
+			global::System.Collections.Generic.IList<global::Neumont.Tools.ORM.ObjectModel.NameGeneratorContainsOmittedWord> links = DslModeling::DomainRoleInfo.GetElementLinks<global::Neumont.Tools.ORM.ObjectModel.NameGeneratorContainsOmittedWord>(source, global::Neumont.Tools.ORM.ObjectModel.NameGeneratorContainsOmittedWord.NameGeneratorDomainRoleId);
+			foreach ( global::Neumont.Tools.ORM.ObjectModel.NameGeneratorContainsOmittedWord link in links )
+			{
+				if ( target.Equals(link.OmittedWord) )
+				{
+					return link;
+				}
+			}
+			return null;
+		}
+		
+		#endregion
+	}
+}
+namespace Neumont.Tools.ORM.ObjectModel
+{
+	/// <summary>
 	/// DomainRelationship ExternalRoleConstraint
 	/// Description for Neumont.Tools.ORM.ObjectModel.ExternalRoleConstraint
 	/// </summary>

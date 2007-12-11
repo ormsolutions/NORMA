@@ -96,6 +96,49 @@
 				</DomainProperty>
 			</Properties>
 		</DomainClass>
+
+		<DomainClass Name="RelationalNameGenerator" Namespace="Neumont.Tools.ORMAbstractionToConceptualDatabaseBridge" HasCustomConstructor="true" Id="A2D24E49-1B2F-42C0-B1CE-1F7F3B193E26" DisplayName="Relational Names" Description="">
+			<Attributes>
+				<ClrAttribute Name="Neumont.Tools.ORM.ObjectModel.NameConsumerIdentifier">
+					<Parameters>
+						<AttributeParameter Value="&quot;Relational&quot;"/>
+					</Parameters>
+				</ClrAttribute>
+				<ClrAttribute Name="Neumont.Tools.ORM.ObjectModel.NameUsage">
+					<Parameters>
+						<AttributeParameter Value="typeof(ColumnNameUsage)"/>
+					</Parameters>
+				</ClrAttribute>
+				<ClrAttribute Name="Neumont.Tools.ORM.ObjectModel.NameUsage">
+					<Parameters>
+						<AttributeParameter Value="typeof(TableNameUsage)"/>
+					</Parameters>
+				</ClrAttribute>
+			</Attributes>
+			<BaseClass>
+				<DomainClassMoniker Name="/Neumont.Tools.ORM.ObjectModel/NameGenerator"/>
+			</BaseClass>
+		</DomainClass>
+
+		<DomainClass Name="ColumnNameUsage" Namespace="Neumont.Tools.ORMAbstractionToConceptualDatabaseBridge" InheritanceModifier="Abstract" Id="61362E35-E677-4A3E-B5CC-A05B7C6EA6E9" DisplayName="Column Specific" Description="">
+			<Attributes>
+				<ClrAttribute Name="Neumont.Tools.ORM.ObjectModel.NameUsageIdentifier">
+					<Parameters>
+						<AttributeParameter Value="&quot;ColumnNameUsage&quot;"/>
+					</Parameters>
+				</ClrAttribute>
+			</Attributes>
+			<BaseClass>
+				<DomainClassMoniker Name="/Neumont.Tools.ORM.ObjectModel/NameUsage"/>
+			</BaseClass>
+		</DomainClass>
+
+		<DomainClass Name="TableNameUsage" Namespace="Neumont.Tools.ORMAbstractionToConceptualDatabaseBridge" InheritanceModifier="Abstract" Id="E8CE0734-1FB3-4D0B-9DA0-56FDDC502AC0" DisplayName="Table Specific" Description="">
+			<BaseClass>
+				<DomainClassMoniker Name="/Neumont.Tools.ORM.ObjectModel/NameUsage"/>
+			</BaseClass>
+		</DomainClass>
+
 	</Classes>
 	
 	<Relationships>

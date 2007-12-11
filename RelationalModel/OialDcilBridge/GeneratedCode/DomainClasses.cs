@@ -883,3 +883,106 @@ namespace Neumont.Tools.ORMAbstractionToConceptualDatabaseBridge
 		#endregion
 	}
 }
+namespace Neumont.Tools.ORMAbstractionToConceptualDatabaseBridge
+{
+	/// <summary>
+	/// DomainClass RelationalNameGenerator
+	/// </summary>
+	[Neumont.Tools.ORM.ObjectModel.NameConsumerIdentifier("Relational")]
+	[Neumont.Tools.ORM.ObjectModel.NameUsage(typeof(ColumnNameUsage))]
+	[Neumont.Tools.ORM.ObjectModel.NameUsage(typeof(TableNameUsage))]
+	[DslDesign::DisplayNameResource("Neumont.Tools.ORMAbstractionToConceptualDatabaseBridge.RelationalNameGenerator.DisplayName", typeof(global::Neumont.Tools.ORMAbstractionToConceptualDatabaseBridge.ORMAbstractionToConceptualDatabaseBridgeDomainModel), "Neumont.Tools.ORMAbstractionToConceptualDatabaseBridge.GeneratedCode.DomainModelResx")]
+	[DslDesign::DescriptionResource("Neumont.Tools.ORMAbstractionToConceptualDatabaseBridge.RelationalNameGenerator.Description", typeof(global::Neumont.Tools.ORMAbstractionToConceptualDatabaseBridge.ORMAbstractionToConceptualDatabaseBridgeDomainModel), "Neumont.Tools.ORMAbstractionToConceptualDatabaseBridge.GeneratedCode.DomainModelResx")]
+	[global::System.CLSCompliant(true)]
+	[DslModeling::DomainObjectId("a2d24e49-1b2f-42c0-b1ce-1f7f3b193e26")]
+	public partial class RelationalNameGenerator : global::Neumont.Tools.ORM.ObjectModel.NameGenerator
+	{
+		#region Constructors, domain class Id
+	
+		/// <summary>
+		/// RelationalNameGenerator domain class Id.
+		/// </summary>
+		public static readonly new global::System.Guid DomainClassId = new global::System.Guid(0xa2d24e49, 0x1b2f, 0x42c0, 0xb1, 0xce, 0x1f, 0x7f, 0x3b, 0x19, 0x3e, 0x26);
+		// Constructors were not generated for this class because it had HasCustomConstructor
+		// set to true. Please provide the constructors below in a partial class.
+		///// <summary>
+		///// Constructor
+		///// </summary>
+		///// <param name="store">Store where new element is to be created.</param>
+		///// <param name="propertyAssignments">List of domain property id/value pairs to set once the element is created.</param>
+		//public RelationalNameGenerator(DslModeling::Store store, params DslModeling::PropertyAssignment[] propertyAssignments)
+		//	: this(store != null ? store.DefaultPartition : null, propertyAssignments)
+		//{
+		//}
+		//
+		///// <summary>
+		///// Constructor
+		///// </summary>
+		///// <param name="partition">Partition where new element is to be created.</param>
+		///// <param name="propertyAssignments">List of domain property id/value pairs to set once the element is created.</param>
+		//public RelationalNameGenerator(DslModeling::Partition partition, params DslModeling::PropertyAssignment[] propertyAssignments)
+		//	: base(partition, propertyAssignments)
+		//{
+		//}
+		#endregion
+	}
+}
+namespace Neumont.Tools.ORMAbstractionToConceptualDatabaseBridge
+{
+	/// <summary>
+	/// DomainClass ColumnNameUsage
+	/// </summary>
+	[Neumont.Tools.ORM.ObjectModel.NameUsageIdentifier("ColumnNameUsage")]
+	[DslDesign::DisplayNameResource("Neumont.Tools.ORMAbstractionToConceptualDatabaseBridge.ColumnNameUsage.DisplayName", typeof(global::Neumont.Tools.ORMAbstractionToConceptualDatabaseBridge.ORMAbstractionToConceptualDatabaseBridgeDomainModel), "Neumont.Tools.ORMAbstractionToConceptualDatabaseBridge.GeneratedCode.DomainModelResx")]
+	[DslDesign::DescriptionResource("Neumont.Tools.ORMAbstractionToConceptualDatabaseBridge.ColumnNameUsage.Description", typeof(global::Neumont.Tools.ORMAbstractionToConceptualDatabaseBridge.ORMAbstractionToConceptualDatabaseBridgeDomainModel), "Neumont.Tools.ORMAbstractionToConceptualDatabaseBridge.GeneratedCode.DomainModelResx")]
+	[global::System.CLSCompliant(true)]
+	[DslModeling::DomainObjectId("61362e35-e677-4a3e-b5cc-a05b7c6ea6e9")]
+	public abstract partial class ColumnNameUsage : global::Neumont.Tools.ORM.ObjectModel.NameUsage
+	{
+		#region Constructors, domain class Id
+	
+		/// <summary>
+		/// ColumnNameUsage domain class Id.
+		/// </summary>
+		public static readonly new global::System.Guid DomainClassId = new global::System.Guid(0x61362e35, 0xe677, 0x4a3e, 0xb5, 0xcc, 0xa0, 0x5b, 0x7c, 0x6e, 0xa6, 0xe9);
+		/// <summary>
+		/// Constructor.
+		/// </summary>
+		/// <param name="partition">Partition where new element is to be created.</param>
+		/// <param name="propertyAssignments">List of domain property id/value pairs to set once the element is created.</param>
+		protected ColumnNameUsage(DslModeling::Partition partition, DslModeling::PropertyAssignment[] propertyAssignments)
+			: base(partition, propertyAssignments)
+		{
+		}
+		#endregion
+	}
+}
+namespace Neumont.Tools.ORMAbstractionToConceptualDatabaseBridge
+{
+	/// <summary>
+	/// DomainClass TableNameUsage
+	/// </summary>
+	[DslDesign::DisplayNameResource("Neumont.Tools.ORMAbstractionToConceptualDatabaseBridge.TableNameUsage.DisplayName", typeof(global::Neumont.Tools.ORMAbstractionToConceptualDatabaseBridge.ORMAbstractionToConceptualDatabaseBridgeDomainModel), "Neumont.Tools.ORMAbstractionToConceptualDatabaseBridge.GeneratedCode.DomainModelResx")]
+	[DslDesign::DescriptionResource("Neumont.Tools.ORMAbstractionToConceptualDatabaseBridge.TableNameUsage.Description", typeof(global::Neumont.Tools.ORMAbstractionToConceptualDatabaseBridge.ORMAbstractionToConceptualDatabaseBridgeDomainModel), "Neumont.Tools.ORMAbstractionToConceptualDatabaseBridge.GeneratedCode.DomainModelResx")]
+	[global::System.CLSCompliant(true)]
+	[DslModeling::DomainObjectId("e8ce0734-1fb3-4d0b-9da0-56fddc502ac0")]
+	public abstract partial class TableNameUsage : global::Neumont.Tools.ORM.ObjectModel.NameUsage
+	{
+		#region Constructors, domain class Id
+	
+		/// <summary>
+		/// TableNameUsage domain class Id.
+		/// </summary>
+		public static readonly new global::System.Guid DomainClassId = new global::System.Guid(0xe8ce0734, 0x1fb3, 0x4d0b, 0x9d, 0xa0, 0x56, 0xfd, 0xdc, 0x50, 0x2a, 0xc0);
+		/// <summary>
+		/// Constructor.
+		/// </summary>
+		/// <param name="partition">Partition where new element is to be created.</param>
+		/// <param name="propertyAssignments">List of domain property id/value pairs to set once the element is created.</param>
+		protected TableNameUsage(DslModeling::Partition partition, DslModeling::PropertyAssignment[] propertyAssignments)
+			: base(partition, propertyAssignments)
+		{
+		}
+		#endregion
+	}
+}

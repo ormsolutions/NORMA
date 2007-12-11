@@ -297,6 +297,22 @@ namespace Neumont.Tools.ORMAbstractionToConceptualDatabaseBridge
 				}
 			}
 			/// <summary>
+			/// ChangeRule: typeof(Neumont.Tools.ORM.ObjectModel.NameGenerator)
+			/// Regenerate names when settings change
+			/// </summary>
+			private static void NameGeneratorSettingsChangedRule(ElementPropertyChangedEventArgs e)
+			{
+				ORMCore.NameGenerator generator = (ORMCore.NameGenerator)e.ModelElement;
+				Store store = generator.Store;
+				if (store.DomainDataDirectory.GetDomainClass(RelationalNameGenerator.DomainClassId).IsDerivedFrom(generator.GetDomainClass()))
+				{
+					foreach (Schema schema in store.ElementDirectory.FindElements<Schema>(true))
+					{
+						ValidateSchemaNamesChanged(schema);
+					}
+				}
+			}
+			/// <summary>
 			/// ChangeRule: typeof(Neumont.Tools.ORM.ObjectModel.Role)
 			/// </summary>
 			private static void RoleNameChangedRule(ElementPropertyChangedEventArgs e)

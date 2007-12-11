@@ -125,6 +125,102 @@
     <value>ORM Core Domain Model</value>
     <comment>DisplayName for DslLibrary &apos;ORMCore&apos;</comment>
   </data>
+  <data name="Neumont.Tools.ORM.ObjectModel.NameConsumer.Description" xml:space="preserve">
+    <value></value>
+    <comment>Description for DomainClass &apos;NameConsumer&apos;</comment>
+  </data>
+  <data name="Neumont.Tools.ORM.ObjectModel.NameConsumer.DisplayName" xml:space="preserve">
+    <value>NameConsumer</value>
+    <comment>DisplayName for DomainClass &apos;NameConsumer&apos;</comment>
+  </data>
+  <data name="Neumont.Tools.ORM.ObjectModel.OmittedWord.Description" xml:space="preserve">
+    <value></value>
+    <comment>Description for DomainClass &apos;OmittedWord&apos;</comment>
+  </data>
+  <data name="Neumont.Tools.ORM.ObjectModel.OmittedWord.DisplayName" xml:space="preserve">
+    <value>OmittedWord</value>
+    <comment>DisplayName for DomainClass &apos;OmittedWord&apos;</comment>
+  </data>
+  <data name="Neumont.Tools.ORM.ObjectModel.OmittedWord/Word.Description" xml:space="preserve">
+    <value></value>
+    <comment>Description for DomainProperty &apos;Word&apos; on DomainClass &apos;OmittedWord&apos;</comment>
+  </data>
+  <data name="Neumont.Tools.ORM.ObjectModel.OmittedWord/Word.DisplayName" xml:space="preserve">
+    <value>Word</value>
+    <comment>DisplayName for DomainProperty &apos;Word&apos; on DomainClass &apos;OmittedWord&apos;</comment>
+  </data>
+  <data name="Neumont.Tools.ORM.ObjectModel.NameGenerator.Description" xml:space="preserve">
+    <value></value>
+    <comment>Description for DomainClass &apos;NameGenerator&apos;</comment>
+  </data>
+  <data name="Neumont.Tools.ORM.ObjectModel.NameGenerator.DisplayName" xml:space="preserve">
+    <value>Name Generation Defaults</value>
+    <comment>DisplayName for DomainClass &apos;NameGenerator&apos;</comment>
+  </data>
+  <data name="Neumont.Tools.ORM.ObjectModel.NameGenerator/NameUsage.Description" xml:space="preserve">
+    <value></value>
+    <comment>Description for DomainProperty &apos;NameUsage&apos; on DomainClass &apos;NameGenerator&apos;</comment>
+  </data>
+  <data name="Neumont.Tools.ORM.ObjectModel.NameGenerator/NameUsage.DisplayName" xml:space="preserve">
+    <value>NameUsage</value>
+    <comment>DisplayName for DomainProperty &apos;NameUsage&apos; on DomainClass &apos;NameGenerator&apos;</comment>
+  </data>
+  <data name="Neumont.Tools.ORM.ObjectModel.NameGenerator/CasingOption.Description" xml:space="preserve">
+    <value></value>
+    <comment>Description for DomainProperty &apos;CasingOption&apos; on DomainClass &apos;NameGenerator&apos;</comment>
+  </data>
+  <data name="Neumont.Tools.ORM.ObjectModel.NameGenerator/CasingOption.DisplayName" xml:space="preserve">
+    <value>CasingOption</value>
+    <comment>DisplayName for DomainProperty &apos;CasingOption&apos; on DomainClass &apos;NameGenerator&apos;</comment>
+  </data>
+  <data name="Neumont.Tools.ORM.ObjectModel.NameGenerator/SpacingFormat.Description" xml:space="preserve">
+    <value></value>
+    <comment>Description for DomainProperty &apos;SpacingFormat&apos; on DomainClass &apos;NameGenerator&apos;</comment>
+  </data>
+  <data name="Neumont.Tools.ORM.ObjectModel.NameGenerator/SpacingFormat.DisplayName" xml:space="preserve">
+    <value>SpacingFormat</value>
+    <comment>DisplayName for DomainProperty &apos;SpacingFormat&apos; on DomainClass &apos;NameGenerator&apos;</comment>
+  </data>
+  <data name="Neumont.Tools.ORM.ObjectModel.NameGenerator/SpacingReplacement.Description" xml:space="preserve">
+    <value></value>
+    <comment>Description for DomainProperty &apos;SpacingReplacement&apos; on DomainClass &apos;NameGenerator&apos;</comment>
+  </data>
+  <data name="Neumont.Tools.ORM.ObjectModel.NameGenerator/SpacingReplacement.DisplayName" xml:space="preserve">
+    <value>SpacingReplacement</value>
+    <comment>DisplayName for DomainProperty &apos;SpacingReplacement&apos; on DomainClass &apos;NameGenerator&apos;</comment>
+  </data>
+  <data name="Neumont.Tools.ORM.ObjectModel.NameGenerator/AutomaticallyShortenNames.Description" xml:space="preserve">
+    <value></value>
+    <comment>Description for DomainProperty &apos;AutomaticallyShortenNames&apos; on DomainClass &apos;NameGenerator&apos;</comment>
+  </data>
+  <data name="Neumont.Tools.ORM.ObjectModel.NameGenerator/AutomaticallyShortenNames.DisplayName" xml:space="preserve">
+    <value>AutomaticallyShortenNames</value>
+    <comment>DisplayName for DomainProperty &apos;AutomaticallyShortenNames&apos; on DomainClass &apos;NameGenerator&apos;</comment>
+  </data>
+  <data name="Neumont.Tools.ORM.ObjectModel.NameGenerator/UseTargetDefaultMaximum.Description" xml:space="preserve">
+    <value></value>
+    <comment>Description for DomainProperty &apos;UseTargetDefaultMaximum&apos; on DomainClass &apos;NameGenerator&apos;</comment>
+  </data>
+  <data name="Neumont.Tools.ORM.ObjectModel.NameGenerator/UseTargetDefaultMaximum.DisplayName" xml:space="preserve">
+    <value>UseTargetDefaultMaximum</value>
+    <comment>DisplayName for DomainProperty &apos;UseTargetDefaultMaximum&apos; on DomainClass &apos;NameGenerator&apos;</comment>
+  </data>
+  <data name="Neumont.Tools.ORM.ObjectModel.NameGenerator/UserDefinedMaximum.Description" xml:space="preserve">
+    <value></value>
+    <comment>Description for DomainProperty &apos;UserDefinedMaximum&apos; on DomainClass &apos;NameGenerator&apos;</comment>
+  </data>
+  <data name="Neumont.Tools.ORM.ObjectModel.NameGenerator/UserDefinedMaximum.DisplayName" xml:space="preserve">
+    <value>UserDefinedMaximum</value>
+    <comment>DisplayName for DomainProperty &apos;UserDefinedMaximum&apos; on DomainClass &apos;NameGenerator&apos;</comment>
+  </data>
+  <data name="Neumont.Tools.ORM.ObjectModel.NameUsage.Description" xml:space="preserve">
+    <value></value>
+    <comment>Description for DomainClass &apos;NameUsage&apos;</comment>
+  </data>
+  <data name="Neumont.Tools.ORM.ObjectModel.NameUsage.DisplayName" xml:space="preserve">
+    <value>NameUsage</value>
+    <comment>DisplayName for DomainClass &apos;NameUsage&apos;</comment>
+  </data>
   <data name="Neumont.Tools.ORM.ObjectModel.ModelErrorCategory.Description" xml:space="preserve">
     <value></value>
     <comment>Description for DomainClass &apos;ModelErrorCategory&apos;</comment>
@@ -564,6 +660,30 @@
   <data name="Neumont.Tools.ORM.ObjectModel.Role/ObjectificationOppositeRoleName.DisplayName" xml:space="preserve">
     <value>ImpliedRoleName</value>
     <comment>DisplayName for DomainProperty &apos;ObjectificationOppositeRoleName&apos; on DomainClass &apos;Role&apos;</comment>
+  </data>
+  <data name="Neumont.Tools.ORM.ObjectModel.NameAlias.Description" xml:space="preserve">
+    <value></value>
+    <comment>Description for DomainClass &apos;NameAlias&apos;</comment>
+  </data>
+  <data name="Neumont.Tools.ORM.ObjectModel.NameAlias.DisplayName" xml:space="preserve">
+    <value>NameAlias</value>
+    <comment>DisplayName for DomainClass &apos;NameAlias&apos;</comment>
+  </data>
+  <data name="Neumont.Tools.ORM.ObjectModel.NameAlias/NameConsumer.Description" xml:space="preserve">
+    <value>Description for Neumont.Tools.ORM.ObjectModel.NameAlias.NameConsumer</value>
+    <comment>Description for DomainProperty &apos;NameConsumer&apos; on DomainClass &apos;NameAlias&apos;</comment>
+  </data>
+  <data name="Neumont.Tools.ORM.ObjectModel.NameAlias/NameConsumer.DisplayName" xml:space="preserve">
+    <value>NameConsumer</value>
+    <comment>DisplayName for DomainProperty &apos;NameConsumer&apos; on DomainClass &apos;NameAlias&apos;</comment>
+  </data>
+  <data name="Neumont.Tools.ORM.ObjectModel.NameAlias/NameUsage.Description" xml:space="preserve">
+    <value>Description for Neumont.Tools.ORM.ObjectModel.NameAlias.NameUsage</value>
+    <comment>Description for DomainProperty &apos;NameUsage&apos; on DomainClass &apos;NameAlias&apos;</comment>
+  </data>
+  <data name="Neumont.Tools.ORM.ObjectModel.NameAlias/NameUsage.DisplayName" xml:space="preserve">
+    <value>NameUsage</value>
+    <comment>DisplayName for DomainProperty &apos;NameUsage&apos; on DomainClass &apos;NameAlias&apos;</comment>
   </data>
   <data name="Neumont.Tools.ORM.ObjectModel.EqualityConstraint.Description" xml:space="preserve">
     <value></value>
@@ -2308,6 +2428,134 @@
   <data name="Neumont.Tools.ORM.ObjectModel.ModelHasDataType/DataType.PropertyDisplayName" xml:space="preserve">
     <value>Model</value>
     <comment>PropertyDisplayName for DomainRole &apos;DataType&apos; on DomainRelationship &apos;ModelHasDataType&apos;</comment>
+  </data>
+  <data name="Neumont.Tools.ORM.ObjectModel.NameGeneratorRefinesNameGenerator.Description" xml:space="preserve">
+    <value>Description for Neumont.Tools.ORM.ObjectModel.NameGeneratorRefinesNameGenerator</value>
+    <comment>Description for DomainClass &apos;NameGeneratorRefinesNameGenerator&apos;</comment>
+  </data>
+  <data name="Neumont.Tools.ORM.ObjectModel.NameGeneratorRefinesNameGenerator.DisplayName" xml:space="preserve">
+    <value>Name Generator Refines Name Generator</value>
+    <comment>DisplayName for DomainClass &apos;NameGeneratorRefinesNameGenerator&apos;</comment>
+  </data>
+  <data name="Neumont.Tools.ORM.ObjectModel.NameGeneratorRefinesNameGenerator/Parent.Description" xml:space="preserve">
+    <value>Description for Neumont.Tools.ORM.ObjectModel.NameGeneratorRefinesNameGenerator.Parent</value>
+    <comment>Description for DomainRole &apos;Parent&apos; on DomainRelationship &apos;NameGeneratorRefinesNameGenerator&apos;</comment>
+  </data>
+  <data name="Neumont.Tools.ORM.ObjectModel.NameGeneratorRefinesNameGenerator/Parent.DisplayName" xml:space="preserve">
+    <value>RefinedByGeneratorCollection</value>
+    <comment>DisplayName for DomainRole &apos;Parent&apos; on DomainRelationship &apos;NameGeneratorRefinesNameGenerator&apos;</comment>
+  </data>
+  <data name="Neumont.Tools.ORM.ObjectModel.NameGeneratorRefinesNameGenerator/Parent.PropertyDisplayName" xml:space="preserve">
+    <value>Refined By Generator Collection</value>
+    <comment>PropertyDisplayName for DomainRole &apos;Parent&apos; on DomainRelationship &apos;NameGeneratorRefinesNameGenerator&apos;</comment>
+  </data>
+  <data name="Neumont.Tools.ORM.ObjectModel.NameGeneratorRefinesNameGenerator/Refinement.Description" xml:space="preserve">
+    <value>Description for Neumont.Tools.ORM.ObjectModel.NameGeneratorRefinesNameGenerator.Refinement</value>
+    <comment>Description for DomainRole &apos;Refinement&apos; on DomainRelationship &apos;NameGeneratorRefinesNameGenerator&apos;</comment>
+  </data>
+  <data name="Neumont.Tools.ORM.ObjectModel.NameGeneratorRefinesNameGenerator/Refinement.DisplayName" xml:space="preserve">
+    <value>Refinement</value>
+    <comment>DisplayName for DomainRole &apos;Refinement&apos; on DomainRelationship &apos;NameGeneratorRefinesNameGenerator&apos;</comment>
+  </data>
+  <data name="Neumont.Tools.ORM.ObjectModel.NameGeneratorRefinesNameGenerator/Refinement.PropertyDisplayName" xml:space="preserve">
+    <value>Refines Generator</value>
+    <comment>PropertyDisplayName for DomainRole &apos;Refinement&apos; on DomainRelationship &apos;NameGeneratorRefinesNameGenerator&apos;</comment>
+  </data>
+  <data name="Neumont.Tools.ORM.ObjectModel.ElementHasAlias.Description" xml:space="preserve">
+    <value>Description for Neumont.Tools.ORM.ObjectModel.ElementHasAlias</value>
+    <comment>Description for DomainClass &apos;ElementHasAlias&apos;</comment>
+  </data>
+  <data name="Neumont.Tools.ORM.ObjectModel.ElementHasAlias.DisplayName" xml:space="preserve">
+    <value>Element Has Alias</value>
+    <comment>DisplayName for DomainClass &apos;ElementHasAlias&apos;</comment>
+  </data>
+  <data name="Neumont.Tools.ORM.ObjectModel.ElementHasAlias/Element.Description" xml:space="preserve">
+    <value>Description for Neumont.Tools.ORM.ObjectModel.ElementHasAlias.Element</value>
+    <comment>Description for DomainRole &apos;Element&apos; on DomainRelationship &apos;ElementHasAlias&apos;</comment>
+  </data>
+  <data name="Neumont.Tools.ORM.ObjectModel.ElementHasAlias/Element.DisplayName" xml:space="preserve">
+    <value>Element</value>
+    <comment>DisplayName for DomainRole &apos;Element&apos; on DomainRelationship &apos;ElementHasAlias&apos;</comment>
+  </data>
+  <data name="Neumont.Tools.ORM.ObjectModel.ElementHasAlias/Element.PropertyDisplayName" xml:space="preserve">
+    <value>Alias Collection</value>
+    <comment>PropertyDisplayName for DomainRole &apos;Element&apos; on DomainRelationship &apos;ElementHasAlias&apos;</comment>
+  </data>
+  <data name="Neumont.Tools.ORM.ObjectModel.ElementHasAlias/Alias.Description" xml:space="preserve">
+    <value>Description for Neumont.Tools.ORM.ObjectModel.ElementHasAlias.Alias</value>
+    <comment>Description for DomainRole &apos;Alias&apos; on DomainRelationship &apos;ElementHasAlias&apos;</comment>
+  </data>
+  <data name="Neumont.Tools.ORM.ObjectModel.ElementHasAlias/Alias.DisplayName" xml:space="preserve">
+    <value>Alias</value>
+    <comment>DisplayName for DomainRole &apos;Alias&apos; on DomainRelationship &apos;ElementHasAlias&apos;</comment>
+  </data>
+  <data name="Neumont.Tools.ORM.ObjectModel.ElementHasAlias/Alias.PropertyDisplayName" xml:space="preserve">
+    <value>Element</value>
+    <comment>PropertyDisplayName for DomainRole &apos;Alias&apos; on DomainRelationship &apos;ElementHasAlias&apos;</comment>
+  </data>
+  <data name="Neumont.Tools.ORM.ObjectModel.ObjectTypeHasAlias.Description" xml:space="preserve">
+    <value>Description for Neumont.Tools.ORM.ObjectModel.ObjectTypeHasAlias</value>
+    <comment>Description for DomainClass &apos;ObjectTypeHasAlias&apos;</comment>
+  </data>
+  <data name="Neumont.Tools.ORM.ObjectModel.ObjectTypeHasAlias.DisplayName" xml:space="preserve">
+    <value>Object Type Has Alias</value>
+    <comment>DisplayName for DomainClass &apos;ObjectTypeHasAlias&apos;</comment>
+  </data>
+  <data name="Neumont.Tools.ORM.ObjectModel.ObjectTypeHasAlias/ObjectType.Description" xml:space="preserve">
+    <value>Description for Neumont.Tools.ORM.ObjectModel.ObjectTypeHasAlias.ObjectType</value>
+    <comment>Description for DomainRole &apos;ObjectType&apos; on DomainRelationship &apos;ObjectTypeHasAlias&apos;</comment>
+  </data>
+  <data name="Neumont.Tools.ORM.ObjectModel.ObjectTypeHasAlias/ObjectType.DisplayName" xml:space="preserve">
+    <value>ObjectType</value>
+    <comment>DisplayName for DomainRole &apos;ObjectType&apos; on DomainRelationship &apos;ObjectTypeHasAlias&apos;</comment>
+  </data>
+  <data name="Neumont.Tools.ORM.ObjectModel.ObjectTypeHasAlias/ObjectType.PropertyDisplayName" xml:space="preserve">
+    <value>Alias Collection</value>
+    <comment>PropertyDisplayName for DomainRole &apos;ObjectType&apos; on DomainRelationship &apos;ObjectTypeHasAlias&apos;</comment>
+  </data>
+  <data name="Neumont.Tools.ORM.ObjectModel.ObjectTypeHasAlias/Alias.Description" xml:space="preserve">
+    <value>Description for Neumont.Tools.ORM.ObjectModel.ObjectTypeHasAlias.Alias</value>
+    <comment>Description for DomainRole &apos;Alias&apos; on DomainRelationship &apos;ObjectTypeHasAlias&apos;</comment>
+  </data>
+  <data name="Neumont.Tools.ORM.ObjectModel.ObjectTypeHasAlias/Alias.DisplayName" xml:space="preserve">
+    <value>Alias</value>
+    <comment>DisplayName for DomainRole &apos;Alias&apos; on DomainRelationship &apos;ObjectTypeHasAlias&apos;</comment>
+  </data>
+  <data name="Neumont.Tools.ORM.ObjectModel.ObjectTypeHasAlias/Alias.PropertyDisplayName" xml:space="preserve">
+    <value>Element</value>
+    <comment>PropertyDisplayName for DomainRole &apos;Alias&apos; on DomainRelationship &apos;ObjectTypeHasAlias&apos;</comment>
+  </data>
+  <data name="Neumont.Tools.ORM.ObjectModel.NameGeneratorContainsOmittedWord.Description" xml:space="preserve">
+    <value>Description for Neumont.Tools.ORM.ObjectModel.NameGeneratorContainsOmittedWord</value>
+    <comment>Description for DomainClass &apos;NameGeneratorContainsOmittedWord&apos;</comment>
+  </data>
+  <data name="Neumont.Tools.ORM.ObjectModel.NameGeneratorContainsOmittedWord.DisplayName" xml:space="preserve">
+    <value>Name Generator Contains Omitted Word</value>
+    <comment>DisplayName for DomainClass &apos;NameGeneratorContainsOmittedWord&apos;</comment>
+  </data>
+  <data name="Neumont.Tools.ORM.ObjectModel.NameGeneratorContainsOmittedWord/NameGenerator.Description" xml:space="preserve">
+    <value>Description for Neumont.Tools.ORM.ObjectModel.NameGeneratorContainsOmittedWord.NameGenerator</value>
+    <comment>Description for DomainRole &apos;NameGenerator&apos; on DomainRelationship &apos;NameGeneratorContainsOmittedWord&apos;</comment>
+  </data>
+  <data name="Neumont.Tools.ORM.ObjectModel.NameGeneratorContainsOmittedWord/NameGenerator.DisplayName" xml:space="preserve">
+    <value>NameGenerator</value>
+    <comment>DisplayName for DomainRole &apos;NameGenerator&apos; on DomainRelationship &apos;NameGeneratorContainsOmittedWord&apos;</comment>
+  </data>
+  <data name="Neumont.Tools.ORM.ObjectModel.NameGeneratorContainsOmittedWord/NameGenerator.PropertyDisplayName" xml:space="preserve">
+    <value>Omitted Word Collection</value>
+    <comment>PropertyDisplayName for DomainRole &apos;NameGenerator&apos; on DomainRelationship &apos;NameGeneratorContainsOmittedWord&apos;</comment>
+  </data>
+  <data name="Neumont.Tools.ORM.ObjectModel.NameGeneratorContainsOmittedWord/OmittedWord.Description" xml:space="preserve">
+    <value>Description for Neumont.Tools.ORM.ObjectModel.NameGeneratorContainsOmittedWord.OmittedWord</value>
+    <comment>Description for DomainRole &apos;OmittedWord&apos; on DomainRelationship &apos;NameGeneratorContainsOmittedWord&apos;</comment>
+  </data>
+  <data name="Neumont.Tools.ORM.ObjectModel.NameGeneratorContainsOmittedWord/OmittedWord.DisplayName" xml:space="preserve">
+    <value>OmittedWord</value>
+    <comment>DisplayName for DomainRole &apos;OmittedWord&apos; on DomainRelationship &apos;NameGeneratorContainsOmittedWord&apos;</comment>
+  </data>
+  <data name="Neumont.Tools.ORM.ObjectModel.NameGeneratorContainsOmittedWord/OmittedWord.PropertyDisplayName" xml:space="preserve">
+    <value>Name Generator</value>
+    <comment>PropertyDisplayName for DomainRole &apos;OmittedWord&apos; on DomainRelationship &apos;NameGeneratorContainsOmittedWord&apos;</comment>
   </data>
   <data name="Neumont.Tools.ORM.ObjectModel.ExternalRoleConstraint.Description" xml:space="preserve">
     <value>Description for Neumont.Tools.ORM.ObjectModel.ExternalRoleConstraint</value>
@@ -5500,6 +5748,94 @@
   <data name="Neumont.Tools.ORM.ObjectModel.JoinType/Outer.Description" xml:space="preserve">
     <value>Outer join.</value>
     <comment>Description for EnumerationLiteral &apos;Outer&apos; on DomainEnumeration &apos;JoinType&apos;</comment>
+  </data>
+  <data name="Neumont.Tools.ORM.ObjectModel.NameGeneratorCasingOption/None.DisplayName" xml:space="preserve">
+    <value>None</value>
+    <comment>Display name for EnumerationLiteral &apos;None&apos; on DomainEnumeration &apos;NameGeneratorCasingOption&apos;</comment>
+  </data>
+  <data name="Neumont.Tools.ORM.ObjectModel.NameGeneratorCasingOption/None.Description" xml:space="preserve">
+    <value>Description for Neumont.Tools.ORM.ObjectModel.NameGeneratorCasingOption.None</value>
+    <comment>Description for EnumerationLiteral &apos;None&apos; on DomainEnumeration &apos;NameGeneratorCasingOption&apos;</comment>
+  </data>
+  <data name="Neumont.Tools.ORM.ObjectModel.NameGeneratorCasingOption/Camel.DisplayName" xml:space="preserve">
+    <value>Camel</value>
+    <comment>Display name for EnumerationLiteral &apos;Camel&apos; on DomainEnumeration &apos;NameGeneratorCasingOption&apos;</comment>
+  </data>
+  <data name="Neumont.Tools.ORM.ObjectModel.NameGeneratorCasingOption/Camel.Description" xml:space="preserve">
+    <value>Indicates the casing of the string is Camel</value>
+    <comment>Description for EnumerationLiteral &apos;Camel&apos; on DomainEnumeration &apos;NameGeneratorCasingOption&apos;</comment>
+  </data>
+  <data name="Neumont.Tools.ORM.ObjectModel.NameGeneratorCasingOption/Pascal.DisplayName" xml:space="preserve">
+    <value>Pascal</value>
+    <comment>Display name for EnumerationLiteral &apos;Pascal&apos; on DomainEnumeration &apos;NameGeneratorCasingOption&apos;</comment>
+  </data>
+  <data name="Neumont.Tools.ORM.ObjectModel.NameGeneratorCasingOption/Pascal.Description" xml:space="preserve">
+    <value>Indicates the casing of the string is Pascal.</value>
+    <comment>Description for EnumerationLiteral &apos;Pascal&apos; on DomainEnumeration &apos;NameGeneratorCasingOption&apos;</comment>
+  </data>
+  <data name="Neumont.Tools.ORM.ObjectModel.NameGeneratorCasingOption/Upper.DisplayName" xml:space="preserve">
+    <value>Upper</value>
+    <comment>Display name for EnumerationLiteral &apos;Upper&apos; on DomainEnumeration &apos;NameGeneratorCasingOption&apos;</comment>
+  </data>
+  <data name="Neumont.Tools.ORM.ObjectModel.NameGeneratorCasingOption/Upper.Description" xml:space="preserve">
+    <value>Indicates the casing of the string is Upper.</value>
+    <comment>Description for EnumerationLiteral &apos;Upper&apos; on DomainEnumeration &apos;NameGeneratorCasingOption&apos;</comment>
+  </data>
+  <data name="Neumont.Tools.ORM.ObjectModel.NameGeneratorCasingOption/Lower.DisplayName" xml:space="preserve">
+    <value>Lower</value>
+    <comment>Display name for EnumerationLiteral &apos;Lower&apos; on DomainEnumeration &apos;NameGeneratorCasingOption&apos;</comment>
+  </data>
+  <data name="Neumont.Tools.ORM.ObjectModel.NameGeneratorCasingOption/Lower.Description" xml:space="preserve">
+    <value>Indicates the casing of the string is Lower.</value>
+    <comment>Description for EnumerationLiteral &apos;Lower&apos; on DomainEnumeration &apos;NameGeneratorCasingOption&apos;</comment>
+  </data>
+  <data name="Neumont.Tools.ORM.ObjectModel.NameGeneratorSpacingFormat/Retain.DisplayName" xml:space="preserve">
+    <value>Retain</value>
+    <comment>Display name for EnumerationLiteral &apos;Retain&apos; on DomainEnumeration &apos;NameGeneratorSpacingFormat&apos;</comment>
+  </data>
+  <data name="Neumont.Tools.ORM.ObjectModel.NameGeneratorSpacingFormat/Retain.Description" xml:space="preserve">
+    <value>Description for Neumont.Tools.ORM.ObjectModel.NameGeneratorSpacingFormat.Retain</value>
+    <comment>Description for EnumerationLiteral &apos;Retain&apos; on DomainEnumeration &apos;NameGeneratorSpacingFormat&apos;</comment>
+  </data>
+  <data name="Neumont.Tools.ORM.ObjectModel.NameGeneratorSpacingFormat/Remove.DisplayName" xml:space="preserve">
+    <value>Remove</value>
+    <comment>Display name for EnumerationLiteral &apos;Remove&apos; on DomainEnumeration &apos;NameGeneratorSpacingFormat&apos;</comment>
+  </data>
+  <data name="Neumont.Tools.ORM.ObjectModel.NameGeneratorSpacingFormat/Remove.Description" xml:space="preserve">
+    <value>Indicates that spaces are Removed</value>
+    <comment>Description for EnumerationLiteral &apos;Remove&apos; on DomainEnumeration &apos;NameGeneratorSpacingFormat&apos;</comment>
+  </data>
+  <data name="Neumont.Tools.ORM.ObjectModel.NameGeneratorSpacingFormat/ReplaceWith.DisplayName" xml:space="preserve">
+    <value>ReplaceWith</value>
+    <comment>Display name for EnumerationLiteral &apos;ReplaceWith&apos; on DomainEnumeration &apos;NameGeneratorSpacingFormat&apos;</comment>
+  </data>
+  <data name="Neumont.Tools.ORM.ObjectModel.NameGeneratorSpacingFormat/ReplaceWith.Description" xml:space="preserve">
+    <value>Indicates that spaces are ReplacedWith a different string.</value>
+    <comment>Description for EnumerationLiteral &apos;ReplaceWith&apos; on DomainEnumeration &apos;NameGeneratorSpacingFormat&apos;</comment>
+  </data>
+  <data name="Neumont.Tools.ORM.ObjectModel.NameGeneratorSubjectArea/None.DisplayName" xml:space="preserve">
+    <value>None</value>
+    <comment>Display name for EnumerationLiteral &apos;None&apos; on DomainEnumeration &apos;NameGeneratorSubjectArea&apos;</comment>
+  </data>
+  <data name="Neumont.Tools.ORM.ObjectModel.NameGeneratorSubjectArea/None.Description" xml:space="preserve">
+    <value>Description for Neumont.Tools.ORM.ObjectModel.NameGeneratorSubjectArea.None</value>
+    <comment>Description for EnumerationLiteral &apos;None&apos; on DomainEnumeration &apos;NameGeneratorSubjectArea&apos;</comment>
+  </data>
+  <data name="Neumont.Tools.ORM.ObjectModel.NameGeneratorSubjectArea/Prefix.DisplayName" xml:space="preserve">
+    <value>Prefix</value>
+    <comment>Display name for EnumerationLiteral &apos;Prefix&apos; on DomainEnumeration &apos;NameGeneratorSubjectArea&apos;</comment>
+  </data>
+  <data name="Neumont.Tools.ORM.ObjectModel.NameGeneratorSubjectArea/Prefix.Description" xml:space="preserve">
+    <value>Indicates that the chosen subject will be prepended to the generated name.</value>
+    <comment>Description for EnumerationLiteral &apos;Prefix&apos; on DomainEnumeration &apos;NameGeneratorSubjectArea&apos;</comment>
+  </data>
+  <data name="Neumont.Tools.ORM.ObjectModel.NameGeneratorSubjectArea/Suffix.DisplayName" xml:space="preserve">
+    <value>Suffix</value>
+    <comment>Display name for EnumerationLiteral &apos;Suffix&apos; on DomainEnumeration &apos;NameGeneratorSubjectArea&apos;</comment>
+  </data>
+  <data name="Neumont.Tools.ORM.ObjectModel.NameGeneratorSubjectArea/Suffix.Description" xml:space="preserve">
+    <value>Indicates that the chosen subject will be appended to the generated name.</value>
+    <comment>Description for EnumerationLiteral &apos;Suffix&apos; on DomainEnumeration &apos;NameGeneratorSubjectArea&apos;</comment>
   </data>
   <data name="AmbiguousSchema" xml:space="preserve">
     <value>More than one schema found for target namespace &apos;{0}&apos;, use the first one at &apos;{1}&apos;.</value>

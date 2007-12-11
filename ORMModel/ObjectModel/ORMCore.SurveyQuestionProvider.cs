@@ -14,6 +14,8 @@ namespace Neumont.Tools.ORM.ObjectModel
 			ProvideSurveyQuestionForSurveyFactTypeDetailType.Instance,
 			ProvideSurveyQuestionForSurveyErrorState.Instance,
 			ProvideSurveyQuestionForSurveyQuestionGlyph.Instance};
+		private static readonly ISurveyQuestionTypeInfo[] mySurveyQuestionTypeInfo3 = new ISurveyQuestionTypeInfo[]{
+			ProvideSurveyQuestionForSurveyNameGeneratorRefinementType.Instance};
 		/// <summary>Implements <see cref="ISurveyQuestionProvider.GetSurveyQuestions"/></summary>
 		protected static IEnumerable<ISurveyQuestionTypeInfo> GetSurveyQuestions(object expansionKey)
 		{
@@ -24,6 +26,10 @@ namespace Neumont.Tools.ORM.ObjectModel
 			else if (expansionKey == FactType.SurveyExpansionKey)
 			{
 				return mySurveyQuestionTypeInfo2;
+			}
+			else if (expansionKey == NameGenerator.SurveyExpansionKey)
+			{
+				return mySurveyQuestionTypeInfo3;
 			}
 			return null;
 		}
@@ -215,6 +221,44 @@ namespace Neumont.Tools.ORM.ObjectModel
 				get
 				{
 					return SurveyQuestionUISupport.Grouping | SurveyQuestionUISupport.Sorting;
+				}
+			}
+		}
+		private sealed class ProvideSurveyQuestionForSurveyNameGeneratorRefinementType : ISurveyQuestionTypeInfo
+		{
+			private ProvideSurveyQuestionForSurveyNameGeneratorRefinementType()
+			{
+			}
+			public static readonly ISurveyQuestionTypeInfo Instance = new ProvideSurveyQuestionForSurveyNameGeneratorRefinementType();
+			public Type QuestionType
+			{
+				get
+				{
+					return typeof(SurveyNameGeneratorRefinementType);
+				}
+			}
+			public int AskQuestion(object data)
+			{
+				IAnswerSurveyQuestion<SurveyNameGeneratorRefinementType> typedData = data as IAnswerSurveyQuestion<SurveyNameGeneratorRefinementType>;
+				if (typedData != null)
+				{
+					return typedData.AskQuestion();
+				}
+				return -1;
+			}
+			public int MapAnswerToImageIndex(int answer)
+			{
+				return -1;
+			}
+			public SurveyQuestionDisplayData GetDisplayData(int answer)
+			{
+				return SurveyQuestionDisplayData.Default;
+			}
+			public SurveyQuestionUISupport UISupport
+			{
+				get
+				{
+					return SurveyQuestionUISupport.Sorting;
 				}
 			}
 		}

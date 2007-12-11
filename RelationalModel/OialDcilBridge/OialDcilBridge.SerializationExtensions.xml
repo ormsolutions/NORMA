@@ -56,7 +56,7 @@
 			<se:OmitRelationship Class="TableIsAlsoForConceptTypeHasAssimilationPath"/>
 		</se:OmittedDomainElements>
 	</se:DomainModel>
-	<se:Element Class="MappingCustomizationModel" Name="MappingCustomization" SortChildElements="true">
+	<se:Element Class="MappingCustomizationModel" Name="MappingCustomization" SortChildElements="true">v
 		<se:ConditionalSerialization>
 			<!-- Only serialize if there is a child that will serialize -->
 			<plx:branch>

@@ -24,6 +24,27 @@
 		<se:RootElements>
 			<se:RootElement Class="ORMModel"/>
 			<se:RootElement Class="ModelErrorDisplayFilter"/>
+			<se:RootElement Class="NameGenerator">
+				<se:ConditionalSerialization>
+					<plx:comment>Only serialize if this is not contained in a refinement relationship</plx:comment>
+					<plx:return>
+						<plx:binaryOperator type="identityEquality">
+							<plx:left>
+								<plx:callInstance name="RefinesGenerator" type="property">
+									<plx:callObject>
+										<plx:cast dataTypeName="NameGenerator">
+											<plx:nameRef name="element" type="parameter"/>
+										</plx:cast>
+									</plx:callObject>
+								</plx:callInstance>
+							</plx:left>
+							<plx:right>
+								<plx:nullKeyword/>
+							</plx:right>
+						</plx:binaryOperator>
+					</plx:return>
+				</se:ConditionalSerialization>
+			</se:RootElement>
 		</se:RootElements>
 		<se:OmittedDomainElements>
 			<se:OmitRelationship Class="FactConstraint"/>
@@ -35,6 +56,7 @@
 			<se:OmitRelationship Class="ORMModelElementHasJoinPath"/>
 			<se:OmitRelationship Class="ModelHasModelErrorDisplayFilter"/>
 			<se:OmitRelationship Class="ElementAssociatedWithModelError"/>
+			<se:OmitRelationship Class="ElementHasAlias"/>
 			<se:OmitRelationship Class="ObjectTypeHasObjectTypeInstance"/>
 			<se:OmitClass Class="IntrinsicReferenceMode"/>
 			<!-- Omitting links to the presentation layers is not strictly required because all
@@ -95,6 +117,71 @@
 		<se:Link Name="ObjectType" RelationshipName="ModelNoteReferencesObjectType" RoleName="Element"/>
 	</se:Element>
 	<!--Object Types-->
+	<se:Element Class="NameAlias" Name="Alias" Override="true">
+		<se:Attribute ID="NameConsumer" WriteCustomStorage="true"/>
+		<se:Attribute ID="NameUsage" WriteCustomStorage="true"/>
+	</se:Element>
+	<se:Element Class="NameGenerator" SortChildElements="true">
+		<se:ConditionalSerialization>
+			<plx:return>
+				<plx:callThis name="RequiresSerialization"/>
+			</plx:return>
+		</se:ConditionalSerialization>
+		<se:Attribute ID="SpacingFormat">
+			<se:Condition WriteStyle="NotWritten">
+				<plx:binaryOperator type="equality">
+					<plx:left>
+						<plx:callThis name="SpacingFormat" type="property"/>
+					</plx:left>
+					<plx:right>
+						<plx:callStatic name="Retain" dataTypeName="NameGeneratorSpacingFormat" type="field"/>
+					</plx:right>
+				</plx:binaryOperator>
+			</se:Condition>
+		</se:Attribute>
+		<se:Attribute ID="CasingOption">
+			<se:Condition WriteStyle="NotWritten">
+				<plx:binaryOperator type="equality">
+					<plx:left>
+						<plx:callThis name="CasingOption" type="property"/>
+					</plx:left>
+					<plx:right>
+						<plx:callStatic name="None" dataTypeName="NameGeneratorCasingOption" type="field"/>
+					</plx:right>
+				</plx:binaryOperator>
+			</se:Condition>
+		</se:Attribute>
+		<se:Attribute ID="SpacingReplacement">
+			<se:Condition WriteStyle="NotWritten">
+				<plx:binaryOperator type="inequality">
+					<plx:left>
+						<plx:callThis name="SpacingFormat" type="property"/>
+					</plx:left>
+					<plx:right>
+						<plx:callStatic name="ReplaceWith" dataTypeName="NameGeneratorSpacingFormat" type="field"/>
+					</plx:right>
+				</plx:binaryOperator>
+			</se:Condition>
+		</se:Attribute>
+		<se:Attribute ID="NameUsage" WriteCustomStorage="true">
+			<se:Condition WriteStyle="NotWritten">
+				<plx:binaryOperator type="identityEquality">
+					<plx:left>
+						<plx:callThis name="NameUsageType" type="property"/>
+					</plx:left>
+					<plx:right>
+						<plx:nullKeyword/>
+					</plx:right>
+				</plx:binaryOperator>
+			</se:Condition>
+		</se:Attribute>
+		<se:Container Name="OmittedWords" Prefix="orm">
+			<se:Embed RelationshipName="NameGeneratorContainsOmittedWord" RoleName="OmittedWord"/>
+		</se:Container>
+		<se:Container Name="Refinements" Prefix="orm">
+			<se:Embed RelationshipName="NameGeneratorRefinesNameGenerator" RoleName="Refinement"/>
+		</se:Container>
+	</se:Element>
 	<se:Element Class="ObjectType" Name="EntityType" SortChildElements="true" Override="true">
 		<se:ConditionalName Name="ValueType">
 			<plx:callThis name="IsValueType" type="property"/>
@@ -147,6 +234,9 @@
 		</se:Container>
 		<se:Container Name="Notes">
 			<se:Embed RelationshipName="ObjectTypeHasNote" RoleName="Note"/>
+		</se:Container>
+		<se:Container Name="Aliases">
+			<se:Embed RelationshipName="ObjectTypeHasAlias" RoleName="Alias"/>
 		</se:Container>
 		<se:Container Name="PlayedRoles">
 			<se:Link RelationshipName="ObjectTypePlaysRole" RoleName="PlayedRole"/>
@@ -763,7 +853,7 @@
 	<se:Element Class="ExclusionContradictsSubsetError" Override="true">
 		<se:Link RelationshipName="SetComparisonConstraintHasExclusionContradictsSubsetError" RoleName="SetComparisonConstraint" WriteStyle="NotWritten" />
 	</se:Element>
-	
+
 	<se:Element Class="ExclusionContradictsMandatoryError" Override="true">
 		<se:Container Name="Constraints">
 			<se:Link RelationshipName="MandatoryConstraintHasExclusionContradictsMandatoryError" RoleName="MandatoryConstraint"/>
@@ -781,7 +871,7 @@
 		<se:Link RelationshipName="SubsetConstraintHasNotWellModeledSubsetAndMandatoryError" RoleName="SubsetConstraint" Name="SubsetConstraint"/>
 		<se:Link RelationshipName="MandatoryConstraintHasNotWellModeledSubsetAndMandatoryError" RoleName="MandatoryConstraint" Name="MandatoryConstraint"/>
 	</se:Element>
-	
+
 	<se:Element Class="ObjectTypeRequiresPrimarySupertypeError" Override="true">
 		<se:Link RelationshipName="ObjectTypeHasObjectTypeRequiresPrimarySupertypeError" RoleName="ObjectType" Name="ObjectType"/>
 	</se:Element>

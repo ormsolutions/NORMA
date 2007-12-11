@@ -53,6 +53,9 @@
 			<arg:DeleteRule methodName="InformationTypeFormatDeletedRule">
 				<arg:RuleOn targetType="AbstractionModelHasInformationTypeFormat" targetTypeQualifier="Neumont.Tools.ORMAbstraction"/>
 			</arg:DeleteRule>
+			<arg:ChangeRule methodName="NameGeneratorSettingsChangedRule">
+				<arg:RuleOn targetType="NameGenerator" targetTypeQualifier="Neumont.Tools.ORM.ObjectModel"/>
+			</arg:ChangeRule>
 			<arg:AddRule methodName="ReferenceModeNamingCustomizesObjectTypeAddedRule">
 				<arg:RuleOn targetType="ReferenceModeNamingCustomizesObjectType"/>
 			</arg:AddRule>

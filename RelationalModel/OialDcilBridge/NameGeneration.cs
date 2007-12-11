@@ -11,6 +11,8 @@ using Neumont.Tools.ORMAbstraction;
 using Neumont.Tools.ORMToORMAbstractionBridge;
 using Neumont.Tools.RelationalModels.ConceptualDatabase;
 using ORMCore = Neumont.Tools.ORM.ObjectModel;
+using CasingOption = Neumont.Tools.ORM.ObjectModel.NameGeneratorCasingOption;
+using DslModeling = global::Microsoft.VisualStudio.Modeling;
 
 namespace Neumont.Tools.ORMAbstractionToConceptualDatabaseBridge
 {
@@ -49,6 +51,100 @@ namespace Neumont.Tools.ORMAbstractionToConceptualDatabaseBridge
 		string GenerateConstraintName(Constraint constraint, string longerThan);
 	}
 	#endregion // IDatabaseNameGenerator interface
+	#region NamePart struct
+	/// <summary>
+	/// Options used with the <see cref="NamePart"/> structure
+	/// </summary>
+	[Flags]
+	public enum NamePartOptions
+	{
+		/// <summary>
+		/// No special options
+		/// </summary>
+		None = 0,
+		/// <summary>
+		/// The element should not be cased
+		/// </summary>
+		ExplicitCasing = 1,
+	}
+	/// <summary>
+	/// A callback delegate for adding a <see cref="NamePart"/>
+	/// </summary>
+	/// <param name="part">The <see cref="NamePart"/> to add</param>
+	/// <param name="insertIndex">The index to insert the name part at.</param>
+	public delegate void AddNamePart(NamePart part, int? insertIndex);
+	/// <summary>
+	/// Represent a single string with options
+	/// </summary>
+	public struct NamePart
+	{
+		private string myString;
+		private NamePartOptions myOptions;
+		/// <summary>
+		/// Create a new NamePart with default options
+		/// </summary>
+		/// <param name="value">The string value for this <see cref="NamePart"/></param>
+		public NamePart(string value)
+		{
+			myString = value;
+			myOptions = NamePartOptions.None;
+		}
+		/// <summary>
+		/// Create a new NamePart with explicit options
+		/// </summary>
+		/// <param name="value">The string value for this <see cref="NamePart"/></param>
+		/// <param name="options">Values from <see cref="NamePartOptions"/></param>
+		public NamePart(string value, NamePartOptions options)
+		{
+			myString = value;
+			myOptions = options;
+		}
+		/// <summary>
+		/// Is the structure populated?
+		/// </summary>
+		public bool IsEmpty
+		{
+			get
+			{
+				return string.IsNullOrEmpty(myString);
+			}
+		}
+		/// <summary>
+		/// Return the <see cref="NamePartOptions"/> passed to the constructor
+		/// </summary>
+		public NamePartOptions Options
+		{
+			get
+			{
+				return myOptions;
+			}
+		}
+		/// <summary>
+		/// If <see langword="true"/>, then the casing of the string should not be changed
+		/// </summary>
+		public bool ExplicitCasing
+		{
+			get
+			{
+				return 0 != (myOptions & NamePartOptions.ExplicitCasing);
+			}
+		}
+		/// <summary>
+		/// Implicitly cast the <see cref="NamePart"/> to its string value
+		/// </summary>
+		public static implicit operator string(NamePart part)
+		{
+			return part.myString;
+		}
+		/// <summary>
+		/// Implicitly cast the <see cref="NamePart"/> to its string value
+		/// </summary>
+		public static implicit operator NamePart(string value)
+		{
+			return new NamePart(value);
+		}
+	}
+	#endregion // NamePart struct
 	#region ORMAbstractionToConceptualDatabaseBridgeDomainModel.NameGeneration class
 	partial class ORMAbstractionToConceptualDatabaseBridgeDomainModel
 	{
@@ -432,10 +528,29 @@ namespace Neumont.Tools.ORMAbstractionToConceptualDatabaseBridge
 				private static Regex myReplaceFieldsPattern;
 				private string GenerateTableName(Table table, string longerThan)
 				{
-					string singleName = null;
-					List<string> nameCollection = null;
+					NamePart singleName = default(NamePart);
+					List<NamePart> nameCollection = null;
 					AddToNameCollection(ref singleName, ref nameCollection, TableIsPrimarilyForConceptType.GetConceptType(table).Name);
-					string finalName = GetFinalName(singleName, nameCollection, "", CasingOption.Pascal);
+
+					#region UNDONE: Need to be separated out of this method as this exact code is used in other methods
+					CasingOption tableCase = ORMCore.NameGenerator.GetGenerator(table.Store, typeof(RelationalNameGenerator), typeof(TableNameUsage)).CasingOption;
+					string tableSpace = "";
+
+					switch (ORMCore.NameGenerator.GetGenerator(table.Store, typeof(RelationalNameGenerator), typeof(TableNameUsage)).SpacingFormat)
+					{
+						case NameGeneratorSpacingFormat.Remove:
+							tableSpace = "";
+							break;
+						case NameGeneratorSpacingFormat.ReplaceWith:
+							tableSpace = ORMCore.NameGenerator.GetGenerator(table.Store, typeof(RelationalNameGenerator), typeof(TableNameUsage)).SpacingReplacement;
+							break;
+						case NameGeneratorSpacingFormat.Retain:
+							tableSpace = " ";
+							break;
+					} 
+					#endregion
+					
+					string finalName = GetFinalName(singleName, nameCollection, tableSpace, tableCase);
 					if (NeedLongerName(finalName, longerThan))
 					{
 						return null;
@@ -447,19 +562,38 @@ namespace Neumont.Tools.ORMAbstractionToConceptualDatabaseBridge
 				}
 				private string GenerateColumnName(Column column, string longerThan)
 				{
+					#region UNDONE: Need to be separated out of this method as this exact code is used in other methods
 					// UNDONE: use these two varables to reflect preference customization 
-					CasingOption columnCase = CasingOption.Camel;
+					CasingOption columnCase = ORMCore.NameGenerator.GetGenerator(column.Store, typeof(RelationalNameGenerator), typeof(ColumnNameUsage)).CasingOption; // CasingOption.Camel;
 					string columnSpace = "";
 
+					switch (ORMCore.NameGenerator.GetGenerator(column.Store, typeof(RelationalNameGenerator), typeof(ColumnNameUsage)).SpacingFormat)
+					{
+						case NameGeneratorSpacingFormat.Remove:
+							columnSpace = "";
+							break;
+						case NameGeneratorSpacingFormat.ReplaceWith:
+							columnSpace = ORMCore.NameGenerator.GetGenerator(column.Store, typeof(RelationalNameGenerator), typeof(ColumnNameUsage)).SpacingReplacement;
+							break;
+						case NameGeneratorSpacingFormat.Retain:
+							columnSpace = " ";
+							break;
+					}
+					#endregion
+
 					//the string is used when possible to avoid using the list for a single entry
-					string singleName = null;
-					List<string> nameCollection = null;
+					NamePart singleName = default(NamePart);
+					List<NamePart> nameCollection = null;
+					AddNamePart addPart = delegate(NamePart newPart, int? insertIndex)
+						{
+							AddToNameCollection(ref singleName, ref nameCollection, newPart, insertIndex.HasValue ? insertIndex.Value : -1);
+						};
 					LinkedElementCollection<ConceptTypeChild> path = ColumnHasConceptTypeChild.GetConceptTypeChildPath(column);
 					int pathCount = path.Count;
 					if (pathCount < 1)
 					{
 						//if we dont have a path, there is nothing we can do
-						AddToNameCollection(ref singleName, ref nameCollection, column.Name);
+						addPart(column.Name, null);
 					}
 					else
 					{
@@ -486,7 +620,7 @@ namespace Neumont.Tools.ORMAbstractionToConceptualDatabaseBridge
 								if (!hasSubtypeNode)
 								{
 									//add the subtype name
-									AddToNameCollection(ref singleName, ref nameCollection, ((ConceptType)link.Target).Name);
+									addPart(((ConceptType)link.Target).Name, null);
 									hasSubtypeNode = true;
 								}
 								if (mainFactType == firstFactType)
@@ -503,7 +637,7 @@ namespace Neumont.Tools.ORMAbstractionToConceptualDatabaseBridge
 						if (null == mainFactType)
 						{
 							//not much we can really do if there are no non subtype fact types
-							AddToNameCollection(ref singleName, ref nameCollection, link.Name);
+							addPart(link.Name, null);
 						}
 						else
 						{
@@ -513,7 +647,7 @@ namespace Neumont.Tools.ORMAbstractionToConceptualDatabaseBridge
 							if (null == objectification && IsPreferredIdentifierFactType(mainFactType, towardsRole))
 							{
 								//for primary identifier columns, just use the name of the value type
-								AddToNameCollection(ref singleName, ref nameCollection, GetEndNodeValueType(path, pathCount));
+								GetEndNodeValueType(path, pathCount, addPart);
 							}
 							else
 							{
@@ -552,14 +686,33 @@ namespace Neumont.Tools.ORMAbstractionToConceptualDatabaseBridge
 										{
 											RoleBase unaryRole = mainFactType.UnaryRole;
 											//always use predicate text for unary fact types
-											AddToNameCollection(ref singleName, ref nameCollection,
-												GetRoleNameFromPredicateText(mainFactType, unaryRole.OppositeRoleResolveProxy, unaryRole, isUnary, columnSpace));
+											GetRoleNameFromPredicateText(mainFactType, unaryRole.OppositeRoleResolveProxy, unaryRole, isUnary, columnSpace, addPart);
 										}
 										else
 										{
 											if (null == objectification)
 											{
-												AddToNameCollection(ref singleName, ref nameCollection, GetObjectTypeName(oppositeRole.Role.RolePlayer));
+												if (addPart == null)
+												{
+													addPart = delegate(NamePart newPart, int? insertIndex)
+														{
+															if (nameCollection != null)
+															{
+																nameCollection.Add(newPart);
+															}
+															else if (!singleName.IsEmpty)
+															{
+																nameCollection = new List<NamePart>();
+																nameCollection.Add(singleName);
+																nameCollection.Add(newPart);
+															}
+															else
+															{
+																singleName = newPart;
+															}
+														};
+												}
+												GetObjectTypeName(oppositeRole.Role.RolePlayer, addPart);
 											}
 											//used for second-level name precision later on, if needed
 											createRoleName = true;
@@ -596,9 +749,18 @@ namespace Neumont.Tools.ORMAbstractionToConceptualDatabaseBridge
 										// to track 'refinement level' that allows us to know what we have tried already
 										// and to jump immediately to other alternatives. Refinements are not necessary longer.
 
-										AddToNameCollection(ref singleName, ref nameCollection,
-											GetRoleNameFromPredicateText(mainFactType, towardsRole, oppositeRole, isUnary, columnSpace),
-											0);
+										int nextInsertIndex = 0;
+										GetRoleNameFromPredicateText(
+											mainFactType,
+											towardsRole,
+											oppositeRole,
+											isUnary,
+											columnSpace,
+											delegate(NamePart insertPart, int? insertIndex)
+											{
+												addPart(insertPart, nextInsertIndex);
+												++nextInsertIndex;
+											});
 										if (needValueTypeName)
 										{
 											//determine if we still need to append the value type name for third-level precision
@@ -607,7 +769,7 @@ namespace Neumont.Tools.ORMAbstractionToConceptualDatabaseBridge
 									}
 									if (needValueTypeName)
 									{
-										AddToNameCollection(ref singleName, ref nameCollection, GetEndNodeValueType(path, pathCount));
+										GetEndNodeValueType(path, pathCount, addPart);
 
 										if (createRoleNameSecond && createRoleName && NeedLongerName(singleName, nameCollection, longerThan, columnSpace))
 										{
@@ -651,13 +813,19 @@ namespace Neumont.Tools.ORMAbstractionToConceptualDatabaseBridge
 					}
 					return constraint.Name;
 				}
-				private void AddToNameCollection(ref string singleName, ref List<string> nameCollection, string newName)
+				private void AddToNameCollection(ref NamePart singleName, ref List<NamePart> nameCollection, string newName)
 				{
-					AddToNameCollection(ref singleName, ref  nameCollection, newName, -1);
+					AddToNameCollection(ref singleName, ref  nameCollection, new NamePart(newName), -1);
 				}
-				private void AddToNameCollection(ref string singleName, ref List<string> nameCollection, string newName, int index)
+				private void AddToNameCollection(ref NamePart singleName, ref List<NamePart> nameCollection, string newName, int index)
 				{
+					AddToNameCollection(ref singleName, ref nameCollection, new NamePart(newName), index);
+				}
+				private void AddToNameCollection(ref NamePart singleName, ref List<NamePart> nameCollection, NamePart newNamePart, int index)
+				{
+					string newName = newNamePart;
 					newName = newName.Trim();
+					NamePartOptions options = newNamePart.Options;
 					Debug.Assert(!string.IsNullOrEmpty(newName));
 					if (newName.Contains(" "))
 					{
@@ -670,17 +838,17 @@ namespace Neumont.Tools.ORMAbstractionToConceptualDatabaseBridge
 						return;
 					}
 
-					if (null == singleName)
+					if (singleName.IsEmpty)
 					{
 						//we only have one name so far, so just use the string
-						singleName = newName;
+						singleName = new NamePart(newName, options);
 					}
 					else
 					{
 						//we need to now use the collection
 						if (null == nameCollection)
 						{
-							nameCollection = new List<string>();
+							nameCollection = new List<NamePart>();
 							//first add to the actual collection the element that had previosly been added
 							nameCollection.Add(singleName);
 						}
@@ -689,17 +857,17 @@ namespace Neumont.Tools.ORMAbstractionToConceptualDatabaseBridge
 						{
 							index = nameCollection.Count;
 							count = index + 1;
-							nameCollection.Add(newName);
+							nameCollection.Add(new NamePart(newName, options));
 						}
 						else
 						{
-							nameCollection.Insert(index, newName);
+							nameCollection.Insert(index, new NamePart(newName, options));
 							count = nameCollection.Count;
 						}
 						//remove duplicate information
 						int nextIndex;
-						if ((index > 0 && nameCollection[index - 1].EndsWith(newName, StringComparison.CurrentCultureIgnoreCase))
-							|| ((nextIndex = index + 1) < count && nameCollection[nextIndex].StartsWith(newName, StringComparison.CurrentCultureIgnoreCase)))
+						if ((index > 0 && ((string)nameCollection[index - 1]).EndsWith(newName, StringComparison.CurrentCultureIgnoreCase))
+							|| ((nextIndex = index + 1) < count && ((string)nameCollection[nextIndex]).StartsWith(newName, StringComparison.CurrentCultureIgnoreCase)))
 						{
 							//we don't need the name that was just added
 							nameCollection.RemoveAt(index);
@@ -735,7 +903,7 @@ namespace Neumont.Tools.ORMAbstractionToConceptualDatabaseBridge
 						}
 					}
 				}
-				private bool NeedLongerName(string finalName, List<string> finalNameCollection, string longerThan, string space)
+				private bool NeedLongerName(NamePart finalName, List<NamePart> finalNameCollection, string longerThan, string space)
 				{
 					return NeedLongerName(GetFinalName(finalName, finalNameCollection, space), longerThan);
 				}
@@ -743,12 +911,12 @@ namespace Neumont.Tools.ORMAbstractionToConceptualDatabaseBridge
 				{
 					return finalName == "" || ((null != longerThan) && longerThan.IndexOf(finalName, 0, StringComparison.CurrentCultureIgnoreCase) > -1);
 				}
-				private string GetFinalName(string singleName, List<string> nameCollection, string space)
+				private string GetFinalName(NamePart singleName, List<NamePart> nameCollection, string space)
 				{
 					//use -1 to signify that case changes should not be done
 					return GetFinalName(singleName, nameCollection, space, CasingOption.None);
 				}
-				private string GetFinalName(string singleName, List<string> nameCollection, string space, CasingOption casing)
+				private string GetFinalName(NamePart singleName, List<NamePart> nameCollection, string space, CasingOption casing)
 				{
 					// UNDONE: There are several things we need to do this correctly.
 					// Object type names cannot be treated as atomic unit.
@@ -762,7 +930,7 @@ namespace Neumont.Tools.ORMAbstractionToConceptualDatabaseBridge
 					string finalName;
 					if (null == nameCollection)
 					{
-						if (null == singleName)
+						if (singleName.IsEmpty)
 						{
 							return "";
 						}
@@ -819,16 +987,17 @@ namespace Neumont.Tools.ORMAbstractionToConceptualDatabaseBridge
 
 					return finalName;
 				}
-				private string DoFirstWordCasing(string name, CasingOption casing, TextInfo textInfo)
+				private string DoFirstWordCasing(NamePart name, CasingOption casing, TextInfo textInfo)
 				{
+					if (name.ExplicitCasing) return name;
 					switch (casing)
 					{
 						case CasingOption.Camel:
-							return TestHasAdjacentUpperCase(name) ? name : DoFirstLetterCase(name, false, textInfo);
+							return TestHasAdjacentUpperCase(name) ? (string)name : DoFirstLetterCase(name, false, textInfo);
 						case CasingOption.Pascal:
-							return TestHasAdjacentUpperCase(name) ? name : DoFirstLetterCase(name, true, textInfo);
-						case CasingOption.Flat:
-							return TestHasAdjacentUpperCase(name) ? name : textInfo.ToLower(name);
+							return TestHasAdjacentUpperCase(name) ? (string)name : DoFirstLetterCase(name, true, textInfo);
+						case CasingOption.Lower:
+							return TestHasAdjacentUpperCase(name) ? (string)name : textInfo.ToLower(name);
 						case CasingOption.Upper:
 							return textInfo.ToUpper(name);
 					}
@@ -865,9 +1034,10 @@ namespace Neumont.Tools.ORMAbstractionToConceptualDatabaseBridge
 					}
 					return false;
 				}
-				private string DoFirstLetterCase(string name, bool upper, TextInfo textInfo)
+				private string DoFirstLetterCase(NamePart name, bool upper, TextInfo textInfo)
 				{
-					char c = name[0];
+					string nameValue = name;
+					char c = nameValue[0];
 					if (upper)
 					{
 						c = textInfo.ToUpper(c);
@@ -876,15 +1046,15 @@ namespace Neumont.Tools.ORMAbstractionToConceptualDatabaseBridge
 					{
 						c = textInfo.ToLower(c);
 					}
-					if (name.Length > 1)
+					if (nameValue.Length > 1)
 					{
-						name = c.ToString() + name.Substring(1);
+						nameValue = c.ToString() + nameValue.Substring(1);
 					}
 					else
 					{
-						name = c.ToString();
+						nameValue = c.ToString();
 					}
-					return name;
+					return nameValue;
 				}
 				private bool IsHyphenBound(IReading reading, LinkedElementCollection<RoleBase> factTypeRoles, RoleBase role, int? unaryRoleIndex, out string hyphenBoundRolePlayerName)
 				{
@@ -905,19 +1075,11 @@ namespace Neumont.Tools.ORMAbstractionToConceptualDatabaseBridge
 					}
 					return preferredIdentifier.FactTypeCollection.Contains(factType);
 				}
-				private string GetObjectTypeName(ObjectType objectType)
+				private void GetObjectTypeName(ObjectType objectType, AddNamePart addNamePartCallback)
 				{
-					string name = ReferenceModeNaming.ResolveObjectTypeName(objectType, null);
-					if (StringIsNullOrEmpty(name))
-					{
-						return objectType.Name;
-					}
-					else
-					{
-						return name;
-					}
+					ReferenceModeNaming.ResolveObjectTypeName(objectType, null, addNamePartCallback);
 				}
-				private string GetEndNodeValueType(LinkedElementCollection<ConceptTypeChild> path, int pathCount)
+				private void GetEndNodeValueType(LinkedElementCollection<ConceptTypeChild> path, int pathCount, AddNamePart addNamePartCallback)
 				{
 					//find the last ConceptTypeChild with an InformationTypeFormat target
 					for (int i = pathCount; --i > -1; )
@@ -926,11 +1088,11 @@ namespace Neumont.Tools.ORMAbstractionToConceptualDatabaseBridge
 						InformationTypeFormat target;
 						if (null != (target = link.Target as InformationTypeFormat))
 						{
-							return target.Name;
+							addNamePartCallback(target.Name, null);
 						}
 					}
-					return null;
 				}
+#if FALSE // NOT CALLED
 				private string GetEndNodeObjectType(LinkedElementCollection<ConceptTypeChild> path, int pathCount)
 				{
 					//find the last ConceptTypeChild with an InformationTypeFormat target
@@ -951,7 +1113,8 @@ namespace Neumont.Tools.ORMAbstractionToConceptualDatabaseBridge
 					}
 					return null;
 				}
-				private string GetRoleNameFromPredicateText(FactType factType, RoleBase towardsRole, RoleBase oppositeRole, bool isUnary, string spaceReplaceString)
+#endif // FALSE
+				private void GetRoleNameFromPredicateText(FactType factType, RoleBase towardsRole, RoleBase oppositeRole, bool isUnary, string spaceReplaceString, AddNamePart addNamePartCallback)
 				{
 					ReadingOrder readingOrder = GetReadingOrder(factType, towardsRole, oppositeRole, isUnary);
 					if (null != readingOrder)
@@ -972,11 +1135,11 @@ namespace Neumont.Tools.ORMAbstractionToConceptualDatabaseBridge
 						}
 						if (!StringIsNullOrEmpty(text))
 						{
-							return text;
+							addNamePartCallback(text, null);
 						}
 					}
 
-					return GetObjectTypeName(oppositeRole.Role.RolePlayer);
+					GetObjectTypeName(oppositeRole.Role.RolePlayer, addNamePartCallback);
 				}
 				private ReadingOrder GetReadingOrder(FactType factType, RoleBase towardsRole, RoleBase oppositeRole, bool isUnary)
 				{
@@ -1002,17 +1165,81 @@ namespace Neumont.Tools.ORMAbstractionToConceptualDatabaseBridge
 				{
 					return (null == newName) || (newName.Trim().Length < 1);
 				}
-				private enum CasingOption
-				{
-					None,
-					Pascal,
-					Camel,
-					Flat,
-					Upper,
-				}
+				//private enum CasingOption
+				//{
+				//    None,
+				//    Pascal,
+				//    Camel,
+				//    Flat,
+				//    Upper,
+				//}
 			}
-			#endregion //DefaultDatabaseNameGenerator class
+			#endregion // DefaultDatabaseNameGenerator class
 		}
 	}
-	#endregion //ORMAbstractionToConceptualDatabaseBridgeDomainModel.NameGeneration class
+	#endregion // ORMAbstractionToConceptualDatabaseBridgeDomainModel.NameGeneration class
+
+	#region ORMAbstractionToConceptualDatabaseBridgeDomainModel.RelationalNameGenerator Class
+	partial class RelationalNameGenerator
+	{
+		/// <summary>
+		/// Constructor
+		/// </summary>
+		/// <param name="store">Store where new element is to be created.</param>
+		/// <param name="propertyAssignments">List of domain property id/value pairs to set once the element is created.</param>
+		public RelationalNameGenerator(DslModeling::Store store, params DslModeling::PropertyAssignment[] propertyAssignments)
+			: this(store != null ? store.DefaultPartition : null, propertyAssignments)
+		{
+		}
+
+		/// <summary>
+		/// Constructor
+		/// </summary>
+		/// <param name="partition">Partition where new element is to be created.</param>
+		/// <param name="propertyAssignments">List of domain property id/value pairs to set once the element is created.</param>
+		public RelationalNameGenerator(DslModeling::Partition partition, params DslModeling::PropertyAssignment[] propertyAssignments)
+			: base(partition, GenerateDefaultValues(propertyAssignments))
+		{
+		}
+
+		/// <summary>
+		/// 
+		/// </summary>
+		/// <param name="propertyAssignments"></param>
+		/// <returns></returns>
+		private static PropertyAssignment[] GenerateDefaultValues(params PropertyAssignment[] propertyAssignments)
+		{
+			PropertyAssignment[] properties = propertyAssignments;
+			string nameUsage = null;
+			int casingOptionIndex = -1;
+			int spacingOptionIndex = -1;
+			for (int i = 0; i < properties.Length; ++i)
+			{
+				PropertyAssignment assignment = properties[i];
+				Guid propertyId = assignment.PropertyId;
+				if (propertyId == ORMCore.NameGenerator.CasingOptionDomainPropertyId)
+				{
+					casingOptionIndex = i;
+				}
+				else if (propertyId == ORMCore.NameGenerator.NameUsageDomainPropertyId)
+				{
+					nameUsage = (string)assignment.Value;
+				}
+				else if (propertyId == ORMCore.NameGenerator.SpacingFormatDomainPropertyId)
+				{
+					spacingOptionIndex = i;
+				}
+			}
+			if (nameUsage != null && casingOptionIndex != -1)
+			{
+				if (nameUsage == "ColumnNameUsage")
+				{
+					properties[casingOptionIndex] = new PropertyAssignment(ORMCore.NameGenerator.CasingOptionDomainPropertyId, NameGeneratorCasingOption.Camel);
+					properties[spacingOptionIndex] = new PropertyAssignment(ORMCore.NameGenerator.SpacingFormatDomainPropertyId, NameGeneratorSpacingFormat.Remove);
+				}
+			}
+			return properties;
+		}
+	}
+	#endregion // ORMAbstractionToConceptualDatabaseBridgeDomainModel.RelationalNameGenerator Class
 }

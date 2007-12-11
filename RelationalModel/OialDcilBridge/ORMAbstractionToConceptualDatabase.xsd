@@ -4,9 +4,11 @@
 	xmlns="http://schemas.neumont.edu/ORM/Bridge/2007-06/ORMAbstractionToConceptualDatabase" 
 	xmlns:oialtocdb="http://schemas.neumont.edu/ORM/Bridge/2007-06/ORMAbstractionToConceptualDatabase"
 	xmlns:xs="http://www.w3.org/2001/XMLSchema"
+	xmlns:orm="http://schemas.neumont.edu/ORM/2006-04/ORMCore"
 	elementFormDefault="qualified"
 	attributeFormDefault="unqualified"
 	version="1.0">
+	<xs:import namespace="http://schemas.neumont.edu/ORM/2006-04/ORMCore"/>
 
 	<xs:annotation>
 		<xs:appinfo>
@@ -244,4 +246,5 @@
 		<xs:attribute name="UniquenessConstraint" type="xs:IDREF" use="required"/>
 		<xs:attribute name="Uniqueness" type="xs:IDREF" use="required"/>
 	</xs:complexType>
+	<xs:element name="RelationalNameGenerator" type="orm:NameGeneratorType" substitutionGroup="orm:NameGenerator"/>
 </xs:schema>

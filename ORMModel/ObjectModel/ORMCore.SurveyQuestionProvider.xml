@@ -30,6 +30,9 @@
 			<qp:displaySupport displayCategory="Grouping"/>
 			<qp:displaySupport displayCategory="Sorting"/>
 		</qp:surveyQuestion>
+		<qp:surveyQuestion questionType="SurveyNameGeneratorRefinementType">
+			<qp:displaySupport displayCategory="Sorting"/>
+		</qp:surveyQuestion>
 	</qp:surveyQuestions>
 	<qp:groupings>
 		<qp:grouping>
@@ -44,6 +47,12 @@
 			<qp:surveyQuestion ref="SurveyFactTypeDetailType"/>
 			<qp:surveyQuestion ref="SurveyErrorState"/>
 			<qp:surveyQuestion ref="SurveyQuestionGlyph"/>
+		</qp:grouping>
+		<qp:grouping>
+			<qp:expansionKey>
+				<plx:callStatic dataTypeName="NameGenerator" name="SurveyExpansionKey" type="property"/>
+			</qp:expansionKey>
+			<qp:surveyQuestion ref="SurveyNameGeneratorRefinementType"/>
 		</qp:grouping>
 	</qp:groupings>
 	<qp:imageInformation>

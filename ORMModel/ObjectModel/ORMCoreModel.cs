@@ -238,6 +238,14 @@ namespace Neumont.Tools.ORM.ObjectModel
 				{
 					yield return element;
 				}
+
+				foreach (NameGenerator element in elementDirectory.FindElements<NameGenerator>(false))
+				{
+					if (element.RefinesGenerator == null)
+					{
+						yield return element;
+					}
+				}
 			}
 			else if (expansionKey == FactType.SurveyExpansionKey)
 			{
@@ -260,6 +268,13 @@ namespace Neumont.Tools.ORM.ObjectModel
 							yield return impliedFactType;
 						}
 					}
+				}
+			}
+			else if (expansionKey == NameGenerator.SurveyExpansionKey)
+			{
+				foreach (NameGenerator refinement in ((NameGenerator)context).RefinedByGeneratorCollection)
+				{
+					yield return refinement;
 				}
 			}
 		}

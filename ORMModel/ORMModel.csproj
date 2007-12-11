@@ -413,13 +413,16 @@
     </Compile>
     <Compile Include="Framework\Shell\DiagramMenuDisplay.cs" />
     <Compile Include="Framework\Shell\SerializationEngine.cs" />
+    <Compile Include="ObjectModel\NameGenerator.cs" />
     <Compile Include="ObjectModel\Design\FrequencyConstraintBoundConverter.cs" />
     <Compile Include="ObjectModel\Design\Editors\FrequencyConstraintMaxPicker.cs" />
     <Compile Include="ObjectModel\Design\ObjectificationRolePlayerPropertyDescriptor.cs" />
     <Compile Include="ObjectModel\Design\Editors\ModelErrorDisplayFilterEditor.cs" />
     <Compile Include="ObjectModel\ModelErrorDisplayFilter.cs" />
     <Compile Include="ObjectModel\Design\ExclusionConstraintTypeDescriptor.cs" />
+    <Compile Include="ObjectModel\NameAlias.cs" />
     <Compile Include="ObjectModel\SurveyImplementations\ConstraintAnswers.cs" />
+    <Compile Include="ObjectModel\SurveyImplementations\NameGeneratorAnswers.cs" />
     <Compile Include="ObjectModel\SurveyImplementations\RoleAnswers.cs" />
     <Compile Include="ObjectModel\VerbalizationGenerator.cs">
       <AutoGen>True</AutoGen>

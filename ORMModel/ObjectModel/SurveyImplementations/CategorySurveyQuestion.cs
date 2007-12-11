@@ -42,6 +42,10 @@ namespace Neumont.Tools.ORM.ObjectModel
 		/// ORM element Constraint
 		/// </summary>
 		ExternalConstraint,
+		/// <summary>
+		/// Name generation settings
+		/// </summary>
+		NameGenerator,
 	}
 	#endregion // Element Type question
 	#region FactType Detail Question
@@ -305,4 +309,26 @@ namespace Neumont.Tools.ORM.ObjectModel
 		Last = SecondarySubtypeRelationship,
 	}
 	#endregion // Survey Glyph questions
+	#region NameGeneratorRefinement Question
+	/// <summary>
+	/// Determine if a <see cref="NameConsumer"/> refinement is
+	/// a usage or type refinement.
+	/// </summary>
+	public enum SurveyNameGeneratorRefinementType
+	{
+		/// <summary>
+		/// The refinement represents a different usage of the same type.
+		/// These are marked with the <see cref="NameUsageAttribute"/> and
+		/// represent different usages of the same refinement level. For example,
+		/// relational usages are Table and Column.
+		/// </summary>
+		UsageRefinement,
+		/// <summary>
+		/// The refinement represents a more specific refinement of the same type.
+		/// These correspond to more-derived generation elements of the context name generator.
+		/// For example, 'SQL Server' would be a type refinement of 'Relational'.
+		/// </summary>
+		TypeRefinement,
+	}
+	#endregion // NameGeneratorRefinement Question
 }

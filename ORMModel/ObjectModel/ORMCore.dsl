@@ -34,7 +34,81 @@
 	</Attributes>
 
 	<Classes>
+		<DomainClass Name="NameConsumer" Namespace="Neumont.Tools.ORM.ObjectModel" Id="491389AA-B7DB-4461-B3CE-8064F8DE4072" DisplayName="NameConsumer" Description=""/>
 
+		<DomainClass Name="OmittedWord" Namespace="Neumont.Tools.ORM.ObjectModel" Id="DF462D31-C2E4-47A5-AF48-7FFC55DE4B2A" DisplayName="OmittedWord" Description="">
+			<Properties>
+				<DomainProperty Name="Word" DisplayName="Word" Id="80822CFE-225B-4618-B0F1-C83C60D45881" Description="">
+					<Type>
+						<ExternalTypeMoniker Name="/System/String"/>
+					</Type>
+				</DomainProperty>
+			</Properties>
+		</DomainClass>
+
+		<DomainClass Name="NameGenerator" Namespace="Neumont.Tools.ORM.ObjectModel" Id="E032727F-440A-431A-82E7-2454BE939C82" DisplayName="Name Generation Defaults" Description="">
+			<BaseClass>
+				<DomainClassMoniker Name="NameConsumer"/>
+			</BaseClass>
+			<Properties>
+				<DomainProperty Name ="NameUsage" DisplayName="NameUsage" IsBrowsable="false" Id="B92D3173-900E-4F35-BAC2-32A607E744FA" Description="" Kind="CustomStorage">
+					<Type>
+						<ExternalTypeMoniker Name="/System/String"/>
+					</Type>
+				</DomainProperty>
+				<DomainProperty Name="CasingOption" DefaultValue="None" DisplayName="CasingOption" Id="30950747-68E7-4A64-8ED7-BACEDAAFD4A2" Description="">
+					<Type>
+						<DomainEnumerationMoniker Name="NameGeneratorCasingOption"/>
+					</Type>
+				</DomainProperty>
+				<DomainProperty Name="SpacingFormat" DefaultValue="Retain" DisplayName="SpacingFormat" Id="CFD3E74C-DE51-4FD9-ADDB-01B0F5414BFD" Description="">
+					<Type>
+						<DomainEnumerationMoniker Name="NameGeneratorSpacingFormat"/>
+					</Type>
+				</DomainProperty>
+				<DomainProperty Name="SpacingReplacement" DefaultValue="" DisplayName="SpacingReplacement" Id="0E203ACB-3611-4180-9324-7FD7D30A5AE4" Description="">
+					<Type>
+						<ExternalTypeMoniker Name="/System/String"/>
+					</Type>
+				</DomainProperty>
+				<DomainProperty Name="AutomaticallyShortenNames" DefaultValue="true" DisplayName="AutomaticallyShortenNames" Id="6A3526D9-AFB3-417E-A988-A44644AA094E" Description="">
+					<Type>
+						<ExternalTypeMoniker Name="/System/Boolean"/>
+					</Type>
+				</DomainProperty>
+				<DomainProperty Name="UseTargetDefaultMaximum" DefaultValue="true" DisplayName="UseTargetDefaultMaximum" Id="67B83B76-394F-4702-A984-6009DC51D224" Description="">
+					<Type>
+						<ExternalTypeMoniker Name="/System/Boolean"/>
+					</Type>
+				</DomainProperty>
+				<DomainProperty Name="UserDefinedMaximum" DefaultValue="128" DisplayName="UserDefinedMaximum" Id="FC154AD5-AB52-4AC8-856C-28B00395ABF4" Description="">
+					<Type>
+						<ExternalTypeMoniker Name="/System/Int32"/>
+					</Type>
+				</DomainProperty>
+				<!--<DomainProperty Name="SubjectArea" DefaultValue="None" DisplayName="SubjectArea" Id="0C59CC43-FC54-44EE-9DBA-EE33648EC50C" Description="">
+					<Type>
+						<DomainEnumerationMoniker Name="NameGeneratorSubjectArea"/>
+					</Type>
+				</DomainProperty>
+				<DomainProperty Name="SubjectAreaText" DefaultValue="" DisplayName="SubjectAreaText" Id="69D57F4B-BDF0-44BD-A62B-0FF49E5D1D31" Description="">
+					<Type>
+						<ExternalTypeMoniker Name="/System/String"/>
+					</Type>
+				</DomainProperty>-->
+			</Properties>
+		</DomainClass>
+
+		<DomainClass Name="NameUsage" Namespace="Neumont.Tools.ORM.ObjectModel" Id="5B10B7DC-2018-41D9-AEF6-E12104614CA0" DisplayName="NameUsage" InheritanceModifier="Abstract" Description="">
+			<Attributes>
+				<ClrAttribute Name="Neumont.Tools.ORM.ObjectModel.NameUsageIdentifier">
+					<Parameters>
+						<AttributeParameter Value="&quot;NameUsage&quot;"/>
+					</Parameters>
+				</ClrAttribute>
+			</Attributes>
+		</DomainClass>
+		
 		<DomainClass Name="ModelErrorCategory" Namespace="Neumont.Tools.ORM.ObjectModel" Id="C9730E21-67A1-47E1-A065-B08C2B3815CE" DisplayName="ModelErrorCategory" InheritanceModifier="Abstract" Description=""/>
 		<DomainClass Name="ModelErrorDisplayFilter" Namespace="Neumont.Tools.ORM.ObjectModel" Id="67CDCE7B-3D28-4A92-B9EB-00418152A13F" DisplayName="ModelErrorDisplayFilter" InheritanceModifier="Sealed" Description="">
 			<Properties>
@@ -546,6 +620,24 @@
 			</Properties>
 		</DomainClass>
 
+		<DomainClass Name="NameAlias" Namespace="Neumont.Tools.ORM.ObjectModel" Id="A0AD1270-E3D1-4851-A5AB-D87E5942F9AE" DisplayName="NameAlias" Description="">
+			<BaseClass>
+				<DomainClassMoniker Name="ORMNamedElement"/>
+			</BaseClass>
+			<Properties>
+				<DomainProperty Name="NameConsumer" DisplayName="NameConsumer" Id="BE9EDEB2-C60E-4446-BAC0-73CCD61716EA" Kind="CustomStorage">
+					<Type>
+						<ExternalTypeMoniker Name="/System/String"/>
+					</Type>
+				</DomainProperty>
+				<DomainProperty Name="NameUsage" DisplayName="NameUsage" Id="18DBB768-B471-4926-B678-5B2245760333" Kind="CustomStorage">
+					<Type>
+						<ExternalTypeMoniker Name="/System/String"/>
+					</Type>
+				</DomainProperty>
+			</Properties>
+		</DomainClass>
+
 		<DomainClass Name="EqualityConstraint" Namespace="Neumont.Tools.ORM.ObjectModel" Id="E4F8E935-C07C-4269-81E3-978110F6DC68" DisplayName="EqualityConstraint" Description="">
 			<BaseClass>
 				<DomainClassMoniker Name="SetComparisonConstraint"/>
@@ -659,7 +751,6 @@
 					</Type>
 				</DomainProperty>
 			</Properties>
-
 		</DomainClass>
 
 		<DomainClass Name="UniquenessConstraint" Namespace="Neumont.Tools.ORM.ObjectModel" Id="49C7E3CE-C4F9-417D-B49C-27EA4016371E" DisplayName="UniquenessConstraint" Description="">
@@ -750,7 +841,7 @@
 				</DomainProperty>
 			</Properties>
 		</DomainClass>
-		
+
 		<DomainClass Name="TooFewRoleSequencesError" Namespace="Neumont.Tools.ORM.ObjectModel" Id="686A4B07-0ED9-4143-8225-5524C4D6C001" DisplayName="Too Few Role Sequences" Description="">
 			<BaseClass>
 				<DomainClassMoniker Name="ModelError"/>
@@ -1964,6 +2055,79 @@
 				</DomainRole>
 			</Target>
 		</DomainRelationship>
+
+		<DomainRelationship Name="NameGeneratorRefinesNameGenerator" IsEmbedding="true" Namespace="Neumont.Tools.ORM.ObjectModel" Id="6224BA97-F59F-4360-A159-7CD5DDB6493F">
+			<Source>
+				<DomainRole Name="Parent" PropertyName="RefinedByGeneratorCollection" Multiplicity="ZeroMany" PropagatesDelete="false" IsPropertyGenerator="true" DisplayName="RefinedByGeneratorCollection" Id="A6585A27-D26A-49B0-BBED-CA133CC1E261">
+					<RolePlayer>
+						<DomainClassMoniker Name="NameGenerator"/>
+					</RolePlayer>
+				</DomainRole>
+			</Source>
+			<Target>
+				<DomainRole Name="Refinement" PropertyName="RefinesGenerator" Multiplicity="ZeroOne" PropagatesDelete="true" IsPropertyGenerator="true" DisplayName="Refinement" Id="05748872-B408-46EB-AB0C-2BD06E819887">
+					<RolePlayer>
+						<DomainClassMoniker Name="NameGenerator"/>
+					</RolePlayer>
+				</DomainRole>
+			</Target>
+		</DomainRelationship>
+
+		<DomainRelationship Name="ElementHasAlias" InheritanceModifier="Abstract" Namespace="Neumont.Tools.ORM.ObjectModel" Id="94F76133-EACC-40D1-B61E-1EBD32C0F81F">
+			<Source>
+				<DomainRole Name="Element" PropertyName="AliasCollection" Multiplicity="ZeroMany" PropagatesDelete="false" IsPropertyGenerator="false" DisplayName="Element" Id="4CCF4DEB-AB2F-402B-AAF5-55D51AC0F6DB">
+					<RolePlayer>
+						<DomainClassMoniker Name="/Microsoft.VisualStudio.Modeling/ModelElement"/>
+					</RolePlayer>
+				</DomainRole>
+			</Source>
+			<Target>
+				<DomainRole Name="Alias" PropertyName="Element" Multiplicity="ZeroOne" PropagatesDelete="true" IsPropertyGenerator="true" DisplayName="Alias" Id="DAE4D333-A8B3-448F-94C2-56286FB60A1F">
+					<RolePlayer>
+						<DomainClassMoniker Name="NameAlias"/>
+					</RolePlayer>
+				</DomainRole>
+			</Target>
+		</DomainRelationship>
+
+		<DomainRelationship Name="ObjectTypeHasAlias" Namespace="Neumont.Tools.ORM.ObjectModel" IsEmbedding="true" Id="6A85513C-747F-4A8C-B45A-B5CFF88314E5">
+			<BaseRelationship>
+				<DomainRelationshipMoniker Name="ElementHasAlias"/>
+			</BaseRelationship>
+			<Source>
+				<DomainRole Name="ObjectType" PropertyName="AliasCollection" Multiplicity="ZeroMany" PropagatesDelete="false" IsPropertyGenerator="true" DisplayName="ObjectType" Id="2C863159-2675-4F32-A30D-83C573A207C7">
+					<RolePlayer>
+						<DomainClassMoniker Name="ObjectType"/>
+					</RolePlayer>
+				</DomainRole>
+			</Source>
+			<Target>
+				<DomainRole Name="Alias" PropertyName="Element" Multiplicity="ZeroOne" PropagatesDelete="true" IsPropertyGenerator="false" DisplayName="Alias" Id="832E3923-BBB7-4A29-A60C-66B03E0A92DA">
+					<RolePlayer>
+						<DomainClassMoniker Name="NameAlias"/>
+					</RolePlayer>
+				</DomainRole>
+			</Target>
+		</DomainRelationship>
+
+		<DomainRelationship Name="NameGeneratorContainsOmittedWord" Namespace="Neumont.Tools.ORM.ObjectModel" IsEmbedding="true" Id="3DE59564-603C-48ED-8EA4-D51AE8E761F1">
+			<Source>
+				<DomainRole Name="NameGenerator" PropertyName="OmittedWordCollection" Multiplicity="ZeroMany" PropagatesDelete="false" IsPropertyGenerator="true" DisplayName="NameGenerator" Id="965FF527-A2D6-4468-94DE-464489E332E2">
+					<RolePlayer>
+						<DomainClassMoniker Name="NameGenerator"/>
+					</RolePlayer>
+				</DomainRole>
+			</Source>
+			<Target>
+				<DomainRole Name="OmittedWord" PropertyName="NameGenerator" Multiplicity="ZeroOne" PropagatesDelete="true" IsPropertyGenerator="true" DisplayName="OmittedWord" Id="6D4F2B86-2C27-4F82-84CE-8AA23DCC0EF8">
+					<RolePlayer>
+						<DomainClassMoniker Name="OmittedWord"/>
+					</RolePlayer>
+				</DomainRole>
+			</Target>
+		</DomainRelationship>
+
+
 
 		<DomainRelationship Name="ExternalRoleConstraint" Namespace="Neumont.Tools.ORM.ObjectModel" AllowsDuplicates="false" Id="9692D61F-13AE-4FEE-9F76-8E0D9A5FF976">
 			<!--<BaseRelationship>
@@ -3669,7 +3833,7 @@
 				</DomainRole>
 			</Target>
 		</DomainRelationship>
-		
+
 		<DomainRelationship Name="JoinHasRole" Namespace="Neumont.Tools.ORM.ObjectModel" InheritanceModifier="Abstract" Id="100DCE21-D23A-4ED5-8919-A6FA9DAA4F8B">
 			<!--<BaseRelationship>
 				<DomainRelationshipMoniker Name="ORMElementLink"/>
@@ -3749,7 +3913,7 @@
 				</DomainRole>
 			</Target>
 		</DomainRelationship>
-		
+
 		<DomainRelationship Name="ConstraintRoleSequenceHasJoinPath" Namespace="Neumont.Tools.ORM.ObjectModel" IsEmbedding="true" Id="62FC7AC1-EB51-4887-81D4-15007D5FACBD">
 			<BaseRelationship>
 				<DomainRelationshipMoniker Name="ORMModelElementHasJoinPath"/>
@@ -3955,6 +4119,55 @@
 				</ClrAttribute>
 			</Attributes>
 		</DomainEnumeration>
+
+
+		<DomainEnumeration Namespace="Neumont.Tools.ORM.ObjectModel" Name="NameGeneratorCasingOption">
+			<Literals>
+				<EnumerationLiteral Name="None" Value="0"/>
+				<EnumerationLiteral Name="Camel" Value="1" Description="Indicates the casing of the string is Camel"/>
+				<EnumerationLiteral Name="Pascal" Value="2" Description="Indicates the casing of the string is Pascal."/>
+				<EnumerationLiteral Name="Upper" Value="3" Description="Indicates the casing of the string is Upper."/>
+				<EnumerationLiteral Name="Lower" Value="4" Description="Indicates the casing of the string is Lower."/>
+			</Literals>
+			<Attributes>
+				<ClrAttribute Name="global::System.ComponentModel.TypeConverter">
+					<Parameters>
+						<AttributeParameter Value="typeof(global::Neumont.Tools.Modeling.Design.EnumConverter&lt;NameGeneratorCasingOption, global::Neumont.Tools.ORM.ObjectModel.ORMModel&gt;)"/>
+					</Parameters>
+				</ClrAttribute>
+			</Attributes>
+		</DomainEnumeration>
+
+		<DomainEnumeration Namespace="Neumont.Tools.ORM.ObjectModel" Name="NameGeneratorSpacingFormat">
+			<Literals>
+				<EnumerationLiteral Name="Retain" Value="0"/>
+				<EnumerationLiteral Name="Remove" Value="1" Description="Indicates that spaces are Removed"/>
+				<EnumerationLiteral Name="ReplaceWith" Value="2" Description="Indicates that spaces are ReplacedWith a different string."/>
+			</Literals>
+			<Attributes>
+				<ClrAttribute Name="global::System.ComponentModel.TypeConverter">
+					<Parameters>
+						<AttributeParameter Value="typeof(global::Neumont.Tools.Modeling.Design.EnumConverter&lt;NameGeneratorSpacingFormat, global::Neumont.Tools.ORM.ObjectModel.ORMModel&gt;)"/>
+					</Parameters>
+				</ClrAttribute>
+			</Attributes>
+		</DomainEnumeration>
+
+		<DomainEnumeration Namespace="Neumont.Tools.ORM.ObjectModel" Name="NameGeneratorSubjectArea">
+			<Literals>
+				<EnumerationLiteral Name="None" Value="0"/>
+				<EnumerationLiteral Name="Prefix" Value="1" Description="Indicates that the chosen subject will be prepended to the generated name."/>
+				<EnumerationLiteral Name="Suffix" Value="2" Description="Indicates that the chosen subject will be appended to the generated name."/>
+			</Literals>
+			<Attributes>
+				<ClrAttribute Name="global::System.ComponentModel.TypeConverter">
+					<Parameters>
+						<AttributeParameter Value="typeof(global::Neumont.Tools.Modeling.Design.EnumConverter&lt;NameGeneratorSubjectArea, global::Neumont.Tools.ORM.ObjectModel.ORMModel&gt;)"/>
+					</Parameters>
+				</ClrAttribute>
+			</Attributes>
+		</DomainEnumeration>
+
 	</Types>
 
 	<XmlSerializationBehavior Name="ORMCoreDomainModelSerializationBehavior" Namespace="Neumont.Tools.ORM.ObjectModel"/>

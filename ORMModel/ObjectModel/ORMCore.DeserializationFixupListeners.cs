@@ -43,6 +43,8 @@ namespace Neumont.Tools.ORM.ObjectModel
 				yield return ORMModel.DataTypesFixupListener;
 				yield return ObjectType.IsIndependentFixupListener;
 				yield return ModelError.FixupListener;
+				yield return NameAlias.FixupListener;
+				yield return NameGenerator.FixupListener;
 			}
 		}
 		IEnumerable<IDeserializationFixupListener> IDeserializationFixupListenerProvider.DeserializationFixupListenerCollection

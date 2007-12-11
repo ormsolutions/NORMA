@@ -74,6 +74,15 @@ namespace Neumont.Tools.ORM.CustomProperties
 		{
 			return GetRootElementClasses();
 		}
+		/// <summary>Implements ICustomSerializedDomainModel.ShouldSerializeRootElement</summary>
+		private static bool ShouldSerializeRootElement(ModelElement element)
+		{
+			return true;
+		}
+		bool ICustomSerializedDomainModel.ShouldSerializeRootElement(ModelElement element)
+		{
+			return ShouldSerializeRootElement(element);
+		}
 		/// <summary>Implements ICustomSerializedDomainModel.GetRootRelationshipContainers</summary>
 		private static CustomSerializedRootRelationshipContainer[] GetRootRelationshipContainers()
 		{

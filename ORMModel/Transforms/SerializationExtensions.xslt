@@ -2318,6 +2318,56 @@
 					</plx:callNew>
 				</plx:return>
 			</plx:function>
+			<plx:function visibility="{$InterfaceImplementationVisibility}" name="ShouldSerializeRootElement" modifier="static">
+				<plx:leadingInfo>
+					<plx:docComment>
+						<summary>Implements ICustomSerializedDomainModel.ShouldSerializeRootElement</summary>
+					</plx:docComment>
+				</plx:leadingInfo>
+				<plx:interfaceMember dataTypeName="ICustomSerializedDomainModel" memberName="ShouldSerializeRootElement"/>
+				<plx:param name="element" dataTypeName="ModelElement"/>
+				<plx:returns dataTypeName=".boolean"/>
+				<xsl:variable name="rootElementConditions" select="se:RootElements/se:RootElement/se:ConditionalSerialization"/>
+				<xsl:if test="$rootElementConditions">
+					<plx:local name="elementDomainClass" dataTypeName="DomainClassInfo">
+						<plx:initialize>
+							<plx:callInstance name="GetDomainClass">
+								<plx:callObject>
+									<plx:nameRef name="element" type="parameter"/>
+								</plx:callObject>
+							</plx:callInstance>
+						</plx:initialize>
+					</plx:local>
+					<xsl:for-each select="$rootElementConditions">
+						<xsl:variable name="elementName">
+							<xsl:choose>
+								<xsl:when test="position()=1">
+									<xsl:text>branch</xsl:text>
+								</xsl:when>
+								<xsl:otherwise>
+									<xsl:text>alternateBranch</xsl:text>
+								</xsl:otherwise>
+							</xsl:choose>
+						</xsl:variable>
+						<xsl:element name="plx:{$elementName}">
+							<plx:condition>
+								<plx:callInstance name="IsDerivedFrom">
+									<plx:callObject>
+										<plx:nameRef name="elementDomainClass"/>
+									</plx:callObject>
+									<plx:passParam>
+										<plx:callStatic name="DomainClassId" dataTypeName="{../@Class}" type="field"/>
+									</plx:passParam>
+								</plx:callInstance>
+							</plx:condition>
+							<xsl:copy-of select="child::plx:*"/>
+						</xsl:element>
+					</xsl:for-each>
+				</xsl:if>
+				<plx:return>
+					<plx:trueKeyword/>
+				</plx:return>
+			</plx:function>
 			<plx:function visibility="{$InterfaceImplementationVisibility}" name="GetRootRelationshipContainers" modifier="static">
 				<plx:leadingInfo>
 					<plx:docComment>
@@ -2960,9 +3010,10 @@
 	</xsl:template>
 	<xsl:template name="ReturnCustomSerializedPropertyInfo">
 		<xsl:for-each select="se:Condition">
+			<xsl:copy-of select="child::*[position()!=last()]"/>
 			<plx:branch>
 				<plx:condition>
-					<xsl:copy-of select="child::*"/>
+					<xsl:copy-of select="child::*[last()]"/>
 				</plx:condition>
 				<xsl:call-template name="ReturnCustomSerializedPropertyInfo"/>
 			</plx:branch>

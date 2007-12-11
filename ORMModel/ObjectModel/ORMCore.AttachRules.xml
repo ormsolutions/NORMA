@@ -317,6 +317,11 @@
 				</arg:RuleOn>
 			</arg:ChangeRule>
 		</arg:RuleContainer>
+		<arg:RuleContainer class="NameGenerator">
+			<arg:ChangeRule methodName="SynchronizedRefinementsPropertyChangedRule" methodInRuleClass="true">
+				<arg:RuleOn targetType="NameGenerator"/>
+			</arg:ChangeRule>
+		</arg:RuleContainer>
 		<arg:RuleContainer class="Note">
 			<arg:ChangeRule methodName="NoteChangeRule">
 				<arg:RuleOn targetType="Note"/>

@@ -27,6 +27,920 @@ using DslDesign = global::Microsoft.VisualStudio.Modeling.Design;
 namespace Neumont.Tools.ORM.ObjectModel
 {
 	/// <summary>
+	/// DomainClass NameConsumer
+	/// </summary>
+	[DslDesign::DisplayNameResource("Neumont.Tools.ORM.ObjectModel.NameConsumer.DisplayName", typeof(global::Neumont.Tools.ORM.ObjectModel.ORMCoreDomainModel), "Neumont.Tools.ORM.GeneratedCode.CoreDomainModelResx")]
+	[DslDesign::DescriptionResource("Neumont.Tools.ORM.ObjectModel.NameConsumer.Description", typeof(global::Neumont.Tools.ORM.ObjectModel.ORMCoreDomainModel), "Neumont.Tools.ORM.GeneratedCode.CoreDomainModelResx")]
+	[global::System.CLSCompliant(true)]
+	[DslModeling::DomainObjectId("491389aa-b7db-4461-b3ce-8064f8de4072")]
+	public partial class NameConsumer : DslModeling::ModelElement
+	{
+		#region Constructors, domain class Id
+	
+		/// <summary>
+		/// NameConsumer domain class Id.
+		/// </summary>
+		public static readonly new global::System.Guid DomainClassId = new global::System.Guid(0x491389aa, 0xb7db, 0x4461, 0xb3, 0xce, 0x80, 0x64, 0xf8, 0xde, 0x40, 0x72);
+		/// <summary>
+		/// Constructor
+		/// </summary>
+		/// <param name="store">Store where new element is to be created.</param>
+		/// <param name="propertyAssignments">List of domain property id/value pairs to set once the element is created.</param>
+		public NameConsumer(DslModeling::Store store, params DslModeling::PropertyAssignment[] propertyAssignments)
+			: this(store != null ? store.DefaultPartition : null, propertyAssignments)
+		{
+		}
+		
+		/// <summary>
+		/// Constructor
+		/// </summary>
+		/// <param name="partition">Partition where new element is to be created.</param>
+		/// <param name="propertyAssignments">List of domain property id/value pairs to set once the element is created.</param>
+		public NameConsumer(DslModeling::Partition partition, params DslModeling::PropertyAssignment[] propertyAssignments)
+			: base(partition, propertyAssignments)
+		{
+		}
+		#endregion
+	}
+}
+namespace Neumont.Tools.ORM.ObjectModel
+{
+	/// <summary>
+	/// DomainClass OmittedWord
+	/// </summary>
+	[DslDesign::DisplayNameResource("Neumont.Tools.ORM.ObjectModel.OmittedWord.DisplayName", typeof(global::Neumont.Tools.ORM.ObjectModel.ORMCoreDomainModel), "Neumont.Tools.ORM.GeneratedCode.CoreDomainModelResx")]
+	[DslDesign::DescriptionResource("Neumont.Tools.ORM.ObjectModel.OmittedWord.Description", typeof(global::Neumont.Tools.ORM.ObjectModel.ORMCoreDomainModel), "Neumont.Tools.ORM.GeneratedCode.CoreDomainModelResx")]
+	[global::System.CLSCompliant(true)]
+	[DslModeling::DomainObjectId("df462d31-c2e4-47a5-af48-7ffc55de4b2a")]
+	public partial class OmittedWord : DslModeling::ModelElement
+	{
+		#region Constructors, domain class Id
+	
+		/// <summary>
+		/// OmittedWord domain class Id.
+		/// </summary>
+		public static readonly new global::System.Guid DomainClassId = new global::System.Guid(0xdf462d31, 0xc2e4, 0x47a5, 0xaf, 0x48, 0x7f, 0xfc, 0x55, 0xde, 0x4b, 0x2a);
+		/// <summary>
+		/// Constructor
+		/// </summary>
+		/// <param name="store">Store where new element is to be created.</param>
+		/// <param name="propertyAssignments">List of domain property id/value pairs to set once the element is created.</param>
+		public OmittedWord(DslModeling::Store store, params DslModeling::PropertyAssignment[] propertyAssignments)
+			: this(store != null ? store.DefaultPartition : null, propertyAssignments)
+		{
+		}
+		
+		/// <summary>
+		/// Constructor
+		/// </summary>
+		/// <param name="partition">Partition where new element is to be created.</param>
+		/// <param name="propertyAssignments">List of domain property id/value pairs to set once the element is created.</param>
+		public OmittedWord(DslModeling::Partition partition, params DslModeling::PropertyAssignment[] propertyAssignments)
+			: base(partition, propertyAssignments)
+		{
+		}
+		#endregion
+		#region Word domain property code
+		
+		/// <summary>
+		/// Word domain property Id.
+		/// </summary>
+		public static readonly global::System.Guid WordDomainPropertyId = new global::System.Guid(0x80822cfe, 0x225b, 0x4618, 0xb0, 0xf1, 0xc8, 0x3c, 0x60, 0xd4, 0x58, 0x81);
+		
+		/// <summary>
+		/// Storage for Word
+		/// </summary>
+		private global::System.String wordPropertyStorage = string.Empty;
+		
+		/// <summary>
+		/// Gets or sets the value of Word domain property.
+		/// </summary>
+		[DslDesign::DisplayNameResource("Neumont.Tools.ORM.ObjectModel.OmittedWord/Word.DisplayName", typeof(global::Neumont.Tools.ORM.ObjectModel.ORMCoreDomainModel), "Neumont.Tools.ORM.GeneratedCode.CoreDomainModelResx")]
+		[DslDesign::DescriptionResource("Neumont.Tools.ORM.ObjectModel.OmittedWord/Word.Description", typeof(global::Neumont.Tools.ORM.ObjectModel.ORMCoreDomainModel), "Neumont.Tools.ORM.GeneratedCode.CoreDomainModelResx")]
+		[DslModeling::DomainObjectId("80822cfe-225b-4618-b0f1-c83c60d45881")]
+		public global::System.String Word
+		{
+			[global::System.Diagnostics.DebuggerStepThrough]
+			get
+			{
+				return wordPropertyStorage;
+			}
+			[global::System.Diagnostics.DebuggerStepThrough]
+			set
+			{
+				WordPropertyHandler.Instance.SetValue(this, value);
+			}
+		}
+		/// <summary>
+		/// Value handler for the OmittedWord.Word domain property.
+		/// </summary>
+		internal sealed partial class WordPropertyHandler : DslModeling::DomainPropertyValueHandler<OmittedWord, global::System.String>
+		{
+			private WordPropertyHandler() { }
+		
+			/// <summary>
+			/// Gets the singleton instance of the OmittedWord.Word domain property value handler.
+			/// </summary>
+			public static readonly WordPropertyHandler Instance = new WordPropertyHandler();
+		
+			/// <summary>
+			/// Gets the Id of the OmittedWord.Word domain property.
+			/// </summary>
+			public sealed override global::System.Guid DomainPropertyId
+			{
+				[global::System.Diagnostics.DebuggerStepThrough]
+				get
+				{
+					return WordDomainPropertyId;
+				}
+			}
+			
+			/// <summary>
+			/// Gets a strongly-typed value of the property on specified element.
+			/// </summary>
+			/// <param name="element">Element which owns the property.</param>
+			/// <returns>Property value.</returns>
+			public override sealed global::System.String GetValue(OmittedWord element)
+			{
+				if (element == null) throw new global::System.ArgumentNullException("element");
+				return element.wordPropertyStorage;
+			}
+		
+			/// <summary>
+			/// Sets property value on an element.
+			/// </summary>
+			/// <param name="element">Element which owns the property.</param>
+			/// <param name="newValue">New property value.</param>
+			public override sealed void SetValue(OmittedWord element, global::System.String newValue)
+			{
+				if (element == null) throw new global::System.ArgumentNullException("element");
+		
+				global::System.String oldValue = GetValue(element);
+				if (newValue != oldValue)
+				{
+					ValueChanging(element, oldValue, newValue);
+					element.wordPropertyStorage = newValue;
+					ValueChanged(element, oldValue, newValue);
+				}
+			}
+		}
+		
+		#endregion
+		#region NameGenerator opposite domain role accessor
+		/// <summary>
+		/// Gets or sets NameGenerator.
+		/// Description for
+		/// Neumont.Tools.ORM.ObjectModel.NameGeneratorContainsOmittedWord.OmittedWord
+		/// </summary>
+		public virtual NameGenerator NameGenerator
+		{
+			[global::System.Diagnostics.DebuggerStepThrough]
+			get
+			{
+				return DslModeling::DomainRoleInfo.GetLinkedElement(this, global::Neumont.Tools.ORM.ObjectModel.NameGeneratorContainsOmittedWord.OmittedWordDomainRoleId) as NameGenerator;
+			}
+			[global::System.Diagnostics.DebuggerStepThrough]
+			set
+			{
+				DslModeling::DomainRoleInfo.SetLinkedElement(this, global::Neumont.Tools.ORM.ObjectModel.NameGeneratorContainsOmittedWord.OmittedWordDomainRoleId, value);
+			}
+		}
+		#endregion
+	}
+}
+namespace Neumont.Tools.ORM.ObjectModel
+{
+	/// <summary>
+	/// DomainClass NameGenerator
+	/// </summary>
+	[DslDesign::DisplayNameResource("Neumont.Tools.ORM.ObjectModel.NameGenerator.DisplayName", typeof(global::Neumont.Tools.ORM.ObjectModel.ORMCoreDomainModel), "Neumont.Tools.ORM.GeneratedCode.CoreDomainModelResx")]
+	[DslDesign::DescriptionResource("Neumont.Tools.ORM.ObjectModel.NameGenerator.Description", typeof(global::Neumont.Tools.ORM.ObjectModel.ORMCoreDomainModel), "Neumont.Tools.ORM.GeneratedCode.CoreDomainModelResx")]
+	[global::System.CLSCompliant(true)]
+	[DslModeling::DomainObjectId("e032727f-440a-431a-82e7-2454be939c82")]
+	public partial class NameGenerator : NameConsumer
+	{
+		#region Constructors, domain class Id
+	
+		/// <summary>
+		/// NameGenerator domain class Id.
+		/// </summary>
+		public static readonly new global::System.Guid DomainClassId = new global::System.Guid(0xe032727f, 0x440a, 0x431a, 0x82, 0xe7, 0x24, 0x54, 0xbe, 0x93, 0x9c, 0x82);
+		/// <summary>
+		/// Constructor
+		/// </summary>
+		/// <param name="store">Store where new element is to be created.</param>
+		/// <param name="propertyAssignments">List of domain property id/value pairs to set once the element is created.</param>
+		public NameGenerator(DslModeling::Store store, params DslModeling::PropertyAssignment[] propertyAssignments)
+			: this(store != null ? store.DefaultPartition : null, propertyAssignments)
+		{
+		}
+		
+		/// <summary>
+		/// Constructor
+		/// </summary>
+		/// <param name="partition">Partition where new element is to be created.</param>
+		/// <param name="propertyAssignments">List of domain property id/value pairs to set once the element is created.</param>
+		public NameGenerator(DslModeling::Partition partition, params DslModeling::PropertyAssignment[] propertyAssignments)
+			: base(partition, propertyAssignments)
+		{
+		}
+		#endregion
+		#region NameUsage domain property code
+		
+		/// <summary>
+		/// NameUsage domain property Id.
+		/// </summary>
+		public static readonly global::System.Guid NameUsageDomainPropertyId = new global::System.Guid(0xb92d3173, 0x900e, 0x4f35, 0xba, 0xc2, 0x32, 0xa6, 0x07, 0xe7, 0x44, 0xfa);
+		
+		/// <summary>
+		/// Gets or sets the value of NameUsage domain property.
+		/// </summary>
+		[DslDesign::DisplayNameResource("Neumont.Tools.ORM.ObjectModel.NameGenerator/NameUsage.DisplayName", typeof(global::Neumont.Tools.ORM.ObjectModel.ORMCoreDomainModel), "Neumont.Tools.ORM.GeneratedCode.CoreDomainModelResx")]
+		[DslDesign::DescriptionResource("Neumont.Tools.ORM.ObjectModel.NameGenerator/NameUsage.Description", typeof(global::Neumont.Tools.ORM.ObjectModel.ORMCoreDomainModel), "Neumont.Tools.ORM.GeneratedCode.CoreDomainModelResx")]
+		[global::System.ComponentModel.Browsable(false)]
+		[DslModeling::DomainProperty(Kind = DslModeling::DomainPropertyKind.CustomStorage)]
+		[DslModeling::DomainObjectId("b92d3173-900e-4f35-bac2-32a607e744fa")]
+		public global::System.String NameUsage
+		{
+			[global::System.Diagnostics.DebuggerStepThrough]
+			get
+			{
+				return NameUsagePropertyHandler.Instance.GetValue(this);
+			}
+			[global::System.Diagnostics.DebuggerStepThrough]
+			set
+			{
+				NameUsagePropertyHandler.Instance.SetValue(this, value);
+			}
+		}
+		/// <summary>
+		/// Value handler for the NameGenerator.NameUsage domain property.
+		/// </summary>
+		internal sealed partial class NameUsagePropertyHandler : DslModeling::DomainPropertyValueHandler<NameGenerator, global::System.String>
+		{
+			private NameUsagePropertyHandler() { }
+		
+			/// <summary>
+			/// Gets the singleton instance of the NameGenerator.NameUsage domain property value handler.
+			/// </summary>
+			public static readonly NameUsagePropertyHandler Instance = new NameUsagePropertyHandler();
+		
+			/// <summary>
+			/// Gets the Id of the NameGenerator.NameUsage domain property.
+			/// </summary>
+			public sealed override global::System.Guid DomainPropertyId
+			{
+				[global::System.Diagnostics.DebuggerStepThrough]
+				get
+				{
+					return NameUsageDomainPropertyId;
+				}
+			}
+			
+			/// <summary>
+			/// Gets a strongly-typed value of the property on specified element.
+			/// </summary>
+			/// <param name="element">Element which owns the property.</param>
+			/// <returns>Property value.</returns>
+			public override sealed global::System.String GetValue(NameGenerator element)
+			{
+				if (element == null) throw new global::System.ArgumentNullException("element");
+				// There is no storage for NameUsage because its Kind is
+				// set to CustomStorage. Please provide the GetNameUsageValue()
+				// method on the domain class.
+				return element.GetNameUsageValue();
+			}
+		
+			/// <summary>
+			/// Sets property value on an element.
+			/// </summary>
+			/// <param name="element">Element which owns the property.</param>
+			/// <param name="newValue">New property value.</param>
+			public override sealed void SetValue(NameGenerator element, global::System.String newValue)
+			{
+				if (element == null) throw new global::System.ArgumentNullException("element");
+		
+				global::System.String oldValue = GetValue(element);
+				if (newValue != oldValue)
+				{
+					ValueChanging(element, oldValue, newValue);
+					// There is no storage for NameUsage because its Kind is
+					// set to CustomStorage. Please provide the SetNameUsageValue()
+					// method on the domain class.
+					element.SetNameUsageValue(newValue);
+					//ValueChanged(element, oldValue, GetValue(element));
+					ValueChanged(element, oldValue, newValue);
+				}
+			}
+		}
+		
+		#endregion
+		#region CasingOption domain property code
+		
+		/// <summary>
+		/// CasingOption domain property Id.
+		/// </summary>
+		public static readonly global::System.Guid CasingOptionDomainPropertyId = new global::System.Guid(0x30950747, 0x68e7, 0x4a64, 0x8e, 0xd7, 0xba, 0xce, 0xda, 0xaf, 0xd4, 0xa2);
+		
+		/// <summary>
+		/// Storage for CasingOption
+		/// </summary>
+		private NameGeneratorCasingOption casingOptionPropertyStorage = Neumont.Tools.ORM.ObjectModel.NameGeneratorCasingOption.None;
+		
+		/// <summary>
+		/// Gets or sets the value of CasingOption domain property.
+		/// </summary>
+		[DslDesign::DisplayNameResource("Neumont.Tools.ORM.ObjectModel.NameGenerator/CasingOption.DisplayName", typeof(global::Neumont.Tools.ORM.ObjectModel.ORMCoreDomainModel), "Neumont.Tools.ORM.GeneratedCode.CoreDomainModelResx")]
+		[DslDesign::DescriptionResource("Neumont.Tools.ORM.ObjectModel.NameGenerator/CasingOption.Description", typeof(global::Neumont.Tools.ORM.ObjectModel.ORMCoreDomainModel), "Neumont.Tools.ORM.GeneratedCode.CoreDomainModelResx")]
+		[global::System.ComponentModel.DefaultValue(Neumont.Tools.ORM.ObjectModel.NameGeneratorCasingOption.None)]
+		[DslModeling::DomainObjectId("30950747-68e7-4a64-8ed7-bacedaafd4a2")]
+		public NameGeneratorCasingOption CasingOption
+		{
+			[global::System.Diagnostics.DebuggerStepThrough]
+			get
+			{
+				return casingOptionPropertyStorage;
+			}
+			[global::System.Diagnostics.DebuggerStepThrough]
+			set
+			{
+				CasingOptionPropertyHandler.Instance.SetValue(this, value);
+			}
+		}
+		/// <summary>
+		/// Value handler for the NameGenerator.CasingOption domain property.
+		/// </summary>
+		internal sealed partial class CasingOptionPropertyHandler : DslModeling::DomainPropertyValueHandler<NameGenerator, NameGeneratorCasingOption>
+		{
+			private CasingOptionPropertyHandler() { }
+		
+			/// <summary>
+			/// Gets the singleton instance of the NameGenerator.CasingOption domain property value handler.
+			/// </summary>
+			public static readonly CasingOptionPropertyHandler Instance = new CasingOptionPropertyHandler();
+		
+			/// <summary>
+			/// Gets the Id of the NameGenerator.CasingOption domain property.
+			/// </summary>
+			public sealed override global::System.Guid DomainPropertyId
+			{
+				[global::System.Diagnostics.DebuggerStepThrough]
+				get
+				{
+					return CasingOptionDomainPropertyId;
+				}
+			}
+			
+			/// <summary>
+			/// Gets a strongly-typed value of the property on specified element.
+			/// </summary>
+			/// <param name="element">Element which owns the property.</param>
+			/// <returns>Property value.</returns>
+			public override sealed NameGeneratorCasingOption GetValue(NameGenerator element)
+			{
+				if (element == null) throw new global::System.ArgumentNullException("element");
+				return element.casingOptionPropertyStorage;
+			}
+		
+			/// <summary>
+			/// Sets property value on an element.
+			/// </summary>
+			/// <param name="element">Element which owns the property.</param>
+			/// <param name="newValue">New property value.</param>
+			public override sealed void SetValue(NameGenerator element, NameGeneratorCasingOption newValue)
+			{
+				if (element == null) throw new global::System.ArgumentNullException("element");
+		
+				NameGeneratorCasingOption oldValue = GetValue(element);
+				if (newValue != oldValue)
+				{
+					ValueChanging(element, oldValue, newValue);
+					element.casingOptionPropertyStorage = newValue;
+					ValueChanged(element, oldValue, newValue);
+				}
+			}
+		}
+		
+		#endregion
+		#region SpacingFormat domain property code
+		
+		/// <summary>
+		/// SpacingFormat domain property Id.
+		/// </summary>
+		public static readonly global::System.Guid SpacingFormatDomainPropertyId = new global::System.Guid(0xcfd3e74c, 0xde51, 0x4fd9, 0xad, 0xdb, 0x01, 0xb0, 0xf5, 0x41, 0x4b, 0xfd);
+		
+		/// <summary>
+		/// Storage for SpacingFormat
+		/// </summary>
+		private NameGeneratorSpacingFormat spacingFormatPropertyStorage = Neumont.Tools.ORM.ObjectModel.NameGeneratorSpacingFormat.Retain;
+		
+		/// <summary>
+		/// Gets or sets the value of SpacingFormat domain property.
+		/// </summary>
+		[DslDesign::DisplayNameResource("Neumont.Tools.ORM.ObjectModel.NameGenerator/SpacingFormat.DisplayName", typeof(global::Neumont.Tools.ORM.ObjectModel.ORMCoreDomainModel), "Neumont.Tools.ORM.GeneratedCode.CoreDomainModelResx")]
+		[DslDesign::DescriptionResource("Neumont.Tools.ORM.ObjectModel.NameGenerator/SpacingFormat.Description", typeof(global::Neumont.Tools.ORM.ObjectModel.ORMCoreDomainModel), "Neumont.Tools.ORM.GeneratedCode.CoreDomainModelResx")]
+		[global::System.ComponentModel.DefaultValue(Neumont.Tools.ORM.ObjectModel.NameGeneratorSpacingFormat.Retain)]
+		[DslModeling::DomainObjectId("cfd3e74c-de51-4fd9-addb-01b0f5414bfd")]
+		public NameGeneratorSpacingFormat SpacingFormat
+		{
+			[global::System.Diagnostics.DebuggerStepThrough]
+			get
+			{
+				return spacingFormatPropertyStorage;
+			}
+			[global::System.Diagnostics.DebuggerStepThrough]
+			set
+			{
+				SpacingFormatPropertyHandler.Instance.SetValue(this, value);
+			}
+		}
+		/// <summary>
+		/// Value handler for the NameGenerator.SpacingFormat domain property.
+		/// </summary>
+		internal sealed partial class SpacingFormatPropertyHandler : DslModeling::DomainPropertyValueHandler<NameGenerator, NameGeneratorSpacingFormat>
+		{
+			private SpacingFormatPropertyHandler() { }
+		
+			/// <summary>
+			/// Gets the singleton instance of the NameGenerator.SpacingFormat domain property value handler.
+			/// </summary>
+			public static readonly SpacingFormatPropertyHandler Instance = new SpacingFormatPropertyHandler();
+		
+			/// <summary>
+			/// Gets the Id of the NameGenerator.SpacingFormat domain property.
+			/// </summary>
+			public sealed override global::System.Guid DomainPropertyId
+			{
+				[global::System.Diagnostics.DebuggerStepThrough]
+				get
+				{
+					return SpacingFormatDomainPropertyId;
+				}
+			}
+			
+			/// <summary>
+			/// Gets a strongly-typed value of the property on specified element.
+			/// </summary>
+			/// <param name="element">Element which owns the property.</param>
+			/// <returns>Property value.</returns>
+			public override sealed NameGeneratorSpacingFormat GetValue(NameGenerator element)
+			{
+				if (element == null) throw new global::System.ArgumentNullException("element");
+				return element.spacingFormatPropertyStorage;
+			}
+		
+			/// <summary>
+			/// Sets property value on an element.
+			/// </summary>
+			/// <param name="element">Element which owns the property.</param>
+			/// <param name="newValue">New property value.</param>
+			public override sealed void SetValue(NameGenerator element, NameGeneratorSpacingFormat newValue)
+			{
+				if (element == null) throw new global::System.ArgumentNullException("element");
+		
+				NameGeneratorSpacingFormat oldValue = GetValue(element);
+				if (newValue != oldValue)
+				{
+					ValueChanging(element, oldValue, newValue);
+					element.spacingFormatPropertyStorage = newValue;
+					ValueChanged(element, oldValue, newValue);
+				}
+			}
+		}
+		
+		#endregion
+		#region SpacingReplacement domain property code
+		
+		/// <summary>
+		/// SpacingReplacement domain property Id.
+		/// </summary>
+		public static readonly global::System.Guid SpacingReplacementDomainPropertyId = new global::System.Guid(0x0e203acb, 0x3611, 0x4180, 0x93, 0x24, 0x7f, 0xd7, 0xd3, 0x0a, 0x5a, 0xe4);
+		
+		/// <summary>
+		/// Storage for SpacingReplacement
+		/// </summary>
+		private global::System.String spacingReplacementPropertyStorage = string.Empty;
+		
+		/// <summary>
+		/// Gets or sets the value of SpacingReplacement domain property.
+		/// </summary>
+		[DslDesign::DisplayNameResource("Neumont.Tools.ORM.ObjectModel.NameGenerator/SpacingReplacement.DisplayName", typeof(global::Neumont.Tools.ORM.ObjectModel.ORMCoreDomainModel), "Neumont.Tools.ORM.GeneratedCode.CoreDomainModelResx")]
+		[DslDesign::DescriptionResource("Neumont.Tools.ORM.ObjectModel.NameGenerator/SpacingReplacement.Description", typeof(global::Neumont.Tools.ORM.ObjectModel.ORMCoreDomainModel), "Neumont.Tools.ORM.GeneratedCode.CoreDomainModelResx")]
+		[DslModeling::DomainObjectId("0e203acb-3611-4180-9324-7fd7d30a5ae4")]
+		public global::System.String SpacingReplacement
+		{
+			[global::System.Diagnostics.DebuggerStepThrough]
+			get
+			{
+				return spacingReplacementPropertyStorage;
+			}
+			[global::System.Diagnostics.DebuggerStepThrough]
+			set
+			{
+				SpacingReplacementPropertyHandler.Instance.SetValue(this, value);
+			}
+		}
+		/// <summary>
+		/// Value handler for the NameGenerator.SpacingReplacement domain property.
+		/// </summary>
+		internal sealed partial class SpacingReplacementPropertyHandler : DslModeling::DomainPropertyValueHandler<NameGenerator, global::System.String>
+		{
+			private SpacingReplacementPropertyHandler() { }
+		
+			/// <summary>
+			/// Gets the singleton instance of the NameGenerator.SpacingReplacement domain property value handler.
+			/// </summary>
+			public static readonly SpacingReplacementPropertyHandler Instance = new SpacingReplacementPropertyHandler();
+		
+			/// <summary>
+			/// Gets the Id of the NameGenerator.SpacingReplacement domain property.
+			/// </summary>
+			public sealed override global::System.Guid DomainPropertyId
+			{
+				[global::System.Diagnostics.DebuggerStepThrough]
+				get
+				{
+					return SpacingReplacementDomainPropertyId;
+				}
+			}
+			
+			/// <summary>
+			/// Gets a strongly-typed value of the property on specified element.
+			/// </summary>
+			/// <param name="element">Element which owns the property.</param>
+			/// <returns>Property value.</returns>
+			public override sealed global::System.String GetValue(NameGenerator element)
+			{
+				if (element == null) throw new global::System.ArgumentNullException("element");
+				return element.spacingReplacementPropertyStorage;
+			}
+		
+			/// <summary>
+			/// Sets property value on an element.
+			/// </summary>
+			/// <param name="element">Element which owns the property.</param>
+			/// <param name="newValue">New property value.</param>
+			public override sealed void SetValue(NameGenerator element, global::System.String newValue)
+			{
+				if (element == null) throw new global::System.ArgumentNullException("element");
+		
+				global::System.String oldValue = GetValue(element);
+				if (newValue != oldValue)
+				{
+					ValueChanging(element, oldValue, newValue);
+					element.spacingReplacementPropertyStorage = newValue;
+					ValueChanged(element, oldValue, newValue);
+				}
+			}
+		}
+		
+		#endregion
+		#region AutomaticallyShortenNames domain property code
+		
+		/// <summary>
+		/// AutomaticallyShortenNames domain property Id.
+		/// </summary>
+		public static readonly global::System.Guid AutomaticallyShortenNamesDomainPropertyId = new global::System.Guid(0x6a3526d9, 0xafb3, 0x417e, 0xa9, 0x88, 0xa4, 0x46, 0x44, 0xaa, 0x09, 0x4e);
+		
+		/// <summary>
+		/// Storage for AutomaticallyShortenNames
+		/// </summary>
+		private global::System.Boolean automaticallyShortenNamesPropertyStorage = true;
+		
+		/// <summary>
+		/// Gets or sets the value of AutomaticallyShortenNames domain property.
+		/// </summary>
+		[DslDesign::DisplayNameResource("Neumont.Tools.ORM.ObjectModel.NameGenerator/AutomaticallyShortenNames.DisplayName", typeof(global::Neumont.Tools.ORM.ObjectModel.ORMCoreDomainModel), "Neumont.Tools.ORM.GeneratedCode.CoreDomainModelResx")]
+		[DslDesign::DescriptionResource("Neumont.Tools.ORM.ObjectModel.NameGenerator/AutomaticallyShortenNames.Description", typeof(global::Neumont.Tools.ORM.ObjectModel.ORMCoreDomainModel), "Neumont.Tools.ORM.GeneratedCode.CoreDomainModelResx")]
+		[global::System.ComponentModel.DefaultValue(true)]
+		[DslModeling::DomainObjectId("6a3526d9-afb3-417e-a988-a44644aa094e")]
+		public global::System.Boolean AutomaticallyShortenNames
+		{
+			[global::System.Diagnostics.DebuggerStepThrough]
+			get
+			{
+				return automaticallyShortenNamesPropertyStorage;
+			}
+			[global::System.Diagnostics.DebuggerStepThrough]
+			set
+			{
+				AutomaticallyShortenNamesPropertyHandler.Instance.SetValue(this, value);
+			}
+		}
+		/// <summary>
+		/// Value handler for the NameGenerator.AutomaticallyShortenNames domain property.
+		/// </summary>
+		internal sealed partial class AutomaticallyShortenNamesPropertyHandler : DslModeling::DomainPropertyValueHandler<NameGenerator, global::System.Boolean>
+		{
+			private AutomaticallyShortenNamesPropertyHandler() { }
+		
+			/// <summary>
+			/// Gets the singleton instance of the NameGenerator.AutomaticallyShortenNames domain property value handler.
+			/// </summary>
+			public static readonly AutomaticallyShortenNamesPropertyHandler Instance = new AutomaticallyShortenNamesPropertyHandler();
+		
+			/// <summary>
+			/// Gets the Id of the NameGenerator.AutomaticallyShortenNames domain property.
+			/// </summary>
+			public sealed override global::System.Guid DomainPropertyId
+			{
+				[global::System.Diagnostics.DebuggerStepThrough]
+				get
+				{
+					return AutomaticallyShortenNamesDomainPropertyId;
+				}
+			}
+			
+			/// <summary>
+			/// Gets a strongly-typed value of the property on specified element.
+			/// </summary>
+			/// <param name="element">Element which owns the property.</param>
+			/// <returns>Property value.</returns>
+			public override sealed global::System.Boolean GetValue(NameGenerator element)
+			{
+				if (element == null) throw new global::System.ArgumentNullException("element");
+				return element.automaticallyShortenNamesPropertyStorage;
+			}
+		
+			/// <summary>
+			/// Sets property value on an element.
+			/// </summary>
+			/// <param name="element">Element which owns the property.</param>
+			/// <param name="newValue">New property value.</param>
+			public override sealed void SetValue(NameGenerator element, global::System.Boolean newValue)
+			{
+				if (element == null) throw new global::System.ArgumentNullException("element");
+		
+				global::System.Boolean oldValue = GetValue(element);
+				if (newValue != oldValue)
+				{
+					ValueChanging(element, oldValue, newValue);
+					element.automaticallyShortenNamesPropertyStorage = newValue;
+					ValueChanged(element, oldValue, newValue);
+				}
+			}
+		}
+		
+		#endregion
+		#region UseTargetDefaultMaximum domain property code
+		
+		/// <summary>
+		/// UseTargetDefaultMaximum domain property Id.
+		/// </summary>
+		public static readonly global::System.Guid UseTargetDefaultMaximumDomainPropertyId = new global::System.Guid(0x67b83b76, 0x394f, 0x4702, 0xa9, 0x84, 0x60, 0x09, 0xdc, 0x51, 0xd2, 0x24);
+		
+		/// <summary>
+		/// Storage for UseTargetDefaultMaximum
+		/// </summary>
+		private global::System.Boolean useTargetDefaultMaximumPropertyStorage = true;
+		
+		/// <summary>
+		/// Gets or sets the value of UseTargetDefaultMaximum domain property.
+		/// </summary>
+		[DslDesign::DisplayNameResource("Neumont.Tools.ORM.ObjectModel.NameGenerator/UseTargetDefaultMaximum.DisplayName", typeof(global::Neumont.Tools.ORM.ObjectModel.ORMCoreDomainModel), "Neumont.Tools.ORM.GeneratedCode.CoreDomainModelResx")]
+		[DslDesign::DescriptionResource("Neumont.Tools.ORM.ObjectModel.NameGenerator/UseTargetDefaultMaximum.Description", typeof(global::Neumont.Tools.ORM.ObjectModel.ORMCoreDomainModel), "Neumont.Tools.ORM.GeneratedCode.CoreDomainModelResx")]
+		[global::System.ComponentModel.DefaultValue(true)]
+		[DslModeling::DomainObjectId("67b83b76-394f-4702-a984-6009dc51d224")]
+		public global::System.Boolean UseTargetDefaultMaximum
+		{
+			[global::System.Diagnostics.DebuggerStepThrough]
+			get
+			{
+				return useTargetDefaultMaximumPropertyStorage;
+			}
+			[global::System.Diagnostics.DebuggerStepThrough]
+			set
+			{
+				UseTargetDefaultMaximumPropertyHandler.Instance.SetValue(this, value);
+			}
+		}
+		/// <summary>
+		/// Value handler for the NameGenerator.UseTargetDefaultMaximum domain property.
+		/// </summary>
+		internal sealed partial class UseTargetDefaultMaximumPropertyHandler : DslModeling::DomainPropertyValueHandler<NameGenerator, global::System.Boolean>
+		{
+			private UseTargetDefaultMaximumPropertyHandler() { }
+		
+			/// <summary>
+			/// Gets the singleton instance of the NameGenerator.UseTargetDefaultMaximum domain property value handler.
+			/// </summary>
+			public static readonly UseTargetDefaultMaximumPropertyHandler Instance = new UseTargetDefaultMaximumPropertyHandler();
+		
+			/// <summary>
+			/// Gets the Id of the NameGenerator.UseTargetDefaultMaximum domain property.
+			/// </summary>
+			public sealed override global::System.Guid DomainPropertyId
+			{
+				[global::System.Diagnostics.DebuggerStepThrough]
+				get
+				{
+					return UseTargetDefaultMaximumDomainPropertyId;
+				}
+			}
+			
+			/// <summary>
+			/// Gets a strongly-typed value of the property on specified element.
+			/// </summary>
+			/// <param name="element">Element which owns the property.</param>
+			/// <returns>Property value.</returns>
+			public override sealed global::System.Boolean GetValue(NameGenerator element)
+			{
+				if (element == null) throw new global::System.ArgumentNullException("element");
+				return element.useTargetDefaultMaximumPropertyStorage;
+			}
+		
+			/// <summary>
+			/// Sets property value on an element.
+			/// </summary>
+			/// <param name="element">Element which owns the property.</param>
+			/// <param name="newValue">New property value.</param>
+			public override sealed void SetValue(NameGenerator element, global::System.Boolean newValue)
+			{
+				if (element == null) throw new global::System.ArgumentNullException("element");
+		
+				global::System.Boolean oldValue = GetValue(element);
+				if (newValue != oldValue)
+				{
+					ValueChanging(element, oldValue, newValue);
+					element.useTargetDefaultMaximumPropertyStorage = newValue;
+					ValueChanged(element, oldValue, newValue);
+				}
+			}
+		}
+		
+		#endregion
+		#region UserDefinedMaximum domain property code
+		
+		/// <summary>
+		/// UserDefinedMaximum domain property Id.
+		/// </summary>
+		public static readonly global::System.Guid UserDefinedMaximumDomainPropertyId = new global::System.Guid(0xfc154ad5, 0xab52, 0x4ac8, 0x85, 0x6c, 0x28, 0xb0, 0x03, 0x95, 0xab, 0xf4);
+		
+		/// <summary>
+		/// Storage for UserDefinedMaximum
+		/// </summary>
+		private global::System.Int32 userDefinedMaximumPropertyStorage = 128;
+		
+		/// <summary>
+		/// Gets or sets the value of UserDefinedMaximum domain property.
+		/// </summary>
+		[DslDesign::DisplayNameResource("Neumont.Tools.ORM.ObjectModel.NameGenerator/UserDefinedMaximum.DisplayName", typeof(global::Neumont.Tools.ORM.ObjectModel.ORMCoreDomainModel), "Neumont.Tools.ORM.GeneratedCode.CoreDomainModelResx")]
+		[DslDesign::DescriptionResource("Neumont.Tools.ORM.ObjectModel.NameGenerator/UserDefinedMaximum.Description", typeof(global::Neumont.Tools.ORM.ObjectModel.ORMCoreDomainModel), "Neumont.Tools.ORM.GeneratedCode.CoreDomainModelResx")]
+		[global::System.ComponentModel.DefaultValue(128)]
+		[DslModeling::DomainObjectId("fc154ad5-ab52-4ac8-856c-28b00395abf4")]
+		public global::System.Int32 UserDefinedMaximum
+		{
+			[global::System.Diagnostics.DebuggerStepThrough]
+			get
+			{
+				return userDefinedMaximumPropertyStorage;
+			}
+			[global::System.Diagnostics.DebuggerStepThrough]
+			set
+			{
+				UserDefinedMaximumPropertyHandler.Instance.SetValue(this, value);
+			}
+		}
+		/// <summary>
+		/// Value handler for the NameGenerator.UserDefinedMaximum domain property.
+		/// </summary>
+		internal sealed partial class UserDefinedMaximumPropertyHandler : DslModeling::DomainPropertyValueHandler<NameGenerator, global::System.Int32>
+		{
+			private UserDefinedMaximumPropertyHandler() { }
+		
+			/// <summary>
+			/// Gets the singleton instance of the NameGenerator.UserDefinedMaximum domain property value handler.
+			/// </summary>
+			public static readonly UserDefinedMaximumPropertyHandler Instance = new UserDefinedMaximumPropertyHandler();
+		
+			/// <summary>
+			/// Gets the Id of the NameGenerator.UserDefinedMaximum domain property.
+			/// </summary>
+			public sealed override global::System.Guid DomainPropertyId
+			{
+				[global::System.Diagnostics.DebuggerStepThrough]
+				get
+				{
+					return UserDefinedMaximumDomainPropertyId;
+				}
+			}
+			
+			/// <summary>
+			/// Gets a strongly-typed value of the property on specified element.
+			/// </summary>
+			/// <param name="element">Element which owns the property.</param>
+			/// <returns>Property value.</returns>
+			public override sealed global::System.Int32 GetValue(NameGenerator element)
+			{
+				if (element == null) throw new global::System.ArgumentNullException("element");
+				return element.userDefinedMaximumPropertyStorage;
+			}
+		
+			/// <summary>
+			/// Sets property value on an element.
+			/// </summary>
+			/// <param name="element">Element which owns the property.</param>
+			/// <param name="newValue">New property value.</param>
+			public override sealed void SetValue(NameGenerator element, global::System.Int32 newValue)
+			{
+				if (element == null) throw new global::System.ArgumentNullException("element");
+		
+				global::System.Int32 oldValue = GetValue(element);
+				if (newValue != oldValue)
+				{
+					ValueChanging(element, oldValue, newValue);
+					element.userDefinedMaximumPropertyStorage = newValue;
+					ValueChanged(element, oldValue, newValue);
+				}
+			}
+		}
+		
+		#endregion
+		#region RefinedByGeneratorCollection opposite domain role accessor
+		/// <summary>
+		/// Gets a list of RefinedByGeneratorCollection.
+		/// Description for
+		/// Neumont.Tools.ORM.ObjectModel.NameGeneratorRefinesNameGenerator.Parent
+		/// </summary>
+		public virtual DslModeling::LinkedElementCollection<NameGenerator> RefinedByGeneratorCollection
+		{
+			[global::System.Diagnostics.DebuggerStepThrough]
+			get
+			{
+				return new DslModeling::LinkedElementCollection<NameGenerator>(this, global::Neumont.Tools.ORM.ObjectModel.NameGeneratorRefinesNameGenerator.ParentDomainRoleId);
+			}
+		}
+		#endregion
+		#region RefinesGenerator opposite domain role accessor
+		/// <summary>
+		/// Gets or sets RefinesGenerator.
+		/// Description for
+		/// Neumont.Tools.ORM.ObjectModel.NameGeneratorRefinesNameGenerator.Refinement
+		/// </summary>
+		public virtual NameGenerator RefinesGenerator
+		{
+			[global::System.Diagnostics.DebuggerStepThrough]
+			get
+			{
+				return DslModeling::DomainRoleInfo.GetLinkedElement(this, global::Neumont.Tools.ORM.ObjectModel.NameGeneratorRefinesNameGenerator.RefinementDomainRoleId) as NameGenerator;
+			}
+			[global::System.Diagnostics.DebuggerStepThrough]
+			set
+			{
+				DslModeling::DomainRoleInfo.SetLinkedElement(this, global::Neumont.Tools.ORM.ObjectModel.NameGeneratorRefinesNameGenerator.RefinementDomainRoleId, value);
+			}
+		}
+		#endregion
+		#region OmittedWordCollection opposite domain role accessor
+		/// <summary>
+		/// Gets a list of OmittedWordCollection.
+		/// Description for
+		/// Neumont.Tools.ORM.ObjectModel.NameGeneratorContainsOmittedWord.NameGenerator
+		/// </summary>
+		public virtual DslModeling::LinkedElementCollection<OmittedWord> OmittedWordCollection
+		{
+			[global::System.Diagnostics.DebuggerStepThrough]
+			get
+			{
+				return new DslModeling::LinkedElementCollection<OmittedWord>(this, global::Neumont.Tools.ORM.ObjectModel.NameGeneratorContainsOmittedWord.NameGeneratorDomainRoleId);
+			}
+		}
+		#endregion
+	}
+}
+namespace Neumont.Tools.ORM.ObjectModel
+{
+	/// <summary>
+	/// DomainClass NameUsage
+	/// </summary>
+	[Neumont.Tools.ORM.ObjectModel.NameUsageIdentifier("NameUsage")]
+	[DslDesign::DisplayNameResource("Neumont.Tools.ORM.ObjectModel.NameUsage.DisplayName", typeof(global::Neumont.Tools.ORM.ObjectModel.ORMCoreDomainModel), "Neumont.Tools.ORM.GeneratedCode.CoreDomainModelResx")]
+	[DslDesign::DescriptionResource("Neumont.Tools.ORM.ObjectModel.NameUsage.Description", typeof(global::Neumont.Tools.ORM.ObjectModel.ORMCoreDomainModel), "Neumont.Tools.ORM.GeneratedCode.CoreDomainModelResx")]
+	[global::System.CLSCompliant(true)]
+	[DslModeling::DomainObjectId("5b10b7dc-2018-41d9-aef6-e12104614ca0")]
+	public abstract partial class NameUsage : DslModeling::ModelElement
+	{
+		#region Constructors, domain class Id
+	
+		/// <summary>
+		/// NameUsage domain class Id.
+		/// </summary>
+		public static readonly new global::System.Guid DomainClassId = new global::System.Guid(0x5b10b7dc, 0x2018, 0x41d9, 0xae, 0xf6, 0xe1, 0x21, 0x04, 0x61, 0x4c, 0xa0);
+		/// <summary>
+		/// Constructor.
+		/// </summary>
+		/// <param name="partition">Partition where new element is to be created.</param>
+		/// <param name="propertyAssignments">List of domain property id/value pairs to set once the element is created.</param>
+		protected NameUsage(DslModeling::Partition partition, DslModeling::PropertyAssignment[] propertyAssignments)
+			: base(partition, propertyAssignments)
+		{
+		}
+		#endregion
+	}
+}
+namespace Neumont.Tools.ORM.ObjectModel
+{
+	/// <summary>
 	/// DomainClass ModelErrorCategory
 	/// </summary>
 	[DslDesign::DisplayNameResource("Neumont.Tools.ORM.ObjectModel.ModelErrorCategory.DisplayName", typeof(global::Neumont.Tools.ORM.ObjectModel.ORMCoreDomainModel), "Neumont.Tools.ORM.GeneratedCode.CoreDomainModelResx")]
@@ -2755,6 +3669,20 @@ namespace Neumont.Tools.ORM.ObjectModel
 			}
 		}
 		#endregion
+		#region AliasCollection opposite domain role accessor
+		/// <summary>
+		/// Gets a list of AliasCollection.
+		/// Description for Neumont.Tools.ORM.ObjectModel.ObjectTypeHasAlias.ObjectType
+		/// </summary>
+		public virtual DslModeling::LinkedElementCollection<NameAlias> AliasCollection
+		{
+			[global::System.Diagnostics.DebuggerStepThrough]
+			get
+			{
+				return new DslModeling::LinkedElementCollection<NameAlias>(this, global::Neumont.Tools.ORM.ObjectModel.ObjectTypeHasAlias.ObjectTypeDomainRoleId);
+			}
+		}
+		#endregion
 		#region DuplicateNameError opposite domain role accessor
 		/// <summary>
 		/// Gets or sets DuplicateNameError.
@@ -5382,6 +6310,239 @@ namespace Neumont.Tools.ORM.ObjectModel
 			get
 			{
 				return new DslModeling::ReadOnlyLinkedElementCollection<Join>(this, global::Neumont.Tools.ORM.ObjectModel.JoinHasRole.RoleDomainRoleId);
+			}
+		}
+		#endregion
+	}
+}
+namespace Neumont.Tools.ORM.ObjectModel
+{
+	/// <summary>
+	/// DomainClass NameAlias
+	/// </summary>
+	[DslDesign::DisplayNameResource("Neumont.Tools.ORM.ObjectModel.NameAlias.DisplayName", typeof(global::Neumont.Tools.ORM.ObjectModel.ORMCoreDomainModel), "Neumont.Tools.ORM.GeneratedCode.CoreDomainModelResx")]
+	[DslDesign::DescriptionResource("Neumont.Tools.ORM.ObjectModel.NameAlias.Description", typeof(global::Neumont.Tools.ORM.ObjectModel.ORMCoreDomainModel), "Neumont.Tools.ORM.GeneratedCode.CoreDomainModelResx")]
+	[global::System.CLSCompliant(true)]
+	[DslModeling::DomainObjectId("a0ad1270-e3d1-4851-a5ab-d87e5942f9ae")]
+	public partial class NameAlias : ORMNamedElement
+	{
+		#region Constructors, domain class Id
+	
+		/// <summary>
+		/// NameAlias domain class Id.
+		/// </summary>
+		public static readonly new global::System.Guid DomainClassId = new global::System.Guid(0xa0ad1270, 0xe3d1, 0x4851, 0xa5, 0xab, 0xd8, 0x7e, 0x59, 0x42, 0xf9, 0xae);
+		/// <summary>
+		/// Constructor
+		/// </summary>
+		/// <param name="store">Store where new element is to be created.</param>
+		/// <param name="propertyAssignments">List of domain property id/value pairs to set once the element is created.</param>
+		public NameAlias(DslModeling::Store store, params DslModeling::PropertyAssignment[] propertyAssignments)
+			: this(store != null ? store.DefaultPartition : null, propertyAssignments)
+		{
+		}
+		
+		/// <summary>
+		/// Constructor
+		/// </summary>
+		/// <param name="partition">Partition where new element is to be created.</param>
+		/// <param name="propertyAssignments">List of domain property id/value pairs to set once the element is created.</param>
+		public NameAlias(DslModeling::Partition partition, params DslModeling::PropertyAssignment[] propertyAssignments)
+			: base(partition, propertyAssignments)
+		{
+		}
+		#endregion
+		#region NameConsumer domain property code
+		
+		/// <summary>
+		/// NameConsumer domain property Id.
+		/// </summary>
+		public static readonly global::System.Guid NameConsumerDomainPropertyId = new global::System.Guid(0xbe9edeb2, 0xc60e, 0x4446, 0xba, 0xc0, 0x73, 0xcc, 0xd6, 0x17, 0x16, 0xea);
+		
+		/// <summary>
+		/// Gets or sets the value of NameConsumer domain property.
+		/// Description for Neumont.Tools.ORM.ObjectModel.NameAlias.NameConsumer
+		/// </summary>
+		[DslDesign::DisplayNameResource("Neumont.Tools.ORM.ObjectModel.NameAlias/NameConsumer.DisplayName", typeof(global::Neumont.Tools.ORM.ObjectModel.ORMCoreDomainModel), "Neumont.Tools.ORM.GeneratedCode.CoreDomainModelResx")]
+		[DslDesign::DescriptionResource("Neumont.Tools.ORM.ObjectModel.NameAlias/NameConsumer.Description", typeof(global::Neumont.Tools.ORM.ObjectModel.ORMCoreDomainModel), "Neumont.Tools.ORM.GeneratedCode.CoreDomainModelResx")]
+		[DslModeling::DomainProperty(Kind = DslModeling::DomainPropertyKind.CustomStorage)]
+		[DslModeling::DomainObjectId("be9edeb2-c60e-4446-bac0-73ccd61716ea")]
+		public global::System.String NameConsumer
+		{
+			[global::System.Diagnostics.DebuggerStepThrough]
+			get
+			{
+				return NameConsumerPropertyHandler.Instance.GetValue(this);
+			}
+			[global::System.Diagnostics.DebuggerStepThrough]
+			set
+			{
+				NameConsumerPropertyHandler.Instance.SetValue(this, value);
+			}
+		}
+		/// <summary>
+		/// Value handler for the NameAlias.NameConsumer domain property.
+		/// </summary>
+		internal sealed partial class NameConsumerPropertyHandler : DslModeling::DomainPropertyValueHandler<NameAlias, global::System.String>
+		{
+			private NameConsumerPropertyHandler() { }
+		
+			/// <summary>
+			/// Gets the singleton instance of the NameAlias.NameConsumer domain property value handler.
+			/// </summary>
+			public static readonly NameConsumerPropertyHandler Instance = new NameConsumerPropertyHandler();
+		
+			/// <summary>
+			/// Gets the Id of the NameAlias.NameConsumer domain property.
+			/// </summary>
+			public sealed override global::System.Guid DomainPropertyId
+			{
+				[global::System.Diagnostics.DebuggerStepThrough]
+				get
+				{
+					return NameConsumerDomainPropertyId;
+				}
+			}
+			
+			/// <summary>
+			/// Gets a strongly-typed value of the property on specified element.
+			/// </summary>
+			/// <param name="element">Element which owns the property.</param>
+			/// <returns>Property value.</returns>
+			public override sealed global::System.String GetValue(NameAlias element)
+			{
+				if (element == null) throw new global::System.ArgumentNullException("element");
+				// There is no storage for NameConsumer because its Kind is
+				// set to CustomStorage. Please provide the GetNameConsumerValue()
+				// method on the domain class.
+				return element.GetNameConsumerValue();
+			}
+		
+			/// <summary>
+			/// Sets property value on an element.
+			/// </summary>
+			/// <param name="element">Element which owns the property.</param>
+			/// <param name="newValue">New property value.</param>
+			public override sealed void SetValue(NameAlias element, global::System.String newValue)
+			{
+				if (element == null) throw new global::System.ArgumentNullException("element");
+		
+				global::System.String oldValue = GetValue(element);
+				if (newValue != oldValue)
+				{
+					ValueChanging(element, oldValue, newValue);
+					// There is no storage for NameConsumer because its Kind is
+					// set to CustomStorage. Please provide the SetNameConsumerValue()
+					// method on the domain class.
+					element.SetNameConsumerValue(newValue);
+					//ValueChanged(element, oldValue, GetValue(element));
+					ValueChanged(element, oldValue, newValue);
+				}
+			}
+		}
+		
+		#endregion
+		#region NameUsage domain property code
+		
+		/// <summary>
+		/// NameUsage domain property Id.
+		/// </summary>
+		public static readonly global::System.Guid NameUsageDomainPropertyId = new global::System.Guid(0x18dbb768, 0xb471, 0x4926, 0xb6, 0x78, 0x5b, 0x22, 0x45, 0x76, 0x03, 0x33);
+		
+		/// <summary>
+		/// Gets or sets the value of NameUsage domain property.
+		/// Description for Neumont.Tools.ORM.ObjectModel.NameAlias.NameUsage
+		/// </summary>
+		[DslDesign::DisplayNameResource("Neumont.Tools.ORM.ObjectModel.NameAlias/NameUsage.DisplayName", typeof(global::Neumont.Tools.ORM.ObjectModel.ORMCoreDomainModel), "Neumont.Tools.ORM.GeneratedCode.CoreDomainModelResx")]
+		[DslDesign::DescriptionResource("Neumont.Tools.ORM.ObjectModel.NameAlias/NameUsage.Description", typeof(global::Neumont.Tools.ORM.ObjectModel.ORMCoreDomainModel), "Neumont.Tools.ORM.GeneratedCode.CoreDomainModelResx")]
+		[DslModeling::DomainProperty(Kind = DslModeling::DomainPropertyKind.CustomStorage)]
+		[DslModeling::DomainObjectId("18dbb768-b471-4926-b678-5b2245760333")]
+		public global::System.String NameUsage
+		{
+			[global::System.Diagnostics.DebuggerStepThrough]
+			get
+			{
+				return NameUsagePropertyHandler.Instance.GetValue(this);
+			}
+			[global::System.Diagnostics.DebuggerStepThrough]
+			set
+			{
+				NameUsagePropertyHandler.Instance.SetValue(this, value);
+			}
+		}
+		/// <summary>
+		/// Value handler for the NameAlias.NameUsage domain property.
+		/// </summary>
+		internal sealed partial class NameUsagePropertyHandler : DslModeling::DomainPropertyValueHandler<NameAlias, global::System.String>
+		{
+			private NameUsagePropertyHandler() { }
+		
+			/// <summary>
+			/// Gets the singleton instance of the NameAlias.NameUsage domain property value handler.
+			/// </summary>
+			public static readonly NameUsagePropertyHandler Instance = new NameUsagePropertyHandler();
+		
+			/// <summary>
+			/// Gets the Id of the NameAlias.NameUsage domain property.
+			/// </summary>
+			public sealed override global::System.Guid DomainPropertyId
+			{
+				[global::System.Diagnostics.DebuggerStepThrough]
+				get
+				{
+					return NameUsageDomainPropertyId;
+				}
+			}
+			
+			/// <summary>
+			/// Gets a strongly-typed value of the property on specified element.
+			/// </summary>
+			/// <param name="element">Element which owns the property.</param>
+			/// <returns>Property value.</returns>
+			public override sealed global::System.String GetValue(NameAlias element)
+			{
+				if (element == null) throw new global::System.ArgumentNullException("element");
+				// There is no storage for NameUsage because its Kind is
+				// set to CustomStorage. Please provide the GetNameUsageValue()
+				// method on the domain class.
+				return element.GetNameUsageValue();
+			}
+		
+			/// <summary>
+			/// Sets property value on an element.
+			/// </summary>
+			/// <param name="element">Element which owns the property.</param>
+			/// <param name="newValue">New property value.</param>
+			public override sealed void SetValue(NameAlias element, global::System.String newValue)
+			{
+				if (element == null) throw new global::System.ArgumentNullException("element");
+		
+				global::System.String oldValue = GetValue(element);
+				if (newValue != oldValue)
+				{
+					ValueChanging(element, oldValue, newValue);
+					// There is no storage for NameUsage because its Kind is
+					// set to CustomStorage. Please provide the SetNameUsageValue()
+					// method on the domain class.
+					element.SetNameUsageValue(newValue);
+					//ValueChanged(element, oldValue, GetValue(element));
+					ValueChanged(element, oldValue, newValue);
+				}
+			}
+		}
+		
+		#endregion
+		#region Element opposite domain role accessor
+		/// <summary>
+		/// Gets or sets Element.
+		/// Description for Neumont.Tools.ORM.ObjectModel.ElementHasAlias.Alias
+		/// </summary>
+		public virtual global::Microsoft.VisualStudio.Modeling.ModelElement Element
+		{
+			[global::System.Diagnostics.DebuggerStepThrough]
+			get
+			{
+				return DslModeling::DomainRoleInfo.GetLinkedElement(this, global::Neumont.Tools.ORM.ObjectModel.ElementHasAlias.AliasDomainRoleId) as global::Microsoft.VisualStudio.Modeling.ModelElement;
 			}
 		}
 		#endregion

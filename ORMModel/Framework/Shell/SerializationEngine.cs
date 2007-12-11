@@ -1316,6 +1316,12 @@ namespace Neumont.Tools.Modeling.Shell
 		/// <param name="classInfo">The class or relationship to test</param>
 		/// <returns>true if the element should be serialized</returns>
 		bool ShouldSerializeDomainClass(Store store, DomainClassInfo classInfo);
+        /// <summary>
+        /// Filter root element instances.
+        /// </summary>
+        /// <param name="rootElement">A element of a type specified by <see cref="GetRootElementClasses"/></param>
+        /// <returns>Returns <see langword="true"/> if the element should serialize.</returns>
+        bool ShouldSerializeRootElement(ModelElement rootElement);
 		/// <summary>
 		/// Map an xml namespace name and element name to a meta class guid
 		/// </summary>
@@ -2617,7 +2623,7 @@ namespace Neumont.Tools.Modeling.Shell
 								{
 									serializableElement.WriteXml(file);
 								}
-								else
+								else if (ns.ShouldSerializeRootElement(element))
 								{
 									SerializeElement(file, element);
 								}

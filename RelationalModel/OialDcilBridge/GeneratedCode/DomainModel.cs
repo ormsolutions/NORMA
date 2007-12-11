@@ -72,6 +72,9 @@ namespace Neumont.Tools.ORMAbstractionToConceptualDatabaseBridge
 				typeof(AssimilationMapping),
 				typeof(ReferenceModeNaming),
 				typeof(DefaultReferenceModeNaming),
+				typeof(RelationalNameGenerator),
+				typeof(ColumnNameUsage),
+				typeof(TableNameUsage),
 				typeof(AssimilationMappingCustomizesFactType),
 				typeof(MappingCustomizationModelHasAssimilationMapping),
 				typeof(ReferenceModeNamingCustomizesObjectType),
@@ -157,11 +160,12 @@ namespace Neumont.Tools.ORMAbstractionToConceptualDatabaseBridge
 	
 			if (createElementMap == null)
 			{
-				createElementMap = new global::System.Collections.Generic.Dictionary<global::System.Type, int>(4);
+				createElementMap = new global::System.Collections.Generic.Dictionary<global::System.Type, int>(7);
 				createElementMap.Add(typeof(MappingCustomizationModel), 0);
 				createElementMap.Add(typeof(AssimilationMapping), 1);
 				createElementMap.Add(typeof(ReferenceModeNaming), 2);
 				createElementMap.Add(typeof(DefaultReferenceModeNaming), 3);
+				createElementMap.Add(typeof(RelationalNameGenerator), 4);
 			}
 			int index;
 			if (!createElementMap.TryGetValue(elementType, out index))
@@ -174,6 +178,9 @@ namespace Neumont.Tools.ORMAbstractionToConceptualDatabaseBridge
 				case 1: return new AssimilationMapping(partition, propertyAssignments);
 				case 2: return new ReferenceModeNaming(partition, propertyAssignments);
 				case 3: return new DefaultReferenceModeNaming(partition, propertyAssignments);
+				// A constructor was not generated for RelationalNameGenerator because it had HasCustomConstructor
+				// set to true. Please provide the constructor below.
+				case 4: return new RelationalNameGenerator(partition, propertyAssignments);
 				default: return null;
 			}
 		}

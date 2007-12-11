@@ -119,6 +119,7 @@ namespace Neumont.Tools.ORM.ObjectModel
 						typeof(Neumont.Tools.Modeling.NamedElementDictionary).GetNestedType("ElementLinkAddedRuleClass", BindingFlags.Public | BindingFlags.NonPublic),
 						typeof(Neumont.Tools.Modeling.NamedElementDictionary).GetNestedType("ElementLinkDeletingRuleClass", BindingFlags.Public | BindingFlags.NonPublic),
 						typeof(Neumont.Tools.Modeling.NamedElementDictionary).GetNestedType("NamedElementChangedRuleClass", BindingFlags.Public | BindingFlags.NonPublic),
+						typeof(NameGenerator).GetNestedType("SynchronizedRefinementsPropertyChangedRuleClass", BindingFlags.Public | BindingFlags.NonPublic),
 						typeof(Note).GetNestedType("NoteChangeRuleClass", BindingFlags.Public | BindingFlags.NonPublic),
 						typeof(Objectification).GetNestedType("ImpliedFactTypeAddRuleClass", BindingFlags.Public | BindingFlags.NonPublic),
 						typeof(Objectification).GetNestedType("ImpliedObjectificationConstraintRoleSequenceHasRoleAddRuleClass", BindingFlags.Public | BindingFlags.NonPublic),
@@ -300,7 +301,7 @@ namespace Neumont.Tools.ORM.ObjectModel
 		{
 			Microsoft.VisualStudio.Modeling.RuleManager ruleManager = store.RuleManager;
 			Type[] disabledRuleTypes = ORMCoreDomainModel.CustomDomainModelTypes;
-			for (int i = 0; i < 233; ++i)
+			for (int i = 0; i < 234; ++i)
 			{
 				ruleManager.EnableRule(disabledRuleTypes[i]);
 			}
@@ -2530,6 +2531,40 @@ namespace Neumont.Tools.ORM.ObjectModel
 		}
 	}
 	#endregion // Rule classes for ModelError
+	#region Rule classes for NameGenerator
+	partial class NameGenerator
+	{
+		[Microsoft.VisualStudio.Modeling.RuleOn(typeof(NameGenerator), Priority=Neumont.Tools.Modeling.FrameworkDomainModel.InlineRulePriority)]
+		private sealed partial class SynchronizedRefinementsPropertyChangedRuleClass : Microsoft.VisualStudio.Modeling.ChangeRule
+		{
+			[System.Diagnostics.DebuggerStepThrough()]
+			public SynchronizedRefinementsPropertyChangedRuleClass()
+			{
+				base.IsEnabled = false;
+			}
+			/// <summary>
+			/// Provide the following method in class: 
+			/// Neumont.Tools.ORM.ObjectModel.NameGenerator
+			/// partial class SynchronizedRefinementsPropertyChangedRuleClass
+			/// {
+			/// 	/// <summary>
+			/// 	/// ChangeRule: typeof(NameGenerator)
+			/// 	/// </summary>
+			/// 	private void SynchronizedRefinementsPropertyChangedRule(ElementPropertyChangedEventArgs e)
+			/// 	{
+			/// 	}
+			/// }
+			/// </summary>
+			[System.Diagnostics.DebuggerStepThrough()]
+			public override void ElementPropertyChanged(Microsoft.VisualStudio.Modeling.ElementPropertyChangedEventArgs e)
+			{
+				Neumont.Tools.Modeling.Diagnostics.TraceUtility.TraceRuleStart(e.ModelElement.Store, "Neumont.Tools.ORM.ObjectModel.NameGenerator.SynchronizedRefinementsPropertyChangedRule");
+				this.SynchronizedRefinementsPropertyChangedRule(e);
+				Neumont.Tools.Modeling.Diagnostics.TraceUtility.TraceRuleEnd(e.ModelElement.Store, "Neumont.Tools.ORM.ObjectModel.NameGenerator.SynchronizedRefinementsPropertyChangedRule");
+			}
+		}
+	}
+	#endregion // Rule classes for NameGenerator
 	#region Rule classes for Note
 	partial class Note
 	{
