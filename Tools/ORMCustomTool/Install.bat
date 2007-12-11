@@ -4,6 +4,7 @@ SET RootDir=%~dp0.
 IF NOT "%~2"=="" (SET TargetVisualStudioVersion=%~2)
 CALL "%RootDir%\..\..\SetupEnvironment.bat" %*
 SET XMLDir=%TrunkDir%\XML
+SET NetTiersDir=%TrunkDir%\CodeSmith\NetTiersPort
 SET NORMAGenerators=HKLM\SOFTWARE\Neumont\ORM Architect for %TargetVisualStudioLongProductName%\Generators
 
 :: Generate a native image for System.Data.SqlXml.dll if one does not already exist (this greatly improves the XSLT compilation speed).
@@ -98,6 +99,13 @@ XCOPY /Y /D /V /Q "%XMLDir%\DCILtoHTML\DCILtoTV.xslt" "%DILTransformsDir%\"
 XCOPY /Y /D /V /Q "%XMLDir%\DCILtoHTML\TVtoHTML.xslt" "%DILTransformsDir%\"
 CALL:_AddXslORMGenerator "DCILtoTV" "DCIL to TableView" "Transforms DCIL to TableView." ".TableView.xml" "DCIL" "TV" "%DILTransformsDir%\DCILtoTV.xslt" "" "1"
 CALL:_AddXslORMGenerator "TVtoHTML" "TableView to HTML" "Transforms TableView to HTML." ".TableView.html" "TV" "TableViewHTML" "%DILTransformsDir%\TVtoHTML.xslt"
+
+:: Install and register NetTiers Transforms
+XCOPY /Y /D /V /Q "%NetTiersDir%\SchemaExplorer.xsd" "%ORMDir%\Schemas\"
+XCOPY /Y /D /V /Q "%NetTiersDir%\DCILToSchemaExplorer.xslt" "%ORMTransformsDir%\NetTiers\"
+XCOPY /Y /D /V /Q "%NetTiersDir%\NetTiersSettings.xslt" "%ORMTransformsDir%\NetTiers\"
+CALL:_AddXslORMGenerator "DCILtoSchemaExplorer" "DCIL to SchemaExplorer" "Transforms DCIL to SchemaExplorer." ".SchemaExplorer.xml" "DCIL" "SchemaExplorer" "%ORMTransformsDir%\NetTiers\DCILToSchemaExplorer.xslt" "" "1"
+CALL:_AddXslORMGenerator "NetTiersSettings" "NetTiers Settings" "Default settings file for NetTiers generators" ".NetTiersSettings.xml" "ORM" "NetTiersSettings" "%ORMTransformsDir%\NetTiers\NetTiersSettings.xslt" "" "1" "1"
 
 :: Install and register PHP Transforms
 XCOPY /Y /D /V /Q "%XMLDir%\OIALtoPLiX\PHP\PHPDataLayer.xslt" "%ORMTransformsDir%\PHP\"

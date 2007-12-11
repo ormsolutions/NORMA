@@ -97,6 +97,8 @@
 				<xs:attribute name="size" type="xs:unsignedInt"/>
 				<xs:attribute name="scale" type="xs:unsignedInt"/>
 				<xs:attribute name="precision" type="xs:unsignedByte"/>
+				<xs:attribute name="isIdentity" type="xs:boolean" default="false"/>
+				<xs:attribute name="isComputed" type="xs:boolean" default="false"/>
 			</xs:extension>
 		</xs:complexContent>
 	</xs:complexType>

@@ -16,6 +16,8 @@
 	<setting name="IncludeSave"/>
 	<setting name="IncludeUpdate"/>
 	<setting name="ChangeUnderscoreToPascalCase"/>
+	<setting name="IncludeWCFDataAttributes"/>
+	<setting name="SerializeEntityState"/>
 	<setting name="UsePascalCasing">Style2</setting>
 	<setting name="MethodNames">
 		<methodName name="BulkInsert">BulkInsert</methodName>
