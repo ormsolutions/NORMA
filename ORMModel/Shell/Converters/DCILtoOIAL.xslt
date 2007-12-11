@@ -12,15 +12,48 @@
 <xsl:stylesheet version="1.0"
 	xmlns:xsl="http://www.w3.org/1999/XSL/Transform"
 	xmlns:exsl="http://exslt.org/common"
-	xmlns:odt="http://schemas.orm.net/ORMDataTypes"
-	xmlns:oil="http://schemas.orm.net/OIAL"
+	xmlns:odt="http://schemas.neumont.edu/ORM/Abstraction/2007-06/DataTypes/Core"
+	xmlns:oil="http://schemas.neumont.edu/ORM/Abstraction/2007-06/Core"
 	xmlns:dcl="http://schemas.orm.net/DIL/DCIL"
 	extension-element-prefixes="exsl"
 	exclude-result-prefixes="dcl">
-	<xsl:output method="xml" encoding="utf-8" media-type="text/xml" indent="no"/>
-	<xsl:template match="dcl:schema">
+	<xsl:param name="FindAssociations" select="true()"/>
+	<xsl:output method="xml" encoding="utf-8" media-type="text/xml" indent="yes"/>
+	<xsl:template match="/">
+		<xsl:choose>
+			<xsl:when test="$FindAssociations">
+				<xsl:variable name="BinaryOIALFragment">
+					<xsl:apply-templates select="child::*" mode="BinaryOIAL"/>
+				</xsl:variable>
+				<!--<xsl:copy-of select="exsl:node-set($BinaryOIALFragment)/child::*"/>-->
+				<xsl:apply-templates select="exsl:node-set($BinaryOIALFragment)/child::*" mode="AddAssociations"/>
+			</xsl:when>
+			<xsl:otherwise>
+				<xsl:apply-templates select="child::*" mode="BinaryOIAL"/>
+			</xsl:otherwise>
+		</xsl:choose>
+	</xsl:template>
+
+	<xsl:template match="@*|*|text()|comment()" mode="AddAssociations">
+		<xsl:copy>
+			<xsl:apply-templates select="@*|*|text()|comment()" mode="AddAssociations"/>
+		</xsl:copy>
+	</xsl:template>
+	<xsl:template match="oil:model/oil:conceptTypes/oil:conceptType[count(oil:uniquenessConstraints/oil:uniquenessConstraint[@isPreferred]/oil:uniquenessChild) = count(oil:children/oil:*)]" mode="AddAssociations">
+		<xsl:copy>
+			<xsl:apply-templates select="@*|*|text()|comment()" mode="AddAssociations"/>
+			<oil:association>
+				<xsl:for-each select="oil:uniquenessConstraints/oil:uniquenessConstraint[@isPreferred]/oil:uniquenessChild">
+				<oil:associationChild>
+					<xsl:copy-of select="@ref"/>
+				</oil:associationChild>
+				</xsl:for-each>
+			</oil:association>
+		</xsl:copy>
+	</xsl:template>
+	<xsl:template match="dcl:schema" mode="BinaryOIAL">
 		<xsl:variable name="allTables" select="dcl:table"/>
-		<oil:model sourceRef="{@name}" name="{@name}">
+		<oil:model id="{@name}" name="{@name}">
 			<oil:informationTypeFormats>
 				<xsl:for-each select="$allTables">
 					<xsl:variable name="resolvedReferenceConstraintColumnNames" select="dcl:referenceConstraint[@targetTable=$allTables/@name]/dcl:columnRef/@sourceName"/>
@@ -68,28 +101,30 @@
 					</xsl:choose>
 				</xsl:for-each>
 			</oil:informationTypeFormats>
-			<xsl:for-each select="dcl:table">
-				<xsl:variable name="resolvedReferenceConstraintColumnNames" select="dcl:referenceConstraint[@targetTable=$allTables/@name]/dcl:columnRef/@sourceName"/>
-				<oil:conceptType name="{@name}" sourceRef="{@name}">
-					<xsl:for-each select="dcl:column">
-						<xsl:choose>
-							<xsl:when test="@name=$resolvedReferenceConstraintColumnNames">
-								<xsl:call-template name="OutputConceptTypeRef"/>
-							</xsl:when>
-							<xsl:otherwise>
-								<xsl:call-template name="OutputInformationType"/>
-							</xsl:otherwise>
-						</xsl:choose>
-					</xsl:for-each>
-					<xsl:for-each select="dcl:uniquenessConstraint">
-						<xsl:choose>
-							<xsl:when test="count(dcl:columnRef) > 1">
+			<oil:conceptTypes>
+				<xsl:for-each select="dcl:table">
+					<xsl:variable name="resolvedReferenceConstraintColumnNames" select="dcl:referenceConstraint[@targetTable=$allTables/@name]/dcl:columnRef/@sourceName"/>
+					<oil:conceptType id="{@name}" name="{@name}">
+						<oil:children>
+							<xsl:for-each select="dcl:column">
+								<xsl:choose>
+									<xsl:when test="@name=$resolvedReferenceConstraintColumnNames">
+										<xsl:call-template name="OutputConceptTypeRef"/>
+									</xsl:when>
+									<xsl:otherwise>
+										<xsl:call-template name="OutputInformationType"/>
+									</xsl:otherwise>
+								</xsl:choose>
+							</xsl:for-each>
+						</oil:children>
+						<oil:uniquenessConstraints>
+							<xsl:for-each select="dcl:uniquenessConstraint">
 								<xsl:call-template name="OutputRoleSequenceUniquenessConstraint"/>
-							</xsl:when>
-						</xsl:choose>
-					</xsl:for-each>
-				</oil:conceptType>
-			</xsl:for-each>
+							</xsl:for-each>
+						</oil:uniquenessConstraints>
+					</oil:conceptType>
+				</xsl:for-each>
+			</oil:conceptTypes>
 		</oil:model>
 	</xsl:template>
 	<!-- Templates to generate information formats -->
@@ -98,10 +133,10 @@
 		<xsl:param name="dataType"/>
 		<xsl:param name="columnName"/>
 		<xsl:param name="maxLength" select="'0'"/>
-		<xsl:variable name="formatName" select="concat(concat($tableName, '_'), $columnName)"/>
+		<xsl:variable name="formatName" select="concat('InformationTypeFormat.', $tableName, '.', $columnName)"/>
 		<xsl:choose>
 			<xsl:when test="$dataType='CHARACTER' or $dataType='CHARACTER VARYING' or $dataType='CHARACTER LARGE OBJECT'">
-				<odt:string name="{$formatName}">
+				<odt:string id="{$formatName}" name="{$formatName}">
 					<xsl:if test="$maxLength">
 						<xsl:attribute name="maxLength">
 							<xsl:value-of select="$maxLength"/>
@@ -109,11 +144,11 @@
 					</xsl:if>
 				</odt:string>
 			</xsl:when>
-			<xsl:when test="$dataType='BIGINT' or $dataType='INTEGER' or $dataType='SMALLINT' or $dataType='DECIMAL' or $dataType='DOUBLE PRECISION' or $dataType='REAL' or $dataType='NUMERIC'">
-				<odt:decimalNumber name="{$formatName}" fractionDigits="0" />
+			<xsl:when test="$dataType='BIGINT' or $dataType='INTEGER' or $dataType='SMALLINT' or $dataType='DECIMAL' or $dataType='NUMERIC'">
+				<odt:decimalNumber id="{$formatName}" name="{$formatName}" fractionDigits="0" />
 			</xsl:when>
 			<xsl:when test="$dataType='BINARY LARGE OBJECT'">
-				<odt:binary name="{$formatName}">
+				<odt:binary id="{$formatName}" name="{$formatName}">
 					<xsl:if test="$maxLength">
 						<xsl:attribute name="maxLength">
 							<xsl:value-of select="$maxLength"/>
@@ -121,8 +156,8 @@
 					</xsl:if>
 				</odt:binary>
 			</xsl:when>
-			<xsl:when test="$dataType='FLOAT'">
-				<odt:floatingPointNumber name="{$formatName}">
+			<xsl:when test="$dataType='FLOAT' or $dataType='DOUBLE PRECISION' or $dataType='REAL'">
+				<odt:floatingPointNumber id="{$formatName}" name="{$formatName}">
 					<xsl:if test="$maxLength">
 						<xsl:attribute name="precision">
 							<xsl:value-of select="$maxLength"/>
@@ -131,85 +166,41 @@
 				</odt:floatingPointNumber>
 			</xsl:when>
 			<xsl:when test="$dataType='BOOLEAN'">
-				<odt:boolean name="{$formatName}" fixed="false"/>
+				<odt:boolean id="{$formatName}" name="{$formatName}"/>
 			</xsl:when>
 			<xsl:otherwise>
-				<odt:string name="{$formatName}" maxLength="255" />
+				<odt:string id="{$formatName}" name="{$formatName}" maxLength="255" />
 			</xsl:otherwise>
 		</xsl:choose>
 	</xsl:template>
 	<xsl:template name="OutputConceptTypeRef">
-		<oil:conceptTypeRef name="{@name}" sourceRoleRef="{@name}" oppositeName="{../@name}" target="{../dcl:referenceConstraint/dcl:columnRef[@sourceName=current()/@name]/../@targetTable}">
-			<xsl:attribute name="mandatory">
-				<xsl:choose>
-					<xsl:when test="@isNullable = 'True' or @isNullable = 'true' or @isNullable = '1'">
-						<xsl:text>false</xsl:text>
-					</xsl:when>
-					<xsl:otherwise>
-						<xsl:text>alethic</xsl:text>
-					</xsl:otherwise>
-				</xsl:choose>
-			</xsl:attribute>
-			<xsl:variable name="columnName" select="@name"/>
-			<xsl:variable name="constraint" select="../dcl:uniquenessConstraint[dcl:columnRef[@name = current()/@name]]"/>
-			<xsl:if test="../dcl:uniquenessConstraint[dcl:columnRef/@name = $columnName] and count(../dcl:uniquenessConstraint[dcl:columnRef/@name = $columnName]/dcl:columnRef) = 1">
-				<oil:singleRoleUniquenessConstraint name="{../@name}_{@name}_UC" modality="alethic">
-					<xsl:attribute name="isPreferred">
-						<xsl:choose>
-							<xsl:when test="$constraint/@isPrimary = 'true'">
-								<xsl:text>true</xsl:text>
-							</xsl:when>
-							<xsl:otherwise>
-								<xsl:text>false</xsl:text>
-							</xsl:otherwise>
-						</xsl:choose>
-					</xsl:attribute>
-				</oil:singleRoleUniquenessConstraint>
+		<oil:relatedConceptType id="{../@name}.{@name}" name="{@name}" oppositeName="{../@name}" ref="{../dcl:referenceConstraint/dcl:columnRef[@sourceName=current()/@name]/../@targetTable}">
+			<xsl:if test="not(@isNullable = 'True' or @isNullable = 'true' or @isNullable = '1')">
+				<xsl:attribute name="isMandatory">
+					<xsl:value-of select="true()"/>
+				</xsl:attribute>
 			</xsl:if>
-		</oil:conceptTypeRef>
+		</oil:relatedConceptType>
 	</xsl:template>
 	<xsl:template name="OutputInformationType">
-		<oil:informationType name="{@name}" formatRef="{@name}" sourceRef="{@name}">
-			<xsl:attribute name="mandatory">
-				<xsl:choose>
-					<xsl:when test="@isNullable = 'True' or @isNullable = 'true' or @isNullable = '1'">
-						<xsl:text>false</xsl:text>
-					</xsl:when>
-					<xsl:otherwise>
-						<xsl:text>alethic</xsl:text>
-					</xsl:otherwise>
-				</xsl:choose>
-			</xsl:attribute>
-			<xsl:variable name="columnName" select="@name"/>
-			<xsl:variable name="constraint" select="../dcl:uniquenessConstraint[dcl:columnRef[@name = current()/@name]]"/>
-			<xsl:if test="../dcl:uniquenessConstraint[dcl:columnRef/@name = $columnName] and count(../dcl:uniquenessConstraint[dcl:columnRef/@name = $columnName]/dcl:columnRef) = 1">
-				<oil:singleRoleUniquenessConstraint name="{../@name}_{@name}_UC" modality="alethic">
-					<xsl:attribute name="isPreferred">
-						<xsl:choose>
-							<xsl:when test="$constraint/@isPrimary = 'true'">
-								<xsl:text>true</xsl:text>
-							</xsl:when>
-							<xsl:otherwise>
-								<xsl:text>false</xsl:text>
-							</xsl:otherwise>
-						</xsl:choose>
-					</xsl:attribute>
-				</oil:singleRoleUniquenessConstraint>
+		<oil:informationType id="{../@name}.{@name}" name="{@name}" ref="InformationTypeFormat.{../@name}.{@name}">
+			<xsl:if test="not(@isNullable = 'True' or @isNullable = 'true' or @isNullable = '1')">
+				<xsl:attribute name="isMandatory">
+					<xsl:value-of select="true()"/>
+				</xsl:attribute>
 			</xsl:if>
 		</oil:informationType>
 	</xsl:template>
 	<xsl:template name="OutputRoleSequenceUniquenessConstraint">
-		<oil:roleSequenceUniquenessConstraint name="{../@name}_{@name}_EUC" modality="alethic">
-			<xsl:if test="@isPrimary = 'true'">
+		<oil:uniquenessConstraint id="{../@name}.{@name}" name="{@name}">
+			<xsl:if test="@isPrimary = 'true' or @isPrimary = 1">
 				<xsl:attribute name="isPreferred">
-					<xsl:text>true</xsl:text>
+					<xsl:value-of select="true()"/>
 				</xsl:attribute>
 			</xsl:if>
-			<oil:roleSequence>
-				<xsl:for-each select="dcl:columnRef">
-					<oil:typeRef targetConceptType="{../../@name}" targetChild="{@name}"/>
-				</xsl:for-each>
-			</oil:roleSequence>
-		</oil:roleSequenceUniquenessConstraint>
+			<xsl:for-each select="dcl:columnRef">
+				<oil:uniquenessChild ref="{../../@name}.{@name}"/>
+			</xsl:for-each>
+		</oil:uniquenessConstraint>
 	</xsl:template>
 </xsl:stylesheet>

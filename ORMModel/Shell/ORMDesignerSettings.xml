@@ -8,7 +8,7 @@
 		xmlns:unversionedOrmRoot="http://schemas.neumont.edu/ORM/ORMRoot"
 		xmlns:unversionedOrmCore="http://schemas.neumont.edu/ORM/ORMCore"
 		xmlns:dcl="http://schemas.orm.net/DIL/DCIL"
-		xmlns:oil="http://schemas.orm.net/OIAL"
+		xmlns:oil="http://schemas.neumont.edu/ORM/Abstraction/2007-06/Core"
 		xmlns:testOld="http://schemas.neumont.edu/ORM/Preview/CustomProperties"
 		xmlns:testNew="http://schemas.neumont.edu/ORM/2007-11/CustomProperties"
 		>
