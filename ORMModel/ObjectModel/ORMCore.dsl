@@ -47,7 +47,14 @@
 		</DomainClass>
 
 		<DomainClass Name="NameGenerator" Namespace="Neumont.Tools.ORM.ObjectModel" Id="E032727F-440A-431A-82E7-2454BE939C82" DisplayName="Name Generation Defaults" Description="">
-			<BaseClass>
+      <Attributes>
+        <ClrAttribute Name="global::System.ComponentModel.TypeDescriptionProvider">
+          <Parameters>
+            <AttributeParameter Value="typeof(global::Neumont.Tools.Modeling.Design.ElementTypeDescriptionProvider&lt;NameGenerator, Design.NameGeneratorTypeDescriptor&lt;NameGenerator&gt;&gt;)"/>
+          </Parameters>
+        </ClrAttribute>
+      </Attributes>
+      <BaseClass>
 				<DomainClassMoniker Name="NameConsumer"/>
 			</BaseClass>
 			<Properties>
@@ -2090,7 +2097,7 @@
 			</Target>
 		</DomainRelationship>
 
-		<DomainRelationship Name="ObjectTypeHasAlias" Namespace="Neumont.Tools.ORM.ObjectModel" IsEmbedding="true" Id="6A85513C-747F-4A8C-B45A-B5CFF88314E5">
+		<DomainRelationship Name="ObjectTypeHasAlias" Namespace="Neumont.Tools.ORM.ObjectModel" DisplayName="ObjectType Aliases" IsEmbedding="true" Id="6A85513C-747F-4A8C-B45A-B5CFF88314E5">
 			<BaseRelationship>
 				<DomainRelationshipMoniker Name="ElementHasAlias"/>
 			</BaseRelationship>

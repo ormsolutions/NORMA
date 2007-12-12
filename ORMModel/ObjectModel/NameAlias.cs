@@ -53,6 +53,29 @@ namespace Neumont.Tools.ORM.ObjectModel
 		{
 			myUsageDomainClass = ObjectModel.NameUsage.TranslateFromNameUsageIdentifier(Store, value);
 		}
+		/// <summary>
+		/// Return the <see cref="Type"/> assocatiated with the <see cref="NameUsage"/> property.
+		/// Returns <see langword="null"/> if NameUsage is not set.
+		/// </summary>
+		public Type NameUsageType
+		{
+			get
+			{
+				DomainClassInfo classInfo = myUsageDomainClass;
+				return (classInfo != null) ? classInfo.ImplementationClass : null;
+			}
+		}
+		/// <summary>
+		/// Return the <see cref="DomainClassInfo"/> assocatiated with the <see cref="NameConsumer"/> property.
+		/// Will not return <see langword="null"/>
+		/// </summary>
+		public DomainClassInfo NameConsumerDomainClass
+		{
+			get
+			{
+				return myConsumerDomainClass;
+			}
+		}
 		#endregion // CustomStorage handlers
 		#region Deserialization Fixup
 		/// <summary>
@@ -88,15 +111,16 @@ namespace Neumont.Tools.ORM.ObjectModel
 			{
 				Type consumer;
 				Type usage;
-				object[] attributes;
-				if (null == element.myConsumerDomainClass ||
-					null == (consumer = element.myConsumerDomainClass.ImplementationClass) ||
-					null == (usage = element.myUsageDomainClass.ImplementationClass) ||
-					null == (attributes = consumer.GetCustomAttributes(typeof(NameUsageAttribute), true)))
+				object[] attributes = null;
+				DomainClassInfo consumerDomainClass;
+				if (null == (consumerDomainClass = element.myConsumerDomainClass) ||
+					null == (consumer = consumerDomainClass.ImplementationClass) ||
+					(null != (usage = element.NameUsageType) &&
+					null == (attributes = consumer.GetCustomAttributes(typeof(NameUsageAttribute), true))))
 				{
 					element.Delete();
 				}
-				else
+				else if (usage != null)
 				{
 					int i = 0;
 					for (; i < attributes.Length; ++i)

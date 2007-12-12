@@ -2498,7 +2498,7 @@
     <comment>Description for DomainClass &apos;ObjectTypeHasAlias&apos;</comment>
   </data>
   <data name="Neumont.Tools.ORM.ObjectModel.ObjectTypeHasAlias.DisplayName" xml:space="preserve">
-    <value>Object Type Has Alias</value>
+    <value>ObjectType Aliases</value>
     <comment>DisplayName for DomainClass &apos;ObjectTypeHasAlias&apos;</comment>
   </data>
   <data name="Neumont.Tools.ORM.ObjectModel.ObjectTypeHasAlias/ObjectType.Description" xml:space="preserve">

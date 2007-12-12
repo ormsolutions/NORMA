@@ -63,7 +63,7 @@
 		</xs:sequence>
 	</xs:complexType>
 	<xs:complexType name="AliasType">
-		<xs:attribute name="id" type="xs:ID"/>
+		<xs:attribute name="id" type="xs:ID" use="required"/>
 		<xs:attribute name="Name" type="xs:string" use="required"/>
 		<xs:attribute name="NameConsumer" type="xs:string" use="required"/>
 		<xs:attribute name="NameUsage" type="xs:string" use="required"/>

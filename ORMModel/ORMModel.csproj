@@ -413,6 +413,7 @@
     </Compile>
     <Compile Include="Framework\Shell\DiagramMenuDisplay.cs" />
     <Compile Include="Framework\Shell\SerializationEngine.cs" />
+    <Compile Include="ObjectModel\Design\NameGeneratorTypeDescriptor.cs" />
     <Compile Include="ObjectModel\NameGenerator.cs" />
     <Compile Include="ObjectModel\Design\FrequencyConstraintBoundConverter.cs" />
     <Compile Include="ObjectModel\Design\Editors\FrequencyConstraintMaxPicker.cs" />
@@ -427,6 +428,12 @@
     <Compile Include="ObjectModel\VerbalizationGenerator.cs">
       <AutoGen>True</AutoGen>
       <DependentUpon>VerbalizationGenerator.xml</DependentUpon>
+    </Compile>
+    <Compile Include="ObjectModel\Design\Editors\AliasManagerForm.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="ObjectModel\Design\Editors\AliasManagerForm.Designer.cs">
+      <DependentUpon>AliasManagerForm.cs</DependentUpon>
     </Compile>
     <Compile Include="Shell\ImportStepOptions.cs">
       <SubType>Form</SubType>
@@ -726,6 +733,10 @@
       <AutoGen>True</AutoGen>
       <SubType>Designer</SubType>
       <DesignTime>True</DesignTime>
+    </EmbeddedResource>
+    <EmbeddedResource Include="ObjectModel\Design\Editors\AliasManagerForm.resx">
+      <SubType>Designer</SubType>
+      <DependentUpon>AliasManagerForm.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="Shell\ExtensionManager.resx">
       <SubType>Designer</SubType>
