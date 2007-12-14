@@ -245,6 +245,45 @@
 			return string.Format(_manyToManyFormat, combinedColumnNames, GetClassNameForTable(ownerName, tableName, ""));
 		}
 		]]>
+		// Property and field names
+		<![CDATA[
+		/// <summary>
+		/// Transform a name into a public class property name.
+		/// </summary>
+		public string GetPropertyName(string name)
+		{
+		   	name = Regex.Replace(name, @"[\W]", "");
+		   	name = name.TrimStart(new char[] {'_', '-', '+', '=', '*'});
+			name = GetPascalCaseName(name);
+			
+			if (Regex.IsMatch(name, @"^[\d]"))
+				name="Data" + name;
+			return name;
+		}
+		
+		/// <summary>
+		/// Creates a string that retpresents a column as a class private member.
+		/// </summary>
+		/// <param name="name">the name from which we want the generate a private member.</param>
+		public string GetPrivateName(string name)
+		{		
+		   	name = Regex.Replace(name, @"[\W]", "");
+			name = GetCamelCaseName(name);
+			
+			foreach(string keyword in _csharpKeywords)
+			{
+				if (keyword == name)
+				{
+					name = "@" + name;
+				}
+			}	
+			
+			if (Regex.IsMatch(name, @"^[\d]"))
+				name="data" + name;
+			
+			return name;
+		}
+		]]>
 		// Casing routines
 		<![CDATA[
 		/// <summary>

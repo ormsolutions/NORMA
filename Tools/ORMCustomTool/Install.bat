@@ -105,8 +105,14 @@ CALL:_AddXslORMGenerator "TVtoHTML" "TableView to HTML" "Transforms TableView to
 XCOPY /Y /D /V /Q "%NetTiersDir%\SchemaExplorer.xsd" "%ORMDir%\Schemas\"
 XCOPY /Y /D /V /Q "%NetTiersDir%\DCILToSchemaExplorer.xslt" "%ORMTransformsDir%\NetTiers\"
 XCOPY /Y /D /V /Q "%NetTiersDir%\NetTiersSettings.xslt" "%ORMTransformsDir%\NetTiers\"
+XCOPY /Y /D /V /Q "%NetTiersDir%\EntityProvider.xslt" "%ORMTransformsDir%\NetTiers\"
+XCOPY /Y /D /V /Q "%NetTiersDir%\EntityScript.xslt" "%ORMTransformsDir%\NetTiers\"
+XCOPY /Y /D /V /Q "%NetTiersDir%\Entities.xslt" "%ORMTransformsDir%\NetTiers\"
+XCOPY /Y /D /V /Q "%NetTiersDir%\SqlProvider.xslt" "%ORMTransformsDir%\NetTiers\"
 CALL:_AddXslORMGenerator "DCILtoSchemaExplorer" "DCIL to SchemaExplorer" "Transforms DCIL to SchemaExplorer." ".SchemaExplorer.xml" "DCIL" "SchemaExplorer" "%ORMTransformsDir%\NetTiers\DCILToSchemaExplorer.xslt" "" "1"
 CALL:_AddXslORMGenerator "NetTiersSettings" "NetTiers Settings" "Default settings file for NetTiers generators" ".NetTiersSettings.xml" "ORM" "NetTiersSettings" "%ORMTransformsDir%\NetTiers\NetTiersSettings.xslt" "" "1" "1"
+CALL:_AddXslORMGenerator "SchemaExplorertoNetTiersEntities" "SchemaExplorer to NetTiers Entities" "Transforms SchemaExplorer to NetTiers Entity layer." ".NetTiersEntities.xml" "SchemaExplorer" "NetTiersEntities" "%ORMTransformsDir%\NetTiers\Entities.xslt" "NUPlixLoader" "1" "" "" "NetTiersSettings\0"
+CALL:_AddXslORMGenerator "SchemaExplorertoNetTiersDataAccessLayer" "SchemaExplorer to NetTiers DataAccessLayer" "Transforms SchemaExplorer to NetTiers DataAccessLayer." ".NetTiersDataAccessLayer.xml" "SchemaExplorer" "NetTiersDataAccessLayer" "%ORMTransformsDir%\NetTiers\EntityProvider.xslt" "NUPlixLoader" "" "" "" "NetTiersSettings\0" "NetTiersEntities\0"
 
 :: Install and register PHP Transforms
 XCOPY /Y /D /V /Q "%XMLDir%\OIALtoPLiX\PHP\PHPDataLayer.xslt" "%ORMTransformsDir%\PHP\"

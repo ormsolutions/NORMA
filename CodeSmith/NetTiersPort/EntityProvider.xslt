@@ -10,43 +10,12 @@
 	xmlns:tmp="urn:temporary"
 	extension-element-prefixes="exsl msxsl csc"
 	exclude-result-prefixes="se xsl tmp">
+	<xsl:include href="EntityScript.xslt"/>
 	<!-- DEBUG: indent="yes" is for debugging only, has sideeffects on docComment output. -->
-	<xsl:output method="xml" indent="yes"/>
+	<xsl:output method="xml" indent="no"/>
 	<xsl:param name="CustomToolNamespace" select="'TestNamespace'"/>
-	<xsl:param name="settingsFragment">
-		<setting name="DataAccessLayerNamespace">Data</setting>
-		<setting name="BusinessLogicLayerNamespace">EntityLayer</setting>
-		<setting name="IncludeCustoms"/>
-		<setting name="IncludeDelete"/>
-		<setting name="IncludeDrop"/>
-		<setting name="IncludeFind"/>
-		<setting name="IncludeGet"/>
-		<setting name="IncludeGetList"/>
-		<setting name="IncludeGetListByFK"/>
-		<setting name="IncludeGetListByIX"/>
-		<setting name="IncludeInsert"/>
-		<setting name="IncludeManyToMany"/>
-		<setting name="IncludeRelations"/>
-		<setting name="IncludeSave"/>
-		<setting name="IncludeUpdate"/>
-		<setting name="ChangeUnderscoreToPascalCase"/>
-		<setting name="UsePascalCasing">Style2</setting>
-		<setting name="MethodNames">
-			<methodName name="BulkInsert">BulkInsert</methodName>
-			<methodName name="DeepLoad">DeepLoad</methodName>
-			<methodName name="DeepSave">DeepSave</methodName>
-			<methodName name="Delete">Delete</methodName>
-			<methodName name="Find">Find</methodName>
-			<methodName name="Get">Get</methodName>
-			<methodName name="GetAll">GetAll</methodName>
-			<methodName name="GetPaged">GetPaged</methodName>
-			<methodName name="GetTotalItems">GetTotalItems</methodName>
-			<methodName name="Insert">Insert</methodName>
-			<methodName name="Save">Save</methodName>
-			<methodName name="Update">Update</methodName>
-		</setting>
-	</xsl:param>
-	<xsl:param name="settings" select="exsl:node-set($settingsFragment)/child::*"/>
+	<xsl:param name="NetTiersSettings" select="document('NETTiersSettings.xml')/child::*"/>
+	<xsl:variable name="settings" select="$NetTiersSettings/child::*"/>
 	<xsl:variable name="DALNamespace" select="concat($CustomToolNamespace,'.',$settings[@name='DataAccessLayerNamespace'])"/>
 	<xsl:variable name="BLLNamespace" select="concat($CustomToolNamespace,'.',$settings[@name='BusinessLogicLayerNamespace'])"/>
 	<xsl:template match="/">
@@ -78,6 +47,7 @@
 		<xsl:variable name="currentTable" select="."/>
 		<xsl:variable name="currentTableIndexes" select="se:indexes/se:index"/>
 		<xsl:variable name="currentTablePrimaryKey" select="$currentTableIndexes[@isPrimary='true' or @isPrimary='1']"/>
+		<xsl:variable name="currentTableForeignKeys" select="se:keys/se:key"/>
 		<plx:pragma type="region" data="Classes for {@name}"/>
 		<!-- *************************************************************
 		Corresponds to DataAccessLayer\Bases\EntityProviderBase.cst
@@ -104,7 +74,7 @@ It exposes CRUD methods as well as selecting on index, foreign keys and custom s
 		<!-- *************************************************************
 		Corresponds to DataAccessLayer\Bases\EntityProviderBaseCore.generated.cst
 		************************************************************** -->
-		<plx:class name="AddressProviderBaseCore" visibility="public" modifier="abstract">
+		<plx:class name="{$baseProviderName}Core" visibility="public" modifier="abstract">
 			<plx:leadingInfo>
 				<plx:docComment>
 					<summary>
@@ -535,7 +505,7 @@ Deletes a row from the DataSource.
 							<returns>Returns true if operation suceeded.</returns>
 						</plx:docComment>
 					</plx:leadingInfo>
-					<plx:param name="transactionManager" dataTypeName="TransactionManager" dataTypeQualifier="Tiers.AdventureWorks.Data"/>
+					<plx:param name="transactionManager" dataTypeName="TransactionManager" dataTypeQualifier="{$DALNamespace}"/>
 					<xsl:copy-of select="$columnParamsFragment"/>
 					<plx:returns dataTypeName=".boolean"/>
 				</plx:function>
@@ -905,7 +875,6 @@ Gets a row from the DataSource based on its primary key.
 							</plx:return>
 						</plx:function>
 					</xsl:if>
-					<xsl:variable name="FullReturnType" select="concat($BLLNamespace,'.',$entityClassName)"/>
 
 					<!-- Method starting on line 16 -->
 					<plx:function name="GetBy{$keysName}" visibility="public">
@@ -915,7 +884,7 @@ Gets a row from the DataSource based on its primary key.
 Gets rows from the datasource based on the primary key <xsl:value-of select="@name" /> index.
 </summary>
 								<xsl:copy-of select="$docCommentColumnParamsFragment"/>
-								<returns>Returns an instance of the &lt;see cref="<xsl:value-of select="$FullReturnType"/>"/&gt; class.</returns>
+								<returns>Returns an instance of the &lt;see cref="<xsl:value-of select="$BLLNamespace"/>.<xsl:value-of select="$entityClassName"/>"/&gt; class.</returns>
 							</plx:docComment>
 						</plx:leadingInfo>
 						<xsl:copy-of select="$columnParamsFragment"/>
@@ -954,7 +923,7 @@ Gets rows from the datasource based on the primary key <xsl:value-of select="@na
 								<xsl:copy-of select="$docCommentColumnParamsFragment"/>
 								<param name="start">Row number at which to start reading, the first row is 0.</param>
 								<param name="pageLength">Number of rows to return.</param>
-								<returns>Returns an instance of the &lt;see cref="<xsl:value-of select="$FullReturnType"/>"/&gt; class.</returns>
+								<returns>Returns an instance of the &lt;see cref="<xsl:value-of select="$BLLNamespace"/>.<xsl:value-of select="$entityClassName"/>"/&gt; class.</returns>
 							</plx:docComment>
 						</plx:leadingInfo>
 						<xsl:copy-of select="$columnParamsFragment"/>
@@ -994,7 +963,9 @@ Gets rows from the datasource based on the primary key <xsl:value-of select="@na
 </summary>
 								<param name="transactionManager">A <see cref="TransactionManager"/> object.</param>
 								<xsl:copy-of select="$docCommentColumnParamsFragment"/>
-								<returns>Returns an instance of the &lt;see cref="<xsl:value-of select="$FullReturnType"/>"/&gt; class.</returns>
+								<returns>
+									Returns an instance of the &lt;see cref="<xsl:value-of select="$BLLNamespace"/>.<xsl:value-of select="$entityClassName"/>"/&gt; class.
+								</returns>
 							</plx:docComment>
 						</plx:leadingInfo>
 						<plx:param name="transactionManager" dataTypeName="TransactionManager"/>
@@ -1029,13 +1000,15 @@ Gets rows from the datasource based on the primary key <xsl:value-of select="@na
 						<plx:leadingInfo>
 							<plx:docComment>
 								<summary>
-Gets a row from the DataSource based on its primary key.
-</summary>
-								<param name="transactionManager">A <see cref="TransactionManager"/> object.</param>
+									Gets a row from the DataSource based on its primary key.
+								</summary>
+								<param name="transactionManager">
+									A <see cref="TransactionManager"/> object.
+								</param>
 								<xsl:copy-of select="$docCommentColumnParamsFragment"/>
 								<param name="start">Row number at which to start reading, the first row is 0.</param>
 								<param name="pageLength">Number of rows to return.</param>
-								<returns>Returns an instance of the &lt;see cref="<xsl:value-of select="$FullReturnType"/>"/&gt; class.</returns>
+								<returns>Returns an instance of the &lt;see cref="<xsl:value-of select="$BLLNamespace"/>.<xsl:value-of select="$entityClassName"/>"/&gt; class.</returns>
 							</plx:docComment>
 						</plx:leadingInfo>
 						<plx:param name="transactionManager" dataTypeName="TransactionManager"/>
@@ -1078,7 +1051,7 @@ Gets a row from the DataSource based on its primary key.
 								<param name="start">Row number at which to start reading, the first row is 0.</param>
 								<param name="pageLength">Number of rows to return.</param>
 								<param name="count">out parameter to get total records for query.</param>
-								<returns>Returns an instance of the &lt;see cref="<xsl:value-of select="$FullReturnType"/>"/&gt; class.</returns>
+								<returns>Returns an instance of the &lt;see cref="<xsl:value-of select="$BLLNamespace"/>.<xsl:value-of select="$entityClassName"/>"/&gt; class.</returns>
 							</plx:docComment>
 						</plx:leadingInfo>
 						<xsl:copy-of select="$columnParamsFragment"/>
@@ -1117,7 +1090,7 @@ Gets a row from the DataSource based on its primary key.
 								<param name="start">Row number at which to start reading, the first row is 0.</param>
 								<param name="pageLength">Number of rows to return.</param>
 								<param name="count">The total number of records.</param>
-								<returns>Returns an instance of the &lt;see cref="<xsl:value-of select="$FullReturnType"/>"/&gt; class.</returns>
+								<returns>Returns an instance of the &lt;see cref="<xsl:value-of select="$BLLNamespace"/>.<xsl:value-of select="$entityClassName"/>"/&gt; class.</returns>
 							</plx:docComment>
 						</plx:leadingInfo>
 						<plx:param name="transactionManager" dataTypeName="TransactionManager"/>
@@ -1131,11 +1104,1255 @@ Gets a row from the DataSource based on its primary key.
 				</xsl:for-each>
 				<plx:pragma type="closeRegion" data="Get By Index Functions"/>
 			</xsl:if>
-			<!-- End Mike/Tommy code -->
 
+			<plx:pragma type="region" data="Helper Functions"/>
+
+			<xsl:variable name="fullColumnParamsFragment">
+				<xsl:call-template name="GetColumnParams">
+					<xsl:with-param name="table" select="$currentTable"/>
+					<xsl:with-param name="columnNames" select="se:indexes/se:index/se:column/@ref"/>
+					<xsl:with-param name="getPropertyNames" select="true()" />
+				</xsl:call-template>
+			</xsl:variable>
+			<xsl:variable name="fullColumnParams" select="exsl:node-set($fullColumnParamsFragment)/child::*"/>
+
+			<plx:function name="Fill" visibility="public" modifier="static">
+				<plx:leadingInfo>
+					<plx:docComment>
+						<summary>
+							Fill a &lt;see cref="<xsl:value-of select="$BLLNamespace"/>.<xsl:value-of select="$entityClassName"/>"/&gt; from a DataReader.
+						</summary>
+						<param name="reader">DataReader</param>
+						<param name="rows">The collection to fill.</param>
+						<param name="start">row number at which to start reading, the first row is 0.</param>
+						<param name="pageLength">Number of rows.</param>
+						<returns>
+							a &lt;see cref="<xsl:value-of select="$BLLNamespace"/>.TList&lt;<xsl:value-of select="$entityClassName"/>&gt;"/&gt;
+						</returns>
+					</plx:docComment>
+				</plx:leadingInfo>
+				<plx:param name="reader" dataTypeName="IDataReader" />
+				<plx:param name="start" dataTypeName=".i4" />
+				<plx:param name="pageLength" dataTypeName=".i4" />
+				<xsl:copy-of select="$returnsEntityClassCollectionFragment"/>
+
+				<plx:loop>
+					<plx:initializeLoop>
+						<plx:local name="i" dataTypeName=".i4">
+							<plx:initialize>
+								<plx:value data="0" type="i4"/>
+							</plx:initialize>
+						</plx:local>
+					</plx:initializeLoop>
+					<plx:condition>
+						<plx:binaryOperator type="lessThan">
+							<plx:left>
+								<plx:nameRef name="i"/>
+							</plx:left>
+							<plx:right>
+								<plx:nameRef name="start"/>
+							</plx:right>
+						</plx:binaryOperator>
+					</plx:condition>
+					<plx:beforeLoop>
+						<plx:increment>
+							<plx:nameRef name="i"/>
+						</plx:increment>
+					</plx:beforeLoop>
+					<plx:branch>
+						<plx:condition>
+							<plx:unaryOperator type="booleanNot">
+								<plx:callInstance name="Read">
+									<plx:callObject>
+										<plx:nameRef name="reader"/>
+									</plx:callObject>
+								</plx:callInstance>
+							</plx:unaryOperator>
+						</plx:condition>
+						<plx:return>
+							<plx:nameRef name="rows"/>
+						</plx:return>
+					</plx:branch>
+				</plx:loop>
+
+				<plx:loop>
+					<plx:initializeLoop>
+						<plx:local name="i" dataTypeName=".i4">
+							<plx:initialize>
+								<plx:value data="0" type="i4"/>
+							</plx:initialize>
+						</plx:local>
+					</plx:initializeLoop>
+					<plx:condition>
+						<plx:binaryOperator type="lessThan">
+							<plx:left>
+								<plx:nameRef name="i"/>
+							</plx:left>
+							<plx:right>
+								<plx:nameRef name="pageLength"/>
+							</plx:right>
+						</plx:binaryOperator>
+					</plx:condition>
+					<plx:beforeLoop>
+						<plx:increment>
+							<plx:nameRef name="i"/>
+						</plx:increment>
+					</plx:beforeLoop>
+					<plx:branch>
+						<plx:condition>
+							<plx:unaryOperator type="booleanNot">
+								<plx:callInstance name="Read">
+									<plx:callObject>
+										<plx:nameRef name="reader"/>
+									</plx:callObject>
+								</plx:callInstance>
+							</plx:unaryOperator>
+						</plx:condition>
+						<plx:break />
+					</plx:branch>
+					<plx:local name="key" dataTypeName=".string">
+						<plx:initialize>
+							<plx:nullKeyword />
+						</plx:initialize>
+					</plx:local>
+					<plx:local name="c" dataTypeName="{$entityClassName}" dataTypeQualifier="{$BLLNamespace}">
+						<plx:initialize>
+							<plx:nullKeyword />
+						</plx:initialize>
+					</plx:local>
+
+					<plx:branch>
+						<plx:condition>
+							<plx:callInstance name="UseEntityFactory" type="property">
+								<plx:callObject>
+									<plx:callStatic name="Provider" type="property" dataTypeName="DataRepository" />
+								</plx:callObject>
+							</plx:callInstance>
+						</plx:condition>
+						<plx:assign>
+							<plx:left>
+								<plx:nameRef name="key"/>
+							</plx:left>
+							<plx:right>
+								<plx:callInstance name="ToString">
+									<plx:callObject>
+										<xsl:call-template name="KeyStringBuilder">
+											<xsl:with-param name="Columns" select="$fullColumnParams"/>
+											<xsl:with-param name="CurrentPosition" select="1"/>
+											<xsl:with-param name="ItemCount" select="count($fullColumnParams)"/>
+											<xsl:with-param name="EntityClassName" select="$entityClassName"/>
+											<xsl:with-param name="BLLNamespace" select="$BLLNamespace"/>
+										</xsl:call-template>
+									</plx:callObject>
+								</plx:callInstance>
+							</plx:right>
+						</plx:assign>
+						<plx:assign>
+							<plx:left>
+								<plx:nameRef name="c"/>
+							</plx:left>
+							<plx:right>
+								<plx:callStatic name="LocateOrCreate" dataTypeName="EntityManager">
+									<plx:passMemberTypeParam dataTypeName="{$entityClassName}" />
+									<plx:passParam>
+										<plx:callInstance name="ToString">
+											<plx:callObject>
+												<plx:nameRef name="key"/>
+											</plx:callObject>
+										</plx:callInstance>
+									</plx:passParam>
+									<plx:passParam>
+										<plx:string>
+											<xsl:copy-of select="$entityClassName"/>
+										</plx:string>
+									</plx:passParam>
+									<plx:passParam>
+										<plx:callInstance name="EntityCreationalFactoryType" type="property">
+											<plx:callObject>
+												<plx:callStatic name="Provider" type="property" dataTypeName="DataRepository" />
+											</plx:callObject>
+										</plx:callInstance>
+									</plx:passParam>
+									<plx:passParam>
+										<plx:callInstance name="EnableEntityTracking" type="property">
+											<plx:callObject>
+												<plx:callStatic name="Provider" type="property" dataTypeName="DataRepository" />
+											</plx:callObject>
+										</plx:callInstance>
+									</plx:passParam>
+								</plx:callStatic>
+							</plx:right>
+						</plx:assign>
+					</plx:branch>
+					<plx:fallbackBranch>
+						<!-- c = new EmployeePayHistory(); -->
+						<plx:assign>
+							<plx:left>
+								<plx:nameRef name="c"/>
+							</plx:left>
+							<plx:right>
+								<plx:callNew dataTypeName="{$entityClassName}" dataTypeQualifier="{$BLLNamespace}"/>
+							</plx:right>
+						</plx:assign>
+					</plx:fallbackBranch>
+					<!-- if ((!DataRepository.Provider.EnableEntityTracking || (c.EntityState == EntityState.Added)) || 
+					(DataRepository.Provider.EnableEntityTracking && (((DataRepository.Provider.CurrentLoadPolicy == LoadPolicy.PreserveChanges) 
+					&& (c.EntityState == EntityState.Unchanged)) || ((DataRepository.Provider.CurrentLoadPolicy == LoadPolicy.DiscardChanges) 
+					&& ((c.EntityState == EntityState.Unchanged) || (c.EntityState == EntityState.Changed)))))) {} -->
+					<plx:branch>
+						<plx:condition>
+							<plx:binaryOperator type="booleanOr">
+								<plx:left>
+									<plx:binaryOperator type="booleanOr">
+										<plx:left>
+											<plx:unaryOperator type="booleanNot">
+												<plx:callInstance name="EnableEntityTracking" type="property">
+													<plx:callObject>
+														<plx:callStatic name="Provider" type="property" dataTypeName="DataRepository" />
+													</plx:callObject>
+												</plx:callInstance>
+											</plx:unaryOperator>
+										</plx:left>
+										<plx:right>
+											<plx:binaryOperator type="equality">
+												<plx:left>
+													<plx:callInstance name="EntityState" type="property">
+														<plx:callObject>
+															<plx:nameRef name="c"/>
+														</plx:callObject>
+													</plx:callInstance>
+												</plx:left>
+												<plx:right>
+													<plx:callStatic name="Added" type="field" dataTypeName="EntityState" />
+												</plx:right>
+											</plx:binaryOperator>
+										</plx:right>
+									</plx:binaryOperator>
+								</plx:left>
+								<plx:right>
+									<plx:binaryOperator type="booleanAnd">
+										<plx:left>
+											<plx:callInstance name="EnableEntityTracking" type="property">
+												<plx:callObject>
+													<plx:callStatic name="Provider" type="property" dataTypeName="DataRepository" />
+												</plx:callObject>
+											</plx:callInstance>
+										</plx:left>
+										<plx:right>
+											<plx:binaryOperator type="booleanOr">
+												<plx:left>
+													<plx:binaryOperator type="booleanAnd">
+														<plx:left>
+															<plx:binaryOperator type="equality">
+																<plx:left>
+																	<plx:callInstance name="CurrentLoadPolicy" type="property">
+																		<plx:callObject>
+																			<plx:callStatic name="Provider" type="property" dataTypeName="DataRepository" />
+																		</plx:callObject>
+																	</plx:callInstance>
+																</plx:left>
+																<plx:right>
+																	<plx:callStatic name="PreserveChanges" type="field" dataTypeName="LoadPolicy"/>
+																</plx:right>
+															</plx:binaryOperator>
+														</plx:left>
+														<plx:right>
+															<plx:binaryOperator type="equality">
+																<plx:left>
+																	<plx:callInstance name="EntityState" type="property">
+																		<plx:callObject>
+																			<plx:nameRef name="c"/>
+																		</plx:callObject>
+																	</plx:callInstance>
+																</plx:left>
+																<plx:right>
+																	<plx:callStatic name="Unchanged" type="field" dataTypeName="EntityState" />
+																</plx:right>
+															</plx:binaryOperator>
+														</plx:right>
+													</plx:binaryOperator>
+												</plx:left>
+												<plx:right>
+													<plx:binaryOperator type="booleanAnd">
+														<plx:left>
+															<plx:binaryOperator type="equality">
+																<plx:left>
+																	<plx:callInstance name="CurrentLoadPolicy" type="property">
+																		<plx:callObject>
+																			<plx:callStatic name="Provider" type="property" dataTypeName="DataRepository" />
+																		</plx:callObject>
+																	</plx:callInstance>
+																</plx:left>
+																<plx:right>
+																	<plx:callStatic name="DiscardChanges" type="field" dataTypeName="LoadPolicy"/>
+																</plx:right>
+															</plx:binaryOperator>
+														</plx:left>
+														<plx:right>
+															<plx:binaryOperator type="booleanOr">
+																<plx:left>
+																	<plx:binaryOperator type="equality">
+																		<plx:left>
+																			<plx:callInstance name="EntityState" type="property">
+																				<plx:callObject>
+																					<plx:nameRef name="c"/>
+																				</plx:callObject>
+																			</plx:callInstance>
+																		</plx:left>
+																		<plx:right>
+																			<plx:callStatic name="Unchanged" type="field" dataTypeName="EntityState" />
+																		</plx:right>
+																	</plx:binaryOperator>
+																</plx:left>
+																<plx:right>
+																	<plx:binaryOperator type="equality">
+																		<plx:left>
+																			<plx:callInstance name="EntityState" type="property">
+																				<plx:callObject>
+																					<plx:nameRef name="c"/>
+																				</plx:callObject>
+																			</plx:callInstance>
+																		</plx:left>
+																		<plx:right>
+																			<plx:callStatic name="Changed" type="field" dataTypeName="EntityState" />
+																		</plx:right>
+																	</plx:binaryOperator>
+																</plx:right>
+															</plx:binaryOperator>
+														</plx:right>
+													</plx:binaryOperator>
+												</plx:right>
+											</plx:binaryOperator>
+										</plx:right>
+									</plx:binaryOperator>
+								</plx:right>
+							</plx:binaryOperator>
+						</plx:condition>
+						<!-- c.SuppressEntityEvents = true; -->
+						<plx:assign>
+							<plx:left>
+								<plx:callInstance name="SuppressEntityEvents" type="property">
+									<plx:callObject>
+										<plx:nameRef name="c"/>
+									</plx:callObject>
+								</plx:callInstance>
+							</plx:left>
+							<plx:right>
+								<plx:trueKeyword/>
+							</plx:right>
+						</plx:assign>
+						<!-- c.EmployeeId = (int) reader["EmployeeID"]; -->
+						<xsl:for-each select="$fullColumnParams">
+							<plx:assign>
+								<plx:left>
+									<plx:callInstance name="{@tmp:propertyName}" type="property">
+										<plx:callObject>
+											<plx:nameRef name="c"/>
+										</plx:callObject>
+									</plx:callInstance>
+								</plx:left>
+								<plx:right>
+									<plx:cast dataTypeName="{@dataTypeName}">
+										<plx:callInstance name=".implied" type="indexerCall">
+											<plx:callObject>
+												<plx:nameRef name="reader" type="parameter"/>
+											</plx:callObject>
+											<plx:passParam>
+												<plx:string>
+													<xsl:value-of select="@tmp:propertyName" />
+												</plx:string>
+											</plx:passParam>
+										</plx:callInstance>
+									</plx:cast>
+								</plx:right>
+							</plx:assign>
+							<plx:assign>
+								<plx:left>
+									<plx:callInstance name="Original{@tmp:propertyName}" type="property">
+										<plx:callObject>
+											<plx:nameRef name="c"/>
+										</plx:callObject>
+									</plx:callInstance>
+								</plx:left>
+								<plx:right>
+									<plx:callInstance name="{@tmp:propertyName}" type="property">
+										<plx:callObject>
+											<plx:nameRef name="c"/>
+										</plx:callObject>
+									</plx:callInstance>
+								</plx:right>
+							</plx:assign>
+						</xsl:for-each>
+						<!-- c.EntityTrackingKey = key; -->
+						<plx:assign>
+							<plx:left>
+								<plx:callInstance name="EntityTrackingKey" type="property">
+									<plx:callObject>
+										<plx:nameRef name="c"/>
+									</plx:callObject>
+								</plx:callInstance>
+							</plx:left>
+							<plx:right>
+								<plx:nameRef name="key"/>
+							</plx:right>
+						</plx:assign>
+						<!-- c.AcceptChanges(); -->
+						<plx:callInstance name="AcceptChanges">
+							<plx:callObject>
+								<plx:nameRef name="c"/>
+							</plx:callObject>
+						</plx:callInstance>
+						<!-- c.SuppressEntityEvents = false; -->
+						<plx:assign>
+							<plx:left>
+								<plx:callInstance name="SuppressEntityEvents" type="property">
+									<plx:callObject>
+										<plx:nameRef name="c"/>
+									</plx:callObject>
+								</plx:callInstance>
+							</plx:left>
+							<plx:right>
+								<plx:falseKeyword/>
+							</plx:right>
+						</plx:assign>
+					</plx:branch>
+					<!-- rows.Add(c); -->
+					<plx:callInstance name="Add">
+						<plx:callObject>
+							<plx:nameRef name="rows" type="parameter"/>
+						</plx:callObject>
+						<plx:passParam>
+							<plx:nameRef name="c"/>
+						</plx:passParam>
+					</plx:callInstance>
+				</plx:loop>
+				<!-- return rows; -->
+				<plx:return>
+					<plx:nameRef name="rows" type="parameter"/>
+				</plx:return>
+			</plx:function>
+
+			<!-- RefreshEntity methods-->
+			<plx:function name="RefreshEntity" visibility="public" modifier="static">
+				<plx:leadingInfo>
+					<plx:docComment>
+						<summary>
+							Refreshes the &lt;see cref="<xsl:value-of select="$BLLNamespace"/>.<xsl:value-of select="$entityClassName"/>"/&gt; object from the &lt;see cref="IDataReader"/&gt;.
+						</summary>
+						<param name="reader">The &lt;see cref="IDataReader"/&gt; to read from.</param>
+						<param name="entity">
+							The &lt;see cref="<xsl:value-of select="$BLLNamespace"/>.<xsl:value-of select="$entityClassName"/>"/&gt; object to refresh.
+						</param>
+					</plx:docComment>
+				</plx:leadingInfo>
+				<plx:param name="reader" dataTypeName="IDataReader" />
+				<plx:param name="entity" dataTypeName="{$entityClassName}" dataTypeQualifier="{$BLLNamespace}" />
+				<plx:branch>
+					<plx:condition>
+						<plx:unaryOperator type="booleanNot">
+							<plx:callInstance name="Read">
+								<plx:callObject>
+									<plx:nameRef name="reader"/>
+								</plx:callObject>
+							</plx:callInstance>
+						</plx:unaryOperator>
+					</plx:condition>
+					<plx:return />
+				</plx:branch>
+				<xsl:for-each select="$fullColumnParams">
+					<plx:assign>
+						<plx:left>
+							<plx:callInstance name="{@tmp:propertyName}" type="property">
+								<plx:callObject>
+									<plx:nameRef name="entity"/>
+								</plx:callObject>
+							</plx:callInstance>
+						</plx:left>
+						<plx:right>
+							<plx:cast dataTypeName="{@dataTypeName}">
+								<plx:callInstance name=".implied" type="indexerCall">
+									<plx:callObject>
+										<plx:nameRef name="reader" type="parameter"/>
+									</plx:callObject>
+									<plx:passParam>
+										<plx:string>
+											<xsl:value-of select="@tmp:propertyName" />
+										</plx:string>
+									</plx:passParam>
+								</plx:callInstance>
+							</plx:cast>
+						</plx:right>
+					</plx:assign>
+					<plx:assign>
+						<plx:left>
+							<plx:callInstance name="Original{@tmp:propertyName}" type="property">
+								<plx:callObject>
+									<plx:nameRef name="entity"/>
+								</plx:callObject>
+							</plx:callInstance>
+						</plx:left>
+						<plx:right>
+							<plx:cast dataTypeName="{@dataTypeName}">
+								<plx:callInstance name=".implied" type="indexerCall">
+									<plx:callObject>
+										<plx:nameRef name="reader" type="parameter"/>
+									</plx:callObject>
+									<plx:passParam>
+										<plx:string>
+											<xsl:value-of select="@tmp:propertyName" />
+										</plx:string>
+									</plx:passParam>
+								</plx:callInstance>
+							</plx:cast>
+						</plx:right>
+					</plx:assign>
+				</xsl:for-each>
+				<!-- entity.AcceptChanges()-->
+				<plx:callInstance name="AcceptChanges">
+					<plx:callObject>
+						<plx:nameRef name="entity"/>
+					</plx:callObject>
+				</plx:callInstance>
+			</plx:function>
+			<plx:function name="RefreshEntity" visibility="public" modifier="static">
+				<plx:leadingInfo>
+					<plx:docComment>
+						<summary>
+							Refreshes the &lt;see cref="<xsl:value-of select="$BLLNamespace"/>.<xsl:value-of select="$entityClassName"/>"/&gt; object from the &lt;see cref="IDataReader"/&gt;.
+						</summary>
+						<param name="dataSet">The &lt;see cref="DataSet"/&gt; to read from.</param>
+						<param name="entity">
+							The &lt;see cref="<xsl:value-of select="$BLLNamespace"/>.<xsl:value-of select="$entityClassName"/>"/&gt; object to refresh.
+						</param>
+					</plx:docComment>
+				</plx:leadingInfo>
+				<plx:param name="dataSet" dataTypeName="DataSet" dataTypeQualifier="System.Data" />
+				<plx:param name="entity" dataTypeName="{$entityClassName}" dataTypeQualifier="{$BLLNamespace}" />
+				<plx:local name="dataRow" dataTypeName="DataRow" dataTypeQualifier="System.Data">
+					<plx:initialize>
+						<plx:callInstance name=".implied" type="indexerCall">
+							<plx:callObject>
+								<plx:callInstance name="Rows" type="property">
+									<plx:callObject>
+										<plx:callInstance name=".implied" type="indexerCall">
+											<plx:callObject>
+												<plx:callInstance name="Tables" type="property">
+													<plx:callObject>
+														<plx:nameRef name="dataSet" type="parameter"/>
+													</plx:callObject>
+												</plx:callInstance>
+											</plx:callObject>
+											<plx:passParam>
+												<plx:value data="0" type="i4"/>
+											</plx:passParam>
+										</plx:callInstance>
+									</plx:callObject>
+								</plx:callInstance>
+							</plx:callObject>
+							<plx:passParam>
+								<plx:value data="0" type="i4"/>
+							</plx:passParam>
+						</plx:callInstance>
+					</plx:initialize>
+				</plx:local>
+
+				<xsl:for-each select="$fullColumnParams">
+					<plx:assign>
+						<plx:left>
+							<plx:callInstance name="{@tmp:propertyName}" type="property">
+								<plx:callObject>
+									<plx:nameRef name="entity"/>
+								</plx:callObject>
+							</plx:callInstance>
+						</plx:left>
+						<plx:right>
+							<plx:cast dataTypeName="{@dataTypeName}">
+								<plx:callInstance name=".implied" type="indexerCall">
+									<plx:callObject>
+										<plx:nameRef name="dataRow" type="parameter"/>
+									</plx:callObject>
+									<plx:passParam>
+										<plx:string>
+											<xsl:value-of select="@tmp:propertyName" />
+										</plx:string>
+									</plx:passParam>
+								</plx:callInstance>
+							</plx:cast>
+						</plx:right>
+					</plx:assign>
+					<plx:assign>
+						<plx:left>
+							<plx:callInstance name="Original{@tmp:propertyName}" type="property">
+								<plx:callObject>
+									<plx:nameRef name="entity"/>
+								</plx:callObject>
+							</plx:callInstance>
+						</plx:left>
+						<plx:right>
+							<plx:cast dataTypeName="{@dataTypeName}">
+								<plx:callInstance name=".implied" type="indexerCall">
+									<plx:callObject>
+										<plx:nameRef name="dataRow" type="parameter"/>
+									</plx:callObject>
+									<plx:passParam>
+										<plx:string>
+											<xsl:value-of select="@tmp:propertyName" />
+										</plx:string>
+									</plx:passParam>
+								</plx:callInstance>
+							</plx:cast>
+						</plx:right>
+					</plx:assign>
+				</xsl:for-each>
+				<!-- entity.AcceptChanges()-->
+				<plx:callInstance name="AcceptChanges">
+					<plx:callObject>
+						<plx:nameRef name="entity"/>
+					</plx:callObject>
+				</plx:callInstance>
+			</plx:function>
+			<plx:pragma type="closeRegion" data="Helper Functions"/>
+
+			<xsl:if test="$settings[@name='IncludeRelations'] and $settings[@name='IncludeGetListByFK']">
+				<plx:pragma type="region" data="{$settings[@name='MethodNames']/methodName[@name='DeepLoad']} Methods"/>
+				<plx:function name="{$settings[@name='MethodNames']/methodName[@name='DeepLoad']}" visibility="internal" modifier="override">
+					<plx:leadingInfo>
+						<plx:docComment>
+							<summary>
+							Deep Loads the &lt;see cref="IEntity" /&gt; object with criteria based of the child property collections only N Levels Deep based on the &lt;see cref="DeepLoadType" /&gt;.
+						</summary>
+							<remarks>Use this method with caution as it is possible to DeepLoad with Recursion and traverse an entire object graph.</remarks>
+							<param name="transactionManager">&lt;see cref="TransactionManager" /&gt; object</param>
+							<param name="entity">
+							The &lt;see cref="<xsl:copy-of select="$BLLNamespace"/>.<xsl:copy-of select="$entityClassName"/>" /&gt; object to load.
+						</param>
+							<param name="deep">Boolean. A flag that indicates whether to recursively save all Property Collection that are descendants of this instance. If True, saves the complete object graph below this object. If False, saves this object only. </param>
+							<param name="deepLoadType">DeepLoadType Enumeration to Include/Exclude object property collections from Load.</param>
+							<param name="childTypes">
+							<xsl:copy-of select="$BLLNamespace"/>.<xsl:copy-of select="$entityClassName"/> Property Collection Type Array To Include or Exclude from Load
+						</param>
+							<param name="innerList">A collection of child types for easy access.</param>
+							<exception cref="ArgumentNullException">entity or childTypes is null.</exception>
+							<exception cref="ArgumentException">deepLoadType has invalid value.</exception>
+						</plx:docComment>
+					</plx:leadingInfo>
+					<plx:param name="transactionManager" dataTypeName="TransactionManager" />
+					<plx:param name="entity" dataTypeName="{$entityClassName}" dataTypeQualifier="{$BLLNamespace}"/>
+					<plx:param name="deep" dataTypeName=".boolean"/>
+					<plx:param name="deepLoadType" dataTypeName="DeepLoadType"/>
+					<plx:param name="childTypes" dataTypeIsSimpleArray="true" dataTypeName="Type" dataTypeQualifier="System"/>
+					<plx:param name="innerList" dataTypeName="DeepSession"/>
+					<plx:branch>
+						<plx:condition>
+							<plx:binaryOperator type="identityEquality">
+								<plx:left>
+									<plx:nameRef name="entity" type="parameter"/>
+								</plx:left>
+								<plx:right>
+									<plx:nullKeyword/>
+								</plx:right>
+							</plx:binaryOperator>
+						</plx:condition>
+						<plx:return/>
+					</plx:branch>
+
+					<plx:local name="pkItems" dataTypeIsSimpleArray="true" dataTypeName=".object"/>
+
+					<xsl:for-each select="$currentTableForeignKeys">
+						<xsl:variable name="targetTable" select="@targetTable"/>
+						<xsl:variable name="targetColumn" select="se:columnReference/@targetColumn" />
+						<plx:pragma type="region" data="{$targetColumn}Source"/>
+						<plx:branch>
+							<plx:condition>
+								<plx:binaryOperator type="booleanAnd">
+									<plx:left>
+										<plx:callThis name="CanDeepLoad">
+											<plx:passParam>
+												<plx:nameRef name="entity" type="parameter"/>
+											</plx:passParam>
+											<plx:passParam>
+												<plx:string><xsl:value-of select="$targetTable"/>|<xsl:value-of select="$targetColumn"/>Source</plx:string>
+											</plx:passParam>
+											<plx:passParam>
+												<plx:nameRef name="deepLoadType" type="parameter"/>
+											</plx:passParam>
+											<plx:passParam>
+												<plx:nameRef name="innerList" type="parameter"/>
+											</plx:passParam>
+										</plx:callThis>
+									</plx:left>
+									<plx:right>
+										<plx:binaryOperator type="identityEquality">
+											<plx:left>
+												<plx:callInstance name="{$targetColumn}Source" type="property">
+													<plx:callObject>
+														<plx:nameRef name="entity" type="parameter"/>
+													</plx:callObject>
+												</plx:callInstance>
+											</plx:left>
+											<plx:right>
+												<plx:nullKeyword/>
+											</plx:right>
+										</plx:binaryOperator>
+									</plx:right>
+								</plx:binaryOperator>
+							</plx:condition>
+							<plx:assign>
+								<plx:left>
+									<plx:nameRef name="pkItems"/>
+								</plx:left>
+								<plx:right>
+									<plx:callNew dataTypeIsSimpleArray="true" dataTypeName=".object">
+										<plx:arrayInitializer>
+											<plx:callInstance name="{$targetColumn}" type="property">
+												<plx:callObject>
+													<plx:nameRef name="entity" type="parameter"/>
+												</plx:callObject>
+											</plx:callInstance>
+										</plx:arrayInitializer>
+									</plx:callNew>
+								</plx:right>
+							</plx:assign>
+							<plx:local name="tmpEntity" dataTypeName="{$targetTable}" dataTypeQualifier="{$BLLNamespace}">
+								<plx:initialize>
+									<plx:callStatic name="LocateEntity" dataTypeName="EntityManager" dataTypeQualifier="{$BLLNamespace}">
+										<plx:passMemberTypeParam dataTypeName="{$targetTable}" dataTypeQualifier="{$BLLNamespace}"/>
+										<plx:passParam>
+											<plx:callStatic name="ConstructKeyFromPkItems" dataTypeName="EntityLocator" dataTypeQualifier="{$BLLNamespace}">
+												<plx:passParam>
+													<plx:typeOf dataTypeName="{$targetTable}" dataTypeQualifier="{$BLLNamespace}"/>
+												</plx:passParam>
+												<plx:passParam>
+													<plx:nameRef name="pkItems"/>
+												</plx:passParam>
+											</plx:callStatic>
+										</plx:passParam>
+										<plx:passParam>
+											<plx:callInstance name="EnableEntityTracking" type="property">
+												<plx:callObject>
+													<plx:callStatic name="Provider" type="property" dataTypeName="DataRepository" dataTypeQualifier="{$DALNamespace}"/>
+												</plx:callObject>
+											</plx:callInstance>
+										</plx:passParam>
+									</plx:callStatic>
+								</plx:initialize>
+							</plx:local>
+							<plx:branch>
+								<plx:condition>
+									<plx:binaryOperator type="identityInequality">
+										<plx:left>
+											<plx:nameRef name="tmpEntity"/>
+										</plx:left>
+										<plx:right>
+											<plx:nullKeyword/>
+										</plx:right>
+									</plx:binaryOperator>
+								</plx:condition>
+								<plx:assign>
+									<plx:left>
+										<plx:callInstance name="{$targetColumn}Source" type="property">
+											<plx:callObject>
+												<plx:nameRef name="entity" type="parameter"/>
+											</plx:callObject>
+										</plx:callInstance>
+									</plx:left>
+									<plx:right>
+										<plx:nameRef name="tmpEntity"/>
+									</plx:right>
+								</plx:assign>
+							</plx:branch>
+							<plx:fallbackBranch>
+								<plx:assign>
+									<plx:left>
+										<plx:callInstance name="{$targetColumn}Source" type="property">
+											<plx:callObject>
+												<plx:nameRef name="entity" type="parameter"/>
+											</plx:callObject>
+										</plx:callInstance>
+									</plx:left>
+									<plx:right>
+										<plx:callInstance name="GetBy{$targetColumn}">
+											<plx:callObject>
+												<plx:callStatic name="{$targetTable}Provider" type="property" dataTypeName="DataRepository" dataTypeQualifier="{$DALNamespace}"/>
+											</plx:callObject>
+											<plx:passParam>
+												<plx:nameRef name="transactionManager" type="parameter"/>
+											</plx:passParam>
+											<plx:passParam>
+												<plx:callInstance name="{$targetColumn}" type="property">
+													<plx:callObject>
+														<plx:nameRef name="entity" type="parameter"/>
+													</plx:callObject>
+												</plx:callInstance>
+											</plx:passParam>
+										</plx:callInstance>
+									</plx:right>
+								</plx:assign>
+							</plx:fallbackBranch>
+							<plx:branch>
+								<plx:condition>
+									<plx:binaryOperator type="booleanAnd">
+										<plx:left>
+											<plx:nameRef name="deep" type="parameter"/>
+										</plx:left>
+										<plx:right>
+											<plx:binaryOperator type="identityInequality">
+												<plx:left>
+													<plx:callInstance name="{$targetColumn}Source" type="property">
+														<plx:callObject>
+															<plx:nameRef name="entity" type="parameter"/>
+														</plx:callObject>
+													</plx:callInstance>
+												</plx:left>
+												<plx:right>
+													<plx:nullKeyword/>
+												</plx:right>
+											</plx:binaryOperator>
+										</plx:right>
+									</plx:binaryOperator>
+								</plx:condition>
+								<plx:assign>
+									<plx:left>
+										<plx:callInstance name="SkipChildren" type="property">
+											<plx:callObject>
+												<plx:nameRef name="innerList" type="parameter"/>
+											</plx:callObject>
+										</plx:callInstance>
+									</plx:left>
+									<plx:right>
+										<plx:trueKeyword/>
+									</plx:right>
+								</plx:assign>
+								<plx:callInstance name="DeepLoad">
+									<plx:callObject>
+										<plx:callStatic name="{$targetTable}Provider" type="property" dataTypeName="DataRepository" dataTypeQualifier="{$DALNamespace}"/>
+									</plx:callObject>
+									<plx:passParam>
+										<plx:nameRef name="transactionManager" type="parameter"/>
+									</plx:passParam>
+									<plx:passParam>
+										<plx:callInstance name="{$targetColumn}Source" type="property">
+											<plx:callObject>
+												<plx:nameRef name="entity" type="parameter"/>
+											</plx:callObject>
+										</plx:callInstance>
+									</plx:passParam>
+									<plx:passParam>
+										<plx:nameRef name="deep" type="parameter"/>
+									</plx:passParam>
+									<plx:passParam>
+										<plx:nameRef name="deepLoadType" type="parameter"/>
+									</plx:passParam>
+									<plx:passParam>
+										<plx:nameRef name="childTypes" type="parameter"/>
+									</plx:passParam>
+									<plx:passParam>
+										<plx:nameRef name="innerList" type="parameter"/>
+									</plx:passParam>
+								</plx:callInstance>
+								<!-- innerList.SkipChildren = false; -->
+								<plx:assign>
+									<plx:left>
+										<plx:callInstance name="SkipChildren" type="property">
+											<plx:callObject>
+												<plx:nameRef name="innerList" type="parameter"/>
+											</plx:callObject>
+										</plx:callInstance>
+									</plx:left>
+									<plx:right>
+										<plx:falseKeyword/>
+									</plx:right>
+								</plx:assign>
+							</plx:branch>
+						</plx:branch>
+						<plx:pragma type="closeRegion" data="{$targetColumn}Source"/>
+					</xsl:for-each>
+					<plx:local name="deepHandles" dataTypeName="Dictionary" dataTypeQualifier="System.Collections.Generic">
+						<plx:passTypeParam dataTypeName=".string"/>
+						<plx:passTypeParam dataTypeName="KeyValuePair" dataTypeQualifier="System.Collections.Generic">
+							<plx:passTypeParam dataTypeName="Delegate" dataTypeQualifier="System"/>
+							<plx:passTypeParam dataTypeName=".object"/>
+						</plx:passTypeParam>
+						<plx:initialize>
+							<plx:callNew dataTypeName="Dictionary" dataTypeQualifier="System.Collections.Generic">
+								<plx:passTypeParam dataTypeName=".string"/>
+								<plx:passTypeParam dataTypeName="KeyValuePair" dataTypeQualifier="System.Collections.Generic">
+									<plx:passTypeParam dataTypeName="Delegate" dataTypeQualifier="System"/>
+									<plx:passTypeParam dataTypeName=".object"/>
+								</plx:passTypeParam>
+							</plx:callNew>
+						</plx:initialize>
+					</plx:local>
+					<plx:iterator localName="pair" dataTypeName="KeyValuePair" dataTypeQualifier="System.Collections.Generic">
+						<plx:passTypeParam dataTypeName="Delegate" dataTypeQualifier="System"/>
+						<plx:passTypeParam dataTypeName=".object"/>
+						<plx:initialize>
+							<plx:callInstance name="Values" type="property">
+								<plx:callObject>
+									<plx:nameRef name="deepHandles"/>
+								</plx:callObject>
+							</plx:callInstance>
+						</plx:initialize>
+						<plx:callInstance name="DynamicInvoke">
+							<plx:callObject>
+								<plx:callInstance name="Key" type="property">
+									<plx:callObject>
+										<plx:nameRef name="pair"/>
+									</plx:callObject>
+								</plx:callInstance>
+							</plx:callObject>
+							<plx:passParam>
+								<plx:cast dataTypeIsSimpleArray="true" dataTypeName=".object">
+									<plx:callInstance name="Value" type="property">
+										<plx:callObject>
+											<plx:nameRef name="pair"/>
+										</plx:callObject>
+									</plx:callInstance>
+								</plx:cast>
+							</plx:passParam>
+						</plx:callInstance>
+					</plx:iterator>
+					<plx:assign>
+						<plx:left>
+							<plx:nameRef name="deepHandles"/>
+						</plx:left>
+						<plx:right>
+							<plx:nullKeyword/>
+						</plx:right>
+					</plx:assign>
+
+				</plx:function>
+				<plx:pragma type="closeRegion" data="{$settings[@name='MethodNames']/methodName[@name='DeepLoad']} Methods"/>
+
+				<xsl:if test="$settings[@name='IncludeSave']">
+					<plx:pragma type="region" data="{$settings[@name='MethodNames']/methodName[@name='DeepSave']} Methods"/>
+					<plx:function name="{$settings[@name='MethodNames']/methodName[@name='DeepSave']}" visibility="internal" modifier="override">
+						<plx:leadingInfo>
+							<plx:docComment>
+								<summary>
+							Deep Save the entire object graph of the [CLASS NAME] object with criteria based off the child type property array and DeepSaveType.
+						</summary>
+								<param name="transactionManager">&lt;see cref="TransactionManager" /&gt; object</param>
+								<param name="entity">
+							The &lt;see cref="<xsl:copy-of select="$BLLNamespace"/>.<xsl:copy-of select="$entityClassName"/>" /&gt; instance.
+						</param>
+								<param name="deepSaveType">DeepSaveType Enumeration to Include/Exclude object property collections from Save.</param>
+								<param name="childTypes">
+							<xsl:copy-of select="$BLLNamespace"/>.<xsl:copy-of select="$entityClassName"/> Property Collection Type Array To Include or Exclude from Save
+						</param>
+								<param name="innerList">A collection of child types for easy access.</param>
+							</plx:docComment>
+						</plx:leadingInfo>
+
+						<plx:param name="transactionManager" dataTypeName="TransactionManager" dataTypeQualifier="{$DALNamespace}"/>
+						<plx:param name="entity" dataTypeName="{$entityClassName}" dataTypeQualifier="{$BLLNamespace}"/>
+						<plx:param name="deepSaveType" dataTypeName="DeepSaveType" dataTypeQualifier="{$DALNamespace}"/>
+						<plx:param name="childTypes" dataTypeIsSimpleArray="true" dataTypeName="Type" dataTypeQualifier="System"/>
+						<plx:param name="innerList" dataTypeName="DeepSession"/>
+						<plx:returns dataTypeName=".boolean"/>
+
+						<plx:branch>
+							<plx:condition>
+								<plx:binaryOperator type="identityEquality">
+									<plx:left>
+										<plx:nameRef name="entity" type="parameter"/>
+									</plx:left>
+									<plx:right>
+										<plx:nullKeyword/>
+									</plx:right>
+								</plx:binaryOperator>
+							</plx:condition>
+							<plx:return>
+								<plx:falseKeyword/>
+							</plx:return>
+						</plx:branch>
+
+						<plx:pragma type="region" data="Composite Parent Properties"/>
+						<plx:comment>Save Source Composite Properties, however, don't call deep save on them.</plx:comment>
+						<plx:comment>So they only get saved a single level deep.</plx:comment>
+						<xsl:for-each select="$currentTableForeignKeys">
+							<xsl:variable name="targetTable" select="@targetTable"/>
+							<xsl:variable name="targetColumn" select="se:columnReference/@targetColumn" />
+							<plx:pragma type="region" data="{$targetColumn}Source"/>
+							<plx:branch>
+								<plx:condition>
+									<plx:binaryOperator type="booleanAnd">
+										<plx:left>
+											<plx:callThis name="CanDeepSave" accessor="base">
+												<plx:passParam>
+													<plx:nameRef name="entity" type="parameter"/>
+												</plx:passParam>
+												<plx:passParam>
+													<plx:string><xsl:value-of select="$targetTable"/>|<xsl:value-of select="$targetColumn"/>Source</plx:string>
+												</plx:passParam>
+												<plx:passParam>
+													<plx:nameRef name="deepSaveType" type="parameter"/>
+												</plx:passParam>
+												<plx:passParam>
+													<plx:nameRef name="innerList" type="parameter"/>
+												</plx:passParam>
+											</plx:callThis>
+										</plx:left>
+										<plx:right>
+											<plx:binaryOperator type="identityInequality">
+												<plx:left>
+													<plx:callInstance name="{$targetColumn}Source" type="property">
+														<plx:callObject>
+															<plx:nameRef name="entity" type="parameter"/>
+														</plx:callObject>
+													</plx:callInstance>
+												</plx:left>
+												<plx:right>
+													<plx:nullKeyword/>
+												</plx:right>
+											</plx:binaryOperator>
+										</plx:right>
+									</plx:binaryOperator>
+								</plx:condition>
+								<plx:callInstance name="Save">
+									<plx:callObject>
+										<plx:callStatic name="{$targetTable}Provider" type="property" dataTypeName="DataRepository" dataTypeQualifier="{$DALNamespace}"/>
+									</plx:callObject>
+									<plx:passParam>
+										<plx:nameRef name="transactionManager" type="parameter"/>
+									</plx:passParam>
+									<plx:passParam>
+										<plx:callInstance name="{$targetColumn}Source" type="property">
+											<plx:callObject>
+												<plx:nameRef name="entity" type="parameter"/>
+											</plx:callObject>
+										</plx:callInstance>
+									</plx:passParam>
+								</plx:callInstance>
+								<plx:assign>
+									<plx:left>
+										<plx:callInstance name="{$targetColumn}" type="property">
+											<plx:callObject>
+												<plx:nameRef name="entity" type="parameter"/>
+											</plx:callObject>
+										</plx:callInstance>
+									</plx:left>
+									<plx:right>
+										<plx:callInstance name="{$targetColumn}" type="property">
+											<plx:callObject>
+												<plx:callInstance name="{$targetColumn}Source" type="property">
+													<plx:callObject>
+														<plx:nameRef name="entity" type="parameter"/>
+													</plx:callObject>
+												</plx:callInstance>
+											</plx:callObject>
+										</plx:callInstance>
+									</plx:right>
+								</plx:assign>
+							</plx:branch>
+							<plx:pragma type="closeRegion" data="{$targetColumn}Source"/>
+						</xsl:for-each>
+
+						<plx:local name="deepHandles" dataTypeName="Dictionary" dataTypeQualifier="System.Collections.Generic">
+							<plx:passTypeParam dataTypeName="Delegate" dataTypeQualifier="System"/>
+							<plx:passTypeParam dataTypeName=".object"/>
+							<plx:initialize>
+								<plx:callNew dataTypeName="Dictionary" dataTypeQualifier="System.Collections.Generic">
+									<plx:passTypeParam dataTypeName="Delegate" dataTypeQualifier="System"/>
+									<plx:passTypeParam dataTypeName=".object"/>
+								</plx:callNew>
+							</plx:initialize>
+						</plx:local>
+						<plx:iterator localName="pair" dataTypeName="KeyValuePair" dataTypeQualifier="System.Collections.Generic">
+							<plx:passTypeParam dataTypeName="Delegate" dataTypeQualifier="System"/>
+							<plx:passTypeParam dataTypeName=".object"/>
+							<plx:initialize>
+								<plx:nameRef name="deepHandles"/>
+							</plx:initialize>
+							<plx:callInstance name="DynamicInvoke">
+								<plx:callObject>
+									<plx:callInstance name="Key" type="property">
+										<plx:callObject>
+											<plx:nameRef name="pair"/>
+										</plx:callObject>
+									</plx:callInstance>
+								</plx:callObject>
+								<plx:passParam>
+									<plx:cast dataTypeIsSimpleArray="true" dataTypeName=".object">
+										<plx:callInstance name="Value" type="property">
+											<plx:callObject>
+												<plx:nameRef name="pair"/>
+											</plx:callObject>
+										</plx:callInstance>
+									</plx:cast>
+								</plx:passParam>
+							</plx:callInstance>
+						</plx:iterator>
+						<plx:branch>
+							<plx:condition>
+								<plx:callInstance name="IsDeleted" type="property">
+									<plx:callObject>
+										<plx:nameRef name="entity" type="parameter"/>
+									</plx:callObject>
+								</plx:callInstance>
+							</plx:condition>
+							<plx:callThis name="Save">
+								<plx:passParam>
+									<plx:nameRef name="transactionManager" type="parameter"/>
+								</plx:passParam>
+								<plx:passParam>
+									<plx:nameRef name="entity" type="parameter"/>
+								</plx:passParam>
+							</plx:callThis>
+						</plx:branch>
+						<plx:assign>
+							<plx:left>
+								<plx:nameRef name="deepHandles"/>
+							</plx:left>
+							<plx:right>
+								<plx:nullKeyword/>
+							</plx:right>
+						</plx:assign>
+						<plx:return>
+							<plx:trueKeyword/>
+						</plx:return>
+
+						<plx:pragma type="closeRegion" data="Composite Parent Properties"/>
+
+					</plx:function>
+					<plx:pragma type="closeRegion" data="{$settings[@name='MethodNames']/methodName[@name='DeepSave']} Methods"/>
+				</xsl:if>
+				<!-- end of IncludeSave -->
+			</xsl:if>
+			<!-- end of IncludeRelations -->
 		</plx:class>
 		<plx:pragma type="closeRegion" data="Classes for {@name}"/>
+
+		<plx:pragma type="region" data="{$entityClassName}ChildEntityTypes"/>
+		<plx:enum name="{$entityClassName}ChildEntityTypes" visibility="public">
+			<plx:leadingInfo>
+				<plx:docComment>
+					<summary>
+             Enumeration used to expose the different child entity types 
+             for child properties in &lt;c&gt;<xsl:value-of select="$BLLNamespace"/>.<xsl:value-of select="$entityClassName"/>&lt;/c&gt;
+            </summary>
+				</plx:docComment>
+			</plx:leadingInfo>
+			<xsl:if test="$settings[@name='IncludeRelations'] and $settings[@name='IncludeGetListByFK']">
+				<xsl:for-each select="$currentTableForeignKeys">
+					<xsl:variable name="targetTable" select="@targetTable"/>
+					<xsl:variable name="targetColumn" select="se:columnReference/@targetColumn" />
+					<plx:enumItem name="{$targetTable}">
+						<plx:leadingInfo>
+							<plx:docComment>
+								<summary>
+             Composite Property for &lt;c&gt;<xsl:value-of select="$targetTable"/>&lt;/c&gt; at <xsl:value-of select="$targetColumn"/>Source
+            </summary>
+							</plx:docComment>
+						</plx:leadingInfo>
+						<plx:attribute dataTypeName="ChildEntityTypeAttribute">
+							<plx:passParam>
+								<plx:typeOf dataTypeName="{$targetTable}" dataTypeQualifier="{$BLLNamespace}"/>
+							</plx:passParam>
+						</plx:attribute>
+						<!--<plx:initialize>
+						<plx:value data="1" type="i4"/>
+					</plx:initialize>-->
+					</plx:enumItem>
+				</xsl:for-each>
+			</xsl:if>
+		</plx:enum>
+		<plx:pragma type="closeRegion" data="{$entityClassName}ChildEntityTypes"/>
+
+
+
+
+
+
+
+
+
+		<!-- End Mike/Tommy code -->
 	</xsl:template>
+
+	<xsl:template name="KeyStringBuilder">
+		<xsl:param name="Columns"/>
+		<xsl:param name="CurrentPosition" select="1"/>
+		<xsl:param name="ItemCount" select="count($Columns)"/>
+		<xsl:param name="EntityClassName"/>
+		<xsl:variable name="currentExpression">
+			<plx:callNew dataTypeName="StringBuilder" dataTypeQualifier="System.Text">
+				<plx:passParam>
+					<plx:string>
+						<xsl:copy-of select="$EntityClassName"/>
+					</plx:string>
+				</plx:passParam>
+			</plx:callNew>
+		</xsl:variable>
+		<xsl:choose>
+			<xsl:when test="$CurrentPosition=$ItemCount + 1">
+				<xsl:copy-of select="$currentExpression"/>
+			</xsl:when>
+			<xsl:otherwise>
+				<plx:callInstance name="Append">
+					<plx:callObject>
+						<xsl:call-template name="KeyStringBuilder">
+							<xsl:with-param name="Columns" select="$Columns"/>
+							<xsl:with-param name="CurrentPosition" select="$CurrentPosition + 1"/>
+							<xsl:with-param name="ItemCount" select="$ItemCount"/>
+							<xsl:with-param name="EntityClassName" select="$EntityClassName"/>
+							<xsl:with-param name="BLLNamespace" select="$BLLNamespace"/>
+						</xsl:call-template>
+					</plx:callObject>
+					<plx:passParam>
+						<plx:inlineStatement dataTypeName=".i4">
+							<plx:conditionalOperator>
+								<plx:condition>
+									<plx:unaryOperator type="booleanNot">
+										<plx:callInstance name="IsDBNull">
+											<plx:callObject>
+												<plx:nameRef name="reader" type="parameter"/>
+											</plx:callObject>
+											<plx:passParam>
+												<plx:binaryOperator type="subtract">
+													<plx:left>
+														<plx:cast dataTypeName=".i4">
+															<plx:callStatic name="{$Columns[position()=$CurrentPosition]/@tmp:propertyName}" dataTypeName="{$EntityClassName}Column" dataTypeQualifier="{$BLLNamespace}"  type="field"/>
+														</plx:cast>
+													</plx:left>
+													<plx:right>
+														<plx:value data="1" type="i4"/>
+													</plx:right>
+												</plx:binaryOperator>
+											</plx:passParam>
+										</plx:callInstance>
+									</plx:unaryOperator>
+								</plx:condition>
+								<plx:left>
+									<plx:value data="0" type="i4"/>
+								</plx:left>
+								<plx:right>
+									<plx:callInstance name=".implied" type="indexerCall">
+										<plx:callObject>
+											<plx:nameRef name="reader" type="parameter"/>
+										</plx:callObject>
+										<plx:passParam>
+											<plx:binaryOperator type="subtract">
+												<plx:left>
+													<plx:cast dataTypeName=".i4">
+														<plx:callStatic name="{$Columns[position()=$CurrentPosition]/@tmp:propertyName}" dataTypeName="{$EntityClassName}Column" dataTypeQualifier="{$BLLNamespace}"  type="field"/>
+													</plx:cast>
+												</plx:left>
+												<plx:right>
+													<plx:value data="1" type="i4"/>
+												</plx:right>
+											</plx:binaryOperator>
+										</plx:passParam>
+									</plx:callInstance>
+								</plx:right>
+							</plx:conditionalOperator>
+						</plx:inlineStatement>
+					</plx:passParam>
+				</plx:callInstance>
+			</xsl:otherwise>
+		</xsl:choose>
+	</xsl:template>
+
 	<!-- Build a set of plx:param elements from a set of column names and a table.
 	Includes a comment with the parameter description, which can be stripped when
 	using the generated fragment to spit plx:param elements. -->
@@ -1295,657 +2512,4 @@ Gets a row from the DataSource based on its primary key.
 			</xsl:otherwise>
 		</xsl:choose>
 	</xsl:template>
-	<msxsl:script implements-prefix="csc" language="CSharp">
-		// Enum definitions
-		<![CDATA[
-		/// <summary>
-		/// Indicates the style of Pascal casing to be used
-		/// </summary>
-		private enum PascalCasingStyle
-		{
-			/// <summary>
-			/// No pascal casing is applied
-			/// </summary>
-			None,
-			
-			/// <summary>
-			/// Original .NetTiers styling (pre SVN553)
-			/// </summary>
-			Style1,
-			
-			/// <summary>
-			/// New styling that handles uppercase (post SVN552)
-			/// </summary>
-			Style2,
-		}
-		private enum ReturnFields
-		{
-			EntityName,
-			PropertyName,
-			FieldName,
-			Id,
-			CSType,
-			FriendlyName
-		}
-
-		private enum ClassNameFormat
-		{
-			None,
-			Base,
-			Abstract,
-			Interface,
-			Key,
-			Column,
-			Comparer,
-			EventHandler,
-			EventArgs,
-			Partial,
-			PartialAbstract,
-			PartialAbstractService,
-			PartialCollection,
-			PartialProviderBase,
-			PartialUnitTest,
-			Service,
-			AbstractService,
-			Proxy,
-			Enum,
-			Struct,
-			Collection,
-			AbstractCollection,
-			CollectionProperty,
-			ViewCollection,
-			Provider,
-			ProviderInterface,
-			ProviderBase,
-			UnitTest,
-			Repository,
-			AbstractRepository
-		}
-		]]>
-		// Initial settings
-		<![CDATA[
-		private bool _changeUnderscoreToPascalCase = true;
-		public void SetChangeUnderscoreToPascalCase(bool value)
-		{
-			_changeUnderscoreToPascalCase = value;
-		}
-		private PascalCasingStyle _usePascalCasing = PascalCasingStyle.Style2;
-		public void SetUsePascalCasing(string value)
-		{
-			if (!string.IsNullOrEmpty(value))
-			{
-				_usePascalCasing = (PascalCasingStyle)Enum.Parse(typeof(PascalCasingStyle), value);
-			}
-		}
-		private string _entityFormat = "{0}";
-		public void SetEntityFormat(string value)
-		{
-			if (!string.IsNullOrEmpty(value))
-			{
-				if (value.IndexOf("{0}") == -1)
-				{
-					throw new ArgumentException("This parameter must contains the pattern {0} to be valid.", "EntityFormat");
-				}
-				_entityFormat = value;
-			}
-		}
-		private string _entityKeyFormat = "{0}Key";
-		public void SetEntityKeyFormat(string value)
-		{
-			if (!string.IsNullOrEmpty(value))
-			{
-				if (value.IndexOf("{0}") == -1) 
-				{
-					throw new ArgumentException("This parameter must contains the pattern {0} to be valid.", "EntityKeyFormat");
-				}
-				_entityKeyFormat = value;
-			}
-		}
-		private string _entityDataFormat 	= "{0}EntityData";
-		public void SetEntityDataFormat(string value)
-		{
-			if (!string.IsNullOrEmpty(value))
-			{
-				if (value.IndexOf("{0}") == -1) 
-				{
-					throw new ArgumentException("This parameter must contains the pattern {0} to be valid.", "EntityDataFormat");
-				}
-				_entityDataFormat = value;
-			}
-		}
-		private string _collectionFormat = "{0}Collection";
-		public void SetCollectionFormat(string value)
-		{
-			if (!string.IsNullOrEmpty(value))
-			{
-				if (value.IndexOf("{0}") == -1) 
-				{
-					throw new ArgumentException("This parameter must contains the pattern {0} to be valid.", "CollectionFormat");
-				}
-				_collectionFormat = value;
-			}
-		}
-		private string _providerFormat = "{0}Provider";
-		public void SetProviderFormat(string value)
-		{
-			if (!string.IsNullOrEmpty(value))
-			{
-				if (value.IndexOf("{0}") == -1) 
-				{
-					throw new ArgumentException("This parameter must contains the pattern {0} to be valid.", "ProviderFormat");
-				}
-				_providerFormat = value;
-			}
-		}
-		private string _interfaceFormat = "I{0}";
-		public void SetInterfaceFormat(string value)
-		{
-			if (!string.IsNullOrEmpty(value))
-			{
-				if (value.IndexOf("{0}") == -1) 
-				{
-					throw new ArgumentException("This parameter must contains the pattern {0} to be valid.", "InterfaceFormat");
-				}
-				_interfaceFormat = value;
-			}
-		}
-		private string _baseClassFormat = "{0}Base";
-		public void SetBaseClassFormat(string value)
-		{
-			if (!string.IsNullOrEmpty(value))
-			{
-				if (value.IndexOf("{0}") == -1) 
-				{
-					throw new ArgumentException("This parameter must contains the pattern {0} to be valid.", "BaseClassFormat");
-				}
-				_baseClassFormat = value;
-			}
-		}
-		private string _enumFormat = "{0}List";
-		public void SetEnumFormat(string value)
-		{
-			if (!string.IsNullOrEmpty(value))
-			{
-				if (value.IndexOf("{0}") == -1) 
-				{
-					throw new ArgumentException("This parameter must contains the pattern {0} to be valid.", "EnumFormat");
-				}
-				_enumFormat = value;
-			}
-		}
-		private string _manyToManyFormat = "{0}From{1}";
-		public void SetManyToManyFormat(string value)
-		{
-			if (!string.IsNullOrEmpty(value))
-			{
-				if (value.IndexOf("{0}") == -1 || value.IndexOf("{1}") == -1) 
-				{
-					throw new ArgumentException("This parameter must contains the patterns {0} and {1} to be valid.", "ManyToManyFormat");
-				}
-				_manyToManyFormat = value;
-			}
-		}
-		private string _serviceClassNameFormat = "{0}Service";
-		public void SetServiceClassNameFormat(string value)
-		{
-			if (!string.IsNullOrEmpty(value))
-			{
-				if (value.IndexOf("{0}") == -1) 
-				{
-					throw new ArgumentException("This parameter must contains the pattern {0} to be valid.", "ServiceClassNameFormat");
-				}
-				_serviceClassNameFormat = value;
-			}
-		}
-		private string _safeNamePrefix = "SafeName_";
-		public void SetSafeNamePrefix(string value)
-		{
-			if (!string.IsNullOrEmpty(value))
-			{
-				_serviceClassNameFormat = value;
-			}
-		}
-		private string _genericListFormat = "TList<{0}>";
-		private string _genericViewFormat = "VList<{0}>";
-		private string _unitTestFormat = "{0}Test";
-		private string _strippedTablePrefixes = "tbl;tbl_";
-		private string _strippedTableSuffixes= "_t";
-		]]>
-		// Specific casing queries
-		<![CDATA[
-		public string GetFieldNameForColumn(string ownerName, string tableName, string columnName)
-		{
-			return GetAliasName(ownerName, tableName, columnName, ReturnFields.FieldName);
-		}
-		public string GetClassNameForTable(string ownerName, string tableName, string classNameFormat)
-		{
-			ClassNameFormat format = ClassNameFormat.None;
-			if (!string.IsNullOrEmpty(classNameFormat))
-			{
-				format = (ClassNameFormat)Enum.Parse(typeof(ClassNameFormat), classNameFormat);
-			}
-			return GetFormattedClassName(GetAliasName(ownerName, tableName, null, ReturnFields.EntityName), format);
-		}
-		public string GetPropertyNameForColumn(string ownerName, string tableName, string columnName)
-		{
-			return GetAliasName(ownerName, tableName, columnName, ReturnFields.PropertyName);
-		}
-		public string GetManyToManyName(string combinedColumnNames, string ownerName, string tableName)
-		{
-			return string.Format(_manyToManyFormat, combinedColumnNames, GetClassNameForTable(ownerName, tableName, ""));
-		}
-		]]>
-		// Casing routines
-		<![CDATA[
-		/// <summary>
-		/// Get the camel cased version of a name.  
-		/// If the name is all upper case, change it to all lower case
-		/// </summary>
-		/// <param name="name">Name to be changed</param>
-		/// <returns>CamelCased version of the name</returns>
-		private string GetCamelCaseName(string name)
-		{
-			if (name == null)
-				return string.Empty;
-			// first get the PascalCase version of the name
-			string pascalName = GetPascalCaseName(name);
-			// now lowercase the first character to transform it to camelCase
-			return pascalName.Substring(0, 1).ToLower() + pascalName.Substring(1);
-		}
-
-		/// <summary>
-		/// Get the Pascal cased version of a name.  
-		/// </summary>
-		/// <param name="name">Name to be changed</param>
-		/// <returns>PascalCased version of the name</returns>
-		private string GetPascalCaseName(string name)
-		{
-			string result = name;
-			switch (_usePascalCasing)
-			{
-				case PascalCasingStyle.Style1 :
-					result = GetPascalCaseNameStyle1(name);
-					break;
-				case PascalCasingStyle.Style2 :
-					result = GetPascalCaseNameStyle2(name);
-					break;
-			}
-			return result;
-		}
-		/// <summary>
-		/// Get the Pascal cased version of a name.  
-		/// </summary>
-		private string GetPascalCaseNameStyle1(string name)
-		{
-			string[] splitNames;
-			name = name.Trim();
-			if (_changeUnderscoreToPascalCase)
-			{
-				char[] splitter = {'_', ' '};
-				splitNames = name.Split(splitter);
-			}
-			else
-			{
-				char[] splitter =  {' '};
-				splitNames = name.Split(splitter);
-			}
-			
-			string pascalName = "";
-			foreach (string s in splitNames)
-			{
-				if (s.Length > 0)
-				{
-					pascalName += s.Substring(0, 1).ToUpper() + s.Substring(1);
-				}
-			}
-
-			return pascalName;
-		}
-		/// <summary>
-		/// Gets the pascal case name of a string.
-		/// </summary>
-		/// <param name="name">The name.</param>
-		/// <returns></returns>
-		private string GetPascalCaseNameStyle2(string name)
-		{
-			string pascalName = string.Empty;
-			// UNDONE: a-zA-Z is too restrictive here
-			string notStartingAlpha = Regex.Replace(name, "^[^a-zA-Z]+", string.Empty);
-			string workingString = ToLowerExceptCamelCase(notStartingAlpha);
-			pascalName = RemoveSeparatorAndCapNext(workingString);
-
-			return pascalName;
-		}
-		/// <summary>
-		/// Converts a pascal string to a spaced string
-		/// </summary>
-		private static string PascalToSpaced(string name)
-		{
-			// ignore missing text
-			if (string.IsNullOrEmpty(name))
-				return string.Empty;
-			// split the words
-			Regex regex = new Regex("(?<=[a-z])(?<x>[A-Z])|(?<=.)(?<x>[A-Z])(?=[a-z])");
-			name = regex.Replace(name, " ${x}");
-			// get rid of any underscores or dashes
-			name = name.Replace("_", string.Empty);
-			return name.Replace("-", string.Empty);
-		}
-		private static string ToLowerExceptCamelCase(string input)
-		{
-			char[] chars = input.ToCharArray();
-			char[] origChars = input.ToCharArray();
-
-			for (int i = 0; i < chars.Length; i++)
-			{
-				int left = (i > 0 ? i - 1 : i);
-				int right = (i < chars.Length - 1 ? i + 1 : i);
-
-				if (i != left &&
-						i != right)
-				{
-					if (Char.IsUpper(chars[i]) &&
-							Char.IsLetter(chars[left]) &&
-							Char.IsUpper(chars[left]))
-					{
-						chars[i] = Char.ToLower(chars[i], System.Globalization.CultureInfo.InvariantCulture);
-					}
-					else if (Char.IsUpper(chars[i]) &&
-							Char.IsLetter(chars[right]) &&
-							Char.IsUpper(chars[right]) &&
-							Char.IsUpper(origChars[left]))
-					{
-						chars[i] = Char.ToLower(chars[i], System.Globalization.CultureInfo.InvariantCulture);
-					}
-					else if (Char.IsUpper(chars[i]) &&
-							!Char.IsLetter(chars[right]))
-					{
-						chars[i] = Char.ToLower(chars[i], System.Globalization.CultureInfo.InvariantCulture);
-					}
-				}
-
-				string x = new string(chars);
-			}
-
-			if (chars.Length > 0)
-			{
-				chars[chars.Length - 1] = Char.ToLower(chars[chars.Length - 1], System.Globalization.CultureInfo.InvariantCulture);
-			}
-
-			return new string(chars);
-		}
-		/// <summary>
-		/// Removes the separator and capitalises next character.
-		/// </summary>
-		/// <param name="input">The input.</param>
-		/// <returns></returns>
-		private string RemoveSeparatorAndCapNext(string input)
-		{
-			char[] splitter = new char[] { '-', '_', ' ' }; // potential chars to split on
-			string workingString = input.TrimEnd(splitter);
-			char[] chars = workingString.ToCharArray();
-
-			if (chars.Length > 0)
-			{
-				int under = workingString.IndexOfAny(splitter);
-				while (under > -1)
-				{
-					chars[under + 1] = Char.ToUpper(chars[under + 1], System.Globalization.CultureInfo.InvariantCulture);
-					workingString = new String(chars);
-					under = workingString.IndexOfAny(splitter, under + 1);
-				}
-
-				chars[0] = Char.ToUpper(chars[0], System.Globalization.CultureInfo.InvariantCulture);
-
-				workingString = new string(chars);
-			}
-			string regexReplacer = "[" + new string(_changeUnderscoreToPascalCase ? new char[] { '-', '_', ' ' } : new char[] { ' ' }) + "]";
-
-			return Regex.Replace(workingString, regexReplacer, string.Empty);
-		}
-	]]>
-		// Class name helpers
-		<![CDATA[
-		private string GetFormattedClassName(string name, ClassNameFormat format)
-		{
-			if (string.IsNullOrEmpty(name))
-				throw new ArgumentNullException("name");
-
-			switch (format)
-			{
-				case ClassNameFormat.None:
-					return name;
-
-				case ClassNameFormat.Base:
-				case ClassNameFormat.Abstract:
-					return string.Format(_baseClassFormat, name);
-
-				case ClassNameFormat.Interface:
-					return string.Format("I{0}", name);
-
-				case ClassNameFormat.Key:
-					return string.Format(_entityKeyFormat, name);
-
-				case ClassNameFormat.Column:
-					return string.Format("{0}Column", name);
-
-				case ClassNameFormat.Comparer:
-					return string.Format("{0}Comparer", name);
-
-				case ClassNameFormat.EventHandler:
-					return string.Format("{0}EventHandler", name);
-
-				case ClassNameFormat.EventArgs:
-					return string.Format("{0}EventArgs", name);
-
-				case ClassNameFormat.Partial:
-					return string.Format("{0}.generated", name);
-
-				case ClassNameFormat.PartialAbstract:
-					return GetFormattedClassName(GetFormattedClassName(name, ClassNameFormat.Abstract), ClassNameFormat.Partial);
-
-				case ClassNameFormat.PartialCollection:
-					return GetFormattedClassName(GetFormattedClassName(name, ClassNameFormat.Collection), ClassNameFormat.Partial);
-
-				case ClassNameFormat.PartialProviderBase:
-					return GetFormattedClassName(GetFormattedClassName(name, ClassNameFormat.ProviderBase), ClassNameFormat.Partial);
-
-				case ClassNameFormat.PartialUnitTest:
-					return GetFormattedClassName(GetFormattedClassName(name, ClassNameFormat.UnitTest), ClassNameFormat.Partial);
-
-				case ClassNameFormat.PartialAbstractService:
-					return GetFormattedClassName(GetFormattedClassName(name, ClassNameFormat.AbstractService), ClassNameFormat.Partial);
-
-				case ClassNameFormat.Service:
-					return string.Format(_serviceClassNameFormat, name);
-
-				case ClassNameFormat.AbstractService:
-					return GetFormattedClassName(GetFormattedClassName(name, ClassNameFormat.Service), ClassNameFormat.Abstract);
-
-				case ClassNameFormat.Proxy:
-					return string.Format("{0}Services", name);
-
-				case ClassNameFormat.Enum:
-					return string.Format(_enumFormat, name);
-
-				case ClassNameFormat.Struct:
-					return string.Format(_entityDataFormat, name);
-
-				case ClassNameFormat.Collection:
-					return string.Format(_genericListFormat, name);
-
-				case ClassNameFormat.AbstractCollection:
-					return GetFormattedClassName(GetFormattedClassName(name, ClassNameFormat.Collection), ClassNameFormat.Abstract);
-
-				case ClassNameFormat.CollectionProperty:
-					return string.Format(_collectionFormat, name);
-
-				case ClassNameFormat.ViewCollection:
-					return string.Format(_genericViewFormat, name);
-
-				case ClassNameFormat.Provider:
-				case ClassNameFormat.Repository:
-					return string.Format(_providerFormat, name);
-
-				case ClassNameFormat.AbstractRepository:
-					return GetFormattedClassName(GetFormattedClassName(name, ClassNameFormat.Repository), ClassNameFormat.Abstract);
-
-				case ClassNameFormat.ProviderInterface:
-					return string.Format(_interfaceFormat, GetFormattedClassName(name, ClassNameFormat.Provider));
-
-				case ClassNameFormat.ProviderBase:
-					return GetFormattedClassName(GetFormattedClassName(name, ClassNameFormat.Provider), ClassNameFormat.Base);
-
-				case ClassNameFormat.UnitTest:
-					return string.Format(_unitTestFormat, name);
-
-				default:
-					throw new ArgumentOutOfRangeException("format");
-			}
-		}
-		/// <summary>
-		/// This function get the alias name for this object name.
-		/// </summary>
-		/// <remark>This function should not be called directly, but via the GetClassName.</remark>
-		private string GetAliasName(string owner, string obj, string item, ReturnFields returnType)
-		{
-			// UNDONE: Note that this is skipping the NameConversionType values in .NETTiers. This
-			// is simply NameConversionType.None
-			string name = string.Empty;
-			// get the name
-			if (!string.IsNullOrEmpty(obj) && string.IsNullOrEmpty(item)) // table/view names
-			{
-				name = obj;
-				char[] delims = new char[] {',', ';'};
-				// strip the prefix
-				string[] strips = _strippedTablePrefixes.ToLower().Split(delims);
-				foreach(string strip in strips)
-					if (name.ToLower().StartsWith(strip))
-						{
-							name = name.Remove(0, strip.Length);
-							continue;
-						}
-				// strip the suffix
-				strips = _strippedTableSuffixes.Split(delims);
-				foreach(string strip in strips)
-				{
-					if (name.ToLower().EndsWith(strip))
-					{
-						name = name.Remove(name.Length - strip.Length, strip.Length);
-						continue;
-					}
-				}
-			}
-			else if (!string.IsNullOrEmpty(obj) && !string.IsNullOrEmpty(item)) // column names
-			{
-				name = item;
-			}
-			else
-			{
-				throw new ArgumentNullException();
-			}
-
-			// return the formatted name
-			switch (returnType)
-			{
-				case ReturnFields.EntityName:
-				case ReturnFields.PropertyName:
-					name = GetCSharpSafeName(name);
-					return GetPascalCaseName(name); // class and property names are pascal-cased
-				case ReturnFields.FieldName:
-					name = GetCSharpSafeName(name);
-					return GetCamelCaseName(name); // fields (private member variables) are camel-cased
-				case ReturnFields.FriendlyName:
-					return PascalToSpaced(GetPascalCaseName(name)); // just return the pascal name with spaces
-				case ReturnFields.Id:
-				case ReturnFields.CSType:
-				default:
-					return string.Empty; // what should happen here, exactly?
-			}
-		}
-		/// <summary>
-		/// Gets a C Sharp safe version of the specified name.
-		/// </summary>
-		/// <param name="name">The name.</param>
-		/// <returns></returns>
-		private string GetCSharpSafeName( string name )
-		{
-			string result = name;
-
-			// we must have something to start with!
-			if (!IsValidCSharpName( result ))
-			{
-				result = _safeNamePrefix + result;
-
-				// replace any non valid char with an underscore
-				// UNDONE: a-zA-Z0-9 is too restrictive here
-				result = Regex.Replace( result, "[^a-zA-Z0-9_]", "_" );
-			}
-
-			return result;
-		}
-		private static string[] _csharpKeywords = PopulateCSharpKeywords();
-		private static string[] PopulateCSharpKeywords()
-		{
-			string[] names = new string[] 
-			{
-					"abstract","event", "new", "struct", 
-					"as", "explicit", "null", "switch",
-					"base", "extern", "object", "this",
-					"bool", "false", "operator", "throw",
-					"break", "finally", "out", "true",
-					"byte", "fixed", "override", "try",
-					"case", "float", "params", "typeof",
-					"catch", "for", "private", "uint",
-					"char", "foreach", "protected", "ulong",
-					"checked", "goto", "public", "unchecked",
-					"class", "if", "readonly", "unsafe",
-					"const", "implicit", "ref", "ushort",
-					"continue","in","return","using",
-					"decimal","int","sbyte","virtual",
-					"default","interface","sealed","volatile",
-					"delegate","internal","short","void",
-					"do","is","sizeof","while",
-					"double","lock","stackalloc",
-					"else","long","static",
-					"enum","namespace", "string"
-			};
-			Array.Sort(names, CaseInsensitiveComparer.DefaultInvariant);
-			return names;
-		}
-		/// <summary>
-		/// Determines whether specified name is valid in C#.
-		/// </summary>
-		/// <param name="name">The name.</param>
-		/// <returns>
-		/// 	<c>true</c> if the name is valid; otherwise, <c>false</c>.
-		/// </returns>
-		private static bool IsValidCSharpName( string name )
-		{
-			// we assume that the name is invalid
-			bool result = false;
-
-			// we must have something to start with!
-			if (!string.IsNullOrEmpty(name))
-			{
-				// the first char must not be a digit
-				if (!char.IsDigit(name, 0))
-				{
-					// check if its a reserved C# keyword
-					// Note this is changed from the .nettiers codebase. There is no need to use IndexOf here.
-					if (Array.BinarySearch(_csharpKeywords, name, CaseInsensitiveComparer.DefaultInvariant) < 0)
-					{
-						// only letters, digits and underscores are allowed
-						// we're also allowing spaces and dashes as the 
-						// user has the option of suppressing those
-						// UNDONE: a-zA-Z0-9 is too restrictive here
-						Regex validChars = new Regex(@"[^a-zA-Z0-9_\s-]");
-						result = !validChars.IsMatch(name);
-					}
-				}
-			}
-			return result;
-		}
-		]]>
-	</msxsl:script>
 </xsl:stylesheet>
