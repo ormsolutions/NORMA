@@ -65,9 +65,11 @@
 	</xsl:template>
 
 	<xsl:template match="dms:commitStatement">
+		<xsl:param name="indent"/>
+		<xsl:value-of select="$NewLine"/>
+		<xsl:value-of select="$indent"/>
 		<xsl:text>COMMIT</xsl:text>
 		<xsl:value-of select="$StatementDelimeter"/>
-		<xsl:value-of select="$NewLine"/>
 		<xsl:value-of select="$NewLine"/>
 	</xsl:template>
 
@@ -110,7 +112,7 @@
 		<xsl:param name="indent"/>
 		<xsl:value-of select="$indent"/>
 		<xsl:choose>
-			<xsl:when test="parent::ddl:tableDefinition/ddl:columnDefinition[@name=current()/ddl:uniqueConstraintDefinition/ddl:column/@name and not(ddl:columnConstraintDefinition/ddl:notNullKeyword)]">
+			<xsl:when test="parent::ddl:tableDefinition/ddl:columnDefinition[@name=current()/ddl:uniqueConstraintDefinition/dep:simpleColumnReference/@name and not(ddl:columnConstraintDefinition/ddl:notNullKeyword)]">
 				<!- Rather than just absorb the constraints, triggers need to be generated. ->
 			</xsl:when>
 			<xsl:otherwise>
@@ -135,7 +137,7 @@
 		<xsl:param name="tableConstraint"/>
 		<xsl:for-each select="$tableConstraint/ddl:tableConstraintDefinition">
 			<xsl:choose>
-				<xsl:when test="parent::ddl:tableDefinition/ddl:columnDefinition[@name=current()/ddl:uniqueConstraintDefinition/ddl:column/@name and not(ddl:columnConstraintDefinition/ddl:notNullKeyword)]">
+				<xsl:when test="parent::ddl:tableDefinition/ddl:columnDefinition[@name=current()/ddl:uniqueConstraintDefinition/dep:simpleColumnReference/@name and not(ddl:columnConstraintDefinition/ddl:notNullKeyword)]">
 				</xsl:when>
 				<xsl:otherwise>
 					<xsl:text>, </xsl:text>

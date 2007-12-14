@@ -41,6 +41,9 @@
 	</xsl:template>
 
 	<xsl:template match="dms:startTransactionStatement">
+		<xsl:param name="indent"/>
+		<xsl:value-of select="$NewLine"/>
+		<xsl:value-of select="$indent"/>
 		<xsl:text>SET TRANSACTION </xsl:text>
 		<xsl:choose>
 			<xsl:when test="@isolationLevel">
@@ -52,7 +55,6 @@
 			</xsl:when>
 		</xsl:choose>
 		<xsl:value-of select="$StatementDelimeter"/>
-		<xsl:value-of select="$NewLine"/>
 		<xsl:value-of select="$NewLine"/>
 	</xsl:template>
 
@@ -101,20 +103,8 @@
 		</xsl:choose>
 	</xsl:template>
 
-	<xsl:template match="@schema" mode="ForTableDefinition">
+	<xsl:template match="@schema" mode="ForSchemaQualifiedName">
 		<!-- We also absorb references to the schema name, because the schema name must be the Oracle Database username. -->
-	</xsl:template>
-
-	<xsl:template match="ddl:alterTableStatement">
-		<xsl:text>ALTER TABLE </xsl:text>
-		<xsl:value-of select="@name"/>
-		<xsl:text> </xsl:text>
-		<xsl:apply-templates>
-			<xsl:with-param name="tableName" select="@name"/>
-		</xsl:apply-templates>
-		<xsl:value-of select="$StatementDelimeter"/>
-		<xsl:value-of select="$NewLine"/>
-		<xsl:value-of select="$NewLine"/>
 	</xsl:template>
 
 	<xsl:template match="ddl:referencesSpecification">
@@ -149,36 +139,5 @@
 	</xsl:template>
 
 	<xsl:template match="@match" mode="ForReferenceSpecification"/>
-
-	<xsl:template match="dep:constraintNameDefinition">
-		<xsl:param name="tableName"/>
-		<xsl:text>CONSTRAINT </xsl:text>
-		<xsl:if test="@schema">
-			<xsl:value-of select="@schema"/>
-			<xsl:text>.</xsl:text>
-		</xsl:if>
-		<xsl:choose>
-			<xsl:when test="$tableName">
-				<xsl:choose>
-					<xsl:when test="contains($tableName, '&quot;')">
-						<xsl:variable name="tablePart1" select="substring-after($tableName, '&quot;')"/>
-						<xsl:variable name="table" select="substring-before($tablePart1, '&quot;')"/>
-						<xsl:text>&quot;</xsl:text>
-						<xsl:value-of select="dsf:makeValidIdentifier(concat($table, @name))"/>
-						<xsl:text>&quot;</xsl:text>
-					</xsl:when>
-					<xsl:otherwise>
-						<xsl:variable name="table" select="concat($tableName, '_')"/>
-						<xsl:value-of select="dsf:makeValidIdentifier(concat($table, @name))"/>
-					</xsl:otherwise>
-				</xsl:choose>
-			</xsl:when>
-			<xsl:otherwise>
-				<xsl:value-of select="@name"/>
-			</xsl:otherwise>
-		</xsl:choose>
-		<xsl:text> </xsl:text>
-		<xsl:apply-templates/>
-	</xsl:template>
 
 </xsl:stylesheet>

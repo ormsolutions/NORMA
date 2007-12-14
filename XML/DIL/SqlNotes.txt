@@ -40,6 +40,9 @@ factor => numeric value expression
 user defined type value expression => value expression primary
 row value predicand => value expression primary
 row value expression => value expression primary
+row value constructor => value expression primary
+row value constructor predicand => value expression primary
+table row value expression => value expression primary
 table factor => table primary
 sql executable statement => sql procedure statement
 drop data type statement => drop user defined type statement
@@ -47,6 +50,14 @@ grouping set => grouping element
 schema routine => SQL-invoked routine
 schema procedure => SQL-invoked procedure
 schema function => SQL-invoked function
+query expression body => query primary
+query term => query primary
+query factor => query primary
+simple table => query primary
+grouping set => grouping element
+grouping set list => grouping element list
+domain constraint => domain constraint definition
+
 
 
 transcoding => <omitted> F695 Translation support

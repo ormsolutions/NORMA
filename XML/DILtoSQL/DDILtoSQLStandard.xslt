@@ -8,7 +8,7 @@
 	2. Altered source versions must be plainly marked as such, and must not be misrepresented as being the original software.
 	3. This notice may not be removed or altered from any source distribution.
 -->
-<!-- Contributors: Corey Kaylor, Kevin M. Owen -->
+<!-- Contributors: Corey Kaylor, Kevin M. Owen, Robert Moore -->
 <xsl:stylesheet version="1.0"
 	xmlns:xsl="http://www.w3.org/1999/XSL/Transform"
 	xmlns:exsl="http://exslt.org/common"
@@ -33,22 +33,15 @@
 	<xsl:param name="RightParen" select="')'"/>
 	<xsl:param name="ConcatenationOperator" select="'||'"/>
 	<xsl:param name="StatementDelimeter" select="';'"/>
-	<xsl:param name="setClauseEqualsOperator" select="'='"/>
+	<xsl:param name="SetClauseEqualsOperator" select="'='"/>
 	<xsl:param name="StatementBlockDelimeter" select="''"/>
 
 	<!-- Schema Definition pg.519 -->
 
 	<xsl:template match="ddl:schemaDefinition">
 		<xsl:param name="indent"/>
-		<!--<xsl:text>DROP SCHEMA </xsl:text>
-		<xsl:apply-templates select="@catalogName" mode="ForSchemaDefinition"/>
-		<xsl:apply-templates select="@schemaName" mode="ForSchemaDefinition"/>
-		<xsl:apply-templates select="@authorizationIdentifier" mode="ForSchemaDefinition"/>
-		<xsl:apply-templates select="@defaultCharacterSet" mode="ForSchemaDefinition"/>
-		<xsl:apply-templates select="ddl:path" mode="ForSchemaDefinition"/>
-		<xsl:value-of select="$StatementDelimeter"/>
 		<xsl:value-of select="$NewLine"/>
-		<xsl:value-of select="$indent"/>-->
+		<xsl:value-of select="$indent"/>
 		<xsl:text>CREATE SCHEMA </xsl:text>
 		<xsl:apply-templates select="@catalogName" mode="ForSchemaDefinition"/>
 		<xsl:apply-templates select="@schemaName" mode="ForSchemaDefinition"/>
@@ -57,8 +50,7 @@
 		<xsl:apply-templates select="ddl:path" mode="ForSchemaDefinition"/>
 		<xsl:value-of select="$StatementDelimeter"/>
 		<xsl:value-of select="$NewLine"/>
-		<xsl:value-of select="$NewLine"/>
-		<xsl:apply-templates>
+		<xsl:apply-templates select="*[not(self::ddl:path)]">
 			<xsl:with-param name="indent" select="concat($indent, $IndentChar)"/>
 		</xsl:apply-templates>
 	</xsl:template>
@@ -96,21 +88,25 @@
 	</xsl:template>
 
 	<xsl:template match="dms:setSchemaStatement">
+		<xsl:param name="indent"/>
+		<xsl:value-of select="$NewLine"/>
+		<xsl:value-of select="$indent"/>
 		<xsl:text>SET SCHEMA </xsl:text>
 		<xsl:apply-templates/>
 		<xsl:value-of select="$StatementDelimeter"/>
 		<xsl:value-of select="$NewLine"/>
-		<xsl:value-of select="$NewLine"/>
 	</xsl:template>
 
 	<xsl:template match="dms:commitStatement">
+		<xsl:param name="indent"/>
+		<xsl:value-of select="$NewLine"/>
+		<xsl:value-of select="$indent"/>
 		<xsl:text>COMMIT WORK</xsl:text>
 		<xsl:if test="@type">
 			<xsl:text> AND </xsl:text>
 			<xsl:value-of select="@type"/>
 		</xsl:if>
 		<xsl:value-of select="$StatementDelimeter"/>
-		<xsl:value-of select="$NewLine"/>
 		<xsl:value-of select="$NewLine"/>
 	</xsl:template>
 
@@ -120,27 +116,27 @@
 
 	<xsl:template match="ddl:tableDefinition">
 		<xsl:param name="indent"/>
+		<xsl:value-of select="$NewLine"/>
 		<xsl:value-of select="$indent"/>
 		<xsl:text>CREATE </xsl:text>
 		<xsl:apply-templates select="@scope" mode="ForTableDefinition"/>
 		<xsl:text>TABLE </xsl:text>
-		<xsl:apply-templates select="@catalog" mode="ForTableDefinition"/>
-		<xsl:apply-templates select="@schema" mode="ForTableDefinition"/>
-		<xsl:apply-templates select="@name" mode="ForTableDefinition"/>
+		<xsl:apply-templates select="@catalog" mode="ForSchemaQualifiedName"/>
+		<xsl:apply-templates select="@schema" mode="ForSchemaQualifiedName"/>
+		<xsl:apply-templates select="@name" mode="ForSchemaQualifiedName"/>
 		<xsl:value-of select="$NewLine"/>
 		<xsl:value-of select="$indent"/>
 		<xsl:value-of select="$StatementStartBracket"/>
 		<xsl:apply-templates select="ddl:columnDefinition">
-			<xsl:with-param name="indent" select="concat($NewLine, concat($indent, $IndentChar))"/>
+			<xsl:with-param name="indent" select="concat($indent, $IndentChar)"/>
 		</xsl:apply-templates>
 		<xsl:apply-templates select="ddl:tableConstraintDefinition">
-			<xsl:with-param name="indent" select="concat($NewLine, concat($indent, $IndentChar))"/>
+			<xsl:with-param name="indent" select="concat($indent, $IndentChar)"/>
 		</xsl:apply-templates>
 		<xsl:value-of select="$NewLine"/>
 		<xsl:value-of select="$indent"/>
 		<xsl:value-of select="$StatementEndBracket"/>
 		<xsl:value-of select="$StatementDelimeter"/>
-		<xsl:value-of select="$NewLine"/>
 		<xsl:value-of select="$NewLine"/>
 	</xsl:template>
 
@@ -149,17 +145,17 @@
 		<xsl:text> </xsl:text>
 	</xsl:template>
 
-	<xsl:template match="@catalog" mode="ForTableDefinition">
+	<xsl:template match="@catalog" mode="ForSchemaQualifiedName">
 		<xsl:value-of select="."/>
 		<xsl:value-of select="$Period"/>
 	</xsl:template>
 
-	<xsl:template match="@schema" mode="ForTableDefinition">
+	<xsl:template match="@schema" mode="ForSchemaQualifiedName">
 		<xsl:value-of select="."/>
 		<xsl:value-of select="$Period"/>
 	</xsl:template>
 
-	<xsl:template match="@name" mode="ForTableDefinition">
+	<xsl:template match="@name" mode="ForSchemaQualifiedName">
 		<xsl:call-template name="RenderIdentifier">
 			<xsl:with-param name="name" select="."/>
 		</xsl:call-template>
@@ -167,22 +163,430 @@
 
 	<!--End of Table Definition -->
 
+	<!-- View Definition pg. #590 -->
+
+	<xsl:template match="ddl:viewDefinition">
+		<xsl:param name="indent"/>
+		<xsl:value-of select="$NewLine"/>
+		<xsl:value-of select="$indent"/>
+		<xsl:text>CREATE </xsl:text>
+		<xsl:apply-templates select="@recursive" mode="ForViewDefinition"/>
+		<xsl:text>VIEW </xsl:text>
+		<xsl:apply-templates select="@catalog" mode="ForSchemaQualifiedName"/>
+		<xsl:apply-templates select="@schema" mode="ForSchemaQualifiedName"/>
+		<xsl:apply-templates select="@name" mode="ForSchemaQualifiedName"/>
+		<xsl:if test="dep:columnNameDefinition">
+			<xsl:text> </xsl:text>
+			<xsl:value-of select="$LeftParen"/>
+			<xsl:apply-templates select="dep:columnNameDefinition"/>
+			<xsl:value-of select="$RightParen"/>
+		</xsl:if>
+		<xsl:apply-templates select="." mode="ForViewDefinitionInBetweenColumnListAndQueryExpression">
+			<xsl:with-param name="indent" select="$indent"/>
+		</xsl:apply-templates>
+		<xsl:value-of select="$NewLine"/>
+		<xsl:value-of select="$indent"/>
+		<xsl:text>AS</xsl:text>
+		<!-- Applys queryExpression template -->
+		<xsl:apply-templates select="*[not(self::dep:columnNameDefinition)]">
+			<xsl:with-param name="indent" select="concat($indent, $IndentChar)"/>
+		</xsl:apply-templates>
+		<xsl:apply-templates select="@checkOption">
+			<xsl:with-param name="indent" select="$indent"/>
+		</xsl:apply-templates>
+		<xsl:value-of select="$StatementDelimeter"/>
+		<xsl:value-of select="$NewLine"/>
+	</xsl:template>
+
+	<xsl:template match="@recursive" mode="ForViewDefinition">
+		<xsl:if test=".='true' or .=1">
+			<xsl:text>RECURSIVE </xsl:text>
+		</xsl:if>
+	</xsl:template>
+	
+	<xsl:template match="@checkOption" mode="ForViewDefinition">
+		<xsl:param name="indent"/>
+		<xsl:value-of select="$NewLine"/>
+		<xsl:value-of select="$indent"/>
+		<xsl:value-of select="."/>
+	</xsl:template>
+
+	<!-- End of View Definition -->
+
+	<!-- Query Expression pg. #351 -->
+
+	<xsl:template match="dml:withClauseQuery">
+		<xsl:param name="indent"/>
+		<xsl:value-of select="$NewLine"/>
+		<xsl:value-of select="$indent"/>
+		<xsl:text>WITH </xsl:text>
+		<xsl:if test="@recursive = 'true' or @recrusive = 1">
+			<xsl:text>RECURSIVE </xsl:text>
+		</xsl:if>
+		<xsl:apply-templates>
+			<xsl:with-param name="indent" select="$indent"/>
+		</xsl:apply-templates>
+	</xsl:template>
+
+	<xsl:template match="dml:withListElement">
+		<xsl:param name="indent"/>
+		<xsl:value-of select="@queryName"/>
+		<xsl:text> </xsl:text>
+		<xsl:if test="dep:columnNameDefinition">
+			<xsl:value-of select="$LeftParen"/>
+			<xsl:apply-templates select="dep:columnNameDefinition"/>
+			<xsl:value-of select="$RightParen"/>
+			<xsl:text> </xsl:text>
+		</xsl:if>
+		<xsl:text>AS </xsl:text>
+		<xsl:value-of select="$NewLine"/>
+		<xsl:apply-templates select="*[not(self::dep:columnNameDefinition)]">
+			<xsl:with-param name="indent" select="concat($indent, $IndentChar)"/>
+		</xsl:apply-templates>
+	</xsl:template>
+
+	<!-- TODO - Templates for SearchClause and CycleClause -->
+
+	<xsl:template match="dml:searchClause">
+		<!--<xsl:text>SEARCH </xsl:text>
+		-->
+		<!-- Recursive Search Order -->
+		<!--
+		<xsl:text> SET </xsl:text>
+		-->
+		<!-- sequence column -->
+		<xsl:text> ***CURRENTLY UNDONE*** </xsl:text>
+	</xsl:template>
+
+	<xsl:template match="dml:cycleClause">
+		<xsl:text> ***CURRENTLY UNDONE*** </xsl:text>
+	</xsl:template>
+
+	<!-- End of Query Expression -->
+
+	<!-- Table Primary -->
+
+	<xsl:template match="dml:tableName | dml:queryName | dml:onlySpec">
+		<xsl:param name="indent"/>
+		<xsl:value-of select="$NewLine"/>
+		<xsl:value-of select="$indent"/>
+		<xsl:if test="self::dml:onlySpec">
+			<xsl:text>ONLY </xsl:text>
+		</xsl:if>
+		<xsl:apply-templates select="@catalog" mode="ForSchemaQualifiedName"/>
+		<xsl:apply-templates select="@schema" mode="ForSchemaQualifiedName"/>
+		<xsl:apply-templates select="@name" mode="ForSchemaQualifiedName"/>
+		<xsl:if test="dml:correlation">
+			<xsl:text> </xsl:text>
+			<xsl:apply-templates select="dml:correlation"/>
+		</xsl:if>
+	</xsl:template>
+
+	<xsl:template match="dml:correlation">
+		<xsl:text>AS </xsl:text>
+		<xsl:apply-templates select="@name" mode="ForCorrelationName"/>
+		<xsl:if test="dep:columnNameDefinition">
+			<xsl:text> </xsl:text>
+			<xsl:value-of select="$LeftParen"/>
+			<xsl:apply-templates select="dep:columnNameDefinition"/>
+			<xsl:value-of select="$RightParen"/>
+		</xsl:if>
+	</xsl:template>
+
+	<xsl:template match="@name" mode="ForCorrelationName">
+		<xsl:value-of select="."/>
+	</xsl:template>
+
+	<xsl:template match="@correlationName">
+		<xsl:text> AS </xsl:text>
+		<xsl:value-of select="."/>
+	</xsl:template>
+
+	<xsl:template match="dml:derivedTable | dml:lateralDerivedTable">
+		<xsl:param name="indent"/>
+		<xsl:if test="self::dml:lateralDerivedTable">
+			<xsl:text>LATERAL</xsl:text>
+		</xsl:if>
+		<xsl:apply-templates select="*[not(self::dml:correlation)]">
+			<xsl:with-param name="indent" select="$indent"/>
+		</xsl:apply-templates>
+		<xsl:value-of select="$NewLine"/>
+		<xsl:value-of select="$indent"/>
+		<xsl:apply-templates select="dml:correlation"/>
+	</xsl:template>
+
+	<!-- End Table Primary -->
+
+	<!-- Join Specifications -->
+
+	<xsl:template match="dml:qualifiedJoin | dml:crossJoin | dml:naturalJoin">
+		<xsl:param name="indent"/>
+		<xsl:value-of select="$NewLine"/>
+		<xsl:value-of select="substring-after($indent, $IndentChar)"/>
+		<xsl:value-of select="$LeftParen"/>
+		<xsl:apply-templates select="child::*[1]">
+			<xsl:with-param name="indent" select="concat($indent, $IndentChar)"/>
+		</xsl:apply-templates>
+		<xsl:value-of select="$NewLine"/>
+		<xsl:value-of select="$indent"/>
+		<xsl:choose>
+			<xsl:when test="self::dml:crossJoin">
+				<xsl:text>CROSS </xsl:text>
+			</xsl:when>
+			<xsl:when test="self::dml:naturalJoin">
+				<xsl:text>NATURAL </xsl:text>
+			</xsl:when>
+		</xsl:choose>
+		<xsl:apply-templates select="@joinType"/>
+		<xsl:text>JOIN</xsl:text>
+		<xsl:apply-templates select="child::*[2]">
+			<xsl:with-param name="indent" select="concat($indent, $IndentChar)"/>
+		</xsl:apply-templates>
+		<xsl:apply-templates select="child::*[3]">
+			<xsl:with-param name="indent" select="$indent"/>
+		</xsl:apply-templates>
+		<xsl:value-of select="$NewLine"/>
+		<xsl:value-of select="substring-after($indent, $IndentChar)"/>
+		<xsl:value-of select="$RightParen"/>
+	</xsl:template>
+
+	<xsl:template match="dml:joinCondition">
+		<xsl:param name="indent"/>
+		<xsl:value-of select="$NewLine"/>
+		<xsl:value-of select="$indent"/>
+		<xsl:text>ON </xsl:text>
+		<xsl:apply-templates>
+			<xsl:with-param name="indent" select="concat($indent, $IndentChar)"/>
+		</xsl:apply-templates>
+	</xsl:template>
+
+	<xsl:template match="@joinType">
+		<xsl:value-of select="."/>
+		<xsl:text> </xsl:text>
+	</xsl:template>
+
+	<!-- End Join specifications-->
+
+	<!-- Query Specificiation pg. #341 -->
+
+	<xsl:template match="dml:union | dml:except | dml:intersect">
+		<xsl:param name="indent"/>
+		<!--<xsl:value-of select="$NewLine"/>-->
+		<!-- Apply template for first query expression -->
+		<xsl:apply-templates select="*[1]">
+			<xsl:with-param name="indent" select="concat($indent, $IndentChar)"/>
+		</xsl:apply-templates>
+		<xsl:value-of select="$NewLine"/>
+		<xsl:value-of select="$indent"/>
+		<xsl:choose>
+			<xsl:when test="self::dml:union">
+				<xsl:text>UNION</xsl:text>
+			</xsl:when>
+			<xsl:when test="self::dml:except">
+				<xsl:text>EXCEPT</xsl:text>
+			</xsl:when>
+			<xsl:when test="self::dml:intersect">
+				<xsl:text>INTERSECT</xsl:text>
+			</xsl:when>
+		</xsl:choose>
+		<xsl:if test="@setQuantifier">
+			<xsl:text> </xsl:text>
+			<xsl:apply-templates select="@setQuantifier"/>
+		</xsl:if>
+		<xsl:if test="dml:correspondingSpec">
+			<xsl:text> </xsl:text>
+			<xsl:apply-templates select="dml:correspondingSpec"/>
+		</xsl:if>
+		<!--<xsl:value-of select="$NewLine"/>-->
+		<!-- apply template for second query expression -->
+		<xsl:apply-templates select="*[last()]">
+			<xsl:with-param name="indent" select="concat($indent, $IndentChar)"/>
+		</xsl:apply-templates>
+	</xsl:template>
+
+	<xsl:template match="@setQuantifier">
+		<xsl:value-of select="."/>
+	</xsl:template>
+
+	<xsl:template match="dml:correspondingSpec">
+		<xsl:text>CORRESPONDING</xsl:text>
+		<xsl:if test="dep:simpleColumnReference">
+			<xsl:text> BY </xsl:text>
+			<xsl:value-of select="$LeftParen"/>
+			<xsl:apply-templates select="dep:simpleColumnReference"/>
+			<xsl:value-of select="$RightParen"/>
+		</xsl:if>
+	</xsl:template>
+
+	<xsl:template match="dml:querySpecification">
+		<xsl:param name="indent"/>
+		<xsl:value-of select="$NewLine"/>
+		<xsl:value-of select="$indent"/>
+		<xsl:text>SELECT </xsl:text>
+		<xsl:if test="@setQuantifier">
+			<xsl:apply-templates select="@setQuantifier"/>
+			<xsl:text> </xsl:text>
+		</xsl:if>
+		<xsl:apply-templates>
+			<!--<xsl:with-param name="indent" select="concat($indent, $IndentChar)"/>-->
+			<xsl:with-param name="indent" select="$indent"/>
+		</xsl:apply-templates>
+	</xsl:template>
+
+	<xsl:template match="dml:selectList">
+		<xsl:apply-templates/>
+	</xsl:template>
+
+	<xsl:template match="dml:asterisk">
+		<xsl:text>* </xsl:text>
+	</xsl:template>
+
+	<xsl:template match="dml:asteriskedIdentifierChain">
+		<xsl:value-of select="@identifierChain"/>
+		<xsl:value-of select="$Period"/>
+		<xsl:text>* </xsl:text>
+	</xsl:template>
+
+	<xsl:template match="dml:allFieldsReference">
+		<xsl:apply-templates select="child::*[1]"/>
+		<xsl:value-of select="$Period"/>
+		<xsl:text>*</xsl:text>
+		<xsl:if test="dep:columnNameDefinition">
+			<xsl:text> AS </xsl:text>
+			<xsl:value-of select="$LeftParen"/>
+			<xsl:apply-templates select="dep:columnNameDefinition"/>
+			<xsl:value-of select="$RightParen"/>
+		</xsl:if>
+	</xsl:template>
+
+	<xsl:template match="dml:derivedColumn">
+		<xsl:apply-templates/>
+		<xsl:text> AS </xsl:text>
+		<xsl:apply-templates select="@columnName"/>
+	</xsl:template>
+
+	<xsl:template match="@columnName">
+		<xsl:value-of select="."/>
+	</xsl:template>
+
+	<xsl:template match="dml:fromClause">
+		<xsl:param name="indent"/>
+		<xsl:value-of select="$NewLine"/>
+		<xsl:value-of select="$indent"/>
+		<xsl:text>FROM </xsl:text>
+		<xsl:apply-templates>
+			<xsl:with-param name="indent" select="concat($indent, $IndentChar)"/>
+		</xsl:apply-templates>
+	</xsl:template>
+
+	<xsl:template match="dml:whereClause">
+		<xsl:param name="indent"/>
+		<xsl:value-of select="$NewLine"/>
+		<xsl:value-of select="$indent"/>
+		<xsl:text>WHERE </xsl:text>
+		<xsl:apply-templates/>
+	</xsl:template>
+
+	<xsl:template match="dml:havingClause">
+		<xsl:param name="indent"/>
+		<xsl:value-of select="$NewLine"/>
+		<xsl:value-of select="$indent"/>
+		<xsl:text>HAVING </xsl:text>
+		<xsl:apply-templates/>
+	</xsl:template>
+
+	<xsl:template match="dml:groupByClause">
+		<xsl:param name="indent"/>
+		<xsl:value-of select="$NewLine"/>
+		<xsl:value-of select="$indent"/>
+		<xsl:text>GROUP BY </xsl:text>
+		<xsl:apply-templates select="@setQuantifier"/>
+		<xsl:for-each select="child::*[1]">
+			<xsl:apply-templates/>
+			<xsl:if test="position != last()">
+				<xsl:text>, </xsl:text>
+			</xsl:if>
+		</xsl:for-each>
+	</xsl:template>
+
+	<xsl:template match="dml:ordinaryGroupingSet">
+		<xsl:value-of select="$LeftParen"/>
+		<xsl:apply-templates/>
+		<xsl:value-of select="$RightParen"/>
+		<xsl:if test="position() != last()">
+			<xsl:text>, </xsl:text>
+		</xsl:if>
+	</xsl:template>
+
+	<xsl:template match="dml:rollupList">
+		<xsl:text>ROLLUP </xsl:text>
+		<xsl:value-of select="$LeftParen"/>
+		<xsl:apply-templates/>
+		<xsl:value-of select="$RightParen"/>
+	</xsl:template>
+
+	<xsl:template match="dml:cubeList">
+		<xsl:text>CUBE </xsl:text>
+		<xsl:value-of select="$LeftParen"/>
+		<xsl:apply-templates/>
+		<xsl:value-of select="$RightParen"/>
+	</xsl:template>
+
+	<xsl:template match="groupingSetsSpecification">
+		<xsl:text>GROUPING SETS </xsl:text>
+		<xsl:value-of select="$LeftParen"/>
+		<xsl:apply-templates/>
+		<xsl:value-of select="$RightParen"/>
+	</xsl:template>
+
+	<xsl:template match="dml:emptyGroupingSet">
+		<xsl:value-of select="$LeftParen"/>
+		<xsl:value-of select="$RightParen"/>
+	</xsl:template>
+
+	<xsl:template match="dml:ordinaryGroupingSet">
+		<xsl:value-of select="$LeftParen"/>
+		<xsl:apply-templates/>
+		<xsl:value-of select="$RightParen"/>
+		<xsl:if test="position() != last()">
+			<xsl:text>,</xsl:text>
+		</xsl:if>
+		<xsl:text> </xsl:text>
+	</xsl:template>
+
+	<xsl:template match="dml:windowClause">
+		<!-- TODO -->
+		<!-- The xml schema needs to be cleaned up for <window clause> before its corisponding transform is written. -->
+		<xsl:text> ***CURRENTLY UNDONE*** </xsl:text>
+	</xsl:template>
+
+	<xsl:template match="dml:explicitTable">
+		<xsl:param name="indent"/>
+		<xsl:value-of select="$NewLine"/>
+		<xsl:value-of select="$indent"/>
+		<xsl:text>TABLE </xsl:text>
+		<xsl:apply-templates select="@catalog" mode="ForSchemaQualifiedName"/>
+		<xsl:apply-templates select="@schema" mode="ForSchemaQualifiedName"/>
+		<xsl:apply-templates select="@name" mode="ForSchemaQualifiedName"/>
+	</xsl:template>
+
+	<!-- End of Query Specification -->
+
 	<!-- Column Definition pg.536 -->
 
 	<xsl:template match="ddl:columnDefinition">
 		<xsl:param name="indent"/>
+		<xsl:value-of select="$NewLine"/>
 		<xsl:value-of select="$indent"/>
-		<xsl:apply-templates select="@name" mode="ForColumnDefinition"/>
+		<xsl:apply-templates select="@name" mode="ForColumnName"/>
 		<xsl:apply-templates select="ddt:boolean | ddt:characterString | ddt:binaryString | ddt:exactNumeric | ddt:approximateNumeric | ddt:date | ddt:time | ddt:interval | ddt:domain"/>
 		<xsl:apply-templates select="ddl:defaultClause"/>
 		<xsl:apply-templates select="ddl:identityColumnSpecification"/>
 		<xsl:apply-templates select="ddl:generationClause"/>
 		<xsl:apply-templates select="ddl:columnConstraintDefinition"/>
-		<xsl:choose>
-			<xsl:when test="position()!=last() or following-sibling::*">
-				<xsl:text>,</xsl:text>
-			</xsl:when>
-		</xsl:choose>
+		<xsl:if test="position()!=last() or following-sibling::*">
+			<xsl:text>,</xsl:text>
+		</xsl:if>
 	</xsl:template>
 
 	<xsl:template match="ddl:generationClause">
@@ -203,7 +607,7 @@
 		<xsl:apply-templates/>
 	</xsl:template>
 
-	<xsl:template match="@name" mode="ForColumnDefinition">
+	<xsl:template match="@name" mode="ForColumnName">
 		<xsl:call-template name="RenderIdentifier">
 			<xsl:with-param name="name" select="."/>
 		</xsl:call-template>
@@ -263,11 +667,9 @@
 	</xsl:template>
 
 	<xsl:template match="ddt:domain">
-		<xsl:if test="@schema">
-			<xsl:value-of select="@schema"/>
-			<xsl:text>.</xsl:text>
-		</xsl:if>
-		<xsl:value-of select="@name"/>
+		<xsl:apply-templates select="@catalog" mode="ForSchemaQualifiedName"/>
+		<xsl:apply-templates select="@schema" mode="ForSchemaQualifiedName"/>
+		<xsl:apply-templates select="@name" mode="ForSchemaQualifiedName"/>
 	</xsl:template>
 
 	<xsl:template match="ddl:identityColumnSpecification">
@@ -371,8 +773,25 @@
 
 	<xsl:template match="ddt:characterStringLiteral">
 		<xsl:text>'</xsl:text>
-		<xsl:value-of select="@value"/>
+		<xsl:call-template name="RenderStringLiteral">
+			<xsl:with-param name="value" select="@value"/>
+		</xsl:call-template>
 		<xsl:text>'</xsl:text>
+	</xsl:template>
+	<xsl:template name="RenderStringLiteral">
+		<xsl:param name="value"/>
+		<xsl:choose>
+			<xsl:when test="contains($value, &quot;'&quot;)">
+				<xsl:value-of select="substring-before($value, &quot;'&quot;)"/>
+				<xsl:text>''</xsl:text>
+				<xsl:call-template name="RenderStringLiteral">
+					<xsl:with-param name="value" select="substring-after($value, &quot;'&quot;)"/>
+				</xsl:call-template>
+			</xsl:when>
+			<xsl:otherwise>
+				<xsl:value-of select="$value"/>
+			</xsl:otherwise>
+		</xsl:choose>
 	</xsl:template>
 
 	<xsl:template match="ddt:binaryStringLiteral">
@@ -506,7 +925,13 @@
 
 	<xsl:template match="ddl:columnConstraintDefinition">
 		<xsl:text> </xsl:text>
+		<xsl:if test="@name">
+			<xsl:text>CONSTRAINT </xsl:text>
+			<xsl:apply-templates select="@name" mode="ForSchemaQualifiedName"/>
+			<xsl:text> </xsl:text>
+		</xsl:if>
 		<xsl:apply-templates/>
+		<xsl:apply-templates select="@constraintCharacteristics"/>
 	</xsl:template>
 
 	<!-- End of Column Constraint Definition -->
@@ -565,12 +990,6 @@
 		<xsl:apply-templates select="child::*[2]"/>
 	</xsl:template>
 
-	<xsl:template match="ddt:characterStringLiteral">
-		<xsl:text>'</xsl:text>
-		<xsl:value-of select="@value"/>
-		<xsl:text>'</xsl:text>
-	</xsl:template>
-
 	<xsl:template match="dep:hostParameterSpecification">
 		<xsl:text>:</xsl:text>
 		<xsl:value-of select="@name"/>
@@ -582,12 +1001,26 @@
 		<xsl:value-of select="@hostParameterName"/>
 	</xsl:template>
 
-	<xsl:template match="dep:sqlParameterReference | dep:columnReference">
+	<xsl:template match="dep:sqlParameterReference | dep:columnReference | dep:columnNameDefinition | dep:simpleColumnReference">
 		<xsl:value-of select="@name"/>
+		<xsl:if test="not(position()=last()) and (following-sibling::dep:sqlParameterReference or following-sibling::dep:columnReference or following-sibling::dep:columnNameDefinition or following-sibling::dep:simpleColumnReference)">
+			<xsl:text>, </xsl:text>
+		</xsl:if>
+	</xsl:template>
+
+	<xsl:template match="dep:collatedColumnReference">
+		<xsl:value-of select="@name"/>
+		<xsl:apply-templates select="@collation"/>
 		<xsl:if test="not(position()=last())">
 			<xsl:text>, </xsl:text>
 		</xsl:if>
 	</xsl:template>
+
+	<xsl:template match="@collation">
+		<xsl:text> COLATE </xsl:text>
+		<xsl:value-of select="."/>
+	</xsl:template>
+
 
 	<xsl:template match="dep:dynamicParameterSpecification">
 		<xsl:text>?</xsl:text>
@@ -601,9 +1034,9 @@
 	</xsl:template>
 
 	<xsl:template match="ddt:userDefinedType">
-		<xsl:apply-templates select="@catalog" mode="ForTableDefinition"/>
-		<xsl:apply-templates select="@schema" mode="ForTableDefinition"/>
-		<xsl:apply-templates select="@name" mode="ForTableDefinition"/>
+		<xsl:apply-templates select="@catalog" mode="ForSchemaQualifiedName"/>
+		<xsl:apply-templates select="@schema" mode="ForSchemaQualifiedName"/>
+		<xsl:apply-templates select="@name" mode="ForSchemaQualifiedName"/>
 	</xsl:template>
 
 	<xsl:template match="dep:generalSetFunction">
@@ -772,11 +1205,9 @@
 	<xsl:template match="ddl:sqlInvokedProcedure">
 		<xsl:value-of select="$NewLine"/>
 		<xsl:text>CREATE PROCEDURE </xsl:text>
-		<xsl:if test="@schema">
-			<xsl:value-of select="@schema"/>
-			<xsl:text>.</xsl:text>
-		</xsl:if>
-		<xsl:value-of select="@name"/>
+		<xsl:apply-templates select="@catalog" mode="ForSchemaQualifiedName"/>
+		<xsl:apply-templates select="@schema" mode="ForSchemaQualifiedName"/>
+		<xsl:apply-templates select="@name" mode="ForSchemaQualifiedName"/>
 		<xsl:value-of select="$NewLine"/>
 		<xsl:value-of select="$LeftParen"/>
 		<xsl:value-of select="$NewLine"/>
@@ -807,48 +1238,91 @@
 	</xsl:template>
 
 	<xsl:template match="dml:insertStatement">
+		<xsl:param name="indent"/>
+		<xsl:value-of select="$NewLine"/>
+		<xsl:value-of select="$indent"/>
 		<xsl:text>INSERT INTO </xsl:text>
-		<xsl:if test="@schema">
-			<xsl:value-of select="@schema"/>
-			<xsl:text>.</xsl:text>
-		</xsl:if>
-		<xsl:value-of select="@name"/>
-		<xsl:apply-templates select="child::*"/>
-	</xsl:template>
-
-
-	<xsl:template match="dml:updateStatement">
-		<xsl:text>UPDATE </xsl:text>
-		<xsl:if test="@schema">
-			<xsl:value-of select="@schema"/>
-			<xsl:text>.</xsl:text>
-		</xsl:if>
-		<xsl:value-of select="@name"/>
-		<xsl:value-of select="$NewLine"/>
-		<xsl:apply-templates select="dml:setClause"/>
-		<xsl:value-of select="$NewLine"/>
-		<xsl:apply-templates select="dml:whereClause"/>
-	</xsl:template>
-
-	<xsl:template match="dml:setClause">
+		<xsl:apply-templates select="@catalog" mode="ForSchemaQualifiedName"/>
+		<xsl:apply-templates select="@schema" mode="ForSchemaQualifiedName"/>
+		<xsl:apply-templates select="@name" mode="ForSchemaQualifiedName"/>
+		<xsl:text> </xsl:text>
 		<xsl:choose>
-			<xsl:when test="not(position()> 1)">
-				<xsl:text>SET </xsl:text>
+			<xsl:when test="dml:defaultValues">
+				<xsl:text>DEFAULT VALUES</xsl:text>
 			</xsl:when>
 			<xsl:otherwise>
-				<xsl:text>, </xsl:text>
+				<xsl:apply-templates select="dep:simpleColumnReference"/>
+				<xsl:apply-templates select="@overrideClause"/>
+				<xsl:apply-templates select="*[not(self::dep:simpleColumnReference)]">
+					<xsl:with-param name="indent" select="$indent"/>
+				</xsl:apply-templates>
 			</xsl:otherwise>
 		</xsl:choose>
-		<xsl:apply-templates select="child::*[1]"/>
+	</xsl:template>
+
+	<xsl:template match="@overrideClause">
 		<xsl:text> </xsl:text>
-		<xsl:value-of select="$setClauseEqualsOperator"/>
+		<xsl:value-of select="."/>
 		<xsl:text> </xsl:text>
-		<xsl:apply-templates select="child::*[2]"/>
+	</xsl:template>
+
+	<xsl:template match="dml:updateStatement">
+		<xsl:param name="indent"/>
+		<xsl:value-of select="$NewLine"/>
+		<xsl:value-of select="$indent"/>
+		<xsl:text>UPDATE </xsl:text>
+		<xsl:apply-templates select="@catalog" mode="ForSchemaQualifiedName"/>
+		<xsl:apply-templates select="@schema" mode="ForSchemaQualifiedName"/>
+		<xsl:apply-templates select="@name" mode="ForSchemaQualifiedName"/>
+		<xsl:apply-templates select="@correlationName"/>
+		<xsl:value-of select="$NewLine"/>
+		<xsl:value-of select="$indent"/>
+		<xsl:text>SET </xsl:text>
+		<xsl:for-each select="dml:multipleColumnAssignment |dml:singleColumnAssignment">
+			<xsl:apply-templates select=".">
+				<xsl:with-param name="indent" select="$indent"/>
+			</xsl:apply-templates>
+			<xsl:if test="following-sibling::dml:multipleColumnAssignment | following-sibling::dml:singleColumnAssignment">
+				<xsl:text>,</xsl:text>
+				<!--No space because each column assignment is currently apearing on a new line -->
+			</xsl:if>
+		</xsl:for-each>
+		<xsl:apply-templates select="dml:whereClause">
+			<xsl:with-param name="indent" select="$indent"/>
+		</xsl:apply-templates>
+	</xsl:template>
+
+	<xsl:template match="dml:multipleColumnAssignment">
+		<xsl:param name="indent"/>
+		<xsl:value-of select="$NewLine"/>
+		<xsl:value-of select="$indent"/>
+		<xsl:value-of select="$LeftParen"/>
+		<xsl:apply-templates select="dep:simpleColumnReference"/>
+		<xsl:value-of select="$RightParen"/>
+		<xsl:text> </xsl:text>
+		<xsl:value-of select="$SetClauseEqualsOperator"/>
+		<xsl:text> </xsl:text>
+		<xsl:apply-templates select="*[not(self::dep:simpleColumnReference)]">
+			<xsl:with-param name="indent" select="$indent"/>
+		</xsl:apply-templates>
+	</xsl:template>
+
+	<xsl:template match="dml:singleColumnAssignment">
+		<xsl:param name="indent"/>
+		<xsl:value-of select="$NewLine"/>
+		<xsl:value-of select="$indent"/>
+		<xsl:apply-templates select="@name" mode="ForColumnName"/>
+		<xsl:text> </xsl:text>
+		<xsl:value-of select="$SetClauseEqualsOperator"/>
+		<xsl:text> </xsl:text>
+		<xsl:apply-templates>
+			<xsl:with-param name="indent" select="$indent"/>
+		</xsl:apply-templates>
 	</xsl:template>
 
 	<xsl:template match="dml:fromConstructor">
 		<xsl:value-of select="$LeftParen"/>
-		<xsl:apply-templates select="ddl:column"/>
+		<xsl:apply-templates select="dep:column"/>
 		<xsl:value-of select="$RightParen"/>
 		<xsl:value-of select="$NewLine"/>
 		<xsl:value-of select="$IndentChar"/>
@@ -859,160 +1333,205 @@
 	</xsl:template>
 
 	<xsl:template match="dml:deleteStatement">
-		<xsl:text>DELETE FROM </xsl:text>
-		<xsl:if test="@schema">
-			<xsl:value-of select="@schema"/>
-			<xsl:text>.</xsl:text>
-		</xsl:if>
-		<xsl:value-of select="@name"/>
+		<xsl:param name="indent"/>
 		<xsl:value-of select="$NewLine"/>
-		<xsl:apply-templates select="child::*"/>
+		<xsl:value-of select="$indent"/>
+		<xsl:text>DELETE FROM </xsl:text>
+		<xsl:apply-templates select="@catalog" mode="ForSchemaQualifiedName"/>
+		<xsl:apply-templates select="@schema" mode="ForSchemaQualifiedName"/>
+		<xsl:apply-templates select="@name" mode="ForSchemaQualifiedName"/>
+		<xsl:apply-templates select="@correlationName"/>
+		<xsl:apply-templates select="child::*">
+			<xsl:with-param name="indent" select="$indent"/>
+		</xsl:apply-templates>
 	</xsl:template>
 
 	<xsl:template match="dml:whereClause">
-		<xsl:value-of select="$IndentChar"/>
+		<xsl:param name="indent"/>
+		<xsl:value-of select="$NewLine"/>
+		<xsl:value-of select="$indent"/>
 		<xsl:text>WHERE </xsl:text>
-		<xsl:apply-templates select="child::*"/>
+		<xsl:apply-templates>
+			<xsl:with-param name="indent" select="$indent"/>
+		</xsl:apply-templates>
 	</xsl:template>
 
 	<xsl:template match="dml:searchCondition">
-		<xsl:apply-templates select="child::*"/>
+		<xsl:param name="indent"/>
+		<xsl:apply-templates>
+			<xsl:with-param name="indent" select="$indent"/>
+		</xsl:apply-templates>
 	</xsl:template>
 
 	<!-- End of Stored Procedure Definitions -->
 
 	<!-- Trigger Definitions-->
-	
+
 	<xsl:template match="ddl:triggerDefinition">
+		<xsl:param name="indent"/>
 		<xsl:value-of select="$NewLine"/>
-		<xsl:value-of select="$NewLine"/>
+		<xsl:value-of select="$indent"/>
 		<xsl:text>CREATE TRIGGER </xsl:text>
-		<xsl:if test="@schema">
-			<xsl:value-of select="@schema"/>
-			<xsl:text>.</xsl:text>
-		</xsl:if>
-		<xsl:value-of  select="@name"/>
+		<xsl:apply-templates select="@catalog" mode="ForSchemaQualifiedName"/>
+		<xsl:apply-templates select="@schema" mode="ForSchemaQualifiedName"/>
+		<xsl:apply-templates select="@name" mode="ForSchemaQualifiedName"/>
 		<xsl:text> </xsl:text>
-		<xsl:value-of  select="@actionTime"/>
+		<xsl:value-of select="@actionTime"/>
 		<xsl:text> </xsl:text>
-		<xsl:call-template name="triggerEvent">
-			<xsl:with-param name="event" select="ddl:event"/>
-		</xsl:call-template>
+		<xsl:apply-templates select="ddl:event"/>
 		<xsl:value-of select="$NewLine"/>
+		<xsl:value-of select="$indent"/>
 		<xsl:text>ON </xsl:text>
-		<xsl:value-of select="ddl:table/@name"/>
-		<xsl:apply-templates select="child::*"/>
+		<xsl:apply-templates select="ddl:table"/>
+		<xsl:apply-templates select="ddl:referencing">
+			<xsl:with-param name="indent" select="$indent"/>
+		</xsl:apply-templates>
+		<xsl:value-of select="$NewLine"/>
+		<xsl:value-of select="$indent"/>
+		<xsl:if test="@forEach">
+			<xsl:text>FOR EACH </xsl:text>
+			<xsl:value-of select="@forEach"/>
+		</xsl:if>
+		<xsl:apply-templates select="ddl:when"/>
+		<xsl:apply-templates select="ddl:atomicBlock">
+			<xsl:with-param name="indent" select="$indent"/>
+		</xsl:apply-templates>
 	</xsl:template>
 
-	<xsl:template name="triggerEvent">
-		<xsl:param name="event" select="."/>
-		<xsl:choose>
-			<xsl:when test="$event/@type='UPDATE'">
-				<xsl:text>UPDATE </xsl:text>
-				<xsl:if test="count($event/ddl:column)>0">
-					<xsl:text>OF </xsl:text>
-					<xsl:apply-templates select="$event/ddl:column"/>
-				</xsl:if>
-			</xsl:when>
-			<xsl:otherwise>
-				<xsl:value-of select="$event/@type"/>
-			</xsl:otherwise>
-		</xsl:choose>
+	<xsl:template match="ddl:event">
+		<xsl:value-of select="@type"/>
+		<xsl:if test="@type='UPDATE' and dep:simpleColumnReference">
+			<xsl:text> OF </xsl:text>
+			<xsl:apply-templates select="dep:simpleColumnReference"/>
+		</xsl:if>
+	</xsl:template>
+
+	<xsl:template match="ddl:triggerDefinition/ddl:table">
+		<xsl:apply-templates select="@catalog" mode="ForSchemaQualifiedName"/>
+		<xsl:apply-templates select="@schema" mode="ForSchemaQualifiedName"/>
+		<xsl:apply-templates select="@name" mode="ForSchemaQualifiedName"/>	
 	</xsl:template>
 
 	<xsl:template match="ddl:when">
 		<xsl:text>WHEN </xsl:text>
-		<xsl:apply-templates select="child::*"/>
+		<xsl:value-of select="$LeftParen"/>
+		<xsl:apply-templates/>
+		<xsl:value-of select="$RightParen"/>
 	</xsl:template>
 
 	<xsl:template match="ddl:referencing">
+		<xsl:param name="indent"/>
 		<xsl:value-of select="$NewLine"/>
-		<xsl:text>REFERENCING </xsl:text>
-		<xsl:apply-templates select="child::*"/>
+		<xsl:value-of select="$indent"/>
+		<xsl:text>REFERENCING</xsl:text>
+		<xsl:apply-templates>
+			<xsl:with-param name="indent" select="concat($indent, $IndentChar)"/>
+		</xsl:apply-templates>
 	</xsl:template>
 
 	<xsl:template match="ddl:newRow">
+		<xsl:param name="indent"/>
+		<xsl:value-of select="$NewLine"/>
+		<xsl:value-of select="$indent"/>
 		<xsl:text>NEW ROW AS </xsl:text>
 		<xsl:value-of select="@name"/>
-		<xsl:value-of select="$NewLine"/>
 	</xsl:template>
+
 	<xsl:template match="ddl:oldRow">
+		<xsl:param name="indent"/>
+		<xsl:value-of select="$NewLine"/>
+		<xsl:value-of select="$indent"/>
 		<xsl:text>OLD ROW AS </xsl:text>
 		<xsl:value-of select="@name"/>
-		<xsl:value-of select="$NewLine"/>
 	</xsl:template>
+
 	<xsl:template match="ddl:newTable">
+		<xsl:param name="indent"/>
+		<xsl:value-of select="$NewLine"/>
+		<xsl:value-of select="$indent"/>
 		<xsl:text>NEW TABLE AS </xsl:text>
 		<xsl:value-of select="@name"/>
-		<xsl:value-of select="$NewLine"/>
 	</xsl:template>
+
 	<xsl:template match="ddl:oldTable">
+		<xsl:param name="indent"/>
+		<xsl:value-of select="$NewLine"/>
+		<xsl:value-of select="$indent"/>
 		<xsl:text>OLD TABLE AS </xsl:text>
 		<xsl:value-of select="@name"/>
-		<xsl:value-of select="$NewLine"/>
 	</xsl:template>
 
 	<xsl:template match="ddl:atomicBlock">
+		<xsl:param name="indent"/>
 		<xsl:value-of select="$NewLine"/>
-		<xsl:text>BEGIN ATOMIC </xsl:text>
+		<xsl:value-of select="$indent"/>
+		<xsl:text>BEGIN ATOMIC</xsl:text>
 		<xsl:value-of select="$NewLine"/>
-		<xsl:apply-templates select="child::*"/>
-		<xsl:text>; </xsl:text>
+		<xsl:value-of select="$indent"/>
+		<xsl:apply-templates>
+			<xsl:with-param name="indent" select="concat($indent, $IndentChar)"/>
+		</xsl:apply-templates>
+		<xsl:text>;</xsl:text>
 		<xsl:value-of select="$NewLine"/>
-		<xsl:text>END </xsl:text>
+		<xsl:value-of select="$indent"/>
+		<xsl:text>END</xsl:text>
 		<xsl:value-of select="$NewLine"/>
 	</xsl:template>
-	
+
 	<!-- End of Trigger Definitions-->
 
 	<!-- Domain Definition -->
 
 	<xsl:template match="ddl:domainDefinition">
 		<xsl:param name="indent"/>
+		<xsl:value-of select="$NewLine"/>
 		<xsl:value-of select="$indent"/>
 		<xsl:text>CREATE DOMAIN </xsl:text>
-		<xsl:if test="@schema">
-			<xsl:value-of select="@schema"/>
-			<xsl:text>.</xsl:text>
-		</xsl:if>
-		<xsl:value-of select="@name"/>
+		<xsl:apply-templates select="@catalog" mode="ForSchemaQualifiedName"/>
+		<xsl:apply-templates select="@schema" mode="ForSchemaQualifiedName"/>
+		<xsl:apply-templates select="@name" mode="ForSchemaQualifiedName"/>
 		<xsl:text> AS </xsl:text>
 		<xsl:apply-templates/>
 		<xsl:value-of select="$StatementDelimeter"/>
 		<xsl:value-of select="$NewLine"/>
-		<xsl:value-of select="$NewLine"/>
 	</xsl:template>
 
-	<xsl:template match="ddl:domainConstraint">
+	<xsl:template match="ddl:domainConstraintDefinition | ddl:addDomainConstraintDefinition">
+		<xsl:if test="self::ddl:addDomainConstraintDefinition">
+			<xsl:text>ADD</xsl:text>
+		</xsl:if>
+		<xsl:text> CONSTRAINT </xsl:text>
+		<xsl:apply-templates select="@name" mode="ForSchemaQualifiedName"/>
 		<xsl:text> </xsl:text>
 		<xsl:apply-templates/>
-		<xsl:value-of select="@dep:constraintCharacteristics"/>
+		<xsl:apply-templates select="@constraintCharacteristics"/>
 	</xsl:template>
 
-	<xsl:template match="dep:constraintNameDefinition">
-		<xsl:text>CONSTRAINT </xsl:text>
-		<xsl:if test="@schema">
-			<xsl:value-of select="@schema"/>
-			<xsl:text>.</xsl:text>
-		</xsl:if>
-		<xsl:apply-templates select="@name" mode="ForConstraintNameDefinition"/>
+	<xsl:template match="@constraintCharacteristics">
 		<xsl:text> </xsl:text>
-	</xsl:template>
-
-	<xsl:template match="@name" mode="ForConstraintNameDefinition">
-		<xsl:call-template name="RenderIdentifier">
-			<xsl:with-param name="name" select="."/>
-		</xsl:call-template>
+		<xsl:value-of select="."/>
 	</xsl:template>
 
 	<!-- End of Domain Definition -->
 
 	<!-- Table Constraint Definition -->
 
-	<xsl:template match="ddl:tableConstraintDefinition">
+	<xsl:template match="ddl:tableConstraintDefinition | ddl:addTableConstraintDefinition">
 		<xsl:param name="indent"/>
-		<xsl:value-of select="$indent"/>
+		<xsl:choose>
+			<xsl:when test="self::ddl:addTableConstraintDefinition">
+				<xsl:text>ADD </xsl:text>
+			</xsl:when>
+			<xsl:otherwise>
+				<xsl:value-of select="$NewLine"/>
+				<xsl:value-of select="$indent"/>
+			</xsl:otherwise>
+		</xsl:choose>
+		<xsl:text>CONSTRAINT </xsl:text>
+		<xsl:apply-templates select="@name" mode="ForSchemaQualifiedName"/>
+		<xsl:text> </xsl:text>
 		<xsl:apply-templates/>
+		<xsl:apply-templates select="@constraintCharacteristics"/>
 		<xsl:if test="not(position()=last())">
 			<xsl:text>,</xsl:text>
 		</xsl:if>
@@ -1025,40 +1544,26 @@
 		<xsl:value-of select="$RightParen"/>
 	</xsl:template>
 
-	<xsl:template match="ddl:column">
-		<xsl:value-of select="@name"/>
-		<xsl:if test="not(position()=last()) and following-sibling::ddl:column">
-			<xsl:text>, </xsl:text>
-		</xsl:if>
-	</xsl:template>
-
-	<xsl:template match="ddl:referenceColumn">
-		<xsl:value-of select="@name"/>
-		<xsl:if test="not(position()=last()) and following-sibling::ddl:referenceColumn">
-			<xsl:text>, </xsl:text>
-		</xsl:if>
-	</xsl:template>
-
 	<xsl:template match="ddl:referentialConstraintDefinition">
 		<xsl:text>FOREIGN KEY </xsl:text>
 		<xsl:value-of select="$LeftParen"/>
-		<xsl:apply-templates select="ddl:column"/>
+		<xsl:apply-templates select="dep:simpleColumnReference"/>
 		<xsl:value-of select="$RightParen"/>
 		<xsl:text> </xsl:text>
-		<xsl:apply-templates select="child::*[not(self::ddl:column)]"/>
+		<xsl:apply-templates select="child::*[not(self::dep:simpleColumnReference)]"/>
 	</xsl:template>
 
 	<xsl:template match="ddl:referencesSpecification">
 		<xsl:text>REFERENCES </xsl:text>
-		<xsl:if test="@schema">
-			<xsl:value-of select="@schema"/>
-			<xsl:text>.</xsl:text>
-		</xsl:if>
-		<xsl:value-of select="@name"/>
+		<xsl:apply-templates select="@catalog" mode="ForSchemaQualifiedName"/>
+		<xsl:apply-templates select="@schema" mode="ForSchemaQualifiedName"/>
+		<xsl:apply-templates select="@name" mode="ForSchemaQualifiedName"/>
 		<xsl:text> </xsl:text>
-		<xsl:value-of select="$LeftParen"/>
-		<xsl:apply-templates/>
-		<xsl:value-of select="$RightParen"/>
+		<xsl:if test="dep:simpleColumnReference">
+			<xsl:value-of select="$LeftParen"/>
+			<xsl:apply-templates/>
+			<xsl:value-of select="$RightParen"/>
+		</xsl:if>
 		<xsl:apply-templates select="@match" mode="ForReferenceSpecification"/>
 		<xsl:apply-templates select="@onDelete" mode="ForReferenceSpecification"/>
 		<xsl:apply-templates select="@onUpdate" mode="ForReferenceSpecification"/>
@@ -1091,12 +1596,14 @@
 	<!-- Start Transaction Statement -->
 
 	<xsl:template match="dms:startTransactionStatement">
+		<xsl:param name="indent"/>
+		<xsl:value-of select="$NewLine"/>
+		<xsl:value-of select="$indent"/>
 		<xsl:text>START TRANSACTION ISOLATION LEVEL </xsl:text>
 		<xsl:value-of select="@isolationLevel"/>
 		<xsl:text>, </xsl:text>
 		<xsl:value-of select="@accessMode"/>
 		<xsl:value-of select="$StatementDelimeter"/>
-		<xsl:value-of select="$NewLine"/>
 		<xsl:value-of select="$NewLine"/>
 	</xsl:template>
 
@@ -1105,27 +1612,19 @@
 	<!-- Alter Table Statement -->
 
 	<xsl:template match="ddl:alterTableStatement">
+		<xsl:param name="indent"/>
+		<xsl:value-of select="$NewLine"/>
+		<xsl:value-of select="$indent"/>
 		<xsl:text>ALTER TABLE </xsl:text>
-		<xsl:if test="@schema">
-			<xsl:value-of select="@schema"/>
-			<xsl:text>.</xsl:text>
-		</xsl:if>
-		<xsl:value-of select="@name"/>
+		<xsl:apply-templates select="@catalog" mode="ForSchemaQualifiedName"/>
+		<xsl:apply-templates select="@schema" mode="ForSchemaQualifiedName"/>
+		<xsl:apply-templates select="@name" mode="ForSchemaQualifiedName"/>
 		<xsl:text> </xsl:text>
 		<xsl:apply-templates>
-			<xsl:with-param name="tableName" select="@name"/>
+			<xsl:with-param name="indent" select="$indent"/>
 		</xsl:apply-templates>
 		<xsl:value-of select="$StatementDelimeter"/>
 		<xsl:value-of select="$NewLine"/>
-		<xsl:value-of select="$NewLine"/>
-	</xsl:template>
-
-	<xsl:template match="ddl:addTableConstraintDefinition">
-		<xsl:param name="tableName"/>
-		<xsl:text>ADD </xsl:text>
-		<xsl:apply-templates>
-			<xsl:with-param name="tableName" select="$tableName"/>
-		</xsl:apply-templates>
 	</xsl:template>
 
 	<xsl:template match="ddl:addColumnDefinition">
@@ -1139,6 +1638,5 @@
 		<xsl:param name="name"/>
 		<xsl:value-of select="$name"/>
 	</xsl:template>
-
 
 </xsl:stylesheet>

@@ -8,22 +8,25 @@
 	2. Altered source versions must be plainly marked as such, and must not be misrepresented as being the original software.
 	3. This notice may not be removed or altered from any source distribution.
 -->
-<!-- Contributors: Corey Kaylor, Kevin M. Owen, Clé Diggins -->
+<!-- Contributors: Corey Kaylor, Kevin M. Owen, Clé Diggins, Robert Moore -->
 <xsl:stylesheet version="1.0"
 	xmlns:xsl="http://www.w3.org/1999/XSL/Transform"
 	xmlns:exsl="http://exslt.org/common"
+	xmlns:dsf="urn:schemas-orm-net:DIL:DILSupportFunctions"
 	xmlns:dml="http://schemas.orm.net/DIL/DMIL"
 	xmlns:dms="http://schemas.orm.net/DIL/DILMS"
 	xmlns:dep="http://schemas.orm.net/DIL/DILEP"
 	xmlns:ddt="http://schemas.orm.net/DIL/DILDT"
 	xmlns:dil="http://schemas.orm.net/DIL/DIL"
 	xmlns:ddl="http://schemas.orm.net/DIL/DDIL"
-	extension-element-prefixes="exsl"
-	exclude-result-prefixes="dml dms dep ddt dil ddl">
+	xmlns:dpp="urn:schemas-orm-net:DIL:Preprocessor"
+	extension-element-prefixes="exsl dsf"
+	exclude-result-prefixes="dml dms dep ddt dil ddl dpp">
 
 	<xsl:import href="DDILtoSQLStandard.xslt"/>
 	<xsl:import href="TruthValueTestRemover.xslt"/>
 	<xsl:import href="DomainInliner.xslt"/>
+	<!--<xsl:import href="UniqueNullableOutliner.xslt"/>-->
 
 	<xsl:output method="text" encoding="utf-8" indent="no" omit-xml-declaration="yes"/>
 	<xsl:strip-space elements="*"/>
@@ -45,22 +48,23 @@
 		<xsl:variable name="domainInlinedDilFragment">
 			<xsl:apply-templates mode="DomainInliner" select="exsl:node-set($truthValueTestRemovedDilFragment)/child::*"/>
 		</xsl:variable>
-		<xsl:apply-templates select="exsl:node-set($domainInlinedDilFragment)/child::*"/>
+		<xsl:variable name="uniqueNullableOutlinedDilFragment">
+			<!-- This pre-transform is disabled until it is finished. -->
+			<xsl:copy-of select="exsl:node-set($domainInlinedDilFragment)/child::*"/>
+			<!--<xsl:apply-templates mode="UniqueNullableOutliner" select="exsl:node-set($domainInlinedDilFragment)/child::*">
+				<xsl:with-param name="UniqueNullableOutliner.UniquenessOption" select="'BackingTable'"/>
+				
+				<xsl:with-param name="UniqueNullableOutliner.GenerateIndexedViews" select="true()"/>
+				<xsl:with-param name="UniqueNullableOutliner.ForeignKeyOption" select="'triggers'"/>
+				<xsl:with-param name="UniqueNullableOutliner.OutlineSingleColumnUniquenesses" select="true()"/>
+			
+			</xsl:apply-templates>-->
+		</xsl:variable>
+		<xsl:apply-templates select="exsl:node-set($uniqueNullableOutlinedDilFragment)/child::*"/>
 	</xsl:template>
 
 	<xsl:template match="ddl:schemaDefinition">
 		<xsl:param name="indent"/>
-		<!--<xsl:text>DROP SCHEMA </xsl:text>
-		<xsl:apply-templates select="@catalogName" mode="ForSchemaDefinition"/>
-		<xsl:apply-templates select="@schemaName" mode="ForSchemaDefinition"/>
-		<xsl:apply-templates select="@authorizationIdentifier" mode="ForSchemaDefinition"/>
-		<xsl:apply-templates select="@defaultCharacterSet" mode="ForSchemaDefinition"/>
-		<xsl:apply-templates select="ddl:path" mode="ForSchemaDefinition"/>
-		<xsl:value-of select="$StatementDelimeter"/>
-		<xsl:value-of select="$NewLine"/>
-		<xsl:text>GO</xsl:text>
-		<xsl:value-of select="$NewLine"/>
-		<xsl:value-of select="$indent"/>-->
 		<xsl:text>CREATE SCHEMA </xsl:text>
 		<xsl:apply-templates select="@catalogName" mode="ForSchemaDefinition"/>
 		<xsl:apply-templates select="@schemaName" mode="ForSchemaDefinition"/>
@@ -78,8 +82,46 @@
 		</xsl:apply-templates>
 	</xsl:template>
 
-	<xsl:template match="dms:startTransactionStatement">
+	<!-- View definition and related templates. -->
+	
+	<xsl:template match="ddl:viewDefinition[@dpp:isUniqueNullableView = 'true' or @dpp:isUniqueNullableView = 1]">
+		<xsl:param name="indent"/>
+		<xsl:apply-imports/>
+		<xsl:value-of select="$NewLine"/>
+		<xsl:value-of select="$indent"/>
+		<xsl:text>CREATE UNIQUE CLUSTERED INDEX </xsl:text>
+		<xsl:value-of select="dsf:makeValidIdentifier(concat(dsf:unescapeIdentifier(@name),'Index'))"/>
+		<xsl:text> ON </xsl:text>
+		<xsl:apply-templates select="@catalog" mode="ForSchemaQualifiedName"/>
+		<xsl:apply-templates select="@schema" mode="ForSchemaQualifiedName"/>
+		<xsl:apply-templates select="@name" mode="ForSchemaQualifiedName"/>
+		<xsl:value-of select="$LeftParen"/>
+		<xsl:apply-templates select="dep:columnNameDefinition"/>
+		<xsl:value-of select="$RightParen"/>
+		<xsl:value-of select="$StatementDelimeter"/>
+		<xsl:value-of select="$NewLine"/>
 	</xsl:template>
+
+	<xsl:template match="ddl:viewDefinition" mode="ForViewDefinitionInBetweenColumnListAndQueryExpression">
+		<xsl:param name="indent"/>
+		<xsl:value-of select="$NewLine"/>
+		<xsl:value-of select="$indent"/>
+		<xsl:text>WITH SCHEMABINDING</xsl:text>
+	</xsl:template>
+
+	<xsl:template match="@recursive" mode="ForViewDefinition"/>
+
+	<xsl:template match="@checkOption" mode="ForViewDefinition">
+		<xsl:param name="indent"/>
+		<xsl:value-of select="$NewLine"/>
+		<xsl:value-of select="$indent"/>
+		<xsl:text>WITH CHECK OPTION</xsl:text>
+	</xsl:template>
+
+	<!-- End view definition and related templates. -->
+	
+	
+	<xsl:template match="dms:startTransactionStatement"/>
 	
 	<xsl:template match="dms:startTransactionStatement" mode="writeOut" name="writeOutStartTrans">
 		<!-- Atomicity has been removed becuase multiple sprocs can't be in transaction in t-sql.-->
@@ -119,7 +161,7 @@
 		<xsl:value-of select="."/>
 	</xsl:template>
 
-	<xsl:template match="@type[.='DATE' or .='TIME']" mode="ForDataType">
+	<xsl:template match="@type[.='DATE' or .='TIME' or .='TIMESTAMP']" mode="ForDataType">
 		<xsl:text>DATETIME</xsl:text>
 	</xsl:template>
 
@@ -214,56 +256,6 @@
 				<xsl:value-of select="."/>
 			</xsl:otherwise>
 		</xsl:choose>
-	</xsl:template>
-
-	<!--<xsl:template match="ddl:sqlInvokedProcedure">
-		<xsl:value-of select="$NewLine"/>
-		<xsl:text>CREATE PROCEDURE </xsl:text>
-		<xsl:if test="@schema">
-			<xsl:value-of select="@schema"/>
-			<xsl:text>.</xsl:text>
-		</xsl:if>
-		<xsl:value-of select="@name"/>
-		<xsl:value-of select="$NewLine"/>
-		<xsl:value-of select="$LeftParen"/>
-		<xsl:value-of select="$NewLine"/>
-		<xsl:apply-templates select="ddl:sqlParameterDeclaration" />
-		<xsl:value-of select="$RightParen"/>
-		<xsl:value-of select="$NewLine"/>
-		<xsl:apply-templates select="ddl:sqlRoutineSpec" />
-		<xsl:value-of select="$StatementDelimeter"/>
-		<xsl:value-of select="$NewLine"/>
-	</xsl:template>-->
-
-	<xsl:template match="dep:constraintNameDefinition">
-		<xsl:param name="tableName"/>
-		<xsl:text>CONSTRAINT </xsl:text>
-		<xsl:if test="@schema">
-			<xsl:value-of select="@schema"/>
-			<xsl:text>.</xsl:text>
-		</xsl:if>
-		<xsl:choose>
-			<xsl:when test="$tableName">
-				<xsl:choose>
-					<xsl:when test="contains($tableName, '&quot;')">
-						<xsl:variable name="tablePart1" select="substring-after($tableName, '&quot;')"/>
-						<xsl:variable name="table" select="substring-before($tablePart1, '&quot;')"/>
-						<xsl:text>&quot;</xsl:text>
-						<xsl:value-of select="concat($table, @name)"/>
-						<xsl:text>&quot;</xsl:text>
-					</xsl:when>
-					<xsl:otherwise>
-						<xsl:variable name="table" select="concat($tableName, '_')"/>
-						<xsl:value-of select="concat($table, @name)"/>
-					</xsl:otherwise>
-				</xsl:choose>
-			</xsl:when>
-			<xsl:otherwise>
-				<xsl:value-of select="@name"/>
-			</xsl:otherwise>
-		</xsl:choose>
-		<xsl:text> </xsl:text>
-		<xsl:apply-templates/>
 	</xsl:template>
 
 </xsl:stylesheet>

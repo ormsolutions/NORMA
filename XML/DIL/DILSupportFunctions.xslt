@@ -67,6 +67,11 @@
 		var caseNormalFormCache = new Array();
 		/*@end@*/
 
+		// TERMINOLOGY:
+		// Name - A "raw" string, without any escaping.
+		// Identifier - A regular or delimited SQL identifier.
+		//     Delimited identifiers begin and end with a doublequote character,
+		//     and any internal doublequote characters are escaped by doubling them.
 
 		/// Accepts a name and returns a valid identifier based on it.
 		/// This identifier is adjusted to be at most as long as the value specified for maxLength.
@@ -92,7 +97,7 @@
 				throw new System.ArgumentNullException("name");
 			}
 			@else@*/
-			if (!name)
+			if (!name || name.length <= 0)
 			{
 				throw "name cannot be null.";
 			}
@@ -233,64 +238,87 @@
 			/*@if (@_jscript_version >= 7) System.Collections.Hashtable @end@*/ (identifierCaches[maxLength])[originalName] = name;
 			return name;
 		}
-
-
-		/// Accepts a string literal value and returns the unescaped form of it.
-		/// Any escaped single quote characters (that is, two sequential occurrences of the single quote character) are unescaped
-		/// (that is, each occurrence of two sequential single quote characters is replaced with a single occurrence of the single
-		/// quote character).
+		
+		
 		/*@if (@_jscript_version >= 7)
 		System.Diagnostics.DebuggerStepThroughAttribute
-		public static @end@*/ function unescapeStringLiteral(stringLiteral /*@if (@_jscript_version >= 7) : System.String) : System.String { @else@*/ )
+		private static @end@*/ function isDelimited(identifier /*@if (@_jscript_version >= 7) : System.String) : System.Boolean { @else@*/ )
 		{
-			if (!stringLiteral)
-			{
-				throw "stringLiteral cannot be null.";
-			}
+			return ((identifier.indexOf("\"") === 0) && (identifier.lastIndexOf("\"") === (identifier.length - 1)));
 			/*@end @if (@_jscript_version >= 7)
-			if (stringLiteral === undefined)
-			{
-				throw new System.ArgumentNullException("stringLiteral");
-			}
+			const doubleQuoteChar : System.Char = '"';
+			return (identifier.Chars[0] === doubleQuoteChar && identifier.Chars[identifier.Length - 1] === doubleQuoteChar);
 			@end@*/
-			return stringLiteral /*@if (@_jscript_version >= 7) .Replace("''", "'")	@else@*/ .replace(doubleSingleQuotePattern, "'") /*@end@*/;
 		}
 
 
-		/// Accepts a regular or delimited identifier and returns the form of it appropriate for use in a literal string.
+		/// Accepts a regular or delimited identifier and returns the unescaped form of it.
+		/// If the identifier is not a delimited identifier, it is returned as-is.
+		/// If the identifier is a delimited identifier, the delimiting doublequote characters are removed, and any escaped
+		/// doublequote characters (that is, two sequential occurrences of the doublequote character) are unescaped (that is,
+		/// each occurrence of two sequential doublequote characters is replaced with a single occurrence of the doublequote
+		/// character).
+		/*@if (@_jscript_version >= 7)
+		System.Diagnostics.DebuggerStepThroughAttribute
+		public static @end@*/ function unescapeIdentifier(identifier /*@if (@_jscript_version >= 7) : System.String) : System.String { @else@*/ )
+		{
+			if (!identifier || identifier.length <= 0)
+			{
+				throw "identifier cannot be null.";
+			}
+			if (isDelimited(identifier))
+			{
+				return identifier.substr(1, identifier.length - 2).replace(doubleDoubleQuotePattern, "\"");
+			}
+			/*@end @if (@_jscript_version >= 7)
+			const doubleQuoteChar : System.Char = '"';
+			if (identifier === undefined || identifier.length <= 0)
+			{
+				throw new System.ArgumentNullException("identifier");
+			}
+			if (isDelimited(identifier))
+			{
+				return identifier.Trim(doubleQuoteChar).Replace("\"\"", "\"");
+			}
+			@end@*/
+
+			// It is not a delimited identifier, so return it as-is.
+			return identifier;
+		}
+
+
+		/// Accepts a regular or delimited identifier and returns the form of it appropriate for use in comparisons and the Information Schema.
 		/// If the identifier is a regular identifier, it is converted to case-normal form.
 		/// If the identifier is a delimited identifier, the delimiting doublequote characters are removed, and any escaped
 		/// doublequote characters (that is, two sequential occurrences of the doublequote character) are unescaped (that is,
 		/// each occurrence of two sequential doublequote characters is replaced with a single occurrence of the doublequote
 		/// character).
-		/// In either case, any occurrence of the single quote character is escaped (that is, replaced with two sequential
-		/// occurrences of the single quote character).
 		/*@if (@_jscript_version >= 7)
 		System.Diagnostics.DebuggerStepThroughAttribute
-		public static @end@*/ function getStringLiteralForm(identifier /*@if (@_jscript_version >= 7) : System.String) : System.String { @else@*/ )
+		public static @end@*/ function getInformationSchemaForm(identifier /*@if (@_jscript_version >= 7) : System.String) : System.String { @else@*/ )
 		{
-			if (!identifier)
+			if (!identifier || identifier.length <= 0)
 			{
 				throw "identifier cannot be null.";
 			}
-			if ((identifier.indexOf("\"") === 0) && (identifier.lastIndexOf("\"") === (identifier.length - 1)))
+			if (isDelimited(identifier))
 			{
-				return identifier.substr(1, identifier.length - 2).replace(doubleDoubleQuotePattern, "\"").replace(singleQuotePattern, "''");
+				return unescapeIdentifier(identifier);
 			}
 			/*@end @if (@_jscript_version >= 7)
 			const doubleQuoteChar : System.Char = '"';
-			if (identifier === undefined)
+			if (identifier === undefined || identifier.length <= 0)
 			{
 				throw new System.ArgumentNullException("identifier");
 			}
-			if (identifier.Chars[0] === doubleQuoteChar && identifier.Chars[identifier.Length - 1] === doubleQuoteChar)
+			if (isDelimited(identifier))
 			{
-				return identifier.Trim(doubleQuoteChar).Replace("\"\"", "\"").Replace("'", "''");
+				return unescapeIdentifier(identifier);
 			}
 			@end@*/
 
 			// It is not a delimited identifier, so return the case-normal form of it with any single quotes escaped.
-			return getCaseNormalForm(identifier) /*@if (@_jscript_version >= 7) .Replace("'", "''")	@else@*/ .replace(singleQuotePattern, "''") /*@end@*/;
+			return getCaseNormalForm(identifier);
 		}
 
 
@@ -302,12 +330,12 @@
 		System.Diagnostics.DebuggerStepThroughAttribute
 		public static @end@*/ function getCaseNormalForm(name /*@if (@_jscript_version >= 7) : System.String) : System.String { @else@*/ )
 		{
-			if (!name)
+			if (!name || name.length <= 0)
 			{
 				throw "name cannot be null.";
 			}
 			/*@end @if (@_jscript_version >= 7)
-			if (name === undefined)
+			if (name === undefined || name.length <= 0)
 			{
 				throw new System.ArgumentNullException("name");
 			}

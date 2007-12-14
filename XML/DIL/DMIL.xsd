@@ -5,10 +5,10 @@
 	xmlns:ddt="http://schemas.orm.net/DIL/DILDT"
 	xmlns:dep="http://schemas.orm.net/DIL/DILEP"
 	xmlns:xs="http://www.w3.org/2001/XMLSchema"
-	xmlns:ddl="http://schemas.orm.net/DIL/DDIL" 
+	xmlns:ddl="http://schemas.orm.net/DIL/DDIL"
 	elementFormDefault="qualified"
 	attributeFormDefault="unqualified"
-	version="0.6">
+	version="0.9">
 
 	<xs:annotation>
 		<xs:appinfo>
@@ -30,6 +30,7 @@
 					<dc:creator>Corey Kaylor</dc:creator>
 					<dc:contributor>Korvyn Dornseif</dc:contributor>
 					<dc:contributor>Clé Diggins</dc:contributor>
+					<dc:contributor>Robert Moore</dc:contributor>
 					<dc:rights>Copyright © Neumont University. All rights reserved.</dc:rights>
 					<dcterms:rightsHolder>Neumont University</dcterms:rightsHolder>
 					<dcterms:license>
@@ -48,92 +49,104 @@
 	<xs:import namespace="http://schemas.orm.net/DIL/DILDT"/>
 	<xs:import namespace="http://schemas.orm.net/DIL/DILEP"/>
 
-	<xs:element name="scalarSubquery" type="dml:queryExpression">
+	<xs:element name="scalarSubquery" type="dml:scalarSubquery"/>
+	<xs:complexType name="scalarSubquery">
 		<xs:annotation>
-			<xs:documentation>( &lt;query expression&gt; )</xs:documentation>
 			<xs:documentation>To be used in this context, a subquery must return a single result (single column, single row, scalar datatype).</xs:documentation>
 		</xs:annotation>
-	</xs:element>
-	<xs:element name="tableSubquery" type="dml:queryExpression">
+		<xs:complexContent>
+			<xs:extension base="dml:subquery"/>
+		</xs:complexContent>
+	</xs:complexType>
+	<xs:element name="tableSubquery" type="dml:tableSubquery"/>
+	<xs:complexType name="tableSubquery">
 		<xs:annotation>
-			<xs:documentation>( &lt;query expression&gt; )</xs:documentation>
 			<xs:documentation>To be used in this context, a subquery must return a table.</xs:documentation>
 		</xs:annotation>
-	</xs:element>
-	<xs:element name="subquery" type="dml:queryExpression">
+		<xs:complexContent>
+			<xs:extension base="dml:subquery"/>
+		</xs:complexContent>
+	</xs:complexType>
+	<xs:element name="subquery" type="dml:subquery"/>
+	<xs:complexType name="subquery">
 		<xs:annotation>
 			<xs:documentation>( &lt;query expression&gt; )</xs:documentation>
 		</xs:annotation>
-	</xs:element>
+		<xs:complexContent>
+			<xs:extension base="dml:queryExpression"/>
+		</xs:complexContent>
+	</xs:complexType>
 
+	<xs:complexType name="tableValueConstructor">
+		<xs:annotation>
+			<xs:documentation>VALUES &lt;row value expression list&gt;</xs:documentation>
+		</xs:annotation>
+		<xs:sequence>
+			<xs:group ref="dep:valueExpressionPrimary" maxOccurs="unbounded"/>
+		</xs:sequence>
+	</xs:complexType>
+	
+	<!-- Query Expression pg. #351-->
 	<xs:complexType name="queryExpression">
-		<xs:annotation>
-			<xs:documentation>[ &lt;with clause&gt; ] &lt;query expression body&gt;</xs:documentation>
-		</xs:annotation>
-		<xs:sequence>
-			<xs:element name="withClause" type="dml:withClause" minOccurs="0"/>
-			<xs:element name="queryExpressionBody" type="dml:queryExpressionBody"/>
-		</xs:sequence>
+		<xs:group ref="dml:queryExpression"/>
 	</xs:complexType>
-
-	<xs:complexType name="queryExpressionBody">
-		<xs:annotation>
-			<xs:documentation>&lt;query term&gt; | &lt;query expression body&gt; UNION | EXCEPT  [ ALL | DISTINCT ] [ &lt;corresponding spec&gt; ] &lt;query term&gt;</xs:documentation>
-		</xs:annotation>
-		<xs:sequence>
-			<xs:element name="queryTerm" type="dml:queryTerm"/>
-			<xs:element name="queryExpressionBody" type="dml:queryExpressionBody" minOccurs="0"/>
-		</xs:sequence>
-	</xs:complexType>
-
-	<xs:complexType name="queryTerm">
-		<xs:annotation>
-			<xs:documentation>&lt;query primary&gt; | &lt;query term&gt; INTERSECT [ ALL | DISTINCT ] [ &lt;corresponding spec&gt; ] &lt;query primary&gt;</xs:documentation>
-		</xs:annotation>
-		<xs:sequence>
-			<xs:element name="queryTerm" type="dml:queryTerm" minOccurs="0"/>
-			<xs:element name="queryPrimary" type="dml:queryPrimary"/>
-			<xs:element name="correspondingSpec" type="dml:correspondingSpec" minOccurs="0" maxOccurs="unbounded"/>
-		</xs:sequence>
-	</xs:complexType>
-
-	<xs:complexType name="correspondingSpec">
-		<xs:attribute name="columnName" type="ddt:identifier"/>
-	</xs:complexType>
-
-	<xs:complexType name="queryPrimary">
-		<xs:annotation>
-			<xs:documentation>&lt;simple table&gt; | ( &lt;query expression body&gt; )</xs:documentation>
-		</xs:annotation>
+	<xs:group name="queryExpression">
 		<xs:choice>
-			<xs:element name="simpleTable" type="dml:simpleTable"/>
-			<xs:element name="queryExpressionBody" type="dml:queryExpressionBody"/>
+			<xs:element name="withClauseQuery" type="dml:withClauseQuery"/>
+			<xs:group ref="dml:queryPrimary"/>
 		</xs:choice>
-	</xs:complexType>
+	</xs:group>
 
-	<xs:complexType name="simpleTable">
-		<xs:annotation>
-			<xs:documentation>&lt;query specification&gt; | &lt;explicit table&gt;</xs:documentation>
-		</xs:annotation>
+	<xs:group name="queryPrimary">
 		<xs:choice>
-			<xs:element name="querySpecification" type="dml:querySpecification"/>
-			<xs:element name="tableOrQueryName" type="dml:tableOrQueryName"/>
+			<xs:element name="union" type="dml:setOperation">
+				<xs:annotation>
+					<xs:documentation>&lt;query primary&gt; UNION [ &lt;set quantifier&gt; ] [ &lt;corresponding spec&gt; ] &lt;query primary&gt;</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:element name="except" type="dml:setOperation">
+				<xs:annotation>
+					<xs:documentation>&lt;query primary&gt; EXCEPT [ &lt;set quantifier&gt; ] [ &lt;corresponding spec&gt; ] &lt;query primary&gt;</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:element name="intersect" type="dml:setOperation">
+				<xs:annotation>
+					<xs:documentation>&lt;query primary&gt; INTERSECT [ &lt;set quantifier&gt; ] [ &lt;corresponding spec&gt; ] &lt;query primary&gt;</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:element ref="dml:querySpecification"/>
+			<xs:element name="tableValueConstructor" type="dml:tableValueConstructor"/>
+			<xs:element name="explicitTable" type="ddt:schemaQualifiedName">
+				<xs:annotation>
+					<xs:documentation>TABLE &lt;table or query name&gt;</xs:documentation>
+				</xs:annotation>
+			</xs:element>
 		</xs:choice>
-	</xs:complexType>
+	</xs:group>
 
-	<xs:element name="withClause">
-		<xs:annotation>
-			<xs:documentation>WITH [ RECURSIVE ] &lt;with list element&gt; [ , &lt;with list element&gt; ] ...</xs:documentation>
-		</xs:annotation>
-		<xs:complexType>
-			<xs:sequence>
-				<xs:element name="withListElement" type="dml:withListElement"/>
-			</xs:sequence>
-		</xs:complexType>
-	</xs:element>
+	<xs:complexType name="setOperation">
+		<xs:sequence>
+			<xs:group ref="dml:queryPrimary"/>
+			<xs:element name="correspondingSpec" minOccurs="0">
+				<xs:annotation>
+					<xs:documentation>CORRESPONDING [ BY ( &lt;column name&gt;... ) ]</xs:documentation>
+				</xs:annotation>
+				<xs:complexType>
+					<xs:sequence>
+						<xs:element ref="dep:columnNameDefinition" minOccurs="0" maxOccurs="unbounded"/>
+					</xs:sequence>
+				</xs:complexType>
+			</xs:element>
+			<xs:group ref="dml:queryPrimary"/>
+		</xs:sequence>
+		<xs:attribute name="setQuantifier" type="dml:setQuantifier" use="optional" default="ALL"/>
+	</xs:complexType>
 
 	<!-- p.300 -->
 	<xs:complexType name="tableExpression">
+		<xs:group ref="dml:tableExpression"/>
+	</xs:complexType>
+	<xs:group name="tableExpression">
 		<xs:annotation>
 			<xs:documentation>&lt;from clause&gt; [ &lt;where clause&gt; ] [ &lt;group by clause&lt; ] [ &lt;having clause&gt; ] [ &lt;window clause&gt; ]</xs:documentation>
 		</xs:annotation>
@@ -144,70 +157,54 @@
 			<xs:element ref="dml:havingClause" minOccurs="0"/>
 			<xs:element ref="dml:windowClause" minOccurs="0"/>
 		</xs:sequence>
-	</xs:complexType>
+	</xs:group>
 
-	<xs:element name="fromClause">
+	<xs:element name="fromClause" type="dml:tablePrimary">
 		<xs:annotation>
-			<xs:documentation>FROM &lt;table reference&gt; [ , &lt;table reference&gt; ]...</xs:documentation>
+			<xs:documentation>FROM &lt;table primary&gt;</xs:documentation>
 		</xs:annotation>
-		<xs:complexType>
-			<xs:sequence>
-				<xs:element name="tableReference"  type="dml:tableReference"/>
-			</xs:sequence>
-		</xs:complexType>
 	</xs:element>
 
-	<xs:element name="whereClause">
+	<xs:element name="whereClause" type="dep:searchCondition">
 		<xs:annotation>
 			<xs:documentation>WHERE &lt;search condition&gt;</xs:documentation>
 		</xs:annotation>
-		<xs:complexType>
-			<xs:sequence>
-				<xs:element ref="dml:searchCondition"/>
-			</xs:sequence>
-		</xs:complexType>
 	</xs:element>
-
-	<xs:element name="searchCondition3" type="dep:booleanValueExpression" />
-	<xs:element name="searchCondition">
-		<xs:complexType>
-		<xs:sequence maxOccurs="unbounded">
-			<xs:group ref="dep:booleanValueExpression" />
-		</xs:sequence>
-	</xs:complexType></xs:element>
-	
 
 	<xs:element name="groupByClause">
 		<xs:annotation>
-			<xs:documentation>GROUP BY [ &lt;set quantifier&gt; ] &lt;grouping element&gt; [ , &lt;grouping element&gt; ]...</xs:documentation>
+			<xs:documentation>GROUP BY [ &lt;set quantifier&gt; ] &lt;grouping element list&gt;</xs:documentation>
 		</xs:annotation>
 		<xs:complexType>
 			<xs:sequence>
-				<xs:element name="groupingElement" type="dml:groupingElement" maxOccurs="unbounded"/>
+				<xs:group ref="dml:groupingElement" maxOccurs="unbounded"/>
 			</xs:sequence>
-			<xs:attribute ref="dml:setQuantifier"  use="optional"/>
+			<xs:attribute name="setQuantifier" type="dml:setQuantifier" use="optional" default="ALL"/>
 		</xs:complexType>
 	</xs:element>
 
-	<xs:complexType name="withClause">
+	<xs:complexType name="withClauseQuery">
 		<xs:annotation>
-			<xs:documentation>WITH [ RECURSIVE ] &lt;with list&gt;</xs:documentation>
+			<xs:documentation>WITH [ RECURSIVE ] &lt;with list&gt; &lt;query primary&gt;</xs:documentation>
 		</xs:annotation>
 		<xs:sequence>
 			<xs:element name="withListElement" type="dml:withListElement" maxOccurs="unbounded"/>
+			<xs:group ref="dml:queryPrimary"/>
 		</xs:sequence>
+		<xs:attribute name="recursive" default="false" type="xs:boolean"/>
 	</xs:complexType>
 
 	<xs:complexType name="withListElement">
 		<xs:annotation>
-			<xs:documentation>&lt;query name&gt; [ ( &lt;with column list&gt; ) ] AS ( &lt;query expression&gt; ) [ &lt;search or cycle clause&gt; ]</xs:documentation>
+			<xs:documentation>&lt;query name&gt; [ ( &lt;with column list&gt; ) ] AS ( &lt;query expression&gt; ) [ &lt;search clause&gt; ] [ &lt;cycle clause&gt; ]</xs:documentation>
 		</xs:annotation>
 		<xs:sequence>
-			<xs:element name="queryName" type="ddt:identifier"/>
-			<xs:element name="columnName" type="ddt:identifier" minOccurs="0" maxOccurs="unbounded"/>
-			<xs:element name="queryExpression" type="dml:queryExpression"/>
-			<xs:element name="searchOrCycleClause" type="dml:searchOrCycleClause" minOccurs="0"/>
+			<xs:element ref="dep:columnNameDefinition" minOccurs="0" maxOccurs="unbounded" />
+			<xs:group ref="dml:queryExpression"/>
+			<xs:element name="searchClause" type="dml:searchClause" minOccurs="0"/>
+			<xs:element name="cycleClause" type="dml:cycleClause" minOccurs="0"/>
 		</xs:sequence>
+		<xs:attribute name="queryName" use="required" type="ddt:identifier"/>
 	</xs:complexType>
 
 	<xs:complexType name="searchClause">
@@ -215,36 +212,42 @@
 			<xs:documentation>SEARCH &lt;recursive search order&gt; SET &lt;sequence column&gt;</xs:documentation>
 		</xs:annotation>
 		<xs:sequence>
-			<xs:element name="recursiveSearchOrder">
-				<xs:complexType>
-					<xs:sequence>
-						<xs:element name="sortSpecification" type="dml:sortSpecification" maxOccurs="unbounded"/>
-					</xs:sequence>
-					<xs:attribute name="type" use="required">
-						<xs:simpleType>
-							<xs:restriction base="xs:string">
-								<xs:enumeration value="DEPTH FIRST BY"/>
-								<xs:enumeration value="BREADTH FIRST BY"/>
-							</xs:restriction>
-						</xs:simpleType>
-					</xs:attribute>
-				</xs:complexType>
-			</xs:element>
-			<xs:element name="sequenceColumn" type="ddt:identifier"/>
+			<xs:element name="sortSpecification" type="dml:sortSpecification" maxOccurs="unbounded"/>
 		</xs:sequence>
+		<xs:attribute name="sequenceColumn" use="required" type="ddt:identifier"/>
+		<xs:attribute name="type" use="required">
+			<xs:simpleType>
+				<xs:restriction base="xs:string">
+					<xs:enumeration value="DEPTH FIRST BY"/>
+					<xs:enumeration value="BREADTH FIRST BY"/>
+				</xs:restriction>
+			</xs:simpleType>
+		</xs:attribute>
 	</xs:complexType>
-
+	
 	<xs:complexType name="cycleClause">
 		<xs:annotation>
 			<xs:documentation>CYCLE &lt;cycle column list&gt; SET &lt;cycle mark column&gt; TO &lt;cycle mark value&gt;</xs:documentation>
 			<xs:documentation>DEFAULT &lt;non cycle mark value&gt; USING &lt;path column&gt;</xs:documentation>
 		</xs:annotation>
 		<xs:sequence>
-			<xs:element name="cycleColumn" type="ddt:identifier" maxOccurs="unbounded"/>
-			<xs:element name="cycleMarkColumn" type="ddt:identifier"/>
+			<xs:element name="cycleColumn" maxOccurs="unbounded">
+				<xs:complexType>
+					<xs:attribute name="name" use="required" type="ddt:identifier"/>
+				</xs:complexType>
+			</xs:element>
+			<xs:element name="cycleMarkColumn">
+				<xs:complexType>
+					<xs:attribute name="name" use="required" type="ddt:identifier"/>
+				</xs:complexType>
+			</xs:element>
 			<xs:element name="cycleMarkValue" type="dep:valueExpression"/>
 			<xs:element name="nonCycleMarkValue" type="dep:valueExpression"/>
-			<xs:element name="pathColumn" type="ddt:identifier"/>
+			<xs:element name="pathColumn">
+				<xs:complexType>
+					<xs:attribute name="name" use="required" type="ddt:identifier"/>
+				</xs:complexType>
+			</xs:element>
 		</xs:sequence>
 	</xs:complexType>
 
@@ -253,7 +256,7 @@
 			<xs:documentation>&lt;sort key&gt; [ &lt;ordering specification&gt; ] [ &lt;null ordering&gt; ]</xs:documentation>
 		</xs:annotation>
 		<xs:sequence>
-			<xs:element name="sortKey" type="dep:valueExpression"/>
+			<xs:group ref="dep:valueExpression"/>
 		</xs:sequence>
 		<xs:attribute name="orderingSpecification" use="optional">
 			<xs:simpleType>
@@ -273,288 +276,358 @@
 		</xs:attribute>
 	</xs:complexType>
 
-	<xs:attribute name="setQuantifier">
-		<xs:simpleType>
-			<xs:restriction base="xs:string">
-				<xs:enumeration value="DISTINCT"/>
-				<xs:enumeration value="ALL"/>
-			</xs:restriction>
-		</xs:simpleType>
-	</xs:attribute>
-
-	<xs:complexType name="groupingElement">
+	<xs:simpleType name="setQuantifier">
 		<xs:annotation>
-			<xs:documentation>&lt;ordinary grouping set&gt; | &lt;rollup list&gt; | &lt;cube list&gt; | &lt;grouping set specification&gt; | &lt;empty grouping set&gt;</xs:documentation>
+			<xs:documentation>ALL | DISTINCT</xs:documentation>
+		</xs:annotation>
+		<xs:restriction base="xs:string">
+			<xs:enumeration value="ALL"/>
+			<xs:enumeration value="DISTINCT"/>
+		</xs:restriction>
+	</xs:simpleType>
+
+	<xs:group name="groupingElement">
+		<xs:annotation>
+			<xs:documentation>&lt;ordinary grouping set&gt; | &lt;rollup list&gt; | &lt;cube list&gt; | &lt;grouping sets specification&gt; | &lt;empty grouping set&gt;</xs:documentation>
 		</xs:annotation>
 		<xs:choice>
 			<xs:element name="ordinaryGroupingSet" type="dml:ordinaryGroupingSet"/>
-			<xs:element name="rollupList" type="dml:ordinaryGroupingSet" maxOccurs="unbounded"/>
-			<xs:element name="cubeList" type="dml:ordinaryGroupingSet" maxOccurs="unbounded"/>
-			<xs:element name="groupingSetSpecification" type="dml:groupingElement" maxOccurs="unbounded"/>
-			<xs:element name="emptyGroupingSet"/>
+			<xs:element name="rollupList" type="dml:ordinaryGroupingSetList">
+				<xs:annotation>
+					<xs:documentation>ROLLUP ( &lt;ordinary grouping set list&gt; )</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:element name="cubeList" type="dml:ordinaryGroupingSetList">
+				<xs:annotation>
+					<xs:documentation>CUBE ( &lt;ordinary grouping set list&gt; )</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:element name="groupingSetsSpecification">
+				<xs:annotation>
+					<xs:documentation>GROUPING SETS ( &lt;grouping element list&gt; )</xs:documentation>
+				</xs:annotation>
+				<xs:complexType>
+					<xs:sequence>
+						<xs:group ref="dml:groupingElement" maxOccurs="unbounded"/>
+					</xs:sequence>
+				</xs:complexType>
+			</xs:element>
+			<xs:element name="emptyGroupingSet">
+				<xs:annotation>
+					<xs:documentation>( )</xs:documentation>
+				</xs:annotation>
+				<xs:complexType/>
+			</xs:element>
 		</xs:choice>
+	</xs:group>
+
+	<xs:complexType name="ordinaryGroupingSetList">
+		<xs:annotation>
+			<xs:documentation>&lt;ordinary grouping set&gt; [ { , &lt;ordinary grouping set&gt; } ... ]</xs:documentation>
+		</xs:annotation>
+		<xs:sequence>
+			<xs:element name="ordinaryGroupingSet" maxOccurs="unbounded"/>
+		</xs:sequence>
 	</xs:complexType>
 
 	<xs:complexType name="ordinaryGroupingSet">
 		<xs:annotation>
-			<xs:documentation>&lt;grouping column reference&gt; [ , &lt;grouping column reference&gt; ]...</xs:documentation>
+			<xs:documentation>( &lt;grouping column reference list&gt; )</xs:documentation>
 		</xs:annotation>
-		<xs:sequence>
-			<xs:element name="groupingColumnReference" maxOccurs="unbounded">
-				<xs:complexType>
-					<xs:sequence>
-						<xs:element ref="dep:columnReference"/>
-						<xs:element name="collationClause" type="ddt:schemaQualifiedName" minOccurs="0"/>
-					</xs:sequence>
-				</xs:complexType>
-			</xs:element>
+		<xs:sequence maxOccurs="unbounded">
+			<xs:group ref="dep:columnReferenceOrCollatedColumnReference"/>
 		</xs:sequence>
 	</xs:complexType>
 
-	<xs:element name="havingClause">
+	<xs:element name="havingClause" type="dep:searchCondition">
 		<xs:annotation>
 			<xs:documentation>HAVING &lt;search condition&gt;</xs:documentation>
 		</xs:annotation>
-		<xs:complexType>
-			<xs:sequence>
-				<xs:element ref="dml:searchCondition"/>
-			</xs:sequence>
-		</xs:complexType>
 	</xs:element>
 
+	<!-- windowClause and related types are not yet ready for use. -->
 	<xs:element name="windowClause">
 		<xs:annotation>
-			<xs:documentation>WINDOW &lt;window definition&gt; [ , &lt;window definition&gt; ]...</xs:documentation>
+			<xs:documentation>WINDOW &lt;window definition list&gt;</xs:documentation>
 		</xs:annotation>
 		<xs:complexType>
 			<xs:sequence>
 				<xs:element name="windowDefinition" maxOccurs="unbounded">
+					<xs:annotation>
+						<xs:documentation>&lt;new window name&gt; AS &lt;window specification&gt;</xs:documentation>
+					</xs:annotation>
 					<xs:complexType>
-						<xs:sequence>
-							<xs:element name="newWindowName" type="ddt:identifier"/>
-						</xs:sequence>
+						<xs:attribute name="newWindowName" use="required" type="ddt:identifier"/>
+						<xs:attribute name="existingWindowName" use="optional" type="ddt:identifier"/>
 					</xs:complexType>
 				</xs:element>
 			</xs:sequence>
 		</xs:complexType>
 	</xs:element>
 
-	<xs:complexType name="searchOrCycleClause">
-		<xs:annotation>
-			<xs:documentation>&lt;search clause&gt; | &lt;cycle clause&gt; |  &lt;search clause&gt; &lt;cycle clause&gt;</xs:documentation>
-		</xs:annotation>
-		<xs:sequence>
-			<xs:element name="searchClause" type="dml:searchClause" minOccurs="0"/>
-			<xs:element name="cycleClause" type="dml:cycleClause" minOccurs="0"/>
-		</xs:sequence>
-	</xs:complexType>
-
 	<!-- p.340 -->
+	<xs:element name="querySpecification" type="dml:querySpecification"/>
 	<xs:complexType name="querySpecification">
 		<xs:annotation>
 			<xs:documentation>SELECT [ &lt;set quantifier&gt; ] &lt;select list&gt; &lt;table expression&gt;</xs:documentation>
 		</xs:annotation>
 		<xs:sequence>
-			<xs:element name="tableExpression" type="dml:tableExpression"/>
 			<xs:element name="selectList" type="dml:selectList"/>
+			<xs:group ref="dml:tableExpression"/>
 		</xs:sequence>
-		<xs:attribute ref="dml:setQuantifier" use="optional"/>
+		<xs:attribute name="setQuantifier" type="dml:setQuantifier" use="optional" default="ALL"/>
 	</xs:complexType>
 
 	<xs:complexType name="selectList">
+		<xs:annotation>
+			<xs:documentation>&lt;asterisk&gt; | &lt;select sublist&gt; [ { , &lt;select sublist&gt; }... ]</xs:documentation>
+		</xs:annotation>
 		<xs:choice>
 			<xs:element name="asterisk" type="dml:asterisk"/>
-			<xs:element name="selectSublist">
-				<xs:complexType>
-					<xs:choice>
-						<xs:element name="derivedColumn">
-							<xs:complexType>
-								<xs:sequence>
-									<xs:element name="valueExpression" type="dep:valueExpression"/>
-									<xs:element name="asClause" type="ddt:identifier" minOccurs="0"/>
-								</xs:sequence>
-							</xs:complexType>
-						</xs:element>
-						<xs:element name="qualifiedAsterisk">
-							<xs:complexType>
-								<xs:choice>
-									<xs:sequence>
-										<xs:element name="asteriskIdentifier" type="ddt:identifier" maxOccurs="unbounded"/>
-										<xs:element name="asterisk" type="dml:asterisk"/>
-									</xs:sequence>
-									<xs:element name="allFieldsReference">
-										<xs:complexType>
-											<xs:sequence>
-												<xs:group ref="dep:valueExpressionPrimary"/>
-												<xs:element name="asterisk" type="dml:asterisk"/>
-												<xs:element name="allFieldsColumnNameList" type="ddt:identifier" maxOccurs="unbounded"/>
-											</xs:sequence>
-										</xs:complexType>
-									</xs:element>
-								</xs:choice>
-							</xs:complexType>
-						</xs:element>
-					</xs:choice>
-				</xs:complexType>
-			</xs:element>
-		</xs:choice>
-	</xs:complexType>
-
-	<xs:complexType name="tableReference">
-		<xs:choice>
-			<xs:element ref="dml:tableFactor"/>
-			<xs:element name="joinedTable" type="dml:joinedTable"/>
-		</xs:choice>
-	</xs:complexType>
-
-	<xs:element name="tableFactor">
-		<xs:annotation>
-			<xs:documentation>&lt;table primary&gt; [ &lt;sample clause&gt; ]</xs:documentation>
-		</xs:annotation>
-		<xs:complexType>
-			<xs:sequence>
-				<xs:element ref="dml:tablePrimary"/>
-				<xs:element ref="dml:sampleClause" minOccurs="0"/>
-			</xs:sequence>
-		</xs:complexType>
-	</xs:element>
-
-	<xs:element name="tablePrimary">
-		<xs:annotation>
-			<xs:documentation>&lt;table or query name&gt; [ AS &lt;correlation name&gt; [ ( &lt;derived column list&gt; ) ] ]</xs:documentation>
-			<xs:documentation>| &lt;derived table&gt; AS &lt;correlation name&gt; [ ( &lt;derived column list&gt; ) ]</xs:documentation>
-			<xs:documentation>| &lt;lateral derived table&gt; AS &lt;correlation name&gt; [ ( &lt;derived column list&gt; ) ]</xs:documentation>
-			<xs:documentation>| &lt;table function derived table&gt; AS &lt;correlation name&gt; [ ( &lt;derived column list&gt; ) ]</xs:documentation>
-			<xs:documentation>| &lt;only spec&gt; [ AS &lt;correlation name&gt; [ ( &lt;derived column list&gt; ) ] ]</xs:documentation>
-			<xs:documentation>| ( &lt;joined table&gt; )</xs:documentation>
-		</xs:annotation>
-		<xs:complexType>
-			<xs:choice>
-				<xs:sequence>
-					<xs:choice>
-						<xs:element name="tableOrQueryName" type="dml:tableOrQueryName"/>
-						<xs:element name="derivedTable" type="dml:queryExpression"/>
-						<xs:element name="lateralDerivedTable" type="dml:queryExpression"/>
-						<xs:element name="onlySpec" type="dml:tableOrQueryName"/>
-					</xs:choice>
-					<xs:sequence minOccurs="0">
-						<xs:element name="correlationName" minOccurs="0" type="ddt:identifier"/>
-						<xs:element name="columnName" minOccurs="0" maxOccurs="unbounded" type="ddt:identifier"/>
-					</xs:sequence>
-				</xs:sequence>
-				<xs:element name="joinedTable" type="dml:joinedTable"/>
+			<xs:choice maxOccurs="unbounded">
+				<!-- In the standard, you can't directly put a value expression in a select list (it can only be part of a derived column. -->
+				<!-- We relax this a bit here and make derived column only necessary when you are providing an explicit name for the result column. -->
+				<xs:element name="derivedColumn">
+					<xs:annotation>
+						<xs:documentation>&lt;value expression&gt; AS &lt;column name&gt; </xs:documentation>
+					</xs:annotation>
+					<xs:complexType>
+						<xs:complexContent>
+							<xs:extension base="dep:valueExpression">
+								<xs:attribute name="columnName" use="required" type="ddt:identifier"/>
+							</xs:extension>
+						</xs:complexContent>
+					</xs:complexType>
+				</xs:element>
+				<xs:group ref="dep:valueExpression"/>
+				<xs:element name="asteriskedIdentifierChain">
+					<xs:annotation>
+						<xs:documentation>&lt;identifier chain&gt; . *</xs:documentation>
+					</xs:annotation>
+					<xs:complexType>
+						<xs:attribute name="identifierChain" use="required" type="ddt:identifierChain"/>
+					</xs:complexType>
+				</xs:element>
+				<xs:element name="allFieldsReference">
+					<xs:annotation>
+						<xs:documentation>&lt;value expression primary&gt; . * [ AS ( &lt;all fields column name list&gt; ) ]</xs:documentation>
+					</xs:annotation>
+					<xs:complexType>
+						<xs:sequence>
+							<xs:group ref="dep:valueExpressionPrimary"/>
+							<xs:element ref="dep:columnNameDefinition" minOccurs="0" maxOccurs="unbounded" />
+						</xs:sequence>
+					</xs:complexType>
+				</xs:element>
 			</xs:choice>
-		</xs:complexType>
-	</xs:element>
-
-	<xs:complexType name="tableOrQueryName">
-		<xs:annotation>
-			<xs:documentation>&lt;table name&gt; | &lt;identifier&gt;</xs:documentation>
-		</xs:annotation>
-		<xs:choice>
-			<xs:element name="schema" maxOccurs="unbounded">
-				<xs:complexType>
-					<xs:attribute name="catalogName" use="optional" type="ddt:identifier"/>
-					<xs:attribute name="schemaName" use="required" type="ddt:identifier"/>
-				</xs:complexType>
-			</xs:element>
-			<xs:element name="transitionTableName" type="ddt:identifier"/>
 		</xs:choice>
 	</xs:complexType>
 
-	<xs:complexType name="joinedTable">
+	<xs:complexType name="asterisk">
+		<xs:annotation>
+			<xs:documentation>*</xs:documentation>
+		</xs:annotation>
+	</xs:complexType>
+
+	<xs:complexType name="tablePrimary">
+		<xs:group ref="dml:tablePrimary"/>
+	</xs:complexType>
+	<xs:group name="tablePrimary">
+		<xs:annotation>
+			<xs:documentation>&lt;table name&gt; [ &lt;correlation&gt; ]</xs:documentation>
+			<xs:documentation>| &lt;query name&gt; [ &lt;correlation&gt; ]</xs:documentation>
+			<xs:documentation>| &lt;derived table&gt; &lt;correlation&gt;</xs:documentation>
+			<xs:documentation>| &lt;lateral derived table&gt; &lt;correlation&gt;</xs:documentation>
+			<xs:documentation>| &lt;table function derived table&gt; &lt;correlation&gt;</xs:documentation>
+			<xs:documentation>| &lt;only spec&gt; [ &lt;correlation&gt; ]</xs:documentation>
+			<xs:documentation>| ( &lt;joined table&gt; )</xs:documentation>
+			<xs:documentation>| &lt;sampled table primary&gt;</xs:documentation>
+		</xs:annotation>
 		<xs:choice>
-			<xs:element name="crossJoin">
+			<xs:element name="tableName" type="dml:schemaQualifiedNameWithOptionalCorrelation"/>
+			<xs:element name="queryName" type="dml:schemaQualifiedNameWithOptionalCorrelation"/>
+			<xs:element name="onlySpec" type="dml:schemaQualifiedNameWithOptionalCorrelation">
+				<xs:annotation>
+					<xs:documentation>ONLY &lt;table or query name&gt;</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:element name="derivedTable" type="dml:tableSubqueryWithMandatoryCorrelation"/>
+			<xs:element name="lateralDerivedTable" type="dml:tableSubqueryWithMandatoryCorrelation">
+				<xs:annotation>
+					<xs:documentation>LATERAL &lt;table subquery&gt;</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:group ref="dml:joinedTable"/>
+			<xs:element name="sampledTablePrimary">
+				<xs:annotation>
+					<xs:documentation>&lt;table primary&gt; [ &lt;sample clause&gt; ]</xs:documentation>
+				</xs:annotation>
 				<xs:complexType>
 					<xs:sequence>
-						<xs:element name="tableReference"  type="dml:tableReference"/>
-						<xs:element ref="dml:tableFactor"/>
+						<xs:group ref="dml:tablePrimary"/>
+						<xs:element name="sampleClause">
+							<xs:annotation>
+								<xs:documentation>TABLESAMPLE &lt;sample method&gt; ( &lt;numeric value expression&gt; ) [ REPEATABLE ( &lt;numeric value expression&gt; ) ]</xs:documentation>
+							</xs:annotation>
+							<xs:complexType>
+								<xs:sequence>
+									<xs:group ref="dep:numericValueExpression" maxOccurs="2"/>
+								</xs:sequence>
+								<xs:attribute name="sampleMethod" use="required">
+									<xs:simpleType>
+										<xs:restriction base="xs:string">
+											<xs:enumeration value="BERNOULLI"/>
+											<xs:enumeration value="SYSTEM"/>
+										</xs:restriction>
+									</xs:simpleType>
+								</xs:attribute>
+							</xs:complexType>
+						</xs:element>
+					</xs:sequence>
+				</xs:complexType>
+			</xs:element>
+		</xs:choice>
+	</xs:group>
+
+	<xs:complexType name="schemaQualifiedNameWithOptionalCorrelation">
+		<xs:complexContent>
+			<xs:extension base="ddt:schemaQualifiedName">
+				<xs:sequence>
+					<xs:element name="correlation" type="dml:correlation" minOccurs="0"/>
+				</xs:sequence>
+			</xs:extension>
+		</xs:complexContent>
+	</xs:complexType>
+	<xs:complexType name="tableSubqueryWithMandatoryCorrelation">
+		<xs:complexContent>
+			<xs:extension base="dml:tableSubquery">
+				<xs:sequence>
+					<xs:element name="correlation" type="dml:correlation"/>
+				</xs:sequence>
+			</xs:extension>
+		</xs:complexContent>
+	</xs:complexType>
+	<xs:complexType name="correlation">
+		<xs:annotation>
+			<xs:documentation>AS &lt;correlation name&gt; [ ( &lt;derived column list&gt; ) ]</xs:documentation>
+		</xs:annotation>
+		<xs:sequence>
+			<xs:element ref="dep:columnNameDefinition" minOccurs="0" maxOccurs="unbounded"/>
+		</xs:sequence>
+		<xs:attribute name="name" use="required" type="ddt:identifier"/>
+	</xs:complexType>
+
+	<xs:group name="joinedTable">
+		<xs:annotation>
+			<xs:documentation>&lt;cross join&gt; | &lt;qualified join&gt; | &lt;natural join&gt;</xs:documentation>
+		</xs:annotation>
+		<xs:choice>
+			<xs:element name="crossJoin">
+				<xs:annotation>
+					<xs:documentation>&lt;table reference&gt; CROSS JOIN &lt;table factor&gt;</xs:documentation>
+				</xs:annotation>
+				<xs:complexType>
+					<xs:sequence>
+						<xs:group ref="dml:tablePrimary" minOccurs="2" maxOccurs="2"/>
 					</xs:sequence>
 				</xs:complexType>
 			</xs:element>
 			<xs:element name="qualifiedJoin">
+				<xs:annotation>
+					<xs:documentation>&lt;table reference&gt; [ &lt;join type&gt; ] JOIN &lt;table reference&gt; { &lt;join condition&gt; | &lt;named columns join&gt; }</xs:documentation>
+				</xs:annotation>
 				<xs:complexType>
 					<xs:sequence>
-						<xs:element name="tableReference"  type="dml:tableReference" minOccurs="2" maxOccurs="2"/>
-						<xs:element name="joinSpecification">
-							<xs:complexType>
-								<xs:choice>
-									<xs:element name="joinCondition" type="dep:booleanValueExpression"/>
-									<xs:element name="namedColumnsJoined" type="ddt:identifier" maxOccurs="unbounded"/>
-								</xs:choice>
-							</xs:complexType>
-						</xs:element>
+						<xs:group ref="dml:tablePrimary" minOccurs="2" maxOccurs="2"/>
+						<xs:choice>
+							<xs:element name="joinCondition" type="dep:searchCondition">
+								<xs:annotation>
+									<xs:documentation>ON &lt;search condition&gt;</xs:documentation>
+								</xs:annotation>
+							</xs:element>
+							<xs:element name="namedColumnsJoin">
+								<xs:annotation>
+									<xs:documentation>USING &lt;join column list&gt;</xs:documentation>
+								</xs:annotation>
+								<xs:complexType>
+									<xs:sequence>
+										<xs:element ref="dep:simpleColumnReference" maxOccurs="unbounded"/>
+									</xs:sequence>
+								</xs:complexType>
+							</xs:element>
+						</xs:choice>
 					</xs:sequence>
-					<xs:attribute ref="dml:joinType"  use="optional"/>
+					<xs:attribute name="joinType" use="optional" default="INNER" type="dml:joinType"/>
 				</xs:complexType>
 			</xs:element>
 			<xs:element name="naturalJoin">
+				<xs:annotation>
+					<xs:documentation>&lt;table reference&gt; NATURAL [ &lt;join type&gt; ] JOIN &lt;table factor&gt;</xs:documentation>
+				</xs:annotation>
 				<xs:complexType>
 					<xs:sequence>
-						<xs:element name="tableReference"  type="dml:tableReference"/>
-						<xs:element ref="dml:tableFactor"/>
+						<xs:group ref="dml:tablePrimary" minOccurs="2" maxOccurs="2"/>
 					</xs:sequence>
-					<xs:attribute ref="dml:joinType" use="optional"/>
+					<xs:attribute name="joinType" use="optional" default="INNER" type="dml:joinType"/>
 				</xs:complexType>
 			</xs:element>
 		</xs:choice>
-	</xs:complexType>
+	</xs:group>
 
-	<xs:attribute name="joinType">
-		<xs:simpleType>
-			<xs:restriction base="xs:string">
-				<xs:enumeration value="INNER"/>
-				<xs:enumeration value="LEFT OUTER"/>
-				<xs:enumeration value="RIGHT OUTER"/>
-				<xs:enumeration value="FULL OUTER"/>
-			</xs:restriction>
-		</xs:simpleType>
-	</xs:attribute>
+	<xs:simpleType name="joinType">
+		<xs:restriction base="xs:string">
+			<xs:enumeration value="INNER"/>
+			<xs:enumeration value="LEFT OUTER"/>
+			<xs:enumeration value="RIGHT OUTER"/>
+			<xs:enumeration value="FULL OUTER"/>
+		</xs:restriction>
+	</xs:simpleType>
 
 	<!--Insert statment : Cle'   comments for purposes of finding my code.  remove them before shipping-->
 	<xs:element name="insertStatement">
 		<xs:annotation>
-			<xs:documentation>INSERT INTO &lt;schema qualified name&gt; &lt;insert columns and source&gt;</xs:documentation>
+			<xs:documentation>INSERT INTO &lt;schema qualified name&gt;</xs:documentation>
+			<xs:documentation>{ [ ( &lt;insert column list&gt; ) ] [ &lt;override clause&gt; ] &lt;query expression&gt; | &lt;default values&gt; }</xs:documentation>
 		</xs:annotation>
 		<xs:complexType>
 			<xs:complexContent>
 				<xs:extension base="ddt:schemaQualifiedName">
-					<xs:group ref="dml:insertColumnsAndSource"/>
+					<xs:choice>
+						<xs:sequence>
+							<xs:element ref="dep:simpleColumnReference" minOccurs="0" maxOccurs="unbounded"/>
+							<xs:group ref="dml:queryExpression"/>
+						</xs:sequence>
+						<xs:element name="defaultValues">
+							<xs:annotation>
+								<xs:documentation>DEFAULT VALUES</xs:documentation>
+							</xs:annotation>
+							<xs:complexType/>
+						</xs:element>
+					</xs:choice>
+					<xs:attribute name="overrideClause" use="optional" type="dml:overrideClause"/>
 				</xs:extension>
 			</xs:complexContent>
 		</xs:complexType>
 	</xs:element>
 
-	<xs:group name="insertColumnsAndSource">
-		<xs:choice>
-			<xs:element ref="dml:fromConstructor" maxOccurs="1" minOccurs="1"/>
-			<!--	from subquery | from constructor | from default are what go here as the insert columns and source.  -->
-			<!-- implementing from constructor and from default, from subquery needs to be done at some point-->
-		</xs:choice>
-	</xs:group>
-
-	<xs:element name="fromConstructor">
-		<xs:annotation>
-			<xs:documentation>[ ( &lt;insert column list&gt; ) ][ &lt;override clause&gt; ] VALUES &lt;row value constructor&gt;</xs:documentation>
-		</xs:annotation>
-		<xs:complexType>
-			<xs:sequence>
-				<xs:element ref="ddl:column" minOccurs="0" maxOccurs="unbounded" />
-				<xs:group ref="dep:rowValueConstructor"/>
-			</xs:sequence>
-		</xs:complexType>
-	</xs:element>
+	<xs:simpleType name="overrideClause">
+		<xs:restriction base="xs:string">
+			<xs:enumeration value="OVERRIDING USER VALUE"/>
+			<xs:enumeration value="OVERRIDING SYSTEM VALUE"/>
+		</xs:restriction>
+	</xs:simpleType>
 
 	<xs:element name="deleteStatement">
 		<xs:annotation>
-			<xs:documentation>DELETE FROM &lt;target table=""&gt;	[ [ AS ] &lt;correlation name=""&gt;][ WHERE &lt;search condition=""&gt;]</xs:documentation>
+			<xs:documentation>DELETE FROM &lt;schema qualified name&gt;	[ AS &lt;correlation name&gt; ] [ &lt;where clause&gt; ]</xs:documentation>
 		</xs:annotation>
 		<xs:complexType>
 			<xs:complexContent>
 				<xs:extension base="ddt:schemaQualifiedName">
 					<xs:sequence>
-						<xs:element ref="dml:whereClause" />
+						<xs:element ref="dml:whereClause" minOccurs="0"/>
 					</xs:sequence>
+					<xs:attribute name="correlationName" use="optional" type="ddt:identifier"/>
 				</xs:extension>
 			</xs:complexContent>
 		</xs:complexType>
@@ -562,54 +635,61 @@
 
 	<xs:element name="updateStatement">
 		<xs:annotation>
-			<xs:documentation>UPDATE &lt;target table=""&gt;[ [ AS ] &lt;correlation name=""&gt;]SET &lt;set clause="" list=""&gt;[ WHERE &lt;search condition=""&gt; ]</xs:documentation>
+			<xs:documentation>UPDATE &lt;schema qualified name&gt; [ AS &lt;correlation name&gt; ] SET &lt;set clause list&gt; [ &lt;where clause&gt; ]</xs:documentation>
 		</xs:annotation>
 		<xs:complexType>
 			<xs:complexContent>
 				<xs:extension base="ddt:schemaQualifiedName">
 					<xs:sequence>
-						<xs:element ref="dml:setClause" maxOccurs="unbounded" />
-						<xs:element ref="dml:whereClause" />
+						<xs:group ref="dml:setClause" maxOccurs="unbounded"/>
+						<xs:element ref="dml:whereClause" minOccurs="0"/>
 					</xs:sequence>
+					<xs:attribute name="correlationName" use="optional" type="ddt:identifier"/>
 				</xs:extension>
 			</xs:complexContent>
 		</xs:complexType>
 	</xs:element>
 
-	<xs:element name="setClause" >
+	<xs:group name="setClause" >
 		<xs:annotation>
-			<xs:documentation>&lt;multiple column="" assignment=""&gt;| &lt;set target=""&gt;&lt;equals operator=""&gt;&lt;update source=""&gt;</xs:documentation>
+			<xs:documentation>&lt;multiple column assignment&gt; | &lt;single column assignment&gt;</xs:documentation>
 		</xs:annotation>
-		<xs:complexType>
-			<xs:sequence>
-				<xs:element ref="ddl:column" />
-				<xs:element ref="dep:sqlParameterReference" />
-			</xs:sequence>
-		</xs:complexType>
-	</xs:element>
+		<xs:choice>
+			<xs:element name="multipleColumnAssignment">
+				<xs:annotation>
+					<xs:documentation>( &lt;column name list&gt; ) = &lt;value expression primary&gt;</xs:documentation>
+				</xs:annotation>
+				<xs:complexType>
+					<xs:sequence>
+						<xs:element ref="dep:simpleColumnReference" maxOccurs="unbounded"/>
+						<xs:group ref="dep:valueExpressionPrimary"/>
+					</xs:sequence>
+				</xs:complexType>
+			</xs:element>
+			<xs:element name="singleColumnAssignment">
+				<xs:annotation>
+					<xs:documentation>&lt;column name&gt; = &lt;update source&gt;</xs:documentation>
+				</xs:annotation>
+				<xs:complexType>
+					<xs:group ref="dml:updateSource"/>
+					<xs:attribute name="name" use="required" type="ddt:identifier"/>
+				</xs:complexType>
+			</xs:element>
+		</xs:choice>
+	</xs:group>
+
+	<xs:group name="updateSource">
+		<xs:choice>
+			<xs:group ref="dep:valueExpression"/>
+			<xs:group ref="dep:contextuallyTypedValueSpecification"/>
+		</xs:choice>
+	</xs:group>
 
 	<!-- End of proc work done by cle.  comments for purposes of finding my code.  remove them before shipping -->
 
-	<xs:element name="sampleClause">
-		<xs:annotation>
-			<xs:documentation>TABLE SAMPLE &lt;sample method&gt; ( &lt;numeric value expression&gt; ) [ REPEATABLE ( &lt;numeric value expression&gt; ) ]</xs:documentation>
-		</xs:annotation>
-		<xs:complexType>
-			<xs:sequence>
-				<xs:group ref="dep:numericValueExpression" maxOccurs="2"/>
-			</xs:sequence>
-			<xs:attribute name="sampleMethod" use="required">
-				<xs:simpleType>
-					<xs:restriction base="xs:string">
-						<xs:enumeration value="BERNOULLI"/>
-						<xs:enumeration value="SYSTEM"/>
-					</xs:restriction>
-				</xs:simpleType>
-			</xs:attribute>
-		</xs:complexType>
-	</xs:element>
 
-	<xs:complexType name="windowSpecificationDetails">
+	<!-- windowClause and related types are not yet ready for use. -->
+	<!--<xs:complexType name="windowSpecificationDetails">
 		<xs:annotation>
 			<xs:documentation>[ &lt;existing window name&gt; ] [ &lt;window partition clause&gt; ] [ &lt;window order clause&gt; ] [ &lt;window frame clause&gt; ]</xs:documentation>
 		</xs:annotation>
@@ -617,7 +697,7 @@
 			<xs:element name="existingWindowName" type="ddt:identifier" minOccurs="0"/>
 			<xs:sequence minOccurs="0">
 				<xs:element ref="dep:columnReference"/>
-				<xs:element name="collationClause" type="ddt:schemaQualifiedName"/>
+				<xs:element ref="dep:collateClause" minOccurs="0"/>
 			</xs:sequence>
 			<xs:element ref="dep:sortSpecification"  maxOccurs="unbounded"/>
 			<xs:element name="windowFrameClause">
@@ -654,7 +734,6 @@
 			</xs:element>
 		</xs:sequence>
 	</xs:complexType>
-
 	<xs:complexType name="unboundedPreceding"/>
 	<xs:complexType name="unboundedFollowing"/>
 	<xs:complexType name="currentRow"/>
@@ -671,8 +750,7 @@
 			<xs:element name="unboundedFollowing" type="dml:unboundedFollowing"/>
 			<xs:element name="windowFrameFollowing" type="dep:valueSpecification"/>
 		</xs:choice>
-	</xs:complexType>
+	</xs:complexType>-->
 
-	<xs:complexType name="asterisk"/>
 
 </xs:schema>

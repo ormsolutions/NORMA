@@ -36,8 +36,8 @@
 	<xsl:template match="@defaultCharacterSet" mode="ForSchemaDefinition"/>
 	<xsl:template match="dms:setSchemaStatement"/>
 	<xsl:template match="ddl:generationClause"/>
-	<xsl:template match="@catalog" mode="ForTableDefinition"/>
-	<xsl:template match="@schema" mode="ForTableDefinition"/>
+	<xsl:template match="@catalog" mode="ForSchemaQualifiedName"/>
+	<xsl:template match="@schema" mode="ForSchemaQualifiedName"/>
 	<!-- 
 		The base SQL Standard Create, Alter, Insert, Update, and Delete From Table templates include a direct call to the Schema and Catalog names. 
 		We need to override these templates to exclude these calls. They also use quotation marks that MySQL does not understand. These must converted to the "`" character instead.
@@ -47,15 +47,15 @@
 		<xsl:value-of select="$indent"/>
 		<xsl:text>CREATE </xsl:text>
 		<xsl:text>TABLE </xsl:text>
-		<xsl:apply-templates select="@name" mode="ForTableDefinition"/>
+		<xsl:apply-templates select="@name" mode="ForSchemaQualifiedName"/>
 		<xsl:value-of select="$NewLine"/>
 		<xsl:value-of select="$indent"/>
 		<xsl:value-of select="$StatementStartBracket"/>
 		<xsl:apply-templates select="ddl:columnDefinition">
-			<xsl:with-param name="indent" select="concat($NewLine, concat($indent, $IndentChar))"/>
+			<xsl:with-param name="indent" select="concat($indent, $IndentChar)"/>
 		</xsl:apply-templates>
 		<xsl:apply-templates select="ddl:tableConstraintDefinition">
-			<xsl:with-param name="indent" select="concat($NewLine, concat($indent, $IndentChar))"/>
+			<xsl:with-param name="indent" select="concat($indent, $IndentChar)"/>
 		</xsl:apply-templates>
 		<xsl:value-of select="$NewLine"/>
 		<xsl:value-of select="$indent"/>
@@ -70,9 +70,7 @@
 			<xsl:with-param name="name" select="@name"/>
 		</xsl:call-template>
 		<xsl:text> </xsl:text>
-		<xsl:apply-templates>
-			<xsl:with-param name="tableName" select="@name"/>
-		</xsl:apply-templates>
+		<xsl:apply-templates/>
 		<xsl:value-of select="$StatementDelimeter"/>
 		<xsl:value-of select="$NewLine"/>
 		<xsl:value-of select="$NewLine"/>
@@ -118,12 +116,6 @@
 		<xsl:apply-templates select="@onDelete" mode="ForReferenceSpecification"/>
 		<xsl:apply-templates select="@onUpdate" mode="ForReferenceSpecification"/>
 	</xsl:template>
-	<xsl:template match="ddl:referenceColumn">
-		<xsl:value-of select="@name"/>
-		<xsl:if test="not(position()=last()) and following-sibling::ddl:referenceColumn">
-			<xsl:text>, </xsl:text>
-		</xsl:if>
-	</xsl:template>
 	<!-- End Schema template overrides -->
 
 	<!-- 
@@ -144,25 +136,22 @@
 	<!-- Template to match Identity columns-->
 	<xsl:template match="ddl:columnDefinition[ddl:identityColumnSpecification]">
 		<xsl:param name="indent"/>
+		<xsl:value-of select="$NewLine"/>
 		<xsl:value-of select="$indent"/>
-		<xsl:apply-templates select="@name" mode="ForColumnDefinition"/>
+		<xsl:apply-templates select="@name" mode="ForColumnName"/>
 		<xsl:apply-templates select="ddt:boolean | ddt:characterString | ddt:binaryString | ddt:date | ddt:time | ddt:interval | ddt:domain"/>
 		<xsl:apply-templates select="ddt:exactNumeric | ddt:approximateNumeric"/>
 		<xsl:apply-templates select="ddl:identityColumnSpecification"/>
 		<xsl:apply-templates select="ddl:defaultClause"/>
 		<xsl:apply-templates select="ddl:generationClause"/>
 		<xsl:apply-templates select="ddl:columnConstraintDefinition"/>
-		<xsl:choose>
-			<xsl:when test="position()=last() and not(following-sibling::*)">
-			</xsl:when>
-			<xsl:otherwise>
-				<xsl:text>, </xsl:text>
-			</xsl:otherwise>
-		</xsl:choose>
+		<xsl:if test="position()!=last() or following-sibling::*">
+			<xsl:text>,</xsl:text>
+		</xsl:if>
 	</xsl:template>
 	<!-- Template override to correctly display the Identity specification in MySQL -> "AUTO_INCREMENT" -->
 	<xsl:template match="ddl:identityColumnSpecification">
-		<xsl:text>AUTO_INCREMENT </xsl:text>
+		<xsl:text> AUTO_INCREMENT</xsl:text>
 	</xsl:template>
 	<!-- Template override to generate a MySQL Stored Procedure declaration -->
 	<xsl:template match="ddl:sqlInvokedProcedure"/>
@@ -174,7 +163,7 @@
 
 	<xsl:template match="dml:fromConstructor">
 		<xsl:value-of select="$LeftParen" />
-		<xsl:apply-templates select="ddl:column"/>
+		<xsl:apply-templates select="dep:simpleColumnReference"/>
 		<xsl:value-of select="$RightParen" />
 		<xsl:value-of select="$NewLine"/>
 		<xsl:value-of select="$IndentChar" />
@@ -221,38 +210,23 @@
 		Template override to correct Data Types. 
 		The current version of MySQL (5.1.12) does not support Domains and must be declared as the Domain's primitive type
 	-->
-	<xsl:template match="ddt:characterString">
-		<xsl:call-template name="ConvertSQLStandardToMySQLDataType">
-			<xsl:with-param name="DataType" select="@type"/>
-		</xsl:call-template>
-		<xsl:value-of select="$LeftParen"/>
-		<xsl:value-of select="@length"/>
-		<xsl:value-of select="$RightParen"/>
-		<xsl:text> </xsl:text>
-		<xsl:apply-templates select="@characterSet" mode="ForColumnDataType"/>
-		<xsl:apply-templates select="@collate" mode="ForColumnDataType"/>
+
+
+	<!-- Templates to convert SQL Standard Data Types to MySQL-friendly (5.1.12) data types -->
+	<xsl:template match="@type[.='INTEGER']" mode="ForDataType">
+		<xsl:text>INT</xsl:text>
 	</xsl:template>
-	<!-- Template to convert SQL Standard Data Types to MySQL-friendly (5.1.12) data types -->
-	<xsl:template name="ConvertSQLStandardToMySQLDataType">
-		<xsl:param name="DataType"/>
-		<xsl:choose>
-			<xsl:when test="$DataType='INTEGER'">
-				<xsl:text>INT</xsl:text>
-			</xsl:when>
-			<xsl:when test="$DataType='CHARACTER'">
-				<xsl:text>CHAR</xsl:text>
-			</xsl:when>
-			<xsl:when test="$DataType='CHARACTER VARYING'">
-				<xsl:text>VARCHAR</xsl:text>
-			</xsl:when>
-			<xsl:when test="$DataType='CHARACTER LARGE OBJECT'">
-				<xsl:text>TEXT</xsl:text>
-			</xsl:when>
-			<xsl:otherwise>
-				<xsl:value-of select="$DataType"/>
-			</xsl:otherwise>
-		</xsl:choose>
+	<xsl:template match="@type[.='CHARACTER']" mode="ForDataType">
+		<xsl:text>CHAR</xsl:text>
 	</xsl:template>
+	<xsl:template match="@type[.='CHARACTER VARYING']" mode="ForDataType">
+		<xsl:text>VARCHAR</xsl:text>
+	</xsl:template>
+	<xsl:template match="@type[.='CHARACTER LARGE OBJECT']" mode="ForDataType">
+		<xsl:text>TEXT</xsl:text>
+	</xsl:template>
+	
+
 	<xsl:template name="ConvertToMySQLQuotation">
 		<xsl:param name="name"/>
 		<xsl:call-template name="globalReplace">

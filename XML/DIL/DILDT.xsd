@@ -78,7 +78,7 @@
 		</xs:restriction>
 	</xs:simpleType>
 
-	<xs:complexType name="schemaQualifiedName">
+	<xs:complexType name="optionalSchemaQualifiedName">
 		<xs:annotation>
 			<xs:documentation>[ [ &lt;catalog name&gt; . ] &lt;schema name&gt; . ] &lt;identifier&gt;</xs:documentation>
 		</xs:annotation>
@@ -88,19 +88,18 @@
 			</xs:annotation>
 		</xs:attribute>
 		<xs:attribute name="schema" use="optional" type="ddt:identifier"/>
+		<xs:attribute name="name" use="optional" type="ddt:identifier"/>
+	</xs:complexType>
+	<xs:complexType name="schemaQualifiedName">
+		<xs:complexContent>
+			<xs:restriction base="ddt:optionalSchemaQualifiedName">
+				<xs:attribute name="name" use="required" type="ddt:identifier"/>
+			</xs:restriction>
+		</xs:complexContent>
+	</xs:complexType>
+	<xs:complexType name="name">
 		<xs:attribute name="name" use="required" type="ddt:identifier"/>
 	</xs:complexType>
-
-
-	<xs:element name="fieldDefinition">
-		<xs:annotation>
-			<xs:documentation>&lt;field name&gt; &lt;data type&gt;</xs:documentation>
-		</xs:annotation>
-		<xs:complexType>
-			<xs:group ref="ddt:dataType"/>
-			<xs:attribute name="name" use="required" type="ddt:identifier"/>
-		</xs:complexType>
-	</xs:element>
 
 
 	<xs:group name="literal">

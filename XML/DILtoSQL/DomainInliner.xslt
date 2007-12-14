@@ -51,10 +51,12 @@
 			</xsl:if>
 			<xsl:copy-of select="$domainDefinition/ddt:*[1]"/>
 			<xsl:copy-of select="$domainDefinition/ddl:defaultClause"/>
-			<xsl:for-each select="$domainDefinition/ddl:domainConstraint">
+			<xsl:for-each select="$domainDefinition/ddl:domainConstraintDefinition">
 				<ddl:columnConstraintDefinition>
-					<xsl:copy-of select="@*"/>
-					<xsl:apply-templates mode="DomainInliner" select="child::*[not(self::dep:constraintNameDefinition)]">
+					<xsl:copy-of select="@*[not(name()='name')]"/>
+					<!-- The constraint names need to be unique, but more than one COLUMN in the same TABLE can share the same DOMAIN. -->
+					<!-- That means constraint names would overlap once inlined, so we don't copy the name over. -->
+					<xsl:apply-templates mode="DomainInliner">
 						<xsl:with-param name="domainDefinitions" select="$domainDefinitions"/>
 						<xsl:with-param name="columnName" select="$columnName"/>
 					</xsl:apply-templates>

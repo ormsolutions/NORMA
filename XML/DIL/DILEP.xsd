@@ -69,6 +69,42 @@
 		</xs:complexType>
 	</xs:element>
 
+	<xs:group name="columnReferenceOrCollatedColumnReference">
+		<xs:choice>
+			<xs:element ref="dep:columnReference"/>
+			<xs:element name="collatedColumnReference">
+				<xs:annotation>
+					<xs:documentation>&lt;column reference&gt; COLLATE &lt;collation&gt;</xs:documentation>
+				</xs:annotation>
+				<xs:complexType>
+					<xs:complexContent>
+						<xs:extension base="dep:collateClause">
+							<xs:attribute name="name" use="required" type="ddt:identifierChain"/>
+						</xs:extension>
+					</xs:complexContent>
+				</xs:complexType>
+			</xs:element>
+		</xs:choice>
+	</xs:group>
+
+	<xs:element name="columnNameDefinition">
+		<xs:annotation>
+			<xs:documentation>Used to define a COLUMN by name.</xs:documentation>
+		</xs:annotation>
+		<xs:complexType>
+			<xs:attribute name="name" use="required" type="ddt:identifier"/>
+		</xs:complexType>
+	</xs:element>
+
+	<xs:element name="simpleColumnReference">
+		<xs:annotation>
+			<xs:documentation>Used to reference a COLUMN in the current scope with no chaining allowed.</xs:documentation>
+		</xs:annotation>
+		<xs:complexType>
+			<xs:attribute name="name" use="required" type="ddt:identifier"/>
+		</xs:complexType>
+	</xs:element>
+	
 	<xs:element name="fieldReference">
 		<xs:annotation>
 			<xs:documentation>&lt;value expression primary&gt; . &lt;identifier&gt;</xs:documentation>
@@ -78,24 +114,6 @@
 			<xs:attribute name="name" use="required" type="ddt:identifier"/>
 		</xs:complexType>
 	</xs:element>
-
-	<xs:complexType name="rowValueConstructorPredicand">
-		<xs:group ref="dep:rowValueConstructorPredicand"/>
-	</xs:complexType>
-	<xs:group name="rowValueConstructorPredicand">
-		<xs:choice>
-			<xs:group ref="dep:valueExpression"/>
-		</xs:choice>
-	</xs:group>
-
-	<xs:complexType name="rowValueConstructor">
-		<xs:group ref="dep:rowValueConstructor"/>
-	</xs:complexType>
-	<xs:group name="rowValueConstructor">
-		<xs:choice>
-			<xs:group ref="dep:valueExpression" minOccurs="1" maxOccurs="unbounded" />
-		</xs:choice>
-	</xs:group>
 
 	<xs:complexType name="valueExpression">
 		<xs:group ref="dep:valueExpression"/>
@@ -168,14 +186,26 @@
 	<xs:group name="characterValueExpression">
 		<xs:choice>
 			<xs:group ref="dep:stringPrimary"/>
-			<xs:element name="collateClause">
-				<xs:complexType>
-					<xs:group ref="dep:characterValueExpression"/>
-					<xs:attribute name="collation" use="required" type="ddt:collationTypes"/>
-				</xs:complexType>
-			</xs:element>
+			<xs:element ref="dep:collatedString"/>
 		</xs:choice>
 	</xs:group>
+
+	<xs:complexType name="collateClause">
+		<xs:attribute name="collation" use="required" type="ddt:collationTypes"/>
+	</xs:complexType>
+	
+	<xs:element name="collatedString">
+		<xs:annotation>
+			<xs:documentation>&lt;string primary&gt; COLLATE &lt;collation&gt;</xs:documentation>
+		</xs:annotation>
+		<xs:complexType>
+			<xs:complexContent>
+				<xs:extension base="dep:collateClause">
+					<xs:group ref="dep:stringPrimary"/>
+				</xs:extension>
+			</xs:complexContent>
+		</xs:complexType>
+	</xs:element>
 
 	<xs:complexType name="blobValueExpression">
 		<xs:group ref="dep:blobValueExpression"/>
@@ -369,6 +399,8 @@
 	</xs:complexType>
 
 
+	
+	
 	<xs:complexType name="booleanValueExpression">
 		<xs:group ref="dep:booleanValueExpression"/>
 	</xs:complexType>
@@ -1008,7 +1040,12 @@
 		</xs:choice>
 	</xs:group>
 
-	<xs:element name="searchCondition" type="dep:booleanValueExpression"/>
+	<xs:element name="searchCondition" type="dep:searchCondition"/>
+	<xs:complexType name="searchCondition">
+		<xs:complexContent>
+			<xs:extension base="dep:booleanValueExpression"/>
+		</xs:complexContent>
+	</xs:complexType>
 
 	<!-- p.201 -->
 	<xs:element name="castSpecification">
@@ -1260,41 +1297,70 @@
 		</xs:complexType>
 	</xs:element>
 
-	<xs:element name="constraintNameDefinition" type="ddt:schemaQualifiedName">
+	<xs:complexType name="optionalConstraintDefinition" abstract="true">
 		<xs:annotation>
-			<xs:documentation>CONSTRAINT &lt;schema qualified name&gt;</xs:documentation>
+			<xs:documentation>[ CONSTRAINT &lt;schema qualified name&gt; ]</xs:documentation>
 		</xs:annotation>
-	</xs:element>
-	<xs:attribute name="constraintCharacteristics" default="INITIALLY IMMEDIATE NOT DEFERRABLE">
-		<xs:annotation>
-			<xs:documentation>&lt;constraint check time&gt; [ [ NOT ] DEFERRABLE ]</xs:documentation>
-		</xs:annotation>
-		<xs:simpleType>
-			<xs:restriction base="xs:string">
-				<xs:enumeration value="INITIALLY IMMEDIATE NOT DEFERRABLE"/>
-				<xs:enumeration value="INITIALLY IMMEDIATE DEFERRABLE"/>
-				<xs:enumeration value="INITIALLY DEFERRED DEFERRABLE"/>
+		<xs:complexContent>
+			<xs:extension base="ddt:optionalSchemaQualifiedName">
+				<xs:attribute name="constraintCharacteristics" default="INITIALLY IMMEDIATE NOT DEFERRABLE">
+					<xs:annotation>
+						<xs:documentation>&lt;constraint check time&gt; [ [ NOT ] DEFERRABLE ]</xs:documentation>
+					</xs:annotation>
+					<xs:simpleType>
+						<xs:restriction base="xs:string">
+							<xs:enumeration value="INITIALLY IMMEDIATE NOT DEFERRABLE"/>
+							<xs:enumeration value="INITIALLY IMMEDIATE DEFERRABLE"/>
+							<xs:enumeration value="INITIALLY DEFERRED DEFERRABLE"/>
+						</xs:restriction>
+					</xs:simpleType>
+				</xs:attribute>
+			</xs:extension>
+		</xs:complexContent>
+	</xs:complexType>
+	<xs:complexType name="constraintDefinition" abstract="true">
+		<xs:complexContent>
+			<xs:restriction base="dep:optionalConstraintDefinition">
+				<xs:attribute name="name" use="required" type="ddt:identifier"/>
 			</xs:restriction>
-		</xs:simpleType>
-	</xs:attribute>
+		</xs:complexContent>
+	</xs:complexType>
+	<xs:complexType name="optionalConstraintDefinitionCatalogAndSchemaProhibited" abstract="true">
+		<xs:complexContent>
+			<xs:restriction base="dep:optionalConstraintDefinition">
+				<xs:attribute name="catalog" use="prohibited" type="ddt:identifier"/>
+				<xs:attribute name="schema" use="prohibited" type="ddt:identifier"/>
+			</xs:restriction>
+		</xs:complexContent>
+	</xs:complexType>
+	<xs:complexType name="constraintDefinitionCatalogAndSchemaProhibited" abstract="true">
+		<xs:complexContent>
+			<xs:restriction base="dep:constraintDefinition">
+				<xs:attribute name="catalog" use="prohibited" type="ddt:identifier"/>
+				<xs:attribute name="schema" use="prohibited" type="ddt:identifier"/>
+			</xs:restriction>
+		</xs:complexContent>
+	</xs:complexType>
 
-	<xs:attribute name="languageClause" default="SQL">
-		<xs:annotation>
-			<xs:documentation>LANGUAGE &lt;language name&gt;</xs:documentation>
-		</xs:annotation>
-		<xs:simpleType>
-			<xs:restriction base="xs:string">
-				<xs:enumeration value="ADA"/>
-				<xs:enumeration value="C"/>
-				<xs:enumeration value="COBOL"/>
-				<xs:enumeration value="FORTRAN"/>
-				<xs:enumeration value="M"/>
-				<xs:enumeration value="PASCAL"/>
-				<xs:enumeration value="PLI"/>
-				<xs:enumeration value="SQL"/>
-			</xs:restriction>
-		</xs:simpleType>
-	</xs:attribute>
+	<xs:attributeGroup name="languageClause">
+		<xs:attribute name="languageClause" use="optional" default="SQL">
+			<xs:annotation>
+				<xs:documentation>LANGUAGE &lt;language name&gt;</xs:documentation>
+			</xs:annotation>
+			<xs:simpleType>
+				<xs:restriction base="xs:string">
+					<xs:enumeration value="ADA"/>
+					<xs:enumeration value="C"/>
+					<xs:enumeration value="COBOL"/>
+					<xs:enumeration value="FORTRAN"/>
+					<xs:enumeration value="M"/>
+					<xs:enumeration value="PASCAL"/>
+					<xs:enumeration value="PLI"/>
+					<xs:enumeration value="SQL"/>
+				</xs:restriction>
+			</xs:simpleType>
+		</xs:attribute>
+	</xs:attributeGroup>
 
 
 	<!-- p.373 -->
@@ -1498,12 +1564,12 @@
 			</xs:attribute>
 		</xs:complexType>
 	</xs:element>
-	<xs:element name="existsPredicate" type="dml:queryExpression">
+	<xs:element name="existsPredicate" type="dml:tableSubquery">
 		<xs:annotation>
 			<xs:documentation>EXISTS &lt;table subquery&gt;</xs:documentation>
 		</xs:annotation>
 	</xs:element>
-	<xs:element name="uniquePredicate" type="dml:queryExpression">
+	<xs:element name="uniquePredicate" type="dml:tableSubquery">
 		<xs:annotation>
 			<xs:documentation>UNIQUE &lt;table subquery&gt;</xs:documentation>
 		</xs:annotation>

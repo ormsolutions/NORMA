@@ -34,20 +34,17 @@
 
 	<xsl:template match="ddl:columnDefinition[ddl:identityColumnSpecification]">
 		<xsl:param name="indent"/>
+		<xsl:value-of select="$NewLine"/>
 		<xsl:value-of select="$indent"/>
-		<xsl:apply-templates select="@name" mode="ForColumnDefinition"/>
+		<xsl:apply-templates select="@name" mode="ForColumnName"/>
 		<xsl:apply-templates select="ddt:boolean | ddt:characterString | ddt:binaryString | ddt:date | ddt:time | ddt:interval | ddt:domain"/>
 		<xsl:apply-templates select="ddt:exactNumeric | ddt:approximateNumeric" mode="ForPostgresIdentityColumn"/>
 		<xsl:apply-templates select="ddl:defaultClause"/>
 		<xsl:apply-templates select="ddl:generationClause"/>
 		<xsl:apply-templates select="ddl:columnConstraintDefinition"/>
-		<xsl:choose>
-			<xsl:when test="position()=last() and not(following-sibling::*)">
-			</xsl:when>
-			<xsl:otherwise>
-				<xsl:text>, </xsl:text>
-			</xsl:otherwise>
-		</xsl:choose>
+		<xsl:if test="position()!=last() or following-sibling::*">
+			<xsl:text>,</xsl:text>
+		</xsl:if>
 	</xsl:template>
 
 	<xsl:template match="ddt:exactNumeric | ddt:approximateNumeric" mode="ForPostgresIdentityColumn">
@@ -64,11 +61,9 @@
 	<xsl:template match="ddl:sqlInvokedProcedure">
 		<xsl:value-of select="$NewLine"/>
 		<xsl:text>CREATE FUNCTION </xsl:text>
-		<xsl:if test="@schema">
-			<xsl:value-of select="@schema"/>
-			<xsl:text>.</xsl:text>
-		</xsl:if>
-		<xsl:value-of select="@name"/>
+		<xsl:apply-templates select="@catalog" mode="ForSchemaQualifiedName"/>
+		<xsl:apply-templates select="@schema" mode="ForSchemaQualifiedName"/>
+		<xsl:apply-templates select="@name" mode="ForSchemaQualifiedName"/>
 		<xsl:value-of select="$NewLine"/>
 		<xsl:value-of select="$LeftParen"/>
 		<xsl:value-of select="$NewLine"/>
@@ -95,7 +90,7 @@
 
 	<xsl:template match="dml:fromConstructor">
 		<xsl:value-of select="$LeftParen" />
-		<xsl:apply-templates select="ddl:column"/>
+		<xsl:apply-templates select="dep:simpleColumnReference"/>
 		<xsl:value-of select="$RightParen" />
 		<xsl:value-of select="$NewLine"/>
 		<xsl:value-of select="$IndentChar" />
