@@ -32,7 +32,7 @@
 			<dms:startTransactionStatement isolationLevel="SERIALIZABLE" accessMode="READ WRITE"/>
 			<ddl:schemaDefinition schemaName="{@name}" defaultCharacterSet="UTF8"/>
 			<dms:setSchemaStatement>
-				<ddt:characterStringLiteral value="{dsf:getStringLiteralForm(@name)}"/>
+				<ddt:characterStringLiteral value="{dsf:getInformationSchemaForm(@name)}"/>
 			</dms:setSchemaStatement>
 			<xsl:apply-templates select="dcl:domain"/>
 			<xsl:apply-templates select="dcl:table" mode="GenerateTableBase"/>
@@ -56,7 +56,7 @@
 			<xsl:call-template name="GenerateSchemaAttribute"/>
 			<xsl:apply-templates select="dcl:predefinedDataType"/>
 			<xsl:apply-templates select="dcl:checkConstraint" mode="GenerateConstraint">
-				<xsl:with-param name="ElementName" select="'ddl:domainConstraint'"/>
+				<xsl:with-param name="ElementName" select="'ddl:domainConstraintDefinition'"/>
 			</xsl:apply-templates>
 		</ddl:domainDefinition>
 	</xsl:template>
@@ -66,7 +66,7 @@
 			<xsl:call-template name="GenerateSchemaAttribute"/>
 			<ddl:event type="{@event}">
 				<xsl:for-each select="dcl:columns/dcl:columnRef">
-					<ddl:column name="{@name}"/>
+					<dep:simpleColumnReference name="{@name}"/>
 				</xsl:for-each>
 			</ddl:event>
 			<ddl:table name="{@targetTable}"/>
@@ -160,18 +160,19 @@
 
 	<xsl:template match="dcl:parameter">
 		<ddl:sqlParameterDeclaration name="{@name}" mode="{@mode}">
-					<xsl:apply-templates select="dcl:predefinedDataType"/>
+			<xsl:apply-templates select="dcl:predefinedDataType"/>
 		</ddl:sqlParameterDeclaration>
 	</xsl:template>
 
+	<!-- UNDONE: This part needs to be fixed. -->
 	<xsl:template match="dml:insertStatement">
 		<ddl:sqlRoutineSpec rightsClause="INVOKER">
 			<dml:insertStatement schema="{@schema}" name="{@name}">
 				<dml:fromConstructor>
-					<xsl:for-each select="dml:fromConstructor/ddl:column">
-						<ddl:column name="{@name}"/>
+					<xsl:for-each select="dml:fromConstructor/dep:simpleColumnReference">
+						<dep:simpleColumnReference name="{@name}"/>
 					</xsl:for-each>
-					<xsl:for-each select="dml:fromConstructor/ddl:column">
+					<xsl:for-each select="dml:fromConstructor/dep:simpleColumnReference">
 						<dep:sqlParameterReference name="{@name}"/>
 					</xsl:for-each>
 				</dml:fromConstructor>
@@ -198,7 +199,9 @@
 	<xsl:template match="dcl:checkConstraint | dcl:uniquenessConstraint | dcl:referenceConstraint" mode="GenerateConstraint">
 		<xsl:param name="ElementName" select="'ddl:tableConstraintDefinition'"/>
 		<xsl:element name="{$ElementName}">
-			<dep:constraintNameDefinition name="{@name}"/>
+			<xsl:attribute name="name">
+				<xsl:value-of select="@name"/>
+			</xsl:attribute>
 			<xsl:apply-templates select="." mode="GenerateConstraintCore"/>
 		</xsl:element>
 	</xsl:template>
@@ -220,19 +223,19 @@
 		</xsl:variable>
 		<ddl:uniqueConstraintDefinition type="{$uniqueConstraintType}">
 			<xsl:for-each select="dcl:columnRef">
-				<ddl:column name="{@name}"/>
+				<dep:simpleColumnReference name="{@name}"/>
 			</xsl:for-each>
 		</ddl:uniqueConstraintDefinition>
 	</xsl:template>
 	<xsl:template match="dcl:referenceConstraint" mode="GenerateConstraintCore">
 		<ddl:referentialConstraintDefinition>
 			<xsl:for-each select="dcl:columnRef">
-				<ddl:column name="{@sourceName}"/>
+				<dep:simpleColumnReference name="{@sourceName}"/>
 			</xsl:for-each>
 			<ddl:referencesSpecification name="{@targetTable}" onDelete="RESTRICT" onUpdate="RESTRICT">
 				<xsl:call-template name="GenerateSchemaAttribute"/>
 				<xsl:for-each select="dcl:columnRef">
-					<ddl:referenceColumn name="{@targetName}"/>
+					<dep:simpleColumnReference name="{@targetName}"/>
 				</xsl:for-each>
 			</ddl:referencesSpecification>
 		</ddl:referentialConstraintDefinition>

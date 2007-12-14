@@ -9,11 +9,11 @@
 		<ddl:schema schemaName="SchemaNameAtt" catalogName="CatalName"/>
 		<ddl:schema schemaName="SecondSchemaName" catalogName="SecondCatName"/>
 	</ddl:path>
+
 	<ddl:tableDefinition scope="GLOBAL TEMPORARY" name="nameAtt" catalog="catalogAtt" commitAction="PRESERVE" schema="SchemaNameAtt">
 		<ddl:columnDefinition name="numName" collation="UNICODE">
 			<ddt:interval type="INTERVAL" fields="YEAR TO MONTH" precision="4"/>
 			<ddl:generationClause>
-
 				<dep:generalSetFunction type="COUNT" quantifier="ALL">
 					<ddt:characterStringLiteral value="sometext"/>
 					<dep:filterClause>
@@ -23,13 +23,11 @@
 						</dep:inPredicate>
 					</dep:filterClause>
 				</dep:generalSetFunction>
-				
 			</ddl:generationClause>	
 		</ddl:columnDefinition>
-		<ddl:tableConstraintDefinition dep:constraintCharacteristics="INITIALLY DEFERRED">
-			<dep:constraintNameDefinition catalog="catName" schema="schemName" name="consrtName"/>
+		<ddl:tableConstraintDefinition constraintCharacteristics="INITIALLY DEFERRED" catalog="catName" schema="schemName" name="consrtName">
 			<ddl:uniqueConstraintDefinition type="PRIMARY KEY">
-				<ddl:column name="charStrName"/>
+				<dep:simpleColumnReference name="charStrName"/>
 			</ddl:uniqueConstraintDefinition>
 		</ddl:tableConstraintDefinition>
 	</ddl:tableDefinition>
