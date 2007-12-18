@@ -217,7 +217,7 @@ namespace Neumont.Tools.ORM.ObjectModel
 				typeof(ModelHasDataType),
 				typeof(NameGeneratorRefinesNameGenerator),
 				typeof(ElementHasAlias),
-				typeof(ObjectTypeHasAlias),
+				typeof(ObjectTypeHasAbbreviation),
 				typeof(NameGeneratorContainsOmittedWord),
 				typeof(ExternalRoleConstraint),
 				typeof(ExclusiveOrConstraintCoupler),
@@ -455,8 +455,8 @@ namespace Neumont.Tools.ORM.ObjectModel
 				new DomainRolePlayerInfo(typeof(NameGeneratorRefinesNameGenerator), "Refinement", NameGeneratorRefinesNameGenerator.RefinementDomainRoleId),
 				new DomainRolePlayerInfo(typeof(ElementHasAlias), "Element", ElementHasAlias.ElementDomainRoleId),
 				new DomainRolePlayerInfo(typeof(ElementHasAlias), "Alias", ElementHasAlias.AliasDomainRoleId),
-				new DomainRolePlayerInfo(typeof(ObjectTypeHasAlias), "ObjectType", ObjectTypeHasAlias.ObjectTypeDomainRoleId),
-				new DomainRolePlayerInfo(typeof(ObjectTypeHasAlias), "Alias", ObjectTypeHasAlias.AliasDomainRoleId),
+				new DomainRolePlayerInfo(typeof(ObjectTypeHasAbbreviation), "ObjectType", ObjectTypeHasAbbreviation.ObjectTypeDomainRoleId),
+				new DomainRolePlayerInfo(typeof(ObjectTypeHasAbbreviation), "Abbreviation", ObjectTypeHasAbbreviation.AbbreviationDomainRoleId),
 				new DomainRolePlayerInfo(typeof(NameGeneratorContainsOmittedWord), "NameGenerator", NameGeneratorContainsOmittedWord.NameGeneratorDomainRoleId),
 				new DomainRolePlayerInfo(typeof(NameGeneratorContainsOmittedWord), "OmittedWord", NameGeneratorContainsOmittedWord.OmittedWordDomainRoleId),
 				new DomainRolePlayerInfo(typeof(ExternalRoleConstraint), "ConstrainedRole", ExternalRoleConstraint.ConstrainedRoleDomainRoleId),
@@ -920,7 +920,7 @@ namespace Neumont.Tools.ORM.ObjectModel
 				createElementLinkMap.Add(typeof(ModelHasSetComparisonConstraint), 14);
 				createElementLinkMap.Add(typeof(ModelHasDataType), 15);
 				createElementLinkMap.Add(typeof(NameGeneratorRefinesNameGenerator), 16);
-				createElementLinkMap.Add(typeof(ObjectTypeHasAlias), 17);
+				createElementLinkMap.Add(typeof(ObjectTypeHasAbbreviation), 17);
 				createElementLinkMap.Add(typeof(NameGeneratorContainsOmittedWord), 18);
 				createElementLinkMap.Add(typeof(ExternalRoleConstraint), 19);
 				createElementLinkMap.Add(typeof(ExclusiveOrConstraintCoupler), 20);
@@ -1033,7 +1033,7 @@ namespace Neumont.Tools.ORM.ObjectModel
 				case 14: return new ModelHasSetComparisonConstraint(partition, roleAssignments, propertyAssignments);
 				case 15: return new ModelHasDataType(partition, roleAssignments, propertyAssignments);
 				case 16: return new NameGeneratorRefinesNameGenerator(partition, roleAssignments, propertyAssignments);
-				case 17: return new ObjectTypeHasAlias(partition, roleAssignments, propertyAssignments);
+				case 17: return new ObjectTypeHasAbbreviation(partition, roleAssignments, propertyAssignments);
 				case 18: return new NameGeneratorContainsOmittedWord(partition, roleAssignments, propertyAssignments);
 				case 19: return new ExternalRoleConstraint(partition, roleAssignments, propertyAssignments);
 				case 20: return new ExclusiveOrConstraintCoupler(partition, roleAssignments, propertyAssignments);
@@ -1270,7 +1270,7 @@ namespace Neumont.Tools.ORM.ObjectModel
 			DomainRoles.Add(global::Neumont.Tools.ORM.ObjectModel.ModelHasDataType.DataTypeDomainRoleId, true);
 			DomainRoles.Add(global::Neumont.Tools.ORM.ObjectModel.NameGeneratorRefinesNameGenerator.RefinementDomainRoleId, true);
 			DomainRoles.Add(global::Neumont.Tools.ORM.ObjectModel.ElementHasAlias.AliasDomainRoleId, true);
-			DomainRoles.Add(global::Neumont.Tools.ORM.ObjectModel.ObjectTypeHasAlias.AliasDomainRoleId, true);
+			DomainRoles.Add(global::Neumont.Tools.ORM.ObjectModel.ObjectTypeHasAbbreviation.AbbreviationDomainRoleId, true);
 			DomainRoles.Add(global::Neumont.Tools.ORM.ObjectModel.NameGeneratorContainsOmittedWord.OmittedWordDomainRoleId, true);
 			DomainRoles.Add(global::Neumont.Tools.ORM.ObjectModel.SetComparisonConstraintHasRoleSequence.RoleSequenceDomainRoleId, true);
 			DomainRoles.Add(global::Neumont.Tools.ORM.ObjectModel.SetComparisonConstraintHasTooFewRoleSequencesError.TooFewRoleSequencesErrorDomainRoleId, true);

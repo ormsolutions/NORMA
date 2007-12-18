@@ -28,26 +28,52 @@ namespace Neumont.Tools.ORM.ObjectModel.Design
 		/// </summary>
 		private void InitializeComponent()
 		{
+			System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(AliasManagerForm));
 			this.virtualTreeControl = new Microsoft.VisualStudio.VirtualTreeGrid.VirtualTreeControl();
+			this.btnCancel = new System.Windows.Forms.Button();
+			this.btnOK = new System.Windows.Forms.Button();
 			this.SuspendLayout();
 			// 
 			// virtualTreeControl
 			// 
-			this.virtualTreeControl.Dock = System.Windows.Forms.DockStyle.Fill;
-			this.virtualTreeControl.Location = new System.Drawing.Point(0, 0);
+			resources.ApplyResources(this.virtualTreeControl, "virtualTreeControl");
+			this.virtualTreeControl.HasGridLines = true;
+			this.virtualTreeControl.HasHorizontalGridLines = true;
+			this.virtualTreeControl.HasLines = false;
+			this.virtualTreeControl.HasRootLines = false;
+			this.virtualTreeControl.HasVerticalGridLines = true;
+			this.virtualTreeControl.LabelEditSupport = ((Microsoft.VisualStudio.VirtualTreeGrid.VirtualTreeLabelEditActivationStyles)(((Microsoft.VisualStudio.VirtualTreeGrid.VirtualTreeLabelEditActivationStyles.Explicit | Microsoft.VisualStudio.VirtualTreeGrid.VirtualTreeLabelEditActivationStyles.Delayed)
+						| Microsoft.VisualStudio.VirtualTreeGrid.VirtualTreeLabelEditActivationStyles.ImmediateSelection)));
 			this.virtualTreeControl.Name = "virtualTreeControl";
-			this.virtualTreeControl.Size = new System.Drawing.Size(324, 257);
-			this.virtualTreeControl.TabIndex = 0;
-			this.virtualTreeControl.Text = "customVirtualTreeControl1";
+			this.virtualTreeControl.LabelEditControlChanged += new System.EventHandler(this.virtualTreeControl_LabelEditControlChanged);
+			this.virtualTreeControl.KeyDown += new System.Windows.Forms.KeyEventHandler(this.virtualTreeControl_KeyDown);
+			// 
+			// btnCancel
+			// 
+			resources.ApplyResources(this.btnCancel, "btnCancel");
+			this.btnCancel.DialogResult = System.Windows.Forms.DialogResult.Cancel;
+			this.btnCancel.Name = "btnCancel";
+			this.btnCancel.UseVisualStyleBackColor = true;
+			// 
+			// btnOK
+			// 
+			resources.ApplyResources(this.btnOK, "btnOK");
+			this.btnOK.DialogResult = System.Windows.Forms.DialogResult.OK;
+			this.btnOK.Name = "btnOK";
+			this.btnOK.UseVisualStyleBackColor = true;
 			// 
 			// AliasManagerForm
 			// 
-			this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
+			this.AcceptButton = this.btnOK;
+			resources.ApplyResources(this, "$this");
 			this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-			this.ClientSize = new System.Drawing.Size(324, 257);
+			this.CancelButton = this.btnCancel;
+			this.Controls.Add(this.btnCancel);
+			this.Controls.Add(this.btnOK);
 			this.Controls.Add(this.virtualTreeControl);
+			this.MinimizeBox = false;
 			this.Name = "AliasManagerForm";
-			this.Text = "Alias Manager";
+			this.ShowIcon = false;
 			this.ResumeLayout(false);
 
 		}
@@ -55,5 +81,7 @@ namespace Neumont.Tools.ORM.ObjectModel.Design
 		#endregion
 
 		private Microsoft.VisualStudio.VirtualTreeGrid.VirtualTreeControl virtualTreeControl;
+		private System.Windows.Forms.Button btnCancel;
+		private System.Windows.Forms.Button btnOK;
 	}
 }

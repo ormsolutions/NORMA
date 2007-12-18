@@ -3673,14 +3673,15 @@ namespace Neumont.Tools.ORM.ObjectModel
 		#region AliasCollection opposite domain role accessor
 		/// <summary>
 		/// Gets a list of AliasCollection.
-		/// Description for Neumont.Tools.ORM.ObjectModel.ObjectTypeHasAlias.ObjectType
+		/// Description for
+		/// Neumont.Tools.ORM.ObjectModel.ObjectTypeHasAbbreviation.ObjectType
 		/// </summary>
 		public virtual DslModeling::LinkedElementCollection<NameAlias> AliasCollection
 		{
 			[global::System.Diagnostics.DebuggerStepThrough]
 			get
 			{
-				return new DslModeling::LinkedElementCollection<NameAlias>(this, global::Neumont.Tools.ORM.ObjectModel.ObjectTypeHasAlias.ObjectTypeDomainRoleId);
+				return new DslModeling::LinkedElementCollection<NameAlias>(this, global::Neumont.Tools.ORM.ObjectModel.ObjectTypeHasAbbreviation.ObjectTypeDomainRoleId);
 			}
 		}
 		#endregion

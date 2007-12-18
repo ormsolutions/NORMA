@@ -2097,7 +2097,7 @@
 			</Target>
 		</DomainRelationship>
 
-		<DomainRelationship Name="ObjectTypeHasAlias" Namespace="Neumont.Tools.ORM.ObjectModel" DisplayName="ObjectType Aliases" IsEmbedding="true" Id="6A85513C-747F-4A8C-B45A-B5CFF88314E5">
+		<DomainRelationship Name="ObjectTypeHasAbbreviation" Namespace="Neumont.Tools.ORM.ObjectModel" DisplayName="ObjectType Abbreviations" IsEmbedding="true" Id="6A85513C-747F-4A8C-B45A-B5CFF88314E5">
 			<BaseRelationship>
 				<DomainRelationshipMoniker Name="ElementHasAlias"/>
 			</BaseRelationship>
@@ -2109,7 +2109,7 @@
 				</DomainRole>
 			</Source>
 			<Target>
-				<DomainRole Name="Alias" PropertyName="Element" Multiplicity="ZeroOne" PropagatesDelete="true" IsPropertyGenerator="false" DisplayName="Alias" Id="832E3923-BBB7-4A29-A60C-66B03E0A92DA">
+				<DomainRole Name="Abbreviation" PropertyName="Element" Multiplicity="ZeroOne" PropagatesDelete="true" IsPropertyGenerator="false" DisplayName="Alias" Id="832E3923-BBB7-4A29-A60C-66B03E0A92DA">
 					<RolePlayer>
 						<DomainClassMoniker Name="NameAlias"/>
 					</RolePlayer>

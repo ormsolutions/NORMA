@@ -4851,32 +4851,32 @@ namespace Neumont.Tools.ORM.ObjectModel
 namespace Neumont.Tools.ORM.ObjectModel
 {
 	/// <summary>
-	/// DomainRelationship ObjectTypeHasAlias
-	/// Description for Neumont.Tools.ORM.ObjectModel.ObjectTypeHasAlias
+	/// DomainRelationship ObjectTypeHasAbbreviation
+	/// Description for Neumont.Tools.ORM.ObjectModel.ObjectTypeHasAbbreviation
 	/// </summary>
-	[DslDesign::DisplayNameResource("Neumont.Tools.ORM.ObjectModel.ObjectTypeHasAlias.DisplayName", typeof(global::Neumont.Tools.ORM.ObjectModel.ORMCoreDomainModel), "Neumont.Tools.ORM.GeneratedCode.CoreDomainModelResx")]
-	[DslDesign::DescriptionResource("Neumont.Tools.ORM.ObjectModel.ObjectTypeHasAlias.Description", typeof(global::Neumont.Tools.ORM.ObjectModel.ORMCoreDomainModel), "Neumont.Tools.ORM.GeneratedCode.CoreDomainModelResx")]
+	[DslDesign::DisplayNameResource("Neumont.Tools.ORM.ObjectModel.ObjectTypeHasAbbreviation.DisplayName", typeof(global::Neumont.Tools.ORM.ObjectModel.ORMCoreDomainModel), "Neumont.Tools.ORM.GeneratedCode.CoreDomainModelResx")]
+	[DslDesign::DescriptionResource("Neumont.Tools.ORM.ObjectModel.ObjectTypeHasAbbreviation.Description", typeof(global::Neumont.Tools.ORM.ObjectModel.ORMCoreDomainModel), "Neumont.Tools.ORM.GeneratedCode.CoreDomainModelResx")]
 	[global::System.CLSCompliant(true)]
 	[DslModeling::DomainRelationship(IsEmbedding=true)]
 	[DslModeling::DomainObjectId("6a85513c-747f-4a8c-b45a-b5cff88314e5")]
-	public partial class ObjectTypeHasAlias : ElementHasAlias
+	public partial class ObjectTypeHasAbbreviation : ElementHasAlias
 	{
 		#region Constructors, domain class Id
 		
 		/// <summary>
-		/// ObjectTypeHasAlias domain class Id.
+		/// ObjectTypeHasAbbreviation domain class Id.
 		/// </summary>
 		public static readonly new global::System.Guid DomainClassId = new global::System.Guid(0x6a85513c, 0x747f, 0x4a8c, 0xb4, 0x5a, 0xb5, 0xcf, 0xf8, 0x83, 0x14, 0xe5);
 	
 				
 		/// <summary>
 		/// Constructor
-		/// Creates a ObjectTypeHasAlias link in the same Partition as the given ObjectType
+		/// Creates a ObjectTypeHasAbbreviation link in the same Partition as the given ObjectType
 		/// </summary>
 		/// <param name="source">ObjectType to use as the source of the relationship.</param>
 		/// <param name="target">NameAlias to use as the target of the relationship.</param>
-		public ObjectTypeHasAlias(ObjectType source, NameAlias target)
-			: base((source != null ? source.Partition : null), new DslModeling::RoleAssignment[]{new DslModeling::RoleAssignment(ObjectTypeHasAlias.ObjectTypeDomainRoleId, source), new DslModeling::RoleAssignment(ObjectTypeHasAlias.AliasDomainRoleId, target)}, null)
+		public ObjectTypeHasAbbreviation(ObjectType source, NameAlias target)
+			: base((source != null ? source.Partition : null), new DslModeling::RoleAssignment[]{new DslModeling::RoleAssignment(ObjectTypeHasAbbreviation.ObjectTypeDomainRoleId, source), new DslModeling::RoleAssignment(ObjectTypeHasAbbreviation.AbbreviationDomainRoleId, target)}, null)
 		{
 		}
 		
@@ -4885,7 +4885,7 @@ namespace Neumont.Tools.ORM.ObjectModel
 		/// </summary>
 		/// <param name="store">Store where new link is to be created.</param>
 		/// <param name="roleAssignments">List of relationship role assignments.</param>
-		public ObjectTypeHasAlias(DslModeling::Store store, params DslModeling::RoleAssignment[] roleAssignments)
+		public ObjectTypeHasAbbreviation(DslModeling::Store store, params DslModeling::RoleAssignment[] roleAssignments)
 			: base(store != null ? store.DefaultPartition : null, roleAssignments, null)
 		{
 		}
@@ -4896,7 +4896,7 @@ namespace Neumont.Tools.ORM.ObjectModel
 		/// <param name="store">Store where new link is to be created.</param>
 		/// <param name="roleAssignments">List of relationship role assignments.</param>
 		/// <param name="propertyAssignments">List of properties assignments to set on the new link.</param>
-		public ObjectTypeHasAlias(DslModeling::Store store, DslModeling::RoleAssignment[] roleAssignments, DslModeling::PropertyAssignment[] propertyAssignments)
+		public ObjectTypeHasAbbreviation(DslModeling::Store store, DslModeling::RoleAssignment[] roleAssignments, DslModeling::PropertyAssignment[] propertyAssignments)
 			: base(store != null ? store.DefaultPartition : null, roleAssignments, propertyAssignments)
 		{
 		}
@@ -4906,7 +4906,7 @@ namespace Neumont.Tools.ORM.ObjectModel
 		/// </summary>
 		/// <param name="partition">Partition where new link is to be created.</param>
 		/// <param name="roleAssignments">List of relationship role assignments.</param>
-		public ObjectTypeHasAlias(DslModeling::Partition partition, params DslModeling::RoleAssignment[] roleAssignments)
+		public ObjectTypeHasAbbreviation(DslModeling::Partition partition, params DslModeling::RoleAssignment[] roleAssignments)
 			: base(partition, roleAssignments, null)
 		{
 		}
@@ -4917,7 +4917,7 @@ namespace Neumont.Tools.ORM.ObjectModel
 		/// <param name="partition">Partition where new link is to be created.</param>
 		/// <param name="roleAssignments">List of relationship role assignments.</param>
 		/// <param name="propertyAssignments">List of properties assignments to set on the new link.</param>
-		public ObjectTypeHasAlias(DslModeling::Partition partition, DslModeling::RoleAssignment[] roleAssignments, DslModeling::PropertyAssignment[] propertyAssignments)
+		public ObjectTypeHasAbbreviation(DslModeling::Partition partition, DslModeling::RoleAssignment[] roleAssignments, DslModeling::PropertyAssignment[] propertyAssignments)
 			: base(partition, roleAssignments, propertyAssignments)
 		{
 		}
@@ -4931,11 +4931,12 @@ namespace Neumont.Tools.ORM.ObjectModel
 		
 		/// <summary>
 		/// DomainRole ObjectType
-		/// Description for Neumont.Tools.ORM.ObjectModel.ObjectTypeHasAlias.ObjectType
+		/// Description for
+		/// Neumont.Tools.ORM.ObjectModel.ObjectTypeHasAbbreviation.ObjectType
 		/// </summary>
-		[DslDesign::DisplayNameResource("Neumont.Tools.ORM.ObjectModel.ObjectTypeHasAlias/ObjectType.DisplayName", typeof(global::Neumont.Tools.ORM.ObjectModel.ORMCoreDomainModel), "Neumont.Tools.ORM.GeneratedCode.CoreDomainModelResx")]
-		[DslDesign::DescriptionResource("Neumont.Tools.ORM.ObjectModel.ObjectTypeHasAlias/ObjectType.Description", typeof(global::Neumont.Tools.ORM.ObjectModel.ORMCoreDomainModel), "Neumont.Tools.ORM.GeneratedCode.CoreDomainModelResx")]
-		[DslModeling::DomainRole(DslModeling::DomainRoleOrder.Source, PropertyName = "AliasCollection", PropertyDisplayNameKey="Neumont.Tools.ORM.ObjectModel.ObjectTypeHasAlias/ObjectType.PropertyDisplayName", Multiplicity = DslModeling::Multiplicity.ZeroMany)]
+		[DslDesign::DisplayNameResource("Neumont.Tools.ORM.ObjectModel.ObjectTypeHasAbbreviation/ObjectType.DisplayName", typeof(global::Neumont.Tools.ORM.ObjectModel.ORMCoreDomainModel), "Neumont.Tools.ORM.GeneratedCode.CoreDomainModelResx")]
+		[DslDesign::DescriptionResource("Neumont.Tools.ORM.ObjectModel.ObjectTypeHasAbbreviation/ObjectType.Description", typeof(global::Neumont.Tools.ORM.ObjectModel.ORMCoreDomainModel), "Neumont.Tools.ORM.GeneratedCode.CoreDomainModelResx")]
+		[DslModeling::DomainRole(DslModeling::DomainRoleOrder.Source, PropertyName = "AliasCollection", PropertyDisplayNameKey="Neumont.Tools.ORM.ObjectModel.ObjectTypeHasAbbreviation/ObjectType.PropertyDisplayName", Multiplicity = DslModeling::Multiplicity.ZeroMany)]
 		[DslModeling::DomainObjectId("2c863159-2675-4f32-a30d-83c573a207c7")]
 		public virtual ObjectType ObjectType
 		{
@@ -4960,7 +4961,7 @@ namespace Neumont.Tools.ORM.ObjectModel
 		[global::System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Design", "CA1011")]
 		public static new ObjectType GetElement(NameAlias element)
 		{
-			return DslModeling::DomainRoleInfo.GetLinkedElement(element, AliasDomainRoleId) as ObjectType;
+			return DslModeling::DomainRoleInfo.GetLinkedElement(element, AbbreviationDomainRoleId) as ObjectType;
 		}
 		
 		/// <summary>
@@ -4970,7 +4971,7 @@ namespace Neumont.Tools.ORM.ObjectModel
 		[global::System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Design", "CA1011")]
 		public static void SetElement(NameAlias element, ObjectType newObjectType)
 		{
-			DslModeling::DomainRoleInfo.SetLinkedElement(element, AliasDomainRoleId, newObjectType);
+			DslModeling::DomainRoleInfo.SetLinkedElement(element, AbbreviationDomainRoleId, newObjectType);
 		}
 		#endregion
 		#region Element domain role override
@@ -4994,32 +4995,33 @@ namespace Neumont.Tools.ORM.ObjectModel
 		}
 		
 		#endregion
-		#region Alias domain role code
+		#region Abbreviation domain role code
 		
 		/// <summary>
-		/// Alias domain role Id.
+		/// Abbreviation domain role Id.
 		/// </summary>
-		public static readonly new global::System.Guid AliasDomainRoleId = new global::System.Guid(0x832e3923, 0xbbb7, 0x4a29, 0xa6, 0x0c, 0x66, 0xb0, 0x3e, 0x0a, 0x92, 0xda);
+		public static readonly global::System.Guid AbbreviationDomainRoleId = new global::System.Guid(0x832e3923, 0xbbb7, 0x4a29, 0xa6, 0x0c, 0x66, 0xb0, 0x3e, 0x0a, 0x92, 0xda);
 		
 		/// <summary>
-		/// DomainRole Alias
-		/// Description for Neumont.Tools.ORM.ObjectModel.ObjectTypeHasAlias.Alias
+		/// DomainRole Abbreviation
+		/// Description for
+		/// Neumont.Tools.ORM.ObjectModel.ObjectTypeHasAbbreviation.Abbreviation
 		/// </summary>
-		[DslDesign::DisplayNameResource("Neumont.Tools.ORM.ObjectModel.ObjectTypeHasAlias/Alias.DisplayName", typeof(global::Neumont.Tools.ORM.ObjectModel.ORMCoreDomainModel), "Neumont.Tools.ORM.GeneratedCode.CoreDomainModelResx")]
-		[DslDesign::DescriptionResource("Neumont.Tools.ORM.ObjectModel.ObjectTypeHasAlias/Alias.Description", typeof(global::Neumont.Tools.ORM.ObjectModel.ORMCoreDomainModel), "Neumont.Tools.ORM.GeneratedCode.CoreDomainModelResx")]
-		[DslModeling::DomainRole(DslModeling::DomainRoleOrder.Target, PropertyName = "Element", PropertyDisplayNameKey="Neumont.Tools.ORM.ObjectModel.ObjectTypeHasAlias/Alias.PropertyDisplayName", PropagatesDelete = true, Multiplicity = DslModeling::Multiplicity.ZeroOne)]
+		[DslDesign::DisplayNameResource("Neumont.Tools.ORM.ObjectModel.ObjectTypeHasAbbreviation/Abbreviation.DisplayName", typeof(global::Neumont.Tools.ORM.ObjectModel.ORMCoreDomainModel), "Neumont.Tools.ORM.GeneratedCode.CoreDomainModelResx")]
+		[DslDesign::DescriptionResource("Neumont.Tools.ORM.ObjectModel.ObjectTypeHasAbbreviation/Abbreviation.Description", typeof(global::Neumont.Tools.ORM.ObjectModel.ORMCoreDomainModel), "Neumont.Tools.ORM.GeneratedCode.CoreDomainModelResx")]
+		[DslModeling::DomainRole(DslModeling::DomainRoleOrder.Target, PropertyName = "Element", PropertyDisplayNameKey="Neumont.Tools.ORM.ObjectModel.ObjectTypeHasAbbreviation/Abbreviation.PropertyDisplayName", PropagatesDelete = true, Multiplicity = DslModeling::Multiplicity.ZeroOne)]
 		[DslModeling::DomainObjectId("832e3923-bbb7-4a29-a60c-66b03e0a92da")]
-		public override NameAlias Alias
+		public virtual NameAlias Abbreviation
 		{
 			[global::System.Diagnostics.DebuggerStepThrough]
 			get
 			{
-				return (NameAlias)DslModeling::DomainRoleInfo.GetRolePlayer(this, AliasDomainRoleId);
+				return (NameAlias)DslModeling::DomainRoleInfo.GetRolePlayer(this, AbbreviationDomainRoleId);
 			}
 			[global::System.Diagnostics.DebuggerStepThrough]
 			set
 			{
-				DslModeling::DomainRoleInfo.SetRolePlayer(this, AliasDomainRoleId, value);
+				DslModeling::DomainRoleInfo.SetRolePlayer(this, AbbreviationDomainRoleId, value);
 			}
 		}
 				
@@ -5035,27 +5037,48 @@ namespace Neumont.Tools.ORM.ObjectModel
 			return new DslModeling::LinkedElementCollection<NameAlias>(element, ObjectTypeDomainRoleId);
 		}
 		#endregion
+		#region Alias domain role override
+		
+		/// <summary>
+		/// Gets the element playing Abbreviation domain role.
+		/// Description for Neumont.Tools.ORM.ObjectModel.ElementHasAlias.Alias
+		/// </summary>
+		public override NameAlias Alias
+		{
+			[global::System.Diagnostics.DebuggerStepThrough]
+			get
+			{
+				return this.Abbreviation;
+			}
+			[global::System.Diagnostics.DebuggerStepThrough]
+			set
+			{
+				this.Abbreviation = value;
+			}
+		}
+		
+		#endregion
 		#region ObjectType link accessor
 		/// <summary>
-		/// Get the list of ObjectTypeHasAlias links to a ObjectType.
+		/// Get the list of ObjectTypeHasAbbreviation links to a ObjectType.
 		/// </summary>
 		[global::System.Diagnostics.DebuggerStepThrough]
 		[global::System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Design", "CA1011")]
-		public static global::System.Collections.ObjectModel.ReadOnlyCollection<global::Neumont.Tools.ORM.ObjectModel.ObjectTypeHasAlias> GetLinksToAliasCollection ( global::Neumont.Tools.ORM.ObjectModel.ObjectType objectTypeInstance )
+		public static global::System.Collections.ObjectModel.ReadOnlyCollection<global::Neumont.Tools.ORM.ObjectModel.ObjectTypeHasAbbreviation> GetLinksToAliasCollection ( global::Neumont.Tools.ORM.ObjectModel.ObjectType objectTypeInstance )
 		{
-			return DslModeling::DomainRoleInfo.GetElementLinks<global::Neumont.Tools.ORM.ObjectModel.ObjectTypeHasAlias>(objectTypeInstance, global::Neumont.Tools.ORM.ObjectModel.ObjectTypeHasAlias.ObjectTypeDomainRoleId);
+			return DslModeling::DomainRoleInfo.GetElementLinks<global::Neumont.Tools.ORM.ObjectModel.ObjectTypeHasAbbreviation>(objectTypeInstance, global::Neumont.Tools.ORM.ObjectModel.ObjectTypeHasAbbreviation.ObjectTypeDomainRoleId);
 		}
 		#endregion
-		#region Alias link accessor
+		#region Abbreviation link accessor
 		/// <summary>
-		/// Get the ObjectTypeHasAlias link to a NameAlias.
+		/// Get the ObjectTypeHasAbbreviation link to a NameAlias.
 		/// </summary>
 		[global::System.Diagnostics.DebuggerStepThrough]
 		[global::System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Design", "CA1011")]
-		public static new global::Neumont.Tools.ORM.ObjectModel.ObjectTypeHasAlias GetLinkToElement (global::Neumont.Tools.ORM.ObjectModel.NameAlias aliasInstance)
+		public static new global::Neumont.Tools.ORM.ObjectModel.ObjectTypeHasAbbreviation GetLinkToElement (global::Neumont.Tools.ORM.ObjectModel.NameAlias abbreviationInstance)
 		{
-			global::System.Collections.Generic.IList<global::Neumont.Tools.ORM.ObjectModel.ObjectTypeHasAlias> links = DslModeling::DomainRoleInfo.GetElementLinks<global::Neumont.Tools.ORM.ObjectModel.ObjectTypeHasAlias>(aliasInstance, global::Neumont.Tools.ORM.ObjectModel.ObjectTypeHasAlias.AliasDomainRoleId);
-			global::System.Diagnostics.Debug.Assert(links.Count <= 1, "Multiplicity of Alias not obeyed.");
+			global::System.Collections.Generic.IList<global::Neumont.Tools.ORM.ObjectModel.ObjectTypeHasAbbreviation> links = DslModeling::DomainRoleInfo.GetElementLinks<global::Neumont.Tools.ORM.ObjectModel.ObjectTypeHasAbbreviation>(abbreviationInstance, global::Neumont.Tools.ORM.ObjectModel.ObjectTypeHasAbbreviation.AbbreviationDomainRoleId);
+			global::System.Diagnostics.Debug.Assert(links.Count <= 1, "Multiplicity of Abbreviation not obeyed.");
 			if ( links.Count == 0 )
 			{
 				return null;
@@ -5066,20 +5089,20 @@ namespace Neumont.Tools.ORM.ObjectModel
 			}
 		}
 		#endregion
-		#region ObjectTypeHasAlias instance accessors
+		#region ObjectTypeHasAbbreviation instance accessors
 		
 		/// <summary>
-		/// Get any ObjectTypeHasAlias links between a given ObjectType and a NameAlias.
+		/// Get any ObjectTypeHasAbbreviation links between a given ObjectType and a NameAlias.
 		/// </summary>
 		[global::System.Diagnostics.DebuggerStepThrough]
 		[global::System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Design", "CA1011")]
-		public static global::System.Collections.ObjectModel.ReadOnlyCollection<global::Neumont.Tools.ORM.ObjectModel.ObjectTypeHasAlias> GetLinks( global::Neumont.Tools.ORM.ObjectModel.ObjectType source, global::Neumont.Tools.ORM.ObjectModel.NameAlias target )
+		public static global::System.Collections.ObjectModel.ReadOnlyCollection<global::Neumont.Tools.ORM.ObjectModel.ObjectTypeHasAbbreviation> GetLinks( global::Neumont.Tools.ORM.ObjectModel.ObjectType source, global::Neumont.Tools.ORM.ObjectModel.NameAlias target )
 		{
-			global::System.Collections.Generic.List<global::Neumont.Tools.ORM.ObjectModel.ObjectTypeHasAlias> outLinks = new global::System.Collections.Generic.List<global::Neumont.Tools.ORM.ObjectModel.ObjectTypeHasAlias>();
-			global::System.Collections.Generic.IList<global::Neumont.Tools.ORM.ObjectModel.ObjectTypeHasAlias> links = DslModeling::DomainRoleInfo.GetElementLinks<global::Neumont.Tools.ORM.ObjectModel.ObjectTypeHasAlias>(source, global::Neumont.Tools.ORM.ObjectModel.ObjectTypeHasAlias.ObjectTypeDomainRoleId);
-			foreach ( global::Neumont.Tools.ORM.ObjectModel.ObjectTypeHasAlias link in links )
+			global::System.Collections.Generic.List<global::Neumont.Tools.ORM.ObjectModel.ObjectTypeHasAbbreviation> outLinks = new global::System.Collections.Generic.List<global::Neumont.Tools.ORM.ObjectModel.ObjectTypeHasAbbreviation>();
+			global::System.Collections.Generic.IList<global::Neumont.Tools.ORM.ObjectModel.ObjectTypeHasAbbreviation> links = DslModeling::DomainRoleInfo.GetElementLinks<global::Neumont.Tools.ORM.ObjectModel.ObjectTypeHasAbbreviation>(source, global::Neumont.Tools.ORM.ObjectModel.ObjectTypeHasAbbreviation.ObjectTypeDomainRoleId);
+			foreach ( global::Neumont.Tools.ORM.ObjectModel.ObjectTypeHasAbbreviation link in links )
 			{
-				if ( target.Equals(link.Alias) )
+				if ( target.Equals(link.Abbreviation) )
 				{
 					outLinks.Add(link);
 				}
@@ -5087,16 +5110,16 @@ namespace Neumont.Tools.ORM.ObjectModel
 			return outLinks.AsReadOnly();
 		}
 		/// <summary>
-		/// Get the one ObjectTypeHasAlias link between a given ObjectTypeand a NameAlias.
+		/// Get the one ObjectTypeHasAbbreviation link between a given ObjectTypeand a NameAlias.
 		/// </summary>
 		[global::System.Diagnostics.DebuggerStepThrough]
 		[global::System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Design", "CA1011")]
-		public static global::Neumont.Tools.ORM.ObjectModel.ObjectTypeHasAlias GetLink( global::Neumont.Tools.ORM.ObjectModel.ObjectType source, global::Neumont.Tools.ORM.ObjectModel.NameAlias target )
+		public static global::Neumont.Tools.ORM.ObjectModel.ObjectTypeHasAbbreviation GetLink( global::Neumont.Tools.ORM.ObjectModel.ObjectType source, global::Neumont.Tools.ORM.ObjectModel.NameAlias target )
 		{
-			global::System.Collections.Generic.IList<global::Neumont.Tools.ORM.ObjectModel.ObjectTypeHasAlias> links = DslModeling::DomainRoleInfo.GetElementLinks<global::Neumont.Tools.ORM.ObjectModel.ObjectTypeHasAlias>(source, global::Neumont.Tools.ORM.ObjectModel.ObjectTypeHasAlias.ObjectTypeDomainRoleId);
-			foreach ( global::Neumont.Tools.ORM.ObjectModel.ObjectTypeHasAlias link in links )
+			global::System.Collections.Generic.IList<global::Neumont.Tools.ORM.ObjectModel.ObjectTypeHasAbbreviation> links = DslModeling::DomainRoleInfo.GetElementLinks<global::Neumont.Tools.ORM.ObjectModel.ObjectTypeHasAbbreviation>(source, global::Neumont.Tools.ORM.ObjectModel.ObjectTypeHasAbbreviation.ObjectTypeDomainRoleId);
+			foreach ( global::Neumont.Tools.ORM.ObjectModel.ObjectTypeHasAbbreviation link in links )
 			{
-				if ( target.Equals(link.Alias) )
+				if ( target.Equals(link.Abbreviation) )
 				{
 					return link;
 				}

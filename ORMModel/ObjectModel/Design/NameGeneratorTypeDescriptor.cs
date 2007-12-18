@@ -47,13 +47,74 @@ namespace Neumont.Tools.ORM.ObjectModel.Design
 		}
 
 		/// <summary>
+		/// Don't create property descriptors for properties that are
+		/// modifiers for other settings.
+		/// </summary>
+		protected override bool ShouldCreatePropertyDescriptor(ModelElement requestor, DomainPropertyInfo domainProperty)
+		{
+			Guid attributeId = domainProperty.Id;
+			if (attributeId == NameGenerator.SpacingReplacementDomainPropertyId)
+			{
+				return ((NameGenerator)requestor).SpacingFormat == NameGeneratorSpacingFormat.ReplaceWith;
+			}
+			else if (attributeId == NameGenerator.UserDefinedMaximumDomainPropertyId)
+			{
+				return !((NameGenerator)requestor).UseTargetDefaultMaximum;
+			}
+			return base.ShouldCreatePropertyDescriptor(requestor, domainProperty);
+		}
+
+		private class NameGeneratorPropertyDescriptor : ElementPropertyDescriptor
+		{
+			public NameGeneratorPropertyDescriptor(ElementTypeDescriptor owner, ModelElement modelElement, DomainPropertyInfo domainProperty, Attribute[] attributes)
+				: base(owner, modelElement, domainProperty, attributes)
+			{
+			}
+			/// <summary>
+			/// Values are non-default if they differ from the refined parent
+			/// </summary>
+			public override bool ShouldSerializeValue(object component)
+			{
+				NameGenerator generator = (NameGenerator)component;
+				NameGenerator parentGenerator = generator.RefinesGenerator;
+				return (parentGenerator != null) ? !DomainPropertyInfo.GetValue(parentGenerator).Equals(DomainPropertyInfo.GetValue(generator)) : base.ShouldSerializeValue(component);
+			}
+			/// <summary>
+			/// Reset the value to the value of the refined generator
+			/// </summary>
+			public override void ResetValue(object component)
+			{
+				NameGenerator generator = (NameGenerator)component;
+				NameGenerator parentGenerator = generator.RefinesGenerator;
+				if (parentGenerator != null)
+				{
+					// This gives a different transaction name that the default ResetValue, but
+					// the correct string is not accessible and the duplication is not worth the effort
+					base.SetValue(component, DomainPropertyInfo.GetValue(parentGenerator));
+				}
+				else
+				{
+					base.ResetValue(component);
+				}
+			}
+		}
+		/// <summary>
+		/// Create a custom property descriptor for all properties to
+		/// enable custom handling of property serialization and resets
+		/// based on the hierarchy.
+		/// </summary>
+		protected override ElementPropertyDescriptor CreatePropertyDescriptor(ModelElement requestor, DomainPropertyInfo domainPropertyInfo, Attribute[] attributes)
+		{
+			return new NameGeneratorPropertyDescriptor(this, requestor, domainPropertyInfo, attributes);
+		}
+
+		/// <summary>
 		/// Add custom property descriptors 
 		/// </summary>
 		public override PropertyDescriptorCollection GetProperties(Attribute[] attributes)
 		{
 			PropertyDescriptorCollection retVal = base.GetProperties(attributes);
-			// UNDONE: Put back in to complete implementation of NameAlias dialog
-			// retVal.Add(NameAliasPropertyDescriptor.Instance);
+			retVal.Add(AbbreviationsPropertyDescriptor.Instance);
 			return retVal;
 		}
 
@@ -74,14 +135,14 @@ namespace Neumont.Tools.ORM.ObjectModel.Design
 		}
 
 		/// <summary>
-		/// 
+		/// A property descriptor to show name alias (aka abbreviations) in the context of this name generator
 		/// </summary>
-		private class NameAliasPropertyDescriptor : PropertyDescriptor
+		private class AbbreviationsPropertyDescriptor : PropertyDescriptor
 		{
-			public static readonly NameAliasPropertyDescriptor Instance = new NameAliasPropertyDescriptor();
+			public static readonly PropertyDescriptor Instance = new AbbreviationsPropertyDescriptor();
 
-			private NameAliasPropertyDescriptor()
-				: base("NameAliasProperty", null)
+			private AbbreviationsPropertyDescriptor()
+				: base("AbbreviationsPropertyDescriptor", null)
 			{
 
 			}
@@ -101,7 +162,7 @@ namespace Neumont.Tools.ORM.ObjectModel.Design
 
 			public override object GetValue(object component)
 			{
-				return "Edit Aliases";
+				return null;
 			}
 
 
@@ -136,7 +197,7 @@ namespace Neumont.Tools.ORM.ObjectModel.Design
 			{
 				get
 				{
-					return base.Description;
+					return ResourceStrings.NameGeneratorAbbreviationsPropertyDescriptorDescription;
 				}
 			}
 
@@ -144,7 +205,7 @@ namespace Neumont.Tools.ORM.ObjectModel.Design
 			{
 				get
 				{
-					return "Alias Tool";
+					return ResourceStrings.NameGeneratorAbbreviationsPropertyDescriptorDisplayName;
 				}
 			}
 

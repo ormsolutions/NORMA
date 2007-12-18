@@ -1428,6 +1428,70 @@ namespace Neumont.Tools.ORM
 				return ResourceStrings.GetString(ResourceManagers.Model, "ModelSamplePopulationEditor.NullSelection");
 			}
 		}
+		/// <summary>Column header for the first 'Abbreviation' column in the name generator abbreviations dialog</summary>
+		public static string NameGeneratorAbbreviationsEditorAbbreviationColumnHeader
+		{
+			get
+			{
+				return ResourceStrings.GetString(ResourceManagers.Model, "NameGeneratorAbbreviations.Editor.AbbreviationColumnHeader");
+			}
+		}
+		/// <summary>Column header for the first 'Element' column in the name generator abbreviations dialog</summary>
+		public static string NameGeneratorAbbreviationsEditorElementColumnHeader
+		{
+			get
+			{
+				return ResourceStrings.GetString(ResourceManagers.Model, "NameGeneratorAbbreviations.Editor.ElementColumnHeader");
+			}
+		}
+		/// <summary>Text displayed for new item dropdown in name generator abbreviations dialog.</summary>
+		public static string NameGeneratorAbbreviationsEditorNewItemText
+		{
+			get
+			{
+				return ResourceStrings.GetString(ResourceManagers.Model, "NameGeneratorAbbreviations.Editor.NewItemText");
+			}
+		}
+		/// <summary>Format string for the title of the name generator abbreviations dialog. Replacement fields: 0=NameGenerator name.</summary>
+		public static string NameGeneratorAbbreviationsEditorTitleFormatString
+		{
+			get
+			{
+				return ResourceStrings.GetString(ResourceManagers.Model, "NameGeneratorAbbreviations.Editor.TitleFormatString");
+			}
+		}
+		/// <summary>Format string for the title of the name generator abbreviations dialog. Replacement fields: 0=NameGenerator name, 1=NameUsage name.</summary>
+		public static string NameGeneratorAbbreviationsEditorTitleFormatStringWithNameUsage
+		{
+			get
+			{
+				return ResourceStrings.GetString(ResourceManagers.Model, "NameGeneratorAbbreviations.Editor.TitleFormatStringWithNameUsage");
+			}
+		}
+		/// <summary>Transaction name when the name generator abbreviations dialog is committed. Displays in the Visual Studio undo and redo dropdowns.</summary>
+		public static string NameGeneratorAbbreviationsEditorTransactionName
+		{
+			get
+			{
+				return ResourceStrings.GetString(ResourceManagers.Model, "NameGeneratorAbbreviations.Editor.TransactionName");
+			}
+		}
+		/// <summary>Description shown in the properties window for the 'Abbreviations' property of a NameGenerator.</summary>
+		public static string NameGeneratorAbbreviationsPropertyDescriptorDescription
+		{
+			get
+			{
+				return ResourceStrings.GetString(ResourceManagers.Model, "NameGeneratorAbbreviations.PropertyDescriptor.Description");
+			}
+		}
+		/// <summary>Display name shown in the properties window for the custom 'Abbreviations' property of a NameGenerator.</summary>
+		public static string NameGeneratorAbbreviationsPropertyDescriptorDisplayName
+		{
+			get
+			{
+				return ResourceStrings.GetString(ResourceManagers.Model, "NameGeneratorAbbreviations.PropertyDescriptor.DisplayName");
+			}
+		}
 		/// <summary>The official name of the package used in the About dialog</summary>
 		public static string PackageOfficialName
 		{

@@ -932,7 +932,7 @@ namespace Neumont.Tools.ORMAbstractionToConceptualDatabaseBridge
 	/// <summary>
 	/// DomainClass ColumnNameUsage
 	/// </summary>
-	[Neumont.Tools.ORM.ObjectModel.NameUsageIdentifier("ColumnNameUsage")]
+	[Neumont.Tools.ORM.ObjectModel.NameUsageIdentifier("RelationalColumn")]
 	[DslDesign::DisplayNameResource("Neumont.Tools.ORMAbstractionToConceptualDatabaseBridge.ColumnNameUsage.DisplayName", typeof(global::Neumont.Tools.ORMAbstractionToConceptualDatabaseBridge.ORMAbstractionToConceptualDatabaseBridgeDomainModel), "Neumont.Tools.ORMAbstractionToConceptualDatabaseBridge.GeneratedCode.DomainModelResx")]
 	[DslDesign::DescriptionResource("Neumont.Tools.ORMAbstractionToConceptualDatabaseBridge.ColumnNameUsage.Description", typeof(global::Neumont.Tools.ORMAbstractionToConceptualDatabaseBridge.ORMAbstractionToConceptualDatabaseBridgeDomainModel), "Neumont.Tools.ORMAbstractionToConceptualDatabaseBridge.GeneratedCode.DomainModelResx")]
 	[global::System.CLSCompliant(true)]
@@ -962,6 +962,7 @@ namespace Neumont.Tools.ORMAbstractionToConceptualDatabaseBridge
 	/// <summary>
 	/// DomainClass TableNameUsage
 	/// </summary>
+	[Neumont.Tools.ORM.ObjectModel.NameUsageIdentifier("RelationalTable")]
 	[DslDesign::DisplayNameResource("Neumont.Tools.ORMAbstractionToConceptualDatabaseBridge.TableNameUsage.DisplayName", typeof(global::Neumont.Tools.ORMAbstractionToConceptualDatabaseBridge.ORMAbstractionToConceptualDatabaseBridgeDomainModel), "Neumont.Tools.ORMAbstractionToConceptualDatabaseBridge.GeneratedCode.DomainModelResx")]
 	[DslDesign::DescriptionResource("Neumont.Tools.ORMAbstractionToConceptualDatabaseBridge.TableNameUsage.Description", typeof(global::Neumont.Tools.ORMAbstractionToConceptualDatabaseBridge.ORMAbstractionToConceptualDatabaseBridgeDomainModel), "Neumont.Tools.ORMAbstractionToConceptualDatabaseBridge.GeneratedCode.DomainModelResx")]
 	[global::System.CLSCompliant(true)]

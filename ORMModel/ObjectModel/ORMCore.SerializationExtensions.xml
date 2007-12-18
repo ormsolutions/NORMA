@@ -119,7 +119,18 @@
 	<!--Object Types-->
 	<se:Element Class="NameAlias" Name="Alias" Override="true">
 		<se:Attribute ID="NameConsumer" WriteCustomStorage="true"/>
-		<se:Attribute ID="NameUsage" WriteCustomStorage="true"/>
+		<se:Attribute ID="NameUsage" WriteCustomStorage="true">
+			<se:Condition WriteStyle="NotWritten">
+				<plx:binaryOperator type="identityEquality">
+					<plx:left>
+						<plx:callThis name="NameUsageType" type="property"/>
+					</plx:left>
+					<plx:right>
+						<plx:nullKeyword/>
+					</plx:right>
+				</plx:binaryOperator>
+			</se:Condition>
+		</se:Attribute>
 	</se:Element>
 	<se:Element Class="NameGenerator" SortChildElements="true">
 		<se:ConditionalSerialization>
@@ -235,8 +246,8 @@
 		<se:Container Name="Notes">
 			<se:Embed RelationshipName="ObjectTypeHasNote" RoleName="Note"/>
 		</se:Container>
-		<se:Container Name="Aliases">
-			<se:Embed RelationshipName="ObjectTypeHasAlias" RoleName="Alias"/>
+		<se:Container Name="Abbreviations">
+			<se:Embed RelationshipName="ObjectTypeHasAbbreviation" RoleName="Abbreviation"/>
 		</se:Container>
 		<se:Container Name="PlayedRoles">
 			<se:Link RelationshipName="ObjectTypePlaysRole" RoleName="PlayedRole"/>

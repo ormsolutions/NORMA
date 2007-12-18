@@ -1230,12 +1230,22 @@ namespace Neumont.Tools.ORMAbstractionToConceptualDatabaseBridge
 					spacingOptionIndex = i;
 				}
 			}
-			if (nameUsage != null && casingOptionIndex != -1)
+			if (nameUsage == null)
 			{
-				if (nameUsage == "ColumnNameUsage")
+				if (spacingOptionIndex != -1)
+				{
+					properties[spacingOptionIndex] = new PropertyAssignment(ORMCore.NameGenerator.SpacingFormatDomainPropertyId, NameGeneratorSpacingFormat.Remove);
+				}
+			}
+			else if (casingOptionIndex != -1)
+			{
+				if (nameUsage == "RelationalColumn")
 				{
 					properties[casingOptionIndex] = new PropertyAssignment(ORMCore.NameGenerator.CasingOptionDomainPropertyId, NameGeneratorCasingOption.Camel);
-					properties[spacingOptionIndex] = new PropertyAssignment(ORMCore.NameGenerator.SpacingFormatDomainPropertyId, NameGeneratorSpacingFormat.Remove);
+				}
+				else if (nameUsage == "RelationalTable")
+				{
+					properties[casingOptionIndex] = new PropertyAssignment(ORMCore.NameGenerator.CasingOptionDomainPropertyId, NameGeneratorCasingOption.Pascal);
 				}
 			}
 			return properties;

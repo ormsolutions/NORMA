@@ -53,6 +53,17 @@ namespace Neumont.Tools.ORM.ObjectModel
 				return (classInfo != null) ? classInfo.ImplementationClass : null;
 			}
 		}
+		/// <summary>
+		/// Return the <see cref="DomainClassInfo"/> assocatiated with the <see cref="NameUsage"/> property.
+		/// Returns <see langword="null"/> if NameUsage is not set.
+		/// </summary>
+		public DomainClassInfo NameUsageDomainClass
+		{
+			get
+			{
+				return myUsageDomainClass;
+			}
+		}
 		#endregion // CustomStorage handlers
 		#region Serialization support
 		/// <summary>

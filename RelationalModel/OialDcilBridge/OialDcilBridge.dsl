@@ -124,7 +124,7 @@
 			<Attributes>
 				<ClrAttribute Name="Neumont.Tools.ORM.ObjectModel.NameUsageIdentifier">
 					<Parameters>
-						<AttributeParameter Value="&quot;ColumnNameUsage&quot;"/>
+						<AttributeParameter Value="&quot;RelationalColumn&quot;"/>
 					</Parameters>
 				</ClrAttribute>
 			</Attributes>
@@ -134,6 +134,13 @@
 		</DomainClass>
 
 		<DomainClass Name="TableNameUsage" Namespace="Neumont.Tools.ORMAbstractionToConceptualDatabaseBridge" InheritanceModifier="Abstract" Id="E8CE0734-1FB3-4D0B-9DA0-56FDDC502AC0" DisplayName="Table Specific" Description="">
+			<Attributes>
+				<ClrAttribute Name="Neumont.Tools.ORM.ObjectModel.NameUsageIdentifier">
+					<Parameters>
+						<AttributeParameter Value="&quot;RelationalTable&quot;"/>
+					</Parameters>
+				</ClrAttribute>
+			</Attributes>
 			<BaseClass>
 				<DomainClassMoniker Name="/Neumont.Tools.ORM.ObjectModel/NameUsage"/>
 			</BaseClass>

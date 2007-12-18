@@ -705,6 +705,38 @@
 		<value>ORM Verbalization Browser</value>
 		<comment>Text to place in the title of the verbalization tool window.</comment>
 	</data>
+	<data name="NameGeneratorAbbreviations.Editor.AbbreviationColumnHeader" xml:space="preserve">
+		<value>Abbreviation</value>
+		<comment>Column header for the first 'Abbreviation' column in the name generator abbreviations dialog</comment>
+	</data>
+	<data name="NameGeneratorAbbreviations.Editor.ElementColumnHeader" xml:space="preserve">
+		<value>Element</value>
+		<comment>Column header for the first 'Element' column in the name generator abbreviations dialog</comment>
+	</data>
+	<data name="NameGeneratorAbbreviations.Editor.NewItemText" xml:space="preserve">
+		<value>New&#x2026;</value>
+		<comment>Text displayed for new item dropdown in name generator abbreviations dialog.</comment>
+	</data>
+	<data name="NameGeneratorAbbreviations.Editor.TitleFormatString" xml:space="preserve">
+		<value>Abbreviations: {0}</value>
+		<comment>Format string for the title of the name generator abbreviations dialog. Replacement fields: 0=NameGenerator name.</comment>
+	</data>
+	<data name="NameGeneratorAbbreviations.Editor.TitleFormatStringWithNameUsage" xml:space="preserve">
+		<value>Abbreviations: {0} ({1})</value>
+		<comment>Format string for the title of the name generator abbreviations dialog. Replacement fields: 0=NameGenerator name, 1=NameUsage name.</comment>
+	</data>
+	<data name="NameGeneratorAbbreviations.Editor.TransactionName" xml:space="preserve">
+		<value>Edit Abbreviations</value>
+		<comment>Transaction name when the name generator abbreviations dialog is committed. Displays in the Visual Studio undo and redo dropdowns.</comment>
+	</data>
+	<data name="NameGeneratorAbbreviations.PropertyDescriptor.Description" xml:space="preserve">
+		<value>Specify abbreviations for elements in the selected name generation context.</value>
+		<comment>Description shown in the properties window for the 'Abbreviations' property of a NameGenerator.</comment>
+	</data>
+	<data name="NameGeneratorAbbreviations.PropertyDescriptor.DisplayName" xml:space="preserve">
+		<value>Abbreviations</value>
+		<comment>Display name shown in the properties window for the custom 'Abbreviations' property of a NameGenerator.</comment>
+	</data>
 	<data name="ReferenceMode.PredicateInverseReading" xml:space="preserve">
 		<value>{0} is of {1}</value>
 		<comment>The inverse reading for the predicate created by setting the ref mode.</comment>

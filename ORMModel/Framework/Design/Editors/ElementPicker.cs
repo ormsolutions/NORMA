@@ -30,6 +30,10 @@ using Microsoft.VisualStudio.Modeling.Diagrams;
 using Microsoft.VisualStudio.Shell.Interop;
 using Microsoft.VisualStudio.VirtualTreeGrid;
 
+#if VISUALSTUDIO_9_0
+using VirtualTreeInPlaceControlFlags = Microsoft.VisualStudio.VirtualTreeGrid.VirtualTreeInPlaceControls;
+#endif //VISUALSTUDIO_9_0
+
 namespace Neumont.Tools.Modeling.Design
 {
 	/// <summary>
@@ -314,8 +318,22 @@ namespace Neumont.Tools.Modeling.Design
 							myInitialSelectionValue = nullList.NullItem;
 						}
 
+						// Make sure keystrokes are forwarded while the modal dropdown is open
+						IVirtualTreeInPlaceControl virtualTreeInPlaceControl = editor as IVirtualTreeInPlaceControl;
+						VirtualTreeInPlaceControlFlags flags = virtualTreeInPlaceControl != null ? virtualTreeInPlaceControl.Flags : 0;
+						if (0 != (flags & VirtualTreeInPlaceControlFlags.ForwardKeyEvents))
+						{
+							virtualTreeInPlaceControl.Flags = flags & ~VirtualTreeInPlaceControlFlags.ForwardKeyEvents;
+						}
+
 						// Show the dropdown. This is modal.
 						editor.DropDownControl(listBox);
+
+						// Restore keystroke forwarding
+						if (0 != (flags & VirtualTreeInPlaceControlFlags.ForwardKeyEvents))
+						{
+							virtualTreeInPlaceControl.Flags = flags;
+						}
 
 						// Record the final size, we'll use it next time for this type of control
 						LastControlSize = listBox.Size;
@@ -347,10 +365,10 @@ namespace Neumont.Tools.Modeling.Design
 		private void HandleBindingContextChanged(object sender, EventArgs e)
 		{
 			ListBox listBox = (ListBox)sender;
-			if (myInitialSelectionValue != null)
+			object value = myInitialSelectionValue;
+			if (value != null)
 			{
 				listBox.BindingContextChanged -= this.HandleBindingContextChanged;
-				object value = myInitialSelectionValue;
 				myInitialSelectionValue = null;
 				listBox.SelectedItem = value;
 				if (listBox.SelectedItem == null)
@@ -359,6 +377,11 @@ namespace Neumont.Tools.Modeling.Design
 					myInitialSelectionValue = value;
 					listBox.BindingContextChanged += this.HandleBindingContextChanged;
 				}
+			}
+			else if (listBox.SelectedItem != null)
+			{
+				listBox.SelectedItem = null;
+				listBox.BindingContextChanged -= this.HandleBindingContextChanged;
 			}
 		}
 		/// <summary>

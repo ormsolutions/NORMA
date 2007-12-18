@@ -168,7 +168,22 @@ namespace Neumont.Tools.Modeling.Design
 #endif
 							treeControl.Tree = tree;
 						}
+
+						// Make sure keystrokes are forwarded while the modal dropdown is open
+						IVirtualTreeInPlaceControl virtualTreeInPlaceControl = editor as IVirtualTreeInPlaceControl;
+						VirtualTreeInPlaceControlFlags flags = virtualTreeInPlaceControl != null ? virtualTreeInPlaceControl.Flags : 0;
+						if (0 != (flags & VirtualTreeInPlaceControlFlags.ForwardKeyEvents))
+						{
+							virtualTreeInPlaceControl.Flags = flags & ~VirtualTreeInPlaceControlFlags.ForwardKeyEvents;
+						}
+
 						editor.DropDownControl(treeControl);
+
+						// Restore keystroke forwarding
+						if (0 != (flags & VirtualTreeInPlaceControlFlags.ForwardKeyEvents))
+						{
+							virtualTreeInPlaceControl.Flags = flags;
+						}
 
 						// Record the final size, we'll use it next time for this type of control
 						LastControlSize = treeControl.Size;

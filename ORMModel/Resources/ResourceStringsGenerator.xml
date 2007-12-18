@@ -309,6 +309,14 @@
 	<ResourceString name="ModelSamplePopulationEditorRemoveInstanceTransactionText" model="Model" resourceName="ModelSamplePopulationEditor.RemoveInstanceTransactionText"/>
 	<ResourceString name="ModelSamplePopulationEditorWindowTitle" model="Model" resourceName="ModelSamplePopulationEditor.WindowTitle"/>
 	<ResourceString name="ModelSamplePopulationEditorNullSelection" model="Model" resourceName="ModelSamplePopulationEditor.NullSelection"/>
+	<ResourceString name="NameGeneratorAbbreviationsEditorAbbreviationColumnHeader" model="Model" resourceName="NameGeneratorAbbreviations.Editor.AbbreviationColumnHeader"/>
+	<ResourceString name="NameGeneratorAbbreviationsEditorElementColumnHeader" model="Model" resourceName="NameGeneratorAbbreviations.Editor.ElementColumnHeader"/>
+	<ResourceString name="NameGeneratorAbbreviationsEditorNewItemText" model="Model" resourceName="NameGeneratorAbbreviations.Editor.NewItemText"/>
+	<ResourceString name="NameGeneratorAbbreviationsEditorTitleFormatString" model="Model" resourceName="NameGeneratorAbbreviations.Editor.TitleFormatString"/>
+	<ResourceString name="NameGeneratorAbbreviationsEditorTitleFormatStringWithNameUsage" model="Model" resourceName="NameGeneratorAbbreviations.Editor.TitleFormatStringWithNameUsage"/>
+	<ResourceString name="NameGeneratorAbbreviationsEditorTransactionName" model="Model" resourceName="NameGeneratorAbbreviations.Editor.TransactionName"/>
+	<ResourceString name="NameGeneratorAbbreviationsPropertyDescriptorDescription" model="Model" resourceName="NameGeneratorAbbreviations.PropertyDescriptor.Description"/>
+	<ResourceString name="NameGeneratorAbbreviationsPropertyDescriptorDisplayName" model="Model" resourceName="NameGeneratorAbbreviations.PropertyDescriptor.DisplayName"/>
 	<ResourceString name="PackageOfficialName" model="Diagram" resourceName="Package.OfficialName"/>
 	<ResourceString name="PackageProductDetails" model="Diagram" resourceName="Package.ProductDetails"/>
 	<ResourceString name="ModelReferenceModeEditorReferenceModeName" model="Model" resourceName="ModelReferenceModeEditor.ReferenceModeName"/>

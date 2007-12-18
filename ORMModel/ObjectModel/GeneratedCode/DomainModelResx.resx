@@ -2493,37 +2493,37 @@
     <value>Element</value>
     <comment>PropertyDisplayName for DomainRole &apos;Alias&apos; on DomainRelationship &apos;ElementHasAlias&apos;</comment>
   </data>
-  <data name="Neumont.Tools.ORM.ObjectModel.ObjectTypeHasAlias.Description" xml:space="preserve">
-    <value>Description for Neumont.Tools.ORM.ObjectModel.ObjectTypeHasAlias</value>
-    <comment>Description for DomainClass &apos;ObjectTypeHasAlias&apos;</comment>
+  <data name="Neumont.Tools.ORM.ObjectModel.ObjectTypeHasAbbreviation.Description" xml:space="preserve">
+    <value>Description for Neumont.Tools.ORM.ObjectModel.ObjectTypeHasAbbreviation</value>
+    <comment>Description for DomainClass &apos;ObjectTypeHasAbbreviation&apos;</comment>
   </data>
-  <data name="Neumont.Tools.ORM.ObjectModel.ObjectTypeHasAlias.DisplayName" xml:space="preserve">
-    <value>ObjectType Aliases</value>
-    <comment>DisplayName for DomainClass &apos;ObjectTypeHasAlias&apos;</comment>
+  <data name="Neumont.Tools.ORM.ObjectModel.ObjectTypeHasAbbreviation.DisplayName" xml:space="preserve">
+    <value>ObjectType Abbreviations</value>
+    <comment>DisplayName for DomainClass &apos;ObjectTypeHasAbbreviation&apos;</comment>
   </data>
-  <data name="Neumont.Tools.ORM.ObjectModel.ObjectTypeHasAlias/ObjectType.Description" xml:space="preserve">
-    <value>Description for Neumont.Tools.ORM.ObjectModel.ObjectTypeHasAlias.ObjectType</value>
-    <comment>Description for DomainRole &apos;ObjectType&apos; on DomainRelationship &apos;ObjectTypeHasAlias&apos;</comment>
+  <data name="Neumont.Tools.ORM.ObjectModel.ObjectTypeHasAbbreviation/ObjectType.Description" xml:space="preserve">
+    <value>Description for Neumont.Tools.ORM.ObjectModel.ObjectTypeHasAbbreviation.ObjectType</value>
+    <comment>Description for DomainRole &apos;ObjectType&apos; on DomainRelationship &apos;ObjectTypeHasAbbreviation&apos;</comment>
   </data>
-  <data name="Neumont.Tools.ORM.ObjectModel.ObjectTypeHasAlias/ObjectType.DisplayName" xml:space="preserve">
+  <data name="Neumont.Tools.ORM.ObjectModel.ObjectTypeHasAbbreviation/ObjectType.DisplayName" xml:space="preserve">
     <value>ObjectType</value>
-    <comment>DisplayName for DomainRole &apos;ObjectType&apos; on DomainRelationship &apos;ObjectTypeHasAlias&apos;</comment>
+    <comment>DisplayName for DomainRole &apos;ObjectType&apos; on DomainRelationship &apos;ObjectTypeHasAbbreviation&apos;</comment>
   </data>
-  <data name="Neumont.Tools.ORM.ObjectModel.ObjectTypeHasAlias/ObjectType.PropertyDisplayName" xml:space="preserve">
+  <data name="Neumont.Tools.ORM.ObjectModel.ObjectTypeHasAbbreviation/ObjectType.PropertyDisplayName" xml:space="preserve">
     <value>Alias Collection</value>
-    <comment>PropertyDisplayName for DomainRole &apos;ObjectType&apos; on DomainRelationship &apos;ObjectTypeHasAlias&apos;</comment>
+    <comment>PropertyDisplayName for DomainRole &apos;ObjectType&apos; on DomainRelationship &apos;ObjectTypeHasAbbreviation&apos;</comment>
   </data>
-  <data name="Neumont.Tools.ORM.ObjectModel.ObjectTypeHasAlias/Alias.Description" xml:space="preserve">
-    <value>Description for Neumont.Tools.ORM.ObjectModel.ObjectTypeHasAlias.Alias</value>
-    <comment>Description for DomainRole &apos;Alias&apos; on DomainRelationship &apos;ObjectTypeHasAlias&apos;</comment>
+  <data name="Neumont.Tools.ORM.ObjectModel.ObjectTypeHasAbbreviation/Abbreviation.Description" xml:space="preserve">
+    <value>Description for Neumont.Tools.ORM.ObjectModel.ObjectTypeHasAbbreviation.Abbreviation</value>
+    <comment>Description for DomainRole &apos;Abbreviation&apos; on DomainRelationship &apos;ObjectTypeHasAbbreviation&apos;</comment>
   </data>
-  <data name="Neumont.Tools.ORM.ObjectModel.ObjectTypeHasAlias/Alias.DisplayName" xml:space="preserve">
+  <data name="Neumont.Tools.ORM.ObjectModel.ObjectTypeHasAbbreviation/Abbreviation.DisplayName" xml:space="preserve">
     <value>Alias</value>
-    <comment>DisplayName for DomainRole &apos;Alias&apos; on DomainRelationship &apos;ObjectTypeHasAlias&apos;</comment>
+    <comment>DisplayName for DomainRole &apos;Abbreviation&apos; on DomainRelationship &apos;ObjectTypeHasAbbreviation&apos;</comment>
   </data>
-  <data name="Neumont.Tools.ORM.ObjectModel.ObjectTypeHasAlias/Alias.PropertyDisplayName" xml:space="preserve">
+  <data name="Neumont.Tools.ORM.ObjectModel.ObjectTypeHasAbbreviation/Abbreviation.PropertyDisplayName" xml:space="preserve">
     <value>Element</value>
-    <comment>PropertyDisplayName for DomainRole &apos;Alias&apos; on DomainRelationship &apos;ObjectTypeHasAlias&apos;</comment>
+    <comment>PropertyDisplayName for DomainRole &apos;Abbreviation&apos; on DomainRelationship &apos;ObjectTypeHasAbbreviation&apos;</comment>
   </data>
   <data name="Neumont.Tools.ORM.ObjectModel.NameGeneratorContainsOmittedWord.Description" xml:space="preserve">
     <value>Description for Neumont.Tools.ORM.ObjectModel.NameGeneratorContainsOmittedWord</value>

@@ -58,7 +58,7 @@
 		<xs:attribute name="id" type="xs:ID"/>
 	</xs:complexType>
 	<xs:complexType name="AliasesType">
-		<xs:sequence minOccurs="0">
+		<xs:sequence minOccurs="0" maxOccurs="unbounded">
 			<xs:element name="Alias" type="AliasType"/>
 		</xs:sequence>
 	</xs:complexType>
@@ -66,7 +66,7 @@
 		<xs:attribute name="id" type="xs:ID" use="required"/>
 		<xs:attribute name="Name" type="xs:string" use="required"/>
 		<xs:attribute name="NameConsumer" type="xs:string" use="required"/>
-		<xs:attribute name="NameUsage" type="xs:string" use="required"/>
+		<xs:attribute name="NameUsage" type="xs:string"/>
 	</xs:complexType>
 	<xs:complexType name="NameConsumer">
 		<xs:attribute name="NameUsage" type="xs:string" use="optional"/>
@@ -117,7 +117,7 @@
 		<xs:sequence>
 			<xs:element name="Definitions" type="DefinitionsType" minOccurs="0"/>
 			<xs:element name="Notes" type="NotesType" minOccurs="0"/>
-			<xs:element name="Aliases" type="AliasesType" minOccurs="0"/>
+			<xs:element name="Abbreviations" type="AliasesType" minOccurs="0"/>
 			<xs:element name="PlayedRoles" type="PlayedRoles" minOccurs="0"/>
 		</xs:sequence>
 		<xs:attribute name="Name" use="required" type="xs:string"/>
