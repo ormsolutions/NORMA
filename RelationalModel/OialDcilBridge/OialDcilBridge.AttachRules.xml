@@ -17,6 +17,15 @@
 	</arg:Copyright>
 	<arg:Model class="ORMAbstractionToConceptualDatabaseBridgeDomainModel">
 		<arg:RuleContainer class="ORMAbstractionToConceptualDatabaseBridgeDomainModel.ModificationTracker">
+			<arg:AddRule methodName="AbbreviationAddedRule">
+				<arg:RuleOn targetType="ObjectTypeHasAbbreviation" targetTypeQualifier="Neumont.Tools.ORM.ObjectModel"/>
+			</arg:AddRule>
+			<arg:ChangeRule methodName="AbbreviationChangedRule">
+				<arg:RuleOn targetType="NameAlias" targetTypeQualifier="Neumont.Tools.ORM.ObjectModel"/>
+			</arg:ChangeRule>
+			<arg:DeleteRule methodName="AbbreviationDeletedRule">
+				<arg:RuleOn targetType="ObjectTypeHasAbbreviation" targetTypeQualifier="Neumont.Tools.ORM.ObjectModel"/>
+			</arg:DeleteRule>
 			<arg:ChangeRule methodName="AbstractionModelChangedRule">
 				<arg:RuleOn targetType="AbstractionModel" targetTypeQualifier="Neumont.Tools.ORMAbstraction"/>
 			</arg:ChangeRule>

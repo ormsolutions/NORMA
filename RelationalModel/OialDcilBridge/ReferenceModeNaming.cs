@@ -173,7 +173,7 @@ namespace Neumont.Tools.ORMAbstractionToConceptualDatabaseBridge
 							string.Format(culture, ResourceStrings.ReferenceModeNamingCurrentFormatStringEntityTypeName, objectType.Name),
 							string.Format(culture, ResourceStrings.ReferenceModeNamingCurrentFormatStringReferenceModeName, referenceMode.Name),
 							string.Format(culture, ResourceStrings.ReferenceModeNamingCurrentFormatStringValueTypeName, objectType.PreferredIdentifier.RoleCollection[0].RolePlayer.Name),
-							string.Format(culture, ResourceStrings.ReferenceModeNamingCurrentFormatStringCustomFormat, ResolveObjectTypeName(objectType, null, ReferenceModeNamingChoice.CustomFormat, null)),
+							string.Format(culture, ResourceStrings.ReferenceModeNamingCurrentFormatStringCustomFormat, ResolveObjectTypeName(objectType, null, ReferenceModeNamingChoice.CustomFormat, null, null)),
 						};
 					}
 					return null;
@@ -1020,33 +1020,21 @@ namespace Neumont.Tools.ORMAbstractionToConceptualDatabaseBridge
 		}
 		#endregion // DefaultReferenceModeNamingCustomFormatPropertyDescriptor class
 		#region Static helper functions
-		/// <summary>
-		/// Given two <see cref="ObjectType"/> instances, determine if the <paramref name="possibleEntityType"/>
-		/// is related to <paramref name="possibleValueType"/> via a reference mode pattern. If so, use the
-		/// reference mode naming settings associated with the entity type to determine an appropriate name.
-		/// </summary>
-		/// <param name="possibleEntityType">An <see cref="ObjectType"/> that may be an EntityType with a <see cref="ReferenceMode"/></param>
-		/// <param name="possibleValueType">An <see cref="ValueType"/> that may be the reference mode value type associated with <paramref name="possibleEntityType"/>. Set to <see langword="null"/> to automatically retrieve the available value type.</param>
-		/// <param name="addNamePartCallback">A <see cref="AddNamePart"/> delegate used to add a name</param>
-		public static void ResolveObjectTypeName(ObjectType possibleEntityType, ObjectType possibleValueType, AddNamePart addNamePartCallback)
-		{
-			ResolveObjectTypeName(possibleEntityType, possibleValueType, null, addNamePartCallback);
-		}
-		private static Regex myReferenceModeFormatStringParser;
-		private static Regex ReferenceModeFormatStringParser
+		private static Regex myFormatStringParser;
+		private static Regex FormatStringParser
 		{
 			get
 			{
-				Regex retVal = myReferenceModeFormatStringParser;
+				Regex retVal = myFormatStringParser;
 				if (retVal == null)
 				{
 					System.Threading.Interlocked.CompareExchange<Regex>(
-						ref myReferenceModeFormatStringParser,
+						ref myFormatStringParser,
 						new Regex(
 							@"(?n)\G(?<Before>.*?)((?<!\{)\{)(?<ReplaceIndex>\d+)(\}(?!\}))",
 							RegexOptions.Compiled),
 						null);
-					retVal = myReferenceModeFormatStringParser;
+					retVal = myFormatStringParser;
 				}
 				return retVal;
 			}
@@ -1059,10 +1047,11 @@ namespace Neumont.Tools.ORMAbstractionToConceptualDatabaseBridge
 		/// <param name="possibleEntityType">An <see cref="ObjectType"/> that may be an EntityType with a <see cref="ReferenceMode"/></param>
 		/// <param name="possibleValueType">An <see cref="ValueType"/> that may be the reference mode value type associated with <paramref name="possibleEntityType"/>. Set to <see langword="null"/> to automatically retrieve the available value type.</param>
 		/// <param name="forceNamingChoice">Use this naming choice (if specified) instead of the current setting on <paramref name="possibleEntityType"/></param>
+		/// <param name="nameGenerator">An optional <see cref="NameGenerator"/>, used to retrieve abbreviations for <see cref="ObjectType"/> names</param>
 		/// <param name="addNamePartCallback">A <see cref="AddNamePart"/> delegate used to add a name. If this parameter is set,
 		/// then we attempt to split the ValueTypeName into pieces and add through the callback instead of using the return value.</param>
-		/// <returns>An appropriate name, or <see langword="null"/> if the expected relationship does not pan out.</returns>
-		private static string ResolveObjectTypeName(ObjectType possibleEntityType, ObjectType possibleValueType, ReferenceModeNamingChoice? forceNamingChoice, AddNamePart addNamePartCallback)
+		/// <returns>An appropriate name, or <see langword="null"/> if the expected relationship does not pan out and <paramref name="addNamePartCallback"/> is <see langword="null"/>.</returns>
+		public static string ResolveObjectTypeName(ObjectType possibleEntityType, ObjectType possibleValueType, ReferenceModeNamingChoice? forceNamingChoice, NameGenerator nameGenerator, AddNamePart addNamePartCallback)
 		{
 			ReferenceMode referenceMode;
 			ReferenceModeType referenceModeType;
@@ -1073,6 +1062,10 @@ namespace Neumont.Tools.ORMAbstractionToConceptualDatabaseBridge
 				ObjectType actualValueType = possibleEntityType.PreferredIdentifier.RoleCollection[0].RolePlayer;
 				if (possibleValueType != null && actualValueType != possibleValueType)
 				{
+					if (addNamePartCallback != null)
+					{
+						addNamePartCallback(possibleEntityType.GetAbbreviatedName(nameGenerator, true), null);
+					}
 					return null;
 				}
 
@@ -1085,7 +1078,7 @@ namespace Neumont.Tools.ORMAbstractionToConceptualDatabaseBridge
 							case EffectiveReferenceModeNamingChoice.EntityTypeName:
 								if (addNamePartCallback != null)
 								{
-									addNamePartCallback(possibleEntityType.Name, null);
+									addNamePartCallback(possibleEntityType.GetAbbreviatedName(nameGenerator, true), null);
 									return null;
 								}
 								else
@@ -1095,7 +1088,15 @@ namespace Neumont.Tools.ORMAbstractionToConceptualDatabaseBridge
 							case EffectiveReferenceModeNamingChoice.ValueTypeName:
 								if (addNamePartCallback != null)
 								{
-									CheckRegex(referenceMode, referenceModeType, possibleEntityType, addNamePartCallback);
+									string abbreviatedName = actualValueType.GetAbbreviatedName(nameGenerator, false);
+									if (abbreviatedName != null)
+									{
+										addNamePartCallback(abbreviatedName, null);
+									}
+									else
+									{
+										SeparateReferenceModeParts(referenceMode, referenceModeType, possibleEntityType, nameGenerator, addNamePartCallback);
+									}
 									return null;
 								}
 								else
@@ -1117,7 +1118,7 @@ namespace Neumont.Tools.ORMAbstractionToConceptualDatabaseBridge
 					case ReferenceModeNamingChoice.EntityTypeName:
 						if (addNamePartCallback != null)
 						{
-							addNamePartCallback(possibleEntityType.Name, null);
+							addNamePartCallback(possibleEntityType.GetAbbreviatedName(nameGenerator, true), null);
 							return null;
 						}
 						else
@@ -1125,10 +1126,17 @@ namespace Neumont.Tools.ORMAbstractionToConceptualDatabaseBridge
 							return possibleEntityType.Name;
 						}
 					case ReferenceModeNamingChoice.ValueTypeName:
-						//UNDONE: Ask Matt if the regex should also be used here
 						if (addNamePartCallback != null)
 						{
-							CheckRegex(referenceMode, referenceModeType, possibleEntityType, addNamePartCallback);
+							string abbreviatedName = actualValueType.GetAbbreviatedName(nameGenerator, false);
+							if (abbreviatedName != null)
+							{
+								addNamePartCallback(abbreviatedName, null);
+							}
+							else
+							{
+								SeparateReferenceModeParts(referenceMode, referenceModeType, possibleEntityType, nameGenerator, addNamePartCallback);
+							}
 							return null;
 						}
 						else
@@ -1155,28 +1163,36 @@ namespace Neumont.Tools.ORMAbstractionToConceptualDatabaseBridge
 				}
 				if (!string.IsNullOrEmpty(customFormat))
 				{
-					return string.Format(CultureInfo.CurrentCulture, customFormat, actualValueType.Name, possibleEntityType.Name, referenceMode.Name);
+					if (addNamePartCallback != null)
+					{
+						SeparateCustomFormatParts(customFormat, referenceMode, referenceModeType, possibleEntityType, actualValueType, nameGenerator, addNamePartCallback);
+						return null;
+					}
+					else
+					{
+						return string.Format(CultureInfo.CurrentCulture, customFormat, actualValueType.Name, possibleEntityType.Name, referenceMode.Name);
+					}
 				}
 			}
 			if (addNamePartCallback != null)
 			{
-				addNamePartCallback(possibleEntityType.Name, null);
+				addNamePartCallback(possibleEntityType.GetAbbreviatedName(nameGenerator, true), null);
 			}
 			return null;
 		}
 
 		/// <summary>
-		/// Used to separate value types into their constituant parts and and specify whether to explicitly case the word or not
+		/// Used to separate value types into their constituent parts and and specify whether to explicitly case the word or not
 		/// </summary>
 		/// <param name="referenceMode">Used to get the name of the <see cref="ReferenceMode"/></param>
 		/// <param name="referenceModeType">Used to determine if the mode is UnitBased and should therefore be explicitly cased</param>
-		/// <param name="possibleEntityType">Used to access the name of the <see cref="ObjectType"/></param>
+		/// <param name="entityType">The EntityType that has this <paramref name="referenceMode"/></param>
+		/// <param name="nameGenerator">The <see cref="NameGenerator"/>, used to retrieve abbreviations for <see cref="ObjectType"/> names</param>
 		/// <param name="addNamePartCallback">Used to add the names to the name collection</param>
-		private static void CheckRegex(ReferenceMode referenceMode, ReferenceModeType referenceModeType, ObjectType possibleEntityType, AddNamePart addNamePartCallback)
+		private static void SeparateReferenceModeParts(ReferenceMode referenceMode, ReferenceModeType referenceModeType, ObjectType entityType, NameGenerator nameGenerator, AddNamePart addNamePartCallback)
 		{
 			string referenceModeFormatString = referenceMode.FormatString;
-			Regex formatStringParser = ReferenceModeFormatStringParser;
-			Match match = formatStringParser.Match(referenceModeFormatString);
+			Match match = FormatStringParser.Match(referenceModeFormatString);
 			int trailingTextIndex = 0;
 			while (match.Success)
 			{
@@ -1189,7 +1205,7 @@ namespace Neumont.Tools.ORMAbstractionToConceptualDatabaseBridge
 				switch (int.Parse(groups["ReplaceIndex"].Value))
 				{
 					case 0:
-						addNamePartCallback(possibleEntityType.Name, null);
+						addNamePartCallback(entityType.GetAbbreviatedName(nameGenerator, true), null);
 						break;
 					case 1:
 						addNamePartCallback(new NamePart(referenceMode.Name, referenceModeType == ReferenceModeType.UnitBased ? NamePartOptions.ExplicitCasing : NamePartOptions.None), null);
@@ -1201,6 +1217,56 @@ namespace Neumont.Tools.ORMAbstractionToConceptualDatabaseBridge
 			if (trailingTextIndex < referenceModeFormatString.Length)
 			{
 				addNamePartCallback(referenceModeFormatString.Substring(trailingTextIndex), null);
+			}
+		}
+		/// <summary>
+		/// Used to separate value types into their constituent parts and and specify whether to explicitly case the word or not
+		/// </summary>
+		/// <param name="customFormat">The custom format string</param>
+		/// <param name="referenceMode">Used to get the name of the <see cref="ReferenceMode"/></param>
+		/// <param name="referenceModeType">Used to determine if the mode is UnitBased and should therefore be explicitly cased</param>
+		/// <param name="entityType">The EntityType that has this <paramref name="referenceMode"/></param>
+		/// <param name="valueType">The ValueType that satisfies the <paramref name="referenceMode"/> with the <paramref name="entityType"/></param>
+		/// <param name="nameGenerator">The <see cref="NameGenerator"/>, used to retrieve abbreviations for <see cref="ObjectType"/> names</param>
+		/// <param name="addNamePartCallback">Used to add the names to the name collection</param>
+		private static void SeparateCustomFormatParts(string customFormat, ReferenceMode referenceMode, ReferenceModeType referenceModeType, ObjectType entityType, ObjectType valueType, NameGenerator nameGenerator, AddNamePart addNamePartCallback)
+		{
+			Match match = FormatStringParser.Match(customFormat);
+			int trailingTextIndex = 0;
+			while (match.Success)
+			{
+				GroupCollection groups = match.Groups;
+				string before = groups["Before"].Value;
+				if (before.Length != 0)
+				{
+					addNamePartCallback(before, null);
+				}
+				switch (int.Parse(groups["ReplaceIndex"].Value))
+				{
+					case 0: // ValueType
+						string abbreviatedName = valueType.GetAbbreviatedName(nameGenerator, false);
+						if (abbreviatedName != null)
+						{
+							addNamePartCallback(abbreviatedName, null);
+						}
+						else
+						{
+							SeparateReferenceModeParts(referenceMode, referenceModeType, entityType, nameGenerator, addNamePartCallback);
+						}
+						break;
+					case 1: // EntityType
+						addNamePartCallback(entityType.GetAbbreviatedName(nameGenerator, true), null);
+						break;
+					case 2: // ReferenceMode
+						addNamePartCallback(new NamePart(referenceMode.Name, referenceModeType == ReferenceModeType.UnitBased ? NamePartOptions.ExplicitCasing : NamePartOptions.None), null);
+						break;
+				}
+				trailingTextIndex += match.Length;
+				match = match.NextMatch();
+			}
+			if (trailingTextIndex < customFormat.Length)
+			{
+				addNamePartCallback(customFormat.Substring(trailingTextIndex), null);
 			}
 		}
 		/// <summary>

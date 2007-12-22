@@ -230,6 +230,19 @@ namespace Neumont.Tools.ORM.ObjectModel
 			return ValueTypeHasDataType.GetLinkToDataType(this);
 		}
 		#endregion // CustomStorage handlers
+		#region Abbreviation Helpers
+		/// <summary>
+		/// Return the abbreviated name that is the best match for the associated <paramref name="nameGenerator"/>
+		/// </summary>
+		/// <param name="nameGenerator">The <see cref="NameGenerator"/> context to retrieve an abbreviation for</param>
+		/// <param name="alwaysReturnName">If <see langword="true"/>, then return the <see cref="P:Name"/> value if no abbreviation is specified</param>
+		/// <returns>The appropriate name.</returns>
+		public string GetAbbreviatedName(NameGenerator nameGenerator, bool alwaysReturnName)
+		{
+			NameAlias alias = nameGenerator.FindMatchingAlias(AbbreviationCollection);
+			return (alias != null) ? alias.Name : alwaysReturnName ? Name : null;
+		}
+		#endregion // Abbreviation Helpers
 		#region Objectification Property
 		/// <summary>
 		/// Return the Objectification relationship that

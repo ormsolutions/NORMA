@@ -4936,7 +4936,7 @@ namespace Neumont.Tools.ORM.ObjectModel
 		/// </summary>
 		[DslDesign::DisplayNameResource("Neumont.Tools.ORM.ObjectModel.ObjectTypeHasAbbreviation/ObjectType.DisplayName", typeof(global::Neumont.Tools.ORM.ObjectModel.ORMCoreDomainModel), "Neumont.Tools.ORM.GeneratedCode.CoreDomainModelResx")]
 		[DslDesign::DescriptionResource("Neumont.Tools.ORM.ObjectModel.ObjectTypeHasAbbreviation/ObjectType.Description", typeof(global::Neumont.Tools.ORM.ObjectModel.ORMCoreDomainModel), "Neumont.Tools.ORM.GeneratedCode.CoreDomainModelResx")]
-		[DslModeling::DomainRole(DslModeling::DomainRoleOrder.Source, PropertyName = "AliasCollection", PropertyDisplayNameKey="Neumont.Tools.ORM.ObjectModel.ObjectTypeHasAbbreviation/ObjectType.PropertyDisplayName", Multiplicity = DslModeling::Multiplicity.ZeroMany)]
+		[DslModeling::DomainRole(DslModeling::DomainRoleOrder.Source, PropertyName = "AbbreviationCollection", PropertyDisplayNameKey="Neumont.Tools.ORM.ObjectModel.ObjectTypeHasAbbreviation/ObjectType.PropertyDisplayName", Multiplicity = DslModeling::Multiplicity.ZeroMany)]
 		[DslModeling::DomainObjectId("2c863159-2675-4f32-a30d-83c573a207c7")]
 		public virtual ObjectType ObjectType
 		{
@@ -5026,13 +5026,13 @@ namespace Neumont.Tools.ORM.ObjectModel
 		}
 				
 		#endregion
-		#region Static methods to access AliasCollection of a ObjectType
+		#region Static methods to access AbbreviationCollection of a ObjectType
 		/// <summary>
-		/// Gets a list of AliasCollection.
+		/// Gets a list of AbbreviationCollection.
 		/// </summary>
 		[global::System.Diagnostics.DebuggerStepThrough]
 		[global::System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Design", "CA1011")]
-		public static DslModeling::LinkedElementCollection<NameAlias> GetAliasCollection(ObjectType element)
+		public static DslModeling::LinkedElementCollection<NameAlias> GetAbbreviationCollection(ObjectType element)
 		{
 			return new DslModeling::LinkedElementCollection<NameAlias>(element, ObjectTypeDomainRoleId);
 		}
@@ -5064,7 +5064,7 @@ namespace Neumont.Tools.ORM.ObjectModel
 		/// </summary>
 		[global::System.Diagnostics.DebuggerStepThrough]
 		[global::System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Design", "CA1011")]
-		public static global::System.Collections.ObjectModel.ReadOnlyCollection<global::Neumont.Tools.ORM.ObjectModel.ObjectTypeHasAbbreviation> GetLinksToAliasCollection ( global::Neumont.Tools.ORM.ObjectModel.ObjectType objectTypeInstance )
+		public static global::System.Collections.ObjectModel.ReadOnlyCollection<global::Neumont.Tools.ORM.ObjectModel.ObjectTypeHasAbbreviation> GetLinksToAbbreviationCollection ( global::Neumont.Tools.ORM.ObjectModel.ObjectType objectTypeInstance )
 		{
 			return DslModeling::DomainRoleInfo.GetElementLinks<global::Neumont.Tools.ORM.ObjectModel.ObjectTypeHasAbbreviation>(objectTypeInstance, global::Neumont.Tools.ORM.ObjectModel.ObjectTypeHasAbbreviation.ObjectTypeDomainRoleId);
 		}

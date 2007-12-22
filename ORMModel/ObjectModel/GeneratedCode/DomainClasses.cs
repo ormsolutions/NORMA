@@ -3670,13 +3670,13 @@ namespace Neumont.Tools.ORM.ObjectModel
 			}
 		}
 		#endregion
-		#region AliasCollection opposite domain role accessor
+		#region AbbreviationCollection opposite domain role accessor
 		/// <summary>
-		/// Gets a list of AliasCollection.
+		/// Gets a list of AbbreviationCollection.
 		/// Description for
 		/// Neumont.Tools.ORM.ObjectModel.ObjectTypeHasAbbreviation.ObjectType
 		/// </summary>
-		public virtual DslModeling::LinkedElementCollection<NameAlias> AliasCollection
+		public virtual DslModeling::LinkedElementCollection<NameAlias> AbbreviationCollection
 		{
 			[global::System.Diagnostics.DebuggerStepThrough]
 			get

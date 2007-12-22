@@ -1234,7 +1234,40 @@ namespace Neumont.Tools.ORM.ObjectModel
 			}
 			return false;
 		}
-		#endregion
+		/// <summary>
+		/// Get a format string to hyphen bind a single role
+		/// </summary>
+		/// <param name="reading">The reading to use</param>
+		/// <param name="role">The role to get a string for</param>
+		/// <param name="unaryRoleIndex">Treat as a unary role if this index is set.</param>
+		/// <returns>A format string with a single replacement field if the role is hyphen bound, or <see langword="null"/> otherwise.</returns>
+		public static string GetFormatStringForHyphenBoundRole(IReading reading, RoleBase role, int? unaryRoleIndex)
+		{
+			IList<RoleBase> roles = reading.RoleCollection;
+			int roleCount = roles.Count;
+			bool isUnary = unaryRoleIndex.HasValue;
+			IFormatProvider formatProvider = CultureInfo.CurrentCulture;
+			Match match = MainRegex.Match(reading.Text);
+			while (match.Success)
+			{
+				GroupCollection groups = match.Groups;
+				string leftWord = groups["LeftHyphenWord"].Value;
+				string rightWord = groups["RightHyphenWord"].Value;
+				if (leftWord.Length != 0 || rightWord.Length != 0)
+				{
+					string stringReplaceIndex = groups["ReplaceIndex"].Value;
+					int replaceIndex = int.Parse(stringReplaceIndex, formatProvider);
+					if ((isUnary && replaceIndex == 0) ||
+						(replaceIndex < roleCount && roles[replaceIndex] == role))
+					{
+						return leftWord + groups["AfterLeftHyphen"].Value + "{0}" + groups["BeforeRightHyphen"].Value + rightWord;
+					}
+				}
+				match = match.NextMatch();
+			}
+			return null;
+		}
+		#endregion // Static Functions
 	}
 	#endregion // VerbalizationHyphenBinder struct
 }

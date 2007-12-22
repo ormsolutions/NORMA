@@ -313,6 +313,60 @@ namespace Neumont.Tools.ORMAbstractionToConceptualDatabaseBridge
 				}
 			}
 			/// <summary>
+			/// AddRule: typeof(Neumont.Tools.ORM.ObjectModel.ObjectTypeHasAbbreviation)
+			/// Regenerate names when an abbreviation is added
+			/// </summary>
+			private static void AbbreviationAddedRule(ElementAddedEventArgs e)
+			{
+				ORMCore.ObjectTypeHasAbbreviation link = (ORMCore.ObjectTypeHasAbbreviation)e.ModelElement;
+				Store store = link.Store;
+				if (store.DomainDataDirectory.GetDomainClass(RelationalNameGenerator.DomainClassId).IsDerivedFrom(link.Abbreviation.NameConsumerDomainClass))
+				{
+					foreach (Schema schema in store.ElementDirectory.FindElements<Schema>(true))
+					{
+						ValidateSchemaNamesChanged(schema);
+					}
+				}
+			}
+			/// <summary>
+			/// DeleteRule: typeof(Neumont.Tools.ORM.ObjectModel.ObjectTypeHasAbbreviation)
+			/// Regenerate names when an abbreviation is deleted
+			/// </summary>
+			private static void AbbreviationDeletedRule(ElementDeletedEventArgs e)
+			{
+				ORMCore.ObjectTypeHasAbbreviation link = (ORMCore.ObjectTypeHasAbbreviation)e.ModelElement;
+				if (!link.ObjectType.IsDeleted)
+				{
+					Store store = link.Store;
+					if (store.DomainDataDirectory.GetDomainClass(RelationalNameGenerator.DomainClassId).IsDerivedFrom(link.Abbreviation.NameConsumerDomainClass))
+					{
+						foreach (Schema schema in store.ElementDirectory.FindElements<Schema>(true))
+						{
+							ValidateSchemaNamesChanged(schema);
+						}
+					}
+				}
+			}
+			/// <summary>
+			/// ChangeRule: typeof(Neumont.Tools.ORM.ObjectModel.NameAlias)
+			/// Regenerate names when an abbreviation is changed
+			/// </summary>
+			private static void AbbreviationChangedRule(ElementPropertyChangedEventArgs e)
+			{
+				if (e.DomainProperty.Id == ORMCore.NameAlias.NameDomainPropertyId)
+				{
+					ORMCore.NameAlias abbreviation = (ORMCore.NameAlias)e.ModelElement;
+					Store store = abbreviation.Store;
+					if (store.DomainDataDirectory.GetDomainClass(RelationalNameGenerator.DomainClassId).IsDerivedFrom(abbreviation.NameConsumerDomainClass))
+					{
+						foreach (Schema schema in store.ElementDirectory.FindElements<Schema>(true))
+						{
+							ValidateSchemaNamesChanged(schema);
+						}
+					}
+				}
+			}
+			/// <summary>
 			/// ChangeRule: typeof(Neumont.Tools.ORM.ObjectModel.Role)
 			/// </summary>
 			private static void RoleNameChangedRule(ElementPropertyChangedEventArgs e)

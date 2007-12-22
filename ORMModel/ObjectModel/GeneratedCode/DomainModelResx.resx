@@ -2510,7 +2510,7 @@
     <comment>DisplayName for DomainRole &apos;ObjectType&apos; on DomainRelationship &apos;ObjectTypeHasAbbreviation&apos;</comment>
   </data>
   <data name="Neumont.Tools.ORM.ObjectModel.ObjectTypeHasAbbreviation/ObjectType.PropertyDisplayName" xml:space="preserve">
-    <value>Alias Collection</value>
+    <value>Abbreviation Collection</value>
     <comment>PropertyDisplayName for DomainRole &apos;ObjectType&apos; on DomainRelationship &apos;ObjectTypeHasAbbreviation&apos;</comment>
   </data>
   <data name="Neumont.Tools.ORM.ObjectModel.ObjectTypeHasAbbreviation/Abbreviation.Description" xml:space="preserve">

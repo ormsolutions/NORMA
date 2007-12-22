@@ -399,6 +399,79 @@ namespace Neumont.Tools.ORM.ObjectModel
 			Debug.Fail("Generator not loaded with domain model");
 			return null;
 		}
+		/// <summary>
+		/// Retrieve the best matching alias for the provided set of aliases
+		/// </summary>
+		/// <param name="aliases">A set of alias elements. The best match is returned.</param>
+		/// <returns>A <see cref="NameAlias"/>, or <see langword="null"/> if none is available.</returns>
+		public NameAlias FindMatchingAlias(IEnumerable<NameAlias> aliases)
+		{
+			NameAlias bestMatch = null;
+			Type usageType = NameUsageType;
+			DomainClassInfo thisClassInfo = GetDomainClass();
+			DomainClassInfo matchedClassInfo = null;
+			bool matchedUsageType = false;
+			int closestDistance = int.MaxValue;
+			foreach (NameAlias alias in aliases)
+			{
+				DomainClassInfo testClassInfo = alias.NameConsumerDomainClass;
+				Type testUsageType = alias.NameUsageType;
+				if (testClassInfo == thisClassInfo)
+				{
+					if (usageType == testUsageType)
+					{
+						bestMatch = alias;
+						break;
+					}
+					else if (usageType != null && testUsageType == null)
+					{
+						matchedClassInfo = testClassInfo;
+						bestMatch = alias;
+						// Keep going to see if we get an exact usage match
+					}
+				}
+				else
+				{
+					DomainClassInfo iterateClassInfo = thisClassInfo.BaseDomainClass;
+					int testDistance = 0;
+					do
+					{
+						++testDistance;
+						if (iterateClassInfo == testClassInfo)
+						{
+							if (testDistance <= closestDistance)
+							{
+								if (testClassInfo == matchedClassInfo)
+								{
+									if (!matchedUsageType)
+									{
+										bestMatch = alias;
+										matchedUsageType = usageType == testUsageType;
+									}
+								}
+								else if (usageType == testUsageType)
+								{
+									closestDistance = testDistance;
+									matchedClassInfo = testClassInfo;
+									matchedUsageType = true;
+									bestMatch = alias;
+								}
+								else if (usageType != null && testUsageType == null)
+								{
+									closestDistance = testDistance;
+									matchedClassInfo = testClassInfo;
+									matchedUsageType = false;
+									bestMatch = alias;
+								}
+							}
+							break;
+						}
+						iterateClassInfo = iterateClassInfo.BaseDomainClass;
+					} while (iterateClassInfo != null);
+				}
+			}
+			return bestMatch;
+		}
 		#endregion // GetGeneratorSettings
 	}
 	#endregion // NameGenerator class

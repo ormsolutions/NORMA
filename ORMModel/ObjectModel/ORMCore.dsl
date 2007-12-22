@@ -2102,7 +2102,7 @@
 				<DomainRelationshipMoniker Name="ElementHasAlias"/>
 			</BaseRelationship>
 			<Source>
-				<DomainRole Name="ObjectType" PropertyName="AliasCollection" Multiplicity="ZeroMany" PropagatesDelete="false" IsPropertyGenerator="true" DisplayName="ObjectType" Id="2C863159-2675-4F32-A30D-83C573A207C7">
+				<DomainRole Name="ObjectType" PropertyName="AbbreviationCollection" Multiplicity="ZeroMany" PropagatesDelete="false" IsPropertyGenerator="true" DisplayName="ObjectType" Id="2C863159-2675-4F32-A30D-83C573A207C7">
 					<RolePlayer>
 						<DomainClassMoniker Name="ObjectType"/>
 					</RolePlayer>
