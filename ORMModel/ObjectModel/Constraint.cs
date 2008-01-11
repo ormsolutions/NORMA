@@ -1975,7 +1975,7 @@ namespace Neumont.Tools.ORM.ObjectModel
 					}
 				}
 			}
-			VerifyCompatibleRolePlayerTypeForRule(notifyAdded);
+			VerifyCompatibleRolePlayerTypeForRule(notifyAdded, tooFewOrTooManySequences || !arityValid);
 		}
 		#endregion // VerifyRoleSequenceArityForRule
 		#region VerifyCompatibleRolePlayerTypeForRule
@@ -2106,6 +2106,7 @@ namespace Neumont.Tools.ORM.ObjectModel
 		/// <summary>
 		/// Validator callback for CompatibleRolePlayerTypeError
 		/// </summary>
+		[DelayValidatePriority(1)] // Run after arity validation is complete
 		private static void DelayValidateCompatibleRolePlayerTypeError(ModelElement element)
 		{
 			(element as SetComparisonConstraint).VerifyCompatibleRolePlayerTypeForRule(null);
@@ -2431,7 +2432,7 @@ namespace Neumont.Tools.ORM.ObjectModel
 			// Calls added here need corresponding delayed calls in DelayValidateErrors
 			VerifyRoleSequenceCountForRule(notifyAdded);
 			// VerifyRoleSequenceArityForRule(notifyAdded); // This is called by VeryRoleSequenceCountForRule
-			VerifyCompatibleRolePlayerTypeForRule(notifyAdded);
+			// VerifyCompatibleRolePlayerTypeForRule(notifyAdded); // This is called by VerifyRoleSequenqeArityForRule
 		}
 		void IModelErrorOwner.ValidateErrors(INotifyElementAdded notifyAdded)
 		{
@@ -2444,7 +2445,7 @@ namespace Neumont.Tools.ORM.ObjectModel
 		{
 			FrameworkDomainModel.DelayValidateElement(this, DelayValidateRoleSequenceCountErrors);
 			// FrameworkDomainModel.DelayValidateElement(this, DelayValidateArityMismatchError); // This is called by DelayValidateRoleSequenceCountErrors
-			FrameworkDomainModel.DelayValidateElement(this, DelayValidateCompatibleRolePlayerTypeError);
+			// FrameworkDomainModel.DelayValidateElement(this, DelayValidateCompatibleRolePlayerTypeError); // This is called by DelayValidateArityMismatchError
 		}
 		void IModelErrorOwner.DelayValidateErrors()
 		{
