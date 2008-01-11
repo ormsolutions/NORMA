@@ -3393,6 +3393,46 @@
 			</Target>
 		</DomainRelationship>
 
+		<DomainRelationship Name="ModelNoteReferencesSetConstraint" Namespace="Neumont.Tools.ORM.ObjectModel" IsEmbedding="false" Id="F5582A97-F2AE-45FA-A3B8-A00D62020519">
+			<BaseRelationship>
+				<DomainRelationshipMoniker Name="ModelNoteReferencesModelElement"/>
+			</BaseRelationship>
+			<Source>
+				<DomainRole Name="Note" PropertyName="SetConstraintCollection" Multiplicity="ZeroMany" PropagatesDelete="false" IsPropertyGenerator="true" DisplayName="Note" Id="1D6BD804-5F9B-4558-97F7-CAD1E0D4F135">
+					<RolePlayer>
+						<DomainClassMoniker Name="ModelNote"/>
+					</RolePlayer>
+				</DomainRole>
+			</Source>
+			<Target>
+				<DomainRole Name="Element" PropertyName="ModelNoteCollection" Multiplicity="ZeroMany" PropagatesDelete="false" IsPropertyGenerator="true" DisplayName="Element" Id="D5ECAFC4-1E5C-471F-9E8D-54AF59FC44BB">
+					<RolePlayer>
+						<DomainClassMoniker Name="SetConstraint"/>
+					</RolePlayer>
+				</DomainRole>
+			</Target>
+		</DomainRelationship>
+
+		<DomainRelationship Name="ModelNoteReferencesSetComparisonConstraint" Namespace="Neumont.Tools.ORM.ObjectModel" IsEmbedding="false" Id="57A31B5C-E265-4C91-8C6C-151101258E28">
+			<BaseRelationship>
+				<DomainRelationshipMoniker Name="ModelNoteReferencesModelElement"/>
+			</BaseRelationship>
+			<Source>
+				<DomainRole Name="Note" PropertyName="SetComparisonConstraintCollection" Multiplicity="ZeroMany" PropagatesDelete="false" IsPropertyGenerator="true" DisplayName="Note" Id="C8AC78EC-FC49-4163-807B-C6A50E905354">
+					<RolePlayer>
+						<DomainClassMoniker Name="ModelNote"/>
+					</RolePlayer>
+				</DomainRole>
+			</Source>
+			<Target>
+				<DomainRole Name="Element" PropertyName="ModelNoteCollection" Multiplicity="ZeroMany" PropagatesDelete="false" IsPropertyGenerator="true" DisplayName="Element" Id="DF805505-E31F-42E8-9C65-7004E3F3D9BD">
+					<RolePlayer>
+						<DomainClassMoniker Name="SetComparisonConstraint"/>
+					</RolePlayer>
+				</DomainRole>
+			</Target>
+		</DomainRelationship>
+
 		<DomainRelationship Name="ObjectTypeHasCompatibleSupertypesError" Namespace="Neumont.Tools.ORM.ObjectModel" Id="4A739F80-00FA-4F02-BD81-ED60C79DEFC3">
 			<BaseRelationship>
 				<DomainRelationshipMoniker Name="ElementAssociatedWithModelError"/>

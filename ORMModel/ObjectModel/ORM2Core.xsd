@@ -100,6 +100,8 @@
 		<xs:choice minOccurs="0" maxOccurs="unbounded">
 			<xs:element name="FactType" type="FactRef"/>
 			<xs:element name="ObjectType" type="ObjectRef"/>
+			<xs:element name="SetConstraint" type="SetConstraintRef"/>
+			<xs:element name="SetComparisonConstraint" type="SetComparisonConstraintRef"/>
 		</xs:choice>
 	</xs:complexType>
 	<!--Objects and Object Types-->

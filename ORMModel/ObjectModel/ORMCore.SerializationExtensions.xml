@@ -112,9 +112,13 @@
 		<se:Container Name="ReferencedBy">
 			<se:Link RelationshipName="ModelNoteReferencesFactType" RoleName="Element"/>
 			<se:Link RelationshipName="ModelNoteReferencesObjectType" RoleName="Element"/>
+			<se:Link RelationshipName="ModelNoteReferencesSetConstraint" RoleName="Element"/>
+			<se:Link RelationshipName="ModelNoteReferencesSetComparisonConstraint" RoleName="Element"/>
 		</se:Container>
 		<se:Link Name="FactType" RelationshipName="ModelNoteReferencesFactType" RoleName="Element"/>
 		<se:Link Name="ObjectType" RelationshipName="ModelNoteReferencesObjectType" RoleName="Element"/>
+		<se:Link Name="SetConstraint" RelationshipName="ModelNoteReferencesSetConstraint" RoleName="Element"/>
+		<se:Link Name="SetComparisonConstraint" RelationshipName="ModelNoteReferencesSetComparisonConstraint" RoleName="Element"/>
 	</se:Element>
 	<!--Object Types-->
 	<se:Element Class="NameAlias" Name="Alias" Override="true">
@@ -585,6 +589,7 @@
 		<se:Link RelationshipName="SetComparisonConstraintHasContradictionError" RoleName="ContradictionError" WriteStyle="NotWritten"/>
 		<se:Link RelationshipName="SetComparisonConstraintHasDuplicateNameError" RoleName="DuplicateNameError" WriteStyle="NotWritten"/>
 		<se:Link RelationshipName="SetComparisonConstraintHasEqualityOrSubsetImpliedByMandatoryError" RoleName="EqualityOrSubsetImpliedByMandatoryError" WriteStyle="NotWritten"/>
+		<se:Link RelationshipName="ModelNoteReferencesSetComparisonConstraint" RoleName="Note" WriteStyle="NotWritten"/>
 	</se:Element>
 	<se:Element Class="SetComparisonConstraintRoleSequence" Name="RoleSequence" SortChildElements="true" Override="true">
 		<se:Attribute ID="Name" WriteStyle="NotWritten"/>
@@ -619,6 +624,7 @@
 		<se:Link RelationshipName="FactSetConstraint" RoleName="FactType" WriteStyle="NotWritten"/>
 		<se:Link RelationshipName="SetConstraintHasImplicationError" RoleName="ImplicationError" WriteStyle="NotWritten"/>
 		<se:Link RelationshipName="SetConstraintHasDuplicateNameError" RoleName="DuplicateNameError" WriteStyle="NotWritten"/>
+		<se:Link RelationshipName="ModelNoteReferencesSetConstraint" RoleName="Note" WriteStyle="NotWritten"/>
 	</se:Element>
 	<se:Element Class="ConstraintRoleSequenceHasRole" Name="Role" LinkOnly="true">
 		<se:Link RelationshipName="ConstraintRoleSequenceHasRoleHasProjectionJoin" RoleName="ProjectionJoin" Name="ProjectionJoin"/>

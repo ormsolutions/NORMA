@@ -22538,6 +22538,449 @@ namespace Neumont.Tools.ORM.ObjectModel
 namespace Neumont.Tools.ORM.ObjectModel
 {
 	/// <summary>
+	/// DomainRelationship ModelNoteReferencesSetConstraint
+	/// Description for Neumont.Tools.ORM.ObjectModel.ModelNoteReferencesSetConstraint
+	/// </summary>
+	[DslDesign::DisplayNameResource("Neumont.Tools.ORM.ObjectModel.ModelNoteReferencesSetConstraint.DisplayName", typeof(global::Neumont.Tools.ORM.ObjectModel.ORMCoreDomainModel), "Neumont.Tools.ORM.GeneratedCode.CoreDomainModelResx")]
+	[DslDesign::DescriptionResource("Neumont.Tools.ORM.ObjectModel.ModelNoteReferencesSetConstraint.Description", typeof(global::Neumont.Tools.ORM.ObjectModel.ORMCoreDomainModel), "Neumont.Tools.ORM.GeneratedCode.CoreDomainModelResx")]
+	[global::System.CLSCompliant(true)]
+	[DslModeling::DomainRelationship()]
+	[DslModeling::DomainObjectId("f5582a97-f2ae-45fa-a3b8-a00d62020519")]
+	public partial class ModelNoteReferencesSetConstraint : ModelNoteReferencesModelElement
+	{
+		#region Constructors, domain class Id
+		
+		/// <summary>
+		/// ModelNoteReferencesSetConstraint domain class Id.
+		/// </summary>
+		public static readonly new global::System.Guid DomainClassId = new global::System.Guid(0xf5582a97, 0xf2ae, 0x45fa, 0xa3, 0xb8, 0xa0, 0x0d, 0x62, 0x02, 0x05, 0x19);
+	
+				
+		/// <summary>
+		/// Constructor
+		/// Creates a ModelNoteReferencesSetConstraint link in the same Partition as the given ModelNote
+		/// </summary>
+		/// <param name="source">ModelNote to use as the source of the relationship.</param>
+		/// <param name="target">SetConstraint to use as the target of the relationship.</param>
+		public ModelNoteReferencesSetConstraint(ModelNote source, SetConstraint target)
+			: base((source != null ? source.Partition : null), new DslModeling::RoleAssignment[]{new DslModeling::RoleAssignment(ModelNoteReferencesSetConstraint.NoteDomainRoleId, source), new DslModeling::RoleAssignment(ModelNoteReferencesSetConstraint.ElementDomainRoleId, target)}, null)
+		{
+		}
+		
+		/// <summary>
+		/// Constructor
+		/// </summary>
+		/// <param name="store">Store where new link is to be created.</param>
+		/// <param name="roleAssignments">List of relationship role assignments.</param>
+		public ModelNoteReferencesSetConstraint(DslModeling::Store store, params DslModeling::RoleAssignment[] roleAssignments)
+			: base(store != null ? store.DefaultPartition : null, roleAssignments, null)
+		{
+		}
+		
+		/// <summary>
+		/// Constructor
+		/// </summary>
+		/// <param name="store">Store where new link is to be created.</param>
+		/// <param name="roleAssignments">List of relationship role assignments.</param>
+		/// <param name="propertyAssignments">List of properties assignments to set on the new link.</param>
+		public ModelNoteReferencesSetConstraint(DslModeling::Store store, DslModeling::RoleAssignment[] roleAssignments, DslModeling::PropertyAssignment[] propertyAssignments)
+			: base(store != null ? store.DefaultPartition : null, roleAssignments, propertyAssignments)
+		{
+		}
+		
+		/// <summary>
+		/// Constructor
+		/// </summary>
+		/// <param name="partition">Partition where new link is to be created.</param>
+		/// <param name="roleAssignments">List of relationship role assignments.</param>
+		public ModelNoteReferencesSetConstraint(DslModeling::Partition partition, params DslModeling::RoleAssignment[] roleAssignments)
+			: base(partition, roleAssignments, null)
+		{
+		}
+		
+		/// <summary>
+		/// Constructor
+		/// </summary>
+		/// <param name="partition">Partition where new link is to be created.</param>
+		/// <param name="roleAssignments">List of relationship role assignments.</param>
+		/// <param name="propertyAssignments">List of properties assignments to set on the new link.</param>
+		public ModelNoteReferencesSetConstraint(DslModeling::Partition partition, DslModeling::RoleAssignment[] roleAssignments, DslModeling::PropertyAssignment[] propertyAssignments)
+			: base(partition, roleAssignments, propertyAssignments)
+		{
+		}
+		#endregion
+		#region Note domain role code
+		
+		/// <summary>
+		/// Note domain role Id.
+		/// </summary>
+		public static readonly new global::System.Guid NoteDomainRoleId = new global::System.Guid(0x1d6bd804, 0x5f9b, 0x4558, 0x97, 0xf7, 0xca, 0xd1, 0xe0, 0xd4, 0xf1, 0x35);
+		
+		/// <summary>
+		/// DomainRole Note
+		/// Description for
+		/// Neumont.Tools.ORM.ObjectModel.ModelNoteReferencesSetConstraint.Note
+		/// </summary>
+		[DslDesign::DisplayNameResource("Neumont.Tools.ORM.ObjectModel.ModelNoteReferencesSetConstraint/Note.DisplayName", typeof(global::Neumont.Tools.ORM.ObjectModel.ORMCoreDomainModel), "Neumont.Tools.ORM.GeneratedCode.CoreDomainModelResx")]
+		[DslDesign::DescriptionResource("Neumont.Tools.ORM.ObjectModel.ModelNoteReferencesSetConstraint/Note.Description", typeof(global::Neumont.Tools.ORM.ObjectModel.ORMCoreDomainModel), "Neumont.Tools.ORM.GeneratedCode.CoreDomainModelResx")]
+		[DslModeling::DomainRole(DslModeling::DomainRoleOrder.Source, PropertyName = "SetConstraintCollection", PropertyDisplayNameKey="Neumont.Tools.ORM.ObjectModel.ModelNoteReferencesSetConstraint/Note.PropertyDisplayName", Multiplicity = DslModeling::Multiplicity.ZeroMany)]
+		[DslModeling::DomainObjectId("1d6bd804-5f9b-4558-97f7-cad1e0d4f135")]
+		public override ModelNote Note
+		{
+			[global::System.Diagnostics.DebuggerStepThrough]
+			get
+			{
+				return (ModelNote)DslModeling::DomainRoleInfo.GetRolePlayer(this, NoteDomainRoleId);
+			}
+			[global::System.Diagnostics.DebuggerStepThrough]
+			set
+			{
+				DslModeling::DomainRoleInfo.SetRolePlayer(this, NoteDomainRoleId, value);
+			}
+		}
+				
+		#endregion
+		#region Static methods to access ModelNoteCollection of a SetConstraint
+		/// <summary>
+		/// Gets a list of ModelNoteCollection.
+		/// </summary>
+		[global::System.Diagnostics.DebuggerStepThrough]
+		[global::System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Design", "CA1011")]
+		public static DslModeling::LinkedElementCollection<ModelNote> GetModelNoteCollection(SetConstraint element)
+		{
+			return new DslModeling::LinkedElementCollection<ModelNote>(element, ElementDomainRoleId);
+		}
+		#endregion
+		#region Element domain role code
+		
+		/// <summary>
+		/// Element domain role Id.
+		/// </summary>
+		public static readonly new global::System.Guid ElementDomainRoleId = new global::System.Guid(0xd5ecafc4, 0x1e5c, 0x471f, 0x9e, 0x8d, 0x54, 0xaf, 0x59, 0xfc, 0x44, 0xbb);
+		
+		/// <summary>
+		/// DomainRole Element
+		/// Description for
+		/// Neumont.Tools.ORM.ObjectModel.ModelNoteReferencesSetConstraint.Element
+		/// </summary>
+		[DslDesign::DisplayNameResource("Neumont.Tools.ORM.ObjectModel.ModelNoteReferencesSetConstraint/Element.DisplayName", typeof(global::Neumont.Tools.ORM.ObjectModel.ORMCoreDomainModel), "Neumont.Tools.ORM.GeneratedCode.CoreDomainModelResx")]
+		[DslDesign::DescriptionResource("Neumont.Tools.ORM.ObjectModel.ModelNoteReferencesSetConstraint/Element.Description", typeof(global::Neumont.Tools.ORM.ObjectModel.ORMCoreDomainModel), "Neumont.Tools.ORM.GeneratedCode.CoreDomainModelResx")]
+		[DslModeling::DomainRole(DslModeling::DomainRoleOrder.Target, RolePlayer = typeof(SetConstraint), PropertyName = "ModelNoteCollection", PropertyDisplayNameKey="Neumont.Tools.ORM.ObjectModel.ModelNoteReferencesSetConstraint/Element.PropertyDisplayName", Multiplicity = DslModeling::Multiplicity.ZeroMany)]
+		[DslModeling::DomainObjectId("d5ecafc4-1e5c-471f-9e8d-54af59fc44bb")]
+		public override global::Microsoft.VisualStudio.Modeling.ModelElement Element
+		{
+			[global::System.Diagnostics.DebuggerStepThrough]
+			get
+			{
+				return (global::Microsoft.VisualStudio.Modeling.ModelElement)DslModeling::DomainRoleInfo.GetRolePlayer(this, ElementDomainRoleId);
+			}
+			[global::System.Diagnostics.DebuggerStepThrough]
+			set
+			{
+				DslModeling::DomainRoleInfo.SetRolePlayer(this, ElementDomainRoleId, value);
+			}
+		}
+				
+		#endregion
+		#region Static methods to access SetConstraintCollection of a ModelNote
+		/// <summary>
+		/// Gets a list of SetConstraintCollection.
+		/// </summary>
+		[global::System.Diagnostics.DebuggerStepThrough]
+		[global::System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Design", "CA1011")]
+		public static DslModeling::LinkedElementCollection<SetConstraint> GetSetConstraintCollection(ModelNote element)
+		{
+			return new DslModeling::LinkedElementCollection<SetConstraint>(element, NoteDomainRoleId);
+		}
+		#endregion
+		#region Note link accessor
+		/// <summary>
+		/// Get the list of ModelNoteReferencesSetConstraint links to a ModelNote.
+		/// </summary>
+		[global::System.Diagnostics.DebuggerStepThrough]
+		[global::System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Design", "CA1011")]
+		public static global::System.Collections.ObjectModel.ReadOnlyCollection<global::Neumont.Tools.ORM.ObjectModel.ModelNoteReferencesSetConstraint> GetLinksToSetConstraintCollection ( global::Neumont.Tools.ORM.ObjectModel.ModelNote noteInstance )
+		{
+			return DslModeling::DomainRoleInfo.GetElementLinks<global::Neumont.Tools.ORM.ObjectModel.ModelNoteReferencesSetConstraint>(noteInstance, global::Neumont.Tools.ORM.ObjectModel.ModelNoteReferencesSetConstraint.NoteDomainRoleId);
+		}
+		#endregion
+		#region Element link accessor
+		/// <summary>
+		/// Get the list of ModelNoteReferencesSetConstraint links to a SetConstraint.
+		/// </summary>
+		[global::System.Diagnostics.DebuggerStepThrough]
+		[global::System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Design", "CA1011")]
+		public static global::System.Collections.ObjectModel.ReadOnlyCollection<global::Neumont.Tools.ORM.ObjectModel.ModelNoteReferencesSetConstraint> GetLinksToModelNoteCollection ( global::Neumont.Tools.ORM.ObjectModel.SetConstraint elementInstance )
+		{
+			return DslModeling::DomainRoleInfo.GetElementLinks<global::Neumont.Tools.ORM.ObjectModel.ModelNoteReferencesSetConstraint>(elementInstance, global::Neumont.Tools.ORM.ObjectModel.ModelNoteReferencesSetConstraint.ElementDomainRoleId);
+		}
+		#endregion
+		#region ModelNoteReferencesSetConstraint instance accessors
+		
+		/// <summary>
+		/// Get any ModelNoteReferencesSetConstraint links between a given ModelNote and a SetConstraint.
+		/// </summary>
+		[global::System.Diagnostics.DebuggerStepThrough]
+		[global::System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Design", "CA1011")]
+		public static global::System.Collections.ObjectModel.ReadOnlyCollection<global::Neumont.Tools.ORM.ObjectModel.ModelNoteReferencesSetConstraint> GetLinks( global::Neumont.Tools.ORM.ObjectModel.ModelNote source, global::Neumont.Tools.ORM.ObjectModel.SetConstraint target )
+		{
+			global::System.Collections.Generic.List<global::Neumont.Tools.ORM.ObjectModel.ModelNoteReferencesSetConstraint> outLinks = new global::System.Collections.Generic.List<global::Neumont.Tools.ORM.ObjectModel.ModelNoteReferencesSetConstraint>();
+			global::System.Collections.Generic.IList<global::Neumont.Tools.ORM.ObjectModel.ModelNoteReferencesSetConstraint> links = DslModeling::DomainRoleInfo.GetElementLinks<global::Neumont.Tools.ORM.ObjectModel.ModelNoteReferencesSetConstraint>(source, global::Neumont.Tools.ORM.ObjectModel.ModelNoteReferencesSetConstraint.NoteDomainRoleId);
+			foreach ( global::Neumont.Tools.ORM.ObjectModel.ModelNoteReferencesSetConstraint link in links )
+			{
+				if ( target.Equals(link.Element) )
+				{
+					outLinks.Add(link);
+				}
+			}
+			return outLinks.AsReadOnly();
+		}
+		/// <summary>
+		/// Get the one ModelNoteReferencesSetConstraint link between a given ModelNoteand a SetConstraint.
+		/// </summary>
+		[global::System.Diagnostics.DebuggerStepThrough]
+		[global::System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Design", "CA1011")]
+		public static global::Neumont.Tools.ORM.ObjectModel.ModelNoteReferencesSetConstraint GetLink( global::Neumont.Tools.ORM.ObjectModel.ModelNote source, global::Neumont.Tools.ORM.ObjectModel.SetConstraint target )
+		{
+			global::System.Collections.Generic.IList<global::Neumont.Tools.ORM.ObjectModel.ModelNoteReferencesSetConstraint> links = DslModeling::DomainRoleInfo.GetElementLinks<global::Neumont.Tools.ORM.ObjectModel.ModelNoteReferencesSetConstraint>(source, global::Neumont.Tools.ORM.ObjectModel.ModelNoteReferencesSetConstraint.NoteDomainRoleId);
+			foreach ( global::Neumont.Tools.ORM.ObjectModel.ModelNoteReferencesSetConstraint link in links )
+			{
+				if ( target.Equals(link.Element) )
+				{
+					return link;
+				}
+			}
+			return null;
+		}
+		
+		#endregion
+	}
+}
+namespace Neumont.Tools.ORM.ObjectModel
+{
+	/// <summary>
+	/// DomainRelationship ModelNoteReferencesSetComparisonConstraint
+	/// Description for
+	/// Neumont.Tools.ORM.ObjectModel.ModelNoteReferencesSetComparisonConstraint
+	/// </summary>
+	[DslDesign::DisplayNameResource("Neumont.Tools.ORM.ObjectModel.ModelNoteReferencesSetComparisonConstraint.DisplayName", typeof(global::Neumont.Tools.ORM.ObjectModel.ORMCoreDomainModel), "Neumont.Tools.ORM.GeneratedCode.CoreDomainModelResx")]
+	[DslDesign::DescriptionResource("Neumont.Tools.ORM.ObjectModel.ModelNoteReferencesSetComparisonConstraint.Description", typeof(global::Neumont.Tools.ORM.ObjectModel.ORMCoreDomainModel), "Neumont.Tools.ORM.GeneratedCode.CoreDomainModelResx")]
+	[global::System.CLSCompliant(true)]
+	[DslModeling::DomainRelationship()]
+	[DslModeling::DomainObjectId("57a31b5c-e265-4c91-8c6c-151101258e28")]
+	public partial class ModelNoteReferencesSetComparisonConstraint : ModelNoteReferencesModelElement
+	{
+		#region Constructors, domain class Id
+		
+		/// <summary>
+		/// ModelNoteReferencesSetComparisonConstraint domain class Id.
+		/// </summary>
+		public static readonly new global::System.Guid DomainClassId = new global::System.Guid(0x57a31b5c, 0xe265, 0x4c91, 0x8c, 0x6c, 0x15, 0x11, 0x01, 0x25, 0x8e, 0x28);
+	
+				
+		/// <summary>
+		/// Constructor
+		/// Creates a ModelNoteReferencesSetComparisonConstraint link in the same Partition as the given ModelNote
+		/// </summary>
+		/// <param name="source">ModelNote to use as the source of the relationship.</param>
+		/// <param name="target">SetComparisonConstraint to use as the target of the relationship.</param>
+		public ModelNoteReferencesSetComparisonConstraint(ModelNote source, SetComparisonConstraint target)
+			: base((source != null ? source.Partition : null), new DslModeling::RoleAssignment[]{new DslModeling::RoleAssignment(ModelNoteReferencesSetComparisonConstraint.NoteDomainRoleId, source), new DslModeling::RoleAssignment(ModelNoteReferencesSetComparisonConstraint.ElementDomainRoleId, target)}, null)
+		{
+		}
+		
+		/// <summary>
+		/// Constructor
+		/// </summary>
+		/// <param name="store">Store where new link is to be created.</param>
+		/// <param name="roleAssignments">List of relationship role assignments.</param>
+		public ModelNoteReferencesSetComparisonConstraint(DslModeling::Store store, params DslModeling::RoleAssignment[] roleAssignments)
+			: base(store != null ? store.DefaultPartition : null, roleAssignments, null)
+		{
+		}
+		
+		/// <summary>
+		/// Constructor
+		/// </summary>
+		/// <param name="store">Store where new link is to be created.</param>
+		/// <param name="roleAssignments">List of relationship role assignments.</param>
+		/// <param name="propertyAssignments">List of properties assignments to set on the new link.</param>
+		public ModelNoteReferencesSetComparisonConstraint(DslModeling::Store store, DslModeling::RoleAssignment[] roleAssignments, DslModeling::PropertyAssignment[] propertyAssignments)
+			: base(store != null ? store.DefaultPartition : null, roleAssignments, propertyAssignments)
+		{
+		}
+		
+		/// <summary>
+		/// Constructor
+		/// </summary>
+		/// <param name="partition">Partition where new link is to be created.</param>
+		/// <param name="roleAssignments">List of relationship role assignments.</param>
+		public ModelNoteReferencesSetComparisonConstraint(DslModeling::Partition partition, params DslModeling::RoleAssignment[] roleAssignments)
+			: base(partition, roleAssignments, null)
+		{
+		}
+		
+		/// <summary>
+		/// Constructor
+		/// </summary>
+		/// <param name="partition">Partition where new link is to be created.</param>
+		/// <param name="roleAssignments">List of relationship role assignments.</param>
+		/// <param name="propertyAssignments">List of properties assignments to set on the new link.</param>
+		public ModelNoteReferencesSetComparisonConstraint(DslModeling::Partition partition, DslModeling::RoleAssignment[] roleAssignments, DslModeling::PropertyAssignment[] propertyAssignments)
+			: base(partition, roleAssignments, propertyAssignments)
+		{
+		}
+		#endregion
+		#region Note domain role code
+		
+		/// <summary>
+		/// Note domain role Id.
+		/// </summary>
+		public static readonly new global::System.Guid NoteDomainRoleId = new global::System.Guid(0xc8ac78ec, 0xfc49, 0x4163, 0x80, 0x7b, 0xc6, 0xa5, 0x0e, 0x90, 0x53, 0x54);
+		
+		/// <summary>
+		/// DomainRole Note
+		/// Description for
+		/// Neumont.Tools.ORM.ObjectModel.ModelNoteReferencesSetComparisonConstraint.Note
+		/// </summary>
+		[DslDesign::DisplayNameResource("Neumont.Tools.ORM.ObjectModel.ModelNoteReferencesSetComparisonConstraint/Note.DisplayName", typeof(global::Neumont.Tools.ORM.ObjectModel.ORMCoreDomainModel), "Neumont.Tools.ORM.GeneratedCode.CoreDomainModelResx")]
+		[DslDesign::DescriptionResource("Neumont.Tools.ORM.ObjectModel.ModelNoteReferencesSetComparisonConstraint/Note.Description", typeof(global::Neumont.Tools.ORM.ObjectModel.ORMCoreDomainModel), "Neumont.Tools.ORM.GeneratedCode.CoreDomainModelResx")]
+		[DslModeling::DomainRole(DslModeling::DomainRoleOrder.Source, PropertyName = "SetComparisonConstraintCollection", PropertyDisplayNameKey="Neumont.Tools.ORM.ObjectModel.ModelNoteReferencesSetComparisonConstraint/Note.PropertyDisplayName", Multiplicity = DslModeling::Multiplicity.ZeroMany)]
+		[DslModeling::DomainObjectId("c8ac78ec-fc49-4163-807b-c6a50e905354")]
+		public override ModelNote Note
+		{
+			[global::System.Diagnostics.DebuggerStepThrough]
+			get
+			{
+				return (ModelNote)DslModeling::DomainRoleInfo.GetRolePlayer(this, NoteDomainRoleId);
+			}
+			[global::System.Diagnostics.DebuggerStepThrough]
+			set
+			{
+				DslModeling::DomainRoleInfo.SetRolePlayer(this, NoteDomainRoleId, value);
+			}
+		}
+				
+		#endregion
+		#region Static methods to access ModelNoteCollection of a SetComparisonConstraint
+		/// <summary>
+		/// Gets a list of ModelNoteCollection.
+		/// </summary>
+		[global::System.Diagnostics.DebuggerStepThrough]
+		[global::System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Design", "CA1011")]
+		public static DslModeling::LinkedElementCollection<ModelNote> GetModelNoteCollection(SetComparisonConstraint element)
+		{
+			return new DslModeling::LinkedElementCollection<ModelNote>(element, ElementDomainRoleId);
+		}
+		#endregion
+		#region Element domain role code
+		
+		/// <summary>
+		/// Element domain role Id.
+		/// </summary>
+		public static readonly new global::System.Guid ElementDomainRoleId = new global::System.Guid(0xdf805505, 0xe31f, 0x42e8, 0x9c, 0x65, 0x70, 0x04, 0xe3, 0xf3, 0xd9, 0xbd);
+		
+		/// <summary>
+		/// DomainRole Element
+		/// Description for
+		/// Neumont.Tools.ORM.ObjectModel.ModelNoteReferencesSetComparisonConstraint.Element
+		/// </summary>
+		[DslDesign::DisplayNameResource("Neumont.Tools.ORM.ObjectModel.ModelNoteReferencesSetComparisonConstraint/Element.DisplayName", typeof(global::Neumont.Tools.ORM.ObjectModel.ORMCoreDomainModel), "Neumont.Tools.ORM.GeneratedCode.CoreDomainModelResx")]
+		[DslDesign::DescriptionResource("Neumont.Tools.ORM.ObjectModel.ModelNoteReferencesSetComparisonConstraint/Element.Description", typeof(global::Neumont.Tools.ORM.ObjectModel.ORMCoreDomainModel), "Neumont.Tools.ORM.GeneratedCode.CoreDomainModelResx")]
+		[DslModeling::DomainRole(DslModeling::DomainRoleOrder.Target, RolePlayer = typeof(SetComparisonConstraint), PropertyName = "ModelNoteCollection", PropertyDisplayNameKey="Neumont.Tools.ORM.ObjectModel.ModelNoteReferencesSetComparisonConstraint/Element.PropertyDisplayName", Multiplicity = DslModeling::Multiplicity.ZeroMany)]
+		[DslModeling::DomainObjectId("df805505-e31f-42e8-9c65-7004e3f3d9bd")]
+		public override global::Microsoft.VisualStudio.Modeling.ModelElement Element
+		{
+			[global::System.Diagnostics.DebuggerStepThrough]
+			get
+			{
+				return (global::Microsoft.VisualStudio.Modeling.ModelElement)DslModeling::DomainRoleInfo.GetRolePlayer(this, ElementDomainRoleId);
+			}
+			[global::System.Diagnostics.DebuggerStepThrough]
+			set
+			{
+				DslModeling::DomainRoleInfo.SetRolePlayer(this, ElementDomainRoleId, value);
+			}
+		}
+				
+		#endregion
+		#region Static methods to access SetComparisonConstraintCollection of a ModelNote
+		/// <summary>
+		/// Gets a list of SetComparisonConstraintCollection.
+		/// </summary>
+		[global::System.Diagnostics.DebuggerStepThrough]
+		[global::System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Design", "CA1011")]
+		public static DslModeling::LinkedElementCollection<SetComparisonConstraint> GetSetComparisonConstraintCollection(ModelNote element)
+		{
+			return new DslModeling::LinkedElementCollection<SetComparisonConstraint>(element, NoteDomainRoleId);
+		}
+		#endregion
+		#region Note link accessor
+		/// <summary>
+		/// Get the list of ModelNoteReferencesSetComparisonConstraint links to a ModelNote.
+		/// </summary>
+		[global::System.Diagnostics.DebuggerStepThrough]
+		[global::System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Design", "CA1011")]
+		public static global::System.Collections.ObjectModel.ReadOnlyCollection<global::Neumont.Tools.ORM.ObjectModel.ModelNoteReferencesSetComparisonConstraint> GetLinksToSetComparisonConstraintCollection ( global::Neumont.Tools.ORM.ObjectModel.ModelNote noteInstance )
+		{
+			return DslModeling::DomainRoleInfo.GetElementLinks<global::Neumont.Tools.ORM.ObjectModel.ModelNoteReferencesSetComparisonConstraint>(noteInstance, global::Neumont.Tools.ORM.ObjectModel.ModelNoteReferencesSetComparisonConstraint.NoteDomainRoleId);
+		}
+		#endregion
+		#region Element link accessor
+		/// <summary>
+		/// Get the list of ModelNoteReferencesSetComparisonConstraint links to a SetComparisonConstraint.
+		/// </summary>
+		[global::System.Diagnostics.DebuggerStepThrough]
+		[global::System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Design", "CA1011")]
+		public static global::System.Collections.ObjectModel.ReadOnlyCollection<global::Neumont.Tools.ORM.ObjectModel.ModelNoteReferencesSetComparisonConstraint> GetLinksToModelNoteCollection ( global::Neumont.Tools.ORM.ObjectModel.SetComparisonConstraint elementInstance )
+		{
+			return DslModeling::DomainRoleInfo.GetElementLinks<global::Neumont.Tools.ORM.ObjectModel.ModelNoteReferencesSetComparisonConstraint>(elementInstance, global::Neumont.Tools.ORM.ObjectModel.ModelNoteReferencesSetComparisonConstraint.ElementDomainRoleId);
+		}
+		#endregion
+		#region ModelNoteReferencesSetComparisonConstraint instance accessors
+		
+		/// <summary>
+		/// Get any ModelNoteReferencesSetComparisonConstraint links between a given ModelNote and a SetComparisonConstraint.
+		/// </summary>
+		[global::System.Diagnostics.DebuggerStepThrough]
+		[global::System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Design", "CA1011")]
+		public static global::System.Collections.ObjectModel.ReadOnlyCollection<global::Neumont.Tools.ORM.ObjectModel.ModelNoteReferencesSetComparisonConstraint> GetLinks( global::Neumont.Tools.ORM.ObjectModel.ModelNote source, global::Neumont.Tools.ORM.ObjectModel.SetComparisonConstraint target )
+		{
+			global::System.Collections.Generic.List<global::Neumont.Tools.ORM.ObjectModel.ModelNoteReferencesSetComparisonConstraint> outLinks = new global::System.Collections.Generic.List<global::Neumont.Tools.ORM.ObjectModel.ModelNoteReferencesSetComparisonConstraint>();
+			global::System.Collections.Generic.IList<global::Neumont.Tools.ORM.ObjectModel.ModelNoteReferencesSetComparisonConstraint> links = DslModeling::DomainRoleInfo.GetElementLinks<global::Neumont.Tools.ORM.ObjectModel.ModelNoteReferencesSetComparisonConstraint>(source, global::Neumont.Tools.ORM.ObjectModel.ModelNoteReferencesSetComparisonConstraint.NoteDomainRoleId);
+			foreach ( global::Neumont.Tools.ORM.ObjectModel.ModelNoteReferencesSetComparisonConstraint link in links )
+			{
+				if ( target.Equals(link.Element) )
+				{
+					outLinks.Add(link);
+				}
+			}
+			return outLinks.AsReadOnly();
+		}
+		/// <summary>
+		/// Get the one ModelNoteReferencesSetComparisonConstraint link between a given ModelNoteand a SetComparisonConstraint.
+		/// </summary>
+		[global::System.Diagnostics.DebuggerStepThrough]
+		[global::System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Design", "CA1011")]
+		public static global::Neumont.Tools.ORM.ObjectModel.ModelNoteReferencesSetComparisonConstraint GetLink( global::Neumont.Tools.ORM.ObjectModel.ModelNote source, global::Neumont.Tools.ORM.ObjectModel.SetComparisonConstraint target )
+		{
+			global::System.Collections.Generic.IList<global::Neumont.Tools.ORM.ObjectModel.ModelNoteReferencesSetComparisonConstraint> links = DslModeling::DomainRoleInfo.GetElementLinks<global::Neumont.Tools.ORM.ObjectModel.ModelNoteReferencesSetComparisonConstraint>(source, global::Neumont.Tools.ORM.ObjectModel.ModelNoteReferencesSetComparisonConstraint.NoteDomainRoleId);
+			foreach ( global::Neumont.Tools.ORM.ObjectModel.ModelNoteReferencesSetComparisonConstraint link in links )
+			{
+				if ( target.Equals(link.Element) )
+				{
+					return link;
+				}
+			}
+			return null;
+		}
+		
+		#endregion
+	}
+}
+namespace Neumont.Tools.ORM.ObjectModel
+{
+	/// <summary>
 	/// DomainRelationship ObjectTypeHasCompatibleSupertypesError
 	/// Description for
 	/// Neumont.Tools.ORM.ObjectModel.ObjectTypeHasCompatibleSupertypesError

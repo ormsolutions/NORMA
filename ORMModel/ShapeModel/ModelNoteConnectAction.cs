@@ -92,6 +92,8 @@ namespace Neumont.Tools.ORM.ShapeModel
 					{
 						FactType factType;
 						ObjectType objectType;
+						SetConstraint setConstraint;
+						SetComparisonConstraint setComparisonConstraint;
 						if (null != (factType = targetElement as FactType))
 						{
 							return !note.FactTypeCollection.Contains(factType);
@@ -99,6 +101,14 @@ namespace Neumont.Tools.ORM.ShapeModel
 						else if (null != (objectType = targetElement as ObjectType))
 						{
 							return !note.ObjectTypeCollection.Contains(objectType);
+						}
+						else if (null != (setConstraint = targetElement as SetConstraint))
+						{
+							return !setConstraint.Constraint.ConstraintIsInternal && !note.SetConstraintCollection.Contains(setConstraint);
+						}
+						else if (null != (setComparisonConstraint = targetElement as SetComparisonConstraint))
+						{
+							return !note.SetComparisonConstraintCollection.Contains(setComparisonConstraint);
 						}
 					}
 				}
@@ -145,6 +155,8 @@ namespace Neumont.Tools.ORM.ShapeModel
 					{
 						FactType factType;
 						ObjectType objectType;
+						SetConstraint setConstraint;
+						SetComparisonConstraint setComparisonConstraint;
 						if (null != (factType = targetElement as FactType))
 						{
 							new ModelNoteReferencesFactType(note, factType);
@@ -152,6 +164,14 @@ namespace Neumont.Tools.ORM.ShapeModel
 						else if (null != (objectType = targetElement as ObjectType))
 						{
 							new ModelNoteReferencesObjectType(note, objectType);
+						}
+						else if (null != (setConstraint = targetElement as SetConstraint))
+						{
+							new ModelNoteReferencesSetConstraint(note, setConstraint);
+						}
+						else if (null != (setComparisonConstraint = targetElement as SetComparisonConstraint))
+						{
+							new ModelNoteReferencesSetComparisonConstraint(note, setComparisonConstraint);
 						}
 					}
 				}

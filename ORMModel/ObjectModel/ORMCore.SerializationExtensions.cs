@@ -824,7 +824,7 @@ namespace Neumont.Tools.ORM.ObjectModel
 				{
 					baseInfo.CopyTo(ret, 1);
 				}
-				ret[0] = new CustomSerializedContainerElementInfo(null, "ReferencedBy", null, CustomSerializedElementWriteStyle.Element, null, ModelNoteReferencesFactType.ElementDomainRoleId, ModelNoteReferencesObjectType.ElementDomainRoleId);
+				ret[0] = new CustomSerializedContainerElementInfo(null, "ReferencedBy", null, CustomSerializedElementWriteStyle.Element, null, ModelNoteReferencesFactType.ElementDomainRoleId, ModelNoteReferencesObjectType.ElementDomainRoleId, ModelNoteReferencesSetConstraint.ElementDomainRoleId, ModelNoteReferencesSetComparisonConstraint.ElementDomainRoleId);
 				ModelNote.myCustomSerializedChildElementInfo = ret;
 			}
 			return ret;
@@ -844,6 +844,14 @@ namespace Neumont.Tools.ORM.ObjectModel
 			if (roleId == ModelNoteReferencesObjectType.ElementDomainRoleId)
 			{
 				return new CustomSerializedElementInfo(null, "ObjectType", null, CustomSerializedElementWriteStyle.Element, null);
+			}
+			if (roleId == ModelNoteReferencesSetConstraint.ElementDomainRoleId)
+			{
+				return new CustomSerializedElementInfo(null, "SetConstraint", null, CustomSerializedElementWriteStyle.Element, null);
+			}
+			if (roleId == ModelNoteReferencesSetComparisonConstraint.ElementDomainRoleId)
+			{
+				return new CustomSerializedElementInfo(null, "SetComparisonConstraint", null, CustomSerializedElementWriteStyle.Element, null);
 			}
 			if (0 != (CustomSerializedElementSupportedOperations.LinkInfo & base.SupportedCustomSerializedOperations))
 			{
@@ -868,6 +876,10 @@ namespace Neumont.Tools.ORM.ObjectModel
 				childElementMappings.Add("||http://schemas.neumont.edu/ORM/2006-04/ORMCore|ReferencedBy||FactType", match);
 				match.InitializeRoles(ModelNoteReferencesObjectType.ElementDomainRoleId);
 				childElementMappings.Add("||http://schemas.neumont.edu/ORM/2006-04/ORMCore|ReferencedBy||ObjectType", match);
+				match.InitializeRoles(ModelNoteReferencesSetConstraint.ElementDomainRoleId);
+				childElementMappings.Add("||http://schemas.neumont.edu/ORM/2006-04/ORMCore|ReferencedBy||SetConstraint", match);
+				match.InitializeRoles(ModelNoteReferencesSetComparisonConstraint.ElementDomainRoleId);
+				childElementMappings.Add("||http://schemas.neumont.edu/ORM/2006-04/ORMCore|ReferencedBy||SetComparisonConstraint", match);
 				ModelNote.myChildElementMappings = childElementMappings;
 			}
 			CustomSerializedElementMatch rVal;
@@ -4075,6 +4087,10 @@ namespace Neumont.Tools.ORM.ObjectModel
 			{
 				return new CustomSerializedElementInfo(null, null, null, CustomSerializedElementWriteStyle.NotWritten, null);
 			}
+			if (roleId == ModelNoteReferencesSetComparisonConstraint.NoteDomainRoleId)
+			{
+				return new CustomSerializedElementInfo(null, null, null, CustomSerializedElementWriteStyle.NotWritten, null);
+			}
 			if (0 != (CustomSerializedElementSupportedOperations.LinkInfo & base.SupportedCustomSerializedOperations))
 			{
 				return base.GetCustomSerializedLinkInfo(rolePlayedInfo, elementLink);
@@ -4114,6 +4130,8 @@ namespace Neumont.Tools.ORM.ObjectModel
 				roleOrderDictionary[string.Concat(domainRole.DomainRelationship.ImplementationClass.FullName, ".", domainRole.Name)] = 7;
 				domainRole = domainDataDirectory.FindDomainRole(SetComparisonConstraintHasEqualityOrSubsetImpliedByMandatoryError.EqualityOrSubsetImpliedByMandatoryErrorDomainRoleId).OppositeDomainRole;
 				roleOrderDictionary[string.Concat(domainRole.DomainRelationship.ImplementationClass.FullName, ".", domainRole.Name)] = 8;
+				domainRole = domainDataDirectory.FindDomainRole(ModelNoteReferencesSetComparisonConstraint.NoteDomainRoleId).OppositeDomainRole;
+				roleOrderDictionary[string.Concat(domainRole.DomainRelationship.ImplementationClass.FullName, ".", domainRole.Name)] = 9;
 				this.myRoleOrderDictionary = roleOrderDictionary;
 			}
 			int IComparer<DomainRoleInfo>.Compare(DomainRoleInfo x, DomainRoleInfo y)
@@ -4514,6 +4532,10 @@ namespace Neumont.Tools.ORM.ObjectModel
 			{
 				return new CustomSerializedElementInfo(null, null, null, CustomSerializedElementWriteStyle.NotWritten, null);
 			}
+			if (roleId == ModelNoteReferencesSetConstraint.NoteDomainRoleId)
+			{
+				return new CustomSerializedElementInfo(null, null, null, CustomSerializedElementWriteStyle.NotWritten, null);
+			}
 			if (0 != (CustomSerializedElementSupportedOperations.LinkInfo & base.SupportedCustomSerializedOperations))
 			{
 				return base.GetCustomSerializedLinkInfo(rolePlayedInfo, elementLink);
@@ -4551,6 +4573,8 @@ namespace Neumont.Tools.ORM.ObjectModel
 				roleOrderDictionary[string.Concat(domainRole.DomainRelationship.ImplementationClass.FullName, ".", domainRole.Name)] = 6;
 				domainRole = domainDataDirectory.FindDomainRole(SetConstraintHasDuplicateNameError.DuplicateNameErrorDomainRoleId).OppositeDomainRole;
 				roleOrderDictionary[string.Concat(domainRole.DomainRelationship.ImplementationClass.FullName, ".", domainRole.Name)] = 7;
+				domainRole = domainDataDirectory.FindDomainRole(ModelNoteReferencesSetConstraint.NoteDomainRoleId).OppositeDomainRole;
+				roleOrderDictionary[string.Concat(domainRole.DomainRelationship.ImplementationClass.FullName, ".", domainRole.Name)] = 8;
 				this.myRoleOrderDictionary = roleOrderDictionary;
 			}
 			int IComparer<DomainRoleInfo>.Compare(DomainRoleInfo x, DomainRoleInfo y)

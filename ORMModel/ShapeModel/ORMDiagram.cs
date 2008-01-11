@@ -736,6 +736,7 @@ namespace Neumont.Tools.ORM.ShapeModel
 			SetConstraint setConstraint;
 			ExclusionConstraint exclusionConstraint;
 			MandatoryConstraint mandatoryConstraint;
+			ModelNoteReferencesModelElement noteReference;
 			if (null != (factType = element as FactType))
 			{
 				if (factType is SubtypeFact)
@@ -787,11 +788,17 @@ namespace Neumont.Tools.ORM.ShapeModel
 			{
 				return exclusionConstraint.ExclusiveOrMandatoryConstraint == null;
 			}
+			else if (null != (noteReference = element as ModelNoteReferencesModelElement))
+			{
+				SetConstraint referencedSetConstraint = noteReference.Element as SetConstraint;
+				// Note that note references to internal constraint cannot be added with the current UI, but
+				// are valid in the object model. Don't try to link them.
+				return referencedSetConstraint == null || !referencedSetConstraint.Constraint.ConstraintIsInternal;
+			}
 			else if (element is SetComparisonConstraint ||
 					 element is RoleHasValueConstraint ||
 					 element is FactConstraint ||
-					 element is ModelNote ||
-					 element is ModelNoteReferencesModelElement)
+					 element is ModelNote)
 			{
 				return true;
 			}

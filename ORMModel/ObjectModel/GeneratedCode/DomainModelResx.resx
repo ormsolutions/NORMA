@@ -4573,6 +4573,70 @@
     <value>Model Note Collection</value>
     <comment>PropertyDisplayName for DomainRole &apos;Element&apos; on DomainRelationship &apos;ModelNoteReferencesObjectType&apos;</comment>
   </data>
+  <data name="Neumont.Tools.ORM.ObjectModel.ModelNoteReferencesSetConstraint.Description" xml:space="preserve">
+    <value>Description for Neumont.Tools.ORM.ObjectModel.ModelNoteReferencesSetConstraint</value>
+    <comment>Description for DomainClass &apos;ModelNoteReferencesSetConstraint&apos;</comment>
+  </data>
+  <data name="Neumont.Tools.ORM.ObjectModel.ModelNoteReferencesSetConstraint.DisplayName" xml:space="preserve">
+    <value>Model Note References Set Constraint</value>
+    <comment>DisplayName for DomainClass &apos;ModelNoteReferencesSetConstraint&apos;</comment>
+  </data>
+  <data name="Neumont.Tools.ORM.ObjectModel.ModelNoteReferencesSetConstraint/Note.Description" xml:space="preserve">
+    <value>Description for Neumont.Tools.ORM.ObjectModel.ModelNoteReferencesSetConstraint.Note</value>
+    <comment>Description for DomainRole &apos;Note&apos; on DomainRelationship &apos;ModelNoteReferencesSetConstraint&apos;</comment>
+  </data>
+  <data name="Neumont.Tools.ORM.ObjectModel.ModelNoteReferencesSetConstraint/Note.DisplayName" xml:space="preserve">
+    <value>Note</value>
+    <comment>DisplayName for DomainRole &apos;Note&apos; on DomainRelationship &apos;ModelNoteReferencesSetConstraint&apos;</comment>
+  </data>
+  <data name="Neumont.Tools.ORM.ObjectModel.ModelNoteReferencesSetConstraint/Note.PropertyDisplayName" xml:space="preserve">
+    <value>Set Constraint Collection</value>
+    <comment>PropertyDisplayName for DomainRole &apos;Note&apos; on DomainRelationship &apos;ModelNoteReferencesSetConstraint&apos;</comment>
+  </data>
+  <data name="Neumont.Tools.ORM.ObjectModel.ModelNoteReferencesSetConstraint/Element.Description" xml:space="preserve">
+    <value>Description for Neumont.Tools.ORM.ObjectModel.ModelNoteReferencesSetConstraint.Element</value>
+    <comment>Description for DomainRole &apos;Element&apos; on DomainRelationship &apos;ModelNoteReferencesSetConstraint&apos;</comment>
+  </data>
+  <data name="Neumont.Tools.ORM.ObjectModel.ModelNoteReferencesSetConstraint/Element.DisplayName" xml:space="preserve">
+    <value>Element</value>
+    <comment>DisplayName for DomainRole &apos;Element&apos; on DomainRelationship &apos;ModelNoteReferencesSetConstraint&apos;</comment>
+  </data>
+  <data name="Neumont.Tools.ORM.ObjectModel.ModelNoteReferencesSetConstraint/Element.PropertyDisplayName" xml:space="preserve">
+    <value>Model Note Collection</value>
+    <comment>PropertyDisplayName for DomainRole &apos;Element&apos; on DomainRelationship &apos;ModelNoteReferencesSetConstraint&apos;</comment>
+  </data>
+  <data name="Neumont.Tools.ORM.ObjectModel.ModelNoteReferencesSetComparisonConstraint.Description" xml:space="preserve">
+    <value>Description for Neumont.Tools.ORM.ObjectModel.ModelNoteReferencesSetComparisonConstraint</value>
+    <comment>Description for DomainClass &apos;ModelNoteReferencesSetComparisonConstraint&apos;</comment>
+  </data>
+  <data name="Neumont.Tools.ORM.ObjectModel.ModelNoteReferencesSetComparisonConstraint.DisplayName" xml:space="preserve">
+    <value>Model Note References Set Comparison Constraint</value>
+    <comment>DisplayName for DomainClass &apos;ModelNoteReferencesSetComparisonConstraint&apos;</comment>
+  </data>
+  <data name="Neumont.Tools.ORM.ObjectModel.ModelNoteReferencesSetComparisonConstraint/Note.Description" xml:space="preserve">
+    <value>Description for Neumont.Tools.ORM.ObjectModel.ModelNoteReferencesSetComparisonConstraint.Note</value>
+    <comment>Description for DomainRole &apos;Note&apos; on DomainRelationship &apos;ModelNoteReferencesSetComparisonConstraint&apos;</comment>
+  </data>
+  <data name="Neumont.Tools.ORM.ObjectModel.ModelNoteReferencesSetComparisonConstraint/Note.DisplayName" xml:space="preserve">
+    <value>Note</value>
+    <comment>DisplayName for DomainRole &apos;Note&apos; on DomainRelationship &apos;ModelNoteReferencesSetComparisonConstraint&apos;</comment>
+  </data>
+  <data name="Neumont.Tools.ORM.ObjectModel.ModelNoteReferencesSetComparisonConstraint/Note.PropertyDisplayName" xml:space="preserve">
+    <value>Set Comparison Constraint Collection</value>
+    <comment>PropertyDisplayName for DomainRole &apos;Note&apos; on DomainRelationship &apos;ModelNoteReferencesSetComparisonConstraint&apos;</comment>
+  </data>
+  <data name="Neumont.Tools.ORM.ObjectModel.ModelNoteReferencesSetComparisonConstraint/Element.Description" xml:space="preserve">
+    <value>Description for Neumont.Tools.ORM.ObjectModel.ModelNoteReferencesSetComparisonConstraint.Element</value>
+    <comment>Description for DomainRole &apos;Element&apos; on DomainRelationship &apos;ModelNoteReferencesSetComparisonConstraint&apos;</comment>
+  </data>
+  <data name="Neumont.Tools.ORM.ObjectModel.ModelNoteReferencesSetComparisonConstraint/Element.DisplayName" xml:space="preserve">
+    <value>Element</value>
+    <comment>DisplayName for DomainRole &apos;Element&apos; on DomainRelationship &apos;ModelNoteReferencesSetComparisonConstraint&apos;</comment>
+  </data>
+  <data name="Neumont.Tools.ORM.ObjectModel.ModelNoteReferencesSetComparisonConstraint/Element.PropertyDisplayName" xml:space="preserve">
+    <value>Model Note Collection</value>
+    <comment>PropertyDisplayName for DomainRole &apos;Element&apos; on DomainRelationship &apos;ModelNoteReferencesSetComparisonConstraint&apos;</comment>
+  </data>
   <data name="Neumont.Tools.ORM.ObjectModel.ObjectTypeHasCompatibleSupertypesError.Description" xml:space="preserve">
     <value>Description for Neumont.Tools.ORM.ObjectModel.ObjectTypeHasCompatibleSupertypesError</value>
     <comment>Description for DomainClass &apos;ObjectTypeHasCompatibleSupertypesError&apos;</comment>

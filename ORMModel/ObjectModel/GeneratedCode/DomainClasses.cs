@@ -7135,6 +7135,21 @@ namespace Neumont.Tools.ORM.ObjectModel
 			}
 		}
 		#endregion
+		#region ModelNoteCollection opposite domain role accessor
+		/// <summary>
+		/// Gets a list of ModelNoteCollection.
+		/// Description for
+		/// Neumont.Tools.ORM.ObjectModel.ModelNoteReferencesSetComparisonConstraint.Element
+		/// </summary>
+		public virtual DslModeling::LinkedElementCollection<ModelNote> ModelNoteCollection
+		{
+			[global::System.Diagnostics.DebuggerStepThrough]
+			get
+			{
+				return new DslModeling::LinkedElementCollection<ModelNote>(this, global::Neumont.Tools.ORM.ObjectModel.ModelNoteReferencesSetComparisonConstraint.ElementDomainRoleId);
+			}
+		}
+		#endregion
 		#region ImplicationError opposite domain role accessor
 		/// <summary>
 		/// Gets or sets ImplicationError.
@@ -8811,6 +8826,21 @@ namespace Neumont.Tools.ORM.ObjectModel
 				{
 					DslModeling::DomainRoleInfo.SetLinkedElement(this, global::Neumont.Tools.ORM.ObjectModel.SetConstraintHasTooManyRoleSequencesError.SetConstraintDomainRoleId, value);
 				}
+			}
+		}
+		#endregion
+		#region ModelNoteCollection opposite domain role accessor
+		/// <summary>
+		/// Gets a list of ModelNoteCollection.
+		/// Description for
+		/// Neumont.Tools.ORM.ObjectModel.ModelNoteReferencesSetConstraint.Element
+		/// </summary>
+		public virtual DslModeling::LinkedElementCollection<ModelNote> ModelNoteCollection
+		{
+			[global::System.Diagnostics.DebuggerStepThrough]
+			get
+			{
+				return new DslModeling::LinkedElementCollection<ModelNote>(this, global::Neumont.Tools.ORM.ObjectModel.ModelNoteReferencesSetConstraint.ElementDomainRoleId);
 			}
 		}
 		#endregion
@@ -15837,6 +15867,36 @@ namespace Neumont.Tools.ORM.ObjectModel
 			get
 			{
 				return new DslModeling::LinkedElementCollection<ObjectType>(this, global::Neumont.Tools.ORM.ObjectModel.ModelNoteReferencesObjectType.NoteDomainRoleId);
+			}
+		}
+		#endregion
+		#region SetConstraintCollection opposite domain role accessor
+		/// <summary>
+		/// Gets a list of SetConstraintCollection.
+		/// Description for
+		/// Neumont.Tools.ORM.ObjectModel.ModelNoteReferencesSetConstraint.Note
+		/// </summary>
+		public virtual DslModeling::LinkedElementCollection<SetConstraint> SetConstraintCollection
+		{
+			[global::System.Diagnostics.DebuggerStepThrough]
+			get
+			{
+				return new DslModeling::LinkedElementCollection<SetConstraint>(this, global::Neumont.Tools.ORM.ObjectModel.ModelNoteReferencesSetConstraint.NoteDomainRoleId);
+			}
+		}
+		#endregion
+		#region SetComparisonConstraintCollection opposite domain role accessor
+		/// <summary>
+		/// Gets a list of SetComparisonConstraintCollection.
+		/// Description for
+		/// Neumont.Tools.ORM.ObjectModel.ModelNoteReferencesSetComparisonConstraint.Note
+		/// </summary>
+		public virtual DslModeling::LinkedElementCollection<SetComparisonConstraint> SetComparisonConstraintCollection
+		{
+			[global::System.Diagnostics.DebuggerStepThrough]
+			get
+			{
+				return new DslModeling::LinkedElementCollection<SetComparisonConstraint>(this, global::Neumont.Tools.ORM.ObjectModel.ModelNoteReferencesSetComparisonConstraint.NoteDomainRoleId);
 			}
 		}
 		#endregion

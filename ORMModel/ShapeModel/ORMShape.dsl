@@ -411,6 +411,14 @@
 				<ConnectorMoniker Name="ModelNoteLink"/>
 				<DomainRelationshipMoniker Name="/Neumont.Tools.ORM.ObjectModel/ModelNoteReferencesObjectType"/>
 			</ConnectorMap>
+			<ConnectorMap>
+				<ConnectorMoniker Name="ModelNoteLink"/>
+				<DomainRelationshipMoniker Name="/Neumont.Tools.ORM.ObjectModel/ModelNoteReferencesSetConstraint"/>
+			</ConnectorMap>
+			<ConnectorMap>
+				<ConnectorMoniker Name="ModelNoteLink"/>
+				<DomainRelationshipMoniker Name="/Neumont.Tools.ORM.ObjectModel/ModelNoteReferencesSetComparisonConstraint"/>
+			</ConnectorMap>
 		</ConnectorMaps>
 	</Diagram>
 
