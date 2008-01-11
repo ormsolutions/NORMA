@@ -23,6 +23,15 @@
 			<arg:AddRule methodName="FactTypeAddedRule">
 				<arg:RuleOn targetType="ModelHasFactType" targetTypeQualifier="Neumont.Tools.ORM.ObjectModel"/>
 			</arg:AddRule>
+			<arg:AddRule methodName="FactTypeDerivationAddedRule">
+				<arg:RuleOn targetType="FactTypeHasDerivationExpression" targetTypeQualifier="Neumont.Tools.ORM.ObjectModel"/>
+			</arg:AddRule>
+			<arg:ChangeRule methodName="FactTypeDerivationChangedRule">
+				<arg:RuleOn targetType="FactTypeDerivationExpression" targetTypeQualifier="Neumont.Tools.ORM.ObjectModel"/>
+			</arg:ChangeRule>
+			<arg:DeleteRule methodName="FactTypeDerivationDeletedRule">
+				<arg:RuleOn targetType="FactTypeHasDerivationExpression" targetTypeQualifier="Neumont.Tools.ORM.ObjectModel"/>
+			</arg:DeleteRule>
 			<arg:AddRule methodName="FactTypeErrorAddedRule">
 				<arg:RuleOn targetType="FactTypeHasImpliedInternalUniquenessConstraintError" targetTypeQualifier="Neumont.Tools.ORM.ObjectModel"/>
 				<arg:RuleOn targetType="FactTypeHasFactTypeRequiresInternalUniquenessConstraintError" targetTypeQualifier="Neumont.Tools.ORM.ObjectModel"/>

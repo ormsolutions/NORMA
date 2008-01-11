@@ -36,6 +36,9 @@ namespace Neumont.Tools.ORMToORMAbstractionBridge
 					retVal = new Type[]{
 						typeof(AbstractionModelIsForORMModel).GetNestedType("ORMElementGateway", BindingFlags.Public | BindingFlags.NonPublic).GetNestedType("ElementExclusionAddedRuleClass", BindingFlags.Public | BindingFlags.NonPublic),
 						typeof(AbstractionModelIsForORMModel).GetNestedType("ORMElementGateway", BindingFlags.Public | BindingFlags.NonPublic).GetNestedType("FactTypeAddedRuleClass", BindingFlags.Public | BindingFlags.NonPublic),
+						typeof(AbstractionModelIsForORMModel).GetNestedType("ORMElementGateway", BindingFlags.Public | BindingFlags.NonPublic).GetNestedType("FactTypeDerivationAddedRuleClass", BindingFlags.Public | BindingFlags.NonPublic),
+						typeof(AbstractionModelIsForORMModel).GetNestedType("ORMElementGateway", BindingFlags.Public | BindingFlags.NonPublic).GetNestedType("FactTypeDerivationChangedRuleClass", BindingFlags.Public | BindingFlags.NonPublic),
+						typeof(AbstractionModelIsForORMModel).GetNestedType("ORMElementGateway", BindingFlags.Public | BindingFlags.NonPublic).GetNestedType("FactTypeDerivationDeletedRuleClass", BindingFlags.Public | BindingFlags.NonPublic),
 						typeof(AbstractionModelIsForORMModel).GetNestedType("ORMElementGateway", BindingFlags.Public | BindingFlags.NonPublic).GetNestedType("FactTypeErrorAddedRuleClass", BindingFlags.Public | BindingFlags.NonPublic),
 						typeof(AbstractionModelIsForORMModel).GetNestedType("ORMElementGateway", BindingFlags.Public | BindingFlags.NonPublic).GetNestedType("FactTypeErrorDeletedRuleClass", BindingFlags.Public | BindingFlags.NonPublic),
 						typeof(AbstractionModelIsForORMModel).GetNestedType("ORMElementGateway", BindingFlags.Public | BindingFlags.NonPublic).GetNestedType("ObjectTypeAddedRuleClass", BindingFlags.Public | BindingFlags.NonPublic),
@@ -91,7 +94,7 @@ namespace Neumont.Tools.ORMToORMAbstractionBridge
 		{
 			Microsoft.VisualStudio.Modeling.RuleManager ruleManager = store.RuleManager;
 			Type[] disabledRuleTypes = ORMToORMAbstractionBridgeDomainModel.CustomDomainModelTypes;
-			for (int i = 0; i < 24; ++i)
+			for (int i = 0; i < 27; ++i)
 			{
 				ruleManager.EnableRule(disabledRuleTypes[i]);
 			}
@@ -158,6 +161,84 @@ namespace Neumont.Tools.ORMToORMAbstractionBridge
 					Neumont.Tools.Modeling.Diagnostics.TraceUtility.TraceRuleStart(e.ModelElement.Store, "Neumont.Tools.ORMToORMAbstractionBridge.AbstractionModelIsForORMModel.ORMElementGateway.FactTypeAddedRule");
 					ORMElementGateway.FactTypeAddedRule(e);
 					Neumont.Tools.Modeling.Diagnostics.TraceUtility.TraceRuleEnd(e.ModelElement.Store, "Neumont.Tools.ORMToORMAbstractionBridge.AbstractionModelIsForORMModel.ORMElementGateway.FactTypeAddedRule");
+				}
+			}
+			[Microsoft.VisualStudio.Modeling.RuleOn(typeof(Neumont.Tools.ORM.ObjectModel.FactTypeHasDerivationExpression), Priority=Neumont.Tools.Modeling.FrameworkDomainModel.InlineRulePriority)]
+			private sealed class FactTypeDerivationAddedRuleClass : Microsoft.VisualStudio.Modeling.AddRule
+			{
+				[System.Diagnostics.DebuggerStepThrough()]
+				public FactTypeDerivationAddedRuleClass()
+				{
+					base.IsEnabled = false;
+				}
+				/// <summary>
+				/// Provide the following method in class: 
+				/// Neumont.Tools.ORMToORMAbstractionBridge.AbstractionModelIsForORMModel.ORMElementGateway
+				/// /// <summary>
+				/// /// AddRule: typeof(Neumont.Tools.ORM.ObjectModel.FactTypeHasDerivationExpression)
+				/// /// </summary>
+				/// private static void FactTypeDerivationAddedRule(ElementAddedEventArgs e)
+				/// {
+				/// }
+				/// </summary>
+				[System.Diagnostics.DebuggerStepThrough()]
+				public override void ElementAdded(Microsoft.VisualStudio.Modeling.ElementAddedEventArgs e)
+				{
+					Neumont.Tools.Modeling.Diagnostics.TraceUtility.TraceRuleStart(e.ModelElement.Store, "Neumont.Tools.ORMToORMAbstractionBridge.AbstractionModelIsForORMModel.ORMElementGateway.FactTypeDerivationAddedRule");
+					ORMElementGateway.FactTypeDerivationAddedRule(e);
+					Neumont.Tools.Modeling.Diagnostics.TraceUtility.TraceRuleEnd(e.ModelElement.Store, "Neumont.Tools.ORMToORMAbstractionBridge.AbstractionModelIsForORMModel.ORMElementGateway.FactTypeDerivationAddedRule");
+				}
+			}
+			[Microsoft.VisualStudio.Modeling.RuleOn(typeof(Neumont.Tools.ORM.ObjectModel.FactTypeDerivationExpression), Priority=Neumont.Tools.Modeling.FrameworkDomainModel.InlineRulePriority)]
+			private sealed class FactTypeDerivationChangedRuleClass : Microsoft.VisualStudio.Modeling.ChangeRule
+			{
+				[System.Diagnostics.DebuggerStepThrough()]
+				public FactTypeDerivationChangedRuleClass()
+				{
+					base.IsEnabled = false;
+				}
+				/// <summary>
+				/// Provide the following method in class: 
+				/// Neumont.Tools.ORMToORMAbstractionBridge.AbstractionModelIsForORMModel.ORMElementGateway
+				/// /// <summary>
+				/// /// ChangeRule: typeof(Neumont.Tools.ORM.ObjectModel.FactTypeDerivationExpression)
+				/// /// </summary>
+				/// private static void FactTypeDerivationChangedRule(ElementPropertyChangedEventArgs e)
+				/// {
+				/// }
+				/// </summary>
+				[System.Diagnostics.DebuggerStepThrough()]
+				public override void ElementPropertyChanged(Microsoft.VisualStudio.Modeling.ElementPropertyChangedEventArgs e)
+				{
+					Neumont.Tools.Modeling.Diagnostics.TraceUtility.TraceRuleStart(e.ModelElement.Store, "Neumont.Tools.ORMToORMAbstractionBridge.AbstractionModelIsForORMModel.ORMElementGateway.FactTypeDerivationChangedRule");
+					ORMElementGateway.FactTypeDerivationChangedRule(e);
+					Neumont.Tools.Modeling.Diagnostics.TraceUtility.TraceRuleEnd(e.ModelElement.Store, "Neumont.Tools.ORMToORMAbstractionBridge.AbstractionModelIsForORMModel.ORMElementGateway.FactTypeDerivationChangedRule");
+				}
+			}
+			[Microsoft.VisualStudio.Modeling.RuleOn(typeof(Neumont.Tools.ORM.ObjectModel.FactTypeHasDerivationExpression), Priority=Neumont.Tools.Modeling.FrameworkDomainModel.InlineRulePriority)]
+			private sealed class FactTypeDerivationDeletedRuleClass : Microsoft.VisualStudio.Modeling.DeleteRule
+			{
+				[System.Diagnostics.DebuggerStepThrough()]
+				public FactTypeDerivationDeletedRuleClass()
+				{
+					base.IsEnabled = false;
+				}
+				/// <summary>
+				/// Provide the following method in class: 
+				/// Neumont.Tools.ORMToORMAbstractionBridge.AbstractionModelIsForORMModel.ORMElementGateway
+				/// /// <summary>
+				/// /// DeleteRule: typeof(Neumont.Tools.ORM.ObjectModel.FactTypeHasDerivationExpression)
+				/// /// </summary>
+				/// private static void FactTypeDerivationDeletedRule(ElementDeletedEventArgs e)
+				/// {
+				/// }
+				/// </summary>
+				[System.Diagnostics.DebuggerStepThrough()]
+				public override void ElementDeleted(Microsoft.VisualStudio.Modeling.ElementDeletedEventArgs e)
+				{
+					Neumont.Tools.Modeling.Diagnostics.TraceUtility.TraceRuleStart(e.ModelElement.Store, "Neumont.Tools.ORMToORMAbstractionBridge.AbstractionModelIsForORMModel.ORMElementGateway.FactTypeDerivationDeletedRule");
+					ORMElementGateway.FactTypeDerivationDeletedRule(e);
+					Neumont.Tools.Modeling.Diagnostics.TraceUtility.TraceRuleEnd(e.ModelElement.Store, "Neumont.Tools.ORMToORMAbstractionBridge.AbstractionModelIsForORMModel.ORMElementGateway.FactTypeDerivationDeletedRule");
 				}
 			}
 			[Microsoft.VisualStudio.Modeling.RuleOn(typeof(Neumont.Tools.ORM.ObjectModel.FactTypeHasImpliedInternalUniquenessConstraintError), Priority=Neumont.Tools.Modeling.FrameworkDomainModel.InlineRulePriority)]

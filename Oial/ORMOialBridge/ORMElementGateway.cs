@@ -184,8 +184,10 @@ namespace Neumont.Tools.ORMToORMAbstractionBridge
 			{
 				// Note that any changes to the list of errors must correspond to changes in
 				// FactTypeErrorAddedRule and FactTypeErrorDeletedRule
+				FactTypeDerivationExpression derivation;
 				if (null == factType.InternalUniquenessConstraintRequiredError &&
-					null == factType.ImpliedInternalUniquenessConstraintError)
+					null == factType.ImpliedInternalUniquenessConstraintError &&
+					(null == (derivation = factType.DerivationRule) || derivation.DerivationStorage != DerivationStorageType.Derived))
 				{
 					foreach (RoleBase role in factType.RoleCollection)
 					{
@@ -751,6 +753,56 @@ namespace Neumont.Tools.ORMToORMAbstractionBridge
 				}
 			}
 			#endregion // RolePlayer tracking rules
+			#region FactType derivation tracking rules
+			/// <summary>
+			/// ChangeRule: typeof(Neumont.Tools.ORM.ObjectModel.FactTypeDerivationExpression)
+			/// Derived FactTypes should not be absorbed
+			/// </summary>
+			private static void FactTypeDerivationChangedRule(ElementPropertyChangedEventArgs e)
+			{
+				Guid propertyId = e.DomainProperty.Id;
+				if (propertyId == FactTypeDerivationExpression.DerivationStorageDomainPropertyId)
+				{
+					DerivationStorageType oldStorage = (DerivationStorageType)e.OldValue;
+					DerivationStorageType newStorage = (DerivationStorageType)e.NewValue;
+					bool oldIgnoreFactType = oldStorage == DerivationStorageType.Derived;
+					bool newIgnoreFactType = newStorage == DerivationStorageType.Derived;
+					if (oldStorage != newStorage)
+					{
+						FactTypeDerivationExpression derivation = (FactTypeDerivationExpression)e.ModelElement;
+						if (!derivation.IsDeleted)
+						{
+							FilterModifiedFactType(derivation.FactType, true);
+						}
+					}
+				}
+			}
+			/// <summary>
+			/// AddRule: typeof(Neumont.Tools.ORM.ObjectModel.FactTypeHasDerivationExpression)
+			/// Derived FactTypes should not be absorbed
+			/// </summary>
+			private static void FactTypeDerivationAddedRule(ElementAddedEventArgs e)
+			{
+				FactTypeHasDerivationExpression link = (FactTypeHasDerivationExpression)e.ModelElement;
+				if (link.DerivationRule.DerivationStorage == DerivationStorageType.Derived)
+				{
+					FilterModifiedFactType(link.FactType, true);
+				}
+			}
+			/// <summary>
+			/// DeleteRule: typeof(Neumont.Tools.ORM.ObjectModel.FactTypeHasDerivationExpression)
+			/// Derived FactTypes should not be absorbed
+			/// </summary>
+			private static void FactTypeDerivationDeletedRule(ElementDeletedEventArgs e)
+			{
+				FactTypeHasDerivationExpression link = (FactTypeHasDerivationExpression)e.ModelElement;
+				FactType factType = link.FactType;
+				if (!factType.IsDeleted && link.DerivationRule.DerivationStorage == DerivationStorageType.Derived)
+				{
+					FilterModifiedFactType(factType, true);
+				}
+			}
+			#endregion // FactType derivation tracking rules
 			#endregion // Rules to defer specific changes to general filter
 		}
 		#endregion // ORMElementGateway class
