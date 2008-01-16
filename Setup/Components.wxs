@@ -917,6 +917,8 @@
 									DefaultLanguage="0" CompanionFile="DILSupportFunctions.xslt"/>
 								<File Id="TruthValueTestRemover.xslt" ShortName="TVTRmvr.xsl" Name="TruthValueTestRemover.xslt" Source="..\XML\DILtoSQL\TruthValueTestRemover.xslt"
 									DefaultLanguage="0" CompanionFile="DILSupportFunctions.xslt"/>
+								<File Id="UniqueNullableOutliner.xslt" ShortName="UNOutlnr.xsl" Name="UniqueNullableOutliner.xslt" Source="..\XML\DILtoSQL\UniqueNullableOutliner.xslt"
+									DefaultLanguage="0" CompanionFile="DILSupportFunctions.xslt"/>
 
 								<File Id="DCILtoDDIL.xslt" ShortName="DCIL2DDL.xsl" Name="DCILtoDDIL.xslt" Source="..\XML\DILtoSQL\DCILtoDDIL.xslt"
 									DefaultLanguage="0" CompanionFile="DILSupportFunctions.xslt"/>
