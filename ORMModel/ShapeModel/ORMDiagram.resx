@@ -338,6 +338,18 @@
         AwHAAQcBgAEDAgAB4AEHAfABFwGAAQMCAAH4AR8B/QFfAcABBwIABP8B4AEPAgAG/wIACw==
 </value>
   </data>
+  <data name="FactEditor.MissingRolePlayerFormatString">
+    <value xml:space="preserve">[Missing_{0}]</value>
+    <comment xml:space="preserve">The format string for a missing role player in the FactEditor. The format string should not use parentheses, which are parsed by the FactEditor as reference modes.</comment>
+  </data>
+  <data name="FactEditor.UnqualifiedRolePlayerFormatString">
+    <value xml:space="preserve">{0}</value>
+    <comment xml:space="preserve">The format string for a role player with no () qualifier in the FactEditor. Languages which should not rely on capitalization to delimit ObjectType names should put square braces around this format string.</comment>
+  </data>
+  <data name="FactEditor.QualifiedRolePlayerFormatString">
+    <value xml:space="preserve">{0}({1})</value>
+    <comment xml:space="preserve">The format string for a role player with a () qualifier in the FactEditor. The qualifier represents either a value type or a reference mode. Languages which should not rely on capitalization to delimit ObjectType names should put square braces around this format string.</comment>
+  </data>
   <data name="FactEditorColors.Delimiter">
     <value xml:space="preserve">ORM Fact Delimiter</value>
     <comment xml:space="preserve">Display Name of the Delimiter color</comment>

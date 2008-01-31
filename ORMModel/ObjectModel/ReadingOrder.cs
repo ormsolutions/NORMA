@@ -64,10 +64,17 @@ namespace Neumont.Tools.ORM.ObjectModel
 			if (!Store.InUndoRedoOrRollback)
 			{
 				LinkedElementCollection<Reading> readings = ReadingCollection;
+				Reading reading;
 				if (readings.Count > 0)
 				{
-					readings[0].Text = newValue;
+					reading = readings[0];
 				}
+				else
+				{
+					reading = new Reading(Store);
+					readings.Add(reading);
+				}
+				reading.Text = newValue;
 			}
 		}
 		#endregion

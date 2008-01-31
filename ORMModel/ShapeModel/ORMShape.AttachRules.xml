@@ -207,6 +207,9 @@
 			<arg:AddRule methodName="RoleAddedRule">
 				<arg:RuleOn targetType="FactTypeHasRole" targetTypeQualifier="Neumont.Tools.ORM.ObjectModel" fireTime="TopLevelCommit" priority="DiagramFixupConstants.ResizeParentRulePriority"/>
 			</arg:AddRule>
+			<arg:AddRule methodName="RoleAddedRuleInline">
+				<arg:RuleOn targetType="FactTypeHasRole" targetTypeQualifier="Neumont.Tools.ORM.ObjectModel" priority="BeforeDelayValidateRulePriority"/>
+			</arg:AddRule>
 			<arg:ChangeRule methodName="RoleChangedRule">
 				<arg:RuleOn targetType="Role" targetTypeQualifier="Neumont.Tools.ORM.ObjectModel" fireTime="TopLevelCommit" priority="DiagramFixupConstants.AddShapeRulePriority"/>
 			</arg:ChangeRule>

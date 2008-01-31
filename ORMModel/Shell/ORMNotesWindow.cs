@@ -33,6 +33,7 @@ using MSOLE = Microsoft.VisualStudio.OLE.Interop;
 using Neumont.Tools.Modeling.Design;
 using Neumont.Tools.ORM.ObjectModel;
 using Neumont.Tools.Modeling;
+using Neumont.Tools.Modeling.Shell;
 
 namespace Neumont.Tools.ORM.Shell
 {

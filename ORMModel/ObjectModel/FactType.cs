@@ -82,6 +82,9 @@ namespace Neumont.Tools.ORM.ObjectModel
 		/// </summary>
 		/// <param name="roleOrder">An IList of <see cref="RoleBase"/> elements. </param>
 		/// <returns>The reading order if found, null if it was not.</returns>
+		/// <remarks>The requested roleOrder may have fewer roles than the FactType and
+		/// may contain trailing null elements in the list. This allows a request
+		/// for a partial reading order match.</remarks>
 		public ReadingOrder FindMatchingReadingOrder(IList<RoleBase> roleOrder)
 		{
 			ReadingOrder retval = null;
@@ -90,13 +93,22 @@ namespace Neumont.Tools.ORM.ObjectModel
 			foreach (ReadingOrder order in readingOrders)
 			{
 				LinkedElementCollection<RoleBase> roles = order.RoleCollection;
-				int numRoles = roles.Count;
-				if (numRoles == roleOrderCount)
+				if (roles.Count >= roleOrderCount)
 				{
 					bool match = true;
-					for (int i = 0; i < numRoles; ++i)
+					for (int i = 0; i < roleOrderCount; ++i)
 					{
-						if (roles[i] != roleOrder[i])
+						RoleBase expectedRole = roleOrder[i];
+						if (expectedRole == null)
+						{
+							if (i == 0)
+							{
+								// Nothing to match
+								return null;
+							}
+							break;
+						}
+						if (roles[i] != expectedRole)
 						{
 							match = false;
 							break;

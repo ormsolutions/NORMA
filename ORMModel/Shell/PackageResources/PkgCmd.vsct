@@ -1,4 +1,4 @@
-<?xml version="1.0" encoding="utf-8"?>
+﻿<?xml version="1.0" encoding="utf-8"?>
 <!--
 	Neumont Object-Role Modeling Architect for Visual Studio
 
@@ -82,6 +82,14 @@
 					<CommandName>ORMReadingEditorContextMenu</CommandName>
 				</Strings>
 			</Menu>
+
+			<Menu guid="guidORMDesignerCommandSet" id="menuIdFactEditorContextMenu" priority="0x0000" type="Context">
+				<Parent guid="guidORMDesignerCommandSet" id="0"/>
+				<Strings>
+					<ButtonText>ORM Fact Editor Context Menu</ButtonText>
+					<CommandName>ORMFactEditorContextMenu</CommandName>
+				</Strings>
+			</Menu>
 		</Menus>
 
 		<Groups>
@@ -154,6 +162,9 @@
 
 			<Group guid="guidORMDesignerCommandSet" id="groupIdORMToolWindows" priority="0x0010">
 				<Parent guid="guidORMDesignerCommandSet" id="menuIdToolWindows"/>
+			</Group>
+			<Group guid="guidORMDesignerCommandSet" id="groupIdFactEditorCommitCommands" priority="0x0010">
+				<Parent guid="guidORMDesignerCommandSet" id="menuIdFactEditorContextMenu"/>
 			</Group>
 		</Groups>
 
@@ -585,6 +596,13 @@
 					<ButtonText>Re&amp;verse Role Order</ButtonText>
 				</Strings>
 			</Button>
+
+			<Button guid="guidORMDesignerCommandSet" id="cmdIdFactEditorCommitLine" priority="0x010" type="Button">
+				<Parent guid="guidORMDesignerCommandSet" id="groupIdFactEditorCommitCommands"/>
+				<Strings>
+					<ButtonText>&amp;Commit FactType Definition</ButtonText>
+				</Strings>
+			</Button>
 		</Buttons>
 
 		<!--<Combos/>-->
@@ -609,6 +627,104 @@
 
 	<KeyBindings>
 		<KeyBinding guid="guidORMDesignerCommandSet" id="cmdIdDeleteAlternate" editor="guidORMDesignerEditor" key1="VK_DELETE" mod1="Control"/>
+		<KeyBinding guid="guidORMDesignerCommandSet" id="cmdIdFactEditorCommitLine" editor="guidFactEditorFactory" key1="VK_RETURN" mod1="Control"/>
+		<!--
+		//****************************-
+		// Standard Editor bindings
+		// Copied from VisualStudioIntegration\Common\Inc\SharedCmdPlace.vsct in the VS2008 VSSDK.
+		// We do this because there does not seem to be a way to override one keybinding. You get
+		// all or none.
+		//****************************- -->
+		<KeyBinding guid="CMDSETID_StandardCommandSet2K" id="ECMD_BACKSPACE" editor="guidFactEditorFactory" key1="VK_BACK" mod1="Shift"/>
+		<KeyBinding guid="CMDSETID_StandardCommandSet2K" id="ECMD_BACKSPACE" editor="guidFactEditorFactory" key1="VK_BACK"/>
+		<KeyBinding guid="CMDSETID_StandardCommandSet2K" id="ECMD_RETURN" editor="guidFactEditorFactory" key1="VK_RETURN" mod1="Shift"/>
+		<KeyBinding guid="CMDSETID_StandardCommandSet2K" id="ECMD_RETURN" editor="guidFactEditorFactory" key1="VK_RETURN"/>
+		<KeyBinding guid="CMDSETID_StandardCommandSet2K" id="ECMD_TAB" editor="guidFactEditorFactory" key1="VK_TAB"/>
+		<KeyBinding guid="CMDSETID_StandardCommandSet2K" id="ECMD_LEFT" editor="guidFactEditorFactory" key1="VK_LEFT"/>
+		<KeyBinding guid="CMDSETID_StandardCommandSet2K" id="ECMD_LEFT_EXT" editor="guidFactEditorFactory" key1="VK_LEFT" mod1="Shift"/>
+		<KeyBinding guid="CMDSETID_StandardCommandSet2K" id="ECMD_LEFT_EXT_COL" editor="guidFactEditorFactory" key1="VK_LEFT" mod1="Alt Shift"/>
+		<KeyBinding guid="CMDSETID_StandardCommandSet2K" id="ECMD_RIGHT" editor="guidFactEditorFactory" key1="VK_RIGHT"/>
+		<KeyBinding guid="CMDSETID_StandardCommandSet2K" id="ECMD_RIGHT_EXT" editor="guidFactEditorFactory" key1="VK_RIGHT" mod1="Shift"/>
+		<KeyBinding guid="CMDSETID_StandardCommandSet2K" id="ECMD_RIGHT_EXT_COL" editor="guidFactEditorFactory" key1="VK_RIGHT" mod1="Alt Shift"/>
+		<KeyBinding guid="CMDSETID_StandardCommandSet2K" id="ECMD_UP" editor="guidFactEditorFactory" key1="VK_UP"/>
+		<KeyBinding guid="CMDSETID_StandardCommandSet2K" id="ECMD_UP_EXT" editor="guidFactEditorFactory" key1="VK_UP" mod1="Shift"/>
+		<KeyBinding guid="CMDSETID_StandardCommandSet2K" id="ECMD_UP_EXT_COL" editor="guidFactEditorFactory" key1="VK_UP" mod1="Alt Shift"/>
+		<KeyBinding guid="CMDSETID_StandardCommandSet2K" id="ECMD_DOWN" editor="guidFactEditorFactory" key1="VK_DOWN"/>
+		<KeyBinding guid="CMDSETID_StandardCommandSet2K" id="ECMD_DOWN_EXT" editor="guidFactEditorFactory" key1="VK_DOWN" mod1="Shift"/>
+		<KeyBinding guid="CMDSETID_StandardCommandSet2K" id="ECMD_DOWN_EXT_COL" editor="guidFactEditorFactory" key1="VK_DOWN" mod1="Alt Shift"/>
+		<KeyBinding guid="CMDSETID_StandardCommandSet2K" id="ECMD_HOME" editor="guidFactEditorFactory" key1="VK_HOME" mod1="Control"/>
+		<KeyBinding guid="CMDSETID_StandardCommandSet2K" id="ECMD_HOME_EXT" editor="guidFactEditorFactory" key1="VK_HOME" mod1="Control Shift"/>
+		<KeyBinding guid="CMDSETID_StandardCommandSet2K" id="ECMD_END" editor="guidFactEditorFactory" key1="VK_END" mod1="Control"/>
+		<KeyBinding guid="CMDSETID_StandardCommandSet2K" id="ECMD_END_EXT" editor="guidFactEditorFactory" key1="VK_END" mod1="Control Shift"/>
+		<KeyBinding guid="CMDSETID_StandardCommandSet2K" id="ECMD_BOL" editor="guidFactEditorFactory" key1="VK_HOME"/>
+		<KeyBinding guid="CMDSETID_StandardCommandSet2K" id="ECMD_BOL_EXT" editor="guidFactEditorFactory" key1="VK_HOME" mod1="Shift"/>
+		<KeyBinding guid="CMDSETID_StandardCommandSet2K" id="ECMD_BOL_EXT_COL" editor="guidFactEditorFactory" key1="VK_HOME" mod1="Alt Shift"/>
+		<KeyBinding guid="CMDSETID_StandardCommandSet2K" id="ECMD_EOL" editor="guidFactEditorFactory" key1="VK_END"/>
+		<KeyBinding guid="CMDSETID_StandardCommandSet2K" id="ECMD_EOL_EXT" editor="guidFactEditorFactory" key1="VK_END" mod1="Shift"/>
+		<KeyBinding guid="CMDSETID_StandardCommandSet2K" id="ECMD_EOL_EXT_COL" editor="guidFactEditorFactory" key1="VK_END" mod1="Alt Shift"/>
+		<KeyBinding guid="CMDSETID_StandardCommandSet2K" id="ECMD_PAGEUP" editor="guidFactEditorFactory" key1="VK_PRIOR"/>
+		<KeyBinding guid="CMDSETID_StandardCommandSet2K" id="ECMD_PAGEUP_EXT" editor="guidFactEditorFactory" key1="VK_PRIOR" mod1="Shift"/>
+		<KeyBinding guid="CMDSETID_StandardCommandSet2K" id="ECMD_PAGEDN" editor="guidFactEditorFactory" key1="VK_NEXT"/>
+		<KeyBinding guid="CMDSETID_StandardCommandSet2K" id="ECMD_PAGEDN_EXT" editor="guidFactEditorFactory" key1="VK_NEXT" mod1="Shift"/>
+		<KeyBinding guid="CMDSETID_StandardCommandSet2K" id="ECMD_TOPLINE" editor="guidFactEditorFactory" key1="VK_PRIOR" mod1="Control"/>
+		<KeyBinding guid="CMDSETID_StandardCommandSet2K" id="ECMD_TOPLINE_EXT" editor="guidFactEditorFactory" key1="VK_PRIOR" mod1="Control Shift"/>
+		<KeyBinding guid="CMDSETID_StandardCommandSet2K" id="ECMD_BOTTOMLINE" editor="guidFactEditorFactory" key1="VK_NEXT" mod1="Control"/>
+		<KeyBinding guid="CMDSETID_StandardCommandSet2K" id="ECMD_BOTTOMLINE_EXT" editor="guidFactEditorFactory" key1="VK_NEXT" mod1="Control Shift"/>
+		<KeyBinding guid="CMDSETID_StandardCommandSet2K" id="ECMD_SCROLLUP" editor="guidFactEditorFactory" key1="VK_UP" mod1="Control"/>
+		<KeyBinding guid="CMDSETID_StandardCommandSet2K" id="ECMD_SCROLLDN" editor="guidFactEditorFactory" key1="VK_DOWN" mod1="Control"/>
+		<KeyBinding guid="CMDSETID_StandardCommandSet2K" id="ECMD_BACKTAB" editor="guidFactEditorFactory" key1="VK_TAB" mod1="Shift"/>
+		<KeyBinding guid="CMDSETID_StandardCommandSet2K" id="ECMD_SELLOWCASE" editor="guidFactEditorFactory" key1="U" mod1="Control"/>
+		<KeyBinding guid="CMDSETID_StandardCommandSet2K" id="ECMD_SELUPCASE" editor="guidFactEditorFactory" key1="U" mod1="Control Shift"/>
+		<KeyBinding guid="CMDSETID_StandardCommandSet2K" id="ECMD_SELSWAPANCHOR" editor="guidFactEditorFactory" key1="K" mod1="Control" key2="A" mod2="Control"/>
+		<KeyBinding guid="CMDSETID_StandardCommandSet2K" id="ECMD_GOTOBRACE" editor="guidFactEditorFactory" key1="221" mod1="Control"/>
+		<KeyBinding guid="CMDSETID_StandardCommandSet2K" id="ECMD_GOTOBRACE_EXT" editor="guidFactEditorFactory" key1="221" mod1="Control Shift"/>
+		<KeyBinding guid="CMDSETID_StandardCommandSet2K" id="ECMD_TOGGLE_OVERTYPE_MODE" editor="guidFactEditorFactory" key1="VK_INSERT"/>
+		<KeyBinding guid="CMDSETID_StandardCommandSet2K" id="ECMD_CUTLINE" editor="guidFactEditorFactory" key1="L" mod1="Control"/>
+		<KeyBinding guid="CMDSETID_StandardCommandSet2K" id="ECMD_DELETELINE" editor="guidFactEditorFactory" key1="L" mod1="Control Shift"/>
+		<KeyBinding guid="CMDSETID_StandardCommandSet2K" id="ECMD_DELETEWHITESPACE" editor="guidFactEditorFactory" key1="K" mod1="Control" key2="220" mod2="Control"/>
+		<!--<KeyBinding guid="CMDSETID_StandardCommandSet2K" id="ECMD_OPENLINEABOVE" editor="guidFactEditorFactory" key1="VK_RETURN" mod1="Control"/>-->
+		<!--<KeyBinding guid="CMDSETID_StandardCommandSet2K" id="ECMD_OPENLINEBELOW" editor="guidFactEditorFactory" key1="VK_RETURN" mod1="Control Shift"/>-->
+		<KeyBinding guid="CMDSETID_StandardCommandSet2K" id="ECMD_INCREASEFILTER" editor="guidFactEditorFactory" key1="VK_OEM_PERIOD" mod1="Alt"/>
+		<KeyBinding guid="CMDSETID_StandardCommandSet2K" id="ECMD_DECREASEFILTER" editor="guidFactEditorFactory" key1="VK_OEM_COMMA" mod1="Alt"/>
+		<KeyBinding guid="CMDSETID_StandardCommandSet2K" id="ECMD_COPYTIP" editor="guidFactEditorFactory" key1="C" mod1="Control Shift Alt"/>
+		<KeyBinding guid="CMDSETID_StandardCommandSet2K" id="ECMD_PASTETIP" editor="guidFactEditorFactory" key1="P" mod1="Control Shift Alt"/>
+		<KeyBinding guid="CMDSETID_StandardCommandSet2K" id="ECMD_FORMATDOCUMENT" editor="guidFactEditorFactory" key1="K" mod1="Control" key2="D" mod2="Control"/>
+		<KeyBinding guid="CMDSETID_StandardCommandSet2K" id="ECMD_FORMATSELECTION" editor="guidFactEditorFactory" key1="K" mod1="Control" key2="F" mod2="Control"/>
+		<KeyBinding guid="CMDSETID_StandardCommandSet2K" id="ECMD_DELETEALLTEMPBOOKMARKS" editor="guidFactEditorFactory" key1="K" mod1="Control" key2="L" mod2="Control"/>
+		<KeyBinding guid="CMDSETID_StandardCommandSet2K" id="ECMD_TOGGLETEMPBOOKMARK" editor="guidFactEditorFactory" key1="K" mod1="Control" key2="K" mod2="Control"/>
+		<KeyBinding guid="CMDSETID_StandardCommandSet2K" id="ECMD_TRANSPOSECHAR" editor="guidFactEditorFactory" key1="T" mod1="Control"/>
+		<KeyBinding guid="CMDSETID_StandardCommandSet2K" id="ECMD_TRANSPOSEWORD" editor="guidFactEditorFactory" key1="T" mod1="Control Shift"/>
+		<KeyBinding guid="CMDSETID_StandardCommandSet2K" id="ECMD_TRANSPOSELINE" editor="guidFactEditorFactory" key1="T" mod1="Alt Shift"/>
+		<KeyBinding guid="CMDSETID_StandardCommandSet2K" id="ECMD_SELECTCURRENTWORD" editor="guidFactEditorFactory" key1="W" mod1="Control"/>
+		<KeyBinding guid="CMDSETID_StandardCommandSet2K" id="ECMD_DELETEWORDRIGHT" editor="guidFactEditorFactory" key1="VK_DELETE" mod1="Control"/>
+		<KeyBinding guid="CMDSETID_StandardCommandSet2K" id="ECMD_DELETEWORDLEFT" editor="guidFactEditorFactory" key1="VK_BACK" mod1="Control"/>
+		<KeyBinding guid="CMDSETID_StandardCommandSet2K" id="ECMD_WORDPREV" editor="guidFactEditorFactory" key1="VK_LEFT" mod1="Control"/>
+		<KeyBinding guid="CMDSETID_StandardCommandSet2K" id="ECMD_WORDPREV_EXT" editor="guidFactEditorFactory" key1="VK_LEFT" mod1="Control Shift"/>
+		<KeyBinding guid="CMDSETID_StandardCommandSet2K" id="ECMD_WORDPREV_EXT_COL" editor="guidFactEditorFactory" key1="VK_LEFT" mod1="Control Alt Shift"/>
+		<KeyBinding guid="CMDSETID_StandardCommandSet2K" id="ECMD_WORDNEXT" editor="guidFactEditorFactory" key1="VK_RIGHT" mod1="Control"/>
+		<KeyBinding guid="CMDSETID_StandardCommandSet2K" id="ECMD_WORDNEXT_EXT" editor="guidFactEditorFactory" key1="VK_RIGHT" mod1="Control Shift"/>
+		<KeyBinding guid="CMDSETID_StandardCommandSet2K" id="ECMD_WORDNEXT_EXT_COL" editor="guidFactEditorFactory" key1="VK_RIGHT" mod1="Control Alt Shift"/>
+		<KeyBinding guid="CMDSETID_StandardCommandSet2K" id="ECMD_CANCEL" editor="guidFactEditorFactory" key1="VK_ESCAPE"/>
+		<KeyBinding guid="CMDSETID_StandardCommandSet2K" id="ECMD_QUICKINFO" editor="guidFactEditorFactory" key1="K" mod1="Control" key2="I" mod2="Control"/>
+		<KeyBinding guid="CMDSETID_StandardCommandSet2K" id="ECMD_PARAMINFO" editor="guidFactEditorFactory" key1="VK_SPACE" mod1="Control Shift"/>
+		<KeyBinding guid="CMDSETID_StandardCommandSet2K" id="ECMD_TOGGLEVISSPACE" editor="guidFactEditorFactory" key1="R" mod1="Control" key2="W" mod2="Control"/>
+		<KeyBinding guid="CMDSETID_StandardCommandSet2K" id="ECMD_COMPLETEWORD" editor="guidFactEditorFactory" key1="VK_RIGHT" mod1="Alt"/>
+		<KeyBinding guid="CMDSETID_StandardCommandSet2K" id="ECMD_COMPLETEWORD" editor="guidFactEditorFactory" key1="VK_SPACE" mod1="Control"/>
+		<KeyBinding guid="CMDSETID_StandardCommandSet2K" id="ECMD_SHOWMEMBERLIST" editor="guidFactEditorFactory" key1="J" mod1="Control"/>
+		<KeyBinding guid="CMDSETID_StandardCommandSet2K" id="ECMD_TOGGLESHORTCUT" editor="guidFactEditorFactory" key1="K" mod1="Control" key2="H" mod2="Control"/>
+		<KeyBinding guid="CMDSETID_StandardCommandSet2K" id="ECMD_TOGGLEWORDWRAP" editor="guidFactEditorFactory" key1="E" mod1="Control" key2="W" mod2="Control"/>
+		<KeyBinding guid="CMDSETID_StandardCommandSet2K" id="ECMD_ISEARCH" editor="guidFactEditorFactory" key1="I" mod1="Control"/>
+		<KeyBinding guid="CMDSETID_StandardCommandSet2K" id="ECMD_ISEARCHBACK" editor="guidFactEditorFactory" key1="I" mod1="Control Shift"/>
+		<KeyBinding guid="CMDSETID_StandardCommandSet2K" id="ECMD_OUTLN_HIDE_SELECTION" editor="guidFactEditorFactory" key1="M" mod1="Control" key2="H" mod2="Control"/>
+		<KeyBinding guid="CMDSETID_StandardCommandSet2K" id="ECMD_OUTLN_TOGGLE_CURRENT" editor="guidFactEditorFactory" key1="M" mod1="Control" key2="M" mod2="Control"/>
+		<KeyBinding guid="CMDSETID_StandardCommandSet2K" id="ECMD_OUTLN_TOGGLE_ALL" editor="guidFactEditorFactory" key1="M" mod1="Control" key2="L" mod2="Control"/>
+		<KeyBinding guid="CMDSETID_StandardCommandSet2K" id="ECMD_OUTLN_STOP_HIDING_ALL" editor="guidFactEditorFactory" key1="M" mod1="Control" key2="P" mod2="Control"/>
+		<KeyBinding guid="CMDSETID_StandardCommandSet2K" id="ECMD_OUTLN_STOP_HIDING_CURRENT" editor="guidFactEditorFactory" key1="M" mod1="Control" key2="U" mod2="Control"/>
+		<KeyBinding guid="CMDSETID_StandardCommandSet2K" id="ECMD_OUTLN_COLLAPSE_TO_DEF" editor="guidFactEditorFactory" key1="M" mod1="Control" key2="O" mod2="Control"/>
+		<KeyBinding guid="CMDSETID_StandardCommandSet2K" id="ECMD_COLLAPSETAG" editor="guidFactEditorFactory" key1="M" mod1="Control" key2="T" mod2="Control"/>
+		<KeyBinding guid="CMDSETID_StandardCommandSet2K" id="ECMD_COMMENT_BLOCK" editor="guidFactEditorFactory" key1="K" mod1="Control" key2="C" mod2="Control"/>
+		<KeyBinding guid="CMDSETID_StandardCommandSet2K" id="ECMD_UNCOMMENT_BLOCK" editor="guidFactEditorFactory" key1="K" mod1="Control" key2="U" mod2="Control"/>
+		<KeyBinding guid="CMDSETID_StandardCommandSet2K" id="ECMD_SELTOGOBACK" editor="guidFactEditorFactory" key1="VK_OEM_PLUS" mod1="Control"/>
 	</KeyBindings>
 
 	<Symbols>
@@ -629,6 +745,7 @@
 			<IDSymbol value="0x0105" name="menuIdToolWindows"/>
 			<IDSymbol value="0x0106" name="menuIdDiagramList"/>
 			<IDSymbol value="0x0107" name="menuIdReportGeneratorList"/>
+			<IDSymbol value="0x0108" name="menuIdFactEditorContextMenu"/>
 
 			<!-- Groups (0x10__) -->
 			<IDSymbol value="0x0FFF" name="groupIdDebugCommands"/>
@@ -652,6 +769,7 @@
 			<IDSymbol value="0x1011" name="groupIdToolWindows"/>
 			<IDSymbol value="0x1012" name="groupIdDiagramListTest"/>
 			<IDSymbol value="0x1013" name="groupIdReportGeneratorListTest"/>
+			<IDSymbol value="0x1014" name="groupIdFactEditorCommitCommands"/>
 
 			<!-- Commands (0x2___) -->
 			<IDSymbol value="0x28FE" name="cmdIdDebugViewTransactionLogs"/>
@@ -699,6 +817,7 @@
 			<IDSymbol value="0x2928" name="cmdIdExclusiveOrDecoupler"/>
 			<IDSymbol value="0x2929" name="cmdIdUnobjectifyFactType"/>
 			<IDSymbol value="0x292A" name="cmdIdViewDefinitionWindow"/>
+			<IDSymbol value="0x292B" name="cmdIdFactEditorCommitLine"/>
 
 			<!-- Large ranges for dynamic commands, keep single commands in the 0x29__ range -->
 			<IDSymbol value="0x2A00" name="cmdIdErrorList"/>
@@ -708,6 +827,7 @@
 			<IDSymbol value="0x2C00" name="cmdIdReportGeneratorList"/>
 			<!-- Reserve 2C__ range for reports. -->
 		</GuidSymbol>
+		<GuidSymbol name="guidFactEditorFactory" value="{EE99A954-82C4-4098-A2BD-5C75E3D138A7}"/>
 		<GuidSymbol name="guidORMVerbalizationToolbarImages" value="{5743D786-F88A-45F9-8117-F915CA6A9433}">
 			<IDSymbol value="0x0001" name="bmpIdShowNegativeVerbalization"/>
 			<IDSymbol value="0x0002" name="bmpIdShowPositiveVerbalization"/>
@@ -726,6 +846,7 @@
 			<IDSymbol value="Extern" name="cmdidDelete"/>
 			<IDSymbol value="Extern" name="cmdidPropertiesWindow"/>
 		</GuidSymbol>
+		<GuidSymbol name="CMDSETID_StandardCommandSet2K" value="Extern"/>
 		<GuidSymbol name="guidOfficeIcon" value="Extern">
 			<IDSymbol value="Extern" name="msotcidNoIcon"/>
 			<IDSymbol value="Extern" name="msotcidDelete"/>

@@ -1684,6 +1684,30 @@ namespace Neumont.Tools.ORM
 				return ResourceStrings.GetString(ResourceManagers.Model, "ModelReferenceModeEditor.NameColumn");
 			}
 		}
+		/// <summary>The format string for a missing role player in the FactEditor. The format string should not use parentheses, which are parsed by the FactEditor as reference modes.</summary>
+		public static string FactEditorMissingRolePlayerFormatString
+		{
+			get
+			{
+				return ResourceStrings.GetString(ResourceManagers.Diagram, "FactEditor.MissingRolePlayerFormatString");
+			}
+		}
+		/// <summary>The format string for a role player with a () qualifier in the FactEditor. The qualifier represents either a value type or a reference mode. Languages which should not rely on capitalization to delimit ObjectType names should put square braces around this format string.</summary>
+		public static string FactEditorQualifiedRolePlayerFormatString
+		{
+			get
+			{
+				return ResourceStrings.GetString(ResourceManagers.Diagram, "FactEditor.QualifiedRolePlayerFormatString");
+			}
+		}
+		/// <summary>The format string for a role player with no () qualifier in the FactEditor. Languages which should not rely on capitalization to delimit ObjectType names should put square braces around this format string.</summary>
+		public static string FactEditorUnqualifiedRolePlayerFormatString
+		{
+			get
+			{
+				return ResourceStrings.GetString(ResourceManagers.Diagram, "FactEditor.UnqualifiedRolePlayerFormatString");
+			}
+		}
 		/// <summary>The caption of the Fact Editor Tool Window.</summary>
 		public static string FactEditorToolWindowCaption
 		{

@@ -18,42 +18,42 @@ using System;
 using System.Diagnostics;
 using Microsoft.VisualStudio.TextManager.Interop;
 using Microsoft.VisualStudio;
-namespace Neumont.Tools.ORM.Shell.FactEditor
+namespace Neumont.Tools.ORM.Shell
 {
-	#region FactEditorColorizableItem Enum
-	/// <summary>
-	/// An indexed list of supported color items
-	/// for the fact editor. Note that these elements
-	/// start at 1. 0 is reserved for plain text and
-	/// is never requested.
-	/// </summary>
-	public enum FactEditorColorizableItem
+	partial class FactEditorLanguageService : IVsProvideColorableItems
 	{
+		#region FactEditorColorizableItem Enum
 		/// <summary>
-		/// The PredicateText color category
+		/// An indexed list of supported color items
+		/// for the fact editor. Note that these elements
+		/// start at 1. 0 is reserved for plain text and
+		/// is never requested.
 		/// </summary>
-		PredicateText = 1,
-		/// <summary>
-		/// The ObjectName color category
-		/// </summary>
-		ObjectName,
-		/// <summary>
-		/// The ReferenceModeName color category
-		/// </summary>
-		ReferenceModeName,
-		/// <summary>
-		/// The Delimiter color category
-		/// </summary>
-		Delimiter,
-		/// <summary>
-		/// The Quantifier color category
-		/// </summary>
-		Quantifier,
-		// Any order change here needs to be reflected in the myDefaultColorSettings array below
-	}
-	#endregion // FactEditorColorizableItem Enum
-	public partial class FactLanguageService : IVsProvideColorableItems
-	{
+		public enum FactEditorColorizableItem
+		{
+			/// <summary>
+			/// The PredicateText color category
+			/// </summary>
+			PredicateText = 1,
+			/// <summary>
+			/// The ObjectName color category
+			/// </summary>
+			ObjectName,
+			/// <summary>
+			/// The ReferenceModeName color category
+			/// </summary>
+			ReferenceModeName,
+			/// <summary>
+			/// The Delimiter color category
+			/// </summary>
+			Delimiter,
+			/// <summary>
+			/// The Quantifier color category
+			/// </summary>
+			Quantifier,
+			// Any order change here needs to be reflected in the myDefaultColorSettings array below
+		}
+		#endregion // FactEditorColorizableItem Enum
 		#region Constant definitions
 		/// <summary>
 		/// Bitwise or this value with a value from the ColorIndex array
@@ -106,12 +106,12 @@ namespace Neumont.Tools.ORM.Shell.FactEditor
 			ResourceStrings.FactEditorColorsDelimiterId,
 			(uint)COLORINDEX.CI_BLACK | StandardColorPaletteBit,
 			(uint)COLORINDEX.CI_SYSPLAINTEXT_BK | StandardColorPaletteBit,
-			true)
+			false)
 			,new DefaultColorSetting(
 			ResourceStrings.FactEditorColorsQuantifierId,
 			(uint)COLORINDEX.CI_DARKGREEN | StandardColorPaletteBit,
 			(uint)COLORINDEX.CI_SYSPLAINTEXT_BK | StandardColorPaletteBit,
-			true)
+			false)
 		};
 		#endregion // Default Settings
 		#region IVsColorableItem Implementation Class
@@ -146,8 +146,7 @@ namespace Neumont.Tools.ORM.Shell.FactEditor
 		/// <summary>
 		/// Implements IVsProvideColorableItems.GetColorableItem
 		/// </summary>
-		[CLSCompliant(false)]
-		protected static int GetColorableItem(int iIndex, out IVsColorableItem ppItem)
+		private static new int GetColorableItem(int iIndex, out IVsColorableItem ppItem)
 		{
 			Debug.Assert(iIndex > 0); // Appears to make all calls 1-based
 			ppItem = new ColorableItemImpl(myDefaultColorSettings[iIndex - 1]);
@@ -162,7 +161,7 @@ namespace Neumont.Tools.ORM.Shell.FactEditor
 		/// </summary>
 		/// <param name="piCount"></param>
 		/// <returns></returns>
-		protected static int GetItemCount(out int piCount)
+		private static new int GetItemCount(out int piCount)
 		{
 			piCount = myDefaultColorSettings.Length;
 			return VSConstants.S_OK;

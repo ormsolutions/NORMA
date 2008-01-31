@@ -374,6 +374,26 @@ namespace Neumont.Tools.ORM.ShapeModel
 				FactTypeShape shape = pel as FactTypeShape;
 				if (shape != null)
 				{
+					shape.AutoResize();
+				}
+			}
+		}
+		/// <summary>
+		/// AddRule: typeof(Neumont.Tools.ORM.ObjectModel.FactTypeHasRole), Priority=FrameworkDomainModel.BeforeDelayValidateRulePriority;
+		/// Complementary rule to <see cref="RoleAddedRule"/>. Modifies RoleDisplayOrder early
+		/// in the rule sequence so that any other rules that resize or redraw a FactTypeShape
+		/// will not crash due to an arity mismatch in the sequence
+		/// </summary>
+		private static void RoleAddedRuleInline(ElementAddedEventArgs e)
+		{
+			FactTypeHasRole link = e.ModelElement as FactTypeHasRole;
+			FactType factType = link.FactType;
+
+			foreach (PresentationElement pel in PresentationViewsSubject.GetPresentation(factType))
+			{
+				FactTypeShape shape = pel as FactTypeShape;
+				if (shape != null)
+				{
 					//This part handles inserting the role in the correct location if the facttypeshape has 
 					//a different display order for the roles than the native one.
 					LinkedElementCollection<RoleBase> roles = shape.RoleDisplayOrderCollection;
@@ -419,7 +439,6 @@ namespace Neumont.Tools.ORM.ShapeModel
 							roles.Add(newRole);
 						}
 					}
-					shape.AutoResize();
 				}
 			}
 		}

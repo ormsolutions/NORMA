@@ -62,6 +62,7 @@
 	<?define BaseAssemblyName="Version=$(var.MajorMinorVersion).0.0, Culture=neutral, PublicKeyToken=$(var.PublicKeyToken)"?>
 	<?define NORMAVSPackageAssemblyName="Neumont.Tools.ORM$(var.VSExt), $(var.BaseAssemblyName)"?>
 	<?define NORMAVSEditorGuid="EDA9E282-8FC6-4AE4-AF2C-C224FD3AE49B"?>
+	<?define NORMAVSFactEditorGuid="EE99A954-82C4-4098-A2BD-5C75E3D138A7"?>
 	<?define NORMAVSFontAndColorsServiceGuid="C5AA80F8-F730-4809-AAB1-8D925E36F9F5"?>
 	<?define ORMCustomToolGuid="977BD01E-F2B4-4341-9C47-459420624A20"?>
 	<?define ORMCustomToolExtenderGuid="6FDCC073-20C2-4435-9B2E-9E70451C81D8"?>

@@ -19,6 +19,7 @@ using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using Microsoft.VisualStudio.Modeling;
 using System.ComponentModel;
+using System.Reflection;
 
 namespace Neumont.Tools.Modeling
 {
@@ -338,5 +339,57 @@ namespace Neumont.Tools.Modeling
 			return false;
 		}
 		#endregion // EnumerableContains
+		#region GetBaseInterfaceMethodDelegate method
+		/// <summary>
+		/// Return a delegate that can be used to call the implementation of a private
+		/// method on a base class.
+		/// </summary>
+		/// <typeparam name="T">The type of a delegate. The first parameter of the delegate
+		/// is assumed to be a 'this' parameter with a type of a base class (not the type of
+		/// the class attempting to forward to a base class implementation). The signature
+		/// of the delegate is also used to verify a matching signature on the method name.</typeparam>
+		/// <param name="interfaceType">The type of the interface to call a method on.</param>
+		/// <param name="methodName">The name of the method on the interface</param>
+		/// <returns>A delegate that can be used to forward the current method call.</returns>
+		public static T GetBaseInterfaceMethodDelegate<T>(Type interfaceType, string methodName)
+			where T : class
+		{
+			Type delegateType = typeof(T);
+			MethodInfo invokeMethod = delegateType.GetMethod("Invoke", BindingFlags.Instance | BindingFlags.Public);
+			ParameterInfo[] invokeParameters = invokeMethod.GetParameters();
+			Type baseType = invokeParameters[0].ParameterType;
+			InterfaceMapping mapping = baseType.GetInterfaceMap(interfaceType);
+			MethodInfo[] interfaceMethods = mapping.InterfaceMethods;
+			MethodInfo[] targetMethods = mapping.TargetMethods;
+			for (int i = 0; i < interfaceMethods.Length; ++i)
+			{
+				MethodInfo interfaceMethod = interfaceMethods[i];
+				if (interfaceMethod.Name == methodName)
+				{
+					if (interfaceMethod.ReturnType == invokeMethod.ReturnType)
+					{
+						bool signatureMatch = true;
+						ParameterInfo[] targetParameters = interfaceMethod.GetParameters();
+						if (targetParameters.Length == invokeParameters.Length - 1)
+						{
+							for (int j = 0; j < targetParameters.Length; ++j)
+							{
+								if (targetParameters[j].ParameterType != invokeParameters[j + 1].ParameterType)
+								{
+									signatureMatch = false;
+									break;
+								}
+							}
+						}
+						if (signatureMatch)
+						{
+							return System.Delegate.CreateDelegate(delegateType, mapping.TargetMethods[i]) as T;
+						}
+					}
+				}
+			}
+			return null;
+		}
+		#endregion // GetBaseInterfaceMethodDelegate method
 	}
 }

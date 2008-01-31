@@ -18,6 +18,7 @@ using System.Collections;
 using System.Collections.Generic;
 using System.ComponentModel.Design;
 using System.Diagnostics;
+using System.Runtime.InteropServices;
 using Microsoft.VisualStudio.Modeling.Shell;
 using Microsoft.VisualStudio.Shell;
 using Microsoft.VisualStudio.Shell.Interop;
@@ -1101,9 +1102,6 @@ namespace Neumont.Tools.ORM.Shell
 			{
 				IVsWindowFrame editorWindow = ORMDesignerPackage.FactEditorWindow;
 				editorWindow.Show();
-
-				ToolWindow newEditorWindow = ORMDesignerPackage.NewFactEditorWindow;
-				newEditorWindow.Show();
 			}
 
 			/// <summary>
@@ -1286,12 +1284,13 @@ namespace Neumont.Tools.ORM.Shell
 		/// <summary>
 		/// CommandIDs for the Application Designer package.
 		/// </summary>
+		[Guid("7C51C000-1EAD-4B39-89B5-42BC9F49EA24")] // keep in sync with PkgCmd.vsct
 		public static class ORMDesignerCommandIds
 		{
 			/// <summary>
 			/// The global identifier for the command set used by the ORM designer.
 			/// </summary>
-			public static readonly Guid guidORMDesignerCommandSet = new Guid("7C51C000-1EAD-4B39-89B5-42BC9F49EA24");    // keep in sync with PkgCmd.vsct
+			private static readonly Guid guidORMDesignerCommandSet = typeof(ORMDesignerCommandIds).GUID;
 			#region CommandID objects for commands
 			/// <summary>
 			/// A command to view transaction contents in debug mode
@@ -1742,6 +1741,8 @@ namespace Neumont.Tools.ORM.Shell
 			/// The ORM Definition Window item on the context menu
 			/// </summary>
 			private const int cmdIdViewDefinitionWindow = 0x292a;
+			// Commit a line in the fact editor, not used by the designer
+			//private const int cmdIdFactEditorCommitLine = 0x292b;
 			#endregion
 		}
 	}

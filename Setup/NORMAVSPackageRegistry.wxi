@@ -60,6 +60,14 @@
 			</RegistryKey>
 		</RegistryKey>
 
+		<RegistryKey Action="createAndRemoveOnUninstall" Key="Editors\{$(var.NORMAVSFactEditorGuid)}">
+			<RegistryValue Value="ORMFactEditorEditorFactory" Type="string"/>
+			<RegistryValue Name="DisplayName" Value="#109" Type="string"/>
+			<RegistryValue Name="Package" Value="{$(var.NORMAVSPackageGuid)}" Type="string"/>
+			<RegistryValue Name="TrustLevel" Value="1" Type="integer"/>
+			<RegistryKey Action="create" Key="LogicalViews"/>
+		</RegistryKey>
+
 		<RegistryKey Action="createAndRemoveOnUninstall" Key="XmlDesigners\{$(var.NORMAVSEditorGuid)}">
 			<RegistryValue Value="ORM Designer" Type="string"/>
 			<RegistryValue Name="Editor" Value="$(var.NORMAVSEditorGuid)" Type="string"/>
@@ -81,16 +89,7 @@
 		<RegistryKey Key="ToolWindows">
 			<RegistryKey Action="createAndRemoveOnUninstall" Key="{63B6F84D-DF09-4E65-86EA-6BC1B856837B}">
 				<RegistryValue Value="{$(var.NORMAVSPackageGuid)}" Type="string"/>
-				<RegistryValue Name="Name" Value="Neumont.Tools.ORM.Shell.ORMDesignerPackage+FactEditorToolWindowShim" Type="string"/>
-				<RegistryValue Name="Style" Value="Tabbed" Type="string"/>
-				<RegistryValue Name="Orientation" Value="Right" Type="string"/>
-				<RegistryValue Name="Window" Value="{$(var.VSOutputWindowGuid)}" Type="string"/>
-				<RegistryValue Name="DontForceCreate" Value="1" Type="integer"/>
-				<RegistryValue Key="Visibility" Name="{$(var.NORMAVSEditorGuid)}" Value="0" Type="integer"/>
-			</RegistryKey>
-			<RegistryKey Action="createAndRemoveOnUninstall" Key="{13BFC0C0-AC36-41D9-B5B6-3EED71683D14}">
-				<RegistryValue Value="{$(var.NORMAVSPackageGuid)}" Type="string"/>
-				<RegistryValue Name="Name" Value="Neumont.Tools.ORM.Shell.FactEditor.ORMFactEditorToolWindow" Type="string"/>
+				<RegistryValue Name="Name" Value="Neumont.Tools.ORM.Shell.FactEditorToolWindow" Type="string"/>
 				<RegistryValue Name="Style" Value="Tabbed" Type="string"/>
 				<RegistryValue Name="Orientation" Value="Right" Type="string"/>
 				<RegistryValue Name="Window" Value="{$(var.VSOutputWindowGuid)}" Type="string"/>
@@ -191,30 +190,18 @@
 			<RegistryValue Value="{C50CD300-9D1E-4AB0-B494-73FA23D14D2B}" Type="string"/>
 			<RegistryValue Name="LangResID" Value="109" Type="integer"/>
 			<RegistryValue Name="Package" Value="{$(var.NORMAVSPackageGuid)}" Type="string"/>
-			<RegistryValue Name="ShowCompletion" Value="1" Type="integer"/>
-			<RegistryValue Name="ShowSmartIndent" Value="0" Type="integer"/>
-			<RegistryValue Name="RequestStockColors" Value="0" Type="integer"/>
-			<RegistryValue Name="ShowHotURLs" Value="0" Type="integer"/>
-			<RegistryValue Name="Default to Non Hot URLs" Value="0" Type="integer"/>
-			<RegistryValue Name="DefaultToInsertSpaces" Value="0" Type="integer"/>
-			<RegistryValue Name="ShowDropdownBarOption" Value="0" Type="integer"/>
-			<RegistryValue Name="Single Code Window Only" Value="1" Type="integer"/>
-			<RegistryValue Name="EnableAdvancedMembersOption" Value="0" Type="integer"/>
-			<RegistryValue Name="Support CF_HTML" Value="1" Type="integer"/>
-		</RegistryKey>
-
-		<RegistryKey Action="createAndRemoveOnUninstall" Key="Languages\Language Services\New ORM Fact Editor">
-			<RegistryValue Value="{CC5B0775-F625-4779-8917-D8740D727149}" Type="string"/>
-			<RegistryValue Name="LangResID" Value="-1" Type="integer"/>
-			<RegistryValue Name="Package" Value="{$(var.NORMAVSPackageGuid)}" Type="string"/>
 			<RegistryValue Name="CodeSense" Value="1" Type="integer"/>
 			<RegistryValue Name="QuickInfo" Value="1" Type="integer"/>
+			<RegistryValue Name="ShowSmartIndent" Value="0" Type="integer"/>
 			<RegistryValue Name="RequestStockColors" Value="0" Type="integer"/>
-			<RegistryValue Name="EnableCommenting" Value="1" Type="integer"/>
+			<RegistryValue Name="EnableCommenting" Value="0" Type="integer"/>
 			<RegistryValue Name="EnableAsyncCompletion" Value="1" Type="integer"/>
-			<RegistryValue Name="EnableLineNumbersOption" Value="1" Type="integer"/>
+			<RegistryValue Name="EnableLineNumbersOption" Value="0" Type="integer"/>
 			<RegistryValue Name="ShowCompletion" Value="1" Type="integer"/>
 			<RegistryValue Name="ShowMatchingBrace" Value="1" Type="integer"/>
+			<RegistryValue Name="ShowDropdownBarOption" Value="0" Type="integer"/>
+			<RegistryValue Name="EnableAdvancedMembersOption" Value="0" Type="integer"/>
+			<RegistryValue Name="Support CF_HTML" Value="1" Type="integer"/>
 		</RegistryKey>
 
 	</RegistryKey>

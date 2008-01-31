@@ -35,6 +35,7 @@ using Neumont.Tools.Modeling.Design;
 using Neumont.Tools.ORM.ObjectModel;
 using Neumont.Tools.ORM.ObjectModel.Design;
 using Neumont.Tools.Modeling;
+using Neumont.Tools.Modeling.Shell;
 
 namespace Neumont.Tools.ORM.Shell
 {
@@ -204,7 +205,7 @@ namespace Neumont.Tools.ORM.Shell
 			}
 			set
 			{
-				if (FrameVisibility == FrameVisibility.Covered && value != myEditor.SelectedValueType)
+				if (CurrentFrameVisibility == FrameVisibility.Covered && value != myEditor.SelectedValueType)
 				{
 					NullSelection();
 					return;
@@ -224,7 +225,7 @@ namespace Neumont.Tools.ORM.Shell
 			}
 			set
 			{
-				if (FrameVisibility == FrameVisibility.Covered && value != myEditor.SelectedEntityType)
+				if (CurrentFrameVisibility == FrameVisibility.Covered && value != myEditor.SelectedEntityType)
 				{
 					NullSelection();
 					return;
@@ -244,7 +245,7 @@ namespace Neumont.Tools.ORM.Shell
 			}
 			set
 			{
-				if (FrameVisibility == FrameVisibility.Covered && value != myEditor.SelectedFactType)
+				if (CurrentFrameVisibility == FrameVisibility.Covered && value != myEditor.SelectedFactType)
 				{
 					NullSelection();
 					return;
@@ -260,10 +261,7 @@ namespace Neumont.Tools.ORM.Shell
 		{
 			Debug.Assert(myEditor != null, "Don't call before editor is initialized");
 			myEditor.NullSelection();
-			if (FrameVisibility == FrameVisibility.Covered)
-			{
-				ClearContents();
-			}
+			ClearIfCovered();
 		}
 		#endregion // Properties
 		#region PopulationMandatoryError Fixup

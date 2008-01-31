@@ -27,16 +27,12 @@ using Microsoft.VisualStudio.Modeling.Design;
 using Microsoft.VisualStudio.Modeling.Shell;
 using Microsoft.VisualStudio.Shell;
 using Microsoft.VisualStudio.Shell.Interop;
-using Microsoft.VisualStudio.TextManager.Interop;
 using Microsoft.Win32;
 using Neumont.Tools.ORM.ObjectModel;
 using Neumont.Tools.ORM.ShapeModel;
-using Neumont.Tools.ORM.Shell.FactEditor;
-
-using OleInterop = Microsoft.VisualStudio.OLE.Interop;
-using DomainModel = Microsoft.VisualStudio.Modeling.DomainModel;
 using Neumont.Tools.Modeling;
 using Microsoft.VisualStudio.Modeling.Diagrams;
+using Microsoft.VisualStudio.Modeling;
 
 namespace Neumont.Tools.ORM.Shell
 {
@@ -56,9 +52,9 @@ namespace Neumont.Tools.ORM.Shell
 	[ProvideEditorLogicalView(typeof(ORMDesignerEditorFactory), LogicalViewID.Designer)]
 	[ProvideEditorExtension(typeof(ORMDesignerEditorFactory), ".orm", 0x32)]
 	[ProvideEditorExtension(typeof(ORMDesignerEditorFactory), ".xml", 0x10)]
-	[ProvideService(typeof(ORMDesignerFontsAndColors), ServiceName="OrmDesignerFontAndColorProvider")]
-	[ProvideLanguageService(typeof(FactLanguageService), "ORM Fact Editor", PackageResources.Id.FactEditorName, ShowCompletion=true, ShowSmartIndent=false, RequestStockColors=false, ShowHotURLs=false, DefaultToNonHotURLs=false, DefaultToInsertSpaces=false, ShowDropDownOptions=false, SingleCodeWindowOnly=true, EnableAdvancedMembersOption=false, SupportCopyPasteOfHTML=true)]
-	[ProvideToolWindow(typeof(ORMDesignerPackage.FactEditorToolWindowShim), Style=VsDockStyle.Tabbed, Transient=true, Orientation=ToolWindowOrientation.Right, Window=ToolWindowGuids.Outputwindow)]
+	[ProvideEditorFactory(typeof(ORMFactEditorEditorFactory), PackageResources.Id.FactEditorName, TrustLevel = __VSEDITORTRUSTLEVEL.ETL_AlwaysTrusted)]
+	[ProvideService(typeof(ORMDesignerFontsAndColors), ServiceName = "OrmDesignerFontAndColorProvider")]
+	[ProvideToolWindow(typeof(FactEditorToolWindow), Style=VsDockStyle.Tabbed, Transient=true, Orientation=ToolWindowOrientation.Right, Window=ToolWindowGuids.Outputwindow)]
 	[ProvideToolWindow(typeof(ORMReferenceModeEditorToolWindow), Style=VsDockStyle.Tabbed, Transient=true, Orientation=ToolWindowOrientation.Right, Window=ToolWindowGuids.Outputwindow)]
 	[ProvideToolWindow(typeof(ORMSamplePopulationToolWindow), Style = VsDockStyle.Tabbed, Transient=true, Orientation=ToolWindowOrientation.Right, Window=ToolWindowGuids.Outputwindow)]
 	[ProvideToolWindow(typeof(ORMReadingEditorToolWindow), Style = VsDockStyle.Tabbed, Transient=true, Orientation=ToolWindowOrientation.Right, Window=ToolWindowGuids.Outputwindow)]
@@ -67,7 +63,7 @@ namespace Neumont.Tools.ORM.Shell
 	[ProvideToolWindow(typeof(ORMDefinitionToolWindow), Style=VsDockStyle.Tabbed, Transient=true, Orientation=ToolWindowOrientation.Right, Window=ToolWindowGuids.Outputwindow)]
 	[ProvideToolWindow(typeof(ORMNotesToolWindow), Style = VsDockStyle.Tabbed, Transient = true, Orientation = ToolWindowOrientation.Right, Window = ToolWindowGuids.Outputwindow)]
 	[ProvideToolWindow(typeof(ORMContextWindow), Style = VsDockStyle.Tabbed, Transient = true, Orientation = ToolWindowOrientation.Right, Window = ToolWindowGuids.Outputwindow)]
-	[ProvideToolWindowVisibility(typeof(ORMDesignerPackage.FactEditorToolWindowShim), ORMDesignerEditorFactory.GuidString)]
+	[ProvideToolWindowVisibility(typeof(FactEditorToolWindow), ORMDesignerEditorFactory.GuidString)]
 	[ProvideToolWindowVisibility(typeof(ORMReferenceModeEditorToolWindow), ORMDesignerEditorFactory.GuidString)]
 	[ProvideToolWindowVisibility(typeof(ORMSamplePopulationToolWindow), ORMDesignerEditorFactory.GuidString)]
 	[ProvideToolWindowVisibility(typeof(ORMReadingEditorToolWindow), ORMDesignerEditorFactory.GuidString)]
@@ -77,36 +73,31 @@ namespace Neumont.Tools.ORM.Shell
 	[ProvideToolWindowVisibility(typeof(ORMNotesToolWindow), ORMDesignerEditorFactory.GuidString)]
 	[ProvideToolWindowVisibility(typeof(ORMContextWindow), ORMDesignerEditorFactory.GuidString)]
 	[ProvideMenuResource(PackageResources.Id.CTMenu, 1)]
-	[ProvideService(typeof(NewFactLanguageService), ServiceName = "New ORM Fact Editor")]
-	[ProvideLanguageService(typeof(NewFactLanguageService),
-							 "New ORM Fact Editor",
-							 -1,                           // resource ID of localized language name
-							 CodeSense = true,              // Supports IntelliSense
-							 QuickInfo = true,              // Supports Quick info
-							 RequestStockColors = false,    // Supplies custom colors
-							 EnableCommenting = true,       // Supports commenting out code
-							 EnableAsyncCompletion = true,  // Supports background parsing
-							 EnableLineNumbers = true,
-							 ShowCompletion = true,
-							 ShowMatchingBrace = true
-							 )]
-	[ProvideLanguageExtensionAttribute(typeof(NewFactLanguageService), ".ormx")]
-	[ProvideToolWindow(typeof(ORMFactEditorToolWindow), Style = VsDockStyle.Tabbed, Transient = true, Orientation = ToolWindowOrientation.Right, Window = ToolWindowGuids.Outputwindow)]
-	[ProvideToolWindowVisibility(typeof(ORMFactEditorToolWindow), ORMDesignerEditorFactory.GuidString)]
+	[ProvideService(typeof(FactEditorLanguageService), ServiceName = FactEditorLanguageService.LanguageName)]
+	[ProvideLanguageService(typeof(FactEditorLanguageService),
+							FactEditorLanguageService.LanguageName,
+							PackageResources.Id.FactEditorName,  // resource ID of localized language name
+							CodeSense = true,                    // Supports IntelliSense
+							QuickInfo = true,                    // Supports Quick info
+							RequestStockColors = false,          // Supplies custom colors
+							EnableCommenting = false,            // Supports commenting out code
+							EnableAsyncCompletion = true,        // Supports background parsing
+							EnableLineNumbers = false,
+							ShowCompletion = true,
+							ShowMatchingBrace = true,
+							SupportCopyPasteOfHTML = true,
+							ShowSmartIndent = false,
+							EnableAdvancedMembersOption = false,
+							ShowDropDownOptions = false
+							)]
 	[ProvideToolboxItems(1, true)]
 	[ProvideToolboxFormat("Microsoft.VisualStudio.Modeling.ElementGroupPrototype")]
 	[PackageRegistration(UseManagedResourcesOnly=true, RegisterUsing=RegistrationMethod.Assembly)]
 	[InstalledProductRegistration(true, null, null, null, LanguageIndependentName="Neumont ORM Architect")]
 	[ProvideLoadKey("Standard", "1.0", "Neumont ORM Architect for Visual Studio", "Neumont University", PackageResources.Id.PackageLoadKey)]
 	#endregion // Attributes
-	public sealed class ORMDesignerPackage : ModelingPackage, IVsInstalledProduct
+	public sealed class ORMDesignerPackage : ModelingPackage, IVsInstalledProduct, IVsToolWindowFactory
 	{
-		#region FactEditorToolWindow Shim
-		// HACK: This exists only so that the ProvideToolWindowAttribute can pull the GUID off of it.
-		[Guid(FactGuidList.FactEditorToolWindowGuidString)]
-		private static class FactEditorToolWindowShim { }
-		#endregion // FactEditorToolWindow Shim
-
 		#region Constants
 		private const string REGISTRYROOT_PACKAGE = @"Neumont\ORM Architect";
 		private const string REGISTRYROOT_EXTENSIONS = REGISTRYROOT_PACKAGE + @"\Extensions\";
@@ -115,14 +106,11 @@ namespace Neumont.Tools.ORM.Shell
 		private const string REGISTRYVALUE_VERBALIZATIONDIR = "VerbalizationDir";
 		private const string REGISTRYVALUE_TOOLBOXREVISION = "ToolboxRevision";
 		#endregion
-
 		#region Member variables
 		/// <summary>
 		/// The commands supported by this package
 		/// </summary>
 		private CommandSet myCommandSet;
-		private CommandSet myFactEditorCommandSet;
-		private IVsWindowFrame myFactEditorToolWindow;
 		private ORMDesignerFontsAndColors myFontAndColorService;
 		private ORMDesignerSettings myDesignerSettings;
 		private string myVerbalizationDirectory;
@@ -142,7 +130,6 @@ namespace Neumont.Tools.ORM.Shell
 			mySingleton = this;
 		}
 		#endregion
-
 		#region Assembly Resolve Handler
 		private static readonly Dictionary<string, Assembly> KnownAssemblies = GetKnownAssemblies();
 		private static Dictionary<string, Assembly> GetKnownAssemblies()
@@ -163,7 +150,6 @@ namespace Neumont.Tools.ORM.Shell
 			return knownAssemblies;
 		}
 		#endregion // Assembly Resolve Handler
-
 		#region Properties
 		/// <summary>
 		/// Gets the singleton command set create for this package.
@@ -300,17 +286,15 @@ namespace Neumont.Tools.ORM.Shell
 			if (!SetupMode)
 			{
 				((IServiceContainer)this).AddService(typeof(ORMDesignerFontsAndColors), myFontAndColorService = new ORMDesignerFontsAndColors(this), true);
-				((IServiceContainer)this).AddService(typeof(FactLanguageService), new FactLanguageService(this), true);
 
-				NewFactLanguageService managedLanguageService = new NewFactLanguageService();
+				FactEditorLanguageService managedLanguageService = new FactEditorLanguageService();
 				managedLanguageService.SetSite(this);
-				((IServiceContainer)this).AddService(typeof(NewFactLanguageService), managedLanguageService, true);
+				((IServiceContainer)this).AddService(typeof(FactEditorLanguageService), managedLanguageService, true);
 
 				// setup commands
 				(myCommandSet = ORMDesignerDocView.CreateCommandSet(this)).Initialize();
 
-				(myFactEditorCommandSet = FactEditor.NewFactEditorCommandSet.CreateCommandSet(this)).Initialize();
-				// Create tool windows
+				// Create managed tool windows
 				AddToolWindow(typeof(ORMModelBrowserToolWindow));
 				AddToolWindow(typeof(ORMReadingEditorToolWindow));
 				AddToolWindow(typeof(ORMReferenceModeEditorToolWindow));
@@ -319,9 +303,6 @@ namespace Neumont.Tools.ORM.Shell
 				AddToolWindow(typeof(ORMDefinitionToolWindow));
 				AddToolWindow(typeof(ORMNotesToolWindow));
 				AddToolWindow(typeof(ORMContextWindow));
-				EnsureFactEditorToolWindow();
-
-				AddToolWindow(typeof(ORMFactEditorToolWindow));
 
 				// Make sure our options are loaded from the registry
 				GetDialogPage(typeof(OptionsPage));
@@ -429,13 +410,7 @@ namespace Neumont.Tools.ORM.Shell
 			{
 				IServiceContainer service = (IServiceContainer)this;
 				service.RemoveService(typeof(ORMDesignerFontsAndColors), true);
-
-				if (myFactEditorToolWindow != null)
-				{
-					myFactEditorToolWindow.CloseFrame(0);
-				}
-
-				service.RemoveService(typeof(FactLanguageService), true);
+				service.RemoveService(typeof(FactEditorLanguageService), true);
 				// dispose of any private objects here
 			}
 			base.Dispose(disposing);
@@ -528,107 +503,6 @@ namespace Neumont.Tools.ORM.Shell
 			}
 		}
 		#endregion // Base overrides
-		#region FactEditorToolWindow Creation
-		private IVsWindowFrame EnsureFactEditorToolWindow()
-		{
-			IVsWindowFrame frame = myFactEditorToolWindow;
-			if (frame == null)
-			{
-				myFactEditorToolWindow = frame = AddFactEditorToolWindow();
-			}
-			return frame;
-		}
-		private IVsWindowFrame AddFactEditorToolWindow()
-		{
-			ILocalRegistry3 locReg = (ILocalRegistry3)this.GetService(typeof(ILocalRegistry));
-			IntPtr pBuf = IntPtr.Zero;
-			Guid iid = typeof(IVsTextLines).GUID;
-			ErrorHandler.ThrowOnFailure(locReg.CreateInstance(
-				typeof(VsTextBufferClass).GUID,
-				null,
-				ref iid,
-				(uint)OleInterop.CLSCTX.CLSCTX_INPROC_SERVER,
-				out pBuf));
-
-			IVsTextLines lines = null;
-			OleInterop.IObjectWithSite objectWithSite = null;
-			try
-			{
-				// Get an object to tie to the IDE
-				lines = (IVsTextLines)Marshal.GetObjectForIUnknown(pBuf);
-				objectWithSite = lines as OleInterop.IObjectWithSite;
-				objectWithSite.SetSite(this);
-			}
-			finally
-			{
-				if (pBuf != IntPtr.Zero)
-				{
-					Marshal.Release(pBuf);
-				}
-			}
-
-			// assign our language service to the buffer
-			Guid langService = typeof(FactLanguageService).GUID;
-			ErrorHandler.ThrowOnFailure(lines.SetLanguageServiceID(ref langService));
-
-			// Create a std code view (text)
-			IntPtr srpCodeWin = IntPtr.Zero;
-			iid = typeof(IVsCodeWindow).GUID;
-
-			// create code view (does CoCreateInstance if not in shell's registry)
-			ErrorHandler.ThrowOnFailure(locReg.CreateInstance(
-				typeof(VsCodeWindowClass).GUID,
-				null,
-				ref iid,
-				(uint)OleInterop.CLSCTX.CLSCTX_INPROC_SERVER,
-				out srpCodeWin));
-
-			IVsCodeWindow codeWindow = null;
-			try
-			{
-				// Get an object to tie to the IDE
-				codeWindow = (IVsCodeWindow)Marshal.GetObjectForIUnknown(srpCodeWin);
-			}
-			finally
-			{
-				if (srpCodeWin != IntPtr.Zero)
-				{
-					Marshal.Release(srpCodeWin);
-				}
-			}
-
-			ErrorHandler.ThrowOnFailure(codeWindow.SetBuffer(lines));
-
-			IVsWindowFrame windowFrame;
-			IVsUIShell shell = (IVsUIShell)GetService(typeof(IVsUIShell));
-			Guid emptyGuid = new Guid();
-			Guid factEditorToolWindowGuid = FactGuidList.FactEditorToolWindowGuid;
-			// CreateToolWindow ARGS
-			// 0 - toolwindow.flags (initnew)
-			// 1 - 0 (the tool window ID)
-			// 2- IVsWindowPane
-			// 3- guid null
-			// 4- persistent slot (same nr as the guid attr on tool window class)
-			// 5- guid null
-			// 6- ole service provider (null)
-			// 7- tool window.windowTitle
-			// 8- int[] for position (empty array)
-			// 9- out IVsWindowFrame
-			ErrorHandler.ThrowOnFailure(shell.CreateToolWindow(
-				(uint)__VSCREATETOOLWIN.CTW_fInitNew, // tool window flags, default to init new
-				0,
-				(IVsWindowPane)codeWindow,
-				ref emptyGuid,
-				ref factEditorToolWindowGuid,
-				ref emptyGuid,
-				null,
-				ResourceStrings.FactEditorToolWindowCaption,
-				null,
-				out windowFrame));
-
-			return windowFrame;
-		}
-		#endregion FactEditorToolWindow Creation
 		#region IVsInstalledProduct Members
 
 		[Obsolete("Visual Studio 2005 no longer calls this method.", true)]
@@ -761,16 +635,12 @@ namespace Neumont.Tools.ORM.Shell
 				return mySingleton.EnsureFactEditorToolWindow();
 			}
 		}
-
 		/// <summary>
-		/// Fact editor tool window.
+		/// Defer to the FactEditorLanguageService to create the tool window on demand
 		/// </summary>
-		public static FactEditor.ORMFactEditorToolWindow NewFactEditorWindow
+		private IVsWindowFrame EnsureFactEditorToolWindow()
 		{
-			get
-			{
-				return (FactEditor.ORMFactEditorToolWindow)mySingleton.GetToolWindow(typeof(FactEditor.ORMFactEditorToolWindow), true);
-			}
+			return ((FactEditorLanguageService)this.GetService(typeof(FactEditorLanguageService))).FactEditorToolWindow;
 		}
 
 		private ORMVerbalizationToolWindowSettings myVerbalizationWindowSettings = new ORMVerbalizationToolWindowSettings();
@@ -812,7 +682,39 @@ namespace Neumont.Tools.ORM.Shell
 			}
 		}
 		#endregion
-
+		#region IVsToolWindowFactory Implementation
+		private delegate int ForwardCreateToolWindowDelegate(ModelingPackage @this, ref Guid rguidPersistenceSlot, uint dwToolWindowId);
+		private static ForwardCreateToolWindowDelegate myForwardCreateToolWindow;
+		private static ForwardCreateToolWindowDelegate ForwardCreateToolWindow
+		{
+			get
+			{
+				ForwardCreateToolWindowDelegate retVal = myForwardCreateToolWindow;
+				if (retVal == null)
+				{
+					System.Threading.Interlocked.CompareExchange<ForwardCreateToolWindowDelegate>(
+						ref myForwardCreateToolWindow,
+						Utility.GetBaseInterfaceMethodDelegate<ForwardCreateToolWindowDelegate>(typeof(IVsToolWindowFactory), "CreateToolWindow"),
+						null);
+					retVal = myForwardCreateToolWindow;
+				}
+				return retVal;
+			}
+		}
+		/// <summary>
+		/// Shadow the toolwindow creation in the base Package code. Enables creation
+		/// of tool windows that are non derived from the managed framework helpers.
+		/// </summary>
+		int IVsToolWindowFactory.CreateToolWindow(ref Guid rguidPersistenceSlot, uint dwToolWindowId)
+		{
+			if (rguidPersistenceSlot == typeof(FactEditorToolWindow).GUID)
+			{
+				EnsureFactEditorToolWindow();
+				return 0;
+			}
+			return ForwardCreateToolWindow(this, ref rguidPersistenceSlot, dwToolWindowId);
+		}
+		#endregion // IVsToolWindowFactory Implementation
 		#region Extension DomainModels
 		/// <summary>
 		/// Generate a collection of autoload extension namespaces

@@ -33,6 +33,7 @@ using Microsoft.VisualStudio.Shell.Interop;
 using Microsoft.VisualStudio.TextManager.Interop;
 using Neumont.Tools.ORM.ObjectModel;
 using Neumont.Tools.Modeling;
+using Neumont.Tools.Modeling.Shell;
 using Neumont.Tools.ORM.ObjectModel.Verbalization;
 
 namespace Neumont.Tools.ORM.Shell

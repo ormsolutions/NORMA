@@ -135,15 +135,9 @@
     <Compile Include="Shell\ORMLayoutEngines.cs" />
     <Compile Include="Shell\LayoutManager.cs" />
     <Compile Include="Shell\ORMContextWindow.cs" />
-    <Compile Include="Shell\FactEditor\FactCodeWindowManager.cs" />
-    <Compile Include="Shell\FactEditor\FactColorizer.cs" />
-    <Compile Include="Shell\FactEditor\FactCompletionSet.cs" />
-    <Compile Include="Shell\FactEditor\FactFontsAndColors.cs" />
-    <Compile Include="Shell\FactEditor\FactGuidList.cs" />
-    <Compile Include="Shell\FactEditor\FactLanguageService.cs" />
-    <Compile Include="Shell\FactEditor\FactParser.cs" />
-    <Compile Include="Shell\FactEditor\FactSaver.cs" />
-    <Compile Include="Shell\FactEditor\FactTextViewFilter.cs" />
+    <Compile Include="Shell\FactEditor\FactEditorFontsAndColors.cs" />
+    <Compile Include="Shell\FactEditor\FactEditorParser.cs" />
+    <Compile Include="Shell\FactEditor\FactEditorSaver.cs" />
     <Compile Include="ObjectModel\SurveyImplementations\CategorySurveyQuestion.cs" />
     <Compile Include="Framework\Shell\DynamicSurveyTreeGrid\SurveyInterfaces.cs" />
     <Compile Include="Framework\Shell\DynamicSurveyTreeGrid\ListGrouper.cs" />
@@ -413,6 +407,7 @@
     </Compile>
     <Compile Include="Framework\Shell\DiagramMenuDisplay.cs" />
     <Compile Include="Framework\Shell\SerializationEngine.cs" />
+    <Compile Include="Framework\Shell\ToolWindowActivator.cs" />
     <Compile Include="ObjectModel\Design\NameGeneratorTypeDescriptor.cs" />
     <Compile Include="ObjectModel\NameGenerator.cs" />
     <Compile Include="ObjectModel\Design\FrequencyConstraintBoundConverter.cs" />
@@ -442,20 +437,17 @@
       <DependentUpon>ImportStepOptions.cs</DependentUpon>
     </Compile>
     <Compile Include="Shell\ORMSerializationEngine.cs" />
-    <Compile Include="Shell\FactEditor\FactTokenHelper.cs" />
-    <Compile Include="Shell\FactEditor\FactTokenInfo.cs" />
-    <Compile Include="Shell\FactEditor\NewFactAuthoringScope.cs" />
+    <Compile Include="Shell\FactEditor\FactEditorTokenHelper.cs" />
+    <Compile Include="Shell\FactEditor\FactEditorTokenInfo.cs" />
+    <Compile Include="Shell\FactEditor\FactEditorAuthoringScope.cs" />
     <Compile Include="ObjectModel\VerbalizationReport.cs" />
-    <Compile Include="Shell\FactEditor\NewFactDeclarations.cs" />
-    <Compile Include="Shell\FactEditor\NewFactEditorCommandSet.cs" />
-    <Compile Include="Shell\FactEditor\NewFactLanguageService.cs" />
-    <Compile Include="Shell\FactEditor\NewFactScanner.cs" />
-    <Compile Include="Shell\FactEditor\NewFactSource.cs" />
+    <Compile Include="Shell\FactEditor\FactEditorDeclarations.cs" />
+    <Compile Include="Shell\FactEditor\FactEditorLanguageService.cs" />
+    <Compile Include="Shell\FactEditor\FactEditorScanner.cs" />
     <Compile Include="ObjectModel\VerbalizationReportGenerator.cs">
       <AutoGen>True</AutoGen>
       <DependentUpon>VerbalizationReportGenerator.xml</DependentUpon>
     </Compile>
-    <Compile Include="Shell\FactEditor\ORMFactEditorToolWindow.cs" />
     <Compile Include="Shell\GenerateReportDialog.cs">
       <SubType>Form</SubType>
     </Compile>

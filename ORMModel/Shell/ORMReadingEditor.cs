@@ -35,6 +35,7 @@ using Neumont.Tools.ORM.ObjectModel.Design;
 using Neumont.Tools.ORM.ShapeModel;
 using Neumont.Tools.ORM.Shell;
 using Neumont.Tools.Modeling;
+using Neumont.Tools.Modeling.Shell;
 using System.Collections.ObjectModel;
 
 namespace Neumont.Tools.ORM.Shell

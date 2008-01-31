@@ -341,6 +341,9 @@
 	<ResourceString name="ModelReferenceModeEditorFormatStringColumn" model="Model" resourceName="ModelReferenceModeEditor.FormatStringColumn"/>
 	<ResourceString name="ModelReferenceModeEditorKindColumn" model="Model" resourceName="ModelReferenceModeEditor.KindColumn"/>
 	<ResourceString name="ModelReferenceModeEditorNameColumn" model="Model" resourceName="ModelReferenceModeEditor.NameColumn"/>
+	<ResourceString name="FactEditorMissingRolePlayerFormatString" model="Diagram" resourceName="FactEditor.MissingRolePlayerFormatString"/>
+	<ResourceString name="FactEditorQualifiedRolePlayerFormatString" model="Diagram" resourceName="FactEditor.QualifiedRolePlayerFormatString"/>
+	<ResourceString name="FactEditorUnqualifiedRolePlayerFormatString" model="Diagram" resourceName="FactEditor.UnqualifiedRolePlayerFormatString"/>
 	<ResourceString name="FactEditorToolWindowCaption" model="Diagram" resourceName="FactEditorToolWindow.Caption"/>
 	<ResourceString name="ModelExceptionReferenceModeAmbiguousName" model="Model" resourceName="ModelException.ReferenceMode.AmbiguousName"/>
 	<ResourceString name="ModelExceptionSubtypeConstraintAndRolePatternFixed" model="Model" resourceName="ModelException.SubtypeFact.ConstraintAndRolePatternFixed"/>

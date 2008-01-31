@@ -35,6 +35,7 @@ using Microsoft.VisualStudio.Shell;
 using Microsoft.VisualStudio.Shell.Interop;
 using Neumont.Tools.Modeling;
 using Neumont.Tools.Modeling.Design;
+using Neumont.Tools.Modeling.Shell;
 using Neumont.Tools.ORM.ObjectModel;
 using Neumont.Tools.ORM.ShapeModel;
 
