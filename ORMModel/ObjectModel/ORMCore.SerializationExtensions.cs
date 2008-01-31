@@ -5009,16 +5009,6 @@ namespace Neumont.Tools.ORM.ObjectModel
 		{
 			return this.MapAttribute(xmlNamespace, attributeName);
 		}
-		/// <summary>Implements ICustomSerializedElement.ShouldSerialize</summary>
-		protected new bool ShouldSerialize()
-		{
-			// UNDONE: Serialize implied mandatory constraints when the generators handle them better.
-			return !this.IsImplied;
-		}
-		bool ICustomSerializedElement.ShouldSerialize()
-		{
-			return this.ShouldSerialize();
-		}
 	}
 	#endregion // MandatoryConstraint serialization
 	#region FrequencyConstraint serialization

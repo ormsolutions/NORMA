@@ -630,18 +630,6 @@
 		<se:Link RelationshipName="ConstraintRoleSequenceHasRoleHasProjectionJoin" RoleName="ProjectionJoin" Name="ProjectionJoin"/>
 	</se:Element>
 	<se:Element Class="MandatoryConstraint" SortChildElements="true" Override="true">
-		<!-- UNDONE: ImplicitElementSerialization
-		ImpliedMandatoryConstraint should serialize, but the old generation
-		algorithms are not ready for them and many of the absorption patterns change in weird
-		ways. Change to serializing these when the generators catch up. -->
-		<se:ConditionalSerialization>
-			<plx:comment>UNDONE: Serialize implied mandatory constraints when the generators handle them better.</plx:comment>
-			<plx:return>
-				<plx:unaryOperator type="booleanNot">
-					<plx:callThis name="IsImplied" type="property"/>
-				</plx:unaryOperator>
-			</plx:return>
-		</se:ConditionalSerialization>
 		<se:Attribute ID="IsSimple">
 			<se:Condition WriteStyle="NotWritten">
 				<plx:unaryOperator type="booleanNot">

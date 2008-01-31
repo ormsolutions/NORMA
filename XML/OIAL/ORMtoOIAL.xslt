@@ -76,7 +76,7 @@
 		</xsl:variable>
 		<xsl:variable name="Model" select="exsl:node-set($ModelFragment2)/child::*"/>
 
-		<xsl:variable name="SingleRoleMandatoryConstraints" select="$Model/orm:Constraints/orm:MandatoryConstraint[count(orm:RoleSequence/child::*)=1]"/>
+		<xsl:variable name="SingleRoleMandatoryConstraints" select="$Model/orm:Constraints/orm:MandatoryConstraint[not(@IsImplied='true' or @IsImplied='1')][count(orm:RoleSequence/child::*)=1]"/>
 		<xsl:variable name="SingleRoleUniquenessConstraints" select="$Model/orm:Constraints/orm:UniquenessConstraint[count(orm:RoleSequence/child::*)=1]"/>
 		<xsl:variable name="AlethicSingleRoleMandatoryConstraints" select="$SingleRoleMandatoryConstraints[not(@Modality) or @Modality='Alethic']"/>
 		<xsl:variable name="AlethicSingleRoleUniquenessConstraints" select="$SingleRoleUniquenessConstraints[not(@Modality) or @Modality='Alethic']"/>
