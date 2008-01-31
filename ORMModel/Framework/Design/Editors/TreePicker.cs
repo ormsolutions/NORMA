@@ -30,6 +30,10 @@ using Microsoft.VisualStudio.Modeling.Diagrams;
 using Microsoft.VisualStudio.Shell.Interop;
 using Microsoft.VisualStudio.VirtualTreeGrid;
 
+#if VISUALSTUDIO_9_0
+using VirtualTreeInPlaceControlFlags = Microsoft.VisualStudio.VirtualTreeGrid.VirtualTreeInPlaceControls;
+#endif //VISUALSTUDIO_9_0
+
 namespace Neumont.Tools.Modeling.Design
 {
 	/// <summary>
