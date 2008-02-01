@@ -2560,7 +2560,7 @@ namespace Neumont.Tools.ORM.ObjectModel
 						{
 							if (depth != 0)
 							{
-								DelayValidateCompatibleSupertypesError(type);
+								FrameworkDomainModel.DelayValidateElement(type, DelayValidateCompatibleSupertypesError);
 							}
 							return ObjectTypeVisitorResult.Continue;
 						});
