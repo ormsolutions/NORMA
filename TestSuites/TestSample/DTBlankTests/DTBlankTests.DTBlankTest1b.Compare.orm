@@ -260,6 +260,30 @@
 					<orm:Role ref="_5DE9E895-25A7-47F9-AE6B-96B7957C9325" id="_0D48697A-02E6-4E3B-839E-1176C0B4AC3B" />
 				</orm:RoleSequence>
 			</orm:UniquenessConstraint>
+			<orm:MandatoryConstraint IsImplied="true" Name="ImpliedMandatoryConstraint1" id="_F660A20E-9316-47C1-B346-BB71EAAB3862">
+				<orm:RoleSequence>
+					<orm:Role id="_B2B2A69E-E648-422E-A64F-DD6FEE7B6E04" ref="_C87CD826-FCFB-4BA1-A0A8-D6F36AD30EF3" />
+				</orm:RoleSequence>
+				<orm:ImpliedByObjectType ref="_821ED408-21E9-4998-9F0B-9ED4E74E4CEE" />
+			</orm:MandatoryConstraint>
+			<orm:MandatoryConstraint IsImplied="true" Name="ImpliedMandatoryConstraint2" id="_1343FFAB-EA7E-499B-BAF4-AD20F5854473">
+				<orm:RoleSequence>
+					<orm:Role id="_313DEDD0-5E8E-4B0D-8308-5C43617C4E2C" ref="_71CF7970-7F55-4BFE-A5F8-9A882849E422" />
+				</orm:RoleSequence>
+				<orm:ImpliedByObjectType ref="_33DA7CC8-522B-44AB-9F20-8B07D1DDDB6E" />
+			</orm:MandatoryConstraint>
+			<orm:MandatoryConstraint IsImplied="true" Name="ImpliedMandatoryConstraint3" id="_E0EEF589-108A-4C35-B648-D4728412984E">
+				<orm:RoleSequence>
+					<orm:Role id="_56526B8D-364D-45D8-9A41-E3A1DE9653C1" ref="_F69451DB-5FEE-41F9-95E6-CF14EA42B0F6" />
+				</orm:RoleSequence>
+				<orm:ImpliedByObjectType ref="_48AD9853-96F2-42DF-AA1C-BF96317B9D09" />
+			</orm:MandatoryConstraint>
+			<orm:MandatoryConstraint IsImplied="true" Name="ImpliedMandatoryConstraint4" id="_8B6F4D03-DC2B-4D90-88B7-B4F93F8E2E0F">
+				<orm:RoleSequence>
+					<orm:Role id="_10FD612D-6B84-4C37-9A74-7EBA53B51F80" ref="_D7CB30B0-1D56-4EF5-97B8-8ED620E4D3B2" />
+				</orm:RoleSequence>
+				<orm:ImpliedByObjectType ref="_2FE6DE92-3EF5-4627-9F13-D926BD9E4CDE" />
+			</orm:MandatoryConstraint>
 			<orm:UniquenessConstraint id="_E6F6FD66-CF8A-49D5-9D23-E29F7AD7A40A" Name="InternalUniquenessConstraint6" IsInternal="true">
 				<orm:RoleSequence>
 					<orm:Role ref="_7FF19491-ECF3-412A-9FC7-B62539C5F355" id="_6FBC8BFA-B869-4C1F-933F-C414F495773F" />

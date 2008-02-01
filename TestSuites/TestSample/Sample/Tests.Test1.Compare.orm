@@ -106,6 +106,18 @@
 					<orm:Role ref="_793246E9-AF54-4ED9-A067-13177BCA7955" id="_37C97AC6-84A6-46A0-97A5-597879682A88" />
 				</orm:RoleSequence>
 			</orm:UniquenessConstraint>
+			<orm:MandatoryConstraint IsImplied="true" Name="ImpliedMandatoryConstraint2" id="_577C0EDD-2773-4FB1-9459-B3BB304D255F">
+				<orm:RoleSequence>
+					<orm:Role id="_2C5180A4-29EC-435D-ABA5-F3508FA3E127" ref="_A8DC318E-29A5-42FF-B9CA-C7D3FE3DAA5C" />
+				</orm:RoleSequence>
+				<orm:ImpliedByObjectType ref="_88929A07-3576-4A65-8A62-2E45E7E82F8C" />
+			</orm:MandatoryConstraint>
+			<orm:MandatoryConstraint IsImplied="true" Name="ImpliedMandatoryConstraint3" id="_F53F5005-D97B-4284-BF1D-0737FEED95C4">
+				<orm:RoleSequence>
+					<orm:Role id="_6EA62225-8D89-40D1-9434-9F61AB348057" ref="_35F50F4A-42BD-47BE-BB70-84378DB9E726" />
+				</orm:RoleSequence>
+				<orm:ImpliedByObjectType ref="_410E1423-1FD6-4836-AD63-9E4681C8AE35" />
+			</orm:MandatoryConstraint>
 			<orm:MandatoryConstraint id="_26C80C1F-4231-4A16-8E77-67A9D3927D9A" Name="SimpleMandatoryConstraint2" IsSimple="true">
 				<orm:RoleSequence>
 					<orm:Role ref="_0E961155-96F6-422B-93E7-DC90F696EE09" id="_BB0E4FB2-745B-4C99-B7C4-A9943208698C" />

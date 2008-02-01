@@ -6,6 +6,7 @@ using Neumont.Tools.ORM.ObjectModel;
 using Microsoft.VisualStudio.Modeling;
 using NUnit.Framework;
 using NUnitCategory = NUnit.Framework.CategoryAttribute;
+using Neumont.Tools.Modeling.Design;
 
 namespace TestSample.FCMinMaxTests
 {
@@ -65,7 +66,7 @@ namespace TestSample.FCMinMaxTests
 		}
 		[ORMTest("ExternalConstraints", "FrequencyConstraintMinMaxError")]
 		public void FCMinMaxTest1c(Store store)
-		{}
+		{ }
 
 		[Test(Description = "Verify FrequencyConstraintMinMaxError added when error condition is added")]
 		[NUnitCategory("ExternalConstraints")]
@@ -77,11 +78,11 @@ namespace TestSample.FCMinMaxTests
 		[ORMTest("ExternalConstraints", "FrequencyConstraintMinMaxError")]
 		public void FCMinMaxTest2a(Store store)
 		{
-			
+
 			myTestServices.LogValidationErrors("Before adding error");
 
 			ORMModel model = store.ElementDirectory.FindElements<ORMModel>()[0];
-			FrequencyConstraint constraint = (FrequencyConstraint)model.ConstraintsDictionary.GetElement("FrequencyConstraint1").SingleElement; 
+			FrequencyConstraint constraint = (FrequencyConstraint)model.ConstraintsDictionary.GetElement("FrequencyConstraint1").SingleElement;
 			int min = constraint.MinFrequency;
 			int max = constraint.MaxFrequency;
 			using (Transaction t = store.TransactionManager.BeginTransaction("Fix Constraint"))
@@ -91,7 +92,7 @@ namespace TestSample.FCMinMaxTests
 				constraint.MaxFrequency = min;
 				t.Commit();
 			}
-			
+
 			myTestServices.LogValidationErrors("After adding error");
 		}
 
@@ -105,7 +106,6 @@ namespace TestSample.FCMinMaxTests
 		[ORMTest("ExternalConstraints", "FrequencyConstraintMinMaxError")]
 		public void FCMinMaxTest2b(Store store)
 		{
-
 			myTestServices.LogValidationErrors("Before removing error");
 
 			ORMModel model = store.ElementDirectory.FindElements<ORMModel>()[0];
@@ -122,6 +122,5 @@ namespace TestSample.FCMinMaxTests
 
 			myTestServices.LogValidationErrors("After removing error");
 		}
-
 	}
 }

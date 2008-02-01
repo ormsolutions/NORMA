@@ -4,6 +4,7 @@ using System.Collections.Generic;
 using System.Text;
 using Microsoft.VisualStudio.Modeling;
 using Neumont.Tools.ORM.ObjectModel;
+using Neumont.Tools.ORM.ObjectModel.Design;
 using Neumont.Tools.ORM.ShapeModel;
 using Neumont.Tools.ORM.Shell;
 using System.Xml;
@@ -35,6 +36,70 @@ namespace Neumont.Tools.ORM.SDK.TestEngine
 				myModelingEventManager = new ModelingEventManagerImpl(this, (IORMToolTestServices)services);
 			}
 			#endregion // Constructors
+			#region ORMModelErrorActivationService class
+			private sealed class ORMModelErrorActivationService : IORMModelErrorActivationService
+			{
+				#region Member variables and constructor
+				private Store myStore;
+				private Dictionary<Type, ORMModelErrorActivator> myActivators;
+				public ORMModelErrorActivationService(Store store)
+				{
+					myStore = store;
+					myActivators = new Dictionary<Type, ORMModelErrorActivator>();
+				}
+				#endregion // Member variables and constructor
+				#region IORMModelErrorActivationService Implementation
+				private bool ActivateError(ModelElement selectedElement, ModelError error, DomainClassInfo domainClass)
+				{
+					ORMModelErrorActivator activator;
+					if (myActivators.TryGetValue(domainClass.ImplementationClass, out activator))
+					{
+						if (activator((IORMToolServices)myStore, selectedElement, error))
+						{
+							return true;
+						}
+					}
+					// See if anything on a base type can handle it. This maximizes the chances of finding a handler.
+					// UNDONE: Do we want both the 'registerDerivedTypes' parameter on RegisterErrorActivator and this recursion?
+					domainClass = domainClass.BaseDomainClass;
+					if (domainClass != null)
+					{
+						return ActivateError(selectedElement, error, domainClass);
+					}
+					return false;
+				}
+				bool IORMModelErrorActivationService.ActivateError(ModelElement selectedElement, ModelError error)
+				{
+					return ActivateError(selectedElement, error, selectedElement.GetDomainClass());
+				}
+				/// <summary>
+				/// Recursively register the given <paramref name="activator"/> for the <paramref name="domainClass"/>
+				/// </summary>
+				/// <param name="domainClass">The <see cref="DomainClassInfo"/> for the type to register</param>
+				/// <param name="activator">A delegate callback for when an element of this type is selected</param>
+				private void RegisterErrorActivator(DomainClassInfo domainClass, ORMModelErrorActivator activator)
+				{
+					myActivators[domainClass.ImplementationClass] = activator;
+					foreach (DomainClassInfo derivedClassInfo in domainClass.AllDescendants)
+					{
+						RegisterErrorActivator(derivedClassInfo, activator);
+					}
+				}
+				void IORMModelErrorActivationService.RegisterErrorActivator(Type elementType, bool registerDerivedTypes, ORMModelErrorActivator activator)
+				{
+					if (registerDerivedTypes)
+					{
+						DomainDataDirectory dataDirectory = myStore.DomainDataDirectory;
+						RegisterErrorActivator(elementType.IsSubclassOf(typeof(ElementLink)) ? dataDirectory.GetDomainRelationship(elementType) : dataDirectory.GetDomainClass(elementType), activator);
+					}
+					else
+					{
+						myActivators[elementType] = activator;
+					}
+				}
+				#endregion // IORMModelErrorActivationService Implementation
+			}
+			#endregion // ORMModelErrorActivationService class
 			#region IORMToolServices Implementation
 			IORMPropertyProviderService IORMToolServices.PropertyProviderService
 			{
@@ -43,11 +108,18 @@ namespace Neumont.Tools.ORM.SDK.TestEngine
 					return myServices.PropertyProviderService;
 				}
 			}
+			private ORMModelErrorActivationService myActivationService;
 			IORMModelErrorActivationService IORMToolServices.ModelErrorActivationService
 			{
 				get
 				{
-					return myServices.ModelErrorActivationService;
+					ORMModelErrorActivationService retVal = myActivationService;
+					if (retVal == null)
+					{
+						myActivationService = retVal = new ORMModelErrorActivationService(this);
+						ORMEditorUtility.RegisterModelErrorActivators(this);
+					}
+					return retVal;
 				}
 			}
 			IORMToolTaskProvider IORMToolServices.TaskProvider

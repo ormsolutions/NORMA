@@ -4,8 +4,10 @@
 		<Categories>
 			<IncludeCategory name="NMinus1"/>
 			<IncludeCategory name="FrequencyConstraintMinMaxError"/>
+			<IncludeCategory name="FrequencyConstraintExactlyOneError"/>
 			<IncludeCategory name="DataTypeNotSpecifiedError"/>
 			<IncludeCategory name="InternalConstraints"/>
+			<IncludeCategory name="ConstraintContradictions"/>
 			<ExcludeCategory name="NotYet"/>
 		</Categories>
 		<TestAssemblies>

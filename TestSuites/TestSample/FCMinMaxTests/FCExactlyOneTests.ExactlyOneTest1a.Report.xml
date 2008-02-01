@@ -1,0 +1,10 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<TestReport xmlns="http://schemas.neumont.edu/ORM/SDK/TestReport">
+	<ValidationErrors name="No errors expected" />
+	<ValidationErrors name="Error introduced">
+		<ValidationError>Constraint 'TestFrequency' in model 'ORMModel1' has a range of exactly one, should be a Uniqueness constraint.</ValidationError>
+	</ValidationErrors>
+	<ValidationErrors name="Error cleared with code" />
+	<ValidationErrors name="Fixing error with error activation service" />
+	<Compare result="pass" />
+</TestReport>

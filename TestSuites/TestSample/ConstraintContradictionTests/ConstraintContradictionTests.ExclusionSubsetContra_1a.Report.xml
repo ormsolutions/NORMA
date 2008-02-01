@@ -1,0 +1,11 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<TestReport xmlns="http://schemas.neumont.edu/ORM/SDK/TestReport">
+	<ValidationErrors name="ExclusionContradictsSubsetError exists">
+		<ValidationError>Constraints 'ExclusionConstraint1' and 'SubsetConstraint1' in model 'ORMModel1' are in a state of contradiction.</ValidationError>
+	</ValidationErrors>
+	<ValidationErrors name="Removing Exclusion Constraint">
+		<ValidationError>Constraints 'ExclusionConstraint1' and 'SubsetConstraint1' in model 'ORMModel1' are in a state of contradiction.</ValidationError>
+	</ValidationErrors>
+	<ValidationErrors name="Error Removed" />
+	<Compare result="pass" />
+</TestReport>
