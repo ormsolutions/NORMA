@@ -1439,63 +1439,11 @@ namespace Neumont.Tools.ORM.Shell
 			else
 			{
 				// Find an appropriate view to activate
-				#region Walk RunningDocumentTable
-				IVsRunningDocumentTable docTable = (IVsRunningDocumentTable)ServiceProvider.GetService(typeof(IVsRunningDocumentTable));
-				IEnumRunningDocuments docIter;
-				ErrorHandler.ThrowOnFailure(docTable.GetRunningDocumentsEnum(out docIter));
-				int hrIter;
-				uint[] currentDocs = new uint[1];
-				uint fetched = 0;
-				do
+				docView = ActivateView(diagram);
+				if (docView != null)
 				{
-					ErrorHandler.ThrowOnFailure(hrIter = docIter.Next(1, currentDocs, out fetched));
-					if (hrIter == 0)
-					{
-						uint grfRDTFlags;
-						uint dwReadLocks;
-						uint dwEditLocks;
-						string bstrMkDocument;
-						IVsHierarchy pHier;
-						uint itemId;
-						IntPtr punkDocData = IntPtr.Zero;
-						ErrorHandler.ThrowOnFailure(docTable.GetDocumentInfo(
-							currentDocs[0],
-							out grfRDTFlags,
-							out dwReadLocks,
-							out dwEditLocks,
-							out bstrMkDocument,
-							out pHier,
-							out itemId,
-							out punkDocData));
-						try
-						{
-							ORMDesignerDocData docData = Marshal.GetObjectForIUnknown(punkDocData) as ORMDesignerDocData;
-							if (this == docData)
-							{
-								IList<ModelingDocView> views = docData.DocViews;
-								int viewCount = views.Count;
-								for (int j = 0; j < viewCount; ++j)
-								{
-									docView = views[j] as MultiDiagramDocView;
-									if (docView != null && docView.SelectDiagram(diagram))
-									{
-										docView.Show();
-										selectOnView = docView.CurrentDesigner;
-										break;
-									}
-								}
-							}
-						}
-						finally
-						{
-							if (punkDocData != IntPtr.Zero)
-							{
-								Marshal.Release(punkDocData);
-							}
-						}
-					}
-				} while (fetched != 0 && selectOnView == null);
-				#endregion // Walk RunningDocumentTable
+					selectOnView = docView.CurrentDesigner;
+				}
 			}
 
 			if (selectOnView != null)
@@ -1505,6 +1453,73 @@ namespace Neumont.Tools.ORM.Shell
 				retVal = true;
 			}
 			return retVal;
+		}
+		/// <summary>
+		/// Find an appropriate view to activate for the specified
+		/// <paramref name="diagram"/>
+		/// </summary>
+		/// <param name="diagram">The diagram to activate. Can be <see langword="null"/></param>
+		/// <returns>DocView associated with the diagram, or any designer if a diagram is not specified.</returns>
+		private MultiDiagramDocView ActivateView(Diagram diagram)
+		{
+			MultiDiagramDocView docView = null;
+			#region Walk RunningDocumentTable
+			IVsRunningDocumentTable docTable = (IVsRunningDocumentTable)ServiceProvider.GetService(typeof(IVsRunningDocumentTable));
+			IEnumRunningDocuments docIter;
+			ErrorHandler.ThrowOnFailure(docTable.GetRunningDocumentsEnum(out docIter));
+			int hrIter;
+			uint[] currentDocs = new uint[1];
+			uint fetched = 0;
+			do
+			{
+				ErrorHandler.ThrowOnFailure(hrIter = docIter.Next(1, currentDocs, out fetched));
+				if (hrIter == 0)
+				{
+					uint grfRDTFlags;
+					uint dwReadLocks;
+					uint dwEditLocks;
+					string bstrMkDocument;
+					IVsHierarchy pHier;
+					uint itemId;
+					IntPtr punkDocData = IntPtr.Zero;
+					ErrorHandler.ThrowOnFailure(docTable.GetDocumentInfo(
+						currentDocs[0],
+						out grfRDTFlags,
+						out dwReadLocks,
+						out dwEditLocks,
+						out bstrMkDocument,
+						out pHier,
+						out itemId,
+						out punkDocData));
+					try
+					{
+						ORMDesignerDocData docData = Marshal.GetObjectForIUnknown(punkDocData) as ORMDesignerDocData;
+						if (this == docData)
+						{
+							IList<ModelingDocView> views = docData.DocViews;
+							int viewCount = views.Count;
+							for (int j = 0; j < viewCount; ++j)
+							{
+								docView = views[j] as MultiDiagramDocView;
+								if (docView != null && (diagram == null || docView.SelectDiagram(diagram)))
+								{
+									docView.Show();
+									break;
+								}
+							}
+						}
+					}
+					finally
+					{
+						if (punkDocData != IntPtr.Zero)
+						{
+							Marshal.Release(punkDocData);
+						}
+					}
+				}
+			} while (fetched != 0 && docView == null);
+			#endregion // Walk RunningDocumentTable
+			return docView;
 		}
 		bool IORMToolServices.ActivateShape(ShapeElement shape)
 		{
@@ -1767,7 +1782,6 @@ namespace Neumont.Tools.ORM.Shell
 				// We couldn't find this on the shapes, attempt to find the item in the model browser
 				if (startElement != null)
 				{
-
 					element = startElement;
 					VirtualTreeControl treeControl = null;
 					while (element != null)
@@ -1777,6 +1791,21 @@ namespace Neumont.Tools.ORM.Shell
 							// Assume if we're a SurveyNode that it is possible to select the item in the survey tree
 							if (treeControl == null)
 							{
+								// Make sure a docview associated with the current model is
+								// active. Otherwise, the model browser will not contain the
+								// correct tree.
+								if (!haveCurrentDesigner)
+								{
+									haveCurrentDesigner = true;
+									targetDocData.GetCurrentDesigner(ref currentDocView, ref currentDesigner);
+								}
+								if (currentDocView == null || currentDocView.DocData != targetDocData)
+								{
+									if (null == targetDocData.ActivateView(null))
+									{
+										return false;
+									}
+								}
 								// UNDONE: See if we can get the tree control without forcing the window to show
 								// This is safe, but gives weird results if the initial item cannot be found.
 								ORMModelBrowserToolWindow browserWindow;
