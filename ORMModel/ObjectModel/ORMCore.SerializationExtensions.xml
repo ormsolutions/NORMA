@@ -913,7 +913,7 @@
 		<se:ConditionalName Name="SubsetConstraintImpliedByMandatoryConstraintsError">
 			<plx:binaryOperator type="typeEquality">
 				<plx:left>
-					<plx:callThis name="SetComparisonConstraint" type="property"/>
+					<plx:callThis name="EqualityOrSubsetConstraint" type="property"/>
 				</plx:left>
 				<plx:right>
 					<plx:directTypeReference dataTypeName="SubsetConstraint"/>

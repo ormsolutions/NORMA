@@ -200,7 +200,8 @@ namespace Neumont.Tools.ORM.ObjectModel
 	{
 		private IntersectingConstraintPattern myPattern;
 		private IntersectingConstraintPatternOptions myPatternOptions;
-		private Guid myDomainRoleFromError;
+		private Guid? myDomainRoleToError;
+		private Guid? myIntersectingDomainRoleToError;
 		private ConstraintType[] myConstraintTypesInPotentialConflict;
 
 		/// <summary>
@@ -208,21 +209,28 @@ namespace Neumont.Tools.ORM.ObjectModel
 		/// </summary>
 		/// <param name="pattern">Pattern this constraint can participate in and produce error</param>
 		/// <param name="options">Options modifying the pattern behavior</param>
-		/// <param name="domainRoleFromError">GUID of the error produced on this contraint in a particular situation</param>
+		/// <param name="domainRoleToError">Identifier of the <see cref="DomainRoleInfo"/> attached to the context constraint
+		/// that leads to the associated error created for this instance. Set to <see langword="null"/> if an error is not attached
+		/// to this constraint.</param>
+		/// <param name="intersectingDomainRoleToError">Identifier of the <see cref="DomainRoleInfo"/> attached to the constraint
+		/// that intersects with the context constraint that leads to the associated error created for this instance. Set to
+		/// <see langword="null"/> if an error is not attached to the intersecting constraint.</param>
 		/// <param name="constraintTypesInPotentialConflict">Given the pattern, what type should the other constraint
 		/// be of to produce the error</param>
 		public IntersectingConstraintValidation(
 			IntersectingConstraintPattern pattern,
 			IntersectingConstraintPatternOptions options,
-			Guid domainRoleFromError,
+			Guid? domainRoleToError,
+			Guid? intersectingDomainRoleToError,
 			params ConstraintType[] constraintTypesInPotentialConflict)
 		{
 			this.myPattern = pattern;
 			this.myPatternOptions = options;
-			this.myDomainRoleFromError = domainRoleFromError;
+			this.myDomainRoleToError = domainRoleToError;
+			this.myIntersectingDomainRoleToError = intersectingDomainRoleToError;
 			this.myConstraintTypesInPotentialConflict = constraintTypesInPotentialConflict;
 		}
-
+#if FALSE
 		/// <summary>
 		/// Checks if the current instance of IntersectingConstraintValidation and the
 		/// instance passed in are the same based on all fields of the struct
@@ -235,7 +243,7 @@ namespace Neumont.Tools.ORM.ObjectModel
 		{
 			if (this.myPattern == other.myPattern &&
 				this.myPatternOptions == other.myPatternOptions &&
-				this.myDomainRoleFromError == other.myDomainRoleFromError)
+				this.myDomainRoleToError == other.myDomainRoleToError)
 			{
 				ConstraintType[] thisConstraintTypes = this.myConstraintTypesInPotentialConflict;
 				ConstraintType[] otherConstraintTypes = this.myConstraintTypesInPotentialConflict;
@@ -258,7 +266,7 @@ namespace Neumont.Tools.ORM.ObjectModel
 			}
 			return false;
 		}
-
+#endif // FALSE
 		/// <summary>
 		/// For each IntersectingConstraintPattern, there are 2 types of constraints:
 		/// the one for which the validation is being done and the other that can conlict with it.
@@ -294,14 +302,26 @@ namespace Neumont.Tools.ORM.ObjectModel
 			}
 		}
 		/// <summary>
-		/// GUID for the error the constraint will produce if it is indeed found to participate in a
-		/// particular intersectingConstraintPattern
+		/// Identifier of the <see cref="DomainRoleInfo"/> attached to the context constraint
+		/// that leads to the associated error created for this instance.
+		/// to this constraint.
 		/// </summary>
-		public Guid DomainRoleFromError
+		public Guid? DomainRoleToError
 		{
 			get
 			{
-				return myDomainRoleFromError;
+				return myDomainRoleToError;
+			}
+		}
+		/// <summary>
+		/// Identifier of the <see cref="DomainRoleInfo"/> attached to the constraint
+		/// that intersects with the context constraint that leads to the associated error created for this instance.
+		/// </summary>
+		public Guid? IntersectingDomainRoleToError
+		{
+			get
+			{
+				return myIntersectingDomainRoleToError;
 			}
 		}
 		/// <summary>
@@ -1365,7 +1385,7 @@ namespace Neumont.Tools.ORM.ObjectModel
 							}
 						}
 					}
-					Guid domainRoleErrorId = validationInfo.DomainRoleFromError;
+					Guid domainRoleErrorId = validationInfo.DomainRoleToError.Value;
 					Store store = Store;
 					ModelError error = (ModelError)DomainRoleInfo.GetLinkedElement(this, domainRoleErrorId);
 					if (hasError)
@@ -2911,7 +2931,6 @@ namespace Neumont.Tools.ORM.ObjectModel
 			if (constraint != null)
 			{
 				ValidateConstraintPatternErrorWithKnownConstraint(notifyAdded, constraint, IntersectingConstraintPattern.None, null);
-
 			}
 		}
 		private void ValidateConstraintPatternErrorWithKnownConstraint(INotifyElementAdded notifyAdded,	IConstraint currentConstraint, IntersectingConstraintPattern pattern, List<IConstraint> constraintsAlreadyValidated)
@@ -2984,11 +3003,43 @@ namespace Neumont.Tools.ORM.ObjectModel
 							return true;
 						});
 				}
+				else
+				{
+					foreach (ConstraintRoleSequence sequence in sequences)
+					{
+						CheckIfAnyRolesInCollectionCanConflict(
+							sequence.RoleCollection,
+							constraintTypesInPotentialConflict,
+							delegate(IConstraint matchConstraint)
+							{
+								if (matchConstraint != currentSetComparisonConstraint &&
+									validationInfo.TestModality(currentModality, matchConstraint.Modality))
+								{
+									if (constraintsPossiblyConflicting == null)
+									{
+										constraintsPossiblyConflicting = new List<IConstraint>();
+										constraintsPossiblyConflicting.Add(matchConstraint);
+									}
+									else if (!constraintsPossiblyConflicting.Contains(matchConstraint))
+									{
+										constraintsPossiblyConflicting.Add(matchConstraint);
+									}
+								}
+								return true;
+							});
+					}
+				}
 
 				//Get these GUIDs from data
-				Guid domainRoleErrorId = validationInfo.DomainRoleFromError;
 				Store store = Store;
-				ModelError error = (ModelError)DomainRoleInfo.GetLinkedElement((ModelElement)currentConstraint, domainRoleErrorId);
+				DomainRoleInfo towardsErrorRoleInfo = null;
+				ModelError error = null;
+				Guid? domainRoleErrorId = validationInfo.DomainRoleToError;
+				if (domainRoleErrorId.HasValue)
+				{
+					towardsErrorRoleInfo = store.DomainDataDirectory.GetDomainRole(domainRoleErrorId.Value);
+					error = (ModelError)towardsErrorRoleInfo.GetLinkedElement((ModelElement)currentConstraint);
+				}
 
 				//This variable is used in the code for each validation pattern; but it will be reset
 				//for each pattern; this is the default value that can be changed by validation code
@@ -3021,7 +3072,10 @@ namespace Neumont.Tools.ORM.ObjectModel
 									}
 									else if (constraintsAlreadyValidated.Contains(constraintToValidate))
 									{
+										// UNDONE: CONSTRAINTINTERSECTION: make sure we can remove the error
 										recurse = false;
+										hasError = false;
+										error = null;
 									}
 									if (recurse)
 									{
@@ -3164,11 +3218,10 @@ namespace Neumont.Tools.ORM.ObjectModel
 						{
 							//For this pattern: there can be an error only if there are more than one sequences on
 							//the constraint and the constraint is only on one column
-							if (sequences.Count > 1 && CheckIfHasOneColumn(sequences))
+							if (sequences.Count == 2 && CheckIfHasOneColumn(sequences))
 							{
-								//The error occurs when simple mandatory is on the top role
-								//TODO: handle disjunctive mandatory too
-
+								// The error occurs when simple mandatory is on the top role
+								hasError = false;
 								CheckIfAnyRolesInCollectionCanConflict(
 									sequences[1].RoleCollection,
 									constraintTypesInPotentialConflict,
@@ -3177,23 +3230,23 @@ namespace Neumont.Tools.ORM.ObjectModel
 										hasError = true;
 										return false;
 									});
-								if (hasError)
-								{
-									CheckIfAnyRolesInCollectionCanConflict(
-										sequences[0].RoleCollection,
-										constraintTypesInPotentialConflict,
-										delegate(IConstraint matchConstraint)
-										{
-											hasError = false;
-											return false;
-										});
-								}
+								// Note that first (non-arrow) sequence does not matter for simple mandatory implication
+								// Both roles mandatory imply an equality, which implies a subset.
+								// UNDONE: handle disjunctive mandatory
+								// For disjunctive mandatory, if both roles (and no non-intersecting roles) are
+								// present in the disjunctive mandatory constraint, then the combination of the
+								// mandatory and subset is equivalent to a simple mandatory on the second role.
+								// UNDONE: For an implied disjunctive mandatory (and potentially for the two constraints
+								// that could reduce to one mandatory), we may need another form of constraint that
+								// is marked as a 'reduction'. Any reduction constraint should not be shown. Any
+								// constraint that is reduced (aka alternately mapped, consider extending this notion
+								// to FactType/ObjectType reductions as well) should not be shown.
 							}
 						}
 
 						if (hasError)
 						{
-							HandleError(true, ref error, domainRoleErrorId, notifyAdded, currentConstraint);
+							HandleError(true, ref error, domainRoleErrorId.Value, notifyAdded, currentConstraint);
 						}
 						else if (error != null)
 						{
@@ -3207,7 +3260,7 @@ namespace Neumont.Tools.ORM.ObjectModel
 						{
 							//For this pattern: there can be an error only if there are more than one sequences on
 							//the constraint
-							if (sequences.Count > 1)
+							if (sequences.Count == 2)
 							{
 								//The error occurs when simple mandatory is on the bottom role
 								//TODO: handle disjunctive mandatory too
@@ -3257,7 +3310,7 @@ namespace Neumont.Tools.ORM.ObjectModel
 
 
 
-							HandleError(false, ref error, domainRoleErrorId, notifyAdded, currentConstraint);
+							HandleError(false, ref error, domainRoleErrorId.Value, notifyAdded, currentConstraint);
 							HandleError(true, ref error, mandatoryDomainRoleId, null, contradictingMandatory);
 						}
 						else if (error != null)
@@ -3418,10 +3471,7 @@ namespace Neumont.Tools.ORM.ObjectModel
 			Guid domainRoleErrorId, INotifyElementAdded notifyAdded,
 			IConstraint constraintToAttachErrorTo)
 		{
-			List<IConstraint> listVersion = new List<IConstraint>();
-			listVersion.Add(constraintToAttachErrorTo);
-
-			HandleError(generateText, ref error, domainRoleErrorId, notifyAdded, listVersion);
+			HandleError(generateText, ref error, domainRoleErrorId, notifyAdded, new IConstraint[]{constraintToAttachErrorTo});
 		}
 
 		/// <summary>
@@ -3510,7 +3560,12 @@ namespace Neumont.Tools.ORM.ObjectModel
 			IConstraint curConstraint,
 			bool hasErrorDefault)
 		{
-			Guid domainRoleErrorId = validationInfo.DomainRoleFromError;
+			Guid? optionalDomainRoleErrorId = validationInfo.DomainRoleToError;
+			if (!optionalDomainRoleErrorId.HasValue)
+			{
+				return false;
+			}
+			Guid domainRoleErrorId = optionalDomainRoleErrorId.Value;
 			IList<IConstraint> constrFound = null;
 			bool hasError = hasErrorDefault;
 
@@ -3725,7 +3780,7 @@ namespace Neumont.Tools.ORM.ObjectModel
 
 			#region Handling the error
 			int constraintsInErrorCount = (constraintsInError == null) ? 0 : constraintsInError.Count;
-			Guid domainRoleErrorId = validationInfo.DomainRoleFromError;
+			Guid domainRoleErrorId = validationInfo.DomainRoleToError.Value;
 			Store store = Store;
 			DomainRoleInfo constraintRoleInfo = store.DomainDataDirectory.FindDomainRole(domainRoleErrorId);
 			DomainRoleInfo errorRoleInfo = constraintRoleInfo.OppositeDomainRole;
@@ -3765,6 +3820,13 @@ namespace Neumont.Tools.ORM.ObjectModel
 				}
 				else if (error != null)
 				{
+					// UNDONE: This is too strong. Currently, if multiple constraints are in contradiction, then they
+					// are all put together in one error. This is not quite right (if B contradicts A and C contradicts A,
+					// then we say that {A,B,C} are in contradiction, but B and C do not necessarily contradict). In this
+					// case, deleting the error here will actually removing a remaining contradiction. Given that this is an
+					// unusual case (generally, two constraints contradict each other), we should instead create two contradiction
+					// errors in this case (A contradicts B, A contradicts C). Without this change, we would have to reprocess
+					// any remaining constraints at this point to see if they are still in contradiction.
 					error.Delete();
 				}
 			}
@@ -7053,9 +7115,10 @@ namespace Neumont.Tools.ORM.ObjectModel
 		/// </summary>
 		public override void GenerateErrorText()
 		{
-			//BAD BAD BAD
-			string errorName = SetComparisonConstraint.Name;
-			string newText = String.Format(CultureInfo.InvariantCulture, ResourceStrings.ModelErrorConstraintImplicationEqualityOrSubsetMandatory, errorName, Model.Name);
+			SetComparisonConstraint constraint = EqualityOrSubsetConstraint;
+			string errorName = constraint.Name;
+
+			string newText = String.Format(CultureInfo.InvariantCulture, ((IConstraint)constraint).ConstraintType == ConstraintType.Subset ? ResourceStrings.ModelErrorConstraintImplicationSubsetMandatory : ResourceStrings.ModelErrorConstraintImplicationEqualityMandatory, errorName, Model.Name);
 
 			if (newText != ErrorText)
 			{
@@ -7070,6 +7133,20 @@ namespace Neumont.Tools.ORM.ObjectModel
 			get
 			{
 				return RegenerateErrorTextEvents.OwnerNameChange | RegenerateErrorTextEvents.ModelNameChange;
+			}
+		}
+		/// <summary>
+		/// Redirect the SetComparisonConstraint to the EqualityOrSubsetConstraint property
+		/// </summary>
+		public override SetComparisonConstraint SetComparisonConstraint
+		{
+			get
+			{
+				return EqualityOrSubsetConstraint;
+			}
+			set
+			{
+				EqualityOrSubsetConstraint = value;
 			}
 		}
 		#endregion //Base Overrides
@@ -7497,6 +7574,7 @@ namespace Neumont.Tools.ORM.ObjectModel
 				    IntersectingConstraintPattern.SetConstraintSubset,
 					IntersectingConstraintPatternOptions.IntersectingConstraintModalityNotWeaker,
 				    SetConstraintHasImplicationError.SetConstraintDomainRoleId,
+					null,
 				    ConstraintType.InternalUniqueness,
 				    ConstraintType.ExternalUniqueness),
 		};
@@ -7579,6 +7657,7 @@ namespace Neumont.Tools.ORM.ObjectModel
 					IntersectingConstraintPattern.SetComparisonConstraintSubset,
 					IntersectingConstraintPatternOptions.None,
 					SetComparisonConstraintHasImplicationError.SetComparisonConstraintDomainRoleId,
+					null, // UNDONE: CONSTRAINTINTERSECTION: Examine error implication direction for equality/exclusion/subset
 					ConstraintType.Equality),
 
 				//Implication
@@ -7586,6 +7665,7 @@ namespace Neumont.Tools.ORM.ObjectModel
 					IntersectingConstraintPattern.SetComparisonConstraintSuperset,
 					IntersectingConstraintPatternOptions.None,
 					SetComparisonConstraintHasImplicationError.SetComparisonConstraintDomainRoleId,
+					null, // UNDONE: CONSTRAINTINTERSECTION: Examine error implication direction for equality/exclusion/subset
 					ConstraintType.Equality,
 					ConstraintType.Subset),
 				
@@ -7593,6 +7673,7 @@ namespace Neumont.Tools.ORM.ObjectModel
 				new IntersectingConstraintValidation(
 					IntersectingConstraintPattern.SetComparisonConstraintSuperset,
 					IntersectingConstraintPatternOptions.IntersectingConstraintModalityIgnored,
+					SetComparisonConstraintHasExclusionContradictsEqualityError.SetComparisonConstraintDomainRoleId,
 					SetComparisonConstraintHasExclusionContradictsEqualityError.SetComparisonConstraintDomainRoleId,
 					ConstraintType.Exclusion),
 
@@ -7602,6 +7683,7 @@ namespace Neumont.Tools.ORM.ObjectModel
 					IntersectingConstraintPattern.EqualityImpliedByMandatory,
 					IntersectingConstraintPatternOptions.None,
 					SetComparisonConstraintHasEqualityOrSubsetImpliedByMandatoryError.SetComparisonConstraintDomainRoleId,
+					null,
 					ConstraintType.SimpleMandatory),
 
 				//TODO: These cases are not currently implemented
@@ -7707,6 +7789,7 @@ namespace Neumont.Tools.ORM.ObjectModel
 					IntersectingConstraintPattern.SetComparisonConstraintSubset,
 					IntersectingConstraintPatternOptions.IntersectingConstraintModalityNotWeaker,
 					SetComparisonConstraintHasImplicationError.SetComparisonConstraintDomainRoleId,
+					null,
 					ConstraintType.Exclusion),
 
 				//Implication
@@ -7714,6 +7797,7 @@ namespace Neumont.Tools.ORM.ObjectModel
 					IntersectingConstraintPattern.SetComparisonConstraintSuperset,
 					IntersectingConstraintPatternOptions.IntersectingConstraintModalityNotStronger,
 					SetComparisonConstraintHasImplicationError.SetComparisonConstraintDomainRoleId,
+					null,
 					ConstraintType.Exclusion),
 				
 				//Contradiction
@@ -7721,12 +7805,14 @@ namespace Neumont.Tools.ORM.ObjectModel
 					IntersectingConstraintPattern.SetComparisonConstraintSubset,
 					IntersectingConstraintPatternOptions.IntersectingConstraintModalityIgnored,
 					SetComparisonConstraintHasExclusionContradictsSubsetError.SetComparisonConstraintDomainRoleId,
+					SetComparisonConstraintHasExclusionContradictsSubsetError.SetComparisonConstraintDomainRoleId,
 					ConstraintType.Subset),
 				
 				//Contradiction
 				new IntersectingConstraintValidation(
 					IntersectingConstraintPattern.SetComparisonConstraintSubset,
 					IntersectingConstraintPatternOptions.IntersectingConstraintModalityIgnored,
+					SetComparisonConstraintHasExclusionContradictsEqualityError.SetComparisonConstraintDomainRoleId,
 					SetComparisonConstraintHasExclusionContradictsEqualityError.SetComparisonConstraintDomainRoleId,
 					ConstraintType.Equality),
 				
@@ -7736,6 +7822,7 @@ namespace Neumont.Tools.ORM.ObjectModel
 					IntersectingConstraintPattern.ExclusionContradictsMandatory,
 					IntersectingConstraintPatternOptions.IntersectingConstraintModalityIgnored,
 					ExclusionConstraintHasExclusionContradictsMandatoryError.ExclusionConstraintDomainRoleId,
+					MandatoryConstraintHasExclusionContradictsMandatoryError.MandatoryConstraintDomainRoleId,
 					ConstraintType.SimpleMandatory),
 
 				//TODO: this case is not currently handled
@@ -7806,6 +7893,7 @@ namespace Neumont.Tools.ORM.ObjectModel
 					IntersectingConstraintPattern.SetConstraintSubset,
 					IntersectingConstraintPatternOptions.IntersectingConstraintModalityNotWeaker,
 					SetConstraintHasImplicationError.SetConstraintDomainRoleId,
+					null,
 					ConstraintType.SimpleMandatory,
 					ConstraintType.DisjunctiveMandatory),
 				
@@ -7813,13 +7901,15 @@ namespace Neumont.Tools.ORM.ObjectModel
 				new IntersectingConstraintValidation(
 					IntersectingConstraintPattern.SubsetImpliedByMandatory,
 					IntersectingConstraintPatternOptions.None,
+					null,
 					SetComparisonConstraintHasEqualityOrSubsetImpliedByMandatoryError.SetComparisonConstraintDomainRoleId,
 					ConstraintType.Subset),
-				
+
 				//Implication
 				new IntersectingConstraintValidation(
 					IntersectingConstraintPattern.EqualityImpliedByMandatory,
 					IntersectingConstraintPatternOptions.None,
+					null,
 					SetComparisonConstraintHasEqualityOrSubsetImpliedByMandatoryError.SetComparisonConstraintDomainRoleId,
 					ConstraintType.Equality),
 
@@ -7827,14 +7917,16 @@ namespace Neumont.Tools.ORM.ObjectModel
 				new IntersectingConstraintValidation(
 					IntersectingConstraintPattern.SubsetContradictsMandatory,
 					IntersectingConstraintPatternOptions.None,
-					MandatoryConstraintHasNotWellModeledSubsetAndMandatoryError.MandatoryConstraintDomainRoleId,
+					MandatoryConstraintHasNotWellModeledSubsetAndMandatoryError.MandatoryConstraintDomainRoleId, // UNDONE: CONSTRAINTINTERSECTION: This should be a many relationship
+					SubsetConstraintHasNotWellModeledSubsetAndMandatoryError.SubsetConstraintDomainRoleId,
 					ConstraintType.Subset),
 
 				//Contradiction
 				new IntersectingConstraintValidation(
 					IntersectingConstraintPattern.ExclusionContradictsMandatory,
 					IntersectingConstraintPatternOptions.IntersectingConstraintModalityIgnored,
-					MandatoryConstraintHasExclusionContradictsMandatoryError.MandatoryConstraintDomainRoleId,
+					MandatoryConstraintHasExclusionContradictsMandatoryError.MandatoryConstraintDomainRoleId, // UNDONE: CONSTRAINTINTERSECTION: Reverse many on this relationship, 1 error per contradiction
+					ExclusionConstraintHasExclusionContradictsMandatoryError.ExclusionConstraintDomainRoleId, // UNDONE: CONSTRAINTINTERSECTION: Reverse many on this relationship, 1 error per contradiction
 					ConstraintType.Exclusion),
 
 				//TODO: Create error object for this case
@@ -7969,6 +8061,7 @@ namespace Neumont.Tools.ORM.ObjectModel
 					IntersectingConstraintPattern.SetComparisonConstraintSuperset,
 					IntersectingConstraintPatternOptions.None,
 					SetComparisonConstraintHasExclusionContradictsSubsetError.SetComparisonConstraintDomainRoleId,
+					SetComparisonConstraintHasExclusionContradictsSubsetError.SetComparisonConstraintDomainRoleId,
 					ConstraintType.Exclusion),
 
 				//TODO: handle disjunctive mandatory too!!!
@@ -7977,6 +8070,7 @@ namespace Neumont.Tools.ORM.ObjectModel
 					IntersectingConstraintPattern.SubsetImpliedByMandatory,
 					IntersectingConstraintPatternOptions.None,
 					SetComparisonConstraintHasEqualityOrSubsetImpliedByMandatoryError.SetComparisonConstraintDomainRoleId,
+					null,
 					ConstraintType.SimpleMandatory),
 
 				//Bad ORM
@@ -7984,6 +8078,7 @@ namespace Neumont.Tools.ORM.ObjectModel
 					IntersectingConstraintPattern.SubsetContradictsMandatory,
 					IntersectingConstraintPatternOptions.IntersectingConstraintModalityIgnored,
 					SubsetConstraintHasNotWellModeledSubsetAndMandatoryError.SubsetConstraintDomainRoleId,
+					MandatoryConstraintHasNotWellModeledSubsetAndMandatoryError.MandatoryConstraintDomainRoleId, // UNDONE: CONSTRAINTINTERSECTION: This should be a many relationship
 					ConstraintType.SimpleMandatory),
 
 				//This case is not currently implemented

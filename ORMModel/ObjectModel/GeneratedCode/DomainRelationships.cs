@@ -23901,7 +23901,7 @@ namespace Neumont.Tools.ORM.ObjectModel
 	[global::System.CLSCompliant(true)]
 	[DslModeling::DomainRelationship()]
 	[DslModeling::DomainObjectId("a7ca6438-cace-4fcc-b96c-03e1ddcd3152")]
-	public partial class SetComparisonConstraintHasEqualityOrSubsetImpliedByMandatoryError : SetComparisonConstraintHasImplicationError
+	public partial class SetComparisonConstraintHasEqualityOrSubsetImpliedByMandatoryError : ElementAssociatedWithModelError
 	{
 		#region Constructors, domain class Id
 		
@@ -23969,7 +23969,7 @@ namespace Neumont.Tools.ORM.ObjectModel
 		/// <summary>
 		/// SetComparisonConstraint domain role Id.
 		/// </summary>
-		public static readonly new global::System.Guid SetComparisonConstraintDomainRoleId = new global::System.Guid(0x5606e453, 0xd52c, 0x4465, 0xae, 0x97, 0xef, 0x3d, 0x75, 0xe9, 0x72, 0x45);
+		public static readonly global::System.Guid SetComparisonConstraintDomainRoleId = new global::System.Guid(0x5606e453, 0xd52c, 0x4465, 0xae, 0x97, 0xef, 0x3d, 0x75, 0xe9, 0x72, 0x45);
 		
 		/// <summary>
 		/// DomainRole SetComparisonConstraint
@@ -23980,7 +23980,7 @@ namespace Neumont.Tools.ORM.ObjectModel
 		[DslDesign::DescriptionResource("Neumont.Tools.ORM.ObjectModel.SetComparisonConstraintHasEqualityOrSubsetImpliedByMandatoryError/SetComparisonConstraint.Description", typeof(global::Neumont.Tools.ORM.ObjectModel.ORMCoreDomainModel), "Neumont.Tools.ORM.GeneratedCode.CoreDomainModelResx")]
 		[DslModeling::DomainRole(DslModeling::DomainRoleOrder.Source, PropertyName = "EqualityOrSubsetImpliedByMandatoryError", PropertyDisplayNameKey="Neumont.Tools.ORM.ObjectModel.SetComparisonConstraintHasEqualityOrSubsetImpliedByMandatoryError/SetComparisonConstraint.PropertyDisplayName", Multiplicity = DslModeling::Multiplicity.ZeroOne)]
 		[DslModeling::DomainObjectId("5606e453-d52c-4465-ae97-ef3d75e97245")]
-		public override SetComparisonConstraint SetComparisonConstraint
+		public virtual SetComparisonConstraint SetComparisonConstraint
 		{
 			[global::System.Diagnostics.DebuggerStepThrough]
 			get
@@ -23995,26 +23995,48 @@ namespace Neumont.Tools.ORM.ObjectModel
 		}
 				
 		#endregion
-		#region Static methods to access SetComparisonConstraint of a EqualityOrSubsetImpliedByMandatoryError
+		#region Static methods to access EqualityOrSubsetConstraint of a EqualityOrSubsetImpliedByMandatoryError
 		/// <summary>
-		/// Gets SetComparisonConstraint.
+		/// Gets EqualityOrSubsetConstraint.
 		/// </summary>
 		[global::System.Diagnostics.DebuggerStepThrough]
 		[global::System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Design", "CA1011")]
-		public static SetComparisonConstraint GetSetComparisonConstraint(EqualityOrSubsetImpliedByMandatoryError element)
+		private static SetComparisonConstraint GetEqualityOrSubsetConstraint(EqualityOrSubsetImpliedByMandatoryError element)
 		{
 			return DslModeling::DomainRoleInfo.GetLinkedElement(element, EqualityOrSubsetImpliedByMandatoryErrorDomainRoleId) as SetComparisonConstraint;
 		}
 		
 		/// <summary>
-		/// Sets SetComparisonConstraint.
+		/// Sets EqualityOrSubsetConstraint.
 		/// </summary>
 		[global::System.Diagnostics.DebuggerStepThrough]
 		[global::System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Design", "CA1011")]
-		public static void SetSetComparisonConstraint(EqualityOrSubsetImpliedByMandatoryError element, SetComparisonConstraint newSetComparisonConstraint)
+		private static void SetEqualityOrSubsetConstraint(EqualityOrSubsetImpliedByMandatoryError element, SetComparisonConstraint newSetComparisonConstraint)
 		{
 			DslModeling::DomainRoleInfo.SetLinkedElement(element, EqualityOrSubsetImpliedByMandatoryErrorDomainRoleId, newSetComparisonConstraint);
 		}
+		#endregion
+		#region AssociatedElement domain role override
+		
+		/// <summary>
+		/// Gets the element playing SetComparisonConstraint domain role.
+		/// Description for
+		/// Neumont.Tools.ORM.ObjectModel.ElementAssociatedWithModelError.AssociatedElement
+		/// </summary>
+		public override global::Microsoft.VisualStudio.Modeling.ModelElement AssociatedElement
+		{
+			[global::System.Diagnostics.DebuggerStepThrough]
+			get
+			{
+				return this.SetComparisonConstraint;
+			}
+			[global::System.Diagnostics.DebuggerStepThrough]
+			set
+			{
+				this.SetComparisonConstraint = (SetComparisonConstraint)value;
+			}
+		}
+		
 		#endregion
 		#region EqualityOrSubsetImpliedByMandatoryError domain role code
 		
@@ -24030,7 +24052,8 @@ namespace Neumont.Tools.ORM.ObjectModel
 		/// </summary>
 		[DslDesign::DisplayNameResource("Neumont.Tools.ORM.ObjectModel.SetComparisonConstraintHasEqualityOrSubsetImpliedByMandatoryError/EqualityOrSubsetImpliedByMandatoryError.DisplayName", typeof(global::Neumont.Tools.ORM.ObjectModel.ORMCoreDomainModel), "Neumont.Tools.ORM.GeneratedCode.CoreDomainModelResx")]
 		[DslDesign::DescriptionResource("Neumont.Tools.ORM.ObjectModel.SetComparisonConstraintHasEqualityOrSubsetImpliedByMandatoryError/EqualityOrSubsetImpliedByMandatoryError.Description", typeof(global::Neumont.Tools.ORM.ObjectModel.ORMCoreDomainModel), "Neumont.Tools.ORM.GeneratedCode.CoreDomainModelResx")]
-		[DslModeling::DomainRole(DslModeling::DomainRoleOrder.Target, PropertyName = "SetComparisonConstraint", PropertyDisplayNameKey="Neumont.Tools.ORM.ObjectModel.SetComparisonConstraintHasEqualityOrSubsetImpliedByMandatoryError/EqualityOrSubsetImpliedByMandatoryError.PropertyDisplayName", PropagatesDelete = true, Multiplicity = DslModeling::Multiplicity.ZeroOne)]
+		[global::System.ComponentModel.ReadOnly(true)]
+		[DslModeling::DomainRole(DslModeling::DomainRoleOrder.Target, PropertyName = "EqualityOrSubsetConstraint", PropertyDisplayNameKey="Neumont.Tools.ORM.ObjectModel.SetComparisonConstraintHasEqualityOrSubsetImpliedByMandatoryError/EqualityOrSubsetImpliedByMandatoryError.PropertyDisplayName", PropagatesDelete = true, Multiplicity = DslModeling::Multiplicity.ZeroOne)]
 		[DslModeling::DomainObjectId("6ddf4667-3dd7-4661-9cf2-aa6e3ef782e3")]
 		public virtual EqualityOrSubsetImpliedByMandatoryError EqualityOrSubsetImpliedByMandatoryError
 		{
@@ -24068,14 +24091,14 @@ namespace Neumont.Tools.ORM.ObjectModel
 			DslModeling::DomainRoleInfo.SetLinkedElement(element, SetComparisonConstraintDomainRoleId, newEqualityOrSubsetImpliedByMandatoryError);
 		}
 		#endregion
-		#region ImplicationError domain role override
+		#region ModelError domain role override
 		
 		/// <summary>
 		/// Gets the element playing EqualityOrSubsetImpliedByMandatoryError domain role.
 		/// Description for
-		/// Neumont.Tools.ORM.ObjectModel.SetComparisonConstraintHasImplicationError.ImplicationError
+		/// Neumont.Tools.ORM.ObjectModel.ElementAssociatedWithModelError.ModelError
 		/// </summary>
-		public override ImplicationError ImplicationError
+		public override ModelError ModelError
 		{
 			[global::System.Diagnostics.DebuggerStepThrough]
 			get
@@ -24116,7 +24139,7 @@ namespace Neumont.Tools.ORM.ObjectModel
 		/// </summary>
 		[global::System.Diagnostics.DebuggerStepThrough]
 		[global::System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Design", "CA1011")]
-		public static global::Neumont.Tools.ORM.ObjectModel.SetComparisonConstraintHasEqualityOrSubsetImpliedByMandatoryError GetLinkToSetComparisonConstraint (global::Neumont.Tools.ORM.ObjectModel.EqualityOrSubsetImpliedByMandatoryError equalityOrSubsetImpliedByMandatoryErrorInstance)
+		private static global::Neumont.Tools.ORM.ObjectModel.SetComparisonConstraintHasEqualityOrSubsetImpliedByMandatoryError GetLinkToEqualityOrSubsetConstraint (global::Neumont.Tools.ORM.ObjectModel.EqualityOrSubsetImpliedByMandatoryError equalityOrSubsetImpliedByMandatoryErrorInstance)
 		{
 			global::System.Collections.Generic.IList<global::Neumont.Tools.ORM.ObjectModel.SetComparisonConstraintHasEqualityOrSubsetImpliedByMandatoryError> links = DslModeling::DomainRoleInfo.GetElementLinks<global::Neumont.Tools.ORM.ObjectModel.SetComparisonConstraintHasEqualityOrSubsetImpliedByMandatoryError>(equalityOrSubsetImpliedByMandatoryErrorInstance, global::Neumont.Tools.ORM.ObjectModel.SetComparisonConstraintHasEqualityOrSubsetImpliedByMandatoryError.EqualityOrSubsetImpliedByMandatoryErrorDomainRoleId);
 			global::System.Diagnostics.Debug.Assert(links.Count <= 1, "Multiplicity of EqualityOrSubsetImpliedByMandatoryError not obeyed.");

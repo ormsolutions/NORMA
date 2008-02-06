@@ -225,7 +225,8 @@
 	<ResourceString name="ModelExceptionReadingIsPrimaryToFalse" model="Model" resourceName="ModelException.Reading.IsPrimary.ReadOnlyWhenFalse"/>
 	<ResourceString name="ModelExceptionFactAddReadingInvalidReadingText" model="Model" resourceName="ModelException.Fact.AddReading.InvalidReadingText"/>
 	<ResourceString name="ModelErrorConstraintImplication" model="Model" resourceName="ModelError.Constraint.ImplicationError.Text"/>
-	<ResourceString name="ModelErrorConstraintImplicationEqualityOrSubsetMandatory" model="Model" resourceName="ModelError.Constraint.EqualityOrSubsetImpliedByMandatoryError.Text"/>
+	<ResourceString name="ModelErrorConstraintImplicationEqualityMandatory" model="Model" resourceName="ModelError.Constraint.EqualityImpliedByMandatoryError.Text"/>
+	<ResourceString name="ModelErrorConstraintImplicationSubsetMandatory" model="Model" resourceName="ModelError.Constraint.SubsetImpliedByMandatoryError.Text"/>
 	<ResourceString name="ModelErrorNotWellModeledSubsetAndMandatoryError" model="Model" resourceName="ModelError.Constraint.NotWellModeledSubsetAndMandatoryError.Text"/>
 	<ResourceString name="ModelErrorConstraintContradiction" model="Model" resourceName="ModelError.Constraint.ContradictionError.Text"/>
 	<ResourceString name="ModelErrorConstraintHasTooFewRoleSequencesText" model="Model" resourceName="ModelError.Constraint.TooFewRoleSequences.Text"/>

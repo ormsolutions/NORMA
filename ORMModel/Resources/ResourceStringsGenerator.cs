@@ -756,12 +756,20 @@ namespace Neumont.Tools.ORM
 				return ResourceStrings.GetString(ResourceManagers.Model, "ModelError.Constraint.ImplicationError.Text");
 			}
 		}
-		/// <summary>Model validation error text when an equality or subset constraint is put on roles that are mandatory.</summary>
-		public static string ModelErrorConstraintImplicationEqualityOrSubsetMandatory
+		/// <summary>Model validation error text when a single-column equality constraint is put on a set of mandatory roles.</summary>
+		public static string ModelErrorConstraintImplicationEqualityMandatory
 		{
 			get
 			{
-				return ResourceStrings.GetString(ResourceManagers.Model, "ModelError.Constraint.EqualityOrSubsetImpliedByMandatoryError.Text");
+				return ResourceStrings.GetString(ResourceManagers.Model, "ModelError.Constraint.EqualityImpliedByMandatoryError.Text");
+			}
+		}
+		/// <summary>Model validation error text when a single-column subset constraint targets a mandatory role.</summary>
+		public static string ModelErrorConstraintImplicationSubsetMandatory
+		{
+			get
+			{
+				return ResourceStrings.GetString(ResourceManagers.Model, "ModelError.Constraint.SubsetImpliedByMandatoryError.Text");
 			}
 		}
 		/// <summary>Model validation error text when a mandatory constraint is put on the subset role of a subset constraint relationship.</summary>

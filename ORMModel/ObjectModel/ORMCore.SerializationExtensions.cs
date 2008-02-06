@@ -8521,7 +8521,7 @@ namespace Neumont.Tools.ORM.ObjectModel
 			get
 			{
 				string name = "EqualityConstraintImpliedByMandatoryConstraintsError";
-				if (this.SetComparisonConstraint is SubsetConstraint)
+				if (this.EqualityOrSubsetConstraint is SubsetConstraint)
 				{
 					name = "SubsetConstraintImpliedByMandatoryConstraintsError";
 				}

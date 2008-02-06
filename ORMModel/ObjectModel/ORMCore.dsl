@@ -3495,7 +3495,7 @@
 
 		<DomainRelationship Name="SetComparisonConstraintHasEqualityOrSubsetImpliedByMandatoryError" Namespace="Neumont.Tools.ORM.ObjectModel" Id="A7CA6438-CACE-4FCC-B96C-03E1DDCD3152">
 			<BaseRelationship>
-				<DomainRelationshipMoniker Name="SetComparisonConstraintHasImplicationError"/>
+				<DomainRelationshipMoniker Name="ElementAssociatedWithModelError"/>
 			</BaseRelationship>
 			<Source>
 				<DomainRole Name="SetComparisonConstraint" PropertyName="EqualityOrSubsetImpliedByMandatoryError" Multiplicity="ZeroOne" PropagatesDelete="false" IsPropertyGenerator="true" DisplayName="SetComparisonConstraint" Id="5606E453-D52C-4465-AE97-EF3D75E97245">
@@ -3505,7 +3505,7 @@
 				</DomainRole>
 			</Source>
 			<Target>
-				<DomainRole Name="EqualityOrSubsetImpliedByMandatoryError" PropertyName="SetComparisonConstraint" Multiplicity="ZeroOne" PropagatesDelete="true" IsPropertyGenerator="true" DisplayName="EqualityOrSubsetImpliedByMandatoryError" Id="6DDF4667-3DD7-4661-9CF2-AA6E3EF782E3">
+				<DomainRole Name="EqualityOrSubsetImpliedByMandatoryError" PropertyName="EqualityOrSubsetConstraint" Multiplicity="ZeroOne" PropagatesDelete="true" IsPropertyGenerator="true" PropertyGetterAccessModifier="Private" PropertySetterAccessModifier="Private" DisplayName="EqualityOrSubsetImpliedByMandatoryError" Id="6DDF4667-3DD7-4661-9CF2-AA6E3EF782E3">
 					<RolePlayer>
 						<DomainClassMoniker Name="EqualityOrSubsetImpliedByMandatoryError"/>
 					</RolePlayer>

@@ -16113,13 +16113,13 @@ namespace Neumont.Tools.ORM.ObjectModel
 		{
 		}
 		#endregion
-		#region SetComparisonConstraint opposite domain role accessor
+		#region EqualityOrSubsetConstraint opposite domain role accessor
 		/// <summary>
-		/// Gets or sets SetComparisonConstraint.
+		/// Gets or sets EqualityOrSubsetConstraint.
 		/// Description for
 		/// Neumont.Tools.ORM.ObjectModel.SetComparisonConstraintHasEqualityOrSubsetImpliedByMandatoryError.EqualityOrSubsetImpliedByMandatoryError
 		/// </summary>
-		public override SetComparisonConstraint SetComparisonConstraint
+		private SetComparisonConstraint EqualityOrSubsetConstraint
 		{
 			[global::System.Diagnostics.DebuggerStepThrough]
 			get
@@ -16130,17 +16130,17 @@ namespace Neumont.Tools.ORM.ObjectModel
 			set
 			{
 				DslModeling::ModelElement existingSource;
-				if (null != (SetComparisonConstraint)value &&
-					null != (existingSource = DslModeling::DomainRoleInfo.GetLinkedElement((SetComparisonConstraint)value, global::Neumont.Tools.ORM.ObjectModel.SetComparisonConstraintHasEqualityOrSubsetImpliedByMandatoryError.SetComparisonConstraintDomainRoleId)))
+				if (null != value &&
+					null != (existingSource = DslModeling::DomainRoleInfo.GetLinkedElement(value, global::Neumont.Tools.ORM.ObjectModel.SetComparisonConstraintHasEqualityOrSubsetImpliedByMandatoryError.SetComparisonConstraintDomainRoleId)))
 				{
-					if (existingSource != (SetComparisonConstraint)value)
+					if (existingSource != value)
 					{
-						DslModeling::DomainRoleInfo.SetLinkedElement((SetComparisonConstraint)value, global::Neumont.Tools.ORM.ObjectModel.SetComparisonConstraintHasEqualityOrSubsetImpliedByMandatoryError.SetComparisonConstraintDomainRoleId, this);
+						DslModeling::DomainRoleInfo.SetLinkedElement(value, global::Neumont.Tools.ORM.ObjectModel.SetComparisonConstraintHasEqualityOrSubsetImpliedByMandatoryError.SetComparisonConstraintDomainRoleId, this);
 					}
 				}
 				else
 				{
-					DslModeling::DomainRoleInfo.SetLinkedElement(this, global::Neumont.Tools.ORM.ObjectModel.SetComparisonConstraintHasEqualityOrSubsetImpliedByMandatoryError.EqualityOrSubsetImpliedByMandatoryErrorDomainRoleId, (SetComparisonConstraint)value);
+					DslModeling::DomainRoleInfo.SetLinkedElement(this, global::Neumont.Tools.ORM.ObjectModel.SetComparisonConstraintHasEqualityOrSubsetImpliedByMandatoryError.EqualityOrSubsetImpliedByMandatoryErrorDomainRoleId, value);
 				}
 			}
 		}

@@ -4762,7 +4762,7 @@
     <comment>DisplayName for DomainRole &apos;EqualityOrSubsetImpliedByMandatoryError&apos; on DomainRelationship &apos;SetComparisonConstraintHasEqualityOrSubsetImpliedByMandatoryError&apos;</comment>
   </data>
   <data name="Neumont.Tools.ORM.ObjectModel.SetComparisonConstraintHasEqualityOrSubsetImpliedByMandatoryError/EqualityOrSubsetImpliedByMandatoryError.PropertyDisplayName" xml:space="preserve">
-    <value>Set Comparison Constraint</value>
+    <value>Equality Or Subset Constraint</value>
     <comment>PropertyDisplayName for DomainRole &apos;EqualityOrSubsetImpliedByMandatoryError&apos; on DomainRelationship &apos;SetComparisonConstraintHasEqualityOrSubsetImpliedByMandatoryError&apos;</comment>
   </data>
   <data name="Neumont.Tools.ORM.ObjectModel.ObjectTypeHasPreferredIdentifierRequiresMandatoryError.Description" xml:space="preserve">

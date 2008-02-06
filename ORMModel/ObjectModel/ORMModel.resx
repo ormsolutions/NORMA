@@ -217,9 +217,9 @@
 		<value>Constraints {0} in model '{1}' are in a state of contradiction.</value>
 		<comment>Model validation error text when a constraint intersects a second constraint where the second constraints roles are a subset of the constraint roles and are in a state of contradiction.</comment>
 	</data>
-	<data name="ModelError.Constraint.EqualityOrSubsetImpliedByMandatoryError.Text" xml:space="preserve">
-		<value>Constraint '{0}' in model '{1}' is implied by intersecting simple mandatory constraints.</value>
-		<comment>Model validation error text when an equality or subset constraint is put on roles that are mandatory.</comment>
+	<data name="ModelError.Constraint.EqualityImpliedByMandatoryError.Text" xml:space="preserve">
+		<value>Equality constraint '{0}' in model '{1}' is implied by simple mandatory constraints on all roles in the constraint.</value>
+		<comment>Model validation error text when a single-column equality constraint is put on a set of mandatory roles.</comment>
 	</data>
 	<data name="ModelError.Constraint.ExternalConstraintArityMismatch.Text" xml:space="preserve">
 		<value>Constraint '{0}' has role sequences with different numbers of roles.</value>
@@ -252,6 +252,10 @@
 	<data name="ModelError.Constraint.RingConstraintTypeNotSpecifiedError.Message" xml:space="preserve">
 		<value>The ring type for ring constraint '{0}' in model '{1}' is not specified.</value>
 		<comment>The ring constraint type must be specified. {0} is the constraint name and {1} is the model name.</comment>
+	</data>
+	<data name="ModelError.Constraint.SubsetImpliedByMandatoryError.Text" xml:space="preserve">
+		<value>Subset constraint '{0}' in model '{1}' is implied by a simple mandatory constraint on the superset role.</value>
+		<comment>Model validation error text when a single-column subset constraint targets a mandatory role.</comment>
 	</data>
 	<data name="ModelError.Constraint.TooFewRoleSequences.Text" xml:space="preserve">
 		<value>Constraint '{0}' does not have enough role sequences.</value>
