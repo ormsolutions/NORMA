@@ -522,6 +522,15 @@ namespace Neumont.Tools.ORM.Shell
 			/// regardless of the selected role order.
 			/// </summary>
 			private IList<RoleBase> myDefaultRoleOrder;
+			/// <summary>
+			/// Cached objects written to the Fact Editor window
+			/// </summary>
+			private IList<ObjectType> mySelectedObjectTypes;
+			/// <summary>
+			/// The number of elements from the <see cref="mySelectedObjectTypes"/> field
+			/// that should be used.
+			/// </summary>
+			private int mySelectedObjectTypeCount;
 			#endregion // Private Fields
 			#region Constructor
 			/// <summary>
@@ -625,6 +634,10 @@ namespace Neumont.Tools.ORM.Shell
 				ModelingEventManager eventManager = ((IModelingEventManagerProvider)store).ModelingEventManager;
 				DomainDataDirectory directory = store.DomainDataDirectory;
 
+				// Events begun/ended
+				eventManager.AddOrRemoveHandler(new EventHandler<ElementEventsBegunEventArgs>(EventsBeginning), action);
+				eventManager.AddOrRemoveHandler(new EventHandler<ElementEventsEndedEventArgs>(EventsEnding), action);
+
 				// Role add/delete
 				DomainClassInfo classInfo = directory.FindDomainRelationship(FactTypeHasRole.DomainClassId);
 				eventManager.AddOrRemoveHandler(classInfo, new EventHandler<ElementAddedEventArgs>(RoleAdded), action);
@@ -652,11 +665,55 @@ namespace Neumont.Tools.ORM.Shell
 				eventManager.AddOrRemoveHandler(classInfo, new EventHandler<ElementDeletedEventArgs>(RoleDisplayOrderDeleted), action);
 				domainRoleInfo = directory.FindDomainRole(FactTypeShapeHasRoleDisplayOrder.RoleDisplayOrderDomainRoleId);
 				eventManager.AddOrRemoveHandler(domainRoleInfo, new EventHandler<RolePlayerOrderChangedEventArgs>(RoleDisplayOrderPositionChanged), action);
+
+				// RolePlayer add/delete/change
+				classInfo = directory.GetDomainRelationship(ObjectTypePlaysRole.DomainClassId);
+				eventManager.AddOrRemoveHandler(classInfo, new EventHandler<ElementAddedEventArgs>(RolePlayerAdded), action);
+				eventManager.AddOrRemoveHandler(classInfo, new EventHandler<ElementDeletedEventArgs>(RolePlayerDeleted), action);
+				domainRoleInfo = directory.FindDomainRole(ObjectTypePlaysRole.RolePlayerDomainRoleId);
+				eventManager.AddOrRemoveHandler(domainRoleInfo, new EventHandler<RolePlayerChangedEventArgs>(RolePlayerChanged), action);
+
+				// ObjectType add/delete/change
+				classInfo = directory.GetDomainClass(ObjectType.DomainClassId);
+				eventManager.AddOrRemoveHandler(classInfo, new EventHandler<ElementAddedEventArgs>(ObjectTypeAdded), action);
+				eventManager.AddOrRemoveHandler(classInfo, new EventHandler<ElementDeletedEventArgs>(ObjectTypeDeleted), action);
+				propertyInfo = directory.FindDomainProperty(ObjectType.NameDomainPropertyId);
+				eventManager.AddOrRemoveHandler(classInfo, propertyInfo, new EventHandler<ElementPropertyChangedEventArgs>(ObjectTypeNameChanged), action);
 			}
 			#endregion // INotifyToolWindowActivation<ORMDesignerDocData,DiagramDocView,IORMSelectionContainer> Implementation
 			#region Selection Handling Methods
+			private bool myRequireUpdate;
+			private bool myForceUpdate;
+			private bool myInEvents;
+			private void EventsBeginning(object sender, ElementEventsBegunEventArgs e)
+			{
+				myRequireUpdate = false;
+				myForceUpdate = false;
+				myInEvents = true;
+			}
+			private void EventsEnding(object sender, ElementEventsEndedEventArgs e)
+			{
+				myInEvents = false;
+				if (myRequireUpdate)
+				{
+					UpdateSelection(myForceUpdate);
+				}
+			}
 			private void UpdateSelection()
 			{
+				bool forceUpdate = myForceUpdate;
+				myForceUpdate = false;
+				UpdateSelection(forceUpdate);
+			}
+			private void UpdateSelection(bool forceUpdate)
+			{
+				if (myInEvents)
+				{
+					myRequireUpdate = true;
+					myForceUpdate |= forceUpdate;
+					return;
+				}
+				myRequireUpdate = false;
 				IORMSelectionContainer selectionContainer = myActivator.CurrentSelectionContainer;
 				FactType currentFactType = null;
 				ObjectType firstObjectType = null;
@@ -949,13 +1006,16 @@ namespace Neumont.Tools.ORM.Shell
 				string newSourceText = null;
 				string currentReadingOrderText = currentReadingOrder != null ? currentReadingOrder.ReadingText : null;
 				string reverseReadingOrderText = reverseReadingOrder != null ? reverseReadingOrder.ReadingText : null;
-				if (mySelectedFactType != currentFactType ||
+				if (forceUpdate ||
+					(mySelectedFactType != currentFactType ||
 					mySelectedReadingOrder != currentReadingOrder ||
 					mySelectedReadingOrderText != currentReadingOrderText ||
 					mySelectedReverseReadingOrder != reverseReadingOrder ||
 					mySelectedReverseReadingOrderText != reverseReadingOrderText ||
-					!RoleOrderEquals(mySelectedRoleOrder, roleOrder) ||
-					!RoleOrderEquals(myDefaultRoleOrder, defaultOrder))
+					!ListEquals(mySelectedRoleOrder, roleOrder) ||
+					!ListEquals(myDefaultRoleOrder, defaultOrder) ||
+					mySelectedObjectTypeCount != selectedObjectTypeCount ||
+					!ListEquals(mySelectedObjectTypes, selectedObjectTypes)))
 				{
 					mySelectedRoleOrder = (roleOrder == null) ? null : Array.AsReadOnly<RoleBase>(roleOrder);
 					myDefaultRoleOrder = defaultOrder;
@@ -964,6 +1024,8 @@ namespace Neumont.Tools.ORM.Shell
 					mySelectedReverseReadingOrder = reverseReadingOrder;
 					mySelectedReverseReadingOrderText = reverseReadingOrderText;
 					mySelectedFactType = currentFactType;
+					mySelectedObjectTypes = selectedObjectTypes;
+					mySelectedObjectTypeCount = selectedObjectTypeCount;
 
 					newSourceText = "";
 					if (currentFactType != null)
@@ -1057,7 +1119,7 @@ namespace Neumont.Tools.ORM.Shell
 					myTextView.SetCaretPos(0, newCaretPosition);
 				}
 			}
-			private static bool RoleOrderEquals(IList<RoleBase> order1, IList<RoleBase> order2)
+			private static bool ListEquals<T>(IList<T> order1, IList<T> order2) where T : class
 			{
 				if (order1 == null)
 				{
@@ -1193,7 +1255,7 @@ namespace Neumont.Tools.ORM.Shell
 			{
 				FactType currentFactType = mySelectedFactType;
 				if (currentFactType != null &&
-					((FactTypeShape)e.ModelElement).ModelElement == currentFactType)
+					((FactTypeShapeHasRoleDisplayOrder)e.ModelElement).FactTypeShape.ModelElement == currentFactType)
 				{
 					UpdateSelection();
 				}
@@ -1203,7 +1265,7 @@ namespace Neumont.Tools.ORM.Shell
 				FactType currentFactType = mySelectedFactType;
 				FactTypeShape shape;
 				if (currentFactType != null &&
-					!(shape = (FactTypeShape)e.ModelElement).IsDeleted &&
+					!(shape = ((FactTypeShapeHasRoleDisplayOrder)e.ModelElement).FactTypeShape).IsDeleted &&
 					shape.ModelElement == currentFactType)
 				{
 					UpdateSelection();
@@ -1215,6 +1277,111 @@ namespace Neumont.Tools.ORM.Shell
 				if (currentFactType != null && ((FactTypeShape)e.SourceElement).ModelElement == currentFactType)
 				{
 					UpdateSelection();
+				}
+			}
+			private void RolePlayerAdded(object sender, ElementAddedEventArgs e)
+			{
+				FactType currentFactType = mySelectedFactType;
+				Role role;
+				if (currentFactType != null &&
+					!(role = ((ObjectTypePlaysRole)e.ModelElement).PlayedRole).IsDeleted &&
+					role.FactType == currentFactType)
+				{
+					UpdateSelection(true);
+				}
+			}
+			private void RolePlayerDeleted(object sender, ElementDeletedEventArgs e)
+			{
+				FactType currentFactType = mySelectedFactType;
+				Role role;
+				if (currentFactType != null &&
+					!(role = ((ObjectTypePlaysRole)e.ModelElement).PlayedRole).IsDeleted &&
+					role.FactType == currentFactType)
+				{
+					UpdateSelection(true);
+				}
+			}
+			private void RolePlayerChanged(object sender, RolePlayerChangedEventArgs e)
+			{
+				FactType currentFactType = mySelectedFactType;
+				Role role;
+				if (currentFactType != null &&
+					!(role = ((ObjectTypePlaysRole)e.ElementLink).PlayedRole).IsDeleted &&
+					role.FactType == currentFactType)
+				{
+					UpdateSelection(true);
+				}
+			}
+			private void ObjectTypeAdded(object sender, ElementAddedEventArgs e)
+			{
+				UpdateForObjectType(e.ModelElement);
+			}
+			private bool UpdateForObjectType(ModelElement element)
+			{
+				int selectedObjectTypeCount = mySelectedObjectTypeCount;
+				if (selectedObjectTypeCount != 0)
+				{
+					ObjectType objectType = (ObjectType)element;
+					IList<ObjectType> selectedObjectTypes = mySelectedObjectTypes;
+					for (int i = 0; i < selectedObjectTypeCount; ++i)
+					{
+						if (selectedObjectTypes[i] == objectType)
+						{
+							UpdateSelection();
+							return true;
+						}
+					}
+				}
+				return false;
+			}
+			private void ObjectTypeDeleted(object sender, ElementDeletedEventArgs e)
+			{
+				UpdateForObjectType(e.ModelElement);
+			}
+			private void ObjectTypeNameChanged(object sender, ElementPropertyChangedEventArgs e)
+			{
+				if (UpdateForObjectType(e.ModelElement))
+				{
+					return;
+				}
+				// Note that additional tests are done with the FactTypeNameChanged watch
+				FactType currentFactType = mySelectedFactType;
+				ObjectType objectType;
+				if (currentFactType != null && !currentFactType.IsDeleted && !(objectType = (ObjectType)e.ModelElement).IsDeleted)
+				{
+					ReadingOrder order;
+					IList<RoleBase> roleOrder;
+					if (null != (order = mySelectedReadingOrder))
+					{
+						LinkedElementCollection<Role> playedRoles = objectType.PlayedRoleCollection;
+						if (playedRoles.Count != 0)
+						{
+							foreach (RoleBase testRole in order.RoleCollection)
+							{
+								if (playedRoles.Contains(testRole.Role))
+								{
+									UpdateSelection(true);
+									return;
+								}
+							}
+						}
+					}
+					else if (null != (roleOrder = mySelectedRoleOrder))
+					{
+						LinkedElementCollection<Role> playedRoles = objectType.PlayedRoleCollection;
+						if (playedRoles.Count != 0)
+						{
+							foreach (RoleBase testRole in roleOrder)
+							{
+								if (playedRoles.Contains(testRole.Role))
+								{
+									// We need to force update here because we're not caching the object type names
+									UpdateSelection(true);
+									return;
+								}
+							}
+						}
+					}
 				}
 			}
 			#endregion // Event Handlers

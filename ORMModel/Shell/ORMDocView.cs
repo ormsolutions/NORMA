@@ -72,10 +72,9 @@ namespace Neumont.Tools.ORM.Shell
 		/// Display the readings toolwindow
 		/// </summary>
 		DisplayReadingsWindow = 1L << 3,
-		/// <summary>
-		/// Display the Custom Reference Mode window
-		/// </summary>
-		DisplayCustomReferenceModeWindow = 1L << 4,
+
+		// IL << 4 is available
+
 		/// <summary>
 		/// Insert a role before or after the current role
 		/// </summary>
@@ -84,10 +83,9 @@ namespace Neumont.Tools.ORM.Shell
 		/// Delete the current role
 		/// </summary>
 		DeleteRole = 1L << 6,
-		/// <summary>
-		/// Display the fact editor toolwindow
-		/// </summary>
-		DisplayFactEditorWindow = 1L << 7,
+
+		// IL << 7 is available
+
 		/// <summary>
 		/// Activate editing for the RoleSequence
 		/// </summary>
@@ -864,7 +862,7 @@ namespace Neumont.Tools.ORM.Shell
 			bool otherShape = false;
 			if (null != (factType = element as FactType))
 			{
-				visibleCommands = enabledCommands = ORMDesignerCommands.DeleteFactType | ORMDesignerCommands.DeleteAny | ORMDesignerCommands.DisplayReadingsWindow | ORMDesignerCommands.DisplayFactEditorWindow;
+				visibleCommands = enabledCommands = ORMDesignerCommands.DeleteFactType | ORMDesignerCommands.DeleteAny | ORMDesignerCommands.DisplayReadingsWindow;
 				Objectification objectification = factType.Objectification;
 				if (objectification == null || objectification.IsImplied)
 				{
@@ -983,11 +981,6 @@ namespace Neumont.Tools.ORM.Shell
 					}
 				}
 			}
-			else if (element is ORMModel)
-			{
-				visibleCommands = ORMDesignerCommands.DisplayCustomReferenceModeWindow | ORMDesignerCommands.DisplayFactEditorWindow;
-				enabledCommands = ORMDesignerCommands.DisplayCustomReferenceModeWindow | ORMDesignerCommands.DisplayFactEditorWindow;
-			}
 			else if (null != (role = element as Role))
 			{
 				FactType fact = role.FactType;
@@ -997,7 +990,7 @@ namespace Neumont.Tools.ORM.Shell
 					return;
 				}
 
-				visibleCommands = enabledCommands = ORMDesignerCommands.DisplayReadingsWindow | ORMDesignerCommands.InsertRole | ORMDesignerCommands.DeleteRole | ORMDesignerCommands.DisplayFactEditorWindow | ORMDesignerCommands.ToggleSimpleMandatory | ORMDesignerCommands.AddInternalUniqueness;
+				visibleCommands = enabledCommands = ORMDesignerCommands.DisplayReadingsWindow | ORMDesignerCommands.InsertRole | ORMDesignerCommands.DeleteRole | ORMDesignerCommands.ToggleSimpleMandatory | ORMDesignerCommands.AddInternalUniqueness;
 				checkableCommands = ORMDesignerCommands.ToggleSimpleMandatory;
 				toleratedCommands |= ORMDesignerCommands.DeleteShape | ORMDesignerCommands.DeleteAnyShape | ORMDesignerCommands.AutoLayout;
 				if (role.IsMandatory)

@@ -76,7 +76,7 @@ namespace Neumont.Tools.ORM.Shell
 						new EventHandler(OnMenuDebugViewTransactionLogs),
 						ORMDesignerCommandIds.DebugViewTransactionLogs),
 						new DynamicStatusMenuCommand(
-						new EventHandler(OnStatusReferenceModesWindow),
+						new EventHandler(OnStatusStandardWindow),
 						new EventHandler(OnMenuReferenceModesWindow),
 						ORMDesignerCommandIds.ViewReferenceModeEditor)
 						,new DynamicStatusMenuCommand(
@@ -120,7 +120,7 @@ namespace Neumont.Tools.ORM.Shell
 						new EventHandler(OnMenuInsertRoleAfter),
 						ORMDesignerCommandIds.InsertRoleAfter)
 						,new DynamicStatusMenuCommand(
-						new EventHandler(OnStatusFactEditorWindow),
+						new EventHandler(OnStatusStandardWindow),
 						new EventHandler(OnMenuFactEditorWindow),
 						ORMDesignerCommandIds.ViewFactEditor)
 						// Constraint editing commands
@@ -470,10 +470,6 @@ namespace Neumont.Tools.ORM.Shell
 							break;
 					}
 				}
-			}
-			private void OnStatusReferenceModesWindow(object sender, EventArgs e)
-			{
-				ORMDesignerDocView.OnStatusCommand(sender, CurrentORMView, ORMDesignerCommands.DisplayCustomReferenceModeWindow);
 			}
 			/// <summary>
 			/// Status callback
@@ -1087,13 +1083,6 @@ namespace Neumont.Tools.ORM.Shell
 			{
 				ORMContextWindow contextWindow = ORMDesignerPackage.ContextWindow;
 				contextWindow.Show();
-			}
-			/// <summary>
-			/// Status callback
-			/// </summary>
-			private void OnStatusFactEditorWindow(object sender, EventArgs e)
-			{
-				ORMDesignerDocView.OnStatusCommand(sender, CurrentORMView, ORMDesignerCommands.DisplayFactEditorWindow);
 			}
 			/// <summary>
 			/// Menu handler
