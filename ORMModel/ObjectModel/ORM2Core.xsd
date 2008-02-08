@@ -618,6 +618,7 @@
 	<xs:complexType name="ImpliedFact">
 		<!-- This is a straight copy from Fact with a change to FactRoles -->
 		<xs:sequence minOccurs="0">
+			<xs:element name="Definitions" type="DefinitionsType" minOccurs="0"/>
 			<xs:element name="Notes" type="NotesType" minOccurs="0"/>
 			<xs:element name="FactRoles" type="ImpliedFactRoles" minOccurs="0"/>
 			<xs:element name="ReadingOrders" type="ReadingOrders" minOccurs="0"/>
@@ -633,11 +634,13 @@
 	<xs:complexType name="SubtypeFact">
 		<!-- This is a straight copy from Fact with a change to FactRoles -->
 		<xs:sequence minOccurs="0">
+			<xs:element name="Definitions" type="DefinitionsType" minOccurs="0"/>
 			<xs:element name="Notes" type="NotesType" minOccurs="0"/>
 			<xs:element name="FactRoles" type="SubtypeRoles"/>
 			<xs:element name="ReadingOrders" type="ReadingOrders" minOccurs="0"/>
 			<xs:element name="InternalConstraints" type="InternalConstraints" minOccurs="0"/>
 			<xs:element name="DerivationRule" type="DerivationRuleType" minOccurs="0"/>
+			<xs:element name="Instances" type="FactTypeInstances" minOccurs="0"/>
 			<xs:element name="Extensions" type="Extensions" minOccurs="0"/>
 		</xs:sequence>
 		<xs:attribute name="_Name" type="xs:string"/>
