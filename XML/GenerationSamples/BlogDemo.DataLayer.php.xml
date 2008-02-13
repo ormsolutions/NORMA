@@ -1,7 +1,7 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
 <plx:root xmlns:plx="http://schemas.neumont.edu/CodeGeneration/PLiX" xmlns:prop="urn:schemas-orm-net:PLiX:CLI:Properties" xmlns:xs="http://www.w3.org/2001/XMLSchema">
 	<plx:namespace name="PHP">
-		<plx:class partial="true" modifier="static" name="DataAccess">
+		<plx:class visibility="public" partial="true" modifier="static" name="DataAccess">
 			<plx:field dataTypeIsSimpleArray="true" static="true" name="params">
 				<plx:initialize>
 					<plx:nullKeyword />
@@ -9,7 +9,9 @@
 			</plx:field>
 			<plx:function modifier="static" name="getDataAdapter" visibility="public">
 				<plx:leadingInfo>
-					<plx:docComment>Gets the appropriate data adapter for the current database configuration</plx:docComment>
+					<plx:docComment>
+						<summary>Gets the appropriate data adapter for the current database configuration</summary>
+					</plx:docComment>
 				</plx:leadingInfo>
 				<plx:returns dataTypeName="Zend_Db_Adapter" />
 				<plx:return>
@@ -25,7 +27,9 @@
 			</plx:function>
 			<plx:property modifier="static" name="" visibility="private">
 				<plx:leadingInfo>
-					<plx:docComment>Gets the current database configuration</plx:docComment>
+					<plx:docComment>
+						<summary>Gets the current database configuration</summary>
+					</plx:docComment>
 				</plx:leadingInfo>
 				<plx:returns dataTypeIsSimpleArray="true" />
 				<plx:get>
@@ -116,7 +120,9 @@
 			</plx:property>
 			<plx:property modifier="static" name="pdoType" visibility="private">
 				<plx:leadingInfo>
-					<plx:docComment>Gets the current PDO string</plx:docComment>
+					<plx:docComment>
+						<summary>Gets the current PDO string</summary>
+					</plx:docComment>
 				</plx:leadingInfo>
 				<plx:returns dataTypeName=".string" />
 				<plx:get>
@@ -150,7 +156,9 @@
 			<plx:field dataTypeName="BlogEntryLabelDao" static="true" name="instance" visibility="private" />
 			<plx:function name=".construct" visibility="public">
 				<plx:leadingInfo>
-					<plx:docComment>Instantiates a new instance of BlogEntryLabelDao</plx:docComment>
+					<plx:docComment>
+						<summary>Instantiates a new instance of BlogEntryLabelDao</summary>
+					</plx:docComment>
 				</plx:leadingInfo>
 			</plx:function>
 			<plx:property name="Instance" modifier="static" visibility="public">
@@ -182,7 +190,9 @@
 			</plx:property>
 			<plx:function name="getAll" visibility="public">
 				<plx:leadingInfo>
-					<plx:docComment>Retrieves the entire collection of BlogEntryLabel objects</plx:docComment>
+					<plx:docComment>
+						<summary>Retrieves the entire collection of BlogEntryLabel objects</summary>
+					</plx:docComment>
 				</plx:leadingInfo>
 				<plx:returns dataTypeIsSimpleArray="true" />
 				<plx:try>
@@ -332,7 +342,9 @@
 			</plx:function>
 			<plx:function name="getSingle" visibility="public">
 				<plx:leadingInfo>
-					<plx:docComment>Retrieves the specified BlogEntryLabelobject from the database</plx:docComment>
+					<plx:docComment>
+						<summary>Retrieves the specified BlogEntryLabelobject from the database</summary>
+					</plx:docComment>
 				</plx:leadingInfo>
 				<plx:param name="BlogEntry_Id" dataTypeName=".decimal" />
 				<plx:param name="BlogLabel_Id" dataTypeName=".i4" />
@@ -460,7 +472,9 @@
 			</plx:function>
 			<plx:function name="insert" visibility="public">
 				<plx:leadingInfo>
-					<plx:docComment>Inserts the given BlogEntryLabel object into the database</plx:docComment>
+					<plx:docComment>
+						<summary>Inserts the given BlogEntryLabel object into the database</summary>
+					</plx:docComment>
 				</plx:leadingInfo>
 				<plx:param dataTypeName="BlogEntryLabel" name="BlogEntryLabel" />
 				<plx:returns dataTypeName=".boolean" />
@@ -541,7 +555,9 @@
 			</plx:function>
 			<plx:function name="update" visibility="public">
 				<plx:leadingInfo>
-					<plx:docComment>Updates the given BlogEntryLabel object in the database</plx:docComment>
+					<plx:docComment>
+						<summary>Updates the given BlogEntryLabel object in the database</summary>
+					</plx:docComment>
 				</plx:leadingInfo>
 				<plx:param dataTypeName="BlogEntryLabel" name="BlogEntryLabel" />
 				<plx:returns dataTypeName=".boolean" />
@@ -661,7 +677,9 @@
 			</plx:function>
 			<plx:function name="delete" visibility="public">
 				<plx:leadingInfo>
-					<plx:docComment>Deletes the given BlogEntryLabel object from the database</plx:docComment>
+					<plx:docComment>
+						<summary>Deletes the given BlogEntryLabel object from the database</summary>
+					</plx:docComment>
 				</plx:leadingInfo>
 				<plx:param dataTypeName="BlogEntryLabel" name="BlogEntryLabel" />
 				<plx:returns dataTypeName=".boolean" />
@@ -738,7 +756,9 @@
 			<plx:field dataTypeName="BlogEntryDao" static="true" name="instance" visibility="private" />
 			<plx:function name=".construct" visibility="public">
 				<plx:leadingInfo>
-					<plx:docComment>Instantiates a new instance of BlogEntryDao</plx:docComment>
+					<plx:docComment>
+						<summary>Instantiates a new instance of BlogEntryDao</summary>
+					</plx:docComment>
 				</plx:leadingInfo>
 			</plx:function>
 			<plx:property name="Instance" modifier="static" visibility="public">
@@ -770,7 +790,9 @@
 			</plx:property>
 			<plx:function name="getAll" visibility="public">
 				<plx:leadingInfo>
-					<plx:docComment>Retrieves the entire collection of BlogEntry objects</plx:docComment>
+					<plx:docComment>
+						<summary>Retrieves the entire collection of BlogEntry objects</summary>
+					</plx:docComment>
 				</plx:leadingInfo>
 				<plx:returns dataTypeIsSimpleArray="true" />
 				<plx:try>
@@ -977,7 +999,9 @@
 			</plx:function>
 			<plx:function name="getSingle" visibility="public">
 				<plx:leadingInfo>
-					<plx:docComment>Retrieves the specified BlogEntryobject from the database</plx:docComment>
+					<plx:docComment>
+						<summary>Retrieves the specified BlogEntryobject from the database</summary>
+					</plx:docComment>
 				</plx:leadingInfo>
 				<plx:param name="BlogEntry_Id" dataTypeName=".decimal" />
 				<plx:returns dataTypeName="BlogEntry" />
@@ -1150,7 +1174,9 @@
 			</plx:function>
 			<plx:function name="insert" visibility="public">
 				<plx:leadingInfo>
-					<plx:docComment>Inserts the given BlogEntry object into the database</plx:docComment>
+					<plx:docComment>
+						<summary>Inserts the given BlogEntry object into the database</summary>
+					</plx:docComment>
 				</plx:leadingInfo>
 				<plx:param dataTypeName="BlogEntry" name="BlogEntry" />
 				<plx:returns dataTypeName=".boolean" />
@@ -1269,7 +1295,9 @@
 			</plx:function>
 			<plx:function name="update" visibility="public">
 				<plx:leadingInfo>
-					<plx:docComment>Updates the given BlogEntry object in the database</plx:docComment>
+					<plx:docComment>
+						<summary>Updates the given BlogEntry object in the database</summary>
+					</plx:docComment>
 				</plx:leadingInfo>
 				<plx:param dataTypeName="BlogEntry" name="BlogEntry" />
 				<plx:returns dataTypeName=".boolean" />
@@ -1412,7 +1440,9 @@
 			</plx:function>
 			<plx:function name="delete" visibility="public">
 				<plx:leadingInfo>
-					<plx:docComment>Deletes the given BlogEntry object from the database</plx:docComment>
+					<plx:docComment>
+						<summary>Deletes the given BlogEntry object from the database</summary>
+					</plx:docComment>
 				</plx:leadingInfo>
 				<plx:param dataTypeName="BlogEntry" name="BlogEntry" />
 				<plx:returns dataTypeName=".boolean" />
@@ -1638,7 +1668,9 @@
 			<plx:field dataTypeName="BlogCommentDao" static="true" name="instance" visibility="private" />
 			<plx:function name=".construct" visibility="public">
 				<plx:leadingInfo>
-					<plx:docComment>Instantiates a new instance of BlogCommentDao</plx:docComment>
+					<plx:docComment>
+						<summary>Instantiates a new instance of BlogCommentDao</summary>
+					</plx:docComment>
 				</plx:leadingInfo>
 			</plx:function>
 			<plx:property name="Instance" modifier="static" visibility="public">
@@ -1670,7 +1702,9 @@
 			</plx:property>
 			<plx:function name="getAll" visibility="public">
 				<plx:leadingInfo>
-					<plx:docComment>Retrieves the entire collection of BlogComment objects</plx:docComment>
+					<plx:docComment>
+						<summary>Retrieves the entire collection of BlogComment objects</summary>
+					</plx:docComment>
 				</plx:leadingInfo>
 				<plx:returns dataTypeIsSimpleArray="true" />
 				<plx:try>
@@ -1897,7 +1931,9 @@
 			</plx:function>
 			<plx:function name="getSingle" visibility="public">
 				<plx:leadingInfo>
-					<plx:docComment>Retrieves the specified BlogCommentobject from the database</plx:docComment>
+					<plx:docComment>
+						<summary>Retrieves the specified BlogCommentobject from the database</summary>
+					</plx:docComment>
 				</plx:leadingInfo>
 				<plx:param name="BlogEntry_Id" dataTypeName=".decimal" />
 				<plx:returns dataTypeName="BlogComment" />
@@ -2090,7 +2126,9 @@
 			</plx:function>
 			<plx:function name="insert" visibility="public">
 				<plx:leadingInfo>
-					<plx:docComment>Inserts the given BlogComment object into the database</plx:docComment>
+					<plx:docComment>
+						<summary>Inserts the given BlogComment object into the database</summary>
+					</plx:docComment>
 				</plx:leadingInfo>
 				<plx:param dataTypeName="BlogComment" name="BlogComment" />
 				<plx:returns dataTypeName=".boolean" />
@@ -2225,7 +2263,9 @@
 			</plx:function>
 			<plx:function name="update" visibility="public">
 				<plx:leadingInfo>
-					<plx:docComment>Updates the given BlogComment object in the database</plx:docComment>
+					<plx:docComment>
+						<summary>Updates the given BlogComment object in the database</summary>
+					</plx:docComment>
 				</plx:leadingInfo>
 				<plx:param dataTypeName="BlogComment" name="BlogComment" />
 				<plx:returns dataTypeName=".boolean" />
@@ -2388,7 +2428,9 @@
 			</plx:function>
 			<plx:function name="delete" visibility="public">
 				<plx:leadingInfo>
-					<plx:docComment>Deletes the given BlogComment object from the database</plx:docComment>
+					<plx:docComment>
+						<summary>Deletes the given BlogComment object from the database</summary>
+					</plx:docComment>
 				</plx:leadingInfo>
 				<plx:param dataTypeName="BlogComment" name="BlogComment" />
 				<plx:returns dataTypeName=".boolean" />
@@ -2454,7 +2496,9 @@
 			<plx:field dataTypeName="NonCommentEntryDao" static="true" name="instance" visibility="private" />
 			<plx:function name=".construct" visibility="public">
 				<plx:leadingInfo>
-					<plx:docComment>Instantiates a new instance of NonCommentEntryDao</plx:docComment>
+					<plx:docComment>
+						<summary>Instantiates a new instance of NonCommentEntryDao</summary>
+					</plx:docComment>
 				</plx:leadingInfo>
 			</plx:function>
 			<plx:property name="Instance" modifier="static" visibility="public">
@@ -2486,7 +2530,9 @@
 			</plx:property>
 			<plx:function name="getAll" visibility="public">
 				<plx:leadingInfo>
-					<plx:docComment>Retrieves the entire collection of NonCommentEntry objects</plx:docComment>
+					<plx:docComment>
+						<summary>Retrieves the entire collection of NonCommentEntry objects</summary>
+					</plx:docComment>
 				</plx:leadingInfo>
 				<plx:returns dataTypeIsSimpleArray="true" />
 				<plx:try>
@@ -2713,7 +2759,9 @@
 			</plx:function>
 			<plx:function name="getSingle" visibility="public">
 				<plx:leadingInfo>
-					<plx:docComment>Retrieves the specified NonCommentEntryobject from the database</plx:docComment>
+					<plx:docComment>
+						<summary>Retrieves the specified NonCommentEntryobject from the database</summary>
+					</plx:docComment>
 				</plx:leadingInfo>
 				<plx:param name="BlogEntry_Id" dataTypeName=".decimal" />
 				<plx:returns dataTypeName="NonCommentEntry" />
@@ -2906,7 +2954,9 @@
 			</plx:function>
 			<plx:function name="insert" visibility="public">
 				<plx:leadingInfo>
-					<plx:docComment>Inserts the given NonCommentEntry object into the database</plx:docComment>
+					<plx:docComment>
+						<summary>Inserts the given NonCommentEntry object into the database</summary>
+					</plx:docComment>
 				</plx:leadingInfo>
 				<plx:param dataTypeName="NonCommentEntry" name="NonCommentEntry" />
 				<plx:returns dataTypeName=".boolean" />
@@ -3041,7 +3091,9 @@
 			</plx:function>
 			<plx:function name="update" visibility="public">
 				<plx:leadingInfo>
-					<plx:docComment>Updates the given NonCommentEntry object in the database</plx:docComment>
+					<plx:docComment>
+						<summary>Updates the given NonCommentEntry object in the database</summary>
+					</plx:docComment>
 				</plx:leadingInfo>
 				<plx:param dataTypeName="NonCommentEntry" name="NonCommentEntry" />
 				<plx:returns dataTypeName=".boolean" />
@@ -3204,7 +3256,9 @@
 			</plx:function>
 			<plx:function name="delete" visibility="public">
 				<plx:leadingInfo>
-					<plx:docComment>Deletes the given NonCommentEntry object from the database</plx:docComment>
+					<plx:docComment>
+						<summary>Deletes the given NonCommentEntry object from the database</summary>
+					</plx:docComment>
 				</plx:leadingInfo>
 				<plx:param dataTypeName="NonCommentEntry" name="NonCommentEntry" />
 				<plx:returns dataTypeName=".boolean" />
@@ -3511,7 +3565,9 @@
 			<plx:field dataTypeName="UserDao" static="true" name="instance" visibility="private" />
 			<plx:function name=".construct" visibility="public">
 				<plx:leadingInfo>
-					<plx:docComment>Instantiates a new instance of UserDao</plx:docComment>
+					<plx:docComment>
+						<summary>Instantiates a new instance of UserDao</summary>
+					</plx:docComment>
 				</plx:leadingInfo>
 			</plx:function>
 			<plx:property name="Instance" modifier="static" visibility="public">
@@ -3543,7 +3599,9 @@
 			</plx:property>
 			<plx:function name="getAll" visibility="public">
 				<plx:leadingInfo>
-					<plx:docComment>Retrieves the entire collection of User objects</plx:docComment>
+					<plx:docComment>
+						<summary>Retrieves the entire collection of User objects</summary>
+					</plx:docComment>
 				</plx:leadingInfo>
 				<plx:returns dataTypeIsSimpleArray="true" />
 				<plx:try>
@@ -3731,7 +3789,9 @@
 			</plx:function>
 			<plx:function name="getSingle" visibility="public">
 				<plx:leadingInfo>
-					<plx:docComment>Retrieves the specified Userobject from the database</plx:docComment>
+					<plx:docComment>
+						<summary>Retrieves the specified Userobject from the database</summary>
+					</plx:docComment>
 				</plx:leadingInfo>
 				<plx:param name="firstName" dataTypeName=".string" />
 				<plx:param name="lastName" dataTypeName=".string" />
@@ -3897,7 +3957,9 @@
 			</plx:function>
 			<plx:function name="insert" visibility="public">
 				<plx:leadingInfo>
-					<plx:docComment>Inserts the given User object into the database</plx:docComment>
+					<plx:docComment>
+						<summary>Inserts the given User object into the database</summary>
+					</plx:docComment>
 				</plx:leadingInfo>
 				<plx:param dataTypeName="User" name="User" />
 				<plx:returns dataTypeName=".boolean" />
@@ -4016,7 +4078,9 @@
 			</plx:function>
 			<plx:function name="update" visibility="public">
 				<plx:leadingInfo>
-					<plx:docComment>Updates the given User object in the database</plx:docComment>
+					<plx:docComment>
+						<summary>Updates the given User object in the database</summary>
+					</plx:docComment>
 				</plx:leadingInfo>
 				<plx:param dataTypeName="User" name="User" />
 				<plx:returns dataTypeName=".boolean" />
@@ -4174,7 +4238,9 @@
 			</plx:function>
 			<plx:function name="delete" visibility="public">
 				<plx:leadingInfo>
-					<plx:docComment>Deletes the given User object from the database</plx:docComment>
+					<plx:docComment>
+						<summary>Deletes the given User object from the database</summary>
+					</plx:docComment>
 				</plx:leadingInfo>
 				<plx:param dataTypeName="User" name="User" />
 				<plx:returns dataTypeName=".boolean" />
@@ -4484,7 +4550,9 @@
 			<plx:field dataTypeName="BlogLabelDao" static="true" name="instance" visibility="private" />
 			<plx:function name=".construct" visibility="public">
 				<plx:leadingInfo>
-					<plx:docComment>Instantiates a new instance of BlogLabelDao</plx:docComment>
+					<plx:docComment>
+						<summary>Instantiates a new instance of BlogLabelDao</summary>
+					</plx:docComment>
 				</plx:leadingInfo>
 			</plx:function>
 			<plx:property name="Instance" modifier="static" visibility="public">
@@ -4516,7 +4584,9 @@
 			</plx:property>
 			<plx:function name="getAll" visibility="public">
 				<plx:leadingInfo>
-					<plx:docComment>Retrieves the entire collection of BlogLabel objects</plx:docComment>
+					<plx:docComment>
+						<summary>Retrieves the entire collection of BlogLabel objects</summary>
+					</plx:docComment>
 				</plx:leadingInfo>
 				<plx:returns dataTypeIsSimpleArray="true" />
 				<plx:try>
@@ -4647,7 +4717,9 @@
 			</plx:function>
 			<plx:function name="getSingle" visibility="public">
 				<plx:leadingInfo>
-					<plx:docComment>Retrieves the specified BlogLabelobject from the database</plx:docComment>
+					<plx:docComment>
+						<summary>Retrieves the specified BlogLabelobject from the database</summary>
+					</plx:docComment>
 				</plx:leadingInfo>
 				<plx:param name="BlogLabel_Id" dataTypeName=".i4" />
 				<plx:returns dataTypeName="BlogLabel" />
@@ -4744,7 +4816,9 @@
 			</plx:function>
 			<plx:function name="insert" visibility="public">
 				<plx:leadingInfo>
-					<plx:docComment>Inserts the given BlogLabel object into the database</plx:docComment>
+					<plx:docComment>
+						<summary>Inserts the given BlogLabel object into the database</summary>
+					</plx:docComment>
 				</plx:leadingInfo>
 				<plx:param dataTypeName="BlogLabel" name="BlogLabel" />
 				<plx:returns dataTypeName=".boolean" />
@@ -4825,7 +4899,9 @@
 			</plx:function>
 			<plx:function name="update" visibility="public">
 				<plx:leadingInfo>
-					<plx:docComment>Updates the given BlogLabel object in the database</plx:docComment>
+					<plx:docComment>
+						<summary>Updates the given BlogLabel object in the database</summary>
+					</plx:docComment>
 				</plx:leadingInfo>
 				<plx:param dataTypeName="BlogLabel" name="BlogLabel" />
 				<plx:returns dataTypeName=".boolean" />
@@ -4930,7 +5006,9 @@
 			</plx:function>
 			<plx:function name="delete" visibility="public">
 				<plx:leadingInfo>
-					<plx:docComment>Deletes the given BlogLabel object from the database</plx:docComment>
+					<plx:docComment>
+						<summary>Deletes the given BlogLabel object from the database</summary>
+					</plx:docComment>
 				</plx:leadingInfo>
 				<plx:param dataTypeName="BlogLabel" name="BlogLabel" />
 				<plx:returns dataTypeName=".boolean" />

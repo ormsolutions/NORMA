@@ -7,7 +7,7 @@ class PersonServiceBase {
 	public function __construct() {
 	}
 	public static function getInstance() {
-		if (!(isset())) {
+		if (!isset()) {
 			instance = new PersonService();
 		}
 		return instance;
@@ -46,7 +46,7 @@ class CountryServiceBase {
 	public function __construct() {
 	}
 	public static function getInstance() {
-		if (!(isset())) {
+		if (!isset()) {
 			instance = new CountryService();
 		}
 		return instance;

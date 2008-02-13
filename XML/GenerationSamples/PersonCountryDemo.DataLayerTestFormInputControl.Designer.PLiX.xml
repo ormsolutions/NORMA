@@ -4315,25 +4315,6 @@
 						</plx:callInstance>
 					</plx:callObject>
 					<plx:passParam>
-						<plx:string data="Person_id" />
-					</plx:passParam>
-					<plx:passParam>
-						<plx:string data="Person_id" />
-					</plx:passParam>
-				</plx:callInstance>
-				<plx:callInstance name="Add" type="methodCall">
-					<plx:callObject>
-						<plx:callInstance name="Columns" type="property">
-							<plx:callObject>
-								<plx:callInstance name="dgvCollection" type="field">
-									<plx:callObject>
-										<plx:thisKeyword />
-									</plx:callObject>
-								</plx:callInstance>
-							</plx:callObject>
-						</plx:callInstance>
-					</plx:callObject>
-					<plx:passParam>
 						<plx:string data="LastName" />
 					</plx:passParam>
 					<plx:passParam>
@@ -5264,18 +5245,6 @@
 						</plx:callNew>
 					</plx:right>
 				</plx:attachEvent>
-				<plx:callInstance name="Add" type="methodCall">
-					<plx:callObject>
-						<plx:callInstance name="Items" type="property">
-							<plx:callObject>
-								<plx:callThis name="cbxSelectionMode" type="field" accessor="this" />
-							</plx:callObject>
-						</plx:callInstance>
-					</plx:callObject>
-					<plx:passParam>
-						<plx:string data="Person_id" />
-					</plx:passParam>
-				</plx:callInstance>
 				<plx:comment />
 				<plx:comment>lblCurrentObject</plx:comment>
 				<plx:comment />
@@ -5437,48 +5406,6 @@
 					</plx:left>
 					<plx:right>
 						<plx:value data="4" type="i4" />
-					</plx:right>
-				</plx:assign>
-				<plx:callInstance name="Add" type="methodCall">
-					<plx:callObject>
-						<plx:callInstance name="Columns" type="property">
-							<plx:callObject>
-								<plx:callInstance name="dgvCurrentObject" type="field">
-									<plx:callObject>
-										<plx:thisKeyword />
-									</plx:callObject>
-								</plx:callInstance>
-							</plx:callObject>
-						</plx:callInstance>
-					</plx:callObject>
-					<plx:passParam>
-						<plx:string data="Person_id" />
-					</plx:passParam>
-					<plx:passParam>
-						<plx:string data="Person_id" />
-					</plx:passParam>
-				</plx:callInstance>
-				<plx:assign>
-					<plx:left>
-						<plx:callInstance name="Visible" type="property">
-							<plx:callObject>
-								<plx:callInstance name="Columns" type="property">
-									<plx:callObject>
-										<plx:callInstance name="dgvCurrentObject" type="field">
-											<plx:callObject>
-												<plx:thisKeyword />
-											</plx:callObject>
-										</plx:callInstance>
-									</plx:callObject>
-									<plx:passParam>
-										<plx:string data="Person_id" />
-									</plx:passParam>
-								</plx:callInstance>
-							</plx:callObject>
-						</plx:callInstance>
-					</plx:left>
-					<plx:right>
-						<plx:falseKeyword />
 					</plx:right>
 				</plx:assign>
 				<plx:callInstance name="Add" type="methodCall">
@@ -5659,29 +5586,6 @@
 					</plx:left>
 					<plx:right>
 						<plx:falseKeyword />
-					</plx:right>
-				</plx:assign>
-				<plx:assign>
-					<plx:left>
-						<plx:callInstance name="ReadOnly" type="property">
-							<plx:callObject>
-								<plx:callInstance name="Columns" type="property">
-									<plx:callObject>
-										<plx:callInstance name="dgvCurrentObject" type="field">
-											<plx:callObject>
-												<plx:thisKeyword />
-											</plx:callObject>
-										</plx:callInstance>
-									</plx:callObject>
-									<plx:passParam>
-										<plx:string data="Person_id" />
-									</plx:passParam>
-								</plx:callInstance>
-							</plx:callObject>
-						</plx:callInstance>
-					</plx:left>
-					<plx:right>
-						<plx:trueKeyword />
 					</plx:right>
 				</plx:assign>
 				<plx:attachEvent>
@@ -5957,25 +5861,6 @@
 						<plx:value data="0" type="i4" />
 					</plx:right>
 				</plx:assign>
-				<plx:callInstance name="Add" type="methodCall">
-					<plx:callObject>
-						<plx:callInstance name="Columns" type="property">
-							<plx:callObject>
-								<plx:callInstance name="dgvSelect" type="field">
-									<plx:callObject>
-										<plx:thisKeyword />
-									</plx:callObject>
-								</plx:callInstance>
-							</plx:callObject>
-						</plx:callInstance>
-					</plx:callObject>
-					<plx:passParam>
-						<plx:string data="Person_id" />
-					</plx:passParam>
-					<plx:passParam>
-						<plx:string data="Person_id" />
-					</plx:passParam>
-				</plx:callInstance>
 				<plx:callInstance name="Add" type="methodCall">
 					<plx:callObject>
 						<plx:callInstance name="Columns" type="property">

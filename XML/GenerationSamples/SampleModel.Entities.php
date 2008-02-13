@@ -114,7 +114,7 @@ class PersonBase extends Entity {
 		return $this->MalePerson;
 	}
 	public function setMalePerson(MalePerson $value) {
-		if ($this->MalePerson != $value) {
+		if ($this->MalePerson !== $value) {
 			$this->MalePerson = $value;
 			$value->setPerson($this);
 		}
@@ -123,7 +123,7 @@ class PersonBase extends Entity {
 		return $this->FemalePerson;
 	}
 	public function setFemalePerson(FemalePerson $value) {
-		if ($this->FemalePerson != $value) {
+		if ($this->FemalePerson !== $value) {
 			$this->FemalePerson = $value;
 			$value->setPerson($this);
 		}
@@ -132,7 +132,7 @@ class PersonBase extends Entity {
 		return $this->ChildPerson;
 	}
 	public function setChildPerson(ChildPerson $value) {
-		if ($this->ChildPerson != $value) {
+		if ($this->ChildPerson !== $value) {
 			$this->ChildPerson = $value;
 			$value->setPerson($this);
 		}
@@ -141,7 +141,7 @@ class PersonBase extends Entity {
 		return $this->Death;
 	}
 	public function setDeath(Death $value) {
-		if ($this->Death != $value) {
+		if ($this->Death !== $value) {
 			$this->Death = $value;
 			$value->setPerson($this);
 		}
@@ -255,7 +255,7 @@ class MalePersonBase extends Entity {
 		return $this->Person;
 	}
 	public function setPerson(Person $value) {
-		if ($this->Person != $value) {
+		if ($this->Person !== $value) {
 			$this->Person = $value;
 			$value->setMalePerson($this);
 		}
@@ -279,7 +279,7 @@ class FemalePersonBase extends Entity {
 		return $this->Person;
 	}
 	public function setPerson(Person $value) {
-		if ($this->Person != $value) {
+		if ($this->Person !== $value) {
 			$this->Person = $value;
 			$value->setFemalePerson($this);
 		}
@@ -311,7 +311,7 @@ class ChildPersonBase extends Entity {
 		return $this->Person;
 	}
 	public function setPerson(Person $value) {
-		if ($this->Person != $value) {
+		if ($this->Person !== $value) {
 			$this->Person = $value;
 			$value->setChildPerson($this);
 		}
@@ -362,7 +362,7 @@ class DeathBase extends Entity {
 		return $this->Person;
 	}
 	public function setPerson(Person $value) {
-		if ($this->Person != $value) {
+		if ($this->Person !== $value) {
 			$this->Person = $value;
 			$value->setDeath($this);
 		}
@@ -371,7 +371,7 @@ class DeathBase extends Entity {
 		return $this->NaturalDeath;
 	}
 	public function setNaturalDeath(NaturalDeath $value) {
-		if ($this->NaturalDeath != $value) {
+		if ($this->NaturalDeath !== $value) {
 			$this->NaturalDeath = $value;
 			$value->setDeath($this);
 		}
@@ -380,7 +380,7 @@ class DeathBase extends Entity {
 		return $this->UnnaturalDeath;
 	}
 	public function setUnnaturalDeath(UnnaturalDeath $value) {
-		if ($this->UnnaturalDeath != $value) {
+		if ($this->UnnaturalDeath !== $value) {
 			$this->UnnaturalDeath = $value;
 			$value->setDeath($this);
 		}
@@ -424,7 +424,7 @@ class NaturalDeathBase extends Entity {
 		return $this->Death;
 	}
 	public function setDeath(Death $value) {
-		if ($this->Death != $value) {
+		if ($this->Death !== $value) {
 			$this->Death = $value;
 			$value->setNaturalDeath($this);
 		}
@@ -458,7 +458,7 @@ class UnnaturalDeathBase extends Entity {
 		return $this->Death;
 	}
 	public function setDeath(Death $value) {
-		if ($this->Death != $value) {
+		if ($this->Death !== $value) {
 			$this->Death = $value;
 			$value->setUnnaturalDeath($this);
 		}

@@ -1,47 +1,47 @@
-﻿SET TRANSACTION ISOLATION LEVEL SERIALIZABLE;
+﻿
+SET TRANSACTION ISOLATION LEVEL SERIALIZABLE;
 
 CREATE TABLE BlogEntry
 (
-	BlogEntry_Id NUMBER NOT NULL,
-	EntryTitle NVARCHAR2(30) NOT NULL,
-	EntryBody CHARACTER LARGE OBJECT() NOT NULL,
-	PostedDate TIMESTAMP NOT NULL,
-	UserIdName2 NVARCHAR2(30) NOT NULL,
-	UserIdName1 NVARCHAR2(30) NOT NULL,
-	BlogCommentParentEntryId NUMBER,
-	CONSTRAINT InternalUniquenessConstraint1 PRIMARY KEY(BlogEntry_Id)
+	blogEntry_Id NUMBER NOT NULL,
+	entryTitle NVARCHAR2(30) NOT NULL,
+	entryBody CHARACTER LARGE OBJECT() NOT NULL,
+	postedDate TIMESTAMP NOT NULL,
+	userIdName2 NVARCHAR2(30) NOT NULL,
+	userIdName1 NVARCHAR2(30) NOT NULL,
+	blogCommentParentEntryId NUMBER,
+	CONSTRAINT InternalUniquenessConstraint1 PRIMARY KEY(blogEntry_Id)
 );
 
 CREATE TABLE "User"
 (
-	Name1 NVARCHAR2(30) NOT NULL,
-	Name2 NVARCHAR2(30) NOT NULL,
-	Username NVARCHAR2(30) NOT NULL,
-	Password NCHAR(32) NOT NULL,
-	CONSTRAINT ExternalUniquenessConstraint1 PRIMARY KEY(Name1, Name2)
+	name1 NVARCHAR2(30) NOT NULL,
+	name2 NVARCHAR2(30) NOT NULL,
+	username NVARCHAR2(30) NOT NULL,
+	password NCHAR(32) NOT NULL,
+	CONSTRAINT ExternalUniquenessConstraint1 PRIMARY KEY(name1, name2)
 );
 
 CREATE TABLE BlogLabel
 (
-	BlogLabel_Id NUMBER NOT NULL,
-	Title CHARACTER LARGE OBJECT(),
-	CONSTRAINT InternalUniquenessConstraint18 PRIMARY KEY(BlogLabel_Id)
+	blogLabel_Id NUMBER NOT NULL,
+	title CHARACTER LARGE OBJECT(),
+	CONSTRAINT InternalUniquenessConstraint18 PRIMARY KEY(blogLabel_Id)
 );
 
 CREATE TABLE BlogEntryLabel
 (
-	BlogEntryId NUMBER NOT NULL,
-	BlogLabelId NUMBER NOT NULL,
-	CONSTRAINT InternalUniquenessConstraint20 PRIMARY KEY(BlogEntryId, BlogLabelId)
+	blogEntryId NUMBER NOT NULL,
+	blogLabelId NUMBER NOT NULL,
+	CONSTRAINT InternalUniquenessConstraint20 PRIMARY KEY(blogEntryId, blogLabelId)
 );
 
-ALTER TABLE BlogEntry ADD CONSTRAINT BlogEntry_BlogEntry_FK1 FOREIGN KEY (UserIdName2, UserIdName1)  REFERENCES "User" (Name1, Name2) ;
+ALTER TABLE BlogEntry ADD CONSTRAINT BlogEntry_FK1 FOREIGN KEY (userIdName2, userIdName1)  REFERENCES "User" (name1, name2) ;
 
-ALTER TABLE BlogEntry ADD CONSTRAINT BlogEntry_BlogEntry_FK2 FOREIGN KEY (BlogCommentParentEntryId)  REFERENCES BlogEntry (BlogEntry_Id) ;
+ALTER TABLE BlogEntry ADD CONSTRAINT BlogEntry_FK2 FOREIGN KEY (blogCommentParentEntryId)  REFERENCES BlogEntry (blogEntry_Id) ;
 
-ALTER TABLE BlogEntryLabel ADD CONSTRAINT BlogEntryLabel_BlogEntryLabel_FK1 FOREIGN KEY (BlogEntryId)  REFERENCES BlogEntry (BlogEntry_Id) ;
+ALTER TABLE BlogEntryLabel ADD CONSTRAINT BlogEntryLabel_FK1 FOREIGN KEY (blogEntryId)  REFERENCES BlogEntry (blogEntry_Id) ;
 
-ALTER TABLE BlogEntryLabel ADD CONSTRAINT BlogEntryLabel_BlogEntryLabel_FK2 FOREIGN KEY (BlogLabelId)  REFERENCES BlogLabel (BlogLabel_Id) ;
+ALTER TABLE BlogEntryLabel ADD CONSTRAINT BlogEntryLabel_FK2 FOREIGN KEY (blogLabelId)  REFERENCES BlogLabel (blogLabel_Id) ;
 
 COMMIT WORK;
-

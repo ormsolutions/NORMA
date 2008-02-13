@@ -1,23 +1,23 @@
-﻿SET TRANSACTION ISOLATION LEVEL SERIALIZABLE;
+﻿
+SET TRANSACTION ISOLATION LEVEL SERIALIZABLE;
 
 CREATE TABLE Person
 (
-	Person_id NUMBER NOT NULL,
-	LastName NVARCHAR2(30) NOT NULL,
-	FirstName NVARCHAR2(30) NOT NULL,
-	Title NVARCHAR2(4) CHECK (Title IN ('Dr', 'Prof', 'Mr', 'Mrs', 'Miss', 'Ms')),
-	Country_name NVARCHAR2(20),
-	CONSTRAINT InternalUniquenessConstraint1 PRIMARY KEY(Person_id)
+	person_Id NUMBER NOT NULL,
+	lastName NVARCHAR2(30) NOT NULL,
+	firstName NVARCHAR2(30) NOT NULL,
+	title NVARCHAR2(4) CHECK (title IN ('Dr', 'Prof', 'Mr', 'Mrs', 'Miss', 'Ms')),
+	country_Name NVARCHAR2(20),
+	CONSTRAINT InternalUniquenessConstraint1 PRIMARY KEY(person_Id)
 );
 
 CREATE TABLE Country
 (
-	Country_name NVARCHAR2(20) NOT NULL,
-	Region_code NCHAR(8),
-	CONSTRAINT InternalUniquenessConstraint3 PRIMARY KEY(Country_name)
+	country_Name NVARCHAR2(20) NOT NULL,
+	region_Code NCHAR(8),
+	CONSTRAINT InternalUniquenessConstraint3 PRIMARY KEY(country_Name)
 );
 
-ALTER TABLE Person ADD CONSTRAINT Person_Person_FK FOREIGN KEY (Country_name)  REFERENCES Country (Country_name) ;
+ALTER TABLE Person ADD CONSTRAINT Person_FK FOREIGN KEY (country_Name)  REFERENCES Country (country_Name) ;
 
 COMMIT WORK;
-

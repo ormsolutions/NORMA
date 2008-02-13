@@ -15,37 +15,37 @@
 		</dcl:checkConstraint>
 	</dcl:domain>
 	<dcl:table name="Person">
-		<dcl:column name="Person_id" isNullable="false" isIdentity="true">
+		<dcl:column name="person_Id" isNullable="false" isIdentity="true">
 			<dcl:predefinedDataType name="INTEGER" />
 		</dcl:column>
-		<dcl:column name="LastName" isNullable="false" isIdentity="false">
+		<dcl:column name="lastName" isNullable="false" isIdentity="false">
 			<dcl:predefinedDataType name="CHARACTER VARYING" length="30" />
 		</dcl:column>
-		<dcl:column name="FirstName" isNullable="false" isIdentity="false">
+		<dcl:column name="firstName" isNullable="false" isIdentity="false">
 			<dcl:predefinedDataType name="CHARACTER VARYING" length="30" />
 		</dcl:column>
-		<dcl:column name="Title" isNullable="true" isIdentity="false">
+		<dcl:column name="title" isNullable="true" isIdentity="false">
 			<dcl:domainRef name="Title" />
 		</dcl:column>
-		<dcl:column name="Country_name" isNullable="true" isIdentity="false">
+		<dcl:column name="country_Name" isNullable="true" isIdentity="false">
 			<dcl:predefinedDataType name="CHARACTER VARYING" length="20" />
 		</dcl:column>
 		<dcl:uniquenessConstraint name="InternalUniquenessConstraint1" isPrimary="true">
-			<dcl:columnRef name="Person_id" />
+			<dcl:columnRef name="person_Id" />
 		</dcl:uniquenessConstraint>
 		<dcl:referenceConstraint name="Person_FK" targetTable="Country">
-			<dcl:columnRef sourceName="Country_name" targetName="Country_name" />
+			<dcl:columnRef sourceName="country_Name" targetName="country_Name" />
 		</dcl:referenceConstraint>
 	</dcl:table>
 	<dcl:table name="Country">
-		<dcl:column name="Country_name" isNullable="false" isIdentity="false">
+		<dcl:column name="country_Name" isNullable="false" isIdentity="false">
 			<dcl:predefinedDataType name="CHARACTER VARYING" length="20" />
 		</dcl:column>
-		<dcl:column name="Region_code" isNullable="true" isIdentity="false">
+		<dcl:column name="region_Code" isNullable="true" isIdentity="false">
 			<dcl:predefinedDataType name="CHARACTER" length="8" />
 		</dcl:column>
 		<dcl:uniquenessConstraint name="InternalUniquenessConstraint3" isPrimary="true">
-			<dcl:columnRef name="Country_name" />
+			<dcl:columnRef name="country_Name" />
 		</dcl:uniquenessConstraint>
 	</dcl:table>
 </dcl:schema>

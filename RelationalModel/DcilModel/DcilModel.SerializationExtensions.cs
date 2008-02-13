@@ -1067,6 +1067,10 @@ namespace Neumont.Tools.RelationalModels.ConceptualDatabase
 			{
 				return new CustomSerializedElementInfo(null, "Column", null, CustomSerializedElementWriteStyle.Element, null);
 			}
+			if (roleId == ReferenceConstraintTargetsUniquenessConstraint.ReferenceConstraintDomainRoleId)
+			{
+				return new CustomSerializedElementInfo(null, null, null, CustomSerializedElementWriteStyle.NotWritten, null);
+			}
 			if (0 != (CustomSerializedElementSupportedOperations.LinkInfo & base.SupportedCustomSerializedOperations))
 			{
 				return base.GetCustomSerializedLinkInfo(rolePlayedInfo, elementLink);
@@ -1207,6 +1211,10 @@ namespace Neumont.Tools.RelationalModels.ConceptualDatabase
 			{
 				return new CustomSerializedElementInfo(null, "TargetTable", null, CustomSerializedElementWriteStyle.Element, null);
 			}
+			if (roleId == ReferenceConstraintTargetsUniquenessConstraint.TargetUniquenessConstraintDomainRoleId)
+			{
+				return new CustomSerializedElementInfo(null, "TargetUniquenessConstraint", null, CustomSerializedElementWriteStyle.Element, null);
+			}
 			if (roleId == ReferenceConstraintContainsColumnReference.ColumnReferenceDomainRoleId)
 			{
 				return new CustomSerializedStandaloneLinkElementInfo(null, "ColumnReference", null, CustomSerializedElementWriteStyle.StandaloneLinkElement, null, new CustomSerializedStandaloneRelationship(ColumnReference.DomainClassId, new CustomSerializedStandaloneRelationshipRole[]{
@@ -1236,8 +1244,10 @@ namespace Neumont.Tools.RelationalModels.ConceptualDatabase
 				DomainRoleInfo domainRole;
 				domainRole = domainDataDirectory.FindDomainRole(ReferenceConstraintTargetsTable.TargetTableDomainRoleId).OppositeDomainRole;
 				roleOrderDictionary[string.Concat(domainRole.DomainRelationship.ImplementationClass.FullName, ".", domainRole.Name)] = 0;
-				domainRole = domainDataDirectory.FindDomainRole(ReferenceConstraintContainsColumnReference.ColumnReferenceDomainRoleId).OppositeDomainRole;
+				domainRole = domainDataDirectory.FindDomainRole(ReferenceConstraintTargetsUniquenessConstraint.TargetUniquenessConstraintDomainRoleId).OppositeDomainRole;
 				roleOrderDictionary[string.Concat(domainRole.DomainRelationship.ImplementationClass.FullName, ".", domainRole.Name)] = 1;
+				domainRole = domainDataDirectory.FindDomainRole(ReferenceConstraintContainsColumnReference.ColumnReferenceDomainRoleId).OppositeDomainRole;
+				roleOrderDictionary[string.Concat(domainRole.DomainRelationship.ImplementationClass.FullName, ".", domainRole.Name)] = 2;
 				this.myRoleOrderDictionary = roleOrderDictionary;
 			}
 			int IComparer<DomainRoleInfo>.Compare(DomainRoleInfo x, DomainRoleInfo y)
@@ -1300,6 +1310,8 @@ namespace Neumont.Tools.RelationalModels.ConceptualDatabase
 				CustomSerializedElementMatch match = new CustomSerializedElementMatch();
 				match.InitializeRoles(ReferenceConstraintTargetsTable.TargetTableDomainRoleId);
 				childElementMappings.Add("||||http://schemas.neumont.edu/ORM/Relational/2007-06/ConceptualDatabase|TargetTable", match);
+				match.InitializeRoles(ReferenceConstraintTargetsUniquenessConstraint.TargetUniquenessConstraintDomainRoleId);
+				childElementMappings.Add("||||http://schemas.neumont.edu/ORM/Relational/2007-06/ConceptualDatabase|TargetUniquenessConstraint", match);
 				match.InitializeRoles(new CustomSerializedStandaloneRelationship(ColumnReference.DomainClassId, new CustomSerializedStandaloneRelationshipRole[]{
 					new CustomSerializedStandaloneRelationshipRole("TargetColumn", ColumnReference.TargetColumnDomainRoleId),
 					new CustomSerializedStandaloneRelationshipRole("SourceColumn", ColumnReference.SourceColumnDomainRoleId)}, "rcd", "ColumnReference", "http://schemas.neumont.edu/ORM/Relational/2007-06/ConceptualDatabase"), ReferenceConstraintContainsColumnReference.ColumnReferenceDomainRoleId);

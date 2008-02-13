@@ -7,7 +7,7 @@ class PersonDrivesCarServiceBase {
 	public function __construct() {
 	}
 	public static function getInstance() {
-		if (!(isset())) {
+		if (!isset()) {
 			instance = new PersonDrivesCarService();
 		}
 		return instance;
@@ -46,7 +46,7 @@ class PersonHasNickNameServiceBase {
 	public function __construct() {
 	}
 	public static function getInstance() {
-		if (!(isset())) {
+		if (!isset()) {
 			instance = new PersonHasNickNameService();
 		}
 		return instance;
@@ -85,7 +85,7 @@ class PersonServiceBase {
 	public function __construct() {
 	}
 	public static function getInstance() {
-		if (!(isset())) {
+		if (!isset()) {
 			instance = new PersonService();
 		}
 		return instance;
@@ -152,7 +152,7 @@ class MalePersonServiceBase {
 	public function __construct() {
 	}
 	public static function getInstance() {
-		if (!(isset())) {
+		if (!isset()) {
 			instance = new MalePersonService();
 		}
 		return instance;
@@ -195,7 +195,7 @@ class FemalePersonServiceBase {
 	public function __construct() {
 	}
 	public static function getInstance() {
-		if (!(isset())) {
+		if (!isset()) {
 			instance = new FemalePersonService();
 		}
 		return instance;
@@ -238,7 +238,7 @@ class ChildPersonServiceBase {
 	public function __construct() {
 	}
 	public static function getInstance() {
-		if (!(isset())) {
+		if (!isset()) {
 			instance = new ChildPersonService();
 		}
 		return instance;
@@ -277,7 +277,7 @@ class DeathServiceBase {
 	public function __construct() {
 	}
 	public static function getInstance() {
-		if (!(isset())) {
+		if (!isset()) {
 			instance = new DeathService();
 		}
 		return instance;
@@ -316,7 +316,7 @@ class NaturalDeathServiceBase {
 	public function __construct() {
 	}
 	public static function getInstance() {
-		if (!(isset())) {
+		if (!isset()) {
 			instance = new NaturalDeathService();
 		}
 		return instance;
@@ -355,7 +355,7 @@ class UnnaturalDeathServiceBase {
 	public function __construct() {
 	}
 	public static function getInstance() {
-		if (!(isset())) {
+		if (!isset()) {
 			instance = new UnnaturalDeathService();
 		}
 		return instance;
@@ -394,7 +394,7 @@ class TaskServiceBase {
 	public function __construct() {
 	}
 	public static function getInstance() {
-		if (!(isset())) {
+		if (!isset()) {
 			instance = new TaskService();
 		}
 		return instance;
@@ -433,7 +433,7 @@ class ValueType1ServiceBase {
 	public function __construct() {
 	}
 	public static function getInstance() {
-		if (!(isset())) {
+		if (!isset()) {
 			instance = new ValueType1Service();
 		}
 		return instance;
@@ -476,7 +476,7 @@ class PersonBoughtCarFromPersonOnDateServiceBase {
 	public function __construct() {
 	}
 	public static function getInstance() {
-		if (!(isset())) {
+		if (!isset()) {
 			instance = new PersonBoughtCarFromPersonOnDateService();
 		}
 		return instance;
@@ -515,7 +515,7 @@ class ReviewServiceBase {
 	public function __construct() {
 	}
 	public static function getInstance() {
-		if (!(isset())) {
+		if (!isset()) {
 			instance = new ReviewService();
 		}
 		return instance;

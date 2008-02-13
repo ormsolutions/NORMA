@@ -457,6 +457,13 @@ namespace Neumont.Tools.ORM.ObjectModel
 				{
 					eventNotify.ElementAdded(role, factType);
 				}
+				foreach (RoleBase displayedRole in factType.RoleCollection)
+				{
+					if (displayedRole != role)
+					{
+						eventNotify.ElementCustomSortChanged(displayedRole);
+					}
+				}
 			}
 		}
 		/// <summary>
@@ -479,6 +486,13 @@ namespace Neumont.Tools.ORM.ObjectModel
 				if (role != null)
 				{
 					eventNotify.ElementDeleted(role);
+				}
+				foreach (RoleBase displayedRole in factType.RoleCollection)
+				{
+					if (displayedRole != role)
+					{
+						eventNotify.ElementCustomSortChanged(displayedRole);
+					}
 				}
 			}
 		}

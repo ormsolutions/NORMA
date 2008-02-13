@@ -788,8 +788,9 @@ namespace Neumont.Tools.ORMAbstractionToConceptualDatabaseBridge
 											generator,
 											delegate(NamePart insertPart, int? insertIndex)
 											{
+												int oldCount = nameCollection == null ? (singleName.IsEmpty ? 0 : 1) : nameCollection.Count;
 												addPart(insertPart, nextInsertIndex);
-												++nextInsertIndex;
+												nextInsertIndex += (nameCollection == null ? (singleName.IsEmpty ? 0 : 1) : nameCollection.Count) - oldCount;
 											});
 										if (needValueTypeName)
 										{
@@ -1152,10 +1153,14 @@ namespace Neumont.Tools.ORMAbstractionToConceptualDatabaseBridge
 						if (!StringIsNullOrEmpty(text))
 						{
 							addNamePartCallback(text, null);
+							if (isUnary)
+							{
+								return;
+							}
 						}
 					}
-
-					GetObjectTypeName(oppositeRole.Role.RolePlayer, nameGenerator, addNamePartCallback);
+					RoleBase useRole = isUnary ? towardsRole : oppositeRole;
+					GetObjectTypeName(useRole.Role.RolePlayer, nameGenerator, addNamePartCallback);
 				}
 				private ReadingOrder GetReadingOrder(FactType factType, RoleBase towardsRole, RoleBase oppositeRole, bool isUnary)
 				{

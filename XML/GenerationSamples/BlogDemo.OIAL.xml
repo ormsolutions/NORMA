@@ -27,6 +27,7 @@
 				<oil:typeRef targetConceptType="BlogEntryLabel" targetChild="blogLabelId" />
 			</oil:roleSequence>
 		</oil:roleSequenceUniquenessConstraint>
+		<!--WARNING: There once was an external constraint here. There isn't any more. It was of type "MandatoryConstraint", and named "ImpliedMandatoryConstraint9".-->
 	</oil:conceptType>
 	<oil:conceptType name="BlogEntry" sourceRef="_2B3E3B2A-5AF7-48C7-A075-8E2F12D2C216">
 		<oil:conceptType name="BlogComment" sourceRef="_FC4B6034-FD2F-48BB-89C1-5E60BCF9E82F" mandatory="false" sourceRoleRef="_BF787BAC-4058-462F-9B63-BB5B79049B43">
@@ -65,6 +66,7 @@
 				<oil:typeRef targetConceptType="User" targetChild="lastName" />
 			</oil:roleSequence>
 		</oil:roleSequenceUniquenessConstraint>
+		<!--WARNING: There once was an external constraint here. There isn't any more. It was of type "MandatoryConstraint", and named "ImpliedMandatoryConstraint6".-->
 	</oil:conceptType>
 	<oil:conceptType name="BlogLabel" sourceRef="_DCA9F048-CDA6-4D87-AEC6-4172CD670DAB">
 		<oil:informationType name="BlogLabel_Id" formatRef="BlogLabel_Id" mandatory="alethic" sourceRef="_830FA036-7C59-484A-80CF-F4A38C4841E3" sourceRoleRef="_96B55F4F-86BC-4F6A-A02B-96FFE75A9506">

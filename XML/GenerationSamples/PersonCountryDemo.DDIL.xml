@@ -7,8 +7,7 @@
 	</dms:setSchemaStatement>
 	<ddl:domainDefinition name="Title" schema="PersonCountryDemo">
 		<ddt:characterString type="CHARACTER VARYING" length="4" />
-		<ddl:domainConstraint>
-			<dep:constraintNameDefinition name="ValueTypeValueConstraint1" />
+		<ddl:domainConstraintDefinition name="ValueTypeValueConstraint1">
 			<ddl:checkConstraintDefinition>
 				<dep:inPredicate type="IN">
 					<dep:valueKeyword />
@@ -20,10 +19,10 @@
 					<ddt:characterStringLiteral value="Ms" />
 				</dep:inPredicate>
 			</ddl:checkConstraintDefinition>
-		</ddl:domainConstraint>
+		</ddl:domainConstraintDefinition>
 	</ddl:domainDefinition>
 	<ddl:tableDefinition name="Person" schema="PersonCountryDemo">
-		<ddl:columnDefinition name="Person_id">
+		<ddl:columnDefinition name="person_Id">
 			<ddt:exactNumeric type="INTEGER" />
 			<ddl:identityColumnSpecification type="ALWAYS">
 				<ddl:sequenceGeneratorStartWithOption>
@@ -37,55 +36,52 @@
 				<ddl:notNullKeyword />
 			</ddl:columnConstraintDefinition>
 		</ddl:columnDefinition>
-		<ddl:columnDefinition name="LastName">
+		<ddl:columnDefinition name="lastName">
 			<ddt:characterString type="CHARACTER VARYING" length="30" />
 			<ddl:columnConstraintDefinition>
 				<ddl:notNullKeyword />
 			</ddl:columnConstraintDefinition>
 		</ddl:columnDefinition>
-		<ddl:columnDefinition name="FirstName">
+		<ddl:columnDefinition name="firstName">
 			<ddt:characterString type="CHARACTER VARYING" length="30" />
 			<ddl:columnConstraintDefinition>
 				<ddl:notNullKeyword />
 			</ddl:columnConstraintDefinition>
 		</ddl:columnDefinition>
-		<ddl:columnDefinition name="Title">
+		<ddl:columnDefinition name="title">
 			<ddt:domain name="Title" schema="PersonCountryDemo" />
 		</ddl:columnDefinition>
-		<ddl:columnDefinition name="Country_name">
+		<ddl:columnDefinition name="country_Name">
 			<ddt:characterString type="CHARACTER VARYING" length="20" />
 		</ddl:columnDefinition>
-		<ddl:tableConstraintDefinition>
-			<dep:constraintNameDefinition name="InternalUniquenessConstraint1" />
+		<ddl:tableConstraintDefinition name="InternalUniquenessConstraint1">
 			<ddl:uniqueConstraintDefinition type="PRIMARY KEY">
-				<ddl:column name="Person_id" />
+				<dep:simpleColumnReference name="person_Id" />
 			</ddl:uniqueConstraintDefinition>
 		</ddl:tableConstraintDefinition>
 	</ddl:tableDefinition>
 	<ddl:tableDefinition name="Country" schema="PersonCountryDemo">
-		<ddl:columnDefinition name="Country_name">
+		<ddl:columnDefinition name="country_Name">
 			<ddt:characterString type="CHARACTER VARYING" length="20" />
 			<ddl:columnConstraintDefinition>
 				<ddl:notNullKeyword />
 			</ddl:columnConstraintDefinition>
 		</ddl:columnDefinition>
-		<ddl:columnDefinition name="Region_code">
+		<ddl:columnDefinition name="region_Code">
 			<ddt:characterString type="CHARACTER" length="8" />
 		</ddl:columnDefinition>
-		<ddl:tableConstraintDefinition>
-			<dep:constraintNameDefinition name="InternalUniquenessConstraint3" />
+		<ddl:tableConstraintDefinition name="InternalUniquenessConstraint3">
 			<ddl:uniqueConstraintDefinition type="PRIMARY KEY">
-				<ddl:column name="Country_name" />
+				<dep:simpleColumnReference name="country_Name" />
 			</ddl:uniqueConstraintDefinition>
 		</ddl:tableConstraintDefinition>
 	</ddl:tableDefinition>
 	<ddl:alterTableStatement name="Person" schema="PersonCountryDemo">
-		<ddl:addTableConstraintDefinition>
-			<dep:constraintNameDefinition name="Person_FK" />
+		<ddl:addTableConstraintDefinition name="Person_FK">
 			<ddl:referentialConstraintDefinition>
-				<ddl:column name="Country_name" />
+				<dep:simpleColumnReference name="country_Name" />
 				<ddl:referencesSpecification name="Country" onDelete="RESTRICT" onUpdate="RESTRICT" schema="PersonCountryDemo">
-					<ddl:referenceColumn name="Country_name" />
+					<dep:simpleColumnReference name="country_Name" />
 				</ddl:referencesSpecification>
 			</ddl:referentialConstraintDefinition>
 		</ddl:addTableConstraintDefinition>

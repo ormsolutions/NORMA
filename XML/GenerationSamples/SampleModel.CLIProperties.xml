@@ -20,9 +20,7 @@
 		<prop:Property name="FirstName" mandatory="alethic" isUnique="false" canBeNull="true" isCollection="false" isCustomType="false">
 			<prop:DataType dataTypeName=".string" />
 		</prop:Property>
-		<prop:Property name="Person_id" mandatory="alethic" isUnique="true" canBeNull="false" isCollection="false" isCustomType="false">
-			<prop:DataType dataTypeName=".i4" />
-		</prop:Property>
+		<prop:IdentityField name="Person_id" />
 		<prop:Property name="Date_YMD" mandatory="alethic" isUnique="false" canBeNull="false" isCollection="false" isCustomType="false">
 			<prop:DataType dataTypeName=".i4" />
 		</prop:Property>
@@ -198,9 +196,7 @@
 		</prop:Property>
 	</prop:Properties>
 	<prop:Properties conceptTypeName="Task">
-		<prop:Property name="Task_id" mandatory="alethic" isUnique="true" canBeNull="false" isCollection="false" isCustomType="false">
-			<prop:DataType dataTypeName=".i4" />
-		</prop:Property>
+		<prop:IdentityField name="Task_id" />
 		<prop:Property name="Person" mandatory="false" isUnique="false" isCollection="false" isCustomType="true" canBeNull="true" oppositeName="Task">
 			<prop:DataType dataTypeName="Person" />
 		</prop:Property>

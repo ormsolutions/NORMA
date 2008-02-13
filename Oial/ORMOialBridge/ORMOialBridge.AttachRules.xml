@@ -107,6 +107,12 @@
 			<arg:ChangeRule methodName="SubtypeFactChangedRule">
 				<arg:RuleOn targetType="SubtypeFact" targetTypeQualifier="Neumont.Tools.ORM.ObjectModel"/>
 			</arg:ChangeRule>
+			<arg:RolePlayerPositionChangeRule methodName="UniquenessConstraintRoleOrderChanged">
+				<arg:RuleOn targetType="ConstraintRoleSequenceHasRole" targetTypeQualifier="Neumont.Tools.ORM.ObjectModel"/>
+			</arg:RolePlayerPositionChangeRule>
+			<arg:DeletingRule methodName="UniquenessConstraintRoleDeleting">
+				<arg:RuleOn targetType="ConstraintRoleSequenceHasRole" targetTypeQualifier="Neumont.Tools.ORM.ObjectModel"/>
+			</arg:DeletingRule>
 			<arg:DeleteRule methodName="UniquenessBridgeDetachedRule">
 				<arg:RuleOn targetType="UniquenessIsForUniquenessConstraint"/>
 			</arg:DeleteRule>

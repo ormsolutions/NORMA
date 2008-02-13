@@ -120,8 +120,8 @@ XCOPY /Y /D /V /Q "%XMLDir%\OIALtoPLiX\PHP\PHPServices.xslt" "%ORMTransformsDir%
 XCOPY /Y /D /V /Q "%XMLDir%\OIALtoPLiX\PHP\PHPProxies.xslt" "%ORMTransformsDir%\PHP\"
 XCOPY /Y /D /V /Q "%XMLDir%\OIALtoPLiX\PHP\PHPEntities.xslt" "%ORMTransformsDir%\PHP\"
 
-CALL:_AddXslORMGenerator "OIALtoPHPEntitiesPLiX" "OIAL to PHP Entities PLiX" "Transforms OIAL to PHP Entities PLiX." ".Entities.php.xml" "OIAL" "PHPEntitiesPLiX" "%ORMTransformsDir%\PHP\PHPEntities.xslt" "" "1" "" "" "PHPProxiesPLiX\0PHPServicesPLiX\0PHPDataLayerPLiX\0"
-CALL:_AddXslORMGenerator "PHPEntitiesPLiXtoPHP" "PHP Entities PLiX to PHP" "Transforms PLiX Entities TO PHP." ".Entities.php" "PHPEntitiesPLiX" "PHPEntitiesImplementation" "%PLiXDir%\Formatters\PLiXPHP.xslt" "" "" "" "" "PHPProxiesImplementation\0PHPServicesImplementation\0PHPDataLayerImplementation\0"
+CALL:_AddXslORMGenerator "OIALtoPHPEntitiesPLiX" "OIAL to PHP Entities PLiX" "Transforms OIAL to PHP Entities PLiX." ".Entities.php.xml" "OIAL" "PHPEntitiesPLiX" "%ORMTransformsDir%\PHP\PHPEntities.xslt" "" "1" "" "" "" "PHPProxiesPLiX\0PHPServicesPLiX\0PHPDataLayerPLiX\0"
+CALL:_AddXslORMGenerator "PHPEntitiesPLiXtoPHP" "PHP Entities PLiX to PHP" "Transforms PLiX Entities TO PHP." ".Entities.php" "PHPEntitiesPLiX" "PHPEntitiesImplementation" "%PLiXDir%\Formatters\PLiXPHP.xslt" "" "" "" "" "" "PHPProxiesImplementation\0PHPServicesImplementation\0PHPDataLayerImplementation\0"
 
 CALL:_AddXslORMGenerator "OIALtoPHPProxiesPLiX" "OIAL to PHP Proxies PLiX" "Transforms OIAL to PHP Proxies PLiX." ".Proxies.php.xml" "OIAL" "PHPProxiesPLiX" "%ORMTransformsDir%\PHP\PHPProxies.xslt" "" "1"
 CALL:_AddXslORMGenerator "PHPProxiesPLiXtoPHP" "PHP Proxies PLiX to PHP" "Transforms PLiX Proxies TO PHP." ".Proxies.php" "PHPProxiesPLiX" "PHPProxiesImplementation" "%PLiXDir%\Formatters\PLiXPHP.xslt" "" "1"

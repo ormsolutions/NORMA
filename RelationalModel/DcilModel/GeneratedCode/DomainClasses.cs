@@ -1528,6 +1528,21 @@ namespace Neumont.Tools.RelationalModels.ConceptualDatabase
 			}
 		}
 		#endregion
+		#region ReferenceConstraintCollection opposite domain role accessor
+		/// <summary>
+		/// Gets a list of ReferenceConstraintCollection.
+		/// Description for
+		/// Neumont.Tools.RelationalModels.ConceptualDatabase.ReferenceConstraintTargetsUniquenessConstraint.TargetUniquenessConstraint
+		/// </summary>
+		public virtual DslModeling::LinkedElementCollection<ReferenceConstraint> ReferenceConstraintCollection
+		{
+			[global::System.Diagnostics.DebuggerStepThrough]
+			get
+			{
+				return new DslModeling::LinkedElementCollection<ReferenceConstraint>(this, global::Neumont.Tools.RelationalModels.ConceptualDatabase.ReferenceConstraintTargetsUniquenessConstraint.TargetUniquenessConstraintDomainRoleId);
+			}
+		}
+		#endregion
 	}
 }
 namespace Neumont.Tools.RelationalModels.ConceptualDatabase
@@ -1606,6 +1621,26 @@ namespace Neumont.Tools.RelationalModels.ConceptualDatabase
 			set
 			{
 				DslModeling::DomainRoleInfo.SetLinkedElement(this, global::Neumont.Tools.RelationalModels.ConceptualDatabase.ReferenceConstraintTargetsTable.ReferenceConstraintDomainRoleId, value);
+			}
+		}
+		#endregion
+		#region TargetUniquenessConstraint opposite domain role accessor
+		/// <summary>
+		/// Gets or sets TargetUniquenessConstraint.
+		/// Description for
+		/// Neumont.Tools.RelationalModels.ConceptualDatabase.ReferenceConstraintTargetsUniquenessConstraint.ReferenceConstraint
+		/// </summary>
+		public virtual UniquenessConstraint TargetUniquenessConstraint
+		{
+			[global::System.Diagnostics.DebuggerStepThrough]
+			get
+			{
+				return DslModeling::DomainRoleInfo.GetLinkedElement(this, global::Neumont.Tools.RelationalModels.ConceptualDatabase.ReferenceConstraintTargetsUniquenessConstraint.ReferenceConstraintDomainRoleId) as UniquenessConstraint;
+			}
+			[global::System.Diagnostics.DebuggerStepThrough]
+			set
+			{
+				DslModeling::DomainRoleInfo.SetLinkedElement(this, global::Neumont.Tools.RelationalModels.ConceptualDatabase.ReferenceConstraintTargetsUniquenessConstraint.ReferenceConstraintDomainRoleId, value);
 			}
 		}
 		#endregion

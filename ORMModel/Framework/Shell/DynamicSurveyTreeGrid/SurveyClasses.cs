@@ -196,6 +196,21 @@ namespace Neumont.Tools.Modeling.Shell.DynamicSurveyTreeGrid
 		{
 			ElementRenamed(element);
 		}
+		/// <summary>
+		/// Implements <see cref="INotifySurveyElementChanged.ElementCustomSortChanged"/>
+		/// </summary>
+		protected void ElementCustomSortChanged(object element)
+		{
+			NodeLocation value;
+			if (myNodeDictionary.TryGetValue(element, out value))
+			{
+				value.MainList.NodeCustomSortChanged(value.ElementNode);
+			}
+		}
+		void INotifySurveyElementChanged.ElementCustomSortChanged(object element)
+		{
+			ElementCustomSortChanged(element);
+		}
 		#endregion //INotifySurveyElementChanged Implementation
 		#region Survey class
 		/// <summary>

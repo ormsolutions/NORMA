@@ -716,6 +716,22 @@
 				</DomainRole>
 			</Target>
 		</DomainRelationship>
+		<DomainRelationship Id="44C97277-D3AD-4B88-8360-8B5FA1C1EFF2" Namespace="Neumont.Tools.RelationalModels.ConceptualDatabase" Name="ReferenceConstraintTargetsUniquenessConstraint">
+			<Source>
+				<DomainRole Id="AD67D427-5D9A-4195-A702-0F994B715E9F" Name="ReferenceConstraint" PropertyName="TargetUniquenessConstraint" Multiplicity="One" PropagatesDelete="true">
+					<RolePlayer>
+						<DomainClassMoniker Name="ReferenceConstraint"/>
+					</RolePlayer>
+				</DomainRole>
+			</Source>
+			<Target>
+				<DomainRole Id="3DA1BE1B-EC9E-4B12-BC28-742543BEBDBE" Name="TargetUniquenessConstraint" PropertyName="ReferenceConstraintCollection" IsPropertyGenerator="true" Multiplicity="ZeroMany">
+					<RolePlayer>
+						<DomainClassMoniker Name="UniquenessConstraint"/>
+					</RolePlayer>
+				</DomainRole>
+			</Target>
+		</DomainRelationship>
 		<DomainRelationship Id="2CA33A35-0FD3-4B68-9222-F2851A909C2F" Namespace="Neumont.Tools.RelationalModels.ConceptualDatabase" Name="ColumnReference" AllowsDuplicates="true">
 			<Attributes>
 				<ClrAttribute Name="global::System.ComponentModel.TypeDescriptionProvider">

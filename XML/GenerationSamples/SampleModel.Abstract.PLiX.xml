@@ -2874,7 +2874,7 @@
 																<plx:right>
 																	<plx:callNew dataTypeIsSimpleArray="true" dataTypeName="Delegate" dataTypeQualifier="System">
 																		<plx:passParam>
-																			<plx:value type="i4" data="40" />
+																			<plx:value type="i4" data="38" />
 																		</plx:passParam>
 																	</plx:callNew>
 																</plx:right>
@@ -3419,7 +3419,7 @@
 					</plx:callThis>
 				</plx:fallbackBranch>
 			</plx:function>
-			<plx:event visibility="public" name="Person_idChanging">
+			<plx:event visibility="public" name="Date_YMDChanging">
 				<plx:param name="sender" dataTypeName=".object" />
 				<plx:param name="e" dataTypeName="PropertyChangingEventArgs">
 					<plx:passTypeParam dataTypeName="Person" />
@@ -3519,7 +3519,7 @@
 					</plx:branch>
 				</plx:onRemove>
 			</plx:event>
-			<plx:function visibility="protected" name="OnPerson_idChanging">
+			<plx:function visibility="protected" name="OnDate_YMDChanging">
 				<plx:param name="newValue" dataTypeName=".i4" />
 				<plx:returns dataTypeName=".boolean" />
 				<plx:local name="events" dataTypeName="Delegate" dataTypeQualifier="System" dataTypeIsSimpleArray="true" />
@@ -3613,10 +3613,10 @@
 										<plx:thisKeyword />
 									</plx:passParam>
 									<plx:passParam>
-										<plx:string data="Person_id" />
+										<plx:string data="Date_YMD" />
 									</plx:passParam>
 									<plx:passParam>
-										<plx:callThis accessor="this" type="property" name="Person_id" />
+										<plx:callThis accessor="this" type="property" name="Date_YMD" />
 									</plx:passParam>
 									<plx:passParam>
 										<plx:nameRef type="parameter" name="newValue" />
@@ -3630,7 +3630,7 @@
 					<plx:trueKeyword />
 				</plx:return>
 			</plx:function>
-			<plx:event visibility="public" name="Person_idChanged">
+			<plx:event visibility="public" name="Date_YMDChanged">
 				<plx:param name="sender" dataTypeName=".object" />
 				<plx:param name="e" dataTypeName="PropertyChangedEventArgs">
 					<plx:passTypeParam dataTypeName="Person" />
@@ -3730,7 +3730,7 @@
 					</plx:branch>
 				</plx:onRemove>
 			</plx:event>
-			<plx:function visibility="protected" name="OnPerson_idChanged">
+			<plx:function visibility="protected" name="OnDate_YMDChanged">
 				<plx:param name="oldValue" dataTypeName=".i4" />
 				<plx:local name="events" dataTypeName="Delegate" dataTypeQualifier="System" dataTypeIsSimpleArray="true" />
 				<plx:local name="eventHandler" dataTypeName="EventHandler">
@@ -3822,432 +3822,6 @@
 									<plx:thisKeyword />
 								</plx:passParam>
 								<plx:passParam>
-									<plx:string data="Person_id" />
-								</plx:passParam>
-								<plx:passParam>
-									<plx:nameRef type="parameter" name="oldValue" />
-								</plx:passParam>
-								<plx:passParam>
-									<plx:callThis accessor="this" type="property" name="Person_id" />
-								</plx:passParam>
-							</plx:callNew>
-						</plx:passParam>
-						<plx:passParam>
-							<plx:callThis accessor="this" type="field" name="_propertyChangedEventHandler" />
-						</plx:passParam>
-					</plx:callStatic>
-				</plx:branch>
-				<plx:fallbackBranch>
-					<plx:callThis accessor="this" type="methodCall" name="OnPropertyChanged">
-						<plx:passParam>
-							<plx:string data="Person_id" />
-						</plx:passParam>
-					</plx:callThis>
-				</plx:fallbackBranch>
-			</plx:function>
-			<plx:event visibility="public" name="Date_YMDChanging">
-				<plx:param name="sender" dataTypeName=".object" />
-				<plx:param name="e" dataTypeName="PropertyChangingEventArgs">
-					<plx:passTypeParam dataTypeName="Person" />
-					<plx:passTypeParam dataTypeName=".i4" />
-				</plx:param>
-				<plx:explicitDelegateType dataTypeName="EventHandler" />
-				<plx:passTypeParam dataTypeName="PropertyChangingEventArgs">
-					<plx:passTypeParam dataTypeName="Person" />
-					<plx:passTypeParam dataTypeName=".i4" />
-				</plx:passTypeParam>
-				<plx:onAdd>
-					<plx:branch>
-						<plx:condition>
-							<plx:binaryOperator type="identityInequality">
-								<plx:left>
-									<plx:cast type="exceptionCast" dataTypeName=".object">
-										<plx:valueKeyword />
-									</plx:cast>
-								</plx:left>
-								<plx:right>
-									<plx:nullKeyword />
-								</plx:right>
-							</plx:binaryOperator>
-						</plx:condition>
-						<plx:callStatic type="methodCall" name="InterlockedDelegateCombine" dataTypeName="Person">
-							<plx:passParam type="inOut">
-								<plx:callInstance type="arrayIndexer" name=".implied">
-									<plx:callObject>
-										<plx:callThis accessor="this" type="property" name="Events" />
-									</plx:callObject>
-									<plx:passParam>
-										<plx:value type="i4" data="4" />
-									</plx:passParam>
-								</plx:callInstance>
-							</plx:passParam>
-							<plx:passParam>
-								<plx:valueKeyword />
-							</plx:passParam>
-						</plx:callStatic>
-					</plx:branch>
-				</plx:onAdd>
-				<plx:onRemove>
-					<plx:local name="events" dataTypeName="Delegate" dataTypeQualifier="System" dataTypeIsSimpleArray="true" />
-					<plx:branch>
-						<plx:condition>
-							<plx:binaryOperator type="booleanAnd">
-								<plx:left>
-									<plx:binaryOperator type="identityInequality">
-										<plx:left>
-											<plx:cast type="exceptionCast" dataTypeName=".object">
-												<plx:valueKeyword />
-											</plx:cast>
-										</plx:left>
-										<plx:right>
-											<plx:nullKeyword />
-										</plx:right>
-									</plx:binaryOperator>
-								</plx:left>
-								<plx:right>
-									<plx:binaryOperator type="identityInequality">
-										<plx:left>
-											<plx:cast type="exceptionCast" dataTypeName=".object">
-												<plx:inlineStatement dataTypeName="Delegate" dataTypeQualifier="System" dataTypeIsSimpleArray="true">
-													<plx:assign>
-														<plx:left>
-															<plx:nameRef type="local" name="events" />
-														</plx:left>
-														<plx:right>
-															<plx:callThis accessor="this" type="field" name="_events" />
-														</plx:right>
-													</plx:assign>
-												</plx:inlineStatement>
-											</plx:cast>
-										</plx:left>
-										<plx:right>
-											<plx:nullKeyword />
-										</plx:right>
-									</plx:binaryOperator>
-								</plx:right>
-							</plx:binaryOperator>
-						</plx:condition>
-						<plx:callStatic type="methodCall" name="InterlockedDelegateRemove" dataTypeName="Person">
-							<plx:passParam type="inOut">
-								<plx:callInstance type="arrayIndexer" name=".implied">
-									<plx:callObject>
-										<plx:nameRef type="local" name="events" />
-									</plx:callObject>
-									<plx:passParam>
-										<plx:value type="i4" data="4" />
-									</plx:passParam>
-								</plx:callInstance>
-							</plx:passParam>
-							<plx:passParam>
-								<plx:valueKeyword />
-							</plx:passParam>
-						</plx:callStatic>
-					</plx:branch>
-				</plx:onRemove>
-			</plx:event>
-			<plx:function visibility="protected" name="OnDate_YMDChanging">
-				<plx:param name="newValue" dataTypeName=".i4" />
-				<plx:returns dataTypeName=".boolean" />
-				<plx:local name="events" dataTypeName="Delegate" dataTypeQualifier="System" dataTypeIsSimpleArray="true" />
-				<plx:local name="eventHandler" dataTypeName="EventHandler">
-					<plx:passTypeParam dataTypeName="PropertyChangingEventArgs">
-						<plx:passTypeParam dataTypeName="Person" />
-						<plx:passTypeParam dataTypeName=".i4" />
-					</plx:passTypeParam>
-				</plx:local>
-				<plx:branch>
-					<plx:condition>
-						<plx:binaryOperator type="booleanAnd">
-							<plx:left>
-								<plx:binaryOperator type="identityInequality">
-									<plx:left>
-										<plx:cast type="exceptionCast" dataTypeName=".object">
-											<plx:inlineStatement dataTypeName="Delegate" dataTypeQualifier="System" dataTypeIsSimpleArray="true">
-												<plx:assign>
-													<plx:left>
-														<plx:nameRef type="local" name="events" />
-													</plx:left>
-													<plx:right>
-														<plx:callThis accessor="this" type="field" name="_events" />
-													</plx:right>
-												</plx:assign>
-											</plx:inlineStatement>
-										</plx:cast>
-									</plx:left>
-									<plx:right>
-										<plx:nullKeyword />
-									</plx:right>
-								</plx:binaryOperator>
-							</plx:left>
-							<plx:right>
-								<plx:binaryOperator type="identityInequality">
-									<plx:left>
-										<plx:cast type="exceptionCast" dataTypeName=".object">
-											<plx:inlineStatement dataTypeName="EventHandler">
-												<plx:passTypeParam dataTypeName="PropertyChangingEventArgs">
-													<plx:passTypeParam dataTypeName="Person" />
-													<plx:passTypeParam dataTypeName=".i4" />
-												</plx:passTypeParam>
-												<plx:assign>
-													<plx:left>
-														<plx:nameRef type="local" name="eventHandler" />
-													</plx:left>
-													<plx:right>
-														<plx:cast type="exceptionCast" dataTypeName="EventHandler">
-															<plx:passTypeParam dataTypeName="PropertyChangingEventArgs">
-																<plx:passTypeParam dataTypeName="Person" />
-																<plx:passTypeParam dataTypeName=".i4" />
-															</plx:passTypeParam>
-															<plx:callInstance type="arrayIndexer" name=".implied">
-																<plx:callObject>
-																	<plx:nameRef type="local" name="events" />
-																</plx:callObject>
-																<plx:passParam>
-																	<plx:value type="i4" data="4" />
-																</plx:passParam>
-															</plx:callInstance>
-														</plx:cast>
-													</plx:right>
-												</plx:assign>
-											</plx:inlineStatement>
-										</plx:cast>
-									</plx:left>
-									<plx:right>
-										<plx:nullKeyword />
-									</plx:right>
-								</plx:binaryOperator>
-							</plx:right>
-						</plx:binaryOperator>
-					</plx:condition>
-					<plx:return>
-						<plx:callStatic name="InvokeCancelableEventHandler" dataTypeName="EventHandlerUtility" type="methodCall">
-							<plx:passMemberTypeParam dataTypeName="PropertyChangingEventArgs">
-								<plx:passTypeParam dataTypeName="Person" />
-								<plx:passTypeParam dataTypeName=".i4" />
-							</plx:passMemberTypeParam>
-							<plx:passParam>
-								<plx:nameRef type="local" name="eventHandler" />
-							</plx:passParam>
-							<plx:passParam>
-								<plx:thisKeyword />
-							</plx:passParam>
-							<plx:passParam>
-								<plx:callNew dataTypeName="PropertyChangingEventArgs">
-									<plx:passTypeParam dataTypeName="Person" />
-									<plx:passTypeParam dataTypeName=".i4" />
-									<plx:passParam>
-										<plx:thisKeyword />
-									</plx:passParam>
-									<plx:passParam>
-										<plx:string data="Date_YMD" />
-									</plx:passParam>
-									<plx:passParam>
-										<plx:callThis accessor="this" type="property" name="Date_YMD" />
-									</plx:passParam>
-									<plx:passParam>
-										<plx:nameRef type="parameter" name="newValue" />
-									</plx:passParam>
-								</plx:callNew>
-							</plx:passParam>
-						</plx:callStatic>
-					</plx:return>
-				</plx:branch>
-				<plx:return>
-					<plx:trueKeyword />
-				</plx:return>
-			</plx:function>
-			<plx:event visibility="public" name="Date_YMDChanged">
-				<plx:param name="sender" dataTypeName=".object" />
-				<plx:param name="e" dataTypeName="PropertyChangedEventArgs">
-					<plx:passTypeParam dataTypeName="Person" />
-					<plx:passTypeParam dataTypeName=".i4" />
-				</plx:param>
-				<plx:explicitDelegateType dataTypeName="EventHandler" />
-				<plx:passTypeParam dataTypeName="PropertyChangedEventArgs">
-					<plx:passTypeParam dataTypeName="Person" />
-					<plx:passTypeParam dataTypeName=".i4" />
-				</plx:passTypeParam>
-				<plx:onAdd>
-					<plx:branch>
-						<plx:condition>
-							<plx:binaryOperator type="identityInequality">
-								<plx:left>
-									<plx:cast type="exceptionCast" dataTypeName=".object">
-										<plx:valueKeyword />
-									</plx:cast>
-								</plx:left>
-								<plx:right>
-									<plx:nullKeyword />
-								</plx:right>
-							</plx:binaryOperator>
-						</plx:condition>
-						<plx:callStatic type="methodCall" name="InterlockedDelegateCombine" dataTypeName="Person">
-							<plx:passParam type="inOut">
-								<plx:callInstance type="arrayIndexer" name=".implied">
-									<plx:callObject>
-										<plx:callThis accessor="this" type="property" name="Events" />
-									</plx:callObject>
-									<plx:passParam>
-										<plx:value type="i4" data="5" />
-									</plx:passParam>
-								</plx:callInstance>
-							</plx:passParam>
-							<plx:passParam>
-								<plx:valueKeyword />
-							</plx:passParam>
-						</plx:callStatic>
-					</plx:branch>
-				</plx:onAdd>
-				<plx:onRemove>
-					<plx:local name="events" dataTypeName="Delegate" dataTypeQualifier="System" dataTypeIsSimpleArray="true" />
-					<plx:branch>
-						<plx:condition>
-							<plx:binaryOperator type="booleanAnd">
-								<plx:left>
-									<plx:binaryOperator type="identityInequality">
-										<plx:left>
-											<plx:cast type="exceptionCast" dataTypeName=".object">
-												<plx:valueKeyword />
-											</plx:cast>
-										</plx:left>
-										<plx:right>
-											<plx:nullKeyword />
-										</plx:right>
-									</plx:binaryOperator>
-								</plx:left>
-								<plx:right>
-									<plx:binaryOperator type="identityInequality">
-										<plx:left>
-											<plx:cast type="exceptionCast" dataTypeName=".object">
-												<plx:inlineStatement dataTypeName="Delegate" dataTypeQualifier="System" dataTypeIsSimpleArray="true">
-													<plx:assign>
-														<plx:left>
-															<plx:nameRef type="local" name="events" />
-														</plx:left>
-														<plx:right>
-															<plx:callThis accessor="this" type="field" name="_events" />
-														</plx:right>
-													</plx:assign>
-												</plx:inlineStatement>
-											</plx:cast>
-										</plx:left>
-										<plx:right>
-											<plx:nullKeyword />
-										</plx:right>
-									</plx:binaryOperator>
-								</plx:right>
-							</plx:binaryOperator>
-						</plx:condition>
-						<plx:callStatic type="methodCall" name="InterlockedDelegateRemove" dataTypeName="Person">
-							<plx:passParam type="inOut">
-								<plx:callInstance type="arrayIndexer" name=".implied">
-									<plx:callObject>
-										<plx:nameRef type="local" name="events" />
-									</plx:callObject>
-									<plx:passParam>
-										<plx:value type="i4" data="5" />
-									</plx:passParam>
-								</plx:callInstance>
-							</plx:passParam>
-							<plx:passParam>
-								<plx:valueKeyword />
-							</plx:passParam>
-						</plx:callStatic>
-					</plx:branch>
-				</plx:onRemove>
-			</plx:event>
-			<plx:function visibility="protected" name="OnDate_YMDChanged">
-				<plx:param name="oldValue" dataTypeName=".i4" />
-				<plx:local name="events" dataTypeName="Delegate" dataTypeQualifier="System" dataTypeIsSimpleArray="true" />
-				<plx:local name="eventHandler" dataTypeName="EventHandler">
-					<plx:passTypeParam dataTypeName="PropertyChangedEventArgs">
-						<plx:passTypeParam dataTypeName="Person" />
-						<plx:passTypeParam dataTypeName=".i4" />
-					</plx:passTypeParam>
-				</plx:local>
-				<plx:branch>
-					<plx:condition>
-						<plx:binaryOperator type="booleanAnd">
-							<plx:left>
-								<plx:binaryOperator type="identityInequality">
-									<plx:left>
-										<plx:cast type="exceptionCast" dataTypeName=".object">
-											<plx:inlineStatement dataTypeName="Delegate" dataTypeQualifier="System" dataTypeIsSimpleArray="true">
-												<plx:assign>
-													<plx:left>
-														<plx:nameRef type="local" name="events" />
-													</plx:left>
-													<plx:right>
-														<plx:callThis accessor="this" type="field" name="_events" />
-													</plx:right>
-												</plx:assign>
-											</plx:inlineStatement>
-										</plx:cast>
-									</plx:left>
-									<plx:right>
-										<plx:nullKeyword />
-									</plx:right>
-								</plx:binaryOperator>
-							</plx:left>
-							<plx:right>
-								<plx:binaryOperator type="identityInequality">
-									<plx:left>
-										<plx:cast type="exceptionCast" dataTypeName=".object">
-											<plx:inlineStatement dataTypeName="EventHandler">
-												<plx:passTypeParam dataTypeName="PropertyChangedEventArgs">
-													<plx:passTypeParam dataTypeName="Person" />
-													<plx:passTypeParam dataTypeName=".i4" />
-												</plx:passTypeParam>
-												<plx:assign>
-													<plx:left>
-														<plx:nameRef type="local" name="eventHandler" />
-													</plx:left>
-													<plx:right>
-														<plx:cast type="exceptionCast" dataTypeName="EventHandler">
-															<plx:passTypeParam dataTypeName="PropertyChangedEventArgs">
-																<plx:passTypeParam dataTypeName="Person" />
-																<plx:passTypeParam dataTypeName=".i4" />
-															</plx:passTypeParam>
-															<plx:callInstance type="arrayIndexer" name=".implied">
-																<plx:callObject>
-																	<plx:nameRef type="local" name="events" />
-																</plx:callObject>
-																<plx:passParam>
-																	<plx:value type="i4" data="5" />
-																</plx:passParam>
-															</plx:callInstance>
-														</plx:cast>
-													</plx:right>
-												</plx:assign>
-											</plx:inlineStatement>
-										</plx:cast>
-									</plx:left>
-									<plx:right>
-										<plx:nullKeyword />
-									</plx:right>
-								</plx:binaryOperator>
-							</plx:right>
-						</plx:binaryOperator>
-					</plx:condition>
-					<plx:callStatic type="methodCall" name="InvokeEventHandlerAsync" dataTypeName="EventHandlerUtility">
-						<plx:passMemberTypeParam dataTypeName="PropertyChangedEventArgs">
-							<plx:passTypeParam dataTypeName="Person" />
-							<plx:passTypeParam dataTypeName=".i4" />
-						</plx:passMemberTypeParam>
-						<plx:passParam>
-							<plx:nameRef type="local" name="eventHandler" />
-						</plx:passParam>
-						<plx:passParam>
-							<plx:thisKeyword />
-						</plx:passParam>
-						<plx:passParam>
-							<plx:callNew dataTypeName="PropertyChangedEventArgs">
-								<plx:passTypeParam dataTypeName="Person" />
-								<plx:passTypeParam dataTypeName=".i4" />
-								<plx:passParam>
-									<plx:thisKeyword />
-								</plx:passParam>
-								<plx:passParam>
 									<plx:string data="Date_YMD" />
 								</plx:passParam>
 								<plx:passParam>
@@ -4303,6 +3877,432 @@
 										<plx:callThis accessor="this" type="property" name="Events" />
 									</plx:callObject>
 									<plx:passParam>
+										<plx:value type="i4" data="4" />
+									</plx:passParam>
+								</plx:callInstance>
+							</plx:passParam>
+							<plx:passParam>
+								<plx:valueKeyword />
+							</plx:passParam>
+						</plx:callStatic>
+					</plx:branch>
+				</plx:onAdd>
+				<plx:onRemove>
+					<plx:local name="events" dataTypeName="Delegate" dataTypeQualifier="System" dataTypeIsSimpleArray="true" />
+					<plx:branch>
+						<plx:condition>
+							<plx:binaryOperator type="booleanAnd">
+								<plx:left>
+									<plx:binaryOperator type="identityInequality">
+										<plx:left>
+											<plx:cast type="exceptionCast" dataTypeName=".object">
+												<plx:valueKeyword />
+											</plx:cast>
+										</plx:left>
+										<plx:right>
+											<plx:nullKeyword />
+										</plx:right>
+									</plx:binaryOperator>
+								</plx:left>
+								<plx:right>
+									<plx:binaryOperator type="identityInequality">
+										<plx:left>
+											<plx:cast type="exceptionCast" dataTypeName=".object">
+												<plx:inlineStatement dataTypeName="Delegate" dataTypeQualifier="System" dataTypeIsSimpleArray="true">
+													<plx:assign>
+														<plx:left>
+															<plx:nameRef type="local" name="events" />
+														</plx:left>
+														<plx:right>
+															<plx:callThis accessor="this" type="field" name="_events" />
+														</plx:right>
+													</plx:assign>
+												</plx:inlineStatement>
+											</plx:cast>
+										</plx:left>
+										<plx:right>
+											<plx:nullKeyword />
+										</plx:right>
+									</plx:binaryOperator>
+								</plx:right>
+							</plx:binaryOperator>
+						</plx:condition>
+						<plx:callStatic type="methodCall" name="InterlockedDelegateRemove" dataTypeName="Person">
+							<plx:passParam type="inOut">
+								<plx:callInstance type="arrayIndexer" name=".implied">
+									<plx:callObject>
+										<plx:nameRef type="local" name="events" />
+									</plx:callObject>
+									<plx:passParam>
+										<plx:value type="i4" data="4" />
+									</plx:passParam>
+								</plx:callInstance>
+							</plx:passParam>
+							<plx:passParam>
+								<plx:valueKeyword />
+							</plx:passParam>
+						</plx:callStatic>
+					</plx:branch>
+				</plx:onRemove>
+			</plx:event>
+			<plx:function visibility="protected" name="OnLastNameChanging">
+				<plx:param name="newValue" dataTypeName=".string" />
+				<plx:returns dataTypeName=".boolean" />
+				<plx:local name="events" dataTypeName="Delegate" dataTypeQualifier="System" dataTypeIsSimpleArray="true" />
+				<plx:local name="eventHandler" dataTypeName="EventHandler">
+					<plx:passTypeParam dataTypeName="PropertyChangingEventArgs">
+						<plx:passTypeParam dataTypeName="Person" />
+						<plx:passTypeParam dataTypeName=".string" />
+					</plx:passTypeParam>
+				</plx:local>
+				<plx:branch>
+					<plx:condition>
+						<plx:binaryOperator type="booleanAnd">
+							<plx:left>
+								<plx:binaryOperator type="identityInequality">
+									<plx:left>
+										<plx:cast type="exceptionCast" dataTypeName=".object">
+											<plx:inlineStatement dataTypeName="Delegate" dataTypeQualifier="System" dataTypeIsSimpleArray="true">
+												<plx:assign>
+													<plx:left>
+														<plx:nameRef type="local" name="events" />
+													</plx:left>
+													<plx:right>
+														<plx:callThis accessor="this" type="field" name="_events" />
+													</plx:right>
+												</plx:assign>
+											</plx:inlineStatement>
+										</plx:cast>
+									</plx:left>
+									<plx:right>
+										<plx:nullKeyword />
+									</plx:right>
+								</plx:binaryOperator>
+							</plx:left>
+							<plx:right>
+								<plx:binaryOperator type="identityInequality">
+									<plx:left>
+										<plx:cast type="exceptionCast" dataTypeName=".object">
+											<plx:inlineStatement dataTypeName="EventHandler">
+												<plx:passTypeParam dataTypeName="PropertyChangingEventArgs">
+													<plx:passTypeParam dataTypeName="Person" />
+													<plx:passTypeParam dataTypeName=".string" />
+												</plx:passTypeParam>
+												<plx:assign>
+													<plx:left>
+														<plx:nameRef type="local" name="eventHandler" />
+													</plx:left>
+													<plx:right>
+														<plx:cast type="exceptionCast" dataTypeName="EventHandler">
+															<plx:passTypeParam dataTypeName="PropertyChangingEventArgs">
+																<plx:passTypeParam dataTypeName="Person" />
+																<plx:passTypeParam dataTypeName=".string" />
+															</plx:passTypeParam>
+															<plx:callInstance type="arrayIndexer" name=".implied">
+																<plx:callObject>
+																	<plx:nameRef type="local" name="events" />
+																</plx:callObject>
+																<plx:passParam>
+																	<plx:value type="i4" data="4" />
+																</plx:passParam>
+															</plx:callInstance>
+														</plx:cast>
+													</plx:right>
+												</plx:assign>
+											</plx:inlineStatement>
+										</plx:cast>
+									</plx:left>
+									<plx:right>
+										<plx:nullKeyword />
+									</plx:right>
+								</plx:binaryOperator>
+							</plx:right>
+						</plx:binaryOperator>
+					</plx:condition>
+					<plx:return>
+						<plx:callStatic name="InvokeCancelableEventHandler" dataTypeName="EventHandlerUtility" type="methodCall">
+							<plx:passMemberTypeParam dataTypeName="PropertyChangingEventArgs">
+								<plx:passTypeParam dataTypeName="Person" />
+								<plx:passTypeParam dataTypeName=".string" />
+							</plx:passMemberTypeParam>
+							<plx:passParam>
+								<plx:nameRef type="local" name="eventHandler" />
+							</plx:passParam>
+							<plx:passParam>
+								<plx:thisKeyword />
+							</plx:passParam>
+							<plx:passParam>
+								<plx:callNew dataTypeName="PropertyChangingEventArgs">
+									<plx:passTypeParam dataTypeName="Person" />
+									<plx:passTypeParam dataTypeName=".string" />
+									<plx:passParam>
+										<plx:thisKeyword />
+									</plx:passParam>
+									<plx:passParam>
+										<plx:string data="LastName" />
+									</plx:passParam>
+									<plx:passParam>
+										<plx:callThis accessor="this" type="property" name="LastName" />
+									</plx:passParam>
+									<plx:passParam>
+										<plx:nameRef type="parameter" name="newValue" />
+									</plx:passParam>
+								</plx:callNew>
+							</plx:passParam>
+						</plx:callStatic>
+					</plx:return>
+				</plx:branch>
+				<plx:return>
+					<plx:trueKeyword />
+				</plx:return>
+			</plx:function>
+			<plx:event visibility="public" name="LastNameChanged">
+				<plx:param name="sender" dataTypeName=".object" />
+				<plx:param name="e" dataTypeName="PropertyChangedEventArgs">
+					<plx:passTypeParam dataTypeName="Person" />
+					<plx:passTypeParam dataTypeName=".string" />
+				</plx:param>
+				<plx:explicitDelegateType dataTypeName="EventHandler" />
+				<plx:passTypeParam dataTypeName="PropertyChangedEventArgs">
+					<plx:passTypeParam dataTypeName="Person" />
+					<plx:passTypeParam dataTypeName=".string" />
+				</plx:passTypeParam>
+				<plx:onAdd>
+					<plx:branch>
+						<plx:condition>
+							<plx:binaryOperator type="identityInequality">
+								<plx:left>
+									<plx:cast type="exceptionCast" dataTypeName=".object">
+										<plx:valueKeyword />
+									</plx:cast>
+								</plx:left>
+								<plx:right>
+									<plx:nullKeyword />
+								</plx:right>
+							</plx:binaryOperator>
+						</plx:condition>
+						<plx:callStatic type="methodCall" name="InterlockedDelegateCombine" dataTypeName="Person">
+							<plx:passParam type="inOut">
+								<plx:callInstance type="arrayIndexer" name=".implied">
+									<plx:callObject>
+										<plx:callThis accessor="this" type="property" name="Events" />
+									</plx:callObject>
+									<plx:passParam>
+										<plx:value type="i4" data="5" />
+									</plx:passParam>
+								</plx:callInstance>
+							</plx:passParam>
+							<plx:passParam>
+								<plx:valueKeyword />
+							</plx:passParam>
+						</plx:callStatic>
+					</plx:branch>
+				</plx:onAdd>
+				<plx:onRemove>
+					<plx:local name="events" dataTypeName="Delegate" dataTypeQualifier="System" dataTypeIsSimpleArray="true" />
+					<plx:branch>
+						<plx:condition>
+							<plx:binaryOperator type="booleanAnd">
+								<plx:left>
+									<plx:binaryOperator type="identityInequality">
+										<plx:left>
+											<plx:cast type="exceptionCast" dataTypeName=".object">
+												<plx:valueKeyword />
+											</plx:cast>
+										</plx:left>
+										<plx:right>
+											<plx:nullKeyword />
+										</plx:right>
+									</plx:binaryOperator>
+								</plx:left>
+								<plx:right>
+									<plx:binaryOperator type="identityInequality">
+										<plx:left>
+											<plx:cast type="exceptionCast" dataTypeName=".object">
+												<plx:inlineStatement dataTypeName="Delegate" dataTypeQualifier="System" dataTypeIsSimpleArray="true">
+													<plx:assign>
+														<plx:left>
+															<plx:nameRef type="local" name="events" />
+														</plx:left>
+														<plx:right>
+															<plx:callThis accessor="this" type="field" name="_events" />
+														</plx:right>
+													</plx:assign>
+												</plx:inlineStatement>
+											</plx:cast>
+										</plx:left>
+										<plx:right>
+											<plx:nullKeyword />
+										</plx:right>
+									</plx:binaryOperator>
+								</plx:right>
+							</plx:binaryOperator>
+						</plx:condition>
+						<plx:callStatic type="methodCall" name="InterlockedDelegateRemove" dataTypeName="Person">
+							<plx:passParam type="inOut">
+								<plx:callInstance type="arrayIndexer" name=".implied">
+									<plx:callObject>
+										<plx:nameRef type="local" name="events" />
+									</plx:callObject>
+									<plx:passParam>
+										<plx:value type="i4" data="5" />
+									</plx:passParam>
+								</plx:callInstance>
+							</plx:passParam>
+							<plx:passParam>
+								<plx:valueKeyword />
+							</plx:passParam>
+						</plx:callStatic>
+					</plx:branch>
+				</plx:onRemove>
+			</plx:event>
+			<plx:function visibility="protected" name="OnLastNameChanged">
+				<plx:param name="oldValue" dataTypeName=".string" />
+				<plx:local name="events" dataTypeName="Delegate" dataTypeQualifier="System" dataTypeIsSimpleArray="true" />
+				<plx:local name="eventHandler" dataTypeName="EventHandler">
+					<plx:passTypeParam dataTypeName="PropertyChangedEventArgs">
+						<plx:passTypeParam dataTypeName="Person" />
+						<plx:passTypeParam dataTypeName=".string" />
+					</plx:passTypeParam>
+				</plx:local>
+				<plx:branch>
+					<plx:condition>
+						<plx:binaryOperator type="booleanAnd">
+							<plx:left>
+								<plx:binaryOperator type="identityInequality">
+									<plx:left>
+										<plx:cast type="exceptionCast" dataTypeName=".object">
+											<plx:inlineStatement dataTypeName="Delegate" dataTypeQualifier="System" dataTypeIsSimpleArray="true">
+												<plx:assign>
+													<plx:left>
+														<plx:nameRef type="local" name="events" />
+													</plx:left>
+													<plx:right>
+														<plx:callThis accessor="this" type="field" name="_events" />
+													</plx:right>
+												</plx:assign>
+											</plx:inlineStatement>
+										</plx:cast>
+									</plx:left>
+									<plx:right>
+										<plx:nullKeyword />
+									</plx:right>
+								</plx:binaryOperator>
+							</plx:left>
+							<plx:right>
+								<plx:binaryOperator type="identityInequality">
+									<plx:left>
+										<plx:cast type="exceptionCast" dataTypeName=".object">
+											<plx:inlineStatement dataTypeName="EventHandler">
+												<plx:passTypeParam dataTypeName="PropertyChangedEventArgs">
+													<plx:passTypeParam dataTypeName="Person" />
+													<plx:passTypeParam dataTypeName=".string" />
+												</plx:passTypeParam>
+												<plx:assign>
+													<plx:left>
+														<plx:nameRef type="local" name="eventHandler" />
+													</plx:left>
+													<plx:right>
+														<plx:cast type="exceptionCast" dataTypeName="EventHandler">
+															<plx:passTypeParam dataTypeName="PropertyChangedEventArgs">
+																<plx:passTypeParam dataTypeName="Person" />
+																<plx:passTypeParam dataTypeName=".string" />
+															</plx:passTypeParam>
+															<plx:callInstance type="arrayIndexer" name=".implied">
+																<plx:callObject>
+																	<plx:nameRef type="local" name="events" />
+																</plx:callObject>
+																<plx:passParam>
+																	<plx:value type="i4" data="5" />
+																</plx:passParam>
+															</plx:callInstance>
+														</plx:cast>
+													</plx:right>
+												</plx:assign>
+											</plx:inlineStatement>
+										</plx:cast>
+									</plx:left>
+									<plx:right>
+										<plx:nullKeyword />
+									</plx:right>
+								</plx:binaryOperator>
+							</plx:right>
+						</plx:binaryOperator>
+					</plx:condition>
+					<plx:callStatic type="methodCall" name="InvokeEventHandlerAsync" dataTypeName="EventHandlerUtility">
+						<plx:passMemberTypeParam dataTypeName="PropertyChangedEventArgs">
+							<plx:passTypeParam dataTypeName="Person" />
+							<plx:passTypeParam dataTypeName=".string" />
+						</plx:passMemberTypeParam>
+						<plx:passParam>
+							<plx:nameRef type="local" name="eventHandler" />
+						</plx:passParam>
+						<plx:passParam>
+							<plx:thisKeyword />
+						</plx:passParam>
+						<plx:passParam>
+							<plx:callNew dataTypeName="PropertyChangedEventArgs">
+								<plx:passTypeParam dataTypeName="Person" />
+								<plx:passTypeParam dataTypeName=".string" />
+								<plx:passParam>
+									<plx:thisKeyword />
+								</plx:passParam>
+								<plx:passParam>
+									<plx:string data="LastName" />
+								</plx:passParam>
+								<plx:passParam>
+									<plx:nameRef type="parameter" name="oldValue" />
+								</plx:passParam>
+								<plx:passParam>
+									<plx:callThis accessor="this" type="property" name="LastName" />
+								</plx:passParam>
+							</plx:callNew>
+						</plx:passParam>
+						<plx:passParam>
+							<plx:callThis accessor="this" type="field" name="_propertyChangedEventHandler" />
+						</plx:passParam>
+					</plx:callStatic>
+				</plx:branch>
+				<plx:fallbackBranch>
+					<plx:callThis accessor="this" type="methodCall" name="OnPropertyChanged">
+						<plx:passParam>
+							<plx:string data="LastName" />
+						</plx:passParam>
+					</plx:callThis>
+				</plx:fallbackBranch>
+			</plx:function>
+			<plx:event visibility="public" name="OptionalUniqueStringChanging">
+				<plx:param name="sender" dataTypeName=".object" />
+				<plx:param name="e" dataTypeName="PropertyChangingEventArgs">
+					<plx:passTypeParam dataTypeName="Person" />
+					<plx:passTypeParam dataTypeName=".string" />
+				</plx:param>
+				<plx:explicitDelegateType dataTypeName="EventHandler" />
+				<plx:passTypeParam dataTypeName="PropertyChangingEventArgs">
+					<plx:passTypeParam dataTypeName="Person" />
+					<plx:passTypeParam dataTypeName=".string" />
+				</plx:passTypeParam>
+				<plx:onAdd>
+					<plx:branch>
+						<plx:condition>
+							<plx:binaryOperator type="identityInequality">
+								<plx:left>
+									<plx:cast type="exceptionCast" dataTypeName=".object">
+										<plx:valueKeyword />
+									</plx:cast>
+								</plx:left>
+								<plx:right>
+									<plx:nullKeyword />
+								</plx:right>
+							</plx:binaryOperator>
+						</plx:condition>
+						<plx:callStatic type="methodCall" name="InterlockedDelegateCombine" dataTypeName="Person">
+							<plx:passParam type="inOut">
+								<plx:callInstance type="arrayIndexer" name=".implied">
+									<plx:callObject>
+										<plx:callThis accessor="this" type="property" name="Events" />
+									</plx:callObject>
+									<plx:passParam>
 										<plx:value type="i4" data="6" />
 									</plx:passParam>
 								</plx:callInstance>
@@ -4371,7 +4371,7 @@
 					</plx:branch>
 				</plx:onRemove>
 			</plx:event>
-			<plx:function visibility="protected" name="OnLastNameChanging">
+			<plx:function visibility="protected" name="OnOptionalUniqueStringChanging">
 				<plx:param name="newValue" dataTypeName=".string" />
 				<plx:returns dataTypeName=".boolean" />
 				<plx:local name="events" dataTypeName="Delegate" dataTypeQualifier="System" dataTypeIsSimpleArray="true" />
@@ -4465,432 +4465,6 @@
 										<plx:thisKeyword />
 									</plx:passParam>
 									<plx:passParam>
-										<plx:string data="LastName" />
-									</plx:passParam>
-									<plx:passParam>
-										<plx:callThis accessor="this" type="property" name="LastName" />
-									</plx:passParam>
-									<plx:passParam>
-										<plx:nameRef type="parameter" name="newValue" />
-									</plx:passParam>
-								</plx:callNew>
-							</plx:passParam>
-						</plx:callStatic>
-					</plx:return>
-				</plx:branch>
-				<plx:return>
-					<plx:trueKeyword />
-				</plx:return>
-			</plx:function>
-			<plx:event visibility="public" name="LastNameChanged">
-				<plx:param name="sender" dataTypeName=".object" />
-				<plx:param name="e" dataTypeName="PropertyChangedEventArgs">
-					<plx:passTypeParam dataTypeName="Person" />
-					<plx:passTypeParam dataTypeName=".string" />
-				</plx:param>
-				<plx:explicitDelegateType dataTypeName="EventHandler" />
-				<plx:passTypeParam dataTypeName="PropertyChangedEventArgs">
-					<plx:passTypeParam dataTypeName="Person" />
-					<plx:passTypeParam dataTypeName=".string" />
-				</plx:passTypeParam>
-				<plx:onAdd>
-					<plx:branch>
-						<plx:condition>
-							<plx:binaryOperator type="identityInequality">
-								<plx:left>
-									<plx:cast type="exceptionCast" dataTypeName=".object">
-										<plx:valueKeyword />
-									</plx:cast>
-								</plx:left>
-								<plx:right>
-									<plx:nullKeyword />
-								</plx:right>
-							</plx:binaryOperator>
-						</plx:condition>
-						<plx:callStatic type="methodCall" name="InterlockedDelegateCombine" dataTypeName="Person">
-							<plx:passParam type="inOut">
-								<plx:callInstance type="arrayIndexer" name=".implied">
-									<plx:callObject>
-										<plx:callThis accessor="this" type="property" name="Events" />
-									</plx:callObject>
-									<plx:passParam>
-										<plx:value type="i4" data="7" />
-									</plx:passParam>
-								</plx:callInstance>
-							</plx:passParam>
-							<plx:passParam>
-								<plx:valueKeyword />
-							</plx:passParam>
-						</plx:callStatic>
-					</plx:branch>
-				</plx:onAdd>
-				<plx:onRemove>
-					<plx:local name="events" dataTypeName="Delegate" dataTypeQualifier="System" dataTypeIsSimpleArray="true" />
-					<plx:branch>
-						<plx:condition>
-							<plx:binaryOperator type="booleanAnd">
-								<plx:left>
-									<plx:binaryOperator type="identityInequality">
-										<plx:left>
-											<plx:cast type="exceptionCast" dataTypeName=".object">
-												<plx:valueKeyword />
-											</plx:cast>
-										</plx:left>
-										<plx:right>
-											<plx:nullKeyword />
-										</plx:right>
-									</plx:binaryOperator>
-								</plx:left>
-								<plx:right>
-									<plx:binaryOperator type="identityInequality">
-										<plx:left>
-											<plx:cast type="exceptionCast" dataTypeName=".object">
-												<plx:inlineStatement dataTypeName="Delegate" dataTypeQualifier="System" dataTypeIsSimpleArray="true">
-													<plx:assign>
-														<plx:left>
-															<plx:nameRef type="local" name="events" />
-														</plx:left>
-														<plx:right>
-															<plx:callThis accessor="this" type="field" name="_events" />
-														</plx:right>
-													</plx:assign>
-												</plx:inlineStatement>
-											</plx:cast>
-										</plx:left>
-										<plx:right>
-											<plx:nullKeyword />
-										</plx:right>
-									</plx:binaryOperator>
-								</plx:right>
-							</plx:binaryOperator>
-						</plx:condition>
-						<plx:callStatic type="methodCall" name="InterlockedDelegateRemove" dataTypeName="Person">
-							<plx:passParam type="inOut">
-								<plx:callInstance type="arrayIndexer" name=".implied">
-									<plx:callObject>
-										<plx:nameRef type="local" name="events" />
-									</plx:callObject>
-									<plx:passParam>
-										<plx:value type="i4" data="7" />
-									</plx:passParam>
-								</plx:callInstance>
-							</plx:passParam>
-							<plx:passParam>
-								<plx:valueKeyword />
-							</plx:passParam>
-						</plx:callStatic>
-					</plx:branch>
-				</plx:onRemove>
-			</plx:event>
-			<plx:function visibility="protected" name="OnLastNameChanged">
-				<plx:param name="oldValue" dataTypeName=".string" />
-				<plx:local name="events" dataTypeName="Delegate" dataTypeQualifier="System" dataTypeIsSimpleArray="true" />
-				<plx:local name="eventHandler" dataTypeName="EventHandler">
-					<plx:passTypeParam dataTypeName="PropertyChangedEventArgs">
-						<plx:passTypeParam dataTypeName="Person" />
-						<plx:passTypeParam dataTypeName=".string" />
-					</plx:passTypeParam>
-				</plx:local>
-				<plx:branch>
-					<plx:condition>
-						<plx:binaryOperator type="booleanAnd">
-							<plx:left>
-								<plx:binaryOperator type="identityInequality">
-									<plx:left>
-										<plx:cast type="exceptionCast" dataTypeName=".object">
-											<plx:inlineStatement dataTypeName="Delegate" dataTypeQualifier="System" dataTypeIsSimpleArray="true">
-												<plx:assign>
-													<plx:left>
-														<plx:nameRef type="local" name="events" />
-													</plx:left>
-													<plx:right>
-														<plx:callThis accessor="this" type="field" name="_events" />
-													</plx:right>
-												</plx:assign>
-											</plx:inlineStatement>
-										</plx:cast>
-									</plx:left>
-									<plx:right>
-										<plx:nullKeyword />
-									</plx:right>
-								</plx:binaryOperator>
-							</plx:left>
-							<plx:right>
-								<plx:binaryOperator type="identityInequality">
-									<plx:left>
-										<plx:cast type="exceptionCast" dataTypeName=".object">
-											<plx:inlineStatement dataTypeName="EventHandler">
-												<plx:passTypeParam dataTypeName="PropertyChangedEventArgs">
-													<plx:passTypeParam dataTypeName="Person" />
-													<plx:passTypeParam dataTypeName=".string" />
-												</plx:passTypeParam>
-												<plx:assign>
-													<plx:left>
-														<plx:nameRef type="local" name="eventHandler" />
-													</plx:left>
-													<plx:right>
-														<plx:cast type="exceptionCast" dataTypeName="EventHandler">
-															<plx:passTypeParam dataTypeName="PropertyChangedEventArgs">
-																<plx:passTypeParam dataTypeName="Person" />
-																<plx:passTypeParam dataTypeName=".string" />
-															</plx:passTypeParam>
-															<plx:callInstance type="arrayIndexer" name=".implied">
-																<plx:callObject>
-																	<plx:nameRef type="local" name="events" />
-																</plx:callObject>
-																<plx:passParam>
-																	<plx:value type="i4" data="7" />
-																</plx:passParam>
-															</plx:callInstance>
-														</plx:cast>
-													</plx:right>
-												</plx:assign>
-											</plx:inlineStatement>
-										</plx:cast>
-									</plx:left>
-									<plx:right>
-										<plx:nullKeyword />
-									</plx:right>
-								</plx:binaryOperator>
-							</plx:right>
-						</plx:binaryOperator>
-					</plx:condition>
-					<plx:callStatic type="methodCall" name="InvokeEventHandlerAsync" dataTypeName="EventHandlerUtility">
-						<plx:passMemberTypeParam dataTypeName="PropertyChangedEventArgs">
-							<plx:passTypeParam dataTypeName="Person" />
-							<plx:passTypeParam dataTypeName=".string" />
-						</plx:passMemberTypeParam>
-						<plx:passParam>
-							<plx:nameRef type="local" name="eventHandler" />
-						</plx:passParam>
-						<plx:passParam>
-							<plx:thisKeyword />
-						</plx:passParam>
-						<plx:passParam>
-							<plx:callNew dataTypeName="PropertyChangedEventArgs">
-								<plx:passTypeParam dataTypeName="Person" />
-								<plx:passTypeParam dataTypeName=".string" />
-								<plx:passParam>
-									<plx:thisKeyword />
-								</plx:passParam>
-								<plx:passParam>
-									<plx:string data="LastName" />
-								</plx:passParam>
-								<plx:passParam>
-									<plx:nameRef type="parameter" name="oldValue" />
-								</plx:passParam>
-								<plx:passParam>
-									<plx:callThis accessor="this" type="property" name="LastName" />
-								</plx:passParam>
-							</plx:callNew>
-						</plx:passParam>
-						<plx:passParam>
-							<plx:callThis accessor="this" type="field" name="_propertyChangedEventHandler" />
-						</plx:passParam>
-					</plx:callStatic>
-				</plx:branch>
-				<plx:fallbackBranch>
-					<plx:callThis accessor="this" type="methodCall" name="OnPropertyChanged">
-						<plx:passParam>
-							<plx:string data="LastName" />
-						</plx:passParam>
-					</plx:callThis>
-				</plx:fallbackBranch>
-			</plx:function>
-			<plx:event visibility="public" name="OptionalUniqueStringChanging">
-				<plx:param name="sender" dataTypeName=".object" />
-				<plx:param name="e" dataTypeName="PropertyChangingEventArgs">
-					<plx:passTypeParam dataTypeName="Person" />
-					<plx:passTypeParam dataTypeName=".string" />
-				</plx:param>
-				<plx:explicitDelegateType dataTypeName="EventHandler" />
-				<plx:passTypeParam dataTypeName="PropertyChangingEventArgs">
-					<plx:passTypeParam dataTypeName="Person" />
-					<plx:passTypeParam dataTypeName=".string" />
-				</plx:passTypeParam>
-				<plx:onAdd>
-					<plx:branch>
-						<plx:condition>
-							<plx:binaryOperator type="identityInequality">
-								<plx:left>
-									<plx:cast type="exceptionCast" dataTypeName=".object">
-										<plx:valueKeyword />
-									</plx:cast>
-								</plx:left>
-								<plx:right>
-									<plx:nullKeyword />
-								</plx:right>
-							</plx:binaryOperator>
-						</plx:condition>
-						<plx:callStatic type="methodCall" name="InterlockedDelegateCombine" dataTypeName="Person">
-							<plx:passParam type="inOut">
-								<plx:callInstance type="arrayIndexer" name=".implied">
-									<plx:callObject>
-										<plx:callThis accessor="this" type="property" name="Events" />
-									</plx:callObject>
-									<plx:passParam>
-										<plx:value type="i4" data="8" />
-									</plx:passParam>
-								</plx:callInstance>
-							</plx:passParam>
-							<plx:passParam>
-								<plx:valueKeyword />
-							</plx:passParam>
-						</plx:callStatic>
-					</plx:branch>
-				</plx:onAdd>
-				<plx:onRemove>
-					<plx:local name="events" dataTypeName="Delegate" dataTypeQualifier="System" dataTypeIsSimpleArray="true" />
-					<plx:branch>
-						<plx:condition>
-							<plx:binaryOperator type="booleanAnd">
-								<plx:left>
-									<plx:binaryOperator type="identityInequality">
-										<plx:left>
-											<plx:cast type="exceptionCast" dataTypeName=".object">
-												<plx:valueKeyword />
-											</plx:cast>
-										</plx:left>
-										<plx:right>
-											<plx:nullKeyword />
-										</plx:right>
-									</plx:binaryOperator>
-								</plx:left>
-								<plx:right>
-									<plx:binaryOperator type="identityInequality">
-										<plx:left>
-											<plx:cast type="exceptionCast" dataTypeName=".object">
-												<plx:inlineStatement dataTypeName="Delegate" dataTypeQualifier="System" dataTypeIsSimpleArray="true">
-													<plx:assign>
-														<plx:left>
-															<plx:nameRef type="local" name="events" />
-														</plx:left>
-														<plx:right>
-															<plx:callThis accessor="this" type="field" name="_events" />
-														</plx:right>
-													</plx:assign>
-												</plx:inlineStatement>
-											</plx:cast>
-										</plx:left>
-										<plx:right>
-											<plx:nullKeyword />
-										</plx:right>
-									</plx:binaryOperator>
-								</plx:right>
-							</plx:binaryOperator>
-						</plx:condition>
-						<plx:callStatic type="methodCall" name="InterlockedDelegateRemove" dataTypeName="Person">
-							<plx:passParam type="inOut">
-								<plx:callInstance type="arrayIndexer" name=".implied">
-									<plx:callObject>
-										<plx:nameRef type="local" name="events" />
-									</plx:callObject>
-									<plx:passParam>
-										<plx:value type="i4" data="8" />
-									</plx:passParam>
-								</plx:callInstance>
-							</plx:passParam>
-							<plx:passParam>
-								<plx:valueKeyword />
-							</plx:passParam>
-						</plx:callStatic>
-					</plx:branch>
-				</plx:onRemove>
-			</plx:event>
-			<plx:function visibility="protected" name="OnOptionalUniqueStringChanging">
-				<plx:param name="newValue" dataTypeName=".string" />
-				<plx:returns dataTypeName=".boolean" />
-				<plx:local name="events" dataTypeName="Delegate" dataTypeQualifier="System" dataTypeIsSimpleArray="true" />
-				<plx:local name="eventHandler" dataTypeName="EventHandler">
-					<plx:passTypeParam dataTypeName="PropertyChangingEventArgs">
-						<plx:passTypeParam dataTypeName="Person" />
-						<plx:passTypeParam dataTypeName=".string" />
-					</plx:passTypeParam>
-				</plx:local>
-				<plx:branch>
-					<plx:condition>
-						<plx:binaryOperator type="booleanAnd">
-							<plx:left>
-								<plx:binaryOperator type="identityInequality">
-									<plx:left>
-										<plx:cast type="exceptionCast" dataTypeName=".object">
-											<plx:inlineStatement dataTypeName="Delegate" dataTypeQualifier="System" dataTypeIsSimpleArray="true">
-												<plx:assign>
-													<plx:left>
-														<plx:nameRef type="local" name="events" />
-													</plx:left>
-													<plx:right>
-														<plx:callThis accessor="this" type="field" name="_events" />
-													</plx:right>
-												</plx:assign>
-											</plx:inlineStatement>
-										</plx:cast>
-									</plx:left>
-									<plx:right>
-										<plx:nullKeyword />
-									</plx:right>
-								</plx:binaryOperator>
-							</plx:left>
-							<plx:right>
-								<plx:binaryOperator type="identityInequality">
-									<plx:left>
-										<plx:cast type="exceptionCast" dataTypeName=".object">
-											<plx:inlineStatement dataTypeName="EventHandler">
-												<plx:passTypeParam dataTypeName="PropertyChangingEventArgs">
-													<plx:passTypeParam dataTypeName="Person" />
-													<plx:passTypeParam dataTypeName=".string" />
-												</plx:passTypeParam>
-												<plx:assign>
-													<plx:left>
-														<plx:nameRef type="local" name="eventHandler" />
-													</plx:left>
-													<plx:right>
-														<plx:cast type="exceptionCast" dataTypeName="EventHandler">
-															<plx:passTypeParam dataTypeName="PropertyChangingEventArgs">
-																<plx:passTypeParam dataTypeName="Person" />
-																<plx:passTypeParam dataTypeName=".string" />
-															</plx:passTypeParam>
-															<plx:callInstance type="arrayIndexer" name=".implied">
-																<plx:callObject>
-																	<plx:nameRef type="local" name="events" />
-																</plx:callObject>
-																<plx:passParam>
-																	<plx:value type="i4" data="8" />
-																</plx:passParam>
-															</plx:callInstance>
-														</plx:cast>
-													</plx:right>
-												</plx:assign>
-											</plx:inlineStatement>
-										</plx:cast>
-									</plx:left>
-									<plx:right>
-										<plx:nullKeyword />
-									</plx:right>
-								</plx:binaryOperator>
-							</plx:right>
-						</plx:binaryOperator>
-					</plx:condition>
-					<plx:return>
-						<plx:callStatic name="InvokeCancelableEventHandler" dataTypeName="EventHandlerUtility" type="methodCall">
-							<plx:passMemberTypeParam dataTypeName="PropertyChangingEventArgs">
-								<plx:passTypeParam dataTypeName="Person" />
-								<plx:passTypeParam dataTypeName=".string" />
-							</plx:passMemberTypeParam>
-							<plx:passParam>
-								<plx:nameRef type="local" name="eventHandler" />
-							</plx:passParam>
-							<plx:passParam>
-								<plx:thisKeyword />
-							</plx:passParam>
-							<plx:passParam>
-								<plx:callNew dataTypeName="PropertyChangingEventArgs">
-									<plx:passTypeParam dataTypeName="Person" />
-									<plx:passTypeParam dataTypeName=".string" />
-									<plx:passParam>
-										<plx:thisKeyword />
-									</plx:passParam>
-									<plx:passParam>
 										<plx:string data="OptionalUniqueString" />
 									</plx:passParam>
 									<plx:passParam>
@@ -4940,7 +4514,7 @@
 										<plx:callThis accessor="this" type="property" name="Events" />
 									</plx:callObject>
 									<plx:passParam>
-										<plx:value type="i4" data="9" />
+										<plx:value type="i4" data="7" />
 									</plx:passParam>
 								</plx:callInstance>
 							</plx:passParam>
@@ -4997,7 +4571,7 @@
 										<plx:nameRef type="local" name="events" />
 									</plx:callObject>
 									<plx:passParam>
-										<plx:value type="i4" data="9" />
+										<plx:value type="i4" data="7" />
 									</plx:passParam>
 								</plx:callInstance>
 							</plx:passParam>
@@ -5065,7 +4639,7 @@
 																	<plx:nameRef type="local" name="events" />
 																</plx:callObject>
 																<plx:passParam>
-																	<plx:value type="i4" data="9" />
+																	<plx:value type="i4" data="7" />
 																</plx:passParam>
 															</plx:callInstance>
 														</plx:cast>
@@ -5159,7 +4733,7 @@
 										<plx:callThis accessor="this" type="property" name="Events" />
 									</plx:callObject>
 									<plx:passParam>
-										<plx:value type="i4" data="10" />
+										<plx:value type="i4" data="8" />
 									</plx:passParam>
 								</plx:callInstance>
 							</plx:passParam>
@@ -5216,7 +4790,7 @@
 										<plx:nameRef type="local" name="events" />
 									</plx:callObject>
 									<plx:passParam>
-										<plx:value type="i4" data="10" />
+										<plx:value type="i4" data="8" />
 									</plx:passParam>
 								</plx:callInstance>
 							</plx:passParam>
@@ -5293,7 +4867,7 @@
 																	<plx:nameRef type="local" name="events" />
 																</plx:callObject>
 																<plx:passParam>
-																	<plx:value type="i4" data="10" />
+																	<plx:value type="i4" data="8" />
 																</plx:passParam>
 															</plx:callInstance>
 														</plx:cast>
@@ -5386,7 +4960,7 @@
 										<plx:callThis accessor="this" type="property" name="Events" />
 									</plx:callObject>
 									<plx:passParam>
-										<plx:value type="i4" data="11" />
+										<plx:value type="i4" data="9" />
 									</plx:passParam>
 								</plx:callInstance>
 							</plx:passParam>
@@ -5443,7 +5017,7 @@
 										<plx:nameRef type="local" name="events" />
 									</plx:callObject>
 									<plx:passParam>
-										<plx:value type="i4" data="11" />
+										<plx:value type="i4" data="9" />
 									</plx:passParam>
 								</plx:callInstance>
 							</plx:passParam>
@@ -5519,7 +5093,7 @@
 																	<plx:nameRef type="local" name="events" />
 																</plx:callObject>
 																<plx:passParam>
-																	<plx:value type="i4" data="11" />
+																	<plx:value type="i4" data="9" />
 																</plx:passParam>
 															</plx:callInstance>
 														</plx:cast>
@@ -5613,7 +5187,7 @@
 										<plx:callThis accessor="this" type="property" name="Events" />
 									</plx:callObject>
 									<plx:passParam>
-										<plx:value type="i4" data="12" />
+										<plx:value type="i4" data="10" />
 									</plx:passParam>
 								</plx:callInstance>
 							</plx:passParam>
@@ -5670,7 +5244,7 @@
 										<plx:nameRef type="local" name="events" />
 									</plx:callObject>
 									<plx:passParam>
-										<plx:value type="i4" data="12" />
+										<plx:value type="i4" data="10" />
 									</plx:passParam>
 								</plx:callInstance>
 							</plx:passParam>
@@ -5739,7 +5313,7 @@
 																	<plx:nameRef type="local" name="events" />
 																</plx:callObject>
 																<plx:passParam>
-																	<plx:value type="i4" data="12" />
+																	<plx:value type="i4" data="10" />
 																</plx:passParam>
 															</plx:callInstance>
 														</plx:cast>
@@ -5824,7 +5398,7 @@
 										<plx:callThis accessor="this" type="property" name="Events" />
 									</plx:callObject>
 									<plx:passParam>
-										<plx:value type="i4" data="13" />
+										<plx:value type="i4" data="11" />
 									</plx:passParam>
 								</plx:callInstance>
 							</plx:passParam>
@@ -5881,7 +5455,7 @@
 										<plx:nameRef type="local" name="events" />
 									</plx:callObject>
 									<plx:passParam>
-										<plx:value type="i4" data="13" />
+										<plx:value type="i4" data="11" />
 									</plx:passParam>
 								</plx:callInstance>
 							</plx:passParam>
@@ -5949,7 +5523,7 @@
 																	<plx:nameRef type="local" name="events" />
 																</plx:callObject>
 																<plx:passParam>
-																	<plx:value type="i4" data="13" />
+																	<plx:value type="i4" data="11" />
 																</plx:passParam>
 															</plx:callInstance>
 														</plx:cast>
@@ -6043,7 +5617,7 @@
 										<plx:callThis accessor="this" type="property" name="Events" />
 									</plx:callObject>
 									<plx:passParam>
-										<plx:value type="i4" data="14" />
+										<plx:value type="i4" data="12" />
 									</plx:passParam>
 								</plx:callInstance>
 							</plx:passParam>
@@ -6100,7 +5674,7 @@
 										<plx:nameRef type="local" name="events" />
 									</plx:callObject>
 									<plx:passParam>
-										<plx:value type="i4" data="14" />
+										<plx:value type="i4" data="12" />
 									</plx:passParam>
 								</plx:callInstance>
 							</plx:passParam>
@@ -6177,7 +5751,7 @@
 																	<plx:nameRef type="local" name="events" />
 																</plx:callObject>
 																<plx:passParam>
-																	<plx:value type="i4" data="14" />
+																	<plx:value type="i4" data="12" />
 																</plx:passParam>
 															</plx:callInstance>
 														</plx:cast>
@@ -6270,7 +5844,7 @@
 										<plx:callThis accessor="this" type="property" name="Events" />
 									</plx:callObject>
 									<plx:passParam>
-										<plx:value type="i4" data="15" />
+										<plx:value type="i4" data="13" />
 									</plx:passParam>
 								</plx:callInstance>
 							</plx:passParam>
@@ -6327,7 +5901,7 @@
 										<plx:nameRef type="local" name="events" />
 									</plx:callObject>
 									<plx:passParam>
-										<plx:value type="i4" data="15" />
+										<plx:value type="i4" data="13" />
 									</plx:passParam>
 								</plx:callInstance>
 							</plx:passParam>
@@ -6403,7 +5977,7 @@
 																	<plx:nameRef type="local" name="events" />
 																</plx:callObject>
 																<plx:passParam>
-																	<plx:value type="i4" data="15" />
+																	<plx:value type="i4" data="13" />
 																</plx:passParam>
 															</plx:callInstance>
 														</plx:cast>
@@ -6497,7 +6071,7 @@
 										<plx:callThis accessor="this" type="property" name="Events" />
 									</plx:callObject>
 									<plx:passParam>
-										<plx:value type="i4" data="16" />
+										<plx:value type="i4" data="14" />
 									</plx:passParam>
 								</plx:callInstance>
 							</plx:passParam>
@@ -6554,7 +6128,7 @@
 										<plx:nameRef type="local" name="events" />
 									</plx:callObject>
 									<plx:passParam>
-										<plx:value type="i4" data="16" />
+										<plx:value type="i4" data="14" />
 									</plx:passParam>
 								</plx:callInstance>
 							</plx:passParam>
@@ -6623,7 +6197,7 @@
 																	<plx:nameRef type="local" name="events" />
 																</plx:callObject>
 																<plx:passParam>
-																	<plx:value type="i4" data="16" />
+																	<plx:value type="i4" data="14" />
 																</plx:passParam>
 															</plx:callInstance>
 														</plx:cast>
@@ -6708,7 +6282,7 @@
 										<plx:callThis accessor="this" type="property" name="Events" />
 									</plx:callObject>
 									<plx:passParam>
-										<plx:value type="i4" data="17" />
+										<plx:value type="i4" data="15" />
 									</plx:passParam>
 								</plx:callInstance>
 							</plx:passParam>
@@ -6765,7 +6339,7 @@
 										<plx:nameRef type="local" name="events" />
 									</plx:callObject>
 									<plx:passParam>
-										<plx:value type="i4" data="17" />
+										<plx:value type="i4" data="15" />
 									</plx:passParam>
 								</plx:callInstance>
 							</plx:passParam>
@@ -6833,7 +6407,7 @@
 																	<plx:nameRef type="local" name="events" />
 																</plx:callObject>
 																<plx:passParam>
-																	<plx:value type="i4" data="17" />
+																	<plx:value type="i4" data="15" />
 																</plx:passParam>
 															</plx:callInstance>
 														</plx:cast>
@@ -6927,7 +6501,7 @@
 										<plx:callThis accessor="this" type="property" name="Events" />
 									</plx:callObject>
 									<plx:passParam>
-										<plx:value type="i4" data="18" />
+										<plx:value type="i4" data="16" />
 									</plx:passParam>
 								</plx:callInstance>
 							</plx:passParam>
@@ -6984,7 +6558,7 @@
 										<plx:nameRef type="local" name="events" />
 									</plx:callObject>
 									<plx:passParam>
-										<plx:value type="i4" data="18" />
+										<plx:value type="i4" data="16" />
 									</plx:passParam>
 								</plx:callInstance>
 							</plx:passParam>
@@ -7061,7 +6635,7 @@
 																	<plx:nameRef type="local" name="events" />
 																</plx:callObject>
 																<plx:passParam>
-																	<plx:value type="i4" data="18" />
+																	<plx:value type="i4" data="16" />
 																</plx:passParam>
 															</plx:callInstance>
 														</plx:cast>
@@ -7154,7 +6728,7 @@
 										<plx:callThis accessor="this" type="property" name="Events" />
 									</plx:callObject>
 									<plx:passParam>
-										<plx:value type="i4" data="19" />
+										<plx:value type="i4" data="17" />
 									</plx:passParam>
 								</plx:callInstance>
 							</plx:passParam>
@@ -7211,7 +6785,7 @@
 										<plx:nameRef type="local" name="events" />
 									</plx:callObject>
 									<plx:passParam>
-										<plx:value type="i4" data="19" />
+										<plx:value type="i4" data="17" />
 									</plx:passParam>
 								</plx:callInstance>
 							</plx:passParam>
@@ -7287,7 +6861,7 @@
 																	<plx:nameRef type="local" name="events" />
 																</plx:callObject>
 																<plx:passParam>
-																	<plx:value type="i4" data="19" />
+																	<plx:value type="i4" data="17" />
 																</plx:passParam>
 															</plx:callInstance>
 														</plx:cast>
@@ -7385,7 +6959,7 @@
 										<plx:callThis accessor="this" type="property" name="Events" />
 									</plx:callObject>
 									<plx:passParam>
-										<plx:value type="i4" data="20" />
+										<plx:value type="i4" data="18" />
 									</plx:passParam>
 								</plx:callInstance>
 							</plx:passParam>
@@ -7442,7 +7016,7 @@
 										<plx:nameRef type="local" name="events" />
 									</plx:callObject>
 									<plx:passParam>
-										<plx:value type="i4" data="20" />
+										<plx:value type="i4" data="18" />
 									</plx:passParam>
 								</plx:callInstance>
 							</plx:passParam>
@@ -7519,7 +7093,7 @@
 																	<plx:nameRef type="local" name="events" />
 																</plx:callObject>
 																<plx:passParam>
-																	<plx:value type="i4" data="20" />
+																	<plx:value type="i4" data="18" />
 																</plx:passParam>
 															</plx:callInstance>
 														</plx:cast>
@@ -7612,7 +7186,7 @@
 										<plx:callThis accessor="this" type="property" name="Events" />
 									</plx:callObject>
 									<plx:passParam>
-										<plx:value type="i4" data="21" />
+										<plx:value type="i4" data="19" />
 									</plx:passParam>
 								</plx:callInstance>
 							</plx:passParam>
@@ -7669,7 +7243,7 @@
 										<plx:nameRef type="local" name="events" />
 									</plx:callObject>
 									<plx:passParam>
-										<plx:value type="i4" data="21" />
+										<plx:value type="i4" data="19" />
 									</plx:passParam>
 								</plx:callInstance>
 							</plx:passParam>
@@ -7745,7 +7319,7 @@
 																	<plx:nameRef type="local" name="events" />
 																</plx:callObject>
 																<plx:passParam>
-																	<plx:value type="i4" data="21" />
+																	<plx:value type="i4" data="19" />
 																</plx:passParam>
 															</plx:callInstance>
 														</plx:cast>
@@ -7839,7 +7413,7 @@
 										<plx:callThis accessor="this" type="property" name="Events" />
 									</plx:callObject>
 									<plx:passParam>
-										<plx:value type="i4" data="22" />
+										<plx:value type="i4" data="20" />
 									</plx:passParam>
 								</plx:callInstance>
 							</plx:passParam>
@@ -7896,7 +7470,7 @@
 										<plx:nameRef type="local" name="events" />
 									</plx:callObject>
 									<plx:passParam>
-										<plx:value type="i4" data="22" />
+										<plx:value type="i4" data="20" />
 									</plx:passParam>
 								</plx:callInstance>
 							</plx:passParam>
@@ -7965,7 +7539,7 @@
 																	<plx:nameRef type="local" name="events" />
 																</plx:callObject>
 																<plx:passParam>
-																	<plx:value type="i4" data="22" />
+																	<plx:value type="i4" data="20" />
 																</plx:passParam>
 															</plx:callInstance>
 														</plx:cast>
@@ -8050,7 +7624,7 @@
 										<plx:callThis accessor="this" type="property" name="Events" />
 									</plx:callObject>
 									<plx:passParam>
-										<plx:value type="i4" data="23" />
+										<plx:value type="i4" data="21" />
 									</plx:passParam>
 								</plx:callInstance>
 							</plx:passParam>
@@ -8107,7 +7681,7 @@
 										<plx:nameRef type="local" name="events" />
 									</plx:callObject>
 									<plx:passParam>
-										<plx:value type="i4" data="23" />
+										<plx:value type="i4" data="21" />
 									</plx:passParam>
 								</plx:callInstance>
 							</plx:passParam>
@@ -8175,7 +7749,7 @@
 																	<plx:nameRef type="local" name="events" />
 																</plx:callObject>
 																<plx:passParam>
-																	<plx:value type="i4" data="23" />
+																	<plx:value type="i4" data="21" />
 																</plx:passParam>
 															</plx:callInstance>
 														</plx:cast>
@@ -8265,7 +7839,7 @@
 										<plx:callThis accessor="this" type="property" name="Events" />
 									</plx:callObject>
 									<plx:passParam>
-										<plx:value type="i4" data="24" />
+										<plx:value type="i4" data="22" />
 									</plx:passParam>
 								</plx:callInstance>
 							</plx:passParam>
@@ -8322,7 +7896,7 @@
 										<plx:nameRef type="local" name="events" />
 									</plx:callObject>
 									<plx:passParam>
-										<plx:value type="i4" data="24" />
+										<plx:value type="i4" data="22" />
 									</plx:passParam>
 								</plx:callInstance>
 							</plx:passParam>
@@ -8391,7 +7965,7 @@
 																	<plx:nameRef type="local" name="events" />
 																</plx:callObject>
 																<plx:passParam>
-																	<plx:value type="i4" data="24" />
+																	<plx:value type="i4" data="22" />
 																</plx:passParam>
 															</plx:callInstance>
 														</plx:cast>
@@ -8476,7 +8050,7 @@
 										<plx:callThis accessor="this" type="property" name="Events" />
 									</plx:callObject>
 									<plx:passParam>
-										<plx:value type="i4" data="25" />
+										<plx:value type="i4" data="23" />
 									</plx:passParam>
 								</plx:callInstance>
 							</plx:passParam>
@@ -8533,7 +8107,7 @@
 										<plx:nameRef type="local" name="events" />
 									</plx:callObject>
 									<plx:passParam>
-										<plx:value type="i4" data="25" />
+										<plx:value type="i4" data="23" />
 									</plx:passParam>
 								</plx:callInstance>
 							</plx:passParam>
@@ -8601,7 +8175,7 @@
 																	<plx:nameRef type="local" name="events" />
 																</plx:callObject>
 																<plx:passParam>
-																	<plx:value type="i4" data="25" />
+																	<plx:value type="i4" data="23" />
 																</plx:passParam>
 															</plx:callInstance>
 														</plx:cast>
@@ -8691,7 +8265,7 @@
 										<plx:callThis accessor="this" type="property" name="Events" />
 									</plx:callObject>
 									<plx:passParam>
-										<plx:value type="i4" data="26" />
+										<plx:value type="i4" data="24" />
 									</plx:passParam>
 								</plx:callInstance>
 							</plx:passParam>
@@ -8748,7 +8322,7 @@
 										<plx:nameRef type="local" name="events" />
 									</plx:callObject>
 									<plx:passParam>
-										<plx:value type="i4" data="26" />
+										<plx:value type="i4" data="24" />
 									</plx:passParam>
 								</plx:callInstance>
 							</plx:passParam>
@@ -8817,7 +8391,7 @@
 																	<plx:nameRef type="local" name="events" />
 																</plx:callObject>
 																<plx:passParam>
-																	<plx:value type="i4" data="26" />
+																	<plx:value type="i4" data="24" />
 																</plx:passParam>
 															</plx:callInstance>
 														</plx:cast>
@@ -8902,7 +8476,7 @@
 										<plx:callThis accessor="this" type="property" name="Events" />
 									</plx:callObject>
 									<plx:passParam>
-										<plx:value type="i4" data="27" />
+										<plx:value type="i4" data="25" />
 									</plx:passParam>
 								</plx:callInstance>
 							</plx:passParam>
@@ -8959,7 +8533,7 @@
 										<plx:nameRef type="local" name="events" />
 									</plx:callObject>
 									<plx:passParam>
-										<plx:value type="i4" data="27" />
+										<plx:value type="i4" data="25" />
 									</plx:passParam>
 								</plx:callInstance>
 							</plx:passParam>
@@ -9027,7 +8601,7 @@
 																	<plx:nameRef type="local" name="events" />
 																</plx:callObject>
 																<plx:passParam>
-																	<plx:value type="i4" data="27" />
+																	<plx:value type="i4" data="25" />
 																</plx:passParam>
 															</plx:callInstance>
 														</plx:cast>
@@ -9117,7 +8691,7 @@
 										<plx:callThis accessor="this" type="property" name="Events" />
 									</plx:callObject>
 									<plx:passParam>
-										<plx:value type="i4" data="28" />
+										<plx:value type="i4" data="26" />
 									</plx:passParam>
 								</plx:callInstance>
 							</plx:passParam>
@@ -9174,7 +8748,7 @@
 										<plx:nameRef type="local" name="events" />
 									</plx:callObject>
 									<plx:passParam>
-										<plx:value type="i4" data="28" />
+										<plx:value type="i4" data="26" />
 									</plx:passParam>
 								</plx:callInstance>
 							</plx:passParam>
@@ -9243,7 +8817,7 @@
 																	<plx:nameRef type="local" name="events" />
 																</plx:callObject>
 																<plx:passParam>
-																	<plx:value type="i4" data="28" />
+																	<plx:value type="i4" data="26" />
 																</plx:passParam>
 															</plx:callInstance>
 														</plx:cast>
@@ -9328,7 +8902,7 @@
 										<plx:callThis accessor="this" type="property" name="Events" />
 									</plx:callObject>
 									<plx:passParam>
-										<plx:value type="i4" data="29" />
+										<plx:value type="i4" data="27" />
 									</plx:passParam>
 								</plx:callInstance>
 							</plx:passParam>
@@ -9385,7 +8959,7 @@
 										<plx:nameRef type="local" name="events" />
 									</plx:callObject>
 									<plx:passParam>
-										<plx:value type="i4" data="29" />
+										<plx:value type="i4" data="27" />
 									</plx:passParam>
 								</plx:callInstance>
 							</plx:passParam>
@@ -9453,7 +9027,7 @@
 																	<plx:nameRef type="local" name="events" />
 																</plx:callObject>
 																<plx:passParam>
-																	<plx:value type="i4" data="29" />
+																	<plx:value type="i4" data="27" />
 																</plx:passParam>
 															</plx:callInstance>
 														</plx:cast>
@@ -9543,7 +9117,7 @@
 										<plx:callThis accessor="this" type="property" name="Events" />
 									</plx:callObject>
 									<plx:passParam>
-										<plx:value type="i4" data="30" />
+										<plx:value type="i4" data="28" />
 									</plx:passParam>
 								</plx:callInstance>
 							</plx:passParam>
@@ -9600,7 +9174,7 @@
 										<plx:nameRef type="local" name="events" />
 									</plx:callObject>
 									<plx:passParam>
-										<plx:value type="i4" data="30" />
+										<plx:value type="i4" data="28" />
 									</plx:passParam>
 								</plx:callInstance>
 							</plx:passParam>
@@ -9669,7 +9243,7 @@
 																	<plx:nameRef type="local" name="events" />
 																</plx:callObject>
 																<plx:passParam>
-																	<plx:value type="i4" data="30" />
+																	<plx:value type="i4" data="28" />
 																</plx:passParam>
 															</plx:callInstance>
 														</plx:cast>
@@ -9754,7 +9328,7 @@
 										<plx:callThis accessor="this" type="property" name="Events" />
 									</plx:callObject>
 									<plx:passParam>
-										<plx:value type="i4" data="31" />
+										<plx:value type="i4" data="29" />
 									</plx:passParam>
 								</plx:callInstance>
 							</plx:passParam>
@@ -9811,7 +9385,7 @@
 										<plx:nameRef type="local" name="events" />
 									</plx:callObject>
 									<plx:passParam>
-										<plx:value type="i4" data="31" />
+										<plx:value type="i4" data="29" />
 									</plx:passParam>
 								</plx:callInstance>
 							</plx:passParam>
@@ -9879,7 +9453,7 @@
 																	<plx:nameRef type="local" name="events" />
 																</plx:callObject>
 																<plx:passParam>
-																	<plx:value type="i4" data="31" />
+																	<plx:value type="i4" data="29" />
 																</plx:passParam>
 															</plx:callInstance>
 														</plx:cast>
@@ -9969,7 +9543,7 @@
 										<plx:callThis accessor="this" type="property" name="Events" />
 									</plx:callObject>
 									<plx:passParam>
-										<plx:value type="i4" data="32" />
+										<plx:value type="i4" data="30" />
 									</plx:passParam>
 								</plx:callInstance>
 							</plx:passParam>
@@ -10026,7 +9600,7 @@
 										<plx:nameRef type="local" name="events" />
 									</plx:callObject>
 									<plx:passParam>
-										<plx:value type="i4" data="32" />
+										<plx:value type="i4" data="30" />
 									</plx:passParam>
 								</plx:callInstance>
 							</plx:passParam>
@@ -10095,7 +9669,7 @@
 																	<plx:nameRef type="local" name="events" />
 																</plx:callObject>
 																<plx:passParam>
-																	<plx:value type="i4" data="32" />
+																	<plx:value type="i4" data="30" />
 																</plx:passParam>
 															</plx:callInstance>
 														</plx:cast>
@@ -10180,7 +9754,7 @@
 										<plx:callThis accessor="this" type="property" name="Events" />
 									</plx:callObject>
 									<plx:passParam>
-										<plx:value type="i4" data="33" />
+										<plx:value type="i4" data="31" />
 									</plx:passParam>
 								</plx:callInstance>
 							</plx:passParam>
@@ -10237,7 +9811,7 @@
 										<plx:nameRef type="local" name="events" />
 									</plx:callObject>
 									<plx:passParam>
-										<plx:value type="i4" data="33" />
+										<plx:value type="i4" data="31" />
 									</plx:passParam>
 								</plx:callInstance>
 							</plx:passParam>
@@ -10305,7 +9879,7 @@
 																	<plx:nameRef type="local" name="events" />
 																</plx:callObject>
 																<plx:passParam>
-																	<plx:value type="i4" data="33" />
+																	<plx:value type="i4" data="31" />
 																</plx:passParam>
 															</plx:callInstance>
 														</plx:cast>
@@ -10395,7 +9969,7 @@
 										<plx:callThis accessor="this" type="property" name="Events" />
 									</plx:callObject>
 									<plx:passParam>
-										<plx:value type="i4" data="34" />
+										<plx:value type="i4" data="32" />
 									</plx:passParam>
 								</plx:callInstance>
 							</plx:passParam>
@@ -10452,7 +10026,7 @@
 										<plx:nameRef type="local" name="events" />
 									</plx:callObject>
 									<plx:passParam>
-										<plx:value type="i4" data="34" />
+										<plx:value type="i4" data="32" />
 									</plx:passParam>
 								</plx:callInstance>
 							</plx:passParam>
@@ -10521,7 +10095,7 @@
 																	<plx:nameRef type="local" name="events" />
 																</plx:callObject>
 																<plx:passParam>
-																	<plx:value type="i4" data="34" />
+																	<plx:value type="i4" data="32" />
 																</plx:passParam>
 															</plx:callInstance>
 														</plx:cast>
@@ -10606,7 +10180,7 @@
 										<plx:callThis accessor="this" type="property" name="Events" />
 									</plx:callObject>
 									<plx:passParam>
-										<plx:value type="i4" data="35" />
+										<plx:value type="i4" data="33" />
 									</plx:passParam>
 								</plx:callInstance>
 							</plx:passParam>
@@ -10663,7 +10237,7 @@
 										<plx:nameRef type="local" name="events" />
 									</plx:callObject>
 									<plx:passParam>
-										<plx:value type="i4" data="35" />
+										<plx:value type="i4" data="33" />
 									</plx:passParam>
 								</plx:callInstance>
 							</plx:passParam>
@@ -10731,7 +10305,7 @@
 																	<plx:nameRef type="local" name="events" />
 																</plx:callObject>
 																<plx:passParam>
-																	<plx:value type="i4" data="35" />
+																	<plx:value type="i4" data="33" />
 																</plx:passParam>
 															</plx:callInstance>
 														</plx:cast>
@@ -10821,7 +10395,7 @@
 										<plx:callThis accessor="this" type="property" name="Events" />
 									</plx:callObject>
 									<plx:passParam>
-										<plx:value type="i4" data="36" />
+										<plx:value type="i4" data="34" />
 									</plx:passParam>
 								</plx:callInstance>
 							</plx:passParam>
@@ -10878,7 +10452,7 @@
 										<plx:nameRef type="local" name="events" />
 									</plx:callObject>
 									<plx:passParam>
-										<plx:value type="i4" data="36" />
+										<plx:value type="i4" data="34" />
 									</plx:passParam>
 								</plx:callInstance>
 							</plx:passParam>
@@ -10947,7 +10521,7 @@
 																	<plx:nameRef type="local" name="events" />
 																</plx:callObject>
 																<plx:passParam>
-																	<plx:value type="i4" data="36" />
+																	<plx:value type="i4" data="34" />
 																</plx:passParam>
 															</plx:callInstance>
 														</plx:cast>
@@ -11032,7 +10606,7 @@
 										<plx:callThis accessor="this" type="property" name="Events" />
 									</plx:callObject>
 									<plx:passParam>
-										<plx:value type="i4" data="37" />
+										<plx:value type="i4" data="35" />
 									</plx:passParam>
 								</plx:callInstance>
 							</plx:passParam>
@@ -11089,7 +10663,7 @@
 										<plx:nameRef type="local" name="events" />
 									</plx:callObject>
 									<plx:passParam>
-										<plx:value type="i4" data="37" />
+										<plx:value type="i4" data="35" />
 									</plx:passParam>
 								</plx:callInstance>
 							</plx:passParam>
@@ -11157,7 +10731,7 @@
 																	<plx:nameRef type="local" name="events" />
 																</plx:callObject>
 																<plx:passParam>
-																	<plx:value type="i4" data="37" />
+																	<plx:value type="i4" data="35" />
 																</plx:passParam>
 															</plx:callInstance>
 														</plx:cast>
@@ -11247,7 +10821,7 @@
 										<plx:callThis accessor="this" type="property" name="Events" />
 									</plx:callObject>
 									<plx:passParam>
-										<plx:value type="i4" data="38" />
+										<plx:value type="i4" data="36" />
 									</plx:passParam>
 								</plx:callInstance>
 							</plx:passParam>
@@ -11304,7 +10878,7 @@
 										<plx:nameRef type="local" name="events" />
 									</plx:callObject>
 									<plx:passParam>
-										<plx:value type="i4" data="38" />
+										<plx:value type="i4" data="36" />
 									</plx:passParam>
 								</plx:callInstance>
 							</plx:passParam>
@@ -11373,7 +10947,7 @@
 																	<plx:nameRef type="local" name="events" />
 																</plx:callObject>
 																<plx:passParam>
-																	<plx:value type="i4" data="38" />
+																	<plx:value type="i4" data="36" />
 																</plx:passParam>
 															</plx:callInstance>
 														</plx:cast>
@@ -11458,7 +11032,7 @@
 										<plx:callThis accessor="this" type="property" name="Events" />
 									</plx:callObject>
 									<plx:passParam>
-										<plx:value type="i4" data="39" />
+										<plx:value type="i4" data="37" />
 									</plx:passParam>
 								</plx:callInstance>
 							</plx:passParam>
@@ -11515,7 +11089,7 @@
 										<plx:nameRef type="local" name="events" />
 									</plx:callObject>
 									<plx:passParam>
-										<plx:value type="i4" data="39" />
+										<plx:value type="i4" data="37" />
 									</plx:passParam>
 								</plx:callInstance>
 							</plx:passParam>
@@ -11583,7 +11157,7 @@
 																	<plx:nameRef type="local" name="events" />
 																</plx:callObject>
 																<plx:passParam>
-																	<plx:value type="i4" data="39" />
+																	<plx:value type="i4" data="37" />
 																</plx:passParam>
 															</plx:callInstance>
 														</plx:cast>
@@ -11661,22 +11235,6 @@
 					</plx:passParam>
 				</plx:attribute>
 				<plx:returns dataTypeName=".string" />
-				<plx:get />
-				<plx:set />
-			</plx:property>
-			<plx:property visibility="public" modifier="abstract" name="Person_id">
-				<plx:attribute dataTypeName="DataObjectFieldAttribute">
-					<plx:passParam>
-						<plx:falseKeyword />
-					</plx:passParam>
-					<plx:passParam>
-						<plx:falseKeyword />
-					</plx:passParam>
-					<plx:passParam>
-						<plx:falseKeyword />
-					</plx:passParam>
-				</plx:attribute>
-				<plx:returns dataTypeName=".i4" />
 				<plx:get />
 				<plx:set />
 			</plx:property>
@@ -12099,7 +11657,7 @@
 							<plx:nameRef type="parameter" name="provider" />
 						</plx:passParam>
 						<plx:passParam>
-							<plx:string>Person{0}{{{0}{1}FirstName = "{2}",{0}{1}Person_id = "{3}",{0}{1}Date_YMD = "{4}",{0}{1}LastName = "{5}",{0}{1}OptionalUniqueString = "{6}",{0}{1}HatType_ColorARGB = "{7}",{0}{1}HatType_HatTypeStyle_HatTypeStyle_Description = "{8}",{0}{1}OwnsCar_vin = "{9}",{0}{1}Gender_Gender_Code = "{10}",{0}{1}hasParents = "{11}",{0}{1}OptionalUniqueDecimal = "{12}",{0}{1}MandatoryUniqueDecimal = "{13}",{0}{1}MandatoryUniqueString = "{14}",{0}{1}Husband = {15},{0}{1}ValueType1DoesSomethingElseWith = {16},{0}{1}MalePerson = {17},{0}{1}FemalePerson = {18},{0}{1}ChildPerson = {19},{0}{1}Death = {20},{0}{1}Wife = {21}{0}}}</plx:string>
+							<plx:string>Person{0}{{{0}{1}FirstName = "{2}",{0}{1}Date_YMD = "{3}",{0}{1}LastName = "{4}",{0}{1}OptionalUniqueString = "{5}",{0}{1}HatType_ColorARGB = "{6}",{0}{1}HatType_HatTypeStyle_HatTypeStyle_Description = "{7}",{0}{1}OwnsCar_vin = "{8}",{0}{1}Gender_Gender_Code = "{9}",{0}{1}hasParents = "{10}",{0}{1}OptionalUniqueDecimal = "{11}",{0}{1}MandatoryUniqueDecimal = "{12}",{0}{1}MandatoryUniqueString = "{13}",{0}{1}Husband = {14},{0}{1}ValueType1DoesSomethingElseWith = {15},{0}{1}MalePerson = {16},{0}{1}FemalePerson = {17},{0}{1}ChildPerson = {18},{0}{1}Death = {19},{0}{1}Wife = {20}{0}}}</plx:string>
 						</plx:passParam>
 						<plx:passParam>
 							<plx:callStatic type="field" name="NewLine" dataTypeName="Environment" />
@@ -12109,9 +11667,6 @@
 						</plx:passParam>
 						<plx:passParam>
 							<plx:callThis accessor="this" type="property" name="FirstName" />
-						</plx:passParam>
-						<plx:passParam>
-							<plx:callThis accessor="this" type="property" name="Person_id" />
 						</plx:passParam>
 						<plx:passParam>
 							<plx:callThis accessor="this" type="property" name="Date_YMD" />
@@ -13479,136 +13034,6 @@
 					<plx:detachEvent>
 						<plx:left>
 							<plx:callInstance type="event" name="FirstNameChanged">
-								<plx:callObject>
-									<plx:callInstance type="property" name="Person">
-										<plx:callObject>
-											<plx:thisKeyword />
-										</plx:callObject>
-									</plx:callInstance>
-								</plx:callObject>
-							</plx:callInstance>
-						</plx:left>
-						<plx:right>
-							<plx:valueKeyword />
-						</plx:right>
-					</plx:detachEvent>
-				</plx:onRemove>
-			</plx:event>
-			<plx:property visibility="public" modifier="virtual" name="Person_id">
-				<plx:returns dataTypeName=".i4" />
-				<plx:get>
-					<plx:return>
-						<plx:callInstance type="property" name="Person_id">
-							<plx:callObject>
-								<plx:callInstance type="property" name="Person">
-									<plx:callObject>
-										<plx:thisKeyword />
-									</plx:callObject>
-								</plx:callInstance>
-							</plx:callObject>
-						</plx:callInstance>
-					</plx:return>
-				</plx:get>
-				<plx:set>
-					<plx:assign>
-						<plx:left>
-							<plx:callInstance type="property" name="Person_id">
-								<plx:callObject>
-									<plx:callInstance type="property" name="Person">
-										<plx:callObject>
-											<plx:thisKeyword />
-										</plx:callObject>
-									</plx:callInstance>
-								</plx:callObject>
-							</plx:callInstance>
-						</plx:left>
-						<plx:right>
-							<plx:valueKeyword />
-						</plx:right>
-					</plx:assign>
-				</plx:set>
-			</plx:property>
-			<plx:event visibility="public" name="Person_idChanging">
-				<plx:param name="sender" dataTypeName=".object" />
-				<plx:param name="e" dataTypeName="PropertyChangingEventArgs">
-					<plx:passTypeParam dataTypeName="Person" />
-					<plx:passTypeParam dataTypeName=".i4" />
-				</plx:param>
-				<plx:explicitDelegateType dataTypeName="EventHandler" />
-				<plx:passTypeParam dataTypeName="PropertyChangingEventArgs">
-					<plx:passTypeParam dataTypeName="Person" />
-					<plx:passTypeParam dataTypeName=".i4" />
-				</plx:passTypeParam>
-				<plx:onAdd>
-					<plx:attachEvent>
-						<plx:left>
-							<plx:callInstance type="event" name="Person_idChanging">
-								<plx:callObject>
-									<plx:callInstance type="property" name="Person">
-										<plx:callObject>
-											<plx:thisKeyword />
-										</plx:callObject>
-									</plx:callInstance>
-								</plx:callObject>
-							</plx:callInstance>
-						</plx:left>
-						<plx:right>
-							<plx:valueKeyword />
-						</plx:right>
-					</plx:attachEvent>
-				</plx:onAdd>
-				<plx:onRemove>
-					<plx:detachEvent>
-						<plx:left>
-							<plx:callInstance type="event" name="Person_idChanging">
-								<plx:callObject>
-									<plx:callInstance type="property" name="Person">
-										<plx:callObject>
-											<plx:thisKeyword />
-										</plx:callObject>
-									</plx:callInstance>
-								</plx:callObject>
-							</plx:callInstance>
-						</plx:left>
-						<plx:right>
-							<plx:valueKeyword />
-						</plx:right>
-					</plx:detachEvent>
-				</plx:onRemove>
-			</plx:event>
-			<plx:event visibility="public" name="Person_idChanged">
-				<plx:param name="sender" dataTypeName=".object" />
-				<plx:param name="e" dataTypeName="PropertyChangedEventArgs">
-					<plx:passTypeParam dataTypeName="Person" />
-					<plx:passTypeParam dataTypeName=".i4" />
-				</plx:param>
-				<plx:explicitDelegateType dataTypeName="EventHandler" />
-				<plx:passTypeParam dataTypeName="PropertyChangedEventArgs">
-					<plx:passTypeParam dataTypeName="Person" />
-					<plx:passTypeParam dataTypeName=".i4" />
-				</plx:passTypeParam>
-				<plx:onAdd>
-					<plx:attachEvent>
-						<plx:left>
-							<plx:callInstance type="event" name="Person_idChanged">
-								<plx:callObject>
-									<plx:callInstance type="property" name="Person">
-										<plx:callObject>
-											<plx:thisKeyword />
-										</plx:callObject>
-									</plx:callInstance>
-								</plx:callObject>
-							</plx:callInstance>
-						</plx:left>
-						<plx:right>
-							<plx:valueKeyword />
-						</plx:right>
-					</plx:attachEvent>
-				</plx:onAdd>
-				<plx:onRemove>
-					<plx:detachEvent>
-						<plx:left>
-							<plx:callInstance type="event" name="Person_idChanged">
 								<plx:callObject>
 									<plx:callInstance type="property" name="Person">
 										<plx:callObject>
@@ -17005,136 +16430,6 @@
 					<plx:detachEvent>
 						<plx:left>
 							<plx:callInstance type="event" name="FirstNameChanged">
-								<plx:callObject>
-									<plx:callInstance type="property" name="Person">
-										<plx:callObject>
-											<plx:thisKeyword />
-										</plx:callObject>
-									</plx:callInstance>
-								</plx:callObject>
-							</plx:callInstance>
-						</plx:left>
-						<plx:right>
-							<plx:valueKeyword />
-						</plx:right>
-					</plx:detachEvent>
-				</plx:onRemove>
-			</plx:event>
-			<plx:property visibility="public" modifier="virtual" name="Person_id">
-				<plx:returns dataTypeName=".i4" />
-				<plx:get>
-					<plx:return>
-						<plx:callInstance type="property" name="Person_id">
-							<plx:callObject>
-								<plx:callInstance type="property" name="Person">
-									<plx:callObject>
-										<plx:thisKeyword />
-									</plx:callObject>
-								</plx:callInstance>
-							</plx:callObject>
-						</plx:callInstance>
-					</plx:return>
-				</plx:get>
-				<plx:set>
-					<plx:assign>
-						<plx:left>
-							<plx:callInstance type="property" name="Person_id">
-								<plx:callObject>
-									<plx:callInstance type="property" name="Person">
-										<plx:callObject>
-											<plx:thisKeyword />
-										</plx:callObject>
-									</plx:callInstance>
-								</plx:callObject>
-							</plx:callInstance>
-						</plx:left>
-						<plx:right>
-							<plx:valueKeyword />
-						</plx:right>
-					</plx:assign>
-				</plx:set>
-			</plx:property>
-			<plx:event visibility="public" name="Person_idChanging">
-				<plx:param name="sender" dataTypeName=".object" />
-				<plx:param name="e" dataTypeName="PropertyChangingEventArgs">
-					<plx:passTypeParam dataTypeName="Person" />
-					<plx:passTypeParam dataTypeName=".i4" />
-				</plx:param>
-				<plx:explicitDelegateType dataTypeName="EventHandler" />
-				<plx:passTypeParam dataTypeName="PropertyChangingEventArgs">
-					<plx:passTypeParam dataTypeName="Person" />
-					<plx:passTypeParam dataTypeName=".i4" />
-				</plx:passTypeParam>
-				<plx:onAdd>
-					<plx:attachEvent>
-						<plx:left>
-							<plx:callInstance type="event" name="Person_idChanging">
-								<plx:callObject>
-									<plx:callInstance type="property" name="Person">
-										<plx:callObject>
-											<plx:thisKeyword />
-										</plx:callObject>
-									</plx:callInstance>
-								</plx:callObject>
-							</plx:callInstance>
-						</plx:left>
-						<plx:right>
-							<plx:valueKeyword />
-						</plx:right>
-					</plx:attachEvent>
-				</plx:onAdd>
-				<plx:onRemove>
-					<plx:detachEvent>
-						<plx:left>
-							<plx:callInstance type="event" name="Person_idChanging">
-								<plx:callObject>
-									<plx:callInstance type="property" name="Person">
-										<plx:callObject>
-											<plx:thisKeyword />
-										</plx:callObject>
-									</plx:callInstance>
-								</plx:callObject>
-							</plx:callInstance>
-						</plx:left>
-						<plx:right>
-							<plx:valueKeyword />
-						</plx:right>
-					</plx:detachEvent>
-				</plx:onRemove>
-			</plx:event>
-			<plx:event visibility="public" name="Person_idChanged">
-				<plx:param name="sender" dataTypeName=".object" />
-				<plx:param name="e" dataTypeName="PropertyChangedEventArgs">
-					<plx:passTypeParam dataTypeName="Person" />
-					<plx:passTypeParam dataTypeName=".i4" />
-				</plx:param>
-				<plx:explicitDelegateType dataTypeName="EventHandler" />
-				<plx:passTypeParam dataTypeName="PropertyChangedEventArgs">
-					<plx:passTypeParam dataTypeName="Person" />
-					<plx:passTypeParam dataTypeName=".i4" />
-				</plx:passTypeParam>
-				<plx:onAdd>
-					<plx:attachEvent>
-						<plx:left>
-							<plx:callInstance type="event" name="Person_idChanged">
-								<plx:callObject>
-									<plx:callInstance type="property" name="Person">
-										<plx:callObject>
-											<plx:thisKeyword />
-										</plx:callObject>
-									</plx:callInstance>
-								</plx:callObject>
-							</plx:callInstance>
-						</plx:left>
-						<plx:right>
-							<plx:valueKeyword />
-						</plx:right>
-					</plx:attachEvent>
-				</plx:onAdd>
-				<plx:onRemove>
-					<plx:detachEvent>
-						<plx:left>
-							<plx:callInstance type="event" name="Person_idChanged">
 								<plx:callObject>
 									<plx:callInstance type="property" name="Person">
 										<plx:callObject>
@@ -21849,136 +21144,6 @@
 					<plx:detachEvent>
 						<plx:left>
 							<plx:callInstance type="event" name="FirstNameChanged">
-								<plx:callObject>
-									<plx:callInstance type="property" name="Person">
-										<plx:callObject>
-											<plx:thisKeyword />
-										</plx:callObject>
-									</plx:callInstance>
-								</plx:callObject>
-							</plx:callInstance>
-						</plx:left>
-						<plx:right>
-							<plx:valueKeyword />
-						</plx:right>
-					</plx:detachEvent>
-				</plx:onRemove>
-			</plx:event>
-			<plx:property visibility="public" modifier="virtual" name="Person_id">
-				<plx:returns dataTypeName=".i4" />
-				<plx:get>
-					<plx:return>
-						<plx:callInstance type="property" name="Person_id">
-							<plx:callObject>
-								<plx:callInstance type="property" name="Person">
-									<plx:callObject>
-										<plx:thisKeyword />
-									</plx:callObject>
-								</plx:callInstance>
-							</plx:callObject>
-						</plx:callInstance>
-					</plx:return>
-				</plx:get>
-				<plx:set>
-					<plx:assign>
-						<plx:left>
-							<plx:callInstance type="property" name="Person_id">
-								<plx:callObject>
-									<plx:callInstance type="property" name="Person">
-										<plx:callObject>
-											<plx:thisKeyword />
-										</plx:callObject>
-									</plx:callInstance>
-								</plx:callObject>
-							</plx:callInstance>
-						</plx:left>
-						<plx:right>
-							<plx:valueKeyword />
-						</plx:right>
-					</plx:assign>
-				</plx:set>
-			</plx:property>
-			<plx:event visibility="public" name="Person_idChanging">
-				<plx:param name="sender" dataTypeName=".object" />
-				<plx:param name="e" dataTypeName="PropertyChangingEventArgs">
-					<plx:passTypeParam dataTypeName="Person" />
-					<plx:passTypeParam dataTypeName=".i4" />
-				</plx:param>
-				<plx:explicitDelegateType dataTypeName="EventHandler" />
-				<plx:passTypeParam dataTypeName="PropertyChangingEventArgs">
-					<plx:passTypeParam dataTypeName="Person" />
-					<plx:passTypeParam dataTypeName=".i4" />
-				</plx:passTypeParam>
-				<plx:onAdd>
-					<plx:attachEvent>
-						<plx:left>
-							<plx:callInstance type="event" name="Person_idChanging">
-								<plx:callObject>
-									<plx:callInstance type="property" name="Person">
-										<plx:callObject>
-											<plx:thisKeyword />
-										</plx:callObject>
-									</plx:callInstance>
-								</plx:callObject>
-							</plx:callInstance>
-						</plx:left>
-						<plx:right>
-							<plx:valueKeyword />
-						</plx:right>
-					</plx:attachEvent>
-				</plx:onAdd>
-				<plx:onRemove>
-					<plx:detachEvent>
-						<plx:left>
-							<plx:callInstance type="event" name="Person_idChanging">
-								<plx:callObject>
-									<plx:callInstance type="property" name="Person">
-										<plx:callObject>
-											<plx:thisKeyword />
-										</plx:callObject>
-									</plx:callInstance>
-								</plx:callObject>
-							</plx:callInstance>
-						</plx:left>
-						<plx:right>
-							<plx:valueKeyword />
-						</plx:right>
-					</plx:detachEvent>
-				</plx:onRemove>
-			</plx:event>
-			<plx:event visibility="public" name="Person_idChanged">
-				<plx:param name="sender" dataTypeName=".object" />
-				<plx:param name="e" dataTypeName="PropertyChangedEventArgs">
-					<plx:passTypeParam dataTypeName="Person" />
-					<plx:passTypeParam dataTypeName=".i4" />
-				</plx:param>
-				<plx:explicitDelegateType dataTypeName="EventHandler" />
-				<plx:passTypeParam dataTypeName="PropertyChangedEventArgs">
-					<plx:passTypeParam dataTypeName="Person" />
-					<plx:passTypeParam dataTypeName=".i4" />
-				</plx:passTypeParam>
-				<plx:onAdd>
-					<plx:attachEvent>
-						<plx:left>
-							<plx:callInstance type="event" name="Person_idChanged">
-								<plx:callObject>
-									<plx:callInstance type="property" name="Person">
-										<plx:callObject>
-											<plx:thisKeyword />
-										</plx:callObject>
-									</plx:callInstance>
-								</plx:callObject>
-							</plx:callInstance>
-						</plx:left>
-						<plx:right>
-							<plx:valueKeyword />
-						</plx:right>
-					</plx:attachEvent>
-				</plx:onAdd>
-				<plx:onRemove>
-					<plx:detachEvent>
-						<plx:left>
-							<plx:callInstance type="event" name="Person_idChanged">
 								<plx:callObject>
 									<plx:callInstance type="property" name="Person">
 										<plx:callObject>
@@ -27632,136 +26797,6 @@
 					</plx:detachEvent>
 				</plx:onRemove>
 			</plx:event>
-			<plx:property visibility="public" modifier="virtual" name="Person_id">
-				<plx:returns dataTypeName=".i4" />
-				<plx:get>
-					<plx:return>
-						<plx:callInstance type="property" name="Person_id">
-							<plx:callObject>
-								<plx:callInstance type="property" name="Person">
-									<plx:callObject>
-										<plx:thisKeyword />
-									</plx:callObject>
-								</plx:callInstance>
-							</plx:callObject>
-						</plx:callInstance>
-					</plx:return>
-				</plx:get>
-				<plx:set>
-					<plx:assign>
-						<plx:left>
-							<plx:callInstance type="property" name="Person_id">
-								<plx:callObject>
-									<plx:callInstance type="property" name="Person">
-										<plx:callObject>
-											<plx:thisKeyword />
-										</plx:callObject>
-									</plx:callInstance>
-								</plx:callObject>
-							</plx:callInstance>
-						</plx:left>
-						<plx:right>
-							<plx:valueKeyword />
-						</plx:right>
-					</plx:assign>
-				</plx:set>
-			</plx:property>
-			<plx:event visibility="public" name="Person_idChanging">
-				<plx:param name="sender" dataTypeName=".object" />
-				<plx:param name="e" dataTypeName="PropertyChangingEventArgs">
-					<plx:passTypeParam dataTypeName="Person" />
-					<plx:passTypeParam dataTypeName=".i4" />
-				</plx:param>
-				<plx:explicitDelegateType dataTypeName="EventHandler" />
-				<plx:passTypeParam dataTypeName="PropertyChangingEventArgs">
-					<plx:passTypeParam dataTypeName="Person" />
-					<plx:passTypeParam dataTypeName=".i4" />
-				</plx:passTypeParam>
-				<plx:onAdd>
-					<plx:attachEvent>
-						<plx:left>
-							<plx:callInstance type="event" name="Person_idChanging">
-								<plx:callObject>
-									<plx:callInstance type="property" name="Person">
-										<plx:callObject>
-											<plx:thisKeyword />
-										</plx:callObject>
-									</plx:callInstance>
-								</plx:callObject>
-							</plx:callInstance>
-						</plx:left>
-						<plx:right>
-							<plx:valueKeyword />
-						</plx:right>
-					</plx:attachEvent>
-				</plx:onAdd>
-				<plx:onRemove>
-					<plx:detachEvent>
-						<plx:left>
-							<plx:callInstance type="event" name="Person_idChanging">
-								<plx:callObject>
-									<plx:callInstance type="property" name="Person">
-										<plx:callObject>
-											<plx:thisKeyword />
-										</plx:callObject>
-									</plx:callInstance>
-								</plx:callObject>
-							</plx:callInstance>
-						</plx:left>
-						<plx:right>
-							<plx:valueKeyword />
-						</plx:right>
-					</plx:detachEvent>
-				</plx:onRemove>
-			</plx:event>
-			<plx:event visibility="public" name="Person_idChanged">
-				<plx:param name="sender" dataTypeName=".object" />
-				<plx:param name="e" dataTypeName="PropertyChangedEventArgs">
-					<plx:passTypeParam dataTypeName="Person" />
-					<plx:passTypeParam dataTypeName=".i4" />
-				</plx:param>
-				<plx:explicitDelegateType dataTypeName="EventHandler" />
-				<plx:passTypeParam dataTypeName="PropertyChangedEventArgs">
-					<plx:passTypeParam dataTypeName="Person" />
-					<plx:passTypeParam dataTypeName=".i4" />
-				</plx:passTypeParam>
-				<plx:onAdd>
-					<plx:attachEvent>
-						<plx:left>
-							<plx:callInstance type="event" name="Person_idChanged">
-								<plx:callObject>
-									<plx:callInstance type="property" name="Person">
-										<plx:callObject>
-											<plx:thisKeyword />
-										</plx:callObject>
-									</plx:callInstance>
-								</plx:callObject>
-							</plx:callInstance>
-						</plx:left>
-						<plx:right>
-							<plx:valueKeyword />
-						</plx:right>
-					</plx:attachEvent>
-				</plx:onAdd>
-				<plx:onRemove>
-					<plx:detachEvent>
-						<plx:left>
-							<plx:callInstance type="event" name="Person_idChanged">
-								<plx:callObject>
-									<plx:callInstance type="property" name="Person">
-										<plx:callObject>
-											<plx:thisKeyword />
-										</plx:callObject>
-									</plx:callInstance>
-								</plx:callObject>
-							</plx:callInstance>
-						</plx:left>
-						<plx:right>
-							<plx:valueKeyword />
-						</plx:right>
-					</plx:detachEvent>
-				</plx:onRemove>
-			</plx:event>
 			<plx:property visibility="public" modifier="virtual" name="LastName">
 				<plx:returns dataTypeName=".string" />
 				<plx:get>
@@ -32303,160 +31338,6 @@
 					<plx:detachEvent>
 						<plx:left>
 							<plx:callInstance type="event" name="FirstNameChanged">
-								<plx:callObject>
-									<plx:callInstance type="property" name="Person">
-										<plx:callObject>
-											<plx:callInstance type="property" name="Death">
-												<plx:callObject>
-													<plx:thisKeyword />
-												</plx:callObject>
-											</plx:callInstance>
-										</plx:callObject>
-									</plx:callInstance>
-								</plx:callObject>
-							</plx:callInstance>
-						</plx:left>
-						<plx:right>
-							<plx:valueKeyword />
-						</plx:right>
-					</plx:detachEvent>
-				</plx:onRemove>
-			</plx:event>
-			<plx:property visibility="public" modifier="virtual" name="Person_id">
-				<plx:returns dataTypeName=".i4" />
-				<plx:get>
-					<plx:return>
-						<plx:callInstance type="property" name="Person_id">
-							<plx:callObject>
-								<plx:callInstance type="property" name="Person">
-									<plx:callObject>
-										<plx:callInstance type="property" name="Death">
-											<plx:callObject>
-												<plx:thisKeyword />
-											</plx:callObject>
-										</plx:callInstance>
-									</plx:callObject>
-								</plx:callInstance>
-							</plx:callObject>
-						</plx:callInstance>
-					</plx:return>
-				</plx:get>
-				<plx:set>
-					<plx:assign>
-						<plx:left>
-							<plx:callInstance type="property" name="Person_id">
-								<plx:callObject>
-									<plx:callInstance type="property" name="Person">
-										<plx:callObject>
-											<plx:callInstance type="property" name="Death">
-												<plx:callObject>
-													<plx:thisKeyword />
-												</plx:callObject>
-											</plx:callInstance>
-										</plx:callObject>
-									</plx:callInstance>
-								</plx:callObject>
-							</plx:callInstance>
-						</plx:left>
-						<plx:right>
-							<plx:valueKeyword />
-						</plx:right>
-					</plx:assign>
-				</plx:set>
-			</plx:property>
-			<plx:event visibility="public" name="Person_idChanging">
-				<plx:param name="sender" dataTypeName=".object" />
-				<plx:param name="e" dataTypeName="PropertyChangingEventArgs">
-					<plx:passTypeParam dataTypeName="Person" />
-					<plx:passTypeParam dataTypeName=".i4" />
-				</plx:param>
-				<plx:explicitDelegateType dataTypeName="EventHandler" />
-				<plx:passTypeParam dataTypeName="PropertyChangingEventArgs">
-					<plx:passTypeParam dataTypeName="Person" />
-					<plx:passTypeParam dataTypeName=".i4" />
-				</plx:passTypeParam>
-				<plx:onAdd>
-					<plx:attachEvent>
-						<plx:left>
-							<plx:callInstance type="event" name="Person_idChanging">
-								<plx:callObject>
-									<plx:callInstance type="property" name="Person">
-										<plx:callObject>
-											<plx:callInstance type="property" name="Death">
-												<plx:callObject>
-													<plx:thisKeyword />
-												</plx:callObject>
-											</plx:callInstance>
-										</plx:callObject>
-									</plx:callInstance>
-								</plx:callObject>
-							</plx:callInstance>
-						</plx:left>
-						<plx:right>
-							<plx:valueKeyword />
-						</plx:right>
-					</plx:attachEvent>
-				</plx:onAdd>
-				<plx:onRemove>
-					<plx:detachEvent>
-						<plx:left>
-							<plx:callInstance type="event" name="Person_idChanging">
-								<plx:callObject>
-									<plx:callInstance type="property" name="Person">
-										<plx:callObject>
-											<plx:callInstance type="property" name="Death">
-												<plx:callObject>
-													<plx:thisKeyword />
-												</plx:callObject>
-											</plx:callInstance>
-										</plx:callObject>
-									</plx:callInstance>
-								</plx:callObject>
-							</plx:callInstance>
-						</plx:left>
-						<plx:right>
-							<plx:valueKeyword />
-						</plx:right>
-					</plx:detachEvent>
-				</plx:onRemove>
-			</plx:event>
-			<plx:event visibility="public" name="Person_idChanged">
-				<plx:param name="sender" dataTypeName=".object" />
-				<plx:param name="e" dataTypeName="PropertyChangedEventArgs">
-					<plx:passTypeParam dataTypeName="Person" />
-					<plx:passTypeParam dataTypeName=".i4" />
-				</plx:param>
-				<plx:explicitDelegateType dataTypeName="EventHandler" />
-				<plx:passTypeParam dataTypeName="PropertyChangedEventArgs">
-					<plx:passTypeParam dataTypeName="Person" />
-					<plx:passTypeParam dataTypeName=".i4" />
-				</plx:passTypeParam>
-				<plx:onAdd>
-					<plx:attachEvent>
-						<plx:left>
-							<plx:callInstance type="event" name="Person_idChanged">
-								<plx:callObject>
-									<plx:callInstance type="property" name="Person">
-										<plx:callObject>
-											<plx:callInstance type="property" name="Death">
-												<plx:callObject>
-													<plx:thisKeyword />
-												</plx:callObject>
-											</plx:callInstance>
-										</plx:callObject>
-									</plx:callInstance>
-								</plx:callObject>
-							</plx:callInstance>
-						</plx:left>
-						<plx:right>
-							<plx:valueKeyword />
-						</plx:right>
-					</plx:attachEvent>
-				</plx:onAdd>
-				<plx:onRemove>
-					<plx:detachEvent>
-						<plx:left>
-							<plx:callInstance type="event" name="Person_idChanged">
 								<plx:callObject>
 									<plx:callInstance type="property" name="Person">
 										<plx:callObject>
@@ -37807,160 +36688,6 @@
 					</plx:detachEvent>
 				</plx:onRemove>
 			</plx:event>
-			<plx:property visibility="public" modifier="virtual" name="Person_id">
-				<plx:returns dataTypeName=".i4" />
-				<plx:get>
-					<plx:return>
-						<plx:callInstance type="property" name="Person_id">
-							<plx:callObject>
-								<plx:callInstance type="property" name="Person">
-									<plx:callObject>
-										<plx:callInstance type="property" name="Death">
-											<plx:callObject>
-												<plx:thisKeyword />
-											</plx:callObject>
-										</plx:callInstance>
-									</plx:callObject>
-								</plx:callInstance>
-							</plx:callObject>
-						</plx:callInstance>
-					</plx:return>
-				</plx:get>
-				<plx:set>
-					<plx:assign>
-						<plx:left>
-							<plx:callInstance type="property" name="Person_id">
-								<plx:callObject>
-									<plx:callInstance type="property" name="Person">
-										<plx:callObject>
-											<plx:callInstance type="property" name="Death">
-												<plx:callObject>
-													<plx:thisKeyword />
-												</plx:callObject>
-											</plx:callInstance>
-										</plx:callObject>
-									</plx:callInstance>
-								</plx:callObject>
-							</plx:callInstance>
-						</plx:left>
-						<plx:right>
-							<plx:valueKeyword />
-						</plx:right>
-					</plx:assign>
-				</plx:set>
-			</plx:property>
-			<plx:event visibility="public" name="Person_idChanging">
-				<plx:param name="sender" dataTypeName=".object" />
-				<plx:param name="e" dataTypeName="PropertyChangingEventArgs">
-					<plx:passTypeParam dataTypeName="Person" />
-					<plx:passTypeParam dataTypeName=".i4" />
-				</plx:param>
-				<plx:explicitDelegateType dataTypeName="EventHandler" />
-				<plx:passTypeParam dataTypeName="PropertyChangingEventArgs">
-					<plx:passTypeParam dataTypeName="Person" />
-					<plx:passTypeParam dataTypeName=".i4" />
-				</plx:passTypeParam>
-				<plx:onAdd>
-					<plx:attachEvent>
-						<plx:left>
-							<plx:callInstance type="event" name="Person_idChanging">
-								<plx:callObject>
-									<plx:callInstance type="property" name="Person">
-										<plx:callObject>
-											<plx:callInstance type="property" name="Death">
-												<plx:callObject>
-													<plx:thisKeyword />
-												</plx:callObject>
-											</plx:callInstance>
-										</plx:callObject>
-									</plx:callInstance>
-								</plx:callObject>
-							</plx:callInstance>
-						</plx:left>
-						<plx:right>
-							<plx:valueKeyword />
-						</plx:right>
-					</plx:attachEvent>
-				</plx:onAdd>
-				<plx:onRemove>
-					<plx:detachEvent>
-						<plx:left>
-							<plx:callInstance type="event" name="Person_idChanging">
-								<plx:callObject>
-									<plx:callInstance type="property" name="Person">
-										<plx:callObject>
-											<plx:callInstance type="property" name="Death">
-												<plx:callObject>
-													<plx:thisKeyword />
-												</plx:callObject>
-											</plx:callInstance>
-										</plx:callObject>
-									</plx:callInstance>
-								</plx:callObject>
-							</plx:callInstance>
-						</plx:left>
-						<plx:right>
-							<plx:valueKeyword />
-						</plx:right>
-					</plx:detachEvent>
-				</plx:onRemove>
-			</plx:event>
-			<plx:event visibility="public" name="Person_idChanged">
-				<plx:param name="sender" dataTypeName=".object" />
-				<plx:param name="e" dataTypeName="PropertyChangedEventArgs">
-					<plx:passTypeParam dataTypeName="Person" />
-					<plx:passTypeParam dataTypeName=".i4" />
-				</plx:param>
-				<plx:explicitDelegateType dataTypeName="EventHandler" />
-				<plx:passTypeParam dataTypeName="PropertyChangedEventArgs">
-					<plx:passTypeParam dataTypeName="Person" />
-					<plx:passTypeParam dataTypeName=".i4" />
-				</plx:passTypeParam>
-				<plx:onAdd>
-					<plx:attachEvent>
-						<plx:left>
-							<plx:callInstance type="event" name="Person_idChanged">
-								<plx:callObject>
-									<plx:callInstance type="property" name="Person">
-										<plx:callObject>
-											<plx:callInstance type="property" name="Death">
-												<plx:callObject>
-													<plx:thisKeyword />
-												</plx:callObject>
-											</plx:callInstance>
-										</plx:callObject>
-									</plx:callInstance>
-								</plx:callObject>
-							</plx:callInstance>
-						</plx:left>
-						<plx:right>
-							<plx:valueKeyword />
-						</plx:right>
-					</plx:attachEvent>
-				</plx:onAdd>
-				<plx:onRemove>
-					<plx:detachEvent>
-						<plx:left>
-							<plx:callInstance type="event" name="Person_idChanged">
-								<plx:callObject>
-									<plx:callInstance type="property" name="Person">
-										<plx:callObject>
-											<plx:callInstance type="property" name="Death">
-												<plx:callObject>
-													<plx:thisKeyword />
-												</plx:callObject>
-											</plx:callInstance>
-										</plx:callObject>
-									</plx:callInstance>
-								</plx:callObject>
-							</plx:callInstance>
-						</plx:left>
-						<plx:right>
-							<plx:valueKeyword />
-						</plx:right>
-					</plx:detachEvent>
-				</plx:onRemove>
-			</plx:event>
 			<plx:property visibility="public" modifier="virtual" name="LastName">
 				<plx:returns dataTypeName=".string" />
 				<plx:get>
@@ -40855,7 +39582,7 @@
 																<plx:right>
 																	<plx:callNew dataTypeIsSimpleArray="true" dataTypeName="Delegate" dataTypeQualifier="System">
 																		<plx:passParam>
-																			<plx:value type="i4" data="4" />
+																			<plx:value type="i4" data="2" />
 																		</plx:passParam>
 																	</plx:callNew>
 																</plx:right>
@@ -40974,432 +39701,6 @@
 					</plx:condition>
 				</plx:loop>
 			</plx:function>
-			<plx:event visibility="public" name="Task_idChanging">
-				<plx:param name="sender" dataTypeName=".object" />
-				<plx:param name="e" dataTypeName="PropertyChangingEventArgs">
-					<plx:passTypeParam dataTypeName="Task" />
-					<plx:passTypeParam dataTypeName=".i4" />
-				</plx:param>
-				<plx:explicitDelegateType dataTypeName="EventHandler" />
-				<plx:passTypeParam dataTypeName="PropertyChangingEventArgs">
-					<plx:passTypeParam dataTypeName="Task" />
-					<plx:passTypeParam dataTypeName=".i4" />
-				</plx:passTypeParam>
-				<plx:onAdd>
-					<plx:branch>
-						<plx:condition>
-							<plx:binaryOperator type="identityInequality">
-								<plx:left>
-									<plx:cast type="exceptionCast" dataTypeName=".object">
-										<plx:valueKeyword />
-									</plx:cast>
-								</plx:left>
-								<plx:right>
-									<plx:nullKeyword />
-								</plx:right>
-							</plx:binaryOperator>
-						</plx:condition>
-						<plx:callStatic type="methodCall" name="InterlockedDelegateCombine" dataTypeName="Task">
-							<plx:passParam type="inOut">
-								<plx:callInstance type="arrayIndexer" name=".implied">
-									<plx:callObject>
-										<plx:callThis accessor="this" type="property" name="Events" />
-									</plx:callObject>
-									<plx:passParam>
-										<plx:value type="i4" data="0" />
-									</plx:passParam>
-								</plx:callInstance>
-							</plx:passParam>
-							<plx:passParam>
-								<plx:valueKeyword />
-							</plx:passParam>
-						</plx:callStatic>
-					</plx:branch>
-				</plx:onAdd>
-				<plx:onRemove>
-					<plx:local name="events" dataTypeName="Delegate" dataTypeQualifier="System" dataTypeIsSimpleArray="true" />
-					<plx:branch>
-						<plx:condition>
-							<plx:binaryOperator type="booleanAnd">
-								<plx:left>
-									<plx:binaryOperator type="identityInequality">
-										<plx:left>
-											<plx:cast type="exceptionCast" dataTypeName=".object">
-												<plx:valueKeyword />
-											</plx:cast>
-										</plx:left>
-										<plx:right>
-											<plx:nullKeyword />
-										</plx:right>
-									</plx:binaryOperator>
-								</plx:left>
-								<plx:right>
-									<plx:binaryOperator type="identityInequality">
-										<plx:left>
-											<plx:cast type="exceptionCast" dataTypeName=".object">
-												<plx:inlineStatement dataTypeName="Delegate" dataTypeQualifier="System" dataTypeIsSimpleArray="true">
-													<plx:assign>
-														<plx:left>
-															<plx:nameRef type="local" name="events" />
-														</plx:left>
-														<plx:right>
-															<plx:callThis accessor="this" type="field" name="_events" />
-														</plx:right>
-													</plx:assign>
-												</plx:inlineStatement>
-											</plx:cast>
-										</plx:left>
-										<plx:right>
-											<plx:nullKeyword />
-										</plx:right>
-									</plx:binaryOperator>
-								</plx:right>
-							</plx:binaryOperator>
-						</plx:condition>
-						<plx:callStatic type="methodCall" name="InterlockedDelegateRemove" dataTypeName="Task">
-							<plx:passParam type="inOut">
-								<plx:callInstance type="arrayIndexer" name=".implied">
-									<plx:callObject>
-										<plx:nameRef type="local" name="events" />
-									</plx:callObject>
-									<plx:passParam>
-										<plx:value type="i4" data="0" />
-									</plx:passParam>
-								</plx:callInstance>
-							</plx:passParam>
-							<plx:passParam>
-								<plx:valueKeyword />
-							</plx:passParam>
-						</plx:callStatic>
-					</plx:branch>
-				</plx:onRemove>
-			</plx:event>
-			<plx:function visibility="protected" name="OnTask_idChanging">
-				<plx:param name="newValue" dataTypeName=".i4" />
-				<plx:returns dataTypeName=".boolean" />
-				<plx:local name="events" dataTypeName="Delegate" dataTypeQualifier="System" dataTypeIsSimpleArray="true" />
-				<plx:local name="eventHandler" dataTypeName="EventHandler">
-					<plx:passTypeParam dataTypeName="PropertyChangingEventArgs">
-						<plx:passTypeParam dataTypeName="Task" />
-						<plx:passTypeParam dataTypeName=".i4" />
-					</plx:passTypeParam>
-				</plx:local>
-				<plx:branch>
-					<plx:condition>
-						<plx:binaryOperator type="booleanAnd">
-							<plx:left>
-								<plx:binaryOperator type="identityInequality">
-									<plx:left>
-										<plx:cast type="exceptionCast" dataTypeName=".object">
-											<plx:inlineStatement dataTypeName="Delegate" dataTypeQualifier="System" dataTypeIsSimpleArray="true">
-												<plx:assign>
-													<plx:left>
-														<plx:nameRef type="local" name="events" />
-													</plx:left>
-													<plx:right>
-														<plx:callThis accessor="this" type="field" name="_events" />
-													</plx:right>
-												</plx:assign>
-											</plx:inlineStatement>
-										</plx:cast>
-									</plx:left>
-									<plx:right>
-										<plx:nullKeyword />
-									</plx:right>
-								</plx:binaryOperator>
-							</plx:left>
-							<plx:right>
-								<plx:binaryOperator type="identityInequality">
-									<plx:left>
-										<plx:cast type="exceptionCast" dataTypeName=".object">
-											<plx:inlineStatement dataTypeName="EventHandler">
-												<plx:passTypeParam dataTypeName="PropertyChangingEventArgs">
-													<plx:passTypeParam dataTypeName="Task" />
-													<plx:passTypeParam dataTypeName=".i4" />
-												</plx:passTypeParam>
-												<plx:assign>
-													<plx:left>
-														<plx:nameRef type="local" name="eventHandler" />
-													</plx:left>
-													<plx:right>
-														<plx:cast type="exceptionCast" dataTypeName="EventHandler">
-															<plx:passTypeParam dataTypeName="PropertyChangingEventArgs">
-																<plx:passTypeParam dataTypeName="Task" />
-																<plx:passTypeParam dataTypeName=".i4" />
-															</plx:passTypeParam>
-															<plx:callInstance type="arrayIndexer" name=".implied">
-																<plx:callObject>
-																	<plx:nameRef type="local" name="events" />
-																</plx:callObject>
-																<plx:passParam>
-																	<plx:value type="i4" data="0" />
-																</plx:passParam>
-															</plx:callInstance>
-														</plx:cast>
-													</plx:right>
-												</plx:assign>
-											</plx:inlineStatement>
-										</plx:cast>
-									</plx:left>
-									<plx:right>
-										<plx:nullKeyword />
-									</plx:right>
-								</plx:binaryOperator>
-							</plx:right>
-						</plx:binaryOperator>
-					</plx:condition>
-					<plx:return>
-						<plx:callStatic name="InvokeCancelableEventHandler" dataTypeName="EventHandlerUtility" type="methodCall">
-							<plx:passMemberTypeParam dataTypeName="PropertyChangingEventArgs">
-								<plx:passTypeParam dataTypeName="Task" />
-								<plx:passTypeParam dataTypeName=".i4" />
-							</plx:passMemberTypeParam>
-							<plx:passParam>
-								<plx:nameRef type="local" name="eventHandler" />
-							</plx:passParam>
-							<plx:passParam>
-								<plx:thisKeyword />
-							</plx:passParam>
-							<plx:passParam>
-								<plx:callNew dataTypeName="PropertyChangingEventArgs">
-									<plx:passTypeParam dataTypeName="Task" />
-									<plx:passTypeParam dataTypeName=".i4" />
-									<plx:passParam>
-										<plx:thisKeyword />
-									</plx:passParam>
-									<plx:passParam>
-										<plx:string data="Task_id" />
-									</plx:passParam>
-									<plx:passParam>
-										<plx:callThis accessor="this" type="property" name="Task_id" />
-									</plx:passParam>
-									<plx:passParam>
-										<plx:nameRef type="parameter" name="newValue" />
-									</plx:passParam>
-								</plx:callNew>
-							</plx:passParam>
-						</plx:callStatic>
-					</plx:return>
-				</plx:branch>
-				<plx:return>
-					<plx:trueKeyword />
-				</plx:return>
-			</plx:function>
-			<plx:event visibility="public" name="Task_idChanged">
-				<plx:param name="sender" dataTypeName=".object" />
-				<plx:param name="e" dataTypeName="PropertyChangedEventArgs">
-					<plx:passTypeParam dataTypeName="Task" />
-					<plx:passTypeParam dataTypeName=".i4" />
-				</plx:param>
-				<plx:explicitDelegateType dataTypeName="EventHandler" />
-				<plx:passTypeParam dataTypeName="PropertyChangedEventArgs">
-					<plx:passTypeParam dataTypeName="Task" />
-					<plx:passTypeParam dataTypeName=".i4" />
-				</plx:passTypeParam>
-				<plx:onAdd>
-					<plx:branch>
-						<plx:condition>
-							<plx:binaryOperator type="identityInequality">
-								<plx:left>
-									<plx:cast type="exceptionCast" dataTypeName=".object">
-										<plx:valueKeyword />
-									</plx:cast>
-								</plx:left>
-								<plx:right>
-									<plx:nullKeyword />
-								</plx:right>
-							</plx:binaryOperator>
-						</plx:condition>
-						<plx:callStatic type="methodCall" name="InterlockedDelegateCombine" dataTypeName="Task">
-							<plx:passParam type="inOut">
-								<plx:callInstance type="arrayIndexer" name=".implied">
-									<plx:callObject>
-										<plx:callThis accessor="this" type="property" name="Events" />
-									</plx:callObject>
-									<plx:passParam>
-										<plx:value type="i4" data="1" />
-									</plx:passParam>
-								</plx:callInstance>
-							</plx:passParam>
-							<plx:passParam>
-								<plx:valueKeyword />
-							</plx:passParam>
-						</plx:callStatic>
-					</plx:branch>
-				</plx:onAdd>
-				<plx:onRemove>
-					<plx:local name="events" dataTypeName="Delegate" dataTypeQualifier="System" dataTypeIsSimpleArray="true" />
-					<plx:branch>
-						<plx:condition>
-							<plx:binaryOperator type="booleanAnd">
-								<plx:left>
-									<plx:binaryOperator type="identityInequality">
-										<plx:left>
-											<plx:cast type="exceptionCast" dataTypeName=".object">
-												<plx:valueKeyword />
-											</plx:cast>
-										</plx:left>
-										<plx:right>
-											<plx:nullKeyword />
-										</plx:right>
-									</plx:binaryOperator>
-								</plx:left>
-								<plx:right>
-									<plx:binaryOperator type="identityInequality">
-										<plx:left>
-											<plx:cast type="exceptionCast" dataTypeName=".object">
-												<plx:inlineStatement dataTypeName="Delegate" dataTypeQualifier="System" dataTypeIsSimpleArray="true">
-													<plx:assign>
-														<plx:left>
-															<plx:nameRef type="local" name="events" />
-														</plx:left>
-														<plx:right>
-															<plx:callThis accessor="this" type="field" name="_events" />
-														</plx:right>
-													</plx:assign>
-												</plx:inlineStatement>
-											</plx:cast>
-										</plx:left>
-										<plx:right>
-											<plx:nullKeyword />
-										</plx:right>
-									</plx:binaryOperator>
-								</plx:right>
-							</plx:binaryOperator>
-						</plx:condition>
-						<plx:callStatic type="methodCall" name="InterlockedDelegateRemove" dataTypeName="Task">
-							<plx:passParam type="inOut">
-								<plx:callInstance type="arrayIndexer" name=".implied">
-									<plx:callObject>
-										<plx:nameRef type="local" name="events" />
-									</plx:callObject>
-									<plx:passParam>
-										<plx:value type="i4" data="1" />
-									</plx:passParam>
-								</plx:callInstance>
-							</plx:passParam>
-							<plx:passParam>
-								<plx:valueKeyword />
-							</plx:passParam>
-						</plx:callStatic>
-					</plx:branch>
-				</plx:onRemove>
-			</plx:event>
-			<plx:function visibility="protected" name="OnTask_idChanged">
-				<plx:param name="oldValue" dataTypeName=".i4" />
-				<plx:local name="events" dataTypeName="Delegate" dataTypeQualifier="System" dataTypeIsSimpleArray="true" />
-				<plx:local name="eventHandler" dataTypeName="EventHandler">
-					<plx:passTypeParam dataTypeName="PropertyChangedEventArgs">
-						<plx:passTypeParam dataTypeName="Task" />
-						<plx:passTypeParam dataTypeName=".i4" />
-					</plx:passTypeParam>
-				</plx:local>
-				<plx:branch>
-					<plx:condition>
-						<plx:binaryOperator type="booleanAnd">
-							<plx:left>
-								<plx:binaryOperator type="identityInequality">
-									<plx:left>
-										<plx:cast type="exceptionCast" dataTypeName=".object">
-											<plx:inlineStatement dataTypeName="Delegate" dataTypeQualifier="System" dataTypeIsSimpleArray="true">
-												<plx:assign>
-													<plx:left>
-														<plx:nameRef type="local" name="events" />
-													</plx:left>
-													<plx:right>
-														<plx:callThis accessor="this" type="field" name="_events" />
-													</plx:right>
-												</plx:assign>
-											</plx:inlineStatement>
-										</plx:cast>
-									</plx:left>
-									<plx:right>
-										<plx:nullKeyword />
-									</plx:right>
-								</plx:binaryOperator>
-							</plx:left>
-							<plx:right>
-								<plx:binaryOperator type="identityInequality">
-									<plx:left>
-										<plx:cast type="exceptionCast" dataTypeName=".object">
-											<plx:inlineStatement dataTypeName="EventHandler">
-												<plx:passTypeParam dataTypeName="PropertyChangedEventArgs">
-													<plx:passTypeParam dataTypeName="Task" />
-													<plx:passTypeParam dataTypeName=".i4" />
-												</plx:passTypeParam>
-												<plx:assign>
-													<plx:left>
-														<plx:nameRef type="local" name="eventHandler" />
-													</plx:left>
-													<plx:right>
-														<plx:cast type="exceptionCast" dataTypeName="EventHandler">
-															<plx:passTypeParam dataTypeName="PropertyChangedEventArgs">
-																<plx:passTypeParam dataTypeName="Task" />
-																<plx:passTypeParam dataTypeName=".i4" />
-															</plx:passTypeParam>
-															<plx:callInstance type="arrayIndexer" name=".implied">
-																<plx:callObject>
-																	<plx:nameRef type="local" name="events" />
-																</plx:callObject>
-																<plx:passParam>
-																	<plx:value type="i4" data="1" />
-																</plx:passParam>
-															</plx:callInstance>
-														</plx:cast>
-													</plx:right>
-												</plx:assign>
-											</plx:inlineStatement>
-										</plx:cast>
-									</plx:left>
-									<plx:right>
-										<plx:nullKeyword />
-									</plx:right>
-								</plx:binaryOperator>
-							</plx:right>
-						</plx:binaryOperator>
-					</plx:condition>
-					<plx:callStatic type="methodCall" name="InvokeEventHandlerAsync" dataTypeName="EventHandlerUtility">
-						<plx:passMemberTypeParam dataTypeName="PropertyChangedEventArgs">
-							<plx:passTypeParam dataTypeName="Task" />
-							<plx:passTypeParam dataTypeName=".i4" />
-						</plx:passMemberTypeParam>
-						<plx:passParam>
-							<plx:nameRef type="local" name="eventHandler" />
-						</plx:passParam>
-						<plx:passParam>
-							<plx:thisKeyword />
-						</plx:passParam>
-						<plx:passParam>
-							<plx:callNew dataTypeName="PropertyChangedEventArgs">
-								<plx:passTypeParam dataTypeName="Task" />
-								<plx:passTypeParam dataTypeName=".i4" />
-								<plx:passParam>
-									<plx:thisKeyword />
-								</plx:passParam>
-								<plx:passParam>
-									<plx:string data="Task_id" />
-								</plx:passParam>
-								<plx:passParam>
-									<plx:nameRef type="parameter" name="oldValue" />
-								</plx:passParam>
-								<plx:passParam>
-									<plx:callThis accessor="this" type="property" name="Task_id" />
-								</plx:passParam>
-							</plx:callNew>
-						</plx:passParam>
-						<plx:passParam>
-							<plx:callThis accessor="this" type="field" name="_propertyChangedEventHandler" />
-						</plx:passParam>
-					</plx:callStatic>
-				</plx:branch>
-				<plx:fallbackBranch>
-					<plx:callThis accessor="this" type="methodCall" name="OnPropertyChanged">
-						<plx:passParam>
-							<plx:string data="Task_id" />
-						</plx:passParam>
-					</plx:callThis>
-				</plx:fallbackBranch>
-			</plx:function>
 			<plx:event visibility="public" name="PersonChanging">
 				<plx:param name="sender" dataTypeName=".object" />
 				<plx:param name="e" dataTypeName="PropertyChangingEventArgs">
@@ -41432,7 +39733,7 @@
 										<plx:callThis accessor="this" type="property" name="Events" />
 									</plx:callObject>
 									<plx:passParam>
-										<plx:value type="i4" data="2" />
+										<plx:value type="i4" data="0" />
 									</plx:passParam>
 								</plx:callInstance>
 							</plx:passParam>
@@ -41489,7 +39790,7 @@
 										<plx:nameRef type="local" name="events" />
 									</plx:callObject>
 									<plx:passParam>
-										<plx:value type="i4" data="2" />
+										<plx:value type="i4" data="0" />
 									</plx:passParam>
 								</plx:callInstance>
 							</plx:passParam>
@@ -41558,7 +39859,7 @@
 																	<plx:nameRef type="local" name="events" />
 																</plx:callObject>
 																<plx:passParam>
-																	<plx:value type="i4" data="2" />
+																	<plx:value type="i4" data="0" />
 																</plx:passParam>
 															</plx:callInstance>
 														</plx:cast>
@@ -41643,7 +39944,7 @@
 										<plx:callThis accessor="this" type="property" name="Events" />
 									</plx:callObject>
 									<plx:passParam>
-										<plx:value type="i4" data="3" />
+										<plx:value type="i4" data="1" />
 									</plx:passParam>
 								</plx:callInstance>
 							</plx:passParam>
@@ -41700,7 +40001,7 @@
 										<plx:nameRef type="local" name="events" />
 									</plx:callObject>
 									<plx:passParam>
-										<plx:value type="i4" data="3" />
+										<plx:value type="i4" data="1" />
 									</plx:passParam>
 								</plx:callInstance>
 							</plx:passParam>
@@ -41768,7 +40069,7 @@
 																	<plx:nameRef type="local" name="events" />
 																</plx:callObject>
 																<plx:passParam>
-																	<plx:value type="i4" data="3" />
+																	<plx:value type="i4" data="1" />
 																</plx:passParam>
 															</plx:callInstance>
 														</plx:cast>
@@ -41833,22 +40134,6 @@
 				<plx:returns dataTypeName="SampleModelContext" />
 				<plx:get />
 			</plx:property>
-			<plx:property visibility="public" modifier="abstract" name="Task_id">
-				<plx:attribute dataTypeName="DataObjectFieldAttribute">
-					<plx:passParam>
-						<plx:falseKeyword />
-					</plx:passParam>
-					<plx:passParam>
-						<plx:falseKeyword />
-					</plx:passParam>
-					<plx:passParam>
-						<plx:falseKeyword />
-					</plx:passParam>
-				</plx:attribute>
-				<plx:returns dataTypeName=".i4" />
-				<plx:get />
-				<plx:set />
-			</plx:property>
 			<plx:property visibility="public" modifier="abstract" name="Person">
 				<plx:attribute dataTypeName="DataObjectFieldAttribute">
 					<plx:passParam>
@@ -41886,16 +40171,13 @@
 							<plx:nameRef type="parameter" name="provider" />
 						</plx:passParam>
 						<plx:passParam>
-							<plx:string>Task{0}{{{0}{1}Task_id = "{2}",{0}{1}Person = {3}{0}}}</plx:string>
+							<plx:string>Task{0}{{{0}{1}Person = {2}{0}}}</plx:string>
 						</plx:passParam>
 						<plx:passParam>
 							<plx:callStatic type="field" name="NewLine" dataTypeName="Environment" />
 						</plx:passParam>
 						<plx:passParam>
 							<plx:string>&#x09;</plx:string>
-						</plx:passParam>
-						<plx:passParam>
-							<plx:callThis accessor="this" type="property" name="Task_id" />
 						</plx:passParam>
 						<plx:passParam>
 							<plx:string>TODO: Recursively call ToString for customTypes...</plx:string>
@@ -47317,15 +45599,6 @@
 				<plx:param type="out" name="Review" dataTypeName="Review" />
 				<plx:returns dataTypeName=".boolean" />
 			</plx:function>
-			<plx:function visibility="public" modifier="abstract" name="GetPersonByPerson_id">
-				<plx:param name="Person_id" dataTypeName=".i4" />
-				<plx:returns dataTypeName="Person" />
-			</plx:function>
-			<plx:function visibility="public" modifier="abstract" name="TryGetPersonByPerson_id">
-				<plx:param name="Person_id" dataTypeName=".i4" />
-				<plx:param type="out" name="Person" dataTypeName="Person" />
-				<plx:returns dataTypeName=".boolean" />
-			</plx:function>
 			<plx:function visibility="public" modifier="abstract" name="GetPersonByOptionalUniqueString">
 				<plx:param name="OptionalUniqueString" dataTypeName=".string" />
 				<plx:returns dataTypeName="Person" />
@@ -47371,15 +45644,6 @@
 				<plx:param type="out" name="Person" dataTypeName="Person" />
 				<plx:returns dataTypeName=".boolean" />
 			</plx:function>
-			<plx:function visibility="public" modifier="abstract" name="GetTaskByTask_id">
-				<plx:param name="Task_id" dataTypeName=".i4" />
-				<plx:returns dataTypeName="Task" />
-			</plx:function>
-			<plx:function visibility="public" modifier="abstract" name="TryGetTaskByTask_id">
-				<plx:param name="Task_id" dataTypeName=".i4" />
-				<plx:param type="out" name="Task" dataTypeName="Task" />
-				<plx:returns dataTypeName=".boolean" />
-			</plx:function>
 			<plx:function visibility="public" modifier="abstract" name="GetValueType1ByValueType1Value">
 				<plx:param name="ValueType1Value" dataTypeName=".i4" />
 				<plx:returns dataTypeName="ValueType1" />
@@ -47413,7 +45677,6 @@
 			</plx:property>
 			<plx:function visibility="public" modifier="abstract" name="CreatePerson">
 				<plx:param name="FirstName" dataTypeName=".string" />
-				<plx:param name="Person_id" dataTypeName=".i4" />
 				<plx:param name="Date_YMD" dataTypeName=".i4" />
 				<plx:param name="LastName" dataTypeName=".string" />
 				<plx:param name="Gender_Gender_Code" dataTypeName=".string" />
@@ -47493,7 +45756,6 @@
 				<plx:get />
 			</plx:property>
 			<plx:function visibility="public" modifier="abstract" name="CreateTask">
-				<plx:param name="Task_id" dataTypeName=".i4" />
 				<plx:returns dataTypeName="Task" />
 			</plx:function>
 			<plx:property visibility="public" modifier="abstract" name="TaskCollection">

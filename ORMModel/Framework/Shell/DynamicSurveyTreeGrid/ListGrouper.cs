@@ -244,8 +244,8 @@ namespace Neumont.Tools.Modeling.Shell.DynamicSurveyTreeGrid
 						return false;
 					}
 					#endregion // AdjustAdd method
-					#region AdjustRename method
-					public void AdjustRename(int fromIndex, int toIndex, BranchModificationEventHandler modificationEvents)
+					#region AdjustModified method
+					public void AdjustModified(int fromIndex, int toIndex, bool displayChanged, BranchModificationEventHandler modificationEvents)
 					{
 						if (modificationEvents != null)
 						{
@@ -265,21 +265,21 @@ namespace Neumont.Tools.Modeling.Shell.DynamicSurveyTreeGrid
 										{
 											modificationEvents(shifter, BranchModificationEventArgs.MoveItem(shifter, fromIndex, toIndex));
 										}
-										else
+										else if (displayChanged)
 										{
 											modificationEvents(shifter, BranchModificationEventArgs.DisplayDataChanged(new DisplayDataChangedData(VirtualTreeDisplayDataChanges.Text, shifter, fromIndex, 0, 1)));
 										}
 									}
 									else if (null != (grouper = branch as ListGrouper))
 									{
-										grouper.ElementRenamedAt(fromIndex, toIndex, modificationEvents, null, 0);
+										grouper.ElementModifiedAt(fromIndex, toIndex, displayChanged, modificationEvents, null, 0);
 									}
 								}
 
 							}
 						}
 					}
-					#endregion // AdjustRename method
+					#endregion // AdjustModified method
 					#endregion // Adjust Methods
 					#region  Helper Methods
 					private static void HandleSubranch(int index, int adjustIndex, BranchModificationEventHandler modificationEvents, SimpleListShifter notifyListShifter)
@@ -986,33 +986,35 @@ namespace Neumont.Tools.Modeling.Shell.DynamicSurveyTreeGrid
 					}
 				}
 				#endregion // ElementAddedAt
-				#region ElementRenamedAt
+				#region ElementModifiedAt
 				/// <summary>
 				/// Renames the node at given index and redraws the tree
 				/// </summary>
 				/// <param name="fromIndex">Original index of the element</param>
 				/// <param name="toIndex">New index of the element. Can be the same as fromIndex</param>
+				/// <param name="displayChanged">Set if the display should be changed even when the element have not moved.</param>
 				/// <param name="modificationEvents">The event handler to notify the tree with</param>
-				public void ElementRenamedAt(int fromIndex, int toIndex, BranchModificationEventHandler modificationEvents)
+				public void ElementModifiedAt(int fromIndex, int toIndex, bool displayChanged, BranchModificationEventHandler modificationEvents)
 				{
-					ElementRenamedAt(fromIndex, toIndex, modificationEvents, null, 0);
+					ElementModifiedAt(fromIndex, toIndex, displayChanged, modificationEvents, null, 0);
 				}
 				/// <summary>
 				/// Renames the node at given index and redraws the tree
 				/// </summary>
 				/// <param name="fromIndex">Original index of the element</param>
 				/// <param name="toIndex">New index of the element. Can be the same as fromIndex</param>
+				/// <param name="displayChanged">Set if the display should be changed even when the element have not moved.</param>
 				/// <param name="modificationEvents">The event handler to notify the tree with</param>
 				/// <param name="notifyThrough">A wrapper branch. Notify the event handler with this branch, not the current branch</param>
 				/// <param name="notifyThroughOffset">Used if notifyThrough is not null. The starting offset of this branch in the outer branch.</param>
-				public void ElementRenamedAt(int fromIndex, int toIndex, BranchModificationEventHandler modificationEvents, IBranch notifyThrough, int notifyThroughOffset)
+				public void ElementModifiedAt(int fromIndex, int toIndex, bool displayChanged, BranchModificationEventHandler modificationEvents, IBranch notifyThrough, int notifyThroughOffset)
 				{
 					if (modificationEvents != null)
 					{
 						SubBranchMetaData[] subBranches = mySubBranches;
 						for (int i = 0; i < subBranches.Length; i++)
 						{
-							subBranches[i].AdjustRename(fromIndex, toIndex, modificationEvents);
+							subBranches[i].AdjustModified(fromIndex, toIndex, displayChanged, modificationEvents);
 						}
 						// Handle any nested neutral branches
 						IBranch neutralBranch = myNeutralBranch;
@@ -1024,7 +1026,7 @@ namespace Neumont.Tools.Modeling.Shell.DynamicSurveyTreeGrid
 							SimpleListShifter shifter;
 							if (null == (shifter = (neutralBranch as SimpleListShifter)))
 							{
-								((ListGrouper)neutralBranch).ElementRenamedAt(fromIndex, toIndex, modificationEvents, notifyBranch, offsetAdjustment);
+								((ListGrouper)neutralBranch).ElementModifiedAt(fromIndex, toIndex, displayChanged, modificationEvents, notifyBranch, offsetAdjustment);
 							}
 							else if (shifter.FirstItem <= fromIndex && shifter.LastItem >= fromIndex)
 							{
@@ -1032,7 +1034,7 @@ namespace Neumont.Tools.Modeling.Shell.DynamicSurveyTreeGrid
 								{
 									modificationEvents(notifyBranch, BranchModificationEventArgs.MoveItem(notifyBranch, fromIndex - shifter.FirstItem + offsetAdjustment, toIndex - shifter.FirstItem + offsetAdjustment));
 								}
-								else
+								else if (displayChanged)
 								{
 									modificationEvents(notifyBranch, BranchModificationEventArgs.DisplayDataChanged(new DisplayDataChangedData(VirtualTreeDisplayDataChanges.Text, notifyBranch, fromIndex - shifter.FirstItem + offsetAdjustment, 0, 1)));
 								}
@@ -1040,7 +1042,7 @@ namespace Neumont.Tools.Modeling.Shell.DynamicSurveyTreeGrid
 						}
 					}
 				}
-				#endregion // ElementRenamedAt
+				#endregion // ElementModifiedAt
 				#region ElementChangedAt
 				/// <summary>
 				/// Modifies display of the node at the given index and redraws the tree

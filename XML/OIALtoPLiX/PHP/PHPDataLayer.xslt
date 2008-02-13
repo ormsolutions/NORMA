@@ -42,7 +42,7 @@
 		<xsl:param name="Model" select="."/>
 		<xsl:param name="ModelContextName"/>
 		<!-- Class to provide configuration options for the DataLayer -->
-		<plx:class partial="true" modifier="static" name="DataAccess">
+		<plx:class visibility="public" partial="true" modifier="static" name="DataAccess">
 			<plx:field dataTypeIsSimpleArray="true" static="true" name="params">
 				<plx:initialize>
 					<plx:nullKeyword/>
@@ -51,7 +51,9 @@
 			<plx:function modifier="static" name="getDataAdapter" visibility="public">
 				<plx:leadingInfo>
 					<plx:docComment>
-						<xsl:text>Gets the appropriate data adapter for the current database configuration</xsl:text>
+						<summary>
+							<xsl:text>Gets the appropriate data adapter for the current database configuration</xsl:text>
+						</summary>
 					</plx:docComment>
 				</plx:leadingInfo>
 				<plx:returns dataTypeName="Zend_Db_Adapter"/>
@@ -69,7 +71,9 @@
 			<plx:property modifier="static" name="" visibility="private">
 				<plx:leadingInfo>
 					<plx:docComment>
-						<xsl:text>Gets the current database configuration</xsl:text>
+						<summary>
+							<xsl:text>Gets the current database configuration</xsl:text>
+						</summary>
 					</plx:docComment>
 				</plx:leadingInfo>
 				<plx:returns dataTypeIsSimpleArray="true"/>
@@ -162,7 +166,9 @@
 			<plx:property modifier="static" name="pdoType" visibility="private">
 				<plx:leadingInfo>
 					<plx:docComment>
-						<xsl:text>Gets the current PDO string</xsl:text>
+						<summary>
+							<xsl:text>Gets the current PDO string</xsl:text>
+						</summary>
 					</plx:docComment>
 				</plx:leadingInfo>
 				<plx:returns dataTypeName=".string"/>
@@ -203,9 +209,11 @@
 				<plx:function name=".construct" visibility="public">
 					<plx:leadingInfo>
 						<plx:docComment>
-							<xsl:text>Instantiates a new instance of </xsl:text>
-							<xsl:value-of select="$EntityName"/>
-							<xsl:text>Dao</xsl:text>
+							<summary>
+								<xsl:text>Instantiates a new instance of </xsl:text>
+								<xsl:value-of select="$EntityName"/>
+								<xsl:text>Dao</xsl:text>
+							</summary>
 						</plx:docComment>
 					</plx:leadingInfo>
 				</plx:function>
@@ -241,9 +249,11 @@
 				<plx:function name="getAll" visibility="public">
 					<plx:leadingInfo>
 						<plx:docComment>
-							<xsl:text>Retrieves the entire collection of </xsl:text>
-							<xsl:value-of select="$EntityName"/>
-							<xsl:text> objects</xsl:text>
+							<summary>
+								<xsl:text>Retrieves the entire collection of </xsl:text>
+								<xsl:value-of select="$EntityName"/>
+								<xsl:text> objects</xsl:text>
+							</summary>
 						</plx:docComment>
 					</plx:leadingInfo>
 					<plx:returns dataTypeIsSimpleArray="true"/>
@@ -365,9 +375,11 @@
 				<plx:function name="getSingle" visibility="public">
 					<plx:leadingInfo>
 						<plx:docComment>
-							<xsl:text>Retrieves the specified </xsl:text>
-							<xsl:value-of select="$EntityName"/>
-							<xsl:text>object from the database</xsl:text>
+							<summary>
+								<xsl:text>Retrieves the specified </xsl:text>
+								<xsl:value-of select="$EntityName"/>
+								<xsl:text>object from the database</xsl:text>
+							</summary>
 						</plx:docComment>
 					</plx:leadingInfo>
 					<xsl:variable name="uniqueInformationTypesFragment">
@@ -467,9 +479,11 @@
 				<plx:function name="insert" visibility="public">
 					<plx:leadingInfo>
 						<plx:docComment>
-							<xsl:text>Inserts the given </xsl:text>
-							<xsl:value-of select="$EntityName"/>
-							<xsl:text> object into the database</xsl:text>
+							<summary>
+								<xsl:text>Inserts the given </xsl:text>
+								<xsl:value-of select="$EntityName"/>
+								<xsl:text> object into the database</xsl:text>
+							</summary>
 						</plx:docComment>
 					</plx:leadingInfo>
 					<plx:param dataTypeName="{$EntityName}" name="{$EntityName}"/>
@@ -517,9 +531,11 @@
 				<plx:function name="update" visibility="public">
 					<plx:leadingInfo>
 						<plx:docComment>
-							<xsl:text>Updates the given </xsl:text>
-							<xsl:value-of select="$EntityName"/>
-							<xsl:text> object in the database</xsl:text>
+							<summary>
+								<xsl:text>Updates the given </xsl:text>
+								<xsl:value-of select="$EntityName"/>
+								<xsl:text> object in the database</xsl:text>
+							</summary>
 						</plx:docComment>
 					</plx:leadingInfo>
 					<plx:param dataTypeName="{$EntityName}" name="{$EntityName}"/>
@@ -581,9 +597,11 @@
 				<plx:function name="delete" visibility="public">
 					<plx:leadingInfo>
 						<plx:docComment>
-							<xsl:text>Deletes the given </xsl:text>
-							<xsl:value-of select="$EntityName"/>
-							<xsl:text> object from the database</xsl:text>
+							<summary>
+								<xsl:text>Deletes the given </xsl:text>
+								<xsl:value-of select="$EntityName"/>
+								<xsl:text> object from the database</xsl:text>
+							</summary>
 						</plx:docComment>
 					</plx:leadingInfo>
 					<plx:param dataTypeName="{$EntityName}" name="{$EntityName}"/>

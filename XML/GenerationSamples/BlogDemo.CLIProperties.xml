@@ -74,9 +74,7 @@
 		</prop:Property>
 	</prop:Properties>
 	<prop:Properties conceptTypeName="BlogLabel">
-		<prop:Property name="BlogLabel_Id" mandatory="alethic" isUnique="true" canBeNull="false" isCollection="false" isCustomType="false">
-			<prop:DataType dataTypeName=".i4" />
-		</prop:Property>
+		<prop:IdentityField name="BlogLabel_Id" />
 		<prop:Property name="title" mandatory="false" isUnique="false" canBeNull="true" isCollection="false" isCustomType="false">
 			<prop:DataType dataTypeName=".string" />
 		</prop:Property>

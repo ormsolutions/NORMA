@@ -589,21 +589,20 @@ namespace Neumont.Tools.RelationalModels.ConceptualDatabase
 		}
 		#endregion // ISurveyNodeContext Implementation
 		#region ICustomComparableSurveyNode Implementation
-		int ICustomComparableSurveyNode.CompareToSurveyNode(object other)
+		int ICustomComparableSurveyNode.CompareToSurveyNode(object other, object customSortData, object otherCustomSortData)
 		{
-			return CompareToSurveyNode(other);
+			return CompareToSurveyNode(other, customSortData, otherCustomSortData);
 		}
 		/// <summary>
 		/// Implements <see cref="ICustomComparableSurveyNode.CompareToSurveyNode"/>. Columns
 		/// sort with columns in the preferred identifier first.
 		/// </summary>
-		protected int CompareToSurveyNode(object other)
+		protected int CompareToSurveyNode(object other, object customSortData, object otherCustomSortData)
 		{
-			Column otherColumn = other as Column;
-			if (otherColumn != null)
+			if (other is Column)
 			{
-				bool leftIsPrimary = this.IsPartOfPrimaryIdentifier;
-				bool rightIsPrimary = otherColumn.IsPartOfPrimaryIdentifier;
+				bool leftIsPrimary = (bool)customSortData;
+				bool rightIsPrimary = (bool)otherCustomSortData;
 				if (leftIsPrimary ^ rightIsPrimary)
 				{
 					return leftIsPrimary ? -1 : 1;
@@ -611,6 +610,25 @@ namespace Neumont.Tools.RelationalModels.ConceptualDatabase
 			}
 			// For this comparison, 0 implies no information is available
 			return 0;
+		}
+		bool ICustomComparableSurveyNode.ResetCustomSortData(ref object customSortData)
+		{
+			return ResetCustomSortData(ref customSortData);
+		}
+		/// <summary>
+		/// Implements <see cref="ICustomComparableSurveyNode.ResetCustomSortData"/>. Returns
+		/// a boolean corresponding to the <see cref="IsPartOfPrimaryIdentifier"/> property.
+		/// </summary>
+		protected bool ResetCustomSortData(ref object customSortData)
+		{
+			bool retVal = IsPartOfPrimaryIdentifier;
+			if (customSortData == null || (bool)customSortData != retVal)
+			{
+				customSortData = retVal;
+				return true;
+			}
+			return false;
+
 		}
 		/// <summary>
 		/// Is this column part of the primary identification scheme?
@@ -1073,7 +1091,7 @@ namespace Neumont.Tools.RelationalModels.ConceptualDatabase
 	}
 	#endregion // ReferenceConstraintTargetsTable answers
 	#region ColumnReference answers
-	partial class ColumnReference : IAnswerSurveyQuestion<SurveyReferenceConstraintChildType>, ISurveyNode, ISurveyNodeContext
+	partial class ColumnReference : IAnswerSurveyQuestion<SurveyReferenceConstraintChildType>, ISurveyNode, ISurveyNodeContext, ICustomComparableSurveyNode
 	{
 		#region IAnswerSurveyQuestion<SurveyReferenceConstraintChildType> Implementation
 		int IAnswerSurveyQuestion<SurveyReferenceConstraintChildType>.AskQuestion()
@@ -1206,10 +1224,61 @@ namespace Neumont.Tools.RelationalModels.ConceptualDatabase
 			}
 		}
 		#endregion // ISurveyNodeContext Implementation
+		#region ICustomComparableSurveyNode Implementation
+		int ICustomComparableSurveyNode.CompareToSurveyNode(object other, object customSortData, object otherCustomSortData)
+		{
+			return CompareToSurveyNode(other, customSortData, otherCustomSortData);
+		}
+		/// <summary>
+		/// Implements <see cref="ICustomComparableSurveyNode.CompareToSurveyNode"/>. Columns
+		/// sort with columns in the preferred identifier first.
+		/// </summary>
+		protected int CompareToSurveyNode(object other, object customSortData, object otherCustomSortData)
+		{
+			if (other is ColumnReference)
+			{
+				int thisIndex = (int)customSortData;
+				int otherIndex = (int)otherCustomSortData;
+				if (thisIndex < otherIndex)
+				{
+					return -1;
+				}
+				else if (thisIndex != otherIndex)
+				{
+					return 1;
+				}
+			}
+			// For this comparison, 0 implies no information is available
+			return 0;
+		}
+		bool ICustomComparableSurveyNode.ResetCustomSortData(ref object customSortData)
+		{
+			return ResetCustomSortData(ref customSortData);
+		}
+		/// <summary>
+		/// Implements <see cref="ICustomComparableSurveyNode.ResetCustomSortData"/>. Returns
+		/// the current position in the ColumnReferenceCollection of the parent <see cref="ReferenceConstraint"/>
+		/// </summary>
+		protected bool ResetCustomSortData(ref object customSortData)
+		{
+			int retVal = -1;
+			ReferenceConstraint parentConstraint;
+			if (null != (parentConstraint = ReferenceConstraint))
+			{
+				retVal = parentConstraint.ColumnReferenceCollection.IndexOf(this);
+			}
+			if (customSortData == null || (int)customSortData != retVal)
+			{
+				customSortData = retVal;
+				return true;
+			}
+			return false;
+		}
+		#endregion // ICustomComparableSurveyNode Implementation
 	}
 	#endregion // ColumnReference answers
 	#region UniquenessConstraintIncludesColumn answers
-	partial class UniquenessConstraintIncludesColumn : IAnswerSurveyQuestion<SurveyUniquenessConstraintChildType>, ISurveyNode, ISurveyNodeContext
+	partial class UniquenessConstraintIncludesColumn : IAnswerSurveyQuestion<SurveyUniquenessConstraintChildType>, ISurveyNode, ISurveyNodeContext, ICustomComparableSurveyNode
 	{
 		#region IAnswerSurveyQuestion<SurveyUniquenessConstraintChildType> Implementation
 		int IAnswerSurveyQuestion<SurveyUniquenessConstraintChildType>.AskQuestion()
@@ -1342,6 +1411,57 @@ namespace Neumont.Tools.RelationalModels.ConceptualDatabase
 			}
 		}
 		#endregion // ISurveyNodeContext Implementation
+		#region ICustomComparableSurveyNode Implementation
+		int ICustomComparableSurveyNode.CompareToSurveyNode(object other, object customSortData, object otherCustomSortData)
+		{
+			return CompareToSurveyNode(other, customSortData, otherCustomSortData);
+		}
+		/// <summary>
+		/// Implements <see cref="ICustomComparableSurveyNode.CompareToSurveyNode"/>. Columns
+		/// sort with columns in the preferred identifier first.
+		/// </summary>
+		protected int CompareToSurveyNode(object other, object customSortData, object otherCustomSortData)
+		{
+			if (other is UniquenessConstraintIncludesColumn)
+			{
+				int thisIndex = (int)customSortData;
+				int otherIndex = (int)otherCustomSortData;
+				if (thisIndex < otherIndex)
+				{
+					return -1;
+				}
+				else if (thisIndex != otherIndex)
+				{
+					return 1;
+				}
+			}
+			// For this comparison, 0 implies no information is available
+			return 0;
+		}
+		bool ICustomComparableSurveyNode.ResetCustomSortData(ref object customSortData)
+		{
+			return ResetCustomSortData(ref customSortData);
+		}
+		/// <summary>
+		/// Implements <see cref="ICustomComparableSurveyNode.ResetCustomSortData"/>. Returns
+		/// the current position in the ColumnReferenceCollection of the parent <see cref="UniquenessConstraint"/>
+		/// </summary>
+		protected bool ResetCustomSortData(ref object customSortData)
+		{
+			int retVal = -1;
+			UniquenessConstraint parentConstraint;
+			if (null != (parentConstraint = UniquenessConstraint))
+			{
+				retVal = UniquenessConstraintIncludesColumn.GetLinksToColumnCollection(parentConstraint).IndexOf(this);
+			}
+			if (customSortData == null || (int)customSortData != retVal)
+			{
+				customSortData = retVal;
+				return true;
+			}
+			return false;
+		}
+		#endregion // ICustomComparableSurveyNode Implementation
 	}
 	#endregion // ReferenceConstraintTargetsTable answers
 	#region ISurveyNodeProvider Implementation
@@ -1457,6 +1577,7 @@ namespace Neumont.Tools.RelationalModels.ConceptualDatabase
 			Store store = this.Store;
 			DomainDataDirectory dataDir = store.DomainDataDirectory;
 			DomainClassInfo classInfo;
+			DomainRoleInfo roleInfo;
 
 			// Schema elements (top level)
 			classInfo = dataDir.FindDomainClass(Schema.DomainClassId);
@@ -1471,7 +1592,7 @@ namespace Neumont.Tools.RelationalModels.ConceptualDatabase
 			eventManager.AddOrRemoveHandler(classInfo, new EventHandler<ElementPropertyChangedEventArgs>(TableChanged), action);
 
 			// Column, uniqueness, and foreign key elements (inside table)
-			// UNDONE: This does not handle updates to the primary identifier keys and sort order.
+			// UNDONE: This does not handle updates to the primary identifier keys.
 			// There are currently no incremental updates involving primary keys.
 			eventManager.AddOrRemoveHandler(dataDir.FindDomainRelationship(TableContainsColumn.DomainClassId), new EventHandler<ElementAddedEventArgs>(ColumnAdded), action);
 			classInfo = dataDir.FindDomainClass(Column.DomainClassId);
@@ -1485,18 +1606,23 @@ namespace Neumont.Tools.RelationalModels.ConceptualDatabase
 			classInfo = dataDir.FindDomainClass(UniquenessConstraint.DomainClassId);
 			eventManager.AddOrRemoveHandler(classInfo, new EventHandler<ElementDeletedEventArgs>(ElementRemoved), action);
 			eventManager.AddOrRemoveHandler(classInfo, new EventHandler<ElementPropertyChangedEventArgs>(UniquenessConstraintChanged), action);
+			roleInfo = dataDir.FindDomainRole(UniquenessConstraintIncludesColumn.ColumnDomainRoleId);
+			eventManager.AddOrRemoveHandler(roleInfo, new EventHandler<RolePlayerOrderChangedEventArgs>(UniquenessConstraintOrderChanged), action);
 
 			// Reference constraint expansion elements
 			classInfo = dataDir.FindDomainRelationship(ReferenceConstraintTargetsTable.DomainClassId);
 			eventManager.AddOrRemoveHandler(classInfo, new EventHandler<ElementAddedEventArgs>(TargetedTableAdded), action);
 			eventManager.AddOrRemoveHandler(classInfo, new EventHandler<ElementDeletedEventArgs>(ElementRemoved), action);
-			eventManager.AddOrRemoveHandler(dataDir.FindDomainRelationship(ReferenceConstraintContainsColumnReference.DomainClassId), new EventHandler<ElementAddedEventArgs>(ColumnReferenceAdded), action);
-			eventManager.AddOrRemoveHandler(dataDir.FindDomainRelationship(ColumnReference.DomainClassId), new EventHandler<ElementDeletedEventArgs>(ElementRemoved), action);
+			classInfo = dataDir.FindDomainRelationship(ReferenceConstraintContainsColumnReference.DomainClassId);
+			eventManager.AddOrRemoveHandler(classInfo, new EventHandler<ElementAddedEventArgs>(ReferenceConstraintColumnReferenceAdded), action);
+			eventManager.AddOrRemoveHandler(classInfo, new EventHandler<ElementDeletedEventArgs>(ReferenceConstraintColumnReferenceDeleted), action);
+			roleInfo = dataDir.FindDomainRole(ReferenceConstraintContainsColumnReference.ColumnReferenceDomainRoleId);
+			eventManager.AddOrRemoveHandler(roleInfo, new EventHandler<RolePlayerOrderChangedEventArgs>(ReferenceConstraintColumnOrderChanged), action);
 
 			// Uniqueness constraint expansion elements
 			classInfo = dataDir.FindDomainRelationship(UniquenessConstraintIncludesColumn.DomainClassId);
 			eventManager.AddOrRemoveHandler(classInfo, new EventHandler<ElementAddedEventArgs>(UniquenessConstraintColumnAdded), action);
-			eventManager.AddOrRemoveHandler(classInfo, new EventHandler<ElementDeletedEventArgs>(ElementRemoved), action);
+			eventManager.AddOrRemoveHandler(classInfo, new EventHandler<ElementDeletedEventArgs>(UniquenessConstraintColumnDeleted), action);
 		}
 		void IModelingEventSubscriber.ManageSurveyQuestionModelingEventHandlers(ModelingEventManager eventManager, bool isReload, EventHandlerAction action)
 		{
@@ -1637,14 +1763,60 @@ namespace Neumont.Tools.RelationalModels.ConceptualDatabase
 				eventNotify.ElementAdded(link.TargetTable, link.ReferenceConstraint);
 			}
 		}
-		private static void ColumnReferenceAdded(object sender, ElementAddedEventArgs e)
+		private static void ReferenceConstraintColumnReferenceAdded(object sender, ElementAddedEventArgs e)
 		{
 			INotifySurveyElementChanged eventNotify;
 			ModelElement element = e.ModelElement;
 			if (null != (eventNotify = (element.Store as IORMToolServices).NotifySurveyElementChanged))
 			{
-				ReferenceConstraintContainsColumnReference link = element as ReferenceConstraintContainsColumnReference;
-				eventNotify.ElementAdded(link.ColumnReference, link.ReferenceConstraint);
+				ReferenceConstraintContainsColumnReference link = (ReferenceConstraintContainsColumnReference)element;
+				if (!link.IsDeleted)
+				{
+					ReferenceConstraint constraint = link.ReferenceConstraint;
+					ColumnReference newColumnReference = link.ColumnReference;
+					foreach (ColumnReference otherColumnReference in constraint.ColumnReferenceCollection)
+					{
+						if (otherColumnReference != newColumnReference)
+						{
+							eventNotify.ElementCustomSortChanged(otherColumnReference);
+						}
+					}
+					eventNotify.ElementAdded(newColumnReference, constraint);
+				}
+			}
+		}
+		private static void ReferenceConstraintColumnReferenceDeleted(object sender, ElementDeletedEventArgs e)
+		{
+			INotifySurveyElementChanged eventNotify;
+			ModelElement element = e.ModelElement;
+			if (null != (eventNotify = (element.Store as IORMToolServices).NotifySurveyElementChanged))
+			{
+				ReferenceConstraintContainsColumnReference link = (ReferenceConstraintContainsColumnReference)element;
+				ReferenceConstraint constraint = link.ReferenceConstraint;
+				eventNotify.ElementDeleted(link.ColumnReference);
+				if (!constraint.IsDeleted)
+				{
+					foreach (ColumnReference columnReference in constraint.ColumnReferenceCollection)
+					{
+						eventNotify.ElementCustomSortChanged(columnReference);
+					}
+				}
+			}
+		}
+		private static void ReferenceConstraintColumnOrderChanged(object sender, RolePlayerOrderChangedEventArgs e)
+		{
+			INotifySurveyElementChanged eventNotify;
+			ModelElement element = e.SourceElement;
+			if (null != (eventNotify = (element.Store as IORMToolServices).NotifySurveyElementChanged))
+			{
+				ReferenceConstraint constraint = (ReferenceConstraint)element;
+				if (!constraint.IsDeleted)
+				{
+					foreach (ColumnReference columnRef in constraint.ColumnReferenceCollection)
+					{
+						eventNotify.ElementCustomSortChanged(columnRef);
+					}
+				}
 			}
 		}
 		private static void UniquenessConstraintAdded(object sender, ElementAddedEventArgs e)
@@ -1675,14 +1847,59 @@ namespace Neumont.Tools.RelationalModels.ConceptualDatabase
 				}
 			}
 		}
+		private static void UniquenessConstraintOrderChanged(object sender, RolePlayerOrderChangedEventArgs e)
+		{
+			INotifySurveyElementChanged eventNotify;
+			ModelElement element = e.SourceElement;
+			if (null != (eventNotify = (element.Store as IORMToolServices).NotifySurveyElementChanged))
+			{
+				UniquenessConstraint constraint = (UniquenessConstraint)element;
+				if (!constraint.IsDeleted)
+				{
+					foreach (UniquenessConstraintIncludesColumn link in UniquenessConstraintIncludesColumn.GetLinksToColumnCollection(constraint))
+					{
+						eventNotify.ElementCustomSortChanged(link);
+					}
+				}
+			}
+		}
 		private static void UniquenessConstraintColumnAdded(object sender, ElementAddedEventArgs e)
 		{
 			INotifySurveyElementChanged eventNotify;
 			ModelElement element = e.ModelElement;
 			if (null != (eventNotify = (element.Store as IORMToolServices).NotifySurveyElementChanged))
 			{
-				UniquenessConstraintIncludesColumn link = element as UniquenessConstraintIncludesColumn;
-				eventNotify.ElementAdded(link.Column, link.UniquenessConstraint);
+				UniquenessConstraintIncludesColumn link = (UniquenessConstraintIncludesColumn)element;
+				if (!link.IsDeleted)
+				{
+					UniquenessConstraint constraint = link.UniquenessConstraint;
+					foreach (UniquenessConstraintIncludesColumn otherLink in UniquenessConstraintIncludesColumn.GetLinksToColumnCollection(constraint))
+					{
+						if (otherLink != link)
+						{
+							eventNotify.ElementCustomSortChanged(otherLink);
+						}
+					}
+					eventNotify.ElementAdded(link, constraint);
+				}
+			}
+		}
+		private static void UniquenessConstraintColumnDeleted(object sender, ElementDeletedEventArgs e)
+		{
+			INotifySurveyElementChanged eventNotify;
+			ModelElement element = e.ModelElement;
+			if (null != (eventNotify = (element.Store as IORMToolServices).NotifySurveyElementChanged))
+			{
+				UniquenessConstraintIncludesColumn link = (UniquenessConstraintIncludesColumn)element;
+				UniquenessConstraint constraint = link.UniquenessConstraint;
+				eventNotify.ElementDeleted(link);
+				if (!constraint.IsDeleted)
+				{
+					foreach (UniquenessConstraintIncludesColumn otherLink in UniquenessConstraintIncludesColumn.GetLinksToColumnCollection(constraint))
+					{
+						eventNotify.ElementCustomSortChanged(otherLink);
+					}
+				}
 			}
 		}
 		#endregion // SurveyQuestion event handlers

@@ -1,83 +1,83 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
 <dcl:schema name="BlogDemo" xmlns:dcl="http://schemas.orm.net/DIL/DCIL" xmlns:dil="http://schemas.orm.net/DIL/DIL" xmlns:ddt="http://schemas.orm.net/DIL/DILDT" xmlns:dep="http://schemas.orm.net/DIL/DILEP" xmlns:dml="http://schemas.orm.net/DIL/DMIL" xmlns:ddl="http://schemas.orm.net/DIL/DDIL">
 	<dcl:table name="BlogEntry">
-		<dcl:column name="BlogEntry_Id" isNullable="false" isIdentity="false">
+		<dcl:column name="blogEntry_Id" isNullable="false" isIdentity="false">
 			<dcl:predefinedDataType name="INTEGER" />
 		</dcl:column>
-		<dcl:column name="EntryTitle" isNullable="false" isIdentity="false">
+		<dcl:column name="entryTitle" isNullable="false" isIdentity="false">
 			<dcl:predefinedDataType name="CHARACTER VARYING" length="30" />
 		</dcl:column>
-		<dcl:column name="EntryBody" isNullable="false" isIdentity="false">
+		<dcl:column name="entryBody" isNullable="false" isIdentity="false">
 			<dcl:predefinedDataType name="CHARACTER LARGE OBJECT" />
 		</dcl:column>
-		<dcl:column name="PostedDate" isNullable="false" isIdentity="false">
+		<dcl:column name="postedDate" isNullable="false" isIdentity="false">
 			<dcl:predefinedDataType name="TIMESTAMP" />
 		</dcl:column>
-		<dcl:column name="UserIdName2" isNullable="false" isIdentity="false">
+		<dcl:column name="userIdName2" isNullable="false" isIdentity="false">
 			<dcl:predefinedDataType name="CHARACTER VARYING" length="30" />
 		</dcl:column>
-		<dcl:column name="UserIdName1" isNullable="false" isIdentity="false">
+		<dcl:column name="userIdName1" isNullable="false" isIdentity="false">
 			<dcl:predefinedDataType name="CHARACTER VARYING" length="30" />
 		</dcl:column>
-		<dcl:column name="BlogCommentParentEntryId" isNullable="true" isIdentity="false">
+		<dcl:column name="blogCommentParentEntryId" isNullable="true" isIdentity="false">
 			<dcl:predefinedDataType name="INTEGER" />
 		</dcl:column>
 		<dcl:uniquenessConstraint name="InternalUniquenessConstraint1" isPrimary="true">
-			<dcl:columnRef name="BlogEntry_Id" />
+			<dcl:columnRef name="blogEntry_Id" />
 		</dcl:uniquenessConstraint>
 		<dcl:referenceConstraint name="BlogEntry_FK1" targetTable="&quot;User&quot;">
-			<dcl:columnRef sourceName="UserIdName2" targetName="Name1" />
-			<dcl:columnRef sourceName="UserIdName1" targetName="Name2" />
+			<dcl:columnRef sourceName="userIdName2" targetName="name1" />
+			<dcl:columnRef sourceName="userIdName1" targetName="name2" />
 		</dcl:referenceConstraint>
 		<dcl:referenceConstraint name="BlogEntry_FK2" targetTable="BlogEntry">
-			<dcl:columnRef sourceName="BlogCommentParentEntryId" targetName="BlogEntry_Id" />
+			<dcl:columnRef sourceName="blogCommentParentEntryId" targetName="blogEntry_Id" />
 		</dcl:referenceConstraint>
 	</dcl:table>
 	<dcl:table name="&quot;User&quot;">
-		<dcl:column name="Name1" isNullable="false" isIdentity="false">
+		<dcl:column name="name1" isNullable="false" isIdentity="false">
 			<dcl:predefinedDataType name="CHARACTER VARYING" length="30" />
 		</dcl:column>
-		<dcl:column name="Name2" isNullable="false" isIdentity="false">
+		<dcl:column name="name2" isNullable="false" isIdentity="false">
 			<dcl:predefinedDataType name="CHARACTER VARYING" length="30" />
 		</dcl:column>
-		<dcl:column name="Username" isNullable="false" isIdentity="false">
+		<dcl:column name="username" isNullable="false" isIdentity="false">
 			<dcl:predefinedDataType name="CHARACTER VARYING" length="30" />
 		</dcl:column>
-		<dcl:column name="Password" isNullable="false" isIdentity="false">
+		<dcl:column name="password" isNullable="false" isIdentity="false">
 			<dcl:predefinedDataType name="CHARACTER" length="32" />
 		</dcl:column>
 		<dcl:uniquenessConstraint name="ExternalUniquenessConstraint1" isPrimary="true">
-			<dcl:columnRef name="Name1" />
-			<dcl:columnRef name="Name2" />
+			<dcl:columnRef name="name1" />
+			<dcl:columnRef name="name2" />
 		</dcl:uniquenessConstraint>
 	</dcl:table>
 	<dcl:table name="BlogLabel">
-		<dcl:column name="BlogLabel_Id" isNullable="false" isIdentity="true">
+		<dcl:column name="blogLabel_Id" isNullable="false" isIdentity="true">
 			<dcl:predefinedDataType name="INTEGER" />
 		</dcl:column>
-		<dcl:column name="Title" isNullable="true" isIdentity="false">
+		<dcl:column name="title" isNullable="true" isIdentity="false">
 			<dcl:predefinedDataType name="CHARACTER LARGE OBJECT" />
 		</dcl:column>
 		<dcl:uniquenessConstraint name="InternalUniquenessConstraint18" isPrimary="true">
-			<dcl:columnRef name="BlogLabel_Id" />
+			<dcl:columnRef name="blogLabel_Id" />
 		</dcl:uniquenessConstraint>
 	</dcl:table>
 	<dcl:table name="BlogEntryLabel">
-		<dcl:column name="BlogEntryId" isNullable="false" isIdentity="false">
+		<dcl:column name="blogEntryId" isNullable="false" isIdentity="false">
 			<dcl:predefinedDataType name="INTEGER" />
 		</dcl:column>
-		<dcl:column name="BlogLabelId" isNullable="false" isIdentity="false">
+		<dcl:column name="blogLabelId" isNullable="false" isIdentity="false">
 			<dcl:predefinedDataType name="INTEGER" />
 		</dcl:column>
 		<dcl:uniquenessConstraint name="InternalUniquenessConstraint20" isPrimary="true">
-			<dcl:columnRef name="BlogEntryId" />
-			<dcl:columnRef name="BlogLabelId" />
+			<dcl:columnRef name="blogEntryId" />
+			<dcl:columnRef name="blogLabelId" />
 		</dcl:uniquenessConstraint>
 		<dcl:referenceConstraint name="BlogEntryLabel_FK1" targetTable="BlogEntry">
-			<dcl:columnRef sourceName="BlogEntryId" targetName="BlogEntry_Id" />
+			<dcl:columnRef sourceName="blogEntryId" targetName="blogEntry_Id" />
 		</dcl:referenceConstraint>
 		<dcl:referenceConstraint name="BlogEntryLabel_FK2" targetTable="BlogLabel">
-			<dcl:columnRef sourceName="BlogLabelId" targetName="BlogLabel_Id" />
+			<dcl:columnRef sourceName="blogLabelId" targetName="blogLabel_Id" />
 		</dcl:referenceConstraint>
 	</dcl:table>
 </dcl:schema>

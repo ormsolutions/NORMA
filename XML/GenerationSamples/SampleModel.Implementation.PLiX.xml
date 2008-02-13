@@ -3581,268 +3581,6 @@
 					</plx:binaryOperator>
 				</plx:return>
 			</plx:function>
-			<plx:function visibility="public" name="GetPersonByPerson_id">
-				<plx:interfaceMember memberName="GetPersonByPerson_id" dataTypeName="ISampleModelContext" />
-				<plx:param name="Person_id" dataTypeName=".i4" />
-				<plx:returns dataTypeName="Person" />
-				<plx:local name="command" dataTypeName="IDbCommand">
-					<plx:initialize>
-						<plx:callInstance type="methodCall" name="CreateCommand">
-							<plx:callObject>
-								<plx:callThis type="methodCall" accessor="this" name="GetConnection" />
-							</plx:callObject>
-						</plx:callInstance>
-					</plx:initialize>
-				</plx:local>
-				<plx:try>
-					<plx:branch>
-						<plx:condition>
-							<plx:binaryOperator type="inequality">
-								<plx:left>
-									<plx:callInstance name="State" type="property">
-										<plx:callObject>
-											<plx:callInstance name="Connection" type="property">
-												<plx:callObject>
-													<plx:nameRef name="command" type="local" />
-												</plx:callObject>
-											</plx:callInstance>
-										</plx:callObject>
-									</plx:callInstance>
-								</plx:left>
-								<plx:right>
-									<plx:callStatic name="Open" dataTypeName="ConnectionState" type="field" />
-								</plx:right>
-							</plx:binaryOperator>
-						</plx:condition>
-						<plx:callInstance name="Open" type="methodCall">
-							<plx:callObject>
-								<plx:callInstance name="Connection" type="property">
-									<plx:callObject>
-										<plx:nameRef name="command" type="local" />
-									</plx:callObject>
-								</plx:callInstance>
-							</plx:callObject>
-						</plx:callInstance>
-					</plx:branch>
-					<plx:assign>
-						<plx:left>
-							<plx:callInstance type="property" name="CommandType">
-								<plx:callObject>
-									<plx:nameRef type="local" name="command" />
-								</plx:callObject>
-							</plx:callInstance>
-						</plx:left>
-						<plx:right>
-							<plx:callStatic type="field" name="Text" dataTypeName="CommandType" />
-						</plx:right>
-					</plx:assign>
-					<plx:assign>
-						<plx:left>
-							<plx:callInstance type="property" name="CommandText">
-								<plx:callObject>
-									<plx:nameRef type="local" name="command" />
-								</plx:callObject>
-							</plx:callInstance>
-						</plx:left>
-						<plx:right>
-							<plx:string>SELECT * FROM SampleModel.Person WHERE Person_id = @Person_id</plx:string>
-						</plx:right>
-					</plx:assign>
-					<plx:local name="parameterPerson_id" dataTypeName="IDataParameter">
-						<plx:initialize>
-							<plx:callInstance name="CreateParameter" type="methodCall">
-								<plx:callObject>
-									<plx:nameRef name="command" />
-								</plx:callObject>
-							</plx:callInstance>
-						</plx:initialize>
-					</plx:local>
-					<plx:assign>
-						<plx:left>
-							<plx:callInstance name="ParameterName" type="property">
-								<plx:callObject>
-									<plx:nameRef name="parameterPerson_id" />
-								</plx:callObject>
-							</plx:callInstance>
-						</plx:left>
-						<plx:right>
-							<plx:string>Person_id</plx:string>
-						</plx:right>
-					</plx:assign>
-					<plx:assign>
-						<plx:left>
-							<plx:callInstance name="Value" type="property">
-								<plx:callObject>
-									<plx:nameRef name="parameterPerson_id" />
-								</plx:callObject>
-							</plx:callInstance>
-						</plx:left>
-						<plx:right>
-							<plx:nameRef type="parameter" name="Person_id" />
-						</plx:right>
-					</plx:assign>
-					<plx:callInstance name="Add" type="methodCall">
-						<plx:callObject>
-							<plx:callInstance name="Parameters" type="property">
-								<plx:callObject>
-									<plx:nameRef name="command" />
-								</plx:callObject>
-							</plx:callInstance>
-						</plx:callObject>
-						<plx:passParam>
-							<plx:nameRef name="parameterPerson_id" type="local" />
-						</plx:passParam>
-					</plx:callInstance>
-					<plx:branch>
-						<plx:condition>
-							<plx:binaryOperator type="inequality">
-								<plx:left>
-									<plx:callInstance name="State" type="property">
-										<plx:callObject>
-											<plx:callInstance name="Connection" type="property">
-												<plx:callObject>
-													<plx:nameRef name="command" type="local" />
-												</plx:callObject>
-											</plx:callInstance>
-										</plx:callObject>
-									</plx:callInstance>
-								</plx:left>
-								<plx:right>
-									<plx:callStatic name="Open" dataTypeName="ConnectionState" type="property" />
-								</plx:right>
-							</plx:binaryOperator>
-						</plx:condition>
-						<plx:callInstance name="Open" type="methodCall">
-							<plx:callObject>
-								<plx:callInstance name="Connection" type="property">
-									<plx:callObject>
-										<plx:nameRef name="command" type="local" />
-									</plx:callObject>
-								</plx:callInstance>
-							</plx:callObject>
-						</plx:callInstance>
-					</plx:branch>
-					<plx:autoDispose localName="reader" dataTypeName="IDataReader">
-						<plx:initialize>
-							<plx:callInstance name="ExecuteReader" type="methodCall">
-								<plx:callObject>
-									<plx:nameRef name="command" type="local" />
-								</plx:callObject>
-								<plx:passParam>
-									<plx:binaryOperator type="bitwiseOr">
-										<plx:left>
-											<plx:callStatic type="field" dataTypeName="CommandBehavior" name="CloseConnection" />
-										</plx:left>
-										<plx:right>
-											<plx:callStatic type="field" dataTypeName="CommandBehavior" name="SingleRow" />
-										</plx:right>
-									</plx:binaryOperator>
-								</plx:passParam>
-							</plx:callInstance>
-						</plx:initialize>
-						<plx:branch>
-							<plx:condition>
-								<plx:binaryOperator type="booleanAnd">
-									<plx:left>
-										<plx:unaryOperator type="booleanNot">
-											<plx:callInstance name="IsClosed" type="property">
-												<plx:callObject>
-													<plx:nameRef type="local" name="reader" />
-												</plx:callObject>
-											</plx:callInstance>
-										</plx:unaryOperator>
-									</plx:left>
-									<plx:right>
-										<plx:callInstance name="Read" type="methodCall">
-											<plx:callObject>
-												<plx:nameRef type="local" name="reader" />
-											</plx:callObject>
-										</plx:callInstance>
-									</plx:right>
-								</plx:binaryOperator>
-							</plx:condition>
-							<plx:return>
-								<plx:callThis type="methodCall" name="CreatePerson">
-									<plx:passParam>
-										<plx:nameRef name="reader" />
-									</plx:passParam>
-								</plx:callThis>
-							</plx:return>
-						</plx:branch>
-						<plx:fallbackBranch>
-							<plx:return>
-								<plx:nullKeyword />
-							</plx:return>
-						</plx:fallbackBranch>
-					</plx:autoDispose>
-					<plx:finally>
-						<plx:branch>
-							<plx:condition>
-								<plx:binaryOperator type="equality">
-									<plx:left>
-										<plx:callInstance name="State" type="property">
-											<plx:callObject>
-												<plx:callInstance name="Connection" type="property">
-													<plx:callObject>
-														<plx:nameRef name="command" type="local" />
-													</plx:callObject>
-												</plx:callInstance>
-											</plx:callObject>
-										</plx:callInstance>
-									</plx:left>
-									<plx:right>
-										<plx:callStatic name="Open" dataTypeName="ConnectionState" type="field" />
-									</plx:right>
-								</plx:binaryOperator>
-							</plx:condition>
-							<plx:callInstance name="Close" type="methodCall">
-								<plx:callObject>
-									<plx:callInstance name="Connection" type="property">
-										<plx:callObject>
-											<plx:nameRef name="command" type="local" />
-										</plx:callObject>
-									</plx:callInstance>
-								</plx:callObject>
-							</plx:callInstance>
-						</plx:branch>
-						<plx:callInstance name="Dispose" type="methodCall">
-							<plx:callObject>
-								<plx:nameRef name="command" type="local" />
-							</plx:callObject>
-						</plx:callInstance>
-					</plx:finally>
-				</plx:try>
-			</plx:function>
-			<plx:function visibility="public" name="TryGetPersonByPerson_id">
-				<plx:interfaceMember memberName="TryGetPersonByPerson_id" dataTypeName="ISampleModelContext" />
-				<plx:param name="Person_id" dataTypeName=".i4" />
-				<plx:param type="out" name="Person" dataTypeName="Person" />
-				<plx:returns dataTypeName=".boolean" />
-				<plx:assign>
-					<plx:left>
-						<plx:nameRef type="local" name="Person" />
-					</plx:left>
-					<plx:right>
-						<plx:callThis type="methodCall" name="GetPersonByPerson_id">
-							<plx:passParam>
-								<plx:nameRef name="Person_id" />
-							</plx:passParam>
-						</plx:callThis>
-					</plx:right>
-				</plx:assign>
-				<plx:return>
-					<plx:binaryOperator type="identityInequality">
-						<plx:left>
-							<plx:cast dataTypeName=".object">
-								<plx:nameRef type="local" name="Person" />
-							</plx:cast>
-						</plx:left>
-						<plx:right>
-							<plx:nullKeyword />
-						</plx:right>
-					</plx:binaryOperator>
-				</plx:return>
-			</plx:function>
 			<plx:function visibility="public" name="GetPersonByOptionalUniqueString">
 				<plx:interfaceMember memberName="GetPersonByOptionalUniqueString" dataTypeName="ISampleModelContext" />
 				<plx:param name="OptionalUniqueString" dataTypeName=".string" />
@@ -5229,268 +4967,6 @@
 					</plx:binaryOperator>
 				</plx:return>
 			</plx:function>
-			<plx:function visibility="public" name="GetTaskByTask_id">
-				<plx:interfaceMember memberName="GetTaskByTask_id" dataTypeName="ISampleModelContext" />
-				<plx:param name="Task_id" dataTypeName=".i4" />
-				<plx:returns dataTypeName="Task" />
-				<plx:local name="command" dataTypeName="IDbCommand">
-					<plx:initialize>
-						<plx:callInstance type="methodCall" name="CreateCommand">
-							<plx:callObject>
-								<plx:callThis type="methodCall" accessor="this" name="GetConnection" />
-							</plx:callObject>
-						</plx:callInstance>
-					</plx:initialize>
-				</plx:local>
-				<plx:try>
-					<plx:branch>
-						<plx:condition>
-							<plx:binaryOperator type="inequality">
-								<plx:left>
-									<plx:callInstance name="State" type="property">
-										<plx:callObject>
-											<plx:callInstance name="Connection" type="property">
-												<plx:callObject>
-													<plx:nameRef name="command" type="local" />
-												</plx:callObject>
-											</plx:callInstance>
-										</plx:callObject>
-									</plx:callInstance>
-								</plx:left>
-								<plx:right>
-									<plx:callStatic name="Open" dataTypeName="ConnectionState" type="field" />
-								</plx:right>
-							</plx:binaryOperator>
-						</plx:condition>
-						<plx:callInstance name="Open" type="methodCall">
-							<plx:callObject>
-								<plx:callInstance name="Connection" type="property">
-									<plx:callObject>
-										<plx:nameRef name="command" type="local" />
-									</plx:callObject>
-								</plx:callInstance>
-							</plx:callObject>
-						</plx:callInstance>
-					</plx:branch>
-					<plx:assign>
-						<plx:left>
-							<plx:callInstance type="property" name="CommandType">
-								<plx:callObject>
-									<plx:nameRef type="local" name="command" />
-								</plx:callObject>
-							</plx:callInstance>
-						</plx:left>
-						<plx:right>
-							<plx:callStatic type="field" name="Text" dataTypeName="CommandType" />
-						</plx:right>
-					</plx:assign>
-					<plx:assign>
-						<plx:left>
-							<plx:callInstance type="property" name="CommandText">
-								<plx:callObject>
-									<plx:nameRef type="local" name="command" />
-								</plx:callObject>
-							</plx:callInstance>
-						</plx:left>
-						<plx:right>
-							<plx:string>SELECT * FROM SampleModel.Task WHERE Task_id = @Task_id</plx:string>
-						</plx:right>
-					</plx:assign>
-					<plx:local name="parameterTask_id" dataTypeName="IDataParameter">
-						<plx:initialize>
-							<plx:callInstance name="CreateParameter" type="methodCall">
-								<plx:callObject>
-									<plx:nameRef name="command" />
-								</plx:callObject>
-							</plx:callInstance>
-						</plx:initialize>
-					</plx:local>
-					<plx:assign>
-						<plx:left>
-							<plx:callInstance name="ParameterName" type="property">
-								<plx:callObject>
-									<plx:nameRef name="parameterTask_id" />
-								</plx:callObject>
-							</plx:callInstance>
-						</plx:left>
-						<plx:right>
-							<plx:string>Task_id</plx:string>
-						</plx:right>
-					</plx:assign>
-					<plx:assign>
-						<plx:left>
-							<plx:callInstance name="Value" type="property">
-								<plx:callObject>
-									<plx:nameRef name="parameterTask_id" />
-								</plx:callObject>
-							</plx:callInstance>
-						</plx:left>
-						<plx:right>
-							<plx:nameRef type="parameter" name="Task_id" />
-						</plx:right>
-					</plx:assign>
-					<plx:callInstance name="Add" type="methodCall">
-						<plx:callObject>
-							<plx:callInstance name="Parameters" type="property">
-								<plx:callObject>
-									<plx:nameRef name="command" />
-								</plx:callObject>
-							</plx:callInstance>
-						</plx:callObject>
-						<plx:passParam>
-							<plx:nameRef name="parameterTask_id" type="local" />
-						</plx:passParam>
-					</plx:callInstance>
-					<plx:branch>
-						<plx:condition>
-							<plx:binaryOperator type="inequality">
-								<plx:left>
-									<plx:callInstance name="State" type="property">
-										<plx:callObject>
-											<plx:callInstance name="Connection" type="property">
-												<plx:callObject>
-													<plx:nameRef name="command" type="local" />
-												</plx:callObject>
-											</plx:callInstance>
-										</plx:callObject>
-									</plx:callInstance>
-								</plx:left>
-								<plx:right>
-									<plx:callStatic name="Open" dataTypeName="ConnectionState" type="property" />
-								</plx:right>
-							</plx:binaryOperator>
-						</plx:condition>
-						<plx:callInstance name="Open" type="methodCall">
-							<plx:callObject>
-								<plx:callInstance name="Connection" type="property">
-									<plx:callObject>
-										<plx:nameRef name="command" type="local" />
-									</plx:callObject>
-								</plx:callInstance>
-							</plx:callObject>
-						</plx:callInstance>
-					</plx:branch>
-					<plx:autoDispose localName="reader" dataTypeName="IDataReader">
-						<plx:initialize>
-							<plx:callInstance name="ExecuteReader" type="methodCall">
-								<plx:callObject>
-									<plx:nameRef name="command" type="local" />
-								</plx:callObject>
-								<plx:passParam>
-									<plx:binaryOperator type="bitwiseOr">
-										<plx:left>
-											<plx:callStatic type="field" dataTypeName="CommandBehavior" name="CloseConnection" />
-										</plx:left>
-										<plx:right>
-											<plx:callStatic type="field" dataTypeName="CommandBehavior" name="SingleRow" />
-										</plx:right>
-									</plx:binaryOperator>
-								</plx:passParam>
-							</plx:callInstance>
-						</plx:initialize>
-						<plx:branch>
-							<plx:condition>
-								<plx:binaryOperator type="booleanAnd">
-									<plx:left>
-										<plx:unaryOperator type="booleanNot">
-											<plx:callInstance name="IsClosed" type="property">
-												<plx:callObject>
-													<plx:nameRef type="local" name="reader" />
-												</plx:callObject>
-											</plx:callInstance>
-										</plx:unaryOperator>
-									</plx:left>
-									<plx:right>
-										<plx:callInstance name="Read" type="methodCall">
-											<plx:callObject>
-												<plx:nameRef type="local" name="reader" />
-											</plx:callObject>
-										</plx:callInstance>
-									</plx:right>
-								</plx:binaryOperator>
-							</plx:condition>
-							<plx:return>
-								<plx:callThis type="methodCall" name="CreateTask">
-									<plx:passParam>
-										<plx:nameRef name="reader" />
-									</plx:passParam>
-								</plx:callThis>
-							</plx:return>
-						</plx:branch>
-						<plx:fallbackBranch>
-							<plx:return>
-								<plx:nullKeyword />
-							</plx:return>
-						</plx:fallbackBranch>
-					</plx:autoDispose>
-					<plx:finally>
-						<plx:branch>
-							<plx:condition>
-								<plx:binaryOperator type="equality">
-									<plx:left>
-										<plx:callInstance name="State" type="property">
-											<plx:callObject>
-												<plx:callInstance name="Connection" type="property">
-													<plx:callObject>
-														<plx:nameRef name="command" type="local" />
-													</plx:callObject>
-												</plx:callInstance>
-											</plx:callObject>
-										</plx:callInstance>
-									</plx:left>
-									<plx:right>
-										<plx:callStatic name="Open" dataTypeName="ConnectionState" type="field" />
-									</plx:right>
-								</plx:binaryOperator>
-							</plx:condition>
-							<plx:callInstance name="Close" type="methodCall">
-								<plx:callObject>
-									<plx:callInstance name="Connection" type="property">
-										<plx:callObject>
-											<plx:nameRef name="command" type="local" />
-										</plx:callObject>
-									</plx:callInstance>
-								</plx:callObject>
-							</plx:callInstance>
-						</plx:branch>
-						<plx:callInstance name="Dispose" type="methodCall">
-							<plx:callObject>
-								<plx:nameRef name="command" type="local" />
-							</plx:callObject>
-						</plx:callInstance>
-					</plx:finally>
-				</plx:try>
-			</plx:function>
-			<plx:function visibility="public" name="TryGetTaskByTask_id">
-				<plx:interfaceMember memberName="TryGetTaskByTask_id" dataTypeName="ISampleModelContext" />
-				<plx:param name="Task_id" dataTypeName=".i4" />
-				<plx:param type="out" name="Task" dataTypeName="Task" />
-				<plx:returns dataTypeName=".boolean" />
-				<plx:assign>
-					<plx:left>
-						<plx:nameRef type="local" name="Task" />
-					</plx:left>
-					<plx:right>
-						<plx:callThis type="methodCall" name="GetTaskByTask_id">
-							<plx:passParam>
-								<plx:nameRef name="Task_id" />
-							</plx:passParam>
-						</plx:callThis>
-					</plx:right>
-				</plx:assign>
-				<plx:return>
-					<plx:binaryOperator type="identityInequality">
-						<plx:left>
-							<plx:cast dataTypeName=".object">
-								<plx:nameRef type="local" name="Task" />
-							</plx:cast>
-						</plx:left>
-						<plx:right>
-							<plx:nullKeyword />
-						</plx:right>
-					</plx:binaryOperator>
-				</plx:return>
-			</plx:function>
 			<plx:function visibility="public" name="GetValueType1ByValueType1Value">
 				<plx:interfaceMember memberName="GetValueType1ByValueType1Value" dataTypeName="ISampleModelContext" />
 				<plx:param name="ValueType1Value" dataTypeName=".i4" />
@@ -6148,7 +5624,7 @@
 							</plx:callInstance>
 						</plx:passParam>
 						<plx:passParam>
-							<plx:callInstance type="methodCall" name="GetInt32">
+							<plx:callInstance type="methodCall" name="">
 								<plx:callObject>
 									<plx:nameRef name="reader" />
 								</plx:callObject>
@@ -6187,7 +5663,7 @@
 				<plx:function visibility="public" name=".construct">
 					<plx:param name="context" dataTypeName="SampleModelContext" />
 					<plx:param name="DrivesCar_vin" dataTypeName=".i4" />
-					<plx:param name="DrivenByPersonPerson_id" dataTypeName=".i4" />
+					<plx:param name="DrivenByPersonPerson_id" />
 					<plx:assign>
 						<plx:left>
 							<plx:callThis accessor="this" type="field" name="_Context" />
@@ -6511,7 +5987,7 @@
 						</plx:branch>
 					</plx:set>
 				</plx:property>
-				<plx:field visibility="private" readOnly="false" name="_DrivenByPersonPerson_id" dataTypeName=".i4" />
+				<plx:field visibility="private" readOnly="" name="_DrivenByPersonPerson_id" />
 				<plx:property visibility="public" modifier="override" name="DrivenByPerson">
 					<plx:returns dataTypeName="Person" />
 					<plx:get>
@@ -6548,7 +6024,7 @@
 								</plx:callNew>
 							</plx:throw>
 						</plx:branch>
-						<plx:local name="oldValueDrivenByPersonPerson_id" dataTypeName=".i4">
+						<plx:local name="oldValueDrivenByPersonPerson_id" dataTypeName="">
 							<plx:initialize>
 								<plx:callThis accessor="this" type="field" name="_DrivenByPersonPerson_id" />
 							</plx:initialize>
@@ -7257,7 +6733,7 @@
 							</plx:callInstance>
 						</plx:passParam>
 						<plx:passParam>
-							<plx:callInstance type="methodCall" name="GetInt32">
+							<plx:callInstance type="methodCall" name="">
 								<plx:callObject>
 									<plx:nameRef name="reader" />
 								</plx:callObject>
@@ -7296,7 +6772,7 @@
 				<plx:function visibility="public" name=".construct">
 					<plx:param name="context" dataTypeName="SampleModelContext" />
 					<plx:param name="NickName" dataTypeName=".string" />
-					<plx:param name="PersonPerson_id" dataTypeName=".i4" />
+					<plx:param name="PersonPerson_id" />
 					<plx:assign>
 						<plx:left>
 							<plx:callThis accessor="this" type="field" name="_Context" />
@@ -7643,7 +7119,7 @@
 						</plx:branch>
 					</plx:set>
 				</plx:property>
-				<plx:field visibility="private" readOnly="false" name="_PersonPerson_id" dataTypeName=".i4" />
+				<plx:field visibility="private" readOnly="" name="_PersonPerson_id" />
 				<plx:property visibility="public" modifier="override" name="Person">
 					<plx:returns dataTypeName="Person" />
 					<plx:get>
@@ -7680,7 +7156,7 @@
 								</plx:callNew>
 							</plx:throw>
 						</plx:branch>
-						<plx:local name="oldValuePersonPerson_id" dataTypeName=".i4">
+						<plx:local name="oldValuePersonPerson_id" dataTypeName="">
 							<plx:initialize>
 								<plx:callThis accessor="this" type="field" name="_PersonPerson_id" />
 							</plx:initialize>
@@ -7979,7 +7455,6 @@
 				</plx:leadingInfo>
 				<plx:interfaceMember memberName="CreatePerson" dataTypeName="ISampleModelContext" />
 				<plx:param name="FirstName" dataTypeName=".string" />
-				<plx:param name="Person_id" dataTypeName=".i4" />
 				<plx:param name="Date_YMD" dataTypeName=".i4" />
 				<plx:param name="LastName" dataTypeName=".string" />
 				<plx:param name="Gender_Gender_Code" dataTypeName=".string" />
@@ -8101,7 +7576,7 @@
 					</plx:left>
 					<plx:right>
 						<plx:string>
-							<plx:string>INSERT INTO SampleModel.Person (FirstName, Person_id, Date_YMD, LastName, Gender_Gender_Code, MandatoryUniqueDecimal, MandatoryUniqueString) VALUES (@FirstName, @Person_id, @Date_YMD, @LastName, @Gender_Gender_Code, @MandatoryUniqueDecimal, @MandatoryUniqueString)</plx:string>
+							<plx:string>INSERT INTO SampleModel.Person (FirstName, Date_YMD, LastName, Gender_Gender_Code, MandatoryUniqueDecimal, MandatoryUniqueString) VALUES (@FirstName, @Date_YMD, @LastName, @Gender_Gender_Code, @MandatoryUniqueDecimal, @MandatoryUniqueString)</plx:string>
 						</plx:string>
 					</plx:right>
 				</plx:assign>
@@ -8148,51 +7623,6 @@
 					</plx:callObject>
 					<plx:passParam>
 						<plx:nameRef name="parameterFirstName" type="local" />
-					</plx:passParam>
-				</plx:callInstance>
-				<plx:local name="parameterPerson_id" dataTypeName="IDataParameter">
-					<plx:initialize>
-						<plx:callInstance name="CreateParameter" type="methodCall">
-							<plx:callObject>
-								<plx:nameRef name="command" />
-							</plx:callObject>
-						</plx:callInstance>
-					</plx:initialize>
-				</plx:local>
-				<plx:assign>
-					<plx:left>
-						<plx:callInstance name="ParameterName" type="property">
-							<plx:callObject>
-								<plx:nameRef name="parameterPerson_id" />
-							</plx:callObject>
-						</plx:callInstance>
-					</plx:left>
-					<plx:right>
-						<plx:string>Person_id</plx:string>
-					</plx:right>
-				</plx:assign>
-				<plx:assign>
-					<plx:left>
-						<plx:callInstance name="Value" type="property">
-							<plx:callObject>
-								<plx:nameRef name="parameterPerson_id" />
-							</plx:callObject>
-						</plx:callInstance>
-					</plx:left>
-					<plx:right>
-						<plx:nameRef type="parameter" name="Person_id" />
-					</plx:right>
-				</plx:assign>
-				<plx:callInstance name="Add" type="methodCall">
-					<plx:callObject>
-						<plx:callInstance name="Parameters" type="property">
-							<plx:callObject>
-								<plx:nameRef name="command" />
-							</plx:callObject>
-						</plx:callInstance>
-					</plx:callObject>
-					<plx:passParam>
-						<plx:nameRef name="parameterPerson_id" type="local" />
 					</plx:passParam>
 				</plx:callInstance>
 				<plx:local name="parameterDate_YMD" dataTypeName="IDataParameter">
@@ -8468,9 +7898,6 @@
 								<plx:nameRef name="FirstName" type="parameter" />
 							</plx:passParam>
 							<plx:passParam>
-								<plx:nameRef name="Person_id" type="parameter" />
-							</plx:passParam>
-							<plx:passParam>
 								<plx:nameRef name="Date_YMD" type="parameter" />
 							</plx:passParam>
 							<plx:passParam>
@@ -8640,18 +8067,6 @@
 						</plx:callInstance>
 					</plx:initialize>
 				</plx:local>
-				<plx:local name="ordinalPerson_id" dataTypeName=".i4">
-					<plx:initialize>
-						<plx:callInstance name="GetOrdinal" type="methodCall">
-							<plx:callObject>
-								<plx:nameRef name="reader" type="parameter" />
-							</plx:callObject>
-							<plx:passParam>
-								<plx:string>Person_id</plx:string>
-							</plx:passParam>
-						</plx:callInstance>
-					</plx:initialize>
-				</plx:local>
 				<plx:local name="ordinalDate_YMD" dataTypeName=".i4">
 					<plx:initialize>
 						<plx:callInstance name="GetOrdinal" type="methodCall">
@@ -8724,16 +8139,6 @@
 								</plx:callObject>
 								<plx:passParam>
 									<plx:nameRef name="ordinalFirstName" />
-								</plx:passParam>
-							</plx:callInstance>
-						</plx:passParam>
-						<plx:passParam>
-							<plx:callInstance type="methodCall" name="GetInt32">
-								<plx:callObject>
-									<plx:nameRef name="reader" />
-								</plx:callObject>
-								<plx:passParam>
-									<plx:nameRef name="ordinalPerson_id" />
 								</plx:passParam>
 							</plx:callInstance>
 						</plx:passParam>
@@ -8817,7 +8222,6 @@
 				<plx:function visibility="public" name=".construct">
 					<plx:param name="context" dataTypeName="SampleModelContext" />
 					<plx:param name="FirstName" dataTypeName=".string" />
-					<plx:param name="Person_id" dataTypeName=".i4" />
 					<plx:param name="Date_YMD" dataTypeName=".i4" />
 					<plx:param name="LastName" dataTypeName=".string" />
 					<plx:param name="Gender_Gender_Code" dataTypeName=".string" />
@@ -8837,14 +8241,6 @@
 						</plx:left>
 						<plx:right>
 							<plx:nameRef type="parameter" name="FirstName" />
-						</plx:right>
-					</plx:assign>
-					<plx:assign>
-						<plx:left>
-							<plx:callThis accessor="this" type="field" name="_Person_id" />
-						</plx:left>
-						<plx:right>
-							<plx:nameRef type="parameter" name="Person_id" />
 						</plx:right>
 					</plx:assign>
 					<plx:assign>
@@ -8987,7 +8383,7 @@
 										</plx:callInstance>
 									</plx:left>
 									<plx:right>
-										<plx:string>UPDATE SampleModel.Person SET FirstName = @NewFirstName WHERE Person_id = @Person_id</plx:string>
+										<plx:string>UPDATE SampleModel.Person SET FirstName = @NewFirstName WHERE </plx:string>
 									</plx:right>
 								</plx:assign>
 								<plx:local name="parameterNewFirstName" dataTypeName="IDataParameter">
@@ -9035,51 +8431,6 @@
 										<plx:nameRef name="parameterNewFirstName" type="local" />
 									</plx:passParam>
 								</plx:callInstance>
-								<plx:local name="parameterPerson_id" dataTypeName="IDataParameter">
-									<plx:initialize>
-										<plx:callInstance name="CreateParameter" type="methodCall">
-											<plx:callObject>
-												<plx:nameRef name="command" />
-											</plx:callObject>
-										</plx:callInstance>
-									</plx:initialize>
-								</plx:local>
-								<plx:assign>
-									<plx:left>
-										<plx:callInstance name="ParameterName" type="property">
-											<plx:callObject>
-												<plx:nameRef name="parameterPerson_id" />
-											</plx:callObject>
-										</plx:callInstance>
-									</plx:left>
-									<plx:right>
-										<plx:string>Person_id</plx:string>
-									</plx:right>
-								</plx:assign>
-								<plx:assign>
-									<plx:left>
-										<plx:callInstance name="Value" type="property">
-											<plx:callObject>
-												<plx:nameRef name="parameterPerson_id" />
-											</plx:callObject>
-										</plx:callInstance>
-									</plx:left>
-									<plx:right>
-										<plx:callThis accessor="this" name="_Person_id" type="property" />
-									</plx:right>
-								</plx:assign>
-								<plx:callInstance name="Add" type="methodCall">
-									<plx:callObject>
-										<plx:callInstance name="Parameters" type="property">
-											<plx:callObject>
-												<plx:nameRef name="command" />
-											</plx:callObject>
-										</plx:callInstance>
-									</plx:callObject>
-									<plx:passParam>
-										<plx:nameRef name="parameterPerson_id" type="local" />
-									</plx:passParam>
-								</plx:callInstance>
 								<plx:branch>
 									<plx:condition>
 										<plx:binaryOperator type="inequality">
@@ -9118,250 +8469,6 @@
 									<plx:assign>
 										<plx:left>
 											<plx:callThis accessor="this" type="field" name="_FirstName" />
-										</plx:left>
-										<plx:right>
-											<plx:valueKeyword />
-										</plx:right>
-									</plx:assign>
-									<plx:finally>
-										<plx:branch>
-											<plx:condition>
-												<plx:binaryOperator type="equality">
-													<plx:left>
-														<plx:callInstance name="State" type="property">
-															<plx:callObject>
-																<plx:callInstance name="Connection" type="property">
-																	<plx:callObject>
-																		<plx:nameRef name="command" type="local" />
-																	</plx:callObject>
-																</plx:callInstance>
-															</plx:callObject>
-														</plx:callInstance>
-													</plx:left>
-													<plx:right>
-														<plx:callStatic name="Open" dataTypeName="ConnectionState" type="field" />
-													</plx:right>
-												</plx:binaryOperator>
-											</plx:condition>
-											<plx:callInstance name="Close" type="methodCall">
-												<plx:callObject>
-													<plx:callInstance name="Connection" type="property">
-														<plx:callObject>
-															<plx:nameRef name="command" type="local" />
-														</plx:callObject>
-													</plx:callInstance>
-												</plx:callObject>
-											</plx:callInstance>
-										</plx:branch>
-										<plx:callInstance name="Dispose" type="methodCall">
-											<plx:callObject>
-												<plx:nameRef name="command" type="local" />
-											</plx:callObject>
-										</plx:callInstance>
-									</plx:finally>
-								</plx:try>
-							</plx:branch>
-						</plx:branch>
-					</plx:set>
-				</plx:property>
-				<plx:field visibility="private" readOnly="false" name="_Person_id" dataTypeName=".i4" />
-				<plx:property visibility="public" modifier="override" name="Person_id">
-					<plx:returns dataTypeName=".i4" />
-					<plx:get>
-						<plx:return>
-							<plx:callThis accessor="this" type="field" name="_Person_id" />
-						</plx:return>
-					</plx:get>
-					<plx:set>
-						<plx:local name="oldValue" dataTypeName=".i4">
-							<plx:initialize>
-								<plx:callThis accessor="this" type="field" name="_Person_id" />
-							</plx:initialize>
-						</plx:local>
-						<plx:branch>
-							<plx:condition>
-								<plx:binaryOperator type="inequality">
-									<plx:left>
-										<plx:nameRef type="local" name="oldValue" />
-									</plx:left>
-									<plx:right>
-										<plx:valueKeyword />
-									</plx:right>
-								</plx:binaryOperator>
-							</plx:condition>
-							<plx:branch>
-								<plx:condition>
-									<plx:callThis accessor="base" type="methodCall" name="OnPerson_idChanging">
-										<plx:passParam>
-											<plx:valueKeyword />
-										</plx:passParam>
-									</plx:callThis>
-								</plx:condition>
-								<plx:local name="command" dataTypeName="IDbCommand">
-									<plx:initialize>
-										<plx:callInstance type="methodCall" name="CreateCommand">
-											<plx:callObject>
-												<plx:callInstance type="methodCall" name="GetConnection">
-													<plx:callObject>
-														<plx:callThis type="property" accessor="this" name="Context" />
-													</plx:callObject>
-												</plx:callInstance>
-											</plx:callObject>
-										</plx:callInstance>
-									</plx:initialize>
-								</plx:local>
-								<plx:assign>
-									<plx:left>
-										<plx:callInstance type="property" name="CommandType">
-											<plx:callObject>
-												<plx:nameRef type="local" name="command" />
-											</plx:callObject>
-										</plx:callInstance>
-									</plx:left>
-									<plx:right>
-										<plx:callStatic type="field" name="Text" dataTypeName="CommandType" />
-									</plx:right>
-								</plx:assign>
-								<plx:assign>
-									<plx:left>
-										<plx:callInstance type="property" name="CommandText">
-											<plx:callObject>
-												<plx:nameRef type="local" name="command" />
-											</plx:callObject>
-										</plx:callInstance>
-									</plx:left>
-									<plx:right>
-										<plx:string>UPDATE SampleModel.Person SET Person_id = @NewPerson_id WHERE Person_id = @Person_id</plx:string>
-									</plx:right>
-								</plx:assign>
-								<plx:local name="parameterNewPerson_id" dataTypeName="IDataParameter">
-									<plx:initialize>
-										<plx:callInstance name="CreateParameter" type="methodCall">
-											<plx:callObject>
-												<plx:nameRef name="command" />
-											</plx:callObject>
-										</plx:callInstance>
-									</plx:initialize>
-								</plx:local>
-								<plx:assign>
-									<plx:left>
-										<plx:callInstance name="ParameterName" type="property">
-											<plx:callObject>
-												<plx:nameRef name="parameterNewPerson_id" />
-											</plx:callObject>
-										</plx:callInstance>
-									</plx:left>
-									<plx:right>
-										<plx:string>NewPerson_id</plx:string>
-									</plx:right>
-								</plx:assign>
-								<plx:assign>
-									<plx:left>
-										<plx:callInstance name="Value" type="property">
-											<plx:callObject>
-												<plx:nameRef name="parameterNewPerson_id" />
-											</plx:callObject>
-										</plx:callInstance>
-									</plx:left>
-									<plx:right>
-										<plx:valueKeyword />
-									</plx:right>
-								</plx:assign>
-								<plx:callInstance name="Add" type="methodCall">
-									<plx:callObject>
-										<plx:callInstance name="Parameters" type="property">
-											<plx:callObject>
-												<plx:nameRef name="command" />
-											</plx:callObject>
-										</plx:callInstance>
-									</plx:callObject>
-									<plx:passParam>
-										<plx:nameRef name="parameterNewPerson_id" type="local" />
-									</plx:passParam>
-								</plx:callInstance>
-								<plx:local name="parameterPerson_id" dataTypeName="IDataParameter">
-									<plx:initialize>
-										<plx:callInstance name="CreateParameter" type="methodCall">
-											<plx:callObject>
-												<plx:nameRef name="command" />
-											</plx:callObject>
-										</plx:callInstance>
-									</plx:initialize>
-								</plx:local>
-								<plx:assign>
-									<plx:left>
-										<plx:callInstance name="ParameterName" type="property">
-											<plx:callObject>
-												<plx:nameRef name="parameterPerson_id" />
-											</plx:callObject>
-										</plx:callInstance>
-									</plx:left>
-									<plx:right>
-										<plx:string>Person_id</plx:string>
-									</plx:right>
-								</plx:assign>
-								<plx:assign>
-									<plx:left>
-										<plx:callInstance name="Value" type="property">
-											<plx:callObject>
-												<plx:nameRef name="parameterPerson_id" />
-											</plx:callObject>
-										</plx:callInstance>
-									</plx:left>
-									<plx:right>
-										<plx:callThis accessor="this" name="_Person_id" type="property" />
-									</plx:right>
-								</plx:assign>
-								<plx:callInstance name="Add" type="methodCall">
-									<plx:callObject>
-										<plx:callInstance name="Parameters" type="property">
-											<plx:callObject>
-												<plx:nameRef name="command" />
-											</plx:callObject>
-										</plx:callInstance>
-									</plx:callObject>
-									<plx:passParam>
-										<plx:nameRef name="parameterPerson_id" type="local" />
-									</plx:passParam>
-								</plx:callInstance>
-								<plx:branch>
-									<plx:condition>
-										<plx:binaryOperator type="inequality">
-											<plx:left>
-												<plx:callInstance name="State" type="property">
-													<plx:callObject>
-														<plx:callInstance name="Connection" type="property">
-															<plx:callObject>
-																<plx:nameRef name="command" type="local" />
-															</plx:callObject>
-														</plx:callInstance>
-													</plx:callObject>
-												</plx:callInstance>
-											</plx:left>
-											<plx:right>
-												<plx:callStatic name="Open" dataTypeName="ConnectionState" type="property" />
-											</plx:right>
-										</plx:binaryOperator>
-									</plx:condition>
-									<plx:callInstance name="Open" type="methodCall">
-										<plx:callObject>
-											<plx:callInstance name="Connection" type="property">
-												<plx:callObject>
-													<plx:nameRef name="command" type="local" />
-												</plx:callObject>
-											</plx:callInstance>
-										</plx:callObject>
-									</plx:callInstance>
-								</plx:branch>
-								<plx:try>
-									<plx:callInstance type="methodCall" name="ExecuteNonQuery">
-										<plx:callObject>
-											<plx:nameRef type="local" name="command" />
-										</plx:callObject>
-									</plx:callInstance>
-									<plx:assign>
-										<plx:left>
-											<plx:callThis accessor="this" type="field" name="_Person_id" />
 										</plx:left>
 										<plx:right>
 											<plx:valueKeyword />
@@ -9475,7 +8582,7 @@
 										</plx:callInstance>
 									</plx:left>
 									<plx:right>
-										<plx:string>UPDATE SampleModel.Person SET Date_YMD = @NewDate_YMD WHERE Person_id = @Person_id</plx:string>
+										<plx:string>UPDATE SampleModel.Person SET Date_YMD = @NewDate_YMD WHERE </plx:string>
 									</plx:right>
 								</plx:assign>
 								<plx:local name="parameterNewDate_YMD" dataTypeName="IDataParameter">
@@ -9521,51 +8628,6 @@
 									</plx:callObject>
 									<plx:passParam>
 										<plx:nameRef name="parameterNewDate_YMD" type="local" />
-									</plx:passParam>
-								</plx:callInstance>
-								<plx:local name="parameterPerson_id" dataTypeName="IDataParameter">
-									<plx:initialize>
-										<plx:callInstance name="CreateParameter" type="methodCall">
-											<plx:callObject>
-												<plx:nameRef name="command" />
-											</plx:callObject>
-										</plx:callInstance>
-									</plx:initialize>
-								</plx:local>
-								<plx:assign>
-									<plx:left>
-										<plx:callInstance name="ParameterName" type="property">
-											<plx:callObject>
-												<plx:nameRef name="parameterPerson_id" />
-											</plx:callObject>
-										</plx:callInstance>
-									</plx:left>
-									<plx:right>
-										<plx:string>Person_id</plx:string>
-									</plx:right>
-								</plx:assign>
-								<plx:assign>
-									<plx:left>
-										<plx:callInstance name="Value" type="property">
-											<plx:callObject>
-												<plx:nameRef name="parameterPerson_id" />
-											</plx:callObject>
-										</plx:callInstance>
-									</plx:left>
-									<plx:right>
-										<plx:callThis accessor="this" name="_Person_id" type="property" />
-									</plx:right>
-								</plx:assign>
-								<plx:callInstance name="Add" type="methodCall">
-									<plx:callObject>
-										<plx:callInstance name="Parameters" type="property">
-											<plx:callObject>
-												<plx:nameRef name="command" />
-											</plx:callObject>
-										</plx:callInstance>
-									</plx:callObject>
-									<plx:passParam>
-										<plx:nameRef name="parameterPerson_id" type="local" />
 									</plx:passParam>
 								</plx:callInstance>
 								<plx:branch>
@@ -9742,7 +8804,7 @@
 										</plx:callInstance>
 									</plx:left>
 									<plx:right>
-										<plx:string>UPDATE SampleModel.Person SET LastName = @NewLastName WHERE Person_id = @Person_id</plx:string>
+										<plx:string>UPDATE SampleModel.Person SET LastName = @NewLastName WHERE </plx:string>
 									</plx:right>
 								</plx:assign>
 								<plx:local name="parameterNewLastName" dataTypeName="IDataParameter">
@@ -9788,51 +8850,6 @@
 									</plx:callObject>
 									<plx:passParam>
 										<plx:nameRef name="parameterNewLastName" type="local" />
-									</plx:passParam>
-								</plx:callInstance>
-								<plx:local name="parameterPerson_id" dataTypeName="IDataParameter">
-									<plx:initialize>
-										<plx:callInstance name="CreateParameter" type="methodCall">
-											<plx:callObject>
-												<plx:nameRef name="command" />
-											</plx:callObject>
-										</plx:callInstance>
-									</plx:initialize>
-								</plx:local>
-								<plx:assign>
-									<plx:left>
-										<plx:callInstance name="ParameterName" type="property">
-											<plx:callObject>
-												<plx:nameRef name="parameterPerson_id" />
-											</plx:callObject>
-										</plx:callInstance>
-									</plx:left>
-									<plx:right>
-										<plx:string>Person_id</plx:string>
-									</plx:right>
-								</plx:assign>
-								<plx:assign>
-									<plx:left>
-										<plx:callInstance name="Value" type="property">
-											<plx:callObject>
-												<plx:nameRef name="parameterPerson_id" />
-											</plx:callObject>
-										</plx:callInstance>
-									</plx:left>
-									<plx:right>
-										<plx:callThis accessor="this" name="_Person_id" type="property" />
-									</plx:right>
-								</plx:assign>
-								<plx:callInstance name="Add" type="methodCall">
-									<plx:callObject>
-										<plx:callInstance name="Parameters" type="property">
-											<plx:callObject>
-												<plx:nameRef name="command" />
-											</plx:callObject>
-										</plx:callInstance>
-									</plx:callObject>
-									<plx:passParam>
-										<plx:nameRef name="parameterPerson_id" type="local" />
 									</plx:passParam>
 								</plx:callInstance>
 								<plx:branch>
@@ -9988,7 +9005,7 @@
 										</plx:callInstance>
 									</plx:left>
 									<plx:right>
-										<plx:string>UPDATE SampleModel.Person SET OptionalUniqueString = @NewOptionalUniqueString WHERE Person_id = @Person_id</plx:string>
+										<plx:string>UPDATE SampleModel.Person SET OptionalUniqueString = @NewOptionalUniqueString WHERE </plx:string>
 									</plx:right>
 								</plx:assign>
 								<plx:local name="parameterNewOptionalUniqueString" dataTypeName="IDataParameter">
@@ -10034,51 +9051,6 @@
 									</plx:callObject>
 									<plx:passParam>
 										<plx:nameRef name="parameterNewOptionalUniqueString" type="local" />
-									</plx:passParam>
-								</plx:callInstance>
-								<plx:local name="parameterPerson_id" dataTypeName="IDataParameter">
-									<plx:initialize>
-										<plx:callInstance name="CreateParameter" type="methodCall">
-											<plx:callObject>
-												<plx:nameRef name="command" />
-											</plx:callObject>
-										</plx:callInstance>
-									</plx:initialize>
-								</plx:local>
-								<plx:assign>
-									<plx:left>
-										<plx:callInstance name="ParameterName" type="property">
-											<plx:callObject>
-												<plx:nameRef name="parameterPerson_id" />
-											</plx:callObject>
-										</plx:callInstance>
-									</plx:left>
-									<plx:right>
-										<plx:string>Person_id</plx:string>
-									</plx:right>
-								</plx:assign>
-								<plx:assign>
-									<plx:left>
-										<plx:callInstance name="Value" type="property">
-											<plx:callObject>
-												<plx:nameRef name="parameterPerson_id" />
-											</plx:callObject>
-										</plx:callInstance>
-									</plx:left>
-									<plx:right>
-										<plx:callThis accessor="this" name="_Person_id" type="property" />
-									</plx:right>
-								</plx:assign>
-								<plx:callInstance name="Add" type="methodCall">
-									<plx:callObject>
-										<plx:callInstance name="Parameters" type="property">
-											<plx:callObject>
-												<plx:nameRef name="command" />
-											</plx:callObject>
-										</plx:callInstance>
-									</plx:callObject>
-									<plx:passParam>
-										<plx:nameRef name="parameterPerson_id" type="local" />
 									</plx:passParam>
 								</plx:callInstance>
 								<plx:branch>
@@ -10267,7 +9239,7 @@
 										</plx:callInstance>
 									</plx:left>
 									<plx:right>
-										<plx:string>UPDATE SampleModel.Person SET HatType_ColorARGB = @NewHatType_ColorARGB WHERE Person_id = @Person_id</plx:string>
+										<plx:string>UPDATE SampleModel.Person SET HatType_ColorARGB = @NewHatType_ColorARGB WHERE </plx:string>
 									</plx:right>
 								</plx:assign>
 								<plx:local name="parameterNewHatType_ColorARGB" dataTypeName="IDataParameter">
@@ -10313,51 +9285,6 @@
 									</plx:callObject>
 									<plx:passParam>
 										<plx:nameRef name="parameterNewHatType_ColorARGB" type="local" />
-									</plx:passParam>
-								</plx:callInstance>
-								<plx:local name="parameterPerson_id" dataTypeName="IDataParameter">
-									<plx:initialize>
-										<plx:callInstance name="CreateParameter" type="methodCall">
-											<plx:callObject>
-												<plx:nameRef name="command" />
-											</plx:callObject>
-										</plx:callInstance>
-									</plx:initialize>
-								</plx:local>
-								<plx:assign>
-									<plx:left>
-										<plx:callInstance name="ParameterName" type="property">
-											<plx:callObject>
-												<plx:nameRef name="parameterPerson_id" />
-											</plx:callObject>
-										</plx:callInstance>
-									</plx:left>
-									<plx:right>
-										<plx:string>Person_id</plx:string>
-									</plx:right>
-								</plx:assign>
-								<plx:assign>
-									<plx:left>
-										<plx:callInstance name="Value" type="property">
-											<plx:callObject>
-												<plx:nameRef name="parameterPerson_id" />
-											</plx:callObject>
-										</plx:callInstance>
-									</plx:left>
-									<plx:right>
-										<plx:callThis accessor="this" name="_Person_id" type="property" />
-									</plx:right>
-								</plx:assign>
-								<plx:callInstance name="Add" type="methodCall">
-									<plx:callObject>
-										<plx:callInstance name="Parameters" type="property">
-											<plx:callObject>
-												<plx:nameRef name="command" />
-											</plx:callObject>
-										</plx:callInstance>
-									</plx:callObject>
-									<plx:passParam>
-										<plx:nameRef name="parameterPerson_id" type="local" />
 									</plx:passParam>
 								</plx:callInstance>
 								<plx:branch>
@@ -10513,7 +9440,7 @@
 										</plx:callInstance>
 									</plx:left>
 									<plx:right>
-										<plx:string>UPDATE SampleModel.Person SET HatType_HatTypeStyle_HatTypeStyle_Description = @NewHatType_HatTypeStyle_HatTypeStyle_Description WHERE Person_id = @Person_id</plx:string>
+										<plx:string>UPDATE SampleModel.Person SET HatType_HatTypeStyle_HatTypeStyle_Description = @NewHatType_HatTypeStyle_HatTypeStyle_Description WHERE </plx:string>
 									</plx:right>
 								</plx:assign>
 								<plx:local name="parameterNewHatType_HatTypeStyle_HatTypeStyle_Description" dataTypeName="IDataParameter">
@@ -10559,51 +9486,6 @@
 									</plx:callObject>
 									<plx:passParam>
 										<plx:nameRef name="parameterNewHatType_HatTypeStyle_HatTypeStyle_Description" type="local" />
-									</plx:passParam>
-								</plx:callInstance>
-								<plx:local name="parameterPerson_id" dataTypeName="IDataParameter">
-									<plx:initialize>
-										<plx:callInstance name="CreateParameter" type="methodCall">
-											<plx:callObject>
-												<plx:nameRef name="command" />
-											</plx:callObject>
-										</plx:callInstance>
-									</plx:initialize>
-								</plx:local>
-								<plx:assign>
-									<plx:left>
-										<plx:callInstance name="ParameterName" type="property">
-											<plx:callObject>
-												<plx:nameRef name="parameterPerson_id" />
-											</plx:callObject>
-										</plx:callInstance>
-									</plx:left>
-									<plx:right>
-										<plx:string>Person_id</plx:string>
-									</plx:right>
-								</plx:assign>
-								<plx:assign>
-									<plx:left>
-										<plx:callInstance name="Value" type="property">
-											<plx:callObject>
-												<plx:nameRef name="parameterPerson_id" />
-											</plx:callObject>
-										</plx:callInstance>
-									</plx:left>
-									<plx:right>
-										<plx:callThis accessor="this" name="_Person_id" type="property" />
-									</plx:right>
-								</plx:assign>
-								<plx:callInstance name="Add" type="methodCall">
-									<plx:callObject>
-										<plx:callInstance name="Parameters" type="property">
-											<plx:callObject>
-												<plx:nameRef name="command" />
-											</plx:callObject>
-										</plx:callInstance>
-									</plx:callObject>
-									<plx:passParam>
-										<plx:nameRef name="parameterPerson_id" type="local" />
 									</plx:passParam>
 								</plx:callInstance>
 								<plx:branch>
@@ -10792,7 +9674,7 @@
 										</plx:callInstance>
 									</plx:left>
 									<plx:right>
-										<plx:string>UPDATE SampleModel.Person SET OwnsCar_vin = @NewOwnsCar_vin WHERE Person_id = @Person_id</plx:string>
+										<plx:string>UPDATE SampleModel.Person SET OwnsCar_vin = @NewOwnsCar_vin WHERE </plx:string>
 									</plx:right>
 								</plx:assign>
 								<plx:local name="parameterNewOwnsCar_vin" dataTypeName="IDataParameter">
@@ -10838,51 +9720,6 @@
 									</plx:callObject>
 									<plx:passParam>
 										<plx:nameRef name="parameterNewOwnsCar_vin" type="local" />
-									</plx:passParam>
-								</plx:callInstance>
-								<plx:local name="parameterPerson_id" dataTypeName="IDataParameter">
-									<plx:initialize>
-										<plx:callInstance name="CreateParameter" type="methodCall">
-											<plx:callObject>
-												<plx:nameRef name="command" />
-											</plx:callObject>
-										</plx:callInstance>
-									</plx:initialize>
-								</plx:local>
-								<plx:assign>
-									<plx:left>
-										<plx:callInstance name="ParameterName" type="property">
-											<plx:callObject>
-												<plx:nameRef name="parameterPerson_id" />
-											</plx:callObject>
-										</plx:callInstance>
-									</plx:left>
-									<plx:right>
-										<plx:string>Person_id</plx:string>
-									</plx:right>
-								</plx:assign>
-								<plx:assign>
-									<plx:left>
-										<plx:callInstance name="Value" type="property">
-											<plx:callObject>
-												<plx:nameRef name="parameterPerson_id" />
-											</plx:callObject>
-										</plx:callInstance>
-									</plx:left>
-									<plx:right>
-										<plx:callThis accessor="this" name="_Person_id" type="property" />
-									</plx:right>
-								</plx:assign>
-								<plx:callInstance name="Add" type="methodCall">
-									<plx:callObject>
-										<plx:callInstance name="Parameters" type="property">
-											<plx:callObject>
-												<plx:nameRef name="command" />
-											</plx:callObject>
-										</plx:callInstance>
-									</plx:callObject>
-									<plx:passParam>
-										<plx:nameRef name="parameterPerson_id" type="local" />
 									</plx:passParam>
 								</plx:callInstance>
 								<plx:branch>
@@ -11059,7 +9896,7 @@
 										</plx:callInstance>
 									</plx:left>
 									<plx:right>
-										<plx:string>UPDATE SampleModel.Person SET Gender_Gender_Code = @NewGender_Gender_Code WHERE Person_id = @Person_id</plx:string>
+										<plx:string>UPDATE SampleModel.Person SET Gender_Gender_Code = @NewGender_Gender_Code WHERE </plx:string>
 									</plx:right>
 								</plx:assign>
 								<plx:local name="parameterNewGender_Gender_Code" dataTypeName="IDataParameter">
@@ -11105,51 +9942,6 @@
 									</plx:callObject>
 									<plx:passParam>
 										<plx:nameRef name="parameterNewGender_Gender_Code" type="local" />
-									</plx:passParam>
-								</plx:callInstance>
-								<plx:local name="parameterPerson_id" dataTypeName="IDataParameter">
-									<plx:initialize>
-										<plx:callInstance name="CreateParameter" type="methodCall">
-											<plx:callObject>
-												<plx:nameRef name="command" />
-											</plx:callObject>
-										</plx:callInstance>
-									</plx:initialize>
-								</plx:local>
-								<plx:assign>
-									<plx:left>
-										<plx:callInstance name="ParameterName" type="property">
-											<plx:callObject>
-												<plx:nameRef name="parameterPerson_id" />
-											</plx:callObject>
-										</plx:callInstance>
-									</plx:left>
-									<plx:right>
-										<plx:string>Person_id</plx:string>
-									</plx:right>
-								</plx:assign>
-								<plx:assign>
-									<plx:left>
-										<plx:callInstance name="Value" type="property">
-											<plx:callObject>
-												<plx:nameRef name="parameterPerson_id" />
-											</plx:callObject>
-										</plx:callInstance>
-									</plx:left>
-									<plx:right>
-										<plx:callThis accessor="this" name="_Person_id" type="property" />
-									</plx:right>
-								</plx:assign>
-								<plx:callInstance name="Add" type="methodCall">
-									<plx:callObject>
-										<plx:callInstance name="Parameters" type="property">
-											<plx:callObject>
-												<plx:nameRef name="command" />
-											</plx:callObject>
-										</plx:callInstance>
-									</plx:callObject>
-									<plx:passParam>
-										<plx:nameRef name="parameterPerson_id" type="local" />
 									</plx:passParam>
 								</plx:callInstance>
 								<plx:branch>
@@ -11338,7 +10130,7 @@
 										</plx:callInstance>
 									</plx:left>
 									<plx:right>
-										<plx:string>UPDATE SampleModel.Person SET hasParents = @NewhasParents WHERE Person_id = @Person_id</plx:string>
+										<plx:string>UPDATE SampleModel.Person SET hasParents = @NewhasParents WHERE </plx:string>
 									</plx:right>
 								</plx:assign>
 								<plx:local name="parameterNewhasParents" dataTypeName="IDataParameter">
@@ -11384,51 +10176,6 @@
 									</plx:callObject>
 									<plx:passParam>
 										<plx:nameRef name="parameterNewhasParents" type="local" />
-									</plx:passParam>
-								</plx:callInstance>
-								<plx:local name="parameterPerson_id" dataTypeName="IDataParameter">
-									<plx:initialize>
-										<plx:callInstance name="CreateParameter" type="methodCall">
-											<plx:callObject>
-												<plx:nameRef name="command" />
-											</plx:callObject>
-										</plx:callInstance>
-									</plx:initialize>
-								</plx:local>
-								<plx:assign>
-									<plx:left>
-										<plx:callInstance name="ParameterName" type="property">
-											<plx:callObject>
-												<plx:nameRef name="parameterPerson_id" />
-											</plx:callObject>
-										</plx:callInstance>
-									</plx:left>
-									<plx:right>
-										<plx:string>Person_id</plx:string>
-									</plx:right>
-								</plx:assign>
-								<plx:assign>
-									<plx:left>
-										<plx:callInstance name="Value" type="property">
-											<plx:callObject>
-												<plx:nameRef name="parameterPerson_id" />
-											</plx:callObject>
-										</plx:callInstance>
-									</plx:left>
-									<plx:right>
-										<plx:callThis accessor="this" name="_Person_id" type="property" />
-									</plx:right>
-								</plx:assign>
-								<plx:callInstance name="Add" type="methodCall">
-									<plx:callObject>
-										<plx:callInstance name="Parameters" type="property">
-											<plx:callObject>
-												<plx:nameRef name="command" />
-											</plx:callObject>
-										</plx:callInstance>
-									</plx:callObject>
-									<plx:passParam>
-										<plx:nameRef name="parameterPerson_id" type="local" />
 									</plx:passParam>
 								</plx:callInstance>
 								<plx:branch>
@@ -11617,7 +10364,7 @@
 										</plx:callInstance>
 									</plx:left>
 									<plx:right>
-										<plx:string>UPDATE SampleModel.Person SET OptionalUniqueDecimal = @NewOptionalUniqueDecimal WHERE Person_id = @Person_id</plx:string>
+										<plx:string>UPDATE SampleModel.Person SET OptionalUniqueDecimal = @NewOptionalUniqueDecimal WHERE </plx:string>
 									</plx:right>
 								</plx:assign>
 								<plx:local name="parameterNewOptionalUniqueDecimal" dataTypeName="IDataParameter">
@@ -11663,51 +10410,6 @@
 									</plx:callObject>
 									<plx:passParam>
 										<plx:nameRef name="parameterNewOptionalUniqueDecimal" type="local" />
-									</plx:passParam>
-								</plx:callInstance>
-								<plx:local name="parameterPerson_id" dataTypeName="IDataParameter">
-									<plx:initialize>
-										<plx:callInstance name="CreateParameter" type="methodCall">
-											<plx:callObject>
-												<plx:nameRef name="command" />
-											</plx:callObject>
-										</plx:callInstance>
-									</plx:initialize>
-								</plx:local>
-								<plx:assign>
-									<plx:left>
-										<plx:callInstance name="ParameterName" type="property">
-											<plx:callObject>
-												<plx:nameRef name="parameterPerson_id" />
-											</plx:callObject>
-										</plx:callInstance>
-									</plx:left>
-									<plx:right>
-										<plx:string>Person_id</plx:string>
-									</plx:right>
-								</plx:assign>
-								<plx:assign>
-									<plx:left>
-										<plx:callInstance name="Value" type="property">
-											<plx:callObject>
-												<plx:nameRef name="parameterPerson_id" />
-											</plx:callObject>
-										</plx:callInstance>
-									</plx:left>
-									<plx:right>
-										<plx:callThis accessor="this" name="_Person_id" type="property" />
-									</plx:right>
-								</plx:assign>
-								<plx:callInstance name="Add" type="methodCall">
-									<plx:callObject>
-										<plx:callInstance name="Parameters" type="property">
-											<plx:callObject>
-												<plx:nameRef name="command" />
-											</plx:callObject>
-										</plx:callInstance>
-									</plx:callObject>
-									<plx:passParam>
-										<plx:nameRef name="parameterPerson_id" type="local" />
 									</plx:passParam>
 								</plx:callInstance>
 								<plx:branch>
@@ -11861,7 +10563,7 @@
 										</plx:callInstance>
 									</plx:left>
 									<plx:right>
-										<plx:string>UPDATE SampleModel.Person SET MandatoryUniqueDecimal = @NewMandatoryUniqueDecimal WHERE Person_id = @Person_id</plx:string>
+										<plx:string>UPDATE SampleModel.Person SET MandatoryUniqueDecimal = @NewMandatoryUniqueDecimal WHERE </plx:string>
 									</plx:right>
 								</plx:assign>
 								<plx:local name="parameterNewMandatoryUniqueDecimal" dataTypeName="IDataParameter">
@@ -11907,51 +10609,6 @@
 									</plx:callObject>
 									<plx:passParam>
 										<plx:nameRef name="parameterNewMandatoryUniqueDecimal" type="local" />
-									</plx:passParam>
-								</plx:callInstance>
-								<plx:local name="parameterPerson_id" dataTypeName="IDataParameter">
-									<plx:initialize>
-										<plx:callInstance name="CreateParameter" type="methodCall">
-											<plx:callObject>
-												<plx:nameRef name="command" />
-											</plx:callObject>
-										</plx:callInstance>
-									</plx:initialize>
-								</plx:local>
-								<plx:assign>
-									<plx:left>
-										<plx:callInstance name="ParameterName" type="property">
-											<plx:callObject>
-												<plx:nameRef name="parameterPerson_id" />
-											</plx:callObject>
-										</plx:callInstance>
-									</plx:left>
-									<plx:right>
-										<plx:string>Person_id</plx:string>
-									</plx:right>
-								</plx:assign>
-								<plx:assign>
-									<plx:left>
-										<plx:callInstance name="Value" type="property">
-											<plx:callObject>
-												<plx:nameRef name="parameterPerson_id" />
-											</plx:callObject>
-										</plx:callInstance>
-									</plx:left>
-									<plx:right>
-										<plx:callThis accessor="this" name="_Person_id" type="property" />
-									</plx:right>
-								</plx:assign>
-								<plx:callInstance name="Add" type="methodCall">
-									<plx:callObject>
-										<plx:callInstance name="Parameters" type="property">
-											<plx:callObject>
-												<plx:nameRef name="command" />
-											</plx:callObject>
-										</plx:callInstance>
-									</plx:callObject>
-									<plx:passParam>
-										<plx:nameRef name="parameterPerson_id" type="local" />
 									</plx:passParam>
 								</plx:callInstance>
 								<plx:branch>
@@ -12128,7 +10785,7 @@
 										</plx:callInstance>
 									</plx:left>
 									<plx:right>
-										<plx:string>UPDATE SampleModel.Person SET MandatoryUniqueString = @NewMandatoryUniqueString WHERE Person_id = @Person_id</plx:string>
+										<plx:string>UPDATE SampleModel.Person SET MandatoryUniqueString = @NewMandatoryUniqueString WHERE </plx:string>
 									</plx:right>
 								</plx:assign>
 								<plx:local name="parameterNewMandatoryUniqueString" dataTypeName="IDataParameter">
@@ -12174,51 +10831,6 @@
 									</plx:callObject>
 									<plx:passParam>
 										<plx:nameRef name="parameterNewMandatoryUniqueString" type="local" />
-									</plx:passParam>
-								</plx:callInstance>
-								<plx:local name="parameterPerson_id" dataTypeName="IDataParameter">
-									<plx:initialize>
-										<plx:callInstance name="CreateParameter" type="methodCall">
-											<plx:callObject>
-												<plx:nameRef name="command" />
-											</plx:callObject>
-										</plx:callInstance>
-									</plx:initialize>
-								</plx:local>
-								<plx:assign>
-									<plx:left>
-										<plx:callInstance name="ParameterName" type="property">
-											<plx:callObject>
-												<plx:nameRef name="parameterPerson_id" />
-											</plx:callObject>
-										</plx:callInstance>
-									</plx:left>
-									<plx:right>
-										<plx:string>Person_id</plx:string>
-									</plx:right>
-								</plx:assign>
-								<plx:assign>
-									<plx:left>
-										<plx:callInstance name="Value" type="property">
-											<plx:callObject>
-												<plx:nameRef name="parameterPerson_id" />
-											</plx:callObject>
-										</plx:callInstance>
-									</plx:left>
-									<plx:right>
-										<plx:callThis accessor="this" name="_Person_id" type="property" />
-									</plx:right>
-								</plx:assign>
-								<plx:callInstance name="Add" type="methodCall">
-									<plx:callObject>
-										<plx:callInstance name="Parameters" type="property">
-											<plx:callObject>
-												<plx:nameRef name="command" />
-											</plx:callObject>
-										</plx:callInstance>
-									</plx:callObject>
-									<plx:passParam>
-										<plx:nameRef name="parameterPerson_id" type="local" />
 									</plx:passParam>
 								</plx:callInstance>
 								<plx:branch>
@@ -12305,7 +10917,7 @@
 						</plx:branch>
 					</plx:set>
 				</plx:property>
-				<plx:field visibility="private" readOnly="false" name="_HusbandPerson_id" dataTypeName=".i4" />
+				<plx:field visibility="private" readOnly="" name="_HusbandPerson_id" />
 				<plx:property visibility="public" modifier="override" name="Husband">
 					<plx:returns dataTypeName="Person" />
 					<plx:get>
@@ -12321,7 +10933,7 @@
 						</plx:return>
 					</plx:get>
 					<plx:set>
-						<plx:local name="oldValueHusbandPerson_id" dataTypeName=".i4">
+						<plx:local name="oldValueHusbandPerson_id" dataTypeName="">
 							<plx:initialize>
 								<plx:callThis accessor="this" type="field" name="_HusbandPerson_id" />
 							</plx:initialize>
@@ -12383,7 +10995,7 @@
 										</plx:callInstance>
 									</plx:left>
 									<plx:right>
-										<plx:string>UPDATE SampleModel.Person SET Husband_Person_id = @NewHusbandPerson_id WHERE Person_id = @Person_id</plx:string>
+										<plx:string>UPDATE SampleModel.Person SET Husband_Person_id = @NewHusbandPerson_id WHERE </plx:string>
 									</plx:right>
 								</plx:assign>
 								<plx:local name="parameterNewHusbandPerson_id" dataTypeName="IDataParameter">
@@ -12433,51 +11045,6 @@
 									</plx:callObject>
 									<plx:passParam>
 										<plx:nameRef name="parameterNewHusbandPerson_id" type="local" />
-									</plx:passParam>
-								</plx:callInstance>
-								<plx:local name="parameterPerson_id" dataTypeName="IDataParameter">
-									<plx:initialize>
-										<plx:callInstance name="CreateParameter" type="methodCall">
-											<plx:callObject>
-												<plx:nameRef name="command" />
-											</plx:callObject>
-										</plx:callInstance>
-									</plx:initialize>
-								</plx:local>
-								<plx:assign>
-									<plx:left>
-										<plx:callInstance name="ParameterName" type="property">
-											<plx:callObject>
-												<plx:nameRef name="parameterPerson_id" />
-											</plx:callObject>
-										</plx:callInstance>
-									</plx:left>
-									<plx:right>
-										<plx:string>Person_id</plx:string>
-									</plx:right>
-								</plx:assign>
-								<plx:assign>
-									<plx:left>
-										<plx:callInstance name="Value" type="property">
-											<plx:callObject>
-												<plx:nameRef name="parameterPerson_id" />
-											</plx:callObject>
-										</plx:callInstance>
-									</plx:left>
-									<plx:right>
-										<plx:callThis accessor="this" name="_Person_id" type="property" />
-									</plx:right>
-								</plx:assign>
-								<plx:callInstance name="Add" type="methodCall">
-									<plx:callObject>
-										<plx:callInstance name="Parameters" type="property">
-											<plx:callObject>
-												<plx:nameRef name="command" />
-											</plx:callObject>
-										</plx:callInstance>
-									</plx:callObject>
-									<plx:passParam>
-										<plx:nameRef name="parameterPerson_id" type="local" />
 									</plx:passParam>
 								</plx:callInstance>
 								<plx:branch>
@@ -12646,7 +11213,7 @@
 										</plx:callInstance>
 									</plx:left>
 									<plx:right>
-										<plx:string>UPDATE SampleModel.Person SET ValueType1DoesSomethingElseWith_ValueType1Value = @NewValueType1DoesSomethingElseWithValueType1Value WHERE Person_id = @Person_id</plx:string>
+										<plx:string>UPDATE SampleModel.Person SET ValueType1DoesSomethingElseWith_ValueType1Value = @NewValueType1DoesSomethingElseWithValueType1Value WHERE </plx:string>
 									</plx:right>
 								</plx:assign>
 								<plx:local name="parameterNewValueType1DoesSomethingElseWithValueType1Value" dataTypeName="IDataParameter">
@@ -12696,51 +11263,6 @@
 									</plx:callObject>
 									<plx:passParam>
 										<plx:nameRef name="parameterNewValueType1DoesSomethingElseWithValueType1Value" type="local" />
-									</plx:passParam>
-								</plx:callInstance>
-								<plx:local name="parameterPerson_id" dataTypeName="IDataParameter">
-									<plx:initialize>
-										<plx:callInstance name="CreateParameter" type="methodCall">
-											<plx:callObject>
-												<plx:nameRef name="command" />
-											</plx:callObject>
-										</plx:callInstance>
-									</plx:initialize>
-								</plx:local>
-								<plx:assign>
-									<plx:left>
-										<plx:callInstance name="ParameterName" type="property">
-											<plx:callObject>
-												<plx:nameRef name="parameterPerson_id" />
-											</plx:callObject>
-										</plx:callInstance>
-									</plx:left>
-									<plx:right>
-										<plx:string>Person_id</plx:string>
-									</plx:right>
-								</plx:assign>
-								<plx:assign>
-									<plx:left>
-										<plx:callInstance name="Value" type="property">
-											<plx:callObject>
-												<plx:nameRef name="parameterPerson_id" />
-											</plx:callObject>
-										</plx:callInstance>
-									</plx:left>
-									<plx:right>
-										<plx:callThis accessor="this" name="_Person_id" type="property" />
-									</plx:right>
-								</plx:assign>
-								<plx:callInstance name="Add" type="methodCall">
-									<plx:callObject>
-										<plx:callInstance name="Parameters" type="property">
-											<plx:callObject>
-												<plx:nameRef name="command" />
-											</plx:callObject>
-										</plx:callInstance>
-									</plx:callObject>
-									<plx:passParam>
-										<plx:nameRef name="parameterPerson_id" type="local" />
 									</plx:passParam>
 								</plx:callInstance>
 								<plx:branch>
@@ -12831,7 +11353,7 @@
 						</plx:branch>
 					</plx:set>
 				</plx:property>
-				<plx:field visibility="private" readOnly="false" name="_MalePersonPerson_id" dataTypeName=".i4" />
+				<plx:field visibility="private" readOnly="" name="_MalePersonPerson_id" />
 				<plx:property visibility="public" modifier="override" name="MalePerson">
 					<plx:returns dataTypeName="MalePerson" />
 					<plx:get>
@@ -12847,7 +11369,7 @@
 						</plx:return>
 					</plx:get>
 					<plx:set>
-						<plx:local name="oldValueMalePersonPerson_id" dataTypeName=".i4">
+						<plx:local name="oldValueMalePersonPerson_id" dataTypeName="">
 							<plx:initialize>
 								<plx:callThis accessor="this" type="field" name="_MalePersonPerson_id" />
 							</plx:initialize>
@@ -12909,7 +11431,7 @@
 										</plx:callInstance>
 									</plx:left>
 									<plx:right>
-										<plx:string>UPDATE SampleModel.Person SET MalePerson_Person_id = @NewMalePersonPerson_id WHERE Person_id = @Person_id</plx:string>
+										<plx:string>UPDATE SampleModel.Person SET MalePerson_Person_id = @NewMalePersonPerson_id WHERE </plx:string>
 									</plx:right>
 								</plx:assign>
 								<plx:local name="parameterNewMalePersonPerson_id" dataTypeName="IDataParameter">
@@ -12959,51 +11481,6 @@
 									</plx:callObject>
 									<plx:passParam>
 										<plx:nameRef name="parameterNewMalePersonPerson_id" type="local" />
-									</plx:passParam>
-								</plx:callInstance>
-								<plx:local name="parameterPerson_id" dataTypeName="IDataParameter">
-									<plx:initialize>
-										<plx:callInstance name="CreateParameter" type="methodCall">
-											<plx:callObject>
-												<plx:nameRef name="command" />
-											</plx:callObject>
-										</plx:callInstance>
-									</plx:initialize>
-								</plx:local>
-								<plx:assign>
-									<plx:left>
-										<plx:callInstance name="ParameterName" type="property">
-											<plx:callObject>
-												<plx:nameRef name="parameterPerson_id" />
-											</plx:callObject>
-										</plx:callInstance>
-									</plx:left>
-									<plx:right>
-										<plx:string>Person_id</plx:string>
-									</plx:right>
-								</plx:assign>
-								<plx:assign>
-									<plx:left>
-										<plx:callInstance name="Value" type="property">
-											<plx:callObject>
-												<plx:nameRef name="parameterPerson_id" />
-											</plx:callObject>
-										</plx:callInstance>
-									</plx:left>
-									<plx:right>
-										<plx:callThis accessor="this" name="_Person_id" type="property" />
-									</plx:right>
-								</plx:assign>
-								<plx:callInstance name="Add" type="methodCall">
-									<plx:callObject>
-										<plx:callInstance name="Parameters" type="property">
-											<plx:callObject>
-												<plx:nameRef name="command" />
-											</plx:callObject>
-										</plx:callInstance>
-									</plx:callObject>
-									<plx:passParam>
-										<plx:nameRef name="parameterPerson_id" type="local" />
 									</plx:passParam>
 								</plx:callInstance>
 								<plx:branch>
@@ -13094,7 +11571,7 @@
 						</plx:branch>
 					</plx:set>
 				</plx:property>
-				<plx:field visibility="private" readOnly="false" name="_FemalePersonPerson_id" dataTypeName=".i4" />
+				<plx:field visibility="private" readOnly="" name="_FemalePersonPerson_id" />
 				<plx:property visibility="public" modifier="override" name="FemalePerson">
 					<plx:returns dataTypeName="FemalePerson" />
 					<plx:get>
@@ -13110,7 +11587,7 @@
 						</plx:return>
 					</plx:get>
 					<plx:set>
-						<plx:local name="oldValueFemalePersonPerson_id" dataTypeName=".i4">
+						<plx:local name="oldValueFemalePersonPerson_id" dataTypeName="">
 							<plx:initialize>
 								<plx:callThis accessor="this" type="field" name="_FemalePersonPerson_id" />
 							</plx:initialize>
@@ -13172,7 +11649,7 @@
 										</plx:callInstance>
 									</plx:left>
 									<plx:right>
-										<plx:string>UPDATE SampleModel.Person SET FemalePerson_Person_id = @NewFemalePersonPerson_id WHERE Person_id = @Person_id</plx:string>
+										<plx:string>UPDATE SampleModel.Person SET FemalePerson_Person_id = @NewFemalePersonPerson_id WHERE </plx:string>
 									</plx:right>
 								</plx:assign>
 								<plx:local name="parameterNewFemalePersonPerson_id" dataTypeName="IDataParameter">
@@ -13222,51 +11699,6 @@
 									</plx:callObject>
 									<plx:passParam>
 										<plx:nameRef name="parameterNewFemalePersonPerson_id" type="local" />
-									</plx:passParam>
-								</plx:callInstance>
-								<plx:local name="parameterPerson_id" dataTypeName="IDataParameter">
-									<plx:initialize>
-										<plx:callInstance name="CreateParameter" type="methodCall">
-											<plx:callObject>
-												<plx:nameRef name="command" />
-											</plx:callObject>
-										</plx:callInstance>
-									</plx:initialize>
-								</plx:local>
-								<plx:assign>
-									<plx:left>
-										<plx:callInstance name="ParameterName" type="property">
-											<plx:callObject>
-												<plx:nameRef name="parameterPerson_id" />
-											</plx:callObject>
-										</plx:callInstance>
-									</plx:left>
-									<plx:right>
-										<plx:string>Person_id</plx:string>
-									</plx:right>
-								</plx:assign>
-								<plx:assign>
-									<plx:left>
-										<plx:callInstance name="Value" type="property">
-											<plx:callObject>
-												<plx:nameRef name="parameterPerson_id" />
-											</plx:callObject>
-										</plx:callInstance>
-									</plx:left>
-									<plx:right>
-										<plx:callThis accessor="this" name="_Person_id" type="property" />
-									</plx:right>
-								</plx:assign>
-								<plx:callInstance name="Add" type="methodCall">
-									<plx:callObject>
-										<plx:callInstance name="Parameters" type="property">
-											<plx:callObject>
-												<plx:nameRef name="command" />
-											</plx:callObject>
-										</plx:callInstance>
-									</plx:callObject>
-									<plx:passParam>
-										<plx:nameRef name="parameterPerson_id" type="local" />
 									</plx:passParam>
 								</plx:callInstance>
 								<plx:branch>
@@ -13357,9 +11789,9 @@
 						</plx:branch>
 					</plx:set>
 				</plx:property>
-				<plx:field visibility="private" readOnly="false" name="_ChildPersonPerson_id" dataTypeName=".i4" />
+				<plx:field visibility="private" readOnly="" name="_ChildPersonPerson_id" />
 				<plx:field visibility="private" readOnly="false" name="_ChildPersonBirthOrder_BirthOrder_Nr" dataTypeName=".i4" />
-				<plx:field visibility="private" readOnly="false" name="_ChildPersonPerson_id" dataTypeName=".i4" />
+				<plx:field visibility="private" readOnly="" name="_ChildPersonPerson_id" />
 				<plx:property visibility="public" modifier="override" name="ChildPerson">
 					<plx:returns dataTypeName="ChildPerson" />
 					<plx:get>
@@ -13381,7 +11813,7 @@
 						</plx:return>
 					</plx:get>
 					<plx:set>
-						<plx:local name="oldValueChildPersonPerson_id" dataTypeName=".i4">
+						<plx:local name="oldValueChildPersonPerson_id" dataTypeName="">
 							<plx:initialize>
 								<plx:callThis accessor="this" type="field" name="_ChildPersonPerson_id" />
 							</plx:initialize>
@@ -13391,7 +11823,7 @@
 								<plx:callThis accessor="this" type="field" name="_ChildPersonBirthOrder_BirthOrder_Nr" />
 							</plx:initialize>
 						</plx:local>
-						<plx:local name="oldValueChildPersonPerson_id" dataTypeName=".i4">
+						<plx:local name="oldValueChildPersonPerson_id" dataTypeName="">
 							<plx:initialize>
 								<plx:callThis accessor="this" type="field" name="_ChildPersonPerson_id" />
 							</plx:initialize>
@@ -13489,7 +11921,7 @@
 										</plx:callInstance>
 									</plx:left>
 									<plx:right>
-										<plx:string>UPDATE SampleModel.Person SET ChildPerson_Person_id = @NewChildPersonPerson_id WHERE Person_id = @Person_id</plx:string>
+										<plx:string>UPDATE SampleModel.Person SET ChildPerson_Person_id = @NewChildPersonPerson_id WHERE </plx:string>
 									</plx:right>
 								</plx:assign>
 								<plx:local name="parameterNewChildPersonPerson_id" dataTypeName="IDataParameter">
@@ -13639,51 +12071,6 @@
 										<plx:nameRef name="parameterNewChildPersonPerson_id" type="local" />
 									</plx:passParam>
 								</plx:callInstance>
-								<plx:local name="parameterPerson_id" dataTypeName="IDataParameter">
-									<plx:initialize>
-										<plx:callInstance name="CreateParameter" type="methodCall">
-											<plx:callObject>
-												<plx:nameRef name="command" />
-											</plx:callObject>
-										</plx:callInstance>
-									</plx:initialize>
-								</plx:local>
-								<plx:assign>
-									<plx:left>
-										<plx:callInstance name="ParameterName" type="property">
-											<plx:callObject>
-												<plx:nameRef name="parameterPerson_id" />
-											</plx:callObject>
-										</plx:callInstance>
-									</plx:left>
-									<plx:right>
-										<plx:string>Person_id</plx:string>
-									</plx:right>
-								</plx:assign>
-								<plx:assign>
-									<plx:left>
-										<plx:callInstance name="Value" type="property">
-											<plx:callObject>
-												<plx:nameRef name="parameterPerson_id" />
-											</plx:callObject>
-										</plx:callInstance>
-									</plx:left>
-									<plx:right>
-										<plx:callThis accessor="this" name="_Person_id" type="property" />
-									</plx:right>
-								</plx:assign>
-								<plx:callInstance name="Add" type="methodCall">
-									<plx:callObject>
-										<plx:callInstance name="Parameters" type="property">
-											<plx:callObject>
-												<plx:nameRef name="command" />
-											</plx:callObject>
-										</plx:callInstance>
-									</plx:callObject>
-									<plx:passParam>
-										<plx:nameRef name="parameterPerson_id" type="local" />
-									</plx:passParam>
-								</plx:callInstance>
 								<plx:branch>
 									<plx:condition>
 										<plx:binaryOperator type="inequality">
@@ -13792,7 +12179,7 @@
 						</plx:branch>
 					</plx:set>
 				</plx:property>
-				<plx:field visibility="private" readOnly="false" name="_DeathPerson_id" dataTypeName=".i4" />
+				<plx:field visibility="private" readOnly="" name="_DeathPerson_id" />
 				<plx:property visibility="public" modifier="override" name="Death">
 					<plx:returns dataTypeName="Death" />
 					<plx:get>
@@ -13808,7 +12195,7 @@
 						</plx:return>
 					</plx:get>
 					<plx:set>
-						<plx:local name="oldValueDeathPerson_id" dataTypeName=".i4">
+						<plx:local name="oldValueDeathPerson_id" dataTypeName="">
 							<plx:initialize>
 								<plx:callThis accessor="this" type="field" name="_DeathPerson_id" />
 							</plx:initialize>
@@ -13870,7 +12257,7 @@
 										</plx:callInstance>
 									</plx:left>
 									<plx:right>
-										<plx:string>UPDATE SampleModel.Person SET Death_Person_id = @NewDeathPerson_id WHERE Person_id = @Person_id</plx:string>
+										<plx:string>UPDATE SampleModel.Person SET Death_Person_id = @NewDeathPerson_id WHERE </plx:string>
 									</plx:right>
 								</plx:assign>
 								<plx:local name="parameterNewDeathPerson_id" dataTypeName="IDataParameter">
@@ -13920,51 +12307,6 @@
 									</plx:callObject>
 									<plx:passParam>
 										<plx:nameRef name="parameterNewDeathPerson_id" type="local" />
-									</plx:passParam>
-								</plx:callInstance>
-								<plx:local name="parameterPerson_id" dataTypeName="IDataParameter">
-									<plx:initialize>
-										<plx:callInstance name="CreateParameter" type="methodCall">
-											<plx:callObject>
-												<plx:nameRef name="command" />
-											</plx:callObject>
-										</plx:callInstance>
-									</plx:initialize>
-								</plx:local>
-								<plx:assign>
-									<plx:left>
-										<plx:callInstance name="ParameterName" type="property">
-											<plx:callObject>
-												<plx:nameRef name="parameterPerson_id" />
-											</plx:callObject>
-										</plx:callInstance>
-									</plx:left>
-									<plx:right>
-										<plx:string>Person_id</plx:string>
-									</plx:right>
-								</plx:assign>
-								<plx:assign>
-									<plx:left>
-										<plx:callInstance name="Value" type="property">
-											<plx:callObject>
-												<plx:nameRef name="parameterPerson_id" />
-											</plx:callObject>
-										</plx:callInstance>
-									</plx:left>
-									<plx:right>
-										<plx:callThis accessor="this" name="_Person_id" type="property" />
-									</plx:right>
-								</plx:assign>
-								<plx:callInstance name="Add" type="methodCall">
-									<plx:callObject>
-										<plx:callInstance name="Parameters" type="property">
-											<plx:callObject>
-												<plx:nameRef name="command" />
-											</plx:callObject>
-										</plx:callInstance>
-									</plx:callObject>
-									<plx:passParam>
-										<plx:nameRef name="parameterPerson_id" type="local" />
 									</plx:passParam>
 								</plx:callInstance>
 								<plx:branch>
@@ -14359,7 +12701,7 @@
 						</plx:return>
 					</plx:get>
 				</plx:property>
-				<plx:field visibility="private" readOnly="false" name="_WifePerson_id" dataTypeName=".i4" />
+				<plx:field visibility="private" readOnly="" name="_WifePerson_id" />
 				<plx:property visibility="public" modifier="override" name="Wife">
 					<plx:returns dataTypeName="Person" />
 					<plx:get>
@@ -14375,7 +12717,7 @@
 						</plx:return>
 					</plx:get>
 					<plx:set>
-						<plx:local name="oldValueWifePerson_id" dataTypeName=".i4">
+						<plx:local name="oldValueWifePerson_id" dataTypeName="">
 							<plx:initialize>
 								<plx:callThis accessor="this" type="field" name="_WifePerson_id" />
 							</plx:initialize>
@@ -14437,7 +12779,7 @@
 										</plx:callInstance>
 									</plx:left>
 									<plx:right>
-										<plx:string>UPDATE SampleModel.Person SET Wife_Person_id = @NewWifePerson_id WHERE Person_id = @Person_id</plx:string>
+										<plx:string>UPDATE SampleModel.Person SET Wife_Person_id = @NewWifePerson_id WHERE </plx:string>
 									</plx:right>
 								</plx:assign>
 								<plx:local name="parameterNewWifePerson_id" dataTypeName="IDataParameter">
@@ -14487,51 +12829,6 @@
 									</plx:callObject>
 									<plx:passParam>
 										<plx:nameRef name="parameterNewWifePerson_id" type="local" />
-									</plx:passParam>
-								</plx:callInstance>
-								<plx:local name="parameterPerson_id" dataTypeName="IDataParameter">
-									<plx:initialize>
-										<plx:callInstance name="CreateParameter" type="methodCall">
-											<plx:callObject>
-												<plx:nameRef name="command" />
-											</plx:callObject>
-										</plx:callInstance>
-									</plx:initialize>
-								</plx:local>
-								<plx:assign>
-									<plx:left>
-										<plx:callInstance name="ParameterName" type="property">
-											<plx:callObject>
-												<plx:nameRef name="parameterPerson_id" />
-											</plx:callObject>
-										</plx:callInstance>
-									</plx:left>
-									<plx:right>
-										<plx:string>Person_id</plx:string>
-									</plx:right>
-								</plx:assign>
-								<plx:assign>
-									<plx:left>
-										<plx:callInstance name="Value" type="property">
-											<plx:callObject>
-												<plx:nameRef name="parameterPerson_id" />
-											</plx:callObject>
-										</plx:callInstance>
-									</plx:left>
-									<plx:right>
-										<plx:callThis accessor="this" name="_Person_id" type="property" />
-									</plx:right>
-								</plx:assign>
-								<plx:callInstance name="Add" type="methodCall">
-									<plx:callObject>
-										<plx:callInstance name="Parameters" type="property">
-											<plx:callObject>
-												<plx:nameRef name="command" />
-											</plx:callObject>
-										</plx:callInstance>
-									</plx:callObject>
-									<plx:passParam>
-										<plx:nameRef name="parameterPerson_id" type="local" />
 									</plx:passParam>
 								</plx:callInstance>
 								<plx:branch>
@@ -15555,7 +13852,7 @@
 							<plx:thisKeyword />
 						</plx:passParam>
 						<plx:passParam>
-							<plx:callInstance type="methodCall" name="GetInt32">
+							<plx:callInstance type="methodCall" name="">
 								<plx:callObject>
 									<plx:nameRef name="reader" />
 								</plx:callObject>
@@ -15593,7 +13890,7 @@
 				<plx:derivesFromClass dataTypeName="MalePerson" />
 				<plx:function visibility="public" name=".construct">
 					<plx:param name="context" dataTypeName="SampleModelContext" />
-					<plx:param name="PersonPerson_id" dataTypeName=".i4" />
+					<plx:param name="PersonPerson_id" />
 					<plx:assign>
 						<plx:left>
 							<plx:callThis accessor="this" type="field" name="_Context" />
@@ -15620,7 +13917,7 @@
 						</plx:return>
 					</plx:get>
 				</plx:property>
-				<plx:field visibility="private" readOnly="false" name="_PersonPerson_id" dataTypeName=".i4" />
+				<plx:field visibility="private" readOnly="" name="_PersonPerson_id" />
 				<plx:property visibility="public" modifier="override" name="Person">
 					<plx:returns dataTypeName="Person" />
 					<plx:get>
@@ -15657,7 +13954,7 @@
 								</plx:callNew>
 							</plx:throw>
 						</plx:branch>
-						<plx:local name="oldValuePersonPerson_id" dataTypeName=".i4">
+						<plx:local name="oldValuePersonPerson_id" dataTypeName="">
 							<plx:initialize>
 								<plx:callThis accessor="this" type="field" name="_PersonPerson_id" />
 							</plx:initialize>
@@ -16336,7 +14633,7 @@
 							<plx:thisKeyword />
 						</plx:passParam>
 						<plx:passParam>
-							<plx:callInstance type="methodCall" name="GetInt32">
+							<plx:callInstance type="methodCall" name="">
 								<plx:callObject>
 									<plx:nameRef name="reader" />
 								</plx:callObject>
@@ -16374,7 +14671,7 @@
 				<plx:derivesFromClass dataTypeName="FemalePerson" />
 				<plx:function visibility="public" name=".construct">
 					<plx:param name="context" dataTypeName="SampleModelContext" />
-					<plx:param name="PersonPerson_id" dataTypeName=".i4" />
+					<plx:param name="PersonPerson_id" />
 					<plx:assign>
 						<plx:left>
 							<plx:callThis accessor="this" type="field" name="_Context" />
@@ -16401,7 +14698,7 @@
 						</plx:return>
 					</plx:get>
 				</plx:property>
-				<plx:field visibility="private" readOnly="false" name="_PersonPerson_id" dataTypeName=".i4" />
+				<plx:field visibility="private" readOnly="" name="_PersonPerson_id" />
 				<plx:property visibility="public" modifier="override" name="Person">
 					<plx:returns dataTypeName="Person" />
 					<plx:get>
@@ -16438,7 +14735,7 @@
 								</plx:callNew>
 							</plx:throw>
 						</plx:branch>
-						<plx:local name="oldValuePersonPerson_id" dataTypeName=".i4">
+						<plx:local name="oldValuePersonPerson_id" dataTypeName="">
 							<plx:initialize>
 								<plx:callThis accessor="this" type="field" name="_PersonPerson_id" />
 							</plx:initialize>
@@ -17368,7 +15665,7 @@
 							</plx:callInstance>
 						</plx:passParam>
 						<plx:passParam>
-							<plx:callInstance type="methodCall" name="GetInt32">
+							<plx:callInstance type="methodCall" name="">
 								<plx:callObject>
 									<plx:nameRef name="reader" />
 								</plx:callObject>
@@ -17378,7 +15675,7 @@
 							</plx:callInstance>
 						</plx:passParam>
 						<plx:passParam>
-							<plx:callInstance type="methodCall" name="GetInt32">
+							<plx:callInstance type="methodCall" name="">
 								<plx:callObject>
 									<plx:nameRef name="reader" />
 								</plx:callObject>
@@ -17388,7 +15685,7 @@
 							</plx:callInstance>
 						</plx:passParam>
 						<plx:passParam>
-							<plx:callInstance type="methodCall" name="GetInt32">
+							<plx:callInstance type="methodCall" name="">
 								<plx:callObject>
 									<plx:nameRef name="reader" />
 								</plx:callObject>
@@ -17427,9 +15724,9 @@
 				<plx:function visibility="public" name=".construct">
 					<plx:param name="context" dataTypeName="SampleModelContext" />
 					<plx:param name="BirthOrder_BirthOrder_Nr" dataTypeName=".i4" />
-					<plx:param name="FatherPerson_id" dataTypeName=".i4" />
-					<plx:param name="MotherPerson_id" dataTypeName=".i4" />
-					<plx:param name="PersonPerson_id" dataTypeName=".i4" />
+					<plx:param name="FatherPerson_id" />
+					<plx:param name="MotherPerson_id" />
+					<plx:param name="PersonPerson_id" />
 					<plx:assign>
 						<plx:left>
 							<plx:callThis accessor="this" type="field" name="_Context" />
@@ -17679,7 +15976,7 @@
 						</plx:branch>
 					</plx:set>
 				</plx:property>
-				<plx:field visibility="private" readOnly="false" name="_FatherPerson_id" dataTypeName=".i4" />
+				<plx:field visibility="private" readOnly="" name="_FatherPerson_id" />
 				<plx:property visibility="public" modifier="override" name="Father">
 					<plx:returns dataTypeName="MalePerson" />
 					<plx:get>
@@ -17716,7 +16013,7 @@
 								</plx:callNew>
 							</plx:throw>
 						</plx:branch>
-						<plx:local name="oldValueFatherPerson_id" dataTypeName=".i4">
+						<plx:local name="oldValueFatherPerson_id" dataTypeName="">
 							<plx:initialize>
 								<plx:callThis accessor="this" type="field" name="_FatherPerson_id" />
 							</plx:initialize>
@@ -17918,7 +16215,7 @@
 						</plx:branch>
 					</plx:set>
 				</plx:property>
-				<plx:field visibility="private" readOnly="false" name="_MotherPerson_id" dataTypeName=".i4" />
+				<plx:field visibility="private" readOnly="" name="_MotherPerson_id" />
 				<plx:property visibility="public" modifier="override" name="Mother">
 					<plx:returns dataTypeName="FemalePerson" />
 					<plx:get>
@@ -17955,7 +16252,7 @@
 								</plx:callNew>
 							</plx:throw>
 						</plx:branch>
-						<plx:local name="oldValueMotherPerson_id" dataTypeName=".i4">
+						<plx:local name="oldValueMotherPerson_id" dataTypeName="">
 							<plx:initialize>
 								<plx:callThis accessor="this" type="field" name="_MotherPerson_id" />
 							</plx:initialize>
@@ -18157,7 +16454,7 @@
 						</plx:branch>
 					</plx:set>
 				</plx:property>
-				<plx:field visibility="private" readOnly="false" name="_PersonPerson_id" dataTypeName=".i4" />
+				<plx:field visibility="private" readOnly="" name="_PersonPerson_id" />
 				<plx:property visibility="public" modifier="override" name="Person">
 					<plx:returns dataTypeName="Person" />
 					<plx:get>
@@ -18194,7 +16491,7 @@
 								</plx:callNew>
 							</plx:throw>
 						</plx:branch>
-						<plx:local name="oldValuePersonPerson_id" dataTypeName=".i4">
+						<plx:local name="oldValuePersonPerson_id" dataTypeName="">
 							<plx:initialize>
 								<plx:callThis accessor="this" type="field" name="_PersonPerson_id" />
 							</plx:initialize>
@@ -18884,7 +17181,7 @@
 							</plx:callInstance>
 						</plx:passParam>
 						<plx:passParam>
-							<plx:callInstance type="methodCall" name="GetInt32">
+							<plx:callInstance type="methodCall" name="">
 								<plx:callObject>
 									<plx:nameRef name="reader" />
 								</plx:callObject>
@@ -18924,7 +17221,7 @@
 					<plx:param name="context" dataTypeName="SampleModelContext" />
 					<plx:param name="DeathCause_DeathCause_Type" dataTypeName=".string" />
 					<plx:param name="isDead" dataTypeName=".boolean" />
-					<plx:param name="PersonPerson_id" dataTypeName=".i4" />
+					<plx:param name="PersonPerson_id" />
 					<plx:assign>
 						<plx:left>
 							<plx:callThis accessor="this" type="field" name="_Context" />
@@ -19622,7 +17919,7 @@
 						</plx:branch>
 					</plx:set>
 				</plx:property>
-				<plx:field visibility="private" readOnly="false" name="_NaturalDeathPerson_id" dataTypeName=".i4" />
+				<plx:field visibility="private" readOnly="" name="_NaturalDeathPerson_id" />
 				<plx:property visibility="public" modifier="override" name="NaturalDeath">
 					<plx:returns dataTypeName="NaturalDeath" />
 					<plx:get>
@@ -19638,7 +17935,7 @@
 						</plx:return>
 					</plx:get>
 					<plx:set>
-						<plx:local name="oldValueNaturalDeathPerson_id" dataTypeName=".i4">
+						<plx:local name="oldValueNaturalDeathPerson_id" dataTypeName="">
 							<plx:initialize>
 								<plx:callThis accessor="this" type="field" name="_NaturalDeathPerson_id" />
 							</plx:initialize>
@@ -19840,7 +18137,7 @@
 						</plx:branch>
 					</plx:set>
 				</plx:property>
-				<plx:field visibility="private" readOnly="false" name="_UnnaturalDeathPerson_id" dataTypeName=".i4" />
+				<plx:field visibility="private" readOnly="" name="_UnnaturalDeathPerson_id" />
 				<plx:property visibility="public" modifier="override" name="UnnaturalDeath">
 					<plx:returns dataTypeName="UnnaturalDeath" />
 					<plx:get>
@@ -19856,7 +18153,7 @@
 						</plx:return>
 					</plx:get>
 					<plx:set>
-						<plx:local name="oldValueUnnaturalDeathPerson_id" dataTypeName=".i4">
+						<plx:local name="oldValueUnnaturalDeathPerson_id" dataTypeName="">
 							<plx:initialize>
 								<plx:callThis accessor="this" type="field" name="_UnnaturalDeathPerson_id" />
 							</plx:initialize>
@@ -20058,7 +18355,7 @@
 						</plx:branch>
 					</plx:set>
 				</plx:property>
-				<plx:field visibility="private" readOnly="false" name="_PersonPerson_id" dataTypeName=".i4" />
+				<plx:field visibility="private" readOnly="" name="_PersonPerson_id" />
 				<plx:property visibility="public" modifier="override" name="Person">
 					<plx:returns dataTypeName="Person" />
 					<plx:get>
@@ -20095,7 +18392,7 @@
 								</plx:callNew>
 							</plx:throw>
 						</plx:branch>
-						<plx:local name="oldValuePersonPerson_id" dataTypeName=".i4">
+						<plx:local name="oldValuePersonPerson_id" dataTypeName="">
 							<plx:initialize>
 								<plx:callThis accessor="this" type="field" name="_PersonPerson_id" />
 							</plx:initialize>
@@ -20622,7 +18919,7 @@
 							<plx:thisKeyword />
 						</plx:passParam>
 						<plx:passParam>
-							<plx:callInstance type="methodCall" name="GetInt32">
+							<plx:callInstance type="methodCall" name="">
 								<plx:callObject>
 									<plx:nameRef name="reader" />
 								</plx:callObject>
@@ -20660,7 +18957,7 @@
 				<plx:derivesFromClass dataTypeName="NaturalDeath" />
 				<plx:function visibility="public" name=".construct">
 					<plx:param name="context" dataTypeName="SampleModelContext" />
-					<plx:param name="DeathPerson_id" dataTypeName=".i4" />
+					<plx:param name="DeathPerson_id" />
 					<plx:assign>
 						<plx:left>
 							<plx:callThis accessor="this" type="field" name="_Context" />
@@ -20921,7 +19218,7 @@
 						</plx:branch>
 					</plx:set>
 				</plx:property>
-				<plx:field visibility="private" readOnly="false" name="_DeathPerson_id" dataTypeName=".i4" />
+				<plx:field visibility="private" readOnly="" name="_DeathPerson_id" />
 				<plx:property visibility="public" modifier="override" name="Death">
 					<plx:returns dataTypeName="Death" />
 					<plx:get>
@@ -20958,7 +19255,7 @@
 								</plx:callNew>
 							</plx:throw>
 						</plx:branch>
-						<plx:local name="oldValueDeathPerson_id" dataTypeName=".i4">
+						<plx:local name="oldValueDeathPerson_id" dataTypeName="">
 							<plx:initialize>
 								<plx:callThis accessor="this" type="field" name="_DeathPerson_id" />
 							</plx:initialize>
@@ -21485,7 +19782,7 @@
 							<plx:thisKeyword />
 						</plx:passParam>
 						<plx:passParam>
-							<plx:callInstance type="methodCall" name="GetInt32">
+							<plx:callInstance type="methodCall" name="">
 								<plx:callObject>
 									<plx:nameRef name="reader" />
 								</plx:callObject>
@@ -21523,7 +19820,7 @@
 				<plx:derivesFromClass dataTypeName="UnnaturalDeath" />
 				<plx:function visibility="public" name=".construct">
 					<plx:param name="context" dataTypeName="SampleModelContext" />
-					<plx:param name="DeathPerson_id" dataTypeName=".i4" />
+					<plx:param name="DeathPerson_id" />
 					<plx:assign>
 						<plx:left>
 							<plx:callThis accessor="this" type="field" name="_Context" />
@@ -22018,7 +20315,7 @@
 						</plx:branch>
 					</plx:set>
 				</plx:property>
-				<plx:field visibility="private" readOnly="false" name="_DeathPerson_id" dataTypeName=".i4" />
+				<plx:field visibility="private" readOnly="" name="_DeathPerson_id" />
 				<plx:property visibility="public" modifier="override" name="Death">
 					<plx:returns dataTypeName="Death" />
 					<plx:get>
@@ -22055,7 +20352,7 @@
 								</plx:callNew>
 							</plx:throw>
 						</plx:branch>
-						<plx:local name="oldValueDeathPerson_id" dataTypeName=".i4">
+						<plx:local name="oldValueDeathPerson_id" dataTypeName="">
 							<plx:initialize>
 								<plx:callThis accessor="this" type="field" name="_DeathPerson_id" />
 							</plx:initialize>
@@ -22263,7 +20560,6 @@
 					<plx:pragma type="region" data="Task" />
 				</plx:leadingInfo>
 				<plx:interfaceMember memberName="CreateTask" dataTypeName="ISampleModelContext" />
-				<plx:param name="Task_id" dataTypeName=".i4" />
 				<plx:returns dataTypeName="Task" />
 				<plx:local name="command" dataTypeName="IDbCommand">
 					<plx:initialize>
@@ -22296,55 +20592,10 @@
 					</plx:left>
 					<plx:right>
 						<plx:string>
-							<plx:string>INSERT INTO SampleModel.Task (Task_id) VALUES (@Task_id)</plx:string>
+							<plx:string>INSERT INTO SampleModel.Task () VALUES ()</plx:string>
 						</plx:string>
 					</plx:right>
 				</plx:assign>
-				<plx:local name="parameterTask_id" dataTypeName="IDataParameter">
-					<plx:initialize>
-						<plx:callInstance name="CreateParameter" type="methodCall">
-							<plx:callObject>
-								<plx:nameRef name="command" />
-							</plx:callObject>
-						</plx:callInstance>
-					</plx:initialize>
-				</plx:local>
-				<plx:assign>
-					<plx:left>
-						<plx:callInstance name="ParameterName" type="property">
-							<plx:callObject>
-								<plx:nameRef name="parameterTask_id" />
-							</plx:callObject>
-						</plx:callInstance>
-					</plx:left>
-					<plx:right>
-						<plx:string>Task_id</plx:string>
-					</plx:right>
-				</plx:assign>
-				<plx:assign>
-					<plx:left>
-						<plx:callInstance name="Value" type="property">
-							<plx:callObject>
-								<plx:nameRef name="parameterTask_id" />
-							</plx:callObject>
-						</plx:callInstance>
-					</plx:left>
-					<plx:right>
-						<plx:nameRef type="parameter" name="Task_id" />
-					</plx:right>
-				</plx:assign>
-				<plx:callInstance name="Add" type="methodCall">
-					<plx:callObject>
-						<plx:callInstance name="Parameters" type="property">
-							<plx:callObject>
-								<plx:nameRef name="command" />
-							</plx:callObject>
-						</plx:callInstance>
-					</plx:callObject>
-					<plx:passParam>
-						<plx:nameRef name="parameterTask_id" type="local" />
-					</plx:passParam>
-				</plx:callInstance>
 				<plx:try>
 					<plx:branch>
 						<plx:condition>
@@ -22388,9 +20639,6 @@
 						<plx:callNew dataTypeName="TaskCore" type="new">
 							<plx:passParam>
 								<plx:thisKeyword />
-							</plx:passParam>
-							<plx:passParam>
-								<plx:nameRef name="Task_id" type="parameter" />
 							</plx:passParam>
 						</plx:callNew>
 					</plx:return>
@@ -22535,32 +20783,10 @@
 			<plx:function name="CreateTask" visibility="private">
 				<plx:param name="reader" dataTypeName="IDataReader" />
 				<plx:returns dataTypeName="Task" />
-				<plx:local name="ordinalTask_id" dataTypeName=".i4">
-					<plx:initialize>
-						<plx:callInstance name="GetOrdinal" type="methodCall">
-							<plx:callObject>
-								<plx:nameRef name="reader" type="parameter" />
-							</plx:callObject>
-							<plx:passParam>
-								<plx:string>Task_id</plx:string>
-							</plx:passParam>
-						</plx:callInstance>
-					</plx:initialize>
-				</plx:local>
 				<plx:return>
 					<plx:callNew dataTypeName="TaskCore">
 						<plx:passParam>
 							<plx:thisKeyword />
-						</plx:passParam>
-						<plx:passParam>
-							<plx:callInstance type="methodCall" name="GetInt32">
-								<plx:callObject>
-									<plx:nameRef name="reader" />
-								</plx:callObject>
-								<plx:passParam>
-									<plx:nameRef name="ordinalTask_id" />
-								</plx:passParam>
-							</plx:callInstance>
 						</plx:passParam>
 					</plx:callNew>
 				</plx:return>
@@ -22591,21 +20817,12 @@
 				<plx:derivesFromClass dataTypeName="Task" />
 				<plx:function visibility="public" name=".construct">
 					<plx:param name="context" dataTypeName="SampleModelContext" />
-					<plx:param name="Task_id" dataTypeName=".i4" />
 					<plx:assign>
 						<plx:left>
 							<plx:callThis accessor="this" type="field" name="_Context" />
 						</plx:left>
 						<plx:right>
 							<plx:nameRef type="parameter" name="context" />
-						</plx:right>
-					</plx:assign>
-					<plx:assign>
-						<plx:left>
-							<plx:callThis accessor="this" type="field" name="_Task_id" />
-						</plx:left>
-						<plx:right>
-							<plx:nameRef type="parameter" name="Task_id" />
 						</plx:right>
 					</plx:assign>
 				</plx:function>
@@ -22618,251 +20835,7 @@
 						</plx:return>
 					</plx:get>
 				</plx:property>
-				<plx:field visibility="private" readOnly="false" name="_Task_id" dataTypeName=".i4" />
-				<plx:property visibility="public" modifier="override" name="Task_id">
-					<plx:returns dataTypeName=".i4" />
-					<plx:get>
-						<plx:return>
-							<plx:callThis accessor="this" type="field" name="_Task_id" />
-						</plx:return>
-					</plx:get>
-					<plx:set>
-						<plx:local name="oldValue" dataTypeName=".i4">
-							<plx:initialize>
-								<plx:callThis accessor="this" type="field" name="_Task_id" />
-							</plx:initialize>
-						</plx:local>
-						<plx:branch>
-							<plx:condition>
-								<plx:binaryOperator type="inequality">
-									<plx:left>
-										<plx:nameRef type="local" name="oldValue" />
-									</plx:left>
-									<plx:right>
-										<plx:valueKeyword />
-									</plx:right>
-								</plx:binaryOperator>
-							</plx:condition>
-							<plx:branch>
-								<plx:condition>
-									<plx:callThis accessor="base" type="methodCall" name="OnTask_idChanging">
-										<plx:passParam>
-											<plx:valueKeyword />
-										</plx:passParam>
-									</plx:callThis>
-								</plx:condition>
-								<plx:local name="command" dataTypeName="IDbCommand">
-									<plx:initialize>
-										<plx:callInstance type="methodCall" name="CreateCommand">
-											<plx:callObject>
-												<plx:callInstance type="methodCall" name="GetConnection">
-													<plx:callObject>
-														<plx:callThis type="property" accessor="this" name="Context" />
-													</plx:callObject>
-												</plx:callInstance>
-											</plx:callObject>
-										</plx:callInstance>
-									</plx:initialize>
-								</plx:local>
-								<plx:assign>
-									<plx:left>
-										<plx:callInstance type="property" name="CommandType">
-											<plx:callObject>
-												<plx:nameRef type="local" name="command" />
-											</plx:callObject>
-										</plx:callInstance>
-									</plx:left>
-									<plx:right>
-										<plx:callStatic type="field" name="Text" dataTypeName="CommandType" />
-									</plx:right>
-								</plx:assign>
-								<plx:assign>
-									<plx:left>
-										<plx:callInstance type="property" name="CommandText">
-											<plx:callObject>
-												<plx:nameRef type="local" name="command" />
-											</plx:callObject>
-										</plx:callInstance>
-									</plx:left>
-									<plx:right>
-										<plx:string>UPDATE SampleModel.Task SET Task_id = @NewTask_id WHERE Task_id = @Task_id</plx:string>
-									</plx:right>
-								</plx:assign>
-								<plx:local name="parameterNewTask_id" dataTypeName="IDataParameter">
-									<plx:initialize>
-										<plx:callInstance name="CreateParameter" type="methodCall">
-											<plx:callObject>
-												<plx:nameRef name="command" />
-											</plx:callObject>
-										</plx:callInstance>
-									</plx:initialize>
-								</plx:local>
-								<plx:assign>
-									<plx:left>
-										<plx:callInstance name="ParameterName" type="property">
-											<plx:callObject>
-												<plx:nameRef name="parameterNewTask_id" />
-											</plx:callObject>
-										</plx:callInstance>
-									</plx:left>
-									<plx:right>
-										<plx:string>NewTask_id</plx:string>
-									</plx:right>
-								</plx:assign>
-								<plx:assign>
-									<plx:left>
-										<plx:callInstance name="Value" type="property">
-											<plx:callObject>
-												<plx:nameRef name="parameterNewTask_id" />
-											</plx:callObject>
-										</plx:callInstance>
-									</plx:left>
-									<plx:right>
-										<plx:valueKeyword />
-									</plx:right>
-								</plx:assign>
-								<plx:callInstance name="Add" type="methodCall">
-									<plx:callObject>
-										<plx:callInstance name="Parameters" type="property">
-											<plx:callObject>
-												<plx:nameRef name="command" />
-											</plx:callObject>
-										</plx:callInstance>
-									</plx:callObject>
-									<plx:passParam>
-										<plx:nameRef name="parameterNewTask_id" type="local" />
-									</plx:passParam>
-								</plx:callInstance>
-								<plx:local name="parameterTask_id" dataTypeName="IDataParameter">
-									<plx:initialize>
-										<plx:callInstance name="CreateParameter" type="methodCall">
-											<plx:callObject>
-												<plx:nameRef name="command" />
-											</plx:callObject>
-										</plx:callInstance>
-									</plx:initialize>
-								</plx:local>
-								<plx:assign>
-									<plx:left>
-										<plx:callInstance name="ParameterName" type="property">
-											<plx:callObject>
-												<plx:nameRef name="parameterTask_id" />
-											</plx:callObject>
-										</plx:callInstance>
-									</plx:left>
-									<plx:right>
-										<plx:string>Task_id</plx:string>
-									</plx:right>
-								</plx:assign>
-								<plx:assign>
-									<plx:left>
-										<plx:callInstance name="Value" type="property">
-											<plx:callObject>
-												<plx:nameRef name="parameterTask_id" />
-											</plx:callObject>
-										</plx:callInstance>
-									</plx:left>
-									<plx:right>
-										<plx:callThis accessor="this" name="_Task_id" type="property" />
-									</plx:right>
-								</plx:assign>
-								<plx:callInstance name="Add" type="methodCall">
-									<plx:callObject>
-										<plx:callInstance name="Parameters" type="property">
-											<plx:callObject>
-												<plx:nameRef name="command" />
-											</plx:callObject>
-										</plx:callInstance>
-									</plx:callObject>
-									<plx:passParam>
-										<plx:nameRef name="parameterTask_id" type="local" />
-									</plx:passParam>
-								</plx:callInstance>
-								<plx:branch>
-									<plx:condition>
-										<plx:binaryOperator type="inequality">
-											<plx:left>
-												<plx:callInstance name="State" type="property">
-													<plx:callObject>
-														<plx:callInstance name="Connection" type="property">
-															<plx:callObject>
-																<plx:nameRef name="command" type="local" />
-															</plx:callObject>
-														</plx:callInstance>
-													</plx:callObject>
-												</plx:callInstance>
-											</plx:left>
-											<plx:right>
-												<plx:callStatic name="Open" dataTypeName="ConnectionState" type="property" />
-											</plx:right>
-										</plx:binaryOperator>
-									</plx:condition>
-									<plx:callInstance name="Open" type="methodCall">
-										<plx:callObject>
-											<plx:callInstance name="Connection" type="property">
-												<plx:callObject>
-													<plx:nameRef name="command" type="local" />
-												</plx:callObject>
-											</plx:callInstance>
-										</plx:callObject>
-									</plx:callInstance>
-								</plx:branch>
-								<plx:try>
-									<plx:callInstance type="methodCall" name="ExecuteNonQuery">
-										<plx:callObject>
-											<plx:nameRef type="local" name="command" />
-										</plx:callObject>
-									</plx:callInstance>
-									<plx:assign>
-										<plx:left>
-											<plx:callThis accessor="this" type="field" name="_Task_id" />
-										</plx:left>
-										<plx:right>
-											<plx:valueKeyword />
-										</plx:right>
-									</plx:assign>
-									<plx:finally>
-										<plx:branch>
-											<plx:condition>
-												<plx:binaryOperator type="equality">
-													<plx:left>
-														<plx:callInstance name="State" type="property">
-															<plx:callObject>
-																<plx:callInstance name="Connection" type="property">
-																	<plx:callObject>
-																		<plx:nameRef name="command" type="local" />
-																	</plx:callObject>
-																</plx:callInstance>
-															</plx:callObject>
-														</plx:callInstance>
-													</plx:left>
-													<plx:right>
-														<plx:callStatic name="Open" dataTypeName="ConnectionState" type="field" />
-													</plx:right>
-												</plx:binaryOperator>
-											</plx:condition>
-											<plx:callInstance name="Close" type="methodCall">
-												<plx:callObject>
-													<plx:callInstance name="Connection" type="property">
-														<plx:callObject>
-															<plx:nameRef name="command" type="local" />
-														</plx:callObject>
-													</plx:callInstance>
-												</plx:callObject>
-											</plx:callInstance>
-										</plx:branch>
-										<plx:callInstance name="Dispose" type="methodCall">
-											<plx:callObject>
-												<plx:nameRef name="command" type="local" />
-											</plx:callObject>
-										</plx:callInstance>
-									</plx:finally>
-								</plx:try>
-							</plx:branch>
-						</plx:branch>
-					</plx:set>
-				</plx:property>
-				<plx:field visibility="private" readOnly="false" name="_PersonPerson_id" dataTypeName=".i4" />
+				<plx:field visibility="private" readOnly="" name="_PersonPerson_id" />
 				<plx:property visibility="public" modifier="override" name="Person">
 					<plx:returns dataTypeName="Person" />
 					<plx:get>
@@ -22878,7 +20851,7 @@
 						</plx:return>
 					</plx:get>
 					<plx:set>
-						<plx:local name="oldValuePersonPerson_id" dataTypeName=".i4">
+						<plx:local name="oldValuePersonPerson_id" dataTypeName="">
 							<plx:initialize>
 								<plx:callThis accessor="this" type="field" name="_PersonPerson_id" />
 							</plx:initialize>
@@ -22940,7 +20913,7 @@
 										</plx:callInstance>
 									</plx:left>
 									<plx:right>
-										<plx:string>UPDATE SampleModel.Task SET Person_Person_id = @NewPersonPerson_id WHERE Task_id = @Task_id</plx:string>
+										<plx:string>UPDATE SampleModel.Task SET Person_Person_id = @NewPersonPerson_id WHERE </plx:string>
 									</plx:right>
 								</plx:assign>
 								<plx:local name="parameterNewPersonPerson_id" dataTypeName="IDataParameter">
@@ -22990,51 +20963,6 @@
 									</plx:callObject>
 									<plx:passParam>
 										<plx:nameRef name="parameterNewPersonPerson_id" type="local" />
-									</plx:passParam>
-								</plx:callInstance>
-								<plx:local name="parameterTask_id" dataTypeName="IDataParameter">
-									<plx:initialize>
-										<plx:callInstance name="CreateParameter" type="methodCall">
-											<plx:callObject>
-												<plx:nameRef name="command" />
-											</plx:callObject>
-										</plx:callInstance>
-									</plx:initialize>
-								</plx:local>
-								<plx:assign>
-									<plx:left>
-										<plx:callInstance name="ParameterName" type="property">
-											<plx:callObject>
-												<plx:nameRef name="parameterTask_id" />
-											</plx:callObject>
-										</plx:callInstance>
-									</plx:left>
-									<plx:right>
-										<plx:string>Task_id</plx:string>
-									</plx:right>
-								</plx:assign>
-								<plx:assign>
-									<plx:left>
-										<plx:callInstance name="Value" type="property">
-											<plx:callObject>
-												<plx:nameRef name="parameterTask_id" />
-											</plx:callObject>
-										</plx:callInstance>
-									</plx:left>
-									<plx:right>
-										<plx:callThis accessor="this" name="_Task_id" type="property" />
-									</plx:right>
-								</plx:assign>
-								<plx:callInstance name="Add" type="methodCall">
-									<plx:callObject>
-										<plx:callInstance name="Parameters" type="property">
-											<plx:callObject>
-												<plx:nameRef name="command" />
-											</plx:callObject>
-										</plx:callInstance>
-									</plx:callObject>
-									<plx:passParam>
-										<plx:nameRef name="parameterTask_id" type="local" />
 									</plx:passParam>
 								</plx:callInstance>
 								<plx:branch>
@@ -23730,7 +21658,7 @@
 						</plx:branch>
 					</plx:set>
 				</plx:property>
-				<plx:field visibility="private" readOnly="false" name="_DoesSomethingWithPersonPerson_id" dataTypeName=".i4" />
+				<plx:field visibility="private" readOnly="" name="_DoesSomethingWithPersonPerson_id" />
 				<plx:property visibility="public" modifier="override" name="DoesSomethingWithPerson">
 					<plx:returns dataTypeName="Person" />
 					<plx:get>
@@ -23746,7 +21674,7 @@
 						</plx:return>
 					</plx:get>
 					<plx:set>
-						<plx:local name="oldValueDoesSomethingWithPersonPerson_id" dataTypeName=".i4">
+						<plx:local name="oldValueDoesSomethingWithPersonPerson_id" dataTypeName="">
 							<plx:initialize>
 								<plx:callThis accessor="this" type="field" name="_DoesSomethingWithPersonPerson_id" />
 							</plx:initialize>
@@ -24702,7 +22630,7 @@
 							</plx:callInstance>
 						</plx:passParam>
 						<plx:passParam>
-							<plx:callInstance type="methodCall" name="GetInt32">
+							<plx:callInstance type="methodCall" name="">
 								<plx:callObject>
 									<plx:nameRef name="reader" />
 								</plx:callObject>
@@ -24712,7 +22640,7 @@
 							</plx:callInstance>
 						</plx:passParam>
 						<plx:passParam>
-							<plx:callInstance type="methodCall" name="GetInt32">
+							<plx:callInstance type="methodCall" name="">
 								<plx:callObject>
 									<plx:nameRef name="reader" />
 								</plx:callObject>
@@ -24752,8 +22680,8 @@
 					<plx:param name="context" dataTypeName="SampleModelContext" />
 					<plx:param name="CarSold_vin" dataTypeName=".i4" />
 					<plx:param name="SaleDate_YMD" dataTypeName=".i4" />
-					<plx:param name="BuyerPerson_id" dataTypeName=".i4" />
-					<plx:param name="SellerPerson_id" dataTypeName=".i4" />
+					<plx:param name="BuyerPerson_id" />
+					<plx:param name="SellerPerson_id" />
 					<plx:assign>
 						<plx:left>
 							<plx:callThis accessor="this" type="field" name="_Context" />
@@ -25472,7 +23400,7 @@
 						</plx:branch>
 					</plx:set>
 				</plx:property>
-				<plx:field visibility="private" readOnly="false" name="_BuyerPerson_id" dataTypeName=".i4" />
+				<plx:field visibility="private" readOnly="" name="_BuyerPerson_id" />
 				<plx:property visibility="public" modifier="override" name="Buyer">
 					<plx:returns dataTypeName="Person" />
 					<plx:get>
@@ -25509,7 +23437,7 @@
 								</plx:callNew>
 							</plx:throw>
 						</plx:branch>
-						<plx:local name="oldValueBuyerPerson_id" dataTypeName=".i4">
+						<plx:local name="oldValueBuyerPerson_id" dataTypeName="">
 							<plx:initialize>
 								<plx:callThis accessor="this" type="field" name="_BuyerPerson_id" />
 							</plx:initialize>
@@ -25846,7 +23774,7 @@
 						</plx:branch>
 					</plx:set>
 				</plx:property>
-				<plx:field visibility="private" readOnly="false" name="_SellerPerson_id" dataTypeName=".i4" />
+				<plx:field visibility="private" readOnly="" name="_SellerPerson_id" />
 				<plx:property visibility="public" modifier="override" name="Seller">
 					<plx:returns dataTypeName="Person" />
 					<plx:get>
@@ -25883,7 +23811,7 @@
 								</plx:callNew>
 							</plx:throw>
 						</plx:branch>
-						<plx:local name="oldValueSellerPerson_id" dataTypeName=".i4">
+						<plx:local name="oldValueSellerPerson_id" dataTypeName="">
 							<plx:initialize>
 								<plx:callThis accessor="this" type="field" name="_SellerPerson_id" />
 							</plx:initialize>

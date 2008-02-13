@@ -106,12 +106,14 @@
 			<se:Link RelationshipName="UniquenessConstraintIncludesColumn" RoleName="Column"/>
 		</se:Container>
 		<se:Link Name="Column" RelationshipName="UniquenessConstraintIncludesColumn" RoleName="Column"/>
+		<se:Link RelationshipName="ReferenceConstraintTargetsUniquenessConstraint" RoleName="ReferenceConstraint" WriteStyle="NotWritten"/>
 	</se:Element>
 	<se:Element Class="CheckConstraint" Override="true">
 		
 	</se:Element>
 	<se:Element Class="ReferenceConstraint" Override="true" SortChildElements="true">
 		<se:Link RelationshipName="ReferenceConstraintTargetsTable" RoleName="TargetTable" Name="TargetTable"/>
+		<se:Link RelationshipName="ReferenceConstraintTargetsUniquenessConstraint" RoleName="TargetUniquenessConstraint" Name="TargetUniquenessConstraint"/>
 		<se:Container Name="ColumnReferences">
 			<se:Link RelationshipName="ReferenceConstraintContainsColumnReference" RoleName="ColumnReference"/>
 		</se:Container>

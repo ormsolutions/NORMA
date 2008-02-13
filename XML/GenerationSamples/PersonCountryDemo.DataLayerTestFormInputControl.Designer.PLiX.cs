@@ -10,7 +10,7 @@
 		/// <param name="disposing">true if managed resources should be disposed; otherwise, false.</param>
 		protected override void Dispose(bool disposing)
 		{
-			if (disposing && (components != null))
+			if (disposing && components != null)
 			{
 				components.Dispose();
 			}
@@ -65,7 +65,7 @@
 		/// <param name="disposing">true if managed resources should be disposed; otherwise, false.</param>
 		protected override void Dispose(bool disposing)
 		{
-			if (disposing && (components != null))
+			if (disposing && components != null)
 			{
 				components.Dispose();
 			}
@@ -160,7 +160,7 @@
 		/// <param name="disposing">true if managed resources should be disposed; otherwise, false.</param>
 		protected override void Dispose(bool disposing)
 		{
-			if (disposing && (components != null))
+			if (disposing && components != null)
 			{
 				components.Dispose();
 			}
@@ -264,7 +264,7 @@
 		/// <param name="disposing">true if managed resources should be disposed; otherwise, false.</param>
 		protected override void Dispose(bool disposing)
 		{
-			if (disposing && (components != null))
+			if (disposing && components != null)
 			{
 				components.Dispose();
 			}
@@ -449,7 +449,7 @@
 		/// <param name="disposing">true if managed resources should be disposed; otherwise, false.</param>
 		protected override void Dispose(bool disposing)
 		{
-			if (disposing && (components != null))
+			if (disposing && components != null)
 			{
 				components.Dispose();
 			}
@@ -504,7 +504,7 @@
 		/// <param name="disposing">true if managed resources should be disposed; otherwise, false.</param>
 		protected override void Dispose(bool disposing)
 		{
-			if (disposing && (components != null))
+			if (disposing && components != null)
 			{
 				components.Dispose();
 			}
@@ -601,7 +601,7 @@
 		/// <param name="disposing">true if managed resources should be disposed; otherwise, false.</param>
 		protected override void Dispose(bool disposing)
 		{
-			if (disposing && (components != null))
+			if (disposing && components != null)
 			{
 				components.Dispose();
 			}
@@ -648,7 +648,6 @@
 			this.dgvCollection.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
 			this.dgvCollection.Name = "dgvCollection";
 			this.dgvCollection.TabIndex = 0;
-			this.dgvCollection.Columns.Add("Person_id", "Person_id");
 			this.dgvCollection.Columns.Add("LastName", "LastName");
 			this.dgvCollection.Columns.Add("FirstName", "FirstName");
 			this.dgvCollection.Columns.Add("Title", "Title");
@@ -708,7 +707,7 @@
 		/// <param name="disposing">true if managed resources should be disposed; otherwise, false.</param>
 		protected override void Dispose(bool disposing)
 		{
-			if (disposing && (components != null))
+			if (disposing && components != null)
 			{
 				components.Dispose();
 			}
@@ -778,7 +777,6 @@
 			this.cbxSelectionMode.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
 			this.cbxSelectionMode.TabIndex = 2;
 			this.cbxSelectionMode.SelectedIndexChanged += new System.EventHandler(this.cbxSelectionMode_SelectedIndexChanged);
-			this.cbxSelectionMode.Items.Add("Person_id");
 			// 
 			// lblCurrentObject
 			// 
@@ -797,8 +795,6 @@
 			this.dgvCurrentObject.Name = "dgvCurrentObject";
 			this.dgvCurrentObject.Size = new System.Drawing.Size(500, 150);
 			this.dgvCurrentObject.TabIndex = 4;
-			this.dgvCurrentObject.Columns.Add("Person_id", "Person_id");
-			this.dgvCurrentObject.Columns["Person_id"].Visible = false;
 			this.dgvCurrentObject.Columns.Add("LastName", "LastName");
 			this.dgvCurrentObject.Columns["LastName"].Visible = false;
 			this.dgvCurrentObject.Columns.Add("FirstName", "FirstName");
@@ -808,7 +804,6 @@
 			this.dgvCurrentObject.Columns.Add("Country", "Country");
 			this.dgvCurrentObject.Columns["Country"].Visible = false;
 			this.dgvCurrentObject.Visible = false;
-			this.dgvCurrentObject.Columns["Person_id"].ReadOnly = true;
 			this.dgvCurrentObject.CellBeginEdit += new System.Windows.Forms.DataGridViewCellCancelEventHandler(this.dgvCurrentObject_CellBeginEdit);
 			this.Controls.Add(this.pnlSave);
 			this.Controls.Add(this.dgvCurrentObject);
@@ -849,7 +844,6 @@
 			this.dgvSelect.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
 			this.dgvSelect.Name = "dgvSelect";
 			this.dgvSelect.TabIndex = 0;
-			this.dgvSelect.Columns.Add("Person_id", "Person_id");
 			this.dgvSelect.Columns.Add("LastName", "LastName");
 			this.dgvSelect.Columns.Add("FirstName", "FirstName");
 			this.dgvSelect.Columns.Add("Title", "Title");

@@ -1,12 +1,12 @@
 ﻿<?php
 static class DataAccessBase {
 	static $params = null;
-	
+	// <summary>Gets the appropriate data adapter for the current database configuration</summary>
 	public static function getDataAdapter() {
 		return Zend_Db::factory(getpdoType(), getparams());
 	}
 	private static function get() {
-		if (params == null) {
+		if (params === null) {
 			params = array();
 			params["host"] = "";
 			params["username"] = "";
@@ -16,7 +16,7 @@ static class DataAccessBase {
 		return params;
 	}
 	private static function getpdoType() {
-		if (pdoType == null) {
+		if (pdoType === null) {
 			pdoType = "PDO_MYSQL";
 		}
 		return pdoType;
@@ -28,16 +28,16 @@ if (!class_exists('DataAccess')) {
 }
 class PersonDrivesCarDaoBase {
 	private static $instance;
-	
+	// <summary>Instantiates a new instance of PersonDrivesCarDao</summary>
 	public function __construct() {
 	}
 	public static function getInstance() {
-		if (!(isset(instance))) {
+		if (!isset(instance)) {
 			instance = new PersonDrivesCarDao();
 		}
 		return instance;
 	}
-	
+	// <summary>Retrieves the entire collection of PersonDrivesCar objects</summary>
 	public function getAll() {
 		try {
 			$retVal = null;
@@ -59,7 +59,7 @@ class PersonDrivesCarDaoBase {
 			return null;
 		}
 	}
-	
+	// <summary>Retrieves the specified PersonDrivesCarobject from the database</summary>
 	public function getSingle(/*decimal*/ $DrivesCar_vin, /*int*/ $Person_id) {
 		try {
 			$retVal = new PersonDrivesCar();
@@ -78,7 +78,7 @@ class PersonDrivesCarDaoBase {
 			return null;
 		}
 	}
-	
+	// <summary>Inserts the given PersonDrivesCar object into the database</summary>
 	public function insert(PersonDrivesCar $PersonDrivesCar) {
 		$retVal = false;
 		try {
@@ -92,7 +92,7 @@ class PersonDrivesCarDaoBase {
 		}
 		return $retVal;
 	}
-	
+	// <summary>Updates the given PersonDrivesCar object in the database</summary>
 	public function update(PersonDrivesCar $PersonDrivesCar) {
 		$retVal = false;
 		try {
@@ -100,19 +100,19 @@ class PersonDrivesCarDaoBase {
 			$dataArray = array();
 			$dataArray["DrivenByPerson"] = $PersonDrivesCar->getPerson_id();
 			$dataArray["DrivesCar_vin"] = $PersonDrivesCar->getDrivesCar_vin();
-			$whereClause = $db->quoteInto("DrivesCar_vin = ?", $PersonDrivesCar->getDrivesCar_vin()).$db->quoteInto("Person_id = ?", $PersonDrivesCar->getPerson_id());
+			$whereClause = $db->quoteInto("DrivesCar_vin = ?", $PersonDrivesCar->getDrivesCar_vin()) . $db->quoteInto("Person_id = ?", $PersonDrivesCar->getPerson_id());
 			$nrRowsAffected = $db->update("PersonDrivesCar", $dataArray, $whereClause);
 		}
 		catch (Exception $exc) {
 		}
 		return $retVal;
 	}
-	
+	// <summary>Deletes the given PersonDrivesCar object from the database</summary>
 	public function delete(PersonDrivesCar $PersonDrivesCar) {
 		$retVal = false;
 		try {
 			$db = DataAccess::getDataAdapter();
-			$whereClause = $db->quoteInto("DrivesCar_vin = ?", $PersonDrivesCar->getDrivesCar_vin()).$db->quoteInto("Person_id = ?", $PersonDrivesCar->getPerson_id());
+			$whereClause = $db->quoteInto("DrivesCar_vin = ?", $PersonDrivesCar->getDrivesCar_vin()) . $db->quoteInto("Person_id = ?", $PersonDrivesCar->getPerson_id());
 			$nrRowsAffected = $db->delete("PersonDrivesCar", $whereClause);
 		}
 		catch (Exception $exc) {
@@ -129,16 +129,16 @@ if (!class_exists('PersonDrivesCarDao')) {
 }
 class PersonHasNickNameDaoBase {
 	private static $instance;
-	
+	// <summary>Instantiates a new instance of PersonHasNickNameDao</summary>
 	public function __construct() {
 	}
 	public static function getInstance() {
-		if (!(isset(instance))) {
+		if (!isset(instance)) {
 			instance = new PersonHasNickNameDao();
 		}
 		return instance;
 	}
-	
+	// <summary>Retrieves the entire collection of PersonHasNickName objects</summary>
 	public function getAll() {
 		try {
 			$retVal = null;
@@ -160,7 +160,7 @@ class PersonHasNickNameDaoBase {
 			return null;
 		}
 	}
-	
+	// <summary>Retrieves the specified PersonHasNickNameobject from the database</summary>
 	public function getSingle(/*string*/ $NickName, /*int*/ $Person_id) {
 		try {
 			$retVal = new PersonHasNickName();
@@ -179,7 +179,7 @@ class PersonHasNickNameDaoBase {
 			return null;
 		}
 	}
-	
+	// <summary>Inserts the given PersonHasNickName object into the database</summary>
 	public function insert(PersonHasNickName $PersonHasNickName) {
 		$retVal = false;
 		try {
@@ -193,7 +193,7 @@ class PersonHasNickNameDaoBase {
 		}
 		return $retVal;
 	}
-	
+	// <summary>Updates the given PersonHasNickName object in the database</summary>
 	public function update(PersonHasNickName $PersonHasNickName) {
 		$retVal = false;
 		try {
@@ -201,19 +201,19 @@ class PersonHasNickNameDaoBase {
 			$dataArray = array();
 			$dataArray["NickName"] = $PersonHasNickName->getNickName();
 			$dataArray["Person"] = $PersonHasNickName->getPerson_id();
-			$whereClause = $db->quoteInto("NickName = ?", $PersonHasNickName->getNickName()).$db->quoteInto("Person_id = ?", $PersonHasNickName->getPerson_id());
+			$whereClause = $db->quoteInto("NickName = ?", $PersonHasNickName->getNickName()) . $db->quoteInto("Person_id = ?", $PersonHasNickName->getPerson_id());
 			$nrRowsAffected = $db->update("PersonHasNickName", $dataArray, $whereClause);
 		}
 		catch (Exception $exc) {
 		}
 		return $retVal;
 	}
-	
+	// <summary>Deletes the given PersonHasNickName object from the database</summary>
 	public function delete(PersonHasNickName $PersonHasNickName) {
 		$retVal = false;
 		try {
 			$db = DataAccess::getDataAdapter();
-			$whereClause = $db->quoteInto("NickName = ?", $PersonHasNickName->getNickName()).$db->quoteInto("Person_id = ?", $PersonHasNickName->getPerson_id());
+			$whereClause = $db->quoteInto("NickName = ?", $PersonHasNickName->getNickName()) . $db->quoteInto("Person_id = ?", $PersonHasNickName->getPerson_id());
 			$nrRowsAffected = $db->delete("PersonHasNickName", $whereClause);
 		}
 		catch (Exception $exc) {
@@ -230,16 +230,16 @@ if (!class_exists('PersonHasNickNameDao')) {
 }
 class PersonDaoBase {
 	private static $instance;
-	
+	// <summary>Instantiates a new instance of PersonDao</summary>
 	public function __construct() {
 	}
 	public static function getInstance() {
-		if (!(isset(instance))) {
+		if (!isset(instance)) {
 			instance = new PersonDao();
 		}
 		return instance;
 	}
-	
+	// <summary>Retrieves the entire collection of Person objects</summary>
 	public function getAll() {
 		try {
 			$retVal = null;
@@ -273,7 +273,7 @@ class PersonDaoBase {
 			return null;
 		}
 	}
-	
+	// <summary>Retrieves the specified Personobject from the database</summary>
 	public function getSingle(/*int*/ $Person_id) {
 		try {
 			$retVal = new Person();
@@ -303,7 +303,7 @@ class PersonDaoBase {
 			return null;
 		}
 	}
-	
+	// <summary>Inserts the given Person object into the database</summary>
 	public function insert(Person $Person) {
 		$retVal = false;
 		try {
@@ -330,7 +330,7 @@ class PersonDaoBase {
 		}
 		return $retVal;
 	}
-	
+	// <summary>Updates the given Person object in the database</summary>
 	public function update(Person $Person) {
 		$retVal = false;
 		try {
@@ -358,7 +358,7 @@ class PersonDaoBase {
 		}
 		return $retVal;
 	}
-	
+	// <summary>Deletes the given Person object from the database</summary>
 	public function delete(Person $Person) {
 		$retVal = false;
 		try {
@@ -540,16 +540,16 @@ if (!class_exists('PersonDao')) {
 }
 class MalePersonDaoBase {
 	private static $instance;
-	
+	// <summary>Instantiates a new instance of MalePersonDao</summary>
 	public function __construct() {
 	}
 	public static function getInstance() {
-		if (!(isset(instance))) {
+		if (!isset(instance)) {
 			instance = new MalePersonDao();
 		}
 		return instance;
 	}
-	
+	// <summary>Retrieves the entire collection of MalePerson objects</summary>
 	public function getAll() {
 		try {
 			$retVal = null;
@@ -583,7 +583,7 @@ class MalePersonDaoBase {
 			return null;
 		}
 	}
-	
+	// <summary>Retrieves the specified MalePersonobject from the database</summary>
 	public function getSingle(/*int*/ $Person_id) {
 		try {
 			$retVal = new MalePerson();
@@ -613,7 +613,7 @@ class MalePersonDaoBase {
 			return null;
 		}
 	}
-	
+	// <summary>Inserts the given MalePerson object into the database</summary>
 	public function insert(MalePerson $MalePerson) {
 		$retVal = false;
 		try {
@@ -640,7 +640,7 @@ class MalePersonDaoBase {
 		}
 		return $retVal;
 	}
-	
+	// <summary>Updates the given MalePerson object in the database</summary>
 	public function update(MalePerson $MalePerson) {
 		$retVal = false;
 		try {
@@ -668,7 +668,7 @@ class MalePersonDaoBase {
 		}
 		return $retVal;
 	}
-	
+	// <summary>Deletes the given MalePerson object from the database</summary>
 	public function delete(MalePerson $MalePerson) {
 		$retVal = false;
 		try {
@@ -725,16 +725,16 @@ if (!class_exists('MalePersonDao')) {
 }
 class FemalePersonDaoBase {
 	private static $instance;
-	
+	// <summary>Instantiates a new instance of FemalePersonDao</summary>
 	public function __construct() {
 	}
 	public static function getInstance() {
-		if (!(isset(instance))) {
+		if (!isset(instance)) {
 			instance = new FemalePersonDao();
 		}
 		return instance;
 	}
-	
+	// <summary>Retrieves the entire collection of FemalePerson objects</summary>
 	public function getAll() {
 		try {
 			$retVal = null;
@@ -768,7 +768,7 @@ class FemalePersonDaoBase {
 			return null;
 		}
 	}
-	
+	// <summary>Retrieves the specified FemalePersonobject from the database</summary>
 	public function getSingle(/*int*/ $Person_id) {
 		try {
 			$retVal = new FemalePerson();
@@ -798,7 +798,7 @@ class FemalePersonDaoBase {
 			return null;
 		}
 	}
-	
+	// <summary>Inserts the given FemalePerson object into the database</summary>
 	public function insert(FemalePerson $FemalePerson) {
 		$retVal = false;
 		try {
@@ -825,7 +825,7 @@ class FemalePersonDaoBase {
 		}
 		return $retVal;
 	}
-	
+	// <summary>Updates the given FemalePerson object in the database</summary>
 	public function update(FemalePerson $FemalePerson) {
 		$retVal = false;
 		try {
@@ -853,7 +853,7 @@ class FemalePersonDaoBase {
 		}
 		return $retVal;
 	}
-	
+	// <summary>Deletes the given FemalePerson object from the database</summary>
 	public function delete(FemalePerson $FemalePerson) {
 		$retVal = false;
 		try {
@@ -910,16 +910,16 @@ if (!class_exists('FemalePersonDao')) {
 }
 class ChildPersonDaoBase {
 	private static $instance;
-	
+	// <summary>Instantiates a new instance of ChildPersonDao</summary>
 	public function __construct() {
 	}
 	public static function getInstance() {
-		if (!(isset(instance))) {
+		if (!isset(instance)) {
 			instance = new ChildPersonDao();
 		}
 		return instance;
 	}
-	
+	// <summary>Retrieves the entire collection of ChildPerson objects</summary>
 	public function getAll() {
 		try {
 			$retVal = null;
@@ -953,7 +953,7 @@ class ChildPersonDaoBase {
 			return null;
 		}
 	}
-	
+	// <summary>Retrieves the specified ChildPersonobject from the database</summary>
 	public function getSingle(/*int*/ $Person_id, /*decimal*/ $BirthOrder_BirthOrder_Nr, /*int*/ $Person_id) {
 		try {
 			$retVal = new ChildPerson();
@@ -985,7 +985,7 @@ class ChildPersonDaoBase {
 			return null;
 		}
 	}
-	
+	// <summary>Inserts the given ChildPerson object into the database</summary>
 	public function insert(ChildPerson $ChildPerson) {
 		$retVal = false;
 		try {
@@ -1013,7 +1013,7 @@ class ChildPersonDaoBase {
 		}
 		return $retVal;
 	}
-	
+	// <summary>Updates the given ChildPerson object in the database</summary>
 	public function update(ChildPerson $ChildPerson) {
 		$retVal = false;
 		try {
@@ -1035,19 +1035,19 @@ class ChildPersonDaoBase {
 			$dataArray["MandatoryUniqueDecimal"] = $ChildPerson->getPerson()->getMandatoryUniqueDecimal();
 			$dataArray["MandatoryUniqueString"] = $ChildPerson->getPerson()->getMandatoryUniqueString();
 			$dataArray["BirthOrder_BirthOrder_Nr"] = $ChildPerson->getBirthOrder_BirthOrder_Nr();
-			$whereClause = $db->quoteInto("Person_id = ?", $ChildPerson->getPerson()->getPerson_id()).$db->quoteInto("BirthOrder_BirthOrder_Nr = ?", $ChildPerson->getBirthOrder_BirthOrder_Nr()).$db->quoteInto("Person_id = ?", $ChildPerson->getPerson()->getPerson_id());
+			$whereClause = $db->quoteInto("Person_id = ?", $ChildPerson->getPerson()->getPerson_id()) . $db->quoteInto("BirthOrder_BirthOrder_Nr = ?", $ChildPerson->getBirthOrder_BirthOrder_Nr()) . $db->quoteInto("Person_id = ?", $ChildPerson->getPerson()->getPerson_id());
 			$nrRowsAffected = $db->update("ChildPerson", $dataArray, $whereClause);
 		}
 		catch (Exception $exc) {
 		}
 		return $retVal;
 	}
-	
+	// <summary>Deletes the given ChildPerson object from the database</summary>
 	public function delete(ChildPerson $ChildPerson) {
 		$retVal = false;
 		try {
 			$db = DataAccess::getDataAdapter();
-			$whereClause = $db->quoteInto("Person_id = ?", $ChildPerson->getPerson()->getPerson_id()).$db->quoteInto("BirthOrder_BirthOrder_Nr = ?", $ChildPerson->getBirthOrder_BirthOrder_Nr()).$db->quoteInto("Person_id = ?", $ChildPerson->getPerson()->getPerson_id());
+			$whereClause = $db->quoteInto("Person_id = ?", $ChildPerson->getPerson()->getPerson_id()) . $db->quoteInto("BirthOrder_BirthOrder_Nr = ?", $ChildPerson->getBirthOrder_BirthOrder_Nr()) . $db->quoteInto("Person_id = ?", $ChildPerson->getPerson()->getPerson_id());
 			$nrRowsAffected = $db->delete("ChildPerson", $whereClause);
 		}
 		catch (Exception $exc) {
@@ -1064,16 +1064,16 @@ if (!class_exists('ChildPersonDao')) {
 }
 class DeathDaoBase {
 	private static $instance;
-	
+	// <summary>Instantiates a new instance of DeathDao</summary>
 	public function __construct() {
 	}
 	public static function getInstance() {
-		if (!(isset(instance))) {
+		if (!isset(instance)) {
 			instance = new DeathDao();
 		}
 		return instance;
 	}
-	
+	// <summary>Retrieves the entire collection of Death objects</summary>
 	public function getAll() {
 		try {
 			$retVal = null;
@@ -1107,7 +1107,7 @@ class DeathDaoBase {
 			return null;
 		}
 	}
-	
+	// <summary>Retrieves the specified Deathobject from the database</summary>
 	public function getSingle(/*int*/ $Person_id) {
 		try {
 			$retVal = new Death();
@@ -1137,7 +1137,7 @@ class DeathDaoBase {
 			return null;
 		}
 	}
-	
+	// <summary>Inserts the given Death object into the database</summary>
 	public function insert(Death $Death) {
 		$retVal = false;
 		try {
@@ -1167,7 +1167,7 @@ class DeathDaoBase {
 		}
 		return $retVal;
 	}
-	
+	// <summary>Updates the given Death object in the database</summary>
 	public function update(Death $Death) {
 		$retVal = false;
 		try {
@@ -1198,7 +1198,7 @@ class DeathDaoBase {
 		}
 		return $retVal;
 	}
-	
+	// <summary>Deletes the given Death object from the database</summary>
 	public function delete(Death $Death) {
 		$retVal = false;
 		try {
@@ -1220,16 +1220,16 @@ if (!class_exists('DeathDao')) {
 }
 class NaturalDeathDaoBase {
 	private static $instance;
-	
+	// <summary>Instantiates a new instance of NaturalDeathDao</summary>
 	public function __construct() {
 	}
 	public static function getInstance() {
-		if (!(isset(instance))) {
+		if (!isset(instance)) {
 			instance = new NaturalDeathDao();
 		}
 		return instance;
 	}
-	
+	// <summary>Retrieves the entire collection of NaturalDeath objects</summary>
 	public function getAll() {
 		try {
 			$retVal = null;
@@ -1263,7 +1263,7 @@ class NaturalDeathDaoBase {
 			return null;
 		}
 	}
-	
+	// <summary>Retrieves the specified NaturalDeathobject from the database</summary>
 	public function getSingle(/*int*/ $Person_id) {
 		try {
 			$retVal = new NaturalDeath();
@@ -1293,7 +1293,7 @@ class NaturalDeathDaoBase {
 			return null;
 		}
 	}
-	
+	// <summary>Inserts the given NaturalDeath object into the database</summary>
 	public function insert(NaturalDeath $NaturalDeath) {
 		$retVal = false;
 		try {
@@ -1324,7 +1324,7 @@ class NaturalDeathDaoBase {
 		}
 		return $retVal;
 	}
-	
+	// <summary>Updates the given NaturalDeath object in the database</summary>
 	public function update(NaturalDeath $NaturalDeath) {
 		$retVal = false;
 		try {
@@ -1356,7 +1356,7 @@ class NaturalDeathDaoBase {
 		}
 		return $retVal;
 	}
-	
+	// <summary>Deletes the given NaturalDeath object from the database</summary>
 	public function delete(NaturalDeath $NaturalDeath) {
 		$retVal = false;
 		try {
@@ -1378,16 +1378,16 @@ if (!class_exists('NaturalDeathDao')) {
 }
 class UnnaturalDeathDaoBase {
 	private static $instance;
-	
+	// <summary>Instantiates a new instance of UnnaturalDeathDao</summary>
 	public function __construct() {
 	}
 	public static function getInstance() {
-		if (!(isset(instance))) {
+		if (!isset(instance)) {
 			instance = new UnnaturalDeathDao();
 		}
 		return instance;
 	}
-	
+	// <summary>Retrieves the entire collection of UnnaturalDeath objects</summary>
 	public function getAll() {
 		try {
 			$retVal = null;
@@ -1421,7 +1421,7 @@ class UnnaturalDeathDaoBase {
 			return null;
 		}
 	}
-	
+	// <summary>Retrieves the specified UnnaturalDeathobject from the database</summary>
 	public function getSingle(/*int*/ $Person_id) {
 		try {
 			$retVal = new UnnaturalDeath();
@@ -1451,7 +1451,7 @@ class UnnaturalDeathDaoBase {
 			return null;
 		}
 	}
-	
+	// <summary>Inserts the given UnnaturalDeath object into the database</summary>
 	public function insert(UnnaturalDeath $UnnaturalDeath) {
 		$retVal = false;
 		try {
@@ -1483,7 +1483,7 @@ class UnnaturalDeathDaoBase {
 		}
 		return $retVal;
 	}
-	
+	// <summary>Updates the given UnnaturalDeath object in the database</summary>
 	public function update(UnnaturalDeath $UnnaturalDeath) {
 		$retVal = false;
 		try {
@@ -1516,7 +1516,7 @@ class UnnaturalDeathDaoBase {
 		}
 		return $retVal;
 	}
-	
+	// <summary>Deletes the given UnnaturalDeath object from the database</summary>
 	public function delete(UnnaturalDeath $UnnaturalDeath) {
 		$retVal = false;
 		try {
@@ -1538,16 +1538,16 @@ if (!class_exists('UnnaturalDeathDao')) {
 }
 class TaskDaoBase {
 	private static $instance;
-	
+	// <summary>Instantiates a new instance of TaskDao</summary>
 	public function __construct() {
 	}
 	public static function getInstance() {
-		if (!(isset(instance))) {
+		if (!isset(instance)) {
 			instance = new TaskDao();
 		}
 		return instance;
 	}
-	
+	// <summary>Retrieves the entire collection of Task objects</summary>
 	public function getAll() {
 		try {
 			$retVal = null;
@@ -1568,7 +1568,7 @@ class TaskDaoBase {
 			return null;
 		}
 	}
-	
+	// <summary>Retrieves the specified Taskobject from the database</summary>
 	public function getSingle(/*int*/ $Task_id) {
 		try {
 			$retVal = new Task();
@@ -1585,7 +1585,7 @@ class TaskDaoBase {
 			return null;
 		}
 	}
-	
+	// <summary>Inserts the given Task object into the database</summary>
 	public function insert(Task $Task) {
 		$retVal = false;
 		try {
@@ -1599,7 +1599,7 @@ class TaskDaoBase {
 		}
 		return $retVal;
 	}
-	
+	// <summary>Updates the given Task object in the database</summary>
 	public function update(Task $Task) {
 		$retVal = false;
 		try {
@@ -1614,7 +1614,7 @@ class TaskDaoBase {
 		}
 		return $retVal;
 	}
-	
+	// <summary>Deletes the given Task object from the database</summary>
 	public function delete(Task $Task) {
 		$retVal = false;
 		try {
@@ -1636,16 +1636,16 @@ if (!class_exists('TaskDao')) {
 }
 class ValueType1DaoBase {
 	private static $instance;
-	
+	// <summary>Instantiates a new instance of ValueType1Dao</summary>
 	public function __construct() {
 	}
 	public static function getInstance() {
-		if (!(isset(instance))) {
+		if (!isset(instance)) {
 			instance = new ValueType1Dao();
 		}
 		return instance;
 	}
-	
+	// <summary>Retrieves the entire collection of ValueType1 objects</summary>
 	public function getAll() {
 		try {
 			$retVal = null;
@@ -1666,7 +1666,7 @@ class ValueType1DaoBase {
 			return null;
 		}
 	}
-	
+	// <summary>Retrieves the specified ValueType1object from the database</summary>
 	public function getSingle(/*decimal*/ $ValueType1Value) {
 		try {
 			$retVal = new ValueType1();
@@ -1683,7 +1683,7 @@ class ValueType1DaoBase {
 			return null;
 		}
 	}
-	
+	// <summary>Inserts the given ValueType1 object into the database</summary>
 	public function insert(ValueType1 $ValueType1) {
 		$retVal = false;
 		try {
@@ -1697,7 +1697,7 @@ class ValueType1DaoBase {
 		}
 		return $retVal;
 	}
-	
+	// <summary>Updates the given ValueType1 object in the database</summary>
 	public function update(ValueType1 $ValueType1) {
 		$retVal = false;
 		try {
@@ -1712,7 +1712,7 @@ class ValueType1DaoBase {
 		}
 		return $retVal;
 	}
-	
+	// <summary>Deletes the given ValueType1 object from the database</summary>
 	public function delete(ValueType1 $ValueType1) {
 		$retVal = false;
 		try {
@@ -1755,16 +1755,16 @@ if (!class_exists('ValueType1Dao')) {
 }
 class PersonBoughtCarFromPersonOnDateDaoBase {
 	private static $instance;
-	
+	// <summary>Instantiates a new instance of PersonBoughtCarFromPersonOnDateDao</summary>
 	public function __construct() {
 	}
 	public static function getInstance() {
-		if (!(isset(instance))) {
+		if (!isset(instance)) {
 			instance = new PersonBoughtCarFromPersonOnDateDao();
 		}
 		return instance;
 	}
-	
+	// <summary>Retrieves the entire collection of PersonBoughtCarFromPersonOnDate objects</summary>
 	public function getAll() {
 		try {
 			$retVal = null;
@@ -1788,7 +1788,7 @@ class PersonBoughtCarFromPersonOnDateDaoBase {
 			return null;
 		}
 	}
-	
+	// <summary>Retrieves the specified PersonBoughtCarFromPersonOnDateobject from the database</summary>
 	public function getSingle(/*int*/ $Person_id, /*decimal*/ $CarSold_vin, /*int*/ $Person_id) {
 		try {
 			$retVal = new PersonBoughtCarFromPersonOnDate();
@@ -1810,7 +1810,7 @@ class PersonBoughtCarFromPersonOnDateDaoBase {
 			return null;
 		}
 	}
-	
+	// <summary>Inserts the given PersonBoughtCarFromPersonOnDate object into the database</summary>
 	public function insert(PersonBoughtCarFromPersonOnDate $PersonBoughtCarFromPersonOnDate) {
 		$retVal = false;
 		try {
@@ -1826,7 +1826,7 @@ class PersonBoughtCarFromPersonOnDateDaoBase {
 		}
 		return $retVal;
 	}
-	
+	// <summary>Updates the given PersonBoughtCarFromPersonOnDate object in the database</summary>
 	public function update(PersonBoughtCarFromPersonOnDate $PersonBoughtCarFromPersonOnDate) {
 		$retVal = false;
 		try {
@@ -1836,19 +1836,19 @@ class PersonBoughtCarFromPersonOnDateDaoBase {
 			$dataArray["CarSold_vin"] = $PersonBoughtCarFromPersonOnDate->getCarSold_vin();
 			$dataArray["Seller"] = $PersonBoughtCarFromPersonOnDate->getPerson_id();
 			$dataArray["SaleDate_YMD"] = $PersonBoughtCarFromPersonOnDate->getSaleDate_YMD();
-			$whereClause = $db->quoteInto("Person_id = ?", $PersonBoughtCarFromPersonOnDate->getPerson_id()).$db->quoteInto("CarSold_vin = ?", $PersonBoughtCarFromPersonOnDate->getCarSold_vin()).$db->quoteInto("Person_id = ?", $PersonBoughtCarFromPersonOnDate->getPerson_id());
+			$whereClause = $db->quoteInto("Person_id = ?", $PersonBoughtCarFromPersonOnDate->getPerson_id()) . $db->quoteInto("CarSold_vin = ?", $PersonBoughtCarFromPersonOnDate->getCarSold_vin()) . $db->quoteInto("Person_id = ?", $PersonBoughtCarFromPersonOnDate->getPerson_id());
 			$nrRowsAffected = $db->update("PersonBoughtCarFromPersonOnDate", $dataArray, $whereClause);
 		}
 		catch (Exception $exc) {
 		}
 		return $retVal;
 	}
-	
+	// <summary>Deletes the given PersonBoughtCarFromPersonOnDate object from the database</summary>
 	public function delete(PersonBoughtCarFromPersonOnDate $PersonBoughtCarFromPersonOnDate) {
 		$retVal = false;
 		try {
 			$db = DataAccess::getDataAdapter();
-			$whereClause = $db->quoteInto("Person_id = ?", $PersonBoughtCarFromPersonOnDate->getPerson_id()).$db->quoteInto("CarSold_vin = ?", $PersonBoughtCarFromPersonOnDate->getCarSold_vin()).$db->quoteInto("Person_id = ?", $PersonBoughtCarFromPersonOnDate->getPerson_id());
+			$whereClause = $db->quoteInto("Person_id = ?", $PersonBoughtCarFromPersonOnDate->getPerson_id()) . $db->quoteInto("CarSold_vin = ?", $PersonBoughtCarFromPersonOnDate->getCarSold_vin()) . $db->quoteInto("Person_id = ?", $PersonBoughtCarFromPersonOnDate->getPerson_id());
 			$nrRowsAffected = $db->delete("PersonBoughtCarFromPersonOnDate", $whereClause);
 		}
 		catch (Exception $exc) {
@@ -1865,16 +1865,16 @@ if (!class_exists('PersonBoughtCarFromPersonOnDateDao')) {
 }
 class ReviewDaoBase {
 	private static $instance;
-	
+	// <summary>Instantiates a new instance of ReviewDao</summary>
 	public function __construct() {
 	}
 	public static function getInstance() {
-		if (!(isset(instance))) {
+		if (!isset(instance)) {
 			instance = new ReviewDao();
 		}
 		return instance;
 	}
-	
+	// <summary>Retrieves the entire collection of Review objects</summary>
 	public function getAll() {
 		try {
 			$retVal = null;
@@ -1897,7 +1897,7 @@ class ReviewDaoBase {
 			return null;
 		}
 	}
-	
+	// <summary>Retrieves the specified Reviewobject from the database</summary>
 	public function getSingle(/*decimal*/ $Car_vin, /*string*/ $Criterion_Name) {
 		try {
 			$retVal = new Review();
@@ -1917,7 +1917,7 @@ class ReviewDaoBase {
 			return null;
 		}
 	}
-	
+	// <summary>Inserts the given Review object into the database</summary>
 	public function insert(Review $Review) {
 		$retVal = false;
 		try {
@@ -1932,7 +1932,7 @@ class ReviewDaoBase {
 		}
 		return $retVal;
 	}
-	
+	// <summary>Updates the given Review object in the database</summary>
 	public function update(Review $Review) {
 		$retVal = false;
 		try {
@@ -1941,19 +1941,19 @@ class ReviewDaoBase {
 			$dataArray["Car_vin"] = $Review->getCar_vin();
 			$dataArray["Rating_Nr_Integer"] = $Review->getRating_Nr_Integer();
 			$dataArray["Criterion_Name"] = $Review->getCriterion_Name();
-			$whereClause = $db->quoteInto("Car_vin = ?", $Review->getCar_vin()).$db->quoteInto("Criterion_Name = ?", $Review->getCriterion_Name());
+			$whereClause = $db->quoteInto("Car_vin = ?", $Review->getCar_vin()) . $db->quoteInto("Criterion_Name = ?", $Review->getCriterion_Name());
 			$nrRowsAffected = $db->update("Review", $dataArray, $whereClause);
 		}
 		catch (Exception $exc) {
 		}
 		return $retVal;
 	}
-	
+	// <summary>Deletes the given Review object from the database</summary>
 	public function delete(Review $Review) {
 		$retVal = false;
 		try {
 			$db = DataAccess::getDataAdapter();
-			$whereClause = $db->quoteInto("Car_vin = ?", $Review->getCar_vin()).$db->quoteInto("Criterion_Name = ?", $Review->getCriterion_Name());
+			$whereClause = $db->quoteInto("Car_vin = ?", $Review->getCar_vin()) . $db->quoteInto("Criterion_Name = ?", $Review->getCriterion_Name());
 			$nrRowsAffected = $db->delete("Review", $whereClause);
 		}
 		catch (Exception $exc) {

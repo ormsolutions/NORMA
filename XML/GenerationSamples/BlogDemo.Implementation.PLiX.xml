@@ -1093,268 +1093,6 @@
 					</plx:binaryOperator>
 				</plx:return>
 			</plx:function>
-			<plx:function visibility="public" name="GetBlogLabelByBlogLabel_Id">
-				<plx:interfaceMember memberName="GetBlogLabelByBlogLabel_Id" dataTypeName="IBlogDemoContext" />
-				<plx:param name="BlogLabel_Id" dataTypeName=".i4" />
-				<plx:returns dataTypeName="BlogLabel" />
-				<plx:local name="command" dataTypeName="IDbCommand">
-					<plx:initialize>
-						<plx:callInstance type="methodCall" name="CreateCommand">
-							<plx:callObject>
-								<plx:callThis type="methodCall" accessor="this" name="GetConnection" />
-							</plx:callObject>
-						</plx:callInstance>
-					</plx:initialize>
-				</plx:local>
-				<plx:try>
-					<plx:branch>
-						<plx:condition>
-							<plx:binaryOperator type="inequality">
-								<plx:left>
-									<plx:callInstance name="State" type="property">
-										<plx:callObject>
-											<plx:callInstance name="Connection" type="property">
-												<plx:callObject>
-													<plx:nameRef name="command" type="local" />
-												</plx:callObject>
-											</plx:callInstance>
-										</plx:callObject>
-									</plx:callInstance>
-								</plx:left>
-								<plx:right>
-									<plx:callStatic name="Open" dataTypeName="ConnectionState" type="field" />
-								</plx:right>
-							</plx:binaryOperator>
-						</plx:condition>
-						<plx:callInstance name="Open" type="methodCall">
-							<plx:callObject>
-								<plx:callInstance name="Connection" type="property">
-									<plx:callObject>
-										<plx:nameRef name="command" type="local" />
-									</plx:callObject>
-								</plx:callInstance>
-							</plx:callObject>
-						</plx:callInstance>
-					</plx:branch>
-					<plx:assign>
-						<plx:left>
-							<plx:callInstance type="property" name="CommandType">
-								<plx:callObject>
-									<plx:nameRef type="local" name="command" />
-								</plx:callObject>
-							</plx:callInstance>
-						</plx:left>
-						<plx:right>
-							<plx:callStatic type="field" name="Text" dataTypeName="CommandType" />
-						</plx:right>
-					</plx:assign>
-					<plx:assign>
-						<plx:left>
-							<plx:callInstance type="property" name="CommandText">
-								<plx:callObject>
-									<plx:nameRef type="local" name="command" />
-								</plx:callObject>
-							</plx:callInstance>
-						</plx:left>
-						<plx:right>
-							<plx:string>SELECT * FROM BlogDemo.BlogLabel WHERE BlogLabel_Id = @BlogLabel_Id</plx:string>
-						</plx:right>
-					</plx:assign>
-					<plx:local name="parameterBlogLabel_Id" dataTypeName="IDataParameter">
-						<plx:initialize>
-							<plx:callInstance name="CreateParameter" type="methodCall">
-								<plx:callObject>
-									<plx:nameRef name="command" />
-								</plx:callObject>
-							</plx:callInstance>
-						</plx:initialize>
-					</plx:local>
-					<plx:assign>
-						<plx:left>
-							<plx:callInstance name="ParameterName" type="property">
-								<plx:callObject>
-									<plx:nameRef name="parameterBlogLabel_Id" />
-								</plx:callObject>
-							</plx:callInstance>
-						</plx:left>
-						<plx:right>
-							<plx:string>BlogLabel_Id</plx:string>
-						</plx:right>
-					</plx:assign>
-					<plx:assign>
-						<plx:left>
-							<plx:callInstance name="Value" type="property">
-								<plx:callObject>
-									<plx:nameRef name="parameterBlogLabel_Id" />
-								</plx:callObject>
-							</plx:callInstance>
-						</plx:left>
-						<plx:right>
-							<plx:nameRef type="parameter" name="BlogLabel_Id" />
-						</plx:right>
-					</plx:assign>
-					<plx:callInstance name="Add" type="methodCall">
-						<plx:callObject>
-							<plx:callInstance name="Parameters" type="property">
-								<plx:callObject>
-									<plx:nameRef name="command" />
-								</plx:callObject>
-							</plx:callInstance>
-						</plx:callObject>
-						<plx:passParam>
-							<plx:nameRef name="parameterBlogLabel_Id" type="local" />
-						</plx:passParam>
-					</plx:callInstance>
-					<plx:branch>
-						<plx:condition>
-							<plx:binaryOperator type="inequality">
-								<plx:left>
-									<plx:callInstance name="State" type="property">
-										<plx:callObject>
-											<plx:callInstance name="Connection" type="property">
-												<plx:callObject>
-													<plx:nameRef name="command" type="local" />
-												</plx:callObject>
-											</plx:callInstance>
-										</plx:callObject>
-									</plx:callInstance>
-								</plx:left>
-								<plx:right>
-									<plx:callStatic name="Open" dataTypeName="ConnectionState" type="property" />
-								</plx:right>
-							</plx:binaryOperator>
-						</plx:condition>
-						<plx:callInstance name="Open" type="methodCall">
-							<plx:callObject>
-								<plx:callInstance name="Connection" type="property">
-									<plx:callObject>
-										<plx:nameRef name="command" type="local" />
-									</plx:callObject>
-								</plx:callInstance>
-							</plx:callObject>
-						</plx:callInstance>
-					</plx:branch>
-					<plx:autoDispose localName="reader" dataTypeName="IDataReader">
-						<plx:initialize>
-							<plx:callInstance name="ExecuteReader" type="methodCall">
-								<plx:callObject>
-									<plx:nameRef name="command" type="local" />
-								</plx:callObject>
-								<plx:passParam>
-									<plx:binaryOperator type="bitwiseOr">
-										<plx:left>
-											<plx:callStatic type="field" dataTypeName="CommandBehavior" name="CloseConnection" />
-										</plx:left>
-										<plx:right>
-											<plx:callStatic type="field" dataTypeName="CommandBehavior" name="SingleRow" />
-										</plx:right>
-									</plx:binaryOperator>
-								</plx:passParam>
-							</plx:callInstance>
-						</plx:initialize>
-						<plx:branch>
-							<plx:condition>
-								<plx:binaryOperator type="booleanAnd">
-									<plx:left>
-										<plx:unaryOperator type="booleanNot">
-											<plx:callInstance name="IsClosed" type="property">
-												<plx:callObject>
-													<plx:nameRef type="local" name="reader" />
-												</plx:callObject>
-											</plx:callInstance>
-										</plx:unaryOperator>
-									</plx:left>
-									<plx:right>
-										<plx:callInstance name="Read" type="methodCall">
-											<plx:callObject>
-												<plx:nameRef type="local" name="reader" />
-											</plx:callObject>
-										</plx:callInstance>
-									</plx:right>
-								</plx:binaryOperator>
-							</plx:condition>
-							<plx:return>
-								<plx:callThis type="methodCall" name="CreateBlogLabel">
-									<plx:passParam>
-										<plx:nameRef name="reader" />
-									</plx:passParam>
-								</plx:callThis>
-							</plx:return>
-						</plx:branch>
-						<plx:fallbackBranch>
-							<plx:return>
-								<plx:nullKeyword />
-							</plx:return>
-						</plx:fallbackBranch>
-					</plx:autoDispose>
-					<plx:finally>
-						<plx:branch>
-							<plx:condition>
-								<plx:binaryOperator type="equality">
-									<plx:left>
-										<plx:callInstance name="State" type="property">
-											<plx:callObject>
-												<plx:callInstance name="Connection" type="property">
-													<plx:callObject>
-														<plx:nameRef name="command" type="local" />
-													</plx:callObject>
-												</plx:callInstance>
-											</plx:callObject>
-										</plx:callInstance>
-									</plx:left>
-									<plx:right>
-										<plx:callStatic name="Open" dataTypeName="ConnectionState" type="field" />
-									</plx:right>
-								</plx:binaryOperator>
-							</plx:condition>
-							<plx:callInstance name="Close" type="methodCall">
-								<plx:callObject>
-									<plx:callInstance name="Connection" type="property">
-										<plx:callObject>
-											<plx:nameRef name="command" type="local" />
-										</plx:callObject>
-									</plx:callInstance>
-								</plx:callObject>
-							</plx:callInstance>
-						</plx:branch>
-						<plx:callInstance name="Dispose" type="methodCall">
-							<plx:callObject>
-								<plx:nameRef name="command" type="local" />
-							</plx:callObject>
-						</plx:callInstance>
-					</plx:finally>
-				</plx:try>
-			</plx:function>
-			<plx:function visibility="public" name="TryGetBlogLabelByBlogLabel_Id">
-				<plx:interfaceMember memberName="TryGetBlogLabelByBlogLabel_Id" dataTypeName="IBlogDemoContext" />
-				<plx:param name="BlogLabel_Id" dataTypeName=".i4" />
-				<plx:param type="out" name="BlogLabel" dataTypeName="BlogLabel" />
-				<plx:returns dataTypeName=".boolean" />
-				<plx:assign>
-					<plx:left>
-						<plx:nameRef type="local" name="BlogLabel" />
-					</plx:left>
-					<plx:right>
-						<plx:callThis type="methodCall" name="GetBlogLabelByBlogLabel_Id">
-							<plx:passParam>
-								<plx:nameRef name="BlogLabel_Id" />
-							</plx:passParam>
-						</plx:callThis>
-					</plx:right>
-				</plx:assign>
-				<plx:return>
-					<plx:binaryOperator type="identityInequality">
-						<plx:left>
-							<plx:cast dataTypeName=".object">
-								<plx:nameRef type="local" name="BlogLabel" />
-							</plx:cast>
-						</plx:left>
-						<plx:right>
-							<plx:nullKeyword />
-						</plx:right>
-					</plx:binaryOperator>
-				</plx:return>
-			</plx:function>
 			<plx:function visibility="public" name="CreateBlogEntryLabel">
 				<plx:leadingInfo>
 					<plx:pragma type="region" data="BlogEntryLabel" />
@@ -1779,7 +1517,7 @@
 							</plx:callInstance>
 						</plx:passParam>
 						<plx:passParam>
-							<plx:callInstance type="methodCall" name="GetInt32">
+							<plx:callInstance type="methodCall" name="">
 								<plx:callObject>
 									<plx:nameRef name="reader" />
 								</plx:callObject>
@@ -1818,7 +1556,7 @@
 				<plx:function visibility="public" name=".construct">
 					<plx:param name="context" dataTypeName="BlogDemoContext" />
 					<plx:param name="blogEntryIdBlogEntry_Id" dataTypeName=".i4" />
-					<plx:param name="blogLabelIdBlogLabel_Id" dataTypeName=".i4" />
+					<plx:param name="blogLabelIdBlogLabel_Id" />
 					<plx:assign>
 						<plx:left>
 							<plx:callThis accessor="this" type="field" name="_Context" />
@@ -2182,7 +1920,7 @@
 						</plx:branch>
 					</plx:set>
 				</plx:property>
-				<plx:field visibility="private" readOnly="false" name="_blogLabelIdBlogLabel_Id" dataTypeName=".i4" />
+				<plx:field visibility="private" readOnly="" name="_blogLabelIdBlogLabel_Id" />
 				<plx:property visibility="public" modifier="override" name="blogLabelId">
 					<plx:returns dataTypeName="BlogLabel" />
 					<plx:get>
@@ -2219,7 +1957,7 @@
 								</plx:callNew>
 							</plx:throw>
 						</plx:branch>
-						<plx:local name="oldValueblogLabelIdBlogLabel_Id" dataTypeName=".i4">
+						<plx:local name="oldValueblogLabelIdBlogLabel_Id" dataTypeName="">
 							<plx:initialize>
 								<plx:callThis accessor="this" type="field" name="_blogLabelIdBlogLabel_Id" />
 							</plx:initialize>
@@ -9314,7 +9052,6 @@
 					<plx:pragma type="region" data="BlogLabel" />
 				</plx:leadingInfo>
 				<plx:interfaceMember memberName="CreateBlogLabel" dataTypeName="IBlogDemoContext" />
-				<plx:param name="BlogLabel_Id" dataTypeName=".i4" />
 				<plx:returns dataTypeName="BlogLabel" />
 				<plx:local name="command" dataTypeName="IDbCommand">
 					<plx:initialize>
@@ -9347,55 +9084,10 @@
 					</plx:left>
 					<plx:right>
 						<plx:string>
-							<plx:string>INSERT INTO BlogDemo.BlogLabel (BlogLabel_Id) VALUES (@BlogLabel_Id)</plx:string>
+							<plx:string>INSERT INTO BlogDemo.BlogLabel () VALUES ()</plx:string>
 						</plx:string>
 					</plx:right>
 				</plx:assign>
-				<plx:local name="parameterBlogLabel_Id" dataTypeName="IDataParameter">
-					<plx:initialize>
-						<plx:callInstance name="CreateParameter" type="methodCall">
-							<plx:callObject>
-								<plx:nameRef name="command" />
-							</plx:callObject>
-						</plx:callInstance>
-					</plx:initialize>
-				</plx:local>
-				<plx:assign>
-					<plx:left>
-						<plx:callInstance name="ParameterName" type="property">
-							<plx:callObject>
-								<plx:nameRef name="parameterBlogLabel_Id" />
-							</plx:callObject>
-						</plx:callInstance>
-					</plx:left>
-					<plx:right>
-						<plx:string>BlogLabel_Id</plx:string>
-					</plx:right>
-				</plx:assign>
-				<plx:assign>
-					<plx:left>
-						<plx:callInstance name="Value" type="property">
-							<plx:callObject>
-								<plx:nameRef name="parameterBlogLabel_Id" />
-							</plx:callObject>
-						</plx:callInstance>
-					</plx:left>
-					<plx:right>
-						<plx:nameRef type="parameter" name="BlogLabel_Id" />
-					</plx:right>
-				</plx:assign>
-				<plx:callInstance name="Add" type="methodCall">
-					<plx:callObject>
-						<plx:callInstance name="Parameters" type="property">
-							<plx:callObject>
-								<plx:nameRef name="command" />
-							</plx:callObject>
-						</plx:callInstance>
-					</plx:callObject>
-					<plx:passParam>
-						<plx:nameRef name="parameterBlogLabel_Id" type="local" />
-					</plx:passParam>
-				</plx:callInstance>
 				<plx:try>
 					<plx:branch>
 						<plx:condition>
@@ -9439,9 +9131,6 @@
 						<plx:callNew dataTypeName="BlogLabelCore" type="new">
 							<plx:passParam>
 								<plx:thisKeyword />
-							</plx:passParam>
-							<plx:passParam>
-								<plx:nameRef name="BlogLabel_Id" type="parameter" />
 							</plx:passParam>
 						</plx:callNew>
 					</plx:return>
@@ -9586,32 +9275,10 @@
 			<plx:function name="CreateBlogLabel" visibility="private">
 				<plx:param name="reader" dataTypeName="IDataReader" />
 				<plx:returns dataTypeName="BlogLabel" />
-				<plx:local name="ordinalBlogLabel_Id" dataTypeName=".i4">
-					<plx:initialize>
-						<plx:callInstance name="GetOrdinal" type="methodCall">
-							<plx:callObject>
-								<plx:nameRef name="reader" type="parameter" />
-							</plx:callObject>
-							<plx:passParam>
-								<plx:string>BlogLabel_Id</plx:string>
-							</plx:passParam>
-						</plx:callInstance>
-					</plx:initialize>
-				</plx:local>
 				<plx:return>
 					<plx:callNew dataTypeName="BlogLabelCore">
 						<plx:passParam>
 							<plx:thisKeyword />
-						</plx:passParam>
-						<plx:passParam>
-							<plx:callInstance type="methodCall" name="GetInt32">
-								<plx:callObject>
-									<plx:nameRef name="reader" />
-								</plx:callObject>
-								<plx:passParam>
-									<plx:nameRef name="ordinalBlogLabel_Id" />
-								</plx:passParam>
-							</plx:callInstance>
 						</plx:passParam>
 					</plx:callNew>
 				</plx:return>
@@ -9642,21 +9309,12 @@
 				<plx:derivesFromClass dataTypeName="BlogLabel" />
 				<plx:function visibility="public" name=".construct">
 					<plx:param name="context" dataTypeName="BlogDemoContext" />
-					<plx:param name="BlogLabel_Id" dataTypeName=".i4" />
 					<plx:assign>
 						<plx:left>
 							<plx:callThis accessor="this" type="field" name="_Context" />
 						</plx:left>
 						<plx:right>
 							<plx:nameRef type="parameter" name="context" />
-						</plx:right>
-					</plx:assign>
-					<plx:assign>
-						<plx:left>
-							<plx:callThis accessor="this" type="field" name="_BlogLabel_Id" />
-						</plx:left>
-						<plx:right>
-							<plx:nameRef type="parameter" name="BlogLabel_Id" />
 						</plx:right>
 					</plx:assign>
 				</plx:function>
@@ -9668,250 +9326,6 @@
 							<plx:callThis accessor="this" type="field" name="_Context" />
 						</plx:return>
 					</plx:get>
-				</plx:property>
-				<plx:field visibility="private" readOnly="false" name="_BlogLabel_Id" dataTypeName=".i4" />
-				<plx:property visibility="public" modifier="override" name="BlogLabel_Id">
-					<plx:returns dataTypeName=".i4" />
-					<plx:get>
-						<plx:return>
-							<plx:callThis accessor="this" type="field" name="_BlogLabel_Id" />
-						</plx:return>
-					</plx:get>
-					<plx:set>
-						<plx:local name="oldValue" dataTypeName=".i4">
-							<plx:initialize>
-								<plx:callThis accessor="this" type="field" name="_BlogLabel_Id" />
-							</plx:initialize>
-						</plx:local>
-						<plx:branch>
-							<plx:condition>
-								<plx:binaryOperator type="inequality">
-									<plx:left>
-										<plx:nameRef type="local" name="oldValue" />
-									</plx:left>
-									<plx:right>
-										<plx:valueKeyword />
-									</plx:right>
-								</plx:binaryOperator>
-							</plx:condition>
-							<plx:branch>
-								<plx:condition>
-									<plx:callThis accessor="base" type="methodCall" name="OnBlogLabel_IdChanging">
-										<plx:passParam>
-											<plx:valueKeyword />
-										</plx:passParam>
-									</plx:callThis>
-								</plx:condition>
-								<plx:local name="command" dataTypeName="IDbCommand">
-									<plx:initialize>
-										<plx:callInstance type="methodCall" name="CreateCommand">
-											<plx:callObject>
-												<plx:callInstance type="methodCall" name="GetConnection">
-													<plx:callObject>
-														<plx:callThis type="property" accessor="this" name="Context" />
-													</plx:callObject>
-												</plx:callInstance>
-											</plx:callObject>
-										</plx:callInstance>
-									</plx:initialize>
-								</plx:local>
-								<plx:assign>
-									<plx:left>
-										<plx:callInstance type="property" name="CommandType">
-											<plx:callObject>
-												<plx:nameRef type="local" name="command" />
-											</plx:callObject>
-										</plx:callInstance>
-									</plx:left>
-									<plx:right>
-										<plx:callStatic type="field" name="Text" dataTypeName="CommandType" />
-									</plx:right>
-								</plx:assign>
-								<plx:assign>
-									<plx:left>
-										<plx:callInstance type="property" name="CommandText">
-											<plx:callObject>
-												<plx:nameRef type="local" name="command" />
-											</plx:callObject>
-										</plx:callInstance>
-									</plx:left>
-									<plx:right>
-										<plx:string>UPDATE BlogDemo.BlogLabel SET BlogLabel_Id = @NewBlogLabel_Id WHERE BlogLabel_Id = @BlogLabel_Id</plx:string>
-									</plx:right>
-								</plx:assign>
-								<plx:local name="parameterNewBlogLabel_Id" dataTypeName="IDataParameter">
-									<plx:initialize>
-										<plx:callInstance name="CreateParameter" type="methodCall">
-											<plx:callObject>
-												<plx:nameRef name="command" />
-											</plx:callObject>
-										</plx:callInstance>
-									</plx:initialize>
-								</plx:local>
-								<plx:assign>
-									<plx:left>
-										<plx:callInstance name="ParameterName" type="property">
-											<plx:callObject>
-												<plx:nameRef name="parameterNewBlogLabel_Id" />
-											</plx:callObject>
-										</plx:callInstance>
-									</plx:left>
-									<plx:right>
-										<plx:string>NewBlogLabel_Id</plx:string>
-									</plx:right>
-								</plx:assign>
-								<plx:assign>
-									<plx:left>
-										<plx:callInstance name="Value" type="property">
-											<plx:callObject>
-												<plx:nameRef name="parameterNewBlogLabel_Id" />
-											</plx:callObject>
-										</plx:callInstance>
-									</plx:left>
-									<plx:right>
-										<plx:valueKeyword />
-									</plx:right>
-								</plx:assign>
-								<plx:callInstance name="Add" type="methodCall">
-									<plx:callObject>
-										<plx:callInstance name="Parameters" type="property">
-											<plx:callObject>
-												<plx:nameRef name="command" />
-											</plx:callObject>
-										</plx:callInstance>
-									</plx:callObject>
-									<plx:passParam>
-										<plx:nameRef name="parameterNewBlogLabel_Id" type="local" />
-									</plx:passParam>
-								</plx:callInstance>
-								<plx:local name="parameterBlogLabel_Id" dataTypeName="IDataParameter">
-									<plx:initialize>
-										<plx:callInstance name="CreateParameter" type="methodCall">
-											<plx:callObject>
-												<plx:nameRef name="command" />
-											</plx:callObject>
-										</plx:callInstance>
-									</plx:initialize>
-								</plx:local>
-								<plx:assign>
-									<plx:left>
-										<plx:callInstance name="ParameterName" type="property">
-											<plx:callObject>
-												<plx:nameRef name="parameterBlogLabel_Id" />
-											</plx:callObject>
-										</plx:callInstance>
-									</plx:left>
-									<plx:right>
-										<plx:string>BlogLabel_Id</plx:string>
-									</plx:right>
-								</plx:assign>
-								<plx:assign>
-									<plx:left>
-										<plx:callInstance name="Value" type="property">
-											<plx:callObject>
-												<plx:nameRef name="parameterBlogLabel_Id" />
-											</plx:callObject>
-										</plx:callInstance>
-									</plx:left>
-									<plx:right>
-										<plx:callThis accessor="this" name="_BlogLabel_Id" type="property" />
-									</plx:right>
-								</plx:assign>
-								<plx:callInstance name="Add" type="methodCall">
-									<plx:callObject>
-										<plx:callInstance name="Parameters" type="property">
-											<plx:callObject>
-												<plx:nameRef name="command" />
-											</plx:callObject>
-										</plx:callInstance>
-									</plx:callObject>
-									<plx:passParam>
-										<plx:nameRef name="parameterBlogLabel_Id" type="local" />
-									</plx:passParam>
-								</plx:callInstance>
-								<plx:branch>
-									<plx:condition>
-										<plx:binaryOperator type="inequality">
-											<plx:left>
-												<plx:callInstance name="State" type="property">
-													<plx:callObject>
-														<plx:callInstance name="Connection" type="property">
-															<plx:callObject>
-																<plx:nameRef name="command" type="local" />
-															</plx:callObject>
-														</plx:callInstance>
-													</plx:callObject>
-												</plx:callInstance>
-											</plx:left>
-											<plx:right>
-												<plx:callStatic name="Open" dataTypeName="ConnectionState" type="property" />
-											</plx:right>
-										</plx:binaryOperator>
-									</plx:condition>
-									<plx:callInstance name="Open" type="methodCall">
-										<plx:callObject>
-											<plx:callInstance name="Connection" type="property">
-												<plx:callObject>
-													<plx:nameRef name="command" type="local" />
-												</plx:callObject>
-											</plx:callInstance>
-										</plx:callObject>
-									</plx:callInstance>
-								</plx:branch>
-								<plx:try>
-									<plx:callInstance type="methodCall" name="ExecuteNonQuery">
-										<plx:callObject>
-											<plx:nameRef type="local" name="command" />
-										</plx:callObject>
-									</plx:callInstance>
-									<plx:assign>
-										<plx:left>
-											<plx:callThis accessor="this" type="field" name="_BlogLabel_Id" />
-										</plx:left>
-										<plx:right>
-											<plx:valueKeyword />
-										</plx:right>
-									</plx:assign>
-									<plx:finally>
-										<plx:branch>
-											<plx:condition>
-												<plx:binaryOperator type="equality">
-													<plx:left>
-														<plx:callInstance name="State" type="property">
-															<plx:callObject>
-																<plx:callInstance name="Connection" type="property">
-																	<plx:callObject>
-																		<plx:nameRef name="command" type="local" />
-																	</plx:callObject>
-																</plx:callInstance>
-															</plx:callObject>
-														</plx:callInstance>
-													</plx:left>
-													<plx:right>
-														<plx:callStatic name="Open" dataTypeName="ConnectionState" type="field" />
-													</plx:right>
-												</plx:binaryOperator>
-											</plx:condition>
-											<plx:callInstance name="Close" type="methodCall">
-												<plx:callObject>
-													<plx:callInstance name="Connection" type="property">
-														<plx:callObject>
-															<plx:nameRef name="command" type="local" />
-														</plx:callObject>
-													</plx:callInstance>
-												</plx:callObject>
-											</plx:callInstance>
-										</plx:branch>
-										<plx:callInstance name="Dispose" type="methodCall">
-											<plx:callObject>
-												<plx:nameRef name="command" type="local" />
-											</plx:callObject>
-										</plx:callInstance>
-									</plx:finally>
-								</plx:try>
-							</plx:branch>
-						</plx:branch>
-					</plx:set>
 				</plx:property>
 				<plx:field visibility="private" readOnly="false" name="_title" dataTypeName=".string" />
 				<plx:property visibility="public" modifier="override" name="title">
@@ -9982,7 +9396,7 @@
 										</plx:callInstance>
 									</plx:left>
 									<plx:right>
-										<plx:string>UPDATE BlogDemo.BlogLabel SET title = @Newtitle WHERE BlogLabel_Id = @BlogLabel_Id</plx:string>
+										<plx:string>UPDATE BlogDemo.BlogLabel SET title = @Newtitle WHERE </plx:string>
 									</plx:right>
 								</plx:assign>
 								<plx:local name="parameterNewtitle" dataTypeName="IDataParameter">
@@ -10028,51 +9442,6 @@
 									</plx:callObject>
 									<plx:passParam>
 										<plx:nameRef name="parameterNewtitle" type="local" />
-									</plx:passParam>
-								</plx:callInstance>
-								<plx:local name="parameterBlogLabel_Id" dataTypeName="IDataParameter">
-									<plx:initialize>
-										<plx:callInstance name="CreateParameter" type="methodCall">
-											<plx:callObject>
-												<plx:nameRef name="command" />
-											</plx:callObject>
-										</plx:callInstance>
-									</plx:initialize>
-								</plx:local>
-								<plx:assign>
-									<plx:left>
-										<plx:callInstance name="ParameterName" type="property">
-											<plx:callObject>
-												<plx:nameRef name="parameterBlogLabel_Id" />
-											</plx:callObject>
-										</plx:callInstance>
-									</plx:left>
-									<plx:right>
-										<plx:string>BlogLabel_Id</plx:string>
-									</plx:right>
-								</plx:assign>
-								<plx:assign>
-									<plx:left>
-										<plx:callInstance name="Value" type="property">
-											<plx:callObject>
-												<plx:nameRef name="parameterBlogLabel_Id" />
-											</plx:callObject>
-										</plx:callInstance>
-									</plx:left>
-									<plx:right>
-										<plx:callThis accessor="this" name="_BlogLabel_Id" type="property" />
-									</plx:right>
-								</plx:assign>
-								<plx:callInstance name="Add" type="methodCall">
-									<plx:callObject>
-										<plx:callInstance name="Parameters" type="property">
-											<plx:callObject>
-												<plx:nameRef name="command" />
-											</plx:callObject>
-										</plx:callInstance>
-									</plx:callObject>
-									<plx:passParam>
-										<plx:nameRef name="parameterBlogLabel_Id" type="local" />
 									</plx:passParam>
 								</plx:callInstance>
 								<plx:branch>

@@ -206,11 +206,11 @@ namespace Neumont.Tools.Modeling.Shell.DynamicSurveyTreeGrid
 						ICustomComparableSurveyNode customCompare = element1 as ICustomComparableSurveyNode;
 						if (customCompare != null)
 						{
-							retVal = customCompare.CompareToSurveyNode(element2);
+							retVal = customCompare.CompareToSurveyNode(element2, node1.CustomSortData, node2.CustomSortData);
 						}
 						if (retVal == 0 && null != (customCompare = element2 as ICustomComparableSurveyNode))
 						{
-							retVal = -customCompare.CompareToSurveyNode(element1);
+							retVal = -customCompare.CompareToSurveyNode(element1, node2.CustomSortData, node1.CustomSortData);
 						}
 						if (retVal == 0)
 						{
@@ -787,45 +787,70 @@ namespace Neumont.Tools.Modeling.Shell.DynamicSurveyTreeGrid
 				{
 					return;
 				}
-				object element = node.Element;
-				SampleDataElementNode newNode = new SampleDataElementNode(element, node.NodeData);
-				int toIndex = myNodes.BinarySearch(newNode, myNodeComparer);
+				UpdateNode(fromIndex, new SampleDataElementNode(node.Element, node.NodeData, null, node.CustomSortData), true);
+			}
+			/// <summary>
+			/// Forwarded from <see cref="INotifySurveyElementChanged.ElementCustomSortChanged"/>
+			/// </summary>
+			public void NodeCustomSortChanged(SampleDataElementNode node)
+			{
+				int fromIndex;
+				if (0 > (fromIndex = myNodes.BinarySearch(node, myNodeComparer)))
+				{
+					return;
+				}
+				ICustomComparableSurveyNode customCompare = node.Element as ICustomComparableSurveyNode;
+				if (customCompare == null)
+				{
+					return;
+				}
+				object customSortData = node.CustomSortData;
+				if (!customCompare.ResetCustomSortData(ref customSortData))
+				{
+					return;
+				}
+				Debug.Assert(!object.ReferenceEquals(customSortData, node.CustomSortData), "ICustomComparableSurveyNode.ResetCustomSortData should return a new instance, or false");
+				UpdateNode(fromIndex, new SampleDataElementNode(node.Element, node.NodeData, node.SurveyName, customSortData), false);
+			}
+			private void UpdateNode(int nodeIndex, SampleDataElementNode replacementNode, bool displayChanged)
+			{
+				int toIndex = myNodes.BinarySearch(replacementNode, myNodeComparer);
 				int inverseToIndex = ~toIndex;
 				BranchModificationEventHandler modificationEvents = myModificationEvents;
-				if (fromIndex == toIndex || (inverseToIndex >= 0 && (inverseToIndex == fromIndex || (inverseToIndex - fromIndex) == 1)))
+				if (nodeIndex == toIndex || (inverseToIndex >= 0 && (inverseToIndex == nodeIndex || (inverseToIndex - nodeIndex) == 1)))
 				{
-					myNodes[fromIndex] = newNode;
-					mySurveyTree.myNodeDictionary[element] = new NodeLocation(this, newNode);
+					myNodes[nodeIndex] = replacementNode;
+					mySurveyTree.myNodeDictionary[replacementNode.Element] = new NodeLocation(this, replacementNode);
 					if (myRootGrouper != null)
 					{
-						myRootGrouper.ElementRenamedAt(fromIndex, fromIndex, modificationEvents);
+						myRootGrouper.ElementModifiedAt(nodeIndex, nodeIndex, displayChanged, modificationEvents);
 					}
-					else if (modificationEvents != null)
+					else if (displayChanged && modificationEvents != null)
 					{
-						modificationEvents(this, BranchModificationEventArgs.DisplayDataChanged(new DisplayDataChangedData(VirtualTreeDisplayDataChanges.Text, this, fromIndex, 0, 1)));
+						modificationEvents(this, BranchModificationEventArgs.DisplayDataChanged(new DisplayDataChangedData(VirtualTreeDisplayDataChanges.Text, this, nodeIndex, 0, 1)));
 					}
 				}
 				else if (inverseToIndex >= 0)
 				{
-					myNodes.RemoveAt(fromIndex);
-					if (inverseToIndex > fromIndex)
+					myNodes.RemoveAt(nodeIndex);
+					if (inverseToIndex > nodeIndex)
 					{
 						--inverseToIndex;
 					}
-					myNodes.Insert(inverseToIndex, newNode);
-					mySurveyTree.myNodeDictionary[element] = new NodeLocation(this, newNode);
+					myNodes.Insert(inverseToIndex, replacementNode);
+					mySurveyTree.myNodeDictionary[replacementNode.Element] = new NodeLocation(this, replacementNode);
 					if (myRootGrouper != null)
 					{
-						myRootGrouper.ElementRenamedAt(fromIndex, inverseToIndex, modificationEvents);
+						myRootGrouper.ElementModifiedAt(nodeIndex, inverseToIndex, displayChanged, modificationEvents);
 					}
 					else if (modificationEvents != null)
 					{
-						modificationEvents(this, BranchModificationEventArgs.MoveItem(this, fromIndex, inverseToIndex));
+						modificationEvents(this, BranchModificationEventArgs.MoveItem(this, nodeIndex, inverseToIndex));
 					}
 				}
 				else
 				{
-					Debug.Assert(false);
+					Debug.Assert(false); // Replacement element can't be placed in or found in the list
 				}
 			}
 			#endregion //INotifySurveyElementChanged Implementation

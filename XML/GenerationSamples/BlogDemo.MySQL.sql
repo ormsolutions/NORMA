@@ -1,43 +1,43 @@
 ﻿CREATE TABLE BlogEntry
 (
-	BlogEntry_Id INTEGER NOT NULL,
-	EntryTitle VARCHAR(30)  NOT NULL,
-	EntryBody TEXT()  NOT NULL,
-	PostedDate TIMESTAMP NOT NULL,
-	UserIdName2 VARCHAR(30)  NOT NULL,
-	UserIdName1 VARCHAR(30)  NOT NULL,
-	BlogCommentParentEntryId INTEGER,
-	CONSTRAINT InternalUniquenessConstraint1 PRIMARY KEY(BlogEntry_Id)
+	blogEntry_Id INT NOT NULL,
+	entryTitle VARCHAR(30) NOT NULL,
+	entryBody TEXT() NOT NULL,
+	postedDate TIMESTAMP NOT NULL,
+	userIdName2 VARCHAR(30) NOT NULL,
+	userIdName1 VARCHAR(30) NOT NULL,
+	blogCommentParentEntryId INT,
+	CONSTRAINT InternalUniquenessConstraint1 PRIMARY KEY(blogEntry_Id)
 );
 
 CREATE TABLE `User`
 (
-	Name1 VARCHAR(30)  NOT NULL,
-	Name2 VARCHAR(30)  NOT NULL,
-	Username VARCHAR(30)  NOT NULL,
-	Password CHAR(32)  NOT NULL,
-	CONSTRAINT ExternalUniquenessConstraint1 PRIMARY KEY(Name1, Name2)
+	name1 VARCHAR(30) NOT NULL,
+	name2 VARCHAR(30) NOT NULL,
+	username VARCHAR(30) NOT NULL,
+	password CHAR(32) NOT NULL,
+	CONSTRAINT ExternalUniquenessConstraint1 PRIMARY KEY(name1, name2)
 );
 
 CREATE TABLE BlogLabel
 (
-	BlogLabel_Id INTEGERAUTO_INCREMENT  NOT NULL, 
-	Title TEXT() ,
-	CONSTRAINT InternalUniquenessConstraint18 PRIMARY KEY(BlogLabel_Id)
+	blogLabel_Id INT AUTO_INCREMENT NOT NULL,
+	title TEXT(),
+	CONSTRAINT InternalUniquenessConstraint18 PRIMARY KEY(blogLabel_Id)
 );
 
 CREATE TABLE BlogEntryLabel
 (
-	BlogEntryId INTEGER NOT NULL,
-	BlogLabelId INTEGER NOT NULL,
-	CONSTRAINT InternalUniquenessConstraint20 PRIMARY KEY(BlogEntryId, BlogLabelId)
+	blogEntryId INT NOT NULL,
+	blogLabelId INT NOT NULL,
+	CONSTRAINT InternalUniquenessConstraint20 PRIMARY KEY(blogEntryId, blogLabelId)
 );
 
-ALTER TABLE BlogEntry ADD CONSTRAINT BlogEntry_FK1 FOREIGN KEY (UserIdName2, UserIdName1)  REFERENCES `User` (Name1, Name2)  ON DELETE RESTRICT ON UPDATE RESTRICT;
+ALTER TABLE BlogEntry ADD CONSTRAINT BlogEntry_FK1 FOREIGN KEY (userIdName2, userIdName1)  REFERENCES `User` (name1, name2)  ON DELETE RESTRICT ON UPDATE RESTRICT;
 
-ALTER TABLE BlogEntry ADD CONSTRAINT BlogEntry_FK2 FOREIGN KEY (BlogCommentParentEntryId)  REFERENCES BlogEntry (BlogEntry_Id)  ON DELETE RESTRICT ON UPDATE RESTRICT;
+ALTER TABLE BlogEntry ADD CONSTRAINT BlogEntry_FK2 FOREIGN KEY (blogCommentParentEntryId)  REFERENCES BlogEntry (blogEntry_Id)  ON DELETE RESTRICT ON UPDATE RESTRICT;
 
-ALTER TABLE BlogEntryLabel ADD CONSTRAINT BlogEntryLabel_FK1 FOREIGN KEY (BlogEntryId)  REFERENCES BlogEntry (BlogEntry_Id)  ON DELETE RESTRICT ON UPDATE RESTRICT;
+ALTER TABLE BlogEntryLabel ADD CONSTRAINT BlogEntryLabel_FK1 FOREIGN KEY (blogEntryId)  REFERENCES BlogEntry (blogEntry_Id)  ON DELETE RESTRICT ON UPDATE RESTRICT;
 
-ALTER TABLE BlogEntryLabel ADD CONSTRAINT BlogEntryLabel_FK2 FOREIGN KEY (BlogLabelId)  REFERENCES BlogLabel (BlogLabel_Id)  ON DELETE RESTRICT ON UPDATE RESTRICT;
+ALTER TABLE BlogEntryLabel ADD CONSTRAINT BlogEntryLabel_FK2 FOREIGN KEY (blogLabelId)  REFERENCES BlogLabel (blogLabel_Id)  ON DELETE RESTRICT ON UPDATE RESTRICT;
 

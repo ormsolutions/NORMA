@@ -7,7 +7,7 @@ class BlogEntryLabel_blogEntryId_BlogEntry_Proxy {
 		$this->ref = $ref;
 	}
 	public function get() {
-		if (!(isset($this->value))) {
+		if (!isset($this->value)) {
 			$this->value = BlogEntryLabelDAO::getInstance()->getSingle($this->ref->getBlogEntry_Id());
 		}
 		return $this->value;
@@ -21,7 +21,7 @@ class BlogEntryLabel_blogLabelId_BlogLabel_Proxy {
 		$this->ref = $ref;
 	}
 	public function get() {
-		if (!(isset($this->value))) {
+		if (!isset($this->value)) {
 			$this->value = BlogEntryLabelDAO::getInstance()->getSingle($this->ref->getBlogLabel_Id());
 		}
 		return $this->value;
@@ -35,7 +35,7 @@ class BlogEntry_userId_User_Proxy {
 		$this->ref = $ref;
 	}
 	public function get() {
-		if (!(isset($this->value))) {
+		if (!isset($this->value)) {
 			$this->value = BlogEntryDAO::getInstance()->getSingle($this->ref->getfirstName(), $this->ref->getlastName());
 		}
 		return $this->value;
@@ -49,7 +49,7 @@ class BlogEntry_blogEntryId_BlogEntryLabel_Proxy {
 		$this->ref = $ref;
 	}
 	public function get() {
-		if (!(isset($this->value))) {
+		if (!isset($this->value)) {
 			$this->value = BlogEntryDAO::getInstance()->get_BlogEntryLabel_Collection_By_blogEntryId($this->ref->getBlogEntry_Id());
 		}
 		return $this->value;
@@ -63,7 +63,7 @@ class BlogComment_parentEntryId_NonCommentEntry_Proxy {
 		$this->ref = $ref;
 	}
 	public function get() {
-		if (!(isset($this->value))) {
+		if (!isset($this->value)) {
 			$this->value = BlogCommentDAO::getInstance()->getSingle($this->ref->getBlogEntry_Id());
 		}
 		return $this->value;
@@ -77,7 +77,7 @@ class NonCommentEntry_parentEntryId_BlogComment_Proxy {
 		$this->ref = $ref;
 	}
 	public function get() {
-		if (!(isset($this->value))) {
+		if (!isset($this->value)) {
 			$this->value = NonCommentEntryDAO::getInstance()->get_BlogComment_Collection_By_parentEntryId($this->ref->getBlogEntry_Id());
 		}
 		return $this->value;
@@ -91,7 +91,7 @@ class User_userId_BlogEntry_Proxy {
 		$this->ref = $ref;
 	}
 	public function get() {
-		if (!(isset($this->value))) {
+		if (!isset($this->value)) {
 			$this->value = UserDAO::getInstance()->get_BlogEntry_Collection_By_userId($this->ref->getfirstName(), $this->ref->getlastName());
 		}
 		return $this->value;
@@ -105,7 +105,7 @@ class BlogLabel_blogLabelId_BlogEntryLabel_Proxy {
 		$this->ref = $ref;
 	}
 	public function get() {
-		if (!(isset($this->value))) {
+		if (!isset($this->value)) {
 			$this->value = BlogLabelDAO::getInstance()->get_BlogEntryLabel_Collection_By_blogLabelId($this->ref->getBlogLabel_Id());
 		}
 		return $this->value;

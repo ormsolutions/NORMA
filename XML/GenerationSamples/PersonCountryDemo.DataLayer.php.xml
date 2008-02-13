@@ -1,7 +1,7 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
 <plx:root xmlns:plx="http://schemas.neumont.edu/CodeGeneration/PLiX" xmlns:prop="urn:schemas-orm-net:PLiX:CLI:Properties" xmlns:xs="http://www.w3.org/2001/XMLSchema">
 	<plx:namespace name="PHP">
-		<plx:class partial="true" modifier="static" name="DataAccess">
+		<plx:class visibility="public" partial="true" modifier="static" name="DataAccess">
 			<plx:field dataTypeIsSimpleArray="true" static="true" name="params">
 				<plx:initialize>
 					<plx:nullKeyword />
@@ -9,7 +9,9 @@
 			</plx:field>
 			<plx:function modifier="static" name="getDataAdapter" visibility="public">
 				<plx:leadingInfo>
-					<plx:docComment>Gets the appropriate data adapter for the current database configuration</plx:docComment>
+					<plx:docComment>
+						<summary>Gets the appropriate data adapter for the current database configuration</summary>
+					</plx:docComment>
 				</plx:leadingInfo>
 				<plx:returns dataTypeName="Zend_Db_Adapter" />
 				<plx:return>
@@ -25,7 +27,9 @@
 			</plx:function>
 			<plx:property modifier="static" name="" visibility="private">
 				<plx:leadingInfo>
-					<plx:docComment>Gets the current database configuration</plx:docComment>
+					<plx:docComment>
+						<summary>Gets the current database configuration</summary>
+					</plx:docComment>
 				</plx:leadingInfo>
 				<plx:returns dataTypeIsSimpleArray="true" />
 				<plx:get>
@@ -116,7 +120,9 @@
 			</plx:property>
 			<plx:property modifier="static" name="pdoType" visibility="private">
 				<plx:leadingInfo>
-					<plx:docComment>Gets the current PDO string</plx:docComment>
+					<plx:docComment>
+						<summary>Gets the current PDO string</summary>
+					</plx:docComment>
 				</plx:leadingInfo>
 				<plx:returns dataTypeName=".string" />
 				<plx:get>
@@ -150,7 +156,9 @@
 			<plx:field dataTypeName="PersonDao" static="true" name="instance" visibility="private" />
 			<plx:function name=".construct" visibility="public">
 				<plx:leadingInfo>
-					<plx:docComment>Instantiates a new instance of PersonDao</plx:docComment>
+					<plx:docComment>
+						<summary>Instantiates a new instance of PersonDao</summary>
+					</plx:docComment>
 				</plx:leadingInfo>
 			</plx:function>
 			<plx:property name="Instance" modifier="static" visibility="public">
@@ -182,7 +190,9 @@
 			</plx:property>
 			<plx:function name="getAll" visibility="public">
 				<plx:leadingInfo>
-					<plx:docComment>Retrieves the entire collection of Person objects</plx:docComment>
+					<plx:docComment>
+						<summary>Retrieves the entire collection of Person objects</summary>
+					</plx:docComment>
 				</plx:leadingInfo>
 				<plx:returns dataTypeIsSimpleArray="true" />
 				<plx:try>
@@ -370,7 +380,9 @@
 			</plx:function>
 			<plx:function name="getSingle" visibility="public">
 				<plx:leadingInfo>
-					<plx:docComment>Retrieves the specified Personobject from the database</plx:docComment>
+					<plx:docComment>
+						<summary>Retrieves the specified Personobject from the database</summary>
+					</plx:docComment>
 				</plx:leadingInfo>
 				<plx:param name="Person_id" dataTypeName=".i4" />
 				<plx:returns dataTypeName="Person" />
@@ -524,7 +536,9 @@
 			</plx:function>
 			<plx:function name="insert" visibility="public">
 				<plx:leadingInfo>
-					<plx:docComment>Inserts the given Person object into the database</plx:docComment>
+					<plx:docComment>
+						<summary>Inserts the given Person object into the database</summary>
+					</plx:docComment>
 				</plx:leadingInfo>
 				<plx:param dataTypeName="Person" name="Person" />
 				<plx:returns dataTypeName=".boolean" />
@@ -662,7 +676,9 @@
 			</plx:function>
 			<plx:function name="update" visibility="public">
 				<plx:leadingInfo>
-					<plx:docComment>Updates the given Person object in the database</plx:docComment>
+					<plx:docComment>
+						<summary>Updates the given Person object in the database</summary>
+					</plx:docComment>
 				</plx:leadingInfo>
 				<plx:param dataTypeName="Person" name="Person" />
 				<plx:returns dataTypeName=".boolean" />
@@ -824,7 +840,9 @@
 			</plx:function>
 			<plx:function name="delete" visibility="public">
 				<plx:leadingInfo>
-					<plx:docComment>Deletes the given Person object from the database</plx:docComment>
+					<plx:docComment>
+						<summary>Deletes the given Person object from the database</summary>
+					</plx:docComment>
 				</plx:leadingInfo>
 				<plx:param dataTypeName="Person" name="Person" />
 				<plx:returns dataTypeName=".boolean" />
@@ -886,7 +904,9 @@
 			<plx:field dataTypeName="CountryDao" static="true" name="instance" visibility="private" />
 			<plx:function name=".construct" visibility="public">
 				<plx:leadingInfo>
-					<plx:docComment>Instantiates a new instance of CountryDao</plx:docComment>
+					<plx:docComment>
+						<summary>Instantiates a new instance of CountryDao</summary>
+					</plx:docComment>
 				</plx:leadingInfo>
 			</plx:function>
 			<plx:property name="Instance" modifier="static" visibility="public">
@@ -918,7 +938,9 @@
 			</plx:property>
 			<plx:function name="getAll" visibility="public">
 				<plx:leadingInfo>
-					<plx:docComment>Retrieves the entire collection of Country objects</plx:docComment>
+					<plx:docComment>
+						<summary>Retrieves the entire collection of Country objects</summary>
+					</plx:docComment>
 				</plx:leadingInfo>
 				<plx:returns dataTypeIsSimpleArray="true" />
 				<plx:try>
@@ -1049,7 +1071,9 @@
 			</plx:function>
 			<plx:function name="getSingle" visibility="public">
 				<plx:leadingInfo>
-					<plx:docComment>Retrieves the specified Countryobject from the database</plx:docComment>
+					<plx:docComment>
+						<summary>Retrieves the specified Countryobject from the database</summary>
+					</plx:docComment>
 				</plx:leadingInfo>
 				<plx:param name="Country_name" dataTypeName=".string" />
 				<plx:returns dataTypeName="Country" />
@@ -1146,7 +1170,9 @@
 			</plx:function>
 			<plx:function name="insert" visibility="public">
 				<plx:leadingInfo>
-					<plx:docComment>Inserts the given Country object into the database</plx:docComment>
+					<plx:docComment>
+						<summary>Inserts the given Country object into the database</summary>
+					</plx:docComment>
 				</plx:leadingInfo>
 				<plx:param dataTypeName="Country" name="Country" />
 				<plx:returns dataTypeName=".boolean" />
@@ -1227,7 +1253,9 @@
 			</plx:function>
 			<plx:function name="update" visibility="public">
 				<plx:leadingInfo>
-					<plx:docComment>Updates the given Country object in the database</plx:docComment>
+					<plx:docComment>
+						<summary>Updates the given Country object in the database</summary>
+					</plx:docComment>
 				</plx:leadingInfo>
 				<plx:param dataTypeName="Country" name="Country" />
 				<plx:returns dataTypeName=".boolean" />
@@ -1332,7 +1360,9 @@
 			</plx:function>
 			<plx:function name="delete" visibility="public">
 				<plx:leadingInfo>
-					<plx:docComment>Deletes the given Country object from the database</plx:docComment>
+					<plx:docComment>
+						<summary>Deletes the given Country object from the database</summary>
+					</plx:docComment>
 				</plx:leadingInfo>
 				<plx:param dataTypeName="Country" name="Country" />
 				<plx:returns dataTypeName=".boolean" />

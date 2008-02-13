@@ -1,9 +1,7 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
 <prop:AllProperties xmlns:prop="urn:schemas-orm-net:PLiX:CLI:Properties" xmlns:plx="http://schemas.neumont.edu/CodeGeneration/PLiX">
 	<prop:Properties conceptTypeName="Person">
-		<prop:Property name="Person_id" mandatory="alethic" isUnique="true" canBeNull="false" isCollection="false" isCustomType="false">
-			<prop:DataType dataTypeName=".i4" />
-		</prop:Property>
+		<prop:IdentityField name="Person_id" />
 		<prop:Property name="LastName" mandatory="alethic" isUnique="false" canBeNull="true" isCollection="false" isCustomType="false">
 			<prop:DataType dataTypeName=".string" />
 		</prop:Property>

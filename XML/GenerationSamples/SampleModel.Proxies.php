@@ -7,7 +7,7 @@ class PersonDrivesCar_DrivenByPerson_Person_Proxy {
 		$this->ref = $ref;
 	}
 	public function get() {
-		if (!(isset($this->value))) {
+		if (!isset($this->value)) {
 			$this->value = PersonDrivesCarDAO::getInstance()->getSingle($this->ref->getPerson_id());
 		}
 		return $this->value;
@@ -21,7 +21,7 @@ class PersonHasNickName_Person_Person_Proxy {
 		$this->ref = $ref;
 	}
 	public function get() {
-		if (!(isset($this->value))) {
+		if (!isset($this->value)) {
 			$this->value = PersonHasNickNameDAO::getInstance()->getSingle($this->ref->getPerson_id());
 		}
 		return $this->value;
@@ -35,7 +35,7 @@ class Wife_Husband_Person_Proxy {
 		$this->ref = $ref;
 	}
 	public function get() {
-		if (!(isset($this->value))) {
+		if (!isset($this->value)) {
 			$this->value = PersonDAO::getInstance()->getSingle($this->ref->getPerson_id());
 		}
 		return $this->value;
@@ -49,7 +49,7 @@ class DoesSomethingElseWithPerson_ValueType1DoesSomethingElseWith_ValueType1_Pro
 		$this->ref = $ref;
 	}
 	public function get() {
-		if (!(isset($this->value))) {
+		if (!isset($this->value)) {
 			$this->value = PersonDAO::getInstance()->getSingle($this->ref->getValueType1Value());
 		}
 		return $this->value;
@@ -63,7 +63,7 @@ class Person_DrivenByPerson_PersonDrivesCar_Proxy {
 		$this->ref = $ref;
 	}
 	public function get() {
-		if (!(isset($this->value))) {
+		if (!isset($this->value)) {
 			$this->value = PersonDAO::getInstance()->get_PersonDrivesCar_Collection_By_DrivenByPerson($this->ref->getPerson_id());
 		}
 		return $this->value;
@@ -77,7 +77,7 @@ class Person_Person_PersonHasNickName_Proxy {
 		$this->ref = $ref;
 	}
 	public function get() {
-		if (!(isset($this->value))) {
+		if (!isset($this->value)) {
 			$this->value = PersonDAO::getInstance()->get_PersonHasNickName_Collection_By_Person($this->ref->getPerson_id());
 		}
 		return $this->value;
@@ -91,7 +91,7 @@ class Person_Husband_Wife_Proxy {
 		$this->ref = $ref;
 	}
 	public function get() {
-		if (!(isset($this->value))) {
+		if (!isset($this->value)) {
 			$this->value = PersonDAO::getInstance()->get_Wife_Collection_By_Husband($this->ref->getPerson_id());
 		}
 		return $this->value;
@@ -105,7 +105,7 @@ class Person_Person_Task_Proxy {
 		$this->ref = $ref;
 	}
 	public function get() {
-		if (!(isset($this->value))) {
+		if (!isset($this->value)) {
 			$this->value = PersonDAO::getInstance()->get_Task_Collection_By_Person($this->ref->getPerson_id());
 		}
 		return $this->value;
@@ -119,7 +119,7 @@ class Person_DoesSomethingWithPerson_ValueType1DoesSomethingWith_Proxy {
 		$this->ref = $ref;
 	}
 	public function get() {
-		if (!(isset($this->value))) {
+		if (!isset($this->value)) {
 			$this->value = PersonDAO::getInstance()->get_ValueType1DoesSomethingWith_Collection_By_DoesSomethingWithPerson($this->ref->getPerson_id());
 		}
 		return $this->value;
@@ -133,7 +133,7 @@ class Person_Buyer_PersonBoughtCarFromPersonOnDate_Proxy {
 		$this->ref = $ref;
 	}
 	public function get() {
-		if (!(isset($this->value))) {
+		if (!isset($this->value)) {
 			$this->value = PersonDAO::getInstance()->get_PersonBoughtCarFromPersonOnDate_Collection_By_Buyer($this->ref->getPerson_id());
 		}
 		return $this->value;
@@ -147,7 +147,7 @@ class Person_Seller_PersonBoughtCarFromPersonOnDate_Proxy {
 		$this->ref = $ref;
 	}
 	public function get() {
-		if (!(isset($this->value))) {
+		if (!isset($this->value)) {
 			$this->value = PersonDAO::getInstance()->get_PersonBoughtCarFromPersonOnDate_Collection_By_Seller($this->ref->getPerson_id());
 		}
 		return $this->value;
@@ -161,7 +161,7 @@ class MalePerson_Father_ChildPerson_Proxy {
 		$this->ref = $ref;
 	}
 	public function get() {
-		if (!(isset($this->value))) {
+		if (!isset($this->value)) {
 			$this->value = MalePersonDAO::getInstance()->get_ChildPerson_Collection_By_Father($this->ref->getPerson_id());
 		}
 		return $this->value;
@@ -175,7 +175,7 @@ class FemalePerson_Mother_ChildPerson_Proxy {
 		$this->ref = $ref;
 	}
 	public function get() {
-		if (!(isset($this->value))) {
+		if (!isset($this->value)) {
 			$this->value = FemalePersonDAO::getInstance()->get_ChildPerson_Collection_By_Mother($this->ref->getPerson_id());
 		}
 		return $this->value;
@@ -189,7 +189,7 @@ class ChildPerson_Father_MalePerson_Proxy {
 		$this->ref = $ref;
 	}
 	public function get() {
-		if (!(isset($this->value))) {
+		if (!isset($this->value)) {
 			$this->value = ChildPersonDAO::getInstance()->getSingle($this->ref->getPerson_id());
 		}
 		return $this->value;
@@ -203,7 +203,7 @@ class ChildPerson_Mother_FemalePerson_Proxy {
 		$this->ref = $ref;
 	}
 	public function get() {
-		if (!(isset($this->value))) {
+		if (!isset($this->value)) {
 			$this->value = ChildPersonDAO::getInstance()->getSingle($this->ref->getPerson_id());
 		}
 		return $this->value;
@@ -217,7 +217,7 @@ class Task_Person_Person_Proxy {
 		$this->ref = $ref;
 	}
 	public function get() {
-		if (!(isset($this->value))) {
+		if (!isset($this->value)) {
 			$this->value = TaskDAO::getInstance()->getSingle($this->ref->getPerson_id());
 		}
 		return $this->value;
@@ -231,7 +231,7 @@ class ValueType1DoesSomethingWith_DoesSomethingWithPerson_Person_Proxy {
 		$this->ref = $ref;
 	}
 	public function get() {
-		if (!(isset($this->value))) {
+		if (!isset($this->value)) {
 			$this->value = ValueType1DAO::getInstance()->getSingle($this->ref->getPerson_id());
 		}
 		return $this->value;
@@ -245,7 +245,7 @@ class ValueType1_ValueType1DoesSomethingElseWith_DoesSomethingElseWithPerson_Pro
 		$this->ref = $ref;
 	}
 	public function get() {
-		if (!(isset($this->value))) {
+		if (!isset($this->value)) {
 			$this->value = ValueType1DAO::getInstance()->get_DoesSomethingElseWithPerson_Collection_By_ValueType1DoesSomethingElseWith($this->ref->getValueType1Value());
 		}
 		return $this->value;
@@ -259,7 +259,7 @@ class PersonBoughtCarFromPersonOnDate_Buyer_Person_Proxy {
 		$this->ref = $ref;
 	}
 	public function get() {
-		if (!(isset($this->value))) {
+		if (!isset($this->value)) {
 			$this->value = PersonBoughtCarFromPersonOnDateDAO::getInstance()->getSingle($this->ref->getPerson_id());
 		}
 		return $this->value;
@@ -273,7 +273,7 @@ class PersonBoughtCarFromPersonOnDate_Seller_Person_Proxy {
 		$this->ref = $ref;
 	}
 	public function get() {
-		if (!(isset($this->value))) {
+		if (!isset($this->value)) {
 			$this->value = PersonBoughtCarFromPersonOnDateDAO::getInstance()->getSingle($this->ref->getPerson_id());
 		}
 		return $this->value;

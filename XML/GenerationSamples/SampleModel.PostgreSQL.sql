@@ -1,4 +1,5 @@
-﻿START TRANSACTION ISOLATION LEVEL SERIALIZABLE, READ WRITE;
+﻿
+START TRANSACTION ISOLATION LEVEL SERIALIZABLE, READ WRITE;
 
 CREATE SCHEMA SampleModel;
 
@@ -16,118 +17,117 @@ CREATE DOMAIN SampleModel.MandatoryUniqueDecimal AS DECIMAL(9) CONSTRAINT ValueT
 
 CREATE TABLE SampleModel.Person
 (
-	Person_id SERIAL NOT NULL, 
-	FirstName CHARACTER VARYING(64) NOT NULL,
-	"Date" DATE NOT NULL,
-	LastName CHARACTER VARYING(64) NOT NULL,
-	MandatoryUniqueDecimal SampleModel.MandatoryUniqueDecimal NOT NULL,
-	MandatoryUniqueString CHARACTER(11) NOT NULL,
-	Gender_Code SampleModel.Gender_Code NOT NULL,
-	OptionalUniqueString CHARACTER(11),
-	OwnsCar SampleModel.vin,
-	OptionalUniqueDecimal DECIMAL(9),
-	Wife INTEGER,
-	ChildPerson SampleModel.BirthOrder_Nr,
-	ChildPersonFather INTEGER,
-	ChildPersonMother INTEGER,
-	WearsHatTypeColorARGB INTEGER,
-	WearsHatTypeStyle_Description CHARACTER VARYING(256),
-	HasParents BOOLEAN,
-	ValueType1DoesSomethingElseWith INTEGER,
-	CONSTRAINT InternalUniquenessConstraint2 PRIMARY KEY(Person_id),
-	CONSTRAINT ExternalUniquenessConstraint1 UNIQUE(FirstName, "Date"),
-	CONSTRAINT ExternalUniquenessConstraint2 UNIQUE("Date", LastName),
-	CONSTRAINT InternalUniquenessConstraint9 UNIQUE(OptionalUniqueString),
-	CONSTRAINT InternalUniquenessConstraint13 UNIQUE(Wife),
-	CONSTRAINT InternalUniquenessConstraint22 UNIQUE(OwnsCar),
-	CONSTRAINT InternalUniquenessConstraint65 UNIQUE(OptionalUniqueDecimal),
-	CONSTRAINT InternalUniquenessConstraint69 UNIQUE(MandatoryUniqueDecimal),
-	CONSTRAINT InternalUniquenessConstraint67 UNIQUE(MandatoryUniqueString),
-	CONSTRAINT InternalUniquenessConstraint49 UNIQUE(ChildPersonFather, ChildPerson, ChildPersonMother),
-	CONSTRAINT RoleValueConstraint2 CHECK (MandatoryUniqueDecimal BETWEEN 9000 AND 10000),
-	CONSTRAINT RoleValueConstraint1 CHECK (OptionalUniqueDecimal BETWEEN 100 AND 4000)
+	person_Id SERIAL NOT NULL,
+	firstName CHARACTER VARYING(64) NOT NULL,
+	"date" DATE NOT NULL,
+	lastName CHARACTER VARYING(64) NOT NULL,
+	mandatoryUniqueDecimal SampleModel.MandatoryUniqueDecimal NOT NULL,
+	mandatoryUniqueString CHARACTER(11) NOT NULL,
+	gender_Code SampleModel.Gender_Code NOT NULL,
+	optionalUniqueString CHARACTER(11),
+	ownsCar SampleModel.vin,
+	optionalUniqueDecimal DECIMAL(9),
+	wife INTEGER,
+	childPerson SampleModel.BirthOrder_Nr,
+	childPersonFather INTEGER,
+	childPersonMother INTEGER,
+	wearsHatTypePerson1 INTEGER,
+	wearsHatTypePerson2 CHARACTER VARYING(256),
+	hasParents BOOLEAN,
+	valueType1DoesSomethingElseWith INTEGER,
+	CONSTRAINT InternalUniquenessConstraint2 PRIMARY KEY(person_Id),
+	CONSTRAINT ExternalUniquenessConstraint1 UNIQUE(firstName, "date"),
+	CONSTRAINT ExternalUniquenessConstraint2 UNIQUE(lastName, "date"),
+	CONSTRAINT InternalUniquenessConstraint9 UNIQUE(optionalUniqueString),
+	CONSTRAINT InternalUniquenessConstraint13 UNIQUE(wife),
+	CONSTRAINT InternalUniquenessConstraint22 UNIQUE(ownsCar),
+	CONSTRAINT InternalUniquenessConstraint65 UNIQUE(optionalUniqueDecimal),
+	CONSTRAINT InternalUniquenessConstraint69 UNIQUE(mandatoryUniqueDecimal),
+	CONSTRAINT InternalUniquenessConstraint67 UNIQUE(mandatoryUniqueString),
+	CONSTRAINT InternalUniquenessConstraint49 UNIQUE(childPersonFather, childPerson, childPersonMother),
+	CONSTRAINT RoleValueConstraint2 CHECK (mandatoryUniqueDecimal BETWEEN 9000 AND 10000),
+	CONSTRAINT RoleValueConstraint1 CHECK (optionalUniqueDecimal BETWEEN 100 AND 4000)
 );
 
 CREATE TABLE SampleModel.Task
 (
-	Task_id SERIAL NOT NULL, 
-	Person_id INTEGER NOT NULL,
-	CONSTRAINT InternalUniquenessConstraint16 PRIMARY KEY(Task_id)
+	task_Id SERIAL NOT NULL,
+	person_Id INTEGER NOT NULL,
+	CONSTRAINT InternalUniquenessConstraint16 PRIMARY KEY(task_Id)
 );
 
 CREATE TABLE SampleModel.ValueType1
 (
-	ValueType1Value INTEGER NOT NULL,
-	DoesSomethingWithPerson INTEGER,
-	CONSTRAINT ValueType1Uniqueness PRIMARY KEY(ValueType1Value)
+	valueType1Value INTEGER NOT NULL,
+	doesSomethingWithPerson INTEGER,
+	CONSTRAINT ValueType1Uniqueness PRIMARY KEY(valueType1Value)
 );
 
 CREATE TABLE SampleModel.Death
 (
-	Person_id SERIAL NOT NULL, 
-	DeathCause SampleModel.DeathCause_Type NOT NULL,
-	IsDead BOOLEAN NOT NULL,
-	"Date" DATE,
-	NaturalDeathIsFromProstateCancer BOOLEAN,
-	UnnaturalDeathIsViolent BOOLEAN,
-	UnnaturalDeathIsBloody BOOLEAN,
-	CONSTRAINT "Constraint" PRIMARY KEY(Person_id)
+	isDeadPerson_Id INTEGER NOT NULL,
+	deathCause SampleModel.DeathCause_Type NOT NULL,
+	isDeadPersonisDead BOOLEAN NOT NULL,
+	"date" DATE,
+	naturalDeathIsFromProstateCancer BOOLEAN,
+	unnaturalDeathIsViolent BOOLEAN,
+	unnaturalDeathIsBloody BOOLEAN,
+	CONSTRAINT "Constraint" PRIMARY KEY(isDeadPerson_Id)
 );
 
 CREATE TABLE SampleModel.PersonDrivesCar
 (
-	DrivesCar SampleModel.vin NOT NULL,
-	DrivenByPerson INTEGER NOT NULL,
-	CONSTRAINT InternalUniquenessConstraint18 PRIMARY KEY(DrivesCar, DrivenByPerson)
+	drivesCar SampleModel.vin NOT NULL,
+	drivenByPerson INTEGER NOT NULL,
+	CONSTRAINT InternalUniquenessConstraint18 PRIMARY KEY(drivesCar, drivenByPerson)
 );
 
 CREATE TABLE SampleModel.PersonBoughtCarFromPersonOnDate
 (
-	CarSold SampleModel.vin NOT NULL,
-	Buyer INTEGER NOT NULL,
-	Seller INTEGER NOT NULL,
-	SaleDate DATE NOT NULL,
-	CONSTRAINT InternalUniquenessConstraint23 PRIMARY KEY(CarSold, Buyer, Seller),
-	CONSTRAINT InternalUniquenessConstraint25 UNIQUE(CarSold, SaleDate, Buyer),
-	CONSTRAINT InternalUniquenessConstraint24 UNIQUE(CarSold, SaleDate, Seller)
+	carSold SampleModel.vin NOT NULL,
+	buyer INTEGER NOT NULL,
+	seller INTEGER NOT NULL,
+	saleDate DATE NOT NULL,
+	CONSTRAINT InternalUniquenessConstraint23 PRIMARY KEY(buyer, carSold, seller),
+	CONSTRAINT InternalUniquenessConstraint25 UNIQUE(carSold, saleDate, buyer),
+	CONSTRAINT InternalUniquenessConstraint24 UNIQUE(saleDate, seller, carSold)
 );
 
 CREATE TABLE SampleModel.Review
 (
-	Vin SampleModel.vin NOT NULL,
-	Name CHARACTER VARYING(64) NOT NULL,
-	"Integer" SampleModel."Integer" NOT NULL,
-	CONSTRAINT InternalUniquenessConstraint26 PRIMARY KEY(Vin, Name)
+	vin SampleModel.vin NOT NULL,
+	name CHARACTER VARYING(64) NOT NULL,
+	"integer" SampleModel."Integer" NOT NULL,
+	CONSTRAINT InternalUniquenessConstraint26 PRIMARY KEY(vin, name)
 );
 
 CREATE TABLE SampleModel.PersonHasNickName
 (
-	NickName CHARACTER VARYING(64) NOT NULL,
-	Person_id INTEGER NOT NULL,
-	CONSTRAINT InternalUniquenessConstraint33 PRIMARY KEY(NickName, Person_id)
+	nickName CHARACTER VARYING(64) NOT NULL,
+	person_Id INTEGER NOT NULL,
+	CONSTRAINT InternalUniquenessConstraint33 PRIMARY KEY(nickName, person_Id)
 );
 
-ALTER TABLE SampleModel.Person ADD CONSTRAINT Person_FK1 FOREIGN KEY (ValueType1DoesSomethingElseWith) REFERENCES SampleModel.ValueType1 (ValueType1Value) ON DELETE RESTRICT ON UPDATE RESTRICT;
+ALTER TABLE SampleModel.Person ADD CONSTRAINT Person_FK1 FOREIGN KEY (valueType1DoesSomethingElseWith) REFERENCES SampleModel.ValueType1 (valueType1Value) ON DELETE RESTRICT ON UPDATE RESTRICT;
 
-ALTER TABLE SampleModel.Person ADD CONSTRAINT Person_FK2 FOREIGN KEY (Wife) REFERENCES SampleModel.Person (Person_id) ON DELETE RESTRICT ON UPDATE RESTRICT;
+ALTER TABLE SampleModel.Person ADD CONSTRAINT Person_FK2 FOREIGN KEY (wife) REFERENCES SampleModel.Person (person_Id) ON DELETE RESTRICT ON UPDATE RESTRICT;
 
-ALTER TABLE SampleModel.Person ADD CONSTRAINT Person_FK3 FOREIGN KEY (ChildPersonFather) REFERENCES SampleModel.Person (Person_id) ON DELETE RESTRICT ON UPDATE RESTRICT;
+ALTER TABLE SampleModel.Person ADD CONSTRAINT Person_FK3 FOREIGN KEY (childPersonFather) REFERENCES SampleModel.Person (person_Id) ON DELETE RESTRICT ON UPDATE RESTRICT;
 
-ALTER TABLE SampleModel.Person ADD CONSTRAINT Person_FK4 FOREIGN KEY (ChildPersonMother) REFERENCES SampleModel.Person (Person_id) ON DELETE RESTRICT ON UPDATE RESTRICT;
+ALTER TABLE SampleModel.Person ADD CONSTRAINT Person_FK4 FOREIGN KEY (childPersonMother) REFERENCES SampleModel.Person (person_Id) ON DELETE RESTRICT ON UPDATE RESTRICT;
 
-ALTER TABLE SampleModel.Task ADD CONSTRAINT Task_FK FOREIGN KEY (Person_id) REFERENCES SampleModel.Person (Person_id) ON DELETE RESTRICT ON UPDATE RESTRICT;
+ALTER TABLE SampleModel.Task ADD CONSTRAINT Task_FK FOREIGN KEY (person_Id) REFERENCES SampleModel.Person (person_Id) ON DELETE RESTRICT ON UPDATE RESTRICT;
 
-ALTER TABLE SampleModel.ValueType1 ADD CONSTRAINT ValueType1_FK FOREIGN KEY (DoesSomethingWithPerson) REFERENCES SampleModel.Person (Person_id) ON DELETE RESTRICT ON UPDATE RESTRICT;
+ALTER TABLE SampleModel.ValueType1 ADD CONSTRAINT ValueType1_FK FOREIGN KEY (doesSomethingWithPerson) REFERENCES SampleModel.Person (person_Id) ON DELETE RESTRICT ON UPDATE RESTRICT;
 
-ALTER TABLE SampleModel.Death ADD CONSTRAINT Death_FK FOREIGN KEY (Person_id) REFERENCES SampleModel.Person (Person_id) ON DELETE RESTRICT ON UPDATE RESTRICT;
+ALTER TABLE SampleModel.Death ADD CONSTRAINT Death_FK FOREIGN KEY (isDeadPerson_Id) REFERENCES SampleModel.Person (person_Id) ON DELETE RESTRICT ON UPDATE RESTRICT;
 
-ALTER TABLE SampleModel.PersonDrivesCar ADD CONSTRAINT PersonDrivesCar_FK FOREIGN KEY (DrivenByPerson) REFERENCES SampleModel.Person (Person_id) ON DELETE RESTRICT ON UPDATE RESTRICT;
+ALTER TABLE SampleModel.PersonDrivesCar ADD CONSTRAINT PersonDrivesCar_FK FOREIGN KEY (drivenByPerson) REFERENCES SampleModel.Person (person_Id) ON DELETE RESTRICT ON UPDATE RESTRICT;
 
-ALTER TABLE SampleModel.PersonBoughtCarFromPersonOnDate ADD CONSTRAINT PersonBoughtCarFromPersonOnDate_FK1 FOREIGN KEY (Buyer) REFERENCES SampleModel.Person (Person_id) ON DELETE RESTRICT ON UPDATE RESTRICT;
+ALTER TABLE SampleModel.PersonBoughtCarFromPersonOnDate ADD CONSTRAINT PersonBoughtCarFromPersonOnDate_FK1 FOREIGN KEY (buyer) REFERENCES SampleModel.Person (person_Id) ON DELETE RESTRICT ON UPDATE RESTRICT;
 
-ALTER TABLE SampleModel.PersonBoughtCarFromPersonOnDate ADD CONSTRAINT PersonBoughtCarFromPersonOnDate_FK2 FOREIGN KEY (Seller) REFERENCES SampleModel.Person (Person_id) ON DELETE RESTRICT ON UPDATE RESTRICT;
+ALTER TABLE SampleModel.PersonBoughtCarFromPersonOnDate ADD CONSTRAINT PersonBoughtCarFromPersonOnDate_FK2 FOREIGN KEY (seller) REFERENCES SampleModel.Person (person_Id) ON DELETE RESTRICT ON UPDATE RESTRICT;
 
-ALTER TABLE SampleModel.PersonHasNickName ADD CONSTRAINT PersonHasNickName_FK FOREIGN KEY (Person_id) REFERENCES SampleModel.Person (Person_id) ON DELETE RESTRICT ON UPDATE RESTRICT;
+ALTER TABLE SampleModel.PersonHasNickName ADD CONSTRAINT PersonHasNickName_FK FOREIGN KEY (person_Id) REFERENCES SampleModel.Person (person_Id) ON DELETE RESTRICT ON UPDATE RESTRICT;
 
 COMMIT WORK;
-

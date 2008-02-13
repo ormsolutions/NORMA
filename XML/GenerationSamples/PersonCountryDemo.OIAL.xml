@@ -24,6 +24,7 @@
 		<oil:informationType name="LastName" formatRef="LastName" mandatory="alethic" sourceRef="_9696890E-CAB2-40E6-AF81-BFD75014755C" sourceRoleRef="_DF01EC20-FD1D-4DEF-BEDF-A1A65EF966D6" />
 		<oil:informationType name="FirstName" formatRef="FirstName" mandatory="alethic" sourceRef="_E401E3A9-94DE-49BE-A6BB-378A3F16CDFF" sourceRoleRef="_63C0EF52-DF3E-4984-A888-43512487555B" />
 		<oil:informationType name="Title" formatRef="Title" mandatory="false" sourceRef="_9609012A-400F-44E9-B7DB-CAAF2D68D432" sourceRoleRef="_955014A5-DADF-4D4F-9E5B-6B82F6537E6C" />
+		<!--WARNING: There once was an external constraint here. There isn't any more. It was of type "MandatoryConstraint", and named "ImpliedMandatoryConstraint4".-->
 	</oil:conceptType>
 	<oil:conceptType name="Country" sourceRef="_F074FCA1-6C15-4349-BC79-62CF67C98BC7">
 		<oil:informationType name="Country_name" formatRef="Country_name" mandatory="alethic" sourceRef="_17006172-BF0E-40E5-B6A8-2992A1408C7E" sourceRoleRef="_FF8BF199-9A80-4EE8-B7E6-82C5879ECFC3">

@@ -1,12 +1,12 @@
 ﻿<?php
 static class DataAccessBase {
 	static $params = null;
-	
+	// <summary>Gets the appropriate data adapter for the current database configuration</summary>
 	public static function getDataAdapter() {
 		return Zend_Db::factory(getpdoType(), getparams());
 	}
 	private static function get() {
-		if (params == null) {
+		if (params === null) {
 			params = array();
 			params["host"] = "";
 			params["username"] = "";
@@ -16,7 +16,7 @@ static class DataAccessBase {
 		return params;
 	}
 	private static function getpdoType() {
-		if (pdoType == null) {
+		if (pdoType === null) {
 			pdoType = "PDO_MYSQL";
 		}
 		return pdoType;
@@ -28,16 +28,16 @@ if (!class_exists('DataAccess')) {
 }
 class PersonDaoBase {
 	private static $instance;
-	
+	// <summary>Instantiates a new instance of PersonDao</summary>
 	public function __construct() {
 	}
 	public static function getInstance() {
-		if (!(isset(instance))) {
+		if (!isset(instance)) {
 			instance = new PersonDao();
 		}
 		return instance;
 	}
-	
+	// <summary>Retrieves the entire collection of Person objects</summary>
 	public function getAll() {
 		try {
 			$retVal = null;
@@ -61,7 +61,7 @@ class PersonDaoBase {
 			return null;
 		}
 	}
-	
+	// <summary>Retrieves the specified Personobject from the database</summary>
 	public function getSingle(/*int*/ $Person_id) {
 		try {
 			$retVal = new Person();
@@ -81,7 +81,7 @@ class PersonDaoBase {
 			return null;
 		}
 	}
-	
+	// <summary>Inserts the given Person object into the database</summary>
 	public function insert(Person $Person) {
 		$retVal = false;
 		try {
@@ -98,7 +98,7 @@ class PersonDaoBase {
 		}
 		return $retVal;
 	}
-	
+	// <summary>Updates the given Person object in the database</summary>
 	public function update(Person $Person) {
 		$retVal = false;
 		try {
@@ -116,7 +116,7 @@ class PersonDaoBase {
 		}
 		return $retVal;
 	}
-	
+	// <summary>Deletes the given Person object from the database</summary>
 	public function delete(Person $Person) {
 		$retVal = false;
 		try {
@@ -138,16 +138,16 @@ if (!class_exists('PersonDao')) {
 }
 class CountryDaoBase {
 	private static $instance;
-	
+	// <summary>Instantiates a new instance of CountryDao</summary>
 	public function __construct() {
 	}
 	public static function getInstance() {
-		if (!(isset(instance))) {
+		if (!isset(instance)) {
 			instance = new CountryDao();
 		}
 		return instance;
 	}
-	
+	// <summary>Retrieves the entire collection of Country objects</summary>
 	public function getAll() {
 		try {
 			$retVal = null;
@@ -168,7 +168,7 @@ class CountryDaoBase {
 			return null;
 		}
 	}
-	
+	// <summary>Retrieves the specified Countryobject from the database</summary>
 	public function getSingle(/*string*/ $Country_name) {
 		try {
 			$retVal = new Country();
@@ -185,7 +185,7 @@ class CountryDaoBase {
 			return null;
 		}
 	}
-	
+	// <summary>Inserts the given Country object into the database</summary>
 	public function insert(Country $Country) {
 		$retVal = false;
 		try {
@@ -199,7 +199,7 @@ class CountryDaoBase {
 		}
 		return $retVal;
 	}
-	
+	// <summary>Updates the given Country object in the database</summary>
 	public function update(Country $Country) {
 		$retVal = false;
 		try {
@@ -214,7 +214,7 @@ class CountryDaoBase {
 		}
 		return $retVal;
 	}
-	
+	// <summary>Deletes the given Country object from the database</summary>
 	public function delete(Country $Country) {
 		$retVal = false;
 		try {

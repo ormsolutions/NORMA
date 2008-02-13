@@ -154,39 +154,55 @@ namespace Neumont.Tools.ORM.ObjectModel
 		}
 		#endregion
 		#region ICustomComparableSurveyNode Members
-		int ICustomComparableSurveyNode.CompareToSurveyNode(object other)
+		int ICustomComparableSurveyNode.CompareToSurveyNode(object other, object customSortData, object otherCustomSortData)
 		{
-			return CompareToSurveyNode(other);
+			return CompareToSurveyNode(other, customSortData, otherCustomSortData);
 		}
 		/// <summary>
 		/// Implements <see cref="ICustomComparableSurveyNode.CompareToSurveyNode"/>. Roles
 		/// compare based on order in the FactType.RoleCollection. 0 (no information) is
 		/// returned for a comparison to all other element types.
 		/// </summary>
-		protected int CompareToSurveyNode(object other)
+		protected int CompareToSurveyNode(object other, object customSortData, object otherCustomSortData)
 		{
-			RoleBase otherRole;
-			FactType factType;
-			if (null != (otherRole = other as RoleBase) &&
-				null != (factType = FactType))
+			if (other is RoleBase)
 			{
-				LinkedElementCollection<RoleBase> allRoles = factType.RoleCollection;
-				int roleCount = allRoles.Count;
-				for (int i = 0; i < roleCount; ++i)
+				int thisIndex = (int)customSortData;
+				int otherIndex = (int)otherCustomSortData;
+				if (thisIndex < otherIndex)
 				{
-					RoleBase testRole = allRoles[i];
-					if (testRole == other)
-					{
-						return 1;
-					}
-					else if (testRole == this)
-					{
-						return -1;
-					}
+					return -1;
+				}
+				else if (thisIndex != otherIndex)
+				{
+					return 1;
 				}
 			}
 			// For this comparison, this implies no information is available
 			return 0;
+		}
+		bool ICustomComparableSurveyNode.ResetCustomSortData(ref object customSortData)
+		{
+			return ResetCustomSortData(ref customSortData);
+		}
+		/// <summary>
+		/// Implements <see cref="ICustomComparableSurveyNode.CompareToSurveyNode"/>. Returns
+		/// the current position in the RoleCollection of the parent <see cref="FactType"/>
+		/// </summary>
+		protected bool ResetCustomSortData(ref object customSortData)
+		{
+			int retVal = -1;
+			FactType factType;
+			if (null != (factType = FactType))
+			{
+				retVal = factType.RoleCollection.IndexOf(this);
+			}
+			if (null == customSortData || (int)customSortData != retVal)
+			{
+				customSortData = retVal;
+				return true;
+			}
+			return false;
 		}
 		#endregion
 		#region ISurveyNodeContext Implementation

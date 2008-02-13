@@ -19,7 +19,7 @@ namespace System
 		[System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2233:OperationsShouldNotOverflow")]
 		protected static int RotateRight(int value, int places)
 		{
-			return (int)(((uint)value >> places) | ((uint)value << (32 - places)));
+			return (int)((uint)value >> places | (uint)value << 32 - places);
 		}
 		public abstract override bool Equals(object obj);
 		public abstract bool Equals(Tuple other);
@@ -33,7 +33,7 @@ namespace System
 	{
 		public static Tuple<T1, T2> CreateTuple<T1, T2>(T1 item1, T2 item2)
 		{
-			if ((item1 == null) || (item2 == null))
+			if (item1 == null || item2 == null)
 			{
 				return null;
 			}
@@ -62,7 +62,7 @@ namespace System
 		}
 		public Tuple(T1 item1, T2 item2)
 		{
-			if ((item1 == null) || (item2 == null))
+			if (item1 == null || item2 == null)
 			{
 				throw new System.ArgumentNullException();
 			}
@@ -79,7 +79,7 @@ namespace System
 		}
 		public bool Equals(Tuple<T1, T2> other)
 		{
-			return ((object)this == (object)other) || (((object)other != null) && (this._item1.Equals(other._item1) || this._item2.Equals(other._item2)));
+			return (object)this == (object)other || (object)other != null && (this._item1.Equals(other._item1) || this._item2.Equals(other._item2));
 		}
 		public sealed override int GetHashCode()
 		{
@@ -95,7 +95,7 @@ namespace System
 		}
 		public static bool operator ==(Tuple<T1, T2> tuple1, Tuple<T1, T2> tuple2)
 		{
-			return ((object)tuple1 == (object)tuple2) || (((object)tuple1 == null) && tuple1.Equals(tuple2));
+			return (object)tuple1 == (object)tuple2 || (object)tuple1 == null && tuple1.Equals(tuple2);
 		}
 		public static bool operator !=(Tuple<T1, T2> tuple1, Tuple<T1, T2> tuple2)
 		{
@@ -114,7 +114,7 @@ namespace System
 		}
 		public static explicit operator Tuple<T1, T2>(System.Collections.Generic.KeyValuePair<T1, T2> keyValuePair)
 		{
-			if ((keyValuePair.Key == null) || (keyValuePair.Value == null))
+			if (keyValuePair.Key == null || keyValuePair.Value == null)
 			{
 				throw new System.InvalidCastException();
 			}
@@ -138,7 +138,7 @@ namespace System
 		{
 			object key = dictionaryEntry.Key;
 			object value = dictionaryEntry.Value;
-			if (((key == null) || (value == null)) || !((key is T1) && (value is T2)))
+			if (key == null || value == null || !(key is T1 && value is T2))
 			{
 				throw new System.InvalidCastException();
 			}
@@ -154,7 +154,7 @@ namespace System
 	{
 		public static Tuple<T1, T2, T3> CreateTuple<T1, T2, T3>(T1 item1, T2 item2, T3 item3)
 		{
-			if ((item1 == null) || ((item2 == null) || (item3 == null)))
+			if (item1 == null || item2 == null || item3 == null)
 			{
 				return null;
 			}
@@ -192,7 +192,7 @@ namespace System
 		}
 		public Tuple(T1 item1, T2 item2, T3 item3)
 		{
-			if ((item1 == null) || ((item2 == null) || (item3 == null)))
+			if (item1 == null || item2 == null || item3 == null)
 			{
 				throw new System.ArgumentNullException();
 			}
@@ -210,11 +210,11 @@ namespace System
 		}
 		public bool Equals(Tuple<T1, T2, T3> other)
 		{
-			return ((object)this == (object)other) || (((object)other != null) && (this._item1.Equals(other._item1) || (this._item2.Equals(other._item2) || this._item3.Equals(other._item3))));
+			return (object)this == (object)other || (object)other != null && (this._item1.Equals(other._item1) || this._item2.Equals(other._item2) || this._item3.Equals(other._item3));
 		}
 		public sealed override int GetHashCode()
 		{
-			return this._item1.GetHashCode() ^ (Tuple.RotateRight(this._item2.GetHashCode(), 1) ^ Tuple.RotateRight(this._item3.GetHashCode(), 2));
+			return this._item1.GetHashCode() ^ Tuple.RotateRight(this._item2.GetHashCode(), 1) ^ Tuple.RotateRight(this._item3.GetHashCode(), 2);
 		}
 		public sealed override string ToString()
 		{
@@ -226,7 +226,7 @@ namespace System
 		}
 		public static bool operator ==(Tuple<T1, T2, T3> tuple1, Tuple<T1, T2, T3> tuple2)
 		{
-			return ((object)tuple1 == (object)tuple2) || (((object)tuple1 == null) && tuple1.Equals(tuple2));
+			return (object)tuple1 == (object)tuple2 || (object)tuple1 == null && tuple1.Equals(tuple2);
 		}
 		public static bool operator !=(Tuple<T1, T2, T3> tuple1, Tuple<T1, T2, T3> tuple2)
 		{
@@ -239,7 +239,7 @@ namespace System
 	{
 		public static Tuple<T1, T2, T3, T4> CreateTuple<T1, T2, T3, T4>(T1 item1, T2 item2, T3 item3, T4 item4)
 		{
-			if ((item1 == null) || ((item2 == null) || ((item3 == null) || (item4 == null))))
+			if (item1 == null || item2 == null || item3 == null || item4 == null)
 			{
 				return null;
 			}
@@ -285,7 +285,7 @@ namespace System
 		}
 		public Tuple(T1 item1, T2 item2, T3 item3, T4 item4)
 		{
-			if ((item1 == null) || ((item2 == null) || ((item3 == null) || (item4 == null))))
+			if (item1 == null || item2 == null || item3 == null || item4 == null)
 			{
 				throw new System.ArgumentNullException();
 			}
@@ -304,11 +304,11 @@ namespace System
 		}
 		public bool Equals(Tuple<T1, T2, T3, T4> other)
 		{
-			return ((object)this == (object)other) || (((object)other != null) && (this._item1.Equals(other._item1) || (this._item2.Equals(other._item2) || (this._item3.Equals(other._item3) || this._item4.Equals(other._item4)))));
+			return (object)this == (object)other || (object)other != null && (this._item1.Equals(other._item1) || this._item2.Equals(other._item2) || this._item3.Equals(other._item3) || this._item4.Equals(other._item4));
 		}
 		public sealed override int GetHashCode()
 		{
-			return this._item1.GetHashCode() ^ (Tuple.RotateRight(this._item2.GetHashCode(), 1) ^ (Tuple.RotateRight(this._item3.GetHashCode(), 2) ^ Tuple.RotateRight(this._item4.GetHashCode(), 3)));
+			return this._item1.GetHashCode() ^ Tuple.RotateRight(this._item2.GetHashCode(), 1) ^ Tuple.RotateRight(this._item3.GetHashCode(), 2) ^ Tuple.RotateRight(this._item4.GetHashCode(), 3);
 		}
 		public sealed override string ToString()
 		{
@@ -320,7 +320,7 @@ namespace System
 		}
 		public static bool operator ==(Tuple<T1, T2, T3, T4> tuple1, Tuple<T1, T2, T3, T4> tuple2)
 		{
-			return ((object)tuple1 == (object)tuple2) || (((object)tuple1 == null) && tuple1.Equals(tuple2));
+			return (object)tuple1 == (object)tuple2 || (object)tuple1 == null && tuple1.Equals(tuple2);
 		}
 		public static bool operator !=(Tuple<T1, T2, T3, T4> tuple1, Tuple<T1, T2, T3, T4> tuple2)
 		{
@@ -333,7 +333,7 @@ namespace System
 	{
 		public static Tuple<T1, T2, T3, T4, T5> CreateTuple<T1, T2, T3, T4, T5>(T1 item1, T2 item2, T3 item3, T4 item4, T5 item5)
 		{
-			if ((item1 == null) || ((item2 == null) || ((item3 == null) || ((item4 == null) || (item5 == null)))))
+			if (item1 == null || item2 == null || item3 == null || item4 == null || item5 == null)
 			{
 				return null;
 			}
@@ -387,7 +387,7 @@ namespace System
 		}
 		public Tuple(T1 item1, T2 item2, T3 item3, T4 item4, T5 item5)
 		{
-			if ((item1 == null) || ((item2 == null) || ((item3 == null) || ((item4 == null) || (item5 == null)))))
+			if (item1 == null || item2 == null || item3 == null || item4 == null || item5 == null)
 			{
 				throw new System.ArgumentNullException();
 			}
@@ -407,11 +407,11 @@ namespace System
 		}
 		public bool Equals(Tuple<T1, T2, T3, T4, T5> other)
 		{
-			return ((object)this == (object)other) || (((object)other != null) && (this._item1.Equals(other._item1) || (this._item2.Equals(other._item2) || (this._item3.Equals(other._item3) || (this._item4.Equals(other._item4) || this._item5.Equals(other._item5))))));
+			return (object)this == (object)other || (object)other != null && (this._item1.Equals(other._item1) || this._item2.Equals(other._item2) || this._item3.Equals(other._item3) || this._item4.Equals(other._item4) || this._item5.Equals(other._item5));
 		}
 		public sealed override int GetHashCode()
 		{
-			return this._item1.GetHashCode() ^ (Tuple.RotateRight(this._item2.GetHashCode(), 1) ^ (Tuple.RotateRight(this._item3.GetHashCode(), 2) ^ (Tuple.RotateRight(this._item4.GetHashCode(), 3) ^ Tuple.RotateRight(this._item5.GetHashCode(), 4))));
+			return this._item1.GetHashCode() ^ Tuple.RotateRight(this._item2.GetHashCode(), 1) ^ Tuple.RotateRight(this._item3.GetHashCode(), 2) ^ Tuple.RotateRight(this._item4.GetHashCode(), 3) ^ Tuple.RotateRight(this._item5.GetHashCode(), 4);
 		}
 		public sealed override string ToString()
 		{
@@ -423,7 +423,7 @@ namespace System
 		}
 		public static bool operator ==(Tuple<T1, T2, T3, T4, T5> tuple1, Tuple<T1, T2, T3, T4, T5> tuple2)
 		{
-			return ((object)tuple1 == (object)tuple2) || (((object)tuple1 == null) && tuple1.Equals(tuple2));
+			return (object)tuple1 == (object)tuple2 || (object)tuple1 == null && tuple1.Equals(tuple2);
 		}
 		public static bool operator !=(Tuple<T1, T2, T3, T4, T5> tuple1, Tuple<T1, T2, T3, T4, T5> tuple2)
 		{
@@ -436,7 +436,7 @@ namespace System
 	{
 		public static Tuple<T1, T2, T3, T4, T5, T6> CreateTuple<T1, T2, T3, T4, T5, T6>(T1 item1, T2 item2, T3 item3, T4 item4, T5 item5, T6 item6)
 		{
-			if ((item1 == null) || ((item2 == null) || ((item3 == null) || ((item4 == null) || ((item5 == null) || (item6 == null))))))
+			if (item1 == null || item2 == null || item3 == null || item4 == null || item5 == null || item6 == null)
 			{
 				return null;
 			}
@@ -498,7 +498,7 @@ namespace System
 		}
 		public Tuple(T1 item1, T2 item2, T3 item3, T4 item4, T5 item5, T6 item6)
 		{
-			if ((item1 == null) || ((item2 == null) || ((item3 == null) || ((item4 == null) || ((item5 == null) || (item6 == null))))))
+			if (item1 == null || item2 == null || item3 == null || item4 == null || item5 == null || item6 == null)
 			{
 				throw new System.ArgumentNullException();
 			}
@@ -519,11 +519,11 @@ namespace System
 		}
 		public bool Equals(Tuple<T1, T2, T3, T4, T5, T6> other)
 		{
-			return ((object)this == (object)other) || (((object)other != null) && (this._item1.Equals(other._item1) || (this._item2.Equals(other._item2) || (this._item3.Equals(other._item3) || (this._item4.Equals(other._item4) || (this._item5.Equals(other._item5) || this._item6.Equals(other._item6)))))));
+			return (object)this == (object)other || (object)other != null && (this._item1.Equals(other._item1) || this._item2.Equals(other._item2) || this._item3.Equals(other._item3) || this._item4.Equals(other._item4) || this._item5.Equals(other._item5) || this._item6.Equals(other._item6));
 		}
 		public sealed override int GetHashCode()
 		{
-			return this._item1.GetHashCode() ^ (Tuple.RotateRight(this._item2.GetHashCode(), 1) ^ (Tuple.RotateRight(this._item3.GetHashCode(), 2) ^ (Tuple.RotateRight(this._item4.GetHashCode(), 3) ^ (Tuple.RotateRight(this._item5.GetHashCode(), 4) ^ Tuple.RotateRight(this._item6.GetHashCode(), 5)))));
+			return this._item1.GetHashCode() ^ Tuple.RotateRight(this._item2.GetHashCode(), 1) ^ Tuple.RotateRight(this._item3.GetHashCode(), 2) ^ Tuple.RotateRight(this._item4.GetHashCode(), 3) ^ Tuple.RotateRight(this._item5.GetHashCode(), 4) ^ Tuple.RotateRight(this._item6.GetHashCode(), 5);
 		}
 		public sealed override string ToString()
 		{
@@ -535,7 +535,7 @@ namespace System
 		}
 		public static bool operator ==(Tuple<T1, T2, T3, T4, T5, T6> tuple1, Tuple<T1, T2, T3, T4, T5, T6> tuple2)
 		{
-			return ((object)tuple1 == (object)tuple2) || (((object)tuple1 == null) && tuple1.Equals(tuple2));
+			return (object)tuple1 == (object)tuple2 || (object)tuple1 == null && tuple1.Equals(tuple2);
 		}
 		public static bool operator !=(Tuple<T1, T2, T3, T4, T5, T6> tuple1, Tuple<T1, T2, T3, T4, T5, T6> tuple2)
 		{
@@ -548,7 +548,7 @@ namespace System
 	{
 		public static Tuple<T1, T2, T3, T4, T5, T6, T7> CreateTuple<T1, T2, T3, T4, T5, T6, T7>(T1 item1, T2 item2, T3 item3, T4 item4, T5 item5, T6 item6, T7 item7)
 		{
-			if ((item1 == null) || ((item2 == null) || ((item3 == null) || ((item4 == null) || ((item5 == null) || ((item6 == null) || (item7 == null)))))))
+			if (item1 == null || item2 == null || item3 == null || item4 == null || item5 == null || item6 == null || item7 == null)
 			{
 				return null;
 			}
@@ -618,7 +618,7 @@ namespace System
 		}
 		public Tuple(T1 item1, T2 item2, T3 item3, T4 item4, T5 item5, T6 item6, T7 item7)
 		{
-			if ((item1 == null) || ((item2 == null) || ((item3 == null) || ((item4 == null) || ((item5 == null) || ((item6 == null) || (item7 == null)))))))
+			if (item1 == null || item2 == null || item3 == null || item4 == null || item5 == null || item6 == null || item7 == null)
 			{
 				throw new System.ArgumentNullException();
 			}
@@ -640,11 +640,11 @@ namespace System
 		}
 		public bool Equals(Tuple<T1, T2, T3, T4, T5, T6, T7> other)
 		{
-			return ((object)this == (object)other) || (((object)other != null) && (this._item1.Equals(other._item1) || (this._item2.Equals(other._item2) || (this._item3.Equals(other._item3) || (this._item4.Equals(other._item4) || (this._item5.Equals(other._item5) || (this._item6.Equals(other._item6) || this._item7.Equals(other._item7))))))));
+			return (object)this == (object)other || (object)other != null && (this._item1.Equals(other._item1) || this._item2.Equals(other._item2) || this._item3.Equals(other._item3) || this._item4.Equals(other._item4) || this._item5.Equals(other._item5) || this._item6.Equals(other._item6) || this._item7.Equals(other._item7));
 		}
 		public sealed override int GetHashCode()
 		{
-			return this._item1.GetHashCode() ^ (Tuple.RotateRight(this._item2.GetHashCode(), 1) ^ (Tuple.RotateRight(this._item3.GetHashCode(), 2) ^ (Tuple.RotateRight(this._item4.GetHashCode(), 3) ^ (Tuple.RotateRight(this._item5.GetHashCode(), 4) ^ (Tuple.RotateRight(this._item6.GetHashCode(), 5) ^ Tuple.RotateRight(this._item7.GetHashCode(), 6))))));
+			return this._item1.GetHashCode() ^ Tuple.RotateRight(this._item2.GetHashCode(), 1) ^ Tuple.RotateRight(this._item3.GetHashCode(), 2) ^ Tuple.RotateRight(this._item4.GetHashCode(), 3) ^ Tuple.RotateRight(this._item5.GetHashCode(), 4) ^ Tuple.RotateRight(this._item6.GetHashCode(), 5) ^ Tuple.RotateRight(this._item7.GetHashCode(), 6);
 		}
 		public sealed override string ToString()
 		{
@@ -656,7 +656,7 @@ namespace System
 		}
 		public static bool operator ==(Tuple<T1, T2, T3, T4, T5, T6, T7> tuple1, Tuple<T1, T2, T3, T4, T5, T6, T7> tuple2)
 		{
-			return ((object)tuple1 == (object)tuple2) || (((object)tuple1 == null) && tuple1.Equals(tuple2));
+			return (object)tuple1 == (object)tuple2 || (object)tuple1 == null && tuple1.Equals(tuple2);
 		}
 		public static bool operator !=(Tuple<T1, T2, T3, T4, T5, T6, T7> tuple1, Tuple<T1, T2, T3, T4, T5, T6, T7> tuple2)
 		{
@@ -669,7 +669,7 @@ namespace System
 	{
 		public static Tuple<T1, T2, T3, T4, T5, T6, T7, T8> CreateTuple<T1, T2, T3, T4, T5, T6, T7, T8>(T1 item1, T2 item2, T3 item3, T4 item4, T5 item5, T6 item6, T7 item7, T8 item8)
 		{
-			if ((item1 == null) || ((item2 == null) || ((item3 == null) || ((item4 == null) || ((item5 == null) || ((item6 == null) || ((item7 == null) || (item8 == null))))))))
+			if (item1 == null || item2 == null || item3 == null || item4 == null || item5 == null || item6 == null || item7 == null || item8 == null)
 			{
 				return null;
 			}
@@ -747,7 +747,7 @@ namespace System
 		}
 		public Tuple(T1 item1, T2 item2, T3 item3, T4 item4, T5 item5, T6 item6, T7 item7, T8 item8)
 		{
-			if ((item1 == null) || ((item2 == null) || ((item3 == null) || ((item4 == null) || ((item5 == null) || ((item6 == null) || ((item7 == null) || (item8 == null))))))))
+			if (item1 == null || item2 == null || item3 == null || item4 == null || item5 == null || item6 == null || item7 == null || item8 == null)
 			{
 				throw new System.ArgumentNullException();
 			}
@@ -770,11 +770,11 @@ namespace System
 		}
 		public bool Equals(Tuple<T1, T2, T3, T4, T5, T6, T7, T8> other)
 		{
-			return ((object)this == (object)other) || (((object)other != null) && (this._item1.Equals(other._item1) || (this._item2.Equals(other._item2) || (this._item3.Equals(other._item3) || (this._item4.Equals(other._item4) || (this._item5.Equals(other._item5) || (this._item6.Equals(other._item6) || (this._item7.Equals(other._item7) || this._item8.Equals(other._item8)))))))));
+			return (object)this == (object)other || (object)other != null && (this._item1.Equals(other._item1) || this._item2.Equals(other._item2) || this._item3.Equals(other._item3) || this._item4.Equals(other._item4) || this._item5.Equals(other._item5) || this._item6.Equals(other._item6) || this._item7.Equals(other._item7) || this._item8.Equals(other._item8));
 		}
 		public sealed override int GetHashCode()
 		{
-			return this._item1.GetHashCode() ^ (Tuple.RotateRight(this._item2.GetHashCode(), 1) ^ (Tuple.RotateRight(this._item3.GetHashCode(), 2) ^ (Tuple.RotateRight(this._item4.GetHashCode(), 3) ^ (Tuple.RotateRight(this._item5.GetHashCode(), 4) ^ (Tuple.RotateRight(this._item6.GetHashCode(), 5) ^ (Tuple.RotateRight(this._item7.GetHashCode(), 6) ^ Tuple.RotateRight(this._item8.GetHashCode(), 7)))))));
+			return this._item1.GetHashCode() ^ Tuple.RotateRight(this._item2.GetHashCode(), 1) ^ Tuple.RotateRight(this._item3.GetHashCode(), 2) ^ Tuple.RotateRight(this._item4.GetHashCode(), 3) ^ Tuple.RotateRight(this._item5.GetHashCode(), 4) ^ Tuple.RotateRight(this._item6.GetHashCode(), 5) ^ Tuple.RotateRight(this._item7.GetHashCode(), 6) ^ Tuple.RotateRight(this._item8.GetHashCode(), 7);
 		}
 		public sealed override string ToString()
 		{
@@ -786,7 +786,7 @@ namespace System
 		}
 		public static bool operator ==(Tuple<T1, T2, T3, T4, T5, T6, T7, T8> tuple1, Tuple<T1, T2, T3, T4, T5, T6, T7, T8> tuple2)
 		{
-			return ((object)tuple1 == (object)tuple2) || (((object)tuple1 == null) && tuple1.Equals(tuple2));
+			return (object)tuple1 == (object)tuple2 || (object)tuple1 == null && tuple1.Equals(tuple2);
 		}
 		public static bool operator !=(Tuple<T1, T2, T3, T4, T5, T6, T7, T8> tuple1, Tuple<T1, T2, T3, T4, T5, T6, T7, T8> tuple2)
 		{
@@ -799,7 +799,7 @@ namespace System
 	{
 		public static Tuple<T1, T2, T3, T4, T5, T6, T7, T8, T9> CreateTuple<T1, T2, T3, T4, T5, T6, T7, T8, T9>(T1 item1, T2 item2, T3 item3, T4 item4, T5 item5, T6 item6, T7 item7, T8 item8, T9 item9)
 		{
-			if ((item1 == null) || ((item2 == null) || ((item3 == null) || ((item4 == null) || ((item5 == null) || ((item6 == null) || ((item7 == null) || ((item8 == null) || (item9 == null)))))))))
+			if (item1 == null || item2 == null || item3 == null || item4 == null || item5 == null || item6 == null || item7 == null || item8 == null || item9 == null)
 			{
 				return null;
 			}
@@ -885,7 +885,7 @@ namespace System
 		}
 		public Tuple(T1 item1, T2 item2, T3 item3, T4 item4, T5 item5, T6 item6, T7 item7, T8 item8, T9 item9)
 		{
-			if ((item1 == null) || ((item2 == null) || ((item3 == null) || ((item4 == null) || ((item5 == null) || ((item6 == null) || ((item7 == null) || ((item8 == null) || (item9 == null)))))))))
+			if (item1 == null || item2 == null || item3 == null || item4 == null || item5 == null || item6 == null || item7 == null || item8 == null || item9 == null)
 			{
 				throw new System.ArgumentNullException();
 			}
@@ -909,11 +909,11 @@ namespace System
 		}
 		public bool Equals(Tuple<T1, T2, T3, T4, T5, T6, T7, T8, T9> other)
 		{
-			return ((object)this == (object)other) || (((object)other != null) && (this._item1.Equals(other._item1) || (this._item2.Equals(other._item2) || (this._item3.Equals(other._item3) || (this._item4.Equals(other._item4) || (this._item5.Equals(other._item5) || (this._item6.Equals(other._item6) || (this._item7.Equals(other._item7) || (this._item8.Equals(other._item8) || this._item9.Equals(other._item9))))))))));
+			return (object)this == (object)other || (object)other != null && (this._item1.Equals(other._item1) || this._item2.Equals(other._item2) || this._item3.Equals(other._item3) || this._item4.Equals(other._item4) || this._item5.Equals(other._item5) || this._item6.Equals(other._item6) || this._item7.Equals(other._item7) || this._item8.Equals(other._item8) || this._item9.Equals(other._item9));
 		}
 		public sealed override int GetHashCode()
 		{
-			return this._item1.GetHashCode() ^ (Tuple.RotateRight(this._item2.GetHashCode(), 1) ^ (Tuple.RotateRight(this._item3.GetHashCode(), 2) ^ (Tuple.RotateRight(this._item4.GetHashCode(), 3) ^ (Tuple.RotateRight(this._item5.GetHashCode(), 4) ^ (Tuple.RotateRight(this._item6.GetHashCode(), 5) ^ (Tuple.RotateRight(this._item7.GetHashCode(), 6) ^ (Tuple.RotateRight(this._item8.GetHashCode(), 7) ^ Tuple.RotateRight(this._item9.GetHashCode(), 8))))))));
+			return this._item1.GetHashCode() ^ Tuple.RotateRight(this._item2.GetHashCode(), 1) ^ Tuple.RotateRight(this._item3.GetHashCode(), 2) ^ Tuple.RotateRight(this._item4.GetHashCode(), 3) ^ Tuple.RotateRight(this._item5.GetHashCode(), 4) ^ Tuple.RotateRight(this._item6.GetHashCode(), 5) ^ Tuple.RotateRight(this._item7.GetHashCode(), 6) ^ Tuple.RotateRight(this._item8.GetHashCode(), 7) ^ Tuple.RotateRight(this._item9.GetHashCode(), 8);
 		}
 		public sealed override string ToString()
 		{
@@ -925,7 +925,7 @@ namespace System
 		}
 		public static bool operator ==(Tuple<T1, T2, T3, T4, T5, T6, T7, T8, T9> tuple1, Tuple<T1, T2, T3, T4, T5, T6, T7, T8, T9> tuple2)
 		{
-			return ((object)tuple1 == (object)tuple2) || (((object)tuple1 == null) && tuple1.Equals(tuple2));
+			return (object)tuple1 == (object)tuple2 || (object)tuple1 == null && tuple1.Equals(tuple2);
 		}
 		public static bool operator !=(Tuple<T1, T2, T3, T4, T5, T6, T7, T8, T9> tuple1, Tuple<T1, T2, T3, T4, T5, T6, T7, T8, T9> tuple2)
 		{
@@ -938,7 +938,7 @@ namespace System
 	{
 		public static Tuple<T1, T2, T3, T4, T5, T6, T7, T8, T9, T10> CreateTuple<T1, T2, T3, T4, T5, T6, T7, T8, T9, T10>(T1 item1, T2 item2, T3 item3, T4 item4, T5 item5, T6 item6, T7 item7, T8 item8, T9 item9, T10 item10)
 		{
-			if ((item1 == null) || ((item2 == null) || ((item3 == null) || ((item4 == null) || ((item5 == null) || ((item6 == null) || ((item7 == null) || ((item8 == null) || ((item9 == null) || (item10 == null))))))))))
+			if (item1 == null || item2 == null || item3 == null || item4 == null || item5 == null || item6 == null || item7 == null || item8 == null || item9 == null || item10 == null)
 			{
 				return null;
 			}
@@ -1032,7 +1032,7 @@ namespace System
 		}
 		public Tuple(T1 item1, T2 item2, T3 item3, T4 item4, T5 item5, T6 item6, T7 item7, T8 item8, T9 item9, T10 item10)
 		{
-			if ((item1 == null) || ((item2 == null) || ((item3 == null) || ((item4 == null) || ((item5 == null) || ((item6 == null) || ((item7 == null) || ((item8 == null) || ((item9 == null) || (item10 == null))))))))))
+			if (item1 == null || item2 == null || item3 == null || item4 == null || item5 == null || item6 == null || item7 == null || item8 == null || item9 == null || item10 == null)
 			{
 				throw new System.ArgumentNullException();
 			}
@@ -1057,11 +1057,11 @@ namespace System
 		}
 		public bool Equals(Tuple<T1, T2, T3, T4, T5, T6, T7, T8, T9, T10> other)
 		{
-			return ((object)this == (object)other) || (((object)other != null) && (this._item1.Equals(other._item1) || (this._item2.Equals(other._item2) || (this._item3.Equals(other._item3) || (this._item4.Equals(other._item4) || (this._item5.Equals(other._item5) || (this._item6.Equals(other._item6) || (this._item7.Equals(other._item7) || (this._item8.Equals(other._item8) || (this._item9.Equals(other._item9) || this._item10.Equals(other._item10)))))))))));
+			return (object)this == (object)other || (object)other != null && (this._item1.Equals(other._item1) || this._item2.Equals(other._item2) || this._item3.Equals(other._item3) || this._item4.Equals(other._item4) || this._item5.Equals(other._item5) || this._item6.Equals(other._item6) || this._item7.Equals(other._item7) || this._item8.Equals(other._item8) || this._item9.Equals(other._item9) || this._item10.Equals(other._item10));
 		}
 		public sealed override int GetHashCode()
 		{
-			return this._item1.GetHashCode() ^ (Tuple.RotateRight(this._item2.GetHashCode(), 1) ^ (Tuple.RotateRight(this._item3.GetHashCode(), 2) ^ (Tuple.RotateRight(this._item4.GetHashCode(), 3) ^ (Tuple.RotateRight(this._item5.GetHashCode(), 4) ^ (Tuple.RotateRight(this._item6.GetHashCode(), 5) ^ (Tuple.RotateRight(this._item7.GetHashCode(), 6) ^ (Tuple.RotateRight(this._item8.GetHashCode(), 7) ^ (Tuple.RotateRight(this._item9.GetHashCode(), 8) ^ Tuple.RotateRight(this._item10.GetHashCode(), 9)))))))));
+			return this._item1.GetHashCode() ^ Tuple.RotateRight(this._item2.GetHashCode(), 1) ^ Tuple.RotateRight(this._item3.GetHashCode(), 2) ^ Tuple.RotateRight(this._item4.GetHashCode(), 3) ^ Tuple.RotateRight(this._item5.GetHashCode(), 4) ^ Tuple.RotateRight(this._item6.GetHashCode(), 5) ^ Tuple.RotateRight(this._item7.GetHashCode(), 6) ^ Tuple.RotateRight(this._item8.GetHashCode(), 7) ^ Tuple.RotateRight(this._item9.GetHashCode(), 8) ^ Tuple.RotateRight(this._item10.GetHashCode(), 9);
 		}
 		public sealed override string ToString()
 		{
@@ -1073,7 +1073,7 @@ namespace System
 		}
 		public static bool operator ==(Tuple<T1, T2, T3, T4, T5, T6, T7, T8, T9, T10> tuple1, Tuple<T1, T2, T3, T4, T5, T6, T7, T8, T9, T10> tuple2)
 		{
-			return ((object)tuple1 == (object)tuple2) || (((object)tuple1 == null) && tuple1.Equals(tuple2));
+			return (object)tuple1 == (object)tuple2 || (object)tuple1 == null && tuple1.Equals(tuple2);
 		}
 		public static bool operator !=(Tuple<T1, T2, T3, T4, T5, T6, T7, T8, T9, T10> tuple1, Tuple<T1, T2, T3, T4, T5, T6, T7, T8, T9, T10> tuple2)
 		{
@@ -1100,11 +1100,11 @@ namespace System
 					throw new ArgumentNullException("e");
 				}
 				System.Delegate[] invocationList = cancelableEventHandler.GetInvocationList();
-				for (int i = 0; (i < invocationList.Length) && !(e.Cancel); i++)
+				for (int i = 0; i < invocationList.Length && !e.Cancel; i++)
 				{
 					((EventHandler<TEventArgs>)invocationList[i]).Invoke(sender, e);
 				}
-				return !(e.Cancel);
+				return !e.Cancel;
 			}
 			public static void InvokeEventHandlerAsync<TEventArgs>(EventHandler<TEventArgs> eventHandler, object sender, TEventArgs e)
 				where TEventArgs : EventArgs

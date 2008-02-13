@@ -16,5 +16,19 @@
 		<arg:CopyrightLine>\**************************************************************************/</arg:CopyrightLine>
 	</arg:Copyright>
 	<arg:Model class="ConceptualDatabaseDomainModel">
+		<arg:RuleContainer class="ReferenceConstraint">
+			<arg:AddRule methodName="ReferenceConstraintTargetAdded">
+				<arg:RuleOn targetType="ReferenceConstraintTargetsTable"/>
+			</arg:AddRule>
+			<arg:AddRule methodName="UniquenessConstraintColumnAdded">
+				<arg:RuleOn targetType="UniquenessConstraintIncludesColumn"/>
+			</arg:AddRule>
+			<arg:DeletingRule methodName="UniquenessConstraintColumnDeleting">
+				<arg:RuleOn targetType="UniquenessConstraintIncludesColumn"/>
+			</arg:DeletingRule>
+			<arg:RolePlayerPositionChangeRule methodName="UniquenessConstraintColumnPositionChanged">
+				<arg:RuleOn targetType="UniquenessConstraintIncludesColumn"/>
+			</arg:RolePlayerPositionChangeRule>
+		</arg:RuleContainer>
 	</arg:Model>
 </arg:Rules>

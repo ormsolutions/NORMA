@@ -1176,7 +1176,7 @@ namespace Neumont.Tools.ORMAbstractionToConceptualDatabaseBridge
 			}
 			if (addNamePartCallback != null)
 			{
-				addNamePartCallback(possibleEntityType.GetAbbreviatedName(nameGenerator, true), null);
+				addNamePartCallback((possibleValueType ?? possibleEntityType).GetAbbreviatedName(nameGenerator, true), null);
 			}
 			return null;
 		}

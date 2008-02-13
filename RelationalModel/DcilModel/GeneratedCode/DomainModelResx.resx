@@ -821,6 +821,38 @@
     <value>Reference Constraints</value>
     <comment>PropertyDisplayName for DomainRole &apos;TargetTable&apos; on DomainRelationship &apos;ReferenceConstraintTargetsTable&apos;</comment>
   </data>
+  <data name="Neumont.Tools.RelationalModels.ConceptualDatabase.ReferenceConstraintTargetsUniquenessConstraint.Description" xml:space="preserve">
+    <value>Description for Neumont.Tools.RelationalModels.ConceptualDatabase.ReferenceConstraintTargetsUniquenessConstraint</value>
+    <comment>Description for DomainClass &apos;ReferenceConstraintTargetsUniquenessConstraint&apos;</comment>
+  </data>
+  <data name="Neumont.Tools.RelationalModels.ConceptualDatabase.ReferenceConstraintTargetsUniquenessConstraint.DisplayName" xml:space="preserve">
+    <value>Reference Constraint Targets Uniqueness Constraint</value>
+    <comment>DisplayName for DomainClass &apos;ReferenceConstraintTargetsUniquenessConstraint&apos;</comment>
+  </data>
+  <data name="Neumont.Tools.RelationalModels.ConceptualDatabase.ReferenceConstraintTargetsUniquenessConstraint/ReferenceConstraint.Description" xml:space="preserve">
+    <value>Description for Neumont.Tools.RelationalModels.ConceptualDatabase.ReferenceConstraintTargetsUniquenessConstraint.ReferenceConstraint</value>
+    <comment>Description for DomainRole &apos;ReferenceConstraint&apos; on DomainRelationship &apos;ReferenceConstraintTargetsUniquenessConstraint&apos;</comment>
+  </data>
+  <data name="Neumont.Tools.RelationalModels.ConceptualDatabase.ReferenceConstraintTargetsUniquenessConstraint/ReferenceConstraint.DisplayName" xml:space="preserve">
+    <value>Reference Constraint</value>
+    <comment>DisplayName for DomainRole &apos;ReferenceConstraint&apos; on DomainRelationship &apos;ReferenceConstraintTargetsUniquenessConstraint&apos;</comment>
+  </data>
+  <data name="Neumont.Tools.RelationalModels.ConceptualDatabase.ReferenceConstraintTargetsUniquenessConstraint/ReferenceConstraint.PropertyDisplayName" xml:space="preserve">
+    <value>Target Uniqueness Constraint</value>
+    <comment>PropertyDisplayName for DomainRole &apos;ReferenceConstraint&apos; on DomainRelationship &apos;ReferenceConstraintTargetsUniquenessConstraint&apos;</comment>
+  </data>
+  <data name="Neumont.Tools.RelationalModels.ConceptualDatabase.ReferenceConstraintTargetsUniquenessConstraint/TargetUniquenessConstraint.Description" xml:space="preserve">
+    <value>Description for Neumont.Tools.RelationalModels.ConceptualDatabase.ReferenceConstraintTargetsUniquenessConstraint.TargetUniquenessConstraint</value>
+    <comment>Description for DomainRole &apos;TargetUniquenessConstraint&apos; on DomainRelationship &apos;ReferenceConstraintTargetsUniquenessConstraint&apos;</comment>
+  </data>
+  <data name="Neumont.Tools.RelationalModels.ConceptualDatabase.ReferenceConstraintTargetsUniquenessConstraint/TargetUniquenessConstraint.DisplayName" xml:space="preserve">
+    <value>Target Uniqueness Constraint</value>
+    <comment>DisplayName for DomainRole &apos;TargetUniquenessConstraint&apos; on DomainRelationship &apos;ReferenceConstraintTargetsUniquenessConstraint&apos;</comment>
+  </data>
+  <data name="Neumont.Tools.RelationalModels.ConceptualDatabase.ReferenceConstraintTargetsUniquenessConstraint/TargetUniquenessConstraint.PropertyDisplayName" xml:space="preserve">
+    <value>Reference Constraint Collection</value>
+    <comment>PropertyDisplayName for DomainRole &apos;TargetUniquenessConstraint&apos; on DomainRelationship &apos;ReferenceConstraintTargetsUniquenessConstraint&apos;</comment>
+  </data>
   <data name="Neumont.Tools.RelationalModels.ConceptualDatabase.ColumnReference.Description" xml:space="preserve">
     <value>Description for Neumont.Tools.RelationalModels.ConceptualDatabase.ColumnReference</value>
     <comment>Description for DomainClass &apos;ColumnReference&apos;</comment>

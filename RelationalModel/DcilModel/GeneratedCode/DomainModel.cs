@@ -89,6 +89,7 @@ namespace Neumont.Tools.RelationalModels.ConceptualDatabase
 				typeof(DomainHasPredefinedDataType),
 				typeof(UniquenessConstraintIncludesColumn),
 				typeof(ReferenceConstraintTargetsTable),
+				typeof(ReferenceConstraintTargetsUniquenessConstraint),
 				typeof(ColumnReference),
 				typeof(ReferenceConstraintContainsColumnReference),
 			};
@@ -157,6 +158,8 @@ namespace Neumont.Tools.RelationalModels.ConceptualDatabase
 				new DomainRolePlayerInfo(typeof(UniquenessConstraintIncludesColumn), "Column", UniquenessConstraintIncludesColumn.ColumnDomainRoleId),
 				new DomainRolePlayerInfo(typeof(ReferenceConstraintTargetsTable), "ReferenceConstraint", ReferenceConstraintTargetsTable.ReferenceConstraintDomainRoleId),
 				new DomainRolePlayerInfo(typeof(ReferenceConstraintTargetsTable), "TargetTable", ReferenceConstraintTargetsTable.TargetTableDomainRoleId),
+				new DomainRolePlayerInfo(typeof(ReferenceConstraintTargetsUniquenessConstraint), "ReferenceConstraint", ReferenceConstraintTargetsUniquenessConstraint.ReferenceConstraintDomainRoleId),
+				new DomainRolePlayerInfo(typeof(ReferenceConstraintTargetsUniquenessConstraint), "TargetUniquenessConstraint", ReferenceConstraintTargetsUniquenessConstraint.TargetUniquenessConstraintDomainRoleId),
 				new DomainRolePlayerInfo(typeof(ColumnReference), "SourceColumn", ColumnReference.SourceColumnDomainRoleId),
 				new DomainRolePlayerInfo(typeof(ColumnReference), "TargetColumn", ColumnReference.TargetColumnDomainRoleId),
 				new DomainRolePlayerInfo(typeof(ReferenceConstraintContainsColumnReference), "ReferenceConstraint", ReferenceConstraintContainsColumnReference.ReferenceConstraintDomainRoleId),
@@ -230,7 +233,7 @@ namespace Neumont.Tools.RelationalModels.ConceptualDatabase
 	
 			if (createElementLinkMap == null)
 			{
-				createElementLinkMap = new global::System.Collections.Generic.Dictionary<global::System.Type, int>(17);
+				createElementLinkMap = new global::System.Collections.Generic.Dictionary<global::System.Type, int>(18);
 				createElementLinkMap.Add(typeof(CatalogContainsSchema), 0);
 				createElementLinkMap.Add(typeof(SchemaContainsTable), 1);
 				createElementLinkMap.Add(typeof(SchemaContainsDomain), 2);
@@ -244,8 +247,9 @@ namespace Neumont.Tools.RelationalModels.ConceptualDatabase
 				createElementLinkMap.Add(typeof(DomainHasPredefinedDataType), 10);
 				createElementLinkMap.Add(typeof(UniquenessConstraintIncludesColumn), 11);
 				createElementLinkMap.Add(typeof(ReferenceConstraintTargetsTable), 12);
-				createElementLinkMap.Add(typeof(ColumnReference), 13);
-				createElementLinkMap.Add(typeof(ReferenceConstraintContainsColumnReference), 14);
+				createElementLinkMap.Add(typeof(ReferenceConstraintTargetsUniquenessConstraint), 13);
+				createElementLinkMap.Add(typeof(ColumnReference), 14);
+				createElementLinkMap.Add(typeof(ReferenceConstraintContainsColumnReference), 15);
 			}
 			int index;
 			if (!createElementLinkMap.TryGetValue(elementLinkType, out index))
@@ -267,8 +271,9 @@ namespace Neumont.Tools.RelationalModels.ConceptualDatabase
 				case 10: return new DomainHasPredefinedDataType(partition, roleAssignments, propertyAssignments);
 				case 11: return new UniquenessConstraintIncludesColumn(partition, roleAssignments, propertyAssignments);
 				case 12: return new ReferenceConstraintTargetsTable(partition, roleAssignments, propertyAssignments);
-				case 13: return new ColumnReference(partition, roleAssignments, propertyAssignments);
-				case 14: return new ReferenceConstraintContainsColumnReference(partition, roleAssignments, propertyAssignments);
+				case 13: return new ReferenceConstraintTargetsUniquenessConstraint(partition, roleAssignments, propertyAssignments);
+				case 14: return new ColumnReference(partition, roleAssignments, propertyAssignments);
+				case 15: return new ReferenceConstraintContainsColumnReference(partition, roleAssignments, propertyAssignments);
 				default: return null;
 			}
 		}
@@ -417,6 +422,7 @@ namespace Neumont.Tools.RelationalModels.ConceptualDatabase
 			DomainRoles.Add(global::Neumont.Tools.RelationalModels.ConceptualDatabase.DomainContainsCheckConstraint.CheckConstraintDomainRoleId, true);
 			DomainRoles.Add(global::Neumont.Tools.RelationalModels.ConceptualDatabase.ColumnHasPredefinedDataType.PredefinedDataTypeDomainRoleId, true);
 			DomainRoles.Add(global::Neumont.Tools.RelationalModels.ConceptualDatabase.ReferenceConstraintTargetsTable.ReferenceConstraintDomainRoleId, true);
+			DomainRoles.Add(global::Neumont.Tools.RelationalModels.ConceptualDatabase.ReferenceConstraintTargetsUniquenessConstraint.ReferenceConstraintDomainRoleId, true);
 			DomainRoles.Add(global::Neumont.Tools.RelationalModels.ConceptualDatabase.ReferenceConstraintContainsColumnReference.ColumnReferenceDomainRoleId, true);
 			#endregion
 		}

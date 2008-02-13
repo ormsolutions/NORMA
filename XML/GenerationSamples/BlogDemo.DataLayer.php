@@ -1,12 +1,12 @@
 ﻿<?php
 static class DataAccessBase {
 	static $params = null;
-	
+	// <summary>Gets the appropriate data adapter for the current database configuration</summary>
 	public static function getDataAdapter() {
 		return Zend_Db::factory(getpdoType(), getparams());
 	}
 	private static function get() {
-		if (params == null) {
+		if (params === null) {
 			params = array();
 			params["host"] = "";
 			params["username"] = "";
@@ -16,7 +16,7 @@ static class DataAccessBase {
 		return params;
 	}
 	private static function getpdoType() {
-		if (pdoType == null) {
+		if (pdoType === null) {
 			pdoType = "PDO_MYSQL";
 		}
 		return pdoType;
@@ -28,16 +28,16 @@ if (!class_exists('DataAccess')) {
 }
 class BlogEntryLabelDaoBase {
 	private static $instance;
-	
+	// <summary>Instantiates a new instance of BlogEntryLabelDao</summary>
 	public function __construct() {
 	}
 	public static function getInstance() {
-		if (!(isset(instance))) {
+		if (!isset(instance)) {
 			instance = new BlogEntryLabelDao();
 		}
 		return instance;
 	}
-	
+	// <summary>Retrieves the entire collection of BlogEntryLabel objects</summary>
 	public function getAll() {
 		try {
 			$retVal = null;
@@ -59,7 +59,7 @@ class BlogEntryLabelDaoBase {
 			return null;
 		}
 	}
-	
+	// <summary>Retrieves the specified BlogEntryLabelobject from the database</summary>
 	public function getSingle(/*decimal*/ $BlogEntry_Id, /*int*/ $BlogLabel_Id) {
 		try {
 			$retVal = new BlogEntryLabel();
@@ -78,7 +78,7 @@ class BlogEntryLabelDaoBase {
 			return null;
 		}
 	}
-	
+	// <summary>Inserts the given BlogEntryLabel object into the database</summary>
 	public function insert(BlogEntryLabel $BlogEntryLabel) {
 		$retVal = false;
 		try {
@@ -92,7 +92,7 @@ class BlogEntryLabelDaoBase {
 		}
 		return $retVal;
 	}
-	
+	// <summary>Updates the given BlogEntryLabel object in the database</summary>
 	public function update(BlogEntryLabel $BlogEntryLabel) {
 		$retVal = false;
 		try {
@@ -100,19 +100,19 @@ class BlogEntryLabelDaoBase {
 			$dataArray = array();
 			$dataArray["blogEntryId"] = $BlogEntryLabel->getBlogEntry_Id();
 			$dataArray["blogLabelId"] = $BlogEntryLabel->getBlogLabel_Id();
-			$whereClause = $db->quoteInto("BlogEntry_Id = ?", $BlogEntryLabel->getBlogEntry_Id()).$db->quoteInto("BlogLabel_Id = ?", $BlogEntryLabel->getBlogLabel_Id());
+			$whereClause = $db->quoteInto("BlogEntry_Id = ?", $BlogEntryLabel->getBlogEntry_Id()) . $db->quoteInto("BlogLabel_Id = ?", $BlogEntryLabel->getBlogLabel_Id());
 			$nrRowsAffected = $db->update("BlogEntryLabel", $dataArray, $whereClause);
 		}
 		catch (Exception $exc) {
 		}
 		return $retVal;
 	}
-	
+	// <summary>Deletes the given BlogEntryLabel object from the database</summary>
 	public function delete(BlogEntryLabel $BlogEntryLabel) {
 		$retVal = false;
 		try {
 			$db = DataAccess::getDataAdapter();
-			$whereClause = $db->quoteInto("BlogEntry_Id = ?", $BlogEntryLabel->getBlogEntry_Id()).$db->quoteInto("BlogLabel_Id = ?", $BlogEntryLabel->getBlogLabel_Id());
+			$whereClause = $db->quoteInto("BlogEntry_Id = ?", $BlogEntryLabel->getBlogEntry_Id()) . $db->quoteInto("BlogLabel_Id = ?", $BlogEntryLabel->getBlogLabel_Id());
 			$nrRowsAffected = $db->delete("BlogEntryLabel", $whereClause);
 		}
 		catch (Exception $exc) {
@@ -129,16 +129,16 @@ if (!class_exists('BlogEntryLabelDao')) {
 }
 class BlogEntryDaoBase {
 	private static $instance;
-	
+	// <summary>Instantiates a new instance of BlogEntryDao</summary>
 	public function __construct() {
 	}
 	public static function getInstance() {
-		if (!(isset(instance))) {
+		if (!isset(instance)) {
 			instance = new BlogEntryDao();
 		}
 		return instance;
 	}
-	
+	// <summary>Retrieves the entire collection of BlogEntry objects</summary>
 	public function getAll() {
 		try {
 			$retVal = null;
@@ -163,7 +163,7 @@ class BlogEntryDaoBase {
 			return null;
 		}
 	}
-	
+	// <summary>Retrieves the specified BlogEntryobject from the database</summary>
 	public function getSingle(/*decimal*/ $BlogEntry_Id) {
 		try {
 			$retVal = new BlogEntry();
@@ -184,7 +184,7 @@ class BlogEntryDaoBase {
 			return null;
 		}
 	}
-	
+	// <summary>Inserts the given BlogEntry object into the database</summary>
 	public function insert(BlogEntry $BlogEntry) {
 		$retVal = false;
 		try {
@@ -200,7 +200,7 @@ class BlogEntryDaoBase {
 		}
 		return $retVal;
 	}
-	
+	// <summary>Updates the given BlogEntry object in the database</summary>
 	public function update(BlogEntry $BlogEntry) {
 		$retVal = false;
 		try {
@@ -217,7 +217,7 @@ class BlogEntryDaoBase {
 		}
 		return $retVal;
 	}
-	
+	// <summary>Deletes the given BlogEntry object from the database</summary>
 	public function delete(BlogEntry $BlogEntry) {
 		$retVal = false;
 		try {
@@ -262,16 +262,16 @@ if (!class_exists('BlogEntryDao')) {
 }
 class BlogCommentDaoBase {
 	private static $instance;
-	
+	// <summary>Instantiates a new instance of BlogCommentDao</summary>
 	public function __construct() {
 	}
 	public static function getInstance() {
-		if (!(isset(instance))) {
+		if (!isset(instance)) {
 			instance = new BlogCommentDao();
 		}
 		return instance;
 	}
-	
+	// <summary>Retrieves the entire collection of BlogComment objects</summary>
 	public function getAll() {
 		try {
 			$retVal = null;
@@ -296,7 +296,7 @@ class BlogCommentDaoBase {
 			return null;
 		}
 	}
-	
+	// <summary>Retrieves the specified BlogCommentobject from the database</summary>
 	public function getSingle(/*decimal*/ $BlogEntry_Id) {
 		try {
 			$retVal = new BlogComment();
@@ -317,7 +317,7 @@ class BlogCommentDaoBase {
 			return null;
 		}
 	}
-	
+	// <summary>Inserts the given BlogComment object into the database</summary>
 	public function insert(BlogComment $BlogComment) {
 		$retVal = false;
 		try {
@@ -333,7 +333,7 @@ class BlogCommentDaoBase {
 		}
 		return $retVal;
 	}
-	
+	// <summary>Updates the given BlogComment object in the database</summary>
 	public function update(BlogComment $BlogComment) {
 		$retVal = false;
 		try {
@@ -350,7 +350,7 @@ class BlogCommentDaoBase {
 		}
 		return $retVal;
 	}
-	
+	// <summary>Deletes the given BlogComment object from the database</summary>
 	public function delete(BlogComment $BlogComment) {
 		$retVal = false;
 		try {
@@ -372,16 +372,16 @@ if (!class_exists('BlogCommentDao')) {
 }
 class NonCommentEntryDaoBase {
 	private static $instance;
-	
+	// <summary>Instantiates a new instance of NonCommentEntryDao</summary>
 	public function __construct() {
 	}
 	public static function getInstance() {
-		if (!(isset(instance))) {
+		if (!isset(instance)) {
 			instance = new NonCommentEntryDao();
 		}
 		return instance;
 	}
-	
+	// <summary>Retrieves the entire collection of NonCommentEntry objects</summary>
 	public function getAll() {
 		try {
 			$retVal = null;
@@ -406,7 +406,7 @@ class NonCommentEntryDaoBase {
 			return null;
 		}
 	}
-	
+	// <summary>Retrieves the specified NonCommentEntryobject from the database</summary>
 	public function getSingle(/*decimal*/ $BlogEntry_Id) {
 		try {
 			$retVal = new NonCommentEntry();
@@ -427,7 +427,7 @@ class NonCommentEntryDaoBase {
 			return null;
 		}
 	}
-	
+	// <summary>Inserts the given NonCommentEntry object into the database</summary>
 	public function insert(NonCommentEntry $NonCommentEntry) {
 		$retVal = false;
 		try {
@@ -443,7 +443,7 @@ class NonCommentEntryDaoBase {
 		}
 		return $retVal;
 	}
-	
+	// <summary>Updates the given NonCommentEntry object in the database</summary>
 	public function update(NonCommentEntry $NonCommentEntry) {
 		$retVal = false;
 		try {
@@ -460,7 +460,7 @@ class NonCommentEntryDaoBase {
 		}
 		return $retVal;
 	}
-	
+	// <summary>Deletes the given NonCommentEntry object from the database</summary>
 	public function delete(NonCommentEntry $NonCommentEntry) {
 		$retVal = false;
 		try {
@@ -508,16 +508,16 @@ if (!class_exists('NonCommentEntryDao')) {
 }
 class UserDaoBase {
 	private static $instance;
-	
+	// <summary>Instantiates a new instance of UserDao</summary>
 	public function __construct() {
 	}
 	public static function getInstance() {
-		if (!(isset(instance))) {
+		if (!isset(instance)) {
 			instance = new UserDao();
 		}
 		return instance;
 	}
-	
+	// <summary>Retrieves the entire collection of User objects</summary>
 	public function getAll() {
 		try {
 			$retVal = null;
@@ -541,7 +541,7 @@ class UserDaoBase {
 			return null;
 		}
 	}
-	
+	// <summary>Retrieves the specified Userobject from the database</summary>
 	public function getSingle(/*string*/ $firstName, /*string*/ $lastName) {
 		try {
 			$retVal = new User();
@@ -562,7 +562,7 @@ class UserDaoBase {
 			return null;
 		}
 	}
-	
+	// <summary>Inserts the given User object into the database</summary>
 	public function insert(User $User) {
 		$retVal = false;
 		try {
@@ -578,7 +578,7 @@ class UserDaoBase {
 		}
 		return $retVal;
 	}
-	
+	// <summary>Updates the given User object in the database</summary>
 	public function update(User $User) {
 		$retVal = false;
 		try {
@@ -588,19 +588,19 @@ class UserDaoBase {
 			$dataArray["lastName"] = $User->getlastName();
 			$dataArray["username"] = $User->getusername();
 			$dataArray["password"] = $User->getpassword();
-			$whereClause = $db->quoteInto("firstName = ?", $User->getfirstName()).$db->quoteInto("lastName = ?", $User->getlastName());
+			$whereClause = $db->quoteInto("firstName = ?", $User->getfirstName()) . $db->quoteInto("lastName = ?", $User->getlastName());
 			$nrRowsAffected = $db->update("User", $dataArray, $whereClause);
 		}
 		catch (Exception $exc) {
 		}
 		return $retVal;
 	}
-	
+	// <summary>Deletes the given User object from the database</summary>
 	public function delete(User $User) {
 		$retVal = false;
 		try {
 			$db = DataAccess::getDataAdapter();
-			$whereClause = $db->quoteInto("firstName = ?", $User->getfirstName()).$db->quoteInto("lastName = ?", $User->getlastName());
+			$whereClause = $db->quoteInto("firstName = ?", $User->getfirstName()) . $db->quoteInto("lastName = ?", $User->getlastName());
 			$nrRowsAffected = $db->delete("User", $whereClause);
 		}
 		catch (Exception $exc) {
@@ -644,16 +644,16 @@ if (!class_exists('UserDao')) {
 }
 class BlogLabelDaoBase {
 	private static $instance;
-	
+	// <summary>Instantiates a new instance of BlogLabelDao</summary>
 	public function __construct() {
 	}
 	public static function getInstance() {
-		if (!(isset(instance))) {
+		if (!isset(instance)) {
 			instance = new BlogLabelDao();
 		}
 		return instance;
 	}
-	
+	// <summary>Retrieves the entire collection of BlogLabel objects</summary>
 	public function getAll() {
 		try {
 			$retVal = null;
@@ -674,7 +674,7 @@ class BlogLabelDaoBase {
 			return null;
 		}
 	}
-	
+	// <summary>Retrieves the specified BlogLabelobject from the database</summary>
 	public function getSingle(/*int*/ $BlogLabel_Id) {
 		try {
 			$retVal = new BlogLabel();
@@ -691,7 +691,7 @@ class BlogLabelDaoBase {
 			return null;
 		}
 	}
-	
+	// <summary>Inserts the given BlogLabel object into the database</summary>
 	public function insert(BlogLabel $BlogLabel) {
 		$retVal = false;
 		try {
@@ -705,7 +705,7 @@ class BlogLabelDaoBase {
 		}
 		return $retVal;
 	}
-	
+	// <summary>Updates the given BlogLabel object in the database</summary>
 	public function update(BlogLabel $BlogLabel) {
 		$retVal = false;
 		try {
@@ -720,7 +720,7 @@ class BlogLabelDaoBase {
 		}
 		return $retVal;
 	}
-	
+	// <summary>Deletes the given BlogLabel object from the database</summary>
 	public function delete(BlogLabel $BlogLabel) {
 		$retVal = false;
 		try {

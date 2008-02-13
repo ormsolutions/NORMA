@@ -254,8 +254,7 @@
       <AutoGen>True</AutoGen>
       <DependentUpon>SampleModel.orm</DependentUpon>
       <ORMGenerator>OIALtoXSD</ORMGenerator>
-      <SubType>
-      </SubType>
+      <SubType>Designer</SubType>
     </None>
   </ItemGroup>
   <ItemGroup Condition="Exists('PersonCountryDemo.orm')">

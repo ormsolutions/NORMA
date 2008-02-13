@@ -90,6 +90,7 @@
 				<oil:typeRef targetConceptType="PersonDrivesCar" targetChild="DrivenByPerson" />
 			</oil:roleSequence>
 		</oil:roleSequenceUniquenessConstraint>
+		<!--WARNING: There once was an external constraint here. There isn't any more. It was of type "MandatoryConstraint", and named "ImpliedMandatoryConstraint10".-->
 	</oil:conceptType>
 	<oil:conceptType name="PersonHasNickName" sourceRef="_47B9564D-4556-42D6-B812-BCD5582F3AF3">
 		<oil:informationType name="NickName" formatRef="NickName" mandatory="alethic" sourceRef="_F413808F-22D4-49FD-9FAB-716C48ECE383" sourceRoleRef="_7CD796B9-EEBF-4288-8EA1-9F83EA16D684" />
@@ -152,6 +153,7 @@
 			<oil:informationType name="Date_YMD" formatRef="YMD" mandatory="false" sourceRef="_4907AECD-F205-4A81-BD0F-4ACFB1F99682" sourceRoleRef="_0AE5870D-43CB-45E4-B252-5B06DA9A5443" />
 			<oil:informationType name="DeathCause_DeathCause_Type" formatRef="DeathCause_Type" mandatory="alethic" sourceRef="_C0DC452E-A5F4-440D-9474-84D3BD7CBFBF" sourceRoleRef="_90A1343B-5AFD-4EDF-ABF3-868915B25477" />
 			<oil:informationType name="isDead" formatRef="PersonisDead" mandatory="alethic" sourceRef="_F461B35C-B36B-4219-8DF3-2E92A73F424F" sourceRoleRef="_F00C59DE-7777-4625-8CA0-B405D9EB07AF" />
+			<!--WARNING: There once was an external constraint here. There isn't any more. It was of type "MandatoryConstraint", and named "ImpliedMandatoryConstraint2".-->
 		</oil:conceptType>
 		<oil:informationType name="Gender_Gender_Code" formatRef="Gender_Code" mandatory="alethic" sourceRef="_FF723148-C1AB-4835-84CD-996B28BC4027" sourceRoleRef="_94C9DD40-B34A-4BF7-A0B8-CAEA067FF7A0" />
 		<oil:informationType name="hasParents" formatRef="PersonhasParents" mandatory="false" sourceRef="_B3958780-E433-4992-963B-E34C33E62DB7" sourceRoleRef="_65D25484-9FF7-407D-B870-B628A66A5A0F" />
@@ -197,6 +199,9 @@
 				<oil:typeRef targetConceptType="Person" targetChild="Date_YMD" />
 			</oil:roleSequence>
 		</oil:roleSequenceUniquenessConstraint>
+		<!--WARNING: There once was an external constraint here. There isn't any more. It was of type "MandatoryConstraint", and named "ImpliedMandatoryConstraint2".-->
+		<!--WARNING: There once was an external constraint here. There isn't any more. It was of type "MandatoryConstraint", and named "ImpliedMandatoryConstraint10".-->
+		<!--WARNING: There once was an external constraint here. There isn't any more. It was of type "MandatoryConstraint", and named "ImpliedMandatoryConstraint19".-->
 	</oil:conceptType>
 	<oil:conceptType name="Task" sourceRef="_779E9788-0C2F-44B6-B958-AEEC22593966">
 		<oil:conceptTypeRef name="Person" target="Person" oppositeName="Task" mandatory="false" sourceRoleRef="_FB7333FB-CE11-4A31-B7DE-6F20958A525A" />
@@ -242,6 +247,8 @@
 				<oil:typeRef targetConceptType="PersonBoughtCarFromPersonOnDate" targetChild="Buyer" />
 			</oil:roleSequence>
 		</oil:roleSequenceUniquenessConstraint>
+		<!--WARNING: There once was an external constraint here. There isn't any more. It was of type "MandatoryConstraint", and named "ImpliedMandatoryConstraint2".-->
+		<!--WARNING: There once was an external constraint here. There isn't any more. It was of type "MandatoryConstraint", and named "ImpliedMandatoryConstraint10".-->
 	</oil:conceptType>
 	<oil:conceptType name="Review" sourceRef="_5FF87171-44B6-47E0-BBF9-D88E6CD44AEC">
 		<oil:informationType name="Car_vin" formatRef="vin" mandatory="alethic" sourceRef="_C36502F8-858D-4FB9-B9C2-445EE1EFBD92" sourceRoleRef="_6E16C61A-BFC0-434F-A7F7-FC6CF51EF094" />
@@ -253,5 +260,6 @@
 				<oil:typeRef targetConceptType="Review" targetChild="Criterion_Name" />
 			</oil:roleSequence>
 		</oil:roleSequenceUniquenessConstraint>
+		<!--WARNING: There once was an external constraint here. There isn't any more. It was of type "MandatoryConstraint", and named "ImpliedMandatoryConstraint10".-->
 	</oil:conceptType>
 </oil:model>

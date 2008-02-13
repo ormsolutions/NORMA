@@ -1,19 +1,19 @@
 ﻿CREATE TABLE Person
 (
-	Person_id INTEGERAUTO_INCREMENT  NOT NULL, 
-	LastName VARCHAR(30)  NOT NULL,
-	FirstName VARCHAR(30)  NOT NULL,
-	Title VARCHAR(4) ,
-	Country_name VARCHAR(20) ,
-	CONSTRAINT InternalUniquenessConstraint1 PRIMARY KEY(Person_id)
+	person_Id INT AUTO_INCREMENT NOT NULL,
+	lastName VARCHAR(30) NOT NULL,
+	firstName VARCHAR(30) NOT NULL,
+	title VARCHAR(4),
+	country_Name VARCHAR(20),
+	CONSTRAINT InternalUniquenessConstraint1 PRIMARY KEY(person_Id)
 );
 
 CREATE TABLE Country
 (
-	Country_name VARCHAR(20)  NOT NULL,
-	Region_code CHAR(8) ,
-	CONSTRAINT InternalUniquenessConstraint3 PRIMARY KEY(Country_name)
+	country_Name VARCHAR(20) NOT NULL,
+	region_Code CHAR(8),
+	CONSTRAINT InternalUniquenessConstraint3 PRIMARY KEY(country_Name)
 );
 
-ALTER TABLE Person ADD CONSTRAINT Person_FK FOREIGN KEY (Country_name)  REFERENCES Country (Country_name)  ON DELETE RESTRICT ON UPDATE RESTRICT;
+ALTER TABLE Person ADD CONSTRAINT Person_FK FOREIGN KEY (country_Name)  REFERENCES Country (country_Name)  ON DELETE RESTRICT ON UPDATE RESTRICT;
 

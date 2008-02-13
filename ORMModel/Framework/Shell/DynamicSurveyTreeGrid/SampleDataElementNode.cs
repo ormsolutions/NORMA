@@ -25,7 +25,7 @@ namespace Neumont.Tools.Modeling.Shell.DynamicSurveyTreeGrid
 	partial class SurveyTree
 	{
 		/// <summary>
-		/// wrapper for objects to be dispalyed in the Survey Tree
+		/// wrapper for objects to be displayed in the Survey Tree
 		/// </summary>
 		[DebuggerDisplay("{myDisplayText} {(myElement != null) ? myElement.GetType().Name : @\"\"\"\"}")]
 		private struct SampleDataElementNode : IEquatable<SampleDataElementNode>
@@ -33,6 +33,7 @@ namespace Neumont.Tools.Modeling.Shell.DynamicSurveyTreeGrid
 			#region Member Variables
 			private readonly object myElement;
 			private int myNodeData;
+			private object myCustomSortData; // Cache this so we can do a custom sort based on a snapshot, not current state
 			private string myDisplayText; // Cache this so it is fast and stable over time
 			#endregion // Member Variables
 			#region Constructors
@@ -40,13 +41,13 @@ namespace Neumont.Tools.Modeling.Shell.DynamicSurveyTreeGrid
 			/// public constructor
 			/// </summary>
 			public SampleDataElementNode(object element)
-				: this(element, 0)
+				: this(element, 0, null, null)
 			{
 			}
 			/// <summary>
 			/// public constructor
 			/// </summary>
-			public SampleDataElementNode(object element, int nodeData)
+			public SampleDataElementNode(object element, int nodeData, string displayText, object customSortData)
 			{
 				if (element == null)
 				{
@@ -54,8 +55,21 @@ namespace Neumont.Tools.Modeling.Shell.DynamicSurveyTreeGrid
 				}
 				myElement = element;
 				myNodeData = nodeData;
-				ISurveyNode node = element as ISurveyNode;
-				myDisplayText = (node != null) ? node.SurveyName : element.ToString();
+				myDisplayText = displayText;
+				if (displayText == null)
+				{
+					ISurveyNode node = element as ISurveyNode;
+					myDisplayText = (node != null) ? node.SurveyName : element.ToString();
+				}
+				myCustomSortData = customSortData;
+				if (null == customSortData)
+				{
+					ICustomComparableSurveyNode customCompare = element as ICustomComparableSurveyNode;
+					if (null != customCompare)
+					{
+						customCompare.ResetCustomSortData(ref myCustomSortData);
+					}
+				}
 			}
 			#endregion // Constructors
 			#region Accessor Properties
@@ -81,6 +95,16 @@ namespace Neumont.Tools.Modeling.Shell.DynamicSurveyTreeGrid
 				private set
 				{
 					myNodeData = value;
+				}
+			}
+			/// <summary>
+			/// Get any custom sort data associated with this node
+			/// </summary>
+			public object CustomSortData
+			{
+				get
+				{
+					return myCustomSortData;
 				}
 			}
 			#endregion // Accessor Properties
@@ -163,7 +187,7 @@ namespace Neumont.Tools.Modeling.Shell.DynamicSurveyTreeGrid
 			/// <summary>See <see cref="IEquatable{SampleDataElementNode}.Equals"/>.</summary>
 			public bool Equals(SampleDataElementNode other)
 			{
-				return this.myElement == other.myElement && this.myNodeData == other.myNodeData && this.myDisplayText == other.myDisplayText;
+				return this.myElement == other.myElement && this.myNodeData == other.myNodeData && this.myDisplayText == other.myDisplayText && object.Equals(this.myCustomSortData, other.myCustomSortData);
 			}
 			/// <summary>
 			/// Returns whether <param name="left"/> is equal to <param name="right"/>, based on the
@@ -203,7 +227,6 @@ namespace Neumont.Tools.Modeling.Shell.DynamicSurveyTreeGrid
 						SurveyQuestion currentQuestion = survey[j];
 						int currentAnswer = currentQuestion.Question.AskQuestion(nodeElement);
 						data |= (currentAnswer << currentQuestion.Shift) & currentQuestion.Mask;
-
 					}
 					currentNode.NodeData = data;
 					nodeList[i] = currentNode;

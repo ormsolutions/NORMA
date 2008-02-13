@@ -56,7 +56,7 @@ namespace BlogDemo
 			get
 			{
 				System.Delegate[] localEvents;
-				return (localEvents = this._events) ?? (System.Threading.Interlocked.CompareExchange<System.Delegate[]>(ref this._events, localEvents = new System.Delegate[4], null) ?? localEvents);
+				return (localEvents = this._events) ?? System.Threading.Interlocked.CompareExchange<System.Delegate[]>(ref this._events, localEvents = new System.Delegate[4], null) ?? localEvents;
 			}
 		}
 		private static void InterlockedDelegateCombine(ref System.Delegate location, System.Delegate value)
@@ -85,7 +85,7 @@ namespace BlogDemo
 			remove
 			{
 				System.Delegate[] events;
-				if (((object)value != null) && ((object)(events = this._events) != null))
+				if ((object)value != null && (object)(events = this._events) != null)
 				{
 					BlogEntryLabel.InterlockedDelegateRemove(ref events[0], value);
 				}
@@ -95,7 +95,7 @@ namespace BlogDemo
 		{
 			System.Delegate[] events;
 			EventHandler<PropertyChangingEventArgs<BlogEntryLabel, BlogEntry>> eventHandler;
-			if (((object)(events = this._events) != null) && ((object)(eventHandler = (EventHandler<PropertyChangingEventArgs<BlogEntryLabel, BlogEntry>>)events[0]) != null))
+			if ((object)(events = this._events) != null && (object)(eventHandler = (EventHandler<PropertyChangingEventArgs<BlogEntryLabel, BlogEntry>>)events[0]) != null)
 			{
 				return EventHandlerUtility.InvokeCancelableEventHandler<PropertyChangingEventArgs<BlogEntryLabel, BlogEntry>>(eventHandler, this, new PropertyChangingEventArgs<BlogEntryLabel, BlogEntry>(this, "blogEntryId", this.blogEntryId, newValue));
 			}
@@ -113,7 +113,7 @@ namespace BlogDemo
 			remove
 			{
 				System.Delegate[] events;
-				if (((object)value != null) && ((object)(events = this._events) != null))
+				if ((object)value != null && (object)(events = this._events) != null)
 				{
 					BlogEntryLabel.InterlockedDelegateRemove(ref events[1], value);
 				}
@@ -123,7 +123,7 @@ namespace BlogDemo
 		{
 			System.Delegate[] events;
 			EventHandler<PropertyChangedEventArgs<BlogEntryLabel, BlogEntry>> eventHandler;
-			if (((object)(events = this._events) != null) && ((object)(eventHandler = (EventHandler<PropertyChangedEventArgs<BlogEntryLabel, BlogEntry>>)events[1]) != null))
+			if ((object)(events = this._events) != null && (object)(eventHandler = (EventHandler<PropertyChangedEventArgs<BlogEntryLabel, BlogEntry>>)events[1]) != null)
 			{
 				EventHandlerUtility.InvokeEventHandlerAsync<PropertyChangedEventArgs<BlogEntryLabel, BlogEntry>>(eventHandler, this, new PropertyChangedEventArgs<BlogEntryLabel, BlogEntry>(this, "blogEntryId", oldValue, this.blogEntryId), this._propertyChangedEventHandler);
 			}
@@ -144,7 +144,7 @@ namespace BlogDemo
 			remove
 			{
 				System.Delegate[] events;
-				if (((object)value != null) && ((object)(events = this._events) != null))
+				if ((object)value != null && (object)(events = this._events) != null)
 				{
 					BlogEntryLabel.InterlockedDelegateRemove(ref events[2], value);
 				}
@@ -154,7 +154,7 @@ namespace BlogDemo
 		{
 			System.Delegate[] events;
 			EventHandler<PropertyChangingEventArgs<BlogEntryLabel, BlogLabel>> eventHandler;
-			if (((object)(events = this._events) != null) && ((object)(eventHandler = (EventHandler<PropertyChangingEventArgs<BlogEntryLabel, BlogLabel>>)events[2]) != null))
+			if ((object)(events = this._events) != null && (object)(eventHandler = (EventHandler<PropertyChangingEventArgs<BlogEntryLabel, BlogLabel>>)events[2]) != null)
 			{
 				return EventHandlerUtility.InvokeCancelableEventHandler<PropertyChangingEventArgs<BlogEntryLabel, BlogLabel>>(eventHandler, this, new PropertyChangingEventArgs<BlogEntryLabel, BlogLabel>(this, "blogLabelId", this.blogLabelId, newValue));
 			}
@@ -172,7 +172,7 @@ namespace BlogDemo
 			remove
 			{
 				System.Delegate[] events;
-				if (((object)value != null) && ((object)(events = this._events) != null))
+				if ((object)value != null && (object)(events = this._events) != null)
 				{
 					BlogEntryLabel.InterlockedDelegateRemove(ref events[3], value);
 				}
@@ -182,7 +182,7 @@ namespace BlogDemo
 		{
 			System.Delegate[] events;
 			EventHandler<PropertyChangedEventArgs<BlogEntryLabel, BlogLabel>> eventHandler;
-			if (((object)(events = this._events) != null) && ((object)(eventHandler = (EventHandler<PropertyChangedEventArgs<BlogEntryLabel, BlogLabel>>)events[3]) != null))
+			if ((object)(events = this._events) != null && (object)(eventHandler = (EventHandler<PropertyChangedEventArgs<BlogEntryLabel, BlogLabel>>)events[3]) != null)
 			{
 				EventHandlerUtility.InvokeEventHandlerAsync<PropertyChangedEventArgs<BlogEntryLabel, BlogLabel>>(eventHandler, this, new PropertyChangedEventArgs<BlogEntryLabel, BlogLabel>(this, "blogLabelId", oldValue, this.blogLabelId), this._propertyChangedEventHandler);
 			}
@@ -273,7 +273,7 @@ namespace BlogDemo
 			get
 			{
 				System.Delegate[] localEvents;
-				return (localEvents = this._events) ?? (System.Threading.Interlocked.CompareExchange<System.Delegate[]>(ref this._events, localEvents = new System.Delegate[14], null) ?? localEvents);
+				return (localEvents = this._events) ?? System.Threading.Interlocked.CompareExchange<System.Delegate[]>(ref this._events, localEvents = new System.Delegate[14], null) ?? localEvents;
 			}
 		}
 		private static void InterlockedDelegateCombine(ref System.Delegate location, System.Delegate value)
@@ -302,7 +302,7 @@ namespace BlogDemo
 			remove
 			{
 				System.Delegate[] events;
-				if (((object)value != null) && ((object)(events = this._events) != null))
+				if ((object)value != null && (object)(events = this._events) != null)
 				{
 					BlogEntry.InterlockedDelegateRemove(ref events[0], value);
 				}
@@ -312,7 +312,7 @@ namespace BlogDemo
 		{
 			System.Delegate[] events;
 			EventHandler<PropertyChangingEventArgs<BlogEntry, int>> eventHandler;
-			if (((object)(events = this._events) != null) && ((object)(eventHandler = (EventHandler<PropertyChangingEventArgs<BlogEntry, int>>)events[0]) != null))
+			if ((object)(events = this._events) != null && (object)(eventHandler = (EventHandler<PropertyChangingEventArgs<BlogEntry, int>>)events[0]) != null)
 			{
 				return EventHandlerUtility.InvokeCancelableEventHandler<PropertyChangingEventArgs<BlogEntry, int>>(eventHandler, this, new PropertyChangingEventArgs<BlogEntry, int>(this, "BlogEntry_Id", this.BlogEntry_Id, newValue));
 			}
@@ -330,7 +330,7 @@ namespace BlogDemo
 			remove
 			{
 				System.Delegate[] events;
-				if (((object)value != null) && ((object)(events = this._events) != null))
+				if ((object)value != null && (object)(events = this._events) != null)
 				{
 					BlogEntry.InterlockedDelegateRemove(ref events[1], value);
 				}
@@ -340,7 +340,7 @@ namespace BlogDemo
 		{
 			System.Delegate[] events;
 			EventHandler<PropertyChangedEventArgs<BlogEntry, int>> eventHandler;
-			if (((object)(events = this._events) != null) && ((object)(eventHandler = (EventHandler<PropertyChangedEventArgs<BlogEntry, int>>)events[1]) != null))
+			if ((object)(events = this._events) != null && (object)(eventHandler = (EventHandler<PropertyChangedEventArgs<BlogEntry, int>>)events[1]) != null)
 			{
 				EventHandlerUtility.InvokeEventHandlerAsync<PropertyChangedEventArgs<BlogEntry, int>>(eventHandler, this, new PropertyChangedEventArgs<BlogEntry, int>(this, "BlogEntry_Id", oldValue, this.BlogEntry_Id), this._propertyChangedEventHandler);
 			}
@@ -361,7 +361,7 @@ namespace BlogDemo
 			remove
 			{
 				System.Delegate[] events;
-				if (((object)value != null) && ((object)(events = this._events) != null))
+				if ((object)value != null && (object)(events = this._events) != null)
 				{
 					BlogEntry.InterlockedDelegateRemove(ref events[2], value);
 				}
@@ -371,7 +371,7 @@ namespace BlogDemo
 		{
 			System.Delegate[] events;
 			EventHandler<PropertyChangingEventArgs<BlogEntry, string>> eventHandler;
-			if (((object)(events = this._events) != null) && ((object)(eventHandler = (EventHandler<PropertyChangingEventArgs<BlogEntry, string>>)events[2]) != null))
+			if ((object)(events = this._events) != null && (object)(eventHandler = (EventHandler<PropertyChangingEventArgs<BlogEntry, string>>)events[2]) != null)
 			{
 				return EventHandlerUtility.InvokeCancelableEventHandler<PropertyChangingEventArgs<BlogEntry, string>>(eventHandler, this, new PropertyChangingEventArgs<BlogEntry, string>(this, "entryTitle", this.entryTitle, newValue));
 			}
@@ -389,7 +389,7 @@ namespace BlogDemo
 			remove
 			{
 				System.Delegate[] events;
-				if (((object)value != null) && ((object)(events = this._events) != null))
+				if ((object)value != null && (object)(events = this._events) != null)
 				{
 					BlogEntry.InterlockedDelegateRemove(ref events[3], value);
 				}
@@ -399,7 +399,7 @@ namespace BlogDemo
 		{
 			System.Delegate[] events;
 			EventHandler<PropertyChangedEventArgs<BlogEntry, string>> eventHandler;
-			if (((object)(events = this._events) != null) && ((object)(eventHandler = (EventHandler<PropertyChangedEventArgs<BlogEntry, string>>)events[3]) != null))
+			if ((object)(events = this._events) != null && (object)(eventHandler = (EventHandler<PropertyChangedEventArgs<BlogEntry, string>>)events[3]) != null)
 			{
 				EventHandlerUtility.InvokeEventHandlerAsync<PropertyChangedEventArgs<BlogEntry, string>>(eventHandler, this, new PropertyChangedEventArgs<BlogEntry, string>(this, "entryTitle", oldValue, this.entryTitle), this._propertyChangedEventHandler);
 			}
@@ -420,7 +420,7 @@ namespace BlogDemo
 			remove
 			{
 				System.Delegate[] events;
-				if (((object)value != null) && ((object)(events = this._events) != null))
+				if ((object)value != null && (object)(events = this._events) != null)
 				{
 					BlogEntry.InterlockedDelegateRemove(ref events[4], value);
 				}
@@ -430,7 +430,7 @@ namespace BlogDemo
 		{
 			System.Delegate[] events;
 			EventHandler<PropertyChangingEventArgs<BlogEntry, string>> eventHandler;
-			if (((object)(events = this._events) != null) && ((object)(eventHandler = (EventHandler<PropertyChangingEventArgs<BlogEntry, string>>)events[4]) != null))
+			if ((object)(events = this._events) != null && (object)(eventHandler = (EventHandler<PropertyChangingEventArgs<BlogEntry, string>>)events[4]) != null)
 			{
 				return EventHandlerUtility.InvokeCancelableEventHandler<PropertyChangingEventArgs<BlogEntry, string>>(eventHandler, this, new PropertyChangingEventArgs<BlogEntry, string>(this, "entryBody", this.entryBody, newValue));
 			}
@@ -448,7 +448,7 @@ namespace BlogDemo
 			remove
 			{
 				System.Delegate[] events;
-				if (((object)value != null) && ((object)(events = this._events) != null))
+				if ((object)value != null && (object)(events = this._events) != null)
 				{
 					BlogEntry.InterlockedDelegateRemove(ref events[5], value);
 				}
@@ -458,7 +458,7 @@ namespace BlogDemo
 		{
 			System.Delegate[] events;
 			EventHandler<PropertyChangedEventArgs<BlogEntry, string>> eventHandler;
-			if (((object)(events = this._events) != null) && ((object)(eventHandler = (EventHandler<PropertyChangedEventArgs<BlogEntry, string>>)events[5]) != null))
+			if ((object)(events = this._events) != null && (object)(eventHandler = (EventHandler<PropertyChangedEventArgs<BlogEntry, string>>)events[5]) != null)
 			{
 				EventHandlerUtility.InvokeEventHandlerAsync<PropertyChangedEventArgs<BlogEntry, string>>(eventHandler, this, new PropertyChangedEventArgs<BlogEntry, string>(this, "entryBody", oldValue, this.entryBody), this._propertyChangedEventHandler);
 			}
@@ -479,7 +479,7 @@ namespace BlogDemo
 			remove
 			{
 				System.Delegate[] events;
-				if (((object)value != null) && ((object)(events = this._events) != null))
+				if ((object)value != null && (object)(events = this._events) != null)
 				{
 					BlogEntry.InterlockedDelegateRemove(ref events[6], value);
 				}
@@ -489,7 +489,7 @@ namespace BlogDemo
 		{
 			System.Delegate[] events;
 			EventHandler<PropertyChangingEventArgs<BlogEntry, int>> eventHandler;
-			if (((object)(events = this._events) != null) && ((object)(eventHandler = (EventHandler<PropertyChangingEventArgs<BlogEntry, int>>)events[6]) != null))
+			if ((object)(events = this._events) != null && (object)(eventHandler = (EventHandler<PropertyChangingEventArgs<BlogEntry, int>>)events[6]) != null)
 			{
 				return EventHandlerUtility.InvokeCancelableEventHandler<PropertyChangingEventArgs<BlogEntry, int>>(eventHandler, this, new PropertyChangingEventArgs<BlogEntry, int>(this, "postedDate_MDYValue", this.postedDate_MDYValue, newValue));
 			}
@@ -507,7 +507,7 @@ namespace BlogDemo
 			remove
 			{
 				System.Delegate[] events;
-				if (((object)value != null) && ((object)(events = this._events) != null))
+				if ((object)value != null && (object)(events = this._events) != null)
 				{
 					BlogEntry.InterlockedDelegateRemove(ref events[7], value);
 				}
@@ -517,7 +517,7 @@ namespace BlogDemo
 		{
 			System.Delegate[] events;
 			EventHandler<PropertyChangedEventArgs<BlogEntry, int>> eventHandler;
-			if (((object)(events = this._events) != null) && ((object)(eventHandler = (EventHandler<PropertyChangedEventArgs<BlogEntry, int>>)events[7]) != null))
+			if ((object)(events = this._events) != null && (object)(eventHandler = (EventHandler<PropertyChangedEventArgs<BlogEntry, int>>)events[7]) != null)
 			{
 				EventHandlerUtility.InvokeEventHandlerAsync<PropertyChangedEventArgs<BlogEntry, int>>(eventHandler, this, new PropertyChangedEventArgs<BlogEntry, int>(this, "postedDate_MDYValue", oldValue, this.postedDate_MDYValue), this._propertyChangedEventHandler);
 			}
@@ -538,7 +538,7 @@ namespace BlogDemo
 			remove
 			{
 				System.Delegate[] events;
-				if (((object)value != null) && ((object)(events = this._events) != null))
+				if ((object)value != null && (object)(events = this._events) != null)
 				{
 					BlogEntry.InterlockedDelegateRemove(ref events[8], value);
 				}
@@ -548,7 +548,7 @@ namespace BlogDemo
 		{
 			System.Delegate[] events;
 			EventHandler<PropertyChangingEventArgs<BlogEntry, User>> eventHandler;
-			if (((object)(events = this._events) != null) && ((object)(eventHandler = (EventHandler<PropertyChangingEventArgs<BlogEntry, User>>)events[8]) != null))
+			if ((object)(events = this._events) != null && (object)(eventHandler = (EventHandler<PropertyChangingEventArgs<BlogEntry, User>>)events[8]) != null)
 			{
 				return EventHandlerUtility.InvokeCancelableEventHandler<PropertyChangingEventArgs<BlogEntry, User>>(eventHandler, this, new PropertyChangingEventArgs<BlogEntry, User>(this, "userId", this.userId, newValue));
 			}
@@ -566,7 +566,7 @@ namespace BlogDemo
 			remove
 			{
 				System.Delegate[] events;
-				if (((object)value != null) && ((object)(events = this._events) != null))
+				if ((object)value != null && (object)(events = this._events) != null)
 				{
 					BlogEntry.InterlockedDelegateRemove(ref events[9], value);
 				}
@@ -576,7 +576,7 @@ namespace BlogDemo
 		{
 			System.Delegate[] events;
 			EventHandler<PropertyChangedEventArgs<BlogEntry, User>> eventHandler;
-			if (((object)(events = this._events) != null) && ((object)(eventHandler = (EventHandler<PropertyChangedEventArgs<BlogEntry, User>>)events[9]) != null))
+			if ((object)(events = this._events) != null && (object)(eventHandler = (EventHandler<PropertyChangedEventArgs<BlogEntry, User>>)events[9]) != null)
 			{
 				EventHandlerUtility.InvokeEventHandlerAsync<PropertyChangedEventArgs<BlogEntry, User>>(eventHandler, this, new PropertyChangedEventArgs<BlogEntry, User>(this, "userId", oldValue, this.userId), this._propertyChangedEventHandler);
 			}
@@ -597,7 +597,7 @@ namespace BlogDemo
 			remove
 			{
 				System.Delegate[] events;
-				if (((object)value != null) && ((object)(events = this._events) != null))
+				if ((object)value != null && (object)(events = this._events) != null)
 				{
 					BlogEntry.InterlockedDelegateRemove(ref events[10], value);
 				}
@@ -607,7 +607,7 @@ namespace BlogDemo
 		{
 			System.Delegate[] events;
 			EventHandler<PropertyChangingEventArgs<BlogEntry, BlogComment>> eventHandler;
-			if (((object)(events = this._events) != null) && ((object)(eventHandler = (EventHandler<PropertyChangingEventArgs<BlogEntry, BlogComment>>)events[10]) != null))
+			if ((object)(events = this._events) != null && (object)(eventHandler = (EventHandler<PropertyChangingEventArgs<BlogEntry, BlogComment>>)events[10]) != null)
 			{
 				return EventHandlerUtility.InvokeCancelableEventHandler<PropertyChangingEventArgs<BlogEntry, BlogComment>>(eventHandler, this, new PropertyChangingEventArgs<BlogEntry, BlogComment>(this, "BlogComment", this.BlogComment, newValue));
 			}
@@ -625,7 +625,7 @@ namespace BlogDemo
 			remove
 			{
 				System.Delegate[] events;
-				if (((object)value != null) && ((object)(events = this._events) != null))
+				if ((object)value != null && (object)(events = this._events) != null)
 				{
 					BlogEntry.InterlockedDelegateRemove(ref events[11], value);
 				}
@@ -635,7 +635,7 @@ namespace BlogDemo
 		{
 			System.Delegate[] events;
 			EventHandler<PropertyChangedEventArgs<BlogEntry, BlogComment>> eventHandler;
-			if (((object)(events = this._events) != null) && ((object)(eventHandler = (EventHandler<PropertyChangedEventArgs<BlogEntry, BlogComment>>)events[11]) != null))
+			if ((object)(events = this._events) != null && (object)(eventHandler = (EventHandler<PropertyChangedEventArgs<BlogEntry, BlogComment>>)events[11]) != null)
 			{
 				EventHandlerUtility.InvokeEventHandlerAsync<PropertyChangedEventArgs<BlogEntry, BlogComment>>(eventHandler, this, new PropertyChangedEventArgs<BlogEntry, BlogComment>(this, "BlogComment", oldValue, this.BlogComment), this._propertyChangedEventHandler);
 			}
@@ -656,7 +656,7 @@ namespace BlogDemo
 			remove
 			{
 				System.Delegate[] events;
-				if (((object)value != null) && ((object)(events = this._events) != null))
+				if ((object)value != null && (object)(events = this._events) != null)
 				{
 					BlogEntry.InterlockedDelegateRemove(ref events[12], value);
 				}
@@ -666,7 +666,7 @@ namespace BlogDemo
 		{
 			System.Delegate[] events;
 			EventHandler<PropertyChangingEventArgs<BlogEntry, NonCommentEntry>> eventHandler;
-			if (((object)(events = this._events) != null) && ((object)(eventHandler = (EventHandler<PropertyChangingEventArgs<BlogEntry, NonCommentEntry>>)events[12]) != null))
+			if ((object)(events = this._events) != null && (object)(eventHandler = (EventHandler<PropertyChangingEventArgs<BlogEntry, NonCommentEntry>>)events[12]) != null)
 			{
 				return EventHandlerUtility.InvokeCancelableEventHandler<PropertyChangingEventArgs<BlogEntry, NonCommentEntry>>(eventHandler, this, new PropertyChangingEventArgs<BlogEntry, NonCommentEntry>(this, "NonCommentEntry", this.NonCommentEntry, newValue));
 			}
@@ -684,7 +684,7 @@ namespace BlogDemo
 			remove
 			{
 				System.Delegate[] events;
-				if (((object)value != null) && ((object)(events = this._events) != null))
+				if ((object)value != null && (object)(events = this._events) != null)
 				{
 					BlogEntry.InterlockedDelegateRemove(ref events[13], value);
 				}
@@ -694,7 +694,7 @@ namespace BlogDemo
 		{
 			System.Delegate[] events;
 			EventHandler<PropertyChangedEventArgs<BlogEntry, NonCommentEntry>> eventHandler;
-			if (((object)(events = this._events) != null) && ((object)(eventHandler = (EventHandler<PropertyChangedEventArgs<BlogEntry, NonCommentEntry>>)events[13]) != null))
+			if ((object)(events = this._events) != null && (object)(eventHandler = (EventHandler<PropertyChangedEventArgs<BlogEntry, NonCommentEntry>>)events[13]) != null)
 			{
 				EventHandlerUtility.InvokeEventHandlerAsync<PropertyChangedEventArgs<BlogEntry, NonCommentEntry>>(eventHandler, this, new PropertyChangedEventArgs<BlogEntry, NonCommentEntry>(this, "NonCommentEntry", oldValue, this.NonCommentEntry), this._propertyChangedEventHandler);
 			}
@@ -852,7 +852,7 @@ namespace BlogDemo
 			get
 			{
 				System.Delegate[] localEvents;
-				return (localEvents = this._events) ?? (System.Threading.Interlocked.CompareExchange<System.Delegate[]>(ref this._events, localEvents = new System.Delegate[4], null) ?? localEvents);
+				return (localEvents = this._events) ?? System.Threading.Interlocked.CompareExchange<System.Delegate[]>(ref this._events, localEvents = new System.Delegate[4], null) ?? localEvents;
 			}
 		}
 		private static void InterlockedDelegateCombine(ref System.Delegate location, System.Delegate value)
@@ -881,7 +881,7 @@ namespace BlogDemo
 			remove
 			{
 				System.Delegate[] events;
-				if (((object)value != null) && ((object)(events = this._events) != null))
+				if ((object)value != null && (object)(events = this._events) != null)
 				{
 					BlogComment.InterlockedDelegateRemove(ref events[0], value);
 				}
@@ -891,7 +891,7 @@ namespace BlogDemo
 		{
 			System.Delegate[] events;
 			EventHandler<PropertyChangingEventArgs<BlogComment, NonCommentEntry>> eventHandler;
-			if (((object)(events = this._events) != null) && ((object)(eventHandler = (EventHandler<PropertyChangingEventArgs<BlogComment, NonCommentEntry>>)events[0]) != null))
+			if ((object)(events = this._events) != null && (object)(eventHandler = (EventHandler<PropertyChangingEventArgs<BlogComment, NonCommentEntry>>)events[0]) != null)
 			{
 				return EventHandlerUtility.InvokeCancelableEventHandler<PropertyChangingEventArgs<BlogComment, NonCommentEntry>>(eventHandler, this, new PropertyChangingEventArgs<BlogComment, NonCommentEntry>(this, "parentEntryId", this.parentEntryId, newValue));
 			}
@@ -909,7 +909,7 @@ namespace BlogDemo
 			remove
 			{
 				System.Delegate[] events;
-				if (((object)value != null) && ((object)(events = this._events) != null))
+				if ((object)value != null && (object)(events = this._events) != null)
 				{
 					BlogComment.InterlockedDelegateRemove(ref events[1], value);
 				}
@@ -919,7 +919,7 @@ namespace BlogDemo
 		{
 			System.Delegate[] events;
 			EventHandler<PropertyChangedEventArgs<BlogComment, NonCommentEntry>> eventHandler;
-			if (((object)(events = this._events) != null) && ((object)(eventHandler = (EventHandler<PropertyChangedEventArgs<BlogComment, NonCommentEntry>>)events[1]) != null))
+			if ((object)(events = this._events) != null && (object)(eventHandler = (EventHandler<PropertyChangedEventArgs<BlogComment, NonCommentEntry>>)events[1]) != null)
 			{
 				EventHandlerUtility.InvokeEventHandlerAsync<PropertyChangedEventArgs<BlogComment, NonCommentEntry>>(eventHandler, this, new PropertyChangedEventArgs<BlogComment, NonCommentEntry>(this, "parentEntryId", oldValue, this.parentEntryId), this._propertyChangedEventHandler);
 			}
@@ -940,7 +940,7 @@ namespace BlogDemo
 			remove
 			{
 				System.Delegate[] events;
-				if (((object)value != null) && ((object)(events = this._events) != null))
+				if ((object)value != null && (object)(events = this._events) != null)
 				{
 					BlogComment.InterlockedDelegateRemove(ref events[2], value);
 				}
@@ -950,7 +950,7 @@ namespace BlogDemo
 		{
 			System.Delegate[] events;
 			EventHandler<PropertyChangingEventArgs<BlogComment, BlogEntry>> eventHandler;
-			if (((object)(events = this._events) != null) && ((object)(eventHandler = (EventHandler<PropertyChangingEventArgs<BlogComment, BlogEntry>>)events[2]) != null))
+			if ((object)(events = this._events) != null && (object)(eventHandler = (EventHandler<PropertyChangingEventArgs<BlogComment, BlogEntry>>)events[2]) != null)
 			{
 				return EventHandlerUtility.InvokeCancelableEventHandler<PropertyChangingEventArgs<BlogComment, BlogEntry>>(eventHandler, this, new PropertyChangingEventArgs<BlogComment, BlogEntry>(this, "BlogEntry", this.BlogEntry, newValue));
 			}
@@ -968,7 +968,7 @@ namespace BlogDemo
 			remove
 			{
 				System.Delegate[] events;
-				if (((object)value != null) && ((object)(events = this._events) != null))
+				if ((object)value != null && (object)(events = this._events) != null)
 				{
 					BlogComment.InterlockedDelegateRemove(ref events[3], value);
 				}
@@ -978,7 +978,7 @@ namespace BlogDemo
 		{
 			System.Delegate[] events;
 			EventHandler<PropertyChangedEventArgs<BlogComment, BlogEntry>> eventHandler;
-			if (((object)(events = this._events) != null) && ((object)(eventHandler = (EventHandler<PropertyChangedEventArgs<BlogComment, BlogEntry>>)events[3]) != null))
+			if ((object)(events = this._events) != null && (object)(eventHandler = (EventHandler<PropertyChangedEventArgs<BlogComment, BlogEntry>>)events[3]) != null)
 			{
 				EventHandlerUtility.InvokeEventHandlerAsync<PropertyChangedEventArgs<BlogComment, BlogEntry>>(eventHandler, this, new PropertyChangedEventArgs<BlogComment, BlogEntry>(this, "BlogEntry", oldValue, this.BlogEntry), this._propertyChangedEventHandler);
 			}
@@ -1284,7 +1284,7 @@ namespace BlogDemo
 			get
 			{
 				System.Delegate[] localEvents;
-				return (localEvents = this._events) ?? (System.Threading.Interlocked.CompareExchange<System.Delegate[]>(ref this._events, localEvents = new System.Delegate[2], null) ?? localEvents);
+				return (localEvents = this._events) ?? System.Threading.Interlocked.CompareExchange<System.Delegate[]>(ref this._events, localEvents = new System.Delegate[2], null) ?? localEvents;
 			}
 		}
 		private static void InterlockedDelegateCombine(ref System.Delegate location, System.Delegate value)
@@ -1313,7 +1313,7 @@ namespace BlogDemo
 			remove
 			{
 				System.Delegate[] events;
-				if (((object)value != null) && ((object)(events = this._events) != null))
+				if ((object)value != null && (object)(events = this._events) != null)
 				{
 					NonCommentEntry.InterlockedDelegateRemove(ref events[0], value);
 				}
@@ -1323,7 +1323,7 @@ namespace BlogDemo
 		{
 			System.Delegate[] events;
 			EventHandler<PropertyChangingEventArgs<NonCommentEntry, BlogEntry>> eventHandler;
-			if (((object)(events = this._events) != null) && ((object)(eventHandler = (EventHandler<PropertyChangingEventArgs<NonCommentEntry, BlogEntry>>)events[0]) != null))
+			if ((object)(events = this._events) != null && (object)(eventHandler = (EventHandler<PropertyChangingEventArgs<NonCommentEntry, BlogEntry>>)events[0]) != null)
 			{
 				return EventHandlerUtility.InvokeCancelableEventHandler<PropertyChangingEventArgs<NonCommentEntry, BlogEntry>>(eventHandler, this, new PropertyChangingEventArgs<NonCommentEntry, BlogEntry>(this, "BlogEntry", this.BlogEntry, newValue));
 			}
@@ -1341,7 +1341,7 @@ namespace BlogDemo
 			remove
 			{
 				System.Delegate[] events;
-				if (((object)value != null) && ((object)(events = this._events) != null))
+				if ((object)value != null && (object)(events = this._events) != null)
 				{
 					NonCommentEntry.InterlockedDelegateRemove(ref events[1], value);
 				}
@@ -1351,7 +1351,7 @@ namespace BlogDemo
 		{
 			System.Delegate[] events;
 			EventHandler<PropertyChangedEventArgs<NonCommentEntry, BlogEntry>> eventHandler;
-			if (((object)(events = this._events) != null) && ((object)(eventHandler = (EventHandler<PropertyChangedEventArgs<NonCommentEntry, BlogEntry>>)events[1]) != null))
+			if ((object)(events = this._events) != null && (object)(eventHandler = (EventHandler<PropertyChangedEventArgs<NonCommentEntry, BlogEntry>>)events[1]) != null)
 			{
 				EventHandlerUtility.InvokeEventHandlerAsync<PropertyChangedEventArgs<NonCommentEntry, BlogEntry>>(eventHandler, this, new PropertyChangedEventArgs<NonCommentEntry, BlogEntry>(this, "BlogEntry", oldValue, this.BlogEntry), this._propertyChangedEventHandler);
 			}
@@ -1656,7 +1656,7 @@ namespace BlogDemo
 			get
 			{
 				System.Delegate[] localEvents;
-				return (localEvents = this._events) ?? (System.Threading.Interlocked.CompareExchange<System.Delegate[]>(ref this._events, localEvents = new System.Delegate[8], null) ?? localEvents);
+				return (localEvents = this._events) ?? System.Threading.Interlocked.CompareExchange<System.Delegate[]>(ref this._events, localEvents = new System.Delegate[8], null) ?? localEvents;
 			}
 		}
 		private static void InterlockedDelegateCombine(ref System.Delegate location, System.Delegate value)
@@ -1685,7 +1685,7 @@ namespace BlogDemo
 			remove
 			{
 				System.Delegate[] events;
-				if (((object)value != null) && ((object)(events = this._events) != null))
+				if ((object)value != null && (object)(events = this._events) != null)
 				{
 					User.InterlockedDelegateRemove(ref events[0], value);
 				}
@@ -1695,7 +1695,7 @@ namespace BlogDemo
 		{
 			System.Delegate[] events;
 			EventHandler<PropertyChangingEventArgs<User, string>> eventHandler;
-			if (((object)(events = this._events) != null) && ((object)(eventHandler = (EventHandler<PropertyChangingEventArgs<User, string>>)events[0]) != null))
+			if ((object)(events = this._events) != null && (object)(eventHandler = (EventHandler<PropertyChangingEventArgs<User, string>>)events[0]) != null)
 			{
 				return EventHandlerUtility.InvokeCancelableEventHandler<PropertyChangingEventArgs<User, string>>(eventHandler, this, new PropertyChangingEventArgs<User, string>(this, "firstName", this.firstName, newValue));
 			}
@@ -1713,7 +1713,7 @@ namespace BlogDemo
 			remove
 			{
 				System.Delegate[] events;
-				if (((object)value != null) && ((object)(events = this._events) != null))
+				if ((object)value != null && (object)(events = this._events) != null)
 				{
 					User.InterlockedDelegateRemove(ref events[1], value);
 				}
@@ -1723,7 +1723,7 @@ namespace BlogDemo
 		{
 			System.Delegate[] events;
 			EventHandler<PropertyChangedEventArgs<User, string>> eventHandler;
-			if (((object)(events = this._events) != null) && ((object)(eventHandler = (EventHandler<PropertyChangedEventArgs<User, string>>)events[1]) != null))
+			if ((object)(events = this._events) != null && (object)(eventHandler = (EventHandler<PropertyChangedEventArgs<User, string>>)events[1]) != null)
 			{
 				EventHandlerUtility.InvokeEventHandlerAsync<PropertyChangedEventArgs<User, string>>(eventHandler, this, new PropertyChangedEventArgs<User, string>(this, "firstName", oldValue, this.firstName), this._propertyChangedEventHandler);
 			}
@@ -1744,7 +1744,7 @@ namespace BlogDemo
 			remove
 			{
 				System.Delegate[] events;
-				if (((object)value != null) && ((object)(events = this._events) != null))
+				if ((object)value != null && (object)(events = this._events) != null)
 				{
 					User.InterlockedDelegateRemove(ref events[2], value);
 				}
@@ -1754,7 +1754,7 @@ namespace BlogDemo
 		{
 			System.Delegate[] events;
 			EventHandler<PropertyChangingEventArgs<User, string>> eventHandler;
-			if (((object)(events = this._events) != null) && ((object)(eventHandler = (EventHandler<PropertyChangingEventArgs<User, string>>)events[2]) != null))
+			if ((object)(events = this._events) != null && (object)(eventHandler = (EventHandler<PropertyChangingEventArgs<User, string>>)events[2]) != null)
 			{
 				return EventHandlerUtility.InvokeCancelableEventHandler<PropertyChangingEventArgs<User, string>>(eventHandler, this, new PropertyChangingEventArgs<User, string>(this, "lastName", this.lastName, newValue));
 			}
@@ -1772,7 +1772,7 @@ namespace BlogDemo
 			remove
 			{
 				System.Delegate[] events;
-				if (((object)value != null) && ((object)(events = this._events) != null))
+				if ((object)value != null && (object)(events = this._events) != null)
 				{
 					User.InterlockedDelegateRemove(ref events[3], value);
 				}
@@ -1782,7 +1782,7 @@ namespace BlogDemo
 		{
 			System.Delegate[] events;
 			EventHandler<PropertyChangedEventArgs<User, string>> eventHandler;
-			if (((object)(events = this._events) != null) && ((object)(eventHandler = (EventHandler<PropertyChangedEventArgs<User, string>>)events[3]) != null))
+			if ((object)(events = this._events) != null && (object)(eventHandler = (EventHandler<PropertyChangedEventArgs<User, string>>)events[3]) != null)
 			{
 				EventHandlerUtility.InvokeEventHandlerAsync<PropertyChangedEventArgs<User, string>>(eventHandler, this, new PropertyChangedEventArgs<User, string>(this, "lastName", oldValue, this.lastName), this._propertyChangedEventHandler);
 			}
@@ -1803,7 +1803,7 @@ namespace BlogDemo
 			remove
 			{
 				System.Delegate[] events;
-				if (((object)value != null) && ((object)(events = this._events) != null))
+				if ((object)value != null && (object)(events = this._events) != null)
 				{
 					User.InterlockedDelegateRemove(ref events[4], value);
 				}
@@ -1813,7 +1813,7 @@ namespace BlogDemo
 		{
 			System.Delegate[] events;
 			EventHandler<PropertyChangingEventArgs<User, string>> eventHandler;
-			if (((object)(events = this._events) != null) && ((object)(eventHandler = (EventHandler<PropertyChangingEventArgs<User, string>>)events[4]) != null))
+			if ((object)(events = this._events) != null && (object)(eventHandler = (EventHandler<PropertyChangingEventArgs<User, string>>)events[4]) != null)
 			{
 				return EventHandlerUtility.InvokeCancelableEventHandler<PropertyChangingEventArgs<User, string>>(eventHandler, this, new PropertyChangingEventArgs<User, string>(this, "username", this.username, newValue));
 			}
@@ -1831,7 +1831,7 @@ namespace BlogDemo
 			remove
 			{
 				System.Delegate[] events;
-				if (((object)value != null) && ((object)(events = this._events) != null))
+				if ((object)value != null && (object)(events = this._events) != null)
 				{
 					User.InterlockedDelegateRemove(ref events[5], value);
 				}
@@ -1841,7 +1841,7 @@ namespace BlogDemo
 		{
 			System.Delegate[] events;
 			EventHandler<PropertyChangedEventArgs<User, string>> eventHandler;
-			if (((object)(events = this._events) != null) && ((object)(eventHandler = (EventHandler<PropertyChangedEventArgs<User, string>>)events[5]) != null))
+			if ((object)(events = this._events) != null && (object)(eventHandler = (EventHandler<PropertyChangedEventArgs<User, string>>)events[5]) != null)
 			{
 				EventHandlerUtility.InvokeEventHandlerAsync<PropertyChangedEventArgs<User, string>>(eventHandler, this, new PropertyChangedEventArgs<User, string>(this, "username", oldValue, this.username), this._propertyChangedEventHandler);
 			}
@@ -1862,7 +1862,7 @@ namespace BlogDemo
 			remove
 			{
 				System.Delegate[] events;
-				if (((object)value != null) && ((object)(events = this._events) != null))
+				if ((object)value != null && (object)(events = this._events) != null)
 				{
 					User.InterlockedDelegateRemove(ref events[6], value);
 				}
@@ -1872,7 +1872,7 @@ namespace BlogDemo
 		{
 			System.Delegate[] events;
 			EventHandler<PropertyChangingEventArgs<User, string>> eventHandler;
-			if (((object)(events = this._events) != null) && ((object)(eventHandler = (EventHandler<PropertyChangingEventArgs<User, string>>)events[6]) != null))
+			if ((object)(events = this._events) != null && (object)(eventHandler = (EventHandler<PropertyChangingEventArgs<User, string>>)events[6]) != null)
 			{
 				return EventHandlerUtility.InvokeCancelableEventHandler<PropertyChangingEventArgs<User, string>>(eventHandler, this, new PropertyChangingEventArgs<User, string>(this, "password", this.password, newValue));
 			}
@@ -1890,7 +1890,7 @@ namespace BlogDemo
 			remove
 			{
 				System.Delegate[] events;
-				if (((object)value != null) && ((object)(events = this._events) != null))
+				if ((object)value != null && (object)(events = this._events) != null)
 				{
 					User.InterlockedDelegateRemove(ref events[7], value);
 				}
@@ -1900,7 +1900,7 @@ namespace BlogDemo
 		{
 			System.Delegate[] events;
 			EventHandler<PropertyChangedEventArgs<User, string>> eventHandler;
-			if (((object)(events = this._events) != null) && ((object)(eventHandler = (EventHandler<PropertyChangedEventArgs<User, string>>)events[7]) != null))
+			if ((object)(events = this._events) != null && (object)(eventHandler = (EventHandler<PropertyChangedEventArgs<User, string>>)events[7]) != null)
 			{
 				EventHandlerUtility.InvokeEventHandlerAsync<PropertyChangedEventArgs<User, string>>(eventHandler, this, new PropertyChangedEventArgs<User, string>(this, "password", oldValue, this.password), this._propertyChangedEventHandler);
 			}
@@ -2008,7 +2008,7 @@ namespace BlogDemo
 			get
 			{
 				System.Delegate[] localEvents;
-				return (localEvents = this._events) ?? (System.Threading.Interlocked.CompareExchange<System.Delegate[]>(ref this._events, localEvents = new System.Delegate[4], null) ?? localEvents);
+				return (localEvents = this._events) ?? System.Threading.Interlocked.CompareExchange<System.Delegate[]>(ref this._events, localEvents = new System.Delegate[2], null) ?? localEvents;
 			}
 		}
 		private static void InterlockedDelegateCombine(ref System.Delegate location, System.Delegate value)
@@ -2025,7 +2025,7 @@ namespace BlogDemo
 			{
 			}
 		}
-		public event EventHandler<PropertyChangingEventArgs<BlogLabel, int>> BlogLabel_IdChanging
+		public event EventHandler<PropertyChangingEventArgs<BlogLabel, string>> titleChanging
 		{
 			add
 			{
@@ -2037,68 +2037,9 @@ namespace BlogDemo
 			remove
 			{
 				System.Delegate[] events;
-				if (((object)value != null) && ((object)(events = this._events) != null))
+				if ((object)value != null && (object)(events = this._events) != null)
 				{
 					BlogLabel.InterlockedDelegateRemove(ref events[0], value);
-				}
-			}
-		}
-		protected bool OnBlogLabel_IdChanging(int newValue)
-		{
-			System.Delegate[] events;
-			EventHandler<PropertyChangingEventArgs<BlogLabel, int>> eventHandler;
-			if (((object)(events = this._events) != null) && ((object)(eventHandler = (EventHandler<PropertyChangingEventArgs<BlogLabel, int>>)events[0]) != null))
-			{
-				return EventHandlerUtility.InvokeCancelableEventHandler<PropertyChangingEventArgs<BlogLabel, int>>(eventHandler, this, new PropertyChangingEventArgs<BlogLabel, int>(this, "BlogLabel_Id", this.BlogLabel_Id, newValue));
-			}
-			return true;
-		}
-		public event EventHandler<PropertyChangedEventArgs<BlogLabel, int>> BlogLabel_IdChanged
-		{
-			add
-			{
-				if ((object)value != null)
-				{
-					BlogLabel.InterlockedDelegateCombine(ref this.Events[1], value);
-				}
-			}
-			remove
-			{
-				System.Delegate[] events;
-				if (((object)value != null) && ((object)(events = this._events) != null))
-				{
-					BlogLabel.InterlockedDelegateRemove(ref events[1], value);
-				}
-			}
-		}
-		protected void OnBlogLabel_IdChanged(int oldValue)
-		{
-			System.Delegate[] events;
-			EventHandler<PropertyChangedEventArgs<BlogLabel, int>> eventHandler;
-			if (((object)(events = this._events) != null) && ((object)(eventHandler = (EventHandler<PropertyChangedEventArgs<BlogLabel, int>>)events[1]) != null))
-			{
-				EventHandlerUtility.InvokeEventHandlerAsync<PropertyChangedEventArgs<BlogLabel, int>>(eventHandler, this, new PropertyChangedEventArgs<BlogLabel, int>(this, "BlogLabel_Id", oldValue, this.BlogLabel_Id), this._propertyChangedEventHandler);
-			}
-			else
-			{
-				this.OnPropertyChanged("BlogLabel_Id");
-			}
-		}
-		public event EventHandler<PropertyChangingEventArgs<BlogLabel, string>> titleChanging
-		{
-			add
-			{
-				if ((object)value != null)
-				{
-					BlogLabel.InterlockedDelegateCombine(ref this.Events[2], value);
-				}
-			}
-			remove
-			{
-				System.Delegate[] events;
-				if (((object)value != null) && ((object)(events = this._events) != null))
-				{
-					BlogLabel.InterlockedDelegateRemove(ref events[2], value);
 				}
 			}
 		}
@@ -2106,7 +2047,7 @@ namespace BlogDemo
 		{
 			System.Delegate[] events;
 			EventHandler<PropertyChangingEventArgs<BlogLabel, string>> eventHandler;
-			if (((object)(events = this._events) != null) && ((object)(eventHandler = (EventHandler<PropertyChangingEventArgs<BlogLabel, string>>)events[2]) != null))
+			if ((object)(events = this._events) != null && (object)(eventHandler = (EventHandler<PropertyChangingEventArgs<BlogLabel, string>>)events[0]) != null)
 			{
 				return EventHandlerUtility.InvokeCancelableEventHandler<PropertyChangingEventArgs<BlogLabel, string>>(eventHandler, this, new PropertyChangingEventArgs<BlogLabel, string>(this, "title", this.title, newValue));
 			}
@@ -2118,15 +2059,15 @@ namespace BlogDemo
 			{
 				if ((object)value != null)
 				{
-					BlogLabel.InterlockedDelegateCombine(ref this.Events[3], value);
+					BlogLabel.InterlockedDelegateCombine(ref this.Events[1], value);
 				}
 			}
 			remove
 			{
 				System.Delegate[] events;
-				if (((object)value != null) && ((object)(events = this._events) != null))
+				if ((object)value != null && (object)(events = this._events) != null)
 				{
-					BlogLabel.InterlockedDelegateRemove(ref events[3], value);
+					BlogLabel.InterlockedDelegateRemove(ref events[1], value);
 				}
 			}
 		}
@@ -2134,7 +2075,7 @@ namespace BlogDemo
 		{
 			System.Delegate[] events;
 			EventHandler<PropertyChangedEventArgs<BlogLabel, string>> eventHandler;
-			if (((object)(events = this._events) != null) && ((object)(eventHandler = (EventHandler<PropertyChangedEventArgs<BlogLabel, string>>)events[3]) != null))
+			if ((object)(events = this._events) != null && (object)(eventHandler = (EventHandler<PropertyChangedEventArgs<BlogLabel, string>>)events[1]) != null)
 			{
 				EventHandlerUtility.InvokeEventHandlerAsync<PropertyChangedEventArgs<BlogLabel, string>>(eventHandler, this, new PropertyChangedEventArgs<BlogLabel, string>(this, "title", oldValue, this.title), this._propertyChangedEventHandler);
 			}
@@ -2148,12 +2089,6 @@ namespace BlogDemo
 		public abstract BlogDemoContext Context
 		{
 			get;
-		}
-		[DataObjectField(false, false, false)]
-		public abstract int BlogLabel_Id
-		{
-			get;
-			set;
 		}
 		[DataObjectField(false, false, true)]
 		public abstract string title
@@ -2174,7 +2109,7 @@ namespace BlogDemo
 		}
 		public virtual string ToString(IFormatProvider provider)
 		{
-			return string.Format(provider, @"BlogLabel{0}{{{0}{1}BlogLabel_Id = ""{2}"",{0}{1}title = ""{3}""{0}}}", Environment.NewLine, @"	", this.BlogLabel_Id, this.title);
+			return string.Format(provider, @"BlogLabel{0}{{{0}{1}title = ""{2}""{0}}}", Environment.NewLine, @"	", this.title);
 		}
 		#endregion // BlogLabel ToString Methods
 	}
@@ -2199,8 +2134,6 @@ namespace BlogDemo
 		bool TryGetUserByExternalUniquenessConstraint1(string firstName, string lastName, out User User);
 		BlogEntry GetBlogEntryByBlogEntry_Id(int BlogEntry_Id);
 		bool TryGetBlogEntryByBlogEntry_Id(int BlogEntry_Id, out BlogEntry BlogEntry);
-		BlogLabel GetBlogLabelByBlogLabel_Id(int BlogLabel_Id);
-		bool TryGetBlogLabelByBlogLabel_Id(int BlogLabel_Id, out BlogLabel BlogLabel);
 		BlogEntryLabel CreateBlogEntryLabel(BlogEntry blogEntryId, BlogLabel blogLabelId);
 		IEnumerable<BlogEntryLabel> BlogEntryLabelCollection
 		{
@@ -2226,7 +2159,7 @@ namespace BlogDemo
 		{
 			get;
 		}
-		BlogLabel CreateBlogLabel(int BlogLabel_Id);
+		BlogLabel CreateBlogLabel();
 		IEnumerable<BlogLabel> BlogLabelCollection
 		{
 			get;

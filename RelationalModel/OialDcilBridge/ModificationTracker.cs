@@ -126,6 +126,46 @@ namespace Neumont.Tools.ORMAbstractionToConceptualDatabaseBridge
 					constraint.Delete();
 				}
 			}
+			/// <summary>
+			/// RolePlayerPositionChangeRule: typeof(Neumont.Tools.ORMAbstraction.UniquenessIncludesConceptTypeChild)
+			/// Reorder the columns in a uniqueness constraint when the order changes
+			/// </summary>
+			private static void UniquenessConstraintRoleOrderChanged(RolePlayerOrderChangedEventArgs e)
+			{
+				Uniqueness uniqueness;
+				LinkedElementCollection<UniquenessConstraint> constraints;
+				int constraintCount;
+				if (null != (uniqueness = e.SourceElement as Uniqueness) &&
+					e.SourceDomainRole.Id == UniquenessIncludesConceptTypeChild.UniquenessDomainRoleId &&
+					0 != (constraintCount = (constraints = UniquenessConstraintIsForUniqueness.GetUniquenessConstraint(uniqueness)).Count))
+				{
+					for (int i = 0; i < constraintCount; ++i)
+					{
+						constraints[i].ColumnCollection.Move(e.OldOrdinal, e.NewOrdinal);
+					}
+				}
+			}
+			/// <summary>
+			/// DeletingRule: typeof(Neumont.Tools.ORMAbstraction.UniquenessIncludesConceptTypeChild)
+			/// Remove a column in a uniqueness constraint when a concept type child is removed from the
+			/// corresponding abstraction construct
+			/// </summary>
+			private static void UniquenessConstraintRoleDeleting(ElementDeletingEventArgs e)
+			{
+				UniquenessIncludesConceptTypeChild link = (UniquenessIncludesConceptTypeChild)e.ModelElement;
+				Uniqueness uniqueness = link.Uniqueness;
+				LinkedElementCollection<UniquenessConstraint> constraints;
+				int constraintCount;
+				if (!uniqueness.IsDeleted &&
+					0 != (constraintCount = (constraints = UniquenessConstraintIsForUniqueness.GetUniquenessConstraint(uniqueness)).Count))
+				{
+					int removeAtIndex = UniquenessIncludesConceptTypeChild.GetLinksToConceptTypeChildCollection(uniqueness).IndexOf(link);
+					for (int i = 0; i < constraintCount; ++i)
+					{
+						constraints[i].ColumnCollection.RemoveAt(removeAtIndex);
+					}
+				}
+			}
 			[DelayValidatePriority(DomainModelType = typeof(AbstractionDomainModel), Order = DelayValidatePriorityOrder.AfterDomainModel)]
 			private static void RebuildForAbstractionModelDelayed(ModelElement element)
 			{

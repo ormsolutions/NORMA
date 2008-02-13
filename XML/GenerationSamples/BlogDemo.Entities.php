@@ -53,7 +53,7 @@ class BlogEntryBase extends Entity {
 		return $this->BlogComment;
 	}
 	public function setBlogComment(BlogComment $value) {
-		if ($this->BlogComment != $value) {
+		if ($this->BlogComment !== $value) {
 			$this->BlogComment = $value;
 			$value->setBlogEntry($this);
 		}
@@ -62,7 +62,7 @@ class BlogEntryBase extends Entity {
 		return $this->NonCommentEntry;
 	}
 	public function setNonCommentEntry(NonCommentEntry $value) {
-		if ($this->NonCommentEntry != $value) {
+		if ($this->NonCommentEntry !== $value) {
 			$this->NonCommentEntry = $value;
 			$value->setBlogEntry($this);
 		}
@@ -118,7 +118,7 @@ class BlogCommentBase extends Entity {
 		return $this->BlogEntry;
 	}
 	public function setBlogEntry(BlogEntry $value) {
-		if ($this->BlogEntry != $value) {
+		if ($this->BlogEntry !== $value) {
 			$this->BlogEntry = $value;
 			$value->setBlogComment($this);
 		}
@@ -148,7 +148,7 @@ class NonCommentEntryBase extends Entity {
 		return $this->BlogEntry;
 	}
 	public function setBlogEntry(BlogEntry $value) {
-		if ($this->BlogEntry != $value) {
+		if ($this->BlogEntry !== $value) {
 			$this->BlogEntry = $value;
 			$value->setNonCommentEntry($this);
 		}

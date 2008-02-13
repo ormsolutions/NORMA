@@ -43,7 +43,15 @@ namespace Neumont.Tools.ORMToORMAbstractionBridge
 				{
 					FactTypeConstraintPatternChanged(link.Role.FactType);
 				}
-				// UNDONE: Incremental uniqueness changes
+				switch (constraint.ConstraintType)
+				{
+					// UNDONE: Incremental uniqueness changes
+					case ConstraintType.InternalUniqueness:
+					case ConstraintType.ExternalUniqueness:
+						SignificantUniquenessConstraintChange((UniquenessConstraint)constraint);
+						SignificantObjectTypeChange(constraint.PreferredIdentifierFor);
+						break;
+				}
 			}
 			/// <summary>
 			/// DeleteRule: typeof(Neumont.Tools.ORM.ObjectModel.ConstraintRoleSequenceHasRole)
@@ -56,7 +64,14 @@ namespace Neumont.Tools.ORMToORMAbstractionBridge
 				{
 					FactTypeConstraintPatternChanged(link.Role.FactType);
 				}
-				// UNDONE: Incremental uniqueness changes
+				switch (constraint.ConstraintType)
+				{
+					// UNDONE: Incremental uniqueness changes
+					case ConstraintType.InternalUniqueness:
+					case ConstraintType.ExternalUniqueness:
+						SignificantObjectTypeChange(constraint.PreferredIdentifierFor);
+						break;
+				}
 			}
 			/// <summary>
 			/// ChangeRule: typeof(Neumont.Tools.ORM.ObjectModel.ObjectType)
@@ -113,6 +128,38 @@ namespace Neumont.Tools.ORMToORMAbstractionBridge
 				}
 			}
 			/// <summary>
+			/// RolePlayerPositionChangeRule: typeof(ConstraintRoleSequenceHasRole)
+			/// Propagate order changes in a uniqueness constraint to an absorbed uniqueness
+			/// </summary>
+			private static void UniquenessConstraintRoleOrderChanged(RolePlayerOrderChangedEventArgs e)
+			{
+				UniquenessConstraint constraint;
+				Uniqueness uniqueness;
+				if (null != (constraint = e.SourceElement as UniquenessConstraint) &&
+					e.SourceDomainRole.Id == ConstraintRoleSequenceHasRole.ConstraintRoleSequenceDomainRoleId &&
+					null != (uniqueness = UniquenessIsForUniquenessConstraint.GetUniqueness(constraint)))
+				{
+					uniqueness.ConceptTypeChildCollection.Move(e.OldOrdinal, e.NewOrdinal);
+				}
+			}
+			/// <summary>
+			/// DeletingRule: typeof(Neumont.Tools.ORM.ObjectModel.ConstraintRoleSequenceHasRole)
+			/// Propagate role deletion in a uniqueness constraint to an absorbed uniqueness
+			/// </summary>
+			private static void UniquenessConstraintRoleDeleting(ElementDeletingEventArgs e)
+			{
+				UniquenessConstraint constraint;
+				Uniqueness uniqueness;
+				ConstraintRoleSequenceHasRole link = (ConstraintRoleSequenceHasRole)e.ModelElement;
+				ConstraintRoleSequence sequence = link.ConstraintRoleSequence;
+				if (!sequence.IsDeleted &&
+					null != (constraint = sequence as UniquenessConstraint) &&
+					null != (uniqueness = UniquenessIsForUniquenessConstraint.GetUniqueness(constraint)))
+				{
+					uniqueness.ConceptTypeChildCollection.RemoveAt(ConstraintRoleSequenceHasRole.GetLinksToRoleCollection(sequence).IndexOf(link));
+				}
+			}
+			/// <summary>
 			/// ChangeRule: typeof(Neumont.Tools.ORM.ObjectModel.ORMModel)
 			/// Synchronize the <see cref="P:AbstractionModel.Name">name</see> of the <see cref="AbstractionModel"/>
 			/// with the <see cref="P:ORMModel.Name">name</see> of the <see cref="ORMModel"/>
@@ -164,7 +211,7 @@ namespace Neumont.Tools.ORMToORMAbstractionBridge
 			/// </summary>
 			private static void PreferredIdentifierDeletedRule(ElementDeletedEventArgs e)
 			{
-				// UNDONE: Incremental If this gets passed the gateway and is not excluded,
+				// UNDONE: Incremental If this gets past the gateway and is not excluded,
 				// then it changed from an EntityType to a ValueType
 				ObjectType objectType = ((EntityTypeHasPreferredIdentifier)e.ModelElement).PreferredIdentifierFor;
 				if (!objectType.IsDeleted)
@@ -388,6 +435,28 @@ namespace Neumont.Tools.ORMToORMAbstractionBridge
 						}
 					}
 					child.IsMandatory = newMandatory;
+				}
+			}
+			private static void SignificantUniquenessConstraintChange(UniquenessConstraint constraint)
+			{
+				if (constraint != null &&
+					!constraint.IsDeleted &&
+					!ORMElementGateway.IsElementExcluded(constraint))
+				{
+					FrameworkDomainModel.DelayValidateElement(constraint, SignificantUniquenessConstraintChangeDelayed);
+				}
+			}
+			[DelayValidatePriority(DomainModelType = typeof(ORMCoreDomainModel), Order = DelayValidatePriorityOrder.AfterDomainModel)]
+			private static void SignificantUniquenessConstraintChangeDelayed(ModelElement element)
+			{
+				UniquenessConstraint constraint;
+				ORMModel model;
+				if (!element.IsDeleted &&
+					!ORMElementGateway.IsElementExcluded(constraint = (UniquenessConstraint)element) &&
+					null != (model = constraint.Model))
+				{
+					AddTransactedModelElement(constraint, ModelElementModification.ORMElementChanged);
+					FrameworkDomainModel.DelayValidateElement(model, DelayValidateModel);
 				}
 			}
 			private static void SignificantFactTypeChange(FactType factType)

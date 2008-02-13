@@ -19,7 +19,7 @@ using System.Reflection;
 namespace Neumont.Tools.RelationalModels.ConceptualDatabase
 {
 	#region Attach rules to ConceptualDatabaseDomainModel model
-	partial class ConceptualDatabaseDomainModel
+	partial class ConceptualDatabaseDomainModel : Neumont.Tools.Modeling.Shell.IDomainModelEnablesRulesAfterDeserialization
 	{
 		private static Type[] myCustomDomainModelTypes;
 		private static Type[] CustomDomainModelTypes
@@ -33,7 +33,11 @@ namespace Neumont.Tools.RelationalModels.ConceptualDatabase
 					// If accessed concurrently, the worst that will happen is the array of Types being created multiple times.
 					// This would have a slightly negative impact on performance, but the result would still be correct.
 					// Given the low likelihood of this ever happening, the extra overhead of synchronization would outweigh any possible gain from it.
-					retVal = new Type[]{};
+					retVal = new Type[]{
+						typeof(ReferenceConstraint).GetNestedType("ReferenceConstraintTargetAddedClass", BindingFlags.Public | BindingFlags.NonPublic),
+						typeof(ReferenceConstraint).GetNestedType("UniquenessConstraintColumnAddedClass", BindingFlags.Public | BindingFlags.NonPublic),
+						typeof(ReferenceConstraint).GetNestedType("UniquenessConstraintColumnDeletingClass", BindingFlags.Public | BindingFlags.NonPublic),
+						typeof(ReferenceConstraint).GetNestedType("UniquenessConstraintColumnPositionChangedClass", BindingFlags.Public | BindingFlags.NonPublic)};
 					ConceptualDatabaseDomainModel.myCustomDomainModelTypes = retVal;
 					System.Diagnostics.Debug.Assert(Array.IndexOf<Type>(retVal, null) < 0, "One or more rule types failed to resolve. The file and/or package will fail to load.");
 				}
@@ -62,6 +66,131 @@ namespace Neumont.Tools.RelationalModels.ConceptualDatabase
 				return retVal;
 			}
 		}
+		/// <summary>Implements IDomainModelEnablesRulesAfterDeserialization.EnableRulesAfterDeserialization</summary>
+		protected void EnableRulesAfterDeserialization(Microsoft.VisualStudio.Modeling.Store store)
+		{
+			Microsoft.VisualStudio.Modeling.RuleManager ruleManager = store.RuleManager;
+			Type[] disabledRuleTypes = ConceptualDatabaseDomainModel.CustomDomainModelTypes;
+			for (int i = 0; i < 4; ++i)
+			{
+				ruleManager.EnableRule(disabledRuleTypes[i]);
+			}
+		}
+		void Neumont.Tools.Modeling.Shell.IDomainModelEnablesRulesAfterDeserialization.EnableRulesAfterDeserialization(Microsoft.VisualStudio.Modeling.Store store)
+		{
+			this.EnableRulesAfterDeserialization(store);
+		}
 	}
 	#endregion // Attach rules to ConceptualDatabaseDomainModel model
+	#region Auto-rule classes
+	#region Rule classes for ReferenceConstraint
+	partial class ReferenceConstraint
+	{
+		[Microsoft.VisualStudio.Modeling.RuleOn(typeof(ReferenceConstraintTargetsTable), Priority=Neumont.Tools.Modeling.FrameworkDomainModel.InlineRulePriority)]
+		private sealed class ReferenceConstraintTargetAddedClass : Microsoft.VisualStudio.Modeling.AddRule
+		{
+			[System.Diagnostics.DebuggerStepThrough()]
+			public ReferenceConstraintTargetAddedClass()
+			{
+				base.IsEnabled = false;
+			}
+			/// <summary>
+			/// Provide the following method in class: 
+			/// Neumont.Tools.RelationalModels.ConceptualDatabase.ReferenceConstraint
+			/// /// <summary>
+			/// /// AddRule: typeof(ReferenceConstraintTargetsTable)
+			/// /// </summary>
+			/// private static void ReferenceConstraintTargetAdded(ElementAddedEventArgs e)
+			/// {
+			/// }
+			/// </summary>
+			[System.Diagnostics.DebuggerStepThrough()]
+			public override void ElementAdded(Microsoft.VisualStudio.Modeling.ElementAddedEventArgs e)
+			{
+				Neumont.Tools.Modeling.Diagnostics.TraceUtility.TraceRuleStart(e.ModelElement.Store, "Neumont.Tools.RelationalModels.ConceptualDatabase.ReferenceConstraint.ReferenceConstraintTargetAdded");
+				ReferenceConstraint.ReferenceConstraintTargetAdded(e);
+				Neumont.Tools.Modeling.Diagnostics.TraceUtility.TraceRuleEnd(e.ModelElement.Store, "Neumont.Tools.RelationalModels.ConceptualDatabase.ReferenceConstraint.ReferenceConstraintTargetAdded");
+			}
+		}
+		[Microsoft.VisualStudio.Modeling.RuleOn(typeof(UniquenessConstraintIncludesColumn), Priority=Neumont.Tools.Modeling.FrameworkDomainModel.InlineRulePriority)]
+		private sealed class UniquenessConstraintColumnAddedClass : Microsoft.VisualStudio.Modeling.AddRule
+		{
+			[System.Diagnostics.DebuggerStepThrough()]
+			public UniquenessConstraintColumnAddedClass()
+			{
+				base.IsEnabled = false;
+			}
+			/// <summary>
+			/// Provide the following method in class: 
+			/// Neumont.Tools.RelationalModels.ConceptualDatabase.ReferenceConstraint
+			/// /// <summary>
+			/// /// AddRule: typeof(UniquenessConstraintIncludesColumn)
+			/// /// </summary>
+			/// private static void UniquenessConstraintColumnAdded(ElementAddedEventArgs e)
+			/// {
+			/// }
+			/// </summary>
+			[System.Diagnostics.DebuggerStepThrough()]
+			public override void ElementAdded(Microsoft.VisualStudio.Modeling.ElementAddedEventArgs e)
+			{
+				Neumont.Tools.Modeling.Diagnostics.TraceUtility.TraceRuleStart(e.ModelElement.Store, "Neumont.Tools.RelationalModels.ConceptualDatabase.ReferenceConstraint.UniquenessConstraintColumnAdded");
+				ReferenceConstraint.UniquenessConstraintColumnAdded(e);
+				Neumont.Tools.Modeling.Diagnostics.TraceUtility.TraceRuleEnd(e.ModelElement.Store, "Neumont.Tools.RelationalModels.ConceptualDatabase.ReferenceConstraint.UniquenessConstraintColumnAdded");
+			}
+		}
+		[Microsoft.VisualStudio.Modeling.RuleOn(typeof(UniquenessConstraintIncludesColumn), Priority=Neumont.Tools.Modeling.FrameworkDomainModel.InlineRulePriority)]
+		private sealed class UniquenessConstraintColumnDeletingClass : Microsoft.VisualStudio.Modeling.DeletingRule
+		{
+			[System.Diagnostics.DebuggerStepThrough()]
+			public UniquenessConstraintColumnDeletingClass()
+			{
+				base.IsEnabled = false;
+			}
+			/// <summary>
+			/// Provide the following method in class: 
+			/// Neumont.Tools.RelationalModels.ConceptualDatabase.ReferenceConstraint
+			/// /// <summary>
+			/// /// DeletingRule: typeof(UniquenessConstraintIncludesColumn)
+			/// /// </summary>
+			/// private static void UniquenessConstraintColumnDeleting(ElementDeletingEventArgs e)
+			/// {
+			/// }
+			/// </summary>
+			[System.Diagnostics.DebuggerStepThrough()]
+			public override void ElementDeleting(Microsoft.VisualStudio.Modeling.ElementDeletingEventArgs e)
+			{
+				Neumont.Tools.Modeling.Diagnostics.TraceUtility.TraceRuleStart(e.ModelElement.Store, "Neumont.Tools.RelationalModels.ConceptualDatabase.ReferenceConstraint.UniquenessConstraintColumnDeleting");
+				ReferenceConstraint.UniquenessConstraintColumnDeleting(e);
+				Neumont.Tools.Modeling.Diagnostics.TraceUtility.TraceRuleEnd(e.ModelElement.Store, "Neumont.Tools.RelationalModels.ConceptualDatabase.ReferenceConstraint.UniquenessConstraintColumnDeleting");
+			}
+		}
+		[Microsoft.VisualStudio.Modeling.RuleOn(typeof(UniquenessConstraintIncludesColumn), Priority=Neumont.Tools.Modeling.FrameworkDomainModel.InlineRulePriority)]
+		private sealed class UniquenessConstraintColumnPositionChangedClass : Microsoft.VisualStudio.Modeling.RolePlayerPositionChangeRule
+		{
+			[System.Diagnostics.DebuggerStepThrough()]
+			public UniquenessConstraintColumnPositionChangedClass()
+			{
+				base.IsEnabled = false;
+			}
+			/// <summary>
+			/// Provide the following method in class: 
+			/// Neumont.Tools.RelationalModels.ConceptualDatabase.ReferenceConstraint
+			/// /// <summary>
+			/// /// RolePlayerPositionChangeRule: typeof(UniquenessConstraintIncludesColumn)
+			/// /// </summary>
+			/// private static void UniquenessConstraintColumnPositionChanged(RolePlayerOrderChangedEventArgs e)
+			/// {
+			/// }
+			/// </summary>
+			[System.Diagnostics.DebuggerStepThrough()]
+			public override void RolePlayerPositionChanged(Microsoft.VisualStudio.Modeling.RolePlayerOrderChangedEventArgs e)
+			{
+				Neumont.Tools.Modeling.Diagnostics.TraceUtility.TraceRuleStart(e.SourceElement.Store, "Neumont.Tools.RelationalModels.ConceptualDatabase.ReferenceConstraint.UniquenessConstraintColumnPositionChanged");
+				ReferenceConstraint.UniquenessConstraintColumnPositionChanged(e);
+				Neumont.Tools.Modeling.Diagnostics.TraceUtility.TraceRuleEnd(e.SourceElement.Store, "Neumont.Tools.RelationalModels.ConceptualDatabase.ReferenceConstraint.UniquenessConstraintColumnPositionChanged");
+			}
+		}
+	}
+	#endregion // Rule classes for ReferenceConstraint
+	#endregion // Auto-rule classes
 }

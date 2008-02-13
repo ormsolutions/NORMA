@@ -217,7 +217,6 @@ namespace Neumont.Tools.ORMAbstractionToConceptualDatabaseBridge
 					if (notifyAdded != null)
 					{
 						notifyAdded.ElementAdded(conceptTypeTable, true);
-						// UNDONE: notifyAdded should be passed through to other relationships as well
 					}
 				}
 			}
@@ -268,6 +267,10 @@ namespace Neumont.Tools.ORMAbstractionToConceptualDatabaseBridge
 							if (isPrimarilyForTable != null)
 							{
 								TableIsAlsoForConceptType tableIsAlsoForConceptType = new TableIsAlsoForConceptType(isPrimarilyForTable, kvp.Key);
+								if (notifyAdded != null)
+								{
+									notifyAdded.ElementAdded(tableIsAlsoForConceptType);
+								}
 							}
 						}
 					}
@@ -280,8 +283,8 @@ namespace Neumont.Tools.ORMAbstractionToConceptualDatabaseBridge
 			// For every concept type create all columns that they represent, map uniquenesses that they participate in.
 			foreach (ConceptType conceptType in conceptTypes)
 			{
-				CreateColumns(conceptType);
-				CreateUniquenessConstraints(conceptType);
+				CreateColumns(conceptType, notifyAdded);
+				CreateUniquenessConstraints(conceptType, notifyAdded);
 			}
 
 			// Make a second pass over the concept types to population separation columns, constraint, and uniquenesses.
@@ -295,7 +298,7 @@ namespace Neumont.Tools.ORMAbstractionToConceptualDatabaseBridge
 					if (AssimilationMapping.GetAbsorptionChoiceFromAssimilation(conceptTypeAssimilation) == AssimilationAbsorptionChoice.Separate &&
 						(separatedConceptTypes == null || !separatedConceptTypes.ContainsKey(conceptTypeAssimilation)))
 					{
-						DoSeparation(conceptTypeAssimilation, ref isPreferredForChildFound);
+						DoSeparation(conceptTypeAssimilation, ref isPreferredForChildFound, notifyAdded);
 						if (separatedConceptTypes == null)
 						{
 							separatedConceptTypes = new Dictionary<ConceptTypeAssimilatesConceptType, object>();
@@ -308,7 +311,7 @@ namespace Neumont.Tools.ORMAbstractionToConceptualDatabaseBridge
 			// For each table in the schema generate any foreign keys it contains and detemine witch of it's columns are mandatory and nullable.
 			foreach (Table table in schema.TableCollection)
 			{
-				CreateForeignKeys(table);
+				CreateForeignKeys(table, notifyAdded);
 				GenerateMandatoryConstraints(table);
 			}
 
@@ -526,13 +529,13 @@ namespace Neumont.Tools.ORMAbstractionToConceptualDatabaseBridge
 		/// <summary>
 		/// Creates columns for a ConceptType for every Table that the ConceptType plays a role in, as a TableIsPrimarilyForConceptType or TableIsAlsoForConceptType relationship.
 		/// </summary>
-		private static void CreateColumns(ConceptType conceptType)
+		private static void CreateColumns(ConceptType conceptType, INotifyElementAdded notifyAdded)
 		{
 			List<Column> columnsForConceptType = new List<Column>();
 
 			foreach (InformationType informationType in InformationType.GetLinksToInformationTypeFormatCollection(conceptType))
 			{
-				columnsForConceptType.Add(GetColumnForInformationType(informationType, new Stack<ConceptTypeChild>()));
+				columnsForConceptType.Add(CreateColumnForInformationType(informationType, new Stack<ConceptTypeChild>()));
 			}
 			foreach (ConceptTypeRelatesToConceptType conceptTypeRelation in ConceptTypeRelatesToConceptType.GetLinksToRelatedConceptTypeCollection(conceptType))
 			{
@@ -574,6 +577,13 @@ namespace Neumont.Tools.ORMAbstractionToConceptualDatabaseBridge
 			if (conceptTypeTable != null)
 			{
 				conceptTypeTable.ColumnCollection.AddRange(columnsForConceptType);
+				if (notifyAdded != null)
+				{
+					foreach (Column column in columnsForConceptType)
+					{
+						notifyAdded.ElementAdded(column, true);
+					}
+				}
 			}
 			else
 			{
@@ -595,12 +605,15 @@ namespace Neumont.Tools.ORMAbstractionToConceptualDatabaseBridge
 						if (possibleDuplicateColumn == null)
 						{
 							tableIsAlsoForConceptType.Table.ColumnCollection.Add(clonedColumn);
+							if (notifyAdded != null)
+							{
+								notifyAdded.ElementAdded(clonedColumn);
+							}
 						}
 						else
 						{
 							clonedColumn.Delete();
 						}
-
 					}
 				}
 
@@ -611,15 +624,15 @@ namespace Neumont.Tools.ORMAbstractionToConceptualDatabaseBridge
 			}
 		}
 
-		private static Column GetColumnForInformationType(InformationType informationType, Stack<ConceptTypeChild> conceptTypeChildPath)
+		private static Column CreateColumnForInformationType(InformationType informationType, Stack<ConceptTypeChild> conceptTypeChildPath)
 		{
 			conceptTypeChildPath.Push(informationType);
 			Column column = new Column(informationType.Store,
 								new PropertyAssignment[]{
 									new PropertyAssignment(Column.NameDomainPropertyId, informationType.Name)});
-			ConceptTypeChild[] concpetTypeChildPathReverse = conceptTypeChildPath.ToArray();
-			Array.Reverse(concpetTypeChildPathReverse);
-			ColumnHasConceptTypeChild.GetConceptTypeChildPath(column).AddRange(concpetTypeChildPathReverse);
+			ConceptTypeChild[] conceptTypeChildPathReverse = conceptTypeChildPath.ToArray();
+			Array.Reverse(conceptTypeChildPathReverse);
+			ColumnHasConceptTypeChild.GetConceptTypeChildPath(column).AddRange(conceptTypeChildPathReverse);
 			conceptTypeChildPath.Pop();
 			return column;
 		}
@@ -645,7 +658,7 @@ namespace Neumont.Tools.ORMAbstractionToConceptualDatabaseBridge
 						InformationType informationType = conceptTypeChild as InformationType;
 						if (informationType != null)
 						{
-							columns.Add(GetColumnForInformationType(informationType, conceptTypeChildPath));
+							columns.Add(CreateColumnForInformationType(informationType, conceptTypeChildPath));
 						}
 						else
 						{
@@ -830,7 +843,7 @@ namespace Neumont.Tools.ORMAbstractionToConceptualDatabaseBridge
 		/// <summary>
 		/// DoSeparation handles the generation of columns and foreign keys when an assimilation is set to separate.
 		/// </summary>
-		private static void DoSeparation(ConceptTypeAssimilatesConceptType assimilation, ref bool isPreferredForChildFound)
+		private static void DoSeparation(ConceptTypeAssimilatesConceptType assimilation, ref bool isPreferredForChildFound, INotifyElementAdded notifyAdded)
 		{
 			Table table = TableIsPrimarilyForConceptType.GetTable(assimilation.AssimilatedConceptType);
 			if (table != null)
@@ -852,11 +865,19 @@ namespace Neumont.Tools.ORMAbstractionToConceptualDatabaseBridge
 						{
 							Column targetColumn = FindTarget(sourcecolumn, assimilation.AssimilatedConceptType);
 							ColumnReference relationship = new ColumnReference(sourcecolumn, targetColumn);
+							if (notifyAdded != null)
+							{
+								notifyAdded.ElementAdded(relationship);
+							}
 							referenceConstraint.ColumnReferenceCollection.Add(relationship);
 							mappedConstraint.ColumnCollection.Add(sourcecolumn);
 						}
 						TableIsPrimarilyForConceptType.GetTable(assimilation.AssimilatorConceptType).UniquenessConstraintCollection.Add(mappedConstraint);
-
+						if (notifyAdded != null)
+						{
+							notifyAdded.ElementAdded(mappedConstraint, true);
+							notifyAdded.ElementAdded(referenceConstraint, true);
+						}
 					}
 					else
 					{
@@ -925,6 +946,14 @@ namespace Neumont.Tools.ORMAbstractionToConceptualDatabaseBridge
 												clonedColumnPath.AddRange(ColumnHasConceptTypeChild.GetConceptTypeChildPath(identifierColumn));
 												new TableContainsColumn(table, clonedColumn);
 												new ReferenceConstraintContainsColumnReference(referenceConstraint, new ColumnReference(clonedColumn, identifierColumn));
+												if (notifyAdded != null)
+												{
+													// This notify takes care of the column and the column reference. The
+													// reference constraint containment will be done with the reference constraint
+													// notification, as will all columns in mappedConstraint. The cloned column
+													// is intentionally added to the mapped constraint after this point
+													notifyAdded.ElementAdded(clonedColumn, true);
+												}
 												new UniquenessConstraintIncludesColumn(mappedConstraint, clonedColumn);
 											}
 											primaryIdentifierFound = true;
@@ -951,7 +980,6 @@ namespace Neumont.Tools.ORMAbstractionToConceptualDatabaseBridge
 										}
 										ColumnHasConceptTypeChild.GetConceptTypeChildPath(informationTypeColumn).AddRange(pathArray);
 										new TableContainsColumn(table, informationTypeColumn);
-										new UniquenessConstraintIncludesColumn(mappedConstraint, informationTypeColumn);
 
 										// Create a column reference to the other column
 										foreach (Column possibleColumn in targetTable.ColumnCollection)
@@ -982,9 +1010,21 @@ namespace Neumont.Tools.ORMAbstractionToConceptualDatabaseBridge
 												}
 											}
 										}
+										if (notifyAdded != null)
+										{
+											// See previous comments on ElementAdded. Not binding the column to
+											// mappedConstraint until after this point is intentional
+											notifyAdded.ElementAdded(informationTypeColumn, true);
+										}
+										new UniquenessConstraintIncludesColumn(mappedConstraint, informationTypeColumn);
 									});
 							}
 							new TableContainsUniquenessConstraint(table, mappedConstraint);
+							if (notifyAdded != null)
+							{
+								notifyAdded.ElementAdded(mappedConstraint, true);
+								notifyAdded.ElementAdded(referenceConstraint, true);
+							}
 							isPreferredForChildFound = true;
 						}
 					}
@@ -1008,7 +1048,7 @@ namespace Neumont.Tools.ORMAbstractionToConceptualDatabaseBridge
 					foreach (ConceptTypeAssimilatesConceptType partition in childAssimilations)
 					{
 						bool preferred = false;
-						DoSeparation(partition, ref preferred);
+						DoSeparation(partition, ref preferred, notifyAdded);
 					}
 				}
 			}
@@ -1018,7 +1058,8 @@ namespace Neumont.Tools.ORMAbstractionToConceptualDatabaseBridge
 		/// CreateForeignKeys looks at a table and generates all Foreign Keys (<see cref="ReferenceConstraint"/>) required by the columns in that table.
 		/// </summary>
 		/// <param name="table">The table to check for foreign keys on.</param>
-		private static void CreateForeignKeys(Table table)
+		/// <param name="notifyAdded">Deserialization callback</param>
+		private static void CreateForeignKeys(Table table, INotifyElementAdded notifyAdded)
 		{
 			Dictionary<ConceptTypeRelatesToConceptType, List<Column>> foreignKeyList = new Dictionary<ConceptTypeRelatesToConceptType, List<Column>>();
 
@@ -1059,8 +1100,17 @@ namespace Neumont.Tools.ORMAbstractionToConceptualDatabaseBridge
 						new TableContainsReferenceConstraint(table, referenceConstraint);
 						referenceColumns = referenceConstraint.ColumnReferenceCollection;
 						new ReferenceConstraintTargetsTable(referenceConstraint, targetColumn.Table);
+						if (notifyAdded != null)
+						{
+							notifyAdded.ElementAdded(referenceConstraint, true);
+						}
 					}
-					referenceColumns.Add(new ColumnReference(column, targetColumn));
+					ColumnReference columnReference = new ColumnReference(column, targetColumn);
+					referenceColumns.Add(columnReference);
+					if (notifyAdded != null)
+					{
+						notifyAdded.ElementAdded(columnReference, true);
+					}
 				}
 			}
 		}
@@ -1429,34 +1479,33 @@ namespace Neumont.Tools.ORMAbstractionToConceptualDatabaseBridge
 		/// CreateUniquenessConstraints looks at a <see cref="ConceptType"/> and determines if it is unique or not.
 		/// </summary>
 		/// <param name="conceptType">The <see cref="ConceptType"/>.</param>
-		private static void CreateUniquenessConstraints(ConceptType conceptType)
+		/// <param name="notifyAdded">Deserialization callback when elements added</param>
+		private static void CreateUniquenessConstraints(ConceptType conceptType, INotifyElementAdded notifyAdded)
 		{
-			// UNDONE: Look here for possible problems with ring contstraints
+			// UNDONE: Look here for possible problems with ring constraints
 			Table isPrimarilyForTable = TableIsPrimarilyForConceptType.GetTable(conceptType);
 			if (isPrimarilyForTable != null)
 			{
 				List<Uniqueness> alreadyDone = new List<Uniqueness>();
 				foreach (Uniqueness uniqueness in conceptType.UniquenessCollection)
 				{
-					UniquenessConstraint uniquenessConstraint = new UniquenessConstraint(uniqueness.Store, new PropertyAssignment[] { new PropertyAssignment(UniquenessConstraint.NameDomainPropertyId, uniqueness.Name) });
-					foreach (Column myColumn in isPrimarilyForTable.ColumnCollection)
+					UniquenessConstraint uniquenessConstraint = new UniquenessConstraint(uniqueness.Store, new PropertyAssignment[] { new PropertyAssignment(UniquenessConstraint.NameDomainPropertyId, uniqueness.Name), new PropertyAssignment(UniquenessConstraint.IsPrimaryDomainPropertyId, uniqueness.IsPreferred) });
+					new TableContainsUniquenessConstraint(isPrimarilyForTable, uniquenessConstraint);
+					new UniquenessConstraintIsForUniqueness(uniquenessConstraint, uniqueness);
+					foreach (ConceptTypeChild conceptTypeChild in uniqueness.ConceptTypeChildCollection)
 					{
-						foreach (ConceptTypeChild conceptTypeChild in uniqueness.ConceptTypeChildCollection)
+						foreach (Column column in ColumnHasConceptTypeChild.GetColumn(conceptTypeChild))
 						{
-							if (ColumnHasConceptTypeChild.GetConceptTypeChildPath(myColumn).Count > 0 && ColumnHasConceptTypeChild.GetConceptTypeChildPath(myColumn)[0] == conceptTypeChild)
+							if (column.Table == isPrimarilyForTable && ColumnHasConceptTypeChild.GetConceptTypeChildPath(column)[0] == conceptTypeChild)
 							{
-								UniquenessConstraintIncludesColumn uniquenessConstraintIncludesColumn = new UniquenessConstraintIncludesColumn(uniquenessConstraint, myColumn);
-								if (uniqueness.IsPreferred)
-								{
-									uniquenessConstraint.IsPrimary = true;
-								}
+								new UniquenessConstraintIncludesColumn(uniquenessConstraint, column);
+								break;
 							}
 						}
 					}
-					if (!isPrimarilyForTable.UniquenessConstraintCollection.Contains(uniquenessConstraint))
+					if (notifyAdded != null)
 					{
-						isPrimarilyForTable.UniquenessConstraintCollection.Add(uniquenessConstraint);
-						UniquenessConstraintIsForUniqueness uniquenessConstraintIsForUniqueness = new UniquenessConstraintIsForUniqueness(uniquenessConstraint, uniqueness);
+						notifyAdded.ElementAdded(uniquenessConstraint, true);
 					}
 				}
 			}
@@ -1544,6 +1593,10 @@ namespace Neumont.Tools.ORMAbstractionToConceptualDatabaseBridge
 									matchingColumns.RemoveAt(i);
 								}
 							}
+						}
+						if (notifyAdded != null)
+						{
+							notifyAdded.ElementAdded(uniquenessConstraint, true);
 						}
 					}
 				}

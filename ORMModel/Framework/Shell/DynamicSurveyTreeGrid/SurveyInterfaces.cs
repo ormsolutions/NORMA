@@ -263,10 +263,29 @@ namespace Neumont.Tools.Modeling.Shell.DynamicSurveyTreeGrid
 		/// as compared to another ISurveyNode.
 		/// </summary>
 		/// <param name="other">The opposite object to compare to</param>
+		/// <param name="customSortData">Data returned by the <see cref="ResetCustomSortData"/>
+		/// method representing a snapshot of the data used to sort an element.</param>
+		/// <param name="otherCustomSortData">Sort data returned by the other
+		/// element's <see cref="ResetCustomSortData"/> method.</param>
 		/// <returns>Normal comparison semantics apply, except that a 0
 		/// return here applies no information, not equality. Survey nodes
 		/// must have a fully deterministic order.</returns>
-		int CompareToSurveyNode(object other);
+		int CompareToSurveyNode(object other, object customSortData, object otherCustomSortData);
+		/// <summary>
+		/// Custom sorting nodes requires data that cannot be represented by
+		/// the survey categorization and string representations of the element.
+		/// Generally, this data is based on the current node state. However,
+		/// the old data is required to find an element in a custom sorted
+		/// state at a time when the old custom sort information is no longer
+		/// available. The data returned here (potentially null if the custom sort
+		/// is based on state that does not change over time) is passed to the
+		/// <see cref="CompareToSurveyNode"/> method, which can interpret the
+		/// data to compare to elements.
+		/// </summary>
+		/// <param name="customSortData">A reference to existing data. If this
+		/// is not null, then the data should only be recreated if it has changed.</param>
+		/// <returns><see langword="true"/> if the data has changed</returns>
+		bool ResetCustomSortData(ref object customSortData);
 	}
 	#endregion // ICustomComparableSurveyNode interface
 	#region ISurveyNodeProvider interface
@@ -298,28 +317,33 @@ namespace Neumont.Tools.Modeling.Shell.DynamicSurveyTreeGrid
 	public interface INotifySurveyElementChanged
 	{
 		/// <summary>
-		/// Called when an element is added to the containers node provider
+		/// Called when an element is added to the container's node provider
 		/// </summary>
 		/// <param name="element">The object that has been added</param>
 		/// <param name="contextElement">If the object is added as part of a detail expansion, the context element
 		/// is the element's parent object.</param>
 		void ElementAdded(object element, object contextElement);
 		/// <summary>
-		/// called if an element in the containers node provider has been changed
+		/// called if an element in the container's node provider has been changed
 		/// </summary>
 		/// <param name="element">the object that has been changed</param>
 		/// <param name="questionTypes">The question types.</param>
 		void ElementChanged(object element, params Type[] questionTypes);
 		/// <summary>
-		/// called if element is removed from the containers node provider
+		/// called if element is removed from the container's node provider
 		/// </summary>
 		/// <param name="element">the object that was removed from the node provider</param>
 		void ElementDeleted(object element);
 		/// <summary>
-		/// called if an element in the containers node provider has been renamed
+		/// called if an element in the container's node provider has been renamed
 		/// </summary>
 		/// <param name="element">the object that has been renamed</param>
 		void ElementRenamed(object element);
+		/// <summary>
+		/// called if the custom sort data has changed for an element in the container's node provider
+		/// </summary>
+		/// <param name="element">the object that has been modified</param>
+		void ElementCustomSortChanged(object element);
 	}
 	#endregion // INotifySurveyElementChanged interface
 }

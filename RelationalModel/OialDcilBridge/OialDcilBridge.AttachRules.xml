@@ -77,6 +77,12 @@
 			<arg:DeleteRule methodName="UniquenessDeletedRule">
 				<arg:RuleOn targetType="UniquenessConstraintIsForUniqueness"/>
 			</arg:DeleteRule>
+			<arg:DeletingRule methodName="UniquenessConstraintRoleDeleting">
+				<arg:RuleOn targetType="UniquenessIncludesConceptTypeChild" targetTypeQualifier="Neumont.Tools.ORMAbstraction"/>
+			</arg:DeletingRule>
+			<arg:RolePlayerPositionChangeRule methodName="UniquenessConstraintRoleOrderChanged">
+				<arg:RuleOn targetType="UniquenessIncludesConceptTypeChild" targetTypeQualifier="Neumont.Tools.ORMAbstraction"/>
+			</arg:RolePlayerPositionChangeRule>
 		</arg:RuleContainer>
 		<arg:RuleContainer class="AssimilationMapping">
 			<arg:AddRule methodName="AssimilationMappingAddedRule">

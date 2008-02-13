@@ -3674,6 +3674,247 @@ namespace Neumont.Tools.RelationalModels.ConceptualDatabase
 namespace Neumont.Tools.RelationalModels.ConceptualDatabase
 {
 	/// <summary>
+	/// DomainRelationship ReferenceConstraintTargetsUniquenessConstraint
+	/// Description for
+	/// Neumont.Tools.RelationalModels.ConceptualDatabase.ReferenceConstraintTargetsUniquenessConstraint
+	/// </summary>
+	[DslDesign::DisplayNameResource("Neumont.Tools.RelationalModels.ConceptualDatabase.ReferenceConstraintTargetsUniquenessConstraint.DisplayName", typeof(global::Neumont.Tools.RelationalModels.ConceptualDatabase.ConceptualDatabaseDomainModel), "Neumont.Tools.RelationalModels.ConceptualDatabase.GeneratedCode.DomainModelResx")]
+	[DslDesign::DescriptionResource("Neumont.Tools.RelationalModels.ConceptualDatabase.ReferenceConstraintTargetsUniquenessConstraint.Description", typeof(global::Neumont.Tools.RelationalModels.ConceptualDatabase.ConceptualDatabaseDomainModel), "Neumont.Tools.RelationalModels.ConceptualDatabase.GeneratedCode.DomainModelResx")]
+	[global::System.CLSCompliant(true)]
+	[DslModeling::DomainRelationship()]
+	[DslModeling::DomainObjectId("44c97277-d3ad-4b88-8360-8b5fa1c1eff2")]
+	public partial class ReferenceConstraintTargetsUniquenessConstraint : DslModeling::ElementLink
+	{
+		#region Constructors, domain class Id
+		
+		/// <summary>
+		/// ReferenceConstraintTargetsUniquenessConstraint domain class Id.
+		/// </summary>
+		public static readonly new global::System.Guid DomainClassId = new global::System.Guid(0x44c97277, 0xd3ad, 0x4b88, 0x83, 0x60, 0x8b, 0x5f, 0xa1, 0xc1, 0xef, 0xf2);
+	
+				
+		/// <summary>
+		/// Constructor
+		/// Creates a ReferenceConstraintTargetsUniquenessConstraint link in the same Partition as the given ReferenceConstraint
+		/// </summary>
+		/// <param name="source">ReferenceConstraint to use as the source of the relationship.</param>
+		/// <param name="target">UniquenessConstraint to use as the target of the relationship.</param>
+		public ReferenceConstraintTargetsUniquenessConstraint(ReferenceConstraint source, UniquenessConstraint target)
+			: base((source != null ? source.Partition : null), new DslModeling::RoleAssignment[]{new DslModeling::RoleAssignment(ReferenceConstraintTargetsUniquenessConstraint.ReferenceConstraintDomainRoleId, source), new DslModeling::RoleAssignment(ReferenceConstraintTargetsUniquenessConstraint.TargetUniquenessConstraintDomainRoleId, target)}, null)
+		{
+		}
+		
+		/// <summary>
+		/// Constructor
+		/// </summary>
+		/// <param name="store">Store where new link is to be created.</param>
+		/// <param name="roleAssignments">List of relationship role assignments.</param>
+		public ReferenceConstraintTargetsUniquenessConstraint(DslModeling::Store store, params DslModeling::RoleAssignment[] roleAssignments)
+			: base(store != null ? store.DefaultPartition : null, roleAssignments, null)
+		{
+		}
+		
+		/// <summary>
+		/// Constructor
+		/// </summary>
+		/// <param name="store">Store where new link is to be created.</param>
+		/// <param name="roleAssignments">List of relationship role assignments.</param>
+		/// <param name="propertyAssignments">List of properties assignments to set on the new link.</param>
+		public ReferenceConstraintTargetsUniquenessConstraint(DslModeling::Store store, DslModeling::RoleAssignment[] roleAssignments, DslModeling::PropertyAssignment[] propertyAssignments)
+			: base(store != null ? store.DefaultPartition : null, roleAssignments, propertyAssignments)
+		{
+		}
+		
+		/// <summary>
+		/// Constructor
+		/// </summary>
+		/// <param name="partition">Partition where new link is to be created.</param>
+		/// <param name="roleAssignments">List of relationship role assignments.</param>
+		public ReferenceConstraintTargetsUniquenessConstraint(DslModeling::Partition partition, params DslModeling::RoleAssignment[] roleAssignments)
+			: base(partition, roleAssignments, null)
+		{
+		}
+		
+		/// <summary>
+		/// Constructor
+		/// </summary>
+		/// <param name="partition">Partition where new link is to be created.</param>
+		/// <param name="roleAssignments">List of relationship role assignments.</param>
+		/// <param name="propertyAssignments">List of properties assignments to set on the new link.</param>
+		public ReferenceConstraintTargetsUniquenessConstraint(DslModeling::Partition partition, DslModeling::RoleAssignment[] roleAssignments, DslModeling::PropertyAssignment[] propertyAssignments)
+			: base(partition, roleAssignments, propertyAssignments)
+		{
+		}
+		#endregion
+		#region ReferenceConstraint domain role code
+		
+		/// <summary>
+		/// ReferenceConstraint domain role Id.
+		/// </summary>
+		public static readonly global::System.Guid ReferenceConstraintDomainRoleId = new global::System.Guid(0xad67d427, 0x5d9a, 0x4195, 0xa7, 0x02, 0x0f, 0x99, 0x4b, 0x71, 0x5e, 0x9f);
+		
+		/// <summary>
+		/// DomainRole ReferenceConstraint
+		/// Description for
+		/// Neumont.Tools.RelationalModels.ConceptualDatabase.ReferenceConstraintTargetsUniquenessConstraint.ReferenceConstraint
+		/// </summary>
+		[DslDesign::DisplayNameResource("Neumont.Tools.RelationalModels.ConceptualDatabase.ReferenceConstraintTargetsUniquenessConstraint/ReferenceConstraint.DisplayName", typeof(global::Neumont.Tools.RelationalModels.ConceptualDatabase.ConceptualDatabaseDomainModel), "Neumont.Tools.RelationalModels.ConceptualDatabase.GeneratedCode.DomainModelResx")]
+		[DslDesign::DescriptionResource("Neumont.Tools.RelationalModels.ConceptualDatabase.ReferenceConstraintTargetsUniquenessConstraint/ReferenceConstraint.Description", typeof(global::Neumont.Tools.RelationalModels.ConceptualDatabase.ConceptualDatabaseDomainModel), "Neumont.Tools.RelationalModels.ConceptualDatabase.GeneratedCode.DomainModelResx")]
+		[DslModeling::DomainRole(DslModeling::DomainRoleOrder.Source, PropertyName = "TargetUniquenessConstraint", PropertyDisplayNameKey="Neumont.Tools.RelationalModels.ConceptualDatabase.ReferenceConstraintTargetsUniquenessConstraint/ReferenceConstraint.PropertyDisplayName", PropagatesDelete = true, Multiplicity = DslModeling::Multiplicity.One)]
+		[DslModeling::DomainObjectId("ad67d427-5d9a-4195-a702-0f994b715e9f")]
+		public virtual ReferenceConstraint ReferenceConstraint
+		{
+			[global::System.Diagnostics.DebuggerStepThrough]
+			get
+			{
+				return (ReferenceConstraint)DslModeling::DomainRoleInfo.GetRolePlayer(this, ReferenceConstraintDomainRoleId);
+			}
+			[global::System.Diagnostics.DebuggerStepThrough]
+			set
+			{
+				DslModeling::DomainRoleInfo.SetRolePlayer(this, ReferenceConstraintDomainRoleId, value);
+			}
+		}
+				
+		#endregion
+		#region Static methods to access ReferenceConstraintCollection of a UniquenessConstraint
+		/// <summary>
+		/// Gets a list of ReferenceConstraintCollection.
+		/// </summary>
+		[global::System.Diagnostics.DebuggerStepThrough]
+		[global::System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Design", "CA1011")]
+		public static DslModeling::LinkedElementCollection<ReferenceConstraint> GetReferenceConstraintCollection(UniquenessConstraint element)
+		{
+			return new DslModeling::LinkedElementCollection<ReferenceConstraint>(element, TargetUniquenessConstraintDomainRoleId);
+		}
+		#endregion
+		#region TargetUniquenessConstraint domain role code
+		
+		/// <summary>
+		/// TargetUniquenessConstraint domain role Id.
+		/// </summary>
+		public static readonly global::System.Guid TargetUniquenessConstraintDomainRoleId = new global::System.Guid(0x3da1be1b, 0xec9e, 0x4b12, 0xbc, 0x28, 0x74, 0x25, 0x43, 0xbe, 0xbd, 0xbe);
+		
+		/// <summary>
+		/// DomainRole TargetUniquenessConstraint
+		/// Description for
+		/// Neumont.Tools.RelationalModels.ConceptualDatabase.ReferenceConstraintTargetsUniquenessConstraint.TargetUniquenessConstraint
+		/// </summary>
+		[DslDesign::DisplayNameResource("Neumont.Tools.RelationalModels.ConceptualDatabase.ReferenceConstraintTargetsUniquenessConstraint/TargetUniquenessConstraint.DisplayName", typeof(global::Neumont.Tools.RelationalModels.ConceptualDatabase.ConceptualDatabaseDomainModel), "Neumont.Tools.RelationalModels.ConceptualDatabase.GeneratedCode.DomainModelResx")]
+		[DslDesign::DescriptionResource("Neumont.Tools.RelationalModels.ConceptualDatabase.ReferenceConstraintTargetsUniquenessConstraint/TargetUniquenessConstraint.Description", typeof(global::Neumont.Tools.RelationalModels.ConceptualDatabase.ConceptualDatabaseDomainModel), "Neumont.Tools.RelationalModels.ConceptualDatabase.GeneratedCode.DomainModelResx")]
+		[DslModeling::DomainRole(DslModeling::DomainRoleOrder.Target, PropertyName = "ReferenceConstraintCollection", PropertyDisplayNameKey="Neumont.Tools.RelationalModels.ConceptualDatabase.ReferenceConstraintTargetsUniquenessConstraint/TargetUniquenessConstraint.PropertyDisplayName", Multiplicity = DslModeling::Multiplicity.ZeroMany)]
+		[DslModeling::DomainObjectId("3da1be1b-ec9e-4b12-bc28-742543bebdbe")]
+		public virtual UniquenessConstraint TargetUniquenessConstraint
+		{
+			[global::System.Diagnostics.DebuggerStepThrough]
+			get
+			{
+				return (UniquenessConstraint)DslModeling::DomainRoleInfo.GetRolePlayer(this, TargetUniquenessConstraintDomainRoleId);
+			}
+			[global::System.Diagnostics.DebuggerStepThrough]
+			set
+			{
+				DslModeling::DomainRoleInfo.SetRolePlayer(this, TargetUniquenessConstraintDomainRoleId, value);
+			}
+		}
+				
+		#endregion
+		#region Static methods to access TargetUniquenessConstraint of a ReferenceConstraint
+		/// <summary>
+		/// Gets TargetUniquenessConstraint.
+		/// </summary>
+		[global::System.Diagnostics.DebuggerStepThrough]
+		[global::System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Design", "CA1011")]
+		public static UniquenessConstraint GetTargetUniquenessConstraint(ReferenceConstraint element)
+		{
+			return DslModeling::DomainRoleInfo.GetLinkedElement(element, ReferenceConstraintDomainRoleId) as UniquenessConstraint;
+		}
+		
+		/// <summary>
+		/// Sets TargetUniquenessConstraint.
+		/// </summary>
+		[global::System.Diagnostics.DebuggerStepThrough]
+		[global::System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Design", "CA1011")]
+		public static void SetTargetUniquenessConstraint(ReferenceConstraint element, UniquenessConstraint newTargetUniquenessConstraint)
+		{
+			DslModeling::DomainRoleInfo.SetLinkedElement(element, ReferenceConstraintDomainRoleId, newTargetUniquenessConstraint);
+		}
+		#endregion
+		#region ReferenceConstraint link accessor
+		/// <summary>
+		/// Get the ReferenceConstraintTargetsUniquenessConstraint link to a ReferenceConstraint.
+		/// </summary>
+		[global::System.Diagnostics.DebuggerStepThrough]
+		[global::System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Design", "CA1011")]
+		public static global::Neumont.Tools.RelationalModels.ConceptualDatabase.ReferenceConstraintTargetsUniquenessConstraint GetLinkToTargetUniquenessConstraint (global::Neumont.Tools.RelationalModels.ConceptualDatabase.ReferenceConstraint referenceConstraintInstance)
+		{
+			global::System.Collections.Generic.IList<global::Neumont.Tools.RelationalModels.ConceptualDatabase.ReferenceConstraintTargetsUniquenessConstraint> links = DslModeling::DomainRoleInfo.GetElementLinks<global::Neumont.Tools.RelationalModels.ConceptualDatabase.ReferenceConstraintTargetsUniquenessConstraint>(referenceConstraintInstance, global::Neumont.Tools.RelationalModels.ConceptualDatabase.ReferenceConstraintTargetsUniquenessConstraint.ReferenceConstraintDomainRoleId);
+			global::System.Diagnostics.Debug.Assert(links.Count <= 1, "Multiplicity of ReferenceConstraint not obeyed.");
+			if ( links.Count == 0 )
+			{
+				return null;
+			}
+			else
+			{
+				return links[0];
+			}
+		}
+		#endregion
+		#region TargetUniquenessConstraint link accessor
+		/// <summary>
+		/// Get the list of ReferenceConstraintTargetsUniquenessConstraint links to a UniquenessConstraint.
+		/// </summary>
+		[global::System.Diagnostics.DebuggerStepThrough]
+		[global::System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Design", "CA1011")]
+		public static global::System.Collections.ObjectModel.ReadOnlyCollection<global::Neumont.Tools.RelationalModels.ConceptualDatabase.ReferenceConstraintTargetsUniquenessConstraint> GetLinksToReferenceConstraintCollection ( global::Neumont.Tools.RelationalModels.ConceptualDatabase.UniquenessConstraint targetUniquenessConstraintInstance )
+		{
+			return DslModeling::DomainRoleInfo.GetElementLinks<global::Neumont.Tools.RelationalModels.ConceptualDatabase.ReferenceConstraintTargetsUniquenessConstraint>(targetUniquenessConstraintInstance, global::Neumont.Tools.RelationalModels.ConceptualDatabase.ReferenceConstraintTargetsUniquenessConstraint.TargetUniquenessConstraintDomainRoleId);
+		}
+		#endregion
+		#region ReferenceConstraintTargetsUniquenessConstraint instance accessors
+		
+		/// <summary>
+		/// Get any ReferenceConstraintTargetsUniquenessConstraint links between a given ReferenceConstraint and a UniquenessConstraint.
+		/// </summary>
+		[global::System.Diagnostics.DebuggerStepThrough]
+		[global::System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Design", "CA1011")]
+		public static global::System.Collections.ObjectModel.ReadOnlyCollection<global::Neumont.Tools.RelationalModels.ConceptualDatabase.ReferenceConstraintTargetsUniquenessConstraint> GetLinks( global::Neumont.Tools.RelationalModels.ConceptualDatabase.ReferenceConstraint source, global::Neumont.Tools.RelationalModels.ConceptualDatabase.UniquenessConstraint target )
+		{
+			global::System.Collections.Generic.List<global::Neumont.Tools.RelationalModels.ConceptualDatabase.ReferenceConstraintTargetsUniquenessConstraint> outLinks = new global::System.Collections.Generic.List<global::Neumont.Tools.RelationalModels.ConceptualDatabase.ReferenceConstraintTargetsUniquenessConstraint>();
+			global::System.Collections.Generic.IList<global::Neumont.Tools.RelationalModels.ConceptualDatabase.ReferenceConstraintTargetsUniquenessConstraint> links = DslModeling::DomainRoleInfo.GetElementLinks<global::Neumont.Tools.RelationalModels.ConceptualDatabase.ReferenceConstraintTargetsUniquenessConstraint>(source, global::Neumont.Tools.RelationalModels.ConceptualDatabase.ReferenceConstraintTargetsUniquenessConstraint.ReferenceConstraintDomainRoleId);
+			foreach ( global::Neumont.Tools.RelationalModels.ConceptualDatabase.ReferenceConstraintTargetsUniquenessConstraint link in links )
+			{
+				if ( target.Equals(link.TargetUniquenessConstraint) )
+				{
+					outLinks.Add(link);
+				}
+			}
+			return outLinks.AsReadOnly();
+		}
+		/// <summary>
+		/// Get the one ReferenceConstraintTargetsUniquenessConstraint link between a given ReferenceConstraintand a UniquenessConstraint.
+		/// </summary>
+		[global::System.Diagnostics.DebuggerStepThrough]
+		[global::System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Design", "CA1011")]
+		public static global::Neumont.Tools.RelationalModels.ConceptualDatabase.ReferenceConstraintTargetsUniquenessConstraint GetLink( global::Neumont.Tools.RelationalModels.ConceptualDatabase.ReferenceConstraint source, global::Neumont.Tools.RelationalModels.ConceptualDatabase.UniquenessConstraint target )
+		{
+			global::System.Collections.Generic.IList<global::Neumont.Tools.RelationalModels.ConceptualDatabase.ReferenceConstraintTargetsUniquenessConstraint> links = DslModeling::DomainRoleInfo.GetElementLinks<global::Neumont.Tools.RelationalModels.ConceptualDatabase.ReferenceConstraintTargetsUniquenessConstraint>(source, global::Neumont.Tools.RelationalModels.ConceptualDatabase.ReferenceConstraintTargetsUniquenessConstraint.ReferenceConstraintDomainRoleId);
+			foreach ( global::Neumont.Tools.RelationalModels.ConceptualDatabase.ReferenceConstraintTargetsUniquenessConstraint link in links )
+			{
+				if ( target.Equals(link.TargetUniquenessConstraint) )
+				{
+					return link;
+				}
+			}
+			return null;
+		}
+		
+		#endregion
+	}
+}
+namespace Neumont.Tools.RelationalModels.ConceptualDatabase
+{
+	/// <summary>
 	/// DomainRelationship ColumnReference
 	/// Description for
 	/// Neumont.Tools.RelationalModels.ConceptualDatabase.ColumnReference
