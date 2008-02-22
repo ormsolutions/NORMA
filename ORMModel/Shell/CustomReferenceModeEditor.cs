@@ -49,7 +49,7 @@ namespace Neumont.Tools.ORM.Shell
 			tree.HasLines = false;
 			tree.HasRootLines = false;
 			tree.IsDragSource = false;
-			tree.LabelEditSupport = VirtualTreeLabelEditActivationStyles.Explicit | VirtualTreeLabelEditActivationStyles.Delayed;
+			tree.LabelEditSupport = VirtualTreeLabelEditActivationStyles.Explicit | VirtualTreeLabelEditActivationStyles.Delayed | VirtualTreeLabelEditActivationStyles.ImmediateSelection;
 			tree.MultiColumnHighlight = true;
 			tree.Name = "myTree";
 			tree.TabIndex = 0;

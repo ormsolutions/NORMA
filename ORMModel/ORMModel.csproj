@@ -405,6 +405,9 @@
       <DependentUpon>Framework.AttachRules.xml</DependentUpon>
       <AutoGen>True</AutoGen>
     </Compile>
+    <Compile Include="Framework\Shell\OnScreenTypeEditorHost.cs">
+      <SubType>Component</SubType>
+    </Compile>
     <Compile Include="Framework\Shell\DiagramMenuDisplay.cs" />
     <Compile Include="Framework\Shell\SerializationEngine.cs" />
     <Compile Include="Framework\Shell\ToolWindowActivator.cs" />

@@ -39,6 +39,7 @@ using Neumont.Tools.Modeling.Design;
 using Neumont.Tools.ORM.ObjectModel;
 using Neumont.Tools.ORM.ShapeModel;
 using Neumont.Tools.ORM.Shell;
+using Neumont.Tools.Modeling.Shell;
 
 #if VISUALSTUDIO_9_0
 using VirtualTreeInPlaceControlFlags = Microsoft.VisualStudio.VirtualTreeGrid.VirtualTreeInPlaceControls;
@@ -1667,7 +1668,7 @@ namespace Neumont.Tools.ORM.Shell
 							myReadingOrderPermutations.Add(roi);
 						}
 					}
-					TypeEditorHost host = TypeEditorHost.Create(new ReadingOrderDescriptor(myFact, this, ResourceStrings.ModelReadingEditorNewItemText), myReadingOrderPermutations, TypeEditorHostEditControlStyle.TransparentEditRegion);
+					TypeEditorHost host = OnScreenTypeEditorHost.Create(new ReadingOrderDescriptor(myFact, this, ResourceStrings.ModelReadingEditorNewItemText), myReadingOrderPermutations, TypeEditorHostEditControlStyle.TransparentEditRegion);
 					host.Flags = VirtualTreeInPlaceControlFlags.DrawItemText | VirtualTreeInPlaceControlFlags.ForwardKeyEvents | VirtualTreeInPlaceControlFlags.SizeToText;
 
 					return new VirtualTreeLabelEditData(
@@ -1730,7 +1731,7 @@ namespace Neumont.Tools.ORM.Shell
 			{
 				get
 				{
-					return BranchFeatures.ExplicitLabelEdits | BranchFeatures.PositionTracking | BranchFeatures.DelayedLabelEdits | BranchFeatures.InsertsAndDeletes | BranchFeatures.ComplexColumns;
+					return BranchFeatures.ExplicitLabelEdits | BranchFeatures.ImmediateSelectionLabelEdits | BranchFeatures.PositionTracking | BranchFeatures.DelayedLabelEdits | BranchFeatures.InsertsAndDeletes | BranchFeatures.ComplexColumns;
 				}
 			}
 			public VirtualTreeAccessibilityData GetAccessibilityData(int row, int column)
@@ -2848,6 +2849,10 @@ namespace Neumont.Tools.ORM.Shell
 								}
 								return LabelEditResult.CancelEdit;
 							});
+					}
+					else if (0 != (activationStyle | VirtualTreeLabelEditActivationStyles.ImmediateSelection))
+					{
+						return VirtualTreeLabelEditData.DeferActivation;
 					}
 					else
 					{

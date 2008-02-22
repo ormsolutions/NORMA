@@ -15,6 +15,7 @@ using Neumont.Tools.Modeling.Design;
 using System.Collections;
 using System.Drawing.Design;
 using System.Globalization;
+using Neumont.Tools.Modeling.Shell;
 
 #if VISUALSTUDIO_9_0
 using VirtualTreeInPlaceControlFlags = Microsoft.VisualStudio.VirtualTreeGrid.VirtualTreeInPlaceControls;
@@ -926,7 +927,7 @@ namespace Neumont.Tools.ORM.ObjectModel.Design
 				{
 					if (row == ExistingItemCount)
 					{
-						TypeEditorHost host = TypeEditorHost.Create(
+						TypeEditorHost host = OnScreenTypeEditorHost.Create(
 							OtherOwnersPropertyDescriptor.Descriptor,
 							this,
 							TypeEditorHostEditControlStyle.TransparentEditRegion);

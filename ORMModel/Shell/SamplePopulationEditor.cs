@@ -13,6 +13,7 @@ using Microsoft.VisualStudio.VirtualTreeGrid;
 using Neumont.Tools.Modeling;
 using Neumont.Tools.Modeling.Design;
 using Neumont.Tools.ORM.ObjectModel;
+using Neumont.Tools.Modeling.Shell;
 
 #if VISUALSTUDIO_9_0
 using VirtualTreeInPlaceControlFlags = Microsoft.VisualStudio.VirtualTreeGrid.VirtualTreeInPlaceControls;
@@ -1052,7 +1053,7 @@ namespace Neumont.Tools.ORM.Shell
 						(!rolePlayer.IsValueType &&
 						(null == (preferredIdentifier = rolePlayer.PreferredIdentifier) ||
 						preferredIdentifier.RoleCollection.Count > 1));
-					TypeEditorHost host = TypeEditorHost.Create(
+					TypeEditorHost host = OnScreenTypeEditorHost.Create(
 						Descriptor,
 						this,
 						blockEdits ? TypeEditorHostEditControlStyle.ReadOnlyEdit : TypeEditorHostEditControlStyle.Editable);

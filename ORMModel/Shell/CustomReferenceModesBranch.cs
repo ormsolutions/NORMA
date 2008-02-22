@@ -26,6 +26,7 @@ using Microsoft.VisualStudio.VirtualTreeGrid;
 using Neumont.Tools.Modeling;
 using Neumont.Tools.Modeling.Design;
 using Neumont.Tools.ORM.ObjectModel;
+using Neumont.Tools.Modeling.Shell;
 
 #if VISUALSTUDIO_9_0
 using VirtualTreeInPlaceControlFlags = Microsoft.VisualStudio.VirtualTreeGrid.VirtualTreeInPlaceControls;
@@ -349,22 +350,14 @@ namespace Neumont.Tools.ORM.Shell
 			{
 				ModelElement element = myCustomReferenceModesList[row];
 				PropertyDescriptor descriptor = DomainTypeDescriptor.CreatePropertyDescriptor(element, ReferenceMode.KindDisplayDomainPropertyId);
-
-				TypeEditorHost hostControl = TypeEditorHost.Create(descriptor, element, TypeEditorHostEditControlStyle.TransparentEditRegion);
-				hostControl.Flags = VirtualTreeInPlaceControlFlags.DisposeControl | VirtualTreeInPlaceControlFlags.DrawItemText | VirtualTreeInPlaceControlFlags.SizeToText;
-				// UNDONE: Deferring ImmediateSelection from the control sends in the
-				// ImmediateSelection value twice to activationStyle. Use the following
-				// settings when/if this is fixed.
-				//TypeEditorHost hostControl = TypeEditorHost.Create(descriptor, element, TypeEditorHostEditControlStyle.TransparentEditRegion);
-				//hostControl.Flags = VirtualTreeInPlaceControlFlags.DisposeControl | VirtualTreeInPlaceControlFlags.SizeToText | VirtualTreeInPlaceControlFlags.DrawItemText | VirtualTreeInPlaceControlFlags.ForwardKeyEvents;
+				TypeEditorHost hostControl = OnScreenTypeEditorHost.Create(descriptor, element, TypeEditorHostEditControlStyle.TransparentEditRegion);
+				hostControl.Flags = VirtualTreeInPlaceControlFlags.DisposeControl | VirtualTreeInPlaceControlFlags.SizeToText | VirtualTreeInPlaceControlFlags.DrawItemText | VirtualTreeInPlaceControlFlags.ForwardKeyEvents;
 				return new VirtualTreeLabelEditData(hostControl);
 			}
-			// UNDONE: Deferring ImmediateSelection from the control sends in the
-				// ImmediateSelection value twice to activationStyle
-				//else if (0 != (activationStyle | VirtualTreeLabelEditActivationStyles.ImmediateSelection))
-				//{
-				//	return VirtualTreeLabelEditData.DeferActivation;
-				//}
+			else if (0 != (activationStyle | VirtualTreeLabelEditActivationStyles.ImmediateSelection))
+			{
+				return VirtualTreeLabelEditData.DeferActivation;
+			}
 			else if (row == myCustomReferenceModesList.Count)
 			{
 				VirtualTreeLabelEditData newRow = VirtualTreeLabelEditData.Default;
@@ -516,10 +509,7 @@ namespace Neumont.Tools.ORM.Shell
 
 		BranchFeatures IBranch.Features
 		{
-			// UNDONE: Deferring ImmediateSelection from the control sends in the
-			// ImmediateSelection value twice to activationStyle. Would like to
-			// add BranchFeatures.ImmediateSelectionLabelEdits when/if this is fixed.
-			get { return BranchFeatures.DelayedLabelEdits | BranchFeatures.ExplicitLabelEdits | BranchFeatures.JaggedColumns | BranchFeatures.InsertsAndDeletes; }
+			get { return BranchFeatures.DelayedLabelEdits | BranchFeatures.ExplicitLabelEdits | BranchFeatures.ImmediateSelectionLabelEdits | BranchFeatures.JaggedColumns | BranchFeatures.InsertsAndDeletes; }
 		}
 
 
