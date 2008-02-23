@@ -916,6 +916,14 @@ namespace Neumont.Tools.ORM
 				return ResourceStrings.GetString(ResourceManagers.Model, "ModelError.ValueConstraint.ValueRangeOverlapError.Role.Message");
 			}
 		}
+		/// <summary>ValueConstraintValueTypeDetachedError text for a RoleValueConstraint. {0}=model {1}=facttype {2}=role number.</summary>
+		public static string ModelErrorRoleValueTypeDetachedError
+		{
+			get
+			{
+				return ResourceStrings.GetString(ResourceManagers.Model, "ModelError.ValueConstraint.ValueTypeDetachedError.Role.Message");
+			}
+		}
 		/// <summary>Category name to display for uncategorized model errors.</summary>
 		public static string ModelErrorUncategorized
 		{
@@ -1764,12 +1772,12 @@ namespace Neumont.Tools.ORM
 				return ResourceStrings.GetString(ResourceManagers.Model, "ModelException.SubtypeFact.NotNested");
 			}
 		}
-		/// <summary>Exception message when an attempt is made to change the SubtypeFact.IsPrimary property to false.</summary>
-		public static string ModelExceptionSubtypeFactPrimaryMustBeTrue
+		/// <summary>Exception message when an attempt is made to change the SubtypeFact.ProvidesPreferredIdentifier property to false.</summary>
+		public static string ModelExceptionSubtypeFactProvidesPreferredIdentifierInvalid
 		{
 			get
 			{
-				return ResourceStrings.GetString(ResourceManagers.Model, "ModelException.SubtypeFact.PrimaryMustBeTrue");
+				return ResourceStrings.GetString(ResourceManagers.Model, "ModelException.SubtypeFact.ProvidesPreferredIdentifierInvalid");
 			}
 		}
 		/// <summary>Exception message when an attempt is made to add a subtype relationship where the subtype is a direct or indirect subtype of the supertype.</summary>
@@ -2090,14 +2098,6 @@ namespace Neumont.Tools.ORM
 			get
 			{
 				return ResourceStrings.GetString(ResourceManagers.Model, "ModelError.Constraint.ExternalEqualityImpliedByMandatory.Text");
-			}
-		}
-		/// <summary>Text displayed in the text of the ObjectTypeRequiresPrimarySupertypeError. {0}=ObjectType name {1}=model name</summary>
-		public static string ModelErrorObjectTypeRequiresPrimarySupertypeError
-		{
-			get
-			{
-				return ResourceStrings.GetString(ResourceManagers.Model, "ModelError.ObjectType.ObjectTypeRequiresPrimarySupertypeError.Message");
 			}
 		}
 		/// <summary>Text displayed in the text of the CompatibleSupertypesError. {0}=ObjectType name {1}=model name.</summary>

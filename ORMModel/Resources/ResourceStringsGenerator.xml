@@ -245,6 +245,7 @@
 	<ResourceString name="ModelErrorValueRangeMinValueMismatchError" model="Model" resourceName="ModelError.ValueRange.MinValueMismatchError.ValueType.Message"/>
 	<ResourceString name="ModelErrorValueTypeValueRangeOverlapError" model="Model" resourceName="ModelError.ValueConstraint.ValueRangeOverlapError.ValueType.Message"/>
 	<ResourceString name="ModelErrorRoleValueRangeOverlapError" model="Model" resourceName="ModelError.ValueConstraint.ValueRangeOverlapError.Role.Message"/>
+	<ResourceString name="ModelErrorRoleValueTypeDetachedError" model="Model" resourceName="ModelError.ValueConstraint.ValueTypeDetachedError.Role.Message"/>
 	<ResourceString name="ModelErrorUncategorized" model="Model" resourceName="ModelError.UncategorizedModelError.CategoryDisplayName"/>
 	<ResourceString name="ModelErrorDisplayFilteredText" model="Model" resourceName="ModelErrorDisplayFilter.ToStringOverrideText"/>
 	<ResourceString name="ModelExceptionNameAlreadyUsedByModel" model="Model" resourceName="ModelException.Model.DuplicateName.Text"/>
@@ -351,7 +352,7 @@
 	<ResourceString name="ModelExceptionSubtypeFactMustBeParentOfMetaRole" model="Model" resourceName="ModelException.SubtypeFact.MetaRolesMustBeUsedOnSubtypeFact"/>
 	<ResourceString name="ModelExceptionSubtypeRolePlayerTypesCannotBeMixed" model="Model" resourceName="ModelException.SubtypeFact.RolePlayersTypesNotMixed"/>
 	<ResourceString name="ModelExceptionSubtypeFactNotNested" model="Model" resourceName="ModelException.SubtypeFact.NotNested"/>
-	<ResourceString name="ModelExceptionSubtypeFactPrimaryMustBeTrue" model="Model" resourceName="ModelException.SubtypeFact.PrimaryMustBeTrue"/>
+	<ResourceString name="ModelExceptionSubtypeFactProvidesPreferredIdentifierInvalid" model="Model" resourceName="ModelException.SubtypeFact.ProvidesPreferredIdentifierInvalid"/>
 	<ResourceString name="ModelExceptionSubtypeFactCycle" model="Model" resourceName="ModelException.SubtypeFact.Cycle"/>
 	<ResourceString name="ModelExceptionSubtypeMetaRoleOnlyAllowsImplicitConstraints" model="Model" resourceName="ModelException.SubtypeMetaRole.OnlyAllowsImplicitConstraints"/>
 	<ResourceString name="ModelExceptionSupertypeMetaRoleDisjunctiveMandatoryMustContainOnlySupertypeMetaRoles" model="Model" resourceName="ModelException.SupertypeMetaRole.DisjunctiveMandatoryMustContainOnlySupertypeMetaRoles"/>
@@ -404,7 +405,6 @@
 	<ResourceString name="ModelErrorSetComparisonConstraintCompatibleRolePlayerTypeError" model="Model" resourceName="ModelError.Constraint.CompatibleRolePlayerTypeError.SetComparison.Text"/>
 	<ResourceString name="ModelErrorRolePlayerRequiredError" model="Model" resourceName="ModelError.Role.RolePlayerRequired.Message"/>
 	<ResourceString name="ModelErrorExternalEqualityImpliedByMandatoryError" model="Model" resourceName="ModelError.Constraint.ExternalEqualityImpliedByMandatory.Text"/>
-	<ResourceString name="ModelErrorObjectTypeRequiresPrimarySupertypeError" model="Model" resourceName="ModelError.ObjectType.ObjectTypeRequiresPrimarySupertypeError.Message"/>
 	<ResourceString name="ModelErrorObjectTypeCompatibleSupertypesError" model="Model" resourceName="ModelError.ObjectType.CompatibleSupertypesError.Message"/>
 	<ResourceString name="ModelErrorObjectTypePreferredIdentifierRequiresMandatoryError" model="Model" resourceName="ModelError.ObjectType.PreferredIdentifierRequiresMandatoryError.Message"/>
 	<ResourceString name="ModelErrorEntityTypeRequiresReferenceSchemeMessage" model="Model" resourceName="ModelError.EntityType.RequiresReferenceScheme.Message"/>

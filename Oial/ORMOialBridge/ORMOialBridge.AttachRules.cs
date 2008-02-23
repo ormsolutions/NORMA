@@ -328,7 +328,6 @@ namespace Neumont.Tools.ORMToORMAbstractionBridge
 			[Microsoft.VisualStudio.Modeling.RuleOn(typeof(Neumont.Tools.ORM.ObjectModel.ObjectTypeHasEntityTypeRequiresReferenceSchemeError), Priority=Neumont.Tools.Modeling.FrameworkDomainModel.InlineRulePriority)]
 			[Microsoft.VisualStudio.Modeling.RuleOn(typeof(Neumont.Tools.ORM.ObjectModel.ObjectTypeHasCompatibleSupertypesError), Priority=Neumont.Tools.Modeling.FrameworkDomainModel.InlineRulePriority)]
 			[Microsoft.VisualStudio.Modeling.RuleOn(typeof(Neumont.Tools.ORM.ObjectModel.ObjectTypeHasPreferredIdentifierRequiresMandatoryError), Priority=Neumont.Tools.Modeling.FrameworkDomainModel.InlineRulePriority)]
-			[Microsoft.VisualStudio.Modeling.RuleOn(typeof(Neumont.Tools.ORM.ObjectModel.ObjectTypeHasObjectTypeRequiresPrimarySupertypeError), Priority=Neumont.Tools.Modeling.FrameworkDomainModel.InlineRulePriority)]
 			[Microsoft.VisualStudio.Modeling.RuleOn(typeof(Neumont.Tools.ORM.ObjectModel.ValueTypeHasUnspecifiedDataTypeError), Priority=Neumont.Tools.Modeling.FrameworkDomainModel.InlineRulePriority)]
 			private sealed class ObjectTypeErrorAddedRuleClass : Microsoft.VisualStudio.Modeling.AddRule
 			{
@@ -344,7 +343,6 @@ namespace Neumont.Tools.ORMToORMAbstractionBridge
 				/// /// AddRule: typeof(Neumont.Tools.ORM.ObjectModel.ObjectTypeHasEntityTypeRequiresReferenceSchemeError)
 				/// /// AddRule: typeof(Neumont.Tools.ORM.ObjectModel.ObjectTypeHasCompatibleSupertypesError)
 				/// /// AddRule: typeof(Neumont.Tools.ORM.ObjectModel.ObjectTypeHasPreferredIdentifierRequiresMandatoryError)
-				/// /// AddRule: typeof(Neumont.Tools.ORM.ObjectModel.ObjectTypeHasObjectTypeRequiresPrimarySupertypeError)
 				/// /// AddRule: typeof(Neumont.Tools.ORM.ObjectModel.ValueTypeHasUnspecifiedDataTypeError)
 				/// /// </summary>
 				/// private static void ObjectTypeErrorAddedRule(ElementAddedEventArgs e)
@@ -362,7 +360,6 @@ namespace Neumont.Tools.ORMToORMAbstractionBridge
 			[Microsoft.VisualStudio.Modeling.RuleOn(typeof(Neumont.Tools.ORM.ObjectModel.ObjectTypeHasEntityTypeRequiresReferenceSchemeError), Priority=Neumont.Tools.Modeling.FrameworkDomainModel.InlineRulePriority)]
 			[Microsoft.VisualStudio.Modeling.RuleOn(typeof(Neumont.Tools.ORM.ObjectModel.ObjectTypeHasCompatibleSupertypesError), Priority=Neumont.Tools.Modeling.FrameworkDomainModel.InlineRulePriority)]
 			[Microsoft.VisualStudio.Modeling.RuleOn(typeof(Neumont.Tools.ORM.ObjectModel.ObjectTypeHasPreferredIdentifierRequiresMandatoryError), Priority=Neumont.Tools.Modeling.FrameworkDomainModel.InlineRulePriority)]
-			[Microsoft.VisualStudio.Modeling.RuleOn(typeof(Neumont.Tools.ORM.ObjectModel.ObjectTypeHasObjectTypeRequiresPrimarySupertypeError), Priority=Neumont.Tools.Modeling.FrameworkDomainModel.InlineRulePriority)]
 			[Microsoft.VisualStudio.Modeling.RuleOn(typeof(Neumont.Tools.ORM.ObjectModel.ValueTypeHasUnspecifiedDataTypeError), Priority=Neumont.Tools.Modeling.FrameworkDomainModel.InlineRulePriority)]
 			private sealed class ObjectTypeErrorDeletedRuleClass : Microsoft.VisualStudio.Modeling.DeleteRule
 			{
@@ -378,7 +375,6 @@ namespace Neumont.Tools.ORMToORMAbstractionBridge
 				/// /// DeleteRule: typeof(Neumont.Tools.ORM.ObjectModel.ObjectTypeHasEntityTypeRequiresReferenceSchemeError)
 				/// /// DeleteRule: typeof(Neumont.Tools.ORM.ObjectModel.ObjectTypeHasCompatibleSupertypesError)
 				/// /// DeleteRule: typeof(Neumont.Tools.ORM.ObjectModel.ObjectTypeHasPreferredIdentifierRequiresMandatoryError)
-				/// /// DeleteRule: typeof(Neumont.Tools.ORM.ObjectModel.ObjectTypeHasObjectTypeRequiresPrimarySupertypeError)
 				/// /// DeleteRule: typeof(Neumont.Tools.ORM.ObjectModel.ValueTypeHasUnspecifiedDataTypeError)
 				/// /// </summary>
 				/// private static void ObjectTypeErrorDeletedRule(ElementDeletedEventArgs e)

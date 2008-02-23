@@ -1,0 +1,9 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<TestReport xmlns="http://schemas.neumont.edu/ORM/SDK/TestReport">
+	<Compare result="pass" />
+	<ValidationErrors>
+		<ValidationError>Entity type 'EntityType5' in model 'ORMModel1' requires a local preferred reference scheme or supertype(s) that provide preferred identification.</ValidationError>
+		<ValidationError>Entity type 'EntityType6' in model 'ORMModel1' requires a local preferred reference scheme or supertype(s) that provide preferred identification.</ValidationError>
+		<ValidationError>Role '1' of FactType 'EntityType6TestValueType1' in model 'ORMModel1' has a value constraint with no associated ValueType.</ValidationError>
+	</ValidationErrors>
+</TestReport>

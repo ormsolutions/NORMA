@@ -306,7 +306,11 @@ namespace Neumont.Tools.ORM.SDK.TestEngine
 					}
 					t.Commit();
 				}
+				// UNDONE: We need to define a generic mechanism to attach events so that events that
+				// affect the state of objects in the store can be distinguished from those that affect
+				// the displayed state of the shell, then attach only events that matter in a given environment.
 				AddErrorReportingEvents(store);
+				NamedElementDictionary.ManageEventHandlers(store, ModelingEventManager.GetModelingEventManager(store), EventHandlerAction.Add);
 				store.UndoManager.UndoState = UndoState.Enabled;
 				return store;
 			}

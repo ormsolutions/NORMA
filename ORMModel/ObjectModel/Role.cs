@@ -521,8 +521,10 @@ namespace Neumont.Tools.ORM.ObjectModel
 					if (walkSubtypes)
 					{
 						SubtypeFact subtypeFact = (SubtypeFact)role.FactType;
-						ObjectType subtype = subtypeFact.Subtype;
-						if (subtype != null && subtype.PreferredIdentifier == null)
+						ObjectType subtype;
+						if (subtypeFact.ProvidesPreferredIdentifier &&
+							null != (subtype = subtypeFact.Subtype) &&
+							subtype.PreferredIdentifier == null)
 						{
 							if (!WalkDescendedValueRoles(subtype.PlayedRoleCollection, dataTypeLink, previousValueConstraint, null, true, visitor))
 							{

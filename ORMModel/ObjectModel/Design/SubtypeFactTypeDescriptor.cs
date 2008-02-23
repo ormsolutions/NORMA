@@ -75,14 +75,17 @@ namespace Neumont.Tools.ORM.ObjectModel.Design
 		}
 
 		/// <summary>
-		/// Ensure that the <see cref="SubtypeFact.IsPrimary"/> property is read-only when
+		/// Ensure that the <see cref="SubtypeFact.ProvidesPreferredIdentifier"/> property is read-only when
 		/// it is <see langword="true"/>.
 		/// </summary>
 		protected override bool IsPropertyDescriptorReadOnly(ElementPropertyDescriptor propertyDescriptor)
 		{
-			if (propertyDescriptor.DomainPropertyInfo.Id.Equals(SubtypeFact.IsPrimaryDomainPropertyId))
+			if (propertyDescriptor.DomainPropertyInfo.Id.Equals(SubtypeFact.ProvidesPreferredIdentifierDomainPropertyId))
 			{
-				return ModelElement.IsPrimary;
+				SubtypeFact subtypeFact = ModelElement;
+				ObjectType subtype;
+				return subtypeFact.ProvidesPreferredIdentifier ||
+					(null != (subtype = subtypeFact.Subtype) && subtype.PreferredIdentifier != null);
 			}
 			return base.IsPropertyDescriptorReadOnly(propertyDescriptor);
 		}

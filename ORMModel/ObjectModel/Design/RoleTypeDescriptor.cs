@@ -78,7 +78,7 @@ namespace Neumont.Tools.ORM.ObjectModel.Design
 			Guid propertyId = propertyDescriptor.DomainPropertyInfo.Id;
 			if (propertyId == Role.ValueRangeTextDomainPropertyId)
 			{
-				return !ModelElement.IsValueRole;
+				return ModelElement.ValueConstraint == null && !ModelElement.IsValueRole;
 			}
 			else if (propertyId == Role.IsMandatoryDomainPropertyId ||
 				propertyId == Role.MandatoryConstraintModalityDomainPropertyId ||

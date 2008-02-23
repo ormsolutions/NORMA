@@ -705,7 +705,7 @@ namespace Neumont.Tools.ORM.ObjectModel
 					// They must both be value types or object types, but can't switch
 					((superType.DataType == null) != (subType.DataType == null)))
 				{
-					RemoveFact(element);
+					RemoveFactType(element);
 				}
 				else
 				{
@@ -723,6 +723,17 @@ namespace Neumont.Tools.ORM.ObjectModel
 					{
 						EnsureSingleColumnUniqueAndMandatory(store, element.Model, superTypeMetaRole, false, notifyAdded);
 					}
+					
+					// Switch to using the new ProvidesPreferredIdentifier path property instead of the deprecated
+					// IsPrimary. Other equivalent paths for preferred identification are marked later in the load process.
+					if (element.IsPrimary)
+					{
+						// UNDONE: Remove IsPrimary after file format change, make this
+						// check in the format upgrade transform
+						element.ProvidesPreferredIdentifier = true;
+						element.IsPrimary = false;
+					}
+					
 				}
 			}
 			/// <summary>
@@ -730,10 +741,10 @@ namespace Neumont.Tools.ORM.ObjectModel
 			/// are not implicitly constructed until a later phase), so we need to work a little harder
 			/// to remove them.
 			/// </summary>
-			/// <param name="fact">The fact to clear of external constraints</param>
-			private static void RemoveFact(FactType fact)
+			/// <param name="factType">The fact to clear of external constraints</param>
+			private static void RemoveFactType(FactType factType)
 			{
-				LinkedElementCollection<RoleBase> factRoles = fact.RoleCollection;
+				LinkedElementCollection<RoleBase> factRoles = factType.RoleCollection;
 				int roleCount = factRoles.Count;
 				for (int i = 0; i < roleCount; ++i)
 				{
@@ -749,7 +760,7 @@ namespace Neumont.Tools.ORM.ObjectModel
 						}
 					}
 				}
-				fact.Delete();
+				factType.Delete();
 			}
 			private static void EnsureSingleColumnUniqueAndMandatory(Store store, ORMModel model, Role role, bool requireMandatory, INotifyElementAdded notifyAdded)
 			{
@@ -837,7 +848,7 @@ namespace Neumont.Tools.ORM.ObjectModel
 		/// <returns></returns>
 		protected new int AskGlyphQuestion()
 		{
-			if (this.IsPrimary)
+			if (this.ProvidesPreferredIdentifier)
 			{
 				return (int)SurveyQuestionGlyph.PrimarySubtypeRelationship;
 			}

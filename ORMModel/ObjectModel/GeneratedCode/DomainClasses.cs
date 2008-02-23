@@ -3801,38 +3801,6 @@ namespace Neumont.Tools.ORM.ObjectModel
 			}
 		}
 		#endregion
-		#region ObjectTypeRequiresPrimarySupertypeError opposite domain role accessor
-		/// <summary>
-		/// Gets or sets ObjectTypeRequiresPrimarySupertypeError.
-		/// Description for
-		/// Neumont.Tools.ORM.ObjectModel.ObjectTypeHasObjectTypeRequiresPrimarySupertypeError.ObjectType
-		/// </summary>
-		public virtual ObjectTypeRequiresPrimarySupertypeError ObjectTypeRequiresPrimarySupertypeError
-		{
-			[global::System.Diagnostics.DebuggerStepThrough]
-			get
-			{
-				return DslModeling::DomainRoleInfo.GetLinkedElement(this, global::Neumont.Tools.ORM.ObjectModel.ObjectTypeHasObjectTypeRequiresPrimarySupertypeError.ObjectTypeDomainRoleId) as ObjectTypeRequiresPrimarySupertypeError;
-			}
-			[global::System.Diagnostics.DebuggerStepThrough]
-			set
-			{
-				DslModeling::ModelElement existingSource;
-				if (null != value &&
-					null != (existingSource = DslModeling::DomainRoleInfo.GetLinkedElement(value, global::Neumont.Tools.ORM.ObjectModel.ObjectTypeHasObjectTypeRequiresPrimarySupertypeError.ObjectTypeRequiresPrimarySupertypeErrorDomainRoleId)))
-				{
-					if (existingSource != value)
-					{
-						DslModeling::DomainRoleInfo.SetLinkedElement(value, global::Neumont.Tools.ORM.ObjectModel.ObjectTypeHasObjectTypeRequiresPrimarySupertypeError.ObjectTypeRequiresPrimarySupertypeErrorDomainRoleId, this);
-					}
-				}
-				else
-				{
-					DslModeling::DomainRoleInfo.SetLinkedElement(this, global::Neumont.Tools.ORM.ObjectModel.ObjectTypeHasObjectTypeRequiresPrimarySupertypeError.ObjectTypeDomainRoleId, value);
-				}
-			}
-		}
-		#endregion
 		#region Definition opposite domain role accessor
 		/// <summary>
 		/// Gets or sets Definition.
@@ -5211,6 +5179,7 @@ namespace Neumont.Tools.ORM.ObjectModel
 		/// </summary>
 		[DslDesign::DisplayNameResource("Neumont.Tools.ORM.ObjectModel.SubtypeFact/IsPrimary.DisplayName", typeof(global::Neumont.Tools.ORM.ObjectModel.ORMCoreDomainModel), "Neumont.Tools.ORM.GeneratedCode.CoreDomainModelResx")]
 		[DslDesign::DescriptionResource("Neumont.Tools.ORM.ObjectModel.SubtypeFact/IsPrimary.Description", typeof(global::Neumont.Tools.ORM.ObjectModel.ORMCoreDomainModel), "Neumont.Tools.ORM.GeneratedCode.CoreDomainModelResx")]
+		[global::System.ComponentModel.Browsable(false)]
 		[DslModeling::DomainObjectId("9a2a6585-7caa-41f9-8117-9f357a6c3626")]
 		public global::System.Boolean IsPrimary
 		{
@@ -5274,6 +5243,95 @@ namespace Neumont.Tools.ORM.ObjectModel
 				{
 					ValueChanging(element, oldValue, newValue);
 					element.isPrimaryPropertyStorage = newValue;
+					ValueChanged(element, oldValue, newValue);
+				}
+			}
+		}
+		
+		#endregion
+		#region ProvidesPreferredIdentifier domain property code
+		
+		/// <summary>
+		/// ProvidesPreferredIdentifier domain property Id.
+		/// </summary>
+		public static readonly global::System.Guid ProvidesPreferredIdentifierDomainPropertyId = new global::System.Guid(0xe4e9e28d, 0x1a60, 0x4321, 0x85, 0x7e, 0x01, 0x8f, 0x39, 0xaa, 0x3e, 0xe3);
+		
+		/// <summary>
+		/// Storage for ProvidesPreferredIdentifier
+		/// </summary>
+		private global::System.Boolean providesPreferredIdentifierPropertyStorage;
+		
+		/// <summary>
+		/// Gets or sets the value of ProvidesPreferredIdentifier domain property.
+		/// The preferred identification scheme for the subtype is provided by a supertype
+		/// reached through this path.
+		/// </summary>
+		[global::System.ComponentModel.MergableProperty(false)]
+		[DslDesign::DisplayNameResource("Neumont.Tools.ORM.ObjectModel.SubtypeFact/ProvidesPreferredIdentifier.DisplayName", typeof(global::Neumont.Tools.ORM.ObjectModel.ORMCoreDomainModel), "Neumont.Tools.ORM.GeneratedCode.CoreDomainModelResx")]
+		[DslDesign::DescriptionResource("Neumont.Tools.ORM.ObjectModel.SubtypeFact/ProvidesPreferredIdentifier.Description", typeof(global::Neumont.Tools.ORM.ObjectModel.ORMCoreDomainModel), "Neumont.Tools.ORM.GeneratedCode.CoreDomainModelResx")]
+		[DslModeling::DomainObjectId("e4e9e28d-1a60-4321-857e-018f39aa3ee3")]
+		public global::System.Boolean ProvidesPreferredIdentifier
+		{
+			[global::System.Diagnostics.DebuggerStepThrough]
+			get
+			{
+				return providesPreferredIdentifierPropertyStorage;
+			}
+			[global::System.Diagnostics.DebuggerStepThrough]
+			set
+			{
+				ProvidesPreferredIdentifierPropertyHandler.Instance.SetValue(this, value);
+			}
+		}
+		/// <summary>
+		/// Value handler for the SubtypeFact.ProvidesPreferredIdentifier domain property.
+		/// </summary>
+		internal sealed partial class ProvidesPreferredIdentifierPropertyHandler : DslModeling::DomainPropertyValueHandler<SubtypeFact, global::System.Boolean>
+		{
+			private ProvidesPreferredIdentifierPropertyHandler() { }
+		
+			/// <summary>
+			/// Gets the singleton instance of the SubtypeFact.ProvidesPreferredIdentifier domain property value handler.
+			/// </summary>
+			public static readonly ProvidesPreferredIdentifierPropertyHandler Instance = new ProvidesPreferredIdentifierPropertyHandler();
+		
+			/// <summary>
+			/// Gets the Id of the SubtypeFact.ProvidesPreferredIdentifier domain property.
+			/// </summary>
+			public sealed override global::System.Guid DomainPropertyId
+			{
+				[global::System.Diagnostics.DebuggerStepThrough]
+				get
+				{
+					return ProvidesPreferredIdentifierDomainPropertyId;
+				}
+			}
+			
+			/// <summary>
+			/// Gets a strongly-typed value of the property on specified element.
+			/// </summary>
+			/// <param name="element">Element which owns the property.</param>
+			/// <returns>Property value.</returns>
+			public override sealed global::System.Boolean GetValue(SubtypeFact element)
+			{
+				if (element == null) throw new global::System.ArgumentNullException("element");
+				return element.providesPreferredIdentifierPropertyStorage;
+			}
+		
+			/// <summary>
+			/// Sets property value on an element.
+			/// </summary>
+			/// <param name="element">Element which owns the property.</param>
+			/// <param name="newValue">New property value.</param>
+			public override sealed void SetValue(SubtypeFact element, global::System.Boolean newValue)
+			{
+				if (element == null) throw new global::System.ArgumentNullException("element");
+		
+				global::System.Boolean oldValue = GetValue(element);
+				if (newValue != oldValue)
+				{
+					ValueChanging(element, oldValue, newValue);
+					element.providesPreferredIdentifierPropertyStorage = newValue;
 					ValueChanged(element, oldValue, newValue);
 				}
 			}
@@ -14846,6 +14904,38 @@ namespace Neumont.Tools.ORM.ObjectModel
 			}
 		}
 		#endregion
+		#region ValueTypeDetachedError opposite domain role accessor
+		/// <summary>
+		/// Gets or sets ValueTypeDetachedError.
+		/// Description for
+		/// Neumont.Tools.ORM.ObjectModel.ValueConstraintHasValueTypeDetachedError.ValueConstraint
+		/// </summary>
+		public virtual ValueConstraintValueTypeDetachedError ValueTypeDetachedError
+		{
+			[global::System.Diagnostics.DebuggerStepThrough]
+			get
+			{
+				return DslModeling::DomainRoleInfo.GetLinkedElement(this, global::Neumont.Tools.ORM.ObjectModel.ValueConstraintHasValueTypeDetachedError.ValueConstraintDomainRoleId) as ValueConstraintValueTypeDetachedError;
+			}
+			[global::System.Diagnostics.DebuggerStepThrough]
+			set
+			{
+				DslModeling::ModelElement existingSource;
+				if (null != value &&
+					null != (existingSource = DslModeling::DomainRoleInfo.GetLinkedElement(value, global::Neumont.Tools.ORM.ObjectModel.ValueConstraintHasValueTypeDetachedError.ValueTypeDetachedErrorDomainRoleId)))
+				{
+					if (existingSource != value)
+					{
+						DslModeling::DomainRoleInfo.SetLinkedElement(value, global::Neumont.Tools.ORM.ObjectModel.ValueConstraintHasValueTypeDetachedError.ValueTypeDetachedErrorDomainRoleId, this);
+					}
+				}
+				else
+				{
+					DslModeling::DomainRoleInfo.SetLinkedElement(this, global::Neumont.Tools.ORM.ObjectModel.ValueConstraintHasValueTypeDetachedError.ValueConstraintDomainRoleId, value);
+				}
+			}
+		}
+		#endregion
 	}
 }
 namespace Neumont.Tools.ORM.ObjectModel
@@ -15314,77 +15404,6 @@ namespace Neumont.Tools.ORM.ObjectModel
 		public SupertypeMetaRole(DslModeling::Partition partition, params DslModeling::PropertyAssignment[] propertyAssignments)
 			: base(partition, propertyAssignments)
 		{
-		}
-		#endregion
-	}
-}
-namespace Neumont.Tools.ORM.ObjectModel
-{
-	/// <summary>
-	/// DomainClass ObjectTypeRequiresPrimarySupertypeError
-	/// </summary>
-	[DslDesign::DisplayNameResource("Neumont.Tools.ORM.ObjectModel.ObjectTypeRequiresPrimarySupertypeError.DisplayName", typeof(global::Neumont.Tools.ORM.ObjectModel.ORMCoreDomainModel), "Neumont.Tools.ORM.GeneratedCode.CoreDomainModelResx")]
-	[DslDesign::DescriptionResource("Neumont.Tools.ORM.ObjectModel.ObjectTypeRequiresPrimarySupertypeError.Description", typeof(global::Neumont.Tools.ORM.ObjectModel.ORMCoreDomainModel), "Neumont.Tools.ORM.GeneratedCode.CoreDomainModelResx")]
-	[global::System.CLSCompliant(true)]
-	[DslModeling::DomainObjectId("c35dee5a-63c5-457c-a015-6e988cbab8c5")]
-	public partial class ObjectTypeRequiresPrimarySupertypeError : ModelError
-	{
-		#region Constructors, domain class Id
-	
-		/// <summary>
-		/// ObjectTypeRequiresPrimarySupertypeError domain class Id.
-		/// </summary>
-		public static readonly new global::System.Guid DomainClassId = new global::System.Guid(0xc35dee5a, 0x63c5, 0x457c, 0xa0, 0x15, 0x6e, 0x98, 0x8c, 0xba, 0xb8, 0xc5);
-		/// <summary>
-		/// Constructor
-		/// </summary>
-		/// <param name="store">Store where new element is to be created.</param>
-		/// <param name="propertyAssignments">List of domain property id/value pairs to set once the element is created.</param>
-		public ObjectTypeRequiresPrimarySupertypeError(DslModeling::Store store, params DslModeling::PropertyAssignment[] propertyAssignments)
-			: this(store != null ? store.DefaultPartition : null, propertyAssignments)
-		{
-		}
-		
-		/// <summary>
-		/// Constructor
-		/// </summary>
-		/// <param name="partition">Partition where new element is to be created.</param>
-		/// <param name="propertyAssignments">List of domain property id/value pairs to set once the element is created.</param>
-		public ObjectTypeRequiresPrimarySupertypeError(DslModeling::Partition partition, params DslModeling::PropertyAssignment[] propertyAssignments)
-			: base(partition, propertyAssignments)
-		{
-		}
-		#endregion
-		#region ObjectType opposite domain role accessor
-		/// <summary>
-		/// Gets or sets ObjectType.
-		/// Description for
-		/// Neumont.Tools.ORM.ObjectModel.ObjectTypeHasObjectTypeRequiresPrimarySupertypeError.ObjectTypeRequiresPrimarySupertypeError
-		/// </summary>
-		public virtual ObjectType ObjectType
-		{
-			[global::System.Diagnostics.DebuggerStepThrough]
-			get
-			{
-				return DslModeling::DomainRoleInfo.GetLinkedElement(this, global::Neumont.Tools.ORM.ObjectModel.ObjectTypeHasObjectTypeRequiresPrimarySupertypeError.ObjectTypeRequiresPrimarySupertypeErrorDomainRoleId) as ObjectType;
-			}
-			[global::System.Diagnostics.DebuggerStepThrough]
-			set
-			{
-				DslModeling::ModelElement existingSource;
-				if (null != value &&
-					null != (existingSource = DslModeling::DomainRoleInfo.GetLinkedElement(value, global::Neumont.Tools.ORM.ObjectModel.ObjectTypeHasObjectTypeRequiresPrimarySupertypeError.ObjectTypeDomainRoleId)))
-				{
-					if (existingSource != value)
-					{
-						DslModeling::DomainRoleInfo.SetLinkedElement(value, global::Neumont.Tools.ORM.ObjectModel.ObjectTypeHasObjectTypeRequiresPrimarySupertypeError.ObjectTypeDomainRoleId, this);
-					}
-				}
-				else
-				{
-					DslModeling::DomainRoleInfo.SetLinkedElement(this, global::Neumont.Tools.ORM.ObjectModel.ObjectTypeHasObjectTypeRequiresPrimarySupertypeError.ObjectTypeRequiresPrimarySupertypeErrorDomainRoleId, value);
-				}
-			}
 		}
 		#endregion
 	}
@@ -16283,6 +16302,77 @@ namespace Neumont.Tools.ORM.ObjectModel
 				else
 				{
 					DslModeling::DomainRoleInfo.SetLinkedElement(this, global::Neumont.Tools.ORM.ObjectModel.ValueConstraintHasValueRangeOverlapError.ValueRangeOverlapErrorDomainRoleId, value);
+				}
+			}
+		}
+		#endregion
+	}
+}
+namespace Neumont.Tools.ORM.ObjectModel
+{
+	/// <summary>
+	/// DomainClass ValueConstraintValueTypeDetachedError
+	/// </summary>
+	[DslDesign::DisplayNameResource("Neumont.Tools.ORM.ObjectModel.ValueConstraintValueTypeDetachedError.DisplayName", typeof(global::Neumont.Tools.ORM.ObjectModel.ORMCoreDomainModel), "Neumont.Tools.ORM.GeneratedCode.CoreDomainModelResx")]
+	[DslDesign::DescriptionResource("Neumont.Tools.ORM.ObjectModel.ValueConstraintValueTypeDetachedError.Description", typeof(global::Neumont.Tools.ORM.ObjectModel.ORMCoreDomainModel), "Neumont.Tools.ORM.GeneratedCode.CoreDomainModelResx")]
+	[global::System.CLSCompliant(true)]
+	[DslModeling::DomainObjectId("92c7060e-a912-4986-984e-e9915b1321ad")]
+	public partial class ValueConstraintValueTypeDetachedError : ModelError
+	{
+		#region Constructors, domain class Id
+	
+		/// <summary>
+		/// ValueConstraintValueTypeDetachedError domain class Id.
+		/// </summary>
+		public static readonly new global::System.Guid DomainClassId = new global::System.Guid(0x92c7060e, 0xa912, 0x4986, 0x98, 0x4e, 0xe9, 0x91, 0x5b, 0x13, 0x21, 0xad);
+		/// <summary>
+		/// Constructor
+		/// </summary>
+		/// <param name="store">Store where new element is to be created.</param>
+		/// <param name="propertyAssignments">List of domain property id/value pairs to set once the element is created.</param>
+		public ValueConstraintValueTypeDetachedError(DslModeling::Store store, params DslModeling::PropertyAssignment[] propertyAssignments)
+			: this(store != null ? store.DefaultPartition : null, propertyAssignments)
+		{
+		}
+		
+		/// <summary>
+		/// Constructor
+		/// </summary>
+		/// <param name="partition">Partition where new element is to be created.</param>
+		/// <param name="propertyAssignments">List of domain property id/value pairs to set once the element is created.</param>
+		public ValueConstraintValueTypeDetachedError(DslModeling::Partition partition, params DslModeling::PropertyAssignment[] propertyAssignments)
+			: base(partition, propertyAssignments)
+		{
+		}
+		#endregion
+		#region ValueConstraint opposite domain role accessor
+		/// <summary>
+		/// Gets or sets ValueConstraint.
+		/// Description for
+		/// Neumont.Tools.ORM.ObjectModel.ValueConstraintHasValueTypeDetachedError.ValueTypeDetachedError
+		/// </summary>
+		public virtual ValueConstraint ValueConstraint
+		{
+			[global::System.Diagnostics.DebuggerStepThrough]
+			get
+			{
+				return DslModeling::DomainRoleInfo.GetLinkedElement(this, global::Neumont.Tools.ORM.ObjectModel.ValueConstraintHasValueTypeDetachedError.ValueTypeDetachedErrorDomainRoleId) as ValueConstraint;
+			}
+			[global::System.Diagnostics.DebuggerStepThrough]
+			set
+			{
+				DslModeling::ModelElement existingSource;
+				if (null != value &&
+					null != (existingSource = DslModeling::DomainRoleInfo.GetLinkedElement(value, global::Neumont.Tools.ORM.ObjectModel.ValueConstraintHasValueTypeDetachedError.ValueConstraintDomainRoleId)))
+				{
+					if (existingSource != value)
+					{
+						DslModeling::DomainRoleInfo.SetLinkedElement(value, global::Neumont.Tools.ORM.ObjectModel.ValueConstraintHasValueTypeDetachedError.ValueConstraintDomainRoleId, this);
+					}
+				}
+				else
+				{
+					DslModeling::DomainRoleInfo.SetLinkedElement(this, global::Neumont.Tools.ORM.ObjectModel.ValueConstraintHasValueTypeDetachedError.ValueTypeDetachedErrorDomainRoleId, value);
 				}
 			}
 		}

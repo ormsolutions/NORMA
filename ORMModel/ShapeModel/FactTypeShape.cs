@@ -3962,6 +3962,7 @@ namespace Neumont.Tools.ORM.ShapeModel
 			MaxValueMismatchError maxValueMismatchError;
 			MinValueMismatchError minValueMismatchError;
 			ValueRangeOverlapError overlapError;
+			ValueConstraintValueTypeDetachedError valueTypeDetachedError;
 			RoleValueConstraint errorValueConstraint = null;
 			bool selectConstraintOnly = false;
 			bool activateNamePropertyAfterSelect = false;
@@ -4087,6 +4088,10 @@ namespace Neumont.Tools.ORM.ShapeModel
 			else if (null != (overlapError = error as ValueRangeOverlapError))
 			{
 				retVal = null != (errorValueConstraint = overlapError.ValueConstraint as RoleValueConstraint);
+			}
+			else if (null != (valueTypeDetachedError = error as ValueConstraintValueTypeDetachedError))
+			{
+				retVal = null != (errorValueConstraint = valueTypeDetachedError.ValueConstraint as RoleValueConstraint);
 			}
 			else
 			{

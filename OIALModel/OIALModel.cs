@@ -2090,18 +2090,19 @@ namespace Neumont.Tools.ORM.OIALModel
 		/// <returns>An <see cref="ObjectType"/> of the first primary supertype if it exist. If not, null.</returns>
 		private static ObjectType GetSupertype(ObjectType objectType)
 		{
-			LinkedElementCollection<Role> playedRoles = objectType.PlayedRoleCollection;
-			int playedRoleCount = playedRoles.Count;
-			for (int i = 0; i < playedRoleCount; ++i)
-			{
-				Role role = playedRoles[i];
-				SubtypeFact roleFactType = role.FactType as SubtypeFact;
-				if (role is SubtypeMetaRole && roleFactType.IsPrimary)
+			ObjectType retVal = null;
+			ObjectType.WalkSupertypes(
+				objectType,
+				delegate(ObjectType supertype, int depth, bool isPrimary)
 				{
-					return role.OppositeRole.Role.RolePlayer;
-				}
-			}
-			return null;
+					if (isPrimary)
+					{
+						retVal = supertype;
+						return ObjectTypeVisitorResult.Stop;
+					}
+					return ObjectTypeVisitorResult.SkipChildren;
+				});
+			return retVal;
 		}
 		/// <summary>
 		/// Gets the ID of the top-level concept type which absorbs the element with the ID of <paramref name="targetId"/>.

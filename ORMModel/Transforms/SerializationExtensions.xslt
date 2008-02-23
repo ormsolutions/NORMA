@@ -113,7 +113,7 @@
 							<xsl:with-param name="links" select="boolean(se:Link)"/>
 							<xsl:with-param name="aggregatingLinks" select="boolean(se:Link[@WriteStyle='EmbeddingLinkElement'])"/>
 							<xsl:with-param name="customSort" select="@SortChildElements='true'"/>
-							<xsl:with-param name="mixedTypedAttributes" select="boolean(se:Attribute[@WriteStyle='Element' or @WriteStyle='DoubleTaggedElement'])"/>
+							<xsl:with-param name="mixedTypedAttributes" select="boolean(se:Attribute[@WriteStyle='Element' or @WriteStyle='DoubleTaggedElement'][not(@ReadOnly='true' or @ReadOnly='1')])"/>
 						</xsl:call-template>
 					</xsl:variable>
 					<plx:return>
@@ -3032,7 +3032,7 @@
 				</plx:passParam>
 				<plx:passParam>
 					<xsl:choose>
-						<xsl:when test="string-length(@Name)">
+						<xsl:when test="string-length(@Name) and not(@WriteStyle='NotWritten' or @ReadOnly='true' or @ReadOnly='1')">
 							<plx:string data="{@Name}"/>
 						</xsl:when>
 						<xsl:otherwise>
@@ -3064,6 +3064,9 @@
 					<plx:callStatic name="pending" type="field" dataTypeName="CustomSerializedAttributeWriteStyle">
 						<xsl:attribute name="name">
 							<xsl:choose>
+								<xsl:when test="@ReadOnly='true' or @ReadOnly='1'">
+									<xsl:text>NotWritten</xsl:text>
+								</xsl:when>
 								<xsl:when test="string-length(@DoubleTagName)">
 									<xsl:text>DoubleTaggedElement</xsl:text>
 								</xsl:when>

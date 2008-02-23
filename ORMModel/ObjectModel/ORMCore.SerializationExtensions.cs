@@ -221,6 +221,7 @@ namespace Neumont.Tools.ORM.ObjectModel
 				classNameMap.Add("MinValueMismatchError", MinValueMismatchError.DomainClassId);
 				classNameMap.Add("MaxValueMismatchError", MaxValueMismatchError.DomainClassId);
 				classNameMap.Add("ValueRangeOverlapError", ValueRangeOverlapError.DomainClassId);
+				classNameMap.Add("ValueTypeDetachedError", ValueConstraintValueTypeDetachedError.DomainClassId);
 				classNameMap.Add("RingConstraintTypeNotSpecifiedError", RingConstraintTypeNotSpecifiedError.DomainClassId);
 				classNameMap.Add("CompatibleValueTypeInstanceValueError", CompatibleValueTypeInstanceValueError.DomainClassId);
 				classNameMap.Add("TooFewEntityTypeRoleInstancesError", TooFewEntityTypeRoleInstancesError.DomainClassId);
@@ -241,7 +242,6 @@ namespace Neumont.Tools.ORM.ObjectModel
 				classNameMap.Add("ExclusionContradictsSubsetError", ExclusionContradictsSubsetError.DomainClassId);
 				classNameMap.Add("ExclusionContradictsMandatoryError", ExclusionContradictsMandatoryError.DomainClassId);
 				classNameMap.Add("NotWellModeledSubsetAndMandatoryError", NotWellModeledSubsetAndMandatoryError.DomainClassId);
-				classNameMap.Add("ObjectTypeRequiresPrimarySupertypeError", ObjectTypeRequiresPrimarySupertypeError.DomainClassId);
 				classNameMap.Add("PreferredIdentifierRequiresMandatoryError", PreferredIdentifierRequiresMandatoryError.DomainClassId);
 				classNameMap.Add("CompatibleSupertypesError", CompatibleSupertypesError.DomainClassId);
 				classNameMap.Add("CompatibleRolePlayerTypeError", CompatibleRolePlayerTypeError.DomainClassId);
@@ -1368,10 +1368,6 @@ namespace Neumont.Tools.ORM.ObjectModel
 			{
 				return new CustomSerializedElementInfo(null, null, null, CustomSerializedElementWriteStyle.NotWritten, null);
 			}
-			if (roleId == ObjectTypeHasObjectTypeRequiresPrimarySupertypeError.ObjectTypeRequiresPrimarySupertypeErrorDomainRoleId)
-			{
-				return new CustomSerializedElementInfo(null, null, null, CustomSerializedElementWriteStyle.NotWritten, null);
-			}
 			if (roleId == ObjectTypeHasPreferredIdentifierRequiresMandatoryError.PreferredIdentifierRequiresMandatoryErrorDomainRoleId)
 			{
 				return new CustomSerializedElementInfo(null, null, null, CustomSerializedElementWriteStyle.NotWritten, null);
@@ -1431,14 +1427,12 @@ namespace Neumont.Tools.ORM.ObjectModel
 				roleOrderDictionary[string.Concat(domainRole.DomainRelationship.ImplementationClass.FullName, ".", domainRole.Name)] = 10;
 				domainRole = domainDataDirectory.FindDomainRole(ObjectTypeHasDuplicateNameError.DuplicateNameErrorDomainRoleId).OppositeDomainRole;
 				roleOrderDictionary[string.Concat(domainRole.DomainRelationship.ImplementationClass.FullName, ".", domainRole.Name)] = 11;
-				domainRole = domainDataDirectory.FindDomainRole(ObjectTypeHasObjectTypeRequiresPrimarySupertypeError.ObjectTypeRequiresPrimarySupertypeErrorDomainRoleId).OppositeDomainRole;
-				roleOrderDictionary[string.Concat(domainRole.DomainRelationship.ImplementationClass.FullName, ".", domainRole.Name)] = 12;
 				domainRole = domainDataDirectory.FindDomainRole(ObjectTypeHasPreferredIdentifierRequiresMandatoryError.PreferredIdentifierRequiresMandatoryErrorDomainRoleId).OppositeDomainRole;
-				roleOrderDictionary[string.Concat(domainRole.DomainRelationship.ImplementationClass.FullName, ".", domainRole.Name)] = 13;
+				roleOrderDictionary[string.Concat(domainRole.DomainRelationship.ImplementationClass.FullName, ".", domainRole.Name)] = 12;
 				domainRole = domainDataDirectory.FindDomainRole(ObjectTypeHasCompatibleSupertypesError.CompatibleSupertypesErrorDomainRoleId).OppositeDomainRole;
-				roleOrderDictionary[string.Concat(domainRole.DomainRelationship.ImplementationClass.FullName, ".", domainRole.Name)] = 14;
+				roleOrderDictionary[string.Concat(domainRole.DomainRelationship.ImplementationClass.FullName, ".", domainRole.Name)] = 13;
 				domainRole = domainDataDirectory.FindDomainRole(ModelNoteReferencesObjectType.NoteDomainRoleId).OppositeDomainRole;
-				roleOrderDictionary[string.Concat(domainRole.DomainRelationship.ImplementationClass.FullName, ".", domainRole.Name)] = 15;
+				roleOrderDictionary[string.Concat(domainRole.DomainRelationship.ImplementationClass.FullName, ".", domainRole.Name)] = 14;
 				this.myRoleOrderDictionary = roleOrderDictionary;
 			}
 			int IComparer<DomainRoleInfo>.Compare(DomainRoleInfo x, DomainRoleInfo y)
@@ -2382,6 +2376,10 @@ namespace Neumont.Tools.ORM.ObjectModel
 			{
 				return new CustomSerializedElementInfo(null, null, null, CustomSerializedElementWriteStyle.NotWritten, null);
 			}
+			if (roleId == ValueConstraintHasValueTypeDetachedError.ValueTypeDetachedErrorDomainRoleId)
+			{
+				return new CustomSerializedElementInfo(null, null, null, CustomSerializedElementWriteStyle.NotWritten, null);
+			}
 			if (0 != (CustomSerializedElementSupportedOperations.LinkInfo & base.SupportedCustomSerializedOperations))
 			{
 				return base.GetCustomSerializedLinkInfo(rolePlayedInfo, elementLink);
@@ -3222,11 +3220,15 @@ namespace Neumont.Tools.ORM.ObjectModel
 		{
 			if (domainPropertyInfo.Id == SubtypeFact.IsPrimaryDomainPropertyId)
 			{
-				if (!this.IsPrimary)
+				return new CustomSerializedPropertyInfo(null, null, null, false, CustomSerializedAttributeWriteStyle.NotWritten, null);
+			}
+			if (domainPropertyInfo.Id == SubtypeFact.ProvidesPreferredIdentifierDomainPropertyId)
+			{
+				if (!this.ProvidesPreferredIdentifier)
 				{
 					return new CustomSerializedPropertyInfo(null, null, null, false, CustomSerializedAttributeWriteStyle.NotWritten, null);
 				}
-				return new CustomSerializedPropertyInfo(null, null, null, false, CustomSerializedAttributeWriteStyle.Attribute, null);
+				return new CustomSerializedPropertyInfo(null, "PreferredIdentificationPath", null, false, CustomSerializedAttributeWriteStyle.Attribute, null);
 			}
 			if (0 != (CustomSerializedElementSupportedOperations.PropertyInfo & base.SupportedCustomSerializedOperations))
 			{
@@ -3247,6 +3249,7 @@ namespace Neumont.Tools.ORM.ObjectModel
 			{
 				customSerializedAttributes = new Dictionary<string, Guid>();
 				customSerializedAttributes.Add("IsPrimary", SubtypeFact.IsPrimaryDomainPropertyId);
+				customSerializedAttributes.Add("PreferredIdentificationPath", SubtypeFact.ProvidesPreferredIdentifierDomainPropertyId);
 				SubtypeFact.myCustomSerializedAttributes = customSerializedAttributes;
 			}
 			Guid rVal;
@@ -6685,6 +6688,83 @@ namespace Neumont.Tools.ORM.ObjectModel
 		}
 	}
 	#endregion // ValueRangeOverlapError serialization
+	#region ValueConstraintValueTypeDetachedError serialization
+	partial class ValueConstraintValueTypeDetachedError : ICustomSerializedElement
+	{
+		/// <summary>Implements ICustomSerializedElement.SupportedCustomSerializedOperations</summary>
+		protected new CustomSerializedElementSupportedOperations SupportedCustomSerializedOperations
+		{
+			get
+			{
+				return base.SupportedCustomSerializedOperations | CustomSerializedElementSupportedOperations.ElementInfo | CustomSerializedElementSupportedOperations.LinkInfo;
+			}
+		}
+		CustomSerializedElementSupportedOperations ICustomSerializedElement.SupportedCustomSerializedOperations
+		{
+			get
+			{
+				return this.SupportedCustomSerializedOperations;
+			}
+		}
+		/// <summary>Implements ICustomSerializedElement.CustomSerializedElementInfo</summary>
+		protected new CustomSerializedElementInfo CustomSerializedElementInfo
+		{
+			get
+			{
+				return new CustomSerializedElementInfo(null, "ValueTypeDetachedError", null, CustomSerializedElementWriteStyle.Element, null);
+			}
+		}
+		CustomSerializedElementInfo ICustomSerializedElement.CustomSerializedElementInfo
+		{
+			get
+			{
+				return this.CustomSerializedElementInfo;
+			}
+		}
+		/// <summary>Implements ICustomSerializedElement.GetCustomSerializedLinkInfo</summary>
+		protected new CustomSerializedElementInfo GetCustomSerializedLinkInfo(DomainRoleInfo rolePlayedInfo, ElementLink elementLink)
+		{
+			Guid roleId = rolePlayedInfo.Id;
+			if (roleId == ValueConstraintHasValueTypeDetachedError.ValueConstraintDomainRoleId)
+			{
+				return new CustomSerializedElementInfo(null, "ValueConstraint", null, CustomSerializedElementWriteStyle.Element, null);
+			}
+			if (0 != (CustomSerializedElementSupportedOperations.LinkInfo & base.SupportedCustomSerializedOperations))
+			{
+				return base.GetCustomSerializedLinkInfo(rolePlayedInfo, elementLink);
+			}
+			return CustomSerializedElementInfo.Default;
+		}
+		CustomSerializedElementInfo ICustomSerializedElement.GetCustomSerializedLinkInfo(DomainRoleInfo rolePlayedInfo, ElementLink elementLink)
+		{
+			return this.GetCustomSerializedLinkInfo(rolePlayedInfo, elementLink);
+		}
+		private static Dictionary<string, CustomSerializedElementMatch> myChildElementMappings;
+		/// <summary>Implements ICustomSerializedElement.MapChildElement</summary>
+		protected new CustomSerializedElementMatch MapChildElement(string elementNamespace, string elementName, string containerNamespace, string containerName, string outerContainerNamespace, string outerContainerName)
+		{
+			Dictionary<string, CustomSerializedElementMatch> childElementMappings = ValueConstraintValueTypeDetachedError.myChildElementMappings;
+			if (childElementMappings == null)
+			{
+				childElementMappings = new Dictionary<string, CustomSerializedElementMatch>();
+				CustomSerializedElementMatch match = new CustomSerializedElementMatch();
+				match.InitializeRoles(ValueConstraintHasValueTypeDetachedError.ValueConstraintDomainRoleId);
+				childElementMappings.Add("||||http://schemas.neumont.edu/ORM/2006-04/ORMCore|ValueConstraint", match);
+				ValueConstraintValueTypeDetachedError.myChildElementMappings = childElementMappings;
+			}
+			CustomSerializedElementMatch rVal;
+			if (!childElementMappings.TryGetValue(string.Concat(outerContainerNamespace, "|", outerContainerName, "|", (object)containerNamespace != (object)outerContainerNamespace ? containerNamespace : null, "|", containerName, "|", (object)elementNamespace != (object)containerNamespace ? elementNamespace : null, "|", elementName), out rVal))
+			{
+				rVal = base.MapChildElement(elementNamespace, elementName, containerNamespace, containerName, outerContainerNamespace, outerContainerName);
+			}
+			return rVal;
+		}
+		CustomSerializedElementMatch ICustomSerializedElement.MapChildElement(string elementNamespace, string elementName, string containerNamespace, string containerName, string outerContainerNamespace, string outerContainerName)
+		{
+			return this.MapChildElement(elementNamespace, elementName, containerNamespace, containerName, outerContainerNamespace, outerContainerName);
+		}
+	}
+	#endregion // ValueConstraintValueTypeDetachedError serialization
 	#region RingConstraintTypeNotSpecifiedError serialization
 	partial class RingConstraintTypeNotSpecifiedError : ICustomSerializedElement
 	{
@@ -8065,68 +8145,6 @@ namespace Neumont.Tools.ORM.ObjectModel
 		}
 	}
 	#endregion // NotWellModeledSubsetAndMandatoryError serialization
-	#region ObjectTypeRequiresPrimarySupertypeError serialization
-	partial class ObjectTypeRequiresPrimarySupertypeError : ICustomSerializedElement
-	{
-		/// <summary>Implements ICustomSerializedElement.SupportedCustomSerializedOperations</summary>
-		protected new CustomSerializedElementSupportedOperations SupportedCustomSerializedOperations
-		{
-			get
-			{
-				return base.SupportedCustomSerializedOperations | CustomSerializedElementSupportedOperations.LinkInfo;
-			}
-		}
-		CustomSerializedElementSupportedOperations ICustomSerializedElement.SupportedCustomSerializedOperations
-		{
-			get
-			{
-				return this.SupportedCustomSerializedOperations;
-			}
-		}
-		/// <summary>Implements ICustomSerializedElement.GetCustomSerializedLinkInfo</summary>
-		protected new CustomSerializedElementInfo GetCustomSerializedLinkInfo(DomainRoleInfo rolePlayedInfo, ElementLink elementLink)
-		{
-			Guid roleId = rolePlayedInfo.Id;
-			if (roleId == ObjectTypeHasObjectTypeRequiresPrimarySupertypeError.ObjectTypeDomainRoleId)
-			{
-				return new CustomSerializedElementInfo(null, "ObjectType", null, CustomSerializedElementWriteStyle.Element, null);
-			}
-			if (0 != (CustomSerializedElementSupportedOperations.LinkInfo & base.SupportedCustomSerializedOperations))
-			{
-				return base.GetCustomSerializedLinkInfo(rolePlayedInfo, elementLink);
-			}
-			return CustomSerializedElementInfo.Default;
-		}
-		CustomSerializedElementInfo ICustomSerializedElement.GetCustomSerializedLinkInfo(DomainRoleInfo rolePlayedInfo, ElementLink elementLink)
-		{
-			return this.GetCustomSerializedLinkInfo(rolePlayedInfo, elementLink);
-		}
-		private static Dictionary<string, CustomSerializedElementMatch> myChildElementMappings;
-		/// <summary>Implements ICustomSerializedElement.MapChildElement</summary>
-		protected new CustomSerializedElementMatch MapChildElement(string elementNamespace, string elementName, string containerNamespace, string containerName, string outerContainerNamespace, string outerContainerName)
-		{
-			Dictionary<string, CustomSerializedElementMatch> childElementMappings = ObjectTypeRequiresPrimarySupertypeError.myChildElementMappings;
-			if (childElementMappings == null)
-			{
-				childElementMappings = new Dictionary<string, CustomSerializedElementMatch>();
-				CustomSerializedElementMatch match = new CustomSerializedElementMatch();
-				match.InitializeRoles(ObjectTypeHasObjectTypeRequiresPrimarySupertypeError.ObjectTypeDomainRoleId);
-				childElementMappings.Add("||||http://schemas.neumont.edu/ORM/2006-04/ORMCore|ObjectType", match);
-				ObjectTypeRequiresPrimarySupertypeError.myChildElementMappings = childElementMappings;
-			}
-			CustomSerializedElementMatch rVal;
-			if (!childElementMappings.TryGetValue(string.Concat(outerContainerNamespace, "|", outerContainerName, "|", (object)containerNamespace != (object)outerContainerNamespace ? containerNamespace : null, "|", containerName, "|", (object)elementNamespace != (object)containerNamespace ? elementNamespace : null, "|", elementName), out rVal))
-			{
-				rVal = base.MapChildElement(elementNamespace, elementName, containerNamespace, containerName, outerContainerNamespace, outerContainerName);
-			}
-			return rVal;
-		}
-		CustomSerializedElementMatch ICustomSerializedElement.MapChildElement(string elementNamespace, string elementName, string containerNamespace, string containerName, string outerContainerNamespace, string outerContainerName)
-		{
-			return this.MapChildElement(elementNamespace, elementName, containerNamespace, containerName, outerContainerNamespace, outerContainerName);
-		}
-	}
-	#endregion // ObjectTypeRequiresPrimarySupertypeError serialization
 	#region PreferredIdentifierRequiresMandatoryError serialization
 	partial class PreferredIdentifierRequiresMandatoryError : ICustomSerializedElement
 	{

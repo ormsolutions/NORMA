@@ -523,7 +523,19 @@
 				<DomainClassMoniker Name="FactType"/>
 			</BaseClass>
 			<Properties>
-				<DomainProperty Name="IsPrimary" DefaultValue="false" DisplayName="IsPrimary" Id="9A2A6585-7CAA-41F9-8117-9F357A6C3626">
+				<DomainProperty Name="IsPrimary" DefaultValue="false" IsBrowsable="false" DisplayName="IsPrimary" Id="9A2A6585-7CAA-41F9-8117-9F357A6C3626">
+					<Type>
+						<ExternalTypeMoniker Name="/System/Boolean"/>
+					</Type>
+				</DomainProperty>
+				<DomainProperty Name="ProvidesPreferredIdentifier" DefaultValue="false" DisplayName="IdentificationPath" Id="E4E9E28D-1A60-4321-857E-018F39AA3EE3" Description="The preferred identification scheme for the subtype is provided by a supertype reached through this path.">
+					<Attributes>
+						<ClrAttribute Name="global::System.ComponentModel.MergableProperty">
+							<Parameters>
+								<AttributeParameter Value="false"/>
+							</Parameters>
+						</ClrAttribute>
+					</Attributes>
 					<Type>
 						<ExternalTypeMoniker Name="/System/Boolean"/>
 					</Type>
@@ -1483,12 +1495,6 @@
 			</BaseClass>
 		</DomainClass>
 
-		<DomainClass Name="ObjectTypeRequiresPrimarySupertypeError" Namespace="Neumont.Tools.ORM.ObjectModel" Id="C35DEE5A-63C5-457C-A015-6E988CBAB8C5" DisplayName="ObjectType Requires Primary Supertype" Description="">
-			<BaseClass>
-				<DomainClassMoniker Name="ModelError"/>
-			</BaseClass>
-		</DomainClass>
-
 		<DomainClass Name="Definition" Namespace="Neumont.Tools.ORM.ObjectModel" Id="25D3235C-76E2-4095-8EFD-847057937A00" DisplayName="Definition" Description="">
 			<BaseClass>
 				<DomainClassMoniker Name="ORMModelElement"/>
@@ -1572,6 +1578,12 @@
 		</DomainClass>
 
 		<DomainClass Name="ValueRangeOverlapError" Namespace="Neumont.Tools.ORM.ObjectModel" Id="2CF1EE1A-1737-4868-9B5C-95B2C0F9488B" DisplayName="Value Ranges Overlap" Description="">
+			<BaseClass>
+				<DomainClassMoniker Name="ModelError"/>
+			</BaseClass>
+		</DomainClass>
+
+		<DomainClass Name="ValueConstraintValueTypeDetachedError" Namespace="Neumont.Tools.ORM.ObjectModel" Id="92C7060E-A912-4986-984E-E9915B1321AD" DisplayName="Path to Identifying ValueType Detached" Description="">
 			<BaseClass>
 				<DomainClassMoniker Name="ModelError"/>
 			</BaseClass>
@@ -3213,26 +3225,6 @@
 			</Target>
 		</DomainRelationship>
 
-		<DomainRelationship Name="ObjectTypeHasObjectTypeRequiresPrimarySupertypeError" Namespace="Neumont.Tools.ORM.ObjectModel" Id="2231FC51-1B87-45A5-AF53-5A95F1B68E04">
-			<BaseRelationship>
-				<DomainRelationshipMoniker Name="ElementAssociatedWithModelError"/>
-			</BaseRelationship>
-			<Source>
-				<DomainRole Name="ObjectType" PropertyName="ObjectTypeRequiresPrimarySupertypeError" Multiplicity="ZeroOne" PropagatesDelete="false" IsPropertyGenerator="true" DisplayName="ObjectType" Id="E968CD16-0FAD-4D46-BE86-478B12CD8FCC">
-					<RolePlayer>
-						<DomainClassMoniker Name="ObjectType"/>
-					</RolePlayer>
-				</DomainRole>
-			</Source>
-			<Target>
-				<DomainRole Name="ObjectTypeRequiresPrimarySupertypeError" PropertyName="ObjectType" Multiplicity="One" PropagatesDelete="true" IsPropertyGenerator="true" DisplayName="ObjectTypeRequiresPrimarySupertypeError" Id="4CDF2EBE-8D1A-48C9-B34F-9CE82C882625">
-					<RolePlayer>
-						<DomainClassMoniker Name="ObjectTypeRequiresPrimarySupertypeError"/>
-					</RolePlayer>
-				</DomainRole>
-			</Target>
-		</DomainRelationship>
-
 		<DomainRelationship Name="ObjectTypeHasDefinition" Namespace="Neumont.Tools.ORM.ObjectModel" IsEmbedding="true" Id="CC5801E2-DC99-4927-8924-F3E451F61E60">
 			<!--<BaseRelationship>
 				<DomainRelationshipMoniker Name="ORMElementLink"/>
@@ -3548,6 +3540,26 @@
 				<DomainRole Name="ValueRangeOverlapError" PropertyName="ValueConstraint" Multiplicity="One" PropagatesDelete="true" IsPropertyGenerator="true" DisplayName="ValueRangeOverlapError" Id="8D12358B-19F0-4FC5-82FB-3E512FECD499">
 					<RolePlayer>
 						<DomainClassMoniker Name="ValueRangeOverlapError"/>
+					</RolePlayer>
+				</DomainRole>
+			</Target>
+		</DomainRelationship>
+
+		<DomainRelationship Name="ValueConstraintHasValueTypeDetachedError" Namespace="Neumont.Tools.ORM.ObjectModel" Id="706B0A12-F0E1-4048-8CEB-EEB5D7BC5CB3">
+			<BaseRelationship>
+				<DomainRelationshipMoniker Name="ElementAssociatedWithModelError"/>
+			</BaseRelationship>
+			<Source>
+				<DomainRole Name="ValueConstraint" PropertyName="ValueTypeDetachedError" Multiplicity="ZeroOne" PropagatesDelete="false" IsPropertyGenerator="true" DisplayName="ValueConstraint" Id="32F093E3-A3FD-42D4-9723-38794D103F4A">
+					<RolePlayer>
+						<DomainClassMoniker Name="ValueConstraint"/>
+					</RolePlayer>
+				</DomainRole>
+			</Source>
+			<Target>
+				<DomainRole Name="ValueTypeDetachedError" PropertyName="ValueConstraint" Multiplicity="One" PropagatesDelete="true" IsPropertyGenerator="true" DisplayName="ValueTypeDetachedError" Id="469A903B-45CC-4B7D-B2EF-F666C5B5D87B">
+					<RolePlayer>
+						<DomainClassMoniker Name="ValueConstraintValueTypeDetachedError"/>
 					</RolePlayer>
 				</DomainRole>
 			</Target>

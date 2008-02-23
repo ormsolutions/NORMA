@@ -41,6 +41,15 @@ namespace Neumont.Tools.ORM.ObjectModel
 	/// <returns>Value from <see cref="ObjectTypeVisitorResult"/> enum</returns>
 	public delegate ObjectTypeVisitorResult ObjectTypeVisitor(ObjectType type, int depth, bool isPrimary);
 	/// <summary>
+	/// A callback definition used for walking subtype and supertype relationships.
+	/// </summary>
+	/// <param name="subtypeFact">The <see cref="SubtypeFact"/> being visited</param>
+	/// <param name="type">The super or subtype (depending on the direction of iteration) of the <paramref name="subtypeFact"/></param>
+	/// <param name="depth">The distance from the initial recursion point. depth
+	/// 0 indicates a subtype or supertype of the starting object.</param>
+	/// <returns>Value from <see cref="ObjectTypeVisitorResult"/> enum</returns>
+	public delegate ObjectTypeVisitorResult SubtypeFactVisitor(SubtypeFact subtypeFact, ObjectType type, int depth);
+	/// <summary>
 	/// Expected results from the ObjectTypeVisitor delegate
 	/// </summary>
 	public enum ObjectTypeVisitorResult
@@ -643,7 +652,11 @@ namespace Neumont.Tools.ORM.ObjectModel
 							if (isPrimary)
 							{
 								retVal = type.PreferredIdentifier;
-								result = (retVal == null) ? ObjectTypeVisitorResult.SkipFollowingSiblings : ObjectTypeVisitorResult.Stop;
+								if (retVal != null)
+								{
+									// Note that we keep going otherwise, this might not be the primary one
+									result = ObjectTypeVisitorResult.Stop;
+								}
 							}
 							else if (depth != 0)
 							{
@@ -659,7 +672,7 @@ namespace Neumont.Tools.ORM.ObjectModel
 		/// Recursively walk all supertypes of a given type (including the type itself).
 		/// </summary>
 		/// <param name="startingType">The type to begin recursion with</param>
-		/// <param name="visitor">A callback delegate. Should return true to continue recursion.</param>
+		/// <param name="visitor">A callback delegate. Returns values from <see cref="ObjectTypeVisitorResult"/>.</param>
 		/// <returns>true if the iteration completes, false if it is stopped by a positive response</returns>
 		public static bool WalkSupertypes(ObjectType startingType, ObjectTypeVisitor visitor)
 		{
@@ -694,7 +707,7 @@ namespace Neumont.Tools.ORM.ObjectModel
 					if (null != (subtypeFact = role.FactType as SubtypeFact) &&
 						null != (supertype = subtypeFact.Supertype))
 					{
-						switch (WalkSupertypes(startingType, supertype, depth, subtypeFact.IsPrimary && !subtypeFact.IsDeleting, visitor))
+						switch (WalkSupertypes(startingType, supertype, depth, subtypeFact.ProvidesPreferredIdentifier && !subtypeFact.IsDeleting, visitor))
 						{
 							case ObjectTypeVisitorResult.Stop:
 								return ObjectTypeVisitorResult.Stop;
@@ -718,7 +731,7 @@ namespace Neumont.Tools.ORM.ObjectModel
 		/// Recursively walk all subtypes of a given type (including the type itself).
 		/// </summary>
 		/// <param name="startingType">The type to begin recursion with</param>
-		/// <param name="visitor">A callback delegate. Should return true to continue recursion.</param>
+		/// <param name="visitor">A callback delegate. Returns values from <see cref="ObjectTypeVisitorResult"/>.</param>
 		/// <returns>true if the iteration completes, false if it is stopped by a positive response</returns>
 		public static bool WalkSubtypes(ObjectType startingType, ObjectTypeVisitor visitor)
 		{
@@ -753,7 +766,127 @@ namespace Neumont.Tools.ORM.ObjectModel
 					if (null != (subtypeFact = role.FactType as SubtypeFact) &&
 						null != (subtype = subtypeFact.Subtype))
 					{
-						switch (WalkSubtypes(startingType, subtype, depth, subtypeFact.IsPrimary && !subtypeFact.IsDeleting, visitor))
+						switch (WalkSubtypes(startingType, subtype, depth, subtypeFact.ProvidesPreferredIdentifier && !subtypeFact.IsDeleting, visitor))
+						{
+							case ObjectTypeVisitorResult.Stop:
+								return ObjectTypeVisitorResult.Stop;
+							case ObjectTypeVisitorResult.SkipChildren:
+								if (result != ObjectTypeVisitorResult.SkipFollowingSiblings)
+								{
+									result = ObjectTypeVisitorResult.SkipChildren;
+								}
+								break;
+						}
+						if (result == ObjectTypeVisitorResult.SkipFollowingSiblings)
+						{
+							break;
+						}
+					}
+				}
+			}
+			return result;
+		}
+		/// <summary>
+		/// Recursively walk all supertype relationships of a starting <see cref="ObjectType"/>.
+		/// </summary>
+		/// <param name="startingType">The type to begin recursion with</param>
+		/// <param name="visitor">A callback delegate. Returns values from <see cref="ObjectTypeVisitorResult"/>.</param>
+		/// <returns>true if the iteration completes, false if it is stopped by a positive response</returns>
+		public static bool WalkSupertypeRelationships(ObjectType startingType, SubtypeFactVisitor visitor)
+		{
+			return (startingType != null) ? WalkSupertypeRelationships(startingType, startingType, 0, visitor) == ObjectTypeVisitorResult.Continue : false;
+		}
+		private static ObjectTypeVisitorResult WalkSupertypeRelationships(ObjectType startingType, ObjectType currentType, int depth, SubtypeFactVisitor visitor)
+		{
+			if (depth != 0 && startingType == currentType)
+			{
+				throw new InvalidOperationException(ResourceStrings.ModelExceptionSubtypeFactCycle);
+			}
+			ObjectTypeVisitorResult result = ObjectTypeVisitorResult.Continue;
+			LinkedElementCollection<Role> playedRoles = currentType.PlayedRoleCollection;
+			int playedRoleCount = playedRoles.Count;
+			for (int i = 0; i < playedRoleCount; ++i)
+			{
+				Role role = playedRoles[i];
+				if (role is SubtypeMetaRole)
+				{
+					SubtypeFact subtypeFact;
+					ObjectType supertype;
+					if (null != (subtypeFact = role.FactType as SubtypeFact) &&
+						null != (supertype = subtypeFact.Supertype))
+					{
+						result = visitor(subtypeFact, supertype, depth);
+						switch (result)
+						{
+							//case ObjectTypeVisitorResult.SkipFollowingSiblings:
+							//case ObjectTypeVisitorResult.Continue:
+							//    break;
+							case ObjectTypeVisitorResult.SkipChildren:
+								continue;
+							case ObjectTypeVisitorResult.Stop:
+								return result;
+						}
+						switch (WalkSupertypeRelationships(startingType, supertype, depth + 1, visitor))
+						{
+							case ObjectTypeVisitorResult.Stop:
+								return ObjectTypeVisitorResult.Stop;
+							case ObjectTypeVisitorResult.SkipChildren:
+								if (result != ObjectTypeVisitorResult.SkipFollowingSiblings)
+								{
+									result = ObjectTypeVisitorResult.SkipChildren;
+								}
+								break;
+						}
+						if (result == ObjectTypeVisitorResult.SkipFollowingSiblings)
+						{
+							break;
+						}
+					}
+				}
+			}
+			return result;
+		}
+		/// <summary>
+		/// Recursively walk all bertype relationships of a starting <see cref="ObjectType"/>.
+		/// </summary>
+		/// <param name="startingType">The type to begin recursion with</param>
+		/// <param name="visitor">A callback delegate. Returns values from <see cref="ObjectTypeVisitorResult"/>.</param>
+		/// <returns>true if the iteration completes, false if it is stopped by a positive response</returns>
+		public static bool WalkSubtypeRelationships(ObjectType startingType, SubtypeFactVisitor visitor)
+		{
+			return (startingType != null) ? WalkSubtypeRelationships(startingType, startingType, 0, visitor) == ObjectTypeVisitorResult.Continue : false;
+		}
+		private static ObjectTypeVisitorResult WalkSubtypeRelationships(ObjectType startingType, ObjectType currentType, int depth, SubtypeFactVisitor visitor)
+		{
+			if (depth != 0 && startingType == currentType)
+			{
+				throw new InvalidOperationException(ResourceStrings.ModelExceptionSubtypeFactCycle);
+			}
+			ObjectTypeVisitorResult result = ObjectTypeVisitorResult.Continue;
+			LinkedElementCollection<Role> playedRoles = currentType.PlayedRoleCollection;
+			int playedRoleCount = playedRoles.Count;
+			for (int i = 0; i < playedRoleCount; ++i)
+			{
+				Role role = playedRoles[i];
+				if (role is SupertypeMetaRole)
+				{
+					SubtypeFact subtypeFact;
+					ObjectType subtype;
+					if (null != (subtypeFact = role.FactType as SubtypeFact) &&
+						null != (subtype = subtypeFact.Subtype))
+					{
+						result = visitor(subtypeFact, subtype, depth);
+						switch (result)
+						{
+							//case ObjectTypeVisitorResult.SkipFollowingSiblings:
+							//case ObjectTypeVisitorResult.Continue:
+							//    break;
+							case ObjectTypeVisitorResult.SkipChildren:
+								continue;
+							case ObjectTypeVisitorResult.Stop:
+								return result;
+						}
+						switch (WalkSubtypeRelationships(startingType, subtype, depth + 1, visitor))
 						{
 							case ObjectTypeVisitorResult.Stop:
 								return ObjectTypeVisitorResult.Stop;
@@ -1809,6 +1942,271 @@ namespace Neumont.Tools.ORM.ObjectModel
 		#endregion // DataTypeNotSpecifiedError retrieval and validation
 		#region EntityTypeRequiresReferenceSchemeError Validation
 		/// <summary>
+		/// Return a deserialization fixup listener. The listener verifies
+		/// that the preferred identification paths are consistent across
+		/// supertypes.
+		/// </summary>
+		public static IDeserializationFixupListener PreferredIdentificationPathFixupListener
+		{
+			get
+			{
+				return new TestPreferredIdentificationPathFixupListener();
+			}
+		}
+		/// <summary>
+		/// A fixup listener to run during load time. This duplicates the
+		/// runtime effort in ValidateRequiresReferenceScheme, which triggers
+		/// downstream delayed validation (a mechanism that does not translate
+		/// well to load time). This runs after initial subtype validation and
+		/// before any error states are validated.
+		/// </summary>
+		private class TestPreferredIdentificationPathFixupListener : DeserializationFixupListener<SubtypeFact>
+		{
+			private class SubtypeValidationState
+			{
+				private ObjectType mySubtype;
+				private int mySupertypeCount;
+				private int myPreferredSupertypeCount;
+				private bool myHasPreferredIdentifier;
+				private bool myIsValidating;
+				private bool myIsValidated;
+				/// <summary>
+				/// Create a new validation state for the provided <paramref name="subtype"/>
+				/// </summary>
+				/// <param name="subtype">The subtype to validate</param>
+				/// <param name="preferredSupertype"><c>true</c> if the initial supertype is preferred</param>
+				public SubtypeValidationState(ObjectType subtype, bool preferredSupertype)
+				{
+					mySubtype = subtype;
+					mySupertypeCount = 1;
+					if (preferredSupertype)
+					{
+						myPreferredSupertypeCount = 1;
+					}
+					myHasPreferredIdentifier = subtype.PreferredIdentifier != null;
+				}
+				/// <summary>
+				/// Another supertype has been found for this subtype
+				/// </summary>
+				/// <param name="preferredSupertype"><c>true</c> if the new supertype is preferred</param>
+				public void AddSupertype(bool preferredSupertype)
+				{
+					++mySupertypeCount;
+					if (preferredSupertype)
+					{
+						++myPreferredSupertypeCount;
+					}
+				}
+				public ObjectType Subtype
+				{
+					get { return mySubtype; }
+				}
+				public int SupertypeCount
+				{
+					get { return mySupertypeCount; }
+				}
+				public int PreferredSupertypeCount
+				{
+					get { return myPreferredSupertypeCount; }
+				}
+				public bool HasPreferredIdentifier
+				{
+					get { return myHasPreferredIdentifier; }
+				}
+				/// <summary>
+				/// The current element is fully validated
+				/// </summary>
+				public bool IsValidated
+				{
+					get { return myIsValidated; }
+					set
+					{
+						if (value)
+						{
+							myIsValidated = true;
+							myIsValidating = false;
+						}
+					}
+				}
+				/// <summary>
+				/// The current element is being validated. Used for cycle checking
+				/// </summary>
+				public bool IsValidating
+				{
+					get { return myIsValidating; }
+					set
+					{
+						if (value)
+						{
+							myIsValidating = true;
+						}
+					}
+				}
+			}
+			private Dictionary<ObjectType, SubtypeValidationState> mySubtypeValidationStates;
+			/// <summary>
+			/// Create a new TestPreferredIdentificationPathFixupListener
+			/// </summary>
+			public TestPreferredIdentificationPathFixupListener()
+				: base((int)ORMDeserializationFixupPhase.AddImplicitElements)
+			{
+			}
+			/// <summary>
+			/// Track subtypes for later processing
+			/// </summary>
+			protected override void ProcessElement(SubtypeFact element, Store store, INotifyElementAdded notifyAdded)
+			{
+				if (element.IsDeleted)
+				{
+					return;
+				}
+				ObjectType subtype = element.Subtype;
+				if (subtype.IsValueType)
+				{
+					return;
+				}
+				Dictionary<ObjectType, SubtypeValidationState> states = mySubtypeValidationStates;
+				if (states == null)
+				{
+					mySubtypeValidationStates = states = new Dictionary<ObjectType, SubtypeValidationState>();
+					states.Add(subtype, new SubtypeValidationState(subtype, element.ProvidesPreferredIdentifier));
+				}
+				else
+				{
+					SubtypeValidationState existingState;
+					if (states.TryGetValue(subtype, out existingState))
+					{
+						existingState.AddSupertype(element.ProvidesPreferredIdentifier);
+					}
+					else
+					{
+						states.Add(subtype, new SubtypeValidationState(subtype, element.ProvidesPreferredIdentifier));
+					}
+				}
+			}
+			/// <summary>
+			/// Make sure all of the preferred paths are consistent
+			/// </summary>
+			protected override void PhaseCompleted(Store store)
+			{
+				Dictionary<ObjectType, SubtypeValidationState> states = mySubtypeValidationStates;
+				if (states != null)
+				{
+					foreach (SubtypeValidationState state in states.Values)
+					{
+						Validate(state);
+					}
+					mySubtypeValidationStates = null;
+				}
+			}
+			/// <summary>
+			/// Recursive routine to validate the subtype state
+			/// </summary>
+			/// <remarks>This routine only updates the IsValidated and IsValidating
+			/// fields on the state. Additional fields are not used again, so there
+			/// is no reason to make them conform to the post-validation state.</remarks>
+			private void Validate(SubtypeValidationState state)
+			{
+				if (state.IsValidated)
+				{
+					return;
+				}
+				if (state.IsValidating)
+				{
+					throw new InvalidOperationException(ResourceStrings.ModelExceptionSubtypeFactCycle);
+				}
+				state.IsValidating = true;
+				ObjectType subtype = state.Subtype;
+
+				// Make sure all supertypes that are also subtypes are validated
+				ObjectType.WalkSupertypeRelationships(
+					subtype,
+					delegate(SubtypeFact supertypeLink, ObjectType supertype, int depth)
+					{
+						SubtypeValidationState supertypeState;
+						if (mySubtypeValidationStates.TryGetValue(supertype, out supertypeState))
+						{
+							Validate(supertypeState);
+						}
+						return ObjectTypeVisitorResult.SkipChildren;
+					});
+
+				bool toggleAllOn = false;
+				bool toggleAllOff = false;
+				ObjectType identifyingTerminus = null;
+				// Do the simple validation first (a subtype with a preferred identifier has no preferred paths,
+				// and a subtype with one supertype has a single preferred path)
+				if (state.HasPreferredIdentifier)
+				{
+					if (state.PreferredSupertypeCount != 0)
+					{
+						toggleAllOff = true;
+					}
+				}
+				else if (state.SupertypeCount == 1)
+				{
+					if (state.PreferredSupertypeCount == 0)
+					{
+						toggleAllOn = true;
+					}
+				}
+				else if (state.PreferredSupertypeCount == 0)
+				{
+					if (null != subtype.FindIdentifyingSupertypeTerminus(true))
+					{
+						toggleAllOn = true;
+					}
+				}
+				else if (null == (identifyingTerminus = subtype.FindIdentifyingSupertypeTerminus(false)))
+				{
+					// The information in the file is inconsistent, turn off all preferred values
+					toggleAllOff = true;
+				}
+				else if (state.PreferredSupertypeCount < state.SupertypeCount)
+				{
+					// Turn on any non-preferred paths that go the same place as the preferred path
+					WalkSupertypeRelationships(
+						subtype,
+						delegate(SubtypeFact supertypeLink, ObjectType supertype, int depth)
+						{
+							if (!supertypeLink.ProvidesPreferredIdentifier)
+							{
+								// Note that the terminus == supertype condition here indicates
+								// a transitive suptype graph, but this error condition is not
+								// in this routine and does not affect identification.
+								if (identifyingTerminus == supertype ||
+									identifyingTerminus == supertype.FindIdentifyingSupertypeTerminus(false))
+								{
+									supertypeLink.ProvidesPreferredIdentifier = true;
+								}
+							}
+							return ObjectTypeVisitorResult.SkipChildren;
+						});
+				}
+				if (toggleAllOn)
+				{
+					ObjectType.WalkSupertypeRelationships(
+						subtype,
+						delegate(SubtypeFact supertypeLink, ObjectType supertype, int depth)
+						{
+							supertypeLink.ProvidesPreferredIdentifier = true;
+							return ObjectTypeVisitorResult.SkipChildren;
+						});
+				}
+				else if (toggleAllOff)
+				{
+					ObjectType.WalkSupertypeRelationships(
+						subtype,
+						delegate(SubtypeFact supertypeLink, ObjectType supertype, int depth)
+						{
+							supertypeLink.ProvidesPreferredIdentifier = false;
+							return ObjectTypeVisitorResult.SkipChildren;
+						});
+				}
+				state.IsValidated = true;
+			}
+		}
+		/// <summary>
 		/// Validator callback for EntityTypeRequiresReferenceSchemeError
 		/// </summary>
 		private static void DelayValidateEntityTypeRequiresReferenceSchemeError(ModelElement element)
@@ -1819,20 +2217,204 @@ namespace Neumont.Tools.ORM.ObjectModel
 		{
 			if (!IsDeleted)
 			{
+				bool verifyDownstream = false;
 				bool hasError = true;
-				Store theStore = Store;
-				ORMModel theModel = Model;
-				if (IsValueType == true || this.PreferredIdentifier != null)
+				Store store = Store;
+				bool disabledChangeRule = false;
+				try
 				{
-					hasError = false;
-				}
-				else
-				{
-					// We can get the preferred identifier from the super type if it exists. The error
-					// should appear on the supertype, not here.
-					using (IEnumerator<ObjectType> superTypes = SupertypeCollection.GetEnumerator())
+					if (IsValueType == true)
 					{
-						hasError = !superTypes.MoveNext();
+						hasError = false;
+					}
+					else if (this.PreferredIdentifier != null)
+					{
+						hasError = false;
+						if (notifyAdded == null)
+						{
+							WalkSupertypeRelationships(
+								this,
+								delegate(SubtypeFact supertypeLink, ObjectType superType, int depth)
+								{
+									if (supertypeLink.ProvidesPreferredIdentifier)
+									{
+										if (!disabledChangeRule)
+										{
+											store.RuleManager.DisableRule(typeof(SubtypeFactChangeRuleClass));
+											disabledChangeRule = true;
+										}
+										supertypeLink.ProvidesPreferredIdentifier = false;
+									}
+									return ObjectTypeVisitorResult.SkipChildren;
+								});
+						}
+					}
+					else if (notifyAdded == null)
+					{
+						// If we have supertype relationships, then verify that the supertypes
+						// marked as providing a preferred identifier are consistent. This leads
+						// to several cases:
+						// 1) If there is only one supertype, make sure it provides the preferred
+						//    identifier path.
+						// 2) If there is more than one supertype that provides the preferred identifier
+						//    path, then make sure all of the paths go to the same place. If they don't,
+						//    then turn them all off and mark an error state.
+						// 3) If any secondary path leads the same place as a validated primary path then
+						//    mark those preferred as well
+						// 4) If all secondary paths lead the same place then mark them all as primary
+						//
+						// If the primary path is turned off or if any paths are turned on then downstream
+						// subtypes also need to be revalidated, regardless of whether they are attached
+						// to this supertype with a primary or secondary relationship.
+
+						int supertypeCount = 0;
+						int preferredCount = 0;
+						SubtypeFact firstSupertypeLink = null;
+						WalkSupertypeRelationships(
+							this,
+							delegate(SubtypeFact supertypeLink, ObjectType supertype, int depth)
+							{
+								if (firstSupertypeLink == null)
+								{
+									firstSupertypeLink = supertypeLink;
+								}
+								++supertypeCount;
+								if (supertypeLink.ProvidesPreferredIdentifier)
+								{
+									++preferredCount;
+								}
+								return ObjectTypeVisitorResult.SkipChildren;
+							});
+
+						if (firstSupertypeLink != null)
+						{
+							if (supertypeCount == 1)
+							{
+								hasError = false;
+								if (preferredCount == 0)
+								{
+									// Turn it on, clear the error, verify downstream
+									if (!disabledChangeRule)
+									{
+										store.RuleManager.DisableRule(typeof(SubtypeFactChangeRuleClass));
+										disabledChangeRule = true;
+									}
+									firstSupertypeLink.ProvidesPreferredIdentifier = true;
+									verifyDownstream = true;
+								}
+							}
+							else if (preferredCount == 0)
+							{
+								ObjectType terminus = FindIdentifyingSupertypeTerminus(true);
+								if (terminus != null)
+								{
+									// All paths go the same place, turn them all on
+									hasError = false;
+									verifyDownstream = true;
+									if (!disabledChangeRule)
+									{
+										store.RuleManager.DisableRule(typeof(SubtypeFactChangeRuleClass));
+										disabledChangeRule = true;
+									}
+									WalkSupertypeRelationships(
+										this,
+										delegate(SubtypeFact supertypeLink, ObjectType supertype, int depth)
+										{
+											supertypeLink.ProvidesPreferredIdentifier = true;
+											return ObjectTypeVisitorResult.SkipChildren;
+										});
+								}
+							}
+							else
+							{
+								ObjectType terminus = FindIdentifyingSupertypeTerminus(false);
+								if (terminus == null)
+								{
+									// Primary paths don't lead the same place, turn them all off
+									verifyDownstream = true;
+									if (!disabledChangeRule)
+									{
+										store.RuleManager.DisableRule(typeof(SubtypeFactChangeRuleClass));
+										disabledChangeRule = true;
+									}
+									WalkSupertypeRelationships(
+										this,
+										delegate(SubtypeFact supertypeLink, ObjectType supertype, int depth)
+										{
+											Role currentSupertypeRole = supertypeLink.SupertypeRole;
+											ObjectType currentSupertype = currentSupertypeRole.RolePlayer;
+											if (currentSupertype != null)
+											{
+												Role.WalkDescendedValueRoles(currentSupertype, currentSupertypeRole, delegate(Role role, ValueTypeHasDataType dataTypeLink, RoleValueConstraint currentValueConstraint, ValueConstraint previousValueConstraint)
+												{
+													if (currentValueConstraint != null && !currentValueConstraint.IsDeleting)
+													{
+														ObjectModel.ValueConstraint.DelayValidateValueConstraint(currentValueConstraint);
+													}
+													return true;
+												});
+											}
+											supertypeLink.ProvidesPreferredIdentifier = false;
+											return ObjectTypeVisitorResult.SkipChildren;
+										});
+								}
+								else
+								{
+									hasError = false;
+									if (preferredCount < supertypeCount)
+									{
+										// Walk individual non-preferred identifiers and turn them on
+										// if they terminate in the same place.
+										WalkSupertypeRelationships(
+											this,
+											delegate(SubtypeFact supertypeLink, ObjectType supertype, int depth)
+											{
+												if (!supertypeLink.ProvidesPreferredIdentifier)
+												{
+													// Note that the terminus == supertype condition here indicates
+													// a transitive suptype graph, but this error condition is not
+													// in this routine and does not affect identification.
+													if (terminus == supertype ||
+														terminus == supertype.FindIdentifyingSupertypeTerminus(false))
+													{
+														if (!disabledChangeRule)
+														{
+															store.RuleManager.DisableRule(typeof(SubtypeFactChangeRuleClass));
+															disabledChangeRule = true;
+														}
+														verifyDownstream = true;
+														supertypeLink.ProvidesPreferredIdentifier = true;
+													}
+												}
+												return ObjectTypeVisitorResult.SkipChildren;
+											});
+									}
+								}
+							}
+						}
+					}
+					else // notifyAdded != null
+					{
+						// All consistency checking was done by the TestPreferredIdentificationPathFixupListener.
+						// All that is left is to make sure we have at least one preferred identification path.
+						WalkSupertypeRelationships(
+							this,
+							delegate(SubtypeFact supertypeLink, ObjectType supertype, int depth)
+							{
+								if (supertypeLink.ProvidesPreferredIdentifier)
+								{
+									hasError = false;
+									return ObjectTypeVisitorResult.Stop;
+								}
+								return ObjectTypeVisitorResult.SkipChildren;
+							});
+					}
+				}
+				finally
+				{
+					if (disabledChangeRule)
+					{
+						store.RuleManager.EnableRule(typeof(SubtypeFactChangeRuleClass));
 					}
 				}
 
@@ -1841,9 +2423,9 @@ namespace Neumont.Tools.ORM.ObjectModel
 				{
 					if (noRefSchemeError == null)
 					{
-						noRefSchemeError = new EntityTypeRequiresReferenceSchemeError(theStore);
+						noRefSchemeError = new EntityTypeRequiresReferenceSchemeError(store);
 						noRefSchemeError.ObjectType = this;
-						noRefSchemeError.Model = theModel;
+						noRefSchemeError.Model = Model;
 						noRefSchemeError.GenerateErrorText();
 						if (notifyAdded != null)
 						{
@@ -1858,119 +2440,156 @@ namespace Neumont.Tools.ORM.ObjectModel
 						noRefSchemeError.Delete();
 					}
 				}
+				if (verifyDownstream)
+				{
+					// This can only runs if notifyAdded is null
+					Role.WalkDescendedValueRoles(this, null, delegate(Role role, ValueTypeHasDataType dataTypeLink, RoleValueConstraint currentValueConstraint, ValueConstraint previousValueConstraint)
+					{
+						if (currentValueConstraint != null && !currentValueConstraint.IsDeleting)
+						{
+							ObjectModel.ValueConstraint.DelayValidateValueConstraint(currentValueConstraint);
+						}
+						return true;
+					});
+					WalkSubtypes(
+						this,
+						delegate(ObjectType subtype, int depth, bool isPrimary)
+						{
+							if (depth == 0)
+							{
+								return ObjectTypeVisitorResult.Continue;
+							}
+							else if (subtype.PreferredIdentifier == null)
+							{
+								FrameworkDomainModel.DelayValidateElement(subtype, DelayValidateEntityTypeRequiresReferenceSchemeError);
+								return ObjectTypeVisitorResult.Continue;
+							}
+							return ObjectTypeVisitorResult.SkipChildren;
+						});
+				}
 			}
 		}
-
-		#endregion // EntityTypeRequiresReferenceSchemeError Validation
-		#region ObectTypeRequiresPrimarySupertype Validation
 		/// <summary>
-		/// Validator callback for ObjectTypeRequiresPrimarySupertypeError
+		/// Find the <see cref="ObjectType"/> in the supertype path for this instance
+		/// that provides a unique terminus. If a terminus with a preferred identifier
+		/// could not be found, then the farthest supertype is returned, as long as it
+		/// is unique. This allows a single identification error instead of error for an
+		/// unidentified subtype tree instead of errors for every subtype in the tree.
 		/// </summary>
-		private static void DelayValidateObjectTypeRequiresPrimarySupertypeError(ModelElement element)
+		/// <param name="treatImmediateSupertypesAsPreferred"><see langword="true"/> if
+		/// all immediate supertypes should be considered, regardless of the current
+		/// <see cref="SubtypeFact.ProvidesPreferredIdentifier"/> setting.</param>
+		/// <returns><see langword="null"/> if a unique terminus could not be found.</returns>
+		private ObjectType FindIdentifyingSupertypeTerminus(bool treatImmediateSupertypesAsPreferred)
 		{
-			(element as ObjectType).ValidateObjectTypeRequiresPrimarySupertypeError(null);
-		}
-		/// <summary>
-		/// Rule helper to determine whether or not ObjectTypeRequiresPrimarySupertypeError should appear
-		/// will assign SubFact as primary if only one exists.
-		/// </summary>
-		/// <param name="notifyAdded"></param>
-		private void ValidateObjectTypeRequiresPrimarySupertypeError(INotifyElementAdded notifyAdded)
-		{
-			if (!IsDeleted)
-			{
-				bool hasError = false;
-				ReadOnlyCollection<ObjectTypePlaysRole> links = ObjectTypePlaysRole.GetLinksToPlayedRoleCollection(this);
-				int linkCount = links.Count;
-				if (linkCount != 0)
+			ObjectType identifiedTerminus = null;
+			bool lastPathReachedIdentifiedTerminus = false;
+			bool seenNonIdentifiedTerminusPath = false;
+			ObjectType lastSupertype = null;
+			ObjectType sharedTerminus = null;
+			int lastNonTerminusDepth = -1;
+			// Turn them all on if all paths lead to the same identified terminus
+			WalkSupertypeRelationships(
+				this,
+				delegate(SubtypeFact supertypeLink, ObjectType supertype, int depth)
 				{
-					SubtypeFact firstSubtypeFact = null;
-					int subtypeFactCount = 0;
-					//bool hasPrimarySupertypeFact = false;
-					int primaryFactCount = 0;
-					for (int i = 0; i < linkCount; ++i)
+					ObjectTypeVisitorResult retVal = ObjectTypeVisitorResult.SkipChildren;
+					if ((treatImmediateSupertypesAsPreferred && depth == 0) || supertypeLink.ProvidesPreferredIdentifier)
 					{
-						ObjectTypePlaysRole link = links[i];
-						SubtypeMetaRole subtypeRole = link.PlayedRole as SubtypeMetaRole;
-						if (subtypeRole != null)
+						if (supertype.PreferredIdentifier != null)
 						{
-							SubtypeFact subtypeFact = subtypeRole.FactType as SubtypeFact;
-							if (subtypeFact != null)
+							lastSupertype = null;
+							sharedTerminus = null;
+							if (seenNonIdentifiedTerminusPath)
 							{
-								if (subtypeFact.IsPrimary)
+								retVal = ObjectTypeVisitorResult.Stop;
+							}
+							else
+							{
+								lastPathReachedIdentifiedTerminus = true;
+								if (identifiedTerminus == null)
 								{
-									++primaryFactCount;
-									firstSubtypeFact = subtypeFact;
-									if (notifyAdded == null)
+									identifiedTerminus = supertype;
+									lastNonTerminusDepth = depth - 1;
+								}
+								else if (identifiedTerminus != supertype)
+								{
+									// We got to a different place
+									identifiedTerminus = null;
+									retVal = ObjectTypeVisitorResult.Stop;
+								}
+							}
+						}
+						else
+						{
+							if (identifiedTerminus == null)
+							{
+								// Get the deepest non-identified element if
+								// nothing is identified.
+								if (lastSupertype != null)
+								{
+									if (depth <= lastNonTerminusDepth)
 									{
-										break;
-									}
-									if (primaryFactCount > 1)
-									{
-										for (int j = 0; j < linkCount; ++j)
+										if (sharedTerminus == null)
 										{
-											link = links[j];
-											subtypeRole = link.PlayedRole as SubtypeMetaRole;
-
-											if (subtypeRole != null)
+											sharedTerminus = lastSupertype;
+										}
+										else if (sharedTerminus != null)
+										{
+											if (lastSupertype != sharedTerminus)
 											{
-												subtypeFact = subtypeRole.FactType as SubtypeFact;
-												if (subtypeFact != null)
-												{
-													subtypeFact.IsPrimary = false;
-												}
+												return ObjectTypeVisitorResult.Stop;
 											}
 										}
-										break;
 									}
-									//hasPrimarySupertypeFact = true;
 								}
-								else if (firstSubtypeFact == null)
+								lastSupertype = supertype;
+							}
+							if (lastPathReachedIdentifiedTerminus || depth > lastNonTerminusDepth)
+							{
+								lastPathReachedIdentifiedTerminus = false;
+								lastNonTerminusDepth = depth;
+								retVal = ObjectTypeVisitorResult.Continue;
+							}
+							else
+							{
+								// We went down a path without finding an identified terminus
+								seenNonIdentifiedTerminusPath = true;
+								lastPathReachedIdentifiedTerminus = false;
+								if (identifiedTerminus != null)
 								{
-									++subtypeFactCount;
-									firstSubtypeFact = subtypeFact;
+									identifiedTerminus = null;
+									retVal = ObjectTypeVisitorResult.Stop;
 								}
 								else
 								{
-									++subtypeFactCount;
+									// Keep going to verify a shared non-identified terminus
+									lastNonTerminusDepth = depth;
+									retVal = ObjectTypeVisitorResult.Continue;
 								}
 							}
 						}
 					}
-					if (primaryFactCount != 1 && firstSubtypeFact != null)
-					{
-						if (subtypeFactCount == 1 && primaryFactCount == 0)
-						{
-							firstSubtypeFact.IsPrimary = true;
-						}
-						else
-						{
-							hasError = true;
-						}
-					}
-				}
-				ObjectTypeRequiresPrimarySupertypeError primaryRequired = this.ObjectTypeRequiresPrimarySupertypeError;
-				if (hasError)
+					return retVal;
+				});
+			if (identifiedTerminus != null && lastPathReachedIdentifiedTerminus)
+			{
+				return identifiedTerminus;
+			}
+			else if (sharedTerminus != null)
+			{
+				if (lastSupertype == sharedTerminus)
 				{
-					if (primaryRequired == null)
-					{
-						primaryRequired = new ObjectTypeRequiresPrimarySupertypeError(this.Store);
-						primaryRequired.ObjectType = this;
-						primaryRequired.Model = this.Model;
-						primaryRequired.GenerateErrorText();
-						if (notifyAdded != null)
-						{
-							notifyAdded.ElementAdded(primaryRequired);
-						}
-					}
-				}
-				else if (primaryRequired != null)
-				{
-					primaryRequired.Delete();
+					return sharedTerminus;
 				}
 			}
+			else if (lastSupertype != null && !seenNonIdentifiedTerminusPath)
+			{
+				return lastSupertype;
+			}
+			return null;
 		}
-		#endregion //ObectTypeRequiresPrimarySupertype Validation
+		#endregion // EntityTypeRequiresReferenceSchemeError Validation
 		#region PreferredIdentifierRequiresMandatoryError Validation
 		/// <summary>
 		/// Validator callback for PreferredIdentifierRequiresMandatoryError
@@ -2293,15 +2912,36 @@ namespace Neumont.Tools.ORM.ObjectModel
 		/// </summary>
 		private static void VerifyReferenceSchemeAddRule(ElementAddedEventArgs e)
 		{
-			ProcessVerifyReferenceSchemeAdd(e.ModelElement as EntityTypeHasPreferredIdentifier);
+			ProcessVerifyReferenceSchemeAdd(e.ModelElement as EntityTypeHasPreferredIdentifier, true);
 		}
 		/// <summary>
 		/// Rule helper method
 		/// </summary>
-		private static void ProcessVerifyReferenceSchemeAdd(EntityTypeHasPreferredIdentifier link)
+		private static void ProcessVerifyReferenceSchemeAdd(EntityTypeHasPreferredIdentifier link, bool verifySubtypeGraph)
 		{
 			ObjectType objectType = link.PreferredIdentifierFor;
-			FrameworkDomainModel.DelayValidateElement(objectType, DelayValidateEntityTypeRequiresReferenceSchemeError);
+			if (verifySubtypeGraph)
+			{
+				WalkSubtypes(
+					objectType,
+					delegate(ObjectType subtype, int depth, bool isPrimary)
+					{
+						if (depth != 0 && subtype.PreferredIdentifier != null)
+						{
+							return ObjectTypeVisitorResult.SkipChildren;
+						}
+						// Note that we don't care about primary/secondary here, changing
+						// the preferred identifier on a supertype can trigger a change
+						// if non-preferred paths are now found to lead to the same terminus
+						// as an existing primary case.
+						FrameworkDomainModel.DelayValidateElement(subtype, DelayValidateEntityTypeRequiresReferenceSchemeError);
+						return ObjectTypeVisitorResult.Continue;
+					});
+			}
+			else
+			{
+				FrameworkDomainModel.DelayValidateElement(objectType, DelayValidateEntityTypeRequiresReferenceSchemeError);
+			}
 			if (!link.PreferredIdentifier.IsInternal)
 			{
 				FrameworkDomainModel.DelayValidateElement(objectType, DelayValidatePreferredIdentifierRequiresMandatoryError);
@@ -2312,12 +2952,12 @@ namespace Neumont.Tools.ORM.ObjectModel
 		/// </summary>
 		private static void VerifyReferenceSchemeDeleteRule(ElementDeletedEventArgs e)
 		{
-			ProcessVerifyReferenceSchemeDelete(e.ModelElement as EntityTypeHasPreferredIdentifier, null, null);
+			ProcessVerifyReferenceSchemeDelete(e.ModelElement as EntityTypeHasPreferredIdentifier, null, null, true);
 		}
 		/// <summary>
 		/// Rule helper method
 		/// </summary>
-		private static void ProcessVerifyReferenceSchemeDelete(EntityTypeHasPreferredIdentifier link, ObjectType objectType, UniquenessConstraint preferredIdentifier)
+		private static void ProcessVerifyReferenceSchemeDelete(EntityTypeHasPreferredIdentifier link, ObjectType objectType, UniquenessConstraint preferredIdentifier, bool verifySubtypeGraph)
 		{
 			if (objectType == null)
 			{
@@ -2325,7 +2965,28 @@ namespace Neumont.Tools.ORM.ObjectModel
 			}
 			if (!objectType.IsDeleted)
 			{
-				FrameworkDomainModel.DelayValidateElement(objectType, DelayValidateEntityTypeRequiresReferenceSchemeError);
+				if (verifySubtypeGraph)
+				{
+					WalkSubtypes(
+						objectType,
+						delegate(ObjectType subtype, int depth, bool isPrimary)
+						{
+							if (depth != 0 && subtype.PreferredIdentifier != null)
+							{
+								return ObjectTypeVisitorResult.SkipChildren;
+							}
+							// Note that we don't care about primary/secondary here, changing
+							// the preferred identifier on a supertype can trigger a change
+							// if non-preferred paths are now found to lead to the same terminus
+							// as an existing primary case.
+							FrameworkDomainModel.DelayValidateElement(subtype, DelayValidateEntityTypeRequiresReferenceSchemeError);
+							return ObjectTypeVisitorResult.Continue;
+						});
+				}
+				else
+				{
+					FrameworkDomainModel.DelayValidateElement(objectType, DelayValidateEntityTypeRequiresReferenceSchemeError);
+				}
 				FrameworkDomainModel.DelayValidateElement(objectType, DelayValidateIsIndependent);
 				if (preferredIdentifier == null)
 				{
@@ -2354,8 +3015,8 @@ namespace Neumont.Tools.ORM.ObjectModel
 				oldPreferredIdentifier = (UniquenessConstraint)e.OldRolePlayer;
 			}
 			EntityTypeHasPreferredIdentifier link = (EntityTypeHasPreferredIdentifier)e.ElementLink;
-			ProcessVerifyReferenceSchemeDelete(link, oldObjectType, oldPreferredIdentifier);
-			ProcessVerifyReferenceSchemeAdd(link);
+			ProcessVerifyReferenceSchemeDelete(link, oldObjectType, oldPreferredIdentifier, false);
+			ProcessVerifyReferenceSchemeAdd(link, false);
 		}
 		/// <summary>
 		/// AddRule: typeof(ValueTypeHasDataType)
@@ -2397,14 +3058,23 @@ namespace Neumont.Tools.ORM.ObjectModel
 			FrameworkDomainModel.DelayValidateElement(rolePlayer, DelayValidateIsIndependent);
 			if (role is SubtypeMetaRole)
 			{
-				ObjectType objectType = link.RolePlayer;
-				FrameworkDomainModel.DelayValidateElement(objectType, DelayValidateEntityTypeRequiresReferenceSchemeError);
-				FrameworkDomainModel.DelayValidateElement(objectType, DelayValidateObjectTypeRequiresPrimarySupertypeError);
-				WalkSubtypes(rolePlayer, delegate(ObjectType type, int depth, bool isPrimary)
+				WalkSubtypes(rolePlayer, delegate(ObjectType subtype, int depth, bool isPrimary)
 				{
-					FrameworkDomainModel.DelayValidateElement(type, DelayValidateCompatibleSupertypesError);
-					ValidateAttachedConstraintColumnCompatibility(type);
-					return ObjectTypeVisitorResult.Continue;
+					if (depth == 0 || subtype.PreferredIdentifier == null)
+					{
+						FrameworkDomainModel.DelayValidateElement(subtype, DelayValidateEntityTypeRequiresReferenceSchemeError);
+						FrameworkDomainModel.DelayValidateElement(subtype, DelayValidateCompatibleSupertypesError);
+						ValidateAttachedConstraintColumnCompatibility(subtype);
+						return ObjectTypeVisitorResult.Continue;
+					}
+					// We want to keep going on the last two errors, but not the reference scheme error
+					WalkSubtypes(subtype, delegate(ObjectType subtype2, int depth2, bool isPrimary2)
+					{
+						FrameworkDomainModel.DelayValidateElement(subtype2, DelayValidateCompatibleSupertypesError);
+						ValidateAttachedConstraintColumnCompatibility(subtype2);
+						return ObjectTypeVisitorResult.Continue;
+					});
+					return ObjectTypeVisitorResult.SkipChildren;
 				});
 			}
 			else if (role is SupertypeMetaRole)
@@ -2434,8 +3104,15 @@ namespace Neumont.Tools.ORM.ObjectModel
 				SubtypeMetaRole role = link.PlayedRole as SubtypeMetaRole;
 				if (role != null)
 				{
-					FrameworkDomainModel.DelayValidateElement(objectType, DelayValidateEntityTypeRequiresReferenceSchemeError);
-					FrameworkDomainModel.DelayValidateElement(objectType, DelayValidateObjectTypeRequiresPrimarySupertypeError);
+					WalkSubtypes(objectType, delegate(ObjectType subtype, int depth, bool isPrimary)
+					{
+						if (depth == 0 || subtype.PreferredIdentifier == null)
+						{
+							FrameworkDomainModel.DelayValidateElement(subtype, DelayValidateEntityTypeRequiresReferenceSchemeError);
+							return ObjectTypeVisitorResult.Continue;
+						}
+						return ObjectTypeVisitorResult.SkipChildren;
+					});
 				}
 			}
 		}
@@ -2723,93 +3400,118 @@ namespace Neumont.Tools.ORM.ObjectModel
 			/// </summary>
 			private void SubtypeFactChangeRule(ElementPropertyChangedEventArgs e)
 			{
-				if (myIgnoreRule)
-				{
-					return;
-				}
 				Guid attributeId = e.DomainProperty.Id;
-				if (attributeId == SubtypeFact.IsPrimaryDomainPropertyId)
+				if (attributeId == SubtypeFact.ProvidesPreferredIdentifierDomainPropertyId)
 				{
 					bool newValue = (bool)e.NewValue;
-					if (!newValue)
+					SubtypeFact changedSubtypeLink;
+					ObjectType changedSubtype = null; ;
+					if (!newValue ||
+						(null != (changedSubtypeLink = e.ModelElement as SubtypeFact) && null != (changedSubtype = changedSubtypeLink.Subtype) && null != changedSubtype.PreferredIdentifier))
 					{
-						throw new InvalidOperationException(ResourceStrings.ModelExceptionSubtypeFactPrimaryMustBeTrue);
-					}
-					try
-					{
-						myIgnoreRule = true;
-						SubtypeFact changedFact = e.ModelElement as SubtypeFact;
-						ObjectType subtype = changedFact.Subtype;
-						Role oldSupertypeRole = null;
-						foreach (Role role in subtype.PlayedRoleCollection)
+						if (myIgnoreRule)
 						{
-							SubtypeMetaRole testSubtypeRole = role as SubtypeMetaRole;
-							if (testSubtypeRole != null)
-							{
-								SubtypeFact subtypeFact = role.FactType as SubtypeFact;
-								if (subtypeFact != changedFact)
-								{
-									subtypeFact.IsPrimary = false;
-									oldSupertypeRole = subtypeFact.SupertypeRole;
-									break;
-								}
-							}
+							return;
 						}
-
-						// Now walk value roles and figure out if they need to be deleted.
-						// UNDONE: VALUEROLE Note that this code makes two assumptions that may not be
-						// value long term:
-						// 1) Subtype and supertype meta roles are not value roles
-						// 2) We only consider value constraints on the primary subtype
-						//    path back to a value type, not the secondary subtyping paths.
-						// This code is here instead of in ValueConstraint because of the difficulty in
-						// establishing the oldSupertypeRole after this rule has been completed,
-						// and the duplication of work necessary to find it before this rule runs.
-						UniquenessConstraint oldIdentifier;
-						LinkedElementCollection<Role> identifierRoles;
-						ObjectType oldSupertype;
-						if (null != oldSupertypeRole &&
-							null != (oldSupertype = oldSupertypeRole.RolePlayer) &&
-							null != (oldIdentifier = oldSupertype.ResolvedPreferredIdentifier) &&
-							1 == (identifierRoles = oldIdentifier.RoleCollection).Count &&
-							identifierRoles[0].IsValueRole)
+						throw new InvalidOperationException(ResourceStrings.ModelExceptionSubtypeFactProvidesPreferredIdentifierInvalid);
+					}
+					if (changedSubtype != null)
+					{
+						try
 						{
-							// The old primary identification allowed value roles. If we still do, then
-							// revalidate them, otherwise, delete them.
-							bool visited = false;
-							Role.WalkDescendedValueRoles(changedFact.Supertype, null, delegate(Role role, ValueTypeHasDataType dataTypeLink, RoleValueConstraint currentValueConstraint, ValueConstraint previousValueConstraint)
+							myIgnoreRule = true;
+
+							// Turn off preferred marker for all other subtypes coming into this element.
+							// These may be turned back on during delayed validation, but we don't want to
+							// do additional processing at this point.
+							WalkSupertypeRelationships(
+								changedSubtype,
+								delegate(SubtypeFact supertypeLink, ObjectType supertype, int depth)
+								{
+									if (supertypeLink != changedSubtypeLink && supertypeLink.ProvidesPreferredIdentifier)
+									{
+										supertypeLink.ProvidesPreferredIdentifier = false;
+										// Now walk value roles and figure out if they need to be deleted.
+										// UNDONE: VALUEROLE Note that this code makes two assumptions that may not be
+										// valid long term:
+										// 1) Subtype and supertype meta roles are not value roles
+										// This code is here instead of in ValueConstraint because of the difficulty in
+										// establishing the oldSupertypeRole after this rule has been completed,
+										// and the duplication of work necessary to find it before this rule runs.
+										UniquenessConstraint oldIdentifier;
+										LinkedElementCollection<Role> identifierRoles;
+										Role oldSupertypeRole = supertypeLink.SupertypeRole;
+										if (null != (oldIdentifier = supertype.ResolvedPreferredIdentifier) &&
+											1 == (identifierRoles = oldIdentifier.RoleCollection).Count &&
+											identifierRoles[0].IsValueRole)
+										{
+											// The old primary identification allowed value roles. Revalidate any downstream value roles.
+											bool visited = false;
+											Role.WalkDescendedValueRoles(changedSubtypeLink.Supertype, null, delegate(Role role, ValueTypeHasDataType dataTypeLink, RoleValueConstraint currentValueConstraint, ValueConstraint previousValueConstraint)
+											{
+												// If we get any callback here, then the role can still be a value role
+												visited = true;
+												if (currentValueConstraint != null && !currentValueConstraint.IsDeleting)
+												{
+													// Make sure that this value constraint is compatible with
+													// other constraints above it.
+													ObjectModel.ValueConstraint.DelayValidateValueConstraint(currentValueConstraint);
+												}
+												return true;
+											});
+											if (!visited)
+											{
+												// The old role player supported values, the new one does not.
+												// Mark any downstream value constraints for validation. Skip from the entity
+												// type attached to the preferred identifier directly to the old
+												// supertype role.
+												Role.WalkDescendedValueRoles(oldIdentifier.PreferredIdentifierFor, oldSupertypeRole, delegate(Role role, ValueTypeHasDataType dataTypeLink, RoleValueConstraint currentValueConstraint, ValueConstraint previousValueConstraint)
+												{
+													if (currentValueConstraint != null && !currentValueConstraint.IsDeleting)
+													{
+														ObjectModel.ValueConstraint.DelayValidateValueConstraint(currentValueConstraint);
+													}
+													return true;
+												});
+											}
+										}
+									}
+									return ObjectTypeVisitorResult.SkipChildren;
+								});
+							Role.WalkDescendedValueRoles(changedSubtypeLink.Subtype, null, delegate(Role role, ValueTypeHasDataType dataTypeLink, RoleValueConstraint currentValueConstraint, ValueConstraint previousValueConstraint)
 							{
-								// If we get any callback here, then the role can still be a value role
-								visited = true;
 								if (currentValueConstraint != null && !currentValueConstraint.IsDeleting)
 								{
-									// Make sure that this value constraint is compatible with
-									// other constraints above it.
 									ObjectModel.ValueConstraint.DelayValidateValueConstraint(currentValueConstraint);
 								}
 								return true;
 							});
-							if (!visited)
-							{
-								// The old role player supported values, the new one does not.
-								// Delete any downstream value constraints. Skip from the entity
-								// type attached to the preferred identifier directly to the old
-								// supertype role.
-								Role.WalkDescendedValueRoles(oldIdentifier.PreferredIdentifierFor, oldSupertypeRole, delegate(Role role, ValueTypeHasDataType dataTypeLink, RoleValueConstraint currentValueConstraint, ValueConstraint previousValueConstraint)
+
+							// A status change here will potentially affect downstream subtypes as well.
+							// Revalidate these as well.
+							WalkSubtypes(
+								changedSubtype,
+								delegate(ObjectType downstreamSubtype, int depth, bool isPrimary)
 								{
-									if (currentValueConstraint != null && !currentValueConstraint.IsDeleting)
+									if (depth == 0 || downstreamSubtype.PreferredIdentifier == null)
 									{
-										currentValueConstraint.Delete();
+										FrameworkDomainModel.DelayValidateElement(downstreamSubtype, DelayValidateEntityTypeRequiresReferenceSchemeError);
+										return ObjectTypeVisitorResult.Continue;
 									}
-									return true;
+									return ObjectTypeVisitorResult.SkipChildren;
 								});
-							}
 						}
-						FrameworkDomainModel.DelayValidateElement(subtype, DelayValidateObjectTypeRequiresPrimarySupertypeError);
+						finally
+						{
+							myIgnoreRule = false;
+						}
 					}
-					finally
+				}
+				else if (attributeId == SubtypeFact.IsPrimaryDomainPropertyId)
+				{
+					if ((bool)e.NewValue)
 					{
-						myIgnoreRule = false;
+						throw new InvalidOperationException("SubtypeFact.IsPrimary is deprecated. Use the ProvidesPreferredIdentifier property instead.");
 					}
 				}
 			}
@@ -2837,12 +3539,6 @@ namespace Neumont.Tools.ORM.ObjectModel
 				if (requiredReferenceSchemeError != null)
 				{
 					yield return requiredReferenceSchemeError;
-				}
-
-				ObjectTypeRequiresPrimarySupertypeError primarySupertypeRequired = ObjectTypeRequiresPrimarySupertypeError;
-				if (primarySupertypeRequired != null)
-				{
-					yield return primarySupertypeRequired;
 				}
 
 				PreferredIdentifierRequiresMandatoryError preferredRequiresMandatory = PreferredIdentifierRequiresMandatoryError;
@@ -2934,7 +3630,6 @@ namespace Neumont.Tools.ORM.ObjectModel
 			// Calls added here need corresponding delayed calls in DelayValidateErrors
 			ValidateDataTypeNotSpecifiedError(notifyAdded);
 			ValidateRequiresReferenceScheme(notifyAdded);
-			ValidateObjectTypeRequiresPrimarySupertypeError(notifyAdded);
 			ValidatePreferredIdentifierRequiresMandatoryError(notifyAdded);
 			ValidateCompatibleSupertypesError(notifyAdded);
 			ValidateIsIndependent(notifyAdded);
@@ -2950,7 +3645,6 @@ namespace Neumont.Tools.ORM.ObjectModel
 		{
 			FrameworkDomainModel.DelayValidateElement(this, DelayValidateDataTypeNotSpecifiedError);
 			FrameworkDomainModel.DelayValidateElement(this, DelayValidateEntityTypeRequiresReferenceSchemeError);
-			FrameworkDomainModel.DelayValidateElement(this, DelayValidateObjectTypeRequiresPrimarySupertypeError);
 			FrameworkDomainModel.DelayValidateElement(this, DelayValidatePreferredIdentifierRequiresMandatoryError);
 			FrameworkDomainModel.DelayValidateElement(this, DelayValidateCompatibleSupertypesError);
 			FrameworkDomainModel.DelayValidateElement(this, DelayValidateIsIndependent);
@@ -3292,32 +3986,6 @@ namespace Neumont.Tools.ORM.ObjectModel
 		#endregion // Base Overrides
 	}
 	#endregion // EntityTypeRequiresReferenceSchemeError class
-	#region ObjectTypeRequiresPrimarySupertypeError class
-	[ModelErrorDisplayFilter(typeof(ReferenceSchemeErrorCategory))]
-	public partial class ObjectTypeRequiresPrimarySupertypeError
-	{
-		#region Base Overrides
-		/// <summary>
-		/// Generates the text for the error to be displayed.
-		/// </summary>
-		public override void GenerateErrorText()
-		{
-			string newText = String.Format(CultureInfo.InvariantCulture, ResourceStrings.ModelErrorObjectTypeRequiresPrimarySupertypeError, ObjectType.Name, Model.Name);
-			if (ErrorText != newText)
-			{
-				ErrorText = newText;
-			}
-		}
-		/// <summary>
-		/// Regenerate error text when the object name changes or model name changes
-		/// </summary>
-		public override RegenerateErrorTextEvents RegenerateEvents
-		{
-			get { return RegenerateErrorTextEvents.OwnerNameChange | RegenerateErrorTextEvents.ModelNameChange; }
-		}
-		#endregion //Base Overrides
-	}
-	#endregion // ObjectTypeRequiresPrimarySupertypeError class
 	#region PreferredIdentifierRequiresMandatoryError class
 	[ModelErrorDisplayFilter(typeof(ReferenceSchemeErrorCategory))]
 	public partial class PreferredIdentifierRequiresMandatoryError

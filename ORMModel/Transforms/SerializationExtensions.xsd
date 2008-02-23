@@ -126,6 +126,11 @@
 				<xs:documentation>How to write.</xs:documentation>
 			</xs:annotation>
 		</xs:attribute>
+		<xs:attribute name="ReadOnly" type="xs:boolean" default="false">
+			<xs:annotation>
+				<xs:documentation>Use in place of writeStyle="NotWritten" to allow an attribute to be read but not written. Used in upgrade scenarios.</xs:documentation>
+			</xs:annotation>
+		</xs:attribute>
 		<xs:attribute name="DoubleTagName" type="xs:string">
 			<xs:annotation>
 				<xs:documentation>The name of the double tag. [WriteStyle=DoubleTaggedElement]</xs:documentation>

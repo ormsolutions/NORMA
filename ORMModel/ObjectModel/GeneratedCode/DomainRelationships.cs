@@ -20366,310 +20366,6 @@ namespace Neumont.Tools.ORM.ObjectModel
 namespace Neumont.Tools.ORM.ObjectModel
 {
 	/// <summary>
-	/// DomainRelationship ObjectTypeHasObjectTypeRequiresPrimarySupertypeError
-	/// Description for
-	/// Neumont.Tools.ORM.ObjectModel.ObjectTypeHasObjectTypeRequiresPrimarySupertypeError
-	/// </summary>
-	[DslDesign::DisplayNameResource("Neumont.Tools.ORM.ObjectModel.ObjectTypeHasObjectTypeRequiresPrimarySupertypeError.DisplayName", typeof(global::Neumont.Tools.ORM.ObjectModel.ORMCoreDomainModel), "Neumont.Tools.ORM.GeneratedCode.CoreDomainModelResx")]
-	[DslDesign::DescriptionResource("Neumont.Tools.ORM.ObjectModel.ObjectTypeHasObjectTypeRequiresPrimarySupertypeError.Description", typeof(global::Neumont.Tools.ORM.ObjectModel.ORMCoreDomainModel), "Neumont.Tools.ORM.GeneratedCode.CoreDomainModelResx")]
-	[global::System.CLSCompliant(true)]
-	[DslModeling::DomainRelationship()]
-	[DslModeling::DomainObjectId("2231fc51-1b87-45a5-af53-5a95f1b68e04")]
-	public partial class ObjectTypeHasObjectTypeRequiresPrimarySupertypeError : ElementAssociatedWithModelError
-	{
-		#region Constructors, domain class Id
-		
-		/// <summary>
-		/// ObjectTypeHasObjectTypeRequiresPrimarySupertypeError domain class Id.
-		/// </summary>
-		public static readonly new global::System.Guid DomainClassId = new global::System.Guid(0x2231fc51, 0x1b87, 0x45a5, 0xaf, 0x53, 0x5a, 0x95, 0xf1, 0xb6, 0x8e, 0x04);
-	
-				
-		/// <summary>
-		/// Constructor
-		/// Creates a ObjectTypeHasObjectTypeRequiresPrimarySupertypeError link in the same Partition as the given ObjectType
-		/// </summary>
-		/// <param name="source">ObjectType to use as the source of the relationship.</param>
-		/// <param name="target">ObjectTypeRequiresPrimarySupertypeError to use as the target of the relationship.</param>
-		public ObjectTypeHasObjectTypeRequiresPrimarySupertypeError(ObjectType source, ObjectTypeRequiresPrimarySupertypeError target)
-			: base((source != null ? source.Partition : null), new DslModeling::RoleAssignment[]{new DslModeling::RoleAssignment(ObjectTypeHasObjectTypeRequiresPrimarySupertypeError.ObjectTypeDomainRoleId, source), new DslModeling::RoleAssignment(ObjectTypeHasObjectTypeRequiresPrimarySupertypeError.ObjectTypeRequiresPrimarySupertypeErrorDomainRoleId, target)}, null)
-		{
-		}
-		
-		/// <summary>
-		/// Constructor
-		/// </summary>
-		/// <param name="store">Store where new link is to be created.</param>
-		/// <param name="roleAssignments">List of relationship role assignments.</param>
-		public ObjectTypeHasObjectTypeRequiresPrimarySupertypeError(DslModeling::Store store, params DslModeling::RoleAssignment[] roleAssignments)
-			: base(store != null ? store.DefaultPartition : null, roleAssignments, null)
-		{
-		}
-		
-		/// <summary>
-		/// Constructor
-		/// </summary>
-		/// <param name="store">Store where new link is to be created.</param>
-		/// <param name="roleAssignments">List of relationship role assignments.</param>
-		/// <param name="propertyAssignments">List of properties assignments to set on the new link.</param>
-		public ObjectTypeHasObjectTypeRequiresPrimarySupertypeError(DslModeling::Store store, DslModeling::RoleAssignment[] roleAssignments, DslModeling::PropertyAssignment[] propertyAssignments)
-			: base(store != null ? store.DefaultPartition : null, roleAssignments, propertyAssignments)
-		{
-		}
-		
-		/// <summary>
-		/// Constructor
-		/// </summary>
-		/// <param name="partition">Partition where new link is to be created.</param>
-		/// <param name="roleAssignments">List of relationship role assignments.</param>
-		public ObjectTypeHasObjectTypeRequiresPrimarySupertypeError(DslModeling::Partition partition, params DslModeling::RoleAssignment[] roleAssignments)
-			: base(partition, roleAssignments, null)
-		{
-		}
-		
-		/// <summary>
-		/// Constructor
-		/// </summary>
-		/// <param name="partition">Partition where new link is to be created.</param>
-		/// <param name="roleAssignments">List of relationship role assignments.</param>
-		/// <param name="propertyAssignments">List of properties assignments to set on the new link.</param>
-		public ObjectTypeHasObjectTypeRequiresPrimarySupertypeError(DslModeling::Partition partition, DslModeling::RoleAssignment[] roleAssignments, DslModeling::PropertyAssignment[] propertyAssignments)
-			: base(partition, roleAssignments, propertyAssignments)
-		{
-		}
-		#endregion
-		#region ObjectType domain role code
-		
-		/// <summary>
-		/// ObjectType domain role Id.
-		/// </summary>
-		public static readonly global::System.Guid ObjectTypeDomainRoleId = new global::System.Guid(0xe968cd16, 0x0fad, 0x4d46, 0xbe, 0x86, 0x47, 0x8b, 0x12, 0xcd, 0x8f, 0xcc);
-		
-		/// <summary>
-		/// DomainRole ObjectType
-		/// Description for
-		/// Neumont.Tools.ORM.ObjectModel.ObjectTypeHasObjectTypeRequiresPrimarySupertypeError.ObjectType
-		/// </summary>
-		[DslDesign::DisplayNameResource("Neumont.Tools.ORM.ObjectModel.ObjectTypeHasObjectTypeRequiresPrimarySupertypeError/ObjectType.DisplayName", typeof(global::Neumont.Tools.ORM.ObjectModel.ORMCoreDomainModel), "Neumont.Tools.ORM.GeneratedCode.CoreDomainModelResx")]
-		[DslDesign::DescriptionResource("Neumont.Tools.ORM.ObjectModel.ObjectTypeHasObjectTypeRequiresPrimarySupertypeError/ObjectType.Description", typeof(global::Neumont.Tools.ORM.ObjectModel.ORMCoreDomainModel), "Neumont.Tools.ORM.GeneratedCode.CoreDomainModelResx")]
-		[DslModeling::DomainRole(DslModeling::DomainRoleOrder.Source, PropertyName = "ObjectTypeRequiresPrimarySupertypeError", PropertyDisplayNameKey="Neumont.Tools.ORM.ObjectModel.ObjectTypeHasObjectTypeRequiresPrimarySupertypeError/ObjectType.PropertyDisplayName", Multiplicity = DslModeling::Multiplicity.ZeroOne)]
-		[DslModeling::DomainObjectId("e968cd16-0fad-4d46-be86-478b12cd8fcc")]
-		public virtual ObjectType ObjectType
-		{
-			[global::System.Diagnostics.DebuggerStepThrough]
-			get
-			{
-				return (ObjectType)DslModeling::DomainRoleInfo.GetRolePlayer(this, ObjectTypeDomainRoleId);
-			}
-			[global::System.Diagnostics.DebuggerStepThrough]
-			set
-			{
-				DslModeling::DomainRoleInfo.SetRolePlayer(this, ObjectTypeDomainRoleId, value);
-			}
-		}
-				
-		#endregion
-		#region Static methods to access ObjectType of a ObjectTypeRequiresPrimarySupertypeError
-		/// <summary>
-		/// Gets ObjectType.
-		/// </summary>
-		[global::System.Diagnostics.DebuggerStepThrough]
-		[global::System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Design", "CA1011")]
-		public static ObjectType GetObjectType(ObjectTypeRequiresPrimarySupertypeError element)
-		{
-			return DslModeling::DomainRoleInfo.GetLinkedElement(element, ObjectTypeRequiresPrimarySupertypeErrorDomainRoleId) as ObjectType;
-		}
-		
-		/// <summary>
-		/// Sets ObjectType.
-		/// </summary>
-		[global::System.Diagnostics.DebuggerStepThrough]
-		[global::System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Design", "CA1011")]
-		public static void SetObjectType(ObjectTypeRequiresPrimarySupertypeError element, ObjectType newObjectType)
-		{
-			DslModeling::DomainRoleInfo.SetLinkedElement(element, ObjectTypeRequiresPrimarySupertypeErrorDomainRoleId, newObjectType);
-		}
-		#endregion
-		#region AssociatedElement domain role override
-		
-		/// <summary>
-		/// Gets the element playing ObjectType domain role.
-		/// Description for
-		/// Neumont.Tools.ORM.ObjectModel.ElementAssociatedWithModelError.AssociatedElement
-		/// </summary>
-		public override global::Microsoft.VisualStudio.Modeling.ModelElement AssociatedElement
-		{
-			[global::System.Diagnostics.DebuggerStepThrough]
-			get
-			{
-				return this.ObjectType;
-			}
-			[global::System.Diagnostics.DebuggerStepThrough]
-			set
-			{
-				this.ObjectType = (ObjectType)value;
-			}
-		}
-		
-		#endregion
-		#region ObjectTypeRequiresPrimarySupertypeError domain role code
-		
-		/// <summary>
-		/// ObjectTypeRequiresPrimarySupertypeError domain role Id.
-		/// </summary>
-		public static readonly global::System.Guid ObjectTypeRequiresPrimarySupertypeErrorDomainRoleId = new global::System.Guid(0x4cdf2ebe, 0x8d1a, 0x48c9, 0xb3, 0x4f, 0x9c, 0xe8, 0x2c, 0x88, 0x26, 0x25);
-		
-		/// <summary>
-		/// DomainRole ObjectTypeRequiresPrimarySupertypeError
-		/// Description for
-		/// Neumont.Tools.ORM.ObjectModel.ObjectTypeHasObjectTypeRequiresPrimarySupertypeError.ObjectTypeRequiresPrimarySupertypeError
-		/// </summary>
-		[DslDesign::DisplayNameResource("Neumont.Tools.ORM.ObjectModel.ObjectTypeHasObjectTypeRequiresPrimarySupertypeError/ObjectTypeRequiresPrimarySupertypeError.DisplayName", typeof(global::Neumont.Tools.ORM.ObjectModel.ORMCoreDomainModel), "Neumont.Tools.ORM.GeneratedCode.CoreDomainModelResx")]
-		[DslDesign::DescriptionResource("Neumont.Tools.ORM.ObjectModel.ObjectTypeHasObjectTypeRequiresPrimarySupertypeError/ObjectTypeRequiresPrimarySupertypeError.Description", typeof(global::Neumont.Tools.ORM.ObjectModel.ORMCoreDomainModel), "Neumont.Tools.ORM.GeneratedCode.CoreDomainModelResx")]
-		[DslModeling::DomainRole(DslModeling::DomainRoleOrder.Target, PropertyName = "ObjectType", PropertyDisplayNameKey="Neumont.Tools.ORM.ObjectModel.ObjectTypeHasObjectTypeRequiresPrimarySupertypeError/ObjectTypeRequiresPrimarySupertypeError.PropertyDisplayName", PropagatesDelete = true, Multiplicity = DslModeling::Multiplicity.One)]
-		[DslModeling::DomainObjectId("4cdf2ebe-8d1a-48c9-b34f-9ce82c882625")]
-		public virtual ObjectTypeRequiresPrimarySupertypeError ObjectTypeRequiresPrimarySupertypeError
-		{
-			[global::System.Diagnostics.DebuggerStepThrough]
-			get
-			{
-				return (ObjectTypeRequiresPrimarySupertypeError)DslModeling::DomainRoleInfo.GetRolePlayer(this, ObjectTypeRequiresPrimarySupertypeErrorDomainRoleId);
-			}
-			[global::System.Diagnostics.DebuggerStepThrough]
-			set
-			{
-				DslModeling::DomainRoleInfo.SetRolePlayer(this, ObjectTypeRequiresPrimarySupertypeErrorDomainRoleId, value);
-			}
-		}
-				
-		#endregion
-		#region Static methods to access ObjectTypeRequiresPrimarySupertypeError of a ObjectType
-		/// <summary>
-		/// Gets ObjectTypeRequiresPrimarySupertypeError.
-		/// </summary>
-		[global::System.Diagnostics.DebuggerStepThrough]
-		[global::System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Design", "CA1011")]
-		public static ObjectTypeRequiresPrimarySupertypeError GetObjectTypeRequiresPrimarySupertypeError(ObjectType element)
-		{
-			return DslModeling::DomainRoleInfo.GetLinkedElement(element, ObjectTypeDomainRoleId) as ObjectTypeRequiresPrimarySupertypeError;
-		}
-		
-		/// <summary>
-		/// Sets ObjectTypeRequiresPrimarySupertypeError.
-		/// </summary>
-		[global::System.Diagnostics.DebuggerStepThrough]
-		[global::System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Design", "CA1011")]
-		public static void SetObjectTypeRequiresPrimarySupertypeError(ObjectType element, ObjectTypeRequiresPrimarySupertypeError newObjectTypeRequiresPrimarySupertypeError)
-		{
-			DslModeling::DomainRoleInfo.SetLinkedElement(element, ObjectTypeDomainRoleId, newObjectTypeRequiresPrimarySupertypeError);
-		}
-		#endregion
-		#region ModelError domain role override
-		
-		/// <summary>
-		/// Gets the element playing ObjectTypeRequiresPrimarySupertypeError domain role.
-		/// Description for
-		/// Neumont.Tools.ORM.ObjectModel.ElementAssociatedWithModelError.ModelError
-		/// </summary>
-		public override ModelError ModelError
-		{
-			[global::System.Diagnostics.DebuggerStepThrough]
-			get
-			{
-				return this.ObjectTypeRequiresPrimarySupertypeError;
-			}
-			[global::System.Diagnostics.DebuggerStepThrough]
-			set
-			{
-				this.ObjectTypeRequiresPrimarySupertypeError = (ObjectTypeRequiresPrimarySupertypeError)value;
-			}
-		}
-		
-		#endregion
-		#region ObjectType link accessor
-		/// <summary>
-		/// Get the ObjectTypeHasObjectTypeRequiresPrimarySupertypeError link to a ObjectType.
-		/// </summary>
-		[global::System.Diagnostics.DebuggerStepThrough]
-		[global::System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Design", "CA1011")]
-		public static global::Neumont.Tools.ORM.ObjectModel.ObjectTypeHasObjectTypeRequiresPrimarySupertypeError GetLinkToObjectTypeRequiresPrimarySupertypeError (global::Neumont.Tools.ORM.ObjectModel.ObjectType objectTypeInstance)
-		{
-			global::System.Collections.Generic.IList<global::Neumont.Tools.ORM.ObjectModel.ObjectTypeHasObjectTypeRequiresPrimarySupertypeError> links = DslModeling::DomainRoleInfo.GetElementLinks<global::Neumont.Tools.ORM.ObjectModel.ObjectTypeHasObjectTypeRequiresPrimarySupertypeError>(objectTypeInstance, global::Neumont.Tools.ORM.ObjectModel.ObjectTypeHasObjectTypeRequiresPrimarySupertypeError.ObjectTypeDomainRoleId);
-			global::System.Diagnostics.Debug.Assert(links.Count <= 1, "Multiplicity of ObjectType not obeyed.");
-			if ( links.Count == 0 )
-			{
-				return null;
-			}
-			else
-			{
-				return links[0];
-			}
-		}
-		#endregion
-		#region ObjectTypeRequiresPrimarySupertypeError link accessor
-		/// <summary>
-		/// Get the ObjectTypeHasObjectTypeRequiresPrimarySupertypeError link to a ObjectTypeRequiresPrimarySupertypeError.
-		/// </summary>
-		[global::System.Diagnostics.DebuggerStepThrough]
-		[global::System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Design", "CA1011")]
-		public static global::Neumont.Tools.ORM.ObjectModel.ObjectTypeHasObjectTypeRequiresPrimarySupertypeError GetLinkToObjectType (global::Neumont.Tools.ORM.ObjectModel.ObjectTypeRequiresPrimarySupertypeError objectTypeRequiresPrimarySupertypeErrorInstance)
-		{
-			global::System.Collections.Generic.IList<global::Neumont.Tools.ORM.ObjectModel.ObjectTypeHasObjectTypeRequiresPrimarySupertypeError> links = DslModeling::DomainRoleInfo.GetElementLinks<global::Neumont.Tools.ORM.ObjectModel.ObjectTypeHasObjectTypeRequiresPrimarySupertypeError>(objectTypeRequiresPrimarySupertypeErrorInstance, global::Neumont.Tools.ORM.ObjectModel.ObjectTypeHasObjectTypeRequiresPrimarySupertypeError.ObjectTypeRequiresPrimarySupertypeErrorDomainRoleId);
-			global::System.Diagnostics.Debug.Assert(links.Count <= 1, "Multiplicity of ObjectTypeRequiresPrimarySupertypeError not obeyed.");
-			if ( links.Count == 0 )
-			{
-				return null;
-			}
-			else
-			{
-				return links[0];
-			}
-		}
-		#endregion
-		#region ObjectTypeHasObjectTypeRequiresPrimarySupertypeError instance accessors
-		
-		/// <summary>
-		/// Get any ObjectTypeHasObjectTypeRequiresPrimarySupertypeError links between a given ObjectType and a ObjectTypeRequiresPrimarySupertypeError.
-		/// </summary>
-		[global::System.Diagnostics.DebuggerStepThrough]
-		[global::System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Design", "CA1011")]
-		public static global::System.Collections.ObjectModel.ReadOnlyCollection<global::Neumont.Tools.ORM.ObjectModel.ObjectTypeHasObjectTypeRequiresPrimarySupertypeError> GetLinks( global::Neumont.Tools.ORM.ObjectModel.ObjectType source, global::Neumont.Tools.ORM.ObjectModel.ObjectTypeRequiresPrimarySupertypeError target )
-		{
-			global::System.Collections.Generic.List<global::Neumont.Tools.ORM.ObjectModel.ObjectTypeHasObjectTypeRequiresPrimarySupertypeError> outLinks = new global::System.Collections.Generic.List<global::Neumont.Tools.ORM.ObjectModel.ObjectTypeHasObjectTypeRequiresPrimarySupertypeError>();
-			global::System.Collections.Generic.IList<global::Neumont.Tools.ORM.ObjectModel.ObjectTypeHasObjectTypeRequiresPrimarySupertypeError> links = DslModeling::DomainRoleInfo.GetElementLinks<global::Neumont.Tools.ORM.ObjectModel.ObjectTypeHasObjectTypeRequiresPrimarySupertypeError>(source, global::Neumont.Tools.ORM.ObjectModel.ObjectTypeHasObjectTypeRequiresPrimarySupertypeError.ObjectTypeDomainRoleId);
-			foreach ( global::Neumont.Tools.ORM.ObjectModel.ObjectTypeHasObjectTypeRequiresPrimarySupertypeError link in links )
-			{
-				if ( target.Equals(link.ObjectTypeRequiresPrimarySupertypeError) )
-				{
-					outLinks.Add(link);
-				}
-			}
-			return outLinks.AsReadOnly();
-		}
-		/// <summary>
-		/// Get the one ObjectTypeHasObjectTypeRequiresPrimarySupertypeError link between a given ObjectTypeand a ObjectTypeRequiresPrimarySupertypeError.
-		/// </summary>
-		[global::System.Diagnostics.DebuggerStepThrough]
-		[global::System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Design", "CA1011")]
-		public static global::Neumont.Tools.ORM.ObjectModel.ObjectTypeHasObjectTypeRequiresPrimarySupertypeError GetLink( global::Neumont.Tools.ORM.ObjectModel.ObjectType source, global::Neumont.Tools.ORM.ObjectModel.ObjectTypeRequiresPrimarySupertypeError target )
-		{
-			global::System.Collections.Generic.IList<global::Neumont.Tools.ORM.ObjectModel.ObjectTypeHasObjectTypeRequiresPrimarySupertypeError> links = DslModeling::DomainRoleInfo.GetElementLinks<global::Neumont.Tools.ORM.ObjectModel.ObjectTypeHasObjectTypeRequiresPrimarySupertypeError>(source, global::Neumont.Tools.ORM.ObjectModel.ObjectTypeHasObjectTypeRequiresPrimarySupertypeError.ObjectTypeDomainRoleId);
-			foreach ( global::Neumont.Tools.ORM.ObjectModel.ObjectTypeHasObjectTypeRequiresPrimarySupertypeError link in links )
-			{
-				if ( target.Equals(link.ObjectTypeRequiresPrimarySupertypeError) )
-				{
-					return link;
-				}
-			}
-			return null;
-		}
-		
-		#endregion
-	}
-}
-namespace Neumont.Tools.ORM.ObjectModel
-{
-	/// <summary>
 	/// DomainRelationship ObjectTypeHasDefinition
 	/// Description for Neumont.Tools.ORM.ObjectModel.ObjectTypeHasDefinition
 	/// </summary>
@@ -24792,6 +24488,310 @@ namespace Neumont.Tools.ORM.ObjectModel
 			foreach ( global::Neumont.Tools.ORM.ObjectModel.ValueConstraintHasValueRangeOverlapError link in links )
 			{
 				if ( target.Equals(link.ValueRangeOverlapError) )
+				{
+					return link;
+				}
+			}
+			return null;
+		}
+		
+		#endregion
+	}
+}
+namespace Neumont.Tools.ORM.ObjectModel
+{
+	/// <summary>
+	/// DomainRelationship ValueConstraintHasValueTypeDetachedError
+	/// Description for
+	/// Neumont.Tools.ORM.ObjectModel.ValueConstraintHasValueTypeDetachedError
+	/// </summary>
+	[DslDesign::DisplayNameResource("Neumont.Tools.ORM.ObjectModel.ValueConstraintHasValueTypeDetachedError.DisplayName", typeof(global::Neumont.Tools.ORM.ObjectModel.ORMCoreDomainModel), "Neumont.Tools.ORM.GeneratedCode.CoreDomainModelResx")]
+	[DslDesign::DescriptionResource("Neumont.Tools.ORM.ObjectModel.ValueConstraintHasValueTypeDetachedError.Description", typeof(global::Neumont.Tools.ORM.ObjectModel.ORMCoreDomainModel), "Neumont.Tools.ORM.GeneratedCode.CoreDomainModelResx")]
+	[global::System.CLSCompliant(true)]
+	[DslModeling::DomainRelationship()]
+	[DslModeling::DomainObjectId("706b0a12-f0e1-4048-8ceb-eeb5d7bc5cb3")]
+	public partial class ValueConstraintHasValueTypeDetachedError : ElementAssociatedWithModelError
+	{
+		#region Constructors, domain class Id
+		
+		/// <summary>
+		/// ValueConstraintHasValueTypeDetachedError domain class Id.
+		/// </summary>
+		public static readonly new global::System.Guid DomainClassId = new global::System.Guid(0x706b0a12, 0xf0e1, 0x4048, 0x8c, 0xeb, 0xee, 0xb5, 0xd7, 0xbc, 0x5c, 0xb3);
+	
+				
+		/// <summary>
+		/// Constructor
+		/// Creates a ValueConstraintHasValueTypeDetachedError link in the same Partition as the given ValueConstraint
+		/// </summary>
+		/// <param name="source">ValueConstraint to use as the source of the relationship.</param>
+		/// <param name="target">ValueConstraintValueTypeDetachedError to use as the target of the relationship.</param>
+		public ValueConstraintHasValueTypeDetachedError(ValueConstraint source, ValueConstraintValueTypeDetachedError target)
+			: base((source != null ? source.Partition : null), new DslModeling::RoleAssignment[]{new DslModeling::RoleAssignment(ValueConstraintHasValueTypeDetachedError.ValueConstraintDomainRoleId, source), new DslModeling::RoleAssignment(ValueConstraintHasValueTypeDetachedError.ValueTypeDetachedErrorDomainRoleId, target)}, null)
+		{
+		}
+		
+		/// <summary>
+		/// Constructor
+		/// </summary>
+		/// <param name="store">Store where new link is to be created.</param>
+		/// <param name="roleAssignments">List of relationship role assignments.</param>
+		public ValueConstraintHasValueTypeDetachedError(DslModeling::Store store, params DslModeling::RoleAssignment[] roleAssignments)
+			: base(store != null ? store.DefaultPartition : null, roleAssignments, null)
+		{
+		}
+		
+		/// <summary>
+		/// Constructor
+		/// </summary>
+		/// <param name="store">Store where new link is to be created.</param>
+		/// <param name="roleAssignments">List of relationship role assignments.</param>
+		/// <param name="propertyAssignments">List of properties assignments to set on the new link.</param>
+		public ValueConstraintHasValueTypeDetachedError(DslModeling::Store store, DslModeling::RoleAssignment[] roleAssignments, DslModeling::PropertyAssignment[] propertyAssignments)
+			: base(store != null ? store.DefaultPartition : null, roleAssignments, propertyAssignments)
+		{
+		}
+		
+		/// <summary>
+		/// Constructor
+		/// </summary>
+		/// <param name="partition">Partition where new link is to be created.</param>
+		/// <param name="roleAssignments">List of relationship role assignments.</param>
+		public ValueConstraintHasValueTypeDetachedError(DslModeling::Partition partition, params DslModeling::RoleAssignment[] roleAssignments)
+			: base(partition, roleAssignments, null)
+		{
+		}
+		
+		/// <summary>
+		/// Constructor
+		/// </summary>
+		/// <param name="partition">Partition where new link is to be created.</param>
+		/// <param name="roleAssignments">List of relationship role assignments.</param>
+		/// <param name="propertyAssignments">List of properties assignments to set on the new link.</param>
+		public ValueConstraintHasValueTypeDetachedError(DslModeling::Partition partition, DslModeling::RoleAssignment[] roleAssignments, DslModeling::PropertyAssignment[] propertyAssignments)
+			: base(partition, roleAssignments, propertyAssignments)
+		{
+		}
+		#endregion
+		#region ValueConstraint domain role code
+		
+		/// <summary>
+		/// ValueConstraint domain role Id.
+		/// </summary>
+		public static readonly global::System.Guid ValueConstraintDomainRoleId = new global::System.Guid(0x32f093e3, 0xa3fd, 0x42d4, 0x97, 0x23, 0x38, 0x79, 0x4d, 0x10, 0x3f, 0x4a);
+		
+		/// <summary>
+		/// DomainRole ValueConstraint
+		/// Description for
+		/// Neumont.Tools.ORM.ObjectModel.ValueConstraintHasValueTypeDetachedError.ValueConstraint
+		/// </summary>
+		[DslDesign::DisplayNameResource("Neumont.Tools.ORM.ObjectModel.ValueConstraintHasValueTypeDetachedError/ValueConstraint.DisplayName", typeof(global::Neumont.Tools.ORM.ObjectModel.ORMCoreDomainModel), "Neumont.Tools.ORM.GeneratedCode.CoreDomainModelResx")]
+		[DslDesign::DescriptionResource("Neumont.Tools.ORM.ObjectModel.ValueConstraintHasValueTypeDetachedError/ValueConstraint.Description", typeof(global::Neumont.Tools.ORM.ObjectModel.ORMCoreDomainModel), "Neumont.Tools.ORM.GeneratedCode.CoreDomainModelResx")]
+		[DslModeling::DomainRole(DslModeling::DomainRoleOrder.Source, PropertyName = "ValueTypeDetachedError", PropertyDisplayNameKey="Neumont.Tools.ORM.ObjectModel.ValueConstraintHasValueTypeDetachedError/ValueConstraint.PropertyDisplayName", Multiplicity = DslModeling::Multiplicity.ZeroOne)]
+		[DslModeling::DomainObjectId("32f093e3-a3fd-42d4-9723-38794d103f4a")]
+		public virtual ValueConstraint ValueConstraint
+		{
+			[global::System.Diagnostics.DebuggerStepThrough]
+			get
+			{
+				return (ValueConstraint)DslModeling::DomainRoleInfo.GetRolePlayer(this, ValueConstraintDomainRoleId);
+			}
+			[global::System.Diagnostics.DebuggerStepThrough]
+			set
+			{
+				DslModeling::DomainRoleInfo.SetRolePlayer(this, ValueConstraintDomainRoleId, value);
+			}
+		}
+				
+		#endregion
+		#region Static methods to access ValueConstraint of a ValueConstraintValueTypeDetachedError
+		/// <summary>
+		/// Gets ValueConstraint.
+		/// </summary>
+		[global::System.Diagnostics.DebuggerStepThrough]
+		[global::System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Design", "CA1011")]
+		public static ValueConstraint GetValueConstraint(ValueConstraintValueTypeDetachedError element)
+		{
+			return DslModeling::DomainRoleInfo.GetLinkedElement(element, ValueTypeDetachedErrorDomainRoleId) as ValueConstraint;
+		}
+		
+		/// <summary>
+		/// Sets ValueConstraint.
+		/// </summary>
+		[global::System.Diagnostics.DebuggerStepThrough]
+		[global::System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Design", "CA1011")]
+		public static void SetValueConstraint(ValueConstraintValueTypeDetachedError element, ValueConstraint newValueConstraint)
+		{
+			DslModeling::DomainRoleInfo.SetLinkedElement(element, ValueTypeDetachedErrorDomainRoleId, newValueConstraint);
+		}
+		#endregion
+		#region AssociatedElement domain role override
+		
+		/// <summary>
+		/// Gets the element playing ValueConstraint domain role.
+		/// Description for
+		/// Neumont.Tools.ORM.ObjectModel.ElementAssociatedWithModelError.AssociatedElement
+		/// </summary>
+		public override global::Microsoft.VisualStudio.Modeling.ModelElement AssociatedElement
+		{
+			[global::System.Diagnostics.DebuggerStepThrough]
+			get
+			{
+				return this.ValueConstraint;
+			}
+			[global::System.Diagnostics.DebuggerStepThrough]
+			set
+			{
+				this.ValueConstraint = (ValueConstraint)value;
+			}
+		}
+		
+		#endregion
+		#region ValueTypeDetachedError domain role code
+		
+		/// <summary>
+		/// ValueTypeDetachedError domain role Id.
+		/// </summary>
+		public static readonly global::System.Guid ValueTypeDetachedErrorDomainRoleId = new global::System.Guid(0x469a903b, 0x45cc, 0x4b7d, 0xb2, 0xef, 0xf6, 0x66, 0xc5, 0xb5, 0xd8, 0x7b);
+		
+		/// <summary>
+		/// DomainRole ValueTypeDetachedError
+		/// Description for
+		/// Neumont.Tools.ORM.ObjectModel.ValueConstraintHasValueTypeDetachedError.ValueTypeDetachedError
+		/// </summary>
+		[DslDesign::DisplayNameResource("Neumont.Tools.ORM.ObjectModel.ValueConstraintHasValueTypeDetachedError/ValueTypeDetachedError.DisplayName", typeof(global::Neumont.Tools.ORM.ObjectModel.ORMCoreDomainModel), "Neumont.Tools.ORM.GeneratedCode.CoreDomainModelResx")]
+		[DslDesign::DescriptionResource("Neumont.Tools.ORM.ObjectModel.ValueConstraintHasValueTypeDetachedError/ValueTypeDetachedError.Description", typeof(global::Neumont.Tools.ORM.ObjectModel.ORMCoreDomainModel), "Neumont.Tools.ORM.GeneratedCode.CoreDomainModelResx")]
+		[DslModeling::DomainRole(DslModeling::DomainRoleOrder.Target, PropertyName = "ValueConstraint", PropertyDisplayNameKey="Neumont.Tools.ORM.ObjectModel.ValueConstraintHasValueTypeDetachedError/ValueTypeDetachedError.PropertyDisplayName", PropagatesDelete = true, Multiplicity = DslModeling::Multiplicity.One)]
+		[DslModeling::DomainObjectId("469a903b-45cc-4b7d-b2ef-f666c5b5d87b")]
+		public virtual ValueConstraintValueTypeDetachedError ValueTypeDetachedError
+		{
+			[global::System.Diagnostics.DebuggerStepThrough]
+			get
+			{
+				return (ValueConstraintValueTypeDetachedError)DslModeling::DomainRoleInfo.GetRolePlayer(this, ValueTypeDetachedErrorDomainRoleId);
+			}
+			[global::System.Diagnostics.DebuggerStepThrough]
+			set
+			{
+				DslModeling::DomainRoleInfo.SetRolePlayer(this, ValueTypeDetachedErrorDomainRoleId, value);
+			}
+		}
+				
+		#endregion
+		#region Static methods to access ValueTypeDetachedError of a ValueConstraint
+		/// <summary>
+		/// Gets ValueTypeDetachedError.
+		/// </summary>
+		[global::System.Diagnostics.DebuggerStepThrough]
+		[global::System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Design", "CA1011")]
+		public static ValueConstraintValueTypeDetachedError GetValueTypeDetachedError(ValueConstraint element)
+		{
+			return DslModeling::DomainRoleInfo.GetLinkedElement(element, ValueConstraintDomainRoleId) as ValueConstraintValueTypeDetachedError;
+		}
+		
+		/// <summary>
+		/// Sets ValueTypeDetachedError.
+		/// </summary>
+		[global::System.Diagnostics.DebuggerStepThrough]
+		[global::System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Design", "CA1011")]
+		public static void SetValueTypeDetachedError(ValueConstraint element, ValueConstraintValueTypeDetachedError newValueTypeDetachedError)
+		{
+			DslModeling::DomainRoleInfo.SetLinkedElement(element, ValueConstraintDomainRoleId, newValueTypeDetachedError);
+		}
+		#endregion
+		#region ModelError domain role override
+		
+		/// <summary>
+		/// Gets the element playing ValueTypeDetachedError domain role.
+		/// Description for
+		/// Neumont.Tools.ORM.ObjectModel.ElementAssociatedWithModelError.ModelError
+		/// </summary>
+		public override ModelError ModelError
+		{
+			[global::System.Diagnostics.DebuggerStepThrough]
+			get
+			{
+				return this.ValueTypeDetachedError;
+			}
+			[global::System.Diagnostics.DebuggerStepThrough]
+			set
+			{
+				this.ValueTypeDetachedError = (ValueConstraintValueTypeDetachedError)value;
+			}
+		}
+		
+		#endregion
+		#region ValueConstraint link accessor
+		/// <summary>
+		/// Get the ValueConstraintHasValueTypeDetachedError link to a ValueConstraint.
+		/// </summary>
+		[global::System.Diagnostics.DebuggerStepThrough]
+		[global::System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Design", "CA1011")]
+		public static global::Neumont.Tools.ORM.ObjectModel.ValueConstraintHasValueTypeDetachedError GetLinkToValueTypeDetachedError (global::Neumont.Tools.ORM.ObjectModel.ValueConstraint valueConstraintInstance)
+		{
+			global::System.Collections.Generic.IList<global::Neumont.Tools.ORM.ObjectModel.ValueConstraintHasValueTypeDetachedError> links = DslModeling::DomainRoleInfo.GetElementLinks<global::Neumont.Tools.ORM.ObjectModel.ValueConstraintHasValueTypeDetachedError>(valueConstraintInstance, global::Neumont.Tools.ORM.ObjectModel.ValueConstraintHasValueTypeDetachedError.ValueConstraintDomainRoleId);
+			global::System.Diagnostics.Debug.Assert(links.Count <= 1, "Multiplicity of ValueConstraint not obeyed.");
+			if ( links.Count == 0 )
+			{
+				return null;
+			}
+			else
+			{
+				return links[0];
+			}
+		}
+		#endregion
+		#region ValueTypeDetachedError link accessor
+		/// <summary>
+		/// Get the ValueConstraintHasValueTypeDetachedError link to a ValueConstraintValueTypeDetachedError.
+		/// </summary>
+		[global::System.Diagnostics.DebuggerStepThrough]
+		[global::System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Design", "CA1011")]
+		public static global::Neumont.Tools.ORM.ObjectModel.ValueConstraintHasValueTypeDetachedError GetLinkToValueConstraint (global::Neumont.Tools.ORM.ObjectModel.ValueConstraintValueTypeDetachedError valueTypeDetachedErrorInstance)
+		{
+			global::System.Collections.Generic.IList<global::Neumont.Tools.ORM.ObjectModel.ValueConstraintHasValueTypeDetachedError> links = DslModeling::DomainRoleInfo.GetElementLinks<global::Neumont.Tools.ORM.ObjectModel.ValueConstraintHasValueTypeDetachedError>(valueTypeDetachedErrorInstance, global::Neumont.Tools.ORM.ObjectModel.ValueConstraintHasValueTypeDetachedError.ValueTypeDetachedErrorDomainRoleId);
+			global::System.Diagnostics.Debug.Assert(links.Count <= 1, "Multiplicity of ValueTypeDetachedError not obeyed.");
+			if ( links.Count == 0 )
+			{
+				return null;
+			}
+			else
+			{
+				return links[0];
+			}
+		}
+		#endregion
+		#region ValueConstraintHasValueTypeDetachedError instance accessors
+		
+		/// <summary>
+		/// Get any ValueConstraintHasValueTypeDetachedError links between a given ValueConstraint and a ValueConstraintValueTypeDetachedError.
+		/// </summary>
+		[global::System.Diagnostics.DebuggerStepThrough]
+		[global::System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Design", "CA1011")]
+		public static global::System.Collections.ObjectModel.ReadOnlyCollection<global::Neumont.Tools.ORM.ObjectModel.ValueConstraintHasValueTypeDetachedError> GetLinks( global::Neumont.Tools.ORM.ObjectModel.ValueConstraint source, global::Neumont.Tools.ORM.ObjectModel.ValueConstraintValueTypeDetachedError target )
+		{
+			global::System.Collections.Generic.List<global::Neumont.Tools.ORM.ObjectModel.ValueConstraintHasValueTypeDetachedError> outLinks = new global::System.Collections.Generic.List<global::Neumont.Tools.ORM.ObjectModel.ValueConstraintHasValueTypeDetachedError>();
+			global::System.Collections.Generic.IList<global::Neumont.Tools.ORM.ObjectModel.ValueConstraintHasValueTypeDetachedError> links = DslModeling::DomainRoleInfo.GetElementLinks<global::Neumont.Tools.ORM.ObjectModel.ValueConstraintHasValueTypeDetachedError>(source, global::Neumont.Tools.ORM.ObjectModel.ValueConstraintHasValueTypeDetachedError.ValueConstraintDomainRoleId);
+			foreach ( global::Neumont.Tools.ORM.ObjectModel.ValueConstraintHasValueTypeDetachedError link in links )
+			{
+				if ( target.Equals(link.ValueTypeDetachedError) )
+				{
+					outLinks.Add(link);
+				}
+			}
+			return outLinks.AsReadOnly();
+		}
+		/// <summary>
+		/// Get the one ValueConstraintHasValueTypeDetachedError link between a given ValueConstraintand a ValueConstraintValueTypeDetachedError.
+		/// </summary>
+		[global::System.Diagnostics.DebuggerStepThrough]
+		[global::System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Design", "CA1011")]
+		public static global::Neumont.Tools.ORM.ObjectModel.ValueConstraintHasValueTypeDetachedError GetLink( global::Neumont.Tools.ORM.ObjectModel.ValueConstraint source, global::Neumont.Tools.ORM.ObjectModel.ValueConstraintValueTypeDetachedError target )
+		{
+			global::System.Collections.Generic.IList<global::Neumont.Tools.ORM.ObjectModel.ValueConstraintHasValueTypeDetachedError> links = DslModeling::DomainRoleInfo.GetElementLinks<global::Neumont.Tools.ORM.ObjectModel.ValueConstraintHasValueTypeDetachedError>(source, global::Neumont.Tools.ORM.ObjectModel.ValueConstraintHasValueTypeDetachedError.ValueConstraintDomainRoleId);
+			foreach ( global::Neumont.Tools.ORM.ObjectModel.ValueConstraintHasValueTypeDetachedError link in links )
+			{
+				if ( target.Equals(link.ValueTypeDetachedError) )
 				{
 					return link;
 				}

@@ -145,8 +145,8 @@ namespace Neumont.Tools.ORM.ObjectModel
 			eventManager.AddOrRemoveHandler(classInfo, new EventHandler<ElementDeletedEventArgs>(ExclusiveOrDeleted), action);
 
 			//SubType
-			info = directory.FindDomainProperty(SubtypeFact.IsPrimaryDomainPropertyId);
-			eventManager.AddOrRemoveHandler(info, new EventHandler<ElementPropertyChangedEventArgs>(SubtypeFactIsPrimaryChanged), action);
+			info = directory.FindDomainProperty(SubtypeFact.ProvidesPreferredIdentifierDomainPropertyId);
+			eventManager.AddOrRemoveHandler(info, new EventHandler<ElementPropertyChangedEventArgs>(SubtypeFactProvidesPreferredIdentifierChanged), action);
 		}
 
 		void IModelingEventSubscriber.ManageSurveyQuestionModelingEventHandlers(ModelingEventManager eventManager, bool isReload, EventHandlerAction action)
@@ -698,11 +698,11 @@ namespace Neumont.Tools.ORM.ObjectModel
 			}
 		}
 		/// <summary>
-		/// SubType Fact IsPrimary property changed
+		/// SubType Fact ProvidesPreferredIdentifier property changed
 		/// </summary>
 		/// <param name="sender">The sender.</param>
 		/// <param name="e">The <see cref="ElementPropertyChangedEventArgs"/> instance containing the event data.</param>
-		protected void SubtypeFactIsPrimaryChanged(object sender, ElementPropertyChangedEventArgs e)
+		protected void SubtypeFactProvidesPreferredIdentifierChanged(object sender, ElementPropertyChangedEventArgs e)
 		{
 			INotifySurveyElementChanged eventNotify;
 			ModelElement element = e.ModelElement;

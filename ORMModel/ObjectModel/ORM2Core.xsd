@@ -646,7 +646,13 @@
 		<xs:attribute name="_Name" type="xs:string"/>
 		<xs:attribute name="id" use="required" type="xs:ID"/>
 		<xs:attribute name="IsExternal" type="xs:boolean" default="false"/>
-		<xs:attribute name="IsPrimary" type="xs:boolean" default="false"/>
+		<xs:attribute name="IsPrimary" type="xs:boolean" default="false">
+			<xs:annotation>
+				<!-- UNDONE: Remove IsPrimary when file format is officially updated -->
+				<xs:documentation>Deprecated property, use PreferredIdentificationPath instead.</xs:documentation>
+			</xs:annotation>
+		</xs:attribute>
+		<xs:attribute name="PreferredIdentificationPath" type="xs:boolean" default="false"/>
 	</xs:complexType>
 	<!--Derived FactType-->
 	<xs:complexType name="DerivationRuleType">
@@ -912,6 +918,7 @@
 			<xs:element name="MinValueMismatchError" type="MinValueMismatchError"/>
 			<xs:element name="MaxValueMismatchError" type="MaxValueMismatchError"/>
 			<xs:element name="ValueRangeOverlapError" type="ValueRangeOverlapError"/>
+			<xs:element name="ValueTypeDetachedError" type="ValueTypeDetachedError"/>
 			<xs:element name="RingConstraintTypeNotSpecifiedError" type="RingConstraintTypeNotSpecifiedError"/>
 			<xs:element name="ImplicationError" type="ImplicationError"/>
 			<xs:element name="SubsetConstraintImpliedByMandatoryConstraintsError" type="SubsetConstraintImpliedByMandatoryConstraintsError"/>
@@ -920,6 +927,7 @@
 			<xs:element name="ExclusionContradictsMandatoryError" type="ExclusionContradictsMandatoryError"/>
 			<xs:element name="NotWellModeledSubsetAndMandatoryError" type="NotWellModeledSubsetAndMandatoryError"/>
 			<xs:element name="ImpliedInternalUniquenessConstraintError" type="ImpliedInternalUniquenessConstraintError"/>
+			<!-- UNDONE: Remove ObjectTypeRequiresPrimarySupertypeError when file format is officially updated -->
 			<xs:element name="ObjectTypeRequiresPrimarySupertypeError" type="ObjectTypeRequiresPrimarySupertypeError"/>
 			<xs:element name="PreferredIdentifierRequiresMandatoryError" type="PreferredIdentifierRequiresMandatoryError"/>
 			<xs:element name="CompatibleSupertypesError" type="CompatibleSupertypesError"/>
@@ -1127,6 +1135,15 @@
 			</xs:extension>
 		</xs:complexContent>
 	</xs:complexType>
+	<xs:complexType name="ValueTypeDetachedError">
+		<xs:complexContent>
+			<xs:extension base="ModelError">
+				<xs:sequence>
+					<xs:element name="ValueConstraint" type="ValueConstraintRef"/>
+				</xs:sequence>
+			</xs:extension>
+		</xs:complexContent>
+	</xs:complexType>
 	<xs:complexType name="ImpliedInternalUniquenessConstraintError">
 		<xs:complexContent>
 			<xs:extension base="ModelError">
@@ -1136,7 +1153,11 @@
 			</xs:extension>
 		</xs:complexContent>
 	</xs:complexType>
+	<!-- UNDONE: Remove ObjectTypeRequiresPrimarySupertypeError when file format is officially updated -->
 	<xs:complexType name="ObjectTypeRequiresPrimarySupertypeError">
+		<xs:annotation>
+			<xs:documentation>Deprecated along with SubtypeFact.IsPrimary property</xs:documentation>
+		</xs:annotation>
 		<xs:complexContent>
 			<xs:extension base="ModelError">
 				<xs:sequence>

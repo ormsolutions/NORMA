@@ -305,7 +305,6 @@
 		<se:Link RelationshipName="ObjectTypeImpliesMandatoryConstraint" RoleName="MandatoryConstraint" WriteStyle="NotWritten"/>
 		<se:Link RelationshipName="ObjectTypeHasEntityTypeRequiresReferenceSchemeError" RoleName="ReferenceSchemeError" WriteStyle="NotWritten"/>
 		<se:Link RelationshipName="ObjectTypeHasDuplicateNameError" RoleName="DuplicateNameError" WriteStyle="NotWritten"/>
-		<se:Link RelationshipName="ObjectTypeHasObjectTypeRequiresPrimarySupertypeError" RoleName="ObjectTypeRequiresPrimarySupertypeError" WriteStyle="NotWritten"/>
 		<se:Link RelationshipName="ObjectTypeHasPreferredIdentifierRequiresMandatoryError" RoleName="PreferredIdentifierRequiresMandatoryError" WriteStyle="NotWritten"/>
 		<se:Link RelationshipName="ObjectTypeHasCompatibleSupertypesError" RoleName="CompatibleSupertypesError" WriteStyle="NotWritten"/>
 		<se:Link RelationshipName="ModelNoteReferencesObjectType" RoleName="Note" WriteStyle="NotWritten"/>
@@ -379,6 +378,7 @@
 		</se:Container>
 		<se:Link RelationshipName="ValueConstraintHasDuplicateNameError" RoleName="DuplicateNameError" WriteStyle="NotWritten"/>
 		<se:Link RelationshipName="ValueConstraintHasValueRangeOverlapError" RoleName="ValueRangeOverlapError" WriteStyle="NotWritten"/>
+		<se:Link RelationshipName="ValueConstraintHasValueTypeDetachedError" RoleName="ValueTypeDetachedError" WriteStyle="NotWritten"/>
 	</se:Element>
 	<se:Element Class="ValueTypeValueConstraint" Name="ValueConstraint" Override="true"/>
 	<se:Element Class="RoleValueConstraint" Name="RoleValueConstraint" Override="true"/>
@@ -503,10 +503,12 @@
 	</se:Element>
 	<se:Element Class="FactTypeDerivationExpression" Name="DerivationExpression" Override="true"/>
 	<se:Element Class="SubtypeFact" Name="SubtypeFact" Override="true">
-		<se:Attribute ID="IsPrimary">
+		<!-- UNDONE: Remove IsPrimary on next file format change -->
+		<se:Attribute ID="IsPrimary" ReadOnly="true"/>
+		<se:Attribute ID="ProvidesPreferredIdentifier" Name="PreferredIdentificationPath">
 			<se:Condition WriteStyle="NotWritten">
 				<plx:unaryOperator type="booleanNot">
-					<plx:callThis name="IsPrimary" type="property"/>
+					<plx:callThis name="ProvidesPreferredIdentifier" type="property"/>
 				</plx:unaryOperator>
 			</se:Condition>
 		</se:Attribute>
@@ -751,6 +753,9 @@
 	<se:Element Class="ValueRangeOverlapError" Override="true">
 		<se:Link RelationshipName="ValueConstraintHasValueRangeOverlapError" RoleName="ValueConstraint" Name="ValueConstraint"/>
 	</se:Element>
+	<se:Element Class="ValueConstraintValueTypeDetachedError" Name="ValueTypeDetachedError" Override="true">
+		<se:Link RelationshipName="ValueConstraintHasValueTypeDetachedError" RoleName="ValueConstraint" Name="ValueConstraint"/>
+	</se:Element>
 	<se:Element Class="RingConstraintTypeNotSpecifiedError" Override="true">
 		<se:Link RelationshipName="RingConstraintHasRingConstraintTypeNotSpecifiedError" RoleName="RingConstraint" Name="RingConstraint"/>
 	</se:Element>
@@ -875,10 +880,6 @@
 		</se:Container>
 		<se:Link RelationshipName="SubsetConstraintHasNotWellModeledSubsetAndMandatoryError" RoleName="SubsetConstraint" Name="SubsetConstraint"/>
 		<se:Link RelationshipName="MandatoryConstraintHasNotWellModeledSubsetAndMandatoryError" RoleName="MandatoryConstraint" Name="MandatoryConstraint"/>
-	</se:Element>
-
-	<se:Element Class="ObjectTypeRequiresPrimarySupertypeError" Override="true">
-		<se:Link RelationshipName="ObjectTypeHasObjectTypeRequiresPrimarySupertypeError" RoleName="ObjectType" Name="ObjectType"/>
 	</se:Element>
 	<se:Element Class="PreferredIdentifierRequiresMandatoryError" Override="true">
 		<se:Link RelationshipName="ObjectTypeHasPreferredIdentifierRequiresMandatoryError" RoleName="ObjectType" Name="ObjectType"/>

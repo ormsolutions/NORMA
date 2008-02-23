@@ -508,7 +508,7 @@
 			<orm:ImpliedInternalUniquenessConstraintError Name="FactType 'EntityType1IsRunningFromEntityType1ToEntityType2EntityType2' in model 'NewModel' contains one or more internal uniqueness constraints that are implied by or duplicates of other internal uniqueness constraints." id="_0E7D03E5-9B8E-40CD-953C-05B0F971511A">
 				<orm:Fact ref="_9DC88B4E-7264-49C7-BB47-5537F75D7940" />
 			</orm:ImpliedInternalUniquenessConstraintError>
-			<orm:EntityTypeRequiresReferenceSchemeError id="_1618AFFA-76DB-4B05-AF1C-94313C912F95" Name="Entity type 'EntityType1IsRunningFromEntityType1ToEntityType2EntityType2' in model 'NewModel' requires a preferred reference scheme.">
+			<orm:EntityTypeRequiresReferenceSchemeError id="_1618AFFA-76DB-4B05-AF1C-94313C912F95" Name="Entity type 'EntityType1IsRunningFromEntityType1ToEntityType2EntityType2' in model 'NewModel' requires a local preferred reference scheme or supertype(s) that provide preferred identification.">
 				<orm:EntityType ref="_7503C555-EDAE-4D1E-9300-009540EAE44D" />
 			</orm:EntityTypeRequiresReferenceSchemeError>
 			<orm:ImplicationError Name="Constraint 'InternalUniquenessConstraint10' in model 'NewModel' is implied by at least one constraint of the same type attached to a subset of the same roles." id="_32D7FF79-21CE-426E-87ED-EC981EFA7062">

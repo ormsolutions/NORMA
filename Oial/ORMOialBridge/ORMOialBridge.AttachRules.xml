@@ -47,14 +47,12 @@
 				<arg:RuleOn targetType="ObjectTypeHasEntityTypeRequiresReferenceSchemeError" targetTypeQualifier="Neumont.Tools.ORM.ObjectModel"/>
 				<arg:RuleOn targetType="ObjectTypeHasCompatibleSupertypesError" targetTypeQualifier="Neumont.Tools.ORM.ObjectModel"/>
 				<arg:RuleOn targetType="ObjectTypeHasPreferredIdentifierRequiresMandatoryError" targetTypeQualifier="Neumont.Tools.ORM.ObjectModel"/>
-				<arg:RuleOn targetType="ObjectTypeHasObjectTypeRequiresPrimarySupertypeError" targetTypeQualifier="Neumont.Tools.ORM.ObjectModel"/>
 				<arg:RuleOn targetType="ValueTypeHasUnspecifiedDataTypeError" targetTypeQualifier="Neumont.Tools.ORM.ObjectModel"/>
 			</arg:AddRule>
 			<arg:DeleteRule methodName="ObjectTypeErrorDeletedRule">
 				<arg:RuleOn targetType="ObjectTypeHasEntityTypeRequiresReferenceSchemeError" targetTypeQualifier="Neumont.Tools.ORM.ObjectModel"/>
 				<arg:RuleOn targetType="ObjectTypeHasCompatibleSupertypesError" targetTypeQualifier="Neumont.Tools.ORM.ObjectModel"/>
 				<arg:RuleOn targetType="ObjectTypeHasPreferredIdentifierRequiresMandatoryError" targetTypeQualifier="Neumont.Tools.ORM.ObjectModel"/>
-				<arg:RuleOn targetType="ObjectTypeHasObjectTypeRequiresPrimarySupertypeError" targetTypeQualifier="Neumont.Tools.ORM.ObjectModel"/>
 				<arg:RuleOn targetType="ValueTypeHasUnspecifiedDataTypeError" targetTypeQualifier="Neumont.Tools.ORM.ObjectModel"/>
 			</arg:DeleteRule>
 			<arg:AddRule methodName="PreferredIdentifierAddedRule">

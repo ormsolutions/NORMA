@@ -252,7 +252,7 @@ namespace Neumont.Tools.ORM.ShapeModel
 				SubtypeFact associatedFact = AssociatedSubtypeFact;
 				if (associatedFact != null)
 				{
-					bool isPrimary = associatedFact.IsPrimary;
+					bool isPrimary = associatedFact.ProvidesPreferredIdentifier;
 					DrawColorStyle style = ColorStyle;
 					switch (style)
 					{
@@ -476,12 +476,12 @@ namespace Neumont.Tools.ORM.ShapeModel
 		/// <param name="action">The <see cref="EventHandlerAction"/> that should be taken for the <see cref="EventHandler{TEventArgs}"/>s.</param>
 		public static new void ManageEventHandlers(Store store, ModelingEventManager eventManager, EventHandlerAction action)
 		{
-			eventManager.AddOrRemoveHandler(store.DomainDataDirectory.FindDomainProperty(SubtypeFact.IsPrimaryDomainPropertyId), new EventHandler<ElementPropertyChangedEventArgs>(IsPrimaryChangedEvent), action);
+			eventManager.AddOrRemoveHandler(store.DomainDataDirectory.FindDomainProperty(SubtypeFact.ProvidesPreferredIdentifierDomainPropertyId), new EventHandler<ElementPropertyChangedEventArgs>(ProvidesPreferredIdentifierChangedEvent), action);
 		}
 		/// <summary>
-		/// Event handler for IsPrimary property on the associated subtype fact
+		/// Event handler for <see cref="SubtypeFact.ProvidesPreferredIdentifier"/> property on the associated subtype fact
 		/// </summary>
-		private static void IsPrimaryChangedEvent(object sender, ElementPropertyChangedEventArgs e)
+		private static void ProvidesPreferredIdentifierChangedEvent(object sender, ElementPropertyChangedEventArgs e)
 		{
 			SubtypeFact fact;
 			if (null != (fact = e.ModelElement as SubtypeFact))

@@ -102,7 +102,6 @@ namespace Neumont.Tools.ORMToORMAbstractionBridge
 				// Note that any changes to the list of errors must correspond to changes in
 				// ObjectTypeErrorAddedRule and ObjectTypeErrorDeletedRule
 				if (null == objectType.ReferenceSchemeError &&
-					null == objectType.ObjectTypeRequiresPrimarySupertypeError &&
 					null == objectType.PreferredIdentifierRequiresMandatoryError &&
 					null == objectType.CompatibleSupertypesError &&
 					null == objectType.DataTypeNotSpecifiedError)

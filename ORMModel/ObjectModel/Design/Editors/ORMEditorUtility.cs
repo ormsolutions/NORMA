@@ -123,7 +123,7 @@ namespace Neumont.Tools.ORM.ObjectModel.Design
 								DomainTypeDescriptor.CreatePropertyDescriptor(selectedElement, Role.RolePlayerDisplayDomainPropertyId),
 								true);
 						}
-						else if (error is ValueMismatchError || error is ValueRangeOverlapError)
+						else if (error is ValueMismatchError || error is ValueRangeOverlapError || error is ValueConstraintValueTypeDetachedError)
 						{
 							EditorUtility.ActivatePropertyEditor(
 								services.ServiceProvider,
@@ -144,7 +144,7 @@ namespace Neumont.Tools.ORM.ObjectModel.Design
 					delegate(IORMToolServices services, ModelElement selectedElement, ModelError error)
 					{
 						bool retVal = true;
-						if (error is ValueMismatchError || error is ValueRangeOverlapError)
+						if (error is ValueMismatchError || error is ValueRangeOverlapError || error is ValueConstraintValueTypeDetachedError)
 						{
 							EditorUtility.ActivatePropertyEditor(
 								services.ServiceProvider,
@@ -259,7 +259,7 @@ namespace Neumont.Tools.ORM.ObjectModel.Design
 								DomainTypeDescriptor.CreatePropertyDescriptor(selectedElement, ObjectType.ReferenceModeDisplayDomainPropertyId),
 								true);
 						}
-						else if (error is ValueMismatchError || error is ValueRangeOverlapError)
+						else if (error is ValueMismatchError || error is ValueRangeOverlapError || error is ValueConstraintValueTypeDetachedError)
 						{
 							EditorUtility.ActivatePropertyEditor(
 								services.ServiceProvider,
@@ -336,7 +336,7 @@ namespace Neumont.Tools.ORM.ObjectModel.Design
 								}
 							}
 						}
-						else if (error is ValueMismatchError || error is ValueRangeOverlapError)
+						else if (error is ValueMismatchError || error is ValueRangeOverlapError || error is ValueConstraintValueTypeDetachedError)
 						{
 							EditorUtility.ActivatePropertyEditor(
 								services.ServiceProvider,

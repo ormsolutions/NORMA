@@ -337,6 +337,12 @@ namespace Neumont.Tools.ORM.ObjectModel
 				{
 					yield return overlap;
 				}
+
+				ValueConstraintValueTypeDetachedError detachedError;
+				if (null != (detachedError = ValueTypeDetachedError))
+				{
+					yield return detachedError;
+				}
 			}
 
 			// Get errors off the base
@@ -436,6 +442,7 @@ namespace Neumont.Tools.ORM.ObjectModel
 				maxMismatch.Delete();
 			}
 		}
+		[DelayValidatePriority(1)] // We want this after reference scheme validation
 		private static void DelayValidateValueRangeValues(ModelElement element)
 		{
 			(element as ValueConstraint).VerifyValueRangeValues(null);
@@ -446,16 +453,47 @@ namespace Neumont.Tools.ORM.ObjectModel
 			{
 				return;
 			}
-			LinkedElementCollection<ValueRange> ranges = ValueRangeCollection;
-			int rangesCount = ranges.Count;
-			DataType dataType;
-			if (rangesCount != 0 &&
-				null != (dataType = this.DataType))
+			DataType dataType = this.DataType;
+			RoleValueConstraint roleConstraint = null;
+			bool hasError = true;
+			if (dataType != null)
 			{
+				hasError = false;
+				LinkedElementCollection<ValueRange> ranges = ValueRangeCollection;
+				int rangesCount = ranges.Count;
 				for (int i = 0; i < rangesCount; ++i)
 				{
 					VerifyValueMatch(ranges[i], dataType, notifyAdded);
 				}
+			}
+			else if (null == (roleConstraint = (this as RoleValueConstraint)))
+			{
+				// UNDONE: When we allow ValueConstraints directly on entity types then
+				// this will change
+				hasError = false;
+			}
+			ValueConstraintValueTypeDetachedError error = ValueTypeDetachedError;
+			if (hasError)
+			{
+				if (error == null)
+				{
+					error = new ValueConstraintValueTypeDetachedError(Store);
+					error.ValueConstraint = this;
+					error.Model = roleConstraint.Role.FactType.Model;
+					error.GenerateErrorText();
+					if (notifyAdded != null)
+					{
+						notifyAdded.ElementAdded(error, true);
+					}
+				}
+				else
+				{
+					error.GenerateErrorText();
+				}
+			}
+			else if (error != null)
+			{
+				error.Delete();
 			}
 		}
 		/// <summary>
@@ -481,7 +519,7 @@ namespace Neumont.Tools.ORM.ObjectModel
 		/// <param name="constraint">Constraint to validate. Can be null.</param>
 		public static void DelayValidateValueConstraint(ValueConstraint constraint)
 		{
-			if (constraint != null && !constraint.IsDeleted)
+			if (constraint != null && !constraint.IsDeleting && !constraint.IsDeleted)
 			{
 				if (FrameworkDomainModel.DelayValidateElement(constraint, DelayValidateValueRangeValues))
 				{
@@ -490,6 +528,20 @@ namespace Neumont.Tools.ORM.ObjectModel
 				}
 				FrameworkDomainModel.DelayValidateElement(constraint, DelayValidateValueRangeOverlapError);
 			}
+		}
+		/// <summary>
+		/// Force validation of downstream value constraints. Helper function, calls
+		/// <see cref="Role.WalkDescendedValueRoles(ObjectType, Role, ValueRoleVisitor)"/>
+		/// </summary>
+		/// <param name="anchorType">The <see cref="ObjectType"/> to begin walking from</param>
+		/// <param name="unattachedRole">The alternate role</param>
+		private static void DelayValidateDescendedValueConstraints(ObjectType anchorType, Role unattachedRole)
+		{
+			Role.WalkDescendedValueRoles(anchorType, unattachedRole, delegate(Role role, ValueTypeHasDataType dataTypeLink, RoleValueConstraint currentValueConstraint, ValueConstraint previousValueConstraint)
+			{
+				DelayValidateValueConstraint(currentValueConstraint);
+				return true; // Continue walking
+			});
 		}
 		#region DataTypeRolePlayerChangeRule
 		/// <summary>
@@ -618,14 +670,7 @@ namespace Neumont.Tools.ORM.ObjectModel
 			}
 			else
 			{
-				Role.WalkDescendedValueRoles(oldValueType, null, delegate(Role role, ValueTypeHasDataType dataTypeLink, RoleValueConstraint currentValueConstraint, ValueConstraint previousValueConstraint)
-				{
-					if (currentValueConstraint != null && !currentValueConstraint.IsDeleting)
-					{
-						currentValueConstraint.Delete();
-					}
-					return true; // Continue walking
-				});
+				DelayValidateDescendedValueConstraints(oldValueType, null);
 			}
 		}
 		#endregion // DataTypeDeletingRule
@@ -751,14 +796,7 @@ namespace Neumont.Tools.ORM.ObjectModel
 			}
 			if (!objectType.IsDeleting)
 			{
-				Role.WalkDescendedValueRoles(objectType, null, delegate(Role role, ValueTypeHasDataType dataTypeLink, RoleValueConstraint currentValueConstraint, ValueConstraint previousValueConstraint)
-				{
-					if (currentValueConstraint != null && !currentValueConstraint.IsDeleting)
-					{
-						currentValueConstraint.Delete();
-					}
-					return true;
-				});
+				DelayValidateDescendedValueConstraints(objectType, null);
 			}
 		}
 		#endregion // PreferredIdentifierDeletingRule
@@ -817,14 +855,7 @@ namespace Neumont.Tools.ORM.ObjectModel
 						if (testRole != oppositeRole)
 						{
 							// Test by skipping the binary fact for the old part of the preferred identifier
-							Role.WalkDescendedValueRoles(originalRolePlayer, testRole, delegate(Role role, ValueTypeHasDataType dataTypeLink, RoleValueConstraint currentValueConstraint, ValueConstraint previousValueConstraint)
-							{
-								if (currentValueConstraint != null && !currentValueConstraint.IsDeleting)
-								{
-									currentValueConstraint.Delete();
-								}
-								return true;
-							});
+							DelayValidateDescendedValueConstraints(originalRolePlayer, testRole);
 						}
 					}
 				}
@@ -839,14 +870,7 @@ namespace Neumont.Tools.ORM.ObjectModel
 		/// </summary>
 		private static void RolePlayerDeletingRule(ElementDeletingEventArgs e)
 		{
-			Role.WalkDescendedValueRoles((e.ModelElement as ObjectTypePlaysRole).RolePlayer, null, delegate(Role role, ValueTypeHasDataType dataTypeLink, RoleValueConstraint currentValueConstraint, ValueConstraint previousValueConstraint)
-			{
-				if (currentValueConstraint != null && !currentValueConstraint.IsDeleting)
-				{
-					currentValueConstraint.Delete();
-				}
-				return true;
-			});
+			DelayValidateDescendedValueConstraints((e.ModelElement as ObjectTypePlaysRole).RolePlayer, null);
 		}
 		#endregion // RolePlayerDeletingRule
 		#region RolePlayerRolePlayerChangeRule
@@ -883,14 +907,7 @@ namespace Neumont.Tools.ORM.ObjectModel
 					{
 						// The old role player supported values, the new one does not.
 						// Delete any downstream value constraints.
-						Role.WalkDescendedValueRoles(oldRolePlayer, changedRole, delegate(Role role, ValueTypeHasDataType dataTypeLink, RoleValueConstraint currentValueConstraint, ValueConstraint previousValueConstraint)
-						{
-							if (currentValueConstraint != null && !currentValueConstraint.IsDeleting)
-							{
-								currentValueConstraint.Delete();
-							}
-							return true;
-						});
+						DelayValidateDescendedValueConstraints(oldRolePlayer, changedRole);
 					}
 				}
 			}
@@ -898,6 +915,7 @@ namespace Neumont.Tools.ORM.ObjectModel
 		#endregion // RolePlayerRolePlayerChangeRule
 		#endregion // ValueMatch Validation
 		#region VerifyValueRangeOverlapError
+		[DelayValidatePriority(2)] // We want this after reference scheme validation and range validation
 		private static void DelayValidateValueRangeOverlapError(ModelElement element)
 		{
 			(element as ValueConstraint).VerifyValueRangeOverlapError(null);
@@ -1469,6 +1487,50 @@ namespace Neumont.Tools.ORM.ObjectModel
 		}
 	}
 	#endregion // MaxValueMismatchError class
+	#region ValueConstraintValueTypeDetachedError class
+	/// <summary>
+	/// This is the model error message for value ranges that overlap
+	/// </summary>
+	[ModelErrorDisplayFilter(typeof(DataTypeAndValueErrorCategory))]
+	public partial class ValueConstraintValueTypeDetachedError
+	{
+		#region Base overrides
+		/// <summary>
+		/// GenerateErrorText
+		/// </summary>
+		public override void GenerateErrorText()
+		{
+			ValueConstraint defn = ValueConstraint;
+			RoleValueConstraint roleDefn;
+			string newText = "";
+			string currentText = ErrorText;
+			if (null != (roleDefn = defn as RoleValueConstraint))
+			{
+				Role attachedRole = roleDefn.Role;
+				FactType roleFact = attachedRole.FactType;
+				int index = roleFact.RoleCollection.IndexOf(attachedRole) + 1;
+				string name = roleFact.Name;
+				string model = this.Model.Name;
+				newText = string.Format(CultureInfo.CurrentCulture, ResourceStrings.ModelErrorRoleValueTypeDetachedError, model, name, index);
+			}
+			if (currentText != newText)
+			{
+				ErrorText = newText;
+			}
+		}
+		/// <summary>
+		/// RegenerateEvents
+		/// </summary>
+		public override RegenerateErrorTextEvents RegenerateEvents
+		{
+			get
+			{
+				return RegenerateErrorTextEvents.OwnerNameChange | RegenerateErrorTextEvents.ModelNameChange;
+			}
+		}
+		#endregion // Base overrides
+	}
+	#endregion // ValueConstraintValueTypeDetachedError class
 	#region ValueRangeOverlapError
 	/// <summary>
 	/// This is the model error message for value ranges that overlap

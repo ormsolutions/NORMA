@@ -573,6 +573,14 @@
     <value>IsPrimary</value>
     <comment>DisplayName for DomainProperty &apos;IsPrimary&apos; on DomainClass &apos;SubtypeFact&apos;</comment>
   </data>
+  <data name="Neumont.Tools.ORM.ObjectModel.SubtypeFact/ProvidesPreferredIdentifier.Description" xml:space="preserve">
+    <value>The preferred identification scheme for the subtype is provided by a supertype reached through this path.</value>
+    <comment>Description for DomainProperty &apos;ProvidesPreferredIdentifier&apos; on DomainClass &apos;SubtypeFact&apos;</comment>
+  </data>
+  <data name="Neumont.Tools.ORM.ObjectModel.SubtypeFact/ProvidesPreferredIdentifier.DisplayName" xml:space="preserve">
+    <value>IdentificationPath</value>
+    <comment>DisplayName for DomainProperty &apos;ProvidesPreferredIdentifier&apos; on DomainClass &apos;SubtypeFact&apos;</comment>
+  </data>
   <data name="Neumont.Tools.ORM.ObjectModel.RoleBase.Description" xml:space="preserve">
     <value></value>
     <comment>Description for DomainClass &apos;RoleBase&apos;</comment>
@@ -1677,14 +1685,6 @@
     <value>SupertypeMetaRole</value>
     <comment>DisplayName for DomainClass &apos;SupertypeMetaRole&apos;</comment>
   </data>
-  <data name="Neumont.Tools.ORM.ObjectModel.ObjectTypeRequiresPrimarySupertypeError.Description" xml:space="preserve">
-    <value></value>
-    <comment>Description for DomainClass &apos;ObjectTypeRequiresPrimarySupertypeError&apos;</comment>
-  </data>
-  <data name="Neumont.Tools.ORM.ObjectModel.ObjectTypeRequiresPrimarySupertypeError.DisplayName" xml:space="preserve">
-    <value>ObjectType Requires Primary Supertype</value>
-    <comment>DisplayName for DomainClass &apos;ObjectTypeRequiresPrimarySupertypeError&apos;</comment>
-  </data>
   <data name="Neumont.Tools.ORM.ObjectModel.Definition.Description" xml:space="preserve">
     <value></value>
     <comment>Description for DomainClass &apos;Definition&apos;</comment>
@@ -1764,6 +1764,14 @@
   <data name="Neumont.Tools.ORM.ObjectModel.ValueRangeOverlapError.DisplayName" xml:space="preserve">
     <value>Value Ranges Overlap</value>
     <comment>DisplayName for DomainClass &apos;ValueRangeOverlapError&apos;</comment>
+  </data>
+  <data name="Neumont.Tools.ORM.ObjectModel.ValueConstraintValueTypeDetachedError.Description" xml:space="preserve">
+    <value></value>
+    <comment>Description for DomainClass &apos;ValueConstraintValueTypeDetachedError&apos;</comment>
+  </data>
+  <data name="Neumont.Tools.ORM.ObjectModel.ValueConstraintValueTypeDetachedError.DisplayName" xml:space="preserve">
+    <value>Path to Identifying ValueType Detached</value>
+    <comment>DisplayName for DomainClass &apos;ValueConstraintValueTypeDetachedError&apos;</comment>
   </data>
   <data name="Neumont.Tools.ORM.ObjectModel.FactTypeDerivationExpression.Description" xml:space="preserve">
     <value></value>
@@ -4285,38 +4293,6 @@
     <value>Value Constraint Collection</value>
     <comment>PropertyDisplayName for DomainRole &apos;DuplicateNameError&apos; on DomainRelationship &apos;ValueConstraintHasDuplicateNameError&apos;</comment>
   </data>
-  <data name="Neumont.Tools.ORM.ObjectModel.ObjectTypeHasObjectTypeRequiresPrimarySupertypeError.Description" xml:space="preserve">
-    <value>Description for Neumont.Tools.ORM.ObjectModel.ObjectTypeHasObjectTypeRequiresPrimarySupertypeError</value>
-    <comment>Description for DomainClass &apos;ObjectTypeHasObjectTypeRequiresPrimarySupertypeError&apos;</comment>
-  </data>
-  <data name="Neumont.Tools.ORM.ObjectModel.ObjectTypeHasObjectTypeRequiresPrimarySupertypeError.DisplayName" xml:space="preserve">
-    <value>Object Type Has Object Type Requires Primary Supertype Error</value>
-    <comment>DisplayName for DomainClass &apos;ObjectTypeHasObjectTypeRequiresPrimarySupertypeError&apos;</comment>
-  </data>
-  <data name="Neumont.Tools.ORM.ObjectModel.ObjectTypeHasObjectTypeRequiresPrimarySupertypeError/ObjectType.Description" xml:space="preserve">
-    <value>Description for Neumont.Tools.ORM.ObjectModel.ObjectTypeHasObjectTypeRequiresPrimarySupertypeError.ObjectType</value>
-    <comment>Description for DomainRole &apos;ObjectType&apos; on DomainRelationship &apos;ObjectTypeHasObjectTypeRequiresPrimarySupertypeError&apos;</comment>
-  </data>
-  <data name="Neumont.Tools.ORM.ObjectModel.ObjectTypeHasObjectTypeRequiresPrimarySupertypeError/ObjectType.DisplayName" xml:space="preserve">
-    <value>ObjectType</value>
-    <comment>DisplayName for DomainRole &apos;ObjectType&apos; on DomainRelationship &apos;ObjectTypeHasObjectTypeRequiresPrimarySupertypeError&apos;</comment>
-  </data>
-  <data name="Neumont.Tools.ORM.ObjectModel.ObjectTypeHasObjectTypeRequiresPrimarySupertypeError/ObjectType.PropertyDisplayName" xml:space="preserve">
-    <value>Object Type Requires Primary Supertype Error</value>
-    <comment>PropertyDisplayName for DomainRole &apos;ObjectType&apos; on DomainRelationship &apos;ObjectTypeHasObjectTypeRequiresPrimarySupertypeError&apos;</comment>
-  </data>
-  <data name="Neumont.Tools.ORM.ObjectModel.ObjectTypeHasObjectTypeRequiresPrimarySupertypeError/ObjectTypeRequiresPrimarySupertypeError.Description" xml:space="preserve">
-    <value>Description for Neumont.Tools.ORM.ObjectModel.ObjectTypeHasObjectTypeRequiresPrimarySupertypeError.ObjectTypeRequiresPrimarySupertypeError</value>
-    <comment>Description for DomainRole &apos;ObjectTypeRequiresPrimarySupertypeError&apos; on DomainRelationship &apos;ObjectTypeHasObjectTypeRequiresPrimarySupertypeError&apos;</comment>
-  </data>
-  <data name="Neumont.Tools.ORM.ObjectModel.ObjectTypeHasObjectTypeRequiresPrimarySupertypeError/ObjectTypeRequiresPrimarySupertypeError.DisplayName" xml:space="preserve">
-    <value>ObjectTypeRequiresPrimarySupertypeError</value>
-    <comment>DisplayName for DomainRole &apos;ObjectTypeRequiresPrimarySupertypeError&apos; on DomainRelationship &apos;ObjectTypeHasObjectTypeRequiresPrimarySupertypeError&apos;</comment>
-  </data>
-  <data name="Neumont.Tools.ORM.ObjectModel.ObjectTypeHasObjectTypeRequiresPrimarySupertypeError/ObjectTypeRequiresPrimarySupertypeError.PropertyDisplayName" xml:space="preserve">
-    <value>Object Type</value>
-    <comment>PropertyDisplayName for DomainRole &apos;ObjectTypeRequiresPrimarySupertypeError&apos; on DomainRelationship &apos;ObjectTypeHasObjectTypeRequiresPrimarySupertypeError&apos;</comment>
-  </data>
   <data name="Neumont.Tools.ORM.ObjectModel.ObjectTypeHasDefinition.Description" xml:space="preserve">
     <value>Description for Neumont.Tools.ORM.ObjectModel.ObjectTypeHasDefinition</value>
     <comment>Description for DomainClass &apos;ObjectTypeHasDefinition&apos;</comment>
@@ -4828,6 +4804,38 @@
   <data name="Neumont.Tools.ORM.ObjectModel.ValueConstraintHasValueRangeOverlapError/ValueRangeOverlapError.PropertyDisplayName" xml:space="preserve">
     <value>Value Constraint</value>
     <comment>PropertyDisplayName for DomainRole &apos;ValueRangeOverlapError&apos; on DomainRelationship &apos;ValueConstraintHasValueRangeOverlapError&apos;</comment>
+  </data>
+  <data name="Neumont.Tools.ORM.ObjectModel.ValueConstraintHasValueTypeDetachedError.Description" xml:space="preserve">
+    <value>Description for Neumont.Tools.ORM.ObjectModel.ValueConstraintHasValueTypeDetachedError</value>
+    <comment>Description for DomainClass &apos;ValueConstraintHasValueTypeDetachedError&apos;</comment>
+  </data>
+  <data name="Neumont.Tools.ORM.ObjectModel.ValueConstraintHasValueTypeDetachedError.DisplayName" xml:space="preserve">
+    <value>Value Constraint Has Value Type Detached Error</value>
+    <comment>DisplayName for DomainClass &apos;ValueConstraintHasValueTypeDetachedError&apos;</comment>
+  </data>
+  <data name="Neumont.Tools.ORM.ObjectModel.ValueConstraintHasValueTypeDetachedError/ValueConstraint.Description" xml:space="preserve">
+    <value>Description for Neumont.Tools.ORM.ObjectModel.ValueConstraintHasValueTypeDetachedError.ValueConstraint</value>
+    <comment>Description for DomainRole &apos;ValueConstraint&apos; on DomainRelationship &apos;ValueConstraintHasValueTypeDetachedError&apos;</comment>
+  </data>
+  <data name="Neumont.Tools.ORM.ObjectModel.ValueConstraintHasValueTypeDetachedError/ValueConstraint.DisplayName" xml:space="preserve">
+    <value>ValueConstraint</value>
+    <comment>DisplayName for DomainRole &apos;ValueConstraint&apos; on DomainRelationship &apos;ValueConstraintHasValueTypeDetachedError&apos;</comment>
+  </data>
+  <data name="Neumont.Tools.ORM.ObjectModel.ValueConstraintHasValueTypeDetachedError/ValueConstraint.PropertyDisplayName" xml:space="preserve">
+    <value>Value Type Detached Error</value>
+    <comment>PropertyDisplayName for DomainRole &apos;ValueConstraint&apos; on DomainRelationship &apos;ValueConstraintHasValueTypeDetachedError&apos;</comment>
+  </data>
+  <data name="Neumont.Tools.ORM.ObjectModel.ValueConstraintHasValueTypeDetachedError/ValueTypeDetachedError.Description" xml:space="preserve">
+    <value>Description for Neumont.Tools.ORM.ObjectModel.ValueConstraintHasValueTypeDetachedError.ValueTypeDetachedError</value>
+    <comment>Description for DomainRole &apos;ValueTypeDetachedError&apos; on DomainRelationship &apos;ValueConstraintHasValueTypeDetachedError&apos;</comment>
+  </data>
+  <data name="Neumont.Tools.ORM.ObjectModel.ValueConstraintHasValueTypeDetachedError/ValueTypeDetachedError.DisplayName" xml:space="preserve">
+    <value>ValueTypeDetachedError</value>
+    <comment>DisplayName for DomainRole &apos;ValueTypeDetachedError&apos; on DomainRelationship &apos;ValueConstraintHasValueTypeDetachedError&apos;</comment>
+  </data>
+  <data name="Neumont.Tools.ORM.ObjectModel.ValueConstraintHasValueTypeDetachedError/ValueTypeDetachedError.PropertyDisplayName" xml:space="preserve">
+    <value>Value Constraint</value>
+    <comment>PropertyDisplayName for DomainRole &apos;ValueTypeDetachedError&apos; on DomainRelationship &apos;ValueConstraintHasValueTypeDetachedError&apos;</comment>
   </data>
   <data name="Neumont.Tools.ORM.ObjectModel.FactTypeHasRole.Description" xml:space="preserve">
     <value>Description for Neumont.Tools.ORM.ObjectModel.FactTypeHasRole</value>

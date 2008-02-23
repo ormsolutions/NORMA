@@ -810,21 +810,17 @@ namespace Neumont.Tools.ORMToORMAbstractionBridge
 
 					if (factTypeMapping.MappingDepth == MappingDepth.Deep)
 					{
-						bool factTypeIsSubtype = factTypeMapping.FactType is SubtypeFact;
+						SubtypeFact factTypeAsSubtype = factTypeMapping.FactType as SubtypeFact;
 
 						UniquenessConstraint fromRoleUniquenessConstraint = (UniquenessConstraint)factTypeMapping.FromRole.SingleRoleAlethicUniquenessConstraint;
 						UniquenessConstraint towardsRoleUniquenessConstraint = (UniquenessConstraint)factTypeMapping.TowardsRole.SingleRoleAlethicUniquenessConstraint;
 						bool fromRoleIsPreferred = fromRoleUniquenessConstraint.IsPreferred;
 						bool towardsRoleIsPreferred = towardsRoleUniquenessConstraint.IsPreferred;
 
-						// UNDONE: Once subtyping is handled correctly on the ORM side, this may need to be adjusted.
 						// If the from object type doesn't have its own preferred identifier and this is a primary subtyping relationship, mark it as being preferred.
-						if (!towardsRoleIsPreferred && factTypeIsSubtype && factTypeMapping.FromObjectType.PreferredIdentifier == null)
+						if (!towardsRoleIsPreferred && factTypeAsSubtype != null && factTypeAsSubtype.ProvidesPreferredIdentifier)
 						{
-							if (((SubtypeFact)factTypeMapping.FactType).IsPrimary)
-							{
-								towardsRoleIsPreferred = true;
-							}
+							towardsRoleIsPreferred = true;
 						}
 
 						RoleAssignment assimilatorConceptType = new RoleAssignment(ConceptTypeAssimilatesConceptType.AssimilatorConceptTypeDomainRoleId, towardsConceptType);
@@ -834,7 +830,7 @@ namespace Neumont.Tools.ORMToORMAbstractionBridge
 						PropertyAssignment isMandatory = new PropertyAssignment(ConceptTypeAssimilatesConceptType.IsMandatoryDomainPropertyId, towardsRoleIsMandatory);
 						PropertyAssignment name = new PropertyAssignment(ConceptTypeAssimilatesConceptType.NameDomainPropertyId, towardsName);
 						PropertyAssignment oppositeName = new PropertyAssignment(ConceptTypeAssimilatesConceptType.OppositeNameDomainPropertyId, fromName);
-						PropertyAssignment refersToSubtype = new PropertyAssignment(ConceptTypeAssimilatesConceptType.RefersToSubtypeDomainPropertyId, factTypeIsSubtype);
+						PropertyAssignment refersToSubtype = new PropertyAssignment(ConceptTypeAssimilatesConceptType.RefersToSubtypeDomainPropertyId, factTypeAsSubtype != null);
 						PropertyAssignment isPreferredForParent = new PropertyAssignment(ConceptTypeAssimilatesConceptType.IsPreferredForParentDomainPropertyId, fromRoleIsPreferred);
 						PropertyAssignment isPreferredForTarget = new PropertyAssignment(ConceptTypeAssimilatesConceptType.IsPreferredForTargetDomainPropertyId, towardsRoleIsPreferred);
 

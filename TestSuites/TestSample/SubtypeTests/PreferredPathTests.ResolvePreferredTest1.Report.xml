@@ -1,0 +1,47 @@
+﻿<TestReport xmlns="http://schemas.neumont.edu/ORM/SDK/TestReport">
+	<ValidationErrors name="Expected three initial errors">
+		<ValidationError>Entity type 'EntityType5' in model 'ORMModel1' requires a local preferred reference scheme or supertype(s) that provide preferred identification.</ValidationError>
+		<ValidationError>Entity type 'EntityType6' in model 'ORMModel1' requires a local preferred reference scheme or supertype(s) that provide preferred identification.</ValidationError>
+		<ValidationError>Role '1' of FactType 'EntityType6TestValueType1' in model 'ORMModel1' has a value constraint with no associated ValueType.</ValidationError>
+	</ValidationErrors>
+	<Message>Scenario 1: Make 5-&gt;2 preferred path, sibling and downstream subtypes should all be preferred</Message>
+	<ValidationErrors name="No errors expected" />
+	<Message>5-&gt;4, 6-&gt;5, 6-&gt;7 are on the preferred path: True</Message>
+	<Message>ValueConstraint should be a string type: { '10' }</Message>
+	<Message>Scenario 2: Make 5-&gt;3 preferred path, downstream subtypes are no ambiguous</Message>
+	<ValidationErrors name="Two errors expected">
+		<ValidationError>Entity type 'EntityType6' in model 'ORMModel1' requires a local preferred reference scheme or supertype(s) that provide preferred identification.</ValidationError>
+		<ValidationError>Role '1' of FactType 'EntityType6TestValueType1' in model 'ORMModel1' has a value constraint with no associated ValueType.</ValidationError>
+	</ValidationErrors>
+	<Message>5-&gt;2, 5-&gt;4, 6-&gt;5, 6-&gt;7 are not preferred: True</Message>
+	<Message>Scenario 3: Make 6-&gt;5 preferred path</Message>
+	<ValidationErrors name="No errors expected" />
+	<Message>6-&gt;7 is not on the preferred path: True</Message>
+	<Message>ValueConstraint should be a number type: { 10 }</Message>
+	<Message>Scenario 4: Make 6-&gt;7 preferred path</Message>
+	<ValidationErrors name="No errors expected" />
+	<Message>6-&gt;5 is not on the preferred path: True</Message>
+	<Message>ValueConstraint should be a string type: { '10' }</Message>
+	<Message>Scenario 5: Delete 7-&gt;4 to break subtype structure</Message>
+	<ValidationErrors name="Expecting invalid graph, detached valuetype, and no reference scheme errors">
+		<ValidationError>Direct supertypes of ObjectType 'EntityType6' in model 'ORMModel1' must be overlapping without transitive implication or mutual exclusion.</ValidationError>
+		<ValidationError>Entity type 'EntityType7' in model 'ORMModel1' requires a local preferred reference scheme or supertype(s) that provide preferred identification.</ValidationError>
+		<ValidationError>Role '1' of FactType 'EntityType6TestValueType1' in model 'ORMModel1' has a value constraint with no associated ValueType.</ValidationError>
+	</ValidationErrors>
+	<Message>Scenario 6: Delete 6-&gt;5 to make graph valid</Message>
+	<ValidationErrors name="Expecting detached valuetype and no reference scheme errors">
+		<ValidationError>Entity type 'EntityType7' in model 'ORMModel1' requires a local preferred reference scheme or supertype(s) that provide preferred identification.</ValidationError>
+		<ValidationError>Role '1' of FactType 'EntityType6TestValueType1' in model 'ORMModel1' has a value constraint with no associated ValueType.</ValidationError>
+	</ValidationErrors>
+	<Message>Scenario 7: Set identifier on 7 to clear errors</Message>
+	<ValidationErrors name="No errors expected" />
+	<ValidationErrors name="Scenario 8: (Undo scenarios 5-7) Make 5-&gt;4 preferred path and give 4 an explicit id in one transaction" />
+	<ValidationErrors name="No errors expected" />
+	<ValidationErrors name="Scenario 9: (Undo scenario 8) Make 5-&gt;4 preferred path then give 4 an explicit id to make 5 and 6 ambiguous" />
+	<Compare result="pass" />
+	<ValidationErrors>
+		<ValidationError>Entity type 'EntityType5' in model 'ORMModel1' requires a local preferred reference scheme or supertype(s) that provide preferred identification.</ValidationError>
+		<ValidationError>Entity type 'EntityType6' in model 'ORMModel1' requires a local preferred reference scheme or supertype(s) that provide preferred identification.</ValidationError>
+		<ValidationError>Role '1' of FactType 'EntityType6TestValueType1' in model 'ORMModel1' has a value constraint with no associated ValueType.</ValidationError>
+	</ValidationErrors>
+</TestReport>

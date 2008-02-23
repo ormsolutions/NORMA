@@ -184,7 +184,7 @@ namespace Neumont.Tools.ORMToORMAbstractionBridge
 			private static void SubtypeFactChangedRule(ElementPropertyChangedEventArgs e)
 			{
 				// UNDONE: Incremental changes, propagate changes to Uniqueness.IsPreferred property
-				if (e.DomainProperty.Id == SubtypeFact.IsPrimaryDomainPropertyId)
+				if (e.DomainProperty.Id == SubtypeFact.ProvidesPreferredIdentifierDomainPropertyId)
 				{
 					SignificantFactTypeChange((FactType)e.ModelElement);
 				}
