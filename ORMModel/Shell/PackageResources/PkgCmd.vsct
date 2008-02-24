@@ -120,9 +120,6 @@
 			<Group guid="guidORMDesignerCommandSet" id="groupIdDeleteContext" priority="0x0080">
 				<Parent guid="guidORMDesignerCommandSet" id="menuIdContextMenu"/>
 			</Group>
-			<Group guid="guidORMDesignerCommandSet" id="groupIdProperties" priority="0x0090">
-				<Parent guid="guidORMDesignerCommandSet" id="menuIdContextMenu"/>
-			</Group>
 
 			<Group guid="guidORMDesignerCommandSet" id="groupIdVerbalizationCommands" priority="0x0010">
 				<Parent guid="guidORMDesignerCommandSet" id="menuIdVerbalizationToolBar"/>
@@ -161,6 +158,9 @@
 			</Group>
 
 			<Group guid="guidORMDesignerCommandSet" id="groupIdORMToolWindows" priority="0x0010">
+				<Parent guid="guidORMDesignerCommandSet" id="menuIdToolWindows"/>
+			</Group>
+			<Group guid="guidORMDesignerCommandSet" id="groupIdProperties" priority="0x0020">
 				<Parent guid="guidORMDesignerCommandSet" id="menuIdToolWindows"/>
 			</Group>
 			<Group guid="guidORMDesignerCommandSet" id="groupIdFactEditorCommitCommands" priority="0x0010">

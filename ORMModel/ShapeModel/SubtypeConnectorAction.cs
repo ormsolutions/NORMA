@@ -190,6 +190,17 @@ namespace Neumont.Tools.ORM.ShapeModel
 			}
 		}
 		/// <summary>
+		/// Allow dragging of the subtype onto the supertype
+		/// </summary>
+		protected override void OnDraggingBegun(MouseActionEventArgs e)
+		{
+			if (mySourceObjectType == null)
+			{
+				mySourceObjectType = ObjectTypeFromShape(MouseDownHitShape);
+			}
+			base.OnDraggingBegun(e);
+		}
+		/// <summary>
 		/// If we're emulating a drag (occurs when we're chained from RoleDragPendingAction),
 		/// then complete the action on mouse up
 		/// </summary>
