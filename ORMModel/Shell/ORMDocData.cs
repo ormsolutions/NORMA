@@ -36,6 +36,8 @@ using System.Xml.Schema;
 using System.Collections.ObjectModel;
 using Neumont.Tools.Modeling.Shell.DynamicSurveyTreeGrid;
 using System.Runtime.InteropServices;
+using Microsoft.VisualStudio.Shell;
+using System.Windows.Forms;
 
 namespace Neumont.Tools.ORM.Shell
 {
@@ -290,9 +292,34 @@ namespace Neumont.Tools.ORM.Shell
 			}
 			if (dontSave)
 			{
-				SetFlag(PrivateFlags.SaveDisabled, true);
-				IVsRunningDocumentTable docTable = (IVsRunningDocumentTable)ServiceProvider.GetService(typeof(IVsRunningDocumentTable));
-				docTable.ModifyDocumentFlags(Cookie, (uint)_VSRDTFLAGS.RDT_DontSave, 1);
+				// If this is a new file then do not disable the save button
+				IVsHierarchy hierarchy;
+				uint itemId;
+				object isNewObject;
+				if (null != (hierarchy = this.Hierarchy) &&
+					VSConstants.VSITEMID_NIL != (itemId = this.ItemId) &&
+					ErrorHandler.Succeeded(hierarchy.GetProperty(itemId, (int)__VSHPROPID.VSHPROPID_IsNewUnsavedItem, out isNewObject)) &&
+					(bool)isNewObject)
+				{
+					dontSave = false;
+				}
+				if (dontSave)
+				{
+					// The disabled save is leading to data loss, prompt the user
+					dontSave = (int)DialogResult.Yes == VsShellUtilities.ShowMessageBox(
+						ServiceProvider,
+						string.Format(CultureInfo.CurrentCulture, ResourceStrings.FileFormatUpgradeMessage, fileName),
+						ResourceStrings.PackageOfficialName,
+						OLEMSGICON.OLEMSGICON_QUERY,
+						OLEMSGBUTTON.OLEMSGBUTTON_YESNO,
+						OLEMSGDEFBUTTON.OLEMSGDEFBUTTON_FIRST);
+					if (dontSave)
+					{
+						IVsRunningDocumentTable docTable = (IVsRunningDocumentTable)ServiceProvider.GetService(typeof(IVsRunningDocumentTable));
+						SetFlag(PrivateFlags.SaveDisabled, true);
+						docTable.ModifyDocumentFlags(Cookie, (uint)_VSRDTFLAGS.RDT_DontSave, 1);
+					}
+				}
 			}
 			this.AddPostLoadModelingEventHandlers(isReload);
 			return retVal;

@@ -470,6 +470,10 @@
     <value xml:space="preserve">One or more of the internal uniqueness constraints are implied by other internal uniqueness constraints. Do you wish to remove the implied constraints?</value>
     <comment xml:space="preserve">The message for the auto-fix implied internal uniqueness constraint message box.</comment>
   </data>
+  <data name="MessageBox.FileFormatUpgrade.Message">
+    <value xml:space="preserve">The file format of '{0}' has been automatically upgraded to a new version.&#xd;&#xa;Should the 'Save' command be disabled to preserve the original file contents? The 'Save As' command will remain enabled.</value>
+    <comment xml:space="preserve">The message shown when a file is upgraded to a new format. Replacement field 0 is the file name.</comment>
+  </data>
   <data name="MessageBox.FinalShapeDeletion.Message">
     <value xml:space="preserve">The final shape corresponding to this element is being deleted. Delete the underlying '{0}' element '{1}' as well?</value>
     <comment xml:space="preserve">The message for the prompt to delete an element from the model when the final shape representing it is delete. Replacement field 0 gets the class name and 1 the component name.</comment>

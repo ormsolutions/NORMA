@@ -2180,6 +2180,14 @@ namespace Neumont.Tools.ORM
 				return ResourceStrings.GetString(ResourceManagers.Diagram, "MessageBox.FinalShapeDeletion.Message");
 			}
 		}
+		/// <summary>The message shown when a file is upgraded to a new format. Replacement field 0 is the file name.</summary>
+		public static string FileFormatUpgradeMessage
+		{
+			get
+			{
+				return ResourceStrings.GetString(ResourceManagers.Diagram, "MessageBox.FileFormatUpgrade.Message");
+			}
+		}
 		/// <summary>The name of the transaction that auto-fixes implied and duplicate internal constraints.</summary>
 		public static string RemoveImpliedInternalUniquenessConstraintsTransactionName
 		{

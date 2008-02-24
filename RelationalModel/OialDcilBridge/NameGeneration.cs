@@ -602,6 +602,10 @@ namespace Neumont.Tools.ORMAbstractionToConceptualDatabaseBridge
 					string finalName = GetFinalName(singleName, nameCollection, GetSpacingReplacement(nameGenerator), nameGenerator.CasingOption);
 					if (NeedLongerName(finalName, longerThan))
 					{
+						if (string.IsNullOrEmpty(finalName) && longerThan == null)
+						{
+							return "TABLE";
+						}
 						return null;
 					}
 					else
@@ -819,6 +823,10 @@ namespace Neumont.Tools.ORMAbstractionToConceptualDatabaseBridge
 					string finalName = GetFinalName(singleName, nameCollection, columnSpace, columnCase);
 					if (NeedLongerName(finalName, longerThan))
 					{
+						if (string.IsNullOrEmpty(finalName) && longerThan == null)
+						{
+							return "COLUMN";
+						}
 						//no more precision available
 						return null;
 					}
@@ -857,7 +865,7 @@ namespace Neumont.Tools.ORMAbstractionToConceptualDatabaseBridge
 					string newName = newNamePart;
 					newName = newName.Trim();
 					NamePartOptions options = newNamePart.Options;
-					Debug.Assert(!string.IsNullOrEmpty(newName));
+					Debug.Assert(newName != null);
 					if (newName.Contains(" "))
 					{
 						string[] individualEntries = newName.Split(new char[] { ' ' }, StringSplitOptions.RemoveEmptyEntries);

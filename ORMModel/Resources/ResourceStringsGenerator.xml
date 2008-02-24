@@ -415,6 +415,7 @@
 	<ResourceString name="ModelErrorImpliedInternalUniquenessConstraintError" model="Model" resourceName="ModelError.FactType.ImpliedInternalUniquenessConstraintError.Text"/>
 	<ResourceString name="ImpliedInternalConstraintFixMessage" model="Diagram" resourceName="MessageBox.ImpliedInternalUniquenessConstraint.Message"/>
 	<ResourceString name="FinalShapeDeletionMessage" model="Diagram" resourceName="MessageBox.FinalShapeDeletion.Message"/>
+	<ResourceString name="FileFormatUpgradeMessage" model="Diagram" resourceName="MessageBox.FileFormatUpgrade.Message"/>
 	<ResourceString name="RemoveImpliedInternalUniquenessConstraintsTransactionName" model="Model" resourceName="FactType.RemoveImpliedInternalUniquenessConstraints.TransactionName"/>
 	<ResourceString name="AlignShapesTransactionName" model="Diagram" resourceName="AlignShapes.TransactionName"/>
 	<ResourceString name="AutoLayoutTransactionName" model="Diagram" resourceName="AutoLayout.TransactionName"/>
