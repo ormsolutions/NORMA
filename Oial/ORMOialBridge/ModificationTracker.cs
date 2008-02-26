@@ -39,18 +39,21 @@ namespace Neumont.Tools.ORMToORMAbstractionBridge
 			{
 				ConstraintRoleSequenceHasRole link = (ConstraintRoleSequenceHasRole)e.ModelElement;
 				IConstraint constraint = link.ConstraintRoleSequence.Constraint;
-				if (IsRelevantConstraint(constraint))
+				if (constraint != null)
 				{
-					FactTypeConstraintPatternChanged(link.Role.FactType);
-				}
-				switch (constraint.ConstraintType)
-				{
-					// UNDONE: Incremental uniqueness changes
-					case ConstraintType.InternalUniqueness:
-					case ConstraintType.ExternalUniqueness:
-						SignificantUniquenessConstraintChange((UniquenessConstraint)constraint);
-						SignificantObjectTypeChange(constraint.PreferredIdentifierFor);
-						break;
+					if (IsRelevantConstraint(constraint))
+					{
+						FactTypeConstraintPatternChanged(link.Role.FactType);
+					}
+					switch (constraint.ConstraintType)
+					{
+						// UNDONE: Incremental uniqueness changes
+						case ConstraintType.InternalUniqueness:
+						case ConstraintType.ExternalUniqueness:
+							SignificantUniquenessConstraintChange((UniquenessConstraint)constraint);
+							SignificantObjectTypeChange(constraint.PreferredIdentifierFor);
+							break;
+					}
 				}
 			}
 			/// <summary>
@@ -60,17 +63,20 @@ namespace Neumont.Tools.ORMToORMAbstractionBridge
 			{
 				ConstraintRoleSequenceHasRole link = (ConstraintRoleSequenceHasRole)e.ModelElement;
 				IConstraint constraint = link.ConstraintRoleSequence.Constraint;
-				if (IsRelevantConstraint(constraint))
+				if (constraint != null)
 				{
-					FactTypeConstraintPatternChanged(link.Role.FactType);
-				}
-				switch (constraint.ConstraintType)
-				{
-					// UNDONE: Incremental uniqueness changes
-					case ConstraintType.InternalUniqueness:
-					case ConstraintType.ExternalUniqueness:
-						SignificantObjectTypeChange(constraint.PreferredIdentifierFor);
-						break;
+					if (IsRelevantConstraint(constraint))
+					{
+						FactTypeConstraintPatternChanged(link.Role.FactType);
+					}
+					switch (constraint.ConstraintType)
+					{
+						// UNDONE: Incremental uniqueness changes
+						case ConstraintType.InternalUniqueness:
+						case ConstraintType.ExternalUniqueness:
+							SignificantObjectTypeChange(constraint.PreferredIdentifierFor);
+							break;
+					}
 				}
 			}
 			/// <summary>
