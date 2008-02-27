@@ -27,6 +27,7 @@ using Neumont.Tools.ORM.ObjectModel;
 using Neumont.Tools.ORM.ObjectModel.Design;
 using System.Collections.ObjectModel;
 using Neumont.Tools.Modeling;
+using Microsoft.VisualStudio.VirtualTreeGrid;
 
 namespace Neumont.Tools.ORM.Shell
 {
@@ -35,7 +36,7 @@ namespace Neumont.Tools.ORM.Shell
 	/// </summary>
 	[Guid("C2415D9F-DBA8-49BC-8BF2-008F24F10559")]
 	[CLSCompliant(false)]
-	public class ORMReferenceModeEditorToolWindow : ORMToolWindow
+	public partial class ORMReferenceModeEditorToolWindow : ORMToolWindow
 	{
 		private ReferenceModeViewForm myForm;
 
@@ -53,7 +54,7 @@ namespace Neumont.Tools.ORM.Shell
 		/// <summary>
 		/// Get the tree control for this editor
 		/// </summary>
-		public Microsoft.VisualStudio.VirtualTreeGrid.VirtualTreeControl TreeControl
+		public VirtualTreeControl TreeControl
 		{
 			get
 			{
@@ -94,7 +95,7 @@ namespace Neumont.Tools.ORM.Shell
 				ReferenceModeViewForm form = myForm;
 				if (form == null)
 				{
-					myForm = form = new ReferenceModeViewForm();
+					myForm = form = new ReferenceModeViewForm(this.ServiceProvider);
 				}
 				LoadWindow();
 				return form;
@@ -102,19 +103,19 @@ namespace Neumont.Tools.ORM.Shell
 		}
 		#endregion // ToolWindow overrides
 		#region Nested Class ReadingsViewForm
-		private sealed class ReferenceModeViewForm : ContainerControl
+		private sealed partial class ReferenceModeViewForm : ContainerControl
 		{
 			private CustomReferenceModeEditor myRefModeEditor;
 
 			#region Construction
-			public ReferenceModeViewForm()
+			public ReferenceModeViewForm(IServiceProvider serviceProvider)
 			{
-				Initialize();
+				Initialize(serviceProvider);
 			}
 
-			private void Initialize()
+			private void Initialize(IServiceProvider serviceProvider)
 			{
-				myRefModeEditor = new CustomReferenceModeEditor();
+				myRefModeEditor = new CustomReferenceModeEditor(serviceProvider);
 				this.Controls.Add(myRefModeEditor);
 				myRefModeEditor.Dock = DockStyle.Fill;
 			}
@@ -131,7 +132,7 @@ namespace Neumont.Tools.ORM.Shell
 			/// <summary>
 			/// Get the tree control for this editor
 			/// </summary>
-			public Microsoft.VisualStudio.VirtualTreeGrid.VirtualTreeControl TreeControl
+			public VirtualTreeControl TreeControl
 			{
 				get
 				{
@@ -157,6 +158,10 @@ namespace Neumont.Tools.ORM.Shell
 				0 != (models = store.ElementDirectory.FindElements<ORMModel>()).Count)
 			{
 				form.SetModel(models[0]);
+			}
+			else
+			{
+				form.SetModel(null);
 			}
 		}
 		#endregion // LoadWindow Method

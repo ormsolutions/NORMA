@@ -4092,7 +4092,7 @@
 				<plx:nameRef name="{$VariablePrefix}{$VariableDecorator}"/>
 			</plx:left>
 			<plx:right>
-				<plx:callThis name="ReferenceModeString" type="property"/>
+				<plx:callThis name="ReferenceModeDecoratedString" type="property"/>
 			</plx:right>
 		</plx:assign>
 	</xsl:template>
@@ -4636,7 +4636,7 @@
 				<plx:nameRef name="{$VariablePrefix}{$VariableDecorator}"/>
 			</plx:left>
 			<plx:right>
-				<plx:callInstance name="ReferenceModeString" type="property">
+				<plx:callInstance name="ReferenceModeDecoratedString" type="property">
 					<plx:callObject>
 						<plx:callInstance name="RolePlayer" type="property">
 							<plx:callObject>

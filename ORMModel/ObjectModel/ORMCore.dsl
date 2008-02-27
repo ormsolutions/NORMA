@@ -369,6 +369,11 @@
 						<ExternalTypeMoniker Name="/System/String"/>
 					</Type>
 				</DomainProperty>
+				<DomainProperty Name="ReferenceModeDecoratedString" DefaultValue="" DisplayName="ReferenceModeDecoratedString" Id="E139F1E3-DC42-498F-BB70-890C3B1FDD13" IsBrowsable="false" Kind="CustomStorage">
+					<Type>
+						<ExternalTypeMoniker Name="/System/String"/>
+					</Type>
+				</DomainProperty>
 				<DomainProperty Name="ReferenceMode" DefaultValue="" DisplayName="ReferenceMode" Id="E2049BA3-F50D-4E1C-9ABD-8A7EBECFEDF5" IsBrowsable="false" Kind="CustomStorage">
 					<Type>
 						<ExternalTypeMoniker Name="/Neumont.Tools.ORM.ObjectModel/ReferenceMode"/>
@@ -1047,7 +1052,7 @@
 
 		<DomainClass Name="ReferenceModeKind" Namespace="Neumont.Tools.ORM.ObjectModel" Id="7EC5E835-5EEB-4FB1-AA09-9BD6ABA531E1" DisplayName="ReferenceModeKind" Description="">
 			<BaseClass>
-				<DomainClassMoniker Name="ORMNamedElement"/>
+				<DomainClassMoniker Name="ORMModelElement"/>
 			</BaseClass>
 			<Properties>
 				<DomainProperty Name="FormatString" DefaultValue="" DisplayName="FormatString" Id="3D1B9C67-FF56-4345-B445-30F1F3367613">
@@ -2570,7 +2575,7 @@
 				<DomainRelationshipMoniker Name="ORMElementLink"/>
 			</BaseRelationship>-->
 			<Source>
-				<DomainRole Name="ReferenceMode" PropertyName="Kind" Multiplicity="One" PropagatesDelete="false" IsPropertyGenerator="true" DisplayName="ReferenceMode" Id="67F35299-D67F-4AE2-9159-E5EFF1FF8544">
+				<DomainRole Name="ReferenceMode" PropertyName="Kind" Multiplicity="One" PropagatesDelete="true" IsPropertyGenerator="true" DisplayName="ReferenceMode" Id="67F35299-D67F-4AE2-9159-E5EFF1FF8544">
 					<RolePlayer>
 						<DomainClassMoniker Name="ReferenceMode"/>
 					</RolePlayer>

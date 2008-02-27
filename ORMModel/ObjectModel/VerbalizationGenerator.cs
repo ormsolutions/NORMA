@@ -1470,7 +1470,7 @@ namespace Neumont.Tools.ORM.ObjectModel
 				writer.WriteLine();
 				string snippetFormat4 = snippets.GetSnippet(CoreVerbalizationSnippetType.ReferenceModeVerbalization, isDeontic, isNegative);
 				string snippet4Replace1 = null;
-				snippet4Replace1 = this.ReferenceModeString;
+				snippet4Replace1 = this.ReferenceModeDecoratedString;
 				FactType.WriteVerbalizerSentence(writer, string.Format(writer.FormatProvider, snippetFormat4, snippet4Replace1), snippets.GetSnippet(CoreVerbalizationSnippetType.CloseVerbalizationSentence, isDeontic, isNegative));
 			}
 			if (this.IsIndependent)
@@ -6358,7 +6358,7 @@ namespace Neumont.Tools.ORM.ObjectModel
 						string variableSnippet1Replace1Replace2Replace1 = null;
 						variableSnippet1Replace1Replace2Replace1 = primaryRole.Role.Name;
 						string variableSnippet1Replace1Replace2Replace2 = null;
-						variableSnippet1Replace1Replace2Replace2 = primaryRole.Role.RolePlayer.ReferenceModeString;
+						variableSnippet1Replace1Replace2Replace2 = primaryRole.Role.RolePlayer.ReferenceModeDecoratedString;
 						variableSnippet1Replace1Replace2 = string.Format(writer.FormatProvider, variableSnippet1Replace1ReplaceFormat2, variableSnippet1Replace1Replace2Replace1, variableSnippet1Replace1Replace2Replace2);
 					}
 					else

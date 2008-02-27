@@ -56,16 +56,8 @@ namespace Neumont.Tools.ORM.ObjectModel.Design
 					ObjectType instance = EditorUtility.ResolveContextInstance(context.Instance, true) as ObjectType;
 					if (instance != null)
 					{
-						IList<ReferenceMode> referenceModes = ReferenceMode.FindReferenceModesByName(refMode, instance.Model);
-						switch (referenceModes.Count)
-						{
-							case 0:
-								return refMode;
-							case 1:
-								return referenceModes[0];
-							default:
-								throw new InvalidOperationException(ResourceStrings.ModelExceptionReferenceModeAmbiguousName);
-						}
+						ReferenceMode singleMode = ReferenceMode.GetReferenceModeForDecoratedName(refMode, instance.Model, false);
+						return (object)singleMode ?? refMode;
 					}
 				}
 			}
@@ -77,7 +69,7 @@ namespace Neumont.Tools.ORM.ObjectModel.Design
 			ReferenceMode referenceMode;
 			if (destinationType == typeof(string) && (referenceMode = value as ReferenceMode) != null)
 			{
-				return referenceMode.Name;
+				return referenceMode.DecoratedName;
 			}
 			return base.ConvertTo(context, culture, value, destinationType);
 		}

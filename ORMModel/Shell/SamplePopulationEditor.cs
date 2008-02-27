@@ -1522,7 +1522,7 @@ namespace Neumont.Tools.ORM.Shell
 					string refModeString;
 					if (identifier.IsInternal &&
 						identifierCount == 1 &&
-						!string.IsNullOrEmpty((refModeString = rolePlayer.ReferenceModeString)))
+						!string.IsNullOrEmpty((refModeString = rolePlayer.ReferenceModeDecoratedString)))
 					{
 						outputText.Append(refModeString);
 					}

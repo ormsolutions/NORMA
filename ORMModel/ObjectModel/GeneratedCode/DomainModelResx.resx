@@ -437,6 +437,14 @@
     <value>ReferenceModeString</value>
     <comment>DisplayName for DomainProperty &apos;ReferenceModeString&apos; on DomainClass &apos;ObjectType&apos;</comment>
   </data>
+  <data name="Neumont.Tools.ORM.ObjectModel.ObjectType/ReferenceModeDecoratedString.Description" xml:space="preserve">
+    <value>Description for Neumont.Tools.ORM.ObjectModel.ObjectType.ReferenceModeDecoratedString</value>
+    <comment>Description for DomainProperty &apos;ReferenceModeDecoratedString&apos; on DomainClass &apos;ObjectType&apos;</comment>
+  </data>
+  <data name="Neumont.Tools.ORM.ObjectModel.ObjectType/ReferenceModeDecoratedString.DisplayName" xml:space="preserve">
+    <value>ReferenceModeDecoratedString</value>
+    <comment>DisplayName for DomainProperty &apos;ReferenceModeDecoratedString&apos; on DomainClass &apos;ObjectType&apos;</comment>
+  </data>
   <data name="Neumont.Tools.ORM.ObjectModel.ObjectType/ReferenceMode.Description" xml:space="preserve">
     <value>Description for Neumont.Tools.ORM.ObjectModel.ObjectType.ReferenceMode</value>
     <comment>Description for DomainProperty &apos;ReferenceMode&apos; on DomainClass &apos;ObjectType&apos;</comment>

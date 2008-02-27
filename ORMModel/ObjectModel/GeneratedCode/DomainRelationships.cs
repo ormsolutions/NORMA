@@ -10951,7 +10951,7 @@ namespace Neumont.Tools.ORM.ObjectModel
 		/// </summary>
 		[DslDesign::DisplayNameResource("Neumont.Tools.ORM.ObjectModel.ReferenceModeHasReferenceModeKind/ReferenceMode.DisplayName", typeof(global::Neumont.Tools.ORM.ObjectModel.ORMCoreDomainModel), "Neumont.Tools.ORM.GeneratedCode.CoreDomainModelResx")]
 		[DslDesign::DescriptionResource("Neumont.Tools.ORM.ObjectModel.ReferenceModeHasReferenceModeKind/ReferenceMode.Description", typeof(global::Neumont.Tools.ORM.ObjectModel.ORMCoreDomainModel), "Neumont.Tools.ORM.GeneratedCode.CoreDomainModelResx")]
-		[DslModeling::DomainRole(DslModeling::DomainRoleOrder.Source, PropertyName = "Kind", PropertyDisplayNameKey="Neumont.Tools.ORM.ObjectModel.ReferenceModeHasReferenceModeKind/ReferenceMode.PropertyDisplayName", Multiplicity = DslModeling::Multiplicity.One)]
+		[DslModeling::DomainRole(DslModeling::DomainRoleOrder.Source, PropertyName = "Kind", PropertyDisplayNameKey="Neumont.Tools.ORM.ObjectModel.ReferenceModeHasReferenceModeKind/ReferenceMode.PropertyDisplayName", PropagatesDelete = true, Multiplicity = DslModeling::Multiplicity.One)]
 		[DslModeling::DomainObjectId("67f35299-d67f-4ae2-9159-e5eff1ff8544")]
 		public virtual ReferenceMode ReferenceMode
 		{

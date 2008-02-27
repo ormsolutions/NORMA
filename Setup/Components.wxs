@@ -197,7 +197,7 @@
 										DefaultVersion="$(var.ProductVersion)" DefaultLanguage="0" KeyPath="yes" Assembly=".net" AssemblyManifest="Neumont.Tools.ORM.CustomProperties$(var.VSExt).dll" AssemblyApplication="Neumont.Tools.ORM.CustomProperties$(var.VSExt).dll" ProcessorArchitecture="msil"/>
 									<File Id="Neumont.Tools.ORM.CustomProperties$(var.VSExt).pdb" ShortName="ORMCstPr.pdb" Name="Neumont.Tools.ORM.CustomProperties$(var.VSExt).pdb" Source="..\CustomProperties\bin\$(var.BuildConfiguration)\Neumont.Tools.ORM.CustomProperties$(var.VSExt).pdb"
 										DefaultLanguage="0" CompanionFile="Neumont.Tools.ORM.CustomProperties$(var.VSExt).dll"/>
-									<RegistryKey Action="createAndRemoveOnUninstall" Root="HKLM" Key="$(var.NORMAVSExtensionsRegRoot)\http://schemas.neumont.edu/ORM/Preview/CustomProperties">
+									<RegistryKey Action="createAndRemoveOnUninstall" Root="HKLM" Key="$(var.NORMAVSExtensionsRegRoot)\http://schemas.neumont.edu/ORM/2007-11/CustomProperties">
 										<RegistryValue Type="string" Name="Class" Value="Neumont.Tools.ORM.CustomProperties.CustomPropertiesDomainModel"/>
 										<RegistryValue Type="string" Name="Assembly" Value="Neumont.Tools.ORM.CustomProperties$(var.VSExt), $(var.BaseAssemblyName)"/>
 										<RegistryValue Type="string" Name="CodeBase" Value="[#Neumont.Tools.ORM.CustomProperties$(var.VSExt).dll]"/>

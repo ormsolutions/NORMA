@@ -26,336 +26,205 @@ using Neumont.Tools.Modeling;
 
 namespace Neumont.Tools.ORM.Shell
 {
-	/// <summary>
-	/// Branch for all the differnt Reference mode kinds
-	/// </summary>
-	public class ReferenceModeKindsBranch : IBranch, IMultiColumnBranch
+	partial class ORMReferenceModeEditorToolWindow
 	{
-		#region Locals
-		private enum Columns
+		partial class ReferenceModeViewForm
 		{
-			Empty = 0,
-			ReferenceModeKind = 1,
-			FormatString = 2
-		}
-
-		private System.Collections.Generic.List<ReferenceModeKind> myReferenceModeKindsList = new System.Collections.Generic.List<ReferenceModeKind>();
-		private static int myNumCols = Enum.GetValues(typeof(Columns)).Length;
-		private Columns[] myEditable = new Columns[] { Columns.FormatString };
-		private ORMModel myModel;
-		private Store myStore;
-		#endregion //Locals
-
-		#region Methods
-		/// <summary>
-		/// Sets the reference modes displayed on the tree
-		/// </summary>
-		/// <param name="model"></param>
-		public void SetModel(ORMModel model)
-		{
-			if (model != myModel)
+			private sealed partial class ReferenceModeHeaderBranch : IBranch
 			{
-				Store newStore = (model == null) ? null : model.Store;
-				Store oldStore = myStore;
-				if (oldStore != null && oldStore != newStore && !oldStore.Disposed)
+				/// <summary>
+				/// Branch for all the differnt Reference mode kinds
+				/// </summary>
+				private sealed class ReferenceModeKindsBranch : MultiColumnBaseBranch, IBranch
 				{
-					ManageStoreEvents(oldStore, EventHandlerAction.Remove);
-				}
-				if (newStore != null && newStore != oldStore)
-				{
-					ManageStoreEvents(newStore, EventHandlerAction.Add);
+					#region Locals
+					private List<ReferenceModeKind> myReferenceModeKindsList = new List<ReferenceModeKind>();
+					private ORMModel myModel;
+					private Store myStore;
+					#endregion //Locals
 
-				}
-				this.myModel = model;
-				this.myStore = newStore;
-				int count = myReferenceModeKindsList.Count;
-				this.myReferenceModeKindsList.Clear();
-				if (myModify != null && count != 0)
-				{
-					myModify(this, BranchModificationEventArgs.DeleteItems(this, 0, count));
-				}
-				if (model != null)
-				{
-					foreach (ReferenceModeKind kind in model.ReferenceModeKindCollection)
+					#region Methods
+					/// <summary>
+					/// Sets the reference modes displayed on the tree
+					/// </summary>
+					/// <param name="model"></param>
+					public void SetModel(ORMModel model)
 					{
-						this.myReferenceModeKindsList.Add(kind);
-					}
-				}
-				count = myReferenceModeKindsList.Count;
-				if (myModify != null && count != 0)
-				{
-					myModify(this, BranchModificationEventArgs.InsertItems(this, -1, count));
-				}
-			}
-		}
-
-		/// <summary>
-		/// Replacement string to prettify the {0} numeric placeholder fields in a format string
-		/// </summary>
-		private static readonly string EntityTypeNameReplacement = string.Concat("{", ResourceStrings.ModelReferenceModeEditorEntityTypeName, "}");
-		/// <summary>
-		/// Replacement string to prettify the {1} numeric placeholder fields in a format string
-		/// </summary>
-		private static readonly string ReferenceModeNameReplacement = string.Concat("{", ResourceStrings.ModelReferenceModeEditorReferenceModeName, "}");
-		/// <summary>
-		/// Replaces the {0} and {1} with entityTypeName and referenceModeName
-		/// </summary>
-		/// <param name="uglyFormatString"></param>
-		/// <returns></returns>
-		private static string PrettyFormatString(string uglyFormatString)
-		{
-			return uglyFormatString.Replace("{0}", EntityTypeNameReplacement).Replace("{1}", ReferenceModeNameReplacement);
-		}
-
-		/// <summary>
-		/// Replaces the {0} and {1} with entityTypeName and referenceModeName
-		/// </summary>
-		/// <param name="prettyFormatString"></param>
-		/// <returns></returns>
-		private static string UglyFormatString(string prettyFormatString)
-		{
-			return prettyFormatString.Replace(EntityTypeNameReplacement, "{0}").Replace(ReferenceModeNameReplacement, "{1}");
-		}
-		#endregion //Methods
-
-		#region EventHandling
-		/// <summary>
-		/// An IMS event to track the shape element added to the associated
-		/// diagram during this connect action.
-		/// </summary>
-		/// <param name="sender"></param>
-		/// <param name="e"></param>
-		private void ReferenceModeKindChangeEvent(object sender, ElementPropertyChangedEventArgs e)
-		{
-			ReferenceModeKind referenceModeKind = e.ModelElement as ReferenceModeKind;
-
-			if (referenceModeKind != null && referenceModeKind.Model == this.myModel)
-			{
-				if (myModify != null)
-				{
-					int row = this.FindReferenceModeKind(referenceModeKind);
-					myModify(this, BranchModificationEventArgs.DisplayDataChanged(new DisplayDataChangedData(VirtualTreeDisplayDataChanges.Text, this, row, (int)Columns.FormatString, 1)));
-				}
-			}
-		}
-
-		private int FindReferenceModeKind(ReferenceModeKind referenceModeKind)
-		{
-			for (int i = 0; i < myReferenceModeKindsList.Count; i++)
-			{
-				ReferenceModeKind kind = myReferenceModeKindsList[i];
-				if (kind == referenceModeKind)
-				{
-					return i;
-				}
-			}
-
-			return -1;
-		}
-		/// <summary>
-		/// Manages <see cref="EventHandler{TEventArgs}"/>s in the <see cref="Store"/> during activation and
-		/// deactivation.
-		/// </summary>
-		/// <param name="store">The <see cref="Store"/> for which the <see cref="EventHandler{TEventArgs}"/>s should be managed.</param>
-		/// <param name="action">The <see cref="EventHandlerAction"/> that should be taken for the <see cref="EventHandler{TEventArgs}"/>s.</param>
-		protected virtual void ManageStoreEvents(Store store, EventHandlerAction action)
-		{
-			ModelingEventManager.GetModelingEventManager(store).AddOrRemoveHandler(store.DomainDataDirectory.FindDomainClass(ReferenceModeKind.DomainClassId), new EventHandler<ElementPropertyChangedEventArgs>(ReferenceModeKindChangeEvent), action);
-		}
-		#endregion // EventHandling
-
-		#region IMultiColumnBranch Members
-		int IMultiColumnBranch.ColumnCount
-		{
-			get { return myNumCols; }
-		}
-
-
-		SubItemCellStyles IMultiColumnBranch.ColumnStyles(int column)
-		{
-			return SubItemCellStyles.Simple;
-		}
-
-		int IMultiColumnBranch.GetJaggedColumnCount(int row)
-		{
-			if (row == myReferenceModeKindsList.Count) 
-			{
-				return 1;
-			}
-			else
-			{
-				return myNumCols;
-			}
-		}
-
-		#endregion
-
-		#region IBranch Members
-
-		VirtualTreeLabelEditData IBranch.BeginLabelEdit(int row, int column, VirtualTreeLabelEditActivationStyles activationStyle)
-		{
-			return (IsColEditable(column))? VirtualTreeLabelEditData.Default : VirtualTreeLabelEditData.Invalid;
-		}
-
-		private bool IsColEditable(int col)
-		{
-			foreach (Columns i in myEditable)
-			{
-				if ((int)i == col)
-				{
-					return true;
-				}
-			}
-			return false;
-		}
-
-		LabelEditResult IBranch.CommitLabelEdit(int row, int column, string newText)
-		{
-			newText = newText.Trim();
-			switch ((Columns)column)
-			{
-				case Columns.Empty:
-					return LabelEditResult.CancelEdit;
-				case Columns.FormatString:
-					string entityTypeName = "{" + ResourceStrings.ModelReferenceModeEditorEntityTypeName + "}";
-					string referenceModeName = "{" + ResourceStrings.ModelReferenceModeEditorReferenceModeName + "}";
-					string abbreviatedEntityTypeName = "{" + ResourceStrings.ModelReferenceModeEditorAbbreviatedEntityTypeName + "}";
-					string abbreviatedReferenceModeName = "{" + ResourceStrings.ModelReferenceModeEditorAbbreviatedReferenceModeName + "}";
-
-
-					newText = newText.Replace(abbreviatedReferenceModeName, referenceModeName).Replace(abbreviatedEntityTypeName, entityTypeName); 
-					if (newText.IndexOf(referenceModeName) == -1 ||
-						newText.IndexOf(referenceModeName) != newText.LastIndexOf(referenceModeName) ||
-						newText.IndexOf(entityTypeName) != newText.LastIndexOf(entityTypeName) )
-					{
-						return LabelEditResult.CancelEdit;
-					}
-
-					string changeFormatStringTransaction = ResourceStrings.ModelReferenceModeEditorChangeFormatStringTransaction;
-					using (Transaction t = myStore.TransactionManager.BeginTransaction(changeFormatStringTransaction))
-					{
-						myReferenceModeKindsList[row].FormatString = UglyFormatString(newText);
-						if (t.HasPendingChanges)
+						if (model != myModel)
 						{
-							t.Commit();
+							Store newStore = (model == null) ? null : model.Store;
+							Store oldStore = myStore;
+							if (oldStore != null && oldStore != newStore && !oldStore.Disposed)
+							{
+								ManageStoreEvents(oldStore, EventHandlerAction.Remove);
+							}
+							if (newStore != null && newStore != oldStore)
+							{
+								ManageStoreEvents(newStore, EventHandlerAction.Add);
+
+							}
+							this.myModel = model;
+							this.myStore = newStore;
+							int count = myReferenceModeKindsList.Count;
+							this.myReferenceModeKindsList.Clear();
+							if (myModify != null && count != 0)
+							{
+								myModify(this, BranchModificationEventArgs.DeleteItems(this, 0, count));
+							}
+							if (model != null)
+							{
+								foreach (ReferenceModeKind kind in model.ReferenceModeKindCollection)
+								{
+									this.myReferenceModeKindsList.Add(kind);
+								}
+								myReferenceModeKindsList.Sort();
+							}
+							count = myReferenceModeKindsList.Count;
+							if (myModify != null && count != 0)
+							{
+								myModify(this, BranchModificationEventArgs.InsertItems(this, -1, count));
+							}
 						}
 					}
-					break;
-				case Columns.ReferenceModeKind:
-					return LabelEditResult.CancelEdit;
-			}
-			return LabelEditResult.AcceptEdit;
-		}
-		BranchFeatures IBranch.Features
-		{
-			get { return BranchFeatures.DelayedLabelEdits | BranchFeatures.InsertsAndDeletes; }
-		}
+					#endregion //Methods
+
+					#region EventHandling
+					/// <summary>
+					/// An IMS event to track the shape element added to the associated
+					/// diagram during this connect action.
+					/// </summary>
+					/// <param name="sender"></param>
+					/// <param name="e"></param>
+					private void ReferenceModeKindChangeEvent(object sender, ElementPropertyChangedEventArgs e)
+					{
+						ReferenceModeKind referenceModeKind = e.ModelElement as ReferenceModeKind;
+
+						if (referenceModeKind != null && referenceModeKind.Model == this.myModel)
+						{
+							if (myModify != null)
+							{
+								int row = this.FindReferenceModeKind(referenceModeKind);
+								myModify(this, BranchModificationEventArgs.DisplayDataChanged(new DisplayDataChangedData(VirtualTreeDisplayDataChanges.Text, this, row, (int)Columns.FormatString, 1)));
+							}
+						}
+					}
+
+					private int FindReferenceModeKind(ReferenceModeKind referenceModeKind)
+					{
+						for (int i = 0; i < myReferenceModeKindsList.Count; i++)
+						{
+							ReferenceModeKind kind = myReferenceModeKindsList[i];
+							if (kind == referenceModeKind)
+							{
+								return i;
+							}
+						}
+
+						return -1;
+					}
+					/// <summary>
+					/// Manages <see cref="EventHandler{TEventArgs}"/>s in the <see cref="Store"/> during activation and
+					/// deactivation.
+					/// </summary>
+					/// <param name="store">The <see cref="Store"/> for which the <see cref="EventHandler{TEventArgs}"/>s should be managed.</param>
+					/// <param name="action">The <see cref="EventHandlerAction"/> that should be taken for the <see cref="EventHandler{TEventArgs}"/>s.</param>
+					private void ManageStoreEvents(Store store, EventHandlerAction action)
+					{
+						ModelingEventManager.GetModelingEventManager(store).AddOrRemoveHandler(store.DomainDataDirectory.FindDomainClass(ReferenceModeKind.DomainClassId), new EventHandler<ElementPropertyChangedEventArgs>(ReferenceModeKindChangeEvent), action);
+					}
+					#endregion // EventHandling
+					#region IBranch Implementation
+
+					VirtualTreeLabelEditData IBranch.BeginLabelEdit(int row, int column, VirtualTreeLabelEditActivationStyles activationStyle)
+					{
+						if (column == (int)Columns.FormatString)
+						{
+							ReferenceModeKind kind = myReferenceModeKindsList[row];
+							if (kind.ReferenceModeType != ReferenceModeType.General || kind.FormatString != "{1}") // Allow a repair, we didn't used to enforce this
+							{
+								return VirtualTreeLabelEditData.Default;
+							}
+						}
+						return VirtualTreeLabelEditData.Invalid;
+					}
+
+					LabelEditResult IBranch.CommitLabelEdit(int row, int column, string newText)
+					{
+						newText = newText.Trim();
+						switch ((Columns)column)
+						{
+							case Columns.Name:
+								return LabelEditResult.CancelEdit;
+							case Columns.FormatString:
+								if (newText.Length == 0)
+								{
+									return LabelEditResult.CancelEdit;
+								}
+
+								using (Transaction t = myStore.TransactionManager.BeginTransaction(ResourceStrings.ModelReferenceModeEditorChangeFormatStringTransaction))
+								{
+									myReferenceModeKindsList[row].FormatString = UglyFormatString(newText);
+									if (t.HasPendingChanges)
+									{
+										t.Commit();
+									}
+								}
+								break;
+							case Columns.ReferenceModeKind:
+								return LabelEditResult.CancelEdit;
+						}
+						return LabelEditResult.AcceptEdit;
+					}
+					BranchFeatures IBranch.Features
+					{
+						get { return BranchFeatures.DelayedLabelEdits | BranchFeatures.InsertsAndDeletes; }
+					}
+					VirtualTreeDisplayData IBranch.GetDisplayData(int row, int column, VirtualTreeDisplayDataMasks requiredData)
+					{
+						if (row == myReferenceModeKindsList.Count && column == 0)
+						{
+							VirtualTreeDisplayData retVal = new VirtualTreeDisplayData();
+							retVal.ForeColor = SystemColors.GrayText;
+							return retVal;
+						}
 
 
-		VirtualTreeAccessibilityData IBranch.GetAccessibilityData(int row, int column)
-		{
-			return VirtualTreeAccessibilityData.Empty;
-		}
-
-		VirtualTreeDisplayData IBranch.GetDisplayData(int row, int column, VirtualTreeDisplayDataMasks requiredData)
-		{
-			if (row == myReferenceModeKindsList.Count && column == 0)
-			{
-				VirtualTreeDisplayData retVal = new VirtualTreeDisplayData();
-				retVal.ForeColor = SystemColors.GrayText;
-				return retVal;
-			}
-
-
-			return new VirtualTreeDisplayData(-1);
-		}
-
-		object IBranch.GetObject(int row, int column, ObjectStyle style, ref int options)
-		{
-			return null;
-		}
-
-		string IBranch.GetText(int row, int column)
-		{
-			try
-			{
-				switch ((Columns)column)
-				{
-					case Columns.Empty:
-						return null;
-					case Columns.FormatString:
-						return PrettyFormatString(myReferenceModeKindsList[row].FormatString);
-					case Columns.ReferenceModeKind:
-						return myReferenceModeKindsList[row].ReferenceModeType.ToString();
-					default :
-						return null;
+						return VirtualTreeDisplayData.Empty;
+					}
+					string IBranch.GetText(int row, int column)
+					{
+						try
+						{
+							switch ((Columns)column)
+							{
+								case Columns.Name:
+									return null;
+								case Columns.FormatString:
+									return PrettyFormatString(myReferenceModeKindsList[row]);
+								case Columns.ReferenceModeKind:
+									return myReferenceModeKindsList[row].ToString();
+								default:
+									return null;
+							}
+						}
+						catch
+						{
+							return null;
+						}
+					}
+					private BranchModificationEventHandler myModify;
+					event BranchModificationEventHandler IBranch.OnBranchModification
+					{
+						add { myModify += value; }
+						remove { myModify -= value; }
+					}
+					int IBranch.VisibleItemCount
+					{
+						get { return myReferenceModeKindsList.Count; }
+					}
+					#endregion //IBranch Implementation
 				}
 			}
-			catch
-			{
-				return null;
-			}
 		}
-
-		string IBranch.GetTipText(int row, int column, ToolTipType tipType)
-		{
-			return null;
-		}
-
-		bool IBranch.IsExpandable(int row, int column)
-		{
-			return false;
-		}
-
-		LocateObjectData IBranch.LocateObject(object obj, ObjectStyle style, int locateOptions)
-		{
-			return default(LocateObjectData);
-		}
-
-		private BranchModificationEventHandler myModify;
-		event BranchModificationEventHandler IBranch.OnBranchModification
-		{
-			add { myModify += value; }
-			remove { myModify -= value; }
-		}
-
-
-		void IBranch.OnDragEvent(object sender, int row, int column, DragEventType eventType, DragEventArgs args)
-		{			
-		}
-
-		void IBranch.OnGiveFeedback(GiveFeedbackEventArgs args, int row, int column)
-		{
-			
-		}
-
-		void IBranch.OnQueryContinueDrag(QueryContinueDragEventArgs args, int row, int column)
-		{
-			
-		}
-
-		VirtualTreeStartDragData IBranch.OnStartDrag(object sender, int row, int column, DragReason reason)
-		{
-			return VirtualTreeStartDragData.Empty;
-		}
-
-		StateRefreshChanges IBranch.ToggleState(int row, int column)
-		{
-			return StateRefreshChanges.None;
-		}
-		StateRefreshChanges IBranch.SynchronizeState(int row, int column, IBranch matchBranch, int matchRow, int matchColumn)
-		{
-			return StateRefreshChanges.None;
-		}
-		int IBranch.UpdateCounter
-		{
-			get { return 0; }
-		}
-
-		int IBranch.VisibleItemCount
-		{
-			get { return myReferenceModeKindsList.Count; }
-		}
-		#endregion //IBranch Members
 	}
 }

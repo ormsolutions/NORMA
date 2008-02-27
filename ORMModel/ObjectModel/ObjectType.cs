@@ -117,6 +117,10 @@ namespace Neumont.Tools.ORM.ObjectModel
 		{
 			// Handled by ObjectTypeChangeRule
 		}
+		private void SetReferenceModeDecoratedStringValue(string newValue)
+		{
+			// Handled by ObjectTypeChangeRule
+		}
 		private void SetValueRangeTextValue(string newValue)
 		{
 			// Handled by ObjectTypeChangeRule
@@ -196,6 +200,17 @@ namespace Neumont.Tools.ORM.ObjectModel
 			ReferenceMode refMode;
 			string referenceModeString;
 			this.GetReferenceMode(out refMode, out referenceModeString);
+			return referenceModeString;
+		}
+		private string GetReferenceModeDecoratedStringValue()
+		{
+			ReferenceMode refMode;
+			string referenceModeString;
+			this.GetReferenceMode(out refMode, out referenceModeString);
+			if (refMode != null)
+			{
+				return refMode.DecoratedName;
+			}
 			return referenceModeString;
 		}
 		private ReferenceMode GetReferenceModeValue()
@@ -1240,7 +1255,27 @@ namespace Neumont.Tools.ORM.ObjectModel
 			}
 			else if (attributeGuid == ObjectType.ReferenceModeDisplayDomainPropertyId)
 			{
-				SetReferenceMode(objectType, e.NewValue as ReferenceMode, e.OldValue as ReferenceMode, e.NewValue as string, e.OldValue as string, true);
+				object newValue = e.NewValue;
+				string newStringValue;
+				if (!string.IsNullOrEmpty(newStringValue = newValue as string))
+				{
+					ReferenceMode singleMode = ReferenceMode.GetReferenceModeForDecoratedName(newStringValue, objectType.Model, true);
+					if (singleMode != null)
+					{
+						newValue = singleMode;
+					}
+				}
+				SetReferenceMode(objectType, newValue as ReferenceMode, e.OldValue as ReferenceMode, newValue as string, e.OldValue as string, true);
+			}
+			else if (attributeGuid == ObjectType.ReferenceModeDecoratedStringDomainPropertyId)
+			{
+				string newName = (string)e.NewValue ?? string.Empty;
+				ReferenceMode singleMode = newName.Length != 0 ? ReferenceMode.GetReferenceModeForDecoratedName(newName, objectType.Model, true) : null;
+				if (singleMode != null)
+				{
+					newName = null;
+				}
+				SetReferenceMode(objectType, singleMode, null, newName, e.OldValue as string, false);
 			}
 			else if (attributeGuid == ObjectType.ReferenceModeStringDomainPropertyId)
 			{

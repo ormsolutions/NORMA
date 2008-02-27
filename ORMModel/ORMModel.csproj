@@ -231,7 +231,6 @@
     </Compile>
     <Compile Include="ObjectModel\Design\Editors\ReadingTextEditor.cs" />
     <Compile Include="Shell\CustomReferenceModeEditor.cs">
-      <SubType>UserControl</SubType>
     </Compile>
     <Compile Include="Shell\CustomReferenceModesBranch.cs" />
     <Compile Include="Shell\IntrinsicReferenceModesBranch.cs" />

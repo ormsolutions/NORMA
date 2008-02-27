@@ -369,7 +369,6 @@
 		<se:Link RelationshipName="ValueTypeHasDataType" RoleName="ValueType" WriteStyle="NotWritten"/>
 	</se:Element>
 	<se:Element Class="ReferenceModeKind" Name="ReferenceModeKind" Override="true">
-		<se:Attribute ID="Name" WriteStyle="NotWritten"/>
 		<se:Link RelationshipName="ReferenceModeHasReferenceModeKind" RoleName="ReferenceMode" WriteStyle="NotWritten" />
 	</se:Element>
 	<se:Element Name="BaseValueConstraint" Class="ValueConstraint" Override="true">

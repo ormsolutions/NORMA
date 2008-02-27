@@ -407,7 +407,7 @@ namespace Neumont.Tools.ORM.Shell
 			ObjectType player = role.Role.RolePlayer;
 			if (player != null)
 			{
-				string refModeString = player.ReferenceModeString;
+				string refModeString = player.ReferenceModeDecoratedString;
 				string playerName = player.Name;
 				bool needsBrackets = !string.IsNullOrEmpty(playerName) && (Char.IsLower(playerName[0]) || playerName.IndexOf(' ') >= 0);
 				if (string.IsNullOrEmpty(refModeString) && !player.IsValueType)
@@ -449,7 +449,7 @@ namespace Neumont.Tools.ORM.Shell
 		/// </summary>
 		private static void FormatObjectType(StringBuilder builder, ObjectType objectType)
 		{
-			string refModeString = objectType.ReferenceModeString;
+			string refModeString = objectType.ReferenceModeDecoratedString;
 			string objectTypeName = objectType.Name;
 			bool needsBrackets = !string.IsNullOrEmpty(objectTypeName) && (Char.IsLower(objectTypeName[0]) || objectTypeName.IndexOf(' ') >= 0);
 			if (needsBrackets)

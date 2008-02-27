@@ -345,6 +345,7 @@ namespace Neumont.Tools.ORM.ObjectModel
 				new DomainMemberInfo(typeof(ObjectType), "Length", ObjectType.LengthDomainPropertyId, typeof(ObjectType.LengthPropertyHandler)),
 				new DomainMemberInfo(typeof(ObjectType), "ReferenceModeDisplay", ObjectType.ReferenceModeDisplayDomainPropertyId, typeof(ObjectType.ReferenceModeDisplayPropertyHandler)),
 				new DomainMemberInfo(typeof(ObjectType), "ReferenceModeString", ObjectType.ReferenceModeStringDomainPropertyId, typeof(ObjectType.ReferenceModeStringPropertyHandler)),
+				new DomainMemberInfo(typeof(ObjectType), "ReferenceModeDecoratedString", ObjectType.ReferenceModeDecoratedStringDomainPropertyId, typeof(ObjectType.ReferenceModeDecoratedStringPropertyHandler)),
 				new DomainMemberInfo(typeof(ObjectType), "ReferenceMode", ObjectType.ReferenceModeDomainPropertyId, typeof(ObjectType.ReferenceModePropertyHandler)),
 				new DomainMemberInfo(typeof(ObjectType), "DataTypeDisplay", ObjectType.DataTypeDisplayDomainPropertyId, typeof(ObjectType.DataTypeDisplayPropertyHandler)),
 				new DomainMemberInfo(typeof(ObjectType), "ValueRangeText", ObjectType.ValueRangeTextDomainPropertyId, typeof(ObjectType.ValueRangeTextPropertyHandler)),
@@ -1290,6 +1291,7 @@ namespace Neumont.Tools.ORM.ObjectModel
 			DomainRoles.Add(global::Neumont.Tools.ORM.ObjectModel.ObjectTypeInstanceHasPopulationMandatoryError.PopulationMandatoryErrorDomainRoleId, true);
 			DomainRoles.Add(global::Neumont.Tools.ORM.ObjectModel.ReadingOrderHasReading.ReadingDomainRoleId, true);
 			DomainRoles.Add(global::Neumont.Tools.ORM.ObjectModel.FactTypeHasReadingOrder.ReadingOrderDomainRoleId, true);
+			DomainRoles.Add(global::Neumont.Tools.ORM.ObjectModel.ReferenceModeHasReferenceModeKind.ReferenceModeDomainRoleId, true);
 			DomainRoles.Add(global::Neumont.Tools.ORM.ObjectModel.ReadingHasTooManyRolesError.TooManyRolesErrorDomainRoleId, true);
 			DomainRoles.Add(global::Neumont.Tools.ORM.ObjectModel.ReadingHasTooFewRolesError.TooFewRolesErrorDomainRoleId, true);
 			DomainRoles.Add(global::Neumont.Tools.ORM.ObjectModel.ReadingHasReadingRequiresUserModificationError.RequiresUserModificationErrorDomainRoleId, true);

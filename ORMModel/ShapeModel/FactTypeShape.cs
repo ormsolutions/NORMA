@@ -5599,7 +5599,7 @@ namespace Neumont.Tools.ORM.ShapeModel
 				if (objectType != null)
 				{
 					bool independent = objectType.IsIndependent;
-					refModeString = objectType.ReferenceModeString;
+					refModeString = objectType.ReferenceModeDecoratedString;
 					if (refModeString.Length != 0)
 					{
 						formatString = independent ? ResourceStrings.ObjectifiedFactTypeNameShapeRefModeIndependentFormatString : ResourceStrings.ObjectifiedFactTypeNameShapeRefModeFormatString;

@@ -334,7 +334,13 @@
 	<ResourceString name="ModelReferenceModeEditorChangeFormatStringTransaction" model="Model" resourceName="ModelReferenceModeEditor.ChangeFormatStringTransaction"/>
 	<ResourceString name="ModelReferenceModeEditorEditorWindowTitle" model="Model" resourceName="ModelReferenceModeEditor.EditorWindowTitle"/>
 	<ResourceString name="ModelExceptionReferenceModeEnforceUniqueFormatString" model="Model" resourceName="ModelException.ReferenceMode.EnforceUniqueFormatString"/>
+	<ResourceString name="ModelExceptionReferenceModeEnforceUniqueModeName" model="Model" resourceName="ModelException.ReferenceMode.EnforceUniqueModeName"/>
 	<ResourceString name="ModelExceptionReferenceModeKindEnforceUniqueFormatString" model="Model" resourceName="ModelException.ReferenceModeKind.EnforceUniqueFormatString"/>
+	<ResourceString name="ModelExceptionReferenceModeKindEnforcePopularPattern" model="Model" resourceName="ModelException.ReferenceModeKind.EnforcePopularPattern"/>
+	<ResourceString name="ModelExceptionReferenceModeKindEnforceUnitBasedPattern" model="Model" resourceName="ModelException.ReferenceModeKind.EnforceUnitBasedPattern"/>
+	<ResourceString name="ModelExceptionReferenceModeEnforceGeneralPattern" model="Model" resourceName="ModelException.ReferenceMode.EnforceGeneralPattern"/>
+	<ResourceString name="ModelExceptionReferenceModeEnforcePopularPattern" model="Model" resourceName="ModelException.ReferenceMode.EnforcePopularPattern"/>
+	<ResourceString name="ModelExceptionReferenceModeEnforceUnitBasedPattern" model="Model" resourceName="ModelException.ReferenceMode.EnforceUnitBasedPattern"/>
 	<ResourceString name="ModelExceptionReferenceModeIntrinsicRefModesDontChange" model="Model" resourceName="ModelException.ReferenceMode.IntrinsicRefModesDontChange"/>
 	<ResourceString name="ModelExceptionReferenceModeReferenceModesKindNotEmpty" model="Model" resourceName="ModelException.ReferenceMode.ReferenceModesKindNotEmpty"/>
 	<ResourceString name="ModelReferenceModeEditorChangeReferenceModeKindTransaction" model="Model" resourceName="ModelReferenceModeEditor.ChangeReferenceModeKindTransaction"/>

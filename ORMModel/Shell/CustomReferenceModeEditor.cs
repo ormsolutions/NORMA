@@ -23,93 +23,107 @@ using System.Windows.Forms;
 using Microsoft.VisualStudio.Modeling;
 using Microsoft.VisualStudio.VirtualTreeGrid;
 using Neumont.Tools.ORM.ObjectModel;
+using Microsoft.VisualStudio.Shell;
+using System.Globalization;
+using Microsoft.VisualStudio.Shell.Interop;
 
 namespace Neumont.Tools.ORM.Shell
 {
-	///	<summary>
-	///	Custom reference mode editor.
-	///	</summary>
-	public partial class CustomReferenceModeEditor : UserControl
+	partial class ORMReferenceModeEditorToolWindow
 	{
-		private readonly VirtualTreeControl myTree;
-		private readonly ReferenceModeHeaderBranch myHeaders;
-
-		/// <summary>
-		/// Default constructor
-		/// </summary>
-		public CustomReferenceModeEditor()
+		partial class ReferenceModeViewForm
 		{
-			VirtualTreeControl tree = this.myTree = new VirtualTreeControl();
-			this.SuspendLayout();
-			// 
-			// myTree
-			// 
-			tree.Dock = DockStyle.Fill;
-			tree.HasGridLines = true;
-			tree.HasLines = false;
-			tree.HasRootLines = false;
-			tree.IsDragSource = false;
-			tree.LabelEditSupport = VirtualTreeLabelEditActivationStyles.Explicit | VirtualTreeLabelEditActivationStyles.Delayed | VirtualTreeLabelEditActivationStyles.ImmediateSelection;
-			tree.MultiColumnHighlight = true;
-			tree.Name = "myTree";
-			tree.TabIndex = 0;
-			// 
-			// CustomReferenceModeEditor
-			// 
-			this.Controls.Add(tree);
-			this.Name = "CustomReferenceModeEditor";
-			this.Size = new System.Drawing.Size(313, 329);
-			this.ResumeLayout(false);
-			
-			tree.SetColumnHeaders(new VirtualTreeColumnHeader[]{
-				new	VirtualTreeColumnHeader(ResourceStrings.ModelReferenceModeEditorNameColumn),
-				new	VirtualTreeColumnHeader(ResourceStrings.ModelReferenceModeEditorKindColumn),
-				new	VirtualTreeColumnHeader(ResourceStrings.ModelReferenceModeEditorFormatStringColumn)}
-				, true);
-			MultiColumnTree treeData = new MultiColumnTree(3);
-			((ITree)treeData).Root = myHeaders = new ReferenceModeHeaderBranch();
-			tree.MultiColumnTree = (IMultiColumnTree)treeData;
-		}
-
-		#region methods
-
-		/// <summary>
-		/// Sets the Reference modes
-		/// </summary>
-		/// <param name="model"></param>
-		public void SetModel(ORMModel model)
-		{
-			myHeaders.SetModel(model);
-		}
-		#endregion
-
-/* Removed for FxCop compliance, not currently used
-		private void DeleteMenu_Click(object sender, EventArgs e)
-		{
-			Delete(sender as VirtualTreeControl);
-		}
-
-		private void Delete(VirtualTreeControl tree)
-		{
-			if (tree != null)
+			///	<summary>
+			///	Custom reference mode editor.
+			///	</summary>
+			private sealed class CustomReferenceModeEditor : UserControl
 			{
-				VirtualTreeItemInfo info = tree.Tree.GetItemInfo(tree.CurrentIndex, tree.CurrentColumn, false);
-				CustomReferenceModesBranch modes = info.Branch as CustomReferenceModesBranch;
-				if (modes != null)
+				private class CustomVirtualTreeControl : VirtualTreeControl
 				{
-					modes.Delete(info.Row, info.Column);
+					private IServiceProvider myServiceProvider;
+					public CustomVirtualTreeControl(IServiceProvider serviceProvider)
+					{
+						myServiceProvider = serviceProvider;
+					}
+					/// <summary>
+					/// Display a message the way VS wants us to
+					/// </summary>
+					/// <param name="exception"></param>
+					/// <returns></returns>
+					protected override bool DisplayException(Exception exception)
+					{
+						VsShellUtilities.ShowMessageBox(
+							myServiceProvider,
+							exception.Message,
+							ResourceStrings.PackageOfficialName,
+							OLEMSGICON.OLEMSGICON_INFO,
+							OLEMSGBUTTON.OLEMSGBUTTON_OK,
+							OLEMSGDEFBUTTON.OLEMSGDEFBUTTON_FIRST);
+						return true;
+					}
 				}
-			}
-		}
-Removed for FxCop compliance, not currently used */
-		/// <summary>
-		/// Get the tree control for this editor
-		/// </summary>
-		public VirtualTreeControl TreeControl
-		{
-			get
-			{
-				return myTree;
+				private readonly VirtualTreeControl myTree;
+				private readonly ReferenceModeHeaderBranch myHeaders;
+
+				/// <summary>
+				/// Default constructor
+				/// </summary>
+				public CustomReferenceModeEditor(IServiceProvider serviceProvider)
+				{
+					VirtualTreeControl tree = this.myTree = new CustomVirtualTreeControl(serviceProvider);
+					this.SuspendLayout();
+					// 
+					// myTree
+					// 
+					tree.Dock = DockStyle.Fill;
+					tree.HasGridLines = true;
+					tree.HasLines = false;
+					tree.HasRootLines = false;
+					tree.IsDragSource = false;
+					tree.LabelEditSupport = VirtualTreeLabelEditActivationStyles.Explicit | VirtualTreeLabelEditActivationStyles.Delayed | VirtualTreeLabelEditActivationStyles.ImmediateSelection;
+					tree.MultiColumnHighlight = true;
+					tree.Name = "myTree";
+					tree.TabIndex = 0;
+					// 
+					// CustomReferenceModeEditor
+					// 
+					this.Controls.Add(tree);
+					this.Name = "CustomReferenceModeEditor";
+					this.Size = new System.Drawing.Size(313, 329);
+					this.ResumeLayout(false);
+
+					tree.SetColumnHeaders(new VirtualTreeColumnHeader[]{
+						new	VirtualTreeColumnHeader(ResourceStrings.ModelReferenceModeEditorNameColumn),
+						new	VirtualTreeColumnHeader(ResourceStrings.ModelReferenceModeEditorKindColumn),
+						new	VirtualTreeColumnHeader(ResourceStrings.ModelReferenceModeEditorFormatStringColumn)}
+						, true);
+					MultiColumnTree treeData = new MultiColumnTree(3);
+					((ITree)treeData).Root = myHeaders = new ReferenceModeHeaderBranch();
+					tree.MultiColumnTree = (IMultiColumnTree)treeData;
+				}
+
+				#region methods
+
+				/// <summary>
+				/// Sets the Reference modes
+				/// </summary>
+				/// <param name="model"></param>
+				public void SetModel(ORMModel model)
+				{
+					myHeaders.SetModel(model);
+				}
+				#endregion
+
+				/// <summary>
+				/// Get the tree control for this editor
+				/// </summary>
+				public VirtualTreeControl TreeControl
+				{
+					get
+					{
+						return myTree;
+					}
+				}
 			}
 		}
 	}

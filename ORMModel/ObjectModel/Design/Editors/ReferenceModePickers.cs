@@ -39,8 +39,7 @@ namespace Neumont.Tools.ORM.ObjectModel.Design
 	public sealed class ReferenceModeKindPicker : ElementPicker<ReferenceModeKindPicker>
 	{
 		/// <summary>
-		/// Returns a list of role player candidates for a fact type.
-		/// The nesting type is filtered out of the list.
+		/// Returns a list of available reference mode kinds.
 		/// </summary>
 		/// <param name="context">ITypeDescriptorContext. Used to retrieve the selected instance</param>
 		/// <param name="value">The current value</param>
@@ -54,8 +53,14 @@ namespace Neumont.Tools.ORM.ObjectModel.Design
 			{
 				// Make sure we're sorted
 				ReferenceModeKind[] kinds = new ReferenceModeKind[candidatesCount];
+				string[] localizedNames = Utility.GetLocalizedEnumNames(typeof(ReferenceModeType), true);
 				candidates.CopyTo(kinds, 0);
-				Array.Sort<ReferenceModeKind>(kinds, NamedElementComparer<ReferenceModeKind>.CurrentCulture);
+				Array.Sort<ReferenceModeKind>(
+					kinds,
+					delegate(ReferenceModeKind leftKind, ReferenceModeKind rightKind)
+					{
+						return string.Compare(localizedNames[(int)leftKind.ReferenceModeType], localizedNames[(int)rightKind.ReferenceModeType], true, CultureInfo.CurrentCulture);
+					});
 				return kinds;
 			}
 			return candidates;
@@ -82,32 +87,35 @@ namespace Neumont.Tools.ORM.ObjectModel.Design
 		{
 			ObjectType instance = (ObjectType)EditorUtility.ResolveContextInstance(context.Instance, true);
 			IList candidates = instance.Model.ReferenceModeCollection;
-			int candidatesCount = candidates.Count;
-			if (candidatesCount == 0)
+			int candidateCount = candidates.Count;
+			if (candidateCount == 0)
 			{
 				// If it's empty, we don't need to do anything else
 				return candidates;
 			}
-			else if (candidatesCount > 1)
+			else
 			{
-				// Make sure we're sorted
-				ReferenceMode[] modes = new ReferenceMode[candidatesCount];
-				candidates.CopyTo(modes, 0);
-				Array.Sort<ReferenceMode>(modes, NamedElementComparer<ReferenceMode>.CurrentCulture);
+				// Make sure we're sorted, and only display the fully defined reference modes
+				ReferenceMode[] modes = new ReferenceMode[candidateCount];
+				if (candidateCount > 1)
+				{
+					candidates.CopyTo(modes, 0);
+					Array.Sort<ReferenceMode>(
+						modes,
+						delegate(ReferenceMode leftMode, ReferenceMode rightMode)
+						{
+							// Sort by decorated name
+							return string.Compare(leftMode.DecoratedName, rightMode.DecoratedName, true, CultureInfo.CurrentCulture);
+						});
+				}
 				myModes = modes;
-				string[] prettyStrings = new string[candidatesCount];
+				string[] prettyStrings = new string[candidateCount];
 				for (int i = 0; i < prettyStrings.Length; ++i)
 				{
 					ReferenceMode refMode = modes[i];
-					prettyStrings[i] = string.Format(CultureInfo.InvariantCulture, ResourceStrings.ModelReferenceModePickerFormatString, refMode.Name, refMode.GenerateValueTypeName(instance.Name));
+					prettyStrings[i] = string.Format(CultureInfo.InvariantCulture, ResourceStrings.ModelReferenceModePickerFormatString, refMode.DecoratedName, refMode.GenerateValueTypeName(instance.Name));
 				}
 				candidates = prettyStrings;
-			}
-			else
-			{
-				myModes = candidates;
-				ReferenceMode refMode = (ReferenceMode)candidates[0];
-				candidates = new string[] { string.Format(CultureInfo.InvariantCulture, ResourceStrings.ModelReferenceModePickerFormatString, refMode.Name, refMode.GenerateValueTypeName(instance.Name)) };
 			}
 			return candidates;
 		}

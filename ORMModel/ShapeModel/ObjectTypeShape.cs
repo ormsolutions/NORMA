@@ -198,10 +198,10 @@ namespace Neumont.Tools.ORM.ShapeModel
 			referenceModeField.DefaultFontId = DiagramFonts.ShapeTitle;
 			referenceModeField.DefaultText = string.Empty;
 			referenceModeField.DefaultStringFormat = fieldFormat;
-			// Note that the reference mode field is associated with the ReferenceModeString
+			// Note that the reference mode field is associated with the ReferenceModeDecoratedString
 			// property, not ReferenceModeDisplay. The field will only activate for editing
 			// if it is a string property.
-			referenceModeField.AssociateValueWith(Store, ObjectType.ReferenceModeStringDomainPropertyId);
+			referenceModeField.AssociateValueWith(Store, ObjectType.ReferenceModeDecoratedStringDomainPropertyId);
 
 			// Add all shapes before modifying anchoring behavior
 			shapeFields.Add(field);

@@ -3018,6 +3018,98 @@ namespace Neumont.Tools.ORM.ObjectModel
 		}
 		
 		#endregion
+		#region ReferenceModeDecoratedString domain property code
+		
+		/// <summary>
+		/// ReferenceModeDecoratedString domain property Id.
+		/// </summary>
+		public static readonly global::System.Guid ReferenceModeDecoratedStringDomainPropertyId = new global::System.Guid(0xe139f1e3, 0xdc42, 0x498f, 0xbb, 0x70, 0x89, 0x0c, 0x3b, 0x1f, 0xdd, 0x13);
+		
+		/// <summary>
+		/// Gets or sets the value of ReferenceModeDecoratedString domain property.
+		/// Description for
+		/// Neumont.Tools.ORM.ObjectModel.ObjectType.ReferenceModeDecoratedString
+		/// </summary>
+		[DslDesign::DisplayNameResource("Neumont.Tools.ORM.ObjectModel.ObjectType/ReferenceModeDecoratedString.DisplayName", typeof(global::Neumont.Tools.ORM.ObjectModel.ORMCoreDomainModel), "Neumont.Tools.ORM.GeneratedCode.CoreDomainModelResx")]
+		[DslDesign::DescriptionResource("Neumont.Tools.ORM.ObjectModel.ObjectType/ReferenceModeDecoratedString.Description", typeof(global::Neumont.Tools.ORM.ObjectModel.ORMCoreDomainModel), "Neumont.Tools.ORM.GeneratedCode.CoreDomainModelResx")]
+		[global::System.ComponentModel.Browsable(false)]
+		[DslModeling::DomainProperty(Kind = DslModeling::DomainPropertyKind.CustomStorage)]
+		[DslModeling::DomainObjectId("e139f1e3-dc42-498f-bb70-890c3b1fdd13")]
+		public global::System.String ReferenceModeDecoratedString
+		{
+			[global::System.Diagnostics.DebuggerStepThrough]
+			get
+			{
+				return ReferenceModeDecoratedStringPropertyHandler.Instance.GetValue(this);
+			}
+			[global::System.Diagnostics.DebuggerStepThrough]
+			set
+			{
+				ReferenceModeDecoratedStringPropertyHandler.Instance.SetValue(this, value);
+			}
+		}
+		/// <summary>
+		/// Value handler for the ObjectType.ReferenceModeDecoratedString domain property.
+		/// </summary>
+		internal sealed partial class ReferenceModeDecoratedStringPropertyHandler : DslModeling::DomainPropertyValueHandler<ObjectType, global::System.String>
+		{
+			private ReferenceModeDecoratedStringPropertyHandler() { }
+		
+			/// <summary>
+			/// Gets the singleton instance of the ObjectType.ReferenceModeDecoratedString domain property value handler.
+			/// </summary>
+			public static readonly ReferenceModeDecoratedStringPropertyHandler Instance = new ReferenceModeDecoratedStringPropertyHandler();
+		
+			/// <summary>
+			/// Gets the Id of the ObjectType.ReferenceModeDecoratedString domain property.
+			/// </summary>
+			public sealed override global::System.Guid DomainPropertyId
+			{
+				[global::System.Diagnostics.DebuggerStepThrough]
+				get
+				{
+					return ReferenceModeDecoratedStringDomainPropertyId;
+				}
+			}
+			
+			/// <summary>
+			/// Gets a strongly-typed value of the property on specified element.
+			/// </summary>
+			/// <param name="element">Element which owns the property.</param>
+			/// <returns>Property value.</returns>
+			public override sealed global::System.String GetValue(ObjectType element)
+			{
+				if (element == null) throw new global::System.ArgumentNullException("element");
+				// There is no storage for ReferenceModeDecoratedString because its Kind is
+				// set to CustomStorage. Please provide the GetReferenceModeDecoratedStringValue()
+				// method on the domain class.
+				return element.GetReferenceModeDecoratedStringValue();
+			}
+		
+			/// <summary>
+			/// Sets property value on an element.
+			/// </summary>
+			/// <param name="element">Element which owns the property.</param>
+			/// <param name="newValue">New property value.</param>
+			public override sealed void SetValue(ObjectType element, global::System.String newValue)
+			{
+				if (element == null) throw new global::System.ArgumentNullException("element");
+		
+				global::System.String oldValue = GetValue(element);
+				if (newValue != oldValue)
+				{
+					ValueChanging(element, oldValue, newValue);
+					// There is no storage for ReferenceModeDecoratedString because its Kind is
+					// set to CustomStorage. Please provide the SetReferenceModeDecoratedStringValue()
+					// method on the domain class.
+					element.SetReferenceModeDecoratedStringValue(newValue);
+					//ValueChanged(element, oldValue, GetValue(element));
+					ValueChanged(element, oldValue, newValue);
+				}
+			}
+		}
+		
+		#endregion
 		#region ReferenceMode domain property code
 		
 		/// <summary>
@@ -11299,7 +11391,7 @@ namespace Neumont.Tools.ORM.ObjectModel
 	[DslDesign::DescriptionResource("Neumont.Tools.ORM.ObjectModel.ReferenceModeKind.Description", typeof(global::Neumont.Tools.ORM.ObjectModel.ORMCoreDomainModel), "Neumont.Tools.ORM.GeneratedCode.CoreDomainModelResx")]
 	[global::System.CLSCompliant(true)]
 	[DslModeling::DomainObjectId("7ec5e835-5eeb-4fb1-aa09-9bd6aba531e1")]
-	public partial class ReferenceModeKind : ORMNamedElement
+	public partial class ReferenceModeKind : ORMModelElement
 	{
 		#region Constructors, domain class Id
 	

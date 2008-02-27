@@ -114,6 +114,7 @@ namespace Neumont.Tools.ORM.Shell
 								currentObjectType.Model = model;
 								(newlyCreatedObjectTypes ?? (newlyCreatedObjectTypes = new Dictionary<string,ObjectType>())).Add(objectName, currentObjectType);
 								(newlyCreatedElements ?? (newlyCreatedElements = new List<ModelElement>())).Add(currentObjectType);
+								string currentRefModeName;
 
 								// If the object DOES NOT already exist AND it's a value type
 								if (forceValueType)
@@ -121,18 +122,16 @@ namespace Neumont.Tools.ORM.Shell
 									currentObjectType.IsValueType = true;
 								}
 								// If the object DOES NOT already exist AND it's an entity type
-								else if (currentRolePlayer.RefMode.Length > 0)
+								else if ((currentRefModeName = currentRolePlayer.RefMode).Length != 0)
 								{
-									IList<ReferenceMode> modes = ReferenceMode.FindReferenceModesByName(currentRolePlayer.RefMode, model);
-									if (modes.Count == 0)
+									ReferenceMode singleMode = ReferenceMode.GetReferenceModeForDecoratedName(currentRefModeName, model, true);
+									if (singleMode != null)
 									{
-										currentObjectType.ReferenceModeString = currentRolePlayer.RefMode;
+										currentObjectType.ReferenceMode = singleMode;
 									}
 									else
 									{
-										// UNDONE: Consider giving a warning here (after the transaction is
-										// completed, no UI during transactions) that the reference mode is ambiguous.
-										currentObjectType.ReferenceMode = modes[0];
+										currentObjectType.ReferenceModeString = currentRefModeName;
 									}
 								}
 							} // Otherwise, use the existing object.
@@ -181,10 +180,10 @@ namespace Neumont.Tools.ORM.Shell
 								{
 									// if convertingToValueType, then we know we have parens and 0 length ref mode - force value type
 									// if we have a ref mode and it's different than the old one, change it
-									if (convertingToValueType || (!currentObjectType.IsValueType && refModeLength > 0 && currentObjectType.ReferenceModeString != refModeText))
+									if (convertingToValueType || (!currentObjectType.IsValueType && refModeLength > 0 && !(currentObjectType.ReferenceModeDecoratedString == refModeText || currentObjectType.ReferenceModeString == refModeText)))
 									{
-										IList<ReferenceMode> modes = ReferenceMode.FindReferenceModesByName(refModeText, model);
-										if (modes.Count == 0)
+										ReferenceMode singleMode = ReferenceMode.GetReferenceModeForDecoratedName(refModeText, model, true);
+										if (singleMode == null)
 										{
 											// Add a "Delete" object to the transaction bucket to enable agressive RefMode deletion
 											if (convertingToValueType)
@@ -201,9 +200,7 @@ namespace Neumont.Tools.ORM.Shell
 										}
 										else
 										{
-											// UNDONE: Consider giving a warning here (after the transaction is
-											// completed, no UI during transactions) that the reference mode is ambiguous.
-											currentObjectType.ReferenceMode = modes[0];
+											currentObjectType.ReferenceMode = singleMode;
 										}
 
 										// The object was an entity, but is now a value type

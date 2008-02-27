@@ -41,11 +41,6 @@
 				<arg:RuleOn targetType="ConstraintRoleSequenceHasRole" fireTime="LocalCommit" priority="BeforeDelayValidateRulePriority"/>
 			</arg:DeleteRule>
 		</arg:RuleContainer>
-		<arg:RuleContainer class="CustomReferenceMode">
-			<arg:ChangeRule methodName="CustomReferenceModeChangeRule">
-				<arg:RuleOn targetType="CustomReferenceMode"/>
-			</arg:ChangeRule>
-		</arg:RuleContainer>
 		<arg:RuleContainer class="EntityTypeHasPreferredIdentifier">
 			<arg:ChangeRule methodName="ModalityChangeRule">
 				<arg:RuleOn targetType="SetConstraint"/>
@@ -544,11 +539,14 @@
 			</arg:DeletingRule>
 		</arg:RuleContainer>
 		<arg:RuleContainer class="ReferenceMode">
+			<arg:ChangeRule methodName="CustomReferenceModeChangeRule">
+				<arg:RuleOn targetType="CustomReferenceMode"/>
+			</arg:ChangeRule>
 			<arg:AddRule methodName="ReferenceModeAddedRule">
 				<arg:RuleOn targetType="ModelHasReferenceMode" fireTime="LocalCommit" priority="BeforeDelayValidateRulePriority"/>
 			</arg:AddRule>
-			<arg:ChangeRule methodName="ReferenceModeChangeRule">
-				<arg:RuleOn targetType="ReferenceMode"/>
+			<arg:ChangeRule methodName="ReferenceModeKindChangeRule">
+				<arg:RuleOn targetType="ReferenceModeKind"/>
 			</arg:ChangeRule>
 		</arg:RuleContainer>
 		<arg:RuleContainer class="ReferenceModeHasReferenceModeKind">
@@ -558,11 +556,6 @@
 			<arg:RolePlayerChangeRule methodName="ReferenceModeHasReferenceModeKindRolePlayerChangeRule">
 				<arg:RuleOn targetType="ReferenceModeHasReferenceModeKind"/>
 			</arg:RolePlayerChangeRule>
-		</arg:RuleContainer>
-		<arg:RuleContainer class="ReferenceModeKind">
-			<arg:ChangeRule methodName="ReferenceModeKindChangeRule">
-				<arg:RuleOn targetType="ReferenceModeKind"/>
-			</arg:ChangeRule>
 		</arg:RuleContainer>
 		<arg:RuleContainer class="RingConstraint">
 			<arg:ChangeRule methodName="RingConstraintTypeChangeRule">

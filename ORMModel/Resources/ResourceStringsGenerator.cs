@@ -1628,12 +1628,60 @@ namespace Neumont.Tools.ORM
 				return ResourceStrings.GetString(ResourceManagers.Model, "ModelException.ReferenceMode.EnforceUniqueFormatString");
 			}
 		}
+		/// <summary>Exception message when the unique reference mode name rule is violated</summary>
+		public static string ModelExceptionReferenceModeEnforceUniqueModeName
+		{
+			get
+			{
+				return ResourceStrings.GetString(ResourceManagers.Model, "ModelException.ReferenceMode.EnforceUniqueModeName");
+			}
+		}
 		/// <summary>Exception message when the unique format string rule is violated for reference mode kinds</summary>
 		public static string ModelExceptionReferenceModeKindEnforceUniqueFormatString
 		{
 			get
 			{
 				return ResourceStrings.GetString(ResourceManagers.Model, "ModelException.ReferenceModeKind.EnforceUniqueFormatString");
+			}
+		}
+		/// <summary>Exception message when the pattern for a popular reference mode kind is violated.</summary>
+		public static string ModelExceptionReferenceModeKindEnforcePopularPattern
+		{
+			get
+			{
+				return ResourceStrings.GetString(ResourceManagers.Model, "ModelException.ReferenceModeKind.EnforcePopularPattern");
+			}
+		}
+		/// <summary>Exception message when the pattern for a unit based reference mode kind is violated.</summary>
+		public static string ModelExceptionReferenceModeKindEnforceUnitBasedPattern
+		{
+			get
+			{
+				return ResourceStrings.GetString(ResourceManagers.Model, "ModelException.ReferenceModeKind.EnforceUnitBasedPattern");
+			}
+		}
+		/// <summary>Exception message when the trivial general reference mode format string pattern is violated</summary>
+		public static string ModelExceptionReferenceModeEnforceGeneralPattern
+		{
+			get
+			{
+				return ResourceStrings.GetString(ResourceManagers.Model, "ModelException.ReferenceMode.EnforceGeneralPattern");
+			}
+		}
+		/// <summary>Exception message when the popular reference mode format string pattern is violated</summary>
+		public static string ModelExceptionReferenceModeEnforcePopularPattern
+		{
+			get
+			{
+				return ResourceStrings.GetString(ResourceManagers.Model, "ModelException.ReferenceMode.EnforcePopularPattern");
+			}
+		}
+		/// <summary>Exception message when the unit based reference mode format string pattern is violated</summary>
+		public static string ModelExceptionReferenceModeEnforceUnitBasedPattern
+		{
+			get
+			{
+				return ResourceStrings.GetString(ResourceManagers.Model, "ModelException.ReferenceMode.EnforceUnitBasedPattern");
 			}
 		}
 		/// <summary>Exception messege when atttempt is made to change the kind of an intrinsic reference mode</summary>

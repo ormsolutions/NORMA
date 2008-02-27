@@ -41,7 +41,6 @@ namespace Neumont.Tools.ORM.ObjectModel
 						typeof(ConstraintRoleSequence).GetNestedType("SetComparisonConstraintHasRoleDeletingRuleClass", BindingFlags.Public | BindingFlags.NonPublic),
 						typeof(ConstraintRoleSequence).GetNestedType("SetConstraintDeletingRuleClass", BindingFlags.Public | BindingFlags.NonPublic),
 						typeof(ConstraintUtility).GetNestedType("ConstraintRoleSequenceHasRoleDeletedRuleClass", BindingFlags.Public | BindingFlags.NonPublic),
-						typeof(CustomReferenceMode).GetNestedType("CustomReferenceModeChangeRuleClass", BindingFlags.Public | BindingFlags.NonPublic),
 						typeof(EntityTypeHasPreferredIdentifier).GetNestedType("ModalityChangeRuleClass", BindingFlags.Public | BindingFlags.NonPublic),
 						typeof(EntityTypeHasPreferredIdentifier).GetNestedType("PreferredIdentifierAddedRuleClass", BindingFlags.Public | BindingFlags.NonPublic),
 						typeof(EntityTypeHasPreferredIdentifier).GetNestedType("PreferredIdentifierRolePlayerChangeRuleClass", BindingFlags.Public | BindingFlags.NonPublic),
@@ -184,11 +183,11 @@ namespace Neumont.Tools.ORM.ObjectModel
 						typeof(ReadingOrder).GetNestedType("EnforceNoEmptyReadingOrderRolePlayerChangeRuleClass", BindingFlags.Public | BindingFlags.NonPublic),
 						typeof(ReadingOrder).GetNestedType("FactTypeHasRoleAddedRuleClass", BindingFlags.Public | BindingFlags.NonPublic),
 						typeof(ReadingOrder).GetNestedType("ReadingOrderHasRoleDeletingRuleClass", BindingFlags.Public | BindingFlags.NonPublic),
+						typeof(ReferenceMode).GetNestedType("CustomReferenceModeChangeRuleClass", BindingFlags.Public | BindingFlags.NonPublic),
 						typeof(ReferenceMode).GetNestedType("ReferenceModeAddedRuleClass", BindingFlags.Public | BindingFlags.NonPublic),
-						typeof(ReferenceMode).GetNestedType("ReferenceModeChangeRuleClass", BindingFlags.Public | BindingFlags.NonPublic),
+						typeof(ReferenceMode).GetNestedType("ReferenceModeKindChangeRuleClass", BindingFlags.Public | BindingFlags.NonPublic),
 						typeof(ReferenceModeHasReferenceModeKind).GetNestedType("ReferenceModeHasReferenceModeKindDeletingRuleClass", BindingFlags.Public | BindingFlags.NonPublic),
 						typeof(ReferenceModeHasReferenceModeKind).GetNestedType("ReferenceModeHasReferenceModeKindRolePlayerChangeRuleClass", BindingFlags.Public | BindingFlags.NonPublic),
-						typeof(ReferenceModeKind).GetNestedType("ReferenceModeKindChangeRuleClass", BindingFlags.Public | BindingFlags.NonPublic),
 						typeof(RingConstraint).GetNestedType("RingConstraintTypeChangeRuleClass", BindingFlags.Public | BindingFlags.NonPublic),
 						typeof(Role).GetNestedType("ConstraintRoleSequenceHasRoleAddedRuleClass", BindingFlags.Public | BindingFlags.NonPublic),
 						typeof(Role).GetNestedType("ConstraintRoleSequenceHasRoleDeletedRuleClass", BindingFlags.Public | BindingFlags.NonPublic),
@@ -301,7 +300,7 @@ namespace Neumont.Tools.ORM.ObjectModel
 		{
 			Microsoft.VisualStudio.Modeling.RuleManager ruleManager = store.RuleManager;
 			Type[] disabledRuleTypes = ORMCoreDomainModel.CustomDomainModelTypes;
-			for (int i = 0; i < 234; ++i)
+			for (int i = 0; i < 233; ++i)
 			{
 				ruleManager.EnableRule(disabledRuleTypes[i]);
 			}
@@ -505,37 +504,6 @@ namespace Neumont.Tools.ORM.ObjectModel
 		}
 	}
 	#endregion // Rule classes for ConstraintUtility
-	#region Rule classes for CustomReferenceMode
-	partial class CustomReferenceMode
-	{
-		[Microsoft.VisualStudio.Modeling.RuleOn(typeof(CustomReferenceMode), Priority=Neumont.Tools.Modeling.FrameworkDomainModel.InlineRulePriority)]
-		private sealed class CustomReferenceModeChangeRuleClass : Microsoft.VisualStudio.Modeling.ChangeRule
-		{
-			[System.Diagnostics.DebuggerStepThrough()]
-			public CustomReferenceModeChangeRuleClass()
-			{
-				base.IsEnabled = false;
-			}
-			/// <summary>
-			/// Provide the following method in class: 
-			/// Neumont.Tools.ORM.ObjectModel.CustomReferenceMode
-			/// /// <summary>
-			/// /// ChangeRule: typeof(CustomReferenceMode)
-			/// /// </summary>
-			/// private static void CustomReferenceModeChangeRule(ElementPropertyChangedEventArgs e)
-			/// {
-			/// }
-			/// </summary>
-			[System.Diagnostics.DebuggerStepThrough()]
-			public override void ElementPropertyChanged(Microsoft.VisualStudio.Modeling.ElementPropertyChangedEventArgs e)
-			{
-				Neumont.Tools.Modeling.Diagnostics.TraceUtility.TraceRuleStart(e.ModelElement.Store, "Neumont.Tools.ORM.ObjectModel.CustomReferenceMode.CustomReferenceModeChangeRule");
-				CustomReferenceMode.CustomReferenceModeChangeRule(e);
-				Neumont.Tools.Modeling.Diagnostics.TraceUtility.TraceRuleEnd(e.ModelElement.Store, "Neumont.Tools.ORM.ObjectModel.CustomReferenceMode.CustomReferenceModeChangeRule");
-			}
-		}
-	}
-	#endregion // Rule classes for CustomReferenceMode
 	#region Rule classes for EntityTypeHasPreferredIdentifier
 	partial class EntityTypeHasPreferredIdentifier
 	{
@@ -4311,6 +4279,32 @@ namespace Neumont.Tools.ORM.ObjectModel
 	#region Rule classes for ReferenceMode
 	partial class ReferenceMode
 	{
+		[Microsoft.VisualStudio.Modeling.RuleOn(typeof(CustomReferenceMode), Priority=Neumont.Tools.Modeling.FrameworkDomainModel.InlineRulePriority)]
+		private sealed class CustomReferenceModeChangeRuleClass : Microsoft.VisualStudio.Modeling.ChangeRule
+		{
+			[System.Diagnostics.DebuggerStepThrough()]
+			public CustomReferenceModeChangeRuleClass()
+			{
+				base.IsEnabled = false;
+			}
+			/// <summary>
+			/// Provide the following method in class: 
+			/// Neumont.Tools.ORM.ObjectModel.ReferenceMode
+			/// /// <summary>
+			/// /// ChangeRule: typeof(CustomReferenceMode)
+			/// /// </summary>
+			/// private static void CustomReferenceModeChangeRule(ElementPropertyChangedEventArgs e)
+			/// {
+			/// }
+			/// </summary>
+			[System.Diagnostics.DebuggerStepThrough()]
+			public override void ElementPropertyChanged(Microsoft.VisualStudio.Modeling.ElementPropertyChangedEventArgs e)
+			{
+				Neumont.Tools.Modeling.Diagnostics.TraceUtility.TraceRuleStart(e.ModelElement.Store, "Neumont.Tools.ORM.ObjectModel.ReferenceMode.CustomReferenceModeChangeRule");
+				ReferenceMode.CustomReferenceModeChangeRule(e);
+				Neumont.Tools.Modeling.Diagnostics.TraceUtility.TraceRuleEnd(e.ModelElement.Store, "Neumont.Tools.ORM.ObjectModel.ReferenceMode.CustomReferenceModeChangeRule");
+			}
+		}
 		[Microsoft.VisualStudio.Modeling.RuleOn(typeof(ModelHasReferenceMode), FireTime=Microsoft.VisualStudio.Modeling.TimeToFire.LocalCommit, Priority=Neumont.Tools.Modeling.FrameworkDomainModel.BeforeDelayValidateRulePriority)]
 		private sealed class ReferenceModeAddedRuleClass : Microsoft.VisualStudio.Modeling.AddRule
 		{
@@ -4337,11 +4331,11 @@ namespace Neumont.Tools.ORM.ObjectModel
 				Neumont.Tools.Modeling.Diagnostics.TraceUtility.TraceRuleEnd(e.ModelElement.Store, "Neumont.Tools.ORM.ObjectModel.ReferenceMode.ReferenceModeAddedRule");
 			}
 		}
-		[Microsoft.VisualStudio.Modeling.RuleOn(typeof(ReferenceMode), Priority=Neumont.Tools.Modeling.FrameworkDomainModel.InlineRulePriority)]
-		private sealed class ReferenceModeChangeRuleClass : Microsoft.VisualStudio.Modeling.ChangeRule
+		[Microsoft.VisualStudio.Modeling.RuleOn(typeof(ReferenceModeKind), Priority=Neumont.Tools.Modeling.FrameworkDomainModel.InlineRulePriority)]
+		private sealed class ReferenceModeKindChangeRuleClass : Microsoft.VisualStudio.Modeling.ChangeRule
 		{
 			[System.Diagnostics.DebuggerStepThrough()]
-			public ReferenceModeChangeRuleClass()
+			public ReferenceModeKindChangeRuleClass()
 			{
 				base.IsEnabled = false;
 			}
@@ -4349,18 +4343,18 @@ namespace Neumont.Tools.ORM.ObjectModel
 			/// Provide the following method in class: 
 			/// Neumont.Tools.ORM.ObjectModel.ReferenceMode
 			/// /// <summary>
-			/// /// ChangeRule: typeof(ReferenceMode)
+			/// /// ChangeRule: typeof(ReferenceModeKind)
 			/// /// </summary>
-			/// private static void ReferenceModeChangeRule(ElementPropertyChangedEventArgs e)
+			/// private static void ReferenceModeKindChangeRule(ElementPropertyChangedEventArgs e)
 			/// {
 			/// }
 			/// </summary>
 			[System.Diagnostics.DebuggerStepThrough()]
 			public override void ElementPropertyChanged(Microsoft.VisualStudio.Modeling.ElementPropertyChangedEventArgs e)
 			{
-				Neumont.Tools.Modeling.Diagnostics.TraceUtility.TraceRuleStart(e.ModelElement.Store, "Neumont.Tools.ORM.ObjectModel.ReferenceMode.ReferenceModeChangeRule");
-				ReferenceMode.ReferenceModeChangeRule(e);
-				Neumont.Tools.Modeling.Diagnostics.TraceUtility.TraceRuleEnd(e.ModelElement.Store, "Neumont.Tools.ORM.ObjectModel.ReferenceMode.ReferenceModeChangeRule");
+				Neumont.Tools.Modeling.Diagnostics.TraceUtility.TraceRuleStart(e.ModelElement.Store, "Neumont.Tools.ORM.ObjectModel.ReferenceMode.ReferenceModeKindChangeRule");
+				ReferenceMode.ReferenceModeKindChangeRule(e);
+				Neumont.Tools.Modeling.Diagnostics.TraceUtility.TraceRuleEnd(e.ModelElement.Store, "Neumont.Tools.ORM.ObjectModel.ReferenceMode.ReferenceModeKindChangeRule");
 			}
 		}
 	}
@@ -4422,37 +4416,6 @@ namespace Neumont.Tools.ORM.ObjectModel
 		}
 	}
 	#endregion // Rule classes for ReferenceModeHasReferenceModeKind
-	#region Rule classes for ReferenceModeKind
-	partial class ReferenceModeKind
-	{
-		[Microsoft.VisualStudio.Modeling.RuleOn(typeof(ReferenceModeKind), Priority=Neumont.Tools.Modeling.FrameworkDomainModel.InlineRulePriority)]
-		private sealed class ReferenceModeKindChangeRuleClass : Microsoft.VisualStudio.Modeling.ChangeRule
-		{
-			[System.Diagnostics.DebuggerStepThrough()]
-			public ReferenceModeKindChangeRuleClass()
-			{
-				base.IsEnabled = false;
-			}
-			/// <summary>
-			/// Provide the following method in class: 
-			/// Neumont.Tools.ORM.ObjectModel.ReferenceModeKind
-			/// /// <summary>
-			/// /// ChangeRule: typeof(ReferenceModeKind)
-			/// /// </summary>
-			/// private static void ReferenceModeKindChangeRule(ElementPropertyChangedEventArgs e)
-			/// {
-			/// }
-			/// </summary>
-			[System.Diagnostics.DebuggerStepThrough()]
-			public override void ElementPropertyChanged(Microsoft.VisualStudio.Modeling.ElementPropertyChangedEventArgs e)
-			{
-				Neumont.Tools.Modeling.Diagnostics.TraceUtility.TraceRuleStart(e.ModelElement.Store, "Neumont.Tools.ORM.ObjectModel.ReferenceModeKind.ReferenceModeKindChangeRule");
-				ReferenceModeKind.ReferenceModeKindChangeRule(e);
-				Neumont.Tools.Modeling.Diagnostics.TraceUtility.TraceRuleEnd(e.ModelElement.Store, "Neumont.Tools.ORM.ObjectModel.ReferenceModeKind.ReferenceModeKindChangeRule");
-			}
-		}
-	}
-	#endregion // Rule classes for ReferenceModeKind
 	#region Rule classes for RingConstraint
 	partial class RingConstraint
 	{

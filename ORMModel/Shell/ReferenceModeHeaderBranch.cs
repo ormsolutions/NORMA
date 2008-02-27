@@ -25,282 +25,281 @@ using Neumont.Tools.ORM.ObjectModel;
 
 namespace Neumont.Tools.ORM.Shell
 {
-	/// <summary>
-	/// Represents the Reference Mode Header Branch
-	/// </summary>
-	public class ReferenceModeHeaderBranch : IBranch 
+	partial class ORMReferenceModeEditorToolWindow
 	{
-		private ReferenceModeKindsBranch myReferenceModeKindsBranch;
-		private CustomReferenceModesBranch myCustomBranch;
-		private IntrinsicReferenceModesBranch myIntrinsicBranch;
-
-		private enum Headers
+		partial class ReferenceModeViewForm
 		{
-			ReferenceModeKinds = 0,
-			CustomReferenceModes = 1,
-			IntrinsicReferenceModes = 2
-		}
-
-		private static readonly string myIntrinsicReferenceModesHeader = ResourceStrings.ModelReferenceModeEditorIntrinsicReferenceModesHeader;
-		private static readonly string myCustomReferenceModesHeader = ResourceStrings.ModelReferenceModeEditorCustomReferenceModesHeader;
-		private static readonly string myReferenceModeKindHeader = ResourceStrings.ModelReferenceModeEditorReferenceModeKindHeader;
-
-		private static readonly string[] myHeaderNames = { myReferenceModeKindHeader, myCustomReferenceModesHeader, myIntrinsicReferenceModesHeader }; 
-
-		/// <summary>
-		/// Default constructor
-		/// </summary>
-		public ReferenceModeHeaderBranch()
-		{
-			this.myReferenceModeKindsBranch = new ReferenceModeKindsBranch();
-			myCustomBranch = new CustomReferenceModesBranch();
-			myIntrinsicBranch = new IntrinsicReferenceModesBranch();			
-		}
-
-		/// <summary>
-		/// Sets the reference modes for the class
-		/// </summary>
-		/// <param name="model"></param>
-		public void SetModel(ORMModel model)
-		{
-			myCustomBranch.SetModel(model);
-			myIntrinsicBranch.SetModel(model);
-			myReferenceModeKindsBranch.SetModel(model);
-		}
-		#region IBranch Members
-		/// <summary>
-		/// Implements IBranch.BeginLabelEdit
-		/// </summary>
-		protected static VirtualTreeLabelEditData BeginLabelEdit(int row, int column, VirtualTreeLabelEditActivationStyles activationStyle)
-		{
-			return VirtualTreeLabelEditData.Invalid;
-		}
-		VirtualTreeLabelEditData IBranch.BeginLabelEdit(int row, int column, VirtualTreeLabelEditActivationStyles activationStyle)
-		{
-			return BeginLabelEdit(row, column, activationStyle);
-		}
-		/// <summary>
-		/// Implements IBranch.CommitLabelEdit
-		/// </summary>
-		protected static LabelEditResult CommitLabelEdit(int row, int column, string newText)
-		{
-			return LabelEditResult.CancelEdit;
-		}
-		LabelEditResult IBranch.CommitLabelEdit(int row, int column, string newText)
-		{
-			return CommitLabelEdit(row, column, newText);
-		}
-		/// <summary>
-		/// Implements IBranch.Features
-		/// </summary>
-		protected static BranchFeatures Features
-		{
-			get { return BranchFeatures.Expansions | BranchFeatures.Realigns; }
-		}
-		BranchFeatures IBranch.Features
-		{
-			get { return Features; }
-		}
-		/// <summary>
-		/// Implements IBranch.GetAccssibilityData
-		/// </summary>
-		protected static VirtualTreeAccessibilityData GetAccessibilityData(int row, int column)
-		{
-			return VirtualTreeAccessibilityData.Empty;
-		}
-		VirtualTreeAccessibilityData IBranch.GetAccessibilityData(int row, int column)
-		{
-			return GetAccessibilityData(row, column);
-		}
-		/// <summary>
-		/// Implements IBranch.GetDisplayData
-		/// </summary>
-		protected static VirtualTreeDisplayData GetDisplayData(int row, int column, VirtualTreeDisplayDataMasks requiredData)
-		{
-			VirtualTreeDisplayData retVal = new VirtualTreeDisplayData();
-			retVal.BackColor = SystemColors.ControlLight;
-			return retVal;
-		}
-		VirtualTreeDisplayData IBranch.GetDisplayData(int row, int column, VirtualTreeDisplayDataMasks requiredData)
-		{
-			return GetDisplayData(row, column, requiredData);
-		}
-		/// <summary>
-		/// Implements IBranch.GetObject
-		/// </summary>
-		protected object GetObject(int row, int column, ObjectStyle style, ref int options)
-		{
-			if (style == ObjectStyle.ExpandedBranch)
+			#region BaseBranch class
+			/// <summary>
+			/// A helper class to provide a default IBranch implementation
+			/// </summary>
+			private abstract class BaseBranch : IBranch
 			{
-				switch ((Headers)row)
+				#region IBranch Implementation
+				VirtualTreeLabelEditData IBranch.BeginLabelEdit(int row, int column, VirtualTreeLabelEditActivationStyles activationStyle)
 				{
-					case Headers.ReferenceModeKinds:
-						return this.myReferenceModeKindsBranch;
-
-					case Headers.CustomReferenceModes:
-						return this.myCustomBranch;
-
-					case Headers.IntrinsicReferenceModes:
-						return myIntrinsicBranch;
+					return VirtualTreeLabelEditData.Invalid;
 				}
-			}
-			return null;
-		}
-		object IBranch.GetObject(int row, int column, ObjectStyle style, ref int options)
-		{
-			return GetObject(row, column, style, ref options);
-		}
-		/// <summary>
-		/// Implements IBranch.GetText
-		/// </summary>
-		protected string GetText(int row, int column)
-		{
-			return myHeaderNames[row];
-		}
-		string IBranch.GetText(int row, int column)
-		{
-			return GetText(row, column);
-		}
-		/// <summary>
-		/// Implements IBranch.GetTipText
-		/// </summary>
-		protected static string GetTipText(int row, int column, ToolTipType tipType)
-		{
-			return null;
-		}
-		string IBranch.GetTipText(int row, int column, ToolTipType tipType)
-		{
-			return GetTipText(row, column, tipType);
-		}
-		/// <summary>
-		/// Implements IBranch.IsExpandable
-		/// </summary>
-		protected static bool IsExpandable(int row, int column)
-		{
-			return true;
-		}
-		bool IBranch.IsExpandable(int row, int column)
-		{
-			return IsExpandable(row, column);
-		}
-		/// <summary>
-		/// Implements IBranch.LocateObject
-		/// </summary>
-		protected static LocateObjectData LocateObject(object obj, ObjectStyle style, int locateOptions)
-		{
-			switch (style)
-			{
-				case ObjectStyle.ExpandedBranch:
-					if (obj is ReferenceModeKindsBranch)
+				LabelEditResult IBranch.CommitLabelEdit(int row, int column, string newText)
+				{
+					return LabelEditResult.CancelEdit;
+				}
+				BranchFeatures IBranch.Features
+				{
+					get
 					{
-						return new LocateObjectData(0, 0, (int)BranchLocationAction.KeepBranch);
+						return BranchFeatures.None;
 					}
-					return new LocateObjectData(0, 0, (int)BranchLocationAction.DiscardBranch);
-				default:
-					Debug.Fail("Shouldn't be here");
-					return new LocateObjectData();
+				}
+				VirtualTreeAccessibilityData IBranch.GetAccessibilityData(int row, int column)
+				{
+					return VirtualTreeAccessibilityData.Empty;
+				}
+				VirtualTreeDisplayData IBranch.GetDisplayData(int row, int column, VirtualTreeDisplayDataMasks requiredData)
+				{
+					return VirtualTreeDisplayData.Empty;
+				}
+				object IBranch.GetObject(int row, int column, ObjectStyle style, ref int options)
+				{
+					Debug.Fail("Should override.");
+					return null;
+				}
+				string IBranch.GetText(int row, int column)
+				{
+					Debug.Fail("Should override.");
+					return null;
+				}
+				string IBranch.GetTipText(int row, int column, ToolTipType tipType)
+				{
+					return null;
+				}
+				bool IBranch.IsExpandable(int row, int column)
+				{
+					return false;
+				}
+				LocateObjectData IBranch.LocateObject(object obj, ObjectStyle style, int locateOptions)
+				{
+					return default(LocateObjectData);
+				}
+				event BranchModificationEventHandler IBranch.OnBranchModification
+				{
+					add { }
+					remove { }
+				}
+				void IBranch.OnDragEvent(object sender, int row, int column, DragEventType eventType, System.Windows.Forms.DragEventArgs args)
+				{
+				}
+				void IBranch.OnGiveFeedback(System.Windows.Forms.GiveFeedbackEventArgs args, int row, int column)
+				{
+				}
+				void IBranch.OnQueryContinueDrag(System.Windows.Forms.QueryContinueDragEventArgs args, int row, int column)
+				{
+				}
+				VirtualTreeStartDragData IBranch.OnStartDrag(object sender, int row, int column, DragReason reason)
+				{
+					return VirtualTreeStartDragData.Empty;
+				}
+				StateRefreshChanges IBranch.SynchronizeState(int row, int column, IBranch matchBranch, int matchRow, int matchColumn)
+				{
+					return StateRefreshChanges.None;
+				}
+				StateRefreshChanges IBranch.ToggleState(int row, int column)
+				{
+					return StateRefreshChanges.None;
+				}
+
+				int IBranch.UpdateCounter
+				{
+					get
+					{
+						return 0;
+					}
+				}
+
+				int IBranch.VisibleItemCount
+				{
+					get
+					{
+						Debug.Fail("Should override");
+						return 0;
+					}
+				}
+				#endregion // IBranch Implementation
 			}
-		}
-		LocateObjectData IBranch.LocateObject(object obj, ObjectStyle style, int locateOptions)
-		{
-			return LocateObject(obj, style, locateOptions);
-		}
-		event BranchModificationEventHandler IBranch.OnBranchModification
-		{
-			add { }
-			remove { }
-		}
-		/// <summary>
-		/// Implements IBranch.OnDragEvent
-		/// </summary>
-		protected static void OnDragEvent(object sender, int row, int column, DragEventType eventType, DragEventArgs args)
-		{
-		}
-		void IBranch.OnDragEvent(object sender, int row, int column, DragEventType eventType, DragEventArgs args)
-		{
-			OnDragEvent(sender, row, column, eventType, args);
-		}
-		/// <summary>
-		/// Implements IBranch.OnGiveFeedback
-		/// </summary>
-		protected static void OnGiveFeedback(GiveFeedbackEventArgs args, int row, int column)
-		{
-		}
-		void IBranch.OnGiveFeedback(GiveFeedbackEventArgs args, int row, int column)
-		{
-			OnGiveFeedback(args, row, column);
-		}
-		/// <summary>
-		/// Implements IBranch.OnQueryContinueDrag
-		/// </summary>
-		protected static void OnQueryContinueDrag(QueryContinueDragEventArgs args, int row, int column)
-		{
-		}
-		void IBranch.OnQueryContinueDrag(QueryContinueDragEventArgs args, int row, int column)
-		{
-			OnQueryContinueDrag(args, row, column);
-		}
-		/// <summary>
-		/// Implements IBranch.OnStartDrag
-		/// </summary>
-		protected static VirtualTreeStartDragData OnStartDrag(object sender, int row, int column, DragReason reason)
-		{
-			return VirtualTreeStartDragData.Empty;
-		}
-		VirtualTreeStartDragData IBranch.OnStartDrag(object sender, int row, int column, DragReason reason)
-		{
-			return OnStartDrag(sender, row, column, reason);
-		}
-		/// <summary>
-		/// Implements IBranch.ToggleState
-		/// </summary>
-		protected static StateRefreshChanges ToggleState(int row, int column)
-		{
-			return StateRefreshChanges.None;
-		}
-		StateRefreshChanges IBranch.ToggleState(int row, int column)
-		{
-			return ToggleState(row, column);
-		}
-		/// <summary>
-		/// Implements IBranch.SynchronizeState
-		/// </summary>
-		protected static StateRefreshChanges SynchronizeState(int row, int column, IBranch matchBranch, int matchRow, int matchColumn)
-		{
-			return StateRefreshChanges.None;
-		}
-		StateRefreshChanges IBranch.SynchronizeState(int row, int column, IBranch matchBranch, int matchRow, int matchColumn)
-		{
-			return SynchronizeState(row, column, matchBranch, matchRow, matchColumn);
-		}
-		/// <summary>
-		/// Implements IBranch.UpdateCounter
-		/// </summary>
-		protected static int UpdateCounter
-		{
-			get
+			#endregion // BaseBranch class
+			/// <summary>
+			/// Represents the Reference Mode Header Branch
+			/// </summary>
+			private sealed partial class ReferenceModeHeaderBranch : BaseBranch, IBranch
 			{
-				return 0;
+				#region Shared by all branches
+				private enum Columns
+				{
+					Name = 0,
+					ReferenceModeKind = 1,
+					FormatString = 2,
+					Last = FormatString,
+				}
+				/// <summary>
+				/// Replaces the {0} and {1} with entityTypeName and referenceModeName
+				/// </summary>
+				/// <param name="mode">The <see cref="ReferenceMode"/> to format</param>
+				/// <param name="forEditing">True to replace the reference mode name with the editable form of the name.
+				/// Otherwise, use the reference mode name</param>
+				private static string PrettyFormatString(ReferenceMode mode, bool forEditing)
+				{
+					return string.Format(mode.FormatString, ResourceStrings.ModelReferenceModeEditorEntityTypeName, forEditing ? ResourceStrings.ModelReferenceModeEditorReferenceModeName : mode.Name);
+				}
+				/// <summary>
+				/// Replaces the {0} and {1} with entityTypeName and referenceModeName
+				/// </summary>
+				/// <param name="kind">The <see cref="ReferenceMode"/> to format</param>
+				private static string PrettyFormatString(ReferenceModeKind kind)
+				{
+					return string.Format(kind.FormatString, ResourceStrings.ModelReferenceModeEditorEntityTypeName, ResourceStrings.ModelReferenceModeEditorReferenceModeName);
+				}
+				/// <summary>
+				/// Replaces the {0} and {1} with entityTypeName and referenceModeName
+				/// </summary>
+				/// <param name="prettyFormatString"></param>
+				/// <returns></returns>
+				private static string UglyFormatString(string prettyFormatString)
+				{
+					return ReplaceInsensitive(ReplaceInsensitive(ReplaceInsensitive(ReplaceInsensitive(prettyFormatString,
+						ResourceStrings.ModelReferenceModeEditorAbbreviatedEntityTypeName, "{0}"),
+						ResourceStrings.ModelReferenceModeEditorAbbreviatedReferenceModeName, "{1}"),
+						ResourceStrings.ModelReferenceModeEditorEntityTypeName, "{0}"),
+						ResourceStrings.ModelReferenceModeEditorReferenceModeName, "{1}");
+				}
+				private static string ReplaceInsensitive(string value, string find, string replaceWith)
+				{
+					int index = value.IndexOf(find, StringComparison.CurrentCultureIgnoreCase);
+					if (index == 0)
+					{
+						return replaceWith + value.Substring(find.Length);
+					}
+					else if (index > 0)
+					{
+						return value.Substring(0, index) + replaceWith + value.Substring(find.Length + index);
+					}
+					return value;
+				}
+				#region MultiColumnBaseBranch class
+				private abstract class MultiColumnBaseBranch : BaseBranch, IMultiColumnBranch
+				{
+					#region IMultiColumnBranch Implementation
+					int IMultiColumnBranch.ColumnCount
+					{
+						get { return (int)Columns.Last + 1; }
+					}
+					SubItemCellStyles IMultiColumnBranch.ColumnStyles(int column)
+					{
+						return SubItemCellStyles.Simple;
+					}
+
+					int IMultiColumnBranch.GetJaggedColumnCount(int row)
+					{
+						return (int)Columns.Last + 1;
+					}
+					#endregion // IMultiColumnBaseBranch Implementation
+				}
+				#endregion // MultiColumnBaseBranch class
+				#endregion // Shared by all branches
+				private ReferenceModeKindsBranch myReferenceModeKindsBranch;
+				private CustomReferenceModesBranch myCustomBranch;
+				private IntrinsicReferenceModesBranch myIntrinsicBranch;
+
+				private enum Headers
+				{
+					ReferenceModeKinds = 0,
+					CustomReferenceModes = 1,
+					IntrinsicReferenceModes = 2
+				}
+
+				private static readonly string myIntrinsicReferenceModesHeader = ResourceStrings.ModelReferenceModeEditorIntrinsicReferenceModesHeader;
+				private static readonly string myCustomReferenceModesHeader = ResourceStrings.ModelReferenceModeEditorCustomReferenceModesHeader;
+				private static readonly string myReferenceModeKindHeader = ResourceStrings.ModelReferenceModeEditorReferenceModeKindHeader;
+
+				private static readonly string[] myHeaderNames = { myReferenceModeKindHeader, myCustomReferenceModesHeader, myIntrinsicReferenceModesHeader };
+
+				/// <summary>
+				/// Default constructor
+				/// </summary>
+				public ReferenceModeHeaderBranch()
+				{
+					this.myReferenceModeKindsBranch = new ReferenceModeKindsBranch();
+					myCustomBranch = new CustomReferenceModesBranch();
+					myIntrinsicBranch = new IntrinsicReferenceModesBranch();
+				}
+
+				/// <summary>
+				/// Sets the reference modes for the class
+				/// </summary>
+				/// <param name="model"></param>
+				public void SetModel(ORMModel model)
+				{
+					myCustomBranch.SetModel(model);
+					myIntrinsicBranch.SetModel(model);
+					myReferenceModeKindsBranch.SetModel(model);
+				}
+				#region IBranch Implementation
+				BranchFeatures IBranch.Features
+				{
+					get { return BranchFeatures.Expansions; }
+				}
+				VirtualTreeDisplayData IBranch.GetDisplayData(int row, int column, VirtualTreeDisplayDataMasks requiredData)
+				{
+					VirtualTreeDisplayData retVal = new VirtualTreeDisplayData();
+					retVal.BackColor = SystemColors.ControlLight;
+					return retVal;
+				}
+				object IBranch.GetObject(int row, int column, ObjectStyle style, ref int options)
+				{
+					if (style == ObjectStyle.ExpandedBranch)
+					{
+						switch ((Headers)row)
+						{
+							case Headers.ReferenceModeKinds:
+								return this.myReferenceModeKindsBranch;
+
+							case Headers.CustomReferenceModes:
+								return this.myCustomBranch;
+
+							case Headers.IntrinsicReferenceModes:
+								return myIntrinsicBranch;
+						}
+					}
+					return null;
+				}
+				string IBranch.GetText(int row, int column)
+				{
+					return myHeaderNames[row];
+				}
+				bool IBranch.IsExpandable(int row, int column)
+				{
+					return true;
+				}
+				LocateObjectData IBranch.LocateObject(object obj, ObjectStyle style, int locateOptions)
+				{
+					switch (style)
+					{
+						case ObjectStyle.ExpandedBranch:
+							if (obj is ReferenceModeKindsBranch)
+							{
+								return new LocateObjectData(0, 0, (int)BranchLocationAction.KeepBranch);
+							}
+							return new LocateObjectData(0, 0, (int)BranchLocationAction.DiscardBranch);
+						default:
+							Debug.Fail("Shouldn't be here");
+							return new LocateObjectData();
+					}
+				}
+				int IBranch.VisibleItemCount
+				{
+					get { return myHeaderNames.Length; }
+				}
+				#endregion // IBranch Implementation
 			}
 		}
-		int IBranch.UpdateCounter
-		{
-			get
-			{
-				return UpdateCounter;
-			}
-		}
-		/// <summary>
-		/// Implements IBranch.VisibleItemCount
-		/// </summary>
-		protected int VisibleItemCount
-		{
-			get { return myHeaderNames.Length; }
-		}
-		int IBranch.VisibleItemCount
-		{
-			get { return VisibleItemCount; }
-		}
-		#endregion
 	}
 }

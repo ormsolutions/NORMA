@@ -477,9 +477,25 @@
 		<value>Multiple reference modes found with the same name. Use the reference mode picker instead of setting the name directly.</value>
 		<comment>Exception message output when multiple reference modes are found with the same name</comment>
 	</data>
+	<data name="ModelException.ReferenceMode.EnforceGeneralPattern" xml:space="preserve">
+		<value>The format string for a General reference mode is limited to the {ReferenceModeName} replacement field.</value>
+		<comment>Exception message when the trivial general reference mode format string pattern is violated</comment>
+	</data>
+	<data name="ModelException.ReferenceMode.EnforcePopularPattern" xml:space="preserve">
+		<value>The format string for a Popular reference mode must include, but not be equal to, the {EntityTypeName} replacement field.</value>
+		<comment>Exception message when the popular reference mode format string pattern is violated</comment>
+	</data>
+	<data name="ModelException.ReferenceMode.EnforceUnitBasedPattern" xml:space="preserve">
+		<value>The format string for a UnitBased reference mode must not include the {EntityTypeName} replacement field.</value>
+		<comment>Exception message when the unit based reference mode format string pattern is violated</comment>
+	</data>
 	<data name="ModelException.ReferenceMode.EnforceUniqueFormatString" xml:space="preserve">
 		<value>Format strings must be unique across all reference modes in the model.</value>
 		<comment>Exception message when the unique format string rule is violated for reference modes</comment>
+	</data>
+	<data name="ModelException.ReferenceMode.EnforceUniqueModeName" xml:space="preserve">
+		<value>Reference mode names must be unique across the model.</value>
+		<comment>Exception message when the unique reference mode name rule is violated</comment>
 	</data>
 	<data name="ModelException.ReferenceMode.IntrinsicRefModesDontChange" xml:space="preserve">
 		<value>Reference mode kind cannot be changed for intrinsic reference modes.</value>
@@ -488,6 +504,14 @@
 	<data name="ModelException.ReferenceMode.ReferenceModesKindNotEmpty" xml:space="preserve">
 		<value>Reference mode kind cannot be empty.</value>
 		<comment>Exception message when attempt is made to remove reference mode kind.</comment>
+	</data>
+	<data name="ModelException.ReferenceModeKind.EnforcePopularPattern" xml:space="preserve">
+		<value>The format string for a Popular reference mode kind must include both the {EntityTypeName} and {ReferenceModeName} replacement fields.</value>
+		<comment>Exception message when the pattern for a popular reference mode kind is violated.</comment>
+	</data>
+	<data name="ModelException.ReferenceModeKind.EnforceUnitBasedPattern" xml:space="preserve">
+		<value>The format string for a UnitBased reference mode kind must include the {ReferenceModeName} replacement field and must not include the EntityTypeName replacement field.</value>
+		<comment>Exception message when the pattern for a unit based reference mode kind is violated.</comment>
 	</data>
 	<data name="ModelException.ReferenceModeKind.EnforceUniqueFormatString" xml:space="preserve">
 		<value>Format strings must be unique across all reference mode kinds in the model.</value>
@@ -618,11 +642,11 @@
 		<comment>Text to place in the title of the reading editor tool window.</comment>
 	</data>
 	<data name="ModelReferenceModeEditor.AbbreviatedEntityTypeName" xml:space="preserve">
-		<value>E</value>
+		<value>{E}</value>
 		<comment>Abbreviated form of the entity type name</comment>
 	</data>
 	<data name="ModelReferenceModeEditor.AbbreviatedReferenceModeName" xml:space="preserve">
-		<value>R</value>
+		<value>{R}</value>
 		<comment>Abbreviated form of the reference mode name</comment>
 	</data>
 	<data name="ModelReferenceModeEditor.AddCustomReferenceModeTransaction" xml:space="preserve">
@@ -654,11 +678,11 @@
 		<comment>The text that displays the title of the editor window.</comment>
 	</data>
 	<data name="ModelReferenceModeEditor.EntityTypeName" xml:space="preserve">
-		<value>EntityTypeName</value>
+		<value>{EntityTypeName}</value>
 		<comment>Text that names the Entity Type in the displayed format string.</comment>
 	</data>
 	<data name="ModelReferenceModeEditor.FormatStringColumn" xml:space="preserve">
-		<value>Format String</value>
+		<value>ValueType Name Format</value>
 		<comment>Column header text for the Format String column.</comment>
 	</data>
 	<data name="ModelReferenceModeEditor.IntrinsicReferenceModesHeader" xml:space="preserve">
@@ -678,7 +702,7 @@
 		<comment>Text used to name the Reference Mode Kind column</comment>
 	</data>
 	<data name="ModelReferenceModeEditor.ReferenceModeName" xml:space="preserve">
-		<value>ReferenceModeName</value>
+		<value>{ReferenceModeName}</value>
 		<comment>Text that names the reference mode in the displayed format string.</comment>
 	</data>
 	<data name="ModelReferenceModePicker.FormatString" xml:space="preserve">
@@ -756,7 +780,7 @@
 		<value>Popular</value>
 	</data>
 	<data name="ReferenceModeType.UnitBased" xml:space="preserve">
-		<value>Unit-based</value>
+		<value>UnitBased</value>
 	</data>
 	<data name="RingConstraintType.Acyclic" xml:space="preserve">
 		<value>Acyclic</value>
