@@ -781,6 +781,11 @@ namespace Neumont.Tools.ORM.Shell
 							else
 							{
 								FactType testFactType = ORMEditorUtility.ResolveContextFactType(element);
+								if (testFactType is SubtypeFact)
+								{
+									// Readings on subtypes are not directly edited
+									testFactType = null;
+								}
 								// Handle selection of multiple elements as long as
 								// they all resolve to the same facttype
 								if (testFactType == null)

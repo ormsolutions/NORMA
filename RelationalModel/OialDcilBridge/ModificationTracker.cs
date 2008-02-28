@@ -156,7 +156,8 @@ namespace Neumont.Tools.ORMAbstractionToConceptualDatabaseBridge
 				Uniqueness uniqueness = link.Uniqueness;
 				LinkedElementCollection<UniquenessConstraint> constraints;
 				int constraintCount;
-				if (!uniqueness.IsDeleted &&
+				if (!uniqueness.IsDeleting &&
+					!link.ConceptTypeChild.IsDeleting &&
 					0 != (constraintCount = (constraints = UniquenessConstraintIsForUniqueness.GetUniquenessConstraint(uniqueness)).Count))
 				{
 					int removeAtIndex = UniquenessIncludesConceptTypeChild.GetLinksToConceptTypeChildCollection(uniqueness).IndexOf(link);

@@ -186,7 +186,7 @@ namespace Neumont.Tools.ORMToORMAbstractionBridge
 				FactTypeDerivationExpression derivation;
 				if (null == factType.InternalUniquenessConstraintRequiredError &&
 					null == factType.ImpliedInternalUniquenessConstraintError &&
-					(null == (derivation = factType.DerivationRule) || derivation.DerivationStorage != DerivationStorageType.Derived))
+					(null == (derivation = factType.DerivationRule) || (derivation.DerivationStorage != DerivationStorageType.Derived || factType is SubtypeFact)))
 				{
 					foreach (RoleBase role in factType.RoleCollection)
 					{
@@ -771,7 +771,11 @@ namespace Neumont.Tools.ORMToORMAbstractionBridge
 						FactTypeDerivationExpression derivation = (FactTypeDerivationExpression)e.ModelElement;
 						if (!derivation.IsDeleted)
 						{
-							FilterModifiedFactType(derivation.FactType, true);
+							FactType factType = derivation.FactType;
+							if (!(factType is SubtypeFact))
+							{
+								FilterModifiedFactType(factType, true);
+							}
 						}
 					}
 				}
@@ -783,7 +787,7 @@ namespace Neumont.Tools.ORMToORMAbstractionBridge
 			private static void FactTypeDerivationAddedRule(ElementAddedEventArgs e)
 			{
 				FactTypeHasDerivationExpression link = (FactTypeHasDerivationExpression)e.ModelElement;
-				if (link.DerivationRule.DerivationStorage == DerivationStorageType.Derived)
+				if (link.DerivationRule.DerivationStorage == DerivationStorageType.Derived && !(link.FactType is SubtypeFact))
 				{
 					FilterModifiedFactType(link.FactType, true);
 				}
@@ -796,7 +800,7 @@ namespace Neumont.Tools.ORMToORMAbstractionBridge
 			{
 				FactTypeHasDerivationExpression link = (FactTypeHasDerivationExpression)e.ModelElement;
 				FactType factType = link.FactType;
-				if (!factType.IsDeleted && link.DerivationRule.DerivationStorage == DerivationStorageType.Derived)
+				if (!factType.IsDeleted && link.DerivationRule.DerivationStorage == DerivationStorageType.Derived && !(factType is SubtypeFact))
 				{
 					FilterModifiedFactType(factType, true);
 				}

@@ -158,8 +158,9 @@ namespace Neumont.Tools.ORMToORMAbstractionBridge
 				Uniqueness uniqueness;
 				ConstraintRoleSequenceHasRole link = (ConstraintRoleSequenceHasRole)e.ModelElement;
 				ConstraintRoleSequence sequence = link.ConstraintRoleSequence;
-				if (!sequence.IsDeleted &&
+				if (!sequence.IsDeleting &&
 					null != (constraint = sequence as UniquenessConstraint) &&
+					!link.Role.IsDeleting &&
 					null != (uniqueness = UniquenessIsForUniquenessConstraint.GetUniqueness(constraint)))
 				{
 					uniqueness.ConceptTypeChildCollection.RemoveAt(ConstraintRoleSequenceHasRole.GetLinksToRoleCollection(sequence).IndexOf(link));
