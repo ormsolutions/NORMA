@@ -233,6 +233,7 @@ namespace Neumont.Tools.ORM.Shell
 		{
 			m_ImageList = new ImageList();
 			m_ImageList.ImageSize = new Size(16, 16);
+			m_ImageList.ColorDepth = ColorDepth.Depth24Bit;
 			m_ImageList.TransparentColor = System.Drawing.Color.Lime;
 			m_ImageList.ImageStream = ResourceStrings.FactEditorIntellisenseImageList;
 		}

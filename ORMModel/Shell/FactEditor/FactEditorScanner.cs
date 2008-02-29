@@ -85,7 +85,9 @@ namespace Neumont.Tools.ORM.Shell
 					{
 						FactTokenInfo factToken = tokenInfo as FactTokenInfo;
 						factToken.Value = m_Line.Substring(factToken.StartIndex, factToken.Length);
+#if FACTEDITOR_TIPTEXT
 						factToken.ExistsOnModel = this.ObjectTypeExists(factToken.Value);
+#endif // FACTEDITOR_TIPTEXT
 					}
 				}
 				return foundToken;
@@ -234,11 +236,13 @@ namespace Neumont.Tools.ORM.Shell
 			}
 			#endregion // Private Methods
 			#region Model Helper Methods
+#if FACTEDITOR_TIPTEXT
 			private bool ObjectTypeExists(string name)
 			{
 				ORMDesignerDocView currentDocView = m_View;
 				if (currentDocView != null)
 				{
+					// UNDONE: This is painfully slow. Use ObjectTypesDictionary on the current model
 					List<ObjectType> temp = new List<ObjectType>();
 					temp.AddRange(currentDocView.DocData.Store.ElementDirectory.FindElements<ObjectType>());
 					//temp.Sort(Modeling.NamedElementComparer<ObjectType>.CurrentCulture);
@@ -252,6 +256,7 @@ namespace Neumont.Tools.ORM.Shell
 
 				return false;
 			}
+#endif // FACTEDITOR_TIPTEXT
 			#endregion // Model Helper Methods
 			#region Private Properties
 			/// <summary>

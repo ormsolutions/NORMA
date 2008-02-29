@@ -30,7 +30,9 @@ namespace Neumont.Tools.ORM.Shell
 		{
 			#region Private Members
 			private string m_Value;
+#if FACTEDITOR_TIPTEXT
 			private bool m_ExistsOnModel;
+#endif // FACTEDITOR_TIPTEXT
 			#endregion // Private Members
 			#region Constructors
 			/// <summary>
@@ -40,7 +42,6 @@ namespace Neumont.Tools.ORM.Shell
 				: base()
 			{
 				m_Value = String.Empty;
-				m_ExistsOnModel = false;
 			}
 
 			public FactTokenInfo(int startIndex, int endIndex, TokenType type)
@@ -51,7 +52,6 @@ namespace Neumont.Tools.ORM.Shell
 				: base(startIndex, endIndex, type)
 			{
 				m_Value = value;
-				m_ExistsOnModel = false;
 			}
 			#endregion // Constructors
 			#region Public Properties
@@ -81,6 +81,7 @@ namespace Neumont.Tools.ORM.Shell
 				}
 			}
 
+#if FACTEDITOR_TIPTEXT
 			/// <summary>
 			/// Gets or sets a value indicating whether there is an ObjectType on the model
 			/// with the name as this token's value.
@@ -100,6 +101,7 @@ namespace Neumont.Tools.ORM.Shell
 					m_ExistsOnModel = value;
 				}
 			}
+#endif // FACTEDITOR_TIPTEXT
 			#endregion // Public Properties
 		}
 	}

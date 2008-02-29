@@ -22,30 +22,52 @@ using Microsoft.VisualStudio.Modeling.Shell;
 using Neumont.Tools.ORM.ObjectModel;
 using Microsoft.VisualStudio.Modeling;
 using Neumont.Tools.Modeling;
+using System.Globalization;
 #endregion
 
 namespace Neumont.Tools.ORM.Shell
 {
 	partial class FactEditorLanguageService
 	{
-		#region FactEditorDeclarationType
-		private enum FactEditorDeclarationType
+		#region FactEditorIconImageIndex enum
+		/// <summary>
+		/// Enumeration of the image to use in the intellisense list
+		/// for the objecttype's type.
+		/// </summary>
+		private enum FactEditorIconImageIndex
 		{
 			/// <summary>
-			/// Get a list of object types in the model
+			/// Index of the entity type image.
 			/// </summary>
-			ObjectType,
+			EntityType = 0,
 			/// <summary>
-			/// Get a list or reference modes in the model
+			/// Index of the value type image.
 			/// </summary>
-			ReferenceMode,
+			ValueType = 1,
+			/// <summary>
+			/// Index of the general reference mode image
+			/// </summary>
+			GeneralReferenceMode = ValueType,
+			/// <summary>
+			/// Index of the objectified type image.
+			/// </summary>
+			ObjectifiedType = 2,
+			/// <summary>
+			/// Index of the popular reference mode image
+			/// </summary>
+			PopularReferenceMode = 3,
+			/// <summary>
+			/// Index of the unit based reference mode image
+			/// </summary>
+			UnitBasedReferenceMode = 4,
 		}
-		#endregion // FactEditorDeclarationType
+		#endregion // FactEditorIconImageIndex enum
+		#region FactEditorObjectTypeDeclarations class
 		/// <summary>
 		/// Manages a list of ObjectType declarations to be shown in an
 		/// intellisense drop-down list.
 		/// </summary>
-		private sealed class FactEditorDeclarations : Declarations
+		private sealed class FactEditorObjectTypeDeclarations : Declarations
 		{
 			#region ObjectTypeDeclaration class
 			/// <summary>
@@ -167,47 +189,20 @@ namespace Neumont.Tools.ORM.Shell
 				#endregion // Public Properties
 			}
 			#endregion // ObjectTypeDeclaration class
-			#region FactEditorIconImageIndex enum
-			/// <summary>
-			/// Enumeration of the image to use in the intellisense list
-			/// for the objecttype's type.
-			/// </summary>
-			private enum FactEditorIconImageIndex
-			{
-				/// <summary>
-				/// Index of the entity type image.
-				/// </summary>
-				EntityType = 0,
-
-				/// <summary>
-				/// Index of the value type image.
-				/// </summary>
-				ValueType = 1,
-
-				/// <summary>
-				/// Index of the objectified type image.
-				/// </summary>
-				ObjectifiedType = 2
-			}
-			#endregion // FactEditorIconImageIndex enum
 			#region Private Members
 			private FactEditorLanguageService myFactLanguageService;
 			private List<ObjectTypeDeclaration> myObjectTypeDeclarations;
 			#endregion // Private Members
 			#region Constructors
 			/// <summary>
-			/// Initializes a new instance of the <see cref="FactEditorDeclarations"/> class.
+			/// Initializes a new instance of the <see cref="FactEditorObjectTypeDeclarations"/> class.
 			/// </summary>
 			/// <param name="languageService">The language service.</param>
-			/// <param name="declarationType">The <see cref="FactEditorDeclarationType"/> of the list to support.</param>
-			public FactEditorDeclarations(FactEditorLanguageService languageService, FactEditorDeclarationType declarationType)
+			public FactEditorObjectTypeDeclarations(FactEditorLanguageService languageService)
 			{
 				myFactLanguageService = languageService;
 				myObjectTypeDeclarations = new List<ObjectTypeDeclaration>();
-				if (declarationType == FactEditorDeclarationType.ObjectType)
-				{
-					ReloadModelElements();
-				}
+				ReloadModelElements();
 			}
 			#endregion // Constructors
 			#region Private Methods
@@ -310,5 +305,222 @@ namespace Neumont.Tools.ORM.Shell
 			}
 			#endregion // Overridden Abstract Methods
 		}
+		#endregion // FactEditorObjectTypeDeclarations class
+		#region FactEditorReferenceModeDeclarations class
+		/// <summary>
+		/// Manages a list of ReferenceMode declarations to be shown in an
+		/// intellisense drop-down list.
+		/// </summary>
+		private sealed class FactEditorReferenceModeDeclarations : Declarations
+		{
+			#region ReferenceModeDeclaration class
+			/// <summary>
+			/// Represents a declaration in the intellisense list.
+			/// </summary>
+			private struct ReferenceModeDeclaration
+			{
+				#region Private Members
+				private ReferenceMode myReferenceMode;
+				#endregion // Private Members
+				#region Comparer
+				public static readonly IComparer<ReferenceModeDeclaration> Comparer = new ReferenceModeDeclarationComparer();
+				private class ReferenceModeDeclarationComparer : IComparer<ReferenceModeDeclaration>
+				{
+					#region IComparer<ReferenceModeDeclaration> Implementation
+					int IComparer<ReferenceModeDeclaration>.Compare(ReferenceModeDeclaration x, ReferenceModeDeclaration y)
+					{
+						return string.Compare(x.myReferenceMode.DecoratedName, y.myReferenceMode.DecoratedName, true, CultureInfo.CurrentCulture);
+					}
+					#endregion // IComparer<ReferenceModeDeclaration> Implementation
+				}
+				#endregion // Comparer
+				#region Constructors
+				/// <summary>
+				/// Initializes a new instance of the <see cref="ReferenceModeDeclaration"/> class.
+				/// </summary>
+				/// <param name="referenceMode">The object type.</param>
+				public ReferenceModeDeclaration(ReferenceMode referenceMode)
+				{
+					myReferenceMode = referenceMode;
+				}
+				#endregion // Constructors
+				#region Public Properties
+				/// <summary>
+				/// Gets the name displayed in the intellisense list.
+				/// </summary>
+				public string Name
+				{
+					get
+					{
+						return myReferenceMode.DecoratedName;
+					}
+				}
+
+				/// <summary>
+				/// Gets the description for the item selected in the intellisense list.
+				/// </summary>
+				public string Description
+				{
+					get
+					{
+						return myReferenceMode.DecoratedName;
+					}
+				}
+
+				/// <summary>
+				/// Gets the text that is inserted when the Name is chosen in the intellisense list.
+				/// </summary>
+				public string DisplayText
+				{
+					get
+					{
+						return myReferenceMode.DecoratedName;
+					}
+				}
+
+				/// <summary>
+				/// Gets the FactEditorIconImageIndex that represents this declaration.
+				/// </summary>
+				public FactEditorIconImageIndex IconImageIndex
+				{
+					get
+					{
+						FactEditorIconImageIndex retVal = FactEditorIconImageIndex.GeneralReferenceMode;
+						ReferenceModeKind kind = myReferenceMode.Kind;
+						if (kind != null)
+						{
+							switch (kind.ReferenceModeType)
+							{
+								case ReferenceModeType.Popular:
+									retVal = FactEditorIconImageIndex.PopularReferenceMode;
+									break;
+								case ReferenceModeType.UnitBased:
+									retVal = FactEditorIconImageIndex.UnitBasedReferenceMode;
+									break;
+							}
+						}
+						return retVal;
+					}
+				}
+				#endregion // Public Properties
+			}
+			#endregion // ReferenceModeDeclaration class
+			#region Private Members
+			private FactEditorLanguageService myFactLanguageService;
+			private List<ReferenceModeDeclaration> myReferenceModeDeclarations;
+			#endregion // Private Members
+			#region Constructors
+			/// <summary>
+			/// Initializes a new instance of the <see cref="FactEditorReferenceModeDeclarations"/> class.
+			/// </summary>
+			/// <param name="languageService">The language service.</param>
+			public FactEditorReferenceModeDeclarations(FactEditorLanguageService languageService)
+			{
+				myFactLanguageService = languageService;
+				myReferenceModeDeclarations = new List<ReferenceModeDeclaration>();
+				ReloadModelElements();
+			}
+			#endregion // Constructors
+			#region Private Methods
+			private void ReloadModelElements()
+			{
+				// UNDONE: This is ridiculously inefficient. Use the ActivationManager to
+				// register events so we only need to change this list for a second request
+				// on the same document instead of repopulating it every time.
+				List<ReferenceModeDeclaration> referenceModeEntries = myReferenceModeDeclarations;
+				if (referenceModeEntries.Count != 0)
+				{
+					referenceModeEntries.Clear();
+				}
+				ActivationManager activationManager;
+				ORMDesignerDocData docData;
+				Store store;
+				if (null != (activationManager = myFactLanguageService.m_ActivationManager) &&
+					null != (docData = activationManager.CurrentDocument) &&
+					null != (store = docData.Store) &&
+					!store.Disposed)
+				{
+					foreach (ReferenceMode referenceMode in store.ElementDirectory.FindElements<ReferenceMode>())
+					{
+						referenceModeEntries.Add(new ReferenceModeDeclaration(referenceMode));
+					}
+					referenceModeEntries.Sort(ReferenceModeDeclaration.Comparer);
+				}
+			}
+			#endregion // Private Methods
+			#region Overridden Abstract Methods
+			/// <summary>
+			/// When implemented in a derived class, gets the number of items in the list of declarations.
+			/// </summary>
+			/// <returns>
+			/// The count of items represented by this <see cref="T:Microsoft.VisualStudio.Package.Declarations"></see> class.
+			/// </returns>
+			public override int GetCount()
+			{
+				return myReferenceModeDeclarations.Count;
+			}
+
+			/// <summary>
+			/// When implemented in a derived class, gets the name or text to be inserted for the specified item.
+			/// </summary>
+			/// <param name="index">[in] The index of the item for which to get the name.</param>
+			/// <returns>
+			/// If successful, returns the name of the item; otherwise, returns null.
+			/// </returns>
+			public override string GetName(int index)
+			{
+				if (index < 0 || index > (myReferenceModeDeclarations.Count - 1))
+					return null;
+
+				return myReferenceModeDeclarations[index].Name;
+			}
+
+			/// <summary>
+			/// When implemented in a derived class, gets a description of the specified item.
+			/// </summary>
+			/// <param name="index">[in] The index of the item for which to get the description.</param>
+			/// <returns>
+			/// If successful, returns the description; otherwise, returns null.
+			/// </returns>
+			public override string GetDescription(int index)
+			{
+				if (index < 0 || index > (myReferenceModeDeclarations.Count - 1))
+					return null;
+
+				return myReferenceModeDeclarations[index].Description;
+			}
+
+			/// <summary>
+			/// When implemented in a derived class, gets the text to be displayed in the completion list for the specified item.
+			/// </summary>
+			/// <param name="index">[in] The index of the item for which to get the display text.</param>
+			/// <returns>
+			/// The text to be displayed, otherwise null.
+			/// </returns>
+			public override string GetDisplayText(int index)
+			{
+				if (index < 0 || index > (myReferenceModeDeclarations.Count - 1))
+					return null;
+
+				return myReferenceModeDeclarations[index].DisplayText;
+			}
+
+			/// <summary>
+			/// When implemented in a derived class, gets the image to show next to the specified item.
+			/// </summary>
+			/// <param name="index">[in] The index of the item for which to get the image index.</param>
+			/// <returns>
+			/// The index of the image from an image list, otherwise -1.
+			/// </returns>
+			public override int GetGlyph(int index)
+			{
+				if (index < 0 || index > (myReferenceModeDeclarations.Count - 1))
+					return (Int32)FactEditorIconImageIndex.EntityType;
+
+				return (Int32)myReferenceModeDeclarations[index].IconImageIndex;
+			}
+			#endregion // Overridden Abstract Methods
+		}
+		#endregion // FactEditorReferenceModeDeclarations class
 	}
 }

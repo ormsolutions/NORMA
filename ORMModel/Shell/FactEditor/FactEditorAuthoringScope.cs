@@ -64,7 +64,7 @@ namespace Neumont.Tools.ORM.Shell
 			{
 				// new up the span
 				span = new TextSpan();
-#if FALSE // Turn this off until it does something useful
+#if FACTEDITOR_TIPTEXT // Turn this off until it does something useful
 
 				// if the line isn't the first, just return null
 				if (line > 0)
@@ -103,9 +103,9 @@ namespace Neumont.Tools.ORM.Shell
 
 				// return the string to show as the tooltip
 				return String.Format("{0} {1} exist on the model.", token.Value, (token.ExistsOnModel == true) ? "does" : "does not");
-#else // FALSE
+#else // FACTEDITOR_TIPTEXT
 				return null;
-#endif // FALSE
+#endif // FACTEDITOR_TIPTEXT
 			}
 			/// <summary>
 			/// Returns a list of declarations based on the specified reason for parsing.
@@ -121,12 +121,11 @@ namespace Neumont.Tools.ORM.Shell
 			public override Declarations GetDeclarations(IVsTextView view, int line, int col, TokenInfo info, ParseReason reason)
 			{
 				TokenTriggers triggers = info.Trigger;
-				FactEditorDeclarationType declarationType = FactEditorDeclarationType.ObjectType;
 				if (0 != (triggers & OpenParenthesisTokenTrigger))
 				{
-					declarationType = FactEditorDeclarationType.ReferenceMode;
+					return new FactEditorReferenceModeDeclarations(m_LanguageService);
 				}
-				return new FactEditorDeclarations(m_LanguageService, declarationType);
+				return new FactEditorObjectTypeDeclarations(m_LanguageService);
 			}
 
 			/// <summary>
