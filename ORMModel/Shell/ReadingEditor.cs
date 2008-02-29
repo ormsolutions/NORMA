@@ -2850,7 +2850,7 @@ namespace Neumont.Tools.ORM.Shell
 								return LabelEditResult.CancelEdit;
 							});
 					}
-					else if (0 != (activationStyle | VirtualTreeLabelEditActivationStyles.ImmediateSelection))
+					else if (0 != (activationStyle & VirtualTreeLabelEditActivationStyles.ImmediateSelection))
 					{
 						return VirtualTreeLabelEditData.DeferActivation;
 					}
