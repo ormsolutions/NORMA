@@ -224,7 +224,6 @@ namespace Neumont.Tools.ORM.ObjectModel
 						store,
 						new PropertyAssignment(ReferenceModeKind.ReferenceModeTypeDomainPropertyId, ReferenceModeType.Popular),
 						new PropertyAssignment(ReferenceModeKind.FormatStringDomainPropertyId, "{0}_{1}"))).Model = model;
-					popularKind = new ReferenceModeKind(store);
 				}
 				if (unitBasedKind == null)
 				{
