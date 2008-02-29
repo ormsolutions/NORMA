@@ -186,33 +186,29 @@ namespace Neumont.Tools.ORM.Shell
 
 						if (customReferenceMode != null && !customReferenceMode.IsDeleted && link.Model == this.myModel)
 						{
+							int index = myCustomReferenceModesList.BinarySearch(customReferenceMode, NamedElementComparer<CustomReferenceMode>.CurrentCulture);
+
+							int insertAt = 0;
+							insertAt = (index < 0) ? ~index : index;
+
+							myCustomReferenceModesList.Insert(insertAt, customReferenceMode);
+
 							if (myModify != null)
 							{
-								int index = myCustomReferenceModesList.BinarySearch(customReferenceMode, NamedElementComparer<CustomReferenceMode>.CurrentCulture);
-
-								int insertAt = 0;
-								insertAt = (index < 0) ? ~index : index;
-
-								myCustomReferenceModesList.Insert(insertAt, customReferenceMode);
-
-								if (myModify != null)
+								if (myIDidIt)
 								{
-									if (myIDidIt)
+									myIDidIt = false;
+									myModify(this, BranchModificationEventArgs.InsertItems(this, myCustomReferenceModesList.Count - 1, 1));
+									if (insertAt != index)
 									{
-										myIDidIt = false;
-										myModify(this, BranchModificationEventArgs.InsertItems(this, myCustomReferenceModesList.Count - 1, 1));
-										if (insertAt != index)
-										{
-											myModify(this, BranchModificationEventArgs.MoveItem(this, myCustomReferenceModesList.Count - 1, insertAt));
-										}
-									}
-									else
-									{
-										myModify(this, BranchModificationEventArgs.InsertItems(this, insertAt - 1, 1));
+										myModify(this, BranchModificationEventArgs.MoveItem(this, myCustomReferenceModesList.Count - 1, insertAt));
 									}
 								}
+								else
+								{
+									myModify(this, BranchModificationEventArgs.InsertItems(this, insertAt - 1, 1));
+								}
 							}
-
 						}
 					}
 

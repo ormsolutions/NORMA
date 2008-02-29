@@ -23,6 +23,7 @@ using Neumont.Tools.ORM.ObjectModel;
 using Microsoft.VisualStudio.Modeling;
 using Neumont.Tools.Modeling;
 using System.Globalization;
+using Microsoft.VisualStudio.TextManager.Interop;
 #endregion
 
 namespace Neumont.Tools.ORM.Shell
@@ -303,6 +304,20 @@ namespace Neumont.Tools.ORM.Shell
 
 				return (Int32)myObjectTypeDeclarations[index].IconImageIndex;
 			}
+			/// <summary>
+			/// Let ']' and '(' be the only commit character for object types
+			/// </summary>
+			public override bool IsCommitChar(string textSoFar, int selected, char commitCharacter)
+			{
+				return commitCharacter == '(' || commitCharacter == ']';
+			}
+			/// <summary>
+			/// Don't eat completion characters if no match is found
+			/// </summary>
+			public override string OnCommit(IVsTextView textView, string textSoFar, char commitCharacter, int index, ref TextSpan initialExtent)
+			{
+				return base.OnCommit(textView, textSoFar, commitCharacter, index, ref initialExtent) ?? textSoFar;
+			}
 			#endregion // Overridden Abstract Methods
 		}
 		#endregion // FactEditorObjectTypeDeclarations class
@@ -518,6 +533,20 @@ namespace Neumont.Tools.ORM.Shell
 					return (Int32)FactEditorIconImageIndex.EntityType;
 
 				return (Int32)myReferenceModeDeclarations[index].IconImageIndex;
+			}
+			/// <summary>
+			/// Let ')' be the only commit character for reference modes
+			/// </summary>
+			public override bool IsCommitChar(string textSoFar, int selected, char commitCharacter)
+			{
+				return commitCharacter == ')';
+			}
+			/// <summary>
+			/// Don't eat completion characters if no match is found
+			/// </summary>
+			public override string OnCommit(IVsTextView textView, string textSoFar, char commitCharacter, int index, ref TextSpan initialExtent)
+			{
+				return base.OnCommit(textView, textSoFar, commitCharacter, index, ref initialExtent) ?? textSoFar;
 			}
 			#endregion // Overridden Abstract Methods
 		}
