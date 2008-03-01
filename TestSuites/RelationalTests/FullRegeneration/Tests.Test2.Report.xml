@@ -1,0 +1,4 @@
+﻿<TestReport xmlns="http://schemas.neumont.edu/ORM/SDK/TestReport">
+	<Compare name="WithIndependent" result="pass" />
+	<Compare result="pass" />
+</TestReport>

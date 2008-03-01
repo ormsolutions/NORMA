@@ -902,6 +902,22 @@ namespace Neumont.Tools.ORM.ObjectModel
 			decimal.TryParse(value2, out typedValue2);
 			return ((IComparable<decimal>)typedValue1).CompareTo(typedValue2);
 		}
+		/// <summary>Show the Length property named as 'DataTypePrecision' with this DataType</summary>
+		public override string LengthName
+		{
+			get
+			{
+				return "DataTypePrecision";
+			}
+		}
+		/// <summary>Show the Scale property with this DataType</summary>
+		public override string ScaleName
+		{
+			get
+			{
+				return "";
+			}
+		}
 	}
 	/// <summary>A fixed length raw data data type</summary>
 	public partial class FixedLengthRawDataDataType

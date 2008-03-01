@@ -65,7 +65,7 @@
 		<SubType name="Decimal" rangeSupport="Open" backingType=".decimal" lengthName="DataTypePrecision" scaleName="">
 			<comment type="summary">A decimal numeric data type</comment>
 		</SubType>
-		<SubType name="Money" rangeSupport="Open" backingType=".decimal">
+		<SubType name="Money" rangeSupport="Open" backingType=".decimal" lengthName="DataTypePrecision" scaleName="">
 			<comment type="summary">A money numeric data type</comment>
 		</SubType>
 	</DataType>

@@ -484,7 +484,7 @@ namespace Neumont.Tools.ORMToORMAbstractionBridge
 		/// <param name="undecidedOneToOneFactTypeMappings">The undecided <see cref="FactTypeMapping"/> possibilities.</param>
 		private void RemoveImpossiblePotentialFactTypeMappings(FactTypeMappingDictionary decidedOneToOneFactTypeMappings, FactTypeMappingListDictionary undecidedOneToOneFactTypeMappings)
 		{
-			Dictionary<ObjectType, object> deeplyMappedObjectTypes = new Dictionary<ObjectType,object>(decidedOneToOneFactTypeMappings.Count + undecidedOneToOneFactTypeMappings.Count);
+			Dictionary<ObjectType, object> deeplyMappedObjectTypes = new Dictionary<ObjectType, object>(decidedOneToOneFactTypeMappings.Count + undecidedOneToOneFactTypeMappings.Count);
 
 			// For each decided fact type mapping...
 			foreach (FactTypeMapping factTypeMapping in decidedOneToOneFactTypeMappings.Values)
@@ -496,7 +496,7 @@ namespace Neumont.Tools.ORMToORMAbstractionBridge
 				}
 			}
 
-			FactTypeList factsPendingDeletion = new FactTypeList();
+			List<FactType> factsPendingDeletion = new List<FactType>();
 
 			foreach (KeyValuePair<FactType, FactTypeMappingList> undecidedFactTypeMapping in undecidedOneToOneFactTypeMappings)
 			{
@@ -544,7 +544,7 @@ namespace Neumont.Tools.ORMToORMAbstractionBridge
 		/// <returns>The number of previously potential one-to-one fact type mappings that are now decided.</returns>
 		private int MapTrivialOneToOneFactTypesWithTwoMandatories(FactTypeMappingDictionary decidedOneToOneFactTypeMappings, FactTypeMappingListDictionary undecidedOneToOneFactTypeMappings)
 		{
-			FactTypeList factTypesPendingDeletion = new FactTypeList();
+			List<FactType> factTypesPendingDeletion = new List<FactType>();
 
 			foreach (KeyValuePair<FactType, FactTypeMappingList> undecidedPair in undecidedOneToOneFactTypeMappings)
 			{

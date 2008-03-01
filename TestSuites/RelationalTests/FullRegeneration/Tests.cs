@@ -53,6 +53,32 @@ namespace RelationalTests.FullRegeneration
 		public void Test1(Store store)
 		{
 		}
+		/// <summary>
+		/// NUnit
+		/// </summary>
+		[Test(Description = "Relational Load")]
+		[NUnitCategory("Relational")]
+		[NUnitCategory("FullRegeneration")]
+		public void Test2()
+		{
+			// Forward the call
+			Suite.RunNUnitTest(this, myTestServices);
+		}
+		/// <summary>
+		/// Test full regeneration of a simple model. This model
+		/// used to generate an extra table for the cmValue valueType.
+		/// The load file is an ORM model with the Abstraction/ConceptualDatabase
+		/// extension hand-added to the top of the file. All other
+		/// required extensions should load automatically.
+		/// </summary>
+		[ORMTest("Relational", "FullRegeneration")]
+		public void Test2(Store store)
+		{
+			myTestServices.Compare(store, (MethodInfo)MethodInfo.GetCurrentMethod(), "WithIndependent");
+			ORMModel model = store.ElementDirectory.FindElements<ORMModel>()[0];
+			ObjectType objectType = (ObjectType)model.ObjectTypesDictionary.GetElement("SomeLength").FirstElement;
+			DomainTypeDescriptor.CreatePropertyDescriptor(objectType, ObjectType.IsIndependentDomainPropertyId).SetValue(objectType, false);
+		}
 		#endregion // Relational Load tests
 	}
 }
