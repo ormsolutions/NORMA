@@ -48,6 +48,9 @@ namespace Neumont.Tools.ORM.Shell
 			public const int FactEditor = 3;
 			public const int ModelBrowser = 4;
 			public const int NotesEditor = 5;
+			public const int PopulationEditor = 6;
+			public const int ContextWindow = 7;
+			public const int DefinitionEditor = 8;
 		}
 	}
 }

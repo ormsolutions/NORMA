@@ -405,6 +405,7 @@
 			</Button>
 			<Button guid="guidORMDesignerCommandSet" id="cmdIdViewDefinitionWindow" priority="0x0380" type="Button">
 				<Parent guid="guidORMDesignerCommandSet" id="groupIdORMToolWindows"/>
+				<Icon guid="guidORMToolWindowIcons" id="bmpIdToolWindowDefinitionEditor"/>
 				<CommandFlag>DefaultInvisible</CommandFlag>
 				<CommandFlag>DynamicVisibility</CommandFlag>
 				<Strings>
@@ -413,6 +414,7 @@
 			</Button>
 			<Button guid="guidORMDesignerCommandSet" id="cmdIdViewSamplePopulationEditor" priority="0x0400" type="Button">
 				<Parent guid="guidORMDesignerCommandSet" id="groupIdORMToolWindows"/>
+				<Icon guid="guidORMToolWindowIcons" id="bmpIdToolWindowPopulationEditor"/>
 				<CommandFlag>DefaultInvisible</CommandFlag>
 				<CommandFlag>DynamicVisibility</CommandFlag>
 				<Strings>
@@ -439,6 +441,7 @@
 			</Button>
 			<Button guid="guidORMDesignerCommandSet" id="cmdIdNewContextWindow" priority="0x0700" type="Button">
 				<Parent guid="guidORMDesignerCommandSet" id="groupIdORMToolWindows"/>
+				<Icon guid="guidORMToolWindowIcons" id="bmpIdToolWindowContextWindow"/>
 				<CommandFlag>DefaultInvisible</CommandFlag>
 				<CommandFlag>DynamicVisibility</CommandFlag>
 				<Strings>
@@ -609,7 +612,7 @@
 
 		<Bitmaps>
 			<Bitmap guid="guidORMVerbalizationToolbarImages" href="../../Resources/VerbalizationToolbarImages.bmp" usedList="bmpIdShowNegativeVerbalization, bmpIdShowPositiveVerbalization"/>
-			<Bitmap guid="guidORMToolWindowIcons" href="../../Resources/ToolWindowIcons32.bmp" usedList="bmpIdToolWindowVerbalizationBrowser, bmpIdToolWindowReadingEditor, bmpIdToolWindowReferenceModeEditor, bmpIdToolWindowFactEditor, bmpIdToolWindowModelBrowser, bmpIdToolWindowNotesEditor"/>
+			<Bitmap guid="guidORMToolWindowIcons" href="../../Resources/ToolWindowIcons32.bmp" usedList="bmpIdToolWindowVerbalizationBrowser, bmpIdToolWindowReadingEditor, bmpIdToolWindowReferenceModeEditor, bmpIdToolWindowFactEditor, bmpIdToolWindowModelBrowser, bmpIdToolWindowNotesEditor, bmpIdToolWindowPopulationEditor, bmpIdToolWindowContextWindow, bmpIdToolWindowDefinitionEditor"/>
 		</Bitmaps>
 
 	</Commands>
@@ -854,6 +857,9 @@
 			<IDSymbol value="0x0004" name="bmpIdToolWindowFactEditor"/>
 			<IDSymbol value="0x0005" name="bmpIdToolWindowModelBrowser"/>
 			<IDSymbol value="0x0006" name="bmpIdToolWindowNotesEditor"/>
+			<IDSymbol value="0x0007" name="bmpIdToolWindowPopulationEditor"/>
+			<IDSymbol value="0x0008" name="bmpIdToolWindowContextWindow"/>
+			<IDSymbol value="0x0009" name="bmpIdToolWindowDefinitionEditor"/>
 		</GuidSymbol>
 		<GuidSymbol name="CMDSETID_StandardCommandSet97" value="Extern">
 			<IDSymbol value="Extern" name="cmdidDelete"/>

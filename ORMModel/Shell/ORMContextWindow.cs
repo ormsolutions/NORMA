@@ -647,7 +647,7 @@ namespace Neumont.Tools.ORM.Shell
 		{
 			get
 			{
-				return PackageResources.ToolWindowIconIndex.None;
+				return PackageResources.ToolWindowIconIndex.ContextWindow;
 			}
 		}
 		#endregion
