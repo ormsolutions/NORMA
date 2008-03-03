@@ -42,6 +42,26 @@
 
 	<xsl:template match="@defaultCharacterSet" mode="ForSchemaDefinition"/>
 
+	<xsl:template match="ddt:binaryString[@type='BINARY' or @type='BINARY VARYING']">
+		<xsl:apply-templates select="@type" mode="ForDataType"/>
+		<xsl:apply-templates select="." mode="ForDataTypeLength"/>
+		<xsl:text> FOR BIT DATA</xsl:text>
+	</xsl:template>
+
+	<xsl:template match="ddt:characterString[@lengthMultiplier='T' or @lengthMultiplier='P'] | ddt:binaryString[@lengthMultiplier='T' or @lengthMultiplier='P']" mode="ForDataTypeLength">
+		<xsl:value-of select="$LeftParen"/>
+		<xsl:call-template name="GetTotalDataTypeLength"/>
+		<xsl:value-of select="$RightParen"/>
+	</xsl:template>
+
+	<xsl:template match="@type[.='BINARY']" mode="ForDataType">
+		<xsl:text>CHARACTER</xsl:text>
+	</xsl:template>
+
+	<xsl:template match="@type[.='BINARY VARYING']" mode="ForDataType">
+		<xsl:text>CHARACTER VARYING</xsl:text>
+	</xsl:template>
+	
 	<xsl:template match="@type[.='BOOLEAN']" mode="ForDataType">
 		<xsl:text>CHARACTER</xsl:text>
 		<xsl:value-of select="$LeftParen"/>

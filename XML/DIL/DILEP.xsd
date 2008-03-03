@@ -24,7 +24,7 @@
 					<dcterms:requires rdf:resource="http://schemas.orm.net/DIL/DILDT"/>
 					<dcterms:requires rdf:resource="http://schemas.orm.net/DIL/DMIL"/>
 					<dc:title>Database Intermediate Language Expressions &amp; Predicates</dc:title>
-					<dcterms:abstract>Encompasses SQL Standard Foundation "6 - Scalar Expressions", "8 - Predicates", "10 - Additional common elements", and "15 - Control statements"</dcterms:abstract>
+					<dcterms:abstract>Encompasses SQL Standard Foundation "6 - Scalar expressions", "8 - Predicates", "10 - Additional common elements", and "15 - Control statements"</dcterms:abstract>
 					<dc:creator>Kevin M. Owen</dc:creator>
 					<dc:creator>Corey Kaylor</dc:creator>
 					<dc:contributor>Korvyn Dornseif</dc:contributor>

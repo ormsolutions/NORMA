@@ -2,8 +2,8 @@
 <xs:schema
 	targetNamespace="http://schemas.orm.net/DIL/DILMS"
 	xmlns:dms="http://schemas.orm.net/DIL/DILMS"
-	xmlns:dep="http://schemas.orm.net/DIL/DILEP"
 	xmlns:ddt="http://schemas.orm.net/DIL/DILDT"
+	xmlns:dep="http://schemas.orm.net/DIL/DILEP"
 	xmlns:xs="http://www.w3.org/2001/XMLSchema"
 	elementFormDefault="qualified"
 	attributeFormDefault="unqualified"

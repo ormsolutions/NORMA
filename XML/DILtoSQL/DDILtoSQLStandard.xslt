@@ -620,17 +620,20 @@
 
 	<xsl:template match="ddt:characterString">
 		<xsl:apply-templates select="@type" mode="ForDataType"/>
-		<xsl:value-of select="$LeftParen"/>
-		<xsl:value-of select="@length"/>
-		<xsl:value-of select="$RightParen"/>
-		<xsl:apply-templates select="@characterSet" mode="ForColumnDataType"/>
-		<xsl:apply-templates select="@collate" mode="ForColumnDataType"/>
+		<xsl:apply-templates select="." mode="ForDataTypeLength"/>
+		<xsl:apply-templates select="@characterSet" mode="ForDataType"/>
+		<xsl:apply-templates select="@collate" mode="ForDataType"/>
 	</xsl:template>
 
 	<xsl:template match="ddt:binaryString">
 		<xsl:apply-templates select="@type" mode="ForDataType"/>
+		<xsl:apply-templates select="." mode="ForDataTypeLength"/>
+	</xsl:template>
+
+	<xsl:template match="ddt:characterString | ddt:binaryString" mode="ForDataTypeLength">
 		<xsl:value-of select="$LeftParen"/>
 		<xsl:value-of select="@length"/>
+		<xsl:value-of select="@lengthMultiplier"/>
 		<xsl:value-of select="$RightParen"/>
 	</xsl:template>
 
@@ -664,6 +667,39 @@
 
 	<xsl:template match="@type" mode="ForDataType">
 		<xsl:value-of select="."/>
+	</xsl:template>
+
+	<xsl:template name="GetTotalDataTypeLength">
+		<xsl:param name="length" select="number(@length)"/>
+		<xsl:param name="lengthMultiplier" select="string(@lengthMultiplier)"/>
+		<xsl:choose>
+			<xsl:when test="not($lengthMultiplier)">
+				<xsl:value-of select="$length"/>
+			</xsl:when>
+			<xsl:when test="$lengthMultiplier = 'K'">
+				<xsl:value-of select="$length * (1024)"/>
+			</xsl:when>
+			<xsl:when test="$lengthMultiplier = 'M'">
+				<xsl:value-of select="$length * (1024 * 1024)"/>
+			</xsl:when>
+			<xsl:when test="$lengthMultiplier = 'G'">
+				<xsl:value-of select="$length * (1024 * 1024 * 1024)"/>
+			</xsl:when>
+			<xsl:when test="$lengthMultiplier = 'T'">
+				<xsl:value-of select="$length * (1024 * 1024 * 1024 * 1024)"/>
+			</xsl:when>
+			<xsl:when test="$lengthMultiplier = 'P'">
+				<xsl:value-of select="$length * (1024 * 1024 * 1024 * 1024 * 1024)"/>
+			</xsl:when>
+			<xsl:otherwise>
+				<xsl:message>
+					<xsl:text>Ignoring unrecognized large object length multiplier value "</xsl:text>
+					<xsl:value-of select="$lengthMultiplier"/>
+					<xsl:text>".</xsl:text>
+				</xsl:message>
+				<xsl:value-of select="$length"/>
+			</xsl:otherwise>
+		</xsl:choose>
 	</xsl:template>
 
 	<xsl:template match="ddt:domain">
@@ -757,12 +793,12 @@
 		<xsl:value-of select="$RightParen"/>
 	</xsl:template>
 
-	<xsl:template match="@characterSet" mode="ForColumnDataType">
+	<xsl:template match="@characterSet" mode="ForDataType">
 		<xsl:text> CHARACTER SET </xsl:text>
 		<xsl:value-of select="."/>
 	</xsl:template>
 
-	<xsl:template match="@collate" mode="ForColumnDataType">
+	<xsl:template match="@collate" mode="ForDataType">
 		<xsl:text> COLLATE </xsl:text>
 		<xsl:value-of select="."/>
 	</xsl:template>
@@ -827,7 +863,7 @@
 	</xsl:template>
 
 	<xsl:template match="dep:currentDateKeyword">
-		<xsl:text>CURRENT_DATE </xsl:text>
+		<xsl:text>CURRENT_DATE</xsl:text>
 	</xsl:template>
 
 	<xsl:template match="dep:currentTimeKeyword">
@@ -1248,10 +1284,14 @@
 		<xsl:text> </xsl:text>
 		<xsl:choose>
 			<xsl:when test="dml:defaultValues">
-				<xsl:text>DEFAULT VALUES</xsl:text>
+				<xsl:apply-templates select="dml:defaultValues"/>
 			</xsl:when>
 			<xsl:otherwise>
-				<xsl:apply-templates select="dep:simpleColumnReference"/>
+				<xsl:if test="dep:simpleColumnReference">
+					<xsl:value-of select="$LeftParen"/>
+					<xsl:apply-templates select="dep:simpleColumnReference"/>
+					<xsl:value-of select="$RightParen"/>
+				</xsl:if>
 				<xsl:apply-templates select="@overrideClause"/>
 				<xsl:apply-templates select="*[not(self::dep:simpleColumnReference)]">
 					<xsl:with-param name="indent" select="$indent"/>
@@ -1264,6 +1304,25 @@
 		<xsl:text> </xsl:text>
 		<xsl:value-of select="."/>
 		<xsl:text> </xsl:text>
+	</xsl:template>
+
+	<xsl:template match="dml:defaultValues">
+		<xsl:text>DEFAULT VALUES</xsl:text>
+	</xsl:template>
+
+	<xsl:template match="dml:tableValueConstructor">
+		<xsl:param name="indent"/>
+		<xsl:text>VALUES </xsl:text>
+		<xsl:value-of select="$LeftParen"/>
+		<xsl:for-each select="child::*">
+			<xsl:apply-templates select=".">
+				<xsl:with-param name="indent" select="$indent"/>
+			</xsl:apply-templates>
+			<xsl:if test="not(position()=last())">
+				<xsl:text>, </xsl:text>
+			</xsl:if>
+		</xsl:for-each>
+		<xsl:value-of select="$RightParen"/>
 	</xsl:template>
 
 	<xsl:template match="dml:updateStatement">

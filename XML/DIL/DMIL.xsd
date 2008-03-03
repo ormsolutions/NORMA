@@ -5,7 +5,6 @@
 	xmlns:ddt="http://schemas.orm.net/DIL/DILDT"
 	xmlns:dep="http://schemas.orm.net/DIL/DILEP"
 	xmlns:xs="http://www.w3.org/2001/XMLSchema"
-	xmlns:ddl="http://schemas.orm.net/DIL/DDIL"
 	elementFormDefault="qualified"
 	attributeFormDefault="unqualified"
 	version="0.9">
@@ -21,11 +20,10 @@
 					<dcterms:isRequiredBy rdf:resource="http://schemas.orm.net/DIL/DIL"/>
 					<dcterms:isRequiredBy rdf:resource="http://schemas.orm.net/DIL/DILEP"/>
 					<dcterms:isRequiredBy rdf:resource="http://schemas.orm.net/DIL/DDIL"/>
-					<dcterms:requires rdf:resource="http://schemas.orm.net/DIL/DIL"/>
 					<dcterms:requires rdf:resource="http://schemas.orm.net/DIL/DILDT"/>
 					<dcterms:requires rdf:resource="http://schemas.orm.net/DIL/DILEP"/>
 					<dc:title>Data Manipulation Intermediate Language</dc:title>
-					<dcterms:abstract>Encompasses SQL Standard Foundation "7 - Query expressions"</dcterms:abstract>
+					<dcterms:abstract>Encompasses SQL Standard Foundation "7 - Query expressions" and "14 - Data manipulation"</dcterms:abstract>
 					<dc:creator>Kevin M. Owen</dc:creator>
 					<dc:creator>Corey Kaylor</dc:creator>
 					<dc:contributor>Korvyn Dornseif</dc:contributor>

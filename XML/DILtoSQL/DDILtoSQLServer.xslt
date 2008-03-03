@@ -152,10 +152,12 @@
 		<xsl:apply-templates/>
 	</xsl:template>
 
-	<xsl:template match="@type[.='BOOLEAN']" mode="ForDataType">
-		<xsl:text>BIT</xsl:text>
+	<xsl:template match="ddt:characterString | ddt:binaryString" mode="ForDataTypeLength">
+		<xsl:value-of select="$LeftParen"/>
+		<xsl:call-template name="GetTotalDataTypeLength"/>
+		<xsl:value-of select="$RightParen"/>
 	</xsl:template>
-
+	
 	<xsl:template match="@type[.='CHARACTER' or .='CHARACTER VARYING']" mode="ForDataType">
 		<xsl:text>NATIONAL </xsl:text>
 		<xsl:value-of select="."/>
@@ -163,6 +165,10 @@
 
 	<xsl:template match="@type[.='DATE' or .='TIME' or .='TIMESTAMP']" mode="ForDataType">
 		<xsl:text>DATETIME</xsl:text>
+	</xsl:template>
+
+	<xsl:template match="@type[.='BOOLEAN']" mode="ForDataType">
+		<xsl:text>BIT</xsl:text>
 	</xsl:template>
 
 	<xsl:template match="ddt:booleanLiteral">

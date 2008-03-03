@@ -2,11 +2,11 @@
 <xs:schema
 	targetNamespace="http://schemas.orm.net/DIL/DIL"
 	xmlns:dil="http://schemas.orm.net/DIL/DIL"
-	xmlns:ddl="http://schemas.orm.net/DIL/DDIL"
-	xmlns:dep="http://schemas.orm.net/DIL/DILEP"
-	xmlns:dml="http://schemas.orm.net/DIL/DMIL"
 	xmlns:ddt="http://schemas.orm.net/DIL/DILDT"
-	xmlns:dms="http://schemas.orm.net/DIL/DILMS" 
+	xmlns:dep="http://schemas.orm.net/DIL/DILEP"
+	xmlns:dms="http://schemas.orm.net/DIL/DILMS"
+	xmlns:dml="http://schemas.orm.net/DIL/DMIL"
+	xmlns:ddl="http://schemas.orm.net/DIL/DDIL"
 	xmlns:xs="http://www.w3.org/2001/XMLSchema"
 	elementFormDefault="qualified"
 	attributeFormDefault="unqualified"
@@ -20,7 +20,6 @@
 				xmlns:dcterms="http://purl.org/dc/terms/">
 				<rdf:Description rdf:about="http://schemas.orm.net/DIL/DIL">
 					<dcterms:isPartOf rdf:resource="http://schemas.orm.net/DIL"/>
-					<dcterms:isRequiredBy rdf:resource="http://schemas.orm.net/DIL/DMIL"/>
 					<dcterms:isRequiredBy rdf:resource="http://schemas.orm.net/DIL/DDIL"/>
 					<dcterms:requires rdf:resource="http://schemas.orm.net/DIL/DILDT"/>
 					<dcterms:requires rdf:resource="http://schemas.orm.net/DIL/DILEP"/>

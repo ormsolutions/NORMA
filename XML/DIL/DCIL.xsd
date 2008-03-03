@@ -6,7 +6,6 @@
 	xmlns:ddt="http://schemas.orm.net/DIL/DILDT"
 	xmlns:dep="http://schemas.orm.net/DIL/DILEP"
 	xmlns:xs="http://www.w3.org/2001/XMLSchema"
-	xmlns:dml="http://schemas.orm.net/DIL/DMIL" 
 	elementFormDefault="qualified"
 	attributeFormDefault="unqualified"
 	version="0.9">
@@ -147,9 +146,9 @@
 
 	<xs:complexType name="predefinedDataType">
 		<xs:attribute name="name" use="required" type="ddt:predefinedTypes"/>
-		<xs:attribute name="length" use="optional" type="ddt:stringOrLargeObjectLength">
+		<xs:attribute name="length" use="optional" type="ddt:stringLength">
 			<xs:annotation>
-				<xs:documentation>The number of characters in a CHARACTER, CHARACTER VARYING, or CHARACTER LARGE OBJECT, or the number of bytes in a BINARY LARGE OBJECT.</xs:documentation>
+				<xs:documentation>The number of characters in a CHARACTER, CHARACTER VARYING, or CHARACTER LARGE OBJECT, or the number of bytes in a BINARY, BINARY VARYING, or BINARY LARGE OBJECT.</xs:documentation>
 				<xs:documentation>If this is any other data type, a value for this attribute must not be specified.</xs:documentation>
 			</xs:annotation>
 		</xs:attribute>

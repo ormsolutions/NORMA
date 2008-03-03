@@ -21,7 +21,7 @@
 					<dcterms:isRequiredBy rdf:resource="http://schemas.orm.net/DIL/DMIL"/>
 					<dcterms:isRequiredBy rdf:resource="http://schemas.orm.net/DIL/DDIL"/>
 					<dc:title>Database Intermediate Language Data Types</dc:title>
-					<dcterms:abstract>Encompasses SQL Standard Foundation "5 - Lexical elements", "6.1 - &lt;data type&gt;", "6.2 - &lt;field definition&gt;", and "6.6 - &lt;identifier chain&gt;"</dcterms:abstract>
+					<dcterms:abstract>Encompasses SQL Standard Foundation "5 - Lexical elements", "6.1 - &lt;data type&gt;", and "6.6 - &lt;identifier chain&gt;"</dcterms:abstract>
 					<dc:creator>Kevin M. Owen</dc:creator>
 					<dc:creator>Corey Kaylor</dc:creator>
 					<dc:contributor>Korvyn Dornseif</dc:contributor>
@@ -72,9 +72,36 @@
 	<xs:simpleType name="numericPrecision">
 		<xs:restriction base="xs:nonNegativeInteger"/>
 	</xs:simpleType>
-	<xs:simpleType name="stringOrLargeObjectLength">
+	<xs:simpleType name="stringLength">
+		<xs:restriction base="xs:positiveInteger"/>
+	</xs:simpleType>
+	<xs:simpleType name="largeObjectLengthMultiplier">
 		<xs:restriction base="xs:string">
-			<xs:pattern value="[0-9]+[K|M|G]?"/>
+			<xs:enumeration value="K">
+				<xs:annotation>
+					<xs:documentation>1,024</xs:documentation>
+				</xs:annotation>
+			</xs:enumeration>
+			<xs:enumeration value="M">
+				<xs:annotation>
+					<xs:documentation>1,048,576</xs:documentation>
+				</xs:annotation>
+			</xs:enumeration>
+			<xs:enumeration value="G">
+				<xs:annotation>
+					<xs:documentation>1,073,741,824</xs:documentation>
+				</xs:annotation>
+			</xs:enumeration>
+			<xs:enumeration value="T">
+				<xs:annotation>
+					<xs:documentation>1,099,511,627,776</xs:documentation>
+				</xs:annotation>
+			</xs:enumeration>
+			<xs:enumeration value="P">
+				<xs:annotation>
+					<xs:documentation>1,125,899,906,842,624</xs:documentation>
+				</xs:annotation>
+			</xs:enumeration>
 		</xs:restriction>
 	</xs:simpleType>
 
@@ -311,9 +338,14 @@
 			<xs:documentation>A character string is a sequence of characters taken from a single character set.</xs:documentation>
 		</xs:annotation>
 		<xs:attribute name="type" use="required" type="ddt:characterStringTypes"/>
-		<xs:attribute name="length" use="required" type="ddt:stringOrLargeObjectLength">
+		<xs:attribute name="length" use="required" type="ddt:stringLength">
 			<xs:annotation>
 				<xs:documentation>The length or maximum length of the character string (in CHARACTERS).</xs:documentation>
+			</xs:annotation>
+		</xs:attribute>
+		<xs:attribute name="lengthMultiplier" use="optional" type="ddt:largeObjectLengthMultiplier">
+			<xs:annotation>
+				<xs:documentation>The multiplier value for the length of a CHARACTER LARGE OBJECT.</xs:documentation>
 			</xs:annotation>
 		</xs:attribute>
 		<xs:attribute name="characterSet" use="optional" type="ddt:characterSets" default="UTF8"/>
@@ -351,9 +383,14 @@
 			<xs:documentation>A binary string is a sequence of octets that has neither a character set nor a collation associated with it.</xs:documentation>
 		</xs:annotation>
 		<xs:attribute name="type" use="required" type="ddt:binaryStringTypes"/>
-		<xs:attribute name="length" use="required" type="ddt:stringOrLargeObjectLength">
+		<xs:attribute name="length" use="required" type="ddt:stringLength">
 			<xs:annotation>
 				<xs:documentation>The maximum length of the binary string (in OCTETS).</xs:documentation>
+			</xs:annotation>
+		</xs:attribute>
+		<xs:attribute name="lengthMultiplier" use="optional" type="ddt:largeObjectLengthMultiplier">
+			<xs:annotation>
+				<xs:documentation>The multiplier value for the length of a BINARY LARGE OBJECT.</xs:documentation>
 			</xs:annotation>
 		</xs:attribute>
 	</xs:complexType>
@@ -505,7 +542,7 @@
 	</xs:simpleType>
 
 	<xs:simpleType name="stringTypes">
-		<xs:union memberTypes="ddt:characterStringTypes ddt:binaryStringTypes ddt:largeObjectStringTypes"/>
+		<xs:union memberTypes="ddt:characterStringTypes ddt:binaryStringTypes"/>
 	</xs:simpleType>
 	<xs:simpleType name="largeObjectStringTypes">
 		<xs:union memberTypes="ddt:characterLargeObjectStringTypes ddt:binaryLargeObjectStringTypes"/>
@@ -538,7 +575,22 @@
 		</xs:restriction>
 	</xs:simpleType>
 	<xs:simpleType name="binaryStringTypes">
-		<xs:union memberTypes="ddt:binaryLargeObjectStringTypes"/>
+		<xs:union memberTypes="ddt:binaryLargeObjectStringTypes">
+			<xs:simpleType>
+				<xs:restriction base="xs:string">
+					<xs:enumeration value="BINARY">
+						<xs:annotation>
+							<xs:documentation></xs:documentation>
+						</xs:annotation>
+					</xs:enumeration>
+					<xs:enumeration value="BINARY VARYING">
+						<xs:annotation>
+							<xs:documentation></xs:documentation>
+						</xs:annotation>
+					</xs:enumeration>
+				</xs:restriction>
+			</xs:simpleType>
+		</xs:union>
 	</xs:simpleType>
 	<xs:simpleType name="binaryLargeObjectStringTypes">
 		<xs:restriction base="xs:string">
