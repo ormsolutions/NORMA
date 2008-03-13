@@ -1499,7 +1499,6 @@ namespace Neumont.Tools.ORMAbstractionToConceptualDatabaseBridge
 							if (column.Table == isPrimarilyForTable && ColumnHasConceptTypeChild.GetConceptTypeChildPath(column)[0] == conceptTypeChild)
 							{
 								new UniquenessConstraintIncludesColumn(uniquenessConstraint, column);
-								break;
 							}
 						}
 					}

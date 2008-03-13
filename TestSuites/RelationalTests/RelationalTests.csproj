@@ -61,6 +61,13 @@
     <None Include="..\..\ORMPackage.snk">
       <Link>ORMPackage.snk</Link>
     </None>
+    <EmbeddedResource Include="FullRegeneration\Tests.Test3.Compare.orm">
+    </EmbeddedResource>
+    <EmbeddedResource Include="FullRegeneration\Tests.Test3.Compare.AfterReorder.orm">
+    </EmbeddedResource>
+    <EmbeddedResource Include="FullRegeneration\Tests.Test3.Compare.OriginalOrder.orm">
+    </EmbeddedResource>
+    <EmbeddedResource Include="FullRegeneration\Tests.Test3.Load.orm" />
     <EmbeddedResource Include="FullRegeneration\Tests.Test2.Compare.orm">
     </EmbeddedResource>
     <EmbeddedResource Include="FullRegeneration\Tests.Test2.Compare.WithIndependent.orm" />
@@ -78,6 +85,9 @@
   </ItemGroup>
   <ItemGroup>
     <EmbeddedResource Include="FullRegeneration\Tests.Test2.Report.xml" />
+  </ItemGroup>
+  <ItemGroup>
+    <EmbeddedResource Include="FullRegeneration\Tests.Test3.Report.xml" />
   </ItemGroup>
   <Import Project="$(MSBuildBinPath)\Microsoft.CSharp.targets" />
   <Import Project="$(MSBuildExtensionsPath)\Neumont\Neumont.Build.targets" />

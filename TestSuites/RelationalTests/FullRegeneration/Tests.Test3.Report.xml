@@ -1,0 +1,8 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<TestReport xmlns="http://schemas.neumont.edu/ORM/SDK/TestReport">
+	<Compare name="OriginalOrder" result="pass" />
+	<Message>Reorder columns on composite pid with no referenced composite elements</Message>
+	<Compare name="AfterReorder" result="pass" />
+	<Message>Reorder columns on composite pid with referenced composite elements</Message>
+	<Compare result="pass" />
+</TestReport>

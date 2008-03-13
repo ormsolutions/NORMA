@@ -10791,6 +10791,16 @@ Every Folder in the same Folder hierarchy
 			<orm:ReferenceModeKind id="_0E6A16A4-B780-46E0-903E-6D500A938BCE" FormatString="{1}Value" ReferenceModeType="UnitBased" />
 		</orm:ReferenceModeKinds>
 	</orm:ORMModel>
+	<orm:NameGenerator AutomaticallyShortenNames="true" UseTargetDefaultMaximum="true" UserDefinedMaximum="128" id="_ADA1B5E1-43B6-47E4-ABF4-F7ACC9579CCD">
+		<orm:Refinements>
+			<oialtocdb:RelationalNameGenerator AutomaticallyShortenNames="true" SpacingFormat="Remove" UseTargetDefaultMaximum="true" UserDefinedMaximum="128" id="_A91755C3-7DB3-4FA2-8B2B-C91CB6F41CF1">
+				<orm:Refinements>
+					<oialtocdb:RelationalNameGenerator AutomaticallyShortenNames="true" CasingOption="Pascal" NameUsage="RelationalTable" SpacingFormat="Remove" UseTargetDefaultMaximum="true" UserDefinedMaximum="128" id="_C6C39F37-7E6D-484E-99DA-84B116623D41" />
+					<oialtocdb:RelationalNameGenerator AutomaticallyShortenNames="true" CasingOption="Camel" NameUsage="RelationalColumn" SpacingFormat="Remove" UseTargetDefaultMaximum="true" UserDefinedMaximum="128" id="_FC516C08-0953-482A-9CDC-15E13B161166" />
+				</orm:Refinements>
+			</oialtocdb:RelationalNameGenerator>
+		</orm:Refinements>
+	</orm:NameGenerator>
 	<ormDiagram:ORMDiagram id="_D67C48EA-B802-4C70-8218-F04CE289AF2F" IsCompleteView="false" Name="Object Hierarchy" BaseFontName="Tahoma" BaseFontSize="0.0972222238779068">
 		<ormDiagram:Shapes>
 			<ormDiagram:ObjectTypeShape id="_F1851229-E73E-4277-A4B8-CA74BABC7634" IsExpanded="true" AbsoluteBounds="5.885416666666667, 1.3958333333333337, 0.80063467741012573, 0.35900605320930479">

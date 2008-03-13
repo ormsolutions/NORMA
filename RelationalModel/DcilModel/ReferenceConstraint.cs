@@ -181,7 +181,60 @@ namespace Neumont.Tools.RelationalModels.ConceptualDatabase
 					int columnRefCount = columnRefs.Count;
 					if (newIndex < columnRefCount && oldIndex < columnRefCount && columnRefs[oldIndex].TargetColumn == e.CounterpartRolePlayer) // Sanity check
 					{
+						Column sourceColumn = columnRefs[oldIndex].SourceColumn;
 						columnRefs.Move(oldIndex, newIndex);
+
+						// Any uniqueness constraint that includes all columns in the
+						// reference constraint will generate in a different order and
+						// should be updated
+						Table sourceTable;
+						if (null != (sourceTable = referenceConstraint.SourceTable))
+						{
+							foreach (UniquenessConstraint sourceUniquenessConstraint in sourceTable.UniquenessConstraintCollection)
+							{
+								LinkedElementCollection<Column> uniquenessColumns = sourceUniquenessConstraint.ColumnCollection;
+								int uniquenessColumnCount = uniquenessColumns.Count;
+								if (uniquenessColumnCount >= columnRefCount)
+								{
+									int firstMatchColumn = int.MaxValue;
+									for (int i = 0; i < columnRefCount; ++i)
+									{
+										Column matchColumn = columnRefs[i].SourceColumn;
+										int j = 0;
+										for (; j < uniquenessColumnCount; ++j)
+										{
+											if (uniquenessColumns[j] == matchColumn)
+											{
+												firstMatchColumn = Math.Min(firstMatchColumn, j);
+												break;
+											}
+										}
+										if (j == uniquenessColumnCount)
+										{
+											// Not included
+											firstMatchColumn = int.MaxValue;
+											break;
+										}
+									}
+									if (firstMatchColumn != int.MaxValue)
+									{
+										uniquenessColumnCount -= firstMatchColumn;
+										if (newIndex < uniquenessColumnCount &&
+											oldIndex < uniquenessColumnCount &&
+											uniquenessColumns[firstMatchColumn + oldIndex] == sourceColumn) // Sanity check
+										{
+											uniquenessColumns.Move(firstMatchColumn + oldIndex, firstMatchColumn + newIndex);
+										}
+										// If this does not line up then something is clearly off, but
+										// this is a non-critical error in that the model is still correctly
+										// aligned and generates correct DDL.
+										// However, the constraint will now have a different column order
+										// than with a full regeneration.
+										// UNDONE: Delay validation routine for this situation
+									}
+								}
+							}
+						}
 					}
 					else
 					{

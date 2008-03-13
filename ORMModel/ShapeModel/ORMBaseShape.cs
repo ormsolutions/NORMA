@@ -469,10 +469,10 @@ namespace Neumont.Tools.ORM.ShapeModel
 		/// <param name="refreshBitmap">Value to forward to the Invalidate method's refreshBitmap property during event playback</param>
 		public void InvalidateRequired(bool refreshBitmap)
 		{
-			TransactionManager tmgr = Store.TransactionManager;
-			if (tmgr.InTransaction)
+			long? newValue = ORMShapeDomainModel.GetNewUpdateCounterValue(this, refreshBitmap);
+			if (newValue.HasValue)
 			{
-				UpdateCounter = unchecked(tmgr.CurrentTransaction.SequenceNumber - (refreshBitmap ? 0L : 1L));
+				UpdateCounter = newValue.Value;
 			}
 		}
 		/// <summary>
@@ -485,22 +485,11 @@ namespace Neumont.Tools.ORM.ShapeModel
 		}
 		private long GetUpdateCounterValue()
 		{
-			TransactionManager tmgr = Store.TransactionManager;
-			if (tmgr.InTransaction)
-			{
-				// Using subtract 2 and set to 1 under to indicate
-				// the difference between an Invalidate(true) and
-				// and Invalidate(false)
-				return unchecked(tmgr.CurrentTransaction.SequenceNumber - 2);
-			}
-			else
-			{
-				return 0L;
-			}
+			return ORMShapeDomainModel.GetCurrentUpdateCounterValue(this);
 		}
 		private void SetUpdateCounterValue(long newValue)
 		{
-			// Nothing to do, we're just trying to create a transaction log
+			// Nothing to do, we're just trying to create a transaction log entry
 		}
 		/// <summary>
 		/// Manages <see cref="EventHandler{TEventArgs}"/>s in the <see cref="Store"/> for <see cref="ORMBaseShape"/>s.
@@ -512,21 +501,19 @@ namespace Neumont.Tools.ORM.ShapeModel
 		{
 			DomainDataDirectory dataDirectory = store.DomainDataDirectory;
 			DomainClassInfo classInfo = dataDirectory.FindDomainClass(ORMBaseShape.DomainClassId);
-			eventManager.AddOrRemoveHandler(classInfo, new EventHandler<ElementPropertyChangedEventArgs>(PropertyChangedEvent), action);
+			DomainPropertyInfo propertyInfo = dataDirectory.FindDomainProperty(UpdateCounterDomainPropertyId);
+			eventManager.AddOrRemoveHandler(propertyInfo, new EventHandler<ElementPropertyChangedEventArgs>(UpdateRequiredEvent), action);
 			eventManager.AddOrRemoveHandler(classInfo, new EventHandler<ElementAddedEventArgs>(ShapeAddedEvent), action);
 			classInfo = dataDirectory.FindDomainClass(PresentationViewsSubject.DomainClassId);
 			eventManager.AddOrRemoveHandler(classInfo, new EventHandler<ElementDeletedEventArgs>(ShapeDeletedEvent), action);
 		}
-		private static void PropertyChangedEvent(object sender, ElementPropertyChangedEventArgs e)
+		private static void UpdateRequiredEvent(object sender, ElementPropertyChangedEventArgs e)
 		{
-			if (e.DomainProperty.Id.Equals(UpdateCounterDomainPropertyId))
+			ORMBaseShape shape = (ORMBaseShape)e.ModelElement;
+			if (!shape.IsDeleted)
 			{
-				ORMBaseShape shape = (ORMBaseShape)e.ModelElement;
-				if (!shape.IsDeleted)
-				{
-					shape.BeforeInvalidate();
-					shape.Invalidate(Math.Abs(unchecked((long)e.OldValue - (long)e.NewValue)) != 1L);
-				}
+				shape.BeforeInvalidate();
+				shape.Invalidate(Math.Abs(unchecked((long)e.OldValue - (long)e.NewValue)) != 1L);
 			}
 		}
 		private static void ShapeAddedEvent(object sender, ElementAddedEventArgs e)

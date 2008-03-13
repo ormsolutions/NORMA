@@ -139,9 +139,27 @@ namespace Neumont.Tools.ORMAbstractionToConceptualDatabaseBridge
 					e.SourceDomainRole.Id == UniquenessIncludesConceptTypeChild.UniquenessDomainRoleId &&
 					0 != (constraintCount = (constraints = UniquenessConstraintIsForUniqueness.GetUniquenessConstraint(uniqueness)).Count))
 				{
+					LinkedElementCollection<ConceptTypeChild> conceptTypeChildren = uniqueness.ConceptTypeChildCollection;
+					int conceptTypeChildCount = conceptTypeChildren.Count;
 					for (int i = 0; i < constraintCount; ++i)
 					{
-						constraints[i].ColumnCollection.Move(e.OldOrdinal, e.NewOrdinal);
+						LinkedElementCollection<Column> constraintColumns = constraints[i].ColumnCollection;
+						int constraintColumnCount = constraintColumns.Count;
+						if (constraintColumnCount == conceptTypeChildCount)
+						{
+							constraintColumns.Move(e.OldOrdinal, e.NewOrdinal);
+						}
+						else
+						{
+							// UNDONE: The question of exactly how many columns are associated with a reference to
+							// a conceptTypeChild is highly non-trivial. Punt on the issue for now by regenerating
+							// the model.
+							ConceptType conceptType = uniqueness.ConceptType;
+							if (conceptType != null)
+							{
+								RebuildAbstractionModel(conceptType.Model);
+							}
+						}
 					}
 				}
 			}

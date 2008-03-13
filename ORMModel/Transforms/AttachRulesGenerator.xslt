@@ -678,6 +678,7 @@
 				</xsl:when>
 				<xsl:otherwise>
 					<xsl:for-each select="child::*">
+						<xsl:variable name="transactionRule" select="boolean(self::arg:TransactionCommittingRule | self::arg:TransactionBeginningRule | self::arg:TransactionRollingBackRule)"/>
 						<xsl:variable name="methodInRuleClass" select="@methodInRuleClass='true' or @methodInRuleClass='1'"/>
 						<xsl:variable name="methodInfoFragment">
 							<xsl:apply-templates select="." mode="RuleMethodInfo"/>
@@ -691,14 +692,14 @@
 							</xsl:if>
 							<xsl:for-each select="arg:RuleOn">
 								<xsl:variable name="fireTime" select="string(@fireTime)"/>
-								<xsl:variable name="fireInline" select="$fireTime='Inline' or not($fireTime)"/>
+								<xsl:variable name="fireInline" select="not($transactionRule) and ($fireTime='Inline' or not($fireTime))"/>
 								<xsl:variable name="standardPriority" select="normalize-space(@priority)"/>
 								<xsl:variable name="priorityAdjustment" select="arg:PriorityAdjustment/child::plx:*"/>
 								<plx:attribute dataTypeName="RuleOn" dataTypeQualifier="Microsoft.VisualStudio.Modeling">
 									<plx:passParam>
 										<plx:typeOf dataTypeName="{@targetType}" dataTypeQualifier="{@targetTypeQualifier}"/>
 									</plx:passParam>
-									<xsl:if test="not($fireInline)">
+									<xsl:if test="not($fireInline) and not($transactionRule)">
 										<plx:passParam>
 											<plx:binaryOperator type="assignNamed">
 												<plx:left>

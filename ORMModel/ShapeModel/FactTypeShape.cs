@@ -3238,7 +3238,8 @@ namespace Neumont.Tools.ORM.ShapeModel
 		/// <param name="factType">The associated FactType</param>
 		/// <param name="constraint">The newly added or removed constraint</param>
 		/// <param name="roleChangeOnly">A role was added or removed</param>
-		public static void ConstraintSetChanged(FactType factType, IConstraint constraint, bool roleChangeOnly)
+		/// <param name="rolePositionChangeOnly">A role was repositioned</param>
+		public static void ConstraintSetChanged(FactType factType, IConstraint constraint, bool roleChangeOnly, bool rolePositionChangeOnly)
 		{
 			Debug.Assert(factType.Store.TransactionManager.InTransaction);
 			foreach (PresentationElement pel in PresentationViewsSubject.GetPresentation(factType))
@@ -3246,7 +3247,7 @@ namespace Neumont.Tools.ORM.ShapeModel
 				FactTypeShape factShape = pel as FactTypeShape;
 				if (factShape != null)
 				{
-					factShape.ConstraintShapeSetChanged(constraint, roleChangeOnly);
+					factShape.ConstraintShapeSetChanged(constraint, roleChangeOnly, rolePositionChangeOnly);
 				}
 			}
 		}
@@ -3257,7 +3258,7 @@ namespace Neumont.Tools.ORM.ShapeModel
 		/// <param name="constraint">The newly added or removed constraint</param>
 		public void ConstraintShapeSetChanged(IConstraint constraint)
 		{
-			ConstraintShapeSetChanged(constraint, false);
+			ConstraintShapeSetChanged(constraint, false, false);
 		}
 		/// <summary>
 		/// The constraint shapes associated with this fact type have changed. Call directly
@@ -3265,7 +3266,8 @@ namespace Neumont.Tools.ORM.ShapeModel
 		/// </summary>
 		/// <param name="constraint">The newly added or removed constraint</param>
 		/// <param name="roleChangeOnly">A role was added or removed</param>
-		private void ConstraintShapeSetChanged(IConstraint constraint, bool roleChangeOnly)
+		/// <param name="rolePositionChangeOnly">A role was repositioned</param>
+		private void ConstraintShapeSetChanged(IConstraint constraint, bool roleChangeOnly, bool rolePositionChangeOnly)
 		{
 			bool resize = false;
 			bool redraw = false;
@@ -3273,7 +3275,11 @@ namespace Neumont.Tools.ORM.ShapeModel
 			switch (constraint.ConstraintType)
 			{
 				case ConstraintType.InternalUniqueness:
-					if (roleChangeOnly)
+					if (rolePositionChangeOnly)
+					{
+						// Nothing to do, role numbers not displayed for internal uniqueness constraints
+					}
+					else if (roleChangeOnly)
 					{
 						resize = AssociatedFactType.RoleCollection.Count == 2;
 						redraw = !resize;
@@ -3310,7 +3316,14 @@ namespace Neumont.Tools.ORM.ShapeModel
 				case ConstraintType.Subset:
 				case ConstraintType.Equality:
 				case ConstraintType.Frequency:
-					resize = true;
+					if (rolePositionChangeOnly)
+					{
+						redraw = true;
+					}
+					else
+					{
+						resize = true;
+					}
 					break;
 			}
 			if (resize)

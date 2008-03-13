@@ -270,6 +270,16 @@
 			<orm:ReferenceModeKind id="_29A522CE-58F4-4554-B963-1754EE840952" FormatString="{1}Value" ReferenceModeType="UnitBased" />
 		</orm:ReferenceModeKinds>
 	</orm:ORMModel>
+	<orm:NameGenerator AutomaticallyShortenNames="true" UseTargetDefaultMaximum="true" UserDefinedMaximum="128" id="_53F263FE-E848-4911-B0A8-A569713FCC7F">
+		<orm:Refinements>
+			<oialtocdb:RelationalNameGenerator AutomaticallyShortenNames="true" SpacingFormat="Remove" UseTargetDefaultMaximum="true" UserDefinedMaximum="128" id="_0A0509CB-4C9C-4228-996A-EDED490BC2C6">
+				<orm:Refinements>
+					<oialtocdb:RelationalNameGenerator AutomaticallyShortenNames="true" CasingOption="Pascal" NameUsage="RelationalTable" SpacingFormat="Remove" UseTargetDefaultMaximum="true" UserDefinedMaximum="128" id="_967F771B-2FCA-4331-9F50-EB7F7EF78EC9" />
+					<oialtocdb:RelationalNameGenerator AutomaticallyShortenNames="true" CasingOption="Camel" NameUsage="RelationalColumn" SpacingFormat="Remove" UseTargetDefaultMaximum="true" UserDefinedMaximum="128" id="_A17A195B-E1F1-4EF3-866E-8E141DFEBB1A" />
+				</orm:Refinements>
+			</oialtocdb:RelationalNameGenerator>
+		</orm:Refinements>
+	</orm:NameGenerator>
 	<ormDiagram:ORMDiagram id="_595A8D6C-BEB6-468F-879E-5A44F981AF9C" IsCompleteView="false" Name="ORMModel2" BaseFontName="Tahoma" BaseFontSize="0.0972222238779068">
 		<ormDiagram:Shapes>
 			<ormDiagram:ObjectTypeShape id="_404DA74B-74B2-4C8D-8E39-BA289A700ADC" IsExpanded="true" AbsoluteBounds="0.5, 1.3958333333333333, 0.43339290738105779, 0.35900605320930479">

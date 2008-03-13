@@ -73,8 +73,10 @@ namespace Neumont.Tools.ORM.ShapeModel
 						typeof(ORMBaseShape).GetNestedType("AbsoluteBoundsChangedRuleClass", BindingFlags.Public | BindingFlags.NonPublic),
 						typeof(ORMBaseShape).GetNestedType("ModelErrorAddedRuleClass", BindingFlags.Public | BindingFlags.NonPublic),
 						typeof(ORMBaseShape).GetNestedType("ModelErrorDeletingRuleClass", BindingFlags.Public | BindingFlags.NonPublic),
+						typeof(ClearInvalidateCacheOnCommittingRuleClass),
 						typeof(ConstraintRoleSequenceRoleAddedRuleClass),
 						typeof(ConstraintRoleSequenceRoleDeletedRuleClass),
+						typeof(ConstraintRoleSequencePositionChangedRuleClass),
 						typeof(FactConstraintAddedRuleClass),
 						typeof(FactConstraintDeletedRuleClass),
 						typeof(ExternalRoleConstraintDeletedRuleClass),
@@ -138,7 +140,7 @@ namespace Neumont.Tools.ORM.ShapeModel
 		{
 			Microsoft.VisualStudio.Modeling.RuleManager ruleManager = store.RuleManager;
 			Type[] disabledRuleTypes = ORMShapeDomainModel.CustomDomainModelTypes;
-			for (int i = 0; i < 71; ++i)
+			for (int i = 0; i < 73; ++i)
 			{
 				ruleManager.EnableRule(disabledRuleTypes[i]);
 			}
@@ -1207,6 +1209,32 @@ namespace Neumont.Tools.ORM.ShapeModel
 	#region Rule classes for ORMShapeDomainModel
 	partial class ORMShapeDomainModel
 	{
+		[Microsoft.VisualStudio.Modeling.RuleOn(typeof(ORMShapeDomainModel))]
+		private sealed class ClearInvalidateCacheOnCommittingRuleClass : Microsoft.VisualStudio.Modeling.TransactionCommittingRule
+		{
+			[System.Diagnostics.DebuggerStepThrough()]
+			public ClearInvalidateCacheOnCommittingRuleClass()
+			{
+				base.IsEnabled = false;
+			}
+			/// <summary>
+			/// Provide the following method in class: 
+			/// Neumont.Tools.ORM.ShapeModel.ORMShapeDomainModel
+			/// /// <summary>
+			/// /// TransactionCommittingRule: typeof(ORMShapeDomainModel)
+			/// /// </summary>
+			/// private static void ClearInvalidateCacheOnCommittingRule(TransactionCommitEventArgs e)
+			/// {
+			/// }
+			/// </summary>
+			[System.Diagnostics.DebuggerStepThrough()]
+			public override void TransactionCommitting(Microsoft.VisualStudio.Modeling.TransactionCommitEventArgs e)
+			{
+				Neumont.Tools.Modeling.Diagnostics.TraceUtility.TraceRuleStart(e.Transaction.Store, "Neumont.Tools.ORM.ShapeModel.ORMShapeDomainModel.ClearInvalidateCacheOnCommittingRule");
+				ORMShapeDomainModel.ClearInvalidateCacheOnCommittingRule(e);
+				Neumont.Tools.Modeling.Diagnostics.TraceUtility.TraceRuleEnd(e.Transaction.Store, "Neumont.Tools.ORM.ShapeModel.ORMShapeDomainModel.ClearInvalidateCacheOnCommittingRule");
+			}
+		}
 		[Microsoft.VisualStudio.Modeling.RuleOn(typeof(Neumont.Tools.ORM.ObjectModel.ConstraintRoleSequenceHasRole), FireTime=Microsoft.VisualStudio.Modeling.TimeToFire.TopLevelCommit, Priority=Microsoft.VisualStudio.Modeling.Diagrams.DiagramFixupConstants.ResizeParentRulePriority)]
 		private sealed class ConstraintRoleSequenceRoleAddedRuleClass : Microsoft.VisualStudio.Modeling.AddRule
 		{
@@ -1257,6 +1285,32 @@ namespace Neumont.Tools.ORM.ShapeModel
 				Neumont.Tools.Modeling.Diagnostics.TraceUtility.TraceRuleStart(e.ModelElement.Store, "Neumont.Tools.ORM.ShapeModel.ORMShapeDomainModel.ConstraintRoleSequenceRoleDeletedRule");
 				ORMShapeDomainModel.ConstraintRoleSequenceRoleDeletedRule(e);
 				Neumont.Tools.Modeling.Diagnostics.TraceUtility.TraceRuleEnd(e.ModelElement.Store, "Neumont.Tools.ORM.ShapeModel.ORMShapeDomainModel.ConstraintRoleSequenceRoleDeletedRule");
+			}
+		}
+		[Microsoft.VisualStudio.Modeling.RuleOn(typeof(Neumont.Tools.ORM.ObjectModel.ConstraintRoleSequenceHasRole), FireTime=Microsoft.VisualStudio.Modeling.TimeToFire.TopLevelCommit, Priority=Microsoft.VisualStudio.Modeling.Diagrams.DiagramFixupConstants.ResizeParentRulePriority)]
+		private sealed class ConstraintRoleSequencePositionChangedRuleClass : Microsoft.VisualStudio.Modeling.RolePlayerPositionChangeRule
+		{
+			[System.Diagnostics.DebuggerStepThrough()]
+			public ConstraintRoleSequencePositionChangedRuleClass()
+			{
+				base.IsEnabled = false;
+			}
+			/// <summary>
+			/// Provide the following method in class: 
+			/// Neumont.Tools.ORM.ShapeModel.ORMShapeDomainModel
+			/// /// <summary>
+			/// /// RolePlayerPositionChangeRule: typeof(Neumont.Tools.ORM.ObjectModel.ConstraintRoleSequenceHasRole), FireTime=TopLevelCommit, Priority=DiagramFixupConstants.ResizeParentRulePriority;
+			/// /// </summary>
+			/// private static void ConstraintRoleSequencePositionChangedRule(RolePlayerOrderChangedEventArgs e)
+			/// {
+			/// }
+			/// </summary>
+			[System.Diagnostics.DebuggerStepThrough()]
+			public override void RolePlayerPositionChanged(Microsoft.VisualStudio.Modeling.RolePlayerOrderChangedEventArgs e)
+			{
+				Neumont.Tools.Modeling.Diagnostics.TraceUtility.TraceRuleStart(e.SourceElement.Store, "Neumont.Tools.ORM.ShapeModel.ORMShapeDomainModel.ConstraintRoleSequencePositionChangedRule");
+				ORMShapeDomainModel.ConstraintRoleSequencePositionChangedRule(e);
+				Neumont.Tools.Modeling.Diagnostics.TraceUtility.TraceRuleEnd(e.SourceElement.Store, "Neumont.Tools.ORM.ShapeModel.ORMShapeDomainModel.ConstraintRoleSequencePositionChangedRule");
 			}
 		}
 		[Microsoft.VisualStudio.Modeling.RuleOn(typeof(Neumont.Tools.ORM.ObjectModel.FactConstraint), FireTime=Microsoft.VisualStudio.Modeling.TimeToFire.TopLevelCommit, Priority=Microsoft.VisualStudio.Modeling.Diagrams.DiagramFixupConstants.AddConnectionRulePriority)]

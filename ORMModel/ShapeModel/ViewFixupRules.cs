@@ -311,7 +311,15 @@ namespace Neumont.Tools.ORM.ShapeModel
 			if (null != (factType = link.Role.FactType) &&
 				null != (constraint = link.ConstraintRoleSequence.Constraint))
 			{
-				FactTypeShape.ConstraintSetChanged(factType, constraint, true);
+				FactTypeShape.ConstraintSetChanged(factType, constraint, true, false);
+				// Other FactTypes might have renumbered, do a less expensive refresh on them
+				foreach (FactType remainingFactType in (constraint.ConstraintStorageStyle == ConstraintStorageStyle.SetComparisonConstraint) ? ((SetComparisonConstraint)constraint).FactTypeCollection : ((SetConstraint)constraint).FactTypeCollection)
+				{
+					if (remainingFactType != factType)
+					{
+						FactTypeShape.ConstraintSetChanged(remainingFactType, constraint, false, true);
+					}
+				}
 			}
 		}
 		#endregion // ConstraintRoleSequenceRoleAddedRule
@@ -332,10 +340,39 @@ namespace Neumont.Tools.ORM.ShapeModel
 				null != (constraint = sequence.Constraint)
 				)
 			{
-				FactTypeShape.ConstraintSetChanged(factType, constraint, true);
+				FactTypeShape.ConstraintSetChanged(factType, constraint, true, false);
+				// Other FactTypes might have renumbered, do a less expensive refresh on them
+				foreach (FactType remainingFactType in (constraint.ConstraintStorageStyle == ConstraintStorageStyle.SetComparisonConstraint) ? ((SetComparisonConstraint)constraint).FactTypeCollection : ((SetConstraint)constraint).FactTypeCollection)
+				{
+					if (remainingFactType != factType)
+					{
+						FactTypeShape.ConstraintSetChanged(remainingFactType, constraint, false, true);
+					}
+				}
 			}
 		}
 		#endregion // ConstraintRoleSequenceRoleDeletedRule
+		#region ConstraintRoleSequencePositionChangedRule
+		/// <summary>
+		/// RolePlayerPositionChangeRule: typeof(Neumont.Tools.ORM.ObjectModel.ConstraintRoleSequenceHasRole), FireTime=TopLevelCommit, Priority=DiagramFixupConstants.ResizeParentRulePriority;
+		/// Update the redraw for the selected for cases when the constraint is active
+		/// </summary>
+		private static void ConstraintRoleSequencePositionChangedRule(RolePlayerOrderChangedEventArgs e)
+		{
+			IConstraint constraint;
+			ModelElement constraintElement;
+			ConstraintRoleSequence sequence = (ConstraintRoleSequence)e.SourceElement;
+			if (!sequence.IsDeleted &&
+				null != (constraint = sequence.Constraint) &&
+				!(constraintElement = (ModelElement)constraint).IsDeleted)
+			{
+				foreach (FactType factType in (constraint.ConstraintStorageStyle == ConstraintStorageStyle.SetComparisonConstraint) ? ((SetComparisonConstraint)constraintElement).FactTypeCollection : ((SetConstraint)constraintElement).FactTypeCollection)
+				{
+					FactTypeShape.ConstraintSetChanged(factType, constraint, false, true);
+				}
+			}
+		}
+		#endregion // ConstraintRoleSequencePositionChangedRule
 		#region ExternalRoleConstraintDeletedRule
 		/// <summary>
 		/// DeleteRule: typeof(Neumont.Tools.ORM.ObjectModel.ExternalRoleConstraint), FireTime=TopLevelCommit, Priority=DiagramFixupConstants.ResizeParentRulePriority;
@@ -353,7 +390,7 @@ namespace Neumont.Tools.ORM.ShapeModel
 				(null != (factType = factConstraint.FactType)) &&
 				!factType.IsDeleted)
 			{
-				FactTypeShape.ConstraintSetChanged(factType, factConstraint.SetComparisonConstraint, false);
+				FactTypeShape.ConstraintSetChanged(factType, factConstraint.SetComparisonConstraint, false, false);
 			}
 		}
 		#endregion // ExternalRoleConstraintDeletedRule
@@ -818,7 +855,7 @@ namespace Neumont.Tools.ORM.ShapeModel
 				FactType fact = link.FactType;
 				if (!fact.IsDeleted)
 				{
-					FactTypeShape.ConstraintSetChanged(fact, constraint, false);
+					FactTypeShape.ConstraintSetChanged(fact, constraint, false, false);
 				}
 			}
 		}
@@ -1181,6 +1218,90 @@ namespace Neumont.Tools.ORM.ShapeModel
 			}
 		}
 		#endregion // ForceClearViewFixupDataListRuleClass
+		#region Shape Invalidation Routines
+		private static readonly object InvalidateRequiredKey = new object();
+		/// <summary>
+		/// TransactionCommittingRule: typeof(ORMShapeDomainModel)
+		/// Don't store the shape invalidation cache long term with the
+		/// transaction log, we don't need it.
+		/// </summary>
+		private static void ClearInvalidateCacheOnCommittingRule(TransactionCommitEventArgs e)
+		{
+			Dictionary<object, object> contextDictionary = e.Transaction.Context.ContextInfo;
+			if (contextDictionary.ContainsKey(InvalidateRequiredKey))
+			{
+				contextDictionary.Remove(InvalidateRequiredKey);
+			}
+		}
+		/// <summary>
+		/// Get a new update counter value if one is required. Use with
+		/// the <see cref="GetCurrentUpdateCounterValue"/> to implement
+		/// the delayed validation pattern
+		/// </summary>
+		/// <param name="element">A <see cref="ShapeElement"/> that implements
+		/// the delayed validation pattern</param>
+		/// <param name="refreshBitmap">Should the bitmap be refreshed?</param>
+		/// <returns>A new value, or <see langword="null"/> if validation is already in place for this element</returns>
+		public static long? GetNewUpdateCounterValue(ShapeElement element, bool refreshBitmap)
+		{
+			TransactionManager tmgr = element.Store.TransactionManager;
+			if (tmgr.InTransaction)
+			{
+				Transaction currentTransaction = tmgr.CurrentTransaction;
+				Dictionary<object, object> contextInfo = currentTransaction.TopLevelTransaction.Context.ContextInfo;
+				object validationStatesObject;
+				Dictionary<ShapeElement, bool> validationStates;
+				bool existingRefresh;
+				bool requiresUpdate = true;
+				if (!contextInfo.TryGetValue(InvalidateRequiredKey, out validationStatesObject) || null == (validationStates = validationStatesObject as Dictionary<ShapeElement, bool>))
+				{
+					validationStates = new Dictionary<ShapeElement, bool>();
+					contextInfo[InvalidateRequiredKey] = validationStates;
+					validationStates.Add(element, refreshBitmap);
+				}
+				else if (!validationStates.TryGetValue(element, out existingRefresh))
+				{
+					validationStates.Add(element, refreshBitmap);
+				}
+				else if (refreshBitmap && !existingRefresh)
+				{
+					validationStates[element] = true;
+				}
+				else
+				{
+					requiresUpdate = false;
+				}
+				if (requiresUpdate)
+				{
+					return unchecked(tmgr.CurrentTransaction.SequenceNumber - (refreshBitmap ? 0L : 1L));
+				}
+			}
+			return null;
+		}
+		/// <summary>
+		/// Get the current update counter value. Used with the
+		/// <see cref="GetNewUpdateCounterValue"/> to manage setting
+		/// an UpdateCounter value. Events on this value indicate that
+		/// a shape needs to be invalidated.
+		/// </summary>
+		/// <param name="element">A <see cref="ShapeElement"/> that implements
+		/// the delayed validation pattern</param>
+		public static long GetCurrentUpdateCounterValue(ShapeElement element)
+		{
+			TransactionManager tmgr = element.Store.TransactionManager;
+			if (tmgr.InTransaction)
+			{
+				// Using subtract 2 and set to 1 under to indicate
+				// the difference between an Invalidate(true) and
+				// and Invalidate(false)
+				return unchecked(tmgr.CurrentTransaction.SequenceNumber - 2);
+			}
+			else
+			{
+				return 0L;
+			}
+		}
+		#endregion // Shape Invalidation Routines
 		#endregion // View Fixup Rules
 	}
 }

@@ -142,10 +142,10 @@ namespace Neumont.Tools.ORM.ShapeModel
 		/// <param name="refreshBitmap">Value to forward to the Invalidate method's refreshBitmap property during event playback</param>
 		public void InvalidateRequired(bool refreshBitmap)
 		{
-			TransactionManager tmgr = Store.TransactionManager;
-			if (tmgr.InTransaction)
+			long? newValue = ORMShapeDomainModel.GetNewUpdateCounterValue(this, refreshBitmap);
+			if (newValue.HasValue)
 			{
-				UpdateCounter = unchecked(tmgr.CurrentTransaction.SequenceNumber - (refreshBitmap ? 0L : 1L));
+				UpdateCounter = newValue.Value;
 			}
 		}
 		/// <summary>
@@ -158,22 +158,11 @@ namespace Neumont.Tools.ORM.ShapeModel
 		}
 		private long GetUpdateCounterValue()
 		{
-			TransactionManager tmgr = Store.TransactionManager;
-			if (tmgr.InTransaction)
-			{
-				// Using subtract 2 and set to 1 under to indicate
-				// the difference between an Invalidate(true) and
-				// and Invalidate(false)
-				return unchecked(tmgr.CurrentTransaction.SequenceNumber - 2);
-			}
-			else
-			{
-				return 0L;
-			}
+			return ORMShapeDomainModel.GetCurrentUpdateCounterValue(this);
 		}
 		private void SetUpdateCounterValue(long newValue)
 		{
-			// Nothing to do, we're just trying to create a transaction log
+			// Nothing to do, we're just trying to create a transaction log entry
 		}
 		/// <summary>
 		/// Manages <see cref="EventHandler{TEventArgs}"/>s in the <see cref="Store"/> for <see cref="ORMBaseShape"/>s.

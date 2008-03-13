@@ -154,12 +154,18 @@
 			</arg:DeletingRule>
 		</arg:RuleContainer>
 		<arg:RuleContainer class="ORMShapeDomainModel">
+			<arg:TransactionCommittingRule methodName="ClearInvalidateCacheOnCommittingRule">
+				<arg:RuleOn targetType="ORMShapeDomainModel"/>
+			</arg:TransactionCommittingRule>
 			<arg:AddRule methodName="ConstraintRoleSequenceRoleAddedRule">
 				<arg:RuleOn targetType="ConstraintRoleSequenceHasRole" targetTypeQualifier="Neumont.Tools.ORM.ObjectModel" fireTime="TopLevelCommit" priority="DiagramFixupConstants.ResizeParentRulePriority"/>
 			</arg:AddRule>
 			<arg:DeleteRule methodName="ConstraintRoleSequenceRoleDeletedRule">
 				<arg:RuleOn targetType="ConstraintRoleSequenceHasRole" targetTypeQualifier="Neumont.Tools.ORM.ObjectModel" fireTime="TopLevelCommit" priority="DiagramFixupConstants.ResizeParentRulePriority"/>
 			</arg:DeleteRule>
+			<arg:RolePlayerPositionChangeRule methodName="ConstraintRoleSequencePositionChangedRule">
+				<arg:RuleOn targetType="ConstraintRoleSequenceHasRole" targetTypeQualifier="Neumont.Tools.ORM.ObjectModel" fireTime="TopLevelCommit" priority="DiagramFixupConstants.ResizeParentRulePriority"/>
+			</arg:RolePlayerPositionChangeRule>
 			<arg:AddRule methodName="FactConstraintAddedRule">
 				<arg:RuleOn targetType="FactConstraint" targetTypeQualifier="Neumont.Tools.ORM.ObjectModel" fireTime="TopLevelCommit" priority="DiagramFixupConstants.AddConnectionRulePriority"/>
 			</arg:AddRule>
