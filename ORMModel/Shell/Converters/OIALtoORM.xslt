@@ -1,4 +1,4 @@
-<?xml version="1.0" encoding="utf-8"?>
+﻿<?xml version="1.0" encoding="utf-8"?>
 <!--
 	Copyright © Neumont University. All rights reserved.
 
@@ -77,9 +77,9 @@
 				</orm:ModelErrors>
 			</xsl:if>
 			<orm:ReferenceModeKinds>
-				<orm:ReferenceModeKind id="_94F6CC9F-76A2-461B-A031-E13A5FA5B9C9" ReferenceModeType="General" FormatString="{1}"/>
-				<orm:ReferenceModeKind id="_54981962-590F-428B-92C0-3430BC951E3F" ReferenceModeType="Popular" FormatString="{0}_{1}"/>
-				<orm:ReferenceModeKind id="_401C5824-3C4A-4514-AE6D-0454546E52AC" ReferenceModeType="UnitBased" FormatString="{1}Value"/>
+				<orm:ReferenceModeKind id="_94F6CC9F-76A2-461B-A031-E13A5FA5B9C9" ReferenceModeType="General" FormatString="{{1}}"/>
+				<orm:ReferenceModeKind id="_54981962-590F-428B-92C0-3430BC951E3F" ReferenceModeType="Popular" FormatString="{{0}}_{{1}}"/>
+				<orm:ReferenceModeKind id="_401C5824-3C4A-4514-AE6D-0454546E52AC" ReferenceModeType="UnitBased" FormatString="{{1}}Value"/>
 			</orm:ReferenceModeKinds>
 		</orm:ORMModel>
 	</xsl:template>
@@ -178,48 +178,23 @@
 			<orm:FactRoles>
 				<xsl:copy-of select="$roles"/>
 			</orm:FactRoles>
-			<orm:ReadingOrders>
-				<orm:ReadingOrder id="ReadingOrder.ParentTarget.{@id}">
-					<orm:Readings>
-						<orm:Reading id="Reading.ParentTarget.{@id}">
-							<orm:Data>
-								<xsl:choose>
-									<xsl:when test="$isSubtypingRelationship">
-										<xsl:text>{0} is {1}</xsl:text>
-									</xsl:when>
-									<xsl:otherwise>
-										<xsl:text>{0} has {1}</xsl:text>
-									</xsl:otherwise>
-								</xsl:choose>
-							</orm:Data>
-						</orm:Reading>
-					</orm:Readings>
-					<orm:RoleSequence>
-						<orm:Role ref="{$roles[1]/@id}"/>
-						<orm:Role ref="{$roles[2]/@id}"/>
-					</orm:RoleSequence>
-				</orm:ReadingOrder>
-				<orm:ReadingOrder id="ReadingOrder.TargetParent.{@id}">
-					<orm:Readings>
-						<orm:Reading id="Reading.TargetParent.{@id}">
-							<orm:Data>
-								<xsl:choose>
-									<xsl:when test="$isSubtypingRelationship">
-										<xsl:text>{0} is {1}</xsl:text>
-									</xsl:when>
-									<xsl:otherwise>
-										<xsl:text>{0} has {1}</xsl:text>
-									</xsl:otherwise>
-								</xsl:choose>
-							</orm:Data>
-						</orm:Reading>
-					</orm:Readings>
-					<orm:RoleSequence>
-						<orm:Role ref="{$roles[2]/@id}"/>
-						<orm:Role ref="{$roles[1]/@id}"/>
-					</orm:RoleSequence>
-				</orm:ReadingOrder>
-			</orm:ReadingOrders>
+			<xsl:if test="not($isSubtypingRelationship)">
+				<orm:ReadingOrders>
+					<orm:ReadingOrder id="ReadingOrder.ParentTarget.{@id}">
+						<orm:Readings>
+							<orm:Reading id="Reading.ParentTarget.{@id}">
+								<orm:Data>
+									<xsl:text>{0} has {1}</xsl:text>
+								</orm:Data>
+							</orm:Reading>
+						</orm:Readings>
+						<orm:RoleSequence>
+							<orm:Role ref="{$roles[1]/@id}"/>
+							<orm:Role ref="{$roles[2]/@id}"/>
+						</orm:RoleSequence>
+					</orm:ReadingOrder>
+				</orm:ReadingOrders>
+			</xsl:if>
 			<xsl:if test="$isPartOfAssociationForParent">
 				<orm:ImpliedByObjectification ref="NestedPredicate.{$conceptType/@id}"/>
 			</xsl:if>
@@ -266,7 +241,9 @@
 			<orm:FactRoles>
 				<xsl:copy-of select="$roles"/>
 			</orm:FactRoles>
-			<orm:ReadingOrders>
+			<!-- UNDONE: Readings with only spaces don't help, just leave them empty for associations
+			until we can figure out how to do something real. -->
+			<!-- <orm:ReadingOrders>
 				<orm:ReadingOrder id="ReadingOrder.Association.{@id}">
 					<orm:Readings>
 						<orm:Reading id="Reading.Association.{@id}">
@@ -288,7 +265,7 @@
 						</xsl:for-each>
 					</orm:RoleSequence>
 				</orm:ReadingOrder>
-			</orm:ReadingOrders>
+			</orm:ReadingOrders> -->
 		</orm:Fact>
 	</xsl:template>
 	
