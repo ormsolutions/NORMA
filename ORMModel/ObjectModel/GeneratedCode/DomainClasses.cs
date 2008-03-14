@@ -942,6 +942,109 @@ namespace Neumont.Tools.ORM.ObjectModel
 namespace Neumont.Tools.ORM.ObjectModel
 {
 	/// <summary>
+	/// DomainClass GenerationState
+	/// </summary>
+	[DslDesign::DisplayNameResource("Neumont.Tools.ORM.ObjectModel.GenerationState.DisplayName", typeof(global::Neumont.Tools.ORM.ObjectModel.ORMCoreDomainModel), "Neumont.Tools.ORM.GeneratedCode.CoreDomainModelResx")]
+	[DslDesign::DescriptionResource("Neumont.Tools.ORM.ObjectModel.GenerationState.Description", typeof(global::Neumont.Tools.ORM.ObjectModel.ORMCoreDomainModel), "Neumont.Tools.ORM.GeneratedCode.CoreDomainModelResx")]
+	[global::System.CLSCompliant(true)]
+	[DslModeling::DomainObjectId("cd0749e6-ddb0-4890-a559-eb70d3f698e0")]
+	public partial class GenerationState : DslModeling::ModelElement
+	{
+		#region Constructors, domain class Id
+	
+		/// <summary>
+		/// GenerationState domain class Id.
+		/// </summary>
+		public static readonly new global::System.Guid DomainClassId = new global::System.Guid(0xcd0749e6, 0xddb0, 0x4890, 0xa5, 0x59, 0xeb, 0x70, 0xd3, 0xf6, 0x98, 0xe0);
+		/// <summary>
+		/// Constructor
+		/// </summary>
+		/// <param name="store">Store where new element is to be created.</param>
+		/// <param name="propertyAssignments">List of domain property id/value pairs to set once the element is created.</param>
+		public GenerationState(DslModeling::Store store, params DslModeling::PropertyAssignment[] propertyAssignments)
+			: this(store != null ? store.DefaultPartition : null, propertyAssignments)
+		{
+		}
+		
+		/// <summary>
+		/// Constructor
+		/// </summary>
+		/// <param name="partition">Partition where new element is to be created.</param>
+		/// <param name="propertyAssignments">List of domain property id/value pairs to set once the element is created.</param>
+		public GenerationState(DslModeling::Partition partition, params DslModeling::PropertyAssignment[] propertyAssignments)
+			: base(partition, propertyAssignments)
+		{
+		}
+		#endregion
+		#region GenerationSettingCollection opposite domain role accessor
+		/// <summary>
+		/// Gets a list of GenerationSettingCollection.
+		/// Description for
+		/// Neumont.Tools.ORM.ObjectModel.GenerationStateHasGenerationSetting.GenerationState
+		/// </summary>
+		public virtual DslModeling::LinkedElementCollection<GenerationSetting> GenerationSettingCollection
+		{
+			[global::System.Diagnostics.DebuggerStepThrough]
+			get
+			{
+				return new DslModeling::LinkedElementCollection<GenerationSetting>(this, global::Neumont.Tools.ORM.ObjectModel.GenerationStateHasGenerationSetting.GenerationStateDomainRoleId);
+			}
+		}
+		#endregion
+	}
+}
+namespace Neumont.Tools.ORM.ObjectModel
+{
+	/// <summary>
+	/// DomainClass GenerationSetting
+	/// </summary>
+	[DslDesign::DisplayNameResource("Neumont.Tools.ORM.ObjectModel.GenerationSetting.DisplayName", typeof(global::Neumont.Tools.ORM.ObjectModel.ORMCoreDomainModel), "Neumont.Tools.ORM.GeneratedCode.CoreDomainModelResx")]
+	[DslDesign::DescriptionResource("Neumont.Tools.ORM.ObjectModel.GenerationSetting.Description", typeof(global::Neumont.Tools.ORM.ObjectModel.ORMCoreDomainModel), "Neumont.Tools.ORM.GeneratedCode.CoreDomainModelResx")]
+	[global::System.CLSCompliant(true)]
+	[DslModeling::DomainObjectId("b707a1d2-87d1-43ea-93b0-92ed9308a0a5")]
+	public abstract partial class GenerationSetting : DslModeling::ModelElement
+	{
+		#region Constructors, domain class Id
+	
+		/// <summary>
+		/// GenerationSetting domain class Id.
+		/// </summary>
+		public static readonly new global::System.Guid DomainClassId = new global::System.Guid(0xb707a1d2, 0x87d1, 0x43ea, 0x93, 0xb0, 0x92, 0xed, 0x93, 0x08, 0xa0, 0xa5);
+		/// <summary>
+		/// Constructor.
+		/// </summary>
+		/// <param name="partition">Partition where new element is to be created.</param>
+		/// <param name="propertyAssignments">List of domain property id/value pairs to set once the element is created.</param>
+		protected GenerationSetting(DslModeling::Partition partition, DslModeling::PropertyAssignment[] propertyAssignments)
+			: base(partition, propertyAssignments)
+		{
+		}
+		#endregion
+		#region GenerationState opposite domain role accessor
+		/// <summary>
+		/// Gets or sets GenerationState.
+		/// Description for
+		/// Neumont.Tools.ORM.ObjectModel.GenerationStateHasGenerationSetting.GenerationSetting
+		/// </summary>
+		public virtual GenerationState GenerationState
+		{
+			[global::System.Diagnostics.DebuggerStepThrough]
+			get
+			{
+				return DslModeling::DomainRoleInfo.GetLinkedElement(this, global::Neumont.Tools.ORM.ObjectModel.GenerationStateHasGenerationSetting.GenerationSettingDomainRoleId) as GenerationState;
+			}
+			[global::System.Diagnostics.DebuggerStepThrough]
+			set
+			{
+				DslModeling::DomainRoleInfo.SetLinkedElement(this, global::Neumont.Tools.ORM.ObjectModel.GenerationStateHasGenerationSetting.GenerationSettingDomainRoleId, value);
+			}
+		}
+		#endregion
+	}
+}
+namespace Neumont.Tools.ORM.ObjectModel
+{
+	/// <summary>
 	/// DomainClass ModelErrorCategory
 	/// </summary>
 	[DslDesign::DisplayNameResource("Neumont.Tools.ORM.ObjectModel.ModelErrorCategory.DisplayName", typeof(global::Neumont.Tools.ORM.ObjectModel.ORMCoreDomainModel), "Neumont.Tools.ORM.GeneratedCode.CoreDomainModelResx")]

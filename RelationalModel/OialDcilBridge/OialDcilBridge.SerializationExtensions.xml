@@ -301,4 +301,7 @@
 		</se:Attribute>
 		<se:Link RelationshipName="DefaultReferenceModeNamingCustomizesORMModel" RoleName="ORMModel" Name="ORMModel"/>
 	</se:Element>
+	<se:Element Class="SchemaGenerationSetting">
+		<se:Link RelationshipName="GenerationSettingTargetsSchema" RoleName="GeneratedSchema" Name="Schema"/>
+	</se:Element>
 </se:CustomSerializedElements>

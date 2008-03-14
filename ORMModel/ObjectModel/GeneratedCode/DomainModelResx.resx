@@ -221,6 +221,22 @@
     <value>NameUsage</value>
     <comment>DisplayName for DomainClass &apos;NameUsage&apos;</comment>
   </data>
+  <data name="Neumont.Tools.ORM.ObjectModel.GenerationState.Description" xml:space="preserve">
+    <value></value>
+    <comment>Description for DomainClass &apos;GenerationState&apos;</comment>
+  </data>
+  <data name="Neumont.Tools.ORM.ObjectModel.GenerationState.DisplayName" xml:space="preserve">
+    <value>GenerationState</value>
+    <comment>DisplayName for DomainClass &apos;GenerationState&apos;</comment>
+  </data>
+  <data name="Neumont.Tools.ORM.ObjectModel.GenerationSetting.Description" xml:space="preserve">
+    <value></value>
+    <comment>Description for DomainClass &apos;GenerationSetting&apos;</comment>
+  </data>
+  <data name="Neumont.Tools.ORM.ObjectModel.GenerationSetting.DisplayName" xml:space="preserve">
+    <value>GenerationSetting</value>
+    <comment>DisplayName for DomainClass &apos;GenerationSetting&apos;</comment>
+  </data>
   <data name="Neumont.Tools.ORM.ObjectModel.ModelErrorCategory.Description" xml:space="preserve">
     <value></value>
     <comment>Description for DomainClass &apos;ModelErrorCategory&apos;</comment>
@@ -2444,6 +2460,38 @@
   <data name="Neumont.Tools.ORM.ObjectModel.ModelHasDataType/DataType.PropertyDisplayName" xml:space="preserve">
     <value>Model</value>
     <comment>PropertyDisplayName for DomainRole &apos;DataType&apos; on DomainRelationship &apos;ModelHasDataType&apos;</comment>
+  </data>
+  <data name="Neumont.Tools.ORM.ObjectModel.GenerationStateHasGenerationSetting.Description" xml:space="preserve">
+    <value>Description for Neumont.Tools.ORM.ObjectModel.GenerationStateHasGenerationSetting</value>
+    <comment>Description for DomainClass &apos;GenerationStateHasGenerationSetting&apos;</comment>
+  </data>
+  <data name="Neumont.Tools.ORM.ObjectModel.GenerationStateHasGenerationSetting.DisplayName" xml:space="preserve">
+    <value>Generation State Has Generation Setting</value>
+    <comment>DisplayName for DomainClass &apos;GenerationStateHasGenerationSetting&apos;</comment>
+  </data>
+  <data name="Neumont.Tools.ORM.ObjectModel.GenerationStateHasGenerationSetting/GenerationState.Description" xml:space="preserve">
+    <value>Description for Neumont.Tools.ORM.ObjectModel.GenerationStateHasGenerationSetting.GenerationState</value>
+    <comment>Description for DomainRole &apos;GenerationState&apos; on DomainRelationship &apos;GenerationStateHasGenerationSetting&apos;</comment>
+  </data>
+  <data name="Neumont.Tools.ORM.ObjectModel.GenerationStateHasGenerationSetting/GenerationState.DisplayName" xml:space="preserve">
+    <value>GenerationState</value>
+    <comment>DisplayName for DomainRole &apos;GenerationState&apos; on DomainRelationship &apos;GenerationStateHasGenerationSetting&apos;</comment>
+  </data>
+  <data name="Neumont.Tools.ORM.ObjectModel.GenerationStateHasGenerationSetting/GenerationState.PropertyDisplayName" xml:space="preserve">
+    <value>Generation Setting Collection</value>
+    <comment>PropertyDisplayName for DomainRole &apos;GenerationState&apos; on DomainRelationship &apos;GenerationStateHasGenerationSetting&apos;</comment>
+  </data>
+  <data name="Neumont.Tools.ORM.ObjectModel.GenerationStateHasGenerationSetting/GenerationSetting.Description" xml:space="preserve">
+    <value>Description for Neumont.Tools.ORM.ObjectModel.GenerationStateHasGenerationSetting.GenerationSetting</value>
+    <comment>Description for DomainRole &apos;GenerationSetting&apos; on DomainRelationship &apos;GenerationStateHasGenerationSetting&apos;</comment>
+  </data>
+  <data name="Neumont.Tools.ORM.ObjectModel.GenerationStateHasGenerationSetting/GenerationSetting.DisplayName" xml:space="preserve">
+    <value>GenerationSetting</value>
+    <comment>DisplayName for DomainRole &apos;GenerationSetting&apos; on DomainRelationship &apos;GenerationStateHasGenerationSetting&apos;</comment>
+  </data>
+  <data name="Neumont.Tools.ORM.ObjectModel.GenerationStateHasGenerationSetting/GenerationSetting.PropertyDisplayName" xml:space="preserve">
+    <value>Generation State</value>
+    <comment>PropertyDisplayName for DomainRole &apos;GenerationSetting&apos; on DomainRelationship &apos;GenerationStateHasGenerationSetting&apos;</comment>
   </data>
   <data name="Neumont.Tools.ORM.ObjectModel.NameGeneratorRefinesNameGenerator.Description" xml:space="preserve">
     <value>Description for Neumont.Tools.ORM.ObjectModel.NameGeneratorRefinesNameGenerator</value>

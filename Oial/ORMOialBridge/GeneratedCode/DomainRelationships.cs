@@ -2053,3 +2053,263 @@ namespace Neumont.Tools.ORMToORMAbstractionBridge
 		#endregion
 	}
 }
+namespace Neumont.Tools.ORMToORMAbstractionBridge
+{
+	/// <summary>
+	/// DomainRelationship GenerationSettingTargetsAbstractionModel
+	/// Description for
+	/// Neumont.Tools.ORMToORMAbstractionBridge.GenerationSettingTargetsAbstractionModel
+	/// </summary>
+	[DslDesign::DisplayNameResource("Neumont.Tools.ORMToORMAbstractionBridge.GenerationSettingTargetsAbstractionModel.DisplayName", typeof(global::Neumont.Tools.ORMToORMAbstractionBridge.ORMToORMAbstractionBridgeDomainModel), "Neumont.Tools.ORMToORMAbstractionBridge.GeneratedCode.ORMToORMAbstractionBridgeDomainModelResx")]
+	[DslDesign::DescriptionResource("Neumont.Tools.ORMToORMAbstractionBridge.GenerationSettingTargetsAbstractionModel.Description", typeof(global::Neumont.Tools.ORMToORMAbstractionBridge.ORMToORMAbstractionBridgeDomainModel), "Neumont.Tools.ORMToORMAbstractionBridge.GeneratedCode.ORMToORMAbstractionBridgeDomainModelResx")]
+	[global::System.CLSCompliant(true)]
+	[DslModeling::DomainRelationship()]
+	[DslModeling::DomainObjectId("890c6aaf-a4b8-42a7-bc0e-89beae1b8d7f")]
+	public partial class GenerationSettingTargetsAbstractionModel : DslModeling::ElementLink
+	{
+		#region Constructors, domain class Id
+		
+		/// <summary>
+		/// GenerationSettingTargetsAbstractionModel domain class Id.
+		/// </summary>
+		public static readonly new global::System.Guid DomainClassId = new global::System.Guid(0x890c6aaf, 0xa4b8, 0x42a7, 0xbc, 0x0e, 0x89, 0xbe, 0xae, 0x1b, 0x8d, 0x7f);
+	
+				
+		/// <summary>
+		/// Constructor
+		/// Creates a GenerationSettingTargetsAbstractionModel link in the same Partition as the given AbstractionModelGenerationSetting
+		/// </summary>
+		/// <param name="source">AbstractionModelGenerationSetting to use as the source of the relationship.</param>
+		/// <param name="target">AbstractionModel to use as the target of the relationship.</param>
+		public GenerationSettingTargetsAbstractionModel(AbstractionModelGenerationSetting source, global::Neumont.Tools.ORMAbstraction.AbstractionModel target)
+			: base((source != null ? source.Partition : null), new DslModeling::RoleAssignment[]{new DslModeling::RoleAssignment(GenerationSettingTargetsAbstractionModel.GenerationSettingDomainRoleId, source), new DslModeling::RoleAssignment(GenerationSettingTargetsAbstractionModel.GeneratedAbstractionModelDomainRoleId, target)}, null)
+		{
+		}
+		
+		/// <summary>
+		/// Constructor
+		/// </summary>
+		/// <param name="store">Store where new link is to be created.</param>
+		/// <param name="roleAssignments">List of relationship role assignments.</param>
+		public GenerationSettingTargetsAbstractionModel(DslModeling::Store store, params DslModeling::RoleAssignment[] roleAssignments)
+			: base(store != null ? store.DefaultPartition : null, roleAssignments, null)
+		{
+		}
+		
+		/// <summary>
+		/// Constructor
+		/// </summary>
+		/// <param name="store">Store where new link is to be created.</param>
+		/// <param name="roleAssignments">List of relationship role assignments.</param>
+		/// <param name="propertyAssignments">List of properties assignments to set on the new link.</param>
+		public GenerationSettingTargetsAbstractionModel(DslModeling::Store store, DslModeling::RoleAssignment[] roleAssignments, DslModeling::PropertyAssignment[] propertyAssignments)
+			: base(store != null ? store.DefaultPartition : null, roleAssignments, propertyAssignments)
+		{
+		}
+		
+		/// <summary>
+		/// Constructor
+		/// </summary>
+		/// <param name="partition">Partition where new link is to be created.</param>
+		/// <param name="roleAssignments">List of relationship role assignments.</param>
+		public GenerationSettingTargetsAbstractionModel(DslModeling::Partition partition, params DslModeling::RoleAssignment[] roleAssignments)
+			: base(partition, roleAssignments, null)
+		{
+		}
+		
+		/// <summary>
+		/// Constructor
+		/// </summary>
+		/// <param name="partition">Partition where new link is to be created.</param>
+		/// <param name="roleAssignments">List of relationship role assignments.</param>
+		/// <param name="propertyAssignments">List of properties assignments to set on the new link.</param>
+		public GenerationSettingTargetsAbstractionModel(DslModeling::Partition partition, DslModeling::RoleAssignment[] roleAssignments, DslModeling::PropertyAssignment[] propertyAssignments)
+			: base(partition, roleAssignments, propertyAssignments)
+		{
+		}
+		#endregion
+		#region GenerationSetting domain role code
+		
+		/// <summary>
+		/// GenerationSetting domain role Id.
+		/// </summary>
+		public static readonly global::System.Guid GenerationSettingDomainRoleId = new global::System.Guid(0x6b876d00, 0x4e9a, 0x42e9, 0xb9, 0x84, 0x03, 0xf6, 0x10, 0xfa, 0x52, 0x27);
+		
+		/// <summary>
+		/// DomainRole GenerationSetting
+		/// Description for
+		/// Neumont.Tools.ORMToORMAbstractionBridge.GenerationSettingTargetsAbstractionModel.GenerationSetting
+		/// </summary>
+		[DslDesign::DisplayNameResource("Neumont.Tools.ORMToORMAbstractionBridge.GenerationSettingTargetsAbstractionModel/GenerationSetting.DisplayName", typeof(global::Neumont.Tools.ORMToORMAbstractionBridge.ORMToORMAbstractionBridgeDomainModel), "Neumont.Tools.ORMToORMAbstractionBridge.GeneratedCode.ORMToORMAbstractionBridgeDomainModelResx")]
+		[DslDesign::DescriptionResource("Neumont.Tools.ORMToORMAbstractionBridge.GenerationSettingTargetsAbstractionModel/GenerationSetting.Description", typeof(global::Neumont.Tools.ORMToORMAbstractionBridge.ORMToORMAbstractionBridgeDomainModel), "Neumont.Tools.ORMToORMAbstractionBridge.GeneratedCode.ORMToORMAbstractionBridgeDomainModelResx")]
+		[DslModeling::DomainRole(DslModeling::DomainRoleOrder.Source, PropertyName = "GeneratedAbstractionModel", PropertyDisplayNameKey="Neumont.Tools.ORMToORMAbstractionBridge.GenerationSettingTargetsAbstractionModel/GenerationSetting.PropertyDisplayName", PropagatesDelete = true, Multiplicity = DslModeling::Multiplicity.ZeroOne)]
+		[DslModeling::DomainObjectId("6b876d00-4e9a-42e9-b984-03f610fa5227")]
+		public virtual AbstractionModelGenerationSetting GenerationSetting
+		{
+			[global::System.Diagnostics.DebuggerStepThrough]
+			get
+			{
+				return (AbstractionModelGenerationSetting)DslModeling::DomainRoleInfo.GetRolePlayer(this, GenerationSettingDomainRoleId);
+			}
+			[global::System.Diagnostics.DebuggerStepThrough]
+			set
+			{
+				DslModeling::DomainRoleInfo.SetRolePlayer(this, GenerationSettingDomainRoleId, value);
+			}
+		}
+				
+		#endregion
+		#region Static methods to access GenerationSetting of a AbstractionModel
+		/// <summary>
+		/// Gets GenerationSetting.
+		/// </summary>
+		[global::System.Diagnostics.DebuggerStepThrough]
+		[global::System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Design", "CA1011")]
+		public static AbstractionModelGenerationSetting GetGenerationSetting(global::Neumont.Tools.ORMAbstraction.AbstractionModel element)
+		{
+			return DslModeling::DomainRoleInfo.GetLinkedElement(element, GeneratedAbstractionModelDomainRoleId) as AbstractionModelGenerationSetting;
+		}
+		
+		/// <summary>
+		/// Sets GenerationSetting.
+		/// </summary>
+		[global::System.Diagnostics.DebuggerStepThrough]
+		[global::System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Design", "CA1011")]
+		public static void SetGenerationSetting(global::Neumont.Tools.ORMAbstraction.AbstractionModel element, AbstractionModelGenerationSetting newGenerationSetting)
+		{
+			DslModeling::DomainRoleInfo.SetLinkedElement(element, GeneratedAbstractionModelDomainRoleId, newGenerationSetting);
+		}
+		#endregion
+		#region GeneratedAbstractionModel domain role code
+		
+		/// <summary>
+		/// GeneratedAbstractionModel domain role Id.
+		/// </summary>
+		public static readonly global::System.Guid GeneratedAbstractionModelDomainRoleId = new global::System.Guid(0x16f8ffd5, 0x2997, 0x475c, 0xa2, 0xaa, 0x61, 0xc3, 0xb1, 0xa6, 0x2d, 0xd2);
+		
+		/// <summary>
+		/// DomainRole GeneratedAbstractionModel
+		/// Description for
+		/// Neumont.Tools.ORMToORMAbstractionBridge.GenerationSettingTargetsAbstractionModel.GeneratedAbstractionModel
+		/// </summary>
+		[DslDesign::DisplayNameResource("Neumont.Tools.ORMToORMAbstractionBridge.GenerationSettingTargetsAbstractionModel/GeneratedAbstractionModel.DisplayName", typeof(global::Neumont.Tools.ORMToORMAbstractionBridge.ORMToORMAbstractionBridgeDomainModel), "Neumont.Tools.ORMToORMAbstractionBridge.GeneratedCode.ORMToORMAbstractionBridgeDomainModelResx")]
+		[DslDesign::DescriptionResource("Neumont.Tools.ORMToORMAbstractionBridge.GenerationSettingTargetsAbstractionModel/GeneratedAbstractionModel.Description", typeof(global::Neumont.Tools.ORMToORMAbstractionBridge.ORMToORMAbstractionBridgeDomainModel), "Neumont.Tools.ORMToORMAbstractionBridge.GeneratedCode.ORMToORMAbstractionBridgeDomainModelResx")]
+		[DslModeling::DomainRole(DslModeling::DomainRoleOrder.Target, PropertyName = "GenerationSetting", PropertyDisplayNameKey="Neumont.Tools.ORMToORMAbstractionBridge.GenerationSettingTargetsAbstractionModel/GeneratedAbstractionModel.PropertyDisplayName", Multiplicity = DslModeling::Multiplicity.ZeroOne)]
+		[DslModeling::DomainObjectId("16f8ffd5-2997-475c-a2aa-61c3b1a62dd2")]
+		public virtual global::Neumont.Tools.ORMAbstraction.AbstractionModel GeneratedAbstractionModel
+		{
+			[global::System.Diagnostics.DebuggerStepThrough]
+			get
+			{
+				return (global::Neumont.Tools.ORMAbstraction.AbstractionModel)DslModeling::DomainRoleInfo.GetRolePlayer(this, GeneratedAbstractionModelDomainRoleId);
+			}
+			[global::System.Diagnostics.DebuggerStepThrough]
+			set
+			{
+				DslModeling::DomainRoleInfo.SetRolePlayer(this, GeneratedAbstractionModelDomainRoleId, value);
+			}
+		}
+				
+		#endregion
+		#region Static methods to access GeneratedAbstractionModel of a AbstractionModelGenerationSetting
+		/// <summary>
+		/// Gets GeneratedAbstractionModel.
+		/// </summary>
+		[global::System.Diagnostics.DebuggerStepThrough]
+		[global::System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Design", "CA1011")]
+		public static global::Neumont.Tools.ORMAbstraction.AbstractionModel GetGeneratedAbstractionModel(AbstractionModelGenerationSetting element)
+		{
+			return DslModeling::DomainRoleInfo.GetLinkedElement(element, GenerationSettingDomainRoleId) as global::Neumont.Tools.ORMAbstraction.AbstractionModel;
+		}
+		
+		/// <summary>
+		/// Sets GeneratedAbstractionModel.
+		/// </summary>
+		[global::System.Diagnostics.DebuggerStepThrough]
+		[global::System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Design", "CA1011")]
+		public static void SetGeneratedAbstractionModel(AbstractionModelGenerationSetting element, global::Neumont.Tools.ORMAbstraction.AbstractionModel newGeneratedAbstractionModel)
+		{
+			DslModeling::DomainRoleInfo.SetLinkedElement(element, GenerationSettingDomainRoleId, newGeneratedAbstractionModel);
+		}
+		#endregion
+		#region GenerationSetting link accessor
+		/// <summary>
+		/// Get the GenerationSettingTargetsAbstractionModel link to a AbstractionModelGenerationSetting.
+		/// </summary>
+		[global::System.Diagnostics.DebuggerStepThrough]
+		[global::System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Design", "CA1011")]
+		public static global::Neumont.Tools.ORMToORMAbstractionBridge.GenerationSettingTargetsAbstractionModel GetLinkToGeneratedAbstractionModel (global::Neumont.Tools.ORMToORMAbstractionBridge.AbstractionModelGenerationSetting generationSettingInstance)
+		{
+			global::System.Collections.Generic.IList<global::Neumont.Tools.ORMToORMAbstractionBridge.GenerationSettingTargetsAbstractionModel> links = DslModeling::DomainRoleInfo.GetElementLinks<global::Neumont.Tools.ORMToORMAbstractionBridge.GenerationSettingTargetsAbstractionModel>(generationSettingInstance, global::Neumont.Tools.ORMToORMAbstractionBridge.GenerationSettingTargetsAbstractionModel.GenerationSettingDomainRoleId);
+			global::System.Diagnostics.Debug.Assert(links.Count <= 1, "Multiplicity of GenerationSetting not obeyed.");
+			if ( links.Count == 0 )
+			{
+				return null;
+			}
+			else
+			{
+				return links[0];
+			}
+		}
+		#endregion
+		#region GeneratedAbstractionModel link accessor
+		/// <summary>
+		/// Get the GenerationSettingTargetsAbstractionModel link to a AbstractionModel.
+		/// </summary>
+		[global::System.Diagnostics.DebuggerStepThrough]
+		[global::System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Design", "CA1011")]
+		public static global::Neumont.Tools.ORMToORMAbstractionBridge.GenerationSettingTargetsAbstractionModel GetLinkToGenerationSetting (global::Neumont.Tools.ORMAbstraction.AbstractionModel generatedAbstractionModelInstance)
+		{
+			global::System.Collections.Generic.IList<global::Neumont.Tools.ORMToORMAbstractionBridge.GenerationSettingTargetsAbstractionModel> links = DslModeling::DomainRoleInfo.GetElementLinks<global::Neumont.Tools.ORMToORMAbstractionBridge.GenerationSettingTargetsAbstractionModel>(generatedAbstractionModelInstance, global::Neumont.Tools.ORMToORMAbstractionBridge.GenerationSettingTargetsAbstractionModel.GeneratedAbstractionModelDomainRoleId);
+			global::System.Diagnostics.Debug.Assert(links.Count <= 1, "Multiplicity of GeneratedAbstractionModel not obeyed.");
+			if ( links.Count == 0 )
+			{
+				return null;
+			}
+			else
+			{
+				return links[0];
+			}
+		}
+		#endregion
+		#region GenerationSettingTargetsAbstractionModel instance accessors
+		
+		/// <summary>
+		/// Get any GenerationSettingTargetsAbstractionModel links between a given AbstractionModelGenerationSetting and a AbstractionModel.
+		/// </summary>
+		[global::System.Diagnostics.DebuggerStepThrough]
+		[global::System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Design", "CA1011")]
+		public static global::System.Collections.ObjectModel.ReadOnlyCollection<global::Neumont.Tools.ORMToORMAbstractionBridge.GenerationSettingTargetsAbstractionModel> GetLinks( global::Neumont.Tools.ORMToORMAbstractionBridge.AbstractionModelGenerationSetting source, global::Neumont.Tools.ORMAbstraction.AbstractionModel target )
+		{
+			global::System.Collections.Generic.List<global::Neumont.Tools.ORMToORMAbstractionBridge.GenerationSettingTargetsAbstractionModel> outLinks = new global::System.Collections.Generic.List<global::Neumont.Tools.ORMToORMAbstractionBridge.GenerationSettingTargetsAbstractionModel>();
+			global::System.Collections.Generic.IList<global::Neumont.Tools.ORMToORMAbstractionBridge.GenerationSettingTargetsAbstractionModel> links = DslModeling::DomainRoleInfo.GetElementLinks<global::Neumont.Tools.ORMToORMAbstractionBridge.GenerationSettingTargetsAbstractionModel>(source, global::Neumont.Tools.ORMToORMAbstractionBridge.GenerationSettingTargetsAbstractionModel.GenerationSettingDomainRoleId);
+			foreach ( global::Neumont.Tools.ORMToORMAbstractionBridge.GenerationSettingTargetsAbstractionModel link in links )
+			{
+				if ( target.Equals(link.GeneratedAbstractionModel) )
+				{
+					outLinks.Add(link);
+				}
+			}
+			return outLinks.AsReadOnly();
+		}
+		/// <summary>
+		/// Get the one GenerationSettingTargetsAbstractionModel link between a given AbstractionModelGenerationSettingand a AbstractionModel.
+		/// </summary>
+		[global::System.Diagnostics.DebuggerStepThrough]
+		[global::System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Design", "CA1011")]
+		public static global::Neumont.Tools.ORMToORMAbstractionBridge.GenerationSettingTargetsAbstractionModel GetLink( global::Neumont.Tools.ORMToORMAbstractionBridge.AbstractionModelGenerationSetting source, global::Neumont.Tools.ORMAbstraction.AbstractionModel target )
+		{
+			global::System.Collections.Generic.IList<global::Neumont.Tools.ORMToORMAbstractionBridge.GenerationSettingTargetsAbstractionModel> links = DslModeling::DomainRoleInfo.GetElementLinks<global::Neumont.Tools.ORMToORMAbstractionBridge.GenerationSettingTargetsAbstractionModel>(source, global::Neumont.Tools.ORMToORMAbstractionBridge.GenerationSettingTargetsAbstractionModel.GenerationSettingDomainRoleId);
+			foreach ( global::Neumont.Tools.ORMToORMAbstractionBridge.GenerationSettingTargetsAbstractionModel link in links )
+			{
+				if ( target.Equals(link.GeneratedAbstractionModel) )
+				{
+					return link;
+				}
+			}
+			return null;
+		}
+		
+		#endregion
+	}
+}

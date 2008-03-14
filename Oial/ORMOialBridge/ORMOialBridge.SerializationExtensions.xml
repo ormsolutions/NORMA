@@ -79,4 +79,7 @@
 			</se:Condition>
 		</se:Attribute>
 	</se:Element>
+	<se:Element Class="AbstractionModelGenerationSetting">
+		<se:Link RelationshipName="GenerationSettingTargetsAbstractionModel" RoleName="GeneratedAbstractionModel" Name="AbstractionModel"/>
+	</se:Element>
 </se:CustomSerializedElements>

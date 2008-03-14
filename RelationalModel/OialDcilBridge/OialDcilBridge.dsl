@@ -146,6 +146,23 @@
 			</BaseClass>
 		</DomainClass>
 
+		<DomainClass Name="SchemaGenerationSetting" Namespace="Neumont.Tools.ORMAbstractionToConceptualDatabaseBridge" Id="94918D9C-0935-4B98-86F2-FF8C98861E0D" DisplayName="SchemaGenerationSetting" Description="">
+			<BaseClass>
+				<DomainClassMoniker Name="/Neumont.Tools.ORM.ObjectModel/GenerationSetting"/>
+			</BaseClass>
+			<Properties>
+				<DomainProperty Name="CoreAlgorithmVersion" DisplayName="Depth" Id="5570F2C2-0F9E-43A7-8A2E-AFC3DFB3F7A3">
+					<Type>
+						<ExternalTypeMoniker Name="/System/String"/>
+					</Type>
+				</DomainProperty>
+				<DomainProperty Name="NameAlgorithmVersion" DisplayName="Depth" Id="01203AF6-93D5-4555-9BD1-545CF5907022">
+					<Type>
+						<ExternalTypeMoniker Name="/System/String"/>
+					</Type>
+				</DomainProperty>
+			</Properties>
+		</DomainClass>
 	</Classes>
 	
 	<Relationships>
@@ -353,6 +370,23 @@
 				<DomainRole Id="64E89755-37F7-43D6-A6C5-654B1C315D1B" Description="" Name="InformationTypeFormat" PropertyName="Domain" Multiplicity="ZeroMany">
 					<RolePlayer>
 						<DomainClassMoniker Name="/Neumont.Tools.ORMAbstraction/InformationTypeFormat"/>
+					</RolePlayer>
+				</DomainRole>
+			</Target>
+		</DomainRelationship>
+
+		<DomainRelationship Name="GenerationSettingTargetsSchema" Namespace="Neumont.Tools.ORMAbstractionToConceptualDatabaseBridge" Id="D7C8E3C8-7A84-4C28-8362-8C8D38C35A07">
+			<Source>
+				<DomainRole Name="GenerationSetting" PropertyName="GeneratedSchema" Multiplicity="ZeroOne" PropagatesDelete="true" IsPropertyGenerator="true" DisplayName="GenerationSetting" Id="654A46A6-2F7A-4C60-AEC9-AD4B71F58082">
+					<RolePlayer>
+						<DomainClassMoniker Name="SchemaGenerationSetting"/>
+					</RolePlayer>
+				</DomainRole>
+			</Source>
+			<Target>
+				<DomainRole Name="GeneratedSchema" PropertyName="GenerationSetting" Multiplicity="ZeroOne" PropagatesDelete="false" IsPropertyGenerator="false" DisplayName="GeneratedSchema" Id="4CD40629-C999-4E6B-A8B6-429046D3F554">
+					<RolePlayer>
+						<DomainClassMoniker Name="/Neumont.Tools.RelationalModels.ConceptualDatabase/Schema"/>
 					</RolePlayer>
 				</DomainRole>
 			</Target>

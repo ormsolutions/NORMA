@@ -987,3 +987,250 @@ namespace Neumont.Tools.ORMAbstractionToConceptualDatabaseBridge
 		#endregion
 	}
 }
+namespace Neumont.Tools.ORMAbstractionToConceptualDatabaseBridge
+{
+	/// <summary>
+	/// DomainClass SchemaGenerationSetting
+	/// </summary>
+	[DslDesign::DisplayNameResource("Neumont.Tools.ORMAbstractionToConceptualDatabaseBridge.SchemaGenerationSetting.DisplayName", typeof(global::Neumont.Tools.ORMAbstractionToConceptualDatabaseBridge.ORMAbstractionToConceptualDatabaseBridgeDomainModel), "Neumont.Tools.ORMAbstractionToConceptualDatabaseBridge.GeneratedCode.DomainModelResx")]
+	[DslDesign::DescriptionResource("Neumont.Tools.ORMAbstractionToConceptualDatabaseBridge.SchemaGenerationSetting.Description", typeof(global::Neumont.Tools.ORMAbstractionToConceptualDatabaseBridge.ORMAbstractionToConceptualDatabaseBridgeDomainModel), "Neumont.Tools.ORMAbstractionToConceptualDatabaseBridge.GeneratedCode.DomainModelResx")]
+	[global::System.CLSCompliant(true)]
+	[DslModeling::DomainObjectId("94918d9c-0935-4b98-86f2-ff8c98861e0d")]
+	public partial class SchemaGenerationSetting : global::Neumont.Tools.ORM.ObjectModel.GenerationSetting
+	{
+		#region Constructors, domain class Id
+	
+		/// <summary>
+		/// SchemaGenerationSetting domain class Id.
+		/// </summary>
+		public static readonly new global::System.Guid DomainClassId = new global::System.Guid(0x94918d9c, 0x0935, 0x4b98, 0x86, 0xf2, 0xff, 0x8c, 0x98, 0x86, 0x1e, 0x0d);
+		/// <summary>
+		/// Constructor
+		/// </summary>
+		/// <param name="store">Store where new element is to be created.</param>
+		/// <param name="propertyAssignments">List of domain property id/value pairs to set once the element is created.</param>
+		public SchemaGenerationSetting(DslModeling::Store store, params DslModeling::PropertyAssignment[] propertyAssignments)
+			: this(store != null ? store.DefaultPartition : null, propertyAssignments)
+		{
+		}
+		
+		/// <summary>
+		/// Constructor
+		/// </summary>
+		/// <param name="partition">Partition where new element is to be created.</param>
+		/// <param name="propertyAssignments">List of domain property id/value pairs to set once the element is created.</param>
+		public SchemaGenerationSetting(DslModeling::Partition partition, params DslModeling::PropertyAssignment[] propertyAssignments)
+			: base(partition, propertyAssignments)
+		{
+		}
+		#endregion
+		#region CoreAlgorithmVersion domain property code
+		
+		/// <summary>
+		/// CoreAlgorithmVersion domain property Id.
+		/// </summary>
+		public static readonly global::System.Guid CoreAlgorithmVersionDomainPropertyId = new global::System.Guid(0x5570f2c2, 0x0f9e, 0x43a7, 0x8a, 0x2e, 0xaf, 0xc3, 0xdf, 0xb3, 0xf7, 0xa3);
+		
+		/// <summary>
+		/// Storage for CoreAlgorithmVersion
+		/// </summary>
+		private global::System.String coreAlgorithmVersionPropertyStorage = string.Empty;
+		
+		/// <summary>
+		/// Gets or sets the value of CoreAlgorithmVersion domain property.
+		/// Description for
+		/// Neumont.Tools.ORMAbstractionToConceptualDatabaseBridge.SchemaGenerationSetting.Depth
+		/// </summary>
+		[DslDesign::DisplayNameResource("Neumont.Tools.ORMAbstractionToConceptualDatabaseBridge.SchemaGenerationSetting/CoreAlgorithmVersion.DisplayName", typeof(global::Neumont.Tools.ORMAbstractionToConceptualDatabaseBridge.ORMAbstractionToConceptualDatabaseBridgeDomainModel), "Neumont.Tools.ORMAbstractionToConceptualDatabaseBridge.GeneratedCode.DomainModelResx")]
+		[DslDesign::DescriptionResource("Neumont.Tools.ORMAbstractionToConceptualDatabaseBridge.SchemaGenerationSetting/CoreAlgorithmVersion.Description", typeof(global::Neumont.Tools.ORMAbstractionToConceptualDatabaseBridge.ORMAbstractionToConceptualDatabaseBridgeDomainModel), "Neumont.Tools.ORMAbstractionToConceptualDatabaseBridge.GeneratedCode.DomainModelResx")]
+		[DslModeling::DomainObjectId("5570f2c2-0f9e-43a7-8a2e-afc3dfb3f7a3")]
+		public global::System.String CoreAlgorithmVersion
+		{
+			[global::System.Diagnostics.DebuggerStepThrough]
+			get
+			{
+				return coreAlgorithmVersionPropertyStorage;
+			}
+			[global::System.Diagnostics.DebuggerStepThrough]
+			set
+			{
+				CoreAlgorithmVersionPropertyHandler.Instance.SetValue(this, value);
+			}
+		}
+		/// <summary>
+		/// Value handler for the SchemaGenerationSetting.CoreAlgorithmVersion domain property.
+		/// </summary>
+		internal sealed partial class CoreAlgorithmVersionPropertyHandler : DslModeling::DomainPropertyValueHandler<SchemaGenerationSetting, global::System.String>
+		{
+			private CoreAlgorithmVersionPropertyHandler() { }
+		
+			/// <summary>
+			/// Gets the singleton instance of the SchemaGenerationSetting.CoreAlgorithmVersion domain property value handler.
+			/// </summary>
+			public static readonly CoreAlgorithmVersionPropertyHandler Instance = new CoreAlgorithmVersionPropertyHandler();
+		
+			/// <summary>
+			/// Gets the Id of the SchemaGenerationSetting.CoreAlgorithmVersion domain property.
+			/// </summary>
+			public sealed override global::System.Guid DomainPropertyId
+			{
+				[global::System.Diagnostics.DebuggerStepThrough]
+				get
+				{
+					return CoreAlgorithmVersionDomainPropertyId;
+				}
+			}
+			
+			/// <summary>
+			/// Gets a strongly-typed value of the property on specified element.
+			/// </summary>
+			/// <param name="element">Element which owns the property.</param>
+			/// <returns>Property value.</returns>
+			public override sealed global::System.String GetValue(SchemaGenerationSetting element)
+			{
+				if (element == null) throw new global::System.ArgumentNullException("element");
+				return element.coreAlgorithmVersionPropertyStorage;
+			}
+		
+			/// <summary>
+			/// Sets property value on an element.
+			/// </summary>
+			/// <param name="element">Element which owns the property.</param>
+			/// <param name="newValue">New property value.</param>
+			public override sealed void SetValue(SchemaGenerationSetting element, global::System.String newValue)
+			{
+				if (element == null) throw new global::System.ArgumentNullException("element");
+		
+				global::System.String oldValue = GetValue(element);
+				if (newValue != oldValue)
+				{
+					ValueChanging(element, oldValue, newValue);
+					element.coreAlgorithmVersionPropertyStorage = newValue;
+					ValueChanged(element, oldValue, newValue);
+				}
+			}
+		}
+		
+		#endregion
+		#region NameAlgorithmVersion domain property code
+		
+		/// <summary>
+		/// NameAlgorithmVersion domain property Id.
+		/// </summary>
+		public static readonly global::System.Guid NameAlgorithmVersionDomainPropertyId = new global::System.Guid(0x01203af6, 0x93d5, 0x4555, 0x9b, 0xd1, 0x54, 0x5c, 0xf5, 0x90, 0x70, 0x22);
+		
+		/// <summary>
+		/// Storage for NameAlgorithmVersion
+		/// </summary>
+		private global::System.String nameAlgorithmVersionPropertyStorage = string.Empty;
+		
+		/// <summary>
+		/// Gets or sets the value of NameAlgorithmVersion domain property.
+		/// Description for
+		/// Neumont.Tools.ORMAbstractionToConceptualDatabaseBridge.SchemaGenerationSetting.Depth
+		/// </summary>
+		[DslDesign::DisplayNameResource("Neumont.Tools.ORMAbstractionToConceptualDatabaseBridge.SchemaGenerationSetting/NameAlgorithmVersion.DisplayName", typeof(global::Neumont.Tools.ORMAbstractionToConceptualDatabaseBridge.ORMAbstractionToConceptualDatabaseBridgeDomainModel), "Neumont.Tools.ORMAbstractionToConceptualDatabaseBridge.GeneratedCode.DomainModelResx")]
+		[DslDesign::DescriptionResource("Neumont.Tools.ORMAbstractionToConceptualDatabaseBridge.SchemaGenerationSetting/NameAlgorithmVersion.Description", typeof(global::Neumont.Tools.ORMAbstractionToConceptualDatabaseBridge.ORMAbstractionToConceptualDatabaseBridgeDomainModel), "Neumont.Tools.ORMAbstractionToConceptualDatabaseBridge.GeneratedCode.DomainModelResx")]
+		[DslModeling::DomainObjectId("01203af6-93d5-4555-9bd1-545cf5907022")]
+		public global::System.String NameAlgorithmVersion
+		{
+			[global::System.Diagnostics.DebuggerStepThrough]
+			get
+			{
+				return nameAlgorithmVersionPropertyStorage;
+			}
+			[global::System.Diagnostics.DebuggerStepThrough]
+			set
+			{
+				NameAlgorithmVersionPropertyHandler.Instance.SetValue(this, value);
+			}
+		}
+		/// <summary>
+		/// Value handler for the SchemaGenerationSetting.NameAlgorithmVersion domain property.
+		/// </summary>
+		internal sealed partial class NameAlgorithmVersionPropertyHandler : DslModeling::DomainPropertyValueHandler<SchemaGenerationSetting, global::System.String>
+		{
+			private NameAlgorithmVersionPropertyHandler() { }
+		
+			/// <summary>
+			/// Gets the singleton instance of the SchemaGenerationSetting.NameAlgorithmVersion domain property value handler.
+			/// </summary>
+			public static readonly NameAlgorithmVersionPropertyHandler Instance = new NameAlgorithmVersionPropertyHandler();
+		
+			/// <summary>
+			/// Gets the Id of the SchemaGenerationSetting.NameAlgorithmVersion domain property.
+			/// </summary>
+			public sealed override global::System.Guid DomainPropertyId
+			{
+				[global::System.Diagnostics.DebuggerStepThrough]
+				get
+				{
+					return NameAlgorithmVersionDomainPropertyId;
+				}
+			}
+			
+			/// <summary>
+			/// Gets a strongly-typed value of the property on specified element.
+			/// </summary>
+			/// <param name="element">Element which owns the property.</param>
+			/// <returns>Property value.</returns>
+			public override sealed global::System.String GetValue(SchemaGenerationSetting element)
+			{
+				if (element == null) throw new global::System.ArgumentNullException("element");
+				return element.nameAlgorithmVersionPropertyStorage;
+			}
+		
+			/// <summary>
+			/// Sets property value on an element.
+			/// </summary>
+			/// <param name="element">Element which owns the property.</param>
+			/// <param name="newValue">New property value.</param>
+			public override sealed void SetValue(SchemaGenerationSetting element, global::System.String newValue)
+			{
+				if (element == null) throw new global::System.ArgumentNullException("element");
+		
+				global::System.String oldValue = GetValue(element);
+				if (newValue != oldValue)
+				{
+					ValueChanging(element, oldValue, newValue);
+					element.nameAlgorithmVersionPropertyStorage = newValue;
+					ValueChanged(element, oldValue, newValue);
+				}
+			}
+		}
+		
+		#endregion
+		#region GeneratedSchema opposite domain role accessor
+		/// <summary>
+		/// Gets or sets GeneratedSchema.
+		/// Description for
+		/// Neumont.Tools.ORMAbstractionToConceptualDatabaseBridge.GenerationSettingTargetsSchema.GenerationSetting
+		/// </summary>
+		public virtual global::Neumont.Tools.RelationalModels.ConceptualDatabase.Schema GeneratedSchema
+		{
+			[global::System.Diagnostics.DebuggerStepThrough]
+			get
+			{
+				return DslModeling::DomainRoleInfo.GetLinkedElement(this, global::Neumont.Tools.ORMAbstractionToConceptualDatabaseBridge.GenerationSettingTargetsSchema.GenerationSettingDomainRoleId) as global::Neumont.Tools.RelationalModels.ConceptualDatabase.Schema;
+			}
+			[global::System.Diagnostics.DebuggerStepThrough]
+			set
+			{
+				DslModeling::ModelElement existingSource;
+				if (null != value &&
+					null != (existingSource = DslModeling::DomainRoleInfo.GetLinkedElement(value, global::Neumont.Tools.ORMAbstractionToConceptualDatabaseBridge.GenerationSettingTargetsSchema.GeneratedSchemaDomainRoleId)))
+				{
+					if (existingSource != value)
+					{
+						DslModeling::DomainRoleInfo.SetLinkedElement(value, global::Neumont.Tools.ORMAbstractionToConceptualDatabaseBridge.GenerationSettingTargetsSchema.GeneratedSchemaDomainRoleId, this);
+					}
+				}
+				else
+				{
+					DslModeling::DomainRoleInfo.SetLinkedElement(this, global::Neumont.Tools.ORMAbstractionToConceptualDatabaseBridge.GenerationSettingTargetsSchema.GenerationSettingDomainRoleId, value);
+				}
+			}
+		}
+		#endregion
+	}
+}

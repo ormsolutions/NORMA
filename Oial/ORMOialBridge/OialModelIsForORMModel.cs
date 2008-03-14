@@ -30,6 +30,12 @@ namespace Neumont.Tools.ORMToORMAbstractionBridge
 {
 	public partial class AbstractionModelIsForORMModel
 	{
+		#region CurrentAlgorithmVersion constant
+		/// <summary>
+		/// The algorithm version written to the file
+		/// </summary>
+		public const string CurrentAlgorithmVersion = "1.001";
+		#endregion // CurrentAlgorithmVersion constant
 		#region ValidationPriority enum
 		/// <summary>
 		/// DelayValidate ordering constants. Handles non-zero values for
@@ -165,6 +171,7 @@ namespace Neumont.Tools.ORMToORMAbstractionBridge
 
 			// Get the link from the given ORMModel
 			AbstractionModelIsForORMModel oialModelIsForORMModel = AbstractionModelIsForORMModel.GetLinkToAbstractionModel(model);
+			AbstractionModel oialModel = null;
 
 			// If the link exists, clear it out. There is no need to recreate it completely.
 			if (oialModelIsForORMModel != null)
@@ -173,7 +180,7 @@ namespace Neumont.Tools.ORMToORMAbstractionBridge
 				oialModelIsForORMModel.myRebuildingAbstractionModel = true;
 				try
 				{
-					AbstractionModel oialModel = oialModelIsForORMModel.AbstractionModel;
+					oialModel = oialModelIsForORMModel.AbstractionModel;
 					oialModel.ConceptTypeCollection.Clear();
 					oialModel.InformationTypeFormatCollection.Clear();
 
@@ -197,17 +204,30 @@ namespace Neumont.Tools.ORMToORMAbstractionBridge
 			}
 			else
 			{
-				AbstractionModel oial = new AbstractionModel(
+				oialModel = new AbstractionModel(
 					store,
-					new PropertyAssignment[]{
-				new PropertyAssignment(AbstractionModel.NameDomainPropertyId, model.Name)});
-				oialModelIsForORMModel = new AbstractionModelIsForORMModel(oial, model);
+					new PropertyAssignment(AbstractionModel.NameDomainPropertyId, model.Name));
+				oialModelIsForORMModel = new AbstractionModelIsForORMModel(oialModel, model);
 
 				// Set initial object exclusion states
 				ORMElementGateway.Initialize(model, null);
 
 				// Apply ORM to OIAL algorithm
 				oialModelIsForORMModel.TransformORMtoOial();
+			}
+			if (oialModel != null)
+			{
+				AbstractionModelGenerationSetting generationSetting = GenerationSettingTargetsAbstractionModel.GetGenerationSetting(oialModel);
+				if (generationSetting == null)
+				{
+					generationSetting = new AbstractionModelGenerationSetting(store, new PropertyAssignment(AbstractionModelGenerationSetting.AlgorithmVersionDomainPropertyId, CurrentAlgorithmVersion));
+					new GenerationSettingTargetsAbstractionModel(generationSetting, oialModel);
+					new GenerationStateHasGenerationSetting(GenerationState.EnsureGenerationState(store), generationSetting);
+				}
+				else
+				{
+					generationSetting.AlgorithmVersion = CurrentAlgorithmVersion;
+				}
 			}
 		}
 		/// <summary>

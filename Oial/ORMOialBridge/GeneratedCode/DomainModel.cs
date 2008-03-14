@@ -65,6 +65,7 @@ namespace Neumont.Tools.ORMToORMAbstractionBridge
 		{
 			return new global::System.Type[]
 			{
+				typeof(AbstractionModelGenerationSetting),
 				typeof(FactTypeMapsTowardsRole),
 				typeof(AbstractionModelIsForORMModel),
 				typeof(ConceptTypeIsForObjectType),
@@ -72,6 +73,7 @@ namespace Neumont.Tools.ORMToORMAbstractionBridge
 				typeof(InformationTypeFormatIsForValueType),
 				typeof(UniquenessIsForUniquenessConstraint),
 				typeof(ExcludedORMModelElement),
+				typeof(GenerationSettingTargetsAbstractionModel),
 			};
 		}
 		/// <summary>
@@ -82,6 +84,7 @@ namespace Neumont.Tools.ORMToORMAbstractionBridge
 		{
 			return new DomainMemberInfo[]
 			{
+				new DomainMemberInfo(typeof(AbstractionModelGenerationSetting), "AlgorithmVersion", AbstractionModelGenerationSetting.AlgorithmVersionDomainPropertyId, typeof(AbstractionModelGenerationSetting.AlgorithmVersionPropertyHandler)),
 				new DomainMemberInfo(typeof(FactTypeMapsTowardsRole), "Depth", FactTypeMapsTowardsRole.DepthDomainPropertyId, typeof(FactTypeMapsTowardsRole.DepthPropertyHandler)),
 				new DomainMemberInfo(typeof(FactTypeMapsTowardsRole), "UniquenessPattern", FactTypeMapsTowardsRole.UniquenessPatternDomainPropertyId, typeof(FactTypeMapsTowardsRole.UniquenessPatternPropertyHandler)),
 				new DomainMemberInfo(typeof(FactTypeMapsTowardsRole), "MandatoryPattern", FactTypeMapsTowardsRole.MandatoryPatternDomainPropertyId, typeof(FactTypeMapsTowardsRole.MandatoryPatternPropertyHandler)),
@@ -109,6 +112,8 @@ namespace Neumont.Tools.ORMToORMAbstractionBridge
 				new DomainRolePlayerInfo(typeof(UniquenessIsForUniquenessConstraint), "UniquenessConstraint", UniquenessIsForUniquenessConstraint.UniquenessConstraintDomainRoleId),
 				new DomainRolePlayerInfo(typeof(ExcludedORMModelElement), "ExcludedElement", ExcludedORMModelElement.ExcludedElementDomainRoleId),
 				new DomainRolePlayerInfo(typeof(ExcludedORMModelElement), "AbstractionModel", ExcludedORMModelElement.AbstractionModelDomainRoleId),
+				new DomainRolePlayerInfo(typeof(GenerationSettingTargetsAbstractionModel), "GenerationSetting", GenerationSettingTargetsAbstractionModel.GenerationSettingDomainRoleId),
+				new DomainRolePlayerInfo(typeof(GenerationSettingTargetsAbstractionModel), "GeneratedAbstractionModel", GenerationSettingTargetsAbstractionModel.GeneratedAbstractionModelDomainRoleId),
 			};
 		}
 		#endregion
@@ -129,7 +134,8 @@ namespace Neumont.Tools.ORMToORMAbstractionBridge
 	
 			if (createElementMap == null)
 			{
-				createElementMap = new global::System.Collections.Generic.Dictionary<global::System.Type, int>(0);
+				createElementMap = new global::System.Collections.Generic.Dictionary<global::System.Type, int>(1);
+				createElementMap.Add(typeof(AbstractionModelGenerationSetting), 0);
 			}
 			int index;
 			if (!createElementMap.TryGetValue(elementType, out index))
@@ -138,6 +144,7 @@ namespace Neumont.Tools.ORMToORMAbstractionBridge
 			}
 			switch (index)
 			{
+				case 0: return new AbstractionModelGenerationSetting(partition, propertyAssignments);
 				default: return null;
 			}
 		}
@@ -160,7 +167,7 @@ namespace Neumont.Tools.ORMToORMAbstractionBridge
 	
 			if (createElementLinkMap == null)
 			{
-				createElementLinkMap = new global::System.Collections.Generic.Dictionary<global::System.Type, int>(7);
+				createElementLinkMap = new global::System.Collections.Generic.Dictionary<global::System.Type, int>(8);
 				createElementLinkMap.Add(typeof(FactTypeMapsTowardsRole), 0);
 				createElementLinkMap.Add(typeof(AbstractionModelIsForORMModel), 1);
 				createElementLinkMap.Add(typeof(ConceptTypeIsForObjectType), 2);
@@ -168,6 +175,7 @@ namespace Neumont.Tools.ORMToORMAbstractionBridge
 				createElementLinkMap.Add(typeof(InformationTypeFormatIsForValueType), 4);
 				createElementLinkMap.Add(typeof(UniquenessIsForUniquenessConstraint), 5);
 				createElementLinkMap.Add(typeof(ExcludedORMModelElement), 6);
+				createElementLinkMap.Add(typeof(GenerationSettingTargetsAbstractionModel), 7);
 			}
 			int index;
 			if (!createElementLinkMap.TryGetValue(elementLinkType, out index))
@@ -185,6 +193,7 @@ namespace Neumont.Tools.ORMToORMAbstractionBridge
 				case 4: return new InformationTypeFormatIsForValueType(partition, roleAssignments, propertyAssignments);
 				case 5: return new UniquenessIsForUniquenessConstraint(partition, roleAssignments, propertyAssignments);
 				case 6: return new ExcludedORMModelElement(partition, roleAssignments, propertyAssignments);
+				case 7: return new GenerationSettingTargetsAbstractionModel(partition, roleAssignments, propertyAssignments);
 				default: return null;
 			}
 		}
@@ -322,6 +331,7 @@ namespace Neumont.Tools.ORMToORMAbstractionBridge
 		{
 			#region Initialize DomainData Table
 			DomainRoles.Add(global::Neumont.Tools.ORMToORMAbstractionBridge.UniquenessIsForUniquenessConstraint.UniquenessDomainRoleId, true);
+			DomainRoles.Add(global::Neumont.Tools.ORMToORMAbstractionBridge.GenerationSettingTargetsAbstractionModel.GenerationSettingDomainRoleId, true);
 			#endregion
 		}
 		/// <summary>

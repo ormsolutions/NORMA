@@ -11194,6 +11194,16 @@
 			</oialtocdb:RelationalNameGenerator>
 		</orm:Refinements>
 	</orm:NameGenerator>
+	<orm:GenerationState id="_8E0783DA-E25D-4F51-BB04-6E2AC65759C4">
+		<orm:GenerationSettings>
+			<ormtooial:AbstractionModelGenerationSetting AlgorithmVersion="1.001" id="_52A37F5B-1E80-4FCB-802E-AA9FA4315D0D">
+				<ormtooial:AbstractionModel ref="_AFA60651-CCAD-47F2-B397-70E5855BF20B" />
+			</ormtooial:AbstractionModelGenerationSetting>
+			<oialtocdb:SchemaGenerationSetting CoreAlgorithmVersion="1.001" NameAlgorithmVersion="1.001" id="_CD0EC594-EDEA-44FC-9593-1DE35929D199">
+				<oialtocdb:Schema ref="_1CA1A0E5-2553-4907-AC75-1850287F4A51" />
+			</oialtocdb:SchemaGenerationSetting>
+		</orm:GenerationSettings>
+	</orm:GenerationState>
 	<ormDiagram:ORMDiagram BaseFontName="Tahoma" BaseFontSize="0.0972222238779068" IsCompleteView="false" Name="Object Hierarchy" id="_D67C48EA-B802-4C70-8218-F04CE289AF2F">
 		<ormDiagram:Shapes>
 			<ormDiagram:ObjectTypeShape AbsoluteBounds="5.885416666666667, 1.3958333333333337, 0.80063467741012573, 0.35900605320930479" IsExpanded="true" id="_F1851229-E73E-4277-A4B8-CA74BABC7634">

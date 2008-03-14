@@ -45,6 +45,31 @@
 					</plx:return>
 				</se:ConditionalSerialization>
 			</se:RootElement>
+			<se:RootElement Class="GenerationState">
+				<se:ConditionalSerialization>
+					<plx:comment>Only serialize if there are generated elements in this model.</plx:comment>
+					<plx:return>
+						<plx:binaryOperator type="inequality">
+							<plx:left>
+								<plx:callInstance name="Count" type="property">
+									<plx:callObject>
+										<plx:callInstance name="GenerationSettingCollection" type="property">
+											<plx:callObject>
+												<plx:cast dataTypeName="GenerationState">
+													<plx:nameRef name="element" type="parameter"/>
+												</plx:cast>
+											</plx:callObject>
+										</plx:callInstance>
+									</plx:callObject>
+								</plx:callInstance>
+							</plx:left>
+							<plx:right>
+								<plx:value data="0" type="i4"/>
+							</plx:right>
+						</plx:binaryOperator>
+					</plx:return>
+				</se:ConditionalSerialization>
+			</se:RootElement>
 		</se:RootElements>
 		<se:OmittedDomainElements>
 			<se:OmitRelationship Class="FactConstraint"/>
@@ -120,7 +145,12 @@
 		<se:Link Name="SetConstraint" RelationshipName="ModelNoteReferencesSetConstraint" RoleName="Element"/>
 		<se:Link Name="SetComparisonConstraint" RelationshipName="ModelNoteReferencesSetComparisonConstraint" RoleName="Element"/>
 	</se:Element>
-	<!--Object Types-->
+	<!--Generation Settings-->
+	<se:Element Class="GenerationState">
+		<se:Container Name="GenerationSettings">
+			<se:Embed RelationshipName="GenerationStateHasGenerationSetting" RoleName="GenerationSetting"/>
+		</se:Container>
+	</se:Element>
 	<se:Element Class="NameAlias" Name="Alias" Override="true">
 		<se:Attribute ID="NameConsumer" WriteCustomStorage="true"/>
 		<se:Attribute ID="NameUsage" WriteCustomStorage="true">
@@ -197,6 +227,7 @@
 			<se:Embed RelationshipName="NameGeneratorRefinesNameGenerator" RoleName="Refinement"/>
 		</se:Container>
 	</se:Element>
+	<!--Object Types-->
 	<se:Element Class="ObjectType" Name="EntityType" SortChildElements="true" Override="true">
 		<se:ConditionalName Name="ValueType">
 			<plx:callThis name="IsValueType" type="property"/>

@@ -59,6 +59,11 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="GeneratedCode\DomainClasses.cs">
+      <DependentUpon>DomainClasses.tt</DependentUpon>
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+    </Compile>
     <Compile Include="ModificationTracker.cs" />
     <Compile Include="FactTypeMapsTowardsRole.cs" />
     <Compile Include="ORMElementGateway.cs" />
@@ -96,6 +101,10 @@
     </None>
   </ItemGroup>
   <ItemGroup>
+    <None Include="GeneratedCode\DomainClasses.tt">
+      <Generator>TextTemplatingFileGenerator</Generator>
+      <LastGenOutput>DomainClasses.cs</LastGenOutput>
+    </None>
     <None Include="GeneratedCode\DomainModel.tt">
       <Generator>TextTemplatingFileGenerator</Generator>
       <LastGenOutput>DomainModel.cs</LastGenOutput>

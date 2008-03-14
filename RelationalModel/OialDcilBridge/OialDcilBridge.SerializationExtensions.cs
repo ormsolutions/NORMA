@@ -167,6 +167,7 @@ namespace Neumont.Tools.ORMAbstractionToConceptualDatabaseBridge
 				classNameMap.Add("AssimilationMapping", AssimilationMapping.DomainClassId);
 				classNameMap.Add("ReferenceModeNaming", ReferenceModeNaming.DomainClassId);
 				classNameMap.Add("DefaultReferenceModeNaming", DefaultReferenceModeNaming.DomainClassId);
+				classNameMap.Add("SchemaGenerationSetting", SchemaGenerationSetting.DomainClassId);
 				ORMAbstractionToConceptualDatabaseBridgeDomainModel.myClassNameMap = classNameMap;
 			}
 			if (validNamespaces.Contains(xmlNamespace) && classNameMap.ContainsKey(elementName))
@@ -790,4 +791,125 @@ namespace Neumont.Tools.ORMAbstractionToConceptualDatabaseBridge
 		}
 	}
 	#endregion // DefaultReferenceModeNaming serialization
+	#region SchemaGenerationSetting serialization
+	partial class SchemaGenerationSetting : ICustomSerializedElement
+	{
+		/// <summary>Implements ICustomSerializedElement.SupportedCustomSerializedOperations</summary>
+		protected CustomSerializedElementSupportedOperations SupportedCustomSerializedOperations
+		{
+			get
+			{
+				return CustomSerializedElementSupportedOperations.LinkInfo;
+			}
+		}
+		CustomSerializedElementSupportedOperations ICustomSerializedElement.SupportedCustomSerializedOperations
+		{
+			get
+			{
+				return this.SupportedCustomSerializedOperations;
+			}
+		}
+		/// <summary>Implements ICustomSerializedElement.GetCustomSerializedChildElementInfo</summary>
+		protected CustomSerializedContainerElementInfo[] GetCustomSerializedChildElementInfo()
+		{
+			throw new NotSupportedException();
+		}
+		CustomSerializedContainerElementInfo[] ICustomSerializedElement.GetCustomSerializedChildElementInfo()
+		{
+			return this.GetCustomSerializedChildElementInfo();
+		}
+		/// <summary>Implements ICustomSerializedElement.CustomSerializedElementInfo</summary>
+		protected CustomSerializedElementInfo CustomSerializedElementInfo
+		{
+			get
+			{
+				throw new NotSupportedException();
+			}
+		}
+		CustomSerializedElementInfo ICustomSerializedElement.CustomSerializedElementInfo
+		{
+			get
+			{
+				return this.CustomSerializedElementInfo;
+			}
+		}
+		/// <summary>Implements ICustomSerializedElement.GetCustomSerializedPropertyInfo</summary>
+		protected CustomSerializedPropertyInfo GetCustomSerializedPropertyInfo(DomainPropertyInfo domainPropertyInfo, DomainRoleInfo rolePlayedInfo)
+		{
+			throw new NotSupportedException();
+		}
+		CustomSerializedPropertyInfo ICustomSerializedElement.GetCustomSerializedPropertyInfo(DomainPropertyInfo domainPropertyInfo, DomainRoleInfo rolePlayedInfo)
+		{
+			return this.GetCustomSerializedPropertyInfo(domainPropertyInfo, rolePlayedInfo);
+		}
+		/// <summary>Implements ICustomSerializedElement.GetCustomSerializedLinkInfo</summary>
+		protected CustomSerializedElementInfo GetCustomSerializedLinkInfo(DomainRoleInfo rolePlayedInfo, ElementLink elementLink)
+		{
+			Guid roleId = rolePlayedInfo.Id;
+			if (roleId == GenerationSettingTargetsSchema.GeneratedSchemaDomainRoleId)
+			{
+				return new CustomSerializedElementInfo(null, "Schema", null, CustomSerializedElementWriteStyle.Element, null);
+			}
+			return CustomSerializedElementInfo.Default;
+		}
+		CustomSerializedElementInfo ICustomSerializedElement.GetCustomSerializedLinkInfo(DomainRoleInfo rolePlayedInfo, ElementLink elementLink)
+		{
+			return this.GetCustomSerializedLinkInfo(rolePlayedInfo, elementLink);
+		}
+		/// <summary>Implements ICustomSerializedElement.CustomSerializedChildRoleComparer</summary>
+		protected IComparer<DomainRoleInfo> CustomSerializedChildRoleComparer
+		{
+			get
+			{
+				return null;
+			}
+		}
+		IComparer<DomainRoleInfo> ICustomSerializedElement.CustomSerializedChildRoleComparer
+		{
+			get
+			{
+				return this.CustomSerializedChildRoleComparer;
+			}
+		}
+		private static Dictionary<string, CustomSerializedElementMatch> myChildElementMappings;
+		/// <summary>Implements ICustomSerializedElement.MapChildElement</summary>
+		protected CustomSerializedElementMatch MapChildElement(string elementNamespace, string elementName, string containerNamespace, string containerName, string outerContainerNamespace, string outerContainerName)
+		{
+			Dictionary<string, CustomSerializedElementMatch> childElementMappings = SchemaGenerationSetting.myChildElementMappings;
+			if (childElementMappings == null)
+			{
+				childElementMappings = new Dictionary<string, CustomSerializedElementMatch>();
+				CustomSerializedElementMatch match = new CustomSerializedElementMatch();
+				match.InitializeRoles(GenerationSettingTargetsSchema.GeneratedSchemaDomainRoleId);
+				childElementMappings.Add("||||http://schemas.neumont.edu/ORM/Bridge/2007-06/ORMAbstractionToConceptualDatabase|Schema", match);
+				SchemaGenerationSetting.myChildElementMappings = childElementMappings;
+			}
+			CustomSerializedElementMatch rVal;
+			childElementMappings.TryGetValue(string.Concat(outerContainerNamespace, "|", outerContainerName, "|", (object)containerNamespace != (object)outerContainerNamespace ? containerNamespace : null, "|", containerName, "|", (object)elementNamespace != (object)containerNamespace ? elementNamespace : null, "|", elementName), out rVal);
+			return rVal;
+		}
+		CustomSerializedElementMatch ICustomSerializedElement.MapChildElement(string elementNamespace, string elementName, string containerNamespace, string containerName, string outerContainerNamespace, string outerContainerName)
+		{
+			return this.MapChildElement(elementNamespace, elementName, containerNamespace, containerName, outerContainerNamespace, outerContainerName);
+		}
+		/// <summary>Implements ICustomSerializedElement.MapAttribute</summary>
+		protected Guid MapAttribute(string xmlNamespace, string attributeName)
+		{
+			return default(Guid);
+		}
+		Guid ICustomSerializedElement.MapAttribute(string xmlNamespace, string attributeName)
+		{
+			return this.MapAttribute(xmlNamespace, attributeName);
+		}
+		/// <summary>Implements ICustomSerializedElement.ShouldSerialize</summary>
+		protected static bool ShouldSerialize()
+		{
+			return true;
+		}
+		bool ICustomSerializedElement.ShouldSerialize()
+		{
+			return ShouldSerialize();
+		}
+	}
+	#endregion // SchemaGenerationSetting serialization
 }

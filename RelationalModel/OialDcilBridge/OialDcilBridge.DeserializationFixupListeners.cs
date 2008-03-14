@@ -23,6 +23,7 @@ using Microsoft.VisualStudio.Modeling;
 using Neumont.Tools.RelationalModels.ConceptualDatabase;
 using System.Collections.ObjectModel;
 using System.Diagnostics;
+using ORMCore = Neumont.Tools.ORM.ObjectModel;
 
 namespace Neumont.Tools.ORMAbstractionToConceptualDatabaseBridge
 {
@@ -42,6 +43,16 @@ namespace Neumont.Tools.ORMAbstractionToConceptualDatabaseBridge
 	}
 	public partial class ORMAbstractionToConceptualDatabaseBridgeDomainModel : IDeserializationFixupListenerProvider
 	{
+		#region Algorithm Version Constants
+		/// <summary>
+		/// The algorithm version written to the file for the core algorithm
+		/// </summary>
+		public const string CurrentCoreAlgorithmVersion = "1.001";
+		/// <summary>
+		/// The algorithm version written to the file for the name generation algorithm
+		/// </summary>
+		public const string CurrentNameAlgorithmVersion = "1.001";
+		#endregion // Algorithm Version Constants
 		#region Fully populate from OIAL
 		#region AssimilationPath class
 
@@ -315,7 +326,7 @@ namespace Neumont.Tools.ORMAbstractionToConceptualDatabaseBridge
 				GenerateMandatoryConstraints(table);
 			}
 
-			// Change all names to a more apropriate verson.
+			// Change all names to a more apropriate version.
 			NameGeneration.GenerateAllNames(schema);
 		}
 
@@ -1766,10 +1777,61 @@ namespace Neumont.Tools.ORMAbstractionToConceptualDatabaseBridge
 						new PropertyAssignment[]{
 						new PropertyAssignment(Schema.NameDomainPropertyId, element.Name)});
 					new SchemaIsForAbstractionModel(schema, element);
+					SchemaGenerationSetting generationSetting = new SchemaGenerationSetting(store, new PropertyAssignment(SchemaGenerationSetting.CoreAlgorithmVersionDomainPropertyId, CurrentCoreAlgorithmVersion), new PropertyAssignment(SchemaGenerationSetting.NameAlgorithmVersionDomainPropertyId, CurrentNameAlgorithmVersion));
+					new GenerationSettingTargetsSchema(generationSetting, schema);
+					new ORMCore.GenerationStateHasGenerationSetting(ORMCore.GenerationState.EnsureGenerationState(store), generationSetting);
 					schema.Catalog = catalog;
 					notifyAdded.ElementAdded(schema, true);
 
 					FullyGenerateConceptualDatabaseModel(schema, element, notifyAdded);
+				}
+				else
+				{
+					SchemaGenerationSetting generationSetting = GenerationSettingTargetsSchema.GetGenerationSetting(schema);
+					bool regenerateAll = generationSetting == null || generationSetting.CoreAlgorithmVersion != CurrentCoreAlgorithmVersion;
+					bool regenerateNames = false;
+					if (!regenerateAll)
+					{
+						foreach (Table table in schema.TableCollection)
+						{
+							if (null == TableIsPrimarilyForConceptType.GetLinkToConceptType(table))
+							{
+								regenerateAll = true;
+								break;
+							}
+							// Theoretically we should also check that all columns and uniqueness constraints
+							// are pathed back to the abstraction model. However, this is far from a full validation,
+							// and the scenario we're trying to cover is the abstraction model regenerating during
+							// load and removing our bridge elements. The table check above is sufficient.
+						}
+						regenerateNames = !regenerateAll && generationSetting.NameAlgorithmVersion != CurrentNameAlgorithmVersion;
+						generationSetting.NameAlgorithmVersion = CurrentNameAlgorithmVersion;
+					}
+					else
+					{
+						if (generationSetting == null)
+						{
+							generationSetting = new SchemaGenerationSetting(store, new PropertyAssignment(SchemaGenerationSetting.CoreAlgorithmVersionDomainPropertyId, CurrentCoreAlgorithmVersion), new PropertyAssignment(SchemaGenerationSetting.NameAlgorithmVersionDomainPropertyId, CurrentNameAlgorithmVersion));
+							new GenerationSettingTargetsSchema(generationSetting, schema);
+							new ORMCore.GenerationStateHasGenerationSetting(ORMCore.GenerationState.EnsureGenerationState(store), generationSetting);
+						}
+						else
+						{
+							regenerateNames = generationSetting.NameAlgorithmVersion != CurrentNameAlgorithmVersion;
+							generationSetting.CoreAlgorithmVersion = CurrentCoreAlgorithmVersion;
+							generationSetting.NameAlgorithmVersion = CurrentNameAlgorithmVersion;
+						}
+					}
+					if (regenerateAll)
+					{
+						schema.TableCollection.Clear();
+						schema.DomainCollection.Clear();
+						FullyGenerateConceptualDatabaseModel(schema, element, notifyAdded);
+					}
+					else if (regenerateNames)
+					{
+						NameGeneration.GenerateAllNames(schema);
+					}
 				}
 			}
 		}

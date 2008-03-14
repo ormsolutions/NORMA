@@ -4432,6 +4432,247 @@ namespace Neumont.Tools.ORM.ObjectModel
 namespace Neumont.Tools.ORM.ObjectModel
 {
 	/// <summary>
+	/// DomainRelationship GenerationStateHasGenerationSetting
+	/// Description for
+	/// Neumont.Tools.ORM.ObjectModel.GenerationStateHasGenerationSetting
+	/// </summary>
+	[DslDesign::DisplayNameResource("Neumont.Tools.ORM.ObjectModel.GenerationStateHasGenerationSetting.DisplayName", typeof(global::Neumont.Tools.ORM.ObjectModel.ORMCoreDomainModel), "Neumont.Tools.ORM.GeneratedCode.CoreDomainModelResx")]
+	[DslDesign::DescriptionResource("Neumont.Tools.ORM.ObjectModel.GenerationStateHasGenerationSetting.Description", typeof(global::Neumont.Tools.ORM.ObjectModel.ORMCoreDomainModel), "Neumont.Tools.ORM.GeneratedCode.CoreDomainModelResx")]
+	[global::System.CLSCompliant(true)]
+	[DslModeling::DomainRelationship(IsEmbedding=true)]
+	[DslModeling::DomainObjectId("475ff8f0-0e0d-4cf1-8110-c132f815e2e6")]
+	public partial class GenerationStateHasGenerationSetting : DslModeling::ElementLink
+	{
+		#region Constructors, domain class Id
+		
+		/// <summary>
+		/// GenerationStateHasGenerationSetting domain class Id.
+		/// </summary>
+		public static readonly new global::System.Guid DomainClassId = new global::System.Guid(0x475ff8f0, 0x0e0d, 0x4cf1, 0x81, 0x10, 0xc1, 0x32, 0xf8, 0x15, 0xe2, 0xe6);
+	
+				
+		/// <summary>
+		/// Constructor
+		/// Creates a GenerationStateHasGenerationSetting link in the same Partition as the given GenerationState
+		/// </summary>
+		/// <param name="source">GenerationState to use as the source of the relationship.</param>
+		/// <param name="target">GenerationSetting to use as the target of the relationship.</param>
+		public GenerationStateHasGenerationSetting(GenerationState source, GenerationSetting target)
+			: base((source != null ? source.Partition : null), new DslModeling::RoleAssignment[]{new DslModeling::RoleAssignment(GenerationStateHasGenerationSetting.GenerationStateDomainRoleId, source), new DslModeling::RoleAssignment(GenerationStateHasGenerationSetting.GenerationSettingDomainRoleId, target)}, null)
+		{
+		}
+		
+		/// <summary>
+		/// Constructor
+		/// </summary>
+		/// <param name="store">Store where new link is to be created.</param>
+		/// <param name="roleAssignments">List of relationship role assignments.</param>
+		public GenerationStateHasGenerationSetting(DslModeling::Store store, params DslModeling::RoleAssignment[] roleAssignments)
+			: base(store != null ? store.DefaultPartition : null, roleAssignments, null)
+		{
+		}
+		
+		/// <summary>
+		/// Constructor
+		/// </summary>
+		/// <param name="store">Store where new link is to be created.</param>
+		/// <param name="roleAssignments">List of relationship role assignments.</param>
+		/// <param name="propertyAssignments">List of properties assignments to set on the new link.</param>
+		public GenerationStateHasGenerationSetting(DslModeling::Store store, DslModeling::RoleAssignment[] roleAssignments, DslModeling::PropertyAssignment[] propertyAssignments)
+			: base(store != null ? store.DefaultPartition : null, roleAssignments, propertyAssignments)
+		{
+		}
+		
+		/// <summary>
+		/// Constructor
+		/// </summary>
+		/// <param name="partition">Partition where new link is to be created.</param>
+		/// <param name="roleAssignments">List of relationship role assignments.</param>
+		public GenerationStateHasGenerationSetting(DslModeling::Partition partition, params DslModeling::RoleAssignment[] roleAssignments)
+			: base(partition, roleAssignments, null)
+		{
+		}
+		
+		/// <summary>
+		/// Constructor
+		/// </summary>
+		/// <param name="partition">Partition where new link is to be created.</param>
+		/// <param name="roleAssignments">List of relationship role assignments.</param>
+		/// <param name="propertyAssignments">List of properties assignments to set on the new link.</param>
+		public GenerationStateHasGenerationSetting(DslModeling::Partition partition, DslModeling::RoleAssignment[] roleAssignments, DslModeling::PropertyAssignment[] propertyAssignments)
+			: base(partition, roleAssignments, propertyAssignments)
+		{
+		}
+		#endregion
+		#region GenerationState domain role code
+		
+		/// <summary>
+		/// GenerationState domain role Id.
+		/// </summary>
+		public static readonly global::System.Guid GenerationStateDomainRoleId = new global::System.Guid(0xf9949793, 0x300a, 0x4ce6, 0xb9, 0x69, 0xcf, 0xbe, 0x5a, 0x2a, 0x19, 0x82);
+		
+		/// <summary>
+		/// DomainRole GenerationState
+		/// Description for
+		/// Neumont.Tools.ORM.ObjectModel.GenerationStateHasGenerationSetting.GenerationState
+		/// </summary>
+		[DslDesign::DisplayNameResource("Neumont.Tools.ORM.ObjectModel.GenerationStateHasGenerationSetting/GenerationState.DisplayName", typeof(global::Neumont.Tools.ORM.ObjectModel.ORMCoreDomainModel), "Neumont.Tools.ORM.GeneratedCode.CoreDomainModelResx")]
+		[DslDesign::DescriptionResource("Neumont.Tools.ORM.ObjectModel.GenerationStateHasGenerationSetting/GenerationState.Description", typeof(global::Neumont.Tools.ORM.ObjectModel.ORMCoreDomainModel), "Neumont.Tools.ORM.GeneratedCode.CoreDomainModelResx")]
+		[DslModeling::DomainRole(DslModeling::DomainRoleOrder.Source, PropertyName = "GenerationSettingCollection", PropertyDisplayNameKey="Neumont.Tools.ORM.ObjectModel.GenerationStateHasGenerationSetting/GenerationState.PropertyDisplayName", Multiplicity = DslModeling::Multiplicity.ZeroMany)]
+		[DslModeling::DomainObjectId("f9949793-300a-4ce6-b969-cfbe5a2a1982")]
+		public virtual GenerationState GenerationState
+		{
+			[global::System.Diagnostics.DebuggerStepThrough]
+			get
+			{
+				return (GenerationState)DslModeling::DomainRoleInfo.GetRolePlayer(this, GenerationStateDomainRoleId);
+			}
+			[global::System.Diagnostics.DebuggerStepThrough]
+			set
+			{
+				DslModeling::DomainRoleInfo.SetRolePlayer(this, GenerationStateDomainRoleId, value);
+			}
+		}
+				
+		#endregion
+		#region Static methods to access GenerationState of a GenerationSetting
+		/// <summary>
+		/// Gets GenerationState.
+		/// </summary>
+		[global::System.Diagnostics.DebuggerStepThrough]
+		[global::System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Design", "CA1011")]
+		public static GenerationState GetGenerationState(GenerationSetting element)
+		{
+			return DslModeling::DomainRoleInfo.GetLinkedElement(element, GenerationSettingDomainRoleId) as GenerationState;
+		}
+		
+		/// <summary>
+		/// Sets GenerationState.
+		/// </summary>
+		[global::System.Diagnostics.DebuggerStepThrough]
+		[global::System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Design", "CA1011")]
+		public static void SetGenerationState(GenerationSetting element, GenerationState newGenerationState)
+		{
+			DslModeling::DomainRoleInfo.SetLinkedElement(element, GenerationSettingDomainRoleId, newGenerationState);
+		}
+		#endregion
+		#region GenerationSetting domain role code
+		
+		/// <summary>
+		/// GenerationSetting domain role Id.
+		/// </summary>
+		public static readonly global::System.Guid GenerationSettingDomainRoleId = new global::System.Guid(0xafe2fc08, 0x6b47, 0x40e6, 0x9c, 0xc3, 0xb9, 0x43, 0x90, 0x0a, 0x95, 0xb2);
+		
+		/// <summary>
+		/// DomainRole GenerationSetting
+		/// Description for
+		/// Neumont.Tools.ORM.ObjectModel.GenerationStateHasGenerationSetting.GenerationSetting
+		/// </summary>
+		[DslDesign::DisplayNameResource("Neumont.Tools.ORM.ObjectModel.GenerationStateHasGenerationSetting/GenerationSetting.DisplayName", typeof(global::Neumont.Tools.ORM.ObjectModel.ORMCoreDomainModel), "Neumont.Tools.ORM.GeneratedCode.CoreDomainModelResx")]
+		[DslDesign::DescriptionResource("Neumont.Tools.ORM.ObjectModel.GenerationStateHasGenerationSetting/GenerationSetting.Description", typeof(global::Neumont.Tools.ORM.ObjectModel.ORMCoreDomainModel), "Neumont.Tools.ORM.GeneratedCode.CoreDomainModelResx")]
+		[DslModeling::DomainRole(DslModeling::DomainRoleOrder.Target, PropertyName = "GenerationState", PropertyDisplayNameKey="Neumont.Tools.ORM.ObjectModel.GenerationStateHasGenerationSetting/GenerationSetting.PropertyDisplayName", Multiplicity = DslModeling::Multiplicity.ZeroOne)]
+		[DslModeling::DomainObjectId("afe2fc08-6b47-40e6-9cc3-b943900a95b2")]
+		public virtual GenerationSetting GenerationSetting
+		{
+			[global::System.Diagnostics.DebuggerStepThrough]
+			get
+			{
+				return (GenerationSetting)DslModeling::DomainRoleInfo.GetRolePlayer(this, GenerationSettingDomainRoleId);
+			}
+			[global::System.Diagnostics.DebuggerStepThrough]
+			set
+			{
+				DslModeling::DomainRoleInfo.SetRolePlayer(this, GenerationSettingDomainRoleId, value);
+			}
+		}
+				
+		#endregion
+		#region Static methods to access GenerationSettingCollection of a GenerationState
+		/// <summary>
+		/// Gets a list of GenerationSettingCollection.
+		/// </summary>
+		[global::System.Diagnostics.DebuggerStepThrough]
+		[global::System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Design", "CA1011")]
+		public static DslModeling::LinkedElementCollection<GenerationSetting> GetGenerationSettingCollection(GenerationState element)
+		{
+			return new DslModeling::LinkedElementCollection<GenerationSetting>(element, GenerationStateDomainRoleId);
+		}
+		#endregion
+		#region GenerationState link accessor
+		/// <summary>
+		/// Get the list of GenerationStateHasGenerationSetting links to a GenerationState.
+		/// </summary>
+		[global::System.Diagnostics.DebuggerStepThrough]
+		[global::System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Design", "CA1011")]
+		public static global::System.Collections.ObjectModel.ReadOnlyCollection<global::Neumont.Tools.ORM.ObjectModel.GenerationStateHasGenerationSetting> GetLinksToGenerationSettingCollection ( global::Neumont.Tools.ORM.ObjectModel.GenerationState generationStateInstance )
+		{
+			return DslModeling::DomainRoleInfo.GetElementLinks<global::Neumont.Tools.ORM.ObjectModel.GenerationStateHasGenerationSetting>(generationStateInstance, global::Neumont.Tools.ORM.ObjectModel.GenerationStateHasGenerationSetting.GenerationStateDomainRoleId);
+		}
+		#endregion
+		#region GenerationSetting link accessor
+		/// <summary>
+		/// Get the GenerationStateHasGenerationSetting link to a GenerationSetting.
+		/// </summary>
+		[global::System.Diagnostics.DebuggerStepThrough]
+		[global::System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Design", "CA1011")]
+		public static global::Neumont.Tools.ORM.ObjectModel.GenerationStateHasGenerationSetting GetLinkToGenerationState (global::Neumont.Tools.ORM.ObjectModel.GenerationSetting generationSettingInstance)
+		{
+			global::System.Collections.Generic.IList<global::Neumont.Tools.ORM.ObjectModel.GenerationStateHasGenerationSetting> links = DslModeling::DomainRoleInfo.GetElementLinks<global::Neumont.Tools.ORM.ObjectModel.GenerationStateHasGenerationSetting>(generationSettingInstance, global::Neumont.Tools.ORM.ObjectModel.GenerationStateHasGenerationSetting.GenerationSettingDomainRoleId);
+			global::System.Diagnostics.Debug.Assert(links.Count <= 1, "Multiplicity of GenerationSetting not obeyed.");
+			if ( links.Count == 0 )
+			{
+				return null;
+			}
+			else
+			{
+				return links[0];
+			}
+		}
+		#endregion
+		#region GenerationStateHasGenerationSetting instance accessors
+		
+		/// <summary>
+		/// Get any GenerationStateHasGenerationSetting links between a given GenerationState and a GenerationSetting.
+		/// </summary>
+		[global::System.Diagnostics.DebuggerStepThrough]
+		[global::System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Design", "CA1011")]
+		public static global::System.Collections.ObjectModel.ReadOnlyCollection<global::Neumont.Tools.ORM.ObjectModel.GenerationStateHasGenerationSetting> GetLinks( global::Neumont.Tools.ORM.ObjectModel.GenerationState source, global::Neumont.Tools.ORM.ObjectModel.GenerationSetting target )
+		{
+			global::System.Collections.Generic.List<global::Neumont.Tools.ORM.ObjectModel.GenerationStateHasGenerationSetting> outLinks = new global::System.Collections.Generic.List<global::Neumont.Tools.ORM.ObjectModel.GenerationStateHasGenerationSetting>();
+			global::System.Collections.Generic.IList<global::Neumont.Tools.ORM.ObjectModel.GenerationStateHasGenerationSetting> links = DslModeling::DomainRoleInfo.GetElementLinks<global::Neumont.Tools.ORM.ObjectModel.GenerationStateHasGenerationSetting>(source, global::Neumont.Tools.ORM.ObjectModel.GenerationStateHasGenerationSetting.GenerationStateDomainRoleId);
+			foreach ( global::Neumont.Tools.ORM.ObjectModel.GenerationStateHasGenerationSetting link in links )
+			{
+				if ( target.Equals(link.GenerationSetting) )
+				{
+					outLinks.Add(link);
+				}
+			}
+			return outLinks.AsReadOnly();
+		}
+		/// <summary>
+		/// Get the one GenerationStateHasGenerationSetting link between a given GenerationStateand a GenerationSetting.
+		/// </summary>
+		[global::System.Diagnostics.DebuggerStepThrough]
+		[global::System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Design", "CA1011")]
+		public static global::Neumont.Tools.ORM.ObjectModel.GenerationStateHasGenerationSetting GetLink( global::Neumont.Tools.ORM.ObjectModel.GenerationState source, global::Neumont.Tools.ORM.ObjectModel.GenerationSetting target )
+		{
+			global::System.Collections.Generic.IList<global::Neumont.Tools.ORM.ObjectModel.GenerationStateHasGenerationSetting> links = DslModeling::DomainRoleInfo.GetElementLinks<global::Neumont.Tools.ORM.ObjectModel.GenerationStateHasGenerationSetting>(source, global::Neumont.Tools.ORM.ObjectModel.GenerationStateHasGenerationSetting.GenerationStateDomainRoleId);
+			foreach ( global::Neumont.Tools.ORM.ObjectModel.GenerationStateHasGenerationSetting link in links )
+			{
+				if ( target.Equals(link.GenerationSetting) )
+				{
+					return link;
+				}
+			}
+			return null;
+		}
+		
+		#endregion
+	}
+}
+namespace Neumont.Tools.ORM.ObjectModel
+{
+	/// <summary>
 	/// DomainRelationship NameGeneratorRefinesNameGenerator
 	/// Description for Neumont.Tools.ORM.ObjectModel.NameGeneratorRefinesNameGenerator
 	/// </summary>

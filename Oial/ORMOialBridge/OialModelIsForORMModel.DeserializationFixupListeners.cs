@@ -110,7 +110,7 @@ namespace Neumont.Tools.ORMToORMAbstractionBridge
 				{
 					// UNDONE: DelayValidateModel currently deletes and recreates any existing
 					// bridge relationship, so there is no point deleting it up front, we'll
-					// just retrieve it later. Also not that DelayValidateModel does not call notifyAdded.
+					// just retrieve it later. Also note that DelayValidateModel does not call notifyAdded.
 					DelayValidateModel(element);
 					oil = AbstractionModelIsForORMModel.GetAbstractionModel(element);
 					if (oil != null)
@@ -120,9 +120,12 @@ namespace Neumont.Tools.ORMToORMAbstractionBridge
 				}
 				else
 				{
+					AbstractionModelGenerationSetting generationSetting;
+					bool regenerateForVersion = null == (generationSetting = GenerationSettingTargetsAbstractionModel.GetGenerationSetting(oil)) || generationSetting.AlgorithmVersion != CurrentAlgorithmVersion;
 					bool excludedBridgedElement = false;
 					ORMElementGateway.Initialize(
 						element,
+						regenerateForVersion ? (ORMElementGateway.NotifyORMElementExcluded)null :
 						delegate(ORMModelElement modelElement)
 						{
 							if (excludedBridgedElement)
@@ -149,7 +152,7 @@ namespace Neumont.Tools.ORMToORMAbstractionBridge
 								}
 							}
 						});
-					if (excludedBridgedElement)
+					if (regenerateForVersion || excludedBridgedElement)
 					{
 						// Something is very wrong, regenerate (does not regenerate the excluded elements we already have)
 						DelayValidateModel(element);

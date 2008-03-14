@@ -4,6 +4,7 @@
 	xmlns="http://schemas.neumont.edu/ORM/Bridge/2007-06/ORMToORMAbstraction" 
 	xmlns:ormtooial="http://schemas.neumont.edu/ORM/Bridge/2007-06/ORMToORMAbstraction"
 	xmlns:xs="http://www.w3.org/2001/XMLSchema"
+	xmlns:orm="http://schemas.neumont.edu/ORM/2006-04/ORMCore"
 	elementFormDefault="qualified"
 	attributeFormDefault="unqualified"
 	version="1.0">
@@ -41,6 +42,7 @@
 		</xs:appinfo>
 	</xs:annotation>
 
+	<xs:import namespace="http://schemas.neumont.edu/ORM/2006-04/ORMCore"/>
 	<xs:element name="Bridge">
 		<xs:complexType>
 			<xs:choice minOccurs="0" maxOccurs="unbounded">
@@ -53,6 +55,25 @@
 			</xs:choice>
 		</xs:complexType>
 	</xs:element>
+	<xs:element name="AbstractionModelGenerationSetting" type="AbstractionModelGenerationSettingType" substitutionGroup="orm:GenerationSetting"/>
+	<xs:complexType name="AbstractionModelGenerationSettingType">
+		<xs:complexContent>
+			<xs:extension base="orm:GenerationSettingType">
+				<xs:sequence>
+					<xs:element name="AbstractionModel">
+						<xs:complexType>
+							<xs:attribute name="ref" type="xs:IDREF" use="required"/>
+						</xs:complexType>
+					</xs:element>
+				</xs:sequence>
+				<xs:attribute name="AlgorithmVersion" type="xs:string" use="required">
+					<xs:annotation>
+						<xs:documentation>Version information interpreted by the generating algorithm.</xs:documentation>
+					</xs:annotation>
+				</xs:attribute>
+			</xs:extension>
+		</xs:complexContent>
+	</xs:complexType>
 	<xs:complexType name="AbstractionModelIsForORMModelType">
 		<xs:attribute name="id" type="xs:ID" use="required"/>
 		<xs:attribute name="AbstractionModel" type="xs:IDREF" use="required"/>

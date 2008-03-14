@@ -38,6 +38,21 @@
 		</ClrAttribute>
 	</Attributes>
 
+	<Classes>
+		<DomainClass Name="AbstractionModelGenerationSetting" Namespace="Neumont.Tools.ORMToORMAbstractionBridge" Id="C7E6B42C-C827-4B39-8FEE-E3D52AA3D186" DisplayName="AbstractionModelGenerationSetting" Description="">
+			<BaseClass>
+				<DomainClassMoniker Name="/Neumont.Tools.ORM.ObjectModel/GenerationSetting"/>
+			</BaseClass>
+			<Properties>
+				<DomainProperty Name="AlgorithmVersion" DisplayName="Depth" Id="64197312-6561-4E25-9DEA-7AD9747D9132">
+					<Type>
+						<ExternalTypeMoniker Name="/System/String"/>
+					</Type>
+				</DomainProperty>
+			</Properties>
+		</DomainClass>
+	</Classes>
+
 	<Relationships>
 		<DomainRelationship Name="FactTypeMapsTowardsRole" Namespace="Neumont.Tools.ORMToORMAbstractionBridge" Id="98ABB729-F2F0-4629-BFA7-801B6615137D" HasCustomConstructor="true">
 			<Properties>
@@ -168,6 +183,23 @@
 			</Source>
 			<Target>
 				<DomainRole Name="AbstractionModel" PropertyName="ExcludedElement" Multiplicity="ZeroMany" PropagatesDelete="false" IsPropertyGenerator="false" DisplayName="AbstractionModel" Id="AFBD0D81-5EF6-4D0E-A4CB-0145F8EA939B">
+					<RolePlayer>
+						<DomainClassMoniker Name="/Neumont.Tools.ORMAbstraction/AbstractionModel"/>
+					</RolePlayer>
+				</DomainRole>
+			</Target>
+		</DomainRelationship>
+
+		<DomainRelationship Name="GenerationSettingTargetsAbstractionModel" Namespace="Neumont.Tools.ORMToORMAbstractionBridge" Id="890C6AAF-A4B8-42A7-BC0E-89BEAE1B8D7F">
+			<Source>
+				<DomainRole Name="GenerationSetting" PropertyName="GeneratedAbstractionModel" Multiplicity="ZeroOne" PropagatesDelete="true" IsPropertyGenerator="true" DisplayName="GenerationSetting" Id="6B876D00-4E9A-42E9-B984-03F610FA5227">
+					<RolePlayer>
+						<DomainClassMoniker Name="AbstractionModelGenerationSetting"/>
+					</RolePlayer>
+				</DomainRole>
+			</Source>
+			<Target>
+				<DomainRole Name="GeneratedAbstractionModel" PropertyName="GenerationSetting" Multiplicity="ZeroOne" PropagatesDelete="false" IsPropertyGenerator="false" DisplayName="GeneratedAbstractionModel" Id="16F8FFD5-2997-475C-A2AA-61C3B1A62DD2">
 					<RolePlayer>
 						<DomainClassMoniker Name="/Neumont.Tools.ORMAbstraction/AbstractionModel"/>
 					</RolePlayer>

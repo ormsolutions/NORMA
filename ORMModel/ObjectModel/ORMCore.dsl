@@ -58,7 +58,7 @@
 				<DomainClassMoniker Name="NameConsumer"/>
 			</BaseClass>
 			<Properties>
-				<DomainProperty Name ="NameUsage" DisplayName="NameUsage" IsBrowsable="false" Id="B92D3173-900E-4F35-BAC2-32A607E744FA" Description="" Kind="CustomStorage">
+				<DomainProperty Name="NameUsage" DisplayName="NameUsage" IsBrowsable="false" Id="B92D3173-900E-4F35-BAC2-32A607E744FA" Description="" Kind="CustomStorage">
 					<Type>
 						<ExternalTypeMoniker Name="/System/String"/>
 					</Type>
@@ -115,7 +115,10 @@
 				</ClrAttribute>
 			</Attributes>
 		</DomainClass>
-		
+
+		<DomainClass Name="GenerationState" Namespace="Neumont.Tools.ORM.ObjectModel" Id="CD0749E6-DDB0-4890-A559-EB70D3F698E0" DisplayName="GenerationState" Description=""/>
+		<DomainClass Name="GenerationSetting" Namespace="Neumont.Tools.ORM.ObjectModel" Id="B707A1D2-87D1-43EA-93B0-92ED9308A0A5" InheritanceModifier="Abstract" DisplayName="GenerationSetting" Description=""/>
+
 		<DomainClass Name="ModelErrorCategory" Namespace="Neumont.Tools.ORM.ObjectModel" Id="C9730E21-67A1-47E1-A065-B08C2B3815CE" DisplayName="ModelErrorCategory" InheritanceModifier="Abstract" Description=""/>
 		<DomainClass Name="ModelErrorDisplayFilter" Namespace="Neumont.Tools.ORM.ObjectModel" Id="67CDCE7B-3D28-4A92-B9EB-00418152A13F" DisplayName="ModelErrorDisplayFilter" InheritanceModifier="Sealed" Description="">
 			<Properties>
@@ -2075,6 +2078,23 @@
 				<DomainRole Name="DataType" PropertyName="Model" Multiplicity="One" PropagatesDelete="true" IsPropertyGenerator="true" DisplayName="DataType" Id="FF17FEFB-0E20-4326-8637-4C3984B8D20B">
 					<RolePlayer>
 						<DomainClassMoniker Name="DataType"/>
+					</RolePlayer>
+				</DomainRole>
+			</Target>
+		</DomainRelationship>
+
+		<DomainRelationship Name="GenerationStateHasGenerationSetting" IsEmbedding="true"  Namespace="Neumont.Tools.ORM.ObjectModel" Id="475FF8F0-0E0D-4CF1-8110-C132F815E2E6">
+			<Source>
+				<DomainRole Name="GenerationState" PropertyName="GenerationSettingCollection" Multiplicity="ZeroMany" PropagatesDelete="false" IsPropertyGenerator="true" DisplayName="GenerationState" Id="F9949793-300A-4CE6-B969-CFBE5A2A1982">
+					<RolePlayer>
+						<DomainClassMoniker Name="GenerationState"/>
+					</RolePlayer>
+				</DomainRole>
+			</Source>
+			<Target>
+				<DomainRole Name="GenerationSetting" PropertyName="GenerationState" Multiplicity="ZeroOne" PropagatesDelete="false" IsPropertyGenerator="true" DisplayName="GenerationSetting" Id="AFE2FC08-6B47-40E6-9CC3-B943900A95B2">
+					<RolePlayer>
+						<DomainClassMoniker Name="GenerationSetting"/>
 					</RolePlayer>
 				</DomainRole>
 			</Target>

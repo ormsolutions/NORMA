@@ -3108,3 +3108,263 @@ namespace Neumont.Tools.ORMAbstractionToConceptualDatabaseBridge
 		#endregion
 	}
 }
+namespace Neumont.Tools.ORMAbstractionToConceptualDatabaseBridge
+{
+	/// <summary>
+	/// DomainRelationship GenerationSettingTargetsSchema
+	/// Description for
+	/// Neumont.Tools.ORMAbstractionToConceptualDatabaseBridge.GenerationSettingTargetsSchema
+	/// </summary>
+	[DslDesign::DisplayNameResource("Neumont.Tools.ORMAbstractionToConceptualDatabaseBridge.GenerationSettingTargetsSchema.DisplayName", typeof(global::Neumont.Tools.ORMAbstractionToConceptualDatabaseBridge.ORMAbstractionToConceptualDatabaseBridgeDomainModel), "Neumont.Tools.ORMAbstractionToConceptualDatabaseBridge.GeneratedCode.DomainModelResx")]
+	[DslDesign::DescriptionResource("Neumont.Tools.ORMAbstractionToConceptualDatabaseBridge.GenerationSettingTargetsSchema.Description", typeof(global::Neumont.Tools.ORMAbstractionToConceptualDatabaseBridge.ORMAbstractionToConceptualDatabaseBridgeDomainModel), "Neumont.Tools.ORMAbstractionToConceptualDatabaseBridge.GeneratedCode.DomainModelResx")]
+	[global::System.CLSCompliant(true)]
+	[DslModeling::DomainRelationship()]
+	[DslModeling::DomainObjectId("d7c8e3c8-7a84-4c28-8362-8c8d38c35a07")]
+	public partial class GenerationSettingTargetsSchema : DslModeling::ElementLink
+	{
+		#region Constructors, domain class Id
+		
+		/// <summary>
+		/// GenerationSettingTargetsSchema domain class Id.
+		/// </summary>
+		public static readonly new global::System.Guid DomainClassId = new global::System.Guid(0xd7c8e3c8, 0x7a84, 0x4c28, 0x83, 0x62, 0x8c, 0x8d, 0x38, 0xc3, 0x5a, 0x07);
+	
+				
+		/// <summary>
+		/// Constructor
+		/// Creates a GenerationSettingTargetsSchema link in the same Partition as the given SchemaGenerationSetting
+		/// </summary>
+		/// <param name="source">SchemaGenerationSetting to use as the source of the relationship.</param>
+		/// <param name="target">Schema to use as the target of the relationship.</param>
+		public GenerationSettingTargetsSchema(SchemaGenerationSetting source, global::Neumont.Tools.RelationalModels.ConceptualDatabase.Schema target)
+			: base((source != null ? source.Partition : null), new DslModeling::RoleAssignment[]{new DslModeling::RoleAssignment(GenerationSettingTargetsSchema.GenerationSettingDomainRoleId, source), new DslModeling::RoleAssignment(GenerationSettingTargetsSchema.GeneratedSchemaDomainRoleId, target)}, null)
+		{
+		}
+		
+		/// <summary>
+		/// Constructor
+		/// </summary>
+		/// <param name="store">Store where new link is to be created.</param>
+		/// <param name="roleAssignments">List of relationship role assignments.</param>
+		public GenerationSettingTargetsSchema(DslModeling::Store store, params DslModeling::RoleAssignment[] roleAssignments)
+			: base(store != null ? store.DefaultPartition : null, roleAssignments, null)
+		{
+		}
+		
+		/// <summary>
+		/// Constructor
+		/// </summary>
+		/// <param name="store">Store where new link is to be created.</param>
+		/// <param name="roleAssignments">List of relationship role assignments.</param>
+		/// <param name="propertyAssignments">List of properties assignments to set on the new link.</param>
+		public GenerationSettingTargetsSchema(DslModeling::Store store, DslModeling::RoleAssignment[] roleAssignments, DslModeling::PropertyAssignment[] propertyAssignments)
+			: base(store != null ? store.DefaultPartition : null, roleAssignments, propertyAssignments)
+		{
+		}
+		
+		/// <summary>
+		/// Constructor
+		/// </summary>
+		/// <param name="partition">Partition where new link is to be created.</param>
+		/// <param name="roleAssignments">List of relationship role assignments.</param>
+		public GenerationSettingTargetsSchema(DslModeling::Partition partition, params DslModeling::RoleAssignment[] roleAssignments)
+			: base(partition, roleAssignments, null)
+		{
+		}
+		
+		/// <summary>
+		/// Constructor
+		/// </summary>
+		/// <param name="partition">Partition where new link is to be created.</param>
+		/// <param name="roleAssignments">List of relationship role assignments.</param>
+		/// <param name="propertyAssignments">List of properties assignments to set on the new link.</param>
+		public GenerationSettingTargetsSchema(DslModeling::Partition partition, DslModeling::RoleAssignment[] roleAssignments, DslModeling::PropertyAssignment[] propertyAssignments)
+			: base(partition, roleAssignments, propertyAssignments)
+		{
+		}
+		#endregion
+		#region GenerationSetting domain role code
+		
+		/// <summary>
+		/// GenerationSetting domain role Id.
+		/// </summary>
+		public static readonly global::System.Guid GenerationSettingDomainRoleId = new global::System.Guid(0x654a46a6, 0x2f7a, 0x4c60, 0xae, 0xc9, 0xad, 0x4b, 0x71, 0xf5, 0x80, 0x82);
+		
+		/// <summary>
+		/// DomainRole GenerationSetting
+		/// Description for
+		/// Neumont.Tools.ORMAbstractionToConceptualDatabaseBridge.GenerationSettingTargetsSchema.GenerationSetting
+		/// </summary>
+		[DslDesign::DisplayNameResource("Neumont.Tools.ORMAbstractionToConceptualDatabaseBridge.GenerationSettingTargetsSchema/GenerationSetting.DisplayName", typeof(global::Neumont.Tools.ORMAbstractionToConceptualDatabaseBridge.ORMAbstractionToConceptualDatabaseBridgeDomainModel), "Neumont.Tools.ORMAbstractionToConceptualDatabaseBridge.GeneratedCode.DomainModelResx")]
+		[DslDesign::DescriptionResource("Neumont.Tools.ORMAbstractionToConceptualDatabaseBridge.GenerationSettingTargetsSchema/GenerationSetting.Description", typeof(global::Neumont.Tools.ORMAbstractionToConceptualDatabaseBridge.ORMAbstractionToConceptualDatabaseBridgeDomainModel), "Neumont.Tools.ORMAbstractionToConceptualDatabaseBridge.GeneratedCode.DomainModelResx")]
+		[DslModeling::DomainRole(DslModeling::DomainRoleOrder.Source, PropertyName = "GeneratedSchema", PropertyDisplayNameKey="Neumont.Tools.ORMAbstractionToConceptualDatabaseBridge.GenerationSettingTargetsSchema/GenerationSetting.PropertyDisplayName", PropagatesDelete = true, Multiplicity = DslModeling::Multiplicity.ZeroOne)]
+		[DslModeling::DomainObjectId("654a46a6-2f7a-4c60-aec9-ad4b71f58082")]
+		public virtual SchemaGenerationSetting GenerationSetting
+		{
+			[global::System.Diagnostics.DebuggerStepThrough]
+			get
+			{
+				return (SchemaGenerationSetting)DslModeling::DomainRoleInfo.GetRolePlayer(this, GenerationSettingDomainRoleId);
+			}
+			[global::System.Diagnostics.DebuggerStepThrough]
+			set
+			{
+				DslModeling::DomainRoleInfo.SetRolePlayer(this, GenerationSettingDomainRoleId, value);
+			}
+		}
+				
+		#endregion
+		#region Static methods to access GenerationSetting of a Schema
+		/// <summary>
+		/// Gets GenerationSetting.
+		/// </summary>
+		[global::System.Diagnostics.DebuggerStepThrough]
+		[global::System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Design", "CA1011")]
+		public static SchemaGenerationSetting GetGenerationSetting(global::Neumont.Tools.RelationalModels.ConceptualDatabase.Schema element)
+		{
+			return DslModeling::DomainRoleInfo.GetLinkedElement(element, GeneratedSchemaDomainRoleId) as SchemaGenerationSetting;
+		}
+		
+		/// <summary>
+		/// Sets GenerationSetting.
+		/// </summary>
+		[global::System.Diagnostics.DebuggerStepThrough]
+		[global::System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Design", "CA1011")]
+		public static void SetGenerationSetting(global::Neumont.Tools.RelationalModels.ConceptualDatabase.Schema element, SchemaGenerationSetting newGenerationSetting)
+		{
+			DslModeling::DomainRoleInfo.SetLinkedElement(element, GeneratedSchemaDomainRoleId, newGenerationSetting);
+		}
+		#endregion
+		#region GeneratedSchema domain role code
+		
+		/// <summary>
+		/// GeneratedSchema domain role Id.
+		/// </summary>
+		public static readonly global::System.Guid GeneratedSchemaDomainRoleId = new global::System.Guid(0x4cd40629, 0xc999, 0x4e6b, 0xa8, 0xb6, 0x42, 0x90, 0x46, 0xd3, 0xf5, 0x54);
+		
+		/// <summary>
+		/// DomainRole GeneratedSchema
+		/// Description for
+		/// Neumont.Tools.ORMAbstractionToConceptualDatabaseBridge.GenerationSettingTargetsSchema.GeneratedSchema
+		/// </summary>
+		[DslDesign::DisplayNameResource("Neumont.Tools.ORMAbstractionToConceptualDatabaseBridge.GenerationSettingTargetsSchema/GeneratedSchema.DisplayName", typeof(global::Neumont.Tools.ORMAbstractionToConceptualDatabaseBridge.ORMAbstractionToConceptualDatabaseBridgeDomainModel), "Neumont.Tools.ORMAbstractionToConceptualDatabaseBridge.GeneratedCode.DomainModelResx")]
+		[DslDesign::DescriptionResource("Neumont.Tools.ORMAbstractionToConceptualDatabaseBridge.GenerationSettingTargetsSchema/GeneratedSchema.Description", typeof(global::Neumont.Tools.ORMAbstractionToConceptualDatabaseBridge.ORMAbstractionToConceptualDatabaseBridgeDomainModel), "Neumont.Tools.ORMAbstractionToConceptualDatabaseBridge.GeneratedCode.DomainModelResx")]
+		[DslModeling::DomainRole(DslModeling::DomainRoleOrder.Target, PropertyName = "GenerationSetting", PropertyDisplayNameKey="Neumont.Tools.ORMAbstractionToConceptualDatabaseBridge.GenerationSettingTargetsSchema/GeneratedSchema.PropertyDisplayName", Multiplicity = DslModeling::Multiplicity.ZeroOne)]
+		[DslModeling::DomainObjectId("4cd40629-c999-4e6b-a8b6-429046d3f554")]
+		public virtual global::Neumont.Tools.RelationalModels.ConceptualDatabase.Schema GeneratedSchema
+		{
+			[global::System.Diagnostics.DebuggerStepThrough]
+			get
+			{
+				return (global::Neumont.Tools.RelationalModels.ConceptualDatabase.Schema)DslModeling::DomainRoleInfo.GetRolePlayer(this, GeneratedSchemaDomainRoleId);
+			}
+			[global::System.Diagnostics.DebuggerStepThrough]
+			set
+			{
+				DslModeling::DomainRoleInfo.SetRolePlayer(this, GeneratedSchemaDomainRoleId, value);
+			}
+		}
+				
+		#endregion
+		#region Static methods to access GeneratedSchema of a SchemaGenerationSetting
+		/// <summary>
+		/// Gets GeneratedSchema.
+		/// </summary>
+		[global::System.Diagnostics.DebuggerStepThrough]
+		[global::System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Design", "CA1011")]
+		public static global::Neumont.Tools.RelationalModels.ConceptualDatabase.Schema GetGeneratedSchema(SchemaGenerationSetting element)
+		{
+			return DslModeling::DomainRoleInfo.GetLinkedElement(element, GenerationSettingDomainRoleId) as global::Neumont.Tools.RelationalModels.ConceptualDatabase.Schema;
+		}
+		
+		/// <summary>
+		/// Sets GeneratedSchema.
+		/// </summary>
+		[global::System.Diagnostics.DebuggerStepThrough]
+		[global::System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Design", "CA1011")]
+		public static void SetGeneratedSchema(SchemaGenerationSetting element, global::Neumont.Tools.RelationalModels.ConceptualDatabase.Schema newGeneratedSchema)
+		{
+			DslModeling::DomainRoleInfo.SetLinkedElement(element, GenerationSettingDomainRoleId, newGeneratedSchema);
+		}
+		#endregion
+		#region GenerationSetting link accessor
+		/// <summary>
+		/// Get the GenerationSettingTargetsSchema link to a SchemaGenerationSetting.
+		/// </summary>
+		[global::System.Diagnostics.DebuggerStepThrough]
+		[global::System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Design", "CA1011")]
+		public static global::Neumont.Tools.ORMAbstractionToConceptualDatabaseBridge.GenerationSettingTargetsSchema GetLinkToGeneratedSchema (global::Neumont.Tools.ORMAbstractionToConceptualDatabaseBridge.SchemaGenerationSetting generationSettingInstance)
+		{
+			global::System.Collections.Generic.IList<global::Neumont.Tools.ORMAbstractionToConceptualDatabaseBridge.GenerationSettingTargetsSchema> links = DslModeling::DomainRoleInfo.GetElementLinks<global::Neumont.Tools.ORMAbstractionToConceptualDatabaseBridge.GenerationSettingTargetsSchema>(generationSettingInstance, global::Neumont.Tools.ORMAbstractionToConceptualDatabaseBridge.GenerationSettingTargetsSchema.GenerationSettingDomainRoleId);
+			global::System.Diagnostics.Debug.Assert(links.Count <= 1, "Multiplicity of GenerationSetting not obeyed.");
+			if ( links.Count == 0 )
+			{
+				return null;
+			}
+			else
+			{
+				return links[0];
+			}
+		}
+		#endregion
+		#region GeneratedSchema link accessor
+		/// <summary>
+		/// Get the GenerationSettingTargetsSchema link to a Schema.
+		/// </summary>
+		[global::System.Diagnostics.DebuggerStepThrough]
+		[global::System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Design", "CA1011")]
+		public static global::Neumont.Tools.ORMAbstractionToConceptualDatabaseBridge.GenerationSettingTargetsSchema GetLinkToGenerationSetting (global::Neumont.Tools.RelationalModels.ConceptualDatabase.Schema generatedSchemaInstance)
+		{
+			global::System.Collections.Generic.IList<global::Neumont.Tools.ORMAbstractionToConceptualDatabaseBridge.GenerationSettingTargetsSchema> links = DslModeling::DomainRoleInfo.GetElementLinks<global::Neumont.Tools.ORMAbstractionToConceptualDatabaseBridge.GenerationSettingTargetsSchema>(generatedSchemaInstance, global::Neumont.Tools.ORMAbstractionToConceptualDatabaseBridge.GenerationSettingTargetsSchema.GeneratedSchemaDomainRoleId);
+			global::System.Diagnostics.Debug.Assert(links.Count <= 1, "Multiplicity of GeneratedSchema not obeyed.");
+			if ( links.Count == 0 )
+			{
+				return null;
+			}
+			else
+			{
+				return links[0];
+			}
+		}
+		#endregion
+		#region GenerationSettingTargetsSchema instance accessors
+		
+		/// <summary>
+		/// Get any GenerationSettingTargetsSchema links between a given SchemaGenerationSetting and a Schema.
+		/// </summary>
+		[global::System.Diagnostics.DebuggerStepThrough]
+		[global::System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Design", "CA1011")]
+		public static global::System.Collections.ObjectModel.ReadOnlyCollection<global::Neumont.Tools.ORMAbstractionToConceptualDatabaseBridge.GenerationSettingTargetsSchema> GetLinks( global::Neumont.Tools.ORMAbstractionToConceptualDatabaseBridge.SchemaGenerationSetting source, global::Neumont.Tools.RelationalModels.ConceptualDatabase.Schema target )
+		{
+			global::System.Collections.Generic.List<global::Neumont.Tools.ORMAbstractionToConceptualDatabaseBridge.GenerationSettingTargetsSchema> outLinks = new global::System.Collections.Generic.List<global::Neumont.Tools.ORMAbstractionToConceptualDatabaseBridge.GenerationSettingTargetsSchema>();
+			global::System.Collections.Generic.IList<global::Neumont.Tools.ORMAbstractionToConceptualDatabaseBridge.GenerationSettingTargetsSchema> links = DslModeling::DomainRoleInfo.GetElementLinks<global::Neumont.Tools.ORMAbstractionToConceptualDatabaseBridge.GenerationSettingTargetsSchema>(source, global::Neumont.Tools.ORMAbstractionToConceptualDatabaseBridge.GenerationSettingTargetsSchema.GenerationSettingDomainRoleId);
+			foreach ( global::Neumont.Tools.ORMAbstractionToConceptualDatabaseBridge.GenerationSettingTargetsSchema link in links )
+			{
+				if ( target.Equals(link.GeneratedSchema) )
+				{
+					outLinks.Add(link);
+				}
+			}
+			return outLinks.AsReadOnly();
+		}
+		/// <summary>
+		/// Get the one GenerationSettingTargetsSchema link between a given SchemaGenerationSettingand a Schema.
+		/// </summary>
+		[global::System.Diagnostics.DebuggerStepThrough]
+		[global::System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Design", "CA1011")]
+		public static global::Neumont.Tools.ORMAbstractionToConceptualDatabaseBridge.GenerationSettingTargetsSchema GetLink( global::Neumont.Tools.ORMAbstractionToConceptualDatabaseBridge.SchemaGenerationSetting source, global::Neumont.Tools.RelationalModels.ConceptualDatabase.Schema target )
+		{
+			global::System.Collections.Generic.IList<global::Neumont.Tools.ORMAbstractionToConceptualDatabaseBridge.GenerationSettingTargetsSchema> links = DslModeling::DomainRoleInfo.GetElementLinks<global::Neumont.Tools.ORMAbstractionToConceptualDatabaseBridge.GenerationSettingTargetsSchema>(source, global::Neumont.Tools.ORMAbstractionToConceptualDatabaseBridge.GenerationSettingTargetsSchema.GenerationSettingDomainRoleId);
+			foreach ( global::Neumont.Tools.ORMAbstractionToConceptualDatabaseBridge.GenerationSettingTargetsSchema link in links )
+			{
+				if ( target.Equals(link.GeneratedSchema) )
+				{
+					return link;
+				}
+			}
+			return null;
+		}
+		
+		#endregion
+	}
+}

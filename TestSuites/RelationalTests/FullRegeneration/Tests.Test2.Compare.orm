@@ -1,5 +1,4 @@
-﻿<?xml version="1.0" encoding="utf-8"?>
-<ormRoot:ORM2 xmlns:ddt="http://schemas.orm.net/DIL/DILDT" xmlns:odt="http://schemas.neumont.edu/ORM/Abstraction/2007-06/DataTypes/Core" xmlns:oial="http://schemas.neumont.edu/ORM/Abstraction/2007-06/Core" xmlns:oialtocdb="http://schemas.neumont.edu/ORM/Bridge/2007-06/ORMAbstractionToConceptualDatabase" xmlns:orm="http://schemas.neumont.edu/ORM/2006-04/ORMCore" xmlns:ormDiagram="http://schemas.neumont.edu/ORM/2006-04/ORMDiagram" xmlns:ormRoot="http://schemas.neumont.edu/ORM/2006-04/ORMRoot" xmlns:ormtooial="http://schemas.neumont.edu/ORM/Bridge/2007-06/ORMToORMAbstraction" xmlns:rcd="http://schemas.neumont.edu/ORM/Relational/2007-06/ConceptualDatabase">
+﻿<ormRoot:ORM2 xmlns:ddt="http://schemas.orm.net/DIL/DILDT" xmlns:odt="http://schemas.neumont.edu/ORM/Abstraction/2007-06/DataTypes/Core" xmlns:oial="http://schemas.neumont.edu/ORM/Abstraction/2007-06/Core" xmlns:oialtocdb="http://schemas.neumont.edu/ORM/Bridge/2007-06/ORMAbstractionToConceptualDatabase" xmlns:orm="http://schemas.neumont.edu/ORM/2006-04/ORMCore" xmlns:ormDiagram="http://schemas.neumont.edu/ORM/2006-04/ORMDiagram" xmlns:ormRoot="http://schemas.neumont.edu/ORM/2006-04/ORMRoot" xmlns:ormtooial="http://schemas.neumont.edu/ORM/Bridge/2007-06/ORMToORMAbstraction" xmlns:rcd="http://schemas.neumont.edu/ORM/Relational/2007-06/ConceptualDatabase">
 	<orm:ORMModel Name="ORMModel2" id="_587F4DD7-D59D-425E-A9CD-36D3265569AD">
 		<orm:Objects>
 			<orm:EntityType Name="Harry" _ReferenceMode="id" id="_3E529D02-56BA-46D2-A5DD-DE559E5CAA77">
@@ -286,6 +285,16 @@
 			</oialtocdb:RelationalNameGenerator>
 		</orm:Refinements>
 	</orm:NameGenerator>
+	<orm:GenerationState id="_CE6A5C67-194C-4538-B61D-09DC277235CA">
+		<orm:GenerationSettings>
+			<ormtooial:AbstractionModelGenerationSetting AlgorithmVersion="1.001" id="_1ECF9C7E-EC03-4118-9BF0-78AC98140751">
+				<ormtooial:AbstractionModel ref="_4EE0E222-C3E6-4E2F-93BD-2832FD0CA530" />
+			</ormtooial:AbstractionModelGenerationSetting>
+			<oialtocdb:SchemaGenerationSetting CoreAlgorithmVersion="1.001" NameAlgorithmVersion="1.001" id="_B469B281-6731-4214-9C2C-6CFDAC31C903">
+				<oialtocdb:Schema ref="_DC73DBF4-111D-49C1-B301-B5F5B89FB4D8" />
+			</oialtocdb:SchemaGenerationSetting>
+		</orm:GenerationSettings>
+	</orm:GenerationState>
 	<ormDiagram:ORMDiagram BaseFontName="Tahoma" BaseFontSize="0.0972222238779068" IsCompleteView="false" Name="ORMModel2" id="_595A8D6C-BEB6-468F-879E-5A44F981AF9C">
 		<ormDiagram:Shapes>
 			<ormDiagram:ObjectTypeShape AbsoluteBounds="0.5, 1.3958333333333333, 0.43339290738105779, 0.35900605320930479" IsExpanded="true" id="_404DA74B-74B2-4C8D-8E39-BA289A700ADC">

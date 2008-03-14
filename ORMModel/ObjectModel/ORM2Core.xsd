@@ -1577,4 +1577,22 @@
 			</xs:annotation>
 		</xs:attribute>
 	</xs:complexType>
+	<xs:element name="GenerationState">
+		<xs:complexType>
+			<xs:sequence>
+				<xs:element name="GenerationSettings" minOccurs="0">
+					<xs:complexType>
+						<xs:sequence minOccurs="0" maxOccurs="unbounded">
+							<xs:element ref="GenerationSetting"/>
+						</xs:sequence>
+					</xs:complexType>
+				</xs:element>
+			</xs:sequence>
+			<xs:attribute name="id" type="xs:ID"/>
+		</xs:complexType>
+	</xs:element>
+	<xs:element name="GenerationSetting" type="GenerationSettingType" abstract="true"/>
+	<xs:complexType name="GenerationSettingType">
+		<xs:attribute name="id" type="xs:ID"/>
+	</xs:complexType>
 </xs:schema>

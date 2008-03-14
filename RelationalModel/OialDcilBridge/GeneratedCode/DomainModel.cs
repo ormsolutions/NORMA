@@ -75,6 +75,7 @@ namespace Neumont.Tools.ORMAbstractionToConceptualDatabaseBridge
 				typeof(RelationalNameGenerator),
 				typeof(ColumnNameUsage),
 				typeof(TableNameUsage),
+				typeof(SchemaGenerationSetting),
 				typeof(AssimilationMappingCustomizesFactType),
 				typeof(MappingCustomizationModelHasAssimilationMapping),
 				typeof(ReferenceModeNamingCustomizesObjectType),
@@ -88,6 +89,7 @@ namespace Neumont.Tools.ORMAbstractionToConceptualDatabaseBridge
 				typeof(ColumnHasConceptTypeChild),
 				typeof(UniquenessConstraintIsForUniqueness),
 				typeof(DomainIsForInformationTypeFormat),
+				typeof(GenerationSettingTargetsSchema),
 			};
 		}
 		/// <summary>
@@ -104,6 +106,8 @@ namespace Neumont.Tools.ORMAbstractionToConceptualDatabaseBridge
 				new DomainMemberInfo(typeof(DefaultReferenceModeNaming), "NamingChoice", DefaultReferenceModeNaming.NamingChoiceDomainPropertyId, typeof(DefaultReferenceModeNaming.NamingChoicePropertyHandler)),
 				new DomainMemberInfo(typeof(DefaultReferenceModeNaming), "CustomFormat", DefaultReferenceModeNaming.CustomFormatDomainPropertyId, typeof(DefaultReferenceModeNaming.CustomFormatPropertyHandler)),
 				new DomainMemberInfo(typeof(DefaultReferenceModeNaming), "ReferenceModeTargetKind", DefaultReferenceModeNaming.ReferenceModeTargetKindDomainPropertyId, typeof(DefaultReferenceModeNaming.ReferenceModeTargetKindPropertyHandler)),
+				new DomainMemberInfo(typeof(SchemaGenerationSetting), "CoreAlgorithmVersion", SchemaGenerationSetting.CoreAlgorithmVersionDomainPropertyId, typeof(SchemaGenerationSetting.CoreAlgorithmVersionPropertyHandler)),
+				new DomainMemberInfo(typeof(SchemaGenerationSetting), "NameAlgorithmVersion", SchemaGenerationSetting.NameAlgorithmVersionDomainPropertyId, typeof(SchemaGenerationSetting.NameAlgorithmVersionPropertyHandler)),
 			};
 		}
 		/// <summary>
@@ -140,6 +144,8 @@ namespace Neumont.Tools.ORMAbstractionToConceptualDatabaseBridge
 				new DomainRolePlayerInfo(typeof(UniquenessConstraintIsForUniqueness), "Uniqueness", UniquenessConstraintIsForUniqueness.UniquenessDomainRoleId),
 				new DomainRolePlayerInfo(typeof(DomainIsForInformationTypeFormat), "Domain", DomainIsForInformationTypeFormat.DomainDomainRoleId),
 				new DomainRolePlayerInfo(typeof(DomainIsForInformationTypeFormat), "InformationTypeFormat", DomainIsForInformationTypeFormat.InformationTypeFormatDomainRoleId),
+				new DomainRolePlayerInfo(typeof(GenerationSettingTargetsSchema), "GenerationSetting", GenerationSettingTargetsSchema.GenerationSettingDomainRoleId),
+				new DomainRolePlayerInfo(typeof(GenerationSettingTargetsSchema), "GeneratedSchema", GenerationSettingTargetsSchema.GeneratedSchemaDomainRoleId),
 			};
 		}
 		#endregion
@@ -160,12 +166,13 @@ namespace Neumont.Tools.ORMAbstractionToConceptualDatabaseBridge
 	
 			if (createElementMap == null)
 			{
-				createElementMap = new global::System.Collections.Generic.Dictionary<global::System.Type, int>(7);
+				createElementMap = new global::System.Collections.Generic.Dictionary<global::System.Type, int>(8);
 				createElementMap.Add(typeof(MappingCustomizationModel), 0);
 				createElementMap.Add(typeof(AssimilationMapping), 1);
 				createElementMap.Add(typeof(ReferenceModeNaming), 2);
 				createElementMap.Add(typeof(DefaultReferenceModeNaming), 3);
 				createElementMap.Add(typeof(RelationalNameGenerator), 4);
+				createElementMap.Add(typeof(SchemaGenerationSetting), 5);
 			}
 			int index;
 			if (!createElementMap.TryGetValue(elementType, out index))
@@ -181,6 +188,7 @@ namespace Neumont.Tools.ORMAbstractionToConceptualDatabaseBridge
 				// A constructor was not generated for RelationalNameGenerator because it had HasCustomConstructor
 				// set to true. Please provide the constructor below.
 				case 4: return new RelationalNameGenerator(partition, propertyAssignments);
+				case 5: return new SchemaGenerationSetting(partition, propertyAssignments);
 				default: return null;
 			}
 		}
@@ -203,7 +211,7 @@ namespace Neumont.Tools.ORMAbstractionToConceptualDatabaseBridge
 	
 			if (createElementLinkMap == null)
 			{
-				createElementLinkMap = new global::System.Collections.Generic.Dictionary<global::System.Type, int>(13);
+				createElementLinkMap = new global::System.Collections.Generic.Dictionary<global::System.Type, int>(14);
 				createElementLinkMap.Add(typeof(AssimilationMappingCustomizesFactType), 0);
 				createElementLinkMap.Add(typeof(MappingCustomizationModelHasAssimilationMapping), 1);
 				createElementLinkMap.Add(typeof(ReferenceModeNamingCustomizesObjectType), 2);
@@ -217,6 +225,7 @@ namespace Neumont.Tools.ORMAbstractionToConceptualDatabaseBridge
 				createElementLinkMap.Add(typeof(ColumnHasConceptTypeChild), 10);
 				createElementLinkMap.Add(typeof(UniquenessConstraintIsForUniqueness), 11);
 				createElementLinkMap.Add(typeof(DomainIsForInformationTypeFormat), 12);
+				createElementLinkMap.Add(typeof(GenerationSettingTargetsSchema), 13);
 			}
 			int index;
 			if (!createElementLinkMap.TryGetValue(elementLinkType, out index))
@@ -238,6 +247,7 @@ namespace Neumont.Tools.ORMAbstractionToConceptualDatabaseBridge
 				case 10: return new ColumnHasConceptTypeChild(partition, roleAssignments, propertyAssignments);
 				case 11: return new UniquenessConstraintIsForUniqueness(partition, roleAssignments, propertyAssignments);
 				case 12: return new DomainIsForInformationTypeFormat(partition, roleAssignments, propertyAssignments);
+				case 13: return new GenerationSettingTargetsSchema(partition, roleAssignments, propertyAssignments);
 				default: return null;
 			}
 		}
@@ -380,6 +390,7 @@ namespace Neumont.Tools.ORMAbstractionToConceptualDatabaseBridge
 			DomainRoles.Add(global::Neumont.Tools.ORMAbstractionToConceptualDatabaseBridge.MappingCustomizationModelHasReferenceModeNaming.ReferenceModeNamingDomainRoleId, true);
 			DomainRoles.Add(global::Neumont.Tools.ORMAbstractionToConceptualDatabaseBridge.DefaultReferenceModeNamingCustomizesORMModel.DefaultReferenceModeNamingDomainRoleId, true);
 			DomainRoles.Add(global::Neumont.Tools.ORMAbstractionToConceptualDatabaseBridge.MappingCustomizationModelHasDefaultReferenceModeNaming.DefaultReferenceModeNamingDomainRoleId, true);
+			DomainRoles.Add(global::Neumont.Tools.ORMAbstractionToConceptualDatabaseBridge.GenerationSettingTargetsSchema.GenerationSettingDomainRoleId, true);
 			#endregion
 		}
 		/// <summary>

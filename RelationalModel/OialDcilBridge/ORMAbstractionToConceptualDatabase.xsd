@@ -247,4 +247,28 @@
 		<xs:attribute name="Uniqueness" type="xs:IDREF" use="required"/>
 	</xs:complexType>
 	<xs:element name="RelationalNameGenerator" type="orm:NameGeneratorType" substitutionGroup="orm:NameGenerator"/>
+	<xs:element name="SchemaGenerationSetting" type="SchemaGenerationSettingType" substitutionGroup="orm:GenerationSetting"/>
+	<xs:complexType name="SchemaGenerationSettingType">
+		<xs:complexContent>
+			<xs:extension base="orm:GenerationSettingType">
+				<xs:sequence>
+					<xs:element name="Schema">
+						<xs:complexType>
+							<xs:attribute name="ref" type="xs:IDREF" use="required"/>
+						</xs:complexType>
+					</xs:element>
+				</xs:sequence>
+				<xs:attribute name="CoreAlgorithmVersion" type="xs:string" use="required">
+					<xs:annotation>
+						<xs:documentation>Version information interpreted by the generating algorithm.</xs:documentation>
+					</xs:annotation>
+				</xs:attribute>
+				<xs:attribute name="NameAlgorithmVersion" type="xs:string" use="required">
+					<xs:annotation>
+						<xs:documentation>Version information interpreted by the generating algorithm. Applies to names only.</xs:documentation>
+					</xs:annotation>
+				</xs:attribute>
+			</xs:extension>
+		</xs:complexContent>
+	</xs:complexType>
 </xs:schema>
