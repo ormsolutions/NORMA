@@ -34,7 +34,7 @@ namespace Neumont.Tools.Modeling.Shell.DynamicSurveyTreeGrid
 		/// </summary>
 		public SurveyTreeContainer()
 		{
-			this.myTreeControl = new VirtualTreeControl();
+			this.myTreeControl = new StandardVirtualTreeControl();
 			this.SuspendLayout();
 			// 
 			// myTreeControl
@@ -75,11 +75,8 @@ namespace Neumont.Tools.Modeling.Shell.DynamicSurveyTreeGrid
 			}
 			set
 			{
-//#if VISUALSTUDIO_9_0
-//                myTreeControl.MultiColumnTree = (IMultiColumnTree)value;
-//#else
 				myTreeControl.Tree = value;
-//#endif
+				myTreeControl.AnchorIndex = -1;
 			}
 		}
 	}

@@ -32,7 +32,7 @@ namespace Neumont.Tools.Modeling.Diagnostics
 			System.Windows.Forms.Label FilterLabel;
 			System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(TransactionLogViewer));
 			this.ImageList = new System.Windows.Forms.ImageList(this.components);
-			this.TreeControl = new Microsoft.VisualStudio.VirtualTreeGrid.VirtualTreeControl();
+			this.TreeControl = new Neumont.Tools.Modeling.Shell.StandardVirtualTreeControl();
 			this.CloseButton = new System.Windows.Forms.Button();
 			this.UndoItemsCombo = new System.Windows.Forms.ComboBox();
 			this.RedoItemsCombo = new System.Windows.Forms.ComboBox();
@@ -164,7 +164,7 @@ namespace Neumont.Tools.Modeling.Diagnostics
 		private System.Windows.Forms.ComboBox RedoItemsCombo;
 		private System.Windows.Forms.Label UndoLabel;
 		private System.Windows.Forms.Label RedoLabel;
-		private Microsoft.VisualStudio.VirtualTreeGrid.VirtualTreeControl TreeControl;
+		private Neumont.Tools.Modeling.Shell.StandardVirtualTreeControl TreeControl;
 		private System.Windows.Forms.ImageList ImageList;
 		private System.Windows.Forms.Button ClearFilterButton;
 		private System.Windows.Forms.ToolTip Tooltip;

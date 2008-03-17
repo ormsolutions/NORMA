@@ -26,6 +26,7 @@ using Neumont.Tools.ORM.ObjectModel;
 using Microsoft.VisualStudio.Shell;
 using System.Globalization;
 using Microsoft.VisualStudio.Shell.Interop;
+using Neumont.Tools.Modeling.Shell;
 
 namespace Neumont.Tools.ORM.Shell
 {
@@ -38,7 +39,7 @@ namespace Neumont.Tools.ORM.Shell
 			///	</summary>
 			private sealed class CustomReferenceModeEditor : UserControl
 			{
-				private class CustomVirtualTreeControl : VirtualTreeControl
+				private class CustomVirtualTreeControl : StandardVirtualTreeControl
 				{
 					private IServiceProvider myServiceProvider;
 					public CustomVirtualTreeControl(IServiceProvider serviceProvider)

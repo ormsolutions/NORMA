@@ -29,6 +29,7 @@ using Microsoft.VisualStudio.Modeling;
 using Microsoft.VisualStudio.Modeling.Diagrams;
 using Microsoft.VisualStudio.Shell.Interop;
 using Microsoft.VisualStudio.VirtualTreeGrid;
+using Neumont.Tools.Modeling.Shell;
 
 #if VISUALSTUDIO_9_0
 using VirtualTreeInPlaceControlFlags = Microsoft.VisualStudio.VirtualTreeGrid.VirtualTreeInPlaceControls;
@@ -47,7 +48,7 @@ namespace Neumont.Tools.Modeling.Design
 		where T : TreePicker<T>
 	{
 		#region DropDownTreeControl class. Handles Escape key for ListBox
-		private sealed class DropDownTreeControl : VirtualTreeControl
+		private sealed class DropDownTreeControl : StandardVirtualTreeControl
 		{
 			private bool myEscapePressed;
 			private int myLastSelectedRow = -1;

@@ -30,7 +30,7 @@ namespace Neumont.Tools.ORM.Shell
 		{
 			this.components = new System.ComponentModel.Container();
 			System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(SamplePopulationEditor));
-			this.vtrSamplePopulation = new Microsoft.VisualStudio.VirtualTreeGrid.VirtualTreeControl();
+			this.vtrSamplePopulation = new Neumont.Tools.Modeling.Shell.StandardVirtualTreeControl();
 			this.myImageList = new System.Windows.Forms.ImageList(this.components);
 			this.lblNoSelection = new System.Windows.Forms.Label();
 			this.SuspendLayout();
@@ -84,7 +84,7 @@ namespace Neumont.Tools.ORM.Shell
 
 		#endregion
 
-		private Microsoft.VisualStudio.VirtualTreeGrid.VirtualTreeControl vtrSamplePopulation;
+		private Neumont.Tools.Modeling.Shell.StandardVirtualTreeControl vtrSamplePopulation;
 		private System.Windows.Forms.Label lblNoSelection;
 		private System.Windows.Forms.ImageList myImageList;
 

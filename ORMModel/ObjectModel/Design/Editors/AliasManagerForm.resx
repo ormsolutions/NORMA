@@ -136,7 +136,7 @@
     <value>virtualTreeControl</value>
   </data>
   <data name="&gt;&gt;virtualTreeControl.Type" xml:space="preserve">
-    <value>Microsoft.VisualStudio.VirtualTreeGrid.VirtualTreeControl, Microsoft.VisualStudio.VirtualTreeGrid, Version=8.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+    <value>Neumont.Tools.Modeling.Shell.StandardVirtualTreeControl, Neumont.Tools.ORM.VS2005, Version=1.0.0.0, Culture=neutral, PublicKeyToken=957d5b7d5e79e25f</value>
   </data>
   <data name="&gt;&gt;virtualTreeControl.Parent" xml:space="preserve">
     <value>$this</value>

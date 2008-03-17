@@ -3285,7 +3285,7 @@ namespace Neumont.Tools.ORM.Shell
 		/// If column headers are not used when column permutation is used an "index out of range exception" 
 		/// is fired when the mouse travels over the region occupied by the scrollbar if no scrollbar exists.
 		/// </summary>
-		public class CustomVirtualTreeControl : VirtualTreeControl
+		public class CustomVirtualTreeControl : StandardVirtualTreeControl
 		{
 			/// <summary>
 			/// Needed for creating a header to prevent the vertical scrollbar from thowing an exception

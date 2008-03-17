@@ -13,7 +13,6 @@
 * You must not remove this notice, or any other, from this software.       *
 \**************************************************************************/
 #endregion
-
 using System;
 using System.Collections;
 using System.ComponentModel;
@@ -29,6 +28,8 @@ using Microsoft.VisualStudio.Modeling;
 using Microsoft.VisualStudio.Modeling.Diagrams;
 using Microsoft.VisualStudio.Shell.Interop;
 using Microsoft.VisualStudio.VirtualTreeGrid;
+using System.Reflection;
+using Neumont.Tools.Modeling.Shell;
 
 #if VISUALSTUDIO_9_0
 using VirtualTreeInPlaceControlFlags = Microsoft.VisualStudio.VirtualTreeGrid.VirtualTreeInPlaceControls;
@@ -47,11 +48,52 @@ namespace Neumont.Tools.Modeling.Design
 	public abstract class ElementPicker<T> : SizePreservingEditor<T>
 		where T : ElementPicker<T>
 	{
-		#region DropDownListBox class. Handles Escape key for ListBox
-		private class DropDownListBox : ListBox
+		#region DropDownTreeControl class. Handles the Escape key for the dropdown
+		private class DropDownTreeControl : StandardVirtualTreeControl
 		{
 			private bool myEscapePressed;
-			private int myLastSelectedIndex = -1;
+			private int myInitialIndex = -1;
+			public event DoubleClickEventHandler AfterDoubleClick;
+			public DropDownTreeControl()
+			{
+				HasRootLines = false;
+				FullCellSelect = true;
+			}
+			public int InitialSelectionIndex
+			{
+				set
+				{
+					myInitialIndex = value;
+				}
+			}
+			protected sealed override CreateParams CreateParams
+			{
+				[SecurityPermission(SecurityAction.LinkDemand, Flags = SecurityPermissionFlag.UnmanagedCode)]
+				get
+				{
+					CreateParams @params = base.CreateParams;
+					@params.ExStyle &= ~0x200; // Turn off Fixed3D border style
+					return @params;
+				}
+			}
+			/// <summary>
+			/// Set an initial selection in the control
+			/// </summary>
+			protected override int InitialIndex
+			{
+				get
+				{
+					return myInitialIndex;
+				}
+			}
+			protected sealed override void OnDoubleClick(DoubleClickEventArgs e)
+			{
+				base.OnDoubleClick(e);
+				if (AfterDoubleClick != null)
+				{
+					AfterDoubleClick(this, e);
+				}
+			}
 			protected sealed override bool IsInputKey(Keys keyData)
 			{
 				if ((keyData & Keys.KeyCode) == Keys.Escape)
@@ -67,197 +109,132 @@ namespace Neumont.Tools.Modeling.Design
 					return myEscapePressed;
 				}
 			}
-			// UNDONE: This sounds like it may have been an early beta bug. Someone should check whether this still happens.
-			/// <summary>
-			/// For some reason, the base SelectedItem property
-			/// is null if the commit is made with an Enter instead
-			/// of a double click. Track the selected item index separately.
-			/// </summary>
-			public int LastSelectedIndex
-			{
-				get
-				{
-					return myLastSelectedIndex;
-				}
-			}
-			protected sealed override void OnSelectedIndexChanged(EventArgs e)
-			{
-				myLastSelectedIndex = SelectedIndex;
-				base.OnSelectedIndexChanged(e);
-			}
 		}
-		private sealed class NullFirstItemDropDownListBox : DropDownListBox
+		#endregion DropDownTreeControl class. Handles the Escape key for the dropdown
+		#region SimpleBranch class
+		private class SimpleBranch : IBranch
 		{
-			public sealed override string Text
+			#region Member Variables
+			private IList myItems;
+			private string myNullItemText;
+			#endregion // Member Variables
+			#region Constructor
+			public SimpleBranch(IList items, string nullItemText)
 			{
-				get
-				{
-					return (SelectedIndex == 0) ? null : base.Text;
-				}
-				set
-				{
-					base.Text = value;
-				}
+				myItems = items;
+				myNullItemText = nullItemText;
 			}
-		}
-		#endregion // DropDownListBox class. Handles Escape key for ListBox
-		#region IList wrapper to automatically display a null element
-		private sealed class NullElementList : IList
-		{
-			#region NullPlaceholder class
-			private sealed class NullPlaceholder
+			#endregion // Constructor
+			#region IBranch Implementation
+			private static TypeConverter myStringConverter;
+			string IBranch.GetText(int row, int column)
 			{
-				private string myText;
-				public NullPlaceholder(string nullText)
+				string nullItemText = myNullItemText;
+				if (nullItemText != null)
 				{
-					myText = nullText;
-				}
-				public sealed override string ToString()
-				{
-					return myText;
-				}
-			}
-			#endregion // NullPlaceholder class
-			#region Constructors, Accessors, and MemberVariables
-			private IList myInner;
-			private NullPlaceholder myPlaceholder;
-			public NullElementList(IList innerList, string nullText)
-			{
-				if (innerList == null)
-				{
-					innerList = new object[0];
-				}
-				myInner = innerList;
-				myPlaceholder = new NullPlaceholder(nullText);
-			}
-			public bool IsNullItem(object test)
-			{
-				return test == null || test == myPlaceholder;
-			}
-			public object NullItem
-			{
-				get
-				{
-					return myPlaceholder;
-				}
-			}
-			#endregion // Constructors, Accessors, and MemberVariables
-			#region IList Members
-			public int Add(object value)
-			{
-				return myInner.Add(value) + 1;
-			}
-			public void Clear()
-			{
-				myInner.Clear();
-			}
-			public bool Contains(object value)
-			{
-				return (value == null || value == myPlaceholder) || myInner.Contains(value);
-			}
-			public int IndexOf(object value)
-			{
-				if (value == null || value == myPlaceholder)
-				{
-					return 0;
-				}
-				else
-				{
-					int retVal = myInner.IndexOf(value);
-					return (retVal >= 0) ? retVal + 1 : retVal;
-				}
-			}
-			public void Insert(int index, object value)
-			{
-				if (index > 0)
-				{
-					myInner.Insert(--index, value);
-				}
-			}
-			public bool IsFixedSize
-			{
-				get
-				{
-					return myInner.IsFixedSize;
-				}
-			}
-			public bool IsReadOnly
-			{
-				get
-				{
-					return myInner.IsReadOnly;
-				}
-			}
-			public void Remove(object value)
-			{
-				myInner.Remove(value);
-			}
-			public void RemoveAt(int index)
-			{
-				if (index > 0)
-				{
-					myInner.RemoveAt(--index);
-				}
-			}
-			public object this[int index]
-			{
-				get
-				{
-					return (index == 0) ? null : myInner[--index];
-				}
-				set
-				{
-					if (index > 0)
+					if (row == 0)
 					{
-						myInner[--index] = value;
+						return nullItemText;
 					}
+					--row;
 				}
+				TypeConverter converter = myStringConverter;
+				if (converter == null)
+				{
+					System.Threading.Interlocked.CompareExchange<TypeConverter>(ref myStringConverter, TypeDescriptor.GetConverter(typeof(string)), null);
+					converter = myStringConverter;
+				}
+				return converter.ConvertToString(myItems[row]);
 			}
-			#endregion // IList Members
-			#region ICollection Members
-			public void CopyTo(Array array, int index)
-			{
-				array.SetValue(null, index);
-				myInner.CopyTo(array, index + 1);
-			}
-			public int Count
+			int IBranch.VisibleItemCount
 			{
 				get
 				{
-					return myInner.Count + 1;
+					int retVal = 0;
+					IList items = myItems;
+					if (items != null)
+					{
+						retVal += items.Count;
+					}
+					if (myNullItemText != null)
+					{
+						retVal += 1;
+					}
+					return retVal;
 				}
 			}
-			public bool IsSynchronized
+			#region Irrelevant methods
+			BranchFeatures IBranch.Features
 			{
-				get
-				{
-					Debug.Fail("Not tested");
-					return myInner.IsSynchronized;
-				}
+				get { return BranchFeatures.None; }
 			}
-			public object SyncRoot
+			VirtualTreeLabelEditData IBranch.BeginLabelEdit(int row, int column, VirtualTreeLabelEditActivationStyles activationStyle)
 			{
-				get
-				{
-					Debug.Fail("Not tested");
-					return myInner.SyncRoot;
-				}
+				return VirtualTreeLabelEditData.Invalid;
 			}
-			#endregion // ICollection Members
-			#region IEnumerable Members
-			public IEnumerator GetEnumerator()
+			LabelEditResult IBranch.CommitLabelEdit(int row, int column, string newText)
 			{
-				yield return myPlaceholder;
-				foreach (object obj in myInner)
-				{
-					yield return obj;
-				}
+				return LabelEditResult.CancelEdit;
 			}
-			#endregion // IEnumerable Members
+			VirtualTreeAccessibilityData IBranch.GetAccessibilityData(int row, int column)
+			{
+				return VirtualTreeAccessibilityData.Empty;
+			}
+			VirtualTreeDisplayData IBranch.GetDisplayData(int row, int column, VirtualTreeDisplayDataMasks requiredData)
+			{
+				return VirtualTreeDisplayData.Empty;
+			}
+			object IBranch.GetObject(int row, int column, ObjectStyle style, ref int options)
+			{
+				return null;
+			}
+			string IBranch.GetTipText(int row, int column, ToolTipType tipType)
+			{
+				return null;
+			}
+			bool IBranch.IsExpandable(int row, int column)
+			{
+				return false;
+			}
+			LocateObjectData IBranch.LocateObject(object obj, ObjectStyle style, int locateOptions)
+			{
+				return default(LocateObjectData);
+			}
+			event BranchModificationEventHandler IBranch.OnBranchModification
+			{
+				add { }
+				remove { }
+			}
+			void IBranch.OnDragEvent(object sender, int row, int column, DragEventType eventType, DragEventArgs args)
+			{
+			}
+			void IBranch.OnGiveFeedback(GiveFeedbackEventArgs args, int row, int column)
+			{
+			}
+			void IBranch.OnQueryContinueDrag(QueryContinueDragEventArgs args, int row, int column)
+			{
+			}
+			VirtualTreeStartDragData IBranch.OnStartDrag(object sender, int row, int column, DragReason reason)
+			{
+				return VirtualTreeStartDragData.Empty;
+			}
+			StateRefreshChanges IBranch.SynchronizeState(int row, int column, IBranch matchBranch, int matchRow, int matchColumn)
+			{
+				return StateRefreshChanges.None;
+			}
+			StateRefreshChanges IBranch.ToggleState(int row, int column)
+			{
+				return StateRefreshChanges.None;
+			}
+			int IBranch.UpdateCounter
+			{
+				get { return 0; }
+			}
+			#endregion // Irrelevant methods
+			#endregion // IBranch Implementation
 		}
-		#endregion // IList wrapper to automatically display a null element
+		#endregion // SimpleBranch class
 		#region UITypeEditor overrides
-		private object myInitialSelectionValue;
 		/// <summary>
 		/// Required UITypeEditor override. Opens dropdown modally
 		/// and waits for user input.
@@ -275,47 +252,56 @@ namespace Neumont.Tools.Modeling.Design
 				object newObject = value;
 				// Get the list contents and add a null handler if needed
 				IList elements = GetContentList(context, value);
-				IList sourceList = elements;
-				NullElementList nullList = null;
 				string nullText = NullItemText;
-				if (!string.IsNullOrEmpty(nullText))
-				{
-					sourceList = nullList = new NullElementList(sourceList, nullText);
-				}
-
 				// Proceed if there is anything to show
-				if (sourceList != null && sourceList.Count > 0)
+				if (nullText != null || (elements != null && elements.Count != 0))
 				{
-					// Create a listbox with its events
-					using (DropDownListBox listBox = (nullList != null) ? new NullFirstItemDropDownListBox() : new DropDownListBox())
+					// Create a tree control
+					using (DropDownTreeControl treeControl = new DropDownTreeControl())
 					{
-						listBox.BindingContextChanged += this.HandleBindingContextChanged;
-						listBox.MouseDoubleClick += delegate(object sender, MouseEventArgs e)
+#if VISUALSTUDIO_9_0 // MSBUG: Hack workaround crashing bug in VirtualTreeControl.OnToggleExpansion
+						treeControl.ColumnPermutation = new ColumnPermutation(1, new int[]{0}, false);
+#endif
+						// Close the dropdown after a double click
+						treeControl.AfterDoubleClick += delegate(object sender, DoubleClickEventArgs e)
 						{
 							if (e.Button == MouseButtons.Left)
 							{
 								editor.CloseDropDown();
 							}
 						};
-						listBox.BorderStyle = BorderStyle.None;
-						listBox.IntegralHeight = false;
+
+						// Create a tree for the control
+						ITree tree = new VirtualTree();
+						tree.Root = new SimpleBranch(elements, nullText);
+						treeControl.Tree = tree;
 
 						// Manage the size of the control
 						Size lastSize = LastControlSize;
 						if (!lastSize.IsEmpty)
 						{
-							listBox.Size = lastSize;
+							treeControl.Size = lastSize;
 						}
 
-						// Attach the data source and handle initial selection
-						listBox.DataSource = sourceList;
+						int initialIndex = -1;
 						if (value != null)
 						{
-							myInitialSelectionValue = TranslateToDisplayObject(value, elements);
+							if (elements != null)
+							{
+								initialIndex = elements.IndexOf(TranslateToDisplayObject(value, elements));
+								if (nullText != null)
+								{
+									++initialIndex;
+								}
+							}
 						}
-						else if (nullList != null)
+						else if (nullText != null)
 						{
-							myInitialSelectionValue = nullList.NullItem;
+							initialIndex = 0;
+						}
+						if (initialIndex != -1)
+						{
+							treeControl.InitialSelectionIndex = initialIndex;
 						}
 
 						// Make sure keystrokes are forwarded while the modal dropdown is open
@@ -327,7 +313,7 @@ namespace Neumont.Tools.Modeling.Design
 						}
 
 						// Show the dropdown. This is modal.
-						editor.DropDownControl(listBox);
+						editor.DropDownControl(treeControl);
 
 						// Restore keystroke forwarding
 						if (0 != (flags & VirtualTreeInPlaceControlFlags.ForwardKeyEvents))
@@ -336,22 +322,33 @@ namespace Neumont.Tools.Modeling.Design
 						}
 
 						// Record the final size, we'll use it next time for this type of control
-						LastControlSize = listBox.Size;
+						LastControlSize = treeControl.Size;
 
 						// Make sure the user didn't cancel, and translate the null placeholder
 						// back to null if necessary
-						if (!listBox.EscapePressed)
+						if (!treeControl.EscapePressed)
 						{
-							int lastIndex = listBox.LastSelectedIndex;
+							int lastIndex = treeControl.AnchorIndex;
 							if (lastIndex != -1)
 							{
-								newObject = sourceList[lastIndex];
-								if (nullList != null && nullList.IsNullItem(newObject))
+								if (nullText != null)
 								{
-									newObject = null;
+									--lastIndex;
+									if (lastIndex == -1)
+									{
+										newObject = null;
+									}
+									else
+									{
+										newObject = elements[lastIndex];
+									}
+								}
+								else
+								{
+									newObject = elements[lastIndex];
 								}
 								// Give the caller the chance to change the type of the chosen object
-								newObject = TranslateFromDisplayObject((nullList == null) ? lastIndex : lastIndex - 1, newObject);
+								newObject = TranslateFromDisplayObject(lastIndex, newObject);
 							}
 						}
 					}
@@ -362,28 +359,6 @@ namespace Neumont.Tools.Modeling.Design
 		}
 		#endregion // UITypeEditor overrides
 		#region ElementPicker Specifics
-		private void HandleBindingContextChanged(object sender, EventArgs e)
-		{
-			ListBox listBox = (ListBox)sender;
-			object value = myInitialSelectionValue;
-			if (value != null)
-			{
-				listBox.BindingContextChanged -= this.HandleBindingContextChanged;
-				myInitialSelectionValue = null;
-				listBox.SelectedItem = value;
-				if (listBox.SelectedItem == null)
-				{
-					// Sometimes this doesn't take
-					myInitialSelectionValue = value;
-					listBox.BindingContextChanged += this.HandleBindingContextChanged;
-				}
-			}
-			else if (listBox.SelectedItem != null)
-			{
-				listBox.SelectedItem = null;
-				listBox.BindingContextChanged -= this.HandleBindingContextChanged;
-			}
-		}
 		/// <summary>
 		/// Override and set a text value to allow a null element to be returned
 		/// </summary>

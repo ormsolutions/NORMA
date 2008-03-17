@@ -29,7 +29,7 @@ namespace Neumont.Tools.ORM.ObjectModel.Design
 		private void InitializeComponent()
 		{
 			System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(AliasManagerForm));
-			this.virtualTreeControl = new Microsoft.VisualStudio.VirtualTreeGrid.VirtualTreeControl();
+			this.virtualTreeControl = new Neumont.Tools.Modeling.Shell.StandardVirtualTreeControl();
 			this.btnCancel = new System.Windows.Forms.Button();
 			this.btnOK = new System.Windows.Forms.Button();
 			this.SuspendLayout();
@@ -80,7 +80,7 @@ namespace Neumont.Tools.ORM.ObjectModel.Design
 
 		#endregion
 
-		private Microsoft.VisualStudio.VirtualTreeGrid.VirtualTreeControl virtualTreeControl;
+		private Neumont.Tools.Modeling.Shell.StandardVirtualTreeControl virtualTreeControl;
 		private System.Windows.Forms.Button btnCancel;
 		private System.Windows.Forms.Button btnOK;
 	}
