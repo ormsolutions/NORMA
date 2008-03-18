@@ -1,0 +1,8 @@
+﻿<TestReport xmlns="http://schemas.neumont.edu/ORM/SDK/TestReport">
+	<ValidationErrors name="No Errors Found Initialliy" />
+	<ValidationErrors name="Error is Introduced">
+		<ValidationError>Constraints 'ExclusionConstraint1' and 'SimpleMandatoryConstraint4' in model 'ORMModel1' are in a state of contradiction.</ValidationError>
+	</ValidationErrors>
+	<ValidationErrors name="Error is removed upon Removal of Exclusion Constraint" />
+	<Compare result="pass" />
+</TestReport>

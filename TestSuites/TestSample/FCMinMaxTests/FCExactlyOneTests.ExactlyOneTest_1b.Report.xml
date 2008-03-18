@@ -1,0 +1,17 @@
+﻿<TestReport xmlns="http://schemas.neumont.edu/ORM/SDK/TestReport">
+	<ValidationErrors name="No errors expected">
+		<ValidationError>Frequency constraint 'FrequencyConstraint1' in model 'ORMModel1' contradicts one or more internal uniqueness constraints on FactType 'AHasB'.</ValidationError>
+	</ValidationErrors>
+	<ValidationErrors name="Introduce Error[FrequencyConstraintExactlyOneError]">
+		<ValidationError>Frequency constraint 'FrequencyConstraint1' in model 'ORMModel1' contradicts one or more internal uniqueness constraints on FactType 'AHasB'.</ValidationError>
+	</ValidationErrors>
+	<ValidationErrors name="Fixing error with error activation service">
+		<ValidationError>Constraint 'FrequencyConstraint1' in model 'ORMModel1' has a range of exactly one, should be a Uniqueness constraint.</ValidationError>
+		<ValidationError>Frequency constraint 'FrequencyConstraint1' in model 'ORMModel1' contradicts one or more internal uniqueness constraints on FactType 'AHasB'.</ValidationError>
+	</ValidationErrors>
+	<ValidationErrors name="[FrequencyConstraintExactlyOneError] removed, different error introduced. Removing new error">
+		<ValidationError>FactType 'AHasB' in model 'ORMModel1' contains one or more internal uniqueness constraints that are implied by or duplicates of other internal uniqueness constraints.</ValidationError>
+	</ValidationErrors>
+	<ValidationErrors name="All errors resolved" />
+	<Compare result="pass" />
+</TestReport>
