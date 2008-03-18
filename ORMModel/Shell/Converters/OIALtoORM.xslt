@@ -15,7 +15,9 @@
 	xmlns:exsl="http://exslt.org/common"
 	xmlns:odt="http://schemas.neumont.edu/ORM/Abstraction/2007-06/DataTypes/Core"
 	xmlns:oil="http://schemas.neumont.edu/ORM/Abstraction/2007-06/Core"
-	extension-element-prefixes="exsl"
+	xmlns:msxsl="urn:schemas-microsoft-com:xslt" 
+	xmlns:fn="urn:functions" 
+	extension-element-prefixes="exsl msxsl fn"
 	exclude-result-prefixes="odt oil">
 	
 	<xsl:param name="RequireReadingModification" select="false()"/>
@@ -26,7 +28,7 @@
 		<xsl:variable name="allConceptTypes" select="oil:conceptTypes/oil:conceptType"/>
 		<xsl:variable name="allConceptTypeChildren" select="$allConceptTypes/oil:children/oil:*"/>
 		<xsl:variable name="allAssociationChildren" select="$allConceptTypes/oil:association/oil:associationChild"/>
-		<orm:ORMModel id="{@name}" Name="{@name}">
+		<orm:ORMModel id="{fn:EncodeName(@name)}" Name="{@name}">
 			<orm:DataTypes>
 				<xsl:if test="oil:informationTypeFormats/child::odt:string">
 					<orm:VariableLengthTextDataType id="VariableLengthTextDataType" />
@@ -76,11 +78,6 @@
 					</xsl:for-each>
 				</orm:ModelErrors>
 			</xsl:if>
-			<orm:ReferenceModeKinds>
-				<orm:ReferenceModeKind id="_94F6CC9F-76A2-461B-A031-E13A5FA5B9C9" ReferenceModeType="General" FormatString="{{1}}"/>
-				<orm:ReferenceModeKind id="_54981962-590F-428B-92C0-3430BC951E3F" ReferenceModeType="Popular" FormatString="{{0}}_{{1}}"/>
-				<orm:ReferenceModeKind id="_401C5824-3C4A-4514-AE6D-0454546E52AC" ReferenceModeType="UnitBased" FormatString="{{1}}Value"/>
-			</orm:ReferenceModeKinds>
 		</orm:ORMModel>
 	</xsl:template>
 	
@@ -92,6 +89,7 @@
 		<xsl:variable name="isPartOfAssociationForParent" select="boolean($conceptType/oil:association/oil:associationChild[@ref = current()/@id])"/>
 		<xsl:variable name="isPartOfAssociationForTarget" select="not($isPartOfAssociationForParent) and @id = $allAssociationChildren/@ref"/>
 		<xsl:variable name="isPartOfAssociation" select="$isPartOfAssociationForParent or $isPartOfAssociationForTarget"/>
+		<xsl:variable name="id" select="fn:EncodeName(@id)"/>
 		<!-- $isPartOfAssociationForParent ==> proxy is for role played by target -->
 		<!-- $isPartOfAssociationForTarget ==> proxy is for role played by parent -->
 		<xsl:if test="$isPartOfAssociation and $isSubtypingRelationship">
@@ -115,25 +113,25 @@
 		<xsl:element name="orm:{$elementName}">
 			<xsl:attribute name="id">
 				<xsl:text>FactType.</xsl:text>
-				<xsl:value-of select="@id"/>
+				<xsl:value-of select="$id"/>
 			</xsl:attribute>
 			<xsl:variable name="rolesFragment">
 				<!-- Handle the parent -->
 				<xsl:choose>
 					<xsl:when test="$isSubtypingRelationship">
-						<orm:SupertypeMetaRole id="Role.Parent.{@id}" Name="">
+						<orm:SupertypeMetaRole id="Role.Parent.{$id}" Name="">
 							<xsl:apply-templates select="$conceptType" mode="GenerateRolePlayer"/>
 						</orm:SupertypeMetaRole>
 					</xsl:when>
 					<xsl:when test="$isPartOfAssociationForTarget">
 						<!-- Make the proxy for the parent -->
-						<orm:RoleProxy id="Role.Proxy.{@id}">
-							<orm:Role ref="Role.Parent.{@id}"/>
+						<orm:RoleProxy id="Role.Proxy.{$id}">
+							<orm:Role ref="Role.Parent.{$id}"/>
 						</orm:RoleProxy>
 					</xsl:when>
 					<xsl:otherwise>
 						<!-- Make the role for the parent -->
-						<orm:Role id="Role.Parent.{@id}" Name="">
+						<orm:Role id="Role.Parent.{$id}" Name="">
 							<xsl:variable name="oppositeName" select="string(@oppositeName)"/>
 							<!-- UNDONE: Don't insert the name if it is the same as the role player name. -->
 							<xsl:if test="$oppositeName">
@@ -149,19 +147,19 @@
 				<!-- Handle the target -->
 				<xsl:choose>
 					<xsl:when test="$isSubtypingRelationship">
-						<orm:SubtypeMetaRole id="Role.Target.{@id}" Name="">
+						<orm:SubtypeMetaRole id="Role.Target.{$id}" Name="">
 							<xsl:apply-templates select="." mode="GenerateRolePlayer"/>
 						</orm:SubtypeMetaRole>
 					</xsl:when>
 					<xsl:when test="$isPartOfAssociationForParent">
 						<!-- Make the proxy for the target -->
-						<orm:RoleProxy id="Role.Proxy.{@id}">
-							<orm:Role ref="Role.Target.{@id}"/>
+						<orm:RoleProxy id="Role.Proxy.{$id}">
+							<orm:Role ref="Role.Target.{$id}"/>
 						</orm:RoleProxy>
 					</xsl:when>
 					<xsl:otherwise>
 						<!-- Make the role for the target -->
-						<orm:Role id="Role.Target.{@id}" Name="">
+						<orm:Role id="Role.Target.{$id}" Name="">
 							<xsl:variable name="name" select="string(@name)"/>
 							<!-- UNDONE: Don't insert the name if it is the same as the role player name. -->
 							<xsl:if test="$name">
@@ -180,9 +178,9 @@
 			</orm:FactRoles>
 			<xsl:if test="not($isSubtypingRelationship)">
 				<orm:ReadingOrders>
-					<orm:ReadingOrder id="ReadingOrder.ParentTarget.{@id}">
+					<orm:ReadingOrder id="ReadingOrder.ParentTarget.{$id}">
 						<orm:Readings>
-							<orm:Reading id="Reading.ParentTarget.{@id}">
+							<orm:Reading id="Reading.ParentTarget.{$id}">
 								<orm:Data>
 									<xsl:text>{0} has {1}</xsl:text>
 								</orm:Data>
@@ -196,20 +194,20 @@
 				</orm:ReadingOrders>
 			</xsl:if>
 			<xsl:if test="$isPartOfAssociationForParent">
-				<orm:ImpliedByObjectification ref="NestedPredicate.{$conceptType/@id}"/>
+				<orm:ImpliedByObjectification ref="NestedPredicate.{fn:EncodeName($conceptType/@id)}"/>
 			</xsl:if>
 			<xsl:if test="$isPartOfAssociationForTarget">
-				<orm:ImpliedByObjectification ref="NestedPredicate.{@ref}"/>
+				<orm:ImpliedByObjectification ref="NestedPredicate.{fn:EncodeName(@ref)}"/>
 			</xsl:if>
 		</xsl:element>
 	</xsl:template>
 
 	
 	<xsl:template match="oil:conceptType | oil:informationType" mode="GenerateRolePlayer">
-		<orm:RolePlayer ref="ObjectType.{@id}"/>
+		<orm:RolePlayer ref="ObjectType.{fn:EncodeName(@id)}"/>
 	</xsl:template>
 	<xsl:template match="oil:relatedConceptType | oil:assimilatedConceptType" mode="GenerateRolePlayer">
-		<orm:RolePlayer ref="ObjectType.{@ref}"/>
+		<orm:RolePlayer ref="ObjectType.{fn:EncodeName(@ref)}"/>
 	</xsl:template>
 
 
@@ -217,20 +215,22 @@
 		<xsl:param name="allConceptTypes"/>
 		<xsl:param name="allConceptTypeChildren"/>
 		<xsl:variable name="conceptType" select="."/>
-		<orm:Fact id="FactType.Association.{@id}">
+		<xsl:variable name="conceptTypeId" select="fn:EncodeName(@id)"/>
+		<orm:Fact id="FactType.Association.{$conceptTypeId}">
 			<xsl:variable name="rolesFragment">
 				<xsl:for-each select="oil:association/oil:associationChild">
 					<xsl:variable name="conceptTypeChild" select="$allConceptTypeChildren[@id = current()/@ref]"/>
+					<xsl:variable name="conceptTypeChildId" select="fn:EncodeName($conceptTypeChild/@id)"/>
 					<xsl:choose>
 						<xsl:when test="$conceptType/oil:children/oil:*[@id = current()/@ref]">
 							<!-- The association child is one of our children -->
-							<orm:Role id="Role.Target.{$conceptTypeChild/@id}" Name="{$conceptTypeChild/@name}">
+							<orm:Role id="Role.Target.{$conceptTypeChildId}" Name="{$conceptTypeChild/@name}">
 								<xsl:apply-templates select="$conceptTypeChild" mode="GenerateRolePlayer"/>
 							</orm:Role>
 						</xsl:when>
 						<xsl:otherwise>
 							<!-- The association child is NOT one of our children, which means it targets us -->
-							<orm:Role id="Role.Parent.{$conceptTypeChild/@id}" Name="{$conceptTypeChild/@oppositeName}">
+							<orm:Role id="Role.Parent.{$conceptTypeChildId}" Name="{$conceptTypeChild/@oppositeName}">
 								<xsl:apply-templates select="$allConceptTypes[oil:children/oil:*/@id = $conceptTypeChild/@id]" mode="GenerateRolePlayer"/>
 							</orm:Role>
 						</xsl:otherwise>
@@ -274,16 +274,17 @@
 		<xsl:param name="allConceptTypes"/>
 		<xsl:param name="allInformationTypeFormats"/>
 		<xsl:param name="allInformationTypes"/>
+		<xsl:variable name="id" select="fn:EncodeName(@id)"/>
 		<xsl:choose>
 			<xsl:when test="oil:association">
-				<orm:ObjectifiedType id="ObjectType.{@id}" Name="{@name}" IsIndependent="true">
+				<orm:ObjectifiedType id="ObjectType.{$id}" Name="{@name}" IsIndependent="true">
 					<!-- We need to be explicitly objectified if any of our children are not part of the association, or if there are any references to us elsewhere. -->
 					<xsl:variable name="needsExplicitObjectification" select="oil:children/oil:*[not(@id = current()/oil:association/oil:associationChild/@ref)] or $allConceptTypes/oil:children[oil:relatedConceptType[@ref = current()/@id] or oil:assimilatedConceptType[@ref = current()/@id]]"/>
-					<orm:NestedPredicate id="NestedPredicate.{@id}" ref="FactType.Association.{@id}" IsImplied="{not($needsExplicitObjectification)}"/>
+					<orm:NestedPredicate id="NestedPredicate.{$id}" ref="FactType.Association.{$id}" IsImplied="{not($needsExplicitObjectification)}"/>
 				</orm:ObjectifiedType>
 			</xsl:when>
 			<xsl:otherwise>
-				<orm:EntityType id="ObjectType.{@id}" Name="{@name}" />
+				<orm:EntityType id="ObjectType.{$id}" Name="{@name}" />
 			</xsl:otherwise>
 		</xsl:choose>
 		<xsl:apply-templates select="oil:children/oil:informationType" mode="GenerateObjectTypes">
@@ -297,7 +298,8 @@
 		<xsl:param name="allInformationTypeFormats"/>
 		<xsl:param name="allInformationTypes"/>
 		<xsl:variable name="conceptTypeName" select="string(parent::oil:children/parent::oil:conceptType/@name)"/>
-		<orm:ValueType id="ObjectType.{@id}">
+		<xsl:variable name="id" select="fn:EncodeName(@id)"/>
+		<orm:ValueType id="ObjectType.{$id}">
 			<xsl:attribute name="Name">
 				<xsl:if test="(count($allInformationTypes[@name = current()/@name]) + count($allConceptTypes[@name = current()/@name])) > 1">
 					<xsl:value-of select="$conceptTypeName"/>
@@ -305,7 +307,7 @@
 				</xsl:if>
 				<xsl:value-of select="@name"/>
 			</xsl:attribute>
-			<orm:ConceptualDataType id="ConceptualDataType.{@id}">
+			<orm:ConceptualDataType id="ConceptualDataType.{$id}">
 				<xsl:apply-templates select="$allInformationTypeFormats[@id = current()/@ref]" mode="GenerateDataTypeRef"/>
 			</orm:ConceptualDataType>
 		</orm:ValueType>
@@ -356,51 +358,61 @@
 	<xsl:template mode="GenerateConstraints" match="oil:informationType | oil:relatedConceptType | oil:assimilatedConceptType">
 		<xsl:variable name="conceptType" select="parent::oil:children/parent::oil:conceptType"/>
 		<xsl:variable name="conceptTypeName" select="string($conceptType/@name)"/>
-		<orm:UniquenessConstraint id="UniquenessConstraint.Parent.{@id}" Name="UniquenessConstraint.Parent.{$conceptTypeName}.{@name}" IsInternal="true">
+		<xsl:variable name="id" select="fn:EncodeName(@id)"/>
+		<orm:UniquenessConstraint id="UniquenessConstraint.Parent.{$id}" Name="UniquenessConstraint.Parent.{$conceptTypeName}.{@name}" IsInternal="true">
 			<orm:RoleSequence>
-				<orm:Role ref="Role.Parent.{@id}"/>
+				<orm:Role ref="Role.Parent.{$id}"/>
 			</orm:RoleSequence>
 			<xsl:if test="self::oil:assimilatedConceptType/@isPreferredForTarget">
-				<orm:PreferredIdentifierFor ref="ObjectType.{@ref}"/>
+				<orm:PreferredIdentifierFor ref="ObjectType.{fn:EncodeName(@ref)}"/>
 			</xsl:if>
 		</orm:UniquenessConstraint>
 		<xsl:if test="@isMandatory">
-			<orm:MandatoryConstraint id="MandatoryConstraint.Parent.{@id}" Name="MandatoryConstraint.Parent.{$conceptTypeName}.{@name}" IsSimple="true">
+			<orm:MandatoryConstraint id="MandatoryConstraint.Parent.{$id}" Name="MandatoryConstraint.Parent.{$conceptTypeName}.{@name}" IsSimple="true">
 				<orm:RoleSequence>
-					<orm:Role ref="Role.Parent.{@id}"/>
+					<orm:Role ref="Role.Parent.{$id}"/>
 				</orm:RoleSequence>
 			</orm:MandatoryConstraint>
 		</xsl:if>
 		<xsl:if test="self::oil:assimilatedConceptType">
-			<orm:UniquenessConstraint id="UniquenessConstraint.Target.{@id}" Name="UniquenessConstraint.Target.{$conceptTypeName}.{@name}" IsInternal="true">
+			<orm:UniquenessConstraint id="UniquenessConstraint.Target.{$id}" Name="UniquenessConstraint.Target.{$conceptTypeName}.{@name}" IsInternal="true">
 				<orm:RoleSequence>
-					<orm:Role ref="Role.Target.{@id}"/>
+					<orm:Role ref="Role.Target.{$id}"/>
 				</orm:RoleSequence>
 				<xsl:if test="@isPreferredForParent">
-					<orm:PreferredIdentifierFor ref="ObjectType.{$conceptType/@id}"/>
+					<orm:PreferredIdentifierFor ref="ObjectType.{fn:EncodeName($conceptType/@id)}"/>
 				</xsl:if>
 			</orm:UniquenessConstraint>
-			<orm:MandatoryConstraint id="MandatoryConstraint.Target.{@id}" Name="MandatoryConstraint.Target.{$conceptTypeName}.{@name}" IsSimple="true">
+			<orm:MandatoryConstraint id="MandatoryConstraint.Target.{$id}" Name="MandatoryConstraint.Target.{$conceptTypeName}.{@name}" IsSimple="true">
 				<orm:RoleSequence>
-					<orm:Role ref="Role.Target.{@id}"/>
+					<orm:Role ref="Role.Target.{$id}"/>
 				</orm:RoleSequence>
 			</orm:MandatoryConstraint>
 		</xsl:if>
 	</xsl:template>
 	<xsl:template mode="GenerateConstraints" match="oil:uniquenessConstraint">
-		<xsl:variable name="uniquenessConstraintId" select="string(@id)"/>
+		<xsl:variable name="uniquenessConstraintId" select="fn:EncodeName(@id)"/>
 		<xsl:variable name="conceptType" select="parent::oil:uniquenessConstraints/parent::oil:conceptType"/>
 		<xsl:variable name="association" select="$conceptType/oil:association"/>
 		<!-- The uniqueness constraint is internal if it is over only a single child, or if this concept type is an association and ALL children of the uniqueness constraint are in the association. -->
 		<orm:UniquenessConstraint id="UniquenessConstraint.{$uniquenessConstraintId}" Name="{@name}" IsInternal="{(count(oil:uniquenessChild) = 1) or ($association and not(oil:uniquenessChild[not(@ref = $association/oil:associationChild/@ref)]))}">
 			<orm:RoleSequence>
 				<xsl:for-each select="oil:uniquenessChild">
-					<orm:Role id="UniquenessConstraintRoleReference.{$uniquenessConstraintId}.{@ref}" ref="Role.Target.{@ref}"/>
+					<xsl:variable name="ref" select="fn:EncodeName(@ref)"/>
+					<orm:Role id="UniquenessConstraintRoleReference.{$uniquenessConstraintId}.{$ref}" ref="Role.Target.{$ref}"/>
 				</xsl:for-each>
 			</orm:RoleSequence>
 			<xsl:if test="@isPreferred">
-				<orm:PreferredIdentifierFor ref="ObjectType.{$conceptType/@id}"/>
+				<orm:PreferredIdentifierFor ref="ObjectType.{fn:EncodeName($conceptType/@id)}"/>
 			</xsl:if>
 		</orm:UniquenessConstraint>
 	</xsl:template>
+	<msxsl:script implements-prefix="fn" language="CSharp">
+		<![CDATA[
+		public static string EncodeName(string value)
+		{
+			return System.Xml.XmlConvert.EncodeName(value);
+		}
+		]]>
+	</msxsl:script>
 </xsl:stylesheet>

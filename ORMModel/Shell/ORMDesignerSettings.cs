@@ -786,6 +786,18 @@ namespace Neumont.Tools.ORM.Shell
 					return myDescription;
 				}
 			}
+			private class XmlFileResolver : XmlUrlResolver
+			{
+				private Uri myBaseUri;
+				public XmlFileResolver(string baseFile)
+				{
+					myBaseUri = new Uri(baseFile, UriKind.Absolute);
+				}
+				public override Uri ResolveUri(Uri baseUri, string relativeUri)
+				{
+					return base.ResolveUri((baseUri == null) ? myBaseUri : baseUri, relativeUri);
+				}
+			}
 			/// <summary>
 			/// The transform to apply
 			/// </summary>
@@ -801,7 +813,7 @@ namespace Neumont.Tools.ORM.Shell
 #else
 						retVal = new XslCompiledTransform();
 #endif
-						retVal.Load(myTransformFile);
+						retVal.Load(myTransformFile, XsltSettings.TrustedXslt, new XmlFileResolver(myTransformFile));
 						myTransform = retVal;
 					}
 					return retVal;
