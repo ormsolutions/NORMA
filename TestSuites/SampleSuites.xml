@@ -11,6 +11,7 @@
 			<IncludeCategory name="ConstraintImplications"/>
 			<IncludeCategory name="NotWellModeledErrors"/>
 			<IncludeCategory name="Subtype"/>
+			<IncludeCategory name="SamplePopulation"/>
 			<ExcludeCategory name="NotYet"/>
 		</Categories>
 		<TestAssemblies>

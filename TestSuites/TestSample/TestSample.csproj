@@ -60,6 +60,7 @@
     <Compile Include="FCMinMaxTests\FCExactlyOneTests.cs" />
     <Compile Include="FCMinMaxTests\FCMinMaxTests.cs" />
     <Compile Include="NMinus1Tests\NMinus1Tests.cs" />
+    <Compile Include="SamplePopulationTests\SamplePopulationTests.cs" />
     <Compile Include="NotWellModeledTests\NotWellModeledTests.cs" />
     <Compile Include="Sample\Tests.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
@@ -110,6 +111,8 @@
     </EmbeddedResource>
     <None Include="ormtest.snippet" />
     <None Include="ormtestclass.snippet" />
+    <EmbeddedResource Include="SamplePopulationTests\PopulationTests.PopulationSampleTest.Compare.orm" />
+    <EmbeddedResource Include="SamplePopulationTests\PopulationTests.PopulationSampleTest.Load.orm" />
     <EmbeddedResource Include="SubtypeTests\PreferredPathTests.ResolvePreferredTest1.Compare.orm">
     </EmbeddedResource>
     <EmbeddedResource Include="SubtypeTests\PreferredPathTests.ClearPreferredLoadTest1.Compare.orm">
@@ -231,6 +234,9 @@
   </ItemGroup>
   <ItemGroup>
     <EmbeddedResource Include="SubtypeTests\PreferredPathTests.ResolvePreferredTest1.Report.xml" />
+  </ItemGroup>
+  <ItemGroup>
+    <EmbeddedResource Include="SamplePopulationTests\PopulationTests.PopulationSampleTest.Report.xml" />
   </ItemGroup>
   <ItemGroup>
     <EmbeddedResource Include="ConstraintImplicationTests\ImplicationErrorTests.EqualityMandatoryImplied_1a.Report.xml" />
