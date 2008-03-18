@@ -270,6 +270,7 @@
 			<xs:element name="SignedSmallIntegerNumericDataType" type="SignedSmallIntegerNumericDataType"/>
 			<xs:element name="SignedLargeIntegerNumericDataType" type="SignedLargeIntegerNumericDataType"/>
 			<xs:element name="UnsignedIntegerNumericDataType" type="UnsignedIntegerNumericDataType"/>
+			<xs:element name="UnsignedTinyIntegerNumericDataType" type="UnsignedTinyIntegerNumericDataType"/>
 			<xs:element name="UnsignedSmallIntegerNumericDataType" type="UnsignedSmallIntegerNumericDataType"/>
 			<xs:element name="UnsignedLargeIntegerNumericDataType" type="UnsignedLargeIntegerNumericDataType"/>
 			<xs:element name="AutoCounterNumericDataType" type="AutoCounterNumericDataType"/>
@@ -335,6 +336,11 @@
 		</xs:complexContent>
 	</xs:complexType>
 	<xs:complexType name="UnsignedIntegerNumericDataType">
+		<xs:complexContent>
+			<xs:extension base="DataType"/>
+		</xs:complexContent>
+	</xs:complexType>
+	<xs:complexType name="UnsignedTinyIntegerNumericDataType">
 		<xs:complexContent>
 			<xs:extension base="DataType"/>
 		</xs:complexContent>

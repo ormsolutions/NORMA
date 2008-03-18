@@ -13,15 +13,15 @@
 	xmlns:xsl="http://www.w3.org/1999/XSL/Transform"
 	xmlns:exsl="http://exslt.org/common"
 	xmlns:dsf="urn:schemas-orm-net:DIL:DILSupportFunctions"
-	xmlns:dml="http://schemas.orm.net/DIL/DMIL"
-	xmlns:dms="http://schemas.orm.net/DIL/DILMS"
-	xmlns:dep="http://schemas.orm.net/DIL/DILEP"
-	xmlns:ddt="http://schemas.orm.net/DIL/DILDT"
 	xmlns:dil="http://schemas.orm.net/DIL/DIL"
+	xmlns:ddt="http://schemas.orm.net/DIL/DILDT"
+	xmlns:dep="http://schemas.orm.net/DIL/DILEP"
+	xmlns:dms="http://schemas.orm.net/DIL/DILMS"
+	xmlns:dml="http://schemas.orm.net/DIL/DMIL"
 	xmlns:ddl="http://schemas.orm.net/DIL/DDIL"
 	xmlns:dpp="urn:schemas-orm-net:DIL:Preprocessor"
 	extension-element-prefixes="exsl dsf"
-	exclude-result-prefixes="dml dms dep ddt dil ddl dpp">
+	exclude-result-prefixes="dil ddt dep dms dml ddl dpp">
 
 	<xsl:import href="DDILtoSQLStandard.xslt"/>
 	<xsl:import href="TruthValueTestRemover.xslt"/>
@@ -31,7 +31,11 @@
 	<xsl:output method="text" encoding="utf-8" indent="no" omit-xml-declaration="yes"/>
 	<xsl:strip-space elements="*"/>
 
-	<xsl:param name="StatementDelimeter">
+	<xsl:param name="DefaultMaximumStringLength" select="'MAX'"/>
+	<xsl:param name="DefaultMaximumCharacterNonVaryingStringLength" select="4000"/>
+	<xsl:param name="DefaultMaximumBinaryNonVaryingStringLength" select="8000"/>
+
+	<xsl:param name="StatementDelimiter">
 		<xsl:value-of select="$NewLine"/>
 		<xsl:text>GO</xsl:text>
 		<xsl:value-of select="$NewLine"/>
@@ -46,12 +50,12 @@
 			<xsl:apply-templates mode="TruthValueTestRemover" select="."/>
 		</xsl:variable>
 		<xsl:variable name="domainInlinedDilFragment">
-			<xsl:apply-templates mode="DomainInliner" select="exsl:node-set($truthValueTestRemovedDilFragment)/child::*"/>
+			<xsl:apply-templates mode="DomainInliner" select="exsl:node-set($truthValueTestRemovedDilFragment)"/>
 		</xsl:variable>
 		<xsl:variable name="uniqueNullableOutlinedDilFragment">
 			<!-- This pre-transform is disabled until it is finished. -->
 			<xsl:copy-of select="exsl:node-set($domainInlinedDilFragment)/child::*"/>
-			<!--<xsl:apply-templates mode="UniqueNullableOutliner" select="exsl:node-set($domainInlinedDilFragment)/child::*">
+			<!--<xsl:apply-templates mode="UniqueNullableOutliner" select="exsl:node-set($domainInlinedDilFragment)">
 				<xsl:with-param name="UniqueNullableOutliner.UniquenessOption" select="'BackingTable'"/>
 				
 				<xsl:with-param name="UniqueNullableOutliner.GenerateIndexedViews" select="true()"/>
@@ -71,7 +75,7 @@
 		<xsl:apply-templates select="@authorizationIdentifier" mode="ForSchemaDefinition"/>
 		<xsl:apply-templates select="@defaultCharacterSet" mode="ForSchemaDefinition"/>
 		<xsl:apply-templates select="ddl:path" mode="ForSchemaDefinition"/>
-		<xsl:value-of select="$StatementDelimeter"/>
+		<xsl:value-of select="$StatementDelimiter"/>
 		<xsl:value-of select="$NewLine"/>
 		<xsl:text>GO</xsl:text>
 		<xsl:value-of select="$NewLine"/>
@@ -98,7 +102,7 @@
 		<xsl:value-of select="$LeftParen"/>
 		<xsl:apply-templates select="dep:columnNameDefinition"/>
 		<xsl:value-of select="$RightParen"/>
-		<xsl:value-of select="$StatementDelimeter"/>
+		<xsl:value-of select="$StatementDelimiter"/>
 		<xsl:value-of select="$NewLine"/>
 	</xsl:template>
 
@@ -138,9 +142,15 @@
 	<xsl:template match="ddl:identityColumnSpecification">
 		<xsl:text> IDENTITY </xsl:text>
 		<xsl:value-of select="$LeftParen"/>
-		<xsl:apply-templates select="child::*[1]"/>
+		<xsl:apply-templates select="ddl:sequenceGeneratorStartWithOption"/>
+		<xsl:if test="not(ddl:sequenceGeneratorStartWithOption)">
+			<xsl:text>1</xsl:text>
+		</xsl:if>
 		<xsl:text>, </xsl:text>
-		<xsl:apply-templates select="child::*[2]"/>
+		<xsl:apply-templates select="ddl:sequenceGeneratorIncrementByOption"/>
+		<xsl:if test="not(ddl:sequenceGeneratorIncrementByOption)">
+			<xsl:text>1</xsl:text>
+		</xsl:if>
 		<xsl:value-of select="$RightParen"/>
 	</xsl:template>
 
@@ -152,15 +162,24 @@
 		<xsl:apply-templates/>
 	</xsl:template>
 
-	<xsl:template match="ddt:characterString | ddt:binaryString" mode="ForDataTypeLength">
-		<xsl:value-of select="$LeftParen"/>
+	<xsl:template match="ddt:characterString | ddt:binaryString" mode="ForDataTypeLengthWithMultiplier">
 		<xsl:call-template name="GetTotalDataTypeLength"/>
-		<xsl:value-of select="$RightParen"/>
 	</xsl:template>
+
+	<!-- UNDONE: Handle rendering ddt:characterString and ddt:binaryString with @length greater than 4000 and 8000, respectively.-->
+	<!-- In order to do this, we will need to render the length as MAX, and add constraints to enforce the original length requested. -->
 	
 	<xsl:template match="@type[.='CHARACTER' or .='CHARACTER VARYING']" mode="ForDataType">
 		<xsl:text>NATIONAL </xsl:text>
 		<xsl:value-of select="."/>
+	</xsl:template>
+
+	<xsl:template match="@type[.='CHARACTER LARGE OBJECT']" mode="ForDataType">
+		<xsl:text>NATIONAL CHARACTER VARYING</xsl:text>
+	</xsl:template>
+
+	<xsl:template match="@type[.='BINARY LARGE OBJECT']" mode="ForDataType">
+		<xsl:text>BINARY VARYING</xsl:text>
 	</xsl:template>
 
 	<xsl:template match="@type[.='DATE' or .='TIME' or .='TIMESTAMP']" mode="ForDataType">
@@ -183,6 +202,16 @@
 				<xsl:text>NULL</xsl:text>
 			</xsl:otherwise>
 		</xsl:choose>
+	</xsl:template>
+
+	<xsl:template match="ddt:characterStringLiteral">
+		<xsl:text>N</xsl:text>
+		<xsl:apply-imports/>
+	</xsl:template>
+	
+	<xsl:template match="ddt:binaryStringLiteral">
+		<xsl:text>0x</xsl:text>
+		<xsl:value-of select="@value"/>
 	</xsl:template>
 
 	<xsl:template match="dep:charLengthExpression">

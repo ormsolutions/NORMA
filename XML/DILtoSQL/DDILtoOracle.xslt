@@ -13,29 +13,39 @@
 	xmlns:xsl="http://www.w3.org/1999/XSL/Transform"
 	xmlns:exsl="http://exslt.org/common"
 	xmlns:dsf="urn:schemas-orm-net:DIL:DILSupportFunctions"
-	xmlns:dml="http://schemas.orm.net/DIL/DMIL"
-	xmlns:dms="http://schemas.orm.net/DIL/DILMS"
-	xmlns:dep="http://schemas.orm.net/DIL/DILEP"
-	xmlns:ddt="http://schemas.orm.net/DIL/DILDT"
 	xmlns:dil="http://schemas.orm.net/DIL/DIL"
+	xmlns:ddt="http://schemas.orm.net/DIL/DILDT"
+	xmlns:dep="http://schemas.orm.net/DIL/DILEP"
+	xmlns:dms="http://schemas.orm.net/DIL/DILMS"
+	xmlns:dml="http://schemas.orm.net/DIL/DMIL"
 	xmlns:ddl="http://schemas.orm.net/DIL/DDIL"
 	extension-element-prefixes="exsl dsf"
-	exclude-result-prefixes="dml dms dep ddt dil ddl">
+	exclude-result-prefixes="dil ddt dep dms dml ddl">
 
 	<xsl:import href="DDILtoSQLStandard.xslt"/>
-	<xsl:import href="DILSupportFunctions.xslt"/>
 	<xsl:import href="TruthValueTestRemover.xslt"/>
+	<xsl:import href="TinyIntRemover.xslt"/>
 	<xsl:import href="DomainInliner.xslt"/>
 
 	<xsl:output method="text" encoding="utf-8" indent="no" omit-xml-declaration="yes"/>
 	<xsl:strip-space elements="*"/>
 
+	<xsl:param name="DefaultMaximumStringLength" select="2000"/>
+	<xsl:param name="DefaultMaximumLargeObjectStringLength" select="''"/>
+
+	<xsl:param name="TinyIntRemover.ReplacementDataType" select="'DECIMAL'"/>
+	<xsl:param name="TinyIntRemover.ReplacementDataTypePrecision" select="3"/>
+	<xsl:param name="TinyIntRemover.ReplacementDataTypeScale" select="0"/>
+
 	<xsl:template match="/">
 		<xsl:variable name="truthValueTestRemovedDilFragment">
 			<xsl:apply-templates mode="TruthValueTestRemover" select="."/>
 		</xsl:variable>
+		<xsl:variable name="tinyIntRemovedDilFragment">
+			<xsl:apply-templates mode="TinyIntRemover" select="exsl:node-set($truthValueTestRemovedDilFragment)"/>
+		</xsl:variable>
 		<xsl:variable name="domainInlinedDilFragment">
-			<xsl:apply-templates mode="DomainInliner" select="exsl:node-set($truthValueTestRemovedDilFragment)/child::*"/>
+			<xsl:apply-templates mode="DomainInliner" select="exsl:node-set($tinyIntRemovedDilFragment)"/>
 		</xsl:variable>
 		<xsl:apply-templates select="exsl:node-set($domainInlinedDilFragment)/child::*"/>
 	</xsl:template>
@@ -54,7 +64,7 @@
 				<xsl:value-of select="@accessMode"/>
 			</xsl:when>
 		</xsl:choose>
-		<xsl:value-of select="$StatementDelimeter"/>
+		<xsl:value-of select="$StatementDelimiter"/>
 		<xsl:value-of select="$NewLine"/>
 	</xsl:template>
 
@@ -65,8 +75,36 @@
 
 	<xsl:template match="dms:setSchemaStatement"/>
 
-	<xsl:template match="@type[.='BIGINT' or .='INTEGER' or .='SMALLINT' or .='NUMERIC' or .='DECIMAL']" mode="ForDataType">
+	<xsl:template match="ddt:characterString | ddt:binaryString" mode="ForDataTypeLengthWithMultiplier">
+		<xsl:call-template name="GetTotalDataTypeLength"/>
+	</xsl:template>
+
+	<xsl:template match="@type[.='NUMERIC' or .='DECIMAL']" mode="ForDataType">
 		<xsl:text>NUMBER</xsl:text>
+	</xsl:template>
+
+	<xsl:template match="@type[.='SMALLINT']" mode="ForDataType">
+		<xsl:text>NUMBER</xsl:text>
+		<xsl:value-of select="$LeftParen"/>
+		<xsl:text>5,0</xsl:text>
+		<xsl:value-of select="$RightParen"/>
+		<!-- UNDONE: Add constraints to enforce SMALLINT range. -->
+	</xsl:template>
+
+	<xsl:template match="@type[.='INTEGER']" mode="ForDataType">
+		<xsl:text>NUMBER</xsl:text>
+		<xsl:value-of select="$LeftParen"/>
+		<xsl:text>10,0</xsl:text>
+		<xsl:value-of select="$RightParen"/>
+		<!-- UNDONE: Add constraints to enforce INTEGER range. -->
+	</xsl:template>
+
+	<xsl:template match="@type[.='BIGINT']" mode="ForDataType">
+		<xsl:text>NUMBER</xsl:text>
+		<xsl:value-of select="$LeftParen"/>
+		<xsl:text>19,0</xsl:text>
+		<xsl:value-of select="$RightParen"/>
+		<!-- UNDONE: Add constraints to enforce BIGINT range. -->
 	</xsl:template>
 
 	<xsl:template match="@type[.='REAL']" mode="ForDataType">
@@ -77,16 +115,29 @@
 		<xsl:text>BINARY_DOUBLE</xsl:text>
 	</xsl:template>
 
-	<xsl:template match="@type[.='CHARACTER VARYING']" mode="ForDataType">
-		<xsl:text>NVARCHAR2</xsl:text>
-	</xsl:template>
-	
 	<xsl:template match="@type[.='CHARACTER']" mode="ForDataType">
 		<xsl:text>NCHAR</xsl:text>
 	</xsl:template>
 	
+	<xsl:template match="@type[.='CHARACTER VARYING']" mode="ForDataType">
+		<xsl:text>NVARCHAR2</xsl:text>
+	</xsl:template>
+
+	<xsl:template match="@type[.='CHARACTER LARGE OBJECT']" mode="ForDataType">
+		<xsl:text>NCLOB</xsl:text>
+	</xsl:template>
+
+	<xsl:template match="@type[.='BINARY' or .='BINARY VARYING']" mode="ForDataType">
+		<xsl:text>RAW</xsl:text>
+	</xsl:template>
+
+	<xsl:template match="@type[.='BINARY LARGE OBJECT']" mode="ForDataType">
+		<xsl:text>BLOB</xsl:text>
+	</xsl:template>
+	
 	<xsl:template match="@type[.='BOOLEAN']" mode="ForDataType">
 		<xsl:text>NCHAR(1)</xsl:text>
+		<!-- UNDONE: Add constraints to restrict BOOLEAN to the appropriate values. -->
 	</xsl:template>
 
 	<xsl:template match="ddt:booleanLiteral">
@@ -101,6 +152,11 @@
 				<xsl:text>NULL</xsl:text>
 			</xsl:otherwise>
 		</xsl:choose>
+	</xsl:template>
+
+	<xsl:template match="ddt:characterStringLiteral">
+		<xsl:text>N</xsl:text>
+		<xsl:apply-imports/>
 	</xsl:template>
 
 	<xsl:template match="@schema" mode="ForSchemaQualifiedName">

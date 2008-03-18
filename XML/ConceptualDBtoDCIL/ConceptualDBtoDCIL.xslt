@@ -229,12 +229,15 @@
 						<xsl:value-of select="'ddt:characterStringLiteral'"/>
 					</xsl:when>
 					<xsl:when test="
-						$predefinedDataTypeName = 'BINARY LARGE OBJECT'">
+						$predefinedDataTypeName = 'BINARY LARGE OBJECT' or
+						$predefinedDataTypeName = 'BINARY' or
+						$predefinedDataTypeName = 'BINARY VARYING'">
 						<xsl:value-of select="'ddt:binaryStringLiteral'"/>
 					</xsl:when>
 					<xsl:when test="
 						$predefinedDataTypeName = 'NUMERIC' or
 						$predefinedDataTypeName = 'DECIMAL' or
+						$predefinedDataTypeName = 'TINYINT' or
 						$predefinedDataTypeName = 'SMALLINT' or
 						$predefinedDataTypeName = 'INTEGER' or
 						$predefinedDataTypeName = 'BIGINT'">
@@ -381,6 +384,7 @@
 			<xsl:when test="
 				$modelDataType/self::orm:AutoCounterNumericDataType or
 				$modelDataType/self::orm:RowIdOtherDataType or
+				$modelDataType/self::orm:UnsignedTinyIntegerNumericDataType or
 				$modelDataType/self::orm:SignedSmallIntegerNumericDataType or
 				$modelDataType/self::orm:UnsignedSmallIntegerNumericDataType or
 				$modelDataType/self::orm:SignedIntegerNumericDataType or
@@ -399,6 +403,7 @@
 				<xsl:variable name="isIntegral" select="
 					$modelDataType/self::orm:AutoCounterNumericDataType or
 					$modelDataType/self::orm:RowIdOtherDataType or
+					$modelDataType/self::orm:UnsignedTinyIntegerNumericDataType or
 					$modelDataType/self::orm:SignedSmallIntegerNumericDataType or
 					$modelDataType/self::orm:UnsignedSmallIntegerNumericDataType or
 					$modelDataType/self::orm:SignedIntegerNumericDataType or
@@ -406,7 +411,8 @@
 					$modelDataType/self::orm:SignedLargeIntegerNumericDataType or
 					$modelDataType/self::orm:UnsignedLargeIntegerNumericDataType"/>
 
-				<xsl:variable name="isUnsigned" select="
+				<!-- TINYINT is unsigned already, so we don't need additional enforcement on it. -->
+				<xsl:variable name="needsUnsignedEnforcement" select="
 					$modelDataType/self::orm:UnsignedSmallIntegerNumericDataType or
 					$modelDataType/self::orm:UnsignedIntegerNumericDataType or
 					$modelDataType/self::orm:UnsignedLargeIntegerNumericDataType"/>
@@ -417,6 +423,9 @@
 							<xsl:when test="$isIntegral">
 								<xsl:attribute name="name">
 									<xsl:choose>
+										<xsl:when test="$modelDataType/self::orm:UnsignedTinyIntegerNumericDataType">
+											<xsl:value-of select="'TINYINT'"/>
+										</xsl:when>
 										<xsl:when test="$modelDataType/self::orm:SignedSmallIntegerNumericDataType or $modelDataType/self::orm:UnsignedSmallIntegerNumericDataType">
 											<xsl:value-of select="'SMALLINT'"/>
 										</xsl:when>
@@ -475,10 +484,10 @@
 				</xsl:variable>
 
 				<xsl:choose>
-					<xsl:when test="$modelValueRanges or $isUnsigned">
+					<xsl:when test="$modelValueRanges or $needsUnsignedEnforcement">
 						<dcl:domain name="{dsf:makeValidIdentifier($dataTypeName)}">
 							<xsl:copy-of select="exsl:node-set($predefinedDataType)"/>
-							<xsl:if test="$isUnsigned and not($modelValueRanges)">
+							<xsl:if test="$needsUnsignedEnforcement and not($modelValueRanges)">
 								<dcl:checkConstraint name="{dsf:makeValidIdentifier(concat($dataTypeName, '_Unsigned_Chk'))}">
 									<dep:comparisonPredicate operator="greaterThanOrEquals">
 										<dep:valueKeyword/>
@@ -489,7 +498,7 @@
 							<xsl:if test="$modelValueRanges">
 								<dcl:checkConstraint name="{dsf:makeValidIdentifier($modelValueConstraint/@Name)}">
 									<xsl:choose>
-										<xsl:when test="$isUnsigned">
+										<xsl:when test="$needsUnsignedEnforcement">
 											<dep:and>
 												<dep:comparisonPredicate operator="greaterThanOrEquals">
 													<dep:valueKeyword/>
@@ -635,7 +644,30 @@
 				$modelDataType/self::orm:PictureRawDataDataType or
 				$modelDataType/self::orm:OleObjectRawDataDataType">
 
-				<dcl:predefinedDataType name="BINARY LARGE OBJECT" length="{$length}"/>
+				<xsl:variable name="predefinedDataType">
+					<dcl:predefinedDataType>
+						<xsl:attribute name="name">
+							<xsl:choose>
+								<xsl:when test="$modelDataType/self::orm:FixedLengthRawDataDataType">
+									<xsl:value-of select="'BINARY'"/>
+								</xsl:when>
+								<xsl:when test="$modelDataType/self::orm:LargeLengthRawDataDataType">
+									<xsl:value-of select="'BINARY LARGE OBJECT'"/>
+								</xsl:when>
+								<xsl:otherwise>
+									<xsl:value-of select="'BINARY VARYING'"/>
+								</xsl:otherwise>
+							</xsl:choose>
+						</xsl:attribute>
+						<xsl:if test="$length > 0">
+							<xsl:attribute name="length">
+								<xsl:value-of select="$length"/>
+							</xsl:attribute>
+						</xsl:if>
+					</dcl:predefinedDataType>
+				</xsl:variable>
+
+				<xsl:copy-of select="exsl:node-set($predefinedDataType)"/>
 				<xsl:if test="$modelValueRanges">
 					<xsl:comment>
 						<xsl:text>WARNING: You had a value constraint on this binary data type, which has been ignored.</xsl:text>

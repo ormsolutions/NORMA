@@ -1167,6 +1167,12 @@
 			</BaseClass>
 		</DomainClass>
 
+		<DomainClass Name="UnsignedTinyIntegerNumericDataType" Namespace="Neumont.Tools.ORM.ObjectModel" Id="A14599A2-2B27-4E76-894F-A1814723EFE9" DisplayName="UnsignedTinyIntegerNumericDataType" Description="">
+			<BaseClass>
+				<DomainClassMoniker Name="NumericDataType"/>
+			</BaseClass>
+		</DomainClass>
+
 		<DomainClass Name="UnsignedSmallIntegerNumericDataType" Namespace="Neumont.Tools.ORM.ObjectModel" Id="0EDC60E7-0548-48C3-BC6B-219AF6E50A31" DisplayName="UnsignedSmallIntegerNumericDataType" Description="">
 			<BaseClass>
 				<DomainClassMoniker Name="NumericDataType"/>

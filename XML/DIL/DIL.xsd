@@ -10,7 +10,7 @@
 	xmlns:xs="http://www.w3.org/2001/XMLSchema"
 	elementFormDefault="qualified"
 	attributeFormDefault="unqualified"
-	version="0.1">
+	version="0.3">
 
 	<xs:annotation>
 		<xs:appinfo>
@@ -27,7 +27,7 @@
 					<dcterms:requires rdf:resource="http://schemas.orm.net/DIL/DMIL"/>
 					<dcterms:requires rdf:resource="http://schemas.orm.net/DIL/DDIL"/>
 					<dc:title>Database Intermediate Language</dc:title>
-					<dcterms:abstract>Encompasses SQL Standard Foundation "13 - SQL-client modules"</dcterms:abstract>
+					<dcterms:abstract>Encompasses SQL Standard Foundation "13 - SQL-client modules" and "21 - Direct invocation of SQL"</dcterms:abstract>
 					<dc:creator>Kevin M. Owen</dc:creator>
 					<dc:creator>Corey Kaylor</dc:creator>
 					<dc:contributor>Korvyn Dornseif</dc:contributor>
@@ -52,25 +52,37 @@
 	<xs:import namespace="http://schemas.orm.net/DIL/DDIL"/>
 
 	<xs:element name="root">
-		<!-- This element is for temporary testing purposes and may be removed. -->
 		<xs:complexType>
-			<xs:group ref="dil:sqlProcedureStatement" maxOccurs="unbounded"/>
+			<xs:group ref="dil:directSqlStatement" minOccurs="0" maxOccurs="unbounded"/>
 		</xs:complexType>
 	</xs:element>
-	
 
-	<xs:element name="sqlProcedureStatement" type="dil:sqlProcedureStatement"/>
-	<xs:complexType name="sqlProcedureStatement">
-		<xs:group ref="dil:sqlProcedureStatement"/>
-	</xs:complexType>
-	<xs:group name="sqlProcedureStatement">
+
+	<xs:group name="directSqlStatement">
+		<xs:annotation>
+			<xs:documentation>&lt;directly executable statement&gt; ;</xs:documentation>
+		</xs:annotation>
 		<xs:choice>
-			<!-- TODO: Actually schematize dil:sqlProcedureStatement and remove the xs:any -->
-			<xs:any namespace="##targetNamespace http://schemas.orm.net/DIL/DDIL http://schemas.orm.net/DIL/DMIL http://schemas.orm.net/DIL/DILMS"/>
+			<xs:group ref="dml:directSqlDataStatement"/>
+			<xs:group ref="ddl:sqlSchemaStatement"/>
+			<xs:group ref="dms:sqlTransactionStatement"/>
+			<xs:group ref="dms:sqlConnectionStatement"/>
+			<xs:group ref="dms:sqlSessionStatement"/>
 		</xs:choice>
 	</xs:group>
 
 
-
+	<xs:group name="sqlProcedureStatement">
+		<xs:choice>
+			<xs:group ref="ddl:sqlSchemaStatement"/>
+			<xs:group ref="dml:sqlDataStatement"/>
+			<xs:group ref="dep:sqlControlStatement"/>
+			<xs:group ref="dms:sqlTransactionStatement"/>
+			<xs:group ref="dms:sqlConnectionStatement"/>
+			<xs:group ref="dms:sqlSessionStatement"/>
+			<!-- Omitted: <SQL diagnostics statement> -->
+			<!-- Omitted: <SQL dynamic statement> -->
+		</xs:choice>
+	</xs:group>
 
 </xs:schema>

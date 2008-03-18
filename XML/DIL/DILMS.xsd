@@ -7,7 +7,7 @@
 	xmlns:xs="http://www.w3.org/2001/XMLSchema"
 	elementFormDefault="qualified"
 	attributeFormDefault="unqualified"
-	version="0.8">
+	version="0.9">
 
 	<xs:annotation>
 		<xs:appinfo>
@@ -41,6 +41,42 @@
 
 	<xs:import namespace="http://schemas.orm.net/DIL/DILDT"/>
 	<xs:import namespace="http://schemas.orm.net/DIL/DILEP"/>
+
+
+	<xs:group name="sqlTransactionStatement">
+		<xs:choice>
+			<xs:element ref="dms:startTransactionStatement"/>
+			<xs:element ref="dms:setTransactionStatement"/>
+			<xs:element ref="dms:setConstraintsModeStatement"/>
+			<xs:element ref="dms:savepointStatement"/>
+			<xs:element ref="dms:releaseSavepointStatement"/>
+			<xs:element ref="dms:commitStatement"/>
+			<xs:element ref="dms:rollbackStatement"/>
+		</xs:choice>
+	</xs:group>
+
+	<xs:group name="sqlConnectionStatement">
+		<xs:choice>
+			<xs:element ref="dms:connectStatement"/>
+			<xs:element ref="dms:setConnectionStatement"/>
+			<xs:element ref="dms:disconnectStatement"/>
+		</xs:choice>
+	</xs:group>
+
+	<xs:group name="sqlSessionStatement">
+		<xs:choice>
+			<xs:element ref="dms:setSessionUserIdentifierStatement"/>
+			<xs:element ref="dms:setRoleStatement"/>
+			<xs:element ref="dms:setLocalTimezoneStatement"/>
+			<xs:element ref="dms:setCatalogStatement"/>
+			<xs:element ref="dms:setSchemaStatement"/>
+			<xs:element ref="dms:setNamesStatement"/>
+			<xs:element ref="dms:setPathStatement"/>
+			<xs:element ref="dms:setTransformGroupStatement"/>
+			<xs:element ref="dms:setSessionCollationStatement"/>
+		</xs:choice>
+	</xs:group>
+
 
 	<xs:complexType name="transactionCharacteristics">
 		<xs:sequence>
@@ -209,16 +245,18 @@
 			<xs:documentation>SET SESSION AUTHORIZATION &lt;value specification&gt;</xs:documentation>
 		</xs:annotation>
 	</xs:element>
-	<xs:element name="setRoleNoneStatement">
+	<xs:element name="setRoleStatement">
 		<xs:annotation>
-			<xs:documentation>SET ROLE NONE</xs:documentation>
+			<xs:documentation>SET ROLE { NONE | &lt;value specification&gt; }</xs:documentation>
 		</xs:annotation>
-		<xs:complexType/>
-	</xs:element>
-	<xs:element name="setRoleStatement" type="dep:valueSpecification">
-		<xs:annotation>
-			<xs:documentation>SET ROLE &lt;value specification&gt;</xs:documentation>
-		</xs:annotation>
+		<xs:complexType>
+			<xs:choice>
+				<xs:element name="noneKeyword">
+					<xs:complexType/>
+				</xs:element>
+				<xs:group ref="dep:valueSpecification"/>
+			</xs:choice>
+		</xs:complexType>
 	</xs:element>
 	<xs:element name="setLocalTimezoneStatement">
 		<xs:annotation>
@@ -253,39 +291,28 @@
 			<xs:documentation>SET PATH &lt;value specification&gt;</xs:documentation>
 		</xs:annotation>
 	</xs:element>
-	<xs:element name="setDefaultTransformGroupStatement" type="dep:valueSpecification">
-		<xs:annotation>
-			<xs:documentation>SET DEFAULT TRANSFORM GROUP &lt;value specification&gt;</xs:documentation>
-		</xs:annotation>
-	</xs:element>
 	<xs:element name="setTransformGroupStatement">
 		<xs:annotation>
-			<xs:documentation>SET TRANSFORM GROUP FOR TYPE &lt;user-defined type name&gt; &lt;value specification&gt;</xs:documentation>
+			<xs:documentation>SET { DEFAULT TRANSFORM GROUP &lt;value specification&gt; | TRANSFORM GROUP FOR TYPE &lt;user-defined type name&gt; &lt;value specification&gt; }</xs:documentation>
 		</xs:annotation>
 		<xs:complexType>
 			<xs:sequence>
-				<xs:element name="userDefinedType" type="ddt:schemaQualifiedName"/>
-				<xs:element name="valueSpecification" type="dep:valueSpecification"/>
+				<xs:element ref="ddt:userDefinedType" minOccurs="0"/>
+				<xs:group ref="dep:valueSpecification"/>
 			</xs:sequence>
 		</xs:complexType>
 	</xs:element>
-	<xs:element name="setCollationStatement">
+	<xs:element name="setSessionCollationStatement">
 		<xs:annotation>
-			<xs:documentation>SET COLLATION &lt;collation specification&gt; [ FOR &lt;character set&gt; ]</xs:documentation>
+			<xs:documentation>SET { NO COLLATION | COLLATION &lt;collation specification&gt; } [ FOR &lt;character set&gt; ]</xs:documentation>
 		</xs:annotation>
 		<xs:complexType>
-			<xs:complexContent>
-				<xs:extension base="dep:valueSpecification">
-					<xs:attribute name="characterSet" use="optional" type="ddt:characterSets"/>
-				</xs:extension>
-			</xs:complexContent>
-		</xs:complexType>
-	</xs:element>
-	<xs:element name="setNoCollationStatement">
-		<xs:annotation>
-			<xs:documentation>SET NO COLLATION [ FOR &lt;character set&gt; ]</xs:documentation>
-		</xs:annotation>
-		<xs:complexType>
+			<xs:choice>
+				<xs:element name="noCollationKeyword">
+					<xs:complexType/>
+				</xs:element>
+				<xs:group ref="dep:valueSpecification"/>
+			</xs:choice>
 			<xs:attribute name="characterSet" use="optional" type="ddt:characterSets"/>
 		</xs:complexType>
 	</xs:element>

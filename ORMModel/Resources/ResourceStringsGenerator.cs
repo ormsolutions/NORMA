@@ -236,6 +236,14 @@ namespace Neumont.Tools.ORM
 				return ResourceStrings.GetString(ResourceManagers.ObjectModel, "Neumont.Tools.ORM.ObjectModel.DataType.PortableDataType.Numeric.UnsignedSmallInteger.Text");
 			}
 		}
+		/// <summary>An unsigned tiny integer numeric data type</summary>
+		public static string PortableDataTypeNumericUnsignedTinyInteger
+		{
+			get
+			{
+				return ResourceStrings.GetString(ResourceManagers.ObjectModel, "Neumont.Tools.ORM.ObjectModel.DataType.PortableDataType.Numeric.UnsignedTinyInteger.Text");
+			}
+		}
 		/// <summary>An auto counter numeric data type</summary>
 		public static string PortableDataTypeNumericAutoCounter
 		{

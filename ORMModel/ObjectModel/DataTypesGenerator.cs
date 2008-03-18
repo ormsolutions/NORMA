@@ -38,6 +38,8 @@ namespace Neumont.Tools.ORM.ObjectModel
 		NumericSignedLargeInteger,
 		/// <summary>An unsigned integer numeric data type</summary>
 		NumericUnsignedInteger,
+		/// <summary>A tiny unsigned integer numeric data type</summary>
+		NumericUnsignedTinyInteger,
 		/// <summary>A small unsigned integer numeric data type</summary>
 		NumericUnsignedSmallInteger,
 		/// <summary>A large unsigned integer numeric data type</summary>
@@ -98,6 +100,7 @@ namespace Neumont.Tools.ORM.ObjectModel
 				typeof(SignedSmallIntegerNumericDataType),
 				typeof(SignedLargeIntegerNumericDataType),
 				typeof(UnsignedIntegerNumericDataType),
+				typeof(UnsignedTinyIntegerNumericDataType),
 				typeof(UnsignedSmallIntegerNumericDataType),
 				typeof(UnsignedLargeIntegerNumericDataType),
 				typeof(AutoCounterNumericDataType),
@@ -477,6 +480,56 @@ namespace Neumont.Tools.ORM.ObjectModel
 			uint typedValue2;
 			uint.TryParse(value2, out typedValue2);
 			return ((IComparable<uint>)typedValue1).CompareTo(typedValue2);
+		}
+	}
+	/// <summary>A tiny unsigned integer numeric data type</summary>
+	public partial class UnsignedTinyIntegerNumericDataType
+	{
+		/// <summary>PortableDataType enum value for this type</summary>
+		public override PortableDataType PortableDataType
+		{
+			get
+			{
+				return PortableDataType.NumericUnsignedTinyInteger;
+			}
+		}
+		/// <summary>Localized data type name</summary>
+		public override string ToString()
+		{
+			return ResourceStrings.PortableDataTypeNumericUnsignedTinyInteger;
+		}
+		/// <summary>The data type supports 'Closed' ranges</summary>
+		public override DataTypeRangeSupport RangeSupport
+		{
+			get
+			{
+				return DataTypeRangeSupport.Closed;
+			}
+		}
+		/// <summary>Returns true if the string value can be interpreted as this data type</summary>
+		public override bool CanParse(string value)
+		{
+			byte result;
+			return byte.TryParse(value, out result);
+		}
+		/// <summary>Returns false, meaning that CanParse can fail for some values</summary>
+		public override bool CanParseAnyValue
+		{
+			get
+			{
+				return false;
+			}
+		}
+		/// <summary>Compare two values. Each value should be checked previously with CanParse</summary>
+		public override int Compare(string value1, string value2)
+		{
+			Debug.Assert(this.CanParse(value1), "Don't call Compare if CanParse(value1) returns false");
+			byte typedValue1;
+			byte.TryParse(value1, out typedValue1);
+			Debug.Assert(this.CanParse(value2), "Don't call Compare if CanParse(value2) returns false");
+			byte typedValue2;
+			byte.TryParse(value2, out typedValue2);
+			return ((IComparable<byte>)typedValue1).CompareTo(typedValue2);
 		}
 	}
 	/// <summary>A small unsigned integer numeric data type</summary>

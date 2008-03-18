@@ -115,6 +115,15 @@
 		</xs:complexType>
 	</xs:element>
 
+
+	<xs:group name="sqlControlStatement">
+		<xs:choice>
+			<xs:element ref="dep:callStatement"/>
+			<xs:element ref="dep:returnStatement"/>
+		</xs:choice>
+	</xs:group>
+
+
 	<xs:complexType name="valueExpression">
 		<xs:group ref="dep:valueExpression"/>
 	</xs:complexType>

@@ -12,25 +12,58 @@
 <xsl:stylesheet version="1.0"
 	xmlns:xsl="http://www.w3.org/1999/XSL/Transform"
 	xmlns:exsl="http://exslt.org/common"
-	xmlns:dml="http://schemas.orm.net/DIL/DMIL"
-	xmlns:dms="http://schemas.orm.net/DIL/DILMS"
-	xmlns:dep="http://schemas.orm.net/DIL/DILEP"
-	xmlns:ddt="http://schemas.orm.net/DIL/DILDT"
+	xmlns:dsf="urn:schemas-orm-net:DIL:DILSupportFunctions"
 	xmlns:dil="http://schemas.orm.net/DIL/DIL"
+	xmlns:ddt="http://schemas.orm.net/DIL/DILDT"
+	xmlns:dep="http://schemas.orm.net/DIL/DILEP"
+	xmlns:dms="http://schemas.orm.net/DIL/DILMS"
+	xmlns:dml="http://schemas.orm.net/DIL/DMIL"
 	xmlns:ddl="http://schemas.orm.net/DIL/DDIL"
-	extension-element-prefixes="exsl"
-	exclude-result-prefixes="dml dms dep ddt dil ddl">
+	extension-element-prefixes="exsl dsf"
+	exclude-result-prefixes="dil ddt dep dms dml ddl">
 
 	<xsl:import href="DDILtoSQLStandard.xslt"/>
+	<xsl:import href="TinyIntRemover.xslt"/>
 
 	<xsl:output method="text" encoding="utf-8" indent="no" omit-xml-declaration="yes"/>
 	<xsl:strip-space elements="*"/>
 
-	<xsl:template match="@defaultCharacterSet" mode="ForSchemaDefinition"/>
+	<xsl:param name="MaximumStringLength" select="''"/>
 
-	<xsl:template match="dms:setSchemaStatement"/>
+	<xsl:template match="/">
+		<xsl:variable name="tinyIntRemovedDilFragment">
+			<xsl:apply-templates mode="TinyIntRemover" select="."/>
+		</xsl:variable>
+		<xsl:apply-templates select="exsl:node-set($tinyIntRemovedDilFragment)/child::*"/>
+	</xsl:template>
+	
+	<xsl:template match="@defaultCharacterSet" mode="ForSchemaDefinition"/>
+	
+	<xsl:template match="dms:setSchemaStatement">
+		<xsl:param name="indent"/>
+		<xsl:choose>
+			<xsl:when test="ddt:characterStringLiteral">
+				<xsl:value-of select="$NewLine"/>
+				<xsl:value-of select="$indent"/>
+				<xsl:text>SET search_path TO </xsl:text>
+				<!-- UNDONE: We need a better way to take the string literal form of the schema name and turn it back in to an identifier. -->
+				<xsl:value-of select="dsf:makeValidIdentifier(ddt:characterStringLiteral/@value)"/>
+				<xsl:text>,"$user",public</xsl:text>
+				<xsl:value-of select="$StatementDelimiter"/>
+				<xsl:value-of select="$NewLine"/>
+			</xsl:when>
+			<xsl:otherwise>
+				<!-- UNDONE: Figure out what to do when we have something other than a ddt:characterStringLiteral. -->
+			</xsl:otherwise>
+		</xsl:choose>
+	</xsl:template>
 
 	<xsl:template match="ddl:generationClause"/>
+
+	<!--
+		UNDONE: Adjust rendering of ddl:identityColumnSpecification to explicitly create a sequence generator and use it instead of the SERIAL types,
+		so that the sequence generator options the user sets can be respected.
+	-->
 
 	<xsl:template match="ddl:columnDefinition[ddl:identityColumnSpecification]">
 		<xsl:param name="indent"/>
@@ -58,6 +91,21 @@
 		</xsl:choose>
 	</xsl:template>
 
+	<xsl:template match="ddt:characterString | ddt:binaryString" mode="ForDataTypeLengthWithMultiplier">
+		<xsl:call-template name="GetTotalDataTypeLength"/>
+	</xsl:template>
+
+	<xsl:template match="@type[.='CHARACTER LARGE OBJECT']" mode="ForDataType">
+		<xsl:text>CHARACTER VARYING</xsl:text>
+	</xsl:template>
+
+	<xsl:template match="@type[.='BINARY' or .='BINARY VARYING' or .='BINARY LARGE OBJECT']" mode="ForDataType">
+		<xsl:text>BYTEA</xsl:text>
+		<!-- UNDONE: Add constraints to support the original length requested. -->
+	</xsl:template>
+	
+	<!-- UNDONE: Handle rendering ddt:binaryStringLiteral. -->
+
 	<xsl:template match="ddl:sqlInvokedProcedure">
 		<xsl:value-of select="$NewLine"/>
 		<xsl:text>CREATE FUNCTION </xsl:text>
@@ -75,7 +123,7 @@
 		<xsl:text>LANGUAGE SQL</xsl:text>
 		<xsl:value-of select="$NewLine"/>
 		<xsl:apply-templates select="ddl:sqlRoutineSpec" />
-		<xsl:value-of select="$StatementDelimeter"/>
+		<xsl:value-of select="$StatementDelimiter"/>
 		<xsl:value-of select="$NewLine"/>
 	</xsl:template>
 
@@ -88,17 +136,6 @@
 		<xsl:text>'</xsl:text>
 	</xsl:template>
 
-	<xsl:template match="dml:fromConstructor">
-		<xsl:value-of select="$LeftParen" />
-		<xsl:apply-templates select="dep:simpleColumnReference"/>
-		<xsl:value-of select="$RightParen" />
-		<xsl:value-of select="$NewLine"/>
-		<xsl:value-of select="$IndentChar" />
-		<xsl:text>VALUES </xsl:text>
-		<xsl:value-of select="$LeftParen"/>
-		<xsl:apply-templates select="dep:sqlParameterReference" />
-		<xsl:value-of select="$RightParen"/>
-	</xsl:template>
 
 	<xsl:template match="dep:sqlParameterReference">
 		<xsl:text>$</xsl:text>

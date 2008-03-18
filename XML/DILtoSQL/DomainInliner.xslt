@@ -12,16 +12,18 @@
 <xsl:stylesheet version="1.0"
 	xmlns:xsl="http://www.w3.org/1999/XSL/Transform"
 	xmlns:exsl="http://exslt.org/common"
-	xmlns:dml="http://schemas.orm.net/DIL/DMIL"
-	xmlns:dms="http://schemas.orm.net/DIL/DILMS"
-	xmlns:dep="http://schemas.orm.net/DIL/DILEP"
-	xmlns:ddt="http://schemas.orm.net/DIL/DILDT"
 	xmlns:dil="http://schemas.orm.net/DIL/DIL"
+	xmlns:ddt="http://schemas.orm.net/DIL/DILDT"
+	xmlns:dep="http://schemas.orm.net/DIL/DILEP"
+	xmlns:dms="http://schemas.orm.net/DIL/DILMS"
+	xmlns:dml="http://schemas.orm.net/DIL/DMIL"
 	xmlns:ddl="http://schemas.orm.net/DIL/DDIL"
 	extension-element-prefixes="exsl">
 
 	<xsl:output method="xml" encoding="utf-8" media-type="text/xml" indent="yes"/>
 	<xsl:strip-space elements="*"/>
+	
+	<!-- ddt:domain can occur only inside of ddl:columnDefinition and dep:castSpecification -->
 
 	<xsl:template match="*" mode="DomainInliner">
 		<xsl:param name="domainDefinitions" select="//ddl:domainDefinition"/>
@@ -37,18 +39,45 @@
 
 	<xsl:template match="ddl:domainDefinition" mode="DomainInliner"/>
 
-	<xsl:template match="ddl:columnDefinition[ddt:domain]" mode="DomainInliner">
+	<xsl:template match="dep:castSpecification[ddt:domain]" mode="DomainInliner">
 		<xsl:param name="domainDefinitions" select="//ddl:domainDefinition"/>
+		<xsl:param name="columnName"/>
+
+		<xsl:variable name="domain" select="ddt:domain"/>
+		<xsl:variable name="domainDefinition" select="$domainDefinitions[@name=$domain/@name and (string-length(@schema)=0 or @schema=$domain/@schema or string-length($domain/@schema)=0) and (string-length(@catalog)=0 or @catalog=$domain/@catalog or string-length($domain/@catalog)=0)]"/>
+		<xsl:if test="not(count($domainDefinition)=1)">
+			<xsl:message terminate="yes">
+				<xsl:text>Too many or too few ddl:domainDefinition elements were found for a ddt:domain.</xsl:text>
+			</xsl:message>
+		</xsl:if>
+
+		<!-- UNDONE: It would be nice to do something more than just replacing the DOMAIN reference with the underlying type... --> 
+		
 		<xsl:copy>
 			<xsl:copy-of select="@*"/>
-			<xsl:variable name="columnName" select="@name"/>
-			<xsl:variable name="domain" select="ddt:domain"/>
-			<xsl:variable name="domainDefinition" select="$domainDefinitions[@name=$domain/@name and (string-length(@schema)=0 or @schema=$domain/@schema or string-length($domain/@schema)=0) and (string-length(@catalog)=0 or @catalog=$domain/@catalog or string-length($domain/@catalog)=0)]"/>
-			<xsl:if test="not(count($domainDefinition)=1)">
-				<xsl:message terminate="yes">
-					<xsl:text>Too many or too few ddl:domainDefinition elements were found for a ddt:domain.</xsl:text>
-				</xsl:message>
-			</xsl:if>
+			<xsl:apply-templates select="*[position() != last()]" mode="DomainInliner">
+				<xsl:with-param name="domainDefinitions" select="$domainDefinitions"/>
+				<xsl:with-param name="columnName" select="$columnName"/>
+			</xsl:apply-templates>
+			<xsl:copy-of select="$domainDefinition/ddt:*[1]"/>
+		</xsl:copy>
+		
+	</xsl:template>
+
+	<xsl:template match="ddl:columnDefinition[ddt:domain]" mode="DomainInliner">
+		<xsl:param name="domainDefinitions" select="//ddl:domainDefinition"/>
+
+		<xsl:variable name="columnName" select="@name"/>
+		<xsl:variable name="domain" select="ddt:domain"/>
+		<xsl:variable name="domainDefinition" select="$domainDefinitions[@name=$domain/@name and (string-length(@schema)=0 or @schema=$domain/@schema or string-length($domain/@schema)=0) and (string-length(@catalog)=0 or @catalog=$domain/@catalog or string-length($domain/@catalog)=0)]"/>
+		<xsl:if test="not(count($domainDefinition)=1)">
+			<xsl:message terminate="yes">
+				<xsl:text>Too many or too few ddl:domainDefinition elements were found for a ddt:domain.</xsl:text>
+			</xsl:message>
+		</xsl:if>
+		
+		<xsl:copy>
+			<xsl:copy-of select="@*"/>
 			<xsl:copy-of select="$domainDefinition/ddt:*[1]"/>
 			<xsl:copy-of select="$domainDefinition/ddl:defaultClause"/>
 			<xsl:for-each select="$domainDefinition/ddl:domainConstraintDefinition">

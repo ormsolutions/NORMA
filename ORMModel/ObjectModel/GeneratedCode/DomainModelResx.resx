@@ -1285,6 +1285,14 @@
     <value>UnsignedIntegerNumericDataType</value>
     <comment>DisplayName for DomainClass &apos;UnsignedIntegerNumericDataType&apos;</comment>
   </data>
+  <data name="Neumont.Tools.ORM.ObjectModel.UnsignedTinyIntegerNumericDataType.Description" xml:space="preserve">
+    <value></value>
+    <comment>Description for DomainClass &apos;UnsignedTinyIntegerNumericDataType&apos;</comment>
+  </data>
+  <data name="Neumont.Tools.ORM.ObjectModel.UnsignedTinyIntegerNumericDataType.DisplayName" xml:space="preserve">
+    <value>UnsignedTinyIntegerNumericDataType</value>
+    <comment>DisplayName for DomainClass &apos;UnsignedTinyIntegerNumericDataType&apos;</comment>
+  </data>
   <data name="Neumont.Tools.ORM.ObjectModel.UnsignedSmallIntegerNumericDataType.Description" xml:space="preserve">
     <value></value>
     <comment>Description for DomainClass &apos;UnsignedSmallIntegerNumericDataType&apos;</comment>

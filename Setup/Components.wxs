@@ -919,6 +919,8 @@
 									DefaultLanguage="0" CompanionFile="DILSupportFunctions.xslt"/>
 								<File Id="UniqueNullableOutliner.xslt" ShortName="UNOutlnr.xsl" Name="UniqueNullableOutliner.xslt" Source="..\XML\DILtoSQL\UniqueNullableOutliner.xslt"
 									DefaultLanguage="0" CompanionFile="DILSupportFunctions.xslt"/>
+								<File Id="TinyIntRemover.xslt" ShortName="TIRmvr.xsl" Name="TinyIntRemover.xslt" Source="..\XML\DILtoSQL\TinyIntRemover.xslt"
+									DefaultLanguage="0" CompanionFile="DILSupportFunctions.xslt"/>
 
 								<File Id="DCILtoDDIL.xslt" ShortName="DCIL2DDL.xsl" Name="DCILtoDDIL.xslt" Source="..\XML\DILtoSQL\DCILtoDDIL.xslt"
 									DefaultLanguage="0" CompanionFile="DILSupportFunctions.xslt"/>

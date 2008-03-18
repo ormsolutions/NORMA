@@ -118,6 +118,9 @@
 	<ResourceString name="PortableDataTypeNumericUnsignedSmallInteger" model="ObjectModel" resourceName="Neumont.Tools.ORM.ObjectModel.DataType.PortableDataType.Numeric.UnsignedSmallInteger.Text">
 		<comment>An unsigned small integer numeric data type</comment>
 	</ResourceString>
+	<ResourceString name="PortableDataTypeNumericUnsignedTinyInteger" model="ObjectModel" resourceName="Neumont.Tools.ORM.ObjectModel.DataType.PortableDataType.Numeric.UnsignedTinyInteger.Text">
+		<comment>An unsigned tiny integer numeric data type</comment>
+	</ResourceString>
 	<ResourceString name="PortableDataTypeNumericAutoCounter" model="ObjectModel" resourceName="Neumont.Tools.ORM.ObjectModel.DataType.PortableDataType.Numeric.AutoCounter.Text">
 		<comment>An auto counter numeric data type</comment>
 	</ResourceString>

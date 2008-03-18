@@ -58,6 +58,64 @@
 		</xs:restriction>
 	</xs:simpleType>
 
+
+	<xs:group name="sqlSchemaStatement">
+		<xs:choice>
+			<xs:group ref="ddl:sqlSchemaDefinitionStatement"/>
+			<xs:group ref="ddl:sqlSchemaManipulationStatement"/>
+		</xs:choice>
+	</xs:group>
+
+	<xs:group name="sqlSchemaDefinitionStatement">
+		<xs:choice>
+			<xs:element ref="ddl:schemaDefinition"/>
+			<xs:element ref="ddl:viewDefinition"/>
+			<xs:group ref="ddl:sqlInvokedRoutine"/>
+			<xs:group ref="ddl:grantStatement"/>
+			<xs:element ref="ddl:roleDefinition"/>
+			<xs:element ref="ddl:domainDefinition"/>
+			<!-- Omitted: <character set definition> -->
+			<!-- Omitted: <collation definition> -->
+			<!-- Omitted: <transliteration definition> -->
+			<xs:element ref="ddl:assertionDefinition"/>
+			<xs:element ref="ddl:triggerDefinition"/>
+			<xs:element ref="ddl:userDefinedTypeDefinition"/>
+			<!-- Omitted: <user-defined cast definition> -->
+			<!-- Omitted: <user-defined ordering definition> -->
+			<!-- Omitted: <transform definition> -->
+			<xs:element ref="ddl:sequenceGeneratorDefinition"/>
+		</xs:choice>
+	</xs:group>
+
+	<xs:group name="sqlSchemaManipulationStatement">
+		<xs:choice>
+			<xs:element ref="ddl:dropSchemaStatement"/>
+			<xs:element ref="ddl:alterTableStatement"/>
+			<xs:element ref="ddl:dropTableStatement"/>
+			<xs:element ref="ddl:dropViewStatement"/>
+			<!-- UNDONE: <alter routine statement> -->
+			<!-- UNDONE: <drop routine statement> -->
+			<!-- Omitted: <drop user-defined cast statement> -->
+			<xs:group ref="ddl:revokeStatement"/>
+			<xs:element ref="ddl:dropRoleStatement"/>
+			<xs:element ref="ddl:alterDomainStatement"/>
+			<xs:element ref="ddl:dropDomainStatement"/>
+			<!-- Omitted: <drop character set statement> -->
+			<!-- Omitted: <drop collation statement> -->
+			<!-- Omitted: <drop transliteration statement> -->
+			<xs:element ref="ddl:dropAssertionStatement"/>
+			<xs:element ref="ddl:dropTriggerStatement"/>
+			<!-- UNDONE: <alter type statement> -->
+			<xs:element ref="ddl:dropUserDefinedTypeStatement"/>
+			<!-- Omitted: <drop user-defined ordering statement> -->
+			<!-- Omitted: <alter transform statement> -->
+			<!-- Omitted: <drop transform statement> -->
+			<xs:element ref="ddl:alterSequenceGeneratorStatement"/>
+			<xs:element ref="ddl:dropSequenceGeneratorStatement"/>
+		</xs:choice>
+	</xs:group>
+
+
 	<xs:element name="schemaDefinition">
 		<xs:annotation>
 			<xs:documentation>CREATE SCHEMA [ &lt;catalog name&gt; . ] &lt;schema name&gt; [ AUTHORIZATION &lt;authorization identifier&gt; ]</xs:documentation>
@@ -117,7 +175,7 @@
 		</xs:choice>
 	</xs:group>
 
-<xs:element name="viewDefinition">
+	<xs:element name="viewDefinition">
 		<xs:annotation>
 			<xs:documentation>CREATE [ RECURSIVE ] VIEW &lt;schema qualified name&gt; [ ( &lt;view column list&gt; ) ] AS &lt;query expression&gt; [ WITH [&lt;levels clause&gt;] CHECK OPTION ]</xs:documentation>
 		</xs:annotation>
@@ -141,6 +199,19 @@
 							</xs:restriction>
 						</xs:simpleType>
 					</xs:attribute>
+				</xs:extension>
+			</xs:complexContent>
+		</xs:complexType>
+	</xs:element>
+
+	<xs:element name="dropViewStatement">
+		<xs:annotation>
+			<xs:documentation>DROP VIEW &lt;view name&gt; &lt;drop behavior&gt;</xs:documentation>
+		</xs:annotation>
+		<xs:complexType>
+			<xs:complexContent>
+				<xs:extension base="ddt:schemaQualifiedName">
+					<xs:attribute name="dropBehavior" use="required" type="ddl:dropBehavior"/>
 				</xs:extension>
 			</xs:complexContent>
 		</xs:complexType>
@@ -722,7 +793,13 @@
 			<xs:complexContent>
 				<xs:extension base="ddt:schemaQualifiedName">
 					<xs:sequence>
-						<xs:group ref="ddt:dataType" minOccurs="0"/>
+						<xs:choice minOccurs="0">
+							<xs:annotation>
+								<xs:documentation>If a data type is specified, it must be an exact numeric data type with scale 0 (zero).</xs:documentation>
+							</xs:annotation>
+							<xs:element ref="ddt:exactNumeric"/>
+							<xs:element ref="ddt:userDefinedType"/>
+						</xs:choice>
 						<xs:group ref="ddl:commonSequenceGeneratorOptions" minOccurs="0"/>
 					</xs:sequence>
 				</xs:extension>

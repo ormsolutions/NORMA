@@ -47,6 +47,48 @@
 	<xs:import namespace="http://schemas.orm.net/DIL/DILDT"/>
 	<xs:import namespace="http://schemas.orm.net/DIL/DILEP"/>
 
+
+	<xs:group name="sqlDataStatement">
+		<xs:choice>
+			<!-- Omitted: <open statement> -->
+			<!-- Omitted: <fetch statement> -->
+			<!-- Omitted: <close statement> -->
+			<!-- UNDONE: <select statement: single row> -->
+			<!-- Omitted: <free locator statement> -->
+			<!-- Omitted: <hold locator statement> -->
+			<xs:group ref="dml:sqlDataChangeStatement"/>
+		</xs:choice>
+	</xs:group>
+
+	<xs:group name="sqlDataChangeStatement">
+		<xs:choice>
+			<!-- Omitted: <delete statement: positioned> -->
+			<!-- dml:deleteStatement is <delete statement: searched> -->
+			<xs:element ref="dml:deleteStatement"/>
+			<xs:element ref="dml:insertStatement"/>
+			<!-- Omitted: <update statement: positioned> -->
+			<!-- dml:updateStatement is <update statement: searched> -->
+			<xs:element ref="dml:updateStatement"/>
+			<!-- UNDONE: <truncate table statement> -->
+			<!-- UNDONE: <merge statement> -->
+		</xs:choice>
+	</xs:group>
+
+	<xs:group name="directSqlDataStatement">
+		<xs:choice>
+			<!-- dml:deleteStatement is <delete statement: searched> -->
+			<xs:element ref="dml:deleteStatement"/>
+			<!-- Omitted: <direct select statement: multiple rows> -->
+			<xs:element ref="dml:insertStatement"/>
+			<!-- dml:updateStatement is <update statement: searched> -->
+			<xs:element ref="dml:updateStatement"/>
+			<!-- UNDONE: <truncate table statement> -->
+			<!-- UNDONE: <merge statement> -->
+			<!-- UNDONE: <temporary table declaration> -->
+		</xs:choice>
+	</xs:group>
+
+
 	<xs:element name="scalarSubquery" type="dml:scalarSubquery"/>
 	<xs:complexType name="scalarSubquery">
 		<xs:annotation>

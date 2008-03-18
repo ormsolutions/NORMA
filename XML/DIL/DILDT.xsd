@@ -338,9 +338,10 @@
 			<xs:documentation>A character string is a sequence of characters taken from a single character set.</xs:documentation>
 		</xs:annotation>
 		<xs:attribute name="type" use="required" type="ddt:characterStringTypes"/>
-		<xs:attribute name="length" use="required" type="ddt:stringLength">
+		<xs:attribute name="length" use="optional" type="ddt:stringLength">
 			<xs:annotation>
 				<xs:documentation>The length or maximum length of the character string (in CHARACTERS).</xs:documentation>
+				<xs:documentation>If a length is not specified, the maximum length supported by the target DBMS will be used.</xs:documentation>
 			</xs:annotation>
 		</xs:attribute>
 		<xs:attribute name="lengthMultiplier" use="optional" type="ddt:largeObjectLengthMultiplier">
@@ -383,9 +384,10 @@
 			<xs:documentation>A binary string is a sequence of octets that has neither a character set nor a collation associated with it.</xs:documentation>
 		</xs:annotation>
 		<xs:attribute name="type" use="required" type="ddt:binaryStringTypes"/>
-		<xs:attribute name="length" use="required" type="ddt:stringLength">
+		<xs:attribute name="length" use="optional" type="ddt:stringLength">
 			<xs:annotation>
 				<xs:documentation>The maximum length of the binary string (in OCTETS).</xs:documentation>
+				<xs:documentation>If a length is not specified, the maximum length supported by the target DBMS will be used.</xs:documentation>
 			</xs:annotation>
 		</xs:attribute>
 		<xs:attribute name="lengthMultiplier" use="optional" type="ddt:largeObjectLengthMultiplier">
@@ -606,6 +608,10 @@
 		<xs:union memberTypes="ddt:exactNumericTypes ddt:approximateNumericTypes"/>
 	</xs:simpleType>
 	<xs:simpleType name="exactNumericTypes">
+		<xs:annotation>
+			<xs:documentation>Although the SQL standard does not specify the ranges of the integer types, DIL treats them as having the ranges specified here.</xs:documentation>
+			<xs:documentation>DIL renderers will output them as appropriate to ensure that they have these ranges.</xs:documentation>
+		</xs:annotation>
 		<xs:restriction base="xs:string">
 			<xs:enumeration value="NUMERIC">
 				<xs:annotation>
@@ -617,19 +623,25 @@
 					<xs:documentation></xs:documentation>
 				</xs:annotation>
 			</xs:enumeration>
+			<xs:enumeration value="TINYINT">
+				<xs:annotation>
+					<xs:documentation>Range: 0 to 2⁸−1 (0 to 255)</xs:documentation>
+					<xs:documentation>WARNING: This type is not defined in the SQL standard.</xs:documentation>
+				</xs:annotation>
+			</xs:enumeration>
 			<xs:enumeration value="SMALLINT">
 				<xs:annotation>
-					<xs:documentation></xs:documentation>
+					<xs:documentation>Range: −2¹⁵ to 2¹⁵−1 (−32,768 to 32,767)</xs:documentation>
 				</xs:annotation>
 			</xs:enumeration>
 			<xs:enumeration value="INTEGER">
 				<xs:annotation>
-					<xs:documentation></xs:documentation>
+					<xs:documentation>Range: −2³¹ to 2³¹−1 (−2,147,483,648 to 2,147,483,647)</xs:documentation>
 				</xs:annotation>
 			</xs:enumeration>
 			<xs:enumeration value="BIGINT">
 				<xs:annotation>
-					<xs:documentation></xs:documentation>
+					<xs:documentation>Range: −2⁶³ to 2⁶³−1 (−9,223,372,036,854,775,808 to 9,223,372,036,854,775,807)</xs:documentation>
 				</xs:annotation>
 			</xs:enumeration>
 		</xs:restriction>

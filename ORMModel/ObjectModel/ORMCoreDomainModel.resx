@@ -180,6 +180,9 @@
   <data name="Neumont.Tools.ORM.ObjectModel.DataType.PortableDataType.Numeric.UnsignedSmallInteger.Text" xml:space="preserve">
     <value>Numeric: Unsigned Small Integer</value>
   </data>
+  <data name="Neumont.Tools.ORM.ObjectModel.DataType.PortableDataType.Numeric.UnsignedTinyInteger.Text" xml:space="preserve">
+    <value>Numeric: Unsigned Tiny Integer</value>
+  </data>
   <data name="Neumont.Tools.ORM.ObjectModel.DataType.PortableDataType.Other.ObjectId.Text" xml:space="preserve">
     <value>Other: Object ID</value>
   </data>

@@ -12,14 +12,21 @@
 <xsl:stylesheet version="1.0"
 	xmlns:xsl="http://www.w3.org/1999/XSL/Transform"
 	xmlns:exsl="http://exslt.org/common"
-	xmlns:dml="http://schemas.orm.net/DIL/DMIL"
-	xmlns:dms="http://schemas.orm.net/DIL/DILMS"
-	xmlns:dep="http://schemas.orm.net/DIL/DILEP"
-	xmlns:ddt="http://schemas.orm.net/DIL/DILDT"
+	xmlns:dsf="urn:schemas-orm-net:DIL:DILSupportFunctions"
 	xmlns:dil="http://schemas.orm.net/DIL/DIL"
+	xmlns:ddt="http://schemas.orm.net/DIL/DILDT"
+	xmlns:dep="http://schemas.orm.net/DIL/DILEP"
+	xmlns:dms="http://schemas.orm.net/DIL/DILMS"
+	xmlns:dml="http://schemas.orm.net/DIL/DMIL"
 	xmlns:ddl="http://schemas.orm.net/DIL/DDIL"
-	extension-element-prefixes="exsl"
-	exclude-result-prefixes="dml dms dep ddt dil ddl">
+	extension-element-prefixes="exsl dsf"
+	exclude-result-prefixes="dil ddt dep dms dml ddl">
+
+	<!--
+		NOTE: Although the DILSupportFunctions are not currently used directly in this transform, they are imported here so that they
+		can be used by the various target-specific renderers and preprocessing transforms without causing duplicate definitions.
+	-->
+	<xsl:import href="DILSupportFunctions.xslt"/>
 
 	<xsl:output method="text" encoding="utf-8" indent="no" omit-xml-declaration="yes"/>
 	<xsl:strip-space elements="*"/>
@@ -32,9 +39,38 @@
 	<xsl:param name="LeftParen" select="'('"/>
 	<xsl:param name="RightParen" select="')'"/>
 	<xsl:param name="ConcatenationOperator" select="'||'"/>
-	<xsl:param name="StatementDelimeter" select="';'"/>
+	<xsl:param name="StatementDelimiter" select="';'"/>
 	<xsl:param name="SetClauseEqualsOperator" select="'='"/>
 	<xsl:param name="StatementBlockDelimeter" select="''"/>
+
+	<!-- The DefaultMaximum*StringLength parameters are provided to allow derived stylesheets to initialize multiple Maximum*StringLength parameters at once. -->
+	<!-- They should be referenced only from the default values for these parameters. Everything else should use the specific Maximum*StringLength parameters. -->
+	<xsl:param name="DefaultMaximumStringLength"/>
+	<xsl:param name="DefaultMaximumNonVaryingStringLength" select="$DefaultMaximumStringLength"/>
+	<xsl:param name="MaximumCharacterNonVaryingStringLength" select="$DefaultMaximumNonVaryingStringLength"/>
+	<xsl:param name="MaximumBinaryNonVaryingStringLength" select="$DefaultMaximumNonVaryingStringLength"/>
+	<xsl:param name="DefaultMaximumVaryingStringLength" select="$DefaultMaximumStringLength"/>
+	<xsl:param name="MaximumCharacterVaryingStringLength" select="$DefaultMaximumVaryingStringLength"/>
+	<xsl:param name="MaximumBinaryVaryingStringLength" select="$DefaultMaximumVaryingStringLength"/>
+	<xsl:param name="DefaultMaximumLargeObjectStringLength" select="$DefaultMaximumStringLength"/>
+	<xsl:param name="MaximumCharacterLargeObjectStringLength" select="$DefaultMaximumLargeObjectStringLength"/>
+	<xsl:param name="MaximumBinaryLargeObjectStringLength" select="$DefaultMaximumLargeObjectStringLength"/>
+
+	<!--
+		UNDONE: Only statements rendered directly inside of dil:root and ddl:atomicBlock should be followed by statement delimiters.
+		However, until the other templates have been adjusted to not render statement delimiters, this is commented out.
+	-->
+	<!--<xsl:template match="dil:root">
+		<xsl:param name="indent"/>
+		<xsl:for-each select="child::*">
+			<xsl:apply-templates select=".">
+				<xsl:with-param name="indent" select="$indent"/>
+			</xsl:apply-templates>
+			<xsl:value-of select="$StatementDelimiter"/>
+			<xsl:value-of select="$NewLine"/>
+		</xsl:for-each>
+	</xsl:template>-->
+
 
 	<!-- Schema Definition pg.519 -->
 
@@ -48,22 +84,23 @@
 		<xsl:apply-templates select="@authorizationIdentifier" mode="ForSchemaDefinition"/>
 		<xsl:apply-templates select="@defaultCharacterSet" mode="ForSchemaDefinition"/>
 		<xsl:apply-templates select="ddl:path" mode="ForSchemaDefinition"/>
-		<xsl:value-of select="$StatementDelimeter"/>
+		<xsl:if test="*[not(self::ddl:path)]">
+			<xsl:value-of select="$NewLine"/>
+			<xsl:apply-templates select="*[not(self::ddl:path)]">
+				<xsl:with-param name="indent" select="concat($indent, $IndentChar)"/>
+			</xsl:apply-templates>
+		</xsl:if>
+		<xsl:value-of select="$StatementDelimiter"/>
 		<xsl:value-of select="$NewLine"/>
-		<xsl:apply-templates select="*[not(self::ddl:path)]">
-			<xsl:with-param name="indent" select="concat($indent, $IndentChar)"/>
-		</xsl:apply-templates>
 	</xsl:template>
 
 	<xsl:template match="@catalogName" mode="ForSchemaDefinition">
-		<xsl:value-of select="."/>
+		<xsl:call-template name="RenderIdentifier"/>
 		<xsl:value-of select="$Period"/>
 	</xsl:template>
 
 	<xsl:template match="@schemaName" mode="ForSchemaDefinition">
-		<xsl:call-template name="RenderIdentifier">
-			<xsl:with-param name="name" select="."/>
-		</xsl:call-template>
+		<xsl:call-template name="RenderIdentifier"/>
 	</xsl:template>
 
 	<xsl:template match="@authorizationIdentifier" mode="ForSchemaDefinition">
@@ -93,7 +130,7 @@
 		<xsl:value-of select="$indent"/>
 		<xsl:text>SET SCHEMA </xsl:text>
 		<xsl:apply-templates/>
-		<xsl:value-of select="$StatementDelimeter"/>
+		<xsl:value-of select="$StatementDelimiter"/>
 		<xsl:value-of select="$NewLine"/>
 	</xsl:template>
 
@@ -102,11 +139,11 @@
 		<xsl:value-of select="$NewLine"/>
 		<xsl:value-of select="$indent"/>
 		<xsl:text>COMMIT WORK</xsl:text>
-		<xsl:if test="@type">
+		<xsl:if test="string(@type)">
 			<xsl:text> AND </xsl:text>
 			<xsl:value-of select="@type"/>
 		</xsl:if>
-		<xsl:value-of select="$StatementDelimeter"/>
+		<xsl:value-of select="$StatementDelimiter"/>
 		<xsl:value-of select="$NewLine"/>
 	</xsl:template>
 
@@ -136,7 +173,7 @@
 		<xsl:value-of select="$NewLine"/>
 		<xsl:value-of select="$indent"/>
 		<xsl:value-of select="$StatementEndBracket"/>
-		<xsl:value-of select="$StatementDelimeter"/>
+		<xsl:value-of select="$StatementDelimiter"/>
 		<xsl:value-of select="$NewLine"/>
 	</xsl:template>
 
@@ -146,19 +183,17 @@
 	</xsl:template>
 
 	<xsl:template match="@catalog" mode="ForSchemaQualifiedName">
-		<xsl:value-of select="."/>
+		<xsl:call-template name="RenderIdentifier"/>
 		<xsl:value-of select="$Period"/>
 	</xsl:template>
 
 	<xsl:template match="@schema" mode="ForSchemaQualifiedName">
-		<xsl:value-of select="."/>
+		<xsl:call-template name="RenderIdentifier"/>
 		<xsl:value-of select="$Period"/>
 	</xsl:template>
 
 	<xsl:template match="@name" mode="ForSchemaQualifiedName">
-		<xsl:call-template name="RenderIdentifier">
-			<xsl:with-param name="name" select="."/>
-		</xsl:call-template>
+		<xsl:call-template name="RenderIdentifier"/>
 	</xsl:template>
 
 	<!--End of Table Definition -->
@@ -194,7 +229,7 @@
 		<xsl:apply-templates select="@checkOption">
 			<xsl:with-param name="indent" select="$indent"/>
 		</xsl:apply-templates>
-		<xsl:value-of select="$StatementDelimeter"/>
+		<xsl:value-of select="$StatementDelimiter"/>
 		<xsl:value-of select="$NewLine"/>
 	</xsl:template>
 
@@ -294,12 +329,12 @@
 	</xsl:template>
 
 	<xsl:template match="@name" mode="ForCorrelationName">
-		<xsl:value-of select="."/>
+		<xsl:call-template name="RenderIdentifier"/>
 	</xsl:template>
 
 	<xsl:template match="@correlationName">
 		<xsl:text> AS </xsl:text>
-		<xsl:value-of select="."/>
+		<xsl:call-template name="RenderIdentifier"/>
 	</xsl:template>
 
 	<xsl:template match="dml:derivedTable | dml:lateralDerivedTable">
@@ -466,7 +501,7 @@
 	</xsl:template>
 
 	<xsl:template match="@columnName">
-		<xsl:value-of select="."/>
+		<xsl:call-template name="RenderIdentifier"/>
 	</xsl:template>
 
 	<xsl:template match="dml:fromClause">
@@ -608,9 +643,7 @@
 	</xsl:template>
 
 	<xsl:template match="@name" mode="ForColumnName">
-		<xsl:call-template name="RenderIdentifier">
-			<xsl:with-param name="name" select="."/>
-		</xsl:call-template>
+		<xsl:call-template name="RenderIdentifier"/>
 		<xsl:text> </xsl:text>
 	</xsl:template>
 
@@ -631,10 +664,58 @@
 	</xsl:template>
 
 	<xsl:template match="ddt:characterString | ddt:binaryString" mode="ForDataTypeLength">
-		<xsl:value-of select="$LeftParen"/>
+		<xsl:variable name="maximumLengthFragment">
+			<xsl:choose>
+				<xsl:when test="@type='CHARACTER'">
+					<xsl:value-of select="$MaximumCharacterNonVaryingStringLength"/>
+				</xsl:when>
+				<xsl:when test="@type='CHARACTER VARYING'">
+					<xsl:value-of select="$MaximumCharacterVaryingStringLength"/>
+				</xsl:when>
+				<xsl:when test="@type='CHARACTER LARGE OBJECT'">
+					<xsl:value-of select="$MaximumCharacterLargeObjectStringLength"/>
+				</xsl:when>
+				<xsl:when test="@type='BINARY'">
+					<xsl:value-of select="$MaximumBinaryNonVaryingStringLength"/>
+				</xsl:when>
+				<xsl:when test="@type='BINARY VARYING'">
+					<xsl:value-of select="$MaximumBinaryVaryingStringLength"/>
+				</xsl:when>
+				<xsl:when test="@type='BINARY LARGE OBJECT'">
+					<xsl:value-of select="$MaximumBinaryLargeObjectStringLength"/>
+				</xsl:when>
+				<xsl:otherwise>
+					<xsl:message>
+						<xsl:text>Unknown character string or binary string type "</xsl:text>
+						<xsl:value-of select="@type"/>
+						<xsl:text>".</xsl:text>
+					</xsl:message>
+				</xsl:otherwise>
+			</xsl:choose>
+		</xsl:variable>
+		<xsl:variable name="maximumLength" select="string($maximumLengthFragment)"/>
+		<xsl:variable name="length" select="string(@length)"/>
+		<!-- If neither a length nor a maximum length is specified, don't render the length portion at all. -->
+		<xsl:if test="$length or $maximumLength">
+			<xsl:value-of select="$LeftParen"/>
+			<xsl:choose>
+				<xsl:when test="$length and string(@lengthMultiplier)">
+					<xsl:apply-templates select="." mode="ForDataTypeLengthWithMultiplier"/>
+				</xsl:when>
+				<xsl:when test="$length">
+					<xsl:value-of select="$length"/>
+				</xsl:when>
+				<xsl:otherwise>
+					<xsl:value-of select="$maximumLength"/>
+				</xsl:otherwise>
+			</xsl:choose>
+			<xsl:value-of select="$RightParen"/>
+		</xsl:if>
+	</xsl:template>
+
+	<xsl:template match="ddt:characterString | ddt:binaryString" mode="ForDataTypeLengthWithMultiplier">
 		<xsl:value-of select="@length"/>
 		<xsl:value-of select="@lengthMultiplier"/>
-		<xsl:value-of select="$RightParen"/>
 	</xsl:template>
 
 	<xsl:template match="ddt:exactNumeric">
@@ -669,10 +750,11 @@
 		<xsl:value-of select="."/>
 	</xsl:template>
 
-	<xsl:template name="GetTotalDataTypeLength">
+	<xsl:template match="ddt:characterString | ddt:binaryString" mode="GetTotalDataTypeLength" name="GetTotalDataTypeLength">
 		<xsl:param name="length" select="number(@length)"/>
 		<xsl:param name="lengthMultiplier" select="string(@lengthMultiplier)"/>
 		<xsl:choose>
+			<xsl:when test="not($length)"/>
 			<xsl:when test="not($lengthMultiplier)">
 				<xsl:value-of select="$length"/>
 			</xsl:when>
@@ -719,6 +801,30 @@
 		</xsl:if>
 	</xsl:template>
 
+	<xsl:template match="ddl:sequenceGeneratorDefinition">
+		<xsl:param name="indent"/>
+		<xsl:value-of select="$NewLine"/>
+		<xsl:value-of select="$indent"/>
+		<xsl:text>CREATE SEQUENCE </xsl:text>
+		<xsl:apply-templates select="@catalog" mode="ForSchemaQualifiedName"/>
+		<xsl:apply-templates select="@schema" mode="ForSchemaQualifiedName"/>
+		<xsl:apply-templates select="@name" mode="ForSchemaQualifiedName"/>
+		<xsl:if test="ddt:*">
+			<xsl:text> AS </xsl:text>
+			<xsl:apply-templates select="ddt:*">
+				<xsl:with-param name="indent" select="concat($indent, $IndentChar)"/>
+			</xsl:apply-templates>
+			<xsl:if test="count(child::*) > 1">
+				<xsl:text> </xsl:text>
+			</xsl:if>
+		</xsl:if>
+		<xsl:apply-templates select="*[not(self::ddt:*)]">
+			<xsl:with-param name="indent" select="concat($indent, $IndentChar)"/>
+		</xsl:apply-templates>
+		<xsl:value-of select="$StatementDelimiter"/>
+		<xsl:value-of select="$NewLine"/>
+	</xsl:template>
+
 	<xsl:template match="ddl:sequenceGeneratorStartWithOption">
 		<xsl:text>START WITH </xsl:text>
 		<xsl:apply-templates/>
@@ -736,7 +842,7 @@
 	</xsl:template>
 
 	<xsl:template match="ddl:sequenceGeneratorMaxValueOption">
-		<xsl:text>MAX VALUE </xsl:text>
+		<xsl:text>MAXVALUE </xsl:text>
 		<xsl:apply-templates/>
 		<xsl:if test="position() != last()">
 			<xsl:text> </xsl:text>
@@ -744,7 +850,7 @@
 	</xsl:template>
 
 	<xsl:template match="ddl:sequenceGeneratorMinValueOption">
-		<xsl:text>MIN VALUE </xsl:text>
+		<xsl:text>MINVALUE </xsl:text>
 		<xsl:apply-templates/>
 		<xsl:if test="position() != last()">
 			<xsl:text> </xsl:text>
@@ -782,13 +888,13 @@
 	<xsl:template match="@precision" mode="ForNumeric">
 		<xsl:value-of select="$LeftParen"/>
 		<xsl:value-of select="."/>
-		<xsl:if test="not(string-length(parent::*/@scale))">
+		<xsl:if test="not(string(parent::*/@scale))">
 			<xsl:value-of select="$RightParen"/>
 		</xsl:if>
 	</xsl:template>
 
 	<xsl:template match="@scale" mode="ForNumeric">
-		<xsl:text>, </xsl:text>
+		<xsl:text>,</xsl:text>
 		<xsl:value-of select="."/>
 		<xsl:value-of select="$RightParen"/>
 	</xsl:template>
@@ -868,7 +974,7 @@
 
 	<xsl:template match="dep:currentTimeKeyword">
 		<xsl:text>CURRENT_TIME</xsl:text>
-		<xsl:if test="string-length(@precision)">
+		<xsl:if test="string(@precision)">
 			<xsl:value-of select="$LeftParen"/>
 			<xsl:value-of select="@precision"/>
 			<xsl:value-of select="$RightParen"/>
@@ -877,7 +983,7 @@
 
 	<xsl:template match="dep:currentTimestampKeyword">
 		<xsl:text>CURRENT_TIMESTAMP</xsl:text>
-		<xsl:if test="string-length(@precision)">
+		<xsl:if test="string(@precision)">
 			<xsl:value-of select="$LeftParen"/>
 			<xsl:value-of select="@precision"/>
 			<xsl:value-of select="$RightParen"/>
@@ -886,7 +992,7 @@
 
 	<xsl:template match="dep:currentLocalTimeKeyword">
 		<xsl:text>LOCALTIME</xsl:text>
-		<xsl:if test="string-length(@precision)">
+		<xsl:if test="string(@precision)">
 			<xsl:value-of select="$LeftParen"/>
 			<xsl:value-of select="@precision"/>
 			<xsl:value-of select="$RightParen"/>
@@ -895,7 +1001,7 @@
 
 	<xsl:template match="dep:currentLocalTimestampKeyword">
 		<xsl:text>LOCALTIMESTAMP</xsl:text>
-		<xsl:if test="string-length(@precision)">
+		<xsl:if test="string(@precision)">
 			<xsl:value-of select="$LeftParen"/>
 			<xsl:value-of select="@precision"/>
 			<xsl:value-of select="$RightParen"/>
@@ -961,7 +1067,7 @@
 
 	<xsl:template match="ddl:columnConstraintDefinition">
 		<xsl:text> </xsl:text>
-		<xsl:if test="@name">
+		<xsl:if test="string(@name)">
 			<xsl:text>CONSTRAINT </xsl:text>
 			<xsl:apply-templates select="@name" mode="ForSchemaQualifiedName"/>
 			<xsl:text> </xsl:text>
@@ -1038,14 +1144,18 @@
 	</xsl:template>
 
 	<xsl:template match="dep:sqlParameterReference | dep:columnReference | dep:columnNameDefinition | dep:simpleColumnReference">
-		<xsl:value-of select="@name"/>
+		<xsl:call-template name="RenderIdentifier">
+			<xsl:with-param name="name" select="@name"/>
+		</xsl:call-template>
 		<xsl:if test="not(position()=last()) and (following-sibling::dep:sqlParameterReference or following-sibling::dep:columnReference or following-sibling::dep:columnNameDefinition or following-sibling::dep:simpleColumnReference)">
 			<xsl:text>, </xsl:text>
 		</xsl:if>
 	</xsl:template>
 
 	<xsl:template match="dep:collatedColumnReference">
-		<xsl:value-of select="@name"/>
+		<xsl:call-template name="RenderIdentifier">
+			<xsl:with-param name="name" select="@name"/>
+		</xsl:call-template>
 		<xsl:apply-templates select="@collation"/>
 		<xsl:if test="not(position()=last())">
 			<xsl:text>, </xsl:text>
@@ -1105,8 +1215,15 @@
 	<xsl:template match="dep:betweenPredicate">
 		<xsl:apply-templates select="child::*[1]"/>
 		<xsl:text> </xsl:text>
-		<xsl:value-of select="@type"/>
-		<xsl:if test="@symmetry">
+		<xsl:choose>
+			<xsl:when test="string(@type)">
+				<xsl:value-of select="@type"/>
+			</xsl:when>
+			<xsl:otherwise>
+				<xsl:text>BETWEEN</xsl:text>
+			</xsl:otherwise>
+		</xsl:choose>
+		<xsl:if test="string(@symmetry)">
 			<xsl:text> </xsl:text>
 			<xsl:value-of select="@symmetry"/>
 		</xsl:if>
@@ -1251,13 +1368,15 @@
 		<xsl:value-of select="$RightParen"/>
 		<xsl:value-of select="$NewLine"/>
 		<xsl:apply-templates select="ddl:sqlRoutineSpec"/>
-		<xsl:value-of select="$StatementDelimeter"/>
+		<xsl:value-of select="$StatementDelimiter"/>
 		<xsl:value-of select="$NewLine"/>
 	</xsl:template>
 
 	<xsl:template match="ddl:sqlParameterDeclaration">
 		<xsl:value-of select="$IndentChar"/>
-		<xsl:value-of select="@name"/>
+		<xsl:call-template name="RenderIdentifier">
+			<xsl:with-param name="name" select="@name"/>
+		</xsl:call-template>
 		<xsl:text> </xsl:text>
 		<xsl:apply-templates select="child::*"/>
 		<xsl:if test="not(position()=last())">
@@ -1337,7 +1456,7 @@
 		<xsl:value-of select="$NewLine"/>
 		<xsl:value-of select="$indent"/>
 		<xsl:text>SET </xsl:text>
-		<xsl:for-each select="dml:multipleColumnAssignment |dml:singleColumnAssignment">
+		<xsl:for-each select="dml:multipleColumnAssignment | dml:singleColumnAssignment">
 			<xsl:apply-templates select=".">
 				<xsl:with-param name="indent" select="$indent"/>
 			</xsl:apply-templates>
@@ -1377,18 +1496,6 @@
 		<xsl:apply-templates>
 			<xsl:with-param name="indent" select="$indent"/>
 		</xsl:apply-templates>
-	</xsl:template>
-
-	<xsl:template match="dml:fromConstructor">
-		<xsl:value-of select="$LeftParen"/>
-		<xsl:apply-templates select="dep:column"/>
-		<xsl:value-of select="$RightParen"/>
-		<xsl:value-of select="$NewLine"/>
-		<xsl:value-of select="$IndentChar"/>
-		<xsl:text>VALUES </xsl:text>
-		<xsl:value-of select="$LeftParen"/>
-		<xsl:apply-templates select="dep:sqlParameterReference"/>
-		<xsl:value-of select="$RightParen"/>
 	</xsl:template>
 
 	<xsl:template match="dml:deleteStatement">
@@ -1493,7 +1600,9 @@
 		<xsl:value-of select="$NewLine"/>
 		<xsl:value-of select="$indent"/>
 		<xsl:text>NEW ROW AS </xsl:text>
-		<xsl:value-of select="@name"/>
+		<xsl:call-template name="RenderIdentifier">
+			<xsl:with-param name="name" select="@name"/>
+		</xsl:call-template>
 	</xsl:template>
 
 	<xsl:template match="ddl:oldRow">
@@ -1501,7 +1610,9 @@
 		<xsl:value-of select="$NewLine"/>
 		<xsl:value-of select="$indent"/>
 		<xsl:text>OLD ROW AS </xsl:text>
-		<xsl:value-of select="@name"/>
+		<xsl:call-template name="RenderIdentifier">
+			<xsl:with-param name="name" select="@name"/>
+		</xsl:call-template>
 	</xsl:template>
 
 	<xsl:template match="ddl:newTable">
@@ -1509,7 +1620,9 @@
 		<xsl:value-of select="$NewLine"/>
 		<xsl:value-of select="$indent"/>
 		<xsl:text>NEW TABLE AS </xsl:text>
-		<xsl:value-of select="@name"/>
+		<xsl:call-template name="RenderIdentifier">
+			<xsl:with-param name="name" select="@name"/>
+		</xsl:call-template>
 	</xsl:template>
 
 	<xsl:template match="ddl:oldTable">
@@ -1517,7 +1630,9 @@
 		<xsl:value-of select="$NewLine"/>
 		<xsl:value-of select="$indent"/>
 		<xsl:text>OLD TABLE AS </xsl:text>
-		<xsl:value-of select="@name"/>
+		<xsl:call-template name="RenderIdentifier">
+			<xsl:with-param name="name" select="@name"/>
+		</xsl:call-template>
 	</xsl:template>
 
 	<xsl:template match="ddl:atomicBlock">
@@ -1525,16 +1640,15 @@
 		<xsl:value-of select="$NewLine"/>
 		<xsl:value-of select="$indent"/>
 		<xsl:text>BEGIN ATOMIC</xsl:text>
-		<xsl:value-of select="$NewLine"/>
-		<xsl:value-of select="$indent"/>
-		<xsl:apply-templates>
-			<xsl:with-param name="indent" select="concat($indent, $IndentChar)"/>
-		</xsl:apply-templates>
-		<xsl:text>;</xsl:text>
+		<xsl:for-each select="child::*">
+			<xsl:apply-templates select=".">
+				<xsl:with-param name="indent" select="concat($indent, $IndentChar)"/>
+			</xsl:apply-templates>
+			<xsl:value-of select="$StatementDelimiter"/>
+		</xsl:for-each>
 		<xsl:value-of select="$NewLine"/>
 		<xsl:value-of select="$indent"/>
 		<xsl:text>END</xsl:text>
-		<xsl:value-of select="$NewLine"/>
 	</xsl:template>
 
 	<!-- End of Trigger Definitions-->
@@ -1551,7 +1665,7 @@
 		<xsl:apply-templates select="@name" mode="ForSchemaQualifiedName"/>
 		<xsl:text> AS </xsl:text>
 		<xsl:apply-templates/>
-		<xsl:value-of select="$StatementDelimeter"/>
+		<xsl:value-of select="$StatementDelimiter"/>
 		<xsl:value-of select="$NewLine"/>
 	</xsl:template>
 
@@ -1662,7 +1776,7 @@
 		<xsl:value-of select="@isolationLevel"/>
 		<xsl:text>, </xsl:text>
 		<xsl:value-of select="@accessMode"/>
-		<xsl:value-of select="$StatementDelimeter"/>
+		<xsl:value-of select="$StatementDelimiter"/>
 		<xsl:value-of select="$NewLine"/>
 	</xsl:template>
 
@@ -1682,7 +1796,7 @@
 		<xsl:apply-templates>
 			<xsl:with-param name="indent" select="$indent"/>
 		</xsl:apply-templates>
-		<xsl:value-of select="$StatementDelimeter"/>
+		<xsl:value-of select="$StatementDelimiter"/>
 		<xsl:value-of select="$NewLine"/>
 	</xsl:template>
 
@@ -1694,7 +1808,7 @@
 	<!-- End of Alter Table Statement -->
 
 	<xsl:template name="RenderIdentifier">
-		<xsl:param name="name"/>
+		<xsl:param name="name" select="."/>
 		<xsl:value-of select="$name"/>
 	</xsl:template>
 

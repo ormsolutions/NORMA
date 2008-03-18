@@ -12,28 +12,36 @@
 <xsl:stylesheet version="1.0"
 	xmlns:xsl="http://www.w3.org/1999/XSL/Transform"
 	xmlns:exsl="http://exslt.org/common"
-	xmlns:dml="http://schemas.orm.net/DIL/DMIL"
-	xmlns:dms="http://schemas.orm.net/DIL/DILMS"
-	xmlns:dep="http://schemas.orm.net/DIL/DILEP"
-	xmlns:ddt="http://schemas.orm.net/DIL/DILDT"
 	xmlns:dil="http://schemas.orm.net/DIL/DIL"
+	xmlns:ddt="http://schemas.orm.net/DIL/DILDT"
+	xmlns:dep="http://schemas.orm.net/DIL/DILEP"
+	xmlns:dms="http://schemas.orm.net/DIL/DILMS"
+	xmlns:dml="http://schemas.orm.net/DIL/DMIL"
 	xmlns:ddl="http://schemas.orm.net/DIL/DDIL"
 	extension-element-prefixes="exsl"
-	exclude-result-prefixes="dml dms dep ddt dil ddl">
+	exclude-result-prefixes="dil ddt dep dms dml ddl">
 
 	<xsl:import href="DDILtoSQLStandard.xslt"/>
 	<xsl:import href="TruthValueTestRemover.xslt"/>
+	<xsl:import href="TinyIntRemover.xslt"/>
 	<xsl:import href="DomainInliner.xslt"/>
 
 	<xsl:output method="text" encoding="utf-8" indent="no" omit-xml-declaration="yes"/>
 	<xsl:strip-space elements="*"/>
 
+	<xsl:param name="DefaultMaximumNonVaryingStringLength" select="254"/>
+	<xsl:param name="DefaultMaximumVaryingStringLength" select="32672"/>
+	<xsl:param name="DefaultMaximumLargeObjectStringLength" select="2147483647"/>
+
 	<xsl:template match="/">
 		<xsl:variable name="truthValueTestRemovedDilFragment">
 			<xsl:apply-templates mode="TruthValueTestRemover" select="."/>
 		</xsl:variable>
+		<xsl:variable name="tinyIntRemovedDilFragment">
+			<xsl:apply-templates mode="TinyIntRemover" select="exsl:node-set($truthValueTestRemovedDilFragment)"/>
+		</xsl:variable>
 		<xsl:variable name="domainInlinedDilFragment">
-			<xsl:apply-templates mode="DomainInliner" select="exsl:node-set($truthValueTestRemovedDilFragment)/child::*"/>
+			<xsl:apply-templates mode="DomainInliner" select="exsl:node-set($tinyIntRemovedDilFragment)"/>
 		</xsl:variable>
 		<xsl:apply-templates select="exsl:node-set($domainInlinedDilFragment)/child::*"/>
 	</xsl:template>
@@ -48,10 +56,8 @@
 		<xsl:text> FOR BIT DATA</xsl:text>
 	</xsl:template>
 
-	<xsl:template match="ddt:characterString[@lengthMultiplier='T' or @lengthMultiplier='P'] | ddt:binaryString[@lengthMultiplier='T' or @lengthMultiplier='P']" mode="ForDataTypeLength">
-		<xsl:value-of select="$LeftParen"/>
+	<xsl:template match="ddt:characterString[@lengthMultiplier='T' or @lengthMultiplier='P'] | ddt:binaryString[@lengthMultiplier='T' or @lengthMultiplier='P']" mode="ForDataTypeLengthWithMultiplier">
 		<xsl:call-template name="GetTotalDataTypeLength"/>
-		<xsl:value-of select="$RightParen"/>
 	</xsl:template>
 
 	<xsl:template match="@type[.='BINARY']" mode="ForDataType">
@@ -68,6 +74,7 @@
 		<xsl:text>1</xsl:text>
 		<xsl:value-of select="$RightParen"/>
 		<xsl:text> FOR BIT DATA</xsl:text>
+		<!-- UNDONE: Add constraints to restrict BOOLEAN to the appropriate values. -->
 	</xsl:template>
 
 	<xsl:template match="ddt:booleanLiteral">
@@ -89,7 +96,7 @@
 		<xsl:value-of select="$NewLine"/>
 		<xsl:value-of select="$indent"/>
 		<xsl:text>COMMIT</xsl:text>
-		<xsl:value-of select="$StatementDelimeter"/>
+		<xsl:value-of select="$StatementDelimiter"/>
 		<xsl:value-of select="$NewLine"/>
 	</xsl:template>
 

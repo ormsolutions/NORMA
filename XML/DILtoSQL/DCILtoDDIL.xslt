@@ -17,9 +17,9 @@
 	xmlns:dil="http://schemas.orm.net/DIL/DIL"
 	xmlns:ddt="http://schemas.orm.net/DIL/DILDT"
 	xmlns:dep="http://schemas.orm.net/DIL/DILEP"
-	xmlns:ddl="http://schemas.orm.net/DIL/DDIL"
-	xmlns:dml="http://schemas.orm.net/DIL/DMIL"
 	xmlns:dms="http://schemas.orm.net/DIL/DILMS"
+	xmlns:dml="http://schemas.orm.net/DIL/DMIL"
+	xmlns:ddl="http://schemas.orm.net/DIL/DDIL"
 	extension-element-prefixes="exsl dsf">
 
 	<xsl:import href="DILSupportFunctions.xslt"/>
@@ -164,8 +164,9 @@
 		</ddl:sqlParameterDeclaration>
 	</xsl:template>
 
+	<!-- UNDONE: Why were these even in here in the first place? -->
 	<!-- UNDONE: This part needs to be fixed. -->
-	<xsl:template match="dml:insertStatement">
+	<!--<xsl:template match="dml:insertStatement">
 		<ddl:sqlRoutineSpec rightsClause="INVOKER">
 			<dml:insertStatement schema="{@schema}" name="{@name}">
 				<dml:fromConstructor>
@@ -194,7 +195,7 @@
 			</xsl:for-each>
 		</dml:deleteStatement>
 		</ddl:sqlRoutineSpec>
-	</xsl:template>
+	</xsl:template>-->
 
 	<xsl:template match="dcl:checkConstraint | dcl:uniquenessConstraint | dcl:referenceConstraint" mode="GenerateConstraint">
 		<xsl:param name="ElementName" select="'ddl:tableConstraintDefinition'"/>
@@ -255,16 +256,20 @@
 			</xsl:if>
 		</ddt:approximateNumeric>
 	</xsl:template>
-	<xsl:template match="dcl:predefinedDataType[@name='BINARY LARGE OBJECT']">
-		<ddt:binaryString type="{@name}" length="{@length}"/>
+	<xsl:template match="dcl:predefinedDataType[@name='BINARY' or @name='BINARY VARYING' or @name='BINARY LARGE OBJECT']">
+		<ddt:binaryString type="{@name}">
+			<xsl:copy-of select="@length"/>
+		</ddt:binaryString>
 	</xsl:template>
 	<xsl:template match="dcl:predefinedDataType[@name='BOOLEAN']">
 		<ddt:boolean type="{@name}"/>
 	</xsl:template>
 	<xsl:template match="dcl:predefinedDataType[@name='CHARACTER' or @name='CHARACTER VARYING' or @name='CHARACTER LARGE OBJECT']">
-		<ddt:characterString type="{@name}" length="{@length}"/>
+		<ddt:characterString type="{@name}">
+			<xsl:copy-of select="@length"/>
+		</ddt:characterString>
 	</xsl:template>
-	<xsl:template match="dcl:predefinedDataType[@name='NUMERIC' or @name='DECIMAL' or @name='SMALLINT' or @name='INTEGER' or @name='BIGINT']">
+	<xsl:template match="dcl:predefinedDataType[@name='NUMERIC' or @name='DECIMAL' or @name='TINYINT' or @name='SMALLINT' or @name='INTEGER' or @name='BIGINT']">
 		<ddt:exactNumeric type="{@name}">
 			<xsl:if test="@name='NUMERIC' or @name='DECIMAL'">
 				<xsl:copy-of select="@precision"/>

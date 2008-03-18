@@ -44,6 +44,9 @@
 		<SubType name="UnsignedInteger" backingType=".u4">
 			<comment type="summary">An unsigned integer numeric data type</comment>
 		</SubType>
+		<SubType name="UnsignedTinyInteger" backingType=".u1">
+			<comment type="summary">A tiny unsigned integer numeric data type</comment>
+		</SubType>
 		<SubType name="UnsignedSmallInteger" backingType=".u2">
 			<comment type="summary">A small unsigned integer numeric data type</comment>
 		</SubType>
