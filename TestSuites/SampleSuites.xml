@@ -8,6 +8,8 @@
 			<IncludeCategory name="DataTypeNotSpecifiedError"/>
 			<IncludeCategory name="InternalConstraints"/>
 			<IncludeCategory name="ConstraintContradictions"/>
+			<IncludeCategory name="ConstraintImplications"/>
+			<IncludeCategory name="NotWellModeledErrors"/>
 			<IncludeCategory name="Subtype"/>
 			<ExcludeCategory name="NotYet"/>
 		</Categories>

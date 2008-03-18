@@ -1,0 +1,9 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<TestReport xmlns="http://schemas.neumont.edu/ORM/SDK/TestReport">
+	<ValidationErrors name="Start with one Implication Error">
+		<ValidationError>Constraint 'ExternalUniquenessConstraint_A' in model 'ORMModel2' is implied by at least one constraint of the same type attached to a subset of the same roles.</ValidationError>
+	</ValidationErrors>
+	<Message>Removing the Implied Uniqueness Costraint...</Message>
+	<ValidationErrors name="Error is removed with removal of Implied Constraint" />
+	<Compare result="pass" />
+</TestReport>

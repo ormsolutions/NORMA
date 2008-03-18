@@ -1,0 +1,10 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<TestReport xmlns="http://schemas.neumont.edu/ORM/SDK/TestReport">
+	<ValidationErrors name="Start with no Error" />
+	<Message>Introducing error via creating additional implied mandatory constraint</Message>
+	<ValidationErrors name="Error Received. Proceed to removal via removing the other Mandatory Constraint">
+		<ValidationError>Constraint 'InclusiveOrConstraint1' in model 'ORMModel3' is implied by at least one constraint of the same type attached to a subset of the same roles.</ValidationError>
+	</ValidationErrors>
+	<ValidationErrors name="Error is removed." />
+	<Compare result="pass" />
+</TestReport>

@@ -55,10 +55,12 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="ConstraintContradictionTests\ConstraintContradictionTests.cs" />
+    <Compile Include="ConstraintImplicationTests\ImplicationErrorTests.cs" />
     <Compile Include="DTBlankTests\DTBlankTests.cs" />
     <Compile Include="FCMinMaxTests\FCExactlyOneTests.cs" />
     <Compile Include="FCMinMaxTests\FCMinMaxTests.cs" />
     <Compile Include="NMinus1Tests\NMinus1Tests.cs" />
+    <Compile Include="NotWellModeledTests\NotWellModeledTests.cs" />
     <Compile Include="Sample\Tests.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="SubtypeTests\PreferredPathTests.cs" />
@@ -80,6 +82,32 @@
     </EmbeddedResource>
     <EmbeddedResource Include="ConstraintContradictionTests\ConstraintContradictionTests.ExclusionSubsetContra_1b.Load.orm" />
     <EmbeddedResource Include="ConstraintContradictionTests\ConstraintContradictionTests.ExclusionSubsetContra_1b.Compare.orm" />
+    <EmbeddedResource Include="ConstraintImplicationTests\ImplicationErrorTests.EqualityMandatoryImplied_1a.Compare.orm" />
+    <EmbeddedResource Include="ConstraintImplicationTests\ImplicationErrorTests.EqualityMandatoryImplied_1a.Load.orm" />
+    <EmbeddedResource Include="ConstraintImplicationTests\ImplicationErrorTests.EqualityMandatoryImplied_1b.Compare.orm" />
+    <EmbeddedResource Include="ConstraintImplicationTests\ImplicationErrorTests.EqualityMandatoryImplied_1b.Load.orm" />
+    <EmbeddedResource Include="ConstraintImplicationTests\ImplicationErrorTests.MandatoryMandatory_1a.Load.orm" />
+    <EmbeddedResource Include="ConstraintImplicationTests\ImplicationErrorTests.MandatoryMandatory_1b.Compare.orm" />
+    <EmbeddedResource Include="ConstraintImplicationTests\ImplicationErrorTests.MandatoryMandatory_1b.Load.orm" />
+    <EmbeddedResource Include="ConstraintImplicationTests\ImplicationErrorTests.UniqueUniqueImplied_1a.Compare.orm" />
+    <EmbeddedResource Include="ConstraintImplicationTests\ImplicationErrorTests.UniqueUniqueImplied_1a.Load.orm" />
+    <EmbeddedResource Include="NotWellModeledTests\NotWellModeledTests.SubsetMandatory_1a.Load.orm" />
+    <EmbeddedResource Include="FCMinMaxTests\FCExactlyOneTests.ExactlyOneTest_1b.Load.orm">
+    </EmbeddedResource>
+    <EmbeddedResource Include="ConstraintContradictionTests\ConstraintContradictionTests.ExclusionMandatoryContra_1a.Compare.orm">
+    </EmbeddedResource>
+    <EmbeddedResource Include="ConstraintContradictionTests\ConstraintContradictionTests.ExclusionMandatoryContra_1a.Load.orm">
+    </EmbeddedResource>
+    <EmbeddedResource Include="ConstraintContradictionTests\ConstraintContradictionTests.ExclusionMandatoryContra_1b.Compare.orm">
+    </EmbeddedResource>
+    <EmbeddedResource Include="ConstraintContradictionTests\ConstraintContradictionTests.ExclusionMandatoryContra_1b.Load.orm">
+    </EmbeddedResource>
+    <EmbeddedResource Include="FCMinMaxTests\FCExactlyOneTests.ExactlyOneTest_1b.Compare.orm">
+    </EmbeddedResource>
+    <EmbeddedResource Include="ConstraintImplicationTests\ImplicationErrorTests.MandatoryMandatory_1a.Compare.orm">
+    </EmbeddedResource>
+    <EmbeddedResource Include="NotWellModeledTests\NotWellModeledTests.SubsetMandatory_1a.Compare.orm">
+    </EmbeddedResource>
     <None Include="ormtest.snippet" />
     <None Include="ormtestclass.snippet" />
     <EmbeddedResource Include="SubtypeTests\PreferredPathTests.ResolvePreferredTest1.Compare.orm">
@@ -203,6 +231,25 @@
   </ItemGroup>
   <ItemGroup>
     <EmbeddedResource Include="SubtypeTests\PreferredPathTests.ResolvePreferredTest1.Report.xml" />
+  </ItemGroup>
+  <ItemGroup>
+    <EmbeddedResource Include="ConstraintImplicationTests\ImplicationErrorTests.EqualityMandatoryImplied_1a.Report.xml" />
+    <EmbeddedResource Include="ConstraintImplicationTests\ImplicationErrorTests.EqualityMandatoryImplied_1b.Report.xml" />
+    <EmbeddedResource Include="ConstraintImplicationTests\ImplicationErrorTests.MandatoryMandatory_1b.Report.xml" />
+    <EmbeddedResource Include="ConstraintImplicationTests\ImplicationErrorTests.UniqueUniqueImplied_1a.Report.xml" />
+  </ItemGroup>
+  <ItemGroup>
+    <EmbeddedResource Include="FCMinMaxTests\FCExactlyOneTests.ExactlyOneTest_1b.Report.xml" />
+  </ItemGroup>
+  <ItemGroup>
+    <EmbeddedResource Include="ConstraintContradictionTests\ConstraintContradictionTests.ExclusionMandatoryContra_1a.Report.xml" />
+    <EmbeddedResource Include="ConstraintContradictionTests\ConstraintContradictionTests.ExclusionMandatoryContra_1b.Report.xml" />
+  </ItemGroup>
+  <ItemGroup>
+    <EmbeddedResource Include="ConstraintImplicationTests\ImplicationErrorTests.MandatoryMandatory_1a.Report.xml" />
+  </ItemGroup>
+  <ItemGroup>
+    <EmbeddedResource Include="NotWellModeledTests\NotWellModeledTests.SubsetMandatory_1a.Report.xml" />
   </ItemGroup>
   <Import Project="$(MSBuildBinPath)\Microsoft.CSharp.targets" />
   <Import Project="$(MSBuildExtensionsPath)\Neumont\Neumont.Build.targets" />

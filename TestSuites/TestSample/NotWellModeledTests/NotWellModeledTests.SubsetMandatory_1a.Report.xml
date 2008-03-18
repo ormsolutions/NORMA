@@ -1,0 +1,15 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<TestReport xmlns="http://schemas.neumont.edu/ORM/SDK/TestReport">
+	<ValidationErrors name="No Errors Found Initially" />
+	<ValidationErrors name="Intoduce Error: Make a role of supertype mandatory" />
+	<ValidationErrors name="Error Found. Calling Undo to remove error...">
+		<ValidationError>Subset constraint 'SubsetConstraint1' and mandatory constraint 'SimpleMandatoryConstraint2' in model 'ORMModel1' are not well-modeled. Suggested ways to fix: (1) Delete the mandatory constraint. (2) Add another mandatory constraint on the superset role. (3) Delete the subset constraint.</ValidationError>
+	</ValidationErrors>
+	<ValidationErrors name="Error removed with undo." />
+	<ValidationErrors name="Intoduce Error: Make a role of subtype mandatory" />
+	<ValidationErrors name="Error Found. Calling Undo to remove error...">
+		<ValidationError>Subset constraint 'SubsetConstraint1' and mandatory constraint 'SimpleMandatoryConstraint2' in model 'ORMModel1' are not well-modeled. Suggested ways to fix: (1) Delete the mandatory constraint. (2) Add another mandatory constraint on the superset role. (3) Delete the subset constraint.</ValidationError>
+	</ValidationErrors>
+	<ValidationErrors name="Error is removed with changing property value..." />
+	<Compare result="pass" />
+</TestReport>

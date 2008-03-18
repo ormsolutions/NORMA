@@ -1,0 +1,12 @@
+﻿<TestReport xmlns="http://schemas.neumont.edu/ORM/SDK/TestReport">
+	<ValidationErrors name="Start with one Implication Error">
+		<ValidationError>Constraint 'InclusiveOrConstraint2' in model 'ORMModel3' is implied by at least one constraint of the same type attached to a subset of the same roles.</ValidationError>
+	</ValidationErrors>
+	<ValidationErrors name="Error is removed with removal of a Constraint" />
+	<ValidationErrors name="Undo to bring to initial condition" />
+	<ValidationErrors name="Proceed to remove the other Mandatory Constraint">
+		<ValidationError>Constraint 'InclusiveOrConstraint2' in model 'ORMModel3' is implied by at least one constraint of the same type attached to a subset of the same roles.</ValidationError>
+	</ValidationErrors>
+	<ValidationErrors name="All Errors Removed" />
+	<Compare result="pass" />
+</TestReport>

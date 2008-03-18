@@ -11,7 +11,7 @@ using Neumont.Tools.Modeling.Design;
 namespace TestSample.ConstraintContradictionTests
 {
 	[ORMTestFixture]
-	[TestFixture(Description = "Test the FrequencyConstraintExactlyOneError")]
+	[TestFixture(Description = "Test Constraint Contradiction/Implication Errors")]
 	public class ConstraintContradictionTests
 	{
 		#region Boilerplate code
@@ -31,6 +31,9 @@ namespace TestSample.ConstraintContradictionTests
 		//ConstContradictTests_1b: Remove Equality Constraint to remove the error, [ExclusionContradictsEqualityError].
 		//ExclusionSubsetContra_1a: Remove Exclusion Constraint to remove the error, [ExclusionContradictsSubsetError].
 		//ExclusionSubsetContra_1b: Remove Subset Constraint to remove the error, [ExclusionContradictsSubsetError].
+		//ExclusionMandatoryContra_1a: Add a Simple Mandatory Constraint to introduce the error, [ExclusionContradictsMandatoryError], then Undo() to remove.
+		//ExclusionMandatoryContra_1b: Add a Simple Mandatory Constraint to introduce the error, [ExclusionContradictsMandatoryError], then Remove the Exclusion Constraint to remove.
+
 
 		#region ConstContradictTests_1a
 		[Test(Description = "Remove Exclusion Constraint and Verify ExclusionContradictsEqualityError is also removed")]
@@ -140,6 +143,70 @@ namespace TestSample.ConstraintContradictionTests
 		}
 		#endregion
 
+		#region ExclusionMandatoryContra_1a
+		[Test(Description= "Add a simple mandatory constraint to conflict with existing Exclusion Constraint")]
+		[NUnitCategory("ConstraintContradictions")]
+		[NUnitCategory("ExclusionContradictsMandatoryError")]
+		public void ExclusionMandatoryContra_1a()
+		{
+			Suite.RunNUnitTest(this, myTestServices);
+		}
+
+		[ORMTest("ConstraintContradictions", "ExclusionContradictsMandatoryError")]
+		public void ExclusionMandatoryContra_1a(Store store)
+		{
+			myTestServices.LogValidationErrors("No Errors Found Initialliy");
+
+			ORMModel model = store.ElementDirectory.FindElements<ORMModel>()[0];
+
+			// Input file(ExclusionMandatoryContra_1a.Load.orm) specific code.
+			// Recommend finding a better method of retrieving the role in context.
+			FactType factType = model.FactTypeCollection[2];
+			Role role = (Role)factType.RoleCollection[0];
+
+			using (Transaction t = store.TransactionManager.BeginTransaction("Add Mandatory Constraint"))
+			{
+				role.IsMandatory = true;
+				t.Commit();
+			}
+			myTestServices.LogValidationErrors("Error is Introduced");
+			store.UndoManager.Undo();
+			myTestServices.LogValidationErrors("Error is removed with Undo");
+		}
+		#endregion
+
+		#region ExclusionMandatoryContra_1b
+		[Test(Description = "Add a simple mandatory constraint to conflict with existing Exclusion Constraint")]
+		[NUnitCategory("ConstraintContradictions")]
+		[NUnitCategory("ExclusionContradictsMandatoryError")]
+		public void ExclusionMandatoryContra_1b()
+		{
+			Suite.RunNUnitTest(this, myTestServices);
+		}
+
+		[ORMTest("ConstraintContradictions", "ExclusionContradictsMandatoryError")]
+		public void ExclusionMandatoryContra_1b(Store store)
+		{
+			myTestServices.LogValidationErrors("No Errors Found Initialliy");
+
+			ORMModel model = store.ElementDirectory.FindElements<ORMModel>()[0];
+			Role role = (Role)store.ElementDirectory.GetElement(new Guid("1C424E34-8369-41EC-850F-FD24E7B30C7A"));
+			ExclusionConstraint constraint = (ExclusionConstraint)model.ConstraintsDictionary.GetElement("ExclusionConstraint1").SingleElement;
+			using (Transaction t = store.TransactionManager.BeginTransaction("Add Mandatory Constraint"))
+			{
+				role.IsMandatory = true;
+				t.Commit();
+			}
+			myTestServices.LogValidationErrors("Error is Introduced");
+
+			using (Transaction t = store.TransactionManager.BeginTransaction("Add Mandatory Constraint"))
+			{
+				constraint.Delete();
+				t.Commit();
+			}
+			myTestServices.LogValidationErrors("Error is removed upon Removal of Exclusion Constraint");
+		}
+		#endregion
 
 
 	}
