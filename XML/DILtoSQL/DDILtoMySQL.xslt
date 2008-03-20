@@ -47,6 +47,8 @@
 	<xsl:param name="MaximumBinaryVaryingStringLength" select="$MySQL.NormalLength"/>
 	<xsl:param name="MaximumCharacterLargeObjectStringLength" select="floor($MySQL.LongLength div $MySQL.CharacterStringLengthDivisor)"/>
 	<xsl:param name="MaximumBinaryLargeObjectStringLength" select="$MySQL.LongLength"/>
+	<xsl:param name="DefaultMaximumExactNumericPrecisionAndScale" select="65"/>
+	<xsl:param name="DefaultMaximumApproximateNumericPrecision" select="53"/>
 
 	<xsl:template match="/">
 		<xsl:variable name="truthValueTestRemovedDilFragment">
@@ -145,6 +147,13 @@
 	</xsl:template>
 	<xsl:template match="@type[.='INTEGER']" mode="ForDataType">
 		<xsl:text>INT</xsl:text>
+	</xsl:template>
+	<xsl:template match="@type[.='REAL']" mode="ForDataType">
+		<xsl:text>FLOAT</xsl:text>
+		<xsl:value-of select="$LeftParen"/>
+		<!-- This would normally be 24, but the MySQL documentation indicates that it treats 24 as being double-precision rather than single-precision. -->
+		<xsl:text>23</xsl:text>
+		<xsl:value-of select="$RightParen"/>
 	</xsl:template>
 	<xsl:template match="@type[.='TIMESTAMP']" mode="ForDataType">
 		<!-- Although MySQL has a TIMESTAMP type, their DATETIME is closer to the SQL Standard's TIMESTAMP. -->

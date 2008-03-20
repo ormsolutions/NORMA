@@ -220,7 +220,7 @@
 				<xs:documentation>If this is any other data type, a value for this attribute must not be specified.</xs:documentation>
 			</xs:annotation>
 		</xs:attribute>
-		<xs:attribute name="Scale" use="optional" type="ddt:numericPrecision">
+		<xs:attribute name="Scale" use="optional" type="ddt:numericScale">
 			<xs:annotation>
 				<xs:documentation>The maximum number of decimal digits after the decimal point in a NUMERIC or DECIMAL.</xs:documentation>
 				<xs:documentation>If this is any other data type, a value for this attribute must not be specified.</xs:documentation>

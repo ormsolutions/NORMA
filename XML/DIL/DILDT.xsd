@@ -70,6 +70,9 @@
 		<xs:restriction base="xs:nonNegativeInteger"/>
 	</xs:simpleType>
 	<xs:simpleType name="numericPrecision">
+		<xs:restriction base="xs:positiveInteger"/>
+	</xs:simpleType>
+	<xs:simpleType name="numericScale">
 		<xs:restriction base="xs:nonNegativeInteger"/>
 	</xs:simpleType>
 	<xs:simpleType name="stringLength">
@@ -401,17 +404,20 @@
 	<xs:complexType name="numericDescriptor" abstract="true">
 		<xs:annotation>
 			<xs:documentation>A number is either an exact numeric value or an approximate numeric value.</xs:documentation>
-			<xs:documentation>Note: For all numeric types, the least value is less than zero and the greatest value is greater than zero. That is, all numeric types are signed.</xs:documentation>
+			<xs:documentation>Note: For all numeric types defined in the SQL standard, the least value is less than zero and the greatest value is greater than zero. That is, all numeric types are signed.</xs:documentation>
 		</xs:annotation>
 		<xs:attribute name="type" use="required" type="ddt:numericTypes"/>
 		<xs:attribute name="precision" use="optional" type="ddt:numericPrecision">
 			<xs:annotation>
 				<xs:documentation>The precision of the number.</xs:documentation>
+				<xs:documentation>If a precision is not specified, the maximum precision supported by the target DBMS will be used.</xs:documentation>
 			</xs:annotation>
 		</xs:attribute>
-		<xs:attribute name="scale" use="optional" type="ddt:numericPrecision">
+		<xs:attribute name="scale" use="optional" type="ddt:numericScale">
 			<xs:annotation>
 				<xs:documentation>The scale of the exact number. Must be less than or equal to the precision.</xs:documentation>
+				<xs:documentation>If a precision is specified and a scale is not specified, a scale of zero will be used.</xs:documentation>
+				<xs:documentation>If a precision is not specified and a scale is not specified, the maximum scale supported by the target DBMS will be used.</xs:documentation>
 			</xs:annotation>
 		</xs:attribute>
 	</xs:complexType>
@@ -431,7 +437,7 @@
 			<xs:restriction base="ddt:numericDescriptor">
 				<xs:attribute name="type" use="required" type="ddt:exactNumericTypes"/>
 				<xs:attribute name="precision" use="optional" type="ddt:numericPrecision"/>
-				<xs:attribute name="scale" use="optional" type="ddt:numericPrecision"/>
+				<xs:attribute name="scale" use="optional" type="ddt:numericScale"/>
 			</xs:restriction>
 		</xs:complexContent>
 	</xs:complexType>
@@ -609,18 +615,18 @@
 	</xs:simpleType>
 	<xs:simpleType name="exactNumericTypes">
 		<xs:annotation>
-			<xs:documentation>Although the SQL standard does not specify the ranges of the integer types, DIL treats them as having the ranges specified here.</xs:documentation>
+			<xs:documentation>Although the SQL standard does not specify the ranges of the exact numeric types, DIL treats them as having the ranges specified here.</xs:documentation>
 			<xs:documentation>DIL renderers will output them as appropriate to ensure that they have these ranges.</xs:documentation>
 		</xs:annotation>
 		<xs:restriction base="xs:string">
 			<xs:enumeration value="NUMERIC">
 				<xs:annotation>
-					<xs:documentation></xs:documentation>
+					<xs:documentation>Range: Determined by the precision attribute.</xs:documentation>
 				</xs:annotation>
 			</xs:enumeration>
 			<xs:enumeration value="DECIMAL">
 				<xs:annotation>
-					<xs:documentation></xs:documentation>
+					<xs:documentation>Range: Determined by the precision attribute.</xs:documentation>
 				</xs:annotation>
 			</xs:enumeration>
 			<xs:enumeration value="TINYINT">
@@ -647,20 +653,26 @@
 		</xs:restriction>
 	</xs:simpleType>
 	<xs:simpleType name="approximateNumericTypes">
+		<xs:annotation>
+			<xs:documentation>Although the SQL standard does not specify the ranges of the approximate numeric types, DIL treats them as having the precisions specified here.</xs:documentation>
+			<xs:documentation>DIL renderers will output them as appropriate to ensure that they have these precisions.</xs:documentation>
+		</xs:annotation>
 		<xs:restriction base="xs:string">
 			<xs:enumeration value="FLOAT">
 				<xs:annotation>
-					<xs:documentation></xs:documentation>
+					<xs:documentation>Precision: Determined by the precision attribute.</xs:documentation>
 				</xs:annotation>
 			</xs:enumeration>
 			<xs:enumeration value="REAL">
 				<xs:annotation>
-					<xs:documentation></xs:documentation>
+					<xs:documentation>Precision: 24 binary digits.</xs:documentation>
+					<xs:documentation>This corresponds to the IEEE 754 single-precision floating point numeric type.</xs:documentation>
 				</xs:annotation>
 			</xs:enumeration>
 			<xs:enumeration value="DOUBLE PRECISION">
 				<xs:annotation>
-					<xs:documentation></xs:documentation>
+					<xs:documentation>Precision: 53 binary digits.</xs:documentation>
+					<xs:documentation>This corresponds to the IEEE 754 double-precision floating point numeric type.</xs:documentation>
 				</xs:annotation>
 			</xs:enumeration>
 		</xs:restriction>

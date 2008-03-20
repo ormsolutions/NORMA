@@ -28,7 +28,10 @@
 	<xsl:output method="text" encoding="utf-8" indent="no" omit-xml-declaration="yes"/>
 	<xsl:strip-space elements="*"/>
 
-	<xsl:param name="MaximumStringLength" select="''"/>
+	<xsl:param name="DefaultMaximumStringLength" select="''"/>
+	<xsl:param name="DefaultMaximumExactNumericPrecisionAndScale" select="''"/>
+	<xsl:param name="DefaultMaximumExactNumericPrecisionWithScale" select="1000"/>
+	<xsl:param name="DefaultMaximumApproximateNumericPrecision" select="''"/>
 
 	<xsl:template match="/">
 		<xsl:variable name="tinyIntRemovedDilFragment">

@@ -32,6 +32,9 @@
 
 	<xsl:param name="DefaultMaximumStringLength" select="2000"/>
 	<xsl:param name="DefaultMaximumLargeObjectStringLength" select="''"/>
+	<xsl:param name="DefaultMaximumExactNumericPrecisionAndScale" select="''"/>
+	<xsl:param name="DefaultMaximumExactNumericPrecisionWithScale" select="38"/>
+	<xsl:param name="DefaultMaximumApproximateNumericPrecision" select="126"/>
 
 	<xsl:param name="TinyIntRemover.ReplacementDataType" select="'DECIMAL'"/>
 	<xsl:param name="TinyIntRemover.ReplacementDataTypePrecision" select="3"/>

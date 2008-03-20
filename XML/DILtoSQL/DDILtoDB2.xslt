@@ -32,6 +32,8 @@
 	<xsl:param name="DefaultMaximumNonVaryingStringLength" select="254"/>
 	<xsl:param name="DefaultMaximumVaryingStringLength" select="32672"/>
 	<xsl:param name="DefaultMaximumLargeObjectStringLength" select="2147483647"/>
+	<xsl:param name="DefaultMaximumExactNumericPrecisionAndScale" select="31"/>
+	<xsl:param name="DefaultMaximumApproximateNumericPrecision" select="''"/>
 
 	<xsl:template match="/">
 		<xsl:variable name="truthValueTestRemovedDilFragment">

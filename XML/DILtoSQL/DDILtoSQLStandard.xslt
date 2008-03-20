@@ -43,8 +43,9 @@
 	<xsl:param name="SetClauseEqualsOperator" select="'='"/>
 	<xsl:param name="StatementBlockDelimeter" select="''"/>
 
-	<!-- The DefaultMaximum*StringLength parameters are provided to allow derived stylesheets to initialize multiple Maximum*StringLength parameters at once. -->
-	<!-- They should be referenced only from the default values for these parameters. Everything else should use the specific Maximum*StringLength parameters. -->
+	<!-- The DefaultMaximum* parameters are provided to allow derived stylesheets to initialize multiple Maximum* parameters at once. -->
+	<!-- They should be referenced only from the default values for these parameters. Everything else should use the specific Maximum* parameters. -->
+
 	<xsl:param name="DefaultMaximumStringLength"/>
 	<xsl:param name="DefaultMaximumNonVaryingStringLength" select="$DefaultMaximumStringLength"/>
 	<xsl:param name="MaximumCharacterNonVaryingStringLength" select="$DefaultMaximumNonVaryingStringLength"/>
@@ -55,6 +56,21 @@
 	<xsl:param name="DefaultMaximumLargeObjectStringLength" select="$DefaultMaximumStringLength"/>
 	<xsl:param name="MaximumCharacterLargeObjectStringLength" select="$DefaultMaximumLargeObjectStringLength"/>
 	<xsl:param name="MaximumBinaryLargeObjectStringLength" select="$DefaultMaximumLargeObjectStringLength"/>
+
+	<xsl:param name="DefaultMaximumExactNumericPrecisionAndScale"/>
+	<xsl:param name="DefaultMaximumExactNumericPrecision" select="$DefaultMaximumExactNumericPrecisionAndScale"/>
+	<xsl:param name="DefaultMaximumExactNumericPrecisionWithoutScale" select="$DefaultMaximumExactNumericPrecision"/>
+	<xsl:param name="MaximumNumericExactNumericPrecisionWithoutScale" select="$DefaultMaximumExactNumericPrecisionWithoutScale"/>
+	<xsl:param name="MaximumDecimalExactNumericPrecisionWithoutScale" select="$DefaultMaximumExactNumericPrecisionWithoutScale"/>
+	<xsl:param name="DefaultMaximumExactNumericPrecisionWithScale" select="$DefaultMaximumExactNumericPrecision"/>
+	<xsl:param name="MaximumNumericExactNumericPrecisionWithScale" select="$DefaultMaximumExactNumericPrecisionWithScale"/>
+	<xsl:param name="MaximumDecimalExactNumericPrecisionWithScale" select="$DefaultMaximumExactNumericPrecisionWithScale"/>
+	<xsl:param name="DefaultMaximumExactNumericScale" select="$DefaultMaximumExactNumericPrecisionAndScale"/>
+	<xsl:param name="MaximumNumericExactNumericScale" select="$DefaultMaximumExactNumericScale"/>
+	<xsl:param name="MaximumDecimalExactNumericScale" select="$DefaultMaximumExactNumericScale"/>
+
+	<xsl:param name="DefaultMaximumApproximateNumericPrecision"/>
+	<xsl:param name="MaximumFloatApproximateNumericPrecision" select="$DefaultMaximumApproximateNumericPrecision"/>
 
 	<!--
 		UNDONE: Only statements rendered directly inside of dil:root and ddl:atomicBlock should be followed by statement delimiters.
@@ -718,15 +734,133 @@
 		<xsl:value-of select="@lengthMultiplier"/>
 	</xsl:template>
 
-	<xsl:template match="ddt:exactNumeric">
+	<xsl:template match="ddt:exactNumeric | ddt:approximateNumeric">
 		<xsl:apply-templates select="@type" mode="ForDataType"/>
-		<xsl:apply-templates select="@precision" mode="ForNumeric"/>
-		<xsl:apply-templates select="@scale" mode="ForNumeric"/>
+		<xsl:apply-templates select="." mode="ForDataTypeNumericPrecisionAndScale"/>
 	</xsl:template>
 
-	<xsl:template match="ddt:approximateNumeric">
-		<xsl:apply-templates select="@type" mode="ForDataType"/>
-		<xsl:apply-templates select="@precision" mode="ForNumeric"/>
+	<xsl:template match="ddt:exactNumeric[@type='NUMERIC' or @type='DECIMAL']" mode="ForDataTypeNumericPrecisionAndScale">
+		<xsl:variable name="precision" select="string(@precision)"/>
+		<xsl:variable name="scale" select="string(@scale)"/>
+
+		<xsl:variable name="maximumPrecisionFragment">
+			<xsl:choose>
+				<xsl:when test="@type='NUMERIC'">
+					<xsl:choose>
+						<xsl:when test="$scale">
+							<xsl:value-of select="$MaximumNumericExactNumericPrecisionWithScale"/>
+						</xsl:when>
+						<xsl:otherwise>
+							<xsl:value-of select="$MaximumNumericExactNumericPrecisionWithoutScale"/>
+						</xsl:otherwise>
+					</xsl:choose>
+				</xsl:when>
+				<xsl:when test="@type='DECIMAL'">
+					<xsl:choose>
+						<xsl:when test="$scale">
+							<xsl:value-of select="$MaximumDecimalExactNumericPrecisionWithScale"/>
+						</xsl:when>
+						<xsl:otherwise>
+							<xsl:value-of select="$MaximumDecimalExactNumericPrecisionWithoutScale"/>
+						</xsl:otherwise>
+					</xsl:choose>
+				</xsl:when>
+				<xsl:otherwise>
+					<xsl:message>
+						<xsl:text>Unknown exact numeric type "</xsl:text>
+						<xsl:value-of select="@type"/>
+						<xsl:text>".</xsl:text>
+					</xsl:message>
+				</xsl:otherwise>
+			</xsl:choose>
+		</xsl:variable>
+		<xsl:variable name="maximumPrecision" select="string($maximumPrecisionFragment)"/>
+		
+		<xsl:variable name="maximumScaleFragment">
+			<xsl:choose>
+				<xsl:when test="@type='NUMERIC'">
+					<xsl:value-of select="$MaximumNumericExactNumericScale"/>
+				</xsl:when>
+				<xsl:when test="@type='DECIMAL'">
+					<xsl:value-of select="$MaximumDecimalExactNumericScale"/>
+				</xsl:when>
+				<xsl:otherwise>
+					<xsl:message>
+						<xsl:text>Unknown exact numeric type "</xsl:text>
+						<xsl:value-of select="@type"/>
+						<xsl:text>".</xsl:text>
+					</xsl:message>
+				</xsl:otherwise>
+			</xsl:choose>
+		</xsl:variable>
+		<xsl:variable name="maximumScale" select="string($maximumScaleFragment)"/>
+
+		<!-- If none of a precision, a maximum precision, a scale, nor a maximum scale are specified, don't render the precision and scale portion at all. -->
+		<xsl:if test="$precision or $maximumPrecision or $scale or $maximumScale">
+			<xsl:value-of select="$LeftParen"/>
+			<xsl:choose>
+				<xsl:when test="$precision">
+					<xsl:value-of select="$precision"/>
+				</xsl:when>
+				<xsl:otherwise>
+					<xsl:value-of select="$maximumPrecision"/>
+				</xsl:otherwise>
+			</xsl:choose>
+			<xsl:text>,</xsl:text>
+			<xsl:choose>
+				<xsl:when test="$scale">
+					<!-- If a scale is specified, we always use it. -->
+					<xsl:value-of select="$scale"/>
+				</xsl:when>
+				<xsl:when test="$precision">
+					<!-- If a scale is not specified but a precision is specified, we use a scale of 0, which is the default defined by the SQL standard for this situtation. -->
+					<!-- However, we always explicitly render the 0 to avoid having to deal with it in specific renderers for targets that have a different default. -->
+					<xsl:text>0</xsl:text>
+				</xsl:when>
+				<xsl:otherwise>
+					<xsl:value-of select="$maximumScale"/>
+				</xsl:otherwise>
+			</xsl:choose>
+			<xsl:value-of select="$RightParen"/>
+		</xsl:if>
+	</xsl:template>
+
+	<xsl:template match="ddt:approximateNumeric[@type='FLOAT']" mode="ForDataTypeNumericPrecisionAndScale">
+		<xsl:variable name="precision" select="string(@precision)"/>
+
+		<xsl:variable name="maximumPrecisionFragment">
+			<xsl:choose>
+				<xsl:when test="@type='FLOAT'">
+					<xsl:value-of select="$MaximumFloatApproximateNumericPrecision"/>
+				</xsl:when>
+				<xsl:otherwise>
+					<xsl:message>
+						<xsl:text>Unknown approximate numeric type "</xsl:text>
+						<xsl:value-of select="@type"/>
+						<xsl:text>".</xsl:text>
+					</xsl:message>
+				</xsl:otherwise>
+			</xsl:choose>
+		</xsl:variable>
+		<xsl:variable name="maximumPrecision" select="string($maximumPrecisionFragment)"/>
+
+		<xsl:if test="$precision or $maximumPrecision">
+			<xsl:value-of select="$LeftParen"/>
+			<xsl:choose>
+				<xsl:when test="$precision">
+					<xsl:value-of select="$precision"/>
+				</xsl:when>
+				<xsl:otherwise>
+					<xsl:value-of select="$maximumPrecision"/>
+				</xsl:otherwise>
+			</xsl:choose>
+			<xsl:value-of select="$RightParen"/>
+		</xsl:if>
+		
+	</xsl:template>
+	
+	<xsl:template match="ddt:exactNumeric[not(@type='DECIMAL' or @type='NUMERIC')] | ddt:approximateNumeric[not(@type='FLOAT')]" mode="ForDataTypeNumericPrecisionAndScale">
+		<!-- Do nothing. Only DECIMAL, NUMERIC, and FLOAT have precision and/or scale. -->
 	</xsl:template>
 
 	<xsl:template match="ddt:date">
@@ -881,20 +1015,6 @@
 
 	<xsl:template match="@precision" mode="ForTimeDataType">
 		<xsl:value-of select="$LeftParen"/>
-		<xsl:value-of select="."/>
-		<xsl:value-of select="$RightParen"/>
-	</xsl:template>
-
-	<xsl:template match="@precision" mode="ForNumeric">
-		<xsl:value-of select="$LeftParen"/>
-		<xsl:value-of select="."/>
-		<xsl:if test="not(string(parent::*/@scale))">
-			<xsl:value-of select="$RightParen"/>
-		</xsl:if>
-	</xsl:template>
-
-	<xsl:template match="@scale" mode="ForNumeric">
-		<xsl:text>,</xsl:text>
 		<xsl:value-of select="."/>
 		<xsl:value-of select="$RightParen"/>
 	</xsl:template>

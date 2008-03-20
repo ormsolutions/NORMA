@@ -34,6 +34,8 @@
 	<xsl:param name="DefaultMaximumStringLength" select="'MAX'"/>
 	<xsl:param name="DefaultMaximumCharacterNonVaryingStringLength" select="4000"/>
 	<xsl:param name="DefaultMaximumBinaryNonVaryingStringLength" select="8000"/>
+	<xsl:param name="DefaultMaximumExactNumericPrecisionAndScale" select="38"/>
+	<xsl:param name="DefaultMaximumApproximateNumericPrecision" select="''"/>
 
 	<xsl:param name="StatementDelimiter">
 		<xsl:value-of select="$NewLine"/>
