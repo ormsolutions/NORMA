@@ -279,7 +279,7 @@ namespace Neumont.Tools.ORM.ObjectModel
 				newIntrinsicAction(CreateIntrinsicReferenceMode(store, model, unitBasedKind, "Fahrenheit", PortableDataType.NumericDecimal));
 				newIntrinsicAction(CreateIntrinsicReferenceMode(store, model, unitBasedKind, "USD", PortableDataType.NumericMoney));
 				newIntrinsicAction(CreateIntrinsicReferenceMode(store, model, unitBasedKind, "AUD", PortableDataType.NumericMoney));
-				newIntrinsicAction(CreateIntrinsicReferenceMode(store, model, unitBasedKind, "XEU", PortableDataType.NumericMoney));
+				newIntrinsicAction(CreateIntrinsicReferenceMode(store, model, unitBasedKind, "EUR", PortableDataType.NumericMoney));
 				newIntrinsicAction(CreateIntrinsicReferenceMode(store, model, unitBasedKind, "CE", PortableDataType.TemporalDate));
 
 				// UNDONE: The following loop assumes the format strings are all unique. Handle this case (requires hand edit or merge in the .orm file)
