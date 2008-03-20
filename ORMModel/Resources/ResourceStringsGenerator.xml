@@ -399,6 +399,7 @@
 	<ResourceString name="ValueConstraintClosedInclusionContainer" model="ObjectModel" resourceName="Neumont.Tools.ORM.ObjectModel.ValueConstraint.ClosedInclusionPattern">
 		<comment>Pattern showing left- and right-string to use to indicate the min- and max-values are closed (i.e. the value itself is a member of the range).</comment>
 	</ResourceString>
+	<ResourceString name="ModelErrorModelHasDuplicateRecognizedPhrases" model="Model" resourceName="ModelError.RecognizedPhrase.DuplicateNameError.Message"/>
 	<ResourceString name="ObjectTypeShapeIndependentFormatString" model="Diagram" resourceName="ObjectTypeShape.IndependentFormatString"/>
 	<ResourceString name="ObjectTypeShapeReferenceModeFormatString" model="Diagram" resourceName="ObjectTypeShape.ReferenceModeFormatString"/>
 	<ResourceString name="ObjectifiedFactTypeNameShapeStandardFormatString" model="Diagram" resourceName="ObjectifiedFactTypeNameShape.StandardFormatString"/>

@@ -349,6 +349,10 @@
 		<value>Role '{2}' of FactType '{1}' in model '{0}' has a value constraint with overlapping values.</value>
 		<comment>ValueRangeOverlapError text for a RoleValueConstraint. {0}=model {1}=facttype {2}=role number.</comment>
 	</data>
+	<data name="ModelError.RecognizedPhrase.DuplicateNameError.Message" xml:space="preserve">
+		<value>Model '{0}' contains multiple recognized phrases named '{1}'. Type names must be unique across all entity and value types in a model.</value>
+		<comment>Model validation error text used when multiple recognized phrases with the same name are loaded into a model.Field 0 is the model name, field 1 is the element name.This is an uncommon condition that should only occur with a hand edit to a model file.</comment>
+	</data>
 	<data name="ModelError.ValueConstraint.ValueRangeOverlapError.ValueType.Message" xml:space="preserve">
 		<value>The value constraint for '{0}' in model '{1}' has overlapping values.</value>
 		<comment>ValueRangeOverlapError text for a ValueTypeConstraint. {0}=valuetype {1}=model.</comment>

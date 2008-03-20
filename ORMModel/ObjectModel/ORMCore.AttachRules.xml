@@ -515,6 +515,9 @@
 			<arg:DeleteRule methodName="DuplicateObjectTypeNameObjectTypeDeleteRule">
 				<arg:RuleOn targetType="ObjectTypeHasDuplicateNameError"/>
 			</arg:DeleteRule>
+			<arg:DeleteRule methodName="DuplicateRecognizedPhraseDeleteRule">
+				<arg:RuleOn targetType="RecognizedPhraseHasDuplicateNameError"/>
+			</arg:DeleteRule>
 		</arg:RuleContainer>
 		<arg:RuleContainer class="Reading">
 			<arg:DeleteRule methodName="ReadingOrderHasRoleDeletedRule">
@@ -523,6 +526,11 @@
 			<arg:ChangeRule methodName="ReadingPropertiesChangedRule">
 				<arg:RuleOn targetType="Reading"/>
 			</arg:ChangeRule>
+		</arg:RuleContainer>
+		<arg:RuleContainer class="RecognizedPhrase">
+			<arg:DeleteRule methodName="RecognizedPhraseHasAbbreviationDeletedRule">
+				<arg:RuleOn targetType="RecognizedPhraseHasAbbreviation" fireTime="LocalCommit" priority="BeforeDelayValidateRulePriority"/>
+			</arg:DeleteRule>
 		</arg:RuleContainer>
 		<arg:RuleContainer class="ReadingOrder">
 			<arg:DeleteRule methodName="EnforceNoEmptyReadingOrderDeleteRule">

@@ -200,6 +200,8 @@ namespace Neumont.Tools.ORM.ObjectModel
 		private NamedElementDictionary myObjectTypesDictionary;
 		[NonSerialized]
 		private NamedElementDictionary myConstraintsDictionary;
+		[NonSerialized]
+		private NamedElementDictionary myRecognizedPhrasesDictionary;
 		/// <summary>
 		/// Returns the Object Types Dictionary
 		/// </summary>
@@ -233,6 +235,23 @@ namespace Neumont.Tools.ORM.ObjectModel
 			}
 		}
 
+		/// <summary>
+		/// Returns the Recognized Word Dictionary
+		/// </summary>
+		/// <value>The model RecognizedPhraseDictionary</value>
+		public INamedElementDictionary RecognizedPhrasesDictionary
+		{
+			get
+			{
+				INamedElementDictionary retVal = myRecognizedPhrasesDictionary;
+				if (retVal == null)
+				{
+					retVal = myRecognizedPhrasesDictionary = new RecognizedPhraseNamedElementDictionary();
+				}
+				return retVal;
+			}
+		}
+
 		INamedElementDictionary INamedElementDictionaryParent.GetCounterpartRoleDictionary(Guid parentDomainRoleId, Guid childDomainRoleId)
 		{
 			return GetCounterpartRoleDictionary(parentDomainRoleId, childDomainRoleId);
@@ -255,6 +274,10 @@ namespace Neumont.Tools.ORM.ObjectModel
 					 parentDomainRoleId == RoleHasValueConstraint.RoleDomainRoleId)
 			{
 				return ConstraintsDictionary;
+			}
+			else if (parentDomainRoleId == ModelContainsRecognizedPhrase.RecognizedPhraseDomainRoleId)
+			{
+				return RecognizedPhrasesDictionary;
 			}
 			return null;
 		}
@@ -321,6 +344,22 @@ namespace Neumont.Tools.ORM.ObjectModel
 			if (error != null && !error.IsDeleted)
 			{
 				if ((error.SetComparisonConstraintCollection.Count + error.SetConstraintCollection.Count + error.ValueConstraintCollection.Count) < 2)
+				{
+					error.Delete();
+				}
+			}
+		}
+
+		/// <summary>
+		/// DeleteRule: typeof(RecognizedPhraseHasDuplicateNameError)
+		/// </summary>
+		private static void DuplicateRecognizedPhraseDeleteRule(ElementDeletedEventArgs e)
+		{
+			RecognizedPhraseHasDuplicateNameError link = e.ModelElement as RecognizedPhraseHasDuplicateNameError;
+			RecognizedPhraseDuplicateNameError error = link.DuplicateNameError;
+			if (!error.IsDeleted)
+			{
+				if (error.RecognizedPhraseCollection.Count < 2)
 				{
 					error.Delete();
 				}
@@ -447,7 +486,8 @@ namespace Neumont.Tools.ORM.ObjectModel
 			/// <summary>
 			/// Default constructor for ObjectTypeNamedElementDictionary
 			/// </summary>
-			public ObjectTypeNamedElementDictionary() : base(new DuplicateNameManager())
+			public ObjectTypeNamedElementDictionary()
+				: base(new DuplicateNameManager())
 			{
 			}
 			#endregion // Constructors
@@ -695,7 +735,8 @@ namespace Neumont.Tools.ORM.ObjectModel
 			/// <summary>
 			/// Default constructor for ConstraintNamedElementDictionary
 			/// </summary>
-			public ConstraintNamedElementDictionary() : base(new DuplicateNameManager())
+			public ConstraintNamedElementDictionary()
+				: base(new DuplicateNameManager())
 			{
 			}
 			#endregion // Constructors
@@ -735,6 +776,172 @@ namespace Neumont.Tools.ORM.ObjectModel
 			#endregion // Base overrides
 		}
 		#endregion // ConstraintNamedElementDictionary class
+		#region RecognizedPhraseNamedElementDictionary class
+		/// <summary>
+		/// Callback method to retrieve an existing alias owner
+		/// </summary>
+		/// <param name="container">An <see cref="ORMModel"/> element</param>
+		/// <param name="recognizedPhraseName">The name for an existing element</param>
+		/// <returns>A <see cref="RecognizedPhrase"/> or <see langword="null"/></returns>
+		private static ModelElement GetExistingRecognizedPhrase(ModelElement container, string recognizedPhraseName)
+		{
+			ORMModel model;
+			INamedElementDictionary phraseDictionary;
+			if (null != (model = container as ORMModel) &&
+				null != (phraseDictionary = model.myRecognizedPhrasesDictionary))
+			{
+				LocatedElement existingElement = phraseDictionary.GetElement(recognizedPhraseName);
+				if (!existingElement.IsEmpty)
+				{
+					return existingElement.SingleElement as RecognizedPhrase;
+				}
+			}
+			return null;
+		}
+		/// <summary>
+		/// Dictionary used to add <see cref="RecognizedPhrase"/> elements by name.
+		/// Also generates model validation errors and exceptions for duplicate
+		/// element names.
+		/// </summary>
+		protected class RecognizedPhraseNamedElementDictionary : NamedElementDictionary
+		{	
+			private sealed class DuplicateNameManager : IDuplicateNameCollectionManager
+			{
+				#region TrackingList class
+				private sealed class TrackingList : List<RecognizedPhrase>
+				{
+					private readonly LinkedElementCollection<RecognizedPhrase> myRecognizedPhrases;
+					public TrackingList(RecognizedPhraseDuplicateNameError error)
+					{
+						myRecognizedPhrases = error.RecognizedPhraseCollection;
+					}
+					public LinkedElementCollection<RecognizedPhrase> RecognizedPhrases
+					{
+						get { return myRecognizedPhrases; }
+					}
+				}
+				#endregion //TrackingList class
+				#region IDuplicateNameCollectionManager Implementation
+
+				public ICollection OnDuplicateElementAdded(ICollection elementCollection, ModelElement element, bool afterTransaction, INotifyElementAdded notifyAdded)
+				{
+					RecognizedPhrase recognizedPhrase = (RecognizedPhrase)element;
+					if (afterTransaction)
+					{
+						if (elementCollection == null)
+						{
+							RecognizedPhraseDuplicateNameError error = recognizedPhrase.DuplicateNameError;
+							if (error != null)
+							{
+								// We're not in a transaction, but the object model will be in
+								// the state we need it because we put it there during a transaction.
+								// Just return the collection from the current state of the object model.
+								TrackingList trackingList = new TrackingList(error);
+								ModelElement existingElement = GetExistingRecognizedPhrase(element, recognizedPhrase.Name);
+								if (existingElement == null)
+								{
+									trackingList.Add(recognizedPhrase);
+								}
+								elementCollection = trackingList;
+							}
+						}
+						else
+						{
+							if (!((IList)elementCollection).Contains(recognizedPhrase))
+							{
+								((TrackingList)elementCollection).Add(recognizedPhrase);
+							}
+						}
+						return elementCollection;
+					}
+					else
+					{
+						// Modify the object model to add the error.
+						if (elementCollection == null)
+						{
+							RecognizedPhraseDuplicateNameError error = null;
+							if (notifyAdded != null)
+							{
+								// During deserialization fixup, an error
+								// may already be attached to the object. Track
+								// it down and verify that it is a legitimate error.
+								// If it is not legitimate, then generate a new one.
+								error = recognizedPhrase.DuplicateNameError;
+								if (error != null && !error.ValidateDuplicates(recognizedPhrase))
+								{
+									error = null;
+								}
+							}
+							if (error == null)
+							{
+								error = new RecognizedPhraseDuplicateNameError(recognizedPhrase.Store);
+								recognizedPhrase.DuplicateNameError = error;
+								error.Model = recognizedPhrase.Model;
+								error.GenerateErrorText();
+								if (notifyAdded != null)
+								{
+									notifyAdded.ElementAdded(error, true);
+								}
+							}
+							TrackingList trackingList = new TrackingList(error);
+							trackingList.Add(recognizedPhrase);
+							elementCollection = trackingList;
+						}
+						else
+						{
+							TrackingList trackingList = (TrackingList)elementCollection;
+							trackingList.Add(recognizedPhrase);
+							// During deserialization fixup (notifyAdded != null), we need
+							// to make sure that the element is not already in the collection
+							LinkedElementCollection<RecognizedPhrase> typedCollection = trackingList.RecognizedPhrases;
+							if (notifyAdded == null || !typedCollection.Contains(recognizedPhrase))
+							{
+								typedCollection.Add(recognizedPhrase);
+							}
+						}
+						return elementCollection;
+					}
+				}
+
+				public ICollection OnDuplicateElementRemoved(ICollection elementCollection, ModelElement element, bool afterTransaction)
+				{
+					TrackingList trackingList = (TrackingList)elementCollection;
+					RecognizedPhrase recognizedPhrase = (RecognizedPhrase)element;
+					trackingList.Remove(recognizedPhrase);
+					if (!afterTransaction)
+					{
+						// Just clear the error. A rule is used to remove the error
+						// object itself when there is no longer a duplicate.
+						recognizedPhrase.DuplicateNameError = null;
+					}
+					return elementCollection;
+
+				}
+
+				#endregion // IDuplicateNameCollectionManager Implementation
+			}
+			/// <summary>
+			/// Public constructor
+			/// </summary>
+			public RecognizedPhraseNamedElementDictionary()
+				:
+				base(new DuplicateNameManager())
+			{
+			}
+			#region Base overrides
+			/// <summary>
+			/// Raise an exception with text specific to a name in a model
+			/// </summary>
+			/// <param name="element">Element we're attempting to name</param>
+			/// <param name="requestedName">The in-use requested name</param>
+			protected override void ThrowDuplicateNameException(ModelElement element, string requestedName)
+			{
+				throw new InvalidOperationException(string.Format(CultureInfo.InvariantCulture, ResourceStrings.ModelErrorModelHasDuplicateRecognizedPhrases, ((RecognizedPhrase)element).Model.Name,  requestedName));
+			}
+			#endregion // Base overrides
+		}
+		#endregion // RecognizedPhraseNamedElementDictionary class
+
 		#endregion // Relationship-specific NamedElementDictionary implementations
 	}
 	public partial class ModelHasObjectType : INamedElementDictionaryLink
@@ -1044,6 +1251,65 @@ namespace Neumont.Tools.ORM.ObjectModel
 		}
 		#endregion // INamedElementDictionaryLink implementation
 	}
+	public partial class ModelContainsRecognizedPhrase : INamedElementDictionaryLink
+	{
+		#region INamedElementDictionaryLink implementation
+		INamedElementDictionaryParent INamedElementDictionaryLink.ParentRolePlayer
+		{
+			get { return ParentRolePlayer; }
+		}
+		/// <summary>
+		/// Implements <see cref="INamedElementDictionaryLink.ParentRolePlayer"/>
+		/// Returns Model.
+		/// </summary>
+		protected INamedElementDictionaryParent ParentRolePlayer
+		{
+			get { return Model; }
+		}
+		INamedElementDictionaryChild INamedElementDictionaryLink.ChildRolePlayer
+		{
+			get { return ChildRolePlayer; }
+		}
+		/// <summary>
+		/// Implements <see cref="INamedElementDictionaryLink.ChildRolePlayer"/>
+		/// Returns <see cref="RecognizedPhrase"/>.
+		/// </summary>
+		protected INamedElementDictionaryChild ChildRolePlayer
+		{
+			get { return RecognizedPhrase; }
+		}
+		INamedElementDictionaryRemoteParent INamedElementDictionaryLink.RemoteParentRolePlayer
+		{
+			get { return RemoteParentRolePlayer; }
+		}
+		/// <summary>
+		/// Implements <see cref="INamedElementDictionaryLink.RemoteParentRolePlayer"/>
+		/// Returns <see langword="null"/>
+		/// </summary>
+		protected INamedElementDictionaryRemoteParent RemoteParentRolePlayer
+		{
+			get { return null; }
+		}
+		#endregion // INamedElementDictionaryLink implementation
+	}
+	public partial class RecognizedPhrase : INamedElementDictionaryChild
+	{
+		#region INamedElementDictionaryChild implementation
+		void INamedElementDictionaryChild.GetRoleGuids(out Guid parentDomainRoleId, out Guid childDomainRoleId)
+		{
+			GetRoleGuids(out parentDomainRoleId, out childDomainRoleId);
+		}
+		/// <summary>
+		/// Implementation of <see cref="INamedElementDictionaryChild.GetRoleGuids"/>. Identifies
+		/// this child as participating in the 'NameGeneratorContainsRecognizedPhrase' naming set.
+		/// </summary>
+		protected static void GetRoleGuids(out Guid parentDomainRoleId, out Guid childDomainRoleId)
+		{
+			parentDomainRoleId = ModelContainsRecognizedPhrase.RecognizedPhraseDomainRoleId;
+			childDomainRoleId = ModelContainsRecognizedPhrase.RecognizedPhraseDomainRoleId;
+		}
+		#endregion // INamedElementDictionaryChild implementation
+	}
 	public partial class SetConstraint : INamedElementDictionaryChild
 	{
 		#region INamedElementDictionaryChild implementation
@@ -1112,7 +1378,7 @@ namespace Neumont.Tools.ORM.ObjectModel
 		/// returned elements will all come from a
 		/// generated metarole collections.
 		/// </summary>
-		protected abstract IList<ORMNamedElement> DuplicateElements{ get;}
+		protected abstract IList<ORMNamedElement> DuplicateElements { get;}
 		/// <summary>
 		/// Get the text to display the duplicate error information. Replacement
 		/// field {0} is replaced by the model name, field {1} is replaced by the
@@ -1540,6 +1806,48 @@ namespace Neumont.Tools.ORM.ObjectModel
 			return GetIndirectModelErrorOwnerLinkRoles();
 		}
 		#endregion // IHasIndirectModelErrorOwner Implementation
+	}
+	[ModelErrorDisplayFilter(typeof(NameErrorCategory))]
+	public partial class RecognizedPhraseDuplicateNameError : DuplicateNameError, IHasIndirectModelErrorOwner
+	{
+		/// <summary>
+		/// Returns the list of DuplicateElements 
+		/// </summary>
+		protected override IList<ORMNamedElement> DuplicateElements
+		{
+			get { return RecognizedPhraseCollection.ToArray(); }
+		}
+		/// <summary>
+		/// Text to be displayed when an error is thrown.
+		///</summary>
+		//TODO: Add this to the ResourceStrings collection
+		protected override string ErrorFormatText
+		{
+			get { return "Duplicate recognized word exists in the model."; }
+		}
+
+		#region IHasIndirectModelErrorOwner Implementation
+		private static Guid[] myIndirectModelErrorOwnerLinkRoles;
+		/// <summary>
+		/// Implements IHasIndirectModelErrorOwner.GetIndirectModelErrorOwnerLinkRoles()
+		/// </summary>
+		protected static Guid[] GetIndirectModelErrorOwnerLinkRoles()
+		{
+			// Creating a static readonly guid array is causing static field initialization
+			// ordering issues with the partial classes. Defer initialization.
+			Guid[] linkRoles = myIndirectModelErrorOwnerLinkRoles;
+			if (linkRoles == null)
+			{
+				myIndirectModelErrorOwnerLinkRoles = linkRoles = new Guid[] { RecognizedPhraseHasDuplicateNameError.DuplicateNameErrorDomainRoleId };
+			}
+			return linkRoles;
+		}
+		Guid[] IHasIndirectModelErrorOwner.GetIndirectModelErrorOwnerLinkRoles()
+		{
+			return GetIndirectModelErrorOwnerLinkRoles();
+		}
+		#endregion // IHasIndirectModelErrorOwner Implementation
+
 	}
 	#endregion // Relationship-specific derivations of DuplicateNameError
 	#endregion // NamedElementDictionary and DuplicateNameError integration

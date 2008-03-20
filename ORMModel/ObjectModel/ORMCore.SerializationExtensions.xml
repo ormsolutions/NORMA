@@ -126,6 +126,9 @@
 		<se:Container Name="ReferenceModeKinds">
 			<se:Embed RelationshipName="ModelHasReferenceModeKind" RoleName="ReferenceModeKind" />
 		</se:Container>
+		<se:Container Name="RecognizedPhrases">
+			<se:Embed RelationshipName="ModelContainsRecognizedPhrase" RoleName="RecognizedPhrase"/>
+		</se:Container>
 	</se:Element>
 	<se:Element Class="Definition" Override="true">
 		<se:Attribute ID="Text" WriteStyle="Element"/>
@@ -220,9 +223,6 @@
 				</plx:binaryOperator>
 			</se:Condition>
 		</se:Attribute>
-		<se:Container Name="OmittedWords" Prefix="orm">
-			<se:Embed RelationshipName="NameGeneratorContainsOmittedWord" RoleName="OmittedWord"/>
-		</se:Container>
 		<se:Container Name="Refinements" Prefix="orm">
 			<se:Embed RelationshipName="NameGeneratorRefinesNameGenerator" RoleName="Refinement"/>
 		</se:Container>
@@ -339,6 +339,12 @@
 		<se:Link RelationshipName="ObjectTypeHasPreferredIdentifierRequiresMandatoryError" RoleName="PreferredIdentifierRequiresMandatoryError" WriteStyle="NotWritten"/>
 		<se:Link RelationshipName="ObjectTypeHasCompatibleSupertypesError" RoleName="CompatibleSupertypesError" WriteStyle="NotWritten"/>
 		<se:Link RelationshipName="ModelNoteReferencesObjectType" RoleName="Note" WriteStyle="NotWritten"/>
+	</se:Element>
+	<se:Element Class="RecognizedPhrase" Override="true">
+		<se:Container Name="Abbreviations">
+			<se:Embed RelationshipName="RecognizedPhraseHasAbbreviation" RoleName="Abbreviation"/>
+		</se:Container>
+		<se:Link RelationshipName="RecognizedPhraseHasDuplicateNameError" RoleName="DuplicateNameError" WriteStyle="NotWritten"/>
 	</se:Element>
 	<se:Element Class="ValueTypeInstance" Name="ValueTypeInstance" Override="true">
 		<se:Attribute ID="Value" WriteStyle="Element"/>
@@ -752,6 +758,12 @@
 			<se:Link RelationshipName="ObjectTypeHasDuplicateNameError" RoleName="ObjectType"/>
 		</se:Container>
 		<se:Link RelationshipName="ObjectTypeHasDuplicateNameError" RoleName="ObjectType" Name="Object"/>
+	</se:Element>
+	<se:Element Class="RecognizedPhraseDuplicateNameError" Override="true">
+		<se:Container Name="Objects">
+			<se:Link RelationshipName="RecognizedPhraseHasDuplicateNameError" RoleName="RecognizedPhrase"/>
+		</se:Container>
+		<se:Link RelationshipName="RecognizedPhraseHasDuplicateNameError" RoleName="RecognizedPhrase" Name="RecognizedPhrase"/>
 	</se:Element>
 	<se:Element Class="EntityTypeRequiresReferenceSchemeError" Override="true">
 		<se:Link RelationshipName="ObjectTypeHasEntityTypeRequiresReferenceSchemeError" RoleName="ObjectType" Name="EntityType"/>

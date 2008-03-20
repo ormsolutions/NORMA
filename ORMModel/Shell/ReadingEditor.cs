@@ -438,25 +438,12 @@ namespace Neumont.Tools.ORM.Shell
 				}
 				catch (Exception ex)
 				{
-					if (IsCriticalException(ex))
+					if (Utility.IsCriticalException(ex))
 					{
 						throw;
 					}
 					myInPlaceHelper.DisplayException(ex);
 				}
-			}
-			private bool IsCriticalException(Exception ex)
-			{
-				if (((ex is NullReferenceException) || (ex is StackOverflowException)) || ((ex is OutOfMemoryException) || (ex is System.Threading.ThreadAbortException)))
-				{
-					return true;
-				}
-				Exception inner = ex.InnerException;
-				if (inner != null)
-				{
-					return IsCriticalException(inner);
-				}
-				return false;
 			}
 			#endregion // Event Forwarding, etc (Copied from VirtualTreeGrid.VirtualTreeInPlaceEditControl)
 			#region IVirtualTreeInPlaceControlDefer Implementation

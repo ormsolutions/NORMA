@@ -74,6 +74,7 @@ namespace Neumont.Tools.ORM.ObjectModel.Design
 			this.MinimizeBox = false;
 			this.Name = "AliasManagerForm";
 			this.ShowIcon = false;
+			this.FormClosing += new System.Windows.Forms.FormClosingEventHandler(this.AliasManagerForm_FormClosing);
 			this.ResumeLayout(false);
 
 		}

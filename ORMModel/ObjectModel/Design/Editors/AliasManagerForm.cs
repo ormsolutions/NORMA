@@ -16,6 +16,9 @@ using System.Collections;
 using System.Drawing.Design;
 using System.Globalization;
 using Neumont.Tools.Modeling.Shell;
+using Neumont.Tools.Modeling;
+using Microsoft.VisualStudio.Shell;
+using Microsoft.VisualStudio.Shell.Interop;
 
 #if VISUALSTUDIO_9_0
 using VirtualTreeInPlaceControlFlags = Microsoft.VisualStudio.VirtualTreeGrid.VirtualTreeInPlaceControls;
@@ -65,18 +68,13 @@ namespace Neumont.Tools.ORM.ObjectModel.Design
 				viewer.Text = usageClass != null ?
 					string.Format(CultureInfo.InvariantCulture, ResourceStrings.NameGeneratorAbbreviationsEditorTitleFormatStringWithNameUsage, nameGenerator.GetDomainClass().DisplayName, usageClass.DisplayName) :
 					string.Format(CultureInfo.InvariantCulture, ResourceStrings.NameGeneratorAbbreviationsEditorTitleFormatString, nameGenerator.GetDomainClass().DisplayName);
-				bool processResults = uiService.ShowDialog(viewer) == DialogResult.OK;
-				tree.Root = null;
-				if (processResults)
+				try
 				{
-					using (Transaction t = nameGenerator.Store.TransactionManager.BeginTransaction(ResourceStrings.NameGeneratorAbbreviationsEditorTransactionName))
-					{
-						rootBranch.CommitChanges();
-						if (t.HasPendingChanges)
-						{
-							t.Commit();
-						}
-					}
+					uiService.ShowDialog(viewer);
+				}
+				finally
+				{
+					tree.Root = null;
 				}
 			}
 		}
@@ -146,6 +144,7 @@ namespace Neumont.Tools.ORM.ObjectModel.Design
 				add { }
 				remove { }
 			}
+
 			void IBranch.OnDragEvent(object sender, int row, int column, DragEventType eventType, System.Windows.Forms.DragEventArgs args)
 			{
 			}
@@ -184,14 +183,41 @@ namespace Neumont.Tools.ORM.ObjectModel.Design
 				}
 			}
 			#endregion // IBranch Implementation
+			#region Overrideable methods
+			/// <summary>
+			/// Delete the specified item. The default implementation returns <see langword="false"/>
+			/// </summary>
+			/// <param name="row">The row in the branch</param>
+			/// <param name="column">The column in the branch</param>
+			/// <returns><see langword="true"/> if the deletion succeeded</returns>
+			public virtual bool DeleteItem(int row, int column)
+			{
+				return false;
+			}
+			#endregion // Overrideable methods
 		}
 		#endregion // BaseBranch Class
-		 
+
 		private sealed class AliasOwnerBranch : BaseBranch, IBranch
 		{
 			#region Member variables and constructor
 			private struct DetailBranchInfo
 			{
+				public static IComparer<DetailBranchInfo> Comparer = new DetailBranchInfoComparer();
+				#region IComparable<DetailBranchInfo> Implementation
+				/// <summary>
+				/// Compare items
+				/// </summary>
+				private class DetailBranchInfoComparer : IComparer<DetailBranchInfo>
+				{
+					#region IComparer<DetailBranchInfo> Implementation
+					int IComparer<DetailBranchInfo>.Compare(DetailBranchInfo x, DetailBranchInfo y)
+					{
+						return string.Compare(x.DisplayName, y.DisplayName, StringComparison.CurrentCultureIgnoreCase);
+					}
+					#endregion // IComparer<DetailBranchInfo> Implementation
+				}
+				#endregion // IComparable<DetailBranchInfo> Implementation
 				/// <summary>
 				/// Create new detail branch information for this
 				/// owner role. The branch is delay created.
@@ -203,6 +229,13 @@ namespace Neumont.Tools.ORM.ObjectModel.Design
 				}
 				public DomainRoleInfo DomainRole;
 				public ElementInstanceBranch Branch;
+				public string DisplayName
+				{
+					get
+					{
+						return DomainRole.DomainRelationship.DisplayName;
+					}
+				}
 			}
 			private DetailBranchInfo[] myDetails;
 			private NameGenerator myNameGenerator;
@@ -226,6 +259,10 @@ namespace Neumont.Tools.ORM.ObjectModel.Design
 					}
 					details[i] = new DetailBranchInfo(roleInfo, null);
 				}
+				if (relCount > 1)
+				{
+					Array.Sort<DetailBranchInfo>(details, DetailBranchInfo.Comparer);
+				}
 				myHostControl = hostControl;
 				myDetails = details;
 				myNameGenerator = nameGenerator;
@@ -233,18 +270,25 @@ namespace Neumont.Tools.ORM.ObjectModel.Design
 			#endregion // Member variables and constructor
 			#region Commit changes to the store
 			/// <summary>
-			/// Commit changes to an open transaction
+			/// Commit changes to a new transaction
 			/// </summary>
 			public void CommitChanges()
 			{
-				DetailBranchInfo[] details = myDetails;
-				NameGenerator generator = myNameGenerator;
-				for (int i = 0; i < details.Length; ++i)
+				using (Transaction t = myNameGenerator.Store.TransactionManager.BeginTransaction(ResourceStrings.NameGeneratorAbbreviationsEditorTransactionName))
 				{
-					ElementInstanceBranch instanceBranch = details[i].Branch;
-					if (instanceBranch != null)
+					DetailBranchInfo[] details = myDetails;
+					NameGenerator generator = myNameGenerator;
+					for (int i = 0; i < details.Length; ++i)
 					{
-						instanceBranch.CommitChanges(generator);
+						ElementInstanceBranch instanceBranch = details[i].Branch;
+						if (instanceBranch != null)
+						{
+							instanceBranch.CommitChanges(generator);
+						}
+					}
+					if (t.HasPendingChanges)
+					{
+						t.Commit();
 					}
 				}
 			}
@@ -271,7 +315,7 @@ namespace Neumont.Tools.ORM.ObjectModel.Design
 			}
 			string IBranch.GetText(int row, int column)
 			{
-				return myDetails[row].DomainRole.DomainRelationship.DisplayName;
+				return myDetails[row].DisplayName;
 			}
 			bool IBranch.IsExpandable(int row, int column)
 			{
@@ -295,32 +339,41 @@ namespace Neumont.Tools.ORM.ObjectModel.Design
 			private sealed class ElementInstanceBranch : BaseBranch, IBranch, IMultiColumnBranch
 			{
 				#region Helper structures
-				[Flags]
-				private enum ItemFlags
-				{
-					/// <summary>
-					/// The direct alias already exists in the store, modify the existing one
-					/// </summary>
-					ExistingAlias = 1,
-					/// <summary>
-					/// The alias associated with the main generator exists
-					/// </summary>
-					DirectAlias = 2,
-					/// <summary>
-					/// An alias associated with a base generator exists
-					/// </summary>
-					ExistingOnBase = 4,
-					/// <summary>
-					/// The item has been modified in the dialog
-					/// </summary>
-					ModifiedEntry = 8,
-					/// <summary>
-					/// The item should be treated as deleted
-					/// </summary>
-					DeletedEntry = 0x10,
-				}
 				private sealed class ItemInfo
 				{
+					[Flags]
+					private enum ItemFlags
+					{
+						/// <summary>
+						/// The direct alias already exists in the store, modify the existing one
+						/// </summary>
+						ExistingAlias = 1,
+						/// <summary>
+						/// The alias associated with the main generator exists
+						/// </summary>
+						DirectAlias = 2,
+						/// <summary>
+						/// An alias associated with a base generator exists
+						/// </summary>
+						ExistingOnBase = 4,
+						/// <summary>
+						/// The item has been modified in the dialog
+						/// </summary>
+						ModifiedEntry = 8,
+						/// <summary>
+						/// The item should be treated as deleted
+						/// </summary>
+						DeletedEntry = 0x10,
+						/// <summary>
+						/// Set if an empty string does not imply a deletion
+						/// </summary>
+						AllowEmpty = 0x20,
+						/// <summary>
+						/// Set if the owner name has been modified. Allowed only for
+						/// auto-create elements.
+						/// </summary>
+						ModifiedOwnerName = 0x40,
+					}
 					/// <summary>
 					/// Compare items
 					/// </summary>
@@ -334,7 +387,7 @@ namespace Neumont.Tools.ORM.ObjectModel.Design
 					/// <summary>
 					/// Create a new ItemInfo for an existing alias
 					/// </summary>
-					public ItemInfo(NameAlias alias, NameAlias baseAlias, ModelElement owner, DomainPropertyInfo ownerNameProperty)
+					public ItemInfo(NameAlias alias, NameAlias baseAlias, ModelElement owner, DomainPropertyInfo ownerNameProperty, string pendingCreateElementName, bool allowEmptyAlias)
 					{
 						myAlias = alias;
 						myBaseAlias = baseAlias;
@@ -351,24 +404,40 @@ namespace Neumont.Tools.ORM.ObjectModel.Design
 						else if (baseAlias == null)
 						{
 							// This is a new item
-							myAliasName = "";
-							flags |= ItemFlags.ModifiedEntry | ItemFlags.DirectAlias;
+							//myAliasName = "";
+							if (allowEmptyAlias)
+							{
+								flags |= ItemFlags.ModifiedEntry | ItemFlags.DirectAlias;
+							}
+							else
+							{
+								// Start with a deleted but not modified state. The item
+								// will move to a non-deleted state when the text is changed
+								flags |= ItemFlags.DeletedEntry | ItemFlags.DirectAlias;
+							}
 						}
 						else
 						{
 							myAliasName = baseAlias.Name;
 							flags |= ItemFlags.ExistingOnBase;
 						}
+						if (allowEmptyAlias)
+						{
+							flags |= ItemFlags.AllowEmpty;
+						}
 						myFlags = flags;
 						myOwner = owner;
-						myOwnerName = (ownerNameProperty != null) ? (string)ownerNameProperty.GetValue(owner) : owner.ToString();
+						myOwnerName = (owner != null) ?
+							((ownerNameProperty != null) ? (string)ownerNameProperty.GetValue(owner) : owner.ToString()) :
+							pendingCreateElementName;
 					}
 					private ItemInfo()
 					{
 					}
 					/// <summary>
 					/// Create a dummy <see cref="ItemInfo"/> appropriate for use with the <see cref="Comparer"/>.
-					/// The item must be passed to <see cref="UpdateForCompare"/> before it can be used.
+					/// The item must be passed to <see cref="UpdateForCompare(ItemInfo,ModelElement,string)"/> or
+					/// <see cref="UpdateForCompare(ItemInfo,ModelElement,DomainPropertyInfo)"/> before it can be used.
 					/// </summary>
 					public static ItemInfo CreateForCompare()
 					{
@@ -377,8 +446,17 @@ namespace Neumont.Tools.ORM.ObjectModel.Design
 					/// <summary>
 					/// Update the item created with <see cref="CreateForCompare"/>
 					/// </summary>
+					public static void UpdateForCompare(ItemInfo item, ModelElement owner, string explicitOwnerName)
+					{
+						item.myOwner = owner;
+						item.myOwnerName = explicitOwnerName;
+					}
+					/// <summary>
+					/// Update the item created with <see cref="CreateForCompare"/>
+					/// </summary>
 					public static void UpdateForCompare(ItemInfo item, ModelElement owner, DomainPropertyInfo ownerNameProperty)
 					{
+						Debug.Assert(owner != null);
 						item.myOwner = owner;
 						item.myOwnerName = (ownerNameProperty != null) ? (string)ownerNameProperty.GetValue(owner) : owner.ToString();
 					}
@@ -400,6 +478,11 @@ namespace Neumont.Tools.ORM.ObjectModel.Design
 						get
 						{
 							return 0 != (myFlags & ItemFlags.DeletedEntry);
+						}
+						set
+						{
+							AliasName = null; // Make sure the property is called, not the field
+							myFlags |= ItemFlags.DeletedEntry;
 						}
 					}
 					/// <summary>
@@ -458,6 +541,19 @@ namespace Neumont.Tools.ORM.ObjectModel.Design
 							{
 								// New entry
 								myAliasName = value;
+								if (0 == (flags & ItemFlags.AllowEmpty))
+								{
+									if (string.IsNullOrEmpty(value))
+									{
+										flags &= ~ItemFlags.ModifiedEntry;
+										flags |= ItemFlags.DeletedEntry;
+									}
+									else
+									{
+										flags &= ~ItemFlags.DeletedEntry;
+										flags |= ItemFlags.ModifiedEntry;
+									}
+								}
 							}
 							else if ((ItemFlags.ExistingAlias | ItemFlags.ExistingOnBase) == (flags & (ItemFlags.ExistingAlias | ItemFlags.ExistingOnBase)))
 							{
@@ -465,7 +561,10 @@ namespace Neumont.Tools.ORM.ObjectModel.Design
 								if (string.IsNullOrEmpty(value) || value == myBaseAlias.Name)
 								{
 									myAliasName = myBaseAlias.Name;
-									flags |= ItemFlags.DeletedEntry | ItemFlags.ModifiedEntry;
+									if (0 == (flags & ItemFlags.AllowEmpty))
+									{
+										flags |= ItemFlags.DeletedEntry | ItemFlags.ModifiedEntry;
+									}
 									flags &= ~ItemFlags.DirectAlias;
 								}
 								else if (value == myAlias.Name)
@@ -489,7 +588,7 @@ namespace Neumont.Tools.ORM.ObjectModel.Design
 								{
 									flags &= ~(ItemFlags.DeletedEntry | ItemFlags.ModifiedEntry);
 								}
-								else if (string.IsNullOrEmpty(value))
+								else if (0 == (flags & ItemFlags.AllowEmpty) && string.IsNullOrEmpty(value))
 								{
 									flags |= ItemFlags.DeletedEntry | ItemFlags.ModifiedEntry;
 								}
@@ -523,6 +622,17 @@ namespace Neumont.Tools.ORM.ObjectModel.Design
 						{
 							return myOwnerName;
 						}
+						set
+						{
+							if (!string.IsNullOrEmpty(value) && 0 != string.CompareOrdinal(value, myOwnerName))
+							{
+								if (myOwner != null)
+								{
+									myFlags |= ItemFlags.ModifiedOwnerName;
+								}
+								myOwnerName = value;
+							}
+						}
 					}
 
 					#region IComparable<ItemInfo> Implementation
@@ -531,12 +641,29 @@ namespace Neumont.Tools.ORM.ObjectModel.Design
 						#region IComparer<ItemInfo> Implementation
 						int IComparer<ItemInfo>.Compare(ItemInfo x, ItemInfo y)
 						{
-							if (x.myOwner == y.myOwner)
+							ModelElement xOwner = x.myOwner;
+							ModelElement yOwner = y.myOwner;
+							if (xOwner != null && xOwner == yOwner)
 							{
 								return 0;
 							}
 							int retVal = x.myOwnerName.CompareTo(y.myOwnerName);
-							return retVal == 0 ? x.myOwner.Id.CompareTo(y.myOwner.Id) : retVal;
+							if (retVal == 0)
+							{
+								if (xOwner == null)
+								{
+									retVal = -1;
+								}
+								else if (yOwner == null)
+								{
+									retVal = 1;
+								}
+								else
+								{
+									retVal = xOwner.Id.CompareTo(yOwner.Id);
+								}
+							}
+							return retVal;
 						}
 						#endregion // IComparer<ItemInfo> Implementation
 					}
@@ -656,7 +783,8 @@ namespace Neumont.Tools.ORM.ObjectModel.Design
 					public sealed override void SetValue(object component, object value)
 					{
 						ElementInstanceBranch contextBranch = (ElementInstanceBranch)component;
-						ItemInfo newItem = new ItemInfo(null, null, (ModelElement)value, contextBranch.myOwnerRoleInfo.RolePlayer.NameDomainProperty);
+						NameAliasOwnerCreationInfoAttribute creationOptions = contextBranch.myCreationOptions;
+						ItemInfo newItem = new ItemInfo(null, null, (ModelElement)value, contextBranch.myOwnerRoleInfo.RolePlayer.NameDomainProperty, null, creationOptions != null && creationOptions.AllowEmptyAlias);
 						List<ItemInfo> items = contextBranch.myItems;
 						int itemCount = items != null ? items.Count : 0;
 						BranchModificationEventHandler notify = contextBranch.myModify;
@@ -724,6 +852,7 @@ namespace Neumont.Tools.ORM.ObjectModel.Design
 				private DomainRoleInfo myOwnerRoleInfo;
 				private Store myStore;
 				private AliasOwnerBranch myParentBranch;
+				private NameAliasOwnerCreationInfoAttribute myCreationOptions;
 				#endregion // Member Variables
 				#region Constructor
 				public ElementInstanceBranch(DomainRoleInfo ownerRoleInfo, AliasOwnerBranch parentBranch)
@@ -732,6 +861,10 @@ namespace Neumont.Tools.ORM.ObjectModel.Design
 					myParentBranch = parentBranch;
 					myStore = generator.Store;
 					myOwnerRoleInfo = ownerRoleInfo;
+					object[] createAttributes = ownerRoleInfo.DomainRelationship.ImplementationClass.GetCustomAttributes(typeof(NameAliasOwnerCreationInfoAttribute), false);
+					NameAliasOwnerCreationInfoAttribute creationOptions = createAttributes.Length != 0 ? (NameAliasOwnerCreationInfoAttribute)createAttributes[0] : null;
+					bool allowEmptyElements = creationOptions != null && creationOptions.AllowEmptyAlias;
+					myCreationOptions = creationOptions;
 					//Find all the aliases that are associated with that name consumer or any of it's base types
 					Store store = generator.Store;
 					Type contextNameUsageType = generator.NameUsageType;
@@ -822,7 +955,7 @@ namespace Neumont.Tools.ORM.ObjectModel.Design
 						foreach (KeyValuePair<ModelElement, GeneratorClassAndAlias> pair in elementMap)
 						{
 							GeneratorClassAndAlias value = pair.Value;
-							items.Add(new ItemInfo(value.Alias, value.BaseAlias, pair.Key, nameProperty));
+							items.Add(new ItemInfo(value.Alias, value.BaseAlias, pair.Key, nameProperty, null, allowEmptyElements));
 						}
 						items.Sort(ItemInfo.Comparer);
 						myItems = items;
@@ -839,6 +972,7 @@ namespace Neumont.Tools.ORM.ObjectModel.Design
 					List<ItemInfo> items = myItems;
 					if (items != null)
 					{
+						ModelElement singletonContainer = null;
 						int itemCount = items.Count;
 						PropertyAssignment consumerProperty = null;
 						PropertyAssignment usageProperty = null;
@@ -854,38 +988,79 @@ namespace Neumont.Tools.ORM.ObjectModel.Design
 								}
 								else
 								{
+									NameAlias alias = currentItem.Alias;
 									string aliasName = currentItem.AliasName;
-									if (!string.IsNullOrEmpty(aliasName))
+									if (alias == null)
 									{
-										NameAlias alias = currentItem.Alias;
-										if (alias == null)
+										if (consumerProperty == null)
 										{
-											if (consumerProperty == null)
+											consumerProperty = new PropertyAssignment(NameAlias.NameConsumerDomainPropertyId, NameConsumer.TranslateToConsumerIdentifier(generator.GetDomainClass()));
+											string nameUsage = NameUsage.TranslateToNameUsageIdentifier(generator.NameUsageDomainClass);
+											if (!string.IsNullOrEmpty(nameUsage))
 											{
-												consumerProperty = new PropertyAssignment(NameAlias.NameConsumerDomainPropertyId, NameConsumer.TranslateToConsumerIdentifier(generator.GetDomainClass()));
-												string nameUsage = NameUsage.TranslateToNameUsageIdentifier(generator.NameUsageDomainClass);
-												if (!string.IsNullOrEmpty(nameUsage))
+												usageProperty = new PropertyAssignment(NameAlias.NameUsageDomainPropertyId, nameUsage);
+											}
+										}
+										PropertyAssignment nameAssignment = new PropertyAssignment(NameAlias.NameDomainPropertyId, aliasName);
+										alias = (usageProperty != null) ?
+											new NameAlias(store, nameAssignment, consumerProperty, usageProperty) :
+											new NameAlias(store, nameAssignment, consumerProperty);
+										DomainRoleInfo roleInfo = myOwnerRoleInfo;
+										ModelElement owner = currentItem.Owner;
+										if (owner == null)
+										{
+											NameAliasOwnerCreationInfoAttribute options;
+											DomainRoleInfo autoCreateRoleInfo;
+											if (null != (options = myCreationOptions) &&
+												options.HasAutoCreateRelationshipRole &&
+												null != (autoCreateRoleInfo = store.DomainDataDirectory.GetDomainRole(options.AutoCreateRelationshipRole)))
+											{
+												// Make sure we have the container. The NameAliasOwnerCreationAttribute should
+												// only be used if we resolve to a single container element.
+												ElementFactory factory = store.ElementFactory;
+												if (singletonContainer == null)
 												{
-													usageProperty = new PropertyAssignment(NameAlias.NameUsageDomainPropertyId, nameUsage);
+													DomainClassInfo containerClassInfo = autoCreateRoleInfo.OppositeDomainRole.RolePlayer;
+													foreach (ModelElement element in store.ElementDirectory.FindElements(containerClassInfo))
+													{
+														singletonContainer = element;
+														break;
+													}
+													if (singletonContainer == null)
+													{
+														singletonContainer = factory.CreateElement(containerClassInfo);
+													}
+												}
+												string ownerName = currentItem.OwnerName;
+												owner = options.GetExistingAliasOwner(singletonContainer, ownerName);
+												if (owner == null)
+												{
+													owner = factory.CreateElement(
+														autoCreateRoleInfo.RolePlayer,
+														new PropertyAssignment(autoCreateRoleInfo.RolePlayer.NameDomainProperty.Id, ownerName));
+													store.ElementFactory.CreateElementLink(
+														autoCreateRoleInfo.DomainRelationship,
+														new RoleAssignment(autoCreateRoleInfo.OppositeDomainRole.Id, singletonContainer),
+														new RoleAssignment(autoCreateRoleInfo.Id, owner));
 												}
 											}
-											PropertyAssignment nameAssignment = new PropertyAssignment(NameAlias.NameDomainPropertyId, aliasName);
-											alias = (usageProperty != null) ?
-												new NameAlias(store, nameAssignment, consumerProperty, usageProperty) :
-												new NameAlias(store, nameAssignment, consumerProperty);
-											DomainRoleInfo roleInfo = myOwnerRoleInfo;
-											store.GetDomainModel(roleInfo.DomainModel.Id).CreateElementLink(
-												store.DefaultPartition,
-												myOwnerRoleInfo.DomainRelationship.ImplementationClass,
-												new RoleAssignment[]{
-													new RoleAssignment(roleInfo.Id, currentItem.Owner),
+											else
+											{
+												continue; // Safety valve, should not be hit
+											}
+
+										}
+										store.GetDomainModel(roleInfo.DomainModel.Id).CreateElementLink(
+											store.DefaultPartition,
+											myOwnerRoleInfo.DomainRelationship.ImplementationClass,
+											new RoleAssignment[]{
+													new RoleAssignment(roleInfo.Id, owner),
 													new RoleAssignment(roleInfo.OppositeDomainRole.Id, alias)},
-												null);
-										}
-										else
-										{
-											alias.Name = aliasName;
-										}
+											null);
+									}
+									else
+									{
+										alias.Name = aliasName;
 									}
 								}
 							}
@@ -893,6 +1068,43 @@ namespace Neumont.Tools.ORM.ObjectModel.Design
 					}
 				}
 				#endregion // CommitChanges
+				#region Base overrides
+				/// <summary>
+				/// Mark items for deletion unless they were explicitly
+				/// created in this dialog, then remove them.
+				/// </summary>
+				public override bool DeleteItem(int row, int column)
+				{
+					if (row != ExistingItemCount)
+					{
+						BranchModificationEventArgs args = null;
+						ItemInfo info = myItems[row];
+						if (info.Alias == null)
+						{
+							// Lose the row, we created it for this instance of the dialog
+							myItems.RemoveAt(row);
+							args = BranchModificationEventArgs.DeleteItems(this, row, 1);
+						}
+						else
+						{
+							// Note that we could theoretically preserve the text for AllowEmptyAlias rows
+							// to show what was being deleted, but this presents display of shadowed names
+							// from less refined name generators. It is not worth the special case.
+
+							// Deleting the item is equivalent to clearing the AliasName property
+							myItems[row].IsDeleted = true;
+						}
+						BranchModificationEventHandler notify;
+						if (null != (notify = myModify))
+						{
+							args = args ?? BranchModificationEventArgs.DisplayDataChanged(new DisplayDataChangedData(VirtualTreeDisplayDataChanges.VisibleElements, this, row, -1, 1));
+							notify(this, args);
+						}
+						return true;
+					}
+					return false;
+				}
+				#endregion // Base overrides
 				#region IBranch Implementation
 				BranchFeatures IBranch.Features
 				{
@@ -923,28 +1135,61 @@ namespace Neumont.Tools.ORM.ObjectModel.Design
 					}
 					return retVal;
 				}
+
 				VirtualTreeLabelEditData IBranch.BeginLabelEdit(int row, int column, VirtualTreeLabelEditActivationStyles activationStyle)
 				{
 					if (row == ExistingItemCount)
 					{
-						TypeEditorHost host = OnScreenTypeEditorHost.Create(
-							OtherOwnersPropertyDescriptor.Descriptor,
-							this,
-							TypeEditorHostEditControlStyle.TransparentEditRegion);
-						if (host != null)
+						NameAliasOwnerCreationInfoAttribute creationOptions = myCreationOptions;
+						if (creationOptions == null || !creationOptions.HasAutoCreateRelationshipRole)
 						{
-							(host as IVirtualTreeInPlaceControl).Flags = VirtualTreeInPlaceControlFlags.DisposeControl | VirtualTreeInPlaceControlFlags.SizeToText | VirtualTreeInPlaceControlFlags.DrawItemText | VirtualTreeInPlaceControlFlags.ForwardKeyEvents;
-							VirtualTreeLabelEditData retVal = VirtualTreeLabelEditData.Default;
-							retVal.CustomInPlaceEdit = host;
-							return retVal;
+							TypeEditorHost host = OnScreenTypeEditorHost.Create(
+								OtherOwnersPropertyDescriptor.Descriptor,
+								this,
+								TypeEditorHostEditControlStyle.TransparentEditRegion);
+							if (host != null)
+							{
+								(host as IVirtualTreeInPlaceControl).Flags = VirtualTreeInPlaceControlFlags.DisposeControl | VirtualTreeInPlaceControlFlags.SizeToText | VirtualTreeInPlaceControlFlags.DrawItemText | VirtualTreeInPlaceControlFlags.ForwardKeyEvents;
+								VirtualTreeLabelEditData retVal = VirtualTreeLabelEditData.Default;
+								retVal.CustomInPlaceEdit = host;
+								return retVal;
+							}
 						}
+						else
+						{
+							if (0 != (activationStyle & (VirtualTreeLabelEditActivationStyles.ImmediateSelection | VirtualTreeLabelEditActivationStyles.ImmediateMouse)))
+							{
+								return VirtualTreeLabelEditData.DeferActivation;
+							}
+							return new VirtualTreeLabelEditData("");
+						}
+					}
+					else if (0 != (activationStyle & (VirtualTreeLabelEditActivationStyles.ImmediateSelection | VirtualTreeLabelEditActivationStyles.ImmediateMouse)))
+					{
+						return VirtualTreeLabelEditData.DeferActivation;
+					}
+					else if (column == 0)
+					{
+						NameAliasOwnerCreationInfoAttribute creationOptions = myCreationOptions;
+						if (creationOptions != null && creationOptions.HasAutoCreateRelationshipRole)
+						{
+							ItemInfo item = myItems[row];
+							if (!item.IsDeleted)
+							{
+								IVirtualTreeInPlaceControl editControl = new VirtualTreeInPlaceEditControl();
+								editControl.Flags &= ~VirtualTreeInPlaceControlFlags.SizeToText;
+								VirtualTreeLabelEditData retVal = new VirtualTreeLabelEditData(editControl);
+								if (item.IsBase)
+								{
+									retVal.AlternateText = "";
+								}
+								return retVal;
+							}
+						}
+						return VirtualTreeLabelEditData.Invalid;
 					}
 					else if (column == 1)
 					{
-						if (0 != (activationStyle & (VirtualTreeLabelEditActivationStyles.ImmediateSelection | VirtualTreeLabelEditActivationStyles.ImmediateMouse)))
-						{
-							return VirtualTreeLabelEditData.DeferActivation;
-						}
 						VirtualTreeLabelEditData retVal = VirtualTreeLabelEditData.Default;
 						IVirtualTreeInPlaceControl editControl = new VirtualTreeInPlaceEditControl();
 						editControl.Flags &= ~VirtualTreeInPlaceControlFlags.SizeToText;
@@ -961,10 +1206,129 @@ namespace Neumont.Tools.ORM.ObjectModel.Design
 				{
 					if (column == 1)
 					{
-						myItems[row].AliasName = newText;
+						ItemInfo item = myItems[row];
+						bool oldIsDeleted = item.IsDeleted;
+						item.AliasName = newText;
+						if (item.IsDeleted ^ oldIsDeleted)
+						{
+							myModify(this, BranchModificationEventArgs.DisplayDataChanged(new DisplayDataChangedData(VirtualTreeDisplayDataChanges.VisibleElements, this, row, -1, 1)));
+						}
 						return LabelEditResult.AcceptEdit;
 					}
+					else if (column == 0 && row != ExistingItemCount)
+					{
+						List<ItemInfo> existingItems = myItems;
+						ItemInfo item = existingItems[row];
+						if (newText == item.OwnerName)
+						{
+							return LabelEditResult.CancelEdit;
+						}
+						ItemInfo testItem = ItemInfo.CreateForCompare();
+						ItemInfo.UpdateForCompare(testItem, null, newText);
+						int newLocation = existingItems.BinarySearch(testItem, ItemInfo.Comparer);
+
+						if (newLocation >= 0)
+						{
+							// This is the same name as an existing displayed item, reject the change
+							return LabelEditResult.CancelEdit;
+						}
+						newLocation = ~newLocation;
+
+						// Do an additional check for a name match either at or immediately before
+						// the new location. The ItemInfo comparer does not return exact matches unless
+						// the item and owner are exactly the same, but it does get us close.
+						if ((newLocation > 0 && existingItems[newLocation - 1].OwnerName.CompareTo(newText) == 0) ||
+							(newLocation < existingItems.Count && existingItems[newLocation].OwnerName.CompareTo(newText) == 0))
+						{
+							return LabelEditResult.CancelEdit;
+						}
+
+						item.OwnerName = newText;
+						BranchModificationEventHandler notify = myModify;
+						if (newLocation == row || (newLocation - row) == 1)
+						{
+							notify(this, BranchModificationEventArgs.DisplayDataChanged(new DisplayDataChangedData(VirtualTreeDisplayDataChanges.VisibleElements, this, row, 0, 1)));
+						}
+						else
+						{
+							if (row < newLocation)
+							{
+								--newLocation;
+							}
+							existingItems.RemoveAt(row);
+							existingItems.Insert(newLocation, item);
+							notify(this, BranchModificationEventArgs.MoveItem(this, row, newLocation));
+						}
+						return LabelEditResult.AcceptEdit;
+					}
+
+					else if (row == ExistingItemCount)
+					{
+						NameAliasOwnerCreationInfoAttribute creationOptions = myCreationOptions;
+
+						if (!string.IsNullOrEmpty(newText) && creationOptions != null && creationOptions.HasAutoCreateRelationshipRole)
+						{
+							ItemInfo newItem = new ItemInfo(null, null, null, null, newText, creationOptions.AllowEmptyAlias);
+							List<ItemInfo> existingItems = myItems;
+							int itemCount = existingItems != null ? existingItems.Count : 0;
+							BranchModificationEventHandler notify = myModify;
+							if (existingItems == null)
+							{
+								existingItems = new List<ItemInfo>();
+								existingItems.Add(newItem);
+								myItems = existingItems;
+							}
+							else
+							{
+								int newLocation = existingItems.BinarySearch(newItem, ItemInfo.Comparer);
+								
+								if (newLocation >= 0)
+								{
+									// This is the same name as an existing displayed item, reject the change
+									return LabelEditResult.CancelEdit;
+								}
+								newLocation = ~newLocation;
+
+								if (newLocation == itemCount)
+								{
+									existingItems.Add(newItem);
+								}
+								else
+								{
+									if ((newLocation > 0 && existingItems[newLocation - 1].OwnerName.CompareTo(newText) == 0) ||
+										(newLocation < existingItems.Count && existingItems[newLocation].OwnerName.CompareTo(newText) == 0))
+									{
+										return LabelEditResult.CancelEdit;
+									}
+									else
+									{
+										existingItems.Insert(newLocation, newItem);
+										notify(this, BranchModificationEventArgs.MoveItem(this, itemCount, newLocation));
+									}
+								}
+							}
+							notify(this, BranchModificationEventArgs.InsertItems(this, itemCount, 1));
+							VirtualTreeControl control = myParentBranch.myHostControl;
+							control.LabelEditControlChanged += new EventHandler(ReactivateLabelEditInSecondColumn);
+							return LabelEditResult.AcceptEdit;
+						}
+					}
 					return LabelEditResult.CancelEdit;
+				}
+
+				/// <summary>
+				/// Ensure that the user can continue to edit an abbreviation when the new recognized phrase is entered.
+				/// We can't do this in-line because the control is still live.
+				/// </summary>
+				private static void ReactivateLabelEditInSecondColumn(object sender, EventArgs e)
+				{
+					VirtualTreeControl control = (VirtualTreeControl)sender;
+					control.LabelEditControlChanged -= new EventHandler(ReactivateLabelEditInSecondColumn);
+					if (control.LabelEditControl == null)
+					{
+						control.CurrentColumn = 1;
+						control.BeginLabelEdit();
+					}
 				}
 				private BranchModificationEventHandler myModify;
 				event BranchModificationEventHandler IBranch.OnBranchModification
@@ -1028,6 +1392,63 @@ namespace Neumont.Tools.ORM.ObjectModel.Design
 			if (e.KeyData == Keys.F2 && virtualTreeControl.LabelEditControl == null)
 			{
 				virtualTreeControl.BeginLabelEdit();
+			}
+
+			if (e.KeyData == Keys.Delete)
+			{
+				int column = virtualTreeControl.CurrentColumn;
+				int index = virtualTreeControl.CurrentIndex;
+
+				if (index != -1)
+				{
+					VirtualTreeItemInfo itemInfo = virtualTreeControl.Tree.GetItemInfo(index, column, false);
+					if (!itemInfo.Blank)
+					{
+						BaseBranch contextBranch = (BaseBranch)itemInfo.Branch;
+						if (!contextBranch.DeleteItem(itemInfo.Row, itemInfo.Column))
+						{
+							System.Media.SystemSounds.Beep.Play();
+						}
+					}
+				}
+			}
+		}
+
+		private void AliasManagerForm_FormClosing(object sender, FormClosingEventArgs e)
+		{
+			if (DialogResult == DialogResult.OK)
+			{
+				AliasOwnerBranch branch = (AliasOwnerBranch)virtualTreeControl.Tree.Root;
+				try
+				{
+					branch.CommitChanges();
+				}
+				catch (Exception ex)
+				{
+					bool cancelClose = false;
+					switch (e.CloseReason)
+					{
+						case CloseReason.None:
+						case CloseReason.UserClosing:
+							cancelClose = true;
+							break;
+					}
+					if (cancelClose && !Utility.IsCriticalException(ex))
+					{
+						VsShellUtilities.ShowMessageBox(
+							Site,
+							ex.Message,
+							ResourceStrings.PackageOfficialName,
+							OLEMSGICON.OLEMSGICON_INFO,
+							OLEMSGBUTTON.OLEMSGBUTTON_OK,
+							OLEMSGDEFBUTTON.OLEMSGDEFBUTTON_FIRST);
+						e.Cancel = true;
+					}
+					else
+					{
+						throw;
+					}
+				}
 			}
 		}
 	}

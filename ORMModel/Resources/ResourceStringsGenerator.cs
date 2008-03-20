@@ -2036,6 +2036,14 @@ namespace Neumont.Tools.ORM
 				return ResourceStrings.GetString(ResourceManagers.ObjectModel, "Neumont.Tools.ORM.ObjectModel.ValueConstraint.ClosedInclusionPattern");
 			}
 		}
+		/// <summary>Model validation error text used when multiple recognized phrases with the same name are loaded into a model.Field 0 is the model name, field 1 is the element name.This is an uncommon condition that should only occur with a hand edit to a model file.</summary>
+		public static string ModelErrorModelHasDuplicateRecognizedPhrases
+		{
+			get
+			{
+				return ResourceStrings.GetString(ResourceManagers.Model, "ModelError.RecognizedPhrase.DuplicateNameError.Message");
+			}
+		}
 		/// <summary>The string used to display that an object is independent.</summary>
 		public static string ObjectTypeShapeIndependentFormatString
 		{

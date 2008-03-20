@@ -35,26 +35,22 @@
 
 	<Classes>
 		<DomainClass Name="NameConsumer" Namespace="Neumont.Tools.ORM.ObjectModel" Id="491389AA-B7DB-4461-B3CE-8064F8DE4072" DisplayName="NameConsumer" Description=""/>
-
-		<DomainClass Name="OmittedWord" Namespace="Neumont.Tools.ORM.ObjectModel" Id="DF462D31-C2E4-47A5-AF48-7FFC55DE4B2A" DisplayName="OmittedWord" Description="">
-			<Properties>
-				<DomainProperty Name="Word" DisplayName="Word" Id="80822CFE-225B-4618-B0F1-C83C60D45881" Description="">
-					<Type>
-						<ExternalTypeMoniker Name="/System/String"/>
-					</Type>
-				</DomainProperty>
-			</Properties>
+		
+		<DomainClass Name="RecognizedPhrase" Namespace="Neumont.Tools.ORM.ObjectModel" Id="DF462D31-C2E4-47A5-AF48-7FFC55DE4B2A" DisplayName="RecognizedPhrase" Description="">
+			<BaseClass>
+				<DomainClassMoniker Name="ORMNamedElement"/>
+			</BaseClass>
 		</DomainClass>
 
 		<DomainClass Name="NameGenerator" Namespace="Neumont.Tools.ORM.ObjectModel" Id="E032727F-440A-431A-82E7-2454BE939C82" DisplayName="Name Generation Defaults" Description="">
-      <Attributes>
-        <ClrAttribute Name="global::System.ComponentModel.TypeDescriptionProvider">
-          <Parameters>
-            <AttributeParameter Value="typeof(global::Neumont.Tools.Modeling.Design.ElementTypeDescriptionProvider&lt;NameGenerator, Design.NameGeneratorTypeDescriptor&lt;NameGenerator&gt;&gt;)"/>
-          </Parameters>
-        </ClrAttribute>
-      </Attributes>
-      <BaseClass>
+			<Attributes>
+				<ClrAttribute Name="global::System.ComponentModel.TypeDescriptionProvider">
+					<Parameters>
+						<AttributeParameter Value="typeof(global::Neumont.Tools.Modeling.Design.ElementTypeDescriptionProvider&lt;NameGenerator, Design.NameGeneratorTypeDescriptor&lt;NameGenerator&gt;&gt;)"/>
+					</Parameters>
+				</ClrAttribute>
+			</Attributes>
+			<BaseClass>
 				<DomainClassMoniker Name="NameConsumer"/>
 			</BaseClass>
 			<Properties>
@@ -882,6 +878,12 @@
 		</DomainClass>
 
 		<DomainClass Name="ObjectTypeDuplicateNameError" Namespace="Neumont.Tools.ORM.ObjectModel" Id="798D4CC7-1AD8-4A83-AFD5-5730AC342DC2" DisplayName="Duplicate ObjectType Names" Description="">
+			<BaseClass>
+				<DomainClassMoniker Name="DuplicateNameError"/>
+			</BaseClass>
+		</DomainClass>
+
+		<DomainClass Name="RecognizedPhraseDuplicateNameError" Namespace="Neumont.Tools.ORM.ObjectModel" Id="E4F41332-9A69-4CE8-871C-3507326D7CDB" DisplayName="Duplicate Recognized Words" Description="">
 			<BaseClass>
 				<DomainClassMoniker Name="DuplicateNameError"/>
 			</BaseClass>
@@ -2140,6 +2142,35 @@
 			</Target>
 		</DomainRelationship>
 
+		<DomainRelationship Name="RecognizedPhraseHasAbbreviation" Namespace="Neumont.Tools.ORM.ObjectModel" DisplayName="Other Word Abbreviations" IsEmbedding="true" Id="83D9D4FB-5F40-42F2-A014-8A5E5052C24F">
+			<Attributes>
+				<ClrAttribute Name="Neumont.Tools.ORM.ObjectModel.NameAliasOwnerCreationInfoAttribute">
+					<Parameters>
+						<AttributeParameter Value="true"/>
+						<AttributeParameter Value='"6D4F2B86-2C27-4F82-84CE-8AA23DCC0EF8"'/>
+						<AttributeParameter Value='"GetExistingRecognizedPhrase"'/>
+					</Parameters>
+				</ClrAttribute>
+			</Attributes>
+			<BaseRelationship>
+				<DomainRelationshipMoniker Name="ElementHasAlias"/>
+			</BaseRelationship>
+			<Source>
+				<DomainRole Name="RecognizedPhrase" PropertyName="AbbreviationCollection" Multiplicity="ZeroMany" PropagatesDelete="false" IsPropertyGenerator="true" DisplayName="RecognizedPhrase" Id="64397C80-2261-4C8B-9CF3-B0CF963EBCCF">
+					<RolePlayer>
+						<DomainClassMoniker Name="RecognizedPhrase"/>
+					</RolePlayer>
+				</DomainRole>
+			</Source>
+			<Target>
+				<DomainRole Name="Abbreviation" PropertyName="Element" Multiplicity="ZeroOne" PropagatesDelete="true" IsPropertyGenerator="false" DisplayName="Alias" Id="5FEF356B-E9AC-4522-811F-E062D83FF9D3">
+					<RolePlayer>
+						<DomainClassMoniker Name="NameAlias"/>
+					</RolePlayer>
+				</DomainRole>
+			</Target>
+		</DomainRelationship>
+
 		<DomainRelationship Name="ObjectTypeHasAbbreviation" Namespace="Neumont.Tools.ORM.ObjectModel" DisplayName="ObjectType Abbreviations" IsEmbedding="true" Id="6A85513C-747F-4A8C-B45A-B5CFF88314E5">
 			<BaseRelationship>
 				<DomainRelationshipMoniker Name="ElementHasAlias"/>
@@ -2160,24 +2191,44 @@
 			</Target>
 		</DomainRelationship>
 
-		<DomainRelationship Name="NameGeneratorContainsOmittedWord" Namespace="Neumont.Tools.ORM.ObjectModel" IsEmbedding="true" Id="3DE59564-603C-48ED-8EA4-D51AE8E761F1">
+		<DomainRelationship Name="ModelContainsRecognizedPhrase" Namespace="Neumont.Tools.ORM.ObjectModel" IsEmbedding="true" Id="27AC76D9-EEDA-4836-8A93-59A7197122D9">
 			<Source>
-				<DomainRole Name="NameGenerator" PropertyName="OmittedWordCollection" Multiplicity="ZeroMany" PropagatesDelete="false" IsPropertyGenerator="true" DisplayName="NameGenerator" Id="965FF527-A2D6-4468-94DE-464489E332E2">
+				<DomainRole Name="Model" PropertyName="RecognizedPhraseCollection" Multiplicity="ZeroMany" PropagatesDelete="false" IsPropertyGenerator="true" DisplayName="NameGenerator" Id="965FF527-A2D6-4468-94DE-464489E332E2">
 					<RolePlayer>
-						<DomainClassMoniker Name="NameGenerator"/>
+						<DomainClassMoniker Name="ORMModel"/>
 					</RolePlayer>
 				</DomainRole>
 			</Source>
 			<Target>
-				<DomainRole Name="OmittedWord" PropertyName="NameGenerator" Multiplicity="ZeroOne" PropagatesDelete="true" IsPropertyGenerator="true" DisplayName="OmittedWord" Id="6D4F2B86-2C27-4F82-84CE-8AA23DCC0EF8">
+				<DomainRole Name="RecognizedPhrase" PropertyName="Model" Multiplicity="ZeroOne" PropagatesDelete="true" IsPropertyGenerator="true" DisplayName="RecognizedPhrase" Id="6D4F2B86-2C27-4F82-84CE-8AA23DCC0EF8">
 					<RolePlayer>
-						<DomainClassMoniker Name="OmittedWord"/>
+						<DomainClassMoniker Name="RecognizedPhrase"/>
 					</RolePlayer>
 				</DomainRole>
 			</Target>
 		</DomainRelationship>
 
 
+
+		<DomainRelationship Name="RecognizedPhraseHasDuplicateNameError" Namespace="Neumont.Tools.ORM.ObjectModel" Id="6D1ABE6F-A38B-4981-8124-4DFB48F1AA5A">
+			<BaseRelationship>
+				<DomainRelationshipMoniker Name="ElementAssociatedWithModelError"/>
+			</BaseRelationship>
+			<Source>
+				<DomainRole Name="RecognizedPhrase" PropertyName="DuplicateNameError" Multiplicity="ZeroOne" PropagatesDelete="false" IsPropertyGenerator="true" DisplayName="RecognizedPhrase" Id="41DF5814-E8E1-4B5E-A6D2-C3C9CE8459A9">
+					<RolePlayer>
+						<DomainClassMoniker Name="RecognizedPhrase"/>
+					</RolePlayer>
+				</DomainRole>
+			</Source>
+			<Target>
+				<DomainRole Name="DuplicateNameError" PropertyName="RecognizedPhraseCollection" Multiplicity="OneMany" PropagatesDelete="false" IsPropertyGenerator="true" DisplayName="DuplicateNameError" Id="DC8DEFE0-274B-42F5-834E-42BFB183FA9E">
+					<RolePlayer>
+						<DomainClassMoniker Name="RecognizedPhraseDuplicateNameError"/>
+					</RolePlayer>
+				</DomainRole>
+			</Target>
+		</DomainRelationship>
 
 		<DomainRelationship Name="ExternalRoleConstraint" Namespace="Neumont.Tools.ORM.ObjectModel" AllowsDuplicates="false" Id="9692D61F-13AE-4FEE-9F76-8E0D9A5FF976">
 			<!--<BaseRelationship>

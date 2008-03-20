@@ -256,26 +256,13 @@ namespace Neumont.Tools.Modeling
 		/// <returns>true to rethrow the exception, false to swallow it</returns>
 		private bool OnException(Exception exception)
 		{
-			if (IsCriticalException(exception))
+			if (Utility.IsCriticalException(exception))
 			{
 				return true;
 			}
 			if (myPendingException == null)
 			{
 				myPendingException = exception;
-			}
-			return false;
-		}
-		private bool IsCriticalException(Exception ex)
-		{
-			if (((ex is StackOverflowException)) || ((ex is OutOfMemoryException) || (ex is System.Threading.ThreadAbortException)))
-			{
-				return true;
-			}
-			Exception inner = ex.InnerException;
-			if (inner != null)
-			{
-				return IsCriticalException(inner);
 			}
 			return false;
 		}

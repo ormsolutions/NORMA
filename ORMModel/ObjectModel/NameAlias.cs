@@ -24,6 +24,7 @@ using System.Globalization;
 using Neumont.Tools.Modeling;
 using System.Text;
 using System.Collections.ObjectModel;
+using System.Reflection;
 
 namespace Neumont.Tools.ORM.ObjectModel
 {
@@ -374,6 +375,113 @@ namespace Neumont.Tools.ORM.ObjectModel
 	}
 
 	#endregion // NameUsage Class
+	#region NameAliasOwnerCreationInfoAttribute class
+	/// <summary>
+	/// Delegate used with the <see cref="NameAliasOwnerCreationInfoAttribute"/> to find
+	/// existing alias owners in an existing container element.
+	/// </summary>
+	/// <param name="container">The singleton container element</param>
+	/// <param name="ownerName">The name of a potentially existing alias owner element</param>
+	/// <returns>The existing model element</returns>
+	public delegate ModelElement GetExistingAliasOwner(ModelElement container, string ownerName);
+	/// <summary>
+	/// Provide custom creation information for <see cref="NameAlias"/> owner classes.
+	/// The primary function of this attribute is to allow UI components to automatically
+	/// create a new instance of an element that exists solely to represent a name that
+	/// can in turn have aliases associated with it.
+	/// </summary>
+	[AttributeUsage(AttributeTargets.Class, AllowMultiple=false, Inherited=false)]
+	public sealed class NameAliasOwnerCreationInfoAttribute : Attribute
+	{
+		private Guid myAutoCreateRelationshipRole;
+		private bool myAllowEmptyAlias;
+		private string myExistingAliasOwnerCallbackName;
+		private GetExistingAliasOwner myExistingAliasCallback;
+
+		/// <summary>
+		/// Create a new <see cref="NameAliasOwnerCreationInfoAttribute"/>
+		/// </summary>
+		/// <param name="allowEmptyAlias">Set to <see langword="true"/> if an alias
+		/// with empty content should be allowed for this owner relationship. If this
+		/// is not set, then clearing the alias name will automatically delete the alias.</param>
+		public NameAliasOwnerCreationInfoAttribute(bool allowEmptyAlias)
+		{
+			myAllowEmptyAlias = allowEmptyAlias;
+		}
+
+		/// <summary>
+		/// Create a new <see cref="NameAliasOwnerCreationInfoAttribute"/>
+		/// </summary>
+		/// <param name="allowEmptyAlias">Set to <see langword="true"/> if an alias
+		/// with empty content should be allowed for this owner relationship. If this
+		/// is not set, then clearing the alias name will automatically delete the alias.</param>
+		/// <param name="autoCreateRelationshipRole">The string form of a <see cref="Guid"/> representing
+		/// the role played by the alias owner in an aggregating relationship with a singleton container. If this
+		/// is set, then the assumption is made that the element has a formal name.</param>
+		/// <param name="getExistingAliasOwnerCallbackName">The name of a static method matching the <see cref="GetExistingAliasOwner"/>
+		/// signature that is implemented on the singleton container type.</param>
+		public NameAliasOwnerCreationInfoAttribute(bool allowEmptyAlias, string autoCreateRelationshipRole, string getExistingAliasOwnerCallbackName)
+		{
+			myAllowEmptyAlias = allowEmptyAlias;
+			if (!string.IsNullOrEmpty(autoCreateRelationshipRole))
+			{
+				myAutoCreateRelationshipRole = new Guid(autoCreateRelationshipRole);
+			}
+			myExistingAliasOwnerCallbackName = getExistingAliasOwnerCallbackName;
+		}
+
+		/// <summary>
+		/// A <see cref="Guid"/> representing the role played by the alias owner in an aggregating relationship
+		/// with a singleton container. If this is set, then the assumption is made that the element has a formal
+		/// name.
+		/// </summary>
+		public Guid AutoCreateRelationshipRole
+		{
+			get { return myAutoCreateRelationshipRole; }
+		}
+		/// <summary>
+		/// Does the <see cref="AutoCreateRelationshipRole"/> have any data?
+		/// </summary>
+		public bool HasAutoCreateRelationshipRole
+		{
+			get { return myAutoCreateRelationshipRole != Guid.Empty; }
+		}
+		/// <summary>
+		/// Set to <see langword="true"/> if an alias
+		/// with empty content should be allowed for this owner relationship. If this
+		/// is not set, then clearing the alias name will automatically delete the alias.
+		/// </summary>
+		public bool AllowEmptyAlias
+		{
+			get { return myAllowEmptyAlias; }
+		}
+		/// <summary>
+		/// Return an existing alias owner of the provided name. The container element
+		/// is identified based on information in the <see cref="AutoCreateRelationshipRole"/>
+		/// </summary>
+		/// <param name="containerElement">A container instance.</param>
+		/// <param name="aliasOwnerName">The name of an existing element to locate</param>
+		/// <returns>An existing alias. Can return <see langword="null"/></returns>
+		public ModelElement GetExistingAliasOwner(ModelElement containerElement, string aliasOwnerName)
+		{
+			GetExistingAliasOwner callback = myExistingAliasCallback;
+			if (callback == null && !string.IsNullOrEmpty(myExistingAliasOwnerCallbackName))
+			{
+				MethodInfo methodInfo = containerElement.GetType().GetMethod(myExistingAliasOwnerCallbackName, BindingFlags.Static | BindingFlags.Public | BindingFlags.NonPublic, null, new Type[]{typeof(ModelElement), typeof(string)}, null);
+				if (methodInfo != null)
+				{
+					System.Threading.Interlocked.CompareExchange(ref myExistingAliasCallback, (GetExistingAliasOwner)Delegate.CreateDelegate(typeof(GetExistingAliasOwner), methodInfo), null);
+					callback = myExistingAliasCallback;
+				}
+			}
+			if (callback == null)
+			{
+				return null;
+			}
+			return callback(containerElement, aliasOwnerName);
+		}
+	}
+	#endregion // NameAliasOwnerCreationInfoAttribute class
 	#region NameUsageAttribute class
 	/// <summary>
 	/// <see cref=" NameUsageAttribute"/> to define the <see cref="NameConsumer"/> usage.
@@ -410,4 +518,24 @@ namespace Neumont.Tools.ORM.ObjectModel
 		}
 	}
 	#endregion // NameUsageAttribute class
+	#region RecognizedPhrase class
+	partial class RecognizedPhrase
+	{
+		/// <summary>
+		/// DeleteRule: typeof(RecognizedPhraseHasAbbreviation), FireTime=LocalCommit, Priority=FrameworkDomainModel.BeforeDelayValidateRulePriority;
+		/// Delete a <see cref="RecognizedPhrase"/> when the last abbreviation for it is deleted
+		/// </summary>
+		private static void RecognizedPhraseHasAbbreviationDeletedRule(ElementDeletedEventArgs e)
+		{
+			RecognizedPhrase phrase = ((RecognizedPhraseHasAbbreviation)e.ModelElement).RecognizedPhrase;
+			if (!phrase.IsDeleted)
+			{
+				if (phrase.AbbreviationCollection.Count == 0)
+				{
+					phrase.Delete();
+				}
+			}
+		}
+	}
+	#endregion // RecognizedPhrase class
 }

@@ -177,8 +177,10 @@ namespace Neumont.Tools.ORM.ObjectModel
 						typeof(ObjectTypeInstance).GetNestedType("ValueTypeInstanceValueChangedRuleClass", BindingFlags.Public | BindingFlags.NonPublic),
 						typeof(ORMModel).GetNestedType("DuplicateConstraintNameConstraintDeleteRuleClass", BindingFlags.Public | BindingFlags.NonPublic),
 						typeof(ORMModel).GetNestedType("DuplicateObjectTypeNameObjectTypeDeleteRuleClass", BindingFlags.Public | BindingFlags.NonPublic),
+						typeof(ORMModel).GetNestedType("DuplicateRecognizedPhraseDeleteRuleClass", BindingFlags.Public | BindingFlags.NonPublic),
 						typeof(Reading).GetNestedType("ReadingOrderHasRoleDeletedRuleClass", BindingFlags.Public | BindingFlags.NonPublic),
 						typeof(Reading).GetNestedType("ReadingPropertiesChangedRuleClass", BindingFlags.Public | BindingFlags.NonPublic),
+						typeof(RecognizedPhrase).GetNestedType("RecognizedPhraseHasAbbreviationDeletedRuleClass", BindingFlags.Public | BindingFlags.NonPublic),
 						typeof(ReadingOrder).GetNestedType("EnforceNoEmptyReadingOrderDeleteRuleClass", BindingFlags.Public | BindingFlags.NonPublic),
 						typeof(ReadingOrder).GetNestedType("EnforceNoEmptyReadingOrderRolePlayerChangeRuleClass", BindingFlags.Public | BindingFlags.NonPublic),
 						typeof(ReadingOrder).GetNestedType("FactTypeHasRoleAddedRuleClass", BindingFlags.Public | BindingFlags.NonPublic),
@@ -300,7 +302,7 @@ namespace Neumont.Tools.ORM.ObjectModel
 		{
 			Microsoft.VisualStudio.Modeling.RuleManager ruleManager = store.RuleManager;
 			Type[] disabledRuleTypes = ORMCoreDomainModel.CustomDomainModelTypes;
-			for (int i = 0; i < 233; ++i)
+			for (int i = 0; i < 235; ++i)
 			{
 				ruleManager.EnableRule(disabledRuleTypes[i]);
 			}
@@ -4108,6 +4110,32 @@ namespace Neumont.Tools.ORM.ObjectModel
 				Neumont.Tools.Modeling.Diagnostics.TraceUtility.TraceRuleEnd(e.ModelElement.Store, "Neumont.Tools.ORM.ObjectModel.ORMModel.DuplicateObjectTypeNameObjectTypeDeleteRule");
 			}
 		}
+		[Microsoft.VisualStudio.Modeling.RuleOn(typeof(RecognizedPhraseHasDuplicateNameError), Priority=Neumont.Tools.Modeling.FrameworkDomainModel.InlineRulePriority)]
+		private sealed class DuplicateRecognizedPhraseDeleteRuleClass : Microsoft.VisualStudio.Modeling.DeleteRule
+		{
+			[System.Diagnostics.DebuggerStepThrough()]
+			public DuplicateRecognizedPhraseDeleteRuleClass()
+			{
+				base.IsEnabled = false;
+			}
+			/// <summary>
+			/// Provide the following method in class: 
+			/// Neumont.Tools.ORM.ObjectModel.ORMModel
+			/// /// <summary>
+			/// /// DeleteRule: typeof(RecognizedPhraseHasDuplicateNameError)
+			/// /// </summary>
+			/// private static void DuplicateRecognizedPhraseDeleteRule(ElementDeletedEventArgs e)
+			/// {
+			/// }
+			/// </summary>
+			[System.Diagnostics.DebuggerStepThrough()]
+			public override void ElementDeleted(Microsoft.VisualStudio.Modeling.ElementDeletedEventArgs e)
+			{
+				Neumont.Tools.Modeling.Diagnostics.TraceUtility.TraceRuleStart(e.ModelElement.Store, "Neumont.Tools.ORM.ObjectModel.ORMModel.DuplicateRecognizedPhraseDeleteRule");
+				ORMModel.DuplicateRecognizedPhraseDeleteRule(e);
+				Neumont.Tools.Modeling.Diagnostics.TraceUtility.TraceRuleEnd(e.ModelElement.Store, "Neumont.Tools.ORM.ObjectModel.ORMModel.DuplicateRecognizedPhraseDeleteRule");
+			}
+		}
 	}
 	#endregion // Rule classes for ORMModel
 	#region Rule classes for Reading
@@ -4167,6 +4195,37 @@ namespace Neumont.Tools.ORM.ObjectModel
 		}
 	}
 	#endregion // Rule classes for Reading
+	#region Rule classes for RecognizedPhrase
+	partial class RecognizedPhrase
+	{
+		[Microsoft.VisualStudio.Modeling.RuleOn(typeof(RecognizedPhraseHasAbbreviation), FireTime=Microsoft.VisualStudio.Modeling.TimeToFire.LocalCommit, Priority=Neumont.Tools.Modeling.FrameworkDomainModel.BeforeDelayValidateRulePriority)]
+		private sealed class RecognizedPhraseHasAbbreviationDeletedRuleClass : Microsoft.VisualStudio.Modeling.DeleteRule
+		{
+			[System.Diagnostics.DebuggerStepThrough()]
+			public RecognizedPhraseHasAbbreviationDeletedRuleClass()
+			{
+				base.IsEnabled = false;
+			}
+			/// <summary>
+			/// Provide the following method in class: 
+			/// Neumont.Tools.ORM.ObjectModel.RecognizedPhrase
+			/// /// <summary>
+			/// /// DeleteRule: typeof(RecognizedPhraseHasAbbreviation), FireTime=LocalCommit, Priority=FrameworkDomainModel.BeforeDelayValidateRulePriority;
+			/// /// </summary>
+			/// private static void RecognizedPhraseHasAbbreviationDeletedRule(ElementDeletedEventArgs e)
+			/// {
+			/// }
+			/// </summary>
+			[System.Diagnostics.DebuggerStepThrough()]
+			public override void ElementDeleted(Microsoft.VisualStudio.Modeling.ElementDeletedEventArgs e)
+			{
+				Neumont.Tools.Modeling.Diagnostics.TraceUtility.TraceRuleStart(e.ModelElement.Store, "Neumont.Tools.ORM.ObjectModel.RecognizedPhrase.RecognizedPhraseHasAbbreviationDeletedRule");
+				RecognizedPhrase.RecognizedPhraseHasAbbreviationDeletedRule(e);
+				Neumont.Tools.Modeling.Diagnostics.TraceUtility.TraceRuleEnd(e.ModelElement.Store, "Neumont.Tools.ORM.ObjectModel.RecognizedPhrase.RecognizedPhraseHasAbbreviationDeletedRule");
+			}
+		}
+	}
+	#endregion // Rule classes for RecognizedPhrase
 	#region Rule classes for ReadingOrder
 	partial class ReadingOrder
 	{

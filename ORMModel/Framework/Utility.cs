@@ -391,5 +391,24 @@ namespace Neumont.Tools.Modeling
 			return null;
 		}
 		#endregion // GetBaseInterfaceMethodDelegate method
+		#region IsCriticalException method
+		/// <summary>
+		/// Determine if a provided <see cref="Exception"/> is a critical
+		/// system failure, or if can be safely ignored.
+		/// </summary>
+		public static bool IsCriticalException(Exception ex)
+		{
+			if (((ex is StackOverflowException)) || ((ex is OutOfMemoryException) || (ex is System.Threading.ThreadAbortException)))
+			{
+				return true;
+			}
+			Exception inner = ex.InnerException;
+			if (inner != null)
+			{
+				return IsCriticalException(inner);
+			}
+			return false;
+		}
+		#endregion // IsCriticalException methods
 	}
 }

@@ -66,18 +66,18 @@ namespace Neumont.Tools.ORM.ObjectModel
 namespace Neumont.Tools.ORM.ObjectModel
 {
 	/// <summary>
-	/// DomainClass OmittedWord
+	/// DomainClass RecognizedPhrase
 	/// </summary>
-	[DslDesign::DisplayNameResource("Neumont.Tools.ORM.ObjectModel.OmittedWord.DisplayName", typeof(global::Neumont.Tools.ORM.ObjectModel.ORMCoreDomainModel), "Neumont.Tools.ORM.GeneratedCode.CoreDomainModelResx")]
-	[DslDesign::DescriptionResource("Neumont.Tools.ORM.ObjectModel.OmittedWord.Description", typeof(global::Neumont.Tools.ORM.ObjectModel.ORMCoreDomainModel), "Neumont.Tools.ORM.GeneratedCode.CoreDomainModelResx")]
+	[DslDesign::DisplayNameResource("Neumont.Tools.ORM.ObjectModel.RecognizedPhrase.DisplayName", typeof(global::Neumont.Tools.ORM.ObjectModel.ORMCoreDomainModel), "Neumont.Tools.ORM.GeneratedCode.CoreDomainModelResx")]
+	[DslDesign::DescriptionResource("Neumont.Tools.ORM.ObjectModel.RecognizedPhrase.Description", typeof(global::Neumont.Tools.ORM.ObjectModel.ORMCoreDomainModel), "Neumont.Tools.ORM.GeneratedCode.CoreDomainModelResx")]
 	[global::System.CLSCompliant(true)]
 	[DslModeling::DomainObjectId("df462d31-c2e4-47a5-af48-7ffc55de4b2a")]
-	public partial class OmittedWord : DslModeling::ModelElement
+	public partial class RecognizedPhrase : ORMNamedElement
 	{
 		#region Constructors, domain class Id
 	
 		/// <summary>
-		/// OmittedWord domain class Id.
+		/// RecognizedPhrase domain class Id.
 		/// </summary>
 		public static readonly new global::System.Guid DomainClassId = new global::System.Guid(0xdf462d31, 0xc2e4, 0x47a5, 0xaf, 0x48, 0x7f, 0xfc, 0x55, 0xde, 0x4b, 0x2a);
 		/// <summary>
@@ -85,7 +85,7 @@ namespace Neumont.Tools.ORM.ObjectModel
 		/// </summary>
 		/// <param name="store">Store where new element is to be created.</param>
 		/// <param name="propertyAssignments">List of domain property id/value pairs to set once the element is created.</param>
-		public OmittedWord(DslModeling::Store store, params DslModeling::PropertyAssignment[] propertyAssignments)
+		public RecognizedPhrase(DslModeling::Store store, params DslModeling::PropertyAssignment[] propertyAssignments)
 			: this(store != null ? store.DefaultPartition : null, propertyAssignments)
 		{
 		}
@@ -95,114 +95,63 @@ namespace Neumont.Tools.ORM.ObjectModel
 		/// </summary>
 		/// <param name="partition">Partition where new element is to be created.</param>
 		/// <param name="propertyAssignments">List of domain property id/value pairs to set once the element is created.</param>
-		public OmittedWord(DslModeling::Partition partition, params DslModeling::PropertyAssignment[] propertyAssignments)
+		public RecognizedPhrase(DslModeling::Partition partition, params DslModeling::PropertyAssignment[] propertyAssignments)
 			: base(partition, propertyAssignments)
 		{
 		}
 		#endregion
-		#region Word domain property code
-		
+		#region AbbreviationCollection opposite domain role accessor
 		/// <summary>
-		/// Word domain property Id.
-		/// </summary>
-		public static readonly global::System.Guid WordDomainPropertyId = new global::System.Guid(0x80822cfe, 0x225b, 0x4618, 0xb0, 0xf1, 0xc8, 0x3c, 0x60, 0xd4, 0x58, 0x81);
-		
-		/// <summary>
-		/// Storage for Word
-		/// </summary>
-		private global::System.String wordPropertyStorage = string.Empty;
-		
-		/// <summary>
-		/// Gets or sets the value of Word domain property.
-		/// </summary>
-		[DslDesign::DisplayNameResource("Neumont.Tools.ORM.ObjectModel.OmittedWord/Word.DisplayName", typeof(global::Neumont.Tools.ORM.ObjectModel.ORMCoreDomainModel), "Neumont.Tools.ORM.GeneratedCode.CoreDomainModelResx")]
-		[DslDesign::DescriptionResource("Neumont.Tools.ORM.ObjectModel.OmittedWord/Word.Description", typeof(global::Neumont.Tools.ORM.ObjectModel.ORMCoreDomainModel), "Neumont.Tools.ORM.GeneratedCode.CoreDomainModelResx")]
-		[DslModeling::DomainObjectId("80822cfe-225b-4618-b0f1-c83c60d45881")]
-		public global::System.String Word
-		{
-			[global::System.Diagnostics.DebuggerStepThrough]
-			get
-			{
-				return wordPropertyStorage;
-			}
-			[global::System.Diagnostics.DebuggerStepThrough]
-			set
-			{
-				WordPropertyHandler.Instance.SetValue(this, value);
-			}
-		}
-		/// <summary>
-		/// Value handler for the OmittedWord.Word domain property.
-		/// </summary>
-		internal sealed partial class WordPropertyHandler : DslModeling::DomainPropertyValueHandler<OmittedWord, global::System.String>
-		{
-			private WordPropertyHandler() { }
-		
-			/// <summary>
-			/// Gets the singleton instance of the OmittedWord.Word domain property value handler.
-			/// </summary>
-			public static readonly WordPropertyHandler Instance = new WordPropertyHandler();
-		
-			/// <summary>
-			/// Gets the Id of the OmittedWord.Word domain property.
-			/// </summary>
-			public sealed override global::System.Guid DomainPropertyId
-			{
-				[global::System.Diagnostics.DebuggerStepThrough]
-				get
-				{
-					return WordDomainPropertyId;
-				}
-			}
-			
-			/// <summary>
-			/// Gets a strongly-typed value of the property on specified element.
-			/// </summary>
-			/// <param name="element">Element which owns the property.</param>
-			/// <returns>Property value.</returns>
-			public override sealed global::System.String GetValue(OmittedWord element)
-			{
-				if (element == null) throw new global::System.ArgumentNullException("element");
-				return element.wordPropertyStorage;
-			}
-		
-			/// <summary>
-			/// Sets property value on an element.
-			/// </summary>
-			/// <param name="element">Element which owns the property.</param>
-			/// <param name="newValue">New property value.</param>
-			public override sealed void SetValue(OmittedWord element, global::System.String newValue)
-			{
-				if (element == null) throw new global::System.ArgumentNullException("element");
-		
-				global::System.String oldValue = GetValue(element);
-				if (newValue != oldValue)
-				{
-					ValueChanging(element, oldValue, newValue);
-					element.wordPropertyStorage = newValue;
-					ValueChanged(element, oldValue, newValue);
-				}
-			}
-		}
-		
-		#endregion
-		#region NameGenerator opposite domain role accessor
-		/// <summary>
-		/// Gets or sets NameGenerator.
+		/// Gets a list of AbbreviationCollection.
 		/// Description for
-		/// Neumont.Tools.ORM.ObjectModel.NameGeneratorContainsOmittedWord.OmittedWord
+		/// Neumont.Tools.ORM.ObjectModel.RecognizedPhraseHasAbbreviation.RecognizedPhrase
 		/// </summary>
-		public virtual NameGenerator NameGenerator
+		public virtual DslModeling::LinkedElementCollection<NameAlias> AbbreviationCollection
 		{
 			[global::System.Diagnostics.DebuggerStepThrough]
 			get
 			{
-				return DslModeling::DomainRoleInfo.GetLinkedElement(this, global::Neumont.Tools.ORM.ObjectModel.NameGeneratorContainsOmittedWord.OmittedWordDomainRoleId) as NameGenerator;
+				return new DslModeling::LinkedElementCollection<NameAlias>(this, global::Neumont.Tools.ORM.ObjectModel.RecognizedPhraseHasAbbreviation.RecognizedPhraseDomainRoleId);
+			}
+		}
+		#endregion
+		#region Model opposite domain role accessor
+		/// <summary>
+		/// Gets or sets Model.
+		/// Description for
+		/// Neumont.Tools.ORM.ObjectModel.ModelContainsRecognizedPhrase.RecognizedPhrase
+		/// </summary>
+		public virtual ORMModel Model
+		{
+			[global::System.Diagnostics.DebuggerStepThrough]
+			get
+			{
+				return DslModeling::DomainRoleInfo.GetLinkedElement(this, global::Neumont.Tools.ORM.ObjectModel.ModelContainsRecognizedPhrase.RecognizedPhraseDomainRoleId) as ORMModel;
 			}
 			[global::System.Diagnostics.DebuggerStepThrough]
 			set
 			{
-				DslModeling::DomainRoleInfo.SetLinkedElement(this, global::Neumont.Tools.ORM.ObjectModel.NameGeneratorContainsOmittedWord.OmittedWordDomainRoleId, value);
+				DslModeling::DomainRoleInfo.SetLinkedElement(this, global::Neumont.Tools.ORM.ObjectModel.ModelContainsRecognizedPhrase.RecognizedPhraseDomainRoleId, value);
+			}
+		}
+		#endregion
+		#region DuplicateNameError opposite domain role accessor
+		/// <summary>
+		/// Gets or sets DuplicateNameError.
+		/// Description for
+		/// Neumont.Tools.ORM.ObjectModel.RecognizedPhraseHasDuplicateNameError.RecognizedPhrase
+		/// </summary>
+		public virtual RecognizedPhraseDuplicateNameError DuplicateNameError
+		{
+			[global::System.Diagnostics.DebuggerStepThrough]
+			get
+			{
+				return DslModeling::DomainRoleInfo.GetLinkedElement(this, global::Neumont.Tools.ORM.ObjectModel.RecognizedPhraseHasDuplicateNameError.RecognizedPhraseDomainRoleId) as RecognizedPhraseDuplicateNameError;
+			}
+			[global::System.Diagnostics.DebuggerStepThrough]
+			set
+			{
+				DslModeling::DomainRoleInfo.SetLinkedElement(this, global::Neumont.Tools.ORM.ObjectModel.RecognizedPhraseHasDuplicateNameError.RecognizedPhraseDomainRoleId, value);
 			}
 		}
 		#endregion
@@ -889,21 +838,6 @@ namespace Neumont.Tools.ORM.ObjectModel
 			set
 			{
 				DslModeling::DomainRoleInfo.SetLinkedElement(this, global::Neumont.Tools.ORM.ObjectModel.NameGeneratorRefinesNameGenerator.RefinementDomainRoleId, value);
-			}
-		}
-		#endregion
-		#region OmittedWordCollection opposite domain role accessor
-		/// <summary>
-		/// Gets a list of OmittedWordCollection.
-		/// Description for
-		/// Neumont.Tools.ORM.ObjectModel.NameGeneratorContainsOmittedWord.NameGenerator
-		/// </summary>
-		public virtual DslModeling::LinkedElementCollection<OmittedWord> OmittedWordCollection
-		{
-			[global::System.Diagnostics.DebuggerStepThrough]
-			get
-			{
-				return new DslModeling::LinkedElementCollection<OmittedWord>(this, global::Neumont.Tools.ORM.ObjectModel.NameGeneratorContainsOmittedWord.NameGeneratorDomainRoleId);
 			}
 		}
 		#endregion
@@ -2021,6 +1955,21 @@ namespace Neumont.Tools.ORM.ObjectModel
 			get
 			{
 				return new DslModeling::LinkedElementCollection<DataType>(this, global::Neumont.Tools.ORM.ObjectModel.ModelHasDataType.ModelDomainRoleId);
+			}
+		}
+		#endregion
+		#region RecognizedPhraseCollection opposite domain role accessor
+		/// <summary>
+		/// Gets a list of RecognizedPhraseCollection.
+		/// Description for
+		/// Neumont.Tools.ORM.ObjectModel.ModelContainsRecognizedPhrase.Model
+		/// </summary>
+		public virtual DslModeling::LinkedElementCollection<RecognizedPhrase> RecognizedPhraseCollection
+		{
+			[global::System.Diagnostics.DebuggerStepThrough]
+			get
+			{
+				return new DslModeling::LinkedElementCollection<RecognizedPhrase>(this, global::Neumont.Tools.ORM.ObjectModel.ModelContainsRecognizedPhrase.ModelDomainRoleId);
 			}
 		}
 		#endregion
@@ -9625,6 +9574,60 @@ namespace Neumont.Tools.ORM.ObjectModel
 			get
 			{
 				return new DslModeling::LinkedElementCollection<ObjectType>(this, global::Neumont.Tools.ORM.ObjectModel.ObjectTypeHasDuplicateNameError.DuplicateNameErrorDomainRoleId);
+			}
+		}
+		#endregion
+	}
+}
+namespace Neumont.Tools.ORM.ObjectModel
+{
+	/// <summary>
+	/// DomainClass RecognizedPhraseDuplicateNameError
+	/// </summary>
+	[DslDesign::DisplayNameResource("Neumont.Tools.ORM.ObjectModel.RecognizedPhraseDuplicateNameError.DisplayName", typeof(global::Neumont.Tools.ORM.ObjectModel.ORMCoreDomainModel), "Neumont.Tools.ORM.GeneratedCode.CoreDomainModelResx")]
+	[DslDesign::DescriptionResource("Neumont.Tools.ORM.ObjectModel.RecognizedPhraseDuplicateNameError.Description", typeof(global::Neumont.Tools.ORM.ObjectModel.ORMCoreDomainModel), "Neumont.Tools.ORM.GeneratedCode.CoreDomainModelResx")]
+	[global::System.CLSCompliant(true)]
+	[DslModeling::DomainObjectId("e4f41332-9a69-4ce8-871c-3507326d7cdb")]
+	public partial class RecognizedPhraseDuplicateNameError : DuplicateNameError
+	{
+		#region Constructors, domain class Id
+	
+		/// <summary>
+		/// RecognizedPhraseDuplicateNameError domain class Id.
+		/// </summary>
+		public static readonly new global::System.Guid DomainClassId = new global::System.Guid(0xe4f41332, 0x9a69, 0x4ce8, 0x87, 0x1c, 0x35, 0x07, 0x32, 0x6d, 0x7c, 0xdb);
+		/// <summary>
+		/// Constructor
+		/// </summary>
+		/// <param name="store">Store where new element is to be created.</param>
+		/// <param name="propertyAssignments">List of domain property id/value pairs to set once the element is created.</param>
+		public RecognizedPhraseDuplicateNameError(DslModeling::Store store, params DslModeling::PropertyAssignment[] propertyAssignments)
+			: this(store != null ? store.DefaultPartition : null, propertyAssignments)
+		{
+		}
+		
+		/// <summary>
+		/// Constructor
+		/// </summary>
+		/// <param name="partition">Partition where new element is to be created.</param>
+		/// <param name="propertyAssignments">List of domain property id/value pairs to set once the element is created.</param>
+		public RecognizedPhraseDuplicateNameError(DslModeling::Partition partition, params DslModeling::PropertyAssignment[] propertyAssignments)
+			: base(partition, propertyAssignments)
+		{
+		}
+		#endregion
+		#region RecognizedPhraseCollection opposite domain role accessor
+		/// <summary>
+		/// Gets a list of RecognizedPhraseCollection.
+		/// Description for
+		/// Neumont.Tools.ORM.ObjectModel.RecognizedPhraseHasDuplicateNameError.DuplicateNameError
+		/// </summary>
+		public virtual DslModeling::LinkedElementCollection<RecognizedPhrase> RecognizedPhraseCollection
+		{
+			[global::System.Diagnostics.DebuggerStepThrough]
+			get
+			{
+				return new DslModeling::LinkedElementCollection<RecognizedPhrase>(this, global::Neumont.Tools.ORM.ObjectModel.RecognizedPhraseHasDuplicateNameError.DuplicateNameErrorDomainRoleId);
 			}
 		}
 		#endregion

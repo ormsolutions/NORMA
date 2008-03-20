@@ -5092,6 +5092,289 @@ namespace Neumont.Tools.ORM.ObjectModel
 namespace Neumont.Tools.ORM.ObjectModel
 {
 	/// <summary>
+	/// DomainRelationship RecognizedPhraseHasAbbreviation
+	/// Description for Neumont.Tools.ORM.ObjectModel.RecognizedPhraseHasAbbreviation
+	/// </summary>
+	[Neumont.Tools.ORM.ObjectModel.NameAliasOwnerCreationInfoAttribute(true, "6D4F2B86-2C27-4F82-84CE-8AA23DCC0EF8", "GetExistingRecognizedPhrase")]
+	[DslDesign::DisplayNameResource("Neumont.Tools.ORM.ObjectModel.RecognizedPhraseHasAbbreviation.DisplayName", typeof(global::Neumont.Tools.ORM.ObjectModel.ORMCoreDomainModel), "Neumont.Tools.ORM.GeneratedCode.CoreDomainModelResx")]
+	[DslDesign::DescriptionResource("Neumont.Tools.ORM.ObjectModel.RecognizedPhraseHasAbbreviation.Description", typeof(global::Neumont.Tools.ORM.ObjectModel.ORMCoreDomainModel), "Neumont.Tools.ORM.GeneratedCode.CoreDomainModelResx")]
+	[global::System.CLSCompliant(true)]
+	[DslModeling::DomainRelationship(IsEmbedding=true)]
+	[DslModeling::DomainObjectId("83d9d4fb-5f40-42f2-a014-8a5e5052c24f")]
+	public partial class RecognizedPhraseHasAbbreviation : ElementHasAlias
+	{
+		#region Constructors, domain class Id
+		
+		/// <summary>
+		/// RecognizedPhraseHasAbbreviation domain class Id.
+		/// </summary>
+		public static readonly new global::System.Guid DomainClassId = new global::System.Guid(0x83d9d4fb, 0x5f40, 0x42f2, 0xa0, 0x14, 0x8a, 0x5e, 0x50, 0x52, 0xc2, 0x4f);
+	
+				
+		/// <summary>
+		/// Constructor
+		/// Creates a RecognizedPhraseHasAbbreviation link in the same Partition as the given RecognizedPhrase
+		/// </summary>
+		/// <param name="source">RecognizedPhrase to use as the source of the relationship.</param>
+		/// <param name="target">NameAlias to use as the target of the relationship.</param>
+		public RecognizedPhraseHasAbbreviation(RecognizedPhrase source, NameAlias target)
+			: base((source != null ? source.Partition : null), new DslModeling::RoleAssignment[]{new DslModeling::RoleAssignment(RecognizedPhraseHasAbbreviation.RecognizedPhraseDomainRoleId, source), new DslModeling::RoleAssignment(RecognizedPhraseHasAbbreviation.AbbreviationDomainRoleId, target)}, null)
+		{
+		}
+		
+		/// <summary>
+		/// Constructor
+		/// </summary>
+		/// <param name="store">Store where new link is to be created.</param>
+		/// <param name="roleAssignments">List of relationship role assignments.</param>
+		public RecognizedPhraseHasAbbreviation(DslModeling::Store store, params DslModeling::RoleAssignment[] roleAssignments)
+			: base(store != null ? store.DefaultPartition : null, roleAssignments, null)
+		{
+		}
+		
+		/// <summary>
+		/// Constructor
+		/// </summary>
+		/// <param name="store">Store where new link is to be created.</param>
+		/// <param name="roleAssignments">List of relationship role assignments.</param>
+		/// <param name="propertyAssignments">List of properties assignments to set on the new link.</param>
+		public RecognizedPhraseHasAbbreviation(DslModeling::Store store, DslModeling::RoleAssignment[] roleAssignments, DslModeling::PropertyAssignment[] propertyAssignments)
+			: base(store != null ? store.DefaultPartition : null, roleAssignments, propertyAssignments)
+		{
+		}
+		
+		/// <summary>
+		/// Constructor
+		/// </summary>
+		/// <param name="partition">Partition where new link is to be created.</param>
+		/// <param name="roleAssignments">List of relationship role assignments.</param>
+		public RecognizedPhraseHasAbbreviation(DslModeling::Partition partition, params DslModeling::RoleAssignment[] roleAssignments)
+			: base(partition, roleAssignments, null)
+		{
+		}
+		
+		/// <summary>
+		/// Constructor
+		/// </summary>
+		/// <param name="partition">Partition where new link is to be created.</param>
+		/// <param name="roleAssignments">List of relationship role assignments.</param>
+		/// <param name="propertyAssignments">List of properties assignments to set on the new link.</param>
+		public RecognizedPhraseHasAbbreviation(DslModeling::Partition partition, DslModeling::RoleAssignment[] roleAssignments, DslModeling::PropertyAssignment[] propertyAssignments)
+			: base(partition, roleAssignments, propertyAssignments)
+		{
+		}
+		#endregion
+		#region RecognizedPhrase domain role code
+		
+		/// <summary>
+		/// RecognizedPhrase domain role Id.
+		/// </summary>
+		public static readonly global::System.Guid RecognizedPhraseDomainRoleId = new global::System.Guid(0x64397c80, 0x2261, 0x4c8b, 0x9c, 0xf3, 0xb0, 0xcf, 0x96, 0x3e, 0xbc, 0xcf);
+		
+		/// <summary>
+		/// DomainRole RecognizedPhrase
+		/// Description for
+		/// Neumont.Tools.ORM.ObjectModel.RecognizedPhraseHasAbbreviation.RecognizedPhrase
+		/// </summary>
+		[DslDesign::DisplayNameResource("Neumont.Tools.ORM.ObjectModel.RecognizedPhraseHasAbbreviation/RecognizedPhrase.DisplayName", typeof(global::Neumont.Tools.ORM.ObjectModel.ORMCoreDomainModel), "Neumont.Tools.ORM.GeneratedCode.CoreDomainModelResx")]
+		[DslDesign::DescriptionResource("Neumont.Tools.ORM.ObjectModel.RecognizedPhraseHasAbbreviation/RecognizedPhrase.Description", typeof(global::Neumont.Tools.ORM.ObjectModel.ORMCoreDomainModel), "Neumont.Tools.ORM.GeneratedCode.CoreDomainModelResx")]
+		[DslModeling::DomainRole(DslModeling::DomainRoleOrder.Source, PropertyName = "AbbreviationCollection", PropertyDisplayNameKey="Neumont.Tools.ORM.ObjectModel.RecognizedPhraseHasAbbreviation/RecognizedPhrase.PropertyDisplayName", Multiplicity = DslModeling::Multiplicity.ZeroMany)]
+		[DslModeling::DomainObjectId("64397c80-2261-4c8b-9cf3-b0cf963ebccf")]
+		public virtual RecognizedPhrase RecognizedPhrase
+		{
+			[global::System.Diagnostics.DebuggerStepThrough]
+			get
+			{
+				return (RecognizedPhrase)DslModeling::DomainRoleInfo.GetRolePlayer(this, RecognizedPhraseDomainRoleId);
+			}
+			[global::System.Diagnostics.DebuggerStepThrough]
+			set
+			{
+				DslModeling::DomainRoleInfo.SetRolePlayer(this, RecognizedPhraseDomainRoleId, value);
+			}
+		}
+				
+		#endregion
+		#region Static methods to access Element of a NameAlias
+		/// <summary>
+		/// Gets Element.
+		/// </summary>
+		[global::System.Diagnostics.DebuggerStepThrough]
+		[global::System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Design", "CA1011")]
+		public static new RecognizedPhrase GetElement(NameAlias element)
+		{
+			return DslModeling::DomainRoleInfo.GetLinkedElement(element, AbbreviationDomainRoleId) as RecognizedPhrase;
+		}
+		
+		/// <summary>
+		/// Sets Element.
+		/// </summary>
+		[global::System.Diagnostics.DebuggerStepThrough]
+		[global::System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Design", "CA1011")]
+		public static void SetElement(NameAlias element, RecognizedPhrase newRecognizedPhrase)
+		{
+			DslModeling::DomainRoleInfo.SetLinkedElement(element, AbbreviationDomainRoleId, newRecognizedPhrase);
+		}
+		#endregion
+		#region Element domain role override
+		
+		/// <summary>
+		/// Gets the element playing RecognizedPhrase domain role.
+		/// Description for Neumont.Tools.ORM.ObjectModel.ElementHasAlias.Element
+		/// </summary>
+		public override global::Microsoft.VisualStudio.Modeling.ModelElement Element
+		{
+			[global::System.Diagnostics.DebuggerStepThrough]
+			get
+			{
+				return this.RecognizedPhrase;
+			}
+			[global::System.Diagnostics.DebuggerStepThrough]
+			set
+			{
+				this.RecognizedPhrase = (RecognizedPhrase)value;
+			}
+		}
+		
+		#endregion
+		#region Abbreviation domain role code
+		
+		/// <summary>
+		/// Abbreviation domain role Id.
+		/// </summary>
+		public static readonly global::System.Guid AbbreviationDomainRoleId = new global::System.Guid(0x5fef356b, 0xe9ac, 0x4522, 0x81, 0x1f, 0xe0, 0x62, 0xd8, 0x3f, 0xf9, 0xd3);
+		
+		/// <summary>
+		/// DomainRole Abbreviation
+		/// Description for
+		/// Neumont.Tools.ORM.ObjectModel.RecognizedPhraseHasAbbreviation.Abbreviation
+		/// </summary>
+		[DslDesign::DisplayNameResource("Neumont.Tools.ORM.ObjectModel.RecognizedPhraseHasAbbreviation/Abbreviation.DisplayName", typeof(global::Neumont.Tools.ORM.ObjectModel.ORMCoreDomainModel), "Neumont.Tools.ORM.GeneratedCode.CoreDomainModelResx")]
+		[DslDesign::DescriptionResource("Neumont.Tools.ORM.ObjectModel.RecognizedPhraseHasAbbreviation/Abbreviation.Description", typeof(global::Neumont.Tools.ORM.ObjectModel.ORMCoreDomainModel), "Neumont.Tools.ORM.GeneratedCode.CoreDomainModelResx")]
+		[DslModeling::DomainRole(DslModeling::DomainRoleOrder.Target, PropertyName = "Element", PropertyDisplayNameKey="Neumont.Tools.ORM.ObjectModel.RecognizedPhraseHasAbbreviation/Abbreviation.PropertyDisplayName", PropagatesDelete = true, Multiplicity = DslModeling::Multiplicity.ZeroOne)]
+		[DslModeling::DomainObjectId("5fef356b-e9ac-4522-811f-e062d83ff9d3")]
+		public virtual NameAlias Abbreviation
+		{
+			[global::System.Diagnostics.DebuggerStepThrough]
+			get
+			{
+				return (NameAlias)DslModeling::DomainRoleInfo.GetRolePlayer(this, AbbreviationDomainRoleId);
+			}
+			[global::System.Diagnostics.DebuggerStepThrough]
+			set
+			{
+				DslModeling::DomainRoleInfo.SetRolePlayer(this, AbbreviationDomainRoleId, value);
+			}
+		}
+				
+		#endregion
+		#region Static methods to access AbbreviationCollection of a RecognizedPhrase
+		/// <summary>
+		/// Gets a list of AbbreviationCollection.
+		/// </summary>
+		[global::System.Diagnostics.DebuggerStepThrough]
+		[global::System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Design", "CA1011")]
+		public static DslModeling::LinkedElementCollection<NameAlias> GetAbbreviationCollection(RecognizedPhrase element)
+		{
+			return new DslModeling::LinkedElementCollection<NameAlias>(element, RecognizedPhraseDomainRoleId);
+		}
+		#endregion
+		#region Alias domain role override
+		
+		/// <summary>
+		/// Gets the element playing Abbreviation domain role.
+		/// Description for Neumont.Tools.ORM.ObjectModel.ElementHasAlias.Alias
+		/// </summary>
+		public override NameAlias Alias
+		{
+			[global::System.Diagnostics.DebuggerStepThrough]
+			get
+			{
+				return this.Abbreviation;
+			}
+			[global::System.Diagnostics.DebuggerStepThrough]
+			set
+			{
+				this.Abbreviation = value;
+			}
+		}
+		
+		#endregion
+		#region RecognizedPhrase link accessor
+		/// <summary>
+		/// Get the list of RecognizedPhraseHasAbbreviation links to a RecognizedPhrase.
+		/// </summary>
+		[global::System.Diagnostics.DebuggerStepThrough]
+		[global::System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Design", "CA1011")]
+		public static global::System.Collections.ObjectModel.ReadOnlyCollection<global::Neumont.Tools.ORM.ObjectModel.RecognizedPhraseHasAbbreviation> GetLinksToAbbreviationCollection ( global::Neumont.Tools.ORM.ObjectModel.RecognizedPhrase recognizedPhraseInstance )
+		{
+			return DslModeling::DomainRoleInfo.GetElementLinks<global::Neumont.Tools.ORM.ObjectModel.RecognizedPhraseHasAbbreviation>(recognizedPhraseInstance, global::Neumont.Tools.ORM.ObjectModel.RecognizedPhraseHasAbbreviation.RecognizedPhraseDomainRoleId);
+		}
+		#endregion
+		#region Abbreviation link accessor
+		/// <summary>
+		/// Get the RecognizedPhraseHasAbbreviation link to a NameAlias.
+		/// </summary>
+		[global::System.Diagnostics.DebuggerStepThrough]
+		[global::System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Design", "CA1011")]
+		public static new global::Neumont.Tools.ORM.ObjectModel.RecognizedPhraseHasAbbreviation GetLinkToElement (global::Neumont.Tools.ORM.ObjectModel.NameAlias abbreviationInstance)
+		{
+			global::System.Collections.Generic.IList<global::Neumont.Tools.ORM.ObjectModel.RecognizedPhraseHasAbbreviation> links = DslModeling::DomainRoleInfo.GetElementLinks<global::Neumont.Tools.ORM.ObjectModel.RecognizedPhraseHasAbbreviation>(abbreviationInstance, global::Neumont.Tools.ORM.ObjectModel.RecognizedPhraseHasAbbreviation.AbbreviationDomainRoleId);
+			global::System.Diagnostics.Debug.Assert(links.Count <= 1, "Multiplicity of Abbreviation not obeyed.");
+			if ( links.Count == 0 )
+			{
+				return null;
+			}
+			else
+			{
+				return links[0];
+			}
+		}
+		#endregion
+		#region RecognizedPhraseHasAbbreviation instance accessors
+		
+		/// <summary>
+		/// Get any RecognizedPhraseHasAbbreviation links between a given RecognizedPhrase and a NameAlias.
+		/// </summary>
+		[global::System.Diagnostics.DebuggerStepThrough]
+		[global::System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Design", "CA1011")]
+		public static global::System.Collections.ObjectModel.ReadOnlyCollection<global::Neumont.Tools.ORM.ObjectModel.RecognizedPhraseHasAbbreviation> GetLinks( global::Neumont.Tools.ORM.ObjectModel.RecognizedPhrase source, global::Neumont.Tools.ORM.ObjectModel.NameAlias target )
+		{
+			global::System.Collections.Generic.List<global::Neumont.Tools.ORM.ObjectModel.RecognizedPhraseHasAbbreviation> outLinks = new global::System.Collections.Generic.List<global::Neumont.Tools.ORM.ObjectModel.RecognizedPhraseHasAbbreviation>();
+			global::System.Collections.Generic.IList<global::Neumont.Tools.ORM.ObjectModel.RecognizedPhraseHasAbbreviation> links = DslModeling::DomainRoleInfo.GetElementLinks<global::Neumont.Tools.ORM.ObjectModel.RecognizedPhraseHasAbbreviation>(source, global::Neumont.Tools.ORM.ObjectModel.RecognizedPhraseHasAbbreviation.RecognizedPhraseDomainRoleId);
+			foreach ( global::Neumont.Tools.ORM.ObjectModel.RecognizedPhraseHasAbbreviation link in links )
+			{
+				if ( target.Equals(link.Abbreviation) )
+				{
+					outLinks.Add(link);
+				}
+			}
+			return outLinks.AsReadOnly();
+		}
+		/// <summary>
+		/// Get the one RecognizedPhraseHasAbbreviation link between a given RecognizedPhraseand a NameAlias.
+		/// </summary>
+		[global::System.Diagnostics.DebuggerStepThrough]
+		[global::System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Design", "CA1011")]
+		public static global::Neumont.Tools.ORM.ObjectModel.RecognizedPhraseHasAbbreviation GetLink( global::Neumont.Tools.ORM.ObjectModel.RecognizedPhrase source, global::Neumont.Tools.ORM.ObjectModel.NameAlias target )
+		{
+			global::System.Collections.Generic.IList<global::Neumont.Tools.ORM.ObjectModel.RecognizedPhraseHasAbbreviation> links = DslModeling::DomainRoleInfo.GetElementLinks<global::Neumont.Tools.ORM.ObjectModel.RecognizedPhraseHasAbbreviation>(source, global::Neumont.Tools.ORM.ObjectModel.RecognizedPhraseHasAbbreviation.RecognizedPhraseDomainRoleId);
+			foreach ( global::Neumont.Tools.ORM.ObjectModel.RecognizedPhraseHasAbbreviation link in links )
+			{
+				if ( target.Equals(link.Abbreviation) )
+				{
+					return link;
+				}
+			}
+			return null;
+		}
+		
+		#endregion
+	}
+}
+namespace Neumont.Tools.ORM.ObjectModel
+{
+	/// <summary>
 	/// DomainRelationship ObjectTypeHasAbbreviation
 	/// Description for Neumont.Tools.ORM.ObjectModel.ObjectTypeHasAbbreviation
 	/// </summary>
@@ -5374,32 +5657,32 @@ namespace Neumont.Tools.ORM.ObjectModel
 namespace Neumont.Tools.ORM.ObjectModel
 {
 	/// <summary>
-	/// DomainRelationship NameGeneratorContainsOmittedWord
-	/// Description for Neumont.Tools.ORM.ObjectModel.NameGeneratorContainsOmittedWord
+	/// DomainRelationship ModelContainsRecognizedPhrase
+	/// Description for Neumont.Tools.ORM.ObjectModel.ModelContainsRecognizedPhrase
 	/// </summary>
-	[DslDesign::DisplayNameResource("Neumont.Tools.ORM.ObjectModel.NameGeneratorContainsOmittedWord.DisplayName", typeof(global::Neumont.Tools.ORM.ObjectModel.ORMCoreDomainModel), "Neumont.Tools.ORM.GeneratedCode.CoreDomainModelResx")]
-	[DslDesign::DescriptionResource("Neumont.Tools.ORM.ObjectModel.NameGeneratorContainsOmittedWord.Description", typeof(global::Neumont.Tools.ORM.ObjectModel.ORMCoreDomainModel), "Neumont.Tools.ORM.GeneratedCode.CoreDomainModelResx")]
+	[DslDesign::DisplayNameResource("Neumont.Tools.ORM.ObjectModel.ModelContainsRecognizedPhrase.DisplayName", typeof(global::Neumont.Tools.ORM.ObjectModel.ORMCoreDomainModel), "Neumont.Tools.ORM.GeneratedCode.CoreDomainModelResx")]
+	[DslDesign::DescriptionResource("Neumont.Tools.ORM.ObjectModel.ModelContainsRecognizedPhrase.Description", typeof(global::Neumont.Tools.ORM.ObjectModel.ORMCoreDomainModel), "Neumont.Tools.ORM.GeneratedCode.CoreDomainModelResx")]
 	[global::System.CLSCompliant(true)]
 	[DslModeling::DomainRelationship(IsEmbedding=true)]
-	[DslModeling::DomainObjectId("3de59564-603c-48ed-8ea4-d51ae8e761f1")]
-	public partial class NameGeneratorContainsOmittedWord : DslModeling::ElementLink
+	[DslModeling::DomainObjectId("27ac76d9-eeda-4836-8a93-59a7197122d9")]
+	public partial class ModelContainsRecognizedPhrase : DslModeling::ElementLink
 	{
 		#region Constructors, domain class Id
 		
 		/// <summary>
-		/// NameGeneratorContainsOmittedWord domain class Id.
+		/// ModelContainsRecognizedPhrase domain class Id.
 		/// </summary>
-		public static readonly new global::System.Guid DomainClassId = new global::System.Guid(0x3de59564, 0x603c, 0x48ed, 0x8e, 0xa4, 0xd5, 0x1a, 0xe8, 0xe7, 0x61, 0xf1);
+		public static readonly new global::System.Guid DomainClassId = new global::System.Guid(0x27ac76d9, 0xeeda, 0x4836, 0x8a, 0x93, 0x59, 0xa7, 0x19, 0x71, 0x22, 0xd9);
 	
 				
 		/// <summary>
 		/// Constructor
-		/// Creates a NameGeneratorContainsOmittedWord link in the same Partition as the given NameGenerator
+		/// Creates a ModelContainsRecognizedPhrase link in the same Partition as the given ORMModel
 		/// </summary>
-		/// <param name="source">NameGenerator to use as the source of the relationship.</param>
-		/// <param name="target">OmittedWord to use as the target of the relationship.</param>
-		public NameGeneratorContainsOmittedWord(NameGenerator source, OmittedWord target)
-			: base((source != null ? source.Partition : null), new DslModeling::RoleAssignment[]{new DslModeling::RoleAssignment(NameGeneratorContainsOmittedWord.NameGeneratorDomainRoleId, source), new DslModeling::RoleAssignment(NameGeneratorContainsOmittedWord.OmittedWordDomainRoleId, target)}, null)
+		/// <param name="source">ORMModel to use as the source of the relationship.</param>
+		/// <param name="target">RecognizedPhrase to use as the target of the relationship.</param>
+		public ModelContainsRecognizedPhrase(ORMModel source, RecognizedPhrase target)
+			: base((source != null ? source.Partition : null), new DslModeling::RoleAssignment[]{new DslModeling::RoleAssignment(ModelContainsRecognizedPhrase.ModelDomainRoleId, source), new DslModeling::RoleAssignment(ModelContainsRecognizedPhrase.RecognizedPhraseDomainRoleId, target)}, null)
 		{
 		}
 		
@@ -5408,7 +5691,7 @@ namespace Neumont.Tools.ORM.ObjectModel
 		/// </summary>
 		/// <param name="store">Store where new link is to be created.</param>
 		/// <param name="roleAssignments">List of relationship role assignments.</param>
-		public NameGeneratorContainsOmittedWord(DslModeling::Store store, params DslModeling::RoleAssignment[] roleAssignments)
+		public ModelContainsRecognizedPhrase(DslModeling::Store store, params DslModeling::RoleAssignment[] roleAssignments)
 			: base(store != null ? store.DefaultPartition : null, roleAssignments, null)
 		{
 		}
@@ -5419,7 +5702,7 @@ namespace Neumont.Tools.ORM.ObjectModel
 		/// <param name="store">Store where new link is to be created.</param>
 		/// <param name="roleAssignments">List of relationship role assignments.</param>
 		/// <param name="propertyAssignments">List of properties assignments to set on the new link.</param>
-		public NameGeneratorContainsOmittedWord(DslModeling::Store store, DslModeling::RoleAssignment[] roleAssignments, DslModeling::PropertyAssignment[] propertyAssignments)
+		public ModelContainsRecognizedPhrase(DslModeling::Store store, DslModeling::RoleAssignment[] roleAssignments, DslModeling::PropertyAssignment[] propertyAssignments)
 			: base(store != null ? store.DefaultPartition : null, roleAssignments, propertyAssignments)
 		{
 		}
@@ -5429,7 +5712,7 @@ namespace Neumont.Tools.ORM.ObjectModel
 		/// </summary>
 		/// <param name="partition">Partition where new link is to be created.</param>
 		/// <param name="roleAssignments">List of relationship role assignments.</param>
-		public NameGeneratorContainsOmittedWord(DslModeling::Partition partition, params DslModeling::RoleAssignment[] roleAssignments)
+		public ModelContainsRecognizedPhrase(DslModeling::Partition partition, params DslModeling::RoleAssignment[] roleAssignments)
 			: base(partition, roleAssignments, null)
 		{
 		}
@@ -5440,126 +5723,126 @@ namespace Neumont.Tools.ORM.ObjectModel
 		/// <param name="partition">Partition where new link is to be created.</param>
 		/// <param name="roleAssignments">List of relationship role assignments.</param>
 		/// <param name="propertyAssignments">List of properties assignments to set on the new link.</param>
-		public NameGeneratorContainsOmittedWord(DslModeling::Partition partition, DslModeling::RoleAssignment[] roleAssignments, DslModeling::PropertyAssignment[] propertyAssignments)
+		public ModelContainsRecognizedPhrase(DslModeling::Partition partition, DslModeling::RoleAssignment[] roleAssignments, DslModeling::PropertyAssignment[] propertyAssignments)
 			: base(partition, roleAssignments, propertyAssignments)
 		{
 		}
 		#endregion
-		#region NameGenerator domain role code
+		#region Model domain role code
 		
 		/// <summary>
-		/// NameGenerator domain role Id.
+		/// Model domain role Id.
 		/// </summary>
-		public static readonly global::System.Guid NameGeneratorDomainRoleId = new global::System.Guid(0x965ff527, 0xa2d6, 0x4468, 0x94, 0xde, 0x46, 0x44, 0x89, 0xe3, 0x32, 0xe2);
+		public static readonly global::System.Guid ModelDomainRoleId = new global::System.Guid(0x965ff527, 0xa2d6, 0x4468, 0x94, 0xde, 0x46, 0x44, 0x89, 0xe3, 0x32, 0xe2);
 		
 		/// <summary>
-		/// DomainRole NameGenerator
+		/// DomainRole Model
 		/// Description for
-		/// Neumont.Tools.ORM.ObjectModel.NameGeneratorContainsOmittedWord.NameGenerator
+		/// Neumont.Tools.ORM.ObjectModel.ModelContainsRecognizedPhrase.Model
 		/// </summary>
-		[DslDesign::DisplayNameResource("Neumont.Tools.ORM.ObjectModel.NameGeneratorContainsOmittedWord/NameGenerator.DisplayName", typeof(global::Neumont.Tools.ORM.ObjectModel.ORMCoreDomainModel), "Neumont.Tools.ORM.GeneratedCode.CoreDomainModelResx")]
-		[DslDesign::DescriptionResource("Neumont.Tools.ORM.ObjectModel.NameGeneratorContainsOmittedWord/NameGenerator.Description", typeof(global::Neumont.Tools.ORM.ObjectModel.ORMCoreDomainModel), "Neumont.Tools.ORM.GeneratedCode.CoreDomainModelResx")]
-		[DslModeling::DomainRole(DslModeling::DomainRoleOrder.Source, PropertyName = "OmittedWordCollection", PropertyDisplayNameKey="Neumont.Tools.ORM.ObjectModel.NameGeneratorContainsOmittedWord/NameGenerator.PropertyDisplayName", Multiplicity = DslModeling::Multiplicity.ZeroMany)]
+		[DslDesign::DisplayNameResource("Neumont.Tools.ORM.ObjectModel.ModelContainsRecognizedPhrase/Model.DisplayName", typeof(global::Neumont.Tools.ORM.ObjectModel.ORMCoreDomainModel), "Neumont.Tools.ORM.GeneratedCode.CoreDomainModelResx")]
+		[DslDesign::DescriptionResource("Neumont.Tools.ORM.ObjectModel.ModelContainsRecognizedPhrase/Model.Description", typeof(global::Neumont.Tools.ORM.ObjectModel.ORMCoreDomainModel), "Neumont.Tools.ORM.GeneratedCode.CoreDomainModelResx")]
+		[DslModeling::DomainRole(DslModeling::DomainRoleOrder.Source, PropertyName = "RecognizedPhraseCollection", PropertyDisplayNameKey="Neumont.Tools.ORM.ObjectModel.ModelContainsRecognizedPhrase/Model.PropertyDisplayName", Multiplicity = DslModeling::Multiplicity.ZeroMany)]
 		[DslModeling::DomainObjectId("965ff527-a2d6-4468-94de-464489e332e2")]
-		public virtual NameGenerator NameGenerator
+		public virtual ORMModel Model
 		{
 			[global::System.Diagnostics.DebuggerStepThrough]
 			get
 			{
-				return (NameGenerator)DslModeling::DomainRoleInfo.GetRolePlayer(this, NameGeneratorDomainRoleId);
+				return (ORMModel)DslModeling::DomainRoleInfo.GetRolePlayer(this, ModelDomainRoleId);
 			}
 			[global::System.Diagnostics.DebuggerStepThrough]
 			set
 			{
-				DslModeling::DomainRoleInfo.SetRolePlayer(this, NameGeneratorDomainRoleId, value);
+				DslModeling::DomainRoleInfo.SetRolePlayer(this, ModelDomainRoleId, value);
 			}
 		}
 				
 		#endregion
-		#region Static methods to access NameGenerator of a OmittedWord
+		#region Static methods to access Model of a RecognizedPhrase
 		/// <summary>
-		/// Gets NameGenerator.
+		/// Gets Model.
 		/// </summary>
 		[global::System.Diagnostics.DebuggerStepThrough]
 		[global::System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Design", "CA1011")]
-		public static NameGenerator GetNameGenerator(OmittedWord element)
+		public static ORMModel GetModel(RecognizedPhrase element)
 		{
-			return DslModeling::DomainRoleInfo.GetLinkedElement(element, OmittedWordDomainRoleId) as NameGenerator;
+			return DslModeling::DomainRoleInfo.GetLinkedElement(element, RecognizedPhraseDomainRoleId) as ORMModel;
 		}
 		
 		/// <summary>
-		/// Sets NameGenerator.
+		/// Sets Model.
 		/// </summary>
 		[global::System.Diagnostics.DebuggerStepThrough]
 		[global::System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Design", "CA1011")]
-		public static void SetNameGenerator(OmittedWord element, NameGenerator newNameGenerator)
+		public static void SetModel(RecognizedPhrase element, ORMModel newModel)
 		{
-			DslModeling::DomainRoleInfo.SetLinkedElement(element, OmittedWordDomainRoleId, newNameGenerator);
+			DslModeling::DomainRoleInfo.SetLinkedElement(element, RecognizedPhraseDomainRoleId, newModel);
 		}
 		#endregion
-		#region OmittedWord domain role code
+		#region RecognizedPhrase domain role code
 		
 		/// <summary>
-		/// OmittedWord domain role Id.
+		/// RecognizedPhrase domain role Id.
 		/// </summary>
-		public static readonly global::System.Guid OmittedWordDomainRoleId = new global::System.Guid(0x6d4f2b86, 0x2c27, 0x4f82, 0x84, 0xce, 0x8a, 0xa2, 0x3d, 0xcc, 0x0e, 0xf8);
+		public static readonly global::System.Guid RecognizedPhraseDomainRoleId = new global::System.Guid(0x6d4f2b86, 0x2c27, 0x4f82, 0x84, 0xce, 0x8a, 0xa2, 0x3d, 0xcc, 0x0e, 0xf8);
 		
 		/// <summary>
-		/// DomainRole OmittedWord
+		/// DomainRole RecognizedPhrase
 		/// Description for
-		/// Neumont.Tools.ORM.ObjectModel.NameGeneratorContainsOmittedWord.OmittedWord
+		/// Neumont.Tools.ORM.ObjectModel.ModelContainsRecognizedPhrase.RecognizedPhrase
 		/// </summary>
-		[DslDesign::DisplayNameResource("Neumont.Tools.ORM.ObjectModel.NameGeneratorContainsOmittedWord/OmittedWord.DisplayName", typeof(global::Neumont.Tools.ORM.ObjectModel.ORMCoreDomainModel), "Neumont.Tools.ORM.GeneratedCode.CoreDomainModelResx")]
-		[DslDesign::DescriptionResource("Neumont.Tools.ORM.ObjectModel.NameGeneratorContainsOmittedWord/OmittedWord.Description", typeof(global::Neumont.Tools.ORM.ObjectModel.ORMCoreDomainModel), "Neumont.Tools.ORM.GeneratedCode.CoreDomainModelResx")]
-		[DslModeling::DomainRole(DslModeling::DomainRoleOrder.Target, PropertyName = "NameGenerator", PropertyDisplayNameKey="Neumont.Tools.ORM.ObjectModel.NameGeneratorContainsOmittedWord/OmittedWord.PropertyDisplayName", PropagatesDelete = true, Multiplicity = DslModeling::Multiplicity.ZeroOne)]
+		[DslDesign::DisplayNameResource("Neumont.Tools.ORM.ObjectModel.ModelContainsRecognizedPhrase/RecognizedPhrase.DisplayName", typeof(global::Neumont.Tools.ORM.ObjectModel.ORMCoreDomainModel), "Neumont.Tools.ORM.GeneratedCode.CoreDomainModelResx")]
+		[DslDesign::DescriptionResource("Neumont.Tools.ORM.ObjectModel.ModelContainsRecognizedPhrase/RecognizedPhrase.Description", typeof(global::Neumont.Tools.ORM.ObjectModel.ORMCoreDomainModel), "Neumont.Tools.ORM.GeneratedCode.CoreDomainModelResx")]
+		[DslModeling::DomainRole(DslModeling::DomainRoleOrder.Target, PropertyName = "Model", PropertyDisplayNameKey="Neumont.Tools.ORM.ObjectModel.ModelContainsRecognizedPhrase/RecognizedPhrase.PropertyDisplayName", PropagatesDelete = true, Multiplicity = DslModeling::Multiplicity.ZeroOne)]
 		[DslModeling::DomainObjectId("6d4f2b86-2c27-4f82-84ce-8aa23dcc0ef8")]
-		public virtual OmittedWord OmittedWord
+		public virtual RecognizedPhrase RecognizedPhrase
 		{
 			[global::System.Diagnostics.DebuggerStepThrough]
 			get
 			{
-				return (OmittedWord)DslModeling::DomainRoleInfo.GetRolePlayer(this, OmittedWordDomainRoleId);
+				return (RecognizedPhrase)DslModeling::DomainRoleInfo.GetRolePlayer(this, RecognizedPhraseDomainRoleId);
 			}
 			[global::System.Diagnostics.DebuggerStepThrough]
 			set
 			{
-				DslModeling::DomainRoleInfo.SetRolePlayer(this, OmittedWordDomainRoleId, value);
+				DslModeling::DomainRoleInfo.SetRolePlayer(this, RecognizedPhraseDomainRoleId, value);
 			}
 		}
 				
 		#endregion
-		#region Static methods to access OmittedWordCollection of a NameGenerator
+		#region Static methods to access RecognizedPhraseCollection of a ORMModel
 		/// <summary>
-		/// Gets a list of OmittedWordCollection.
+		/// Gets a list of RecognizedPhraseCollection.
 		/// </summary>
 		[global::System.Diagnostics.DebuggerStepThrough]
 		[global::System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Design", "CA1011")]
-		public static DslModeling::LinkedElementCollection<OmittedWord> GetOmittedWordCollection(NameGenerator element)
+		public static DslModeling::LinkedElementCollection<RecognizedPhrase> GetRecognizedPhraseCollection(ORMModel element)
 		{
-			return new DslModeling::LinkedElementCollection<OmittedWord>(element, NameGeneratorDomainRoleId);
+			return new DslModeling::LinkedElementCollection<RecognizedPhrase>(element, ModelDomainRoleId);
 		}
 		#endregion
-		#region NameGenerator link accessor
+		#region Model link accessor
 		/// <summary>
-		/// Get the list of NameGeneratorContainsOmittedWord links to a NameGenerator.
+		/// Get the list of ModelContainsRecognizedPhrase links to a ORMModel.
 		/// </summary>
 		[global::System.Diagnostics.DebuggerStepThrough]
 		[global::System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Design", "CA1011")]
-		public static global::System.Collections.ObjectModel.ReadOnlyCollection<global::Neumont.Tools.ORM.ObjectModel.NameGeneratorContainsOmittedWord> GetLinksToOmittedWordCollection ( global::Neumont.Tools.ORM.ObjectModel.NameGenerator nameGeneratorInstance )
+		public static global::System.Collections.ObjectModel.ReadOnlyCollection<global::Neumont.Tools.ORM.ObjectModel.ModelContainsRecognizedPhrase> GetLinksToRecognizedPhraseCollection ( global::Neumont.Tools.ORM.ObjectModel.ORMModel modelInstance )
 		{
-			return DslModeling::DomainRoleInfo.GetElementLinks<global::Neumont.Tools.ORM.ObjectModel.NameGeneratorContainsOmittedWord>(nameGeneratorInstance, global::Neumont.Tools.ORM.ObjectModel.NameGeneratorContainsOmittedWord.NameGeneratorDomainRoleId);
+			return DslModeling::DomainRoleInfo.GetElementLinks<global::Neumont.Tools.ORM.ObjectModel.ModelContainsRecognizedPhrase>(modelInstance, global::Neumont.Tools.ORM.ObjectModel.ModelContainsRecognizedPhrase.ModelDomainRoleId);
 		}
 		#endregion
-		#region OmittedWord link accessor
+		#region RecognizedPhrase link accessor
 		/// <summary>
-		/// Get the NameGeneratorContainsOmittedWord link to a OmittedWord.
+		/// Get the ModelContainsRecognizedPhrase link to a RecognizedPhrase.
 		/// </summary>
 		[global::System.Diagnostics.DebuggerStepThrough]
 		[global::System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Design", "CA1011")]
-		public static global::Neumont.Tools.ORM.ObjectModel.NameGeneratorContainsOmittedWord GetLinkToNameGenerator (global::Neumont.Tools.ORM.ObjectModel.OmittedWord omittedWordInstance)
+		public static global::Neumont.Tools.ORM.ObjectModel.ModelContainsRecognizedPhrase GetLinkToModel (global::Neumont.Tools.ORM.ObjectModel.RecognizedPhrase recognizedPhraseInstance)
 		{
-			global::System.Collections.Generic.IList<global::Neumont.Tools.ORM.ObjectModel.NameGeneratorContainsOmittedWord> links = DslModeling::DomainRoleInfo.GetElementLinks<global::Neumont.Tools.ORM.ObjectModel.NameGeneratorContainsOmittedWord>(omittedWordInstance, global::Neumont.Tools.ORM.ObjectModel.NameGeneratorContainsOmittedWord.OmittedWordDomainRoleId);
-			global::System.Diagnostics.Debug.Assert(links.Count <= 1, "Multiplicity of OmittedWord not obeyed.");
+			global::System.Collections.Generic.IList<global::Neumont.Tools.ORM.ObjectModel.ModelContainsRecognizedPhrase> links = DslModeling::DomainRoleInfo.GetElementLinks<global::Neumont.Tools.ORM.ObjectModel.ModelContainsRecognizedPhrase>(recognizedPhraseInstance, global::Neumont.Tools.ORM.ObjectModel.ModelContainsRecognizedPhrase.RecognizedPhraseDomainRoleId);
+			global::System.Diagnostics.Debug.Assert(links.Count <= 1, "Multiplicity of RecognizedPhrase not obeyed.");
 			if ( links.Count == 0 )
 			{
 				return null;
@@ -5570,20 +5853,20 @@ namespace Neumont.Tools.ORM.ObjectModel
 			}
 		}
 		#endregion
-		#region NameGeneratorContainsOmittedWord instance accessors
+		#region ModelContainsRecognizedPhrase instance accessors
 		
 		/// <summary>
-		/// Get any NameGeneratorContainsOmittedWord links between a given NameGenerator and a OmittedWord.
+		/// Get any ModelContainsRecognizedPhrase links between a given ORMModel and a RecognizedPhrase.
 		/// </summary>
 		[global::System.Diagnostics.DebuggerStepThrough]
 		[global::System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Design", "CA1011")]
-		public static global::System.Collections.ObjectModel.ReadOnlyCollection<global::Neumont.Tools.ORM.ObjectModel.NameGeneratorContainsOmittedWord> GetLinks( global::Neumont.Tools.ORM.ObjectModel.NameGenerator source, global::Neumont.Tools.ORM.ObjectModel.OmittedWord target )
+		public static global::System.Collections.ObjectModel.ReadOnlyCollection<global::Neumont.Tools.ORM.ObjectModel.ModelContainsRecognizedPhrase> GetLinks( global::Neumont.Tools.ORM.ObjectModel.ORMModel source, global::Neumont.Tools.ORM.ObjectModel.RecognizedPhrase target )
 		{
-			global::System.Collections.Generic.List<global::Neumont.Tools.ORM.ObjectModel.NameGeneratorContainsOmittedWord> outLinks = new global::System.Collections.Generic.List<global::Neumont.Tools.ORM.ObjectModel.NameGeneratorContainsOmittedWord>();
-			global::System.Collections.Generic.IList<global::Neumont.Tools.ORM.ObjectModel.NameGeneratorContainsOmittedWord> links = DslModeling::DomainRoleInfo.GetElementLinks<global::Neumont.Tools.ORM.ObjectModel.NameGeneratorContainsOmittedWord>(source, global::Neumont.Tools.ORM.ObjectModel.NameGeneratorContainsOmittedWord.NameGeneratorDomainRoleId);
-			foreach ( global::Neumont.Tools.ORM.ObjectModel.NameGeneratorContainsOmittedWord link in links )
+			global::System.Collections.Generic.List<global::Neumont.Tools.ORM.ObjectModel.ModelContainsRecognizedPhrase> outLinks = new global::System.Collections.Generic.List<global::Neumont.Tools.ORM.ObjectModel.ModelContainsRecognizedPhrase>();
+			global::System.Collections.Generic.IList<global::Neumont.Tools.ORM.ObjectModel.ModelContainsRecognizedPhrase> links = DslModeling::DomainRoleInfo.GetElementLinks<global::Neumont.Tools.ORM.ObjectModel.ModelContainsRecognizedPhrase>(source, global::Neumont.Tools.ORM.ObjectModel.ModelContainsRecognizedPhrase.ModelDomainRoleId);
+			foreach ( global::Neumont.Tools.ORM.ObjectModel.ModelContainsRecognizedPhrase link in links )
 			{
-				if ( target.Equals(link.OmittedWord) )
+				if ( target.Equals(link.RecognizedPhrase) )
 				{
 					outLinks.Add(link);
 				}
@@ -5591,16 +5874,301 @@ namespace Neumont.Tools.ORM.ObjectModel
 			return outLinks.AsReadOnly();
 		}
 		/// <summary>
-		/// Get the one NameGeneratorContainsOmittedWord link between a given NameGeneratorand a OmittedWord.
+		/// Get the one ModelContainsRecognizedPhrase link between a given ORMModeland a RecognizedPhrase.
 		/// </summary>
 		[global::System.Diagnostics.DebuggerStepThrough]
 		[global::System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Design", "CA1011")]
-		public static global::Neumont.Tools.ORM.ObjectModel.NameGeneratorContainsOmittedWord GetLink( global::Neumont.Tools.ORM.ObjectModel.NameGenerator source, global::Neumont.Tools.ORM.ObjectModel.OmittedWord target )
+		public static global::Neumont.Tools.ORM.ObjectModel.ModelContainsRecognizedPhrase GetLink( global::Neumont.Tools.ORM.ObjectModel.ORMModel source, global::Neumont.Tools.ORM.ObjectModel.RecognizedPhrase target )
 		{
-			global::System.Collections.Generic.IList<global::Neumont.Tools.ORM.ObjectModel.NameGeneratorContainsOmittedWord> links = DslModeling::DomainRoleInfo.GetElementLinks<global::Neumont.Tools.ORM.ObjectModel.NameGeneratorContainsOmittedWord>(source, global::Neumont.Tools.ORM.ObjectModel.NameGeneratorContainsOmittedWord.NameGeneratorDomainRoleId);
-			foreach ( global::Neumont.Tools.ORM.ObjectModel.NameGeneratorContainsOmittedWord link in links )
+			global::System.Collections.Generic.IList<global::Neumont.Tools.ORM.ObjectModel.ModelContainsRecognizedPhrase> links = DslModeling::DomainRoleInfo.GetElementLinks<global::Neumont.Tools.ORM.ObjectModel.ModelContainsRecognizedPhrase>(source, global::Neumont.Tools.ORM.ObjectModel.ModelContainsRecognizedPhrase.ModelDomainRoleId);
+			foreach ( global::Neumont.Tools.ORM.ObjectModel.ModelContainsRecognizedPhrase link in links )
 			{
-				if ( target.Equals(link.OmittedWord) )
+				if ( target.Equals(link.RecognizedPhrase) )
+				{
+					return link;
+				}
+			}
+			return null;
+		}
+		
+		#endregion
+	}
+}
+namespace Neumont.Tools.ORM.ObjectModel
+{
+	/// <summary>
+	/// DomainRelationship RecognizedPhraseHasDuplicateNameError
+	/// Description for
+	/// Neumont.Tools.ORM.ObjectModel.RecognizedPhraseHasDuplicateNameError
+	/// </summary>
+	[DslDesign::DisplayNameResource("Neumont.Tools.ORM.ObjectModel.RecognizedPhraseHasDuplicateNameError.DisplayName", typeof(global::Neumont.Tools.ORM.ObjectModel.ORMCoreDomainModel), "Neumont.Tools.ORM.GeneratedCode.CoreDomainModelResx")]
+	[DslDesign::DescriptionResource("Neumont.Tools.ORM.ObjectModel.RecognizedPhraseHasDuplicateNameError.Description", typeof(global::Neumont.Tools.ORM.ObjectModel.ORMCoreDomainModel), "Neumont.Tools.ORM.GeneratedCode.CoreDomainModelResx")]
+	[global::System.CLSCompliant(true)]
+	[DslModeling::DomainRelationship()]
+	[DslModeling::DomainObjectId("6d1abe6f-a38b-4981-8124-4dfb48f1aa5a")]
+	public partial class RecognizedPhraseHasDuplicateNameError : ElementAssociatedWithModelError
+	{
+		#region Constructors, domain class Id
+		
+		/// <summary>
+		/// RecognizedPhraseHasDuplicateNameError domain class Id.
+		/// </summary>
+		public static readonly new global::System.Guid DomainClassId = new global::System.Guid(0x6d1abe6f, 0xa38b, 0x4981, 0x81, 0x24, 0x4d, 0xfb, 0x48, 0xf1, 0xaa, 0x5a);
+	
+				
+		/// <summary>
+		/// Constructor
+		/// Creates a RecognizedPhraseHasDuplicateNameError link in the same Partition as the given RecognizedPhrase
+		/// </summary>
+		/// <param name="source">RecognizedPhrase to use as the source of the relationship.</param>
+		/// <param name="target">RecognizedPhraseDuplicateNameError to use as the target of the relationship.</param>
+		public RecognizedPhraseHasDuplicateNameError(RecognizedPhrase source, RecognizedPhraseDuplicateNameError target)
+			: base((source != null ? source.Partition : null), new DslModeling::RoleAssignment[]{new DslModeling::RoleAssignment(RecognizedPhraseHasDuplicateNameError.RecognizedPhraseDomainRoleId, source), new DslModeling::RoleAssignment(RecognizedPhraseHasDuplicateNameError.DuplicateNameErrorDomainRoleId, target)}, null)
+		{
+		}
+		
+		/// <summary>
+		/// Constructor
+		/// </summary>
+		/// <param name="store">Store where new link is to be created.</param>
+		/// <param name="roleAssignments">List of relationship role assignments.</param>
+		public RecognizedPhraseHasDuplicateNameError(DslModeling::Store store, params DslModeling::RoleAssignment[] roleAssignments)
+			: base(store != null ? store.DefaultPartition : null, roleAssignments, null)
+		{
+		}
+		
+		/// <summary>
+		/// Constructor
+		/// </summary>
+		/// <param name="store">Store where new link is to be created.</param>
+		/// <param name="roleAssignments">List of relationship role assignments.</param>
+		/// <param name="propertyAssignments">List of properties assignments to set on the new link.</param>
+		public RecognizedPhraseHasDuplicateNameError(DslModeling::Store store, DslModeling::RoleAssignment[] roleAssignments, DslModeling::PropertyAssignment[] propertyAssignments)
+			: base(store != null ? store.DefaultPartition : null, roleAssignments, propertyAssignments)
+		{
+		}
+		
+		/// <summary>
+		/// Constructor
+		/// </summary>
+		/// <param name="partition">Partition where new link is to be created.</param>
+		/// <param name="roleAssignments">List of relationship role assignments.</param>
+		public RecognizedPhraseHasDuplicateNameError(DslModeling::Partition partition, params DslModeling::RoleAssignment[] roleAssignments)
+			: base(partition, roleAssignments, null)
+		{
+		}
+		
+		/// <summary>
+		/// Constructor
+		/// </summary>
+		/// <param name="partition">Partition where new link is to be created.</param>
+		/// <param name="roleAssignments">List of relationship role assignments.</param>
+		/// <param name="propertyAssignments">List of properties assignments to set on the new link.</param>
+		public RecognizedPhraseHasDuplicateNameError(DslModeling::Partition partition, DslModeling::RoleAssignment[] roleAssignments, DslModeling::PropertyAssignment[] propertyAssignments)
+			: base(partition, roleAssignments, propertyAssignments)
+		{
+		}
+		#endregion
+		#region RecognizedPhrase domain role code
+		
+		/// <summary>
+		/// RecognizedPhrase domain role Id.
+		/// </summary>
+		public static readonly global::System.Guid RecognizedPhraseDomainRoleId = new global::System.Guid(0x41df5814, 0xe8e1, 0x4b5e, 0xa6, 0xd2, 0xc3, 0xc9, 0xce, 0x84, 0x59, 0xa9);
+		
+		/// <summary>
+		/// DomainRole RecognizedPhrase
+		/// Description for
+		/// Neumont.Tools.ORM.ObjectModel.RecognizedPhraseHasDuplicateNameError.RecognizedPhrase
+		/// </summary>
+		[DslDesign::DisplayNameResource("Neumont.Tools.ORM.ObjectModel.RecognizedPhraseHasDuplicateNameError/RecognizedPhrase.DisplayName", typeof(global::Neumont.Tools.ORM.ObjectModel.ORMCoreDomainModel), "Neumont.Tools.ORM.GeneratedCode.CoreDomainModelResx")]
+		[DslDesign::DescriptionResource("Neumont.Tools.ORM.ObjectModel.RecognizedPhraseHasDuplicateNameError/RecognizedPhrase.Description", typeof(global::Neumont.Tools.ORM.ObjectModel.ORMCoreDomainModel), "Neumont.Tools.ORM.GeneratedCode.CoreDomainModelResx")]
+		[DslModeling::DomainRole(DslModeling::DomainRoleOrder.Source, PropertyName = "DuplicateNameError", PropertyDisplayNameKey="Neumont.Tools.ORM.ObjectModel.RecognizedPhraseHasDuplicateNameError/RecognizedPhrase.PropertyDisplayName", Multiplicity = DslModeling::Multiplicity.ZeroOne)]
+		[DslModeling::DomainObjectId("41df5814-e8e1-4b5e-a6d2-c3c9ce8459a9")]
+		public virtual RecognizedPhrase RecognizedPhrase
+		{
+			[global::System.Diagnostics.DebuggerStepThrough]
+			get
+			{
+				return (RecognizedPhrase)DslModeling::DomainRoleInfo.GetRolePlayer(this, RecognizedPhraseDomainRoleId);
+			}
+			[global::System.Diagnostics.DebuggerStepThrough]
+			set
+			{
+				DslModeling::DomainRoleInfo.SetRolePlayer(this, RecognizedPhraseDomainRoleId, value);
+			}
+		}
+				
+		#endregion
+		#region Static methods to access RecognizedPhraseCollection of a RecognizedPhraseDuplicateNameError
+		/// <summary>
+		/// Gets a list of RecognizedPhraseCollection.
+		/// </summary>
+		[global::System.Diagnostics.DebuggerStepThrough]
+		[global::System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Design", "CA1011")]
+		public static DslModeling::LinkedElementCollection<RecognizedPhrase> GetRecognizedPhraseCollection(RecognizedPhraseDuplicateNameError element)
+		{
+			return new DslModeling::LinkedElementCollection<RecognizedPhrase>(element, DuplicateNameErrorDomainRoleId);
+		}
+		#endregion
+		#region AssociatedElement domain role override
+		
+		/// <summary>
+		/// Gets the element playing RecognizedPhrase domain role.
+		/// Description for
+		/// Neumont.Tools.ORM.ObjectModel.ElementAssociatedWithModelError.AssociatedElement
+		/// </summary>
+		public override global::Microsoft.VisualStudio.Modeling.ModelElement AssociatedElement
+		{
+			[global::System.Diagnostics.DebuggerStepThrough]
+			get
+			{
+				return this.RecognizedPhrase;
+			}
+			[global::System.Diagnostics.DebuggerStepThrough]
+			set
+			{
+				this.RecognizedPhrase = (RecognizedPhrase)value;
+			}
+		}
+		
+		#endregion
+		#region DuplicateNameError domain role code
+		
+		/// <summary>
+		/// DuplicateNameError domain role Id.
+		/// </summary>
+		public static readonly global::System.Guid DuplicateNameErrorDomainRoleId = new global::System.Guid(0xdc8defe0, 0x274b, 0x42f5, 0x83, 0x4e, 0x42, 0xbf, 0xb1, 0x83, 0xfa, 0x9e);
+		
+		/// <summary>
+		/// DomainRole DuplicateNameError
+		/// Description for
+		/// Neumont.Tools.ORM.ObjectModel.RecognizedPhraseHasDuplicateNameError.DuplicateNameError
+		/// </summary>
+		[DslDesign::DisplayNameResource("Neumont.Tools.ORM.ObjectModel.RecognizedPhraseHasDuplicateNameError/DuplicateNameError.DisplayName", typeof(global::Neumont.Tools.ORM.ObjectModel.ORMCoreDomainModel), "Neumont.Tools.ORM.GeneratedCode.CoreDomainModelResx")]
+		[DslDesign::DescriptionResource("Neumont.Tools.ORM.ObjectModel.RecognizedPhraseHasDuplicateNameError/DuplicateNameError.Description", typeof(global::Neumont.Tools.ORM.ObjectModel.ORMCoreDomainModel), "Neumont.Tools.ORM.GeneratedCode.CoreDomainModelResx")]
+		[DslModeling::DomainRole(DslModeling::DomainRoleOrder.Target, PropertyName = "RecognizedPhraseCollection", PropertyDisplayNameKey="Neumont.Tools.ORM.ObjectModel.RecognizedPhraseHasDuplicateNameError/DuplicateNameError.PropertyDisplayName", Multiplicity = DslModeling::Multiplicity.OneMany)]
+		[DslModeling::DomainObjectId("dc8defe0-274b-42f5-834e-42bfb183fa9e")]
+		public virtual RecognizedPhraseDuplicateNameError DuplicateNameError
+		{
+			[global::System.Diagnostics.DebuggerStepThrough]
+			get
+			{
+				return (RecognizedPhraseDuplicateNameError)DslModeling::DomainRoleInfo.GetRolePlayer(this, DuplicateNameErrorDomainRoleId);
+			}
+			[global::System.Diagnostics.DebuggerStepThrough]
+			set
+			{
+				DslModeling::DomainRoleInfo.SetRolePlayer(this, DuplicateNameErrorDomainRoleId, value);
+			}
+		}
+				
+		#endregion
+		#region Static methods to access DuplicateNameError of a RecognizedPhrase
+		/// <summary>
+		/// Gets DuplicateNameError.
+		/// </summary>
+		[global::System.Diagnostics.DebuggerStepThrough]
+		[global::System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Design", "CA1011")]
+		public static RecognizedPhraseDuplicateNameError GetDuplicateNameError(RecognizedPhrase element)
+		{
+			return DslModeling::DomainRoleInfo.GetLinkedElement(element, RecognizedPhraseDomainRoleId) as RecognizedPhraseDuplicateNameError;
+		}
+		
+		/// <summary>
+		/// Sets DuplicateNameError.
+		/// </summary>
+		[global::System.Diagnostics.DebuggerStepThrough]
+		[global::System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Design", "CA1011")]
+		public static void SetDuplicateNameError(RecognizedPhrase element, RecognizedPhraseDuplicateNameError newDuplicateNameError)
+		{
+			DslModeling::DomainRoleInfo.SetLinkedElement(element, RecognizedPhraseDomainRoleId, newDuplicateNameError);
+		}
+		#endregion
+		#region ModelError domain role override
+		
+		/// <summary>
+		/// Gets the element playing DuplicateNameError domain role.
+		/// Description for
+		/// Neumont.Tools.ORM.ObjectModel.ElementAssociatedWithModelError.ModelError
+		/// </summary>
+		public override ModelError ModelError
+		{
+			[global::System.Diagnostics.DebuggerStepThrough]
+			get
+			{
+				return this.DuplicateNameError;
+			}
+			[global::System.Diagnostics.DebuggerStepThrough]
+			set
+			{
+				this.DuplicateNameError = (RecognizedPhraseDuplicateNameError)value;
+			}
+		}
+		
+		#endregion
+		#region RecognizedPhrase link accessor
+		/// <summary>
+		/// Get the RecognizedPhraseHasDuplicateNameError link to a RecognizedPhrase.
+		/// </summary>
+		[global::System.Diagnostics.DebuggerStepThrough]
+		[global::System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Design", "CA1011")]
+		public static global::Neumont.Tools.ORM.ObjectModel.RecognizedPhraseHasDuplicateNameError GetLinkToDuplicateNameError (global::Neumont.Tools.ORM.ObjectModel.RecognizedPhrase recognizedPhraseInstance)
+		{
+			global::System.Collections.Generic.IList<global::Neumont.Tools.ORM.ObjectModel.RecognizedPhraseHasDuplicateNameError> links = DslModeling::DomainRoleInfo.GetElementLinks<global::Neumont.Tools.ORM.ObjectModel.RecognizedPhraseHasDuplicateNameError>(recognizedPhraseInstance, global::Neumont.Tools.ORM.ObjectModel.RecognizedPhraseHasDuplicateNameError.RecognizedPhraseDomainRoleId);
+			global::System.Diagnostics.Debug.Assert(links.Count <= 1, "Multiplicity of RecognizedPhrase not obeyed.");
+			if ( links.Count == 0 )
+			{
+				return null;
+			}
+			else
+			{
+				return links[0];
+			}
+		}
+		#endregion
+		#region DuplicateNameError link accessor
+		/// <summary>
+		/// Get the list of RecognizedPhraseHasDuplicateNameError links to a RecognizedPhraseDuplicateNameError.
+		/// </summary>
+		[global::System.Diagnostics.DebuggerStepThrough]
+		[global::System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Design", "CA1011")]
+		public static global::System.Collections.ObjectModel.ReadOnlyCollection<global::Neumont.Tools.ORM.ObjectModel.RecognizedPhraseHasDuplicateNameError> GetLinksToRecognizedPhraseCollection ( global::Neumont.Tools.ORM.ObjectModel.RecognizedPhraseDuplicateNameError duplicateNameErrorInstance )
+		{
+			return DslModeling::DomainRoleInfo.GetElementLinks<global::Neumont.Tools.ORM.ObjectModel.RecognizedPhraseHasDuplicateNameError>(duplicateNameErrorInstance, global::Neumont.Tools.ORM.ObjectModel.RecognizedPhraseHasDuplicateNameError.DuplicateNameErrorDomainRoleId);
+		}
+		#endregion
+		#region RecognizedPhraseHasDuplicateNameError instance accessors
+		
+		/// <summary>
+		/// Get any RecognizedPhraseHasDuplicateNameError links between a given RecognizedPhrase and a RecognizedPhraseDuplicateNameError.
+		/// </summary>
+		[global::System.Diagnostics.DebuggerStepThrough]
+		[global::System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Design", "CA1011")]
+		public static global::System.Collections.ObjectModel.ReadOnlyCollection<global::Neumont.Tools.ORM.ObjectModel.RecognizedPhraseHasDuplicateNameError> GetLinks( global::Neumont.Tools.ORM.ObjectModel.RecognizedPhrase source, global::Neumont.Tools.ORM.ObjectModel.RecognizedPhraseDuplicateNameError target )
+		{
+			global::System.Collections.Generic.List<global::Neumont.Tools.ORM.ObjectModel.RecognizedPhraseHasDuplicateNameError> outLinks = new global::System.Collections.Generic.List<global::Neumont.Tools.ORM.ObjectModel.RecognizedPhraseHasDuplicateNameError>();
+			global::System.Collections.Generic.IList<global::Neumont.Tools.ORM.ObjectModel.RecognizedPhraseHasDuplicateNameError> links = DslModeling::DomainRoleInfo.GetElementLinks<global::Neumont.Tools.ORM.ObjectModel.RecognizedPhraseHasDuplicateNameError>(source, global::Neumont.Tools.ORM.ObjectModel.RecognizedPhraseHasDuplicateNameError.RecognizedPhraseDomainRoleId);
+			foreach ( global::Neumont.Tools.ORM.ObjectModel.RecognizedPhraseHasDuplicateNameError link in links )
+			{
+				if ( target.Equals(link.DuplicateNameError) )
+				{
+					outLinks.Add(link);
+				}
+			}
+			return outLinks.AsReadOnly();
+		}
+		/// <summary>
+		/// Get the one RecognizedPhraseHasDuplicateNameError link between a given RecognizedPhraseand a RecognizedPhraseDuplicateNameError.
+		/// </summary>
+		[global::System.Diagnostics.DebuggerStepThrough]
+		[global::System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Design", "CA1011")]
+		public static global::Neumont.Tools.ORM.ObjectModel.RecognizedPhraseHasDuplicateNameError GetLink( global::Neumont.Tools.ORM.ObjectModel.RecognizedPhrase source, global::Neumont.Tools.ORM.ObjectModel.RecognizedPhraseDuplicateNameError target )
+		{
+			global::System.Collections.Generic.IList<global::Neumont.Tools.ORM.ObjectModel.RecognizedPhraseHasDuplicateNameError> links = DslModeling::DomainRoleInfo.GetElementLinks<global::Neumont.Tools.ORM.ObjectModel.RecognizedPhraseHasDuplicateNameError>(source, global::Neumont.Tools.ORM.ObjectModel.RecognizedPhraseHasDuplicateNameError.RecognizedPhraseDomainRoleId);
+			foreach ( global::Neumont.Tools.ORM.ObjectModel.RecognizedPhraseHasDuplicateNameError link in links )
+			{
+				if ( target.Equals(link.DuplicateNameError) )
 				{
 					return link;
 				}

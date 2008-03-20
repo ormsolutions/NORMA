@@ -1,4 +1,4 @@
-#region Common Public License Copyright Notice
+\#region Common Public License Copyright Notice
 /**************************************************************************\
 * Neumont Object-Role Modeling Architect for Visual Studio                 *
 *                                                                          *
@@ -88,16 +88,12 @@ namespace Neumont.Tools.ORM.ObjectModel
 				!UseTargetDefaultMaximum);
 			if (!retVal)
 			{
-				retVal = OmittedWordCollection.Count != 0;
-				if (!retVal)
+				foreach (NameGenerator refinement in RefinedByGeneratorCollection)
 				{
-					foreach (NameGenerator refinement in RefinedByGeneratorCollection)
+					if (refinement.RequiresSerialization())
 					{
-						if (refinement.RequiresSerialization())
-						{
-							retVal = true;
-							break;
-						}
+						retVal = true;
+						break;
 					}
 				}
 			}

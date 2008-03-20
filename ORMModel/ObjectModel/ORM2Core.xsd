@@ -32,6 +32,7 @@
 			<xs:element name="ModelNotes" type="ModelNotes" minOccurs="0"/>
 			<xs:element name="ModelErrors" type="ModelErrors" minOccurs="0"/>
 			<xs:element name="ReferenceModeKinds" type="ReferenceModeKinds" minOccurs="0"/>
+			<xs:element name="RecognizedPhrases" type="RecognizedPhrasesType" minOccurs="0"/>
 			<xs:element name="Extensions" type="Extensions" minOccurs="0"/>
 		</xs:all>
 		<xs:attribute name="Name" type="xs:string"/>
@@ -902,6 +903,7 @@
 			<xs:element ref="ExtensionModelError"/>
 			<xs:element name="ConstraintDuplicateNameError" type="ConstraintDuplicateNameError"/>
 			<xs:element name="ObjectTypeDuplicateNameError" type="ObjectTypeDuplicateNameError"/>
+			<xs:element name="RecognizedPhraseDuplicateNameError" type="RecognizedPhraseDuplicateNameError"/>
 			<xs:element name="ExternalConstraintRoleSequenceArityMismatchError" type="ExternalConstraintRoleSequenceArityMismatchError"/>
 			<xs:element name="FactTypeRequiresInternalUniquenessConstraintError" type="FactTypeRequiresInternalUniquenessConstraintError"/>
 			<xs:element name="FactTypeRequiresReadingError" type="FactTypeRequiresReadingError"/>
@@ -975,6 +977,21 @@
 						<xs:complexType>
 							<xs:sequence minOccurs="2" maxOccurs="unbounded">
 								<xs:element name="Object" type="ObjectRef"/>
+							</xs:sequence>
+						</xs:complexType>
+					</xs:element>
+				</xs:sequence>
+			</xs:extension>
+		</xs:complexContent>
+	</xs:complexType>
+	<xs:complexType name="RecognizedPhraseDuplicateNameError">
+		<xs:complexContent>
+			<xs:extension base="ModelError">
+				<xs:sequence>
+					<xs:element name="RecognizedPhrases">
+						<xs:complexType>
+							<xs:sequence minOccurs="2" maxOccurs="unbounded">
+								<xs:element name="RecognizedPhrase" type="RecognizedPhraseRef"/>
 							</xs:sequence>
 						</xs:complexType>
 					</xs:element>
@@ -1506,22 +1523,6 @@
 			<xs:documentation>Name generation settings</xs:documentation>
 		</xs:annotation>
 		<xs:sequence>
-			<xs:element name="OmittedWords" minOccurs="0">
-				<xs:complexType>
-					<xs:sequence>
-						<xs:element name="OmittedWord" minOccurs="0" maxOccurs="unbounded">
-							<xs:complexType>
-								<xs:attribute name="Word" type="xs:string" use="required">
-									<xs:annotation>
-										<xs:documentation>A word to omit when generating names from multiple words. Generally a common word such as 'has' or 'the'.</xs:documentation>
-									</xs:annotation>
-								</xs:attribute>
-								<xs:attribute name="id" type="xs:ID"/>
-							</xs:complexType>
-						</xs:element>
-					</xs:sequence>
-				</xs:complexType>
-			</xs:element>
 			<xs:element name="Refinements" minOccurs="0">
 				<xs:complexType>
 					<xs:sequence>
@@ -1582,6 +1583,26 @@
 				<xs:documentation>The maximum name length set by user</xs:documentation>
 			</xs:annotation>
 		</xs:attribute>
+	</xs:complexType>
+	<xs:complexType name="RecognizedPhrasesType">
+		<xs:sequence>
+			<xs:element name="RecognizedPhrase" minOccurs="0" maxOccurs="unbounded">
+				<xs:complexType>
+					<xs:sequence>
+						<xs:element name="Abbreviations" type="AliasesType" minOccurs="0"/>
+					</xs:sequence>
+					<xs:attribute name="Name" type="xs:string" use="required">
+						<xs:annotation>
+							<xs:documentation>A recognized word to map to a different text value during name generation. Generally a common word such as 'has' or 'the'. Allows mapping to an empty alias value.</xs:documentation>
+						</xs:annotation>
+					</xs:attribute>
+					<xs:attribute name="id" type="xs:ID"/>
+				</xs:complexType>
+			</xs:element>
+		</xs:sequence>
+	</xs:complexType>
+	<xs:complexType name="RecognizedPhraseRef">
+		<xs:attribute name="ref" type="xs:IDREF"/>
 	</xs:complexType>
 	<xs:element name="GenerationState">
 		<xs:complexType>

@@ -133,21 +133,13 @@
     <value>NameConsumer</value>
     <comment>DisplayName for DomainClass &apos;NameConsumer&apos;</comment>
   </data>
-  <data name="Neumont.Tools.ORM.ObjectModel.OmittedWord.Description" xml:space="preserve">
+  <data name="Neumont.Tools.ORM.ObjectModel.RecognizedPhrase.Description" xml:space="preserve">
     <value></value>
-    <comment>Description for DomainClass &apos;OmittedWord&apos;</comment>
+    <comment>Description for DomainClass &apos;RecognizedPhrase&apos;</comment>
   </data>
-  <data name="Neumont.Tools.ORM.ObjectModel.OmittedWord.DisplayName" xml:space="preserve">
-    <value>OmittedWord</value>
-    <comment>DisplayName for DomainClass &apos;OmittedWord&apos;</comment>
-  </data>
-  <data name="Neumont.Tools.ORM.ObjectModel.OmittedWord/Word.Description" xml:space="preserve">
-    <value></value>
-    <comment>Description for DomainProperty &apos;Word&apos; on DomainClass &apos;OmittedWord&apos;</comment>
-  </data>
-  <data name="Neumont.Tools.ORM.ObjectModel.OmittedWord/Word.DisplayName" xml:space="preserve">
-    <value>Word</value>
-    <comment>DisplayName for DomainProperty &apos;Word&apos; on DomainClass &apos;OmittedWord&apos;</comment>
+  <data name="Neumont.Tools.ORM.ObjectModel.RecognizedPhrase.DisplayName" xml:space="preserve">
+    <value>RecognizedPhrase</value>
+    <comment>DisplayName for DomainClass &apos;RecognizedPhrase&apos;</comment>
   </data>
   <data name="Neumont.Tools.ORM.ObjectModel.NameGenerator.Description" xml:space="preserve">
     <value></value>
@@ -940,6 +932,14 @@
   <data name="Neumont.Tools.ORM.ObjectModel.ObjectTypeDuplicateNameError.DisplayName" xml:space="preserve">
     <value>Duplicate ObjectType Names</value>
     <comment>DisplayName for DomainClass &apos;ObjectTypeDuplicateNameError&apos;</comment>
+  </data>
+  <data name="Neumont.Tools.ORM.ObjectModel.RecognizedPhraseDuplicateNameError.Description" xml:space="preserve">
+    <value></value>
+    <comment>Description for DomainClass &apos;RecognizedPhraseDuplicateNameError&apos;</comment>
+  </data>
+  <data name="Neumont.Tools.ORM.ObjectModel.RecognizedPhraseDuplicateNameError.DisplayName" xml:space="preserve">
+    <value>Duplicate Recognized Words</value>
+    <comment>DisplayName for DomainClass &apos;RecognizedPhraseDuplicateNameError&apos;</comment>
   </data>
   <data name="Neumont.Tools.ORM.ObjectModel.PopulationUniquenessError.Description" xml:space="preserve">
     <value></value>
@@ -2565,6 +2565,38 @@
     <value>Element</value>
     <comment>PropertyDisplayName for DomainRole &apos;Alias&apos; on DomainRelationship &apos;ElementHasAlias&apos;</comment>
   </data>
+  <data name="Neumont.Tools.ORM.ObjectModel.RecognizedPhraseHasAbbreviation.Description" xml:space="preserve">
+    <value>Description for Neumont.Tools.ORM.ObjectModel.RecognizedPhraseHasAbbreviation</value>
+    <comment>Description for DomainClass &apos;RecognizedPhraseHasAbbreviation&apos;</comment>
+  </data>
+  <data name="Neumont.Tools.ORM.ObjectModel.RecognizedPhraseHasAbbreviation.DisplayName" xml:space="preserve">
+    <value>Other Word Abbreviations</value>
+    <comment>DisplayName for DomainClass &apos;RecognizedPhraseHasAbbreviation&apos;</comment>
+  </data>
+  <data name="Neumont.Tools.ORM.ObjectModel.RecognizedPhraseHasAbbreviation/RecognizedPhrase.Description" xml:space="preserve">
+    <value>Description for Neumont.Tools.ORM.ObjectModel.RecognizedPhraseHasAbbreviation.RecognizedPhrase</value>
+    <comment>Description for DomainRole &apos;RecognizedPhrase&apos; on DomainRelationship &apos;RecognizedPhraseHasAbbreviation&apos;</comment>
+  </data>
+  <data name="Neumont.Tools.ORM.ObjectModel.RecognizedPhraseHasAbbreviation/RecognizedPhrase.DisplayName" xml:space="preserve">
+    <value>RecognizedPhrase</value>
+    <comment>DisplayName for DomainRole &apos;RecognizedPhrase&apos; on DomainRelationship &apos;RecognizedPhraseHasAbbreviation&apos;</comment>
+  </data>
+  <data name="Neumont.Tools.ORM.ObjectModel.RecognizedPhraseHasAbbreviation/RecognizedPhrase.PropertyDisplayName" xml:space="preserve">
+    <value>Abbreviation Collection</value>
+    <comment>PropertyDisplayName for DomainRole &apos;RecognizedPhrase&apos; on DomainRelationship &apos;RecognizedPhraseHasAbbreviation&apos;</comment>
+  </data>
+  <data name="Neumont.Tools.ORM.ObjectModel.RecognizedPhraseHasAbbreviation/Abbreviation.Description" xml:space="preserve">
+    <value>Description for Neumont.Tools.ORM.ObjectModel.RecognizedPhraseHasAbbreviation.Abbreviation</value>
+    <comment>Description for DomainRole &apos;Abbreviation&apos; on DomainRelationship &apos;RecognizedPhraseHasAbbreviation&apos;</comment>
+  </data>
+  <data name="Neumont.Tools.ORM.ObjectModel.RecognizedPhraseHasAbbreviation/Abbreviation.DisplayName" xml:space="preserve">
+    <value>Alias</value>
+    <comment>DisplayName for DomainRole &apos;Abbreviation&apos; on DomainRelationship &apos;RecognizedPhraseHasAbbreviation&apos;</comment>
+  </data>
+  <data name="Neumont.Tools.ORM.ObjectModel.RecognizedPhraseHasAbbreviation/Abbreviation.PropertyDisplayName" xml:space="preserve">
+    <value>Element</value>
+    <comment>PropertyDisplayName for DomainRole &apos;Abbreviation&apos; on DomainRelationship &apos;RecognizedPhraseHasAbbreviation&apos;</comment>
+  </data>
   <data name="Neumont.Tools.ORM.ObjectModel.ObjectTypeHasAbbreviation.Description" xml:space="preserve">
     <value>Description for Neumont.Tools.ORM.ObjectModel.ObjectTypeHasAbbreviation</value>
     <comment>Description for DomainClass &apos;ObjectTypeHasAbbreviation&apos;</comment>
@@ -2597,37 +2629,69 @@
     <value>Element</value>
     <comment>PropertyDisplayName for DomainRole &apos;Abbreviation&apos; on DomainRelationship &apos;ObjectTypeHasAbbreviation&apos;</comment>
   </data>
-  <data name="Neumont.Tools.ORM.ObjectModel.NameGeneratorContainsOmittedWord.Description" xml:space="preserve">
-    <value>Description for Neumont.Tools.ORM.ObjectModel.NameGeneratorContainsOmittedWord</value>
-    <comment>Description for DomainClass &apos;NameGeneratorContainsOmittedWord&apos;</comment>
+  <data name="Neumont.Tools.ORM.ObjectModel.ModelContainsRecognizedPhrase.Description" xml:space="preserve">
+    <value>Description for Neumont.Tools.ORM.ObjectModel.ModelContainsRecognizedPhrase</value>
+    <comment>Description for DomainClass &apos;ModelContainsRecognizedPhrase&apos;</comment>
   </data>
-  <data name="Neumont.Tools.ORM.ObjectModel.NameGeneratorContainsOmittedWord.DisplayName" xml:space="preserve">
-    <value>Name Generator Contains Omitted Word</value>
-    <comment>DisplayName for DomainClass &apos;NameGeneratorContainsOmittedWord&apos;</comment>
+  <data name="Neumont.Tools.ORM.ObjectModel.ModelContainsRecognizedPhrase.DisplayName" xml:space="preserve">
+    <value>Model Contains Recognized Phrase</value>
+    <comment>DisplayName for DomainClass &apos;ModelContainsRecognizedPhrase&apos;</comment>
   </data>
-  <data name="Neumont.Tools.ORM.ObjectModel.NameGeneratorContainsOmittedWord/NameGenerator.Description" xml:space="preserve">
-    <value>Description for Neumont.Tools.ORM.ObjectModel.NameGeneratorContainsOmittedWord.NameGenerator</value>
-    <comment>Description for DomainRole &apos;NameGenerator&apos; on DomainRelationship &apos;NameGeneratorContainsOmittedWord&apos;</comment>
+  <data name="Neumont.Tools.ORM.ObjectModel.ModelContainsRecognizedPhrase/Model.Description" xml:space="preserve">
+    <value>Description for Neumont.Tools.ORM.ObjectModel.ModelContainsRecognizedPhrase.Model</value>
+    <comment>Description for DomainRole &apos;Model&apos; on DomainRelationship &apos;ModelContainsRecognizedPhrase&apos;</comment>
   </data>
-  <data name="Neumont.Tools.ORM.ObjectModel.NameGeneratorContainsOmittedWord/NameGenerator.DisplayName" xml:space="preserve">
+  <data name="Neumont.Tools.ORM.ObjectModel.ModelContainsRecognizedPhrase/Model.DisplayName" xml:space="preserve">
     <value>NameGenerator</value>
-    <comment>DisplayName for DomainRole &apos;NameGenerator&apos; on DomainRelationship &apos;NameGeneratorContainsOmittedWord&apos;</comment>
+    <comment>DisplayName for DomainRole &apos;Model&apos; on DomainRelationship &apos;ModelContainsRecognizedPhrase&apos;</comment>
   </data>
-  <data name="Neumont.Tools.ORM.ObjectModel.NameGeneratorContainsOmittedWord/NameGenerator.PropertyDisplayName" xml:space="preserve">
-    <value>Omitted Word Collection</value>
-    <comment>PropertyDisplayName for DomainRole &apos;NameGenerator&apos; on DomainRelationship &apos;NameGeneratorContainsOmittedWord&apos;</comment>
+  <data name="Neumont.Tools.ORM.ObjectModel.ModelContainsRecognizedPhrase/Model.PropertyDisplayName" xml:space="preserve">
+    <value>Recognized Phrase Collection</value>
+    <comment>PropertyDisplayName for DomainRole &apos;Model&apos; on DomainRelationship &apos;ModelContainsRecognizedPhrase&apos;</comment>
   </data>
-  <data name="Neumont.Tools.ORM.ObjectModel.NameGeneratorContainsOmittedWord/OmittedWord.Description" xml:space="preserve">
-    <value>Description for Neumont.Tools.ORM.ObjectModel.NameGeneratorContainsOmittedWord.OmittedWord</value>
-    <comment>Description for DomainRole &apos;OmittedWord&apos; on DomainRelationship &apos;NameGeneratorContainsOmittedWord&apos;</comment>
+  <data name="Neumont.Tools.ORM.ObjectModel.ModelContainsRecognizedPhrase/RecognizedPhrase.Description" xml:space="preserve">
+    <value>Description for Neumont.Tools.ORM.ObjectModel.ModelContainsRecognizedPhrase.RecognizedPhrase</value>
+    <comment>Description for DomainRole &apos;RecognizedPhrase&apos; on DomainRelationship &apos;ModelContainsRecognizedPhrase&apos;</comment>
   </data>
-  <data name="Neumont.Tools.ORM.ObjectModel.NameGeneratorContainsOmittedWord/OmittedWord.DisplayName" xml:space="preserve">
-    <value>OmittedWord</value>
-    <comment>DisplayName for DomainRole &apos;OmittedWord&apos; on DomainRelationship &apos;NameGeneratorContainsOmittedWord&apos;</comment>
+  <data name="Neumont.Tools.ORM.ObjectModel.ModelContainsRecognizedPhrase/RecognizedPhrase.DisplayName" xml:space="preserve">
+    <value>RecognizedPhrase</value>
+    <comment>DisplayName for DomainRole &apos;RecognizedPhrase&apos; on DomainRelationship &apos;ModelContainsRecognizedPhrase&apos;</comment>
   </data>
-  <data name="Neumont.Tools.ORM.ObjectModel.NameGeneratorContainsOmittedWord/OmittedWord.PropertyDisplayName" xml:space="preserve">
-    <value>Name Generator</value>
-    <comment>PropertyDisplayName for DomainRole &apos;OmittedWord&apos; on DomainRelationship &apos;NameGeneratorContainsOmittedWord&apos;</comment>
+  <data name="Neumont.Tools.ORM.ObjectModel.ModelContainsRecognizedPhrase/RecognizedPhrase.PropertyDisplayName" xml:space="preserve">
+    <value>Model</value>
+    <comment>PropertyDisplayName for DomainRole &apos;RecognizedPhrase&apos; on DomainRelationship &apos;ModelContainsRecognizedPhrase&apos;</comment>
+  </data>
+  <data name="Neumont.Tools.ORM.ObjectModel.RecognizedPhraseHasDuplicateNameError.Description" xml:space="preserve">
+    <value>Description for Neumont.Tools.ORM.ObjectModel.RecognizedPhraseHasDuplicateNameError</value>
+    <comment>Description for DomainClass &apos;RecognizedPhraseHasDuplicateNameError&apos;</comment>
+  </data>
+  <data name="Neumont.Tools.ORM.ObjectModel.RecognizedPhraseHasDuplicateNameError.DisplayName" xml:space="preserve">
+    <value>Recognized Phrase Has Duplicate Name Error</value>
+    <comment>DisplayName for DomainClass &apos;RecognizedPhraseHasDuplicateNameError&apos;</comment>
+  </data>
+  <data name="Neumont.Tools.ORM.ObjectModel.RecognizedPhraseHasDuplicateNameError/RecognizedPhrase.Description" xml:space="preserve">
+    <value>Description for Neumont.Tools.ORM.ObjectModel.RecognizedPhraseHasDuplicateNameError.RecognizedPhrase</value>
+    <comment>Description for DomainRole &apos;RecognizedPhrase&apos; on DomainRelationship &apos;RecognizedPhraseHasDuplicateNameError&apos;</comment>
+  </data>
+  <data name="Neumont.Tools.ORM.ObjectModel.RecognizedPhraseHasDuplicateNameError/RecognizedPhrase.DisplayName" xml:space="preserve">
+    <value>RecognizedPhrase</value>
+    <comment>DisplayName for DomainRole &apos;RecognizedPhrase&apos; on DomainRelationship &apos;RecognizedPhraseHasDuplicateNameError&apos;</comment>
+  </data>
+  <data name="Neumont.Tools.ORM.ObjectModel.RecognizedPhraseHasDuplicateNameError/RecognizedPhrase.PropertyDisplayName" xml:space="preserve">
+    <value>Duplicate Name Error</value>
+    <comment>PropertyDisplayName for DomainRole &apos;RecognizedPhrase&apos; on DomainRelationship &apos;RecognizedPhraseHasDuplicateNameError&apos;</comment>
+  </data>
+  <data name="Neumont.Tools.ORM.ObjectModel.RecognizedPhraseHasDuplicateNameError/DuplicateNameError.Description" xml:space="preserve">
+    <value>Description for Neumont.Tools.ORM.ObjectModel.RecognizedPhraseHasDuplicateNameError.DuplicateNameError</value>
+    <comment>Description for DomainRole &apos;DuplicateNameError&apos; on DomainRelationship &apos;RecognizedPhraseHasDuplicateNameError&apos;</comment>
+  </data>
+  <data name="Neumont.Tools.ORM.ObjectModel.RecognizedPhraseHasDuplicateNameError/DuplicateNameError.DisplayName" xml:space="preserve">
+    <value>DuplicateNameError</value>
+    <comment>DisplayName for DomainRole &apos;DuplicateNameError&apos; on DomainRelationship &apos;RecognizedPhraseHasDuplicateNameError&apos;</comment>
+  </data>
+  <data name="Neumont.Tools.ORM.ObjectModel.RecognizedPhraseHasDuplicateNameError/DuplicateNameError.PropertyDisplayName" xml:space="preserve">
+    <value>Recognized Phrase Collection</value>
+    <comment>PropertyDisplayName for DomainRole &apos;DuplicateNameError&apos; on DomainRelationship &apos;RecognizedPhraseHasDuplicateNameError&apos;</comment>
   </data>
   <data name="Neumont.Tools.ORM.ObjectModel.ExternalRoleConstraint.Description" xml:space="preserve">
     <value>Description for Neumont.Tools.ORM.ObjectModel.ExternalRoleConstraint</value>
