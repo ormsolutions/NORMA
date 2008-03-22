@@ -1,0 +1,114 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<qp:surveyQuestionProvider xmlns:qp="http://schemas.neumont.edu/ORM/SDK/SurveyQuestionProvider" xmlns:plx="http://schemas.neumont.edu/CodeGeneration/PLiX" class="BarkerDomainModel">
+	<qp:surveyQuestions>
+		<qp:surveyQuestion questionType="SurveyBarkerModelType">
+			<qp:displaySupport displayCategory="Grouping"/>
+			<qp:displaySupport displayCategory="Sorting"/>
+			<qp:displaySupport displayCategory="Glyph"/>
+			<qp:explicitImageMap>
+				<qp:map enumValue="Model" imageIndex="0"/>
+			</qp:explicitImageMap>
+		</qp:surveyQuestion>
+		<qp:surveyQuestion questionType="SurveyBarkerElementType">
+			<qp:displaySupport displayCategory="Grouping"/>
+			<qp:displaySupport displayCategory="Sorting"/>
+			<qp:displaySupport displayCategory="Glyph"/>
+			<qp:explicitImageMap>
+				<qp:map enumValue="EntityType" imageIndex="1"/>
+				<qp:map enumValue="BinaryAssociation" imageIndex="4"/>
+				<qp:map enumValue="Constraint" imageIndex="10"/>
+			</qp:explicitImageMap>
+		</qp:surveyQuestion>
+		<qp:surveyQuestion questionType="SurveyEntityChildType">
+			<qp:displaySupport displayCategory="Grouping"/>
+			<qp:displaySupport displayCategory="Sorting"/>
+			<qp:displaySupport displayCategory="Glyph"/>
+			<qp:explicitImageMap>
+				<qp:map enumValue="Attribute" imageIndex="2"/>
+				<qp:map enumValue="Subtype" imageIndex="13"/>
+				<qp:map enumValue="RoleRef" imageIndex="14"/>
+			</qp:explicitImageMap>
+		</qp:surveyQuestion>
+		<qp:surveyQuestion questionType="SurveyBinaryAssociationChildType">
+			<qp:displaySupport displayCategory="Glyph"/>
+			<qp:explicitImageMap>
+				<qp:map enumValue="Role_OptionalOne" imageIndex="6"/>
+				<qp:map enumValue="Role_MandatoryOne" imageIndex="8"/>
+				<qp:map enumValue="Role_MandatoryMany" imageIndex="7"/>
+				<qp:map enumValue="Role_OptionalMany" imageIndex="5"/>
+				<qp:map enumValue="Role_MandatoryOnePrimary" imageIndex="12"/>
+				<qp:map enumValue="Role_MandatoryManyPrimary" imageIndex="11"/>
+			</qp:explicitImageMap>
+		</qp:surveyQuestion>
+		<qp:surveyQuestion questionType="SurveyAttributeChildType">
+			<qp:displaySupport displayCategory="Grouping"/>
+			<qp:displaySupport displayCategory="Sorting"/>
+			<qp:displaySupport displayCategory="Glyph"/>
+			<qp:explicitImageMap>
+				<qp:map enumValue="PossibleValue" imageIndex="3"/>
+			</qp:explicitImageMap>
+		</qp:surveyQuestion>
+		<qp:surveyQuestion questionType="SurveyRoleChildType">
+			<qp:displaySupport displayCategory="Grouping"/>
+			<qp:displaySupport displayCategory="Sorting"/>
+			<qp:displaySupport displayCategory="Glyph"/>
+			<qp:explicitImageMap>
+				<qp:map enumValue="CardinalityQualifier" imageIndex="9"/>
+			</qp:explicitImageMap>
+		</qp:surveyQuestion>
+		<qp:surveyQuestion questionType="SurveyExclusiveArcChildType">
+			<qp:displaySupport displayCategory="Grouping"/>
+			<qp:displaySupport displayCategory="Sorting"/>
+			<qp:displaySupport displayCategory="Glyph"/>
+			<qp:explicitImageMap>
+				<qp:map enumValue="RoleRef" imageIndex="14"/>
+			</qp:explicitImageMap>
+		</qp:surveyQuestion>
+	</qp:surveyQuestions>
+	<qp:groupings>
+		<qp:grouping>
+			<qp:surveyQuestion ref="SurveyBarkerModelType"/>
+		</qp:grouping>
+		<qp:grouping>
+			<qp:expansionKey>
+				<plx:callStatic dataTypeName="BarkerErModel" name="SurveyExpansionKey" type="property"/>
+			</qp:expansionKey>
+			<qp:surveyQuestion ref="SurveyBarkerElementType"/>
+		</qp:grouping>
+		<qp:grouping>
+			<qp:expansionKey>
+				<plx:callStatic dataTypeName="EntityType" name="SurveyExpansionKey" type="property"/>
+			</qp:expansionKey>
+			<qp:surveyQuestion ref="SurveyEntityChildType"/>
+		</qp:grouping>
+		<qp:grouping>
+			<qp:expansionKey>
+				<plx:callStatic dataTypeName="BinaryAssociation" name="SurveyExpansionKey" type="property"/>
+			</qp:expansionKey>
+			<qp:surveyQuestion ref="SurveyBinaryAssociationChildType"/>
+		</qp:grouping>
+		<qp:grouping>
+			<qp:expansionKey>
+				<plx:callStatic dataTypeName="Attribute" name="SurveyExpansionKey" type="property"/>
+			</qp:expansionKey>
+			<qp:surveyQuestion ref="SurveyAttributeChildType"/>
+		</qp:grouping>
+		<qp:grouping>
+			<qp:expansionKey>
+				<plx:callStatic dataTypeName="Role" name="SurveyExpansionKey" type="property"/>
+			</qp:expansionKey>
+			<qp:surveyQuestion ref="SurveyRoleChildType"/>
+		</qp:grouping>
+		<qp:grouping>
+			<qp:expansionKey>
+				<plx:callStatic dataTypeName="ExclusiveArc" name="SurveyExpansionKey" type="property"/>
+			</qp:expansionKey>
+			<qp:surveyQuestion ref="SurveyExclusiveArcChildType"/>
+		</qp:grouping>
+	</qp:groupings>
+	<qp:imageInformation>
+		<plx:return>
+			<plx:callStatic dataTypeName="ResourceStrings" name="SurveyTreeImageList" type="property"/>
+		</plx:return>
+	</qp:imageInformation>
+</qp:surveyQuestionProvider>

@@ -1,0 +1,20 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<arg:Rules xmlns:arg="http://schemas.neumont.edu/ORM/SDK/AttachRulesGenerator">
+	<arg:Copyright name="Common Public License Copyright Notice">
+		<arg:CopyrightLine>/**************************************************************************\</arg:CopyrightLine>
+		<arg:CopyrightLine>* Neumont Object-Role Modeling Architect for Visual Studio                 *</arg:CopyrightLine>
+		<arg:CopyrightLine>*                                                                          *</arg:CopyrightLine>
+		<arg:CopyrightLine>* Copyright © Neumont University. All rights reserved.                     *</arg:CopyrightLine>
+		<arg:CopyrightLine>*                                                                          *</arg:CopyrightLine>
+		<arg:CopyrightLine>* The use and distribution terms for this software are covered by the      *</arg:CopyrightLine>
+		<arg:CopyrightLine>* Common Public License 1.0 (http://opensource.org/licenses/cpl) which     *</arg:CopyrightLine>
+		<arg:CopyrightLine>* can be found in the file CPL.txt at the root of this distribution.       *</arg:CopyrightLine>
+		<arg:CopyrightLine>* By using this software in any fashion, you are agreeing to be bound by   *</arg:CopyrightLine>
+		<arg:CopyrightLine>* the terms of this license.                                               *</arg:CopyrightLine>
+		<arg:CopyrightLine>*                                                                          *</arg:CopyrightLine>
+		<arg:CopyrightLine>* You must not remove this notice, or any other, from this software.       *</arg:CopyrightLine>
+		<arg:CopyrightLine>\**************************************************************************/</arg:CopyrightLine>
+	</arg:Copyright>
+	<arg:Model class="BarkerDomainModel">
+	</arg:Model>
+</arg:Rules>

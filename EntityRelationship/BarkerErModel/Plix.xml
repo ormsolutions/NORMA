@@ -1,0 +1,7 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<plixLoader:sourceFiles xmlns:plixLoader="http://schemas.neumont.edu/CodeGeneration/PLiXLoader">
+	<plixLoader:sourceFile file="BerModel.AttachRules.xml" transformFile="..\..\ORMModel\Transforms\AttachRulesGenerator.xslt"/>
+	<plixLoader:sourceFile file="BerModel.SerializationExtensions.xml" transformFile="..\..\ORMModel\Transforms\SerializationExtensions.xslt"/>
+	<plixLoader:sourceFile file="BerModel.SurveyQuestionProvider.xml" transformFile="..\..\ORMModel\Transforms\SurveyQuestionProvider.xslt"/>
+	<plixLoader:sourceFile file="Resources\ResourceStringsGenerator.xml" transformFile="..\..\ORMModel\Transforms\ResourceStringsGenerator.xslt"/>
+</plixLoader:sourceFiles>

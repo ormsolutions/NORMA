@@ -8,6 +8,7 @@
 		<ProjectReference Include="RelationalModel\Dil.sln"/>
 		<ProjectReference Include="AlternateViews\RelationalView\RelationalView.sln"/>
 		<ProjectReference Include="CustomProperties\CustomProperties.sln"/>
+		<ProjectReference Include="EntityRelationship\EntityRelationship.sln"/>
 		<ProjectReference Include="Tools\ORMCustomTool\ORMCustomTool.sln"/>
 		<ProjectReference Include="Tools\DatabaseImport\DatabaseImport.sln"/>
 	</ItemGroup>

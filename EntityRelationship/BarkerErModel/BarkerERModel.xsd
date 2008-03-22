@@ -1,0 +1,449 @@
+<?xml version="1.0" encoding="utf-8"?>
+<xs:schema
+	targetNamespace="http://schemas.neumont.edu/ORM/EntityRelationship/2008-03/Barker"
+	xmlns:xs="http://www.w3.org/2001/XMLSchema"
+	xmlns:rbe="http://schemas.neumont.edu/ORM/EntityRelationship/2008-03/Barker"
+	xmlns="http://schemas.neumont.edu/ORM/EntityRelationship/2008-03/Barker"
+	elementFormDefault="qualified"
+	attributeFormDefault="unqualified"
+	version="0.9">
+	<xs:annotation>
+		<xs:appinfo source="zlib/libpng License Copyright Notice">
+			Copyright © Neumont University. All rights reserved.
+
+			This software is provided 'as-is', without any express or implied warranty. In no event will the authors be held liable for any damages arising from the use of this software.
+			Permission is granted to anyone to use this software for any purpose, including commercial applications, and to alter it and redistribute it freely, subject to the following restrictions:
+			1. The origin of this software must not be misrepresented; you must not claim that you wrote the original software. If you use this software in a product, an acknowledgment in the product documentation would be appreciated but is not required.
+			2. Altered source versions must be plainly marked as such, and must not be misrepresented as being the original software.
+			3. This notice may not be removed or altered from any source distribution.
+		</xs:appinfo>
+		<xs:appinfo>Based on the XML/DIL/DCIL.xsd file</xs:appinfo>
+		<xs:documentation>Barker Entity Relationship Language</xs:documentation>
+	</xs:annotation>
+
+	<xs:import namespace="http://schemas.orm.net/DIL/DILDT"/>
+
+	<xs:element name="Root">
+		<xs:complexType>
+			<xs:sequence>
+				<xs:element ref="BarkerErModel" minOccurs="0" maxOccurs="unbounded"/>
+			</xs:sequence>
+		</xs:complexType>
+		<xs:key name="barkerErModelKey">
+			<xs:selector xpath="BarkerErModel"/>
+			<xs:field xpath="@id"/>
+		</xs:key>
+	</xs:element>
+
+	<xs:simpleType name="NamedIdentifier">
+		<xs:restriction base="xs:string"/>
+	</xs:simpleType>
+
+	<xs:attributeGroup name="SurrogateIdentifier">
+		<xs:attribute name="id" type="xs:ID" use="required">
+			<xs:annotation>
+				<xs:documentation>A surrogate identifier used for all elements.</xs:documentation>
+			</xs:annotation>
+		</xs:attribute>
+	</xs:attributeGroup>
+
+	<xs:attributeGroup name="SurrogateIdentifierRef">
+		<xs:attribute name="ref" type="xs:IDREF" use="required">
+			<xs:annotation>
+				<xs:documentation>A surrogate identifier reference used for all elements.</xs:documentation>
+			</xs:annotation>
+		</xs:attribute>
+	</xs:attributeGroup>
+
+	<xs:element name="BarkerErModel">
+		<xs:annotation>
+			<xs:documentation>A named Barker ER Model. Contains a collection of entity types and binary associations</xs:documentation>
+		</xs:annotation>
+		<xs:complexType>
+			<xs:all>
+				<xs:element name="EntityTypes" minOccurs="0">
+					<xs:complexType>
+						<xs:sequence>
+							<xs:element ref="EntityType" minOccurs="0" maxOccurs="unbounded"/>
+						</xs:sequence>
+					</xs:complexType>
+				</xs:element>
+				<xs:element name="BinaryAssociations" minOccurs="0">
+					<xs:complexType>
+						<xs:sequence>
+							<xs:element ref="BinaryAssociation" minOccurs="0" maxOccurs="unbounded"/>
+						</xs:sequence>
+					</xs:complexType>
+				</xs:element>
+				<xs:element name="Constraints" minOccurs="0">
+					<xs:complexType>
+						<xs:sequence>
+							<xs:element ref="ExclusiveArc" minOccurs="0" maxOccurs="unbounded"/>
+						</xs:sequence>
+					</xs:complexType>
+				</xs:element>
+			</xs:all>
+			<xs:attributeGroup ref="SurrogateIdentifier"/>
+			<xs:attribute name="Name" use="required" type="NamedIdentifier">
+				<xs:annotation>
+					<xs:documentation>The name of the model.</xs:documentation>
+				</xs:annotation>
+			</xs:attribute>
+		</xs:complexType>
+		<xs:key name="entityTypeKey">
+			<xs:selector xpath="rbe:EntityTypes/rbe:EntityType"/>
+			<xs:field xpath="@id"/>
+			<!--<xs:field xpath="@Name"/>-->
+		</xs:key>
+		<xs:key name="binaryAssociationKey">
+			<xs:selector xpath="rbe:BinaryAssociations/rbe:BinaryAssociation"/>
+			<xs:field xpath="@id"/>
+			<!--<xs:field xpath="@Name"/>-->
+		</xs:key>
+		<xs:key name="exclusiveArcKey">
+			<xs:selector xpath="rbe:Constraints/rbe:ExclusiveArc"/>
+			<xs:field xpath="@id"/>
+			<!--<xs:field xpath="@Name"/>-->
+		</xs:key>
+	</xs:element>
+
+	<xs:element name="EntityType">
+		<xs:annotation>
+			<xs:documentation>Entity type.</xs:documentation>
+		</xs:annotation>
+		<xs:complexType>
+			<xs:sequence>
+				<xs:element name="Attributes" minOccurs="0">
+					<xs:annotation>
+						<xs:documentation>The attributes of the entity type</xs:documentation>
+					</xs:annotation>
+					<xs:complexType>
+						<xs:sequence minOccurs="0" maxOccurs="unbounded">
+							<xs:element ref="Attribute"/>
+						</xs:sequence>
+					</xs:complexType>
+				</xs:element>
+				<xs:element name="Roles" minOccurs="0">
+					<xs:annotation>
+						<xs:documentation>The roles played by this entity type</xs:documentation>
+					</xs:annotation>
+					<xs:complexType>
+						<xs:sequence minOccurs="0" maxOccurs="unbounded">
+							<xs:element name="Role" minOccurs="0" maxOccurs="unbounded">
+								<xs:annotation>
+									<xs:documentation>A reference to a role.</xs:documentation>
+								</xs:annotation>
+								<xs:complexType>
+									<xs:attributeGroup ref="SurrogateIdentifierRef"/>
+								</xs:complexType>
+							</xs:element>
+						</xs:sequence>
+					</xs:complexType>
+				</xs:element>
+				<xs:element name="Subtypes" minOccurs="0">
+					<xs:annotation>
+						<xs:documentation>The subtypes of this entity type</xs:documentation>
+					</xs:annotation>
+					<xs:complexType>
+						<xs:sequence minOccurs="0" maxOccurs="1">
+							<xs:element name="EntityType" minOccurs="2" maxOccurs="unbounded">
+								<xs:annotation>
+									<xs:documentation>A reference to a role.</xs:documentation>
+								</xs:annotation>
+								<xs:complexType>
+									<xs:attributeGroup ref="SurrogateIdentifierRef"/>
+								</xs:complexType>
+							</xs:element>
+						</xs:sequence>
+					</xs:complexType>
+				</xs:element>
+			</xs:sequence>
+			<xs:attributeGroup ref="SurrogateIdentifier"/>
+			<xs:attribute name="Name" use="required" type="NamedIdentifier">
+				<xs:annotation>
+					<xs:documentation>The name of the entity type.</xs:documentation>
+				</xs:annotation>
+			</xs:attribute>
+		</xs:complexType>
+		<xs:key name="attributeKey">
+			<xs:selector xpath="rbe:Attributes/rbe:Attribute"/>
+			<xs:field xpath="@id"/>
+			<!--<xs:field xpath="@Name"/>-->
+		</xs:key>
+		<!--<xs:keyref name="entityTypeRoleKeyRef" refer="rbe:associationRoleKey">
+			<xs:selector xpath="rbe:Role"/>
+			<xs:field xpath="@ref"/>
+		</xs:keyref>-->
+		<xs:keyref name="subtypeKeyRef" refer="rbe:entityTypeKey">
+			<xs:selector xpath="rbe:EntityType"/>
+			<xs:field xpath="@ref"/>
+		</xs:keyref>
+	</xs:element>
+
+	<xs:element name="Attribute">
+		<xs:annotation>
+			<xs:documentation>Attribute of an entity type.</xs:documentation>
+		</xs:annotation>
+		<xs:complexType>
+			<xs:sequence>
+				<xs:element name="PossibleValues" minOccurs="0">
+					<xs:annotation>
+						<xs:documentation>The possible values of the attribute.</xs:documentation>
+					</xs:annotation>
+					<xs:complexType>
+						<xs:sequence minOccurs="0" maxOccurs="unbounded">
+							<xs:element ref="Value"/>
+						</xs:sequence>
+					</xs:complexType>
+				</xs:element>
+				<xs:element name="Domain" minOccurs="0">
+					<xs:complexType>
+						<xs:attributeGroup ref="SurrogateIdentifierRef"/>
+					</xs:complexType>
+				</xs:element>
+			</xs:sequence>
+			<xs:attributeGroup ref="SurrogateIdentifier"/>
+			<xs:attribute name="Name" use="required" type="NamedIdentifier">
+				<xs:annotation>
+					<xs:documentation>The name of the attribute.</xs:documentation>
+				</xs:annotation>
+			</xs:attribute>
+			<xs:attribute name="IsMandatory" default="false" type="xs:boolean">
+				<xs:annotation>
+					<xs:documentation>Is this attribute required?</xs:documentation>
+				</xs:annotation>
+			</xs:attribute>
+			<xs:attribute name="IsPrimaryIdComponent" default="false" type="xs:boolean">
+				<xs:annotation>
+					<xs:documentation>Is this attribute part of primary identifier for its entity type?</xs:documentation>
+				</xs:annotation>
+			</xs:attribute>
+		</xs:complexType>
+		<xs:key name="possibleValueKey">
+			<xs:selector xpath="rbe:PossibleValues/rbe:Value"/>
+			<xs:field xpath="@id"/>
+			<!--<xs:field xpath="@Name"/>-->
+		</xs:key>
+	</xs:element>
+
+	<xs:element name="Value">
+		<xs:annotation>
+			<xs:documentation>Attribute possible value.</xs:documentation>
+		</xs:annotation>
+		<xs:complexType>
+			<xs:sequence>
+				<xs:element name="Domains" minOccurs="0">
+					<xs:annotation>
+						<xs:documentation>Domains the value belongs to.</xs:documentation>
+					</xs:annotation>
+					<xs:complexType>
+						<xs:sequence minOccurs="0" maxOccurs="unbounded">
+							<xs:element ref="Domain"/>
+						</xs:sequence>
+					</xs:complexType>
+				</xs:element>
+			</xs:sequence>
+			<xs:attribute name="Val" type="xs:string" >
+				<xs:annotation>
+					<xs:documentation>Temp hack :: TODO figure out the proper way to record value.</xs:documentation>
+				</xs:annotation>
+			</xs:attribute>
+			<xs:attributeGroup ref="SurrogateIdentifier"/>
+		</xs:complexType>
+		<xs:key name="domainKey">
+			<xs:selector xpath="rbe:Domains/rbe:Domain"/>
+			<xs:field xpath="@id"/>
+			<!--<xs:field xpath="@Name"/>-->
+		</xs:key>
+	</xs:element>
+
+	<xs:element name="Domain">
+		<xs:annotation>
+			<xs:documentation>Domain.</xs:documentation>
+		</xs:annotation>
+		<xs:complexType>
+			<xs:attributeGroup ref="SurrogateIdentifier"/>
+			<xs:attribute name="Name" use="required" type="NamedIdentifier">
+				<xs:annotation>
+					<xs:documentation>The name of the domain.</xs:documentation>
+				</xs:annotation>
+			</xs:attribute>
+		</xs:complexType>
+	</xs:element>
+
+	<xs:element name="BinaryAssociation">
+		<xs:annotation>
+			<xs:documentation>Binary association - represents a relationship consisting of 2 roles.</xs:documentation>
+		</xs:annotation>
+		<xs:complexType>
+			<xs:sequence>
+				<xs:element name="Roles" minOccurs="0">
+					<xs:annotation>
+						<xs:documentation>The roles of the relationship</xs:documentation>
+					</xs:annotation>
+					<xs:complexType>
+						<xs:sequence minOccurs="2" maxOccurs="2">
+							<xs:element ref="Role"/>
+						</xs:sequence>
+					</xs:complexType>
+				</xs:element>
+			</xs:sequence>
+			<xs:attributeGroup ref="SurrogateIdentifier"/>
+			<xs:attribute name="Number" type="xs:int" >
+				<xs:annotation>
+					<xs:documentation>The Number of the binary association.</xs:documentation>
+				</xs:annotation>
+			</xs:attribute>
+		</xs:complexType>
+		<xs:key name="associationRoleKey">
+			<xs:selector xpath="rbe:Roles/rbe:Role"/>
+			<xs:field xpath="@id"/>
+			<!--<xs:field xpath="@Name"/>-->
+		</xs:key>
+	</xs:element>
+
+	<xs:element name="Role">
+		<xs:annotation>
+			<xs:documentation>Barker ER role.</xs:documentation>
+		</xs:annotation>
+		<xs:complexType>
+			<xs:complexContent>
+				<xs:extension base="RoleType" />
+			</xs:complexContent>
+		</xs:complexType>
+	</xs:element>
+	<xs:complexType name="RoleType">
+		<xs:annotation>
+			<xs:documentation>Barker ER role.</xs:documentation>
+		</xs:annotation>
+		<xs:sequence>
+			<xs:element name="Modifier" minOccurs="0">
+				<xs:complexType>
+					<xs:sequence>
+						<xs:element ref="CardinalityQualifier" minOccurs="0"/>
+					</xs:sequence>
+				</xs:complexType>
+			</xs:element>
+		</xs:sequence>
+		<xs:attributeGroup ref="SurrogateIdentifier"/>
+		<xs:attribute name="Number" type="xs:int" >
+			<xs:annotation>
+				<xs:documentation>The Number of the role.</xs:documentation>
+			</xs:annotation>
+		</xs:attribute>
+		<xs:attribute name="IsNonTransferable" default="false" type="xs:boolean">
+			<xs:annotation>
+				<xs:documentation>Is this role non-transferable?</xs:documentation>
+			</xs:annotation>
+		</xs:attribute>
+		<xs:attribute name="PredicateText" type="xs:string" >
+			<xs:annotation>
+				<xs:documentation>The predicate text of the role.</xs:documentation>
+			</xs:annotation>
+		</xs:attribute>
+		<xs:attribute name="IsMandatory" default="false" type="xs:boolean">
+			<xs:annotation>
+				<xs:documentation>Is this a required role?</xs:documentation>
+			</xs:annotation>
+		</xs:attribute>
+		<xs:attribute name="IsPrimaryIdComponent" default="false" type="xs:boolean">
+			<xs:annotation>
+				<xs:documentation>Is this role a part of primary identifier for an entity type?</xs:documentation>
+			</xs:annotation>
+		</xs:attribute>
+		<xs:attribute name="IsMultiValued" default="false" type="xs:boolean">
+			<xs:annotation>
+				<xs:documentation>Does this role have cardinality specified?</xs:documentation>
+			</xs:annotation>
+		</xs:attribute>
+	</xs:complexType>
+
+	<xs:element name="CardinalityQualifier">
+		<xs:annotation>
+			<xs:documentation>Cardinality qualifier for a role.</xs:documentation>
+		</xs:annotation>
+		<xs:complexType>
+			<xs:attributeGroup ref="SurrogateIdentifier"/>
+			<xs:attribute name="Number" type="xs:int" use="required">
+				<xs:annotation>
+					<xs:documentation>The Number of the cardinality qualifier.</xs:documentation>
+				</xs:annotation>
+			</xs:attribute>
+			<xs:attribute name="Operator" use="required">
+				<xs:simpleType>
+					<xs:restriction base="xs:token">
+						<xs:enumeration value="Equal"/>
+						<xs:enumeration value="LessThan"/>
+						<xs:enumeration value="GreaterThan"/>
+						<xs:enumeration value="LessThanOrEqualTo"/>
+						<xs:enumeration value="GreaterThanOrEqualTo"/>
+					</xs:restriction>
+				</xs:simpleType>
+			</xs:attribute>
+		</xs:complexType>
+	</xs:element>
+
+	<xs:element name="OptionalRole">
+		<xs:annotation>
+			<xs:documentation>Role that is not mandatory.</xs:documentation>
+		</xs:annotation>
+		<xs:complexType>
+			<xs:complexContent>
+				<xs:extension base="RoleType">
+					<!--<xs:sequence>
+						<xs:element name="ExclusiveArc" minOccurs="0">
+							<xs:complexType>
+								<xs:attributeGroup ref="SurrogateIdentifierRef"/>
+							</xs:complexType>
+						</xs:element>
+					</xs:sequence>-->
+				</xs:extension>
+			</xs:complexContent>
+		</xs:complexType>
+	</xs:element>
+
+	<xs:element name="ExclusiveArc">
+		<xs:annotation>
+			<xs:documentation>Exclusive arc over roles.</xs:documentation>
+		</xs:annotation>
+		<xs:complexType>
+			<xs:sequence>
+				<xs:element name="Roles" minOccurs="1" maxOccurs="1">
+					<xs:annotation>
+						<xs:documentation>The roles under this exclusive arc</xs:documentation>
+					</xs:annotation>
+					<xs:complexType>
+						<xs:sequence minOccurs="1" maxOccurs="1">
+							<xs:element name="Role" minOccurs="2" maxOccurs="unbounded">
+								<xs:annotation>
+									<xs:documentation>A reference to a role.</xs:documentation>
+								</xs:annotation>
+								<xs:complexType>
+									<xs:attributeGroup ref="SurrogateIdentifierRef"/>
+								</xs:complexType>
+							</xs:element>
+						</xs:sequence>
+					</xs:complexType>
+				</xs:element>
+			</xs:sequence>
+			<xs:attributeGroup ref="SurrogateIdentifier"/>
+			<xs:attribute name="IsMandatory" default="false" type="xs:boolean">
+				<xs:annotation>
+					<xs:documentation>Is one of the roles under exclusive arc required?</xs:documentation>
+				</xs:annotation>
+			</xs:attribute>
+			<xs:attribute name="IsPrimaryIdComponent" default="false" type="xs:boolean">
+				<xs:annotation>
+					<xs:documentation>Is one of the roles under exclusive arc a part of primary identifier for an entity type?</xs:documentation>
+				</xs:annotation>
+			</xs:attribute>
+			<xs:attribute name="Number" type="xs:int" >
+				<xs:annotation>
+					<xs:documentation>The Number of the exclusive arc.</xs:documentation>
+				</xs:annotation>
+			</xs:attribute>
+		</xs:complexType>
+	</xs:element>
+
+
+</xs:schema>

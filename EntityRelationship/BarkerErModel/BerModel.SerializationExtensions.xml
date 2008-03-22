@@ -1,0 +1,156 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<se:CustomSerializedElements
+	xmlns:se="http://schemas.neumont.edu/ORM/SDK/SerializationExtensions"
+	xmlns:plx="http://schemas.neumont.edu/CodeGeneration/PLiX">
+	<se:Copyright name="Common Public License Copyright Notice">
+		<se:CopyrightLine>/**************************************************************************\</se:CopyrightLine>
+		<se:CopyrightLine>* Neumont Object-Role Modeling Architect for Visual Studio                 *</se:CopyrightLine>
+		<se:CopyrightLine>*                                                                          *</se:CopyrightLine>
+		<se:CopyrightLine>* Copyright © Neumont University. All rights reserved.                     *</se:CopyrightLine>
+		<se:CopyrightLine>*                                                                          *</se:CopyrightLine>
+		<se:CopyrightLine>* The use and distribution terms for this software are covered by the      *</se:CopyrightLine>
+		<se:CopyrightLine>* Common Public License 1.0 (http://opensource.org/licenses/cpl) which     *</se:CopyrightLine>
+		<se:CopyrightLine>* can be found in the file CPL.txt at the root of this distribution.       *</se:CopyrightLine>
+		<se:CopyrightLine>* By using this software in any fashion, you are agreeing to be bound by   *</se:CopyrightLine>
+		<se:CopyrightLine>* the terms of this license.                                               *</se:CopyrightLine>
+		<se:CopyrightLine>*                                                                          *</se:CopyrightLine>
+		<se:CopyrightLine>* You must not remove this notice, or any other, from this software.       *</se:CopyrightLine>
+		<se:CopyrightLine>\**************************************************************************/</se:CopyrightLine>
+	</se:Copyright>
+	<se:DomainModel Class="BarkerDomainModel">
+		<se:Namespaces>
+			<se:Namespace Prefix="rbe" URI="http://schemas.neumont.edu/ORM/EntityRelationship/2008-03/Barker" SchemaFile="BarkerERModel.xsd" DefaultPrefix="true"/>
+		</se:Namespaces>
+		<se:RootElements>
+			<se:RootElement Class="BarkerErModel"/>
+		</se:RootElements>
+	</se:DomainModel>
+	<se:Element Class="BarkerErModel">
+		<se:Attribute ID="Name">
+			<se:Condition WriteStyle="NotWritten">
+				<plx:callStatic name="IsNullOrEmpty" dataTypeName=".string">
+					<plx:passParam>
+						<plx:callThis name="Name" type="property"/>
+					</plx:passParam>
+				</plx:callStatic>
+			</se:Condition>
+		</se:Attribute>
+		<se:Container Name="EntityTypes">
+			<se:Embed RelationshipName="BarkerErModelContainsEntityType" RoleName="EntityType"/>
+		</se:Container>
+		<se:Container Name="BinaryAssociations">
+			<se:Embed RelationshipName="BarkerErModelContainsBinaryAssociation" RoleName="BinaryAssociation"/>
+		</se:Container>
+		<se:Container Name="Constraints">
+			<se:Embed RelationshipName="BarkerErModelContainsExclusiveArc" RoleName="ExclusiveArc"/>
+		</se:Container>
+	</se:Element>
+	<se:Element Class="EntityType" SortChildElements="false">
+		<se:Container Name="Attributes">
+			<se:Embed RelationshipName="EntityTypeHasAttribute" RoleName="Attribute"/>
+		</se:Container>
+		<se:Container Name="Roles">
+			<se:Link RelationshipName="EntityTypePlaysRole" RoleName="Role"/>
+		</se:Container>
+		<se:Link Name="Role" RelationshipName="EntityTypePlaysRole" RoleName="Role"/>
+		<se:Container Name="Subtypes">
+			<se:Link RelationshipName="EntityTypeIsSubtypeOfEntityType" RoleName="Subtype"/>
+		</se:Container>
+		<se:Link Name="EntityType" RelationshipName="EntityTypeIsSubtypeOfEntityType" RoleName="Subtype"/>
+		<se:Link RelationshipName="EntityTypeIsSubtypeOfEntityType" RoleName="Supertype" WriteStyle="NotWritten"/>
+	</se:Element>
+	<se:Element Class="Attribute">
+		<se:Attribute ID="IsMandatory">
+			<se:Condition WriteStyle="NotWritten">
+				<plx:unaryOperator type="booleanNot">
+					<plx:callThis name="IsMandatory" type="property"/>
+				</plx:unaryOperator>
+			</se:Condition>
+		</se:Attribute>
+		<se:Attribute ID="IsPrimaryIdComponent">
+			<se:Condition WriteStyle="NotWritten">
+				<plx:unaryOperator type="booleanNot">
+					<plx:callThis name="IsPrimaryIdComponent" type="property"/>
+				</plx:unaryOperator>
+			</se:Condition>
+		</se:Attribute>
+		<!--
+		<se:Link RelationshipName="AttributeIsBasedOnDomain" RoleName="Domain" Name="Domain"/>
+		-->
+		<se:Container Name="PossibleValues">
+			<se:Embed RelationshipName="AttributeHasPossibleValue" RoleName="Value"/>
+		</se:Container>
+	</se:Element>
+	<se:Element Class="Value">
+		<!--
+		<se:Container Name="Domains">
+			<se:Embed RelationshipName="DomainHasPossibleValue" RoleName="Domain"/>
+		</se:Container>
+		-->
+	</se:Element>
+	<se:Element Class="Role">
+		<se:Attribute ID="IsNonTransferable">
+			<se:Condition WriteStyle="NotWritten">
+				<plx:unaryOperator type="booleanNot">
+					<plx:callThis name="IsNonTransferable" type="property"/>
+				</plx:unaryOperator>
+			</se:Condition>
+		</se:Attribute>
+		<se:Attribute ID="IsMandatory">
+			<se:Condition WriteStyle="NotWritten">
+				<plx:unaryOperator type="booleanNot">
+					<plx:callThis name="IsMandatory" type="property"/>
+				</plx:unaryOperator>
+			</se:Condition>
+		</se:Attribute>
+		<se:Attribute ID="IsPrimaryIdComponent">
+			<se:Condition WriteStyle="NotWritten">
+				<plx:unaryOperator type="booleanNot">
+					<plx:callThis name="IsPrimaryIdComponent" type="property"/>
+				</plx:unaryOperator>
+			</se:Condition>
+		</se:Attribute>
+		<se:Attribute ID="IsMultiValued">
+			<se:Condition WriteStyle="NotWritten">
+				<plx:unaryOperator type="booleanNot">
+					<plx:callThis name="IsMultiValued" type="property"/>
+				</plx:unaryOperator>
+			</se:Condition>
+		</se:Attribute>
+		<se:Container Name="Modifier">
+			<se:Embed RelationshipName="RoleHasCardinalityQualifier" RoleName="CardinalityQualifier"/>
+		</se:Container>
+		<se:Link RelationshipName="BinaryAssociationContainsRole" RoleName="BinaryAssociation" WriteStyle="NotWritten"/>
+		<se:Link RelationshipName="EntityTypePlaysRole" RoleName="EntityType" WriteStyle="NotWritten"/>
+		<se:Link RelationshipName="ExclusiveArcSpansOptionalRole" RoleName="ExclusiveArc" WriteStyle="NotWritten"/>
+	</se:Element>
+	<se:Element Class="CardinalityQualifier">
+	</se:Element>
+	<se:Element Class="ExclusiveArc">
+		<se:Attribute ID="IsMandatory">
+			<se:Condition WriteStyle="NotWritten">
+				<plx:unaryOperator type="booleanNot">
+					<plx:callThis name="IsMandatory" type="property"/>
+				</plx:unaryOperator>
+			</se:Condition>
+		</se:Attribute>
+		<se:Attribute ID="IsPrimaryIdComponent">
+			<se:Condition WriteStyle="NotWritten">
+				<plx:unaryOperator type="booleanNot">
+					<plx:callThis name="IsPrimaryIdComponent" type="property"/>
+				</plx:unaryOperator>
+			</se:Condition>
+		</se:Attribute>
+		<se:Container Name="Roles">
+			<se:Link RelationshipName="ExclusiveArcSpansOptionalRole" RoleName="ConstrainedRole"/>
+		</se:Container>
+		<se:Link Name="Role" RelationshipName="ExclusiveArcSpansOptionalRole" RoleName="ConstrainedRole"/>
+	</se:Element>
+	<se:Element Class="BinaryAssociation">
+		<se:Container Name="Roles">
+			<se:Embed RelationshipName="BinaryAssociationContainsRole" RoleName="Role"/>
+		</se:Container>
+	</se:Element>
+	<se:Element Class="OptionalRole" Override="true">
+	</se:Element>
+</se:CustomSerializedElements>
