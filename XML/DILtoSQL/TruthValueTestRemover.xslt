@@ -30,15 +30,10 @@
 		</xsl:copy>
 	</xsl:template>
 
-	<xsl:template match="dep:is | dep:isNot" mode="TruthValueTestRemover">
+	<xsl:template match="dep:is" mode="TruthValueTestRemover">
 		<xsl:choose>
 			<xsl:when test="@truthValue = 'UNKNOWN'">
 				<dep:nullPredicate type="NULL">
-					<xsl:if test="self::dep:isNot">
-						<xsl:attribute name="type">
-							<xsl:value-of select="'NOT NULL'"/>
-						</xsl:attribute>
-					</xsl:if>
 					<xsl:apply-templates mode="TruthValueTestRemover"/>
 				</dep:nullPredicate>
 			</xsl:when>
@@ -49,15 +44,33 @@
 							<xsl:apply-templates mode="TruthValueTestRemover"/>
 						</dep:nullPredicate>
 						<dep:comparisonPredicate operator="equals">
-							<xsl:if test="self::dep:isNot">
-								<xsl:attribute name="operator">
-									<xsl:value-of select="'notEquals'"/>
-								</xsl:attribute>
-							</xsl:if>
 							<xsl:apply-templates mode="TruthValueTestRemover"/>
 							<ddt:booleanLiteral value="{@truthValue}"/>
 						</dep:comparisonPredicate>
 					</dep:and>
+				</dep:parenthesizedValueExpression>
+			</xsl:otherwise>
+		</xsl:choose>
+	</xsl:template>
+
+	<xsl:template match="dep:isNot" mode="TruthValueTestRemover">
+		<xsl:choose>
+			<xsl:when test="@truthValue = 'UNKNOWN'">
+				<dep:nullPredicate type="NOT NULL">
+					<xsl:apply-templates mode="TruthValueTestRemover"/>
+				</dep:nullPredicate>
+			</xsl:when>
+			<xsl:otherwise>
+				<dep:parenthesizedValueExpression>
+					<dep:or>
+						<dep:nullPredicate type="NULL">
+							<xsl:apply-templates mode="TruthValueTestRemover"/>
+						</dep:nullPredicate>
+						<dep:comparisonPredicate operator="notEquals">
+							<xsl:apply-templates mode="TruthValueTestRemover"/>
+							<ddt:booleanLiteral value="{@truthValue}"/>
+						</dep:comparisonPredicate>
+					</dep:or>
 				</dep:parenthesizedValueExpression>
 			</xsl:otherwise>
 		</xsl:choose>

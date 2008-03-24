@@ -21,7 +21,7 @@
 					<dcterms:requires rdf:resource="http://schemas.orm.net/DIL/DILDT"/>
 					<dcterms:requires rdf:resource="http://schemas.orm.net/DIL/DILEP"/>
 					<dc:title>Database Intermediate Language Management Statements</dc:title>
-					<dcterms:abstract>Encompasses SQL Standard Foundation "16 - Transaction Management", "17 - Connection Management", and "18 - Session Management"</dcterms:abstract>
+					<dcterms:abstract>Encompasses SQL Standard Foundation "16 - Transaction management", "17 - Connection management", and "18 - Session management"</dcterms:abstract>
 					<dc:creator>Kevin M. Owen</dc:creator>
 					<dc:creator>Corey Kaylor</dc:creator>
 					<dc:contributor>Korvyn Dornseif</dc:contributor>
