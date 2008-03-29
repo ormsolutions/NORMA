@@ -229,7 +229,6 @@
 						<xsl:value-of select="'Max'"/>
 					</xsl:otherwise>
 				</xsl:choose>
-				<xsl:value-of select="$predefinedDataType/@length"/>
 				<xsl:text>)</xsl:text>
 			</xsl:when>
 			<xsl:when test="$predefinedDataTypeName = 'BINARY LARGE OBJECT'">
@@ -433,7 +432,7 @@
 				<xsl:choose>
 					<xsl:when test="string($predefinedDataTypeName/@percision)">
 						<xsl:choose>
-							<xsl:when test="$predefinedDataTypeName/@percision &lt= 24">
+							<xsl:when test="$predefinedDataTypeName/@percision &lt;= 24">
 								<xsl:value-of select="'Single'"/>
 							</xsl:when>
 							<xsl:otherwise>

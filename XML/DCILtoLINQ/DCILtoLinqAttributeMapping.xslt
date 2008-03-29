@@ -3,13 +3,16 @@
 	version="1.0"
 	xmlns:xsl="http://www.w3.org/1999/XSL/Transform"
 	xmlns:plx="http://schemas.neumont.edu/CodeGeneration/PLiX"
+	xmlns:dep="http://schemas.orm.net/DIL/DILEP"
+	xmlns:dcl="http://schemas.orm.net/DIL/DCIL"
+	xmlns:ddt="http://schemas.orm.net/DIL/DILDT"
 	xmlns:orm="http://schemas.neumont.edu/ORM/2006-04/ORMCore"
 	xmlns:oial="http://schemas.neumont.edu/ORM/Abstraction/2007-06/Core"
 	xmlns:odt="http://schemas.neumont.edu/ORM/Abstraction/2007-06/DataTypes/Core"
 	xmlns:ormRoot="http://schemas.neumont.edu/ORM/2006-04/ORMRoot"
 	xmlns:ormtooial="http://schemas.neumont.edu/ORM/Bridge/2007-06/ORMToORMAbstraction"
 	xmlns:exsl="http://exslt.org/common"
-	extension-element-prefixes="exsl"
+	extension-element-prefixes="exsl dcl orm oial dep odt ormRoot ormtooial ddt"
 	>
 	<xsl:output indent="yes"/>
 	<xsl:param name="GenerateCodeAnalysisAttributes" select="true()"/>
@@ -23,11 +26,13 @@
 	<xsl:variable name="GenerateLinqAttributes" select="true()"/>
 	<xsl:variable name="CollectionSuffix" select="'Collection'"/>
 	<xsl:variable name="TableSuffix" select="'Table'"/>
+	<xsl:param name="UseXmlMapping" select="false()"/>
+	<xsl:param name="UseAttributeMapping" select="true()"/>
+	<xsl:variable name="DcilSchemaName" select="/dcl:schema/@name"/>
 
 
 	<xsl:template match="/">
 		<plx:root>
-			<!--Create the Namespaces Needed-->
 			<plx:namespaceImport name="System"/>
 			<plx:namespaceImport name="System.Collections.Generic"/>
 			<plx:namespaceImport name="System.ComponentModel"/>
@@ -41,12 +46,11 @@
 				<plx:namespaceImport name="System.ServiceModel"/>
 			</xsl:if>
 			<plx:namespaceImport name="System.Threading"/>
-			<!--Create the DatabaseContext and the ServiceContract-->
-			<xsl:apply-templates select="ormRoot:ORM2/oial:model" mode="GenerateNamespace"/>
+			<xsl:apply-templates select="dcl:schema" mode="GenerateNamespace"/>
 		</plx:root>
 	</xsl:template>
 
-	<xsl:template match="oial:model" mode="GenerateNamespace">
+	<xsl:template match="dcl:schema" mode="GenerateNamespace">
 		<xsl:variable name="modelName" select="@name"/>
 		<xsl:variable name="fullyQualifiedNamespace" select="$DefaultNamespace"/>
 		<plx:namespace name="{$fullyQualifiedNamespace}">
@@ -55,35 +59,56 @@
 					<xsl:with-param name="modelName" select="$modelName"/>
 				</xsl:apply-templates>
 			</xsl:if>
-			<!-- Generate Database Context-->
 			<xsl:apply-templates select="." mode="GenerateDatabaseContext">
 				<xsl:with-param name="modelName" select="$modelName"/>
 				<xsl:with-param name="fullyQualifiedNamespace" select="$fullyQualifiedNamespace"/>
 			</xsl:apply-templates>
 			<!--Generate Enumerations for any ValueConstraints that qualify. -->
-			<xsl:apply-templates select="/ormRoot:ORM2/orm:ORMModel/orm:Objects/orm:ValueType[orm:ValueRestriction/orm:ValueConstraint/orm:ValueRanges[count(orm:ValueRange) = count(orm:ValueRange[@MinValue=@MaxValue])]]" mode="GenerateEnumerations"/>
-			<!-- Generate Business Entities for Database Context-->
-			<xsl:apply-templates select="oial:conceptTypes/oial:conceptType" mode="GenerateBusinessEntities">
-
+			<xsl:apply-templates select="dcl:domain[dcl:predefinedDataType/@name = 'CHARACTER VARYING' or dcl:predefinedDataType/@name = 'CHARACTER' or dcl:predefinedDataType/@name = 'CHARACTER LARGE OBJECT' and count(dcl:checkConstraint) = 1 and count(dcl:checkConstraint/dep:inPredicate) = 1 and dcl:checkConstraint/dep:inPredicate/@type='IN']" mode="GenerateEnumerations"/>
+			<xsl:apply-templates select="dcl:table" mode="GenerateBusinessEntities">
 			</xsl:apply-templates>
-			<!--Create the DataContracts and the TableAttributes-->
 			<xsl:call-template name="GenerateGlobalSupportClasses"/>
 		</plx:namespace>
 	</xsl:template>
 
-	<xsl:template match="oial:model" mode="GenerateServiceContract">
+	<xsl:template match="dcl:schema" mode="GenerateServiceContract">
 		<xsl:param name="modelName" select="@name"/>
 		<xsl:if test="$GenerateServiceLayer">
 			<plx:interface visibility="public" name="I{$modelName}Service">
 				<plx:attribute dataTypeName="ServiceContractAttribute"/>
-				<!--<xsl:apply-templates select="oial:conceptTypes/oial:conceptType" mode="GenerateOperationContract"/>-->
+				<xsl:for-each select="dcl:table">
+					<plx:pragma type="region">
+						<xsl:attribute name="data">
+							<xsl:text>Create, Read, Update, and Delete Operations for </xsl:text>
+							<xsl:value-of select="@name"/>
+						</xsl:attribute>
+					</plx:pragma>
+					<plx:function name="Create{@name}">
+						<plx:attribute dataTypeName="OperationContract"/>
+					</plx:function>
+					<plx:function name="Read{@name}">
+						<plx:attribute dataTypeName="OperationContract"/>
+					</plx:function>
+					<plx:function name="Update{@name}">
+						<plx:attribute dataTypeName="OperationContract"/>
+					</plx:function>
+					<plx:function name="Delete{@name}">
+						<plx:attribute dataTypeName="OperationContract"/>
+					</plx:function>
+					<plx:pragma type="closeRegion">
+						<xsl:attribute name="data">
+							<xsl:text>CRUD Operation for</xsl:text>
+							<xsl:value-of select="@name"/>
+						</xsl:attribute>
+					</plx:pragma>
+				</xsl:for-each>
 			</plx:interface>
 		</xsl:if>
 	</xsl:template>
 
-	<xsl:template match="oial:conceptType" mode="GenerateBusinessEntities">
-		<xsl:variable name="conceptTypeName" select="@name"/>
-		<plx:class visibility="public" name="{$conceptTypeName}">
+	<xsl:template match="dcl:table" mode="GenerateBusinessEntities">
+		<xsl:variable name="tableName" select="@name"/>
+		<plx:class visibility="public" name="{$tableName}">
 			<plx:implementsInterface dataTypeName="INotifyPropertyChanging"/>
 			<plx:implementsInterface dataTypeName="INotifyPropertyChanged" />
 			<xsl:if test="$GenerateServiceLayer">
@@ -95,7 +120,7 @@
 							</plx:left>
 							<plx:right>
 								<!--TODO: Set this via a settings file.-->
-								<plx:string data="{$conceptTypeName}"/>
+								<plx:string data="{$tableName}"/>
 							</plx:right>
 						</plx:binaryOperator>
 					</plx:passParam>
@@ -110,7 +135,7 @@
 							</plx:left>
 							<plx:right>
 								<!--TODO: Set this via a settings file.-->
-								<plx:string data="{$conceptTypeName}"/>
+								<plx:string data="{$DcilSchemaName}.{$tableName}"/>
 							</plx:right>
 						</plx:binaryOperator>
 					</plx:passParam>
@@ -118,66 +143,82 @@
 			</xsl:if>
 			<xsl:variable name="containingConceptType" select="."/>
 			<plx:function name=".construct" visibility="public">
-				<xsl:for-each select="../oial:conceptType[oial:children/oial:relatedConceptType/@ref = current()/@id]">
+				<xsl:for-each select="../dcl:table[dcl:referenceConstraint/@targetTable = current()/@name]">
+					<xsl:variable name="entitySetTableName" select="@name"/>
 					<plx:assign>
 						<plx:left>
-							<plx:callThis accessor="this" type="field" name="{$PrivateMemberPrefix}{./@name}"/>
+							<plx:callThis accessor="this" type="field" name="{$PrivateMemberPrefix}{$entitySetTableName}"/>
 						</plx:left>
 						<plx:right>
 							<plx:callNew dataTypeName="EntitySet">
-								<plx:passTypeParam dataTypeName="{@name}"/>
+								<plx:passTypeParam dataTypeName="{$entitySetTableName}"/>
 								<plx:passParam>
 									<plx:callNew dataTypeName="Action">
-										<plx:passTypeParam dataTypeName="{@name}"/>
+										<plx:passTypeParam dataTypeName="{$entitySetTableName}"/>
 										<plx:passParam>
-											<plx:callThis accessor="this" name="On{@name}Added" type="fireCustomEvent"/>
+											<plx:callThis accessor="this" name="On{$entitySetTableName}Added" type="fireCustomEvent"/>
 										</plx:passParam>
 									</plx:callNew>
 								</plx:passParam>
 								<plx:passParam>
 									<plx:callNew dataTypeName="Action">
-										<plx:passTypeParam dataTypeName="{@name}"/>
+										<plx:passTypeParam dataTypeName="{$entitySetTableName}"/>
 										<plx:passParam>
-											<plx:callThis accessor="this" type="fireCustomEvent" name="On{@name}Removed"/>
+											<plx:callThis accessor="this" type="fireCustomEvent" name="On{$entitySetTableName}Removed"/>
 										</plx:passParam>
 									</plx:callNew>
 								</plx:passParam>
 							</plx:callNew>
 						</plx:right>
 					</plx:assign>
-					<!--this._Persons = new EntitySet<Person> (new Action<Person>(this.attach_Persons), new Action<Person>(this.detach_Persons));-->
-					
 				</xsl:for-each>
 			</plx:function>
-			<plx:pragma type="region" data="Databinding Information for INotifyPropertyChanging and INotifyPropertyChanged"/>
+			<plx:pragma type="region" data="Event Binding Information for INotifyPropertyChanging and INotifyPropertyChanged"/>
 			<xsl:call-template name="GenerateINotifyPropertyChangingImplementation"/>
 			<xsl:call-template name="GenerateINotifyPropertyChangedImplementation"/>
 			<plx:pragma type="closeRegion" data="Databinding Information for INotifyPropertyChanging and INotifyPropertyChanged"/>
-			<xsl:apply-templates select="oial:children/child::*" mode="GenerateEntityMembers"/>
-			<xsl:for-each select="../oial:conceptType[oial:children/oial:relatedConceptType/@ref = current()/@id]">
+			<xsl:apply-templates select="child::*" mode="GenerateEntityMembers"/>
+			<xsl:for-each select="../dcl:table[dcl:referenceConstraint/@targetTable = current()/@name]">
 				<xsl:apply-templates select="." mode="GenerateEntitySetMembers">
 					<xsl:with-param name="containingConceptType" select="$containingConceptType"/>
 				</xsl:apply-templates>
 			</xsl:for-each>
+			<xsl:if test="$GenerateServiceLayer">
+				<plx:function visibility="private" name="On{@name}Serializing">
+					<plx:attribute dataTypeName="OnSerializing"
+				</plx:function>
+				<!--[OnDeserializing()]
+				[System.ComponentModel.EditorBrowsableAttribute(EditorBrowsableState.Never)]
+				public void OnDeserializing(StreamingContext context)
+				{
+				this.Initialize();
+				}
+
+				[OnSerializing()]
+				[System.ComponentModel.EditorBrowsableAttribute(EditorBrowsableState.Never)]
+				public void OnSerializing(StreamingContext context)
+				{
+				this.serializing = true;
+				}
+
+				[OnSerialized()]
+				[System.ComponentModel.EditorBrowsableAttribute(EditorBrowsableState.Never)]
+				public void OnSerialized(StreamingContext context)
+				{
+				this.serializing = false;
+				}-->
+			</xsl:if>
 		</plx:class>
 	</xsl:template>
 
-	<xsl:template match="oial:conceptType" mode="GenerateEntitySetMembers">
+	<xsl:template match="dcl:table" mode="GenerateEntitySetMembers">
 		<xsl:param name="containingConceptType"/>
 		<xsl:variable name="preferredIdentifierInformationTypesFragment">
 			<xsl:apply-templates select="$containingConceptType" mode="GetInformationTypesForPreferredIdentifier"/>
 		</xsl:variable>
-		<!--<xsl:for-each select="exsl:node-set($preferredIdentifierInformationTypesFragment)/child::*">
-			<xsl:apply-templates select="." mode="GenerateEntityMembers">
-				<xsl:with-param name="informationTypeName" select="@name"/>
-			</xsl:apply-templates>
-		</xsl:for-each>-->
 		<xsl:variable name="conceptTypeName" select="@name"/>
-		<!--TODO: Use @oppositeName instead of @name -->
 		<xsl:variable name="oppositeRoleName" select="@name"/>
-		<!--TODO: Update this field to include the @name instead of the oppositeName when the serialization engine is fixed.-->
 		<xsl:variable name="privateMemberName" select="concat($PrivateMemberPrefix,$conceptTypeName)"/>
-		<!-- TODO: determine the correct datatype -->
 		<plx:field visibility="private" static="true" readOnly="true" dataTypeName="PropertyChangingEventArgs" name="{$conceptTypeName}PropertyChangingEventArgs">
 			<plx:initialize>
 				<plx:callNew dataTypeName="PropertyChangingEventArgs">
@@ -196,7 +237,6 @@
 				</plx:callNew>
 			</plx:initialize>
 		</plx:field>
-
 		<plx:field visibility="private" dataTypeName="EntitySet" name="{$privateMemberName}">
 			<plx:passTypeParam dataTypeName="{$conceptTypeName}"/>
 		</plx:field>
@@ -236,8 +276,9 @@
 							</plx:left>
 							<plx:right>
 								<plx:string>
-									<xsl:for-each select="exsl:node-set($preferredIdentifierInformationTypesFragment)/child::*">
-										<xsl:value-of select="@name"/>
+									<!--TODO: Set this via a settings file.-->
+									<xsl:for-each select="$containingConceptType/dcl:uniquenessConstraint[@isPrimary = 'true' or @isPrimary = 1]/dcl:columnRef">
+										<xsl:value-of select="concat(translate(substring(@name, 1, 1), 'abcdefghijklmnopqrstuvwxyz', 'ABCDEFGHIJKLMNOPQRSTUVWXYZ'), substring(@name, 2))"/>
 										<xsl:if test="position() != last()">
 											<xsl:text>,</xsl:text>
 										</xsl:if>
@@ -246,8 +287,6 @@
 							</plx:right>
 						</plx:binaryOperator>
 					</plx:passParam>
-					<!--TODO: When NORMA provides information as to how the identites are being genrated, set the IsDbGenerated Attribute Property-->
-					<!--TODO: When we can inferr what kind of datatypes the database will be using for these columns, generate the DbType Attribute Property.-->
 				</plx:attribute>
 			</xsl:if>
 			<plx:returns dataTypeName="EntitySet">
@@ -321,14 +360,13 @@
 		</plx:function>
 	</xsl:template>
 
-	<xsl:template match="oial:informationType" mode="GenerateEntityMembers">
+	<xsl:template match="dcl:column" mode="GenerateEntityMembers">
 		<xsl:variable name="informationTypeName" select="@name"/>
-		<!-- TODO: determine the correct datatype -->
 		<plx:field visibility="private" static="true" readOnly="true" dataTypeName="PropertyChangingEventArgs" name="{$informationTypeName}PropertyChangingEventArgs">
 			<plx:initialize>
 				<plx:callNew dataTypeName="PropertyChangingEventArgs">
 					<plx:passParam>
-						<plx:string data="{$informationTypeName}"/>
+						<plx:string data="{concat(translate(substring($informationTypeName, 1, 1), 'abcdefghijklmnopqrstuvwxyz', 'ABCDEFGHIJKLMNOPQRSTUVWXYZ'), substring($informationTypeName, 2))}"/>
 					</plx:passParam>
 				</plx:callNew>
 			</plx:initialize>
@@ -337,71 +375,89 @@
 			<plx:initialize>
 				<plx:callNew dataTypeName="PropertyChangedEventArgs">
 					<plx:passParam>
-						<plx:string data="{$informationTypeName}"/>
+						<plx:string data="{concat(translate(substring($informationTypeName, 1, 1), 'abcdefghijklmnopqrstuvwxyz', 'ABCDEFGHIJKLMNOPQRSTUVWXYZ'), substring($informationTypeName, 2))}"/>
 					</plx:passParam>
 				</plx:callNew>
 			</plx:initialize>
 		</plx:field>
 		<plx:field visibility="private" name="{$PrivateMemberPrefix}{$informationTypeName}">
 			<xsl:choose>
-				<xsl:when test="/ormRoot:ORM2/orm:ORMModel/orm:Objects/orm:ValueType[orm:ValueRestriction/orm:ValueConstraint/orm:ValueRanges[count(orm:ValueRange) = count(orm:ValueRange[@MinValue=@MaxValue])]][@id = /ormRoot:ORM2/ormtooial:Bridge/ormtooial:InformationTypeFormatIsForValueType[@InformationTypeFormat = current()/@ref]/@ValueType]">
+				<xsl:when test="(@isNullable = 'true' or @isNullable = 1) and not(dcl:predefinedDataType/@name = 'CHARACTER VARYING') and not(dcl:predefinedDataType/@name = 'CHARACTER') and not(dcl:predefinedDataType/@name = 'CHARACTER LARGE OBJECT')">
 					<xsl:attribute name="dataTypeName">
-						<xsl:value-of select="$informationTypeName"/>
+						<xsl:value-of select="'Nullable'"/>
 					</xsl:attribute>
+					<plx:passTypeParam>
+						<xsl:choose>
+							<xsl:when test="dcl:domainRef[@name = /dcl:schema/dcl:domain[dcl:predefinedDataType/@name = 'CHARACTER VARYING' or dcl:predefinedDataType/@name = 'CHARACTER' or dcl:predefinedDataType/@name = 'CHARACTER LARGE OBJECT' and count(dcl:checkConstraint) = 1 and count(dcl:checkConstraint/dep:inPredicate) = 1 and dcl:checkConstraint/dep:inPredicate/@type='IN']/@name]">
+								<xsl:attribute name="dataTypeName">
+									<xsl:value-of select="dcl:domainRef/@name"/>
+								</xsl:attribute>
+							</xsl:when>
+							<xsl:otherwise>
+								<xsl:attribute name="dataTypeName">
+									<xsl:call-template name="GetDotNetTypeFromDcilPredefinedDataType">
+										<xsl:with-param name="predefinedDataType" select="dcl:predefinedDataType"/>
+										<xsl:with-param name="column" select="."/>
+									</xsl:call-template>
+								</xsl:attribute>
+							</xsl:otherwise>
+						</xsl:choose>
+					</plx:passTypeParam>
 				</xsl:when>
 				<xsl:otherwise>
-					<xsl:attribute name="dataTypeName">
-						<xsl:value-of select="'.object'"/>
-					</xsl:attribute>
-					<!--TODO: Set Nullible Type for plx:field-->
-					<!--<xsl:choose>
-						<xsl:when test="@isMandatory">
+					<xsl:choose>
+						<xsl:when test="dcl:domainRef[@name = /dcl:schema/dcl:domain[dcl:predefinedDataType/@name = 'CHARACTER VARYING' or dcl:predefinedDataType/@name = 'CHARACTER' or dcl:predefinedDataType/@name = 'CHARACTER LARGE OBJECT' and count(dcl:checkConstraint) = 1 and count(dcl:checkConstraint/dep:inPredicate) = 1 and dcl:checkConstraint/dep:inPredicate/@type='IN']/@name]">
 							<xsl:attribute name="dataTypeName">
-
+								<xsl:value-of select="dcl:domainRef/@name"/>
 							</xsl:attribute>
 						</xsl:when>
 						<xsl:otherwise>
 							<xsl:attribute name="dataTypeName">
-								<xsl:value-of select="'.object'"/>
+								<xsl:call-template name="GetDotNetTypeFromDcilPredefinedDataType">
+									<xsl:with-param name="predefinedDataType" select="dcl:predefinedDataType"/>
+									<xsl:with-param name="column" select="."/>
+								</xsl:call-template>
 							</xsl:attribute>
 						</xsl:otherwise>
-					</xsl:choose>-->
+					</xsl:choose>
 				</xsl:otherwise>
 			</xsl:choose>
 		</plx:field>
-		<plx:property visibility="public" name="{$informationTypeName}">
+		<plx:property visibility="public" name="{concat(translate(substring($informationTypeName, 1, 1), 'abcdefghijklmnopqrstuvwxyz', 'ABCDEFGHIJKLMNOPQRSTUVWXYZ'), substring($informationTypeName, 2))}">
 			<xsl:if test="$GenerateServiceLayer">
-				<plx:attribute dataTypeName="DataMember">
-					<plx:passParam>
-						<plx:binaryOperator type="assignNamed">
-							<plx:left>
-								<plx:nameRef name="Name"/>
-							</plx:left>
-							<plx:right>
-								<!--TODO: Set this via a settings file.-->
-								<plx:string data="{$informationTypeName}"/>
-							</plx:right>
-						</plx:binaryOperator>
-					</plx:passParam>
-					<plx:passParam>
-						<plx:binaryOperator type="assignNamed">
-							<plx:left>
-								<plx:nameRef name="IsRequired"/>
-							</plx:left>
-							<plx:right>
-								<!--TODO: Set this via a settings file.-->
-								<xsl:choose>
-									<xsl:when test="@isMandatory">
-										<plx:trueKeyword/>
-									</xsl:when>
-									<xsl:otherwise>
-										<plx:falseKeyword/>
-									</xsl:otherwise>
-								</xsl:choose>
-							</plx:right>
-						</plx:binaryOperator>
-					</plx:passParam>
-				</plx:attribute>
+				<xsl:if test="not(../dcl:referenceConstraint/dcl:columnRef/@sourceName = current()/@name)">
+					<plx:attribute dataTypeName="DataMember">
+						<plx:passParam>
+							<plx:binaryOperator type="assignNamed">
+								<plx:left>
+									<plx:nameRef name="Name"/>
+								</plx:left>
+								<plx:right>
+									<!--TODO: Set this via a settings file.-->
+									<plx:string data="{$informationTypeName}"/>
+								</plx:right>
+							</plx:binaryOperator>
+						</plx:passParam>
+						<plx:passParam>
+							<plx:binaryOperator type="assignNamed">
+								<plx:left>
+									<plx:nameRef name="IsRequired"/>
+								</plx:left>
+								<plx:right>
+									<!--TODO: Set this via a settings file.-->
+									<xsl:choose>
+										<xsl:when test="@isNullable = 'false' or @isNullable = 0">
+											<plx:trueKeyword/>
+										</xsl:when>
+										<xsl:otherwise>
+											<plx:falseKeyword/>
+										</xsl:otherwise>
+									</xsl:choose>
+								</plx:right>
+							</plx:binaryOperator>
+						</plx:passParam>
+					</plx:attribute>
+				</xsl:if>
 			</xsl:if>
 			<xsl:if test="$GenerateLinqAttributes">
 				<plx:attribute dataTypeName="Column">
@@ -424,7 +480,7 @@
 							<plx:right>
 								<!--TODO: Set this via a settings file.-->
 								<xsl:choose>
-									<xsl:when test="@isMandatory">
+									<xsl:when test="@isNullable = 'false' or @isNullable = 0">
 										<plx:falseKeyword/>
 									</xsl:when>
 									<xsl:otherwise>
@@ -434,7 +490,7 @@
 							</plx:right>
 						</plx:binaryOperator>
 					</plx:passParam>
-					<xsl:if test="../../oial:uniquenessConstraints/oial:uniquenessConstraint[@isPreferred=true()]/child::*[@ref = current()/@id]">
+					<xsl:if test="../dcl:uniquenessConstraint[@isPrimary='true' or @IsPrimary = 1]/dcl:columnRef[@name = current()/@name]">
 						<plx:passParam>
 							<plx:binaryOperator type="assignNamed">
 								<plx:left>
@@ -447,53 +503,93 @@
 							</plx:binaryOperator>
 						</plx:passParam>
 					</xsl:if>
-					<!--TODO: When NORMA provides information as to how the identites are being genrated-->
-					<!--<xsl:if test="">
-								<plx:passParam>
-									<plx:binaryOperator type="assignNamed">
-										<plx:left>
-											<plx:nameRef name="IsDbGenerated"/>
-										</plx:left>
-										<plx:right>
-											-->
-					<!--TODO: Set this via a settings file.-->
-					<!--
-											<plx:trueKeyword/>
-										</plx:right>
-									</plx:binaryOperator>
-								</plx:passParam>
-							</xsl:if>-->
-					<!--TODO: When we can inferr what kind of datatypes the database will be using for these columns.-->
-					<!--<xsl:if test="">
-								<plx:passParam>
-									<plx:binaryOperator type="assignNamed">
-										<plx:left>
-											<plx:nameRef name="DbType"/>
-										</plx:left>
-										<plx:right>
-											-->
-					<!--TODO: Set this via a settings file.-->
-					<!--
-								<plx:string data="{$PrivateMemberPrefix}{$informationTypeName}"/>
-										</plx:right>
-									</plx:binaryOperator>
-								</plx:passParam>
-							</xsl:if>-->
+					<xsl:if test="@isIdentity = 'true' or @isIdentity = 1">
+						<plx:passParam>
+							<plx:binaryOperator type="assignNamed">
+								<plx:left>
+									<plx:nameRef name="IsDbGenerated"/>
+								</plx:left>
+								<plx:right>
+									<!--TODO: Set this via a settings file.-->
+									<plx:trueKeyword/>
+								</plx:right>
+							</plx:binaryOperator>
+						</plx:passParam>
+					</xsl:if>
+					<plx:passParam>
+						<plx:binaryOperator type="assignNamed">
+							<plx:left>
+								<plx:nameRef name="DbType"/>
+							</plx:left>
+							<plx:right>
+								<!--TODO: Set this via a settings file.-->
+								<plx:string>
+									<xsl:attribute name="data">
+										<xsl:choose>
+											<xsl:when test="dcl:predefinedDataType">
+												<xsl:call-template name="GetDbTypeFromDcilPredefinedDataType">
+													<xsl:with-param name="predefinedDataType" select="dcl:predefinedDataType"/>
+													<xsl:with-param name="column" select="."/>
+												</xsl:call-template>
+											</xsl:when>
+											<xsl:when test="dcl:domainRef">
+												<xsl:variable name="domainPredefinedDataType" select="/dcl:schema/dcl:domain[@name = current()/dcl:domainRef/@name]/dcl:predefinedDataType"/>
+												<xsl:call-template name="GetDbTypeFromDcilPredefinedDataType">
+													<xsl:with-param name="predefinedDataType" select="$domainPredefinedDataType"/>
+													<xsl:with-param name="column" select="."/>
+												</xsl:call-template>
+											</xsl:when>
+											<xsl:otherwise>
+												<xsl:message terminate="yes">SANITY CHECK: A Column should always havea predefinedDataType or a domainRef.</xsl:message>
+											</xsl:otherwise>
+										</xsl:choose>
+									</xsl:attribute>
+								</plx:string>
+							</plx:right>
+						</plx:binaryOperator>
+					</plx:passParam>
 				</plx:attribute>
 			</xsl:if>
-			<!-- TODO: Pass in correct datatype -->
 			<plx:returns>
 				<xsl:choose>
-					<xsl:when test="/ormRoot:ORM2/orm:ORMModel/orm:Objects/orm:ValueType[orm:ValueRestriction/orm:ValueConstraint/orm:ValueRanges[count(orm:ValueRange) = count(orm:ValueRange[@MinValue=@MaxValue])]][@id = /ormRoot:ORM2/ormtooial:Bridge/ormtooial:InformationTypeFormatIsForValueType[@InformationTypeFormat = current()/@ref]/@ValueType]">
+					<xsl:when test="(@isNullable = 'true' or @isNullable = 1) and not(dcl:predefinedDataType/@name = 'CHARACTER VARYING') and not(dcl:predefinedDataType/@name = 'CHARACTER') and not(dcl:predefinedDataType/@name = 'CHARACTER LARGE OBJECT')">
 						<xsl:attribute name="dataTypeName">
-							<xsl:value-of select="$informationTypeName"/>
+							<xsl:value-of select="'Nullable'"/>
 						</xsl:attribute>
+						<plx:passTypeParam>
+							<xsl:choose>
+								<xsl:when test="dcl:domainRef[@name = /dcl:schema/dcl:domain[dcl:predefinedDataType/@name = 'CHARACTER VARYING' or dcl:predefinedDataType/@name = 'CHARACTER' or dcl:predefinedDataType/@name = 'CHARACTER LARGE OBJECT' and count(dcl:checkConstraint) = 1 and count(dcl:checkConstraint/dep:inPredicate) = 1 and dcl:checkConstraint/dep:inPredicate/@type='IN']/@name]">
+									<xsl:attribute name="dataTypeName">
+										<xsl:value-of select="dcl:domainRef/@name"/>
+									</xsl:attribute>
+								</xsl:when>
+								<xsl:otherwise>
+									<xsl:attribute name="dataTypeName">
+										<xsl:call-template name="GetDotNetTypeFromDcilPredefinedDataType">
+											<xsl:with-param name="predefinedDataType" select="dcl:predefinedDataType"/>
+											<xsl:with-param name="column" select="."/>
+										</xsl:call-template>
+									</xsl:attribute>
+								</xsl:otherwise>
+							</xsl:choose>
+						</plx:passTypeParam>
 					</xsl:when>
 					<xsl:otherwise>
-						<!--TODO: Set Nullible Type for plx:field-->
-						<xsl:attribute name="dataTypeName">
-							<xsl:value-of select="'.object'"/>
-						</xsl:attribute>
+						<xsl:choose>
+							<xsl:when test="dcl:domainRef[@name = /dcl:schema/dcl:domain[dcl:predefinedDataType/@name = 'CHARACTER VARYING' or dcl:predefinedDataType/@name = 'CHARACTER' or dcl:predefinedDataType/@name = 'CHARACTER LARGE OBJECT' and count(dcl:checkConstraint) = 1 and count(dcl:checkConstraint/dep:inPredicate) = 1 and dcl:checkConstraint/dep:inPredicate/@type='IN']/@name]">
+								<xsl:attribute name="dataTypeName">
+									<xsl:value-of select="dcl:domainRef/@name"/>
+								</xsl:attribute>
+							</xsl:when>
+							<xsl:otherwise>
+								<xsl:attribute name="dataTypeName">
+									<xsl:call-template name="GetDotNetTypeFromDcilPredefinedDataType">
+										<xsl:with-param name="predefinedDataType" select="dcl:predefinedDataType"/>
+										<xsl:with-param name="column" select="."/>
+									</xsl:call-template>
+								</xsl:attribute>
+							</xsl:otherwise>
+						</xsl:choose>
 					</xsl:otherwise>
 				</xsl:choose>
 			</plx:returns>
@@ -503,7 +599,7 @@
 				</plx:return>
 			</plx:get>
 			<plx:set>
-				<xsl:if test="@isMandatory">
+				<!--<xsl:if test="@isMandatory">
 					<plx:branch>
 						<plx:condition>
 							<plx:binaryOperator type="identityEquality">
@@ -519,7 +615,7 @@
 							<plx:callNew dataTypeName="ArgumentNullException"/>
 						</plx:throw>
 					</plx:branch>
-				</xsl:if>
+				</xsl:if>-->
 				<plx:branch>
 					<plx:condition>
 						<plx:binaryOperator type="identityInequality">
@@ -554,79 +650,9 @@
 		</plx:property>
 	</xsl:template>
 
-	<!--TODO: Figure out how to call this.-->
-	<xsl:template name="ValidateMandatoryParameter">
-		<xsl:param name="paramToValidate"/>
-		<plx:branch>
-			<plx:condition>
-				<plx:binaryOperator type="identityEquality">
-					<plx:left>
-						<xsl:value-of select="$paramToValidate"/>
-					</plx:left>
-					<plx:right>
-						<plx:nullKeyword/>
-					</plx:right>
-				</plx:binaryOperator>
-			</plx:condition>
-			<plx:throw>
-				<plx:callNew dataTypeName="ArgumentNullException"/>
-			</plx:throw>
-		</plx:branch>
-	</xsl:template>
-
-	<xsl:template match="oial:conceptType" mode="GetInformationTypesForPreferredIdentifier">
-		<!-- First see if we have a uniquenessConstraint that is preferred. -->
-		<xsl:variable name="conceptType" select="."/>
-		<xsl:variable name="preferredUniquenessConstraint" select="oial:uniquenessConstraints/oial:uniquenessConstraint[@isPreferred = 'true' or @isPreferred = 1]"/>
-		<xsl:variable name="preferredAssimilatedConceptType" select="oial:children/oial:assimilatedConceptType[@isPreferredForParent = 'true' or @isPreferredForParent = 1]"/>
-		<xsl:variable name="preferredAssimilationsOfThisConceptType" select="parent::oial:conceptTypes/oial:conceptType/oial:children/oial:assimilatedConceptType[@ref = current()/@id and (@isPreferredForTarget = 'true' or @isPreferredForTarget = 1)]"/>
-		<xsl:choose>
-			<xsl:when test="$preferredUniquenessConstraint">
-				<xsl:for-each select="$preferredUniquenessConstraint/oial:uniquenessChild">
-					<!-- Find the right child for each member of the uniqueness constraint here rather than in for-each so that the order of the uniqueness constraint is preserved. -->
-					<xsl:apply-templates select="$conceptType/oial:children/oial:*[@id = current()/@ref]" mode="GetInformationTypesForPreferredIdentifier"/>
-				</xsl:for-each>
-			</xsl:when>
-			<xsl:when test="$preferredAssimilatedConceptType">
-				<xsl:apply-templates select="parent::oial:conceptTypes/oial:conceptType[@id = $preferredAssimilatedConceptType/@ref]" mode="GetInformationTypesForPreferredIdentifier"/>
-			</xsl:when>
-			<xsl:when test="$preferredAssimilationsOfThisConceptType">
-				<xsl:apply-templates select="$preferredAssimilationsOfThisConceptType[1]/parent::oial:conceptType" mode="GetInformationTypesForPreferredIdentifier"/>
-			</xsl:when>
-			<xsl:otherwise>
-				<xsl:message terminate="yes">
-					<xsl:text>SANITY CHECK: Concept type '</xsl:text>
-					<xsl:value-of select="@name"/>
-					<xsl:text>' (id '</xsl:text>
-					<xsl:value-of select="@id"/>
-					<xsl:text>') does not have any preferred identifier.</xsl:text>
-				</xsl:message>
-			</xsl:otherwise>
-		</xsl:choose>
-	</xsl:template>
-
-	<xsl:template match="oial:informationType" mode="GetInformationTypesForPreferredIdentifier">
-		<xsl:copy-of select="."/>
-	</xsl:template>
-
-	<xsl:template match="oial:relatedConceptType | oial:assimilatedConceptType" mode="GetInformationTypesForPreferredIdentifier">
-		<xsl:apply-templates select="parent::oial:children/parent::oial:conceptType/parent::oial:conceptTypes/oial:conceptType[@id = current()/@ref]" mode="GetInformationTypesForPreferredIdentifier"/>
-	</xsl:template>
-
-	<xsl:template match="oial:relatedConceptType" mode="GenerateEntityMembers">
-		<xsl:variable name="preferredIdentifierInformationTypesFragment">
-			<xsl:apply-templates select="." mode="GetInformationTypesForPreferredIdentifier"/>
-		</xsl:variable>
-		<xsl:for-each select="exsl:node-set($preferredIdentifierInformationTypesFragment)/child::*">
-			<xsl:apply-templates select="." mode="GenerateEntityMembers">
-				<xsl:with-param name="informationTypeName" select="@name"/>
-			</xsl:apply-templates>
-		</xsl:for-each>
-
-		<!--TODO: Update this field to include the @name instead of the oppositeName when the serialization engine is fixed.-->
-		<xsl:variable name="conceptTypeName" select="@oppositeName"/>
+	<xsl:template match="dcl:referenceConstraint" mode="GenerateEntityMembers">
+		<xsl:variable name="conceptTypeName" select="@targetTable"/>
 		<xsl:variable name="privateMemberName" select="concat($PrivateMemberPrefix,$conceptTypeName)"/>
-		<!-- TODO: determine the correct datatype -->
 		<plx:field visibility="private" static="true" readOnly="true" dataTypeName="PropertyChangingEventArgs" name="{$conceptTypeName}PropertyChangingEventArgs">
 			<plx:initialize>
 				<plx:callNew dataTypeName="PropertyChangingEventArgs">
@@ -645,7 +671,6 @@
 				</plx:callNew>
 			</plx:initialize>
 		</plx:field>
-
 		<plx:field visibility="private" dataTypeName="EntityRef" name="{$privateMemberName}">
 			<plx:passTypeParam dataTypeName="{$conceptTypeName}"/>
 		</plx:field>
@@ -671,11 +696,11 @@
 							<plx:right>
 								<!--TODO: Set this via a settings file.-->
 								<xsl:choose>
-									<xsl:when test="@isMandatory">
-										<plx:trueKeyword/>
+									<xsl:when test="@isNullable = 'true' or @isNullable = 1">
+										<plx:falseKeyword/>
 									</xsl:when>
 									<xsl:otherwise>
-										<plx:falseKeyword/>
+										<plx:trueKeyword/>
 									</xsl:otherwise>
 								</xsl:choose>
 							</plx:right>
@@ -685,6 +710,7 @@
 			</xsl:if>
 			<xsl:if test="$GenerateLinqAttributes">
 				<plx:attribute dataTypeName="Association">
+					<!-- TODO: Determin what we should do with: DeleteOnNull, DeleteRule, IsUnique, TypeId, Name -->
 					<plx:passParam>
 						<plx:binaryOperator type="assignNamed">
 							<plx:left>
@@ -707,19 +733,6 @@
 							</plx:right>
 						</plx:binaryOperator>
 					</plx:passParam>
-					<xsl:if test="../../oial:uniquenessConstraints/oial:uniquenessConstraint[@isPreferred=true()]/child::*[@ref = current()/@id]">
-						<plx:passParam>
-							<plx:binaryOperator type="assignNamed">
-								<plx:left>
-									<plx:nameRef name="IsPrimaryKey"/>
-								</plx:left>
-								<plx:right>
-									<!--TODO: Set this via a settings file.-->
-									<plx:trueKeyword/>
-								</plx:right>
-							</plx:binaryOperator>
-						</plx:passParam>
-					</xsl:if>
 					<plx:passParam>
 						<plx:binaryOperator type="assignNamed">
 							<plx:left>
@@ -727,8 +740,8 @@
 							</plx:left>
 							<plx:right>
 								<plx:string>
-									<xsl:for-each select="exsl:node-set($preferredIdentifierInformationTypesFragment)/child::*">
-										<xsl:value-of select="@name"/>
+									<xsl:for-each select="dcl:columnRef">
+										<xsl:value-of select="concat(translate(substring(@sourceName, 1, 1), 'abcdefghijklmnopqrstuvwxyz', 'ABCDEFGHIJKLMNOPQRSTUVWXYZ'), substring(@sourceName, 2))"/>
 										<xsl:if test="position() != last()">
 											<xsl:text>,</xsl:text>
 										</xsl:if>
@@ -737,8 +750,6 @@
 							</plx:right>
 						</plx:binaryOperator>
 					</plx:passParam>
-					<!--TODO: When NORMA provides information as to how the identites are being genrated, set the IsDbGenerated Attribute Property-->
-					<!--TODO: When we can inferr what kind of datatypes the database will be using for these columns, generate the DbType Attribute Property.-->
 				</plx:attribute>
 			</xsl:if>
 			<plx:returns dataTypeName="{$conceptTypeName}"/>
@@ -752,7 +763,7 @@
 				</plx:return>
 			</plx:get>
 			<plx:set>
-				<xsl:if test="@isMandatory">
+				<!--<xsl:if test="@isNullable = 'false' or @isNullable = 0">
 					<plx:branch>
 						<plx:condition>
 							<plx:binaryOperator type="identityEquality">
@@ -768,7 +779,7 @@
 							<plx:callNew dataTypeName="ArgumentNullException"/>
 						</plx:throw>
 					</plx:branch>
-				</xsl:if>
+				</xsl:if>-->
 				<plx:local name="previousValue" dataTypeName="{$conceptTypeName}">
 					<plx:initialize>
 						<plx:callInstance type="property" name="Entity">
@@ -832,8 +843,7 @@
 						</plx:assign>
 						<plx:callInstance type="methodCall" name="Remove">
 							<plx:callObject>
-								<!--TODO: Need to change @name to @oppositeName when serialization is fixed.-->
-								<plx:callInstance type="property" name="{@name}">
+								<plx:callInstance type="property" name="{../@name}">
 									<plx:callObject>
 										<plx:nameRef name="previousValue"/>
 									</plx:callObject>
@@ -869,8 +879,7 @@
 						</plx:condition>
 						<plx:callInstance type="methodCall" name="Add">
 							<plx:callObject>
-								<!--TODO: Change this reference to opposite name when serialization is fixed.-->
-								<plx:callInstance type="property" name="{@name}">
+								<plx:callInstance type="property" name="{../@name}">
 									<plx:callObject>
 										<plx:valueKeyword/>
 									</plx:callObject>
@@ -880,13 +889,13 @@
 								<plx:thisKeyword/>
 							</plx:passParam>
 						</plx:callInstance>
-						<xsl:for-each select="exsl:node-set($preferredIdentifierInformationTypesFragment)/child::*">
+						<xsl:for-each select="dcl:columnRef">
 							<plx:assign>
 								<plx:left>
-									<plx:callThis accessor="this" type="field" name="{@name}"/>
+									<plx:callThis accessor="this" type="field" name="{concat(translate(substring(@sourceName, 1, 1), 'abcdefghijklmnopqrstuvwxyz', 'ABCDEFGHIJKLMNOPQRSTUVWXYZ'), substring(@sourceName, 2))}"/>
 								</plx:left>
 								<plx:right>
-									<plx:callInstance type="field" name="{@name}">
+									<plx:callInstance type="field" name="{concat(translate(substring(@targetName, 1, 1), 'abcdefghijklmnopqrstuvwxyz', 'ABCDEFGHIJKLMNOPQRSTUVWXYZ'), substring(@targetName, 2))}">
 										<plx:callObject>
 											<plx:valueKeyword/>
 										</plx:callObject>
@@ -895,15 +904,19 @@
 							</plx:assign>
 						</xsl:for-each>
 					</plx:branch>
-
+					<plx:callThis accessor="this" name="OnPropertyChanged">
+						<plx:passParam>
+							<plx:callThis accessor="static" type="field" name="{$conceptTypeName}PropertyChangedEventArgs"/>
+						</plx:passParam>
+					</plx:callThis>
 				</plx:branch>
-
 			</plx:set>
 		</plx:property>
 	</xsl:template>
 
-	<xsl:template match="orm:ValueType" mode="GenerateEnumerations">
-		<plx:enum visibility="public" name="{@Name}">
+	<xsl:template match="dcl:domain" mode="GenerateEnumerations">
+		<xsl:param name="enumName" select="@name"/>
+		<plx:enum visibility="public" name="{$enumName}">
 			<plx:attribute dataTypeName="Serializable"/>
 			<xsl:if test="$GenerateServiceLayer">
 				<plx:attribute dataTypeName="DataContract">
@@ -914,15 +927,15 @@
 							</plx:left>
 							<plx:right>
 								<!--TODO: Set this via a settings file.-->
-								<plx:string data="{@Name}"/>
+								<plx:string data="{$enumName}"/>
 							</plx:right>
 						</plx:binaryOperator>
 					</plx:passParam>
 				</plx:attribute>
 			</xsl:if>
-			<xsl:for-each select="orm:ValueRestriction/orm:ValueConstraint/orm:ValueRanges/orm:ValueRange">
-				<xsl:variable name="valueConstratinMember"/>
-				<plx:enumItem name="{@MinValue}">
+			<xsl:for-each select="dcl:checkConstraint/dep:inPredicate/ddt:characterStringLiteral">
+				<xsl:variable name="enumItem" select="@value"/>
+				<plx:enumItem name="{$enumItem}">
 					<xsl:if test="$GenerateServiceLayer">
 						<plx:attribute dataTypeName="EnumMember">
 							<plx:passParam>
@@ -932,7 +945,7 @@
 									</plx:left>
 									<plx:right>
 										<!--TODO: Set this via a settings file.-->
-										<plx:string data="{@MinValue}"/>
+										<plx:string data="{$enumItem}"/>
 									</plx:right>
 								</plx:binaryOperator>
 							</plx:passParam>
@@ -943,7 +956,7 @@
 		</plx:enum>
 	</xsl:template>
 
-	<xsl:template match="oial:model" mode="GenerateDatabaseContext">
+	<xsl:template match="dcl:schema" mode="GenerateDatabaseContext">
 		<xsl:param name="modelName" select="@name"/>
 		<xsl:param name="fullyQualifiedNamespace"/>
 		<plx:class visibility="public" name="{$modelName}">
@@ -951,10 +964,19 @@
 			<xsl:if test="$GenerateServiceLayer">
 				<plx:implementsInterface dataTypeName="I{$modelName}Service"/>
 			</xsl:if>
-			<!--private static System.Data.Linq.Mapping.MappingSource mappingSource = new AttributeMappingSource();-->
 			<plx:field visibility="private" static="true" name="mappingSource" dataTypeName="MappingSource">
 				<plx:initialize>
-					<plx:callNew dataTypeName="AttributeMappingSource"/>
+					<xsl:choose>
+						<xsl:when test="$UseAttributeMapping">
+							<plx:callNew dataTypeName="AttributeMappingSource"/>
+						</xsl:when>
+						<xsl:when test="$UseXmlMapping">
+							<plx:callNew dataTypeName="XmlMappingSource"/>
+						</xsl:when>
+						<xsl:otherwise>
+							<xsl:message terminate="yes">Must specify the type of MappingSource being used.</xsl:message>
+						</xsl:otherwise>
+					</xsl:choose>
 				</plx:initialize>
 			</plx:field>
 			<plx:function name=".construct" visibility="public">
@@ -1007,22 +1029,21 @@
 					</plx:callThis>
 				</plx:initialize>
 			</plx:function>
-			<!--Create property accessors for all tables.-->
-			<xsl:apply-templates select="oial:conceptTypes/oial:conceptType" mode="CreateDatabaseContextTableAccessorProperties"/>
+			<xsl:apply-templates select="dcl:table" mode="CreateDatabaseContextTableAccessorProperties"/>
 			<!--Create procedure calls for all procedures.-->
 		</plx:class>
 	</xsl:template>
 
-	<xsl:template match="oial:conceptType" mode="CreateDatabaseContextTableAccessorProperties">
-		<plx:property name="{@name}{$TableSuffix}" visibility="public">
+	<xsl:template match="dcl:table" mode="CreateDatabaseContextTableAccessorProperties">
+		<xsl:variable name="tableName" select="@name"/>
+		<plx:property name="{$tableName}{$TableSuffix}" visibility="public">
 			<plx:returns dataTypeName="Table">
-				<plx:passTypeParam dataTypeName="{@name}"/>
+				<plx:passTypeParam dataTypeName="{$tableName}"/>
 			</plx:returns>
 			<plx:get>
-				<!--return this.GetTable<{@name}>();-->
 				<plx:return>
 					<plx:callThis accessor="this" name="GetTable">
-						<plx:passMemberTypeParam dataTypeName="{@name}"/>
+						<plx:passMemberTypeParam dataTypeName="{$tableName}"/>
 					</plx:callThis>
 				</plx:return>
 			</plx:get>
@@ -1753,7 +1774,265 @@
 		</plx:class>
 	</xsl:template>
 
-	<xsl:template name="GenerateToString">
+	<xsl:template name="GetDbTypeFromDcilPredefinedDataType">
+		<xsl:param name="predefinedDataType"/>
+		<xsl:param name="column"/>
+		<xsl:variable name="predefinedDataTypeName" select="$predefinedDataType/@name"/>
+		<xsl:choose>
+			<xsl:when test="$predefinedDataTypeName = 'CHARACTER'">
+				<xsl:value-of select="'NChar'"/>
+				<xsl:text>(</xsl:text>
+				<xsl:choose>
+					<xsl:when test="string($predefinedDataType/@length)">
+						<xsl:value-of select="$predefinedDataType/@length"/>
+					</xsl:when>
+					<xsl:otherwise>
+						<xsl:value-of select="4000"/>
+					</xsl:otherwise>
+				</xsl:choose>
+				<xsl:text>)</xsl:text>
+			</xsl:when>
+			<xsl:when test="$predefinedDataTypeName = 'CHARACTER VARYING'">
+				<xsl:value-of select="'NVarChar'"/>
+				<xsl:text>(</xsl:text>
+				<xsl:choose>
+					<xsl:when test="string($predefinedDataType/@length)">
+						<xsl:value-of select="$predefinedDataType/@length"/>
+					</xsl:when>
+					<xsl:otherwise>
+						<xsl:value-of select="'Max'"/>
+					</xsl:otherwise>
+				</xsl:choose>
+				<xsl:text>)</xsl:text>
+			</xsl:when>
+			<xsl:when test="$predefinedDataTypeName = 'CHARACTER LARGE OBJECT'">
+				<xsl:value-of select="'NVarChar'"/>
+				<xsl:text>(</xsl:text>
+				<xsl:choose>
+					<xsl:when test="string($predefinedDataType/@length)">
+						<xsl:value-of select="$predefinedDataType/@length"/>
+					</xsl:when>
+					<xsl:otherwise>
+						<xsl:value-of select="'Max'"/>
+					</xsl:otherwise>
+				</xsl:choose>
+				<xsl:value-of select="$predefinedDataType/@length"/>
+				<xsl:text>)</xsl:text>
+			</xsl:when>
+			<xsl:when test="$predefinedDataTypeName = 'BINARY LARGE OBJECT'">
+				<xsl:value-of select="'VarBinary'"/>
+				<xsl:text>(</xsl:text>
+				<xsl:value-of select="$predefinedDataType/@length"/>
+				<xsl:text>)</xsl:text>
+			</xsl:when>
+			<xsl:when test="$predefinedDataTypeName = 'BINARY VARYING'">
+				<xsl:value-of select="'VarBinary'"/>
+				<xsl:if test="string($predefinedDataTypeName/@length)">
+					<xsl:text>(</xsl:text>
+					<xsl:value-of select="$predefinedDataType/@length"/>
+					<xsl:text>)</xsl:text>
+				</xsl:if>
+			</xsl:when>
+			<xsl:when test="$predefinedDataTypeName = 'BINARY'">
+				<xsl:value-of select="'Binary'"/>
+			</xsl:when>
+			<xsl:when test="$predefinedDataTypeName = 'NUMERIC'">
+				<xsl:value-of select="'Numeric'"/>
+				<xsl:if test="$predefinedDataType/@precision">
+					<xsl:text>(</xsl:text>
+					<xsl:value-of select="$predefinedDataType/@precision"/>
+					<xsl:if test="$predefinedDataType/@scale">
+						<xsl:text>, </xsl:text>
+						<xsl:value-of select="$predefinedDataType/@scale"/>
+					</xsl:if>
+					<xsl:text>)</xsl:text>
+				</xsl:if>
+			</xsl:when>
+			<xsl:when test="$predefinedDataTypeName = 'DECIMAL'">
+				<xsl:value-of select="'Decimal'"/>
+				<xsl:if test="$predefinedDataType/@precision">
+					<xsl:text>(</xsl:text>
+					<xsl:value-of select="$predefinedDataType/@precision"/>
+					<xsl:if test="$predefinedDataType/@scale">
+						<xsl:text>, </xsl:text>
+						<xsl:value-of select="$predefinedDataType/@scale"/>
+					</xsl:if>
+					<xsl:text>)</xsl:text>
+				</xsl:if>
+			</xsl:when>
+			<xsl:when test="$predefinedDataTypeName = 'SMALLINT'">
+				<xsl:value-of select="'SmallInt'"/>
+			</xsl:when>
+			<xsl:when test="$predefinedDataTypeName = 'TINYINT'">
+				<xsl:value-of select="'TinyInt'"/>
+			</xsl:when>
+			<xsl:when test="$predefinedDataTypeName = 'INTEGER'">
+				<xsl:value-of select="'Int'"/>
+			</xsl:when>
+			<xsl:when test="$predefinedDataTypeName = 'BIGINT'">
+				<xsl:value-of select="'BigInt'"/>
+			</xsl:when>
+			<xsl:when test="$predefinedDataTypeName = 'FLOAT'">
+				<xsl:value-of select="'Float'"/>
+				<xsl:if test="string($predefinedDataType/@precision)">
+					<xsl:text>(</xsl:text>
+					<xsl:value-of select="$predefinedDataType/@precision"/>
+					<xsl:text>)</xsl:text>
+				</xsl:if>
+			</xsl:when>
+			<xsl:when test="$predefinedDataTypeName = 'REAL'">
+				<xsl:value-of select="'Real'"/>
+			</xsl:when>
+			<xsl:when test="$predefinedDataTypeName = 'DOUBLE PRECISION'">
+				<xsl:value-of select="'Float(53)'"/>
+			</xsl:when>
+			<xsl:when test="$predefinedDataTypeName = 'BOOLEAN'">
+				<xsl:value-of select="'Bit'"/>
+			</xsl:when>
+			<xsl:when test="$predefinedDataTypeName = 'DATE'">
+				<xsl:value-of select="'DateTime'"/>
+			</xsl:when>
+			<xsl:when test="$predefinedDataTypeName = 'TIME'">
+				<xsl:value-of select="'DateTime'"/>
+			</xsl:when>
+			<xsl:when test="$predefinedDataTypeName = 'TIMESTAMP'">
+				<xsl:value-of select="'DateTime'"/>
+				<!--
+				This one is wierd in the default mapping in SQL Server where they use a different meaning for Timestamp.
+				[Column(Storage="_Region_code", AutoSync=AutoSync.Always, DbType="rowversion", IsDbGenerated=true, IsVersion=true, UpdateCheck=UpdateCheck.Never)]
+				public System.Data.Linq.Binary Region_code
+				-->
+			</xsl:when>
+			<xsl:when test="$predefinedDataTypeName = 'INTERVAL'">
+				<xsl:value-of select="''"/>
+			</xsl:when>
+			<!--
+			<xsl:when test="$predefinedDataTypeName = 'DAY'">
+			</xsl:when>
+			<xsl:when test="$predefinedDataTypeName = 'DAY TO HOUR'">
+			</xsl:when>
+			<xsl:when test="$predefinedDataTypeName = 'DAY TO MINUTE'">
+			</xsl:when>
+			<xsl:when test="$predefinedDataTypeName = 'DAY TO SECOND'">
+			</xsl:when>
+			<xsl:when test="$predefinedDataTypeName = 'HOUR'">
+			</xsl:when>
+			<xsl:when test="$predefinedDataTypeName = 'HOUR TO MINUTE'">
+			</xsl:when>
+			<xsl:when test="$predefinedDataTypeName = 'HOUR TO SECOND'">
+			</xsl:when>
+			<xsl:when test="$predefinedDataTypeName = 'SECOND'">
+			</xsl:when>
+			<xsl:when test="$predefinedDataTypeName = 'YEAR'">
+			</xsl:when>
+			<xsl:when test="$predefinedDataTypeName = 'YEAR TO MONTH'">
+			</xsl:when>
+			<xsl:when test="$predefinedDataTypeName = 'MONTH'">
+			</xsl:when>
+			<xsl:when test="$predefinedDataTypeName = 'TIMEZONE_HOUR'">
+			</xsl:when>
+			<xsl:when test="$predefinedDataTypeName = 'TIMEZONE_MINUTE'">
+			</xsl:when>
+			-->
+		</xsl:choose>
+		<xsl:if test="$column/@isNullable = 'false' or $column/@isNullable = 0">
+			<xsl:text> NOT NULL</xsl:text>
+			<xsl:if test="$predefinedDataTypeName = 'BIGINT' or $predefinedDataTypeName = 'INTEGER'">
+				<xsl:if test="$column/@isIdentity = 'true' or $column/@isIdentity = 1">
+					<xsl:text> IDENTITY</xsl:text>
+				</xsl:if>
+			</xsl:if>
+		</xsl:if>
+	</xsl:template>
+
+	<xsl:template name="GetDotNetTypeFromDcilPredefinedDataType">
+		<xsl:param name="predefinedDataType"/>
+		<xsl:param name="column"/>
+		<xsl:variable name="predefinedDataTypeName" select="$predefinedDataType/@name"/>
+		<xsl:choose>
+			<xsl:when test="$predefinedDataTypeName = 'CHARACTER'">
+				<xsl:value-of select="'String'"/>
+			</xsl:when>
+			<xsl:when test="$predefinedDataTypeName = 'CHARACTER VARYING'">
+				<xsl:value-of select="'String'"/>
+			</xsl:when>
+			<xsl:when test="$predefinedDataTypeName = 'CHARACTER LARGE OBJECT'">
+				<xsl:value-of select="'String'"/>
+			</xsl:when>
+			<xsl:when test="$predefinedDataTypeName = 'BINARY'">
+				<xsl:value-of select="'Byte[]'"/>
+			</xsl:when>
+			<xsl:when test="$predefinedDataTypeName = 'BINARY VARYING'">
+				<xsl:value-of select="'Byte[]'"/>
+			</xsl:when>
+			<xsl:when test="$predefinedDataTypeName = 'BINARY LARGE OBJECT'">
+				<xsl:value-of select="'Byte[]'"/>
+			</xsl:when>
+			<xsl:when test="$predefinedDataTypeName = 'NUMERIC'">
+				<xsl:value-of select="'Decimal'"/>
+			</xsl:when>
+			<xsl:when test="$predefinedDataTypeName = 'DECIMAL'">
+				<xsl:value-of select="'Decimal'"/>
+			</xsl:when>
+			<xsl:when test="$predefinedDataTypeName = 'TINYINT'">
+				<xsl:value-of select="'Byte'"/>
+			</xsl:when>
+			<xsl:when test="$predefinedDataTypeName = 'SMALLINT'">
+				<xsl:value-of select="'Int16'"/>
+			</xsl:when>
+			<xsl:when test="$predefinedDataTypeName = 'INTEGER'">
+				<xsl:value-of select="'Int32'"/>
+			</xsl:when>
+			<xsl:when test="$predefinedDataTypeName = 'BIGINT'">
+				<xsl:value-of select="'Int64'"/>
+			</xsl:when>
+			<xsl:when test="$predefinedDataTypeName = 'FLOAT'">
+				<xsl:choose>
+					<xsl:when test="string($predefinedDataTypeName/@percision)">
+						<xsl:choose>
+							<xsl:when test="$predefinedDataTypeName/@percision &lt;= 24">
+								<xsl:value-of select="'Single'"/>
+							</xsl:when>
+							<xsl:otherwise>
+								<xsl:value-of select="'Double'"/>
+							</xsl:otherwise>
+						</xsl:choose>
+					</xsl:when>
+					<xsl:otherwise>
+						<xsl:value-of select="'Double'"/>
+					</xsl:otherwise>
+				</xsl:choose>
+			</xsl:when>
+			<xsl:when test="$predefinedDataTypeName = 'REAL'">
+				<xsl:value-of select="'Single'"/>
+			</xsl:when>
+			<xsl:when test="$predefinedDataTypeName = 'DOUBLE PRECISION'">
+				<xsl:value-of select="'Double'"/>
+			</xsl:when>
+			<xsl:when test="$predefinedDataTypeName = 'BOOLEAN'">
+				<xsl:value-of select="'Boolean'"/>
+			</xsl:when>
+			<xsl:when test="$predefinedDataTypeName = 'DATE'">
+				<xsl:value-of select="'DateTime'"/>
+			</xsl:when>
+			<xsl:when test="$predefinedDataTypeName = 'TIME'">
+				<xsl:value-of select="'DateTime'"/>
+			</xsl:when>
+			<xsl:when test="$predefinedDataTypeName = 'TIMESTAMP'">
+				<xsl:value-of select="'DateTime'"/>
+				<!--
+				This one is wierd.
+				[Column(Storage="_Region_code", AutoSync=AutoSync.Always, DbType="rowversion", IsDbGenerated=true, IsVersion=true, UpdateCheck=UpdateCheck.Never)]
+				public System.Data.Linq.Binary Region_code
+				-->
+			</xsl:when>
+			<xsl:when test="$predefinedDataTypeName = 'INTERVAL'">
+				<xsl:value-of select="'TimeSpan'"/>
+			</xsl:when>
+		</xsl:choose>
+	</xsl:template>
+	
+	<!--<xsl:template name="GenerateToString">
 		<xsl:param name="ClassName"/>
 		<xsl:param name="Properties"/>
 		<xsl:variable name="nonCollectionProperties" select="$Properties[not(@isCollection='true')]"/>
@@ -1818,4 +2097,9 @@
 			</plx:return>
 		</plx:function>
 	</xsl:template>
+
+	<xsl:template match="oial:conceptType" mode="GetInformationTypesForPreferredIdentifier">
+		-->
+	
+
 </xsl:stylesheet>
