@@ -69,6 +69,13 @@ namespace Neumont.Tools.ORM.ObjectModel
 			get;
 		}
 		/// <summary>
+		/// Get details on whether this is an implied constraint
+		/// </summary>
+		bool ConstraintIsImplied
+		{
+			get;
+		}
+		/// <summary>
 		/// Retrieve the model for the current constraint
 		/// </summary>
 		ORMModel Model
@@ -1178,6 +1185,23 @@ namespace Neumont.Tools.ORM.ObjectModel
 			get
 			{
 				return ConstraintIsInternal;
+			}
+		}
+		/// <summary>
+		/// Implements IConstraint.ConstraintIsImplied
+		/// </summary>
+		protected static bool ConstraintIsImplied
+		{
+			get
+			{
+				return false;
+			}
+		}
+		bool IConstraint.ConstraintIsImplied
+		{
+			get
+			{
+				return ConstraintIsImplied;
 			}
 		}
 		ConstraintType IConstraint.ConstraintType
@@ -2543,6 +2567,23 @@ namespace Neumont.Tools.ORM.ObjectModel
 			get
 			{
 				return ConstraintIsInternal;
+			}
+		}
+		/// <summary>
+		/// Implements IConstraint.ConstraintIsImplied
+		/// </summary>
+		protected static bool ConstraintIsImplied
+		{
+			get
+			{
+				return false;
+			}
+		}
+		bool IConstraint.ConstraintIsImplied
+		{
+			get
+			{
+				return ConstraintIsImplied;
 			}
 		}
 		ObjectType IConstraint.PreferredIdentifierFor
@@ -7980,6 +8021,23 @@ namespace Neumont.Tools.ORM.ObjectModel
 			get
 			{
 				return ConstraintIsInternal;
+			}
+		}
+		/// <summary>
+		/// Implements IConstraint.ConstraintIsImplied
+		/// </summary>
+		protected new bool ConstraintIsImplied
+		{
+			get
+			{
+				return IsImplied;
+			}
+		}
+		bool IConstraint.ConstraintIsImplied
+		{
+			get
+			{
+				return ConstraintIsImplied;
 			}
 		}
 		/// <summary>

@@ -903,6 +903,8 @@ namespace Neumont.Tools.ORM.ShapeModel
 			ORMModel model;
 			ModelElement constraintElement = (ModelElement)constraint;
 			if (!constraintElement.IsDeleted &&
+				!constraint.ConstraintIsInternal &&
+				!constraint.ConstraintIsImplied &&
 				null != (factType = ifc.FactType) &&
 				!factType.IsDeleted &&
 				null != (model = factType.Model))
