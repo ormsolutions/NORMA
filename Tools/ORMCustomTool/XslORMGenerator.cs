@@ -259,13 +259,14 @@ namespace Neumont.Tools.ORM.ORMCustomTool
 				return buildItem;
 			}
 
-			public void GenerateOutput(BuildItem buildItem, Stream outputStream, IDictionary<string, Stream> inputFormatStreams, string defaultNamespace)
+			public void GenerateOutput(BuildItem buildItem, Stream outputStream, IDictionary<string, Stream> inputFormatStreams, string defaultNamespace, IORMGeneratorItemProperties itemProperties)
 			{
 				this.EnsureTransform();
 				Stream inputStream = inputFormatStreams[this._sourceInputFormat];
 				
 				XsltArgumentList argumentList = new XsltArgumentList();
 				argumentList.AddParam("DefaultNamespace", string.Empty, defaultNamespace);
+				argumentList.AddExtensionObject("urn:ORMCustomTool:ItemProperties", itemProperties);
 
 				string[] referenceFormats = this._referenceInputFormats;
 				if (referenceFormats != null)

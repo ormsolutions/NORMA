@@ -7,14 +7,26 @@
 	xmlns:exsl="http://exslt.org/common"
 	xmlns:dep="http://schemas.orm.net/DIL/DILEP"
 	xmlns:opt="http://schemas.neumont.edu/ORM/2008-04/LinqToSql/Settings"
-	extension-element-prefixes="dcl exsl dep"
+	xmlns:oct="urn:ORMCustomTool:ItemProperties" 
+	exclude-result-prefixes="dcl dep opt"
+	extension-element-prefixes="exsl oct"
 	>
 	<xsl:output indent="yes" method="xml"/>
 
 	<xsl:param name="LinqToSqlSettings" select="document('LinqToSqlSettings.xml')/child::*"/>
-	<xsl:param name="ProjectName" select="'ProjectName'"/>
 	<xsl:variable name="DcilSchemaName" select="string(dcl:schema/@name)"/>
 	<xsl:variable name="DcilTables" select="dcl:schema/dcl:table"/>
+	<xsl:variable name="ProjectNameFragment">
+		<xsl:choose>
+			<xsl:when test="function-available('oct:GetProjectProperty')">
+				<xsl:value-of select="oct:GetProjectProperty('Title')"/>
+			</xsl:when>
+			<xsl:otherwise>
+				<xsl:text>ProjectName</xsl:text>
+			</xsl:otherwise>
+		</xsl:choose>
+	</xsl:variable>
+	<xsl:param name="ProjectName" select="string($ProjectNameFragment)"/>
 	<xsl:variable name="DataSource" select="$LinqToSqlSettings/opt:ConnectionString/@DataSource"/>
 	<xsl:variable name="DatabaseNameFragment">
 		<xsl:variable name="setting" select="string($LinqToSqlSettings/opt:ConnectionString/@DataBaseName)"/>

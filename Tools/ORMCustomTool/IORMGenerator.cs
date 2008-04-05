@@ -136,6 +136,7 @@ namespace Neumont.Tools.ORM.ORMCustomTool
 		/// <param name="outputStream">The <see cref="Stream"/> to which output is to be generated.</param>
 		/// <param name="inputFormatStreams">A read-only <see cref="IDictionary{String,Stream}"/> containing pairs of official output format names and read-only <see cref="Stream"/>s containing the output in that format.</param>
 		/// <param name="defaultNamespace">A <see cref="String"/> containing the default namespace that should be used in the generated output, as appropriate.</param>
+		/// <param name="itemProperties">An implementation of <see cref="IORMGeneratorItemProperties"/> to allow retrieval of additional properties</param>
 		/// <remarks>
 		/// <para><paramref name="inputFormatStreams"/> is only guarenteed to contain the output <see cref="Stream"/>s for
 		/// the formats "ORM", "OIAL", and any formats returned by this <see cref="IORMGenerator"/>'s implementation of
@@ -148,6 +149,34 @@ namespace Neumont.Tools.ORM.ORMCustomTool
 		/// ...
 		/// oialStream.Seek(0, SeekOrigin.Begin);</example></para>
 		/// </remarks>
-		void GenerateOutput(BuildItem buildItem, Stream outputStream, IDictionary<string, Stream> inputFormatStreams, string defaultNamespace);
+		void GenerateOutput(BuildItem buildItem, Stream outputStream, IDictionary<string, Stream> inputFormatStreams, string defaultNamespace, IORMGeneratorItemProperties itemProperties);
+	}
+	/// <summary>
+	/// An interface used for generators to retrieve additional properties about the orm item
+	/// being generated and its containing project.
+	/// </summary>
+	public interface IORMGeneratorItemProperties
+	{
+		/// <summary>
+		/// Retrieve a named property from the project item that is the
+		/// initial input to the generation process.
+		/// </summary>
+		/// <param name="propertyName">The name of a property</param>
+		/// <returns>Property value or empty string</returns>
+		string GetItemProperty(string propertyName);
+		/// <summary>
+		/// Retrieve a named property from the project item that is the
+		/// initial input to the generation process.
+		/// </summary>
+		/// <param name="propertyName">The name of a property</param>
+		/// <returns>Property value or empty string</returns>
+		string GetProjectProperty(string propertyName);
+		/// <summary>
+		/// Ensure that the containing project contains a reference to the specified assembly
+		/// </summary>
+		/// <param name="referencedNamespace">The root namespace for the assembly</param>
+		/// <param name="assemblyName">The assembly name</param>
+		/// <returns>True if the item is added or exists</returns>
+		bool EnsureProjectReference(string referencedNamespace, string assemblyName);
 	}
 }

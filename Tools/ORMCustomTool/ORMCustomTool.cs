@@ -439,6 +439,76 @@ namespace Neumont.Tools.ORM.ORMCustomTool
 			pcbOutput = (uint)bufferLength;
 			return VSConstants.S_OK;
 		}
+		private sealed class ItemPropertiesImpl : IORMGeneratorItemProperties
+		{
+			#region Member Variables and Constructor
+			private EnvDTE.Properties myProjectProperties;
+			private EnvDTE.Properties myProjectItemProperties;
+			private References myReferences;
+			public ItemPropertiesImpl(EnvDTE.Project project, EnvDTE.ProjectItem projectItem)
+			{
+				VSProject vsProj = project.Object as VSProject;
+				if (vsProj != null)
+				{
+					myReferences = vsProj.References;
+				}
+				myProjectProperties = project.Properties;
+				myProjectItemProperties = projectItem.Properties;
+			}
+			#endregion // Member Variables and Constructor
+			#region IORMGeneratorItemProperties Members
+			/// <summary>
+			/// Implements <see cref="IORMGeneratorItemProperties.GetItemProperty"/>
+			/// </summary>
+			public string GetItemProperty(string propertyName)
+			{
+				return GetProperty(myProjectItemProperties, propertyName);
+			}
+			/// <summary>
+			/// Implements <see cref="IORMGeneratorItemProperties.GetProjectProperty"/>
+			/// </summary>
+			public string GetProjectProperty(string propertyName)
+			{
+				return GetProperty(myProjectProperties, propertyName);
+			}
+			/// <summary>
+			/// Implements <see cref="IORMGeneratorItemProperties.EnsureProjectReference"/>
+			/// </summary>
+			public bool EnsureProjectReference(string referencedNamespace, string assemblyName)
+			{
+				References refs = myReferences;
+				if (refs != null)
+				{
+					if (refs.Item(referencedNamespace) == null)
+					{
+						refs.Add(assemblyName);
+					}
+					return true;
+				}
+				return false;
+			}
+			private static string GetProperty(EnvDTE.Properties properties, string propertyName)
+			{
+				string retVal = "";
+				try
+				{
+					EnvDTE.Property property = properties.Item(propertyName);
+					if (property != null)
+					{
+						object value = property.Value;
+						if (value != null)
+						{
+							retVal = value as string ?? value.ToString();
+						}
+					}
+				}
+				catch (ArgumentException)
+				{
+				}
+				return retVal;
+			}
+			#endregion // IORMGeneratorItemProperties Members
+		}
 		private void GenerateCode(string bstrInputFileContents, string wszDefaultNamespace, IVsGeneratorProgress pGenerateProgress, WriteReportItem report)
 		{
 			string message =
@@ -452,9 +522,10 @@ namespace Neumont.Tools.ORM.ORMCustomTool
 			string projectItemName = projectItem.Name;
 
 			// If we weren't passed a default namespace, pick one up from the project properties
+			EnvDTE.Project envProject = projectItem.ContainingProject;
 			if (String.IsNullOrEmpty(wszDefaultNamespace))
 			{
-				wszDefaultNamespace = projectItem.ContainingProject.Properties.Item("DefaultNamespace").Value as string;
+				wszDefaultNamespace = envProject.Properties.Item("DefaultNamespace").Value as string;
 			}
 
 			string projectItemExtension = Path.GetExtension(projectItemName);
@@ -467,7 +538,7 @@ namespace Neumont.Tools.ORM.ORMCustomTool
 			}
 
 			// This is actually the full project path for the next couple of lines, and then it is changed to the project directory.
-			string projectPath = projectItem.ContainingProject.FullName;
+			string projectPath = envProject.FullName;
 			Project project = Engine.GlobalEngine.GetLoadedProject(projectPath);
 			Debug.Assert(project != null);
 			pGenerateProgress.Progress(1, 20);
@@ -488,6 +559,7 @@ namespace Neumont.Tools.ORM.ORMCustomTool
 			}
 			else
 			{
+				IORMGeneratorItemProperties itemProperties = new ItemPropertiesImpl(envProject, projectItem);
 				List<BuildItem> ormBuildItems = new List<BuildItem>(ormBuildItemGroup.Count - 1);
 				foreach (BuildItem buildItem in ormBuildItemGroup)
 				{
@@ -610,7 +682,7 @@ namespace Neumont.Tools.ORM.ORMCustomTool
 										}
 										if (extensionsSatisfied)
 										{
-											ormGenerator.GenerateOutput(buildItem, outputStream, readonlyOutputFormatStreams, wszDefaultNamespace);
+											ormGenerator.GenerateOutput(buildItem, outputStream, readonlyOutputFormatStreams, wszDefaultNamespace, itemProperties);
 											readonlyOutputStream = new ReadOnlyStream(outputStream);
 										}
 									}
