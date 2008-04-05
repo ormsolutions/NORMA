@@ -115,6 +115,12 @@ CALL:_AddXslORMGenerator "NetTiersSettings" "NetTiers Settings" "Default setting
 CALL:_AddXslORMGenerator "SchemaExplorertoNetTiersEntities" "SchemaExplorer to NetTiers Entities" "Transforms SchemaExplorer to NetTiers Entity layer." ".NetTiersEntities.xml" "SchemaExplorer" "NetTiersEntities" "%ORMTransformsDir%\NetTiers\Entities.xslt" "NUPlixLoader" "1" "" "" "NetTiersSettings\0"
 CALL:_AddXslORMGenerator "SchemaExplorertoNetTiersDataAccessLayer" "SchemaExplorer to NetTiers DataAccessLayer" "Transforms SchemaExplorer to NetTiers DataAccessLayer." ".NetTiersDataAccessLayer.xml" "SchemaExplorer" "NetTiersDataAccessLayer" "%ORMTransformsDir%\NetTiers\EntityProvider.xslt" "NUPlixLoader" "" "" "" "NetTiersSettings\0" "NetTiersEntities\0"
 
+:: Install and register LinqToSql Transforms
+XCOPY /Y /D /V /Q "%XMLDir%\DCILtoLINQ\LinqToSqlSettings.xslt" "%ORMTransformsDir%\LinqToSql\"
+XCOPY /Y /D /V /Q "%XMLDir%\DCILtoLINQ\DCILtoDBML.xslt" "%ORMTransformsDir%\LinqtoSql\"
+CALL:_AddXslORMGenerator "DCILtoDBML" "DCIL to DBML" "Transforms DCIL to DBML." ".DBML" "DCIL" "DBML" "%ORMTransformsDir%\LinqToSql\DCILtoDBML.xslt" "MSLinqToSqlGenerator" "" "" "" "LinqToSqlSettings\0"
+CALL:_AddXslORMGenerator "LinqToSqlSettings" "LinqToSql Settings" "Default settings file for LinqToSql generators" ".LinqToSqlSettings.xml" "ORM" "LinqToSqlSettings" "%ORMTransformsDir%\LinqToSql\LinqToSqlSettings.xslt" "" "1" "1"
+
 :: Install and register PHP Transforms
 XCOPY /Y /D /V /Q "%XMLDir%\OIALtoPLiX\PHP\PHPDataLayer.xslt" "%ORMTransformsDir%\PHP\"
 XCOPY /Y /D /V /Q "%XMLDir%\OIALtoPLiX\PHP\PHPServices.xslt" "%ORMTransformsDir%\PHP\"

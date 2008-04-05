@@ -6,23 +6,80 @@
 	xmlns:dcl="http://schemas.orm.net/DIL/DCIL"
 	xmlns:exsl="http://exslt.org/common"
 	xmlns:dep="http://schemas.orm.net/DIL/DILEP"
+	xmlns:opt="http://schemas.neumont.edu/ORM/2008-04/LinqToSql/Settings"
 	extension-element-prefixes="dcl exsl dep"
 	>
 	<xsl:output indent="yes" method="xml"/>
 
-	<xsl:variable name="DcilSchemaName" select="/dcl:schema/@name"/>
-	<xsl:variable name="DcilTables" select="/dcl:schema/dcl:table"/>
-	<xsl:variable name="CollectionSuffix" select="'Set'"/>
-	<xsl:variable name="TableSuffix" select="'Table'"/>
-	<xsl:param name="DataSource" select="'.'"/>
-	<xsl:param name="DatabaseName" select="'DatabaseName'"/>
+	<xsl:param name="LinqToSqlSettings" select="document('LinqToSqlSettings.xml')/child::*"/>
 	<xsl:param name="ProjectName" select="'ProjectName'"/>
-	<xsl:param name="DataContextSuffix" select="'DataContext'"/>
-	<xsl:param name="EntityNamespace" select="$DcilSchemaName"/>
-	<xsl:param name="ContextNamespace" select="$DcilSchemaName"/>
-	<xsl:param name="AccessModifier"/>
-	<xsl:param name="ClassModifier"/>
-	<xsl:param name="PrivateMemberPrefix" select="'_'"/>
+	<xsl:variable name="DcilSchemaName" select="string(dcl:schema/@name)"/>
+	<xsl:variable name="DcilTables" select="dcl:schema/dcl:table"/>
+	<xsl:variable name="DataSource" select="$LinqToSqlSettings/opt:ConnectionString/@DataSource"/>
+	<xsl:variable name="DatabaseNameFragment">
+		<xsl:variable name="setting" select="string($LinqToSqlSettings/opt:ConnectionString/@DataBaseName)"/>
+		<xsl:choose>
+			<xsl:when test="$setting">
+				<xsl:value-of select="$setting"/>
+			</xsl:when>
+			<xsl:otherwise>
+				<xsl:value-of select="$DcilSchemaName"/>
+			</xsl:otherwise>
+		</xsl:choose>
+	</xsl:variable>
+	<xsl:variable name="DatabaseName" select="string($DatabaseNameFragment)"/>
+	<xsl:variable name="DataContextSuffixFragment">
+		<xsl:variable name="setting" select="string($LinqToSqlSettings/opt:NameParts/@DataContextClassSuffix)"/>
+		<xsl:choose>
+			<xsl:when test="$setting">
+				<xsl:value-of select="$setting"/>
+			</xsl:when>
+			<xsl:otherwise>
+				<xsl:text>DataContext</xsl:text>
+			</xsl:otherwise>
+		</xsl:choose>
+	</xsl:variable>
+	<xsl:variable name="DataContextSuffix" select="string($DataContextSuffixFragment)"/>
+	<xsl:variable name="CollectionSuffixFragment">
+		<xsl:variable name="setting" select="string($LinqToSqlSettings/opt:NameParts/@CollectionSuffix)"/>
+		<xsl:choose>
+			<xsl:when test="$setting">
+				<xsl:value-of select="$setting"/>
+			</xsl:when>
+			<xsl:otherwise>
+				<xsl:text>Collection</xsl:text>
+			</xsl:otherwise>
+		</xsl:choose>
+	</xsl:variable>
+	<xsl:variable name="CollectionSuffix" select="string($CollectionSuffixFragment)"/>
+	<xsl:variable name="TableSuffixFragment">
+		<xsl:variable name="setting" select="string($LinqToSqlSettings/opt:NameParts/@DataContextTableSuffix)"/>
+		<xsl:choose>
+			<xsl:when test="$setting">
+				<xsl:value-of select="$setting"/>
+			</xsl:when>
+			<xsl:otherwise>
+				<xsl:text>Table</xsl:text>
+			</xsl:otherwise>
+		</xsl:choose>
+	</xsl:variable>
+	<xsl:variable name="TableSuffix" select="string($TableSuffixFragment)"/>
+	<xsl:variable name="PrivateMemberPrefixFragment">
+		<xsl:variable name="setting" select="string($LinqToSqlSettings/opt:NameParts/@PrivateFieldPrefix)"/>
+		<xsl:choose>
+			<xsl:when test="$setting">
+				<xsl:value-of select="$setting"/>
+			</xsl:when>
+			<xsl:otherwise>
+				<xsl:text>_</xsl:text>
+			</xsl:otherwise>
+		</xsl:choose>
+	</xsl:variable>
+	<xsl:variable name="PrivateMemberPrefix" select="string($PrivateMemberPrefixFragment)"/>
+	<xsl:variable name="EntityNamespace" select="$DcilSchemaName"/>
+	<xsl:variable name="ContextNamespace" select="$DcilSchemaName"/>
+	<xsl:variable name="AccessModifier"/>
+	<xsl:variable name="ClassModifier"/>
 
 	<xsl:template match="/">
 		<xsl:apply-templates select="dcl:schema"/>
@@ -40,7 +97,7 @@
 			<xs:attribute name="Serialization" type="SerializationMode" use="optional" />
 			<xs:attribute name="EntityBase" type="xs:string" use="optional" />
 			-->
-			<Connection Mode="AppSettings" ConnectionString="Data Source={$DataSource};Initial Catalog={$DatabaseName};Integrated Security=True" SettingsObjectName="{$ProjectName}.Properties.Settings" SettingsPropertyName="{$DatabaseName}ConnectionString" Provider="System.Data.SqlClient"/>
+			<Connection Mode="AppSettings" SettingsObjectName="{$ProjectName}.Properties.Settings" SettingsPropertyName="{$DatabaseName}ConnectionString" Provider="System.Data.SqlClient"/>
 			<xsl:apply-templates select="dcl:table" mode="GenerateTableXmlMarkup"/>
 		</Database>
 	</xsl:template>
