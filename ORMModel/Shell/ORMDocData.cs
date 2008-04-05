@@ -58,6 +58,7 @@ namespace Neumont.Tools.ORM.Shell
 			AddedSurveyQuestionEvents = 4,
 			SaveDisabled = 8,
 			ErrorDisplayModified = 0x10,
+			UndoStackRemoved = 0x20,
 			// Other flags here, add instead of lots of bool variables
 		}
 		private PrivateFlags myFlags;
@@ -164,6 +165,18 @@ namespace Neumont.Tools.ORM.Shell
 			myFileStream = stream;
 			// This calls into LoadDocData(string, bool) after doing necessary cleanup
 			ReloadDocData((uint)_VSRELOADDOCDATA.RDD_RemoveUndoStack);
+
+			// The document now has no undo stack, but we need it to display as dirty
+			SetFlag(PrivateFlags.UndoStackRemoved, true);
+			IServiceProvider serviceProvider;
+			uint cookie;
+			IVsUIShell shell;
+			if (null != (serviceProvider = base.ServiceProvider) &&
+				0 != (cookie = base.Cookie) &&
+				null != (shell = serviceProvider.GetService(typeof(IVsUIShell)) as IVsUIShell))
+			{
+				shell.UpdateDocDataIsDirtyFeedback(cookie, 1);
+			}
 		}
 		/// <summary>
 		/// See the <see cref="LoadDocData"/> method.
@@ -322,6 +335,7 @@ namespace Neumont.Tools.ORM.Shell
 				}
 			}
 			this.AddPostLoadModelingEventHandlers(isReload);
+			SetFlag(PrivateFlags.UndoStackRemoved, false);
 			return retVal;
 		}
 		/// <summary>
@@ -446,6 +460,7 @@ namespace Neumont.Tools.ORM.Shell
 				}
 			}
 
+			SetFlag(PrivateFlags.UndoStackRemoved, false);
 			if (GetFlag(PrivateFlags.SaveDisabled))
 			{
 				SetFlag(PrivateFlags.SaveDisabled, false);
@@ -581,6 +596,18 @@ namespace Neumont.Tools.ORM.Shell
 				return true;
 			}
 			return base.SupportsLogicalView(logicalView);
+		}
+		/// <summary>
+		/// Mark files with extension changes as dirty
+		/// </summary>
+		public override int IsDocDataDirty(out int isDirty)
+		{
+			if (GetFlag(PrivateFlags.UndoStackRemoved))
+			{
+				isDirty = 1;
+				return VSConstants.S_OK;
+			}
+			return base.IsDocDataDirty(out isDirty);
 		}
 		#endregion // Base overrides
 		#region Error reporting
