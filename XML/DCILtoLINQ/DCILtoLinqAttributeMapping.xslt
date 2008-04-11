@@ -638,7 +638,7 @@
 								<plx:string>
 									<!--TODO: Set this via a settings file.-->
 									<xsl:for-each select="$containingEntity/dcl:uniquenessConstraint[@isPrimary = 'true' or @isPrimary = 1]/dcl:columnRef">
-										<xsl:variable name="oppositeEntityPropertyName"  select="$oppositeEntity/dcl:referenceConstraint/dcl:columnRef[@targetName = current()/@name]/@sofixurceName"/>
+										<xsl:variable name="oppositeEntityPropertyName"  select="$oppositeEntity/dcl:referenceConstraint/dcl:columnRef[@targetName = current()/@name]/@sourceName"/>
 										<xsl:value-of select="translate(concat(translate(substring($oppositeEntityPropertyName, 1, 1), 'abcdefghijklmnopqrstuvwxyz', 'ABCDEFGHIJKLMNOPQRSTUVWXYZ'), substring($oppositeEntityPropertyName, 2)),'_','')"/>
 										<xsl:if test="position() != last()">
 											<xsl:text>,</xsl:text>
