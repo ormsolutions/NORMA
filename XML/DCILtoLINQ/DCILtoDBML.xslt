@@ -26,7 +26,7 @@
 			</xsl:otherwise>
 		</xsl:choose>
 	</xsl:variable>
-	<xsl:param name="ProjectName" select="string($ProjectNameFragment)"/>
+	<xsl:variable name="ProjectName" select="string($ProjectNameFragment)"/>
 	<xsl:variable name="DataSource" select="$LinqToSqlSettings/opt:ConnectionString/@DataSource"/>
 	<xsl:variable name="DatabaseNameFragment">
 		<xsl:variable name="setting" select="string($LinqToSqlSettings/opt:ConnectionString/@DataBaseName)"/>
@@ -88,6 +88,18 @@
 		</xsl:choose>
 	</xsl:variable>
 	<xsl:variable name="PrivateMemberPrefix" select="string($PrivateMemberPrefixFragment)"/>
+	<xsl:variable name="SettingsPropertyNameFragment">
+		<xsl:variable name="setting" select="string($LinqToSqlSettings/opt:NameParts/@ConnectionStringPropertyName)"/>
+		<xsl:choose>
+			<xsl:when test="$setting">
+				<xsl:value-of select="$setting"/>
+			</xsl:when>
+			<xsl:otherwise>
+				<xsl:value-of select="concat($DatabaseName,'ConnectionString')"/>
+			</xsl:otherwise>
+		</xsl:choose>
+	</xsl:variable>
+	<xsl:variable name="SettingsPropertyName" select="string($SettingsPropertyNameFragment)"/>
 	<xsl:variable name="EntityNamespace" select="$DcilSchemaName"/>
 	<xsl:variable name="ContextNamespace" select="$DcilSchemaName"/>
 	<xsl:variable name="AccessModifier"/>
@@ -98,8 +110,8 @@
 	</xsl:template>
 
 	<xsl:template match="dcl:schema">
-
-		<Database Name="{$DatabaseName}" Class="{$DcilSchemaName}{$DataContextSuffix}" EntityNamespace="{$EntityNamespace}" ContextNamespace="{$ContextNamespace}">
+		<xsl:variable name="databaseClass" select="concat($DcilSchemaName,$DataContextSuffix)"/>
+		<Database Name="{$DatabaseName}" Class="{$databaseClass}" EntityNamespace="{$EntityNamespace}" ContextNamespace="{$ContextNamespace}">
 			<!-- TODO: Decide what to do with these.
 			<xs:attribute name="AccessModifier" type="AccessModifier" use="optional" />
 			<xs:attribute name="Modifier" type="ClassModifier" use="optional" />
@@ -109,7 +121,7 @@
 			<xs:attribute name="Serialization" type="SerializationMode" use="optional" />
 			<xs:attribute name="EntityBase" type="xs:string" use="optional" />
 			-->
-			<Connection Mode="AppSettings" SettingsObjectName="{$ProjectName}.Properties.Settings" SettingsPropertyName="{$DatabaseName}ConnectionString" Provider="System.Data.SqlClient"/>
+			<Connection Mode="AppSettings" SettingsObjectName="{$ProjectName}.Properties.Settings" SettingsPropertyName="{$SettingsPropertyName}" Provider="System.Data.SqlClient"/>
 			<xsl:apply-templates select="dcl:table" mode="GenerateTableXmlMarkup"/>
 		</Database>
 	</xsl:template>
@@ -140,7 +152,11 @@
 	</xsl:template>
 
 	<xsl:template match="dcl:referenceConstraint" mode="GenerateAbsorbedMembers">
-		<Association Name="{@name}" Member="{@targetTable}" Type="{@targetTable}" IsForeignKey="true" Storage="{$PrivateMemberPrefix}{@targetTable}">
+		<xsl:variable name="associationStorage" select="concat($PrivateMemberPrefix,translate(translate(concat(translate(substring(@targetTable, 1, 1), 'ABCDEFGHIJKLMNOPQRSTUVWXYZ', 'abcdefghijklmnopqrstuvwxyz'), substring(@targetTable, 2)),'_',''),' ',''))"/>
+		<xsl:variable name="associationType" select="@targetTable"/>
+		<xsl:variable name="associationName" select="@name"/>
+		<xsl:variable name="associationMember" select="@targetTable"/>
+		<Association Name="{$associationName}" Type="{$associationType}" Member="{$associationMember}" Storage="{$associationStorage}" IsForeignKey="true">
 			<!-- TODO: Decide what to do with these.
 			<xs:attribute name="AccessModifier" type="AccessModifier" use="optional" />
 			<xs:attribute name="Modifier" type="MemberModifier" use="optional" />
@@ -150,7 +166,7 @@
 			-->
 			<xsl:attribute name="ThisKey">
 				<xsl:for-each select="dcl:columnRef">
-					<xsl:value-of select="@sourceName"/>
+					<xsl:value-of select="translate(translate(concat(translate(substring(@sourceName, 1, 1), 'ABCDEFGHIJKLMNOPQRSTUVWXYZ', 'abcdefghijklmnopqrstuvwxyz'), substring(@sourceName, 2)),'_',''),' ','')"/>
 					<xsl:if test="position() != last()">
 						<xsl:text>,</xsl:text>
 					</xsl:if>
@@ -161,7 +177,11 @@
 
 	<xsl:template match="dcl:table" mode="GenerateEntitySetMembers">
 		<xsl:param name="containingTable"/>
-		<Association Name="{dcl:referenceConstraint[@targetTable = $containingTable/@name]/@name}" Member="{@name}{$CollectionSuffix}" Type="{@name}" Storage="{$PrivateMemberPrefix}{@name}">
+		<xsl:variable name="associationStorage" select="concat($PrivateMemberPrefix,translate(translate(concat(translate(substring(@name, 1, 1), 'ABCDEFGHIJKLMNOPQRSTUVWXYZ', 'abcdefghijklmnopqrstuvwxyz'), substring(@name, 2)),'_',''),' ',''))"/>
+		<xsl:variable name="associationType" select="@name"/>
+		<xsl:variable name="associationName" select="dcl:referenceConstraint[@targetTable = $containingTable/@name]/@name"/>
+		<xsl:variable name="associationMember" select="concat(@name,$CollectionSuffix)"/>
+		<Association Name="{$associationName}" Type="{$associationType}" Member="{$associationMember}" Storage="{$associationStorage}">
 			<!-- TODO: Decide what to do with these.
 			<xs:attribute name="AccessModifier" type="AccessModifier" use="optional" />
 			<xs:attribute name="Modifier" type="MemberModifier" use="optional" />
@@ -171,7 +191,7 @@
 			-->
 			<xsl:attribute name="OtherKey">
 				<xsl:for-each select="dcl:uniquenessConstraint[@isPrimary = 'true' or @isPrimary = 1]/dcl:columnRef">
-					<xsl:value-of select="@name"/>
+					<xsl:value-of select="translate(translate(concat(translate(substring(@name, 1, 1), 'ABCDEFGHIJKLMNOPQRSTUVWXYZ', 'abcdefghijklmnopqrstuvwxyz'), substring(@name, 2)),'_',''),' ','')"/>
 					<xsl:if test="position() != last()">
 						<xsl:text>,</xsl:text>
 					</xsl:if>
@@ -181,6 +201,12 @@
 	</xsl:template>
 
 	<xsl:template match="dcl:column" mode="GenerateAbsorbedMembers">
+		<xsl:variable name="columnName" select="@name"/>
+		<xsl:variable name="columnCanBeNull" select="@isNullable = 'true' or @isNullable = 1"/>
+		<xsl:variable name="columnIsPrimaryKey" select="../dcl:uniquenessConstraint[@isPrimary = 'true' or @isPrimary = 1]/dcl:columnRef[@name = current()/@name]"/>
+		<xsl:variable name="columnIsDbGenerated" select="@isIdentity = 'true' or @isIdentity = 1"/>
+		<xsl:variable name="columnMember" select="translate(translate(concat(translate(substring(@name, 1, 1), 'abcdefghijklmnopqrstuvwxyz', 'ABCDEFGHIJKLMNOPQRSTUVWXYZ'), substring(@name, 2)),'_',''),' ','')"/>
+		<xsl:variable name="columnStorage" select="concat($PrivateMemberPrefix,translate(@name,'_',''))"/>
 		<Column Name="{@name}">
 			<!-- TODO: Decide what to do with these.
 			<xs:attribute name="Member" type="xs:string" use="optional" />
@@ -188,20 +214,20 @@
 			<xs:attribute name="Modifier" type="MemberModifier" use="optional" />
 			<xs:attribute name="IsReadOnly" type="xs:boolean" use="optional" />
 			<xs:attribute name="UpdateCheck" type="UpdateCheck" use="optional" />
-			
-			This will be useful for describing a member that is used in a subtype definition constraint. 
 			<xs:attribute name="IsDiscriminator" type="xs:boolean" use="optional" />
-			
-			This will be useful for Derived/computed columns
 			<xs:attribute name="Expression" type="xs:string" use="optional" />
-			
 			<xs:attribute name="IsDelayLoaded" type="xs:boolean" use="optional" />
 			<xs:attribute name="AutoSync" type="AutoSync" use="optional" />
 			-->
-			<xsl:apply-templates select="." mode="GetDbType"/>
 			<xsl:apply-templates select="." mode="GetDotNetType"/>
+			<xsl:attribute name="Member">
+				<xsl:value-of select="$columnMember"/>
+			</xsl:attribute>
+			<xsl:attribute name="Storage">
+				<xsl:value-of select="$columnStorage"/>
+			</xsl:attribute>
 			<xsl:choose>
-				<xsl:when test="@isNullable = 'true' or @isNullable = 1">
+				<xsl:when test="$columnCanBeNull">
 					<xsl:attribute name="CanBeNull">
 						<xsl:value-of select="true()"/>
 					</xsl:attribute>
@@ -212,25 +238,23 @@
 					</xsl:attribute>
 				</xsl:otherwise>
 			</xsl:choose>
-			<xsl:if test="../dcl:uniquenessConstraint[@isPrimary = 'true' or @isPrimary = 1]/dcl:columnRef[@name = current()/@name]">
+			<xsl:apply-templates select="." mode="GetDbType"/>
+			<xsl:if test="$columnIsPrimaryKey">
 				<xsl:attribute name="IsPrimaryKey">
 					<xsl:value-of select="true()"/>
 				</xsl:attribute>
 			</xsl:if>
-			<xsl:if test="@isIdentity = 'true' or @isIdentity = 1">
+			<xsl:if test="$columnIsDbGenerated">
 				<xsl:attribute name="IsDbGenerated">
 					<xsl:value-of select="true()"/>
 				</xsl:attribute>
 			</xsl:if>
-			<xsl:if test="dcl:predefinedDataType/@name = 'TIMESTAMP'">
+			<!-- Timestamp does not mean the same thing in DCIL as it does in SQL Server.-->
+			<!--<xsl:if test="dcl:predefinedDataType/@name = 'TIMESTAMP'">
 				<xsl:attribute name="IsVersion">
 					<xsl:value-of select="true()"/>
 				</xsl:attribute>
-			</xsl:if>
-			<xsl:attribute name="Storage">
-				<xsl:value-of select="$PrivateMemberPrefix"/>
-				<xsl:value-of select="@name"/>
-			</xsl:attribute>
+			</xsl:if>-->
 		</Column>
 	</xsl:template>
 
@@ -284,7 +308,6 @@
 						<xsl:value-of select="'Max'"/>
 					</xsl:otherwise>
 				</xsl:choose>
-				<xsl:value-of select="$predefinedDataType/@length"/>
 				<xsl:text>)</xsl:text>
 			</xsl:when>
 			<xsl:when test="$predefinedDataTypeName = 'CHARACTER LARGE OBJECT'">

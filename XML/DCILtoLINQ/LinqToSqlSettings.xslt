@@ -11,7 +11,7 @@
 			<xsl:comment>Change basic name generation settings</xsl:comment>
 			<NameParts/>
 			<xsl:comment>Change WCF name generation settings</xsl:comment>
-			<WCFNameParts/>
+			<ServiceLayer/>
 			<xsl:comment>Inline settings schema, do not modify</xsl:comment>
 			<xs:schema xmlns:xs="http://www.w3.org/2001/XMLSchema"
 				targetNamespace="http://schemas.neumont.edu/ORM/2008-04/LinqToSql/Settings"
@@ -65,26 +65,36 @@
 									</xs:attribute>
 								</xs:complexType>
 							</xs:element>
-							<xs:element name="WCFNameParts" minOccurs="0">
+							<xs:element name="ServiceLayer" minOccurs="0">
 								<xs:complexType>
-									<xs:attribute name="CreatePrefix" type="NamePartType" default="Insert">
+									<xs:attribute name="Generate" type="xs:boolean" default="false">
+										<xs:annotation>
+											<xs:documentation>Determins whether or not the generator should include WCF DataContract attributes and ServiceContract calls.</xs:documentation>
+										</xs:annotation>
+									</xs:attribute>
+									<xs:attribute name="CreateKeyword" type="NamePartType" default="Insert">
 										<xs:annotation>
 											<xs:documentation>The text prepended to the name of 'create' service methods in the WCF service contract.</xs:documentation>
 										</xs:annotation>
 									</xs:attribute>
-									<xs:attribute name="ReadPrefix" type="NamePartType" default="Select">
+									<xs:attribute name="ReadKeyword" type="NamePartType" default="Select">
 										<xs:annotation>
 											<xs:documentation>The text prepended to the name of 'read' service methods in the WCF service contract.</xs:documentation>
 										</xs:annotation>
 									</xs:attribute>
-									<xs:attribute name="UpdatePrefix" type="NamePartType" default="Update">
+									<xs:attribute name="UpdateKeyword" type="NamePartType" default="Update">
 										<xs:annotation>
 											<xs:documentation>The text prepended to the name of 'update' service methods in the WCF service contract.</xs:documentation>
 										</xs:annotation>
 									</xs:attribute>
-									<xs:attribute name="DeletePrefix" type="NamePartType" default="Delete">
+									<xs:attribute name="DeleteKeyword" type="NamePartType" default="Delete">
 										<xs:annotation>
 											<xs:documentation>The text prepended to the name of 'delete' service methods in the WCF service contract.</xs:documentation>
+										</xs:annotation>
+									</xs:attribute>
+									<xs:attribute name="InitializeFunctionName" type="NamePartType" default="Initialize">
+										<xs:annotation>
+											<xs:documentation>If WCF service is generated, this specifes the function name for initializing EntitySet members for serialization.</xs:documentation>
 										</xs:annotation>
 									</xs:attribute>
 								</xs:complexType>
