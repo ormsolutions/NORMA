@@ -33,7 +33,7 @@
 	</xsl:variable>
 	<xsl:variable name="ProjectName" select="string($ProjectNameFragment)"/>
 	<xsl:variable name="DatabaseNameFragment">
-		<xsl:variable name="setting" select="string($LinqToSqlSettings/opt:ConnectionString/@DataBaseName)"/>
+		<xsl:variable name="setting" select="string($LinqToSqlSettings/opt:ConnectionString/@DatabaseName)"/>
 		<xsl:choose>
 			<xsl:when test="$setting">
 				<xsl:value-of select="$setting"/>
@@ -115,7 +115,7 @@
 				<xsl:value-of select="$setting"/>
 			</xsl:when>
 			<xsl:otherwise>
-				<xsl:value-of select="true()"/>
+				<xsl:value-of select="false()"/>
 			</xsl:otherwise>
 		</xsl:choose>
 	</xsl:variable>
@@ -638,9 +638,7 @@
 								<plx:string>
 									<!--TODO: Set this via a settings file.-->
 									<xsl:for-each select="$containingEntity/dcl:uniquenessConstraint[@isPrimary = 'true' or @isPrimary = 1]/dcl:columnRef">
-										<xsl:variable name="oppositeEntityPropertyName" >
-											<xsl:value-of select="$oppositeEntity/dcl:referenceConstraint[@targetName = current()/@name]/@sourceName"/>
-										</xsl:variable>
+										<xsl:variable name="oppositeEntityPropertyName"  select="$oppositeEntity/dcl:referenceConstraint/dcl:columnRef[@targetName = current()/@name]/@sofixurceName"/>
 										<xsl:value-of select="translate(concat(translate(substring($oppositeEntityPropertyName, 1, 1), 'abcdefghijklmnopqrstuvwxyz', 'ABCDEFGHIJKLMNOPQRSTUVWXYZ'), substring($oppositeEntityPropertyName, 2)),'_','')"/>
 										<xsl:if test="position() != last()">
 											<xsl:text>,</xsl:text>
