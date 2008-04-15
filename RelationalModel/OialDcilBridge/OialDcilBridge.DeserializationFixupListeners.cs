@@ -47,7 +47,7 @@ namespace Neumont.Tools.ORMAbstractionToConceptualDatabaseBridge
 		/// <summary>
 		/// The algorithm version written to the file for the core algorithm
 		/// </summary>
-		public const string CurrentCoreAlgorithmVersion = "1.001";
+		public const string CurrentCoreAlgorithmVersion = "1.002";
 		/// <summary>
 		/// The algorithm version written to the file for the name generation algorithm
 		/// </summary>
@@ -298,28 +298,15 @@ namespace Neumont.Tools.ORMAbstractionToConceptualDatabaseBridge
 				CreateUniquenessConstraints(conceptType, notifyAdded);
 			}
 
-			// Make a second pass over the concept types to population separation columns, constraint, and uniquenesses.
-			// Note that we do this second so that any target columns already exist
+			// Make a second pass over the concept types to populate separation columns, constraints, and uniquenesses.
+			// Note that we do this second so that any target columns already exist.
 			Dictionary<ConceptTypeAssimilatesConceptType, object> separatedConceptTypes = null;
 			foreach (ConceptType conceptType in conceptTypes)
 			{
-				bool isPreferredForChildFound = false;
-				foreach (ConceptTypeAssimilatesConceptType conceptTypeAssimilation in ConceptTypeAssimilatesConceptType.GetLinksToAssimilatorConceptTypeCollection(conceptType))//GetAssimilationsForConceptType(conceptType))
-				{
-					if (AssimilationMapping.GetAbsorptionChoiceFromAssimilation(conceptTypeAssimilation) == AssimilationAbsorptionChoice.Separate &&
-						(separatedConceptTypes == null || !separatedConceptTypes.ContainsKey(conceptTypeAssimilation)))
-					{
-						DoSeparation(conceptTypeAssimilation, ref isPreferredForChildFound, notifyAdded);
-						if (separatedConceptTypes == null)
-						{
-							separatedConceptTypes = new Dictionary<ConceptTypeAssimilatesConceptType, object>();
-						}
-						separatedConceptTypes.Add(conceptTypeAssimilation, null);
-					}
-				}
+				DoSeparations(conceptType, ref separatedConceptTypes, notifyAdded);
 			}
 
-			// For each table in the schema generate any foreign keys it contains and detemine witch of it's columns are mandatory and nullable.
+			// For each table in the schema generate any foreign keys it contains and detemine which of its columns are mandatory and nullable.
 			foreach (Table table in schema.TableCollection)
 			{
 				CreateForeignKeys(table, notifyAdded);
@@ -330,6 +317,32 @@ namespace Neumont.Tools.ORMAbstractionToConceptualDatabaseBridge
 			NameGeneration.GenerateAllNames(schema);
 		}
 
+		/// <summary>
+		/// Makes a second pass over the concept types to populate separation columns, constraints, and uniquenesses.
+		/// </summary>
+		private static void DoSeparations(ConceptType conceptType, ref Dictionary<ConceptTypeAssimilatesConceptType, object> separatedConceptTypes, INotifyElementAdded notifyAdded)
+		{
+			bool isPreferredForChildFound = false;
+			foreach (ConceptTypeAssimilatesConceptType conceptTypeAssimilation in ConceptTypeAssimilatesConceptType.GetLinksToAssimilatorConceptTypeCollection(conceptType))//GetAssimilationsForConceptType(conceptType))
+			{
+				if (AssimilationMapping.GetAbsorptionChoiceFromAssimilation(conceptTypeAssimilation) == AssimilationAbsorptionChoice.Separate &&
+					(separatedConceptTypes == null || !separatedConceptTypes.ContainsKey(conceptTypeAssimilation)))
+				{
+					// Recursively process the assimilator first, so that any target columns that result from its own separation(s) will be created.
+					DoSeparations(conceptTypeAssimilation.AssimilatorConceptType, ref separatedConceptTypes, notifyAdded);
+
+					Debug.Assert(separatedConceptTypes == null || !separatedConceptTypes.ContainsKey(conceptTypeAssimilation),
+						"Handling separation for assimilator concept types should never cause separation to be handled for the current concept type.");
+
+					DoSeparation(conceptTypeAssimilation, ref isPreferredForChildFound, notifyAdded);
+					if (separatedConceptTypes == null)
+					{
+						separatedConceptTypes = new Dictionary<ConceptTypeAssimilatesConceptType, object>();
+					}
+					separatedConceptTypes.Add(conceptTypeAssimilation, null);
+				}
+			}
+		}
 
 		/// <summary>
 		/// Maps the TableIsPrimarilyForConceptType for a given ConceptType and a given Table.
@@ -893,7 +906,6 @@ namespace Neumont.Tools.ORMAbstractionToConceptualDatabaseBridge
 					else
 					{
 						ConceptType parentConcept = assimilation.AssimilatorConceptType;
-						ConceptTypeAssimilatesConceptType assimilationPath = assimilation;
 						Table targetTable = null;
 
 						while (targetTable == null)
