@@ -68,12 +68,12 @@ namespace Neumont.Tools.ORM.Views.RelationalView
 		/// Specifies the offset used for measuring a string in updating the size of this
 		/// <see cref="T:Neumont.Tools.ORM.Views.RelationalView.ColumnElementListCompartment"/> based on the table name.
 		/// </summary>	
-		private const string TableOffsetString = "_";
+		private const double TableExtraWidth = .14d;
 		/// <summary>
 		/// Specifies the offset used for measuring a string in updating the size of this
 		/// <see cref="T:Neumont.Tools.ORM.Views.RelationalView.ColumnElementListCompartment"/> based on the column names.
 		/// </summary>	
-		private const string ColumnOffsetString = "____";
+		private const double ColumnExtraWidth = .33d;
 
 		/// <summary>
 		/// Initializes a new instance of the <see cref="T:Neumont.Tools.ORM.RelationalView.ColumnElementListCompartment" /> class.	
@@ -354,7 +354,7 @@ namespace Neumont.Tools.ORM.Views.RelationalView
 
 			using (Graphics g = Graphics.FromHwnd(GetDesktopWindow()))
 			{
-				double tableNameWidth = (double)g.MeasureString(tableName + TableOffsetString, tableNameFont, int.MaxValue, DefaultStringFormat).Width;
+				double tableNameWidth = (double)g.MeasureString(tableName, tableNameFont, int.MaxValue, DefaultStringFormat).Width + TableExtraWidth;
 
 				// Changes the width if the current width is less than the width of the table name.
 				if (width < tableNameWidth)
@@ -370,7 +370,7 @@ namespace Neumont.Tools.ORM.Views.RelationalView
 					string text = itemDrawInfo.Text;
 
 					// Gets the size of the column name in the context of the compartment
-					double stringWidth = (double)g.MeasureString(text + ColumnOffsetString, isMandatory ? alternateFont : defaultFont, int.MaxValue, DefaultStringFormat).Width;
+					double stringWidth = (double)g.MeasureString(text, isMandatory ? alternateFont : defaultFont, int.MaxValue, DefaultStringFormat).Width + ColumnExtraWidth;
 
 					// Changes the width if the current width is less than the width of the column name.
 					if (width < stringWidth)
