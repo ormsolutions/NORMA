@@ -903,44 +903,49 @@ namespace Neumont.Tools.ORM.ShapeModel
 			ORMModel model;
 			ModelElement constraintElement = (ModelElement)constraint;
 			if (!constraintElement.IsDeleted &&
-				!constraint.ConstraintIsInternal &&
 				!constraint.ConstraintIsImplied &&
 				null != (factType = ifc.FactType) &&
-				!factType.IsDeleted &&
-				null != (model = factType.Model))
+				!factType.IsDeleted)
 			{
-				Debug.Assert(model == constraint.Model);
-
-				Diagram.FixUpDiagram(model, constraint as ModelElement);
-				Diagram.FixUpDiagram(model, factType);
-
-				object AllowMultipleShapes;
-				Dictionary<object, object> topLevelContextInfo;
-				bool containedAllowMultipleShapes;
-				if (!(containedAllowMultipleShapes = (topLevelContextInfo = link.Store.TransactionManager.CurrentTransaction.TopLevelTransaction.Context.ContextInfo).ContainsKey(AllowMultipleShapes = MultiShapeUtility.AllowMultipleShapes)))
+				if (constraint.ConstraintIsInternal)
 				{
-					topLevelContextInfo.Add(AllowMultipleShapes, null);
+					FactTypeShape.ConstraintSetChanged(factType, constraint, false, false);
 				}
-
-				foreach (PresentationViewsSubject presentationViewsSubject in DomainRoleInfo.GetElementLinks<PresentationViewsSubject>(model, PresentationViewsSubject.SubjectDomainRoleId))
+				else if (null != (model = factType.Model))
 				{
-					ORMDiagram diagram;
-					if ((diagram = presentationViewsSubject.Presentation as ORMDiagram) != null)
+					Debug.Assert(model == constraint.Model);
+
+					Diagram.FixUpDiagram(model, constraint as ModelElement);
+					Diagram.FixUpDiagram(model, factType);
+
+					object AllowMultipleShapes;
+					Dictionary<object, object> topLevelContextInfo;
+					bool containedAllowMultipleShapes;
+					if (!(containedAllowMultipleShapes = (topLevelContextInfo = link.Store.TransactionManager.CurrentTransaction.TopLevelTransaction.Context.ContextInfo).ContainsKey(AllowMultipleShapes = MultiShapeUtility.AllowMultipleShapes)))
 					{
-						//add a link shape for each constraint shape
-						foreach (ExternalConstraintShape shapeElement in MultiShapeUtility.FindAllShapesForElement<ExternalConstraintShape>(diagram, constraint as ModelElement))
+						topLevelContextInfo.Add(AllowMultipleShapes, null);
+					}
+
+					foreach (PresentationViewsSubject presentationViewsSubject in DomainRoleInfo.GetElementLinks<PresentationViewsSubject>(model, PresentationViewsSubject.SubjectDomainRoleId))
+					{
+						ORMDiagram diagram;
+						if ((diagram = presentationViewsSubject.Presentation as ORMDiagram) != null)
 						{
-							if (null == diagram.FixUpLocalDiagram(link))
+							//add a link shape for each constraint shape
+							foreach (ExternalConstraintShape shapeElement in MultiShapeUtility.FindAllShapesForElement<ExternalConstraintShape>(diagram, constraint as ModelElement))
 							{
-								shapeElement.Delete();
+								if (null == diagram.FixUpLocalDiagram(link))
+								{
+									shapeElement.Delete();
+								}
 							}
 						}
 					}
-				}
 
-				if (!containedAllowMultipleShapes)
-				{
-					topLevelContextInfo.Remove(AllowMultipleShapes);
+					if (!containedAllowMultipleShapes)
+					{
+						topLevelContextInfo.Remove(AllowMultipleShapes);
+					}
 				}
 			}
 		}
