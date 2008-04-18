@@ -1548,32 +1548,15 @@ namespace Neumont.Tools.RelationalModels.ConceptualDatabase
 		#endregion // ISurveyNodeProvider Implementation
 		#region IModelingEventSubscriber Implementation
 		/// <summary>
-		/// Implements <see cref="IModelingEventSubscriber.ManagePostLoadModelingEventHandlers"/>
+		/// Implements <see cref="IModelingEventSubscriber.ManageModelingEventHandlers"/>
 		/// </summary>
-		protected static void ManagePostLoadModelingEventHandlers(ModelingEventManager eventManager, bool isReload, EventHandlerAction action)
+		protected void ManageModelingEventHandlers(ModelingEventManager eventManager, EventSubscriberReasons reasons, EventHandlerAction action)
 		{
-			// Nothing to do
-		}
-		void IModelingEventSubscriber.ManagePostLoadModelingEventHandlers(ModelingEventManager eventManager, bool isReload, EventHandlerAction action)
-		{
-			ManagePostLoadModelingEventHandlers(eventManager, isReload, action);
-		}
-		/// <summary>
-		/// Implements <see cref="IModelingEventSubscriber.ManagePreLoadModelingEventHandlers"/>
-		/// </summary>
-		protected static void ManagePreLoadModelingEventHandlers(ModelingEventManager eventManager, bool isReload, EventHandlerAction action)
-		{
-			// Nothing to do
-		}
-		void IModelingEventSubscriber.ManagePreLoadModelingEventHandlers(ModelingEventManager eventManager, bool isReload, EventHandlerAction action)
-		{
-			ManagePreLoadModelingEventHandlers(eventManager, isReload, action);
-		}
-		/// <summary>
-		/// Implements <see cref="IModelingEventSubscriber.ManageSurveyQuestionModelingEventHandlers"/>
-		/// </summary>
-		protected void ManageSurveyQuestionModelingEventHandlers(ModelingEventManager eventManager, bool isReload, EventHandlerAction action)
-		{
+			if (0 == (reasons & EventSubscriberReasons.SurveyQuestionEvents))
+			{
+				return;
+			}
+
 			Store store = this.Store;
 			DomainDataDirectory dataDir = store.DomainDataDirectory;
 			DomainClassInfo classInfo;
@@ -1584,7 +1567,7 @@ namespace Neumont.Tools.RelationalModels.ConceptualDatabase
 			eventManager.AddOrRemoveHandler(classInfo, new EventHandler<ElementAddedEventArgs>(SchemaAdded), action);
 			eventManager.AddOrRemoveHandler(classInfo, new EventHandler<ElementDeletedEventArgs>(ElementRemoved), action);
 			eventManager.AddOrRemoveHandler(classInfo, new EventHandler<ElementPropertyChangedEventArgs>(SchemaChanged), action);
-				
+
 			// Table elements (schema expansion)
 			eventManager.AddOrRemoveHandler(dataDir.FindDomainRelationship(SchemaContainsTable.DomainClassId), new EventHandler<ElementAddedEventArgs>(TableAdded), action);
 			classInfo = dataDir.FindDomainClass(Table.DomainClassId);
@@ -1624,9 +1607,9 @@ namespace Neumont.Tools.RelationalModels.ConceptualDatabase
 			eventManager.AddOrRemoveHandler(classInfo, new EventHandler<ElementAddedEventArgs>(UniquenessConstraintColumnAdded), action);
 			eventManager.AddOrRemoveHandler(classInfo, new EventHandler<ElementDeletedEventArgs>(UniquenessConstraintColumnDeleted), action);
 		}
-		void IModelingEventSubscriber.ManageSurveyQuestionModelingEventHandlers(ModelingEventManager eventManager, bool isReload, EventHandlerAction action)
+		void IModelingEventSubscriber.ManageModelingEventHandlers(ModelingEventManager eventManager, EventSubscriberReasons reasons, EventHandlerAction action)
 		{
-			ManageSurveyQuestionModelingEventHandlers(eventManager, isReload, action);
+			ManageModelingEventHandlers(eventManager, reasons, action);
 		}
 		#endregion // IModelingEventSubscriber Implementation
 		#region SurveyQuestion event handlers

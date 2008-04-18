@@ -47,6 +47,10 @@ namespace Neumont.Tools.ORM.ObjectModel
 		/// Return true if the reading text is editable
 		/// </summary>
 		bool IsEditable { get;}
+		/// <summary>
+		/// Return true if the reading is a generated default reading
+		/// </summary>
+		bool IsDefault { get;}
 	}
 	#endregion // IReading interface
 	#region Reading text utility delegates
@@ -132,7 +136,6 @@ namespace Neumont.Tools.ORM.ObjectModel
 		{
 			ReadingOrder readOrd = ReadingOrder;
 			LinkedElementCollection<RoleBase> roles = readOrd.RoleCollection;
-//			Debug.Assert(readOrd.FactType.RoleCollection.Count == roles.Count);
 			return IsValidReadingText(Text, roles.Count);
 		}
 
@@ -581,7 +584,7 @@ namespace Neumont.Tools.ORM.ObjectModel
 		/// <summary>
 		/// Implements <see cref="IReading.IsEditable"/>. Always returns <see langword="true"/>
 		/// </summary>
-		public static bool IsEditable
+		protected static bool IsEditable
 		{
 			get
 			{
@@ -593,6 +596,33 @@ namespace Neumont.Tools.ORM.ObjectModel
 			get
 			{
 				return IsEditable;
+			}
+		}
+		/// <summary>
+		/// Implements <see cref="IReading.IsDefault"/>. Returns <see langword="true"/>
+		/// for default generated readings on implied fact types
+		/// </summary>
+		protected bool IsDefault
+		{
+			get
+			{
+				ReadingOrder order;
+				FactType factType;
+				if (null != (order = this.ReadingOrder) &&
+					null != (factType = order.FactType) &&
+					null != factType.ImpliedByObjectification)
+				{
+					string readingText = Text;
+					return Text == ((order.RoleCollection[0] is RoleProxy) ? ResourceStrings.ImpliedFactTypePredicateInverseReading : ResourceStrings.ImpliedFactTypePredicateReading);
+				}
+				return false;
+			}
+		}
+		bool IReading.IsDefault
+		{
+			get
+			{
+				return IsDefault;
 			}
 		}
 		#endregion // IReading Implementation

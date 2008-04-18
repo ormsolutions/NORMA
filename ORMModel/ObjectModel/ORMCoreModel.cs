@@ -41,117 +41,117 @@ namespace Neumont.Tools.ORM.ObjectModel
 		public const string VerbalizationTargetName = "VerbalizationBrowser";
 		#region IModelingEventSubscriber Implementation
 		/// <summary>
-		/// Implements <see cref="IModelingEventSubscriber.ManagePreLoadModelingEventHandlers"/>.
-		/// This implementation does nothing and does not need to be called.
+		/// Implements <see cref="IModelingEventSubscriber.ManageModelingEventHandlers"/>.
 		/// </summary>
-		void IModelingEventSubscriber.ManagePreLoadModelingEventHandlers(ModelingEventManager eventManager, bool isReload, EventHandlerAction action)
+		protected void ManageModelingEventHandlers(ModelingEventManager eventManager, EventSubscriberReasons reasons, EventHandlerAction action)
 		{
-		}
-		/// <summary>
-		/// Implements <see cref="IModelingEventSubscriber.ManagePostLoadModelingEventHandlers"/>.
-		/// </summary>
-		protected void ManagePostLoadModelingEventHandlers(ModelingEventManager eventManager, bool isReload, EventHandlerAction action)
-		{
-			NamedElementDictionary.ManageEventHandlers(Store, eventManager, action);
-			if (!isReload && action == EventHandlerAction.Add)
+			Store store = Store;
+			if (action == EventHandlerAction.Add &&
+				(EventSubscriberReasons.ModelStateEvents | EventSubscriberReasons.DocumentLoading) == (reasons & (EventSubscriberReasons.ModelStateEvents | EventSubscriberReasons.DocumentLoading)))
 			{
-				Design.ORMEditorUtility.RegisterModelErrorActivators(Store);
+				store.TransactionManager.CurrentTransaction.TopLevelTransaction.Context.ContextInfo[NamedElementDictionary.DefaultAllowDuplicateNamesKey] = null;
+			}
+			if (0 != (reasons & EventSubscriberReasons.DocumentLoaded))
+			{
+				if (0 != (reasons & EventSubscriberReasons.ModelStateEvents))
+				{
+					NamedElementDictionary.ManageModelStateEventHandlers(store, eventManager, action);
+					ORMModel.ManageModelStateEventHandlers(store, eventManager, action);
+				}
+				if (action == EventHandlerAction.Add &&
+					0 == (reasons & EventSubscriberReasons.DocumentReloading) &&
+					0 != (reasons & EventSubscriberReasons.UserInterfaceEvents))
+				{
+					Design.ORMEditorUtility.RegisterModelErrorActivators(store);
+				}
+			}
+			if (0 != (reasons & EventSubscriberReasons.SurveyQuestionEvents))
+			{
+				DomainDataDirectory directory = store.DomainDataDirectory;
+				//Object Type
+				DomainClassInfo classInfo = directory.FindDomainRelationship(ModelHasObjectType.DomainClassId);
+				eventManager.AddOrRemoveHandler(classInfo, new EventHandler<ElementAddedEventArgs>(ModelElementAdded), action);
+				eventManager.AddOrRemoveHandler(classInfo, new EventHandler<ElementDeletedEventArgs>(ModelElementRemoved), action);
+
+				//Fact Type
+				classInfo = directory.FindDomainClass(ModelHasFactType.DomainClassId);
+				eventManager.AddOrRemoveHandler(classInfo, new EventHandler<ElementDeletedEventArgs>(FactTypeRemoved), action);
+				eventManager.AddOrRemoveHandler(classInfo, new EventHandler<ElementAddedEventArgs>(FactTypeAdded), action);
+
+				//Set Constraint
+				classInfo = directory.FindDomainClass(ModelHasSetConstraint.DomainClassId);
+				eventManager.AddOrRemoveHandler(classInfo, new EventHandler<ElementAddedEventArgs>(SetConstraintAdded), action);
+				eventManager.AddOrRemoveHandler(classInfo, new EventHandler<ElementDeletedEventArgs>(SetConstraintDeleted), action);
+
+				//Set Comparison
+				classInfo = directory.FindDomainClass(ModelHasSetComparisonConstraint.DomainClassId);
+				eventManager.AddOrRemoveHandler(classInfo, new EventHandler<ElementAddedEventArgs>(SetComparisonConstraintAdded), action);
+				eventManager.AddOrRemoveHandler(classInfo, new EventHandler<ElementDeletedEventArgs>(SetComparisonConstraintDeleted), action);
+
+				//Track name change
+				DomainPropertyInfo propertyInfo = directory.FindDomainProperty(ORMNamedElement.NameDomainPropertyId);
+				eventManager.AddOrRemoveHandler(propertyInfo, new EventHandler<ElementPropertyChangedEventArgs>(ModelElementNameChanged), action);
+				propertyInfo = directory.FindDomainProperty(FactType.NameChangedDomainPropertyId);
+				eventManager.AddOrRemoveHandler(propertyInfo, new EventHandler<ElementPropertyChangedEventArgs>(ModelElementNameChanged), action);
+
+				//FactTypeHasRole
+				classInfo = directory.FindDomainClass(FactTypeHasRole.DomainClassId);
+				eventManager.AddOrRemoveHandler(classInfo, new EventHandler<ElementAddedEventArgs>(FactTypeHasRoleAdded), action);
+				eventManager.AddOrRemoveHandler(classInfo, new EventHandler<ElementDeletedEventArgs>(FactTypeHasRoleDeleted), action);
+
+				//Role
+				propertyInfo = directory.FindDomainProperty(Role.NameDomainPropertyId);
+				eventManager.AddOrRemoveHandler(propertyInfo, new EventHandler<ElementPropertyChangedEventArgs>(RoleNameChanged), action);
+
+				//ValueTypeHasDataType
+				classInfo = directory.FindDomainClass(ValueTypeHasDataType.DomainClassId);
+				eventManager.AddOrRemoveHandler(classInfo, new EventHandler<ElementAddedEventArgs>(ValueTypeHasDataTypeAdded), action);
+				eventManager.AddOrRemoveHandler(classInfo, new EventHandler<ElementDeletedEventArgs>(ValueTypeHasDataTypeDeleted), action);
+
+				//Objectification
+				classInfo = directory.FindDomainClass(Objectification.DomainClassId);
+				eventManager.AddOrRemoveHandler(classInfo, new EventHandler<ElementAddedEventArgs>(ObjectificationAdded), action);
+				eventManager.AddOrRemoveHandler(classInfo, new EventHandler<ElementDeletedEventArgs>(ObjectificationDeleted), action);
+				propertyInfo = directory.FindDomainProperty(Objectification.IsImpliedDomainPropertyId);
+				eventManager.AddOrRemoveHandler(propertyInfo, new EventHandler<ElementPropertyChangedEventArgs>(ObjectificationChanged), action);
+
+				//RolePlayerChanged
+				eventManager.AddOrRemoveHandler(classInfo, new EventHandler<RolePlayerChangedEventArgs>(ObjectificationRolePlayerChanged), action);
+
+				//Error state changed
+				//classInfo = directory.FindDomainClass(ElementLink.DomainClassId);
+				//eventManager.AddOrRemoveHandler(classInfo, new EventHandler<ElementDeletedEventArgs>(PotentialIndirectModelErrorLinkDeleted), action);
+				classInfo = directory.FindDomainRelationship(ElementAssociatedWithModelError.DomainClassId);
+				eventManager.AddOrRemoveHandler(classInfo, new EventHandler<ElementAddedEventArgs>(ModelElementErrorStateChanged), action);
+				eventManager.AddOrRemoveHandler(classInfo, new EventHandler<ElementDeletedEventArgs>(ModelElementErrorStateChanged), action);
+
+				//ModalityChanged
+				DomainPropertyInfo info = directory.FindDomainProperty(SetConstraint.ModalityDomainPropertyId);
+				eventManager.AddOrRemoveHandler(info, new EventHandler<ElementPropertyChangedEventArgs>(ModalityChanged), action);
+				info = directory.FindDomainProperty(SetComparisonConstraint.ModalityDomainPropertyId);
+				eventManager.AddOrRemoveHandler(info, new EventHandler<ElementPropertyChangedEventArgs>(ModalityChanged), action);
+
+				//RingType changed
+				info = directory.FindDomainProperty(RingConstraint.RingTypeDomainPropertyId);
+				eventManager.AddOrRemoveHandler(info, new EventHandler<ElementPropertyChangedEventArgs>(RingTypeChanged), action);
+
+				//RingType changed
+				info = directory.FindDomainProperty(UniquenessConstraint.IsPreferredDomainPropertyId);
+				eventManager.AddOrRemoveHandler(info, new EventHandler<ElementPropertyChangedEventArgs>(IsPreferredChanged), action);
+				//ExclusiveOr added deleted 
+				classInfo = directory.FindDomainClass(ExclusiveOrConstraintCoupler.DomainClassId);
+				eventManager.AddOrRemoveHandler(classInfo, new EventHandler<ElementAddedEventArgs>(ExclusiveOrAdded), action);
+				classInfo = directory.FindDomainClass(ExclusiveOrConstraintCoupler.DomainClassId);
+				eventManager.AddOrRemoveHandler(classInfo, new EventHandler<ElementDeletedEventArgs>(ExclusiveOrDeleted), action);
+
+				//SubType
+				info = directory.FindDomainProperty(SubtypeFact.ProvidesPreferredIdentifierDomainPropertyId);
+				eventManager.AddOrRemoveHandler(info, new EventHandler<ElementPropertyChangedEventArgs>(SubtypeFactProvidesPreferredIdentifierChanged), action);
 			}
 		}
-		void IModelingEventSubscriber.ManagePostLoadModelingEventHandlers(ModelingEventManager eventManager, bool isReload, EventHandlerAction action)
+		void IModelingEventSubscriber.ManageModelingEventHandlers(ModelingEventManager eventManager, EventSubscriberReasons reasons, EventHandlerAction action)
 		{
-			this.ManagePostLoadModelingEventHandlers(eventManager, isReload, action);
-		}
-		/// <summary>
-		/// Implementes <see cref="IModelingEventSubscriber.ManageSurveyQuestionModelingEventHandlers"/>.
-		/// </summary>
-		protected void ManageSurveyQuestionModelingEventHandlers(ModelingEventManager eventManager, bool isReload, EventHandlerAction action)
-		{
-			DomainDataDirectory directory = this.Store.DomainDataDirectory;
-			//Object Type
-			DomainClassInfo classInfo = directory.FindDomainRelationship(ModelHasObjectType.DomainClassId);
-			eventManager.AddOrRemoveHandler(classInfo, new EventHandler<ElementAddedEventArgs>(ModelElementAdded), action);
-			eventManager.AddOrRemoveHandler(classInfo, new EventHandler<ElementDeletedEventArgs>(ModelElementRemoved), action);
-
-			//Fact Type
-			classInfo = directory.FindDomainClass(ModelHasFactType.DomainClassId);
-			eventManager.AddOrRemoveHandler(classInfo, new EventHandler<ElementDeletedEventArgs>(FactTypeRemoved), action);
-			eventManager.AddOrRemoveHandler(classInfo, new EventHandler<ElementAddedEventArgs>(FactTypeAdded), action);
-
-			//Set Constraint
-			classInfo = directory.FindDomainClass(ModelHasSetConstraint.DomainClassId);
-			eventManager.AddOrRemoveHandler(classInfo, new EventHandler<ElementAddedEventArgs>(SetConstraintAdded), action);
-			eventManager.AddOrRemoveHandler(classInfo, new EventHandler<ElementDeletedEventArgs>(SetConstraintDeleted), action);
-
-			//Set Comparison
-			classInfo = directory.FindDomainClass(ModelHasSetComparisonConstraint.DomainClassId);
-			eventManager.AddOrRemoveHandler(classInfo, new EventHandler<ElementAddedEventArgs>(SetComparisonConstraintAdded), action);
-			eventManager.AddOrRemoveHandler(classInfo, new EventHandler<ElementDeletedEventArgs>(SetComparisonConstraintDeleted), action);
-
-			//Track name change
-			DomainPropertyInfo propertyInfo = directory.FindDomainProperty(ORMNamedElement.NameDomainPropertyId);
-			eventManager.AddOrRemoveHandler(propertyInfo, new EventHandler<ElementPropertyChangedEventArgs>(ModelElementNameChanged), action);
-			propertyInfo = directory.FindDomainProperty(FactType.NameChangedDomainPropertyId);
-			eventManager.AddOrRemoveHandler(propertyInfo, new EventHandler<ElementPropertyChangedEventArgs>(ModelElementNameChanged), action);
-
-			//FactTypeHasRole
-			classInfo = directory.FindDomainClass(FactTypeHasRole.DomainClassId);
-			eventManager.AddOrRemoveHandler(classInfo, new EventHandler<ElementAddedEventArgs>(FactTypeHasRoleAdded), action);
-			eventManager.AddOrRemoveHandler(classInfo, new EventHandler<ElementDeletedEventArgs>(FactTypeHasRoleDeleted), action);
-
-			//Role
-			propertyInfo = directory.FindDomainProperty(Role.NameDomainPropertyId);
-			eventManager.AddOrRemoveHandler(propertyInfo, new EventHandler<ElementPropertyChangedEventArgs>(RoleNameChanged), action);
-
-			//ValueTypeHasDataType
-			classInfo = directory.FindDomainClass(ValueTypeHasDataType.DomainClassId);
-			eventManager.AddOrRemoveHandler(classInfo, new EventHandler<ElementAddedEventArgs>(ValueTypeHasDataTypeAdded), action);
-			eventManager.AddOrRemoveHandler(classInfo, new EventHandler<ElementDeletedEventArgs>(ValueTypeHasDataTypeDeleted), action);
-
-			//Objectification
-			classInfo = directory.FindDomainClass(Objectification.DomainClassId);
-			eventManager.AddOrRemoveHandler(classInfo, new EventHandler<ElementAddedEventArgs>(ObjectificationAdded), action);
-			eventManager.AddOrRemoveHandler(classInfo, new EventHandler<ElementDeletedEventArgs>(ObjectificationDeleted), action);
-			propertyInfo = directory.FindDomainProperty(Objectification.IsImpliedDomainPropertyId);
-			eventManager.AddOrRemoveHandler(propertyInfo, new EventHandler<ElementPropertyChangedEventArgs>(ObjectificationChanged), action);
-
-			//RolePlayerChanged
-			eventManager.AddOrRemoveHandler(classInfo, new EventHandler<RolePlayerChangedEventArgs>(ObjectificationRolePlayerChanged), action);
-
-			//Error state changed
-			//classInfo = directory.FindDomainClass(ElementLink.DomainClassId);
-			//eventManager.AddOrRemoveHandler(classInfo, new EventHandler<ElementDeletedEventArgs>(PotentialIndirectModelErrorLinkDeleted), action);
-			classInfo = directory.FindDomainRelationship(ElementAssociatedWithModelError.DomainClassId);
-			eventManager.AddOrRemoveHandler(classInfo, new EventHandler<ElementAddedEventArgs>(ModelElementErrorStateChanged), action);
-			eventManager.AddOrRemoveHandler(classInfo, new EventHandler<ElementDeletedEventArgs>(ModelElementErrorStateChanged), action);
-
-			//ModalityChanged
-			DomainPropertyInfo info = directory.FindDomainProperty(SetConstraint.ModalityDomainPropertyId);
-			eventManager.AddOrRemoveHandler(info, new EventHandler<ElementPropertyChangedEventArgs>(ModalityChanged), action);
-			info = directory.FindDomainProperty(SetComparisonConstraint.ModalityDomainPropertyId);
-			eventManager.AddOrRemoveHandler(info, new EventHandler<ElementPropertyChangedEventArgs>(ModalityChanged), action);
-
-			//RingType changed
-			info = directory.FindDomainProperty(RingConstraint.RingTypeDomainPropertyId);
-			eventManager.AddOrRemoveHandler(info, new EventHandler<ElementPropertyChangedEventArgs>(RingTypeChanged), action);
-
-			//RingType changed
-			info = directory.FindDomainProperty(UniquenessConstraint.IsPreferredDomainPropertyId);
-			eventManager.AddOrRemoveHandler(info, new EventHandler<ElementPropertyChangedEventArgs>(IsPreferredChanged), action);
-			//ExclusiveOr added deleted 
-			classInfo = directory.FindDomainClass(ExclusiveOrConstraintCoupler.DomainClassId);
-			eventManager.AddOrRemoveHandler(classInfo, new EventHandler<ElementAddedEventArgs>(ExclusiveOrAdded), action);
-			classInfo = directory.FindDomainClass(ExclusiveOrConstraintCoupler.DomainClassId);
-			eventManager.AddOrRemoveHandler(classInfo, new EventHandler<ElementDeletedEventArgs>(ExclusiveOrDeleted), action);
-
-			//SubType
-			info = directory.FindDomainProperty(SubtypeFact.ProvidesPreferredIdentifierDomainPropertyId);
-			eventManager.AddOrRemoveHandler(info, new EventHandler<ElementPropertyChangedEventArgs>(SubtypeFactProvidesPreferredIdentifierChanged), action);
-		}
-
-		void IModelingEventSubscriber.ManageSurveyQuestionModelingEventHandlers(ModelingEventManager eventManager, bool isReload, EventHandlerAction action)
-		{
-			this.ManageSurveyQuestionModelingEventHandlers(eventManager, isReload, action);
+			this.ManageModelingEventHandlers(eventManager, reasons, action);
 		}
 		#endregion // IModelingEventSubscriber Implementation
 		#region IVerbalizationTargetProvider implementation

@@ -34,7 +34,7 @@ namespace Neumont.Tools.ORM.ObjectModel.Design
 	/// <see cref="ElementTypeDescriptor"/> for <see cref="DataType"/>s.
 	/// </summary>
 	[HostProtection(SecurityAction.LinkDemand, SharedState = true)]
-	public class NameGeneratorTypeDescriptor<TModelElement> : ElementTypeDescriptor<TModelElement>
+	public class NameGeneratorTypeDescriptor<TModelElement> : ORMModelElementTypeDescriptor<TModelElement>
 		where TModelElement : NameGenerator
 	{
 		/// <summary>
@@ -117,23 +117,6 @@ namespace Neumont.Tools.ORM.ObjectModel.Design
 			retVal.Add(AbbreviationsPropertyDescriptor.Instance);
 			return retVal;
 		}
-
-		/// <summary>
-		/// Don't automatically display embedded relationship
-		/// </summary>
-		protected override bool IncludeEmbeddingRelationshipProperties(ModelElement requestor)
-		{
-			return true;
-		}
-
-		/// <summary>
-		/// Don't automatically display relationships
-		/// </summary>
-		protected override bool IncludeOppositeRolePlayerProperties(ModelElement requestor)
-		{
-			return true;
-		}
-
 		/// <summary>
 		/// A property descriptor to show name alias (aka abbreviations) in the context of this name generator
 		/// </summary>

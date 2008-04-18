@@ -872,6 +872,7 @@ namespace Neumont.Tools.ORM.Shell
 
 						if (currentFactType != null)
 						{
+							LinkedElementCollection<ReadingOrder> readingOrders = currentFactType.ReadingOrderCollection;
 							// First base the order on the role selection
 							if (leadRole != null)
 							{
@@ -882,7 +883,7 @@ namespace Neumont.Tools.ORM.Shell
 									roleOrder[0] = leadRole;
 									openRoleIndex = 1;
 								}
-								currentReadingOrder = currentFactType.FindMatchingReadingOrder(roleOrder);
+								currentReadingOrder = FactType.FindMatchingReadingOrder(readingOrders, roleOrder);
 							}
 
 							// Get the default display order based sole on the current FactType selection
@@ -900,7 +901,7 @@ namespace Neumont.Tools.ORM.Shell
 										defaultOrder = factTypeShape.DisplayedRoleOrder;
 										if (currentReadingOrder == null)
 										{
-											currentReadingOrder = currentFactType.FindMatchingReadingOrder(defaultOrder);
+											currentReadingOrder = FactType.FindMatchingReadingOrder(readingOrders, defaultOrder);
 											mergeDefaultOrder = true;
 										}
 										break;
@@ -912,7 +913,7 @@ namespace Neumont.Tools.ORM.Shell
 							// Fallback on default order from the FactType
 							if (defaultOrder == null)
 							{
-								foreach (ReadingOrder order in currentFactType.ReadingOrderCollection)
+								foreach (ReadingOrder order in readingOrders)
 								{
 									defaultOrder = order.RoleCollection;
 									if (currentReadingOrder == null)
@@ -993,7 +994,7 @@ namespace Neumont.Tools.ORM.Shell
 									{
 										currentReadingOrderRoles = currentReadingOrder.RoleCollection;
 									}
-									reverseReadingOrder = currentFactType.FindMatchingReadingOrder(new RoleBase[] { currentReadingOrderRoles[1], currentReadingOrderRoles[0] });
+									reverseReadingOrder = FactType.FindMatchingReadingOrder(readingOrders, new RoleBase[] { currentReadingOrderRoles[1], currentReadingOrderRoles[0] });
 									if (reverseReadingOrder != null)
 									{
 										reverseReadingText = reverseReadingOrder.ReadingText;

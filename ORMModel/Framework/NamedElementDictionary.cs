@@ -1502,13 +1502,13 @@ namespace Neumont.Tools.Modeling
 			}
 		}
 		/// <summary>
-		/// Call from <see cref="IModelingEventSubscriber.ManagePostLoadModelingEventHandlers"/>
+		/// Call from <see cref="IModelingEventSubscriber.ManageModelingEventHandlers"/>
 		/// implementations to attach <see cref="EventHandler{TEventArgs}"/>s that correctly deal with undo and redo scenarios.
 		/// </summary>
 		/// <param name="store">The <see cref="Store"/> for which the <see cref="EventHandler{TEventArgs}"/>s should be managed.</param>
 		/// <param name="eventManager">The <see cref="ModelingEventManager"/> used to manage the <see cref="EventHandler{TEventArgs}"/>s.</param>
 		/// <param name="action">The <see cref="EventHandlerAction"/> that should be taken for the <see cref="EventHandler{TEventArgs}"/>s.</param>
-		public static void ManageEventHandlers(Store store, ModelingEventManager eventManager, EventHandlerAction action)
+		public static void ManageModelStateEventHandlers(Store store, ModelingEventManager eventManager, EventHandlerAction action)
 		{
 			
 			DomainDataDirectory dataDirectory = store.DomainDataDirectory;

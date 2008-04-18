@@ -90,9 +90,14 @@ namespace Neumont.Tools.ORM.Shell
 				SurveyTree rootBranch = new SurveyTree(
 					Utility.EnumerateDomainModels<ISurveyNodeProvider>(domainModels),
 					Utility.EnumerateDomainModels<ISurveyQuestionProvider>(domainModels));
+				EventSubscriberReasons reasons = EventSubscriberReasons.SurveyQuestionEvents | EventSubscriberReasons.ModelStateEvents | EventSubscriberReasons.UserInterfaceEvents;
+				if (isReload)
+				{
+					reasons |= EventSubscriberReasons.DocumentReloading;
+				}
 				foreach (IModelingEventSubscriber eventSubscriber in Utility.EnumerateDomainModels<IModelingEventSubscriber>(domainModels))
 				{
-					eventSubscriber.ManageSurveyQuestionModelingEventHandlers(eventManager, isReload, EventHandlerAction.Add);
+					eventSubscriber.ManageModelingEventHandlers(eventManager, reasons, EventHandlerAction.Add);
 				}
 				SetFlag(PrivateFlags.AddedSurveyQuestionEvents, true);
 				mySurveyTree = rootBranch;

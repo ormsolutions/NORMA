@@ -56,7 +56,7 @@
 			<se:OmitRelationship Class="TableIsAlsoForConceptTypeHasAssimilationPath"/>
 		</se:OmittedDomainElements>
 	</se:DomainModel>
-	<se:Element Class="MappingCustomizationModel" Name="MappingCustomization" SortChildElements="true">v
+	<se:Element Class="MappingCustomizationModel" Name="MappingCustomization" SortChildElements="true">
 		<se:ConditionalSerialization>
 			<!-- Only serialize if there is a child that will serialize -->
 			<plx:branch>
@@ -167,25 +167,55 @@
 	<se:Element Class="ReferenceModeNaming">
 		<se:ConditionalSerialization>
 			<plx:local name="objectType" dataTypeName="ObjectType" dataTypeQualifier="Neumont.Tools.ORM.ObjectModel"/>
-			<plx:local name="referenceMode" dataTypeName="ReferenceMode" dataTypeQualifier="Neumont.Tools.ORM.ObjectModel"/>
 			<plx:return>
 				<plx:binaryOperator type="booleanOr">
 					<plx:left>
-						<plx:callThis name="UsesCustomFormat">
-							<plx:passParam>
-								<plx:trueKeyword/>
-							</plx:passParam>
-						</plx:callThis>
+						<plx:binaryOperator type="booleanOr">
+							<plx:left>
+								<plx:callThis name="UsesCustomFormat">
+									<plx:passParam>
+										<plx:callStatic name="ReferenceToEntityType" dataTypeName="ReferenceModeNamingUse" type="field"/>
+									</plx:passParam>
+									<plx:passParam>
+										<plx:trueKeyword/>
+									</plx:passParam>
+								</plx:callThis>
+							</plx:left>
+							<plx:right>
+								<plx:callThis name="UsesCustomFormat">
+									<plx:passParam>
+										<plx:callStatic name="PrimaryIdentifier" dataTypeName="ReferenceModeNamingUse" type="field"/>
+									</plx:passParam>
+									<plx:passParam>
+										<plx:trueKeyword/>
+									</plx:passParam>
+								</plx:callThis>
+							</plx:right>
+						</plx:binaryOperator>
 					</plx:left>
 					<plx:right>
 						<plx:binaryOperator type="booleanAnd">
 							<plx:left>
-								<plx:binaryOperator type="inequality">
+								<plx:binaryOperator type="booleanOr">
 									<plx:left>
-										<plx:callThis name="NamingChoice" type="property"/>
+										<plx:binaryOperator type="inequality">
+											<plx:left>
+												<plx:callThis name="NamingChoice" type="property"/>
+											</plx:left>
+											<plx:right>
+												<plx:callStatic dataTypeName="ReferenceModeNamingChoice" name="ModelDefault" type="field"/>
+											</plx:right>
+										</plx:binaryOperator>
 									</plx:left>
 									<plx:right>
-										<plx:callStatic dataTypeName="ReferenceModeNamingChoice" name="ModelDefault" type="field"/>
+										<plx:binaryOperator type="inequality">
+											<plx:left>
+												<plx:callThis name="PrimaryIdentifierNamingChoice" type="property"/>
+											</plx:left>
+											<plx:right>
+												<plx:callStatic dataTypeName="ReferenceModeNamingChoice" name="ModelDefault" type="field"/>
+											</plx:right>
+										</plx:binaryOperator>
 									</plx:right>
 								</plx:binaryOperator>
 							</plx:left>
@@ -211,47 +241,16 @@
 										</plx:binaryOperator>
 									</plx:left>
 									<plx:right>
-										<plx:binaryOperator type="booleanAnd">
+										<plx:binaryOperator type="identityInequality">
 											<plx:left>
-												<plx:binaryOperator type="identityInequality">
-													<plx:left>
-														<plx:inlineStatement dataTypeName="ReferenceMode" dataTypeQualifier="Neumont.Tools.ORM.ObjectModel">
-															<plx:assign>
-																<plx:left>
-																	<plx:nameRef name="referenceMode"/>
-																</plx:left>
-																<plx:right>
-																	<plx:callInstance name="ReferenceMode" type="property">
-																		<plx:callObject>
-																			<plx:nameRef name="objectType"/>
-																		</plx:callObject>
-																	</plx:callInstance>
-																</plx:right>
-															</plx:assign>
-														</plx:inlineStatement>
-													</plx:left>
-													<plx:right>
-														<plx:nullKeyword/>
-													</plx:right>
-												</plx:binaryOperator>
+												<plx:callInstance name="ReferenceModePattern" type="property">
+													<plx:callObject>
+														<plx:nameRef name="objectType"/>
+													</plx:callObject>
+												</plx:callInstance>
 											</plx:left>
 											<plx:right>
-												<plx:binaryOperator type="inequality">
-													<plx:left>
-														<plx:callStatic name="General" dataTypeName="ReferenceModeType" dataTypeQualifier="Neumont.Tools.ORM.ObjectModel" type="field"/>
-													</plx:left>
-													<plx:right>
-														<plx:callInstance name="ReferenceModeType" type="property">
-															<plx:callObject>
-																<plx:callInstance name="Kind" type="property">
-																	<plx:callObject>
-																		<plx:nameRef name="referenceMode"/>
-																	</plx:callObject>
-																</plx:callInstance>
-															</plx:callObject>
-														</plx:callInstance>
-													</plx:right>
-												</plx:binaryOperator>
+												<plx:nullKeyword/>
 											</plx:right>
 										</plx:binaryOperator>
 									</plx:right>
@@ -274,10 +273,39 @@
 				</plx:binaryOperator>
 			</se:Condition>
 		</se:Attribute>
+		<se:Attribute ID="PrimaryIdentifierNamingChoice">
+			<se:Condition WriteStyle="NotWritten">
+				<plx:binaryOperator type="equality">
+					<plx:left>
+						<plx:callThis name="PrimaryIdentifierNamingChoice" type="property"/>
+					</plx:left>
+					<plx:right>
+						<plx:callStatic dataTypeName="ReferenceModeNamingChoice" name="ModelDefault" type="field"/>
+					</plx:right>
+				</plx:binaryOperator>
+			</se:Condition>
+		</se:Attribute>
 		<se:Attribute ID="CustomFormat">
 			<se:Condition WriteStyle="NotWritten">
 				<plx:unaryOperator type="booleanNot">
 					<plx:callThis name="UsesCustomFormat">
+						<plx:passParam>
+							<plx:callStatic name="ReferenceToEntityType" dataTypeName="ReferenceModeNamingUse" type="field"/>
+						</plx:passParam>
+						<plx:passParam>
+							<plx:trueKeyword/>
+						</plx:passParam>
+					</plx:callThis>
+				</plx:unaryOperator>
+			</se:Condition>
+		</se:Attribute>
+		<se:Attribute ID="PrimaryIdentifierCustomFormat">
+			<se:Condition WriteStyle="NotWritten">
+				<plx:unaryOperator type="booleanNot">
+					<plx:callThis name="UsesCustomFormat">
+						<plx:passParam>
+							<plx:callStatic name="PrimaryIdentifier" dataTypeName="ReferenceModeNamingUse" type="field"/>
+						</plx:passParam>
 						<plx:passParam>
 							<plx:trueKeyword/>
 						</plx:passParam>

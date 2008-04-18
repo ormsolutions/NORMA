@@ -881,6 +881,10 @@
 		<value>{0}-&gt;{1}</value>
 		<comment>String for generating a component name for a subtype. The {0} replacement field is used for the subtype component name; {1} for the supertype.</comment>
 	</data>
+	<data name="SubtypeFact.DefaultReadingText" xml:space="preserve">
+		<value>{0} is a subtype of {1}</value>
+		<comment>The format string for the default reading of a subtype. The {0} replacement field is used for the subtype element name; {1} for the supertype.</comment>
+	</data>
 	<data name="SubtypeFact.ElementNameFormat" xml:space="preserve">
 		<value>{0}IsASubtypeOf{1}</value>
 		<comment>The format string for the generated name of a subtype relationship. The {0} replacement field is used for the subtype element name; {1} for the supertype.</comment>

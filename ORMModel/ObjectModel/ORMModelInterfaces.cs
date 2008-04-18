@@ -123,7 +123,8 @@ namespace Neumont.Tools.ORM.ObjectModel
 		bool ActivateError(ModelElement selectedElement, ModelError error);
 		/// <summary>
 		/// Register a handler for a specific type of error. Error activators should be registered
-		/// during the initial call (isReload is false) of <see cref="IModelingEventSubscriber.ManagePostLoadModelingEventHandlers"/>
+		/// during initial DocumentLoaded call (DocumentReloading is not set) to
+		/// <see cref="IModelingEventSubscriber.ManageModelingEventHandlers"/>
 		/// </summary>
 		/// <param name="elementType">The type of element to handle</param>
 		/// <param name="registerDerivedTypes">Specify <see langword="true"/> to register derived types in addition to the specified type.

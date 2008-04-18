@@ -23,6 +23,40 @@ using System.ComponentModel;
 
 namespace Neumont.Tools.Modeling
 {
+	#region EventSubsriberReasons
+	/// <summary>
+	/// Reasons for a call to <see cref="IModelingEventSubscriber.ManageModelingEventHandlers"/>
+	/// </summary>
+	[Flags]
+	public enum EventSubscriberReasons
+	{
+		/// <summary>
+		/// Attach or detach events required for the document load process
+		/// </summary>
+		DocumentLoading = 1,
+		/// <summary>
+		/// Attach or detach events required for a fully loaded document
+		/// </summary>
+		DocumentLoaded = 2,
+		/// <summary>
+		/// Attach or detach events required to maintain model state even if
+		/// a user interface is not active.
+		/// </summary>
+		ModelStateEvents = 4,
+		/// <summary>
+		/// Attach or detach events required to update the user interface.
+		/// </summary>
+		UserInterfaceEvents = 8,
+		/// <summary>
+		/// Set when survey questions (used to load the model browser) are required
+		/// </summary>
+		SurveyQuestionEvents = 0x10,
+		/// <summary>
+		/// The document is reloading.
+		/// </summary>
+		DocumentReloading = 0x20,
+	}
+	#endregion // EventSubscriberReasons
 	#region IModelingEventSubscriber
 	/// <summary>
 	/// This interface provides needed methods that are required to add Events to the Object Model.
@@ -31,47 +65,19 @@ namespace Neumont.Tools.Modeling
 	{
 		/// <summary>
 		/// Manages modeling <see cref="EventHandler{TEventArgs}"/>s for the primary <see cref="Store"/>.
-		/// Called before the document is loaded and when <see cref="EventHandler{TEventArgs}"/>s are removed.
+		/// Called to both attach and detach events.
 		/// </summary>
 		/// <param name="eventManager">
 		/// The <see cref="ModelingEventManager"/> used to add or remove <see cref="EventHandler{TEventArgs}"/>s.
 		/// </param>
-		/// <param name="isReload">
-		/// The model is being reloaded.
+		/// <param name="reasons">
+		/// One or more <see cref="EventSubscriberReasons"/> indicating the set of events to attach or detach. Implementations
+		/// should check all reasons and make no assumptions about reason combinations, especially when a Remove action is specified.
 		/// </param>
 		/// <param name="action">
 		/// The <see cref="EventHandlerAction"/> that should be taken for the <see cref="EventHandler{TEventArgs}"/>s.
 		/// </param>
-		void ManagePreLoadModelingEventHandlers(ModelingEventManager eventManager, bool isReload, EventHandlerAction action);
-		/// <summary>
-		/// Manages modeling <see cref="EventHandler{TEventArgs}"/>s for the primary <see cref="Store"/>.
-		/// Called after the document is loaded and when <see cref="EventHandler{TEventArgs}"/>s are removed.
-		/// </summary>
-		/// <param name="eventManager">
-		/// The <see cref="ModelingEventManager"/> used to add or remove <see cref="EventHandler{TEventArgs}"/>s.
-		/// </param>
-		/// <param name="isReload">
-		/// The model is being reloaded.
-		/// </param>
-		/// <param name="action">
-		/// The <see cref="EventHandlerAction"/> that should be taken for the <see cref="EventHandler{TEventArgs}"/>s.
-		/// </param>
-		void ManagePostLoadModelingEventHandlers(ModelingEventManager eventManager, bool isReload, EventHandlerAction action);
-		/// <summary>
-		/// Manages modeling <see cref="EventHandler{TEventArgs}"/>s for the primary <see cref="Store"/>.
-		/// Called when survey questions (used to load the model browser) are required and when
-		/// <see cref="EventHandler{TEventArgs}"/>s are removed.
-		/// </summary>
-		/// <param name="eventManager">
-		/// The <see cref="ModelingEventManager"/> used to add or remove <see cref="EventHandler{TEventArgs}"/>s.
-		/// </param>
-		/// <param name="isReload">
-		/// The model is being reloaded.
-		/// </param>
-		/// <param name="action">
-		/// The <see cref="EventHandlerAction"/> that should be taken for the <see cref="EventHandler{TEventArgs}"/>s.
-		/// </param>
-		void ManageSurveyQuestionModelingEventHandlers(ModelingEventManager eventManager, bool isReload, EventHandlerAction action);
+		void ManageModelingEventHandlers(ModelingEventManager eventManager, EventSubscriberReasons reasons, EventHandlerAction action);
 	}
 	#endregion // IModelingEventSubscriber
 	#region EventHandlerAction enum

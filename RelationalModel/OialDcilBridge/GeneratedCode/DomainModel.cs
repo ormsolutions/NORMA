@@ -103,8 +103,12 @@ namespace Neumont.Tools.ORMAbstractionToConceptualDatabaseBridge
 				new DomainMemberInfo(typeof(AssimilationMapping), "AbsorptionChoice", AssimilationMapping.AbsorptionChoiceDomainPropertyId, typeof(AssimilationMapping.AbsorptionChoicePropertyHandler)),
 				new DomainMemberInfo(typeof(ReferenceModeNaming), "NamingChoice", ReferenceModeNaming.NamingChoiceDomainPropertyId, typeof(ReferenceModeNaming.NamingChoicePropertyHandler)),
 				new DomainMemberInfo(typeof(ReferenceModeNaming), "CustomFormat", ReferenceModeNaming.CustomFormatDomainPropertyId, typeof(ReferenceModeNaming.CustomFormatPropertyHandler)),
+				new DomainMemberInfo(typeof(ReferenceModeNaming), "PrimaryIdentifierNamingChoice", ReferenceModeNaming.PrimaryIdentifierNamingChoiceDomainPropertyId, typeof(ReferenceModeNaming.PrimaryIdentifierNamingChoicePropertyHandler)),
+				new DomainMemberInfo(typeof(ReferenceModeNaming), "PrimaryIdentifierCustomFormat", ReferenceModeNaming.PrimaryIdentifierCustomFormatDomainPropertyId, typeof(ReferenceModeNaming.PrimaryIdentifierCustomFormatPropertyHandler)),
 				new DomainMemberInfo(typeof(DefaultReferenceModeNaming), "NamingChoice", DefaultReferenceModeNaming.NamingChoiceDomainPropertyId, typeof(DefaultReferenceModeNaming.NamingChoicePropertyHandler)),
 				new DomainMemberInfo(typeof(DefaultReferenceModeNaming), "CustomFormat", DefaultReferenceModeNaming.CustomFormatDomainPropertyId, typeof(DefaultReferenceModeNaming.CustomFormatPropertyHandler)),
+				new DomainMemberInfo(typeof(DefaultReferenceModeNaming), "PrimaryIdentifierNamingChoice", DefaultReferenceModeNaming.PrimaryIdentifierNamingChoiceDomainPropertyId, typeof(DefaultReferenceModeNaming.PrimaryIdentifierNamingChoicePropertyHandler)),
+				new DomainMemberInfo(typeof(DefaultReferenceModeNaming), "PrimaryIdentifierCustomFormat", DefaultReferenceModeNaming.PrimaryIdentifierCustomFormatDomainPropertyId, typeof(DefaultReferenceModeNaming.PrimaryIdentifierCustomFormatPropertyHandler)),
 				new DomainMemberInfo(typeof(DefaultReferenceModeNaming), "ReferenceModeTargetKind", DefaultReferenceModeNaming.ReferenceModeTargetKindDomainPropertyId, typeof(DefaultReferenceModeNaming.ReferenceModeTargetKindPropertyHandler)),
 				new DomainMemberInfo(typeof(SchemaGenerationSetting), "CoreAlgorithmVersion", SchemaGenerationSetting.CoreAlgorithmVersionDomainPropertyId, typeof(SchemaGenerationSetting.CoreAlgorithmVersionPropertyHandler)),
 				new DomainMemberInfo(typeof(SchemaGenerationSetting), "NameAlgorithmVersion", SchemaGenerationSetting.NameAlgorithmVersionDomainPropertyId, typeof(SchemaGenerationSetting.NameAlgorithmVersionPropertyHandler)),
@@ -621,29 +625,6 @@ namespace Neumont.Tools.ORMAbstractionToConceptualDatabaseBridge
 		/// </summary>
 		[DslDesign::DescriptionResource("Neumont.Tools.ORMAbstractionToConceptualDatabaseBridge.EffectiveReferenceModeNamingChoice/CustomFormat.Description", typeof(global::Neumont.Tools.ORMAbstractionToConceptualDatabaseBridge.ORMAbstractionToConceptualDatabaseBridgeDomainModel), "Neumont.Tools.ORMAbstractionToConceptualDatabaseBridge.GeneratedCode.DomainModelResx")]
 		CustomFormat = 3,
-	}
-}
-namespace Neumont.Tools.ORMAbstractionToConceptualDatabaseBridge
-{
-	/// <summary>
-	/// DomainEnumeration: DefaultReferenceModeNamingTargetKind
-	/// Specifies the reference mode kind of a set of default reference mode.
-	/// </summary>
-	[global::System.CLSCompliant(true)]
-	public enum DefaultReferenceModeNamingTargetKind
-	{
-		/// <summary>
-		/// Popular
-		/// The popular reference mode.
-		/// </summary>
-		[DslDesign::DescriptionResource("Neumont.Tools.ORMAbstractionToConceptualDatabaseBridge.DefaultReferenceModeNamingTargetKind/Popular.Description", typeof(global::Neumont.Tools.ORMAbstractionToConceptualDatabaseBridge.ORMAbstractionToConceptualDatabaseBridgeDomainModel), "Neumont.Tools.ORMAbstractionToConceptualDatabaseBridge.GeneratedCode.DomainModelResx")]
-		Popular = 1,
-		/// <summary>
-		/// UnitBased
-		/// The unit based reference mode.
-		/// </summary>
-		[DslDesign::DescriptionResource("Neumont.Tools.ORMAbstractionToConceptualDatabaseBridge.DefaultReferenceModeNamingTargetKind/UnitBased.Description", typeof(global::Neumont.Tools.ORMAbstractionToConceptualDatabaseBridge.ORMAbstractionToConceptualDatabaseBridgeDomainModel), "Neumont.Tools.ORMAbstractionToConceptualDatabaseBridge.GeneratedCode.DomainModelResx")]
-		UnitBased = 2,
 	}
 }
 

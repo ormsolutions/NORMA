@@ -92,7 +92,7 @@
 	</se:DomainModel>
 	<!--Model-->
 	<se:Element Class="ORMModelElement">
-		<se:Container Name="Extensions">
+		<se:Container Name="Extensions" Prefix="orm">
 			<se:Embed RelationshipName="ORMModelElementHasExtensionElement" RoleName="Extension"/>
 		</se:Container>
 	</se:Element>
@@ -169,7 +169,7 @@
 			</se:Condition>
 		</se:Attribute>
 	</se:Element>
-	<se:Element Class="NameGenerator" SortChildElements="true">
+	<se:Element Class="NameGenerator" SortChildElements="true" UnsortedElementsFirst="true" Override="true">
 		<se:ConditionalSerialization>
 			<plx:return>
 				<plx:callThis name="RequiresSerialization"/>

@@ -177,6 +177,19 @@ namespace Neumont.Tools.ORM.ObjectModel
 			return elementGroupPrototype.UserData != ORMModel.InternalUniquenessConstraintUserDataKey;
 		}
 		#endregion // MergeContext functions
+		#region Event integration
+		/// <summary>
+		/// Manages <see cref="EventHandler{TEventArgs}"/>s in the <see cref="Store"/> for state in the
+		/// model that is not maintained automatically in the store.
+		/// </summary>
+		/// <param name="store">The <see cref="Store"/> for which the <see cref="EventHandler{TEventArgs}"/>s should be managed.</param>
+		/// <param name="eventManager">The <see cref="ModelingEventManager"/> used to manage the <see cref="EventHandler{TEventArgs}"/>s.</param>
+		/// <param name="action">The <see cref="EventHandlerAction"/> that should be taken for the <see cref="EventHandler{TEventArgs}"/>s.</param>
+		public static void ManageModelStateEventHandlers(Store store, ModelingEventManager eventManager, EventHandlerAction action)
+		{
+			ManageReferenceModeModelStateEventHandlers(store, eventManager, action);
+		}
+		#endregion // Event integration
 	}
 	#region NamedElementDictionary and DuplicateNameError integration
 	public partial class ORMModel : INamedElementDictionaryParent

@@ -378,7 +378,6 @@ namespace Neumont.Tools.ORM.Shell
 			Store store = this.Store;
 
 			Debug.Assert(base.InLoad);
-			store.TransactionManager.CurrentTransaction.TopLevelTransaction.Context.ContextInfo[NamedElementDictionary.DefaultAllowDuplicateNamesKey] = null;
 
 			if (stream.Length > 1)
 			{
@@ -499,9 +498,14 @@ namespace Neumont.Tools.ORM.Shell
 		{
 			Store store = Store;
 			ModelingEventManager eventManager = ModelingEventManager.GetModelingEventManager(store);
+			EventSubscriberReasons reasons = EventSubscriberReasons.DocumentLoading | EventSubscriberReasons.ModelStateEvents | EventSubscriberReasons.UserInterfaceEvents;
+			if (isReload)
+			{
+				reasons |= EventSubscriberReasons.DocumentReloading;
+			}
 			foreach (IModelingEventSubscriber subscriber in Utility.EnumerateDomainModels<IModelingEventSubscriber>(Store.DomainModels))
 			{
-				subscriber.ManagePreLoadModelingEventHandlers(eventManager, isReload, EventHandlerAction.Add);
+				subscriber.ManageModelingEventHandlers(eventManager, reasons, EventHandlerAction.Add);
 			}
 			SetFlag(PrivateFlags.AddedPreLoadEvents, true);
 		}
@@ -513,9 +517,14 @@ namespace Neumont.Tools.ORM.Shell
 		{
 			Store store = Store;
 			ModelingEventManager eventManager = ModelingEventManager.GetModelingEventManager(store);
+			EventSubscriberReasons reasons = EventSubscriberReasons.DocumentLoaded | EventSubscriberReasons.ModelStateEvents | EventSubscriberReasons.UserInterfaceEvents;
+			if (isReload)
+			{
+				reasons |= EventSubscriberReasons.DocumentReloading;
+			}
 			foreach (IModelingEventSubscriber subscriber in Utility.EnumerateDomainModels<IModelingEventSubscriber>(Store.DomainModels))
 			{
-				subscriber.ManagePostLoadModelingEventHandlers(eventManager, isReload, EventHandlerAction.Add);
+				subscriber.ManageModelingEventHandlers(eventManager, reasons, EventHandlerAction.Add);
 			}
 			ReloadSurveyTree(isReload);
 			ManageErrorReportingEvents(eventManager, EventHandlerAction.Add);
@@ -538,20 +547,26 @@ namespace Neumont.Tools.ORM.Shell
 			}
 			Store store = Store;
 			ModelingEventManager eventManager = ModelingEventManager.GetModelingEventManager(store);
+			EventSubscriberReasons reasons = EventSubscriberReasons.ModelStateEvents | EventSubscriberReasons.UserInterfaceEvents;
+			if (isReload)
+			{
+				reasons |= EventSubscriberReasons.DocumentReloading;
+			}
+			if (addedPreLoad)
+			{
+				reasons |= EventSubscriberReasons.DocumentLoading;
+			}
+			if (addedPostLoad)
+			{
+				reasons |= EventSubscriberReasons.DocumentLoaded;
+			}
+			if (addedSurveyQuestion)
+			{
+				reasons |= EventSubscriberReasons.SurveyQuestionEvents;
+			}
 			foreach (IModelingEventSubscriber subscriber in Utility.EnumerateDomainModels<IModelingEventSubscriber>(Store.DomainModels))
 			{
-				if (addedPreLoad)
-				{
-					subscriber.ManagePreLoadModelingEventHandlers(eventManager, isReload, EventHandlerAction.Remove);
-				}
-				if (addedPostLoad)
-				{
-					subscriber.ManagePostLoadModelingEventHandlers(eventManager, isReload, EventHandlerAction.Remove);
-				}
-				if (addedSurveyQuestion)
-				{
-					subscriber.ManageSurveyQuestionModelingEventHandlers(eventManager, isReload, EventHandlerAction.Remove);
-				}
+				subscriber.ManageModelingEventHandlers(eventManager, reasons, EventHandlerAction.Remove);
 			}
 			UnloadSurveyTree();
 			if (addedPostLoad)

@@ -532,6 +532,11 @@
 				<xs:documentation>All link and container elements should be explicitly sorted to force them to write out in a fixed order.</xs:documentation>
 			</xs:annotation>
 		</xs:attribute>
+		<xs:attribute name="UnsortedElementsFirst" type="canonicalBoolean" default="false">
+			<xs:annotation>
+				<xs:documentation>If SortChildElements is true and elements in a base class are unsorted, or child elements in this class are marked as unsorted, then all unsorted elements are placed after all sorted elements. However, this makes it very difficult to establish the element as the head of an XSD substitution group. Set UnsortedElementsFirst to true to place unsorted elements before sorted elements instead of after.</xs:documentation>
+			</xs:annotation>
+		</xs:attribute>
 		<xs:attributeGroup ref="ElementAttributes"/>
 		<xs:attribute name="Override" type="canonicalBoolean" default="false">
 			<xs:annotation>

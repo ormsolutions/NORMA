@@ -184,6 +184,7 @@
 	<ResourceString name="ValueTypeDefaultNamePattern" model="ObjectModel" resourceName="Neumont.Tools.ORM.ObjectModel.ValueType.DefaultNamePattern">
 		<comment>The base name used to create a name for a new ValueType. This is a format string with {0} being the placeholder for the number placement.</comment>
 	</ResourceString>
+	<ResourceString name="SubtypeFactDefaultReadingText" model="Model" resourceName="SubtypeFact.DefaultReadingText"/>
 	<ResourceString name="SubtypeFactElementNameFormat" model="Model" resourceName="SubtypeFact.ElementNameFormat"/>
 	<ResourceString name="SubtypeFactPredicateInverseReading" model="Model" resourceName="SubtypeFact.PredicateInverseReading"/>
 	<ResourceString name="SubtypeFactPredicateReading" model="Model" resourceName="SubtypeFact.PredicateReading"/>

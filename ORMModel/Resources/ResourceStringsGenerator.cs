@@ -412,6 +412,14 @@ namespace Neumont.Tools.ORM
 				return ResourceStrings.GetString(ResourceManagers.ObjectModel, "Neumont.Tools.ORM.ObjectModel.ValueType.DefaultNamePattern");
 			}
 		}
+		/// <summary>The format string for the default reading of a subtype. The {0} replacement field is used for the subtype element name; {1} for the supertype.</summary>
+		public static string SubtypeFactDefaultReadingText
+		{
+			get
+			{
+				return ResourceStrings.GetString(ResourceManagers.Model, "SubtypeFact.DefaultReadingText");
+			}
+		}
 		/// <summary>The format string for the generated name of a subtype relationship. The {0} replacement field is used for the subtype element name; {1} for the supertype.</summary>
 		public static string SubtypeFactElementNameFormat
 		{

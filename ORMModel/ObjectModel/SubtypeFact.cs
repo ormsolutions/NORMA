@@ -169,6 +169,14 @@ namespace Neumont.Tools.ORM.ObjectModel
 			}
 			return null;
 		}
+		/// <summary>
+		/// Provide the default implicit reading for a subtype fact
+		/// </summary>
+		/// <returns></returns>
+		protected override IReading GetDefaultImplicitReading()
+		{
+			return new ImplicitReading(ResourceStrings.SubtypeFactDefaultReadingText, new RoleBase[] { SubtypeRole, SupertypeRole });
+		}
 		#endregion // Implicit Reading Support
 		#region Initialize pattern rules
 		/// <summary>

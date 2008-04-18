@@ -69,9 +69,6 @@
 		<xs:attribute name="NameConsumer" type="xs:string" use="required"/>
 		<xs:attribute name="NameUsage" type="xs:string"/>
 	</xs:complexType>
-	<xs:complexType name="NameConsumer">
-		<xs:attribute name="NameUsage" type="xs:string" use="optional"/>
-	</xs:complexType>
 	<xs:complexType name="NotesType">
 		<xs:sequence minOccurs="0">
 			<xs:element name="Note" type="NoteType"/>
@@ -1523,6 +1520,7 @@
 			<xs:documentation>Name generation settings</xs:documentation>
 		</xs:annotation>
 		<xs:sequence>
+			<xs:element name="Extensions" type="Extensions" minOccurs="0"/>
 			<xs:element name="Refinements" minOccurs="0">
 				<xs:complexType>
 					<xs:sequence>

@@ -213,11 +213,11 @@ namespace Neumont.Tools.ORM.Views.RelationalView
 			// A boolean data type for unaries will not have an associated value type
 			if (valueType == null)
 			{
-				return "BIT";
+				return "BOOLEAN";
 			}
 			DataType dataType = valueType.DataType;
-			int precision = valueType.Length;
-			int scale = valueType.Scale;
+			int precision = Math.Max(valueType.Length, 0);
+			int scale = Math.Max(valueType.Scale, 0);
 			if (dataType is NumericDataType || dataType is OtherDataType)
 			{
 				if (dataType is AutoCounterNumericDataType || dataType is SignedIntegerNumericDataType || dataType is UnsignedIntegerNumericDataType)
@@ -244,30 +244,58 @@ namespace Neumont.Tools.ORM.Views.RelationalView
 				{
 					return "FLOAT" + (precision > 0 ? "(" + precision + ")" : string.Empty);
 				}
+				else if (dataType is UnsignedTinyIntegerNumericDataType)
+				{
+					return "TINYINT";
+				}
+				else if (dataType is MoneyNumericDataType)
+				{
+					if ((precision + scale) > 0)
+					{
+						return "DECIMAL(" + ((precision == 0) ? 19 : precision) + ", " + Math.Min((scale == 0) ? 4 : scale, 4) + ")";
+					}
+					return "DECIMAL(19, 4)";
+				}
 				else
 				{
-					return "DECIMAL(" + Math.Max(precision, 0) + ", " + Math.Max(scale, 0) + ")";
+					if ((precision + scale) > 0)
+					{
+						return "DECIMAL(" + ((precision == 0) ? null : precision.ToString()) + ", " + scale + ")";
+					}
+					return "DECIMAL";
 				}
 			}
 			else if (dataType is LogicalDataType)
 			{
-				return "BIT";
+				return "BOOLEAN";
 			}
-			else if (dataType is VariableLengthTextDataType || dataType is LargeLengthTextDataType)
+			else if (dataType is VariableLengthTextDataType)
 			{
-				return "NVARCHAR(" + (precision <= 0 ? "MAX" : precision.ToString()) + ")";
+				return "VARCHAR" + (precision > 0 ? "(" + precision.ToString() + ")" : null);
+			}
+			else if (dataType is LargeLengthTextDataType)
+			{
+				return "CLOB" + (precision > 0 ? "(" + precision.ToString() + ")" : null);
 			}
 			else if (dataType is FixedLengthTextDataType)
 			{
-				return "NCHAR(" + (precision <= 0 ? "MAX" : precision.ToString()) + ")";
+				return "CHAR" + (precision > 0 ? "(" + precision.ToString() + ")" : null);
 			}
 			else if (dataType is RawDataDataType)
 			{
-				return "VARBINARY(" + (precision <= 0 ? "MAX" : precision.ToString()) + ")";
+				return ((dataType is FixedLengthRawDataDataType) ? "BINARY" : ((dataType is LargeLengthRawDataDataType) ? "BLOB" : "VARBINARY")) + (precision > 0 ? "(" + precision.ToString() + ")" : null);
 			}
 			else if (dataType is TemporalDataType)
 			{
-				return "DATETIME";
+				if (dataType is DateTemporalDataType)
+				{
+					return "DATE";
+				}
+				else if (dataType is TimeTemporalDataType)
+				{
+					return "TIME";
+				}
+				return "TIMESTAMP";
 			}
 			else
 			{

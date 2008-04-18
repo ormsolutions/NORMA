@@ -24,38 +24,31 @@ namespace Neumont.Tools.ORM.ShapeModel
 	{
 		#region IModelingEventSubscriber Implementation
 		/// <summary>
-		/// Implements <see cref="IModelingEventSubscriber.ManagePreLoadModelingEventHandlers"/>.
-		/// This implementation does nothing and does not need to be called.
+		/// Implements <see cref="IModelingEventSubscriber.ManageModelingEventHandlers"/>.
 		/// </summary>
-		void IModelingEventSubscriber.ManagePreLoadModelingEventHandlers(ModelingEventManager eventManager, bool isReload, EventHandlerAction action)
+		protected void ManageModelingEventHandlers(ModelingEventManager eventManager, EventSubscriberReasons reasons, EventHandlerAction action)
 		{
+			// UNDONE: If we delay attach user interface events (possible in the future for
+			// external model scenarios), then we need to check ModelStateEvents here and
+			// be more precise in which events are attached that affect model state such as
+			// calculated shape size. Currently, this is only called without 'UserInterfaceEvents'
+			// for unit-testing.
+			if ((EventSubscriberReasons.DocumentLoaded | EventSubscriberReasons.UserInterfaceEvents) == (reasons & (EventSubscriberReasons.DocumentLoaded | EventSubscriberReasons.UserInterfaceEvents)))
+			{
+				Store store = Store;
+				ORMBaseShape.ManageEventHandlers(store, eventManager, action);
+				ReadingShape.ManageEventHandlers(store, eventManager, action);
+				ExternalConstraintShape.ManageEventHandlers(store, eventManager, action);
+				RolePlayerLink.ManageEventHandlers(store, eventManager, action);
+				ObjectTypeShape.ManageEventHandlers(store, eventManager, action);
+				ORMBaseBinaryLinkShape.ManageEventHandlers(store, eventManager, action);
+				FactTypeShape.ManageEventHandlers(store, eventManager, action);
+				SubtypeLink.ManageEventHandlers(store, eventManager, action);
+			}
 		}
-		/// <summary>
-		/// Implements <see cref="IModelingEventSubscriber.ManagePostLoadModelingEventHandlers"/>.
-		/// </summary>
-		protected void ManagePostLoadModelingEventHandlers(ModelingEventManager eventManager, bool isReload, EventHandlerAction action)
+		void IModelingEventSubscriber.ManageModelingEventHandlers(ModelingEventManager eventManager, EventSubscriberReasons reasons, EventHandlerAction action)
 		{
-			Store store = Store;
-			ORMBaseShape.ManageEventHandlers(store, eventManager, action);
-			ReadingShape.ManageEventHandlers(store, eventManager, action);
-			ExternalConstraintShape.ManageEventHandlers(store, eventManager, action);
-			RolePlayerLink.ManageEventHandlers(store, eventManager, action);
-			ObjectTypeShape.ManageEventHandlers(store, eventManager, action);
-			ORMBaseBinaryLinkShape.ManageEventHandlers(store, eventManager, action);
-			FactTypeShape.ManageEventHandlers(store, eventManager, action);
-			SubtypeLink.ManageEventHandlers(store, eventManager, action);
-		}
-		void IModelingEventSubscriber.ManagePostLoadModelingEventHandlers(ModelingEventManager eventManager, bool isReload, EventHandlerAction action)
-		{
-			ManagePostLoadModelingEventHandlers(eventManager, isReload, action);
-		}
-		/// <summary>
-		/// Implements <see cref="IModelingEventSubscriber.ManageSurveyQuestionModelingEventHandlers"/>.
-		/// This implementation does nothing and does not need to be called.
-		/// </summary>
-		void IModelingEventSubscriber.ManageSurveyQuestionModelingEventHandlers(ModelingEventManager eventManager, bool isReload, EventHandlerAction action)
-		{
-			//currently unimplemented as the survey doesn't care about shape model changes
+			ManageModelingEventHandlers(eventManager, reasons, action);
 		}
 		#endregion // IModelingEventSubscriber Implementation
 	}

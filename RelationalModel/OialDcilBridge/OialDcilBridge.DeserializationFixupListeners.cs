@@ -51,7 +51,7 @@ namespace Neumont.Tools.ORMAbstractionToConceptualDatabaseBridge
 		/// <summary>
 		/// The algorithm version written to the file for the name generation algorithm
 		/// </summary>
-		public const string CurrentNameAlgorithmVersion = "1.001";
+		public const string CurrentNameAlgorithmVersion = "1.002";
 		#endregion // Algorithm Version Constants
 		#region Fully populate from OIAL
 		#region AssimilationPath class
@@ -1722,6 +1722,7 @@ namespace Neumont.Tools.ORMAbstractionToConceptualDatabaseBridge
 			{
 				yield return new GenerateConceptualDatabaseFixupListener();
 				yield return AssimilationMapping.FixupListener;
+				yield return ReferenceModeNaming.FixupListener;
 			}
 		}
 		IEnumerable<IDeserializationFixupListener> IDeserializationFixupListenerProvider.DeserializationFixupListenerCollection

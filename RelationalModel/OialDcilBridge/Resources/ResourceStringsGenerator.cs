@@ -92,6 +92,14 @@ namespace Neumont.Tools.ORMAbstractionToConceptualDatabaseBridge
 				return ResourceStrings.GetString(ResourceManagers.CustomizationModel, "ObjectTypeAbsorptionChoiceProperty.DisplayName");
 			}
 		}
+		/// <summary>The name of the identifier column for a ValueType mapped to its own top-level table.</summary>
+		public static string NameGenerationValueTypeValueColumn
+		{
+			get
+			{
+				return ResourceStrings.GetString(ResourceManagers.CustomizationModel, "NameGeneration.ValueTypeValueColumn");
+			}
+		}
 		/// <summary>The displayed form of the ModelDefault value in the dropdown list when the ModelDefault is CustomFormat</summary>
 		public static string ReferenceModeNamingCurrentModelDefaultCustomFormat
 		{
@@ -156,148 +164,260 @@ namespace Neumont.Tools.ORMAbstractionToConceptualDatabaseBridge
 				return ResourceStrings.GetString(ResourceManagers.CustomizationModel, "ReferenceModeNaming.CurrentFormatString.ValueTypeName");
 			}
 		}
-		/// <summary>The description for the ReferenceModeNamingCustomFormat property on an ObjectType. Displays as a detailed description in the Properties Window.</summary>
+		/// <summary>The description for the ReferencedEntityTypeCustomFormat property on an ObjectType. Displays as a detailed description in the Properties Window.</summary>
 		public static string ReferenceModeNamingCustomFormatPropertyDescription
 		{
 			get
 			{
-				return ResourceStrings.GetString(ResourceManagers.CustomizationModel, "ReferenceModeNamingCustomFormatProperty.Description");
+				return ResourceStrings.GetString(ResourceManagers.CustomizationModel, "ReferenceModeNaming.CustomFormatProperty.Description");
 			}
 		}
-		/// <summary>The display name for the ReferenceModeNamingCustomFormat property on an ObjectType. Displays as the name of a property in the Properties Window.</summary>
+		/// <summary>The display name for the ReferencedEntityTypeCustomFormat property on an ObjectType. Displays as the name of a property in the Properties Window.</summary>
 		public static string ReferenceModeNamingCustomFormatPropertyDisplayName
 		{
 			get
 			{
-				return ResourceStrings.GetString(ResourceManagers.CustomizationModel, "ReferenceModeNamingCustomFormatProperty.DisplayName");
+				return ResourceStrings.GetString(ResourceManagers.CustomizationModel, "ReferenceModeNaming.CustomFormatProperty.DisplayName");
 			}
 		}
-		/// <summary>The format string to use when the ReferenceModeNamingCustomFormat property is modified. Shown in the undo dropdown in VS.</summary>
+		/// <summary>The format string to use when the ReferencedEntityTypeCustomFormat property is modified. Shown in the undo dropdown in VS.</summary>
 		public static string ReferenceModeNamingCustomFormatPropertyTransactionName
 		{
 			get
 			{
-				return ResourceStrings.GetString(ResourceManagers.CustomizationModel, "ReferenceModeNamingCustomFormatProperty.TransactionName");
+				return ResourceStrings.GetString(ResourceManagers.CustomizationModel, "ReferenceModeNaming.CustomFormatProperty.TransactionName");
 			}
 		}
-		/// <summary>The description for the ReferenceModeNaming property on an ObjectType. Displays as a detailed description in the Properties Window.</summary>
+		/// <summary>Value displayed for any modified state of the grouped reference mode customization options.</summary>
+		public static string ReferenceModeNamingDefaultGroupDisplayValueCustom
+		{
+			get
+			{
+				return ResourceStrings.GetString(ResourceManagers.CustomizationModel, "ReferenceModeNaming.DefaultGroup.DisplayValue.Custom");
+			}
+		}
+		/// <summary>Value displayed for the default state of the  grouped reference mode customization options.</summary>
+		public static string ReferenceModeNamingDefaultGroupDisplayValueDefault
+		{
+			get
+			{
+				return ResourceStrings.GetString(ResourceManagers.CustomizationModel, "ReferenceModeNaming.DefaultGroup.DisplayValue.Default");
+			}
+		}
+		/// <summary>The description for the GeneralReferenceModeNames property on an ORMModel. Displays as a detailed description in the Properties Window.</summary>
+		public static string ReferenceModeNamingDefaultGroupGeneralDescription
+		{
+			get
+			{
+				return ResourceStrings.GetString(ResourceManagers.CustomizationModel, "ReferenceModeNaming.DefaultGroup.General.Description");
+			}
+		}
+		/// <summary>The display name for the GeneralBasedReferenceModeNames property on an ORMModel. Displays as the name of a property in the Properties Window.</summary>
+		public static string ReferenceModeNamingDefaultGroupGeneralDisplayName
+		{
+			get
+			{
+				return ResourceStrings.GetString(ResourceManagers.CustomizationModel, "ReferenceModeNaming.DefaultGroup.General.DisplayName");
+			}
+		}
+		/// <summary>The description for the PopularReferenceModeNames property on an ORMModel. Displays as a detailed description in the Properties Window.</summary>
+		public static string ReferenceModeNamingDefaultGroupPopularDescription
+		{
+			get
+			{
+				return ResourceStrings.GetString(ResourceManagers.CustomizationModel, "ReferenceModeNaming.DefaultGroup.Popular.Description");
+			}
+		}
+		/// <summary>The display name for the PopularReferenceModeNames property on an ORMModel. Displays as the name of a property in the Properties Window.</summary>
+		public static string ReferenceModeNamingDefaultGroupPopularDisplayName
+		{
+			get
+			{
+				return ResourceStrings.GetString(ResourceManagers.CustomizationModel, "ReferenceModeNaming.DefaultGroup.Popular.DisplayName");
+			}
+		}
+		/// <summary>The description for the UnitBasedReferenceModeNames property on an ORMModel. Displays as a detailed description in the Properties Window.</summary>
+		public static string ReferenceModeNamingDefaultGroupUnitBasedDescription
+		{
+			get
+			{
+				return ResourceStrings.GetString(ResourceManagers.CustomizationModel, "ReferenceModeNaming.DefaultGroup.UnitBased.Description");
+			}
+		}
+		/// <summary>The display name for the UnitBasedReferenceModeNames property on an ORMModel. Displays as the name of a property in the Properties Window.</summary>
+		public static string ReferenceModeNamingDefaultGroupUnitBasedDisplayName
+		{
+			get
+			{
+				return ResourceStrings.GetString(ResourceManagers.CustomizationModel, "ReferenceModeNaming.DefaultGroup.UnitBased.DisplayName");
+			}
+		}
+		/// <summary>The description for the ReferencedEntityTypeName property on an ObjectType. Displays as a detailed description in the Properties Window.</summary>
 		public static string ReferenceModeNamingNamingChoicePropertyDescription
 		{
 			get
 			{
-				return ResourceStrings.GetString(ResourceManagers.CustomizationModel, "ReferenceModeNamingNamingChoiceProperty.Description");
+				return ResourceStrings.GetString(ResourceManagers.CustomizationModel, "ReferenceModeNaming.NamingChoiceProperty.Description");
 			}
 		}
-		/// <summary>The display name for the ReferenceModeNaming property on an ObjectType. Displays as the name of a property in the Properties Window.</summary>
+		/// <summary>The display name for the ReferencedEntityTypeName property on an ObjectType. Displays as the name of a property in the Properties Window.</summary>
 		public static string ReferenceModeNamingNamingChoicePropertyDisplayName
 		{
 			get
 			{
-				return ResourceStrings.GetString(ResourceManagers.CustomizationModel, "ReferenceModeNamingNamingChoiceProperty.DisplayName");
+				return ResourceStrings.GetString(ResourceManagers.CustomizationModel, "ReferenceModeNaming.NamingChoiceProperty.DisplayName");
 			}
 		}
-		/// <summary>The format string to use when the ReferenceModeNaming property is modified. Shown in the undo dropdown in VS.</summary>
+		/// <summary>The format string to use when the ReferencedEntityTypeName property is modified. Shown in the undo dropdown in VS.</summary>
 		public static string ReferenceModeNamingNamingChoicePropertyTransactionName
 		{
 			get
 			{
-				return ResourceStrings.GetString(ResourceManagers.CustomizationModel, "ReferenceModeNamingNamingChoiceProperty.TransactionName");
+				return ResourceStrings.GetString(ResourceManagers.CustomizationModel, "ReferenceModeNaming.NamingChoiceProperty.TransactionName");
 			}
 		}
-		/// <summary>The description for the PopularReferenceModeNamingCustomFormat property on an ORMModel. Displays as a detailed description in the Properties Window.</summary>
-		public static string ReferenceModeNamingPopularCustomFormatPropertyDescription
+		/// <summary>The description for the PrimaryIdentifierCustomFormat property on an ObjectType. Displays as a detailed description in the Properties Window.</summary>
+		public static string ReferenceModeNamingPrimaryIdentifierCustomFormatPropertyDescription
 		{
 			get
 			{
-				return ResourceStrings.GetString(ResourceManagers.CustomizationModel, "ReferenceModeNamingPopularCustomFormatProperty.Description");
+				return ResourceStrings.GetString(ResourceManagers.CustomizationModel, "ReferenceModeNaming.PrimaryIdentifierCustomFormatProperty.Description");
 			}
 		}
-		/// <summary>The display name for the PopularReferenceModeNamingCustomFormat property on an ORMModel. Displays as the name of a property in the Properties Window.</summary>
-		public static string ReferenceModeNamingPopularCustomFormatPropertyDisplayName
+		/// <summary>The display name for the PrimaryIdentifierCustomFormat property on an ObjectType. Displays as the name of a property in the Properties Window.</summary>
+		public static string ReferenceModeNamingPrimaryIdentifierCustomFormatPropertyDisplayName
 		{
 			get
 			{
-				return ResourceStrings.GetString(ResourceManagers.CustomizationModel, "ReferenceModeNamingPopularCustomFormatProperty.DisplayName");
+				return ResourceStrings.GetString(ResourceManagers.CustomizationModel, "ReferenceModeNaming.PrimaryIdentifierCustomFormatProperty.DisplayName");
 			}
 		}
-		/// <summary>The format string to use when the PopularReferenceModeNamingCustomFormat property is modified. Shown in the undo dropdown in VS.</summary>
-		public static string ReferenceModeNamingPopularCustomFormatPropertyTransactionName
+		/// <summary>The format string to use when the PrimaryIdentifierCustomFormat property is modified. Shown in the undo dropdown in VS.</summary>
+		public static string ReferenceModeNamingPrimaryIdentifierCustomFormatPropertyTransactionName
 		{
 			get
 			{
-				return ResourceStrings.GetString(ResourceManagers.CustomizationModel, "ReferenceModeNamingPopularCustomFormatProperty.TransactionName");
+				return ResourceStrings.GetString(ResourceManagers.CustomizationModel, "ReferenceModeNaming.PrimaryIdentifierCustomFormatProperty.TransactionName");
 			}
 		}
-		/// <summary>The description for the PopularReferenceModeNaming property on an ORMModel. Displays as a detailed description in the Properties Window.</summary>
-		public static string ReferenceModeNamingPopularNamingChoicePropertyDescription
+		/// <summary>The description for the PrimaryIdentifierName property on an ObjectType. Displays as a detailed description in the Properties Window.</summary>
+		public static string ReferenceModeNamingPrimaryIdentifierNamingChoicePropertyDescription
 		{
 			get
 			{
-				return ResourceStrings.GetString(ResourceManagers.CustomizationModel, "ReferenceModeNamingPopularNamingChoiceProperty.Description");
+				return ResourceStrings.GetString(ResourceManagers.CustomizationModel, "ReferenceModeNaming.PrimaryIdentifierNamingChoiceProperty.Description");
 			}
 		}
-		/// <summary>The display name for the PopularReferenceModeNaming property on an ORMModel. Displays as the name of a property in the Properties Window.</summary>
-		public static string ReferenceModeNamingPopularNamingChoicePropertyDisplayName
+		/// <summary>The display name for the PrimaryIdentifierName property on an ObjectType. Displays as the name of a property in the Properties Window.</summary>
+		public static string ReferenceModeNamingPrimaryIdentifierNamingChoicePropertyDisplayName
 		{
 			get
 			{
-				return ResourceStrings.GetString(ResourceManagers.CustomizationModel, "ReferenceModeNamingPopularNamingChoiceProperty.DisplayName");
+				return ResourceStrings.GetString(ResourceManagers.CustomizationModel, "ReferenceModeNaming.PrimaryIdentifierNamingChoiceProperty.DisplayName");
 			}
 		}
-		/// <summary>The format string to use when the PopularReferenceModeNaming property is modified. Shown in the undo dropdown in VS.</summary>
-		public static string ReferenceModeNamingPopularNamingChoicePropertyTransactionName
+		/// <summary>The format string to use when the PrimaryIdentifierName property is modified. Shown in the undo dropdown in VS.</summary>
+		public static string ReferenceModeNamingPrimaryIdentifierNamingChoicePropertyTransactionName
 		{
 			get
 			{
-				return ResourceStrings.GetString(ResourceManagers.CustomizationModel, "ReferenceModeNamingPopularNamingChoiceProperty.TransactionName");
+				return ResourceStrings.GetString(ResourceManagers.CustomizationModel, "ReferenceModeNaming.PrimaryIdentifierNamingChoiceProperty.TransactionName");
 			}
 		}
-		/// <summary>The description for the UnitBasedReferenceModeNamingCustomFormat property on an ORMModel. Displays as a detailed description in the Properties Window.</summary>
-		public static string ReferenceModeNamingUnitBasedCustomFormatPropertyDescription
+		/// <summary>The description for the ReferencedEntityTypeCustomFormat property on ReferenceModeType-scoped naming options on an ORMModel. Displays as a detailed description in the Properties Window.</summary>
+		public static string ReferenceModeNamingDefaultCustomFormatPropertyDescription
 		{
 			get
 			{
-				return ResourceStrings.GetString(ResourceManagers.CustomizationModel, "ReferenceModeNamingUnitBasedCustomFormatProperty.Description");
+				return ResourceStrings.GetString(ResourceManagers.CustomizationModel, "ReferenceModeNaming.DefaultCustomFormatProperty.Description");
 			}
 		}
-		/// <summary>The display name for the UnitBasedReferenceModeNamingCustomFormat property on an ORMModel. Displays as the name of a property in the Properties Window.</summary>
-		public static string ReferenceModeNamingUnitBasedCustomFormatPropertyDisplayName
+		/// <summary>The display name for the ReferencedEntityTypeCustomFormat property on ReferenceModeType-scoped naming options on an ORMModel. Displays as the name of a property in the Properties Window.</summary>
+		public static string ReferenceModeNamingDefaultCustomFormatPropertyDisplayName
 		{
 			get
 			{
-				return ResourceStrings.GetString(ResourceManagers.CustomizationModel, "ReferenceModeNamingUnitBasedCustomFormatProperty.DisplayName");
+				return ResourceStrings.GetString(ResourceManagers.CustomizationModel, "ReferenceModeNaming.DefaultCustomFormatProperty.DisplayName");
 			}
 		}
-		/// <summary>The format string to use when the UnitBasedReferenceModeNamingCustomFormat property is modified. Shown in the undo dropdown in VS.</summary>
-		public static string ReferenceModeNamingUnitBasedCustomFormatPropertyTransactionName
+		/// <summary>The format string to use when the ReferencedEntityTypeCustomFormat property is modified. Shown in the undo dropdown in VS.</summary>
+		public static string ReferenceModeNamingDefaultCustomFormatPropertyTransactionName
 		{
 			get
 			{
-				return ResourceStrings.GetString(ResourceManagers.CustomizationModel, "ReferenceModeNamingUnitBasedCustomFormatProperty.TransactionName");
+				return ResourceStrings.GetString(ResourceManagers.CustomizationModel, "ReferenceModeNaming.DefaultCustomFormatProperty.TransactionName");
 			}
 		}
-		/// <summary>The description for the UnitBasedReferenceModeNaming property on an ORMModel. Displays as a detailed description in the Properties Window.</summary>
-		public static string ReferenceModeNamingUnitBasedNamingChoicePropertyDescription
+		/// <summary>The description for the ReferencedEntityTypeName property on ReferenceModeType-scoped naming options on an ORMModel. Displays as a detailed description in the Properties Window.</summary>
+		public static string ReferenceModeNamingDefaultNamingChoicePropertyDescription
 		{
 			get
 			{
-				return ResourceStrings.GetString(ResourceManagers.CustomizationModel, "ReferenceModeNamingUnitBasedNamingChoiceProperty.Description");
+				return ResourceStrings.GetString(ResourceManagers.CustomizationModel, "ReferenceModeNaming.DefaultNamingChoiceProperty.Description");
 			}
 		}
-		/// <summary>The display name for the UnitBasedReferenceModeNaming property on an ORMModel. Displays as the name of a property in the Properties Window.</summary>
-		public static string ReferenceModeNamingUnitBasedNamingChoicePropertyDisplayName
+		/// <summary>The display name for the ReferencedEntityTypeName property on ReferenceModeType-scoped naming options on an ORMModel. Displays as the name of a property in the Properties Window.</summary>
+		public static string ReferenceModeNamingDefaultNamingChoicePropertyDisplayName
 		{
 			get
 			{
-				return ResourceStrings.GetString(ResourceManagers.CustomizationModel, "ReferenceModeNamingUnitBasedNamingChoiceProperty.DisplayName");
+				return ResourceStrings.GetString(ResourceManagers.CustomizationModel, "ReferenceModeNaming.DefaultNamingChoiceProperty.DisplayName");
 			}
 		}
-		/// <summary>The format string to use when the UnitBasedReferenceModeNaming property is modified. Shown in the undo dropdown in VS.</summary>
-		public static string ReferenceModeNamingUnitBasedNamingChoicePropertyTransactionName
+		/// <summary>The format string to use when the ReferencedEntityTypeName property is modified. Shown in the undo dropdown in VS.</summary>
+		public static string ReferenceModeNamingDefaultNamingChoicePropertyTransactionName
 		{
 			get
 			{
-				return ResourceStrings.GetString(ResourceManagers.CustomizationModel, "ReferenceModeNamingUnitBasedNamingChoiceProperty.TransactionName");
+				return ResourceStrings.GetString(ResourceManagers.CustomizationModel, "ReferenceModeNaming.DefaultNamingChoiceProperty.TransactionName");
+			}
+		}
+		/// <summary>The description for the PrimaryIdentifierCustomFormat property on ReferenceModeType-scoped naming options on an ORMModel. Displays as a detailed description in the Properties Window.</summary>
+		public static string ReferenceModeNamingDefaultPrimaryIdentifierCustomFormatPropertyDescription
+		{
+			get
+			{
+				return ResourceStrings.GetString(ResourceManagers.CustomizationModel, "ReferenceModeNaming.DefaultPrimaryIdentifierCustomFormatProperty.Description");
+			}
+		}
+		/// <summary>The display name for the PrimaryIdentifierCustomFormat property on ReferenceModeType-scoped naming options on an ORMModel. Displays as the name of a property in the Properties Window.</summary>
+		public static string ReferenceModeNamingDefaultPrimaryIdentifierCustomFormatPropertyDisplayName
+		{
+			get
+			{
+				return ResourceStrings.GetString(ResourceManagers.CustomizationModel, "ReferenceModeNaming.DefaultPrimaryIdentifierCustomFormatProperty.DisplayName");
+			}
+		}
+		/// <summary>The format string to use when the PrimaryIdentifierCustomFormat property is modified. Shown in the undo dropdown in VS.</summary>
+		public static string ReferenceModeNamingDefaultPrimaryIdentifierCustomFormatPropertyTransactionName
+		{
+			get
+			{
+				return ResourceStrings.GetString(ResourceManagers.CustomizationModel, "ReferenceModeNaming.DefaultPrimaryIdentifierCustomFormatProperty.TransactionName");
+			}
+		}
+		/// <summary>The description for the PrimaryIdentifierName property on ReferenceModeType-scoped naming options on an ORMModel. Displays as a detailed description in the Properties Window.</summary>
+		public static string ReferenceModeNamingDefaultPrimaryIdentifierNamingChoicePropertyDescription
+		{
+			get
+			{
+				return ResourceStrings.GetString(ResourceManagers.CustomizationModel, "ReferenceModeNaming.DefaultPrimaryIdentifierNamingChoiceProperty.Description");
+			}
+		}
+		/// <summary>The display name for the PrimaryIdentifierName property on ReferenceModeType-scoped naming options on an ORMModel. Displays as the name of a property in the Properties Window.</summary>
+		public static string ReferenceModeNamingDefaultPrimaryIdentifierNamingChoicePropertyDisplayName
+		{
+			get
+			{
+				return ResourceStrings.GetString(ResourceManagers.CustomizationModel, "ReferenceModeNaming.DefaultPrimaryIdentifierNamingChoiceProperty.DisplayName");
+			}
+		}
+		/// <summary>The format string to use when the PrimaryIdentifierName property is modified. Shown in the undo dropdown in VS.</summary>
+		public static string ReferenceModeNamingDefaultPrimaryIdentifierNamingChoicePropertyTransactionName
+		{
+			get
+			{
+				return ResourceStrings.GetString(ResourceManagers.CustomizationModel, "ReferenceModeNaming.DefaultPrimaryIdentifierNamingChoiceProperty.TransactionName");
 			}
 		}
 		/// <summary>The short form of the parseable replacement field for an EntityTypeName in the CustomFormat editor.</summary>
@@ -348,6 +468,14 @@ namespace Neumont.Tools.ORMAbstractionToConceptualDatabaseBridge
 				return ResourceStrings.GetString(ResourceManagers.CustomizationModel, "ReferenceModeNaming.DisplayedReplacementField.ValueTypeName");
 			}
 		}
+		/// <summary>Custom formatting for a general reference mode defaults to {EntityType}{ReferenceMode}.</summary>
+		public static string ReferenceModeNamingDefaultCustomFormatGeneral
+		{
+			get
+			{
+				return ResourceStrings.GetString(ResourceManagers.CustomizationModel, "ReferenceModeNaming.DefaultCustomFormat.General");
+			}
+		}
 		/// <summary>Custom formatting for a popular reference mode defaults to {EntityType}{ReferenceMode}.</summary>
 		public static string ReferenceModeNamingDefaultCustomFormatPopular
 		{
@@ -356,12 +484,36 @@ namespace Neumont.Tools.ORMAbstractionToConceptualDatabaseBridge
 				return ResourceStrings.GetString(ResourceManagers.CustomizationModel, "ReferenceModeNaming.DefaultCustomFormat.Popular");
 			}
 		}
-		/// <summary>Custom formatting for a unit-base reference mode defaults to {ReferenceMode}{EntityType}.</summary>
+		/// <summary>Custom formatting for a unit-based reference mode defaults to {ReferenceMode}{EntityType}.</summary>
 		public static string ReferenceModeNamingDefaultCustomFormatUnitBased
 		{
 			get
 			{
 				return ResourceStrings.GetString(ResourceManagers.CustomizationModel, "ReferenceModeNaming.DefaultCustomFormat.UnitBased");
+			}
+		}
+		/// <summary>Custom formatting for a general reference mode used as a primary identifier defaults to {EntityType}{ReferenceMode}.</summary>
+		public static string ReferenceModeNamingDefaultPrimaryIdentifierCustomFormatGeneral
+		{
+			get
+			{
+				return ResourceStrings.GetString(ResourceManagers.CustomizationModel, "ReferenceModeNaming.DefaultPrimaryIdentifierCustomFormat.General");
+			}
+		}
+		/// <summary>Custom formatting for a popular reference mode used as a primary identifier defaults to {EntityType}{ReferenceMode}.</summary>
+		public static string ReferenceModeNamingDefaultPrimaryIdentifierCustomFormatPopular
+		{
+			get
+			{
+				return ResourceStrings.GetString(ResourceManagers.CustomizationModel, "ReferenceModeNaming.DefaultPrimaryIdentifierCustomFormat.Popular");
+			}
+		}
+		/// <summary>Custom formatting for a unit-based reference mode used as a primary identifier defaults to {ReferenceMode}{EntityType}.</summary>
+		public static string ReferenceModeNamingDefaultPrimaryIdentifierCustomFormatUnitBased
+		{
+			get
+			{
+				return ResourceStrings.GetString(ResourceManagers.CustomizationModel, "ReferenceModeNaming.DefaultPrimaryIdentifierCustomFormat.UnitBased");
 			}
 		}
 		/// <summary>The text for the exception thrown when an attempt is made to enter a default custom format with no replacement fields.</summary>

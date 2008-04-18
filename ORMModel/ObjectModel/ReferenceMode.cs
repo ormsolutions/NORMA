@@ -28,8 +28,31 @@ using System.Text.RegularExpressions;
 
 namespace Neumont.Tools.ORM.ObjectModel
 {
+	#region IReferenceModePattern interface
+	/// <summary>
+	/// A read-only interface representing a reference mode pattern.
+	/// </summary>
+	public interface IReferenceModePattern
+	{
+		/// <summary>
+		/// The name of the reference mode
+		/// </summary>
+		string Name { get;}
+		/// <summary>
+		/// The FormatString used to combine the name of an EntityType
+		/// and the name of the ReferenceMode into a ValueType name.
+		/// Field {0} is the name of the EntityType and field {1} is the
+		/// name of the reference mode.
+		/// </summary>
+		string FormatString { get;}
+		/// <summary>
+		/// The <see cref="T:ReferenceModeType"/>
+		/// </summary>
+		ReferenceModeType ReferenceModeType { get;}
+	}
+	#endregion // IReferenceModePattern interface
 	#region ReferenceMode class
-	public abstract partial class ReferenceMode : IComparable<ReferenceMode>
+	partial class ReferenceMode : IComparable<ReferenceMode>, IReferenceModePattern
 	{
 		#region ReferenceMode specific
 		/// <summary>
@@ -102,6 +125,26 @@ namespace Neumont.Tools.ORM.ObjectModel
 			}
 		}
 		#endregion // ReferenceMode specific
+		#region IReferenceModePattern implementation
+		/// <summary>
+		/// Implements <see cref="IReferenceModePattern.ReferenceModeType"/>
+		/// </summary>
+		protected ReferenceModeType ReferenceModeType
+		{
+			get
+			{
+				ReferenceModeKind kind = this.Kind;
+				return (kind != null) ? kind.ReferenceModeType : ReferenceModeType.General;
+			}
+		}
+		ReferenceModeType IReferenceModePattern.ReferenceModeType
+		{
+			get
+			{
+				return ReferenceModeType;
+			}
+		}
+		#endregion // IReferenceModePattern implementation
 		#region Deserialization Fixup
 		/// <summary>
 		/// Return a deserialization fixup listener. The listener
@@ -553,6 +596,74 @@ namespace Neumont.Tools.ORM.ObjectModel
 			}
 		}
 		#endregion // CustomStorage handlers
+		#region FixedValueTypeName cache
+		private string myFixedValueTypeName;
+		/// <summary>
+		/// Return the name of a ValueType that would always be
+		/// associated with the current structure of this <see cref="ReferenceMode"/>,
+		/// or <see langword="null"/> if this is not a General or UnitBased <see cref="ReferenceMode"/>
+		/// </summary>
+		public string FixedValueTypeName
+		{
+			get
+			{
+				string retVal = myFixedValueTypeName;
+				if (retVal == null)
+				{
+					retVal = "";
+					ReferenceModeKind kind;
+					if (null != (kind = this.Kind) &&
+						kind.ReferenceModeType != ReferenceModeType.Popular)
+					{
+						retVal = GenerateValueTypeName("\x1", this.FormatString, this.Name);
+						if (retVal.Contains("\x1"))
+						{
+							// Sanity test, violates the expected patterns
+							retVal = "";
+						}
+					}
+					myFixedValueTypeName = retVal;
+				}
+				return (retVal.Length != 0) ? retVal : null;
+			}
+		}
+		/// <summary>
+		/// Internal accessor for integration with <see cref="ORMModel.GetReferenceModeForValueType"/>
+		/// </summary>
+		internal string ResetFixedValueTypeName()
+		{
+			// Internal justification: the FixedValueTypeName property is used in conjunction with
+			// the ORMModel.GetReferenceModeForValueType method. This internal property is used to
+			// get internal access to the field so that the per-model lookup and the internals
+			// of the backing field can be synchronized without placing a second lookup dictionary
+			// in the model.
+			string retVal = myFixedValueTypeName;
+			myFixedValueTypeName = null;
+			return retVal;
+		}
+		/// <summary>
+		/// Get the single ValueType in this model associated with this <see cref="ReferenceMode"/>
+		/// There is a one-to-one mapping between UnitBased and General reference modes and
+		/// the ValueType in the model.
+		/// </summary>
+		public ObjectType FixedValueType
+		{
+			get
+			{
+				string valueTypeName;
+				ORMModel model;
+				ObjectType matchedObjectType;
+				if (null != (valueTypeName = FixedValueTypeName) &&
+					null != (model = this.Model) &&
+					null != (matchedObjectType = model.ObjectTypesDictionary.GetElement(valueTypeName).SingleElement as ObjectType) &&
+					matchedObjectType.IsValueType)
+				{
+					return matchedObjectType;
+				}
+				return null;
+			}
+		}
+		#endregion // FixedValueTypeName cache
 		#region IComparable<ReferenceMode> Members
 
 		/// <summary>
@@ -1047,4 +1158,160 @@ namespace Neumont.Tools.ORM.ObjectModel
 		#endregion // ReferenceModeHasReferenceModeKindDeletingRule
 	}
 	#endregion
+	#region ORMModel ReferenceMode/ValueType mapping cache
+	partial class ORMModel
+	{
+		private Dictionary<string, ReferenceMode> myReferenceModeByFixedValueTypeDictionary;
+		/// <summary>
+		/// Manages <see cref="EventHandler{TEventArgs}"/>s in the <see cref="Store"/> for <see cref="ReferenceMode"/>s.
+		/// Used to maintain cached state for the <see cref="ReferenceMode.FixedValueTypeName"/> and <see cref="GetReferenceModeForValueType"/> methods.
+		/// </summary>
+		/// <param name="store">The <see cref="Store"/> for which the <see cref="EventHandler{TEventArgs}"/>s should be managed.</param>
+		/// <param name="eventManager">The <see cref="ModelingEventManager"/> used to manage the <see cref="EventHandler{TEventArgs}"/>s.</param>
+		/// <param name="action">The <see cref="EventHandlerAction"/> that should be taken for the <see cref="EventHandler{TEventArgs}"/>s.</param>
+		private static void ManageReferenceModeModelStateEventHandlers(Store store, ModelingEventManager eventManager, EventHandlerAction action)
+		{
+			DomainDataDirectory dataDir = store.DomainDataDirectory;
+			DomainClassInfo classInfo;
+			classInfo = dataDir.FindDomainRelationship(ModelHasReferenceMode.DomainClassId);
+			eventManager.AddOrRemoveHandler(classInfo, new EventHandler<ElementAddedEventArgs>(ReferenceModeAddedEvent), action);
+			eventManager.AddOrRemoveHandler(classInfo, new EventHandler<ElementDeletedEventArgs>(ReferenceModeDeletedEvent), action);
+			classInfo = dataDir.FindDomainRelationship(ReferenceModeHasReferenceModeKind.DomainClassId);
+			eventManager.AddOrRemoveHandler(classInfo, new EventHandler<RolePlayerChangedEventArgs>(ReferenceModeKindChangedEvent), action);
+			classInfo = dataDir.FindDomainClass(ReferenceModeKind.DomainClassId);
+			eventManager.AddOrRemoveHandler(classInfo, new EventHandler<ElementPropertyChangedEventArgs>(ReferenceModeKindPropertyChangedEvent), action);
+			classInfo = dataDir.FindDomainClass(CustomReferenceMode.DomainClassId);
+			eventManager.AddOrRemoveHandler(classInfo, new EventHandler<ElementPropertyChangedEventArgs>(CustomReferenceModePropertyChangedEvent), action);
+		}
+		private static void ReferenceModeAddedEvent(object sender, ElementAddedEventArgs e)
+		{
+			ModelHasReferenceMode link = (ModelHasReferenceMode)e.ModelElement;
+			if (!link.IsDeleted)
+			{
+				link.Model.SynchronizeFixedReferenceModeMap(link.ReferenceMode);
+			}
+		}
+		private static void ReferenceModeDeletedEvent(object sender, ElementDeletedEventArgs e)
+		{
+			ModelHasReferenceMode link = (ModelHasReferenceMode)e.ModelElement;
+			ORMModel model = link.Model;
+			if (model.IsDeleted)
+			{
+				// Delete the dictionary, easier than synchronizing a deleted state
+				model.myReferenceModeByFixedValueTypeDictionary = null;
+			}
+			else
+			{
+				string oldName = link.ReferenceMode.ResetFixedValueTypeName();
+				Dictionary<string, ReferenceMode> dictionary;
+				if (!string.IsNullOrEmpty(oldName) &&
+					null != (dictionary = link.Model.myReferenceModeByFixedValueTypeDictionary))
+				{
+					dictionary.Remove(oldName);
+				}
+			}
+		}
+		private static void ReferenceModeKindChangedEvent(object sender, RolePlayerChangedEventArgs e)
+		{
+			ReferenceModeHasReferenceModeKind link = (ReferenceModeHasReferenceModeKind)e.ElementLink;
+			ORMModel model;
+			ReferenceMode mode;
+			if (!link.IsDeleted &&
+				null != (model = (mode = link.ReferenceMode).Model))
+			{
+				model.SynchronizeFixedReferenceModeMap(mode);
+			}
+		}
+		private static void ReferenceModeKindPropertyChangedEvent(object sender, ElementPropertyChangedEventArgs e)
+		{
+			ReferenceModeKind modeKind = (ReferenceModeKind)e.ModelElement;
+			ORMModel model;
+			if (!modeKind.IsDeleted &&
+				modeKind.ReferenceModeType != ReferenceModeType.Popular &&
+				null != (model = modeKind.Model) &&
+				null != model.myReferenceModeByFixedValueTypeDictionary)
+			{
+				foreach (ReferenceMode mode in modeKind.ReferenceModeCollection)
+				{
+					model.SynchronizeFixedReferenceModeMap(mode);
+				}
+			}
+		}
+		private static void CustomReferenceModePropertyChangedEvent(object sender, ElementPropertyChangedEventArgs e)
+		{
+			ReferenceMode mode = (ReferenceMode)e.ModelElement;
+			ORMModel model;
+			if (!mode.IsDeleted &&
+				null != (model = mode.Model))
+			{
+				model.SynchronizeFixedReferenceModeMap(mode);
+			}
+		}
+		private void SynchronizeFixedReferenceModeMap(ReferenceMode referenceMode)
+		{
+			Dictionary<string, ReferenceMode> dictionary = myReferenceModeByFixedValueTypeDictionary;
+			if (dictionary != null)
+			{
+				string oldName = referenceMode.ResetFixedValueTypeName();
+				string newName = referenceMode.FixedValueTypeName;
+				bool haveNewName = newName.Length != 0;
+				if (!string.IsNullOrEmpty(oldName))
+				{
+					if (haveNewName && 0 == string.CompareOrdinal(oldName, newName))
+					{
+						ReferenceMode oldMode;
+						if (dictionary.TryGetValue(oldName, out oldMode) && oldMode == referenceMode)
+						{
+							haveNewName = false;
+						}
+					}
+					else
+					{
+						dictionary.Remove(oldName);
+					}
+				}
+				if (haveNewName)
+				{
+					dictionary[newName] = referenceMode;
+				}
+			}
+			else
+			{
+				referenceMode.ResetFixedValueTypeName();
+			}
+		}
+		/// <summary>
+		/// Given <see cref="ObjectType"/> that is a ValueType, return the
+		/// associated <see cref="ReferenceMode"/> object that matches the
+		/// name of the ValueType. Returns non-null values for UnitBased and
+		/// explicitly specific General reference mode patterns.
+		/// </summary>
+		public ReferenceMode GetReferenceModeForValueType(ObjectType valueType)
+		{
+			if (IsDeleted || !valueType.IsValueType)
+			{
+				return null;
+			}
+			Dictionary<string, ReferenceMode> dictionary = myReferenceModeByFixedValueTypeDictionary;
+			if (dictionary == null)
+			{
+				myReferenceModeByFixedValueTypeDictionary = dictionary = new Dictionary<string, ReferenceMode>();
+				foreach (ReferenceMode referenceMode in ReferenceModeCollection)
+				{
+					string valueTypeName = referenceMode.FixedValueTypeName;
+					if (valueTypeName != null)
+					{
+						dictionary[valueTypeName] = referenceMode;
+					}
+				}
+			}
+			ReferenceMode retVal;
+			if (dictionary.TryGetValue(valueType.Name, out retVal))
+			{
+				return retVal;
+			}
+			return null;
+		}
+	}
+	#endregion // ORMModel ReferenceMode/ValueType mapping cache
 }

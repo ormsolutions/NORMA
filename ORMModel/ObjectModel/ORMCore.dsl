@@ -34,8 +34,12 @@
 	</Attributes>
 
 	<Classes>
-		<DomainClass Name="NameConsumer" Namespace="Neumont.Tools.ORM.ObjectModel" Id="491389AA-B7DB-4461-B3CE-8064F8DE4072" DisplayName="NameConsumer" Description=""/>
-		
+		<DomainClass Name="NameConsumer" Namespace="Neumont.Tools.ORM.ObjectModel" Id="491389AA-B7DB-4461-B3CE-8064F8DE4072" DisplayName="NameConsumer" Description="">
+			<BaseClass>
+				<DomainClassMoniker Name="ORMModelElement"/>
+			</BaseClass>
+		</DomainClass>
+
 		<DomainClass Name="RecognizedPhrase" Namespace="Neumont.Tools.ORM.ObjectModel" Id="DF462D31-C2E4-47A5-AF48-7FFC55DE4B2A" DisplayName="RecognizedPhrase" Description="">
 			<BaseClass>
 				<DomainClassMoniker Name="ORMNamedElement"/>

@@ -23,6 +23,7 @@ using System.Diagnostics;
 using System.Globalization;
 using Microsoft.VisualStudio.Modeling;
 using Neumont.Tools.Modeling;
+using System.Text;
 
 namespace Neumont.Tools.ORM.ObjectModel
 {
@@ -87,8 +88,21 @@ namespace Neumont.Tools.ORM.ObjectModel
 		/// for a partial reading order match.</remarks>
 		public ReadingOrder FindMatchingReadingOrder(IList<RoleBase> roleOrder)
 		{
+			return FindMatchingReadingOrder(ReadingOrderCollection, roleOrder);
+		}
+		/// <summary>
+		/// Looks for a <see cref="ReadingOrder"/> that has the roles in the same order
+		/// as the currently selected role order.
+		/// </summary>
+		/// <param name="readingOrders">An IList of <see cref="ReadingOrder"/> elements. </param>
+		/// <param name="roleOrder">An IList of <see cref="RoleBase"/> elements. </param>
+		/// <returns>The reading order if found, null if it was not.</returns>
+		/// <remarks>The requested roleOrder may have fewer roles than the FactType and
+		/// may contain trailing null elements in the list. This allows a request
+		/// for a partial reading order match.</remarks>
+		public static ReadingOrder FindMatchingReadingOrder(IList<ReadingOrder> readingOrders, IList<RoleBase> roleOrder)
+		{
 			ReadingOrder retval = null;
-			LinkedElementCollection<ReadingOrder> readingOrders = ReadingOrderCollection;
 			int roleOrderCount = roleOrder.Count;
 			foreach (ReadingOrder order in readingOrders)
 			{
@@ -123,7 +137,6 @@ namespace Neumont.Tools.ORM.ObjectModel
 			}
 			return retval;
 		}
-
 		/// <summary>
 		/// Creates a new ReadingOrder with the same role sequence as the currently selected one.
 		/// A transaction should have been pushed before calling this method. It operates under
@@ -853,6 +866,16 @@ namespace Neumont.Tools.ORM.ObjectModel
 			Debug.Fail("GetImplicitReading must be overridden if HasImplicitReadings is overridden to return true.");
 			return null;
 		}
+		/// <summary>
+		/// Generate the default implicit reading for this FactType. Called only
+		/// if the <see cref="HasImplicitReadings"/> property returns <see langword="true"/>
+		/// </summary>
+		/// <returns><see cref="IReading"/></returns>
+		protected virtual IReading GetDefaultImplicitReading()
+		{
+			Debug.Fail("GetDefaultImplicitReading must be overridden if HasImplicitReadings is overridden to return true.");
+			return null;
+		}
 		#region ImplicitReading class
 		/// <summary>
 		/// A helper class used to add implicit readings. Can be used to
@@ -897,6 +920,13 @@ namespace Neumont.Tools.ORM.ObjectModel
 				get
 				{
 					return false;
+				}
+			}
+			bool IReading.IsDefault
+			{
+				get
+				{
+					return true;
 				}
 			}
 			#endregion //IReading Implementation
@@ -1266,10 +1296,83 @@ namespace Neumont.Tools.ORM.ObjectModel
 			}
 		}
 		/// <summary>
+		/// Return the default reading for this <see cref="FactType"/>. Corresponds
+		/// to the reading information used to calculate the <see cref="DefaultName"/>
+		/// property in the form of an <see cref="IReading"/>, which enables precise
+		/// control of generated names.
+		/// </summary>
+		/// <returns><see cref="IReading"/> or <see langword="null"/> in rare cases</returns>
+		public IReading GetDefaultReading()
+		{
+			// Note that the implementation here should parallel GenerateName
+			IReading retVal = null;
+			if (!IsDeleted && !IsDeleting)
+			{
+				if (HasImplicitReadings)
+				{
+					return GetDefaultImplicitReading();
+				}
+				LinkedElementCollection<ReadingOrder> readingOrders = ReadingOrderCollection;
+				int readingOrdersCount = readingOrders.Count;
+				for (int i = 0; i < readingOrdersCount; ++i)
+				{
+					ReadingOrder order = readingOrders[i];
+					LinkedElementCollection<Reading> readings = order.ReadingCollection;
+					int readingsCount = readings.Count;
+					for (int j = 0; j < readingsCount; ++j)
+					{
+						Reading reading = readings[j];
+						if (!ModelError.HasErrors(reading, ModelErrorUses.DisplayPrimary))
+						{
+							return reading;
+						}
+					}
+				}
+				LinkedElementCollection<RoleBase> roles = RoleCollection;
+				int roleCount = roles.Count;
+				if (roleCount != 0)
+				{
+					//used for naming binarized unaries
+					int? unaryRoleIndex;
+					if (roleCount == 2 &&
+						(unaryRoleIndex = GetUnaryRoleIndex(roles)).HasValue)
+					{
+						return new ImplicitReading(ResourceStrings.ImplicitBooleanValueTypeNoReadingFormatString, new RoleBase[] { roles[unaryRoleIndex.Value] });
+					}
+					string readingText = null;
+					switch (roleCount)
+					{
+						case 2:
+							readingText = "{0}{1}";
+							break;
+						case 3:
+							readingText = "{0}{1}{2}";
+							break;
+						case 4:
+							readingText = "{0}{1}{2}{3}";
+							break;
+						default:
+							StringBuilder sb = new StringBuilder();
+							for (int i = 0; i < roleCount; ++i)
+							{
+								sb.Append('{');
+								sb.Append(i.ToString(CultureInfo.InvariantCulture));
+								sb.Append('}');
+							}
+							readingText = sb.ToString();
+							break;
+					}
+					return new ImplicitReading(readingText, roles);
+				}
+			}
+			return retVal;
+		}
+		/// <summary>
 		/// Helper function to get the current setting for the generated Name property
 		/// </summary>
 		private string GenerateName()
 		{
+			// Note that the implementation here should parallel GetDefaultReading
 			string retVal = "";
 			if (!IsDeleted && !IsDeleting)
 			{
@@ -1304,18 +1407,18 @@ namespace Neumont.Tools.ORM.ObjectModel
 				{
 					roles = RoleCollection;
 				}
-				int rolesCount = roles.Count;
-				if (rolesCount != 0)
+				int roleCount = roles.Count;
+				if (roleCount != 0)
 				{
 					//used for naming binarized unaries
 					bool applyValueText = false;
-					if (this.RoleCollection.Count == 2 && this.UnaryRole != null)
+					if (roleCount == 2 && GetUnaryRoleIndex(roles).HasValue)
 					{
-						rolesCount = 1;
+						roleCount = 1;
 						applyValueText = readingOrdersCount == 0;
 					}
-					string[] replacements = new string[rolesCount];
-					for (int k = 0; k < rolesCount; ++k)
+					string[] replacements = new string[roleCount];
+					for (int k = 0; k < roleCount; ++k)
 					{
 						ObjectType rolePlayer = roles[k].Role.RolePlayer;
 						replacements[k] = (rolePlayer != null) ? rolePlayer.Name.Replace('-', ' ') : ResourceStrings.ModelReadingEditorMissingRolePlayerText;

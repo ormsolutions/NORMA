@@ -302,7 +302,7 @@ namespace Neumont.Tools.ORM.ObjectModel
 			if (ret == null)
 			{
 				ret = new CustomSerializedContainerElementInfo[1];
-				ret[0] = new CustomSerializedContainerElementInfo(null, "Extensions", null, CustomSerializedElementWriteStyle.Element, null, ORMModelElementHasExtensionElement.ExtensionDomainRoleId);
+				ret[0] = new CustomSerializedContainerElementInfo("orm", "Extensions", null, CustomSerializedElementWriteStyle.Element, null, ORMModelElementHasExtensionElement.ExtensionDomainRoleId);
 				ORMModelElement.myCustomSerializedChildElementInfo = ret;
 			}
 			return ret;
@@ -1129,11 +1129,11 @@ namespace Neumont.Tools.ORM.ObjectModel
 	partial class NameGenerator : ICustomSerializedElement
 	{
 		/// <summary>Implements ICustomSerializedElement.SupportedCustomSerializedOperations</summary>
-		protected CustomSerializedElementSupportedOperations SupportedCustomSerializedOperations
+		protected new CustomSerializedElementSupportedOperations SupportedCustomSerializedOperations
 		{
 			get
 			{
-				return CustomSerializedElementSupportedOperations.ChildElementInfo | CustomSerializedElementSupportedOperations.PropertyInfo | CustomSerializedElementSupportedOperations.CustomSortChildRoles;
+				return base.SupportedCustomSerializedOperations | CustomSerializedElementSupportedOperations.ChildElementInfo | CustomSerializedElementSupportedOperations.PropertyInfo | CustomSerializedElementSupportedOperations.CustomSortChildRoles;
 			}
 		}
 		CustomSerializedElementSupportedOperations ICustomSerializedElement.SupportedCustomSerializedOperations
@@ -1145,12 +1145,26 @@ namespace Neumont.Tools.ORM.ObjectModel
 		}
 		private static CustomSerializedContainerElementInfo[] myCustomSerializedChildElementInfo;
 		/// <summary>Implements ICustomSerializedElement.GetCustomSerializedChildElementInfo</summary>
-		protected CustomSerializedContainerElementInfo[] GetCustomSerializedChildElementInfo()
+		protected new CustomSerializedContainerElementInfo[] GetCustomSerializedChildElementInfo()
 		{
 			CustomSerializedContainerElementInfo[] ret = NameGenerator.myCustomSerializedChildElementInfo;
 			if (ret == null)
 			{
-				ret = new CustomSerializedContainerElementInfo[1];
+				CustomSerializedContainerElementInfo[] baseInfo = null;
+				int baseInfoCount = 0;
+				if (0 != (CustomSerializedElementSupportedOperations.ChildElementInfo & base.SupportedCustomSerializedOperations))
+				{
+					baseInfo = base.GetCustomSerializedChildElementInfo();
+					if (baseInfo != null)
+					{
+						baseInfoCount = baseInfo.Length;
+					}
+				}
+				ret = new CustomSerializedContainerElementInfo[baseInfoCount + 1];
+				if (baseInfoCount != 0)
+				{
+					baseInfo.CopyTo(ret, 1);
+				}
 				ret[0] = new CustomSerializedContainerElementInfo("orm", "Refinements", null, CustomSerializedElementWriteStyle.Element, null, NameGeneratorRefinesNameGenerator.RefinementDomainRoleId);
 				NameGenerator.myCustomSerializedChildElementInfo = ret;
 			}
@@ -1160,23 +1174,8 @@ namespace Neumont.Tools.ORM.ObjectModel
 		{
 			return this.GetCustomSerializedChildElementInfo();
 		}
-		/// <summary>Implements ICustomSerializedElement.CustomSerializedElementInfo</summary>
-		protected CustomSerializedElementInfo CustomSerializedElementInfo
-		{
-			get
-			{
-				throw new NotSupportedException();
-			}
-		}
-		CustomSerializedElementInfo ICustomSerializedElement.CustomSerializedElementInfo
-		{
-			get
-			{
-				return this.CustomSerializedElementInfo;
-			}
-		}
 		/// <summary>Implements ICustomSerializedElement.GetCustomSerializedPropertyInfo</summary>
-		protected CustomSerializedPropertyInfo GetCustomSerializedPropertyInfo(DomainPropertyInfo domainPropertyInfo, DomainRoleInfo rolePlayedInfo)
+		protected new CustomSerializedPropertyInfo GetCustomSerializedPropertyInfo(DomainPropertyInfo domainPropertyInfo, DomainRoleInfo rolePlayedInfo)
 		{
 			if (domainPropertyInfo.Id == NameGenerator.SpacingFormatDomainPropertyId)
 			{
@@ -1210,27 +1209,24 @@ namespace Neumont.Tools.ORM.ObjectModel
 				}
 				return new CustomSerializedPropertyInfo(null, null, null, true, CustomSerializedAttributeWriteStyle.Attribute, null);
 			}
+			if (0 != (CustomSerializedElementSupportedOperations.PropertyInfo & base.SupportedCustomSerializedOperations))
+			{
+				return base.GetCustomSerializedPropertyInfo(domainPropertyInfo, rolePlayedInfo);
+			}
 			return CustomSerializedPropertyInfo.Default;
 		}
 		CustomSerializedPropertyInfo ICustomSerializedElement.GetCustomSerializedPropertyInfo(DomainPropertyInfo domainPropertyInfo, DomainRoleInfo rolePlayedInfo)
 		{
 			return this.GetCustomSerializedPropertyInfo(domainPropertyInfo, rolePlayedInfo);
 		}
-		/// <summary>Implements ICustomSerializedElement.GetCustomSerializedLinkInfo</summary>
-		protected CustomSerializedElementInfo GetCustomSerializedLinkInfo(DomainRoleInfo rolePlayedInfo, ElementLink elementLink)
-		{
-			throw new NotSupportedException();
-		}
-		CustomSerializedElementInfo ICustomSerializedElement.GetCustomSerializedLinkInfo(DomainRoleInfo rolePlayedInfo, ElementLink elementLink)
-		{
-			return this.GetCustomSerializedLinkInfo(rolePlayedInfo, elementLink);
-		}
 		private static IComparer<DomainRoleInfo> myCustomSortChildComparer;
 		private sealed class CustomSortChildComparer : IComparer<DomainRoleInfo>
 		{
 			private readonly Dictionary<string, int> myRoleOrderDictionary;
-			public CustomSortChildComparer(Store store)
+			private IComparer<DomainRoleInfo> myBaseComparer;
+			public CustomSortChildComparer(Store store, IComparer<DomainRoleInfo> baseComparer)
 			{
+				this.myBaseComparer = baseComparer;
 				DomainDataDirectory domainDataDirectory = store.DomainDataDirectory;
 				Dictionary<string, int> roleOrderDictionary = new Dictionary<string, int>();
 				DomainRoleInfo domainRole;
@@ -1240,28 +1236,41 @@ namespace Neumont.Tools.ORM.ObjectModel
 			}
 			int IComparer<DomainRoleInfo>.Compare(DomainRoleInfo x, DomainRoleInfo y)
 			{
+				if (this.myBaseComparer != null)
+				{
+					int baseOpinion = this.myBaseComparer.Compare(x, y);
+					if (0 != baseOpinion)
+					{
+						return baseOpinion;
+					}
+				}
 				int xPos;
 				if (!this.myRoleOrderDictionary.TryGetValue(string.Concat(x.DomainRelationship.ImplementationClass.FullName, ".", x.Name), out xPos))
 				{
-					xPos = int.MaxValue;
+					xPos = int.MinValue;
 				}
 				int yPos;
 				if (!this.myRoleOrderDictionary.TryGetValue(string.Concat(y.DomainRelationship.ImplementationClass.FullName, ".", y.Name), out yPos))
 				{
-					yPos = int.MaxValue;
+					yPos = int.MinValue;
 				}
 				return xPos.CompareTo(yPos);
 			}
 		}
 		/// <summary>Implements ICustomSerializedElement.CustomSerializedChildRoleComparer</summary>
-		protected IComparer<DomainRoleInfo> CustomSerializedChildRoleComparer
+		protected new IComparer<DomainRoleInfo> CustomSerializedChildRoleComparer
 		{
 			get
 			{
 				IComparer<DomainRoleInfo> retVal = NameGenerator.myCustomSortChildComparer;
 				if (null == retVal)
 				{
-					retVal = new CustomSortChildComparer(this.Store);
+					IComparer<DomainRoleInfo> baseComparer = null;
+					if (0 != (CustomSerializedElementSupportedOperations.CustomSortChildRoles & base.SupportedCustomSerializedOperations))
+					{
+						baseComparer = base.CustomSerializedChildRoleComparer;
+					}
+					retVal = new CustomSortChildComparer(this.Store, baseComparer);
 					NameGenerator.myCustomSortChildComparer = retVal;
 				}
 				return retVal;
@@ -1276,7 +1285,7 @@ namespace Neumont.Tools.ORM.ObjectModel
 		}
 		private static Dictionary<string, CustomSerializedElementMatch> myChildElementMappings;
 		/// <summary>Implements ICustomSerializedElement.MapChildElement</summary>
-		protected CustomSerializedElementMatch MapChildElement(string elementNamespace, string elementName, string containerNamespace, string containerName, string outerContainerNamespace, string outerContainerName)
+		protected new CustomSerializedElementMatch MapChildElement(string elementNamespace, string elementName, string containerNamespace, string containerName, string outerContainerNamespace, string outerContainerName)
 		{
 			Dictionary<string, CustomSerializedElementMatch> childElementMappings = NameGenerator.myChildElementMappings;
 			if (childElementMappings == null)
@@ -1288,7 +1297,10 @@ namespace Neumont.Tools.ORM.ObjectModel
 				NameGenerator.myChildElementMappings = childElementMappings;
 			}
 			CustomSerializedElementMatch rVal;
-			childElementMappings.TryGetValue(string.Concat(outerContainerNamespace, "|", outerContainerName, "|", (object)containerNamespace != (object)outerContainerNamespace ? containerNamespace : null, "|", containerName, "|", (object)elementNamespace != (object)containerNamespace ? elementNamespace : null, "|", elementName), out rVal);
+			if (!childElementMappings.TryGetValue(string.Concat(outerContainerNamespace, "|", outerContainerName, "|", (object)containerNamespace != (object)outerContainerNamespace ? containerNamespace : null, "|", containerName, "|", (object)elementNamespace != (object)containerNamespace ? elementNamespace : null, "|", elementName), out rVal))
+			{
+				rVal = base.MapChildElement(elementNamespace, elementName, containerNamespace, containerName, outerContainerNamespace, outerContainerName);
+			}
 			return rVal;
 		}
 		CustomSerializedElementMatch ICustomSerializedElement.MapChildElement(string elementNamespace, string elementName, string containerNamespace, string containerName, string outerContainerNamespace, string outerContainerName)
@@ -1297,7 +1309,7 @@ namespace Neumont.Tools.ORM.ObjectModel
 		}
 		private static Dictionary<string, Guid> myCustomSerializedAttributes;
 		/// <summary>Implements ICustomSerializedElement.MapAttribute</summary>
-		protected Guid MapAttribute(string xmlNamespace, string attributeName)
+		protected new Guid MapAttribute(string xmlNamespace, string attributeName)
 		{
 			Dictionary<string, Guid> customSerializedAttributes = NameGenerator.myCustomSerializedAttributes;
 			if (customSerializedAttributes == null)
@@ -1315,7 +1327,10 @@ namespace Neumont.Tools.ORM.ObjectModel
 			{
 				key = string.Concat(xmlNamespace, "|", attributeName);
 			}
-			customSerializedAttributes.TryGetValue(key, out rVal);
+			if (!customSerializedAttributes.TryGetValue(key, out rVal))
+			{
+				rVal = base.MapAttribute(xmlNamespace, attributeName);
+			}
 			return rVal;
 		}
 		Guid ICustomSerializedElement.MapAttribute(string xmlNamespace, string attributeName)
@@ -1323,7 +1338,7 @@ namespace Neumont.Tools.ORM.ObjectModel
 			return this.MapAttribute(xmlNamespace, attributeName);
 		}
 		/// <summary>Implements ICustomSerializedElement.ShouldSerialize</summary>
-		protected bool ShouldSerialize()
+		protected new bool ShouldSerialize()
 		{
 			return this.RequiresSerialization();
 		}

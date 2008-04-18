@@ -540,9 +540,25 @@ namespace Neumont.Tools.ORMAbstractionToConceptualDatabaseBridge
 				}
 				return new CustomSerializedPropertyInfo(null, null, null, false, CustomSerializedAttributeWriteStyle.Attribute, null);
 			}
+			if (domainPropertyInfo.Id == ReferenceModeNaming.PrimaryIdentifierNamingChoiceDomainPropertyId)
+			{
+				if (this.PrimaryIdentifierNamingChoice == ReferenceModeNamingChoice.ModelDefault)
+				{
+					return new CustomSerializedPropertyInfo(null, null, null, false, CustomSerializedAttributeWriteStyle.NotWritten, null);
+				}
+				return new CustomSerializedPropertyInfo(null, null, null, false, CustomSerializedAttributeWriteStyle.Attribute, null);
+			}
 			if (domainPropertyInfo.Id == ReferenceModeNaming.CustomFormatDomainPropertyId)
 			{
-				if (!this.UsesCustomFormat(true))
+				if (!this.UsesCustomFormat(ReferenceModeNamingUse.ReferenceToEntityType, true))
+				{
+					return new CustomSerializedPropertyInfo(null, null, null, false, CustomSerializedAttributeWriteStyle.NotWritten, null);
+				}
+				return new CustomSerializedPropertyInfo(null, null, null, false, CustomSerializedAttributeWriteStyle.Attribute, null);
+			}
+			if (domainPropertyInfo.Id == ReferenceModeNaming.PrimaryIdentifierCustomFormatDomainPropertyId)
+			{
+				if (!this.UsesCustomFormat(ReferenceModeNamingUse.PrimaryIdentifier, true))
 				{
 					return new CustomSerializedPropertyInfo(null, null, null, false, CustomSerializedAttributeWriteStyle.NotWritten, null);
 				}
@@ -613,7 +629,9 @@ namespace Neumont.Tools.ORMAbstractionToConceptualDatabaseBridge
 			{
 				customSerializedAttributes = new Dictionary<string, Guid>();
 				customSerializedAttributes.Add("NamingChoice", ReferenceModeNaming.NamingChoiceDomainPropertyId);
+				customSerializedAttributes.Add("PrimaryIdentifierNamingChoice", ReferenceModeNaming.PrimaryIdentifierNamingChoiceDomainPropertyId);
 				customSerializedAttributes.Add("CustomFormat", ReferenceModeNaming.CustomFormatDomainPropertyId);
+				customSerializedAttributes.Add("PrimaryIdentifierCustomFormat", ReferenceModeNaming.PrimaryIdentifierCustomFormatDomainPropertyId);
 				ReferenceModeNaming.myCustomSerializedAttributes = customSerializedAttributes;
 			}
 			Guid rVal;
@@ -633,8 +651,7 @@ namespace Neumont.Tools.ORMAbstractionToConceptualDatabaseBridge
 		protected bool ShouldSerialize()
 		{
 			Neumont.Tools.ORM.ObjectModel.ObjectType objectType;
-			Neumont.Tools.ORM.ObjectModel.ReferenceMode referenceMode;
-			return this.UsesCustomFormat(true) || this.NamingChoice != ReferenceModeNamingChoice.ModelDefault && (objectType = this.ObjectType) != null && (referenceMode = objectType.ReferenceMode) != null && Neumont.Tools.ORM.ObjectModel.ReferenceModeType.General != referenceMode.Kind.ReferenceModeType;
+			return this.UsesCustomFormat(ReferenceModeNamingUse.ReferenceToEntityType, true) || this.UsesCustomFormat(ReferenceModeNamingUse.PrimaryIdentifier, true) || (this.NamingChoice != ReferenceModeNamingChoice.ModelDefault || this.PrimaryIdentifierNamingChoice != ReferenceModeNamingChoice.ModelDefault) && (objectType = this.ObjectType) != null && objectType.ReferenceModePattern != null;
 		}
 		bool ICustomSerializedElement.ShouldSerialize()
 		{

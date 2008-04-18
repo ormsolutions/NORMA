@@ -33,7 +33,7 @@ namespace Neumont.Tools.ORM.ObjectModel
 	[DslDesign::DescriptionResource("Neumont.Tools.ORM.ObjectModel.NameConsumer.Description", typeof(global::Neumont.Tools.ORM.ObjectModel.ORMCoreDomainModel), "Neumont.Tools.ORM.GeneratedCode.CoreDomainModelResx")]
 	[global::System.CLSCompliant(true)]
 	[DslModeling::DomainObjectId("491389aa-b7db-4461-b3ce-8064f8de4072")]
-	public partial class NameConsumer : DslModeling::ModelElement
+	public partial class NameConsumer : ORMModelElement
 	{
 		#region Constructors, domain class Id
 	

@@ -51,41 +51,24 @@ namespace Neumont.Tools.ORMAbstractionToConceptualDatabaseBridge
 	{
 		#region IModelingEventSubscriber Implementation
 		/// <summary>
-		/// Implements <see cref="IModelingEventSubscriber.ManagePostLoadModelingEventHandlers"/>
+		/// Implements <see cref="IModelingEventSubscriber.ManageModelingEventHandlers"/>
 		/// </summary>
-		protected void ManagePostLoadModelingEventHandlers(ModelingEventManager eventManager, bool isReload, EventHandlerAction action)
+		protected void ManageModelingEventHandlers(ModelingEventManager eventManager, EventSubscriberReasons reasons, EventHandlerAction action)
 		{
+			if (0 == (reasons & EventSubscriberReasons.DocumentLoaded))
+			{
+				return;
+			}
 			IORMPropertyProviderService propertyProvider = ((IORMToolServices)Store).PropertyProviderService;
 			propertyProvider.AddOrRemovePropertyProvider<FactType>(AssimilationMapping.PopulateAssimilationMappingExtensionProperties, true, action);
 			propertyProvider.AddOrRemovePropertyProvider<ObjectType>(AssimilationMapping.PopulateObjectTypeAbsorptionExtensionProperties, false, action);
 			propertyProvider.AddOrRemovePropertyProvider<ObjectType>(ReferenceModeNaming.PopulateReferenceModeNamingExtensionProperties, false, action);
-			propertyProvider.AddOrRemovePropertyProvider<ORMModel>(ReferenceModeNaming.PopulateDefaultReferenceModeNamingExtensionProperties, false, action);
+			propertyProvider.AddOrRemovePropertyProvider<ORMModel>(ReferenceModeNaming.PopulateDefaultReferenceModeNamingExtensionPropertiesOnORMModel, false, action);
+			propertyProvider.AddOrRemovePropertyProvider<RelationalNameGenerator>(ReferenceModeNaming.PopulateDefaultReferenceModeNamingExtensionPropertiesOnColumnNameGenerator, false, action);
 		}
-		void IModelingEventSubscriber.ManagePostLoadModelingEventHandlers(ModelingEventManager eventManager, bool isReload, EventHandlerAction action)
+		void IModelingEventSubscriber.ManageModelingEventHandlers(ModelingEventManager eventManager, EventSubscriberReasons reasons, EventHandlerAction action)
 		{
-			ManagePostLoadModelingEventHandlers(eventManager, isReload, action);
-		}
-		/// <summary>
-		/// Implements <see cref="IModelingEventSubscriber.ManagePreLoadModelingEventHandlers"/>
-		/// </summary>
-		protected static void ManagePreLoadModelingEventHandlers(ModelingEventManager eventManager, bool isReload, EventHandlerAction action)
-		{
-			// Nothing to do
-		}
-		void IModelingEventSubscriber.ManagePreLoadModelingEventHandlers(ModelingEventManager eventManager, bool isReload, EventHandlerAction action)
-		{
-			ManagePreLoadModelingEventHandlers(eventManager, isReload, action);
-		}
-		/// <summary>
-		/// Implements <see cref="IModelingEventSubscriber.ManageSurveyQuestionModelingEventHandlers"/>
-		/// </summary>
-		protected static void ManageSurveyQuestionModelingEventHandlers(ModelingEventManager eventManager, bool isReload, EventHandlerAction action)
-		{
-			// Nothing to do
-		}
-		void IModelingEventSubscriber.ManageSurveyQuestionModelingEventHandlers(ModelingEventManager eventManager, bool isReload, EventHandlerAction action)
-		{
-			ManageSurveyQuestionModelingEventHandlers(eventManager, isReload, action);
+			ManageModelingEventHandlers(eventManager, reasons, action);
 		}
 		#endregion // IModelingEventSubscriber Implementation
 	}

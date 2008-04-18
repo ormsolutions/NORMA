@@ -267,6 +267,52 @@ namespace Neumont.Tools.ORM.ObjectModel
 			return (alias != null) ? alias.Name : alwaysReturnName ? Name : null;
 		}
 		#endregion // Abbreviation Helpers
+		#region ReferenceModePattern Helpers
+		private sealed class GeneralReferenceModeMockup : IReferenceModePattern
+		{
+			#region Member Variables and Constructors
+			private readonly string myValueTypeName;
+			public GeneralReferenceModeMockup(string valueTypeName)
+			{
+				myValueTypeName = valueTypeName;
+			}
+			#endregion // Member Variables and Constructors
+			#region IReferenceModePattern Implementation
+			public string Name
+			{
+				get { return myValueTypeName; }
+			}
+
+			public string FormatString
+			{
+				get { return "{1}"; }
+			}
+
+			public ReferenceModeType ReferenceModeType
+			{
+				get { return ReferenceModeType.General; }
+			}
+			#endregion // IReferenceModePattern Implementation
+		}
+		/// <summary>
+		/// Get a current <see cref="IReferenceModePattern"/> for this
+		/// <see cref="ObjectType"/>. Unlike the <see cref="ReferenceMode"/>
+		/// property, ReferenceModePattern returns an instance for a
+		/// general reference mode pattern, even if there is no formal
+		/// <see cref="ReferenceMode"/> of that name. The returned value is
+		/// a read-only snapshot and is not guaranteed to be useable over time.
+		/// </summary>
+		public IReferenceModePattern ReferenceModePattern
+		{
+			get
+			{
+				ReferenceMode refMode;
+				string refModeString;
+				GetReferenceMode(out refMode, out refModeString);
+				return (IReferenceModePattern)refMode ?? (string.IsNullOrEmpty(refModeString) ? null : new GeneralReferenceModeMockup(refModeString));
+			}
+		}
+		#endregion // ReferenceModePattern Helpers
 		#region Objectification Property
 		/// <summary>
 		/// Return the Objectification relationship that

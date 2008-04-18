@@ -709,6 +709,7 @@
 			</xsl:if>
 			<xsl:choose>
 				<xsl:when test="@SortChildElements='true'">
+					<xsl:variable name="UnsortedFirst" select="@UnsortedElementsFirst='true'"/>
 					<plx:field name="myCustomSortChildComparer" static="true" visibility="private" dataTypeName="IComparer">
 						<plx:passTypeParam dataTypeName="DomainRoleInfo"/>
 					</plx:field>
@@ -961,7 +962,13 @@
 											<plx:nameRef name="{.}Pos"/>
 										</plx:left>
 										<plx:right>
-											<plx:callStatic dataTypeName=".i4" name="MaxValue" type="field"/>
+											<plx:callStatic dataTypeName=".i4" name="MaxValue" type="field">
+												<xsl:if test="$UnsortedFirst">
+													<xsl:attribute name="name">
+														<xsl:text>MinValue</xsl:text>
+													</xsl:attribute>
+												</xsl:if>
+											</plx:callStatic>
 										</plx:right>
 									</plx:assign>
 								</plx:branch>

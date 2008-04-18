@@ -329,8 +329,7 @@ namespace Neumont.Tools.ORMAbstractionToConceptualDatabaseBridge
 		
 		/// <summary>
 		/// Gets or sets the value of NamingChoice domain property.
-		/// Description for
-		/// Neumont.Tools.ORMAbstractionToConceptualDatabaseBridge.ReferenceModeNaming.NamingChoice
+		/// The naming pattern used for references to this EntityType.
 		/// </summary>
 		[DslDesign::DisplayNameResource("Neumont.Tools.ORMAbstractionToConceptualDatabaseBridge.ReferenceModeNaming/NamingChoice.DisplayName", typeof(global::Neumont.Tools.ORMAbstractionToConceptualDatabaseBridge.ORMAbstractionToConceptualDatabaseBridgeDomainModel), "Neumont.Tools.ORMAbstractionToConceptualDatabaseBridge.GeneratedCode.DomainModelResx")]
 		[DslDesign::DescriptionResource("Neumont.Tools.ORMAbstractionToConceptualDatabaseBridge.ReferenceModeNaming/NamingChoice.Description", typeof(global::Neumont.Tools.ORMAbstractionToConceptualDatabaseBridge.ORMAbstractionToConceptualDatabaseBridgeDomainModel), "Neumont.Tools.ORMAbstractionToConceptualDatabaseBridge.GeneratedCode.DomainModelResx")]
@@ -418,8 +417,7 @@ namespace Neumont.Tools.ORMAbstractionToConceptualDatabaseBridge
 		
 		/// <summary>
 		/// Gets or sets the value of CustomFormat domain property.
-		/// Description for
-		/// Neumont.Tools.ORMAbstractionToConceptualDatabaseBridge.ReferenceModeNaming.NamingChoice
+		/// The custom naming format used for references to this EntityType.
 		/// </summary>
 		[DslDesign::DisplayNameResource("Neumont.Tools.ORMAbstractionToConceptualDatabaseBridge.ReferenceModeNaming/CustomFormat.DisplayName", typeof(global::Neumont.Tools.ORMAbstractionToConceptualDatabaseBridge.ORMAbstractionToConceptualDatabaseBridgeDomainModel), "Neumont.Tools.ORMAbstractionToConceptualDatabaseBridge.GeneratedCode.DomainModelResx")]
 		[DslDesign::DescriptionResource("Neumont.Tools.ORMAbstractionToConceptualDatabaseBridge.ReferenceModeNaming/CustomFormat.Description", typeof(global::Neumont.Tools.ORMAbstractionToConceptualDatabaseBridge.ORMAbstractionToConceptualDatabaseBridgeDomainModel), "Neumont.Tools.ORMAbstractionToConceptualDatabaseBridge.GeneratedCode.DomainModelResx")]
@@ -486,6 +484,182 @@ namespace Neumont.Tools.ORMAbstractionToConceptualDatabaseBridge
 				{
 					ValueChanging(element, oldValue, newValue);
 					element.customFormatPropertyStorage = newValue;
+					ValueChanged(element, oldValue, newValue);
+				}
+			}
+		}
+		
+		#endregion
+		#region PrimaryIdentifierNamingChoice domain property code
+		
+		/// <summary>
+		/// PrimaryIdentifierNamingChoice domain property Id.
+		/// </summary>
+		public static readonly global::System.Guid PrimaryIdentifierNamingChoiceDomainPropertyId = new global::System.Guid(0xbad8149a, 0xdb92, 0x4c8e, 0xb6, 0x46, 0x4d, 0x6d, 0x7b, 0xdb, 0xc3, 0xbc);
+		
+		/// <summary>
+		/// Storage for PrimaryIdentifierNamingChoice
+		/// </summary>
+		private ReferenceModeNamingChoice primaryIdentifierNamingChoicePropertyStorage = Neumont.Tools.ORMAbstractionToConceptualDatabaseBridge.ReferenceModeNamingChoice.ModelDefault;
+		
+		/// <summary>
+		/// Gets or sets the value of PrimaryIdentifierNamingChoice domain property.
+		/// The naming pattern used for simple primary identification of this EntityType.
+		/// </summary>
+		[DslDesign::DisplayNameResource("Neumont.Tools.ORMAbstractionToConceptualDatabaseBridge.ReferenceModeNaming/PrimaryIdentifierNamingChoice.DisplayName", typeof(global::Neumont.Tools.ORMAbstractionToConceptualDatabaseBridge.ORMAbstractionToConceptualDatabaseBridgeDomainModel), "Neumont.Tools.ORMAbstractionToConceptualDatabaseBridge.GeneratedCode.DomainModelResx")]
+		[DslDesign::DescriptionResource("Neumont.Tools.ORMAbstractionToConceptualDatabaseBridge.ReferenceModeNaming/PrimaryIdentifierNamingChoice.Description", typeof(global::Neumont.Tools.ORMAbstractionToConceptualDatabaseBridge.ORMAbstractionToConceptualDatabaseBridgeDomainModel), "Neumont.Tools.ORMAbstractionToConceptualDatabaseBridge.GeneratedCode.DomainModelResx")]
+		[global::System.ComponentModel.DefaultValue(Neumont.Tools.ORMAbstractionToConceptualDatabaseBridge.ReferenceModeNamingChoice.ModelDefault)]
+		[DslModeling::DomainObjectId("bad8149a-db92-4c8e-b646-4d6d7bdbc3bc")]
+		public ReferenceModeNamingChoice PrimaryIdentifierNamingChoice
+		{
+			[global::System.Diagnostics.DebuggerStepThrough]
+			get
+			{
+				return primaryIdentifierNamingChoicePropertyStorage;
+			}
+			[global::System.Diagnostics.DebuggerStepThrough]
+			set
+			{
+				PrimaryIdentifierNamingChoicePropertyHandler.Instance.SetValue(this, value);
+			}
+		}
+		/// <summary>
+		/// Value handler for the ReferenceModeNaming.PrimaryIdentifierNamingChoice domain property.
+		/// </summary>
+		internal sealed partial class PrimaryIdentifierNamingChoicePropertyHandler : DslModeling::DomainPropertyValueHandler<ReferenceModeNaming, ReferenceModeNamingChoice>
+		{
+			private PrimaryIdentifierNamingChoicePropertyHandler() { }
+		
+			/// <summary>
+			/// Gets the singleton instance of the ReferenceModeNaming.PrimaryIdentifierNamingChoice domain property value handler.
+			/// </summary>
+			public static readonly PrimaryIdentifierNamingChoicePropertyHandler Instance = new PrimaryIdentifierNamingChoicePropertyHandler();
+		
+			/// <summary>
+			/// Gets the Id of the ReferenceModeNaming.PrimaryIdentifierNamingChoice domain property.
+			/// </summary>
+			public sealed override global::System.Guid DomainPropertyId
+			{
+				[global::System.Diagnostics.DebuggerStepThrough]
+				get
+				{
+					return PrimaryIdentifierNamingChoiceDomainPropertyId;
+				}
+			}
+			
+			/// <summary>
+			/// Gets a strongly-typed value of the property on specified element.
+			/// </summary>
+			/// <param name="element">Element which owns the property.</param>
+			/// <returns>Property value.</returns>
+			public override sealed ReferenceModeNamingChoice GetValue(ReferenceModeNaming element)
+			{
+				if (element == null) throw new global::System.ArgumentNullException("element");
+				return element.primaryIdentifierNamingChoicePropertyStorage;
+			}
+		
+			/// <summary>
+			/// Sets property value on an element.
+			/// </summary>
+			/// <param name="element">Element which owns the property.</param>
+			/// <param name="newValue">New property value.</param>
+			public override sealed void SetValue(ReferenceModeNaming element, ReferenceModeNamingChoice newValue)
+			{
+				if (element == null) throw new global::System.ArgumentNullException("element");
+		
+				ReferenceModeNamingChoice oldValue = GetValue(element);
+				if (newValue != oldValue)
+				{
+					ValueChanging(element, oldValue, newValue);
+					element.primaryIdentifierNamingChoicePropertyStorage = newValue;
+					ValueChanged(element, oldValue, newValue);
+				}
+			}
+		}
+		
+		#endregion
+		#region PrimaryIdentifierCustomFormat domain property code
+		
+		/// <summary>
+		/// PrimaryIdentifierCustomFormat domain property Id.
+		/// </summary>
+		public static readonly global::System.Guid PrimaryIdentifierCustomFormatDomainPropertyId = new global::System.Guid(0xe7c711bd, 0x9687, 0x4fc8, 0x96, 0xc9, 0xfe, 0x31, 0x4c, 0x47, 0x09, 0x9d);
+		
+		/// <summary>
+		/// Storage for PrimaryIdentifierCustomFormat
+		/// </summary>
+		private global::System.String primaryIdentifierCustomFormatPropertyStorage = string.Empty;
+		
+		/// <summary>
+		/// Gets or sets the value of PrimaryIdentifierCustomFormat domain property.
+		/// The custom naming format used for simple primary identification of this
+		/// EntityType.
+		/// </summary>
+		[DslDesign::DisplayNameResource("Neumont.Tools.ORMAbstractionToConceptualDatabaseBridge.ReferenceModeNaming/PrimaryIdentifierCustomFormat.DisplayName", typeof(global::Neumont.Tools.ORMAbstractionToConceptualDatabaseBridge.ORMAbstractionToConceptualDatabaseBridgeDomainModel), "Neumont.Tools.ORMAbstractionToConceptualDatabaseBridge.GeneratedCode.DomainModelResx")]
+		[DslDesign::DescriptionResource("Neumont.Tools.ORMAbstractionToConceptualDatabaseBridge.ReferenceModeNaming/PrimaryIdentifierCustomFormat.Description", typeof(global::Neumont.Tools.ORMAbstractionToConceptualDatabaseBridge.ORMAbstractionToConceptualDatabaseBridgeDomainModel), "Neumont.Tools.ORMAbstractionToConceptualDatabaseBridge.GeneratedCode.DomainModelResx")]
+		[DslModeling::DomainObjectId("e7c711bd-9687-4fc8-96c9-fe314c47099d")]
+		public global::System.String PrimaryIdentifierCustomFormat
+		{
+			[global::System.Diagnostics.DebuggerStepThrough]
+			get
+			{
+				return primaryIdentifierCustomFormatPropertyStorage;
+			}
+			[global::System.Diagnostics.DebuggerStepThrough]
+			set
+			{
+				PrimaryIdentifierCustomFormatPropertyHandler.Instance.SetValue(this, value);
+			}
+		}
+		/// <summary>
+		/// Value handler for the ReferenceModeNaming.PrimaryIdentifierCustomFormat domain property.
+		/// </summary>
+		internal sealed partial class PrimaryIdentifierCustomFormatPropertyHandler : DslModeling::DomainPropertyValueHandler<ReferenceModeNaming, global::System.String>
+		{
+			private PrimaryIdentifierCustomFormatPropertyHandler() { }
+		
+			/// <summary>
+			/// Gets the singleton instance of the ReferenceModeNaming.PrimaryIdentifierCustomFormat domain property value handler.
+			/// </summary>
+			public static readonly PrimaryIdentifierCustomFormatPropertyHandler Instance = new PrimaryIdentifierCustomFormatPropertyHandler();
+		
+			/// <summary>
+			/// Gets the Id of the ReferenceModeNaming.PrimaryIdentifierCustomFormat domain property.
+			/// </summary>
+			public sealed override global::System.Guid DomainPropertyId
+			{
+				[global::System.Diagnostics.DebuggerStepThrough]
+				get
+				{
+					return PrimaryIdentifierCustomFormatDomainPropertyId;
+				}
+			}
+			
+			/// <summary>
+			/// Gets a strongly-typed value of the property on specified element.
+			/// </summary>
+			/// <param name="element">Element which owns the property.</param>
+			/// <returns>Property value.</returns>
+			public override sealed global::System.String GetValue(ReferenceModeNaming element)
+			{
+				if (element == null) throw new global::System.ArgumentNullException("element");
+				return element.primaryIdentifierCustomFormatPropertyStorage;
+			}
+		
+			/// <summary>
+			/// Sets property value on an element.
+			/// </summary>
+			/// <param name="element">Element which owns the property.</param>
+			/// <param name="newValue">New property value.</param>
+			public override sealed void SetValue(ReferenceModeNaming element, global::System.String newValue)
+			{
+				if (element == null) throw new global::System.ArgumentNullException("element");
+		
+				global::System.String oldValue = GetValue(element);
+				if (newValue != oldValue)
+				{
+					ValueChanging(element, oldValue, newValue);
+					element.primaryIdentifierCustomFormatPropertyStorage = newValue;
 					ValueChanged(element, oldValue, newValue);
 				}
 			}
@@ -593,8 +767,8 @@ namespace Neumont.Tools.ORMAbstractionToConceptualDatabaseBridge
 		
 		/// <summary>
 		/// Gets or sets the value of NamingChoice domain property.
-		/// Description for
-		/// Neumont.Tools.ORMAbstractionToConceptualDatabaseBridge.DefaultReferenceModeNaming.DefaultReferenceModeNaming
+		/// The default naming pattern used for references to EntityTypes with this kind of
+		/// reference mode.
 		/// </summary>
 		[DslDesign::DisplayNameResource("Neumont.Tools.ORMAbstractionToConceptualDatabaseBridge.DefaultReferenceModeNaming/NamingChoice.DisplayName", typeof(global::Neumont.Tools.ORMAbstractionToConceptualDatabaseBridge.ORMAbstractionToConceptualDatabaseBridgeDomainModel), "Neumont.Tools.ORMAbstractionToConceptualDatabaseBridge.GeneratedCode.DomainModelResx")]
 		[DslDesign::DescriptionResource("Neumont.Tools.ORMAbstractionToConceptualDatabaseBridge.DefaultReferenceModeNaming/NamingChoice.Description", typeof(global::Neumont.Tools.ORMAbstractionToConceptualDatabaseBridge.ORMAbstractionToConceptualDatabaseBridgeDomainModel), "Neumont.Tools.ORMAbstractionToConceptualDatabaseBridge.GeneratedCode.DomainModelResx")]
@@ -682,8 +856,8 @@ namespace Neumont.Tools.ORMAbstractionToConceptualDatabaseBridge
 		
 		/// <summary>
 		/// Gets or sets the value of CustomFormat domain property.
-		/// Description for
-		/// Neumont.Tools.ORMAbstractionToConceptualDatabaseBridge.DefaultReferenceModeNaming.NamingChoice
+		/// The default custom naming format used for references to EntityTypes with custom
+		/// naming formats.
 		/// </summary>
 		[DslDesign::DisplayNameResource("Neumont.Tools.ORMAbstractionToConceptualDatabaseBridge.DefaultReferenceModeNaming/CustomFormat.DisplayName", typeof(global::Neumont.Tools.ORMAbstractionToConceptualDatabaseBridge.ORMAbstractionToConceptualDatabaseBridgeDomainModel), "Neumont.Tools.ORMAbstractionToConceptualDatabaseBridge.GeneratedCode.DomainModelResx")]
 		[DslDesign::DescriptionResource("Neumont.Tools.ORMAbstractionToConceptualDatabaseBridge.DefaultReferenceModeNaming/CustomFormat.Description", typeof(global::Neumont.Tools.ORMAbstractionToConceptualDatabaseBridge.ORMAbstractionToConceptualDatabaseBridgeDomainModel), "Neumont.Tools.ORMAbstractionToConceptualDatabaseBridge.GeneratedCode.DomainModelResx")]
@@ -756,6 +930,183 @@ namespace Neumont.Tools.ORMAbstractionToConceptualDatabaseBridge
 		}
 		
 		#endregion
+		#region PrimaryIdentifierNamingChoice domain property code
+		
+		/// <summary>
+		/// PrimaryIdentifierNamingChoice domain property Id.
+		/// </summary>
+		public static readonly global::System.Guid PrimaryIdentifierNamingChoiceDomainPropertyId = new global::System.Guid(0x63ddcaa0, 0x330f, 0x4bb6, 0x8f, 0xca, 0x82, 0x73, 0xfa, 0x3a, 0xaa, 0xe4);
+		
+		/// <summary>
+		/// Storage for PrimaryIdentifierNamingChoice
+		/// </summary>
+		private EffectiveReferenceModeNamingChoice primaryIdentifierNamingChoicePropertyStorage = Neumont.Tools.ORMAbstractionToConceptualDatabaseBridge.EffectiveReferenceModeNamingChoice.ValueTypeName;
+		
+		/// <summary>
+		/// Gets or sets the value of PrimaryIdentifierNamingChoice domain property.
+		/// The default naming pattern used for simple primary identification of EntityTypes
+		/// with this kind of reference mode.
+		/// </summary>
+		[DslDesign::DisplayNameResource("Neumont.Tools.ORMAbstractionToConceptualDatabaseBridge.DefaultReferenceModeNaming/PrimaryIdentifierNamingChoice.DisplayName", typeof(global::Neumont.Tools.ORMAbstractionToConceptualDatabaseBridge.ORMAbstractionToConceptualDatabaseBridgeDomainModel), "Neumont.Tools.ORMAbstractionToConceptualDatabaseBridge.GeneratedCode.DomainModelResx")]
+		[DslDesign::DescriptionResource("Neumont.Tools.ORMAbstractionToConceptualDatabaseBridge.DefaultReferenceModeNaming/PrimaryIdentifierNamingChoice.Description", typeof(global::Neumont.Tools.ORMAbstractionToConceptualDatabaseBridge.ORMAbstractionToConceptualDatabaseBridgeDomainModel), "Neumont.Tools.ORMAbstractionToConceptualDatabaseBridge.GeneratedCode.DomainModelResx")]
+		[global::System.ComponentModel.DefaultValue(Neumont.Tools.ORMAbstractionToConceptualDatabaseBridge.EffectiveReferenceModeNamingChoice.ValueTypeName)]
+		[DslModeling::DomainObjectId("63ddcaa0-330f-4bb6-8fca-8273fa3aaae4")]
+		public EffectiveReferenceModeNamingChoice PrimaryIdentifierNamingChoice
+		{
+			[global::System.Diagnostics.DebuggerStepThrough]
+			get
+			{
+				return primaryIdentifierNamingChoicePropertyStorage;
+			}
+			[global::System.Diagnostics.DebuggerStepThrough]
+			set
+			{
+				PrimaryIdentifierNamingChoicePropertyHandler.Instance.SetValue(this, value);
+			}
+		}
+		/// <summary>
+		/// Value handler for the DefaultReferenceModeNaming.PrimaryIdentifierNamingChoice domain property.
+		/// </summary>
+		internal sealed partial class PrimaryIdentifierNamingChoicePropertyHandler : DslModeling::DomainPropertyValueHandler<DefaultReferenceModeNaming, EffectiveReferenceModeNamingChoice>
+		{
+			private PrimaryIdentifierNamingChoicePropertyHandler() { }
+		
+			/// <summary>
+			/// Gets the singleton instance of the DefaultReferenceModeNaming.PrimaryIdentifierNamingChoice domain property value handler.
+			/// </summary>
+			public static readonly PrimaryIdentifierNamingChoicePropertyHandler Instance = new PrimaryIdentifierNamingChoicePropertyHandler();
+		
+			/// <summary>
+			/// Gets the Id of the DefaultReferenceModeNaming.PrimaryIdentifierNamingChoice domain property.
+			/// </summary>
+			public sealed override global::System.Guid DomainPropertyId
+			{
+				[global::System.Diagnostics.DebuggerStepThrough]
+				get
+				{
+					return PrimaryIdentifierNamingChoiceDomainPropertyId;
+				}
+			}
+			
+			/// <summary>
+			/// Gets a strongly-typed value of the property on specified element.
+			/// </summary>
+			/// <param name="element">Element which owns the property.</param>
+			/// <returns>Property value.</returns>
+			public override sealed EffectiveReferenceModeNamingChoice GetValue(DefaultReferenceModeNaming element)
+			{
+				if (element == null) throw new global::System.ArgumentNullException("element");
+				return element.primaryIdentifierNamingChoicePropertyStorage;
+			}
+		
+			/// <summary>
+			/// Sets property value on an element.
+			/// </summary>
+			/// <param name="element">Element which owns the property.</param>
+			/// <param name="newValue">New property value.</param>
+			public override sealed void SetValue(DefaultReferenceModeNaming element, EffectiveReferenceModeNamingChoice newValue)
+			{
+				if (element == null) throw new global::System.ArgumentNullException("element");
+		
+				EffectiveReferenceModeNamingChoice oldValue = GetValue(element);
+				if (newValue != oldValue)
+				{
+					ValueChanging(element, oldValue, newValue);
+					element.primaryIdentifierNamingChoicePropertyStorage = newValue;
+					ValueChanged(element, oldValue, newValue);
+				}
+			}
+		}
+		
+		#endregion
+		#region PrimaryIdentifierCustomFormat domain property code
+		
+		/// <summary>
+		/// PrimaryIdentifierCustomFormat domain property Id.
+		/// </summary>
+		public static readonly global::System.Guid PrimaryIdentifierCustomFormatDomainPropertyId = new global::System.Guid(0xb393f62e, 0xe784, 0x488c, 0xbd, 0x72, 0x3a, 0x4c, 0x69, 0xa7, 0xfe, 0x97);
+		
+		/// <summary>
+		/// Storage for PrimaryIdentifierCustomFormat
+		/// </summary>
+		private global::System.String primaryIdentifierCustomFormatPropertyStorage = string.Empty;
+		
+		/// <summary>
+		/// Gets or sets the value of PrimaryIdentifierCustomFormat domain property.
+		/// The default custom naming format used for simple primary identification of
+		/// EntityTypes with custom naming formats.
+		/// </summary>
+		[DslDesign::DisplayNameResource("Neumont.Tools.ORMAbstractionToConceptualDatabaseBridge.DefaultReferenceModeNaming/PrimaryIdentifierCustomFormat.DisplayName", typeof(global::Neumont.Tools.ORMAbstractionToConceptualDatabaseBridge.ORMAbstractionToConceptualDatabaseBridgeDomainModel), "Neumont.Tools.ORMAbstractionToConceptualDatabaseBridge.GeneratedCode.DomainModelResx")]
+		[DslDesign::DescriptionResource("Neumont.Tools.ORMAbstractionToConceptualDatabaseBridge.DefaultReferenceModeNaming/PrimaryIdentifierCustomFormat.Description", typeof(global::Neumont.Tools.ORMAbstractionToConceptualDatabaseBridge.ORMAbstractionToConceptualDatabaseBridgeDomainModel), "Neumont.Tools.ORMAbstractionToConceptualDatabaseBridge.GeneratedCode.DomainModelResx")]
+		[DslModeling::DomainObjectId("b393f62e-e784-488c-bd72-3a4c69a7fe97")]
+		public global::System.String PrimaryIdentifierCustomFormat
+		{
+			[global::System.Diagnostics.DebuggerStepThrough]
+			get
+			{
+				return primaryIdentifierCustomFormatPropertyStorage;
+			}
+			[global::System.Diagnostics.DebuggerStepThrough]
+			set
+			{
+				PrimaryIdentifierCustomFormatPropertyHandler.Instance.SetValue(this, value);
+			}
+		}
+		/// <summary>
+		/// Value handler for the DefaultReferenceModeNaming.PrimaryIdentifierCustomFormat domain property.
+		/// </summary>
+		internal sealed partial class PrimaryIdentifierCustomFormatPropertyHandler : DslModeling::DomainPropertyValueHandler<DefaultReferenceModeNaming, global::System.String>
+		{
+			private PrimaryIdentifierCustomFormatPropertyHandler() { }
+		
+			/// <summary>
+			/// Gets the singleton instance of the DefaultReferenceModeNaming.PrimaryIdentifierCustomFormat domain property value handler.
+			/// </summary>
+			public static readonly PrimaryIdentifierCustomFormatPropertyHandler Instance = new PrimaryIdentifierCustomFormatPropertyHandler();
+		
+			/// <summary>
+			/// Gets the Id of the DefaultReferenceModeNaming.PrimaryIdentifierCustomFormat domain property.
+			/// </summary>
+			public sealed override global::System.Guid DomainPropertyId
+			{
+				[global::System.Diagnostics.DebuggerStepThrough]
+				get
+				{
+					return PrimaryIdentifierCustomFormatDomainPropertyId;
+				}
+			}
+			
+			/// <summary>
+			/// Gets a strongly-typed value of the property on specified element.
+			/// </summary>
+			/// <param name="element">Element which owns the property.</param>
+			/// <returns>Property value.</returns>
+			public override sealed global::System.String GetValue(DefaultReferenceModeNaming element)
+			{
+				if (element == null) throw new global::System.ArgumentNullException("element");
+				return element.primaryIdentifierCustomFormatPropertyStorage;
+			}
+		
+			/// <summary>
+			/// Sets property value on an element.
+			/// </summary>
+			/// <param name="element">Element which owns the property.</param>
+			/// <param name="newValue">New property value.</param>
+			public override sealed void SetValue(DefaultReferenceModeNaming element, global::System.String newValue)
+			{
+				if (element == null) throw new global::System.ArgumentNullException("element");
+		
+				global::System.String oldValue = GetValue(element);
+				if (newValue != oldValue)
+				{
+					ValueChanging(element, oldValue, newValue);
+					element.primaryIdentifierCustomFormatPropertyStorage = newValue;
+					ValueChanged(element, oldValue, newValue);
+				}
+			}
+		}
+		
+		#endregion
 		#region ReferenceModeTargetKind domain property code
 		
 		/// <summary>
@@ -766,7 +1117,7 @@ namespace Neumont.Tools.ORMAbstractionToConceptualDatabaseBridge
 		/// <summary>
 		/// Storage for ReferenceModeTargetKind
 		/// </summary>
-		private DefaultReferenceModeNamingTargetKind referenceModeTargetKindPropertyStorage = Neumont.Tools.ORMAbstractionToConceptualDatabaseBridge.DefaultReferenceModeNamingTargetKind.Popular;
+		private global::Neumont.Tools.ORM.ObjectModel.ReferenceModeType referenceModeTargetKindPropertyStorage = Neumont.Tools.ORM.ObjectModel.ReferenceModeType.Popular;
 		
 		/// <summary>
 		/// Gets or sets the value of ReferenceModeTargetKind domain property.
@@ -775,9 +1126,9 @@ namespace Neumont.Tools.ORMAbstractionToConceptualDatabaseBridge
 		/// </summary>
 		[DslDesign::DisplayNameResource("Neumont.Tools.ORMAbstractionToConceptualDatabaseBridge.DefaultReferenceModeNaming/ReferenceModeTargetKind.DisplayName", typeof(global::Neumont.Tools.ORMAbstractionToConceptualDatabaseBridge.ORMAbstractionToConceptualDatabaseBridgeDomainModel), "Neumont.Tools.ORMAbstractionToConceptualDatabaseBridge.GeneratedCode.DomainModelResx")]
 		[DslDesign::DescriptionResource("Neumont.Tools.ORMAbstractionToConceptualDatabaseBridge.DefaultReferenceModeNaming/ReferenceModeTargetKind.Description", typeof(global::Neumont.Tools.ORMAbstractionToConceptualDatabaseBridge.ORMAbstractionToConceptualDatabaseBridgeDomainModel), "Neumont.Tools.ORMAbstractionToConceptualDatabaseBridge.GeneratedCode.DomainModelResx")]
-		[global::System.ComponentModel.DefaultValue(Neumont.Tools.ORMAbstractionToConceptualDatabaseBridge.DefaultReferenceModeNamingTargetKind.Popular)]
+		[global::System.ComponentModel.DefaultValue(Neumont.Tools.ORM.ObjectModel.ReferenceModeType.Popular)]
 		[DslModeling::DomainObjectId("1699fa2a-d247-4d5b-9b4c-7e147b2459af")]
-		public DefaultReferenceModeNamingTargetKind ReferenceModeTargetKind
+		public global::Neumont.Tools.ORM.ObjectModel.ReferenceModeType ReferenceModeTargetKind
 		{
 			[global::System.Diagnostics.DebuggerStepThrough]
 			get
@@ -793,7 +1144,7 @@ namespace Neumont.Tools.ORMAbstractionToConceptualDatabaseBridge
 		/// <summary>
 		/// Value handler for the DefaultReferenceModeNaming.ReferenceModeTargetKind domain property.
 		/// </summary>
-		internal sealed partial class ReferenceModeTargetKindPropertyHandler : DslModeling::DomainPropertyValueHandler<DefaultReferenceModeNaming, DefaultReferenceModeNamingTargetKind>
+		internal sealed partial class ReferenceModeTargetKindPropertyHandler : DslModeling::DomainPropertyValueHandler<DefaultReferenceModeNaming, global::Neumont.Tools.ORM.ObjectModel.ReferenceModeType>
 		{
 			private ReferenceModeTargetKindPropertyHandler() { }
 		
@@ -819,7 +1170,7 @@ namespace Neumont.Tools.ORMAbstractionToConceptualDatabaseBridge
 			/// </summary>
 			/// <param name="element">Element which owns the property.</param>
 			/// <returns>Property value.</returns>
-			public override sealed DefaultReferenceModeNamingTargetKind GetValue(DefaultReferenceModeNaming element)
+			public override sealed global::Neumont.Tools.ORM.ObjectModel.ReferenceModeType GetValue(DefaultReferenceModeNaming element)
 			{
 				if (element == null) throw new global::System.ArgumentNullException("element");
 				return element.referenceModeTargetKindPropertyStorage;
@@ -830,11 +1181,11 @@ namespace Neumont.Tools.ORMAbstractionToConceptualDatabaseBridge
 			/// </summary>
 			/// <param name="element">Element which owns the property.</param>
 			/// <param name="newValue">New property value.</param>
-			public override sealed void SetValue(DefaultReferenceModeNaming element, DefaultReferenceModeNamingTargetKind newValue)
+			public override sealed void SetValue(DefaultReferenceModeNaming element, global::Neumont.Tools.ORM.ObjectModel.ReferenceModeType newValue)
 			{
 				if (element == null) throw new global::System.ArgumentNullException("element");
 		
-				DefaultReferenceModeNamingTargetKind oldValue = GetValue(element);
+				global::Neumont.Tools.ORM.ObjectModel.ReferenceModeType oldValue = GetValue(element);
 				if (newValue != oldValue)
 				{
 					ValueChanging(element, oldValue, newValue);

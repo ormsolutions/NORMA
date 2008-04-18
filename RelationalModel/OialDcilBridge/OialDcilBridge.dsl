@@ -65,12 +65,22 @@
 		</DomainClass>
 		<DomainClass Name="ReferenceModeNaming" Namespace="Neumont.Tools.ORMAbstractionToConceptualDatabaseBridge" Id="B49AE46D-1551-4477-A2EB-C56415059912" DisplayName="ReferenceModeNaming" Description="">
 			<Properties>
-				<DomainProperty Name="NamingChoice" DefaultValue="ModelDefault" DisplayName="NamingChoice" Id="3E60BEBC-05E3-4D6E-8662-66C04FF27B8F">
+				<DomainProperty Name="NamingChoice" DefaultValue="ModelDefault" DisplayName="NamingChoice" Id="3E60BEBC-05E3-4D6E-8662-66C04FF27B8F" Description="The naming pattern used for references to this EntityType.">
 					<Type>
 						<DomainEnumerationMoniker Name="ReferenceModeNamingChoice"/>
 					</Type>
 				</DomainProperty>
-				<DomainProperty Name="CustomFormat" DefaultValue="" DisplayName="NamingChoice" Id="24265C6B-8058-43AE-91A3-D04968CA7C32">
+				<DomainProperty Name="CustomFormat" DefaultValue="" DisplayName="CustomFormat" Id="24265C6B-8058-43AE-91A3-D04968CA7C32" Description="The custom naming format used for references to this EntityType.">
+					<Type>
+						<ExternalTypeMoniker Name="/System/String"/>
+					</Type>
+				</DomainProperty>
+				<DomainProperty Name="PrimaryIdentifierNamingChoice" DefaultValue="ModelDefault" DisplayName="PrimaryIdentifierNamingChoice" Id="BAD8149A-DB92-4C8E-B646-4D6D7BDBC3BC" Description="The naming pattern used for simple primary identification of this EntityType.">
+					<Type>
+						<DomainEnumerationMoniker Name="ReferenceModeNamingChoice"/>
+					</Type>
+				</DomainProperty>
+				<DomainProperty Name="PrimaryIdentifierCustomFormat" DefaultValue="" DisplayName="PrimaryIdentifierCustomFormat" Id="E7C711BD-9687-4FC8-96C9-FE314C47099D" Description="The custom naming format used for simple primary identification of this EntityType.">
 					<Type>
 						<ExternalTypeMoniker Name="/System/String"/>
 					</Type>
@@ -79,19 +89,29 @@
 		</DomainClass>
 		<DomainClass Name="DefaultReferenceModeNaming" Namespace="Neumont.Tools.ORMAbstractionToConceptualDatabaseBridge" Id="443F27D8-44D6-4D4D-A918-2B9E7F613157" DisplayName="DefaultReferenceModeNaming" Description="">
 			<Properties>
-				<DomainProperty Name="NamingChoice" DefaultValue="ValueTypeName" DisplayName="DefaultReferenceModeNaming" Id="178450CE-A301-4022-9CA7-ADC28F59D7C9">
+				<DomainProperty Name="NamingChoice" DefaultValue="ValueTypeName" DisplayName="DefaultReferenceModeNaming" Id="178450CE-A301-4022-9CA7-ADC28F59D7C9" Description="The default naming pattern used for references to EntityTypes with this kind of reference mode.">
 					<Type>
 						<DomainEnumerationMoniker Name="EffectiveReferenceModeNamingChoice"/>
 					</Type>
 				</DomainProperty>
-				<DomainProperty Name="CustomFormat" DefaultValue="" DisplayName="NamingChoice" Id="D0266C9E-C95E-43A6-A874-A0EBE08F5E28">
+				<DomainProperty Name="CustomFormat" DefaultValue="" DisplayName="NamingChoice" Id="D0266C9E-C95E-43A6-A874-A0EBE08F5E28" Description="The default custom naming format used for references to EntityTypes with custom naming formats.">
+					<Type>
+						<ExternalTypeMoniker Name="/System/String"/>
+					</Type>
+				</DomainProperty>
+				<DomainProperty Name="PrimaryIdentifierNamingChoice" DefaultValue="ValueTypeName" DisplayName="DefaultPrimaryIdentifierReferenceModeNaming" Id="63DDCAA0-330F-4BB6-8FCA-8273FA3AAAE4" Description="The default naming pattern used for simple primary identification of EntityTypes with this kind of reference mode.">
+					<Type>
+						<DomainEnumerationMoniker Name="EffectiveReferenceModeNamingChoice"/>
+					</Type>
+				</DomainProperty>
+				<DomainProperty Name="PrimaryIdentifierCustomFormat" DefaultValue="" DisplayName="DefaultPrimaryIdentifierReferenceModeCustomFormat" Id="B393F62E-E784-488C-BD72-3A4C69A7FE97" Description="The default custom naming format used for simple primary identification of EntityTypes with custom naming formats.">
 					<Type>
 						<ExternalTypeMoniker Name="/System/String"/>
 					</Type>
 				</DomainProperty>
 				<DomainProperty Name="ReferenceModeTargetKind" DefaultValue="Popular" DisplayName="ReferenceModeTargetKind" Id="1699FA2A-D247-4D5B-9B4C-7E147B2459AF">
 					<Type>
-						<DomainEnumerationMoniker Name="DefaultReferenceModeNamingTargetKind"/>
+						<DomainEnumerationMoniker Name="/Neumont.Tools.ORM.ObjectModel/ReferenceModeType"/>
 					</Type>
 				</DomainProperty>
 			</Properties>
@@ -438,12 +458,6 @@
 					</Parameters>
 				</ClrAttribute>
 			</Attributes>
-		</DomainEnumeration>
-		<DomainEnumeration Namespace="Neumont.Tools.ORMAbstractionToConceptualDatabaseBridge" Name="DefaultReferenceModeNamingTargetKind" Description="Specifies the reference mode kind of a set of default reference mode.">
-			<Literals>
-				<EnumerationLiteral Name="Popular" Value="1" Description="The popular reference mode."/>
-				<EnumerationLiteral Name="UnitBased" Value="2" Description="The unit based reference mode."/>
-			</Literals>
 		</DomainEnumeration>
 	</Types>
 

@@ -158,7 +158,7 @@
     <comment>DisplayName for DomainClass &apos;ReferenceModeNaming&apos;</comment>
   </data>
   <data name="Neumont.Tools.ORMAbstractionToConceptualDatabaseBridge.ReferenceModeNaming/NamingChoice.Description" xml:space="preserve">
-    <value>Description for Neumont.Tools.ORMAbstractionToConceptualDatabaseBridge.ReferenceModeNaming.NamingChoice</value>
+    <value>The naming pattern used for references to this EntityType.</value>
     <comment>Description for DomainProperty &apos;NamingChoice&apos; on DomainClass &apos;ReferenceModeNaming&apos;</comment>
   </data>
   <data name="Neumont.Tools.ORMAbstractionToConceptualDatabaseBridge.ReferenceModeNaming/NamingChoice.DisplayName" xml:space="preserve">
@@ -166,12 +166,28 @@
     <comment>DisplayName for DomainProperty &apos;NamingChoice&apos; on DomainClass &apos;ReferenceModeNaming&apos;</comment>
   </data>
   <data name="Neumont.Tools.ORMAbstractionToConceptualDatabaseBridge.ReferenceModeNaming/CustomFormat.Description" xml:space="preserve">
-    <value>Description for Neumont.Tools.ORMAbstractionToConceptualDatabaseBridge.ReferenceModeNaming.NamingChoice</value>
+    <value>The custom naming format used for references to this EntityType.</value>
     <comment>Description for DomainProperty &apos;CustomFormat&apos; on DomainClass &apos;ReferenceModeNaming&apos;</comment>
   </data>
   <data name="Neumont.Tools.ORMAbstractionToConceptualDatabaseBridge.ReferenceModeNaming/CustomFormat.DisplayName" xml:space="preserve">
-    <value>NamingChoice</value>
+    <value>CustomFormat</value>
     <comment>DisplayName for DomainProperty &apos;CustomFormat&apos; on DomainClass &apos;ReferenceModeNaming&apos;</comment>
+  </data>
+  <data name="Neumont.Tools.ORMAbstractionToConceptualDatabaseBridge.ReferenceModeNaming/PrimaryIdentifierNamingChoice.Description" xml:space="preserve">
+    <value>The naming pattern used for simple primary identification of this EntityType.</value>
+    <comment>Description for DomainProperty &apos;PrimaryIdentifierNamingChoice&apos; on DomainClass &apos;ReferenceModeNaming&apos;</comment>
+  </data>
+  <data name="Neumont.Tools.ORMAbstractionToConceptualDatabaseBridge.ReferenceModeNaming/PrimaryIdentifierNamingChoice.DisplayName" xml:space="preserve">
+    <value>PrimaryIdentifierNamingChoice</value>
+    <comment>DisplayName for DomainProperty &apos;PrimaryIdentifierNamingChoice&apos; on DomainClass &apos;ReferenceModeNaming&apos;</comment>
+  </data>
+  <data name="Neumont.Tools.ORMAbstractionToConceptualDatabaseBridge.ReferenceModeNaming/PrimaryIdentifierCustomFormat.Description" xml:space="preserve">
+    <value>The custom naming format used for simple primary identification of this EntityType.</value>
+    <comment>Description for DomainProperty &apos;PrimaryIdentifierCustomFormat&apos; on DomainClass &apos;ReferenceModeNaming&apos;</comment>
+  </data>
+  <data name="Neumont.Tools.ORMAbstractionToConceptualDatabaseBridge.ReferenceModeNaming/PrimaryIdentifierCustomFormat.DisplayName" xml:space="preserve">
+    <value>PrimaryIdentifierCustomFormat</value>
+    <comment>DisplayName for DomainProperty &apos;PrimaryIdentifierCustomFormat&apos; on DomainClass &apos;ReferenceModeNaming&apos;</comment>
   </data>
   <data name="Neumont.Tools.ORMAbstractionToConceptualDatabaseBridge.DefaultReferenceModeNaming.Description" xml:space="preserve">
     <value></value>
@@ -182,7 +198,7 @@
     <comment>DisplayName for DomainClass &apos;DefaultReferenceModeNaming&apos;</comment>
   </data>
   <data name="Neumont.Tools.ORMAbstractionToConceptualDatabaseBridge.DefaultReferenceModeNaming/NamingChoice.Description" xml:space="preserve">
-    <value>Description for Neumont.Tools.ORMAbstractionToConceptualDatabaseBridge.DefaultReferenceModeNaming.DefaultReferenceModeNaming</value>
+    <value>The default naming pattern used for references to EntityTypes with this kind of reference mode.</value>
     <comment>Description for DomainProperty &apos;NamingChoice&apos; on DomainClass &apos;DefaultReferenceModeNaming&apos;</comment>
   </data>
   <data name="Neumont.Tools.ORMAbstractionToConceptualDatabaseBridge.DefaultReferenceModeNaming/NamingChoice.DisplayName" xml:space="preserve">
@@ -190,12 +206,28 @@
     <comment>DisplayName for DomainProperty &apos;NamingChoice&apos; on DomainClass &apos;DefaultReferenceModeNaming&apos;</comment>
   </data>
   <data name="Neumont.Tools.ORMAbstractionToConceptualDatabaseBridge.DefaultReferenceModeNaming/CustomFormat.Description" xml:space="preserve">
-    <value>Description for Neumont.Tools.ORMAbstractionToConceptualDatabaseBridge.DefaultReferenceModeNaming.NamingChoice</value>
+    <value>The default custom naming format used for references to EntityTypes with custom naming formats.</value>
     <comment>Description for DomainProperty &apos;CustomFormat&apos; on DomainClass &apos;DefaultReferenceModeNaming&apos;</comment>
   </data>
   <data name="Neumont.Tools.ORMAbstractionToConceptualDatabaseBridge.DefaultReferenceModeNaming/CustomFormat.DisplayName" xml:space="preserve">
     <value>NamingChoice</value>
     <comment>DisplayName for DomainProperty &apos;CustomFormat&apos; on DomainClass &apos;DefaultReferenceModeNaming&apos;</comment>
+  </data>
+  <data name="Neumont.Tools.ORMAbstractionToConceptualDatabaseBridge.DefaultReferenceModeNaming/PrimaryIdentifierNamingChoice.Description" xml:space="preserve">
+    <value>The default naming pattern used for simple primary identification of EntityTypes with this kind of reference mode.</value>
+    <comment>Description for DomainProperty &apos;PrimaryIdentifierNamingChoice&apos; on DomainClass &apos;DefaultReferenceModeNaming&apos;</comment>
+  </data>
+  <data name="Neumont.Tools.ORMAbstractionToConceptualDatabaseBridge.DefaultReferenceModeNaming/PrimaryIdentifierNamingChoice.DisplayName" xml:space="preserve">
+    <value>DefaultPrimaryIdentifierReferenceModeNaming</value>
+    <comment>DisplayName for DomainProperty &apos;PrimaryIdentifierNamingChoice&apos; on DomainClass &apos;DefaultReferenceModeNaming&apos;</comment>
+  </data>
+  <data name="Neumont.Tools.ORMAbstractionToConceptualDatabaseBridge.DefaultReferenceModeNaming/PrimaryIdentifierCustomFormat.Description" xml:space="preserve">
+    <value>The default custom naming format used for simple primary identification of EntityTypes with custom naming formats.</value>
+    <comment>Description for DomainProperty &apos;PrimaryIdentifierCustomFormat&apos; on DomainClass &apos;DefaultReferenceModeNaming&apos;</comment>
+  </data>
+  <data name="Neumont.Tools.ORMAbstractionToConceptualDatabaseBridge.DefaultReferenceModeNaming/PrimaryIdentifierCustomFormat.DisplayName" xml:space="preserve">
+    <value>DefaultPrimaryIdentifierReferenceModeCustomFormat</value>
+    <comment>DisplayName for DomainProperty &apos;PrimaryIdentifierCustomFormat&apos; on DomainClass &apos;DefaultReferenceModeNaming&apos;</comment>
   </data>
   <data name="Neumont.Tools.ORMAbstractionToConceptualDatabaseBridge.DefaultReferenceModeNaming/ReferenceModeTargetKind.Description" xml:space="preserve">
     <value>Description for Neumont.Tools.ORMAbstractionToConceptualDatabaseBridge.DefaultReferenceModeNaming.ReferenceModeTargetKind</value>
@@ -796,22 +828,6 @@
   <data name="Neumont.Tools.ORMAbstractionToConceptualDatabaseBridge.EffectiveReferenceModeNamingChoice/CustomFormat.Description" xml:space="preserve">
     <value>Use a custom format with the other three values as replacement fields.</value>
     <comment>Description for EnumerationLiteral &apos;CustomFormat&apos; on DomainEnumeration &apos;EffectiveReferenceModeNamingChoice&apos;</comment>
-  </data>
-  <data name="Neumont.Tools.ORMAbstractionToConceptualDatabaseBridge.DefaultReferenceModeNamingTargetKind/Popular.DisplayName" xml:space="preserve">
-    <value>Popular</value>
-    <comment>Display name for EnumerationLiteral &apos;Popular&apos; on DomainEnumeration &apos;DefaultReferenceModeNamingTargetKind&apos;</comment>
-  </data>
-  <data name="Neumont.Tools.ORMAbstractionToConceptualDatabaseBridge.DefaultReferenceModeNamingTargetKind/Popular.Description" xml:space="preserve">
-    <value>The popular reference mode.</value>
-    <comment>Description for EnumerationLiteral &apos;Popular&apos; on DomainEnumeration &apos;DefaultReferenceModeNamingTargetKind&apos;</comment>
-  </data>
-  <data name="Neumont.Tools.ORMAbstractionToConceptualDatabaseBridge.DefaultReferenceModeNamingTargetKind/UnitBased.DisplayName" xml:space="preserve">
-    <value>UnitBased</value>
-    <comment>Display name for EnumerationLiteral &apos;UnitBased&apos; on DomainEnumeration &apos;DefaultReferenceModeNamingTargetKind&apos;</comment>
-  </data>
-  <data name="Neumont.Tools.ORMAbstractionToConceptualDatabaseBridge.DefaultReferenceModeNamingTargetKind/UnitBased.Description" xml:space="preserve">
-    <value>The unit based reference mode.</value>
-    <comment>Description for EnumerationLiteral &apos;UnitBased&apos; on DomainEnumeration &apos;DefaultReferenceModeNamingTargetKind&apos;</comment>
   </data>
   <data name="AmbiguousSchema" xml:space="preserve">
     <value>More than one schema found for target namespace &apos;{0}&apos;, use the first one at &apos;{1}&apos;.</value>

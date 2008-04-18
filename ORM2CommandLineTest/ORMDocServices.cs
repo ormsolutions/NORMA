@@ -297,20 +297,25 @@ namespace Neumont.Tools.ORM.SDK.TestEngine
 						return x.FullName.CompareTo(y.FullName);
 					});
 				store.LoadDomainModels(domainModels);
+				ModelingEventManager eventManager = ModelingEventManager.GetModelingEventManager(store);
 
 				using (Transaction t = store.TransactionManager.BeginTransaction("File load and fixup"))
 				{
+					foreach (IModelingEventSubscriber subscriber in Utility.EnumerateDomainModels<IModelingEventSubscriber>(store.DomainModels))
+					{
+						subscriber.ManageModelingEventHandlers(eventManager, EventSubscriberReasons.DocumentLoading | EventSubscriberReasons.ModelStateEvents, EventHandlerAction.Add);
+					}
 					if (stream.Length > 1)
 					{
 						(new ORMSerializationEngine(store)).Load(stream);
 					}
 					t.Commit();
 				}
-				// UNDONE: We need to define a generic mechanism to attach events so that events that
-				// affect the state of objects in the store can be distinguished from those that affect
-				// the displayed state of the shell, then attach only events that matter in a given environment.
 				AddErrorReportingEvents(store);
-				NamedElementDictionary.ManageEventHandlers(store, ModelingEventManager.GetModelingEventManager(store), EventHandlerAction.Add);
+				foreach (IModelingEventSubscriber subscriber in Utility.EnumerateDomainModels<IModelingEventSubscriber>(store.DomainModels))
+				{
+					subscriber.ManageModelingEventHandlers(eventManager, EventSubscriberReasons.DocumentLoaded | EventSubscriberReasons.ModelStateEvents, EventHandlerAction.Add);
+				}
 				store.UndoManager.UndoState = UndoState.Enabled;
 				return store;
 			}

@@ -98,28 +98,23 @@ namespace Neumont.Tools.ORM.Views.RelationalView
 	partial class RelationalShapeDomainModel : IModelingEventSubscriber
 	{
 		#region IModelingEventSubscriber Implementation
-		/// <summary>
-		/// Hack implementation to turn on the FixupDiagram rules before the model loads.
-		/// Normally this would be done with a coordinated fixup listener. However, we
-		/// have no control over the DSL-generated FixupDiagram rule without jumping through
-		/// a lot of hoops, so we do it here, which fires after the rules are created and
-		/// before the model loads.
-		/// </summary>
-		void IModelingEventSubscriber.ManagePreLoadModelingEventHandlers(ModelingEventManager eventManager, bool isReload, EventHandlerAction action)
+		void IModelingEventSubscriber.ManageModelingEventHandlers(ModelingEventManager eventManager, EventSubscriberReasons reasons, EventHandlerAction action)
 		{
-			if (action == EventHandlerAction.Add)
+			if (action == EventHandlerAction.Add && 0 != (reasons & EventSubscriberReasons.DocumentLoading))
 			{
+				// Hack implementation to turn on the FixupDiagram rules before the model loads.
+				// Normally this would be done with a coordinated fixup listener. However, we
+				// have no control over the DSL-generated FixupDiagram rule without jumping through
+				// a lot of hoops, so we do it here, which fires after the rules are created and
+				// before the model loads.
 				Store.RuleManager.EnableRule(typeof(FixUpDiagram));
 			}
-		}
-		void IModelingEventSubscriber.ManagePostLoadModelingEventHandlers(ModelingEventManager eventManager, bool isReload, EventHandlerAction action)
-		{
-			Store store = Store;
-			TableShape.ManageEventHandlers(store, eventManager, action);
-			RelationalDiagram.ManageEventHandlers(store, eventManager, action);
-		}
-		void IModelingEventSubscriber.ManageSurveyQuestionModelingEventHandlers(ModelingEventManager eventManager, bool isReload, EventHandlerAction action)
-		{
+			if (0 != (reasons & EventSubscriberReasons.DocumentLoaded))
+			{
+				Store store = Store;
+				TableShape.ManageEventHandlers(store, eventManager, action);
+				RelationalDiagram.ManageEventHandlers(store, eventManager, action);
+			}
 		}
 		#endregion // IModelingEventSubscriber Implementation
 	}
