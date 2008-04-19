@@ -117,17 +117,21 @@
   <resheader name="writer">
     <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
+  <data name="CustomPropertiesManager.TransactionName" xml:space="preserve">
+    <value>Edit Custom Properties</value>
+    <comment>The transaction name used for committing the custom properties editor. The text appears in the undo dropdown in the VS IDE.</comment>
+  </data>
   <data name="PropertiesEditor.Category" xml:space="preserve">
     <value>Custom Properties</value>
-		<comment>The category for the custom properties editor. Displays as a grouping category in the Properties Window.</comment>
+    <comment>The category for the custom properties editor. Displays as a grouping category in the Properties Window.</comment>
   </data>
   <data name="PropertiesEditor.Description" xml:space="preserve">
     <value>Press the button to edit custom properties associated with this model and this machine.</value>
-		<comment>The description for the custom properties editor. Displays as a detailed description in the Properties Window.</comment>
+    <comment>The description for the custom properties editor. Displays as a detailed description in the Properties Window.</comment>
   </data>
   <data name="PropertiesEditor.DisplayName" xml:space="preserve">
     <value>PropertiesEditor</value>
-		<comment>The display name for the custom properties editor. Displays as the name of a property in the Properties Window.</comment>
+    <comment>The display name for the custom properties editor. Displays as the name of a property in the Properties Window.</comment>
   </data>
   <data name="Verbalization.CustomPropertiesSnippetsDefaultDescription" xml:space="preserve">
     <value>Default Verbalization</value>

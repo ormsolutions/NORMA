@@ -20,6 +20,14 @@ namespace Neumont.Tools.ORM.CustomProperties
 	/// <summary>A helper class to insulate the rest of the code from direct resource manipulation.</summary>
 	internal partial class ResourceStrings
 	{
+		/// <summary>The transaction name used for committing the custom properties editor. The text appears in the undo dropdown in the VS IDE.</summary>
+		public static string CustomPropertiesManagerTransactionName
+		{
+			get
+			{
+				return ResourceStrings.GetString(ResourceManagers.CustomProperties, "CustomPropertiesManager.TransactionName");
+			}
+		}
 		/// <summary>The description for the custom properties verbalization snippets associated with the custom properties model.</summary>
 		public static string CustomPropertiesSnippetsTypeDescription
 		{

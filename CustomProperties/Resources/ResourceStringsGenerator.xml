@@ -31,6 +31,7 @@
 	<FileAssociations>
 		<FileAssociation model="CustomProperties" resourceFile="..\CustomPropertyProvidersResources.resx" useFileComments="primary"/>
 	</FileAssociations>
+	<ResourceString name="CustomPropertiesManagerTransactionName" model="CustomProperties" resourceName="CustomPropertiesManager.TransactionName"/>
 	<ResourceString name="CustomPropertiesSnippetsTypeDescription" model="CustomProperties" resourceName="Verbalization.CustomPropertiesSnippetsTypeDescription"/>
 	<ResourceString name="CustomPropertiesSnippetsDefaultDescription" model="CustomProperties" resourceName="Verbalization.CustomPropertiesSnippetsDefaultDescription"/>
 	<ResourceString name="PropertiesEditorCategory" model="CustomProperties" resourceName="PropertiesEditor.Category"/>

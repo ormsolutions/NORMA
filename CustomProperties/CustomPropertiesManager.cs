@@ -9,6 +9,10 @@ using System.Windows.Forms;
 using System.Windows.Forms.Design;
 using System.Xml;
 using Microsoft.VisualStudio.Modeling;
+using System.IO;
+using System.Xml.Xsl;
+using Neumont.Tools.Modeling;
+using Neumont.Tools.ORM.ObjectModel;
 
 namespace Neumont.Tools.ORM.CustomProperties
 {
@@ -16,10 +20,12 @@ namespace Neumont.Tools.ORM.CustomProperties
 	public partial class CustomPropertiesManager : Form
 	{
 		#region Fields
+		private static XslCompiledTransform _upgradeMachineFileTransform;
+		private static readonly object LockObject = new object();
 		private static string _filePath = Environment.GetFolderPath(Environment.SpecialFolder.CommonApplicationData) + @"\Neumont\ORM\GroupsAndDefinitions.xml";
 		private static XmlNamespaceManager _namespaceManager;
 		private static XmlDocument _loadedDoc;
-		private static Store _store;
+		private Store _store;
 		private const int _groupLevel = 1;
 		private const int _definitionLevel = 2;
 		private TreeNode _machineNode;
@@ -31,22 +37,110 @@ namespace Neumont.Tools.ORM.CustomProperties
 			InitializeComponent();
 		}
 		#endregion
-		#region Properties
+		#region Machine document management
 		internal static XmlDocument LoadedDocument
 		{
 			get
 			{
-				return _loadedDoc;
+				XmlDocument retVal = _loadedDoc;
+				if (retVal == null)
+				{
+					EnsureMachineDocument();
+					retVal = _loadedDoc;
+				}
+				return retVal;
 			}
 		}
+
 		internal static XmlNamespaceManager NamespaceManager
 		{
 			get
 			{
-				return _namespaceManager;
+				XmlNamespaceManager retVal = _namespaceManager;
+				if (retVal == null)
+				{
+					EnsureMachineDocument();
+					retVal = _namespaceManager;
+				}
+				return retVal;
 			}
 		}
-		#endregion
+		/// <summary>
+		/// Load the xml document off the machine if it hasn't been already.
+		/// And create the document if it doesn't exist on the machine.
+		/// </summary>
+		private static void EnsureMachineDocument()
+		{
+			if (_loadedDoc == null)
+			{
+				lock (LockObject)
+				{
+					if (_loadedDoc == null)
+					{
+						XmlDocument newDoc = null;
+						XmlNamespaceManager newNamespaceManager;
+						if (File.Exists(_filePath))
+						{
+							using (FileStream stream = new FileStream(_filePath, FileMode.Open, FileAccess.Read, FileShare.Read))
+							{
+								Stream loadFromStream = null;
+								XmlReaderSettings readerSettings = new XmlReaderSettings();
+								readerSettings.CloseInput = false;
+								using (XmlReader reader = XmlReader.Create(stream, readerSettings))
+								{
+									if (reader.MoveToContent() == XmlNodeType.Element)
+									{
+										if (reader.Name == "CustomPropertyGroups")
+										{
+											if (reader.NamespaceURI == CustomPropertiesDomainModel.XmlNamespace)
+											{
+												stream.Position = 0;
+												loadFromStream = stream;
+											}
+											else
+											{
+												// Attempt to upgrade the file to the current namespace. The
+												// machine file itself has never exactly matched the file format
+												// for the .orm model of the schema, but the I/O is custom and
+												// we have never changed it--beyond writing a different default
+												// namespace. The upgrade transform moves all elements to the
+												// the current default namespace.
+												stream.Position = 0;
+												XslCompiledTransform transform = GetUpgradeMachineFileTransform();
+												using (XmlReader upgradeReader = XmlReader.Create(stream))
+												{
+													loadFromStream = new MemoryStream();
+													GetUpgradeMachineFileTransform().Transform(upgradeReader, null, loadFromStream);
+												}
+												loadFromStream.Position = 0;
+											}
+										}
+									}
+								}
+								using (loadFromStream)
+								{
+									newDoc = new XmlDocument();
+									newDoc.Load(loadFromStream);
+								}
+							}
+						}
+						if (newDoc == null)
+						{
+							newDoc = new XmlDocument();
+							newDoc.AppendChild(newDoc.CreateXmlDeclaration("1.0", "utf-8", string.Empty));
+							XmlNode newGroups = newDoc.CreateNode(XmlNodeType.Element, "CustomPropertyGroups", CustomPropertiesDomainModel.XmlNamespace);
+							newDoc.AppendChild(newGroups);
+						}
+						newNamespaceManager = new XmlNamespaceManager(newDoc.NameTable);
+						newNamespaceManager.AddNamespace("def", CustomPropertiesDomainModel.XmlNamespace);
+						newNamespaceManager.AddNamespace("xsi", "http://www.w3.org/2001/XMLSchema-instance");
+						_loadedDoc = newDoc;
+						_namespaceManager = newNamespaceManager;
+					}
+				}
+			}
+		}
+		#endregion // Machine document management
 		#region Event Handlers
 		private void btnCancel_Click(object sender, EventArgs e)
 		{
@@ -92,7 +186,7 @@ namespace Neumont.Tools.ORM.CustomProperties
 				}
 			}
 
-			Dictionary<CustomPropertyGroup, List<CustomPropertyDefinition>> groupsAndDefs = GetGroupsAndDefsFromStore();
+			Dictionary<CustomPropertyGroup, List<CustomPropertyDefinition>> groupsAndDefs = GetGroupsAndDefsFromStore(_store);
 			foreach (CustomPropertyGroup group in groupsAndDefs.Keys)
 			{
 				if (string.IsNullOrEmpty(group.Name))
@@ -131,9 +225,9 @@ namespace Neumont.Tools.ORM.CustomProperties
 				return;
 			}
 
-			if (!System.IO.File.Exists(System.IO.Path.GetDirectoryName(_filePath)))
+			if (!File.Exists(Path.GetDirectoryName(_filePath)))
 			{
-				System.IO.Directory.CreateDirectory(System.IO.Path.GetDirectoryName(_filePath));
+				Directory.CreateDirectory(Path.GetDirectoryName(_filePath));
 			}
 
 			_loadedDoc.Save(_filePath);
@@ -161,7 +255,7 @@ namespace Neumont.Tools.ORM.CustomProperties
 			if (rootNode == _machineNode)
 			{
 				XmlNode node = _loadedDoc.SelectSingleNode("//def:CustomPropertyGroups", _namespaceManager);
-				XmlNode newGroup = _loadedDoc.CreateNode("element", "CustomPropertyGroup", CustomPropertiesDomainModel.XmlNamespace);
+				XmlNode newGroup = _loadedDoc.CreateNode(XmlNodeType.Element, "CustomPropertyGroup", CustomPropertiesDomainModel.XmlNamespace);
 				XmlAttribute nameAttrib = _loadedDoc.CreateAttribute("name");
 				XmlAttribute descAttrib = _loadedDoc.CreateAttribute("description");
 				XmlAttribute idAttrib = _loadedDoc.CreateAttribute("id");
@@ -200,7 +294,7 @@ namespace Neumont.Tools.ORM.CustomProperties
 				groupXmlNode = groupNode.Tag as XmlNode;
 				CustomPropertyGroup groupObject = groupNode.Tag as CustomPropertyGroup;
 
-				XmlNode newProperty = _loadedDoc.CreateNode("element", "CustomPropertyDefinition", CustomPropertiesDomainModel.XmlNamespace);
+				XmlNode newProperty = _loadedDoc.CreateNode(XmlNodeType.Element, "CustomPropertyDefinition", CustomPropertiesDomainModel.XmlNamespace);
 				XmlNode newOrmTypes = _loadedDoc.CreateElement("ORMTypes", CustomPropertiesDomainModel.XmlNamespace);
 				newProperty.AppendChild(newOrmTypes);
 				groupXmlNode.AppendChild(newProperty);
@@ -260,7 +354,7 @@ namespace Neumont.Tools.ORM.CustomProperties
 
 			//Create the XML for the Group and it's attributes.
 			XmlNode groupsNode = _loadedDoc.SelectSingleNode("//def:CustomPropertyGroups", _namespaceManager);
-			XmlNode newGroup = _loadedDoc.CreateNode("element", "CustomPropertyGroup", CustomPropertiesDomainModel.XmlNamespace);
+			XmlNode newGroup = _loadedDoc.CreateNode(XmlNodeType.Element, "CustomPropertyGroup", CustomPropertiesDomainModel.XmlNamespace);
 			XmlAttribute nameAttrib = _loadedDoc.CreateAttribute("name");
 			XmlAttribute descAttrib = _loadedDoc.CreateAttribute("description");
 			XmlAttribute idAttrib = _loadedDoc.CreateAttribute("id");
@@ -286,7 +380,7 @@ namespace Neumont.Tools.ORM.CustomProperties
 				CustomPropertyDefinition newDef = nd.Tag as CustomPropertyDefinition;
 
 				//Create the XML objects for the definition.
-				XmlNode newProperty = _loadedDoc.CreateNode("element", "CustomPropertyDefinition", CustomPropertiesDomainModel.XmlNamespace);
+				XmlNode newProperty = _loadedDoc.CreateNode(XmlNodeType.Element, "CustomPropertyDefinition", CustomPropertiesDomainModel.XmlNamespace);
 				XmlNode newOrmTypes = _loadedDoc.CreateElement("ORMTypes", CustomPropertiesDomainModel.XmlNamespace);
 				newProperty.AppendChild(newOrmTypes);
 				newGroup.AppendChild(newProperty);
@@ -343,7 +437,7 @@ namespace Neumont.Tools.ORM.CustomProperties
 			}
 
 			XmlNode groupXMLNode = groupTreeNode.Tag as XmlNode;
-			AddGroupToModel(groupXMLNode);
+			AddGroupToModel(_store, groupXMLNode, this, null);
 		}
 		private void tsbDefaultToggle_Click(object sender, EventArgs e)
 		{
@@ -432,7 +526,8 @@ namespace Neumont.Tools.ORM.CustomProperties
 			definitionEditor1.Visible = false;
 
 			TreeNode rootNode = null;
-			switch (e.Node.Level)
+			int nodeLevel = e.Node.Level;
+			switch (nodeLevel)
 			{
 				case _groupLevel:
 					rootNode = e.Node.Parent;
@@ -460,7 +555,8 @@ namespace Neumont.Tools.ORM.CustomProperties
 					break;
 			}
 
-			tsbDelete.Enabled = e.Node.Level != 0;
+			tsbAddDefinition.Enabled = nodeLevel != 0;
+			tsbDelete.Enabled = nodeLevel != 0;
 			tsbAddGroupToModel.Enabled = rootNode == _machineNode;
 			tsbDefaultToggle.Enabled = rootNode == _machineNode;
 			tsbAddGroupToMachine.Enabled = rootNode == _modelNode;
@@ -490,39 +586,16 @@ namespace Neumont.Tools.ORM.CustomProperties
 			{
 				serviceProvider = store;
 			}
-			using (Transaction t = store.TransactionManager.BeginTransaction())
+			using (Transaction t = store.TransactionManager.BeginTransaction(ResourceStrings.CustomPropertiesManagerTransactionName))
 			{
 				CustomPropertiesManager mgr = new CustomPropertiesManager();
-				_store = store;
+				mgr._store = store;
 
 				mgr.tvCustomProperties.Nodes.Clear();
 				mgr._machineNode = mgr.tvCustomProperties.Nodes.Add("Machine");
 				mgr._modelNode = mgr.tvCustomProperties.Nodes.Add("Model");
 
-				//Load the xml document off the machine if it hasn't been already.
-				//And create the document if it doesn't exist on the machine.
-				if (_loadedDoc == null)
-				{
-					_loadedDoc = new XmlDocument();
-					if (System.IO.File.Exists(_filePath))
-					{
-						_loadedDoc.Load(_filePath);
-					}
-					else
-					{
-						_loadedDoc.AppendChild(_loadedDoc.CreateXmlDeclaration("1.0", "utf-8", string.Empty));
-						XmlNode newGroups = _loadedDoc.CreateNode("element", "CustomPropertyGroups", CustomPropertiesDomainModel.XmlNamespace);
-						_loadedDoc.AppendChild(newGroups);
-					}
-				}
-
-				if (_namespaceManager == null)
-				{
-					_namespaceManager = new XmlNamespaceManager(_loadedDoc.NameTable);
-					_namespaceManager.AddNamespace("def", CustomPropertiesDomainModel.XmlNamespace);
-					_namespaceManager.AddNamespace("xsi", "http://www.w3.org/2001/XMLSchema-instance");
-
-				}
+				EnsureMachineDocument();
 
 				XmlNodeList groups = _loadedDoc.SelectNodes("//def:CustomPropertyGroup", _namespaceManager);
 				foreach (XmlNode group in groups)
@@ -543,7 +616,7 @@ namespace Neumont.Tools.ORM.CustomProperties
 					}
 				}
 
-				Dictionary<CustomPropertyGroup, List<CustomPropertyDefinition>> groupsAndDefs = GetGroupsAndDefsFromStore();
+				Dictionary<CustomPropertyGroup, List<CustomPropertyDefinition>> groupsAndDefs = GetGroupsAndDefsFromStore(store);
 				foreach (CustomPropertyGroup grp in groupsAndDefs.Keys)
 				{
 					TreeNode groupNode = mgr._modelNode.Nodes.Add(grp.Name);
@@ -555,7 +628,7 @@ namespace Neumont.Tools.ORM.CustomProperties
 					}
 				}
 
-				mgr.ApplyDefaultGroups();
+				ApplyDefaultGroups(store, mgr, null);
 
 				bool saveChanges = false;
 				IWindowsFormsEditorService windowsFormsEditorService = serviceProvider.GetService(typeof(IWindowsFormsEditorService)) as IWindowsFormsEditorService;
@@ -578,6 +651,35 @@ namespace Neumont.Tools.ORM.CustomProperties
 					t.Rollback();
 				}
 			}
+		}
+		/// <summary>
+		/// This method grabs and compiles the XSLT transform that upgrades the machine file transform to the current namespace.
+		/// </summary>
+		/// <returns>The compiled XSLT tranform.</returns>
+		private static XslCompiledTransform GetUpgradeMachineFileTransform()
+		{
+			XslCompiledTransform retVal = _upgradeMachineFileTransform;
+			if (retVal == null)
+			{
+				lock (LockObject)
+				{
+					retVal = _upgradeMachineFileTransform;
+					if (retVal == null)
+					{
+						retVal = new XslCompiledTransform();
+						Type resourceType = typeof(CustomPropertiesManager);
+						using (Stream transformStream = resourceType.Assembly.GetManifestResourceStream(resourceType, "UpgradeCurrentNamespace.xslt"))
+						{
+							using (XmlReader reader = XmlReader.Create(transformStream))
+							{
+								retVal.Load(reader, XsltSettings.TrustedXslt, new XmlUrlResolver());
+							}
+						}
+						_upgradeMachineFileTransform = retVal;
+					}
+				}
+			}
+			return retVal;
 		}
 		/// <summary>
 		/// Looks through all tree nodes recursively until it finds the one with 
@@ -632,7 +734,7 @@ namespace Neumont.Tools.ORM.CustomProperties
 				names.Add(node.Attributes["name"].Value);
 			}
 
-			List<CustomPropertyGroup> groups = GetGroupsFromStore();
+			List<CustomPropertyGroup> groups = GetGroupsFromStore(_store);
 			foreach (CustomPropertyGroup grp in groups)
 			{
 				names.Add(grp.Name);
@@ -741,9 +843,9 @@ namespace Neumont.Tools.ORM.CustomProperties
 		/// Gets all of the groups and their definitions from the store.
 		/// </summary>
 		/// <returns>All of the groups and their definitions.</returns>
-		private static Dictionary<CustomPropertyGroup, List<CustomPropertyDefinition>> GetGroupsAndDefsFromStore()
+		private static Dictionary<CustomPropertyGroup, List<CustomPropertyDefinition>> GetGroupsAndDefsFromStore(Store store)
 		{
-			ReadOnlyCollection<ModelElement> mdlDefs = _store.ElementDirectory.FindElements(CustomPropertyDefinition.DomainClassId);
+			ReadOnlyCollection<ModelElement> mdlDefs = store.ElementDirectory.FindElements(CustomPropertyDefinition.DomainClassId);
 			Dictionary<CustomPropertyGroup, List<CustomPropertyDefinition>> groupsAndDefs = new Dictionary<CustomPropertyGroup, List<CustomPropertyDefinition>>();
 			foreach (ModelElement elemnt in mdlDefs)
 			{
@@ -765,9 +867,9 @@ namespace Neumont.Tools.ORM.CustomProperties
 		/// Gets all of the groups from the store.
 		/// </summary>
 		/// <returns>All of the groups.</returns>
-		private static List<CustomPropertyGroup> GetGroupsFromStore()
+		private static List<CustomPropertyGroup> GetGroupsFromStore(Store store)
 		{
-			ReadOnlyCollection<ModelElement> mdlDefs = _store.ElementDirectory.FindElements(CustomPropertyGroup.DomainClassId);
+			ReadOnlyCollection<ModelElement> mdlDefs = store.ElementDirectory.FindElements(CustomPropertyGroup.DomainClassId);
 			List<CustomPropertyGroup> groups = new List<CustomPropertyGroup>();
 			foreach (CustomPropertyGroup grp in mdlDefs)
 			{
@@ -800,16 +902,19 @@ namespace Neumont.Tools.ORM.CustomProperties
 		/// Goes through all of the machine level groups that are marked as default 
 		/// and adds them to the model if needed.
 		/// </summary>
-		private void ApplyDefaultGroups()
+		/// <param name="store">The current store</param>
+		/// <param name="activeForm">An active form</param>
+		/// <param name="notifyAdded">Used during deserialization fixup</param>
+		private static void ApplyDefaultGroups(Store store, CustomPropertiesManager activeForm, INotifyElementAdded notifyAdded)
 		{
 			XmlNodeList defaultGroups = _loadedDoc.SelectNodes("//def:CustomPropertyGroup[@isDefault='true']", _namespaceManager);
-			Dictionary<CustomPropertyGroup, List<CustomPropertyDefinition>> groupsAndDefs = GetGroupsAndDefsFromStore();
+			Dictionary<CustomPropertyGroup, List<CustomPropertyDefinition>> groupsAndDefs = GetGroupsAndDefsFromStore(store);
 			foreach (XmlNode xmlGroup in defaultGroups)
 			{
 				string groupName = xmlGroup.Attributes["name"].Value;
 				if (!ListHasGroupName(groupsAndDefs, groupName))
 				{
-					AddGroupToModel(xmlGroup);
+					AddGroupToModel(store, xmlGroup, activeForm, notifyAdded);
 				}
 			}
 		}
@@ -819,7 +924,7 @@ namespace Neumont.Tools.ORM.CustomProperties
 		/// <param name="groups">The list of groups and definitions.</param>
 		/// <param name="name">The name to look for.</param>
 		/// <returns>True if the list has a group with the specified name.</returns>
-		private bool ListHasGroupName(Dictionary<CustomPropertyGroup, List<CustomPropertyDefinition>> groups, string name)
+		private static bool ListHasGroupName(Dictionary<CustomPropertyGroup, List<CustomPropertyDefinition>> groups, string name)
 		{
 			foreach (CustomPropertyGroup group in groups.Keys)
 			{
@@ -833,21 +938,33 @@ namespace Neumont.Tools.ORM.CustomProperties
 		/// <summary>
 		/// Adds the specified machine level group to the model.
 		/// </summary>
+		/// <param name="store">Target store</param>
 		/// <param name="groupXMLNode">The group to add to the model.</param>
-		private void AddGroupToModel(XmlNode groupXMLNode)
+		/// <param name="activeForm">The current form</param>
+		/// <param name="notifyAdded">Used during deserialization fixup</param>
+		private static void AddGroupToModel(Store store, XmlNode groupXMLNode, CustomPropertiesManager activeForm, INotifyElementAdded notifyAdded)
 		{
-			CustomPropertyGroup grp = new CustomPropertyGroup(_store);
+			CustomPropertyGroup grp = new CustomPropertyGroup(store);
 			grp.Name = groupXMLNode.Attributes["name"].Value;
 			grp.Description = groupXMLNode.Attributes["description"].Value;
 
-			TreeNode newGroupTreeNode = _modelNode.Nodes.Add(grp.Name);
-			newGroupTreeNode.Tag = grp;
-			tvCustomProperties.SelectedNode = newGroupTreeNode;
+			if (notifyAdded != null)
+			{
+				notifyAdded.ElementAdded(grp, false);
+			}
+
+			TreeNode newGroupTreeNode = null;
+			if (activeForm != null)
+			{
+				newGroupTreeNode = activeForm._modelNode.Nodes.Add(grp.Name);
+				newGroupTreeNode.Tag = grp;
+				activeForm.tvCustomProperties.SelectedNode = newGroupTreeNode;
+			}
 
 			XmlNodeList xmlDefinitions = groupXMLNode.SelectNodes("def:CustomPropertyDefinition", _namespaceManager);
 			foreach (XmlNode xmlDef in xmlDefinitions)
 			{
-				CustomPropertyDefinition def = new CustomPropertyDefinition(_store);
+				CustomPropertyDefinition def = new CustomPropertyDefinition(store);
 				def.CustomPropertyGroup = grp;
 				def.Name = xmlDef.Attributes["name"].Value;
 				def.Category = xmlDef.Attributes["category"].Value;
@@ -863,10 +980,51 @@ namespace Neumont.Tools.ORM.CustomProperties
 					def.ORMTypes = def.ORMTypes | (ORMTypes)Enum.Parse(typeof(ORMTypes), ormType.Attributes["name"].Value, true);
 				}
 
-				TreeNode newDefinitionNode = newGroupTreeNode.Nodes.Add(def.Name);
-				newDefinitionNode.Tag = def;
+				if (notifyAdded != null)
+				{
+					notifyAdded.ElementAdded(def, true);
+				}
+
+				if (newGroupTreeNode != null)
+				{
+					newGroupTreeNode.Nodes.Add(def.Name).Tag = def;
+				}
 			}
 		}
 		#endregion
+		#region Deserialization Fixup
+		/// <summary>
+		/// Return a deserialization fixup listener. The listener
+		/// adds the implicit FactConstraint elements.
+		/// </summary>
+		public static IDeserializationFixupListener FixupListener
+		{
+			get
+			{
+				return new DefaultMachinePropertiesFixupListener();
+			}
+		}
+		/// <summary>
+		/// Fixup listener implementation. Adds default properties
+		/// </summary>
+		private sealed class DefaultMachinePropertiesFixupListener : DeserializationFixupListener<ORMModel>
+		{
+			/// <summary>
+			/// ExternalConstraintFixupListener constructor
+			/// </summary>
+			public DefaultMachinePropertiesFixupListener()
+				: base((int)ORMDeserializationFixupPhase.ValidateImplicitStoredElements)
+			{
+			}
+			/// <summary>
+			/// Move settings from the machine file into the model if they are not there already 
+			/// </summary>
+			protected override void ProcessElement(ORMModel element, Store store, INotifyElementAdded notifyAdded)
+			{
+				EnsureMachineDocument();
+				ApplyDefaultGroups(store, null, notifyAdded);
+			}
+		}
+		#endregion // Deserialization Fixup
 	}
 }

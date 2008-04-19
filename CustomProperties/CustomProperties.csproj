@@ -49,6 +49,7 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="CustomProperty.DeserializationFixupListeners.cs" />
     <Compile Include="CustomPropertyDescriptor.cs" />
     <Compile Include="CustomPropertiesManager.cs">
       <SubType>Form</SubType>
@@ -160,6 +161,7 @@
       <Generator>NUPlixLoader</Generator>
       <LastGenOutput>ResourceStringsGenerator.cs</LastGenOutput>
     </Content>
+    <EmbeddedResource Include="UpgradeCurrentNamespace.xslt" />
     <Content Include="VerbalizationSnippets\CustomPropertyVerbalizationSnippets.xml" />
   </ItemGroup>
   <ItemGroup>

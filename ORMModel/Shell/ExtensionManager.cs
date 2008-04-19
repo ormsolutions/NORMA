@@ -14,6 +14,7 @@
 \**************************************************************************/
 #endregion
 
+//#define DEBUG_EXTENSION_TRANSFORMS
 using System;
 using System.Collections.Generic;
 using System.ComponentModel;
@@ -38,7 +39,9 @@ namespace Neumont.Tools.ORM.Shell
 {
 	public sealed partial class ExtensionManager : Form
 	{
-		private readonly Store _store;
+		private readonly Store myStore;
+		private static XslCompiledTransform myExtensionStripperTransform;
+		private static readonly object LockObject = new object();
 
 		/// <summary>
 		/// Initialize the ExtensionManager form
@@ -46,7 +49,7 @@ namespace Neumont.Tools.ORM.Shell
 		private ExtensionManager(Store store)
 		{
 			InitializeComponent();
-			this._store = store;
+			this.myStore = store;
 		}
 		/// <summary>
 		/// This method shows the ExtensionManager form.
@@ -285,7 +288,7 @@ namespace Neumont.Tools.ORM.Shell
 			Type type = ormExtensionType.Type;
 			ListViewItem lvi = new ListViewItem();
 			lvi.Tag = ormExtensionType.NamespaceUri;
-			if (null != _store.FindDomainModel(ormExtensionType.DomainModelId))
+			if (null != myStore.FindDomainModel(ormExtensionType.DomainModelId))
 			{
 				lvi.Checked = true;
 			}
@@ -320,18 +323,34 @@ namespace Neumont.Tools.ORM.Shell
 			}
 		}
 		/// <summary>
-		/// This method grabs and compiles the XSLT transform that strips or adds custom extension to the ORM file.
+		/// This method grabs and compiles the XSLT transform that strips or adds custom extensions to the ORM file.
 		/// </summary>
 		/// <returns>The compiled XSLT tranform.</returns>
 		private static XslCompiledTransform GetExtensionStripperTransform()
 		{
-			XslCompiledTransform retVal = new XslCompiledTransform(false);
-			Type resourceType = typeof(ExtensionManager);
-			using (Stream transformStream = resourceType.Assembly.GetManifestResourceStream(resourceType, "ExtensionStripper.xslt"))
+			XslCompiledTransform retVal = myExtensionStripperTransform;
+			if (retVal == null)
 			{
-				using (XmlReader reader = XmlReader.Create(transformStream))
+				lock (LockObject)
 				{
-					retVal.Load(reader, XsltSettings.TrustedXslt, new XmlUrlResolver());
+					retVal = myExtensionStripperTransform;
+					if (retVal == null)
+					{
+#if DEBUG_EXTENSION_TRANSFORMS 
+						retVal = new XslCompiledTransform(true);
+#else
+						retVal = new XslCompiledTransform();
+#endif
+						Type resourceType = typeof(ExtensionManager);
+						using (Stream transformStream = resourceType.Assembly.GetManifestResourceStream(resourceType, "ExtensionStripper.xslt"))
+						{
+							using (XmlReader reader = XmlReader.Create(transformStream))
+							{
+								retVal.Load(reader, XsltSettings.TrustedXslt, new XmlUrlResolver());
+							}
+						}
+						myExtensionStripperTransform = retVal;
+					}
 				}
 			}
 			return retVal;
