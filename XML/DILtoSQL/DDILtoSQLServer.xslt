@@ -26,7 +26,7 @@
 	<xsl:import href="DDILtoSQLStandard.xslt"/>
 	<xsl:import href="TruthValueTestRemover.xslt"/>
 	<xsl:import href="DomainInliner.xslt"/>
-	<!--<xsl:import href="UniqueNullableOutliner.xslt"/>-->
+	<xsl:import href="UniqueNullableOutliner.xslt"/>
 
 	<xsl:output method="text" encoding="utf-8" indent="no" omit-xml-declaration="yes"/>
 	<xsl:strip-space elements="*"/>
@@ -55,16 +55,7 @@
 			<xsl:apply-templates mode="DomainInliner" select="exsl:node-set($truthValueTestRemovedDilFragment)"/>
 		</xsl:variable>
 		<xsl:variable name="uniqueNullableOutlinedDilFragment">
-			<!-- This pre-transform is disabled until it is finished. -->
-			<xsl:copy-of select="exsl:node-set($domainInlinedDilFragment)/child::*"/>
-			<!--<xsl:apply-templates mode="UniqueNullableOutliner" select="exsl:node-set($domainInlinedDilFragment)">
-				<xsl:with-param name="UniqueNullableOutliner.UniquenessOption" select="'BackingTable'"/>
-				
-				<xsl:with-param name="UniqueNullableOutliner.GenerateIndexedViews" select="true()"/>
-				<xsl:with-param name="UniqueNullableOutliner.ForeignKeyOption" select="'triggers'"/>
-				<xsl:with-param name="UniqueNullableOutliner.OutlineSingleColumnUniquenesses" select="true()"/>
-			
-			</xsl:apply-templates>-->
+			<xsl:apply-templates mode="UniqueNullableOutliner" select="exsl:node-set($domainInlinedDilFragment)"/>
 		</xsl:variable>
 		<xsl:apply-templates select="exsl:node-set($uniqueNullableOutlinedDilFragment)/child::*"/>
 	</xsl:template>

@@ -27,6 +27,8 @@
 
 	<xsl:param name="UniqueNullableOutliner.UniquenessOption" select="'backingTable'"/>
 	<xsl:param name="UniqueNullableOutliner.GenerateIndexedViews" select="true()"/>
+	<!-- If true, turns off the rest of the nullable uniqueness processing (which is still a work in progress). -->
+	<xsl:param name="UniqueNullableOutliner.GenerateIndexedViewsOnly" select="$UniqueNullableOutliner.GenerateIndexedViews"/>
 	<xsl:param name="UniqueNullableOutliner.ForeignKeyOption" select="'triggers'"/>
 	<!-- Controls whether uniqueness constraints over a single column are outlined. -->
 	<xsl:param name="UniqueNullableOutliner.OutlineSingleColumnUniquenesses" select="true()"/>
@@ -127,29 +129,31 @@
 					<xsl:with-param name="uniquenessColumnNames" select="column/@name"/>
 				</xsl:apply-templates>
 			</xsl:if>
-			<xsl:choose>
-				<xsl:when test="$UniqueNullableOutliner.UniquenessOption = 'backingTable'">
-					<xsl:apply-templates select="$table" mode="UniqueNullableOutliner.ForBackingTable">
-						<xsl:with-param name="nullableColumnNames" select="$nullableColumnNames"/>
-						<xsl:with-param name="uniquenessName" select="@name"/>
-						<xsl:with-param name="uniquenessColumnNames" select="column/@name"/>
-					</xsl:apply-templates>
-				</xsl:when>
-				<xsl:when test ="$UniqueNullableOutliner.UniquenessOption = 'Trigger'">
-					<xsl:apply-templates select="$table" mode="UniqueNullableOutliner.ForTrigger">
-						<xsl:with-param name="nullableColumnNames" select="$nullableColumnNames"/>
-						<xsl:with-param name="uniquenessName" select="@name"/>
-						<xsl:with-param name="uniquenessColumnNames" select="column/@name"/>
-					</xsl:apply-templates>
-				</xsl:when>
-				<xsl:otherwise>
-					<xsl:message terminate="yes">
-						<xsl:text>ERROR: UniqueNullableOutliner.UniquenessOption value '</xsl:text>
-						<xsl:value-of select="$UniqueNullableOutliner.UniquenessOption"/>
-						<xsl:text>' is not recognized.</xsl:text>
-					</xsl:message>
-				</xsl:otherwise>
-			</xsl:choose>
+			<xsl:if test="not($UniqueNullableOutliner.GenerateIndexedViewsOnly)">
+				<xsl:choose>
+					<xsl:when test="$UniqueNullableOutliner.UniquenessOption = 'backingTable'">
+						<xsl:apply-templates select="$table" mode="UniqueNullableOutliner.ForBackingTable">
+							<xsl:with-param name="nullableColumnNames" select="$nullableColumnNames"/>
+							<xsl:with-param name="uniquenessName" select="@name"/>
+							<xsl:with-param name="uniquenessColumnNames" select="column/@name"/>
+						</xsl:apply-templates>
+					</xsl:when>
+					<xsl:when test ="$UniqueNullableOutliner.UniquenessOption = 'Trigger'">
+						<xsl:apply-templates select="$table" mode="UniqueNullableOutliner.ForTrigger">
+							<xsl:with-param name="nullableColumnNames" select="$nullableColumnNames"/>
+							<xsl:with-param name="uniquenessName" select="@name"/>
+							<xsl:with-param name="uniquenessColumnNames" select="column/@name"/>
+						</xsl:apply-templates>
+					</xsl:when>
+					<xsl:otherwise>
+						<xsl:message terminate="yes">
+							<xsl:text>ERROR: UniqueNullableOutliner.UniquenessOption value '</xsl:text>
+							<xsl:value-of select="$UniqueNullableOutliner.UniquenessOption"/>
+							<xsl:text>' is not recognized.</xsl:text>
+						</xsl:message>
+					</xsl:otherwise>
+				</xsl:choose>
+			</xsl:if>
 		</xsl:for-each>
 
 	</xsl:template>
@@ -443,7 +447,7 @@
 	
 	After Update on TableWithUniqueness
 	-->
-	<ddl:triggerDefinition actionTime="AFTER" name="">
+	<!--<ddl:triggerDefinition actionTime="AFTER" name="">
 		<ddl:event type="INSERT">
 			
 		</ddl:event>
@@ -453,7 +457,7 @@
 		<ddl:event type="UPDATE">
 
 		</ddl:event>
-	</ddl:triggerDefinition>	
+	</ddl:triggerDefinition>-->	
 	<!--
 	Foreign Key TRIGGER:
 	After Update on TableWithUniqueness

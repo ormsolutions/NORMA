@@ -69,6 +69,7 @@
 	<xs:group name="sqlSchemaDefinitionStatement">
 		<xs:choice>
 			<xs:element ref="ddl:schemaDefinition"/>
+			<xs:element ref="ddl:tableDefinition"/>
 			<xs:element ref="ddl:viewDefinition"/>
 			<xs:group ref="ddl:sqlInvokedRoutine"/>
 			<xs:group ref="ddl:grantStatement"/>
