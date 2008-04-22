@@ -34,7 +34,7 @@ namespace Neumont.Tools.ORMToORMAbstractionBridge
 		/// <summary>
 		/// The algorithm version written to the file
 		/// </summary>
-		public const string CurrentAlgorithmVersion = "1.001";
+		public const string CurrentAlgorithmVersion = "1.002";
 		#endregion // CurrentAlgorithmVersion constant
 		#region ValidationPriority enum
 		/// <summary>
@@ -1056,16 +1056,19 @@ namespace Neumont.Tools.ORMToORMAbstractionBridge
 				Objectification objectification = ot.Objectification;
 				if (objectification != null)
 				{
-					LinkedElementCollection<ConceptTypeChild> associationChildren =
-						ConceptTypeHasChildAsPartOfAssociation.GetTargetCollection(ct);
-
 					// CT becomes an associationChild for all concept types related to the binarized fact types
 					foreach (FactType factType in objectification.ImpliedFactTypeCollection)
 					{
 						LinkedElementCollection<ConceptTypeChild> childrenForFactType =
 							ConceptTypeChildHasPathFactType.GetConceptTypeChild(factType);
 
-						associationChildren.AddRange(ConceptTypeChildHasPathFactType.GetConceptTypeChild(factType));
+						foreach (ConceptTypeChild conceptTypeChild in ConceptTypeChildHasPathFactType.GetConceptTypeChild(factType))
+						{
+							if (conceptTypeChild.Parent == ct || conceptTypeChild.Target == ct)
+							{
+								associationChildren.Add(conceptTypeChild);
+							}
+						} 
 					}
 				}
 			}
