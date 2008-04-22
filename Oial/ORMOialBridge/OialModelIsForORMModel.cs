@@ -1056,12 +1056,11 @@ namespace Neumont.Tools.ORMToORMAbstractionBridge
 				Objectification objectification = ot.Objectification;
 				if (objectification != null)
 				{
+					LinkedElementCollection<ConceptTypeChild> associationChildren = ConceptTypeHasChildAsPartOfAssociation.GetTargetCollection(ct);
+
 					// CT becomes an associationChild for all concept types related to the binarized fact types
 					foreach (FactType factType in objectification.ImpliedFactTypeCollection)
 					{
-						LinkedElementCollection<ConceptTypeChild> childrenForFactType =
-							ConceptTypeChildHasPathFactType.GetConceptTypeChild(factType);
-
 						foreach (ConceptTypeChild conceptTypeChild in ConceptTypeChildHasPathFactType.GetConceptTypeChild(factType))
 						{
 							if (conceptTypeChild.Parent == ct || conceptTypeChild.Target == ct)
