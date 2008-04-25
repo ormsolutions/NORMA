@@ -410,6 +410,34 @@
 					</xs:documentation>
 				</xs:annotation>
 			</xs:enumeration>
+			<xs:enumeration value="FrequencyRangeExact">
+				<xs:annotation>
+					<xs:documentation>
+						Matches a frequency range where the minimum and maximum frequencies are equal.
+					</xs:documentation>
+				</xs:annotation>
+			</xs:enumeration>
+			<xs:enumeration value="FrequencyRangeMaxUnbounded">
+				<xs:annotation>
+					<xs:documentation>
+						Matches a frequency range with no upper bound.
+					</xs:documentation>
+				</xs:annotation>
+			</xs:enumeration>
+			<xs:enumeration value="FrequencyRangeMinUnbounded">
+				<xs:annotation>
+					<xs:documentation>
+						Matches a frequency range where the minimum is one.
+					</xs:documentation>
+				</xs:annotation>
+			</xs:enumeration>
+			<xs:enumeration value="SingleRoleRoleSequence">
+				<xs:annotation>
+					<xs:documentation>
+						Matches a role sequence with exactly one role.
+					</xs:documentation>
+				</xs:annotation>
+			</xs:enumeration>
 		</xs:restriction>
 	</xs:simpleType>
 	<xs:complexType name="SnippetType">
@@ -438,6 +466,8 @@
 			<xs:element name="IterateValueRanges" type="IterateValueRangesType"/>
 			<xs:element name="MinValue" type="MinValueType"/>
 			<xs:element name="MaxValue" type="MaxValueType"/>
+			<xs:element name="MinFrequencyValue" type="MinFrequencyValueType"/>
+			<xs:element name="MaxFrequencyValue" type="MaxFrequencyValueType"/>
 			<xs:element name="IterateContextRoles" type="IterateContextRolesType"/>
 			<xs:element name="RoleName" type="RoleNameType"/>
 			<xs:element name="RolePlayer" type="RolePlayerType"/>
@@ -555,6 +585,24 @@
 				<xs:complexType>
 					<xs:complexContent>
 						<xs:extension base="MaxValueType">
+							<xs:attribute name="conditionalMatch" use="optional" type="ConditionalMatchPatternType"/>
+						</xs:extension>
+					</xs:complexContent>
+				</xs:complexType>
+			</xs:element>
+			<xs:element name="MinFrequencyValue">
+				<xs:complexType>
+					<xs:complexContent>
+						<xs:extension base="MinFrequencyValueType">
+							<xs:attribute name="conditionalMatch" use="optional" type="ConditionalMatchPatternType"/>
+						</xs:extension>
+					</xs:complexContent>
+				</xs:complexType>
+			</xs:element>
+			<xs:element name="MaxFrequencyValue">
+				<xs:complexType>
+					<xs:complexContent>
+						<xs:extension base="MaxFrequencyValueType">
 							<xs:attribute name="conditionalMatch" use="optional" type="ConditionalMatchPatternType"/>
 						</xs:extension>
 					</xs:complexContent>
@@ -728,6 +776,20 @@
 			</xs:documentation>
 		</xs:annotation>
 	</xs:complexType>
+	<xs:complexType name="MinFrequencyValueType">
+		<xs:annotation>
+			<xs:documentation>
+				Returns the minimum value of a frequency constraint.
+			</xs:documentation>
+		</xs:annotation>
+	</xs:complexType>
+	<xs:complexType name="MaxFrequencyValueType">
+		<xs:annotation>
+			<xs:documentation>
+				Returns the maximumu value of a frequency constraint.
+			</xs:documentation>
+		</xs:annotation>
+	</xs:complexType>
 	<xs:complexType name="RoleNameType">
 		<xs:annotation>
 			<xs:documentation>
@@ -752,7 +814,11 @@
 	<xs:complexType name="PredicateReplacementType">
 		<xs:choice minOccurs="1" maxOccurs="1">
 			<xs:element name="ConditionalSnippet" type="ConditionalSnippetType"/>
-			<xs:element name="Snippet" type="SnippetLeafType"/>
+			<xs:element name="Snippet" type="SnippetType">
+				<xs:annotation>
+					<xs:documentation>The {0} replacement field for this snippet always corresponds to the role player name. Contained snippets are used as replacements for subsequent fields.</xs:documentation>
+				</xs:annotation>
+			</xs:element>
 		</xs:choice>
 		<xs:attribute name="match" use="optional" type="RoleIteratorContextMatchEnum"/>
 		<xs:attribute name="pass" use="optional" type="PassEnum"/>
@@ -947,11 +1013,38 @@
 		</xs:choice>
 	</xs:complexType>
 	<xs:complexType name="EnableSubscriptsType">
-		<xs:attribute name="minFactArity" type="xs:positiveInteger" use="required"/>
+		<xs:attribute name="minFactArity" type="xs:positiveInteger"/>
+		<xs:attribute name="maxFactArity" type="xs:positiveInteger"/>
+		<xs:attribute name="factArity" type="xs:positiveInteger"/>
+		<xs:attribute name="nonOptimizedFrequencyPattern" type="xs:boolean"/>
 	</xs:complexType>
 	<xs:simpleType name="RingTypeEnum">
-		<xs:restriction base="xs:string">
+		<xs:restriction base="xs:token">
 			<xs:enumeration value="Irreflexive"/>
+		</xs:restriction>
+	</xs:simpleType>
+	<xs:simpleType name="FrequencyRangePatternEnum">
+		<xs:restriction base="xs:token">
+			<xs:enumeration value="Exact">
+				<xs:annotation>
+					<xs:documentation>The min and max frequency are equal</xs:documentation>
+				</xs:annotation>
+			</xs:enumeration>
+			<xs:enumeration value="MinUnbounded">
+				<xs:annotation>
+					<xs:documentation>The min frequency is default (1, maps to no explicit bound)</xs:documentation>
+				</xs:annotation>
+			</xs:enumeration>
+			<xs:enumeration value="MaxUnbounded">
+				<xs:annotation>
+					<xs:documentation>The max frequency is unbounded</xs:documentation>
+				</xs:annotation>
+			</xs:enumeration>
+			<xs:enumeration value="Both">
+				<xs:annotation>
+					<xs:documentation>The min and max frequency are both specified to non-default values</xs:documentation>
+				</xs:annotation>
+			</xs:enumeration>
 		</xs:restriction>
 	</xs:simpleType>
 	<xs:complexType name="ConstraintType">
@@ -976,6 +1069,11 @@
 					<xs:attribute name="sign" type="ve:SignEnum" use="optional"/>
 					<xs:attribute name="ringType" type="RingTypeEnum" use="optional"/>
 					<xs:attribute name="columnArity" type="xs:positiveInteger" use="optional"/>
+					<xs:attribute name="frequencyRangePattern" type="FrequencyRangePatternEnum" use="optional">
+						<xs:annotation>
+							<xs:documentation>The frequency range pattern to check</xs:documentation>
+						</xs:annotation>
+					</xs:attribute>
 					<xs:attributeGroup ref="FactArityAttributes"/>
 				</xs:complexType>
 			</xs:element>

@@ -2273,6 +2273,10 @@ namespace Neumont.Tools.ORM.ObjectModel
 		/// </summary>
 		protected IEnumerable<CustomChildVerbalizer> GetCustomChildVerbalizations(IVerbalizeFilterChildren filter, bool isNegative)
 		{
+			if (ReadingRequiredError != null)
+			{
+				yield break;
+			}
 			LinkedElementCollection<SetConstraint> setConstraints = SetConstraintCollection;
 			int setConstraintCount = setConstraints.Count;
 			if (setConstraintCount != 0)
@@ -2510,21 +2514,37 @@ namespace Neumont.Tools.ORM.ObjectModel
 					}
 				}
 			}
-			if (ReadingRequiredError == null)
+
+			// Verbalize other single-facttype set constraints
+			for (int i = 0; i < setConstraintCount; ++i)
 			{
-				LinkedElementCollection<FactTypeInstance> instances = FactTypeInstanceCollection;
-				int instanceCount = instances.Count;
-				if (instanceCount != 0)
+				SetConstraint constraint = setConstraints[i];
+				switch (constraint.Constraint.ConstraintType)
 				{
-					yield return new CustomChildVerbalizer(FactTypeInstanceBlockStart.GetVerbalizer(), true);
-					for (int i = 0; i < instanceCount; ++i)
-					{
-						FactTypeInstanceVerbalizer verbalizer = FactTypeInstanceVerbalizer.GetVerbalizer();
-						verbalizer.Initialize(this, instances[i]);
-						yield return new CustomChildVerbalizer(verbalizer, true);
-					}
-					yield return new CustomChildVerbalizer(FactTypeInstanceBlockEnd.GetVerbalizer(), true);
+					case ConstraintType.Frequency: // UNDONE: Consider collapsing single-role frequency constraints with simple mandatories
+					case ConstraintType.Ring:
+						if (constraint.FactTypeCollection.Count == 1 &&
+							(filter == null || !filter.FilterChildVerbalizer(constraint, isNegative).IsBlocked))
+						{
+							yield return new CustomChildVerbalizer((IVerbalize)constraint);
+						}
+						break;
 				}
+			}
+
+			// Verbalize instances
+			LinkedElementCollection<FactTypeInstance> instances = FactTypeInstanceCollection;
+			int instanceCount = instances.Count;
+			if (instanceCount != 0)
+			{
+				yield return new CustomChildVerbalizer(FactTypeInstanceBlockStart.GetVerbalizer(), true);
+				for (int i = 0; i < instanceCount; ++i)
+				{
+					FactTypeInstanceVerbalizer verbalizer = FactTypeInstanceVerbalizer.GetVerbalizer();
+					verbalizer.Initialize(this, instances[i]);
+					yield return new CustomChildVerbalizer(verbalizer, true);
+				}
+				yield return new CustomChildVerbalizer(FactTypeInstanceBlockEnd.GetVerbalizer(), true);
 			}
 		}
 		IEnumerable<CustomChildVerbalizer> IVerbalizeCustomChildren.GetCustomChildVerbalizations(IVerbalizeFilterChildren filter, bool isNegative)

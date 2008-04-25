@@ -53,11 +53,13 @@
       <snippet name="UniversalQuantifier" />
     </contains>
     <containedIn>
+      <snippet name="FrequencyPopulation" />
       <snippet name="ImpliedModalNecessityOperator" />
       <snippet name="ModalPossibilityOperator" />
       <snippet name="OccursInPopulation" />
     </containedIn>
     <usedBy>
+      <constraint name="FrequencyConstraint" />
       <constraint name="UniquenessConstraint" />
     </usedBy>
   </snippet>
@@ -89,6 +91,7 @@
     <contains />
     <containedIn />
     <usedBy>
+      <constraint name="FrequencyConstraint" />
       <constraint name="ImpliedUniqueVerbalizer" />
       <constraint name="RoleValueConstraint" />
       <constraint name="UniquenessConstraint" />
@@ -103,6 +106,7 @@
     <contains />
     <containedIn />
     <usedBy>
+      <constraint name="FrequencyConstraint" />
       <constraint name="ImpliedUniqueVerbalizer" />
       <constraint name="RoleValueConstraint" />
       <constraint name="UniquenessConstraint" />
@@ -117,6 +121,7 @@
     <contains />
     <containedIn />
     <usedBy>
+      <constraint name="FrequencyConstraint" />
       <constraint name="ImpliedUniqueVerbalizer" />
       <constraint name="RoleValueConstraint" />
       <constraint name="UniquenessConstraint" />
@@ -131,6 +136,7 @@
     <contains />
     <containedIn />
     <usedBy>
+      <constraint name="FrequencyConstraint" />
       <constraint name="ImpliedUniqueVerbalizer" />
       <constraint name="RoleValueConstraint" />
       <constraint name="UniquenessConstraint" />
@@ -145,6 +151,7 @@
     <contains />
     <containedIn />
     <usedBy>
+      <constraint name="FrequencyConstraint" />
       <constraint name="ImpliedUniqueVerbalizer" />
       <constraint name="RoleValueConstraint" />
       <constraint name="UniquenessConstraint" />
@@ -580,6 +587,100 @@
       <constraint name="UniquenessConstraint" />
     </usedBy>
   </snippet>
+  <snippet name="FrequencyPopulation" replacementCount="3">
+    <statement>
+							Description: Used as for the main body text of a frequency constraint.
+							Format: each {0} in the population of {1} occurs there {2} times
+						</statement>
+    <unformattedSnippet>each {0} in the population of “{1}” occurs there {2}</unformattedSnippet>
+    <contains>
+      <snippet name="CombinationIdentifier" />
+      <snippet name="FrequencyRangeExact" />
+      <snippet name="FrequencyRangeMaxUnbounded" />
+      <snippet name="FrequencyRangeMinAndMax" />
+      <snippet name="FrequencyRangeMinUnbounded" />
+    </contains>
+    <containedIn>
+      <snippet name="ImpliedModalNecessityOperator" />
+    </containedIn>
+    <usedBy>
+      <constraint name="FrequencyConstraint" />
+    </usedBy>
+  </snippet>
+  <snippet name="FrequencyRangeExact" replacementCount="1">
+    <statement>
+							Description: Used for a frequency range where both the min and max values the same
+							Format: exactly {0} times
+						</statement>
+    <unformattedSnippet>exactly {0} times</unformattedSnippet>
+    <contains />
+    <containedIn>
+      <snippet name="FrequencyPopulation" />
+      <snippet name="ImpliedModalNecessityOperator" />
+    </containedIn>
+    <usedBy>
+      <constraint name="FrequencyConstraint" />
+    </usedBy>
+  </snippet>
+  <snippet name="FrequencyRangeMaxUnbounded" replacementCount="1">
+    <statement>
+							Description: Used for a frequency range where both the max value is unbounded.
+							Format: at least {0} times
+						</statement>
+    <unformattedSnippet>at least {0} times</unformattedSnippet>
+    <contains />
+    <containedIn>
+      <snippet name="FrequencyPopulation" />
+      <snippet name="ImpliedModalNecessityOperator" />
+    </containedIn>
+    <usedBy>
+      <constraint name="FrequencyConstraint" />
+    </usedBy>
+  </snippet>
+  <snippet name="FrequencyRangeMinAndMax" replacementCount="2">
+    <statement>
+							Description: Used for a frequency range where both the min and max values are specified and different.
+							Format: at least {0} and at most {1} times
+						</statement>
+    <unformattedSnippet>at least {0} and at most {1} times</unformattedSnippet>
+    <contains />
+    <containedIn>
+      <snippet name="FrequencyPopulation" />
+      <snippet name="ImpliedModalNecessityOperator" />
+    </containedIn>
+    <usedBy>
+      <constraint name="FrequencyConstraint" />
+    </usedBy>
+  </snippet>
+  <snippet name="FrequencyRangeMinUnbounded" replacementCount="1">
+    <statement>
+							Description: Used for a frequency range where the min value is &lt; 2.
+							Format: at most {1} times
+						</statement>
+    <unformattedSnippet>at most {1} times</unformattedSnippet>
+    <contains />
+    <containedIn>
+      <snippet name="FrequencyPopulation" />
+      <snippet name="ImpliedModalNecessityOperator" />
+    </containedIn>
+    <usedBy>
+      <constraint name="FrequencyConstraint" />
+    </usedBy>
+  </snippet>
+  <snippet name="FrequencyRangeMinUnboundedOptimized" replacementCount="2">
+    <statement>
+							Description: Used for single-role frequency range where the min value is &lt; 2 and a forward reading is available on a binary fact type.
+							Format: at most {1} {0} instances 
+						</statement>
+    <unformattedSnippet>at most {1} {0} instances</unformattedSnippet>
+    <contains />
+    <containedIn>
+      <snippet name="ImpliedModalNecessityOperator" />
+    </containedIn>
+    <usedBy>
+      <constraint name="FrequencyConstraint" />
+    </usedBy>
+  </snippet>
   <snippet name="HyphenBoundPredicatePart" replacementCount="2">
     <statement>Description: .  Format: {0}{{0}}{1}</statement>
     <unformattedSnippet>{0}{{0}}{1}</unformattedSnippet>
@@ -679,6 +780,12 @@
       <snippet name="ExclusiveOrForEachIndentedQuantifier" />
       <snippet name="ExistentialQuantifier" />
       <snippet name="ForEachIndentedQuantifier" />
+      <snippet name="FrequencyPopulation" />
+      <snippet name="FrequencyRangeExact" />
+      <snippet name="FrequencyRangeMaxUnbounded" />
+      <snippet name="FrequencyRangeMinAndMax" />
+      <snippet name="FrequencyRangeMinUnbounded" />
+      <snippet name="FrequencyRangeMinUnboundedOptimized" />
       <snippet name="IdentityReferenceQuantifier" />
       <snippet name="OccursInPopulation" />
       <snippet name="OneQuantifier" />
@@ -693,6 +800,7 @@
       <constraint name="CombinedMandatoryUniqueVerbalizer" />
       <constraint name="EqualityConstraint" />
       <constraint name="ExclusionConstraint" />
+      <constraint name="FrequencyConstraint" />
       <constraint name="ImpliedMandatoryVerbalizer" />
       <constraint name="ImpliedUniqueVerbalizer" />
       <constraint name="MandatoryConstraint" />
@@ -1740,6 +1848,7 @@
     </containedIn>
     <usedBy>
       <constraint name="CombinedMandatoryUniqueVerbalizer" />
+      <constraint name="FrequencyConstraint" />
       <constraint name="ImpliedMandatoryVerbalizer" />
       <constraint name="ImpliedUniqueVerbalizer" />
       <constraint name="MandatoryConstraint" />

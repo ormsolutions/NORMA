@@ -810,6 +810,70 @@
 				</ConstrainedRoles>
 			</Constraint>
 			<!-- End Uniqueness Constraint  -->
+			<!-- Begin Frequency Constraint  -->
+			<Constraint patternGroup="SetConstraint" type="FrequencyConstraint">
+				<EnableSubscripts nonOptimizedFrequencyPattern="true"/>
+				<ConstrainedRoles factCount="1" factArity="2" constraintArity="1" sign="positive" frequencyRangePattern="MinUnbounded">
+					<ConditionalReading>
+						<ReadingChoice match="RequireLeadReading">
+							<Snippet ref="ImpliedModalNecessityOperator">
+								<Fact readingChoice="Context">
+									<PredicateReplacement match="included">
+										<Snippet ref="UniversalQuantifier"/>
+									</PredicateReplacement>
+									<PredicateReplacement>
+										<Snippet ref="FrequencyRangeMinUnboundedOptimized">
+											<MaxFrequencyValue/>
+										</Snippet>
+									</PredicateReplacement>
+								</Fact>
+							</Snippet>
+						</ReadingChoice>
+						<ReadingChoice>
+							<Snippet ref="ImpliedModalNecessityOperator">
+								<Snippet ref="FrequencyPopulation">
+									<IterateRoles match="constraintRoles" listStyle="null"/>
+									<Fact/>
+									<ConditionalSnippet>
+										<Snippet ref="FrequencyRangeExact" conditionalMatch="FrequencyRangeExact"/>
+										<Snippet ref="FrequencyRangeMaxUnbounded" conditionalMatch="FrequencyRangeMaxUnbounded"/>
+										<Snippet ref="FrequencyRangeMinUnbounded" conditionalMatch="FrequencyRangeMinUnbounded"/>
+										<Snippet ref="FrequencyRangeMinAndMax"/>
+										<SnippetReplacements>
+											<MinFrequencyValue/>
+											<MaxFrequencyValue/>
+										</SnippetReplacements>
+									</ConditionalSnippet>
+								</Snippet>
+							</Snippet>
+						</ReadingChoice>
+					</ConditionalReading>
+				</ConstrainedRoles>
+				<ConstrainedRoles factCount="1" minFactArity="2" sign="positive">
+					<Snippet ref="ImpliedModalNecessityOperator">
+						<Snippet ref="FrequencyPopulation">
+							<ConditionalReplacement>
+								<IterateRoles conditionalMatch="SingleRoleRoleSequence" match="constraintRoles" listStyle="null"/>
+								<Snippet ref="CombinationIdentifier">
+									<IterateRoles match="constraintRoles" listStyle="CompactSimpleList"/>
+								</Snippet>
+							</ConditionalReplacement>
+							<Fact/>
+							<ConditionalSnippet>
+								<Snippet ref="FrequencyRangeExact" conditionalMatch="FrequencyRangeExact"/>
+								<Snippet ref="FrequencyRangeMaxUnbounded" conditionalMatch="FrequencyRangeMaxUnbounded"/>
+								<Snippet ref="FrequencyRangeMinUnbounded" conditionalMatch="FrequencyRangeMinUnbounded"/>
+								<Snippet ref="FrequencyRangeMinAndMax"/>
+								<SnippetReplacements>
+									<MinFrequencyValue/>
+									<MaxFrequencyValue/>
+								</SnippetReplacements>
+							</ConditionalSnippet>
+						</Snippet>
+					</Snippet>
+				</ConstrainedRoles>
+			</Constraint>
+			<!-- End Frequency Constraint -->
 			<!-- Begin Role Value Constraint -->
 			<Constraint patternGroup="RoleValueConstraint" type="RoleValueConstraint">
 				<ConditionalSnippet>

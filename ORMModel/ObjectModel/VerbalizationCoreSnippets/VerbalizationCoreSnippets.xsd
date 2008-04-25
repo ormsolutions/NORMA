@@ -1100,6 +1100,54 @@
 						</xs:documentation>
 					</xs:annotation>
 				</xs:enumeration>
+				<xs:enumeration value="FrequencyPopulation">
+					<xs:annotation>
+						<xs:documentation>
+							Description: Used as for the main body text of a frequency constraint.
+							Format: each {0} in the population of {1} occurs there {2} times
+						</xs:documentation>
+					</xs:annotation>
+				</xs:enumeration>
+				<xs:enumeration value="FrequencyRangeExact">
+					<xs:annotation>
+						<xs:documentation>
+							Description: Used for a frequency range where both the min and max values the same
+							Format: exactly {0} times
+						</xs:documentation>
+					</xs:annotation>
+				</xs:enumeration>
+				<xs:enumeration value="FrequencyRangeMinAndMax">
+					<xs:annotation>
+						<xs:documentation>
+							Description: Used for a frequency range where both the min and max values are specified and different.
+							Format: at least {0} and at most {1} times
+						</xs:documentation>
+					</xs:annotation>
+				</xs:enumeration>
+				<xs:enumeration value="FrequencyRangeMaxUnbounded">
+					<xs:annotation>
+						<xs:documentation>
+							Description: Used for a frequency range where both the max value is unbounded.
+							Format: at least {0} times
+						</xs:documentation>
+					</xs:annotation>
+				</xs:enumeration>
+				<xs:enumeration value="FrequencyRangeMinUnbounded">
+					<xs:annotation>
+						<xs:documentation>
+							Description: Used for a frequency range where the min value is &lt; 2.
+							Format: at most {1} times
+						</xs:documentation>
+					</xs:annotation>
+				</xs:enumeration>
+				<xs:enumeration value="FrequencyRangeMinUnboundedOptimized">
+					<xs:annotation>
+						<xs:documentation>
+							Description: Used for single-role frequency range where the min value is &lt; 2 and a forward reading is available on a binary fact type.
+							Format: at most {1} {0} instances 
+						</xs:documentation>
+					</xs:annotation>
+				</xs:enumeration>
 			</xs:restriction>
 		</xs:simpleType>
 	</xs:redefine>

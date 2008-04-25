@@ -64,7 +64,7 @@ namespace Neumont.Tools.ORM.ObjectModel.Design
 			return sourceType == typeof(string);
 		}
 		/// <summary>
-		/// Standard override. Map any value less than 1 to 1.
+		/// Standard override. Map non-positive values to 0, meaning unbounded.
 		/// </summary>
 		public override object ConvertFrom(ITypeDescriptorContext context, CultureInfo culture, object value)
 		{
