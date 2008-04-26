@@ -1923,7 +1923,9 @@ namespace Neumont.Tools.ORMAbstractionToConceptualDatabaseBridge
 		/// </summary>
 		private static EffectiveReferenceModeNamingChoice GetDefaultNamingChoice(ReferenceModeType referenceModeType, ReferenceModeNamingUse targetUse)
 		{
-			return (referenceModeType == ReferenceModeType.Popular || targetUse == ReferenceModeNamingUse.PrimaryIdentifier) ? EffectiveReferenceModeNamingChoice.ValueTypeName : EffectiveReferenceModeNamingChoice.EntityTypeName;
+			return referenceModeType == ReferenceModeType.Popular ?
+				EffectiveReferenceModeNamingChoice.CustomFormat :
+				(targetUse == ReferenceModeNamingUse.PrimaryIdentifier ? EffectiveReferenceModeNamingChoice.ValueTypeName : EffectiveReferenceModeNamingChoice.EntityTypeName);
 		}
 		/// <summary>
 		/// Given an <see cref="ORMModel"/>, determine the stored <see cref="DefaultReferenceModeNaming"/> for the specified <see cref="ReferenceModeType"/>.

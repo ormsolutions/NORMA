@@ -747,7 +747,7 @@
 			<ormtooial:AbstractionModelGenerationSetting AlgorithmVersion="1.002" id="_93A125B5-363A-454B-A6FC-473B4987BBF7">
 				<ormtooial:AbstractionModel ref="_B227B9F1-E66D-4885-9EBB-FA6C30E3AC66" />
 			</ormtooial:AbstractionModelGenerationSetting>
-			<oialtocdb:SchemaGenerationSetting id="_75FDA8E6-2EB8-493D-A6BF-CB382F439713" NameAlgorithmVersion="1.002" CoreAlgorithmVersion="1.002">
+			<oialtocdb:SchemaGenerationSetting id="_75FDA8E6-2EB8-493D-A6BF-CB382F439713" CoreAlgorithmVersion="1.002" NameAlgorithmVersion="1.003">
 				<oialtocdb:Schema ref="_0C507CBC-61D4-4B2D-ACE1-7BED6CF800A3" />
 			</oialtocdb:SchemaGenerationSetting>
 		</orm:GenerationSettings>
@@ -930,7 +930,7 @@
 				<rcd:Tables>
 					<rcd:Table Name="A" id="_4F8E314F-46B1-4343-BC96-DE61B74E508B">
 						<rcd:Columns>
-							<rcd:Column id="_969D25CF-B8B8-4FBB-8A72-DC8536B7A786" Name="b_Id" />
+							<rcd:Column id="_969D25CF-B8B8-4FBB-8A72-DC8536B7A786" Name="bId" />
 							<rcd:Column Name="c" id="_88212CDF-350D-4525-B7AE-D6DC93E3C289" />
 							<rcd:Column IsNullable="true" Name="d" id="_458FC9F5-012D-4E63-AD0D-B30691E7CFF1" />
 						</rcd:Columns>
@@ -947,7 +947,7 @@
 						<rcd:Columns>
 							<rcd:Column Name="f" id="_51713070-8E71-4A81-9596-40F56CC87415" />
 							<rcd:Column IsNullable="true" Name="h" id="_5640FDFC-7DF9-40D6-9BB5-F2CBD677D936" />
-							<rcd:Column id="_39421898-37AF-4BA5-A596-61E09FF95DB9" Name="b_Id" />
+							<rcd:Column id="_39421898-37AF-4BA5-A596-61E09FF95DB9" Name="bId" />
 							<rcd:Column Name="c" id="_8830EE88-94BE-4784-89EA-65F58A59C5CE" />
 						</rcd:Columns>
 						<rcd:Constraints>
@@ -970,9 +970,9 @@
 					</rcd:Table>
 					<rcd:Table Name="I" id="_93C19EC9-9262-4EAF-B622-D7132E0AF44D">
 						<rcd:Columns>
-							<rcd:Column Name="i_Id" id="_585E8BEC-81A5-4DD5-943D-50485EC0E57F" />
+							<rcd:Column id="_585E8BEC-81A5-4DD5-943D-50485EC0E57F" Name="id" />
 							<rcd:Column id="_D09DBE03-DC80-46B0-B58F-20EE31A06E0C" Name="f" />
-							<rcd:Column id="_F9F8A022-DD10-44FA-BE1F-88E240320DBD" Name="b_Id" />
+							<rcd:Column id="_F9F8A022-DD10-44FA-BE1F-88E240320DBD" Name="bId" />
 							<rcd:Column id="_8DDC2665-340B-407F-98BB-232E02D6EFCF" Name="c" />
 						</rcd:Columns>
 						<rcd:Constraints>
@@ -994,9 +994,9 @@
 					</rcd:Table>
 					<rcd:Table Name="ERG" id="_FC8D3E36-8171-40A7-ADE6-EBD359469A3A">
 						<rcd:Columns>
-							<rcd:Column id="_9C28DBCC-419D-4983-9F2F-38E737477460" Name="g_Id" />
+							<rcd:Column id="_9C28DBCC-419D-4983-9F2F-38E737477460" Name="gId" />
 							<rcd:Column Name="f" id="_8D236219-5AA2-4A48-A061-86D1C4C16025" />
-							<rcd:Column id="_D7BA8A3A-46EA-4445-A5CB-C497C5CBC983" Name="b_Id" />
+							<rcd:Column id="_D7BA8A3A-46EA-4445-A5CB-C497C5CBC983" Name="bId" />
 							<rcd:Column Name="c" id="_625F262E-7DAC-4477-8AF5-314CEC2D7DC9" />
 						</rcd:Columns>
 						<rcd:Constraints>

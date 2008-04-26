@@ -294,27 +294,27 @@
     <comment xml:space="preserve">Value displayed for the default state of the  grouped reference mode customization options.</comment>
   </data>
   <data name="ReferenceModeNaming.DefaultGroup.General.Description" xml:space="preserve">
-    <value>Model default settings controlling how general reference modes are used for generated names.</value>
+    <value>Model default settings controlling how general reference modes are used for generated names. Default settings can be modified for any EntityType that uses a standard reference scheme to provide its preferred identifier.</value>
     <comment>The description for the GeneralReferenceModeNames property on an ORMModel. Displays as a detailed description in the Properties Window.</comment>
   </data>
   <data name="ReferenceModeNaming.DefaultGroup.General.DisplayName" xml:space="preserve">
-    <value>GeneralReferenceModeNames</value>
+    <value>DefaultGeneralReferenceModeNames</value>
     <comment>The display name for the GeneralBasedReferenceModeNames property on an ORMModel. Displays as the name of a property in the Properties Window.</comment>
   </data>
   <data name="ReferenceModeNaming.DefaultGroup.Popular.Description" xml:space="preserve">
-    <value>Model default settings controlling how popular reference modes are used for generated names.</value>
+    <value>Model default settings controlling how popular reference modes are used for generated names. Default settings can be modified for any EntityType that uses a standard reference scheme to provide its preferred identifier.</value>
     <comment>The description for the PopularReferenceModeNames property on an ORMModel. Displays as a detailed description in the Properties Window.</comment>
   </data>
   <data name="ReferenceModeNaming.DefaultGroup.Popular.DisplayName" xml:space="preserve">
-    <value>PopularReferenceModeNames</value>
+    <value>DefaultPopularReferenceModeNames</value>
     <comment>The display name for the PopularReferenceModeNames property on an ORMModel. Displays as the name of a property in the Properties Window.</comment>
   </data>
   <data name="ReferenceModeNaming.DefaultGroup.UnitBased.Description" xml:space="preserve">
-    <value>Model default settings controlling how unit-based reference modes are used for generated names.</value>
+    <value>Model default settings controlling how unit-based reference modes are used for generated names. Default settings can be modified for any EntityType that uses a standard reference scheme to provide its preferred identifier.</value>
     <comment>The description for the UnitBasedReferenceModeNames property on an ORMModel. Displays as a detailed description in the Properties Window.</comment>
   </data>
   <data name="ReferenceModeNaming.DefaultGroup.UnitBased.DisplayName" xml:space="preserve">
-    <value>UnitBasedReferenceModeNames</value>
+    <value>DefaultUnitBasedReferenceModeNames</value>
     <comment>The display name for the UnitBasedReferenceModeNames property on an ORMModel. Displays as the name of a property in the Properties Window.</comment>
   </data>
   <data name="ReferenceModeNaming.DefaultPrimaryIdentifierCustomFormat.General" xml:space="preserve">

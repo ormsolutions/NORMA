@@ -721,6 +721,7 @@ namespace Neumont.Tools.ORMAbstractionToConceptualDatabaseBridge
 					bool firstPass = true;
 					bool treatNextIdentifierAsFirstStep = false;
 					bool lastStepConsumedNextNode = false;
+					bool lastStepUsedExplicitRoleName = false;
 					do
 					{
 						LinkedNode<ColumnPathStep> nextLoopNode = currentNode.Next;
@@ -738,17 +739,19 @@ namespace Neumont.Tools.ORMAbstractionToConceptualDatabaseBridge
 						{
 							addPart(step.ObjectType.GetAbbreviatedName(generator, true), null);
 							lastStepConsumedNextNode = false;
+							lastStepUsedExplicitRoleName = false;
 						}
 						else if (0 != (stepFlags & ColumnPathStepFlags.ReverseSubtype))
 						{
 							// Don't add names for reverse path types
 							lastStepConsumedNextNode = false;
+							lastStepUsedExplicitRoleName = false;
 							treatNextIdentifierAsFirstStep = true;
 						}
 						else
 						{
 							bool decorate = 0 != (stepFlags & ColumnPathStepFlags.RequiresDecoration);
-							if (decorate || (nextLoopNode == null && (0 == (stepFlags & ColumnPathStepFlags.IsIdentifier) || !lastStepConsumedNextNode)))
+							if (decorate || (nextLoopNode == null && (0 == (stepFlags & ColumnPathStepFlags.IsIdentifier) || !(lastStepConsumedNextNode || lastStepUsedExplicitRoleName))))
 							{
 								LinkedNode<ColumnPathStep> nextNode = nextLoopNode;
 								if (!decorate &&
@@ -788,6 +791,7 @@ namespace Neumont.Tools.ORMAbstractionToConceptualDatabaseBridge
 									reading = factType.GetMatchingReading(readingOrders, null, nearRole, null, false, true, factTypeRoles, isUnary);
 								}
 								lastStepConsumedNextNode = false;
+								lastStepUsedExplicitRoleName = false;
 								if (reading != null && !reading.IsDefault)
 								{
 									string readingText = string.Format(CultureInfo.CurrentCulture, reading.Text, isUnary ? "\x1" : "", "\x1");
@@ -825,6 +829,7 @@ namespace Neumont.Tools.ORMAbstractionToConceptualDatabaseBridge
 								else if (!string.IsNullOrEmpty(explicitFarRoleName))
 								{
 									addPart(explicitFarRoleName, null);
+									lastStepUsedExplicitRoleName = true;
 								}
 								else
 								{
@@ -887,6 +892,7 @@ namespace Neumont.Tools.ORMAbstractionToConceptualDatabaseBridge
 							else
 							{
 								lastStepConsumedNextNode = false;
+								lastStepUsedExplicitRoleName = false;
 							}
 						}
 						previousPreviousObjectType = previousObjectType;
