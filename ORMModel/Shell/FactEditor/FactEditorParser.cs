@@ -51,7 +51,7 @@ namespace Neumont.Tools.ORM.Shell
 						System.Threading.Interlocked.CompareExchange<Regex>(
 							ref myObjectTypeRegex,
 							new Regex(
-								@"(?n)(?<object>((\[(?<objectName>[\w\p{Pd}]+(\s+[\w\p{Pd}]+)*)(?<refModeWithParens>(\((?<refMode>.*?)?\))?)?\])|((?<objectName>\p{Lu}[\w\p{Pd}]*)(?<refModeWithParens>(\((?<refMode>.*?)?\))?)?)))",
+								@"(?n)(?<object>((\[(?<objectName>[\w\p{Pd}]+(\s+[\w\p{Pd}]+)*)(?<refModeWithParens>(\((?<refMode>.*?)?\))?)?\])|((?<objectName>(?<=^|\s)\p{Lu}[\w\p{Pd}]*)(?<refModeWithParens>(\((?<refMode>.*?)?\))?)?)))",
 								RegexOptions.Compiled),
 							null);
 						retVal = myObjectTypeRegex;
