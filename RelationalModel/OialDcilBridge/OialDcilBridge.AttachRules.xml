@@ -20,11 +20,20 @@
 			<arg:AddRule methodName="AbbreviationAddedRule">
 				<arg:RuleOn targetType="ObjectTypeHasAbbreviation" targetTypeQualifier="Neumont.Tools.ORM.ObjectModel"/>
 			</arg:AddRule>
+			<arg:AddRule methodName="AbbreviationAddedRule" className="AbbreviationAddedRuleClass2">
+				<!-- UNDONE: Adding the second RuleOn to the previous AddRule changes the DomainModel load order
+				and breaks the unit tests (rcd:Catalog moves after ormtooial:Bridge in the XML). Find out why this has an effect
+				and find a workaround to stabilize the load order. The same behavior is seen with AbbreviationDeletedRule. -->
+				<arg:RuleOn targetType="RecognizedPhraseHasAbbreviation" targetTypeQualifier="Neumont.Tools.ORM.ObjectModel"/>
+			</arg:AddRule>
 			<arg:ChangeRule methodName="AbbreviationChangedRule">
 				<arg:RuleOn targetType="NameAlias" targetTypeQualifier="Neumont.Tools.ORM.ObjectModel"/>
 			</arg:ChangeRule>
 			<arg:DeleteRule methodName="AbbreviationDeletedRule">
 				<arg:RuleOn targetType="ObjectTypeHasAbbreviation" targetTypeQualifier="Neumont.Tools.ORM.ObjectModel"/>
+			</arg:DeleteRule>
+			<arg:DeleteRule methodName="AbbreviationDeletedRule" className="AbbreviationDeletedRuleClass2">
+				<arg:RuleOn targetType="RecognizedPhraseHasAbbreviation" targetTypeQualifier="Neumont.Tools.ORM.ObjectModel"/>
 			</arg:DeleteRule>
 			<arg:ChangeRule methodName="AbstractionModelChangedRule">
 				<arg:RuleOn targetType="AbstractionModel" targetTypeQualifier="Neumont.Tools.ORMAbstraction"/>
@@ -65,6 +74,9 @@
 			<arg:ChangeRule methodName="NameGeneratorSettingsChangedRule">
 				<arg:RuleOn targetType="NameGenerator" targetTypeQualifier="Neumont.Tools.ORM.ObjectModel"/>
 			</arg:ChangeRule>
+			<arg:DeletingRule methodName="RecognizedPhraseDeletingRule">
+				<arg:RuleOn targetType="ModelContainsRecognizedPhrase" targetTypeQualifier="Neumont.Tools.ORM.ObjectModel"/>
+			</arg:DeletingRule>
 			<arg:AddRule methodName="ReferenceModeNamingCustomizesObjectTypeAddedRule">
 				<arg:RuleOn targetType="ReferenceModeNamingCustomizesObjectType"/>
 			</arg:AddRule>

@@ -2146,7 +2146,7 @@
 			</Target>
 		</DomainRelationship>
 
-		<DomainRelationship Name="RecognizedPhraseHasAbbreviation" Namespace="Neumont.Tools.ORM.ObjectModel" DisplayName="Other Word Abbreviations" IsEmbedding="true" Id="83D9D4FB-5F40-42F2-A014-8A5E5052C24F">
+		<DomainRelationship Name="RecognizedPhraseHasAbbreviation" Namespace="Neumont.Tools.ORM.ObjectModel" DisplayName="Other Phrase Replacements and Omissions" IsEmbedding="true" Id="83D9D4FB-5F40-42F2-A014-8A5E5052C24F">
 			<Attributes>
 				<ClrAttribute Name="Neumont.Tools.ORM.ObjectModel.NameAliasOwnerCreationInfoAttribute">
 					<Parameters>

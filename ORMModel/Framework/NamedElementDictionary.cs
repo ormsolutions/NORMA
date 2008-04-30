@@ -382,7 +382,7 @@ namespace Neumont.Tools.Modeling
 	{
 		/// <summary>
 		/// Get the meta-role guids for all roles on this object that
-		/// attach to a link that implements INamedElementDictionaryLink
+		/// attach to a link that implements <see cref="INamedElementDictionaryLink"/>
 		/// </summary>
 		/// <returns>An array of supported guids, or null.</returns>
 		Guid[] GetNamedElementDictionaryLinkRoles();
@@ -413,14 +413,12 @@ namespace Neumont.Tools.Modeling
 		/// if duplicate names should not be allowed.
 		/// </summary>
 		public static readonly object BlockDuplicateNamesKey = new object();
-		// UNDONE: 2006-08 DSL Tools port: LoadingKey doesn't exist any more...
 		/// <summary>
 		/// The default key used by the named element dictionary to control whether
 		/// duplicate names should be allowed. A null return from
 		/// INamedElementDictionaryParent.GetAllowDuplicateNamesContextKey will use
 		/// this key by default
 		/// </summary>
-		//public static readonly object DefaultAllowDuplicateNamesKey = Microsoft.VisualStudio.Modeling.Shell.ModelingDocData.LoadingKey;
 		public static readonly object DefaultAllowDuplicateNamesKey = new object();
 		#endregion // Public token values
 		#region Default duplicate collection manager
@@ -533,9 +531,29 @@ namespace Neumont.Tools.Modeling
 			myDictionary = new Dictionary<string, object>();
 		}
 		/// <summary>
+		/// Construct a NamedElementDictionary with the specified duplicate
+		/// collection manager
+		/// </summary>
+		/// <param name="duplicateManager">IDuplicateNameCollectionManager implementation</param>
+		/// <param name="comparer">String comparison algorithm used to determine duplicate names</param>
+		public NamedElementDictionary(IDuplicateNameCollectionManager duplicateManager, IEqualityComparer<string> comparer)
+		{
+			myDuplicateManager = duplicateManager;
+			myDictionary = new Dictionary<string, object>(comparer);
+		}
+		/// <summary>
 		/// Default constructor. Uses a basic collection manager with no IMS ties
 		/// </summary>
-		public NamedElementDictionary() : this(SimpleDuplicateCollectionManager.Singleton)
+		public NamedElementDictionary()
+			: this(SimpleDuplicateCollectionManager.Singleton)
+		{
+		}
+		/// <summary>
+		/// Default constructor. Uses a basic collection manager with no IMS ties
+		/// </summary>
+		/// <param name="comparer">String comparison algorithm used to determine duplicate names</param>
+		public NamedElementDictionary(IEqualityComparer<string> comparer)
+			: this(SimpleDuplicateCollectionManager.Singleton, comparer)
 		{
 		}
 		#endregion // Constructors
@@ -616,7 +634,7 @@ namespace Neumont.Tools.Modeling
 			AddElement(element, duplicateAction, notifyAdded);
 		}
 		/// <summary>
-		/// Implements INamedElementDictionary.AddElement
+		/// Implements <see cref="INamedElementDictionary.AddElement"/>
 		/// </summary>
 		/// <param name="element">ModelElement</param>
 		/// <param name="duplicateAction">DuplicateNameAction</param>
@@ -763,8 +781,8 @@ namespace Neumont.Tools.Modeling
 			return RemoveElement(element, alternateElementName, duplicateAction);
 		}
 		/// <summary>
-		/// Implements INamedElementDictionary.RemoveElement, and helper function
-		/// for ReplaceEmenet.
+		/// Implements <see cref="INamedElementDictionary.RemoveElement"/>, and helper function
+		/// for <see cref="INamedElementDictionary.ReplaceElement"/>.
 		/// Remove an element with a provided name. The current element name is
 		/// used if the alternate is not provided.
 		/// </summary>
@@ -773,7 +791,7 @@ namespace Neumont.Tools.Modeling
 		/// the current element name value</param>
 		/// <param name="duplicateAction">DuplicateNameAction</param>
 		/// <returns>true if the element was successfully removed</returns>
-		private bool RemoveElement(ModelElement element, string alternateElementName, DuplicateNameAction duplicateAction)
+		protected bool RemoveElement(ModelElement element, string alternateElementName, DuplicateNameAction duplicateAction)
 		{
 			string elementName = alternateElementName;
 			if (string.IsNullOrEmpty(elementName))
@@ -845,7 +863,7 @@ namespace Neumont.Tools.Modeling
 			ReplaceElement(originalElement, replacementElement, duplicateAction);
 		}
 		/// <summary>
-		/// Implements INamedElementDictionary.ReplaceElement
+		/// Implements <see cref="INamedElementDictionary.ReplaceElement"/>
 		/// </summary>
 		/// <param name="originalElement">ModelElement</param>
 		/// <param name="replacementElement">ModelElement</param>
@@ -861,7 +879,7 @@ namespace Neumont.Tools.Modeling
 			RenameElement(element, oldName, newName, duplicateAction);
 		}
 		/// <summary>
-		/// Implements INamedElementDictionary.RenameElement
+		/// Implements <see cref="INamedElementDictionary.RenameElement"/>
 		/// </summary>
 		/// <param name="element">ModelElement</param>
 		/// <param name="oldName">string</param>
@@ -884,7 +902,7 @@ namespace Neumont.Tools.Modeling
 		/// </summary>
 		/// <param name="elementName">string</param>
 		/// <returns>LocatedElement structure</returns>
-		LocatedElement GetElement(string elementName)
+		protected LocatedElement GetElement(string elementName)
 		{
 			object element;
 			return myDictionary.TryGetValue(elementName, out element) ? new LocatedElement(element) : LocatedElement.Empty;

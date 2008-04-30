@@ -214,7 +214,7 @@ namespace Neumont.Tools.ORM.ObjectModel
 		[NonSerialized]
 		private NamedElementDictionary myConstraintsDictionary;
 		[NonSerialized]
-		private NamedElementDictionary myRecognizedPhrasesDictionary;
+		private RecognizedPhraseNamedElementDictionary myRecognizedPhrasesDictionary;
 		/// <summary>
 		/// Returns the Object Types Dictionary
 		/// </summary>
@@ -264,7 +264,71 @@ namespace Neumont.Tools.ORM.ObjectModel
 				return retVal;
 			}
 		}
-
+		/// <summary>
+		/// Get the <see cref="RecognizedPhrase"/> elements starting with a specific <paramref name="startingWord"/>
+		/// within a <paramref name="nameGenerator"/> context
+		/// </summary>
+		/// <param name="startingWord">The initial word to test</param>
+		/// <param name="nameGenerator">The <see cref="NameGenerator"/> context to retrieve an abbreviation for</param>
+		/// <returns>An enumeration of <see cref="NameAlias"/> elements. The corresponding <see cref="RecognizedPhrase"/>
+		/// can be return from the <see cref="NameAlias.Element"/> property</returns>
+		public IEnumerable<NameAlias> GetRecognizedPhrasesStartingWith(string startingWord, NameGenerator nameGenerator)
+		{
+			RecognizedPhraseNamedElementDictionary dictionary = myRecognizedPhrasesDictionary;
+			if (dictionary != null)
+			{
+				ModelElement singleElement;
+				NameAlias alias;
+				LocatedElement matchedPhrase = ((INamedElementDictionary)dictionary).GetElement(startingWord);
+				if (!matchedPhrase.IsEmpty)
+				{
+					singleElement = matchedPhrase.SingleElement;
+					if (singleElement != null)
+					{
+						alias = nameGenerator.FindMatchingAlias(((RecognizedPhrase)singleElement).AbbreviationCollection);
+						if (alias != null)
+						{
+							yield return alias;
+						}
+					}
+					else
+					{
+						foreach (ModelElement element in matchedPhrase.MultipleElements)
+						{
+							alias = nameGenerator.FindMatchingAlias(((RecognizedPhrase)element).AbbreviationCollection);
+							if (alias != null)
+							{
+								yield return alias;
+							}
+						}
+					}
+				}
+				matchedPhrase = dictionary.GetMultiWordPhrasesStartingWith(startingWord);
+				if (!matchedPhrase.IsEmpty)
+				{
+					singleElement = matchedPhrase.SingleElement;
+					if (singleElement != null)
+					{
+						alias = nameGenerator.FindMatchingAlias(((RecognizedPhrase)singleElement).AbbreviationCollection);
+						if (alias != null)
+						{
+							yield return alias;
+						}
+					}
+					else
+					{
+						foreach (ModelElement element in matchedPhrase.MultipleElements)
+						{
+							alias = nameGenerator.FindMatchingAlias(((RecognizedPhrase)element).AbbreviationCollection);
+							if (alias != null)
+							{
+								yield return alias;
+							}
+						}
+					}
+				}
+			}
+		}
 		INamedElementDictionary INamedElementDictionaryParent.GetCounterpartRoleDictionary(Guid parentDomainRoleId, Guid childDomainRoleId)
 		{
 			return GetCounterpartRoleDictionary(parentDomainRoleId, childDomainRoleId);
@@ -816,7 +880,7 @@ namespace Neumont.Tools.ORM.ObjectModel
 		/// Also generates model validation errors and exceptions for duplicate
 		/// element names.
 		/// </summary>
-		protected class RecognizedPhraseNamedElementDictionary : NamedElementDictionary
+		protected class RecognizedPhraseNamedElementDictionary : NamedElementDictionary, INamedElementDictionary
 		{	
 			private sealed class DuplicateNameManager : IDuplicateNameCollectionManager
 			{
@@ -938,7 +1002,7 @@ namespace Neumont.Tools.ORM.ObjectModel
 			/// </summary>
 			public RecognizedPhraseNamedElementDictionary()
 				:
-				base(new DuplicateNameManager())
+				base(new DuplicateNameManager(), StringComparer.CurrentCultureIgnoreCase)
 			{
 			}
 			#region Base overrides
@@ -952,9 +1016,172 @@ namespace Neumont.Tools.ORM.ObjectModel
 				throw new InvalidOperationException(string.Format(CultureInfo.InvariantCulture, ResourceStrings.ModelErrorModelHasDuplicateRecognizedPhrases, ((RecognizedPhrase)element).Model.Name,  requestedName));
 			}
 			#endregion // Base overrides
+			#region INamedElementDictionary Reimplementation
+			#region StartsWith helper methods and fields
+			private Dictionary<string, LocatedElement> myStartsWithWordDictionary;
+			/// <summary>
+			/// A supplemental lookup to the <see cref="ORMModel.RecognizedPhrasesDictionary"/> that
+			/// looks up multi-word phrases based on the starting word
+			/// </summary>
+			/// <param name="startingWord">The first word in the phrase</param>
+			public LocatedElement GetMultiWordPhrasesStartingWith(string startingWord)
+			{
+				Dictionary<string, LocatedElement> startsWithDictionary;
+				LocatedElement retVal;
+				if (null != (startsWithDictionary = myStartsWithWordDictionary) &&
+					startsWithDictionary.TryGetValue(startingWord, out retVal))
+				{
+					return retVal;
+				}
+				return LocatedElement.Empty;
+			}
+			private void AddToStartsWith(RecognizedPhrase phrase, string startsWithName)
+			{
+				Dictionary<string, LocatedElement> startsWithDictionary = myStartsWithWordDictionary;
+				if (startsWithDictionary == null)
+				{
+					myStartsWithWordDictionary = startsWithDictionary = new Dictionary<string, LocatedElement>(StringComparer.CurrentCultureIgnoreCase);
+					startsWithDictionary.Add(startsWithName, new LocatedElement(phrase));
+				}
+				else
+				{
+					LocatedElement existingElement;
+					if (startsWithDictionary.TryGetValue(startsWithName, out existingElement))
+					{
+						ModelElement currentSingle = existingElement.SingleElement;
+						if (currentSingle == null)
+						{
+							((List<RecognizedPhrase>)existingElement.MultipleElements).Add(phrase);
+						}
+						else
+						{
+							startsWithDictionary[startsWithName] = new LocatedElement(new List<RecognizedPhrase>(new RecognizedPhrase[] { (RecognizedPhrase)currentSingle, phrase }));
+						}
+					}
+					else
+					{
+						startsWithDictionary.Add(startsWithName, new LocatedElement(phrase));
+					}
+				}
+			}
+			private void RemoveFromStartsWith(RecognizedPhrase phrase, string startsWithName)
+			{
+				Dictionary<string, LocatedElement> startsWithDictionary;
+				LocatedElement existingElement;
+				if (null != (startsWithDictionary = myStartsWithWordDictionary) &&
+					startsWithDictionary.TryGetValue(startsWithName, out existingElement))
+				{
+					ModelElement currentSingle = existingElement.SingleElement;
+					if (currentSingle != null)
+					{
+						startsWithDictionary.Remove(startsWithName);
+					}
+					else
+					{
+						List<RecognizedPhrase> phrases = (List<RecognizedPhrase>)existingElement.MultipleElements;
+						phrases.Remove(phrase);
+						if (phrases.Count == 1)
+						{
+							startsWithDictionary[startsWithName] = new LocatedElement(phrases[0]);
+						}
+					}
+				}
+			}
+			#endregion // StartsWith helper methods and fields
+			/// <summary>
+			/// Implements <see cref="INamedElementDictionary.AddElement"/>
+			/// </summary>
+			protected new void AddElement(ModelElement element, DuplicateNameAction duplicateAction, INotifyElementAdded notifyAdded)
+			{
+				base.AddElement(element, duplicateAction, notifyAdded);
+				RecognizedPhrase phrase = (RecognizedPhrase)element;
+				string newName = phrase.Name;
+				int spaceIndex = newName.IndexOf(' '); // Note that spaces are normalized well before this point
+				if (spaceIndex != -1)
+				{
+					AddToStartsWith(phrase, newName.Substring(0, spaceIndex));
+				}
+			}
+			void INamedElementDictionary.AddElement(ModelElement element, DuplicateNameAction duplicateAction, INotifyElementAdded notifyAdded)
+			{
+				AddElement(element, duplicateAction, notifyAdded);
+			}
+			/// <summary>
+			/// Implements <see cref="INamedElementDictionary.RemoveElement"/>
+			/// </summary>
+			protected new bool RemoveElement(ModelElement element, string alternateElementName, DuplicateNameAction duplicateAction)
+			{
+				if (base.RemoveElement(element, alternateElementName, duplicateAction))
+				{
+					RecognizedPhrase phrase = (RecognizedPhrase)element;
+					string removeName = alternateElementName ?? phrase.Name;
+					int spaceIndex = removeName.IndexOf(' '); // Note that spaces are normalized well before this point
+					if (spaceIndex != -1)
+					{
+						RemoveFromStartsWith(phrase, removeName.Substring(0, spaceIndex));
+					}
+					return true;
+				}
+				return false;
+			}
+			bool INamedElementDictionary.RemoveElement(ModelElement element, string alternateElementName, DuplicateNameAction duplicateAction)
+			{
+				return RemoveElement(element, alternateElementName, duplicateAction);
+			}
+			/// <summary>
+			/// Implements <see cref="INamedElementDictionary.ReplaceElement"/>
+			/// </summary>
+			protected new void ReplaceElement(ModelElement originalElement, ModelElement replacementElement, DuplicateNameAction duplicateAction)
+			{
+				// Note that this is implemented the same as the base class
+				RemoveElement(originalElement, null, duplicateAction);
+				AddElement(replacementElement, duplicateAction, null);
+			}
+			void INamedElementDictionary.ReplaceElement(ModelElement originalElement, ModelElement replacementElement, DuplicateNameAction duplicateAction)
+			{
+				ReplaceElement(originalElement, replacementElement, duplicateAction);
+			}
+			/// <summary>
+			/// Implements <see cref="INamedElementDictionary.RenameElement"/>
+			/// </summary>
+			protected new void RenameElement(ModelElement element, string oldName, string newName, DuplicateNameAction duplicateAction)
+			{
+				base.RenameElement(element, oldName, newName, duplicateAction);
+				RecognizedPhrase phrase = (RecognizedPhrase)element;
+			}
+			void INamedElementDictionary.RenameElement(ModelElement element, string oldName, string newName, DuplicateNameAction duplicateAction)
+			{
+				RenameElement(element, oldName, newName, duplicateAction);
+				string oldStartsWith = null;
+				RecognizedPhrase phrase = (RecognizedPhrase)element;
+				int oldSpaceIndex = oldName.IndexOf(' '); // Note that spaces are normalized well before this point
+				int newSpaceIndex = newName.IndexOf(' ');
+				if (oldSpaceIndex != -1)
+				{
+					oldStartsWith = oldName.Substring(0, oldSpaceIndex);
+				}
+				if (newSpaceIndex != -1)
+				{
+					string newStartsWith = newName.Substring(0, newSpaceIndex);
+					if (oldStartsWith != null &&
+						StringComparer.CurrentCultureIgnoreCase.Equals(oldStartsWith, newStartsWith))
+					{
+						// Nothing to do, the leading and trailing phrases are the same
+						oldStartsWith = null;
+					}
+					else
+					{
+						AddToStartsWith(phrase, newStartsWith);
+					}
+				}
+				if (oldStartsWith != null)
+				{
+					RemoveFromStartsWith(phrase, oldStartsWith);
+				}
+			}
+			#endregion // INamedElementDictionary Reimplementation
 		}
 		#endregion // RecognizedPhraseNamedElementDictionary class
-
 		#endregion // Relationship-specific NamedElementDictionary implementations
 	}
 	public partial class ModelHasObjectType : INamedElementDictionaryLink

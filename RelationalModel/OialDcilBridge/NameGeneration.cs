@@ -11,6 +11,7 @@ using Neumont.Tools.ORMAbstraction;
 using Neumont.Tools.ORMToORMAbstractionBridge;
 using Neumont.Tools.RelationalModels.ConceptualDatabase;
 using ORMUniquenessConstraint = Neumont.Tools.ORM.ObjectModel.UniquenessConstraint;
+using Neumont.Tools.Modeling;
 
 namespace Neumont.Tools.ORMAbstractionToConceptualDatabaseBridge
 {
@@ -64,6 +65,10 @@ namespace Neumont.Tools.ORMAbstractionToConceptualDatabaseBridge
 		/// The element should not be cased
 		/// </summary>
 		ExplicitCasing = 1,
+		/// <summary>
+		/// Stop a name part that is a 
+		/// </summary>
+		ReplacementOfSelf = 2,
 	}
 	/// <summary>
 	/// A callback delegate for adding a <see cref="NamePart"/>
@@ -572,6 +577,7 @@ namespace Neumont.Tools.ORMAbstractionToConceptualDatabaseBridge
 				#region Member variables
 				private NameGenerator myTableGenerator;
 				private NameGenerator myColumnGenerator;
+				private ORMModel myORMModel;
 				private Store myStore;
 				#endregion // Member variables
 				#region Constructor
@@ -619,6 +625,22 @@ namespace Neumont.Tools.ORMAbstractionToConceptualDatabaseBridge
 						if (retVal == null)
 						{
 							myTableGenerator = retVal = NameGenerator.GetGenerator(myStore, typeof(RelationalNameGenerator), typeof(TableNameUsage));
+						}
+						return retVal;
+					}
+				}
+				private ORMModel ContextModel
+				{
+					get
+					{
+						ORMModel retVal = myORMModel;
+						if (retVal == null)
+						{
+							foreach (ORMModel model in myStore.ElementDirectory.FindElements<ORMModel>(false))
+							{
+								myORMModel = retVal = model;
+								break;
+							}
 						}
 						return retVal;
 					}
@@ -682,7 +704,7 @@ namespace Neumont.Tools.ORMAbstractionToConceptualDatabaseBridge
 							AddToNameCollection(ref singleName, ref nameCollection, newPart, insertIndex.HasValue ? insertIndex.Value : -1);
 						});
 
-					string finalName = GetFinalName(singleName, nameCollection, GetSpacingReplacement(nameGenerator), nameGenerator.CasingOption);
+					string finalName = GetFinalName(singleName, nameCollection, nameGenerator);
 					return string.IsNullOrEmpty(finalName) ? "TABLE" : finalName;
 				}
 				private string GenerateColumnName(Column column, int phase)
@@ -695,12 +717,10 @@ namespace Neumont.Tools.ORMAbstractionToConceptualDatabaseBridge
 					LinkedNode<ColumnPathStep> currentNode = GetColumnPath(column);
 
 					NameGenerator generator = ColumnNameGenerator;
-					NameGeneratorCasingOption columnCase = generator.CasingOption;
-					string columnSpace = GetSpacingReplacement(generator);
 
 					if (currentNode == null)
 					{
-						return GetFinalName(ResourceStrings.NameGenerationValueTypeValueColumn, null, columnSpace, columnCase);
+						return GetFinalName(ResourceStrings.NameGenerationValueTypeValueColumn, null, generator);
 					}
 
 					// Prepare for adding name parts. The single NamePart string is used when
@@ -900,7 +920,7 @@ namespace Neumont.Tools.ORMAbstractionToConceptualDatabaseBridge
 						currentNode = nextLoopNode;
 						firstPass = false;
 					} while (currentNode != null);
-					string finalName = GetFinalName(singleName, nameCollection, columnSpace, columnCase);
+					string finalName = GetFinalName(singleName, nameCollection, generator);
 					if (string.IsNullOrEmpty(finalName))
 					{
 						return (phase == 0) ? "COLUMN" : null;
@@ -1013,22 +1033,11 @@ namespace Neumont.Tools.ORMAbstractionToConceptualDatabaseBridge
 						}
 					}
 				}
-				private string GetFinalName(NamePart singleName, List<NamePart> nameCollection, string space)
+				private string GetFinalName(NamePart singleName, List<NamePart> nameCollection, NameGenerator generator)
 				{
-					//use -1 to signify that case changes should not be done
-					return GetFinalName(singleName, nameCollection, space, NameGeneratorCasingOption.None);
-				}
-				private string GetFinalName(NamePart singleName, List<NamePart> nameCollection, string space, NameGeneratorCasingOption casing)
-				{
-					// UNDONE: There are several things we need to do this correctly.
-					// Object type names cannot be treated as atomic unit.
-					// 1) ValueType names may be composed of EntityType and reference mode names combined with
-					//    a format string.
-					// 2) EntityType names may be composed of a format string combining EntityType/ValueType/ReferenceMode names
-					//    that also need to be considered as atomic names and a format string to combine them
-					// 3) ReferenceModeNames may be units, which should never be cased.
-					//
-					// Camel gives inconsistent results until these are done, although it is used as the column default.
+					ResolveRecognizedPhrases(ref singleName, ref nameCollection, generator);
+					NameGeneratorCasingOption casing = generator.CasingOption;
+					string space = GetSpacingReplacement(generator);
 					string finalName;
 					if (null == nameCollection)
 					{
@@ -1036,7 +1045,7 @@ namespace Neumont.Tools.ORMAbstractionToConceptualDatabaseBridge
 						{
 							return "";
 						}
-						else if (casing == NameGeneratorCasingOption.None)
+						if (casing == NameGeneratorCasingOption.None)
 						{
 							finalName = singleName;
 						}
@@ -1088,6 +1097,282 @@ namespace Neumont.Tools.ORMAbstractionToConceptualDatabaseBridge
 					}
 
 					return finalName;
+				}
+				private struct RecognizedPhraseData
+				{
+					private static readonly char[] SpaceCharArray = new char[] { ' ' };
+					private string[] myOriginalNames;
+					private string myUnparsedReplacement;
+					public static bool Populate(NameAlias alias, int remainingParts, out RecognizedPhraseData phraseData)
+					{
+						phraseData = new RecognizedPhraseData();
+						string matchPhrase = ((RecognizedPhrase)alias.Element).Name;
+						string replacePhrase = alias.Name;
+						if (0 == string.Compare(matchPhrase, replacePhrase, StringComparison.CurrentCultureIgnoreCase))
+						{
+							// Sanity check, don't process these
+							return false;
+						}
+						if (matchPhrase.IndexOf(' ') != -1)
+						{
+							string[] parts = matchPhrase.Split(SpaceCharArray, StringSplitOptions.RemoveEmptyEntries);
+							if (parts.Length > remainingParts)
+							{
+								return false;
+							}
+							phraseData.myOriginalNames = parts;
+						}
+						else
+						{
+							phraseData.myOriginalNames = new string[] { matchPhrase };
+						}
+						phraseData.myUnparsedReplacement = replacePhrase;
+						return true;
+					}
+					public bool IsEmpty
+					{
+						get
+						{
+							return myOriginalNames == null;
+						}
+					}
+					public string[] OriginalNames
+					{
+						get
+						{
+							return myOriginalNames;
+						}
+					}
+					/// <summary>
+					/// Get the replacement names. The assumption is that this is rarely called,
+					/// and the results are not cached.
+					/// </summary>
+					public string[] ReplacementNames
+					{
+						get
+						{
+							string name = myUnparsedReplacement;
+							return string.IsNullOrEmpty(name) ?
+								new string[0] :
+								(name.IndexOf(' ') != -1) ? name.Split(SpaceCharArray, StringSplitOptions.RemoveEmptyEntries) : new string[] { name };
+						}
+					}
+				}
+				private void ResolveRecognizedPhrases(ref NamePart singleName, ref List<NamePart> nameCollection, NameGenerator generator)
+				{
+					ORMModel model = ContextModel;
+					if (model != null)
+					{
+						if (nameCollection != null)
+						{
+							int nameCount = nameCollection.Count;
+							int remainingParts = nameCount;
+							for (int i = 0; i < nameCount; ++i, --remainingParts)
+							{
+								// For each part, collection possible replacement phrases beginning with that name
+								NamePart currentPart = nameCollection[i];
+								RecognizedPhraseData singlePhrase = new RecognizedPhraseData();
+								List<RecognizedPhraseData> phraseList = null;
+								bool possibleReplacement = false;
+								foreach (NameAlias alias in model.GetRecognizedPhrasesStartingWith(currentPart, generator))
+								{
+									RecognizedPhraseData phraseData;
+									if (RecognizedPhraseData.Populate(alias, remainingParts, out phraseData))
+									{
+										if (phraseList == null)
+										{
+											possibleReplacement = true;
+											if (singlePhrase.IsEmpty)
+											{
+												singlePhrase = phraseData;
+											}
+											else
+											{
+												phraseList = new List<RecognizedPhraseData>();
+												phraseList.Add(singlePhrase);
+												phraseList.Add(phraseData);
+												singlePhrase = new RecognizedPhraseData();
+											}
+										}
+										else
+										{
+											phraseList.Add(phraseData);
+										}
+									}
+								}
+								// If we have possible replacements, then look farther to see
+								// if the multi-part phrases match. Start by searching the longest
+								// match possible.
+								if (possibleReplacement)
+								{
+									if (phraseList != null)
+									{
+										phraseList.Sort(delegate(RecognizedPhraseData left, RecognizedPhraseData right)
+										{
+											return right.OriginalNames.Length.CompareTo(left.OriginalNames.Length);
+										});
+										int phraseCount = phraseList.Count;
+										for (int j = 0; j < phraseCount; ++j)
+										{
+											if (TestResolvePhraseDataForCollection(phraseList[j], ref singleName, ref nameCollection, i, generator))
+											{
+												return;
+											}
+										}
+									}
+									else
+									{
+										if (TestResolvePhraseDataForCollection(singlePhrase, ref singleName, ref nameCollection, i, generator))
+										{
+											return;
+										}
+									}
+								}
+							}
+						}
+						else if (!singleName.IsEmpty)
+						{
+							LocatedElement element = model.RecognizedPhrasesDictionary.GetElement(singleName);
+							RecognizedPhrase phrase;
+							NameAlias alias;
+							if (null != (phrase = element.SingleElement as RecognizedPhrase) &&
+								null != (alias = generator.FindMatchingAlias(phrase.AbbreviationCollection)))
+							{
+								RecognizedPhraseData phraseData;
+								if (RecognizedPhraseData.Populate(alias, 1, out phraseData))
+								{
+									string[] replacements = phraseData.ReplacementNames;
+									int replacementLength = replacements.Length;
+									NamePart startingPart = singleName;
+									singleName = new NamePart();
+									if (replacementLength == 0)
+									{
+										// Highly unusual, but possible with collapsing phrases and omitted readings
+										singleName = new NamePart();
+									}
+									else
+									{
+										string testForEqual = singleName;
+										bool caseIfEqual = 0 != (singleName.Options & NamePartOptions.ExplicitCasing);
+										singleName = new NamePart();
+										if (replacementLength == 1)
+										{
+											string replacement = replacements[0];
+											NamePartOptions options = NamePartOptions.None;
+											if ((caseIfEqual && 0 == string.Compare(testForEqual, replacement, StringComparison.CurrentCulture)) ||
+												(0 == string.Compare(testForEqual, replacement, StringComparison.CurrentCultureIgnoreCase)))
+											{
+												// Single replacement for same string
+												return;
+											}
+											AddToNameCollection(ref singleName, ref nameCollection, new NamePart(replacement, options));
+										}
+										else
+										{
+											for (int i = 0; i < replacementLength; ++i)
+											{
+												string replacement = replacements[i];
+												NamePartOptions options = NamePartOptions.None;
+												if (caseIfEqual && 0 == string.Compare(testForEqual, replacement, StringComparison.CurrentCulture))
+												{
+													options |= NamePartOptions.ExplicitCasing | NamePartOptions.ReplacementOfSelf;
+												}
+												else if (0 == string.Compare(testForEqual, replacement, StringComparison.CurrentCultureIgnoreCase))
+												{
+													options |= NamePartOptions.ReplacementOfSelf;
+												}
+												AddToNameCollection(ref singleName, ref nameCollection, new NamePart(replacement, options));
+											}
+										}
+										ResolveRecognizedPhrases(ref singleName, ref nameCollection, generator);
+									}
+									return;
+								}
+							}
+						}
+					}
+				}
+				/// <summary>
+				/// Helper for ResolveRecognizedPhrases. Returns true is parent processing is complete.
+				/// </summary>
+				private bool TestResolvePhraseDataForCollection(RecognizedPhraseData phraseData, ref NamePart singleName, ref List<NamePart> nameCollection, int collectionIndex, NameGenerator generator)
+				{
+					Debug.Assert(nameCollection != null);
+					string[] matchNames = phraseData.OriginalNames;
+					int matchLength = matchNames.Length;
+					int i = 0;
+					int firstExplicitPart = -1;
+					int explicitPartCount = 0;
+					for (; i < matchLength; ++i) // Note the bound on this is already verified by RecognizedPhraseData.Populate
+					{
+						NamePart testPart = nameCollection[collectionIndex + i];
+						bool currentPartExplicit = 0 != (testPart.Options & NamePartOptions.ExplicitCasing);
+						if (0 != string.Compare(testPart, matchNames[i], currentPartExplicit ? StringComparison.CurrentCulture : StringComparison.CurrentCultureIgnoreCase) ||
+							(matchLength == 1 && 0 != (testPart.Options & NamePartOptions.ReplacementOfSelf)))
+						{
+							break;
+						}
+						if (currentPartExplicit && firstExplicitPart == -1)
+						{
+							++explicitPartCount;
+							firstExplicitPart = i;
+						}
+					}
+					if (i == matchLength)
+					{
+						// We have a valid replacement, apply it and recurse
+						string[] explicitlyCasedNames = null;
+						string singleMatchName = (matchLength == 1) ? matchNames[0] : null;
+						if (explicitPartCount != 0)
+						{
+							explicitlyCasedNames = new string[explicitPartCount];
+							int nextExplicitName = 0;
+							for (int j = collectionIndex + firstExplicitPart; ; ++j)
+							{
+								NamePart testPart = nameCollection[j];
+								if (0 != (testPart.Options & NamePartOptions.ExplicitCasing))
+								{
+									explicitlyCasedNames[nextExplicitName] = testPart;
+									if (++nextExplicitName == explicitPartCount)
+									{
+										break;
+									}
+								}
+							}
+							if (explicitPartCount > 1)
+							{
+								Array.Sort<string>(explicitlyCasedNames, StringComparer.CurrentCulture);
+							}
+						}
+						nameCollection.RemoveRange(collectionIndex, matchLength);
+						int startingCollectionSize = nameCollection.Count;
+						string[] replacements = phraseData.ReplacementNames;
+						for (i = 0; i < replacements.Length; ++i)
+						{
+							// Recognized phrases do not record casing priority and phrases are
+							// generally treated as case insensitive. However, if any replacement
+							// word exactly matches an explicitly cased word in the original names
+							// then case the replacement as well.
+							NamePartOptions options = NamePartOptions.None;
+							string replacement = replacements[i];
+							if (explicitlyCasedNames != null && 0 <= Array.BinarySearch<string>(explicitlyCasedNames, replacement, StringComparer.CurrentCulture))
+							{
+								options |= NamePartOptions.ExplicitCasing;
+								if (matchLength == 1)
+								{
+									options |= NamePartOptions.ReplacementOfSelf;
+								}
+							}
+							else if (singleMatchName != null && 0 == string.Compare(singleMatchName, replacement, StringComparison.CurrentCultureIgnoreCase))
+							{
+								options |= NamePartOptions.ExplicitCasing;
+							}
+							AddToNameCollection(ref singleName, ref nameCollection, new NamePart(replacement, options), collectionIndex + nameCollection.Count - startingCollectionSize);
+						}
+						ResolveRecognizedPhrases(ref singleName, ref nameCollection, generator);
+						return true;
+					}
+					return false;
 				}
 				#endregion // NameCollection helpers
 				#region Casing helpers

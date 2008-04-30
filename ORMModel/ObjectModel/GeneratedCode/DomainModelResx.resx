@@ -2570,7 +2570,7 @@
     <comment>Description for DomainClass &apos;RecognizedPhraseHasAbbreviation&apos;</comment>
   </data>
   <data name="Neumont.Tools.ORM.ObjectModel.RecognizedPhraseHasAbbreviation.DisplayName" xml:space="preserve">
-    <value>Other Word Abbreviations</value>
+    <value>Other Phrase Replacements and Omissions</value>
     <comment>DisplayName for DomainClass &apos;RecognizedPhraseHasAbbreviation&apos;</comment>
   </data>
   <data name="Neumont.Tools.ORM.ObjectModel.RecognizedPhraseHasAbbreviation/RecognizedPhrase.Description" xml:space="preserve">

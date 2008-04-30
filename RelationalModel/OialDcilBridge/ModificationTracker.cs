@@ -373,13 +373,14 @@ namespace Neumont.Tools.ORMAbstractionToConceptualDatabaseBridge
 			}
 			/// <summary>
 			/// AddRule: typeof(Neumont.Tools.ORM.ObjectModel.ObjectTypeHasAbbreviation)
+			/// AddRule: typeof(Neumont.Tools.ORM.ObjectModel.RecognizedPhraseHasAbbreviation)
 			/// Regenerate names when an abbreviation is added
 			/// </summary>
 			private static void AbbreviationAddedRule(ElementAddedEventArgs e)
 			{
-				ORMCore.ObjectTypeHasAbbreviation link = (ORMCore.ObjectTypeHasAbbreviation)e.ModelElement;
+				ORMCore.ElementHasAlias link = (ORMCore.ElementHasAlias)e.ModelElement;
 				Store store = link.Store;
-				if (store.DomainDataDirectory.GetDomainClass(RelationalNameGenerator.DomainClassId).IsDerivedFrom(link.Abbreviation.NameConsumerDomainClass))
+				if (store.DomainDataDirectory.GetDomainClass(RelationalNameGenerator.DomainClassId).IsDerivedFrom(link.Alias.NameConsumerDomainClass))
 				{
 					foreach (Schema schema in store.ElementDirectory.FindElements<Schema>(true))
 					{
@@ -389,20 +390,42 @@ namespace Neumont.Tools.ORMAbstractionToConceptualDatabaseBridge
 			}
 			/// <summary>
 			/// DeleteRule: typeof(Neumont.Tools.ORM.ObjectModel.ObjectTypeHasAbbreviation)
+			/// DeleteRule: typeof(Neumont.Tools.ORM.ObjectModel.RecognizedPhraseHasAbbreviation)
 			/// Regenerate names when an abbreviation is deleted
 			/// </summary>
 			private static void AbbreviationDeletedRule(ElementDeletedEventArgs e)
 			{
-				ORMCore.ObjectTypeHasAbbreviation link = (ORMCore.ObjectTypeHasAbbreviation)e.ModelElement;
-				if (!link.ObjectType.IsDeleted)
+				ORMCore.ElementHasAlias link = (ORMCore.ElementHasAlias)e.ModelElement;
+				if (!link.Element.IsDeleted)
 				{
 					Store store = link.Store;
-					if (store.DomainDataDirectory.GetDomainClass(RelationalNameGenerator.DomainClassId).IsDerivedFrom(link.Abbreviation.NameConsumerDomainClass))
+					if (store.DomainDataDirectory.GetDomainClass(RelationalNameGenerator.DomainClassId).IsDerivedFrom(link.Alias.NameConsumerDomainClass))
 					{
 						foreach (Schema schema in store.ElementDirectory.FindElements<Schema>(true))
 						{
 							ValidateSchemaNamesChanged(schema);
 						}
+					}
+				}
+			}
+			/// <summary>
+			/// DeletingRule: typeof(Neumont.Tools.ORM.ObjectModel.ModelContainsRecognizedPhrase)
+			/// Regenerate names when a recognized phrase with relational-targeted aliases is deleting
+			/// </summary>
+			private static void RecognizedPhraseDeletingRule(ElementDeletingEventArgs e)
+			{
+				ORMCore.ModelContainsRecognizedPhrase link = (ORMCore.ModelContainsRecognizedPhrase)e.ModelElement;
+				Store store = link.Store;
+				DomainClassInfo relationalInfo = store.DomainDataDirectory.GetDomainClass(RelationalNameGenerator.DomainClassId);
+				foreach (ORMCore.NameAlias alias in link.RecognizedPhrase.AbbreviationCollection)
+				{
+					if (relationalInfo.IsDerivedFrom(alias.NameConsumerDomainClass))
+					{
+						foreach (Schema schema in store.ElementDirectory.FindElements<Schema>(true))
+						{
+							ValidateSchemaNamesChanged(schema);
+						}
+						break;
 					}
 				}
 			}

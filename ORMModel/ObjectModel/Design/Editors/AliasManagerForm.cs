@@ -1202,8 +1202,17 @@ namespace Neumont.Tools.ORM.ObjectModel.Design
 					}
 					return VirtualTreeLabelEditData.Invalid;
 				}
+				private static readonly char[] SpaceCharArray = new char[] { ' ' };
 				LabelEditResult IBranch.CommitLabelEdit(int row, int column, string newText)
 				{
+					if (newText.IndexOf(' ') != -1)
+					{
+						// Normalize the spaces in the string.
+						// UNDONE: This should be backed up by code in a rule, but the tweaks to
+						// the DomainProperty.tt DSL generator template to allow the unofficial 'passthrough'
+						// pattern mean that accurate notification of scrubbed custom store values is difficult.
+						newText = string.Join(" ", newText.Split(SpaceCharArray, StringSplitOptions.RemoveEmptyEntries));
+					}
 					if (column == 1)
 					{
 						ItemInfo item = myItems[row];
