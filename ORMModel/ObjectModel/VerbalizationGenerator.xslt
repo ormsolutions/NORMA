@@ -318,6 +318,11 @@
 							<xsl:call-template name="InitializeFactArity"/>
 						</plx:initialize>
 					</plx:local>
+					<plx:local name="unaryRoleOffset" dataTypeName=".i4">
+						<plx:initialize>
+							<xsl:call-template name="InitializeUnaryRoleOffset"/>
+						</plx:initialize>
+					</plx:local>
 					<plx:local name="allReadingOrders" dataTypeName="LinkedElementCollection">
 						<plx:passTypeParam dataTypeName="ReadingOrder"/>
 						<plx:initialize>
@@ -430,6 +435,11 @@
 				<plx:local name="factArity" dataTypeName=".i4">
 					<plx:initialize>
 						<xsl:call-template name="InitializeFactArity"/>
+					</plx:initialize>
+				</plx:local>
+				<plx:local name="unaryRoleOffset" dataTypeName=".i4">
+					<plx:initialize>
+						<xsl:call-template name="InitializeUnaryRoleOffset"/>
 					</plx:initialize>
 				</plx:local>
 				<plx:local name="parentFact" dataTypeName="FactType">
@@ -781,6 +791,18 @@
 							</xsl:choose>
 						</plx:initialize>
 					</plx:local>
+					<plx:local name="unaryRoleOffset" dataTypeName=".i4">
+						<plx:initialize>
+							<xsl:choose>
+								<xsl:when test="$isInternal">
+									<xsl:call-template name="InitializeUnaryRoleOffset"/>
+								</xsl:when>
+								<xsl:otherwise>
+									<plx:value data="0" type="i4"/>
+								</xsl:otherwise>
+							</xsl:choose>
+						</plx:initialize>
+					</plx:local>
 					<plx:local name="allReadingOrders" dataTypeName="LinkedElementCollection">
 						<plx:passTypeParam dataTypeName="ReadingOrder"/>
 						<xsl:if test="$isInternal">
@@ -1011,6 +1033,16 @@
 								</plx:callNew>
 							</plx:initialize>
 						</plx:local>
+						<plx:local name="unaryReplacements" dataTypeName=".boolean" dataTypeIsSimpleArray="true">
+							<plx:initialize>
+								<plx:callNew dataTypeName=".boolean" dataTypeIsSimpleArray="true">
+									<plx:passParam>
+										<plx:nameRef name="allFactsCount"/>
+									</plx:passParam>
+								</plx:callNew>
+							</plx:initialize>
+						</plx:local>
+						<plx:local name="contextBasicReplacementIndex" dataTypeName=".i4"/>
 						<plx:local name="minFactArity" dataTypeName=".i4">
 							<plx:initialize>
 								<plx:callStatic name="MaxValue" dataTypeName=".i4" type="field"/>
@@ -1113,6 +1145,14 @@
 									<xsl:call-template name="InitializeFactArity"/>
 								</plx:right>
 							</plx:assign>
+							<plx:assign>
+								<plx:left>
+									<plx:nameRef name="unaryRoleOffset"/>
+								</plx:left>
+								<plx:right>
+									<xsl:call-template name="InitializeUnaryRoleOffset"/>
+								</plx:right>
+							</plx:assign>
 							<!-- Track the min and max values for our current fact arity -->
 							<plx:branch>
 								<plx:condition>
@@ -1173,6 +1213,25 @@
 								</plx:left>
 								<plx:right>
 									<plx:nameRef name="basicRoleReplacements"/>
+								</plx:right>
+							</plx:assign>
+							<plx:assign>
+								<plx:left>
+									<plx:callInstance name=".implied" type="arrayIndexer">
+										<plx:callObject>
+											<plx:nameRef name="unaryReplacements"/>
+										</plx:callObject>
+										<plx:passParam>
+											<plx:nameRef name="iFact"/>
+										</plx:passParam>
+									</plx:callInstance>
+								</plx:left>
+								<plx:right>
+									<plx:callInstance name="HasValue" type="property">
+										<plx:callObject>
+											<plx:nameRef name="unaryRoleIndex"/>
+										</plx:callObject>
+									</plx:callInstance>
 								</plx:right>
 							</plx:assign>
 						</plx:loop>
@@ -1335,6 +1394,29 @@
 							<plx:nameRef name="factRoles"/>
 						</plx:callObject>
 					</plx:callInstance>
+				</plx:right>
+			</plx:conditionalOperator>
+		</plx:inlineStatement>
+	</xsl:template>
+	<xsl:template name="InitializeUnaryRoleOffset">
+		<plx:inlineStatement dataTypeName=".i4">
+			<plx:conditionalOperator>
+				<plx:condition>
+					<plx:callInstance name="HasValue" type="property">
+						<plx:callObject>
+							<plx:nameRef name="unaryRoleIndex"/>
+						</plx:callObject>
+					</plx:callInstance>
+				</plx:condition>
+				<plx:left>
+					<plx:callInstance name="Value" type="property">
+						<plx:callObject>
+							<plx:nameRef name="unaryRoleIndex"/>
+						</plx:callObject>
+					</plx:callInstance>
+				</plx:left>
+				<plx:right>
+					<plx:value data="0" type="i4"/>
 				</plx:right>
 			</plx:conditionalOperator>
 		</plx:inlineStatement>
@@ -2284,7 +2366,14 @@
 									<plx:nameRef name="factRoles"/>
 								</plx:callObject>
 								<plx:passParam>
-									<plx:nameRef name="i"/>
+									<plx:binaryOperator type="add">
+										<plx:left>
+											<plx:nameRef name="i"/>
+										</plx:left>
+										<plx:right>
+											<plx:nameRef name="unaryRoleOffset"/>
+										</plx:right>
+									</plx:binaryOperator>
 								</plx:passParam>
 							</plx:callInstance>
 						</plx:callObject>
@@ -3918,6 +4007,11 @@
 				<plx:value data="0" type="i4"/>
 			</plx:initialize>
 		</plx:local>
+		<plx:local name="unaryRoleOffset" dataTypeName=".i4">
+			<plx:initialize>
+				<plx:value data="0" type="i4"/>
+			</plx:initialize>
+		</plx:local>
 		<plx:local name="allReadingOrders" dataTypeName="LinkedElementCollection">
 			<plx:passTypeParam dataTypeName="ReadingOrder"/>
 			<plx:initialize>
@@ -3963,6 +4057,14 @@
 					</plx:left>
 					<plx:right>
 						<xsl:call-template name="InitializeFactArity"/>
+					</plx:right>
+				</plx:assign>
+				<plx:assign>
+					<plx:left>
+						<plx:nameRef name="unaryRoleOffset"/>
+					</plx:left>
+					<plx:right>
+						<xsl:call-template name="InitializeUnaryRoleOffset"/>
 					</plx:right>
 				</plx:assign>
 				<plx:assign>
@@ -4372,63 +4474,91 @@
 														<plx:nameRef name="allBasicRoleReplacements"/>
 													</plx:callObject>
 													<plx:passParam>
-														<plx:callInstance name="IndexOf" type="methodCall">
-															<plx:callObject>
-																<plx:nameRef name="allFacts" type="local"/>
-															</plx:callObject>
-															<plx:passParam>
-																<plx:callInstance name="FactType" type="property">
-																	<plx:callObject>
-																		<plx:callInstance name=".implied" type="arrayIndexer">
-																			<plx:callObject>
-																				<plx:nameRef name="includedSequenceRoles"/>
-																			</plx:callObject>
-																			<plx:passParam>
-																				<plx:nameRef name="{$IteratorVariableName}"/>
-																			</plx:passParam>
-																		</plx:callInstance>
-																	</plx:callObject>
-																</plx:callInstance>
-															</plx:passParam>
-														</plx:callInstance>
+														<plx:inlineStatement dataTypeName=".i4">
+															<plx:assign>
+																<plx:left>
+																	<plx:nameRef name="contextBasicReplacementIndex"/>
+																</plx:left>
+																<plx:right>
+																	<plx:callInstance name="IndexOf" type="methodCall">
+																		<plx:callObject>
+																			<plx:nameRef name="allFacts" type="local"/>
+																		</plx:callObject>
+																		<plx:passParam>
+																			<plx:callInstance name="FactType" type="property">
+																				<plx:callObject>
+																					<plx:callInstance name=".implied" type="arrayIndexer">
+																						<plx:callObject>
+																							<plx:nameRef name="includedSequenceRoles"/>
+																						</plx:callObject>
+																						<plx:passParam>
+																							<plx:nameRef name="{$IteratorVariableName}"/>
+																						</plx:passParam>
+																					</plx:callInstance>
+																				</plx:callObject>
+																			</plx:callInstance>
+																		</plx:passParam>
+																	</plx:callInstance>
+																</plx:right>
+															</plx:assign>
+														</plx:inlineStatement>
 													</plx:passParam>
 												</plx:callInstance>
 											</plx:callObject>
 											<plx:passParam>
-												<plx:callInstance name="IndexOf" type="methodCall">
-													<plx:callObject>
-														<plx:callInstance name="RoleCollection" type="property">
-															<plx:callObject>
-																<plx:callInstance name="FactType" type="property">
-																	<plx:callObject>
-																		<plx:callInstance name=".implied" type="indexerCall">
-																			<plx:callObject>
-																				<plx:nameRef name="includedSequenceRoles"/>
-																			</plx:callObject>
-																			<plx:passParam>
-																				<plx:nameRef name="{$IteratorVariableName}"/>
-																			</plx:passParam>
-																		</plx:callInstance>
-																	</plx:callObject>
-																</plx:callInstance>
-															</plx:callObject>
-														</plx:callInstance>
-													</plx:callObject>
-													<plx:passParam>
-														<plx:callInstance name="Role" type="property">
-															<plx:callObject>
-																<plx:callInstance name=".implied" type="indexerCall">
-																	<plx:callObject>
-																		<plx:nameRef name="factRoles"/>
-																	</plx:callObject>
-																	<plx:passParam>
-																		<plx:nameRef name="{$iterVarName}"/>
-																	</plx:passParam>
-																</plx:callInstance>
-															</plx:callObject>
-														</plx:callInstance>
-													</plx:passParam>
-												</plx:callInstance>
+												<plx:inlineStatement dataTypeName=".i4">
+													<plx:conditionalOperator>
+														<plx:condition>
+															<plx:callInstance name=".implied" type="arrayIndexer">
+																<plx:callObject>
+																	<plx:nameRef name="unaryReplacements"/>
+																</plx:callObject>
+																<plx:passParam>
+																	<plx:nameRef name="contextBasicReplacementIndex"/>
+																</plx:passParam>
+															</plx:callInstance>
+														</plx:condition>
+														<plx:left>
+															<plx:value data="0" type="i4"/>
+														</plx:left>
+														<plx:right>
+															<plx:callInstance name="IndexOf" type="methodCall">
+																<plx:callObject>
+																	<plx:callInstance name="RoleCollection" type="property">
+																		<plx:callObject>
+																			<plx:callInstance name="FactType" type="property">
+																				<plx:callObject>
+																					<plx:callInstance name=".implied" type="indexerCall">
+																						<plx:callObject>
+																							<plx:nameRef name="includedSequenceRoles"/>
+																						</plx:callObject>
+																						<plx:passParam>
+																							<plx:nameRef name="{$IteratorVariableName}"/>
+																						</plx:passParam>
+																					</plx:callInstance>
+																				</plx:callObject>
+																			</plx:callInstance>
+																		</plx:callObject>
+																	</plx:callInstance>
+																</plx:callObject>
+																<plx:passParam>
+																	<plx:callInstance name="Role" type="property">
+																		<plx:callObject>
+																			<plx:callInstance name=".implied" type="indexerCall">
+																				<plx:callObject>
+																					<plx:nameRef name="factRoles"/>
+																				</plx:callObject>
+																				<plx:passParam>
+																					<plx:nameRef name="{$iterVarName}"/>
+																				</plx:passParam>
+																			</plx:callInstance>
+																		</plx:callObject>
+																	</plx:callInstance>
+																</plx:passParam>
+															</plx:callInstance>
+														</plx:right>
+													</plx:conditionalOperator>
+												</plx:inlineStatement>
 											</plx:passParam>
 										</plx:callInstance>
 									</plx:passParam>
@@ -4559,52 +4689,80 @@
 										<plx:nameRef name="allBasicRoleReplacements"/>
 									</plx:callObject>
 									<plx:passParam>
-										<plx:callInstance name="IndexOf" type="methodCall">
-											<plx:callObject>
-												<plx:nameRef name="allFacts" type="local"/>
-											</plx:callObject>
-											<plx:passParam>
-												<plx:callInstance name="FactType" type="property">
-													<plx:callObject>
-														<plx:callInstance name=".implied" type="arrayIndexer">
-															<plx:callObject>
-																<plx:nameRef name="includedSequenceRoles"/>
-															</plx:callObject>
-															<plx:passParam>
-																<plx:nameRef name="{$IteratorVariableName}"/>
-															</plx:passParam>
-														</plx:callInstance>
-													</plx:callObject>
-												</plx:callInstance>
-											</plx:passParam>
-										</plx:callInstance>
+										<plx:inlineStatement dataTypeName=".i4">
+											<plx:assign>
+												<plx:left>
+													<plx:nameRef name="contextBasicReplacementIndex"/>
+												</plx:left>
+												<plx:right>
+													<plx:callInstance name="IndexOf" type="methodCall">
+														<plx:callObject>
+															<plx:nameRef name="allFacts" type="local"/>
+														</plx:callObject>
+														<plx:passParam>
+															<plx:callInstance name="FactType" type="property">
+																<plx:callObject>
+																	<plx:callInstance name=".implied" type="arrayIndexer">
+																		<plx:callObject>
+																			<plx:nameRef name="includedSequenceRoles"/>
+																		</plx:callObject>
+																		<plx:passParam>
+																			<plx:nameRef name="{$IteratorVariableName}"/>
+																		</plx:passParam>
+																	</plx:callInstance>
+																</plx:callObject>
+															</plx:callInstance>
+														</plx:passParam>
+													</plx:callInstance>
+												</plx:right>
+											</plx:assign>
+										</plx:inlineStatement>
 									</plx:passParam>
 								</plx:callInstance>
 							</plx:callObject>
 							<plx:passParam>
-								<plx:callInstance name="IndexOf" type="methodCall">
-									<plx:callObject>
-										<plx:callInstance name="RoleCollection" type="property">
-											<plx:callObject>
-												<plx:callInstance name="FactType" type="property">
-													<plx:callObject>
-														<plx:callInstance name=".implied" type="indexerCall">
-															<plx:callObject>
-																<plx:nameRef name="includedSequenceRoles"/>
-															</plx:callObject>
-															<plx:passParam>
-																<plx:nameRef name="{$IteratorVariableName}"/>
-															</plx:passParam>
-														</plx:callInstance>
-													</plx:callObject>
-												</plx:callInstance>
-											</plx:callObject>
-										</plx:callInstance>
-									</plx:callObject>
-									<plx:passParam>
-										<plx:nameRef name="rolePlayer"/>
-									</plx:passParam>
-								</plx:callInstance>
+								<plx:inlineStatement dataTypeName=".i4">
+									<plx:conditionalOperator>
+										<plx:condition>
+											<plx:callInstance name=".implied" type="arrayIndexer">
+												<plx:callObject>
+													<plx:nameRef name="unaryReplacements"/>
+												</plx:callObject>
+												<plx:passParam>
+													<plx:nameRef name="contextBasicReplacementIndex"/>
+												</plx:passParam>
+											</plx:callInstance>
+										</plx:condition>
+										<plx:left>
+											<plx:value data="0" type="i4"/>
+										</plx:left>
+										<plx:right>
+											<plx:callInstance name="IndexOf" type="methodCall">
+												<plx:callObject>
+													<plx:callInstance name="RoleCollection" type="property">
+														<plx:callObject>
+															<plx:callInstance name="FactType" type="property">
+																<plx:callObject>
+																	<plx:callInstance name=".implied" type="indexerCall">
+																		<plx:callObject>
+																			<plx:nameRef name="includedSequenceRoles"/>
+																		</plx:callObject>
+																		<plx:passParam>
+																			<plx:nameRef name="{$IteratorVariableName}"/>
+																		</plx:passParam>
+																	</plx:callInstance>
+																</plx:callObject>
+															</plx:callInstance>
+														</plx:callObject>
+													</plx:callInstance>
+												</plx:callObject>
+												<plx:passParam>
+													<plx:nameRef name="rolePlayer"/>
+												</plx:passParam>
+											</plx:callInstance>
+										</plx:right>
+									</plx:conditionalOperator>
+								</plx:inlineStatement>
 							</plx:passParam>
 						</plx:callInstance>
 					</plx:right>
@@ -4625,77 +4783,105 @@
 												<plx:nameRef name="allBasicRoleReplacements"/>
 											</plx:callObject>
 											<plx:passParam>
-												<plx:callInstance name="IndexOf" type="methodCall">
-													<plx:callObject>
-														<plx:nameRef name="allFacts" type="local"/>
-													</plx:callObject>
-													<plx:passParam>
-														<plx:callInstance name="FactType" type="property">
-															<plx:callObject>
-																<plx:callInstance name=".implied" type="arrayIndexer">
-																	<plx:callObject>
-																		<plx:nameRef name="includedSequenceRoles"/>
-																	</plx:callObject>
-																	<plx:passParam>
-																		<plx:nameRef name="{$IteratorVariableName}"/>
-																	</plx:passParam>
-																</plx:callInstance>
-															</plx:callObject>
-														</plx:callInstance>
-													</plx:passParam>
-												</plx:callInstance>
+												<plx:inlineStatement dataTypeName=".i4">
+													<plx:assign>
+														<plx:left>
+															<plx:nameRef name="contextBasicReplacementIndex"/>
+														</plx:left>
+														<plx:right>
+															<plx:callInstance name="IndexOf" type="methodCall">
+																<plx:callObject>
+																	<plx:nameRef name="allFacts" type="local"/>
+																</plx:callObject>
+																<plx:passParam>
+																	<plx:callInstance name="FactType" type="property">
+																		<plx:callObject>
+																			<plx:callInstance name=".implied" type="arrayIndexer">
+																				<plx:callObject>
+																					<plx:nameRef name="includedSequenceRoles"/>
+																				</plx:callObject>
+																				<plx:passParam>
+																					<plx:nameRef name="{$IteratorVariableName}"/>
+																				</plx:passParam>
+																			</plx:callInstance>
+																		</plx:callObject>
+																	</plx:callInstance>
+																</plx:passParam>
+															</plx:callInstance>
+														</plx:right>
+													</plx:assign>
+												</plx:inlineStatement>
 											</plx:passParam>
 										</plx:callInstance>
 									</plx:callObject>
 									<plx:passParam>
-										<plx:callInstance name="IndexOf" type="methodCall">
-											<plx:callObject>
-												<plx:callInstance name="RoleCollection" type="property">
-													<plx:callObject>
-														<plx:callInstance name="FactType" type="property">
-															<plx:callObject>
-																<plx:callInstance name=".implied" type="indexerCall">
-																	<plx:callObject>
-																		<plx:nameRef name="includedSequenceRoles"/>
-																	</plx:callObject>
-																	<plx:passParam>
-																		<plx:nameRef name="{$IteratorVariableName}"/>
-																	</plx:passParam>
-																</plx:callInstance>
-															</plx:callObject>
-														</plx:callInstance>
-													</plx:callObject>
-												</plx:callInstance>
-											</plx:callObject>
-											<plx:passParam>
-												<plx:callInstance name=".implied" type="indexerCall">
-													<plx:callObject>
-														<plx:nameRef name="includedSequenceRoles"/>
-													</plx:callObject>
-													<plx:passParam>
-														<xsl:choose>
-															<xsl:when test="not($ConditionalMatch='null') or not(@pass)">
-																<plx:nameRef name="{$IteratorVariableName}"/>
-															</xsl:when>
-															<xsl:otherwise>
-																<plx:value type="i4">
-																	<xsl:attribute name="data">
-																		<xsl:choose>
-																			<xsl:when test="@pass='first'">
-																				<xsl:text>0</xsl:text>
-																			</xsl:when>
-																			<xsl:otherwise>
-																				<xsl:text>1</xsl:text>
-																			</xsl:otherwise>
-																		</xsl:choose>
-																	</xsl:attribute>
-																</plx:value>
-															</xsl:otherwise>
-														</xsl:choose>
-													</plx:passParam>
-												</plx:callInstance>
-											</plx:passParam>
-										</plx:callInstance>
+										<plx:inlineStatement dataTypeName="i4">
+											<plx:conditionalOperator>
+												<plx:condition>
+													<plx:callInstance name=".implied" type="arrayIndexer">
+														<plx:callObject>
+															<plx:nameRef name="unaryReplacements"/>
+														</plx:callObject>
+														<plx:passParam>
+															<plx:nameRef name="contextBasicReplacementIndex"/>
+														</plx:passParam>
+													</plx:callInstance>
+												</plx:condition>
+												<plx:left>
+													<plx:value data="0" type="i4"/>
+												</plx:left>
+												<plx:right>
+													<plx:callInstance name="IndexOf" type="methodCall">
+														<plx:callObject>
+															<plx:callInstance name="RoleCollection" type="property">
+																<plx:callObject>
+																	<plx:callInstance name="FactType" type="property">
+																		<plx:callObject>
+																			<plx:callInstance name=".implied" type="indexerCall">
+																				<plx:callObject>
+																					<plx:nameRef name="includedSequenceRoles"/>
+																				</plx:callObject>
+																				<plx:passParam>
+																					<plx:nameRef name="{$IteratorVariableName}"/>
+																				</plx:passParam>
+																			</plx:callInstance>
+																		</plx:callObject>
+																	</plx:callInstance>
+																</plx:callObject>
+															</plx:callInstance>
+														</plx:callObject>
+														<plx:passParam>
+															<plx:callInstance name=".implied" type="indexerCall">
+																<plx:callObject>
+																	<plx:nameRef name="includedSequenceRoles"/>
+																</plx:callObject>
+																<plx:passParam>
+																	<xsl:choose>
+																		<xsl:when test="not($ConditionalMatch='null') or not(@pass)">
+																			<plx:nameRef name="{$IteratorVariableName}"/>
+																		</xsl:when>
+																		<xsl:otherwise>
+																			<plx:value type="i4">
+																				<xsl:attribute name="data">
+																					<xsl:choose>
+																						<xsl:when test="@pass='first'">
+																							<xsl:text>0</xsl:text>
+																						</xsl:when>
+																						<xsl:otherwise>
+																							<xsl:text>1</xsl:text>
+																						</xsl:otherwise>
+																					</xsl:choose>
+																				</xsl:attribute>
+																			</plx:value>
+																		</xsl:otherwise>
+																	</xsl:choose>
+																</plx:passParam>
+															</plx:callInstance>
+														</plx:passParam>
+													</plx:callInstance>
+												</plx:right>
+											</plx:conditionalOperator>
+										</plx:inlineStatement>
 									</plx:passParam>
 								</plx:callInstance>
 							</xsl:when>
@@ -4719,7 +4905,33 @@
 										</xsl:choose>
 									</plx:callObject>
 									<plx:passParam>
-										<plx:nameRef name="{$IteratorVariableName}"/>
+										<plx:inlineStatement dataTypeName=".i4">
+											<plx:conditionalOperator>
+												<plx:condition>
+													<plx:callInstance name=".implied" type="arrayIndexer">
+														<plx:callObject>
+															<plx:nameRef name="unaryReplacements"/>
+														</plx:callObject>
+														<plx:passParam>
+															<xsl:choose>
+																<xsl:when test="$PatternGroup='InternalSetConstraint'">
+																	<plx:value data="0" type="i4"/>
+																</xsl:when>
+																<xsl:otherwise>
+																	<plx:nameRef name="contextBasicReplacementIndex"/>
+																</xsl:otherwise>
+															</xsl:choose>
+														</plx:passParam>
+													</plx:callInstance>
+												</plx:condition>
+												<plx:left>
+													<plx:value data="0" type="i4"/>
+												</plx:left>
+												<plx:right>
+													<plx:nameRef name="{$IteratorVariableName}"/>
+												</plx:right>
+											</plx:conditionalOperator>
+										</plx:inlineStatement>
 									</plx:passParam>
 								</plx:callInstance>
 							</xsl:otherwise>
@@ -7138,6 +7350,11 @@
 							<xsl:call-template name="InitializeFactArity"/>
 						</plx:initialize>
 					</plx:local>
+					<plx:local name="unaryRoleOffset" dataTypeName=".i4">
+						<plx:initialize>
+							<xsl:call-template name="InitializeUnaryRoleOffset"/>
+						</plx:initialize>
+					</plx:local>
 					<plx:local name="allReadingOrders" dataTypeName="LinkedElementCollection">
 						<plx:passTypeParam dataTypeName="ReadingOrder"/>
 						<plx:initialize>
@@ -7231,21 +7448,30 @@
 									<plx:nameRef name="allBasicRoleReplacements"/>
 								</plx:callObject>
 								<plx:passParam>
-									<xsl:choose>
-										<xsl:when test="$iterateFacts">
-											<plx:nameRef name="{$iterVarName}"/>
-										</xsl:when>
-										<xsl:otherwise>
-											<plx:callInstance name="IndexOf">
-												<plx:callObject>
-													<plx:nameRef name="allFacts"/>
-												</plx:callObject>
-												<plx:passParam>
-													<plx:nameRef name="parentFact"/>
-												</plx:passParam>
-											</plx:callInstance>
-										</xsl:otherwise>
-									</xsl:choose>
+									<plx:inlineStatement dataTypeName=".i4">
+										<plx:assign>
+											<plx:left>
+												<plx:nameRef name="contextBasicReplacementIndex"/>
+											</plx:left>
+											<plx:right>
+												<xsl:choose>
+													<xsl:when test="$iterateFacts">
+														<plx:nameRef name="{$iterVarName}"/>
+													</xsl:when>
+													<xsl:otherwise>
+														<plx:callInstance name="IndexOf">
+															<plx:callObject>
+																<plx:nameRef name="allFacts"/>
+															</plx:callObject>
+															<plx:passParam>
+																<plx:nameRef name="parentFact"/>
+															</plx:passParam>
+														</plx:callInstance>
+													</xsl:otherwise>
+												</xsl:choose>
+											</plx:right>
+										</plx:assign>
+									</plx:inlineStatement>
 								</plx:passParam>
 							</plx:callInstance>
 						</plx:initialize>
@@ -7956,34 +8182,70 @@
 					<xsl:choose>
 						<xsl:when test="@match='included' or @match='constraintRoles'">
 							<!-- The role index needs to be retrieved from the all roles list -->
-							<plx:callStatic name="IndexOfRole" dataTypeName="FactType">
-								<plx:passParam>
-									<plx:nameRef name="factRoles"/>
-								</plx:passParam>
-								<plx:passParam>
-									<plx:callInstance name=".implied" type="arrayIndexer">
-										<plx:callObject>
-											<plx:nameRef name="includedRoles">
-												<xsl:if test="@match='constraintRoles' or $PatternGroup='InternalSetConstraint'">
-													<xsl:attribute name="name">
+							<xsl:variable name="innerRoleIndexExpression">
+								<plx:callStatic name="IndexOfRole" dataTypeName="FactType">
+									<plx:passParam>
+										<plx:nameRef name="factRoles"/>
+									</plx:passParam>
+									<plx:passParam>
+										<plx:callInstance name=".implied" type="arrayIndexer">
+											<plx:callObject>
+												<plx:nameRef name="includedRoles">
+													<xsl:if test="@match='constraintRoles' or $PatternGroup='InternalSetConstraint'">
+														<xsl:attribute name="name">
+															<xsl:choose>
+																<xsl:when test="$PatternGroup='SetComparisonConstraint'">
+																	<xsl:text>includedSequenceRoles</xsl:text>
+																</xsl:when>
+																<xsl:otherwise>
+																	<xsl:text>allConstraintRoles</xsl:text>
+																</xsl:otherwise>
+															</xsl:choose>
+														</xsl:attribute>
+													</xsl:if>
+												</plx:nameRef>
+											</plx:callObject>
+											<plx:passParam>
+												<plx:nameRef name="{$iterVarName}"/>
+											</plx:passParam>
+										</plx:callInstance>
+									</plx:passParam>
+								</plx:callStatic>
+							</xsl:variable>
+							<xsl:choose>
+								<xsl:when test="$PatternGroup='InternalConstraint' or $PatternGroup='RoleValueConstraint'">
+									<xsl:copy-of select="$innerRoleIndexExpression"/>
+								</xsl:when>
+								<xsl:otherwise>
+									<plx:inlineStatement dataTypeName=".i4">
+										<plx:conditionalOperator>
+											<plx:condition>
+												<plx:callInstance name=".implied" type="arrayIndexer">
+													<plx:callObject>
+														<plx:nameRef name="unaryReplacements"/>
+													</plx:callObject>
+													<plx:passParam>
 														<xsl:choose>
-															<xsl:when test="$PatternGroup='SetComparisonConstraint'">
-																<xsl:text>includedSequenceRoles</xsl:text>
+															<xsl:when test="$PatternGroup='InternalSetConstraint'">
+																<plx:value data="0" type="i4"/>
 															</xsl:when>
 															<xsl:otherwise>
-																<xsl:text>allConstraintRoles</xsl:text>
+																<plx:nameRef name="contextBasicReplacementIndex"/>
 															</xsl:otherwise>
 														</xsl:choose>
-													</xsl:attribute>
-												</xsl:if>
-											</plx:nameRef>
-										</plx:callObject>
-										<plx:passParam>
-											<plx:nameRef name="{$iterVarName}"/>
-										</plx:passParam>
-									</plx:callInstance>
-								</plx:passParam>
-							</plx:callStatic>
+													</plx:passParam>
+												</plx:callInstance>
+											</plx:condition>
+											<plx:left>
+												<plx:value data="0" type="i4"/>
+											</plx:left>
+											<plx:right>
+												<xsl:copy-of select="$innerRoleIndexExpression"/>
+											</plx:right>
+										</plx:conditionalOperator>
+									</plx:inlineStatement>
+								</xsl:otherwise>
+							</xsl:choose>
 						</xsl:when>
 						<!-- UNDONE: Support excluded match -->
 						<xsl:otherwise>

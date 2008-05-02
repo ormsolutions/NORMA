@@ -347,6 +347,39 @@
 		<se:Link RelationshipName="RecognizedPhraseHasDuplicateNameError" RoleName="DuplicateNameError" WriteStyle="NotWritten"/>
 	</se:Element>
 	<se:Element Class="ValueTypeInstance" Name="ValueTypeInstance" Override="true">
+		<se:ConditionalSerialization>
+			<plx:return>
+				<plx:binaryOperator type="booleanOr">
+					<plx:left>
+						<plx:unaryOperator type="booleanNot">
+							<plx:callInstance name="IsImplicitBooleanValue" type="property">
+								<plx:callObject>
+									<plx:callThis name="ValueType" type="property"/>
+								</plx:callObject>
+							</plx:callInstance>
+						</plx:unaryOperator>
+					</plx:left>
+					<plx:right>
+						<plx:binaryOperator type="inequality">
+							<plx:left>
+								<plx:callInstance name="Count" type="property">
+									<plx:callObject>
+										<plx:callStatic dataTypeName="EntityTypeRoleInstance" name="GetLinksToRoleCollection">
+											<plx:passParam>
+												<plx:thisKeyword/>
+											</plx:passParam>
+										</plx:callStatic>
+									</plx:callObject>
+								</plx:callInstance>
+							</plx:left>
+							<plx:right>
+								<plx:value data="0" type="i4"/>
+							</plx:right>
+						</plx:binaryOperator>
+					</plx:right>
+				</plx:binaryOperator>
+			</plx:return>
+		</se:ConditionalSerialization>
 		<se:Attribute ID="Value" WriteStyle="Element"/>
 		<se:Link RelationshipName="EntityTypeRoleInstance" RoleName="Role" WriteStyle="NotWritten"/>
 		<se:Link RelationshipName="FactTypeRoleInstance" RoleName="Role" WriteStyle="NotWritten"/>
@@ -529,6 +562,21 @@
 		<se:Link RelationshipName="FactTypeInstanceHasTooFewFactTypeRoleInstancesError" RoleName="TooFewFactTypeRoleInstancesError" WriteStyle="NotWritten"/>
 	</se:Element>
 	<se:Element Class="FactTypeRoleInstance">
+		<se:ConditionalSerialization>
+			<plx:return>
+				<plx:unaryOperator type="booleanNot">
+					<plx:callInstance name="IsImplicitBooleanValue" type="property">
+						<plx:callObject>
+							<plx:callInstance name="RolePlayer" type="property">
+								<plx:callObject>
+									<plx:callThis name="Role" type="property"/>
+								</plx:callObject>
+							</plx:callInstance>
+						</plx:callObject>
+					</plx:callInstance>
+				</plx:unaryOperator>
+			</plx:return>
+		</se:ConditionalSerialization>
 		<se:Link RelationshipName="FactTypeInstanceHasRoleInstance" RoleName="FactTypeInstance" WriteStyle="NotWritten" />
 		<se:Link RelationshipName="RoleInstanceHasPopulationUniquenessError" RoleName="PopulationUniquenessError" WriteStyle="NotWritten"/>
 		<se:Link RelationshipName="FactTypeRoleInstanceHasPopulationUniquenessError" RoleName="PopulationUniquenessError" WriteStyle="NotWritten"/>
@@ -802,6 +850,17 @@
 		<se:Link RelationshipName="RingConstraintHasRingConstraintTypeNotSpecifiedError" RoleName="RingConstraint" Name="RingConstraint"/>
 	</se:Element>
 	<se:Element Class="CompatibleValueTypeInstanceValueError" Override="true">
+		<se:ConditionalSerialization>
+			<plx:return>
+				<plx:callInstance name="ShouldSerialize">
+					<plx:callObject>
+						<plx:cast dataTypeName="ICustomSerializedElement">
+							<plx:callThis name="ValueTypeInstance" type="property"/>
+						</plx:cast>
+					</plx:callObject>
+				</plx:callInstance>
+			</plx:return>
+		</se:ConditionalSerialization>
 		<se:Link RelationshipName="ValueTypeInstanceHasCompatibleValueTypeInstanceValueError" RoleName="ValueTypeInstance" Name="ValueTypeInstance"/>
 	</se:Element>
 	<se:Element Class="TooFewEntityTypeRoleInstancesError" Override="true">
@@ -811,6 +870,17 @@
 		<se:Link RelationshipName="FactTypeInstanceHasTooFewFactTypeRoleInstancesError" RoleName="FactTypeInstance" Name="FactTypeInstance"/>
 	</se:Element>
 	<se:Element Class="PopulationMandatoryError" Override="true">
+		<se:ConditionalSerialization>
+			<plx:return>
+				<plx:callInstance name="ShouldSerialize">
+					<plx:callObject>
+						<plx:cast dataTypeName="ICustomSerializedElement">
+							<plx:callThis name="ObjectTypeInstance" type="property"/>
+						</plx:cast>
+					</plx:callObject>
+				</plx:callInstance>
+			</plx:return>
+		</se:ConditionalSerialization>
 		<se:Link RelationshipName="ObjectTypeInstanceHasPopulationMandatoryError" RoleName="ObjectTypeInstance" Name="ObjectTypeInstance"/>
 		<se:Link RelationshipName="MandatoryConstraintHasPopulationMandatoryError" RoleName="MandatoryConstraint" Name="MandatoryConstraint"/>
 	</se:Element>

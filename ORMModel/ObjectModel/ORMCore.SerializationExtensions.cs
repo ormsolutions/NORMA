@@ -1908,6 +1908,15 @@ namespace Neumont.Tools.ORM.ObjectModel
 		{
 			return this.MapChildElement(elementNamespace, elementName, containerNamespace, containerName, outerContainerNamespace, outerContainerName);
 		}
+		/// <summary>Implements ICustomSerializedElement.ShouldSerialize</summary>
+		protected new bool ShouldSerialize()
+		{
+			return !this.ValueType.IsImplicitBooleanValue || EntityTypeRoleInstance.GetLinksToRoleCollection(this).Count != 0;
+		}
+		bool ICustomSerializedElement.ShouldSerialize()
+		{
+			return this.ShouldSerialize();
+		}
 	}
 	#endregion // ValueTypeInstance serialization
 	#region EntityTypeInstance serialization
@@ -3300,13 +3309,13 @@ namespace Neumont.Tools.ORM.ObjectModel
 			return this.MapAttribute(xmlNamespace, attributeName);
 		}
 		/// <summary>Implements ICustomSerializedElement.ShouldSerialize</summary>
-		protected static bool ShouldSerialize()
+		protected bool ShouldSerialize()
 		{
-			return true;
+			return !this.Role.RolePlayer.IsImplicitBooleanValue;
 		}
 		bool ICustomSerializedElement.ShouldSerialize()
 		{
-			return ShouldSerialize();
+			return this.ShouldSerialize();
 		}
 	}
 	#endregion // FactTypeRoleInstance serialization
@@ -7208,6 +7217,15 @@ namespace Neumont.Tools.ORM.ObjectModel
 		{
 			return this.MapChildElement(elementNamespace, elementName, containerNamespace, containerName, outerContainerNamespace, outerContainerName);
 		}
+		/// <summary>Implements ICustomSerializedElement.ShouldSerialize</summary>
+		protected new bool ShouldSerialize()
+		{
+			return ((ICustomSerializedElement)this.ValueTypeInstance).ShouldSerialize();
+		}
+		bool ICustomSerializedElement.ShouldSerialize()
+		{
+			return this.ShouldSerialize();
+		}
 	}
 	#endregion // CompatibleValueTypeInstanceValueError serialization
 	#region TooFewEntityTypeRoleInstancesError serialization
@@ -7399,6 +7417,15 @@ namespace Neumont.Tools.ORM.ObjectModel
 		CustomSerializedElementMatch ICustomSerializedElement.MapChildElement(string elementNamespace, string elementName, string containerNamespace, string containerName, string outerContainerNamespace, string outerContainerName)
 		{
 			return this.MapChildElement(elementNamespace, elementName, containerNamespace, containerName, outerContainerNamespace, outerContainerName);
+		}
+		/// <summary>Implements ICustomSerializedElement.ShouldSerialize</summary>
+		protected new bool ShouldSerialize()
+		{
+			return ((ICustomSerializedElement)this.ObjectTypeInstance).ShouldSerialize();
+		}
+		bool ICustomSerializedElement.ShouldSerialize()
+		{
+			return this.ShouldSerialize();
 		}
 	}
 	#endregion // PopulationMandatoryError serialization

@@ -478,7 +478,14 @@ namespace Neumont.Tools.ORM.ObjectModel
 					int roleInstancesCount = roleInstances.Count;
 					if (roleCollectionCount != roleInstancesCount)
 					{
-						hasError = true;
+						int? unaryRoleIndex;
+						if (!(roleCollectionCount == 2 &&
+							roleInstancesCount == 1 &&
+							(unaryRoleIndex = FactType.GetUnaryRoleIndex(factRoles)).HasValue &&
+							factRoles[unaryRoleIndex.Value].Role == roleInstances[0].Role))
+						{
+							hasError = true;
+						}
 					}
 					else
 					{
@@ -2388,13 +2395,16 @@ namespace Neumont.Tools.ORM.ObjectModel
 									LinkedElementCollection<Role> constraintRoles = constraint.RoleCollection;
 									int constraintRoleCount = constraintRoles.Count;
 									int j = 0;
-									for (; j < constraintRoleCount; ++j)
+									if (!objectType.IsImplicitBooleanValue)
 									{
-										Role constraintRole = constraintRoles[j];
-										ReadOnlyLinkedElementCollection<ObjectTypeInstance> roleInstances = (currentRole == constraintRole) ? currentRoleInstances : constraintRole.ObjectTypeInstanceCollection;
-										if (roleInstances.Contains(this))
+										for (; j < constraintRoleCount; ++j)
 										{
-											break;
+											Role constraintRole = constraintRoles[j];
+											ReadOnlyLinkedElementCollection<ObjectTypeInstance> roleInstances = (currentRole == constraintRole) ? currentRoleInstances : constraintRole.ObjectTypeInstanceCollection;
+											if (roleInstances.Contains(this))
+											{
+												break;
+											}
 										}
 									}
 									if (j == constraintRoleCount)
@@ -2554,46 +2564,50 @@ namespace Neumont.Tools.ORM.ObjectModel
 									if (constraint != null && constraint.Modality == ConstraintModality.Alethic)
 									{
 										int seenInstanceCount = 0;
-										// Get repeated stuff once
-										if (instances == null)
+										int constraintRoleCount = 0;
+										if (!rolePlayer.IsImplicitBooleanValue)
 										{
-											instances = rolePlayer.ObjectTypeInstanceCollection.ToArray();
-											instanceCount = instances.Length;
-											if (instanceCount == 0)
+											// Get repeated stuff once
+											if (instances == null)
 											{
-												break;
-											}
-											Array.Sort<ObjectTypeInstance>(instances, comparer);
-											seenInstances = new bool[instanceCount];
-											thisRoleObjectTypeInstances = role.ObjectTypeInstanceCollection;
-										}
-										else
-										{
-											seenInstances.Initialize();
-										}
-
-										// Intersect each role with the instances on the current role player.
-										// Note that a disjunctive mandatory constraint with incompatible roles
-										// will clearly not intersect, but is still a population error. We do
-										// not make role compatibility a prerequisite for checking population
-										// mandatory errors.
-										LinkedElementCollection<Role> constraintRoles = sequence.RoleCollection;
-										int constraintRoleCount = constraintRoles.Count;
-										for (int i = 0; i < constraintRoleCount && seenInstanceCount < instanceCount; ++i)
-										{
-											Role currentRole = constraintRoles[i];
-											ReadOnlyLinkedElementCollection<ObjectTypeInstance> roleInstances = (currentRole == role) ? thisRoleObjectTypeInstances : currentRole.ObjectTypeInstanceCollection;
-											int roleInstanceCount = roleInstances.Count;
-											for (int j = 0; j < roleInstanceCount; ++j)
-											{
-												int index = Array.BinarySearch<ObjectTypeInstance>(instances, roleInstances[j], comparer);
-												if (index >= 0 && !seenInstances[index])
+												instances = rolePlayer.ObjectTypeInstanceCollection.ToArray();
+												instanceCount = instances.Length;
+												if (instanceCount == 0)
 												{
-													++seenInstanceCount;
-													seenInstances[index] = true;
-													if (seenInstanceCount == instanceCount)
+													break;
+												}
+												Array.Sort<ObjectTypeInstance>(instances, comparer);
+												seenInstances = new bool[instanceCount];
+												thisRoleObjectTypeInstances = role.ObjectTypeInstanceCollection;
+											}
+											else
+											{
+												seenInstances.Initialize();
+											}
+
+											// Intersect each role with the instances on the current role player.
+											// Note that a disjunctive mandatory constraint with incompatible roles
+											// will clearly not intersect, but is still a population error. We do
+											// not make role compatibility a prerequisite for checking population
+											// mandatory errors.
+											LinkedElementCollection<Role> constraintRoles = sequence.RoleCollection;
+											constraintRoleCount = constraintRoles.Count;
+											for (int i = 0; i < constraintRoleCount && seenInstanceCount < instanceCount; ++i)
+											{
+												Role currentRole = constraintRoles[i];
+												ReadOnlyLinkedElementCollection<ObjectTypeInstance> roleInstances = (currentRole == role) ? thisRoleObjectTypeInstances : currentRole.ObjectTypeInstanceCollection;
+												int roleInstanceCount = roleInstances.Count;
+												for (int j = 0; j < roleInstanceCount; ++j)
+												{
+													int index = Array.BinarySearch<ObjectTypeInstance>(instances, roleInstances[j], comparer);
+													if (index >= 0 && !seenInstances[index])
 													{
-														break;
+														++seenInstanceCount;
+														seenInstances[index] = true;
+														if (seenInstanceCount == instanceCount)
+														{
+															break;
+														}
 													}
 												}
 											}

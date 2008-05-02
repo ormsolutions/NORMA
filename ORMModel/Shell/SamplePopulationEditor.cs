@@ -184,7 +184,7 @@ namespace Neumont.Tools.ORM.Shell
 			Debug.Assert(mySelectedValueType != null);
 			DisconnectTree();
 			int numColumns = 1; // ValueTypes will always be a single column tree
-			VirtualTreeColumnHeader[] headers = new VirtualTreeColumnHeader[numColumns+1];
+			VirtualTreeColumnHeader[] headers = new VirtualTreeColumnHeader[numColumns + 1];
 			headers[0] = CreateRowNumberColumn();
 			for (int i = 0; i < numColumns; ++i)
 			{
@@ -237,14 +237,21 @@ namespace Neumont.Tools.ORM.Shell
 			DisconnectTree();
 			LinkedElementCollection<RoleBase> roleCollection = mySelectedFactType.RoleCollection;
 			int numColumns = roleCollection.Count;
-			VirtualTreeColumnHeader[] headers = new VirtualTreeColumnHeader[numColumns+1];
+			int? unaryRoleIndex = FactType.GetUnaryRoleIndex(roleCollection);
+			int unaryRoleAdjust = 0;
+			if (unaryRoleIndex.HasValue)
+			{
+				unaryRoleAdjust = unaryRoleIndex.Value;
+				numColumns = 1;
+			}
+			VirtualTreeColumnHeader[] headers = new VirtualTreeColumnHeader[numColumns + 1];
 			headers[0] = CreateRowNumberColumn();
 			for (int i = 0; i < numColumns; ++i)
 			{
-				headers[i + 1] = new VirtualTreeColumnHeader(SamplePopulationBaseBranch.DeriveColumnName(roleCollection[i].Role));
+				headers[i + 1] = new VirtualTreeColumnHeader(SamplePopulationBaseBranch.DeriveColumnName(roleCollection[i + unaryRoleAdjust].Role));
 			}
 			vtrSamplePopulation.SetColumnHeaders(headers, true);
-			myBranch = new SamplePopulationFactTypeBranch(mySelectedFactType, numColumns+1);
+			myBranch = new SamplePopulationFactTypeBranch(mySelectedFactType, numColumns + 1, unaryRoleIndex);
 			ConnectTree();
 		}
 
@@ -2464,9 +2471,11 @@ namespace Neumont.Tools.ORM.Shell
 			private List<FactTypeInstance> myCachedFactTypeInstances;
 			private List<EntityTypeInstance> myCachedEntityTypeInstances;
 			private ObjectType myProxyObjectType;
+			private int myUnaryColumn;
+			private bool myHasUnaryColumn;
 			#endregion
 			#region Construction
-			public SamplePopulationFactTypeBranch(FactType selectedFactType, int numColumns)
+			public SamplePopulationFactTypeBranch(FactType selectedFactType, int numColumns, int? unaryColumnAdjustment)
 				: base(numColumns, selectedFactType.Store)
 			{
 				myFactType = selectedFactType;
@@ -2480,6 +2489,11 @@ namespace Neumont.Tools.ORM.Shell
 				{
 					myCachedFactTypeInstances = new List<FactTypeInstance>(selectedFactType.FactTypeInstanceCollection);
 				}
+				if (unaryColumnAdjustment.HasValue)
+				{
+					myHasUnaryColumn = true;
+					myUnaryColumn = unaryColumnAdjustment.Value;
+				}
 			}
 			#endregion
 			#region IBranch Interface Members
@@ -2488,7 +2502,8 @@ namespace Neumont.Tools.ORM.Shell
 				VirtualTreeLabelEditData retVal = base.BeginLabelEdit(row, column, activationStyle);
 				if (retVal.IsValid)
 				{
-					ObjectType rolePlayer = myFactType.RoleCollection[column - 1].Role.RolePlayer;
+					Role role = myFactType.RoleCollection[column + myUnaryColumn - 1].Role;
+					ObjectType rolePlayer = role.RolePlayer;
 					if (rolePlayer == null || (!rolePlayer.IsValueType && rolePlayer.PreferredIdentifier == null))
 					{
 						retVal = VirtualTreeLabelEditData.Invalid;
@@ -2496,7 +2511,7 @@ namespace Neumont.Tools.ORM.Shell
 					else
 					{
 						List<FactTypeInstance> instances = myCachedFactTypeInstances;
-						retVal.CustomInPlaceEdit = new CellEditContext(myFactType.RoleCollection[column - 1].Role, (row < instances.Count) ? instances[row] : null).CreateInPlaceEditControl();
+						retVal.CustomInPlaceEdit = new CellEditContext(role, (row < instances.Count) ? instances[row] : null).CreateInPlaceEditControl();
 						retVal.CustomCommit = delegate(VirtualTreeItemInfo itemInfo, Control editControl)
 						{
 							// Defer to the normal text edit if the control is not dirty
@@ -2518,7 +2533,7 @@ namespace Neumont.Tools.ORM.Shell
 					FactTypeRoleInstance editRoleInstance = null;
 					LinkedElementCollection<FactTypeRoleInstance> roleInstances = editInstance.RoleInstanceCollection;
 					int instanceCount = roleInstances.Count;
-					Role factRole = selectedFactType.RoleCollection[column - 1].Role;
+					Role factRole = selectedFactType.RoleCollection[column + myUnaryColumn - 1].Role;
 					for (int i = 0; i < instanceCount; ++i)
 					{
 						if (factRole == roleInstances[i].Role)
@@ -2551,7 +2566,7 @@ namespace Neumont.Tools.ORM.Shell
 						{
 							using (Transaction t = store.TransactionManager.BeginTransaction(String.Format(ResourceStrings.ModelSamplePopulationEditorEditInstanceTransactionText, "")))
 							{
-								myCachedFactTypeInstances[row].FindRoleInstance(myFactType.RoleCollection[column-1].Role).Delete();
+								editRoleInstance.Delete();
 								ObjectTypeInstance result = RecurseValueTypeInstance(editRoleInstance.ObjectTypeInstance, editRoleInstance.Role.RolePlayer, newText, ref instance, true);
 								ConnectInstance(ref editInstance, result, factRole);
 								t.Commit();
@@ -2582,7 +2597,7 @@ namespace Neumont.Tools.ORM.Shell
 						FactType selectedFactType = myFactType;
 						FactTypeInstance newInstance = new FactTypeInstance(store);
 						newInstance.FactType = selectedFactType;
-						Role factRole = selectedFactType.RoleCollection[column - 1].Role;
+						Role factRole = selectedFactType.RoleCollection[column + myUnaryColumn - 1].Role;
 						ValueTypeInstance instance = null;
 						ObjectTypeInstance result = RecurseValueTypeInstance(null, factRole.RolePlayer, newText, ref instance, true);
 						EditValueTypeInstance(instance, newText);
@@ -2603,7 +2618,7 @@ namespace Neumont.Tools.ORM.Shell
 					{
 						ObjectType selectedEntityType = myProxyObjectType;
 						List<EntityTypeInstance> instances = myCachedEntityTypeInstances;
-						Role identifierRole = myFactType.RoleCollection[column - 1].Role;
+						Role identifierRole = myFactType.RoleCollection[column + myUnaryColumn - 1].Role;
 						EntityTypeInstance parentInstance = instances[row];
 						EntityTypeInstance editInstance = null;
 						if (identifierRole.RolePlayer == selectedEntityType)
@@ -2630,7 +2645,7 @@ namespace Neumont.Tools.ORM.Shell
 					{
 						FactType selectedFactType = myFactType;
 						List<FactTypeInstance> instances = myCachedFactTypeInstances;
-						Role selectedRole = selectedFactType.RoleCollection[column - 1].Role;
+						Role selectedRole = selectedFactType.RoleCollection[column + myUnaryColumn - 1].Role;
 						FactTypeInstance parentInstance = (row < instances.Count) ? instances[row] : null;
 						EntityTypeInstance editInstance = null;
 						if (parentInstance != null)
@@ -2658,13 +2673,13 @@ namespace Neumont.Tools.ORM.Shell
 				string text = base.GetText(row, column);
 				if (text == null)
 				{
-					text = ObjectTypeInstance.GetDisplayString(null, myFactType.RoleCollection[column - 1].Role.RolePlayer);
+					text = ObjectTypeInstance.GetDisplayString(null, myFactType.RoleCollection[column + myUnaryColumn - 1].Role.RolePlayer);
 				}
 				else if (text.Length == 0)
 				{
 					if (IsReadOnly)
 					{
-						Role selectedRole = myFactType.RoleCollection[column - 1].Role;
+						Role selectedRole = myFactType.RoleCollection[column + myUnaryColumn - 1].Role;
 						ObjectType rolePlayer = selectedRole.RolePlayer;
 						ObjectTypeInstance instance = null;
 						if (myProxyObjectType != null && rolePlayer == myProxyObjectType)
@@ -2695,7 +2710,7 @@ namespace Neumont.Tools.ORM.Shell
 						LinkedElementCollection<FactTypeRoleInstance> factTypeRoleInstances = factTypeInstance.RoleInstanceCollection;
 						int roleInstanceCount = factTypeRoleInstances.Count;
 						FactTypeRoleInstance instance;
-						Role factTypeRole = myFactType.RoleCollection[column - 1].Role;
+						Role factTypeRole = myFactType.RoleCollection[column + myUnaryColumn - 1].Role;
 						for (int i = 0; i < roleInstanceCount; ++i)
 						{
 							if (factTypeRole == (instance = factTypeRoleInstances[i]).Role)
@@ -2713,7 +2728,7 @@ namespace Neumont.Tools.ORM.Shell
 			{
 				if (!IsReadOnly && !base.IsFullRowSelectColumn(column))
 				{
-					Role factRole = myFactType.RoleCollection[column - 1].Role;
+					Role factRole = myFactType.RoleCollection[column + myUnaryColumn - 1].Role;
 					ObjectType rolePlayer = factRole.RolePlayer;
 					if (rolePlayer != null)
 					{
@@ -2849,18 +2864,10 @@ namespace Neumont.Tools.ORM.Shell
 			private void EntityTypeHasPreferredIdentifierAddedEvent(object sender, ElementAddedEventArgs e)
 			{
 				EntityTypeHasPreferredIdentifier link = e.ModelElement as EntityTypeHasPreferredIdentifier;
-				ObjectType entityType = link.PreferredIdentifierFor;
-				if (entityType != null && !entityType.IsDeleted)
+				ObjectType preferredFor = link.PreferredIdentifierFor;
+				if (preferredFor != null && !preferredFor.IsDeleted)
 				{
-					LinkedElementCollection<RoleBase> identifierRoles = myFactType.RoleCollection;
-					int identifierCount = identifierRoles.Count;
-					for (int i = 0; i < identifierCount; ++i)
-					{
-						if (entityType == identifierRoles[i].Role.RolePlayer)
-						{
-							base.EditColumnHeader(i + 1, identifierRoles[i].Role);
-						}
-					}
+					UpdateColumnHeadersForObjectType(preferredFor);
 				}
 				if (!IsReadOnly)
 				{
@@ -2871,21 +2878,10 @@ namespace Neumont.Tools.ORM.Shell
 			private void EntityTypeHasPreferredIdentifierRemovedEvent(object sender, ElementDeletedEventArgs e)
 			{
 				EntityTypeHasPreferredIdentifier link = e.ModelElement as EntityTypeHasPreferredIdentifier;
-				ObjectType entityType = link.PreferredIdentifierFor;
-				if (entityType != null && !entityType.IsDeleted)
+				ObjectType preferredFor = link.PreferredIdentifierFor;
+				if (preferredFor != null && !preferredFor.IsDeleted)
 				{
-					LinkedElementCollection<RoleBase> identifierRoles = myFactType.RoleCollection;
-					if (identifierRoles != null)
-					{
-						int identifierCount = identifierRoles.Count;
-						for (int i = 0; i < identifierCount; ++i)
-						{
-							if (entityType == identifierRoles[i].Role.RolePlayer)
-							{
-								base.EditColumnHeader(i + 1, identifierRoles[i].Role);
-							}
-						}
-					}
+					UpdateColumnHeadersForObjectType(preferredFor);
 				}
 				if (IsReadOnly)
 				{
@@ -2902,18 +2898,7 @@ namespace Neumont.Tools.ORM.Shell
 					!uniqueness.IsDeleted &&
 					null != (preferredFor = uniqueness.PreferredIdentifierFor))
 				{
-					LinkedElementCollection<RoleBase> identifierRoles = myFactType.RoleCollection;
-					if (identifierRoles != null)
-					{
-						int identifierCount = identifierRoles.Count;
-						for (int i = 0; i < identifierCount; ++i)
-						{
-							if (preferredFor == identifierRoles[i].Role.RolePlayer)
-							{
-								base.EditColumnHeader(i + 1, identifierRoles[i].Role);
-							}
-						}
-					}
+					UpdateColumnHeadersForObjectType(preferredFor);
 				}
 				if (!IsReadOnly)
 				{
@@ -2960,18 +2945,7 @@ namespace Neumont.Tools.ORM.Shell
 					!uniqueness.IsDeleted &&
 					null != (preferredFor = uniqueness.PreferredIdentifierFor))
 				{
-					LinkedElementCollection<RoleBase> identifierRoles = myFactType.RoleCollection;
-					if (identifierRoles != null)
-					{
-						int identifierCount = identifierRoles.Count;
-						for (int i = 0; i < identifierCount; ++i)
-						{
-							if (preferredFor == identifierRoles[i].Role.RolePlayer)
-							{
-								base.EditColumnHeader(i + 1, identifierRoles[i].Role);
-							}
-						}
-					}
+					UpdateColumnHeadersForObjectType(preferredFor);
 				}
 				if (IsReadOnly)
 				{
@@ -3046,15 +3020,7 @@ namespace Neumont.Tools.ORM.Shell
 				Role role = e.ModelElement as Role;
 				if (!role.IsDeleted)
 				{
-					LinkedElementCollection<RoleBase> roleCollection = myFactType.RoleCollection;
-					int collectionCount = roleCollection.Count;
-					for (int i = 0; i < collectionCount; ++i)
-					{
-						if (roleCollection[i].Role == role)
-						{
-							base.EditColumnHeader(i + 1, role);
-						}
-					}
+					UpdateColumnHeadersForRole(role, false);
 				}
 			}
 
@@ -3079,22 +3045,7 @@ namespace Neumont.Tools.ORM.Shell
 				Role factRole = link.PlayedRole;
 				if (!rolePlayer.IsDeleted && !factRole.IsDeleted)
 				{
-					LinkedElementCollection<RoleBase> factRoles = myFactType.RoleCollection;
-					int roleCount = factRoles.Count;
-					for (int i = 0; i < roleCount; ++i)
-					{
-						if (factRole == factRoles[i].Role)
-						{
-							base.EditColumnHeader(i + 1, factRole);
-							if (myProxyObjectType != null)
-							{
-								Debug.Assert(roleCount == 2);
-								int oppositeIndex = (i + 1) % 2;
-								base.EditColumnHeader(oppositeIndex + 1, factRoles[oppositeIndex].Role);
-								break;
-							}
-						}
-					}
+					UpdateColumnHeadersForRole(factRole, true);
 				}
 			}
 
@@ -3157,19 +3108,74 @@ namespace Neumont.Tools.ORM.Shell
 				ObjectType objectType = e.ModelElement as ObjectType;
 				if (!objectType.IsDeleted)
 				{
-					LinkedElementCollection<RoleBase> roleCollection = myFactType.RoleCollection;
-					int collectionCount = roleCollection.Count;
-					for (int i = 0; i < collectionCount; ++i)
-					{
-						if (roleCollection[i].Role.RolePlayer == objectType)
-						{
-							base.EditColumnHeader(i + 1, roleCollection[i].Role);
-						}
-					}
+					UpdateColumnHeadersForObjectType(objectType);
 				}
 			}
 			#endregion
 			#region Helper Methods
+			/// <summary>
+			/// Helper method to update column headers when <see cref="ObjectType"/> changes are made
+			/// that affect the header display
+			/// </summary>
+			private void UpdateColumnHeadersForObjectType(ObjectType objectType)
+			{
+				LinkedElementCollection<RoleBase> roleCollection = myFactType.RoleCollection;
+				int collectionCount = roleCollection.Count;
+				if (myHasUnaryColumn)
+				{
+					int unaryColumn = myUnaryColumn;
+					Role currentRole;
+					if (unaryColumn < collectionCount && (currentRole = roleCollection[unaryColumn].Role).RolePlayer == objectType)
+					{
+						base.EditColumnHeader(1, currentRole);
+					}
+				}
+				else
+				{
+					for (int i = 0; i < collectionCount; ++i)
+					{
+						Role currentRole = roleCollection[i].Role;
+						if (currentRole.RolePlayer == objectType)
+						{
+							base.EditColumnHeader(i + 1, currentRole);
+						}
+					}
+				}
+			}
+			/// <summary>
+			/// Helper method to update column headers when <see cref="Role"/> changes are made
+			/// that affect the header display
+			/// </summary>
+			private void UpdateColumnHeadersForRole(Role role, bool updateProxyHeader)
+			{
+				LinkedElementCollection<RoleBase> factRoles = myFactType.RoleCollection;
+				int roleCount = factRoles.Count;
+				if (myHasUnaryColumn)
+				{
+					int unaryColumn = myUnaryColumn;
+					if (unaryColumn < roleCount && factRoles[unaryColumn].Role == role)
+					{
+						base.EditColumnHeader(1, role);
+					}
+				}
+				else
+				{
+					for (int i = 0; i < roleCount; ++i)
+					{
+						if (role == factRoles[i].Role)
+						{
+							base.EditColumnHeader(i + 1, role);
+							if (updateProxyHeader && myProxyObjectType != null)
+							{
+								Debug.Assert(roleCount == 2);
+								int oppositeIndex = (i + 1) % 2;
+								base.EditColumnHeader(oppositeIndex + 1, factRoles[oppositeIndex].Role);
+							}
+							break;
+						}
+					}
+				}
+			}
 			/// <summary>
 			/// Connect a given instance to the branch's current objectType, for the given role
 			/// </summary>

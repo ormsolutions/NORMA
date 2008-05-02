@@ -770,7 +770,10 @@ namespace Neumont.Tools.ORM.ObjectModel
 				{
 					try
 					{
-						retVal = string.Format(CultureInfo.CurrentCulture, reading.Text, roleReplacements[defaultOrder.IndexOf(readingRoles[0])]);
+						// Single role reading for a unary FactType. The roleReplacement will always have a single
+						// element. However, the unary role can come second in the default order. The safest approach
+						// is to simple ignore defaultOrder in this case
+						retVal = string.Format(CultureInfo.CurrentCulture, reading.Text, roleReplacements[0]);
 					}
 					catch (FormatException ex)
 					{

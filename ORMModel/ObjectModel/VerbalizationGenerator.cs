@@ -1142,6 +1142,7 @@ namespace Neumont.Tools.ORM.ObjectModel
 			IList<RoleBase> factRoles = this.RoleCollection;
 			Nullable<int> unaryRoleIndex = FactType.GetUnaryRoleIndex(factRoles);
 			int factArity = unaryRoleIndex.HasValue ? 1 : factRoles.Count;
+			int unaryRoleOffset = unaryRoleIndex.HasValue ? unaryRoleIndex.Value : 0;
 			FactType parentFact = this;
 			LinkedElementCollection<ReadingOrder> allReadingOrders = this.ReadingOrderCollection;
 			const bool isDeontic = false;
@@ -1150,7 +1151,7 @@ namespace Neumont.Tools.ORM.ObjectModel
 			string[] basicRoleReplacements = new string[factArity];
 			for (int i = 0; i < factArity; ++i)
 			{
-				Role factRole = factRoles[i].Role;
+				Role factRole = factRoles[i + unaryRoleOffset].Role;
 				ObjectType rolePlayer = factRole.RolePlayer;
 				string basicReplacement;
 				if (rolePlayer != null)
@@ -1390,6 +1391,7 @@ namespace Neumont.Tools.ORM.ObjectModel
 				IList<RoleBase> factRoles = null;
 				Nullable<int> unaryRoleIndex = null;
 				int factArity = 0;
+				int unaryRoleOffset = 0;
 				LinkedElementCollection<ReadingOrder> allReadingOrders = null;
 				IReading reading = null;
 				VerbalizationHyphenBinder hyphenBinder;
@@ -1397,11 +1399,12 @@ namespace Neumont.Tools.ORM.ObjectModel
 				factRoles = parentFact.RoleCollection;
 				unaryRoleIndex = FactType.GetUnaryRoleIndex(factRoles);
 				factArity = unaryRoleIndex.HasValue ? 1 : factRoles.Count;
+				unaryRoleOffset = unaryRoleIndex.HasValue ? unaryRoleIndex.Value : 0;
 				allReadingOrders = parentFact.ReadingOrderCollection;
 				string[] basicRoleReplacements = new string[factArity];
 				for (int i = 0; i < factArity; ++i)
 				{
-					Role factRole = factRoles[i].Role;
+					Role factRole = factRoles[i + unaryRoleOffset].Role;
 					ObjectType rolePlayer = factRole.RolePlayer;
 					string basicReplacement;
 					if (rolePlayer != null)
@@ -1449,13 +1452,14 @@ namespace Neumont.Tools.ORM.ObjectModel
 					IList<RoleBase> factRoles = parentFact.RoleCollection;
 					Nullable<int> unaryRoleIndex = FactType.GetUnaryRoleIndex(factRoles);
 					int factArity = unaryRoleIndex.HasValue ? 1 : factRoles.Count;
+					int unaryRoleOffset = unaryRoleIndex.HasValue ? unaryRoleIndex.Value : 0;
 					LinkedElementCollection<ReadingOrder> allReadingOrders = parentFact.ReadingOrderCollection;
 					IReading reading = null;
 					VerbalizationHyphenBinder hyphenBinder;
 					string[] basicRoleReplacements = new string[factArity];
 					for (int i = 0; i < factArity; ++i)
 					{
-						Role factRole = factRoles[i].Role;
+						Role factRole = factRoles[i + unaryRoleOffset].Role;
 						ObjectType rolePlayer = factRole.RolePlayer;
 						string basicReplacement;
 						if (rolePlayer != null)
@@ -1820,6 +1824,7 @@ namespace Neumont.Tools.ORM.ObjectModel
 			IList<RoleBase> factRoles = null;
 			Nullable<int> unaryRoleIndex = null;
 			int factArity = 0;
+			int unaryRoleOffset = 0;
 			LinkedElementCollection<ReadingOrder> allReadingOrders;
 			LinkedElementCollection<SetComparisonConstraintRoleSequence> constraintSequences = this.RoleSequenceCollection;
 			int constraintRoleArity = constraintSequences.Count;
@@ -1863,6 +1868,8 @@ namespace Neumont.Tools.ORM.ObjectModel
 				return false;
 			}
 			string[][] allBasicRoleReplacements = new string[allFactsCount][];
+			bool[] unaryReplacements = new bool[allFactsCount];
+			int contextBasicReplacementIndex;
 			int minFactArity = int.MaxValue;
 			int maxFactArity = int.MinValue;
 			for (int iFact = 0; iFact < allFactsCount; ++iFact)
@@ -1902,6 +1909,7 @@ namespace Neumont.Tools.ORM.ObjectModel
 				factRoles = currentFact.RoleCollection;
 				unaryRoleIndex = FactType.GetUnaryRoleIndex(factRoles);
 				factArity = unaryRoleIndex.HasValue ? 1 : factRoles.Count;
+				unaryRoleOffset = unaryRoleIndex.HasValue ? unaryRoleIndex.Value : 0;
 				if (factArity < minFactArity)
 				{
 					minFactArity = factArity;
@@ -1913,7 +1921,7 @@ namespace Neumont.Tools.ORM.ObjectModel
 				string[] basicRoleReplacements = new string[factArity];
 				for (int i = 0; i < factArity; ++i)
 				{
-					Role factRole = factRoles[i].Role;
+					Role factRole = factRoles[i + unaryRoleOffset].Role;
 					ObjectType rolePlayer = factRole.RolePlayer;
 					string basicReplacement;
 					if (rolePlayer != null)
@@ -1927,6 +1935,7 @@ namespace Neumont.Tools.ORM.ObjectModel
 					basicRoleReplacements[i] = basicReplacement;
 				}
 				allBasicRoleReplacements[iFact] = basicRoleReplacements;
+				unaryReplacements[iFact] = unaryRoleIndex.HasValue;
 			}
 			IReading[] allConstraintRoleReadings = new IReading[constraintRoleArity];
 			string[] roleReplacements = new string[maxFactArity];
@@ -2150,7 +2159,7 @@ namespace Neumont.Tools.ORM.ObjectModel
 							parentFact = primaryRole.FactType;
 							factRoles = parentFact.RoleCollection;
 							allReadingOrders = parentFact.ReadingOrderCollection;
-							string[] basicRoleReplacements = allBasicRoleReplacements[allFacts.IndexOf(parentFact)];
+							string[] basicRoleReplacements = allBasicRoleReplacements[contextBasicReplacementIndex = allFacts.IndexOf(parentFact)];
 							snippet1Replace1Replace2 = null;
 							reading = currentFact.GetMatchingReading(allReadingOrders, null, factRoles[0], null, false, false, factRoles, true);
 							hyphenBinder = new VerbalizationHyphenBinder(reading, factRoles, unaryRoleIndex, snippets.GetSnippet(CoreVerbalizationSnippetType.HyphenBoundPredicatePart, isDeontic, isNegative));
@@ -2204,8 +2213,8 @@ namespace Neumont.Tools.ORM.ObjectModel
 							parentFact = primaryRole.FactType;
 							factRoles = parentFact.RoleCollection;
 							allReadingOrders = parentFact.ReadingOrderCollection;
-							string[] basicRoleReplacements = allBasicRoleReplacements[allFacts.IndexOf(parentFact)];
-							sbTemp.Append(basicRoleReplacements[FactType.IndexOfRole(factRoles, includedSequenceRoles[RoleIter1])]);
+							string[] basicRoleReplacements = allBasicRoleReplacements[contextBasicReplacementIndex = allFacts.IndexOf(parentFact)];
+							sbTemp.Append(basicRoleReplacements[unaryReplacements[contextBasicReplacementIndex] ? 0 : FactType.IndexOfRole(factRoles, includedSequenceRoles[RoleIter1])]);
 						}
 						snippet1Replace1Replace1 = sbTemp.ToString();
 					}
@@ -2281,7 +2290,7 @@ namespace Neumont.Tools.ORM.ObjectModel
 							parentFact = primaryRole.FactType;
 							factRoles = parentFact.RoleCollection;
 							allReadingOrders = parentFact.ReadingOrderCollection;
-							string[] basicRoleReplacements = allBasicRoleReplacements[allFacts.IndexOf(parentFact)];
+							string[] basicRoleReplacements = allBasicRoleReplacements[contextBasicReplacementIndex = allFacts.IndexOf(parentFact)];
 							snippet1Replace1Replace2Replace1 = null;
 							reading = currentFact.GetMatchingReading(allReadingOrders, null, null, (System.Collections.IList)factRoles, false, false, factRoles, true);
 							hyphenBinder = new VerbalizationHyphenBinder(reading, factRoles, unaryRoleIndex, snippets.GetSnippet(CoreVerbalizationSnippetType.HyphenBoundPredicatePart, isDeontic, isNegative));
@@ -2378,7 +2387,7 @@ namespace Neumont.Tools.ORM.ObjectModel
 							parentFact = primaryRole.FactType;
 							factRoles = parentFact.RoleCollection;
 							allReadingOrders = parentFact.ReadingOrderCollection;
-							string[] basicRoleReplacements = allBasicRoleReplacements[allFacts.IndexOf(parentFact)];
+							string[] basicRoleReplacements = allBasicRoleReplacements[contextBasicReplacementIndex = allFacts.IndexOf(parentFact)];
 							snippet1Replace1Replace2Replace2 = null;
 							reading = currentFact.GetMatchingReading(allReadingOrders, null, null, (System.Collections.IList)factRoles, false, false, factRoles, true);
 							hyphenBinder = new VerbalizationHyphenBinder(reading, factRoles, unaryRoleIndex, snippets.GetSnippet(CoreVerbalizationSnippetType.HyphenBoundPredicatePart, isDeontic, isNegative));
@@ -2976,6 +2985,7 @@ namespace Neumont.Tools.ORM.ObjectModel
 				IList<RoleBase> factRoles = parentFact.RoleCollection;
 				Nullable<int> unaryRoleIndex = FactType.GetUnaryRoleIndex(factRoles);
 				int factArity = unaryRoleIndex.HasValue ? 1 : factRoles.Count;
+				int unaryRoleOffset = unaryRoleIndex.HasValue ? unaryRoleIndex.Value : 0;
 				LinkedElementCollection<ReadingOrder> allReadingOrders = parentFact.ReadingOrderCollection;
 				int includedArity = includedRoles.Count;
 				if (allReadingOrders.Count == 0 || includedArity == 0)
@@ -2985,7 +2995,7 @@ namespace Neumont.Tools.ORM.ObjectModel
 				string[] basicRoleReplacements = new string[factArity];
 				for (int i = 0; i < factArity; ++i)
 				{
-					Role factRole = factRoles[i].Role;
+					Role factRole = factRoles[i + unaryRoleOffset].Role;
 					ObjectType rolePlayer = factRole.RolePlayer;
 					string basicReplacement;
 					if (rolePlayer != null)
@@ -3267,6 +3277,7 @@ namespace Neumont.Tools.ORM.ObjectModel
 				IList<RoleBase> factRoles = parentFact.RoleCollection;
 				Nullable<int> unaryRoleIndex = FactType.GetUnaryRoleIndex(factRoles);
 				int factArity = unaryRoleIndex.HasValue ? 1 : factRoles.Count;
+				int unaryRoleOffset = unaryRoleIndex.HasValue ? unaryRoleIndex.Value : 0;
 				LinkedElementCollection<ReadingOrder> allReadingOrders = parentFact.ReadingOrderCollection;
 				int includedArity = includedRoles.Count;
 				if (allReadingOrders.Count == 0 || includedArity == 0)
@@ -3276,7 +3287,7 @@ namespace Neumont.Tools.ORM.ObjectModel
 				string[] basicRoleReplacements = new string[factArity];
 				for (int i = 0; i < factArity; ++i)
 				{
-					Role factRole = factRoles[i].Role;
+					Role factRole = factRoles[i + unaryRoleOffset].Role;
 					ObjectType rolePlayer = factRole.RolePlayer;
 					string basicReplacement;
 					if (rolePlayer != null)
@@ -3448,6 +3459,7 @@ namespace Neumont.Tools.ORM.ObjectModel
 				IList<RoleBase> factRoles = parentFact.RoleCollection;
 				Nullable<int> unaryRoleIndex = FactType.GetUnaryRoleIndex(factRoles);
 				int factArity = unaryRoleIndex.HasValue ? 1 : factRoles.Count;
+				int unaryRoleOffset = unaryRoleIndex.HasValue ? unaryRoleIndex.Value : 0;
 				LinkedElementCollection<ReadingOrder> allReadingOrders = parentFact.ReadingOrderCollection;
 				int includedArity = includedRoles.Count;
 				if (allReadingOrders.Count == 0 || includedArity == 0)
@@ -3457,7 +3469,7 @@ namespace Neumont.Tools.ORM.ObjectModel
 				string[] basicRoleReplacements = new string[factArity];
 				for (int i = 0; i < factArity; ++i)
 				{
-					Role factRole = factRoles[i].Role;
+					Role factRole = factRoles[i + unaryRoleOffset].Role;
 					ObjectType rolePlayer = factRole.RolePlayer;
 					string basicReplacement;
 					if (rolePlayer != null)
@@ -3550,6 +3562,7 @@ namespace Neumont.Tools.ORM.ObjectModel
 				IList<RoleBase> factRoles = parentFact.RoleCollection;
 				Nullable<int> unaryRoleIndex = FactType.GetUnaryRoleIndex(factRoles);
 				int factArity = unaryRoleIndex.HasValue ? 1 : factRoles.Count;
+				int unaryRoleOffset = unaryRoleIndex.HasValue ? unaryRoleIndex.Value : 0;
 				LinkedElementCollection<ReadingOrder> allReadingOrders = parentFact.ReadingOrderCollection;
 				int includedArity = includedRoles.Count;
 				if (allReadingOrders.Count == 0 || includedArity == 0)
@@ -3559,7 +3572,7 @@ namespace Neumont.Tools.ORM.ObjectModel
 				string[] basicRoleReplacements = new string[factArity];
 				for (int i = 0; i < factArity; ++i)
 				{
-					Role factRole = factRoles[i].Role;
+					Role factRole = factRoles[i + unaryRoleOffset].Role;
 					ObjectType rolePlayer = factRole.RolePlayer;
 					string basicReplacement;
 					if (rolePlayer != null)
@@ -3755,6 +3768,7 @@ namespace Neumont.Tools.ORM.ObjectModel
 			IList<RoleBase> factRoles = null;
 			Nullable<int> unaryRoleIndex = null;
 			int factArity = 0;
+			int unaryRoleOffset = 0;
 			LinkedElementCollection<ReadingOrder> allReadingOrders;
 			LinkedElementCollection<Role> allConstraintRoles = this.RoleCollection;
 			LinkedElementCollection<FactType> allFacts = this.FactTypeCollection;
@@ -3791,6 +3805,8 @@ namespace Neumont.Tools.ORM.ObjectModel
 				return false;
 			}
 			string[][] allBasicRoleReplacements = new string[allFactsCount][];
+			bool[] unaryReplacements = new bool[allFactsCount];
+			int contextBasicReplacementIndex;
 			int minFactArity = int.MaxValue;
 			int maxFactArity = int.MinValue;
 			for (int iFact = 0; iFact < allFactsCount; ++iFact)
@@ -3830,6 +3846,7 @@ namespace Neumont.Tools.ORM.ObjectModel
 				factRoles = currentFact.RoleCollection;
 				unaryRoleIndex = FactType.GetUnaryRoleIndex(factRoles);
 				factArity = unaryRoleIndex.HasValue ? 1 : factRoles.Count;
+				unaryRoleOffset = unaryRoleIndex.HasValue ? unaryRoleIndex.Value : 0;
 				if (factArity < minFactArity)
 				{
 					minFactArity = factArity;
@@ -3842,7 +3859,7 @@ namespace Neumont.Tools.ORM.ObjectModel
 				ObjectType[] compatibleTypes = ObjectType.GetNearestCompatibleTypes(allConstraintRoles);
 				for (int i = 0; i < factArity; ++i)
 				{
-					Role factRole = factRoles[i].Role;
+					Role factRole = factRoles[i + unaryRoleOffset].Role;
 					ObjectType rolePlayer = factRole.RolePlayer;
 					string basicReplacement;
 					if (rolePlayer != null)
@@ -3908,6 +3925,7 @@ namespace Neumont.Tools.ORM.ObjectModel
 					basicRoleReplacements[i] = basicReplacement;
 				}
 				allBasicRoleReplacements[iFact] = basicRoleReplacements;
+				unaryReplacements[iFact] = unaryRoleIndex.HasValue;
 			}
 			int constraintRoleArity = allConstraintRoles.Count;
 			IReading[] allConstraintRoleReadings = new IReading[constraintRoleArity];
@@ -4002,7 +4020,7 @@ namespace Neumont.Tools.ORM.ObjectModel
 								listSnippet = CoreVerbalizationSnippetType.SimpleListSeparator;
 							}
 							sbTemp.Append(snippets.GetSnippet(listSnippet, isDeontic, isNegative));
-							int ResolvedRoleIndex1 = FactType.IndexOfRole(factRoles, allConstraintRoles[RoleIter1]);
+							int ResolvedRoleIndex1 = unaryReplacements[0] ? 0 : FactType.IndexOfRole(factRoles, allConstraintRoles[RoleIter1]);
 							sbTemp.Append(hyphenBinder.HyphenBindRoleReplacement(allBasicRoleReplacements[0][ResolvedRoleIndex1], ResolvedRoleIndex1));
 							if (RoleIter1 == constraintRoleArity - 1)
 							{
@@ -4113,7 +4131,7 @@ namespace Neumont.Tools.ORM.ObjectModel
 								listSnippet = CoreVerbalizationSnippetType.SimpleListSeparator;
 							}
 							sbTemp.Append(snippets.GetSnippet(listSnippet, isDeontic, isNegative));
-							int ResolvedRoleIndex1 = FactType.IndexOfRole(factRoles, allConstraintRoles[RoleIter1]);
+							int ResolvedRoleIndex1 = unaryReplacements[0] ? 0 : FactType.IndexOfRole(factRoles, allConstraintRoles[RoleIter1]);
 							sbTemp.Append(hyphenBinder.HyphenBindRoleReplacement(allBasicRoleReplacements[0][ResolvedRoleIndex1], ResolvedRoleIndex1));
 							if (RoleIter1 == constraintRoleArity - 1)
 							{
@@ -4174,8 +4192,8 @@ namespace Neumont.Tools.ORM.ObjectModel
 					unaryRoleIndex = FactType.GetUnaryRoleIndex(factRoles);
 					factArity = unaryRoleIndex.HasValue ? 1 : factRoles.Count;
 					allReadingOrders = parentFact.ReadingOrderCollection;
-					string[] basicRoleReplacements = allBasicRoleReplacements[allFacts.IndexOf(parentFact)];
-					sbTemp.Append(basicRoleReplacements[FactType.IndexOfRole(factRoles, allConstraintRoles[RoleIter1])]);
+					string[] basicRoleReplacements = allBasicRoleReplacements[contextBasicReplacementIndex = allFacts.IndexOf(parentFact)];
+					sbTemp.Append(basicRoleReplacements[unaryReplacements[contextBasicReplacementIndex] ? 0 : FactType.IndexOfRole(factRoles, allConstraintRoles[RoleIter1])]);
 				}
 				snippet1Replace1Replace1 = sbTemp.ToString();
 				string snippet1Replace1Replace2 = null;
@@ -4194,7 +4212,7 @@ namespace Neumont.Tools.ORM.ObjectModel
 					unaryRoleIndex = FactType.GetUnaryRoleIndex(factRoles);
 					factArity = unaryRoleIndex.HasValue ? 1 : factRoles.Count;
 					allReadingOrders = parentFact.ReadingOrderCollection;
-					string[] basicRoleReplacements = allBasicRoleReplacements[FactIter2];
+					string[] basicRoleReplacements = allBasicRoleReplacements[contextBasicReplacementIndex = FactIter2];
 					CoreVerbalizationSnippetType listSnippet;
 					if (FactIter2 == 0)
 					{
@@ -4271,7 +4289,7 @@ namespace Neumont.Tools.ORM.ObjectModel
 						unaryRoleIndex = FactType.GetUnaryRoleIndex(factRoles);
 						factArity = unaryRoleIndex.HasValue ? 1 : factRoles.Count;
 						allReadingOrders = parentFact.ReadingOrderCollection;
-						string[] basicRoleReplacements = allBasicRoleReplacements[allFacts.IndexOf(parentFact)];
+						string[] basicRoleReplacements = allBasicRoleReplacements[contextBasicReplacementIndex = allFacts.IndexOf(parentFact)];
 						CoreVerbalizationSnippetType listSnippet;
 						if (RoleIter1 == 0)
 						{
@@ -4347,8 +4365,8 @@ namespace Neumont.Tools.ORM.ObjectModel
 						unaryRoleIndex = FactType.GetUnaryRoleIndex(factRoles);
 						factArity = unaryRoleIndex.HasValue ? 1 : factRoles.Count;
 						allReadingOrders = parentFact.ReadingOrderCollection;
-						string[] basicRoleReplacements = allBasicRoleReplacements[allFacts.IndexOf(parentFact)];
-						sbTemp.Append(basicRoleReplacements[FactType.IndexOfRole(factRoles, allConstraintRoles[RoleIter1])]);
+						string[] basicRoleReplacements = allBasicRoleReplacements[contextBasicReplacementIndex = allFacts.IndexOf(parentFact)];
+						sbTemp.Append(basicRoleReplacements[unaryReplacements[contextBasicReplacementIndex] ? 0 : FactType.IndexOfRole(factRoles, allConstraintRoles[RoleIter1])]);
 					}
 					snippet1Replace1 = sbTemp.ToString();
 					string snippet1Replace2 = null;
@@ -4370,7 +4388,7 @@ namespace Neumont.Tools.ORM.ObjectModel
 						unaryRoleIndex = FactType.GetUnaryRoleIndex(factRoles);
 						factArity = unaryRoleIndex.HasValue ? 1 : factRoles.Count;
 						allReadingOrders = parentFact.ReadingOrderCollection;
-						string[] basicRoleReplacements = allBasicRoleReplacements[allFacts.IndexOf(parentFact)];
+						string[] basicRoleReplacements = allBasicRoleReplacements[contextBasicReplacementIndex = allFacts.IndexOf(parentFact)];
 						CoreVerbalizationSnippetType listSnippet;
 						if (RoleIter1 == 0)
 						{
@@ -4493,7 +4511,7 @@ namespace Neumont.Tools.ORM.ObjectModel
 						unaryRoleIndex = FactType.GetUnaryRoleIndex(factRoles);
 						factArity = unaryRoleIndex.HasValue ? 1 : factRoles.Count;
 						allReadingOrders = parentFact.ReadingOrderCollection;
-						string[] basicRoleReplacements = allBasicRoleReplacements[allFacts.IndexOf(parentFact)];
+						string[] basicRoleReplacements = allBasicRoleReplacements[contextBasicReplacementIndex = allFacts.IndexOf(parentFact)];
 						if (factArity >= 2)
 						{
 							CoreVerbalizationSnippetType listSnippet;
@@ -4562,7 +4580,7 @@ namespace Neumont.Tools.ORM.ObjectModel
 						unaryRoleIndex = FactType.GetUnaryRoleIndex(factRoles);
 						factArity = unaryRoleIndex.HasValue ? 1 : factRoles.Count;
 						allReadingOrders = parentFact.ReadingOrderCollection;
-						string[] basicRoleReplacements = allBasicRoleReplacements[allFacts.IndexOf(parentFact)];
+						string[] basicRoleReplacements = allBasicRoleReplacements[contextBasicReplacementIndex = allFacts.IndexOf(parentFact)];
 						if (factArity == 1)
 						{
 							CoreVerbalizationSnippetType listSnippet;
@@ -4634,11 +4652,11 @@ namespace Neumont.Tools.ORM.ObjectModel
 						unaryRoleIndex = FactType.GetUnaryRoleIndex(factRoles);
 						factArity = unaryRoleIndex.HasValue ? 1 : factRoles.Count;
 						allReadingOrders = parentFact.ReadingOrderCollection;
-						string[] basicRoleReplacements = allBasicRoleReplacements[allFacts.IndexOf(parentFact)];
+						string[] basicRoleReplacements = allBasicRoleReplacements[contextBasicReplacementIndex = allFacts.IndexOf(parentFact)];
 						CoreVerbalizationSnippetType listSnippet;
 						listSnippet = CoreVerbalizationSnippetType.SimpleListOpen;
 						sbTemp.Append(snippets.GetSnippet(listSnippet, isDeontic, isNegative));
-						sbTemp.Append(basicRoleReplacements[FactType.IndexOfRole(factRoles, allConstraintRoles[RoleIter1])]);
+						sbTemp.Append(basicRoleReplacements[unaryReplacements[contextBasicReplacementIndex] ? 0 : FactType.IndexOfRole(factRoles, allConstraintRoles[RoleIter1])]);
 						sbTemp.Append(snippets.GetSnippet(CoreVerbalizationSnippetType.SimpleListClose, isDeontic, isNegative));
 					}
 					snippet1Replace1 = sbTemp.ToString();
@@ -4691,7 +4709,7 @@ namespace Neumont.Tools.ORM.ObjectModel
 						unaryRoleIndex = FactType.GetUnaryRoleIndex(factRoles);
 						factArity = unaryRoleIndex.HasValue ? 1 : factRoles.Count;
 						allReadingOrders = parentFact.ReadingOrderCollection;
-						string[] basicRoleReplacements = allBasicRoleReplacements[allFacts.IndexOf(parentFact)];
+						string[] basicRoleReplacements = allBasicRoleReplacements[contextBasicReplacementIndex = allFacts.IndexOf(parentFact)];
 						if (factArity >= 2)
 						{
 							CoreVerbalizationSnippetType listSnippet;
@@ -4755,7 +4773,7 @@ namespace Neumont.Tools.ORM.ObjectModel
 						unaryRoleIndex = FactType.GetUnaryRoleIndex(factRoles);
 						factArity = unaryRoleIndex.HasValue ? 1 : factRoles.Count;
 						allReadingOrders = parentFact.ReadingOrderCollection;
-						string[] basicRoleReplacements = allBasicRoleReplacements[allFacts.IndexOf(parentFact)];
+						string[] basicRoleReplacements = allBasicRoleReplacements[contextBasicReplacementIndex = allFacts.IndexOf(parentFact)];
 						if (factArity == 1)
 						{
 							CoreVerbalizationSnippetType listSnippet;
@@ -4905,6 +4923,7 @@ namespace Neumont.Tools.ORM.ObjectModel
 			IList<RoleBase> factRoles = null;
 			Nullable<int> unaryRoleIndex = null;
 			int factArity = 0;
+			int unaryRoleOffset = 0;
 			LinkedElementCollection<ReadingOrder> allReadingOrders;
 			LinkedElementCollection<Role> allConstraintRoles = this.RoleCollection;
 			LinkedElementCollection<FactType> allFacts = this.FactTypeCollection;
@@ -4941,6 +4960,8 @@ namespace Neumont.Tools.ORM.ObjectModel
 				return false;
 			}
 			string[][] allBasicRoleReplacements = new string[allFactsCount][];
+			bool[] unaryReplacements = new bool[allFactsCount];
+			int contextBasicReplacementIndex;
 			int minFactArity = int.MaxValue;
 			int maxFactArity = int.MinValue;
 			for (int iFact = 0; iFact < allFactsCount; ++iFact)
@@ -4980,6 +5001,7 @@ namespace Neumont.Tools.ORM.ObjectModel
 				factRoles = currentFact.RoleCollection;
 				unaryRoleIndex = FactType.GetUnaryRoleIndex(factRoles);
 				factArity = unaryRoleIndex.HasValue ? 1 : factRoles.Count;
+				unaryRoleOffset = unaryRoleIndex.HasValue ? unaryRoleIndex.Value : 0;
 				if (factArity < minFactArity)
 				{
 					minFactArity = factArity;
@@ -4991,7 +5013,7 @@ namespace Neumont.Tools.ORM.ObjectModel
 				string[] basicRoleReplacements = new string[factArity];
 				for (int i = 0; i < factArity; ++i)
 				{
-					Role factRole = factRoles[i].Role;
+					Role factRole = factRoles[i + unaryRoleOffset].Role;
 					ObjectType rolePlayer = factRole.RolePlayer;
 					string basicReplacement;
 					if (rolePlayer != null)
@@ -5005,6 +5027,7 @@ namespace Neumont.Tools.ORM.ObjectModel
 					basicRoleReplacements[i] = basicReplacement;
 				}
 				allBasicRoleReplacements[iFact] = basicRoleReplacements;
+				unaryReplacements[iFact] = unaryRoleIndex.HasValue;
 			}
 			int constraintRoleArity = allConstraintRoles.Count;
 			IReading[] allConstraintRoleReadings = new IReading[constraintRoleArity];
@@ -5053,7 +5076,7 @@ namespace Neumont.Tools.ORM.ObjectModel
 						listSnippet = CoreVerbalizationSnippetType.SimpleListSeparator;
 					}
 					sbTemp.Append(snippets.GetSnippet(listSnippet, isDeontic, isNegative));
-					sbTemp.Append(allBasicRoleReplacements[0][FactType.IndexOfRole(factRoles, allConstraintRoles[RoleIter1])]);
+					sbTemp.Append(allBasicRoleReplacements[0][unaryReplacements[0] ? 0 : FactType.IndexOfRole(factRoles, allConstraintRoles[RoleIter1])]);
 					if (RoleIter1 == constraintRoleArity - 1)
 					{
 						sbTemp.Append(snippets.GetSnippet(CoreVerbalizationSnippetType.SimpleListClose, isDeontic, isNegative));
@@ -5112,7 +5135,7 @@ namespace Neumont.Tools.ORM.ObjectModel
 						listSnippet = CoreVerbalizationSnippetType.SimpleListSeparator;
 					}
 					sbTemp.Append(snippets.GetSnippet(listSnippet, isDeontic, isNegative));
-					int ResolvedRoleIndex1 = FactType.IndexOfRole(factRoles, allConstraintRoles[RoleIter1]);
+					int ResolvedRoleIndex1 = unaryReplacements[0] ? 0 : FactType.IndexOfRole(factRoles, allConstraintRoles[RoleIter1]);
 					sbTemp.Append(hyphenBinder.HyphenBindRoleReplacement(allBasicRoleReplacements[0][ResolvedRoleIndex1], ResolvedRoleIndex1));
 					if (RoleIter1 == constraintRoleArity - 1)
 					{
@@ -5236,7 +5259,7 @@ namespace Neumont.Tools.ORM.ObjectModel
 						listSnippet = CoreVerbalizationSnippetType.CompactSimpleListSeparator;
 					}
 					sbTemp.Append(snippets.GetSnippet(listSnippet, isDeontic, isNegative));
-					sbTemp.Append(allBasicRoleReplacements[0][FactType.IndexOfRole(factRoles, allConstraintRoles[RoleIter1])]);
+					sbTemp.Append(allBasicRoleReplacements[0][unaryReplacements[0] ? 0 : FactType.IndexOfRole(factRoles, allConstraintRoles[RoleIter1])]);
 					if (RoleIter1 == constraintRoleArity - 1)
 					{
 						sbTemp.Append(snippets.GetSnippet(CoreVerbalizationSnippetType.CompactSimpleListClose, isDeontic, isNegative));
@@ -5298,7 +5321,7 @@ namespace Neumont.Tools.ORM.ObjectModel
 						listSnippet = CoreVerbalizationSnippetType.CompactSimpleListSeparator;
 					}
 					sbTemp.Append(snippets.GetSnippet(listSnippet, isDeontic, isNegative));
-					int ResolvedRoleIndex1 = FactType.IndexOfRole(factRoles, allConstraintRoles[RoleIter1]);
+					int ResolvedRoleIndex1 = unaryReplacements[0] ? 0 : FactType.IndexOfRole(factRoles, allConstraintRoles[RoleIter1]);
 					sbTemp.Append(hyphenBinder.HyphenBindRoleReplacement(allBasicRoleReplacements[0][ResolvedRoleIndex1], ResolvedRoleIndex1));
 					if (RoleIter1 == constraintRoleArity - 1)
 					{
@@ -5386,7 +5409,7 @@ namespace Neumont.Tools.ORM.ObjectModel
 								listSnippet = CoreVerbalizationSnippetType.SimpleListSeparator;
 							}
 							sbTemp.Append(snippets.GetSnippet(listSnippet, isDeontic, isNegative));
-							int ResolvedRoleIndex1 = FactType.IndexOfRole(factRoles, allConstraintRoles[RoleIter1]);
+							int ResolvedRoleIndex1 = unaryReplacements[0] ? 0 : FactType.IndexOfRole(factRoles, allConstraintRoles[RoleIter1]);
 							sbTemp.Append(hyphenBinder.HyphenBindRoleReplacement(allBasicRoleReplacements[0][ResolvedRoleIndex1], ResolvedRoleIndex1));
 							if (RoleIter1 == constraintRoleArity - 1)
 							{
@@ -5438,7 +5461,7 @@ namespace Neumont.Tools.ORM.ObjectModel
 					}
 					for (int RoleIter1 = 0; RoleIter1 < constraintRoleArity; ++RoleIter1)
 					{
-						sbTemp.Append(allBasicRoleReplacements[0][FactType.IndexOfRole(factRoles, allConstraintRoles[RoleIter1])]);
+						sbTemp.Append(allBasicRoleReplacements[0][unaryReplacements[0] ? 0 : FactType.IndexOfRole(factRoles, allConstraintRoles[RoleIter1])]);
 					}
 					snippet2Replace1 = sbTemp.ToString();
 					string snippet2Replace2 = null;
@@ -5501,7 +5524,7 @@ namespace Neumont.Tools.ORM.ObjectModel
 						listSnippet = CoreVerbalizationSnippetType.CompactSimpleListSeparator;
 					}
 					sbTemp.Append(snippets.GetSnippet(listSnippet, isDeontic, isNegative));
-					int ResolvedRoleIndex1 = FactType.IndexOfRole(factRoles, allConstraintRoles[RoleIter1]);
+					int ResolvedRoleIndex1 = unaryReplacements[0] ? 0 : FactType.IndexOfRole(factRoles, allConstraintRoles[RoleIter1]);
 					sbTemp.Append(hyphenBinder.HyphenBindRoleReplacement(allBasicRoleReplacements[0][ResolvedRoleIndex1], ResolvedRoleIndex1));
 					if (RoleIter1 == constraintRoleArity - 1)
 					{
@@ -5606,7 +5629,7 @@ namespace Neumont.Tools.ORM.ObjectModel
 						listSnippet = CoreVerbalizationSnippetType.SimpleListSeparator;
 					}
 					sbTemp.Append(snippets.GetSnippet(listSnippet, isDeontic, isNegative));
-					int ResolvedRoleIndex1 = FactType.IndexOfRole(factRoles, allConstraintRoles[RoleIter1]);
+					int ResolvedRoleIndex1 = unaryReplacements[0] ? 0 : FactType.IndexOfRole(factRoles, allConstraintRoles[RoleIter1]);
 					sbTemp.Append(hyphenBinder.HyphenBindRoleReplacement(allBasicRoleReplacements[0][ResolvedRoleIndex1], ResolvedRoleIndex1));
 					if (RoleIter1 == constraintRoleArity - 1)
 					{
@@ -5680,7 +5703,7 @@ namespace Neumont.Tools.ORM.ObjectModel
 						unaryRoleIndex = FactType.GetUnaryRoleIndex(factRoles);
 						factArity = unaryRoleIndex.HasValue ? 1 : factRoles.Count;
 						allReadingOrders = parentFact.ReadingOrderCollection;
-						string[] basicRoleReplacements = allBasicRoleReplacements[allFacts.IndexOf(parentFact)];
+						string[] basicRoleReplacements = allBasicRoleReplacements[contextBasicReplacementIndex = allFacts.IndexOf(parentFact)];
 						CoreVerbalizationSnippetType listSnippet;
 						if (RoleIter1 == 0)
 						{
@@ -5704,7 +5727,7 @@ namespace Neumont.Tools.ORM.ObjectModel
 						sbTemp.Append(snippets.GetSnippet(listSnippet, isDeontic, isNegative));
 						reading = parentFact.GetMatchingReading(allReadingOrders, null, factRoles[0], null, false, false, factRoles, true);
 						hyphenBinder = new VerbalizationHyphenBinder(reading, factRoles, unaryRoleIndex, snippets.GetSnippet(CoreVerbalizationSnippetType.HyphenBoundPredicatePart, isDeontic, isNegative));
-						int ResolvedRoleIndex1 = FactType.IndexOfRole(factRoles, allConstraintRoles[RoleIter1]);
+						int ResolvedRoleIndex1 = unaryReplacements[contextBasicReplacementIndex] ? 0 : FactType.IndexOfRole(factRoles, allConstraintRoles[RoleIter1]);
 						sbTemp.Append(hyphenBinder.HyphenBindRoleReplacement(basicRoleReplacements[ResolvedRoleIndex1], ResolvedRoleIndex1));
 						if (RoleIter1 == constraintRoleArity - 1)
 						{
@@ -5730,7 +5753,7 @@ namespace Neumont.Tools.ORM.ObjectModel
 						unaryRoleIndex = FactType.GetUnaryRoleIndex(factRoles);
 						factArity = unaryRoleIndex.HasValue ? 1 : factRoles.Count;
 						allReadingOrders = parentFact.ReadingOrderCollection;
-						string[] basicRoleReplacements = allBasicRoleReplacements[allFacts.IndexOf(parentFact)];
+						string[] basicRoleReplacements = allBasicRoleReplacements[contextBasicReplacementIndex = allFacts.IndexOf(parentFact)];
 						CoreVerbalizationSnippetType listSnippet;
 						if (RoleIter2 == 0)
 						{
@@ -5809,7 +5832,7 @@ namespace Neumont.Tools.ORM.ObjectModel
 						unaryRoleIndex = FactType.GetUnaryRoleIndex(factRoles);
 						factArity = unaryRoleIndex.HasValue ? 1 : factRoles.Count;
 						allReadingOrders = parentFact.ReadingOrderCollection;
-						string[] basicRoleReplacements = allBasicRoleReplacements[FactIter1];
+						string[] basicRoleReplacements = allBasicRoleReplacements[contextBasicReplacementIndex = FactIter1];
 						CoreVerbalizationSnippetType listSnippet;
 						if (FactIter1 == 0)
 						{
@@ -5868,7 +5891,7 @@ namespace Neumont.Tools.ORM.ObjectModel
 						unaryRoleIndex = FactType.GetUnaryRoleIndex(factRoles);
 						factArity = unaryRoleIndex.HasValue ? 1 : factRoles.Count;
 						allReadingOrders = parentFact.ReadingOrderCollection;
-						string[] basicRoleReplacements = allBasicRoleReplacements[allFacts.IndexOf(parentFact)];
+						string[] basicRoleReplacements = allBasicRoleReplacements[contextBasicReplacementIndex = allFacts.IndexOf(parentFact)];
 						CoreVerbalizationSnippetType listSnippet;
 						if (RoleIter1 == 0)
 						{
@@ -5890,7 +5913,7 @@ namespace Neumont.Tools.ORM.ObjectModel
 							listSnippet = CoreVerbalizationSnippetType.CompactSimpleListSeparator;
 						}
 						sbTemp.Append(snippets.GetSnippet(listSnippet, isDeontic, isNegative));
-						sbTemp.Append(basicRoleReplacements[FactType.IndexOfRole(factRoles, allConstraintRoles[RoleIter1])]);
+						sbTemp.Append(basicRoleReplacements[unaryReplacements[contextBasicReplacementIndex] ? 0 : FactType.IndexOfRole(factRoles, allConstraintRoles[RoleIter1])]);
 						if (RoleIter1 == constraintRoleArity - 1)
 						{
 							sbTemp.Append(snippets.GetSnippet(CoreVerbalizationSnippetType.CompactSimpleListClose, isDeontic, isNegative));
@@ -5916,7 +5939,7 @@ namespace Neumont.Tools.ORM.ObjectModel
 						unaryRoleIndex = FactType.GetUnaryRoleIndex(factRoles);
 						factArity = unaryRoleIndex.HasValue ? 1 : factRoles.Count;
 						allReadingOrders = parentFact.ReadingOrderCollection;
-						string[] basicRoleReplacements = allBasicRoleReplacements[allFacts.IndexOf(parentFact)];
+						string[] basicRoleReplacements = allBasicRoleReplacements[contextBasicReplacementIndex = allFacts.IndexOf(parentFact)];
 						snippet2Replace1Replace1Replace1Replace2Replace1 = null;
 						RoleBase contextPrimaryRole = primaryRole;
 						int contextTempStringBuildLength = sbTemp.Length;
@@ -5982,7 +6005,7 @@ namespace Neumont.Tools.ORM.ObjectModel
 						unaryRoleIndex = FactType.GetUnaryRoleIndex(factRoles);
 						factArity = unaryRoleIndex.HasValue ? 1 : factRoles.Count;
 						allReadingOrders = parentFact.ReadingOrderCollection;
-						string[] basicRoleReplacements = allBasicRoleReplacements[allFacts.IndexOf(parentFact)];
+						string[] basicRoleReplacements = allBasicRoleReplacements[contextBasicReplacementIndex = allFacts.IndexOf(parentFact)];
 						CoreVerbalizationSnippetType listSnippet;
 						if (RoleIter1 == 0)
 						{
@@ -6061,7 +6084,7 @@ namespace Neumont.Tools.ORM.ObjectModel
 						unaryRoleIndex = FactType.GetUnaryRoleIndex(factRoles);
 						factArity = unaryRoleIndex.HasValue ? 1 : factRoles.Count;
 						allReadingOrders = parentFact.ReadingOrderCollection;
-						string[] basicRoleReplacements = allBasicRoleReplacements[FactIter1];
+						string[] basicRoleReplacements = allBasicRoleReplacements[contextBasicReplacementIndex = FactIter1];
 						CoreVerbalizationSnippetType listSnippet;
 						if (FactIter1 == 0)
 						{
@@ -6120,7 +6143,7 @@ namespace Neumont.Tools.ORM.ObjectModel
 						unaryRoleIndex = FactType.GetUnaryRoleIndex(factRoles);
 						factArity = unaryRoleIndex.HasValue ? 1 : factRoles.Count;
 						allReadingOrders = parentFact.ReadingOrderCollection;
-						string[] basicRoleReplacements = allBasicRoleReplacements[allFacts.IndexOf(parentFact)];
+						string[] basicRoleReplacements = allBasicRoleReplacements[contextBasicReplacementIndex = allFacts.IndexOf(parentFact)];
 						CoreVerbalizationSnippetType listSnippet;
 						if (RoleIter1 == 0)
 						{
@@ -6142,7 +6165,7 @@ namespace Neumont.Tools.ORM.ObjectModel
 							listSnippet = CoreVerbalizationSnippetType.CompactSimpleListSeparator;
 						}
 						sbTemp.Append(snippets.GetSnippet(listSnippet, isDeontic, isNegative));
-						sbTemp.Append(basicRoleReplacements[FactType.IndexOfRole(factRoles, allConstraintRoles[RoleIter1])]);
+						sbTemp.Append(basicRoleReplacements[unaryReplacements[contextBasicReplacementIndex] ? 0 : FactType.IndexOfRole(factRoles, allConstraintRoles[RoleIter1])]);
 						if (RoleIter1 == constraintRoleArity - 1)
 						{
 							sbTemp.Append(snippets.GetSnippet(CoreVerbalizationSnippetType.CompactSimpleListClose, isDeontic, isNegative));
@@ -6169,7 +6192,7 @@ namespace Neumont.Tools.ORM.ObjectModel
 						unaryRoleIndex = FactType.GetUnaryRoleIndex(factRoles);
 						factArity = unaryRoleIndex.HasValue ? 1 : factRoles.Count;
 						allReadingOrders = parentFact.ReadingOrderCollection;
-						string[] basicRoleReplacements = allBasicRoleReplacements[allFacts.IndexOf(parentFact)];
+						string[] basicRoleReplacements = allBasicRoleReplacements[contextBasicReplacementIndex = allFacts.IndexOf(parentFact)];
 						snippet2Replace1Replace1Replace2Replace1 = null;
 						RoleBase contextPrimaryRole = primaryRole;
 						int contextTempStringBuildLength = sbTemp.Length;
@@ -6290,6 +6313,7 @@ namespace Neumont.Tools.ORM.ObjectModel
 			IList<RoleBase> factRoles = null;
 			Nullable<int> unaryRoleIndex = null;
 			int factArity = 0;
+			int unaryRoleOffset = 0;
 			LinkedElementCollection<ReadingOrder> allReadingOrders;
 			LinkedElementCollection<Role> allConstraintRoles = this.RoleCollection;
 			LinkedElementCollection<FactType> allFacts = this.FactTypeCollection;
@@ -6326,6 +6350,8 @@ namespace Neumont.Tools.ORM.ObjectModel
 				return false;
 			}
 			string[][] allBasicRoleReplacements = new string[allFactsCount][];
+			bool[] unaryReplacements = new bool[allFactsCount];
+			int contextBasicReplacementIndex;
 			int minFactArity = int.MaxValue;
 			int maxFactArity = int.MinValue;
 			for (int iFact = 0; iFact < allFactsCount; ++iFact)
@@ -6365,6 +6391,7 @@ namespace Neumont.Tools.ORM.ObjectModel
 				factRoles = currentFact.RoleCollection;
 				unaryRoleIndex = FactType.GetUnaryRoleIndex(factRoles);
 				factArity = unaryRoleIndex.HasValue ? 1 : factRoles.Count;
+				unaryRoleOffset = unaryRoleIndex.HasValue ? unaryRoleIndex.Value : 0;
 				if (factArity < minFactArity)
 				{
 					minFactArity = factArity;
@@ -6378,7 +6405,7 @@ namespace Neumont.Tools.ORM.ObjectModel
 					allConstraintRoles[0]});
 				for (int i = 0; i < factArity; ++i)
 				{
-					Role factRole = factRoles[i].Role;
+					Role factRole = factRoles[i + unaryRoleOffset].Role;
 					ObjectType rolePlayer = factRole.RolePlayer;
 					string basicReplacement;
 					if (rolePlayer != null)
@@ -6420,6 +6447,7 @@ namespace Neumont.Tools.ORM.ObjectModel
 					basicRoleReplacements[i] = basicReplacement;
 				}
 				allBasicRoleReplacements[iFact] = basicRoleReplacements;
+				unaryReplacements[iFact] = unaryRoleIndex.HasValue;
 			}
 			int constraintRoleArity = allConstraintRoles.Count;
 			IReading[] allConstraintRoleReadings = new IReading[constraintRoleArity];
@@ -6488,8 +6516,8 @@ namespace Neumont.Tools.ORM.ObjectModel
 							unaryRoleIndex = FactType.GetUnaryRoleIndex(factRoles);
 							factArity = unaryRoleIndex.HasValue ? 1 : factRoles.Count;
 							allReadingOrders = parentFact.ReadingOrderCollection;
-							string[] basicRoleReplacements = allBasicRoleReplacements[allFacts.IndexOf(parentFact)];
-							sbTemp.Append(allBasicRoleReplacements[0][FactType.IndexOfRole(factRoles, allConstraintRoles[RoleIter1])]);
+							string[] basicRoleReplacements = allBasicRoleReplacements[contextBasicReplacementIndex = allFacts.IndexOf(parentFact)];
+							sbTemp.Append(allBasicRoleReplacements[0][unaryReplacements[0] ? 0 : FactType.IndexOfRole(factRoles, allConstraintRoles[RoleIter1])]);
 						}
 						snippet1Replace1Replace1 = sbTemp.ToString();
 						string snippet1Replace1Replace2 = null;
@@ -6552,8 +6580,8 @@ namespace Neumont.Tools.ORM.ObjectModel
 						unaryRoleIndex = FactType.GetUnaryRoleIndex(factRoles);
 						factArity = unaryRoleIndex.HasValue ? 1 : factRoles.Count;
 						allReadingOrders = parentFact.ReadingOrderCollection;
-						string[] basicRoleReplacements = allBasicRoleReplacements[allFacts.IndexOf(parentFact)];
-						sbTemp.Append(allBasicRoleReplacements[0][FactType.IndexOfRole(factRoles, allConstraintRoles[RoleIter1])]);
+						string[] basicRoleReplacements = allBasicRoleReplacements[contextBasicReplacementIndex = allFacts.IndexOf(parentFact)];
+						sbTemp.Append(allBasicRoleReplacements[0][unaryReplacements[0] ? 0 : FactType.IndexOfRole(factRoles, allConstraintRoles[RoleIter1])]);
 					}
 					snippet1Replace1Replace1 = sbTemp.ToString();
 				}
@@ -6577,7 +6605,7 @@ namespace Neumont.Tools.ORM.ObjectModel
 						unaryRoleIndex = FactType.GetUnaryRoleIndex(factRoles);
 						factArity = unaryRoleIndex.HasValue ? 1 : factRoles.Count;
 						allReadingOrders = parentFact.ReadingOrderCollection;
-						string[] basicRoleReplacements = allBasicRoleReplacements[allFacts.IndexOf(parentFact)];
+						string[] basicRoleReplacements = allBasicRoleReplacements[contextBasicReplacementIndex = allFacts.IndexOf(parentFact)];
 						CoreVerbalizationSnippetType listSnippet;
 						if (RoleIter1 == 0)
 						{
@@ -6599,7 +6627,7 @@ namespace Neumont.Tools.ORM.ObjectModel
 							listSnippet = CoreVerbalizationSnippetType.CompactSimpleListSeparator;
 						}
 						sbTemp.Append(snippets.GetSnippet(listSnippet, isDeontic, isNegative));
-						sbTemp.Append(allBasicRoleReplacements[0][FactType.IndexOfRole(factRoles, allConstraintRoles[RoleIter1])]);
+						sbTemp.Append(allBasicRoleReplacements[0][unaryReplacements[0] ? 0 : FactType.IndexOfRole(factRoles, allConstraintRoles[RoleIter1])]);
 						if (RoleIter1 == constraintRoleArity - 1)
 						{
 							sbTemp.Append(snippets.GetSnippet(CoreVerbalizationSnippetType.CompactSimpleListClose, isDeontic, isNegative));
@@ -6739,6 +6767,7 @@ namespace Neumont.Tools.ORM.ObjectModel
 			IList<RoleBase> factRoles = parentFact.RoleCollection;
 			Nullable<int> unaryRoleIndex = FactType.GetUnaryRoleIndex(factRoles);
 			int factArity = unaryRoleIndex.HasValue ? 1 : factRoles.Count;
+			int unaryRoleOffset = unaryRoleIndex.HasValue ? unaryRoleIndex.Value : 0;
 			LinkedElementCollection<ReadingOrder> allReadingOrders = parentFact.ReadingOrderCollection;
 			int includedArity = includedRoles.Count;
 			if (allReadingOrders.Count == 0 || includedArity == 0)
@@ -6775,7 +6804,7 @@ namespace Neumont.Tools.ORM.ObjectModel
 			string[] basicRoleReplacements = new string[factArity];
 			for (int i = 0; i < factArity; ++i)
 			{
-				Role factRole = factRoles[i].Role;
+				Role factRole = factRoles[i + unaryRoleOffset].Role;
 				ObjectType rolePlayer = factRole.RolePlayer;
 				string basicReplacement;
 				if (rolePlayer != null)
@@ -7263,6 +7292,7 @@ namespace Neumont.Tools.ORM.ObjectModel
 			IList<RoleBase> factRoles = null;
 			Nullable<int> unaryRoleIndex = null;
 			int factArity = 0;
+			int unaryRoleOffset = 0;
 			LinkedElementCollection<ReadingOrder> allReadingOrders;
 			LinkedElementCollection<Role> allConstraintRoles = this.RoleCollection;
 			LinkedElementCollection<FactType> allFacts = this.FactTypeCollection;
@@ -7299,6 +7329,8 @@ namespace Neumont.Tools.ORM.ObjectModel
 				return false;
 			}
 			string[][] allBasicRoleReplacements = new string[allFactsCount][];
+			bool[] unaryReplacements = new bool[allFactsCount];
+			int contextBasicReplacementIndex;
 			int minFactArity = int.MaxValue;
 			int maxFactArity = int.MinValue;
 			for (int iFact = 0; iFact < allFactsCount; ++iFact)
@@ -7338,6 +7370,7 @@ namespace Neumont.Tools.ORM.ObjectModel
 				factRoles = currentFact.RoleCollection;
 				unaryRoleIndex = FactType.GetUnaryRoleIndex(factRoles);
 				factArity = unaryRoleIndex.HasValue ? 1 : factRoles.Count;
+				unaryRoleOffset = unaryRoleIndex.HasValue ? unaryRoleIndex.Value : 0;
 				if (factArity < minFactArity)
 				{
 					minFactArity = factArity;
@@ -7350,7 +7383,7 @@ namespace Neumont.Tools.ORM.ObjectModel
 				bool generateSubscripts = factArity >= 3;
 				for (int i = 0; i < factArity; ++i)
 				{
-					Role factRole = factRoles[i].Role;
+					Role factRole = factRoles[i + unaryRoleOffset].Role;
 					ObjectType rolePlayer = factRole.RolePlayer;
 					string basicReplacement;
 					if (rolePlayer != null)
@@ -7392,6 +7425,7 @@ namespace Neumont.Tools.ORM.ObjectModel
 					basicRoleReplacements[i] = basicReplacement;
 				}
 				allBasicRoleReplacements[iFact] = basicRoleReplacements;
+				unaryReplacements[iFact] = unaryRoleIndex.HasValue;
 			}
 			int constraintRoleArity = allConstraintRoles.Count;
 			IReading[] allConstraintRoleReadings = new IReading[constraintRoleArity];
@@ -7541,6 +7575,7 @@ namespace Neumont.Tools.ORM.ObjectModel
 			IList<RoleBase> factRoles = null;
 			Nullable<int> unaryRoleIndex = null;
 			int factArity = 0;
+			int unaryRoleOffset = 0;
 			LinkedElementCollection<ReadingOrder> allReadingOrders;
 			LinkedElementCollection<SetComparisonConstraintRoleSequence> constraintSequences = this.RoleSequenceCollection;
 			int constraintRoleArity = constraintSequences.Count;
@@ -7584,6 +7619,8 @@ namespace Neumont.Tools.ORM.ObjectModel
 				return false;
 			}
 			string[][] allBasicRoleReplacements = new string[allFactsCount][];
+			bool[] unaryReplacements = new bool[allFactsCount];
+			int contextBasicReplacementIndex;
 			int minFactArity = int.MaxValue;
 			int maxFactArity = int.MinValue;
 			for (int iFact = 0; iFact < allFactsCount; ++iFact)
@@ -7623,6 +7660,7 @@ namespace Neumont.Tools.ORM.ObjectModel
 				factRoles = currentFact.RoleCollection;
 				unaryRoleIndex = FactType.GetUnaryRoleIndex(factRoles);
 				factArity = unaryRoleIndex.HasValue ? 1 : factRoles.Count;
+				unaryRoleOffset = unaryRoleIndex.HasValue ? unaryRoleIndex.Value : 0;
 				if (factArity < minFactArity)
 				{
 					minFactArity = factArity;
@@ -7634,7 +7672,7 @@ namespace Neumont.Tools.ORM.ObjectModel
 				string[] basicRoleReplacements = new string[factArity];
 				for (int i = 0; i < factArity; ++i)
 				{
-					Role factRole = factRoles[i].Role;
+					Role factRole = factRoles[i + unaryRoleOffset].Role;
 					ObjectType rolePlayer = factRole.RolePlayer;
 					string basicReplacement;
 					if (rolePlayer != null)
@@ -7648,6 +7686,7 @@ namespace Neumont.Tools.ORM.ObjectModel
 					basicRoleReplacements[i] = basicReplacement;
 				}
 				allBasicRoleReplacements[iFact] = basicRoleReplacements;
+				unaryReplacements[iFact] = unaryRoleIndex.HasValue;
 			}
 			IReading[] allConstraintRoleReadings = new IReading[constraintRoleArity];
 			string[] roleReplacements = new string[maxFactArity];
@@ -7756,7 +7795,7 @@ namespace Neumont.Tools.ORM.ObjectModel
 									sbTemp.Append(snippets.GetSnippet(listSnippet));
 									isFirstAppend = false;
 								}
-								sbTemp.Append(allBasicRoleReplacements[allFacts.IndexOf(includedSequenceRoles[FactIter1].FactType)][includedSequenceRoles[FactIter1].FactType.RoleCollection.IndexOf(factRoles[snippet1Replace1ReplaceFactRoleIter1].Role)]);
+								sbTemp.Append(allBasicRoleReplacements[contextBasicReplacementIndex = allFacts.IndexOf(includedSequenceRoles[FactIter1].FactType)][unaryReplacements[contextBasicReplacementIndex] ? 0 : includedSequenceRoles[FactIter1].FactType.RoleCollection.IndexOf(factRoles[snippet1Replace1ReplaceFactRoleIter1].Role)]);
 							}
 						}
 					}
@@ -7834,7 +7873,7 @@ namespace Neumont.Tools.ORM.ObjectModel
 						parentFact = primaryRole.FactType;
 						factRoles = parentFact.RoleCollection;
 						allReadingOrders = parentFact.ReadingOrderCollection;
-						string[] basicRoleReplacements = allBasicRoleReplacements[allFacts.IndexOf(parentFact)];
+						string[] basicRoleReplacements = allBasicRoleReplacements[contextBasicReplacementIndex = allFacts.IndexOf(parentFact)];
 						snippet1Replace1Replace2Replace1 = null;
 						reading = currentFact.GetMatchingReading(allReadingOrders, null, factRoles[0], null, false, false, factRoles, true);
 						hyphenBinder = new VerbalizationHyphenBinder(reading, factRoles, unaryRoleIndex, snippets.GetSnippet(CoreVerbalizationSnippetType.HyphenBoundPredicatePart, isDeontic, isNegative));
@@ -7931,7 +7970,7 @@ namespace Neumont.Tools.ORM.ObjectModel
 						parentFact = primaryRole.FactType;
 						factRoles = parentFact.RoleCollection;
 						allReadingOrders = parentFact.ReadingOrderCollection;
-						string[] basicRoleReplacements = allBasicRoleReplacements[allFacts.IndexOf(parentFact)];
+						string[] basicRoleReplacements = allBasicRoleReplacements[contextBasicReplacementIndex = allFacts.IndexOf(parentFact)];
 						snippet1Replace1Replace2Replace2 = null;
 						reading = currentFact.GetMatchingReading(allReadingOrders, null, factRoles[0], null, false, false, factRoles, true);
 						hyphenBinder = new VerbalizationHyphenBinder(reading, factRoles, unaryRoleIndex, snippets.GetSnippet(CoreVerbalizationSnippetType.HyphenBoundPredicatePart, isDeontic, isNegative));
@@ -8065,7 +8104,7 @@ namespace Neumont.Tools.ORM.ObjectModel
 									sbTemp.Append(snippets.GetSnippet(listSnippet));
 									isFirstAppend = false;
 								}
-								sbTemp.Append(allBasicRoleReplacements[allFacts.IndexOf(includedSequenceRoles[FactIter1].FactType)][includedSequenceRoles[FactIter1].FactType.RoleCollection.IndexOf(factRoles[snippet1Replace1ReplaceFactRoleIter1].Role)]);
+								sbTemp.Append(allBasicRoleReplacements[contextBasicReplacementIndex = allFacts.IndexOf(includedSequenceRoles[FactIter1].FactType)][unaryReplacements[contextBasicReplacementIndex] ? 0 : includedSequenceRoles[FactIter1].FactType.RoleCollection.IndexOf(factRoles[snippet1Replace1ReplaceFactRoleIter1].Role)]);
 							}
 						}
 					}
@@ -8364,7 +8403,7 @@ namespace Neumont.Tools.ORM.ObjectModel
 									sbTemp.Append(snippets.GetSnippet(listSnippet));
 									isFirstAppend = false;
 								}
-								sbTemp.Append(allBasicRoleReplacements[allFacts.IndexOf(includedSequenceRoles[FactIter1].FactType)][includedSequenceRoles[FactIter1].FactType.RoleCollection.IndexOf(factRoles[snippet1Replace1ReplaceFactRoleIter1].Role)]);
+								sbTemp.Append(allBasicRoleReplacements[contextBasicReplacementIndex = allFacts.IndexOf(includedSequenceRoles[FactIter1].FactType)][unaryReplacements[contextBasicReplacementIndex] ? 0 : includedSequenceRoles[FactIter1].FactType.RoleCollection.IndexOf(factRoles[snippet1Replace1ReplaceFactRoleIter1].Role)]);
 							}
 						}
 					}
@@ -8584,6 +8623,7 @@ namespace Neumont.Tools.ORM.ObjectModel
 			IList<RoleBase> factRoles = null;
 			Nullable<int> unaryRoleIndex = null;
 			int factArity = 0;
+			int unaryRoleOffset = 0;
 			LinkedElementCollection<ReadingOrder> allReadingOrders;
 			LinkedElementCollection<SetComparisonConstraintRoleSequence> constraintSequences = this.RoleSequenceCollection;
 			int constraintRoleArity = constraintSequences.Count;
@@ -8627,6 +8667,8 @@ namespace Neumont.Tools.ORM.ObjectModel
 				return false;
 			}
 			string[][] allBasicRoleReplacements = new string[allFactsCount][];
+			bool[] unaryReplacements = new bool[allFactsCount];
+			int contextBasicReplacementIndex;
 			int minFactArity = int.MaxValue;
 			int maxFactArity = int.MinValue;
 			for (int iFact = 0; iFact < allFactsCount; ++iFact)
@@ -8666,6 +8708,7 @@ namespace Neumont.Tools.ORM.ObjectModel
 				factRoles = currentFact.RoleCollection;
 				unaryRoleIndex = FactType.GetUnaryRoleIndex(factRoles);
 				factArity = unaryRoleIndex.HasValue ? 1 : factRoles.Count;
+				unaryRoleOffset = unaryRoleIndex.HasValue ? unaryRoleIndex.Value : 0;
 				if (factArity < minFactArity)
 				{
 					minFactArity = factArity;
@@ -8677,7 +8720,7 @@ namespace Neumont.Tools.ORM.ObjectModel
 				string[] basicRoleReplacements = new string[factArity];
 				for (int i = 0; i < factArity; ++i)
 				{
-					Role factRole = factRoles[i].Role;
+					Role factRole = factRoles[i + unaryRoleOffset].Role;
 					ObjectType rolePlayer = factRole.RolePlayer;
 					string basicReplacement;
 					if (rolePlayer != null)
@@ -8691,6 +8734,7 @@ namespace Neumont.Tools.ORM.ObjectModel
 					basicRoleReplacements[i] = basicReplacement;
 				}
 				allBasicRoleReplacements[iFact] = basicRoleReplacements;
+				unaryReplacements[iFact] = unaryRoleIndex.HasValue;
 			}
 			IReading[] allConstraintRoleReadings = new IReading[constraintRoleArity];
 			string[] roleReplacements = new string[maxFactArity];
@@ -8808,7 +8852,7 @@ namespace Neumont.Tools.ORM.ObjectModel
 									sbTemp.Append(snippets.GetSnippet(listSnippet));
 									isFirstAppend = false;
 								}
-								sbTemp.Append(allBasicRoleReplacements[allFacts.IndexOf(includedSequenceRoles[FactIter1].FactType)][includedSequenceRoles[FactIter1].FactType.RoleCollection.IndexOf(factRoles[snippet1Replace1ReplaceFactRoleIter1].Role)]);
+								sbTemp.Append(allBasicRoleReplacements[contextBasicReplacementIndex = allFacts.IndexOf(includedSequenceRoles[FactIter1].FactType)][unaryReplacements[contextBasicReplacementIndex] ? 0 : includedSequenceRoles[FactIter1].FactType.RoleCollection.IndexOf(factRoles[snippet1Replace1ReplaceFactRoleIter1].Role)]);
 							}
 						}
 					}
@@ -9074,7 +9118,7 @@ namespace Neumont.Tools.ORM.ObjectModel
 									break;
 								}
 							}
-							snippet1Replace1Replace1Replace1 = allBasicRoleReplacements[allFacts.IndexOf(includedSequenceRoles[FactIter1].FactType)][includedSequenceRoles[FactIter1].FactType.RoleCollection.IndexOf(rolePlayer)];
+							snippet1Replace1Replace1Replace1 = allBasicRoleReplacements[contextBasicReplacementIndex = allFacts.IndexOf(includedSequenceRoles[FactIter1].FactType)][unaryReplacements[contextBasicReplacementIndex] ? 0 : includedSequenceRoles[FactIter1].FactType.RoleCollection.IndexOf(rolePlayer)];
 						}
 					}
 					string snippet1Replace1Replace1Replace2 = null;
@@ -9284,7 +9328,7 @@ namespace Neumont.Tools.ORM.ObjectModel
 										sbTemp.Append(snippets.GetSnippet(listSnippet));
 										isFirstAppend = false;
 									}
-									sbTemp.Append(allBasicRoleReplacements[allFacts.IndexOf(includedSequenceRoles[FactIter1].FactType)][includedSequenceRoles[FactIter1].FactType.RoleCollection.IndexOf(factRoles[snippet1Replace1ReplaceFactRoleIter1].Role)]);
+									sbTemp.Append(allBasicRoleReplacements[contextBasicReplacementIndex = allFacts.IndexOf(includedSequenceRoles[FactIter1].FactType)][unaryReplacements[contextBasicReplacementIndex] ? 0 : includedSequenceRoles[FactIter1].FactType.RoleCollection.IndexOf(factRoles[snippet1Replace1ReplaceFactRoleIter1].Role)]);
 								}
 							}
 						}
@@ -9371,7 +9415,7 @@ namespace Neumont.Tools.ORM.ObjectModel
 									break;
 								}
 							}
-							snippet1Replace1Replace2 = allBasicRoleReplacements[allFacts.IndexOf(includedSequenceRoles[FactIter2].FactType)][includedSequenceRoles[FactIter2].FactType.RoleCollection.IndexOf(rolePlayer)];
+							snippet1Replace1Replace2 = allBasicRoleReplacements[contextBasicReplacementIndex = allFacts.IndexOf(includedSequenceRoles[FactIter2].FactType)][unaryReplacements[contextBasicReplacementIndex] ? 0 : includedSequenceRoles[FactIter2].FactType.RoleCollection.IndexOf(rolePlayer)];
 						}
 					}
 				}
@@ -9597,7 +9641,7 @@ namespace Neumont.Tools.ORM.ObjectModel
 									sbTemp.Append(snippets.GetSnippet(listSnippet));
 									isFirstAppend = false;
 								}
-								sbTemp.Append(allBasicRoleReplacements[allFacts.IndexOf(includedSequenceRoles[FactIter1].FactType)][includedSequenceRoles[FactIter1].FactType.RoleCollection.IndexOf(factRoles[snippet1Replace1ReplaceFactRoleIter1].Role)]);
+								sbTemp.Append(allBasicRoleReplacements[contextBasicReplacementIndex = allFacts.IndexOf(includedSequenceRoles[FactIter1].FactType)][unaryReplacements[contextBasicReplacementIndex] ? 0 : includedSequenceRoles[FactIter1].FactType.RoleCollection.IndexOf(factRoles[snippet1Replace1ReplaceFactRoleIter1].Role)]);
 							}
 						}
 					}
@@ -9927,6 +9971,7 @@ namespace Neumont.Tools.ORM.ObjectModel
 				IList<RoleBase> factRoles = parentFact.RoleCollection;
 				Nullable<int> unaryRoleIndex = FactType.GetUnaryRoleIndex(factRoles);
 				int factArity = unaryRoleIndex.HasValue ? 1 : factRoles.Count;
+				int unaryRoleOffset = unaryRoleIndex.HasValue ? unaryRoleIndex.Value : 0;
 				LinkedElementCollection<ReadingOrder> allReadingOrders = parentFact.ReadingOrderCollection;
 				const bool isDeontic = false;
 				IReading reading;
@@ -9936,7 +9981,7 @@ namespace Neumont.Tools.ORM.ObjectModel
 				string[] basicRoleReplacements = new string[factArity];
 				for (int i = 0; i < factArity; ++i)
 				{
-					Role factRole = factRoles[i].Role;
+					Role factRole = factRoles[i + unaryRoleOffset].Role;
 					ObjectType rolePlayer = factRole.RolePlayer;
 					string basicReplacement;
 					if (rolePlayer != null)

@@ -2029,7 +2029,7 @@ namespace Neumont.Tools.Modeling.Shell
 			{
 				supportedOperations = customElement.SupportedCustomSerializedOperations;
 
-				if (0 != (customElement.SupportedCustomSerializedOperations & CustomSerializedElementSupportedOperations.MixedTypedAttributes) && properties != null)
+				if (0 != (supportedOperations & CustomSerializedElementSupportedOperations.MixedTypedAttributes) && properties != null)
 				{
 					SortProperties(customElement, rolePlayedInfo, ref properties);
 				}
@@ -2192,7 +2192,7 @@ namespace Neumont.Tools.Modeling.Shell
 							}
 						}
 
-						if (ShouldSerializeElement(link) && ShouldSerializeElement(childElement))
+						if (ShouldSerializeElement(link) && ShouldSerializeElement(oppositeRolePlayer))
 						{
 							if (writeBeginElement && !ret && customInfo != null)
 							{
@@ -2427,7 +2427,7 @@ namespace Neumont.Tools.Modeling.Shell
 			{
 				supportedOperations = customElement.SupportedCustomSerializedOperations;
 
-				if (0 != (customElement.SupportedCustomSerializedOperations & CustomSerializedElementSupportedOperations.MixedTypedAttributes))
+				if (0 != (supportedOperations & CustomSerializedElementSupportedOperations.MixedTypedAttributes))
 				{
 					SortProperties(customElement, null, ref properties);
 				}
