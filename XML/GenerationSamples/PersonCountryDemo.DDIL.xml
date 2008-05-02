@@ -1,5 +1,5 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
-<dil:root xmlns:dil="http://schemas.orm.net/DIL/DIL" xmlns:dcl="http://schemas.orm.net/DIL/DCIL" xmlns:ddt="http://schemas.orm.net/DIL/DILDT" xmlns:dep="http://schemas.orm.net/DIL/DILEP" xmlns:ddl="http://schemas.orm.net/DIL/DDIL" xmlns:dml="http://schemas.orm.net/DIL/DMIL" xmlns:dms="http://schemas.orm.net/DIL/DILMS">
+<dil:root xmlns:dil="http://schemas.orm.net/DIL/DIL" xmlns:dcl="http://schemas.orm.net/DIL/DCIL" xmlns:ddt="http://schemas.orm.net/DIL/DILDT" xmlns:dep="http://schemas.orm.net/DIL/DILEP" xmlns:dms="http://schemas.orm.net/DIL/DILMS" xmlns:dml="http://schemas.orm.net/DIL/DMIL" xmlns:ddl="http://schemas.orm.net/DIL/DDIL">
 	<dms:startTransactionStatement isolationLevel="SERIALIZABLE" accessMode="READ WRITE" />
 	<ddl:schemaDefinition schemaName="PersonCountryDemo" defaultCharacterSet="UTF8" />
 	<dms:setSchemaStatement>
@@ -22,7 +22,7 @@
 		</ddl:domainConstraintDefinition>
 	</ddl:domainDefinition>
 	<ddl:tableDefinition name="Person" schema="PersonCountryDemo">
-		<ddl:columnDefinition name="person_Id">
+		<ddl:columnDefinition name="personId">
 			<ddt:exactNumeric type="INTEGER" />
 			<ddl:identityColumnSpecification type="ALWAYS">
 				<ddl:sequenceGeneratorStartWithOption>
@@ -51,37 +51,37 @@
 		<ddl:columnDefinition name="title">
 			<ddt:domain name="Title" schema="PersonCountryDemo" />
 		</ddl:columnDefinition>
-		<ddl:columnDefinition name="country_Name">
+		<ddl:columnDefinition name="countryName">
 			<ddt:characterString type="CHARACTER VARYING" length="20" />
 		</ddl:columnDefinition>
 		<ddl:tableConstraintDefinition name="InternalUniquenessConstraint1">
 			<ddl:uniqueConstraintDefinition type="PRIMARY KEY">
-				<dep:simpleColumnReference name="person_Id" />
+				<dep:simpleColumnReference name="personId" />
 			</ddl:uniqueConstraintDefinition>
 		</ddl:tableConstraintDefinition>
 	</ddl:tableDefinition>
 	<ddl:tableDefinition name="Country" schema="PersonCountryDemo">
-		<ddl:columnDefinition name="country_Name">
+		<ddl:columnDefinition name="countryName">
 			<ddt:characterString type="CHARACTER VARYING" length="20" />
 			<ddl:columnConstraintDefinition>
 				<ddl:notNullKeyword />
 			</ddl:columnConstraintDefinition>
 		</ddl:columnDefinition>
-		<ddl:columnDefinition name="region_Code">
+		<ddl:columnDefinition name="regionCode">
 			<ddt:characterString type="CHARACTER" length="8" />
 		</ddl:columnDefinition>
 		<ddl:tableConstraintDefinition name="InternalUniquenessConstraint3">
 			<ddl:uniqueConstraintDefinition type="PRIMARY KEY">
-				<dep:simpleColumnReference name="country_Name" />
+				<dep:simpleColumnReference name="countryName" />
 			</ddl:uniqueConstraintDefinition>
 		</ddl:tableConstraintDefinition>
 	</ddl:tableDefinition>
 	<ddl:alterTableStatement name="Person" schema="PersonCountryDemo">
 		<ddl:addTableConstraintDefinition name="Person_FK">
 			<ddl:referentialConstraintDefinition>
-				<dep:simpleColumnReference name="country_Name" />
+				<dep:simpleColumnReference name="countryName" />
 				<ddl:referencesSpecification name="Country" onDelete="RESTRICT" onUpdate="RESTRICT" schema="PersonCountryDemo">
-					<dep:simpleColumnReference name="country_Name" />
+					<dep:simpleColumnReference name="countryName" />
 				</ddl:referencesSpecification>
 			</ddl:referentialConstraintDefinition>
 		</ddl:addTableConstraintDefinition>

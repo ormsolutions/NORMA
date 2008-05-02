@@ -62,9 +62,6 @@ if (!class_exists('PersonHasNickName')) {
 	}
 }
 class PersonBase extends Entity {
-	private $MalePerson;
-	private $FemalePerson;
-	private $ChildPerson;
 	private $FirstName;
 	private $Person_id;
 	private $Date_YMD;
@@ -81,6 +78,12 @@ class PersonBase extends Entity {
 	private $OptionalUniqueDecimal;
 	private $MandatoryUniqueDecimal;
 	private $MandatoryUniqueString;
+	private $OptionalUniqueTinyInt;
+	private $MandatoryUniqueTinyInt;
+	private $OptionalNonUniqueTinyInt;
+	private $MandatoryNonUniqueTinyInt;
+	private $MandatoryNonUniqueUnconstrainedDecimal;
+	private $MandatoryNonUniqueUnconstrainedFloat;
 	public function __construct() {
 		parent::__construct();
 		$this->Wife_Husband_Person_Proxy = new Wife_Husband_Person_Proxy($this);
@@ -109,33 +112,12 @@ class PersonBase extends Entity {
 		$this->validationRules->addValidationRule(new ValueRangeValidator("MandatoryUniqueDecimal", 4000, ValueRangeValidatorClusivity::$inclusive, 20000, ValueRangeValidatorClusivity::$inclusive));
 		$this->validationRules->addValidationRule(new RequiredFieldValidator("MandatoryUniqueString"));
 		$this->validationRules->addValidationRule(new StringLenthValidator("MandatoryUniqueString", 11, 11));
-	}
-	public function getMalePerson() {
-		return $this->MalePerson;
-	}
-	public function setMalePerson(MalePerson $value) {
-		if ($this->MalePerson !== $value) {
-			$this->MalePerson = $value;
-			$value->setPerson($this);
-		}
-	}
-	public function getFemalePerson() {
-		return $this->FemalePerson;
-	}
-	public function setFemalePerson(FemalePerson $value) {
-		if ($this->FemalePerson !== $value) {
-			$this->FemalePerson = $value;
-			$value->setPerson($this);
-		}
-	}
-	public function getChildPerson() {
-		return $this->ChildPerson;
-	}
-	public function setChildPerson(ChildPerson $value) {
-		if ($this->ChildPerson !== $value) {
-			$this->ChildPerson = $value;
-			$value->setPerson($this);
-		}
+		$this->validationRules->addValidationRule(new RequiredFieldValidator("OptionalUniqueTinyInt"));
+		$this->validationRules->addValidationRule(new RequiredFieldValidator("MandatoryUniqueTinyInt"));
+		$this->validationRules->addValidationRule(new RequiredFieldValidator("OptionalNonUniqueTinyInt"));
+		$this->validationRules->addValidationRule(new RequiredFieldValidator("MandatoryNonUniqueTinyInt"));
+		$this->validationRules->addValidationRule(new RequiredFieldValidator("MandatoryNonUniqueUnconstrainedDecimal"));
+		$this->validationRules->addValidationRule(new RequiredFieldValidator("MandatoryNonUniqueUnconstrainedFloat"));
 	}
 	public function getDeath() {
 		return $this->Death;
@@ -236,6 +218,42 @@ class PersonBase extends Entity {
 	public function setMandatoryUniqueString(/*string*/ $value) {
 		$this->MandatoryUniqueString = $value;
 	}
+	public function getOptionalUniqueTinyInt() {
+		return $this->OptionalUniqueTinyInt;
+	}
+	public function setOptionalUniqueTinyInt(/*object*/ $value) {
+		$this->OptionalUniqueTinyInt = $value;
+	}
+	public function getMandatoryUniqueTinyInt() {
+		return $this->MandatoryUniqueTinyInt;
+	}
+	public function setMandatoryUniqueTinyInt(/*object*/ $value) {
+		$this->MandatoryUniqueTinyInt = $value;
+	}
+	public function getOptionalNonUniqueTinyInt() {
+		return $this->OptionalNonUniqueTinyInt;
+	}
+	public function setOptionalNonUniqueTinyInt(/*object*/ $value) {
+		$this->OptionalNonUniqueTinyInt = $value;
+	}
+	public function getMandatoryNonUniqueTinyInt() {
+		return $this->MandatoryNonUniqueTinyInt;
+	}
+	public function setMandatoryNonUniqueTinyInt(/*object*/ $value) {
+		$this->MandatoryNonUniqueTinyInt = $value;
+	}
+	public function getMandatoryNonUniqueUnconstrainedDecimal() {
+		return $this->MandatoryNonUniqueUnconstrainedDecimal;
+	}
+	public function setMandatoryNonUniqueUnconstrainedDecimal(/*decimal*/ $value) {
+		$this->MandatoryNonUniqueUnconstrainedDecimal = $value;
+	}
+	public function getMandatoryNonUniqueUnconstrainedFloat() {
+		return $this->MandatoryNonUniqueUnconstrainedFloat;
+	}
+	public function setMandatoryNonUniqueUnconstrainedFloat(/*float*/ $value) {
+		$this->MandatoryNonUniqueUnconstrainedFloat = $value;
+	}
 }
 if (!class_exists('Person')) {
 	class Person extends PersonBase {
@@ -244,107 +262,7 @@ if (!class_exists('Person')) {
 		}
 	}
 }
-class MalePersonBase extends Entity {
-	private $Person;
-	public function __construct() {
-		parent::__construct();
-	}
-	public function addValidationRules() {
-	}
-	public function getPerson() {
-		return $this->Person;
-	}
-	public function setPerson(Person $value) {
-		if ($this->Person !== $value) {
-			$this->Person = $value;
-			$value->setMalePerson($this);
-		}
-	}
-}
-if (!class_exists('MalePerson')) {
-	class MalePerson extends MalePersonBase {
-		public function __construct() {
-			parent::__construct();
-		}
-	}
-}
-class FemalePersonBase extends Entity {
-	private $Person;
-	public function __construct() {
-		parent::__construct();
-	}
-	public function addValidationRules() {
-	}
-	public function getPerson() {
-		return $this->Person;
-	}
-	public function setPerson(Person $value) {
-		if ($this->Person !== $value) {
-			$this->Person = $value;
-			$value->setFemalePerson($this);
-		}
-	}
-}
-if (!class_exists('FemalePerson')) {
-	class FemalePerson extends FemalePersonBase {
-		public function __construct() {
-			parent::__construct();
-		}
-	}
-}
-class ChildPersonBase extends Entity {
-	private $ChildPerson_Father_MalePerson_Proxy;
-	private $BirthOrder_BirthOrder_Nr;
-	private $ChildPerson_Mother_FemalePerson_Proxy;
-	private $Person;
-	public function __construct() {
-		parent::__construct();
-		$this->ChildPerson_Father_MalePerson_Proxy = new ChildPerson_Father_MalePerson_Proxy($this);
-		$this->ChildPerson_Mother_FemalePerson_Proxy = new ChildPerson_Mother_FemalePerson_Proxy($this);
-	}
-	public function addValidationRules() {
-		$this->validationRules->addValidationRule(new RequiredFieldValidator("BirthOrder_BirthOrder_Nr"));
-		$this->validationRules->addValidationRule(new ValueRangeValidator("BirthOrder_Nr", 0, ValueRangeValidatorClusivity::$inclusive, 4294967295, ValueRangeValidatorClusivity::$inclusive));
-		$this->validationRules->addValidationRule(new ValueRangeValidator("BirthOrder_Nr", 1, ValueRangeValidatorClusivity::$inclusive, null, ValueRangeValidatorClusivity::$));
-	}
-	public function getPerson() {
-		return $this->Person;
-	}
-	public function setPerson(Person $value) {
-		if ($this->Person !== $value) {
-			$this->Person = $value;
-			$value->setChildPerson($this);
-		}
-	}
-	public function setFather(MalePerson $value) {
-		$this->ChildPerson_Father_MalePerson_Proxy->Set($value);
-	}
-	public function getFather() {
-		return $this->ChildPerson_Father_MalePerson_Proxy->Get();
-	}
-	public function getBirthOrder_BirthOrder_Nr() {
-		return $this->BirthOrder_BirthOrder_Nr;
-	}
-	public function setBirthOrder_BirthOrder_Nr(/*int*/ $value) {
-		$this->BirthOrder_BirthOrder_Nr = $value;
-	}
-	public function setMother(FemalePerson $value) {
-		$this->ChildPerson_Mother_FemalePerson_Proxy->Set($value);
-	}
-	public function getMother() {
-		return $this->ChildPerson_Mother_FemalePerson_Proxy->Get();
-	}
-}
-if (!class_exists('ChildPerson')) {
-	class ChildPerson extends ChildPersonBase {
-		public function __construct() {
-			parent::__construct();
-		}
-	}
-}
 class DeathBase extends Entity {
-	private $NaturalDeath;
-	private $UnnaturalDeath;
 	private $Date_YMD;
 	private $DeathCause_DeathCause_Type;
 	private $isDead;
@@ -364,24 +282,6 @@ class DeathBase extends Entity {
 	public function setPerson(Person $value) {
 		if ($this->Person !== $value) {
 			$this->Person = $value;
-			$value->setDeath($this);
-		}
-	}
-	public function getNaturalDeath() {
-		return $this->NaturalDeath;
-	}
-	public function setNaturalDeath(NaturalDeath $value) {
-		if ($this->NaturalDeath !== $value) {
-			$this->NaturalDeath = $value;
-			$value->setDeath($this);
-		}
-	}
-	public function getUnnaturalDeath() {
-		return $this->UnnaturalDeath;
-	}
-	public function setUnnaturalDeath(UnnaturalDeath $value) {
-		if ($this->UnnaturalDeath !== $value) {
-			$this->UnnaturalDeath = $value;
 			$value->setDeath($this);
 		}
 	}
@@ -406,78 +306,6 @@ class DeathBase extends Entity {
 }
 if (!class_exists('Death')) {
 	class Death extends DeathBase {
-		public function __construct() {
-			parent::__construct();
-		}
-	}
-}
-class NaturalDeathBase extends Entity {
-	private $isFromProstateCancer;
-	private $Death;
-	public function __construct() {
-		parent::__construct();
-	}
-	public function addValidationRules() {
-		$this->validationRules->addValidationRule(new RequiredFieldValidator("isFromProstateCancer"));
-	}
-	public function getDeath() {
-		return $this->Death;
-	}
-	public function setDeath(Death $value) {
-		if ($this->Death !== $value) {
-			$this->Death = $value;
-			$value->setNaturalDeath($this);
-		}
-	}
-	public function getisFromProstateCancer() {
-		return $this->isFromProstateCancer;
-	}
-	public function setisFromProstateCancer(/*bool*/ $value) {
-		$this->isFromProstateCancer = $value;
-	}
-}
-if (!class_exists('NaturalDeath')) {
-	class NaturalDeath extends NaturalDeathBase {
-		public function __construct() {
-			parent::__construct();
-		}
-	}
-}
-class UnnaturalDeathBase extends Entity {
-	private $isViolent;
-	private $isBloody;
-	private $Death;
-	public function __construct() {
-		parent::__construct();
-	}
-	public function addValidationRules() {
-		$this->validationRules->addValidationRule(new RequiredFieldValidator("isViolent"));
-		$this->validationRules->addValidationRule(new RequiredFieldValidator("isBloody"));
-	}
-	public function getDeath() {
-		return $this->Death;
-	}
-	public function setDeath(Death $value) {
-		if ($this->Death !== $value) {
-			$this->Death = $value;
-			$value->setUnnaturalDeath($this);
-		}
-	}
-	public function getisViolent() {
-		return $this->isViolent;
-	}
-	public function setisViolent(/*bool*/ $value) {
-		$this->isViolent = $value;
-	}
-	public function getisBloody() {
-		return $this->isBloody;
-	}
-	public function setisBloody(/*bool*/ $value) {
-		$this->isBloody = $value;
-	}
-}
-if (!class_exists('UnnaturalDeath')) {
-	class UnnaturalDeath extends UnnaturalDeathBase {
 		public function __construct() {
 			parent::__construct();
 		}

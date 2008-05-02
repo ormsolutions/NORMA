@@ -328,7 +328,7 @@
 				<orm:MandatoryConstraint ref="_3856E4DB-8013-4BA8-B94A-EADC05FD7A7F" />
 			</orm:InternalConstraints>
 		</orm:Fact>
-		<orm:SubtypeFact id="_89A69209-79AB-4D98-803D-7F2A366152F5" _Name="BlogCommentIsASubtypeOfBlogEntry" IsPrimary="true">
+		<orm:SubtypeFact id="_89A69209-79AB-4D98-803D-7F2A366152F5" _Name="BlogCommentIsASubtypeOfBlogEntry" PreferredIdentificationPath="true">
 			<orm:FactRoles>
 				<orm:SubtypeMetaRole id="_EE81D1B8-C073-407E-9445-4D77B2A771BF" _IsMandatory="true" _Multiplicity="ZeroToOne" Name="">
 					<orm:RolePlayer ref="_FC4B6034-FD2F-48BB-89C1-5E60BCF9E82F" />
@@ -592,7 +592,7 @@
 				<orm:UniquenessConstraint ref="_6B68FD45-AB57-40FB-84E2-3A93BD8C02F6" />
 			</orm:InternalConstraints>
 		</orm:Fact>
-		<orm:SubtypeFact id="_5F4F6500-88EC-4D99-BF1D-692369870C4C" _Name="NonCommentEntryIsASubtypeOfBlogEntry" IsPrimary="true">
+		<orm:SubtypeFact id="_5F4F6500-88EC-4D99-BF1D-692369870C4C" _Name="NonCommentEntryIsASubtypeOfBlogEntry" PreferredIdentificationPath="true">
 			<orm:FactRoles>
 				<orm:SubtypeMetaRole id="_61F4213B-402E-4149-B290-58102E27EB03" _IsMandatory="true" _Multiplicity="ZeroToOne" Name="">
 					<orm:RolePlayer ref="_DC84D934-1982-4B2B-B9E0-9989407A6135" />

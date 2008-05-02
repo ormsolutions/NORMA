@@ -1,7 +1,7 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
 <dcl:schema name="BlogDemo" xmlns:dcl="http://schemas.orm.net/DIL/DCIL" xmlns:dil="http://schemas.orm.net/DIL/DIL" xmlns:ddt="http://schemas.orm.net/DIL/DILDT" xmlns:dep="http://schemas.orm.net/DIL/DILEP" xmlns:dml="http://schemas.orm.net/DIL/DMIL" xmlns:ddl="http://schemas.orm.net/DIL/DDIL">
 	<dcl:table name="BlogEntry">
-		<dcl:column name="blogEntry_Id" isNullable="false" isIdentity="false">
+		<dcl:column name="blogEntryId" isNullable="false" isIdentity="false">
 			<dcl:predefinedDataType name="INTEGER" />
 		</dcl:column>
 		<dcl:column name="entryTitle" isNullable="false" isIdentity="false">
@@ -13,31 +13,31 @@
 		<dcl:column name="postedDate" isNullable="false" isIdentity="false">
 			<dcl:predefinedDataType name="TIMESTAMP" />
 		</dcl:column>
-		<dcl:column name="userIdName2" isNullable="false" isIdentity="false">
+		<dcl:column name="firstName" isNullable="false" isIdentity="false">
 			<dcl:predefinedDataType name="CHARACTER VARYING" length="30" />
 		</dcl:column>
-		<dcl:column name="userIdName1" isNullable="false" isIdentity="false">
+		<dcl:column name="lastName" isNullable="false" isIdentity="false">
 			<dcl:predefinedDataType name="CHARACTER VARYING" length="30" />
 		</dcl:column>
-		<dcl:column name="blogCommentParentEntryId" isNullable="true" isIdentity="false">
+		<dcl:column name="blogCommentParentEntryIdNonCommentEntryBlogEntryId" isNullable="true" isIdentity="false">
 			<dcl:predefinedDataType name="INTEGER" />
 		</dcl:column>
 		<dcl:uniquenessConstraint name="InternalUniquenessConstraint1" isPrimary="true">
-			<dcl:columnRef name="blogEntry_Id" />
+			<dcl:columnRef name="blogEntryId" />
 		</dcl:uniquenessConstraint>
 		<dcl:referenceConstraint name="BlogEntry_FK1" targetTable="&quot;User&quot;">
-			<dcl:columnRef sourceName="userIdName2" targetName="name1" />
-			<dcl:columnRef sourceName="userIdName1" targetName="name2" />
+			<dcl:columnRef sourceName="firstName" targetName="firstName" />
+			<dcl:columnRef sourceName="lastName" targetName="lastName" />
 		</dcl:referenceConstraint>
 		<dcl:referenceConstraint name="BlogEntry_FK2" targetTable="BlogEntry">
-			<dcl:columnRef sourceName="blogCommentParentEntryId" targetName="blogEntry_Id" />
+			<dcl:columnRef sourceName="blogCommentParentEntryIdNonCommentEntryBlogEntryId" targetName="blogEntryId" />
 		</dcl:referenceConstraint>
 	</dcl:table>
 	<dcl:table name="&quot;User&quot;">
-		<dcl:column name="name1" isNullable="false" isIdentity="false">
+		<dcl:column name="firstName" isNullable="false" isIdentity="false">
 			<dcl:predefinedDataType name="CHARACTER VARYING" length="30" />
 		</dcl:column>
-		<dcl:column name="name2" isNullable="false" isIdentity="false">
+		<dcl:column name="lastName" isNullable="false" isIdentity="false">
 			<dcl:predefinedDataType name="CHARACTER VARYING" length="30" />
 		</dcl:column>
 		<dcl:column name="username" isNullable="false" isIdentity="false">
@@ -47,19 +47,19 @@
 			<dcl:predefinedDataType name="CHARACTER" length="32" />
 		</dcl:column>
 		<dcl:uniquenessConstraint name="ExternalUniquenessConstraint1" isPrimary="true">
-			<dcl:columnRef name="name1" />
-			<dcl:columnRef name="name2" />
+			<dcl:columnRef name="firstName" />
+			<dcl:columnRef name="lastName" />
 		</dcl:uniquenessConstraint>
 	</dcl:table>
 	<dcl:table name="BlogLabel">
-		<dcl:column name="blogLabel_Id" isNullable="false" isIdentity="true">
+		<dcl:column name="blogLabelId" isNullable="false" isIdentity="true">
 			<dcl:predefinedDataType name="INTEGER" />
 		</dcl:column>
 		<dcl:column name="title" isNullable="true" isIdentity="false">
 			<dcl:predefinedDataType name="CHARACTER LARGE OBJECT" />
 		</dcl:column>
 		<dcl:uniquenessConstraint name="InternalUniquenessConstraint18" isPrimary="true">
-			<dcl:columnRef name="blogLabel_Id" />
+			<dcl:columnRef name="blogLabelId" />
 		</dcl:uniquenessConstraint>
 	</dcl:table>
 	<dcl:table name="BlogEntryLabel">
@@ -74,10 +74,10 @@
 			<dcl:columnRef name="blogLabelId" />
 		</dcl:uniquenessConstraint>
 		<dcl:referenceConstraint name="BlogEntryLabel_FK1" targetTable="BlogEntry">
-			<dcl:columnRef sourceName="blogEntryId" targetName="blogEntry_Id" />
+			<dcl:columnRef sourceName="blogEntryId" targetName="blogEntryId" />
 		</dcl:referenceConstraint>
 		<dcl:referenceConstraint name="BlogEntryLabel_FK2" targetTable="BlogLabel">
-			<dcl:columnRef sourceName="blogLabelId" targetName="blogLabel_Id" />
+			<dcl:columnRef sourceName="blogLabelId" targetName="blogLabelId" />
 		</dcl:referenceConstraint>
 	</dcl:table>
 </dcl:schema>

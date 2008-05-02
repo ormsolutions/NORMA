@@ -40,30 +40,10 @@
 			this.Controls.Add(MasterTabControl);
 			this.Size = new System.Drawing.Size(550, 550);
 
-			this.MasterTabControl.TabPages.Add("ChildPerson", "ChildPerson");
-			ChildPersonCore_InputControl icChildPersonCore = new ChildPersonCore_InputControl();
-			icChildPersonCore.Dock = System.Windows.Forms.DockStyle.Fill;
-			this.MasterTabControl.TabPages["ChildPerson"].Controls.Add(icChildPersonCore);
-
 			this.MasterTabControl.TabPages.Add("Death", "Death");
 			DeathCore_InputControl icDeathCore = new DeathCore_InputControl();
 			icDeathCore.Dock = System.Windows.Forms.DockStyle.Fill;
 			this.MasterTabControl.TabPages["Death"].Controls.Add(icDeathCore);
-
-			this.MasterTabControl.TabPages.Add("FemalePerson", "FemalePerson");
-			FemalePersonCore_InputControl icFemalePersonCore = new FemalePersonCore_InputControl();
-			icFemalePersonCore.Dock = System.Windows.Forms.DockStyle.Fill;
-			this.MasterTabControl.TabPages["FemalePerson"].Controls.Add(icFemalePersonCore);
-
-			this.MasterTabControl.TabPages.Add("MalePerson", "MalePerson");
-			MalePersonCore_InputControl icMalePersonCore = new MalePersonCore_InputControl();
-			icMalePersonCore.Dock = System.Windows.Forms.DockStyle.Fill;
-			this.MasterTabControl.TabPages["MalePerson"].Controls.Add(icMalePersonCore);
-
-			this.MasterTabControl.TabPages.Add("NaturalDeath", "NaturalDeath");
-			NaturalDeathCore_InputControl icNaturalDeathCore = new NaturalDeathCore_InputControl();
-			icNaturalDeathCore.Dock = System.Windows.Forms.DockStyle.Fill;
-			this.MasterTabControl.TabPages["NaturalDeath"].Controls.Add(icNaturalDeathCore);
 
 			this.MasterTabControl.TabPages.Add("PersonBoughtCarFromPersonOnDate", "PersonBoughtCarFromPersonOnDate");
 			PersonBoughtCarFromPersonOnDateCore_InputControl icPersonBoughtCarFromPersonOnDateCore = new PersonBoughtCarFromPersonOnDateCore_InputControl();
@@ -94,11 +74,6 @@
 			TaskCore_InputControl icTaskCore = new TaskCore_InputControl();
 			icTaskCore.Dock = System.Windows.Forms.DockStyle.Fill;
 			this.MasterTabControl.TabPages["Task"].Controls.Add(icTaskCore);
-
-			this.MasterTabControl.TabPages.Add("UnnaturalDeath", "UnnaturalDeath");
-			UnnaturalDeathCore_InputControl icUnnaturalDeathCore = new UnnaturalDeathCore_InputControl();
-			icUnnaturalDeathCore.Dock = System.Windows.Forms.DockStyle.Fill;
-			this.MasterTabControl.TabPages["UnnaturalDeath"].Controls.Add(icUnnaturalDeathCore);
 
 			this.MasterTabControl.TabPages.Add("ValueType1", "ValueType1");
 			ValueType1Core_InputControl icValueType1Core = new ValueType1Core_InputControl();

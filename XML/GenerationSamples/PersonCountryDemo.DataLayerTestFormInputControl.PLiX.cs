@@ -89,7 +89,7 @@ namespace PersonCountryDemo
 			{
 				int index = 0;
 				this.dgvCollection.Rows.Clear();
-				using (IEnumerator<Country> iterator = this.testVar.CountryCollection.GetEnumerator())
+				using (this.testVar.CountryCollection.GetEnumerator())
 				{
 					while (iterator.MoveNext())
 					{
@@ -332,7 +332,7 @@ namespace PersonCountryDemo
 			{
 				int index = 0;
 				this.dgvCollection.Rows.Clear();
-				using (IEnumerator<Person> iterator = this.testVar.PersonCollection.GetEnumerator())
+				using (this.testVar.PersonCollection.GetEnumerator())
 				{
 					while (iterator.MoveNext())
 					{

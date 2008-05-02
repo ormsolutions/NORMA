@@ -55,34 +55,6 @@ class BlogEntry_blogEntryId_BlogEntryLabel_Proxy {
 		return $this->value;
 	}
 }
-// <summary>Class used to proxy a NonCommentEntry for the role parentEntryId for use inside of a BlogComment isCollection: false</summary>
-class BlogComment_parentEntryId_NonCommentEntry_Proxy {
-	private $ref = null;
-	private $value = null;
-	public function __construct(/*object*/ $ref) {
-		$this->ref = $ref;
-	}
-	public function get() {
-		if (!isset($this->value)) {
-			$this->value = BlogCommentDAO::getInstance()->getSingle($this->ref->getBlogEntry_Id());
-		}
-		return $this->value;
-	}
-}
-// <summary>Class used to proxy a NonCommentEntry for the role parentEntryId for use inside of a NonCommentEntry isCollection: true</summary>
-class NonCommentEntry_parentEntryId_BlogComment_Proxy {
-	private $ref = null;
-	private $value = null;
-	public function __construct(/*object*/ $ref) {
-		$this->ref = $ref;
-	}
-	public function get() {
-		if (!isset($this->value)) {
-			$this->value = NonCommentEntryDAO::getInstance()->get_BlogComment_Collection_By_parentEntryId($this->ref->getBlogEntry_Id());
-		}
-		return $this->value;
-	}
-}
 // <summary>Class used to proxy a User for the role userId for use inside of a User isCollection: true</summary>
 class User_userId_BlogEntry_Proxy {
 	private $ref = null;

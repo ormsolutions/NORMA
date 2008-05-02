@@ -62,20 +62,21 @@
 		<prop:Property name="MandatoryUniqueString" mandatory="alethic" isUnique="true" canBeNull="true" isCollection="false" isCustomType="false">
 			<prop:DataType dataTypeName=".string" />
 		</prop:Property>
+		<prop:Property name="OptionalUniqueTinyInt" mandatory="false" isUnique="true" canBeNull="true" isCollection="false" isCustomType="false" />
+		<prop:Property name="MandatoryUniqueTinyInt" mandatory="alethic" isUnique="true" canBeNull="false" isCollection="false" isCustomType="false" />
+		<prop:Property name="OptionalNonUniqueTinyInt" mandatory="false" isUnique="false" canBeNull="true" isCollection="false" isCustomType="false" />
+		<prop:Property name="MandatoryNonUniqueTinyInt" mandatory="alethic" isUnique="false" canBeNull="false" isCollection="false" isCustomType="false" />
+		<prop:Property name="MandatoryNonUniqueUnconstrainedDecimal" mandatory="alethic" isUnique="false" canBeNull="false" isCollection="false" isCustomType="false">
+			<prop:DataType dataTypeName=".decimal" />
+		</prop:Property>
+		<prop:Property name="MandatoryNonUniqueUnconstrainedFloat" mandatory="alethic" isUnique="false" canBeNull="false" isCollection="false" isCustomType="false">
+			<prop:DataType dataTypeName=".r4" />
+		</prop:Property>
 		<prop:Property name="Husband" mandatory="false" isUnique="true" isCollection="false" isCustomType="true" canBeNull="true" oppositeName="Wife">
 			<prop:DataType dataTypeName="Person" />
 		</prop:Property>
 		<prop:Property name="ValueType1DoesSomethingElseWith" mandatory="false" isUnique="false" isCollection="false" isCustomType="true" canBeNull="true" oppositeName="DoesSomethingElseWithPerson">
 			<prop:DataType dataTypeName="ValueType1" />
-		</prop:Property>
-		<prop:Property name="MalePerson" mandatory="false" isUnique="true" isCollection="false" isCustomType="true" canBeNull="true" oppositeName="Person">
-			<prop:DataType dataTypeName="MalePerson" />
-		</prop:Property>
-		<prop:Property name="FemalePerson" mandatory="false" isUnique="true" isCollection="false" isCustomType="true" canBeNull="true" oppositeName="Person">
-			<prop:DataType dataTypeName="FemalePerson" />
-		</prop:Property>
-		<prop:Property name="ChildPerson" mandatory="false" isUnique="true" isCollection="false" isCustomType="true" canBeNull="true" oppositeName="Person">
-			<prop:DataType dataTypeName="ChildPerson" />
 		</prop:Property>
 		<prop:Property name="Death" mandatory="false" isUnique="true" isCollection="false" isCustomType="true" canBeNull="true" oppositeName="Person">
 			<prop:DataType dataTypeName="Death" />
@@ -114,40 +115,6 @@
 			</prop:DataType>
 		</prop:Property>
 	</prop:Properties>
-	<prop:Properties conceptTypeName="MalePerson">
-		<prop:Property name="Person" mandatory="alethic" isUnique="true" isCollection="false" isCustomType="true" canBeNull="true" oppositeName="MalePerson">
-			<prop:DataType dataTypeName="Person" />
-		</prop:Property>
-		<prop:Property name="ChildPersonViaFatherCollection" mandatory="false" isUnique="true" isCollection="true" isCustomType="true" canBeNull="true" oppositeName="Father">
-			<prop:DataType dataTypeName="IEnumerable">
-				<plx:passTypeParam dataTypeName="ChildPerson" />
-			</prop:DataType>
-		</prop:Property>
-	</prop:Properties>
-	<prop:Properties conceptTypeName="FemalePerson">
-		<prop:Property name="Person" mandatory="alethic" isUnique="true" isCollection="false" isCustomType="true" canBeNull="true" oppositeName="FemalePerson">
-			<prop:DataType dataTypeName="Person" />
-		</prop:Property>
-		<prop:Property name="ChildPersonViaMotherCollection" mandatory="false" isUnique="true" isCollection="true" isCustomType="true" canBeNull="true" oppositeName="Mother">
-			<prop:DataType dataTypeName="IEnumerable">
-				<plx:passTypeParam dataTypeName="ChildPerson" />
-			</prop:DataType>
-		</prop:Property>
-	</prop:Properties>
-	<prop:Properties conceptTypeName="ChildPerson">
-		<prop:Property name="BirthOrder_BirthOrder_Nr" mandatory="alethic" isUnique="false" canBeNull="false" isCollection="false" isCustomType="false">
-			<prop:DataType dataTypeName=".i4" />
-		</prop:Property>
-		<prop:Property name="Father" mandatory="alethic" isUnique="false" isCollection="false" isCustomType="true" canBeNull="true" oppositeName="ChildPerson">
-			<prop:DataType dataTypeName="MalePerson" />
-		</prop:Property>
-		<prop:Property name="Mother" mandatory="alethic" isUnique="false" isCollection="false" isCustomType="true" canBeNull="true" oppositeName="ChildPerson">
-			<prop:DataType dataTypeName="FemalePerson" />
-		</prop:Property>
-		<prop:Property name="Person" mandatory="alethic" isUnique="true" isCollection="false" isCustomType="true" canBeNull="true" oppositeName="ChildPerson">
-			<prop:DataType dataTypeName="Person" />
-		</prop:Property>
-	</prop:Properties>
 	<prop:Properties conceptTypeName="Death">
 		<prop:Property name="Date_YMD" mandatory="false" isUnique="false" canBeNull="true" isCollection="false" isCustomType="false">
 			<prop:DataType dataTypeName="Nullable">
@@ -160,39 +127,8 @@
 		<prop:Property name="isDead" mandatory="alethic" isUnique="false" canBeNull="false" isCollection="false" isCustomType="false">
 			<prop:DataType dataTypeName=".boolean" />
 		</prop:Property>
-		<prop:Property name="NaturalDeath" mandatory="false" isUnique="true" isCollection="false" isCustomType="true" canBeNull="true" oppositeName="Death">
-			<prop:DataType dataTypeName="NaturalDeath" />
-		</prop:Property>
-		<prop:Property name="UnnaturalDeath" mandatory="false" isUnique="true" isCollection="false" isCustomType="true" canBeNull="true" oppositeName="Death">
-			<prop:DataType dataTypeName="UnnaturalDeath" />
-		</prop:Property>
 		<prop:Property name="Person" mandatory="alethic" isUnique="true" isCollection="false" isCustomType="true" canBeNull="true" oppositeName="Death">
 			<prop:DataType dataTypeName="Person" />
-		</prop:Property>
-	</prop:Properties>
-	<prop:Properties conceptTypeName="NaturalDeath">
-		<prop:Property name="isFromProstateCancer" mandatory="false" isUnique="false" canBeNull="true" isCollection="false" isCustomType="false">
-			<prop:DataType dataTypeName="Nullable">
-				<plx:passTypeParam dataTypeName=".boolean" />
-			</prop:DataType>
-		</prop:Property>
-		<prop:Property name="Death" mandatory="alethic" isUnique="true" isCollection="false" isCustomType="true" canBeNull="true" oppositeName="NaturalDeath">
-			<prop:DataType dataTypeName="Death" />
-		</prop:Property>
-	</prop:Properties>
-	<prop:Properties conceptTypeName="UnnaturalDeath">
-		<prop:Property name="isViolent" mandatory="false" isUnique="false" canBeNull="true" isCollection="false" isCustomType="false">
-			<prop:DataType dataTypeName="Nullable">
-				<plx:passTypeParam dataTypeName=".boolean" />
-			</prop:DataType>
-		</prop:Property>
-		<prop:Property name="isBloody" mandatory="false" isUnique="false" canBeNull="true" isCollection="false" isCustomType="false">
-			<prop:DataType dataTypeName="Nullable">
-				<plx:passTypeParam dataTypeName=".boolean" />
-			</prop:DataType>
-		</prop:Property>
-		<prop:Property name="Death" mandatory="alethic" isUnique="true" isCollection="false" isCustomType="true" canBeNull="true" oppositeName="UnnaturalDeath">
-			<prop:DataType dataTypeName="Death" />
 		</prop:Property>
 	</prop:Properties>
 	<prop:Properties conceptTypeName="Task">

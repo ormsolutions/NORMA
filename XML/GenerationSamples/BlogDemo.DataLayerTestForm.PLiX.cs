@@ -40,11 +40,6 @@
 			this.Controls.Add(MasterTabControl);
 			this.Size = new System.Drawing.Size(550, 550);
 
-			this.MasterTabControl.TabPages.Add("BlogComment", "BlogComment");
-			BlogCommentCore_InputControl icBlogCommentCore = new BlogCommentCore_InputControl();
-			icBlogCommentCore.Dock = System.Windows.Forms.DockStyle.Fill;
-			this.MasterTabControl.TabPages["BlogComment"].Controls.Add(icBlogCommentCore);
-
 			this.MasterTabControl.TabPages.Add("BlogEntry", "BlogEntry");
 			BlogEntryCore_InputControl icBlogEntryCore = new BlogEntryCore_InputControl();
 			icBlogEntryCore.Dock = System.Windows.Forms.DockStyle.Fill;
@@ -59,11 +54,6 @@
 			BlogLabelCore_InputControl icBlogLabelCore = new BlogLabelCore_InputControl();
 			icBlogLabelCore.Dock = System.Windows.Forms.DockStyle.Fill;
 			this.MasterTabControl.TabPages["BlogLabel"].Controls.Add(icBlogLabelCore);
-
-			this.MasterTabControl.TabPages.Add("NonCommentEntry", "NonCommentEntry");
-			NonCommentEntryCore_InputControl icNonCommentEntryCore = new NonCommentEntryCore_InputControl();
-			icNonCommentEntryCore.Dock = System.Windows.Forms.DockStyle.Fill;
-			this.MasterTabControl.TabPages["NonCommentEntry"].Controls.Add(icNonCommentEntryCore);
 
 			this.MasterTabControl.TabPages.Add("User", "User");
 			UserCore_InputControl icUserCore = new UserCore_InputControl();

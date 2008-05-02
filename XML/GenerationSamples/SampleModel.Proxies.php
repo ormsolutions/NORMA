@@ -153,62 +153,6 @@ class Person_Seller_PersonBoughtCarFromPersonOnDate_Proxy {
 		return $this->value;
 	}
 }
-// <summary>Class used to proxy a MalePerson for the role Father for use inside of a MalePerson isCollection: true</summary>
-class MalePerson_Father_ChildPerson_Proxy {
-	private $ref = null;
-	private $value = null;
-	public function __construct(/*object*/ $ref) {
-		$this->ref = $ref;
-	}
-	public function get() {
-		if (!isset($this->value)) {
-			$this->value = MalePersonDAO::getInstance()->get_ChildPerson_Collection_By_Father($this->ref->getPerson_id());
-		}
-		return $this->value;
-	}
-}
-// <summary>Class used to proxy a FemalePerson for the role Mother for use inside of a FemalePerson isCollection: true</summary>
-class FemalePerson_Mother_ChildPerson_Proxy {
-	private $ref = null;
-	private $value = null;
-	public function __construct(/*object*/ $ref) {
-		$this->ref = $ref;
-	}
-	public function get() {
-		if (!isset($this->value)) {
-			$this->value = FemalePersonDAO::getInstance()->get_ChildPerson_Collection_By_Mother($this->ref->getPerson_id());
-		}
-		return $this->value;
-	}
-}
-// <summary>Class used to proxy a MalePerson for the role Father for use inside of a ChildPerson isCollection: false</summary>
-class ChildPerson_Father_MalePerson_Proxy {
-	private $ref = null;
-	private $value = null;
-	public function __construct(/*object*/ $ref) {
-		$this->ref = $ref;
-	}
-	public function get() {
-		if (!isset($this->value)) {
-			$this->value = ChildPersonDAO::getInstance()->getSingle($this->ref->getPerson_id());
-		}
-		return $this->value;
-	}
-}
-// <summary>Class used to proxy a FemalePerson for the role Mother for use inside of a ChildPerson isCollection: false</summary>
-class ChildPerson_Mother_FemalePerson_Proxy {
-	private $ref = null;
-	private $value = null;
-	public function __construct(/*object*/ $ref) {
-		$this->ref = $ref;
-	}
-	public function get() {
-		if (!isset($this->value)) {
-			$this->value = ChildPersonDAO::getInstance()->getSingle($this->ref->getPerson_id());
-		}
-		return $this->value;
-	}
-}
 // <summary>Class used to proxy a Person for the role Person for use inside of a Task isCollection: false</summary>
 class Task_Person_Person_Proxy {
 	private $ref = null;

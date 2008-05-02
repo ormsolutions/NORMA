@@ -265,6 +265,12 @@ class PersonDaoBase {
 				$tempEntity->setOptionalUniqueDecimal($results["OptionalUniqueDecimal"]);
 				$tempEntity->setMandatoryUniqueDecimal($results["MandatoryUniqueDecimal"]);
 				$tempEntity->setMandatoryUniqueString($results["MandatoryUniqueString"]);
+				$tempEntity->setOptionalUniqueTinyInt($results["OptionalUniqueTinyInt"]);
+				$tempEntity->setMandatoryUniqueTinyInt($results["MandatoryUniqueTinyInt"]);
+				$tempEntity->setOptionalNonUniqueTinyInt($results["OptionalNonUniqueTinyInt"]);
+				$tempEntity->setMandatoryNonUniqueTinyInt($results["MandatoryNonUniqueTinyInt"]);
+				$tempEntity->setMandatoryNonUniqueUnconstrainedDecimal($results["MandatoryNonUniqueUnconstrainedDecimal"]);
+				$tempEntity->setMandatoryNonUniqueUnconstrainedFloat($results["MandatoryNonUniqueUnconstrainedFloat"]);
 				$retVal[] = $tempEntity;
 			}
 			return $retVal;
@@ -297,6 +303,12 @@ class PersonDaoBase {
 			$retVal->setOptionalUniqueDecimal($row["OptionalUniqueDecimal"]);
 			$retVal->setMandatoryUniqueDecimal($row["MandatoryUniqueDecimal"]);
 			$retVal->setMandatoryUniqueString($row["MandatoryUniqueString"]);
+			$retVal->setOptionalUniqueTinyInt($row["OptionalUniqueTinyInt"]);
+			$retVal->setMandatoryUniqueTinyInt($row["MandatoryUniqueTinyInt"]);
+			$retVal->setOptionalNonUniqueTinyInt($row["OptionalNonUniqueTinyInt"]);
+			$retVal->setMandatoryNonUniqueTinyInt($row["MandatoryNonUniqueTinyInt"]);
+			$retVal->setMandatoryNonUniqueUnconstrainedDecimal($row["MandatoryNonUniqueUnconstrainedDecimal"]);
+			$retVal->setMandatoryNonUniqueUnconstrainedFloat($row["MandatoryNonUniqueUnconstrainedFloat"]);
 			return $retVal;
 		}
 		catch (Exception $exc) {
@@ -324,6 +336,12 @@ class PersonDaoBase {
 			$dataArray["OptionalUniqueDecimal"] = $Person->getOptionalUniqueDecimal();
 			$dataArray["MandatoryUniqueDecimal"] = $Person->getMandatoryUniqueDecimal();
 			$dataArray["MandatoryUniqueString"] = $Person->getMandatoryUniqueString();
+			$dataArray["OptionalUniqueTinyInt"] = $Person->getOptionalUniqueTinyInt();
+			$dataArray["MandatoryUniqueTinyInt"] = $Person->getMandatoryUniqueTinyInt();
+			$dataArray["OptionalNonUniqueTinyInt"] = $Person->getOptionalNonUniqueTinyInt();
+			$dataArray["MandatoryNonUniqueTinyInt"] = $Person->getMandatoryNonUniqueTinyInt();
+			$dataArray["MandatoryNonUniqueUnconstrainedDecimal"] = $Person->getMandatoryNonUniqueUnconstrainedDecimal();
+			$dataArray["MandatoryNonUniqueUnconstrainedFloat"] = $Person->getMandatoryNonUniqueUnconstrainedFloat();
 			$nrRowsAffected = $db->insert("Person", $dataArray);
 		}
 		catch (Exception $exc) {
@@ -351,6 +369,12 @@ class PersonDaoBase {
 			$dataArray["OptionalUniqueDecimal"] = $Person->getOptionalUniqueDecimal();
 			$dataArray["MandatoryUniqueDecimal"] = $Person->getMandatoryUniqueDecimal();
 			$dataArray["MandatoryUniqueString"] = $Person->getMandatoryUniqueString();
+			$dataArray["OptionalUniqueTinyInt"] = $Person->getOptionalUniqueTinyInt();
+			$dataArray["MandatoryUniqueTinyInt"] = $Person->getMandatoryUniqueTinyInt();
+			$dataArray["OptionalNonUniqueTinyInt"] = $Person->getOptionalNonUniqueTinyInt();
+			$dataArray["MandatoryNonUniqueTinyInt"] = $Person->getMandatoryNonUniqueTinyInt();
+			$dataArray["MandatoryNonUniqueUnconstrainedDecimal"] = $Person->getMandatoryNonUniqueUnconstrainedDecimal();
+			$dataArray["MandatoryNonUniqueUnconstrainedFloat"] = $Person->getMandatoryNonUniqueUnconstrainedFloat();
 			$whereClause = $db->quoteInto("Person_id = ?", $Person->getPerson_id());
 			$nrRowsAffected = $db->update("Person", $dataArray, $whereClause);
 		}
@@ -538,530 +562,6 @@ if (!class_exists('PersonDao')) {
 		}
 	}
 }
-class MalePersonDaoBase {
-	private static $instance;
-	// <summary>Instantiates a new instance of MalePersonDao</summary>
-	public function __construct() {
-	}
-	public static function getInstance() {
-		if (!isset(instance)) {
-			instance = new MalePersonDao();
-		}
-		return instance;
-	}
-	// <summary>Retrieves the entire collection of MalePerson objects</summary>
-	public function getAll() {
-		try {
-			$retVal = null;
-			$db = DataAccess::getDataAdapter();
-			$select = $db->select();
-			$select->from("Person", "*");
-			$db->setFetchMode(PDO::FETCH_ASSOC);
-			$result = $db->fetchPairs($select);
-			$rowCount = count($result);
-			for ($i = 0; $i < $rowCount; ++$i) {
-				$tempEntity = new MalePerson();
-				$tempEntity->getPerson()->setFirstName($results["FirstName"]);
-				$tempEntity->getPerson()->setDate_YMD($results["Date_YMD"]);
-				$tempEntity->getPerson()->setLastName($results["LastName"]);
-				$tempEntity->getPerson()->setOptionalUniqueString($results["OptionalUniqueString"]);
-				$tempEntity->getPerson()->setHatType_ColorARGB($results["HatType_ColorARGB"]);
-				$tempEntity->getPerson()->setHatType_HatTypeStyle_HatTypeStyle_Description($results["HatType_HatTypeStyle_HatTypeStyle_Description"]);
-				$tempEntity->getPerson()->setPerson_id($results["Husband_Person_id"]);
-				$tempEntity->getPerson()->setOwnsCar_vin($results["OwnsCar_vin"]);
-				$tempEntity->getPerson()->setGender_Gender_Code($results["Gender_Gender_Code"]);
-				$tempEntity->getPerson()->sethasParents($results["hasParents"]);
-				$tempEntity->getPerson()->setValueType1Value($results["ValueType1DoesSomethingElseWith_ValueType1Value"]);
-				$tempEntity->getPerson()->setOptionalUniqueDecimal($results["OptionalUniqueDecimal"]);
-				$tempEntity->getPerson()->setMandatoryUniqueDecimal($results["MandatoryUniqueDecimal"]);
-				$tempEntity->getPerson()->setMandatoryUniqueString($results["MandatoryUniqueString"]);
-				$retVal[] = $tempEntity;
-			}
-			return $retVal;
-		}
-		catch (Exception $exc) {
-			return null;
-		}
-	}
-	// <summary>Retrieves the specified MalePersonobject from the database</summary>
-	public function getSingle(/*int*/ $Person_id) {
-		try {
-			$retVal = new MalePerson();
-			$db = DataAccess::getDataAdapter();
-			$db->setFetchMode(PDO::FETCH_ASSOC);
-			$select = $db->select();
-			$select->from("Person", "*");
-			$select->where("Person_id = ?", $Person_id);
-			$row = $db->fetchRow($select);
-			$retVal->getPerson()->setFirstName($row["FirstName"]);
-			$retVal->getPerson()->setDate_YMD($row["Date_YMD"]);
-			$retVal->getPerson()->setLastName($row["LastName"]);
-			$retVal->getPerson()->setOptionalUniqueString($row["OptionalUniqueString"]);
-			$retVal->getPerson()->setHatType_ColorARGB($row["HatType_ColorARGB"]);
-			$retVal->getPerson()->setHatType_HatTypeStyle_HatTypeStyle_Description($row["HatType_HatTypeStyle_HatTypeStyle_Description"]);
-			$retVal->getPerson()->setPerson_id($row["Husband_Person_id"]);
-			$retVal->getPerson()->setOwnsCar_vin($row["OwnsCar_vin"]);
-			$retVal->getPerson()->setGender_Gender_Code($row["Gender_Gender_Code"]);
-			$retVal->getPerson()->sethasParents($row["hasParents"]);
-			$retVal->getPerson()->setValueType1Value($row["ValueType1DoesSomethingElseWith_ValueType1Value"]);
-			$retVal->getPerson()->setOptionalUniqueDecimal($row["OptionalUniqueDecimal"]);
-			$retVal->getPerson()->setMandatoryUniqueDecimal($row["MandatoryUniqueDecimal"]);
-			$retVal->getPerson()->setMandatoryUniqueString($row["MandatoryUniqueString"]);
-			return $retVal;
-		}
-		catch (Exception $exc) {
-			return null;
-		}
-	}
-	// <summary>Inserts the given MalePerson object into the database</summary>
-	public function insert(MalePerson $MalePerson) {
-		$retVal = false;
-		try {
-			$db = DataAccess::getDataAdapter();
-			$dataArray = array();
-			$dataArray["FirstName"] = $MalePerson->getPerson()->getFirstName();
-			$dataArray["Person_id"] = $MalePerson->getPerson()->getPerson_id();
-			$dataArray["Date_YMD"] = $MalePerson->getPerson()->getDate_YMD();
-			$dataArray["LastName"] = $MalePerson->getPerson()->getLastName();
-			$dataArray["OptionalUniqueString"] = $MalePerson->getPerson()->getOptionalUniqueString();
-			$dataArray["HatType_ColorARGB"] = $MalePerson->getPerson()->getHatType_ColorARGB();
-			$dataArray["HatType_HatTypeStyle_HatTypeStyle_Description"] = $MalePerson->getPerson()->getHatType_HatTypeStyle_HatTypeStyle_Description();
-			$dataArray["Husband"] = $MalePerson->getPerson()->getPerson_id();
-			$dataArray["OwnsCar_vin"] = $MalePerson->getPerson()->getOwnsCar_vin();
-			$dataArray["Gender_Gender_Code"] = $MalePerson->getPerson()->getGender_Gender_Code();
-			$dataArray["hasParents"] = $MalePerson->getPerson()->gethasParents();
-			$dataArray["ValueType1DoesSomethingElseWith"] = $MalePerson->getPerson()->getValueType1Value();
-			$dataArray["OptionalUniqueDecimal"] = $MalePerson->getPerson()->getOptionalUniqueDecimal();
-			$dataArray["MandatoryUniqueDecimal"] = $MalePerson->getPerson()->getMandatoryUniqueDecimal();
-			$dataArray["MandatoryUniqueString"] = $MalePerson->getPerson()->getMandatoryUniqueString();
-			$nrRowsAffected = $db->insert("MalePerson", $dataArray);
-		}
-		catch (Exception $exc) {
-		}
-		return $retVal;
-	}
-	// <summary>Updates the given MalePerson object in the database</summary>
-	public function update(MalePerson $MalePerson) {
-		$retVal = false;
-		try {
-			$db = DataAccess::getDataAdapter();
-			$dataArray = array();
-			$dataArray["FirstName"] = $MalePerson->getPerson()->getFirstName();
-			$dataArray["Person_id"] = $MalePerson->getPerson()->getPerson_id();
-			$dataArray["Date_YMD"] = $MalePerson->getPerson()->getDate_YMD();
-			$dataArray["LastName"] = $MalePerson->getPerson()->getLastName();
-			$dataArray["OptionalUniqueString"] = $MalePerson->getPerson()->getOptionalUniqueString();
-			$dataArray["HatType_ColorARGB"] = $MalePerson->getPerson()->getHatType_ColorARGB();
-			$dataArray["HatType_HatTypeStyle_HatTypeStyle_Description"] = $MalePerson->getPerson()->getHatType_HatTypeStyle_HatTypeStyle_Description();
-			$dataArray["Husband"] = $MalePerson->getPerson()->getPerson_id();
-			$dataArray["OwnsCar_vin"] = $MalePerson->getPerson()->getOwnsCar_vin();
-			$dataArray["Gender_Gender_Code"] = $MalePerson->getPerson()->getGender_Gender_Code();
-			$dataArray["hasParents"] = $MalePerson->getPerson()->gethasParents();
-			$dataArray["ValueType1DoesSomethingElseWith"] = $MalePerson->getPerson()->getValueType1Value();
-			$dataArray["OptionalUniqueDecimal"] = $MalePerson->getPerson()->getOptionalUniqueDecimal();
-			$dataArray["MandatoryUniqueDecimal"] = $MalePerson->getPerson()->getMandatoryUniqueDecimal();
-			$dataArray["MandatoryUniqueString"] = $MalePerson->getPerson()->getMandatoryUniqueString();
-			$whereClause = $db->quoteInto("Person_id = ?", $MalePerson->getPerson()->getPerson_id());
-			$nrRowsAffected = $db->update("MalePerson", $dataArray, $whereClause);
-		}
-		catch (Exception $exc) {
-		}
-		return $retVal;
-	}
-	// <summary>Deletes the given MalePerson object from the database</summary>
-	public function delete(MalePerson $MalePerson) {
-		$retVal = false;
-		try {
-			$db = DataAccess::getDataAdapter();
-			$whereClause = $db->quoteInto("Person_id = ?", $MalePerson->getPerson()->getPerson_id());
-			$nrRowsAffected = $db->delete("MalePerson", $whereClause);
-		}
-		catch (Exception $exc) {
-		}
-		return $retVal;
-	}
-	// <summary>Retrieves a collection of ChildPerson objects by the given MalePerson object</summary>
-	public function get_ChildPerson_Collection_By_Father(/*int*/ $Person_id) {
-		try {
-			$retVal = null;
-			$db = DataAccess::getDataAdapter();
-			$select = $db->select();
-			$select->from("Person", "*");
-			$select->where("Person_id = ?", $Person_id);
-			$db->setFetchMode(PDO::FETCH_ASSOC);
-			$result = $db->fetchPairs($select);
-			$rowCount = count($result);
-			for ($i = 0; $i < $rowCount; ++$i) {
-				$tempEntity = new ChildPerson();
-				$tempEntity->getPerson()->setFirstName($results["FirstName"]);
-				$tempEntity->getPerson()->setDate_YMD($results["Date_YMD"]);
-				$tempEntity->getPerson()->setLastName($results["LastName"]);
-				$tempEntity->getPerson()->setOptionalUniqueString($results["OptionalUniqueString"]);
-				$tempEntity->getPerson()->setHatType_ColorARGB($results["HatType_ColorARGB"]);
-				$tempEntity->getPerson()->setHatType_HatTypeStyle_HatTypeStyle_Description($results["HatType_HatTypeStyle_HatTypeStyle_Description"]);
-				$tempEntity->getPerson()->setPerson_id($results["Husband_Person_id"]);
-				$tempEntity->getPerson()->setOwnsCar_vin($results["OwnsCar_vin"]);
-				$tempEntity->getPerson()->setGender_Gender_Code($results["Gender_Gender_Code"]);
-				$tempEntity->getPerson()->sethasParents($results["hasParents"]);
-				$tempEntity->getPerson()->setValueType1Value($results["ValueType1DoesSomethingElseWith_ValueType1Value"]);
-				$tempEntity->getPerson()->setOptionalUniqueDecimal($results["OptionalUniqueDecimal"]);
-				$tempEntity->getPerson()->setMandatoryUniqueDecimal($results["MandatoryUniqueDecimal"]);
-				$tempEntity->getPerson()->setMandatoryUniqueString($results["MandatoryUniqueString"]);
-				$retVal[] = $tempEntity;
-			}
-			return $retVal;
-		}
-		catch (Exception $exc) {
-			return null;
-		}
-	}
-}
-if (!class_exists('MalePersonDao')) {
-	class MalePersonDao extends MalePersonDaoBase {
-		public function __construct() {
-			parent::__construct();
-		}
-	}
-}
-class FemalePersonDaoBase {
-	private static $instance;
-	// <summary>Instantiates a new instance of FemalePersonDao</summary>
-	public function __construct() {
-	}
-	public static function getInstance() {
-		if (!isset(instance)) {
-			instance = new FemalePersonDao();
-		}
-		return instance;
-	}
-	// <summary>Retrieves the entire collection of FemalePerson objects</summary>
-	public function getAll() {
-		try {
-			$retVal = null;
-			$db = DataAccess::getDataAdapter();
-			$select = $db->select();
-			$select->from("Person", "*");
-			$db->setFetchMode(PDO::FETCH_ASSOC);
-			$result = $db->fetchPairs($select);
-			$rowCount = count($result);
-			for ($i = 0; $i < $rowCount; ++$i) {
-				$tempEntity = new FemalePerson();
-				$tempEntity->getPerson()->setFirstName($results["FirstName"]);
-				$tempEntity->getPerson()->setDate_YMD($results["Date_YMD"]);
-				$tempEntity->getPerson()->setLastName($results["LastName"]);
-				$tempEntity->getPerson()->setOptionalUniqueString($results["OptionalUniqueString"]);
-				$tempEntity->getPerson()->setHatType_ColorARGB($results["HatType_ColorARGB"]);
-				$tempEntity->getPerson()->setHatType_HatTypeStyle_HatTypeStyle_Description($results["HatType_HatTypeStyle_HatTypeStyle_Description"]);
-				$tempEntity->getPerson()->setPerson_id($results["Husband_Person_id"]);
-				$tempEntity->getPerson()->setOwnsCar_vin($results["OwnsCar_vin"]);
-				$tempEntity->getPerson()->setGender_Gender_Code($results["Gender_Gender_Code"]);
-				$tempEntity->getPerson()->sethasParents($results["hasParents"]);
-				$tempEntity->getPerson()->setValueType1Value($results["ValueType1DoesSomethingElseWith_ValueType1Value"]);
-				$tempEntity->getPerson()->setOptionalUniqueDecimal($results["OptionalUniqueDecimal"]);
-				$tempEntity->getPerson()->setMandatoryUniqueDecimal($results["MandatoryUniqueDecimal"]);
-				$tempEntity->getPerson()->setMandatoryUniqueString($results["MandatoryUniqueString"]);
-				$retVal[] = $tempEntity;
-			}
-			return $retVal;
-		}
-		catch (Exception $exc) {
-			return null;
-		}
-	}
-	// <summary>Retrieves the specified FemalePersonobject from the database</summary>
-	public function getSingle(/*int*/ $Person_id) {
-		try {
-			$retVal = new FemalePerson();
-			$db = DataAccess::getDataAdapter();
-			$db->setFetchMode(PDO::FETCH_ASSOC);
-			$select = $db->select();
-			$select->from("Person", "*");
-			$select->where("Person_id = ?", $Person_id);
-			$row = $db->fetchRow($select);
-			$retVal->getPerson()->setFirstName($row["FirstName"]);
-			$retVal->getPerson()->setDate_YMD($row["Date_YMD"]);
-			$retVal->getPerson()->setLastName($row["LastName"]);
-			$retVal->getPerson()->setOptionalUniqueString($row["OptionalUniqueString"]);
-			$retVal->getPerson()->setHatType_ColorARGB($row["HatType_ColorARGB"]);
-			$retVal->getPerson()->setHatType_HatTypeStyle_HatTypeStyle_Description($row["HatType_HatTypeStyle_HatTypeStyle_Description"]);
-			$retVal->getPerson()->setPerson_id($row["Husband_Person_id"]);
-			$retVal->getPerson()->setOwnsCar_vin($row["OwnsCar_vin"]);
-			$retVal->getPerson()->setGender_Gender_Code($row["Gender_Gender_Code"]);
-			$retVal->getPerson()->sethasParents($row["hasParents"]);
-			$retVal->getPerson()->setValueType1Value($row["ValueType1DoesSomethingElseWith_ValueType1Value"]);
-			$retVal->getPerson()->setOptionalUniqueDecimal($row["OptionalUniqueDecimal"]);
-			$retVal->getPerson()->setMandatoryUniqueDecimal($row["MandatoryUniqueDecimal"]);
-			$retVal->getPerson()->setMandatoryUniqueString($row["MandatoryUniqueString"]);
-			return $retVal;
-		}
-		catch (Exception $exc) {
-			return null;
-		}
-	}
-	// <summary>Inserts the given FemalePerson object into the database</summary>
-	public function insert(FemalePerson $FemalePerson) {
-		$retVal = false;
-		try {
-			$db = DataAccess::getDataAdapter();
-			$dataArray = array();
-			$dataArray["FirstName"] = $FemalePerson->getPerson()->getFirstName();
-			$dataArray["Person_id"] = $FemalePerson->getPerson()->getPerson_id();
-			$dataArray["Date_YMD"] = $FemalePerson->getPerson()->getDate_YMD();
-			$dataArray["LastName"] = $FemalePerson->getPerson()->getLastName();
-			$dataArray["OptionalUniqueString"] = $FemalePerson->getPerson()->getOptionalUniqueString();
-			$dataArray["HatType_ColorARGB"] = $FemalePerson->getPerson()->getHatType_ColorARGB();
-			$dataArray["HatType_HatTypeStyle_HatTypeStyle_Description"] = $FemalePerson->getPerson()->getHatType_HatTypeStyle_HatTypeStyle_Description();
-			$dataArray["Husband"] = $FemalePerson->getPerson()->getPerson_id();
-			$dataArray["OwnsCar_vin"] = $FemalePerson->getPerson()->getOwnsCar_vin();
-			$dataArray["Gender_Gender_Code"] = $FemalePerson->getPerson()->getGender_Gender_Code();
-			$dataArray["hasParents"] = $FemalePerson->getPerson()->gethasParents();
-			$dataArray["ValueType1DoesSomethingElseWith"] = $FemalePerson->getPerson()->getValueType1Value();
-			$dataArray["OptionalUniqueDecimal"] = $FemalePerson->getPerson()->getOptionalUniqueDecimal();
-			$dataArray["MandatoryUniqueDecimal"] = $FemalePerson->getPerson()->getMandatoryUniqueDecimal();
-			$dataArray["MandatoryUniqueString"] = $FemalePerson->getPerson()->getMandatoryUniqueString();
-			$nrRowsAffected = $db->insert("FemalePerson", $dataArray);
-		}
-		catch (Exception $exc) {
-		}
-		return $retVal;
-	}
-	// <summary>Updates the given FemalePerson object in the database</summary>
-	public function update(FemalePerson $FemalePerson) {
-		$retVal = false;
-		try {
-			$db = DataAccess::getDataAdapter();
-			$dataArray = array();
-			$dataArray["FirstName"] = $FemalePerson->getPerson()->getFirstName();
-			$dataArray["Person_id"] = $FemalePerson->getPerson()->getPerson_id();
-			$dataArray["Date_YMD"] = $FemalePerson->getPerson()->getDate_YMD();
-			$dataArray["LastName"] = $FemalePerson->getPerson()->getLastName();
-			$dataArray["OptionalUniqueString"] = $FemalePerson->getPerson()->getOptionalUniqueString();
-			$dataArray["HatType_ColorARGB"] = $FemalePerson->getPerson()->getHatType_ColorARGB();
-			$dataArray["HatType_HatTypeStyle_HatTypeStyle_Description"] = $FemalePerson->getPerson()->getHatType_HatTypeStyle_HatTypeStyle_Description();
-			$dataArray["Husband"] = $FemalePerson->getPerson()->getPerson_id();
-			$dataArray["OwnsCar_vin"] = $FemalePerson->getPerson()->getOwnsCar_vin();
-			$dataArray["Gender_Gender_Code"] = $FemalePerson->getPerson()->getGender_Gender_Code();
-			$dataArray["hasParents"] = $FemalePerson->getPerson()->gethasParents();
-			$dataArray["ValueType1DoesSomethingElseWith"] = $FemalePerson->getPerson()->getValueType1Value();
-			$dataArray["OptionalUniqueDecimal"] = $FemalePerson->getPerson()->getOptionalUniqueDecimal();
-			$dataArray["MandatoryUniqueDecimal"] = $FemalePerson->getPerson()->getMandatoryUniqueDecimal();
-			$dataArray["MandatoryUniqueString"] = $FemalePerson->getPerson()->getMandatoryUniqueString();
-			$whereClause = $db->quoteInto("Person_id = ?", $FemalePerson->getPerson()->getPerson_id());
-			$nrRowsAffected = $db->update("FemalePerson", $dataArray, $whereClause);
-		}
-		catch (Exception $exc) {
-		}
-		return $retVal;
-	}
-	// <summary>Deletes the given FemalePerson object from the database</summary>
-	public function delete(FemalePerson $FemalePerson) {
-		$retVal = false;
-		try {
-			$db = DataAccess::getDataAdapter();
-			$whereClause = $db->quoteInto("Person_id = ?", $FemalePerson->getPerson()->getPerson_id());
-			$nrRowsAffected = $db->delete("FemalePerson", $whereClause);
-		}
-		catch (Exception $exc) {
-		}
-		return $retVal;
-	}
-	// <summary>Retrieves a collection of ChildPerson objects by the given FemalePerson object</summary>
-	public function get_ChildPerson_Collection_By_Mother(/*int*/ $Person_id) {
-		try {
-			$retVal = null;
-			$db = DataAccess::getDataAdapter();
-			$select = $db->select();
-			$select->from("Person", "*");
-			$select->where("Person_id = ?", $Person_id);
-			$db->setFetchMode(PDO::FETCH_ASSOC);
-			$result = $db->fetchPairs($select);
-			$rowCount = count($result);
-			for ($i = 0; $i < $rowCount; ++$i) {
-				$tempEntity = new ChildPerson();
-				$tempEntity->getPerson()->setFirstName($results["FirstName"]);
-				$tempEntity->getPerson()->setDate_YMD($results["Date_YMD"]);
-				$tempEntity->getPerson()->setLastName($results["LastName"]);
-				$tempEntity->getPerson()->setOptionalUniqueString($results["OptionalUniqueString"]);
-				$tempEntity->getPerson()->setHatType_ColorARGB($results["HatType_ColorARGB"]);
-				$tempEntity->getPerson()->setHatType_HatTypeStyle_HatTypeStyle_Description($results["HatType_HatTypeStyle_HatTypeStyle_Description"]);
-				$tempEntity->getPerson()->setPerson_id($results["Husband_Person_id"]);
-				$tempEntity->getPerson()->setOwnsCar_vin($results["OwnsCar_vin"]);
-				$tempEntity->getPerson()->setGender_Gender_Code($results["Gender_Gender_Code"]);
-				$tempEntity->getPerson()->sethasParents($results["hasParents"]);
-				$tempEntity->getPerson()->setValueType1Value($results["ValueType1DoesSomethingElseWith_ValueType1Value"]);
-				$tempEntity->getPerson()->setOptionalUniqueDecimal($results["OptionalUniqueDecimal"]);
-				$tempEntity->getPerson()->setMandatoryUniqueDecimal($results["MandatoryUniqueDecimal"]);
-				$tempEntity->getPerson()->setMandatoryUniqueString($results["MandatoryUniqueString"]);
-				$retVal[] = $tempEntity;
-			}
-			return $retVal;
-		}
-		catch (Exception $exc) {
-			return null;
-		}
-	}
-}
-if (!class_exists('FemalePersonDao')) {
-	class FemalePersonDao extends FemalePersonDaoBase {
-		public function __construct() {
-			parent::__construct();
-		}
-	}
-}
-class ChildPersonDaoBase {
-	private static $instance;
-	// <summary>Instantiates a new instance of ChildPersonDao</summary>
-	public function __construct() {
-	}
-	public static function getInstance() {
-		if (!isset(instance)) {
-			instance = new ChildPersonDao();
-		}
-		return instance;
-	}
-	// <summary>Retrieves the entire collection of ChildPerson objects</summary>
-	public function getAll() {
-		try {
-			$retVal = null;
-			$db = DataAccess::getDataAdapter();
-			$select = $db->select();
-			$select->from("Person", "*");
-			$db->setFetchMode(PDO::FETCH_ASSOC);
-			$result = $db->fetchPairs($select);
-			$rowCount = count($result);
-			for ($i = 0; $i < $rowCount; ++$i) {
-				$tempEntity = new ChildPerson();
-				$tempEntity->getPerson()->setFirstName($results["FirstName"]);
-				$tempEntity->getPerson()->setDate_YMD($results["Date_YMD"]);
-				$tempEntity->getPerson()->setLastName($results["LastName"]);
-				$tempEntity->getPerson()->setOptionalUniqueString($results["OptionalUniqueString"]);
-				$tempEntity->getPerson()->setHatType_ColorARGB($results["HatType_ColorARGB"]);
-				$tempEntity->getPerson()->setHatType_HatTypeStyle_HatTypeStyle_Description($results["HatType_HatTypeStyle_HatTypeStyle_Description"]);
-				$tempEntity->getPerson()->setPerson_id($results["Husband_Person_id"]);
-				$tempEntity->getPerson()->setOwnsCar_vin($results["OwnsCar_vin"]);
-				$tempEntity->getPerson()->setGender_Gender_Code($results["Gender_Gender_Code"]);
-				$tempEntity->getPerson()->sethasParents($results["hasParents"]);
-				$tempEntity->getPerson()->setValueType1Value($results["ValueType1DoesSomethingElseWith_ValueType1Value"]);
-				$tempEntity->getPerson()->setOptionalUniqueDecimal($results["OptionalUniqueDecimal"]);
-				$tempEntity->getPerson()->setMandatoryUniqueDecimal($results["MandatoryUniqueDecimal"]);
-				$tempEntity->getPerson()->setMandatoryUniqueString($results["MandatoryUniqueString"]);
-				$retVal[] = $tempEntity;
-			}
-			return $retVal;
-		}
-		catch (Exception $exc) {
-			return null;
-		}
-	}
-	// <summary>Retrieves the specified ChildPersonobject from the database</summary>
-	public function getSingle(/*int*/ $Person_id, /*decimal*/ $BirthOrder_BirthOrder_Nr, /*int*/ $Person_id) {
-		try {
-			$retVal = new ChildPerson();
-			$db = DataAccess::getDataAdapter();
-			$db->setFetchMode(PDO::FETCH_ASSOC);
-			$select = $db->select();
-			$select->from("Person", "*");
-			$select->where("Person_id = ?", $Person_id);
-			$select->where("BirthOrder_BirthOrder_Nr = ?", $BirthOrder_BirthOrder_Nr);
-			$select->where("Person_id = ?", $Person_id);
-			$row = $db->fetchRow($select);
-			$retVal->getPerson()->setFirstName($row["FirstName"]);
-			$retVal->getPerson()->setDate_YMD($row["Date_YMD"]);
-			$retVal->getPerson()->setLastName($row["LastName"]);
-			$retVal->getPerson()->setOptionalUniqueString($row["OptionalUniqueString"]);
-			$retVal->getPerson()->setHatType_ColorARGB($row["HatType_ColorARGB"]);
-			$retVal->getPerson()->setHatType_HatTypeStyle_HatTypeStyle_Description($row["HatType_HatTypeStyle_HatTypeStyle_Description"]);
-			$retVal->getPerson()->setPerson_id($row["Husband_Person_id"]);
-			$retVal->getPerson()->setOwnsCar_vin($row["OwnsCar_vin"]);
-			$retVal->getPerson()->setGender_Gender_Code($row["Gender_Gender_Code"]);
-			$retVal->getPerson()->sethasParents($row["hasParents"]);
-			$retVal->getPerson()->setValueType1Value($row["ValueType1DoesSomethingElseWith_ValueType1Value"]);
-			$retVal->getPerson()->setOptionalUniqueDecimal($row["OptionalUniqueDecimal"]);
-			$retVal->getPerson()->setMandatoryUniqueDecimal($row["MandatoryUniqueDecimal"]);
-			$retVal->getPerson()->setMandatoryUniqueString($row["MandatoryUniqueString"]);
-			return $retVal;
-		}
-		catch (Exception $exc) {
-			return null;
-		}
-	}
-	// <summary>Inserts the given ChildPerson object into the database</summary>
-	public function insert(ChildPerson $ChildPerson) {
-		$retVal = false;
-		try {
-			$db = DataAccess::getDataAdapter();
-			$dataArray = array();
-			$dataArray["FirstName"] = $ChildPerson->getPerson()->getFirstName();
-			$dataArray["Person_id"] = $ChildPerson->getPerson()->getPerson_id();
-			$dataArray["Date_YMD"] = $ChildPerson->getPerson()->getDate_YMD();
-			$dataArray["LastName"] = $ChildPerson->getPerson()->getLastName();
-			$dataArray["OptionalUniqueString"] = $ChildPerson->getPerson()->getOptionalUniqueString();
-			$dataArray["HatType_ColorARGB"] = $ChildPerson->getPerson()->getHatType_ColorARGB();
-			$dataArray["HatType_HatTypeStyle_HatTypeStyle_Description"] = $ChildPerson->getPerson()->getHatType_HatTypeStyle_HatTypeStyle_Description();
-			$dataArray["Husband"] = $ChildPerson->getPerson()->getPerson_id();
-			$dataArray["OwnsCar_vin"] = $ChildPerson->getPerson()->getOwnsCar_vin();
-			$dataArray["Gender_Gender_Code"] = $ChildPerson->getPerson()->getGender_Gender_Code();
-			$dataArray["hasParents"] = $ChildPerson->getPerson()->gethasParents();
-			$dataArray["ValueType1DoesSomethingElseWith"] = $ChildPerson->getPerson()->getValueType1Value();
-			$dataArray["OptionalUniqueDecimal"] = $ChildPerson->getPerson()->getOptionalUniqueDecimal();
-			$dataArray["MandatoryUniqueDecimal"] = $ChildPerson->getPerson()->getMandatoryUniqueDecimal();
-			$dataArray["MandatoryUniqueString"] = $ChildPerson->getPerson()->getMandatoryUniqueString();
-			$dataArray["BirthOrder_BirthOrder_Nr"] = $ChildPerson->getBirthOrder_BirthOrder_Nr();
-			$nrRowsAffected = $db->insert("ChildPerson", $dataArray);
-		}
-		catch (Exception $exc) {
-		}
-		return $retVal;
-	}
-	// <summary>Updates the given ChildPerson object in the database</summary>
-	public function update(ChildPerson $ChildPerson) {
-		$retVal = false;
-		try {
-			$db = DataAccess::getDataAdapter();
-			$dataArray = array();
-			$dataArray["FirstName"] = $ChildPerson->getPerson()->getFirstName();
-			$dataArray["Person_id"] = $ChildPerson->getPerson()->getPerson_id();
-			$dataArray["Date_YMD"] = $ChildPerson->getPerson()->getDate_YMD();
-			$dataArray["LastName"] = $ChildPerson->getPerson()->getLastName();
-			$dataArray["OptionalUniqueString"] = $ChildPerson->getPerson()->getOptionalUniqueString();
-			$dataArray["HatType_ColorARGB"] = $ChildPerson->getPerson()->getHatType_ColorARGB();
-			$dataArray["HatType_HatTypeStyle_HatTypeStyle_Description"] = $ChildPerson->getPerson()->getHatType_HatTypeStyle_HatTypeStyle_Description();
-			$dataArray["Husband"] = $ChildPerson->getPerson()->getPerson_id();
-			$dataArray["OwnsCar_vin"] = $ChildPerson->getPerson()->getOwnsCar_vin();
-			$dataArray["Gender_Gender_Code"] = $ChildPerson->getPerson()->getGender_Gender_Code();
-			$dataArray["hasParents"] = $ChildPerson->getPerson()->gethasParents();
-			$dataArray["ValueType1DoesSomethingElseWith"] = $ChildPerson->getPerson()->getValueType1Value();
-			$dataArray["OptionalUniqueDecimal"] = $ChildPerson->getPerson()->getOptionalUniqueDecimal();
-			$dataArray["MandatoryUniqueDecimal"] = $ChildPerson->getPerson()->getMandatoryUniqueDecimal();
-			$dataArray["MandatoryUniqueString"] = $ChildPerson->getPerson()->getMandatoryUniqueString();
-			$dataArray["BirthOrder_BirthOrder_Nr"] = $ChildPerson->getBirthOrder_BirthOrder_Nr();
-			$whereClause = $db->quoteInto("Person_id = ?", $ChildPerson->getPerson()->getPerson_id()) . $db->quoteInto("BirthOrder_BirthOrder_Nr = ?", $ChildPerson->getBirthOrder_BirthOrder_Nr()) . $db->quoteInto("Person_id = ?", $ChildPerson->getPerson()->getPerson_id());
-			$nrRowsAffected = $db->update("ChildPerson", $dataArray, $whereClause);
-		}
-		catch (Exception $exc) {
-		}
-		return $retVal;
-	}
-	// <summary>Deletes the given ChildPerson object from the database</summary>
-	public function delete(ChildPerson $ChildPerson) {
-		$retVal = false;
-		try {
-			$db = DataAccess::getDataAdapter();
-			$whereClause = $db->quoteInto("Person_id = ?", $ChildPerson->getPerson()->getPerson_id()) . $db->quoteInto("BirthOrder_BirthOrder_Nr = ?", $ChildPerson->getBirthOrder_BirthOrder_Nr()) . $db->quoteInto("Person_id = ?", $ChildPerson->getPerson()->getPerson_id());
-			$nrRowsAffected = $db->delete("ChildPerson", $whereClause);
-		}
-		catch (Exception $exc) {
-		}
-		return $retVal;
-	}
-}
-if (!class_exists('ChildPersonDao')) {
-	class ChildPersonDao extends ChildPersonDaoBase {
-		public function __construct() {
-			parent::__construct();
-		}
-	}
-}
 class DeathDaoBase {
 	private static $instance;
 	// <summary>Instantiates a new instance of DeathDao</summary>
@@ -1099,6 +599,12 @@ class DeathDaoBase {
 				$tempEntity->getPerson()->setOptionalUniqueDecimal($results["OptionalUniqueDecimal"]);
 				$tempEntity->getPerson()->setMandatoryUniqueDecimal($results["MandatoryUniqueDecimal"]);
 				$tempEntity->getPerson()->setMandatoryUniqueString($results["MandatoryUniqueString"]);
+				$tempEntity->getPerson()->setOptionalUniqueTinyInt($results["OptionalUniqueTinyInt"]);
+				$tempEntity->getPerson()->setMandatoryUniqueTinyInt($results["MandatoryUniqueTinyInt"]);
+				$tempEntity->getPerson()->setOptionalNonUniqueTinyInt($results["OptionalNonUniqueTinyInt"]);
+				$tempEntity->getPerson()->setMandatoryNonUniqueTinyInt($results["MandatoryNonUniqueTinyInt"]);
+				$tempEntity->getPerson()->setMandatoryNonUniqueUnconstrainedDecimal($results["MandatoryNonUniqueUnconstrainedDecimal"]);
+				$tempEntity->getPerson()->setMandatoryNonUniqueUnconstrainedFloat($results["MandatoryNonUniqueUnconstrainedFloat"]);
 				$retVal[] = $tempEntity;
 			}
 			return $retVal;
@@ -1131,6 +637,12 @@ class DeathDaoBase {
 			$retVal->getPerson()->setOptionalUniqueDecimal($row["OptionalUniqueDecimal"]);
 			$retVal->getPerson()->setMandatoryUniqueDecimal($row["MandatoryUniqueDecimal"]);
 			$retVal->getPerson()->setMandatoryUniqueString($row["MandatoryUniqueString"]);
+			$retVal->getPerson()->setOptionalUniqueTinyInt($row["OptionalUniqueTinyInt"]);
+			$retVal->getPerson()->setMandatoryUniqueTinyInt($row["MandatoryUniqueTinyInt"]);
+			$retVal->getPerson()->setOptionalNonUniqueTinyInt($row["OptionalNonUniqueTinyInt"]);
+			$retVal->getPerson()->setMandatoryNonUniqueTinyInt($row["MandatoryNonUniqueTinyInt"]);
+			$retVal->getPerson()->setMandatoryNonUniqueUnconstrainedDecimal($row["MandatoryNonUniqueUnconstrainedDecimal"]);
+			$retVal->getPerson()->setMandatoryNonUniqueUnconstrainedFloat($row["MandatoryNonUniqueUnconstrainedFloat"]);
 			return $retVal;
 		}
 		catch (Exception $exc) {
@@ -1158,6 +670,12 @@ class DeathDaoBase {
 			$dataArray["OptionalUniqueDecimal"] = $Death->getPerson()->getOptionalUniqueDecimal();
 			$dataArray["MandatoryUniqueDecimal"] = $Death->getPerson()->getMandatoryUniqueDecimal();
 			$dataArray["MandatoryUniqueString"] = $Death->getPerson()->getMandatoryUniqueString();
+			$dataArray["OptionalUniqueTinyInt"] = $Death->getPerson()->getOptionalUniqueTinyInt();
+			$dataArray["MandatoryUniqueTinyInt"] = $Death->getPerson()->getMandatoryUniqueTinyInt();
+			$dataArray["OptionalNonUniqueTinyInt"] = $Death->getPerson()->getOptionalNonUniqueTinyInt();
+			$dataArray["MandatoryNonUniqueTinyInt"] = $Death->getPerson()->getMandatoryNonUniqueTinyInt();
+			$dataArray["MandatoryNonUniqueUnconstrainedDecimal"] = $Death->getPerson()->getMandatoryNonUniqueUnconstrainedDecimal();
+			$dataArray["MandatoryNonUniqueUnconstrainedFloat"] = $Death->getPerson()->getMandatoryNonUniqueUnconstrainedFloat();
 			$dataArray["Date_YMD"] = $Death->getDate_YMD();
 			$dataArray["DeathCause_DeathCause_Type"] = $Death->getDeathCause_DeathCause_Type();
 			$dataArray["isDead"] = $Death->getisDead();
@@ -1188,6 +706,12 @@ class DeathDaoBase {
 			$dataArray["OptionalUniqueDecimal"] = $Death->getPerson()->getOptionalUniqueDecimal();
 			$dataArray["MandatoryUniqueDecimal"] = $Death->getPerson()->getMandatoryUniqueDecimal();
 			$dataArray["MandatoryUniqueString"] = $Death->getPerson()->getMandatoryUniqueString();
+			$dataArray["OptionalUniqueTinyInt"] = $Death->getPerson()->getOptionalUniqueTinyInt();
+			$dataArray["MandatoryUniqueTinyInt"] = $Death->getPerson()->getMandatoryUniqueTinyInt();
+			$dataArray["OptionalNonUniqueTinyInt"] = $Death->getPerson()->getOptionalNonUniqueTinyInt();
+			$dataArray["MandatoryNonUniqueTinyInt"] = $Death->getPerson()->getMandatoryNonUniqueTinyInt();
+			$dataArray["MandatoryNonUniqueUnconstrainedDecimal"] = $Death->getPerson()->getMandatoryNonUniqueUnconstrainedDecimal();
+			$dataArray["MandatoryNonUniqueUnconstrainedFloat"] = $Death->getPerson()->getMandatoryNonUniqueUnconstrainedFloat();
 			$dataArray["Date_YMD"] = $Death->getDate_YMD();
 			$dataArray["DeathCause_DeathCause_Type"] = $Death->getDeathCause_DeathCause_Type();
 			$dataArray["isDead"] = $Death->getisDead();
@@ -1213,324 +737,6 @@ class DeathDaoBase {
 }
 if (!class_exists('DeathDao')) {
 	class DeathDao extends DeathDaoBase {
-		public function __construct() {
-			parent::__construct();
-		}
-	}
-}
-class NaturalDeathDaoBase {
-	private static $instance;
-	// <summary>Instantiates a new instance of NaturalDeathDao</summary>
-	public function __construct() {
-	}
-	public static function getInstance() {
-		if (!isset(instance)) {
-			instance = new NaturalDeathDao();
-		}
-		return instance;
-	}
-	// <summary>Retrieves the entire collection of NaturalDeath objects</summary>
-	public function getAll() {
-		try {
-			$retVal = null;
-			$db = DataAccess::getDataAdapter();
-			$select = $db->select();
-			$select->from("Person", "*");
-			$db->setFetchMode(PDO::FETCH_ASSOC);
-			$result = $db->fetchPairs($select);
-			$rowCount = count($result);
-			for ($i = 0; $i < $rowCount; ++$i) {
-				$tempEntity = new NaturalDeath();
-				$tempEntity->getDeath()->getPerson()->setFirstName($results["FirstName"]);
-				$tempEntity->getDeath()->getPerson()->setDate_YMD($results["Date_YMD"]);
-				$tempEntity->getDeath()->getPerson()->setLastName($results["LastName"]);
-				$tempEntity->getDeath()->getPerson()->setOptionalUniqueString($results["OptionalUniqueString"]);
-				$tempEntity->getDeath()->getPerson()->setHatType_ColorARGB($results["HatType_ColorARGB"]);
-				$tempEntity->getDeath()->getPerson()->setHatType_HatTypeStyle_HatTypeStyle_Description($results["HatType_HatTypeStyle_HatTypeStyle_Description"]);
-				$tempEntity->getDeath()->getPerson()->setPerson_id($results["Husband_Person_id"]);
-				$tempEntity->getDeath()->getPerson()->setOwnsCar_vin($results["OwnsCar_vin"]);
-				$tempEntity->getDeath()->getPerson()->setGender_Gender_Code($results["Gender_Gender_Code"]);
-				$tempEntity->getDeath()->getPerson()->sethasParents($results["hasParents"]);
-				$tempEntity->getDeath()->getPerson()->setValueType1Value($results["ValueType1DoesSomethingElseWith_ValueType1Value"]);
-				$tempEntity->getDeath()->getPerson()->setOptionalUniqueDecimal($results["OptionalUniqueDecimal"]);
-				$tempEntity->getDeath()->getPerson()->setMandatoryUniqueDecimal($results["MandatoryUniqueDecimal"]);
-				$tempEntity->getDeath()->getPerson()->setMandatoryUniqueString($results["MandatoryUniqueString"]);
-				$retVal[] = $tempEntity;
-			}
-			return $retVal;
-		}
-		catch (Exception $exc) {
-			return null;
-		}
-	}
-	// <summary>Retrieves the specified NaturalDeathobject from the database</summary>
-	public function getSingle(/*int*/ $Person_id) {
-		try {
-			$retVal = new NaturalDeath();
-			$db = DataAccess::getDataAdapter();
-			$db->setFetchMode(PDO::FETCH_ASSOC);
-			$select = $db->select();
-			$select->from("Person", "*");
-			$select->where("Person_id = ?", $Person_id);
-			$row = $db->fetchRow($select);
-			$retVal->getDeath()->getPerson()->setFirstName($row["FirstName"]);
-			$retVal->getDeath()->getPerson()->setDate_YMD($row["Date_YMD"]);
-			$retVal->getDeath()->getPerson()->setLastName($row["LastName"]);
-			$retVal->getDeath()->getPerson()->setOptionalUniqueString($row["OptionalUniqueString"]);
-			$retVal->getDeath()->getPerson()->setHatType_ColorARGB($row["HatType_ColorARGB"]);
-			$retVal->getDeath()->getPerson()->setHatType_HatTypeStyle_HatTypeStyle_Description($row["HatType_HatTypeStyle_HatTypeStyle_Description"]);
-			$retVal->getDeath()->getPerson()->setPerson_id($row["Husband_Person_id"]);
-			$retVal->getDeath()->getPerson()->setOwnsCar_vin($row["OwnsCar_vin"]);
-			$retVal->getDeath()->getPerson()->setGender_Gender_Code($row["Gender_Gender_Code"]);
-			$retVal->getDeath()->getPerson()->sethasParents($row["hasParents"]);
-			$retVal->getDeath()->getPerson()->setValueType1Value($row["ValueType1DoesSomethingElseWith_ValueType1Value"]);
-			$retVal->getDeath()->getPerson()->setOptionalUniqueDecimal($row["OptionalUniqueDecimal"]);
-			$retVal->getDeath()->getPerson()->setMandatoryUniqueDecimal($row["MandatoryUniqueDecimal"]);
-			$retVal->getDeath()->getPerson()->setMandatoryUniqueString($row["MandatoryUniqueString"]);
-			return $retVal;
-		}
-		catch (Exception $exc) {
-			return null;
-		}
-	}
-	// <summary>Inserts the given NaturalDeath object into the database</summary>
-	public function insert(NaturalDeath $NaturalDeath) {
-		$retVal = false;
-		try {
-			$db = DataAccess::getDataAdapter();
-			$dataArray = array();
-			$dataArray["FirstName"] = $NaturalDeath->getDeath()->getPerson()->getFirstName();
-			$dataArray["Person_id"] = $NaturalDeath->getDeath()->getPerson()->getPerson_id();
-			$dataArray["Date_YMD"] = $NaturalDeath->getDeath()->getPerson()->getDate_YMD();
-			$dataArray["LastName"] = $NaturalDeath->getDeath()->getPerson()->getLastName();
-			$dataArray["OptionalUniqueString"] = $NaturalDeath->getDeath()->getPerson()->getOptionalUniqueString();
-			$dataArray["HatType_ColorARGB"] = $NaturalDeath->getDeath()->getPerson()->getHatType_ColorARGB();
-			$dataArray["HatType_HatTypeStyle_HatTypeStyle_Description"] = $NaturalDeath->getDeath()->getPerson()->getHatType_HatTypeStyle_HatTypeStyle_Description();
-			$dataArray["Husband"] = $NaturalDeath->getDeath()->getPerson()->getPerson_id();
-			$dataArray["OwnsCar_vin"] = $NaturalDeath->getDeath()->getPerson()->getOwnsCar_vin();
-			$dataArray["Gender_Gender_Code"] = $NaturalDeath->getDeath()->getPerson()->getGender_Gender_Code();
-			$dataArray["hasParents"] = $NaturalDeath->getDeath()->getPerson()->gethasParents();
-			$dataArray["ValueType1DoesSomethingElseWith"] = $NaturalDeath->getDeath()->getPerson()->getValueType1Value();
-			$dataArray["OptionalUniqueDecimal"] = $NaturalDeath->getDeath()->getPerson()->getOptionalUniqueDecimal();
-			$dataArray["MandatoryUniqueDecimal"] = $NaturalDeath->getDeath()->getPerson()->getMandatoryUniqueDecimal();
-			$dataArray["MandatoryUniqueString"] = $NaturalDeath->getDeath()->getPerson()->getMandatoryUniqueString();
-			$dataArray["Date_YMD"] = $NaturalDeath->getDeath()->getDate_YMD();
-			$dataArray["DeathCause_DeathCause_Type"] = $NaturalDeath->getDeath()->getDeathCause_DeathCause_Type();
-			$dataArray["isDead"] = $NaturalDeath->getDeath()->getisDead();
-			$dataArray["isFromProstateCancer"] = $NaturalDeath->getisFromProstateCancer();
-			$nrRowsAffected = $db->insert("NaturalDeath", $dataArray);
-		}
-		catch (Exception $exc) {
-		}
-		return $retVal;
-	}
-	// <summary>Updates the given NaturalDeath object in the database</summary>
-	public function update(NaturalDeath $NaturalDeath) {
-		$retVal = false;
-		try {
-			$db = DataAccess::getDataAdapter();
-			$dataArray = array();
-			$dataArray["FirstName"] = $NaturalDeath->getDeath()->getPerson()->getFirstName();
-			$dataArray["Person_id"] = $NaturalDeath->getDeath()->getPerson()->getPerson_id();
-			$dataArray["Date_YMD"] = $NaturalDeath->getDeath()->getPerson()->getDate_YMD();
-			$dataArray["LastName"] = $NaturalDeath->getDeath()->getPerson()->getLastName();
-			$dataArray["OptionalUniqueString"] = $NaturalDeath->getDeath()->getPerson()->getOptionalUniqueString();
-			$dataArray["HatType_ColorARGB"] = $NaturalDeath->getDeath()->getPerson()->getHatType_ColorARGB();
-			$dataArray["HatType_HatTypeStyle_HatTypeStyle_Description"] = $NaturalDeath->getDeath()->getPerson()->getHatType_HatTypeStyle_HatTypeStyle_Description();
-			$dataArray["Husband"] = $NaturalDeath->getDeath()->getPerson()->getPerson_id();
-			$dataArray["OwnsCar_vin"] = $NaturalDeath->getDeath()->getPerson()->getOwnsCar_vin();
-			$dataArray["Gender_Gender_Code"] = $NaturalDeath->getDeath()->getPerson()->getGender_Gender_Code();
-			$dataArray["hasParents"] = $NaturalDeath->getDeath()->getPerson()->gethasParents();
-			$dataArray["ValueType1DoesSomethingElseWith"] = $NaturalDeath->getDeath()->getPerson()->getValueType1Value();
-			$dataArray["OptionalUniqueDecimal"] = $NaturalDeath->getDeath()->getPerson()->getOptionalUniqueDecimal();
-			$dataArray["MandatoryUniqueDecimal"] = $NaturalDeath->getDeath()->getPerson()->getMandatoryUniqueDecimal();
-			$dataArray["MandatoryUniqueString"] = $NaturalDeath->getDeath()->getPerson()->getMandatoryUniqueString();
-			$dataArray["Date_YMD"] = $NaturalDeath->getDeath()->getDate_YMD();
-			$dataArray["DeathCause_DeathCause_Type"] = $NaturalDeath->getDeath()->getDeathCause_DeathCause_Type();
-			$dataArray["isDead"] = $NaturalDeath->getDeath()->getisDead();
-			$dataArray["isFromProstateCancer"] = $NaturalDeath->getisFromProstateCancer();
-			$whereClause = $db->quoteInto("Person_id = ?", $NaturalDeath->getDeath()->getPerson()->getPerson_id());
-			$nrRowsAffected = $db->update("NaturalDeath", $dataArray, $whereClause);
-		}
-		catch (Exception $exc) {
-		}
-		return $retVal;
-	}
-	// <summary>Deletes the given NaturalDeath object from the database</summary>
-	public function delete(NaturalDeath $NaturalDeath) {
-		$retVal = false;
-		try {
-			$db = DataAccess::getDataAdapter();
-			$whereClause = $db->quoteInto("Person_id = ?", $NaturalDeath->getDeath()->getPerson()->getPerson_id());
-			$nrRowsAffected = $db->delete("NaturalDeath", $whereClause);
-		}
-		catch (Exception $exc) {
-		}
-		return $retVal;
-	}
-}
-if (!class_exists('NaturalDeathDao')) {
-	class NaturalDeathDao extends NaturalDeathDaoBase {
-		public function __construct() {
-			parent::__construct();
-		}
-	}
-}
-class UnnaturalDeathDaoBase {
-	private static $instance;
-	// <summary>Instantiates a new instance of UnnaturalDeathDao</summary>
-	public function __construct() {
-	}
-	public static function getInstance() {
-		if (!isset(instance)) {
-			instance = new UnnaturalDeathDao();
-		}
-		return instance;
-	}
-	// <summary>Retrieves the entire collection of UnnaturalDeath objects</summary>
-	public function getAll() {
-		try {
-			$retVal = null;
-			$db = DataAccess::getDataAdapter();
-			$select = $db->select();
-			$select->from("Person", "*");
-			$db->setFetchMode(PDO::FETCH_ASSOC);
-			$result = $db->fetchPairs($select);
-			$rowCount = count($result);
-			for ($i = 0; $i < $rowCount; ++$i) {
-				$tempEntity = new UnnaturalDeath();
-				$tempEntity->getDeath()->getPerson()->setFirstName($results["FirstName"]);
-				$tempEntity->getDeath()->getPerson()->setDate_YMD($results["Date_YMD"]);
-				$tempEntity->getDeath()->getPerson()->setLastName($results["LastName"]);
-				$tempEntity->getDeath()->getPerson()->setOptionalUniqueString($results["OptionalUniqueString"]);
-				$tempEntity->getDeath()->getPerson()->setHatType_ColorARGB($results["HatType_ColorARGB"]);
-				$tempEntity->getDeath()->getPerson()->setHatType_HatTypeStyle_HatTypeStyle_Description($results["HatType_HatTypeStyle_HatTypeStyle_Description"]);
-				$tempEntity->getDeath()->getPerson()->setPerson_id($results["Husband_Person_id"]);
-				$tempEntity->getDeath()->getPerson()->setOwnsCar_vin($results["OwnsCar_vin"]);
-				$tempEntity->getDeath()->getPerson()->setGender_Gender_Code($results["Gender_Gender_Code"]);
-				$tempEntity->getDeath()->getPerson()->sethasParents($results["hasParents"]);
-				$tempEntity->getDeath()->getPerson()->setValueType1Value($results["ValueType1DoesSomethingElseWith_ValueType1Value"]);
-				$tempEntity->getDeath()->getPerson()->setOptionalUniqueDecimal($results["OptionalUniqueDecimal"]);
-				$tempEntity->getDeath()->getPerson()->setMandatoryUniqueDecimal($results["MandatoryUniqueDecimal"]);
-				$tempEntity->getDeath()->getPerson()->setMandatoryUniqueString($results["MandatoryUniqueString"]);
-				$retVal[] = $tempEntity;
-			}
-			return $retVal;
-		}
-		catch (Exception $exc) {
-			return null;
-		}
-	}
-	// <summary>Retrieves the specified UnnaturalDeathobject from the database</summary>
-	public function getSingle(/*int*/ $Person_id) {
-		try {
-			$retVal = new UnnaturalDeath();
-			$db = DataAccess::getDataAdapter();
-			$db->setFetchMode(PDO::FETCH_ASSOC);
-			$select = $db->select();
-			$select->from("Person", "*");
-			$select->where("Person_id = ?", $Person_id);
-			$row = $db->fetchRow($select);
-			$retVal->getDeath()->getPerson()->setFirstName($row["FirstName"]);
-			$retVal->getDeath()->getPerson()->setDate_YMD($row["Date_YMD"]);
-			$retVal->getDeath()->getPerson()->setLastName($row["LastName"]);
-			$retVal->getDeath()->getPerson()->setOptionalUniqueString($row["OptionalUniqueString"]);
-			$retVal->getDeath()->getPerson()->setHatType_ColorARGB($row["HatType_ColorARGB"]);
-			$retVal->getDeath()->getPerson()->setHatType_HatTypeStyle_HatTypeStyle_Description($row["HatType_HatTypeStyle_HatTypeStyle_Description"]);
-			$retVal->getDeath()->getPerson()->setPerson_id($row["Husband_Person_id"]);
-			$retVal->getDeath()->getPerson()->setOwnsCar_vin($row["OwnsCar_vin"]);
-			$retVal->getDeath()->getPerson()->setGender_Gender_Code($row["Gender_Gender_Code"]);
-			$retVal->getDeath()->getPerson()->sethasParents($row["hasParents"]);
-			$retVal->getDeath()->getPerson()->setValueType1Value($row["ValueType1DoesSomethingElseWith_ValueType1Value"]);
-			$retVal->getDeath()->getPerson()->setOptionalUniqueDecimal($row["OptionalUniqueDecimal"]);
-			$retVal->getDeath()->getPerson()->setMandatoryUniqueDecimal($row["MandatoryUniqueDecimal"]);
-			$retVal->getDeath()->getPerson()->setMandatoryUniqueString($row["MandatoryUniqueString"]);
-			return $retVal;
-		}
-		catch (Exception $exc) {
-			return null;
-		}
-	}
-	// <summary>Inserts the given UnnaturalDeath object into the database</summary>
-	public function insert(UnnaturalDeath $UnnaturalDeath) {
-		$retVal = false;
-		try {
-			$db = DataAccess::getDataAdapter();
-			$dataArray = array();
-			$dataArray["FirstName"] = $UnnaturalDeath->getDeath()->getPerson()->getFirstName();
-			$dataArray["Person_id"] = $UnnaturalDeath->getDeath()->getPerson()->getPerson_id();
-			$dataArray["Date_YMD"] = $UnnaturalDeath->getDeath()->getPerson()->getDate_YMD();
-			$dataArray["LastName"] = $UnnaturalDeath->getDeath()->getPerson()->getLastName();
-			$dataArray["OptionalUniqueString"] = $UnnaturalDeath->getDeath()->getPerson()->getOptionalUniqueString();
-			$dataArray["HatType_ColorARGB"] = $UnnaturalDeath->getDeath()->getPerson()->getHatType_ColorARGB();
-			$dataArray["HatType_HatTypeStyle_HatTypeStyle_Description"] = $UnnaturalDeath->getDeath()->getPerson()->getHatType_HatTypeStyle_HatTypeStyle_Description();
-			$dataArray["Husband"] = $UnnaturalDeath->getDeath()->getPerson()->getPerson_id();
-			$dataArray["OwnsCar_vin"] = $UnnaturalDeath->getDeath()->getPerson()->getOwnsCar_vin();
-			$dataArray["Gender_Gender_Code"] = $UnnaturalDeath->getDeath()->getPerson()->getGender_Gender_Code();
-			$dataArray["hasParents"] = $UnnaturalDeath->getDeath()->getPerson()->gethasParents();
-			$dataArray["ValueType1DoesSomethingElseWith"] = $UnnaturalDeath->getDeath()->getPerson()->getValueType1Value();
-			$dataArray["OptionalUniqueDecimal"] = $UnnaturalDeath->getDeath()->getPerson()->getOptionalUniqueDecimal();
-			$dataArray["MandatoryUniqueDecimal"] = $UnnaturalDeath->getDeath()->getPerson()->getMandatoryUniqueDecimal();
-			$dataArray["MandatoryUniqueString"] = $UnnaturalDeath->getDeath()->getPerson()->getMandatoryUniqueString();
-			$dataArray["Date_YMD"] = $UnnaturalDeath->getDeath()->getDate_YMD();
-			$dataArray["DeathCause_DeathCause_Type"] = $UnnaturalDeath->getDeath()->getDeathCause_DeathCause_Type();
-			$dataArray["isDead"] = $UnnaturalDeath->getDeath()->getisDead();
-			$dataArray["isViolent"] = $UnnaturalDeath->getisViolent();
-			$dataArray["isBloody"] = $UnnaturalDeath->getisBloody();
-			$nrRowsAffected = $db->insert("UnnaturalDeath", $dataArray);
-		}
-		catch (Exception $exc) {
-		}
-		return $retVal;
-	}
-	// <summary>Updates the given UnnaturalDeath object in the database</summary>
-	public function update(UnnaturalDeath $UnnaturalDeath) {
-		$retVal = false;
-		try {
-			$db = DataAccess::getDataAdapter();
-			$dataArray = array();
-			$dataArray["FirstName"] = $UnnaturalDeath->getDeath()->getPerson()->getFirstName();
-			$dataArray["Person_id"] = $UnnaturalDeath->getDeath()->getPerson()->getPerson_id();
-			$dataArray["Date_YMD"] = $UnnaturalDeath->getDeath()->getPerson()->getDate_YMD();
-			$dataArray["LastName"] = $UnnaturalDeath->getDeath()->getPerson()->getLastName();
-			$dataArray["OptionalUniqueString"] = $UnnaturalDeath->getDeath()->getPerson()->getOptionalUniqueString();
-			$dataArray["HatType_ColorARGB"] = $UnnaturalDeath->getDeath()->getPerson()->getHatType_ColorARGB();
-			$dataArray["HatType_HatTypeStyle_HatTypeStyle_Description"] = $UnnaturalDeath->getDeath()->getPerson()->getHatType_HatTypeStyle_HatTypeStyle_Description();
-			$dataArray["Husband"] = $UnnaturalDeath->getDeath()->getPerson()->getPerson_id();
-			$dataArray["OwnsCar_vin"] = $UnnaturalDeath->getDeath()->getPerson()->getOwnsCar_vin();
-			$dataArray["Gender_Gender_Code"] = $UnnaturalDeath->getDeath()->getPerson()->getGender_Gender_Code();
-			$dataArray["hasParents"] = $UnnaturalDeath->getDeath()->getPerson()->gethasParents();
-			$dataArray["ValueType1DoesSomethingElseWith"] = $UnnaturalDeath->getDeath()->getPerson()->getValueType1Value();
-			$dataArray["OptionalUniqueDecimal"] = $UnnaturalDeath->getDeath()->getPerson()->getOptionalUniqueDecimal();
-			$dataArray["MandatoryUniqueDecimal"] = $UnnaturalDeath->getDeath()->getPerson()->getMandatoryUniqueDecimal();
-			$dataArray["MandatoryUniqueString"] = $UnnaturalDeath->getDeath()->getPerson()->getMandatoryUniqueString();
-			$dataArray["Date_YMD"] = $UnnaturalDeath->getDeath()->getDate_YMD();
-			$dataArray["DeathCause_DeathCause_Type"] = $UnnaturalDeath->getDeath()->getDeathCause_DeathCause_Type();
-			$dataArray["isDead"] = $UnnaturalDeath->getDeath()->getisDead();
-			$dataArray["isViolent"] = $UnnaturalDeath->getisViolent();
-			$dataArray["isBloody"] = $UnnaturalDeath->getisBloody();
-			$whereClause = $db->quoteInto("Person_id = ?", $UnnaturalDeath->getDeath()->getPerson()->getPerson_id());
-			$nrRowsAffected = $db->update("UnnaturalDeath", $dataArray, $whereClause);
-		}
-		catch (Exception $exc) {
-		}
-		return $retVal;
-	}
-	// <summary>Deletes the given UnnaturalDeath object from the database</summary>
-	public function delete(UnnaturalDeath $UnnaturalDeath) {
-		$retVal = false;
-		try {
-			$db = DataAccess::getDataAdapter();
-			$whereClause = $db->quoteInto("Person_id = ?", $UnnaturalDeath->getDeath()->getPerson()->getPerson_id());
-			$nrRowsAffected = $db->delete("UnnaturalDeath", $whereClause);
-		}
-		catch (Exception $exc) {
-		}
-		return $retVal;
-	}
-}
-if (!class_exists('UnnaturalDeathDao')) {
-	class UnnaturalDeathDao extends UnnaturalDeathDaoBase {
 		public function __construct() {
 			parent::__construct();
 		}

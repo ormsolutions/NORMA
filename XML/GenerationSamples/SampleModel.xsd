@@ -109,6 +109,11 @@
 			<xs:maxLength value="11" />
 		</xs:restriction>
 	</xs:simpleType>
+	<xs:simpleType name="MandatoryNonUniqueUnconstrainedDecimal">
+		<xs:restriction base="xs:decimal">
+			<xs:fractionDigits value="" />
+		</xs:restriction>
+	</xs:simpleType>
 	<!--Each ORM EntityType and it's Preferred Id or top level ValueType-->
 	<xs:complexType name="PersonDrivesCarIdentifier">
 		<xs:attribute name="DrivesCar_vin" use="required" type="oxs:vin" />
@@ -121,14 +126,7 @@
 	<xs:complexType name="PersonIdentifier">
 		<xs:attribute name="Person_id" use="required" type="xs:integer" />
 	</xs:complexType>
-	<xs:complexType name="MalePersonIdentifier" />
-	<xs:complexType name="FemalePersonIdentifier" />
-	<xs:complexType name="ChildPersonIdentifier">
-		<xs:attribute name="BirthOrder_BirthOrder_Nr" use="required" type="oxs:BirthOrder_Nr" />
-	</xs:complexType>
 	<xs:complexType name="DeathIdentifier" />
-	<xs:complexType name="NaturalDeathIdentifier" />
-	<xs:complexType name="UnnaturalDeathIdentifier" />
 	<xs:complexType name="TaskIdentifier">
 		<xs:attribute name="Task_id" use="required" type="xs:integer" />
 	</xs:complexType>
@@ -169,9 +167,6 @@
 		<xs:complexContent>
 			<xs:extension base="oxs:PersonIdentifier">
 				<xs:sequence>
-					<xs:element name="MalePerson" type="oxs:MalePersonIdentifier" />
-					<xs:element name="FemalePerson" type="oxs:FemalePersonIdentifier" />
-					<xs:element name="ChildPerson" type="oxs:ChildPersonIdentifier" />
 					<xs:element name="Death" type="oxs:DeathIdentifier" />
 					<xs:element name="Husband" type="oxs:PersonIdentifier" />
 					<xs:element name="ValueType1DoesSomethingElseWith" type="oxs:ValueType1Identifier" />
@@ -202,6 +197,12 @@
 				<xs:attribute name="OptionalUniqueDecimal" type="oxs:OptionalUniqueDecimal" use="optional" />
 				<xs:attribute name="MandatoryUniqueDecimal" type="oxs:MandatoryUniqueDecimal" use="required" />
 				<xs:attribute name="MandatoryUniqueString" type="oxs:MandatoryUniqueString" use="required" />
+				<xs:attribute name="OptionalUniqueTinyInt" type="" use="optional" />
+				<xs:attribute name="MandatoryUniqueTinyInt" type="" use="required" />
+				<xs:attribute name="OptionalNonUniqueTinyInt" type="" use="optional" />
+				<xs:attribute name="MandatoryNonUniqueTinyInt" type="" use="required" />
+				<xs:attribute name="MandatoryNonUniqueUnconstrainedDecimal" type="oxs:MandatoryNonUniqueUnconstrainedDecimal" use="required" />
+				<xs:attribute name="MandatoryNonUniqueUnconstrainedFloat" type="xs:float" use="required" />
 			</xs:extension>
 		</xs:complexContent>
 	</xs:complexType>
@@ -345,6 +346,14 @@
 		<xs:unique name="MandatoryUniqueStringUnique">
 			<xs:selector xpath="oxs:SampleModel/oxs:Person" />
 			<xs:field xpath="oxs:MandatoryUniqueString" />
+		</xs:unique>
+		<xs:unique name="OptionalUniqueTinyIntUnique">
+			<xs:selector xpath="oxs:SampleModel/oxs:Person" />
+			<xs:field xpath="oxs:OptionalUniqueTinyInt" />
+		</xs:unique>
+		<xs:unique name="MandatoryUniqueTinyIntUnique">
+			<xs:selector xpath="oxs:SampleModel/oxs:Person" />
+			<xs:field xpath="oxs:MandatoryUniqueTinyInt" />
 		</xs:unique>
 		<!--KeyRefs between Major Object Type groupings-->
 		<xs:keyref name="PersonDrivesCarDrivenByPersonRef" refer="PersonKey">

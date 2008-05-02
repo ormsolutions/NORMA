@@ -99,35 +99,28 @@
 				<owl:onProperty rdf:resource="#MandatoryUniqueString" />
 				<owl:cardinality rdf:datatype="xs:nonNegativeInteger">1</owl:cardinality>
 			</owl:Restriction>
-		</rdfs:subClassOf>
-	</owl:Class>
-	<owl:Class rdf:ID="MalePerson">
-		<!--Preferred Id-->
-		<rdfs:subClassOf />
-	</owl:Class>
-	<owl:Class rdf:ID="FemalePerson">
-		<!--Preferred Id-->
-		<rdfs:subClassOf />
-	</owl:Class>
-	<owl:Class rdf:ID="ChildPerson">
-		<!--Preferred Id-->
-		<rdfs:subClassOf>
-			<owl:unionOf rdf:parseType="Collection">
-				<owl:Restriction>
-					<owl:onProperty rdf:resource="#Father" />
-					<owl:cardinality rdf:datatype="xs:nonNegativeInteger">1</owl:cardinality>
-				</owl:Restriction>
-				<owl:Restriction>
-					<owl:onProperty rdf:resource="#BirthOrder_BirthOrder_Nr" />
-					<owl:cardinality rdf:datatype="xs:nonNegativeInteger">1</owl:cardinality>
-				</owl:Restriction>
-				<owl:Restriction>
-					<owl:onProperty rdf:resource="#Mother" />
-					<owl:cardinality rdf:datatype="xs:nonNegativeInteger">1</owl:cardinality>
-				</owl:Restriction>
-			</owl:unionOf>
 			<owl:Restriction>
-				<owl:onProperty rdf:resource="#BirthOrder_Nr" />
+				<owl:onProperty rdf:resource="#OptionalUniqueTinyInt" />
+				<owl:minCardinality rdf:datatype="xs:nonNegativeInteger">1</owl:minCardinality>
+			</owl:Restriction>
+			<owl:Restriction>
+				<owl:onProperty rdf:resource="#MandatoryUniqueTinyInt" />
+				<owl:cardinality rdf:datatype="xs:nonNegativeInteger">1</owl:cardinality>
+			</owl:Restriction>
+			<owl:Restriction>
+				<owl:onProperty rdf:resource="#OptionalNonUniqueTinyInt" />
+				<owl:minCardinality rdf:datatype="xs:nonNegativeInteger">1</owl:minCardinality>
+			</owl:Restriction>
+			<owl:Restriction>
+				<owl:onProperty rdf:resource="#MandatoryNonUniqueTinyInt" />
+				<owl:cardinality rdf:datatype="xs:nonNegativeInteger">1</owl:cardinality>
+			</owl:Restriction>
+			<owl:Restriction>
+				<owl:onProperty rdf:resource="#MandatoryNonUniqueUnconstrainedDecimal" />
+				<owl:cardinality rdf:datatype="xs:nonNegativeInteger">1</owl:cardinality>
+			</owl:Restriction>
+			<owl:Restriction>
+				<owl:onProperty rdf:resource="#MandatoryNonUniqueUnconstrainedFloat" />
 				<owl:cardinality rdf:datatype="xs:nonNegativeInteger">1</owl:cardinality>
 			</owl:Restriction>
 		</rdfs:subClassOf>
@@ -146,28 +139,6 @@
 			<owl:Restriction>
 				<owl:onProperty rdf:resource="#PersonisDead" />
 				<owl:cardinality rdf:datatype="xs:nonNegativeInteger">1</owl:cardinality>
-			</owl:Restriction>
-		</rdfs:subClassOf>
-	</owl:Class>
-	<owl:Class rdf:ID="NaturalDeath">
-		<!--Preferred Id-->
-		<rdfs:subClassOf>
-			<owl:Restriction>
-				<owl:onProperty rdf:resource="#NaturalDeathisFromProstateCancer" />
-				<owl:minCardinality rdf:datatype="xs:nonNegativeInteger">1</owl:minCardinality>
-			</owl:Restriction>
-		</rdfs:subClassOf>
-	</owl:Class>
-	<owl:Class rdf:ID="UnnaturalDeath">
-		<!--Preferred Id-->
-		<rdfs:subClassOf>
-			<owl:Restriction>
-				<owl:onProperty rdf:resource="#UnnaturalDeathisViolent" />
-				<owl:minCardinality rdf:datatype="xs:nonNegativeInteger">1</owl:minCardinality>
-			</owl:Restriction>
-			<owl:Restriction>
-				<owl:onProperty rdf:resource="#UnnaturalDeathisBloody" />
-				<owl:minCardinality rdf:datatype="xs:nonNegativeInteger">1</owl:minCardinality>
 			</owl:Restriction>
 		</rdfs:subClassOf>
 	</owl:Class>
@@ -323,7 +294,7 @@
 		<rdfs:range rdf:resource="xs:string" />
 	</owl:DatatypeProperty>
 	<owl:DatatypeProperty rdf:ID="BirthOrder_Nr">
-		<rdfs:domain rdf:resource="#ChildPerson" />
+		<rdfs:domain rdf:resource="#" />
 		<rdfs:range />
 	</owl:DatatypeProperty>
 	<owl:DatatypeProperty rdf:ID="Gender_Code">
@@ -361,20 +332,28 @@
 		<rdfs:range rdf:resource="xs:boolean" />
 	</owl:DatatypeProperty>
 	<owl:DatatypeProperty rdf:ID="NaturalDeathisFromProstateCancer">
-		<rdfs:domain rdf:resource="#NaturalDeath" />
+		<rdfs:domain rdf:resource="#" />
 		<rdfs:range rdf:resource="xs:boolean" />
 	</owl:DatatypeProperty>
 	<owl:DatatypeProperty rdf:ID="UnnaturalDeathisViolent">
-		<rdfs:domain rdf:resource="#UnnaturalDeath" />
+		<rdfs:domain rdf:resource="#" />
 		<rdfs:range rdf:resource="xs:boolean" />
 	</owl:DatatypeProperty>
 	<owl:DatatypeProperty rdf:ID="UnnaturalDeathisBloody">
-		<rdfs:domain rdf:resource="#UnnaturalDeath" />
+		<rdfs:domain rdf:resource="#" />
 		<rdfs:range rdf:resource="xs:boolean" />
 	</owl:DatatypeProperty>
 	<owl:DatatypeProperty rdf:ID="PersonhasParents">
 		<rdfs:domain rdf:resource="#Person" />
 		<rdfs:range rdf:resource="xs:boolean" />
+	</owl:DatatypeProperty>
+	<owl:DatatypeProperty rdf:ID="MandatoryNonUniqueUnconstrainedDecimal">
+		<rdfs:domain rdf:resource="#Person" />
+		<rdfs:range rdf:resource="xs:decimalNumber" />
+	</owl:DatatypeProperty>
+	<owl:DatatypeProperty rdf:ID="MandatoryNonUniqueUnconstrainedFloat">
+		<rdfs:domain rdf:resource="#" />
+		<rdfs:range rdf:resource="xs:float" />
 	</owl:DatatypeProperty>
 	<!--Relationships between ORM EntityTypes map to an owl:ObjectProperty-->
 	<owl:ObjectProperty rdf:ID="DrivenByPerson">
@@ -390,27 +369,6 @@
 	</owl:ObjectProperty>
 	<owl:ObjectProperty rdf:ID="PersonHasNickName">
 		<rdfs:inverseOf rdf:resource="#Person" />
-	</owl:ObjectProperty>
-	<owl:ObjectProperty rdf:ID="">
-		<rdfs:domain rdf:resource="#Person" />
-		<rdfs:range rdf:resource="#MalePerson" />
-	</owl:ObjectProperty>
-	<owl:ObjectProperty rdf:ID="">
-		<rdfs:inverseOf rdf:resource="#" />
-	</owl:ObjectProperty>
-	<owl:ObjectProperty rdf:ID="">
-		<rdfs:domain rdf:resource="#Person" />
-		<rdfs:range rdf:resource="#FemalePerson" />
-	</owl:ObjectProperty>
-	<owl:ObjectProperty rdf:ID="">
-		<rdfs:inverseOf rdf:resource="#" />
-	</owl:ObjectProperty>
-	<owl:ObjectProperty rdf:ID="">
-		<rdfs:domain rdf:resource="#Person" />
-		<rdfs:range rdf:resource="#ChildPerson" />
-	</owl:ObjectProperty>
-	<owl:ObjectProperty rdf:ID="">
-		<rdfs:inverseOf rdf:resource="#" />
 	</owl:ObjectProperty>
 	<owl:ObjectProperty rdf:ID="">
 		<rdfs:domain rdf:resource="#Person" />

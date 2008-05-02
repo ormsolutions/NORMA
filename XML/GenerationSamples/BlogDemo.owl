@@ -42,14 +42,6 @@
 			</owl:Restriction>
 		</rdfs:subClassOf>
 	</owl:Class>
-	<owl:Class rdf:ID="BlogComment">
-		<!--Preferred Id-->
-		<rdfs:subClassOf />
-	</owl:Class>
-	<owl:Class rdf:ID="NonCommentEntry">
-		<!--Preferred Id-->
-		<rdfs:subClassOf />
-	</owl:Class>
 	<owl:Class rdf:ID="User">
 		<!--Preferred Id-->
 		<rdfs:subClassOf>
@@ -149,20 +141,6 @@
 	</owl:ObjectProperty>
 	<owl:ObjectProperty rdf:ID="BlogEntryLabel">
 		<rdfs:inverseOf rdf:resource="#blogLabelId" />
-	</owl:ObjectProperty>
-	<owl:ObjectProperty rdf:ID="">
-		<rdfs:domain rdf:resource="#BlogEntry" />
-		<rdfs:range rdf:resource="#BlogComment" />
-	</owl:ObjectProperty>
-	<owl:ObjectProperty rdf:ID="">
-		<rdfs:inverseOf rdf:resource="#" />
-	</owl:ObjectProperty>
-	<owl:ObjectProperty rdf:ID="">
-		<rdfs:domain rdf:resource="#BlogEntry" />
-		<rdfs:range rdf:resource="#NonCommentEntry" />
-	</owl:ObjectProperty>
-	<owl:ObjectProperty rdf:ID="">
-		<rdfs:inverseOf rdf:resource="#" />
 	</owl:ObjectProperty>
 	<owl:ObjectProperty rdf:ID="userId">
 		<rdfs:domain rdf:resource="#BlogEntry" />

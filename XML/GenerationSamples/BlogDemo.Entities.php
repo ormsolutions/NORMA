@@ -30,8 +30,6 @@ if (!class_exists('BlogEntryLabel')) {
 	}
 }
 class BlogEntryBase extends Entity {
-	private $BlogComment;
-	private $NonCommentEntry;
 	private $BlogEntry_userId_User_Proxy;
 	private $BlogEntry_Id;
 	private $entryTitle;
@@ -48,24 +46,6 @@ class BlogEntryBase extends Entity {
 		$this->validationRules->addValidationRule(new StringLenthValidator("EntryTitle", null, 30));
 		$this->validationRules->addValidationRule(new RequiredFieldValidator("entryBody"));
 		$this->validationRules->addValidationRule(new RequiredFieldValidator("postedDate_MDYValue"));
-	}
-	public function getBlogComment() {
-		return $this->BlogComment;
-	}
-	public function setBlogComment(BlogComment $value) {
-		if ($this->BlogComment !== $value) {
-			$this->BlogComment = $value;
-			$value->setBlogEntry($this);
-		}
-	}
-	public function getNonCommentEntry() {
-		return $this->NonCommentEntry;
-	}
-	public function setNonCommentEntry(NonCommentEntry $value) {
-		if ($this->NonCommentEntry !== $value) {
-			$this->NonCommentEntry = $value;
-			$value->setBlogEntry($this);
-		}
 	}
 	public function setuserId(User $value) {
 		$this->BlogEntry_userId_User_Proxy->Set($value);
@@ -100,62 +80,6 @@ class BlogEntryBase extends Entity {
 }
 if (!class_exists('BlogEntry')) {
 	class BlogEntry extends BlogEntryBase {
-		public function __construct() {
-			parent::__construct();
-		}
-	}
-}
-class BlogCommentBase extends Entity {
-	private $BlogComment_parentEntryId_NonCommentEntry_Proxy;
-	private $BlogEntry;
-	public function __construct() {
-		parent::__construct();
-		$this->BlogComment_parentEntryId_NonCommentEntry_Proxy = new BlogComment_parentEntryId_NonCommentEntry_Proxy($this);
-	}
-	public function addValidationRules() {
-	}
-	public function getBlogEntry() {
-		return $this->BlogEntry;
-	}
-	public function setBlogEntry(BlogEntry $value) {
-		if ($this->BlogEntry !== $value) {
-			$this->BlogEntry = $value;
-			$value->setBlogComment($this);
-		}
-	}
-	public function setparentEntryId(NonCommentEntry $value) {
-		$this->BlogComment_parentEntryId_NonCommentEntry_Proxy->Set($value);
-	}
-	public function getparentEntryId() {
-		return $this->BlogComment_parentEntryId_NonCommentEntry_Proxy->Get();
-	}
-}
-if (!class_exists('BlogComment')) {
-	class BlogComment extends BlogCommentBase {
-		public function __construct() {
-			parent::__construct();
-		}
-	}
-}
-class NonCommentEntryBase extends Entity {
-	private $BlogEntry;
-	public function __construct() {
-		parent::__construct();
-	}
-	public function addValidationRules() {
-	}
-	public function getBlogEntry() {
-		return $this->BlogEntry;
-	}
-	public function setBlogEntry(BlogEntry $value) {
-		if ($this->BlogEntry !== $value) {
-			$this->BlogEntry = $value;
-			$value->setNonCommentEntry($this);
-		}
-	}
-}
-if (!class_exists('NonCommentEntry')) {
-	class NonCommentEntry extends NonCommentEntryBase {
 		public function __construct() {
 			parent::__construct();
 		}

@@ -24,33 +24,9 @@
 		<prop:Property name="userId" mandatory="alethic" isUnique="false" isCollection="false" isCustomType="true" canBeNull="true" oppositeName="BlogEntry">
 			<prop:DataType dataTypeName="User" />
 		</prop:Property>
-		<prop:Property name="BlogComment" mandatory="false" isUnique="true" isCollection="false" isCustomType="true" canBeNull="true" oppositeName="BlogEntry">
-			<prop:DataType dataTypeName="BlogComment" />
-		</prop:Property>
-		<prop:Property name="NonCommentEntry" mandatory="false" isUnique="true" isCollection="false" isCustomType="true" canBeNull="true" oppositeName="BlogEntry">
-			<prop:DataType dataTypeName="NonCommentEntry" />
-		</prop:Property>
 		<prop:Property name="BlogEntryLabelViablogEntryIdCollection" mandatory="false" isUnique="true" isCollection="true" isCustomType="true" canBeNull="true" oppositeName="blogEntryId">
 			<prop:DataType dataTypeName="IEnumerable">
 				<plx:passTypeParam dataTypeName="BlogEntryLabel" />
-			</prop:DataType>
-		</prop:Property>
-	</prop:Properties>
-	<prop:Properties conceptTypeName="BlogComment">
-		<prop:Property name="parentEntryId" mandatory="alethic" isUnique="false" isCollection="false" isCustomType="true" canBeNull="true" oppositeName="BlogComment">
-			<prop:DataType dataTypeName="NonCommentEntry" />
-		</prop:Property>
-		<prop:Property name="BlogEntry" mandatory="alethic" isUnique="true" isCollection="false" isCustomType="true" canBeNull="true" oppositeName="BlogComment">
-			<prop:DataType dataTypeName="BlogEntry" />
-		</prop:Property>
-	</prop:Properties>
-	<prop:Properties conceptTypeName="NonCommentEntry">
-		<prop:Property name="BlogEntry" mandatory="alethic" isUnique="true" isCollection="false" isCustomType="true" canBeNull="true" oppositeName="NonCommentEntry">
-			<prop:DataType dataTypeName="BlogEntry" />
-		</prop:Property>
-		<prop:Property name="BlogCommentViaparentEntryIdCollection" mandatory="false" isUnique="true" isCollection="true" isCustomType="true" canBeNull="true" oppositeName="parentEntryId">
-			<prop:DataType dataTypeName="IEnumerable">
-				<plx:passTypeParam dataTypeName="BlogComment" />
 			</prop:DataType>
 		</prop:Property>
 	</prop:Properties>
