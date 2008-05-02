@@ -21,8 +21,8 @@ CREATE TABLE SampleModel.Person
 (
 	personId INTEGER GENERATED ALWAYS AS IDENTITY(START WITH 1 INCREMENT BY 1) NOT NULL,
 	firstName CHARACTER VARYING(64) NOT NULL,
-	"date" DATE NOT NULL,
 	lastName CHARACTER VARYING(64) NOT NULL,
+	"date" DATE NOT NULL,
 	mandatoryUniqueDecimal SampleModel.MandatoryUniqueDecimal NOT NULL,
 	mandatoryUniqueString CHARACTER(11) NOT NULL,
 	mandatoryUniqueTinyInt TINYINT NOT NULL,
@@ -118,9 +118,9 @@ CREATE TABLE SampleModel.PersonHasNickName
 	CONSTRAINT InternalUniquenessConstraint33 PRIMARY KEY(nickName, personId)
 );
 
-ALTER TABLE SampleModel.Person ADD CONSTRAINT Person_FK1 FOREIGN KEY (valueType1DoesSomethingElseWith) REFERENCES SampleModel.ValueType1 ("value") ON DELETE RESTRICT ON UPDATE RESTRICT;
+ALTER TABLE SampleModel.Person ADD CONSTRAINT Person_FK1 FOREIGN KEY (wife) REFERENCES SampleModel.Person (personId) ON DELETE RESTRICT ON UPDATE RESTRICT;
 
-ALTER TABLE SampleModel.Person ADD CONSTRAINT Person_FK2 FOREIGN KEY (wife) REFERENCES SampleModel.Person (personId) ON DELETE RESTRICT ON UPDATE RESTRICT;
+ALTER TABLE SampleModel.Person ADD CONSTRAINT Person_FK2 FOREIGN KEY (valueType1DoesSomethingElseWith) REFERENCES SampleModel.ValueType1 ("value") ON DELETE RESTRICT ON UPDATE RESTRICT;
 
 ALTER TABLE SampleModel.Person ADD CONSTRAINT Person_FK3 FOREIGN KEY (childPersonFatherMalePersonId) REFERENCES SampleModel.Person (personId) ON DELETE RESTRICT ON UPDATE RESTRICT;
 

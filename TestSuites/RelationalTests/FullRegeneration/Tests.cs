@@ -116,6 +116,26 @@ namespace RelationalTests.FullRegeneration
 				t.Commit();
 			}
 		}
+		/// <summary>
+		/// NUnit
+		/// </summary>
+		[Test(Description = "Relational Load")]
+		[NUnitCategory("Relational")]
+		[NUnitCategory("FullRegeneration")]
+		public void Test4()
+		{
+			// Forward the call
+			Suite.RunNUnitTest(this, myTestServices);
+		}
+		/// <summary>
+		/// Test full regeneration of collapsing object type
+		/// with a composite preferred identifier with references
+		/// to something other than simple information types.
+		/// </summary>
+		[ORMTest("Relational", "FullRegeneration")]
+		public void Test4(Store store)
+		{
+		}
 		#endregion // Relational Load tests
 	}
 }

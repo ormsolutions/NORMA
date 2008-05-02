@@ -744,7 +744,7 @@
 	</orm:NameGenerator>
 	<orm:GenerationState id="_B5DD8E65-E6E9-4E8C-8B4D-FF5958987841">
 		<orm:GenerationSettings>
-			<ormtooial:AbstractionModelGenerationSetting AlgorithmVersion="1.002" id="_4F4B5F39-12A2-4488-9BA9-EEF2F2BB5E6D">
+			<ormtooial:AbstractionModelGenerationSetting id="_4F4B5F39-12A2-4488-9BA9-EEF2F2BB5E6D" AlgorithmVersion="1.003">
 				<ormtooial:AbstractionModel ref="_21511FEB-5B88-4FBD-A74C-06B4A3C70480" />
 			</ormtooial:AbstractionModelGenerationSetting>
 			<oialtocdb:SchemaGenerationSetting id="_6E61D4EE-E269-4EB5-8CD2-5D643CA8F6AB" CoreAlgorithmVersion="1.002" NameAlgorithmVersion="1.004">
@@ -871,7 +871,7 @@
 		<oial:conceptTypes>
 			<oial:conceptType id="_16810621-D2B9-4524-8635-280AF892EE9C" name="A">
 				<oial:children>
-					<oial:informationType id="_50BF0860-855A-414F-B5D9-EB4A9B33AA25" isMandatory="true" name="B" ref="_B433DA93-7AC8-44C7-8E2F-068E84C5B9BD" />
+					<oial:informationType id="_50BF0860-855A-414F-B5D9-EB4A9B33AA25" isMandatory="true" ref="_B433DA93-7AC8-44C7-8E2F-068E84C5B9BD" name="B_id" />
 					<oial:informationType id="_CC97EF40-4CD0-49D0-A0AC-ECC535A80021" isMandatory="true" name="C" ref="_30ACC96D-2D43-410A-9A60-4238B7AA94B2" />
 					<oial:informationType id="_51FBFF9C-7DCD-4FD0-8AC0-0F75822473FE" name="D" ref="_B99165BC-AF18-45F3-938A-28424EA30B62" />
 				</oial:children>
@@ -909,7 +909,7 @@
 			<oial:conceptType id="_BDAF2752-F110-4D34-8247-479C4EBFAD4A" name="ERG">
 				<oial:children>
 					<oial:relatedConceptType id="_C7C83906-473A-41A3-91C6-1CF7C071914B" isMandatory="true" name="ERG" oppositeName="E" ref="_1FBF4A91-F558-4FD3-B7FB-E30EF8A3972C" />
-					<oial:informationType id="_F05536FA-CED4-40FF-861C-B00E6ECF73F5" isMandatory="true" name="G" ref="_AEAF5427-43F9-433E-93D1-9CCAB7C3D87C" />
+					<oial:informationType id="_F05536FA-CED4-40FF-861C-B00E6ECF73F5" isMandatory="true" ref="_AEAF5427-43F9-433E-93D1-9CCAB7C3D87C" name="G_id" />
 				</oial:children>
 				<oial:uniquenessConstraints>
 					<oial:uniquenessConstraint id="_45BA9471-99E6-449A-A872-047FF62B0F62" isPreferred="true" name="InternalUniquenessConstraint13">

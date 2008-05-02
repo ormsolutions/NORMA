@@ -34,7 +34,7 @@ namespace Neumont.Tools.ORMToORMAbstractionBridge
 		/// <summary>
 		/// The algorithm version written to the file
 		/// </summary>
-		public const string CurrentAlgorithmVersion = "1.002";
+		public const string CurrentAlgorithmVersion = "1.003";
 		#endregion // CurrentAlgorithmVersion constant
 		#region ValidationPriority enum
 		/// <summary>
@@ -804,103 +804,250 @@ namespace Neumont.Tools.ORMToORMAbstractionBridge
 		}
 
 		/// <summary>
-		/// Generate the <see cref="ConceptTypeChild"/> objects of the <see cref="AbstractionModel"/>.
+		/// Generates the <see cref="ConceptTypeChild">concept type children</see> for each
+		/// <see cref="ConceptType"/> in the <see cref="AbstractionModel">OIAL model</see>.
 		/// </summary>
-		/// <param name="factTypeMappings">The decided <see cref="FactTypeMapping"/> objects.</param>
+		/// <param name="factTypeMappings">
+		/// The set of all decided <see cref="FactTypeMapping">fact type mappings</see>.
+		/// </param>
 		private void GenerateConceptTypeChildren(FactTypeMappingDictionary factTypeMappings)
 		{
-			foreach (FactTypeMapping factTypeMapping in factTypeMappings.Values)
+			List<FactType> factTypePath = new List<FactType>();
+
+			foreach (ConceptType conceptType in this.AbstractionModel.ConceptTypeCollection)
 			{
-				string towardsName = ResolveRoleName(factTypeMapping.TowardsRole);
-				string fromName = ResolveRoleName(factTypeMapping.FromRole);
+				ObjectType objectType = ConceptTypeIsForObjectType.GetObjectType(conceptType);
 
-				ConceptType towardsConceptType = ConceptTypeIsForObjectType.GetConceptType(factTypeMapping.TowardsObjectType);
+				// NOTE: We don't need the ShouldIgnoreObjectType filter here, because object
+				// types that we want to ignore won't be in the OIAL model in the first place.
 
-				// If this is not going toward a object type that has a concept type...
-				if (towardsConceptType == null)
+				foreach (Role playedRole in objectType.PlayedRoleCollection)
 				{
-					continue;
-				}
+					// NOTE: We don't need the ShouldIgnoreFactType filter here, because fact types that
+					// we want to ignore won't be in the set of fact type mappings in the first place.
+					FactType playedFactType = playedRole.BinarizedFactType;
 
-				bool towardsRoleIsMandatory = null != factTypeMapping.TowardsRole.SingleRoleAlethicMandatoryConstraint;
+					FactTypeMapping factTypeMapping;
 
-				if (ObjectTypeIsConceptType(factTypeMapping.FromObjectType, factTypeMappings))
-				{
-					ConceptType fromConceptType = ConceptTypeIsForObjectType.GetConceptType(factTypeMapping.FromObjectType);
-
-					if (factTypeMapping.MappingDepth == MappingDepth.Deep)
+					if (factTypeMappings.TryGetValue(playedFactType, out factTypeMapping) &&
+						factTypeMapping.TowardsRole == playedRole)
 					{
-						SubtypeFact factTypeAsSubtype = factTypeMapping.FactType as SubtypeFact;
-
-						UniquenessConstraint fromRoleUniquenessConstraint = (UniquenessConstraint)factTypeMapping.FromRole.SingleRoleAlethicUniquenessConstraint;
-						UniquenessConstraint towardsRoleUniquenessConstraint = (UniquenessConstraint)factTypeMapping.TowardsRole.SingleRoleAlethicUniquenessConstraint;
-						bool fromRoleIsPreferred = fromRoleUniquenessConstraint.IsPreferred;
-						bool towardsRoleIsPreferred = towardsRoleUniquenessConstraint.IsPreferred;
-
-						// If the from object type doesn't have its own preferred identifier and this is a primary subtyping relationship, mark it as being preferred.
-						if (!towardsRoleIsPreferred && factTypeAsSubtype != null && factTypeAsSubtype.ProvidesPreferredIdentifier)
-						{
-							towardsRoleIsPreferred = true;
-						}
-
-						RoleAssignment assimilatorConceptType = new RoleAssignment(ConceptTypeAssimilatesConceptType.AssimilatorConceptTypeDomainRoleId, towardsConceptType);
-						RoleAssignment assimilatedConceptType = new RoleAssignment(ConceptTypeAssimilatesConceptType.AssimilatedConceptTypeDomainRoleId, fromConceptType);
-						RoleAssignment[] roleAssignments = { assimilatorConceptType, assimilatedConceptType };
-
-						PropertyAssignment isMandatory = new PropertyAssignment(ConceptTypeAssimilatesConceptType.IsMandatoryDomainPropertyId, towardsRoleIsMandatory);
-						PropertyAssignment name = new PropertyAssignment(ConceptTypeAssimilatesConceptType.NameDomainPropertyId, towardsName);
-						PropertyAssignment oppositeName = new PropertyAssignment(ConceptTypeAssimilatesConceptType.OppositeNameDomainPropertyId, fromName);
-						PropertyAssignment refersToSubtype = new PropertyAssignment(ConceptTypeAssimilatesConceptType.RefersToSubtypeDomainPropertyId, factTypeAsSubtype != null);
-						PropertyAssignment isPreferredForParent = new PropertyAssignment(ConceptTypeAssimilatesConceptType.IsPreferredForParentDomainPropertyId, fromRoleIsPreferred);
-						PropertyAssignment isPreferredForTarget = new PropertyAssignment(ConceptTypeAssimilatesConceptType.IsPreferredForTargetDomainPropertyId, towardsRoleIsPreferred);
-
-						PropertyAssignment[] propertyAssignments = { isMandatory, name, oppositeName, refersToSubtype, isPreferredForParent, isPreferredForTarget };
-
-						// ConceptType for factTypeMapping's TowardsObjectType assimilates ConceptType for factTypeMapping's FromObjectType.
-						ConceptTypeAssimilatesConceptType assimilatedConceptTypeRef = new ConceptTypeAssimilatesConceptType(Store, roleAssignments, propertyAssignments);
-						ConceptTypeChildHasPathFactType conceptTypeChildHasPathFactType = new ConceptTypeChildHasPathFactType(assimilatedConceptTypeRef, factTypeMapping.FactType);
-					}
-					else
-					{
-						RoleAssignment relatingConceptType = new RoleAssignment(ConceptTypeRelatesToConceptType.RelatingConceptTypeDomainRoleId, towardsConceptType);
-						RoleAssignment relatedConceptType = new RoleAssignment(ConceptTypeRelatesToConceptType.RelatedConceptTypeDomainRoleId, fromConceptType);
-						RoleAssignment[] roleAssignments = { relatingConceptType, relatedConceptType };
-
-						PropertyAssignment isMandatory = new PropertyAssignment(ConceptTypeRelatesToConceptType.IsMandatoryDomainPropertyId, towardsRoleIsMandatory);
-						PropertyAssignment name = new PropertyAssignment(ConceptTypeRelatesToConceptType.NameDomainPropertyId, towardsName);
-						PropertyAssignment oppositeName = new PropertyAssignment(ConceptTypeRelatesToConceptType.OppositeNameDomainPropertyId, fromName);
-						PropertyAssignment[] propertyAssignments = { isMandatory, name, oppositeName };
-
-						// ConceptType for factTypeMapping's TowardsObjectType relates to ConcpetType for factTypeMapping's FromObjectType.
-						ConceptTypeRelatesToConceptType relatingConceptTypeRef = new ConceptTypeRelatesToConceptType(Store, roleAssignments, propertyAssignments);
-						ConceptTypeChildHasPathFactType conceptTypeChildHasPathFactType = new ConceptTypeChildHasPathFactType(relatingConceptTypeRef, factTypeMapping.FactType);
-					}
-				}
-				else
-				{
-					IList<FactType> factTypes = new List<FactType>();
-					factTypes.Add(factTypeMapping.FactType);
-
-					foreach (InformationTypeFormatWithFactTypes fromInformationTypeFormatWithFactTypes in GetCollapsedConceptTypeChildren(factTypeMapping.FromObjectType, factTypes))
-					{
-						RoleAssignment conceptType = new RoleAssignment(InformationType.ConceptTypeDomainRoleId, towardsConceptType);
-						RoleAssignment informationTypeFormat = new RoleAssignment(InformationType.InformationTypeFormatDomainRoleId, fromInformationTypeFormatWithFactTypes.InformationTypeFormat);
-						RoleAssignment[] roleAssignments = { conceptType, informationTypeFormat };
-						PropertyAssignment isMandatory = new PropertyAssignment(InformationType.IsMandatoryDomainPropertyId, towardsRoleIsMandatory);
-						// HACK: find a better way to get the name of this.
-						PropertyAssignment name = new PropertyAssignment(InformationType.NameDomainPropertyId, fromName);
-						PropertyAssignment[] propertyAssignments = { isMandatory, name };
-
-						// ConceptType for factTypeMapping's TowardsConceptType gets an InformationType that references ConceptType for factTypeMapping's FromObjectType.
-						InformationType informationType = new InformationType(Store, roleAssignments, propertyAssignments);
-
-						foreach (FactType factType in fromInformationTypeFormatWithFactTypes.FactTypes)
-						{
-							ConceptTypeChildHasPathFactType conceptTypeChildHasPathFactType = new ConceptTypeChildHasPathFactType(informationType, factType);
-						}
+						// The fact type has a mapping and that mapping is towards the role played by
+						// this concept type, so we need to generate concept type children for it.
+						GenerateConceptTypeChildrenForFactTypeMapping(factTypeMappings, conceptType, factTypeMapping, factTypePath, true);
 					}
 				}
 			}
+		}
+
+		/// <summary>
+		/// Generates the appropriate <see cref="ConceptTypeChild">concept type children</see> in <paramref name="parentConceptType"/>
+		/// for <paramref name="factTypeMapping"/>.
+		/// </summary>
+		/// <param name="factTypeMappings">
+		/// The set of all decided <see cref="FactTypeMapping">fact type mappings</see>.
+		/// </param>
+		/// <param name="parentConceptType">
+		/// The <see cref="ConceptType"/> into which <see cref="ConceptTypeChild">concept type children</see> should be generated.
+		/// </param>
+		/// <param name="factTypeMapping">
+		/// The <see cref="FactTypeMapping"/> for which <see cref="ConceptTypeChild">concept type children</see> should be generated.
+		/// </param>
+		/// <param name="factTypePath">
+		/// The path of <see cref="FactType">fact types</see> leading from <paramref name="parentConceptType"/> to <paramref name="factTypeMapping"/>
+		/// </param>
+		/// <param name="isMandatorySoFar">
+		/// Indicates whether every step in <paramref name="factTypePath"/> is mandatory for the parent concept type (towards object type).
+		/// </param>
+		private static void GenerateConceptTypeChildrenForFactTypeMapping(FactTypeMappingDictionary factTypeMappings, ConceptType parentConceptType, FactTypeMapping factTypeMapping, List<FactType> factTypePath, bool isMandatorySoFar)
+		{
+			// Push the current fact type onto the path.
+			factTypePath.Add(factTypeMapping.FactType);
+
+			bool isMandatory = isMandatorySoFar && (factTypeMapping.TowardsRole.SingleRoleAlethicMandatoryConstraint != null);
+
+			ConceptTypeChild newConceptTypeChild;
+
+			ConceptType fromConceptType = ConceptTypeIsForObjectType.GetConceptType(factTypeMapping.FromObjectType);
+			if (fromConceptType != null)
+			{
+				// The mapping is coming from a concept type, so we will create a concept type reference to it.
+
+				// Set up the property assignments that are common to both kinds of concept type references.
+				PropertyAssignment isMandatoryPropertyAssignment = new PropertyAssignment(ConceptTypeChild.IsMandatoryDomainPropertyId, isMandatory);
+
+				string name = ResolveRoleName(factTypeMapping.FromRole);
+				string oppositeName = ResolveRoleName(factTypeMapping.TowardsRole);
+
+				// UNDONE: Yes, these are backwards, but they need to remain so for compatibility reasons until we do a file format change.
+				PropertyAssignment namePropertyAssignment = new PropertyAssignment(ConceptTypeChild.NameDomainPropertyId, oppositeName);
+				PropertyAssignment oppositeNamePropertyAssignment = new PropertyAssignment(ConceptTypeReferencesConceptType.OppositeNameDomainPropertyId, name);
+
+				if (factTypeMapping.MappingDepth == MappingDepth.Deep)
+				{
+					// Since this is a deep mapping, we will create a concept type assimilation for it.
+
+					SubtypeFact subtypeFact = factTypeMapping.FactType as SubtypeFact;
+
+					// UNDONE: The handling here for IsPreferredForParent and IsPreferredForTarget may not be correct
+					// if we have more than one fact type in the fact type path.
+
+					bool isPreferredForTarget;
+					if (subtypeFact != null)
+					{
+						// For subtype assimilations, IsPreferredForTarget matches the ProvidesPreferredIdentifier
+						// property of the ORM subtype fact.
+						isPreferredForTarget = subtypeFact.ProvidesPreferredIdentifier;
+					}
+					else
+					{
+						// For non-subtype assimilations, IsPreferredForTarget is true if the role played by the object
+						// type corresponding to the parent concept type has the preferred identifying uniqueness constraint
+						// for the target concept type.
+						isPreferredForTarget = factTypeMapping.TowardsRole.SingleRoleAlethicUniquenessConstraint.IsPreferred;
+					}
+
+					bool isPreferredForParent = factTypeMapping.IsFromPreferredIdentifier;
+					// The IsPreferredForParent property on concept type assimilations indicates that the assimilation, on its own,
+					// provides the preferred identifier for the assimilating concept type. Although the IsFromPreferredIdentifier
+					// property on the fact type mapping will be true even if the from role is part of a multi-role preferred identifier,
+					// ORM currently doesn't allow a role with a single role alethic uniqueness constraint (which is required for this to
+					// be a deep mapping) to be part of any other uniqueness constraint. However, this may change in the future as our
+					// handling of derivations, implications, equivalences, and logical rules becomes more sophisticated. We assert here
+					// in order to make this case easier to catch if it happens, since this method may need to be adjusted in that case
+					// to ensure that it continues to produce correct results.
+					Debug.Assert(!isPreferredForParent || factTypeMapping.FromRole.SingleRoleAlethicUniquenessConstraint.IsPreferred);
+
+					newConceptTypeChild = new ConceptTypeAssimilatesConceptType(parentConceptType.Partition,
+						new RoleAssignment[]
+						{
+							new RoleAssignment(ConceptTypeAssimilatesConceptType.AssimilatorConceptTypeDomainRoleId, parentConceptType),
+							new RoleAssignment(ConceptTypeAssimilatesConceptType.AssimilatedConceptTypeDomainRoleId, fromConceptType)
+						},
+						new PropertyAssignment[]
+						{
+							isMandatoryPropertyAssignment,
+							namePropertyAssignment,
+							oppositeNamePropertyAssignment,
+							new PropertyAssignment(ConceptTypeAssimilatesConceptType.RefersToSubtypeDomainPropertyId, subtypeFact != null),
+							new PropertyAssignment(ConceptTypeAssimilatesConceptType.IsPreferredForParentDomainPropertyId, isPreferredForParent),
+							new PropertyAssignment(ConceptTypeAssimilatesConceptType.IsPreferredForTargetDomainPropertyId, isPreferredForTarget),
+						});
+				}
+				else
+				{
+					Debug.Assert(factTypeMapping.MappingDepth == MappingDepth.Shallow,
+						"Collapse mappings should not come from object types that have a concept type.");
+					
+					// Since this is a shallow mapping, we will create a concept type relation for it.
+					newConceptTypeChild = new ConceptTypeRelatesToConceptType(parentConceptType.Partition,
+						new RoleAssignment[]
+						{
+							new RoleAssignment(ConceptTypeRelatesToConceptType.RelatingConceptTypeDomainRoleId, parentConceptType),
+							new RoleAssignment(ConceptTypeRelatesToConceptType.RelatedConceptTypeDomainRoleId, fromConceptType)
+						},
+						new PropertyAssignment[]
+						{
+							isMandatoryPropertyAssignment,
+							namePropertyAssignment,
+							oppositeNamePropertyAssignment
+						});
+				}
+			}
+			else
+			{
+				// The mapping is not coming from a concept type, meaning that we either need an information
+				// type for an atomic value type (which will already have an information type format created
+				// for it), or we need to collapse the preferred identifier of an entity type or structured
+				// value type.
+
+				InformationTypeFormat fromInformationTypeFormat = InformationTypeFormatIsForValueType.GetInformationTypeFormat(factTypeMapping.FromObjectType);
+				if (fromInformationTypeFormat != null)
+				{
+					// We have an information type format, which means that we need to create an information type.
+
+					string name = ResolveRoleName(factTypeMapping.FromRole);
+
+					newConceptTypeChild = new InformationType(parentConceptType.Partition,
+						new RoleAssignment[]
+						{
+							new RoleAssignment(InformationType.ConceptTypeDomainRoleId, parentConceptType),
+							new RoleAssignment(InformationType.InformationTypeFormatDomainRoleId, fromInformationTypeFormat)
+						},
+						new PropertyAssignment[]
+						{
+							new PropertyAssignment(ConceptTypeChild.IsMandatoryDomainPropertyId, isMandatory),
+							new PropertyAssignment(ConceptTypeChild.NameDomainPropertyId, name)
+						});
+				}
+				else
+				{
+					// We do not have an information type format, which means that we need to collapse the fact
+					// types in the preferred identifier of the FromObjectType into the parent concept type.
+
+					newConceptTypeChild = null;
+
+					UniquenessConstraint preferredIdentifier = factTypeMapping.FromObjectType.PreferredIdentifier;
+					Debug.Assert(preferredIdentifier != null);
+
+					foreach (Role preferredIdentifierRole in preferredIdentifier.RoleCollection)
+					{
+						// NOTE: We don't need the ShouldIgnoreFactType filter here, because we would have ignored
+						// this object type if we were ignoring any of the fact types in its preferred identifier.
+						FactType preferredIdentifierFactType = preferredIdentifierRole.BinarizedFactType;
+
+						FactTypeMapping preferredIdentifierFactTypeMapping = factTypeMappings[preferredIdentifierFactType];
+
+						if (preferredIdentifierFactType == factTypeMapping.FactType)
+						{
+							// We just got back to the fact that we were already mapping. This should only happen
+							// when the object type has a single fact type in its preferred identifier and it is
+							// deeply mapped away from the object type.
+							Debug.Assert(preferredIdentifier.RoleCollection.Count == 1 && preferredIdentifierFactTypeMapping.MappingDepth == MappingDepth.Deep);
+
+							// UNDONE: For now, we just ignore this fact type entirely. What we should be doing is:
+							// 1) If everything along the path is mandatory, then we're done, since we know that instances of the parent
+							// concept type always identify an instance of the object type that we're trying to map.
+							// 2) Otherwise, check if there are any other relationships that would allow use to derive whether an instance
+							// of the parent concept type identifies an instance of the object type that we're trying to map. Examples
+							// of things that would allow us to do this would be a mandatory role played by the object type that we're
+							// we're trying to map that gets absorbed into some concept type. The reference to an instance of this concept
+							// type from it allows us to tell if this instance identifies an instance of the object type.
+							// 3) If no other relationship allows us to derive this information, we need to add a boolean information type
+							// that indicates for each instance of the parent concept type whether it identifies an instance of the object
+							// type that we're trying to map.
+							break;
+						}
+
+						// If we have a single fact type in the preferred identifier, it might be mapped
+						// deeply away from the object type that we are collapsing. For this case, we need
+						// to create a "fake" mapping and process it instead.
+						if (preferredIdentifierFactTypeMapping.TowardsRole == preferredIdentifierRole)
+						{
+							// Make sure this is actually the situation we are trying to handle, since it shouldn't be possible in any other scenario.
+							Debug.Assert(preferredIdentifier.RoleCollection.Count == 1 && preferredIdentifierFactTypeMapping.MappingDepth == MappingDepth.Deep);
+
+							// UNDONE: Would we ever want to use a depth other than shallow here? Probably not, but it might be worth looking in to.
+							preferredIdentifierFactTypeMapping = new FactTypeMapping(preferredIdentifierFactType, preferredIdentifierFactTypeMapping.TowardsRole, preferredIdentifierFactTypeMapping.FromRole, MappingDepth.Shallow);
+						}
+
+						GenerateConceptTypeChildrenForFactTypeMapping(factTypeMappings, parentConceptType, preferredIdentifierFactTypeMapping, factTypePath, isMandatory);
+					}
+				}
+			}
+
+			// If we created a new concept type child, populate its fact type path.
+			if (newConceptTypeChild != null)
+			{
+				foreach (FactType pathFactType in factTypePath)
+				{
+					ConceptTypeChildHasPathFactType conceptTypeChildHasPathFactType = new ConceptTypeChildHasPathFactType(newConceptTypeChild, pathFactType);
+				}
+			}
+
+			// Pop the current fact type off of the path.
+			Debug.Assert(factTypePath[factTypePath.Count - 1] == factTypeMapping.FactType, "Fact type path stack is corrupt.");
+			factTypePath.RemoveAt(factTypePath.Count - 1);
 		}
 
 		/// <summary>
@@ -1079,7 +1226,7 @@ namespace Neumont.Tools.ORMToORMAbstractionBridge
 		/// </summary>
 		/// <param name="role">The <see cref="Role"/> that the <see cref="ConceptTypeChild"/> is resulting from.</param>
 		/// <returns>The name to use for the <see cref="ConceptTypeChild"/>.</returns>
-		private string ResolveRoleName(Role role)
+		private static string ResolveRoleName(Role role)
 		{
 			// HACK: This is only here until we implement a better alternative.
 			string name = role.Name;

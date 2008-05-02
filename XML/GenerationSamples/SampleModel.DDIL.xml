@@ -129,14 +129,14 @@
 				<ddl:notNullKeyword />
 			</ddl:columnConstraintDefinition>
 		</ddl:columnDefinition>
-		<ddl:columnDefinition name="&quot;date&quot;">
-			<ddt:date type="DATE" />
+		<ddl:columnDefinition name="lastName">
+			<ddt:characterString type="CHARACTER VARYING" length="64" />
 			<ddl:columnConstraintDefinition>
 				<ddl:notNullKeyword />
 			</ddl:columnConstraintDefinition>
 		</ddl:columnDefinition>
-		<ddl:columnDefinition name="lastName">
-			<ddt:characterString type="CHARACTER VARYING" length="64" />
+		<ddl:columnDefinition name="&quot;date&quot;">
+			<ddt:date type="DATE" />
 			<ddl:columnConstraintDefinition>
 				<ddl:notNullKeyword />
 			</ddl:columnConstraintDefinition>
@@ -501,9 +501,9 @@
 	<ddl:alterTableStatement name="Person" schema="SampleModel">
 		<ddl:addTableConstraintDefinition name="Person_FK1">
 			<ddl:referentialConstraintDefinition>
-				<dep:simpleColumnReference name="valueType1DoesSomethingElseWith" />
-				<ddl:referencesSpecification name="ValueType1" onDelete="RESTRICT" onUpdate="RESTRICT" schema="SampleModel">
-					<dep:simpleColumnReference name="&quot;value&quot;" />
+				<dep:simpleColumnReference name="wife" />
+				<ddl:referencesSpecification name="Person" onDelete="RESTRICT" onUpdate="RESTRICT" schema="SampleModel">
+					<dep:simpleColumnReference name="personId" />
 				</ddl:referencesSpecification>
 			</ddl:referentialConstraintDefinition>
 		</ddl:addTableConstraintDefinition>
@@ -511,9 +511,9 @@
 	<ddl:alterTableStatement name="Person" schema="SampleModel">
 		<ddl:addTableConstraintDefinition name="Person_FK2">
 			<ddl:referentialConstraintDefinition>
-				<dep:simpleColumnReference name="wife" />
-				<ddl:referencesSpecification name="Person" onDelete="RESTRICT" onUpdate="RESTRICT" schema="SampleModel">
-					<dep:simpleColumnReference name="personId" />
+				<dep:simpleColumnReference name="valueType1DoesSomethingElseWith" />
+				<ddl:referencesSpecification name="ValueType1" onDelete="RESTRICT" onUpdate="RESTRICT" schema="SampleModel">
+					<dep:simpleColumnReference name="&quot;value&quot;" />
 				</ddl:referencesSpecification>
 			</ddl:referentialConstraintDefinition>
 		</ddl:addTableConstraintDefinition>

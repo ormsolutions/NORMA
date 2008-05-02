@@ -5,8 +5,8 @@ CREATE TABLE Person
 (
 	personId NUMBER(10,0) NOT NULL,
 	firstName NVARCHAR2(64) NOT NULL,
-	"date" DATE NOT NULL,
 	lastName NVARCHAR2(64) NOT NULL,
+	"date" DATE NOT NULL,
 	mandatoryUniqueDecimal NUMBER(9,0) CHECK (mandatoryUniqueDecimal BETWEEN 4000 AND 20000) NOT NULL,
 	mandatoryUniqueString NCHAR(11) NOT NULL,
 	mandatoryUniqueTinyInt NUMBER(3,0) CHECK (mandatoryUniqueTinyInt BETWEEN 0 AND 255) NOT NULL,
@@ -102,9 +102,9 @@ CREATE TABLE PersonHasNickName
 	CONSTRAINT InternalUniquenessConstraint33 PRIMARY KEY(nickName, personId)
 );
 
-ALTER TABLE Person ADD CONSTRAINT Person_FK1 FOREIGN KEY (valueType1DoesSomethingElseWith)  REFERENCES ValueType1 ("value") ;
+ALTER TABLE Person ADD CONSTRAINT Person_FK1 FOREIGN KEY (wife)  REFERENCES Person (personId) ;
 
-ALTER TABLE Person ADD CONSTRAINT Person_FK2 FOREIGN KEY (wife)  REFERENCES Person (personId) ;
+ALTER TABLE Person ADD CONSTRAINT Person_FK2 FOREIGN KEY (valueType1DoesSomethingElseWith)  REFERENCES ValueType1 ("value") ;
 
 ALTER TABLE Person ADD CONSTRAINT Person_FK3 FOREIGN KEY (childPersonFatherMalePersonId)  REFERENCES Person (personId) ;
 

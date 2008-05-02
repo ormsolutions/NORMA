@@ -98,11 +98,11 @@
 		<dcl:column name="firstName" isNullable="false" isIdentity="false">
 			<dcl:predefinedDataType name="CHARACTER VARYING" length="64" />
 		</dcl:column>
-		<dcl:column name="&quot;date&quot;" isNullable="false" isIdentity="false">
-			<dcl:predefinedDataType name="DATE" />
-		</dcl:column>
 		<dcl:column name="lastName" isNullable="false" isIdentity="false">
 			<dcl:predefinedDataType name="CHARACTER VARYING" length="64" />
+		</dcl:column>
+		<dcl:column name="&quot;date&quot;" isNullable="false" isIdentity="false">
+			<dcl:predefinedDataType name="DATE" />
 		</dcl:column>
 		<dcl:column name="mandatoryUniqueDecimal" isNullable="false" isIdentity="false">
 			<dcl:domainRef name="MandatoryUniqueDecimal" />
@@ -218,11 +218,11 @@
 			<dcl:columnRef name="childPersonBirthOrderNr" />
 			<dcl:columnRef name="childPersonMotherFemalePersonId" />
 		</dcl:uniquenessConstraint>
-		<dcl:referenceConstraint name="Person_FK1" targetTable="ValueType1">
-			<dcl:columnRef sourceName="valueType1DoesSomethingElseWith" targetName="&quot;value&quot;" />
-		</dcl:referenceConstraint>
-		<dcl:referenceConstraint name="Person_FK2" targetTable="Person">
+		<dcl:referenceConstraint name="Person_FK1" targetTable="Person">
 			<dcl:columnRef sourceName="wife" targetName="personId" />
+		</dcl:referenceConstraint>
+		<dcl:referenceConstraint name="Person_FK2" targetTable="ValueType1">
+			<dcl:columnRef sourceName="valueType1DoesSomethingElseWith" targetName="&quot;value&quot;" />
 		</dcl:referenceConstraint>
 		<dcl:referenceConstraint name="Person_FK3" targetTable="Person">
 			<dcl:columnRef sourceName="childPersonFatherMalePersonId" targetName="personId" />
