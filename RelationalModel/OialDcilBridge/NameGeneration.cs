@@ -66,7 +66,7 @@ namespace Neumont.Tools.ORMAbstractionToConceptualDatabaseBridge
 		/// </summary>
 		ExplicitCasing = 1,
 		/// <summary>
-		/// Stop a name part that is a 
+		/// Stop a name part that was added as a single-word expansion
 		/// </summary>
 		ReplacementOfSelf = 2,
 	}
@@ -1115,6 +1115,13 @@ namespace Neumont.Tools.ORMAbstractionToConceptualDatabaseBridge
 						}
 						if (matchPhrase.IndexOf(' ') != -1)
 						{
+							if (replacePhrase.IndexOf(matchPhrase, StringComparison.CurrentCultureIgnoreCase) != -1)
+							{
+								// UNDONE: We handle expanding single words to a phrase containing the word, but not
+								// multi-word phrases doing the same thing. However, make sure we don't recurse in this
+								// situation.
+								return false;
+							}
 							string[] parts = matchPhrase.Split(SpaceCharArray, StringSplitOptions.RemoveEmptyEntries);
 							if (parts.Length > remainingParts)
 							{

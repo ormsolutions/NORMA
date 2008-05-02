@@ -1042,7 +1042,10 @@
 								</plx:callNew>
 							</plx:initialize>
 						</plx:local>
-						<plx:local name="contextBasicReplacementIndex" dataTypeName=".i4"/>
+						<xsl:if test="not(@type='RingConstraint')">
+							<!-- UNDONE: Temporary workaround for RingConstraint compile error, will go away when all patterns are populated -->
+							<plx:local name="contextBasicReplacementIndex" dataTypeName=".i4"/>
+						</xsl:if>
 						<plx:local name="minFactArity" dataTypeName=".i4">
 							<plx:initialize>
 								<plx:callStatic name="MaxValue" dataTypeName=".i4" type="field"/>

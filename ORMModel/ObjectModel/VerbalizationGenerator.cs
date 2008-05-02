@@ -7330,7 +7330,6 @@ namespace Neumont.Tools.ORM.ObjectModel
 			}
 			string[][] allBasicRoleReplacements = new string[allFactsCount][];
 			bool[] unaryReplacements = new bool[allFactsCount];
-			int contextBasicReplacementIndex;
 			int minFactArity = int.MaxValue;
 			int maxFactArity = int.MinValue;
 			for (int iFact = 0; iFact < allFactsCount; ++iFact)
