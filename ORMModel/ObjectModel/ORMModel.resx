@@ -578,7 +578,7 @@
 		<comment>Text that separates a root type's name from notes if multiple notes are displayed in the ORM notes window. Replacement field 0 is the element name, 1 is the note text.</comment>
 	</data>
 	<data name="ModelDefinitionWindow.WindowTitle" xml:space="preserve">
-		<value>ORM Definition Editor</value>
+		<value>ORM Informal Definition Editor</value>
 		<comment>Text to place in the title bar of the description editor tool window.</comment>
 	</data>
 	<data name="ModelNotesWindow.WindowTitle" xml:space="preserve">

@@ -286,7 +286,7 @@
 						<ExternalTypeMoniker Name="/System/Boolean"/>
 					</Type>
 				</DomainProperty>
-				<DomainProperty Name="DefinitionText" DefaultValue="" DisplayName="Definition" Description="A definition of this ObjectType. To insert new lines, use Control-Enter in the dropdown editor, or open the 'ORM Notes Editor' toolwindow." Id="431A8A8F-E8EC-4014-B1A1-843E55751A55" Kind="CustomStorage">
+				<DomainProperty Name="DefinitionText" DefaultValue="" DisplayName="InformalDefinition" Description="A definition of this ObjectType. To insert new lines, use Control-Enter in the dropdown editor, or open the 'ORM Notes Editor' toolwindow." Id="431A8A8F-E8EC-4014-B1A1-843E55751A55" Kind="CustomStorage">
 					<Attributes>
 						<ClrAttribute Name="global::System.ComponentModel.Editor">
 							<Parameters>

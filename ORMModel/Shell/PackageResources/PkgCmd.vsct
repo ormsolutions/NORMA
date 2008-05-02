@@ -403,13 +403,13 @@
 					<ButtonText>ORM &amp;Fact Editor</ButtonText>
 				</Strings>
 			</Button>
-			<Button guid="guidORMDesignerCommandSet" id="cmdIdViewDefinitionWindow" priority="0x0380" type="Button">
+			<Button guid="guidORMDesignerCommandSet" id="cmdIdViewInformalDefinitionWindow" priority="0x0380" type="Button">
 				<Parent guid="guidORMDesignerCommandSet" id="groupIdORMToolWindows"/>
 				<Icon guid="guidORMToolWindowIcons" id="bmpIdToolWindowDefinitionEditor"/>
 				<CommandFlag>DefaultInvisible</CommandFlag>
 				<CommandFlag>DynamicVisibility</CommandFlag>
 				<Strings>
-					<ButtonText>ORM &amp;Definition Editor</ButtonText>
+					<ButtonText>ORM &amp;Informal Definition Editor</ButtonText>
 				</Strings>
 			</Button>
 			<Button guid="guidORMDesignerCommandSet" id="cmdIdViewSamplePopulationEditor" priority="0x0400" type="Button">
@@ -635,7 +635,7 @@
 		<KeyBinding guid="guidORMDesignerCommandSet" id="cmdIdViewFactEditor" editor="guidORMDesignerEditor" key1="W" mod1="Control" key2="F" mod2="Control"/>
 		<KeyBinding guid="guidORMDesignerCommandSet" id="cmdIdViewReadingEditor" editor="guidORMDesignerEditor" key1="W" mod1="Control" key2="R" mod2="Control"/>
 		<KeyBinding guid="guidORMDesignerCommandSet" id="cmdIdViewVerbalizationBrowser" editor="guidORMDesignerEditor" key1="W" mod1="Control" key2="V" mod2="Control"/>
-		<KeyBinding guid="guidORMDesignerCommandSet" id="cmdIdViewDefinitionWindow" editor="guidORMDesignerEditor" key1="W" mod1="Control" key2="D" mod2="Control"/>
+		<KeyBinding guid="guidORMDesignerCommandSet" id="cmdIdViewInformalDefinitionWindow" editor="guidORMDesignerEditor" key1="W" mod1="Control" key2="I" mod2="Control"/>
 		<KeyBinding guid="guidORMDesignerCommandSet" id="cmdIdViewSamplePopulationEditor" editor="guidORMDesignerEditor" key1="W" mod1="Control" key2="S" mod2="Control"/>
 		<KeyBinding guid="guidORMDesignerCommandSet" id="cmdIdViewNotesWindow" editor="guidORMDesignerEditor" key1="W" mod1="Control" key2="N" mod2="Control"/>
 		<KeyBinding guid="guidORMDesignerCommandSet" id="cmdIdViewReferenceModeEditor" editor="guidORMDesignerEditor" key1="W" mod1="Control" key2="E" mod2="Control"/>
@@ -832,7 +832,7 @@
 			<IDSymbol value="0x2927" name="cmdIdExclusiveOrCoupler"/>
 			<IDSymbol value="0x2928" name="cmdIdExclusiveOrDecoupler"/>
 			<IDSymbol value="0x2929" name="cmdIdUnobjectifyFactType"/>
-			<IDSymbol value="0x292A" name="cmdIdViewDefinitionWindow"/>
+			<IDSymbol value="0x292A" name="cmdIdViewInformalDefinitionWindow"/>
 			<IDSymbol value="0x292B" name="cmdIdFactEditorCommitLine"/>
 
 			<!-- Large ranges for dynamic commands, keep single commands in the 0x29__ range -->

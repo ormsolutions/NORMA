@@ -573,7 +573,7 @@ namespace Neumont.Tools.ORM.Shell
 		/// <summary>
 		/// Description tool window.
 		/// </summary>
-		public static ORMDefinitionToolWindow DefinitionWindow
+		public static ORMDefinitionToolWindow InformalDefinitionWindow
 		{
 			get
 			{

@@ -386,7 +386,7 @@
     <comment>Description for DomainProperty &apos;DefinitionText&apos; on DomainClass &apos;ObjectType&apos;</comment>
   </data>
   <data name="Neumont.Tools.ORM.ObjectModel.ObjectType/DefinitionText.DisplayName" xml:space="preserve">
-    <value>Definition</value>
+    <value>InformalDefinition</value>
     <comment>DisplayName for DomainProperty &apos;DefinitionText&apos; on DomainClass &apos;ObjectType&apos;</comment>
   </data>
   <data name="Neumont.Tools.ORM.ObjectModel.ObjectType/NoteText.Description" xml:space="preserve">

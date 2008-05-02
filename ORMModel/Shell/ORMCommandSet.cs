@@ -81,8 +81,8 @@ namespace Neumont.Tools.ORM.Shell
 						ORMDesignerCommandIds.ViewReferenceModeEditor)
 						,new DynamicStatusMenuCommand(
 						new EventHandler(OnStatusStandardWindow),
-						new EventHandler(OnMenuDefinitionWindow),
-						ORMDesignerCommandIds.ViewDefinitionWindow)
+						new EventHandler(OnMenuInformalDefinitionWindow),
+						ORMDesignerCommandIds.ViewInformalDefinitionWindow)
 						,new DynamicStatusMenuCommand(
 						new EventHandler(OnStatusStandardWindow),
 						new EventHandler(OnMenuNotesWindow),
@@ -1061,9 +1061,9 @@ namespace Neumont.Tools.ORM.Shell
 			/// <summary>
 			/// Menu handler
 			/// </summary>
-			protected void OnMenuDefinitionWindow(object sender, EventArgs e)
+			protected void OnMenuInformalDefinitionWindow(object sender, EventArgs e)
 			{
-				ORMDefinitionToolWindow definitionWindow = ORMDesignerPackage.DefinitionWindow;
+				ORMDefinitionToolWindow definitionWindow = ORMDesignerPackage.InformalDefinitionWindow;
 				definitionWindow.Show();
 			}
 			/// <summary>
@@ -1308,7 +1308,7 @@ namespace Neumont.Tools.ORM.Shell
 			/// <summary>
 			/// The ORM Definition Window item on the context menu
 			/// </summary>
-			public static readonly CommandID ViewDefinitionWindow = new CommandID(guidORMDesignerCommandSet, cmdIdViewDefinitionWindow);
+			public static readonly CommandID ViewInformalDefinitionWindow = new CommandID(guidORMDesignerCommandSet, cmdIdViewInformalDefinitionWindow);
 			/// <summary>
 			/// The ORM Note Window item on the context menu
 			/// </summary>
@@ -1729,7 +1729,7 @@ namespace Neumont.Tools.ORM.Shell
 			/// <summary>
 			/// The ORM Definition Window item on the context menu
 			/// </summary>
-			private const int cmdIdViewDefinitionWindow = 0x292a;
+			private const int cmdIdViewInformalDefinitionWindow = 0x292a;
 			// Commit a line in the fact editor, not used by the designer
 			//private const int cmdIdFactEditorCommitLine = 0x292b;
 			#endregion
