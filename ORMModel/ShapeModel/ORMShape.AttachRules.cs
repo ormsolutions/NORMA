@@ -48,7 +48,7 @@ namespace Neumont.Tools.ORM.ShapeModel
 						typeof(FactTypeShape).GetNestedType("DerivationDeletedRuleClass", BindingFlags.Public | BindingFlags.NonPublic),
 						typeof(FactTypeShape).GetNestedType("ExternalConstraintShapeChangeRuleClass", BindingFlags.Public | BindingFlags.NonPublic),
 						typeof(FactTypeShape).GetNestedType("FactTypeShapeChangeRuleClass", BindingFlags.Public | BindingFlags.NonPublic),
-						typeof(FactTypeShape).GetNestedType("ImplicitBooleanValueChangeRuleClass", BindingFlags.Public | BindingFlags.NonPublic),
+						typeof(FactTypeShape).GetNestedType("ImplicitBooleanValueTypeDeletedRuleClass", BindingFlags.Public | BindingFlags.NonPublic),
 						typeof(FactTypeShape).GetNestedType("ObjectificationIsImpliedChangeRuleClass", BindingFlags.Public | BindingFlags.NonPublic),
 						typeof(FactTypeShape).GetNestedType("ObjectificationRolePlayerChangeRuleClass", BindingFlags.Public | BindingFlags.NonPublic),
 						typeof(FactTypeShape).GetNestedType("RoleDisplayOrderChangedRuleClass", BindingFlags.Public | BindingFlags.NonPublic),
@@ -529,11 +529,11 @@ namespace Neumont.Tools.ORM.ShapeModel
 				Neumont.Tools.Modeling.Diagnostics.TraceUtility.TraceRuleEnd(e.ModelElement.Store, "Neumont.Tools.ORM.ShapeModel.FactTypeShape.FactTypeShapeChangeRule");
 			}
 		}
-		[Microsoft.VisualStudio.Modeling.RuleOn(typeof(Neumont.Tools.ORM.ObjectModel.ObjectType), Priority=Neumont.Tools.Modeling.FrameworkDomainModel.InlineRulePriority)]
-		private sealed class ImplicitBooleanValueChangeRuleClass : Microsoft.VisualStudio.Modeling.ChangeRule
+		[Microsoft.VisualStudio.Modeling.RuleOn(typeof(Neumont.Tools.ORM.ObjectModel.ObjectTypePlaysRole), FireTime=Microsoft.VisualStudio.Modeling.TimeToFire.TopLevelCommit, Priority=Microsoft.VisualStudio.Modeling.Diagrams.DiagramFixupConstants.ResizeParentRulePriority)]
+		private sealed class ImplicitBooleanValueTypeDeletedRuleClass : Microsoft.VisualStudio.Modeling.DeleteRule
 		{
 			[System.Diagnostics.DebuggerStepThrough()]
-			public ImplicitBooleanValueChangeRuleClass()
+			public ImplicitBooleanValueTypeDeletedRuleClass()
 			{
 				base.IsEnabled = false;
 			}
@@ -541,18 +541,18 @@ namespace Neumont.Tools.ORM.ShapeModel
 			/// Provide the following method in class: 
 			/// Neumont.Tools.ORM.ShapeModel.FactTypeShape
 			/// /// <summary>
-			/// /// ChangeRule: typeof(Neumont.Tools.ORM.ObjectModel.ObjectType)
+			/// /// DeleteRule: typeof(Neumont.Tools.ORM.ObjectModel.ObjectTypePlaysRole), FireTime=TopLevelCommit, Priority=DiagramFixupConstants.ResizeParentRulePriority;
 			/// /// </summary>
-			/// private static void ImplicitBooleanValueChangeRule(ElementPropertyChangedEventArgs e)
+			/// private static void ImplicitBooleanValueTypeDeletedRule(ElementDeletedEventArgs e)
 			/// {
 			/// }
 			/// </summary>
 			[System.Diagnostics.DebuggerStepThrough()]
-			public override void ElementPropertyChanged(Microsoft.VisualStudio.Modeling.ElementPropertyChangedEventArgs e)
+			public override void ElementDeleted(Microsoft.VisualStudio.Modeling.ElementDeletedEventArgs e)
 			{
-				Neumont.Tools.Modeling.Diagnostics.TraceUtility.TraceRuleStart(e.ModelElement.Store, "Neumont.Tools.ORM.ShapeModel.FactTypeShape.ImplicitBooleanValueChangeRule");
-				FactTypeShape.ImplicitBooleanValueChangeRule(e);
-				Neumont.Tools.Modeling.Diagnostics.TraceUtility.TraceRuleEnd(e.ModelElement.Store, "Neumont.Tools.ORM.ShapeModel.FactTypeShape.ImplicitBooleanValueChangeRule");
+				Neumont.Tools.Modeling.Diagnostics.TraceUtility.TraceRuleStart(e.ModelElement.Store, "Neumont.Tools.ORM.ShapeModel.FactTypeShape.ImplicitBooleanValueTypeDeletedRule");
+				FactTypeShape.ImplicitBooleanValueTypeDeletedRule(e);
+				Neumont.Tools.Modeling.Diagnostics.TraceUtility.TraceRuleEnd(e.ModelElement.Store, "Neumont.Tools.ORM.ShapeModel.FactTypeShape.ImplicitBooleanValueTypeDeletedRule");
 			}
 		}
 		[Microsoft.VisualStudio.Modeling.RuleOn(typeof(Neumont.Tools.ORM.ObjectModel.Objectification), FireTime=Microsoft.VisualStudio.Modeling.TimeToFire.TopLevelCommit, Priority=Microsoft.VisualStudio.Modeling.Diagrams.DiagramFixupConstants.AddShapeRulePriority)]

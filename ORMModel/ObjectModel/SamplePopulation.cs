@@ -592,6 +592,26 @@ namespace Neumont.Tools.ORM.ObjectModel
 			}
 		}
 		/// <summary>
+		/// DeleteRule: typeof(ObjectTypePlaysRole)
+		/// Treat deletion of an implicit boolean role player where the role
+		/// is not deleted the same as a role add.
+		/// </summary>
+		private static void ImpliedBooleanRolePlayerDeletedRule(ElementDeletedEventArgs e)
+		{
+			ObjectTypePlaysRole link = (ObjectTypePlaysRole)e.ModelElement;
+			Role role;
+			FactType factType;
+			if (link.RolePlayer.IsImplicitBooleanValue &&
+				!(role = link.PlayedRole).IsDeleted &&
+				null != (factType = role.FactType))
+			{
+				foreach (FactTypeInstance factTypeInstance in factType.FactTypeInstanceCollection)
+				{
+					FrameworkDomainModel.DelayValidateElement(factTypeInstance, DelayValidateTooFewFactTypeRoleInstancesError);
+				}
+			}
+		}
+		/// <summary>
 		/// DeleteRule: typeof(FactTypeHasRole)
 		/// If a Role is removed from a FactType's role collection, it will
 		/// automatically propagate and destroy any role instances.  This rule

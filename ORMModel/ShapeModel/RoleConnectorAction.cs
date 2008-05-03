@@ -90,7 +90,17 @@ namespace Neumont.Tools.ORM.ShapeModel
 						if (sticky.StickySelectable(role))
 						{
 							IConstraint constraint = constraintShape.AssociatedConstraint;
-							foreach (ConstraintRoleSequence sequence in role.ConstraintRoleSequenceCollection)
+							Role constraintRole = role;
+							Role oppositeRole;
+							ObjectType oppositeRolePlayer;
+							if (constraint.ConstraintType == ConstraintType.ExternalUniqueness &&
+								null != (oppositeRole = role.OppositeRole as Role) &&
+								null != (oppositeRolePlayer = oppositeRole.RolePlayer) &&
+								oppositeRolePlayer.IsImplicitBooleanValue)
+							{
+								constraintRole = oppositeRole;
+							}
+							foreach (ConstraintRoleSequence sequence in constraintRole.ConstraintRoleSequenceCollection)
 							{
 								if (constraint == sequence.Constraint)
 								{

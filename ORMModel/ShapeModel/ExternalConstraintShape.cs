@@ -446,7 +446,19 @@ namespace Neumont.Tools.ORM.ShapeModel
 				switch (constraint.ConstraintStorageStyle)
 				{
 					case ConstraintStorageStyle.SetConstraint:
-						rVal = (constraint as SetConstraint).RoleCollection.Contains(r);
+						LinkedElementCollection<Role> constraintRoles = (constraint as SetConstraint).RoleCollection;
+						rVal = constraintRoles.Contains(r);
+						if (!rVal && constraint.ConstraintType == ConstraintType.ExternalUniqueness)
+						{
+							// Check for unary condition on external uniqueness
+							ObjectType rolePlayer;
+							if (null != (r = r.OppositeRole as Role) &&
+								null != (rolePlayer = r.RolePlayer) &&
+								rolePlayer.IsImplicitBooleanValue)
+							{
+								rVal = constraintRoles.Contains(r);
+							}
+						}
 						break;
 					case ConstraintStorageStyle.SetComparisonConstraint:
 						foreach (SetComparisonConstraintRoleSequence roleSequence in (constraint as SetComparisonConstraint).RoleSequenceCollection)

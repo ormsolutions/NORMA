@@ -267,6 +267,9 @@
 			<arg:DeleteRule methodName="FactTypeInstanceHasRoleInstanceDeletedRule">
 				<arg:RuleOn targetType="FactTypeInstanceHasRoleInstance" fireTime="LocalCommit" priority="BeforeDelayValidateRulePriority"/>
 			</arg:DeleteRule>
+			<arg:DeleteRule methodName="ImpliedBooleanRolePlayerDeletedRule">
+				<arg:RuleOn targetType="ObjectTypePlaysRole"/>
+			</arg:DeleteRule>
 		</arg:RuleContainer>
 		<arg:RuleContainer class="FrequencyConstraint">
 			<arg:ChangeRule methodName="FrequencyConstraintMinMaxRule">

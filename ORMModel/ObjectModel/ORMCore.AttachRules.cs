@@ -110,6 +110,7 @@ namespace Neumont.Tools.ORM.ObjectModel
 						typeof(FactTypeInstance).GetNestedType("FactTypeHasRoleDeletedRuleClass", BindingFlags.Public | BindingFlags.NonPublic),
 						typeof(FactTypeInstance).GetNestedType("FactTypeInstanceHasRoleInstanceAddedRuleClass", BindingFlags.Public | BindingFlags.NonPublic),
 						typeof(FactTypeInstance).GetNestedType("FactTypeInstanceHasRoleInstanceDeletedRuleClass", BindingFlags.Public | BindingFlags.NonPublic),
+						typeof(FactTypeInstance).GetNestedType("ImpliedBooleanRolePlayerDeletedRuleClass", BindingFlags.Public | BindingFlags.NonPublic),
 						typeof(FrequencyConstraint).GetNestedType("FrequencyConstraintMinMaxRuleClass", BindingFlags.Public | BindingFlags.NonPublic),
 						typeof(FrequencyConstraint).GetNestedType("RemoveContradictionErrorsWithFactTypeRuleClass", BindingFlags.Public | BindingFlags.NonPublic),
 						typeof(MandatoryConstraint).GetNestedType("MandatoryConstraintChangeRuleClass", BindingFlags.Public | BindingFlags.NonPublic),
@@ -302,7 +303,7 @@ namespace Neumont.Tools.ORM.ObjectModel
 		{
 			Microsoft.VisualStudio.Modeling.RuleManager ruleManager = store.RuleManager;
 			Type[] disabledRuleTypes = ORMCoreDomainModel.CustomDomainModelTypes;
-			for (int i = 0; i < 235; ++i)
+			for (int i = 0; i < 236; ++i)
 			{
 				ruleManager.EnableRule(disabledRuleTypes[i]);
 			}
@@ -2352,6 +2353,32 @@ namespace Neumont.Tools.ORM.ObjectModel
 				Neumont.Tools.Modeling.Diagnostics.TraceUtility.TraceRuleStart(e.ModelElement.Store, "Neumont.Tools.ORM.ObjectModel.FactTypeInstance.FactTypeInstanceHasRoleInstanceDeletedRule");
 				FactTypeInstance.FactTypeInstanceHasRoleInstanceDeletedRule(e);
 				Neumont.Tools.Modeling.Diagnostics.TraceUtility.TraceRuleEnd(e.ModelElement.Store, "Neumont.Tools.ORM.ObjectModel.FactTypeInstance.FactTypeInstanceHasRoleInstanceDeletedRule");
+			}
+		}
+		[Microsoft.VisualStudio.Modeling.RuleOn(typeof(ObjectTypePlaysRole), Priority=Neumont.Tools.Modeling.FrameworkDomainModel.InlineRulePriority)]
+		private sealed class ImpliedBooleanRolePlayerDeletedRuleClass : Microsoft.VisualStudio.Modeling.DeleteRule
+		{
+			[System.Diagnostics.DebuggerStepThrough()]
+			public ImpliedBooleanRolePlayerDeletedRuleClass()
+			{
+				base.IsEnabled = false;
+			}
+			/// <summary>
+			/// Provide the following method in class: 
+			/// Neumont.Tools.ORM.ObjectModel.FactTypeInstance
+			/// /// <summary>
+			/// /// DeleteRule: typeof(ObjectTypePlaysRole)
+			/// /// </summary>
+			/// private static void ImpliedBooleanRolePlayerDeletedRule(ElementDeletedEventArgs e)
+			/// {
+			/// }
+			/// </summary>
+			[System.Diagnostics.DebuggerStepThrough()]
+			public override void ElementDeleted(Microsoft.VisualStudio.Modeling.ElementDeletedEventArgs e)
+			{
+				Neumont.Tools.Modeling.Diagnostics.TraceUtility.TraceRuleStart(e.ModelElement.Store, "Neumont.Tools.ORM.ObjectModel.FactTypeInstance.ImpliedBooleanRolePlayerDeletedRule");
+				FactTypeInstance.ImpliedBooleanRolePlayerDeletedRule(e);
+				Neumont.Tools.Modeling.Diagnostics.TraceUtility.TraceRuleEnd(e.ModelElement.Store, "Neumont.Tools.ORM.ObjectModel.FactTypeInstance.ImpliedBooleanRolePlayerDeletedRule");
 			}
 		}
 	}

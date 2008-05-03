@@ -989,6 +989,7 @@ namespace Neumont.Tools.ORM.Shell
 					// This is happening during teardown scenarios
 					return;
 				}
+				Role unaryRole = fact.UnaryRole;
 
 				visibleCommands = enabledCommands = ORMDesignerCommands.DisplayReadingsWindow | ORMDesignerCommands.InsertRole | ORMDesignerCommands.DeleteRole | ORMDesignerCommands.ToggleSimpleMandatory | ORMDesignerCommands.AddInternalUniqueness;
 				checkableCommands = ORMDesignerCommands.ToggleSimpleMandatory;
@@ -1000,7 +1001,7 @@ namespace Neumont.Tools.ORM.Shell
 
 				// Disable role deletion if the FactType is a unary
 				visibleCommands |= ORMDesignerCommands.DeleteRole;
-				if (fact.UnaryRole != null)
+				if (unaryRole != null)
 				{
 					enabledCommands &= ~ORMDesignerCommands.DeleteRole;
 				}
@@ -1036,7 +1037,11 @@ namespace Neumont.Tools.ORM.Shell
 						switch (constraint.ConstraintStorageStyle)
 						{
 							case ConstraintStorageStyle.SetConstraint:
-								if ((constraint as SetConstraint).RoleCollection.IndexOf(role) >= 0)
+								LinkedElementCollection<Role> constraintRoles = ((SetConstraint)constraint).RoleCollection;
+								if (constraintRoles.Contains(role) ||
+									(constraint.ConstraintType == ConstraintType.ExternalUniqueness &&
+									role.Role == unaryRole &&
+									constraintRoles.Contains(role.OppositeRole as Role)))
 								{
 									visibleCommands |= ORMDesignerCommands.ActivateRoleSequence;
 									enabledCommands |= ORMDesignerCommands.ActivateRoleSequence;
@@ -2947,6 +2952,15 @@ namespace Neumont.Tools.ORM.Shell
 				ExternalConstraintConnectAction connectAction = ormDiagram.ExternalConstraintConnectAction;
 
 				Role role = SelectedElements[0] as Role;
+				Role oppositeRole;
+				ObjectType oppositeRolePlayer;
+				if (constraint.ConstraintType == ConstraintType.ExternalUniqueness &&
+					null != (oppositeRole = role.OppositeRole as Role) &&
+					null != (oppositeRolePlayer = oppositeRole.RolePlayer) &&
+					oppositeRolePlayer.IsImplicitBooleanValue)
+				{
+					role = oppositeRole;
+				}
 				ConstraintRoleSequence selectedSequence = null;
 				foreach (ConstraintRoleSequence sequence in role.ConstraintRoleSequenceCollection)
 				{

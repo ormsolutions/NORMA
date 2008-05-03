@@ -2712,7 +2712,7 @@ namespace Neumont.Tools.ORM.ObjectModel
 				else if (element.UnaryRole != null)
 				{
 					// Validate and fix any binarized unary facts
-					UnaryBinarizationUtility.ProcessFactType(element);
+					UnaryBinarizationUtility.ProcessFactType(element, notifyAdded);
 				}
 			}
 		}

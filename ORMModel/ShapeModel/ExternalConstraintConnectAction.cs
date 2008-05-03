@@ -227,6 +227,30 @@ namespace Neumont.Tools.ORM.ShapeModel
 					{
 						// The single-column constraint is its own role set, just add the roles.
 						modifyRoleSequence = scConstraint;
+						if (constraint.ConstraintType == ConstraintType.ExternalUniqueness)
+						{
+							// Translate selected unary roles back to the implied role
+							bool duplicatedSelectedRoles = false;
+							for (int i = 0; i < rolesCount; ++i)
+							{
+								Role testRole = selectedRoles[i];
+								Role oppositeRole;
+								ObjectType oppositeRolePlayer;
+								if (null != (oppositeRole = testRole.OppositeRole as Role) &&
+									null != (oppositeRolePlayer = oppositeRole.RolePlayer) &&
+									oppositeRolePlayer.IsImplicitBooleanValue)
+								{
+									if (!duplicatedSelectedRoles)
+									{
+										duplicatedSelectedRoles = true;
+										Role[] dupRoles = new Role[rolesCount];
+										selectedRoles.CopyTo(dupRoles, 0);
+										selectedRoles = dupRoles;
+									}
+									selectedRoles[i] = oppositeRole;
+								}
+							}
+						}
 					}
 					if (modifyRoleSequence != null)
 					{
@@ -254,21 +278,9 @@ namespace Neumont.Tools.ORM.ShapeModel
 								{
 									roles.Insert(i, selectedRole);
 								}
-								else
+								else if (!roles.Contains(selectedRole))
 								{
-									// Redirect connection of an external uniqueness constraint on a binarized unary
-									if (constraint is UniquenessConstraint && selectedRole.FactType.UnaryRole != null)
-									{
-										Role oppositeRole = selectedRole.OppositeRole.Role;
-										if (!roles.Contains(oppositeRole))
-										{
-											roles.Add(oppositeRole);
-										}
-									}
-									else if (!roles.Contains(selectedRole))
-									{
-										roles.Add(selectedRole);
-									}
+									roles.Add(selectedRole);
 								}
 								++existingRolesCount;
 							}
@@ -727,8 +739,15 @@ namespace Neumont.Tools.ORM.ShapeModel
 							break;
 						}
 					}
-					selectedRoleCollection.Add(r);
-					initialRoles.Add(r);
+					Role roleToAdd = r;
+					ObjectType rolePlayer;
+					if (null != (rolePlayer = r.RolePlayer) &&
+						rolePlayer.IsImplicitBooleanValue)
+					{
+						roleToAdd = r.OppositeRole.Role;
+					}
+					selectedRoleCollection.Add(roleToAdd);
+					initialRoles.Add(roleToAdd);
 				}
 			}
 			get

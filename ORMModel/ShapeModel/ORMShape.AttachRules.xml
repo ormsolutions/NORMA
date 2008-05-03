@@ -67,9 +67,9 @@
 			<arg:ChangeRule methodName="FactTypeShapeChangeRule">
 				<arg:RuleOn targetType="FactTypeShape" fireTime="TopLevelCommit" priority="DiagramFixupConstants.ResizeParentRulePriority"/>
 			</arg:ChangeRule>
-			<arg:ChangeRule methodName="ImplicitBooleanValueChangeRule">
-				<arg:RuleOn targetType="ObjectType" targetTypeQualifier="Neumont.Tools.ORM.ObjectModel"/>
-			</arg:ChangeRule>
+			<arg:DeleteRule methodName="ImplicitBooleanValueTypeDeletedRule">
+				<arg:RuleOn targetType="ObjectTypePlaysRole" targetTypeQualifier="Neumont.Tools.ORM.ObjectModel" fireTime="TopLevelCommit" priority="DiagramFixupConstants.ResizeParentRulePriority"/>
+			</arg:DeleteRule>
 			<arg:ChangeRule methodName="ObjectificationIsImpliedChangeRule">
 				<arg:RuleOn targetType="Objectification" targetTypeQualifier="Neumont.Tools.ORM.ObjectModel" fireTime="TopLevelCommit" priority="DiagramFixupConstants.AddShapeRulePriority"/>
 			</arg:ChangeRule>

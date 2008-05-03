@@ -215,56 +215,77 @@ namespace Neumont.Tools.ORM.ObjectModel
 			/// Reverses the binarization process performed by <see cref="BinarizeUnary"/>. Typically used when
 			/// <paramref name="binarizedUnaryFactType"/> no longer qualifies to be a binarized unary <see cref="FactType"/>.
 			/// </summary>
-			private static void DebinarizeUnary(LinkedElementCollection<RoleBase> binarizedUnaryFactRoleCollection)
+			private static void DebinarizeUnary(LinkedElementCollection<RoleBase> binarizedUnaryFactRoleCollection, bool deleteImplicitBooleanRole, INotifyElementAdded notifyAdded)
 			{
 				// UNDONE: We need to make sure the debinarization happens BEFORE the implied Objectification rules run on the binarized unary FactType.
 
-				bool foundImplicitBoolean = false;
-				for (int i = binarizedUnaryFactRoleCollection.Count - 1; i > 0; i--)
+				// The default implied role is the second one, walk the collection backwards
+				int roleCount = binarizedUnaryFactRoleCollection.Count;
+				for (int i = roleCount - 1; i >= 0; --i)
 				{
-					Role implicitBooleanRole = binarizedUnaryFactRoleCollection[i].Role;
-					if (implicitBooleanRole != null)
+					Role implicitBooleanRole;
+					ObjectType implicitBooleanValueType;
+					if (null != (implicitBooleanRole = binarizedUnaryFactRoleCollection[i].Role) &&
+						null != (implicitBooleanValueType = implicitBooleanRole.RolePlayer) &&
+						implicitBooleanValueType.IsImplicitBooleanValue)
 					{
-						ObjectType implicitBooleanValueType = implicitBooleanRole.RolePlayer;
-						if (implicitBooleanValueType != null && implicitBooleanValueType.IsImplicitBooleanValue)
+						// Delete the implicit boolean value type (which will also remove any value constraints on it)
+						// Note that changes to IsImplicitBooleanValue are intentionally blocked so that the
+						// deleted implied ValueType can be identified as such by events as well as rules.
+						// implicitBooleanValueType.IsImplicitBooleanValue = false;
+						bool ruleDisabled = false;
+						RuleManager ruleManager = null;
+						try
 						{
-							foundImplicitBoolean = true;
-
-							// Delete the implicit boolean value type (which will also remove any value constraints on it)
-							implicitBooleanValueType.IsImplicitBooleanValue = false;
-							implicitBooleanValueType.Delete();
-						}
-					}
-				}
-
-				if (foundImplicitBoolean)
-				{
-					int binarizedUnaryFactRoleCollectionCount = binarizedUnaryFactRoleCollection.Count;
-					for (int i = 0; i < binarizedUnaryFactRoleCollectionCount; i++)
-					{
-						Role role = binarizedUnaryFactRoleCollection[i] as Role;
-						if (role != null)
-						{
-							UniquenessConstraint singleRoleAlethicUniquenessConstraint = role.SingleRoleAlethicUniquenessConstraint;
-							if (singleRoleAlethicUniquenessConstraint != null)
+							if (notifyAdded == null)
 							{
-								// Delete the uniqueness constraint
-								singleRoleAlethicUniquenessConstraint.Delete();
+								ruleManager = implicitBooleanRole.Store.RuleManager;
+								ruleManager.DisableRule(typeof(ObjectTypePlaysRoleDeletedRuleClass));
+								ruleDisabled = true;
 							}
-
-							// UNDONE: We are using open-world assumption now
-							//MandatoryConstraint simpleMandatoryConstraint = role.SimpleMandatoryConstraint;
-							//if (simpleMandatoryConstraint != null && simpleMandatoryConstraint.Modality == ConstraintModality.Alethic)
-							//{
-							//    // Delete the simple mandatory constraint (for closed-world assumption), if present
-							//    simpleMandatoryConstraint.Delete();
-							//}
+							implicitBooleanValueType.Delete();
+							if (deleteImplicitBooleanRole)
+							{
+								implicitBooleanRole.Delete();
+								--roleCount;
+							}
 						}
+						finally
+						{
+							if (ruleDisabled)
+							{
+								ruleManager.EnableRule(typeof(ObjectTypePlaysRoleDeletedRuleClass));
+							}
+						}
+
+						// Clear implied constraints
+						for (int j = 0; j < roleCount; ++j)
+						{
+							Role role = binarizedUnaryFactRoleCollection[j] as Role;
+							if (role != null)
+							{
+								UniquenessConstraint singleRoleAlethicUniquenessConstraint = role.SingleRoleAlethicUniquenessConstraint;
+								if (singleRoleAlethicUniquenessConstraint != null)
+								{
+									// Delete the uniqueness constraint
+									singleRoleAlethicUniquenessConstraint.Delete();
+								}
+
+								// UNDONE: We are using open-world assumption now
+								//MandatoryConstraint simpleMandatoryConstraint = role.SimpleMandatoryConstraint;
+								//if (simpleMandatoryConstraint != null && simpleMandatoryConstraint.Modality == ConstraintModality.Alethic)
+								//{
+								//    // Delete the simple mandatory constraint (for closed-world assumption), if present
+								//    simpleMandatoryConstraint.Delete();
+								//}
+							}
+						}
+						break;
 					}
 				}
 			}
 
-			public static void ProcessFactType(FactType factType)
+			public static void ProcessFactType(FactType factType, INotifyElementAdded notifyAdded)
 			{
 				LinkedElementCollection<RoleBase> roleCollection = factType.RoleCollection;
 				int roleCollectionCount = roleCollection.Count;
@@ -272,7 +293,7 @@ namespace Neumont.Tools.ORM.ObjectModel
 				if (roleCollectionCount == 1)
 				{
 					// If we have a unary, binarize it
-					BinarizeUnary(factType, null);
+					BinarizeUnary(factType, notifyAdded);
 					return;
 				}
 				else if (roleCollectionCount == 2)
@@ -302,23 +323,23 @@ namespace Neumont.Tools.ORM.ObjectModel
 						if (!ValidateConstraints(unaryRole, implicitBooleanRole) || !ValidateImplictBooleanValueType(implicitBooleanRole.RolePlayer))
 						{
 							LinkedElementCollection<RoleBase> roles = factType.RoleCollection;
-							DebinarizeUnary(roles);
+							DebinarizeUnary(roles, false, notifyAdded);
 							// Append to the reading orders
 							LinkedElementCollection<ReadingOrder> readingOrders = factType.ReadingOrderCollection;
 							int readingOrderCount = readingOrders.Count;
 							for (int i = 0; i < readingOrderCount; ++i)
 							{
-								if (!readingOrders[i].RoleCollection.Contains(implicitBooleanRole))
+								ReadingOrder order = readingOrders[i];
+								LinkedElementCollection<RoleBase> readingRoles = order.RoleCollection;
+								if (!readingRoles.Contains(implicitBooleanRole))
 								{
-									readingOrders[i].RoleCollection.Add(implicitBooleanRole);
-								}
-
-								// UNDONE: iterate readings and set text
-								LinkedElementCollection<Reading> readings = readingOrders[i].ReadingCollection;
-								int readingCount = readings.Count;
-								for (int j = 0; j < readingCount; ++j)
-								{
-									readings[j].SetAutoText(readings[j].Text + "  {1}");
+									readingRoles.Add(implicitBooleanRole);
+									LinkedElementCollection<Reading> readings = order.ReadingCollection;
+									int readingCount = readings.Count;
+									for (int j = 0; j < readingCount; ++j)
+									{
+										readings[j].SetAutoText(readings[j].Text + " {1}");
+									}
 								}
 							}
 						}
@@ -332,9 +353,7 @@ namespace Neumont.Tools.ORM.ObjectModel
 						Role implicitBooleanRole = roleCollection[i].Role;
 						if (implicitBooleanRole != null && implicitBooleanRole.RolePlayer != null && implicitBooleanRole.RolePlayer.IsImplicitBooleanValue)
 						{
-							DebinarizeUnary(factType.RoleCollection);
-							// Delete our implicit boolean role
-							implicitBooleanRole.Delete();
+							DebinarizeUnary(factType.RoleCollection, true, notifyAdded);
 							break;
 						}
 					}
@@ -527,7 +546,7 @@ namespace Neumont.Tools.ORM.ObjectModel
 				FactType factType = (FactType)element;
 				if (!factType.IsDeleted)
 				{
-					ProcessFactType(factType);
+					ProcessFactType(factType, null);
 				}
 			}
 			/// <summary>

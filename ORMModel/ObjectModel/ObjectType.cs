@@ -1411,7 +1411,7 @@ namespace Neumont.Tools.ORM.ObjectModel
 					FrameworkDomainModel.DelayValidateElement(objectType, DelayValidateIsIndependent);
 				}
 			}
-			else if (attributeGuid == ObjectType.IsImplicitBooleanValueDomainPropertyId && e.ChangeSource != ChangeSource.Rule)
+			else if (attributeGuid == ObjectType.IsImplicitBooleanValueDomainPropertyId)
 			{
 				throw new InvalidOperationException(ResourceStrings.ImplicitBooleanValueTypePropertyRestriction);
 			}

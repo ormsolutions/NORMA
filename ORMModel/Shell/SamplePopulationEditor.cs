@@ -426,10 +426,15 @@ namespace Neumont.Tools.ORM.Shell
 			eventManager.AddOrRemoveHandler(new EventHandler<ElementEventsBegunEventArgs>(ElementEventsBegunEvent), action);
 			eventManager.AddOrRemoveHandler(new EventHandler<ElementEventsEndedEventArgs>(ElementEventsEndedEvent), action);
 
-			// Track FactTypeInstance changes
+			// Track FactType changes
 			classInfo = dataDirectory.FindDomainRelationship(FactTypeHasRole.DomainClassId);
 			eventManager.AddOrRemoveHandler(classInfo, new EventHandler<ElementAddedEventArgs>(FactTypeHasRoleAddedEvent), action);
 			eventManager.AddOrRemoveHandler(classInfo, new EventHandler<ElementDeletedEventArgs>(FactTypeHasRoleRemovedEvent), action);
+
+			// Track unary changes
+			classInfo = dataDirectory.FindDomainRelationship(ObjectTypePlaysRole.DomainClassId);
+			eventManager.AddOrRemoveHandler(classInfo, new EventHandler<ElementAddedEventArgs>(ImpliedBooleanRolePlayerAddedEvent), action);
+			eventManager.AddOrRemoveHandler(classInfo, new EventHandler<ElementDeletedEventArgs>(ImpliedBooleanRolePlayerRemovedEvent), action);
 
 			// Track EntityTypeInstance changes
 			classInfo = dataDirectory.FindDomainRelationship(EntityTypeHasPreferredIdentifier.DomainClassId);
@@ -505,6 +510,38 @@ namespace Neumont.Tools.ORM.Shell
 			}
 			FactType factType = (e.ModelElement as FactTypeHasRole).FactType;
 			if (!factType.IsDeleted && factType == mySelectedFactType)
+			{
+				PopulateControlForFactType();
+			}
+		}
+		private void ImpliedBooleanRolePlayerAddedEvent(object sender, ElementAddedEventArgs e)
+		{
+			// Adding an implicit boolean value type is treated the same as removing a role
+			if (myRepopulated)
+			{
+				return;
+			}
+			ObjectTypePlaysRole link = (ObjectTypePlaysRole)e.ModelElement;
+			Role role;
+			if (link.RolePlayer.IsImplicitBooleanValue &&
+				!(role = link.PlayedRole).IsDeleted &&
+				role.FactType == mySelectedFactType)
+			{
+				PopulateControlForFactType();
+			}
+		}
+		private void ImpliedBooleanRolePlayerRemovedEvent(object sender, ElementDeletedEventArgs e)
+		{
+			// Removing an implicit boolean value type is treated the same as adding a role
+			if (myRepopulated)
+			{
+				return;
+			}
+			ObjectTypePlaysRole link = (ObjectTypePlaysRole)e.ModelElement;
+			Role role;
+			if (link.RolePlayer.IsImplicitBooleanValue &&
+				!(role = link.PlayedRole).IsDeleted &&
+				role.FactType == mySelectedFactType)
 			{
 				PopulateControlForFactType();
 			}

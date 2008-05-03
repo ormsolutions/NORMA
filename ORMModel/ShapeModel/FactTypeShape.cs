@@ -2396,17 +2396,19 @@ namespace Neumont.Tools.ORM.ShapeModel
 					bool reverseRoleOrder = orientation == DisplayOrientation.VerticalRotatedLeft;
 					try
 					{
+						Role impliedUnaryRole = (roleCount == 1) ? impliedUnaryRole = roles[0].OppositeRole.Role : null;
 						for (int i = 0; i < roleCount; ++i)
 						{
 							RectangleF roleBounds = drawHorizontal ?
 								new RectangleF((float)lastX, top, (float)offsetBy, height) :
 								new RectangleF(top, (float)lastX, height, (float)offsetBy);
 							int iRole = reverseRoleOrder ? roleCount - i - 1 : i;
-							RoleBase currentRole = roles[iRole];
+							RoleBase currentRoleBase = roles[iRole];
+							Role currentRole = currentRoleBase.Role;
 							highlightThisRole = factShapeHighlighted || iRole == highlightRoleBox;
 
 							Brush roleCenterBrush;
-							if (ModelError.HasErrors(currentRole, ModelErrorUses.DisplayPrimary, factType.Model.ModelErrorDisplayFilter))
+							if (ModelError.HasErrors(currentRoleBase, ModelErrorUses.DisplayPrimary, factType.Model.ModelErrorDisplayFilter))
 							{
 								roleCenterBrush = styleSet.GetBrush(ORMDiagram.ErrorBackgroundResource);
 							}
@@ -2417,8 +2419,8 @@ namespace Neumont.Tools.ORM.ShapeModel
 							g.FillRectangle(roleCenterBrush, roleBounds.Left, roleBounds.Top, roleBounds.Width, roleBounds.Height);
 
 							// There is an active ExternalConstraintConnectAction, and this role is currently in the action's role set.
-							if ((activeExternalAction != null) &&
-								(-1 != (activeRoleIndex = activeExternalAction.GetActiveRoleIndex(currentRole.Role))))
+							if (activeExternalAction != null &&
+								-1 != (activeRoleIndex = activeExternalAction.GetActiveRoleIndex(currentRole)))
 							{
 								// There is an active ExternalConstraintConnectAction, and this role is currently in the action's role set.
 								DrawHighlight(g, styleSet, roleBounds, highlightThisRole);
@@ -2458,7 +2460,7 @@ namespace Neumont.Tools.ORM.ShapeModel
 								}
 							}
 							// There is an active InternalUniquenessConstraintConnectAction, and this role is currently in the action's role set.
-							else if (activeInternalAction != null && -1 != (activeRoleIndex = activeInternalAction.GetActiveRoleIndex(currentRole.Role)))
+							else if (activeInternalAction != null && -1 != (activeRoleIndex = activeInternalAction.GetActiveRoleIndex(currentRole)))
 							{
 								// There is an active InternalUniquenessConstraintConnectAction, and this role is currently in the action's role set.
 								DrawHighlight(g, styleSet, roleBounds, highlightThisRole);
@@ -2468,31 +2470,21 @@ namespace Neumont.Tools.ORM.ShapeModel
 								// Current diagram is an ORMDiagram.
 								#region Handling StickyObject highlighting and selection
 								ExternalConstraintShape stickyConstraintShape;
+								IStickyObject stickyObject;
 								IConstraint stickyConstraint;
 								// The active StickyObject for the diagram is an ExternalConstraintShape
-								if (null != (stickyConstraintShape = currentDiagram.StickyObject as ExternalConstraintShape)
+								if (null != (stickyConstraintShape = (stickyObject = currentDiagram.StickyObject) as ExternalConstraintShape)
 									&& null != (stickyConstraint = stickyConstraintShape.AssociatedConstraint))
 								{
-									ConstraintRoleSequence sequence = null;
-									bool roleIsInStickyObject = false;
-
-									// Test to see if the diagram's StickyObject (which is an IConstraint) contains a reference to this role.
-									foreach (ConstraintRoleSequence c in currentRole.Role.ConstraintRoleSequenceCollection)
+									// If the role is selectedable as part of the sticky object then it is part
+									// of the currently selected constraint.
+									if (stickyObject.StickySelectable(currentRole))
 									{
-										if (c.Constraint == stickyConstraint)
-										{
-											sequence = c;
-											roleIsInStickyObject = true;
-											break;
-										}
-									}
-
-									// This role is in the diagram's StickyObject.
-									if (roleIsInStickyObject)
-									{
+										Role constraintRole = (impliedUnaryRole != null && stickyConstraint.ConstraintType == ConstraintType.ExternalUniqueness) ?
+											impliedUnaryRole :
+											currentRole;
 										// We need to find out if this role is in one of the role sequences being edited, or if it's just selected.
 										parentFactShape.DrawHighlight(g, roleBounds, true, highlightThisRole);
-										Debug.Assert(sequence != null);
 										SetComparisonConstraint mcec;
 										SetConstraint scec;
 										bool drawIndexNumbers = false;
@@ -2504,7 +2496,7 @@ namespace Neumont.Tools.ORM.ShapeModel
 										}
 										else
 										{
-											if (activeExternalAction.InitialRoles.IndexOf(currentRole.Role) < 0)
+											if (activeExternalAction.InitialRoles.IndexOf(currentRole) < 0)
 											{
 												drawIndexNumbers = true;
 											}
@@ -2517,12 +2509,12 @@ namespace Neumont.Tools.ORM.ShapeModel
 												int sequenceCollectionCount = sequenceCollection.Count;
 												for (int sequenceIndex = 0; sequenceIndex < sequenceCollectionCount; ++sequenceIndex)
 												{
-													int roleIndex = sequenceCollection[sequenceIndex].RoleCollection.IndexOf(currentRole.Role);
+													int roleIndex = sequenceCollection[sequenceIndex].RoleCollection.IndexOf(constraintRole);
 													if (roleIndex >= 0)
 													{
 														for (int j = sequenceIndex + 1; j < sequenceCollectionCount; ++j)
 														{
-															if (sequenceCollection[j].RoleCollection.IndexOf(currentRole.Role) >= 0)
+															if (sequenceCollection[j].RoleCollection.IndexOf(constraintRole) >= 0)
 															{
 																// Indicate overlapping role sequences
 																indexString = ResourceStrings.SetConstraintStickyRoleOverlapping;
@@ -2539,7 +2531,7 @@ namespace Neumont.Tools.ORM.ShapeModel
 											}
 											else if (null != (scec = stickyConstraint as SetConstraint))
 											{
-												indexString = (scec.RoleCollection.IndexOf(currentRole.Role) + 1).ToString();
+												indexString = (scec.RoleCollection.IndexOf(constraintRole) + 1).ToString();
 											}
 
 											if ((object)indexString != null)
@@ -2589,7 +2581,7 @@ namespace Neumont.Tools.ORM.ShapeModel
 								#endregion // Handling StickyObject highlighting and selection
 								else if (highlightThisRole)
 								{
-									if (ModelError.HasErrors(currentRole, ModelErrorUses.DisplayPrimary, factType.Model.ModelErrorDisplayFilter))
+									if (ModelError.HasErrors(currentRoleBase, ModelErrorUses.DisplayPrimary, factType.Model.ModelErrorDisplayFilter))
 									{
 										g.FillRectangle(styleSet.GetBrush(ORMDiagram.HighlightedErrorBackgroundResource), roleBounds);
 									}
@@ -2601,7 +2593,7 @@ namespace Neumont.Tools.ORM.ShapeModel
 							}
 
 							// Draw a selection rectangle if needed
-							testSubField.AssociatedRole = currentRole;
+							testSubField.AssociatedRole = currentRoleBase;
 							if (selection != null && selection.Contains(testSelect))
 							{
 								roleBounds.Inflate(-.02f, -.02f);
@@ -5160,36 +5152,32 @@ namespace Neumont.Tools.ORM.ShapeModel
 			MaintainRelativeShapeOffsetsForBoundsChange(e);
 		}
 		#endregion // FactTypeShapeChangeRule
-		#region ImplicitBooleanValueChangeRule
+		#region ImplicitBooleanValueTypeDeletedRule
 		/// <summary>
-		/// ChangeRule: typeof(Neumont.Tools.ORM.ObjectModel.ObjectType)
+		/// DeleteRule: typeof(Neumont.Tools.ORM.ObjectModel.ObjectTypePlaysRole), FireTime=TopLevelCommit, Priority=DiagramFixupConstants.ResizeParentRulePriority;
+		/// Deletion of an implicit boolean value type means that the FactType is no longer unary.
 		/// </summary>
-		private static void ImplicitBooleanValueChangeRule(ElementPropertyChangedEventArgs e)
+		private static void ImplicitBooleanValueTypeDeletedRule(ElementDeletedEventArgs e)
 		{
-			if (e.DomainProperty.Id == ObjectType.IsImplicitBooleanValueDomainPropertyId)
+			ObjectTypePlaysRole link = (ObjectTypePlaysRole)e.ModelElement;
+			ObjectType impliedBoolean = link.RolePlayer;
+			Role role;
+			if (impliedBoolean.IsImplicitBooleanValue &&
+				!(role = link.PlayedRole).IsDeleted)
 			{
-				if ((bool)e.OldValue)
+				foreach (PresentationElement pel in PresentationViewsSubject.GetPresentation(role.FactType))
 				{
-					FactType factType;
-					LinkedElementCollection<Role> playedRoles = (e.ModelElement as ObjectType).PlayedRoleCollection;
-					if (playedRoles.Count != 0 &&
-						null != (factType = playedRoles[0].FactType))
+					FactTypeShape shape = pel as FactTypeShape;
+					if (shape != null)
 					{
-						foreach (PresentationElement pel in PresentationViewsSubject.GetPresentation(factType))
-						{
-							FactTypeShape shape = pel as FactTypeShape;
-							if (shape != null)
-							{
-								// When a binarized Unary Fact is no longer a unary, clear the displayed role orders
-								shape.RoleDisplayOrderCollection.Clear();
-								shape.AutoResize();
-							}
-						}
+						// When a binarized Unary Fact is no longer a unary, clear the displayed role orders
+						shape.RoleDisplayOrderCollection.Clear();
+						shape.AutoResize();
 					}
 				}
 			}
 		}
-		#endregion // ImplicitBooleanValueChangeRule
+		#endregion // ImplicitBooleanValueTypeDeletedRule
 		#endregion // Shape display update rules
 		#region Store Event Handlers
 		/// <summary>
