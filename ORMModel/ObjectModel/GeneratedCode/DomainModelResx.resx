@@ -522,7 +522,7 @@
     <comment>Description for DomainProperty &apos;DefinitionText&apos; on DomainClass &apos;FactType&apos;</comment>
   </data>
   <data name="Neumont.Tools.ORM.ObjectModel.FactType/DefinitionText.DisplayName" xml:space="preserve">
-    <value>Definition</value>
+    <value>InformalDefinition</value>
     <comment>DisplayName for DomainProperty &apos;DefinitionText&apos; on DomainClass &apos;FactType&apos;</comment>
   </data>
   <data name="Neumont.Tools.ORM.ObjectModel.FactType/NoteText.Description" xml:space="preserve">
@@ -1722,7 +1722,7 @@
     <comment>Description for DomainClass &apos;Definition&apos;</comment>
   </data>
   <data name="Neumont.Tools.ORM.ObjectModel.Definition.DisplayName" xml:space="preserve">
-    <value>Definition</value>
+    <value>InformalDefinition</value>
     <comment>DisplayName for DomainClass &apos;Definition&apos;</comment>
   </data>
   <data name="Neumont.Tools.ORM.ObjectModel.Definition/Text.Description" xml:space="preserve">
@@ -1730,7 +1730,7 @@
     <comment>Description for DomainProperty &apos;Text&apos; on DomainClass &apos;Definition&apos;</comment>
   </data>
   <data name="Neumont.Tools.ORM.ObjectModel.Definition/Text.DisplayName" xml:space="preserve">
-    <value>Definition</value>
+    <value>Text</value>
     <comment>DisplayName for DomainProperty &apos;Text&apos; on DomainClass &apos;Definition&apos;</comment>
   </data>
   <data name="Neumont.Tools.ORM.ObjectModel.Note.Description" xml:space="preserve">

@@ -435,7 +435,7 @@
 						<ExternalTypeMoniker Name="/System/Boolean"/>
 					</Type>
 				</DomainProperty>
-				<DomainProperty Name="DefinitionText" DefaultValue="" DisplayName="Definition" Description="A definition of this FactType. To insert new lines, use Control-Enter in the dropdown editor, or open the 'ORM Notes Editor' toolwindow." Id="3F58E4D1-4562-478A-A3FE-08715E455CD8" Kind="CustomStorage">
+				<DomainProperty Name="DefinitionText" DefaultValue="" DisplayName="InformalDefinition" Description="A definition of this FactType. To insert new lines, use Control-Enter in the dropdown editor, or open the 'ORM Notes Editor' toolwindow." Id="3F58E4D1-4562-478A-A3FE-08715E455CD8" Kind="CustomStorage">
 					<Attributes>
 						<ClrAttribute Name="global::System.ComponentModel.Editor">
 							<Parameters>
@@ -1515,12 +1515,12 @@
 			</BaseClass>
 		</DomainClass>
 
-		<DomainClass Name="Definition" Namespace="Neumont.Tools.ORM.ObjectModel" Id="25D3235C-76E2-4095-8EFD-847057937A00" DisplayName="Definition" Description="">
+		<DomainClass Name="Definition" Namespace="Neumont.Tools.ORM.ObjectModel" Id="25D3235C-76E2-4095-8EFD-847057937A00" DisplayName="InformalDefinition" Description="">
 			<BaseClass>
 				<DomainClassMoniker Name="ORMModelElement"/>
 			</BaseClass>
 			<Properties>
-				<DomainProperty Name="Text" DefaultValue="" Description="The definition contents. To insert new lines, use Control-Enter in the dropdown editor, or open the 'ORM Notes Editor' toolwindow." DisplayName="Definition" Id="B68867A8-4B52-4DE1-8B39-7EEE5ECB60A4">
+				<DomainProperty Name="Text" DefaultValue="" Description="The definition contents. To insert new lines, use Control-Enter in the dropdown editor, or open the 'ORM Notes Editor' toolwindow." DisplayName="Text" Id="B68867A8-4B52-4DE1-8B39-7EEE5ECB60A4">
 					<Attributes>
 						<ClrAttribute Name="global::System.ComponentModel.Editor">
 							<Parameters>

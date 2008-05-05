@@ -719,12 +719,19 @@ namespace Neumont.Tools.ORM.ObjectModel
 				(null != (fact = role.FactType)))
 			{
 				Objectification objectificationLink;
+				SubtypeMetaRole subtypeRole;
 				if (null != (objectificationLink = fact.ImpliedByObjectification))
 				{
 					if (!(objectificationLink.IsDeleting || role.IsDeleting))
 					{
 						throw BlockedByObjectificationPatternException();
 					}
+				}
+				else if (null != (subtypeRole = role as SubtypeMetaRole))
+				{
+					// We don't force preferred identifiers when supertypes are in place.
+					// If this is the last supertype then we need to revalidate for preferred identification.
+					FrameworkDomainModel.DelayValidateElement(rolePlayer, DelayProcessObjectifyingTypeForPreferredIdentifier);
 				}
 			}
 		}
@@ -1368,8 +1375,21 @@ namespace Neumont.Tools.ORM.ObjectModel
 					}
 					if (useConstraint != null)
 					{
-						objectType.PreferredIdentifier = useConstraint;
-						preferredIdentifier = useConstraint;
+						bool haveSupertype = false;
+						ObjectType.WalkSupertypeRelationships(
+							objectType,
+							delegate(SubtypeFact subtypeFact, ObjectType type, int depth)
+							{
+								// Note that we do not check if the supertype is a preferred
+								// path here, only that supertypes are available.
+								haveSupertype = true;
+								return ObjectTypeVisitorResult.Stop;
+							});
+						if (!haveSupertype)
+						{
+							objectType.PreferredIdentifier = useConstraint;
+							preferredIdentifier = useConstraint;
+						}
 					}
 				}
 				if (preferredIdentifier != null &&

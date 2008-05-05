@@ -93,7 +93,20 @@ namespace Neumont.Tools.ORM.ObjectModel.Design
 								}
 							}
 						}
-						return candidate != null;
+						if (candidate != null)
+						{
+							bool haveSupertype = false;
+							ObjectType.WalkSupertypeRelationships(
+								identifierFor,
+								delegate(SubtypeFact subtypeFact, ObjectType type, int depth)
+								{
+									// Note that we do not check if the supertype is a preferred
+									// path here, only that supertypes are available.
+									haveSupertype = true;
+									return ObjectTypeVisitorResult.Stop;
+								});
+							return !haveSupertype;
+						}
 					}
 					return false;
 				}

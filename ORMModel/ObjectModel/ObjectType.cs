@@ -1468,12 +1468,13 @@ namespace Neumont.Tools.ORM.ObjectModel
 				Debug.Assert(haveNew);
 				objectType.CreateReferenceMode(name);
 			}
-			if (newMode != null)
+			PortableDataType newModeType;
+			if (newMode != null && PortableDataType.Unspecified != (newModeType = newMode.Type))
 			{
 				//Now, set the dataType
 				DataType dataType = null;
 				ORMModel ormModel = objectType.Model;
-				dataType = ormModel.GetPortableDataType(newMode.Type);
+				dataType = ormModel.GetPortableDataType(newModeType);
 				//Change the objectType to the ref mode's preferred valueType and set the
 				//dataType on that objectType.
 				//Unless things change and the refMode can be set on objects without a preferred constraint,
