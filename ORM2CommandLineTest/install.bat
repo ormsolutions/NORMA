@@ -38,6 +38,7 @@ CALL:_CleanupFile "%NORMADir%\bin\ORMTestReportViewer.pdb"
 
 xcopy /Y /D /Q "%rootPath%%outDir%TestEngine\Neumont.Tools.ORM.SDK.TestEngine.%VSProduct%.dll" "%NORMADir%\bin\"
 xcopy /Y /D /Q "%rootPath%%outDir%TestEngine\Neumont.Tools.ORM.SDK.TestEngine.%VSProduct%.XML" "%NORMADir%\bin\"
+xcopy /Y /D /Q "%rootPath%%outDir%TestEngine\nunit.framework.dll" "%NORMADir%\bin\"
 if exist "%rootPath%%outDir%TestEngine\Neumont.Tools.ORM.SDK.TestEngine.%VSProduct%.pdb" (
 xcopy /Y /D /Q "%rootPath%%outDir%TestEngine\Neumont.Tools.ORM.SDK.TestEngine.%VSProduct%.pdb" "%NORMADir%\bin\"
 ) else (
