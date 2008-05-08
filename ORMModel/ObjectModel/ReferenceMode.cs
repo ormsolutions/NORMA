@@ -1254,7 +1254,7 @@ namespace Neumont.Tools.ORM.ObjectModel
 			{
 				string oldName = referenceMode.ResetFixedValueTypeName();
 				string newName = referenceMode.FixedValueTypeName;
-				bool haveNewName = newName.Length != 0;
+				bool haveNewName = newName != null;
 				if (!string.IsNullOrEmpty(oldName))
 				{
 					if (haveNewName && 0 == string.CompareOrdinal(oldName, newName))

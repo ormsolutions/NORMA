@@ -1862,7 +1862,7 @@ namespace Neumont.Tools.ORMAbstractionToConceptualDatabaseBridge
 						string before = groups["Before"].Value;
 						if (before.Length != 0)
 						{
-							addNamePartCallback(before, null);
+							addNamePartCallback(before.Replace("- ", " ").Replace(" -", " "), null);
 						}
 						SeparateObjectTypeParts(roles[int.Parse(groups["ReplaceIndex"].Value)].Role.RolePlayer, nameGenerator, addNamePartCallback);
 						trailingTextIndex += match.Length;
@@ -1870,7 +1870,7 @@ namespace Neumont.Tools.ORMAbstractionToConceptualDatabaseBridge
 					}
 					if (trailingTextIndex < readingText.Length)
 					{
-						addNamePartCallback(readingText.Substring(trailingTextIndex), null);
+						addNamePartCallback(readingText.Substring(trailingTextIndex).Replace("- ", " ").Replace(" -", " "), null);
 					}
 					return;
 				}
