@@ -2477,6 +2477,11 @@ namespace Neumont.Tools.ORM.ObjectModel
 			VerifyRoleSequenceCountForRule(notifyAdded);
 			// VerifyRoleSequenceArityForRule(notifyAdded); // This is called by VeryRoleSequenceCountForRule
 			// VerifyCompatibleRolePlayerTypeForRule(notifyAdded); // This is called by VerifyRoleSequenqeArityForRule
+			foreach (SetComparisonConstraintRoleSequence sequence in RoleSequenceCollection)
+			{
+				sequence.ValidateIntersectingConstraints(notifyAdded);
+				break;
+			}
 		}
 		void IModelErrorOwner.ValidateErrors(INotifyElementAdded notifyAdded)
 		{
@@ -3370,7 +3375,7 @@ namespace Neumont.Tools.ORM.ObjectModel
 					//with at least 2 mandatory constraints
 					case IntersectingConstraintPattern.EqualityImpliedByMandatory:
 						HandleExclusionOrEqualityAndMandatory(sequences, shouldExecuteValidationCode,
-							false, 2, error, validationInfo,
+							false, -1, error, validationInfo,
 							notifyAdded, currentConstraint, hasError);
 						break;
 					case IntersectingConstraintPattern.ExclusionContradictsMandatory:
@@ -3610,7 +3615,9 @@ namespace Neumont.Tools.ORM.ObjectModel
 			IList<IConstraint> constrFound = null;
 			bool hasError = hasErrorDefault;
 
-			if (shouldExecuteValidationCode)
+			if (shouldExecuteValidationCode &&
+				(0 < minNumViolatingConstraints ||
+				0 < (minNumViolatingConstraints = (sequences != null) ? sequences.Count : 0)))
 			{
 				Store store = Store;
 				int numOfViolatingConstraints = 0;
@@ -4014,6 +4021,17 @@ namespace Neumont.Tools.ORM.ObjectModel
 			}
 		}
 		#endregion // ConstraintRoleSequence overrides
+		#region Error validation
+		/// <summary>
+		/// Called during initial validation of a <see cref="SetComparisonConstraint"/> to
+		/// verify intersecting constraints. This methods needs to be called for one sequence
+		/// on a constraint only.
+		/// </summary>
+		public void ValidateIntersectingConstraints(INotifyElementAdded notifyAdded)
+		{
+			base.ValidateConstraintPatternError(notifyAdded);
+		}
+		#endregion // Error validation
 	}
 	public partial class SetConstraint
 	{
@@ -4032,236 +4050,6 @@ namespace Neumont.Tools.ORM.ObjectModel
 		#endregion // ConstraintRoleSequence overrides
 	}
 	#endregion // ConstraintRoleSequence classes
-	#region EqualityConstraint class
-	public partial class EqualityConstraint : IModelErrorOwner
-	{
-		#region IModelErrorOwner Implementation
-		/// <summary>
-		/// Implements IModelErrorOwner.GetErrorCollection
-		/// </summary>
-		protected new IEnumerable<ModelErrorUsage> GetErrorCollection(ModelErrorUses filter)
-		{
-			if (filter == 0)
-			{
-				filter = (ModelErrorUses)(-1);
-			}
-			foreach (ModelErrorUsage baseError in base.GetErrorCollection(filter))
-			{
-				yield return baseError;
-			}
-			if (0 != (filter & ModelErrorUses.Verbalize))
-			{
-				EqualityImpliedByMandatoryError equalityImplied;
-				if (null != (equalityImplied = EqualityImpliedByMandatoryError))
-				{
-					yield return equalityImplied;
-				}
-			}
-		}
-		IEnumerable<ModelErrorUsage> IModelErrorOwner.GetErrorCollection(ModelErrorUses filter)
-		{
-			return GetErrorCollection(filter);
-		}
-		/// <summary>
-		/// Implements IModelErrorOwner.ValidateErrors
-		/// Validate all errors on the external constraint. This
-		/// is called during deserialization fixup when rules are
-		/// suspended.
-		/// </summary>
-		/// <param name="notifyAdded">A callback for notifying
-		/// the caller of all objects that are added.</param>
-		protected new void ValidateErrors(INotifyElementAdded notifyAdded)
-		{
-			base.ValidateErrors(notifyAdded);
-			VerifyNotImpliedByMandatoryConstraints(notifyAdded);
-		}
-		void IModelErrorOwner.ValidateErrors(INotifyElementAdded notifyAdded)
-		{
-			ValidateErrors(notifyAdded);
-		}
-		/// <summary>
-		/// Implements IModelErrorOwner.DelayValidateErrors
-		/// </summary>
-		protected new void DelayValidateErrors()
-		{
-			base.DelayValidateErrors();
-			FrameworkDomainModel.DelayValidateElement(this, DelayValidateEqualityImpliedByMandatoryError);
-		}
-		void IModelErrorOwner.DelayValidateErrors()
-		{
-			DelayValidateErrors();
-		}
-		#endregion // IModelErrorOwner Implementation
-		#region Error synchronization rules
-		// UNDONE: Delayed validation (EqualityConstraint.DelayValidateEqualityImpliedByMandatoryError not called by rules)
-		/// <summary>
-		/// Validator callback for EqualityImpliedByMandatoryError
-		/// </summary>
-		private static void DelayValidateEqualityImpliedByMandatoryError(ModelElement element)
-		{
-			(element as EqualityConstraint).VerifyNotImpliedByMandatoryConstraints(null);
-		}
-		/// <summary>
-		/// Verifies that the equality constraint is not implied by mandatory constraints. An equality
-		/// constraint is implied if it has a single column and all of the roles in that column have
-		/// a mandatory constraint.
-		/// </summary>
-		/// <param name="notifyAdded">If not null, this is being called during
-		/// load when rules are not in place. Any elements that are added
-		/// must be notified back to the caller.</param>
-		private void VerifyNotImpliedByMandatoryConstraints(INotifyElementAdded notifyAdded)
-		{
-			if (!IsDeleted)
-			{
-				bool noError = true;
-				EqualityImpliedByMandatoryError impliedEqualityError;
-				LinkedElementCollection<SetComparisonConstraintRoleSequence> sequences = RoleSequenceCollection;
-				int roleSequenceCount = sequences.Count;
-
-				if (roleSequenceCount >= 2)
-				{
-					for (int i = 0; i < roleSequenceCount; ++i)
-					{
-						LinkedElementCollection<Role> roleCollection = sequences[i].RoleCollection;
-						int roleCount = roleCollection.Count;
-						if (roleCount != 1)
-						{
-							break;
-						}
-						Role currentRole = roleCollection[0];
-						LinkedElementCollection<ConstraintRoleSequence> roleConstraints = currentRole.ConstraintRoleSequenceCollection;
-						int constraintCount = roleConstraints.Count;
-						bool haveMandatory = false;
-						for (int counter = 0; counter < constraintCount; ++counter)
-						{
-							IConstraint currentConstraint = roleConstraints[counter].Constraint;
-							if (currentConstraint.ConstraintType == ConstraintType.SimpleMandatory)
-							{
-								MandatoryConstraint mandatory = currentConstraint as MandatoryConstraint;
-								if (!mandatory.IsDeleting)
-								{
-									haveMandatory = true;
-								}
-								break; // There will only be one simple mandatory constraint on any given role
-							}
-						}
-						if (!haveMandatory)
-						{
-							break;
-						}
-						else if (i == (roleSequenceCount - 1))
-						{
-							// There are mandatory constraints on all roles
-							noError = false;
-						}
-					}
-				}
-
-				if (!noError)
-				{
-					if (null == EqualityImpliedByMandatoryError)
-					{
-						impliedEqualityError = new EqualityImpliedByMandatoryError(Store);
-						impliedEqualityError.EqualityConstraint = this;
-						impliedEqualityError.Model = Model;
-						impliedEqualityError.GenerateErrorText();
-						if (notifyAdded != null)
-						{
-							notifyAdded.ElementAdded(impliedEqualityError, true);
-						}
-					}
-				}
-				else if (noError && null != (impliedEqualityError = EqualityImpliedByMandatoryError))
-				{
-					impliedEqualityError.Delete();
-				}
-			}
-		}
-		/// <summary>
-		/// Make sure that there are no equality constraints implied by the mandatory constraint
-		/// </summary>
-		/// <param name="mandatoryContraint">The mandatory constraint being added or removed</param>
-		private static void VerifyMandatoryDoesNotImplyEquality(MandatoryConstraint mandatoryContraint)
-		{
-			Debug.Assert(mandatoryContraint.IsSimple);
-			LinkedElementCollection<Role> roles = mandatoryContraint.RoleCollection;
-			if (roles.Count != 0)
-			{
-				Role currentRole = roles[0];
-				LinkedElementCollection<ConstraintRoleSequence> constraints = currentRole.ConstraintRoleSequenceCollection;
-				int constraintCount = constraints.Count;
-				for (int i = 0; i < constraintCount; ++i)
-				{
-					IConstraint currentConstraint = constraints[i].Constraint;
-					if (currentConstraint.ConstraintType == ConstraintType.Equality)
-					{
-						(currentConstraint as EqualityConstraint).VerifyNotImpliedByMandatoryConstraints(null);
-					}
-				}
-			}
-		}
-		#endregion //Error synchronization rules
-		#region ConstraintRoleSequenceHasRole Rules
-		/// <summary>
-		/// DeletingRule: typeof(ConstraintRoleSequenceHasRole)
-		/// Check to see if mandatory constraints are still implied by equality when removing a mandatory
-		/// constraint.
-		/// </summary>
-		private static void ConstraintRoleSequenceHasRoleDeletingRule(ElementDeletingEventArgs e)
-		{
-			ConstraintRoleSequenceHasRole link = e.ModelElement as ConstraintRoleSequenceHasRole;
-			ConstraintRoleSequence roleSequences = link.ConstraintRoleSequence;
-			IConstraint constraint = roleSequences.Constraint;
-			switch (constraint.ConstraintType)
-			{
-				case ConstraintType.Equality:
-					EqualityConstraint equality = constraint as EqualityConstraint;
-					if (!equality.IsDeleted)
-					{
-						equality.VerifyNotImpliedByMandatoryConstraints(null);
-					}
-					break;
-				case ConstraintType.SimpleMandatory:
-					//Find my my equality constraint and check to see if my error message can be
-					//removed.
-					MandatoryConstraint mandatory = constraint as MandatoryConstraint;
-					VerifyMandatoryDoesNotImplyEquality(mandatory);
-					break;
-			}
-		}
-		/// <summary>
-		/// AddRule: typeof(ConstraintRoleSequenceHasRole), FireTime=LocalCommit, Priority=ORMCoreDomainModel.BeforeDelayValidateRulePriority;
-		/// Check to see if mandatory constraints are implied by equality when adding an equality
-		/// constraint.
-		/// </summary>
-		private static void ConstraintRoleSequenceHasRoleAddedRule(ElementAddedEventArgs e)
-		{
-			ConstraintRoleSequenceHasRole link = e.ModelElement as ConstraintRoleSequenceHasRole;
-			ConstraintRoleSequence roleSequences = link.ConstraintRoleSequence;
-			IConstraint constraint = roleSequences.Constraint;
-			if (constraint != null)
-			{
-				switch (constraint.ConstraintType)
-				{
-					case ConstraintType.Equality:
-						EqualityConstraint equality = constraint as EqualityConstraint;
-						if (!equality.IsDeleted)
-						{
-							equality.VerifyNotImpliedByMandatoryConstraints(null);
-						}
-						break;
-					case ConstraintType.SimpleMandatory:
-						//Find my my equality constraint and check to see if my error message can be
-						//removed.
-						MandatoryConstraint mandatory = constraint as MandatoryConstraint;
-						VerifyMandatoryDoesNotImplyEquality(mandatory);
-						break;
-				}
-			}
-		}
-		#endregion // ConstraintRoleSequenceHasRole Rules
-	}
-	#endregion // EqualityConstraint class
 	#region EntityTypeHasPreferredIdentifier pattern enforcement
 	public partial class EntityTypeHasPreferredIdentifier
 	{
@@ -7040,38 +6828,6 @@ namespace Neumont.Tools.ORM.ObjectModel
 		#endregion
 	}
 	#endregion // ImpliedInternalUniquenessConstraintError class
-	#region EqualityImpliedByMandatoryError class
-	[ModelErrorDisplayFilter(typeof(ConstraintImplicationAndContradictionErrorCategory))]
-	public partial class EqualityImpliedByMandatoryError
-	{
-		#region Base overrides
-		/// <summary>
-		/// Generate text for the error
-		/// </summary>
-		public override void GenerateErrorText()
-		{
-			EqualityConstraint parent = this.EqualityConstraint;
-			string parentName = (parent != null) ? parent.Name : "";
-			string currentText = ErrorText;
-			string newText = string.Format(CultureInfo.InvariantCulture, ResourceStrings.ModelErrorExternalEqualityImpliedByMandatoryError, parentName, this.Model.Name);
-			if (currentText != newText)
-			{
-				ErrorText = newText;
-			}
-		}
-		/// <summary>
-		/// Regenerate the error text when the constraint name changes
-		/// </summary>
-		public override RegenerateErrorTextEvents RegenerateEvents
-		{
-			get
-			{
-				return RegenerateErrorTextEvents.ModelNameChange | RegenerateErrorTextEvents.OwnerNameChange;
-			}
-		}
-		#endregion //Base overrides
-	}
-	#endregion // EqualityImpliedByMandatoryError class
 	#region RingConstraintTypeNotSpecifiedError class
 	[ModelErrorDisplayFilter(typeof(ConstraintStructureErrorCategory))]
 	public partial class RingConstraintTypeNotSpecifiedError

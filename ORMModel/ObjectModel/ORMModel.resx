@@ -225,10 +225,6 @@
 		<value>Constraint '{0}' has role sequences with different numbers of roles.</value>
 		<comment>Model validation error text when role sequences in a multi column constraint have different role counts (arity).</comment>
 	</data>
-	<data name="ModelError.Constraint.ExternalEqualityImpliedByMandatory.Text" xml:space="preserve">
-		<value>Constraint '{0}' in Model '{1}' is implied by mandatory constraint(s).</value>
-		<comment>Model validation error text when two roles played by the same object have an external equality constrant and also have both roles identified as mandatory. {0}=constraint name {1}=model name</comment>
-	</data>
 	<data name="ModelError.Constraint.FrequencyConstraintContradictsInternalUniquenessConstraintError.Text" xml:space="preserve">
 		<value>Frequency constraint '{0}' in model '{2}' contradicts one or more internal uniqueness constraints on FactType '{1}'.</value>
 		<comment>Model validation error text used when a frequency constraint contradicts an internal uniqueness constraint</comment>

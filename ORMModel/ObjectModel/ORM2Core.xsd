@@ -915,6 +915,7 @@
 			<xs:element name="NMinusOneError" type="NMinusOneError"/>
 			<xs:element name="CompatibleRolePlayerTypeError" type="CompatibleRolePlayerTypeError"/>
 			<xs:element name="RolePlayerRequiredError" type="RolePlayerRequiredError"/>
+			<!-- UNDONE: Remove EqualityImpliedByMandatoryError when file format is officially updated -->
 			<xs:element name="EqualityImpliedByMandatoryError" type="EqualityImpliedByMandatoryError"/>
 			<xs:element name="EntityTypeRequiresReferenceSchemeError" type="EntityTypeRequiresReferenceSchemeError"/>
 			<xs:element name="FrequencyConstraintMinMaxError" type="FrequencyConstraintMinMaxError"/>
@@ -1364,6 +1365,7 @@
 			</xs:extension >
 		</xs:complexContent>
 	</xs:complexType>
+	<!-- UNDONE: Remove EqualityImpliedByMandatoryError when file format is officially updated -->
 	<xs:complexType name="EqualityImpliedByMandatoryError">
 		<xs:complexContent>
 			<xs:extension base="ModelError">

@@ -106,14 +106,6 @@
 				<arg:RuleOn targetType="RoleInstanceHasPopulationUniquenessError"/>
 			</arg:DeleteRule>
 		</arg:RuleContainer>
-		<arg:RuleContainer class="EqualityConstraint">
-			<arg:AddRule methodName="ConstraintRoleSequenceHasRoleAddedRule">
-				<arg:RuleOn targetType="ConstraintRoleSequenceHasRole" fireTime="LocalCommit" priority="BeforeDelayValidateRulePriority"/>
-			</arg:AddRule>
-			<arg:DeletingRule methodName="ConstraintRoleSequenceHasRoleDeletingRule">
-				<arg:RuleOn targetType="ConstraintRoleSequenceHasRole"/>
-			</arg:DeletingRule>
-		</arg:RuleContainer>
 		<arg:RuleContainer class="ExclusiveOrConstraintCoupler">
 			<arg:AddRule methodName="CouplerAddRule">
 				<arg:RuleOn targetType="ExclusiveOrConstraintCoupler"/>

@@ -1093,14 +1093,6 @@
     <value>Role Player Required</value>
     <comment>DisplayName for DomainClass &apos;RolePlayerRequiredError&apos;</comment>
   </data>
-  <data name="Neumont.Tools.ORM.ObjectModel.EqualityImpliedByMandatoryError.Description" xml:space="preserve">
-    <value></value>
-    <comment>Description for DomainClass &apos;EqualityImpliedByMandatoryError&apos;</comment>
-  </data>
-  <data name="Neumont.Tools.ORM.ObjectModel.EqualityImpliedByMandatoryError.DisplayName" xml:space="preserve">
-    <value>Equality Constraint Implied By Mandatory Constraint(s)</value>
-    <comment>DisplayName for DomainClass &apos;EqualityImpliedByMandatoryError&apos;</comment>
-  </data>
   <data name="Neumont.Tools.ORM.ObjectModel.EntityTypeRequiresReferenceSchemeError.Description" xml:space="preserve">
     <value></value>
     <comment>Description for DomainClass &apos;EntityTypeRequiresReferenceSchemeError&apos;</comment>
@@ -3972,38 +3964,6 @@
   <data name="Neumont.Tools.ORM.ObjectModel.RoleHasRolePlayerRequiredError/RolePlayerRequiredError.PropertyDisplayName" xml:space="preserve">
     <value>Role</value>
     <comment>PropertyDisplayName for DomainRole &apos;RolePlayerRequiredError&apos; on DomainRelationship &apos;RoleHasRolePlayerRequiredError&apos;</comment>
-  </data>
-  <data name="Neumont.Tools.ORM.ObjectModel.EqualityConstraintHasEqualityImpliedByMandatoryError.Description" xml:space="preserve">
-    <value>Description for Neumont.Tools.ORM.ObjectModel.EqualityConstraintHasEqualityImpliedByMandatoryError</value>
-    <comment>Description for DomainClass &apos;EqualityConstraintHasEqualityImpliedByMandatoryError&apos;</comment>
-  </data>
-  <data name="Neumont.Tools.ORM.ObjectModel.EqualityConstraintHasEqualityImpliedByMandatoryError.DisplayName" xml:space="preserve">
-    <value>Equality Constraint Has Equality Implied By Mandatory Error</value>
-    <comment>DisplayName for DomainClass &apos;EqualityConstraintHasEqualityImpliedByMandatoryError&apos;</comment>
-  </data>
-  <data name="Neumont.Tools.ORM.ObjectModel.EqualityConstraintHasEqualityImpliedByMandatoryError/EqualityConstraint.Description" xml:space="preserve">
-    <value>Description for Neumont.Tools.ORM.ObjectModel.EqualityConstraintHasEqualityImpliedByMandatoryError.EqualityConstraint</value>
-    <comment>Description for DomainRole &apos;EqualityConstraint&apos; on DomainRelationship &apos;EqualityConstraintHasEqualityImpliedByMandatoryError&apos;</comment>
-  </data>
-  <data name="Neumont.Tools.ORM.ObjectModel.EqualityConstraintHasEqualityImpliedByMandatoryError/EqualityConstraint.DisplayName" xml:space="preserve">
-    <value>EqualityConstraint</value>
-    <comment>DisplayName for DomainRole &apos;EqualityConstraint&apos; on DomainRelationship &apos;EqualityConstraintHasEqualityImpliedByMandatoryError&apos;</comment>
-  </data>
-  <data name="Neumont.Tools.ORM.ObjectModel.EqualityConstraintHasEqualityImpliedByMandatoryError/EqualityConstraint.PropertyDisplayName" xml:space="preserve">
-    <value>Equality Implied By Mandatory Error</value>
-    <comment>PropertyDisplayName for DomainRole &apos;EqualityConstraint&apos; on DomainRelationship &apos;EqualityConstraintHasEqualityImpliedByMandatoryError&apos;</comment>
-  </data>
-  <data name="Neumont.Tools.ORM.ObjectModel.EqualityConstraintHasEqualityImpliedByMandatoryError/EqualityImpliedByMandatoryError.Description" xml:space="preserve">
-    <value>Description for Neumont.Tools.ORM.ObjectModel.EqualityConstraintHasEqualityImpliedByMandatoryError.EqualityImpliedByMandatoryError</value>
-    <comment>Description for DomainRole &apos;EqualityImpliedByMandatoryError&apos; on DomainRelationship &apos;EqualityConstraintHasEqualityImpliedByMandatoryError&apos;</comment>
-  </data>
-  <data name="Neumont.Tools.ORM.ObjectModel.EqualityConstraintHasEqualityImpliedByMandatoryError/EqualityImpliedByMandatoryError.DisplayName" xml:space="preserve">
-    <value>EqualityImpliedByMandatoryError</value>
-    <comment>DisplayName for DomainRole &apos;EqualityImpliedByMandatoryError&apos; on DomainRelationship &apos;EqualityConstraintHasEqualityImpliedByMandatoryError&apos;</comment>
-  </data>
-  <data name="Neumont.Tools.ORM.ObjectModel.EqualityConstraintHasEqualityImpliedByMandatoryError/EqualityImpliedByMandatoryError.PropertyDisplayName" xml:space="preserve">
-    <value>Equality Constraint</value>
-    <comment>PropertyDisplayName for DomainRole &apos;EqualityImpliedByMandatoryError&apos; on DomainRelationship &apos;EqualityConstraintHasEqualityImpliedByMandatoryError&apos;</comment>
   </data>
   <data name="Neumont.Tools.ORM.ObjectModel.ObjectTypeHasEntityTypeRequiresReferenceSchemeError.Description" xml:space="preserve">
     <value>Description for Neumont.Tools.ORM.ObjectModel.ObjectTypeHasEntityTypeRequiresReferenceSchemeError</value>

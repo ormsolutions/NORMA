@@ -1009,12 +1009,6 @@
 			</BaseClass>
 		</DomainClass>
 
-		<DomainClass Name="EqualityImpliedByMandatoryError" Namespace="Neumont.Tools.ORM.ObjectModel" Id="0809316F-AE25-4D6A-8FF2-8CE8A685D32D" DisplayName="Equality Constraint Implied By Mandatory Constraint(s)" Description="">
-			<BaseClass>
-				<DomainClassMoniker Name="ModelError"/>
-			</BaseClass>
-		</DomainClass>
-
 		<DomainClass Name="EntityTypeRequiresReferenceSchemeError" Namespace="Neumont.Tools.ORM.ObjectModel" Id="A9177733-169B-418A-A843-3E3777DC9982" DisplayName="EntityType Requires Reference Scheme" Description="">
 			<BaseClass>
 				<DomainClassMoniker Name="ModelError"/>
@@ -3026,26 +3020,6 @@
 				<DomainRole Name="RolePlayerRequiredError" PropertyName="Role" Multiplicity="One" PropagatesDelete="true" IsPropertyGenerator="true" DisplayName="RolePlayerRequiredError" Id="AAD1B942-E191-4878-9421-33A7F2D201F7">
 					<RolePlayer>
 						<DomainClassMoniker Name="RolePlayerRequiredError"/>
-					</RolePlayer>
-				</DomainRole>
-			</Target>
-		</DomainRelationship>
-
-		<DomainRelationship Name="EqualityConstraintHasEqualityImpliedByMandatoryError" Namespace="Neumont.Tools.ORM.ObjectModel" Id="0D352E42-06D6-4AD1-AACE-3EA5AACDE302">
-			<BaseRelationship>
-				<DomainRelationshipMoniker Name="ElementAssociatedWithModelError"/>
-			</BaseRelationship>
-			<Source>
-				<DomainRole Name="EqualityConstraint" PropertyName="EqualityImpliedByMandatoryError" Multiplicity="ZeroOne" PropagatesDelete="false" IsPropertyGenerator="true" DisplayName="EqualityConstraint" Id="FBF0117A-A2B8-4EF9-B263-24288F40CB4E">
-					<RolePlayer>
-						<DomainClassMoniker Name="EqualityConstraint"/>
-					</RolePlayer>
-				</DomainRole>
-			</Source>
-			<Target>
-				<DomainRole Name="EqualityImpliedByMandatoryError" PropertyName="EqualityConstraint" Multiplicity="One" PropagatesDelete="true" IsPropertyGenerator="true" DisplayName="EqualityImpliedByMandatoryError" Id="6C8C0E5F-9376-490B-98F7-67607F791480">
-					<RolePlayer>
-						<DomainClassMoniker Name="EqualityImpliedByMandatoryError"/>
 					</RolePlayer>
 				</DomainRole>
 			</Target>

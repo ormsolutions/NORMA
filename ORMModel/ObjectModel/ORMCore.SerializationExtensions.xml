@@ -754,7 +754,6 @@
 	</se:Element>
 
 	<se:Element Class="EqualityConstraint" SortChildElements="true" Override="true">
-		<se:Link RelationshipName="EqualityConstraintHasEqualityImpliedByMandatoryError" RoleName="EqualityImpliedByMandatoryError" WriteStyle="NotWritten"/>
 		<se:Link RelationshipName="SetComparisonConstraintHasExclusionContradictsEqualityError" RoleName="ExclusionContradictsEqualityError" WriteStyle="NotWritten"/>
 	</se:Element>
 	<se:Element Class="ExclusionConstraint" SortChildElements="true" Override="true">
@@ -911,9 +910,6 @@
 	</se:Element>
 	<se:Element Class="DataTypeNotSpecifiedError" Override="true">
 		<se:Link RelationshipName="ValueTypeHasUnspecifiedDataTypeError" RoleName="ValueTypeHasDataType" Name="ConceptualDataType"/>
-	</se:Element>
-	<se:Element Class="EqualityImpliedByMandatoryError" Override="true">
-		<se:Link RelationshipName="EqualityConstraintHasEqualityImpliedByMandatoryError" RoleName="EqualityConstraint" Name="EqualityConstraint"/>
 	</se:Element>
 	<se:Element Class="NMinusOneError" Override="true">
 		<se:Link RelationshipName="UniquenessConstraintHasNMinusOneError" RoleName="Constraint" Name="UniquenessConstraint"/>

@@ -2164,14 +2164,6 @@ namespace Neumont.Tools.ORM
 				return ResourceStrings.GetString(ResourceManagers.Model, "ModelError.Role.RolePlayerRequired.Message");
 			}
 		}
-		/// <summary>Model validation error text when two roles played by the same object have an external equality constrant and also have both roles identified as mandatory. {0}=constraint name {1}=model name</summary>
-		public static string ModelErrorExternalEqualityImpliedByMandatoryError
-		{
-			get
-			{
-				return ResourceStrings.GetString(ResourceManagers.Model, "ModelError.Constraint.ExternalEqualityImpliedByMandatory.Text");
-			}
-		}
 		/// <summary>Text displayed in the text of the CompatibleSupertypesError. {0}=ObjectType name {1}=model name.</summary>
 		public static string ModelErrorObjectTypeCompatibleSupertypesError
 		{

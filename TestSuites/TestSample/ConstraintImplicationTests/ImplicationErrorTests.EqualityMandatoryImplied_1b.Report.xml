@@ -1,8 +1,6 @@
-﻿<?xml version="1.0" encoding="utf-8"?>
-<TestReport xmlns="http://schemas.neumont.edu/ORM/SDK/TestReport">
+﻿<TestReport xmlns="http://schemas.neumont.edu/ORM/SDK/TestReport">
 	<ValidationErrors name="No Errors Found Initialliy" />
 	<ValidationErrors name="Error is Introduced">
-		<ValidationError>Constraint 'EqualityConstraint1' in Model 'ORMModel1' is implied by mandatory constraint(s).</ValidationError>
 		<ValidationError>Equality constraint 'EqualityConstraint1' in model 'ORMModel1' is implied by simple mandatory constraints on all roles in the constraint.</ValidationError>
 	</ValidationErrors>
 	<ValidationErrors name="Error is removed with removal of Equality Constraint" />
