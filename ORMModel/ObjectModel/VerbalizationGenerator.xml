@@ -576,6 +576,12 @@
 							<Fact/>
 						</Snippet>
 					</Snippet>
+					<Snippet ref="ConstraintProvidesPreferredIdentifier" conditionalMatch="IsPreferredIdentifier">
+						<IterateRoles listStyle="null" match="included"/>
+						<Snippet ref="ObjectType">
+							<PreferredIdentifierFor/>
+						</Snippet>
+					</Snippet>
 				</ConstrainedRoles>
 				<ConstrainedRoles factCount="1" factArity="1">
 					<!-- span="all" sign="negative" is implicit in the other conditions are previous element-->
@@ -617,6 +623,12 @@
 								</Snippet>
 							</Snippet>
 							<Fact/>
+						</Snippet>
+					</Snippet>
+					<Snippet ref="ConstraintProvidesPreferredIdentifier" conditionalMatch="IsPreferredIdentifier">
+						<IterateRoles listStyle="CompactSimpleList" match="included"/>
+						<Snippet ref="ObjectType">
+							<PreferredIdentifierFor/>
 						</Snippet>
 					</Snippet>
 				</ConstrainedRoles>
@@ -666,8 +678,10 @@
 						</ReadingChoice>
 					</ConditionalReading>
 					<Snippet ref="ConstraintProvidesPreferredIdentifier" conditionalMatch="IsPreferredIdentifier">
-						<IterateRoles listStyle="null" match="included"/>
-						<IterateRoles listStyle="null" match="excluded"/>
+						<IterateRoles listStyle="CompactSimpleList" match="included"/>
+						<Snippet ref="ObjectType">
+							<PreferredIdentifierFor/>
+						</Snippet>
 					</Snippet>
 				</ConstrainedRoles>
 				<ConstrainedRoles factCount="1" factArity="2">
@@ -765,6 +779,12 @@
 							</Snippet>
 						</ReadingChoice>
 					</ConditionalReading>
+					<Snippet ref="ConstraintProvidesPreferredIdentifier" conditionalMatch="IsPreferredIdentifier">
+						<IterateRoles listStyle="CompactSimpleList" match="constraintRoles"/>
+						<Snippet ref="ObjectType">
+							<PreferredIdentifierFor/>
+						</Snippet>
+					</Snippet>
 				</ConstrainedRoles>
 				<!-- Negative Reading for External Uniqueness Constraint-->
 				<ConstrainedRoles sign="negative" minFactArity="2" maxFactArity="2">

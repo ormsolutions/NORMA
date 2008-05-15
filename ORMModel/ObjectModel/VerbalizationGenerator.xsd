@@ -469,6 +469,7 @@
 			<xs:element name="MinFrequencyValue" type="MinFrequencyValueType"/>
 			<xs:element name="MaxFrequencyValue" type="MaxFrequencyValueType"/>
 			<xs:element name="IterateContextRoles" type="IterateContextRolesType"/>
+			<xs:element name="PreferredIdentifierFor" type="PreferredIdentifierForType"/>
 			<xs:element name="RoleName" type="RoleNameType"/>
 			<xs:element name="RolePlayer" type="RolePlayerType"/>
 			<xs:element name="RolePlayerReferenceMode" type="RolePlayerReferenceModeType"/>
@@ -724,6 +725,13 @@
 		<xs:annotation>
 			<xs:documentation>
 				Returns the name of the object type.
+			</xs:documentation>
+		</xs:annotation>
+	</xs:complexType>
+	<xs:complexType name="PreferredIdentifierForType">
+		<xs:annotation>
+			<xs:documentation>
+				Returns the name of the identified ObjectType from the context of a UniquenessConstraint
 			</xs:documentation>
 		</xs:annotation>
 	</xs:complexType>

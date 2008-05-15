@@ -4274,6 +4274,22 @@
 			</plx:right>
 		</plx:assign>
 	</xsl:template>
+	<xsl:template match="cvg:PreferredIdentifierFor" mode="ConstraintVerbalization">
+		<xsl:param name="VariableDecorator" select="position()"/>
+		<xsl:param name="VariablePrefix" select="'factText'"/>
+		<plx:assign>
+			<plx:left>
+				<plx:nameRef name="{$VariablePrefix}{$VariableDecorator}"/>
+			</plx:left>
+			<plx:right>
+				<plx:callInstance name="Name" type="property">
+					<plx:callObject>
+						<plx:callThis name="PreferredIdentifierFor" type="property"/>
+					</plx:callObject>
+				</plx:callInstance>
+			</plx:right>
+		</plx:assign>
+	</xsl:template>
 	<xsl:template match="cvg:SubtypeName" mode="ConstraintVerbalization">
 		<xsl:param name="VariableDecorator" select="position()"/>
 		<xsl:param name="VariablePrefix" select="'subtypeNameText'"/>

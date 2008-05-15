@@ -242,7 +242,9 @@
 							Format: this association with {0}provides the preferred identification scheme for {1}
 						</statement>
     <unformattedSnippet>this association with {0} provides the preferred identification scheme for {1}</unformattedSnippet>
-    <contains />
+    <contains>
+      <snippet name="ObjectType" />
+    </contains>
     <containedIn />
     <usedBy>
       <constraint name="ImpliedUniqueVerbalizer" />
@@ -1254,11 +1256,13 @@
     <unformattedSnippet>{0}</unformattedSnippet>
     <contains />
     <containedIn>
+      <snippet name="ConstraintProvidesPreferredIdentifier" />
       <snippet name="IndependentVerbalization" />
       <snippet name="ObjectifiesFactTypeVerbalization" />
       <snippet name="SubtypeMetaReading" />
     </containedIn>
     <usedBy>
+      <constraint name="UniquenessConstraint" />
       <constraint name="ValueTypeValueConstraint" />
     </usedBy>
   </snippet>
