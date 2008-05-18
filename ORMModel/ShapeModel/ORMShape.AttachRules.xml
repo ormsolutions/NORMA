@@ -76,6 +76,9 @@
 			<arg:RolePlayerChangeRule methodName="ObjectificationRolePlayerChangeRule">
 				<arg:RuleOn targetType="Objectification" targetTypeQualifier="Neumont.Tools.ORM.ObjectModel" fireTime="TopLevelCommit" priority="DiagramFixupConstants.AddShapeRulePriority"/>
 			</arg:RolePlayerChangeRule>
+			<arg:ChangeRule methodName="RoleChangedRule">
+				<arg:RuleOn targetType="Role" targetTypeQualifier="Neumont.Tools.ORM.ObjectModel" fireTime="TopLevelCommit" priority="DiagramFixupConstants.AddShapeRulePriority"/>
+			</arg:ChangeRule>
 			<arg:RolePlayerPositionChangeRule methodName="RoleDisplayOrderChangedRule">
 				<arg:RuleOn targetType="FactTypeShapeHasRoleDisplayOrder" fireTime="TopLevelCommit" priority="DiagramFixupConstants.ResizeParentRulePriority"/>
 			</arg:RolePlayerPositionChangeRule>
@@ -216,9 +219,6 @@
 			<arg:AddRule methodName="RoleAddedRuleInline">
 				<arg:RuleOn targetType="FactTypeHasRole" targetTypeQualifier="Neumont.Tools.ORM.ObjectModel" priority="BeforeDelayValidateRulePriority"/>
 			</arg:AddRule>
-			<arg:ChangeRule methodName="RoleChangedRule">
-				<arg:RuleOn targetType="Role" targetTypeQualifier="Neumont.Tools.ORM.ObjectModel" fireTime="TopLevelCommit" priority="DiagramFixupConstants.AddShapeRulePriority"/>
-			</arg:ChangeRule>
 			<arg:DeleteRule methodName="RoleDeletedRule">
 				<arg:RuleOn targetType="FactTypeHasRole" targetTypeQualifier="Neumont.Tools.ORM.ObjectModel" fireTime="TopLevelCommit" priority="DiagramFixupConstants.ResizeParentRulePriority"/>
 			</arg:DeleteRule>

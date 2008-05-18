@@ -378,6 +378,9 @@
 			<arg:DeletingRule methodName="RolePlayerDeletingRule">
 				<arg:RuleOn targetType="ObjectTypePlaysRole"/>
 			</arg:DeletingRule>
+			<arg:RolePlayerChangeRule methodName="RolePlayerRolePlayerChangeRule">
+				<arg:RuleOn targetType="ObjectTypePlaysRole"/>
+			</arg:RolePlayerChangeRule>
 			<arg:AddRule methodName="UniquenessConstraintAddRule">
 				<arg:RuleOn targetType="ModelHasSetConstraint"/>
 			</arg:AddRule>

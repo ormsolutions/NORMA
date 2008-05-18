@@ -85,9 +85,11 @@ namespace Neumont.Tools.ORM.ObjectModel.Design
 				propertyId == Role.MultiplicityDomainPropertyId)
 			{
 				Role role = ModelElement;
+				FactType factType;
 				if (role is SubtypeMetaRole ||
 					role is SupertypeMetaRole ||
-					null != role.FactType.UnaryRole)
+					null != (factType = role.FactType)
+					&& null != factType.UnaryRole)
 				{
 					return true;
 				}
@@ -96,8 +98,11 @@ namespace Neumont.Tools.ORM.ObjectModel.Design
 			{
 				Role role = ModelElement;
 				ObjectType rolePlayer;
+				FactType factType;
 				if (role is SubtypeMetaRole ||
 					role is SupertypeMetaRole ||
+					(null != (factType = role.FactType) &&
+					null != factType.ImpliedByObjectification) ||
 					(null != (rolePlayer = role.RolePlayer) && rolePlayer.IsImplicitBooleanValue))
 				{
 					return true;

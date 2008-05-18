@@ -442,7 +442,7 @@
 		<comment>Exception message when a ModelErrorDisplayFilterAttribute is initialized with a type that does not derive from ModelErrorCategory.</comment>
 	</data>
 	<data name="ModelException.Objectification.DirectModificationOfImpliedElement" xml:space="preserve">
-		<value>Facts and constraints implied by an Objectification relationship cannot be directly modified.</value>
+		<value>FactTypes, role players, and the associated internal constraints implied by an Objectification relationship cannot be directly modified.</value>
 		<comment>Exception message when an attempt is made to modify roles, constraints, and role players on elements implied by an Objectification relationship.</comment>
 	</data>
 	<data name="ModelException.Objectification.ImpliedFactTypesCannotBeObjectified" xml:space="preserve">
@@ -562,7 +562,7 @@
 		<comment>Exception message when an attempt is made to constraint a SupertypeMetaRole with a constraint other than the implicit uniqueness constraint, or disjunctive mandatory or exclusion constraints.</comment>
 	</data>
 	<data name="ModelException.UniquenessConstraint.InvalidPreferredIdentifierPreConditions" xml:space="preserve">
-		<value>The current state of the roles attached to the external uniqueness constraint do no permit its use as a preferred identifier. All roles must be on a binary fact types, and all opposite roles must be attached to the same non-ValueType ObjectType. All opposite roles must also have single-column uniqueness constraints, but this precondition is applied automatically by the object model if it is not satisfied.</value>
+		<value>The current state of the roles attached to the external uniqueness constraint do no permit its use as a preferred identifier. All roles must be on binary fact types, and all opposite roles must be attached to the same non-ValueType ObjectType.</value>
 		<comment>Exception message when an attempt is made to set a uniqueness constraint as a preferred identifier when the preconditions are not met.</comment>
 	</data>
 	<data name="ModelException.ValueTypeInstance.InvalidValueTypeParent" xml:space="preserve">

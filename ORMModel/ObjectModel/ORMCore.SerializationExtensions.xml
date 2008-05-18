@@ -605,7 +605,7 @@
 				</plx:unaryOperator>
 			</se:Condition>
 		</se:Attribute>
-		<se:Link Name="ImpliedByObjectification" RelationshipName="ObjectificationImpliesFactType" RoleName="ImpliedFactType" WriteStyle="NotWritten"/>
+		<se:Link RelationshipName="ObjectificationImpliesFactType" RoleName="ImpliedFactType" WriteStyle="NotWritten"/>
 	</se:Element>
 	<!--Readings-->
 	<se:Element Class="ReadingOrder" SortChildElements="true" Override="true">
@@ -639,6 +639,7 @@
 		<se:Link Name="EntityTypeRoleInstance" RelationshipName="EntityTypeRoleInstance" RoleName="ObjectTypeInstance" WriteStyle="PrimaryLinkElement" AllowDuplicates="true"/>
 		<se:Link Name="FactTypeRoleInstance" RelationshipName="FactTypeRoleInstance" RoleName="ObjectTypeInstance" WriteStyle="PrimaryLinkElement" AllowDuplicates="true"/>
 		<se:Link RelationshipName="RoleProxyHasRole" RoleName="Proxy" WriteStyle="NotWritten"/>
+		<se:Link RelationshipName="ObjectifiedUnaryRoleHasRole" RoleName="ObjectifiedUnaryRole" WriteStyle="NotWritten"/>
 		<se:Link RelationshipName="ConstraintRoleSequenceHasRole" RoleName="ConstraintRoleSequence" WriteStyle="NotWritten"/>
 		<se:Link RelationshipName="ReadingOrderHasRole" RoleName="ReadingOrder" WriteStyle="NotWritten"/>
 		<se:Link RelationshipName="RoleHasRolePlayerRequiredError" RoleName="RolePlayerRequiredError" WriteStyle="NotWritten"/>
@@ -649,6 +650,10 @@
 	<se:Element Class="RoleProxy" Override="true">
 		<se:Link RelationshipName="RoleProxyHasRole" RoleName="TargetRole" Name="Role"/>
 		<se:Link RelationshipName="ReadingOrderHasRole" RoleName="ReadingOrder" WriteStyle="NotWritten" />
+	</se:Element>
+	<!--ObjectifiedUnaryRole-->
+	<se:Element Class="ObjectifiedUnaryRole" Override="true">
+		<se:Link RelationshipName="ObjectifiedUnaryRoleHasRole" RoleName="TargetRole" Name="UnaryRole"/>
 	</se:Element>
 	<!--Constraints-->
 	<se:Element Class="SetComparisonConstraint" SortChildElements="true" Override="true">

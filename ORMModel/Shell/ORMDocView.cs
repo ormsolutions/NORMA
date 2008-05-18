@@ -1001,7 +1001,7 @@ namespace Neumont.Tools.ORM.Shell
 
 				// Disable role deletion if the FactType is a unary
 				visibleCommands |= ORMDesignerCommands.DeleteRole;
-				if (unaryRole != null)
+				if (unaryRole != null && (presentationElement == null || !(presentationElement is RoleNameShape)))
 				{
 					enabledCommands &= ~ORMDesignerCommands.DeleteRole;
 				}
@@ -1780,7 +1780,7 @@ namespace Neumont.Tools.ORM.Shell
 							// or any shape overrides the AllowChildrenInSelection property, then
 							// the delete propagation on child shapes can force the pel to be deleted
 							// without deleting the underlying mel. This would require resolving all
-							// model elements before any pels are deleting because the pel could
+							// model elements before any pels are deleted because the pel could
 							// now be deleted without the underlying mel having been touched.
 							if (pel.IsDeleted)
 							{
@@ -1796,34 +1796,46 @@ namespace Neumont.Tools.ORM.Shell
 							mel = pel.ModelElement;
 
 							// Remove the actual object in the model
-							if (mel != null && !mel.IsDeleted && !(mel is ReadingOrder)) // Reading orders tolerate delete, but are not deleted directly
+							if (mel != null && !mel.IsDeleted && !(mel is ReadingOrder))
 							{
-								// Check if the object shape was in expanded mode
-								bool testRefModeCollapse = complexSelection || 0 != (enabledCommands & ORMDesignerCommands.DeleteObjectType);
-								ObjectTypeShape objectShape;
-								ObjectifiedFactTypeNameShape objectifiedShape;
-								if (testRefModeCollapse &&
-									((null != (objectShape = pel as ObjectTypeShape) &&
-									!objectShape.ExpandRefMode) ||
-									(null != (objectifiedShape = pel as ObjectifiedFactTypeNameShape) &&
-									!objectifiedShape.ExpandRefMode))
-									)
+								Role role;
+								if (null != (role = mel as Role) && pel is RoleNameShape)
 								{
-									if (!deleteReferenceModeValueTypeInContext)
+									role.Name = "";
+								}
+								else if (mel is ReadingOrder)
+								{
+									// Reading orders tolerate the delete command, but are not deleted directly
+								}
+								else
+								{
+									// Check if the object shape was in expanded mode
+									bool testRefModeCollapse = complexSelection || 0 != (enabledCommands & ORMDesignerCommands.DeleteObjectType);
+									ObjectTypeShape objectShape;
+									ObjectifiedFactTypeNameShape objectifiedShape;
+									if (testRefModeCollapse &&
+										((null != (objectShape = pel as ObjectTypeShape) &&
+										!objectShape.ExpandRefMode) ||
+										(null != (objectifiedShape = pel as ObjectifiedFactTypeNameShape) &&
+										!objectifiedShape.ExpandRefMode))
+										)
 									{
-										contextInfo[ObjectType.DeleteReferenceModeValueType] = null;
-										deleteReferenceModeValueTypeInContext = true;
+										if (!deleteReferenceModeValueTypeInContext)
+										{
+											contextInfo[ObjectType.DeleteReferenceModeValueType] = null;
+											deleteReferenceModeValueTypeInContext = true;
+										}
 									}
-								}
-								else if (deleteReferenceModeValueTypeInContext)
-								{
-									deleteReferenceModeValueTypeInContext = false;
-									contextInfo.Remove(ObjectType.DeleteReferenceModeValueType);
-								}
+									else if (deleteReferenceModeValueTypeInContext)
+									{
+										deleteReferenceModeValueTypeInContext = false;
+										contextInfo.Remove(ObjectType.DeleteReferenceModeValueType);
+									}
 
-								// Get rid of the model element. Delete propagation on the PresentationViewsSubject
-								// relationship will automatically delete the pel.
-								mel.Delete();
+									// Get rid of the model element. Delete propagation on the PresentationViewsSubject
+									// relationship will automatically delete the pel.
+									mel.Delete();
+								}
 							}
 						}
 						else if (null != (mel = selectedObject as ModelElement) && !mel.IsDeleted)

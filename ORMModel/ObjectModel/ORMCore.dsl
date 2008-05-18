@@ -647,6 +647,12 @@
 			</Properties>
 		</DomainClass>
 
+		<DomainClass Name="ObjectifiedUnaryRole" Namespace="Neumont.Tools.ORM.ObjectModel" Id="EE1EFD02-7AD8-42FA-9062-1F499941617F" DisplayName="Role" Description="">
+			<BaseClass>
+				<DomainClassMoniker Name="Role"/>
+			</BaseClass>
+		</DomainClass>
+
 		<DomainClass Name="NameAlias" Namespace="Neumont.Tools.ORM.ObjectModel" Id="A0AD1270-E3D1-4851-A5AB-D87E5942F9AE" DisplayName="NameAlias" Description="">
 			<BaseClass>
 				<DomainClassMoniker Name="ORMNamedElement"/>
@@ -3678,6 +3684,26 @@
 			</Source>
 			<Target>
 				<DomainRole Name="TargetRole" PropertyName="Proxy" Multiplicity="ZeroOne" PropagatesDelete="false" IsPropertyGenerator="true" DisplayName="TargetRole" Id="AE004027-BE74-4E53-99D7-D3E894F4124D">
+					<RolePlayer>
+						<DomainClassMoniker Name="Role"/>
+					</RolePlayer>
+				</DomainRole>
+			</Target>
+		</DomainRelationship>
+
+		<DomainRelationship Name="ObjectifiedUnaryRoleHasRole" Namespace="Neumont.Tools.ORM.ObjectModel" Id="8455A054-C4BF-4E35-99B0-5054602675F1" Description="Links a unary role with the objectified unary role in the implied FactType. Implies a single-column equality constraint between the two roles.">
+			<!--<BaseRelationship>
+				<DomainRelationshipMoniker Name="ORMElementLink"/>
+			</BaseRelationship>-->
+			<Source>
+				<DomainRole Name="ObjectifiedUnaryRole" PropertyName="TargetRole" Multiplicity="One" PropagatesDelete="false" IsPropertyGenerator="true" DisplayName="ObjectifiedUnaryRole" Id="04095428-688B-44D0-9BAE-84CBEA134295">
+					<RolePlayer>
+						<DomainClassMoniker Name="ObjectifiedUnaryRole"/>
+					</RolePlayer>
+				</DomainRole>
+			</Source>
+			<Target>
+				<DomainRole Name="TargetRole" PropertyName="ObjectifiedUnaryRole" Multiplicity="ZeroOne" PropagatesDelete="false" IsPropertyGenerator="true" DisplayName="TargetRole" Id="30BBECA0-CCB7-4A34-8AED-82EC95CC1166">
 					<RolePlayer>
 						<DomainClassMoniker Name="Role"/>
 					</RolePlayer>

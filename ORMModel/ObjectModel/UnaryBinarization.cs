@@ -62,21 +62,18 @@ namespace Neumont.Tools.ORM.ObjectModel
 		{
 			private static string GetImplicitBooleanValueTypeName(Role unaryRole)
 			{
-				//Debug.Assert(!(unaryRole is ImplicitBooleanRole));
 				string unaryRoleName = unaryRole.Name;
 				ObjectType unaryRolePlayer = unaryRole.RolePlayer;
-				FactType unaryFactType = unaryRole.FactType;
-				if (unaryRolePlayer != null)
+				FactType unaryFactType;
+				IReading defaultReading;
+				if (unaryRolePlayer != null && !string.IsNullOrEmpty(unaryRoleName))
 				{
-					if (!string.IsNullOrEmpty(unaryRoleName))
-					{
-						// UNDONE: Localize the space? (Some languages may not use spaces between words.)
-						//return unaryRolePlayer.Name + " " + unaryRoleName;
-						// UNDONE: As a temporary favor to code generators, don't add spaces in object names.
-						// Eventually all generators will handle this cleanly, but they don't yet, so leave out
-						// the space to handle the normal case cleanly.
-						return unaryRolePlayer.Name + unaryRoleName;
-					}
+					// UNDONE: Localize the space? (Some languages may not use spaces between words.)
+					return unaryRolePlayer.Name + " " + unaryRoleName;
+				}
+				else if (null != (defaultReading = (unaryFactType = unaryRole.FactType).GetDefaultReading()))
+				{
+					return string.Format(CultureInfo.InvariantCulture, defaultReading.Text.Replace('-', ' '), (unaryRolePlayer != null) ? unaryRolePlayer.Name.Replace('-', ' ') : ResourceStrings.ModelReadingEditorMissingRolePlayerText);
 				}
 				return unaryFactType.Name;
 			}
@@ -200,9 +197,6 @@ namespace Neumont.Tools.ORM.ObjectModel
 				// Make the boolean value type the role player for the implicit boolean role
 				implicitBooleanRole.RolePlayer = implicitBooleanValueType;
 
-				LinkedElementCollection<ReadingOrder> readings = unaryFactType.ReadingOrderCollection;
-				int readingCount = readings.Count;
-
 				// Add the boolean role to the FactType
 				roleCollection.Add(implicitBooleanRole);
 				if (notifyAdded != null)
@@ -264,6 +258,11 @@ namespace Neumont.Tools.ORM.ObjectModel
 							Role role = binarizedUnaryFactRoleCollection[j] as Role;
 							if (role != null)
 							{
+								if (role != implicitBooleanRole)
+								{
+									role.Name = "";
+								}
+
 								UniquenessConstraint singleRoleAlethicUniquenessConstraint = role.SingleRoleAlethicUniquenessConstraint;
 								if (singleRoleAlethicUniquenessConstraint != null)
 								{

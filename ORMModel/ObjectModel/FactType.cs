@@ -2299,20 +2299,23 @@ namespace Neumont.Tools.ORM.ObjectModel
 						roles[1] = (Role)factRoles[1];
 						primaryRoleCount = 2;
 					}
+					// Find the proxy, and put the opposite role in the 0 slot
+					else if (null != (proxy = factRoles[0] as RoleProxy))
+					{
+						roles[0] = (Role)factRoles[1];
+						primaryRoleCount = 1;
+					}
+					else if (null != (proxy = factRoles[1] as RoleProxy))
+					{
+						roles[0] = (Role)factRoles[0];
+						primaryRoleCount = 1;
+					}
+					// Fallback case for unary objectification, which does not use a proxy
 					else
 					{
-						// Find the proxy, and put the opposite role in the 0 slot
-						proxy = factRoles[0] as RoleProxy;
-						if (proxy != null)
-						{
-							roles[0] = (Role)factRoles[1];
-						}
-						else
-						{
-							proxy = (RoleProxy)factRoles[1];
-							roles[0] = (Role)factRoles[0];
-						}
-						primaryRoleCount = 1;
+						roles[0] = (Role)factRoles[0];
+						roles[1] = (Role)factRoles[1];
+						primaryRoleCount = 2;
 					}
 					// Array of single role constraints.
 					//    Index 1 == Left/Right

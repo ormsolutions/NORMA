@@ -35,7 +35,7 @@ namespace Neumont.Tools.ORMToORMAbstractionBridge
 		}
 		private bool ShouldIgnoreFactType(FactType factType)
 		{
-			return ORMElementGateway.IsElementExcluded(factType) || null != factType.Objectification;
+			return ORMElementGateway.IsElementExcluded(factType) || (null != factType.Objectification && factType.UnaryRole == null);
 		}
 		#endregion // ORM Error Filtering Methods
 		#region ORMElementGateway class

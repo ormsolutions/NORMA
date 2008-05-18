@@ -757,7 +757,7 @@ namespace Neumont.Tools.ORMAbstractionToConceptualDatabaseBridge
 						}
 						if (0 != (stepFlags & ColumnPathStepFlags.ForwardSubtype))
 						{
-							addPart(step.ObjectType.GetAbbreviatedName(generator, true), null);
+							ReferenceModeNaming.SeparateObjectTypeParts(step.ObjectType, generator, addPart);
 							lastStepConsumedNextNode = false;
 							lastStepUsedExplicitRoleName = false;
 						}
@@ -767,6 +767,11 @@ namespace Neumont.Tools.ORMAbstractionToConceptualDatabaseBridge
 							lastStepConsumedNextNode = false;
 							lastStepUsedExplicitRoleName = false;
 							treatNextIdentifierAsFirstStep = true;
+							if (nextLoopNode == null)
+							{
+								// Unusual, but can happen with a ValueType with its own table
+								ReferenceModeNaming.SeparateObjectTypeParts(step.ObjectType, generator, addPart);
+							}
 						}
 						else
 						{
@@ -797,7 +802,9 @@ namespace Neumont.Tools.ORMAbstractionToConceptualDatabaseBridge
 									}
 								}
 								Role nearRole = step.FromRole;
-								Role farRole = nearRole.OppositeRoleAlwaysResolveProxy.Role;
+								Role farRole = (0 == (stepFlags & ColumnPathStepFlags.ObjectifiedFactType)) ?
+									nearRole.OppositeRoleAlwaysResolveProxy.Role :
+									nearRole.OppositeRole.Role;
 								string explicitFarRoleName = farRole.Name;
 								FactType factType = nearRole.FactType;
 								LinkedElementCollection<RoleBase> factTypeRoles = factType.RoleCollection;
@@ -805,7 +812,7 @@ namespace Neumont.Tools.ORMAbstractionToConceptualDatabaseBridge
 								bool isUnary = unaryRoleIndex.HasValue;
 								LinkedElementCollection<ReadingOrder> readingOrders = null;
 								IReading reading = null;
-								if (decorate && decorateWithPredicateText)
+								if ((decorate && decorateWithPredicateText) || (isUnary && string.IsNullOrEmpty(explicitFarRoleName)))
 								{
 									readingOrders = factType.ReadingOrderCollection;
 									reading = factType.GetMatchingReading(readingOrders, null, nearRole, null, false, true, factTypeRoles, isUnary);
@@ -816,34 +823,56 @@ namespace Neumont.Tools.ORMAbstractionToConceptualDatabaseBridge
 								{
 									string readingText = string.Format(CultureInfo.CurrentCulture, reading.Text, isUnary ? "\x1" : "", "\x1");
 									int splitPosition = readingText.LastIndexOf('\x1');
-									addPart(readingText.Substring(0, splitPosition).Replace("- ", " ").Replace(" -", " "), null);
-									if (!string.IsNullOrEmpty(explicitFarRoleName))
+									addPart(readingText.Substring(0, splitPosition), null);
+									if (!isUnary)
 									{
-										addPart(explicitFarRoleName, null);
-									}
-									else if (nextNode != null)
-									{
-										lastStepConsumedNextNode = ReferenceModeNaming.ResolveObjectTypeName(
-											step.ObjectType,
-											nextNode.Value.ObjectType,
-											true,
-											ReferenceModeNamingUse.ReferenceToEntityType,
-											generator,
-											addPart);
-									}
-									else
-									{
-										ReferenceModeNaming.ResolveObjectTypeName(
-											(!firstPass || 0 != (stepFlags & ColumnPathStepFlags.IsIdentifier)) ? previousObjectType : null,
-											step.ObjectType,
-											false,
-											firstPass ? ReferenceModeNamingUse.PrimaryIdentifier : ReferenceModeNamingUse.ReferenceToEntityType, // Ignored if first parameter is null
-											generator,
-											addPart);
+										if (nextNode != null)
+										{
+											ColumnPathStep nextStep = nextNode.Value;
+											ColumnPathStepFlags nextFlags = nextStep.Flags;
+											if (0 != (nextFlags & ColumnPathStepFlags.RequiresDecoration) &&
+												0 != (nextFlags & (ColumnPathStepFlags.ForwardSubtype | ColumnPathStepFlags.ReverseSubtype)) &&
+												step.ObjectType == nextStep.ObjectType)
+											{
+												// Note that this does not interfere with the earlier 'back up one step'
+												// because the checked flags are different.
+												nextLoopNode = nextNode.Next;
+												lastStepConsumedNextNode = ReferenceModeNaming.ResolveObjectTypeName(
+													nextStep.ResolvedSupertype,
+													(nextLoopNode != null) ? nextLoopNode.Value.ObjectType : null,
+													nextStep.ObjectType,
+													true,
+													ReferenceModeNamingUse.ReferenceToEntityType,
+													generator,
+													addPart);
+											}
+											else
+											{
+												lastStepConsumedNextNode = ReferenceModeNaming.ResolveObjectTypeName(
+													step.ResolvedSupertype,
+													nextNode.Value.ObjectType,
+													step.ObjectType,
+													true,
+													ReferenceModeNamingUse.ReferenceToEntityType,
+													generator,
+													addPart);
+											}
+										}
+										else
+										{
+											ReferenceModeNaming.ResolveObjectTypeName(
+												(!firstPass || 0 != (stepFlags & ColumnPathStepFlags.IsIdentifier)) ? previousObjectType : null,
+												step.ObjectType,
+												null,
+												false,
+												firstPass ? ReferenceModeNamingUse.PrimaryIdentifier : ReferenceModeNamingUse.ReferenceToEntityType, // Ignored if first parameter is null
+												generator,
+												addPart);
+										}
 									}
 									if ((readingText.Length - splitPosition) > 1)
 									{
-										addPart(readingText.Substring(splitPosition + 1).Replace("- ", " ").Replace(" -", " "), null);
+										addPart(readingText.Substring(splitPosition + 1), null);
 									}
 								}
 								else if (!string.IsNullOrEmpty(explicitFarRoleName))
@@ -884,19 +913,47 @@ namespace Neumont.Tools.ORMAbstractionToConceptualDatabaseBridge
 									}
 									if (nextNode != null)
 									{
-										lastStepConsumedNextNode = ReferenceModeNaming.ResolveObjectTypeName(
-											step.ObjectType,
-											nextNode.Value.ObjectType,
-											true,
-											ReferenceModeNamingUse.ReferenceToEntityType,
-											generator,
-											addPart);
+											ColumnPathStep nextStep = nextNode.Value;
+											ColumnPathStepFlags nextFlags = nextStep.Flags;
+											if (0 != (nextFlags & ColumnPathStepFlags.RequiresDecoration) &&
+												0 != (nextFlags & (ColumnPathStepFlags.ForwardSubtype | ColumnPathStepFlags.ReverseSubtype)) &&
+												step.ObjectType == nextStep.ObjectType)
+											{
+												// Note that this does not interfere with the earlier 'back up one step'
+												// because the checked flags are different.
+
+												// Advance the loop one step
+												previousPreviousObjectType = previousObjectType;
+												previousObjectType = step.ResolvedSupertype;
+												nextLoopNode = nextNode.Next;
+												step = nextStep;
+												lastStepConsumedNextNode = ReferenceModeNaming.ResolveObjectTypeName(
+													nextStep.ResolvedSupertype,
+													(nextLoopNode != null) ? nextLoopNode.Value.ObjectType : null,
+													nextStep.ObjectType,
+													true,
+													ReferenceModeNamingUse.ReferenceToEntityType,
+													generator,
+													addPart);
+											}
+											else
+											{
+												lastStepConsumedNextNode = ReferenceModeNaming.ResolveObjectTypeName(
+													step.ResolvedSupertype,
+													nextNode.Value.ObjectType,
+													step.ObjectType,
+													true,
+													ReferenceModeNamingUse.ReferenceToEntityType,
+													generator,
+													addPart);
+											}
 									}
 									else
 									{
 										ReferenceModeNaming.ResolveObjectTypeName(
 											(!firstPass || 0 != (stepFlags & ColumnPathStepFlags.IsIdentifier)) ? previousObjectType : null,
 											step.ObjectType,
+											null,
 											false,
 											firstPass ? ReferenceModeNamingUse.PrimaryIdentifier : ReferenceModeNamingUse.ReferenceToEntityType, // Ignored if first parameter is null
 											generator,
@@ -950,15 +1007,16 @@ namespace Neumont.Tools.ORMAbstractionToConceptualDatabaseBridge
 				{
 					AddToNameCollection(ref singleName, ref nameCollection, new NamePart(newName), index);
 				}
+				private static readonly char[] NameDelimiterArray = new char[] { ' ', '-' };
 				private void AddToNameCollection(ref NamePart singleName, ref List<NamePart> nameCollection, NamePart newNamePart, int index)
 				{
 					string newName = newNamePart;
 					newName = newName.Trim();
 					NamePartOptions options = newNamePart.Options;
 					Debug.Assert(newName != null);
-					if (newName.Contains(" "))
+					if (newName.IndexOfAny(NameDelimiterArray) != -1)
 					{
-						string[] individualEntries = newName.Split(new char[] { ' ' }, StringSplitOptions.RemoveEmptyEntries);
+						string[] individualEntries = newName.Split(NameDelimiterArray, StringSplitOptions.RemoveEmptyEntries);
 						for (int i = 0; i < individualEntries.Length; ++i)
 						{
 							//add each space separated name individually
@@ -1478,6 +1536,13 @@ namespace Neumont.Tools.ORMAbstractionToConceptualDatabaseBridge
 					/// This step needs special name generation
 					/// </summary>
 					RequiresDecoration = 0x10,
+					/// <summary>
+					/// Use an objectified <see cref="FactType"/> directly
+					/// instead of resolve a proxy role to get the implied
+					/// <see cref="FactType"/>. Used in cases of unary and
+					/// one-to-many objectification.
+					/// </summary>
+					ObjectifiedFactType = 0x20,
 				}
 				[DebuggerDisplay("{System.String.Concat(ObjectType.Name, (FromRole != null) ? System.String.Concat(\", \", FromRole.FactType.Name) : \"\", \" Flags=\", Flags.ToString(\"g\"))}")]
 				private struct ColumnPathStep
@@ -1578,6 +1643,7 @@ namespace Neumont.Tools.ORMAbstractionToConceptualDatabaseBridge
 						LinkedNode<ColumnPathStep> tailNode = null;
 						bool passedIdentifier = false;
 						bool processTailDelayed = false;
+						Objectification assimilationObjectification = null;
 						for (int iChild = 0; iChild < childPathCount; ++iChild)
 						{
 							ConceptTypeChild child = childPath[iChild];
@@ -1594,8 +1660,10 @@ namespace Neumont.Tools.ORMAbstractionToConceptualDatabaseBridge
 									targetRole = targetRole.OppositeRoleAlwaysResolveProxy.Role;
 								}
 								ColumnPathStepFlags flags = passedIdentifier ? ColumnPathStepFlags.PassedIdentifier : 0;
-								ColumnPathStep pathStep;
+								ColumnPathStep pathStep = default(ColumnPathStep);
 								bool processPreviousTail = false;
+								Objectification previousAssimilationObjectification = assimilationObjectification;
+								assimilationObjectification = null;
 								if (reverseAssimilation)
 								{
 									if (tailNode != null && 0 != (tailNode.Value.Flags & ColumnPathStepFlags.ReverseSubtype))
@@ -1609,32 +1677,68 @@ namespace Neumont.Tools.ORMAbstractionToConceptualDatabaseBridge
 								}
 								else if (assimilation != null)
 								{
-									flags |= ColumnPathStepFlags.ForwardSubtype;
-									pathStep = new ColumnPathStep(null, targetRole.RolePlayer, null, flags);
+									Objectification objectification;
+									if (!assimilation.RefersToSubtype &&
+										null != (objectification = factType.ImpliedByObjectification) &&
+										objectification.NestingType == targetRole.RolePlayer)
+									{
+										assimilationObjectification = objectification;
+									}
 									if (tailNode != null && 0 != (tailNode.Value.Flags & ColumnPathStepFlags.ForwardSubtype))
 									{
-										tailNode.Value = pathStep;
 										continue;
 									}
+									flags |= ColumnPathStepFlags.ForwardSubtype;
+									pathStep = new ColumnPathStep(null, targetRole.RolePlayer, null, flags);
 									processTailDelayed = true;
 								}
 								else
 								{
+									bool haveStep = false;
 									if (tailNode != null && 0 != (tailNode.Value.Flags & (ColumnPathStepFlags.ForwardSubtype | ColumnPathStepFlags.ReverseSubtype)))
 									{
-										// Add a resolved supertype to the reverse subtype to
-										// allow later steps to be compared to this one.
 										pathStep = tailNode.Value;
-										tailNode.Value = new ColumnPathStep(pathStep.FromRole, pathStep.ObjectType, targetRole.RolePlayer, pathStep.Flags);
+										RoleProxy oppositeProxy;
+										Role objectifiedResolvedProxyRole;
+										Role objectifiedOppositeRole;
+										if (previousAssimilationObjectification != null &&
+											factType.ImpliedByObjectification == previousAssimilationObjectification &&
+											null != (oppositeProxy = targetRole.OppositeRole as RoleProxy) &&
+											null != (objectifiedOppositeRole = (objectifiedResolvedProxyRole = oppositeProxy.Role).OppositeRole as Role))
+										{
+											flags |= ColumnPathStepFlags.ObjectifiedFactType;
+											// Replace both factTypes with the original unobjectified FactType
+											ObjectType fromObjectType = objectifiedOppositeRole.RolePlayer;
+											if (pathStep.ObjectType == previousAssimilationObjectification.NestingType)
+											{
+												// Trivial path leading in, remove the subtype completely
+												processTailDelayed = false;
+												tailNode.Value = new ColumnPathStep(objectifiedOppositeRole, objectifiedResolvedProxyRole.RolePlayer, null, flags);
+												ProcessTailNode(tailNode, objectTypeToSteps);
+												continue;
+											}
+											tailNode.Value = new ColumnPathStep(pathStep.FromRole, pathStep.ObjectType, fromObjectType, pathStep.Flags);
+											pathStep = new ColumnPathStep(objectifiedOppositeRole, objectifiedResolvedProxyRole.RolePlayer, null, flags);
+											haveStep = true;
+										}
+										else
+										{
+											// Add a resolved supertype to the reverse subtype to
+											// allow later steps to be compared to this one.
+											tailNode.Value = new ColumnPathStep(pathStep.FromRole, pathStep.ObjectType, targetRole.RolePlayer, pathStep.Flags);
+										}
 									}
-									Role oppositeRole = targetRole.OppositeRoleAlwaysResolveProxy.Role;
-									ORMUniquenessConstraint pid = targetRole.RolePlayer.PreferredIdentifier;
-									if (pid != null && pid.RoleCollection.Contains(oppositeRole))
+									if (!haveStep)
 									{
-										flags |= ColumnPathStepFlags.IsIdentifier;
-										passedIdentifier = true;
+										Role oppositeRole = targetRole.OppositeRoleAlwaysResolveProxy.Role;
+										ORMUniquenessConstraint pid = targetRole.RolePlayer.PreferredIdentifier;
+										if (pid != null && pid.RoleCollection.Contains(oppositeRole))
+										{
+											flags |= ColumnPathStepFlags.IsIdentifier;
+											passedIdentifier = true;
+										}
+										pathStep = new ColumnPathStep(targetRole, oppositeRole.RolePlayer, null, flags);
 									}
-									pathStep = new ColumnPathStep(targetRole, oppositeRole.RolePlayer, null, flags);
 									processPreviousTail = processTailDelayed;
 									processTailDelayed = false;
 								}

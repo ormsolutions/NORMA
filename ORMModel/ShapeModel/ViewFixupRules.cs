@@ -1014,43 +1014,6 @@ namespace Neumont.Tools.ORM.ShapeModel
 		}
 		#endregion // DisplayReadingsFixupListener class
 		#endregion // ReadingOrder fixup
-		#region RoleName fixup
-		/// <summary>
-		/// ChangeRule: typeof(Neumont.Tools.ORM.ObjectModel.Role), FireTime=TopLevelCommit, Priority=DiagramFixupConstants.AddShapeRulePriority;
-		/// Add shape elements for role names. Used during deserialization fixup
-		/// and rules.
-		/// </summary>
-		private static void RoleChangedRule(ElementPropertyChangedEventArgs e)
-		{
-			if (e.DomainProperty.Id == Role.NameDomainPropertyId)
-			{
-				Role role = (Role)e.ModelElement;
-				if (!role.IsDeleted)
-				{
-					if (string.IsNullOrEmpty(role.Name))
-					{
-						RoleNameShape.RemoveRoleNameShapeFromRole(role);
-					}
-					else
-					{
-						Diagram.FixUpDiagram(role.FactType, role);
-						if (OptionsPage.CurrentRoleNameDisplay == RoleNameDisplay.Off)
-						{
-							foreach (PresentationElement element in PresentationViewsSubject.GetPresentation(role.FactType))
-							{
-								FactTypeShape fts = element as FactTypeShape;
-								if (fts != null
-									&& fts.DisplayRoleNames == DisplayRoleNames.UserDefault)
-								{
-									RoleNameShape.SetRoleNameDisplay(role.FactType);
-								}
-							}
-						}
-					}
-				}
-			}
-		}
-		#endregion // RoleName fixup
 		#region DisplayRolePlayersFixupListener class
 		/// <summary>
 		/// A fixup class to display role name

@@ -1568,7 +1568,7 @@ namespace Neumont.Tools.ORMAbstractionToConceptualDatabaseBridge
 		public static string ResolveObjectTypeName(ObjectType entityType, ReferenceModeNamingChoice namingChoice, ReferenceModeNamingUse targetUse)
 		{
 			bool consumedValueTypeDummy;
-			return ResolveObjectTypeName(entityType, null, true, targetUse, namingChoice, null, null, out consumedValueTypeDummy);
+			return ResolveObjectTypeName(entityType, null, null, true, targetUse, namingChoice, null, null, out consumedValueTypeDummy);
 		}
 		/// <summary>
 		/// Given two <see cref="ObjectType"/> instances, determine if the <paramref name="possibleEntityType"/>
@@ -1577,16 +1577,17 @@ namespace Neumont.Tools.ORMAbstractionToConceptualDatabaseBridge
 		/// </summary>
 		/// <param name="possibleEntityType">An <see cref="ObjectType"/> that may be an EntityType with a <see cref="ReferenceMode"/></param>
 		/// <param name="possibleValueType">An <see cref="ValueType"/> that may be the reference mode value type associated with <paramref name="possibleEntityType"/>. Set to <see langword="null"/> to automatically retrieve the available value type.</param>
+		/// <param name="alternateEntityType">An <see cref="ObjectType"/> that is a subtype of <paramref name="possibleEntityType"/>. <paramref name="possibleEntityType"/> is used to resolve any reference mode relationship, but the name for this type is generated.</param>
 		/// <param name="preferEntityType">If true and a reference mode pattern is not found, then use the name of the <paramref name="possibleEntityType"/> by default.
 		/// Otherwise, use the <paramref name="possibleValueType"/> name as the default when a reference mode pattern is not found.</param>
 		/// <param name="targetUse">The <see cref="ReferenceModeNamingUse"/> for the name</param>
 		/// <param name="nameGenerator">An optional <see cref="NameGenerator"/>, used to retrieve abbreviations for <see cref="ObjectType"/> names</param>
 		/// <param name="addNamePartCallback">A <see cref="AddNamePart"/> delegate used to add a name.</param>
 		/// <returns>True if the valuetype was used as part of the generated name.</returns>
-		public static bool ResolveObjectTypeName(ObjectType possibleEntityType, ObjectType possibleValueType, bool preferEntityType, ReferenceModeNamingUse targetUse, NameGenerator nameGenerator, AddNamePart addNamePartCallback)
+		public static bool ResolveObjectTypeName(ObjectType possibleEntityType, ObjectType possibleValueType, ObjectType alternateEntityType, bool preferEntityType, ReferenceModeNamingUse targetUse, NameGenerator nameGenerator, AddNamePart addNamePartCallback)
 		{
 			bool retVal;
-			ResolveObjectTypeName(possibleEntityType, possibleValueType, preferEntityType, targetUse, null, nameGenerator, addNamePartCallback, out retVal);
+			ResolveObjectTypeName(possibleEntityType, possibleValueType, alternateEntityType, preferEntityType, targetUse, null, nameGenerator, addNamePartCallback, out retVal);
 			return retVal;
 		}
 		/// <summary>
@@ -1596,6 +1597,7 @@ namespace Neumont.Tools.ORMAbstractionToConceptualDatabaseBridge
 		/// </summary>
 		/// <param name="possibleEntityType">An <see cref="ObjectType"/> that may be an EntityType with a <see cref="ReferenceMode"/></param>
 		/// <param name="possibleValueType">An <see cref="ValueType"/> that may be the reference mode value type associated with <paramref name="possibleEntityType"/>. Set to <see langword="null"/> to automatically retrieve the available value type.</param>
+		/// <param name="alternateEntityType">An <see cref="ObjectType"/> that is a subtype of <paramref name="possibleEntityType"/>. <paramref name="possibleEntityType"/> is used to resolve any reference mode relationship, but the name for this type is generated.</param>
 		/// <param name="preferEntityType">If true and a reference mode pattern is not found, then use the name of the <paramref name="possibleEntityType"/> by default.
 		/// Otherwise, use the <paramref name="possibleValueType"/> name as the default when a reference mode pattern is not found.</param>
 		/// <param name="targetUse">The <see cref="ReferenceModeNamingUse"/> for the name</param>
@@ -1605,7 +1607,7 @@ namespace Neumont.Tools.ORMAbstractionToConceptualDatabaseBridge
 		/// then we attempt to split the ValueTypeName into pieces and add through the callback instead of using the return value.</param>
 		/// <param name="consumedValueType">Output set to true if the valuetype was used as part of the generated name.</param>
 		/// <returns>An appropriate name, or <see langword="null"/> if the expected relationship does not pan out and <paramref name="addNamePartCallback"/> is <see langword="null"/>.</returns>
-		private static string ResolveObjectTypeName(ObjectType possibleEntityType, ObjectType possibleValueType, bool preferEntityType, ReferenceModeNamingUse targetUse, ReferenceModeNamingChoice? forceNamingChoice, NameGenerator nameGenerator, AddNamePart addNamePartCallback, out bool consumedValueType)
+		private static string ResolveObjectTypeName(ObjectType possibleEntityType, ObjectType possibleValueType, ObjectType alternateEntityType, bool preferEntityType, ReferenceModeNamingUse targetUse, ReferenceModeNamingChoice? forceNamingChoice, NameGenerator nameGenerator, AddNamePart addNamePartCallback, out bool consumedValueType)
 		{
 			consumedValueType = false;
 			IReferenceModePattern referenceMode;
@@ -1614,6 +1616,11 @@ namespace Neumont.Tools.ORMAbstractionToConceptualDatabaseBridge
 			{
 				ReferenceModeType referenceModeType = referenceMode.ReferenceModeType;
 				ObjectType actualValueType = possibleEntityType.PreferredIdentifier.RoleCollection[0].RolePlayer;
+				if (alternateEntityType != null)
+				{
+					// Use the alternate for all naming purposes
+					possibleEntityType = alternateEntityType;
+				}
 				if (possibleValueType != null && actualValueType != possibleValueType)
 				{
 					consumedValueType = !preferEntityType;
@@ -1702,6 +1709,7 @@ namespace Neumont.Tools.ORMAbstractionToConceptualDatabaseBridge
 					case ReferenceModeNamingChoice.ReferenceModeName:
 						if (addNamePartCallback != null)
 						{
+							// Use the alternate for all naming purposes
 							addNamePartCallback(referenceMode.Name, null);
 							return null;
 						}
@@ -1734,6 +1742,10 @@ namespace Neumont.Tools.ORMAbstractionToConceptualDatabaseBridge
 			if (addNamePartCallback != null)
 			{
 				consumedValueType = preferEntityType ? possibleEntityType == null : possibleValueType != null;
+				if (possibleEntityType != null && alternateEntityType != null)
+				{
+					possibleEntityType = alternateEntityType;
+				}
 				SeparateObjectTypeParts(preferEntityType ? (possibleEntityType ?? possibleValueType) : (possibleValueType ?? possibleEntityType), nameGenerator, addNamePartCallback);
 			}
 			return null;

@@ -685,6 +685,14 @@
     <value>ImpliedRoleName</value>
     <comment>DisplayName for DomainProperty &apos;ObjectificationOppositeRoleName&apos; on DomainClass &apos;Role&apos;</comment>
   </data>
+  <data name="Neumont.Tools.ORM.ObjectModel.ObjectifiedUnaryRole.Description" xml:space="preserve">
+    <value></value>
+    <comment>Description for DomainClass &apos;ObjectifiedUnaryRole&apos;</comment>
+  </data>
+  <data name="Neumont.Tools.ORM.ObjectModel.ObjectifiedUnaryRole.DisplayName" xml:space="preserve">
+    <value>Role</value>
+    <comment>DisplayName for DomainClass &apos;ObjectifiedUnaryRole&apos;</comment>
+  </data>
   <data name="Neumont.Tools.ORM.ObjectModel.NameAlias.Description" xml:space="preserve">
     <value></value>
     <comment>Description for DomainClass &apos;NameAlias&apos;</comment>
@@ -5020,6 +5028,38 @@
   <data name="Neumont.Tools.ORM.ObjectModel.RoleProxyHasRole/TargetRole.PropertyDisplayName" xml:space="preserve">
     <value>Proxy</value>
     <comment>PropertyDisplayName for DomainRole &apos;TargetRole&apos; on DomainRelationship &apos;RoleProxyHasRole&apos;</comment>
+  </data>
+  <data name="Neumont.Tools.ORM.ObjectModel.ObjectifiedUnaryRoleHasRole.Description" xml:space="preserve">
+    <value>Links a unary role with the objectified unary role in the implied FactType. Implies a single-column equality constraint between the two roles.</value>
+    <comment>Description for DomainClass &apos;ObjectifiedUnaryRoleHasRole&apos;</comment>
+  </data>
+  <data name="Neumont.Tools.ORM.ObjectModel.ObjectifiedUnaryRoleHasRole.DisplayName" xml:space="preserve">
+    <value>Objectified Unary Role Has Role</value>
+    <comment>DisplayName for DomainClass &apos;ObjectifiedUnaryRoleHasRole&apos;</comment>
+  </data>
+  <data name="Neumont.Tools.ORM.ObjectModel.ObjectifiedUnaryRoleHasRole/ObjectifiedUnaryRole.Description" xml:space="preserve">
+    <value>Description for Neumont.Tools.ORM.ObjectModel.ObjectifiedUnaryRoleHasRole.ObjectifiedUnaryRole</value>
+    <comment>Description for DomainRole &apos;ObjectifiedUnaryRole&apos; on DomainRelationship &apos;ObjectifiedUnaryRoleHasRole&apos;</comment>
+  </data>
+  <data name="Neumont.Tools.ORM.ObjectModel.ObjectifiedUnaryRoleHasRole/ObjectifiedUnaryRole.DisplayName" xml:space="preserve">
+    <value>ObjectifiedUnaryRole</value>
+    <comment>DisplayName for DomainRole &apos;ObjectifiedUnaryRole&apos; on DomainRelationship &apos;ObjectifiedUnaryRoleHasRole&apos;</comment>
+  </data>
+  <data name="Neumont.Tools.ORM.ObjectModel.ObjectifiedUnaryRoleHasRole/ObjectifiedUnaryRole.PropertyDisplayName" xml:space="preserve">
+    <value>Target Role</value>
+    <comment>PropertyDisplayName for DomainRole &apos;ObjectifiedUnaryRole&apos; on DomainRelationship &apos;ObjectifiedUnaryRoleHasRole&apos;</comment>
+  </data>
+  <data name="Neumont.Tools.ORM.ObjectModel.ObjectifiedUnaryRoleHasRole/TargetRole.Description" xml:space="preserve">
+    <value>Description for Neumont.Tools.ORM.ObjectModel.ObjectifiedUnaryRoleHasRole.TargetRole</value>
+    <comment>Description for DomainRole &apos;TargetRole&apos; on DomainRelationship &apos;ObjectifiedUnaryRoleHasRole&apos;</comment>
+  </data>
+  <data name="Neumont.Tools.ORM.ObjectModel.ObjectifiedUnaryRoleHasRole/TargetRole.DisplayName" xml:space="preserve">
+    <value>TargetRole</value>
+    <comment>DisplayName for DomainRole &apos;TargetRole&apos; on DomainRelationship &apos;ObjectifiedUnaryRoleHasRole&apos;</comment>
+  </data>
+  <data name="Neumont.Tools.ORM.ObjectModel.ObjectifiedUnaryRoleHasRole/TargetRole.PropertyDisplayName" xml:space="preserve">
+    <value>Objectified Unary Role</value>
+    <comment>PropertyDisplayName for DomainRole &apos;TargetRole&apos; on DomainRelationship &apos;ObjectifiedUnaryRoleHasRole&apos;</comment>
   </data>
   <data name="Neumont.Tools.ORM.ObjectModel.FactTypeHasDerivationExpression.Description" xml:space="preserve">
     <value>Description for Neumont.Tools.ORM.ObjectModel.FactTypeHasDerivationExpression</value>

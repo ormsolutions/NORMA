@@ -206,7 +206,7 @@ namespace Neumont.Tools.ORMAbstractionToConceptualDatabaseBridge
 		/// <returns><see cref="AssimilationAbsorptionChoice.Absorb"/> for a <see cref="SubtypeFact"/>, <see cref="AssimilationAbsorptionChoice.Separate"/> otherwise.</returns>
 		public static AssimilationAbsorptionChoice GetDefaultAbsorptionChoice(FactType factType)
 		{
-			return (factType is SubtypeFact) ? AssimilationAbsorptionChoice.Absorb : AssimilationAbsorptionChoice.Separate;
+			return (factType is SubtypeFact || factType.ImpliedByObjectification != null) ? AssimilationAbsorptionChoice.Absorb : AssimilationAbsorptionChoice.Separate;
 		}
 		/// <summary>
 		/// Determine if a <see cref="FactType"/> is associated only with deeply mapped assimilations

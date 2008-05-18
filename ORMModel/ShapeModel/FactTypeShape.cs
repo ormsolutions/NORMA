@@ -5152,6 +5152,47 @@ namespace Neumont.Tools.ORM.ShapeModel
 			MaintainRelativeShapeOffsetsForBoundsChange(e);
 		}
 		#endregion // FactTypeShapeChangeRule
+		#region RoleName fixup
+		/// <summary>
+		/// ChangeRule: typeof(Neumont.Tools.ORM.ObjectModel.Role), FireTime=TopLevelCommit, Priority=DiagramFixupConstants.AddShapeRulePriority;
+		/// Add shape elements for role names. Used during deserialization fixup
+		/// and rules.
+		/// </summary>
+		private static void RoleChangedRule(ElementPropertyChangedEventArgs e)
+		{
+			if (e.DomainProperty.Id == Role.NameDomainPropertyId)
+			{
+				Role role = (Role)e.ModelElement;
+				if (!role.IsDeleted)
+				{
+					FixupRoleNameShapes(role);
+				}
+			}
+		}
+		private static void FixupRoleNameShapes(Role role)
+		{
+			if (string.IsNullOrEmpty(role.Name))
+			{
+				RoleNameShape.RemoveRoleNameShapeFromRole(role);
+			}
+			else
+			{
+				Diagram.FixUpDiagram(role.FactType, role);
+				if (OptionsPage.CurrentRoleNameDisplay == RoleNameDisplay.Off)
+				{
+					foreach (PresentationElement element in PresentationViewsSubject.GetPresentation(role.FactType))
+					{
+						FactTypeShape fts = element as FactTypeShape;
+						if (fts != null
+							&& fts.DisplayRoleNames == DisplayRoleNames.UserDefault)
+						{
+							RoleNameShape.SetRoleNameDisplay(role.FactType);
+						}
+					}
+				}
+			}
+		}
+		#endregion // RoleName fixup
 		#region ImplicitBooleanValueTypeDeletedRule
 		/// <summary>
 		/// DeleteRule: typeof(Neumont.Tools.ORM.ObjectModel.ObjectTypePlaysRole), FireTime=TopLevelCommit, Priority=DiagramFixupConstants.ResizeParentRulePriority;
@@ -5174,6 +5215,10 @@ namespace Neumont.Tools.ORM.ShapeModel
 						shape.RoleDisplayOrderCollection.Clear();
 						shape.AutoResize();
 					}
+				}
+				if (!string.IsNullOrEmpty(role.Name))
+				{
+					FixupRoleNameShapes(role);
 				}
 			}
 		}

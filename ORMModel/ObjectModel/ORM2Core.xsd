@@ -536,10 +536,22 @@
 		</xs:choice>
 	</xs:complexType>
 	<xs:complexType name="ImpliedFactRoles">
-		<xs:all>
-			<xs:element name="Role" type="Role"/>
-			<xs:element name="RoleProxy" type="RoleProxy"/>
-		</xs:all>
+		<xs:choice>
+			<xs:sequence>
+				<xs:element name="Role" type="Role"/>
+				<xs:choice>
+					<xs:element name="RoleProxy" type="RoleProxy"/>
+					<xs:element name="ObjectifiedUnaryRole" type="ObjectifiedUnaryRole"/>
+				</xs:choice>
+			</xs:sequence>
+			<xs:sequence>
+				<xs:choice>
+					<xs:element name="RoleProxy" type="RoleProxy"/>
+					<xs:element name="ObjectifiedUnaryRole" type="ObjectifiedUnaryRole"/>
+				</xs:choice>
+				<xs:element name="Role" type="Role"/>
+			</xs:sequence>
+		</xs:choice>
 	</xs:complexType>
 	<xs:complexType name="SubtypeRoles">
 		<xs:all>
@@ -547,13 +559,12 @@
 			<xs:element name="SubtypeMetaRole" type="Role"/>
 		</xs:all>
 	</xs:complexType>
-	<xs:complexType name="Role">
-		<xs:all>
+	<xs:complexType name="RoleBase">
+		<xs:sequence>
 			<xs:element name="RolePlayer" type="ObjectRef" minOccurs="0"/>
 			<xs:element name="ValueRestriction" type="RoleValueRestriction" minOccurs="0"/>
 			<xs:element name="RoleInstances" type="ObjectTypeRoleInstances" minOccurs="0"/>
-			<xs:element name="Extensions" type="Extensions" minOccurs="0"/>
-		</xs:all>
+		</xs:sequence>
 		<xs:attribute name="Name" type="xs:string" use="required"/>
 		<xs:attribute name="id" type="xs:ID" use="required"/>
 		<!--Derived-->
@@ -561,12 +572,31 @@
 		<!--Derived-->
 		<xs:attribute name="_Multiplicity" type="MultiplicityEnum" default="ZeroToOne"/>
 	</xs:complexType>
+	<xs:complexType name="Role">
+		<xs:complexContent>
+			<xs:extension base="RoleBase">
+				<xs:sequence>
+					<xs:element name="Extensions" type="Extensions" minOccurs="0"/>
+				</xs:sequence>
+			</xs:extension>
+		</xs:complexContent>
+	</xs:complexType>
 	<xs:complexType name="RoleProxy">
 		<xs:sequence>
 			<xs:element name="Role" type="RoleRef"/>
 			<xs:element name="Extensions" type="Extensions" minOccurs="0"/>
 		</xs:sequence>
 		<xs:attribute name="id" type="xs:ID" use="required"/>
+	</xs:complexType>
+	<xs:complexType name="ObjectifiedUnaryRole">
+		<xs:complexContent>
+			<xs:extension base="RoleBase">
+				<xs:sequence>
+					<xs:element name="UnaryRole" type="RoleRef"/>
+					<xs:element name="Extensions" type="Extensions" minOccurs="0"/>
+				</xs:sequence>
+			</xs:extension>
+		</xs:complexContent>
 	</xs:complexType>
 	<!--Look up enum values.-->
 	<xs:simpleType name="MultiplicityEnum">

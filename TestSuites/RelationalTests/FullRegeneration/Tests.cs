@@ -136,6 +136,25 @@ namespace RelationalTests.FullRegeneration
 		public void Test4(Store store)
 		{
 		}
+		/// <summary>
+		/// NUnit
+		/// </summary>
+		[Test(Description = "Relational Load")]
+		[NUnitCategory("Relational")]
+		[NUnitCategory("FullRegeneration")]
+		public void Test5()
+		{
+			// Forward the call
+			Suite.RunNUnitTest(this, myTestServices);
+		}
+		/// <summary>
+		/// Test full regeneration of collapsing multiple one-many
+		/// and unary objectifications into a single table.
+		/// </summary>
+		[ORMTest("Relational", "FullRegeneration")]
+		public void Test5(Store store)
+		{
+		}
 		#endregion // Relational Load tests
 	}
 }

@@ -34,7 +34,7 @@ namespace Neumont.Tools.ORMToORMAbstractionBridge
 		/// <summary>
 		/// The algorithm version written to the file
 		/// </summary>
-		public const string CurrentAlgorithmVersion = "1.003";
+		public const string CurrentAlgorithmVersion = "1.004";
 		#endregion // CurrentAlgorithmVersion constant
 		#region ValidationPriority enum
 		/// <summary>
@@ -283,7 +283,6 @@ namespace Neumont.Tools.ORMToORMAbstractionBridge
 
 			GenerateOialModel(decidedFactTypeMappings);
 		}
-
 		/// <summary>
 		/// Determines the obvious fact type mappings, and all other potential mappings.
 		/// </summary>
@@ -317,8 +316,8 @@ namespace Neumont.Tools.ORMToORMAbstractionBridge
 				{
 					LinkedElementCollection<RoleBase> roles = factType.RoleCollection;
 
-					Debug.Assert(roles.Count == 2 && factType.Objectification == null, "Non-binarized fact types should have been filtered out already.");
-					
+					Debug.Assert(roles.Count == 2 && (factType.Objectification == null || factType.UnaryRole != null), "Non-binarized fact types should have been filtered out already.");
+
 					Role firstRole = roles[0].Role;
 					Role secondRole = roles[1].Role;
 					ObjectType firstRolePlayer = firstRole.RolePlayer;
@@ -1195,8 +1194,6 @@ namespace Neumont.Tools.ORMToORMAbstractionBridge
 		private void GenerateAssociations()
 		{
 			AbstractionModel oialModel = this.AbstractionModel;
-
-			// UNDONE: Portions of this may need to change depending on what we do for unary objectification.
 			foreach (ConceptType ct in oialModel.ConceptTypeCollection)
 			{
 				ObjectType ot = ConceptTypeIsForObjectType.GetObjectType(ct);

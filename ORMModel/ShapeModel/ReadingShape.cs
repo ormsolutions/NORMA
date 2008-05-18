@@ -124,7 +124,7 @@ namespace Neumont.Tools.ORM.ShapeModel
 			// The primary reading is the first reading in the reading order.
 			// Note: this is done inline here because we already have the link,
 			// which would need to be requeried in the IsPrimaryForReadingOrder property
-			if (order.ReadingCollection[0] == link.Reading)
+			if (!link.IsDeleted && order.ReadingCollection[0] == link.Reading)
 			{
 				RefreshPresentationElements(order);
 			}

@@ -118,6 +118,11 @@ namespace Neumont.Tools.ORM.ObjectModel
 				propertyInfo = directory.FindDomainProperty(Objectification.IsImpliedDomainPropertyId);
 				eventManager.AddOrRemoveHandler(propertyInfo, new EventHandler<ElementPropertyChangedEventArgs>(ObjectificationChanged), action);
 
+				//Unary binarization
+				classInfo = directory.FindDomainClass(ObjectTypePlaysRole.DomainClassId);
+				eventManager.AddOrRemoveHandler(classInfo, new EventHandler<ElementAddedEventArgs>(ImplicitUnaryBooleanValueAdded), action);
+				eventManager.AddOrRemoveHandler(classInfo, new EventHandler<ElementDeletedEventArgs>(ImplicitUnaryBooleanValueDeleted), action);
+
 				//RolePlayerChanged
 				eventManager.AddOrRemoveHandler(classInfo, new EventHandler<RolePlayerChangedEventArgs>(ObjectificationRolePlayerChanged), action);
 
@@ -136,7 +141,7 @@ namespace Neumont.Tools.ORM.ObjectModel
 				propertyInfo = directory.FindDomainProperty(RingConstraint.RingTypeDomainPropertyId);
 				eventManager.AddOrRemoveHandler(propertyInfo, standardGlyphChangeHandler, action);
 
-				//RingType changed
+				//Preferred Identifier Changed
 				propertyInfo = directory.FindDomainProperty(UniquenessConstraint.IsPreferredDomainPropertyId);
 				eventManager.AddOrRemoveHandler(propertyInfo, standardGlyphChangeHandler, action);
 
@@ -254,9 +259,17 @@ namespace Neumont.Tools.ORM.ObjectModel
 				FactType factType = context as FactType;
 				if (factType != null)
 				{
-					foreach (RoleBase role in factType.RoleCollection)
+					foreach (RoleBase roleBase in factType.RoleCollection)
 					{
-						yield return role;
+						Role role;
+						ObjectType player;
+						if (null != (role = roleBase as Role) &&
+							null != (player = role.RolePlayer) &&
+							player.IsImplicitBooleanValue)
+						{
+							continue;
+						}
+						yield return roleBase;
 					}
 					foreach (SetConstraint element in factType.GetInternalConstraints<SetConstraint>())
 					{
@@ -515,6 +528,40 @@ namespace Neumont.Tools.ORM.ObjectModel
 					{
 						eventNotify.ElementChanged(nestedFactType, SurveyGlyphQuestionTypes);
 					}
+				}
+			}
+		}
+		/// <summary>
+		/// Survey event handler for conversion of a non-unary <see cref="FactType"/> to a unary FactType
+		/// </summary>
+		protected void ImplicitUnaryBooleanValueAdded(object sender, ElementAddedEventArgs e)
+		{
+			INotifySurveyElementChanged eventNotify;
+			ModelElement element = e.ModelElement;
+			if (null != (eventNotify = (element.Store as IORMToolServices).NotifySurveyElementChanged))
+			{
+				ObjectTypePlaysRole link = (ObjectTypePlaysRole)element;
+				Role role;
+				if (link.RolePlayer.IsImplicitBooleanValue && !(role = link.PlayedRole).IsDeleted)
+				{
+					eventNotify.ElementDeleted(role);
+				}
+			}
+		}
+		/// <summary>
+		/// Survey event handler for conversion of a unary <see cref="FactType"/> to a non-unary FactType
+		/// </summary>
+		protected void ImplicitUnaryBooleanValueDeleted(object sender, ElementDeletedEventArgs e)
+		{
+			INotifySurveyElementChanged eventNotify;
+			ModelElement element = e.ModelElement;
+			if (null != (eventNotify = (element.Store as IORMToolServices).NotifySurveyElementChanged))
+			{
+				ObjectTypePlaysRole link = (ObjectTypePlaysRole)element;
+				Role role;
+				if (link.RolePlayer.IsImplicitBooleanValue && !(role = link.PlayedRole).IsDeleted)
+				{
+					eventNotify.ElementAdded(role, role.FactType);
 				}
 			}
 		}

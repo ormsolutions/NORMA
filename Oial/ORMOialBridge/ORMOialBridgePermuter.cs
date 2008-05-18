@@ -261,6 +261,8 @@ namespace Neumont.Tools.ORMToORMAbstractionBridge
 				// This is used to prevent deep mappings of an object type in two directions.
 				Dictionary<ObjectType, object> deeplyMappedObjectTypes = new Dictionary<ObjectType, object>(largestChainCount);
 				ChainPermutationState permutationStateHelper = new ChainPermutationState();
+				// Used to eliminate deep mappings towards simple identifiers
+				Dictionary<ObjectType, bool> nonPreferredFuntionalObjectTypesCache = new Dictionary<ObjectType, bool>();
 
 				// Loop through each chain, calculating the permutations.
 				foreach (Chain chain in chainer.Chains)
@@ -279,7 +281,7 @@ namespace Neumont.Tools.ORMToORMAbstractionBridge
 					//int maxPermutations = CalculateMaxNumberOfPermutations(chain.UndecidedOneToOneFactTypeMappings);
 
 					PermuteFactTypeMappings(chain.PossiblePermutations, chain.UndecidedOneToOneFactTypeMappings, newlyDecidedFactTypeMappings, deeplyMappedObjectTypes, 0);
-					EliminateInvalidPermutations(chain);
+					EliminateInvalidPermutations(chain, nonPreferredFuntionalObjectTypesCache);
 					FindSmallestPermutationsInTermsOfConceptTypes(chain, permutationStateHelper);
 					EliminatePermutationsWithIdenticalResults(chain);
 
@@ -662,12 +664,6 @@ namespace Neumont.Tools.ORMToORMAbstractionBridge
 					{
 						if (0 != (startingState & (ObjectTypeStates.PredecidedMustNotHaveTopLevelConceptType | ObjectTypeStates.PermutationMustNotHaveTopLevelConceptType)))
 						{
-							// UNDONE: Can the independent state check be processed before this point?
-							if (0 != (startingState & ObjectTypeStates.IsIndependent))
-							{
-								isNotOptimalPermutation = true;
-								break;
-							}
 							if (permutationState.SetNonTopLevel(objectType) &&
 								(permutationState.TopLevelCount == minTopLevelConceptTypesCount) &&
 								(permutationState.NonTopLevelCount > minNonTopLevelConceptTypesCount))
@@ -822,14 +818,15 @@ namespace Neumont.Tools.ORMToORMAbstractionBridge
 					decidedMappings.RemoveAt(decidedMappings.Count - 1);
 				}
 			}
-
 			/// <summary>
 			/// Eliminates any <see cref="Permutation"/>s that contain cyclical deep <see cref="FactTypeMapping"/>s.
 			/// </summary>
 			/// <param name="chain">
 			/// The <see cref="Chain"/> for which invalid <see cref="Permutation"/>s should be eliminated.
 			/// </param>
-			private static void EliminateInvalidPermutations(Chain chain)
+			/// <param name="nonPreferredFuntionalObjectTypes">A dictionary to cache state information
+			/// for potentially deeply mapped <see cref="ObjectType"/>s</param>
+			private static void EliminateInvalidPermutations(Chain chain, Dictionary<ObjectType, bool> nonPreferredFuntionalObjectTypes)
 			{
 				Debug.Assert(chain.UndecidedOneToOneFactTypeMappings.Count > 0);
 
@@ -914,7 +911,107 @@ namespace Neumont.Tools.ORMToORMAbstractionBridge
 						}
 					}
 					while (!permutationIsInvalid && (visited.Count < factTypeCount));
+
+					if (!permutationIsInvalid)
+					{
+						// We now filter out a common pattern where an ObjectType plays
+						// no functional roles to justify a ConceptType and is not chained with
+						// another deep mapping that satisfies this criteria.
+						// If the permuation is valid at this point, then there are no cycles
+						// in the deep maps for the permuation, so we can safely run this routine
+						// recursively.
+						for (int i = 0; i < mappingsCount; ++i)
+						{
+							if (IsBlockedDeepMapping(mappings, i, nonPreferredFuntionalObjectTypes))
+							{
+								possiblePermutations.RemoveAt(permutationIndex);
+								break;
+							}
+						}
+					}
 				}
+			}
+			private static bool IsBlockedDeepMapping(FactTypeMappingList mappings, int currentMappingIndex, Dictionary<ObjectType, bool> nonPreferredFuntionalObjectTypes)
+			{
+				FactTypeMapping mapping = mappings[currentMappingIndex];
+				ObjectType towards;
+				if (mapping.MappingDepth == MappingDepth.Deep && !ObjectTypePlaysNonIdentifierFunctionalRoles((towards = mapping.TowardsObjectType), nonPreferredFuntionalObjectTypes))
+				{
+					int mappingsCount = mappings.Count;
+					int j = 1;
+					for (; j < mappingsCount; ++j)
+					{
+						int testIndex = (j + currentMappingIndex) % mappingsCount;
+						FactTypeMapping testMapping = mappings[testIndex];
+						if (testMapping.MappingDepth == MappingDepth.Deep && testMapping.FromObjectType == towards && !IsBlockedDeepMapping(mappings, testIndex, nonPreferredFuntionalObjectTypes))
+						{
+							break;
+						}
+					}
+					if (j == mappingsCount)
+					{
+						return true;
+					}
+				}
+				return false;
+			}
+			/// <summary>
+			/// Test if an <see cref="ObjectType"/> plays non-identifier functional roles,
+			/// meaning a functional role that is not opposite part of the preferred identifier for
+			/// this ObjectType and is not part of the preferred identifier for any other object.
+			/// Also returns true if <see cref="ObjectType.TreatAsIndependent"/> is set.
+			/// </summary>
+			private static bool ObjectTypePlaysNonIdentifierFunctionalRoles(ObjectType objectType, Dictionary<ObjectType, bool> alreadyTested)
+			{
+				bool retVal;
+				if (alreadyTested != null && alreadyTested.TryGetValue(objectType, out retVal))
+				{
+					return retVal;
+				}
+				else if (objectType.TreatAsIndependent)
+				{
+					if (alreadyTested != null)
+					{
+						alreadyTested[objectType] = true;
+					}
+					return true;
+				}
+				foreach (Role role in objectType.PlayedRoleCollection)
+				{
+					UniquenessConstraint functionalUniqueness = role.SingleRoleAlethicUniquenessConstraint;
+					if (functionalUniqueness == null || functionalUniqueness.IsPreferred)
+					{
+						continue;
+					}
+					Role oppositeRole = role.OppositeRoleAlwaysResolveProxy as Role;
+					retVal = true;
+					if (oppositeRole != null)
+					{
+						foreach (ConstraintRoleSequence sequence in oppositeRole.ConstraintRoleSequenceCollection)
+						{
+							UniquenessConstraint oppositeUniqueness = sequence as UniquenessConstraint;
+							if (oppositeUniqueness != null &&
+								oppositeUniqueness.PreferredIdentifierFor == objectType)
+							{
+								retVal = false;
+								break;
+							}
+						}
+					}
+					if (retVal)
+					{
+						if (alreadyTested != null)
+						{
+							alreadyTested[objectType] = true;
+						}
+						return true;
+					}
+				}
+				if (alreadyTested != null)
+				{
+					alreadyTested[objectType] = false;
+				}
+				return false;
 			}
 		}
 	}

@@ -612,8 +612,8 @@ namespace Neumont.Tools.ORM.ObjectModel
 					null != (factType = order.FactType) &&
 					null != factType.ImpliedByObjectification)
 				{
-					string readingText = Text;
-					return Text == ((order.RoleCollection[0] is RoleProxy) ? ResourceStrings.ImpliedFactTypePredicateInverseReading : ResourceStrings.ImpliedFactTypePredicateReading);
+					RoleBase testRole = order.RoleCollection[0];
+					return Text == ((testRole is RoleProxy || testRole is ObjectifiedUnaryRole) ? ResourceStrings.ImpliedFactTypePredicateReading : ResourceStrings.ImpliedFactTypePredicateInverseReading);
 				}
 				return false;
 			}

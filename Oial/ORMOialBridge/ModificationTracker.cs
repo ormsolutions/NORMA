@@ -487,17 +487,23 @@ namespace Neumont.Tools.ORMToORMAbstractionBridge
 					Objectification objectification = factType.Objectification;
 					if (objectification != null)
 					{
-						foreach (FactType impliedFactType in objectification.ImpliedFactTypeCollection)
+						LinkedElementCollection<FactType> impliedFactTypes = objectification.ImpliedFactTypeCollection;
+						int impliedFactTypeCount = impliedFactTypes.Count;
+						for (int i = 0; i < impliedFactTypeCount; ++i)
 						{
+							FactType impliedFactType = impliedFactTypes[i];
 							AddTransactedModelElement(impliedFactType, ModelElementModification.ORMElementChanged);
-							FrameworkDomainModel.DelayValidateElement(model, DelayValidateModel);
+						}
+						if (impliedFactTypeCount == 1)
+						{
+							AddTransactedModelElement(factType, ModelElementModification.ORMElementChanged);
 						}
 					}
 					else
 					{
 						AddTransactedModelElement(factType, ModelElementModification.ORMElementChanged);
-						FrameworkDomainModel.DelayValidateElement(model, DelayValidateModel);
 					}
+					FrameworkDomainModel.DelayValidateElement(model, DelayValidateModel);
 				}
 			}
 			private static void SignificantObjectTypeChange(ObjectType objectType)

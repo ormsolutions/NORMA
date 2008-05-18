@@ -6489,6 +6489,38 @@ namespace Neumont.Tools.ORM.ObjectModel
 			}
 		}
 		#endregion
+		#region ObjectifiedUnaryRole opposite domain role accessor
+		/// <summary>
+		/// Gets or sets ObjectifiedUnaryRole.
+		/// Description for
+		/// Neumont.Tools.ORM.ObjectModel.ObjectifiedUnaryRoleHasRole.TargetRole
+		/// </summary>
+		public virtual ObjectifiedUnaryRole ObjectifiedUnaryRole
+		{
+			[global::System.Diagnostics.DebuggerStepThrough]
+			get
+			{
+				return DslModeling::DomainRoleInfo.GetLinkedElement(this, global::Neumont.Tools.ORM.ObjectModel.ObjectifiedUnaryRoleHasRole.TargetRoleDomainRoleId) as ObjectifiedUnaryRole;
+			}
+			[global::System.Diagnostics.DebuggerStepThrough]
+			set
+			{
+				DslModeling::ModelElement existingSource;
+				if (null != value &&
+					null != (existingSource = DslModeling::DomainRoleInfo.GetLinkedElement(value, global::Neumont.Tools.ORM.ObjectModel.ObjectifiedUnaryRoleHasRole.ObjectifiedUnaryRoleDomainRoleId)))
+				{
+					if (existingSource != value)
+					{
+						DslModeling::DomainRoleInfo.SetLinkedElement(value, global::Neumont.Tools.ORM.ObjectModel.ObjectifiedUnaryRoleHasRole.ObjectifiedUnaryRoleDomainRoleId, this);
+					}
+				}
+				else
+				{
+					DslModeling::DomainRoleInfo.SetLinkedElement(this, global::Neumont.Tools.ORM.ObjectModel.ObjectifiedUnaryRoleHasRole.TargetRoleDomainRoleId, value);
+				}
+			}
+		}
+		#endregion
 		#region ObjectTypeInstanceCollection opposite domain role accessor
 		/// <summary>
 		/// Gets a list of ObjectTypeInstanceCollection.
@@ -6514,6 +6546,77 @@ namespace Neumont.Tools.ORM.ObjectModel
 			get
 			{
 				return new DslModeling::ReadOnlyLinkedElementCollection<Join>(this, global::Neumont.Tools.ORM.ObjectModel.JoinHasRole.RoleDomainRoleId);
+			}
+		}
+		#endregion
+	}
+}
+namespace Neumont.Tools.ORM.ObjectModel
+{
+	/// <summary>
+	/// DomainClass ObjectifiedUnaryRole
+	/// </summary>
+	[DslDesign::DisplayNameResource("Neumont.Tools.ORM.ObjectModel.ObjectifiedUnaryRole.DisplayName", typeof(global::Neumont.Tools.ORM.ObjectModel.ORMCoreDomainModel), "Neumont.Tools.ORM.GeneratedCode.CoreDomainModelResx")]
+	[DslDesign::DescriptionResource("Neumont.Tools.ORM.ObjectModel.ObjectifiedUnaryRole.Description", typeof(global::Neumont.Tools.ORM.ObjectModel.ORMCoreDomainModel), "Neumont.Tools.ORM.GeneratedCode.CoreDomainModelResx")]
+	[global::System.CLSCompliant(true)]
+	[DslModeling::DomainObjectId("ee1efd02-7ad8-42fa-9062-1f499941617f")]
+	public partial class ObjectifiedUnaryRole : Role
+	{
+		#region Constructors, domain class Id
+	
+		/// <summary>
+		/// ObjectifiedUnaryRole domain class Id.
+		/// </summary>
+		public static readonly new global::System.Guid DomainClassId = new global::System.Guid(0xee1efd02, 0x7ad8, 0x42fa, 0x90, 0x62, 0x1f, 0x49, 0x99, 0x41, 0x61, 0x7f);
+		/// <summary>
+		/// Constructor
+		/// </summary>
+		/// <param name="store">Store where new element is to be created.</param>
+		/// <param name="propertyAssignments">List of domain property id/value pairs to set once the element is created.</param>
+		public ObjectifiedUnaryRole(DslModeling::Store store, params DslModeling::PropertyAssignment[] propertyAssignments)
+			: this(store != null ? store.DefaultPartition : null, propertyAssignments)
+		{
+		}
+		
+		/// <summary>
+		/// Constructor
+		/// </summary>
+		/// <param name="partition">Partition where new element is to be created.</param>
+		/// <param name="propertyAssignments">List of domain property id/value pairs to set once the element is created.</param>
+		public ObjectifiedUnaryRole(DslModeling::Partition partition, params DslModeling::PropertyAssignment[] propertyAssignments)
+			: base(partition, propertyAssignments)
+		{
+		}
+		#endregion
+		#region TargetRole opposite domain role accessor
+		/// <summary>
+		/// Gets or sets TargetRole.
+		/// Description for
+		/// Neumont.Tools.ORM.ObjectModel.ObjectifiedUnaryRoleHasRole.ObjectifiedUnaryRole
+		/// </summary>
+		public virtual Role TargetRole
+		{
+			[global::System.Diagnostics.DebuggerStepThrough]
+			get
+			{
+				return DslModeling::DomainRoleInfo.GetLinkedElement(this, global::Neumont.Tools.ORM.ObjectModel.ObjectifiedUnaryRoleHasRole.ObjectifiedUnaryRoleDomainRoleId) as Role;
+			}
+			[global::System.Diagnostics.DebuggerStepThrough]
+			set
+			{
+				DslModeling::ModelElement existingSource;
+				if (null != value &&
+					null != (existingSource = DslModeling::DomainRoleInfo.GetLinkedElement(value, global::Neumont.Tools.ORM.ObjectModel.ObjectifiedUnaryRoleHasRole.TargetRoleDomainRoleId)))
+				{
+					if (existingSource != value)
+					{
+						DslModeling::DomainRoleInfo.SetLinkedElement(value, global::Neumont.Tools.ORM.ObjectModel.ObjectifiedUnaryRoleHasRole.TargetRoleDomainRoleId, this);
+					}
+				}
+				else
+				{
+					DslModeling::DomainRoleInfo.SetLinkedElement(this, global::Neumont.Tools.ORM.ObjectModel.ObjectifiedUnaryRoleHasRole.ObjectifiedUnaryRoleDomainRoleId, value);
+				}
 			}
 		}
 		#endregion

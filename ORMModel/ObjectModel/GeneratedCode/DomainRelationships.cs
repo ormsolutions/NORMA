@@ -26024,6 +26024,266 @@ namespace Neumont.Tools.ORM.ObjectModel
 namespace Neumont.Tools.ORM.ObjectModel
 {
 	/// <summary>
+	/// DomainRelationship ObjectifiedUnaryRoleHasRole
+	/// Links a unary role with the objectified unary role in the implied FactType.
+	/// Implies a single-column equality constraint between the two roles.
+	/// </summary>
+	[DslDesign::DisplayNameResource("Neumont.Tools.ORM.ObjectModel.ObjectifiedUnaryRoleHasRole.DisplayName", typeof(global::Neumont.Tools.ORM.ObjectModel.ORMCoreDomainModel), "Neumont.Tools.ORM.GeneratedCode.CoreDomainModelResx")]
+	[DslDesign::DescriptionResource("Neumont.Tools.ORM.ObjectModel.ObjectifiedUnaryRoleHasRole.Description", typeof(global::Neumont.Tools.ORM.ObjectModel.ORMCoreDomainModel), "Neumont.Tools.ORM.GeneratedCode.CoreDomainModelResx")]
+	[global::System.CLSCompliant(true)]
+	[DslModeling::DomainRelationship()]
+	[DslModeling::DomainObjectId("8455a054-c4bf-4e35-99b0-5054602675f1")]
+	public partial class ObjectifiedUnaryRoleHasRole : DslModeling::ElementLink
+	{
+		#region Constructors, domain class Id
+		
+		/// <summary>
+		/// ObjectifiedUnaryRoleHasRole domain class Id.
+		/// </summary>
+		public static readonly new global::System.Guid DomainClassId = new global::System.Guid(0x8455a054, 0xc4bf, 0x4e35, 0x99, 0xb0, 0x50, 0x54, 0x60, 0x26, 0x75, 0xf1);
+	
+				
+		/// <summary>
+		/// Constructor
+		/// Creates a ObjectifiedUnaryRoleHasRole link in the same Partition as the given ObjectifiedUnaryRole
+		/// </summary>
+		/// <param name="source">ObjectifiedUnaryRole to use as the source of the relationship.</param>
+		/// <param name="target">Role to use as the target of the relationship.</param>
+		public ObjectifiedUnaryRoleHasRole(ObjectifiedUnaryRole source, Role target)
+			: base((source != null ? source.Partition : null), new DslModeling::RoleAssignment[]{new DslModeling::RoleAssignment(ObjectifiedUnaryRoleHasRole.ObjectifiedUnaryRoleDomainRoleId, source), new DslModeling::RoleAssignment(ObjectifiedUnaryRoleHasRole.TargetRoleDomainRoleId, target)}, null)
+		{
+		}
+		
+		/// <summary>
+		/// Constructor
+		/// </summary>
+		/// <param name="store">Store where new link is to be created.</param>
+		/// <param name="roleAssignments">List of relationship role assignments.</param>
+		public ObjectifiedUnaryRoleHasRole(DslModeling::Store store, params DslModeling::RoleAssignment[] roleAssignments)
+			: base(store != null ? store.DefaultPartition : null, roleAssignments, null)
+		{
+		}
+		
+		/// <summary>
+		/// Constructor
+		/// </summary>
+		/// <param name="store">Store where new link is to be created.</param>
+		/// <param name="roleAssignments">List of relationship role assignments.</param>
+		/// <param name="propertyAssignments">List of properties assignments to set on the new link.</param>
+		public ObjectifiedUnaryRoleHasRole(DslModeling::Store store, DslModeling::RoleAssignment[] roleAssignments, DslModeling::PropertyAssignment[] propertyAssignments)
+			: base(store != null ? store.DefaultPartition : null, roleAssignments, propertyAssignments)
+		{
+		}
+		
+		/// <summary>
+		/// Constructor
+		/// </summary>
+		/// <param name="partition">Partition where new link is to be created.</param>
+		/// <param name="roleAssignments">List of relationship role assignments.</param>
+		public ObjectifiedUnaryRoleHasRole(DslModeling::Partition partition, params DslModeling::RoleAssignment[] roleAssignments)
+			: base(partition, roleAssignments, null)
+		{
+		}
+		
+		/// <summary>
+		/// Constructor
+		/// </summary>
+		/// <param name="partition">Partition where new link is to be created.</param>
+		/// <param name="roleAssignments">List of relationship role assignments.</param>
+		/// <param name="propertyAssignments">List of properties assignments to set on the new link.</param>
+		public ObjectifiedUnaryRoleHasRole(DslModeling::Partition partition, DslModeling::RoleAssignment[] roleAssignments, DslModeling::PropertyAssignment[] propertyAssignments)
+			: base(partition, roleAssignments, propertyAssignments)
+		{
+		}
+		#endregion
+		#region ObjectifiedUnaryRole domain role code
+		
+		/// <summary>
+		/// ObjectifiedUnaryRole domain role Id.
+		/// </summary>
+		public static readonly global::System.Guid ObjectifiedUnaryRoleDomainRoleId = new global::System.Guid(0x04095428, 0x688b, 0x44d0, 0x9b, 0xae, 0x84, 0xcb, 0xea, 0x13, 0x42, 0x95);
+		
+		/// <summary>
+		/// DomainRole ObjectifiedUnaryRole
+		/// Description for
+		/// Neumont.Tools.ORM.ObjectModel.ObjectifiedUnaryRoleHasRole.ObjectifiedUnaryRole
+		/// </summary>
+		[DslDesign::DisplayNameResource("Neumont.Tools.ORM.ObjectModel.ObjectifiedUnaryRoleHasRole/ObjectifiedUnaryRole.DisplayName", typeof(global::Neumont.Tools.ORM.ObjectModel.ORMCoreDomainModel), "Neumont.Tools.ORM.GeneratedCode.CoreDomainModelResx")]
+		[DslDesign::DescriptionResource("Neumont.Tools.ORM.ObjectModel.ObjectifiedUnaryRoleHasRole/ObjectifiedUnaryRole.Description", typeof(global::Neumont.Tools.ORM.ObjectModel.ORMCoreDomainModel), "Neumont.Tools.ORM.GeneratedCode.CoreDomainModelResx")]
+		[DslModeling::DomainRole(DslModeling::DomainRoleOrder.Source, PropertyName = "TargetRole", PropertyDisplayNameKey="Neumont.Tools.ORM.ObjectModel.ObjectifiedUnaryRoleHasRole/ObjectifiedUnaryRole.PropertyDisplayName", Multiplicity = DslModeling::Multiplicity.One)]
+		[DslModeling::DomainObjectId("04095428-688b-44d0-9bae-84cbea134295")]
+		public virtual ObjectifiedUnaryRole ObjectifiedUnaryRole
+		{
+			[global::System.Diagnostics.DebuggerStepThrough]
+			get
+			{
+				return (ObjectifiedUnaryRole)DslModeling::DomainRoleInfo.GetRolePlayer(this, ObjectifiedUnaryRoleDomainRoleId);
+			}
+			[global::System.Diagnostics.DebuggerStepThrough]
+			set
+			{
+				DslModeling::DomainRoleInfo.SetRolePlayer(this, ObjectifiedUnaryRoleDomainRoleId, value);
+			}
+		}
+				
+		#endregion
+		#region Static methods to access ObjectifiedUnaryRole of a Role
+		/// <summary>
+		/// Gets ObjectifiedUnaryRole.
+		/// </summary>
+		[global::System.Diagnostics.DebuggerStepThrough]
+		[global::System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Design", "CA1011")]
+		public static ObjectifiedUnaryRole GetObjectifiedUnaryRole(Role element)
+		{
+			return DslModeling::DomainRoleInfo.GetLinkedElement(element, TargetRoleDomainRoleId) as ObjectifiedUnaryRole;
+		}
+		
+		/// <summary>
+		/// Sets ObjectifiedUnaryRole.
+		/// </summary>
+		[global::System.Diagnostics.DebuggerStepThrough]
+		[global::System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Design", "CA1011")]
+		public static void SetObjectifiedUnaryRole(Role element, ObjectifiedUnaryRole newObjectifiedUnaryRole)
+		{
+			DslModeling::DomainRoleInfo.SetLinkedElement(element, TargetRoleDomainRoleId, newObjectifiedUnaryRole);
+		}
+		#endregion
+		#region TargetRole domain role code
+		
+		/// <summary>
+		/// TargetRole domain role Id.
+		/// </summary>
+		public static readonly global::System.Guid TargetRoleDomainRoleId = new global::System.Guid(0x30bbeca0, 0xccb7, 0x4a34, 0x8a, 0xed, 0x82, 0xec, 0x95, 0xcc, 0x11, 0x66);
+		
+		/// <summary>
+		/// DomainRole TargetRole
+		/// Description for
+		/// Neumont.Tools.ORM.ObjectModel.ObjectifiedUnaryRoleHasRole.TargetRole
+		/// </summary>
+		[DslDesign::DisplayNameResource("Neumont.Tools.ORM.ObjectModel.ObjectifiedUnaryRoleHasRole/TargetRole.DisplayName", typeof(global::Neumont.Tools.ORM.ObjectModel.ORMCoreDomainModel), "Neumont.Tools.ORM.GeneratedCode.CoreDomainModelResx")]
+		[DslDesign::DescriptionResource("Neumont.Tools.ORM.ObjectModel.ObjectifiedUnaryRoleHasRole/TargetRole.Description", typeof(global::Neumont.Tools.ORM.ObjectModel.ORMCoreDomainModel), "Neumont.Tools.ORM.GeneratedCode.CoreDomainModelResx")]
+		[DslModeling::DomainRole(DslModeling::DomainRoleOrder.Target, PropertyName = "ObjectifiedUnaryRole", PropertyDisplayNameKey="Neumont.Tools.ORM.ObjectModel.ObjectifiedUnaryRoleHasRole/TargetRole.PropertyDisplayName", Multiplicity = DslModeling::Multiplicity.ZeroOne)]
+		[DslModeling::DomainObjectId("30bbeca0-ccb7-4a34-8aed-82ec95cc1166")]
+		public virtual Role TargetRole
+		{
+			[global::System.Diagnostics.DebuggerStepThrough]
+			get
+			{
+				return (Role)DslModeling::DomainRoleInfo.GetRolePlayer(this, TargetRoleDomainRoleId);
+			}
+			[global::System.Diagnostics.DebuggerStepThrough]
+			set
+			{
+				DslModeling::DomainRoleInfo.SetRolePlayer(this, TargetRoleDomainRoleId, value);
+			}
+		}
+				
+		#endregion
+		#region Static methods to access TargetRole of a ObjectifiedUnaryRole
+		/// <summary>
+		/// Gets TargetRole.
+		/// </summary>
+		[global::System.Diagnostics.DebuggerStepThrough]
+		[global::System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Design", "CA1011")]
+		public static Role GetTargetRole(ObjectifiedUnaryRole element)
+		{
+			return DslModeling::DomainRoleInfo.GetLinkedElement(element, ObjectifiedUnaryRoleDomainRoleId) as Role;
+		}
+		
+		/// <summary>
+		/// Sets TargetRole.
+		/// </summary>
+		[global::System.Diagnostics.DebuggerStepThrough]
+		[global::System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Design", "CA1011")]
+		public static void SetTargetRole(ObjectifiedUnaryRole element, Role newTargetRole)
+		{
+			DslModeling::DomainRoleInfo.SetLinkedElement(element, ObjectifiedUnaryRoleDomainRoleId, newTargetRole);
+		}
+		#endregion
+		#region ObjectifiedUnaryRole link accessor
+		/// <summary>
+		/// Get the ObjectifiedUnaryRoleHasRole link to a ObjectifiedUnaryRole.
+		/// </summary>
+		[global::System.Diagnostics.DebuggerStepThrough]
+		[global::System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Design", "CA1011")]
+		public static global::Neumont.Tools.ORM.ObjectModel.ObjectifiedUnaryRoleHasRole GetLinkToTargetRole (global::Neumont.Tools.ORM.ObjectModel.ObjectifiedUnaryRole objectifiedUnaryRoleInstance)
+		{
+			global::System.Collections.Generic.IList<global::Neumont.Tools.ORM.ObjectModel.ObjectifiedUnaryRoleHasRole> links = DslModeling::DomainRoleInfo.GetElementLinks<global::Neumont.Tools.ORM.ObjectModel.ObjectifiedUnaryRoleHasRole>(objectifiedUnaryRoleInstance, global::Neumont.Tools.ORM.ObjectModel.ObjectifiedUnaryRoleHasRole.ObjectifiedUnaryRoleDomainRoleId);
+			global::System.Diagnostics.Debug.Assert(links.Count <= 1, "Multiplicity of ObjectifiedUnaryRole not obeyed.");
+			if ( links.Count == 0 )
+			{
+				return null;
+			}
+			else
+			{
+				return links[0];
+			}
+		}
+		#endregion
+		#region TargetRole link accessor
+		/// <summary>
+		/// Get the ObjectifiedUnaryRoleHasRole link to a Role.
+		/// </summary>
+		[global::System.Diagnostics.DebuggerStepThrough]
+		[global::System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Design", "CA1011")]
+		public static global::Neumont.Tools.ORM.ObjectModel.ObjectifiedUnaryRoleHasRole GetLinkToObjectifiedUnaryRole (global::Neumont.Tools.ORM.ObjectModel.Role targetRoleInstance)
+		{
+			global::System.Collections.Generic.IList<global::Neumont.Tools.ORM.ObjectModel.ObjectifiedUnaryRoleHasRole> links = DslModeling::DomainRoleInfo.GetElementLinks<global::Neumont.Tools.ORM.ObjectModel.ObjectifiedUnaryRoleHasRole>(targetRoleInstance, global::Neumont.Tools.ORM.ObjectModel.ObjectifiedUnaryRoleHasRole.TargetRoleDomainRoleId);
+			global::System.Diagnostics.Debug.Assert(links.Count <= 1, "Multiplicity of TargetRole not obeyed.");
+			if ( links.Count == 0 )
+			{
+				return null;
+			}
+			else
+			{
+				return links[0];
+			}
+		}
+		#endregion
+		#region ObjectifiedUnaryRoleHasRole instance accessors
+		
+		/// <summary>
+		/// Get any ObjectifiedUnaryRoleHasRole links between a given ObjectifiedUnaryRole and a Role.
+		/// </summary>
+		[global::System.Diagnostics.DebuggerStepThrough]
+		[global::System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Design", "CA1011")]
+		public static global::System.Collections.ObjectModel.ReadOnlyCollection<global::Neumont.Tools.ORM.ObjectModel.ObjectifiedUnaryRoleHasRole> GetLinks( global::Neumont.Tools.ORM.ObjectModel.ObjectifiedUnaryRole source, global::Neumont.Tools.ORM.ObjectModel.Role target )
+		{
+			global::System.Collections.Generic.List<global::Neumont.Tools.ORM.ObjectModel.ObjectifiedUnaryRoleHasRole> outLinks = new global::System.Collections.Generic.List<global::Neumont.Tools.ORM.ObjectModel.ObjectifiedUnaryRoleHasRole>();
+			global::System.Collections.Generic.IList<global::Neumont.Tools.ORM.ObjectModel.ObjectifiedUnaryRoleHasRole> links = DslModeling::DomainRoleInfo.GetElementLinks<global::Neumont.Tools.ORM.ObjectModel.ObjectifiedUnaryRoleHasRole>(source, global::Neumont.Tools.ORM.ObjectModel.ObjectifiedUnaryRoleHasRole.ObjectifiedUnaryRoleDomainRoleId);
+			foreach ( global::Neumont.Tools.ORM.ObjectModel.ObjectifiedUnaryRoleHasRole link in links )
+			{
+				if ( target.Equals(link.TargetRole) )
+				{
+					outLinks.Add(link);
+				}
+			}
+			return outLinks.AsReadOnly();
+		}
+		/// <summary>
+		/// Get the one ObjectifiedUnaryRoleHasRole link between a given ObjectifiedUnaryRoleand a Role.
+		/// </summary>
+		[global::System.Diagnostics.DebuggerStepThrough]
+		[global::System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Design", "CA1011")]
+		public static global::Neumont.Tools.ORM.ObjectModel.ObjectifiedUnaryRoleHasRole GetLink( global::Neumont.Tools.ORM.ObjectModel.ObjectifiedUnaryRole source, global::Neumont.Tools.ORM.ObjectModel.Role target )
+		{
+			global::System.Collections.Generic.IList<global::Neumont.Tools.ORM.ObjectModel.ObjectifiedUnaryRoleHasRole> links = DslModeling::DomainRoleInfo.GetElementLinks<global::Neumont.Tools.ORM.ObjectModel.ObjectifiedUnaryRoleHasRole>(source, global::Neumont.Tools.ORM.ObjectModel.ObjectifiedUnaryRoleHasRole.ObjectifiedUnaryRoleDomainRoleId);
+			foreach ( global::Neumont.Tools.ORM.ObjectModel.ObjectifiedUnaryRoleHasRole link in links )
+			{
+				if ( target.Equals(link.TargetRole) )
+				{
+					return link;
+				}
+			}
+			return null;
+		}
+		
+		#endregion
+	}
+}
+namespace Neumont.Tools.ORM.ObjectModel
+{
+	/// <summary>
 	/// DomainRelationship FactTypeHasDerivationExpression
 	/// Description for Neumont.Tools.ORM.ObjectModel.FactTypeHasDerivationExpression
 	/// </summary>

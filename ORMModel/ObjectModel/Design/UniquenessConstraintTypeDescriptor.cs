@@ -69,27 +69,38 @@ namespace Neumont.Tools.ORM.ObjectModel.Design
 				if (identifierFor != null)
 				{
 					// If this is the preferred identifier for an objectifying type and
-					// is the only alethic internal uniqueness constraint for the fact, then
-					// it will automatically be readded as the preferred identifier if it is
+					// is the only alethic internal uniqueness constraint for the nested FactType,
+					// then it will automatically be readded as the preferred identifier if it is
 					// changed to false. Don't allow it to change.
 					if (uniquenessConstraint.IsInternal &&
 						(null != (factType = identifierFor.NestedFactType)) &&
-						// Note there is only fact with an internal constraint
+						// Note there is only one FactType for an internal constraint
 						(factType == uniquenessConstraint.FactTypeCollection[0]))
 					{
 						UniquenessConstraint candidate = null;
-						foreach (UniquenessConstraint constraint in factType.GetInternalConstraints<UniquenessConstraint>())
+						Role unaryRole;
+						if (null != (unaryRole = factType.UnaryRole))
 						{
-							if (constraint.Modality == ConstraintModality.Alethic)
+							if (null != (unaryRole = unaryRole.ObjectifiedUnaryRole))
 							{
-								if (candidate != null || constraint != uniquenessConstraint)
+								candidate = unaryRole.SingleRoleAlethicUniquenessConstraint;
+							}
+						}
+						else
+						{
+							foreach (UniquenessConstraint constraint in factType.GetInternalConstraints<UniquenessConstraint>())
+							{
+								if (constraint.Modality == ConstraintModality.Alethic)
 								{
-									candidate = null;
-									break;
-								}
-								else
-								{
-									candidate = constraint;
+									if (candidate != null || constraint != uniquenessConstraint)
+									{
+										candidate = null;
+										break;
+									}
+									else
+									{
+										candidate = constraint;
+									}
 								}
 							}
 						}
