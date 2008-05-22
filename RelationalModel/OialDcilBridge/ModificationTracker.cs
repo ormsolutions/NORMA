@@ -257,10 +257,7 @@ namespace Neumont.Tools.ORMAbstractionToConceptualDatabaseBridge
 			{
 				if (e.DomainProperty.Id == ORMCore.FactType.NameChangedDomainPropertyId)
 				{
-					foreach (ConceptTypeChild child in ConceptTypeChildHasPathFactType.GetConceptTypeChild((ORMCore.FactType)e.ModelElement))
-					{
-						ValidateConceptTypeChildNameChanged(child);
-					}
+					FactTypeNamePartChanged((ORMCore.FactType)e.ModelElement);
 				}
 			}
 			/// <summary>
@@ -458,24 +455,30 @@ namespace Neumont.Tools.ORMAbstractionToConceptualDatabaseBridge
 					ORMCore.FactType factType = ((ORMCore.Role)e.ModelElement).FactType;
 					if (null != factType)
 					{
-						ORMCore.Objectification objectification = factType.Objectification;
-						if (null != objectification)
+						FactTypeNamePartChanged(factType);
+					}
+				}
+			}
+			private static void FactTypeNamePartChanged(ORMCore.FactType factType)
+			{
+				bool checkPrimaryFactType = true;
+				ORMCore.Objectification objectification = factType.Objectification;
+				if (null != objectification)
+				{
+					foreach (ORMCore.FactType impliedFactType in objectification.ImpliedFactTypeCollection)
+					{
+						foreach (ConceptTypeChild child in ConceptTypeChildHasPathFactType.GetConceptTypeChild(impliedFactType))
 						{
-							foreach (ORMCore.FactType impliedFactType in objectification.ImpliedFactTypeCollection)
-							{
-								foreach (ConceptTypeChild child in ConceptTypeChildHasPathFactType.GetConceptTypeChild(impliedFactType))
-								{
-									ValidateConceptTypeChildNameChanged(child);
-								}
-							}
+							ValidateConceptTypeChildNameChanged(child);
 						}
-						else
-						{
-							foreach (ConceptTypeChild child in ConceptTypeChildHasPathFactType.GetConceptTypeChild(factType))
-							{
-								ValidateConceptTypeChildNameChanged(child);
-							}
-						}
+					}
+					checkPrimaryFactType = factType.UnaryRole != null;
+				}
+				if (checkPrimaryFactType)
+				{
+					foreach (ConceptTypeChild child in ConceptTypeChildHasPathFactType.GetConceptTypeChild(factType))
+					{
+						ValidateConceptTypeChildNameChanged(child);
 					}
 				}
 			}

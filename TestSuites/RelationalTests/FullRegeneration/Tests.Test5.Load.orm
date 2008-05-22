@@ -315,7 +315,7 @@
 				</orm:InternalConstraints>
 				<orm:ImpliedByObjectification ref="_13CF35FE-22FF-4799-AFC2-4FC840F9FB7A" />
 			</orm:ImpliedFact>
-			<orm:Fact id="_5FFD109D-1E12-4646-8F59-FF57AE770F50" _Name="DeathOccuredOnDeathDate">
+			<orm:Fact id="_5FFD109D-1E12-4646-8F59-FF57AE770F50" _Name="DeathOccurredOnDeathDate">
 				<orm:FactRoles>
 					<orm:Role id="_6B857366-AFA7-4F8A-BCD3-826627DA5BBC" _IsMandatory="false" _Multiplicity="ZeroToMany" Name="">
 						<orm:RolePlayer ref="_03692516-326D-473C-955F-B876B9D5A255" />
@@ -328,7 +328,7 @@
 					<orm:ReadingOrder id="_D2C4A28D-4310-4559-ADB6-829D49010602">
 						<orm:Readings>
 							<orm:Reading id="_A1A2A1B1-984B-476C-B4CB-CD2D8F305DD8">
-								<orm:Data>{0} occured on death- {1}</orm:Data>
+								<orm:Data>{0} occurred on death- {1}</orm:Data>
 							</orm:Reading>
 						</orm:Readings>
 						<orm:RoleSequence>

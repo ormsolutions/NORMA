@@ -1185,7 +1185,7 @@ namespace Neumont.Tools.ORM.ObjectModel
 				string oldGeneratedName = factType.myGeneratedName;
 				bool haveNewName = false;
 				string newGeneratedName = null;
-				bool raiseEvent = true;
+				bool renameValidationErrors = true;
 
 				// See if the nestedType uses the old automatic name. If it does, then
 				// update the automatic name to the the new name.
@@ -1220,7 +1220,7 @@ namespace Neumont.Tools.ORM.ObjectModel
 							// Rule updates for this case are handled in ValidateFactNameForObjectTypeNameChange
 							haveNewName = false;
 							newGeneratedName = null;
-							raiseEvent = false;
+							renameValidationErrors = false;
 						}
 					}
 					else
@@ -1229,7 +1229,7 @@ namespace Neumont.Tools.ORM.ObjectModel
 					}
 				}
 
-				if (raiseEvent && (!haveNewName || newGeneratedName != null))
+				if (renameValidationErrors && (!haveNewName || newGeneratedName != null))
 				{
 					// Now move on to any model errors
 					foreach (ModelError error in (factType as IModelErrorOwner).GetErrorCollection(ModelErrorUses.None))
@@ -1264,10 +1264,7 @@ namespace Neumont.Tools.ORM.ObjectModel
 						GeneratedNamePropertyHandler.ClearGeneratedName(factType, oldGeneratedName);
 					}
 				}
-				if (raiseEvent)
-				{
-					factType.OnFactTypeNameChanged();
-				}
+				factType.OnFactTypeNameChanged();
 			}
 		}
 		partial class GeneratedNamePropertyHandler

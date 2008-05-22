@@ -47,11 +47,11 @@ namespace Neumont.Tools.ORMAbstractionToConceptualDatabaseBridge
 		/// <summary>
 		/// The algorithm version written to the file for the core algorithm
 		/// </summary>
-		public const string CurrentCoreAlgorithmVersion = "1.002";
+		public const string CurrentCoreAlgorithmVersion = "1.003";
 		/// <summary>
 		/// The algorithm version written to the file for the name generation algorithm
 		/// </summary>
-		public const string CurrentNameAlgorithmVersion = "1.005";
+		public const string CurrentNameAlgorithmVersion = "1.006";
 		#endregion // Algorithm Version Constants
 		#region Fully populate from OIAL
 		#region AssimilationPath class
@@ -300,10 +300,10 @@ namespace Neumont.Tools.ORMAbstractionToConceptualDatabaseBridge
 
 			// Make a second pass over the concept types to populate separation columns, constraints, and uniquenesses.
 			// Note that we do this second so that any target columns already exist.
-			Dictionary<ConceptTypeAssimilatesConceptType, object> separatedConceptTypes = null;
+			Dictionary<ConceptTypeAssimilatesConceptType, object> processedAssimilations = null;
 			foreach (ConceptType conceptType in conceptTypes)
 			{
-				DoSeparations(conceptType, ref separatedConceptTypes, notifyAdded);
+				DoSeparations(conceptType, ref processedAssimilations, notifyAdded);
 			}
 
 			// For each table in the schema generate any foreign keys it contains and detemine which of its columns are mandatory and nullable.
@@ -320,27 +320,30 @@ namespace Neumont.Tools.ORMAbstractionToConceptualDatabaseBridge
 		/// <summary>
 		/// Makes a second pass over the concept types to populate separation columns, constraints, and uniquenesses.
 		/// </summary>
-		private static void DoSeparations(ConceptType conceptType, ref Dictionary<ConceptTypeAssimilatesConceptType, object> separatedConceptTypes, INotifyElementAdded notifyAdded)
+		private static void DoSeparations(ConceptType conceptType, ref Dictionary<ConceptTypeAssimilatesConceptType, object> processedAssimilations, INotifyElementAdded notifyAdded)
 		{
 			bool isPreferredForChildFound = false;
-			foreach (ConceptTypeAssimilatesConceptType conceptTypeAssimilation in ConceptTypeAssimilatesConceptType.GetLinksToAssimilatorConceptTypeCollection(conceptType))//GetAssimilationsForConceptType(conceptType))
+			foreach (ConceptTypeAssimilatesConceptType conceptTypeAssimilation in ConceptTypeAssimilatesConceptType.GetLinksToAssimilatorConceptTypeCollection(conceptType))
 			{
-				if (AssimilationMapping.GetAbsorptionChoiceFromAssimilation(conceptTypeAssimilation) == AssimilationAbsorptionChoice.Separate &&
-					(separatedConceptTypes == null || !separatedConceptTypes.ContainsKey(conceptTypeAssimilation)))
+				if (processedAssimilations != null && processedAssimilations.ContainsKey(conceptTypeAssimilation))
 				{
-					// Recursively process the assimilator first, so that any target columns that result from its own separation(s) will be created.
-					DoSeparations(conceptTypeAssimilation.AssimilatorConceptType, ref separatedConceptTypes, notifyAdded);
-
-					Debug.Assert(separatedConceptTypes == null || !separatedConceptTypes.ContainsKey(conceptTypeAssimilation),
+					continue;
+				}
+				// Recursively process the assimilator first, so that any target columns that result from its own separation(s) will be created.
+				// Note that we do this regardless of absorption choice because separations may not be contiguous in the list of assimilations
+				DoSeparations(conceptTypeAssimilation.AssimilatorConceptType, ref processedAssimilations, notifyAdded);
+				if (AssimilationMapping.GetAbsorptionChoiceFromAssimilation(conceptTypeAssimilation) == AssimilationAbsorptionChoice.Separate)
+				{
+					Debug.Assert(processedAssimilations == null || !processedAssimilations.ContainsKey(conceptTypeAssimilation),
 						"Handling separation for assimilator concept types should never cause separation to be handled for the current concept type.");
 
 					DoSeparation(conceptTypeAssimilation, ref isPreferredForChildFound, notifyAdded);
-					if (separatedConceptTypes == null)
-					{
-						separatedConceptTypes = new Dictionary<ConceptTypeAssimilatesConceptType, object>();
-					}
-					separatedConceptTypes.Add(conceptTypeAssimilation, null);
 				}
+				if (processedAssimilations == null)
+				{
+					processedAssimilations = new Dictionary<ConceptTypeAssimilatesConceptType, object>();
+				}
+				processedAssimilations.Add(conceptTypeAssimilation, null);
 			}
 		}
 
@@ -396,23 +399,6 @@ namespace Neumont.Tools.ORMAbstractionToConceptualDatabaseBridge
 				}
 			}
 		}
-
-		/// <summary>
-		/// Gets all ConceptType Assimilates ConceptType retaitions containing a given ConceptType as either the Asimmilator 
-		/// or the Assimilated ConceptType.
-		/// </summary>
-		private static IEnumerable<ConceptTypeAssimilatesConceptType> GetAssimilationsForConceptType(ConceptType conceptType)
-		{
-			foreach (ConceptTypeAssimilatesConceptType assimilated in ConceptTypeAssimilatesConceptType.GetLinksToAssimilatedConceptTypeCollection(conceptType))
-			{
-				yield return assimilated;
-			}
-			foreach (ConceptTypeAssimilatesConceptType assimilator in ConceptTypeAssimilatesConceptType.GetLinksToAssimilatorConceptTypeCollection(conceptType))
-			{
-				yield return assimilator;
-			}
-		}
-
 #if OLDPARTITIONCODE
 		/// <summary> Deprecated Method for Mapping Absorbed Assimilations.
 		/// Maps all Absorbed ConceptTypes
@@ -1695,7 +1681,7 @@ namespace Neumont.Tools.ORMAbstractionToConceptualDatabaseBridge
 
 						}
 						if (lastTarget != null &&
-							lastTarget == assimilation.Target)
+							(lastTarget == assimilation.Target || AssimilationMapping.GetAbsorptionChoiceFromAssimilation(assimilation) != AssimilationAbsorptionChoice.Absorb))
 						{
 							lastTarget = assimilation.Parent;
 							firstPass = false;
@@ -1710,7 +1696,71 @@ namespace Neumont.Tools.ORMAbstractionToConceptualDatabaseBridge
 			}
 			column.IsNullable = !allStepsMandatory;
 		}
+#if FALSE
+		// UNDONE: Holes in ColumnHasConceptTypeChild path. The following routine should be more
+		// robust, but it assumes complete path information, which we are currently not always
+		// generating for absorption cases. See the final compare version of
+		// TestSuites\RelationalTest\FullRegeneration\Test5 for an example of holes in the child path.
+		private static void CheckColumnConstraint(Column column, Table table)
+		{
+			bool allStepsMandatory = true;
+			ConceptType previousConceptType = null;
+			foreach (ConceptTypeChild child in ColumnHasConceptTypeChild.GetConceptTypeChildPath(column))
+			{
+				ConceptTypeAssimilatesConceptType assimilation = child as ConceptTypeAssimilatesConceptType;
+				if (assimilation != null)
+				{
+					if (previousConceptType == null)
+					{
+						// This is the first concept type child in the path. To determine what our starting concept
+						// type is, we need to look at which concept type the table is primarily for. We only need
+						// to do this for assimilations, since for information types and relations the starting
+						// concept type will always be the parent.
 
+						// Don't bother storing column.Table in the table variable, since we'll never use it again.
+						previousConceptType = TableIsPrimarilyForConceptType.GetConceptType(table ?? column.Table);
+						Debug.Assert(previousConceptType != null);
+					}
+
+					if (assimilation.Parent == previousConceptType)
+					{
+						// We are walking this assimilation from parent to target, so we go off the IsMandatory value.
+						if (!child.IsMandatory)
+						{
+							allStepsMandatory = false;
+							break;
+						}
+
+						// The next concept type in the path is the target (assimilated concept type).
+						previousConceptType = assimilation.AssimilatedConceptType;
+					}
+					else
+					{
+						Debug.Assert(assimilation.Target == previousConceptType);
+
+						// We are walking this assimilation from target to parent, so it is always mandatory.
+						// The next concept type in the path is the parent (assimilator concept type).
+						previousConceptType = assimilation.AssimilatorConceptType;
+					}
+				}
+				else
+				{
+					// This is not an assimilation, so we always go off of the IsMandatory value.
+					if (!child.IsMandatory)
+					{
+						allStepsMandatory = false;
+						break;
+					}
+
+					// Get the next concept type in the path (or null if this is an information type and therefore the
+					// end of the path).
+					previousConceptType = child.Target as ConceptType;
+					Debug.Assert((previousConceptType != null) || (child is InformationType));
+				}
+			}
+			column.IsNullable = !allStepsMandatory;
+		}
+#endif // FALSE
 		#endregion // Fully populate from OIAL
 		#region IDeserializationFixupListenerProvider Implementation
 		/// <summary>

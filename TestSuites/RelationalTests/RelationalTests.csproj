@@ -40,9 +40,29 @@
       <HintPath>$(ProgramFiles)\Neumont\ORM Architect for $(TargetVisualStudioLongProductName)\bin\Neumont.Tools.ORM.$(TargetVisualStudioShortProductName).dll</HintPath>
       <Private>False</Private>
     </Reference>
+    <Reference Include="Neumont.Tools.RelationalModels.$(TargetVisualStudioShortProductName), Version=1.0.0.0, Culture=neutral, PublicKeyToken=957d5b7d5e79e25f, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>$(ProgramFiles)\Neumont\ORM Architect for $(TargetVisualStudioLongProductName)\bin\Extensions\Neumont.Tools.RelationalModels.$(TargetVisualStudioShortProductName).dll</HintPath>
+      <Private>False</Private>
+    </Reference>
     <Reference Include="Neumont.Tools.ORM.SDK.TestEngine.$(TargetVisualStudioShortProductName), Version=1.0.0.0, Culture=neutral, PublicKeyToken=957d5b7d5e79e25f, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
       <HintPath>$(ProgramFiles)\Neumont\ORM Architect for $(TargetVisualStudioLongProductName)\bin\Neumont.Tools.ORM.SDK.TestEngine.$(TargetVisualStudioShortProductName).dll</HintPath>
+    </Reference>
+    <Reference Include="Neumont.Tools.ORMAbstraction.$(TargetVisualStudioShortProductName), Version=1.0.0.0, Culture=neutral, PublicKeyToken=957d5b7d5e79e25f, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>$(ProgramFiles)\Neumont\ORM Architect for $(TargetVisualStudioLongProductName)\bin\Extensions\Neumont.Tools.ORMAbstraction.$(TargetVisualStudioShortProductName).dll</HintPath>
+      <Private>False</Private>
+    </Reference>
+    <Reference Include="Neumont.Tools.ORMAbstractionToConceptualDatabaseBridge.$(TargetVisualStudioShortProductName), Version=1.0.0.0, Culture=neutral, PublicKeyToken=957d5b7d5e79e25f, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>$(ProgramFiles)\Neumont\ORM Architect for $(TargetVisualStudioLongProductName)\bin\Extensions\Neumont.Tools.ORMAbstractionToConceptualDatabaseBridge.$(TargetVisualStudioShortProductName).dll</HintPath>
+      <Private>False</Private>
+    </Reference>
+    <Reference Include="Neumont.Tools.ORMToORMAbstractionBridge.$(TargetVisualStudioShortProductName), Version=1.0.0.0, Culture=neutral, PublicKeyToken=957d5b7d5e79e25f, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>$(ProgramFiles)\Neumont\ORM Architect for $(TargetVisualStudioLongProductName)\bin\Extensions\Neumont.Tools.ORMToORMAbstractionBridge.$(TargetVisualStudioShortProductName).dll</HintPath>
+      <Private>False</Private>
     </Reference>
     <Reference Include="nunit.framework, Version=2.4.7.0, Culture=neutral, PublicKeyToken=96d09a1eb7f44a77, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
@@ -61,7 +81,11 @@
     <None Include="..\..\ORMPackage.snk">
       <Link>ORMPackage.snk</Link>
     </None>
-    <EmbeddedResource Include="FullRegeneration\Tests.Test5.Compare.orm">
+    <EmbeddedResource Include="FullRegeneration\Tests.Test5.Compare.FullyAbsorbed.orm" />
+    <EmbeddedResource Include="FullRegeneration\Tests.Test5.Compare.orm" />
+    <EmbeddedResource Include="FullRegeneration\Tests.Test5.Compare.SeparateRemoteSupertype.orm">
+    </EmbeddedResource>
+    <EmbeddedResource Include="FullRegeneration\Tests.Test5.Compare.SeparateObjectification.orm">
     </EmbeddedResource>
     <EmbeddedResource Include="FullRegeneration\Tests.Test5.Load.orm" />
     <EmbeddedResource Include="FullRegeneration\Tests.Test4.Compare.orm">

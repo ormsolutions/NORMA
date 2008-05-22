@@ -731,13 +731,15 @@ namespace Neumont.Tools.ORMAbstractionToConceptualDatabaseBridge
 						{
 							AddToNameCollection(ref singleName, ref nameCollection, newPart, insertIndex.HasValue ? insertIndex.Value : -1);
 						};
-					ObjectType previousObjectType = null;
+					ObjectType previousResolvedSupertype = null;
+					ObjectType previousResolvedObjectType = null;
 					ConceptType primaryConceptType = TableIsPrimarilyForConceptType.GetConceptType(column.Table);
 					if (primaryConceptType != null)
 					{
-						previousObjectType = ConceptTypeIsForObjectType.GetObjectType(primaryConceptType);
+						previousResolvedSupertype = previousResolvedObjectType = ConceptTypeIsForObjectType.GetObjectType(primaryConceptType);
 					}
-					ObjectType previousPreviousObjectType = null;
+					ObjectType previousPreviousResolvedSupertype = null;
+					ObjectType previousPreviousResolvedObjectType = null;
 					bool firstPass = true;
 					bool treatNextIdentifierAsFirstStep = false;
 					bool lastStepConsumedNextNode = false;
@@ -755,13 +757,13 @@ namespace Neumont.Tools.ORMAbstractionToConceptualDatabaseBridge
 								firstPass = true;
 							}
 						}
-						if (0 != (stepFlags & ColumnPathStepFlags.ForwardSubtype))
+						if (0 != (stepFlags & ColumnPathStepFlags.ForwardAssimilation))
 						{
-							ReferenceModeNaming.SeparateObjectTypeParts(step.ObjectType, generator, addPart);
+							ReferenceModeNaming.SeparateObjectTypeParts(step.ResolvedSupertype, generator, addPart);
 							lastStepConsumedNextNode = false;
 							lastStepUsedExplicitRoleName = false;
 						}
-						else if (0 != (stepFlags & ColumnPathStepFlags.ReverseSubtype))
+						else if (0 != (stepFlags & ColumnPathStepFlags.ReverseAssimilation))
 						{
 							// Don't add names for reverse path types
 							lastStepConsumedNextNode = false;
@@ -770,7 +772,7 @@ namespace Neumont.Tools.ORMAbstractionToConceptualDatabaseBridge
 							if (nextLoopNode == null)
 							{
 								// Unusual, but can happen with a ValueType with its own table
-								ReferenceModeNaming.SeparateObjectTypeParts(step.ObjectType, generator, addPart);
+								ReferenceModeNaming.SeparateObjectTypeParts(step.ResolvedSupertype, generator, addPart);
 							}
 						}
 						else
@@ -788,8 +790,8 @@ namespace Neumont.Tools.ORMAbstractionToConceptualDatabaseBridge
 									{
 										ColumnPathStep previousStep = previousNode.Value;
 										ColumnPathStepFlags previousFlags = previousStep.Flags;
-										if (0 == (previousFlags & (ColumnPathStepFlags.RequiresDecoration | ColumnPathStepFlags.ForwardSubtype | ColumnPathStepFlags.ReverseSubtype)) &&
-											previousObjectType.ReferenceModePattern != null)
+										if (0 == (previousFlags & (ColumnPathStepFlags.RequiresDecoration | ColumnPathStepFlags.ForwardAssimilation | ColumnPathStepFlags.ReverseAssimilation)) &&
+											previousResolvedSupertype.ReferenceModePattern != null)
 										{
 											// Special condition when the last node is a simple identifier:
 											// Back up one step to enable picking up the role or hyphen-bound
@@ -797,7 +799,8 @@ namespace Neumont.Tools.ORMAbstractionToConceptualDatabaseBridge
 											stepFlags = previousFlags;
 											step = previousStep;
 											nextNode = currentNode;
-											previousObjectType = previousPreviousObjectType;
+											previousResolvedSupertype = previousPreviousResolvedSupertype;
+											previousResolvedObjectType = previousPreviousResolvedObjectType;
 										}
 									}
 								}
@@ -831,7 +834,7 @@ namespace Neumont.Tools.ORMAbstractionToConceptualDatabaseBridge
 											ColumnPathStep nextStep = nextNode.Value;
 											ColumnPathStepFlags nextFlags = nextStep.Flags;
 											if (0 != (nextFlags & ColumnPathStepFlags.RequiresDecoration) &&
-												0 != (nextFlags & (ColumnPathStepFlags.ForwardSubtype | ColumnPathStepFlags.ReverseSubtype)) &&
+												0 != (nextFlags & (ColumnPathStepFlags.ForwardAssimilation | ColumnPathStepFlags.ReverseAssimilation)) &&
 												step.ObjectType == nextStep.ObjectType)
 											{
 												// Note that this does not interfere with the earlier 'back up one step'
@@ -849,9 +852,9 @@ namespace Neumont.Tools.ORMAbstractionToConceptualDatabaseBridge
 											else
 											{
 												lastStepConsumedNextNode = ReferenceModeNaming.ResolveObjectTypeName(
-													step.ResolvedSupertype,
-													nextNode.Value.ObjectType,
 													step.ObjectType,
+													nextNode.Value.ObjectType,
+													step.ResolvedSupertype,
 													true,
 													ReferenceModeNamingUse.ReferenceToEntityType,
 													generator,
@@ -861,9 +864,9 @@ namespace Neumont.Tools.ORMAbstractionToConceptualDatabaseBridge
 										else
 										{
 											ReferenceModeNaming.ResolveObjectTypeName(
-												(!firstPass || 0 != (stepFlags & ColumnPathStepFlags.IsIdentifier)) ? previousObjectType : null,
+												(!firstPass || 0 != (stepFlags & ColumnPathStepFlags.IsIdentifier)) ? previousResolvedSupertype : null,
 												step.ObjectType,
-												null,
+												previousResolvedObjectType,
 												false,
 												firstPass ? ReferenceModeNamingUse.PrimaryIdentifier : ReferenceModeNamingUse.ReferenceToEntityType, // Ignored if first parameter is null
 												generator,
@@ -916,21 +919,23 @@ namespace Neumont.Tools.ORMAbstractionToConceptualDatabaseBridge
 											ColumnPathStep nextStep = nextNode.Value;
 											ColumnPathStepFlags nextFlags = nextStep.Flags;
 											if (0 != (nextFlags & ColumnPathStepFlags.RequiresDecoration) &&
-												0 != (nextFlags & (ColumnPathStepFlags.ForwardSubtype | ColumnPathStepFlags.ReverseSubtype)) &&
+												0 != (nextFlags & (ColumnPathStepFlags.ForwardAssimilation | ColumnPathStepFlags.ReverseAssimilation)) &&
 												step.ObjectType == nextStep.ObjectType)
 											{
 												// Note that this does not interfere with the earlier 'back up one step'
 												// because the checked flags are different.
 
 												// Advance the loop one step
-												previousPreviousObjectType = previousObjectType;
-												previousObjectType = step.ResolvedSupertype;
+												previousPreviousResolvedSupertype = previousResolvedSupertype;
+												previousPreviousResolvedObjectType = previousResolvedObjectType;
+												previousResolvedSupertype = step.ResolvedSupertype;
+												previousResolvedObjectType = step.ResolvedObjectType;
 												nextLoopNode = nextNode.Next;
 												step = nextStep;
 												lastStepConsumedNextNode = ReferenceModeNaming.ResolveObjectTypeName(
 													nextStep.ResolvedSupertype,
 													(nextLoopNode != null) ? nextLoopNode.Value.ObjectType : null,
-													nextStep.ObjectType,
+													nextStep.ResolvedObjectType,
 													true,
 													ReferenceModeNamingUse.ReferenceToEntityType,
 													generator,
@@ -941,7 +946,7 @@ namespace Neumont.Tools.ORMAbstractionToConceptualDatabaseBridge
 												lastStepConsumedNextNode = ReferenceModeNaming.ResolveObjectTypeName(
 													step.ResolvedSupertype,
 													nextNode.Value.ObjectType,
-													step.ObjectType,
+													step.ResolvedObjectType,
 													true,
 													ReferenceModeNamingUse.ReferenceToEntityType,
 													generator,
@@ -951,9 +956,9 @@ namespace Neumont.Tools.ORMAbstractionToConceptualDatabaseBridge
 									else
 									{
 										ReferenceModeNaming.ResolveObjectTypeName(
-											(!firstPass || 0 != (stepFlags & ColumnPathStepFlags.IsIdentifier)) ? previousObjectType : null,
+											(!firstPass || 0 != (stepFlags & ColumnPathStepFlags.IsIdentifier)) ? previousResolvedObjectType : null,
 											step.ObjectType,
-											null,
+											previousResolvedSupertype,
 											false,
 											firstPass ? ReferenceModeNamingUse.PrimaryIdentifier : ReferenceModeNamingUse.ReferenceToEntityType, // Ignored if first parameter is null
 											generator,
@@ -972,8 +977,10 @@ namespace Neumont.Tools.ORMAbstractionToConceptualDatabaseBridge
 								lastStepUsedExplicitRoleName = false;
 							}
 						}
-						previousPreviousObjectType = previousObjectType;
-						previousObjectType = step.ResolvedSupertype;
+						previousPreviousResolvedSupertype = previousResolvedSupertype;
+						previousPreviousResolvedObjectType = previousResolvedObjectType;
+						previousResolvedSupertype = step.ResolvedSupertype;
+						previousResolvedObjectType = step.ResolvedObjectType;
 						currentNode = nextLoopNode;
 						firstPass = false;
 					} while (currentNode != null);
@@ -1517,13 +1524,13 @@ namespace Neumont.Tools.ORMAbstractionToConceptualDatabaseBridge
 					/// </summary>
 					None = 0,
 					/// <summary>
-					/// A subtype that has not been separated or partitioned
+					/// An assimilation that has not been separated or partitioned
 					/// </summary>
-					ForwardSubtype = 1,
+					ForwardAssimilation = 1,
 					/// <summary>
-					/// A subtype that has been separated or partitioned
+					/// An assimilation that has been separated or partitioned
 					/// </summary>
-					ReverseSubtype = 2,
+					ReverseAssimilation = 2,
 					/// <summary>
 					/// A FactType that is part of an identifier
 					/// </summary>
@@ -1543,19 +1550,27 @@ namespace Neumont.Tools.ORMAbstractionToConceptualDatabaseBridge
 					/// one-to-many objectification.
 					/// </summary>
 					ObjectifiedFactType = 0x20,
+					/// <summary>
+					/// An assimilation corresponds to a subtype relationship
+					/// </summary>
+					AssimilationIsSubtype = 0x40,
+					/// <summary>
+					/// An assimilation step was processed as a FactType
+					/// </summary>
+					DeclinedAssimilation = 0x80,
 				}
 				[DebuggerDisplay("{System.String.Concat(ObjectType.Name, (FromRole != null) ? System.String.Concat(\", \", FromRole.FactType.Name) : \"\", \" Flags=\", Flags.ToString(\"g\"))}")]
 				private struct ColumnPathStep
 				{
 					private ColumnPathStepFlags myFlags;
 					private ObjectType myObjectType;
-					private ObjectType myResolvedSupertype;
+					private ObjectType myAlternateObjectType;
 					private Role myFromRole;
-					public ColumnPathStep(Role fromRole, ObjectType targetObjectType, ObjectType resolvedSupertype, ColumnPathStepFlags flags)
+					public ColumnPathStep(Role fromRole, ObjectType targetObjectType, ObjectType alternateObjectType, ColumnPathStepFlags flags)
 					{
 						myFromRole = fromRole;
 						myObjectType = targetObjectType;
-						myResolvedSupertype = resolvedSupertype;
+						myAlternateObjectType = alternateObjectType;
 						myFlags = flags;
 					}
 					public Role FromRole
@@ -1572,11 +1587,25 @@ namespace Neumont.Tools.ORMAbstractionToConceptualDatabaseBridge
 							return myObjectType;
 						}
 					}
+					public ObjectType ResolvedObjectType
+					{
+						get
+						{
+							return (0 != (myFlags & ColumnPathStepFlags.DeclinedAssimilation) && myAlternateObjectType != null) ? myAlternateObjectType : myObjectType;
+						}
+					}
 					public ObjectType ResolvedSupertype
 					{
 						get
 						{
-							return myResolvedSupertype ?? myObjectType;
+							return (0 == (myFlags & ColumnPathStepFlags.DeclinedAssimilation) && myAlternateObjectType != null) ? myAlternateObjectType : myObjectType;
+						}
+					}
+					public ObjectType AlternateObjectType
+					{
+						get
+						{
+							return myAlternateObjectType ?? myObjectType;
 						}
 					}
 					public ColumnPathStepFlags Flags
@@ -1649,82 +1678,199 @@ namespace Neumont.Tools.ORMAbstractionToConceptualDatabaseBridge
 							ConceptTypeChild child = childPath[iChild];
 							ConceptTypeAssimilatesConceptType assimilation = child as ConceptTypeAssimilatesConceptType;
 							bool reverseAssimilation = assimilation != null && AssimilationMapping.GetAbsorptionChoiceFromAssimilation(assimilation) != AssimilationAbsorptionChoice.Absorb;
+							if (reverseAssimilation && tailNode != null && 0 != (tailNode.Value.Flags & ColumnPathStepFlags.ForwardAssimilation))
+							{
+								// For our purposes, the difference between a forward and reverse assimiliation is the
+								// forward assimilation stores the ObjectType field first and the ResolvedSuperType is
+								// provided by FactType after the assimilation chain, while the reverse assimilation
+								// stores the ResolvedSuperType first, with the starting object provided by the
+								// trailing FactType. However, if we've already started down the forward path, then
+								// we have a reference that has a separation in its identifier chain. Keep going
+								// in the same direction and set the ResolvedSupertType after the chain walk is completed.
+								reverseAssimilation = false;
+								// UNDONE: Do we need a similar flip going from reverse to forward?
+							}
 							LinkedElementCollection<FactType> factTypes = ConceptTypeChildHasPathFactType.GetPathFactTypeCollection(child);
 							int factTypeCount = factTypes.Count;
 							for (int iFactType = 0; iFactType < factTypeCount; ++iFactType)
 							{
 								FactType factType = factTypes[iFactType];
 								Role targetRole = FactTypeMapsTowardsRole.GetTowardsRole(factType).Role;
-								if (assimilation != null && !reverseAssimilation)
-								{
-									targetRole = targetRole.OppositeRoleAlwaysResolveProxy.Role;
-								}
 								ColumnPathStepFlags flags = passedIdentifier ? ColumnPathStepFlags.PassedIdentifier : 0;
 								ColumnPathStep pathStep = default(ColumnPathStep);
 								bool processPreviousTail = false;
 								Objectification previousAssimilationObjectification = assimilationObjectification;
 								assimilationObjectification = null;
-								if (reverseAssimilation)
+								bool processAsFactType = true;
+								if (assimilation != null)
 								{
-									if (tailNode != null && 0 != (tailNode.Value.Flags & ColumnPathStepFlags.ReverseSubtype))
+									Role nonAssimilationTargetRole = targetRole;
+									if (!reverseAssimilation)
 									{
-										continue;
+										targetRole = targetRole.OppositeRoleAlwaysResolveProxy.Role;
 									}
-									flags |= ColumnPathStepFlags.ReverseSubtype;
-									pathStep = new ColumnPathStep(null, targetRole.RolePlayer, null, flags);
-									processPreviousTail = processTailDelayed;
-									processTailDelayed = false;
-								}
-								else if (assimilation != null)
-								{
+									processAsFactType = false;
 									Objectification objectification;
-									if (!assimilation.RefersToSubtype &&
+									bool assimilationIsSubtype = assimilation.RefersToSubtype;
+									if (!assimilationIsSubtype &&
 										null != (objectification = factType.ImpliedByObjectification) &&
 										objectification.NestingType == targetRole.RolePlayer)
 									{
 										assimilationObjectification = objectification;
 									}
-									if (tailNode != null && 0 != (tailNode.Value.Flags & ColumnPathStepFlags.ForwardSubtype))
+									if (reverseAssimilation)
 									{
-										continue;
+										if (tailNode != null)
+										{
+											pathStep = tailNode.Value;
+											ColumnPathStepFlags tailFlags = pathStep.Flags;
+											if (0 != (tailFlags & ColumnPathStepFlags.ReverseAssimilation))
+											{
+												bool tailIsSubtype = 0 != (tailFlags & ColumnPathStepFlags.AssimilationIsSubtype);
+												if (tailIsSubtype && assimilationIsSubtype)
+												{
+													// Keep going, we'll resolve the final ObjectType when we get to a non-assimilation
+													continue;
+												}
+												else if (assimilationObjectification != null)
+												{
+													// The type of assimilation has changed, but we have an objectifying object type,
+													// so we treat it basically like a new link in the chain.
+													tailNode.Value = new ColumnPathStep(pathStep.FromRole, nonAssimilationTargetRole.RolePlayer, pathStep.AlternateObjectType, pathStep.Flags);
+													processPreviousTail = processTailDelayed;
+												}
+												else
+												{
+													flags |= ColumnPathStepFlags.DeclinedAssimilation;
+													targetRole = targetRole.OppositeRoleAlwaysResolveProxy.Role;
+													processAsFactType = true;
+												}
+											}
+											else if (!processTailDelayed && 0 != (tailFlags & ColumnPathStepFlags.DeclinedAssimilation))
+											{
+												tailNode.Value = new ColumnPathStep(pathStep.FromRole, pathStep.ObjectType, targetRole.RolePlayer, pathStep.Flags);
+											}
+										}
+										else if (!assimilationIsSubtype && assimilationObjectification == null)
+										{
+											flags |= ColumnPathStepFlags.DeclinedAssimilation;
+											targetRole = targetRole.OppositeRoleAlwaysResolveProxy.Role;
+											processAsFactType = true;
+										}
+										if (!processAsFactType)
+										{
+											flags |= ColumnPathStepFlags.ReverseAssimilation;
+											if (assimilationIsSubtype)
+											{
+												flags |= ColumnPathStepFlags.AssimilationIsSubtype;
+											}
+											pathStep = new ColumnPathStep(null, targetRole.RolePlayer, (tailNode == null && assimilationIsSubtype) ? ConceptTypeIsForObjectType.GetObjectType(primaryConceptType) : targetRole.RolePlayer, flags);
+											processPreviousTail = processTailDelayed;
+											processTailDelayed = true;
+										}
 									}
-									flags |= ColumnPathStepFlags.ForwardSubtype;
-									pathStep = new ColumnPathStep(null, targetRole.RolePlayer, null, flags);
-									processTailDelayed = true;
+									else
+									{
+										if (tailNode != null)
+										{
+											pathStep = tailNode.Value;
+											ColumnPathStepFlags tailFlags = pathStep.Flags;
+											if (0 != (tailFlags & ColumnPathStepFlags.ForwardAssimilation))
+											{
+												bool tailIsSubtype = 0 != (tailFlags & ColumnPathStepFlags.AssimilationIsSubtype);
+												if (tailIsSubtype && assimilationIsSubtype)
+												{
+													// If this is a subtype chain, then keep going, using the first
+													// subtype in the chain as a node used in the final name.
+													continue;
+												}
+												else if (assimilationObjectification != null)
+												{
+													// The type of assimilation has changed, but we have an objectifying object type,
+													// so we treat it like a separate link in the chain, or the previous element was
+													// also not a subtype.
+													tailNode.Value = new ColumnPathStep(pathStep.FromRole, pathStep.ObjectType, nonAssimilationTargetRole.RolePlayer, pathStep.Flags);
+													processPreviousTail = processTailDelayed;
+												}
+												else
+												{
+													flags |= ColumnPathStepFlags.DeclinedAssimilation;
+													targetRole = nonAssimilationTargetRole;
+													processAsFactType = true;
+												}
+											}
+										}
+										else if (!assimilationIsSubtype && assimilationObjectification == null)
+										{
+											flags |= ColumnPathStepFlags.DeclinedAssimilation;
+											targetRole = nonAssimilationTargetRole;
+											processAsFactType = true;
+										}
+										if (!processAsFactType)
+										{
+											flags |= ColumnPathStepFlags.ForwardAssimilation;
+											if (assimilationIsSubtype)
+											{
+												flags |= ColumnPathStepFlags.AssimilationIsSubtype;
+											}
+											pathStep = new ColumnPathStep(null, targetRole.RolePlayer, null, flags);
+											processTailDelayed = true;
+										}
+									}
 								}
-								else
+								if (processAsFactType)
 								{
 									bool haveStep = false;
-									if (tailNode != null && 0 != (tailNode.Value.Flags & (ColumnPathStepFlags.ForwardSubtype | ColumnPathStepFlags.ReverseSubtype)))
+									if (tailNode != null)
 									{
 										pathStep = tailNode.Value;
-										RoleProxy oppositeProxy;
-										Role objectifiedResolvedProxyRole;
-										Role objectifiedOppositeRole;
-										if (previousAssimilationObjectification != null &&
-											factType.ImpliedByObjectification == previousAssimilationObjectification &&
-											null != (oppositeProxy = targetRole.OppositeRole as RoleProxy) &&
-											null != (objectifiedOppositeRole = (objectifiedResolvedProxyRole = oppositeProxy.Role).OppositeRole as Role))
+										ColumnPathStepFlags tailFlags = pathStep.Flags;
+										if (0 != (tailFlags & (ColumnPathStepFlags.ForwardAssimilation | ColumnPathStepFlags.ReverseAssimilation)))
 										{
-											flags |= ColumnPathStepFlags.ObjectifiedFactType;
-											// Replace both factTypes with the original unobjectified FactType
-											ObjectType fromObjectType = objectifiedOppositeRole.RolePlayer;
-											if (pathStep.ObjectType == previousAssimilationObjectification.NestingType)
+											RoleProxy oppositeProxy;
+											Role objectifiedResolvedProxyRole;
+											Role objectifiedOppositeRole;
+											if (previousAssimilationObjectification != null &&
+												factType.ImpliedByObjectification == previousAssimilationObjectification &&
+												null != (oppositeProxy = targetRole.OppositeRole as RoleProxy) &&
+												null != (objectifiedOppositeRole = (objectifiedResolvedProxyRole = oppositeProxy.Role).OppositeRole as Role))
 											{
-												// Trivial path leading in, remove the subtype completely
-												processTailDelayed = false;
-												tailNode.Value = new ColumnPathStep(objectifiedOppositeRole, objectifiedResolvedProxyRole.RolePlayer, null, flags);
-												ProcessTailNode(tailNode, objectTypeToSteps);
-												continue;
+												flags |= ColumnPathStepFlags.ObjectifiedFactType;
+												// Replace both factTypes with the original unobjectified FactType
+												ObjectType fromObjectType = objectifiedOppositeRole.RolePlayer;
+												if (pathStep.ObjectType == previousAssimilationObjectification.NestingType)
+												{
+													// Trivial path leading in, remove the subtype completely
+													processTailDelayed = false;
+													tailNode.Value = new ColumnPathStep(objectifiedOppositeRole, objectifiedResolvedProxyRole.RolePlayer, null, flags);
+													ProcessTailNode(tailNode, objectTypeToSteps);
+													continue;
+												}
+												if (0 != (tailFlags & ColumnPathStepFlags.ReverseAssimilation))
+												{
+													tailNode.Value = new ColumnPathStep(pathStep.FromRole, fromObjectType, pathStep.AlternateObjectType, pathStep.Flags);
+												}
+												else
+												{
+													tailNode.Value = new ColumnPathStep(pathStep.FromRole, pathStep.ObjectType, fromObjectType, pathStep.Flags);
+												}
+												pathStep = new ColumnPathStep(objectifiedOppositeRole, objectifiedResolvedProxyRole.RolePlayer, null, flags);
+												haveStep = true;
 											}
-											tailNode.Value = new ColumnPathStep(pathStep.FromRole, pathStep.ObjectType, fromObjectType, pathStep.Flags);
-											pathStep = new ColumnPathStep(objectifiedOppositeRole, objectifiedResolvedProxyRole.RolePlayer, null, flags);
-											haveStep = true;
+											else if (0 != (tailFlags & ColumnPathStepFlags.ReverseAssimilation))
+											{
+												tailNode.Value = new ColumnPathStep(pathStep.FromRole, targetRole.RolePlayer, pathStep.AlternateObjectType, pathStep.Flags);
+											}
+											else
+											{
+												// Add a resolved supertype to the forward subtype to
+												// allow later steps to be compared to this one.
+												tailNode.Value = new ColumnPathStep(pathStep.FromRole, pathStep.ObjectType, targetRole.RolePlayer, pathStep.Flags);
+											}
 										}
-										else
+										else if (!processTailDelayed && 0 != (tailFlags & ColumnPathStepFlags.DeclinedAssimilation))
 										{
-											// Add a resolved supertype to the reverse subtype to
-											// allow later steps to be compared to this one.
+											// Add a resolved supertype to the previous step
 											tailNode.Value = new ColumnPathStep(pathStep.FromRole, pathStep.ObjectType, targetRole.RolePlayer, pathStep.Flags);
 										}
 									}

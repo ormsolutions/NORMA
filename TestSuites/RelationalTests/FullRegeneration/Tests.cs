@@ -6,6 +6,7 @@ using Microsoft.VisualStudio.Modeling;
 using NUnit.Framework;
 using NUnitCategory = NUnit.Framework.CategoryAttribute;
 using Neumont.Tools.Modeling.Design;
+using Neumont.Tools.ORMAbstractionToConceptualDatabaseBridge;
 namespace RelationalTests.FullRegeneration
 {
 	/// <summary>
@@ -154,6 +155,48 @@ namespace RelationalTests.FullRegeneration
 		[ORMTest("Relational", "FullRegeneration")]
 		public void Test5(Store store)
 		{
+			myTestServices.Compare(store, (MethodInfo)MethodInfo.GetCurrentMethod(), "FullyAbsorbed");
+
+			myTestServices.LogMessage("Separate a one-to-main objectification");
+			ORMModel model = store.ElementDirectory.FindElements<ORMModel>()[0];
+			ObjectType birthObjectType = (ObjectType)model.ObjectTypesDictionary.GetElement("Birth").FirstElement;
+			FactType factTypeToSeparate = birthObjectType.PreferredIdentifier.RoleCollection[0].Proxy.FactType;
+			MappingCustomizationModel customizationModel;
+			using (Transaction t = store.TransactionManager.BeginTransaction("Separate assimilated objectification"))
+			{
+				customizationModel = new MappingCustomizationModel(store);
+				AssimilationMapping mapping = new AssimilationMapping(store, new PropertyAssignment(AssimilationMapping.AbsorptionChoiceDomainPropertyId, AssimilationAbsorptionChoice.Separate));
+				new AssimilationMappingCustomizesFactType(mapping, factTypeToSeparate);
+				mapping.Model = customizationModel;
+				t.Commit();
+			}
+			myTestServices.Compare(store, (MethodInfo)MethodInfo.GetCurrentMethod(), "SeparateObjectification");
+
+			myTestServices.LogMessage("Add a longer assimilation chain with a separate end point");
+			ObjectType partyObjectType = (ObjectType)model.ObjectTypesDictionary.GetElement("Party").FirstElement;
+			AssimilationMapping partyIsThingAssimilationMapping;
+			using (Transaction t = store.TransactionManager.BeginTransaction("Longer assimilation chain"))
+			{
+				partyObjectType.ReferenceModeString = "";
+				ObjectType thingObjectType = new ObjectType(store, new PropertyAssignment(ObjectType.NameDomainPropertyId, "Thing"), new PropertyAssignment(ObjectType.IsIndependentDomainPropertyId, true));
+				thingObjectType.Model = model;
+				thingObjectType.ReferenceModeString = "id";
+				SubtypeFact partyIsThingSubtypeFact = SubtypeFact.Create(partyObjectType, thingObjectType);
+				partyIsThingAssimilationMapping = new AssimilationMapping(store, new PropertyAssignment(AssimilationMapping.AbsorptionChoiceDomainPropertyId, AssimilationAbsorptionChoice.Separate));
+				new AssimilationMappingCustomizesFactType(partyIsThingAssimilationMapping, partyIsThingSubtypeFact);
+				partyIsThingAssimilationMapping.Model = customizationModel;
+				t.Commit();
+			}
+			// UNDONE: The Birth.thingId field here should be Birth.personId. I don't think there
+			// is a reasonable way to do this without first fixing the holes in the ConceptTypeChild path for the column.
+			myTestServices.Compare(store, (MethodInfo)MethodInfo.GetCurrentMethod(), "SeparateRemoteSupertype");
+
+			myTestServices.LogMessage("Remove the remote separation");
+			using (Transaction t = store.TransactionManager.BeginTransaction(""))
+			{
+				partyIsThingAssimilationMapping.AbsorptionChoice = AssimilationAbsorptionChoice.Absorb;
+				t.Commit();
+			}
 		}
 		#endregion // Relational Load tests
 	}

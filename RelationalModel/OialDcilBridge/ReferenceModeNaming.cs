@@ -1616,6 +1616,7 @@ namespace Neumont.Tools.ORMAbstractionToConceptualDatabaseBridge
 			{
 				ReferenceModeType referenceModeType = referenceMode.ReferenceModeType;
 				ObjectType actualValueType = possibleEntityType.PreferredIdentifier.RoleCollection[0].RolePlayer;
+				ObjectType resolveReferenceModeEntityType = possibleEntityType;
 				if (alternateEntityType != null)
 				{
 					// Use the alternate for all naming purposes
@@ -1631,7 +1632,7 @@ namespace Neumont.Tools.ORMAbstractionToConceptualDatabaseBridge
 					return null;
 				}
 
-				ReferenceModeNamingChoice choice = forceNamingChoice.HasValue ? forceNamingChoice.Value : GetNamingChoiceFromObjectType(possibleEntityType, targetUse);
+				ReferenceModeNamingChoice choice = forceNamingChoice.HasValue ? forceNamingChoice.Value : GetNamingChoiceFromObjectType(resolveReferenceModeEntityType, targetUse);
 				consumedValueType = true;
 				switch (choice)
 				{
