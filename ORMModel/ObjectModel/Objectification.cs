@@ -1475,14 +1475,30 @@ namespace Neumont.Tools.ORM.ObjectModel
 
 					// For each fact type implied by the objectification, reassign the role played by the old object type
 					// to the new object type.
-					foreach (FactType impliedFactType in explicitObjectification.ImpliedFactTypeCollection)
+					Type disabledRolePlayerChangeRuleType = null;
+					try
 					{
-						LinkedElementCollection<RoleBase> roles = impliedFactType.RoleCollection;
-						Debug.Assert(roles.Count == 2);
-						Role role = roles[1] as Role ?? roles[0] as Role;
-						Debug.Assert(role != null && role.RolePlayer == objectType);
+						foreach (FactType impliedFactType in explicitObjectification.ImpliedFactTypeCollection)
+						{
+							LinkedElementCollection<RoleBase> roles = impliedFactType.RoleCollection;
+							Debug.Assert(roles.Count == 2);
+							Role role = roles[1] as Role ?? roles[0] as Role;
+							Debug.Assert(role != null && role.RolePlayer == objectType);
 
-						role.RolePlayer = newObjectifyingType;
+							if (disabledRolePlayerChangeRuleType == null)
+							{
+								disabledRolePlayerChangeRuleType = typeof(RolePlayerRolePlayerChangeRuleClass);
+								explicitObjectification.Store.RuleManager.DisableRule(disabledRolePlayerChangeRuleType);
+							}
+							role.RolePlayer = newObjectifyingType;
+						}
+					}
+					finally
+					{
+						if (disabledRolePlayerChangeRuleType != null)
+						{
+							explicitObjectification.Store.RuleManager.EnableRule(disabledRolePlayerChangeRuleType);
+						}
 					}
 
 					// Reassign the objectification itself to the new object type.
@@ -1733,7 +1749,19 @@ namespace Neumont.Tools.ORM.ObjectModel
 						if (proxy != null &&
 							null != (mismatchedFactType = proxy.FactType))
 						{
-							RemoveFact(mismatchedFactType);
+							UniquenessConstraint pid;
+							LinkedElementCollection<Role> pidRoles;
+							if (null != (pid = nestingType.PreferredIdentifier) &&
+								1 == (pidRoles = pid.RoleCollection).Count &&
+								pidRoles[0] == factRole)
+							{
+								// The preferred identifier points straight to
+								// the unary role via the proxy. We'll hook it
+								// back up to the uniqueness constraint on the
+								// objectified unary role below.
+								nestingType.PreferredIdentifier = null;
+							}
+							RemoveFactType(mismatchedFactType);
 						}
 						nearRole = objectifiedUnaryRole;
 					}
@@ -1742,7 +1770,7 @@ namespace Neumont.Tools.ORM.ObjectModel
 						if (objectifiedUnaryRole != null &&
 							null != (mismatchedFactType = objectifiedUnaryRole.FactType))
 						{
-							RemoveFact(mismatchedFactType);
+							RemoveFactType(mismatchedFactType);
 						}
 						nearRole = proxy;
 					}
@@ -1757,7 +1785,7 @@ namespace Neumont.Tools.ORM.ObjectModel
 						}
 						else if ((unaryRole != null && unaryRole != factRole) || impliedFact.ImpliedByObjectification != element)
 						{
-							RemoveFact(impliedFact);
+							RemoveFactType(impliedFact);
 							impliedFact = null;
 							Debug.Assert(nearRole.IsDeleted); // Goes away with delete propagation on the fact
 							nearRole = null;
@@ -1767,7 +1795,7 @@ namespace Neumont.Tools.ORM.ObjectModel
 							LinkedElementCollection<RoleBase> impliedRoles = impliedFact.RoleCollection;
 							if (impliedRoles.Count != 2)
 							{
-								RemoveFact(impliedFact);
+								RemoveFactType(impliedFact);
 								impliedFact = null;
 								nearRole = null;
 							}
@@ -1780,7 +1808,7 @@ namespace Neumont.Tools.ORM.ObjectModel
 									Debug.Assert(farRole != null);
 									if (farRole == null)
 									{
-										RemoveFact(impliedFact);
+										RemoveFactType(impliedFact);
 										impliedFact = null;
 										nearRole = null;
 									}
@@ -1809,6 +1837,7 @@ namespace Neumont.Tools.ORM.ObjectModel
 							// Create the objectified unary role
 							objectifiedUnaryRole = new ObjectifiedUnaryRole(store);
 							objectifiedUnaryRole.TargetRole = factRole;
+							objectifiedUnaryRole.RolePlayer = factRole.RolePlayer;
 							notifyAdded.ElementAdded(objectifiedUnaryRole, true);
 							nearRole = objectifiedUnaryRole;
 						}
@@ -1833,6 +1862,18 @@ namespace Neumont.Tools.ORM.ObjectModel
 						impliedFact.ImpliedByObjectification = element;
 						impliedFact.Model = model;
 						notifyAdded.ElementAdded(impliedFact, true);
+
+						if (objectifiedUnaryRole != null)
+						{
+							UniquenessConstraint objectifiedUnaryUniqueness = UniquenessConstraint.CreateInternalUniquenessConstraint(impliedFact);
+							objectifiedUnaryUniqueness.RoleCollection.Add(objectifiedUnaryRole);
+							if (nestingType.PreferredIdentifier == null)
+							{
+								nestingType.PreferredIdentifier = objectifiedUnaryUniqueness;
+							}
+							objectifiedUnaryUniqueness.Model = model;
+							notifyAdded.ElementAdded(objectifiedUnaryUniqueness, true);
+						}
 
 						// Add forward reading
 						LinkedElementCollection<ReadingOrder> readingOrders = impliedFact.ReadingOrderCollection;
@@ -1883,7 +1924,7 @@ namespace Neumont.Tools.ORM.ObjectModel
 						LinkedElementCollection<RoleBase> impliedRoles = impliedFact.RoleCollection;
 						if (impliedRoles.Count != 2)
 						{
-							RemoveFact(impliedFact);
+							RemoveFactType(impliedFact);
 							--leftToRemove;
 						}
 						else
@@ -1904,7 +1945,7 @@ namespace Neumont.Tools.ORM.ObjectModel
 								null == (targetRole = (proxy != null ? proxy.Role : objectifiedUnaryRole.TargetRole)) ||
 								nestedFact != targetRole.FactType)
 							{
-								RemoveFact(impliedFact);
+								RemoveFactType(impliedFact);
 								--leftToRemove;
 							}
 						}
@@ -1959,26 +2000,29 @@ namespace Neumont.Tools.ORM.ObjectModel
 			/// are not implicitly constructed until a later phase), so we need to work a little harder
 			/// to remove them.
 			/// </summary>
-			/// <param name="fact">The fact to clear of external constraints</param>
-			private static void RemoveFact(FactType fact)
+			/// <param name="factType">The fact to clear of external constraints</param>
+			private static void RemoveFactType(FactType factType)
 			{
-				LinkedElementCollection<RoleBase> factRoles = fact.RoleCollection;
+				LinkedElementCollection<RoleBase> factRoles = factType.RoleCollection;
 				int roleCount = factRoles.Count;
 				for (int i = 0; i < roleCount; ++i)
 				{
-					Role role = factRoles[i].Role;
-					LinkedElementCollection<ConstraintRoleSequence> sequences = role.ConstraintRoleSequenceCollection;
-					int sequenceCount = sequences.Count;
-					for (int j = sequenceCount - 1; j >= 0; --j)
+					Role role = factRoles[i] as Role;
+					if (role != null)
 					{
-						SetConstraint ic = sequences[j] as SetConstraint;
-						if (ic != null && ic.Constraint.ConstraintIsInternal)
+						LinkedElementCollection<ConstraintRoleSequence> sequences = role.ConstraintRoleSequenceCollection;
+						int sequenceCount = sequences.Count;
+						for (int j = sequenceCount - 1; j >= 0; --j)
 						{
-							ic.Delete();
+							SetConstraint ic = sequences[j] as SetConstraint;
+							if (ic != null && ic.Constraint.ConstraintIsInternal)
+							{
+								ic.Delete();
+							}
 						}
 					}
 				}
-				fact.Delete();
+				factType.Delete();
 			}
 			private static void EnsureSingleColumnUniqueAndMandatory(Store store, ORMModel model, Role role, INotifyElementAdded notifyAdded)
 			{

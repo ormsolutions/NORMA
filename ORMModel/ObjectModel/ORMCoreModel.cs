@@ -226,7 +226,8 @@ namespace Neumont.Tools.ORM.ObjectModel
 				}
 				foreach (ObjectType element in elementDirectory.FindElements<ObjectType>(true))
 				{
-					if (!element.IsImplicitBooleanValue)
+					Objectification objectification;
+					if (!element.IsImplicitBooleanValue && (null == (objectification = element.Objectification) || !objectification.IsImplied))
 					{
 						yield return element;
 					}
@@ -343,7 +344,8 @@ namespace Neumont.Tools.ORM.ObjectModel
 			if (null != (eventNotify = (element.Store as IORMToolServices).NotifySurveyElementChanged))
 			{
 				ObjectType objectType = (ObjectType)element;
-				if (!objectType.IsImplicitBooleanValue)
+				Objectification objectification;
+				if (!objectType.IsImplicitBooleanValue && (null == (objectification = objectType.Objectification) || !objectification.IsImplied))
 				{
 					eventNotify.ElementAdded(objectType, null);
 				}
@@ -516,9 +518,9 @@ namespace Neumont.Tools.ORM.ObjectModel
 			if (null != (eventNotify = (element.Store as IORMToolServices).NotifySurveyElementChanged))
 			{
 				Objectification objectification = (Objectification)element;
+				ObjectType nestingType = objectification.NestingType;
 				if (!objectification.IsImplied)
 				{
-					ObjectType nestingType = objectification.NestingType;
 					FactType nestedFactType = objectification.NestedFactType;
 					if (!nestingType.IsDeleted)
 					{
@@ -528,6 +530,10 @@ namespace Neumont.Tools.ORM.ObjectModel
 					{
 						eventNotify.ElementChanged(nestedFactType, SurveyGlyphQuestionTypes);
 					}
+				}
+				else if (!nestingType.IsDeleted)
+				{
+					eventNotify.ElementAdded(nestingType, null);
 				}
 			}
 		}
@@ -580,7 +586,14 @@ namespace Neumont.Tools.ORM.ObjectModel
 				FactType nestedFactType = objectification.NestedFactType;
 				if (!nestingType.IsDeleted)
 				{
-					eventNotify.ElementChanged(nestingType, SurveyGlyphQuestionTypes);
+					if (objectification.IsImplied)
+					{
+						eventNotify.ElementDeleted(nestingType);
+					}
+					else
+					{
+						eventNotify.ElementAdded(nestingType, null);
+					}
 				}
 				if (!nestedFactType.IsDeleted)
 				{
