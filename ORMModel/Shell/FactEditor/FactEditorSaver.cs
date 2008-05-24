@@ -82,7 +82,7 @@ namespace Neumont.Tools.ORM.Shell
 					ORMDesignerDocView docView = myCurrentDocView;
 					ORMDiagram diagram = (docView != null) ? docView.CurrentDiagram as ORMDiagram : null;
 					LayoutManager layoutManager = (diagram != null) ? new LayoutManager(diagram, (diagram.Store as IORMToolServices).GetLayoutEngine(typeof(ORMRadialLayoutEngine))) : null;
-					List<ModelElement> newlyCreatedElements = null;
+					List<ModelElement> newlyCreatedElementsWithNoShape = null;
 
 					// We've got a model, now lets start a transaction to add our FactType and associated ObjectType elements to the model.
 					using (Transaction t = store.TransactionManager.BeginTransaction(ResourceStrings.InterpretFactEditorLineTransactionName))
@@ -113,7 +113,7 @@ namespace Neumont.Tools.ORM.Shell
 								currentObjectType.Name = objectName;
 								currentObjectType.Model = model;
 								(newlyCreatedObjectTypes ?? (newlyCreatedObjectTypes = new Dictionary<string,ObjectType>())).Add(objectName, currentObjectType);
-								(newlyCreatedElements ?? (newlyCreatedElements = new List<ModelElement>())).Add(currentObjectType);
+								(newlyCreatedElementsWithNoShape ?? (newlyCreatedElementsWithNoShape = new List<ModelElement>())).Add(currentObjectType);
 								string currentRefModeName;
 
 								// If the object DOES NOT already exist AND it's a value type
@@ -149,14 +149,47 @@ namespace Neumont.Tools.ORM.Shell
 								// get a presentation element to work with for determine if the ref mode is expanded or collapsed
 								if (diagram != null)
 								{
-									layoutManager.AddShape(diagram.FindShapeForElement<ObjectTypeShape>(currentObjectType), true);
+									FactType nestedFactType = currentObjectType.NestedFactType;
+									ShapeElement foundShape;
+									if (nestedFactType != null)
+									{
+										foundShape = diagram.FindShapeForElement<FactTypeShape>(nestedFactType);
+										if (foundShape != null)
+										{
+											layoutManager.AddShape(foundShape, true);
+										}
+										else
+										{
+											(newlyCreatedElementsWithNoShape ?? (newlyCreatedElementsWithNoShape = new List<ModelElement>())).Add(nestedFactType);
+										}
+									}
+									else
+									{
+										foundShape = diagram.FindShapeForElement<ObjectTypeShape>(currentObjectType);
+										if (foundShape != null)
+										{
+											layoutManager.AddShape(foundShape, true);
+										}
+										else
+										{
+											(newlyCreatedElementsWithNoShape ?? (newlyCreatedElementsWithNoShape = new List<ModelElement>())).Add(currentObjectType);
+										}
+									}
 									LinkedElementCollection<Role> playedRoles = currentObjectType.PlayedRoleCollection;
 									int playedRoleCount = playedRoles.Count;
 									for (int j = 0; j < playedRoleCount; ++j)
 									{
-										layoutManager.AddShape(diagram.FindShapeForElement<FactTypeShape>(playedRoles[j].FactType), true);
+										FactType factType = playedRoles[j].FactType;
+										foundShape = diagram.FindShapeForElement<FactTypeShape>(factType);
+										if (foundShape != null)
+										{
+											layoutManager.AddShape(foundShape, true);
+										}
+										else
+										{
+											(newlyCreatedElementsWithNoShape ?? (newlyCreatedElementsWithNoShape = new List<ModelElement>())).Add(factType);
+										}
 									}
-									layoutManager.AddShape(diagram.FindShapeForElement<FactTypeShape>(currentObjectType.NestedFactType), true);
 								}
 
 								// convert this object to a entity type if it was a value type and if we are now adding a ref mode
@@ -234,7 +267,7 @@ namespace Neumont.Tools.ORM.Shell
 						if (startingFactType == null)
 						{
 							currentFactType = new FactType(store);
-							(newlyCreatedElements ?? (newlyCreatedElements = new List<ModelElement>())).Add(currentFactType);
+							(newlyCreatedElementsWithNoShape ?? (newlyCreatedElementsWithNoShape = new List<ModelElement>())).Add(currentFactType);
 							currentFactType.Model = model;
 							for (int i = 0; i < newFactArity; ++i)
 							{
@@ -499,9 +532,9 @@ namespace Neumont.Tools.ORM.Shell
 					#region Autolayout
 					// Only perform autlayout if new objects have been created AND there are objects
 					// in the modelElements collection.
-					if (diagram != null && newlyCreatedElements != null && newlyCreatedElements.Count != 0)
+					if (diagram != null && newlyCreatedElementsWithNoShape != null && newlyCreatedElementsWithNoShape.Count != 0)
 					{
-						AutoLayout(store, diagram, layoutManager, newlyCreatedElements);
+						AutoLayout(store, diagram, layoutManager, newlyCreatedElementsWithNoShape);
 					}
 					#endregion // Autolayout
 				}

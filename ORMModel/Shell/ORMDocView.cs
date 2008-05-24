@@ -432,7 +432,7 @@ namespace Neumont.Tools.ORM.Shell
 			if (menuItem != null)
 			{
 				Store store = base.DocData.Store;
-				using (Transaction t = store.TransactionManager.BeginTransaction(menuItem.Name.Replace("&", string.Empty)))
+				using (Transaction t = store.TransactionManager.BeginTransaction(menuItem.Text.Replace("&", string.Empty)))
 				{
 					DomainClassInfo diagramInfo = menuItem.Tag as DomainClassInfo;
 					if (diagramInfo != null)
