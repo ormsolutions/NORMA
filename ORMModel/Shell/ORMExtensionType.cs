@@ -1,6 +1,7 @@
 using System;
 using Microsoft.VisualStudio.Modeling;
 using System.Collections.Generic;
+using Neumont.Tools.Modeling.Shell;
 
 namespace Neumont.Tools.ORM.Shell
 {
@@ -27,6 +28,29 @@ namespace Neumont.Tools.ORM.Shell
 		/// that contribute services but not elements.</param>
 		public ORMExtensionType(string namespaceUri, Type type, bool isSecondary, bool isAutoLoad)
 		{
+			// Verify that if the domain serializes elements, then it serializes this one
+			if (!isAutoLoad)
+			{
+				object[] namespaceAttributes = type.GetCustomAttributes(typeof(CustomSerializedXmlNamespacesAttribute), false);
+				if (namespaceAttributes != null && namespaceAttributes.Length != 0)
+				{
+					bool foundMatch = false;
+					foreach (string testNamespace in (CustomSerializedXmlNamespacesAttribute)namespaceAttributes[0])
+					{
+						if (testNamespace == namespaceUri)
+						{
+							foundMatch = true;
+							break;
+						}
+					}
+					if (!foundMatch)
+					{
+						// Bogus request, return and leave IsValidExtension false
+						this = default(ORMExtensionType);
+						return;
+					}
+				}
+			}
 			this.myNamespaceUri = namespaceUri;
 			this.myType = type;
 			object[] extendsAttributes = type.GetCustomAttributes(typeof(ExtendsDomainModelAttribute), false);
