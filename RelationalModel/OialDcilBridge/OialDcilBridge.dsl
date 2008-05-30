@@ -364,7 +364,7 @@
 		</DomainRelationship>
 		<DomainRelationship Id="5DA169BB-5439-4F61-926F-6B789503511E" Name="UniquenessConstraintIsForUniqueness" Namespace="Neumont.Tools.ORMAbstractionToConceptualDatabaseBridge">
 			<Source>
-				<DomainRole Id="2C58F935-E736-401F-B22F-E38F71AB33E5" Description="" Name="UniquenessConstraint" PropertyName="Uniqueness" Multiplicity="ZeroMany">
+				<DomainRole Id="2C58F935-E736-401F-B22F-E38F71AB33E5" Description="" Name="UniquenessConstraint" PropertyName="Uniqueness" Multiplicity="ZeroOne">
 					<RolePlayer>
 						<DomainClassMoniker Name="/Neumont.Tools.RelationalModels.ConceptualDatabase/UniquenessConstraint"/>
 					</RolePlayer>

@@ -157,10 +157,10 @@
 		<dcl:column name="childPersonBirthOrderNr" isNullable="true" isIdentity="false">
 			<dcl:domainRef name="BirthOrder_Nr" />
 		</dcl:column>
-		<dcl:column name="childPersonFatherMalePersonId" isNullable="true" isIdentity="false">
+		<dcl:column name="childPersonFatherPerson_id" isNullable="true" isIdentity="false">
 			<dcl:predefinedDataType name="INTEGER" />
 		</dcl:column>
-		<dcl:column name="childPersonMotherFemalePersonId" isNullable="true" isIdentity="false">
+		<dcl:column name="childPersonMotherPerson_id" isNullable="true" isIdentity="false">
 			<dcl:predefinedDataType name="INTEGER" />
 		</dcl:column>
 		<dcl:column name="ColorARGB" isNullable="true" isIdentity="false">
@@ -168,6 +168,9 @@
 		</dcl:column>
 		<dcl:column name="hatTypeStyle" isNullable="true" isIdentity="false">
 			<dcl:predefinedDataType name="CHARACTER VARYING" length="256" />
+		</dcl:column>
+		<dcl:column name="isDead" isNullable="true" isIdentity="false">
+			<dcl:predefinedDataType name="BOOLEAN" />
 		</dcl:column>
 		<dcl:column name="hasParents" isNullable="true" isIdentity="false">
 			<dcl:predefinedDataType name="BOOLEAN" />
@@ -178,45 +181,60 @@
 		<dcl:column name="valueType1DoesSomethingElseWith" isNullable="true" isIdentity="false">
 			<dcl:predefinedDataType name="INTEGER" />
 		</dcl:column>
-		<dcl:uniquenessConstraint name="InternalUniquenessConstraint2" isPrimary="true">
+		<dcl:column name="deathDate" isNullable="true" isIdentity="false">
+			<dcl:predefinedDataType name="DATE" />
+		</dcl:column>
+		<dcl:column name="deathCause" isNullable="true" isIdentity="false">
+			<dcl:domainRef name="DeathCause_Type" />
+		</dcl:column>
+		<dcl:column name="deathNaturalDeathIsFromProstateCancer" isNullable="true" isIdentity="false">
+			<dcl:predefinedDataType name="BOOLEAN" />
+		</dcl:column>
+		<dcl:column name="deathUnnaturalDeathIsViolent" isNullable="true" isIdentity="false">
+			<dcl:predefinedDataType name="BOOLEAN" />
+		</dcl:column>
+		<dcl:column name="deathUnnaturalDeathIsBloody" isNullable="true" isIdentity="false">
+			<dcl:predefinedDataType name="BOOLEAN" />
+		</dcl:column>
+		<dcl:uniquenessConstraint name="Person_PK" isPrimary="true">
 			<dcl:columnRef name="personId" />
 		</dcl:uniquenessConstraint>
-		<dcl:uniquenessConstraint name="ExternalUniquenessConstraint1" isPrimary="false">
+		<dcl:uniquenessConstraint name="Person_UC1" isPrimary="false">
 			<dcl:columnRef name="firstName" />
 			<dcl:columnRef name="&quot;date&quot;" />
 		</dcl:uniquenessConstraint>
-		<dcl:uniquenessConstraint name="ExternalUniquenessConstraint2" isPrimary="false">
+		<dcl:uniquenessConstraint name="Person_UC2" isPrimary="false">
 			<dcl:columnRef name="lastName" />
 			<dcl:columnRef name="&quot;date&quot;" />
 		</dcl:uniquenessConstraint>
-		<dcl:uniquenessConstraint name="InternalUniquenessConstraint9" isPrimary="false">
+		<dcl:uniquenessConstraint name="Person_UC3" isPrimary="false">
 			<dcl:columnRef name="optionalUniqueString" />
 		</dcl:uniquenessConstraint>
-		<dcl:uniquenessConstraint name="InternalUniquenessConstraint13" isPrimary="false">
+		<dcl:uniquenessConstraint name="Person_UC4" isPrimary="false">
 			<dcl:columnRef name="wife" />
 		</dcl:uniquenessConstraint>
-		<dcl:uniquenessConstraint name="InternalUniquenessConstraint22" isPrimary="false">
+		<dcl:uniquenessConstraint name="Person_UC5" isPrimary="false">
 			<dcl:columnRef name="ownsCar" />
 		</dcl:uniquenessConstraint>
-		<dcl:uniquenessConstraint name="InternalUniquenessConstraint65" isPrimary="false">
+		<dcl:uniquenessConstraint name="Person_UC6" isPrimary="false">
 			<dcl:columnRef name="optionalUniqueDecimal" />
 		</dcl:uniquenessConstraint>
-		<dcl:uniquenessConstraint name="InternalUniquenessConstraint69" isPrimary="false">
+		<dcl:uniquenessConstraint name="Person_UC7" isPrimary="false">
 			<dcl:columnRef name="mandatoryUniqueDecimal" />
 		</dcl:uniquenessConstraint>
-		<dcl:uniquenessConstraint name="InternalUniquenessConstraint67" isPrimary="false">
+		<dcl:uniquenessConstraint name="Person_UC8" isPrimary="false">
 			<dcl:columnRef name="mandatoryUniqueString" />
 		</dcl:uniquenessConstraint>
-		<dcl:uniquenessConstraint name="InternalUniquenessConstraint86" isPrimary="false">
+		<dcl:uniquenessConstraint name="Person_UC9" isPrimary="false">
 			<dcl:columnRef name="optionalUniqueTinyInt" />
 		</dcl:uniquenessConstraint>
-		<dcl:uniquenessConstraint name="InternalUniquenessConstraint88" isPrimary="false">
+		<dcl:uniquenessConstraint name="Person_UC10" isPrimary="false">
 			<dcl:columnRef name="mandatoryUniqueTinyInt" />
 		</dcl:uniquenessConstraint>
-		<dcl:uniquenessConstraint name="InternalUniquenessConstraint49" isPrimary="false">
-			<dcl:columnRef name="childPersonFatherMalePersonId" />
+		<dcl:uniquenessConstraint name="Person_UC11" isPrimary="false">
+			<dcl:columnRef name="childPersonFatherPerson_id" />
 			<dcl:columnRef name="childPersonBirthOrderNr" />
-			<dcl:columnRef name="childPersonMotherFemalePersonId" />
+			<dcl:columnRef name="childPersonMotherPerson_id" />
 		</dcl:uniquenessConstraint>
 		<dcl:referenceConstraint name="Person_FK1" targetTable="Person">
 			<dcl:columnRef sourceName="wife" targetName="personId" />
@@ -225,10 +243,10 @@
 			<dcl:columnRef sourceName="valueType1DoesSomethingElseWith" targetName="&quot;value&quot;" />
 		</dcl:referenceConstraint>
 		<dcl:referenceConstraint name="Person_FK3" targetTable="Person">
-			<dcl:columnRef sourceName="childPersonFatherMalePersonId" targetName="personId" />
+			<dcl:columnRef sourceName="childPersonFatherPerson_id" targetName="personId" />
 		</dcl:referenceConstraint>
 		<dcl:referenceConstraint name="Person_FK4" targetTable="Person">
-			<dcl:columnRef sourceName="childPersonMotherFemalePersonId" targetName="personId" />
+			<dcl:columnRef sourceName="childPersonMotherPerson_id" targetName="personId" />
 		</dcl:referenceConstraint>
 	</dcl:table>
 	<dcl:table name="Task">
@@ -238,7 +256,7 @@
 		<dcl:column name="personId" isNullable="false" isIdentity="false">
 			<dcl:predefinedDataType name="INTEGER" />
 		</dcl:column>
-		<dcl:uniquenessConstraint name="InternalUniquenessConstraint16" isPrimary="true">
+		<dcl:uniquenessConstraint name="Task_PK" isPrimary="true">
 			<dcl:columnRef name="taskId" />
 		</dcl:uniquenessConstraint>
 		<dcl:referenceConstraint name="Task_FK" targetTable="Person">
@@ -252,40 +270,11 @@
 		<dcl:column name="doesSomethingWithPerson" isNullable="true" isIdentity="false">
 			<dcl:predefinedDataType name="INTEGER" />
 		</dcl:column>
-		<dcl:uniquenessConstraint name="ValueType1Uniqueness" isPrimary="true">
+		<dcl:uniquenessConstraint name="ValueType1_PK" isPrimary="true">
 			<dcl:columnRef name="&quot;value&quot;" />
 		</dcl:uniquenessConstraint>
 		<dcl:referenceConstraint name="ValueType1_FK" targetTable="Person">
 			<dcl:columnRef sourceName="doesSomethingWithPerson" targetName="personId" />
-		</dcl:referenceConstraint>
-	</dcl:table>
-	<dcl:table name="Death">
-		<dcl:column name="personId" isNullable="false" isIdentity="false">
-			<dcl:predefinedDataType name="INTEGER" />
-		</dcl:column>
-		<dcl:column name="deathCause" isNullable="false" isIdentity="false">
-			<dcl:domainRef name="DeathCause_Type" />
-		</dcl:column>
-		<dcl:column name="isDead" isNullable="false" isIdentity="false">
-			<dcl:predefinedDataType name="BOOLEAN" />
-		</dcl:column>
-		<dcl:column name="&quot;date&quot;" isNullable="true" isIdentity="false">
-			<dcl:predefinedDataType name="DATE" />
-		</dcl:column>
-		<dcl:column name="naturalDeathIsFromProstateCancer" isNullable="true" isIdentity="false">
-			<dcl:predefinedDataType name="BOOLEAN" />
-		</dcl:column>
-		<dcl:column name="unnaturalDeathIsViolent" isNullable="true" isIdentity="false">
-			<dcl:predefinedDataType name="BOOLEAN" />
-		</dcl:column>
-		<dcl:column name="unnaturalDeathIsBloody" isNullable="true" isIdentity="false">
-			<dcl:predefinedDataType name="BOOLEAN" />
-		</dcl:column>
-		<dcl:uniquenessConstraint name="&quot;Constraint&quot;" isPrimary="true">
-			<dcl:columnRef name="personId" />
-		</dcl:uniquenessConstraint>
-		<dcl:referenceConstraint name="Death_FK" targetTable="Person">
-			<dcl:columnRef sourceName="personId" targetName="personId" />
 		</dcl:referenceConstraint>
 	</dcl:table>
 	<dcl:table name="PersonDrivesCar">
@@ -295,7 +284,7 @@
 		<dcl:column name="drivenByPerson" isNullable="false" isIdentity="false">
 			<dcl:predefinedDataType name="INTEGER" />
 		</dcl:column>
-		<dcl:uniquenessConstraint name="InternalUniquenessConstraint18" isPrimary="true">
+		<dcl:uniquenessConstraint name="PersonDrivesCar_PK" isPrimary="true">
 			<dcl:columnRef name="drivesCar" />
 			<dcl:columnRef name="drivenByPerson" />
 		</dcl:uniquenessConstraint>
@@ -316,17 +305,17 @@
 		<dcl:column name="saleDate" isNullable="false" isIdentity="false">
 			<dcl:predefinedDataType name="DATE" />
 		</dcl:column>
-		<dcl:uniquenessConstraint name="InternalUniquenessConstraint23" isPrimary="true">
+		<dcl:uniquenessConstraint name="PersonBoughtCarFromPersonDate_PK" isPrimary="true">
 			<dcl:columnRef name="buyer" />
 			<dcl:columnRef name="carSold" />
 			<dcl:columnRef name="seller" />
 		</dcl:uniquenessConstraint>
-		<dcl:uniquenessConstraint name="InternalUniquenessConstraint25" isPrimary="false">
+		<dcl:uniquenessConstraint name="PersonBoughtCarFromPersonDate_UC1" isPrimary="false">
 			<dcl:columnRef name="carSold" />
 			<dcl:columnRef name="saleDate" />
 			<dcl:columnRef name="buyer" />
 		</dcl:uniquenessConstraint>
-		<dcl:uniquenessConstraint name="InternalUniquenessConstraint24" isPrimary="false">
+		<dcl:uniquenessConstraint name="PersonBoughtCarFromPersonDate_UC2" isPrimary="false">
 			<dcl:columnRef name="saleDate" />
 			<dcl:columnRef name="seller" />
 			<dcl:columnRef name="carSold" />
@@ -348,7 +337,7 @@
 		<dcl:column name="nr" isNullable="false" isIdentity="false">
 			<dcl:domainRef name="&quot;Integer&quot;" />
 		</dcl:column>
-		<dcl:uniquenessConstraint name="InternalUniquenessConstraint26" isPrimary="true">
+		<dcl:uniquenessConstraint name="Review_PK" isPrimary="true">
 			<dcl:columnRef name="car" />
 			<dcl:columnRef name="criterion" />
 		</dcl:uniquenessConstraint>
@@ -360,7 +349,7 @@
 		<dcl:column name="personId" isNullable="false" isIdentity="false">
 			<dcl:predefinedDataType name="INTEGER" />
 		</dcl:column>
-		<dcl:uniquenessConstraint name="InternalUniquenessConstraint33" isPrimary="true">
+		<dcl:uniquenessConstraint name="PersonHasNickName_PK" isPrimary="true">
 			<dcl:columnRef name="nickName" />
 			<dcl:columnRef name="personId" />
 		</dcl:uniquenessConstraint>

@@ -1,5 +1,4 @@
-﻿<?xml version="1.0" encoding="utf-8"?>
-<ormRoot:ORM2 xmlns:orm="http://schemas.neumont.edu/ORM/2006-04/ORMCore" xmlns:ormDiagram="http://schemas.neumont.edu/ORM/2006-04/ORMDiagram" xmlns:oial="http://schemas.neumont.edu/ORM/Abstraction/2007-06/Core" xmlns:odt="http://schemas.neumont.edu/ORM/Abstraction/2007-06/DataTypes/Core" xmlns:rcd="http://schemas.neumont.edu/ORM/Relational/2007-06/ConceptualDatabase" xmlns:ddt="http://schemas.orm.net/DIL/DILDT" xmlns:ormtooial="http://schemas.neumont.edu/ORM/Bridge/2007-06/ORMToORMAbstraction" xmlns:oialtocdb="http://schemas.neumont.edu/ORM/Bridge/2007-06/ORMAbstractionToConceptualDatabase" xmlns:ormRoot="http://schemas.neumont.edu/ORM/2006-04/ORMRoot">
+﻿<ormRoot:ORM2 xmlns:orm="http://schemas.neumont.edu/ORM/2006-04/ORMCore" xmlns:ormDiagram="http://schemas.neumont.edu/ORM/2006-04/ORMDiagram" xmlns:oial="http://schemas.neumont.edu/ORM/Abstraction/2007-06/Core" xmlns:odt="http://schemas.neumont.edu/ORM/Abstraction/2007-06/DataTypes/Core" xmlns:rcd="http://schemas.neumont.edu/ORM/Relational/2007-06/ConceptualDatabase" xmlns:ddt="http://schemas.orm.net/DIL/DILDT" xmlns:ormtooial="http://schemas.neumont.edu/ORM/Bridge/2007-06/ORMToORMAbstraction" xmlns:oialtocdb="http://schemas.neumont.edu/ORM/Bridge/2007-06/ORMAbstractionToConceptualDatabase" xmlns:ormRoot="http://schemas.neumont.edu/ORM/2006-04/ORMRoot">
 	<orm:ORMModel id="_3AB1211A-4D44-4326-BB49-EADBBBB1B86B" Name="ORMModel1">
 		<orm:Objects>
 			<orm:EntityType id="_B952E37F-9306-4210-8931-804419B9170A" Name="Person" _ReferenceMode="">
@@ -925,7 +924,7 @@
 			<ormtooial:AbstractionModelGenerationSetting id="_F689860F-F598-413B-B7D2-0DD7D4CACE41" AlgorithmVersion="1.004">
 				<ormtooial:AbstractionModel ref="_B774300C-8F49-43EB-AB62-17534D8DBB42" />
 			</ormtooial:AbstractionModelGenerationSetting>
-			<oialtocdb:SchemaGenerationSetting id="_0F8EAA5B-2586-41D4-9523-EDE35695503A" CoreAlgorithmVersion="1.003" NameAlgorithmVersion="1.006">
+			<oialtocdb:SchemaGenerationSetting id="_0F8EAA5B-2586-41D4-9523-EDE35695503A" NameAlgorithmVersion="1.007" CoreAlgorithmVersion="1.004">
 				<oialtocdb:Schema ref="_EC000843-0D4E-43C1-80E8-527C74F04153" />
 			</oialtocdb:SchemaGenerationSetting>
 		</orm:GenerationSettings>
@@ -1108,7 +1107,7 @@
 							<rcd:Column id="_5F73777E-5DA8-4328-A1E5-39E6B01E9DBC" Name="personId" />
 						</rcd:Columns>
 						<rcd:Constraints>
-							<rcd:UniquenessConstraint id="_29B41BAE-AC73-48D9-B3E0-0D75F95B9E5B" Name="Constraint" IsPrimary="true">
+							<rcd:UniquenessConstraint id="_29B41BAE-AC73-48D9-B3E0-0D75F95B9E5B" IsPrimary="true" Name="Birth_PK">
 								<rcd:Columns>
 									<rcd:Column ref="_5F73777E-5DA8-4328-A1E5-39E6B01E9DBC" />
 								</rcd:Columns>
@@ -1117,28 +1116,28 @@
 								<rcd:TargetTable ref="_145FA7F4-ADD7-4C24-B06A-E315A1CD7162" />
 								<rcd:TargetUniquenessConstraint ref="_27FECBD0-41C6-40F7-8C86-100939DF175A" />
 								<rcd:ColumnReferences>
-									<rcd:ColumnReference TargetColumn="_3A4158A6-182B-48F3-9946-A831FEEA89F2" SourceColumn="_5F73777E-5DA8-4328-A1E5-39E6B01E9DBC" />
+									<rcd:ColumnReference TargetColumn="_3A4158A6-182B-48F3-9946-A831FEEA89F2" SourceColumn="_DA1F5588-CB40-4E55-8446-EDE3902D9326" />
 								</rcd:ColumnReferences>
 							</rcd:ReferenceConstraint>
 							<rcd:ReferenceConstraint id="_476A5F4D-48F2-45CF-A04D-E38806D3CA29" Name="Birth_FK2">
 								<rcd:TargetTable ref="_145FA7F4-ADD7-4C24-B06A-E315A1CD7162" />
 								<rcd:TargetUniquenessConstraint ref="_27FECBD0-41C6-40F7-8C86-100939DF175A" />
 								<rcd:ColumnReferences>
-									<rcd:ColumnReference TargetColumn="_3A4158A6-182B-48F3-9946-A831FEEA89F2" SourceColumn="_DA1F5588-CB40-4E55-8446-EDE3902D9326" />
+									<rcd:ColumnReference TargetColumn="_3A4158A6-182B-48F3-9946-A831FEEA89F2" SourceColumn="_5F73777E-5DA8-4328-A1E5-39E6B01E9DBC" />
 								</rcd:ColumnReferences>
 							</rcd:ReferenceConstraint>
 						</rcd:Constraints>
 					</rcd:Table>
 					<rcd:Table id="_145FA7F4-ADD7-4C24-B06A-E315A1CD7162" Name="Thing">
 						<rcd:Columns>
+							<rcd:Column id="_3A4158A6-182B-48F3-9946-A831FEEA89F2" Name="thingId" />
 							<rcd:Column id="_B3DCEB4D-A692-4C14-AF0C-7604817A64C8" Name="personDied" IsNullable="true" />
 							<rcd:Column id="_F6F2B552-D53D-4225-BAC5-0FA7ACC36019" Name="personDeathDate" IsNullable="true" />
 							<rcd:Column id="_DE2B14C0-B979-46D0-950B-E65773B01B94" Name="partyName" IsNullable="true" />
 							<rcd:Column id="_E8BED280-3324-4EE6-B8E0-0B4AE4D75C35" Name="partyMonikerAccuracyLevel" IsNullable="true" />
-							<rcd:Column id="_3A4158A6-182B-48F3-9946-A831FEEA89F2" Name="thingId" />
 						</rcd:Columns>
 						<rcd:Constraints>
-							<rcd:UniquenessConstraint id="_27FECBD0-41C6-40F7-8C86-100939DF175A" Name="InternalUniquenessConstraint17" IsPrimary="true">
+							<rcd:UniquenessConstraint id="_27FECBD0-41C6-40F7-8C86-100939DF175A" IsPrimary="true" Name="Thing_PK">
 								<rcd:Columns>
 									<rcd:Column ref="_3A4158A6-182B-48F3-9946-A831FEEA89F2" />
 								</rcd:Columns>
@@ -1226,8 +1225,10 @@
 		<oialtocdb:ColumnHasConceptTypeChild id="_71E0F465-C6F4-4F7C-883C-4BF610275EC4" Column="_B3DCEB4D-A692-4C14-AF0C-7604817A64C8" ConceptTypeChild="_2921398C-8F04-482C-89D7-D985A6841A62" />
 		<oialtocdb:ColumnHasConceptTypeChild id="_D0F062E7-E519-4094-B83C-DB040EBAE0AC" Column="_B3DCEB4D-A692-4C14-AF0C-7604817A64C8" ConceptTypeChild="_65535123-FE2D-4B43-9726-FCFB7A092DCE" />
 		<oialtocdb:ColumnHasConceptTypeChild id="_7B6D9EB6-ABDF-4D76-A816-6CFA0C8B3715" Column="_5F73777E-5DA8-4328-A1E5-39E6B01E9DBC" ConceptTypeChild="_D985D644-D88E-4675-B247-D9F0FF4BEE19" />
-		<oialtocdb:ColumnHasConceptTypeChild id="_79142BEA-4B0C-41CB-944C-A4B6033FC507" Column="_5F73777E-5DA8-4328-A1E5-39E6B01E9DBC" ConceptTypeChild="_B8C3D5F8-C86C-4F9A-9B93-72BF41EBD9B1" />
-		<oialtocdb:ColumnHasConceptTypeChild id="_F41F6F8B-1C87-4302-AA39-98A13FC5EF6B" Column="_3A4158A6-182B-48F3-9946-A831FEEA89F2" ConceptTypeChild="_B8C3D5F8-C86C-4F9A-9B93-72BF41EBD9B1" />
+		<oialtocdb:ColumnHasConceptTypeChild id="_79142BEA-4B0C-41CB-944C-A4B6033FC507" Column="_5F73777E-5DA8-4328-A1E5-39E6B01E9DBC" ConceptTypeChild="_2921398C-8F04-482C-89D7-D985A6841A62" />
+		<oialtocdb:ColumnHasConceptTypeChild id="_F41F6F8B-1C87-4302-AA39-98A13FC5EF6B" ConceptTypeChild="_F0BC1F47-ABF4-4D0B-9D3C-45993941B699" Column="_5F73777E-5DA8-4328-A1E5-39E6B01E9DBC" />
+		<oialtocdb:ColumnHasConceptTypeChild Column="_5F73777E-5DA8-4328-A1E5-39E6B01E9DBC" ConceptTypeChild="_B8C3D5F8-C86C-4F9A-9B93-72BF41EBD9B1" id="_2CE5F6C0-1225-4316-9E0B-351DFB6E7EE5" />
+		<oialtocdb:ColumnHasConceptTypeChild Column="_3A4158A6-182B-48F3-9946-A831FEEA89F2" ConceptTypeChild="_B8C3D5F8-C86C-4F9A-9B93-72BF41EBD9B1" id="_76832D4B-6EF2-48B4-970C-9388DAC518BD" />
 		<oialtocdb:TableIsPrimarilyForConceptType id="_3A092B37-E587-4EE9-9ABD-ED04DB86B0DB" Table="_684B7E96-6327-46CB-9C69-837CEDD78BE7" ConceptType="_7DAB0263-6A15-46C6-9E8F-9E79680D2D97" />
 		<oialtocdb:TableIsPrimarilyForConceptType id="_C9700A43-60F9-459F-912F-68AE0CDF0FE0" Table="_145FA7F4-ADD7-4C24-B06A-E315A1CD7162" ConceptType="_9CFDC54B-C42F-4DA8-AD8E-F93656DA5251" />
 		<oialtocdb:TableIsAlsoForConceptType id="_ECE7077F-62C2-4D27-A83C-88ACB114C8A1" Table="_145FA7F4-ADD7-4C24-B06A-E315A1CD7162" ConceptType="_C599AC77-A130-4BE0-B6A9-07C7F94EDDAD" />

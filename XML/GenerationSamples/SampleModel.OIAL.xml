@@ -75,17 +75,18 @@
 			</odt:range>
 		</odt:decimalNumber>
 		<odt:string name="MandatoryUniqueString" maxLength="11" minLength="11" />
-		<odt:boolean name="PersonisDead" />
-		<odt:boolean name="NaturalDeathisFromProstateCancer" />
-		<odt:boolean name="UnnaturalDeathisViolent" />
-		<odt:boolean name="UnnaturalDeathisBloody" />
-		<odt:boolean name="PersonhasParents" />
+		<odt:boolean name="Person isDead" />
+		<odt:boolean name="NaturalDeath isFromProstateCancer" />
+		<odt:boolean name="UnnaturalDeath isViolent" />
+		<odt:boolean name="UnnaturalDeath isBloody" />
+		<odt:boolean name="Person hasParents" />
 		<!--WARNING: We currently don't support the data type 'UnsignedTinyIntegerNumericDataType' that was chosen for value type "OptionalUniqueTinyInt"-->
 		<!--WARNING: We currently don't support the data type 'UnsignedTinyIntegerNumericDataType' that was chosen for value type "MandatoryUniqueTinyInt"-->
 		<!--WARNING: We currently don't support the data type 'UnsignedTinyIntegerNumericDataType' that was chosen for value type "OptionalNonUniqueTinyInt"-->
 		<!--WARNING: We currently don't support the data type 'UnsignedTinyIntegerNumericDataType' that was chosen for value type "MandatoryNonUniqueTinyInt"-->
 		<odt:decimalNumber name="MandatoryNonUniqueUnconstrainedDecimal" />
 		<odt:floatingPointNumber name="MandatoryNonUniqueUnconstrainedFloat" precision="0" />
+		<!--WARNING: We currently don't support the data type '' that was chosen for value type "Death_isinvolvedin{1}"-->
 	</oil:informationTypeFormats>
 	<oil:conceptType name="PersonDrivesCar" sourceRef="_72D0A608-D62A-4A03-9A14-695CE9F67496">
 		<oil:conceptTypeRef name="DrivenByPerson" target="Person" oppositeName="PersonDrivesCar" mandatory="alethic" sourceRoleRef="_5E7AEB81-DCB6-441C-82AD-EADB5354CDFE" />
@@ -134,14 +135,8 @@
 		<oil:informationType name="OwnsCar_vin" formatRef="vin" mandatory="false" sourceRef="_C36502F8-858D-4FB9-B9C2-445EE1EFBD92" sourceRoleRef="_ED495E3B-6C47-4D22-B01C-0E0C805C6664">
 			<oil:singleRoleUniquenessConstraint name="InternalUniquenessConstraint22" sourceRef="_50710E80-100C-47A9-B5D3-B86A8E75B7B9" modality="alethic" isPreferred="false" />
 		</oil:informationType>
-		<oil:conceptType name="Death" sourceRef="_BFB2A8BF-78DB-4EDE-B2ED-24DFF73EAA63" mandatory="false" sourceRoleRef="_CF6F1E78-7D74-4ED9-B3FA-FD7141238AB4">
-			<oil:informationType name="Date_YMD" formatRef="YMD" mandatory="false" sourceRef="_4907AECD-F205-4A81-BD0F-4ACFB1F99682" sourceRoleRef="_0AE5870D-43CB-45E4-B252-5B06DA9A5443" />
-			<oil:informationType name="DeathCause_DeathCause_Type" formatRef="DeathCause_Type" mandatory="alethic" sourceRef="_C0DC452E-A5F4-440D-9474-84D3BD7CBFBF" sourceRoleRef="_90A1343B-5AFD-4EDF-ABF3-868915B25477" />
-			<oil:informationType name="isDead" formatRef="PersonisDead" mandatory="alethic" sourceRef="_F461B35C-B36B-4219-8DF3-2E92A73F424F" sourceRoleRef="_F00C59DE-7777-4625-8CA0-B405D9EB07AF" />
-			<!--WARNING: There once was an external constraint here. There isn't any more. It was of type "MandatoryConstraint", and named "ImpliedMandatoryConstraint2".-->
-		</oil:conceptType>
 		<oil:informationType name="Gender_Gender_Code" formatRef="Gender_Code" mandatory="alethic" sourceRef="_FF723148-C1AB-4835-84CD-996B28BC4027" sourceRoleRef="_94C9DD40-B34A-4BF7-A0B8-CAEA067FF7A0" />
-		<oil:informationType name="hasParents" formatRef="PersonhasParents" mandatory="false" sourceRef="_B3958780-E433-4992-963B-E34C33E62DB7" sourceRoleRef="_65D25484-9FF7-407D-B870-B628A66A5A0F" />
+		<oil:informationType name="hasParents" formatRef="Person hasParents" mandatory="false" sourceRef="_B3958780-E433-4992-963B-E34C33E62DB7" sourceRoleRef="_65D25484-9FF7-407D-B870-B628A66A5A0F" />
 		<oil:conceptTypeRef name="ValueType1DoesSomethingElseWith" target="ValueType1" oppositeName="DoesSomethingElseWithPerson" mandatory="false" sourceRoleRef="_37C4F90B-50F3-4655-9946-C6D796CA4FDB" />
 		<oil:informationType name="OptionalUniqueDecimal" formatRef="OptionalUniqueDecimal" mandatory="false" sourceRef="_2BD0D7D3-0B11-45F9-9D8F-1BA51BB7A138" sourceRoleRef="_42291EC4-DB35-459F-A7F9-A3517D1C709C">
 			<oil:singleRoleUniquenessConstraint name="InternalUniquenessConstraint65" sourceRef="_30FE89A6-1F2E-416E-A6A0-0CC3021BFA4D" modality="alethic" isPreferred="false" />
@@ -209,6 +204,12 @@
 			<oil:singleRoleUniquenessConstraint name="ValueType1Value_Unique" modality="alethic" sourceRef="_D4808010-4C18-442E-A5E4-B69A33A5FA88" isPreferred="true" />
 		</oil:informationType>
 		<oil:conceptTypeRef name="DoesSomethingWithPerson" target="Person" oppositeName="ValueType1DoesSomethingWith" mandatory="false" sourceRoleRef="_92066292-C1C5-4063-9652-E071F922267B" />
+	</oil:conceptType>
+	<oil:conceptType name="Death" sourceRef="_BFB2A8BF-78DB-4EDE-B2ED-24DFF73EAA63">
+		<oil:informationType name="Date_YMD" formatRef="YMD" mandatory="false" sourceRef="_4907AECD-F205-4A81-BD0F-4ACFB1F99682" sourceRoleRef="_0AE5870D-43CB-45E4-B252-5B06DA9A5443" />
+		<oil:informationType name="DeathCause_DeathCause_Type" formatRef="DeathCause_Type" mandatory="alethic" sourceRef="_C0DC452E-A5F4-440D-9474-84D3BD7CBFBF" sourceRoleRef="_90A1343B-5AFD-4EDF-ABF3-868915B25477" />
+		<oil:informationType name="isinvolvedin{1}" formatRef="Death_isinvolvedin{1}" mandatory="alethic" sourceRef="_1A4DAE4E-E690-4C2C-B21B-2C42B2F2CCF8_coref_fact1" sourceRoleRef="_5FEB0E2A-F99E-41AB-B3E1-2296ED431914" />
+		<!--WARNING: There once was an external constraint here. There isn't any more. It was of type "MandatoryConstraint", and named "ImpliedMandatoryConstraint2".-->
 	</oil:conceptType>
 	<oil:conceptType name="PersonBoughtCarFromPersonOnDate" sourceRef="_824C4C8F-678A-49C5-8B98-0D96C4CB59C8">
 		<oil:conceptTypeRef name="Buyer" target="Person" oppositeName="PersonBoughtCarFromPersonOnDate" mandatory="alethic" sourceRoleRef="_AA114F40-EE80-457F-8281-5095743521CD" />

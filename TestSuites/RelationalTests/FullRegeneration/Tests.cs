@@ -187,8 +187,7 @@ namespace RelationalTests.FullRegeneration
 				partyIsThingAssimilationMapping.Model = customizationModel;
 				t.Commit();
 			}
-			// UNDONE: The Birth.thingId field here should be Birth.personId. I don't think there
-			// is a reasonable way to do this without first fixing the holes in the ConceptTypeChild path for the column.
+
 			myTestServices.Compare(store, (MethodInfo)MethodInfo.GetCurrentMethod(), "SeparateRemoteSupertype");
 
 			myTestServices.LogMessage("Remove the remote separation");
@@ -197,6 +196,65 @@ namespace RelationalTests.FullRegeneration
 				partyIsThingAssimilationMapping.AbsorptionChoice = AssimilationAbsorptionChoice.Absorb;
 				t.Commit();
 			}
+		}
+		/// <summary>
+		/// NUnit
+		/// </summary>
+		[Test(Description = "Relational Load")]
+		[NUnitCategory("Relational")]
+		[NUnitCategory("FullRegeneration")]
+		public void Test6()
+		{
+			// Forward the call
+			Suite.RunNUnitTest(this, myTestServices);
+		}
+		/// <summary>
+		/// Test full regeneration of a concept type relation
+		/// to an absorbed subtype with its own identifier.
+		/// </summary>
+		[ORMTest("Relational", "FullRegeneration")]
+		public void Test6(Store store)
+		{
+		}
+		/// <summary>
+		/// NUnit
+		/// </summary>
+		[Test(Description = "Relational Load")]
+		[NUnitCategory("Relational")]
+		[NUnitCategory("FullRegeneration")]
+		public void Test7()
+		{
+			// Forward the call
+			Suite.RunNUnitTest(this, myTestServices);
+		}
+		/// <summary>
+		/// Test full regeneration of a subtyping hierarchy with
+		/// identifiers at multiple levels and concept type
+		/// relations to the concept types at each level.
+		/// </summary>
+		[ORMTest("Relational", "FullRegeneration")]
+		public void Test7(Store store)
+		{
+		}
+		/// <summary>
+		/// NUnit
+		/// </summary>
+		[Test(Description = "Relational Load")]
+		[NUnitCategory("Relational")]
+		[NUnitCategory("FullRegeneration")]
+		public void Test8()
+		{
+			// Forward the call
+			Suite.RunNUnitTest(this, myTestServices);
+		}
+		/// <summary>
+		/// Test full regeneration of a separated concept type
+		/// assimilation that is preferred for the parent
+		/// concept type.
+		/// </summary>
+		[ORMTest("Relational", "FullRegeneration")]
+		public void Test8(Store store)
+		{
 		}
 		#endregion // Relational Load tests
 	}

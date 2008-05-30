@@ -11,7 +11,7 @@ CREATE TABLE PersonCountryDemo.Person
 	firstName NATIONAL CHARACTER VARYING(30) NOT NULL,
 	title NATIONAL CHARACTER VARYING(4) CHECK (title IN (N'Dr', N'Prof', N'Mr', N'Mrs', N'Miss', N'Ms')),
 	countryName NATIONAL CHARACTER VARYING(20),
-	CONSTRAINT InternalUniquenessConstraint1 PRIMARY KEY(personId)
+	CONSTRAINT Person_PK PRIMARY KEY(personId)
 )
 GO
 
@@ -20,7 +20,7 @@ CREATE TABLE PersonCountryDemo.Country
 (
 	countryName NATIONAL CHARACTER VARYING(20) NOT NULL,
 	regionCode NATIONAL CHARACTER(8),
-	CONSTRAINT InternalUniquenessConstraint3 PRIMARY KEY(countryName)
+	CONSTRAINT Country_PK PRIMARY KEY(countryName)
 )
 GO
 

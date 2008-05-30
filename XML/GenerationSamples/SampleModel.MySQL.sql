@@ -18,58 +18,52 @@ CREATE TABLE Person
 	optionalUniqueTinyInt TINYINT UNSIGNED,
 	wife INT,
 	childPersonBirthOrderNr INT,
-	childPersonFatherMalePersonId INT,
-	childPersonMotherFemalePersonId INT,
+	childPersonFatherPerson_id INT,
+	childPersonMotherPerson_id INT,
 	ColorARGB INT,
 	hatTypeStyle VARCHAR(256),
+	isDead BIT(1),
 	hasParents BIT(1),
 	optionalNonUniqueTinyInt TINYINT UNSIGNED,
 	valueType1DoesSomethingElseWith INT,
-	CONSTRAINT InternalUniquenessConstraint2 PRIMARY KEY(personId),
-	CONSTRAINT ExternalUniquenessConstraint1 UNIQUE(firstName, `date`),
-	CONSTRAINT ExternalUniquenessConstraint2 UNIQUE(lastName, `date`),
-	CONSTRAINT InternalUniquenessConstraint9 UNIQUE(optionalUniqueString),
-	CONSTRAINT InternalUniquenessConstraint13 UNIQUE(wife),
-	CONSTRAINT InternalUniquenessConstraint22 UNIQUE(ownsCar),
-	CONSTRAINT InternalUniquenessConstraint65 UNIQUE(optionalUniqueDecimal),
-	CONSTRAINT InternalUniquenessConstraint69 UNIQUE(mandatoryUniqueDecimal),
-	CONSTRAINT InternalUniquenessConstraint67 UNIQUE(mandatoryUniqueString),
-	CONSTRAINT InternalUniquenessConstraint86 UNIQUE(optionalUniqueTinyInt),
-	CONSTRAINT InternalUniquenessConstraint88 UNIQUE(mandatoryUniqueTinyInt),
-	CONSTRAINT InternalUniquenessConstraint49 UNIQUE(childPersonFatherMalePersonId, childPersonBirthOrderNr, childPersonMotherFemalePersonId),
+	deathDate DATE,
+	deathCause VARCHAR(14),
+	deathNaturalDeathIsFromProstateCancer BIT(1),
+	deathUnnaturalDeathIsViolent BIT(1),
+	deathUnnaturalDeathIsBloody BIT(1),
+	CONSTRAINT Person_PK PRIMARY KEY(personId),
+	CONSTRAINT Person_UC1 UNIQUE(firstName, `date`),
+	CONSTRAINT Person_UC2 UNIQUE(lastName, `date`),
+	CONSTRAINT Person_UC3 UNIQUE(optionalUniqueString),
+	CONSTRAINT Person_UC4 UNIQUE(wife),
+	CONSTRAINT Person_UC5 UNIQUE(ownsCar),
+	CONSTRAINT Person_UC6 UNIQUE(optionalUniqueDecimal),
+	CONSTRAINT Person_UC7 UNIQUE(mandatoryUniqueDecimal),
+	CONSTRAINT Person_UC8 UNIQUE(mandatoryUniqueString),
+	CONSTRAINT Person_UC9 UNIQUE(optionalUniqueTinyInt),
+	CONSTRAINT Person_UC10 UNIQUE(mandatoryUniqueTinyInt),
+	CONSTRAINT Person_UC11 UNIQUE(childPersonFatherPerson_id, childPersonBirthOrderNr, childPersonMotherPerson_id),
 );
 
 CREATE TABLE Task
 (
 	taskId INT AUTO_INCREMENT NOT NULL,
 	personId INT NOT NULL,
-	CONSTRAINT InternalUniquenessConstraint16 PRIMARY KEY(taskId)
+	CONSTRAINT Task_PK PRIMARY KEY(taskId)
 );
 
 CREATE TABLE ValueType1
 (
 	`value` INT NOT NULL,
 	doesSomethingWithPerson INT,
-	CONSTRAINT ValueType1Uniqueness PRIMARY KEY(`value`)
-);
-
-CREATE TABLE Death
-(
-	personId INT NOT NULL,
-	deathCause VARCHAR(14) NOT NULL,
-	isDead BIT(1) NOT NULL,
-	`date` DATE,
-	naturalDeathIsFromProstateCancer BIT(1),
-	unnaturalDeathIsViolent BIT(1),
-	unnaturalDeathIsBloody BIT(1),
-	CONSTRAINT `Constraint` PRIMARY KEY(personId)
+	CONSTRAINT ValueType1_PK PRIMARY KEY(`value`)
 );
 
 CREATE TABLE PersonDrivesCar
 (
 	drivesCar INT NOT NULL,
 	drivenByPerson INT NOT NULL,
-	CONSTRAINT InternalUniquenessConstraint18 PRIMARY KEY(drivesCar, drivenByPerson)
+	CONSTRAINT PersonDrivesCar_PK PRIMARY KEY(drivesCar, drivenByPerson)
 );
 
 CREATE TABLE PersonBoughtCarFromPersonDate
@@ -78,9 +72,9 @@ CREATE TABLE PersonBoughtCarFromPersonDate
 	buyer INT NOT NULL,
 	seller INT NOT NULL,
 	saleDate DATE NOT NULL,
-	CONSTRAINT InternalUniquenessConstraint23 PRIMARY KEY(buyer, carSold, seller),
-	CONSTRAINT InternalUniquenessConstraint25 UNIQUE(carSold, saleDate, buyer),
-	CONSTRAINT InternalUniquenessConstraint24 UNIQUE(saleDate, seller, carSold)
+	CONSTRAINT PersonBoughtCarFromPersonDate_PK PRIMARY KEY(buyer, carSold, seller),
+	CONSTRAINT PersonBoughtCarFromPersonDate_UC1 UNIQUE(carSold, saleDate, buyer),
+	CONSTRAINT PersonBoughtCarFromPersonDate_UC2 UNIQUE(saleDate, seller, carSold)
 );
 
 CREATE TABLE Review
@@ -88,29 +82,27 @@ CREATE TABLE Review
 	car INT NOT NULL,
 	criterion VARCHAR(64) NOT NULL,
 	nr INT NOT NULL,
-	CONSTRAINT InternalUniquenessConstraint26 PRIMARY KEY(car, criterion)
+	CONSTRAINT Review_PK PRIMARY KEY(car, criterion)
 );
 
 CREATE TABLE PersonHasNickName
 (
 	nickName VARCHAR(64) NOT NULL,
 	personId INT NOT NULL,
-	CONSTRAINT InternalUniquenessConstraint33 PRIMARY KEY(nickName, personId)
+	CONSTRAINT PersonHasNickName_PK PRIMARY KEY(nickName, personId)
 );
 
 ALTER TABLE Person ADD CONSTRAINT Person_FK1 FOREIGN KEY (wife) REFERENCES Person (personId) ON DELETE RESTRICT ON UPDATE RESTRICT;
 
 ALTER TABLE Person ADD CONSTRAINT Person_FK2 FOREIGN KEY (valueType1DoesSomethingElseWith) REFERENCES ValueType1 (`value`) ON DELETE RESTRICT ON UPDATE RESTRICT;
 
-ALTER TABLE Person ADD CONSTRAINT Person_FK3 FOREIGN KEY (childPersonFatherMalePersonId) REFERENCES Person (personId) ON DELETE RESTRICT ON UPDATE RESTRICT;
+ALTER TABLE Person ADD CONSTRAINT Person_FK3 FOREIGN KEY (childPersonFatherPerson_id) REFERENCES Person (personId) ON DELETE RESTRICT ON UPDATE RESTRICT;
 
-ALTER TABLE Person ADD CONSTRAINT Person_FK4 FOREIGN KEY (childPersonMotherFemalePersonId) REFERENCES Person (personId) ON DELETE RESTRICT ON UPDATE RESTRICT;
+ALTER TABLE Person ADD CONSTRAINT Person_FK4 FOREIGN KEY (childPersonMotherPerson_id) REFERENCES Person (personId) ON DELETE RESTRICT ON UPDATE RESTRICT;
 
 ALTER TABLE Task ADD CONSTRAINT Task_FK FOREIGN KEY (personId) REFERENCES Person (personId) ON DELETE RESTRICT ON UPDATE RESTRICT;
 
 ALTER TABLE ValueType1 ADD CONSTRAINT ValueType1_FK FOREIGN KEY (doesSomethingWithPerson) REFERENCES Person (personId) ON DELETE RESTRICT ON UPDATE RESTRICT;
-
-ALTER TABLE Death ADD CONSTRAINT Death_FK FOREIGN KEY (personId) REFERENCES Person (personId) ON DELETE RESTRICT ON UPDATE RESTRICT;
 
 ALTER TABLE PersonDrivesCar ADD CONSTRAINT PersonDrivesCar_FK FOREIGN KEY (drivenByPerson) REFERENCES Person (personId) ON DELETE RESTRICT ON UPDATE RESTRICT;
 

@@ -712,29 +712,10 @@
 						</plx:callInstance>
 					</plx:callObject>
 					<plx:passParam>
-						<plx:string data="isDead" />
+						<plx:string data="isinvolvedin{1}" />
 					</plx:passParam>
 					<plx:passParam>
-						<plx:string data="isDead" />
-					</plx:passParam>
-				</plx:callInstance>
-				<plx:callInstance name="Add" type="methodCall">
-					<plx:callObject>
-						<plx:callInstance name="Columns" type="property">
-							<plx:callObject>
-								<plx:callInstance name="dgvCreate" type="field">
-									<plx:callObject>
-										<plx:thisKeyword />
-									</plx:callObject>
-								</plx:callInstance>
-							</plx:callObject>
-						</plx:callInstance>
-					</plx:callObject>
-					<plx:passParam>
-						<plx:string data="Person" />
-					</plx:passParam>
-					<plx:passParam>
-						<plx:string data="Person" />
+						<plx:string data="isinvolvedin{1}" />
 					</plx:passParam>
 				</plx:callInstance>
 				<plx:assign>
@@ -1325,29 +1306,10 @@
 						</plx:callInstance>
 					</plx:callObject>
 					<plx:passParam>
-						<plx:string data="isDead" />
+						<plx:string data="isinvolvedin{1}" />
 					</plx:passParam>
 					<plx:passParam>
-						<plx:string data="isDead" />
-					</plx:passParam>
-				</plx:callInstance>
-				<plx:callInstance name="Add" type="methodCall">
-					<plx:callObject>
-						<plx:callInstance name="Columns" type="property">
-							<plx:callObject>
-								<plx:callInstance name="dgvCollection" type="field">
-									<plx:callObject>
-										<plx:thisKeyword />
-									</plx:callObject>
-								</plx:callInstance>
-							</plx:callObject>
-						</plx:callInstance>
-					</plx:callObject>
-					<plx:passParam>
-						<plx:string data="Person" />
-					</plx:passParam>
-					<plx:passParam>
-						<plx:string data="Person" />
+						<plx:string data="isinvolvedin{1}" />
 					</plx:passParam>
 				</plx:callInstance>
 				<plx:assign>
@@ -2477,10 +2439,10 @@
 						</plx:callInstance>
 					</plx:callObject>
 					<plx:passParam>
-						<plx:string data="isDead" />
+						<plx:string data="isinvolvedin{1}" />
 					</plx:passParam>
 					<plx:passParam>
-						<plx:string data="isDead" />
+						<plx:string data="isinvolvedin{1}" />
 					</plx:passParam>
 				</plx:callInstance>
 				<plx:assign>
@@ -2496,49 +2458,7 @@
 										</plx:callInstance>
 									</plx:callObject>
 									<plx:passParam>
-										<plx:string data="isDead" />
-									</plx:passParam>
-								</plx:callInstance>
-							</plx:callObject>
-						</plx:callInstance>
-					</plx:left>
-					<plx:right>
-						<plx:falseKeyword />
-					</plx:right>
-				</plx:assign>
-				<plx:callInstance name="Add" type="methodCall">
-					<plx:callObject>
-						<plx:callInstance name="Columns" type="property">
-							<plx:callObject>
-								<plx:callInstance name="dgvCurrentObject" type="field">
-									<plx:callObject>
-										<plx:thisKeyword />
-									</plx:callObject>
-								</plx:callInstance>
-							</plx:callObject>
-						</plx:callInstance>
-					</plx:callObject>
-					<plx:passParam>
-						<plx:string data="Person" />
-					</plx:passParam>
-					<plx:passParam>
-						<plx:string data="Person" />
-					</plx:passParam>
-				</plx:callInstance>
-				<plx:assign>
-					<plx:left>
-						<plx:callInstance name="Visible" type="property">
-							<plx:callObject>
-								<plx:callInstance name="Columns" type="property">
-									<plx:callObject>
-										<plx:callInstance name="dgvCurrentObject" type="field">
-											<plx:callObject>
-												<plx:thisKeyword />
-											</plx:callObject>
-										</plx:callInstance>
-									</plx:callObject>
-									<plx:passParam>
-										<plx:string data="Person" />
+										<plx:string data="isinvolvedin{1}" />
 									</plx:passParam>
 								</plx:callInstance>
 							</plx:callObject>
@@ -2884,29 +2804,10 @@
 						</plx:callInstance>
 					</plx:callObject>
 					<plx:passParam>
-						<plx:string data="isDead" />
+						<plx:string data="isinvolvedin{1}" />
 					</plx:passParam>
 					<plx:passParam>
-						<plx:string data="isDead" />
-					</plx:passParam>
-				</plx:callInstance>
-				<plx:callInstance name="Add" type="methodCall">
-					<plx:callObject>
-						<plx:callInstance name="Columns" type="property">
-							<plx:callObject>
-								<plx:callInstance name="dgvSelect" type="field">
-									<plx:callObject>
-										<plx:thisKeyword />
-									</plx:callObject>
-								</plx:callInstance>
-							</plx:callObject>
-						</plx:callInstance>
-					</plx:callObject>
-					<plx:passParam>
-						<plx:string data="Person" />
-					</plx:passParam>
-					<plx:passParam>
-						<plx:string data="Person" />
+						<plx:string data="isinvolvedin{1}" />
 					</plx:passParam>
 				</plx:callInstance>
 				<plx:assign>
@@ -7518,25 +7419,6 @@
 						</plx:callInstance>
 					</plx:callObject>
 					<plx:passParam>
-						<plx:string data="Death" />
-					</plx:passParam>
-					<plx:passParam>
-						<plx:string data="Death" />
-					</plx:passParam>
-				</plx:callInstance>
-				<plx:callInstance name="Add" type="methodCall">
-					<plx:callObject>
-						<plx:callInstance name="Columns" type="property">
-							<plx:callObject>
-								<plx:callInstance name="dgvCreate" type="field">
-									<plx:callObject>
-										<plx:thisKeyword />
-									</plx:callObject>
-								</plx:callInstance>
-							</plx:callObject>
-						</plx:callInstance>
-					</plx:callObject>
-					<plx:passParam>
 						<plx:string data="Wife" />
 					</plx:passParam>
 					<plx:passParam>
@@ -8458,25 +8340,6 @@
 					</plx:passParam>
 					<plx:passParam>
 						<plx:string data="ValueType1DoesSomethingElseWith" />
-					</plx:passParam>
-				</plx:callInstance>
-				<plx:callInstance name="Add" type="methodCall">
-					<plx:callObject>
-						<plx:callInstance name="Columns" type="property">
-							<plx:callObject>
-								<plx:callInstance name="dgvCollection" type="field">
-									<plx:callObject>
-										<plx:thisKeyword />
-									</plx:callObject>
-								</plx:callInstance>
-							</plx:callObject>
-						</plx:callInstance>
-					</plx:callObject>
-					<plx:passParam>
-						<plx:string data="Death" />
-					</plx:passParam>
-					<plx:passParam>
-						<plx:string data="Death" />
 					</plx:passParam>
 				</plx:callInstance>
 				<plx:callInstance name="Add" type="methodCall">
@@ -10489,48 +10352,6 @@
 						</plx:callInstance>
 					</plx:callObject>
 					<plx:passParam>
-						<plx:string data="Death" />
-					</plx:passParam>
-					<plx:passParam>
-						<plx:string data="Death" />
-					</plx:passParam>
-				</plx:callInstance>
-				<plx:assign>
-					<plx:left>
-						<plx:callInstance name="Visible" type="property">
-							<plx:callObject>
-								<plx:callInstance name="Columns" type="property">
-									<plx:callObject>
-										<plx:callInstance name="dgvCurrentObject" type="field">
-											<plx:callObject>
-												<plx:thisKeyword />
-											</plx:callObject>
-										</plx:callInstance>
-									</plx:callObject>
-									<plx:passParam>
-										<plx:string data="Death" />
-									</plx:passParam>
-								</plx:callInstance>
-							</plx:callObject>
-						</plx:callInstance>
-					</plx:left>
-					<plx:right>
-						<plx:falseKeyword />
-					</plx:right>
-				</plx:assign>
-				<plx:callInstance name="Add" type="methodCall">
-					<plx:callObject>
-						<plx:callInstance name="Columns" type="property">
-							<plx:callObject>
-								<plx:callInstance name="dgvCurrentObject" type="field">
-									<plx:callObject>
-										<plx:thisKeyword />
-									</plx:callObject>
-								</plx:callInstance>
-							</plx:callObject>
-						</plx:callInstance>
-					</plx:callObject>
-					<plx:passParam>
 						<plx:string data="Wife" />
 					</plx:passParam>
 					<plx:passParam>
@@ -11223,25 +11044,6 @@
 					</plx:passParam>
 					<plx:passParam>
 						<plx:string data="ValueType1DoesSomethingElseWith" />
-					</plx:passParam>
-				</plx:callInstance>
-				<plx:callInstance name="Add" type="methodCall">
-					<plx:callObject>
-						<plx:callInstance name="Columns" type="property">
-							<plx:callObject>
-								<plx:callInstance name="dgvSelect" type="field">
-									<plx:callObject>
-										<plx:thisKeyword />
-									</plx:callObject>
-								</plx:callInstance>
-							</plx:callObject>
-						</plx:callInstance>
-					</plx:callObject>
-					<plx:passParam>
-						<plx:string data="Death" />
-					</plx:passParam>
-					<plx:passParam>
-						<plx:string data="Death" />
 					</plx:passParam>
 				</plx:callInstance>
 				<plx:callInstance name="Add" type="methodCall">

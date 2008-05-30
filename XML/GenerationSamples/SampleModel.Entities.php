@@ -71,7 +71,6 @@ class PersonBase extends Entity {
 	private $HatType_HatTypeStyle_HatTypeStyle_Description;
 	private $Wife_Husband_Person_Proxy;
 	private $OwnsCar_vin;
-	private $Death;
 	private $Gender_Gender_Code;
 	private $hasParents;
 	private $DoesSomethingElseWithPerson_ValueType1DoesSomethingElseWith_ValueType1_Proxy;
@@ -118,15 +117,6 @@ class PersonBase extends Entity {
 		$this->validationRules->addValidationRule(new RequiredFieldValidator("MandatoryNonUniqueTinyInt"));
 		$this->validationRules->addValidationRule(new RequiredFieldValidator("MandatoryNonUniqueUnconstrainedDecimal"));
 		$this->validationRules->addValidationRule(new RequiredFieldValidator("MandatoryNonUniqueUnconstrainedFloat"));
-	}
-	public function getDeath() {
-		return $this->Death;
-	}
-	public function setDeath(Death $value) {
-		if ($this->Death !== $value) {
-			$this->Death = $value;
-			$value->setPerson($this);
-		}
 	}
 	public function getFirstName() {
 		return $this->FirstName;
@@ -262,55 +252,6 @@ if (!class_exists('Person')) {
 		}
 	}
 }
-class DeathBase extends Entity {
-	private $Date_YMD;
-	private $DeathCause_DeathCause_Type;
-	private $isDead;
-	private $Person;
-	public function __construct() {
-		parent::__construct();
-	}
-	public function addValidationRules() {
-		$this->validationRules->addValidationRule(new RequiredFieldValidator("Date_YMD"));
-		$this->validationRules->addValidationRule(new RequiredFieldValidator("DeathCause_DeathCause_Type"));
-		$this->validationRules->addValidationRule(new StringLenthValidator("DeathCause_Type", null, 14));
-		$this->validationRules->addValidationRule(new RequiredFieldValidator("isDead"));
-	}
-	public function getPerson() {
-		return $this->Person;
-	}
-	public function setPerson(Person $value) {
-		if ($this->Person !== $value) {
-			$this->Person = $value;
-			$value->setDeath($this);
-		}
-	}
-	public function getDate_YMD() {
-		return $this->Date_YMD;
-	}
-	public function setDate_YMD(/*int*/ $value) {
-		$this->Date_YMD = $value;
-	}
-	public function getDeathCause_DeathCause_Type() {
-		return $this->DeathCause_DeathCause_Type;
-	}
-	public function setDeathCause_DeathCause_Type(/*string*/ $value) {
-		$this->DeathCause_DeathCause_Type = $value;
-	}
-	public function getisDead() {
-		return $this->isDead;
-	}
-	public function setisDead(/*bool*/ $value) {
-		$this->isDead = $value;
-	}
-}
-if (!class_exists('Death')) {
-	class Death extends DeathBase {
-		public function __construct() {
-			parent::__construct();
-		}
-	}
-}
 class TaskBase extends Entity {
 	private $Task_Person_Person_Proxy;
 	private $Task_id;
@@ -367,6 +308,45 @@ class ValueType1Base extends Entity {
 }
 if (!class_exists('ValueType1')) {
 	class ValueType1 extends ValueType1Base {
+		public function __construct() {
+			parent::__construct();
+		}
+	}
+}
+class DeathBase extends Entity {
+	private $Date_YMD;
+	private $DeathCause_DeathCause_Type;
+	private $isinvolvedin{1};
+	public function __construct() {
+		parent::__construct();
+	}
+	public function addValidationRules() {
+		$this->validationRules->addValidationRule(new RequiredFieldValidator("Date_YMD"));
+		$this->validationRules->addValidationRule(new RequiredFieldValidator("DeathCause_DeathCause_Type"));
+		$this->validationRules->addValidationRule(new StringLenthValidator("DeathCause_Type", null, 14));
+		$this->validationRules->addValidationRule(new RequiredFieldValidator("isinvolvedin{1}"));
+	}
+	public function getDate_YMD() {
+		return $this->Date_YMD;
+	}
+	public function setDate_YMD(/*int*/ $value) {
+		$this->Date_YMD = $value;
+	}
+	public function getDeathCause_DeathCause_Type() {
+		return $this->DeathCause_DeathCause_Type;
+	}
+	public function setDeathCause_DeathCause_Type(/*string*/ $value) {
+		$this->DeathCause_DeathCause_Type = $value;
+	}
+	public function getisinvolvedin{1}() {
+		return $this->isinvolvedin{1};
+	}
+	public function setisinvolvedin{1}(/*object*/ $value) {
+		$this->isinvolvedin{1} = $value;
+	}
+}
+if (!class_exists('Death')) {
+	class Death extends DeathBase {
 		public function __construct() {
 			parent::__construct();
 		}

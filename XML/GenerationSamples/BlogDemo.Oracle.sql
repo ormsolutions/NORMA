@@ -9,8 +9,8 @@ CREATE TABLE BlogEntry
 	postedDate TIMESTAMP NOT NULL,
 	firstName NVARCHAR2(30) NOT NULL,
 	lastName NVARCHAR2(30) NOT NULL,
-	blogCommentParentEntryIdNonCommentEntryBlogEntryId NUMBER(10,0),
-	CONSTRAINT InternalUniquenessConstraint1 PRIMARY KEY(blogEntryId)
+	blogCommentParentEntryIdBlogEntry_Id NUMBER(10,0),
+	CONSTRAINT BlogEntry_PK PRIMARY KEY(blogEntryId)
 );
 
 CREATE TABLE "User"
@@ -19,26 +19,26 @@ CREATE TABLE "User"
 	lastName NVARCHAR2(30) NOT NULL,
 	username NVARCHAR2(30) NOT NULL,
 	password NCHAR(32) NOT NULL,
-	CONSTRAINT ExternalUniquenessConstraint1 PRIMARY KEY(firstName, lastName)
+	CONSTRAINT User_PK PRIMARY KEY(firstName, lastName)
 );
 
 CREATE TABLE BlogLabel
 (
 	blogLabelId NUMBER(10,0) NOT NULL,
 	title NCLOB,
-	CONSTRAINT InternalUniquenessConstraint18 PRIMARY KEY(blogLabelId)
+	CONSTRAINT BlogLabel_PK PRIMARY KEY(blogLabelId)
 );
 
 CREATE TABLE BlogEntryLabel
 (
 	blogEntryId NUMBER(10,0) NOT NULL,
 	blogLabelId NUMBER(10,0) NOT NULL,
-	CONSTRAINT InternalUniquenessConstraint20 PRIMARY KEY(blogEntryId, blogLabelId)
+	CONSTRAINT BlogEntryLabel_PK PRIMARY KEY(blogEntryId, blogLabelId)
 );
 
 ALTER TABLE BlogEntry ADD CONSTRAINT BlogEntry_FK1 FOREIGN KEY (firstName, lastName)  REFERENCES "User" (firstName, lastName) ;
 
-ALTER TABLE BlogEntry ADD CONSTRAINT BlogEntry_FK2 FOREIGN KEY (blogCommentParentEntryIdNonCommentEntryBlogEntryId)  REFERENCES BlogEntry (blogEntryId) ;
+ALTER TABLE BlogEntry ADD CONSTRAINT BlogEntry_FK2 FOREIGN KEY (blogCommentParentEntryIdBlogEntry_Id)  REFERENCES BlogEntry (blogEntryId) ;
 
 ALTER TABLE BlogEntryLabel ADD CONSTRAINT BlogEntryLabel_FK1 FOREIGN KEY (blogEntryId)  REFERENCES BlogEntry (blogEntryId) ;
 

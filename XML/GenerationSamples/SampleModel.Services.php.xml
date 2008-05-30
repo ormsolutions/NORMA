@@ -485,117 +485,6 @@
 				</plx:return>
 			</plx:function>
 		</plx:class>
-		<plx:class name="DeathService" partial="true" visibility="public">
-			<plx:field dataTypeName="DeathService" static="true" name="instance" visibility="private" />
-			<plx:function name=".construct" visibility="public">
-				<plx:leadingInfo>
-					<plx:docComment>Instantiates a new instance of DeathService</plx:docComment>
-				</plx:leadingInfo>
-			</plx:function>
-			<plx:property name="Instance" modifier="static" visibility="public">
-				<plx:returns dataTypeName="DeathService" />
-				<plx:get>
-					<plx:branch>
-						<plx:condition>
-							<plx:unaryOperator type="booleanNot">
-								<plx:callStatic dataTypeName=".global" name="isset" />
-							</plx:unaryOperator>
-						</plx:condition>
-						<plx:assign>
-							<plx:left>
-								<plx:callThis accessor="static" name="instance" type="field" />
-							</plx:left>
-							<plx:right>
-								<plx:callNew dataTypeName="DeathService" type="new" />
-							</plx:right>
-						</plx:assign>
-					</plx:branch>
-					<plx:return>
-						<plx:callThis accessor="static" name="instance" type="field" />
-					</plx:return>
-				</plx:get>
-			</plx:property>
-			<plx:function name="getAll" visibility="public">
-				<plx:leadingInfo>
-					<plx:docComment>Retrieves the entire collection of Death objects</plx:docComment>
-				</plx:leadingInfo>
-				<plx:return>
-					<plx:callInstance name="getAll" type="methodCall">
-						<plx:callObject>
-							<plx:callStatic name="Instance" type="property" dataTypeName="DeathDAO" />
-						</plx:callObject>
-					</plx:callInstance>
-				</plx:return>
-			</plx:function>
-			<plx:function name="getSingle" visibility="public">
-				<plx:leadingInfo>
-					<plx:docComment>Retrieves the specified Death object from the database</plx:docComment>
-				</plx:leadingInfo>
-				<plx:param name="Person_id" />
-				<plx:returns dataTypeName="Death" />
-				<plx:return>
-					<plx:callInstance name="getSingle" type="methodCall">
-						<plx:callObject>
-							<plx:callStatic name="Instance" type="property" dataTypeName="DeathDAO" />
-						</plx:callObject>
-						<plx:passParam>
-							<plx:nameRef name="Person_id" type="parameter" />
-						</plx:passParam>
-					</plx:callInstance>
-				</plx:return>
-			</plx:function>
-			<plx:function name="insert" visibility="public">
-				<plx:leadingInfo>
-					<plx:docComment>Inserts the given Death object into the database</plx:docComment>
-				</plx:leadingInfo>
-				<plx:param dataTypeName="Death" name="Death" />
-				<plx:returns dataTypeName=".boolean" />
-				<plx:return>
-					<plx:callInstance name="insert" type="methodCall">
-						<plx:callObject>
-							<plx:callStatic name="Instance" type="property" dataTypeName="DeathDAO" />
-						</plx:callObject>
-						<plx:passParam>
-							<plx:nameRef name="Death" type="parameter" />
-						</plx:passParam>
-					</plx:callInstance>
-				</plx:return>
-			</plx:function>
-			<plx:function name="update" visibility="public">
-				<plx:leadingInfo>
-					<plx:docComment>Updates the given Death object in the database</plx:docComment>
-				</plx:leadingInfo>
-				<plx:param dataTypeName="Death" name="Death" />
-				<plx:returns dataTypeName=".boolean" />
-				<plx:return>
-					<plx:callInstance name="update" type="methodCall">
-						<plx:callObject>
-							<plx:callStatic name="Instance" type="property" dataTypeName="DeathDAO" />
-						</plx:callObject>
-						<plx:passParam>
-							<plx:nameRef name="Death" type="parameter" />
-						</plx:passParam>
-					</plx:callInstance>
-				</plx:return>
-			</plx:function>
-			<plx:function name="delete" visibility="public">
-				<plx:leadingInfo>
-					<plx:docComment>Deletes the given Death object from the database</plx:docComment>
-				</plx:leadingInfo>
-				<plx:param dataTypeName="Death" name="Death" />
-				<plx:returns dataTypeName=".boolean" />
-				<plx:return>
-					<plx:callInstance name="delete" type="methodCall">
-						<plx:callObject>
-							<plx:callStatic name="Instance" type="property" dataTypeName="DeathDAO" />
-						</plx:callObject>
-						<plx:passParam>
-							<plx:nameRef name="Death" type="parameter" />
-						</plx:passParam>
-					</plx:callInstance>
-				</plx:return>
-			</plx:function>
-		</plx:class>
 		<plx:class name="TaskService" partial="true" visibility="public">
 			<plx:field dataTypeName="TaskService" static="true" name="instance" visibility="private" />
 			<plx:function name=".construct" visibility="public">
@@ -832,6 +721,113 @@
 						</plx:callObject>
 						<plx:passParam>
 							<plx:nameRef name="ValueType1Value" type="parameter" />
+						</plx:passParam>
+					</plx:callInstance>
+				</plx:return>
+			</plx:function>
+		</plx:class>
+		<plx:class name="DeathService" partial="true" visibility="public">
+			<plx:field dataTypeName="DeathService" static="true" name="instance" visibility="private" />
+			<plx:function name=".construct" visibility="public">
+				<plx:leadingInfo>
+					<plx:docComment>Instantiates a new instance of DeathService</plx:docComment>
+				</plx:leadingInfo>
+			</plx:function>
+			<plx:property name="Instance" modifier="static" visibility="public">
+				<plx:returns dataTypeName="DeathService" />
+				<plx:get>
+					<plx:branch>
+						<plx:condition>
+							<plx:unaryOperator type="booleanNot">
+								<plx:callStatic dataTypeName=".global" name="isset" />
+							</plx:unaryOperator>
+						</plx:condition>
+						<plx:assign>
+							<plx:left>
+								<plx:callThis accessor="static" name="instance" type="field" />
+							</plx:left>
+							<plx:right>
+								<plx:callNew dataTypeName="DeathService" type="new" />
+							</plx:right>
+						</plx:assign>
+					</plx:branch>
+					<plx:return>
+						<plx:callThis accessor="static" name="instance" type="field" />
+					</plx:return>
+				</plx:get>
+			</plx:property>
+			<plx:function name="getAll" visibility="public">
+				<plx:leadingInfo>
+					<plx:docComment>Retrieves the entire collection of Death objects</plx:docComment>
+				</plx:leadingInfo>
+				<plx:return>
+					<plx:callInstance name="getAll" type="methodCall">
+						<plx:callObject>
+							<plx:callStatic name="Instance" type="property" dataTypeName="DeathDAO" />
+						</plx:callObject>
+					</plx:callInstance>
+				</plx:return>
+			</plx:function>
+			<plx:function name="getSingle" visibility="public">
+				<plx:leadingInfo>
+					<plx:docComment>Retrieves the specified Death object from the database</plx:docComment>
+				</plx:leadingInfo>
+				<plx:returns dataTypeName="Death" />
+				<plx:return>
+					<plx:callInstance name="getSingle" type="methodCall">
+						<plx:callObject>
+							<plx:callStatic name="Instance" type="property" dataTypeName="DeathDAO" />
+						</plx:callObject>
+					</plx:callInstance>
+				</plx:return>
+			</plx:function>
+			<plx:function name="insert" visibility="public">
+				<plx:leadingInfo>
+					<plx:docComment>Inserts the given Death object into the database</plx:docComment>
+				</plx:leadingInfo>
+				<plx:param dataTypeName="Death" name="Death" />
+				<plx:returns dataTypeName=".boolean" />
+				<plx:return>
+					<plx:callInstance name="insert" type="methodCall">
+						<plx:callObject>
+							<plx:callStatic name="Instance" type="property" dataTypeName="DeathDAO" />
+						</plx:callObject>
+						<plx:passParam>
+							<plx:nameRef name="Death" type="parameter" />
+						</plx:passParam>
+					</plx:callInstance>
+				</plx:return>
+			</plx:function>
+			<plx:function name="update" visibility="public">
+				<plx:leadingInfo>
+					<plx:docComment>Updates the given Death object in the database</plx:docComment>
+				</plx:leadingInfo>
+				<plx:param dataTypeName="Death" name="Death" />
+				<plx:returns dataTypeName=".boolean" />
+				<plx:return>
+					<plx:callInstance name="update" type="methodCall">
+						<plx:callObject>
+							<plx:callStatic name="Instance" type="property" dataTypeName="DeathDAO" />
+						</plx:callObject>
+						<plx:passParam>
+							<plx:nameRef name="Death" type="parameter" />
+						</plx:passParam>
+					</plx:callInstance>
+				</plx:return>
+			</plx:function>
+			<plx:function name="delete" visibility="public">
+				<plx:leadingInfo>
+					<plx:docComment>Deletes the given Death object from the database</plx:docComment>
+				</plx:leadingInfo>
+				<plx:param dataTypeName="Death" name="Death" />
+				<plx:returns dataTypeName=".boolean" />
+				<plx:return>
+					<plx:callInstance name="delete" type="methodCall">
+						<plx:callObject>
+							<plx:callStatic name="Instance" type="property" dataTypeName="DeathDAO" />
+						</plx:callObject>
+						<plx:passParam>
+							<plx:nameRef name="Death" type="parameter" />
 						</plx:passParam>
 					</plx:callInstance>
 				</plx:return>

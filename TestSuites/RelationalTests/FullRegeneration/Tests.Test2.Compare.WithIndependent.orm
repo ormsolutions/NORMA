@@ -284,7 +284,7 @@
 			<ormtooial:AbstractionModelGenerationSetting id="_216FCBEF-24A6-4138-9F8D-255066420DD2" AlgorithmVersion="1.004">
 				<ormtooial:AbstractionModel ref="_FE3D35D4-8BFA-4604-B769-6F8224F4CC89" />
 			</ormtooial:AbstractionModelGenerationSetting>
-			<oialtocdb:SchemaGenerationSetting id="_AB43283A-160B-4A51-9E75-F464582D1F72" NameAlgorithmVersion="1.006" CoreAlgorithmVersion="1.003">
+			<oialtocdb:SchemaGenerationSetting id="_AB43283A-160B-4A51-9E75-F464582D1F72" NameAlgorithmVersion="1.007" CoreAlgorithmVersion="1.004">
 				<oialtocdb:Schema ref="_3F310E69-550D-441F-9F8C-15CBA2CE8CEB" />
 			</oialtocdb:SchemaGenerationSetting>
 		</orm:GenerationSettings>
@@ -360,7 +360,7 @@
 							<rcd:Column Name="someLength" id="_5C196783-3EFB-4DDA-B953-9B71A645899C" />
 						</rcd:Columns>
 						<rcd:Constraints>
-							<rcd:UniquenessConstraint IsPrimary="true" Name="InternalUniquenessConstraint5" id="_66AD75B0-FFBF-4822-A633-BA6AFFA0EBC4">
+							<rcd:UniquenessConstraint IsPrimary="true" id="_66AD75B0-FFBF-4822-A633-BA6AFFA0EBC4" Name="Harry_PK">
 								<rcd:Columns>
 									<rcd:Column ref="_11B2BF37-D364-40AB-B40D-4F565F9FD8C6" />
 								</rcd:Columns>
@@ -379,7 +379,7 @@
 							<rcd:Column Name="cmValue" id="_98347D31-31AC-4A5E-AD98-2450372CEA72" />
 						</rcd:Columns>
 						<rcd:Constraints>
-							<rcd:UniquenessConstraint IsPrimary="true" Name="InternalUniquenessConstraint11" id="_8FC89DBB-87F2-4BBE-A625-3EC068194360">
+							<rcd:UniquenessConstraint IsPrimary="true" id="_8FC89DBB-87F2-4BBE-A625-3EC068194360" Name="Bob_PK">
 								<rcd:Columns>
 									<rcd:Column ref="_98347D31-31AC-4A5E-AD98-2450372CEA72" />
 								</rcd:Columns>
@@ -391,7 +391,7 @@
 							<rcd:Column Name="cmValue" id="_70ACCDE3-905A-4820-8A43-21749A8398DB" />
 						</rcd:Columns>
 						<rcd:Constraints>
-							<rcd:UniquenessConstraint IsPrimary="true" Name="InternalUniquenessConstraint16" id="_61D471EB-1848-4631-836B-CD7C2D0BC8B5">
+							<rcd:UniquenessConstraint IsPrimary="true" id="_61D471EB-1848-4631-836B-CD7C2D0BC8B5" Name="SomeLength_PK">
 								<rcd:Columns>
 									<rcd:Column ref="_70ACCDE3-905A-4820-8A43-21749A8398DB" />
 								</rcd:Columns>
@@ -432,7 +432,7 @@
 		<oialtocdb:TableIsPrimarilyForConceptType ConceptType="_2F1C5194-D755-4C86-A54F-40642AC44826" Table="_FC3C4CD2-2171-4FB0-B7F1-7A119912E8D8" id="_ED09CF0E-ED22-4D38-BC94-78DE02F44372" />
 		<oialtocdb:TableIsPrimarilyForConceptType ConceptType="_BA234165-689F-4459-9922-919D8F1655FD" Table="_A73A228C-8CF3-441D-A43E-3AAC3916D752" id="_FE73C15E-4C69-45D5-B3CA-CA0FC54413D2" />
 		<oialtocdb:UniquenessConstraintIsForUniqueness Uniqueness="_3EED3360-F6A2-49D5-9EA2-25B4E21EF1EC" UniquenessConstraint="_8FC89DBB-87F2-4BBE-A625-3EC068194360" id="_5E292F6F-4E25-4593-AC40-51FEBAE2413A" />
-		<oialtocdb:UniquenessConstraintIsForUniqueness Uniqueness="_FB21BACD-9A46-4FCE-BDF5-022BAD9EDA3D" UniquenessConstraint="_61D471EB-1848-4631-836B-CD7C2D0BC8B5" id="_88C7FD3F-4A31-46AD-8290-57002763686F" />
-		<oialtocdb:UniquenessConstraintIsForUniqueness Uniqueness="_B6583BC3-65C7-4F20-983C-E6007826A938" UniquenessConstraint="_66AD75B0-FFBF-4822-A633-BA6AFFA0EBC4" id="_1006A08F-B0BA-40E3-B15E-FFD2A3E672C7" />
+		<oialtocdb:UniquenessConstraintIsForUniqueness id="_88C7FD3F-4A31-46AD-8290-57002763686F" UniquenessConstraint="_66AD75B0-FFBF-4822-A633-BA6AFFA0EBC4" Uniqueness="_B6583BC3-65C7-4F20-983C-E6007826A938" />
+		<oialtocdb:UniquenessConstraintIsForUniqueness id="_1006A08F-B0BA-40E3-B15E-FFD2A3E672C7" UniquenessConstraint="_61D471EB-1848-4631-836B-CD7C2D0BC8B5" Uniqueness="_FB21BACD-9A46-4FCE-BDF5-022BAD9EDA3D" />
 	</oialtocdb:Bridge>
 </ormRoot:ORM2>

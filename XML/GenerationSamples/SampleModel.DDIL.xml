@@ -201,10 +201,10 @@
 		<ddl:columnDefinition name="childPersonBirthOrderNr">
 			<ddt:domain name="BirthOrder_Nr" schema="SampleModel" />
 		</ddl:columnDefinition>
-		<ddl:columnDefinition name="childPersonFatherMalePersonId">
+		<ddl:columnDefinition name="childPersonFatherPerson_id">
 			<ddt:exactNumeric type="INTEGER" />
 		</ddl:columnDefinition>
-		<ddl:columnDefinition name="childPersonMotherFemalePersonId">
+		<ddl:columnDefinition name="childPersonMotherPerson_id">
 			<ddt:exactNumeric type="INTEGER" />
 		</ddl:columnDefinition>
 		<ddl:columnDefinition name="ColorARGB">
@@ -212,6 +212,9 @@
 		</ddl:columnDefinition>
 		<ddl:columnDefinition name="hatTypeStyle">
 			<ddt:characterString type="CHARACTER VARYING" length="256" />
+		</ddl:columnDefinition>
+		<ddl:columnDefinition name="isDead">
+			<ddt:boolean type="BOOLEAN" />
 		</ddl:columnDefinition>
 		<ddl:columnDefinition name="hasParents">
 			<ddt:boolean type="BOOLEAN" />
@@ -222,68 +225,83 @@
 		<ddl:columnDefinition name="valueType1DoesSomethingElseWith">
 			<ddt:exactNumeric type="INTEGER" />
 		</ddl:columnDefinition>
-		<ddl:tableConstraintDefinition name="InternalUniquenessConstraint2">
+		<ddl:columnDefinition name="deathDate">
+			<ddt:date type="DATE" />
+		</ddl:columnDefinition>
+		<ddl:columnDefinition name="deathCause">
+			<ddt:domain name="DeathCause_Type" schema="SampleModel" />
+		</ddl:columnDefinition>
+		<ddl:columnDefinition name="deathNaturalDeathIsFromProstateCancer">
+			<ddt:boolean type="BOOLEAN" />
+		</ddl:columnDefinition>
+		<ddl:columnDefinition name="deathUnnaturalDeathIsViolent">
+			<ddt:boolean type="BOOLEAN" />
+		</ddl:columnDefinition>
+		<ddl:columnDefinition name="deathUnnaturalDeathIsBloody">
+			<ddt:boolean type="BOOLEAN" />
+		</ddl:columnDefinition>
+		<ddl:tableConstraintDefinition name="Person_PK">
 			<ddl:uniqueConstraintDefinition type="PRIMARY KEY">
 				<dep:simpleColumnReference name="personId" />
 			</ddl:uniqueConstraintDefinition>
 		</ddl:tableConstraintDefinition>
-		<ddl:tableConstraintDefinition name="ExternalUniquenessConstraint1">
+		<ddl:tableConstraintDefinition name="Person_UC1">
 			<ddl:uniqueConstraintDefinition type="UNIQUE">
 				<dep:simpleColumnReference name="firstName" />
 				<dep:simpleColumnReference name="&quot;date&quot;" />
 			</ddl:uniqueConstraintDefinition>
 		</ddl:tableConstraintDefinition>
-		<ddl:tableConstraintDefinition name="ExternalUniquenessConstraint2">
+		<ddl:tableConstraintDefinition name="Person_UC2">
 			<ddl:uniqueConstraintDefinition type="UNIQUE">
 				<dep:simpleColumnReference name="lastName" />
 				<dep:simpleColumnReference name="&quot;date&quot;" />
 			</ddl:uniqueConstraintDefinition>
 		</ddl:tableConstraintDefinition>
-		<ddl:tableConstraintDefinition name="InternalUniquenessConstraint9">
+		<ddl:tableConstraintDefinition name="Person_UC3">
 			<ddl:uniqueConstraintDefinition type="UNIQUE">
 				<dep:simpleColumnReference name="optionalUniqueString" />
 			</ddl:uniqueConstraintDefinition>
 		</ddl:tableConstraintDefinition>
-		<ddl:tableConstraintDefinition name="InternalUniquenessConstraint13">
+		<ddl:tableConstraintDefinition name="Person_UC4">
 			<ddl:uniqueConstraintDefinition type="UNIQUE">
 				<dep:simpleColumnReference name="wife" />
 			</ddl:uniqueConstraintDefinition>
 		</ddl:tableConstraintDefinition>
-		<ddl:tableConstraintDefinition name="InternalUniquenessConstraint22">
+		<ddl:tableConstraintDefinition name="Person_UC5">
 			<ddl:uniqueConstraintDefinition type="UNIQUE">
 				<dep:simpleColumnReference name="ownsCar" />
 			</ddl:uniqueConstraintDefinition>
 		</ddl:tableConstraintDefinition>
-		<ddl:tableConstraintDefinition name="InternalUniquenessConstraint65">
+		<ddl:tableConstraintDefinition name="Person_UC6">
 			<ddl:uniqueConstraintDefinition type="UNIQUE">
 				<dep:simpleColumnReference name="optionalUniqueDecimal" />
 			</ddl:uniqueConstraintDefinition>
 		</ddl:tableConstraintDefinition>
-		<ddl:tableConstraintDefinition name="InternalUniquenessConstraint69">
+		<ddl:tableConstraintDefinition name="Person_UC7">
 			<ddl:uniqueConstraintDefinition type="UNIQUE">
 				<dep:simpleColumnReference name="mandatoryUniqueDecimal" />
 			</ddl:uniqueConstraintDefinition>
 		</ddl:tableConstraintDefinition>
-		<ddl:tableConstraintDefinition name="InternalUniquenessConstraint67">
+		<ddl:tableConstraintDefinition name="Person_UC8">
 			<ddl:uniqueConstraintDefinition type="UNIQUE">
 				<dep:simpleColumnReference name="mandatoryUniqueString" />
 			</ddl:uniqueConstraintDefinition>
 		</ddl:tableConstraintDefinition>
-		<ddl:tableConstraintDefinition name="InternalUniquenessConstraint86">
+		<ddl:tableConstraintDefinition name="Person_UC9">
 			<ddl:uniqueConstraintDefinition type="UNIQUE">
 				<dep:simpleColumnReference name="optionalUniqueTinyInt" />
 			</ddl:uniqueConstraintDefinition>
 		</ddl:tableConstraintDefinition>
-		<ddl:tableConstraintDefinition name="InternalUniquenessConstraint88">
+		<ddl:tableConstraintDefinition name="Person_UC10">
 			<ddl:uniqueConstraintDefinition type="UNIQUE">
 				<dep:simpleColumnReference name="mandatoryUniqueTinyInt" />
 			</ddl:uniqueConstraintDefinition>
 		</ddl:tableConstraintDefinition>
-		<ddl:tableConstraintDefinition name="InternalUniquenessConstraint49">
+		<ddl:tableConstraintDefinition name="Person_UC11">
 			<ddl:uniqueConstraintDefinition type="UNIQUE">
-				<dep:simpleColumnReference name="childPersonFatherMalePersonId" />
+				<dep:simpleColumnReference name="childPersonFatherPerson_id" />
 				<dep:simpleColumnReference name="childPersonBirthOrderNr" />
-				<dep:simpleColumnReference name="childPersonMotherFemalePersonId" />
+				<dep:simpleColumnReference name="childPersonMotherPerson_id" />
 			</ddl:uniqueConstraintDefinition>
 		</ddl:tableConstraintDefinition>
 		<ddl:tableConstraintDefinition name="RoleValueConstraint2">
@@ -326,7 +344,7 @@
 				<ddl:notNullKeyword />
 			</ddl:columnConstraintDefinition>
 		</ddl:columnDefinition>
-		<ddl:tableConstraintDefinition name="InternalUniquenessConstraint16">
+		<ddl:tableConstraintDefinition name="Task_PK">
 			<ddl:uniqueConstraintDefinition type="PRIMARY KEY">
 				<dep:simpleColumnReference name="taskId" />
 			</ddl:uniqueConstraintDefinition>
@@ -342,46 +360,9 @@
 		<ddl:columnDefinition name="doesSomethingWithPerson">
 			<ddt:exactNumeric type="INTEGER" />
 		</ddl:columnDefinition>
-		<ddl:tableConstraintDefinition name="ValueType1Uniqueness">
+		<ddl:tableConstraintDefinition name="ValueType1_PK">
 			<ddl:uniqueConstraintDefinition type="PRIMARY KEY">
 				<dep:simpleColumnReference name="&quot;value&quot;" />
-			</ddl:uniqueConstraintDefinition>
-		</ddl:tableConstraintDefinition>
-	</ddl:tableDefinition>
-	<ddl:tableDefinition name="Death" schema="SampleModel">
-		<ddl:columnDefinition name="personId">
-			<ddt:exactNumeric type="INTEGER" />
-			<ddl:columnConstraintDefinition>
-				<ddl:notNullKeyword />
-			</ddl:columnConstraintDefinition>
-		</ddl:columnDefinition>
-		<ddl:columnDefinition name="deathCause">
-			<ddt:domain name="DeathCause_Type" schema="SampleModel" />
-			<ddl:columnConstraintDefinition>
-				<ddl:notNullKeyword />
-			</ddl:columnConstraintDefinition>
-		</ddl:columnDefinition>
-		<ddl:columnDefinition name="isDead">
-			<ddt:boolean type="BOOLEAN" />
-			<ddl:columnConstraintDefinition>
-				<ddl:notNullKeyword />
-			</ddl:columnConstraintDefinition>
-		</ddl:columnDefinition>
-		<ddl:columnDefinition name="&quot;date&quot;">
-			<ddt:date type="DATE" />
-		</ddl:columnDefinition>
-		<ddl:columnDefinition name="naturalDeathIsFromProstateCancer">
-			<ddt:boolean type="BOOLEAN" />
-		</ddl:columnDefinition>
-		<ddl:columnDefinition name="unnaturalDeathIsViolent">
-			<ddt:boolean type="BOOLEAN" />
-		</ddl:columnDefinition>
-		<ddl:columnDefinition name="unnaturalDeathIsBloody">
-			<ddt:boolean type="BOOLEAN" />
-		</ddl:columnDefinition>
-		<ddl:tableConstraintDefinition name="&quot;Constraint&quot;">
-			<ddl:uniqueConstraintDefinition type="PRIMARY KEY">
-				<dep:simpleColumnReference name="personId" />
 			</ddl:uniqueConstraintDefinition>
 		</ddl:tableConstraintDefinition>
 	</ddl:tableDefinition>
@@ -398,7 +379,7 @@
 				<ddl:notNullKeyword />
 			</ddl:columnConstraintDefinition>
 		</ddl:columnDefinition>
-		<ddl:tableConstraintDefinition name="InternalUniquenessConstraint18">
+		<ddl:tableConstraintDefinition name="PersonDrivesCar_PK">
 			<ddl:uniqueConstraintDefinition type="PRIMARY KEY">
 				<dep:simpleColumnReference name="drivesCar" />
 				<dep:simpleColumnReference name="drivenByPerson" />
@@ -430,21 +411,21 @@
 				<ddl:notNullKeyword />
 			</ddl:columnConstraintDefinition>
 		</ddl:columnDefinition>
-		<ddl:tableConstraintDefinition name="InternalUniquenessConstraint23">
+		<ddl:tableConstraintDefinition name="PersonBoughtCarFromPersonDate_PK">
 			<ddl:uniqueConstraintDefinition type="PRIMARY KEY">
 				<dep:simpleColumnReference name="buyer" />
 				<dep:simpleColumnReference name="carSold" />
 				<dep:simpleColumnReference name="seller" />
 			</ddl:uniqueConstraintDefinition>
 		</ddl:tableConstraintDefinition>
-		<ddl:tableConstraintDefinition name="InternalUniquenessConstraint25">
+		<ddl:tableConstraintDefinition name="PersonBoughtCarFromPersonDate_UC1">
 			<ddl:uniqueConstraintDefinition type="UNIQUE">
 				<dep:simpleColumnReference name="carSold" />
 				<dep:simpleColumnReference name="saleDate" />
 				<dep:simpleColumnReference name="buyer" />
 			</ddl:uniqueConstraintDefinition>
 		</ddl:tableConstraintDefinition>
-		<ddl:tableConstraintDefinition name="InternalUniquenessConstraint24">
+		<ddl:tableConstraintDefinition name="PersonBoughtCarFromPersonDate_UC2">
 			<ddl:uniqueConstraintDefinition type="UNIQUE">
 				<dep:simpleColumnReference name="saleDate" />
 				<dep:simpleColumnReference name="seller" />
@@ -471,7 +452,7 @@
 				<ddl:notNullKeyword />
 			</ddl:columnConstraintDefinition>
 		</ddl:columnDefinition>
-		<ddl:tableConstraintDefinition name="InternalUniquenessConstraint26">
+		<ddl:tableConstraintDefinition name="Review_PK">
 			<ddl:uniqueConstraintDefinition type="PRIMARY KEY">
 				<dep:simpleColumnReference name="car" />
 				<dep:simpleColumnReference name="criterion" />
@@ -491,7 +472,7 @@
 				<ddl:notNullKeyword />
 			</ddl:columnConstraintDefinition>
 		</ddl:columnDefinition>
-		<ddl:tableConstraintDefinition name="InternalUniquenessConstraint33">
+		<ddl:tableConstraintDefinition name="PersonHasNickName_PK">
 			<ddl:uniqueConstraintDefinition type="PRIMARY KEY">
 				<dep:simpleColumnReference name="nickName" />
 				<dep:simpleColumnReference name="personId" />
@@ -521,7 +502,7 @@
 	<ddl:alterTableStatement name="Person" schema="SampleModel">
 		<ddl:addTableConstraintDefinition name="Person_FK3">
 			<ddl:referentialConstraintDefinition>
-				<dep:simpleColumnReference name="childPersonFatherMalePersonId" />
+				<dep:simpleColumnReference name="childPersonFatherPerson_id" />
 				<ddl:referencesSpecification name="Person" onDelete="RESTRICT" onUpdate="RESTRICT" schema="SampleModel">
 					<dep:simpleColumnReference name="personId" />
 				</ddl:referencesSpecification>
@@ -531,7 +512,7 @@
 	<ddl:alterTableStatement name="Person" schema="SampleModel">
 		<ddl:addTableConstraintDefinition name="Person_FK4">
 			<ddl:referentialConstraintDefinition>
-				<dep:simpleColumnReference name="childPersonMotherFemalePersonId" />
+				<dep:simpleColumnReference name="childPersonMotherPerson_id" />
 				<ddl:referencesSpecification name="Person" onDelete="RESTRICT" onUpdate="RESTRICT" schema="SampleModel">
 					<dep:simpleColumnReference name="personId" />
 				</ddl:referencesSpecification>
@@ -552,16 +533,6 @@
 		<ddl:addTableConstraintDefinition name="ValueType1_FK">
 			<ddl:referentialConstraintDefinition>
 				<dep:simpleColumnReference name="doesSomethingWithPerson" />
-				<ddl:referencesSpecification name="Person" onDelete="RESTRICT" onUpdate="RESTRICT" schema="SampleModel">
-					<dep:simpleColumnReference name="personId" />
-				</ddl:referencesSpecification>
-			</ddl:referentialConstraintDefinition>
-		</ddl:addTableConstraintDefinition>
-	</ddl:alterTableStatement>
-	<ddl:alterTableStatement name="Death" schema="SampleModel">
-		<ddl:addTableConstraintDefinition name="Death_FK">
-			<ddl:referentialConstraintDefinition>
-				<dep:simpleColumnReference name="personId" />
 				<ddl:referencesSpecification name="Person" onDelete="RESTRICT" onUpdate="RESTRICT" schema="SampleModel">
 					<dep:simpleColumnReference name="personId" />
 				</ddl:referencesSpecification>

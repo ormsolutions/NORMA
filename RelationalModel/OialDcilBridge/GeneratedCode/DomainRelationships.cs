@@ -2740,7 +2740,7 @@ namespace Neumont.Tools.ORMAbstractionToConceptualDatabaseBridge
 		/// </summary>
 		[DslDesign::DisplayNameResource("Neumont.Tools.ORMAbstractionToConceptualDatabaseBridge.UniquenessConstraintIsForUniqueness/UniquenessConstraint.DisplayName", typeof(global::Neumont.Tools.ORMAbstractionToConceptualDatabaseBridge.ORMAbstractionToConceptualDatabaseBridgeDomainModel), "Neumont.Tools.ORMAbstractionToConceptualDatabaseBridge.GeneratedCode.DomainModelResx")]
 		[DslDesign::DescriptionResource("Neumont.Tools.ORMAbstractionToConceptualDatabaseBridge.UniquenessConstraintIsForUniqueness/UniquenessConstraint.Description", typeof(global::Neumont.Tools.ORMAbstractionToConceptualDatabaseBridge.ORMAbstractionToConceptualDatabaseBridgeDomainModel), "Neumont.Tools.ORMAbstractionToConceptualDatabaseBridge.GeneratedCode.DomainModelResx")]
-		[DslModeling::DomainRole(DslModeling::DomainRoleOrder.Source, PropertyName = "Uniqueness", PropertyDisplayNameKey="Neumont.Tools.ORMAbstractionToConceptualDatabaseBridge.UniquenessConstraintIsForUniqueness/UniquenessConstraint.PropertyDisplayName", Multiplicity = DslModeling::Multiplicity.ZeroMany)]
+		[DslModeling::DomainRole(DslModeling::DomainRoleOrder.Source, PropertyName = "Uniqueness", PropertyDisplayNameKey="Neumont.Tools.ORMAbstractionToConceptualDatabaseBridge.UniquenessConstraintIsForUniqueness/UniquenessConstraint.PropertyDisplayName", Multiplicity = DslModeling::Multiplicity.ZeroOne)]
 		[DslModeling::DomainObjectId("2c58f935-e736-401f-b22f-e38f71ab33e5")]
 		public virtual global::Neumont.Tools.RelationalModels.ConceptualDatabase.UniquenessConstraint UniquenessConstraint
 		{
@@ -2799,24 +2799,43 @@ namespace Neumont.Tools.ORMAbstractionToConceptualDatabaseBridge
 		#endregion
 		#region Static methods to access Uniqueness of a UniquenessConstraint
 		/// <summary>
-		/// Gets a list of Uniqueness.
+		/// Gets Uniqueness.
 		/// </summary>
 		[global::System.Diagnostics.DebuggerStepThrough]
 		[global::System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Design", "CA1011")]
-		public static DslModeling::LinkedElementCollection<global::Neumont.Tools.ORMAbstraction.Uniqueness> GetUniqueness(global::Neumont.Tools.RelationalModels.ConceptualDatabase.UniquenessConstraint element)
+		public static global::Neumont.Tools.ORMAbstraction.Uniqueness GetUniqueness(global::Neumont.Tools.RelationalModels.ConceptualDatabase.UniquenessConstraint element)
 		{
-			return new DslModeling::LinkedElementCollection<global::Neumont.Tools.ORMAbstraction.Uniqueness>(element, UniquenessConstraintDomainRoleId);
+			return DslModeling::DomainRoleInfo.GetLinkedElement(element, UniquenessConstraintDomainRoleId) as global::Neumont.Tools.ORMAbstraction.Uniqueness;
+		}
+		
+		/// <summary>
+		/// Sets Uniqueness.
+		/// </summary>
+		[global::System.Diagnostics.DebuggerStepThrough]
+		[global::System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Design", "CA1011")]
+		public static void SetUniqueness(global::Neumont.Tools.RelationalModels.ConceptualDatabase.UniquenessConstraint element, global::Neumont.Tools.ORMAbstraction.Uniqueness newUniqueness)
+		{
+			DslModeling::DomainRoleInfo.SetLinkedElement(element, UniquenessConstraintDomainRoleId, newUniqueness);
 		}
 		#endregion
 		#region UniquenessConstraint link accessor
 		/// <summary>
-		/// Get the list of UniquenessConstraintIsForUniqueness links to a UniquenessConstraint.
+		/// Get the UniquenessConstraintIsForUniqueness link to a UniquenessConstraint.
 		/// </summary>
 		[global::System.Diagnostics.DebuggerStepThrough]
 		[global::System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Design", "CA1011")]
-		public static global::System.Collections.ObjectModel.ReadOnlyCollection<global::Neumont.Tools.ORMAbstractionToConceptualDatabaseBridge.UniquenessConstraintIsForUniqueness> GetLinksToUniqueness ( global::Neumont.Tools.RelationalModels.ConceptualDatabase.UniquenessConstraint uniquenessConstraintInstance )
+		public static global::Neumont.Tools.ORMAbstractionToConceptualDatabaseBridge.UniquenessConstraintIsForUniqueness GetLinkToUniqueness (global::Neumont.Tools.RelationalModels.ConceptualDatabase.UniquenessConstraint uniquenessConstraintInstance)
 		{
-			return DslModeling::DomainRoleInfo.GetElementLinks<global::Neumont.Tools.ORMAbstractionToConceptualDatabaseBridge.UniquenessConstraintIsForUniqueness>(uniquenessConstraintInstance, global::Neumont.Tools.ORMAbstractionToConceptualDatabaseBridge.UniquenessConstraintIsForUniqueness.UniquenessConstraintDomainRoleId);
+			global::System.Collections.Generic.IList<global::Neumont.Tools.ORMAbstractionToConceptualDatabaseBridge.UniquenessConstraintIsForUniqueness> links = DslModeling::DomainRoleInfo.GetElementLinks<global::Neumont.Tools.ORMAbstractionToConceptualDatabaseBridge.UniquenessConstraintIsForUniqueness>(uniquenessConstraintInstance, global::Neumont.Tools.ORMAbstractionToConceptualDatabaseBridge.UniquenessConstraintIsForUniqueness.UniquenessConstraintDomainRoleId);
+			global::System.Diagnostics.Debug.Assert(links.Count <= 1, "Multiplicity of UniquenessConstraint not obeyed.");
+			if ( links.Count == 0 )
+			{
+				return null;
+			}
+			else
+			{
+				return links[0];
+			}
 		}
 		#endregion
 		#region Uniqueness link accessor

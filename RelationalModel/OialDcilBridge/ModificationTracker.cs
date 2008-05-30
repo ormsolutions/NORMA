@@ -205,10 +205,7 @@ namespace Neumont.Tools.ORMAbstractionToConceptualDatabaseBridge
 				bool canBeNullable = !child.IsMandatory;
 				foreach (Column column in ColumnHasConceptTypeChild.GetColumn(child))
 				{
-					if (canBeNullable ? !column.IsNullable : column.IsNullable)
-					{
-						FrameworkDomainModel.DelayValidateElement(column, ValidateColumnIsNullableDelayed);
-					}
+					FrameworkDomainModel.DelayValidateElement(column, ValidateColumnIsNullableDelayed);
 				}
 			}
 			[DelayValidatePriority(10, DomainModelType = typeof(AbstractionDomainModel), Order = DelayValidatePriorityOrder.AfterDomainModel)]
@@ -217,7 +214,7 @@ namespace Neumont.Tools.ORMAbstractionToConceptualDatabaseBridge
 				// Check if the element survived regeneration. Note priority is after RebuildForAbstractionModelDelayed
 				if (!element.IsDeleted)
 				{
-					CheckColumnConstraint((Column)element);
+					UpdateColumnNullability((Column)element);
 				}
 			}
 			#endregion // Abstraction model modification rules

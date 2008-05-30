@@ -114,8 +114,7 @@
 			this.dgvCreate.TabIndex = 0;
 			this.dgvCreate.Columns.Add("Date_YMD", "Date_YMD");
 			this.dgvCreate.Columns.Add("DeathCause_DeathCause_Type", "DeathCause_DeathCause_Type");
-			this.dgvCreate.Columns.Add("isDead", "isDead");
-			this.dgvCreate.Columns.Add("Person", "Person");
+			this.dgvCreate.Columns.Add("isinvolvedin{1}", "isinvolvedin{1}");
 			this.dgvCreate.ScrollBars = System.Windows.Forms.ScrollBars.Both;
 			this.dgvCreate.Height = 75;
 			// 
@@ -211,8 +210,7 @@
 			this.dgvCollection.TabIndex = 0;
 			this.dgvCollection.Columns.Add("Date_YMD", "Date_YMD");
 			this.dgvCollection.Columns.Add("DeathCause_DeathCause_Type", "DeathCause_DeathCause_Type");
-			this.dgvCollection.Columns.Add("isDead", "isDead");
-			this.dgvCollection.Columns.Add("Person", "Person");
+			this.dgvCollection.Columns.Add("isinvolvedin{1}", "isinvolvedin{1}");
 			this.dgvCollection.ScrollBars = System.Windows.Forms.ScrollBars.Both;
 			this.dgvCollection.Height = 300;
 			// 
@@ -360,10 +358,8 @@
 			this.dgvCurrentObject.Columns["Date_YMD"].Visible = false;
 			this.dgvCurrentObject.Columns.Add("DeathCause_DeathCause_Type", "DeathCause_DeathCause_Type");
 			this.dgvCurrentObject.Columns["DeathCause_DeathCause_Type"].Visible = false;
-			this.dgvCurrentObject.Columns.Add("isDead", "isDead");
-			this.dgvCurrentObject.Columns["isDead"].Visible = false;
-			this.dgvCurrentObject.Columns.Add("Person", "Person");
-			this.dgvCurrentObject.Columns["Person"].Visible = false;
+			this.dgvCurrentObject.Columns.Add("isinvolvedin{1}", "isinvolvedin{1}");
+			this.dgvCurrentObject.Columns["isinvolvedin{1}"].Visible = false;
 			this.dgvCurrentObject.Visible = false;
 			this.dgvCurrentObject.CellBeginEdit += new System.Windows.Forms.DataGridViewCellCancelEventHandler(this.dgvCurrentObject_CellBeginEdit);
 			this.Controls.Add(this.pnlSave);
@@ -407,8 +403,7 @@
 			this.dgvSelect.TabIndex = 0;
 			this.dgvSelect.Columns.Add("Date_YMD", "Date_YMD");
 			this.dgvSelect.Columns.Add("DeathCause_DeathCause_Type", "DeathCause_DeathCause_Type");
-			this.dgvSelect.Columns.Add("isDead", "isDead");
-			this.dgvSelect.Columns.Add("Person", "Person");
+			this.dgvSelect.Columns.Add("isinvolvedin{1}", "isinvolvedin{1}");
 			this.dgvSelect.ScrollBars = System.Windows.Forms.ScrollBars.Both;
 			this.dgvSelect.Height = 75;
 			// 
@@ -1031,7 +1026,6 @@
 			this.dgvCreate.Columns.Add("MandatoryNonUniqueUnconstrainedFloat", "MandatoryNonUniqueUnconstrainedFloat");
 			this.dgvCreate.Columns.Add("Husband", "Husband");
 			this.dgvCreate.Columns.Add("ValueType1DoesSomethingElseWith", "ValueType1DoesSomethingElseWith");
-			this.dgvCreate.Columns.Add("Death", "Death");
 			this.dgvCreate.Columns.Add("Wife", "Wife");
 			this.dgvCreate.ScrollBars = System.Windows.Forms.ScrollBars.Both;
 			this.dgvCreate.Height = 75;
@@ -1146,7 +1140,6 @@
 			this.dgvCollection.Columns.Add("MandatoryNonUniqueUnconstrainedFloat", "MandatoryNonUniqueUnconstrainedFloat");
 			this.dgvCollection.Columns.Add("Husband", "Husband");
 			this.dgvCollection.Columns.Add("ValueType1DoesSomethingElseWith", "ValueType1DoesSomethingElseWith");
-			this.dgvCollection.Columns.Add("Death", "Death");
 			this.dgvCollection.Columns.Add("Wife", "Wife");
 			this.dgvCollection.ScrollBars = System.Windows.Forms.ScrollBars.Both;
 			this.dgvCollection.Height = 300;
@@ -1340,8 +1333,6 @@
 			this.dgvCurrentObject.Columns["Husband"].Visible = false;
 			this.dgvCurrentObject.Columns.Add("ValueType1DoesSomethingElseWith", "ValueType1DoesSomethingElseWith");
 			this.dgvCurrentObject.Columns["ValueType1DoesSomethingElseWith"].Visible = false;
-			this.dgvCurrentObject.Columns.Add("Death", "Death");
-			this.dgvCurrentObject.Columns["Death"].Visible = false;
 			this.dgvCurrentObject.Columns.Add("Wife", "Wife");
 			this.dgvCurrentObject.Columns["Wife"].Visible = false;
 			this.dgvCurrentObject.Visible = false;
@@ -1405,7 +1396,6 @@
 			this.dgvSelect.Columns.Add("MandatoryNonUniqueUnconstrainedFloat", "MandatoryNonUniqueUnconstrainedFloat");
 			this.dgvSelect.Columns.Add("Husband", "Husband");
 			this.dgvSelect.Columns.Add("ValueType1DoesSomethingElseWith", "ValueType1DoesSomethingElseWith");
-			this.dgvSelect.Columns.Add("Death", "Death");
 			this.dgvSelect.Columns.Add("Wife", "Wife");
 			this.dgvSelect.ScrollBars = System.Windows.Forms.ScrollBars.Both;
 			this.dgvSelect.Height = 75;

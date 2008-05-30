@@ -19,10 +19,10 @@
 		<dcl:column name="lastName" isNullable="false" isIdentity="false">
 			<dcl:predefinedDataType name="CHARACTER VARYING" length="30" />
 		</dcl:column>
-		<dcl:column name="blogCommentParentEntryIdNonCommentEntryBlogEntryId" isNullable="true" isIdentity="false">
+		<dcl:column name="blogCommentParentEntryIdBlogEntry_Id" isNullable="true" isIdentity="false">
 			<dcl:predefinedDataType name="INTEGER" />
 		</dcl:column>
-		<dcl:uniquenessConstraint name="InternalUniquenessConstraint1" isPrimary="true">
+		<dcl:uniquenessConstraint name="BlogEntry_PK" isPrimary="true">
 			<dcl:columnRef name="blogEntryId" />
 		</dcl:uniquenessConstraint>
 		<dcl:referenceConstraint name="BlogEntry_FK1" targetTable="&quot;User&quot;">
@@ -30,7 +30,7 @@
 			<dcl:columnRef sourceName="lastName" targetName="lastName" />
 		</dcl:referenceConstraint>
 		<dcl:referenceConstraint name="BlogEntry_FK2" targetTable="BlogEntry">
-			<dcl:columnRef sourceName="blogCommentParentEntryIdNonCommentEntryBlogEntryId" targetName="blogEntryId" />
+			<dcl:columnRef sourceName="blogCommentParentEntryIdBlogEntry_Id" targetName="blogEntryId" />
 		</dcl:referenceConstraint>
 	</dcl:table>
 	<dcl:table name="&quot;User&quot;">
@@ -46,7 +46,7 @@
 		<dcl:column name="password" isNullable="false" isIdentity="false">
 			<dcl:predefinedDataType name="CHARACTER" length="32" />
 		</dcl:column>
-		<dcl:uniquenessConstraint name="ExternalUniquenessConstraint1" isPrimary="true">
+		<dcl:uniquenessConstraint name="User_PK" isPrimary="true">
 			<dcl:columnRef name="firstName" />
 			<dcl:columnRef name="lastName" />
 		</dcl:uniquenessConstraint>
@@ -58,7 +58,7 @@
 		<dcl:column name="title" isNullable="true" isIdentity="false">
 			<dcl:predefinedDataType name="CHARACTER LARGE OBJECT" />
 		</dcl:column>
-		<dcl:uniquenessConstraint name="InternalUniquenessConstraint18" isPrimary="true">
+		<dcl:uniquenessConstraint name="BlogLabel_PK" isPrimary="true">
 			<dcl:columnRef name="blogLabelId" />
 		</dcl:uniquenessConstraint>
 	</dcl:table>
@@ -69,7 +69,7 @@
 		<dcl:column name="blogLabelId" isNullable="false" isIdentity="false">
 			<dcl:predefinedDataType name="INTEGER" />
 		</dcl:column>
-		<dcl:uniquenessConstraint name="InternalUniquenessConstraint20" isPrimary="true">
+		<dcl:uniquenessConstraint name="BlogEntryLabel_PK" isPrimary="true">
 			<dcl:columnRef name="blogEntryId" />
 			<dcl:columnRef name="blogLabelId" />
 		</dcl:uniquenessConstraint>

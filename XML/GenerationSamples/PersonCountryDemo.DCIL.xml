@@ -30,7 +30,7 @@
 		<dcl:column name="countryName" isNullable="true" isIdentity="false">
 			<dcl:predefinedDataType name="CHARACTER VARYING" length="20" />
 		</dcl:column>
-		<dcl:uniquenessConstraint name="InternalUniquenessConstraint1" isPrimary="true">
+		<dcl:uniquenessConstraint name="Person_PK" isPrimary="true">
 			<dcl:columnRef name="personId" />
 		</dcl:uniquenessConstraint>
 		<dcl:referenceConstraint name="Person_FK" targetTable="Country">
@@ -44,7 +44,7 @@
 		<dcl:column name="regionCode" isNullable="true" isIdentity="false">
 			<dcl:predefinedDataType name="CHARACTER" length="8" />
 		</dcl:column>
-		<dcl:uniquenessConstraint name="InternalUniquenessConstraint3" isPrimary="true">
+		<dcl:uniquenessConstraint name="Country_PK" isPrimary="true">
 			<dcl:columnRef name="countryName" />
 		</dcl:uniquenessConstraint>
 	</dcl:table>

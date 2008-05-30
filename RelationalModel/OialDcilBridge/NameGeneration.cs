@@ -1,17 +1,19 @@
 using System;
 using System.Collections;
 using System.Collections.Generic;
+using System.ComponentModel;
 using System.Diagnostics;
 using System.Globalization;
 using System.Text;
 using System.Text.RegularExpressions;
 using Microsoft.VisualStudio.Modeling;
+using Neumont.Tools.Modeling;
 using Neumont.Tools.ORM.ObjectModel;
 using Neumont.Tools.ORMAbstraction;
 using Neumont.Tools.ORMToORMAbstractionBridge;
 using Neumont.Tools.RelationalModels.ConceptualDatabase;
+using UniquenessConstraint = Neumont.Tools.RelationalModels.ConceptualDatabase.UniquenessConstraint;
 using ORMUniquenessConstraint = Neumont.Tools.ORM.ObjectModel.UniquenessConstraint;
-using Neumont.Tools.Modeling;
 
 namespace Neumont.Tools.ORMAbstractionToConceptualDatabaseBridge
 {
@@ -189,21 +191,27 @@ namespace Neumont.Tools.ORMAbstractionToConceptualDatabaseBridge
 						{
 							((Column)element).Name = elementName;
 						});
+				}
 
-					//constraint names
-					LinkedElementCollection<ReferenceConstraint> constraints;
-					if (0 != (constraints = table.ReferenceConstraintCollection).Count)
+				// Constraint names, unique across the schema
+				uniqueChecker.GenerateUniqueElementNames(
+					IterateConstraints(schema),
+					delegate(object element, int phase)
 					{
-						uniqueChecker.GenerateUniqueElementNames(
-							constraints,
-							delegate(object element, int phase)
-							{
-								return nameGenerator.GenerateConstraintName((Constraint)element, phase);
-							},
-							delegate(object element, string elementName)
-							{
-								((Constraint)element).Name = elementName;
-							});
+						return nameGenerator.GenerateConstraintName((Constraint)element, phase);
+					},
+					delegate(object element, string elementName)
+					{
+						((Constraint)element).Name = elementName;
+					});
+			}
+			private static IEnumerable IterateConstraints(Schema schema)
+			{
+				foreach (Table table in schema.TableCollection)
+				{
+					foreach (Constraint constraint in TableContainsConstraint.GetConstraintCollection(table))
+					{
+						yield return constraint;
 					}
 				}
 			}
@@ -993,12 +1001,46 @@ namespace Neumont.Tools.ORMAbstractionToConceptualDatabaseBridge
 				}
 				private string GenerateConstraintName(Constraint constraint, int phase)
 				{
+					if (phase > 1)
+					{
+						return null;
+					}
+					// UNDONE: The PK, UC, FK suffixes should have generator options to control them
+					ReferenceConstraint refConstraint;
+					UniquenessConstraint uniquenessConstraint;
+					if (null != (uniquenessConstraint = constraint as UniquenessConstraint))
+					{
+						// If we map to a single constraint in the ORM model and that constraint
+						// name is not a default generated name, then use that name.
+						Uniqueness uniqueness = UniquenessConstraintIsForUniqueness.GetUniqueness(uniquenessConstraint);
+						if (uniqueness != null)
+						{
+							ORMUniquenessConstraint ormUniqueness = UniquenessIsForUniquenessConstraint.GetUniquenessConstraint(uniqueness);
+							if (ormUniqueness != null)
+							{
+								string currentName = ormUniqueness.Name;
+								string defaultName = TypeDescriptor.GetClassName(ormUniqueness);
+								int dummyInt;
+								// UNDONE: Should probably be a callback to determine if this is a generated name
+								if (!(currentName.Length > defaultName.Length &&
+									currentName.StartsWith(defaultName) &&
+									int.TryParse(currentName.Substring(defaultName.Length), out dummyInt)))
+								{
+									return (phase == 1 ? uniquenessConstraint.Table.Name + "_" : "") + currentName + (uniquenessConstraint.IsPrimary ? "_PK" : "_UC");
+								}
+							}
+						}
+						if (phase != 0)
+						{
+							return null;
+						}
+						return uniquenessConstraint.Table.Name + (uniquenessConstraint.IsPrimary ? "_PK" : "_UC");
+					}
 					if (phase != 0)
 					{
 						return null;
 					}
-					ReferenceConstraint refConstraint = constraint as ReferenceConstraint;
-					if (null != refConstraint)
+					if (null != (refConstraint = constraint as ReferenceConstraint))
 					{
 						return refConstraint.SourceTable.Name + "_FK";
 					}

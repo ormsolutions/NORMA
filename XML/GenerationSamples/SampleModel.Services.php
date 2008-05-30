@@ -146,45 +146,6 @@ if (!class_exists('PersonService')) {
 		}
 	}
 }
-class DeathServiceBase {
-	private static $instance;
-	
-	public function __construct() {
-	}
-	public static function getInstance() {
-		if (!isset()) {
-			instance = new DeathService();
-		}
-		return instance;
-	}
-	
-	public function getAll() {
-		return DeathDAO::getInstance()->getAll();
-	}
-	
-	public function getSingle( $Person_id) {
-		return DeathDAO::getInstance()->getSingle($Person_id);
-	}
-	
-	public function insert(Death $Death) {
-		return DeathDAO::getInstance()->insert($Death);
-	}
-	
-	public function update(Death $Death) {
-		return DeathDAO::getInstance()->update($Death);
-	}
-	
-	public function delete(Death $Death) {
-		return DeathDAO::getInstance()->delete($Death);
-	}
-}
-if (!class_exists('DeathService')) {
-	class DeathService extends DeathServiceBase {
-		public function __construct() {
-			parent::__construct();
-		}
-	}
-}
 class TaskServiceBase {
 	private static $instance;
 	
@@ -262,6 +223,45 @@ class ValueType1ServiceBase {
 }
 if (!class_exists('ValueType1Service')) {
 	class ValueType1Service extends ValueType1ServiceBase {
+		public function __construct() {
+			parent::__construct();
+		}
+	}
+}
+class DeathServiceBase {
+	private static $instance;
+	
+	public function __construct() {
+	}
+	public static function getInstance() {
+		if (!isset()) {
+			instance = new DeathService();
+		}
+		return instance;
+	}
+	
+	public function getAll() {
+		return DeathDAO::getInstance()->getAll();
+	}
+	
+	public function getSingle() {
+		return DeathDAO::getInstance()->getSingle();
+	}
+	
+	public function insert(Death $Death) {
+		return DeathDAO::getInstance()->insert($Death);
+	}
+	
+	public function update(Death $Death) {
+		return DeathDAO::getInstance()->update($Death);
+	}
+	
+	public function delete(Death $Death) {
+		return DeathDAO::getInstance()->delete($Death);
+	}
+}
+if (!class_exists('DeathService')) {
+	class DeathService extends DeathServiceBase {
 		public function __construct() {
 			parent::__construct();
 		}

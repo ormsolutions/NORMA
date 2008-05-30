@@ -12,8 +12,8 @@ CREATE TABLE BlogDemo.BlogEntry
 	postedDate DATETIME NOT NULL,
 	firstName NATIONAL CHARACTER VARYING(30) NOT NULL,
 	lastName NATIONAL CHARACTER VARYING(30) NOT NULL,
-	blogCommentParentEntryIdNonCommentEntryBlogEntryId INTEGER,
-	CONSTRAINT InternalUniquenessConstraint1 PRIMARY KEY(blogEntryId)
+	blogCommentParentEntryIdBlogEntry_Id INTEGER,
+	CONSTRAINT BlogEntry_PK PRIMARY KEY(blogEntryId)
 )
 GO
 
@@ -24,7 +24,7 @@ CREATE TABLE BlogDemo."User"
 	lastName NATIONAL CHARACTER VARYING(30) NOT NULL,
 	username NATIONAL CHARACTER VARYING(30) NOT NULL,
 	password NATIONAL CHARACTER(32) NOT NULL,
-	CONSTRAINT ExternalUniquenessConstraint1 PRIMARY KEY(firstName, lastName)
+	CONSTRAINT User_PK PRIMARY KEY(firstName, lastName)
 )
 GO
 
@@ -33,7 +33,7 @@ CREATE TABLE BlogDemo.BlogLabel
 (
 	blogLabelId INTEGER IDENTITY (1, 1) NOT NULL,
 	title NATIONAL CHARACTER VARYING(MAX),
-	CONSTRAINT InternalUniquenessConstraint18 PRIMARY KEY(blogLabelId)
+	CONSTRAINT BlogLabel_PK PRIMARY KEY(blogLabelId)
 )
 GO
 
@@ -42,7 +42,7 @@ CREATE TABLE BlogDemo.BlogEntryLabel
 (
 	blogEntryId INTEGER NOT NULL,
 	blogLabelId INTEGER NOT NULL,
-	CONSTRAINT InternalUniquenessConstraint20 PRIMARY KEY(blogEntryId, blogLabelId)
+	CONSTRAINT BlogEntryLabel_PK PRIMARY KEY(blogEntryId, blogLabelId)
 )
 GO
 
@@ -51,7 +51,7 @@ ALTER TABLE BlogDemo.BlogEntry ADD CONSTRAINT BlogEntry_FK1 FOREIGN KEY (firstNa
 GO
 
 
-ALTER TABLE BlogDemo.BlogEntry ADD CONSTRAINT BlogEntry_FK2 FOREIGN KEY (blogCommentParentEntryIdNonCommentEntryBlogEntryId) REFERENCES BlogDemo.BlogEntry (blogEntryId) ON DELETE NO ACTION ON UPDATE NO ACTION
+ALTER TABLE BlogDemo.BlogEntry ADD CONSTRAINT BlogEntry_FK2 FOREIGN KEY (blogCommentParentEntryIdBlogEntry_Id) REFERENCES BlogDemo.BlogEntry (blogEntryId) ON DELETE NO ACTION ON UPDATE NO ACTION
 GO
 
 

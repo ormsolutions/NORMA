@@ -747,7 +747,7 @@
 			<ormtooial:AbstractionModelGenerationSetting id="_93A125B5-363A-454B-A6FC-473B4987BBF7" AlgorithmVersion="1.004">
 				<ormtooial:AbstractionModel ref="_B227B9F1-E66D-4885-9EBB-FA6C30E3AC66" />
 			</ormtooial:AbstractionModelGenerationSetting>
-			<oialtocdb:SchemaGenerationSetting id="_75FDA8E6-2EB8-493D-A6BF-CB382F439713" NameAlgorithmVersion="1.006" CoreAlgorithmVersion="1.003">
+			<oialtocdb:SchemaGenerationSetting id="_75FDA8E6-2EB8-493D-A6BF-CB382F439713" NameAlgorithmVersion="1.007" CoreAlgorithmVersion="1.004">
 				<oialtocdb:Schema ref="_0C507CBC-61D4-4B2D-ACE1-7BED6CF800A3" />
 			</oialtocdb:SchemaGenerationSetting>
 		</orm:GenerationSettings>
@@ -935,7 +935,7 @@
 							<rcd:Column IsNullable="true" Name="d" id="_458FC9F5-012D-4E63-AD0D-B30691E7CFF1" />
 						</rcd:Columns>
 						<rcd:Constraints>
-							<rcd:UniquenessConstraint IsPrimary="true" Name="ExternalUniquenessConstraint1" id="_CF0F810D-FA20-426C-B035-803E693484C1">
+							<rcd:UniquenessConstraint IsPrimary="true" id="_CF0F810D-FA20-426C-B035-803E693484C1" Name="A_PK">
 								<rcd:Columns>
 									<rcd:Column ref="_88212CDF-350D-4525-B7AE-D6DC93E3C289" />
 									<rcd:Column ref="_969D25CF-B8B8-4FBB-8A72-DC8536B7A786" />
@@ -951,7 +951,7 @@
 							<rcd:Column Name="c" id="_8830EE88-94BE-4784-89EA-65F58A59C5CE" />
 						</rcd:Columns>
 						<rcd:Constraints>
-							<rcd:UniquenessConstraint IsPrimary="true" Name="ExternalUniquenessConstraint2" id="_49C9D3FB-7800-4750-9897-5A3730EDDE76">
+							<rcd:UniquenessConstraint IsPrimary="true" id="_49C9D3FB-7800-4750-9897-5A3730EDDE76" Name="E_PK">
 								<rcd:Columns>
 									<rcd:Column ref="_51713070-8E71-4A81-9596-40F56CC87415" />
 									<rcd:Column ref="_8830EE88-94BE-4784-89EA-65F58A59C5CE" />
@@ -976,7 +976,7 @@
 							<rcd:Column id="_8DDC2665-340B-407F-98BB-232E02D6EFCF" Name="c" />
 						</rcd:Columns>
 						<rcd:Constraints>
-							<rcd:UniquenessConstraint IsPrimary="true" Name="InternalUniquenessConstraint8" id="_A87CA5AD-4ABA-4ECE-A591-4EAE73DF731D">
+							<rcd:UniquenessConstraint IsPrimary="true" id="_A87CA5AD-4ABA-4ECE-A591-4EAE73DF731D" Name="I_PK">
 								<rcd:Columns>
 									<rcd:Column ref="_585E8BEC-81A5-4DD5-943D-50485EC0E57F" />
 								</rcd:Columns>
@@ -1000,7 +1000,7 @@
 							<rcd:Column Name="c" id="_625F262E-7DAC-4477-8AF5-314CEC2D7DC9" />
 						</rcd:Columns>
 						<rcd:Constraints>
-							<rcd:UniquenessConstraint IsPrimary="true" Name="InternalUniquenessConstraint13" id="_115CF209-CF4F-43A0-A441-C712ED5B8F25">
+							<rcd:UniquenessConstraint IsPrimary="true" id="_115CF209-CF4F-43A0-A441-C712ED5B8F25" Name="ERG_PK">
 								<rcd:Columns>
 									<rcd:Column ref="_9C28DBCC-419D-4983-9F2F-38E737477460" />
 									<rcd:Column ref="_8D236219-5AA2-4A48-A061-86D1C4C16025" />
@@ -1099,8 +1099,8 @@
 		<oialtocdb:TableIsPrimarilyForConceptType ConceptType="_5889180F-B5C5-41C6-B627-8E0C400D1A70" Table="_FC8D3E36-8171-40A7-ADE6-EBD359469A3A" id="_977558F2-4BC2-42E6-B540-359E6BE3A04A" />
 		<oialtocdb:TableIsPrimarilyForConceptType ConceptType="_5CAA8356-5DA6-49C1-A7D6-6BD8DE7786BA" Table="_93C19EC9-9262-4EAF-B622-D7132E0AF44D" id="_BF750C5F-E8C3-405B-931E-D41257825AF1" />
 		<oialtocdb:UniquenessConstraintIsForUniqueness Uniqueness="_1E83D4B3-5B71-4580-B878-95492E641660" UniquenessConstraint="_CF0F810D-FA20-426C-B035-803E693484C1" id="_2F572370-8E41-442A-BF68-1F7EACBE698B" />
-		<oialtocdb:UniquenessConstraintIsForUniqueness Uniqueness="_8055A9DA-E3AA-4827-952A-F038EB1F0DA9" UniquenessConstraint="_49C9D3FB-7800-4750-9897-5A3730EDDE76" id="_CC7BDC07-6E54-4310-8399-727997DD501C" />
 		<oialtocdb:UniquenessConstraintIsForUniqueness Uniqueness="_03D598BA-BEED-4D4C-A5CE-C293F921637E" UniquenessConstraint="_115CF209-CF4F-43A0-A441-C712ED5B8F25" id="_52CC5ABE-62B3-466E-9F2A-BE92E1FA23A5" />
+		<oialtocdb:UniquenessConstraintIsForUniqueness Uniqueness="_8055A9DA-E3AA-4827-952A-F038EB1F0DA9" UniquenessConstraint="_49C9D3FB-7800-4750-9897-5A3730EDDE76" id="_CC7BDC07-6E54-4310-8399-727997DD501C" />
 		<oialtocdb:UniquenessConstraintIsForUniqueness Uniqueness="_56566C3A-DF6B-440C-807F-A7F103B3EF64" UniquenessConstraint="_A87CA5AD-4ABA-4ECE-A591-4EAE73DF731D" id="_DEFDD941-1116-4AEE-8497-70EB85E002E8" />
 	</oialtocdb:Bridge>
 </ormRoot:ORM2>

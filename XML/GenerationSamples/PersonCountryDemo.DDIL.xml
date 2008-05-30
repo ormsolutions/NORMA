@@ -54,7 +54,7 @@
 		<ddl:columnDefinition name="countryName">
 			<ddt:characterString type="CHARACTER VARYING" length="20" />
 		</ddl:columnDefinition>
-		<ddl:tableConstraintDefinition name="InternalUniquenessConstraint1">
+		<ddl:tableConstraintDefinition name="Person_PK">
 			<ddl:uniqueConstraintDefinition type="PRIMARY KEY">
 				<dep:simpleColumnReference name="personId" />
 			</ddl:uniqueConstraintDefinition>
@@ -70,7 +70,7 @@
 		<ddl:columnDefinition name="regionCode">
 			<ddt:characterString type="CHARACTER" length="8" />
 		</ddl:columnDefinition>
-		<ddl:tableConstraintDefinition name="InternalUniquenessConstraint3">
+		<ddl:tableConstraintDefinition name="Country_PK">
 			<ddl:uniqueConstraintDefinition type="PRIMARY KEY">
 				<dep:simpleColumnReference name="countryName" />
 			</ddl:uniqueConstraintDefinition>

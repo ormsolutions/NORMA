@@ -12987,224 +12987,6 @@
 						</plx:branch>
 					</plx:set>
 				</plx:property>
-				<plx:field visibility="private" readOnly="" name="_DeathPerson_id" />
-				<plx:property visibility="public" modifier="override" name="Death">
-					<plx:returns dataTypeName="Death" />
-					<plx:get>
-						<plx:return>
-							<plx:callInstance type="methodCall" name="GetDeathByPerson_id">
-								<plx:callObject>
-									<plx:callThis accessor="this" type="property" name="Context" />
-								</plx:callObject>
-								<plx:passParam>
-									<plx:callThis accessor="this" type="field" name="_DeathPerson_id" />
-								</plx:passParam>
-							</plx:callInstance>
-						</plx:return>
-					</plx:get>
-					<plx:set>
-						<plx:local name="oldValueDeathPerson_id" dataTypeName="">
-							<plx:initialize>
-								<plx:callThis accessor="this" type="field" name="_DeathPerson_id" />
-							</plx:initialize>
-						</plx:local>
-						<plx:branch>
-							<plx:condition>
-								<plx:binaryOperator type="inequality">
-									<plx:left>
-										<plx:nameRef type="local" name="oldValueDeathPerson_id" />
-									</plx:left>
-									<plx:right>
-										<plx:callInstance name="Person_id" type="property">
-											<plx:callObject>
-												<plx:valueKeyword />
-											</plx:callObject>
-										</plx:callInstance>
-									</plx:right>
-								</plx:binaryOperator>
-							</plx:condition>
-							<plx:branch>
-								<plx:condition>
-									<plx:callThis accessor="base" type="methodCall" name="OnDeathChanging">
-										<plx:passParam>
-											<plx:valueKeyword />
-										</plx:passParam>
-									</plx:callThis>
-								</plx:condition>
-								<plx:local name="command" dataTypeName="IDbCommand">
-									<plx:initialize>
-										<plx:callInstance type="methodCall" name="CreateCommand">
-											<plx:callObject>
-												<plx:callInstance type="methodCall" name="GetConnection">
-													<plx:callObject>
-														<plx:callThis type="property" accessor="this" name="Context" />
-													</plx:callObject>
-												</plx:callInstance>
-											</plx:callObject>
-										</plx:callInstance>
-									</plx:initialize>
-								</plx:local>
-								<plx:assign>
-									<plx:left>
-										<plx:callInstance type="property" name="CommandType">
-											<plx:callObject>
-												<plx:nameRef type="local" name="command" />
-											</plx:callObject>
-										</plx:callInstance>
-									</plx:left>
-									<plx:right>
-										<plx:callStatic type="field" name="Text" dataTypeName="CommandType" />
-									</plx:right>
-								</plx:assign>
-								<plx:assign>
-									<plx:left>
-										<plx:callInstance type="property" name="CommandText">
-											<plx:callObject>
-												<plx:nameRef type="local" name="command" />
-											</plx:callObject>
-										</plx:callInstance>
-									</plx:left>
-									<plx:right>
-										<plx:string>UPDATE SampleModel.Person SET Death_Person_id = @NewDeathPerson_id WHERE </plx:string>
-									</plx:right>
-								</plx:assign>
-								<plx:local name="parameterNewDeathPerson_id" dataTypeName="IDataParameter">
-									<plx:initialize>
-										<plx:callInstance name="CreateParameter" type="methodCall">
-											<plx:callObject>
-												<plx:nameRef name="command" />
-											</plx:callObject>
-										</plx:callInstance>
-									</plx:initialize>
-								</plx:local>
-								<plx:assign>
-									<plx:left>
-										<plx:callInstance name="ParameterName" type="property">
-											<plx:callObject>
-												<plx:nameRef name="parameterNewDeathPerson_id" />
-											</plx:callObject>
-										</plx:callInstance>
-									</plx:left>
-									<plx:right>
-										<plx:string>NewDeathPerson_id</plx:string>
-									</plx:right>
-								</plx:assign>
-								<plx:assign>
-									<plx:left>
-										<plx:callInstance name="Value" type="property">
-											<plx:callObject>
-												<plx:nameRef name="parameterNewDeathPerson_id" />
-											</plx:callObject>
-										</plx:callInstance>
-									</plx:left>
-									<plx:right>
-										<plx:callInstance type="property" name="Person_id">
-											<plx:callObject>
-												<plx:valueKeyword />
-											</plx:callObject>
-										</plx:callInstance>
-									</plx:right>
-								</plx:assign>
-								<plx:callInstance name="Add" type="methodCall">
-									<plx:callObject>
-										<plx:callInstance name="Parameters" type="property">
-											<plx:callObject>
-												<plx:nameRef name="command" />
-											</plx:callObject>
-										</plx:callInstance>
-									</plx:callObject>
-									<plx:passParam>
-										<plx:nameRef name="parameterNewDeathPerson_id" type="local" />
-									</plx:passParam>
-								</plx:callInstance>
-								<plx:branch>
-									<plx:condition>
-										<plx:binaryOperator type="inequality">
-											<plx:left>
-												<plx:callInstance name="State" type="property">
-													<plx:callObject>
-														<plx:callInstance name="Connection" type="property">
-															<plx:callObject>
-																<plx:nameRef name="command" type="local" />
-															</plx:callObject>
-														</plx:callInstance>
-													</plx:callObject>
-												</plx:callInstance>
-											</plx:left>
-											<plx:right>
-												<plx:callStatic name="Open" dataTypeName="ConnectionState" type="property" />
-											</plx:right>
-										</plx:binaryOperator>
-									</plx:condition>
-									<plx:callInstance name="Open" type="methodCall">
-										<plx:callObject>
-											<plx:callInstance name="Connection" type="property">
-												<plx:callObject>
-													<plx:nameRef name="command" type="local" />
-												</plx:callObject>
-											</plx:callInstance>
-										</plx:callObject>
-									</plx:callInstance>
-								</plx:branch>
-								<plx:try>
-									<plx:callInstance type="methodCall" name="ExecuteNonQuery">
-										<plx:callObject>
-											<plx:nameRef type="local" name="command" />
-										</plx:callObject>
-									</plx:callInstance>
-									<plx:assign>
-										<plx:left>
-											<plx:callThis accessor="this" type="field" name="_DeathPerson_id" />
-										</plx:left>
-										<plx:right>
-											<plx:callInstance name="Person_id" type="property">
-												<plx:callObject>
-													<plx:valueKeyword />
-												</plx:callObject>
-											</plx:callInstance>
-										</plx:right>
-									</plx:assign>
-									<plx:finally>
-										<plx:branch>
-											<plx:condition>
-												<plx:binaryOperator type="equality">
-													<plx:left>
-														<plx:callInstance name="State" type="property">
-															<plx:callObject>
-																<plx:callInstance name="Connection" type="property">
-																	<plx:callObject>
-																		<plx:nameRef name="command" type="local" />
-																	</plx:callObject>
-																</plx:callInstance>
-															</plx:callObject>
-														</plx:callInstance>
-													</plx:left>
-													<plx:right>
-														<plx:callStatic name="Open" dataTypeName="ConnectionState" type="field" />
-													</plx:right>
-												</plx:binaryOperator>
-											</plx:condition>
-											<plx:callInstance name="Close" type="methodCall">
-												<plx:callObject>
-													<plx:callInstance name="Connection" type="property">
-														<plx:callObject>
-															<plx:nameRef name="command" type="local" />
-														</plx:callObject>
-													</plx:callInstance>
-												</plx:callObject>
-											</plx:callInstance>
-										</plx:branch>
-										<plx:callInstance name="Dispose" type="methodCall">
-											<plx:callObject>
-												<plx:nameRef name="command" type="local" />
-											</plx:callObject>
-										</plx:callInstance>
-									</plx:finally>
-								</plx:try>
-							</plx:branch>
-						</plx:branch>
-					</plx:set>
-				</plx:property>
 				<plx:property visibility="public" modifier="override" name="PersonDrivesCarViaDrivenByPersonCollection">
 					<plx:returns dataTypeName="IEnumerable">
 						<plx:passTypeParam dataTypeName="PersonDrivesCar" />
@@ -14334,1471 +14116,6 @@
 							</plx:callNew>
 						</plx:return>
 					</plx:get>
-				</plx:property>
-			</plx:class>
-			<plx:function visibility="public" name="CreateDeath">
-				<plx:leadingInfo>
-					<plx:pragma type="region" data="Death" />
-				</plx:leadingInfo>
-				<plx:interfaceMember memberName="CreateDeath" dataTypeName="ISampleModelContext" />
-				<plx:param name="DeathCause_DeathCause_Type" dataTypeName=".string" />
-				<plx:param name="isDead" dataTypeName=".boolean" />
-				<plx:param name="Person" dataTypeName="Person" />
-				<plx:returns dataTypeName="Death" />
-				<plx:branch>
-					<plx:condition>
-						<plx:binaryOperator type="identityEquality">
-							<plx:left>
-								<plx:cast type="exceptionCast" dataTypeName=".object">
-									<plx:nameRef type="parameter" name="DeathCause_DeathCause_Type" />
-								</plx:cast>
-							</plx:left>
-							<plx:right>
-								<plx:nullKeyword />
-							</plx:right>
-						</plx:binaryOperator>
-					</plx:condition>
-					<plx:throw>
-						<plx:callNew dataTypeName="ArgumentNullException">
-							<plx:passParam>
-								<plx:string>DeathCause_DeathCause_Type</plx:string>
-							</plx:passParam>
-						</plx:callNew>
-					</plx:throw>
-				</plx:branch>
-				<plx:branch>
-					<plx:condition>
-						<plx:binaryOperator type="identityEquality">
-							<plx:left>
-								<plx:cast type="exceptionCast" dataTypeName=".object">
-									<plx:nameRef type="parameter" name="Person" />
-								</plx:cast>
-							</plx:left>
-							<plx:right>
-								<plx:nullKeyword />
-							</plx:right>
-						</plx:binaryOperator>
-					</plx:condition>
-					<plx:throw>
-						<plx:callNew dataTypeName="ArgumentNullException">
-							<plx:passParam>
-								<plx:string>Person</plx:string>
-							</plx:passParam>
-						</plx:callNew>
-					</plx:throw>
-				</plx:branch>
-				<plx:local name="command" dataTypeName="IDbCommand">
-					<plx:initialize>
-						<plx:callInstance type="methodCall" name="CreateCommand">
-							<plx:callObject>
-								<plx:callThis type="methodCall" accessor="this" name="GetConnection" />
-							</plx:callObject>
-						</plx:callInstance>
-					</plx:initialize>
-				</plx:local>
-				<plx:assign>
-					<plx:left>
-						<plx:callInstance type="property" name="CommandType">
-							<plx:callObject>
-								<plx:nameRef type="local" name="command" />
-							</plx:callObject>
-						</plx:callInstance>
-					</plx:left>
-					<plx:right>
-						<plx:callStatic type="field" name="Text" dataTypeName="CommandType" />
-					</plx:right>
-				</plx:assign>
-				<plx:assign>
-					<plx:left>
-						<plx:callInstance name="CommandText" type="property">
-							<plx:callObject>
-								<plx:nameRef name="command" type="local" />
-							</plx:callObject>
-						</plx:callInstance>
-					</plx:left>
-					<plx:right>
-						<plx:string>
-							<plx:string>INSERT INTO SampleModel.Person (DeathCause_DeathCause_Type, isDead, Person_Person_id) VALUES (@DeathCause_DeathCause_Type, @isDead, @PersonPerson_id)</plx:string>
-						</plx:string>
-					</plx:right>
-				</plx:assign>
-				<plx:local name="parameterDeathCause_DeathCause_Type" dataTypeName="IDataParameter">
-					<plx:initialize>
-						<plx:callInstance name="CreateParameter" type="methodCall">
-							<plx:callObject>
-								<plx:nameRef name="command" />
-							</plx:callObject>
-						</plx:callInstance>
-					</plx:initialize>
-				</plx:local>
-				<plx:assign>
-					<plx:left>
-						<plx:callInstance name="ParameterName" type="property">
-							<plx:callObject>
-								<plx:nameRef name="parameterDeathCause_DeathCause_Type" />
-							</plx:callObject>
-						</plx:callInstance>
-					</plx:left>
-					<plx:right>
-						<plx:string>DeathCause_DeathCause_Type</plx:string>
-					</plx:right>
-				</plx:assign>
-				<plx:assign>
-					<plx:left>
-						<plx:callInstance name="Value" type="property">
-							<plx:callObject>
-								<plx:nameRef name="parameterDeathCause_DeathCause_Type" />
-							</plx:callObject>
-						</plx:callInstance>
-					</plx:left>
-					<plx:right>
-						<plx:nameRef type="parameter" name="DeathCause_DeathCause_Type" />
-					</plx:right>
-				</plx:assign>
-				<plx:callInstance name="Add" type="methodCall">
-					<plx:callObject>
-						<plx:callInstance name="Parameters" type="property">
-							<plx:callObject>
-								<plx:nameRef name="command" />
-							</plx:callObject>
-						</plx:callInstance>
-					</plx:callObject>
-					<plx:passParam>
-						<plx:nameRef name="parameterDeathCause_DeathCause_Type" type="local" />
-					</plx:passParam>
-				</plx:callInstance>
-				<plx:local name="parameterisDead" dataTypeName="IDataParameter">
-					<plx:initialize>
-						<plx:callInstance name="CreateParameter" type="methodCall">
-							<plx:callObject>
-								<plx:nameRef name="command" />
-							</plx:callObject>
-						</plx:callInstance>
-					</plx:initialize>
-				</plx:local>
-				<plx:assign>
-					<plx:left>
-						<plx:callInstance name="ParameterName" type="property">
-							<plx:callObject>
-								<plx:nameRef name="parameterisDead" />
-							</plx:callObject>
-						</plx:callInstance>
-					</plx:left>
-					<plx:right>
-						<plx:string>isDead</plx:string>
-					</plx:right>
-				</plx:assign>
-				<plx:assign>
-					<plx:left>
-						<plx:callInstance name="Value" type="property">
-							<plx:callObject>
-								<plx:nameRef name="parameterisDead" />
-							</plx:callObject>
-						</plx:callInstance>
-					</plx:left>
-					<plx:right>
-						<plx:nameRef type="parameter" name="isDead" />
-					</plx:right>
-				</plx:assign>
-				<plx:callInstance name="Add" type="methodCall">
-					<plx:callObject>
-						<plx:callInstance name="Parameters" type="property">
-							<plx:callObject>
-								<plx:nameRef name="command" />
-							</plx:callObject>
-						</plx:callInstance>
-					</plx:callObject>
-					<plx:passParam>
-						<plx:nameRef name="parameterisDead" type="local" />
-					</plx:passParam>
-				</plx:callInstance>
-				<plx:local name="parameterPersonPerson_id" dataTypeName="IDataParameter">
-					<plx:initialize>
-						<plx:callInstance name="CreateParameter" type="methodCall">
-							<plx:callObject>
-								<plx:nameRef name="command" />
-							</plx:callObject>
-						</plx:callInstance>
-					</plx:initialize>
-				</plx:local>
-				<plx:assign>
-					<plx:left>
-						<plx:callInstance name="ParameterName" type="property">
-							<plx:callObject>
-								<plx:nameRef name="parameterPersonPerson_id" />
-							</plx:callObject>
-						</plx:callInstance>
-					</plx:left>
-					<plx:right>
-						<plx:string>PersonPerson_id</plx:string>
-					</plx:right>
-				</plx:assign>
-				<plx:assign>
-					<plx:left>
-						<plx:callInstance name="Value" type="property">
-							<plx:callObject>
-								<plx:nameRef name="parameterPersonPerson_id" />
-							</plx:callObject>
-						</plx:callInstance>
-					</plx:left>
-					<plx:right>
-						<plx:callInstance name="Person_id" type="property">
-							<plx:callObject>
-								<plx:nameRef type="parameter" name="Person" />
-							</plx:callObject>
-						</plx:callInstance>
-					</plx:right>
-				</plx:assign>
-				<plx:callInstance name="Add" type="methodCall">
-					<plx:callObject>
-						<plx:callInstance name="Parameters" type="property">
-							<plx:callObject>
-								<plx:nameRef name="command" />
-							</plx:callObject>
-						</plx:callInstance>
-					</plx:callObject>
-					<plx:passParam>
-						<plx:nameRef name="parameterPersonPerson_id" type="local" />
-					</plx:passParam>
-				</plx:callInstance>
-				<plx:try>
-					<plx:branch>
-						<plx:condition>
-							<plx:binaryOperator type="inequality">
-								<plx:left>
-									<plx:callInstance name="State" type="property">
-										<plx:callObject>
-											<plx:callInstance name="Connection" type="property">
-												<plx:callObject>
-													<plx:nameRef name="command" type="local" />
-												</plx:callObject>
-											</plx:callInstance>
-										</plx:callObject>
-									</plx:callInstance>
-								</plx:left>
-								<plx:right>
-									<plx:callStatic type="field" dataTypeName="ConnectionState" name="Open" />
-								</plx:right>
-							</plx:binaryOperator>
-						</plx:condition>
-						<plx:callInstance name="Open" type="methodCall">
-							<plx:callObject>
-								<plx:callInstance name="Connection" type="property">
-									<plx:callObject>
-										<plx:nameRef name="command" type="local" />
-									</plx:callObject>
-								</plx:callInstance>
-							</plx:callObject>
-						</plx:callInstance>
-					</plx:branch>
-					<plx:local name="identity" dataTypeName=".object">
-						<plx:initialize>
-							<plx:callInstance name="ExecuteScalar" type="methodCall">
-								<plx:callObject>
-									<plx:nameRef name="command" type="local" />
-								</plx:callObject>
-							</plx:callInstance>
-						</plx:initialize>
-					</plx:local>
-					<plx:return>
-						<plx:callNew dataTypeName="DeathCore" type="new">
-							<plx:passParam>
-								<plx:thisKeyword />
-							</plx:passParam>
-							<plx:passParam>
-								<plx:nameRef name="DeathCause_DeathCause_Type" type="parameter" />
-							</plx:passParam>
-							<plx:passParam>
-								<plx:nameRef name="isDead" type="parameter" />
-							</plx:passParam>
-							<plx:passParam>
-								<plx:callInstance name="Person_id" type="property">
-									<plx:callObject>
-										<plx:nameRef name="Person" type="parameter" />
-									</plx:callObject>
-								</plx:callInstance>
-							</plx:passParam>
-						</plx:callNew>
-					</plx:return>
-					<plx:finally>
-						<plx:branch>
-							<plx:condition>
-								<plx:binaryOperator type="equality">
-									<plx:left>
-										<plx:callInstance name="State" type="property">
-											<plx:callObject>
-												<plx:callInstance name="Connection" type="property">
-													<plx:callObject>
-														<plx:nameRef name="command" type="local" />
-													</plx:callObject>
-												</plx:callInstance>
-											</plx:callObject>
-										</plx:callInstance>
-									</plx:left>
-									<plx:right>
-										<plx:callStatic name="Open" dataTypeName="ConnectionState" type="field" />
-									</plx:right>
-								</plx:binaryOperator>
-							</plx:condition>
-							<plx:callInstance name="Close" type="methodCall">
-								<plx:callObject>
-									<plx:callInstance name="Connection" type="property">
-										<plx:callObject>
-											<plx:nameRef name="command" type="local" />
-										</plx:callObject>
-									</plx:callInstance>
-								</plx:callObject>
-							</plx:callInstance>
-						</plx:branch>
-						<plx:callInstance name="Dispose" type="methodCall">
-							<plx:callObject>
-								<plx:nameRef name="command" type="local" />
-							</plx:callObject>
-						</plx:callInstance>
-					</plx:finally>
-				</plx:try>
-			</plx:function>
-			<plx:property visibility="public" name="DeathCollection">
-				<plx:interfaceMember memberName="DeathCollection" dataTypeName="ISampleModelContext" />
-				<plx:returns dataTypeName="IEnumerable">
-					<plx:passTypeParam dataTypeName="Death" />
-				</plx:returns>
-				<plx:get>
-					<plx:local name="command" dataTypeName="IDbCommand">
-						<plx:initialize>
-							<plx:callInstance name="CreateCommand" type="methodCall">
-								<plx:callObject>
-									<plx:callThis type="methodCall" accessor="this" name="GetConnection" />
-								</plx:callObject>
-							</plx:callInstance>
-						</plx:initialize>
-					</plx:local>
-					<plx:assign>
-						<plx:left>
-							<plx:callInstance type="property" name="CommandType">
-								<plx:callObject>
-									<plx:nameRef type="local" name="command" />
-								</plx:callObject>
-							</plx:callInstance>
-						</plx:left>
-						<plx:right>
-							<plx:callStatic type="field" name="Text" dataTypeName="CommandType" />
-						</plx:right>
-					</plx:assign>
-					<plx:assign>
-						<plx:left>
-							<plx:callInstance name="CommandText" type="property">
-								<plx:callObject>
-									<plx:nameRef name="command" type="local" />
-								</plx:callObject>
-							</plx:callInstance>
-						</plx:left>
-						<plx:right>
-							<plx:string>SELECT * FROM SampleModel.Death</plx:string>
-						</plx:right>
-					</plx:assign>
-					<plx:branch>
-						<plx:condition>
-							<plx:binaryOperator type="inequality">
-								<plx:left>
-									<plx:callInstance name="State" type="property">
-										<plx:callObject>
-											<plx:callInstance name="Connection" type="property">
-												<plx:callObject>
-													<plx:nameRef name="command" type="local" />
-												</plx:callObject>
-											</plx:callInstance>
-										</plx:callObject>
-									</plx:callInstance>
-								</plx:left>
-								<plx:right>
-									<plx:callStatic name="Open" dataTypeName="ConnectionState" type="field" />
-								</plx:right>
-							</plx:binaryOperator>
-						</plx:condition>
-						<plx:callInstance name="Open" type="methodCall">
-							<plx:callObject>
-								<plx:callInstance name="Connection" type="property">
-									<plx:callObject>
-										<plx:nameRef name="command" type="local" />
-									</plx:callObject>
-								</plx:callInstance>
-							</plx:callObject>
-						</plx:callInstance>
-					</plx:branch>
-					<plx:return>
-						<plx:callNew dataTypeName="DataReaderEnumerator" type="new">
-							<plx:passTypeParam dataTypeName="Death" />
-							<plx:passParam>
-								<plx:callInstance name="ExecuteReader" type="methodCall">
-									<plx:callObject>
-										<plx:nameRef name="command" type="local" />
-									</plx:callObject>
-									<plx:passParam>
-										<plx:binaryOperator type="bitwiseOr">
-											<plx:left>
-												<plx:callStatic name="SingleResult" dataTypeName="CommandBehavior" type="field" />
-											</plx:left>
-											<plx:right>
-												<plx:callStatic name="CloseConnection" dataTypeName="CommandBehavior" type="field" />
-											</plx:right>
-										</plx:binaryOperator>
-									</plx:passParam>
-								</plx:callInstance>
-							</plx:passParam>
-							<plx:passParam>
-								<plx:callNew dataTypeName="CreateCallback" type="new">
-									<plx:passTypeParam dataTypeName="Death" />
-									<plx:passParam>
-										<plx:callThis name="CreateDeath" accessor="this" type="methodReference" />
-									</plx:passParam>
-								</plx:callNew>
-							</plx:passParam>
-						</plx:callNew>
-					</plx:return>
-				</plx:get>
-			</plx:property>
-			<plx:function name="CreateDeath" visibility="private">
-				<plx:param name="reader" dataTypeName="IDataReader" />
-				<plx:returns dataTypeName="Death" />
-				<plx:local name="ordinalDeathCause_DeathCause_Type" dataTypeName=".i4">
-					<plx:initialize>
-						<plx:callInstance name="GetOrdinal" type="methodCall">
-							<plx:callObject>
-								<plx:nameRef name="reader" type="parameter" />
-							</plx:callObject>
-							<plx:passParam>
-								<plx:string>DeathCause_DeathCause_Type</plx:string>
-							</plx:passParam>
-						</plx:callInstance>
-					</plx:initialize>
-				</plx:local>
-				<plx:local name="ordinalisDead" dataTypeName=".i4">
-					<plx:initialize>
-						<plx:callInstance name="GetOrdinal" type="methodCall">
-							<plx:callObject>
-								<plx:nameRef name="reader" type="parameter" />
-							</plx:callObject>
-							<plx:passParam>
-								<plx:string>isDead</plx:string>
-							</plx:passParam>
-						</plx:callInstance>
-					</plx:initialize>
-				</plx:local>
-				<plx:local name="ordinalPersonPerson_id" dataTypeName=".i4">
-					<plx:initialize>
-						<plx:callInstance name="GetOrdinal" type="methodCall">
-							<plx:callObject>
-								<plx:nameRef name="reader" type="parameter" />
-							</plx:callObject>
-							<plx:passParam>
-								<plx:string>Person_Person_id</plx:string>
-							</plx:passParam>
-						</plx:callInstance>
-					</plx:initialize>
-				</plx:local>
-				<plx:return>
-					<plx:callNew dataTypeName="DeathCore">
-						<plx:passParam>
-							<plx:thisKeyword />
-						</plx:passParam>
-						<plx:passParam>
-							<plx:callInstance type="methodCall" name="GetString">
-								<plx:callObject>
-									<plx:nameRef name="reader" />
-								</plx:callObject>
-								<plx:passParam>
-									<plx:nameRef name="ordinalDeathCause_DeathCause_Type" />
-								</plx:passParam>
-							</plx:callInstance>
-						</plx:passParam>
-						<plx:passParam>
-							<plx:callInstance type="methodCall" name="GetBoolean">
-								<plx:callObject>
-									<plx:nameRef name="reader" />
-								</plx:callObject>
-								<plx:passParam>
-									<plx:nameRef name="ordinalisDead" />
-								</plx:passParam>
-							</plx:callInstance>
-						</plx:passParam>
-						<plx:passParam>
-							<plx:callInstance type="methodCall" name="">
-								<plx:callObject>
-									<plx:nameRef name="reader" />
-								</plx:callObject>
-								<plx:passParam>
-									<plx:nameRef name="ordinalPersonPerson_id" />
-								</plx:passParam>
-							</plx:callInstance>
-						</plx:passParam>
-					</plx:callNew>
-				</plx:return>
-			</plx:function>
-			<plx:class visibility="private" modifier="sealed" name="DeathCore">
-				<plx:leadingInfo>
-					<plx:pragma type="region" data="DeathCore" />
-				</plx:leadingInfo>
-				<plx:trailingInfo>
-					<plx:pragma type="closeRegion" data="DeathCore" />
-					<plx:pragma type="closeRegion" data="Death" />
-				</plx:trailingInfo>
-				<plx:attribute dataTypeName="StructLayoutAttribute" dataTypeQualifier="System.Runtime.InteropServices">
-					<plx:passParam>
-						<plx:callStatic type="field" name="Auto" dataTypeName="LayoutKind" dataTypeQualifier="System.Runtime.InteropServices" />
-					</plx:passParam>
-					<plx:passParam>
-						<plx:binaryOperator type="assignNamed">
-							<plx:left>
-								<plx:nameRef type="namedParameter" name="CharSet" />
-							</plx:left>
-							<plx:right>
-								<plx:callStatic type="field" name="Auto" dataTypeName="CharSet" dataTypeQualifier="System.Runtime.InteropServices" />
-							</plx:right>
-						</plx:binaryOperator>
-					</plx:passParam>
-				</plx:attribute>
-				<plx:derivesFromClass dataTypeName="Death" />
-				<plx:function visibility="public" name=".construct">
-					<plx:param name="context" dataTypeName="SampleModelContext" />
-					<plx:param name="DeathCause_DeathCause_Type" dataTypeName=".string" />
-					<plx:param name="isDead" dataTypeName=".boolean" />
-					<plx:param name="PersonPerson_id" />
-					<plx:assign>
-						<plx:left>
-							<plx:callThis accessor="this" type="field" name="_Context" />
-						</plx:left>
-						<plx:right>
-							<plx:nameRef type="parameter" name="context" />
-						</plx:right>
-					</plx:assign>
-					<plx:assign>
-						<plx:left>
-							<plx:callThis accessor="this" type="field" name="_DeathCause_DeathCause_Type" />
-						</plx:left>
-						<plx:right>
-							<plx:nameRef type="parameter" name="DeathCause_DeathCause_Type" />
-						</plx:right>
-					</plx:assign>
-					<plx:assign>
-						<plx:left>
-							<plx:callThis accessor="this" type="field" name="_isDead" />
-						</plx:left>
-						<plx:right>
-							<plx:nameRef type="parameter" name="isDead" />
-						</plx:right>
-					</plx:assign>
-					<plx:assign>
-						<plx:left>
-							<plx:callThis accessor="this" type="field" name="_PersonPerson_id" />
-						</plx:left>
-						<plx:right>
-							<plx:nameRef type="parameter" name="PersonPerson_id" />
-						</plx:right>
-					</plx:assign>
-				</plx:function>
-				<plx:field visibility="private" readOnly="true" name="_Context" dataTypeName="SampleModelContext" />
-				<plx:property visibility="public" modifier="override" name="Context">
-					<plx:returns dataTypeName="SampleModelContext" />
-					<plx:get>
-						<plx:return>
-							<plx:callThis accessor="this" type="field" name="_Context" />
-						</plx:return>
-					</plx:get>
-				</plx:property>
-				<plx:field visibility="private" readOnly="false" name="_Date_YMD" dataTypeName="Nullable">
-					<plx:passTypeParam dataTypeName=".i4" />
-				</plx:field>
-				<plx:property visibility="public" modifier="override" name="Date_YMD">
-					<plx:returns dataTypeName="Nullable">
-						<plx:passTypeParam dataTypeName=".i4" />
-					</plx:returns>
-					<plx:get>
-						<plx:return>
-							<plx:callThis accessor="this" type="field" name="_Date_YMD" />
-						</plx:return>
-					</plx:get>
-					<plx:set>
-						<plx:local name="oldValue" dataTypeName="Nullable">
-							<plx:passTypeParam dataTypeName=".i4" />
-							<plx:initialize>
-								<plx:callThis accessor="this" type="field" name="_Date_YMD" />
-							</plx:initialize>
-						</plx:local>
-						<plx:branch>
-							<plx:condition>
-								<plx:binaryOperator type="booleanOr">
-									<plx:left>
-										<plx:binaryOperator type="inequality">
-											<plx:left>
-												<plx:callInstance type="methodCall" name="GetValueOrDefault">
-													<plx:callObject>
-														<plx:nameRef type="local" name="oldValue" />
-													</plx:callObject>
-												</plx:callInstance>
-											</plx:left>
-											<plx:right>
-												<plx:callInstance type="methodCall" name="GetValueOrDefault">
-													<plx:callObject>
-														<plx:valueKeyword />
-													</plx:callObject>
-												</plx:callInstance>
-											</plx:right>
-										</plx:binaryOperator>
-									</plx:left>
-									<plx:right>
-										<plx:binaryOperator type="inequality">
-											<plx:left>
-												<plx:callInstance type="property" name="HasValue">
-													<plx:callObject>
-														<plx:nameRef type="local" name="oldValue" />
-													</plx:callObject>
-												</plx:callInstance>
-											</plx:left>
-											<plx:right>
-												<plx:callInstance type="property" name="HasValue">
-													<plx:callObject>
-														<plx:valueKeyword />
-													</plx:callObject>
-												</plx:callInstance>
-											</plx:right>
-										</plx:binaryOperator>
-									</plx:right>
-								</plx:binaryOperator>
-							</plx:condition>
-							<plx:branch>
-								<plx:condition>
-									<plx:callThis accessor="base" type="methodCall" name="OnDate_YMDChanging">
-										<plx:passParam>
-											<plx:valueKeyword />
-										</plx:passParam>
-									</plx:callThis>
-								</plx:condition>
-								<plx:local name="command" dataTypeName="IDbCommand">
-									<plx:initialize>
-										<plx:callInstance type="methodCall" name="CreateCommand">
-											<plx:callObject>
-												<plx:callInstance type="methodCall" name="GetConnection">
-													<plx:callObject>
-														<plx:callThis type="property" accessor="this" name="Context" />
-													</plx:callObject>
-												</plx:callInstance>
-											</plx:callObject>
-										</plx:callInstance>
-									</plx:initialize>
-								</plx:local>
-								<plx:assign>
-									<plx:left>
-										<plx:callInstance type="property" name="CommandType">
-											<plx:callObject>
-												<plx:nameRef type="local" name="command" />
-											</plx:callObject>
-										</plx:callInstance>
-									</plx:left>
-									<plx:right>
-										<plx:callStatic type="field" name="Text" dataTypeName="CommandType" />
-									</plx:right>
-								</plx:assign>
-								<plx:assign>
-									<plx:left>
-										<plx:callInstance type="property" name="CommandText">
-											<plx:callObject>
-												<plx:nameRef type="local" name="command" />
-											</plx:callObject>
-										</plx:callInstance>
-									</plx:left>
-									<plx:right>
-										<plx:string>UPDATE SampleModel.Death SET Date_YMD = @NewDate_YMD WHERE </plx:string>
-									</plx:right>
-								</plx:assign>
-								<plx:local name="parameterNewDate_YMD" dataTypeName="IDataParameter">
-									<plx:initialize>
-										<plx:callInstance name="CreateParameter" type="methodCall">
-											<plx:callObject>
-												<plx:nameRef name="command" />
-											</plx:callObject>
-										</plx:callInstance>
-									</plx:initialize>
-								</plx:local>
-								<plx:assign>
-									<plx:left>
-										<plx:callInstance name="ParameterName" type="property">
-											<plx:callObject>
-												<plx:nameRef name="parameterNewDate_YMD" />
-											</plx:callObject>
-										</plx:callInstance>
-									</plx:left>
-									<plx:right>
-										<plx:string>NewDate_YMD</plx:string>
-									</plx:right>
-								</plx:assign>
-								<plx:assign>
-									<plx:left>
-										<plx:callInstance name="Value" type="property">
-											<plx:callObject>
-												<plx:nameRef name="parameterNewDate_YMD" />
-											</plx:callObject>
-										</plx:callInstance>
-									</plx:left>
-									<plx:right>
-										<plx:valueKeyword />
-									</plx:right>
-								</plx:assign>
-								<plx:callInstance name="Add" type="methodCall">
-									<plx:callObject>
-										<plx:callInstance name="Parameters" type="property">
-											<plx:callObject>
-												<plx:nameRef name="command" />
-											</plx:callObject>
-										</plx:callInstance>
-									</plx:callObject>
-									<plx:passParam>
-										<plx:nameRef name="parameterNewDate_YMD" type="local" />
-									</plx:passParam>
-								</plx:callInstance>
-								<plx:branch>
-									<plx:condition>
-										<plx:binaryOperator type="inequality">
-											<plx:left>
-												<plx:callInstance name="State" type="property">
-													<plx:callObject>
-														<plx:callInstance name="Connection" type="property">
-															<plx:callObject>
-																<plx:nameRef name="command" type="local" />
-															</plx:callObject>
-														</plx:callInstance>
-													</plx:callObject>
-												</plx:callInstance>
-											</plx:left>
-											<plx:right>
-												<plx:callStatic name="Open" dataTypeName="ConnectionState" type="property" />
-											</plx:right>
-										</plx:binaryOperator>
-									</plx:condition>
-									<plx:callInstance name="Open" type="methodCall">
-										<plx:callObject>
-											<plx:callInstance name="Connection" type="property">
-												<plx:callObject>
-													<plx:nameRef name="command" type="local" />
-												</plx:callObject>
-											</plx:callInstance>
-										</plx:callObject>
-									</plx:callInstance>
-								</plx:branch>
-								<plx:try>
-									<plx:callInstance type="methodCall" name="ExecuteNonQuery">
-										<plx:callObject>
-											<plx:nameRef type="local" name="command" />
-										</plx:callObject>
-									</plx:callInstance>
-									<plx:assign>
-										<plx:left>
-											<plx:callThis accessor="this" type="field" name="_Date_YMD" />
-										</plx:left>
-										<plx:right>
-											<plx:valueKeyword />
-										</plx:right>
-									</plx:assign>
-									<plx:finally>
-										<plx:branch>
-											<plx:condition>
-												<plx:binaryOperator type="equality">
-													<plx:left>
-														<plx:callInstance name="State" type="property">
-															<plx:callObject>
-																<plx:callInstance name="Connection" type="property">
-																	<plx:callObject>
-																		<plx:nameRef name="command" type="local" />
-																	</plx:callObject>
-																</plx:callInstance>
-															</plx:callObject>
-														</plx:callInstance>
-													</plx:left>
-													<plx:right>
-														<plx:callStatic name="Open" dataTypeName="ConnectionState" type="field" />
-													</plx:right>
-												</plx:binaryOperator>
-											</plx:condition>
-											<plx:callInstance name="Close" type="methodCall">
-												<plx:callObject>
-													<plx:callInstance name="Connection" type="property">
-														<plx:callObject>
-															<plx:nameRef name="command" type="local" />
-														</plx:callObject>
-													</plx:callInstance>
-												</plx:callObject>
-											</plx:callInstance>
-										</plx:branch>
-										<plx:callInstance name="Dispose" type="methodCall">
-											<plx:callObject>
-												<plx:nameRef name="command" type="local" />
-											</plx:callObject>
-										</plx:callInstance>
-									</plx:finally>
-								</plx:try>
-							</plx:branch>
-						</plx:branch>
-					</plx:set>
-				</plx:property>
-				<plx:field visibility="private" readOnly="false" name="_DeathCause_DeathCause_Type" dataTypeName=".string" />
-				<plx:property visibility="public" modifier="override" name="DeathCause_DeathCause_Type">
-					<plx:returns dataTypeName=".string" />
-					<plx:get>
-						<plx:return>
-							<plx:callThis accessor="this" type="field" name="_DeathCause_DeathCause_Type" />
-						</plx:return>
-					</plx:get>
-					<plx:set>
-						<plx:branch>
-							<plx:condition>
-								<plx:binaryOperator type="identityEquality">
-									<plx:left>
-										<plx:cast type="exceptionCast" dataTypeName=".object">
-											<plx:valueKeyword />
-										</plx:cast>
-									</plx:left>
-									<plx:right>
-										<plx:nullKeyword />
-									</plx:right>
-								</plx:binaryOperator>
-							</plx:condition>
-							<plx:throw>
-								<plx:callNew dataTypeName="ArgumentNullException">
-									<plx:passParam>
-										<plx:string>value</plx:string>
-									</plx:passParam>
-								</plx:callNew>
-							</plx:throw>
-						</plx:branch>
-						<plx:local name="oldValue" dataTypeName=".string">
-							<plx:initialize>
-								<plx:callThis accessor="this" type="field" name="_DeathCause_DeathCause_Type" />
-							</plx:initialize>
-						</plx:local>
-						<plx:branch>
-							<plx:condition>
-								<plx:unaryOperator type="booleanNot">
-									<plx:callStatic type="methodCall" name="Equals" dataTypeName=".object">
-										<plx:passParam>
-											<plx:nameRef type="local" name="oldValue" />
-										</plx:passParam>
-										<plx:passParam>
-											<plx:valueKeyword />
-										</plx:passParam>
-									</plx:callStatic>
-								</plx:unaryOperator>
-							</plx:condition>
-							<plx:branch>
-								<plx:condition>
-									<plx:callThis accessor="base" type="methodCall" name="OnDeathCause_DeathCause_TypeChanging">
-										<plx:passParam>
-											<plx:valueKeyword />
-										</plx:passParam>
-									</plx:callThis>
-								</plx:condition>
-								<plx:local name="command" dataTypeName="IDbCommand">
-									<plx:initialize>
-										<plx:callInstance type="methodCall" name="CreateCommand">
-											<plx:callObject>
-												<plx:callInstance type="methodCall" name="GetConnection">
-													<plx:callObject>
-														<plx:callThis type="property" accessor="this" name="Context" />
-													</plx:callObject>
-												</plx:callInstance>
-											</plx:callObject>
-										</plx:callInstance>
-									</plx:initialize>
-								</plx:local>
-								<plx:assign>
-									<plx:left>
-										<plx:callInstance type="property" name="CommandType">
-											<plx:callObject>
-												<plx:nameRef type="local" name="command" />
-											</plx:callObject>
-										</plx:callInstance>
-									</plx:left>
-									<plx:right>
-										<plx:callStatic type="field" name="Text" dataTypeName="CommandType" />
-									</plx:right>
-								</plx:assign>
-								<plx:assign>
-									<plx:left>
-										<plx:callInstance type="property" name="CommandText">
-											<plx:callObject>
-												<plx:nameRef type="local" name="command" />
-											</plx:callObject>
-										</plx:callInstance>
-									</plx:left>
-									<plx:right>
-										<plx:string>UPDATE SampleModel.Death SET DeathCause_DeathCause_Type = @NewDeathCause_DeathCause_Type WHERE </plx:string>
-									</plx:right>
-								</plx:assign>
-								<plx:local name="parameterNewDeathCause_DeathCause_Type" dataTypeName="IDataParameter">
-									<plx:initialize>
-										<plx:callInstance name="CreateParameter" type="methodCall">
-											<plx:callObject>
-												<plx:nameRef name="command" />
-											</plx:callObject>
-										</plx:callInstance>
-									</plx:initialize>
-								</plx:local>
-								<plx:assign>
-									<plx:left>
-										<plx:callInstance name="ParameterName" type="property">
-											<plx:callObject>
-												<plx:nameRef name="parameterNewDeathCause_DeathCause_Type" />
-											</plx:callObject>
-										</plx:callInstance>
-									</plx:left>
-									<plx:right>
-										<plx:string>NewDeathCause_DeathCause_Type</plx:string>
-									</plx:right>
-								</plx:assign>
-								<plx:assign>
-									<plx:left>
-										<plx:callInstance name="Value" type="property">
-											<plx:callObject>
-												<plx:nameRef name="parameterNewDeathCause_DeathCause_Type" />
-											</plx:callObject>
-										</plx:callInstance>
-									</plx:left>
-									<plx:right>
-										<plx:valueKeyword />
-									</plx:right>
-								</plx:assign>
-								<plx:callInstance name="Add" type="methodCall">
-									<plx:callObject>
-										<plx:callInstance name="Parameters" type="property">
-											<plx:callObject>
-												<plx:nameRef name="command" />
-											</plx:callObject>
-										</plx:callInstance>
-									</plx:callObject>
-									<plx:passParam>
-										<plx:nameRef name="parameterNewDeathCause_DeathCause_Type" type="local" />
-									</plx:passParam>
-								</plx:callInstance>
-								<plx:branch>
-									<plx:condition>
-										<plx:binaryOperator type="inequality">
-											<plx:left>
-												<plx:callInstance name="State" type="property">
-													<plx:callObject>
-														<plx:callInstance name="Connection" type="property">
-															<plx:callObject>
-																<plx:nameRef name="command" type="local" />
-															</plx:callObject>
-														</plx:callInstance>
-													</plx:callObject>
-												</plx:callInstance>
-											</plx:left>
-											<plx:right>
-												<plx:callStatic name="Open" dataTypeName="ConnectionState" type="property" />
-											</plx:right>
-										</plx:binaryOperator>
-									</plx:condition>
-									<plx:callInstance name="Open" type="methodCall">
-										<plx:callObject>
-											<plx:callInstance name="Connection" type="property">
-												<plx:callObject>
-													<plx:nameRef name="command" type="local" />
-												</plx:callObject>
-											</plx:callInstance>
-										</plx:callObject>
-									</plx:callInstance>
-								</plx:branch>
-								<plx:try>
-									<plx:callInstance type="methodCall" name="ExecuteNonQuery">
-										<plx:callObject>
-											<plx:nameRef type="local" name="command" />
-										</plx:callObject>
-									</plx:callInstance>
-									<plx:assign>
-										<plx:left>
-											<plx:callThis accessor="this" type="field" name="_DeathCause_DeathCause_Type" />
-										</plx:left>
-										<plx:right>
-											<plx:valueKeyword />
-										</plx:right>
-									</plx:assign>
-									<plx:finally>
-										<plx:branch>
-											<plx:condition>
-												<plx:binaryOperator type="equality">
-													<plx:left>
-														<plx:callInstance name="State" type="property">
-															<plx:callObject>
-																<plx:callInstance name="Connection" type="property">
-																	<plx:callObject>
-																		<plx:nameRef name="command" type="local" />
-																	</plx:callObject>
-																</plx:callInstance>
-															</plx:callObject>
-														</plx:callInstance>
-													</plx:left>
-													<plx:right>
-														<plx:callStatic name="Open" dataTypeName="ConnectionState" type="field" />
-													</plx:right>
-												</plx:binaryOperator>
-											</plx:condition>
-											<plx:callInstance name="Close" type="methodCall">
-												<plx:callObject>
-													<plx:callInstance name="Connection" type="property">
-														<plx:callObject>
-															<plx:nameRef name="command" type="local" />
-														</plx:callObject>
-													</plx:callInstance>
-												</plx:callObject>
-											</plx:callInstance>
-										</plx:branch>
-										<plx:callInstance name="Dispose" type="methodCall">
-											<plx:callObject>
-												<plx:nameRef name="command" type="local" />
-											</plx:callObject>
-										</plx:callInstance>
-									</plx:finally>
-								</plx:try>
-							</plx:branch>
-						</plx:branch>
-					</plx:set>
-				</plx:property>
-				<plx:field visibility="private" readOnly="false" name="_isDead" dataTypeName=".boolean" />
-				<plx:property visibility="public" modifier="override" name="isDead">
-					<plx:returns dataTypeName=".boolean" />
-					<plx:get>
-						<plx:return>
-							<plx:callThis accessor="this" type="field" name="_isDead" />
-						</plx:return>
-					</plx:get>
-					<plx:set>
-						<plx:local name="oldValue" dataTypeName=".boolean">
-							<plx:initialize>
-								<plx:callThis accessor="this" type="field" name="_isDead" />
-							</plx:initialize>
-						</plx:local>
-						<plx:branch>
-							<plx:condition>
-								<plx:binaryOperator type="inequality">
-									<plx:left>
-										<plx:nameRef type="local" name="oldValue" />
-									</plx:left>
-									<plx:right>
-										<plx:valueKeyword />
-									</plx:right>
-								</plx:binaryOperator>
-							</plx:condition>
-							<plx:branch>
-								<plx:condition>
-									<plx:callThis accessor="base" type="methodCall" name="OnisDeadChanging">
-										<plx:passParam>
-											<plx:valueKeyword />
-										</plx:passParam>
-									</plx:callThis>
-								</plx:condition>
-								<plx:local name="command" dataTypeName="IDbCommand">
-									<plx:initialize>
-										<plx:callInstance type="methodCall" name="CreateCommand">
-											<plx:callObject>
-												<plx:callInstance type="methodCall" name="GetConnection">
-													<plx:callObject>
-														<plx:callThis type="property" accessor="this" name="Context" />
-													</plx:callObject>
-												</plx:callInstance>
-											</plx:callObject>
-										</plx:callInstance>
-									</plx:initialize>
-								</plx:local>
-								<plx:assign>
-									<plx:left>
-										<plx:callInstance type="property" name="CommandType">
-											<plx:callObject>
-												<plx:nameRef type="local" name="command" />
-											</plx:callObject>
-										</plx:callInstance>
-									</plx:left>
-									<plx:right>
-										<plx:callStatic type="field" name="Text" dataTypeName="CommandType" />
-									</plx:right>
-								</plx:assign>
-								<plx:assign>
-									<plx:left>
-										<plx:callInstance type="property" name="CommandText">
-											<plx:callObject>
-												<plx:nameRef type="local" name="command" />
-											</plx:callObject>
-										</plx:callInstance>
-									</plx:left>
-									<plx:right>
-										<plx:string>UPDATE SampleModel.Death SET isDead = @NewisDead WHERE </plx:string>
-									</plx:right>
-								</plx:assign>
-								<plx:local name="parameterNewisDead" dataTypeName="IDataParameter">
-									<plx:initialize>
-										<plx:callInstance name="CreateParameter" type="methodCall">
-											<plx:callObject>
-												<plx:nameRef name="command" />
-											</plx:callObject>
-										</plx:callInstance>
-									</plx:initialize>
-								</plx:local>
-								<plx:assign>
-									<plx:left>
-										<plx:callInstance name="ParameterName" type="property">
-											<plx:callObject>
-												<plx:nameRef name="parameterNewisDead" />
-											</plx:callObject>
-										</plx:callInstance>
-									</plx:left>
-									<plx:right>
-										<plx:string>NewisDead</plx:string>
-									</plx:right>
-								</plx:assign>
-								<plx:assign>
-									<plx:left>
-										<plx:callInstance name="Value" type="property">
-											<plx:callObject>
-												<plx:nameRef name="parameterNewisDead" />
-											</plx:callObject>
-										</plx:callInstance>
-									</plx:left>
-									<plx:right>
-										<plx:valueKeyword />
-									</plx:right>
-								</plx:assign>
-								<plx:callInstance name="Add" type="methodCall">
-									<plx:callObject>
-										<plx:callInstance name="Parameters" type="property">
-											<plx:callObject>
-												<plx:nameRef name="command" />
-											</plx:callObject>
-										</plx:callInstance>
-									</plx:callObject>
-									<plx:passParam>
-										<plx:nameRef name="parameterNewisDead" type="local" />
-									</plx:passParam>
-								</plx:callInstance>
-								<plx:branch>
-									<plx:condition>
-										<plx:binaryOperator type="inequality">
-											<plx:left>
-												<plx:callInstance name="State" type="property">
-													<plx:callObject>
-														<plx:callInstance name="Connection" type="property">
-															<plx:callObject>
-																<plx:nameRef name="command" type="local" />
-															</plx:callObject>
-														</plx:callInstance>
-													</plx:callObject>
-												</plx:callInstance>
-											</plx:left>
-											<plx:right>
-												<plx:callStatic name="Open" dataTypeName="ConnectionState" type="property" />
-											</plx:right>
-										</plx:binaryOperator>
-									</plx:condition>
-									<plx:callInstance name="Open" type="methodCall">
-										<plx:callObject>
-											<plx:callInstance name="Connection" type="property">
-												<plx:callObject>
-													<plx:nameRef name="command" type="local" />
-												</plx:callObject>
-											</plx:callInstance>
-										</plx:callObject>
-									</plx:callInstance>
-								</plx:branch>
-								<plx:try>
-									<plx:callInstance type="methodCall" name="ExecuteNonQuery">
-										<plx:callObject>
-											<plx:nameRef type="local" name="command" />
-										</plx:callObject>
-									</plx:callInstance>
-									<plx:assign>
-										<plx:left>
-											<plx:callThis accessor="this" type="field" name="_isDead" />
-										</plx:left>
-										<plx:right>
-											<plx:valueKeyword />
-										</plx:right>
-									</plx:assign>
-									<plx:finally>
-										<plx:branch>
-											<plx:condition>
-												<plx:binaryOperator type="equality">
-													<plx:left>
-														<plx:callInstance name="State" type="property">
-															<plx:callObject>
-																<plx:callInstance name="Connection" type="property">
-																	<plx:callObject>
-																		<plx:nameRef name="command" type="local" />
-																	</plx:callObject>
-																</plx:callInstance>
-															</plx:callObject>
-														</plx:callInstance>
-													</plx:left>
-													<plx:right>
-														<plx:callStatic name="Open" dataTypeName="ConnectionState" type="field" />
-													</plx:right>
-												</plx:binaryOperator>
-											</plx:condition>
-											<plx:callInstance name="Close" type="methodCall">
-												<plx:callObject>
-													<plx:callInstance name="Connection" type="property">
-														<plx:callObject>
-															<plx:nameRef name="command" type="local" />
-														</plx:callObject>
-													</plx:callInstance>
-												</plx:callObject>
-											</plx:callInstance>
-										</plx:branch>
-										<plx:callInstance name="Dispose" type="methodCall">
-											<plx:callObject>
-												<plx:nameRef name="command" type="local" />
-											</plx:callObject>
-										</plx:callInstance>
-									</plx:finally>
-								</plx:try>
-							</plx:branch>
-						</plx:branch>
-					</plx:set>
-				</plx:property>
-				<plx:field visibility="private" readOnly="" name="_PersonPerson_id" />
-				<plx:property visibility="public" modifier="override" name="Person">
-					<plx:returns dataTypeName="Person" />
-					<plx:get>
-						<plx:return>
-							<plx:callInstance type="methodCall" name="GetPersonByPerson_id">
-								<plx:callObject>
-									<plx:callThis accessor="this" type="property" name="Context" />
-								</plx:callObject>
-								<plx:passParam>
-									<plx:callThis accessor="this" type="field" name="_PersonPerson_id" />
-								</plx:passParam>
-							</plx:callInstance>
-						</plx:return>
-					</plx:get>
-					<plx:set>
-						<plx:branch>
-							<plx:condition>
-								<plx:binaryOperator type="identityEquality">
-									<plx:left>
-										<plx:cast type="exceptionCast" dataTypeName=".object">
-											<plx:valueKeyword />
-										</plx:cast>
-									</plx:left>
-									<plx:right>
-										<plx:nullKeyword />
-									</plx:right>
-								</plx:binaryOperator>
-							</plx:condition>
-							<plx:throw>
-								<plx:callNew dataTypeName="ArgumentNullException">
-									<plx:passParam>
-										<plx:string>value</plx:string>
-									</plx:passParam>
-								</plx:callNew>
-							</plx:throw>
-						</plx:branch>
-						<plx:local name="oldValuePersonPerson_id" dataTypeName="">
-							<plx:initialize>
-								<plx:callThis accessor="this" type="field" name="_PersonPerson_id" />
-							</plx:initialize>
-						</plx:local>
-						<plx:branch>
-							<plx:condition>
-								<plx:binaryOperator type="inequality">
-									<plx:left>
-										<plx:nameRef type="local" name="oldValuePersonPerson_id" />
-									</plx:left>
-									<plx:right>
-										<plx:callInstance name="Person_id" type="property">
-											<plx:callObject>
-												<plx:valueKeyword />
-											</plx:callObject>
-										</plx:callInstance>
-									</plx:right>
-								</plx:binaryOperator>
-							</plx:condition>
-							<plx:branch>
-								<plx:condition>
-									<plx:callThis accessor="base" type="methodCall" name="OnPersonChanging">
-										<plx:passParam>
-											<plx:valueKeyword />
-										</plx:passParam>
-									</plx:callThis>
-								</plx:condition>
-								<plx:local name="command" dataTypeName="IDbCommand">
-									<plx:initialize>
-										<plx:callInstance type="methodCall" name="CreateCommand">
-											<plx:callObject>
-												<plx:callInstance type="methodCall" name="GetConnection">
-													<plx:callObject>
-														<plx:callThis type="property" accessor="this" name="Context" />
-													</plx:callObject>
-												</plx:callInstance>
-											</plx:callObject>
-										</plx:callInstance>
-									</plx:initialize>
-								</plx:local>
-								<plx:assign>
-									<plx:left>
-										<plx:callInstance type="property" name="CommandType">
-											<plx:callObject>
-												<plx:nameRef type="local" name="command" />
-											</plx:callObject>
-										</plx:callInstance>
-									</plx:left>
-									<plx:right>
-										<plx:callStatic type="field" name="Text" dataTypeName="CommandType" />
-									</plx:right>
-								</plx:assign>
-								<plx:assign>
-									<plx:left>
-										<plx:callInstance type="property" name="CommandText">
-											<plx:callObject>
-												<plx:nameRef type="local" name="command" />
-											</plx:callObject>
-										</plx:callInstance>
-									</plx:left>
-									<plx:right>
-										<plx:string>UPDATE SampleModel.Death SET Person_Person_id = @NewPersonPerson_id WHERE </plx:string>
-									</plx:right>
-								</plx:assign>
-								<plx:local name="parameterNewPersonPerson_id" dataTypeName="IDataParameter">
-									<plx:initialize>
-										<plx:callInstance name="CreateParameter" type="methodCall">
-											<plx:callObject>
-												<plx:nameRef name="command" />
-											</plx:callObject>
-										</plx:callInstance>
-									</plx:initialize>
-								</plx:local>
-								<plx:assign>
-									<plx:left>
-										<plx:callInstance name="ParameterName" type="property">
-											<plx:callObject>
-												<plx:nameRef name="parameterNewPersonPerson_id" />
-											</plx:callObject>
-										</plx:callInstance>
-									</plx:left>
-									<plx:right>
-										<plx:string>NewPersonPerson_id</plx:string>
-									</plx:right>
-								</plx:assign>
-								<plx:assign>
-									<plx:left>
-										<plx:callInstance name="Value" type="property">
-											<plx:callObject>
-												<plx:nameRef name="parameterNewPersonPerson_id" />
-											</plx:callObject>
-										</plx:callInstance>
-									</plx:left>
-									<plx:right>
-										<plx:callInstance type="property" name="Person_id">
-											<plx:callObject>
-												<plx:valueKeyword />
-											</plx:callObject>
-										</plx:callInstance>
-									</plx:right>
-								</plx:assign>
-								<plx:callInstance name="Add" type="methodCall">
-									<plx:callObject>
-										<plx:callInstance name="Parameters" type="property">
-											<plx:callObject>
-												<plx:nameRef name="command" />
-											</plx:callObject>
-										</plx:callInstance>
-									</plx:callObject>
-									<plx:passParam>
-										<plx:nameRef name="parameterNewPersonPerson_id" type="local" />
-									</plx:passParam>
-								</plx:callInstance>
-								<plx:branch>
-									<plx:condition>
-										<plx:binaryOperator type="inequality">
-											<plx:left>
-												<plx:callInstance name="State" type="property">
-													<plx:callObject>
-														<plx:callInstance name="Connection" type="property">
-															<plx:callObject>
-																<plx:nameRef name="command" type="local" />
-															</plx:callObject>
-														</plx:callInstance>
-													</plx:callObject>
-												</plx:callInstance>
-											</plx:left>
-											<plx:right>
-												<plx:callStatic name="Open" dataTypeName="ConnectionState" type="property" />
-											</plx:right>
-										</plx:binaryOperator>
-									</plx:condition>
-									<plx:callInstance name="Open" type="methodCall">
-										<plx:callObject>
-											<plx:callInstance name="Connection" type="property">
-												<plx:callObject>
-													<plx:nameRef name="command" type="local" />
-												</plx:callObject>
-											</plx:callInstance>
-										</plx:callObject>
-									</plx:callInstance>
-								</plx:branch>
-								<plx:try>
-									<plx:callInstance type="methodCall" name="ExecuteNonQuery">
-										<plx:callObject>
-											<plx:nameRef type="local" name="command" />
-										</plx:callObject>
-									</plx:callInstance>
-									<plx:assign>
-										<plx:left>
-											<plx:callThis accessor="this" type="field" name="_PersonPerson_id" />
-										</plx:left>
-										<plx:right>
-											<plx:callInstance name="Person_id" type="property">
-												<plx:callObject>
-													<plx:valueKeyword />
-												</plx:callObject>
-											</plx:callInstance>
-										</plx:right>
-									</plx:assign>
-									<plx:finally>
-										<plx:branch>
-											<plx:condition>
-												<plx:binaryOperator type="equality">
-													<plx:left>
-														<plx:callInstance name="State" type="property">
-															<plx:callObject>
-																<plx:callInstance name="Connection" type="property">
-																	<plx:callObject>
-																		<plx:nameRef name="command" type="local" />
-																	</plx:callObject>
-																</plx:callInstance>
-															</plx:callObject>
-														</plx:callInstance>
-													</plx:left>
-													<plx:right>
-														<plx:callStatic name="Open" dataTypeName="ConnectionState" type="field" />
-													</plx:right>
-												</plx:binaryOperator>
-											</plx:condition>
-											<plx:callInstance name="Close" type="methodCall">
-												<plx:callObject>
-													<plx:callInstance name="Connection" type="property">
-														<plx:callObject>
-															<plx:nameRef name="command" type="local" />
-														</plx:callObject>
-													</plx:callInstance>
-												</plx:callObject>
-											</plx:callInstance>
-										</plx:branch>
-										<plx:callInstance name="Dispose" type="methodCall">
-											<plx:callObject>
-												<plx:nameRef name="command" type="local" />
-											</plx:callObject>
-										</plx:callInstance>
-									</plx:finally>
-								</plx:try>
-							</plx:branch>
-						</plx:branch>
-					</plx:set>
 				</plx:property>
 			</plx:class>
 			<plx:function visibility="public" name="CreateTask">
@@ -17318,6 +15635,1123 @@
 							</plx:callNew>
 						</plx:return>
 					</plx:get>
+				</plx:property>
+			</plx:class>
+			<plx:function visibility="public" name="CreateDeath">
+				<plx:leadingInfo>
+					<plx:pragma type="region" data="Death" />
+				</plx:leadingInfo>
+				<plx:interfaceMember memberName="CreateDeath" dataTypeName="ISampleModelContext" />
+				<plx:param name="DeathCause_DeathCause_Type" dataTypeName=".string" />
+				<plx:param name="isinvolvedin{1}" />
+				<plx:returns dataTypeName="Death" />
+				<plx:branch>
+					<plx:condition>
+						<plx:binaryOperator type="identityEquality">
+							<plx:left>
+								<plx:cast type="exceptionCast" dataTypeName=".object">
+									<plx:nameRef type="parameter" name="DeathCause_DeathCause_Type" />
+								</plx:cast>
+							</plx:left>
+							<plx:right>
+								<plx:nullKeyword />
+							</plx:right>
+						</plx:binaryOperator>
+					</plx:condition>
+					<plx:throw>
+						<plx:callNew dataTypeName="ArgumentNullException">
+							<plx:passParam>
+								<plx:string>DeathCause_DeathCause_Type</plx:string>
+							</plx:passParam>
+						</plx:callNew>
+					</plx:throw>
+				</plx:branch>
+				<plx:local name="command" dataTypeName="IDbCommand">
+					<plx:initialize>
+						<plx:callInstance type="methodCall" name="CreateCommand">
+							<plx:callObject>
+								<plx:callThis type="methodCall" accessor="this" name="GetConnection" />
+							</plx:callObject>
+						</plx:callInstance>
+					</plx:initialize>
+				</plx:local>
+				<plx:assign>
+					<plx:left>
+						<plx:callInstance type="property" name="CommandType">
+							<plx:callObject>
+								<plx:nameRef type="local" name="command" />
+							</plx:callObject>
+						</plx:callInstance>
+					</plx:left>
+					<plx:right>
+						<plx:callStatic type="field" name="Text" dataTypeName="CommandType" />
+					</plx:right>
+				</plx:assign>
+				<plx:assign>
+					<plx:left>
+						<plx:callInstance name="CommandText" type="property">
+							<plx:callObject>
+								<plx:nameRef name="command" type="local" />
+							</plx:callObject>
+						</plx:callInstance>
+					</plx:left>
+					<plx:right>
+						<plx:string>
+							<plx:string>INSERT INTO SampleModel.Death (DeathCause_DeathCause_Type, isinvolvedin{1}) VALUES (@DeathCause_DeathCause_Type, @isinvolvedin{1})</plx:string>
+						</plx:string>
+					</plx:right>
+				</plx:assign>
+				<plx:local name="parameterDeathCause_DeathCause_Type" dataTypeName="IDataParameter">
+					<plx:initialize>
+						<plx:callInstance name="CreateParameter" type="methodCall">
+							<plx:callObject>
+								<plx:nameRef name="command" />
+							</plx:callObject>
+						</plx:callInstance>
+					</plx:initialize>
+				</plx:local>
+				<plx:assign>
+					<plx:left>
+						<plx:callInstance name="ParameterName" type="property">
+							<plx:callObject>
+								<plx:nameRef name="parameterDeathCause_DeathCause_Type" />
+							</plx:callObject>
+						</plx:callInstance>
+					</plx:left>
+					<plx:right>
+						<plx:string>DeathCause_DeathCause_Type</plx:string>
+					</plx:right>
+				</plx:assign>
+				<plx:assign>
+					<plx:left>
+						<plx:callInstance name="Value" type="property">
+							<plx:callObject>
+								<plx:nameRef name="parameterDeathCause_DeathCause_Type" />
+							</plx:callObject>
+						</plx:callInstance>
+					</plx:left>
+					<plx:right>
+						<plx:nameRef type="parameter" name="DeathCause_DeathCause_Type" />
+					</plx:right>
+				</plx:assign>
+				<plx:callInstance name="Add" type="methodCall">
+					<plx:callObject>
+						<plx:callInstance name="Parameters" type="property">
+							<plx:callObject>
+								<plx:nameRef name="command" />
+							</plx:callObject>
+						</plx:callInstance>
+					</plx:callObject>
+					<plx:passParam>
+						<plx:nameRef name="parameterDeathCause_DeathCause_Type" type="local" />
+					</plx:passParam>
+				</plx:callInstance>
+				<plx:local name="parameterisinvolvedin{1}" dataTypeName="IDataParameter">
+					<plx:initialize>
+						<plx:callInstance name="CreateParameter" type="methodCall">
+							<plx:callObject>
+								<plx:nameRef name="command" />
+							</plx:callObject>
+						</plx:callInstance>
+					</plx:initialize>
+				</plx:local>
+				<plx:assign>
+					<plx:left>
+						<plx:callInstance name="ParameterName" type="property">
+							<plx:callObject>
+								<plx:nameRef name="parameterisinvolvedin{1}" />
+							</plx:callObject>
+						</plx:callInstance>
+					</plx:left>
+					<plx:right>
+						<plx:string>isinvolvedin{1}</plx:string>
+					</plx:right>
+				</plx:assign>
+				<plx:assign>
+					<plx:left>
+						<plx:callInstance name="Value" type="property">
+							<plx:callObject>
+								<plx:nameRef name="parameterisinvolvedin{1}" />
+							</plx:callObject>
+						</plx:callInstance>
+					</plx:left>
+					<plx:right>
+						<plx:nameRef type="parameter" name="isinvolvedin{1}" />
+					</plx:right>
+				</plx:assign>
+				<plx:callInstance name="Add" type="methodCall">
+					<plx:callObject>
+						<plx:callInstance name="Parameters" type="property">
+							<plx:callObject>
+								<plx:nameRef name="command" />
+							</plx:callObject>
+						</plx:callInstance>
+					</plx:callObject>
+					<plx:passParam>
+						<plx:nameRef name="parameterisinvolvedin{1}" type="local" />
+					</plx:passParam>
+				</plx:callInstance>
+				<plx:try>
+					<plx:branch>
+						<plx:condition>
+							<plx:binaryOperator type="inequality">
+								<plx:left>
+									<plx:callInstance name="State" type="property">
+										<plx:callObject>
+											<plx:callInstance name="Connection" type="property">
+												<plx:callObject>
+													<plx:nameRef name="command" type="local" />
+												</plx:callObject>
+											</plx:callInstance>
+										</plx:callObject>
+									</plx:callInstance>
+								</plx:left>
+								<plx:right>
+									<plx:callStatic type="field" dataTypeName="ConnectionState" name="Open" />
+								</plx:right>
+							</plx:binaryOperator>
+						</plx:condition>
+						<plx:callInstance name="Open" type="methodCall">
+							<plx:callObject>
+								<plx:callInstance name="Connection" type="property">
+									<plx:callObject>
+										<plx:nameRef name="command" type="local" />
+									</plx:callObject>
+								</plx:callInstance>
+							</plx:callObject>
+						</plx:callInstance>
+					</plx:branch>
+					<plx:local name="identity" dataTypeName=".object">
+						<plx:initialize>
+							<plx:callInstance name="ExecuteScalar" type="methodCall">
+								<plx:callObject>
+									<plx:nameRef name="command" type="local" />
+								</plx:callObject>
+							</plx:callInstance>
+						</plx:initialize>
+					</plx:local>
+					<plx:return>
+						<plx:callNew dataTypeName="DeathCore" type="new">
+							<plx:passParam>
+								<plx:thisKeyword />
+							</plx:passParam>
+							<plx:passParam>
+								<plx:nameRef name="DeathCause_DeathCause_Type" type="parameter" />
+							</plx:passParam>
+							<plx:passParam>
+								<plx:nameRef name="isinvolvedin{1}" type="parameter" />
+							</plx:passParam>
+						</plx:callNew>
+					</plx:return>
+					<plx:finally>
+						<plx:branch>
+							<plx:condition>
+								<plx:binaryOperator type="equality">
+									<plx:left>
+										<plx:callInstance name="State" type="property">
+											<plx:callObject>
+												<plx:callInstance name="Connection" type="property">
+													<plx:callObject>
+														<plx:nameRef name="command" type="local" />
+													</plx:callObject>
+												</plx:callInstance>
+											</plx:callObject>
+										</plx:callInstance>
+									</plx:left>
+									<plx:right>
+										<plx:callStatic name="Open" dataTypeName="ConnectionState" type="field" />
+									</plx:right>
+								</plx:binaryOperator>
+							</plx:condition>
+							<plx:callInstance name="Close" type="methodCall">
+								<plx:callObject>
+									<plx:callInstance name="Connection" type="property">
+										<plx:callObject>
+											<plx:nameRef name="command" type="local" />
+										</plx:callObject>
+									</plx:callInstance>
+								</plx:callObject>
+							</plx:callInstance>
+						</plx:branch>
+						<plx:callInstance name="Dispose" type="methodCall">
+							<plx:callObject>
+								<plx:nameRef name="command" type="local" />
+							</plx:callObject>
+						</plx:callInstance>
+					</plx:finally>
+				</plx:try>
+			</plx:function>
+			<plx:property visibility="public" name="DeathCollection">
+				<plx:interfaceMember memberName="DeathCollection" dataTypeName="ISampleModelContext" />
+				<plx:returns dataTypeName="IEnumerable">
+					<plx:passTypeParam dataTypeName="Death" />
+				</plx:returns>
+				<plx:get>
+					<plx:local name="command" dataTypeName="IDbCommand">
+						<plx:initialize>
+							<plx:callInstance name="CreateCommand" type="methodCall">
+								<plx:callObject>
+									<plx:callThis type="methodCall" accessor="this" name="GetConnection" />
+								</plx:callObject>
+							</plx:callInstance>
+						</plx:initialize>
+					</plx:local>
+					<plx:assign>
+						<plx:left>
+							<plx:callInstance type="property" name="CommandType">
+								<plx:callObject>
+									<plx:nameRef type="local" name="command" />
+								</plx:callObject>
+							</plx:callInstance>
+						</plx:left>
+						<plx:right>
+							<plx:callStatic type="field" name="Text" dataTypeName="CommandType" />
+						</plx:right>
+					</plx:assign>
+					<plx:assign>
+						<plx:left>
+							<plx:callInstance name="CommandText" type="property">
+								<plx:callObject>
+									<plx:nameRef name="command" type="local" />
+								</plx:callObject>
+							</plx:callInstance>
+						</plx:left>
+						<plx:right>
+							<plx:string>SELECT * FROM SampleModel.Death</plx:string>
+						</plx:right>
+					</plx:assign>
+					<plx:branch>
+						<plx:condition>
+							<plx:binaryOperator type="inequality">
+								<plx:left>
+									<plx:callInstance name="State" type="property">
+										<plx:callObject>
+											<plx:callInstance name="Connection" type="property">
+												<plx:callObject>
+													<plx:nameRef name="command" type="local" />
+												</plx:callObject>
+											</plx:callInstance>
+										</plx:callObject>
+									</plx:callInstance>
+								</plx:left>
+								<plx:right>
+									<plx:callStatic name="Open" dataTypeName="ConnectionState" type="field" />
+								</plx:right>
+							</plx:binaryOperator>
+						</plx:condition>
+						<plx:callInstance name="Open" type="methodCall">
+							<plx:callObject>
+								<plx:callInstance name="Connection" type="property">
+									<plx:callObject>
+										<plx:nameRef name="command" type="local" />
+									</plx:callObject>
+								</plx:callInstance>
+							</plx:callObject>
+						</plx:callInstance>
+					</plx:branch>
+					<plx:return>
+						<plx:callNew dataTypeName="DataReaderEnumerator" type="new">
+							<plx:passTypeParam dataTypeName="Death" />
+							<plx:passParam>
+								<plx:callInstance name="ExecuteReader" type="methodCall">
+									<plx:callObject>
+										<plx:nameRef name="command" type="local" />
+									</plx:callObject>
+									<plx:passParam>
+										<plx:binaryOperator type="bitwiseOr">
+											<plx:left>
+												<plx:callStatic name="SingleResult" dataTypeName="CommandBehavior" type="field" />
+											</plx:left>
+											<plx:right>
+												<plx:callStatic name="CloseConnection" dataTypeName="CommandBehavior" type="field" />
+											</plx:right>
+										</plx:binaryOperator>
+									</plx:passParam>
+								</plx:callInstance>
+							</plx:passParam>
+							<plx:passParam>
+								<plx:callNew dataTypeName="CreateCallback" type="new">
+									<plx:passTypeParam dataTypeName="Death" />
+									<plx:passParam>
+										<plx:callThis name="CreateDeath" accessor="this" type="methodReference" />
+									</plx:passParam>
+								</plx:callNew>
+							</plx:passParam>
+						</plx:callNew>
+					</plx:return>
+				</plx:get>
+			</plx:property>
+			<plx:function name="CreateDeath" visibility="private">
+				<plx:param name="reader" dataTypeName="IDataReader" />
+				<plx:returns dataTypeName="Death" />
+				<plx:local name="ordinalDeathCause_DeathCause_Type" dataTypeName=".i4">
+					<plx:initialize>
+						<plx:callInstance name="GetOrdinal" type="methodCall">
+							<plx:callObject>
+								<plx:nameRef name="reader" type="parameter" />
+							</plx:callObject>
+							<plx:passParam>
+								<plx:string>DeathCause_DeathCause_Type</plx:string>
+							</plx:passParam>
+						</plx:callInstance>
+					</plx:initialize>
+				</plx:local>
+				<plx:local name="ordinalisinvolvedin{1}" dataTypeName=".i4">
+					<plx:initialize>
+						<plx:callInstance name="GetOrdinal" type="methodCall">
+							<plx:callObject>
+								<plx:nameRef name="reader" type="parameter" />
+							</plx:callObject>
+							<plx:passParam>
+								<plx:string>isinvolvedin{1}</plx:string>
+							</plx:passParam>
+						</plx:callInstance>
+					</plx:initialize>
+				</plx:local>
+				<plx:return>
+					<plx:callNew dataTypeName="DeathCore">
+						<plx:passParam>
+							<plx:thisKeyword />
+						</plx:passParam>
+						<plx:passParam>
+							<plx:callInstance type="methodCall" name="GetString">
+								<plx:callObject>
+									<plx:nameRef name="reader" />
+								</plx:callObject>
+								<plx:passParam>
+									<plx:nameRef name="ordinalDeathCause_DeathCause_Type" />
+								</plx:passParam>
+							</plx:callInstance>
+						</plx:passParam>
+						<plx:passParam>
+							<plx:callInstance type="methodCall" name="">
+								<plx:callObject>
+									<plx:nameRef name="reader" />
+								</plx:callObject>
+								<plx:passParam>
+									<plx:nameRef name="ordinalisinvolvedin{1}" />
+								</plx:passParam>
+							</plx:callInstance>
+						</plx:passParam>
+					</plx:callNew>
+				</plx:return>
+			</plx:function>
+			<plx:class visibility="private" modifier="sealed" name="DeathCore">
+				<plx:leadingInfo>
+					<plx:pragma type="region" data="DeathCore" />
+				</plx:leadingInfo>
+				<plx:trailingInfo>
+					<plx:pragma type="closeRegion" data="DeathCore" />
+					<plx:pragma type="closeRegion" data="Death" />
+				</plx:trailingInfo>
+				<plx:attribute dataTypeName="StructLayoutAttribute" dataTypeQualifier="System.Runtime.InteropServices">
+					<plx:passParam>
+						<plx:callStatic type="field" name="Auto" dataTypeName="LayoutKind" dataTypeQualifier="System.Runtime.InteropServices" />
+					</plx:passParam>
+					<plx:passParam>
+						<plx:binaryOperator type="assignNamed">
+							<plx:left>
+								<plx:nameRef type="namedParameter" name="CharSet" />
+							</plx:left>
+							<plx:right>
+								<plx:callStatic type="field" name="Auto" dataTypeName="CharSet" dataTypeQualifier="System.Runtime.InteropServices" />
+							</plx:right>
+						</plx:binaryOperator>
+					</plx:passParam>
+				</plx:attribute>
+				<plx:derivesFromClass dataTypeName="Death" />
+				<plx:function visibility="public" name=".construct">
+					<plx:param name="context" dataTypeName="SampleModelContext" />
+					<plx:param name="DeathCause_DeathCause_Type" dataTypeName=".string" />
+					<plx:param name="isinvolvedin{1}" />
+					<plx:assign>
+						<plx:left>
+							<plx:callThis accessor="this" type="field" name="_Context" />
+						</plx:left>
+						<plx:right>
+							<plx:nameRef type="parameter" name="context" />
+						</plx:right>
+					</plx:assign>
+					<plx:assign>
+						<plx:left>
+							<plx:callThis accessor="this" type="field" name="_DeathCause_DeathCause_Type" />
+						</plx:left>
+						<plx:right>
+							<plx:nameRef type="parameter" name="DeathCause_DeathCause_Type" />
+						</plx:right>
+					</plx:assign>
+					<plx:assign>
+						<plx:left>
+							<plx:callThis accessor="this" type="field" name="_isinvolvedin{1}" />
+						</plx:left>
+						<plx:right>
+							<plx:nameRef type="parameter" name="isinvolvedin{1}" />
+						</plx:right>
+					</plx:assign>
+				</plx:function>
+				<plx:field visibility="private" readOnly="true" name="_Context" dataTypeName="SampleModelContext" />
+				<plx:property visibility="public" modifier="override" name="Context">
+					<plx:returns dataTypeName="SampleModelContext" />
+					<plx:get>
+						<plx:return>
+							<plx:callThis accessor="this" type="field" name="_Context" />
+						</plx:return>
+					</plx:get>
+				</plx:property>
+				<plx:field visibility="private" readOnly="false" name="_Date_YMD" dataTypeName="Nullable">
+					<plx:passTypeParam dataTypeName=".i4" />
+				</plx:field>
+				<plx:property visibility="public" modifier="override" name="Date_YMD">
+					<plx:returns dataTypeName="Nullable">
+						<plx:passTypeParam dataTypeName=".i4" />
+					</plx:returns>
+					<plx:get>
+						<plx:return>
+							<plx:callThis accessor="this" type="field" name="_Date_YMD" />
+						</plx:return>
+					</plx:get>
+					<plx:set>
+						<plx:local name="oldValue" dataTypeName="Nullable">
+							<plx:passTypeParam dataTypeName=".i4" />
+							<plx:initialize>
+								<plx:callThis accessor="this" type="field" name="_Date_YMD" />
+							</plx:initialize>
+						</plx:local>
+						<plx:branch>
+							<plx:condition>
+								<plx:binaryOperator type="booleanOr">
+									<plx:left>
+										<plx:binaryOperator type="inequality">
+											<plx:left>
+												<plx:callInstance type="methodCall" name="GetValueOrDefault">
+													<plx:callObject>
+														<plx:nameRef type="local" name="oldValue" />
+													</plx:callObject>
+												</plx:callInstance>
+											</plx:left>
+											<plx:right>
+												<plx:callInstance type="methodCall" name="GetValueOrDefault">
+													<plx:callObject>
+														<plx:valueKeyword />
+													</plx:callObject>
+												</plx:callInstance>
+											</plx:right>
+										</plx:binaryOperator>
+									</plx:left>
+									<plx:right>
+										<plx:binaryOperator type="inequality">
+											<plx:left>
+												<plx:callInstance type="property" name="HasValue">
+													<plx:callObject>
+														<plx:nameRef type="local" name="oldValue" />
+													</plx:callObject>
+												</plx:callInstance>
+											</plx:left>
+											<plx:right>
+												<plx:callInstance type="property" name="HasValue">
+													<plx:callObject>
+														<plx:valueKeyword />
+													</plx:callObject>
+												</plx:callInstance>
+											</plx:right>
+										</plx:binaryOperator>
+									</plx:right>
+								</plx:binaryOperator>
+							</plx:condition>
+							<plx:branch>
+								<plx:condition>
+									<plx:callThis accessor="base" type="methodCall" name="OnDate_YMDChanging">
+										<plx:passParam>
+											<plx:valueKeyword />
+										</plx:passParam>
+									</plx:callThis>
+								</plx:condition>
+								<plx:local name="command" dataTypeName="IDbCommand">
+									<plx:initialize>
+										<plx:callInstance type="methodCall" name="CreateCommand">
+											<plx:callObject>
+												<plx:callInstance type="methodCall" name="GetConnection">
+													<plx:callObject>
+														<plx:callThis type="property" accessor="this" name="Context" />
+													</plx:callObject>
+												</plx:callInstance>
+											</plx:callObject>
+										</plx:callInstance>
+									</plx:initialize>
+								</plx:local>
+								<plx:assign>
+									<plx:left>
+										<plx:callInstance type="property" name="CommandType">
+											<plx:callObject>
+												<plx:nameRef type="local" name="command" />
+											</plx:callObject>
+										</plx:callInstance>
+									</plx:left>
+									<plx:right>
+										<plx:callStatic type="field" name="Text" dataTypeName="CommandType" />
+									</plx:right>
+								</plx:assign>
+								<plx:assign>
+									<plx:left>
+										<plx:callInstance type="property" name="CommandText">
+											<plx:callObject>
+												<plx:nameRef type="local" name="command" />
+											</plx:callObject>
+										</plx:callInstance>
+									</plx:left>
+									<plx:right>
+										<plx:string>UPDATE SampleModel.Death SET Date_YMD = @NewDate_YMD WHERE </plx:string>
+									</plx:right>
+								</plx:assign>
+								<plx:local name="parameterNewDate_YMD" dataTypeName="IDataParameter">
+									<plx:initialize>
+										<plx:callInstance name="CreateParameter" type="methodCall">
+											<plx:callObject>
+												<plx:nameRef name="command" />
+											</plx:callObject>
+										</plx:callInstance>
+									</plx:initialize>
+								</plx:local>
+								<plx:assign>
+									<plx:left>
+										<plx:callInstance name="ParameterName" type="property">
+											<plx:callObject>
+												<plx:nameRef name="parameterNewDate_YMD" />
+											</plx:callObject>
+										</plx:callInstance>
+									</plx:left>
+									<plx:right>
+										<plx:string>NewDate_YMD</plx:string>
+									</plx:right>
+								</plx:assign>
+								<plx:assign>
+									<plx:left>
+										<plx:callInstance name="Value" type="property">
+											<plx:callObject>
+												<plx:nameRef name="parameterNewDate_YMD" />
+											</plx:callObject>
+										</plx:callInstance>
+									</plx:left>
+									<plx:right>
+										<plx:valueKeyword />
+									</plx:right>
+								</plx:assign>
+								<plx:callInstance name="Add" type="methodCall">
+									<plx:callObject>
+										<plx:callInstance name="Parameters" type="property">
+											<plx:callObject>
+												<plx:nameRef name="command" />
+											</plx:callObject>
+										</plx:callInstance>
+									</plx:callObject>
+									<plx:passParam>
+										<plx:nameRef name="parameterNewDate_YMD" type="local" />
+									</plx:passParam>
+								</plx:callInstance>
+								<plx:branch>
+									<plx:condition>
+										<plx:binaryOperator type="inequality">
+											<plx:left>
+												<plx:callInstance name="State" type="property">
+													<plx:callObject>
+														<plx:callInstance name="Connection" type="property">
+															<plx:callObject>
+																<plx:nameRef name="command" type="local" />
+															</plx:callObject>
+														</plx:callInstance>
+													</plx:callObject>
+												</plx:callInstance>
+											</plx:left>
+											<plx:right>
+												<plx:callStatic name="Open" dataTypeName="ConnectionState" type="property" />
+											</plx:right>
+										</plx:binaryOperator>
+									</plx:condition>
+									<plx:callInstance name="Open" type="methodCall">
+										<plx:callObject>
+											<plx:callInstance name="Connection" type="property">
+												<plx:callObject>
+													<plx:nameRef name="command" type="local" />
+												</plx:callObject>
+											</plx:callInstance>
+										</plx:callObject>
+									</plx:callInstance>
+								</plx:branch>
+								<plx:try>
+									<plx:callInstance type="methodCall" name="ExecuteNonQuery">
+										<plx:callObject>
+											<plx:nameRef type="local" name="command" />
+										</plx:callObject>
+									</plx:callInstance>
+									<plx:assign>
+										<plx:left>
+											<plx:callThis accessor="this" type="field" name="_Date_YMD" />
+										</plx:left>
+										<plx:right>
+											<plx:valueKeyword />
+										</plx:right>
+									</plx:assign>
+									<plx:finally>
+										<plx:branch>
+											<plx:condition>
+												<plx:binaryOperator type="equality">
+													<plx:left>
+														<plx:callInstance name="State" type="property">
+															<plx:callObject>
+																<plx:callInstance name="Connection" type="property">
+																	<plx:callObject>
+																		<plx:nameRef name="command" type="local" />
+																	</plx:callObject>
+																</plx:callInstance>
+															</plx:callObject>
+														</plx:callInstance>
+													</plx:left>
+													<plx:right>
+														<plx:callStatic name="Open" dataTypeName="ConnectionState" type="field" />
+													</plx:right>
+												</plx:binaryOperator>
+											</plx:condition>
+											<plx:callInstance name="Close" type="methodCall">
+												<plx:callObject>
+													<plx:callInstance name="Connection" type="property">
+														<plx:callObject>
+															<plx:nameRef name="command" type="local" />
+														</plx:callObject>
+													</plx:callInstance>
+												</plx:callObject>
+											</plx:callInstance>
+										</plx:branch>
+										<plx:callInstance name="Dispose" type="methodCall">
+											<plx:callObject>
+												<plx:nameRef name="command" type="local" />
+											</plx:callObject>
+										</plx:callInstance>
+									</plx:finally>
+								</plx:try>
+							</plx:branch>
+						</plx:branch>
+					</plx:set>
+				</plx:property>
+				<plx:field visibility="private" readOnly="false" name="_DeathCause_DeathCause_Type" dataTypeName=".string" />
+				<plx:property visibility="public" modifier="override" name="DeathCause_DeathCause_Type">
+					<plx:returns dataTypeName=".string" />
+					<plx:get>
+						<plx:return>
+							<plx:callThis accessor="this" type="field" name="_DeathCause_DeathCause_Type" />
+						</plx:return>
+					</plx:get>
+					<plx:set>
+						<plx:branch>
+							<plx:condition>
+								<plx:binaryOperator type="identityEquality">
+									<plx:left>
+										<plx:cast type="exceptionCast" dataTypeName=".object">
+											<plx:valueKeyword />
+										</plx:cast>
+									</plx:left>
+									<plx:right>
+										<plx:nullKeyword />
+									</plx:right>
+								</plx:binaryOperator>
+							</plx:condition>
+							<plx:throw>
+								<plx:callNew dataTypeName="ArgumentNullException">
+									<plx:passParam>
+										<plx:string>value</plx:string>
+									</plx:passParam>
+								</plx:callNew>
+							</plx:throw>
+						</plx:branch>
+						<plx:local name="oldValue" dataTypeName=".string">
+							<plx:initialize>
+								<plx:callThis accessor="this" type="field" name="_DeathCause_DeathCause_Type" />
+							</plx:initialize>
+						</plx:local>
+						<plx:branch>
+							<plx:condition>
+								<plx:unaryOperator type="booleanNot">
+									<plx:callStatic type="methodCall" name="Equals" dataTypeName=".object">
+										<plx:passParam>
+											<plx:nameRef type="local" name="oldValue" />
+										</plx:passParam>
+										<plx:passParam>
+											<plx:valueKeyword />
+										</plx:passParam>
+									</plx:callStatic>
+								</plx:unaryOperator>
+							</plx:condition>
+							<plx:branch>
+								<plx:condition>
+									<plx:callThis accessor="base" type="methodCall" name="OnDeathCause_DeathCause_TypeChanging">
+										<plx:passParam>
+											<plx:valueKeyword />
+										</plx:passParam>
+									</plx:callThis>
+								</plx:condition>
+								<plx:local name="command" dataTypeName="IDbCommand">
+									<plx:initialize>
+										<plx:callInstance type="methodCall" name="CreateCommand">
+											<plx:callObject>
+												<plx:callInstance type="methodCall" name="GetConnection">
+													<plx:callObject>
+														<plx:callThis type="property" accessor="this" name="Context" />
+													</plx:callObject>
+												</plx:callInstance>
+											</plx:callObject>
+										</plx:callInstance>
+									</plx:initialize>
+								</plx:local>
+								<plx:assign>
+									<plx:left>
+										<plx:callInstance type="property" name="CommandType">
+											<plx:callObject>
+												<plx:nameRef type="local" name="command" />
+											</plx:callObject>
+										</plx:callInstance>
+									</plx:left>
+									<plx:right>
+										<plx:callStatic type="field" name="Text" dataTypeName="CommandType" />
+									</plx:right>
+								</plx:assign>
+								<plx:assign>
+									<plx:left>
+										<plx:callInstance type="property" name="CommandText">
+											<plx:callObject>
+												<plx:nameRef type="local" name="command" />
+											</plx:callObject>
+										</plx:callInstance>
+									</plx:left>
+									<plx:right>
+										<plx:string>UPDATE SampleModel.Death SET DeathCause_DeathCause_Type = @NewDeathCause_DeathCause_Type WHERE </plx:string>
+									</plx:right>
+								</plx:assign>
+								<plx:local name="parameterNewDeathCause_DeathCause_Type" dataTypeName="IDataParameter">
+									<plx:initialize>
+										<plx:callInstance name="CreateParameter" type="methodCall">
+											<plx:callObject>
+												<plx:nameRef name="command" />
+											</plx:callObject>
+										</plx:callInstance>
+									</plx:initialize>
+								</plx:local>
+								<plx:assign>
+									<plx:left>
+										<plx:callInstance name="ParameterName" type="property">
+											<plx:callObject>
+												<plx:nameRef name="parameterNewDeathCause_DeathCause_Type" />
+											</plx:callObject>
+										</plx:callInstance>
+									</plx:left>
+									<plx:right>
+										<plx:string>NewDeathCause_DeathCause_Type</plx:string>
+									</plx:right>
+								</plx:assign>
+								<plx:assign>
+									<plx:left>
+										<plx:callInstance name="Value" type="property">
+											<plx:callObject>
+												<plx:nameRef name="parameterNewDeathCause_DeathCause_Type" />
+											</plx:callObject>
+										</plx:callInstance>
+									</plx:left>
+									<plx:right>
+										<plx:valueKeyword />
+									</plx:right>
+								</plx:assign>
+								<plx:callInstance name="Add" type="methodCall">
+									<plx:callObject>
+										<plx:callInstance name="Parameters" type="property">
+											<plx:callObject>
+												<plx:nameRef name="command" />
+											</plx:callObject>
+										</plx:callInstance>
+									</plx:callObject>
+									<plx:passParam>
+										<plx:nameRef name="parameterNewDeathCause_DeathCause_Type" type="local" />
+									</plx:passParam>
+								</plx:callInstance>
+								<plx:branch>
+									<plx:condition>
+										<plx:binaryOperator type="inequality">
+											<plx:left>
+												<plx:callInstance name="State" type="property">
+													<plx:callObject>
+														<plx:callInstance name="Connection" type="property">
+															<plx:callObject>
+																<plx:nameRef name="command" type="local" />
+															</plx:callObject>
+														</plx:callInstance>
+													</plx:callObject>
+												</plx:callInstance>
+											</plx:left>
+											<plx:right>
+												<plx:callStatic name="Open" dataTypeName="ConnectionState" type="property" />
+											</plx:right>
+										</plx:binaryOperator>
+									</plx:condition>
+									<plx:callInstance name="Open" type="methodCall">
+										<plx:callObject>
+											<plx:callInstance name="Connection" type="property">
+												<plx:callObject>
+													<plx:nameRef name="command" type="local" />
+												</plx:callObject>
+											</plx:callInstance>
+										</plx:callObject>
+									</plx:callInstance>
+								</plx:branch>
+								<plx:try>
+									<plx:callInstance type="methodCall" name="ExecuteNonQuery">
+										<plx:callObject>
+											<plx:nameRef type="local" name="command" />
+										</plx:callObject>
+									</plx:callInstance>
+									<plx:assign>
+										<plx:left>
+											<plx:callThis accessor="this" type="field" name="_DeathCause_DeathCause_Type" />
+										</plx:left>
+										<plx:right>
+											<plx:valueKeyword />
+										</plx:right>
+									</plx:assign>
+									<plx:finally>
+										<plx:branch>
+											<plx:condition>
+												<plx:binaryOperator type="equality">
+													<plx:left>
+														<plx:callInstance name="State" type="property">
+															<plx:callObject>
+																<plx:callInstance name="Connection" type="property">
+																	<plx:callObject>
+																		<plx:nameRef name="command" type="local" />
+																	</plx:callObject>
+																</plx:callInstance>
+															</plx:callObject>
+														</plx:callInstance>
+													</plx:left>
+													<plx:right>
+														<plx:callStatic name="Open" dataTypeName="ConnectionState" type="field" />
+													</plx:right>
+												</plx:binaryOperator>
+											</plx:condition>
+											<plx:callInstance name="Close" type="methodCall">
+												<plx:callObject>
+													<plx:callInstance name="Connection" type="property">
+														<plx:callObject>
+															<plx:nameRef name="command" type="local" />
+														</plx:callObject>
+													</plx:callInstance>
+												</plx:callObject>
+											</plx:callInstance>
+										</plx:branch>
+										<plx:callInstance name="Dispose" type="methodCall">
+											<plx:callObject>
+												<plx:nameRef name="command" type="local" />
+											</plx:callObject>
+										</plx:callInstance>
+									</plx:finally>
+								</plx:try>
+							</plx:branch>
+						</plx:branch>
+					</plx:set>
+				</plx:property>
+				<plx:field visibility="private" readOnly="false" name="_isinvolvedin{1}" />
+				<plx:property visibility="public" modifier="override" name="isinvolvedin{1}">
+					<plx:returns />
+					<plx:get>
+						<plx:return>
+							<plx:callThis accessor="this" type="field" name="_isinvolvedin{1}" />
+						</plx:return>
+					</plx:get>
+					<plx:set>
+						<plx:local name="oldValue">
+							<plx:initialize>
+								<plx:callThis accessor="this" type="field" name="_isinvolvedin{1}" />
+							</plx:initialize>
+						</plx:local>
+						<plx:branch>
+							<plx:condition>
+								<plx:binaryOperator type="inequality">
+									<plx:left>
+										<plx:nameRef type="local" name="oldValue" />
+									</plx:left>
+									<plx:right>
+										<plx:valueKeyword />
+									</plx:right>
+								</plx:binaryOperator>
+							</plx:condition>
+							<plx:branch>
+								<plx:condition>
+									<plx:callThis accessor="base" type="methodCall" name="Onisinvolvedin{1}Changing">
+										<plx:passParam>
+											<plx:valueKeyword />
+										</plx:passParam>
+									</plx:callThis>
+								</plx:condition>
+								<plx:local name="command" dataTypeName="IDbCommand">
+									<plx:initialize>
+										<plx:callInstance type="methodCall" name="CreateCommand">
+											<plx:callObject>
+												<plx:callInstance type="methodCall" name="GetConnection">
+													<plx:callObject>
+														<plx:callThis type="property" accessor="this" name="Context" />
+													</plx:callObject>
+												</plx:callInstance>
+											</plx:callObject>
+										</plx:callInstance>
+									</plx:initialize>
+								</plx:local>
+								<plx:assign>
+									<plx:left>
+										<plx:callInstance type="property" name="CommandType">
+											<plx:callObject>
+												<plx:nameRef type="local" name="command" />
+											</plx:callObject>
+										</plx:callInstance>
+									</plx:left>
+									<plx:right>
+										<plx:callStatic type="field" name="Text" dataTypeName="CommandType" />
+									</plx:right>
+								</plx:assign>
+								<plx:assign>
+									<plx:left>
+										<plx:callInstance type="property" name="CommandText">
+											<plx:callObject>
+												<plx:nameRef type="local" name="command" />
+											</plx:callObject>
+										</plx:callInstance>
+									</plx:left>
+									<plx:right>
+										<plx:string>UPDATE SampleModel.Death SET isinvolvedin{1} = @Newisinvolvedin{1} WHERE </plx:string>
+									</plx:right>
+								</plx:assign>
+								<plx:local name="parameterNewisinvolvedin{1}" dataTypeName="IDataParameter">
+									<plx:initialize>
+										<plx:callInstance name="CreateParameter" type="methodCall">
+											<plx:callObject>
+												<plx:nameRef name="command" />
+											</plx:callObject>
+										</plx:callInstance>
+									</plx:initialize>
+								</plx:local>
+								<plx:assign>
+									<plx:left>
+										<plx:callInstance name="ParameterName" type="property">
+											<plx:callObject>
+												<plx:nameRef name="parameterNewisinvolvedin{1}" />
+											</plx:callObject>
+										</plx:callInstance>
+									</plx:left>
+									<plx:right>
+										<plx:string>Newisinvolvedin{1}</plx:string>
+									</plx:right>
+								</plx:assign>
+								<plx:assign>
+									<plx:left>
+										<plx:callInstance name="Value" type="property">
+											<plx:callObject>
+												<plx:nameRef name="parameterNewisinvolvedin{1}" />
+											</plx:callObject>
+										</plx:callInstance>
+									</plx:left>
+									<plx:right>
+										<plx:valueKeyword />
+									</plx:right>
+								</plx:assign>
+								<plx:callInstance name="Add" type="methodCall">
+									<plx:callObject>
+										<plx:callInstance name="Parameters" type="property">
+											<plx:callObject>
+												<plx:nameRef name="command" />
+											</plx:callObject>
+										</plx:callInstance>
+									</plx:callObject>
+									<plx:passParam>
+										<plx:nameRef name="parameterNewisinvolvedin{1}" type="local" />
+									</plx:passParam>
+								</plx:callInstance>
+								<plx:branch>
+									<plx:condition>
+										<plx:binaryOperator type="inequality">
+											<plx:left>
+												<plx:callInstance name="State" type="property">
+													<plx:callObject>
+														<plx:callInstance name="Connection" type="property">
+															<plx:callObject>
+																<plx:nameRef name="command" type="local" />
+															</plx:callObject>
+														</plx:callInstance>
+													</plx:callObject>
+												</plx:callInstance>
+											</plx:left>
+											<plx:right>
+												<plx:callStatic name="Open" dataTypeName="ConnectionState" type="property" />
+											</plx:right>
+										</plx:binaryOperator>
+									</plx:condition>
+									<plx:callInstance name="Open" type="methodCall">
+										<plx:callObject>
+											<plx:callInstance name="Connection" type="property">
+												<plx:callObject>
+													<plx:nameRef name="command" type="local" />
+												</plx:callObject>
+											</plx:callInstance>
+										</plx:callObject>
+									</plx:callInstance>
+								</plx:branch>
+								<plx:try>
+									<plx:callInstance type="methodCall" name="ExecuteNonQuery">
+										<plx:callObject>
+											<plx:nameRef type="local" name="command" />
+										</plx:callObject>
+									</plx:callInstance>
+									<plx:assign>
+										<plx:left>
+											<plx:callThis accessor="this" type="field" name="_isinvolvedin{1}" />
+										</plx:left>
+										<plx:right>
+											<plx:valueKeyword />
+										</plx:right>
+									</plx:assign>
+									<plx:finally>
+										<plx:branch>
+											<plx:condition>
+												<plx:binaryOperator type="equality">
+													<plx:left>
+														<plx:callInstance name="State" type="property">
+															<plx:callObject>
+																<plx:callInstance name="Connection" type="property">
+																	<plx:callObject>
+																		<plx:nameRef name="command" type="local" />
+																	</plx:callObject>
+																</plx:callInstance>
+															</plx:callObject>
+														</plx:callInstance>
+													</plx:left>
+													<plx:right>
+														<plx:callStatic name="Open" dataTypeName="ConnectionState" type="field" />
+													</plx:right>
+												</plx:binaryOperator>
+											</plx:condition>
+											<plx:callInstance name="Close" type="methodCall">
+												<plx:callObject>
+													<plx:callInstance name="Connection" type="property">
+														<plx:callObject>
+															<plx:nameRef name="command" type="local" />
+														</plx:callObject>
+													</plx:callInstance>
+												</plx:callObject>
+											</plx:callInstance>
+										</plx:branch>
+										<plx:callInstance name="Dispose" type="methodCall">
+											<plx:callObject>
+												<plx:nameRef name="command" type="local" />
+											</plx:callObject>
+										</plx:callInstance>
+									</plx:finally>
+								</plx:try>
+							</plx:branch>
+						</plx:branch>
+					</plx:set>
 				</plx:property>
 			</plx:class>
 			<plx:function visibility="public" name="CreatePersonBoughtCarFromPersonOnDate">

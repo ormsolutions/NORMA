@@ -14,14 +14,14 @@ CREATE TABLE PersonCountryDemo.Person
 	firstName CHARACTER VARYING(30) NOT NULL,
 	title PersonCountryDemo.Title,
 	countryName CHARACTER VARYING(20),
-	CONSTRAINT InternalUniquenessConstraint1 PRIMARY KEY(personId)
+	CONSTRAINT Person_PK PRIMARY KEY(personId)
 );
 
 CREATE TABLE PersonCountryDemo.Country
 (
 	countryName CHARACTER VARYING(20) NOT NULL,
 	regionCode CHARACTER(8),
-	CONSTRAINT InternalUniquenessConstraint3 PRIMARY KEY(countryName)
+	CONSTRAINT Country_PK PRIMARY KEY(countryName)
 );
 
 ALTER TABLE PersonCountryDemo.Person ADD CONSTRAINT Person_FK FOREIGN KEY (countryName) REFERENCES PersonCountryDemo.Country (countryName) ON DELETE RESTRICT ON UPDATE RESTRICT;

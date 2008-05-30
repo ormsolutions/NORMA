@@ -1,7 +1,6 @@
 ﻿// Generate threw an exception
 // The required attribute 'dataTypeName' is missing.
 //    at System.Xml.Schema.XmlSchemaValidator.SendValidationEvent(XmlSchemaValidationException e, XmlSeverityType severity)
-//   at System.Xml.Schema.XmlSchemaValidator.SendValidationEvent(String code, String arg)
 //   at System.Xml.Schema.XmlSchemaValidator.CheckRequiredAttributes(SchemaElementDecl currentElementDecl)
 //   at System.Xml.Schema.XmlSchemaValidator.ValidateEndOfAttributes(XmlSchemaInfo schemaInfo)
 //   at System.Xml.XsdValidatingReader.ProcessElementEvent()

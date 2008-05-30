@@ -78,9 +78,6 @@
 		<prop:Property name="ValueType1DoesSomethingElseWith" mandatory="false" isUnique="false" isCollection="false" isCustomType="true" canBeNull="true" oppositeName="DoesSomethingElseWithPerson">
 			<prop:DataType dataTypeName="ValueType1" />
 		</prop:Property>
-		<prop:Property name="Death" mandatory="false" isUnique="true" isCollection="false" isCustomType="true" canBeNull="true" oppositeName="Person">
-			<prop:DataType dataTypeName="Death" />
-		</prop:Property>
 		<prop:Property name="PersonDrivesCarViaDrivenByPersonCollection" mandatory="false" isUnique="true" isCollection="true" isCustomType="true" canBeNull="true" oppositeName="DrivenByPerson">
 			<prop:DataType dataTypeName="IEnumerable">
 				<plx:passTypeParam dataTypeName="PersonDrivesCar" />
@@ -115,22 +112,6 @@
 			</prop:DataType>
 		</prop:Property>
 	</prop:Properties>
-	<prop:Properties conceptTypeName="Death">
-		<prop:Property name="Date_YMD" mandatory="false" isUnique="false" canBeNull="true" isCollection="false" isCustomType="false">
-			<prop:DataType dataTypeName="Nullable">
-				<plx:passTypeParam dataTypeName=".i4" />
-			</prop:DataType>
-		</prop:Property>
-		<prop:Property name="DeathCause_DeathCause_Type" mandatory="alethic" isUnique="false" canBeNull="true" isCollection="false" isCustomType="false">
-			<prop:DataType dataTypeName=".string" />
-		</prop:Property>
-		<prop:Property name="isDead" mandatory="alethic" isUnique="false" canBeNull="false" isCollection="false" isCustomType="false">
-			<prop:DataType dataTypeName=".boolean" />
-		</prop:Property>
-		<prop:Property name="Person" mandatory="alethic" isUnique="true" isCollection="false" isCustomType="true" canBeNull="true" oppositeName="Death">
-			<prop:DataType dataTypeName="Person" />
-		</prop:Property>
-	</prop:Properties>
 	<prop:Properties conceptTypeName="Task">
 		<prop:IdentityField name="Task_id" />
 		<prop:Property name="Person" mandatory="false" isUnique="false" isCollection="false" isCustomType="true" canBeNull="true" oppositeName="Task">
@@ -149,6 +130,17 @@
 				<plx:passTypeParam dataTypeName="Person" />
 			</prop:DataType>
 		</prop:Property>
+	</prop:Properties>
+	<prop:Properties conceptTypeName="Death">
+		<prop:Property name="Date_YMD" mandatory="false" isUnique="false" canBeNull="true" isCollection="false" isCustomType="false">
+			<prop:DataType dataTypeName="Nullable">
+				<plx:passTypeParam dataTypeName=".i4" />
+			</prop:DataType>
+		</prop:Property>
+		<prop:Property name="DeathCause_DeathCause_Type" mandatory="alethic" isUnique="false" canBeNull="true" isCollection="false" isCustomType="false">
+			<prop:DataType dataTypeName=".string" />
+		</prop:Property>
+		<prop:Property name="isinvolvedin{1}" mandatory="alethic" isUnique="false" canBeNull="false" isCollection="false" isCustomType="false" />
 	</prop:Properties>
 	<prop:Properties conceptTypeName="PersonBoughtCarFromPersonOnDate">
 		<prop:Property name="CarSold_vin" mandatory="alethic" isUnique="false" canBeNull="false" isCollection="false" isCustomType="false">

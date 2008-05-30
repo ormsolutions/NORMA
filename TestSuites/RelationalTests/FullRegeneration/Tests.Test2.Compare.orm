@@ -290,7 +290,7 @@
 			<ormtooial:AbstractionModelGenerationSetting id="_1ECF9C7E-EC03-4118-9BF0-78AC98140751" AlgorithmVersion="1.004">
 				<ormtooial:AbstractionModel ref="_4EE0E222-C3E6-4E2F-93BD-2832FD0CA530" />
 			</ormtooial:AbstractionModelGenerationSetting>
-			<oialtocdb:SchemaGenerationSetting id="_B469B281-6731-4214-9C2C-6CFDAC31C903" NameAlgorithmVersion="1.006" CoreAlgorithmVersion="1.003">
+			<oialtocdb:SchemaGenerationSetting id="_B469B281-6731-4214-9C2C-6CFDAC31C903" NameAlgorithmVersion="1.007" CoreAlgorithmVersion="1.004">
 				<oialtocdb:Schema ref="_DC73DBF4-111D-49C1-B301-B5F5B89FB4D8" />
 			</oialtocdb:SchemaGenerationSetting>
 		</orm:GenerationSettings>
@@ -356,7 +356,7 @@
 							<rcd:Column id="_F1753BB0-3092-48DA-8172-1FB16DD896A6" Name="someLength" />
 						</rcd:Columns>
 						<rcd:Constraints>
-							<rcd:UniquenessConstraint IsPrimary="true" Name="InternalUniquenessConstraint5" id="_6D3A29A9-9970-4E60-BF5E-28670161B4FD">
+							<rcd:UniquenessConstraint IsPrimary="true" id="_6D3A29A9-9970-4E60-BF5E-28670161B4FD" Name="Harry_PK">
 								<rcd:Columns>
 									<rcd:Column ref="_4EDFB83C-9B0F-40FC-BB81-49442C9EDF6F" />
 								</rcd:Columns>
@@ -368,7 +368,7 @@
 							<rcd:Column Name="cmValue" id="_11892B95-CA3B-47A4-B3F4-C0092282949E" />
 						</rcd:Columns>
 						<rcd:Constraints>
-							<rcd:UniquenessConstraint IsPrimary="true" Name="InternalUniquenessConstraint11" id="_0C5350B7-6C8C-4D84-8B0F-04692491FFCE">
+							<rcd:UniquenessConstraint IsPrimary="true" id="_0C5350B7-6C8C-4D84-8B0F-04692491FFCE" Name="Bob_PK">
 								<rcd:Columns>
 									<rcd:Column ref="_11892B95-CA3B-47A4-B3F4-C0092282949E" />
 								</rcd:Columns>

@@ -42,10 +42,10 @@
 				<ddl:notNullKeyword />
 			</ddl:columnConstraintDefinition>
 		</ddl:columnDefinition>
-		<ddl:columnDefinition name="blogCommentParentEntryIdNonCommentEntryBlogEntryId">
+		<ddl:columnDefinition name="blogCommentParentEntryIdBlogEntry_Id">
 			<ddt:exactNumeric type="INTEGER" />
 		</ddl:columnDefinition>
-		<ddl:tableConstraintDefinition name="InternalUniquenessConstraint1">
+		<ddl:tableConstraintDefinition name="BlogEntry_PK">
 			<ddl:uniqueConstraintDefinition type="PRIMARY KEY">
 				<dep:simpleColumnReference name="blogEntryId" />
 			</ddl:uniqueConstraintDefinition>
@@ -76,7 +76,7 @@
 				<ddl:notNullKeyword />
 			</ddl:columnConstraintDefinition>
 		</ddl:columnDefinition>
-		<ddl:tableConstraintDefinition name="ExternalUniquenessConstraint1">
+		<ddl:tableConstraintDefinition name="User_PK">
 			<ddl:uniqueConstraintDefinition type="PRIMARY KEY">
 				<dep:simpleColumnReference name="firstName" />
 				<dep:simpleColumnReference name="lastName" />
@@ -101,7 +101,7 @@
 		<ddl:columnDefinition name="title">
 			<ddt:characterString type="CHARACTER LARGE OBJECT" />
 		</ddl:columnDefinition>
-		<ddl:tableConstraintDefinition name="InternalUniquenessConstraint18">
+		<ddl:tableConstraintDefinition name="BlogLabel_PK">
 			<ddl:uniqueConstraintDefinition type="PRIMARY KEY">
 				<dep:simpleColumnReference name="blogLabelId" />
 			</ddl:uniqueConstraintDefinition>
@@ -120,7 +120,7 @@
 				<ddl:notNullKeyword />
 			</ddl:columnConstraintDefinition>
 		</ddl:columnDefinition>
-		<ddl:tableConstraintDefinition name="InternalUniquenessConstraint20">
+		<ddl:tableConstraintDefinition name="BlogEntryLabel_PK">
 			<ddl:uniqueConstraintDefinition type="PRIMARY KEY">
 				<dep:simpleColumnReference name="blogEntryId" />
 				<dep:simpleColumnReference name="blogLabelId" />
@@ -142,7 +142,7 @@
 	<ddl:alterTableStatement name="BlogEntry" schema="BlogDemo">
 		<ddl:addTableConstraintDefinition name="BlogEntry_FK2">
 			<ddl:referentialConstraintDefinition>
-				<dep:simpleColumnReference name="blogCommentParentEntryIdNonCommentEntryBlogEntryId" />
+				<dep:simpleColumnReference name="blogCommentParentEntryIdBlogEntry_Id" />
 				<ddl:referencesSpecification name="BlogEntry" onDelete="RESTRICT" onUpdate="RESTRICT" schema="BlogDemo">
 					<dep:simpleColumnReference name="blogEntryId" />
 				</ddl:referencesSpecification>

@@ -885,7 +885,7 @@
 			<ormtooial:AbstractionModelGenerationSetting AlgorithmVersion="1.004" id="_953B9230-0B01-406E-B73F-E99E73B31F8D">
 				<ormtooial:AbstractionModel ref="_B6DA4F58-8BCF-478E-82AE-C04CD0DD68C9" />
 			</ormtooial:AbstractionModelGenerationSetting>
-			<oialtocdb:SchemaGenerationSetting id="_0C331C48-4E21-4197-8186-4A3769048023" NameAlgorithmVersion="1.006" CoreAlgorithmVersion="1.003">
+			<oialtocdb:SchemaGenerationSetting id="_0C331C48-4E21-4197-8186-4A3769048023" NameAlgorithmVersion="1.007" CoreAlgorithmVersion="1.004">
 				<oialtocdb:Schema ref="_77081B66-EB8A-44C5-9D03-DF6573330E4B" />
 			</oialtocdb:SchemaGenerationSetting>
 		</orm:GenerationSettings>
@@ -1057,16 +1057,16 @@
 				<rcd:Tables>
 					<rcd:Table Name="Party" id="_A2BE2015-0BEF-4C99-A653-A96180B8BE55">
 						<rcd:Columns>
+							<rcd:Column Name="partyId" id="_20754109-168A-49DD-9F50-A5535546764B" />
 							<rcd:Column IsNullable="true" Name="personDied" id="_7F2F2522-F18B-44B4-A7A6-30505B06708B" />
 							<rcd:Column IsNullable="true" Name="personDateOfBirth" id="_62F7FB65-EEBA-4CAD-9256-AD08D8A7A5F2" />
 							<rcd:Column IsNullable="true" id="_BB4FDBA5-5648-46B7-959B-B5D365B86AA6" Name="personBirthAttendingDoctorId" />
 							<rcd:Column IsNullable="true" Name="personDeathDate" id="_82DC3D35-8A88-4B6D-B123-B571F00B429B" />
-							<rcd:Column Name="partyId" id="_20754109-168A-49DD-9F50-A5535546764B" />
 							<rcd:Column IsNullable="true" Name="partyName" id="_C11EB4B1-530E-493C-B0AA-25A9271D1254" />
 							<rcd:Column IsNullable="true" Name="partyMonikerAccuracyLevel" id="_91ABB90B-659A-4F80-AE80-808BDF40F80C" />
 						</rcd:Columns>
 						<rcd:Constraints>
-							<rcd:UniquenessConstraint IsPrimary="true" Name="InternalUniquenessConstraint17" id="_EC4EBD5A-7125-4A7E-8778-36730589865C">
+							<rcd:UniquenessConstraint IsPrimary="true" id="_EC4EBD5A-7125-4A7E-8778-36730589865C" Name="Party_PK">
 								<rcd:Columns>
 									<rcd:Column ref="_20754109-168A-49DD-9F50-A5535546764B" />
 								</rcd:Columns>
