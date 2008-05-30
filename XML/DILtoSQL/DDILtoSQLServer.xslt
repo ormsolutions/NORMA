@@ -32,8 +32,8 @@
 	<xsl:strip-space elements="*"/>
 
 	<xsl:param name="DefaultMaximumStringLength" select="'MAX'"/>
-	<xsl:param name="DefaultMaximumCharacterNonVaryingStringLength" select="4000"/>
-	<xsl:param name="DefaultMaximumBinaryNonVaryingStringLength" select="8000"/>
+	<xsl:param name="MaximumCharacterNonVaryingStringLength" select="4000"/>
+	<xsl:param name="MaximumBinaryNonVaryingStringLength" select="8000"/>
 	<xsl:param name="DefaultMaximumExactNumericPrecisionAndScale" select="38"/>
 	<xsl:param name="DefaultMaximumApproximateNumericPrecision" select="''"/>
 
