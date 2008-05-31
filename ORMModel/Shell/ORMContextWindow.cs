@@ -331,7 +331,7 @@ namespace Neumont.Tools.ORM.Shell
 				{
 					bl.AddShape(shape, false);
 				}
-				bl.Layout();
+				bl.Layout(true);
 
 				myDiagram.AutoPopulateShapes = false;
 				if (t.HasPendingChanges)

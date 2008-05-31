@@ -396,7 +396,7 @@ namespace Neumont.Tools.ORM.Shell
 				if (diagram.AutoPopulateShapes)
 				{
 					diagram.AutoPopulateShapes = false;
-					ORMDesignerDocView.AutoLayoutDiagram(diagram, diagram.NestedChildShapes);
+					ORMDesignerDocView.AutoLayoutDiagram(diagram, diagram.NestedChildShapes, true);
 				}
 			}
 

@@ -117,8 +117,7 @@ namespace Neumont.Tools.Modeling.Diagrams
 
 	#region LayoutEngine - base class
 	/// <summary>
-	/// The base class that all layout engines must implement.  You MUST override PerformLayout, and can optionally override
-	/// the PlaceConstraints and EnsureRolePosition methods as well.
+	/// The base class that all layout engines must implement.
 	/// </summary>
 	public abstract class LayoutEngine
 	{
@@ -149,7 +148,8 @@ namespace Neumont.Tools.Modeling.Diagrams
 		/// <summary>
 		/// Perform post-layout tasks
 		/// </summary>
-		protected virtual void PostLayout()
+		/// <param name="minimumPoint">The minimum location for new element placement</param>
+		public virtual void PostLayout(PointD minimumPoint)
 		{
 			// do nothing
 		}
@@ -196,32 +196,34 @@ namespace Neumont.Tools.Modeling.Diagrams
 		}
 
 		/// <summary>
-		/// The implementer runs the layout algorithm here, setting the NodeShape.Location property for every
-		/// child of <paramref name="rootShape"/> and their descendents.
+		/// The implementer runs the layout algorithm here, setting the <see cref="LayoutShape.TargetLocation"/> property for every
+		/// child of <paramref name="rootShape"/> and their descendants.
 		/// </summary>
 		/// <param name="rootShape">The element from which all other shapes are placed on the diagram.</param>
-		/// <param name="minX">Stores the smallest X value from the layout.  Used to ensure that all shapes are visible after placement.</param>
-		/// <param name="minY">Stores the smallest Y value from the layout.  Used to ensure that all shapes are visible after placement.</param>
-		public virtual void PerformLayout(LayoutShape rootShape, ref double minX, ref double minY)
-		{
-			PostLayout();
-		}
+		/// <param name="minimumPoint">The minimum location for new element placement</param>
+		/// <param name="layoutRectangle">The bounded rectangle for the newly layed out unpinned shapes</param>
+		public abstract void PerformLayout(LayoutShape rootShape, PointD minimumPoint, ref RectangleD layoutRectangle);
 
 		/// <summary>
 		/// Resolves references between shapes (indicated as lines on the diagram)
 		/// </summary>
 		/// <param name="list">Any list of <seealso cref="LayoutShape"/>s that need to have the shape references resolved</param>
 		/// <returns>The shape with the most references in the list (typically treated as the root shape)</returns>
+		/// <remarks>Any <see cref="LayoutShape"/> where the <see cref="LayoutShape.Placed"/> property is <see langword="true"/>
+		/// should be ignored.</remarks>
 		public virtual LayoutShape ResolveReferences(LayoutShapeList list)
 		{
 			LayoutShape mostChildren = null;
 			LayoutShapeList allShapes = myLayoutShapes;
 			foreach (LayoutShape layshape in list)
 			{
-				layshape.ResolveReferences(allShapes);
-				if (mostChildren == null || layshape.Count > mostChildren.Count)
+				if (!layshape.Placed)
 				{
-					mostChildren = layshape;
+					layshape.ResolveReferences(allShapes);
+					if (mostChildren == null || layshape.Count > mostChildren.Count)
+					{
+						mostChildren = layshape;
+					}
 				}
 			}
 			return mostChildren;
@@ -328,7 +330,8 @@ namespace Neumont.Tools.Modeling.Diagrams
 		/// <summary>
 		/// Perform post-layout tasks
 		/// </summary>
-		protected override void PostLayout()
+		/// <param name="minimumPoint">The minimum location for new element placement</param>
+		public override void PostLayout(PointD minimumPoint)
 		{
 			// do nothing
 		}
@@ -363,18 +366,149 @@ namespace Neumont.Tools.Modeling.Diagrams
 		/// Performs standard radial layout algorithm.
 		/// </summary>
 		/// <param name="rootShape">The shape determined to be the center of the diagram.</param>
-		/// <param name="minX">A by-ref parameter to return the smallest (possibly negative) X value used to place a shape on the diagram.</param>
-		/// <param name="minY">A by-ref parameter to return the smallest (possibly negative) Y value used to place a shape on the diagram.</param>
-		public override void PerformLayout(LayoutShape rootShape, ref double minX, ref double minY)
+		/// <param name="minimumPoint">The minimum location for new element placement</param>
+		/// <param name="layoutRectangle">The bounded rectangle for the newly layed out unpinned shapes</param>
+		public override void PerformLayout(LayoutShape rootShape, PointD minimumPoint, ref RectangleD layoutRectangle)
 		{
 			List<double> degrees = GenerateDegrees(-180, 180, 1);
 
-			rootShape.TargetLocation = new PointD(0, 0);
 			BuildTree(rootShape, null);
+
+			// Find the starting average location to best locate the root element
+			int allCount = 0;
+			int pinnedCount = 0;
+			double pinnedAverageX = 0;
+			double pinnedAverageY = 0;
+			double allAverageX = 0;
+			double allAverageY = 0;
+			IterateLayoutShapes(
+				rootShape,
+				delegate(LayoutShape shape)
+				{
+					RectangleD bounds = shape.Shape.AbsoluteBounds;
+					if (!bounds.Location.IsEmpty)
+					{
+						PointD location = bounds.Center;
+						++allCount;
+						allAverageX += location.X;
+						allAverageY += location.Y;
+						if (shape.Pinned)
+						{
+							++pinnedCount;
+							pinnedAverageX += location.X;
+							pinnedAverageY += location.Y;
+							// Record for easy access later
+							shape.TargetLocation = location;
+						}
+					}
+				});
+
+			// Set a starting location for the rootShape
+			PointD offsetBy = default(PointD);
+			if (pinnedCount != 0)
+			{
+				pinnedAverageX /= pinnedCount;
+				pinnedAverageY /= pinnedCount;
+				offsetBy = new PointD(pinnedAverageX, pinnedAverageY);
+				// Use later for adjustment
+				allAverageX = pinnedAverageX;
+				allAverageY = pinnedAverageY;
+			}
+			else if (allCount != 0)
+			{
+				allAverageX /= allCount;
+				allAverageY /= allCount;
+				offsetBy = new PointD(allAverageX, allAverageY);
+			}
+			rootShape.TargetLocation = offsetBy;
+
+			// Run the main recursive algorithm
 			AddShapeToQueue(rootShape);
 
-			PlaceShapes(rootShape, ref minX, ref minY, degrees);
-			base.PerformLayout(rootShape, ref minX, ref minY);
+			PlaceShapes(rootShape, degrees);
+
+			// Determine where our shapes ended up to get a bounding box
+			int newCount = 0;
+			double adjustX = 0;
+			double adjustY = 0;
+			double minX = double.MaxValue;
+			double minY = double.MaxValue;
+			double maxX = double.MinValue;
+			double maxY = double.MinValue;
+			IterateLayoutShapes(
+				rootShape,
+				delegate(LayoutShape shape)
+				{
+					PointD location = shape.TargetLocation;
+					SizeD size = shape.Shape.AbsoluteBounds.Size;
+					if (!shape.Pinned)
+					{
+						minX = Math.Min(minX, location.X);
+						minY = Math.Min(minY, location.Y);
+						maxX = Math.Max(maxX, location.X + size.Width);
+						maxY = Math.Max(maxY, location.Y + size.Height);
+					}
+					location.Offset(size.Width / 2, size.Height / 2);
+					++newCount;
+					adjustX += location.X;
+					adjustY += location.Y;
+				});
+
+			if (minX != double.MaxValue)
+			{
+				// Adjust the average position of non-pinned elements and
+				// set the location of the underlying elements
+				if (allCount != 0)
+				{
+					adjustX = allAverageX - adjustX / newCount;
+					minX += adjustX;
+					maxX += adjustX;
+					adjustY = allAverageY - adjustY / newCount;
+					minY += adjustY;
+					maxY += adjustY;
+				}
+				else
+				{
+					adjustX = 0;
+					adjustY = 0;
+				}
+				double offset;
+				//offset = minimumPoint.X - minX;
+				if (0 < (offset = minimumPoint.X - minX))
+				{
+					adjustX += offset;
+					minX += offset;
+					maxX += offset;
+				}
+				//offset = minimumPoint.Y - minY;
+				if (0 < (offset = minimumPoint.Y - minY))
+				{
+					adjustY += offset;
+					minY += offset;
+					maxY += offset;
+				}
+				layoutRectangle = new RectangleD(minX, minY, maxX - minX, maxY - minY);
+
+				// Adjust locations and move the actual shape
+				IterateLayoutShapes(
+					rootShape,
+					delegate(LayoutShape shape)
+					{
+						if (!shape.Pinned)
+						{
+							shape.TargetLocation.Offset(adjustX, adjustY);
+						}
+					});
+			}
+
+			// Now that all shapes are in the correct position, notify the new
+			// placement for all shapes.
+			IterateLayoutShapes(
+				rootShape,
+				delegate(LayoutShape shape)
+				{
+					PostShapePlacement(shape);
+				});
 		}
 
 		/// <summary>
@@ -416,15 +550,35 @@ namespace Neumont.Tools.Modeling.Diagrams
 				BuildTree(shape.RelatedShapes[i], shape);
 			}
 		}
-
-		private void PlaceShapes(LayoutShape rootShape, ref double minX, ref double minY, List<double> degrees)
+		/// <summary>
+		/// Callback used by IterateTree
+		/// </summary>
+		/// <param name="shape">The <see cref="LayoutShape"/> to visit</param>
+		private delegate void LayoutShapeVisitor(LayoutShape shape);
+		/// <summary>
+		/// Recursive walk all elements related to the current tree. This does
+		/// a depth-first walk.
+		/// </summary>
+		/// <param name="shape">The <see cref="LayoutShape"/> to examine</param>
+		/// <param name="visit">A <see cref="LayoutShapeVisitor"/> callback delegate</param>
+		private void IterateLayoutShapes(LayoutShape shape, LayoutShapeVisitor visit)
 		{
-			NodeShape nodeshape = null;
+			visit(shape);
+			foreach (LayoutShape child in shape.RelatedShapes)
+			{
+				if (child.Parent == shape)
+				{
+					IterateLayoutShapes(child, visit);
+				}
+			}
+		}
+
+		private void PlaceShapes(LayoutShape rootShape, List<double> degrees)
+		{
 			LayoutShape shape = null;
-			double originX = rootShape.TargetLocation.X;
-			double originY = rootShape.TargetLocation.Y;
-			double x = 0;
-			double y = 0;
+			PointD location = rootShape.TargetLocation;
+			double originX = location.X;
+			double originY = location.Y;
 
 			/*
 			 * This probably looks a little odd, but there's a reason to the madness.  This loop/queue combo allows
@@ -435,23 +589,6 @@ namespace Neumont.Tools.Modeling.Diagrams
 			while (myPlaceQueue.Count > 0)
 			{
 				shape = GetNextShapeFromQueue();
-				nodeshape = shape.Shape;
-
-				if (!shape.Pinned)
-				{
-					nodeshape.Location = new PointD(shape.TargetLocation.X, shape.TargetLocation.Y);
-				}
-
-				x = nodeshape.Location.X;
-				y = nodeshape.Location.Y;
-				if (x < minX)
-				{
-					minX = x;
-				}
-				if (y < minY)
-				{
-					minY = y;
-				}
 				shape.Placed = true;
 
 				shape.CountUnplacedRelatives();
@@ -485,19 +622,21 @@ namespace Neumont.Tools.Modeling.Diagrams
 				if (shape.Pinned)
 				{
 					// Remove degrees to avoid already-placed shapes, then retrieve the next most appropriate degree array index.
-					degreeIndex = AvoidPinnedShapes(shape, nodeshape, relDegrees, degreeIndex);
+					degreeIndex = AvoidPinnedShapes(shape, relDegrees, degreeIndex);
 				}
 
-				PlaceChildShapes(x, y, shape, relDegrees, degreeIndex, degreeIndexIncrement);
+				location = shape.TargetLocation;
+				PlaceChildShapes(location.X, location.Y, shape, relDegrees, degreeIndex, degreeIndexIncrement);
 			}
 		}
 
-		private int AvoidPinnedShapes(LayoutShape shape, NodeShape nodeshape, List<double> relDegrees, int degreeIndex)
+		private int AvoidPinnedShapes(LayoutShape shape, List<double> relDegrees, int degreeIndex)
 		{
-			PointD shapeLocation = shape.Shape.Location;
+			PointD shapeLocation = shape.TargetLocation;
+			NodeShape nodeShape = shape.Shape;
 
 			// We did not place the shape, there may be existing children on the map that we don't want to overlap
-			ReadOnlyCollection<LinkConnectsToNode> links = DomainRoleInfo.GetElementLinks<LinkConnectsToNode>(nodeshape, LinkConnectsToNode.NodesDomainRoleId);
+			ReadOnlyCollection<LinkConnectsToNode> links = DomainRoleInfo.GetElementLinks<LinkConnectsToNode>(nodeShape, LinkConnectsToNode.NodesDomainRoleId);
 			foreach (LinkConnectsToNode link in links)
 			{
 				BinaryLinkShape binaryLink = link.Link as BinaryLinkShape;
@@ -506,7 +645,7 @@ namespace Neumont.Tools.Modeling.Diagrams
 					continue;
 				}
 
-				NodeShape relation = (binaryLink.FromShape != nodeshape ? binaryLink.FromShape : binaryLink.ToShape);
+				NodeShape relation = (binaryLink.FromShape != nodeShape ? binaryLink.FromShape : binaryLink.ToShape);
 				LayoutShape childShape = null;
 				if (myLayoutShapes.TryGetValue(relation, out childShape) && !childShape.Pinned)
 				{
@@ -601,8 +740,6 @@ namespace Neumont.Tools.Modeling.Diagrams
 				childShape.TargetLocation = new PointD(x, y);
 				childShape.AngleFromParent = relDegree;
 				childShape.Depth = childDepth;
-
-				PostShapePlacement(childShape);
 
 				AddShapeToQueue(childShape);
 			}
@@ -814,12 +951,12 @@ namespace Neumont.Tools.Modeling.Diagrams
 		/// Performs the grid-based radial layout algorithm.
 		/// </summary>
 		/// <param name="rootShape">The shape determined to be the center of the diagram.</param>
-		/// <param name="minX">A by-ref parameter to return the smallest (possibly negative) X value used to place a shape on the diagram.</param>
-		/// <param name="minY">A by-ref parameter to return the smallest (possibly negative) Y value used to place a shape on the diagram.</param>
-		public override void PerformLayout(LayoutShape rootShape, ref double minX, ref double minY)
+		/// <param name="minimumPoint">The minimum location for new element placement</param>
+		/// <param name="layoutRectangle">The bounded rectangle for the newly layed out unpinned shapes</param>
+		public override void PerformLayout(LayoutShape rootShape, PointD minimumPoint, ref RectangleD layoutRectangle)
 		{
 			FindLargestShape();
-			base.PerformLayout(rootShape, ref minX, ref minY);
+			base.PerformLayout(rootShape, minimumPoint, ref layoutRectangle);
 		}
 
 		private void FindLargestShape()

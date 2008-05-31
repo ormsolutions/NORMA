@@ -282,7 +282,7 @@ namespace Neumont.Tools.ORM.Shell
 				#endregion Commented Out
 				ParsedFactTypeRolePlayerCollection objects = instance.myRolePlayers;
 				//Reading text is in format: {0} <blank> {1}
-				instance.ReadingText = builderFact.ToString();
+				instance.ReadingText = builderFact.ToString().Trim();
 				//Checks if the fact is a binary fact type with a forward AND reverse reading, denoted by the presence of the "/"
 				//Then it splits the text into representations of two seperate readings
 				if (nrObjects == 2 && instance.ReadingText.Contains("/"))

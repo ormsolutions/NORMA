@@ -108,11 +108,20 @@ namespace Neumont.Tools.ORM.Shell
 				AddShape(shape, pinned);
 			}
 		}
-
 		/// <summary>
-		/// Organizes the shapes in <see cref="myLayoutShapes"/>.
+		/// Organizes the shapes added with <see cref="AddShape(ShapeElement)"/> or similar methods.
 		/// </summary>
-		public void Layout()
+		/// <param name="ignoreExistingShapes">Do not adjust for existing shapes</param>
+		public void Layout(bool ignoreExistingShapes)
+		{
+			Layout(ignoreExistingShapes, null);
+		}
+		/// <summary>
+		/// Organizes the shapes added with <see cref="AddShape(ShapeElement)"/> or similar methods.
+		/// </summary>
+		/// <param name="ignoreExistingShapes">Do not adjust for existing shapes</param>
+		/// <param name="rightOfShape">Layout shapes to the right of this shape.</param>
+		public void Layout(bool ignoreExistingShapes, NodeShape rightOfShape)
 		{
 			LayoutShape backupRoot = null;
 			LayoutShapeList allShapes = myLayoutShapes;
@@ -125,34 +134,47 @@ namespace Neumont.Tools.ORM.Shell
 					break;
 			}
 			myLayoutEngine.LateBind(myDiagram, allShapes);
-			LayoutShape mostRelatives = myLayoutEngine.ResolveReferences(allShapes);
-			LayoutShape root = null;
-			// If the root shape was set by the user, AND the shape exists in our shape list
-			if (myRootShape == null || !allShapes.TryGetValue(myRootShape, out root))
+
+			SizeD margin = myDiagram.NestedShapesMargin;
+			if (rightOfShape != null)
 			{
-				root = GetRoot(mostRelatives);
+				margin.Width = Math.Max(margin.Width, rightOfShape.AbsoluteBounds.Right);
 			}
-			if (root == null)
+			PointD minimumPoint = new PointD(margin.Width, margin.Height);
+			RectangleD layoutRectangle = new RectangleD(minimumPoint, SizeD.Empty);
+			bool firstPass = true;
+			for (; ; )
 			{
-				root = backupRoot;
+				LayoutShape mostRelatives = myLayoutEngine.ResolveReferences(allShapes);
+				LayoutShape root = null;
+				// If the root shape was set by the user, AND the shape exists in our shape list
+				if (myRootShape == null || !allShapes.TryGetValue(myRootShape, out root))
+				{
+					root = GetRoot(mostRelatives);
+				}
+				if (root == null)
+				{
+					if (backupRoot == null)
+					{
+						myLayoutEngine.PostLayout(minimumPoint);
+						break;
+					}
+					root = backupRoot;
+				}
+
+				// run the layout of base shapes
+				myLayoutEngine.PerformLayout(root, new PointD(margin.Width, layoutRectangle.Bottom + (firstPass ? 0 : root.Shape.Size.Height)), ref layoutRectangle);
+				firstPass = false;
+				backupRoot = null;
+				myRootShape = null;
 			}
 
-			double minX = 0;
-			double minY = 0;
-			// run the layout of base shapes
-			myLayoutEngine.PerformLayout(root, ref minX, ref minY);
-
-			// shift the graph so that it's all visible
-			if (minX <= 0 || minY <= 0)
-			{
-				Reflow(-minX, -minY);
-			}
+			Reflow(ignoreExistingShapes);
 		}
 
 		/// <summary>
 		/// Sets the central shape from which all other shapes will extend.
 		/// </summary>
-		/// <param name="shape"></param>
 		public void SetRootShape(NodeShape shape)
 		{
 			myRootShape = shape;
@@ -167,15 +189,18 @@ namespace Neumont.Tools.ORM.Shell
 				LayoutShape first = null;
 				foreach (LayoutShape layshape in myLayoutShapes)
 				{
-					if (first == null)
+					if (!layshape.Placed)
 					{
-						first = layshape;
-					}
+						if (first == null)
+						{
+							first = layshape;
+						}
 
-					if (!(layshape.Shape is FactTypeShape) && !(layshape.Shape is ExternalConstraintShape))
-					{
-						root = layshape;
-						break;
+						if (!(layshape.Shape is FactTypeShape) && !(layshape.Shape is ExternalConstraintShape))
+						{
+							root = layshape;
+							break;
+						}
 					}
 				}
 
@@ -189,32 +214,40 @@ namespace Neumont.Tools.ORM.Shell
 			return root;
 		}
 
-		private void Reflow(double deltaX, double deltaY)
+		/// <summary>
+		/// Adjust element location for existing shapes and set the Location properties
+		/// </summary>
+		/// <param name="ignoreExistingShapes">Set if no attempt should be made to flow around existing shapes</param>
+		private void Reflow(bool ignoreExistingShapes)
 		{
 			// Respect the diagram margin
 			Diagram diagram = myDiagram;
-			SizeD margin = diagram.NestedShapesMargin;
-			deltaX += margin.Width;
-			deltaY += margin.Height;
-			bool movedFirstShape = false;
+			double deltaX = 0;
+			double deltaY = 0;
+			bool movedFirstShape = ignoreExistingShapes;
 
 			foreach (LayoutShape shape in myLayoutShapes)
 			{
 				if (!shape.Pinned)
 				{
 					NodeShape ns = shape.Shape;
-					RectangleD currentRectangle = ns.AbsoluteBounds;
-					PointD currentLocation = currentRectangle.Location;
+					PointD currentLocation = shape.TargetLocation;
 					if (!movedFirstShape)
 					{
+						// The shape location has not been set until immediately after this branch
+						// so finding the free area will not force a shape to move because it
+						// is on itself. Also, the available free area is always down and right.
+						RectangleD currentShapeBounds = ns.AbsoluteBounds;
+						RectangleD currentRectangle = new RectangleD(currentLocation, currentShapeBounds.Size);
 						movedFirstShape = true;
-						currentRectangle.Offset(deltaX, deltaY);
 						PointD currentCenter = currentRectangle.Center;
-						currentCenter.Offset(deltaX, deltaY);
-						RectangleD diagramBounds = diagram.AbsoluteBounds;
-						PointD adjustedLocation = diagram.FindFreeArea(currentCenter.X, currentCenter.Y, currentCenter.X, currentCenter.Y, currentRectangle.Width * 1.3, currentRectangle.Height * 1.3, currentRectangle.Width, currentRectangle.Height, diagramBounds.X, diagramBounds.Y, double.MaxValue, double.MaxValue);
-						deltaX += adjustedLocation.X - currentCenter.X;
-						deltaY += adjustedLocation.Y - currentCenter.Y;
+						if (currentShapeBounds.Location.IsEmpty || !currentShapeBounds.Contains(currentCenter))
+						{
+							RectangleD diagramBounds = diagram.AbsoluteBounds;
+							PointD adjustedLocation = diagram.FindFreeArea(currentCenter.X, currentCenter.Y, currentCenter.X, currentCenter.Y, currentRectangle.Width * 1.3, currentRectangle.Height * 1.3, currentRectangle.Width, currentRectangle.Height, currentRectangle.Left, currentRectangle.Top, double.MaxValue, double.MaxValue);
+							deltaX += adjustedLocation.X - currentCenter.X;
+							deltaY += adjustedLocation.Y - currentCenter.Y;
+						}
 					}
 					ns.Location = new PointD(currentLocation.X + deltaX, currentLocation.Y + deltaY);
 				}

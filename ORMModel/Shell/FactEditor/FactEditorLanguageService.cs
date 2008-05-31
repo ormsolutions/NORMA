@@ -781,7 +781,9 @@ namespace Neumont.Tools.ORM.Shell
 							}
 							else
 							{
-								FactType testFactType = ORMEditorUtility.ResolveContextFactType(element);
+								object contextInstance = EditorUtility.ResolveContextInstance(element, false);
+								ObjectType currentObjectType = contextInstance as ObjectType;
+								FactType testFactType = (currentObjectType == null) ? ORMEditorUtility.ResolveContextFactType(contextInstance) : null;
 								if (testFactType is SubtypeFact)
 								{
 									// Readings on subtypes are not directly edited
@@ -791,7 +793,6 @@ namespace Neumont.Tools.ORM.Shell
 								// they all resolve to the same facttype
 								if (testFactType == null)
 								{
-									ObjectType currentObjectType = EditorUtility.ResolveContextInstance(element, false) as ObjectType;
 									if (currentObjectType != null)
 									{
 										selectedObjectTypes = new ObjectType[MaxSelectedObjectTypes];

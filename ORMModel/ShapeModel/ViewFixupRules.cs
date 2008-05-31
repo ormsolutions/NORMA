@@ -211,7 +211,7 @@ namespace Neumont.Tools.ORM.ShapeModel
 						}
 						bl.AddShape(rootShape, true);
 						bl.SetRootShape(rootShape);
-						bl.Layout();
+						bl.Layout(false);
 					}
 				}
 			}

@@ -2032,7 +2032,7 @@ namespace Neumont.Tools.ORM.Shell
 		/// </summary>
 		protected virtual void OnMenuAutoLayout()
 		{
-			ORMDesignerDocView.AutoLayoutDiagram(this.CurrentDiagram, this.SelectedElements);
+			ORMDesignerDocView.AutoLayoutDiagram(this.CurrentDiagram, this.SelectedElements, false);
 		}
 		/// <summary>
 		/// Automatically lays out the <see cref="ShapeElement"/>s contained in <paramref name="shapeElementCollection"/> on
@@ -2044,9 +2044,9 @@ namespace Neumont.Tools.ORM.Shell
 		/// <see langword="true"/> is passed for the <c>route</c> parameter if and only if <see cref="Diagram.RoutingStyle"/> is any
 		/// value other than <see cref="VGRoutingStyle.VGRouteNone"/>.
 		/// </remarks>
-		public static void AutoLayoutDiagram(Diagram diagram, ICollection shapeElementCollection)
+		public static void AutoLayoutDiagram(Diagram diagram, ICollection shapeElementCollection, bool ignoreExistingShapes)
 		{
-			ORMDesignerDocView.AutoLayoutDiagram(diagram, shapeElementCollection, PlacementValueStyle.VGPlaceWideSSW);
+			ORMDesignerDocView.AutoLayoutDiagram(diagram, shapeElementCollection, ignoreExistingShapes, PlacementValueStyle.VGPlaceWideSSW);
 		}
 		/// <summary>
 		/// Automatically lays out the <see cref="ShapeElement"/>s contained in <paramref name="shapeElementCollection"/> on
@@ -2058,7 +2058,7 @@ namespace Neumont.Tools.ORM.Shell
 		/// <see langword="true"/> is passed for the <c>route</c> parameter if and only if <see cref="Diagram.RoutingStyle"/> is any
 		/// value other than <see cref="VGRoutingStyle.VGRouteNone"/>.
 		/// </remarks>
-		public static void AutoLayoutDiagram(Diagram diagram, ICollection shapeElementCollection, PlacementValueStyle placementStyle)
+		public static void AutoLayoutDiagram(Diagram diagram, ICollection shapeElementCollection, bool ignoreExistingShapes, PlacementValueStyle placementStyle)
 		{
 			if (diagram != null)
 			{
@@ -2069,7 +2069,7 @@ namespace Neumont.Tools.ORM.Shell
 					{
 						bl.AddShape(shape, false);
 					}
-					bl.Layout();
+					bl.Layout(ignoreExistingShapes);
 
 					if (t.HasPendingChanges)
 					{

@@ -27,6 +27,7 @@ using Microsoft.VisualStudio.Modeling.Shell;
 using Microsoft.VisualStudio.Modeling.Diagrams;
 using System.Text.RegularExpressions;
 using System.Diagnostics;
+using System.Globalization;
 
 namespace Neumont.Tools.ORM.Shell
 {
@@ -83,6 +84,7 @@ namespace Neumont.Tools.ORM.Shell
 					ORMDiagram diagram = (docView != null) ? docView.CurrentDiagram as ORMDiagram : null;
 					LayoutManager layoutManager = (diagram != null) ? new LayoutManager(diagram, (diagram.Store as IORMToolServices).GetLayoutEngine(typeof(ORMRadialLayoutEngine))) : null;
 					List<ModelElement> newlyCreatedElementsWithNoShape = null;
+					NodeShape rightOfShape = null;
 
 					// We've got a model, now lets start a transaction to add our FactType and associated ObjectType elements to the model.
 					using (Transaction t = store.TransactionManager.BeginTransaction(ResourceStrings.InterpretFactEditorLineTransactionName))
@@ -156,6 +158,7 @@ namespace Neumont.Tools.ORM.Shell
 										foundShape = diagram.FindShapeForElement<FactTypeShape>(nestedFactType);
 										if (foundShape != null)
 										{
+											rightOfShape = (i == 0) ? (NodeShape)foundShape : null;
 											layoutManager.AddShape(foundShape, true);
 										}
 										else
@@ -168,6 +171,7 @@ namespace Neumont.Tools.ORM.Shell
 										foundShape = diagram.FindShapeForElement<ObjectTypeShape>(currentObjectType);
 										if (foundShape != null)
 										{
+											rightOfShape = (i == 0) ? (NodeShape)foundShape : null;
 											layoutManager.AddShape(foundShape, true);
 										}
 										else
@@ -253,8 +257,6 @@ namespace Neumont.Tools.ORM.Shell
 						} // end foreach (ParsedFactTypeRolePlayer o in myParsedFactType.RolePlayers)
 						#endregion // Determine all object types
 
-						RoleBase[] matchedRoles = new RoleBase[newFactArity];
-
 						// Make sure that we aren't trying to use the objectifying type
 						// of the active fact as one of the objects.
 						if (startingFactType != null)
@@ -262,265 +264,273 @@ namespace Neumont.Tools.ORM.Shell
 							startingFactType = ObjectificationCheck(startingFactType);
 						}
 
-						// Get the facttype if it exists, otherwise create a new one.
-						bool resetReadingOrders = false;
-						if (startingFactType == null)
+						// Add a FactType unless there is no information other than ObjectTypes
+						if (startingFactType != null ||
+							!string.IsNullOrEmpty(myParsedFactType.ReverseReadingText) ||
+							Reading.ReplaceFields(myParsedFactType.ReadingText, "").Trim().Length != 0)
 						{
-							currentFactType = new FactType(store);
-							(newlyCreatedElementsWithNoShape ?? (newlyCreatedElementsWithNoShape = new List<ModelElement>())).Add(currentFactType);
-							currentFactType.Model = model;
-							for (int i = 0; i < newFactArity; ++i)
-							{
-								Role role = new Role(store);
-								role.FactType = currentFactType;
-								role.RolePlayer = objectTypes[i];
-								matchedRoles[i] = role;
-							}
-							resetReadingOrders = true;
-						}
-						else
-						{
-							currentFactType = startingFactType;
+							RoleBase[] matchedRoles = new RoleBase[newFactArity];
 
-							// Match roles in current FactType to object types. If one
-							// ObjectType is used multiple times, fallback on the selected
-							// reading orders to determine the best role order
-							IList<RoleBase> selectedRolesList = mySelectedReadingOrder != null ? mySelectedReadingOrder.RoleCollection : mySelectedRoleOrder;
-							int selectedRoleCount = selectedRolesList.Count;
-							int unmatchedRoleCount = newFactArity;
-							int unusedRoleCount = selectedRoleCount;
-							RoleBase[] selectedRoles = new RoleBase[selectedRoleCount];
-							selectedRolesList.CopyTo(selectedRoles, 0);
-							for (int i = 0; i < newFactArity; ++i)
+							// Get the facttype if it exists, otherwise create a new one.
+							bool resetReadingOrders = false;
+							if (startingFactType == null)
 							{
-								ObjectType matchObjectType = objectTypes[i];
-								RoleBase matchRole = null;
-								for (int j = 0; j < selectedRoleCount; ++j)
+								currentFactType = new FactType(store);
+								(newlyCreatedElementsWithNoShape ?? (newlyCreatedElementsWithNoShape = new List<ModelElement>())).Add(currentFactType);
+								currentFactType.Model = model;
+								for (int i = 0; i < newFactArity; ++i)
 								{
-									RoleBase testRole = selectedRoles[j];
-									if (testRole != null && testRole.Role.RolePlayer == matchObjectType)
-									{
-										matchRole = testRole;
-										selectedRoles[j] = null;
-										--unusedRoleCount;
-										break;
-									}
+									Role role = new Role(store);
+									role.FactType = currentFactType;
+									role.RolePlayer = objectTypes[i];
+									matchedRoles[i] = role;
 								}
-								if (matchRole != null)
-								{
-									matchedRoles[i] = matchRole;
-									--unmatchedRoleCount;
-								}
+								resetReadingOrders = true;
 							}
-							if (unmatchedRoleCount != 0)
+							else
 							{
-								if (selectedRoleCount == newFactArity)
+								currentFactType = startingFactType;
+
+								// Match roles in current FactType to object types. If one
+								// ObjectType is used multiple times, fallback on the selected
+								// reading orders to determine the best role order
+								IList<RoleBase> selectedRolesList = mySelectedReadingOrder != null ? mySelectedReadingOrder.RoleCollection : mySelectedRoleOrder;
+								int selectedRoleCount = selectedRolesList.Count;
+								int unmatchedRoleCount = newFactArity;
+								int unusedRoleCount = selectedRoleCount;
+								RoleBase[] selectedRoles = new RoleBase[selectedRoleCount];
+								selectedRolesList.CopyTo(selectedRoles, 0);
+								for (int i = 0; i < newFactArity; ++i)
 								{
-									// Keep the FactType basically intact if the
-									// null matched roles line up positionally with the
-									// unused selected roles.
-									int i = 0;
-									for (; i < newFactArity; ++i)
+									ObjectType matchObjectType = objectTypes[i];
+									RoleBase matchRole = null;
+									for (int j = 0; j < selectedRoleCount; ++j)
 									{
-										// First pass, see if they line up
-										if ((matchedRoles[i] == null) == (selectedRoles[i] == null))
+										RoleBase testRole = selectedRoles[j];
+										if (testRole != null && testRole.Role.RolePlayer == matchObjectType)
 										{
+											matchRole = testRole;
+											selectedRoles[j] = null;
+											--unusedRoleCount;
 											break;
 										}
 									}
-									if (i == newFactArity) // All missing slots align with selected order
+									if (matchRole != null)
 									{
-										for (i = 0; i < newFactArity; ++i)
-										{
-											if (matchedRoles[i] == null)
-											{
-												RoleBase selectedRole = selectedRoles[i];
-												matchedRoles[i] = selectedRole;
-												selectedRoles[i] = null;
-												--unusedRoleCount;
-												--unmatchedRoleCount;
-												// Clear the value constraint (the type has changed),
-												// but leave other constraints attached
-												Role role = selectedRole.Role;
-												role.ValueConstraint = null;
-												role.RolePlayer = objectTypes[i];
-											}
-										}
-									}
-								}
-								if (unusedRoleCount != 0)
-								{
-									// Remove any ConstraintRoleSequence attached to a matchedRole
-									// that includes a role on this FactType that is not part of the
-									// current matchedRoles set.
-									for (int i = 0; i < newFactArity; ++i)
-									{
-										RoleBase roleBase = matchedRoles[i];
-										if (roleBase != null)
-										{
-											Role role = roleBase.Role;
-											LinkedElementCollection<ConstraintRoleSequence> sequences = role.ConstraintRoleSequenceCollection;
-											int sequenceCount = sequences.Count;
-											for (int j = sequenceCount - 1; j >= 0; --j)
-											{
-												ConstraintRoleSequence sequence = sequences[j];
-												bool unmatchedRole = false;
-												bool sequenceIntersectsForeignFactType = false;
-												LinkedElementCollection<Role> constraintRoles = sequence.RoleCollection;
-												int constraintRoleCount = constraintRoles.Count;
-												if (constraintRoleCount > 1)
-												{
-													for (int k = 0; k < constraintRoleCount; ++k)
-													{
-														Role constraintRole = constraintRoles[k];
-														if (constraintRole != role)
-														{
-															if (constraintRole.FactType != currentFactType)
-															{
-																sequenceIntersectsForeignFactType = true;
-															}
-															else
-															{
-																int m = 0;
-																for (; m < newFactArity; ++m)
-																{
-																	if (m != i)
-																	{
-																		RoleBase testRole = matchedRoles[m];
-																		if (testRole.Role == constraintRole)
-																		{
-																			break;
-																		}
-																	}
-																}
-																if (m == newFactArity)
-																{
-																	unmatchedRole = true;
-																	break;
-																}
-															}
-														}
-													}
-													if (unmatchedRole)
-													{
-														if (sequenceIntersectsForeignFactType)
-														{
-															for (int k = constraintRoleCount - 1; k >= 0; --k)
-															{
-																if (constraintRoles[k].FactType == currentFactType)
-																{
-																	constraintRoles.RemoveAt(k);
-																}
-															}
-														}
-														else
-														{
-															// Easier case, get rid of the full sequence
-															sequence.Delete();
-														}
-													}
-												}
-											}
-										}
+										matchedRoles[i] = matchRole;
+										--unmatchedRoleCount;
 									}
 								}
 								if (unmatchedRoleCount != 0)
 								{
-									int lastUnusedRoleIndex = 0;
-									for (int i = 0; i < newFactArity; ++i)
+									if (selectedRoleCount == newFactArity)
 									{
-										if (matchedRoles[i] == null)
+										// Keep the FactType basically intact if the
+										// null matched roles line up positionally with the
+										// unused selected roles.
+										int i = 0;
+										for (; i < newFactArity; ++i)
 										{
-											// UNDONE: Consider using the FactTypeShape.InsertAfterRoleKey
-											// and FactTypeShape.InsertBeforeRoleKey context information
-											// to modify display of inserted roles.
-
-											// Use an existing role if we have it
-											if (unusedRoleCount != 0)
+											// First pass, see if they line up
+											if ((matchedRoles[i] == null) == (selectedRoles[i] == null))
 											{
-												for (int j = lastUnusedRoleIndex; j < selectedRoleCount; ++j)
-												{
-													RoleBase availableRole = selectedRoles[j];
-													if (availableRole != null)
-													{
-														Role role = availableRole.Role;
-														// Clean constraint relationships on this role
-														// We're essentially using it like a new role.
-														role.ConstraintRoleSequenceCollection.Clear();
-														role.ValueConstraint = null;
-														role.RolePlayer = objectTypes[i];
-														role.Name = "";
-														matchedRoles[i] = availableRole;
-														selectedRoles[j] = null;
-														--unusedRoleCount;
-														lastUnusedRoleIndex = j + 1;
-													}
-												}
+												break;
 											}
-											else
+										}
+										if (i == newFactArity) // All missing slots align with selected order
+										{
+											for (i = 0; i < newFactArity; ++i)
 											{
-												Role role = new Role(store);
-												role.FactType = currentFactType;
-												role.RolePlayer = objectTypes[i];
-												matchedRoles[i] = role;
+												if (matchedRoles[i] == null)
+												{
+													RoleBase selectedRole = selectedRoles[i];
+													matchedRoles[i] = selectedRole;
+													selectedRoles[i] = null;
+													--unusedRoleCount;
+													--unmatchedRoleCount;
+													// Clear the value constraint (the type has changed),
+													// but leave other constraints attached
+													Role role = selectedRole.Role;
+													role.ValueConstraint = null;
+													role.RolePlayer = objectTypes[i];
+												}
 											}
 										}
 									}
-									resetReadingOrders = true;
-								}
-							}
-							if (unusedRoleCount != 0)
-							{
-								resetReadingOrders = true;
-								for (int i = 0; i < selectedRoleCount; ++i)
-								{
-									RoleBase currentRole = selectedRoles[i];
-									if (currentRole != null)
+									if (unusedRoleCount != 0)
 									{
-										// Deleting the role will automatically take
-										// care of the other relationships that reference it
-										currentRole.Delete();
+										// Remove any ConstraintRoleSequence attached to a matchedRole
+										// that includes a role on this FactType that is not part of the
+										// current matchedRoles set.
+										for (int i = 0; i < newFactArity; ++i)
+										{
+											RoleBase roleBase = matchedRoles[i];
+											if (roleBase != null)
+											{
+												Role role = roleBase.Role;
+												LinkedElementCollection<ConstraintRoleSequence> sequences = role.ConstraintRoleSequenceCollection;
+												int sequenceCount = sequences.Count;
+												for (int j = sequenceCount - 1; j >= 0; --j)
+												{
+													ConstraintRoleSequence sequence = sequences[j];
+													bool unmatchedRole = false;
+													bool sequenceIntersectsForeignFactType = false;
+													LinkedElementCollection<Role> constraintRoles = sequence.RoleCollection;
+													int constraintRoleCount = constraintRoles.Count;
+													if (constraintRoleCount > 1)
+													{
+														for (int k = 0; k < constraintRoleCount; ++k)
+														{
+															Role constraintRole = constraintRoles[k];
+															if (constraintRole != role)
+															{
+																if (constraintRole.FactType != currentFactType)
+																{
+																	sequenceIntersectsForeignFactType = true;
+																}
+																else
+																{
+																	int m = 0;
+																	for (; m < newFactArity; ++m)
+																	{
+																		if (m != i)
+																		{
+																			RoleBase testRole = matchedRoles[m];
+																			if (testRole.Role == constraintRole)
+																			{
+																				break;
+																			}
+																		}
+																	}
+																	if (m == newFactArity)
+																	{
+																		unmatchedRole = true;
+																		break;
+																	}
+																}
+															}
+														}
+														if (unmatchedRole)
+														{
+															if (sequenceIntersectsForeignFactType)
+															{
+																for (int k = constraintRoleCount - 1; k >= 0; --k)
+																{
+																	if (constraintRoles[k].FactType == currentFactType)
+																	{
+																		constraintRoles.RemoveAt(k);
+																	}
+																}
+															}
+															else
+															{
+																// Easier case, get rid of the full sequence
+																sequence.Delete();
+															}
+														}
+													}
+												}
+											}
+										}
+									}
+									if (unmatchedRoleCount != 0)
+									{
+										int lastUnusedRoleIndex = 0;
+										for (int i = 0; i < newFactArity; ++i)
+										{
+											if (matchedRoles[i] == null)
+											{
+												// UNDONE: Consider using the FactTypeShape.InsertAfterRoleKey
+												// and FactTypeShape.InsertBeforeRoleKey context information
+												// to modify display of inserted roles.
+
+												// Use an existing role if we have it
+												if (unusedRoleCount != 0)
+												{
+													for (int j = lastUnusedRoleIndex; j < selectedRoleCount; ++j)
+													{
+														RoleBase availableRole = selectedRoles[j];
+														if (availableRole != null)
+														{
+															Role role = availableRole.Role;
+															// Clean constraint relationships on this role
+															// We're essentially using it like a new role.
+															role.ConstraintRoleSequenceCollection.Clear();
+															role.ValueConstraint = null;
+															role.RolePlayer = objectTypes[i];
+															role.Name = "";
+															matchedRoles[i] = availableRole;
+															selectedRoles[j] = null;
+															--unusedRoleCount;
+															lastUnusedRoleIndex = j + 1;
+														}
+													}
+												}
+												else
+												{
+													Role role = new Role(store);
+													role.FactType = currentFactType;
+													role.RolePlayer = objectTypes[i];
+													matchedRoles[i] = role;
+												}
+											}
+										}
+										resetReadingOrders = true;
+									}
+								}
+								if (unusedRoleCount != 0)
+								{
+									resetReadingOrders = true;
+									for (int i = 0; i < selectedRoleCount; ++i)
+									{
+										RoleBase currentRole = selectedRoles[i];
+										if (currentRole != null)
+										{
+											// Deleting the role will automatically take
+											// care of the other relationships that reference it
+											currentRole.Delete();
+										}
 									}
 								}
 							}
-						}
 
-						// Get a current reading to set the text for
-						if (resetReadingOrders)
-						{
-							// There is no way to preserve any meaningingful information
-							// in the existing reading orders and readings (if any). However,
-							// we don't want to clear the collection outright because there
-							// may be shapes attached to the reading orders that will lose
-							// position if we clear the full collection. Make sure we
-							// keep a reading order at all times.
-							LinkedElementCollection<ReadingOrder> orders = currentFactType.ReadingOrderCollection;
-							ReadingOrder newOrder = new ReadingOrder(store);
-							newOrder.RoleCollection.AddRange(matchedRoles);
-							int startingOrdersCount = orders.Count;
-							if (startingOrdersCount == 0)
+							// Get a current reading to set the text for
+							if (resetReadingOrders)
 							{
-								orders.Add(newOrder);
+								// There is no way to preserve any meaningingful information
+								// in the existing reading orders and readings (if any). However,
+								// we don't want to clear the collection outright because there
+								// may be shapes attached to the reading orders that will lose
+								// position if we clear the full collection. Make sure we
+								// keep a reading order at all times.
+								LinkedElementCollection<ReadingOrder> orders = currentFactType.ReadingOrderCollection;
+								ReadingOrder newOrder = new ReadingOrder(store);
+								newOrder.RoleCollection.AddRange(matchedRoles);
+								int startingOrdersCount = orders.Count;
+								if (startingOrdersCount == 0)
+								{
+									orders.Add(newOrder);
+								}
+								else
+								{
+									orders.Insert(0, newOrder);
+									orders.RemoveRange(1, startingOrdersCount);
+								}
+								newOrder.ReadingText = myParsedFactType.ReadingText;
+								retVal = newOrder;
 							}
 							else
 							{
-								orders.Insert(0, newOrder);
-								orders.RemoveRange(1, startingOrdersCount);
+								retVal = SetPrimaryReading(store, currentFactType, matchedRoles, myParsedFactType.ReadingText);
 							}
-							newOrder.ReadingText = myParsedFactType.ReadingText;
-							retVal = newOrder;
-						}
-						else
-						{
-							retVal = SetPrimaryReading(store, currentFactType, matchedRoles, myParsedFactType.ReadingText);
-						}
 
-						string reverseReadingText;
-						if (newFactArity == 2 &&
-							!string.IsNullOrEmpty(reverseReadingText = myParsedFactType.ReverseReadingText))
-						{
-							Array.Reverse(matchedRoles);
-							SetPrimaryReading(store, currentFactType, matchedRoles, reverseReadingText);
+							string reverseReadingText;
+							if (newFactArity == 2 &&
+								!string.IsNullOrEmpty(reverseReadingText = myParsedFactType.ReverseReadingText))
+							{
+								Array.Reverse(matchedRoles);
+								SetPrimaryReading(store, currentFactType, matchedRoles, reverseReadingText);
+							}
 						}
 
 						if (t.HasPendingChanges)
@@ -534,7 +544,7 @@ namespace Neumont.Tools.ORM.Shell
 					// in the modelElements collection.
 					if (diagram != null && newlyCreatedElementsWithNoShape != null && newlyCreatedElementsWithNoShape.Count != 0)
 					{
-						AutoLayout(store, diagram, layoutManager, newlyCreatedElementsWithNoShape);
+						AutoLayout(store, diagram, layoutManager, newlyCreatedElementsWithNoShape, rightOfShape);
 					}
 					#endregion // Autolayout
 				}
@@ -552,7 +562,7 @@ namespace Neumont.Tools.ORM.Shell
 				currentOrder.ReadingText = readingText;
 				return currentOrder;
 			}
-			private static void AutoLayout(Store store, ORMDiagram diagram, LayoutManager layoutManager, List<ModelElement> newlyCreatedElements)
+			private static void AutoLayout(Store store, ORMDiagram diagram, LayoutManager layoutManager, List<ModelElement> newlyCreatedElements, NodeShape rightOfShape)
 			{
 				// Create a new transaction to perform autolayout (You cannot do this inside the same transaction)
 				using (Transaction t = store.TransactionManager.BeginTransaction(ResourceStrings.InterpretFactEditorLineTransactionName))
@@ -566,7 +576,7 @@ namespace Neumont.Tools.ORM.Shell
 							layoutManager.AddShape(shapeElement, false);
 						}
 					}
-					layoutManager.Layout();
+					layoutManager.Layout(false, rightOfShape);
 
 					t.Commit();
 				}

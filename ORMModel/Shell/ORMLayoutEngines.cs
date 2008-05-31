@@ -26,7 +26,6 @@ namespace Neumont.Tools.ORM.Shell
 		: RadialLayoutEngine
 	{
 		LayoutShapeList myConstraintShapes = new LayoutShapeList();
-		LayoutShape myLastPlacedShape = null;
 
 		/// <summary>
 		/// Default constructor
@@ -41,16 +40,21 @@ namespace Neumont.Tools.ORM.Shell
 		/// </summary>
 		/// <param name="list">Any list of <seealso cref="LayoutShape"/>s that need to have the shape references resolved</param>
 		/// <returns>The shape with the most references in the list (typically treated as the root shape)</returns>
+		/// <remarks>Any <see cref="LayoutShape"/> where the <see cref="LayoutShape.Placed"/> property is <see langword="true"/>
+		/// should be ignored.</remarks>
 		public override LayoutShape ResolveReferences(LayoutShapeList list)
 		{
 			LayoutShape mostChildren = null;
 			LayoutShapeList allShapes = myLayoutShapes;
 			foreach (LayoutShape layshape in list)
 			{
-				layshape.ResolveReferences(allShapes);
-				if ((mostChildren == null || layshape.Count > mostChildren.Count) && !(layshape.Shape is FactTypeShape) && !(layshape.Shape is ExternalConstraintShape))
+				if (!layshape.Placed)
 				{
-					mostChildren = layshape;
+					layshape.ResolveReferences(allShapes);
+					if ((mostChildren == null || layshape.Count > mostChildren.Count) && !(layshape.Shape is FactTypeShape) && !(layshape.Shape is ExternalConstraintShape))
+					{
+						mostChildren = layshape;
+					}
 				}
 			}
 			return mostChildren;
@@ -62,7 +66,6 @@ namespace Neumont.Tools.ORM.Shell
 		protected override void ClearState()
 		{
 			myConstraintShapes.Clear();
-			myLastPlacedShape = null;
 			base.ClearState();
 		}
 
@@ -72,17 +75,13 @@ namespace Neumont.Tools.ORM.Shell
 		protected override void PreLayout()
 		{
 			// Separate out the external constraint shapes
-			for (int i=0; i < myLayoutShapes.Count;)
+			for (int i = myLayoutShapes.Count - 1; i >= 0; --i)
 			{
 				LayoutShape layshape = myLayoutShapes[i];
 				if (layshape.Shape is ExternalConstraintShape)
 				{
 					myConstraintShapes.Add(layshape);
 					myLayoutShapes.RemoveAt(i);
-				}
-				else
-				{
-					i++;
 				}
 			}
 		}
@@ -92,62 +91,98 @@ namespace Neumont.Tools.ORM.Shell
 		/// Frequency constraints are handled differently, since they apply to only one fact type (but 1 or more roles in that
 		/// fact type) at any time.
 		/// </summary>
-		protected override void PostLayout()
+		/// <param name="minimumPoint">The minimum location for new element placement</param>
+		public override void PostLayout(PointD minimumPoint)
 		{
 			ResolveReferences(myConstraintShapes);
 
 			foreach (LayoutShape shape in myConstraintShapes)
 			{
-				PointD avg = new PointD(0, 0);
-				bool isFrequencyConstraint = !(shape.Shape is FrequencyConstraintShape);
-				int count = shape.Count;	// default for non-frequency constraints
-
-				if (isFrequencyConstraint)
+				if (!shape.Pinned)
 				{
-					for (int i = 0; i < shape.Count; i++)
-					{
-						NodeShape ns = shape.RelatedShapes[i].Shape;
-						avg.X += ns.Location.X;
-						avg.Y += ns.Location.Y;
-					}
-				}
-				else
-				{
-					FrequencyConstraintShape freqShape = shape.Shape as FrequencyConstraintShape;
-					FrequencyConstraint constraint = freqShape.ModelElement as FrequencyConstraint;
-					if (constraint.FactTypeCollection.Count == 0 || constraint.RoleCollection.Count == 0)
-					{
-						continue;
-					}
+					PointD avg = new PointD(0, 0);
+					NodeShape nodeShape = shape.Shape;
+					FrequencyConstraintShape freqShape;
+					FrequencyConstraint constraint;
+					LinkedElementCollection<FactType> relatedFactTypes;
 
-					FactType factType = constraint.FactTypeCollection[0];
-					FactTypeShape factShape = (FactTypeShape)myDiagram.FindShape(factType);
-					count = constraint.RoleCollection.Count;
-					double width = factShape.Size.Width;
-					double height = factShape.Size.Height;
-
-					for (int i = 0; i < count; i++)
+					if (null != (freqShape = nodeShape as FrequencyConstraintShape) &&
+						null != (constraint = freqShape.ModelElement as FrequencyConstraint) &&
+						1 == (relatedFactTypes = constraint.FactTypeCollection).Count)
 					{
-						int targetIndex = factType.RoleCollection.IndexOf(constraint.RoleCollection[i]);
-						if (factShape.DisplayOrientation == DisplayOrientation.Horizontal)
+						Diagram diagram = myDiagram;
+						FactType factType = relatedFactTypes[0];
+						FactTypeShape factTypeShape = null;
+						LayoutShape factTypeLayoutShape = null;
+						foreach (PresentationElement pel in PresentationViewsSubject.GetPresentation(factType))
 						{
-							avg.X += (width / (targetIndex + 1)) + factShape.Location.X;
-							avg.Y += factShape.Location.Y - height;
+							FactTypeShape testShape = pel as FactTypeShape;
+							if (testShape != null && testShape.Diagram == diagram)
+							{
+								if (factTypeShape == null)
+								{
+									factTypeShape = testShape;
+								}
+								if (myLayoutShapes.TryGetValue(testShape, out factTypeLayoutShape))
+								{
+									factTypeShape = testShape;
+									break;
+								}
+							}
 						}
-						else
+
+						LinkedElementCollection<Role> constraintRoles = constraint.RoleCollection;
+						LinkedElementCollection<RoleBase> displayOrder = factTypeShape.DisplayedRoleOrder;
+						DisplayOrientation orientation = factTypeShape.DisplayOrientation;
+						RectangleD shapeBounds = factTypeShape.AbsoluteBounds;
+						SizeD shapeSize = factTypeShape.Size;
+						PointD location = (factTypeLayoutShape != null) ? factTypeLayoutShape.TargetLocation : shapeBounds.Location;
+						int count = constraintRoles.Count;
+						double width = shapeSize.Width;
+						double height = shapeSize.Height;
+
+						for (int i = 0; i < count; i++)
 						{
-							avg.X += factShape.Location.X + width;
-							avg.Y += (height / (targetIndex + 1)) + factShape.Location.Y;
+							int targetIndex = displayOrder.IndexOf(constraintRoles[i]);
+							switch (orientation)
+							{
+								case DisplayOrientation.Horizontal:
+									avg.Offset((width / (targetIndex + 1)) + location.X, location.Y - height);
+									break;
+								case DisplayOrientation.VerticalRotatedRight:
+									avg.Offset(location.X + width, (height / (targetIndex + 1)) + location.Y);
+									break;
+								case DisplayOrientation.VerticalRotatedLeft:
+									avg.Offset(location.X + width, height - (height / (targetIndex + 1)) + location.Y);
+									break;
+							}
+						}
+						avg.X /= count;
+						avg.Y /= count;
+					}
+					else
+					{
+						int count = shape.Count;
+						for (int i = 0; i < count; ++i)
+						{
+							PointD location = shape.RelatedShapes[i].TargetLocation;
+							avg.Offset(location.X, location.Y);
+						}
+						avg.X /= count;
+						avg.Y /= count;
+						// Constraints are frequently ending up directly on top of
+						// an ObjectTypeShape, bump them up a bit
+						double bumpAdjust = nodeShape.Size.Height * 2;
+						avg.Y -= bumpAdjust;
+						if (avg.Y < minimumPoint.Y)
+						{
+							avg.Y += bumpAdjust + bumpAdjust;
 						}
 					}
-				}
-				if (count != 0)
-				{
-					avg.X /= count;
-					avg.Y /= count;
-				}
 
-				shape.Shape.Location = new PointD(avg.X, avg.Y);
+					shape.TargetLocation = avg;
+				}
+				shape.Placed = true;
 			}
 			
 			// Now add the shapes back into the main myLayoutShape list for reflow
@@ -155,6 +190,7 @@ namespace Neumont.Tools.ORM.Shell
 			{
 				myLayoutShapes.Add(shape);
 			}
+			myConstraintShapes.Clear();
 		}
 
 		/// <summary>
@@ -182,26 +218,38 @@ namespace Neumont.Tools.ORM.Shell
 				}
 			}
 			factElement = factShape.ModelElement as FactType;
-			LinkedElementCollection<RoleBase> roles = factShape.GetEditableDisplayRoleOrder();
+			LinkedElementCollection<RoleBase> roles = factShape.DisplayedRoleOrder;
 
 			// set the index at which the role will be closest to otherLayoutShape
 			int targetIndex = 0;
-			if (objectShape.Location.X > shape.TargetLocation.X + (factShape.Size.Width / 2))
+			LayoutShape objectLayoutShape;
+			PointD objectShapeLocation = myLayoutShapes.TryGetValue(objectShape, out objectLayoutShape) ? objectLayoutShape.TargetLocation : objectShape.Location;
+			SizeD objectShapeSize = objectShape.Size;
+			objectShapeLocation.Offset(objectShapeSize.Width / 2, objectShapeSize.Height / 2);
+			if (objectShapeLocation.X > shape.TargetLocation.X + (factShape.Size.Width / 2))
 			{
 				targetIndex = roles.Count - 1;
 			}
 
 			// find actual index
-			for (int i = 0; i < roles.Count; i++)
+			bool haveEditableOrder = false;
+			int roleCount = roles.Count;
+			for (int i = 0; i < roleCount; ++i)
 			{
 				if (roles[i].Role.RolePlayer == objectElement)
 				{
-					roles.Move(i, targetIndex);
-					break;
+					if (i == targetIndex)
+					{
+						if (!haveEditableOrder)
+						{
+							haveEditableOrder = true;
+							roles = factShape.GetEditableDisplayRoleOrder();
+						}
+						roles.Move(i, targetIndex);
+						break;
+					}
 				}
 			}
-
-			myLastPlacedShape = shape;
 		}
 	}
 	#endregion
