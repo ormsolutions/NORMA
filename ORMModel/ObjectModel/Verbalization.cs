@@ -43,6 +43,22 @@ namespace Neumont.Tools.ORM.ObjectModel
 		ErrorReport = 1,
 	}
 	/// <summary>
+	/// Options for the <see cref="IVerbalizationContext.DeferVerbalization"/> method
+	/// </summary>
+	[Flags]
+	public enum DeferVerbalizationOptions
+	{
+		/// <summary>
+		/// Default behavior
+		/// </summary>
+		None = 0,
+		/// <summary>
+		/// The target object may be verbalized multiple times, do not
+		/// block subsequent verbalizations.
+		/// </summary>
+		MultipleVerbalizations = 1,
+	}
+	/// <summary>
 	/// An Interface to provide context services to <see cref="IVerbalize.GetVerbalization"/>. Allows elements
 	/// being verbalized to call back to the outer verbalization engine to do a natural inline verbalization
 	/// of a referenced element.
@@ -66,8 +82,9 @@ namespace Neumont.Tools.ORM.ObjectModel
 		/// <see cref="IVerbalize"/>, <see cref="IRedirectVerbalization"/>,
 		/// <see cref="IVerbalizeChildren"/>, and <see cref="IVerbalizeCustomChildren"/>
 		/// </param>
+		/// <param name="options">Options modifying verbalization.</param>
 		/// <param name="childFilter">the filter used to remove aggregates.</param>
-		void DeferVerbalization(object target, IVerbalizeFilterChildren childFilter);
+		void DeferVerbalization(object target, DeferVerbalizationOptions options, IVerbalizeFilterChildren childFilter);
 	}
 	/// <summary>
 	/// Interface for verbalization

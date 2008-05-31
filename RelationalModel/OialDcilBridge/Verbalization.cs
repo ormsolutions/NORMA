@@ -49,7 +49,7 @@ namespace Neumont.Tools.ORMAbstractionToConceptualDatabaseBridge
 					{
 						writer.WriteLine();
 					}
-					verbalizationContext.DeferVerbalization(factType, null);
+					verbalizationContext.DeferVerbalization(factType, DeferVerbalizationOptions.MultipleVerbalizations, null);
 				}
 			}
 			return false;
@@ -71,7 +71,7 @@ namespace Neumont.Tools.ORMAbstractionToConceptualDatabaseBridge
 			ORMCore.UniquenessConstraint constraint = UniquenessIsForUniquenessConstraint.GetUniquenessConstraint(this.Uniqueness);
 			if (constraint != null)
 			{
-				verbalizationContext.DeferVerbalization(constraint, null);
+				verbalizationContext.DeferVerbalization(constraint, DeferVerbalizationOptions.None, null);
 			}
 			return false;
 		}

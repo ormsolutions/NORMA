@@ -597,7 +597,7 @@ namespace Neumont.Tools.ORM.ObjectModel.Verbalization
 			/// </summary>
 			/// <param name="content">The style of verbalization content</param>
 			public delegate void NotifyBeginVerbalization(VerbalizationContent content);
-			public delegate void NotifyDeferVerbalization(object target, IVerbalizeFilterChildren childFilter);
+			public delegate void NotifyDeferVerbalization(object target, DeferVerbalizationOptions options, IVerbalizeFilterChildren childFilter);
 			private NotifyBeginVerbalization myBeginCallback;
 			private NotifyDeferVerbalization myDeferCallback;
 			public VerbalizationContextImpl(NotifyBeginVerbalization beginCallback, NotifyDeferVerbalization deferCallback)
@@ -610,11 +610,11 @@ namespace Neumont.Tools.ORM.ObjectModel.Verbalization
 			{
 				myBeginCallback(content);
 			}
-			void IVerbalizationContext.DeferVerbalization(object target, IVerbalizeFilterChildren childFilter)
+			void IVerbalizationContext.DeferVerbalization(object target, DeferVerbalizationOptions options, IVerbalizeFilterChildren childFilter)
 			{
 				if (myDeferCallback != null)
 				{
-					myDeferCallback(target, childFilter);
+					myDeferCallback(target, options, childFilter);
 				}
 			}
 			#endregion // IVerbalizationContext Implementation
@@ -637,12 +637,11 @@ namespace Neumont.Tools.ORM.ObjectModel.Verbalization
 		/// <returns></returns>
 		private static VerbalizationResult VerbalizeElement_VerbalizationResult(VerbalizationCallbackWriter writer, IDictionary<Type, IVerbalizationSets> snippetsDictionary, IDictionary<IVerbalize, IVerbalize> alreadyVerbalized, IVerbalize verbalizer, VerbalizationHandler callback, int indentationLevel, bool isNegative, bool writeSecondaryLines, ref bool firstCallPending, ref bool firstWrite, ref int lastLevel)
 		{
-			if (indentationLevel == 0)
+			if (indentationLevel == 0 &&
+				alreadyVerbalized != null &&
+				alreadyVerbalized.ContainsKey(verbalizer))
 			{
-				if (alreadyVerbalized.ContainsKey(verbalizer))
-				{
-					return VerbalizationResult.AlreadyVerbalized;
-				}
+				return VerbalizationResult.AlreadyVerbalized;
 			}
 			bool localFirstWrite = firstWrite;
 			bool localFirstCallPending = firstCallPending;
@@ -692,7 +691,7 @@ namespace Neumont.Tools.ORM.ObjectModel.Verbalization
 						} while (localLastLevel != indentationLevel);
 					}
 				},
-				delegate(object target, IVerbalizeFilterChildren childFilter)
+				delegate(object target, DeferVerbalizationOptions options, IVerbalizeFilterChildren childFilter)
 				{
 					bool localfcp = localFirstCallPending;
 					bool localfw = localFirstWrite;
@@ -700,7 +699,7 @@ namespace Neumont.Tools.ORM.ObjectModel.Verbalization
 					VerbalizationHelper.VerbalizeElement(
 						target as ModelElement,
 						snippetsDictionary,
-						alreadyVerbalized,
+						(0 == (options & DeferVerbalizationOptions.MultipleVerbalizations)) ? alreadyVerbalized : null,
 						childFilter,
 						writer,
 						callback,
@@ -720,7 +719,7 @@ namespace Neumont.Tools.ORM.ObjectModel.Verbalization
 			firstCallPending = localFirstCallPending;
 			if (retVal)
 			{
-				if (indentationLevel == 0)
+				if (indentationLevel == 0 && alreadyVerbalized != null)
 				{
 					alreadyVerbalized.Add(verbalizer, verbalizer);
 				}
@@ -1307,7 +1306,7 @@ namespace Neumont.Tools.ORM.ObjectModel.Verbalization
 			IVerbalizationSets<ReportVerbalizationSnippetType> snippets = (IVerbalizationSets<ReportVerbalizationSnippetType>)snippetsDictionary[typeof(ReportVerbalizationSnippetType)];
 			writer.Write(string.Format(writer.FormatProvider, snippets.GetSnippet(ReportVerbalizationSnippetType.ObjectTypePageHeader), (myVerbalizationObject as ObjectType).Name));
 			writer.Write(snippets.GetSnippet(ReportVerbalizationSnippetType.GenericSummaryOpen));
-			verbalizationContext.DeferVerbalization(myVerbalizationObject, myFilterChildren);
+			verbalizationContext.DeferVerbalization(myVerbalizationObject, DeferVerbalizationOptions.None, myFilterChildren);
 			writer.Write(snippets.GetSnippet(ReportVerbalizationSnippetType.GenericSummaryClose));
 			return true;
 		}
@@ -1692,7 +1691,7 @@ namespace Neumont.Tools.ORM.ObjectModel.Verbalization
 			IVerbalizationSets<ReportVerbalizationSnippetType> snippets = (IVerbalizationSets<ReportVerbalizationSnippetType>)snippetsDictionary[typeof(ReportVerbalizationSnippetType)];
 			writer.Write(string.Format(writer.FormatProvider, snippets.GetSnippet(ReportVerbalizationSnippetType.FactTypePageHeader), (myVerbalizationObject as FactType).Name));
 			writer.Write(snippets.GetSnippet(ReportVerbalizationSnippetType.GenericSummaryOpen));
-			verbalizationContext.DeferVerbalization(myVerbalizationObject, myFilter);
+			verbalizationContext.DeferVerbalization(myVerbalizationObject, DeferVerbalizationOptions.None, myFilter);
 			writer.Write(snippets.GetSnippet(ReportVerbalizationSnippetType.GenericSummaryClose));
 			return true;
 		}
@@ -2505,7 +2504,7 @@ namespace Neumont.Tools.ORM.ObjectModel.Verbalization
 			verbalizationContext.BeginVerbalization(VerbalizationContent.Normal);
 			IVerbalizationSets<ReportVerbalizationSnippetType> snippets = (IVerbalizationSets<ReportVerbalizationSnippetType>)snippetsDictionary[typeof(ReportVerbalizationSnippetType)];
 			writer.Write(snippets.GetSnippet(myOpeningSnippet), (myVerbalizationObject as ORMNamedElement).Name, (myVerbalizationObject as IConstraint).ConstraintType.ToString());
-			verbalizationContext.DeferVerbalization(myVerbalizationObject, null);
+			verbalizationContext.DeferVerbalization(myVerbalizationObject, DeferVerbalizationOptions.None, null);
 			writer.Write(snippets.GetSnippet(myClosingSnippet));
 			return true;
 		}
