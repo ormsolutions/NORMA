@@ -1369,6 +1369,8 @@ namespace Neumont.Tools.ORM.ObjectModel
 			}
 			const bool isDeontic = false;
 			StringBuilder sbTemp = null;
+			UniquenessConstraint preferredIdentifier = this.PreferredIdentifier;
+			LinkedElementCollection<Role> preferredIdentifierRoles = preferredIdentifier != null ? preferredIdentifier.RoleCollection : null;
 			CoreVerbalizationSnippetType variableSnippetSnippetType1 = 0;
 			if (!this.IsValueType)
 			{
@@ -1430,7 +1432,7 @@ namespace Neumont.Tools.ORM.ObjectModel
 				snippet2Replace2 = hyphenBinder.PopulatePredicateText(reading, factRoles, basicRoleReplacements, true);
 				FactType.WriteVerbalizerSentence(writer, string.Format(writer.FormatProvider, snippetFormat2, snippet2Replace1, snippet2Replace2), snippets.GetSnippet(CoreVerbalizationSnippetType.CloseVerbalizationSentence, isDeontic, isNegative));
 			}
-			if (this.PreferredIdentifier != null)
+			if (preferredIdentifier != null && preferredIdentifierRoles.Count == 1 && preferredIdentifierRoles[0].Proxy == null)
 			{
 				writer.WriteLine();
 				string snippetFormat3 = snippets.GetSnippet(CoreVerbalizationSnippetType.ReferenceSchemeVerbalization, isDeontic, isNegative);

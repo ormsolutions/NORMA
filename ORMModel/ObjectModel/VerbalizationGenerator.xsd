@@ -291,6 +291,11 @@
 					<xs:documentation>True if the current object type has preferred identifier.</xs:documentation>
 				</xs:annotation>
 			</xs:enumeration>
+			<xs:enumeration value="HasSimplePreferredIdentifier">
+				<xs:annotation>
+					<xs:documentation>True if the current object type has a single-role preferred identifier where the role is not part of an objectified role.</xs:documentation>
+				</xs:annotation>
+			</xs:enumeration>
 			<xs:enumeration value="IsPersonal">
 				<xs:annotation>
 					<xs:documentation>True if the IsPersonal property for the current role player is true.</xs:documentation>

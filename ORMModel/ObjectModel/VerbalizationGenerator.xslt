@@ -562,6 +562,43 @@
 						<plx:nullKeyword/>
 					</plx:initialize>
 				</plx:local>
+				
+				<!-- Add some standard helper variables for related conditional patterns -->
+				<plx:local name="preferredIdentifier" dataTypeName="UniquenessConstraint">
+					<plx:initialize>
+						<plx:callThis name="PreferredIdentifier" type="property"/>
+					</plx:initialize>
+				</plx:local>
+				<plx:local name="preferredIdentifierRoles" dataTypeName="LinkedElementCollection">
+					<plx:passTypeParam dataTypeName="Role"/>
+					<plx:initialize>
+						<plx:inlineStatement dataTypeName="LinkedElementCollection">
+							<plx:passTypeParam dataTypeName="Role"/>
+							<plx:conditionalOperator>
+								<plx:condition>
+									<plx:binaryOperator type="identityInequality">
+										<plx:left>
+											<plx:nameRef name="preferredIdentifier"/>
+										</plx:left>
+										<plx:right>
+											<plx:nullKeyword/>
+										</plx:right>
+									</plx:binaryOperator>
+								</plx:condition>
+								<plx:left>
+									<plx:callInstance name="RoleCollection" type="property">
+										<plx:callObject>
+											<plx:nameRef name="preferredIdentifier"/>
+										</plx:callObject>
+									</plx:callInstance>
+								</plx:left>
+								<plx:right>
+									<plx:nullKeyword/>
+								</plx:right>
+							</plx:conditionalOperator>
+						</plx:inlineStatement>
+					</plx:initialize>
+				</plx:local>
 				<xsl:apply-templates select="child::*" mode="ConstraintVerbalization">
 					<xsl:with-param name="TopLevel" select="true()"/>
 				</xsl:apply-templates>
@@ -5799,6 +5836,59 @@
 						</plx:left>
 						<plx:right>
 							<plx:nullKeyword/>
+						</plx:right>
+					</plx:binaryOperator>
+				</xsl:when>
+				<xsl:when test="$ConditionalMatch='HasSimplePreferredIdentifier'">
+					<plx:binaryOperator type="booleanAnd">
+						<plx:left>
+							<plx:binaryOperator type="booleanAnd">
+								<plx:left>
+									<plx:binaryOperator type="identityInequality">
+										<plx:left>
+											<plx:nameRef name="preferredIdentifier"/>
+										</plx:left>
+										<plx:right>
+											<plx:nullKeyword/>
+										</plx:right>
+									</plx:binaryOperator>
+								</plx:left>
+								<plx:right>
+									<plx:binaryOperator type="equality">
+										<plx:left>
+											<plx:callInstance name="Count" type="property">
+												<plx:callObject>
+													<plx:nameRef name="preferredIdentifierRoles"/>
+												</plx:callObject>
+											</plx:callInstance>
+										</plx:left>
+										<plx:right>
+											<plx:value data="1" type="i4"/>
+										</plx:right>
+									</plx:binaryOperator>
+								</plx:right>
+							</plx:binaryOperator>
+						</plx:left>
+						<plx:right>
+							<plx:binaryOperator type="identityEquality">
+								<plx:left>
+									<plx:callInstance name="Proxy" type="property">
+										<plx:callObject>
+											<plx:callInstance name=".implied" type="indexerCall">
+												<plx:callObject>
+													<plx:nameRef name="preferredIdentifierRoles"/>
+												</plx:callObject>
+												<plx:passParam>
+													<plx:value data="0" type="i4"/>
+												</plx:passParam>
+											</plx:callInstance>
+										</plx:callObject>
+									</plx:callInstance>
+								</plx:left>
+								<plx:right>
+									<plx:nullKeyword/>
+								</plx:right>
+							</plx:binaryOperator>
 						</plx:right>
 					</plx:binaryOperator>
 				</xsl:when>

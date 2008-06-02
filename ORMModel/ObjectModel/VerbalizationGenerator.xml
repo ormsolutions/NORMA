@@ -49,7 +49,7 @@
 				</Snippet>
 				<Fact/>
 			</Snippet>
-			<Snippet ref="ReferenceSchemeVerbalization" conditionalMatch="HasPreferredIdentifier">
+			<Snippet ref="ReferenceSchemeVerbalization" conditionalMatch="HasSimplePreferredIdentifier">
 				<IterateRoles match="preferredIdentifier" listStyle="CompoundList">
 					<Fact/>
 				</IterateRoles>
