@@ -26,8 +26,17 @@
 	ProductName="Neumont ORM Architect for Visual Studio"
 	MajorVersion="1" MinorVersion="0" Build="0" Revision="0">
 
+	<Attributes>
+		<!-- UNDONE: This is a temporary hack to get a reasonable order in the .orm file. The NORMA framework needs to add a
+		LoadPriority attribute to enable these to be explicitly controlled. -->
+		<ClrAttribute Name="DslModeling::ExtendsDomainModel">
+			<Parameters>
+				<AttributeParameter Value="&quot;1F394F03-8A41-48BC-BDED-2268E131B4A3&quot;/*Neumont.Tools.ORMToORMAbstractionBridge.ORMToORMAbstractionBridgeDomainModel*/"/>
+			</Parameters>
+		</ClrAttribute>
+	</Attributes>
+
 	<Classes>
-		<!--do i need this base class?-->
 		<DomainClass Id="F8F5677E-5632-4A48-BF24-18F4D32DB589" Namespace="Neumont.Tools.EntityRelationshipModels.Barker" Name="BarkerModelElement" InheritanceModifier="Abstract" Description="Base class for ConceptualData &lt;see cref='DslModeling::ModelElement'/>s.">
 			<Attributes>
 				<ClrAttribute Name="global::System.ComponentModel.TypeDescriptionProvider">
@@ -74,8 +83,6 @@
 					</Type>
 				</DomainProperty>
 
-				<!-- Note that IsMandatory is readonly because relational view has similar property read-only (not sure whether the model
-				browser is prepared to have it as editable). -->
 				<DomainProperty Id="73BF0465-613A-4B97-8293-827448E0DBC6" Name="IsMandatory" DisplayName="IsMandatory" Description="Is this attribute required for its entity type?">
 					<Attributes>
 						<ClrAttribute Name="global::System.Xml.Serialization.XmlAttribute">
@@ -88,9 +95,7 @@
 						<ExternalTypeMoniker Name="/System/Boolean"/>
 					</Type>
 				</DomainProperty>
-
-				<!-- Note that IsPrimaryIdComponent is readonly because relational view has similar property read-only (not sure whether the model
-				browser is prepared to have it as editable). -->
+				
 <DomainProperty Id="7F5E4C3E-7020-4664-B4B6-FD2EBBDCCDC5" Name="IsPrimaryIdComponent" DisplayName="IsPrimaryIdComponent" Description="Is this attribute part of primary identifier for its entity type?">
 					<Attributes>
 						<ClrAttribute Name="global::System.Xml.Serialization.XmlAttribute">
@@ -105,34 +110,11 @@
 				</DomainProperty>
 			</Properties>
 		</DomainClass>
-		<!--
-		<DomainClass Id="322C253C-D6F1-4501-98A4-6FB9EBD17F72" Namespace="Neumont.Tools.EntityRelationshipModels.Barker" Name="Domain">
-			<BaseClass>
-				<DomainClassMoniker Name="BarkerModelElement"/>
-			</BaseClass>
-			<Properties>
-				<DomainProperty Id="2DE720DC-7A3E-46DC-A63F-4B31ED073B89" Name="Name" IsElementName="true" Description="The name of the domain.">
-					<Attributes>
-						<ClrAttribute Name="global::System.Xml.Serialization.XmlAttribute">
-							<Parameters>
-								<AttributeParameter Value="&quot;name&quot;"/>
-							</Parameters>
-						</ClrAttribute>
-					</Attributes>
-					<Type>
-						<ExternalTypeMoniker Name="/System/String"/>
-					</Type>
-				</DomainProperty>
-			</Properties>
-		</DomainClass>
-		-->
 		<DomainClass Id="B34CDD9E-F23C-4190-9194-4260F4DD9A59" Namespace="Neumont.Tools.EntityRelationshipModels.Barker" Name="Value">
 			<BaseClass>
 				<DomainClassMoniker Name="BarkerModelElement"/>
 			</BaseClass>
 			<Properties>
-				<!--what properties should it have? It is a value type in Dr. Halpin's ORM meta-model-->
-				<!--temp hack-->
 				<DomainProperty Id="7BBD6637-C6C2-489A-B18E-E77C92FAA9BC" Name="Val" Description="represents the actual value.">
 					<Attributes>
 						<ClrAttribute Name="global::System.Xml.Serialization.XmlAttribute">
@@ -176,8 +158,6 @@
 						<ExternalTypeMoniker Name="/System/String"/>
 					</Type>
 				</DomainProperty>
-				<!-- Note that IsNonTransferable is readonly because relational view has similar property read-only (not sure whether the model
-				browser is prepared to have it as editable). -->
 				<DomainProperty Id="D4F77973-EB66-4940-8D70-5F58EDAD45E6" Name="IsNonTransferable" DisplayName="IsNonTransferable" Description="Is this role non-transferable?">
 					<Attributes>
 						<ClrAttribute Name="global::System.Xml.Serialization.XmlAttribute">
@@ -190,8 +170,6 @@
 						<ExternalTypeMoniker Name="/System/Boolean"/>
 					</Type>
 				</DomainProperty>
-				<!-- Note that IsMandatory is readonly because relational view has similar property read-only (not sure whether the model
-				browser is prepared to have it as editable). -->
 				<DomainProperty Id="BB635854-08AA-4555-9917-1BBA75599B14" Name="IsMandatory" DisplayName="IsMandatory" Description="Is this a required role?">
 					<Attributes>
 						<ClrAttribute Name="global::System.Xml.Serialization.XmlAttribute">
@@ -204,7 +182,6 @@
 						<ExternalTypeMoniker Name="/System/Boolean"/>
 					</Type>
 				</DomainProperty>
-				<!-- Note that IsPrimaryIdComponent is readonly because relational view has similar property read-only (not sure whether the model browser is prepared to have it as editable). -->
 				<DomainProperty Id="A5843D76-17F3-4A8D-9A8C-331ACEEDCC60" Name="IsPrimaryIdComponent" DisplayName="IsPrimaryIdComponent" Description="Is this role a part of primary identifier for an entity type?">
 					<Attributes>
 						<ClrAttribute Name="global::System.Xml.Serialization.XmlAttribute">
@@ -217,7 +194,6 @@
 						<ExternalTypeMoniker Name="/System/Boolean"/>
 					</Type>
 				</DomainProperty>
-				<!-- Note that IsMultiValued is readonly because relational view has similar property read-only (not sure whether the model browser is prepared to have it as editable). -->
 				<DomainProperty Id="D7959BF6-7F67-4F37-9914-52D76D1388D6" Name="IsMultiValued" DisplayName="IsMultiValued" Description="Does this role have cardinality specified?">
 					<Attributes>
 						<ClrAttribute Name="global::System.Xml.Serialization.XmlAttribute">
@@ -297,7 +273,6 @@
 						<ExternalTypeMoniker Name="/System/Boolean"/>
 					</Type>
 				</DomainProperty>
-				<!-- Note that IsPrimaryIdComponent is readonly because relational view has similar property read-only (not sure whether the model browser is prepared to have it as editable). -->
 				<DomainProperty Id="ED4DE2FC-330E-44DA-8E57-63CF8614A8B6" Name="IsPrimaryIdComponent" DisplayName="IsPrimaryIdComponent" Description="Is one of the roles under exclusive arc a part of primary identifier for an entity type?">
 					<Attributes>
 						<ClrAttribute Name="global::System.Xml.Serialization.XmlAttribute">
@@ -353,7 +328,6 @@
 		</DomainClass>
 	</Classes>
 
-	<!--when should I make relationships embedding and when I shouldn't? Also not sure about PropagatesDelete :(-->
 	<Relationships>
 		<DomainRelationship Id="FF7D1A21-8F7F-4392-8BC4-C75E2B44464B" Namespace="Neumont.Tools.EntityRelationshipModels.Barker" Name="EntityTypeHasAttribute" IsEmbedding="true">
 			<Source>
@@ -615,7 +589,6 @@
 		</DomainEnumeration>
 	</Types>
 
-	<!--what is this?-->
 	<XmlSerializationBehavior Name="BerDomainModelSerializationBehavior" Namespace="Neumont.Tools.EntityRelationshipModels.Barker"/>
 
 </Dsl>

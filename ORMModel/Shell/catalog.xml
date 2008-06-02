@@ -8,4 +8,7 @@
 	<Schema targetNamespace="http://schemas.neumont.edu/ORM/Relational/2007-06/ConceptualDatabase" href="ConceptualDatabase.xsd"/>
 	<Schema targetNamespace="http://schemas.neumont.edu/ORM/Bridge/2007-06/ORMAbstractionToConceptualDatabase" href="ORMAbstractionToConceptualDatabase.xsd"/>
 	<Schema targetNamespace="http://schemas.neumont.edu/ORM/2007-11/RelationalView" href="RelationalView.xsd"/>
+	<Schema targetNamespace="http://schemas.neumont.edu/ORM/EntityRelationship/2008-05/Barker" href="BarkerERModel.xsd"/>
+	<Schema targetNamespace="http://schemas.neumont.edu/ORM/Bridge/2008-05/ORMAbstractionToBarkerER" href="ORMAbstractionToBarkerERBridge.xsd"/>
+	<Schema targetNamespace="http://schemas.neumont.edu/ORM/2008-05/BarkerERView" href="BarkerERView.xsd"/>
 </SchemaCatalog>

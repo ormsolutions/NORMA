@@ -1,0 +1,21 @@
+#region Common Public License Copyright Notice
+/**************************************************************************\
+* Neumont Object-Role Modeling Architect for Visual Studio                 *
+*                                                                          *
+* Copyright © Neumont University. All rights reserved.                     *
+*                                                                          *
+* The use and distribution terms for this software are covered by the      *
+* Common Public License 1.0 (http://opensource.org/licenses/cpl) which     *
+* can be found in the file CPL.txt at the root of this distribution.       *
+* By using this software in any fashion, you are agreeing to be bound by   *
+* the terms of this license.                                               *
+*                                                                          *
+* You must not remove this notice, or any other, from this software.       *
+\**************************************************************************/
+#endregion
+<#@ Dsl processor="DslDirectiveProcessor" requires="fileName='../EntityRelationshipShape.dsl';validation=''" #>
+<#@ Dsl processor="DslDirectiveProcessor" requires="fileName='../../../EntityRelationship/BarkerErModel/BerModel.dsl';validation=''" provides="dslLibrary='BerDslLibrary'" #>
+<#@ Dsl processor="DslDirectiveProcessor" requires="fileName='../../../ORMModel/ObjectModel/ORMCore.dsl';validation=''" provides="dslLibrary='ORMCoreDslLibrary'" #>
+<#@ Dsl processor="DslDirectiveProcessor" requires="fileName='../../../ORMModel/Framework/SystemCore.dsl';validation=''" provides="dslLibrary='SystemCoreDslLibrary'" #>
+<#@ Dsl processor="DslDirectiveProcessor" requires="fileName='../../../ORMModel/ShapeModel/ORMShape.dsl';validation=''" provides="dslLibrary='ORMShapeDslLibrary'" #>
+<#@ include file="Dsl\ToolboxHelper.tt" #>

@@ -424,6 +424,14 @@ namespace Neumont.Tools.EntityRelationshipModels.Barker
 			}
 		}
 		#endregion
+		/// <summary>
+		/// Return the name of the entity for its ToString()
+		/// </summary>
+		/// <returns></returns>
+		public override string ToString()
+		{
+			return Name;
+		}
 	}
 	#endregion
 	#region BinaryAssociation answers
@@ -1529,6 +1537,15 @@ namespace Neumont.Tools.EntityRelationshipModels.Barker
 			}
 		}
 		#endregion
+		/// <summary>
+		/// Return the predicate text and the entity playing the role
+		/// for the ToString() of the Role
+		/// </summary>
+		/// <returns></returns>
+		public override string ToString()
+		{
+			return string.Format("{0} ({1})", PredicateText, EntityType);
+		}
 	}
 	#endregion // BarkerDomainModel answers
 	#region CardinalityQualifier answers

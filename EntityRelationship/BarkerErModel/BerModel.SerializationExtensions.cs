@@ -24,11 +24,11 @@ using Neumont.Tools.Modeling.Shell;
 namespace Neumont.Tools.EntityRelationshipModels.Barker
 {
 	#region BarkerDomainModel model serialization
-	[CustomSerializedXmlNamespaces("http://schemas.neumont.edu/ORM/EntityRelationship/2008-03/Barker")]
+	[CustomSerializedXmlNamespaces("http://schemas.neumont.edu/ORM/EntityRelationship/2008-05/Barker")]
 	partial class BarkerDomainModel : ICustomSerializedDomainModel
 	{
 		/// <summary>The default XmlNamespace associated with the 'BarkerDomainModel' extension model</summary>
-		public static readonly string XmlNamespace = "http://schemas.neumont.edu/ORM/EntityRelationship/2008-03/Barker";
+		public static readonly string XmlNamespace = "http://schemas.neumont.edu/ORM/EntityRelationship/2008-05/Barker";
 		/// <summary>Implements ICustomSerializedDomainModel.DefaultElementPrefix</summary>
 		protected static string DefaultElementPrefix
 		{
@@ -49,7 +49,7 @@ namespace Neumont.Tools.EntityRelationshipModels.Barker
 		{
 			string[,] ret = new string[1, 3];
 			ret[0, 0] = "rbe";
-			ret[0, 1] = "http://schemas.neumont.edu/ORM/EntityRelationship/2008-03/Barker";
+			ret[0, 1] = "http://schemas.neumont.edu/ORM/EntityRelationship/2008-05/Barker";
 			ret[0, 2] = "BarkerERModel.xsd";
 			return ret;
 		}
@@ -99,7 +99,7 @@ namespace Neumont.Tools.EntityRelationshipModels.Barker
 		/// <summary>Implements ICustomSerializedDomainModel.MapRootElement</summary>
 		protected static Guid MapRootElement(string xmlNamespace, string elementName)
 		{
-			if (elementName == "BarkerErModel" && xmlNamespace == "http://schemas.neumont.edu/ORM/EntityRelationship/2008-03/Barker")
+			if (elementName == "BarkerErModel" && xmlNamespace == "http://schemas.neumont.edu/ORM/EntityRelationship/2008-05/Barker")
 			{
 				return BarkerErModel.DomainClassId;
 			}
@@ -117,7 +117,7 @@ namespace Neumont.Tools.EntityRelationshipModels.Barker
 			if (validNamespaces == null)
 			{
 				validNamespaces = new Collection<string>();
-				validNamespaces.Add("http://schemas.neumont.edu/ORM/EntityRelationship/2008-03/Barker");
+				validNamespaces.Add("http://schemas.neumont.edu/ORM/EntityRelationship/2008-05/Barker");
 				BarkerDomainModel.myValidNamespaces = validNamespaces;
 			}
 			if (classNameMap == null)
@@ -249,11 +249,11 @@ namespace Neumont.Tools.EntityRelationshipModels.Barker
 				childElementMappings = new Dictionary<string, CustomSerializedElementMatch>();
 				CustomSerializedElementMatch match = new CustomSerializedElementMatch();
 				match.InitializeRoles(BarkerErModelContainsEntityType.EntityTypeDomainRoleId);
-				childElementMappings.Add("||http://schemas.neumont.edu/ORM/EntityRelationship/2008-03/Barker|EntityTypes||", match);
+				childElementMappings.Add("||http://schemas.neumont.edu/ORM/EntityRelationship/2008-05/Barker|EntityTypes||", match);
 				match.InitializeRoles(BarkerErModelContainsBinaryAssociation.BinaryAssociationDomainRoleId);
-				childElementMappings.Add("||http://schemas.neumont.edu/ORM/EntityRelationship/2008-03/Barker|BinaryAssociations||", match);
+				childElementMappings.Add("||http://schemas.neumont.edu/ORM/EntityRelationship/2008-05/Barker|BinaryAssociations||", match);
 				match.InitializeRoles(BarkerErModelContainsExclusiveArc.ExclusiveArcDomainRoleId);
-				childElementMappings.Add("||http://schemas.neumont.edu/ORM/EntityRelationship/2008-03/Barker|Constraints||", match);
+				childElementMappings.Add("||http://schemas.neumont.edu/ORM/EntityRelationship/2008-05/Barker|Constraints||", match);
 				BarkerErModel.myChildElementMappings = childElementMappings;
 			}
 			CustomSerializedElementMatch rVal;
@@ -407,11 +407,11 @@ namespace Neumont.Tools.EntityRelationshipModels.Barker
 				childElementMappings = new Dictionary<string, CustomSerializedElementMatch>();
 				CustomSerializedElementMatch match = new CustomSerializedElementMatch();
 				match.InitializeRoles(EntityTypePlaysRole.RoleDomainRoleId);
-				childElementMappings.Add("||http://schemas.neumont.edu/ORM/EntityRelationship/2008-03/Barker|Roles||Role", match);
+				childElementMappings.Add("||http://schemas.neumont.edu/ORM/EntityRelationship/2008-05/Barker|Roles||Role", match);
 				match.InitializeRoles(EntityTypeIsSubtypeOfEntityType.SubtypeDomainRoleId);
-				childElementMappings.Add("||http://schemas.neumont.edu/ORM/EntityRelationship/2008-03/Barker|Subtypes||EntityType", match);
+				childElementMappings.Add("||http://schemas.neumont.edu/ORM/EntityRelationship/2008-05/Barker|Subtypes||EntityType", match);
 				match.InitializeRoles(EntityTypeHasAttribute.AttributeDomainRoleId);
-				childElementMappings.Add("||http://schemas.neumont.edu/ORM/EntityRelationship/2008-03/Barker|Attributes||", match);
+				childElementMappings.Add("||http://schemas.neumont.edu/ORM/EntityRelationship/2008-05/Barker|Attributes||", match);
 				EntityType.myChildElementMappings = childElementMappings;
 			}
 			CustomSerializedElementMatch rVal;
@@ -551,7 +551,7 @@ namespace Neumont.Tools.EntityRelationshipModels.Barker
 				childElementMappings = new Dictionary<string, CustomSerializedElementMatch>();
 				CustomSerializedElementMatch match = new CustomSerializedElementMatch();
 				match.InitializeRoles(AttributeHasPossibleValue.ValueDomainRoleId);
-				childElementMappings.Add("||http://schemas.neumont.edu/ORM/EntityRelationship/2008-03/Barker|PossibleValues||", match);
+				childElementMappings.Add("||http://schemas.neumont.edu/ORM/EntityRelationship/2008-05/Barker|PossibleValues||", match);
 				Attribute.myChildElementMappings = childElementMappings;
 			}
 			CustomSerializedElementMatch rVal;
@@ -840,7 +840,7 @@ namespace Neumont.Tools.EntityRelationshipModels.Barker
 				childElementMappings = new Dictionary<string, CustomSerializedElementMatch>();
 				CustomSerializedElementMatch match = new CustomSerializedElementMatch();
 				match.InitializeRoles(RoleHasCardinalityQualifier.CardinalityQualifierDomainRoleId);
-				childElementMappings.Add("||http://schemas.neumont.edu/ORM/EntityRelationship/2008-03/Barker|Modifier||", match);
+				childElementMappings.Add("||http://schemas.neumont.edu/ORM/EntityRelationship/2008-05/Barker|Modifier||", match);
 				Role.myChildElementMappings = childElementMappings;
 			}
 			CustomSerializedElementMatch rVal;
@@ -1107,7 +1107,7 @@ namespace Neumont.Tools.EntityRelationshipModels.Barker
 				childElementMappings = new Dictionary<string, CustomSerializedElementMatch>();
 				CustomSerializedElementMatch match = new CustomSerializedElementMatch();
 				match.InitializeRoles(ExclusiveArcSpansOptionalRole.ConstrainedRoleDomainRoleId);
-				childElementMappings.Add("||http://schemas.neumont.edu/ORM/EntityRelationship/2008-03/Barker|Roles||Role", match);
+				childElementMappings.Add("||http://schemas.neumont.edu/ORM/EntityRelationship/2008-05/Barker|Roles||Role", match);
 				ExclusiveArc.myChildElementMappings = childElementMappings;
 			}
 			CustomSerializedElementMatch rVal;
@@ -1247,7 +1247,7 @@ namespace Neumont.Tools.EntityRelationshipModels.Barker
 				childElementMappings = new Dictionary<string, CustomSerializedElementMatch>();
 				CustomSerializedElementMatch match = new CustomSerializedElementMatch();
 				match.InitializeRoles(BinaryAssociationContainsRole.RoleDomainRoleId);
-				childElementMappings.Add("||http://schemas.neumont.edu/ORM/EntityRelationship/2008-03/Barker|Roles||", match);
+				childElementMappings.Add("||http://schemas.neumont.edu/ORM/EntityRelationship/2008-05/Barker|Roles||", match);
 				BinaryAssociation.myChildElementMappings = childElementMappings;
 			}
 			CustomSerializedElementMatch rVal;

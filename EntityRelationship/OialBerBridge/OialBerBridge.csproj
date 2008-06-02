@@ -1,0 +1,161 @@
+﻿<Project DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <Import Project="$(MSBuildExtensionsPath)\Neumont\VisualStudio\Neumont.Build.VisualStudio.Multitargeting.targets" />
+  <PropertyGroup>
+    <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
+    <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
+    <ProductVersion>8.0.50727</ProductVersion>
+    <SchemaVersion>2.0</SchemaVersion>
+    <ProjectGuid>{7281C8EA-3577-479A-A3C3-1BA3FE44A3F4}</ProjectGuid>
+    <OutputType>Library</OutputType>
+    <AppDesignerFolder>Properties</AppDesignerFolder>
+    <RootNamespace>Neumont.Tools.ORMAbstractionToBarkerERBridge</RootNamespace>
+    <AssemblyName>Neumont.Tools.ORMAbstractionToBarkerERBridge.VS2005</AssemblyName>
+    <WarningLevel>4</WarningLevel>
+    <SignAssembly>true</SignAssembly>
+    <AssemblyOriginatorKeyFile>..\..\ORMPackage.snk</AssemblyOriginatorKeyFile>
+    <RunPostBuildEvent>OnOutputUpdated</RunPostBuildEvent>
+    <InstallInGac>true</InstallInGac>
+    <TrunkDir Condition=" '$(TrunkDir)' == '' ">$(MSBuildProjectDirectory)\..\..</TrunkDir>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
+    <DebugSymbols>true</DebugSymbols>
+    <DebugType>full</DebugType>
+    <Optimize>true</Optimize>
+    <OutputPath>bin\Debug\</OutputPath>
+    <DefineConstants>$(DefineConstants);TRACE;DEBUG</DefineConstants>
+    <DocumentationFile>bin\Debug\Neumont.Tools.ORMAbstractionToBarkerERBridge.VS2005.xml</DocumentationFile>
+    <ErrorReport>prompt</ErrorReport>
+    <NoWarn>1607</NoWarn>
+    <UseVSHostingProcess>false</UseVSHostingProcess>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
+    <DebugType>pdbonly</DebugType>
+    <Optimize>true</Optimize>
+    <OutputPath>bin\Release\</OutputPath>
+    <DefineConstants>$(DefineConstants);TRACE</DefineConstants>
+    <DocumentationFile>bin\Release\Neumont.Tools.ORMAbstractionToConceptualDatabaseBridge.$(TargetVisualStudioShortProductName).xml</DocumentationFile>
+    <ErrorReport>prompt</ErrorReport>
+    <NoWarn>1607</NoWarn>
+    <UseVSHostingProcess>false</UseVSHostingProcess>
+  </PropertyGroup>
+  <ItemGroup>
+    <Reference Include="Neumont.Tools.ORM.$(TargetVisualStudioShortProductName), Version=1.0.0.0, Culture=neutral, PublicKeyToken=957d5b7d5e79e25f, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+    </Reference>
+    <Reference Include="Neumont.Tools.ORMAbstraction.$(TargetVisualStudioShortProductName), Version=1.0.0.0, Culture=neutral, PublicKeyToken=957d5b7d5e79e25f, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+    </Reference>
+    <Reference Include="Microsoft.VisualStudio.Modeling.Sdk, Version=$(TargetDslToolsAssemblyVersion), Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a, processorArchitecture=MSIL" />
+    <Reference Include="Neumont.Tools.ORMToORMAbstractionBridge.$(TargetVisualStudioShortProductName), Version=1.0.0.0, Culture=neutral, PublicKeyToken=957d5b7d5e79e25f, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+    </Reference>
+    <Reference Include="System" />
+    <Reference Include="System.Data" />
+    <Reference Include="System.Drawing" />
+    <Reference Include="System.Drawing.Design" />
+    <Reference Include="System.Windows.Forms" />
+    <Reference Include="System.Xml" />
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="..\..\CommonAssemblyInfo.cs">
+      <Link>Properties\CommonAssemblyInfo.cs</Link>
+    </Compile>
+    <Compile Include="..\..\Version.cs">
+      <Link>Properties\Version.cs</Link>
+    </Compile>
+    <None Include="..\..\ORMPackage.snk">
+      <Link>Properties\ORMPackage.snk</Link>
+    </None>
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Plix.xml" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="GeneratedCode\DomainClasses.tt">
+      <Generator>TextTemplatingFileGenerator</Generator>
+      <LastGenOutput>DomainClasses.cs</LastGenOutput>
+    </None>
+    <None Include="GeneratedCode\DomainModel.tt">
+      <Generator>TextTemplatingFileGenerator</Generator>
+      <LastGenOutput>DomainModel.cs</LastGenOutput>
+    </None>
+    <None Include="GeneratedCode\DomainModelResx.tt">
+      <Generator>TextTemplatingFileGenerator</Generator>
+      <LastGenOutput>DomainModelResx.resx</LastGenOutput>
+    </None>
+    <None Include="GeneratedCode\DomainRelationships.tt">
+      <Generator>TextTemplatingFileGenerator</Generator>
+      <LastGenOutput>DomainRelationships.cs</LastGenOutput>
+    </None>
+    <EmbeddedResource Include="GeneratedCode\DomainModelResx.resx">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>DomainModelResx.tt</DependentUpon>
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
+    <EmbeddedResource Include="ORMAbstractionToBarkerERBridge.xsd">
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
+    <Compile Include="GeneratedCode\DomainModel.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>DomainModel.tt</DependentUpon>
+    </Compile>
+    <Compile Include="GeneratedCode\DomainClasses.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>DomainClasses.tt</DependentUpon>
+    </Compile>
+    <Compile Include="GeneratedCode\DomainRelationships.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>DomainRelationships.tt</DependentUpon>
+    </Compile>
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="OialBerBridge.AttachRules.xml">
+      <Generator>NUPlixLoader</Generator>
+      <LastGenOutput>OialBerBridge.AttachRules.cs</LastGenOutput>
+    </Content>
+    <Compile Include="OialBerBridge.AttachRules.cs">
+      <AutoGen>True</AutoGen>
+      <DependentUpon>OialBerBridge.AttachRules.xml</DependentUpon>
+    </Compile>
+    <Compile Include="OialBerBridge.SerializationExtensions.cs">
+      <AutoGen>True</AutoGen>
+      <DependentUpon>OialBerBridge.SerializationExtensions.xml</DependentUpon>
+    </Compile>
+    <Compile Include="ModificationTracker.cs" />
+    <Content Include="OialBerBridge.SerializationExtensions.xml">
+      <Generator>NUPlixLoader</Generator>
+      <LastGenOutput>OialBerBridge.SerializationExtensions.cs</LastGenOutput>
+    </Content>
+    <Content Include="OialBerBridge.dsl" />
+    <None Include="Resources\ResourceStringsGenerator.xml">
+      <Generator>NUPlixLoader</Generator>
+      <LastGenOutput>ResourceStringsGenerator.cs</LastGenOutput>
+    </None>
+    <Compile Include="OialDcilBridge.DeserializationFixupListeners.cs" />
+    <Compile Include="Resources\ResourceStrings.cs" />
+    <Compile Include="Resources\ResourceStringsGenerator.cs">
+      <AutoGen>True</AutoGen>
+      <DependentUpon>ResourceStringsGenerator.xml</DependentUpon>
+    </Compile>
+  </ItemGroup>
+  <ItemGroup>
+    <Service Include="{B4F97281-0DBD-4835-9ED8-7DFB966E87FF}" />
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\BarkerErModel\BarkerErModel.csproj">
+      <Project>{69D74A73-B925-4C75-8D6B-6806F07030D5}</Project>
+      <Name>BarkerErModel</Name>
+    </ProjectReference>
+  </ItemGroup>
+  <Import Project="$(MSBuildBinPath)\Microsoft.CSharp.targets" />
+  <Import Project="$(MSBuildExtensionsPath)\Neumont\Neumont.Build.targets" />
+  <PropertyGroup>
+    <PreBuildEvent>"$(TrunkDir)\VersionGenerator.exe"</PreBuildEvent>
+    <PostBuildEvent>"$(MSBuildProjectDirectory)\Install.bat" "$(OutputPath)" "$(TargetVisualStudioVersion)"</PostBuildEvent>
+  </PropertyGroup>
+</Project>

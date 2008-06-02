@@ -30,6 +30,7 @@ namespace Neumont.Tools.EntityRelationshipModels.Barker
 	/// DomainModel BarkerDomainModel
 	/// Barker Entity Relationship View of ORM Model
 	/// </summary>
+	[DslModeling::ExtendsDomainModel("1F394F03-8A41-48BC-BDED-2268E131B4A3"/*Neumont.Tools.ORMToORMAbstractionBridge.ORMToORMAbstractionBridgeDomainModel*/)]
 	[DslDesign::DisplayNameResource("Neumont.Tools.EntityRelationshipModels.Barker.BarkerDomainModel.DisplayName", typeof(global::Neumont.Tools.EntityRelationshipModels.Barker.BarkerDomainModel), "Neumont.Tools.EntityRelationshipModels.Barker.GeneratedCode.DomainModelResx")]
 	[DslDesign::DescriptionResource("Neumont.Tools.EntityRelationshipModels.Barker.BarkerDomainModel.Description", typeof(global::Neumont.Tools.EntityRelationshipModels.Barker.BarkerDomainModel), "Neumont.Tools.EntityRelationshipModels.Barker.GeneratedCode.DomainModelResx")]
 	[global::System.CLSCompliant(true)]

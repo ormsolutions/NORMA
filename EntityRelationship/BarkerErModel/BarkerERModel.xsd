@@ -1,9 +1,9 @@
 <?xml version="1.0" encoding="utf-8"?>
 <xs:schema
-	targetNamespace="http://schemas.neumont.edu/ORM/EntityRelationship/2008-03/Barker"
+	targetNamespace="http://schemas.neumont.edu/ORM/EntityRelationship/2008-05/Barker"
 	xmlns:xs="http://www.w3.org/2001/XMLSchema"
-	xmlns:rbe="http://schemas.neumont.edu/ORM/EntityRelationship/2008-03/Barker"
-	xmlns="http://schemas.neumont.edu/ORM/EntityRelationship/2008-03/Barker"
+	xmlns:rbe="http://schemas.neumont.edu/ORM/EntityRelationship/2008-05/Barker"
+	xmlns="http://schemas.neumont.edu/ORM/EntityRelationship/2008-05/Barker"
 	elementFormDefault="qualified"
 	attributeFormDefault="unqualified"
 	version="0.9">

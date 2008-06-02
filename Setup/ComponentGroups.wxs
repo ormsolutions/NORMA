@@ -41,6 +41,8 @@
 			<ComponentRef Id="NORMAVSVerbalizationReportComponent"/>
 			<ComponentRef Id="NORMAVSRelationalViewExtensionComponent"/>
 			<ComponentRef Id="NORMAVSRelationalViewSchemaComponent"/>
+			<ComponentRef Id="NORMAVSBarkerERViewExtensionComponent"/>
+			<ComponentRef Id="NORMAVSBarkerERViewSchemaComponent"/>
 			<ComponentRef Id="NORMAVSCustomPropertiesExtensionComponent"/>
 			<ComponentRef Id="NORMAVSCustomPropertiesGACComponent"/>
 			<ComponentRef Id="NORMAVSCustomPropertiesSchemaComponent"/>
@@ -54,9 +56,15 @@
 			<ComponentRef Id="NORMAVSRelationalModelsExtensionComponent"/>
 			<ComponentRef Id="NORMAVSRelationalModelsGACComponent"/>
 			<ComponentRef Id="NORMAVSRelationalModelsSchemaComponent"/>
+			<ComponentRef Id="NORMAVSEntityRelationshipModelsExtensionComponent"/>
+			<ComponentRef Id="NORMAVSEntityRelationshipModelsGACComponent"/>
+			<ComponentRef Id="NORMAVSBarkerERModelSchemaComponent"/>
 			<ComponentRef Id="NORMAVSORMAbstractionToConceptualDatabaseExtensionComponent"/>
 			<ComponentRef Id="NORMAVSORMAbstractionToConceptualDatabaseGACComponent"/>
 			<ComponentRef Id="NORMAVSORMAbstractionToConceptualDatabaseSchemaComponent"/>
+			<ComponentRef Id="NORMAVSORMAbstractionToBarkerERSchemaExtensionComponent"/>
+			<ComponentRef Id="NORMAVSORMAbstractionToBarkerERGACComponent"/>
+			<ComponentRef Id="NORMAVSORMAbstractionToBarkerERSchemaComponent"/>
 			<ComponentRef Id="ORMSchemaCatalogComponent"/>
 			<ComponentRef Id="ORMSchemasComponent"/>
 			<ComponentRef Id="ORMSchemasLocalCatalogComponent"/>

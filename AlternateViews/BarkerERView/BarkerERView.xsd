@@ -1,0 +1,35 @@
+<?xml version="1.0" encoding="utf-8"?>
+<xs:schema
+	targetNamespace="http://schemas.neumont.edu/ORM/2008-05/BarkerERView"
+	xmlns="http://schemas.neumont.edu/ORM/2008-05/BarkerERView"
+	xmlns:xs="http://www.w3.org/2001/XMLSchema"
+	elementFormDefault="qualified"
+	attributeFormDefault="unqualified"
+	version="1.0">
+	<xs:annotation>
+		<xs:appinfo source="zlib/libpng License Copyright Notice">
+			Copyright © Neumont University. All rights reserved.
+
+			This software is provided 'as-is', without any express or implied warranty. In no event will the authors be held liable for any damages arising from the use of this software.
+			Permission is granted to anyone to use this software for any purpose, including commercial applications, and to alter it and redistribute it freely, subject to the following restrictions:
+			1. The origin of this software must not be misrepresented; you must not claim that you wrote the original software. If you use this software in a product, an acknowledgment in the product documentation would be appreciated but is not required.
+			2. Altered source versions must be plainly marked as such, and must not be misrepresented as being the original software.
+			3. This notice may not be removed or altered from any source distribution.
+		</xs:appinfo>
+	</xs:annotation>
+	<xs:element name="BarkerERDiagram">
+		<xs:complexType>
+			<xs:sequence>
+				<xs:element name="BarkerEntityShape" minOccurs="0" maxOccurs="unbounded">
+					<xs:complexType>
+						<xs:attribute name="ObjectTypeRef" type="xs:IDREF" use="required"/>
+						<xs:attribute name="Location" type="xs:string" use="required"/>
+					</xs:complexType>
+				</xs:element>
+			</xs:sequence>
+			<xs:attribute name="id" type="xs:ID" use="required"/>
+			<xs:attribute name="SubjectRef" type="xs:IDREF" use="required"/>
+			<!--<xs:attribute name="DisplayDataTypes" type="xs:boolean" use="required"/>-->
+		</xs:complexType>
+	</xs:element>
+</xs:schema>

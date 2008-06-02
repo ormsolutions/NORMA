@@ -1,0 +1,45 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<se:CustomSerializedElements
+	xmlns:se="http://schemas.neumont.edu/ORM/SDK/SerializationExtensions"
+	xmlns:plx="http://schemas.neumont.edu/CodeGeneration/PLiX">
+	<se:Copyright name="Common Public License Copyright Notice">
+		<se:CopyrightLine>/**************************************************************************\</se:CopyrightLine>
+		<se:CopyrightLine>* Neumont Object-Role Modeling Architect for Visual Studio                 *</se:CopyrightLine>
+		<se:CopyrightLine>*                                                                          *</se:CopyrightLine>
+		<se:CopyrightLine>* Copyright © Neumont University. All rights reserved.                     *</se:CopyrightLine>
+		<se:CopyrightLine>*                                                                          *</se:CopyrightLine>
+		<se:CopyrightLine>* The use and distribution terms for this software are covered by the      *</se:CopyrightLine>
+		<se:CopyrightLine>* Common Public License 1.0 (http://opensource.org/licenses/cpl) which     *</se:CopyrightLine>
+		<se:CopyrightLine>* can be found in the file CPL.txt at the root of this distribution.       *</se:CopyrightLine>
+		<se:CopyrightLine>* By using this software in any fashion, you are agreeing to be bound by   *</se:CopyrightLine>
+		<se:CopyrightLine>* the terms of this license.                                               *</se:CopyrightLine>
+		<se:CopyrightLine>*                                                                          *</se:CopyrightLine>
+		<se:CopyrightLine>* You must not remove this notice, or any other, from this software.       *</se:CopyrightLine>
+		<se:CopyrightLine>\**************************************************************************/</se:CopyrightLine>
+	</se:Copyright>
+	<se:DomainModel Class="BarkerERShapeDomainModel">
+		<se:Namespaces>
+			<se:Namespace Prefix="bvw" URI="http://schemas.neumont.edu/ORM/2008-05/BarkerERView" SchemaFile="BarkerERView.xsd" DefaultPrefix="true"/>
+		</se:Namespaces>
+		<se:RootElements>
+			<se:RootElement Class="BarkerERDiagram"/>
+		</se:RootElements>
+		<se:OmittedDomainElements>
+			<se:OmitRelationship Class="ParentShapeContainsNestedChildShapes"/>
+			<se:OmitRelationship Class="PresentationViewsSubject"/>
+			<se:OmitClass Class="BarkerEntityShape"/>
+		</se:OmittedDomainElements>
+	</se:DomainModel>
+	<se:Element Class="BarkerERDiagram">
+		<se:Attribute ID="IsCompleteView" WriteStyle="NotWritten"/>
+		<se:Attribute ID="Name" WriteStyle="NotWritten"/>
+		<se:Attribute ID="BaseFontName" WriteStyle="NotWritten"/>
+		<se:Attribute ID="BaseFontSize" WriteStyle="NotWritten"/>
+		<se:Attribute ID="DiagramId" WriteStyle="NotWritten"/>
+		<se:Attribute ID="DoLineRouting" WriteStyle="NotWritten"/>
+		<se:Attribute ID="DoResizeParent" WriteStyle="NotWritten"/>
+		<se:Attribute ID="DoShapeAnchoring" WriteStyle="NotWritten"/>
+		<se:Attribute ID="DoViewFixup" WriteStyle="NotWritten"/>
+		<se:Attribute ID="PlaceUnplacedShapes" WriteStyle="NotWritten"/>
+	</se:Element>
+</se:CustomSerializedElements>

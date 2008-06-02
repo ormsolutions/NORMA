@@ -1,0 +1,92 @@
+<?xml version="1.0" encoding="utf-8"?>
+<xs:schema
+	targetNamespace="http://schemas.neumont.edu/ORM/Bridge/2008-05/ORMAbstractionToBarkerER"
+	xmlns="http://schemas.neumont.edu/ORM/Bridge/2008-05/ORMAbstractionToBarkerER" 
+	xmlns:oialtocdb="http://schemas.neumont.edu/ORM/Bridge/2008-05/ORMAbstractionToBarkerER"
+	xmlns:xs="http://www.w3.org/2001/XMLSchema"
+	xmlns:orm="http://schemas.neumont.edu/ORM/2006-04/ORMCore"
+	elementFormDefault="qualified"
+	attributeFormDefault="unqualified"
+	version="1.0">
+	<xs:import namespace="http://schemas.neumont.edu/ORM/2006-04/ORMCore"/>
+
+	<xs:annotation>
+		<xs:appinfo>
+			<rdf:RDF
+				xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#"
+				xmlns:dc="http://purl.org/dc/elements/1.1/"
+				xmlns:dcterms="http://purl.org/dc/terms/">
+				<rdf:Description rdf:about="http://schemas.neumont.edu/ORM/Bridge/2007-06/ORMToORMAbstraction">
+					<dcterms:requires rdf:resource="http://schemas.neumont.edu/ORM/2006-04/ORMCore"/>
+					<dcterms:requires rdf:resource="http://schemas.neumont.edu/ORM/Abstraction/2007-06/Core"/>
+					<dc:title>ORM Intermediate Abstraction Language To Barker ER</dc:title>
+					<dc:rights>Copyright © Neumont University. All rights reserved.</dc:rights>
+					<dcterms:rightsHolder>Neumont University</dcterms:rightsHolder>
+					<dcterms:license>
+						This software is provided 'as-is', without any express or implied warranty. In no event will the authors be held liable for any damages arising from the use of this software.
+						Permission is granted to anyone to use this software for any purpose, including commercial applications, and to alter it and redistribute it freely, subject to the following restrictions:
+						1. The origin of this software must not be misrepresented; you must not claim that you wrote the original software. If you use this software in a product, an acknowledgment in the product documentation would be appreciated but is not required.
+						2. Altered source versions must be plainly marked as such, and must not be misrepresented as being the original software.
+						3. This notice may not be removed or altered from any source distribution.
+					</dcterms:license>
+				</rdf:Description>
+			</rdf:RDF>
+		</xs:appinfo>
+	</xs:annotation>
+
+	<xs:element name="Bridge">
+		<xs:complexType>
+			<xs:choice minOccurs="0" maxOccurs="unbounded">
+				<xs:element name="BarkerErModelIsForAbstractionModel" type="BarkerErModelIsForAbstractionModelType"/>
+				<xs:element name="AttributeHasConceptTypeChild" type="AttributeHasConceptTypeChildType"/>
+				<xs:element name="BinaryAssociationHasConceptTypeChild" type="BinaryAssociationHasConceptTypeChildType"/>
+				<xs:element name="EntityTypeIsPrimarilyForConceptType" type="EntityTypeIsPrimarilyForConceptTypeType"/>
+			</xs:choice>
+		</xs:complexType>
+	</xs:element>
+
+	<xs:complexType name="BarkerErModelIsForAbstractionModelType">
+		<xs:attribute name="id" type="xs:ID" use="required"/>
+		<xs:attribute name="BarkerErModel" type="xs:IDREF" use="required"/>
+		<xs:attribute name="AbstractionModel" type="xs:IDREF" use="required"/>
+	</xs:complexType>
+	<xs:complexType name="AttributeHasConceptTypeChildType">
+		<xs:attribute name="id" type="xs:ID" use="required"/>
+		<xs:attribute name="Attribute" type="xs:IDREF" use="required"/>
+		<xs:attribute name="ConceptTypeChild" type="xs:IDREF" use="required"/>
+	</xs:complexType>
+	<xs:complexType name="BinaryAssociationHasConceptTypeChildType">
+		<xs:attribute name="id" type="xs:ID" use="required"/>
+		<xs:attribute name="BinaryAssociation" type="xs:IDREF" use="required"/>
+		<xs:attribute name="ConceptTypeChild" type="xs:IDREF" use="required"/>
+	</xs:complexType>
+	<xs:complexType name="EntityTypeIsPrimarilyForConceptTypeType">
+		<xs:attribute name="id" type="xs:ID" use="required"/>
+		<xs:attribute name="EntityType" type="xs:IDREF" use="required"/>
+		<xs:attribute name="ConceptType" type="xs:IDREF" use="required"/>
+		</xs:complexType>
+	<xs:element name="BarkerERModelGenerationSetting" type="BarkerERModelGenerationSettingType" substitutionGroup="orm:GenerationSetting"/>
+	<xs:complexType name="BarkerERModelGenerationSettingType">
+		<xs:complexContent>
+			<xs:extension base="orm:GenerationSettingType">
+				<xs:sequence>
+					<xs:element name="BarkerErModel">
+						<xs:complexType>
+							<xs:attribute name="ref" type="xs:IDREF" use="required"/>
+						</xs:complexType>
+					</xs:element>
+				</xs:sequence>
+				<xs:attribute name="CoreAlgorithmVersion" type="xs:string" use="required">
+					<xs:annotation>
+						<xs:documentation>Version information interpreted by the generating algorithm.</xs:documentation>
+					</xs:annotation>
+				</xs:attribute>
+				<xs:attribute name="NameAlgorithmVersion" type="xs:string" use="required">
+					<xs:annotation>
+						<xs:documentation>Version information interpreted by the generating algorithm. Applies to names only.</xs:documentation>
+					</xs:annotation>
+				</xs:attribute>
+			</xs:extension>
+		</xs:complexContent>
+	</xs:complexType>
+</xs:schema>

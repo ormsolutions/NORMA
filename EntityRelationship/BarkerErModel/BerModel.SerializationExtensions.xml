@@ -19,7 +19,7 @@
 	</se:Copyright>
 	<se:DomainModel Class="BarkerDomainModel">
 		<se:Namespaces>
-			<se:Namespace Prefix="rbe" URI="http://schemas.neumont.edu/ORM/EntityRelationship/2008-03/Barker" SchemaFile="BarkerERModel.xsd" DefaultPrefix="true"/>
+			<se:Namespace Prefix="rbe" URI="http://schemas.neumont.edu/ORM/EntityRelationship/2008-05/Barker" SchemaFile="BarkerERModel.xsd" DefaultPrefix="true"/>
 		</se:Namespaces>
 		<se:RootElements>
 			<se:RootElement Class="BarkerErModel"/>

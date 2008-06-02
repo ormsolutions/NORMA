@@ -43,6 +43,14 @@
 					<File Id="Neumont.Tools.ORMAbstractionToConceptualDatabaseBridge$(var.VSExt).dll_GAC" ShortName="CDBBr.dll" Name="Neumont.Tools.ORMAbstractionToConceptualDatabaseBridge$(var.VSExt).dll" Source="..\RelationalModel\OialDcilBridge\bin\$(var.BuildConfiguration)\Neumont.Tools.ORMAbstractionToConceptualDatabaseBridge$(var.VSExt).dll"
 						DefaultVersion="$(var.ProductVersion)" DefaultLanguage="0" KeyPath="yes" Assembly=".net" AssemblyManifest="Neumont.Tools.ORMAbstractionToConceptualDatabaseBridge$(var.VSExt).dll_GAC" ProcessorArchitecture="msil"/>
 				</Component>
+				<Component Id="NORMAVSEntityRelationshipModelsGACComponent" Guid="ED234F0B-2461-4DC2-$(var.VersionGuidSuffix)" DiskId="1" Win64="$(var.Win64)">
+					<File Id="Neumont.Tools.EntityRelationshipModels$(var.VSExt).dll_GAC" ShortName="ErMods.dll" Name="Neumont.Tools.EntityRelationshipModels$(var.VSExt).dll" Source="..\EntityRelationship\BarkerErModel\bin\$(var.BuildConfiguration)\Neumont.Tools.EntityRelationshipModels$(var.VSExt).dll"
+						DefaultVersion="$(var.ProductVersion)" DefaultLanguage="0" KeyPath="yes" Assembly=".net" AssemblyManifest="Neumont.Tools.EntityRelationshipModels$(var.VSExt).dll_GAC" ProcessorArchitecture="msil"/>
+				</Component>
+				<Component Id="NORMAVSORMAbstractionToBarkerERGACComponent" Guid="724CB346-8686-4964-$(var.VersionGuidSuffix)" DiskId="1" Win64="$(var.Win64)">
+					<File Id="Neumont.Tools.ORMAbstractionToBarkerERBridge$(var.VSExt).dll_GAC" ShortName="BarkerBr.dll" Name="Neumont.Tools.ORMAbstractionToBarkerERBridge$(var.VSExt).dll" Source="..\EntityRelationship\OialBerBridge\bin\$(var.BuildConfiguration)\Neumont.Tools.ORMAbstractionToBarkerERBridge$(var.VSExt).dll"
+						DefaultVersion="$(var.ProductVersion)" DefaultLanguage="0" KeyPath="yes" Assembly=".net" AssemblyManifest="Neumont.Tools.ORMAbstractionToBarkerERBridge$(var.VSExt).dll_GAC" ProcessorArchitecture="msil"/>
+				</Component>
 				<Component Id="NORMADBImportGACComponent" Guid="029817D9-6779-4801-$(var.VersionGuidSuffix)" DiskId="1" Win64="$(var.Win64)">
 					<File Id="Neumont.Tools.ORM.DatabaseImport$(var.VSExt).dll_GAC" ShortName="DBImport.dll" Name="Neumont.Tools.ORM.DatabaseImport$(var.VSExt).dll" Source="..\Tools\DatabaseImport\bin\$(var.BuildConfiguration)\Neumont.Tools.ORM.DatabaseImport$(var.VSExt).dll"
 						DefaultVersion="$(var.ProductVersion)" DefaultLanguage="0" KeyPath="yes" Assembly=".net" AssemblyManifest="Neumont.Tools.ORM.DatabaseImport$(var.VSExt).dll_GAC" ProcessorArchitecture="msil"/>
@@ -261,6 +269,47 @@
 										<RegistryValue Type="string" Name="CodeBase" Value="[#Neumont.Tools.ORMAbstractionToConceptualDatabaseBridge$(var.VSExt).dll]"/>
 									</RegistryKey>
 								</Component>
+
+								<Component Id="NORMAVSEntityRelationshipModelsExtensionComponent" Guid="EE32F7FA-A6FB-4CEF-$(var.VersionGuidSuffix)" DiskId="1" Win64="$(var.Win64)">
+									<File Id="Neumont.Tools.EntityRelationshipModels$(var.VSExt).dll" ShortName="ErMods.dll" Name="Neumont.Tools.EntityRelationshipModels$(var.VSExt).dll" Source="..\EntityRelationship\BarkerErModel\bin\$(var.BuildConfiguration)\Neumont.Tools.EntityRelationshipModels$(var.VSExt).dll"
+										DefaultVersion="$(var.ProductVersion)" DefaultLanguage="0" KeyPath="yes" Assembly=".net" AssemblyManifest="Neumont.Tools.RelationalModels$(var.VSExt).dll" AssemblyApplication="Neumont.Tools.EntityRelationshipModels$(var.VSExt).dll" ProcessorArchitecture="msil"/>
+									<File Id="Neumont.Tools.EntityRelationshipModels$(var.VSExt).pdb" ShortName="ErMods.pdb" Name="Neumont.Tools.EntityRelationshipModels$(var.VSExt).pdb" Source="..\EntityRelationship\BarkerErModel\bin\$(var.BuildConfiguration)\Neumont.Tools.EntityRelationshipModels$(var.VSExt).pdb"
+										DefaultLanguage="0" CompanionFile="Neumont.Tools.EntityRelationshipModels$(var.VSExt).dll"/>
+									<File Id="Neumont.Tools.EntityRelationshipModels$(var.VSExt).xml" ShortName="ErMods.xml" Name="Neumont.Tools.EntityRelationshipModels$(var.VSExt).xml" Source="..\EntityRelationship\BarkerErModel\bin\$(var.BuildConfiguration)\Neumont.Tools.EntityRelationshipModels$(var.VSExt).xml"
+										DefaultLanguage="0" CompanionFile="Neumont.Tools.EntityRelationshipModels$(var.VSExt).dll"/>
+									<RegistryKey Action="createAndRemoveOnUninstall" Root="HKLM" Key="$(var.NORMAVSExtensionsRegRoot)\http://schemas.neumont.edu/ORM/EntityRelationship/2008-05/Barker">
+										<RegistryValue Type="string" Name="Class" Value="Neumont.Tools.EntityRelationshipModels.Barker.BarkerDomainModel"/>
+										<RegistryValue Type="string" Name="Assembly" Value="Neumont.Tools.EntityRelationshipModels$(var.VSExt), $(var.BaseAssemblyName)"/>
+										<RegistryValue Type="string" Name="CodeBase" Value="[#Neumont.Tools.EntityRelationshipModels$(var.VSExt).dll]"/>
+										<RegistryValue Type="integer" Name="SecondaryNamespace" Value="1"/>
+									</RegistryKey>
+								</Component>
+
+								<Component Id="NORMAVSORMAbstractionToBarkerERSchemaExtensionComponent" Guid="2A0DA5D1-5E8B-4F95-$(var.VersionGuidSuffix)" DiskId="1" Win64="$(var.Win64)">
+									<File Id="Neumont.Tools.ORMAbstractionToBarkerERBridge$(var.VSExt).dll" ShortName="BarkerBr.dll" Name="Neumont.Tools.ORMAbstractionToBarkerERBridge$(var.VSExt).dll" Source="..\EntityRelationship\OialBerBridge\bin\$(var.BuildConfiguration)\Neumont.Tools.ORMAbstractionToBarkerERBridge$(var.VSExt).dll"
+										DefaultVersion="$(var.ProductVersion)" DefaultLanguage="0" KeyPath="yes" Assembly=".net" AssemblyManifest="Neumont.Tools.ORMAbstractionToBarkerERBridge$(var.VSExt).dll" AssemblyApplication="Neumont.Tools.ORMAbstractionToBarkerERBridge$(var.VSExt).dll" ProcessorArchitecture="msil"/>
+									<File Id="Neumont.Tools.ORMAbstractionToBarkerERBridge$(var.VSExt).pdb" ShortName="BarkerBr.pdb" Name="Neumont.Tools.ORMAbstractionToBarkerERBridge$(var.VSExt).pdb" Source="..\EntityRelationship\OialBerBridge\bin\$(var.BuildConfiguration)\Neumont.Tools.ORMAbstractionToBarkerERBridge$(var.VSExt).pdb"
+										DefaultLanguage="0" CompanionFile="Neumont.Tools.ORMAbstractionToBarkerERBridge$(var.VSExt).dll"/>
+									<File Id="Neumont.Tools.ORMAbstractionToBarkerERBridge.xml" ShortName="BarkerBr.xml" Name="Neumont.Tools.ORMAbstractionToBarkerERBridge$(var.VSExt).xml" Source="..\EntityRelationship\OialBerBridge\bin\$(var.BuildConfiguration)\Neumont.Tools.ORMAbstractionToBarkerERBridge$(var.VSExt).xml"
+										DefaultLanguage="0" CompanionFile="Neumont.Tools.ORMAbstractionToBarkerERBridge$(var.VSExt).dll"/>
+									<RegistryKey Action="createAndRemoveOnUninstall" Root="HKLM" Key="$(var.NORMAVSExtensionsRegRoot)\http://schemas.neumont.edu/ORM/Bridge/2008-05/ORMAbstractionToBarkerER">
+										<RegistryValue Type="string" Name="Class" Value="Neumont.Tools.ORMAbstractionToBarkerERBridge.ORMAbstractionToBarkerERBridgeDomainModel"/>
+										<RegistryValue Type="string" Name="Assembly" Value="Neumont.Tools.ORMAbstractionToBarkerERBridge$(var.VSExt), $(var.BaseAssemblyName)"/>
+										<RegistryValue Type="string" Name="CodeBase" Value="[#Neumont.Tools.ORMAbstractionToBarkerERBridge$(var.VSExt).dll]"/>
+									</RegistryKey>
+								</Component>
+
+								<Component Id="NORMAVSBarkerERViewExtensionComponent" Guid="6549D6E9-3256-40DC-$(var.VersionGuidSuffix)" DiskId="1" Win64="$(var.Win64)">
+									<File Id="Neumont.Tools.ORM.Views.BarkerERView$(var.VSExt).dll" ShortName="BarkerVw.dll" Name="Neumont.Tools.ORM.Views.BarkerERView$(var.VSExt).dll" Source="..\AlternateViews\BarkerERView\bin\$(var.BuildConfiguration)\Neumont.Tools.ORM.Views.BarkerERView$(var.VSExt).dll"
+										DefaultVersion="$(var.ProductVersion)" DefaultLanguage="0" KeyPath="yes" Assembly=".net" AssemblyManifest="Neumont.Tools.ORM.Views.RelationalView$(var.VSExt).dll" AssemblyApplication="Neumont.Tools.ORM.Views.BarkerERView$(var.VSExt).dll" ProcessorArchitecture="msil"/>
+									<File Id="Neumont.Tools.ORM.Views.BarkerERView$(var.VSExt).pdb" ShortName="BarkerVw.pdb" Name="Neumont.Tools.ORM.Views.BarkerERView$(var.VSExt).pdb" Source="..\AlternateViews\BarkerERView\bin\$(var.BuildConfiguration)\Neumont.Tools.ORM.Views.BarkerERView$(var.VSExt).pdb"
+										DefaultLanguage="0" CompanionFile="Neumont.Tools.ORM.Views.BarkerERView$(var.VSExt).dll"/>
+									<RegistryKey Action="createAndRemoveOnUninstall" Root="HKLM" Key="$(var.NORMAVSExtensionsRegRoot)\http://schemas.neumont.edu/ORM/2008-05/BarkerERView">
+										<RegistryValue Type="string" Name="Class" Value="Neumont.Tools.ORM.Views.BarkerERView.BarkerERShapeDomainModel"/>
+										<RegistryValue Type="string" Name="Assembly" Value="Neumont.Tools.ORM.Views.BarkerERView$(var.VSExt), $(var.BaseAssemblyName)"/>
+										<RegistryValue Type="string" Name="CodeBase" Value="[#Neumont.Tools.ORM.Views.BarkerERView$(var.VSExt).dll]"/>
+									</RegistryKey>
+								</Component>
 							</Directory>
 
 						</Directory>
@@ -338,6 +387,18 @@
 								<Component Id="NORMAVSRelationalViewSchemaComponent" Guid="18A6CF00-ECD7-4FDA-$(var.VersionGuidSuffix)" DiskId="1" Win64="$(var.Win64)" KeyPath="yes">
 									<File Id="RelationalView.xsd" ShortName="ReltnlVw.xsd" Name="RelationalView.xsd" Source="..\AlternateViews\RelationalView\RelationalView.xsd"
 										DefaultLanguage="0" CompanionFile="Neumont.Tools.ORM.Views.RelationalView$(var.VSExt).dll"/>
+								</Component>
+								<Component Id="NORMAVSBarkerERModelSchemaComponent" Guid="C6C5DD6E-4546-48A3-$(var.VersionGuidSuffix)" DiskId="1" Win64="$(var.Win64)" KeyPath="yes">
+									<File Id="BarkerERModel.xsd" ShortName="Barker.xsd" Name="BarkerERModel.xsd" Source="..\EntityRelationship\BarkerErModel\BarkerERModel.xsd"
+										DefaultLanguage="0" CompanionFile="Neumont.Tools.EntityRelationshipModels$(var.VSExt).dll"/>
+								</Component>
+								<Component Id="NORMAVSORMAbstractionToBarkerERSchemaComponent" Guid="34752977-F3E7-4BA8-$(var.VersionGuidSuffix)" DiskId="1" Win64="$(var.Win64)" KeyPath="yes">
+									<File Id="ORMAbstractionToBarkerERBridge.xsd" ShortName="BarkerBr.xsd" Name="ORMAbstractionToBarkerERBridge.xsd" Source="..\EntityRelationship\OialBerBridge\ORMAbstractionToBarkerERBridge.xsd"
+										DefaultLanguage="0" CompanionFile="Neumont.Tools.ORMAbstractionToBarkerERBridge$(var.VSExt).dll"/>
+								</Component>
+								<Component Id="NORMAVSBarkerERViewSchemaComponent" Guid="BF7FCA1E-0DDD-4118-$(var.VersionGuidSuffix)" DiskId="1" Win64="$(var.Win64)" KeyPath="yes">
+									<File Id="BarkerERView.xsd" ShortName="BarkerVw.xsd" Name="BarkerERView.xsd" Source="..\AlternateViews\BarkerERView\BarkerERView.xsd"
+										DefaultLanguage="0" CompanionFile="Neumont.Tools.ORM.Views.BarkerERView$(var.VSExt).dll"/>
 								</Component>
 							</Directory>
 							<Directory Id="Transforms" ShortName="Trnsfrms" Name="Transforms">
