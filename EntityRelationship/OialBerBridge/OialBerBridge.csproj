@@ -9,7 +9,7 @@
     <OutputType>Library</OutputType>
     <AppDesignerFolder>Properties</AppDesignerFolder>
     <RootNamespace>Neumont.Tools.ORMAbstractionToBarkerERBridge</RootNamespace>
-    <AssemblyName>Neumont.Tools.ORMAbstractionToBarkerERBridge.VS2005</AssemblyName>
+    <AssemblyName>Neumont.Tools.ORMAbstractionToBarkerERBridge.$(TargetVisualStudioShortProductName)</AssemblyName>
     <WarningLevel>4</WarningLevel>
     <SignAssembly>true</SignAssembly>
     <AssemblyOriginatorKeyFile>..\..\ORMPackage.snk</AssemblyOriginatorKeyFile>
@@ -23,7 +23,7 @@
     <Optimize>true</Optimize>
     <OutputPath>bin\Debug\</OutputPath>
     <DefineConstants>$(DefineConstants);TRACE;DEBUG</DefineConstants>
-    <DocumentationFile>bin\Debug\Neumont.Tools.ORMAbstractionToBarkerERBridge.VS2005.xml</DocumentationFile>
+    <DocumentationFile>bin\Debug\Neumont.Tools.ORMAbstractionToBarkerERBridge.$(TargetVisualStudioShortProductName).xml</DocumentationFile>
     <ErrorReport>prompt</ErrorReport>
     <NoWarn>1607</NoWarn>
     <UseVSHostingProcess>false</UseVSHostingProcess>

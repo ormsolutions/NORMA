@@ -80,11 +80,16 @@ namespace Neumont.Tools.ORM.Views.BarkerERView
 
 		#endregion // Customize appearance
 		#region reconfigure
+		/// <summary>
+		/// Override of <see cref="ORMBaseBinaryLinkShape.ConfiguringAsChildOf"/>
+		/// </summary>
 		public override void ConfiguringAsChildOf(Neumont.Tools.ORM.ShapeModel.ORMDiagram diagram, bool createdDuringViewFixup)
 		{
-			//Reconfigure(null);
+			Reconfigure(null);
 		}
-
+		/// <summary>
+		/// Associate the <see cref="EntityRelationshipShapeGeometry"/> shape geometry with this connector shape.
+		/// </summary>
 		public override ShapeGeometry ShapeGeometry
 		{
 			get
