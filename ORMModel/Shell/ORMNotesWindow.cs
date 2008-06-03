@@ -37,6 +37,156 @@ using Neumont.Tools.Modeling.Shell;
 
 namespace Neumont.Tools.ORM.Shell
 {
+	#region CommandTargetTextBox control
+	/// <summary>
+	/// A <see cref="TextBox"/> that supports standard routed editing commands
+	/// </summary>
+	[CLSCompliant(false)]
+	public class CommandTargetTextBox : TextBox, MSOLE.IOleCommandTarget
+	{
+		#region PInvoke functions
+		[DllImport("user32.dll", CharSet = CharSet.Auto)]
+		private static extern IntPtr SendMessage(HandleRef handle, int msg, int wParam, int lParam);
+		#endregion // PInvoke functions
+		#region Member variables
+		private IServiceProvider myServiceProvider;
+		private bool myHasSelection = false;
+		private bool myHasText = false;
+		#endregion // Member variables
+		#region Constructors
+		/// <summary>
+		/// Enable notification
+		/// </summary>
+		public CommandTargetTextBox(IServiceProvider serviceProvider)
+		{
+			myHasSelection = false;
+			myServiceProvider = serviceProvider;
+			this.SetStyle(ControlStyles.EnableNotifyMessage, true);
+		}
+		#endregion // Constructors
+		#region IOleCommandTarget Implementation
+		/// <summary>
+		/// Implements <see cref="MSOLE.IOleCommandTarget.QueryStatus"/>
+		/// </summary>
+		protected int QueryStatus(ref Guid pguidCmdGroup, uint cCmds, MSOLE.OLECMD[] prgCmds, IntPtr pCmdText)
+		{
+			int hr = (int)MSOLE.Constants.OLECMDERR_E_NOTSUPPORTED;
+			if (pguidCmdGroup == VSConstants.GUID_VSStandardCommandSet97)
+			{
+				int flags = 0; // 1 = SUPPORTED, 3 = SUPPORTED and ENABLED
+				switch ((VSConstants.VSStd97CmdID)prgCmds[0].cmdID)
+				{
+					case VSConstants.VSStd97CmdID.Copy:
+						flags = SelectionLength != 0 ? 3 : 1;
+						break;
+					case VSConstants.VSStd97CmdID.Cut:
+						flags = (!ReadOnly && SelectionLength != 0) ? 3 : 1;
+						break;
+					case VSConstants.VSStd97CmdID.Paste:
+						flags = (!ReadOnly && (Clipboard.ContainsText(TextDataFormat.Text) || Clipboard.ContainsText(TextDataFormat.UnicodeText))) ? 3 : 1;
+						break;
+					case VSConstants.VSStd97CmdID.SelectAll:
+						flags = TextLength != 0 ? 3 : 1;
+						break;
+					case VSConstants.VSStd97CmdID.Undo:
+						flags = !ReadOnly && CanUndo ? 3 : 1;
+						break;
+					case VSConstants.VSStd97CmdID.Delete:
+						flags = 3;
+						break;
+					case VSConstants.VSStd97CmdID.Redo:
+					case VSConstants.VSStd97CmdID.MultiLevelRedo:
+					case VSConstants.VSStd97CmdID.MultiLevelUndo:
+						flags = 1;
+						break;
+				}
+				if (flags != 0)
+				{
+					prgCmds[0].cmdf = (uint)flags;
+					hr = VSConstants.S_OK;
+				}
+			}
+			return hr;
+		}
+		int MSOLE.IOleCommandTarget.QueryStatus(ref Guid pguidCmdGroup, uint cCmds, MSOLE.OLECMD[] prgCmds, IntPtr pCmdText)
+		{
+			return QueryStatus(ref pguidCmdGroup, cCmds, prgCmds, pCmdText);
+		}
+		/// <summary>
+		/// Implements <see cref="MSOLE.IOleCommandTarget.Exec"/>
+		/// </summary>
+		int Exec(ref Guid pguidCmdGroup, uint nCmdID, uint nCmdexecopt, IntPtr pvaIn, IntPtr pvaOut)
+		{
+			int hr = (int)MSOLE.Constants.OLECMDERR_E_NOTSUPPORTED;
+			if (pguidCmdGroup == VSConstants.GUID_VSStandardCommandSet97)
+			{
+				switch ((VSConstants.VSStd97CmdID)nCmdID)
+				{
+					case VSConstants.VSStd97CmdID.Copy:
+						Copy();
+						hr = VSConstants.S_OK;
+						break;
+					case VSConstants.VSStd97CmdID.Cut:
+						Cut();
+						hr = VSConstants.S_OK;
+						break;
+					case VSConstants.VSStd97CmdID.Paste:
+						Paste();
+						hr = VSConstants.S_OK;
+						break;
+					case VSConstants.VSStd97CmdID.SelectAll:
+						SelectAll();
+						hr = VSConstants.S_OK;
+						break;
+					case VSConstants.VSStd97CmdID.Undo:
+						Undo();
+						hr = VSConstants.S_OK;
+						break;
+					case VSConstants.VSStd97CmdID.Delete:
+						HandleRef handleRef = new HandleRef(this, Handle);
+						// WM_KEYDOWN == 0x100
+						SendMessage(handleRef, 0x100, (int)Keys.Delete, 1);
+						// WM_KEYUP == 0x101
+						SendMessage(handleRef, 0x101, (int)Keys.Delete, 0x40000001);
+						hr = VSConstants.S_OK;
+						break;
+				}
+			}
+			return hr;
+		}
+		int MSOLE.IOleCommandTarget.Exec(ref Guid pguidCmdGroup, uint nCmdID, uint nCmdexecopt, IntPtr pvaIn, IntPtr pvaOut)
+		{
+			return Exec(ref pguidCmdGroup, nCmdID, nCmdexecopt, pvaIn, pvaOut);
+		}
+		#endregion // IOleCommandTarget Implementation
+		#region Base overrides
+		/// <summary>
+		/// Catch selection change notifications to force UI update
+		/// </summary>
+		protected override void OnNotifyMessage(Message m)
+		{
+			if (m.Msg == 0x282 && m.WParam == (IntPtr)0xB) // WM_IME_NOTIFY = 0x282, IMN_SETCOMPOSITIONWINDOW = 0xB
+			{
+				bool hasCurrentSelection = SelectionLength != 0;
+				bool hasText = hasCurrentSelection || TextLength != 0;
+				if ((hasCurrentSelection ^ myHasSelection) || (hasText ^ myHasText))
+				{
+					myHasSelection = hasCurrentSelection;
+					myHasText = hasText;
+					if (this.Focused)
+					{
+						IVsUIShell service = myServiceProvider.GetService(typeof(SVsUIShell)) as IVsUIShell;
+						if (service != null)
+						{
+							service.UpdateCommandUI(1);
+						}
+					}
+				}
+			}
+		}
+		#endregion // Base overrides
+	}
+	#endregion // CommandTargetTextBox control
 	#region ORMNotesToolWindow class
 	/// <summary>
 	/// The ToolWindow which is responsible for displaying and allowing
@@ -188,7 +338,7 @@ namespace Neumont.Tools.ORM.Shell
 				TextBox textBox = myTextBox;	// Cache the textbox.
 				if (textBox == null)	// If it's null,
 				{
-					myTextBox = textBox = new TextBox();	// instantiate it and set the properties, wire events,
+					myTextBox = textBox = new CommandTargetTextBox(this);	// instantiate it and set the properties, wire events,
 					textBox.Dock = DockStyle.Fill;
 					textBox.WordWrap = true;
 					textBox.Multiline = true;
@@ -376,29 +526,17 @@ namespace Neumont.Tools.ORM.Shell
 			if (pguidCmdGroup == VSConstants.GUID_VSStandardCommandSet97)	// Only handle commands from the Office 97
 			// Command Set (aka VSStandardCommandSet97).
 			{
-				// There typically is only one command passed in to this array - in any case, we only care
-				// about the first command.
-				MSOLE.OLECMD cmd = prgCmds[0];
-				switch ((VSConstants.VSStd97CmdID)cmd.cmdID)
+				MSOLE.IOleCommandTarget forwardTo = myTextBox as MSOLE.IOleCommandTarget;
+				if (forwardTo != null)
 				{
-					case VSConstants.VSStd97CmdID.Delete:
-						// Inform the shell that we should have a chance to handle the delete command.
-						MSOLE.IOleCommandTarget forwardTo = myTextBox as MSOLE.IOleCommandTarget;
-						if (forwardTo != null)
-						{
-							hr = forwardTo.QueryStatus(ref pguidCmdGroup, cCmds, prgCmds, pCmdText);
-						}
-						else
-						{
-							goto default;
-						}
-						break;
-
-					default:
-						// Inform the shell that we don't support any other commands.
-						handled = false;
-						hr = (int)MSOLE.Constants.OLECMDERR_E_NOTSUPPORTED;
-						break;
+					hr = forwardTo.QueryStatus(ref pguidCmdGroup, cCmds, prgCmds, pCmdText);
+					handled = hr != (int)MSOLE.Constants.OLECMDERR_E_NOTSUPPORTED && hr != (int)MSOLE.Constants.OLECMDERR_E_UNKNOWNGROUP;
+				}
+				else
+				{
+					// Inform the shell that we don't support any other commands.
+					hr = (int)MSOLE.Constants.OLECMDERR_E_NOTSUPPORTED;
+					handled = false;
 				}
 			}
 			else
@@ -446,30 +584,26 @@ namespace Neumont.Tools.ORM.Shell
 			{
 				// Default to a not-supported status.
 				hr = (int)MSOLE.Constants.OLECMDERR_E_NOTSUPPORTED;
-				switch ((VSConstants.VSStd97CmdID)nCmdID)
+				MSOLE.IOleCommandTarget forwardTo = myTextBox as MSOLE.IOleCommandTarget;
+				if (forwardTo != null)
 				{
-					case VSConstants.VSStd97CmdID.Delete:
-						// If we aren't in label edit (in which case the commands should be passed down to the
-						// VirtualTreeView control), handle the delete command and set the hresult to a handled status.
-						MSOLE.IOleCommandTarget forwardTo = myTextBox as MSOLE.IOleCommandTarget;
-						if (forwardTo != null)
-						{
-							forwardTo.Exec(ref pguidCmdGroup, nCmdID, nCmdexecopt, pvaIn, pvaOut);
-							// We enabled the command, so we say we handled it regardless of the further conditions
-							hr = VSConstants.S_OK;
-						}
-						else
-						{
-							goto default;
-						}
-						break;
-
-					default:
-						// If the command is from our command set, but not explicitly handled, inform the shell
-						// that we didn't handle the command.
+					hr = forwardTo.Exec(ref pguidCmdGroup, nCmdID, nCmdexecopt, pvaIn, pvaOut);
+					// We enabled the command, so we say we handled it regardless of the further conditions
+					if (hr != (int)MSOLE.Constants.OLECMDERR_E_NOTSUPPORTED && hr != (int)MSOLE.Constants.OLECMDERR_E_UNKNOWNGROUP)
+					{
+						hr = VSConstants.S_OK;
+					}
+					else
+					{
 						handled = false;
-						hr = (int)MSOLE.Constants.OLECMDERR_E_NOTSUPPORTED;
-						break;
+					}
+				}
+				else
+				{
+					// If the command is from our command set, but not explicitly handled, inform the shell
+					// that we didn't handle the command.
+					handled = false;
+					hr = (int)MSOLE.Constants.OLECMDERR_E_NOTSUPPORTED;
 				}
 			}
 			// The command is from an unknown group.
