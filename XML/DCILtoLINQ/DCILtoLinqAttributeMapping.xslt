@@ -19,10 +19,11 @@
 	<xsl:param name="LinqToSqlSettings" select="document('LinqToSqlSettings.xml')/child::*"/>
 
 	<xsl:variable name="Model" select="dcl:schema"/>
-	<xsl:variable name="ModelName" select="string($Model/@name)"/>
-	<xsl:variable name="DatabaseSchemaName" select="string($ModelName)"/>
-	<xsl:variable name="Entitys" select="$Model/dcl:table"/>
+	<xsl:variable name="ModelName" select="string(translate(translate($Model/@name,' ',''),'&quot;',''))"/>
+	<xsl:variable name="DatabaseSchemaName" select="string(translate(dcl:schema/@name,'&quot;',''))"/>
+	<xsl:variable name="Entitiess" select="$Model/dcl:table"/>
 	<xsl:variable name="Enumerations" select="$Model/dcl:domain[dcl:predefinedDataType/@name = 'CHARACTER VARYING' or dcl:predefinedDataType/@name = 'CHARACTER' or dcl:predefinedDataType/@name = 'CHARACTER LARGE OBJECT' and count(dcl:checkConstraint) = 1 and count(dcl:checkConstraint/dep:inPredicate) = 1 and dcl:checkConstraint/dep:inPredicate/@type='IN']"/>
+	<!--<xsl:variable name="NestedEnumerations" select="$Entities/dcl:checkConstraint[dep:child::*/dep:columnReference = current()../dcl:column]"-->
 	<!--<xsl:variable name="ModelNumericConstraints" select="$Model/dcl:domain[dcl:predefinedDataType/@name = 'NUMERIC' or dcl:predefinedDataType/@name = 'INTEGER' or dcl:predefinedDataType/@name = 'DECIMAL' or dcl:predefinedDataType/@name = 'SMALLINT' or dcl:predefinedDataType/@name = 'TINYINT']"/>-->
 
 	<xsl:variable name="ProjectNameFragment">
@@ -232,6 +233,18 @@
 		</xsl:choose>
 	</xsl:variable>
 	<xsl:variable name="InstanceContextMode" select="string($InstanceContextModeFragment)"/>
+	<xsl:variable name="UnitTestFrameworkFragment">
+		<xsl:variable name="setting" select="string($LinqToSqlSettings/opt:Testing/@UnitTestingFramework)"/>
+		<xsl:choose>
+			<xsl:when test="$setting">
+				<xsl:value-of select="$setting"/>
+			</xsl:when>
+			<xsl:otherwise>
+				<xsl:text>NUnit</xsl:text>
+			</xsl:otherwise>
+		</xsl:choose>
+	</xsl:variable>
+	<xsl:variable name="UnitTestingFramework" select="string($UnitTestFrameworkFragment)"/>
 
 	<xsl:variable name="ServiceName" select="concat('I',$ModelName,$ServiceNameSuffix)"/>
 
@@ -1002,23 +1015,6 @@
 				</plx:return>
 			</plx:get>
 			<plx:set>
-				<!--<xsl:if test="@isMandatory">
-					<plx:branch>
-						<plx:condition>
-							<plx:binaryOperator type="identityEquality">
-								<plx:left>
-									<plx:valueKeyword/>
-								</plx:left>
-								<plx:right>
-									<plx:nullKeyword/>
-								</plx:right>
-							</plx:binaryOperator>
-						</plx:condition>
-						<plx:throw>
-							<plx:callNew dataTypeName="ArgumentNullException"/>
-						</plx:throw>
-					</plx:branch>
-				</xsl:if>-->
 				<plx:branch>
 					<plx:condition>
 						<plx:binaryOperator type="identityInequality">
@@ -1149,23 +1145,6 @@
 				</plx:return>
 			</plx:get>
 			<plx:set>
-				<!--<xsl:if test="@isNullable = 'false' or @isNullable = 0">
-					<plx:branch>
-						<plx:condition>
-							<plx:binaryOperator type="identityEquality">
-								<plx:left>
-									<plx:valueKeyword/>
-								</plx:left>
-								<plx:right>
-									<plx:nullKeyword/>
-								</plx:right>
-							</plx:binaryOperator>
-						</plx:condition>
-						<plx:throw>
-							<plx:callNew dataTypeName="ArgumentNullException"/>
-						</plx:throw>
-					</plx:branch>
-				</xsl:if>-->
 				<plx:local name="previousValue" dataTypeName="{$entityName}">
 					<plx:initialize>
 						<plx:callInstance type="property" name="Entity">
@@ -1366,6 +1345,395 @@
 		</plx:passParam>
 	</xsl:template>
 
+	<!--<xsl:template match="dcl:schema" mode="GenerateServiceLayerTests">
+		<xsl:variable name="testClassSuffix" select="'Tests'"/>
+		<xsl:variable name="testFunctionPrefix" select="'Test'"/>
+		-->
+	<!--<plx:namespace name="System">
+			<plx:
+		</plx:namespace>-->
+	<!--
+		<xsl:variable name="serviceDataTypeName" select="$ServiceName"/>
+		<xsl:variable name="servicePropertyName" select="'Service'"/>
+		<xsl:variable name="serviceFieldName" select="concat($PrivateMemberPrefix,'service')"/>
+		<xsl:variable name="baseTestClassName" select="concat($ModelName,'Service',$testClassSuffix)"/>
+		<plx:class visibility="public" modifier="abstract" partual="true" name="{$baseTestClassName}">
+			<plx:attribute>
+				<xsl:attribute name="dataTypeName">
+					<xsl:choose>
+						<xsl:when test="$UnitTestingFramework = 'NUnit'">
+							<xsl:value-of select="'TestFixture'"/>
+						</xsl:when>
+						<xsl:when test="$UnitTestingFramework = 'MSTest'">
+							<xsl:value-of select="'TestClass'"/>
+						</xsl:when>
+					</xsl:choose>
+				</xsl:attribute>
+			</plx:attribute>
+			<plx:function visibility="public" modifier="virtual">
+				<xsl:attribute name="name">
+					<xsl:choose>
+						<xsl:when test="$UnitTestingFramework = 'NUnit'">
+							<xsl:value-of select="'TestFixtureSetUp'"/>
+						</xsl:when>
+						<xsl:when test="$UnitTestingFramework = 'MSTest'">
+							<xsl:value-of select="'ClassInitialize'"/>
+						</xsl:when>
+					</xsl:choose>
+				</xsl:attribute>
+				<plx:attribute>
+					<xsl:attribute name="dataTypeName">
+						<xsl:choose>
+							<xsl:when test="$UnitTestingFramework = 'NUnit'">
+								<xsl:value-of select="'TestFixtureSetUp'"/>
+							</xsl:when>
+							<xsl:when test="$UnitTestingFramework = 'MSTest'">
+								<xsl:value-of select="'ClassCleanup'"/>
+							</xsl:when>
+						</xsl:choose>
+					</xsl:attribute>
+				</plx:attribute>
+				<plx:branch>
+					<plx:condition>
+						<plx:binaryOperator type="equality">
+							<plx:left>
+								<plx:callInstance type="property" name="{$servicePropertyName}"/>
+							</plx:left>
+							<plx:right>
+								<plx:nullKeyword/>
+							</plx:right>
+						</plx:binaryOperator>
+					</plx:condition>
+					<plx:assign>
+						<plx:left>
+							
+						</plx:left>
+						<plx:right>
+							
+						</plx:right>
+					</plx:assign>
+				</plx:branch>
+			</plx:function>
+			<plx:field visibility="private" dataTypeName="{$serviceDataTypeName}" name="{$serviceFieldName}"/>
+			<plx:property visibility="public" modifier="virtual" name="{$servicePropertyName}">
+				<plx:returns dataTypeName="{$serviceDataTypeName}"/>
+			</plx:property>
+			<xsl:if test="$UseTransactionScopes">
+				<xsl:variable name="transactionDataTypeName" select="'TransactionScope'"/>
+				<xsl:variable name="transactionPropertyName" select="'Transaction'"/>
+				<xsl:variable name="transactionFieldName" select="concat($PrivateMemberPrefix,'transaction')"/>
+				<plx:field visibility="private" dataTypeName="{$transactionDataTypeName}" name="{$transactionFieldName}"/>
+				<plx:property visibility="public" modifier="virtual" name="{$transactionPropertyName}">
+					<plx:returns dataTypeName="{$transactionDataTypeName}"/>
+				</plx:property>
+			</xsl:if>
+			<plx:function visibility="public" modifier="virtual">
+				<xsl:attribute name="name">
+					<xsl:choose>
+						<xsl:when test="$UnitTestingFramework = 'NUnit'">
+							<xsl:value-of select="'TestFixtureTearDown'"/>
+						</xsl:when>
+						<xsl:when test="$UnitTestingFramework = 'MSTest'">
+							<xsl:value-of select="'ClassCleanup'"/>
+						</xsl:when>
+					</xsl:choose>
+				</xsl:attribute>
+				<plx:attribute>
+					<xsl:attribute name="dataTypeName">
+						<xsl:choose>
+							<xsl:when test="$UnitTestingFramework = 'NUnit'">
+								<xsl:value-of select="'TestFixtureTearDown'"/>
+							</xsl:when>
+							<xsl:when test="$UnitTestingFramework = 'MSTest'">
+								<xsl:value-of select="'ClassCleanup'"/>
+							</xsl:when>
+						</xsl:choose>
+					</xsl:attribute>
+				</plx:attribute>
+				<xsl:if test="$UseTransactionScopes">
+					
+				</xsl:if>
+			</plx:function>
+		</plx:class>
+		<xsl:for-each select="dcl:table">
+			<xsl:variable name="entityName" select="@name"/>
+			<xsl:variable name="entityTableAccessorName" select="concat($entityName,$TableSuffix)"/>
+			<plx:class visibility="public" partial="true" name="concat($entityName,'ServiceTests')">
+				<plx:attribute>
+					<xsl:attribute name="dataTypeName">
+						<xsl:choose>
+							<xsl:when test="$UnitTestingFramework = 'NUnit'">
+								<xsl:value-of select="'TestFixture'"/>
+							</xsl:when>
+							<xsl:when test="$UnitTestingFramework = 'MSTest'">
+								<xsl:value-of select="'TestClass'"/>
+							</xsl:when>
+						</xsl:choose>
+					</xsl:attribute>
+				</plx:attribute>
+				<plx:derivesFromClass dataTypeName="asdfasd1234234f"/>
+				
+									  
+				<xsl:variable name="interfaceImplementationPragmaData" select="concat('I',$ModelName,' ',$CreateKeyword,', ',$ReadKeyword,', ',$UpdateKeyword,', and ',$DeleteKeyword,' Implementation for ',$entityName)"/>
+				<plx:pragma type="region" data="{$interfaceImplementationPragmaData}"/>
+				<xsl:variable name="createEntityFunctionName" select="concat($CreateKeyword,$entityName)"/>
+				<plx:function name="{$createEntityFunctionName}" visibility="public">
+					<plx:attribute dataTypeName="OperationBehavior">
+						<xsl:attribute name="dataTypeName">
+							<xsl:choose>
+								<xsl:when test="$UnitTestingFramework = 'NUnit'">
+
+								</xsl:when>
+								<xsl:when test="$UnitTestingFramework = 'MSTest'">
+
+								</xsl:when>
+							</xsl:choose>
+						</xsl:attribute>
+						<xsl:if test="$UseTransactionScopes">
+						</xsl:if>
+					</plx:attribute>
+					<xsl:variable name="parameterName" select="concat(translate(concat(translate(substring($entityName, 1, 1), 'ABCDEFGHIJKLMNOPQRSTUVWXYZ','abcdefghijklmnopqrstuvwxyz'), substring($entityName, 2)),'_',''),'To',$CreateKeyword)"/>
+					<plx:param dataTypeName="{$entityName}" name="{$parameterName}"/>
+					<plx:try>
+						<plx:autoDispose dataTypeName="{$serviceDataContextPropertyName}">
+							<plx:initialize>
+								<plx:callNew dataTypeName="{$serviceDataContextTypeName}" type="new"/>
+							</plx:initialize>
+							<plx:callInstance name="InsertOnSubmit" type="methodCall">
+								<plx:callObject>
+									<plx:callInstance type="property" name="{$entityTableAccessorName}">
+										<plx:callObject>
+											<plx:callThis type="property" name="{$serviceDataContextPropertyName}"/>
+										</plx:callObject>
+									</plx:callInstance>
+								</plx:callObject>
+								<plx:passParam>
+									<plx:nameRef name="{$parameterName}"/>
+								</plx:passParam>
+							</plx:callInstance>
+							<plx:callInstance type="methodCall" name="SubmitChanges">
+								<plx:callObject>
+									<plx:callThis type="property" name="{$serviceDataContextPropertyName}"/>
+								</plx:callObject>
+								<plx:passParam>
+									<plx:callInstance type="property" name="FailOnFirstConflict">
+										<plx:callObject>
+											<plx:nameRef name="ConflictMode"/>
+										</plx:callObject>
+									</plx:callInstance>
+								</plx:passParam>
+							</plx:callInstance>
+						</plx:autoDispose>
+						<plx:catch dataTypeName="SqlException" localName="exception">
+							<plx:comment>TODO: Log the exception somewhere</plx:comment>
+							<plx:throw/>
+						</plx:catch>
+						<plx:catch dataTypeName="Exception" localName="exception">
+							<plx:comment>TODO: Log the exception somewhere</plx:comment>
+							<plx:throw/>
+						</plx:catch>
+					</plx:try>
+				</plx:function>
+				<xsl:for-each select="dcl:uniquenessConstraint">
+					<xsl:variable name="isPrimaryUniquenessConstraint" select="@isPrimary = 'true' or @isPrimary = 1"/>
+					<plx:function visibility="public">
+						<xsl:attribute name="name">
+							<xsl:value-of select="concat($ReadKeyword,$entityName,'By')"/>
+							<xsl:choose>
+								<xsl:when test="$isPrimaryUniquenessConstraint">
+									<xsl:value-of select="$IsPrimaryKeyword"/>
+								</xsl:when>
+								<xsl:otherwise>
+									<xsl:for-each select="dcl:columnRef">
+										<xsl:value-of select="concat(translate(substring(@name, 1, 1), 'abcdefghijklmnopqrstuvwxyz', 'ABCDEFGHIJKLMNOPQRSTUVWXYZ'), substring(@name, 2))"/>
+										<xsl:if test="position() != last()">
+											<xsl:text>And</xsl:text>
+										</xsl:if>
+									</xsl:for-each>
+								</xsl:otherwise>
+							</xsl:choose>
+						</xsl:attribute>
+						-->
+	<!--<plx:attribute dataTypeName="OperationContract">
+								<plx:passParam>
+									<plx:binaryOperator type="assignNamed">
+										<plx:left>
+											<plx:nameRef name="IsOneWay"/>
+										</plx:left>
+										<plx:right>
+											<plx:falseKeyword/>
+										</plx:right>
+									</plx:binaryOperator>
+								</plx:passParam>
+							</plx:attribute>-->
+	<!--
+						<xsl:for-each select="dcl:columnRef">
+							<plx:param name="{translate(@name,'_','')}" >
+								<xsl:variable name="column" select="../../dcl:column[@name=current()/@name]"/>
+								<xsl:attribute name="dataTypeName">
+									<xsl:choose>
+										<xsl:when test="$column/dcl:domainRef[@name = $Enumerations/@name]">
+											<xsl:value-of select="translate($column/dcl:domainRef/@name,'_','')"/>
+										</xsl:when>
+									</xsl:choose>
+									<xsl:call-template name="GetDotNetTypeFromDcilPredefinedDataType">
+										<xsl:with-param name="predefinedDataType" select="$column/dcl:predefinedDataType"/>
+										<xsl:with-param name="column" select="$column"/>
+									</xsl:call-template>
+								</xsl:attribute>
+							</plx:param>
+						</xsl:for-each>
+						<plx:returns dataTypeName="{$entityName}"/>
+						<plx:autoDispose dataTypeName="{$serviceDataContextPropertyName}">
+							<plx:initialize>
+								<plx:callNew dataTypeName="{$serviceDataContextTypeName}" type="new"/>
+							</plx:initialize>
+							<plx:return>
+								<plx:callInstance name="First" type="methodCall">
+									<plx:callObject>
+										<plx:callInstance name="Where" type="methodCall">
+											<plx:callObject>
+												<plx:callInstance type="property" name="{$entityTableAccessorName}">
+													<plx:callObject>
+														<plx:callThis name="{$serviceDataContextPropertyName}" type="property"/>
+													</plx:callObject>
+												</plx:callInstance>
+												<plx:nameRef type="parameter" name=""/>
+											</plx:callObject>
+											<plx:passParam>
+												<xsl:variable name="parameterName" select="concat(translate(concat(translate(substring($entityName, 1, 1), 'ABCDEFGHIJKLMNOPQRSTUVWXYZ','abcdefghijklmnopqrstuvwxyz'), substring($entityName, 2)),'_',''),'To',$ReadKeyword)"/>
+												<plx:anonymousFunction>
+													<plx:param dataTypeName="{$entityName}" name="{$parameterName}"/>
+													<plx:return>
+														<xsl:call-template name="GenerateNestedOperations">
+															<xsl:with-param name="operands" select="dcl:columnRef"/>
+														</xsl:call-template>
+														-->
+	<!--<xsl:for-each select="dcl:columnRef">
+															<plx:binaryOperator type="equality">
+																<plx:left>
+																	<plx:callInstance name="{translate(concat(translate(substring(@name, 1, 1), 'abcdefghijklmnopqrstuvwxyz', 'ABCDEFGHIJKLMNOPQRSTUVWXYZ'), substring(@name, 2)),'_','')}" type="property">
+																		<plx:callObject>
+																			<plx:nameRef name="{$parameterName}" type="parameter"/>
+																		</plx:callObject>
+																	</plx:callInstance>
+																</plx:left>
+																<plx:right>
+																	<plx:nameRef name="{translate(@name,'_','')}"/>
+																</plx:right>
+															</plx:binaryOperator>
+														</xsl:for-each>-->
+	<!--
+													</plx:return>
+												</plx:anonymousFunction>
+											</plx:passParam>
+										</plx:callInstance>
+									</plx:callObject>
+								</plx:callInstance>
+							</plx:return>
+						</plx:autoDispose>
+					</plx:function>
+				</xsl:for-each>
+				<xsl:variable name="updateEntityFunctionName" select="concat($UpdateKeyword,$entityName)"/>
+				<plx:function name="{$updateEntityFunctionName}" visibility="public">
+					<plx:attribute dataTypeName="OperationBehavior">
+						<xsl:if test="$UseTransactionScopes">
+							<xsl:call-template name="GenerateOperationBehaviorAttributeTransactionScopeUsage"/>
+						</xsl:if>
+					</plx:attribute>
+					<xsl:variable name="parameterName" select="concat(translate(concat(translate(substring(@name, 1, 1), 'ABCDEFGHIJKLMNOPQRSTUVWXYZ','abcdefghijklmnopqrstuvwxyz'), substring(@name, 2)),'_',''),'To',$UpdateKeyword)"/>
+					<plx:param dataTypeName="{@name}" name="{$parameterName}"/>
+					<plx:try>
+						<plx:callInstance name="Attach" type="methodCall">
+							<plx:callObject>
+								<plx:callThis accessor="this" type="property" name="{$entityTableAccessorName}"></plx:callThis>
+							</plx:callObject>
+							<plx:passParam>
+								<plx:nameRef name="{$parameterName}"/>
+							</plx:passParam>
+							<plx:passParam>
+								<plx:callInstance name="GetOriginalEntityState" type="methodCall">
+									<plx:callObject>
+										<plx:callThis accessor="this" type="property" name="{$entityTableAccessorName}"></plx:callThis>
+									</plx:callObject>
+									<plx:passParam>
+										<plx:nameRef name="{$parameterName}"/>
+									</plx:passParam>
+								</plx:callInstance>
+							</plx:passParam>
+						</plx:callInstance>
+						<plx:callThis accessor="this" type="methodCall" name="SubmitChanges">
+							<plx:passParam>
+								<plx:callInstance type="property" name="FailOnFirstConflict">
+									<plx:callObject>
+										<plx:nameRef name="ConflictMode"/>
+									</plx:callObject>
+								</plx:callInstance>
+							</plx:passParam>
+						</plx:callThis>
+						<plx:catch dataTypeName="SqlException" localName="exception">
+							<plx:comment>TODO: Log the exception somewhere</plx:comment>
+							<plx:throw/>
+						</plx:catch>
+						<plx:catch dataTypeName="Exception" localName="exception">
+							<plx:comment>TODO: Log the exception somewhere</plx:comment>
+							<plx:throw/>
+						</plx:catch>
+					</plx:try>
+				</plx:function>
+				<xsl:variable name="deleteEntityFunctionName" select="concat($DeleteKeyword,$entityName)"/>
+				<plx:function name="{$deleteEntityFunctionName}" visibility="public">
+					<plx:attribute dataTypeName="OperationBehavior">
+						<xsl:if test="$UseTransactionScopes">
+							<xsl:call-template name="GenerateOperationBehaviorAttributeTransactionScopeUsage"/>
+						</xsl:if>
+					</plx:attribute>
+					<xsl:variable name="parameterName" select="concat(translate(concat(translate(substring($entityName, 1, 1), 'ABCDEFGHIJKLMNOPQRSTUVWXYZ','abcdefghijklmnopqrstuvwxyz'), substring($entityName, 2)),'_',''),'To',$DeleteKeyword)"/>
+					<plx:param dataTypeName="{$entityName}" name="{$parameterName}"/>
+					<plx:try>
+						<plx:callInstance name="Attach" type="methodCall">
+							<plx:callObject>
+								<plx:callThis accessor="this" type="property" name="{$entityTableAccessorName}"></plx:callThis>
+							</plx:callObject>
+							<plx:passParam>
+								<plx:nameRef name="{$parameterName}"/>
+							</plx:passParam>
+							<plx:passParam>
+								<plx:falseKeyword/>
+							</plx:passParam>
+						</plx:callInstance>
+						<plx:callInstance name="DeleteOnSubmit" type="methodCall">
+							<plx:callObject>
+								<plx:callThis accessor="this" type="property" name="{$entityTableAccessorName}"></plx:callThis>
+							</plx:callObject>
+							<plx:passParam>
+								<plx:nameRef name="{$parameterName}"/>
+							</plx:passParam>
+						</plx:callInstance>
+						<plx:callThis accessor="this" type="methodCall" name="SubmitChanges">
+							<plx:passParam>
+								<plx:callInstance type="property" name="FailOnFirstConflict">
+									<plx:callObject>
+										<plx:nameRef name="ConflictMode"/>
+									</plx:callObject>
+								</plx:callInstance>
+							</plx:passParam>
+						</plx:callThis>
+						<plx:catch dataTypeName="SqlException" localName="exception">
+							<plx:comment>TODO: Log the exception somewhere</plx:comment>
+							<plx:throw/>
+						</plx:catch>
+						<plx:catch dataTypeName="Exception" localName="exception">
+							<plx:comment>TODO: Log the exception somewhere</plx:comment>
+							<plx:throw/>
+						</plx:catch>
+					</plx:try>
+				</plx:function>
+				<plx:pragma type="closeRegion" data="{$interfaceImplementationPragmaData}"/>
+			</plx:class>
+		</xsl:for-each>
+	</xsl:template>-->
+
 	<xsl:template match="dcl:schema" mode="GenerateLinqServiceLayerImplementation">
 		<plx:class partial="true" visibility="public" name="{$ModelName}Service">
 			<plx:attribute dataTypeName="ServiceBehavior">
@@ -1530,6 +1898,18 @@
 							<plx:initialize>
 								<plx:callNew dataTypeName="{$serviceDataContextTypeName}" type="new"/>
 							</plx:initialize>
+							<plx:assign>
+								<plx:left>
+									<plx:callInstance name="ObjectTrackingEnabled" type="property">
+										<plx:callObject>
+											<plx:callThis accessor="this" name="{$serviceDataContextPropertyName}" type="property"/>
+										</plx:callObject>
+									</plx:callInstance>
+								</plx:left>
+								<plx:right>
+									<plx:falseKeyword/>
+								</plx:right>
+							</plx:assign>
 							<plx:return>
 								<plx:callInstance name="First" type="methodCall">
 									<plx:callObject>
@@ -1547,26 +1927,10 @@
 												<plx:anonymousFunction>
 													<plx:param dataTypeName="{$entityName}" name="{$parameterName}"/>
 													<plx:return>
-														<!--<xsl:call-template name="CombineExpressions">
-															<xsl:with-param name="Expressions" select="dcl:columnRef"/>
-														</xsl:call-template>-->
 														<xsl:call-template name="GenerateNestedOperations">
 															<xsl:with-param name="operands" select="dcl:columnRef"/>
+															<xsl:with-param name="parameterName" select="$parameterName"/>
 														</xsl:call-template>
-														<!--<xsl:for-each select="dcl:columnRef">
-															<plx:binaryOperator type="equality">
-																<plx:left>
-																	<plx:callInstance name="{translate(concat(translate(substring(@name, 1, 1), 'abcdefghijklmnopqrstuvwxyz', 'ABCDEFGHIJKLMNOPQRSTUVWXYZ'), substring(@name, 2)),'_','')}" type="property">
-																		<plx:callObject>
-																			<plx:nameRef name="{$parameterName}" type="parameter"/>
-																		</plx:callObject>
-																	</plx:callInstance>
-																</plx:left>
-																<plx:right>
-																	<plx:nameRef name="{translate(@name,'_','')}"/>
-																</plx:right>
-															</plx:binaryOperator>
-														</xsl:for-each>-->
 													</plx:return>
 												</plx:anonymousFunction>
 											</plx:passParam>
@@ -1587,33 +1951,49 @@
 					<xsl:variable name="parameterName" select="concat(translate(concat(translate(substring(@name, 1, 1), 'ABCDEFGHIJKLMNOPQRSTUVWXYZ','abcdefghijklmnopqrstuvwxyz'), substring(@name, 2)),'_',''),'To',$UpdateKeyword)"/>
 					<plx:param dataTypeName="{@name}" name="{$parameterName}"/>
 					<plx:try>
-						<plx:callInstance name="Attach" type="methodCall">
-							<plx:callObject>
-								<plx:callThis accessor="this" type="property" name="{$entityTableAccessorName}"></plx:callThis>
-							</plx:callObject>
-							<plx:passParam>
-								<plx:nameRef name="{$parameterName}"/>
-							</plx:passParam>
-							<plx:passParam>
-								<plx:callInstance name="GetOriginalEntityState" type="methodCall">
-									<plx:callObject>
-										<plx:callThis accessor="this" type="property" name="{$entityTableAccessorName}"></plx:callThis>
-									</plx:callObject>
-									<plx:passParam>
-										<plx:nameRef name="{$parameterName}"/>
-									</plx:passParam>
-								</plx:callInstance>
-							</plx:passParam>
-						</plx:callInstance>
-						<plx:callThis accessor="this" type="methodCall" name="SubmitChanges">
-							<plx:passParam>
-								<plx:callInstance type="property" name="FailOnFirstConflict">
-									<plx:callObject>
-										<plx:nameRef name="ConflictMode"/>
-									</plx:callObject>
-								</plx:callInstance>
-							</plx:passParam>
-						</plx:callThis>
+						<plx:autoDispose dataTypeName="{$serviceDataContextPropertyName}">
+							<plx:initialize>
+								<plx:callNew dataTypeName="{$serviceDataContextTypeName}" type="new"/>
+							</plx:initialize>
+							<plx:callInstance name="Attach" type="methodCall">
+								<plx:callObject>
+									<plx:callInstance type="property" name="{$entityTableAccessorName}">
+										<plx:callObject>
+											<plx:callThis type="property" name="{$serviceDataContextPropertyName}"/>
+										</plx:callObject>
+									</plx:callInstance>
+								</plx:callObject>
+								<plx:passParam>
+									<plx:nameRef name="{$parameterName}"/>
+								</plx:passParam>
+								<plx:passParam>
+									<plx:callInstance name="GetOriginalEntityState" type="methodCall">
+										<plx:callObject>
+											<plx:callInstance type="property" name="{$entityTableAccessorName}">
+												<plx:callObject>
+													<plx:callThis type="property" name="{$serviceDataContextPropertyName}"/>
+												</plx:callObject>
+											</plx:callInstance>
+										</plx:callObject>
+										<plx:passParam>
+											<plx:nameRef name="{$parameterName}"/>
+										</plx:passParam>
+									</plx:callInstance>
+								</plx:passParam>
+							</plx:callInstance>
+							<plx:callInstance accessor="this" type="methodCall" name="SubmitChanges">
+								<plx:callObject>
+									<plx:callThis type="property" name="{$serviceDataContextPropertyName}"/>
+								</plx:callObject>
+								<plx:passParam>
+									<plx:callInstance type="property" name="FailOnFirstConflict">
+										<plx:callObject>
+											<plx:nameRef name="ConflictMode"/>
+										</plx:callObject>
+									</plx:callInstance>
+								</plx:passParam>
+							</plx:callInstance>
+						</plx:autoDispose>
 						<plx:catch dataTypeName="SqlException" localName="exception">
 							<plx:comment>TODO: Log the exception somewhere</plx:comment>
 							<plx:throw/>
@@ -1636,7 +2016,11 @@
 					<plx:try>
 						<plx:callInstance name="Attach" type="methodCall">
 							<plx:callObject>
-								<plx:callThis accessor="this" type="property" name="{$entityTableAccessorName}"></plx:callThis>
+								<plx:callInstance accessor="this" type="property" name="{$entityTableAccessorName}">
+									<plx:callObject>
+										<plx:callThis type="property" name="{$serviceDataContextPropertyName}"/>
+									</plx:callObject>
+								</plx:callInstance>
 							</plx:callObject>
 							<plx:passParam>
 								<plx:nameRef name="{$parameterName}"/>
@@ -1647,13 +2031,20 @@
 						</plx:callInstance>
 						<plx:callInstance name="DeleteOnSubmit" type="methodCall">
 							<plx:callObject>
-								<plx:callThis accessor="this" type="property" name="{$entityTableAccessorName}"></plx:callThis>
+								<plx:callInstance accessor="this" type="property" name="{$entityTableAccessorName}">
+									<plx:callObject>
+										<plx:callThis type="property" name="{$serviceDataContextPropertyName}"/>
+									</plx:callObject>
+								</plx:callInstance>
 							</plx:callObject>
 							<plx:passParam>
 								<plx:nameRef name="{$parameterName}"/>
 							</plx:passParam>
 						</plx:callInstance>
-						<plx:callThis accessor="this" type="methodCall" name="SubmitChanges">
+						<plx:callInstance accessor="this" type="methodCall" name="SubmitChanges">
+							<plx:callObject>
+								<plx:callThis type="property" name="{$serviceDataContextPropertyName}"/>
+							</plx:callObject>
 							<plx:passParam>
 								<plx:callInstance type="property" name="FailOnFirstConflict">
 									<plx:callObject>
@@ -1661,7 +2052,7 @@
 									</plx:callObject>
 								</plx:callInstance>
 							</plx:passParam>
-						</plx:callThis>
+						</plx:callInstance>
 						<plx:catch dataTypeName="SqlException" localName="exception">
 							<plx:comment>TODO: Log the exception somewhere</plx:comment>
 							<plx:throw/>
@@ -1682,24 +2073,56 @@
 		<xsl:param name="operands"/>
 		<xsl:param name="operandsIndex" select="1"/>
 		<xsl:param name="operandsCount" select="count($operands)"/>
+		<xsl:param name="parameterName"/>
 		<xsl:choose>
 			<xsl:when test="$operandsIndex = $operandsCount">
-				<xsl:copy-of select="$operands[$operandsIndex]"/>
+				<!--<xsl:copy-of select="$operands[$operandsIndex]"/>-->
+				<xsl:variable name="columnRefName" select="$operands[$operandsIndex]/@name"/>
+				<plx:binaryOperator type="equality">
+					<plx:left>
+						<plx:callInstance name="{translate(concat(translate(substring($columnRefName, 1, 1), 'abcdefghijklmnopqrstuvwxyz', 'ABCDEFGHIJKLMNOPQRSTUVWXYZ'), substring($columnRefName, 2)),'_','')}" type="property">
+							<plx:callObject>
+								<plx:nameRef name="{$parameterName}" type="parameter"/>
+							</plx:callObject>
+						</plx:callInstance>
+					</plx:left>
+					<plx:right>
+						<plx:nameRef name="{translate($columnRefName,'_','')}"/>
+					</plx:right>
+				</plx:binaryOperator>
 			</xsl:when>
+			<xsl:otherwise>
+				<!--TODO: Fix this area.-->
+				<plx:binaryOperator type="{$operator}">
+					<plx:left>
+						<!--<xsl:copy-of select="$operands[$operandsIndex]"/>-->
+						<xsl:variable name="columnRefName" select="$operands[$operandsIndex]/@name"/>
+						<plx:binaryOperator type="equality">
+							<plx:left>
+								<plx:callInstance name="{translate(concat(translate(substring($columnRefName, 1, 1), 'abcdefghijklmnopqrstuvwxyz', 'ABCDEFGHIJKLMNOPQRSTUVWXYZ'), substring($columnRefName, 2)),'_','')}" type="property">
+									<plx:callObject>
+										<plx:nameRef name="{$parameterName}" type="parameter"/>
+									</plx:callObject>
+								</plx:callInstance>
+							</plx:left>
+							<plx:right>
+								<plx:nameRef name="{translate($columnRefName,'_','')}"/>
+							</plx:right>
+						</plx:binaryOperator>
+					</plx:left>
+					<plx:right>
+						<xsl:call-template name="GenerateNestedOperations">
+							<xsl:with-param name="operator" select="$operator"/>
+							<xsl:with-param name="operands" select="$operands"/>
+							<xsl:with-param name="operandsIndex" select="$operandsIndex + 1"/>
+							<xsl:with-param name="operandsCount" select="$operandsCount"/>
+							<xsl:with-param name="parameterName" select="$parameterName"/>
+						</xsl:call-template>
+					</plx:right>
+				</plx:binaryOperator>
+			</xsl:otherwise>
 		</xsl:choose>
-		<plx:binaryOperator type="{$operator}">
-			<plx:left>
-				<xsl:copy-of select="$operands[$operandsIndex]"/>
-			</plx:left>
-			<plx:right>
-				<xsl:call-template name="GenerateNestedOperations">
-					<xsl:with-param name="operator" select="$operator"/>
-					<xsl:with-param name="operands" select="$operands"/>
-					<xsl:with-param name="operandsIndex" select="$operandsIndex + 1"/>
-					<xsl:with-param name="operandsCount" select="$operandsCount"/>
-				</xsl:call-template>
-			</plx:right>
-		</plx:binaryOperator>
+
 	</xsl:template>
 
 	<xsl:template match="dcl:schema" mode="GenerateDatabaseContext">
