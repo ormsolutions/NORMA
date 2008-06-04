@@ -134,7 +134,7 @@ namespace Neumont.Tools.ORM.Views.BarkerERView
 			/// <summary>
 			/// Singleton EntityRelationshipShapeGeometry instance
 			/// </summary>
-			public static new readonly ShapeGeometry ShapeGeometry = new EntityRelationshipShapeGeometry();
+			public static readonly ShapeGeometry ShapeGeometry = new EntityRelationshipShapeGeometry();
 			/// <summary>
 			/// Protected default constructor. The class should be used
 			/// as a singleton instead of being publicly constructed.
