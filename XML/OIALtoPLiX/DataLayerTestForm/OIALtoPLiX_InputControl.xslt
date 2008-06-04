@@ -16,10 +16,10 @@
 	xmlns:xsl="http://www.w3.org/1999/XSL/Transform"
 	xmlns:exsl="http://exslt.org/common"
 	xmlns:oil="http://schemas.orm.net/OIAL"
-	xmlns:odt="http://schemas.orm.net/ORMDataTypes"
+	xmlns:ormdt="http://schemas.orm.net/ORMDataTypes"
 	xmlns:plx="http://schemas.neumont.edu/CodeGeneration/PLiX"
 	xmlns:prop="urn:schemas-orm-net:PLiX:CLI:Properties"
-	exclude-result-prefixes="oil odt prop"
+	exclude-result-prefixes="oil ormdt prop"
 	extension-element-prefixes="exsl">
 
 	<!-- Input file:  [ORM Model Name].Implementation.PLiX.xml -->
@@ -56,7 +56,7 @@
 		<xsl:variable name="OilInfoFragment">
 			<xsl:element name="AllTypes">
 				<!-- Value Types -->
-				<xsl:for-each select="$OIL/oil:informationTypeFormats/odt:identity">
+				<xsl:for-each select="$OIL/oil:informationTypeFormats/ormdt:identity">
 					<!-- Identity(Object) -->
 					<xsl:call-template name="CreateValueTypeElement">
 						<xsl:with-param name="Element" select="current()"/>
@@ -64,21 +64,21 @@
 						<xsl:with-param name="AutoIncrement" select="'true'"/>
 					</xsl:call-template>
 				</xsl:for-each>
-				<xsl:for-each select="$OIL/oil:informationTypeFormats/odt:string">
+				<xsl:for-each select="$OIL/oil:informationTypeFormats/ormdt:string">
 					<!-- string -->
 					<xsl:call-template name="CreateValueTypeElement">
 						<xsl:with-param name="Element" select="current()"/>
 						<xsl:with-param name="Type" select="'.string'"/>
 					</xsl:call-template>
 				</xsl:for-each>
-				<xsl:for-each select="$OIL/oil:informationTypeFormats/odt:boolean">
+				<xsl:for-each select="$OIL/oil:informationTypeFormats/ormdt:boolean">
 					<!-- boolean -->
 					<xsl:call-template name="CreateValueTypeElement">
 						<xsl:with-param name="Element" select="current()"/>
 						<xsl:with-param name="Type" select="'.boolean'"/>
 					</xsl:call-template>
 				</xsl:for-each>
-				<xsl:for-each select="$OIL/oil:informationTypeFormats/odt:decimalNumber">
+				<xsl:for-each select="$OIL/oil:informationTypeFormats/ormdt:decimalNumber">
 					<xsl:choose>
 						<xsl:when test="@fractionDigits = 0 and not(substring-after(@name, 'Date_') = '')">
 							<!-- Date -->
@@ -110,7 +110,7 @@
 						</xsl:otherwise>
 					</xsl:choose>
 				</xsl:for-each>
-				<xsl:for-each select="$OIL/oil:informationTypeFormats/odt:floatingPointNumber">
+				<xsl:for-each select="$OIL/oil:informationTypeFormats/ormdt:floatingPointNumber">
 					<xsl:choose>
 						<xsl:when test="@precision = 'single'">
 							<!-- float -->
@@ -146,8 +146,8 @@
 								<xsl:attribute name="type_kind">
 									<xsl:text>value</xsl:text>
 								</xsl:attribute>
-								<xsl:for-each select="//oil:informationTypeFormats/odt:identity[@name = current()/@formatRef]">
-									<!-- old ../../oil:informationTypeFormats/odt:identity[@name = current()/@formatRef] -->
+								<xsl:for-each select="//oil:informationTypeFormats/ormdt:identity[@name = current()/@formatRef]">
+									<!-- old ../../oil:informationTypeFormats/ormdt:identity[@name = current()/@formatRef] -->
 									<xsl:attribute name="autoIncrement">
 										<xsl:text>true</xsl:text>
 									</xsl:attribute>
@@ -171,8 +171,8 @@
 									<xsl:attribute name="name">
 										<xsl:value-of select="@targetChild"/>
 									</xsl:attribute>
-									<xsl:for-each select="//oil:informationTypeFormats/odt:identity[@name = current()/@formatRef]">
-										<!-- old ../../../../oil:informationTypeFormats/odt:identity[@name = current()/@formatRef] -->
+									<xsl:for-each select="//oil:informationTypeFormats/ormdt:identity[@name = current()/@formatRef]">
+										<!-- old ../../../../oil:informationTypeFormats/ormdt:identity[@name = current()/@formatRef] -->
 										<xsl:attribute name="autoIncrement">
 											<xsl:text>true</xsl:text>
 										</xsl:attribute>
@@ -185,8 +185,8 @@
 									<xsl:attribute name="id_kind">
 										<xsl:text>value</xsl:text>
 									</xsl:attribute>
-									<xsl:for-each select="//oil:informationTypeFormats/odt:identity[@name = current()/@formatRef]">
-										<!-- old ../../../../oil:informationTypeFormats/odt:identity[@name = current()/@formatRef] -->
+									<xsl:for-each select="//oil:informationTypeFormats/ormdt:identity[@name = current()/@formatRef]">
+										<!-- old ../../../../oil:informationTypeFormats/ormdt:identity[@name = current()/@formatRef] -->
 										<xsl:attribute name="autoIncrement">
 											<xsl:text>true</xsl:text>
 										</xsl:attribute>
@@ -199,8 +199,8 @@
 									<xsl:attribute name="id_kind">
 										<xsl:value-of select="@target"/>
 									</xsl:attribute>
-									<xsl:for-each select="//oil:informationTypeFormats/odt:identity[@name = current()/@formatRef]">
-										<!-- old ../../oil:informationTypeFormats/odt:identity[@name = current()/@formatRef] -->
+									<xsl:for-each select="//oil:informationTypeFormats/ormdt:identity[@name = current()/@formatRef]">
+										<!-- old ../../oil:informationTypeFormats/ormdt:identity[@name = current()/@formatRef] -->
 										<xsl:attribute name="autoIncrement">
 											<xsl:text>true</xsl:text>
 										</xsl:attribute>
@@ -213,8 +213,8 @@
 									<xsl:attribute name="id_kind">
 										<xsl:text>value</xsl:text>
 									</xsl:attribute>
-									<xsl:for-each select="//oil:informationTypeFormats/odt:identity[@name = current()/@formatRef]">
-										<!-- old ../../oil:informationTypeFormats/odt:identity[@name = current()/@formatRef] -->
+									<xsl:for-each select="//oil:informationTypeFormats/ormdt:identity[@name = current()/@formatRef]">
+										<!-- old ../../oil:informationTypeFormats/ormdt:identity[@name = current()/@formatRef] -->
 										<xsl:attribute name="autoIncrement">
 											<xsl:text>true</xsl:text>
 										</xsl:attribute>

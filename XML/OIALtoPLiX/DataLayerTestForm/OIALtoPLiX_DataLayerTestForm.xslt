@@ -16,10 +16,10 @@
 	xmlns:xsl="http://www.w3.org/1999/XSL/Transform"
 	xmlns:exsl="http://exslt.org/common"
 	xmlns:oil="http://schemas.orm.net/OIAL"
-	xmlns:odt="http://schemas.orm.net/ORMDataTypes"
+	xmlns:ormdt="http://schemas.orm.net/ORMDataTypes"
 	xmlns:plx="http://schemas.neumont.edu/CodeGeneration/PLiX"
 	xmlns:prop="urn:schemas-orm-net:PLiX:CLI:Properties"
-	exclude-result-prefixes="oil odt prop"
+	exclude-result-prefixes="oil ormdt prop"
 	extension-element-prefixes="exsl">
 
 	<!-- Input file:  [ORM Model Name].Implementation.PLiX.xml -->

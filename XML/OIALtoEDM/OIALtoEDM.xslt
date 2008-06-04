@@ -3,9 +3,9 @@
 				xmlns:xsl="http://www.w3.org/1999/XSL/Transform"
 				xmlns:edm="http://schemas.microsoft.com/ado/2006/04/edm"
 				xmlns:oil="http://schemas.orm.net/OIAL"
-				xmlns:odt="http://schemas.orm.net/ORMDataTypes"
+				xmlns:ormdt="http://schemas.orm.net/ORMDataTypes"
 				xmlns:exsl="http://exslt.org/common"
-				exclude-result-prefixes="odt oil">
+				exclude-result-prefixes="ormdt oil">
 	<xsl:output method="xml" encoding="utf-8" media-type="text/xml" indent="yes"/>
 	<xsl:strip-space elements="*"/>
 
@@ -24,12 +24,12 @@
 	</xsl:template>
 
 	<xsl:template match="oil:informationTypeFormats">
-		<xsl:apply-templates mode="GenerationEnumeration" select="child::*[odt:enumeration]"/>
+		<xsl:apply-templates mode="GenerationEnumeration" select="child::*[ormdt:enumeration]"/>
 	</xsl:template>
 
-	<xsl:template match="odt:string" mode="GenerationEnumeration">
+	<xsl:template match="ormdt:string" mode="GenerationEnumeration">
 		<edm:EnumerationType Name="{@name}">
-			<xsl:for-each select="odt:enumeration">
+			<xsl:for-each select="ormdt:enumeration">
 				<edm:EnumerationMember Name="{@value}"/>
 			</xsl:for-each>
 		</edm:EnumerationType>
@@ -59,7 +59,7 @@
 		</xsl:apply-templates>
 	</xsl:template>
 
-	<xsl:template match="odt:string" mode="GenerateProperty">
+	<xsl:template match="ormdt:string" mode="GenerateProperty">
 		<xsl:param name="informationTypeName"/>
 		<xsl:param name="isMandatory"/>
 		<edm:Property Name="{$informationTypeName}">
@@ -91,7 +91,7 @@
 		</edm:Property>
 	</xsl:template>
 
-	<xsl:template match="odt:identity" mode="GenerateProperty">
+	<xsl:template match="ormdt:identity" mode="GenerateProperty">
 		<xsl:param name="informationTypeName"/>
 		<xsl:param name="isMandatory"/>
 		<edm:Property Name="{$informationTypeName}">
@@ -118,7 +118,7 @@
 			</xsl:choose>
 		</edm:Property>
 	</xsl:template>
-	<xsl:template match="odt:binary" mode="GenerateProperty">
+	<xsl:template match="ormdt:binary" mode="GenerateProperty">
 		<xsl:param name="informationTypeName"/>
 		<xsl:param name="isMandatory"/>
 		<edm:Property Name="{$informationTypeName}">
@@ -145,7 +145,7 @@
 			</xsl:choose>
 		</edm:Property>
 	</xsl:template>
-	<xsl:template match="odt:boolean" mode="GenerateProperty">
+	<xsl:template match="ormdt:boolean" mode="GenerateProperty">
 		<xsl:param name="informationTypeName"/>
 		<xsl:param name="isMandatory"/>
 		<edm:Property Name="{$informationTypeName}">
@@ -172,7 +172,7 @@
 			</xsl:choose>
 		</edm:Property>
 	</xsl:template>
-	<xsl:template match="odt:decimalNumber" mode="GenerateProperty">
+	<xsl:template match="ormdt:decimalNumber" mode="GenerateProperty">
 		<xsl:param name="informationTypeName"/>
 		<xsl:param name="isMandatory"/>
 		<edm:Property Name="{$informationTypeName}">
@@ -199,7 +199,7 @@
 			</xsl:choose>
 		</edm:Property>
 	</xsl:template>
-	<xsl:template match="odt:floatingPointNumber" mode="GenerateProperty">
+	<xsl:template match="ormdt:floatingPointNumber" mode="GenerateProperty">
 		<xsl:param name="informationTypeName"/>
 		<xsl:param name="isMandatory"/>
 		<edm:Property Name="{$informationTypeName}">

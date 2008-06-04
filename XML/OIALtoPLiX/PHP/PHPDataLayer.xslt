@@ -17,11 +17,11 @@
 	xmlns:xsl="http://www.w3.org/1999/XSL/Transform"
 	xmlns:exsl="http://exslt.org/common"
 	xmlns:oil="http://schemas.orm.net/OIAL"
-	xmlns:odt="http://schemas.orm.net/ORMDataTypes"
+	xmlns:ormdt="http://schemas.orm.net/ORMDataTypes"
 	xmlns:plx="http://schemas.neumont.edu/CodeGeneration/PLiX"
 	xmlns:prop="urn:schemas-orm-net:PLiX:CLI:Properties"
 	xmlns:xs="http://www.w3.org/2001/XMLSchema"
-	exclude-result-prefixes="oil odt"
+	exclude-result-prefixes="oil ormdt"
 	extension-element-prefixes="exsl">
 	<xsl:output method="xml" encoding="utf-8" media-type="text/xml" indent="yes"/>
 	<xsl:param name="OIAL" select="/*"/>
@@ -389,7 +389,7 @@
 					<xsl:for-each select="$uniqueInformationTypes/oil:informationType">
 						<plx:param name="{@name}">
 							<xsl:attribute name="dataTypeName">
-								<xsl:apply-templates select="$OIAL//oil:informationTypeFormats/odt:*[@name=current()/@formatRef]" mode="GetInformationTypeFormat"/>
+								<xsl:apply-templates select="$OIAL//oil:informationTypeFormats/ormdt:*[@name=current()/@formatRef]" mode="GetInformationTypeFormat"/>
 							</xsl:attribute>
 						</plx:param>
 					</xsl:for-each>
@@ -674,7 +674,7 @@
 						<xsl:for-each select="$proxyUniqueInformationTypes/oil:informationType">
 							<plx:param name="{@name}">
 								<xsl:attribute name="dataTypeName">
-									<xsl:apply-templates select="$OIAL//oil:informationTypeFormats/odt:*[@name=current()/@formatRef]" mode="GetInformationTypeFormat"/>
+									<xsl:apply-templates select="$OIAL//oil:informationTypeFormats/ormdt:*[@name=current()/@formatRef]" mode="GetInformationTypeFormat"/>
 								</xsl:attribute>
 							</plx:param>
 						</xsl:for-each>
@@ -1227,22 +1227,22 @@
 	<!-- End all non-preferred identification scheme of a given ConceptType -->
 	<!-- Begin templates to convert data types -->
 	<xsl:template match="*" mode="GetInformationTypeFormat"/>
-	<xsl:template match="odt:identity" mode="GetInformationTypeFormat">
+	<xsl:template match="ormdt:identity" mode="GetInformationTypeFormat">
 		<xsl:text>.i4</xsl:text>
 	</xsl:template>
-	<xsl:template match="odt:string" mode="GetInformationTypeFormat">
+	<xsl:template match="ormdt:string" mode="GetInformationTypeFormat">
 		<xsl:text>.string</xsl:text>
 	</xsl:template>
-	<xsl:template match="odt:boolean" mode="GetInformationTypeFormat">
+	<xsl:template match="ormdt:boolean" mode="GetInformationTypeFormat">
 		<xsl:text>.boolean</xsl:text>
 	</xsl:template>
-	<xsl:template match="odt:binary" mode="GetInformationTypeFormat">
+	<xsl:template match="ormdt:binary" mode="GetInformationTypeFormat">
 		<xsl:text>.object</xsl:text>
 	</xsl:template>
-	<xsl:template match="odt:decimalNumber" mode="GetInformationTypeFormat">
+	<xsl:template match="ormdt:decimalNumber" mode="GetInformationTypeFormat">
 		<xsl:text>.decimal</xsl:text>
 	</xsl:template>
-	<xsl:template match="odt:floatingPointNumber" mode="GetInformationTypeFormat">
+	<xsl:template match="ormdt:floatingPointNumber" mode="GetInformationTypeFormat">
 		<xsl:text>.r4</xsl:text>
 	</xsl:template>
 	<!-- End templates to convert data types -->

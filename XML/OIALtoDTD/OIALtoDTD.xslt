@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8" ?>
-<xsl:stylesheet version="1.0" xmlns:xsl="http://www.w3.org/1999/XSL/Transform" xmlns:oil="http://schemas.orm.net/OIAL" xmlns:odt="http://schemas.orm.net/ORMDataTypes">
+<xsl:stylesheet version="1.0" xmlns:xsl="http://www.w3.org/1999/XSL/Transform" xmlns:oil="http://schemas.orm.net/OIAL" xmlns:ormdt="http://schemas.orm.net/ORMDataTypes">
 	<xsl:output indent="yes" cdata-section-elements="no" method="xml"/>
 	<xsl:template match="/">
 		<xsl:apply-templates select="*"/>
@@ -75,9 +75,9 @@
 					<xsl:value-of select="@name"/>
 					<xsl:variable name="InformationTypeFormat" select="/oil:model/oil:informationTypeFormats/child::*[@name = current()/@name]"/>
 					<xsl:choose>
-						<xsl:when test="$InformationTypeFormat/odt:enumeration">
+						<xsl:when test="$InformationTypeFormat/ormdt:enumeration">
 							<xsl:text> (</xsl:text>
-							<xsl:for-each select="$InformationTypeFormat/odt:enumeration">
+							<xsl:for-each select="$InformationTypeFormat/ormdt:enumeration">
 								<xsl:value-of select="@value"/>
 								<xsl:if test="following-sibling::*">
 									<xsl:text> | </xsl:text>

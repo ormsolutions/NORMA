@@ -5,10 +5,10 @@
 	xmlns:wsdl="http://schemas.xmlsoap.org/wsdl/" 
 	xmlns:xsd="http://www.w3.org/2001/XMLSchema"
 	xmlns:exsl="http://exslt.org/common"
-	xmlns:odt="http://schemas.orm.net/ORMDataTypes"
+	xmlns:ormdt="http://schemas.orm.net/ORMDataTypes"
 	xmlns:xs="http://www.w3.org/2001/XMLSchema" 
 	extension-element-prefixes="exsl"
-	exclude-result-prefixes="oil odt">
+	exclude-result-prefixes="oil ormdt">
 	<xsl:import href="OIALtoXSD.xslt"/>
 
 	<xsl:output method="xml" encoding="utf-8" media-type="text/xml" indent="yes"/>

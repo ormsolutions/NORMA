@@ -17,7 +17,7 @@
 	xmlns:exsl="http://exslt.org/common"
 	xmlns:orm="http://schemas.neumont.edu/ORM/2006-04/ORMCore"
 	xmlns:ormRoot="http://schemas.neumont.edu/ORM/2006-04/ORMRoot"
-	xmlns:odt="http://schemas.orm.net/ORMDataTypes"
+	xmlns:ormdt="http://schemas.orm.net/ORMDataTypes"
 	xmlns:oil="http://schemas.orm.net/OIAL"
 	extension-element-prefixes="exsl"
 	exclude-result-prefixes="orm ormRoot">
@@ -489,10 +489,10 @@
 
 		<xsl:choose>
 			<xsl:when test="$modelDataType/self::orm:AutoCounterNumericDataType or $modelDataType/self::orm:RowIdOtherDataType">
-				<odt:identity name="{$dataTypeName}"/>
+				<ormdt:identity name="{$dataTypeName}"/>
 			</xsl:when>
 			<xsl:when test="$modelDataType/self::orm:TrueOrFalseLogicalDataType or $modelDataType/self::orm:YesOrNoLogicalDataType">
-				<odt:boolean name="{$dataTypeName}">
+				<ormdt:boolean name="{$dataTypeName}">
 					<!-- BOOLEAN_HACK: Remove the false() on the next line to stop forcing open-world-with-negation. -->
 					<xsl:if test="false() and $modelValueRanges">
 						<xsl:attribute name="fixed">
@@ -514,11 +514,11 @@
 							</xsl:choose>
 						</xsl:attribute>
 					</xsl:if>
-				</odt:boolean>
+				</ormdt:boolean>
 			</xsl:when>
 			<xsl:when test="$modelDataType/self::orm:SignedSmallIntegerNumericDataType or $modelDataType/self::orm:UnsignedSmallIntegerNumericDataType or $modelDataType/self::orm:SignedIntegerNumericDataType or $modelDataType/self::orm:UnsignedIntegerNumericDataType or $modelDataType/self::orm:SignedLargeIntegerNumericDataType or $modelDataType/self::orm:UnsignedLargeIntegerNumericDataType or $modelDataType/self::orm:DecimalNumericDataType or $modelDataType/self::orm:MoneyNumericDataType">
 				<xsl:variable name="isIntegral" select="$modelDataType/self::orm:SignedSmallIntegerNumericDataType or $modelDataType/self::orm:UnsignedSmallIntegerNumericDataType or $modelDataType/self::orm:SignedIntegerNumericDataType or $modelDataType/self::orm:UnsignedIntegerNumericDataType or $modelDataType/self::orm:SignedLargeIntegerNumericDataType or $modelDataType/self::orm:UnsignedLargeIntegerNumericDataType"/>
-				<odt:decimalNumber name="{$dataTypeName}">
+				<ormdt:decimalNumber name="{$dataTypeName}">
 					<xsl:if test="$length > 0">
 						<xsl:attribute name="totalDigits">
 							<xsl:value-of select="$length"/>
@@ -537,41 +537,41 @@
 						</xsl:when>
 					</xsl:choose>
 					<xsl:if test="$isIntegral">
-						<odt:range>
+						<ormdt:range>
 							<xsl:choose>
 								<xsl:when test="$modelDataType/self::orm:SignedSmallIntegerNumericDataType">
-									<odt:lowerBound clusivity="inclusive" value="{$SmallIntegerMinValue}"/>
-									<odt:upperBound clusivity="inclusive" value="{$SmallIntegerMaxValue}"/>
+									<ormdt:lowerBound clusivity="inclusive" value="{$SmallIntegerMinValue}"/>
+									<ormdt:upperBound clusivity="inclusive" value="{$SmallIntegerMaxValue}"/>
 								</xsl:when>
 								<xsl:when test="$modelDataType/self::orm:UnsignedSmallIntegerNumericDataType">
-									<odt:lowerBound clusivity="inclusive" value="{$UnsignedSmallIntegerMinValue}"/>
-									<odt:upperBound clusivity="inclusive" value="{$UnsignedSmallIntegerMaxValue}"/>
+									<ormdt:lowerBound clusivity="inclusive" value="{$UnsignedSmallIntegerMinValue}"/>
+									<ormdt:upperBound clusivity="inclusive" value="{$UnsignedSmallIntegerMaxValue}"/>
 								</xsl:when>
 								<xsl:when test="$modelDataType/self::orm:SignedIntegerNumericDataType">
-									<odt:lowerBound clusivity="inclusive" value="{$IntegerMinValue}"/>
-									<odt:upperBound clusivity="inclusive" value="{$IntegerMaxValue}"/>
+									<ormdt:lowerBound clusivity="inclusive" value="{$IntegerMinValue}"/>
+									<ormdt:upperBound clusivity="inclusive" value="{$IntegerMaxValue}"/>
 								</xsl:when>
 								<xsl:when test="$modelDataType/self::orm:UnsignedIntegerNumericDataType">
-									<odt:lowerBound clusivity="inclusive" value="{$UnsignedIntegerMinValue}"/>
-									<odt:upperBound clusivity="inclusive" value="{$UnsignedIntegerMaxValue}"/>
+									<ormdt:lowerBound clusivity="inclusive" value="{$UnsignedIntegerMinValue}"/>
+									<ormdt:upperBound clusivity="inclusive" value="{$UnsignedIntegerMaxValue}"/>
 								</xsl:when>
 								<xsl:when test="$modelDataType/self::orm:SignedLargeIntegerNumericDataType">
-									<odt:lowerBound clusivity="inclusive" value="{$LargeIntegerMinValue}"/>
-									<odt:upperBound clusivity="inclusive" value="{$LargeIntegerMaxValue}"/>
+									<ormdt:lowerBound clusivity="inclusive" value="{$LargeIntegerMinValue}"/>
+									<ormdt:upperBound clusivity="inclusive" value="{$LargeIntegerMaxValue}"/>
 								</xsl:when>
 								<xsl:when test="$modelDataType/self::orm:UnsignedLargeIntegerNumericDataType">
-									<odt:lowerBound clusivity="inclusive" value="{$UnsignedLargeIntegerMinValue}"/>
-									<odt:upperBound clusivity="inclusive" value="{$UnsignedLargeIntegerMaxValue}"/>
+									<ormdt:lowerBound clusivity="inclusive" value="{$UnsignedLargeIntegerMinValue}"/>
+									<ormdt:upperBound clusivity="inclusive" value="{$UnsignedLargeIntegerMaxValue}"/>
 								</xsl:when>
 							</xsl:choose>
-						</odt:range>
+						</ormdt:range>
 					</xsl:if>
 					<xsl:apply-templates select="$modelValueRanges" mode="ProcessOrmValueRange"/>
-				</odt:decimalNumber>
+				</ormdt:decimalNumber>
 			</xsl:when>
 			<xsl:when test="$modelDataType/self::orm:FloatingPointNumericDataType or $modelDataType/self::orm:SinglePrecisionFloatingPointNumericDataType or $modelDataType/self::orm:DoublePrecisionFloatingPointNumericDataType">
 				<!-- TODO: Is the precision the $scale or the $length? -->
-				<odt:floatingPointNumber name="{$dataTypeName}" precision="{$scale}">
+				<ormdt:floatingPointNumber name="{$dataTypeName}" precision="{$scale}">
 					<xsl:if test="$length > 0">
 						<xsl:attribute name="precision">
 							<xsl:value-of select="$length"/>
@@ -594,10 +594,10 @@
 						</xsl:when>
 					</xsl:choose>
 					<xsl:apply-templates select="$modelValueRanges" mode="ProcessOrmValueRange"/>
-				</odt:floatingPointNumber>
+				</ormdt:floatingPointNumber>
 			</xsl:when>
 			<xsl:when test="$modelDataType/self::orm:FixedLengthTextDataType or $modelDataType/self::orm:VariableLengthTextDataType or $modelDataType/self::orm:LargeLengthTextDataType">
-				<odt:string name="{$dataTypeName}">
+				<ormdt:string name="{$dataTypeName}">
 					<xsl:if test="$length > 0">
 						<xsl:attribute name="maxLength">
 							<xsl:value-of select="$length"/>
@@ -611,10 +611,10 @@
 					<xsl:for-each select="$modelValueRanges">
 						<xsl:choose>
 							<xsl:when test="@MinValue=@MaxValue">
-								<odt:enumeration value="{@MinValue}"/>
+								<ormdt:enumeration value="{@MinValue}"/>
 							</xsl:when>
 							<xsl:otherwise>
-								<odt:pattern>
+								<ormdt:pattern>
 									<xsl:attribute name="value">
 										<xsl:text>[</xsl:text>
 										<xsl:value-of select="@MinValue"/>
@@ -622,14 +622,14 @@
 										<xsl:value-of select="@MaxValue"/>
 										<xsl:text>]</xsl:text>
 									</xsl:attribute>
-								</odt:pattern>
+								</ormdt:pattern>
 							</xsl:otherwise>
 						</xsl:choose>
 					</xsl:for-each>
-				</odt:string>
+				</ormdt:string>
 			</xsl:when>
 			<xsl:when test="$modelDataType/self::orm:FixedLengthRawDataDataType or $modelDataType/self::orm:VariableLengthRawDataDataType or $modelDataType/self::orm:LargeLengthRawDataDataType or $modelDataType/self::orm:PictureRawDataDataType or $modelDataType/self::orm:OleObjectRawDataDataType">
-				<odt:binary name="{$dataTypeName}" maxLength="{$length}">
+				<ormdt:binary name="{$dataTypeName}" maxLength="{$length}">
 					<xsl:if test="$length > 0">
 						<xsl:attribute name="maxLength">
 							<xsl:value-of select="$length"/>
@@ -640,14 +640,14 @@
 							</xsl:attribute>
 						</xsl:if>
 					</xsl:if>
-				</odt:binary>
+				</ormdt:binary>
 			</xsl:when>
 			<xsl:when test="$modelDataType/self::orm:AutoTimestampTemporalDataType or $modelDataType/self::orm:TimeTemporalDataType or $modelDataType/self::orm:DateTemporalDataType or $modelDataType/self::orm:DateAndTimeTemporalDataType">
 				<!-- TODO: When the ORM2 temporal data types specification has been finalized and support has been implemented in the tool, this section will need to be changed. -->
 				<xsl:comment>
 					<xsl:text>WARNING: ORM2 does not yet support temporal data types, but you tried to transform a model that used an ORM1 temporal data type. This data type has been converted to an arbitrary-precision integer that measures the number of ticks (100 nanosecond increments) since 0000-01-01T00:00:00.</xsl:text>
 				</xsl:comment>
-				<odt:decimalNumber name="{$dataTypeName}" fractionDigits="0"/>
+				<ormdt:decimalNumber name="{$dataTypeName}" fractionDigits="0"/>
 			</xsl:when>
 			<xsl:otherwise>
 				<xsl:comment>
@@ -1062,29 +1062,29 @@
 	<xsl:template match="orm:ValueRange" mode="ProcessOrmValueRange">
 		<xsl:choose>
 			<xsl:when test="@MinValue=@MaxValue">
-				<odt:enumeration value="{@MinValue}"/>
+				<ormdt:enumeration value="{@MinValue}"/>
 			</xsl:when>
 			<xsl:otherwise>
-				<odt:range>
+				<ormdt:range>
 					<xsl:if test="string-length(@MinValue)">
-						<odt:lowerBound value="{@MinValue}">
+						<ormdt:lowerBound value="{@MinValue}">
 							<xsl:attribute name="clusivity">
 								<xsl:call-template name="GetClusivity">
 									<xsl:with-param name="Inclusion" select="@MinInclusion"/>
 								</xsl:call-template>
 							</xsl:attribute>
-						</odt:lowerBound>
+						</ormdt:lowerBound>
 					</xsl:if>
 					<xsl:if test="string-length(@MaxValue)">
-						<odt:upperBound value="{@MaxValue}">
+						<ormdt:upperBound value="{@MaxValue}">
 							<xsl:attribute name="clusivity">
 								<xsl:call-template name="GetClusivity">
 									<xsl:with-param name="Inclusion" select="@MaxInclusion"/>
 								</xsl:call-template>
 							</xsl:attribute>
-						</odt:upperBound>
+						</ormdt:upperBound>
 					</xsl:if>
-				</odt:range>
+				</ormdt:range>
 			</xsl:otherwise>
 		</xsl:choose>
 	</xsl:template>

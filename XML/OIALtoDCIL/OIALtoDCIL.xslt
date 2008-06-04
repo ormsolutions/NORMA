@@ -13,7 +13,7 @@
 	xmlns:xsl="http://www.w3.org/1999/XSL/Transform"
 	xmlns:exsl="http://exslt.org/common"
 	xmlns:dsf="urn:schemas-orm-net:DIL:DILSupportFunctions"
-	xmlns:odt="http://schemas.orm.net/ORMDataTypes"
+	xmlns:ormdt="http://schemas.orm.net/ORMDataTypes"
 	xmlns:oil="http://schemas.orm.net/OIAL"
 	xmlns:dcl="http://schemas.orm.net/DIL/DCIL"
 	xmlns:dil="http://schemas.orm.net/DIL/DIL"
@@ -22,7 +22,7 @@
 	xmlns:dml="http://schemas.orm.net/DIL/DMIL" 
 	xmlns:ddl="http://schemas.orm.net/DIL/DDIL" 
 	extension-element-prefixes="exsl dsf"
-	exclude-result-prefixes="odt oil">
+	exclude-result-prefixes="ormdt oil">
 
 	<xsl:import href="../../DIL/Transforms/DILSupportFunctions.xslt"/>
 
@@ -100,7 +100,7 @@
 		</dcl:schema>
 	</xsl:template>
 
-	<xsl:template match="odt:identity" mode="GenerateDataTypeReference">
+	<xsl:template match="ormdt:identity" mode="GenerateDataTypeReference">
 		<xsl:attribute name="isForIdentity">
 			<xsl:value-of select="true()"/>
 		</xsl:attribute>
@@ -109,18 +109,18 @@
 		</xsl:attribute>
 		<dcl:predefinedDataType name="BIGINT"/>
 	</xsl:template>
-	<xsl:template match="odt:boolean" mode="GenerateDataTypeReference">
+	<xsl:template match="ormdt:boolean" mode="GenerateDataTypeReference">
 		<xsl:attribute name="oilRefName">
 			<xsl:value-of select="@name"/>
 		</xsl:attribute>
 		<dcl:predefinedDataType name="BOOLEAN"/>
 	</xsl:template>
-	<xsl:template match="odt:decimalNumber" mode="GenerateDataTypeReference">
+	<xsl:template match="ormdt:decimalNumber" mode="GenerateDataTypeReference">
 		<xsl:attribute name="oilRefName">
 			<xsl:value-of select="@name"/>
 		</xsl:attribute>
 		<xsl:choose>
-			<xsl:when test="odt:enumeration or odt:range">
+			<xsl:when test="ormdt:enumeration or ormdt:range">
 				<dcl:domainRef name="{dsf:makeValidIdentifier(@name)}"/>
 			</xsl:when>
 			<xsl:when test="@fractionDigits = 0 and not(@totalDigits)">
@@ -142,12 +142,12 @@
 			</xsl:otherwise>
 		</xsl:choose>
 	</xsl:template>
-	<xsl:template match="odt:floatingPointNumber" mode="GenerateDataTypeReference">
+	<xsl:template match="ormdt:floatingPointNumber" mode="GenerateDataTypeReference">
 		<xsl:attribute name="oilRefName">
 			<xsl:value-of select="@name"/>
 		</xsl:attribute>
 		<xsl:choose>
-			<xsl:when test="odt:enumeration or odt:range">
+			<xsl:when test="ormdt:enumeration or ormdt:range">
 				<dcl:domainRef name="{dsf:makeValidIdentifier(@name)}"/>
 			</xsl:when>
 			<xsl:otherwise>
@@ -161,12 +161,12 @@
 			</xsl:otherwise>
 		</xsl:choose>
 	</xsl:template>
-	<xsl:template match="odt:string" mode="GenerateDataTypeReference">
+	<xsl:template match="ormdt:string" mode="GenerateDataTypeReference">
 		<xsl:attribute name="oilRefName">
 			<xsl:value-of select="@name"/>
 		</xsl:attribute>
 		<xsl:choose>
-			<xsl:when test="oil:pattern or odt:enumeration or @minLength">
+			<xsl:when test="oil:pattern or ormdt:enumeration or @minLength">
 				<dcl:domainRef name="{dsf:makeValidIdentifier(@name)}"/>
 			</xsl:when>
 			<xsl:otherwise>
@@ -180,7 +180,7 @@
 			</xsl:otherwise>
 		</xsl:choose>
 	</xsl:template>
-	<xsl:template match="odt:binary" mode="GenerateDataTypeReference">
+	<xsl:template match="ormdt:binary" mode="GenerateDataTypeReference">
 		<xsl:attribute name="oilRefName">
 			<xsl:value-of select="@name"/>
 		</xsl:attribute>
@@ -196,7 +196,7 @@
 		<TODO value="Fallback for GenerateDataTypeReference. How this is done will depend on how we chose to do data types for ORM."/>
 	</xsl:template>
 
-	<xsl:template match="odt:decimalNumber" mode="GenerateDomain">
+	<xsl:template match="ormdt:decimalNumber" mode="GenerateDomain">
 		<xsl:attribute name="oilRefName">
 			<xsl:value-of select="@name"/>
 		</xsl:attribute>
@@ -226,17 +226,17 @@
 		</dcl:predefinedDataType>
 		<dcl:checkConstraint name="{dsf:makeValidIdentifier(concat(@name,'_Chk'))}">
 			<xsl:variable name="enumerations">
-				<xsl:if test="odt:enumeration">
+				<xsl:if test="ormdt:enumeration">
 					<dep:inPredicate type="IN">
 						<dep:valueKeyword/>
-						<xsl:for-each select="odt:enumeration">
+						<xsl:for-each select="ormdt:enumeration">
 							<ddt:exactNumericLiteral value="{@value}"/>
 						</xsl:for-each>
 					</dep:inPredicate>
 				</xsl:if>
 			</xsl:variable>
 			<xsl:choose>
-				<xsl:when test="odt:enumeration and odt:range">
+				<xsl:when test="ormdt:enumeration and ormdt:range">
 					<dep:or>
 						<xsl:call-template name="ProcessOilRangeForNumber">
 							<xsl:with-param name="predicandToTest">
@@ -247,10 +247,10 @@
 						<xsl:copy-of select="$enumerations"/>
 					</dep:or>
 				</xsl:when>
-				<xsl:when test="odt:enumeration">
+				<xsl:when test="ormdt:enumeration">
 					<xsl:copy-of select="$enumerations"/>
 				</xsl:when>
-				<xsl:when test="odt:range">
+				<xsl:when test="ormdt:range">
 					<xsl:call-template name="ProcessOilRangeForNumber">
 						<xsl:with-param name="predicandToTest">
 							<dep:valueKeyword/>
@@ -261,7 +261,7 @@
 			</xsl:choose>
 		</dcl:checkConstraint>
 	</xsl:template>
-	<xsl:template match="odt:floatingPointNumber" mode="GenerateDomain">
+	<xsl:template match="ormdt:floatingPointNumber" mode="GenerateDomain">
 		<xsl:attribute name="oilRefName">
 			<xsl:value-of select="@name"/>
 		</xsl:attribute>
@@ -274,17 +274,17 @@
 		</dcl:predefinedDataType>
 		<dcl:checkConstraint name="{dsf:makeValidIdentifier(concat(@name,'_Chk'))}">
 			<xsl:variable name="enumerations">
-				<xsl:if test="odt:enumeration">
+				<xsl:if test="ormdt:enumeration">
 					<dep:inPredicate type="IN">
 						<dep:valueKeyword/>
-						<xsl:for-each select="odt:enumeration">
+						<xsl:for-each select="ormdt:enumeration">
 							<ddt:approximateNumericLiteral value="{@value}"/>
 						</xsl:for-each>
 					</dep:inPredicate>
 				</xsl:if>
 			</xsl:variable>
 			<xsl:choose>
-				<xsl:when test="odt:enumeration and odt:range">
+				<xsl:when test="ormdt:enumeration and ormdt:range">
 					<dep:or>
 						<xsl:call-template name="ProcessOilRangeForNumber">
 							<xsl:with-param name="predicandToTest">
@@ -295,10 +295,10 @@
 						<xsl:copy-of select="$enumerations"/>
 					</dep:or>
 				</xsl:when>
-				<xsl:when test="odt:enumeration">
+				<xsl:when test="ormdt:enumeration">
 					<xsl:copy-of select="$enumerations"/>
 				</xsl:when>
-				<xsl:when test="odt:range">
+				<xsl:when test="ormdt:range">
 					<xsl:call-template name="ProcessOilRangeForNumber">
 						<xsl:with-param name="predicandToTest">
 							<dep:valueKeyword/>
@@ -309,7 +309,7 @@
 			</xsl:choose>
 		</dcl:checkConstraint>
 	</xsl:template>
-	<xsl:template match="odt:string" mode="GenerateDomain">
+	<xsl:template match="ormdt:string" mode="GenerateDomain">
 		<xsl:attribute name="oilRefName">
 			<xsl:value-of select="@name"/>
 		</xsl:attribute>
@@ -346,10 +346,10 @@
 						<ddt:exactNumericLiteral value="{@minLength}"/>
 					</dep:comparisonPredicate>
 				</xsl:if>
-				<xsl:if test="odt:enumeration">
+				<xsl:if test="ormdt:enumeration">
 					<dep:inPredicate type="IN">
 						<dep:valueKeyword/>
-						<xsl:for-each select="odt:enumeration">
+						<xsl:for-each select="ormdt:enumeration">
 							<ddt:characterStringLiteral value="{@value}"/>
 						</xsl:for-each>
 					</dep:inPredicate>
@@ -892,33 +892,33 @@
 
 	<xsl:template name="ProcessOilRangeForNumber">
 		<xsl:param name="currentNr" select="1"/>
-		<xsl:param name="totalNr" select="count(odt:range)"/>
+		<xsl:param name="totalNr" select="count(ormdt:range)"/>
 		<xsl:param name="predicandToTest"/>
 		<xsl:param name="exactOrApproximate"/>
 		<xsl:variable name="rangeCode">
-			<xsl:variable name="currentRange" select="odt:range[$currentNr]"/>
+			<xsl:variable name="currentRange" select="ormdt:range[$currentNr]"/>
 			<xsl:variable name="lowerBoundLiteral">
-				<xsl:if test="$currentRange/odt:lowerBound">
+				<xsl:if test="$currentRange/ormdt:lowerBound">
 					<xsl:element name="{concat('ddt:',$exactOrApproximate,'NumericLiteral')}">
 						<xsl:attribute name="value">
-							<xsl:value-of select="$currentRange/odt:lowerBound/@value"/>
+							<xsl:value-of select="$currentRange/ormdt:lowerBound/@value"/>
 						</xsl:attribute>
 					</xsl:element>
 				</xsl:if>
 			</xsl:variable>
 			<xsl:variable name="upperBoundLiteral">
-				<xsl:if test="$currentRange/odt:upperBound">
+				<xsl:if test="$currentRange/ormdt:upperBound">
 					<xsl:element name="{concat('ddt:',$exactOrApproximate,'NumericLiteral')}">
 						<xsl:attribute name="value">
-							<xsl:value-of select="$currentRange/odt:upperBound/@value"/>
+							<xsl:value-of select="$currentRange/ormdt:upperBound/@value"/>
 						</xsl:attribute>
 					</xsl:element>
 				</xsl:if>
 			</xsl:variable>
 			<xsl:variable name="lowerBoundOperator">
-				<xsl:if test="$currentRange/odt:lowerBound">
+				<xsl:if test="$currentRange/ormdt:lowerBound">
 					<xsl:choose>
-						<xsl:when test="$currentRange/odt:lowerBound/@clusivity='exclusive'">
+						<xsl:when test="$currentRange/ormdt:lowerBound/@clusivity='exclusive'">
 							<xsl:value-of select="'greaterThan'"/>
 						</xsl:when>
 						<xsl:otherwise>
@@ -928,9 +928,9 @@
 				</xsl:if>
 			</xsl:variable>
 			<xsl:variable name="upperBoundOperator">
-				<xsl:if test="$currentRange/odt:upperBound">
+				<xsl:if test="$currentRange/ormdt:upperBound">
 					<xsl:choose>
-						<xsl:when test="$currentRange/odt:upperBound/@clusivity='exclusive'">
+						<xsl:when test="$currentRange/ormdt:upperBound/@clusivity='exclusive'">
 							<xsl:value-of select="'lessThan'"/>
 						</xsl:when>
 						<xsl:otherwise>

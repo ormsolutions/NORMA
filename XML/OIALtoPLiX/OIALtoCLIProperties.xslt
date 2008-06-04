@@ -16,10 +16,10 @@
 	xmlns:xsl="http://www.w3.org/1999/XSL/Transform"
 	xmlns:exsl="http://exslt.org/common"
 	xmlns:oil="http://schemas.orm.net/OIAL"
-	xmlns:odt="http://schemas.orm.net/ORMDataTypes"
+	xmlns:ormdt="http://schemas.orm.net/ORMDataTypes"
 	xmlns:plx="http://schemas.neumont.edu/CodeGeneration/PLiX"
 	xmlns:prop="urn:schemas-orm-net:PLiX:CLI:Properties"
-	exclude-result-prefixes="oil odt"
+	exclude-result-prefixes="oil ormdt"
 	extension-element-prefixes="exsl">
 
 	<xsl:include href="OIALtoPLiX_GlobalSupportFunctions.xslt"/>
@@ -48,10 +48,10 @@
 		</prop:AllProperties>
 	</xsl:template>
 
-	<xsl:template match="odt:identity" mode="GenerateInformationTypeFormatMapping">
+	<xsl:template match="ormdt:identity" mode="GenerateInformationTypeFormatMapping">
 		<prop:FormatMapping name="{@name}" canBeNull="false" isIdentity="true"/>
 	</xsl:template>
-	<xsl:template match="odt:boolean" mode="GenerateInformationTypeFormatMapping">
+	<xsl:template match="ormdt:boolean" mode="GenerateInformationTypeFormatMapping">
 		<prop:FormatMapping name="{@name}" canBeNull="false">
 			<prop:DataType dataTypeName=".boolean"/>
 			<xsl:if test="string-length(@fixed)">
@@ -66,7 +66,7 @@
 			</xsl:if>
 		</prop:FormatMapping>
 	</xsl:template>
-	<xsl:template match="odt:decimalNumber" mode="GenerateInformationTypeFormatMapping">
+	<xsl:template match="ormdt:decimalNumber" mode="GenerateInformationTypeFormatMapping">
 		<prop:FormatMapping name="{@name}" canBeNull="false">
 			<xsl:variable name="hasConstraints" select="boolean(child::*)"/>
 			<xsl:choose>
@@ -83,7 +83,7 @@
 			</xsl:choose>
 		</prop:FormatMapping>
 	</xsl:template>
-	<xsl:template match="odt:floatingPointNumber" mode="GenerateInformationTypeFormatMapping">
+	<xsl:template match="ormdt:floatingPointNumber" mode="GenerateInformationTypeFormatMapping">
 		<prop:FormatMapping name="{@name}" canBeNull="false">
 			<xsl:choose>
 				<xsl:when test="@precision='single' or @precision&lt;=24">
@@ -104,7 +104,7 @@
 			<!-- TODO: Process all child elements -->
 		</prop:FormatMapping>
 	</xsl:template>
-	<xsl:template match="odt:string" mode="GenerateInformationTypeFormatMapping">
+	<xsl:template match="ormdt:string" mode="GenerateInformationTypeFormatMapping">
 		<prop:FormatMapping name="{@name}" canBeNull="true">
 			<prop:DataType dataTypeName=".string"/>
 			<!-- TODO: Process all child elements -->
@@ -116,7 +116,7 @@
 			</xsl:if>
 		</prop:FormatMapping>
 	</xsl:template>
-	<xsl:template match="odt:binary" mode="GenerateInformationTypeFormatMapping">
+	<xsl:template match="ormdt:binary" mode="GenerateInformationTypeFormatMapping">
 		<prop:FormatMapping name="{@name}" canBeNull="true">
 			<prop:DataType dataTypeName=".u1" dataTypeIsSimpleArray="true"/>
 			<xsl:if test="(@minLength and not(@minLength=0)) or @maxLength">

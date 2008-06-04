@@ -2,7 +2,7 @@
 <xsl:stylesheet version="1.0" 
 	xmlns:xsl="http://www.w3.org/1999/XSL/Transform"
 	xmlns:oil="http://schemas.orm.net/OIAL" 
-	xmlns:odt="http://schemas.orm.net/ORMDataTypes"
+	xmlns:ormdt="http://schemas.orm.net/ORMDataTypes"
 	xmlns:rdfs="http://www.w3.org/2000/01/rdf-schema#"
 	xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#"
 	xmlns:owl="http://www.w3.org/2002/07/owl#"
@@ -64,10 +64,10 @@
 		
 	</xsl:template>
 	
-	<xsl:template match="odt:identity" mode="GenerateMapping">
+	<xsl:template match="ormdt:identity" mode="GenerateMapping">
 		<FormatMapping name="{@name}" target="xs:integer"/>
 	</xsl:template>
-	<xsl:template match="odt:boolean" mode="GenerateMapping">
+	<xsl:template match="ormdt:boolean" mode="GenerateMapping">
 		<FormatMapping name="{@name}">
 			<xsl:attribute name="target">
 				<xsl:choose>
@@ -84,12 +84,12 @@
 			</xsl:attribute>
 		</FormatMapping>
 	</xsl:template>
-	<xsl:template match="odt:decimalNumber" mode="GenerateMapping">
+	<xsl:template match="ormdt:decimalNumber" mode="GenerateMapping">
 		<FormatMapping name="{@name}">
 			<xsl:attribute name="target">
 				<xsl:choose>
 					<!-- TODO: Optimize this so that we map to smaller integer types when possible. -->
-					<xsl:when test="odt:enumeration or odt:range or @totalDigits or not(@fractionDigits=0)">
+					<xsl:when test="ormdt:enumeration or ormdt:range or @totalDigits or not(@fractionDigits=0)">
 						<xsl:value-of select="concat('oxs:', @name)"/>
 					</xsl:when>
 					<xsl:when test="@fractionDigits = 0">
@@ -102,7 +102,7 @@
 			</xsl:attribute>
 		</FormatMapping>
 	</xsl:template>
-	<xsl:template match="odt:floatingPointNumber" mode="GenerateMapping">
+	<xsl:template match="ormdt:floatingPointNumber" mode="GenerateMapping">
 		<FormatMapping name="{@name}">
 			<xsl:attribute name="target">
 				<xsl:choose>
@@ -124,7 +124,7 @@
 			</xsl:attribute>
 		</FormatMapping>
 	</xsl:template>
-	<xsl:template match="odt:string" mode="GenerateMapping">
+	<xsl:template match="ormdt:string" mode="GenerateMapping">
 		<FormatMapping name="{@name}">
 			<xsl:attribute name="target">
 				<xsl:choose>
@@ -138,7 +138,7 @@
 			</xsl:attribute>
 		</FormatMapping>
 	</xsl:template>
-	<xsl:template match="odt:binary" mode="GenerateMapping">
+	<xsl:template match="ormdt:binary" mode="GenerateMapping">
 		<FormatMapping name="{@name}">
 			<xsl:attribute name="target">
 				<xsl:choose>
@@ -162,7 +162,7 @@
 		</owl:DatatypeProperty>
 	</xsl:template>
 
-	<xsl:template match="odt:identity" mode="GenerateDatatypePropertyRefs">
+	<xsl:template match="ormdt:identity" mode="GenerateDatatypePropertyRefs">
 		<!-- Need to decide how we cater for a Value Type that is absorbed by more than one entity type.-->
 		<xsl:param name="resourceName"/>
 		<rdfs:domain rdf:resource="#{$resourceName}"/>
@@ -180,7 +180,7 @@
 			</xsl:choose>
 		</rdfs:range>
 	</xsl:template>
-	<xsl:template match="odt:floatingPointNumber" mode="GenerateDatatypePropertyRefs">
+	<xsl:template match="ormdt:floatingPointNumber" mode="GenerateDatatypePropertyRefs">
 		<xsl:param name="resourceName"/>
 		<rdfs:domain rdf:resource="#"/>
 		<rdfs:range >
@@ -196,7 +196,7 @@
 			</xsl:choose>
 		</rdfs:range>
 	</xsl:template>
-	<xsl:template match="odt:binary" mode="GenerateDatatypePropertyRefs">
+	<xsl:template match="ormdt:binary" mode="GenerateDatatypePropertyRefs">
 		<xsl:param name="resourceName"/>	
 		<rdfs:domain rdf:resource="#{$resourceName}"/>
 		<rdfs:range >
@@ -212,16 +212,16 @@
 			</xsl:choose>
 		</rdfs:range>
 	</xsl:template>
-	<xsl:template match="odt:string" mode="GenerateDatatypePropertyRefs">
+	<xsl:template match="ormdt:string" mode="GenerateDatatypePropertyRefs">
 		<xsl:param name="resourceName"/>
 		<rdfs:domain rdf:resource="#{$resourceName}"/>
 		<rdfs:range>
 			<xsl:choose>
-				<xsl:when test="odt:enumeration">
+				<xsl:when test="ormdt:enumeration">
 					<owl:DataRange>
 						<owl:oneOf>
 							<xsl:call-template name="GenerateEnumeration">
-								<xsl:with-param name="enum" select="odt:enumeration[1]"/>
+								<xsl:with-param name="enum" select="ormdt:enumeration[1]"/>
 							</xsl:call-template>
 						</owl:oneOf>
 					</owl:DataRange>
@@ -263,7 +263,7 @@
 			</rdf:rest>
 		</rdf:List>
 	</xsl:template>
-	<xsl:template match="odt:boolean" mode="GenerateDatatypePropertyRefs">
+	<xsl:template match="ormdt:boolean" mode="GenerateDatatypePropertyRefs">
 		<xsl:param name="resourceName"/>
 		<rdfs:domain rdf:resource="#{$resourceName}"/>
 		<rdfs:range >
@@ -279,7 +279,7 @@
 			</xsl:choose>
 		</rdfs:range>
 	</xsl:template>
-	<xsl:template match="odt:decimalNumber" mode="GenerateDatatypePropertyRefs">
+	<xsl:template match="ormdt:decimalNumber" mode="GenerateDatatypePropertyRefs">
 		<xsl:param name="resourceName"/>
 		<rdfs:domain rdf:resource="#{$resourceName}"/>
 		<rdfs:range>

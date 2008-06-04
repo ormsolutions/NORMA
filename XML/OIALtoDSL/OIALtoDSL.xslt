@@ -4,9 +4,9 @@
 	xmlns="http://schemas.microsoft.com/VisualStudio/2005/DslTools/DslDefinitionModel"
 	xmlns:exsl="http://exslt.org/common"
 	xmlns:oil="http://schemas.orm.net/OIAL"
-	xmlns:odt="http://schemas.orm.net/ORMDataTypes"
+	xmlns:ormdt="http://schemas.orm.net/ORMDataTypes"
 	extension-element-prefixes="exsl"
-	exclude-result-prefixes="oil odt">
+	exclude-result-prefixes="oil ormdt">
 
 	<xsl:param name="DefaultNamespace" select="''"/>
 	<!--<xsl:param name="dslVersion" select="1.0.0.0"/>-->
@@ -75,18 +75,18 @@
 		</Dsl>
 	</xsl:template>
 
-	<xsl:template match="odt:string" mode="GenerateType">
+	<xsl:template match="ormdt:string" mode="GenerateType">
 		<xsl:choose>
-			<xsl:when test="odt:enumeration and not(odt:pattern)">
+			<xsl:when test="ormdt:enumeration and not(ormdt:pattern)">
 				<DomainEnumeration Name="{@name}" AccessModifier="Public" Namespace="{$ModelNamespace}">
 					<Literals>
-						<xsl:for-each select="odt:enumeration">
+						<xsl:for-each select="ormdt:enumeration">
 							<EnumerationLiteral Name="{@value}"/>
 						</xsl:for-each>
 					</Literals>
 				</DomainEnumeration>
 			</xsl:when>
-			<xsl:when test="odt:pattern">
+			<xsl:when test="ormdt:pattern">
 				<!-- TODO: Not supported. -->
 			</xsl:when>
 			<xsl:when test="@maxLength">
@@ -100,21 +100,21 @@
 			</xsl:otherwise>
 		</xsl:choose>
 	</xsl:template>
-	<xsl:template match="odt:boolean" mode="GenerateType">
+	<xsl:template match="ormdt:boolean" mode="GenerateType">
 		<!-- TODO: Not supported. -->
 	</xsl:template>
-	<xsl:template match="odt:decimalNumber" mode="GenerateType">
+	<xsl:template match="ormdt:decimalNumber" mode="GenerateType">
 		<xsl:choose>
-			<xsl:when test="odt:enumeration and @fractionDigits=0 and not(odt:range)">
+			<xsl:when test="ormdt:enumeration and @fractionDigits=0 and not(ormdt:range)">
 				<DomainEnumeration Name="{@name}" AccessModifier="Public" Namespace="{$ModelNamespace}">
 					<Literals>
-						<xsl:for-each select="odt:enumeration">
+						<xsl:for-each select="ormdt:enumeration">
 							<EnumerationLiteral Name="Literal{@value}" Value="{@value}"/>
 						</xsl:for-each>
 					</Literals>
 				</DomainEnumeration>
 			</xsl:when>
-			<xsl:when test="odt:range">
+			<xsl:when test="ormdt:range">
 				<!-- TODO: Not supported. -->
 			</xsl:when>
 			<xsl:otherwise>
@@ -122,12 +122,12 @@
 			</xsl:otherwise>
 		</xsl:choose>
 	</xsl:template>
-	<xsl:template match="odt:floatingPointNumber" mode="GenerateType">
+	<xsl:template match="ormdt:floatingPointNumber" mode="GenerateType">
 		<xsl:choose>
-			<xsl:when test="odt:enumeration">
+			<xsl:when test="ormdt:enumeration">
 				<!-- TODO: Not supported. -->
 			</xsl:when>
-			<xsl:when test="odt:pattern">
+			<xsl:when test="ormdt:pattern">
 				<!-- TODO: Not supported. -->
 			</xsl:when>
 			<xsl:otherwise>
@@ -135,7 +135,7 @@
 			</xsl:otherwise>
 		</xsl:choose>
 	</xsl:template>
-	<xsl:template match="odt:binary" mode="GenerateType">
+	<xsl:template match="ormdt:binary" mode="GenerateType">
 		<!-- TODO: Not supported. -->
 	</xsl:template>
 
@@ -207,7 +207,7 @@
 
 	<xsl:template match="oil:informationType" mode="GenerateDomainProperty">
 		<xsl:variable name="informationTypeFormat" select="/oil:model/oil:informationTypeFormats/child::*[@name=current()/@formatRef]"/>
-		<xsl:if test="not($informationTypeFormat/self::odt:identity)">
+		<xsl:if test="not($informationTypeFormat/self::ormdt:identity)">
 			<DomainProperty Name="{@name}">
 				<xsl:apply-templates select="@sourceRoleRef" mode="GenerateId"/>
 				<Type>
@@ -250,7 +250,7 @@
 		</xsl:variable>
 		<ExternalTypeMoniker Name="/System/{$typeName}"/>
 	</xsl:template>
-	<xsl:template match="odt:floatingPointNumber" mode="GenerateExternalTypeMoniker">
+	<xsl:template match="ormdt:floatingPointNumber" mode="GenerateExternalTypeMoniker">
 		<xsl:param name="Modality"/>
 		<xsl:variable name="typeName">
 			<xsl:variable name="baseTypeName">
@@ -273,10 +273,10 @@
 			</xsl:with-param>
 		</xsl:call-template>
 	</xsl:template>
-	<xsl:template match="odt:binary" mode="GetExternalTypeMoniker">
+	<xsl:template match="ormdt:binary" mode="GetExternalTypeMoniker">
 		<ExternalTypeMoniker Name="/System/Byte[]"/>
 	</xsl:template>
-	<xsl:template match="odt:decimalNumber" mode="GenerateExternalTypeMoniker">
+	<xsl:template match="ormdt:decimalNumber" mode="GenerateExternalTypeMoniker">
 		<xsl:param name="Modality"/>
 		<!-- TODO: Map to correct size. -->
 		<xsl:call-template name="GenerateExternalTypeMonikerForValueType">
@@ -293,10 +293,10 @@
 			</xsl:with-param>
 		</xsl:call-template>
 	</xsl:template>
-	<xsl:template match="odt:string" mode="GenerateExternalTypeMoniker">
+	<xsl:template match="ormdt:string" mode="GenerateExternalTypeMoniker">
 		<ExternalTypeMoniker Name="/System/String"/>
 	</xsl:template>
-	<xsl:template match="odt:boolean" mode="GenerateExternalTypeMoniker">
+	<xsl:template match="ormdt:boolean" mode="GenerateExternalTypeMoniker">
 		<xsl:param name="Modality"/>
 		<xsl:call-template name="GenerateExternalTypeMonikerForValueType">
 			<xsl:with-param name="Modality" select="$Modality"/>

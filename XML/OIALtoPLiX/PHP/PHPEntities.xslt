@@ -16,11 +16,11 @@
 	xmlns:xsl="http://www.w3.org/1999/XSL/Transform"
 	xmlns:exsl="http://exslt.org/common"
 	xmlns:oil="http://schemas.orm.net/OIAL"
-	xmlns:odt="http://schemas.orm.net/ORMDataTypes"
+	xmlns:ormdt="http://schemas.orm.net/ORMDataTypes"
 	xmlns:plx="http://schemas.neumont.edu/CodeGeneration/PLiX"
 	xmlns:prop="urn:schemas-orm-net:PLiX:CLI:Properties"
 	xmlns:xs="http://www.w3.org/2001/XMLSchema"
-	exclude-result-prefixes="oil odt"
+	exclude-result-prefixes="oil ormdt"
 	extension-element-prefixes="exsl">
 
 	<xsl:import href="../OIALtoPLiX_GlobalSupportFunctions.xslt"/>
@@ -38,10 +38,10 @@
 	</xsl:variable>
 	<xsl:variable name="InformationTypeFormatMappings" select="exsl:node-set($InformationTypeFormatMappingsFragment)/child::*"/>
 
-	<xsl:template match="odt:identity" mode="GenerateInformationTypeFormatMapping">
+	<xsl:template match="ormdt:identity" mode="GenerateInformationTypeFormatMapping">
 		<prop:FormatMapping name="{@name}" canBeNull="false" isIdentity="true"/>
 	</xsl:template>
-	<xsl:template match="odt:boolean" mode="GenerateInformationTypeFormatMapping">
+	<xsl:template match="ormdt:boolean" mode="GenerateInformationTypeFormatMapping">
 		<prop:FormatMapping name="{@name}" canBeNull="false">
 			<prop:DataType dataTypeName=".boolean"/>
 			<xsl:if test="string-length(@fixed)">
@@ -56,7 +56,7 @@
 			</xsl:if>
 		</prop:FormatMapping>
 	</xsl:template>
-	<xsl:template match="odt:decimalNumber" mode="GenerateInformationTypeFormatMapping">
+	<xsl:template match="ormdt:decimalNumber" mode="GenerateInformationTypeFormatMapping">
 		<prop:FormatMapping name="{@name}" canBeNull="false">
 			<xsl:variable name="hasConstraints" select="boolean(child::*)"/>
 			<xsl:choose>
@@ -73,7 +73,7 @@
 			</xsl:choose>
 		</prop:FormatMapping>
 	</xsl:template>
-	<xsl:template match="odt:floatingPointNumber" mode="GenerateInformationTypeFormatMapping">
+	<xsl:template match="ormdt:floatingPointNumber" mode="GenerateInformationTypeFormatMapping">
 		<prop:FormatMapping name="{@name}" canBeNull="false">
 			<xsl:choose>
 				<xsl:when test="@precision='single' or @precision&lt;=24">
@@ -94,7 +94,7 @@
 			<!-- TODO: Process all child elements -->
 		</prop:FormatMapping>
 	</xsl:template>
-	<xsl:template match="odt:string" mode="GenerateInformationTypeFormatMapping">
+	<xsl:template match="ormdt:string" mode="GenerateInformationTypeFormatMapping">
 		<prop:FormatMapping name="{@name}" canBeNull="true">
 			<prop:DataType dataTypeName=".string"/>
 			<!-- TODO: Process all child elements -->
@@ -106,7 +106,7 @@
 			</xsl:if>
 		</prop:FormatMapping>
 	</xsl:template>
-	<xsl:template match="odt:binary" mode="GenerateInformationTypeFormatMapping">
+	<xsl:template match="ormdt:binary" mode="GenerateInformationTypeFormatMapping">
 		<prop:FormatMapping name="{@name}" canBeNull="true">
 			<prop:DataType dataTypeName=".u1" dataTypeIsSimpleArray="true"/>
 			<xsl:if test="(@minLength and not(@minLength=0)) or @maxLength">
@@ -152,7 +152,7 @@
 		<!--</xsl:message>-->
 	</xsl:template>
 
-	<xsl:template match="odt:string" mode="validation">
+	<xsl:template match="ormdt:string" mode="validation">
 		<xsl:variable name="dataType" select="$InformationTypeFormatMappings[@name = current()/@name]/prop:DataType/@dataTypeName"/>
 		<xsl:if test="@minLength or @maxLength">
 			<plx:callInstance name="addValidationRule">
@@ -191,9 +191,9 @@
 			</plx:callInstance>
 		</xsl:if>
 	</xsl:template>
-	<xsl:template match="odt:decimalNumber" mode="validation">
+	<xsl:template match="ormdt:decimalNumber" mode="validation">
 		<xsl:variable name="dataType" select="$InformationTypeFormatMappings[@name = current()/@name]/prop:DataType/@dataTypeName"/>
-		<xsl:for-each select="odt:range">
+		<xsl:for-each select="ormdt:range">
 			<plx:callInstance name="addValidationRule">
 				<plx:callObject>
 					<plx:callThis name="validationRules" type="field" accessor="this"/>
@@ -207,8 +207,8 @@
 						</plx:passParam>
 						<plx:passParam>
 							<xsl:choose>
-								<xsl:when test="odt:lowerBound/@value">
-									<plx:value data="{odt:lowerBound/@value}" type="{$dataType}"/>
+								<xsl:when test="ormdt:lowerBound/@value">
+									<plx:value data="{ormdt:lowerBound/@value}" type="{$dataType}"/>
 								</xsl:when>
 								<xsl:otherwise>
 									<plx:nullKeyword/>
@@ -216,12 +216,12 @@
 							</xsl:choose>
 						</plx:passParam>
 						<plx:passParam>
-							<plx:callStatic name="{odt:lowerBound/@clusivity}" type="field" dataTypeName="ValueRangeValidatorClusivity" dataTypeQualifier="PHPEntities"/>
+							<plx:callStatic name="{ormdt:lowerBound/@clusivity}" type="field" dataTypeName="ValueRangeValidatorClusivity" dataTypeQualifier="PHPEntities"/>
 						</plx:passParam>
 						<plx:passParam>
 							<xsl:choose>
-								<xsl:when test="odt:upperBound/@value">
-									<plx:value data="{odt:upperBound/@value}" type="{$dataType}"/>
+								<xsl:when test="ormdt:upperBound/@value">
+									<plx:value data="{ormdt:upperBound/@value}" type="{$dataType}"/>
 								</xsl:when>
 								<xsl:otherwise>
 									<plx:nullKeyword/>
@@ -229,7 +229,7 @@
 							</xsl:choose>
 						</plx:passParam>
 						<plx:passParam>
-							<plx:callStatic name="{odt:upperBound/@clusivity}" type="field" dataTypeName="ValueRangeValidatorClusivity" dataTypeQualifier="PHPEntities"/>
+							<plx:callStatic name="{ormdt:upperBound/@clusivity}" type="field" dataTypeName="ValueRangeValidatorClusivity" dataTypeQualifier="PHPEntities"/>
 						</plx:passParam>
 					</plx:callNew>
 				</plx:passParam>

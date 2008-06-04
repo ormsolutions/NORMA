@@ -16,11 +16,11 @@
 	xmlns:xsl="http://www.w3.org/1999/XSL/Transform"
 	xmlns:exsl="http://exslt.org/common"
 	xmlns:oil="http://schemas.orm.net/OIAL"
-	xmlns:odt="http://schemas.orm.net/ORMDataTypes"
+	xmlns:ormdt="http://schemas.orm.net/ORMDataTypes"
 	xmlns:xsOut="OutputSchema"
 	xmlns:xs="http://www.w3.org/2001/XMLSchema" 
 	extension-element-prefixes="exsl"
-	exclude-result-prefixes="oil odt">
+	exclude-result-prefixes="oil ormdt">
 
 	<xsl:param name="DefaultNamespace" select="''"/>
 	
@@ -116,10 +116,10 @@
 		</xsOut:schema>
 	</xsl:template>
 
-	<xsl:template match="odt:identity" mode="GenerateMapping">
+	<xsl:template match="ormdt:identity" mode="GenerateMapping">
 		<FormatMapping name="{@name}" target="xs:integer"/>
 	</xsl:template>
-	<xsl:template match="odt:boolean" mode="GenerateMapping">
+	<xsl:template match="ormdt:boolean" mode="GenerateMapping">
 		<FormatMapping name="{@name}">
 			<xsl:attribute name="target">
 				<xsl:choose>
@@ -136,12 +136,12 @@
 			</xsl:attribute>
 		</FormatMapping>
 	</xsl:template>
-	<xsl:template match="odt:decimalNumber" mode="GenerateMapping">
+	<xsl:template match="ormdt:decimalNumber" mode="GenerateMapping">
 		<FormatMapping name="{@name}">
 			<xsl:attribute name="target">
 				<xsl:choose>
 					<!-- TODO: Optimize this so that we map to smaller integer types when possible. -->
-					<xsl:when test="odt:enumeration or odt:range or @totalDigits or not(@fractionDigits=0)">
+					<xsl:when test="ormdt:enumeration or ormdt:range or @totalDigits or not(@fractionDigits=0)">
 						<xsl:value-of select="concat('oxs:', @name)"/>
 					</xsl:when>
 					<xsl:when test="@fractionDigits = 0">
@@ -154,7 +154,7 @@
 			</xsl:attribute>
 		</FormatMapping>
 	</xsl:template>
-	<xsl:template match="odt:floatingPointNumber" mode="GenerateMapping">
+	<xsl:template match="ormdt:floatingPointNumber" mode="GenerateMapping">
 		<FormatMapping name="{@name}">
 			<xsl:attribute name="target">
 				<xsl:choose>
@@ -176,7 +176,7 @@
 			</xsl:attribute>
 		</FormatMapping>
 	</xsl:template>
-	<xsl:template match="odt:string" mode="GenerateMapping">
+	<xsl:template match="ormdt:string" mode="GenerateMapping">
 		<FormatMapping name="{@name}">
 			<xsl:attribute name="target">
 				<xsl:choose>
@@ -190,7 +190,7 @@
 			</xsl:attribute>
 		</FormatMapping>
 	</xsl:template>
-	<xsl:template match="odt:binary" mode="GenerateMapping">
+	<xsl:template match="ormdt:binary" mode="GenerateMapping">
 		<FormatMapping name="{@name}">
 			<xsl:attribute name="target">
 				<xsl:choose>
@@ -212,26 +212,26 @@
 		</xsOut:simpleType>
 	</xsl:template>
 
-	<xsl:template match="odt:boolean" mode="GenerateSimpleTypeRestriction">
+	<xsl:template match="ormdt:boolean" mode="GenerateSimpleTypeRestriction">
 		<xsOut:restriction base="xs:boolean">
 			<xsOut:enumeration value="{@fixed}"/>
 		</xsOut:restriction>
 	</xsl:template>
-	<xsl:template match="odt:decimalNumber" mode="GenerateSimpleTypeRestriction">
+	<xsl:template match="ormdt:decimalNumber" mode="GenerateSimpleTypeRestriction">
 		<!-- TODO: Need to finish this. -->
 		<xsOut:restriction base="xs:decimal">
 			<xsOut:fractionDigits value="{@fractionDigits}"/>
 			<xsl:if test="@totalDigits">
 				<xsOut:totalDigits value="{@totalDigits}"/>
 			</xsl:if>
-			<xsl:if test="odt:range">
-				<xsl:apply-templates select="odt:range"/>
+			<xsl:if test="ormdt:range">
+				<xsl:apply-templates select="ormdt:range"/>
 			</xsl:if>
 
 		</xsOut:restriction>
 		<!-- Stuff relating to having multiple Ranges or enumerations-->
 	</xsl:template>
-	<xsl:template match="odt:floatingPointNumber" mode="GenerateSimpleTypeRestriction">
+	<xsl:template match="ormdt:floatingPointNumber" mode="GenerateSimpleTypeRestriction">
 		<!-- TODO: Need to finish this. -->
 		<!-- Stuff relating to having multiple Ranges or enumerations-->
 		<xsOut:restriction base="xs:float">
@@ -240,7 +240,7 @@
 			</xsl:if>
 		</xsOut:restriction>
 	</xsl:template>
-	<xsl:template match="odt:string" mode="GenerateSimpleTypeRestriction">
+	<xsl:template match="ormdt:string" mode="GenerateSimpleTypeRestriction">
 		<xsOut:restriction base="xs:string">
 			<xsl:if test="@minLength">
 				<xsOut:minLength value="{@minLength}"/>
@@ -249,12 +249,12 @@
 				<xsOut:maxLength value="{@maxLength}"/>
 			</xsl:if>
 			<xsl:choose>
-				<xsl:when test="odt:enumeration and not(odt:pattern)">
-					<xsl:for-each select="odt:enumeration">
+				<xsl:when test="ormdt:enumeration and not(ormdt:pattern)">
+					<xsl:for-each select="ormdt:enumeration">
 						<xsOut:enumeration value="{@value}"/>
 					</xsl:for-each>
 				</xsl:when>
-				<xsl:when test="odt:pattern">
+				<xsl:when test="ormdt:pattern">
 					<xsOut:pattern>
 						<xsl:attribute name="value">
 							<xsl:text>(</xsl:text>
@@ -273,7 +273,7 @@
 			</xsl:choose>
 		</xsOut:restriction>
 	</xsl:template>
-	<xsl:template match="odt:binary" mode="GenerateSimpleTypeRestriction">
+	<xsl:template match="ormdt:binary" mode="GenerateSimpleTypeRestriction">
 		<xsOut:restriction base="xs:hexBinary">
 			<xsl:if test="@minLength">
 				<xsOut:minLength value="{@minLength}"/>
@@ -525,12 +525,12 @@
 		</xsl:if>
 	</xsl:template>
 	<!-- handels clusivity for range constraints -->
-	<xsl:template match="odt:range">
-		<xsl:variable name="lowerClusivity" select="odt:lowerBound/@clusivity"/>
-		<xsl:variable name="upperClusivity" select="odt:upperBound/@clusivity"/>
-		<xsl:variable name="lowerValue" select="odt:lowerBound/@value"/>
-		<xsl:variable name="upperValue" select="odt:upperBound/@value"/>
-		<xsl:if test="odt:lowerBound">
+	<xsl:template match="ormdt:range">
+		<xsl:variable name="lowerClusivity" select="ormdt:lowerBound/@clusivity"/>
+		<xsl:variable name="upperClusivity" select="ormdt:upperBound/@clusivity"/>
+		<xsl:variable name="lowerValue" select="ormdt:lowerBound/@value"/>
+		<xsl:variable name="upperValue" select="ormdt:upperBound/@value"/>
+		<xsl:if test="ormdt:lowerBound">
 			<xsl:if test="$lowerClusivity = 'inclusive'">
 				<xsOut:minInclusive value="{$lowerValue}"/>
 			</xsl:if>
@@ -538,7 +538,7 @@
 				<xsOut:minExclusive value="{$lowerValue}"/>
 			</xsl:if>
 		</xsl:if>
-		<xsl:if test="odt:upperBound">
+		<xsl:if test="ormdt:upperBound">
 			<xsl:if test="$upperClusivity = 'inclusive'">
 				<xsOut:maxInclusive value="{$upperValue}"/>
 			</xsl:if>
