@@ -40,6 +40,7 @@
 				<xs:element name="BarkerErModelIsForAbstractionModel" type="BarkerErModelIsForAbstractionModelType"/>
 				<xs:element name="AttributeHasConceptTypeChild" type="AttributeHasConceptTypeChildType"/>
 				<xs:element name="BinaryAssociationHasConceptTypeChild" type="BinaryAssociationHasConceptTypeChildType"/>
+				<xs:element name="BinaryAssociationHasConceptType" type="BinaryAssociationHasConceptTypeType"/>
 				<xs:element name="EntityTypeIsPrimarilyForConceptType" type="EntityTypeIsPrimarilyForConceptTypeType"/>
 			</xs:choice>
 		</xs:complexType>
@@ -59,6 +60,11 @@
 		<xs:attribute name="id" type="xs:ID" use="required"/>
 		<xs:attribute name="BinaryAssociation" type="xs:IDREF" use="required"/>
 		<xs:attribute name="ConceptTypeChild" type="xs:IDREF" use="required"/>
+	</xs:complexType>
+	<xs:complexType name="BinaryAssociationHasConceptTypeType">
+		<xs:attribute name="id" type="xs:ID" use="required"/>
+		<xs:attribute name="BinaryAssociation" type="xs:IDREF" use="required"/>
+		<xs:attribute name="ConceptType" type="xs:IDREF" use="required"/>
 	</xs:complexType>
 	<xs:complexType name="EntityTypeIsPrimarilyForConceptTypeType">
 		<xs:attribute name="id" type="xs:ID" use="required"/>

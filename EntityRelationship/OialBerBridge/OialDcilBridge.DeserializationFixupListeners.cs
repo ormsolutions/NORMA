@@ -102,18 +102,26 @@ namespace Neumont.Tools.ORMAbstractionToBarkerERBridge
 			Store store = barkerModel.Store;
 
 			// Generate all Barker entities
+			List<ConceptType> manyToMany = new List<ConceptType>();
 			foreach (ConceptType conceptType in conceptTypes)
 			{
-				EntityType entity = new EntityType(
-					conceptType.Store,
-					new PropertyAssignment[]{
-							new PropertyAssignment(EntityType.NameDomainPropertyId, conceptType.Name)});
-				new EntityTypeIsPrimarilyForConceptType(entity, conceptType);
-
-				barkerEntities.Add(entity);
-				if (notifyAdded != null)
+				if (!IsSimpleManyToManyAssociation(conceptType))
 				{
-					notifyAdded.ElementAdded(entity, true);
+					EntityType entity = new EntityType(
+						conceptType.Store,
+						new PropertyAssignment[]{
+							new PropertyAssignment(EntityType.NameDomainPropertyId, conceptType.Name)});
+					new EntityTypeIsPrimarilyForConceptType(entity, conceptType);
+
+					barkerEntities.Add(entity);
+					if (notifyAdded != null)
+					{
+						notifyAdded.ElementAdded(entity, true);
+					}
+				}
+				else
+				{
+					manyToMany.Add(conceptType);
 				}
 			}
 
@@ -121,7 +129,14 @@ namespace Neumont.Tools.ORMAbstractionToBarkerERBridge
 			int associationCounter = 0;
 			foreach (ConceptType conceptType in conceptTypes)
 			{
-				CreateAttributesAndBinaryRelationships(conceptType, notifyAdded, ref associationCounter);
+				if (!manyToMany.Contains(conceptType))
+				{
+					CreateAttributesAndBinaryRelationships(conceptType, notifyAdded, ref associationCounter);
+				}
+				else
+				{
+					CreateBinaryAssociation(conceptType, notifyAdded, ref associationCounter);
+				}
 			}
 
 			// For each entity type in the Barker model generate relationships it plays and detemine which of its atrributes are mandatory and nullable.
@@ -188,7 +203,22 @@ namespace Neumont.Tools.ORMAbstractionToBarkerERBridge
 
 			return allStepsMandatory;
 		}
-
+		private static bool IsSimpleManyToManyAssociation(ConceptType conceptType)
+		{
+			bool isManyToMany = false;
+			LinkedElementCollection<ConceptTypeChild> associationChildren = 
+				ConceptTypeHasChildAsPartOfAssociation.GetTargetCollection(conceptType);
+			ReadOnlyCollection<ConceptTypeChild> allChildren =
+				ConceptTypeChild.GetLinksToTargetCollection(conceptType);
+			if (associationChildren != null && allChildren != null &&
+				associationChildren.Count == 2 && allChildren.Count == 2)
+			{
+				isManyToMany =
+					associationChildren[0] == allChildren[0] && associationChildren[1] == allChildren[1] ||
+					associationChildren[0] == allChildren[1] && associationChildren[1] == allChildren[0];
+			}
+			return isManyToMany;
+		}
 		private static void CreateAttributesAndBinaryRelationships(ConceptType conceptType, INotifyElementAdded notifyAdded, ref int associationCounter)
 		{
 			List<Attribute> attributesForConceptType = new List<Attribute>();
@@ -227,6 +257,15 @@ namespace Neumont.Tools.ORMAbstractionToBarkerERBridge
 				}
 			}
 		}
+		/// <summary>
+		/// for regular relationships
+		/// </summary>
+		/// <param name="relation"></param>
+		/// <param name="source"></param>
+		/// <param name="target"></param>
+		/// <param name="notifyAdded"></param>
+		/// <param name="associationCounter"></param>
+		/// <returns></returns>
 		private static bool CreateBinaryAssociation(ConceptTypeChild relation, ConceptType source, ConceptType target, INotifyElementAdded notifyAdded, ref int associationCounter)
 		{
 			if (BinaryAssociationHasConceptTypeChild.GetBinaryAssociation(relation).Count > 0)
@@ -244,7 +283,7 @@ namespace Neumont.Tools.ORMAbstractionToBarkerERBridge
 
 				Role r1 = new Role(relation.Store,
 							new PropertyAssignment[] { new PropertyAssignment(Role.PredicateTextDomainPropertyId, source.Name) });
-
+		
 				Role r2 = new Role(relation.Store,
 							new PropertyAssignment[] { new PropertyAssignment(Role.PredicateTextDomainPropertyId, target.Name) });
 
@@ -267,7 +306,7 @@ namespace Neumont.Tools.ORMAbstractionToBarkerERBridge
 					r2.IsMandatory = AllStepsMandatory(sourceEntity, links);
 				}
 
-				#region determine whether roles are multivalued or not
+				#region determine whether roles are multivalued or not - and possibly rename
 				ORMCore.ObjectType sourceObjectType = ConceptTypeIsForObjectType.GetObjectType(source);
 				ORMCore.ObjectType targetObjectType = ConceptTypeIsForObjectType.GetObjectType(target);
 				ORMCore.UniquenessConstraint uSource = null, uTarget = null;
@@ -296,6 +335,30 @@ namespace Neumont.Tools.ORMAbstractionToBarkerERBridge
 							}
 						}
 					}
+					//name the roles properly
+					//TODO this is a hack; proper name generation is yet to be implemented
+					foreach (ORMCore.ReadingOrder order in factType.ReadingOrderCollection)
+					{
+						string text = order.ReadingText;
+						int first = text.IndexOf('}') + 1;
+						text = text.Substring(first, text.LastIndexOf('{') - first);
+						text = text.Trim();
+
+						if (!string.IsNullOrEmpty(text) &&
+							order.RoleCollection != null && order.RoleCollection.Count > 0 &&
+							order.RoleCollection[0].Role != null)
+						{
+							ORMCore.ObjectType o = order.RoleCollection[0].Role.RolePlayer;
+							if (o == sourceObjectType)
+							{
+								r1.PredicateText = text;
+							}
+							else if (o == targetObjectType)
+							{
+								r2.PredicateText = text;
+							}
+						}
+					}
 				}
 				if (uSource != null && uSource == uTarget)
 				{
@@ -321,6 +384,17 @@ namespace Neumont.Tools.ORMAbstractionToBarkerERBridge
 				} 
 				#endregion
 
+				#region primary id?
+				foreach (Uniqueness u in UniquenessIncludesConceptTypeChild.GetUniquenessCollection(relation))
+				{
+					if (u.IsPreferred)
+					{
+						r1.IsPrimaryIdComponent = true;
+						break;
+					}
+				}
+				#endregion
+
 				//notify elements added
 				if (notifyAdded != null)
 				{
@@ -335,6 +409,65 @@ namespace Neumont.Tools.ORMAbstractionToBarkerERBridge
 			{
 				//should not create binary association in this case
 				return false;
+			}
+		}
+		/// <summary>
+		/// for many-to-many associations; it is assumed that IsSimpleManyToManyAssociation has been
+		/// called on the passed-in concept type and returned true
+		/// </summary>
+		/// <param name="parentConceptType"></param>
+		/// <param name="notifyAdded"></param>
+		/// <param name="associationCounter"></param>
+		private static void CreateBinaryAssociation(ConceptType parentConceptType, INotifyElementAdded notifyAdded, ref int associationCounter)
+		{
+			if (BinaryAssociationHasConceptType.GetBinaryAssociation(parentConceptType).Count == 0)
+			{
+				LinkedElementCollection<ConceptTypeChild> associationChildren =
+					ConceptTypeHasChildAsPartOfAssociation.GetTargetCollection(parentConceptType);
+				ConceptTypeChild relation1, relation2;
+				ConceptType ct1, ct2;
+
+				if (null != (relation1 = associationChildren[0]) &&
+					null != (relation2 = associationChildren[1]) &&
+					null != (ct1 = relation1.Target as ConceptType) &&
+					null != (ct2 = relation2.Target as ConceptType))
+				{
+					// create association
+					BinaryAssociation b = new BinaryAssociation(parentConceptType.Store,
+								new PropertyAssignment[] { new PropertyAssignment(BinaryAssociation.NumberDomainPropertyId, associationCounter++) });
+					//new BinaryAssociationHasConceptTypeChild(b, relation);
+					BinaryAssociationHasConceptType.GetConceptType(b).Add(parentConceptType);
+
+					Role r1 = new Role(parentConceptType.Store,
+								new PropertyAssignment[] { new PropertyAssignment(Role.PredicateTextDomainPropertyId, ct1.Name) });
+
+					Role r2 = new Role(parentConceptType.Store,
+								new PropertyAssignment[] { new PropertyAssignment(Role.PredicateTextDomainPropertyId, ct2.Name) });
+
+					b.RoleCollection.Add(r1);
+					b.RoleCollection.Add(r2);
+
+					EntityType sourceEntity = EntityTypeIsPrimarilyForConceptType.GetEntityType(ct1);
+					EntityType targetEntity = EntityTypeIsPrimarilyForConceptType.GetEntityType(ct2);
+					sourceEntity.RoleCollection.Add(r1);
+					targetEntity.RoleCollection.Add(r2);
+					sourceEntity.BarkerErModel.BinaryAssociationCollection.Add(b);
+
+					//determine whether roles are mandatory or optional
+					//TODO
+
+					//set multi-values
+					r1.IsMultiValued = true;
+					r2.IsMultiValued = true;
+
+					//notify elements added
+					if (notifyAdded != null)
+					{
+						notifyAdded.ElementAdded(b, true);
+						notifyAdded.ElementAdded(r1, true);
+						notifyAdded.ElementAdded(r2, true);
+					}
+				}
 			}
 		}
 		private static Attribute CreateAttributeForInformationType(InformationType informationType, Stack<ConceptTypeChild> conceptTypeChildPath)

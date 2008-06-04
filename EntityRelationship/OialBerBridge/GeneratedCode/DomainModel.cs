@@ -75,6 +75,7 @@ namespace Neumont.Tools.ORMAbstractionToBarkerERBridge
 				typeof(GenerationSettingTargetsBarkerERModel),
 				typeof(AttributeHasConceptTypeChild),
 				typeof(BinaryAssociationHasConceptTypeChild),
+				typeof(BinaryAssociationHasConceptType),
 			};
 		}
 		/// <summary>
@@ -107,6 +108,8 @@ namespace Neumont.Tools.ORMAbstractionToBarkerERBridge
 				new DomainRolePlayerInfo(typeof(AttributeHasConceptTypeChild), "ConceptTypeChild", AttributeHasConceptTypeChild.ConceptTypeChildDomainRoleId),
 				new DomainRolePlayerInfo(typeof(BinaryAssociationHasConceptTypeChild), "BinaryAssociation", BinaryAssociationHasConceptTypeChild.BinaryAssociationDomainRoleId),
 				new DomainRolePlayerInfo(typeof(BinaryAssociationHasConceptTypeChild), "ConceptTypeChild", BinaryAssociationHasConceptTypeChild.ConceptTypeChildDomainRoleId),
+				new DomainRolePlayerInfo(typeof(BinaryAssociationHasConceptType), "BinaryAssociation", BinaryAssociationHasConceptType.BinaryAssociationDomainRoleId),
+				new DomainRolePlayerInfo(typeof(BinaryAssociationHasConceptType), "ConceptType", BinaryAssociationHasConceptType.ConceptTypeDomainRoleId),
 			};
 		}
 		#endregion
@@ -162,12 +165,13 @@ namespace Neumont.Tools.ORMAbstractionToBarkerERBridge
 	
 			if (createElementLinkMap == null)
 			{
-				createElementLinkMap = new global::System.Collections.Generic.Dictionary<global::System.Type, int>(5);
+				createElementLinkMap = new global::System.Collections.Generic.Dictionary<global::System.Type, int>(6);
 				createElementLinkMap.Add(typeof(BarkerErModelIsForAbstractionModel), 0);
 				createElementLinkMap.Add(typeof(EntityTypeIsPrimarilyForConceptType), 1);
 				createElementLinkMap.Add(typeof(GenerationSettingTargetsBarkerERModel), 2);
 				createElementLinkMap.Add(typeof(AttributeHasConceptTypeChild), 3);
 				createElementLinkMap.Add(typeof(BinaryAssociationHasConceptTypeChild), 4);
+				createElementLinkMap.Add(typeof(BinaryAssociationHasConceptType), 5);
 			}
 			int index;
 			if (!createElementLinkMap.TryGetValue(elementLinkType, out index))
@@ -181,6 +185,7 @@ namespace Neumont.Tools.ORMAbstractionToBarkerERBridge
 				case 2: return new GenerationSettingTargetsBarkerERModel(partition, roleAssignments, propertyAssignments);
 				case 3: return new AttributeHasConceptTypeChild(partition, roleAssignments, propertyAssignments);
 				case 4: return new BinaryAssociationHasConceptTypeChild(partition, roleAssignments, propertyAssignments);
+				case 5: return new BinaryAssociationHasConceptType(partition, roleAssignments, propertyAssignments);
 				default: return null;
 			}
 		}

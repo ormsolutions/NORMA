@@ -156,6 +156,22 @@
 				</DomainRole>
 			</Target>
 		</DomainRelationship>
+		<DomainRelationship Id="E9923CB9-22EF-4866-9E54-3799C8311DAE" Name="BinaryAssociationHasConceptType" Namespace="Neumont.Tools.ORMAbstractionToBarkerERBridge" AllowsDuplicates="true">
+			<Source>
+				<DomainRole Id="B56F9740-E940-4021-81D6-3D49F6EA911B" Description="" Name="BinaryAssociation" PropertyName="ConceptType" Multiplicity="OneMany">
+					<RolePlayer>
+						<DomainClassMoniker Name="/Neumont.Tools.EntityRelationshipModels.Barker/BinaryAssociation"/>
+					</RolePlayer>
+				</DomainRole>
+			</Source>
+			<Target>
+				<DomainRole Id="453529F7-8950-48FD-BC2A-DC56D8A32672" Description="" Name="ConceptType" PropertyName="BinaryAssociation" Multiplicity="OneMany">
+					<RolePlayer>
+						<DomainClassMoniker Name="/Neumont.Tools.ORMAbstraction/ConceptType"/>
+					</RolePlayer>
+				</DomainRole>
+			</Target>
+		</DomainRelationship>
 	</Relationships>
 
 	<Types>

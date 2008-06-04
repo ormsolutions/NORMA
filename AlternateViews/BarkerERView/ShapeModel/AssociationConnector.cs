@@ -33,7 +33,7 @@ namespace Neumont.Tools.ORM.Views.BarkerERView
 	{
 		#region Customize appearance
 		/// <summary>
-		/// Overridden to disallow selection of this <see cref="T:Neumont.Tools.ORM.Views.RelationalView.ForeignKeyConnector"/>.
+		/// Overridden to disallow selection of this <see cref="T:Neumont.Tools.ORM.Views.BarkerERView.AssociationConnector"/>.
 		/// </summary>
 		public override bool CanSelect
 		{
@@ -42,11 +42,12 @@ namespace Neumont.Tools.ORM.Views.BarkerERView
 				return false;
 			}
 		}
+		
 		/// <summary>
-		/// Overridden to disallow manual routing of this <see cref="T:Neumont.Tools.ORM.Views.RelationalView.ForeignKeyConnector"/>.
+		/// Overridden to disallow manual routing of this <see cref="T:Neumont.Tools.ORM.Views.BarkerERView.AssociationConnector"/>.
 		/// </summary>
 		/// <remarks>
-		/// If this returns <see langword="true"/> while the <see cref="P:Neumont.Tools.ORM.Views.RelationalView.ForeignKeyConnector.CanSelect"/>
+		/// If this returns <see langword="true"/> while the <see cref="P:Neumont.Tools.ORM.Views.BarkerERView.AssociationConnector.CanSelect"/>
 		/// property returns <see langword="false"/>, the application will crash while trying to manually route the connector.
 		/// </remarks>
 		public override bool CanManuallyRoute
@@ -66,6 +67,7 @@ namespace Neumont.Tools.ORM.Views.BarkerERView
 				return true;
 			}
 		}
+		
 		/// <summary>
 		/// Indicate the source/target columns for the foreign key connector
 		/// </summary>
@@ -75,8 +77,7 @@ namespace Neumont.Tools.ORM.Views.BarkerERView
 			return string.Format(
 				"Association #{0}; Role 1: {1}, Role 2: {2}", 
 				link.Number, link.RoleCollection[0].PredicateText, link.RoleCollection[1].PredicateText);
-		}
-		
+		}		
 
 		#endregion // Customize appearance
 		#region reconfigure
@@ -120,12 +121,14 @@ namespace Neumont.Tools.ORM.Views.BarkerERView
 		#region EntityRelationshipShapeGeometry class
 		private const double CrowsFootHeight = .12;
 		private const double CrowsFootHalfWidth = .05;
+		private const double TextPaddingX = .08;
+		private const double TextPaddingY = .05;
 		private const double InfEngOuterOneMarkOffset = .03;
 		private const double InfEngInnerOneMarkOffset = .06;
 		private const double InfEngMarkerHalfWidth = .04;
 		private const bool CrowsFootParallelMode = true;
 		private static float[] DashPattern = new float[] { 7.0F, 3.0F };
-		private sealed class EntityRelationshipShapeGeometry : ClickThroughObliqueBinaryLinkShapeGeometry
+		private sealed class EntityRelationshipShapeGeometry : LinkShapeGeometry
 		{
 			#region Constructor and singleton
 			/// <summary>
@@ -147,7 +150,7 @@ namespace Neumont.Tools.ORM.Views.BarkerERView
 			{
 				AssociationConnector connector = (AssociationConnector)geometryHost;
 				BarkerErModelContainsBinaryAssociation link = connector.ModelElement as BarkerErModelContainsBinaryAssociation;
-
+				
 				EdgePointCollection edgePoints;
 				int edgePointCount;
 				BinaryAssociation association;
@@ -185,16 +188,32 @@ namespace Neumont.Tools.ORM.Views.BarkerERView
 					
 					if (fromRole != null && toRole != null)
 					{
-						DrawAssociationEnd(e, geometryHost, connector.FromShape, p2, midP, fromRole.IsMultiValued, !fromRole.IsMandatory, fromRole.PredicateText);
-						DrawAssociationEnd(e, geometryHost, connector.ToShape, p1, midP, toRole.IsMultiValued, !toRole.IsMandatory, toRole.PredicateText);
+						bool fromOptional = !fromRole.IsMandatory;
+						bool toOptional = !toRole.IsMandatory;
+						bool bothOptional = fromOptional && toOptional;
+
+						PointF? v1 = null, v2 = null;
+						DrawAssociationEnd(
+							e, geometryHost, connector.FromShape, p2, midP, fromRole.IsMultiValued, fromOptional, fromRole.IsPrimaryIdComponent,
+							fromRole.PredicateText, ref v1, bothOptional);
+						DrawAssociationEnd(
+							e, geometryHost, connector.ToShape, p1, midP, toRole.IsMultiValued, toOptional, toRole.IsPrimaryIdComponent,
+							toRole.PredicateText, ref v2, bothOptional);
+
+						if (bothOptional && v1.HasValue && v2.HasValue)
+						{
+							Pen pen = geometryHost.GeometryStyleSet.GetPen(DiagramPens.ConnectionLine);
+							pen = (Pen)pen.Clone();
+							pen.DashPattern = DashPattern;
+							e.Graphics.DrawLine(pen, v1.Value, v2.Value);
+						}
 					}
 				}
 			}
-
 			private static void DrawAssociationEnd(
 				DiagramPaintEventArgs e, IGeometryHost geometryHost,
 				NodeShape node, PointD pointOnBorder, PointD endPoint,
-				bool many, bool optional, string predicateText)
+				bool many, bool optional, bool id, string predicateText, ref PointF? lineEnd, bool bothOptional)
 			{
 				Pen pen;
 				ShapeElement shapeHost;
@@ -220,15 +239,30 @@ namespace Neumont.Tools.ORM.Views.BarkerERView
 					if (optional)
 					{
 						mainLinePen.DashPattern = DashPattern;
+						mainLinePen.DashOffset = DashPattern[0];
 					}
 					if (many & optional)
 					{
-						g.DrawLine(mainLinePen, PointD.ToPointF(endPoint), PointD.ToPointF(vertexPoint));
+						if (!bothOptional)
+						{
+							g.DrawLine(mainLinePen, PointD.ToPointF(endPoint), PointD.ToPointF(vertexPoint));
+						}
+						else
+						{
+							lineEnd = PointD.ToPointF(vertexPoint);
+						}
 						g.DrawLine(pen, PointD.ToPointF(vertexPoint), PointD.ToPointF(pointOnBorder));
 					}
 					else
 					{
-						g.DrawLine(mainLinePen, PointD.ToPointF(endPoint), PointD.ToPointF(pointOnBorder));
+						if (!bothOptional)
+						{
+							g.DrawLine(mainLinePen, PointD.ToPointF(endPoint), PointD.ToPointF(pointOnBorder));
+						}
+						else
+						{
+							lineEnd = PointD.ToPointF(pointOnBorder);
+						}
 					}
 					#endregion
 					#region draw crow's foot if necessary
@@ -246,13 +280,28 @@ namespace Neumont.Tools.ORM.Views.BarkerERView
 						}
 					}
 					#endregion
+					#region draw tick mark if necessary
+					if (id)
+					{
+						PointD oneMarkLeft = vertexPoint;
+						double cosAngle = Math.Cos(angle);
+						double sinAngle = Math.Sin(angle);
+
+						oneMarkLeft.Offset(InfEngInnerOneMarkOffset * cosAngle, InfEngInnerOneMarkOffset * sinAngle);
+						PointD oneMarkRight = oneMarkLeft;
+						oneMarkLeft.Offset(-InfEngMarkerHalfWidth * sinAngle, InfEngMarkerHalfWidth * cosAngle);
+						oneMarkRight.Offset(InfEngMarkerHalfWidth * sinAngle, -InfEngMarkerHalfWidth * cosAngle);
+
+						g.DrawLine(pen, PointD.ToPointF(oneMarkLeft), PointD.ToPointF(oneMarkRight));
+					}
+					#endregion
 					#region draw text
 
 					//determine the line's properties
 					double edgeX = pointOnBorder.X;
 					double edgeY = pointOnBorder.Y;
 					EntitySideType whichSideShapeIsOn = EntitySide.FindWhichSide(pointOnBorder, shapeHost.GeometryBoundingBox);
-					double x = 0, y = 0;
+					double w = 0;//, y = 0;
 					angle = Math.Atan2(Math.Abs(endPoint.Y - edgeY), Math.Abs(endPoint.X - edgeX));
 					double inDegrees = angle * 180 / Math.PI;
 					if (inDegrees < 0)
@@ -261,45 +310,39 @@ namespace Neumont.Tools.ORM.Views.BarkerERView
 					}
 					
 					SizeF textSize = g.MeasureString(predicateText, font);
-					x = textSize.Width;
-					y = Math.Abs(x * Math.Tan(angle));
+					w = textSize.Width;
+					//y = Math.Abs(w * Math.Tan(angle));
 
 					//determine what to offset
 					double textX = edgeX;
 					double textY = edgeY;
-
-					if (whichSideShapeIsOn == EntitySideType.OnRight)
-					{
-						textX -= x;
-						if (inDegrees < 180)
-						{
-							textY -= y;
-						}
-					}
-					else if (whichSideShapeIsOn == EntitySideType.OnLeft && (inDegrees > 180 || inDegrees < 90))
-					{
-						textY -= y;
-					}
-					if (whichSideShapeIsOn != EntitySideType.OnTop)
-					{
-						textY -= textSize.Height;
-					}
-					//now add padding
-					double paddingX = CrowsFootHeight, paddingY = CrowsFootHeight;
+					double h = textSize.Height;
+					bool lessThan45 = inDegrees < 45;
+					
 					switch (whichSideShapeIsOn)
 					{
 						case EntitySideType.OnBottom:
-						case EntitySideType.OnLeft:
-							textX += paddingX;
-							textY -= paddingY;
+							textY -= TextPaddingY + h;
+							if (lessThan45) textX += TextPaddingX;
+							else textX -= TextPaddingX + w;
 							break;
-						case EntitySideType.OnRight:
-							textX -= paddingX;
-							textY -= paddingY;
-							break;
+
 						case EntitySideType.OnTop:
-							textX += paddingX;
-							textY += paddingY;
+							textY += TextPaddingY;
+							if (lessThan45)textX -= TextPaddingX + w;
+							else textX += TextPaddingX;
+							break;
+
+						case EntitySideType.OnLeft:
+							textX += TextPaddingX;
+							if (lessThan45)textY -= TextPaddingY + h;
+							else textY += TextPaddingY;
+							break;
+
+						case EntitySideType.OnRight:
+							textX -= TextPaddingX + w;
+							if (lessThan45) textY += TextPaddingY;
+							else textY -= TextPaddingY + h;
 							break;
 					}
 

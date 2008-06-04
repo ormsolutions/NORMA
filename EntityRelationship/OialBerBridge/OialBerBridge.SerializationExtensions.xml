@@ -42,6 +42,10 @@
 				<se:Role RoleName="BinaryAssociation"/>
 				<se:Role RoleName="ConceptTypeChild"/>
 			</se:RootLink>
+			<se:RootLink Class="BinaryAssociationHasConceptType" PrimaryLinkElement="true">
+				<se:Role RoleName="BinaryAssociation"/>
+				<se:Role RoleName="ConceptType"/>
+			</se:RootLink>
 		</se:Container>
 		</se:RootLinks>
 	</se:DomainModel>

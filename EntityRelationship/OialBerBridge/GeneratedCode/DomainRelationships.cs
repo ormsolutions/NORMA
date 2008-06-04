@@ -1196,3 +1196,203 @@ namespace Neumont.Tools.ORMAbstractionToBarkerERBridge
 		#endregion
 	}
 }
+namespace Neumont.Tools.ORMAbstractionToBarkerERBridge
+{
+	/// <summary>
+	/// DomainRelationship BinaryAssociationHasConceptType
+	/// Description for
+	/// Neumont.Tools.ORMAbstractionToBarkerERBridge.BinaryAssociationHasConceptType
+	/// </summary>
+	[DslDesign::DisplayNameResource("Neumont.Tools.ORMAbstractionToBarkerERBridge.BinaryAssociationHasConceptType.DisplayName", typeof(global::Neumont.Tools.ORMAbstractionToBarkerERBridge.ORMAbstractionToBarkerERBridgeDomainModel), "Neumont.Tools.ORMAbstractionToBarkerERBridge.GeneratedCode.DomainModelResx")]
+	[DslDesign::DescriptionResource("Neumont.Tools.ORMAbstractionToBarkerERBridge.BinaryAssociationHasConceptType.Description", typeof(global::Neumont.Tools.ORMAbstractionToBarkerERBridge.ORMAbstractionToBarkerERBridgeDomainModel), "Neumont.Tools.ORMAbstractionToBarkerERBridge.GeneratedCode.DomainModelResx")]
+	[global::System.CLSCompliant(true)]
+	[DslModeling::DomainRelationship(AllowsDuplicates = true)]
+	[DslModeling::DomainObjectId("e9923cb9-22ef-4866-9e54-3799c8311dae")]
+	public partial class BinaryAssociationHasConceptType : DslModeling::ElementLink
+	{
+		#region Constructors, domain class Id
+		
+		/// <summary>
+		/// BinaryAssociationHasConceptType domain class Id.
+		/// </summary>
+		public static readonly new global::System.Guid DomainClassId = new global::System.Guid(0xe9923cb9, 0x22ef, 0x4866, 0x9e, 0x54, 0x37, 0x99, 0xc8, 0x31, 0x1d, 0xae);
+	
+				
+		/// <summary>
+		/// Constructor
+		/// Creates a BinaryAssociationHasConceptType link in the same Partition as the given BinaryAssociation
+		/// </summary>
+		/// <param name="source">BinaryAssociation to use as the source of the relationship.</param>
+		/// <param name="target">ConceptType to use as the target of the relationship.</param>
+		public BinaryAssociationHasConceptType(global::Neumont.Tools.EntityRelationshipModels.Barker.BinaryAssociation source, global::Neumont.Tools.ORMAbstraction.ConceptType target)
+			: base((source != null ? source.Partition : null), new DslModeling::RoleAssignment[]{new DslModeling::RoleAssignment(BinaryAssociationHasConceptType.BinaryAssociationDomainRoleId, source), new DslModeling::RoleAssignment(BinaryAssociationHasConceptType.ConceptTypeDomainRoleId, target)}, null)
+		{
+		}
+		
+		/// <summary>
+		/// Constructor
+		/// </summary>
+		/// <param name="store">Store where new link is to be created.</param>
+		/// <param name="roleAssignments">List of relationship role assignments.</param>
+		public BinaryAssociationHasConceptType(DslModeling::Store store, params DslModeling::RoleAssignment[] roleAssignments)
+			: base(store != null ? store.DefaultPartition : null, roleAssignments, null)
+		{
+		}
+		
+		/// <summary>
+		/// Constructor
+		/// </summary>
+		/// <param name="store">Store where new link is to be created.</param>
+		/// <param name="roleAssignments">List of relationship role assignments.</param>
+		/// <param name="propertyAssignments">List of properties assignments to set on the new link.</param>
+		public BinaryAssociationHasConceptType(DslModeling::Store store, DslModeling::RoleAssignment[] roleAssignments, DslModeling::PropertyAssignment[] propertyAssignments)
+			: base(store != null ? store.DefaultPartition : null, roleAssignments, propertyAssignments)
+		{
+		}
+		
+		/// <summary>
+		/// Constructor
+		/// </summary>
+		/// <param name="partition">Partition where new link is to be created.</param>
+		/// <param name="roleAssignments">List of relationship role assignments.</param>
+		public BinaryAssociationHasConceptType(DslModeling::Partition partition, params DslModeling::RoleAssignment[] roleAssignments)
+			: base(partition, roleAssignments, null)
+		{
+		}
+		
+		/// <summary>
+		/// Constructor
+		/// </summary>
+		/// <param name="partition">Partition where new link is to be created.</param>
+		/// <param name="roleAssignments">List of relationship role assignments.</param>
+		/// <param name="propertyAssignments">List of properties assignments to set on the new link.</param>
+		public BinaryAssociationHasConceptType(DslModeling::Partition partition, DslModeling::RoleAssignment[] roleAssignments, DslModeling::PropertyAssignment[] propertyAssignments)
+			: base(partition, roleAssignments, propertyAssignments)
+		{
+		}
+		#endregion
+		#region BinaryAssociation domain role code
+		
+		/// <summary>
+		/// BinaryAssociation domain role Id.
+		/// </summary>
+		public static readonly global::System.Guid BinaryAssociationDomainRoleId = new global::System.Guid(0xb56f9740, 0xe940, 0x4021, 0x81, 0xd6, 0x3d, 0x49, 0xf6, 0xea, 0x91, 0x1b);
+		
+		/// <summary>
+		/// DomainRole BinaryAssociation
+		/// </summary>
+		[DslDesign::DisplayNameResource("Neumont.Tools.ORMAbstractionToBarkerERBridge.BinaryAssociationHasConceptType/BinaryAssociation.DisplayName", typeof(global::Neumont.Tools.ORMAbstractionToBarkerERBridge.ORMAbstractionToBarkerERBridgeDomainModel), "Neumont.Tools.ORMAbstractionToBarkerERBridge.GeneratedCode.DomainModelResx")]
+		[DslDesign::DescriptionResource("Neumont.Tools.ORMAbstractionToBarkerERBridge.BinaryAssociationHasConceptType/BinaryAssociation.Description", typeof(global::Neumont.Tools.ORMAbstractionToBarkerERBridge.ORMAbstractionToBarkerERBridgeDomainModel), "Neumont.Tools.ORMAbstractionToBarkerERBridge.GeneratedCode.DomainModelResx")]
+		[DslModeling::DomainRole(DslModeling::DomainRoleOrder.Source, PropertyName = "ConceptType", PropertyDisplayNameKey="Neumont.Tools.ORMAbstractionToBarkerERBridge.BinaryAssociationHasConceptType/BinaryAssociation.PropertyDisplayName", Multiplicity = DslModeling::Multiplicity.OneMany)]
+		[DslModeling::DomainObjectId("b56f9740-e940-4021-81d6-3d49f6ea911b")]
+		public virtual global::Neumont.Tools.EntityRelationshipModels.Barker.BinaryAssociation BinaryAssociation
+		{
+			[global::System.Diagnostics.DebuggerStepThrough]
+			get
+			{
+				return (global::Neumont.Tools.EntityRelationshipModels.Barker.BinaryAssociation)DslModeling::DomainRoleInfo.GetRolePlayer(this, BinaryAssociationDomainRoleId);
+			}
+			[global::System.Diagnostics.DebuggerStepThrough]
+			set
+			{
+				DslModeling::DomainRoleInfo.SetRolePlayer(this, BinaryAssociationDomainRoleId, value);
+			}
+		}
+				
+		#endregion
+		#region Static methods to access BinaryAssociation of a ConceptType
+		/// <summary>
+		/// Gets a list of BinaryAssociation.
+		/// </summary>
+		[global::System.Diagnostics.DebuggerStepThrough]
+		[global::System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Design", "CA1011")]
+		public static DslModeling::LinkedElementCollection<global::Neumont.Tools.EntityRelationshipModels.Barker.BinaryAssociation> GetBinaryAssociation(global::Neumont.Tools.ORMAbstraction.ConceptType element)
+		{
+			return new DslModeling::LinkedElementCollection<global::Neumont.Tools.EntityRelationshipModels.Barker.BinaryAssociation>(element, ConceptTypeDomainRoleId);
+		}
+		#endregion
+		#region ConceptType domain role code
+		
+		/// <summary>
+		/// ConceptType domain role Id.
+		/// </summary>
+		public static readonly global::System.Guid ConceptTypeDomainRoleId = new global::System.Guid(0x453529f7, 0x8950, 0x48fd, 0xbc, 0x2a, 0xdc, 0x56, 0xd8, 0xa3, 0x26, 0x72);
+		
+		/// <summary>
+		/// DomainRole ConceptType
+		/// </summary>
+		[DslDesign::DisplayNameResource("Neumont.Tools.ORMAbstractionToBarkerERBridge.BinaryAssociationHasConceptType/ConceptType.DisplayName", typeof(global::Neumont.Tools.ORMAbstractionToBarkerERBridge.ORMAbstractionToBarkerERBridgeDomainModel), "Neumont.Tools.ORMAbstractionToBarkerERBridge.GeneratedCode.DomainModelResx")]
+		[DslDesign::DescriptionResource("Neumont.Tools.ORMAbstractionToBarkerERBridge.BinaryAssociationHasConceptType/ConceptType.Description", typeof(global::Neumont.Tools.ORMAbstractionToBarkerERBridge.ORMAbstractionToBarkerERBridgeDomainModel), "Neumont.Tools.ORMAbstractionToBarkerERBridge.GeneratedCode.DomainModelResx")]
+		[DslModeling::DomainRole(DslModeling::DomainRoleOrder.Target, PropertyName = "BinaryAssociation", PropertyDisplayNameKey="Neumont.Tools.ORMAbstractionToBarkerERBridge.BinaryAssociationHasConceptType/ConceptType.PropertyDisplayName", Multiplicity = DslModeling::Multiplicity.OneMany)]
+		[DslModeling::DomainObjectId("453529f7-8950-48fd-bc2a-dc56d8a32672")]
+		public virtual global::Neumont.Tools.ORMAbstraction.ConceptType ConceptType
+		{
+			[global::System.Diagnostics.DebuggerStepThrough]
+			get
+			{
+				return (global::Neumont.Tools.ORMAbstraction.ConceptType)DslModeling::DomainRoleInfo.GetRolePlayer(this, ConceptTypeDomainRoleId);
+			}
+			[global::System.Diagnostics.DebuggerStepThrough]
+			set
+			{
+				DslModeling::DomainRoleInfo.SetRolePlayer(this, ConceptTypeDomainRoleId, value);
+			}
+		}
+				
+		#endregion
+		#region Static methods to access ConceptType of a BinaryAssociation
+		/// <summary>
+		/// Gets a list of ConceptType.
+		/// </summary>
+		[global::System.Diagnostics.DebuggerStepThrough]
+		[global::System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Design", "CA1011")]
+		public static DslModeling::LinkedElementCollection<global::Neumont.Tools.ORMAbstraction.ConceptType> GetConceptType(global::Neumont.Tools.EntityRelationshipModels.Barker.BinaryAssociation element)
+		{
+			return new DslModeling::LinkedElementCollection<global::Neumont.Tools.ORMAbstraction.ConceptType>(element, BinaryAssociationDomainRoleId);
+		}
+		#endregion
+		#region BinaryAssociation link accessor
+		/// <summary>
+		/// Get the list of BinaryAssociationHasConceptType links to a BinaryAssociation.
+		/// </summary>
+		[global::System.Diagnostics.DebuggerStepThrough]
+		[global::System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Design", "CA1011")]
+		public static global::System.Collections.ObjectModel.ReadOnlyCollection<global::Neumont.Tools.ORMAbstractionToBarkerERBridge.BinaryAssociationHasConceptType> GetLinksToConceptType ( global::Neumont.Tools.EntityRelationshipModels.Barker.BinaryAssociation binaryAssociationInstance )
+		{
+			return DslModeling::DomainRoleInfo.GetElementLinks<global::Neumont.Tools.ORMAbstractionToBarkerERBridge.BinaryAssociationHasConceptType>(binaryAssociationInstance, global::Neumont.Tools.ORMAbstractionToBarkerERBridge.BinaryAssociationHasConceptType.BinaryAssociationDomainRoleId);
+		}
+		#endregion
+		#region ConceptType link accessor
+		/// <summary>
+		/// Get the list of BinaryAssociationHasConceptType links to a ConceptType.
+		/// </summary>
+		[global::System.Diagnostics.DebuggerStepThrough]
+		[global::System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Design", "CA1011")]
+		public static global::System.Collections.ObjectModel.ReadOnlyCollection<global::Neumont.Tools.ORMAbstractionToBarkerERBridge.BinaryAssociationHasConceptType> GetLinksToBinaryAssociation ( global::Neumont.Tools.ORMAbstraction.ConceptType conceptTypeInstance )
+		{
+			return DslModeling::DomainRoleInfo.GetElementLinks<global::Neumont.Tools.ORMAbstractionToBarkerERBridge.BinaryAssociationHasConceptType>(conceptTypeInstance, global::Neumont.Tools.ORMAbstractionToBarkerERBridge.BinaryAssociationHasConceptType.ConceptTypeDomainRoleId);
+		}
+		#endregion
+		#region BinaryAssociationHasConceptType instance accessors
+		
+		/// <summary>
+		/// Get any BinaryAssociationHasConceptType links between a given BinaryAssociation and a ConceptType.
+		/// </summary>
+		[global::System.Diagnostics.DebuggerStepThrough]
+		[global::System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Design", "CA1011")]
+		public static global::System.Collections.ObjectModel.ReadOnlyCollection<global::Neumont.Tools.ORMAbstractionToBarkerERBridge.BinaryAssociationHasConceptType> GetLinks( global::Neumont.Tools.EntityRelationshipModels.Barker.BinaryAssociation source, global::Neumont.Tools.ORMAbstraction.ConceptType target )
+		{
+			global::System.Collections.Generic.List<global::Neumont.Tools.ORMAbstractionToBarkerERBridge.BinaryAssociationHasConceptType> outLinks = new global::System.Collections.Generic.List<global::Neumont.Tools.ORMAbstractionToBarkerERBridge.BinaryAssociationHasConceptType>();
+			global::System.Collections.Generic.IList<global::Neumont.Tools.ORMAbstractionToBarkerERBridge.BinaryAssociationHasConceptType> links = DslModeling::DomainRoleInfo.GetElementLinks<global::Neumont.Tools.ORMAbstractionToBarkerERBridge.BinaryAssociationHasConceptType>(source, global::Neumont.Tools.ORMAbstractionToBarkerERBridge.BinaryAssociationHasConceptType.BinaryAssociationDomainRoleId);
+			foreach ( global::Neumont.Tools.ORMAbstractionToBarkerERBridge.BinaryAssociationHasConceptType link in links )
+			{
+				if ( target.Equals(link.ConceptType) )
+				{
+					outLinks.Add(link);
+				}
+			}
+			return outLinks.AsReadOnly();
+		}
+		#endregion
+	}
+}

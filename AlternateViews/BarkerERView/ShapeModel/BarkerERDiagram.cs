@@ -56,6 +56,7 @@ namespace Neumont.Tools.ORM.Views.BarkerERView
 			: base(partition, propertyAssignments)
 		{
 			this.Name = Neumont.Tools.Modeling.Design.ResourceAccessor<BarkerERDiagram>.ResourceManager.GetString(NameResourceName);
+			NodeToNodeClearance = new SizeD(1.75, 1.75);
 		}
 		public override void OnInitialize()
 		{

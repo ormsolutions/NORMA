@@ -484,7 +484,7 @@ namespace Neumont.Tools.EntityRelationshipModels.Barker
 		{
 			get
 			{
-				return this.Number.ToString(CultureInfo.CurrentCulture);
+				return string.Format("Association #{0}",  this.Number.ToString(CultureInfo.CurrentCulture));
 			}
 		}
 		string ISurveyNode.EditableSurveyName

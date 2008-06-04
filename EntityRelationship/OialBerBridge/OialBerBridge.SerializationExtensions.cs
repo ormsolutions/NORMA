@@ -107,7 +107,10 @@ namespace Neumont.Tools.ORMAbstractionToBarkerERBridge
 							new CustomSerializedStandaloneRelationshipRole("ConceptType", EntityTypeIsPrimarilyForConceptType.ConceptTypeDomainRoleId)}, null, null, null),
 						new CustomSerializedStandaloneRelationship(BinaryAssociationHasConceptTypeChild.DomainClassId, new CustomSerializedStandaloneRelationshipRole[]{
 							new CustomSerializedStandaloneRelationshipRole("BinaryAssociation", BinaryAssociationHasConceptTypeChild.BinaryAssociationDomainRoleId),
-							new CustomSerializedStandaloneRelationshipRole("ConceptTypeChild", BinaryAssociationHasConceptTypeChild.ConceptTypeChildDomainRoleId)}, null, null, null)})};
+							new CustomSerializedStandaloneRelationshipRole("ConceptTypeChild", BinaryAssociationHasConceptTypeChild.ConceptTypeChildDomainRoleId)}, null, null, null),
+						new CustomSerializedStandaloneRelationship(BinaryAssociationHasConceptType.DomainClassId, new CustomSerializedStandaloneRelationshipRole[]{
+							new CustomSerializedStandaloneRelationshipRole("BinaryAssociation", BinaryAssociationHasConceptType.BinaryAssociationDomainRoleId),
+							new CustomSerializedStandaloneRelationshipRole("ConceptType", BinaryAssociationHasConceptType.ConceptTypeDomainRoleId)}, null, null, null)})};
 				ORMAbstractionToBarkerERBridgeDomainModel.myRootRelationshipContainers = retVal;
 			}
 			return retVal;
