@@ -863,10 +863,8 @@ namespace Neumont.Tools.ORMAbstractionToConceptualDatabaseBridge
 				//    assimilations, the last concept type is the targetConceptType that was passed in to
 				//    this method.
 				//    If the table is also for (rather than primarily for) this last concept type, the
-				//    assimilation path from this last concept type to the target table is inserted at the
-				//    beginning of the desired path. Note that the assimilation path stored on the
-				//    TableIsAlsoForConceptType relationship is in the opposite order (from table to concept
-				//    type), so it will need to be inserted in reverse.
+				//    assimilation path from the target table to this last concept type is inserted at
+				//    the beginning of the desired path.
 
 				int sourcePathIndex = sourcePathStartIndex;
 				// The current concept type is the concept type that we are coming from as we walk the path.
@@ -879,6 +877,7 @@ namespace Neumont.Tools.ORMAbstractionToConceptualDatabaseBridge
 						sourcePath[sourcePathIndex] as ConceptTypeAssimilatesConceptType;
 					if (assimilationPathStep == null)
 					{
+						// We hit a concept type relation or an information type, so we're done.
 						break;
 					}
 					ConceptType nextConceptType = assimilationPathStep.AssimilatedConceptType;
@@ -906,7 +905,7 @@ namespace Neumont.Tools.ORMAbstractionToConceptualDatabaseBridge
 				{
 					// Since the last concept type we hit is not the concept type that the
 					// table is primarily for, we need to look for a column that starts with
-					// the assimilation path from that concept type to the table.
+					// the assimilation path from the table to that concept type.
 					TableIsAlsoForConceptType tableIsAlsoForConceptType =
 						TableIsAlsoForConceptType.GetLink(targetTable, currentConceptType);
 					Debug.Assert(tableIsAlsoForConceptType != null);
@@ -915,13 +914,9 @@ namespace Neumont.Tools.ORMAbstractionToConceptualDatabaseBridge
 
 					desiredPath =
 						new List<ConceptTypeChild>(assimilationPath.Count + (sourcePathCount - sourcePathIndex));
-
-					// Walk the assimilation path backwards, since we want the path from
-					// the concept type to the table, and it is stored as the path from the
-					// table to the concept type.
-					for (int i = assimilationPath.Count - 1; i >= 0; i--)
+					foreach (ConceptTypeAssimilatesConceptType assimilation in assimilationPath)
 					{
-						desiredPath.Add(assimilationPath[i]);
+						desiredPath.Add(assimilation);
 					}
 				}
 				else
@@ -936,7 +931,15 @@ namespace Neumont.Tools.ORMAbstractionToConceptualDatabaseBridge
 				}
 
 				Column targetColumn = GetColumnForExactPath(targetTableColumns, desiredPath);
-				Debug.Assert(targetColumn != null, "Could not find target column for reference constraint.");
+				if (targetColumn == null)
+				{
+					// Something went very wrong. Delete the reference constraint and bail out.
+					// This reference constraint will obviously be missing, but at least we won't
+					// be blocking legal changes to the OIAL model.
+					Debug.Fail("Could not find target column for reference constraint.");
+					referenceConstraint.Delete();
+					return;
+				}
 
 				// Record the target column (so that we can use it to find the target uniqueness constraint).
 				targetColumns[columnIndex] = targetColumn;
@@ -976,7 +979,8 @@ namespace Neumont.Tools.ORMAbstractionToConceptualDatabaseBridge
 				}
 			}
 
-			Debug.Assert(referenceConstraint.TargetUniquenessConstraint != null);
+			Debug.Assert(referenceConstraint.TargetUniquenessConstraint != null,
+				"Could not find target uniqueness constraint for reference constraint.");
 		}
 
 		/// <summary>

@@ -256,6 +256,27 @@ namespace RelationalTests.FullRegeneration
 		public void Test8(Store store)
 		{
 		}
+		/// <summary>
+		/// NUnit
+		/// </summary>
+		[Test(Description = "Relational Load")]
+		[NUnitCategory("Relational")]
+		[NUnitCategory("FullRegeneration")]
+		public void Test9()
+		{
+			// Forward the call
+			Suite.RunNUnitTest(this, myTestServices);
+		}
+		/// <summary>
+		/// Test full regeneration of a concept type relation
+		/// to a concept type that inherits its preferred
+		/// identifier and is absorbed into a supertype
+		/// table through a multi-step assimilation path.
+		/// </summary>
+		[ORMTest("Relational", "FullRegeneration")]
+		public void Test9(Store store)
+		{
+		}
 		#endregion // Relational Load tests
 	}
 }
