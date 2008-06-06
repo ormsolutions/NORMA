@@ -25,15 +25,16 @@
 	xmlns:dep="http://schemas.orm.net/DIL/DILEP"
 	xmlns:dml="http://schemas.orm.net/DIL/DMIL"
 	xmlns:ddl="http://schemas.orm.net/DIL/DDIL"
+	xmlns:loc="urn:local-cache"
 	extension-element-prefixes="exsl dsf"
-	exclude-result-prefixes="orm ormRoot ormtooial oial odt cdb oialtocdb">
+	exclude-result-prefixes="orm ormRoot ormtooial oial odt cdb oialtocdb loc">
 
 	<xsl:import href="../../DIL/Transforms/DILSupportFunctions.xslt"/>
 
 	<xsl:output method="xml" encoding="utf-8" media-type="text/xml" indent="yes"/>
 	<xsl:strip-space elements="*"/>
 
-	<!-- These aren't used yet, but it doesn't hurt to leave them here for now. --> 
+	<!-- These aren't used yet, but it doesn't hurt to leave them here for now. -->
 	<xsl:param name="SMALLINT_MinValue" select="number(-32768)"/>
 	<xsl:param name="SMALLINT_MaxValue" select="number(32767)"/>
 	<xsl:param name="INTEGER_MinValue" select="number(-2147483648)"/>
@@ -44,14 +45,12 @@
 	<xsl:template match="ormRoot:ORM2">
 		<xsl:apply-templates select=".//cdb:Schema"/>
 	</xsl:template>
-	
 	<xsl:template match="cdb:Schema">
 
 		<xsl:variable name="oialDcilBridge" select="//oialtocdb:Bridge"/>
 		<xsl:variable name="ormOialBridge" select="//ormtooial:Bridge"/>
 		<xsl:variable name="oialModel" select="//oial:model[@id = $oialDcilBridge/oialtocdb:SchemaIsForAbstractionModel[@Schema = current()/@id]/@AbstractionModel]"/>
 		<xsl:variable name="ormModel" select="//orm:ORMModel[@id = $ormOialBridge/ormtooial:AbstractionModelIsForORMModel[@AbstractionModel = $oialModel/@id]/@ORMModel]"/>
-		
 		<xsl:variable name="mappedValueTypes" select="$ormModel/orm:Objects/orm:ValueType[@id = $ormOialBridge/ormtooial:InformationTypeFormatIsForValueType[@InformationTypeFormat = $oialModel/oial:informationTypeFormats/child::*/@id]/@ValueType]"/>
 		<xsl:variable name="initialDataTypeMappingsFragment">
 			<xsl:for-each select="$mappedValueTypes">
@@ -92,7 +91,6 @@
 			</xsl:apply-templates>
 		</dcl:schema>
 	</xsl:template>
-
 	<xsl:template match="cdb:Table" mode="GenerateSchemaContent">
 		<xsl:param name="oialDcilBridge"/>
 		<xsl:param name="ormOialBridge"/>
@@ -114,9 +112,12 @@
 				<xsl:with-param name="initialDataTypeMappings" select="$initialDataTypeMappings"/>
 			</xsl:apply-templates>
 			<xsl:apply-templates mode="GenerateTableContent" select="cdb:Constraints/cdb:*"/>
+			<xsl:apply-templates mode="GenerateAbsorptionConstraints" select=".">
+				<xsl:with-param name="oialDcilBridge" select="$oialDcilBridge"/>
+				<xsl:with-param name="oialModel" select="$oialModel"/>
+			</xsl:apply-templates>
 		</dcl:table>
 	</xsl:template>
-
 	<xsl:template match="cdb:Column" mode="GenerateTableContent">
 		<xsl:param name="oialDcilBridge"/>
 		<xsl:param name="ormOialBridge"/>
@@ -194,9 +195,8 @@
 
 		<xsl:variable name="dataTypeMapping" select="$dataTypeMappings[@id = $valueTypeId]"/>
 		<xsl:variable name="initialDataTypeMapping" select="$initialDataTypeMappings[@id = $valueTypeId]"/>
-
 		<xsl:variable name="columnName" select="dsf:makeValidIdentifier(@Name)"/>
-		
+
 		<dcl:column name="{$columnName}" isNullable="{@IsNullable='true' or @IsNullable=1}" isIdentity="false">
 			<xsl:if test="
 				count($conceptTypeChildPath) = 1 or
@@ -324,7 +324,278 @@
 		</dcl:referenceConstraint>
 	</xsl:template>
 
+	<xsl:template name="BuildChildAndLeafHierarchy">
+		<xsl:param name="startLinks"/>
+		<xsl:param name="allConceptTypes"/>
+		<xsl:param name="allConceptTypeChildren"/>
+		<xsl:param name="columns"/>
+		<xsl:param name="contextConceptType"/>
+		<xsl:param name="startingMandatoryDepth"/>
+		<xsl:param name="generateLeafNodes" select="false()"/>
+		<xsl:param name="depth" select="1"/>
+		<xsl:variable name="uniqueLeadConceptTypeChildFragment">
+			<xsl:variable name="sortedLeadConceptTypeChildFragment">
+				<xsl:for-each select="$startLinks[not(preceding-sibling::*[1]/@Column=@Column)]/@ConceptTypeChild">
+					<xsl:sort select="."/>
+					<loc:sorting>
+						<xsl:value-of select="."/>
+					</loc:sorting>
+				</xsl:for-each>
+			</xsl:variable>
+			<xsl:copy-of select="exsl:node-set($sortedLeadConceptTypeChildFragment)/child::*[not(following-sibling::*[1]=.)]"/>
+		</xsl:variable>
 
+		<xsl:for-each select="exsl:node-set($uniqueLeadConceptTypeChildFragment)/child::*">
+			<xsl:variable name="currentConceptTypeChild" select="$allConceptTypeChildren[@id=current()]"/>
+			<xsl:variable name="currentAssimilation" select="$currentConceptTypeChild/self::oial:assimilatedConceptType"/>
+			<xsl:variable name="parentConceptTypeId" select="$currentConceptTypeChild/parent::oial:children/parent::oial:conceptType/@id"/>
+			<xsl:variable name="currentMandatoryAndNextFragment">
+				<loc:dummy isMandatory="{$currentConceptTypeChild/@isMandatory}" nextComingFrom="{$currentConceptTypeChild/@ref}">
+					<!-- For most cases, the mandatory state corresponds directly to the isMandatory property on the
+					current concept type child. However, if the place we're coming from does not match the parent
+					of a current assimilation, then we're walking in reverse and we always treat it as mandatory. Also,
+					in this case, the next node maps to the assimilation parent. -->
+					<xsl:if test="$currentAssimilation and not($contextConceptType=$parentConceptTypeId)">
+						<xsl:attribute name="isMandatory">
+							<xsl:text>true</xsl:text>
+						</xsl:attribute>
+						<xsl:attribute name="nextComingFrom">
+							<xsl:value-of select="$parentConceptTypeId"/>
+						</xsl:attribute>
+					</xsl:if>
+				</loc:dummy>
+			</xsl:variable>
+			<xsl:variable name="currentMandatoryAndNext" select="exsl:node-set($currentMandatoryAndNextFragment)/child::*"/>
+			<xsl:variable name="mandatoryDepthFragment">
+				<xsl:choose>
+					<xsl:when test="$currentMandatoryAndNext/@isMandatory='true'">
+						<xsl:choose>
+							<xsl:when test="$startingMandatoryDepth!=0">
+								<xsl:value-of select="$startingMandatoryDepth" />
+							</xsl:when>
+							<xsl:otherwise>
+								<xsl:value-of select="$depth"/>
+							</xsl:otherwise>
+						</xsl:choose>
+					</xsl:when>
+					<xsl:otherwise>
+						<xsl:value-of select="0"/>
+					</xsl:otherwise>
+				</xsl:choose>
+			</xsl:variable>
+			<xsl:variable name="mandatoryDepth" select="number($mandatoryDepthFragment)"/>
+			<xsl:variable name="childLinksFragment">
+				<xsl:for-each select="$startLinks[not(preceding-sibling::*[1]/@Column=@Column)][@ConceptTypeChild=current()]">
+					<xsl:variable name="linksForColumn" select="$startLinks[@Column=current()/@Column]"/>
+					<xsl:choose>
+						<xsl:when test="count($linksForColumn)=1">
+							<xsl:if test="$generateLeafNodes">
+								<loc:leaf>
+									<xsl:copy-of select="@*"/>
+									<xsl:variable name="resolvedColumn" select="$columns[@id=current()/@Column]"/>
+									<xsl:copy-of select="$resolvedColumn/@Name"/>
+									<xsl:if test="not($resolvedColumn/@IsNullable='true' or $resolvedColumn/@IsNullable=1)">
+										<xsl:attribute name="alwaysMandatory">
+											<xsl:value-of select="true()"/>
+										</xsl:attribute>
+									</xsl:if>
+									<xsl:if test="$mandatoryDepth!=0">
+										<xsl:attribute name="isMandatoryStartingAt">
+											<xsl:value-of select="$mandatoryDepth"/>
+										</xsl:attribute>
+									</xsl:if>
+								</loc:leaf>
+							</xsl:if>
+						</xsl:when>
+						<xsl:otherwise>
+							<xsl:copy-of select="$linksForColumn[position()!=1]"/>
+						</xsl:otherwise>
+					</xsl:choose>
+				</xsl:for-each>
+			</xsl:variable>
+			<xsl:variable name="childLinks" select="exsl:node-set($childLinksFragment)/child::*"/>
+			<xsl:copy-of select="$childLinks/self::loc:leaf"/>
+
+			<xsl:variable name="nextLinks" select="$childLinks/self::oialtocdb:ColumnHasConceptTypeChild"/>
+			<xsl:if test="$nextLinks">
+				<loc:child ConceptTypeChild="{.}" ConceptTypeChildName="{$allConceptTypes[@id=$allConceptTypeChildren[@id=current()]/@ref]/@name}" IsMandatory="{$mandatoryDepth!=0}">
+					<xsl:call-template name="BuildChildAndLeafHierarchy">
+						<xsl:with-param name="startLinks" select="$nextLinks"/>
+						<xsl:with-param name="allConceptTypes" select="$allConceptTypes"/>
+						<xsl:with-param name="allConceptTypeChildren" select="$allConceptTypeChildren"/>
+						<xsl:with-param name="columns" select="$columns"/>
+						<xsl:with-param name="contextConceptType" select="string($currentMandatoryAndNext/@nextComingFrom)"/>
+						<xsl:with-param name="startingMandatoryDepth" select="$mandatoryDepth"/>
+						<xsl:with-param name="generateLeafNodes" select="true()"/>
+						<xsl:with-param name="depth" select="$depth+1"/>
+					</xsl:call-template>
+				</loc:child>
+			</xsl:if>
+		</xsl:for-each>
+	</xsl:template>
+
+	<xsl:template match="cdb:Table" mode="GenerateAbsorptionConstraints">
+		<xsl:param name="oialDcilBridge"/>
+		<xsl:param name="oialModel"/>
+
+		<xsl:variable name="allConceptTypes" select="$oialModel/oial:conceptTypes/oial:conceptType"/>
+		<xsl:variable name="allConceptTypeChildren" select="$allConceptTypes/oial:children/oial:*"/>
+
+		<xsl:variable name="columns" select="cdb:Columns/cdb:Column"/>
+
+
+		<xsl:variable name="nestedChildFragment">
+			<xsl:call-template name="BuildChildAndLeafHierarchy">
+				<xsl:with-param name="startLinks" select="$oialDcilBridge/oialtocdb:ColumnHasConceptTypeChild[@Column = $columns/@id]"/>
+				<xsl:with-param name="allConceptTypes" select="$allConceptTypes"/>
+				<xsl:with-param name="allConceptTypeChildren" select="$allConceptTypeChildren"/>
+				<xsl:with-param name="columns" select="$columns"/>
+				<xsl:with-param name="contextConceptType" select="string($oialDcilBridge/oialtocdb:TableIsPrimarilyForConceptType[@Table=current()/@id]/@ConceptType)"/>
+				<xsl:with-param name="startingMandatoryDepth" select="0"/>
+			</xsl:call-template>
+		</xsl:variable>
+		<xsl:variable name="nestedChildren" select="exsl:node-set($nestedChildFragment)/child::*"/>
+		
+		<xsl:variable name="absorptionCheckConstraintsFragment">
+			<xsl:apply-templates select="$nestedChildren" mode="GenerateAssimilationCheckConstraints">
+				<xsl:with-param name="columns" select="$columns"/>
+				<xsl:with-param name="currentDepth" select="1"/>
+			</xsl:apply-templates>
+		</xsl:variable>
+		<xsl:variable name="absorptionCheckConstraints" select="exsl:node-set($absorptionCheckConstraintsFragment)/child::*"/>
+		<xsl:if test="$absorptionCheckConstraints">
+			<xsl:variable name="tableName" select="@Name"/>
+			<xsl:for-each select="$absorptionCheckConstraints">
+				<xsl:variable name="nameInstanceCount">
+					<xsl:variable name="precedingCount" select="count(preceding-sibling::*[@name=current()/@name])"/>
+					<xsl:choose>
+						<xsl:when test="$precedingCount">
+							<xsl:value-of select="$precedingCount+1"/>
+						</xsl:when>
+						<xsl:when test="following-sibling::*[@name=current()/@name][1]">
+							<xsl:value-of select="1"/>
+						</xsl:when>
+					</xsl:choose>
+				</xsl:variable>
+				<dcl:checkConstraint name="{dsf:makeValidIdentifier(concat($tableName,'_',@name,$nameInstanceCount,'_MandatoryGroup'))}">
+					<xsl:copy-of select="@*[local-name()!='name']"/>
+					<xsl:copy-of select="*"/>
+				</dcl:checkConstraint>
+			</xsl:for-each>
+		</xsl:if>
+	</xsl:template>
+
+	<xsl:template match="loc:child" mode="GenerateAssimilationCheckConstraints">
+		<xsl:param name="columns"/>
+		<xsl:param name="currentDepth"/>
+		
+		<xsl:variable name="notNullClauseColumnReferencesFragment">
+			<xsl:apply-templates mode="GetColumnReferenceForNotNullClause">
+				<xsl:with-param name="columns" select="$columns"/>
+				<xsl:with-param name="currentDepth" select="$currentDepth + 1"/>
+			</xsl:apply-templates>
+		</xsl:variable>
+		<xsl:variable name="notNullClauseColumnReferences" select="exsl:node-set($notNullClauseColumnReferencesFragment)/*"/>
+
+		<xsl:variable name="nullClauseColumnReferencesFragment">
+			<xsl:apply-templates mode="GetColumnReferencesForNullClause">
+				<xsl:with-param name="columns" select="$columns"/>
+				<xsl:with-param name="currentDepth" select="$currentDepth + 1"/>
+			</xsl:apply-templates>
+		</xsl:variable>
+		<xsl:variable name="nullClauseColumnReferences" select="exsl:node-set($nullClauseColumnReferencesFragment)/*"/>
+
+		<!--
+			UNDONE: There is potentially an optimization that can be made here.
+			If there is only a single column (from the current level?) in the not null clause,
+			that column does not need to be included in the null clause as well.
+			Example:
+				a IS NOT NULL OR b IS NULL AND a IS NULL
+				can become
+				a IS NOT NULL OR b IS NULL
+		-->
+		
+		<xsl:if test="$notNullClauseColumnReferences and count($nullClauseColumnReferences) >= 2">
+			<dcl:checkConstraint name="{translate(normalize-space(@ConceptTypeChildName),' ','_')}">
+				<dep:or>
+					<dep:and>
+						<xsl:for-each select="$notNullClauseColumnReferences">
+							<dep:nullPredicate type="NOT NULL">
+								<xsl:copy-of select="."/>
+							</dep:nullPredicate>
+						</xsl:for-each>
+					</dep:and>
+					<dep:and>
+						<xsl:for-each select="$nullClauseColumnReferences">
+							<dep:nullPredicate type="NULL">
+								<xsl:copy-of select="."/>
+							</dep:nullPredicate>
+						</xsl:for-each>
+					</dep:and>
+				</dep:or>
+			</dcl:checkConstraint>
+		</xsl:if>
+
+		<xsl:apply-templates select="loc:child" mode="GenerateAssimilationCheckConstraints">
+			<xsl:with-param name="columns" select="$columns"/>
+			<xsl:with-param name="currentDepth" select="$currentDepth + 1"/>
+		</xsl:apply-templates>
+		
+	</xsl:template>
+
+	<xsl:template match="loc:child" mode="GetColumnReferenceForNotNullClause">
+		<xsl:param name="columns"/>
+		<xsl:param name="currentDepth"/>
+		<xsl:variable name="mandatoryNextStepColumnReferencesFragment">
+			<xsl:apply-templates mode="GetColumnReferenceForNotNullClause">
+				<xsl:with-param name="columns" select="$columns"/>
+				<xsl:with-param name="currentDepth" select="$currentDepth"/>
+			</xsl:apply-templates>
+		</xsl:variable>
+		<xsl:copy-of select="exsl:node-set($mandatoryNextStepColumnReferencesFragment)/*[1]"/>
+	</xsl:template>
+	<xsl:template match="loc:leaf" mode="GetColumnReferenceForNotNullClause">
+		<xsl:param name="columns"/>
+		<xsl:param name="currentDepth"/>
+		<xsl:if test="not(@alwaysMandatory) and @isMandatoryStartingAt &lt;= $currentDepth">
+			<xsl:apply-templates select="." mode="GetColumnReference">
+				<xsl:with-param name="columns" select="$columns"/>
+			</xsl:apply-templates>
+		</xsl:if>
+	</xsl:template>
+	<xsl:template match="loc:child" mode="GetColumnReferencesForNullClause">
+		<xsl:param name="columns"/>
+		<xsl:param name="currentDepth"/>
+		<xsl:variable name="mandatoryNextStepColumnReferencesFragment">
+			<xsl:apply-templates select="." mode="GetColumnReferenceForNotNullClause">
+				<xsl:with-param name="columns" select="$columns"/>
+				<xsl:with-param name="currentDepth" select="$currentDepth"/>
+			</xsl:apply-templates>
+		</xsl:variable>
+		<xsl:variable name="mandatoryNextStepColumnReferences" select="exsl:node-set($mandatoryNextStepColumnReferencesFragment)/*"/>
+		<xsl:choose>
+			<xsl:when test="$mandatoryNextStepColumnReferences">
+				<xsl:copy-of select="$mandatoryNextStepColumnReferences[1]"/>
+			</xsl:when>
+			<xsl:otherwise>
+				<xsl:apply-templates mode="GetColumnReferencesForNullClause">
+					<xsl:with-param name="columns" select="$columns"/>
+					<xsl:with-param name="currentDepth" select="$currentDepth + 1"/>
+				</xsl:apply-templates>
+			</xsl:otherwise>
+		</xsl:choose>
+	</xsl:template>
+	<xsl:template match="loc:leaf" mode="GetColumnReferencesForNullClause">
+		<xsl:param name="columns"/>
+		<xsl:apply-templates select="self::node()[not(@alwaysMandatory)]" mode="GetColumnReference">
+			<xsl:with-param name="columns" select="$columns"/>
+		</xsl:apply-templates>
+	</xsl:template>
+	<xsl:template match="loc:leaf" mode="GetColumnReference">
+		<xsl:param name="columns"/>
+		<dep:columnReference name="{dsf:makeValidIdentifier($columns[@id = current()/@Column]/@Name)}"/>
+	</xsl:template>
+	
 	<xsl:template match="orm:ValueType" mode="GenerateDataTypeMapping">
 		<xsl:param name="ormModel"/>
 		<xsl:variable name="dataTypeName" select="@Name"/>
@@ -336,7 +607,6 @@
 		<xsl:variable name="scale" select="number($modelConceptualDataType/@Scale)"/>
 
 		<xsl:choose>
-
 			<xsl:when test="
 				$modelDataType/self::orm:TrueOrFalseLogicalDataType or
 				$modelDataType/self::orm:YesOrNoLogicalDataType">
@@ -581,7 +851,6 @@
 						<xsl:copy-of select="exsl:node-set($predefinedDataType)"/>
 					</xsl:otherwise>
 				</xsl:choose>
-				
 			</xsl:when>
 
 			<xsl:when test="
@@ -717,7 +986,6 @@
 						<dcl:predefinedDataType name="{$predefinedDataTypeName}"/>
 					</xsl:otherwise>
 				</xsl:choose>
-				
 			</xsl:when>
 
 			<xsl:otherwise>
@@ -751,7 +1019,6 @@
 			</xsl:choose>
 		</xsl:variable>
 		<xsl:variable name="realValueReference" select="exsl:node-set($realValueReferenceFragment)/child::*"/>
-		
 		<xsl:variable name="valueRangesForIn" select="$valueRanges[string-length(@MinValue) and string-length(@MaxValue) and (@MinValue = @MaxValue)]"/>
 		<xsl:variable name="valueRangesForComparisons" select="$valueRanges[not(string-length(@MinValue)) or not(string-length(@MaxValue)) or not(@MinValue = @MaxValue)]"/>
 
@@ -790,7 +1057,6 @@
 				</xsl:message>
 			</xsl:otherwise>
 		</xsl:choose>
-		
 	</xsl:template>
 	<xsl:template name="ProcessValueConstraintRangesForIn">
 		<xsl:param name="literalName"/>
@@ -909,6 +1175,4 @@
 			</xsl:otherwise>
 		</xsl:choose>
 	</xsl:template>
-	
-
 </xsl:stylesheet>
