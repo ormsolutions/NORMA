@@ -1,5 +1,4 @@
-﻿<?xml version="1.0" encoding="utf-8"?>
-<ormRoot:ORM2 xmlns:orm="http://schemas.neumont.edu/ORM/2006-04/ORMCore" xmlns:ormDiagram="http://schemas.neumont.edu/ORM/2006-04/ORMDiagram" xmlns:oial="http://schemas.neumont.edu/ORM/Abstraction/2007-06/Core" xmlns:odt="http://schemas.neumont.edu/ORM/Abstraction/2007-06/DataTypes/Core" xmlns:rcd="http://schemas.neumont.edu/ORM/Relational/2007-06/ConceptualDatabase" xmlns:ddt="http://schemas.orm.net/DIL/DILDT" xmlns:ormtooial="http://schemas.neumont.edu/ORM/Bridge/2007-06/ORMToORMAbstraction" xmlns:oialtocdb="http://schemas.neumont.edu/ORM/Bridge/2007-06/ORMAbstractionToConceptualDatabase" xmlns:ormRoot="http://schemas.neumont.edu/ORM/2006-04/ORMRoot">
+﻿<ormRoot:ORM2 xmlns:orm="http://schemas.neumont.edu/ORM/2006-04/ORMCore" xmlns:ormDiagram="http://schemas.neumont.edu/ORM/2006-04/ORMDiagram" xmlns:oial="http://schemas.neumont.edu/ORM/Abstraction/2007-06/Core" xmlns:odt="http://schemas.neumont.edu/ORM/Abstraction/2007-06/DataTypes/Core" xmlns:rcd="http://schemas.neumont.edu/ORM/Relational/2007-06/ConceptualDatabase" xmlns:ddt="http://schemas.orm.net/DIL/DILDT" xmlns:ormtooial="http://schemas.neumont.edu/ORM/Bridge/2007-06/ORMToORMAbstraction" xmlns:oialtocdb="http://schemas.neumont.edu/ORM/Bridge/2007-06/ORMAbstractionToConceptualDatabase" xmlns:ormRoot="http://schemas.neumont.edu/ORM/2006-04/ORMRoot">
 	<orm:ORMModel id="_FA4538C2-1C8C-4BBD-BF7F-489C7F6A7227" Name="SeparateAssimilationPreferredForParent">
 		<orm:Objects>
 			<orm:EntityType id="_7E882959-0B11-4D1D-9CBC-C813A2A35DBF" Name="Foo" _ReferenceMode="">
@@ -208,7 +207,7 @@
 			<ormtooial:AbstractionModelGenerationSetting id="_CA317692-2D5E-4094-9CC9-F7B049F0A505" AlgorithmVersion="1.004">
 				<ormtooial:AbstractionModel ref="_9C9BECFF-37EA-4156-B4BF-55AD6ED21CD2" />
 			</ormtooial:AbstractionModelGenerationSetting>
-			<oialtocdb:SchemaGenerationSetting id="_7A16F888-F499-4270-94C6-894CF461C356" CoreAlgorithmVersion="1.004" NameAlgorithmVersion="1.007">
+			<oialtocdb:SchemaGenerationSetting id="_7A16F888-F499-4270-94C6-894CF461C356" CoreAlgorithmVersion="1.004" NameAlgorithmVersion="1.008">
 				<oialtocdb:Schema ref="_58CD2382-A0F9-4C22-806A-7FC12438339C" />
 			</oialtocdb:SchemaGenerationSetting>
 		</orm:GenerationSettings>

@@ -11199,7 +11199,7 @@
 			<ormtooial:AbstractionModelGenerationSetting id="_52A37F5B-1E80-4FCB-802E-AA9FA4315D0D" AlgorithmVersion="1.004">
 				<ormtooial:AbstractionModel ref="_AFA60651-CCAD-47F2-B397-70E5855BF20B" />
 			</ormtooial:AbstractionModelGenerationSetting>
-			<oialtocdb:SchemaGenerationSetting id="_CD0EC594-EDEA-44FC-9593-1DE35929D199" NameAlgorithmVersion="1.007" CoreAlgorithmVersion="1.004">
+			<oialtocdb:SchemaGenerationSetting id="_CD0EC594-EDEA-44FC-9593-1DE35929D199" CoreAlgorithmVersion="1.004" NameAlgorithmVersion="1.008">
 				<oialtocdb:Schema ref="_1CA1A0E5-2553-4907-AC75-1850287F4A51" />
 			</oialtocdb:SchemaGenerationSetting>
 		</orm:GenerationSettings>

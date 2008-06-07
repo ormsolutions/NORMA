@@ -1,3 +1,4 @@
+//#define DEBUGCOLUMNPATH
 using System;
 using System.Collections;
 using System.Collections.Generic;
@@ -1600,6 +1601,16 @@ namespace Neumont.Tools.ORMAbstractionToConceptualDatabaseBridge
 					/// An assimilation step was processed as a FactType
 					/// </summary>
 					DeclinedAssimilation = 0x80,
+					/// <summary>
+					/// One or more steps in the subtype chain are not identifying
+					/// </summary>
+					NonPreferredSubtype = 0x100,
+					/// <summary>
+					/// Track if the assimilation is points towards
+					/// the subtype. Maintained separately from the
+					/// forward/reverse notions.
+					/// </summary>
+					AssimilationTowardsSubtype = 0x200,
 				}
 				[DebuggerDisplay("{System.String.Concat(ObjectType.Name, (FromRole != null) ? System.String.Concat(\", \", FromRole.FactType.Name) : \"\", \" Flags=\", Flags.ToString(\"g\"))}")]
 				private struct ColumnPathStep
@@ -1633,14 +1644,32 @@ namespace Neumont.Tools.ORMAbstractionToConceptualDatabaseBridge
 					{
 						get
 						{
-							return (0 != (myFlags & ColumnPathStepFlags.DeclinedAssimilation) && myAlternateObjectType != null) ? myAlternateObjectType : myObjectType;
+							if (myAlternateObjectType != null)
+							{
+								ColumnPathStepFlags flags = myFlags;
+								if (0 != (flags & ColumnPathStepFlags.DeclinedAssimilation) ||
+									(0 != (flags & ColumnPathStepFlags.NonPreferredSubtype) &&
+									0 == (flags & ColumnPathStepFlags.ReverseAssimilation)))
+								{
+									return myAlternateObjectType;
+								}
+							}
+							return myObjectType;
 						}
 					}
 					public ObjectType ResolvedSupertype
 					{
 						get
 						{
-							return (0 == (myFlags & ColumnPathStepFlags.DeclinedAssimilation) && myAlternateObjectType != null) ? myAlternateObjectType : myObjectType;
+							if (myAlternateObjectType != null)
+							{
+								ColumnPathStepFlags flags = myFlags;
+								if (0 == (flags & (ColumnPathStepFlags.DeclinedAssimilation | ColumnPathStepFlags.NonPreferredSubtype)))
+								{
+									return myAlternateObjectType;
+								}
+							}
+							return myObjectType;
 						}
 					}
 					public ObjectType AlternateObjectType
@@ -1688,6 +1717,11 @@ namespace Neumont.Tools.ORMAbstractionToConceptualDatabaseBridge
 						columnSteps.Clear();
 					}
 					myColumnStepTable = table;
+#if DEBUGCOLUMNPATH
+					Debug.WriteLine("Table: " + table.Name);
+					Debug.Indent();
+					Debug.Indent();
+#endif // DEBUGCOLUMNPATH
 
 					// Seed the cross-cutting dictionary and seed it with the main represented
 					// ObjectTypes to force decorations on columns that loop back into this table.
@@ -1708,29 +1742,72 @@ namespace Neumont.Tools.ORMAbstractionToConceptualDatabaseBridge
 					for (int iColumn = 0; iColumn < columnCount; ++iColumn)
 					{
 						Column currentColumn = columns[iColumn];
+#if DEBUGCOLUMNPATH
+						Debug.Unindent();
+						Debug.WriteLine("Column: " + currentColumn.Name);
+						Debug.Indent();
+#endif // DEBUGCOLUMNPATH
 						LinkedElementCollection<ConceptTypeChild> childPath = ColumnHasConceptTypeChild.GetConceptTypeChildPath(currentColumn);
 						int childPathCount = childPath.Count;
 						LinkedNode<ColumnPathStep> headNode = null;
 						LinkedNode<ColumnPathStep> tailNode = null;
 						bool passedIdentifier = false;
 						bool processTailDelayed = false;
+						ConceptType nextComingFromConceptType = primaryConceptType;
 						Objectification assimilationObjectification = null;
 						for (int iChild = 0; iChild < childPathCount; ++iChild)
 						{
+							ConceptType comingFromConceptType = nextComingFromConceptType;
 							ConceptTypeChild child = childPath[iChild];
 							ConceptTypeAssimilatesConceptType assimilation = child as ConceptTypeAssimilatesConceptType;
-							bool reverseAssimilation = assimilation != null && AssimilationMapping.GetAbsorptionChoiceFromAssimilation(assimilation) != AssimilationAbsorptionChoice.Absorb;
-							if (reverseAssimilation && tailNode != null && 0 != (tailNode.Value.Flags & ColumnPathStepFlags.ForwardAssimilation))
+							bool reverseAssimilation = false;
+							bool towardsSubtype = false;
+							if (assimilation != null)
 							{
-								// For our purposes, the difference between a forward and reverse assimiliation is the
-								// forward assimilation stores the ObjectType field first and the ResolvedSuperType is
-								// provided by FactType after the assimilation chain, while the reverse assimilation
-								// stores the ResolvedSuperType first, with the starting object provided by the
-								// trailing FactType. However, if we've already started down the forward path, then
-								// we have a reference that has a separation in its identifier chain. Keep going
-								// in the same direction and set the ResolvedSupertType after the chain walk is completed.
-								reverseAssimilation = false;
-								// UNDONE: Do we need a similar flip going from reverse to forward?
+								if (comingFromConceptType == assimilation.Parent)
+								{
+									nextComingFromConceptType = assimilation.ReferencedConceptType;
+								}
+								else
+								{
+									towardsSubtype = true;
+									nextComingFromConceptType = assimilation.Parent;
+								}
+#if DEBUGCOLUMNPATH
+								Debug.WriteLine("From: " + comingFromConceptType.Name + " To: " + nextComingFromConceptType.Name + "(" + (assimilation.RefersToSubtype && assimilation.IsPreferredForTarget).ToString() + ")");
+#endif // DEBUGCOLUMNPATH
+								if (tailNode != null)
+								{
+									// If we're already moving down an assimilation path in a specific direction then keep
+									// going that direction
+									ColumnPathStep pathStep = tailNode.Value;
+									ColumnPathStepFlags stepFlags = pathStep.Flags;
+									if (0 != (stepFlags & ColumnPathStepFlags.ForwardAssimilation))
+									{
+										// Keep going forward
+									}
+									else if (0 != (stepFlags & ColumnPathStepFlags.ReverseAssimilation))
+									{
+										// Keep going backward
+										reverseAssimilation = true;
+									}
+									else
+									{
+										// Figure it out from this step
+										reverseAssimilation = AssimilationMapping.GetAbsorptionChoiceFromAssimilation(assimilation) != AssimilationAbsorptionChoice.Absorb;
+									}
+								}
+								else
+								{
+									reverseAssimilation = AssimilationMapping.GetAbsorptionChoiceFromAssimilation(assimilation) != AssimilationAbsorptionChoice.Absorb;
+								}
+							}
+							else
+							{
+								nextComingFromConceptType = child.Target as ConceptType;
+#if DEBUGCOLUMNPATH
+								Debug.WriteLine("From: " + comingFromConceptType.Name + " To: " + ((nextComingFromConceptType != null) ? nextComingFromConceptType.Name : ((InformationTypeFormat)child.Target).Name));
+#endif // DEBUGCOLUMNPATH
 							}
 							LinkedElementCollection<FactType> factTypes = ConceptTypeChildHasPathFactType.GetPathFactTypeCollection(child);
 							int factTypeCount = factTypes.Count;
@@ -1754,6 +1831,7 @@ namespace Neumont.Tools.ORMAbstractionToConceptualDatabaseBridge
 									processAsFactType = false;
 									Objectification objectification;
 									bool assimilationIsSubtype = assimilation.RefersToSubtype;
+									bool secondarySubtype = assimilationIsSubtype && !assimilation.IsPreferredForTarget;
 									if (!assimilationIsSubtype &&
 										null != (objectification = factType.ImpliedByObjectification) &&
 										objectification.NestingType == targetRole.RolePlayer)
@@ -1771,6 +1849,10 @@ namespace Neumont.Tools.ORMAbstractionToConceptualDatabaseBridge
 												bool tailIsSubtype = 0 != (tailFlags & ColumnPathStepFlags.AssimilationIsSubtype);
 												if (tailIsSubtype && assimilationIsSubtype)
 												{
+													if (secondarySubtype && 0 == (tailFlags & ColumnPathStepFlags.NonPreferredSubtype))
+													{
+														tailNode.Value = new ColumnPathStep(pathStep.FromRole, pathStep.ObjectType, pathStep.AlternateObjectType, tailFlags | ColumnPathStepFlags.NonPreferredSubtype);
+													}
 													// Keep going, we'll resolve the final ObjectType when we get to a non-assimilation
 													continue;
 												}
@@ -1805,8 +1887,17 @@ namespace Neumont.Tools.ORMAbstractionToConceptualDatabaseBridge
 											if (assimilationIsSubtype)
 											{
 												flags |= ColumnPathStepFlags.AssimilationIsSubtype;
+												if (secondarySubtype)
+												{
+													flags |= ColumnPathStepFlags.NonPreferredSubtype;
+												}
+												if (towardsSubtype)
+												{
+													flags |= ColumnPathStepFlags.AssimilationTowardsSubtype;
+												}
 											}
-											pathStep = new ColumnPathStep(null, targetRole.RolePlayer, (tailNode == null && assimilationIsSubtype) ? ConceptTypeIsForObjectType.GetObjectType(primaryConceptType) : targetRole.RolePlayer, flags);
+											// pathStep = new ColumnPathStep(null, targetRole.RolePlayer, (tailNode == null && assimilationIsSubtype) ? ConceptTypeIsForObjectType.GetObjectType(primaryConceptType) : targetRole.RolePlayer, flags);
+											pathStep = new ColumnPathStep(null, targetRole.RolePlayer, towardsSubtype ? ConceptTypeIsForObjectType.GetObjectType(comingFromConceptType) : null, flags);
 											processPreviousTail = processTailDelayed;
 											processTailDelayed = true;
 										}
@@ -1822,6 +1913,10 @@ namespace Neumont.Tools.ORMAbstractionToConceptualDatabaseBridge
 												bool tailIsSubtype = 0 != (tailFlags & ColumnPathStepFlags.AssimilationIsSubtype);
 												if (tailIsSubtype && assimilationIsSubtype)
 												{
+													if (secondarySubtype && 0 == (tailFlags & ColumnPathStepFlags.NonPreferredSubtype))
+													{
+														tailNode.Value = new ColumnPathStep(pathStep.FromRole, pathStep.ObjectType, pathStep.AlternateObjectType, tailFlags | ColumnPathStepFlags.NonPreferredSubtype);
+													}
 													// If this is a subtype chain, then keep going, using the first
 													// subtype in the chain as a node used in the final name.
 													continue;
@@ -1854,6 +1949,10 @@ namespace Neumont.Tools.ORMAbstractionToConceptualDatabaseBridge
 											if (assimilationIsSubtype)
 											{
 												flags |= ColumnPathStepFlags.AssimilationIsSubtype;
+												if (secondarySubtype)
+												{
+													flags |= ColumnPathStepFlags.NonPreferredSubtype;
+												}
 											}
 											pathStep = new ColumnPathStep(null, targetRole.RolePlayer, null, flags);
 											processTailDelayed = true;
@@ -1956,6 +2055,8 @@ namespace Neumont.Tools.ORMAbstractionToConceptualDatabaseBridge
 						}
 						columnSteps.Add(currentColumn, headNode);
 					}
+					Debug.Unindent();
+					Debug.Unindent();
 					return columnSteps[column];
 				}
 				private static void ProcessTailNode(LinkedNode<ColumnPathStep> tailNode, Dictionary<ObjectType, LinkedNode<LinkedNode<ColumnPathStep>>> objectTypeToSteps)
