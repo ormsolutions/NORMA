@@ -304,7 +304,7 @@
 				<dep:simpleColumnReference name="childPersonMotherPerson_id" />
 			</ddl:uniqueConstraintDefinition>
 		</ddl:tableConstraintDefinition>
-		<ddl:tableConstraintDefinition name="RoleValueConstraint2">
+		<ddl:tableConstraintDefinition name="Person_mandatoryUniqueDecimal_RoleValueConstraint2">
 			<ddl:checkConstraintDefinition>
 				<dep:betweenPredicate type="BETWEEN">
 					<dep:columnReference name="mandatoryUniqueDecimal" />
@@ -313,13 +313,69 @@
 				</dep:betweenPredicate>
 			</ddl:checkConstraintDefinition>
 		</ddl:tableConstraintDefinition>
-		<ddl:tableConstraintDefinition name="RoleValueConstraint1">
+		<ddl:tableConstraintDefinition name="Person_optionalUniqueDecimal_RoleValueConstraint1">
 			<ddl:checkConstraintDefinition>
 				<dep:betweenPredicate type="BETWEEN">
 					<dep:columnReference name="optionalUniqueDecimal" />
 					<ddt:exactNumericLiteral value="100" />
 					<ddt:exactNumericLiteral value="4000" />
 				</dep:betweenPredicate>
+			</ddl:checkConstraintDefinition>
+		</ddl:tableConstraintDefinition>
+		<ddl:tableConstraintDefinition name="Person_Death_MandatoryGroup">
+			<ddl:checkConstraintDefinition>
+				<dep:or>
+					<dep:and>
+						<dep:nullPredicate type="NOT NULL">
+							<dep:columnReference name="deathCause" />
+						</dep:nullPredicate>
+					</dep:and>
+					<dep:and>
+						<dep:nullPredicate type="NULL">
+							<dep:columnReference name="deathCause" />
+						</dep:nullPredicate>
+						<dep:nullPredicate type="NULL">
+							<dep:columnReference name="deathDate" />
+						</dep:nullPredicate>
+						<dep:nullPredicate type="NULL">
+							<dep:columnReference name="deathNaturalDeathIsFromProstateCancer" />
+						</dep:nullPredicate>
+						<dep:nullPredicate type="NULL">
+							<dep:columnReference name="deathUnnaturalDeathIsViolent" />
+						</dep:nullPredicate>
+						<dep:nullPredicate type="NULL">
+							<dep:columnReference name="deathUnnaturalDeathIsBloody" />
+						</dep:nullPredicate>
+					</dep:and>
+				</dep:or>
+			</ddl:checkConstraintDefinition>
+		</ddl:tableConstraintDefinition>
+		<ddl:tableConstraintDefinition name="Person_ChildPerson_MandatoryGroup">
+			<ddl:checkConstraintDefinition>
+				<dep:or>
+					<dep:and>
+						<dep:nullPredicate type="NOT NULL">
+							<dep:columnReference name="childPersonBirthOrderNr" />
+						</dep:nullPredicate>
+						<dep:nullPredicate type="NOT NULL">
+							<dep:columnReference name="childPersonMotherPerson_id" />
+						</dep:nullPredicate>
+						<dep:nullPredicate type="NOT NULL">
+							<dep:columnReference name="childPersonFatherPerson_id" />
+						</dep:nullPredicate>
+					</dep:and>
+					<dep:and>
+						<dep:nullPredicate type="NULL">
+							<dep:columnReference name="childPersonBirthOrderNr" />
+						</dep:nullPredicate>
+						<dep:nullPredicate type="NULL">
+							<dep:columnReference name="childPersonMotherPerson_id" />
+						</dep:nullPredicate>
+						<dep:nullPredicate type="NULL">
+							<dep:columnReference name="childPersonFatherPerson_id" />
+						</dep:nullPredicate>
+					</dep:and>
+				</dep:or>
 			</ddl:checkConstraintDefinition>
 		</ddl:tableConstraintDefinition>
 	</ddl:tableDefinition>

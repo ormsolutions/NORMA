@@ -107,7 +107,7 @@
 		<dcl:column name="mandatoryUniqueDecimal" isNullable="false" isIdentity="false">
 			<dcl:domainRef name="MandatoryUniqueDecimal" />
 		</dcl:column>
-		<dcl:checkConstraint name="RoleValueConstraint2">
+		<dcl:checkConstraint name="Person_mandatoryUniqueDecimal_RoleValueConstraint2">
 			<dep:betweenPredicate type="BETWEEN">
 				<dep:columnReference name="mandatoryUniqueDecimal" />
 				<ddt:exactNumericLiteral value="9000" />
@@ -141,7 +141,7 @@
 		<dcl:column name="optionalUniqueDecimal" isNullable="true" isIdentity="false">
 			<dcl:predefinedDataType name="DECIMAL" precision="9" />
 		</dcl:column>
-		<dcl:checkConstraint name="RoleValueConstraint1">
+		<dcl:checkConstraint name="Person_optionalUniqueDecimal_RoleValueConstraint1">
 			<dep:betweenPredicate type="BETWEEN">
 				<dep:columnReference name="optionalUniqueDecimal" />
 				<ddt:exactNumericLiteral value="100" />
@@ -248,6 +248,58 @@
 		<dcl:referenceConstraint name="Person_FK4" targetTable="Person">
 			<dcl:columnRef sourceName="childPersonMotherPerson_id" targetName="personId" />
 		</dcl:referenceConstraint>
+		<dcl:checkConstraint name="Person_Death_MandatoryGroup">
+			<dep:or>
+				<dep:and>
+					<dep:nullPredicate type="NOT NULL">
+						<dep:columnReference name="deathCause" />
+					</dep:nullPredicate>
+				</dep:and>
+				<dep:and>
+					<dep:nullPredicate type="NULL">
+						<dep:columnReference name="deathCause" />
+					</dep:nullPredicate>
+					<dep:nullPredicate type="NULL">
+						<dep:columnReference name="deathDate" />
+					</dep:nullPredicate>
+					<dep:nullPredicate type="NULL">
+						<dep:columnReference name="deathNaturalDeathIsFromProstateCancer" />
+					</dep:nullPredicate>
+					<dep:nullPredicate type="NULL">
+						<dep:columnReference name="deathUnnaturalDeathIsViolent" />
+					</dep:nullPredicate>
+					<dep:nullPredicate type="NULL">
+						<dep:columnReference name="deathUnnaturalDeathIsBloody" />
+					</dep:nullPredicate>
+				</dep:and>
+			</dep:or>
+		</dcl:checkConstraint>
+		<dcl:checkConstraint name="Person_ChildPerson_MandatoryGroup">
+			<dep:or>
+				<dep:and>
+					<dep:nullPredicate type="NOT NULL">
+						<dep:columnReference name="childPersonBirthOrderNr" />
+					</dep:nullPredicate>
+					<dep:nullPredicate type="NOT NULL">
+						<dep:columnReference name="childPersonMotherPerson_id" />
+					</dep:nullPredicate>
+					<dep:nullPredicate type="NOT NULL">
+						<dep:columnReference name="childPersonFatherPerson_id" />
+					</dep:nullPredicate>
+				</dep:and>
+				<dep:and>
+					<dep:nullPredicate type="NULL">
+						<dep:columnReference name="childPersonBirthOrderNr" />
+					</dep:nullPredicate>
+					<dep:nullPredicate type="NULL">
+						<dep:columnReference name="childPersonMotherPerson_id" />
+					</dep:nullPredicate>
+					<dep:nullPredicate type="NULL">
+						<dep:columnReference name="childPersonFatherPerson_id" />
+					</dep:nullPredicate>
+				</dep:and>
+			</dep:or>
+		</dcl:checkConstraint>
 	</dcl:table>
 	<dcl:table name="Task">
 		<dcl:column name="taskId" isNullable="false" isIdentity="true">

@@ -98,7 +98,8 @@
 		<xsl:param name="ormModel"/>
 		<xsl:param name="dataTypeMappings"/>
 		<xsl:param name="initialDataTypeMappings"/>
-		<dcl:table name="{dsf:makeValidIdentifier(@Name)}">
+		<xsl:variable name="rawTableName" select="string(@Name)"/>
+		<dcl:table name="{dsf:makeValidIdentifier($rawTableName)}">
 			<xsl:variable name="uniquenessConstraints" select="cdb:Constraints/cdb:UniquenessConstraint"/>
 			<xsl:apply-templates mode="GenerateTableContent" select="cdb:Columns/cdb:Column">
 				<xsl:sort data-type="number" select="number(not(boolean(@id = $uniquenessConstraints[@IsPrimary='true' or @IsPrimary=1]/cdb:Columns/cdb:Column/@ref)))"/>
@@ -110,6 +111,7 @@
 				<xsl:with-param name="ormModel" select="$ormModel"/>
 				<xsl:with-param name="dataTypeMappings" select="$dataTypeMappings"/>
 				<xsl:with-param name="initialDataTypeMappings" select="$initialDataTypeMappings"/>
+				<xsl:with-param name="rawTableName" select="$rawTableName"/>
 			</xsl:apply-templates>
 			<xsl:apply-templates mode="GenerateTableContent" select="cdb:Constraints/cdb:*"/>
 			<xsl:apply-templates mode="GenerateAbsorptionConstraints" select=".">
@@ -125,6 +127,7 @@
 		<xsl:param name="ormModel"/>
 		<xsl:param name="dataTypeMappings"/>
 		<xsl:param name="initialDataTypeMappings"/>
+		<xsl:param name="rawTableName"/>
 
 		<xsl:variable name="conceptTypeChildPath" select="$oialDcilBridge/oialtocdb:ColumnHasConceptTypeChild[@Column = current()/@id]"/>
 		<xsl:variable name="factTypePath" select="$ormOialBridge/ormtooial:ConceptTypeChildHasPathFactType[@ConceptTypeChild = $conceptTypeChildPath/@ConceptTypeChild]"/>
@@ -195,7 +198,8 @@
 
 		<xsl:variable name="dataTypeMapping" select="$dataTypeMappings[@id = $valueTypeId]"/>
 		<xsl:variable name="initialDataTypeMapping" select="$initialDataTypeMappings[@id = $valueTypeId]"/>
-		<xsl:variable name="columnName" select="dsf:makeValidIdentifier(@Name)"/>
+		<xsl:variable name="rawColumnName" select="string(@Name)"/>
+		<xsl:variable name="columnName" select="dsf:makeValidIdentifier($rawColumnName)"/>
 
 		<dcl:column name="{$columnName}" isNullable="{@IsNullable='true' or @IsNullable=1}" isIdentity="false">
 			<xsl:if test="
@@ -293,7 +297,7 @@
 			<xsl:variable name="valueReference" select="exsl:node-set($valueReferenceFragment)/child::*"/>
 
 			<xsl:for-each select="$roleValueConstraints">
-				<dcl:checkConstraint name="{dsf:makeValidIdentifier(@Name)}">
+				<dcl:checkConstraint name="{dsf:makeValidIdentifier(concat($rawTableName, '_', $rawColumnName, '_', @Name))}">
 					<xsl:call-template name="ProcessValueConstraintRanges">
 						<xsl:with-param name="literalName" select="$literalName"/>
 						<xsl:with-param name="valueRanges" select="orm:ValueRanges/orm:ValueRange"/>
@@ -737,6 +741,7 @@
 										<xsl:when test="$modelDataType/self::orm:MoneyNumericDataType">
 											<xsl:attribute name="scale">
 												<xsl:choose>
+													<!-- Make sure that we don't make the scale greater than the length, if we have one. -->
 													<xsl:when test="$length > 0 and $length &lt; 4">
 														<xsl:value-of select="$length"/>
 													</xsl:when>

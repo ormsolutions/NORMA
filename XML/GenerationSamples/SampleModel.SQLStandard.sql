@@ -61,8 +61,10 @@ CREATE TABLE SampleModel.Person
 	CONSTRAINT Person_UC9 UNIQUE(optionalUniqueTinyInt),
 	CONSTRAINT Person_UC10 UNIQUE(mandatoryUniqueTinyInt),
 	CONSTRAINT Person_UC11 UNIQUE(childPersonFatherPerson_id, childPersonBirthOrderNr, childPersonMotherPerson_id),
-	CONSTRAINT RoleValueConstraint2 CHECK (mandatoryUniqueDecimal BETWEEN 9000 AND 10000),
-	CONSTRAINT RoleValueConstraint1 CHECK (optionalUniqueDecimal BETWEEN 100 AND 4000)
+	CONSTRAINT Person_mandatoryUniqueDecimal_RoleValueConstraint2 CHECK (mandatoryUniqueDecimal BETWEEN 9000 AND 10000),
+	CONSTRAINT Person_optionalUniqueDecimal_RoleValueConstraint1 CHECK (optionalUniqueDecimal BETWEEN 100 AND 4000),
+	CONSTRAINT Person_Death_MandatoryGroup CHECK (deathCause IS NOT NULL OR deathCause IS NULL AND deathDate IS NULL AND deathNaturalDeathIsFromProstateCancer IS NULL AND deathUnnaturalDeathIsViolent IS NULL AND deathUnnaturalDeathIsBloody IS NULL),
+	CONSTRAINT Person_ChildPerson_MandatoryGroup CHECK (childPersonBirthOrderNr IS NOT NULL AND childPersonMotherPerson_id IS NOT NULL AND childPersonFatherPerson_id IS NOT NULL OR childPersonBirthOrderNr IS NULL AND childPersonMotherPerson_id IS NULL AND childPersonFatherPerson_id IS NULL)
 );
 
 CREATE TABLE SampleModel.Task
