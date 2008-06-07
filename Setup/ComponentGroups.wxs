@@ -105,6 +105,9 @@
 			<ComponentRef Id="ORMClassModelSchemasComponent"/>
 			<ComponentRef Id="ORMClassModelTransformsComponent"/>
 			<ComponentRef Id="ORMClassModelPHPTransformsComponent"/>
+			<?ifdef LinqSupport?>
+			<ComponentRef Id="ORMClassModelLinqToSqlTransformsComponent"/>
+			<?endif?>
 			<!--<ComponentRef Id="ORMClassModelTransformsTestFormComponent"/>-->
 		</ComponentGroup>
 		<ComponentGroup Id="XmlSchemaGenerationFeatureComponents">

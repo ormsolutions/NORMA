@@ -771,6 +771,43 @@
 
 								</Component>
 							</Directory>
+							<?ifdef LinqSupport?>
+							<Directory Id="ORMCOMMONTRANSFORMSLINQTOSQLDIR" Name="LinqToSql">
+								<Component Id="ORMClassModelLinqToSqlTransformsComponent" Guid="3A361C38-3267-4481-$(var.VersionGuidSuffix)" DiskId="1" Win64="$(var.Win64)" KeyPath="yes">
+									<File Id="LinqToSqlSettings.xslt" ShortName="LqSqlSet.xsl" Name="LinqToSqlSettings.xslt" Source="..\XML\DCILtoLinq\LinqToSqlSettings.xslt"
+										DefaultLanguage="0" CompanionFile="Neumont.Tools.ORM$(var.VSExt).dll"/>
+									<RegistryKey Action="createAndRemoveOnUninstall" Root="HKLM" Key="$(var.NORMARegRoot)\Generators\LinqToSqlSettings">
+										<RegistryValue Type="string" Name="Type" Value="XSLT"/>
+										<RegistryValue Type="string" Name="OfficialName" Value="LinqToSqlSettings"/>
+										<RegistryValue Type="string" Name="DisplayName" Value="LinqToSql Settings"/>
+										<RegistryValue Type="string" Name="DisplayDescription" Value="Default settings file for LinqToSql generators"/>
+										<RegistryValue Type="string" Name="FileExtension" Value=".LinqToSqlSettings.xml"/>
+										<RegistryValue Type="string" Name="SourceInputFormat" Value="ORM"/>
+										<RegistryValue Type="string" Name="ProvidesOutputFormat" Value="LinqToSqlSettings"/>
+										<RegistryValue Type="string" Name="TransformUri" Value="[#LinqToSqlSettings.xslt]"/>
+										<RegistryValue Type="integer" Name="GeneratesSupportFile" Value="1"/>
+										<RegistryValue Type="integer" Name="GeneratesOnce" Value="1"/>
+									</RegistryKey>
+
+									<File Id="DCILtoLinqAttributeMapping.xslt" ShortName="DclLqAM.xsl" Name="DCILtoLinqAttributeMapping.xslt" Source="..\XML\DCILtoLinq\DCILtoLinqAttributeMapping.xslt"
+										DefaultLanguage="0" CompanionFile="Neumont.Tools.ORM$(var.VSExt).dll"/>
+									<RegistryKey Action="createAndRemoveOnUninstall" Root="HKLM" Key="$(var.NORMARegRoot)\Generators\DCILtoLinqAttributeMapping">
+										<RegistryValue Type="string" Name="Type" Value="XSLT"/>
+										<RegistryValue Type="string" Name="OfficialName" Value="DCILtoLinqAttributeMapping"/>
+										<RegistryValue Type="string" Name="DisplayName" Value="DCIL to LinqToSql"/>
+										<RegistryValue Type="string" Name="DisplayDescription" Value="Transforms DCIL to a LinqToSql-targeted object model"/>
+										<RegistryValue Type="string" Name="FileExtension" Value=".LinqToSqlAttributeMapping.PLiX.xml"/>
+										<RegistryValue Type="string" Name="SourceInputFormat" Value="DCIL"/>
+										<RegistryValue Type="string" Name="ProvidesOutputFormat" Value="LinqToSqlAttributeMapping"/>
+										<RegistryValue Type="string" Name="TransformUri" Value="[#DCILtoLinqAttributeMapping.xslt]"/>
+										<RegistryValue Type="string" Name="CustomTool" Value="NUPlixLoader"/>
+										<RegistryValue Type="multiString" Name="ReferenceInputFormats">
+											<MultiStringValue>LinqToSqlSettings</MultiStringValue>
+										</RegistryValue>
+									</RegistryKey>
+								</Component>
+							</Directory>
+							<?endif?>
 
 							<!--<Directory Id="ORMDataLayerTestFormDIR" ShortName="DtaTstFm" Name="DataLayerTestForm">
 								<Component Id="ORMClassModelTransformsTestFormComponent" Guid="870B6A5C-543A-416a-$(var.VersionGuidSuffix)" DiskId="1" Win64="$(var.Win64)" KeyPath="yes">

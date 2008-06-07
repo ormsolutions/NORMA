@@ -31,6 +31,8 @@ SET TmpTransformUri=
 IF NOT "%~8"=="" (ECHO 	^<RegistryValue Type="string" Name="CustomTool" Value="%~8"/^> >> Output.WiX.xml)
 IF NOT "%~9"=="" (ECHO 	^<RegistryValue Type="integer" Name="GeneratesSupportFile" Value="%~9"/^> >> Output.WiX.xml)
 SHIFT /8
+IF NOT "%~9"=="" (ECHO 	^<RegistryValue Type="integer" Name="GeneratesOnce" Value="%~9"/^> >> Output.WiX.xml)
+SHIFT /8
 IF NOT "%~9"=="" (ECHO 	^<RegistryValue Type="integer" Name="Compilable" Value="%~9"/^> >> Output.WiX.xml)
 SHIFT /8
 IF NOT "%~9"=="" (CALL:_GenerateMultiString "ReferenceInputFormats" "%~9")

@@ -47,6 +47,7 @@
 	<?elseif $(var.VSVer) = v9.0?>
 		<?define PackageGuidStart="24D571AB-0000-4FA4"?>
 		<?define RootSuffixVersion="9.0"?>
+		<?define LinqSupport=1 ?>
 		<?define HelpFileTargetCollection="MS.VSIPCC.v90"?>
 	<?endif?>
 	<?include ../Version.wxi?>

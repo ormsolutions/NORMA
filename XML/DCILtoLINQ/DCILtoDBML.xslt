@@ -89,7 +89,7 @@
 	</xsl:variable>
 	<xsl:variable name="PrivateMemberPrefix" select="string($PrivateMemberPrefixFragment)"/>
 	<xsl:variable name="SettingsPropertyNameFragment">
-		<xsl:variable name="setting" select="string($LinqToSqlSettings/opt:NameParts/@ConnectionStringPropertyName)"/>
+		<xsl:variable name="setting" select="string($LinqToSqlSettings/opt:ConnectionString/@SettingsProperty)"/>
 		<xsl:choose>
 			<xsl:when test="$setting">
 				<xsl:value-of select="$setting"/>

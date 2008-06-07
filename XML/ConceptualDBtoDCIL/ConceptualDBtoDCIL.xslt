@@ -522,13 +522,22 @@
 		<xsl:if test="$notNullClauseColumnReferences and count($nullClauseColumnReferences) >= 2">
 			<dcl:checkConstraint name="{translate(normalize-space(@ConceptTypeChildName),' ','_')}">
 				<dep:or>
-					<dep:and>
-						<xsl:for-each select="$notNullClauseColumnReferences">
+					<xsl:choose>
+						<xsl:when test="count($notNullClauseColumnReferences)=1">
 							<dep:nullPredicate type="NOT NULL">
-								<xsl:copy-of select="."/>
+								<xsl:copy-of select="$notNullClauseColumnReferences"/>
 							</dep:nullPredicate>
-						</xsl:for-each>
-					</dep:and>
+						</xsl:when>
+						<xsl:otherwise>
+							<dep:and>
+								<xsl:for-each select="$notNullClauseColumnReferences">
+									<dep:nullPredicate type="NOT NULL">
+										<xsl:copy-of select="."/>
+									</dep:nullPredicate>
+								</xsl:for-each>
+							</dep:and>
+						</xsl:otherwise>
+					</xsl:choose>
 					<dep:and>
 						<xsl:for-each select="$nullClauseColumnReferences">
 							<dep:nullPredicate type="NULL">

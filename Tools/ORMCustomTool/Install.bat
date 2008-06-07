@@ -118,8 +118,10 @@ CALL:_AddXslORMGenerator "SchemaExplorertoNetTiersDataAccessLayer" "SchemaExplor
 :: Install and register LinqToSql Transforms
 IF NOT "%TargetVisualStudioVersion%"=="v8.0" (
 XCOPY /Y /D /V /Q "%XMLDir%\DCILtoLINQ\LinqToSqlSettings.xslt" "%ORMTransformsDir%\LinqToSql\"
+XCOPY /Y /D /V /Q "%XMLDir%\DCILtoLINQ\DCILtoLinqAttributeMapping.xslt" "%ORMTransformsDir%\LinqToSql\"
 XCOPY /Y /D /V /Q "%XMLDir%\DCILtoLINQ\DCILtoDBML.xslt" "%ORMTransformsDir%\LinqtoSql\"
 CALL:_AddXslORMGenerator "DCILtoDBML" "DCIL to DBML" "Transforms DCIL to DBML." ".DBML" "DCIL" "DBML" "%ORMTransformsDir%\LinqToSql\DCILtoDBML.xslt" "MSLinqToSqlGenerator" "" "" "" "LinqToSqlSettings\0"
+CALL:_AddXslORMGenerator "DCILtoLinqAttributeMapping" "DCIL to LinqToSql" "Transforms DCIL to a LinqToSql-targeted object model" ".LinqToSqlAttributeMapping.PLiX.xml" "DCIL" "LinqToSqlAttributeMapping" "%ORMTransformsDir%\LinqToSql\DCILtoLinqAttributeMapping.xslt" "NUPlixLoader" "" "" "" "LinqToSqlSettings\0"
 CALL:_AddXslORMGenerator "LinqToSqlSettings" "LinqToSql Settings" "Default settings file for LinqToSql generators" ".LinqToSqlSettings.xml" "ORM" "LinqToSqlSettings" "%ORMTransformsDir%\LinqToSql\LinqToSqlSettings.xslt" "" "1" "1"
 )
 

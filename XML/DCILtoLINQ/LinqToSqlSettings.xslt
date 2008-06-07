@@ -6,8 +6,14 @@
 	<xsl:output method="xml" indent="yes"/>
 	<xsl:template match="/">
 		<LinqToSqlSettings xmlns="http://schemas.neumont.edu/ORM/2008-04/LinqToSql/Settings">
+			<xsl:comment>These settings affect LinqToSql generators, but modifications here
+	have no effect until the .ORM file is regenerated. To force regenerationt, right
+	click the	parent .ORM file in the Solution Explorer and choose 'Run Custom Tool'.
+	The schema file at the end this settings file is designed to help you customize
+	your settings. For any of the settings areas, click immediately after the element
+	name and click space to see a list of individual attributes.</xsl:comment>
 			<xsl:comment>Change connection string properties here</xsl:comment>
-			<ConnectionString DataSource="." SettingsProperty="SCHEMANAMEConnectionString" DatabaseName=""/>
+			<ConnectionString DataSource="." SettingsProperty="" DatabaseName=""/>
 			<xsl:comment>Change basic name generation settings</xsl:comment>
 			<NameParts/>
 			<xsl:comment>Change WCF name generation settings</xsl:comment>
@@ -31,7 +37,7 @@
 									</xs:attribute>
 									<xs:attribute name="SettingsProperty" type="xs:string" use="required">
 										<xs:annotation>
-											<xs:documentation>The name of the property in the PROJECTNAME.Properties.Settings file that provides the connection string.</xs:documentation>
+											<xs:documentation>The name of the property in the PROJECTNAME.Properties.Settings file that provides the connection string. The default is {@DatabaseName}ConnectionString</xs:documentation>
 										</xs:annotation>
 									</xs:attribute>
 									<xs:attribute name="DatabaseName" type="xs:string" use="required">
@@ -58,6 +64,11 @@
 											<xs:documentation>The text appended to the names of typed EntitySet properties.</xs:documentation>
 										</xs:annotation>
 									</xs:attribute>
+									<xs:attribute name="AssociationReferenceSuffix" type="NamePartType" default="Reference">
+										<xs:annotation>
+											<xs:documentation>The text appended to the names of typed properties used for association navigation (the source or target of a foreign key).</xs:documentation>
+										</xs:annotation>
+									</xs:attribute>
 									<xs:attribute name="PrivateFieldPrefix" type="NamePartType" default="_">
 										<xs:annotation>
 											<xs:documentation>The text prepended to private field names.</xs:documentation>
@@ -69,7 +80,7 @@
 								<xs:complexType>
 									<xs:attribute name="Generate" type="xs:boolean" default="false">
 										<xs:annotation>
-											<xs:documentation>Determins whether or not the generator should include WCF DataContract attributes and ServiceContract calls.</xs:documentation>
+											<xs:documentation>Determines whether or not the generator should include WCF DataContract attributes and ServiceContract calls.</xs:documentation>
 										</xs:annotation>
 									</xs:attribute>
 									<xs:attribute name="CreateKeyword" type="NamePartType" default="Insert">
@@ -92,10 +103,32 @@
 											<xs:documentation>The text prepended to the name of 'delete' service methods in the WCF service contract.</xs:documentation>
 										</xs:annotation>
 									</xs:attribute>
+									<xs:attribute name="PreferredIdKeyword" type="NamePartType" default="PreferredIdentifier">
+										<xs:annotation>
+											<xs:documentation>The text appended to the name of service methods used to select by the preferred identifier.</xs:documentation>
+										</xs:annotation>
+									</xs:attribute>
+									<xs:attribute name="ServiceNameSuffix" type="NamePartType" default="Service">
+										<xs:annotation>
+											<xs:documentation>The text appended to the name of service contract interfaces.</xs:documentation>
+										</xs:annotation>
+									</xs:attribute>
 									<xs:attribute name="InitializeFunctionName" type="NamePartType" default="Initialize">
 										<xs:annotation>
 											<xs:documentation>If WCF service is generated, this specifes the function name for initializing EntitySet members for serialization.</xs:documentation>
 										</xs:annotation>
+									</xs:attribute>
+									<xs:attribute name="InstanceContextMode" default="PerCall">
+										<xs:annotation>
+											<xs:documentation>Determines the InstanceContextMode used with the ServiceBehavior attribute.</xs:documentation>
+										</xs:annotation>
+										<xs:simpleType>
+											<xs:restriction base="xs:token">
+												<xs:enumeration value="PerCall"/>
+												<xs:enumeration value="PerSession"/>
+												<xs:enumeration value="Single"/>
+											</xs:restriction>
+										</xs:simpleType>
 									</xs:attribute>
 								</xs:complexType>
 							</xs:element>

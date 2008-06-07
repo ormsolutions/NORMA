@@ -75,6 +75,18 @@
 		</xsl:choose>
 	</xsl:variable>
 	<xsl:variable name="CollectionSuffix" select="string($CollectionSuffixFragment)"/>
+	<xsl:variable name="AssociationReferenceSuffixFragment">
+		<xsl:variable name="setting" select="string($LinqToSqlSettings/opt:NameParts/@AssociationReferenceSuffix)"/>
+		<xsl:choose>
+			<xsl:when test="$setting">
+				<xsl:value-of select="$setting"/>
+			</xsl:when>
+			<xsl:otherwise>
+				<xsl:text>Reference</xsl:text>
+			</xsl:otherwise>
+		</xsl:choose>
+	</xsl:variable>
+	<xsl:variable name="AssociationReferenceSuffix" select="string($AssociationReferenceSuffixFragment)"/>
 	<xsl:variable name="TableSuffixFragment">
 		<xsl:variable name="setting" select="string($LinqToSqlSettings/opt:NameParts/@DataContextTableSuffix)"/>
 		<xsl:choose>
@@ -100,7 +112,7 @@
 	</xsl:variable>
 	<xsl:variable name="PrivateMemberPrefix" select="string($PrivateMemberPrefixFragment)"/>
 	<xsl:variable name="SettingsPropertyNameFragment">
-		<xsl:variable name="setting" select="string($LinqToSqlSettings/opt:NameParts/@ConnectionStringPropertyName)"/>
+		<xsl:variable name="setting" select="string($LinqToSqlSettings/opt:ConnectionString/@SettingsProperty)"/>
 		<xsl:choose>
 			<xsl:when test="$setting">
 				<xsl:value-of select="$setting"/>
@@ -119,7 +131,7 @@
 		<xsl:variable name="setting" select="string($LinqToSqlSettings/opt:ServiceLayer/@Generate)"/>
 		<xsl:choose>
 			<xsl:when test="$setting">
-				<xsl:value-of select="$setting"/>
+				<xsl:value-of select="$setting='false' or $setting='0'"/>
 			</xsl:when>
 			<xsl:otherwise>
 				<xsl:value-of select="false()"/>
@@ -215,7 +227,7 @@
 		<xsl:variable name="setting" select="string($LinqToSqlSettings/opt:ServiceLayer/@UseTransactionScopes)"/>
 		<xsl:choose>
 			<xsl:when test="$setting">
-				<xsl:value-of select="$setting"/>
+				<xsl:value-of select="$setting='true' or $setting='1'"/>
 			</xsl:when>
 			<xsl:otherwise>
 				<xsl:value-of select="true()"/>
@@ -286,6 +298,9 @@
 			<plx:namespaceImport name="{$ProjectName}.Properties"/>
 			<xsl:apply-templates select="dcl:schema" mode="GenerateNamespace"/>
 		</plx:root>
+		<xsl:if test="function-available('oct:EnsureProjectReference')">
+			<xsl:variable name="addedProjectReference" select="oct:EnsureProjectReference('System.Data.Linq','System.Data.Linq') and oct:EnsureProjectReference('System.Data','System.Data')"/>
+		</xsl:if>
 	</xsl:template>
 
 	<xsl:template match="dcl:schema" mode="GenerateNamespace">
@@ -620,7 +635,7 @@
 			<xsl:for-each select="$containingEntity/dcl:uniquenessConstraint[@isPrimary = 'true' or @isPrimary = 1]/dcl:columnRef">
 				<xsl:value-of select="fn:pascalName($oppositeEntity/dcl:referenceConstraint/dcl:columnRef[@targetName = current()/@name]/@sourceName)"/>
 				<xsl:if test="position() = last()">
-					<xsl:text>Reference</xsl:text>
+					<xsl:value-of select="$AssociationReferenceSuffix"/>
 				</xsl:if>
 			</xsl:for-each>
 		</xsl:variable>
@@ -897,7 +912,7 @@
 							</plx:left>
 							<plx:right>
 								<!--TODO: Set this via a settings file.-->
-								<plx:string data="{$columnName}"/>
+								<plx:string data="{fn:bracketQuotedName($columnName)}"/>
 							</plx:right>
 						</plx:binaryOperator>
 					</plx:passParam>
@@ -3354,10 +3369,6 @@
 		<![CDATA[
 		private static readonly object _lockObject = new object();
 		private static System.Text.RegularExpressions.Regex _scrubNameRegex;
-		public static string removeQuotes(string name)
-		{
-			string retVal = 
-		}
 		public static string pascalName(string name)
 		{
 			string retVal = scrubName(name);
@@ -3406,6 +3417,18 @@
 					}
 					return groups[2].Value;
 				});
+		}
+		public static string bracketQuotedName(string name)
+		{
+			if (name != null)
+			{
+				int length = name.Length;
+				if (length >= 2 && name[0] == '\"' && name[length - 1] == '\"')
+				{
+					return "[" + name.Substring(1, length - 2) + "]";
+				}
+			}
+			return name;
 		}
 		]]>
 	</msxsl:script>
