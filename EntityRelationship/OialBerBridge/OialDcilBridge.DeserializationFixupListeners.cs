@@ -49,7 +49,7 @@ namespace Neumont.Tools.ORMAbstractionToBarkerERBridge
 		/// <summary>
 		/// The algorithm version written to the file for the core algorithm
 		/// </summary>
-		public const string CurrentCoreAlgorithmVersion = "1.000";
+		public const string CurrentCoreAlgorithmVersion = "1.001";
 		/// <summary>
 		/// The algorithm version written to the file for the name generation algorithm
 		/// </summary>
@@ -205,19 +205,22 @@ namespace Neumont.Tools.ORMAbstractionToBarkerERBridge
 		}
 		private static bool IsSimpleManyToManyAssociation(ConceptType conceptType)
 		{
-			bool isManyToMany = false;
-			LinkedElementCollection<ConceptTypeChild> associationChildren = 
-				ConceptTypeHasChildAsPartOfAssociation.GetTargetCollection(conceptType);
-			ReadOnlyCollection<ConceptTypeChild> allChildren =
-				ConceptTypeChild.GetLinksToTargetCollection(conceptType);
-			if (associationChildren != null && allChildren != null &&
-				associationChildren.Count == 2 && allChildren.Count == 2)
+			LinkedElementCollection<ConceptTypeChild> associationChildren = ConceptTypeHasChildAsPartOfAssociation.GetTargetCollection(conceptType);
+			ConceptTypeChild child0;
+			ConceptTypeChild child1;
+			if (associationChildren.Count == 2 &&
+				!((child0 = associationChildren[0]) is InformationType) &&
+				!((child1 = associationChildren[1]) is InformationType))
 			{
-				isManyToMany =
-					associationChildren[0] == allChildren[0] && associationChildren[1] == allChildren[1] ||
-					associationChildren[0] == allChildren[1] && associationChildren[1] == allChildren[0];
+				ReadOnlyCollection<ConceptTypeChild> allChildren = ConceptTypeChild.GetLinksToTargetCollection(conceptType);
+				if (allChildren.Count == 2)
+				{
+					return
+						child0 == allChildren[0] && child1 == allChildren[1] ||
+						child0 == allChildren[1] && child1 == allChildren[0];
+				}
 			}
-			return isManyToMany;
+			return false;
 		}
 		private static void CreateAttributesAndBinaryRelationships(ConceptType conceptType, INotifyElementAdded notifyAdded, ref int associationCounter)
 		{
