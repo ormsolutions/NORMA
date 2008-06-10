@@ -42,7 +42,7 @@
 				<ddl:notNullKeyword />
 			</ddl:columnConstraintDefinition>
 		</ddl:columnDefinition>
-		<ddl:columnDefinition name="blogCommentParentEntryIdBlogEntry_Id">
+		<ddl:columnDefinition name="blogCommentParentEntryId">
 			<ddt:exactNumeric type="INTEGER" />
 		</ddl:columnDefinition>
 		<ddl:tableConstraintDefinition name="BlogEntry_PK">
@@ -142,7 +142,7 @@
 	<ddl:alterTableStatement name="BlogEntry" schema="BlogDemo">
 		<ddl:addTableConstraintDefinition name="BlogEntry_FK2">
 			<ddl:referentialConstraintDefinition>
-				<dep:simpleColumnReference name="blogCommentParentEntryIdBlogEntry_Id" />
+				<dep:simpleColumnReference name="blogCommentParentEntryId" />
 				<ddl:referencesSpecification name="BlogEntry" onDelete="RESTRICT" onUpdate="RESTRICT" schema="BlogDemo">
 					<dep:simpleColumnReference name="blogEntryId" />
 				</ddl:referencesSpecification>

@@ -12,7 +12,7 @@ CREATE TABLE BlogDemo.BlogEntry
 	postedDate DATETIME NOT NULL,
 	firstName NATIONAL CHARACTER VARYING(30) NOT NULL,
 	lastName NATIONAL CHARACTER VARYING(30) NOT NULL,
-	blogCommentParentEntryIdBlogEntry_Id INTEGER,
+	blogCommentParentEntryId INTEGER,
 	CONSTRAINT BlogEntry_PK PRIMARY KEY(blogEntryId)
 )
 GO
@@ -51,7 +51,7 @@ ALTER TABLE BlogDemo.BlogEntry ADD CONSTRAINT BlogEntry_FK1 FOREIGN KEY (firstNa
 GO
 
 
-ALTER TABLE BlogDemo.BlogEntry ADD CONSTRAINT BlogEntry_FK2 FOREIGN KEY (blogCommentParentEntryIdBlogEntry_Id) REFERENCES BlogDemo.BlogEntry (blogEntryId) ON DELETE NO ACTION ON UPDATE NO ACTION
+ALTER TABLE BlogDemo.BlogEntry ADD CONSTRAINT BlogEntry_FK2 FOREIGN KEY (blogCommentParentEntryId) REFERENCES BlogDemo.BlogEntry (blogEntryId) ON DELETE NO ACTION ON UPDATE NO ACTION
 GO
 
 

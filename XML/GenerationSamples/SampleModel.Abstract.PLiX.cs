@@ -1,6 +1,7 @@
 ﻿// Generate threw an exception
 // The required attribute 'dataTypeName' is missing.
 //    at System.Xml.Schema.XmlSchemaValidator.SendValidationEvent(XmlSchemaValidationException e, XmlSeverityType severity)
+//   at System.Xml.Schema.XmlSchemaValidator.SendValidationEvent(String code, String arg)
 //   at System.Xml.Schema.XmlSchemaValidator.CheckRequiredAttributes(SchemaElementDecl currentElementDecl)
 //   at System.Xml.Schema.XmlSchemaValidator.ValidateEndOfAttributes(XmlSchemaInfo schemaInfo)
 //   at System.Xml.XsdValidatingReader.ProcessElementEvent()
@@ -17,5 +18,5 @@
 //   at System.Xml.Xsl.XmlILCommand.Execute(Object defaultDocument, XmlResolver dataSources, XsltArgumentList argumentList, XmlWriter writer, Boolean closeWriter)
 //   at System.Xml.Xsl.XmlILCommand.Execute(XmlReader contextDocument, XmlResolver dataSources, XsltArgumentList argumentList, TextWriter results)
 //   at System.Xml.Xsl.XslCompiledTransform.Transform(XmlReader input, XsltArgumentList arguments, TextWriter results)
-//   at Neumont.Tools.CodeGeneration.Plix.PlixLoaderCustomTool.GenerateCode(String fileContents, String defaultNamespace) in c:\Projects\ORM\codegen\CodeGenCustomTool\PlixLoaderCustomTool.cs:line 609
+//   at Neumont.Tools.CodeGeneration.Plix.PlixLoaderCustomTool.GenerateCode(String fileContents, String defaultNamespace) in c:\Documents and Settings\mcurland\My Documents\Visual Studio 2005\Projects\CodeGen\CodeGenCustomTool\PlixLoaderCustomTool.cs:line 609
 #error NUPlixLoader Exception

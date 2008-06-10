@@ -960,7 +960,7 @@
 			<ormtooial:AbstractionModelGenerationSetting id="_A43ACAC7-8E78-483E-98CF-C5C06C949D83" AlgorithmVersion="1.004">
 				<ormtooial:AbstractionModel ref="_586DBDF6-B598-4BEF-85B7-1A71F9B563B5" />
 			</ormtooial:AbstractionModelGenerationSetting>
-			<oialtocdb:SchemaGenerationSetting id="_0D549D23-FB6C-4F0A-8BB9-1CB3A1A38D0E" CoreAlgorithmVersion="1.004" NameAlgorithmVersion="1.007">
+			<oialtocdb:SchemaGenerationSetting id="_0D549D23-FB6C-4F0A-8BB9-1CB3A1A38D0E" CoreAlgorithmVersion="1.004" NameAlgorithmVersion="1.009">
 				<oialtocdb:Schema ref="_664AF5F7-182D-4B0D-85BC-F2484A0BD78D" />
 			</oialtocdb:SchemaGenerationSetting>
 		</orm:GenerationSettings>
@@ -1238,7 +1238,7 @@
 							<rcd:Column id="_652E50EF-FBB6-4BF5-8100-4AAABD57C483" Name="postedDate" />
 							<rcd:Column id="_E38F5627-00F3-4AA2-BC56-5D04B44807E7" Name="firstName" />
 							<rcd:Column id="_F153FBB7-02D8-4FCB-8366-B3A6CD2655F3" Name="lastName" />
-							<rcd:Column id="_688BFAFB-3B4F-45E8-BEAF-84D2E3AFA60F" Name="blogCommentParentEntryIdBlogEntry_Id" IsNullable="true" />
+							<rcd:Column id="_688BFAFB-3B4F-45E8-BEAF-84D2E3AFA60F" Name="blogCommentParentEntryId" IsNullable="true" />
 						</rcd:Columns>
 						<rcd:Constraints>
 							<rcd:UniquenessConstraint id="_C5B39417-5AF8-4500-9403-1552F5CDD9E5" Name="BlogEntry_PK" IsPrimary="true">

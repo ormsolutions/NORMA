@@ -3550,7 +3550,7 @@
 			<ormtooial:AbstractionModelGenerationSetting id="_A64869C1-C2FB-4F77-94FA-48FE3452C95B" AlgorithmVersion="1.004">
 				<ormtooial:AbstractionModel ref="_B0CDFA26-E80B-4496-9622-6642A1AE8B16" />
 			</ormtooial:AbstractionModelGenerationSetting>
-			<oialtocdb:SchemaGenerationSetting id="_DF8F9656-CAB0-4216-A238-6620C0E4B604" CoreAlgorithmVersion="1.004" NameAlgorithmVersion="1.007">
+			<oialtocdb:SchemaGenerationSetting id="_DF8F9656-CAB0-4216-A238-6620C0E4B604" CoreAlgorithmVersion="1.004" NameAlgorithmVersion="1.009">
 				<oialtocdb:Schema ref="_D5057546-41C5-4637-BCBF-A4324C15934B" />
 			</oialtocdb:SchemaGenerationSetting>
 		</orm:GenerationSettings>
@@ -4372,8 +4372,8 @@
 							<rcd:Column id="_9AEE2240-AEA6-4094-A559-A70F89CA368D" Name="wife" IsNullable="true" />
 							<rcd:Column id="_60EE665D-FF26-4A87-9206-5F27A4287986" Name="valueType1DoesSomethingElseWith" IsNullable="true" />
 							<rcd:Column id="_F58DA83E-14BA-44DE-8ABD-59AF53168542" Name="childPersonBirthOrderNr" IsNullable="true" />
-							<rcd:Column id="_3D872FFD-3E09-4120-8E21-44F308F304B8" Name="childPersonFatherPerson_id" IsNullable="true" />
-							<rcd:Column id="_C93B0961-A561-41B6-B705-1E50096D334B" Name="childPersonMotherPerson_id" IsNullable="true" />
+							<rcd:Column id="_3D872FFD-3E09-4120-8E21-44F308F304B8" Name="childPersonFather" IsNullable="true" />
+							<rcd:Column id="_C93B0961-A561-41B6-B705-1E50096D334B" Name="childPersonMother" IsNullable="true" />
 							<rcd:Column id="_C1BE3588-81E3-4B28-9EAB-49DEDC612185" Name="deathDate" IsNullable="true" />
 							<rcd:Column id="_618B5CAD-A4C0-44CD-97F2-1E2DF5C958D4" Name="deathCause" IsNullable="true" />
 							<rcd:Column id="_4A348243-C67A-46CC-82F7-844CF9418AD7" Name="deathNaturalDeathIsFromProstateCancer" IsNullable="true" />

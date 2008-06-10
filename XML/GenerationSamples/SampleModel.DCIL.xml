@@ -157,10 +157,10 @@
 		<dcl:column name="childPersonBirthOrderNr" isNullable="true" isIdentity="false">
 			<dcl:domainRef name="BirthOrder_Nr" />
 		</dcl:column>
-		<dcl:column name="childPersonFatherPerson_id" isNullable="true" isIdentity="false">
+		<dcl:column name="childPersonFather" isNullable="true" isIdentity="false">
 			<dcl:predefinedDataType name="INTEGER" />
 		</dcl:column>
-		<dcl:column name="childPersonMotherPerson_id" isNullable="true" isIdentity="false">
+		<dcl:column name="childPersonMother" isNullable="true" isIdentity="false">
 			<dcl:predefinedDataType name="INTEGER" />
 		</dcl:column>
 		<dcl:column name="ColorARGB" isNullable="true" isIdentity="false">
@@ -232,9 +232,9 @@
 			<dcl:columnRef name="mandatoryUniqueTinyInt" />
 		</dcl:uniquenessConstraint>
 		<dcl:uniquenessConstraint name="Person_UC11" isPrimary="false">
-			<dcl:columnRef name="childPersonFatherPerson_id" />
+			<dcl:columnRef name="childPersonFather" />
 			<dcl:columnRef name="childPersonBirthOrderNr" />
-			<dcl:columnRef name="childPersonMotherPerson_id" />
+			<dcl:columnRef name="childPersonMother" />
 		</dcl:uniquenessConstraint>
 		<dcl:referenceConstraint name="Person_FK1" targetTable="Person">
 			<dcl:columnRef sourceName="wife" targetName="personId" />
@@ -243,18 +243,16 @@
 			<dcl:columnRef sourceName="valueType1DoesSomethingElseWith" targetName="&quot;value&quot;" />
 		</dcl:referenceConstraint>
 		<dcl:referenceConstraint name="Person_FK3" targetTable="Person">
-			<dcl:columnRef sourceName="childPersonFatherPerson_id" targetName="personId" />
+			<dcl:columnRef sourceName="childPersonFather" targetName="personId" />
 		</dcl:referenceConstraint>
 		<dcl:referenceConstraint name="Person_FK4" targetTable="Person">
-			<dcl:columnRef sourceName="childPersonMotherPerson_id" targetName="personId" />
+			<dcl:columnRef sourceName="childPersonMother" targetName="personId" />
 		</dcl:referenceConstraint>
 		<dcl:checkConstraint name="Person_Death_MandatoryGroup">
 			<dep:or>
-				<dep:and>
-					<dep:nullPredicate type="NOT NULL">
-						<dep:columnReference name="deathCause" />
-					</dep:nullPredicate>
-				</dep:and>
+				<dep:nullPredicate type="NOT NULL">
+					<dep:columnReference name="deathCause" />
+				</dep:nullPredicate>
 				<dep:and>
 					<dep:nullPredicate type="NULL">
 						<dep:columnReference name="deathCause" />
@@ -281,10 +279,10 @@
 						<dep:columnReference name="childPersonBirthOrderNr" />
 					</dep:nullPredicate>
 					<dep:nullPredicate type="NOT NULL">
-						<dep:columnReference name="childPersonMotherPerson_id" />
+						<dep:columnReference name="childPersonMother" />
 					</dep:nullPredicate>
 					<dep:nullPredicate type="NOT NULL">
-						<dep:columnReference name="childPersonFatherPerson_id" />
+						<dep:columnReference name="childPersonFather" />
 					</dep:nullPredicate>
 				</dep:and>
 				<dep:and>
@@ -292,10 +290,10 @@
 						<dep:columnReference name="childPersonBirthOrderNr" />
 					</dep:nullPredicate>
 					<dep:nullPredicate type="NULL">
-						<dep:columnReference name="childPersonMotherPerson_id" />
+						<dep:columnReference name="childPersonMother" />
 					</dep:nullPredicate>
 					<dep:nullPredicate type="NULL">
-						<dep:columnReference name="childPersonFatherPerson_id" />
+						<dep:columnReference name="childPersonFather" />
 					</dep:nullPredicate>
 				</dep:and>
 			</dep:or>

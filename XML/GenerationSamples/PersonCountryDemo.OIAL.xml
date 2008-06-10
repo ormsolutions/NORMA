@@ -1,20 +1,20 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
-<oil:model name="PersonCountryDemo" sourceRef="_BDFAF3F3-6FE2-4184-B30B-EF969F7C9578" xmlns:oil="http://schemas.orm.net/OIAL" xmlns:odt="http://schemas.orm.net/ORMDataTypes">
+<oil:model name="PersonCountryDemo" sourceRef="_BDFAF3F3-6FE2-4184-B30B-EF969F7C9578" xmlns:oil="http://schemas.orm.net/OIAL" xmlns:ormdt="http://schemas.orm.net/ORMDataTypes">
 	<oil:informationTypeFormats>
 		<!--These may change in the future once they are integrated into the core ORM model file.-->
-		<odt:identity name="Person_id" />
-		<odt:string name="Title" maxLength="4">
-			<odt:enumeration value="Dr" />
-			<odt:enumeration value="Prof" />
-			<odt:enumeration value="Mr" />
-			<odt:enumeration value="Mrs" />
-			<odt:enumeration value="Miss" />
-			<odt:enumeration value="Ms" />
-		</odt:string>
-		<odt:string name="FirstName" maxLength="30" />
-		<odt:string name="LastName" maxLength="30" />
-		<odt:string name="Country_name" maxLength="20" />
-		<odt:string name="Region_code" maxLength="8" minLength="8" />
+		<ormdt:identity name="Person_id" />
+		<ormdt:string name="Title" maxLength="4">
+			<ormdt:enumeration value="Dr" />
+			<ormdt:enumeration value="Prof" />
+			<ormdt:enumeration value="Mr" />
+			<ormdt:enumeration value="Mrs" />
+			<ormdt:enumeration value="Miss" />
+			<ormdt:enumeration value="Ms" />
+		</ormdt:string>
+		<ormdt:string name="FirstName" maxLength="30" />
+		<ormdt:string name="LastName" maxLength="30" />
+		<ormdt:string name="Country_name" maxLength="20" />
+		<ormdt:string name="Region_code" maxLength="8" minLength="8" />
 	</oil:informationTypeFormats>
 	<oil:conceptType name="Person" sourceRef="_08FCB217-4D5A-4D6E-BB08-033359BFEF51">
 		<oil:informationType name="Person_id" formatRef="Person_id" mandatory="alethic" sourceRef="_C9C8AA4D-9160-41E4-B050-4FE4271B2F56" sourceRoleRef="_D6CB6642-E6C6-42D3-838E-1E81413CE968">

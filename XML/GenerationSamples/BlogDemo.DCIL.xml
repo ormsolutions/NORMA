@@ -19,7 +19,7 @@
 		<dcl:column name="lastName" isNullable="false" isIdentity="false">
 			<dcl:predefinedDataType name="CHARACTER VARYING" length="30" />
 		</dcl:column>
-		<dcl:column name="blogCommentParentEntryIdBlogEntry_Id" isNullable="true" isIdentity="false">
+		<dcl:column name="blogCommentParentEntryId" isNullable="true" isIdentity="false">
 			<dcl:predefinedDataType name="INTEGER" />
 		</dcl:column>
 		<dcl:uniquenessConstraint name="BlogEntry_PK" isPrimary="true">
@@ -30,7 +30,7 @@
 			<dcl:columnRef sourceName="lastName" targetName="lastName" />
 		</dcl:referenceConstraint>
 		<dcl:referenceConstraint name="BlogEntry_FK2" targetTable="BlogEntry">
-			<dcl:columnRef sourceName="blogCommentParentEntryIdBlogEntry_Id" targetName="blogEntryId" />
+			<dcl:columnRef sourceName="blogCommentParentEntryId" targetName="blogEntryId" />
 		</dcl:referenceConstraint>
 	</dcl:table>
 	<dcl:table name="&quot;User&quot;">

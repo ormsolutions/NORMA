@@ -23,8 +23,8 @@ CREATE TABLE SampleModel.Person
 	optionalUniqueTinyInt TINYINT,
 	wife INTEGER,
 	childPersonBirthOrderNr INTEGER CHECK (childPersonBirthOrderNr >= 0 AND childPersonBirthOrderNr >= 1),
-	childPersonFatherPerson_id INTEGER,
-	childPersonMotherPerson_id INTEGER,
+	childPersonFather INTEGER,
+	childPersonMother INTEGER,
 	ColorARGB INTEGER,
 	hatTypeStyle NATIONAL CHARACTER VARYING(256),
 	isDead BIT,
@@ -45,7 +45,7 @@ CREATE TABLE SampleModel.Person
 	CONSTRAINT Person_mandatoryUniqueDecimal_RoleValueConstraint2 CHECK (mandatoryUniqueDecimal BETWEEN 9000 AND 10000),
 	CONSTRAINT Person_optionalUniqueDecimal_RoleValueConstraint1 CHECK (optionalUniqueDecimal BETWEEN 100 AND 4000),
 	CONSTRAINT Person_Death_MandatoryGroup CHECK (deathCause IS NOT NULL OR deathCause IS NULL AND deathDate IS NULL AND deathNaturalDeathIsFromProstateCancer IS NULL AND deathUnnaturalDeathIsViolent IS NULL AND deathUnnaturalDeathIsBloody IS NULL),
-	CONSTRAINT Person_ChildPerson_MandatoryGroup CHECK (childPersonBirthOrderNr IS NOT NULL AND childPersonMotherPerson_id IS NOT NULL AND childPersonFatherPerson_id IS NOT NULL OR childPersonBirthOrderNr IS NULL AND childPersonMotherPerson_id IS NULL AND childPersonFatherPerson_id IS NULL)
+	CONSTRAINT Person_ChildPerson_MandatoryGroup CHECK (childPersonBirthOrderNr IS NOT NULL AND childPersonMother IS NOT NULL AND childPersonFather IS NOT NULL OR childPersonBirthOrderNr IS NULL AND childPersonMother IS NULL AND childPersonFather IS NULL)
 )
 GO
 
@@ -120,17 +120,17 @@ CREATE UNIQUE CLUSTERED INDEX Person_UC9Index ON SampleModel.Person_UC9(optional
 GO
 
 
-CREATE VIEW SampleModel.Person_UC11 (childPersonFatherPerson_id, childPersonBirthOrderNr, childPersonMotherPerson_id)
+CREATE VIEW SampleModel.Person_UC11 (childPersonFather, childPersonBirthOrderNr, childPersonMother)
 WITH SCHEMABINDING
 AS
-	SELECT childPersonFatherPerson_id, childPersonBirthOrderNr, childPersonMotherPerson_id
+	SELECT childPersonFather, childPersonBirthOrderNr, childPersonMother
 	FROM 
 		SampleModel.Person
-	WHERE childPersonFatherPerson_id IS NOT NULL AND childPersonBirthOrderNr IS NOT NULL AND childPersonMotherPerson_id IS NOT NULL
+	WHERE childPersonFather IS NOT NULL AND childPersonBirthOrderNr IS NOT NULL AND childPersonMother IS NOT NULL
 GO
 
 
-CREATE UNIQUE CLUSTERED INDEX Person_UC11Index ON SampleModel.Person_UC11(childPersonFatherPerson_id, childPersonBirthOrderNr, childPersonMotherPerson_id)
+CREATE UNIQUE CLUSTERED INDEX Person_UC11Index ON SampleModel.Person_UC11(childPersonFather, childPersonBirthOrderNr, childPersonMother)
 GO
 
 
@@ -201,11 +201,11 @@ ALTER TABLE SampleModel.Person ADD CONSTRAINT Person_FK2 FOREIGN KEY (valueType1
 GO
 
 
-ALTER TABLE SampleModel.Person ADD CONSTRAINT Person_FK3 FOREIGN KEY (childPersonFatherPerson_id) REFERENCES SampleModel.Person (personId) ON DELETE NO ACTION ON UPDATE NO ACTION
+ALTER TABLE SampleModel.Person ADD CONSTRAINT Person_FK3 FOREIGN KEY (childPersonFather) REFERENCES SampleModel.Person (personId) ON DELETE NO ACTION ON UPDATE NO ACTION
 GO
 
 
-ALTER TABLE SampleModel.Person ADD CONSTRAINT Person_FK4 FOREIGN KEY (childPersonMotherPerson_id) REFERENCES SampleModel.Person (personId) ON DELETE NO ACTION ON UPDATE NO ACTION
+ALTER TABLE SampleModel.Person ADD CONSTRAINT Person_FK4 FOREIGN KEY (childPersonMother) REFERENCES SampleModel.Person (personId) ON DELETE NO ACTION ON UPDATE NO ACTION
 GO
 
 

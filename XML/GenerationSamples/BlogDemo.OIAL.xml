@@ -1,22 +1,22 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
-<oil:model name="BlogDemo" sourceRef="_F434295F-CF9E-4E0A-8EAC-7DBF899336FD" xmlns:oil="http://schemas.orm.net/OIAL" xmlns:odt="http://schemas.orm.net/ORMDataTypes">
+<oil:model name="BlogDemo" sourceRef="_F434295F-CF9E-4E0A-8EAC-7DBF899336FD" xmlns:oil="http://schemas.orm.net/OIAL" xmlns:ormdt="http://schemas.orm.net/ORMDataTypes">
 	<oil:informationTypeFormats>
 		<!--These may change in the future once they are integrated into the core ORM model file.-->
-		<odt:decimalNumber name="BlogEntry_Id" fractionDigits="0">
-			<odt:range>
-				<odt:lowerBound clusivity="inclusive" value="-2147483648" />
-				<odt:upperBound clusivity="inclusive" value="2147483647" />
-			</odt:range>
-		</odt:decimalNumber>
-		<odt:string name="EntryTitle" maxLength="30" />
-		<odt:string name="EntryBody" />
+		<ormdt:decimalNumber name="BlogEntry_Id" fractionDigits="0">
+			<ormdt:range>
+				<ormdt:lowerBound clusivity="inclusive" value="-2147483648" />
+				<ormdt:upperBound clusivity="inclusive" value="2147483647" />
+			</ormdt:range>
+		</ormdt:decimalNumber>
+		<ormdt:string name="EntryTitle" maxLength="30" />
+		<ormdt:string name="EntryBody" />
 		<!--WARNING: ORM2 does not yet support temporal data types, but you tried to transform a model that used an ORM1 temporal data type. This data type has been converted to an arbitrary-precision integer that measures the number of ticks (100 nanosecond increments) since 0000-01-01T00:00:00.-->
-		<odt:decimalNumber name="MDYValue" fractionDigits="0" />
-		<odt:string name="Name" maxLength="30" />
-		<odt:string name="Username" maxLength="30" />
-		<odt:string name="Password" maxLength="32" minLength="32" />
-		<odt:identity name="BlogLabel_Id" />
-		<odt:string name="Title" />
+		<ormdt:decimalNumber name="MDYValue" fractionDigits="0" />
+		<ormdt:string name="Name" maxLength="30" />
+		<ormdt:string name="Username" maxLength="30" />
+		<ormdt:string name="Password" maxLength="32" minLength="32" />
+		<ormdt:identity name="BlogLabel_Id" />
+		<ormdt:string name="Title" />
 	</oil:informationTypeFormats>
 	<oil:conceptType name="BlogEntryLabel" sourceRef="_6E7E0F2F-EAF0-4D19-91CA-71E702D587CC">
 		<oil:conceptTypeRef name="blogEntryId" target="BlogEntry" oppositeName="BlogEntryLabel" mandatory="alethic" sourceRoleRef="_842AE0A8-31EE-4EA5-8AC8-75226E9944D1" />

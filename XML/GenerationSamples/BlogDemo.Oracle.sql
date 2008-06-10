@@ -9,7 +9,7 @@ CREATE TABLE BlogEntry
 	postedDate TIMESTAMP NOT NULL,
 	firstName NVARCHAR2(30) NOT NULL,
 	lastName NVARCHAR2(30) NOT NULL,
-	blogCommentParentEntryIdBlogEntry_Id NUMBER(10,0),
+	blogCommentParentEntryId NUMBER(10,0),
 	CONSTRAINT BlogEntry_PK PRIMARY KEY(blogEntryId)
 );
 
@@ -38,7 +38,7 @@ CREATE TABLE BlogEntryLabel
 
 ALTER TABLE BlogEntry ADD CONSTRAINT BlogEntry_FK1 FOREIGN KEY (firstName, lastName)  REFERENCES "User" (firstName, lastName) ;
 
-ALTER TABLE BlogEntry ADD CONSTRAINT BlogEntry_FK2 FOREIGN KEY (blogCommentParentEntryIdBlogEntry_Id)  REFERENCES BlogEntry (blogEntryId) ;
+ALTER TABLE BlogEntry ADD CONSTRAINT BlogEntry_FK2 FOREIGN KEY (blogCommentParentEntryId)  REFERENCES BlogEntry (blogEntryId) ;
 
 ALTER TABLE BlogEntryLabel ADD CONSTRAINT BlogEntryLabel_FK1 FOREIGN KEY (blogEntryId)  REFERENCES BlogEntry (blogEntryId) ;
 

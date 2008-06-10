@@ -1,91 +1,91 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
-<oil:model name="SampleModel" sourceRef="_AA456D07-4B8E-43CB-9F7B-093F42087891" xmlns:oil="http://schemas.orm.net/OIAL" xmlns:odt="http://schemas.orm.net/ORMDataTypes">
+<oil:model name="SampleModel" sourceRef="_AA456D07-4B8E-43CB-9F7B-093F42087891" xmlns:oil="http://schemas.orm.net/OIAL" xmlns:ormdt="http://schemas.orm.net/ORMDataTypes">
 	<oil:informationTypeFormats>
 		<!--These may change in the future once they are integrated into the core ORM model file.-->
-		<odt:identity name="Person_id" />
-		<odt:string name="FirstName" maxLength="64" />
-		<odt:string name="LastName" maxLength="64" />
-		<odt:string name="OptionalUniqueString" maxLength="11" minLength="11" />
-		<odt:decimalNumber name="ColorARGB" fractionDigits="0">
-			<odt:range>
-				<odt:lowerBound clusivity="inclusive" value="-2147483648" />
-				<odt:upperBound clusivity="inclusive" value="2147483647" />
-			</odt:range>
-		</odt:decimalNumber>
-		<odt:identity name="Task_id" />
-		<odt:decimalNumber name="vin" fractionDigits="0">
-			<odt:range>
-				<odt:lowerBound clusivity="inclusive" value="0" />
-				<odt:upperBound clusivity="inclusive" value="4294967295" />
-			</odt:range>
-		</odt:decimalNumber>
+		<ormdt:identity name="Person_id" />
+		<ormdt:string name="FirstName" maxLength="64" />
+		<ormdt:string name="LastName" maxLength="64" />
+		<ormdt:string name="OptionalUniqueString" maxLength="11" minLength="11" />
+		<ormdt:decimalNumber name="ColorARGB" fractionDigits="0">
+			<ormdt:range>
+				<ormdt:lowerBound clusivity="inclusive" value="-2147483648" />
+				<ormdt:upperBound clusivity="inclusive" value="2147483647" />
+			</ormdt:range>
+		</ormdt:decimalNumber>
+		<ormdt:identity name="Task_id" />
+		<ormdt:decimalNumber name="vin" fractionDigits="0">
+			<ormdt:range>
+				<ormdt:lowerBound clusivity="inclusive" value="0" />
+				<ormdt:upperBound clusivity="inclusive" value="4294967295" />
+			</ormdt:range>
+		</ormdt:decimalNumber>
 		<!--WARNING: ORM2 does not yet support temporal data types, but you tried to transform a model that used an ORM1 temporal data type. This data type has been converted to an arbitrary-precision integer that measures the number of ticks (100 nanosecond increments) since 0000-01-01T00:00:00.-->
-		<odt:decimalNumber name="YMD" fractionDigits="0" />
-		<odt:string name="Name" maxLength="64" />
-		<odt:decimalNumber name="Integer" fractionDigits="0">
-			<odt:range>
-				<odt:lowerBound clusivity="inclusive" value="0" />
-				<odt:upperBound clusivity="inclusive" value="4294967295" />
-			</odt:range>
-			<odt:range>
-				<odt:lowerBound value="1" clusivity="inclusive" />
-				<odt:upperBound value="7" clusivity="inclusive" />
-			</odt:range>
-			<odt:enumeration value="9" />
-			<odt:enumeration value="10" />
-			<odt:enumeration value="12" />
-			<odt:range>
-				<odt:lowerBound value="14" clusivity="inclusive" />
-				<odt:upperBound value="16" clusivity="inclusive" />
-			</odt:range>
-			<odt:range>
-				<odt:lowerBound value="18" clusivity="inclusive" />
-			</odt:range>
-		</odt:decimalNumber>
-		<odt:string name="NickName" maxLength="64" />
-		<odt:decimalNumber name="ValueType1" fractionDigits="0">
-			<odt:range>
-				<odt:lowerBound clusivity="inclusive" value="-2147483648" />
-				<odt:upperBound clusivity="inclusive" value="2147483647" />
-			</odt:range>
-		</odt:decimalNumber>
-		<odt:string name="DeathCause_Type" maxLength="14">
-			<odt:enumeration value="natural" />
-			<odt:enumeration value="not so natural" />
-		</odt:string>
-		<odt:string name="HatTypeStyle_Description" maxLength="256" />
-		<odt:decimalNumber name="BirthOrder_Nr" fractionDigits="0">
-			<odt:range>
-				<odt:lowerBound clusivity="inclusive" value="0" />
-				<odt:upperBound clusivity="inclusive" value="4294967295" />
-			</odt:range>
-			<odt:range>
-				<odt:lowerBound value="1" clusivity="inclusive" />
-			</odt:range>
-		</odt:decimalNumber>
-		<odt:string name="Gender_Code" maxLength="1" minLength="1">
-			<odt:enumeration value="M" />
-			<odt:enumeration value="F" />
-		</odt:string>
-		<odt:decimalNumber name="OptionalUniqueDecimal" totalDigits="9" />
-		<odt:decimalNumber name="MandatoryUniqueDecimal" totalDigits="9">
-			<odt:range>
-				<odt:lowerBound value="4000" clusivity="inclusive" />
-				<odt:upperBound value="20000" clusivity="inclusive" />
-			</odt:range>
-		</odt:decimalNumber>
-		<odt:string name="MandatoryUniqueString" maxLength="11" minLength="11" />
-		<odt:boolean name="Person isDead" />
-		<odt:boolean name="NaturalDeath isFromProstateCancer" />
-		<odt:boolean name="UnnaturalDeath isViolent" />
-		<odt:boolean name="UnnaturalDeath isBloody" />
-		<odt:boolean name="Person hasParents" />
+		<ormdt:decimalNumber name="YMD" fractionDigits="0" />
+		<ormdt:string name="Name" maxLength="64" />
+		<ormdt:decimalNumber name="Integer" fractionDigits="0">
+			<ormdt:range>
+				<ormdt:lowerBound clusivity="inclusive" value="0" />
+				<ormdt:upperBound clusivity="inclusive" value="4294967295" />
+			</ormdt:range>
+			<ormdt:range>
+				<ormdt:lowerBound value="1" clusivity="inclusive" />
+				<ormdt:upperBound value="7" clusivity="inclusive" />
+			</ormdt:range>
+			<ormdt:enumeration value="9" />
+			<ormdt:enumeration value="10" />
+			<ormdt:enumeration value="12" />
+			<ormdt:range>
+				<ormdt:lowerBound value="14" clusivity="inclusive" />
+				<ormdt:upperBound value="16" clusivity="inclusive" />
+			</ormdt:range>
+			<ormdt:range>
+				<ormdt:lowerBound value="18" clusivity="inclusive" />
+			</ormdt:range>
+		</ormdt:decimalNumber>
+		<ormdt:string name="NickName" maxLength="64" />
+		<ormdt:decimalNumber name="ValueType1" fractionDigits="0">
+			<ormdt:range>
+				<ormdt:lowerBound clusivity="inclusive" value="-2147483648" />
+				<ormdt:upperBound clusivity="inclusive" value="2147483647" />
+			</ormdt:range>
+		</ormdt:decimalNumber>
+		<ormdt:string name="DeathCause_Type" maxLength="14">
+			<ormdt:enumeration value="natural" />
+			<ormdt:enumeration value="not so natural" />
+		</ormdt:string>
+		<ormdt:string name="HatTypeStyle_Description" maxLength="256" />
+		<ormdt:decimalNumber name="BirthOrder_Nr" fractionDigits="0">
+			<ormdt:range>
+				<ormdt:lowerBound clusivity="inclusive" value="0" />
+				<ormdt:upperBound clusivity="inclusive" value="4294967295" />
+			</ormdt:range>
+			<ormdt:range>
+				<ormdt:lowerBound value="1" clusivity="inclusive" />
+			</ormdt:range>
+		</ormdt:decimalNumber>
+		<ormdt:string name="Gender_Code" maxLength="1" minLength="1">
+			<ormdt:enumeration value="M" />
+			<ormdt:enumeration value="F" />
+		</ormdt:string>
+		<ormdt:decimalNumber name="OptionalUniqueDecimal" totalDigits="9" />
+		<ormdt:decimalNumber name="MandatoryUniqueDecimal" totalDigits="9">
+			<ormdt:range>
+				<ormdt:lowerBound value="4000" clusivity="inclusive" />
+				<ormdt:upperBound value="20000" clusivity="inclusive" />
+			</ormdt:range>
+		</ormdt:decimalNumber>
+		<ormdt:string name="MandatoryUniqueString" maxLength="11" minLength="11" />
+		<ormdt:boolean name="Person isDead" />
+		<ormdt:boolean name="NaturalDeath isFromProstateCancer" />
+		<ormdt:boolean name="UnnaturalDeath isViolent" />
+		<ormdt:boolean name="UnnaturalDeath isBloody" />
+		<ormdt:boolean name="Person hasParents" />
 		<!--WARNING: We currently don't support the data type 'UnsignedTinyIntegerNumericDataType' that was chosen for value type "OptionalUniqueTinyInt"-->
 		<!--WARNING: We currently don't support the data type 'UnsignedTinyIntegerNumericDataType' that was chosen for value type "MandatoryUniqueTinyInt"-->
 		<!--WARNING: We currently don't support the data type 'UnsignedTinyIntegerNumericDataType' that was chosen for value type "OptionalNonUniqueTinyInt"-->
 		<!--WARNING: We currently don't support the data type 'UnsignedTinyIntegerNumericDataType' that was chosen for value type "MandatoryNonUniqueTinyInt"-->
-		<odt:decimalNumber name="MandatoryNonUniqueUnconstrainedDecimal" />
-		<odt:floatingPointNumber name="MandatoryNonUniqueUnconstrainedFloat" precision="0" />
+		<ormdt:decimalNumber name="MandatoryNonUniqueUnconstrainedDecimal" />
+		<ormdt:floatingPointNumber name="MandatoryNonUniqueUnconstrainedFloat" precision="0" />
 		<!--WARNING: We currently don't support the data type '' that was chosen for value type "Death_isinvolvedin{1}"-->
 	</oil:informationTypeFormats>
 	<oil:conceptType name="PersonDrivesCar" sourceRef="_72D0A608-D62A-4A03-9A14-695CE9F67496">
@@ -141,19 +141,19 @@
 		<oil:informationType name="OptionalUniqueDecimal" formatRef="OptionalUniqueDecimal" mandatory="false" sourceRef="_2BD0D7D3-0B11-45F9-9D8F-1BA51BB7A138" sourceRoleRef="_42291EC4-DB35-459F-A7F9-A3517D1C709C">
 			<oil:singleRoleUniquenessConstraint name="InternalUniquenessConstraint65" sourceRef="_30FE89A6-1F2E-416E-A6A0-0CC3021BFA4D" modality="alethic" isPreferred="false" />
 			<oil:valueConstraint name="RoleValueConstraint1" sourceRef="_6D5D13C0-37D6-4669-8CA3-AEFD2BC2A590" appliesTo="self" modality="alethic">
-				<odt:range>
-					<odt:lowerBound value="100" clusivity="inclusive" />
-					<odt:upperBound value="4000" clusivity="inclusive" />
-				</odt:range>
+				<ormdt:range>
+					<ormdt:lowerBound value="100" clusivity="inclusive" />
+					<ormdt:upperBound value="4000" clusivity="inclusive" />
+				</ormdt:range>
 			</oil:valueConstraint>
 		</oil:informationType>
 		<oil:informationType name="MandatoryUniqueDecimal" formatRef="MandatoryUniqueDecimal" mandatory="alethic" sourceRef="_F879571B-3B2C-4D83-81D5-A3F22E0B1763" sourceRoleRef="_7772A382-6040-4313-B750-2A1E663D7A74">
 			<oil:singleRoleUniquenessConstraint name="InternalUniquenessConstraint69" sourceRef="_237F71F7-7879-4969-9937-7DECDC4A8D4E" modality="alethic" isPreferred="false" />
 			<oil:valueConstraint name="RoleValueConstraint2" sourceRef="_D78E38A7-474E-4E4B-AB4C-02B91C168D25" appliesTo="self" modality="alethic">
-				<odt:range>
-					<odt:lowerBound value="9000" clusivity="inclusive" />
-					<odt:upperBound value="10000" clusivity="inclusive" />
-				</odt:range>
+				<ormdt:range>
+					<ormdt:lowerBound value="9000" clusivity="inclusive" />
+					<ormdt:upperBound value="10000" clusivity="inclusive" />
+				</ormdt:range>
 			</oil:valueConstraint>
 		</oil:informationType>
 		<oil:informationType name="MandatoryUniqueString" formatRef="MandatoryUniqueString" mandatory="alethic" sourceRef="_05B33E84-9567-412A-8ABF-DC395F52C220" sourceRoleRef="_36E5694F-1B3C-495C-ACBF-209DC6C2F4BD">

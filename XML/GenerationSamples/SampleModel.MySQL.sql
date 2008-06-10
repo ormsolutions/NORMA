@@ -18,8 +18,8 @@ CREATE TABLE Person
 	optionalUniqueTinyInt TINYINT UNSIGNED,
 	wife INT,
 	childPersonBirthOrderNr INT,
-	childPersonFatherPerson_id INT,
-	childPersonMotherPerson_id INT,
+	childPersonFather INT,
+	childPersonMother INT,
 	ColorARGB INT,
 	hatTypeStyle VARCHAR(256),
 	isDead BIT(1),
@@ -42,7 +42,7 @@ CREATE TABLE Person
 	CONSTRAINT Person_UC8 UNIQUE(mandatoryUniqueString),
 	CONSTRAINT Person_UC9 UNIQUE(optionalUniqueTinyInt),
 	CONSTRAINT Person_UC10 UNIQUE(mandatoryUniqueTinyInt),
-	CONSTRAINT Person_UC11 UNIQUE(childPersonFatherPerson_id, childPersonBirthOrderNr, childPersonMotherPerson_id),
+	CONSTRAINT Person_UC11 UNIQUE(childPersonFather, childPersonBirthOrderNr, childPersonMother),
 );
 
 CREATE TABLE Task
@@ -96,9 +96,9 @@ ALTER TABLE Person ADD CONSTRAINT Person_FK1 FOREIGN KEY (wife) REFERENCES Perso
 
 ALTER TABLE Person ADD CONSTRAINT Person_FK2 FOREIGN KEY (valueType1DoesSomethingElseWith) REFERENCES ValueType1 (`value`) ON DELETE RESTRICT ON UPDATE RESTRICT;
 
-ALTER TABLE Person ADD CONSTRAINT Person_FK3 FOREIGN KEY (childPersonFatherPerson_id) REFERENCES Person (personId) ON DELETE RESTRICT ON UPDATE RESTRICT;
+ALTER TABLE Person ADD CONSTRAINT Person_FK3 FOREIGN KEY (childPersonFather) REFERENCES Person (personId) ON DELETE RESTRICT ON UPDATE RESTRICT;
 
-ALTER TABLE Person ADD CONSTRAINT Person_FK4 FOREIGN KEY (childPersonMotherPerson_id) REFERENCES Person (personId) ON DELETE RESTRICT ON UPDATE RESTRICT;
+ALTER TABLE Person ADD CONSTRAINT Person_FK4 FOREIGN KEY (childPersonMother) REFERENCES Person (personId) ON DELETE RESTRICT ON UPDATE RESTRICT;
 
 ALTER TABLE Task ADD CONSTRAINT Task_FK FOREIGN KEY (personId) REFERENCES Person (personId) ON DELETE RESTRICT ON UPDATE RESTRICT;
 

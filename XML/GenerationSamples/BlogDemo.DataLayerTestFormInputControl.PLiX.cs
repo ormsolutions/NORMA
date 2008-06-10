@@ -20,7 +20,7 @@
 //   at System.Xml.Xsl.XmlILCommand.Execute(Object defaultDocument, XmlResolver dataSources, XsltArgumentList argumentList, XmlWriter writer, Boolean closeWriter)
 //   at System.Xml.Xsl.XmlILCommand.Execute(XmlReader contextDocument, XmlResolver dataSources, XsltArgumentList argumentList, TextWriter results)
 //   at System.Xml.Xsl.XslCompiledTransform.Transform(XmlReader input, XsltArgumentList arguments, TextWriter results)
-//   at Neumont.Tools.CodeGeneration.Plix.PlixLoaderCustomTool.GenerateCode(String fileContents, String defaultNamespace) in c:\Projects\ORM\codegen\CodeGenCustomTool\PlixLoaderCustomTool.cs:line 609
+//   at Neumont.Tools.CodeGeneration.Plix.PlixLoaderCustomTool.GenerateCode(String fileContents, String defaultNamespace) in c:\Documents and Settings\mcurland\My Documents\Visual Studio 2005\Projects\CodeGen\CodeGenCustomTool\PlixLoaderCustomTool.cs:line 609
 // Info from InnerException
 // The 'name' attribute is invalid - The value '' is invalid according to its datatype 'http://schemas.neumont.edu/CodeGeneration/PLiX:callNameType' - The value '' is not valid according to any of the memberTypes of the union.
 //    at System.Xml.Schema.XmlSchemaValidator.SendValidationEvent(XmlSchemaValidationException e, XmlSeverityType severity)
@@ -43,5 +43,5 @@
 //   at System.Xml.Xsl.XmlILCommand.Execute(Object defaultDocument, XmlResolver dataSources, XsltArgumentList argumentList, XmlWriter writer, Boolean closeWriter)
 //   at System.Xml.Xsl.XmlILCommand.Execute(XmlReader contextDocument, XmlResolver dataSources, XsltArgumentList argumentList, TextWriter results)
 //   at System.Xml.Xsl.XslCompiledTransform.Transform(XmlReader input, XsltArgumentList arguments, TextWriter results)
-//   at Neumont.Tools.CodeGeneration.Plix.PlixLoaderCustomTool.GenerateCode(String fileContents, String defaultNamespace) in c:\Projects\ORM\codegen\CodeGenCustomTool\PlixLoaderCustomTool.cs:line 609
+//   at Neumont.Tools.CodeGeneration.Plix.PlixLoaderCustomTool.GenerateCode(String fileContents, String defaultNamespace) in c:\Documents and Settings\mcurland\My Documents\Visual Studio 2005\Projects\CodeGen\CodeGenCustomTool\PlixLoaderCustomTool.cs:line 609
 #error NUPlixLoader Exception

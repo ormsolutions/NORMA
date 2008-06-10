@@ -38,8 +38,8 @@ CREATE TABLE SampleModel.Person
 	optionalUniqueTinyInt SampleModel.TINYINT,
 	wife INTEGER,
 	childPersonBirthOrderNr SampleModel.BirthOrder_Nr,
-	childPersonFatherPerson_id INTEGER,
-	childPersonMotherPerson_id INTEGER,
+	childPersonFather INTEGER,
+	childPersonMother INTEGER,
 	ColorARGB INTEGER,
 	hatTypeStyle CHARACTER VARYING(256),
 	isDead BOOLEAN,
@@ -62,11 +62,11 @@ CREATE TABLE SampleModel.Person
 	CONSTRAINT Person_UC8 UNIQUE(mandatoryUniqueString),
 	CONSTRAINT Person_UC9 UNIQUE(optionalUniqueTinyInt),
 	CONSTRAINT Person_UC10 UNIQUE(mandatoryUniqueTinyInt),
-	CONSTRAINT Person_UC11 UNIQUE(childPersonFatherPerson_id, childPersonBirthOrderNr, childPersonMotherPerson_id),
+	CONSTRAINT Person_UC11 UNIQUE(childPersonFather, childPersonBirthOrderNr, childPersonMother),
 	CONSTRAINT Person_mandatoryUniqueDecimal_RoleValueConstraint2 CHECK (mandatoryUniqueDecimal BETWEEN 9000 AND 10000),
 	CONSTRAINT Person_optionalUniqueDecimal_RoleValueConstraint1 CHECK (optionalUniqueDecimal BETWEEN 100 AND 4000),
 	CONSTRAINT Person_Death_MandatoryGroup CHECK (deathCause IS NOT NULL OR deathCause IS NULL AND deathDate IS NULL AND deathNaturalDeathIsFromProstateCancer IS NULL AND deathUnnaturalDeathIsViolent IS NULL AND deathUnnaturalDeathIsBloody IS NULL),
-	CONSTRAINT Person_ChildPerson_MandatoryGroup CHECK (childPersonBirthOrderNr IS NOT NULL AND childPersonMotherPerson_id IS NOT NULL AND childPersonFatherPerson_id IS NOT NULL OR childPersonBirthOrderNr IS NULL AND childPersonMotherPerson_id IS NULL AND childPersonFatherPerson_id IS NULL)
+	CONSTRAINT Person_ChildPerson_MandatoryGroup CHECK (childPersonBirthOrderNr IS NOT NULL AND childPersonMother IS NOT NULL AND childPersonFather IS NOT NULL OR childPersonBirthOrderNr IS NULL AND childPersonMother IS NULL AND childPersonFather IS NULL)
 );
 
 CREATE TABLE SampleModel.Task
@@ -120,9 +120,9 @@ ALTER TABLE SampleModel.Person ADD CONSTRAINT Person_FK1 FOREIGN KEY (wife) REFE
 
 ALTER TABLE SampleModel.Person ADD CONSTRAINT Person_FK2 FOREIGN KEY (valueType1DoesSomethingElseWith) REFERENCES SampleModel.ValueType1 ("value") ON DELETE RESTRICT ON UPDATE RESTRICT;
 
-ALTER TABLE SampleModel.Person ADD CONSTRAINT Person_FK3 FOREIGN KEY (childPersonFatherPerson_id) REFERENCES SampleModel.Person (personId) ON DELETE RESTRICT ON UPDATE RESTRICT;
+ALTER TABLE SampleModel.Person ADD CONSTRAINT Person_FK3 FOREIGN KEY (childPersonFather) REFERENCES SampleModel.Person (personId) ON DELETE RESTRICT ON UPDATE RESTRICT;
 
-ALTER TABLE SampleModel.Person ADD CONSTRAINT Person_FK4 FOREIGN KEY (childPersonMotherPerson_id) REFERENCES SampleModel.Person (personId) ON DELETE RESTRICT ON UPDATE RESTRICT;
+ALTER TABLE SampleModel.Person ADD CONSTRAINT Person_FK4 FOREIGN KEY (childPersonMother) REFERENCES SampleModel.Person (personId) ON DELETE RESTRICT ON UPDATE RESTRICT;
 
 ALTER TABLE SampleModel.Task ADD CONSTRAINT Task_FK FOREIGN KEY (personId) REFERENCES SampleModel.Person (personId) ON DELETE RESTRICT ON UPDATE RESTRICT;
 

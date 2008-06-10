@@ -201,10 +201,10 @@
 		<ddl:columnDefinition name="childPersonBirthOrderNr">
 			<ddt:domain name="BirthOrder_Nr" schema="SampleModel" />
 		</ddl:columnDefinition>
-		<ddl:columnDefinition name="childPersonFatherPerson_id">
+		<ddl:columnDefinition name="childPersonFather">
 			<ddt:exactNumeric type="INTEGER" />
 		</ddl:columnDefinition>
-		<ddl:columnDefinition name="childPersonMotherPerson_id">
+		<ddl:columnDefinition name="childPersonMother">
 			<ddt:exactNumeric type="INTEGER" />
 		</ddl:columnDefinition>
 		<ddl:columnDefinition name="ColorARGB">
@@ -299,9 +299,9 @@
 		</ddl:tableConstraintDefinition>
 		<ddl:tableConstraintDefinition name="Person_UC11">
 			<ddl:uniqueConstraintDefinition type="UNIQUE">
-				<dep:simpleColumnReference name="childPersonFatherPerson_id" />
+				<dep:simpleColumnReference name="childPersonFather" />
 				<dep:simpleColumnReference name="childPersonBirthOrderNr" />
-				<dep:simpleColumnReference name="childPersonMotherPerson_id" />
+				<dep:simpleColumnReference name="childPersonMother" />
 			</ddl:uniqueConstraintDefinition>
 		</ddl:tableConstraintDefinition>
 		<ddl:tableConstraintDefinition name="Person_mandatoryUniqueDecimal_RoleValueConstraint2">
@@ -325,11 +325,9 @@
 		<ddl:tableConstraintDefinition name="Person_Death_MandatoryGroup">
 			<ddl:checkConstraintDefinition>
 				<dep:or>
-					<dep:and>
-						<dep:nullPredicate type="NOT NULL">
-							<dep:columnReference name="deathCause" />
-						</dep:nullPredicate>
-					</dep:and>
+					<dep:nullPredicate type="NOT NULL">
+						<dep:columnReference name="deathCause" />
+					</dep:nullPredicate>
 					<dep:and>
 						<dep:nullPredicate type="NULL">
 							<dep:columnReference name="deathCause" />
@@ -358,10 +356,10 @@
 							<dep:columnReference name="childPersonBirthOrderNr" />
 						</dep:nullPredicate>
 						<dep:nullPredicate type="NOT NULL">
-							<dep:columnReference name="childPersonMotherPerson_id" />
+							<dep:columnReference name="childPersonMother" />
 						</dep:nullPredicate>
 						<dep:nullPredicate type="NOT NULL">
-							<dep:columnReference name="childPersonFatherPerson_id" />
+							<dep:columnReference name="childPersonFather" />
 						</dep:nullPredicate>
 					</dep:and>
 					<dep:and>
@@ -369,10 +367,10 @@
 							<dep:columnReference name="childPersonBirthOrderNr" />
 						</dep:nullPredicate>
 						<dep:nullPredicate type="NULL">
-							<dep:columnReference name="childPersonMotherPerson_id" />
+							<dep:columnReference name="childPersonMother" />
 						</dep:nullPredicate>
 						<dep:nullPredicate type="NULL">
-							<dep:columnReference name="childPersonFatherPerson_id" />
+							<dep:columnReference name="childPersonFather" />
 						</dep:nullPredicate>
 					</dep:and>
 				</dep:or>
@@ -558,7 +556,7 @@
 	<ddl:alterTableStatement name="Person" schema="SampleModel">
 		<ddl:addTableConstraintDefinition name="Person_FK3">
 			<ddl:referentialConstraintDefinition>
-				<dep:simpleColumnReference name="childPersonFatherPerson_id" />
+				<dep:simpleColumnReference name="childPersonFather" />
 				<ddl:referencesSpecification name="Person" onDelete="RESTRICT" onUpdate="RESTRICT" schema="SampleModel">
 					<dep:simpleColumnReference name="personId" />
 				</ddl:referencesSpecification>
@@ -568,7 +566,7 @@
 	<ddl:alterTableStatement name="Person" schema="SampleModel">
 		<ddl:addTableConstraintDefinition name="Person_FK4">
 			<ddl:referentialConstraintDefinition>
-				<dep:simpleColumnReference name="childPersonMotherPerson_id" />
+				<dep:simpleColumnReference name="childPersonMother" />
 				<ddl:referencesSpecification name="Person" onDelete="RESTRICT" onUpdate="RESTRICT" schema="SampleModel">
 					<dep:simpleColumnReference name="personId" />
 				</ddl:referencesSpecification>
