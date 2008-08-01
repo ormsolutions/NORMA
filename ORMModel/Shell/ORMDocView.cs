@@ -2351,7 +2351,8 @@ namespace Neumont.Tools.ORM.Shell
 					LinkedElementCollection<Role> constraintRoles = null;
 					bool abort = false;
 					IList selectedElements = SelectedElements;
-					for (int i = selectedElements.Count - 1; i >= 0; i--)
+					int selectedElementCount = selectedElements.Count;
+					for (int i = 0; i < selectedElementCount; ++i)
 					{
 						Role role = selectedElements[i] as Role;
 						if (role != null)
@@ -2362,13 +2363,14 @@ namespace Neumont.Tools.ORM.Shell
 								parentFact = testFact;
 								UniquenessConstraint iuc = UniquenessConstraint.CreateInternalUniquenessConstraint(parentFact);
 								constraintRoles = iuc.RoleCollection;
+								constraintRoles.Add(role);
 							}
 							else if (testFact != parentFact)
 							{
 								abort = true; // Transaction will rollback when it disposes if we don't commit
 								break;
 							}
-							if (!constraintRoles.Contains(role))
+							else if (!constraintRoles.Contains(role))
 							{
 								constraintRoles.Add(role);
 							}

@@ -122,33 +122,37 @@ namespace Neumont.Tools.ORM.ShapeModel
 					if (null != (iuConstraint = constraint as UniquenessConstraint) &&
 						iuConstraint.IsInternal)
 					{
-						// The single-column constraint is its own role set, just add the roles
+						// Keep the collection ordered, this ends up as constraint order on objectified FactTypes
 						LinkedElementCollection<Role> roles = iuConstraint.RoleCollection;
-						int currentCount = roles.Count;
-						int removedCount = 0;
-						for (int i = currentCount - 1; i >= 0; --i)
+						int existingRolesCount = roles.Count;
+						for (int i = existingRolesCount - 1; i >= 0; --i)
 						{
-							Role currentRole = roles[i];
-							int index = selectedRoles.IndexOf(currentRole);
-							if (index == -1)
+							Role testRole = roles[i];
+							if (!selectedRoles.Contains(testRole))
 							{
-								roles.Remove(currentRole);
-							}
-							else
-							{
-								selectedRoles[index] = null;
-								++removedCount;
+								roles.Remove(testRole);
+								--existingRolesCount;
 							}
 						}
-						if (removedCount < rolesCount)
+						for (int i = 0; i < rolesCount; ++i)
 						{
-							for (int i = 0; i < rolesCount; ++i)
+							Role selectedRole = selectedRoles[i];
+							int existingIndex = roles.IndexOf(selectedRole);
+							if (existingIndex == -1)
 							{
-								Role r = selectedRoles[i];
-								if (r != null)
+								if (i < existingRolesCount)
 								{
-									roles.Add(r);
+									roles.Insert(i, selectedRole);
 								}
+								else if (!roles.Contains(selectedRole))
+								{
+									roles.Add(selectedRole);
+								}
+								++existingRolesCount;
+							}
+							else if (existingIndex != i)
+							{
+								roles.Move(existingIndex, i);
 							}
 						}
 					}

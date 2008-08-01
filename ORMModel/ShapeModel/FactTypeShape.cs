@@ -2385,7 +2385,20 @@ namespace Neumont.Tools.ORM.ShapeModel
 					Pen pen = styleSet.GetPen(FactTypeShape.RoleBoxResource);
 					int activeRoleIndex;
 					ExternalConstraintConnectAction activeExternalAction = ActiveExternalConstraintConnectAction;
+					UniquenessConstraint activeInternalUniqueness = null;
+					LinkedElementCollection<Role> activeInternalUniquenessRoles = null;
 					InternalUniquenessConstraintConnectAction activeInternalAction = ActiveInternalUniquenessConstraintConnectAction;
+					if (activeInternalAction != null)
+					{
+						if (activeInternalAction.SourceShape != parentFactShape)
+						{
+							activeInternalAction = null;
+						}
+						else
+						{
+							activeInternalUniqueness = activeInternalAction.ActiveConstraint;
+						}
+					}
 					ORMDiagram currentDiagram = parentFactShape.Diagram as ORMDiagram;
 					StringFormat stringFormat = null;
 					Font connectActionFont = null;
@@ -2419,8 +2432,10 @@ namespace Neumont.Tools.ORM.ShapeModel
 							g.FillRectangle(roleCenterBrush, roleBounds.Left, roleBounds.Top, roleBounds.Width, roleBounds.Height);
 
 							// There is an active ExternalConstraintConnectAction, and this role is currently in the action's role set.
-							if (activeExternalAction != null &&
-								-1 != (activeRoleIndex = activeExternalAction.GetActiveRoleIndex(currentRole)))
+							if ((activeExternalAction != null &&
+								-1 != (activeRoleIndex = activeExternalAction.GetActiveRoleIndex(currentRole))) ||
+								(activeInternalAction != null &&
+								-1 != (activeRoleIndex = activeInternalAction.GetActiveRoleIndex(currentRole))))
 							{
 								// There is an active ExternalConstraintConnectAction, and this role is currently in the action's role set.
 								DrawHighlight(g, styleSet, roleBounds, highlightThisRole);
@@ -2459,11 +2474,11 @@ namespace Neumont.Tools.ORM.ShapeModel
 									g.Restore(state);
 								}
 							}
-							// There is an active InternalUniquenessConstraintConnectAction, and this role is currently in the action's role set.
-							else if (activeInternalAction != null && -1 != (activeRoleIndex = activeInternalAction.GetActiveRoleIndex(currentRole)))
+							// There is an active InternalUniquenessConstraintConnectAction, and this role is removed from an existing constraint.
+							else if (activeInternalUniqueness != null &&
+								(activeInternalUniquenessRoles ?? (activeInternalUniquenessRoles = activeInternalUniqueness.RoleCollection)).Contains(currentRole))
 							{
-								// There is an active InternalUniquenessConstraintConnectAction, and this role is currently in the action's role set.
-								DrawHighlight(g, styleSet, roleBounds, highlightThisRole);
+								parentFactShape.DrawHighlight(g, roleBounds, true, highlightThisRole);
 							}
 							else if (null != currentDiagram)
 							{
@@ -2487,21 +2502,9 @@ namespace Neumont.Tools.ORM.ShapeModel
 										parentFactShape.DrawHighlight(g, roleBounds, true, highlightThisRole);
 										SetComparisonConstraint mcec;
 										SetConstraint scec;
-										bool drawIndexNumbers = false;
 										string indexString = null;
 
-										if (activeExternalAction == null)
-										{
-											drawIndexNumbers = true;
-										}
-										else
-										{
-											if (activeExternalAction.InitialRoles.IndexOf(currentRole) < 0)
-											{
-												drawIndexNumbers = true;
-											}
-										}
-										if (drawIndexNumbers)
+										if (activeExternalAction == null || !activeExternalAction.InitialRoles.Contains(currentRole))
 										{
 											if (null != (mcec = stickyConstraint as SetComparisonConstraint))
 											{
