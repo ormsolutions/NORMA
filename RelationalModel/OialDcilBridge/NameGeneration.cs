@@ -835,7 +835,7 @@ namespace Neumont.Tools.ORMAbstractionToConceptualDatabaseBridge
 								if ((decorate && decorateWithPredicateText) || (isUnary && string.IsNullOrEmpty(explicitFarRoleName)))
 								{
 									readingOrders = factType.ReadingOrderCollection;
-									reading = factType.GetMatchingReading(readingOrders, null, nearRole, null, false, true, factTypeRoles, isUnary);
+									reading = factType.GetMatchingReading(readingOrders, null, nearRole, null, false, true, false, factTypeRoles, isUnary);
 								}
 								lastStepConsumedNextNode = false;
 								lastStepUsedExplicitRoleName = false;

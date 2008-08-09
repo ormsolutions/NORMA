@@ -111,54 +111,86 @@
 	</xs:simpleType>
 	<xs:simpleType name="ReadingChoicePreferSingleMatchWithContextEnum">
 		<xs:restriction base="xs:string">
-			<!-- Allowable options are {Context|Prefer[Non][Primary]LeadReading[NoFrontText]} -->
+			<!-- Allowable options are {Context|Prefer[Non][Primary]LeadReading[NoFrontText][NotHyphenBound]} -->
 			<xs:enumeration value="Context">
 				<xs:annotation>
 					<xs:documentation>Use the reading from the current ReadingChoice or ReadingContext elements</xs:documentation>
 				</xs:annotation>
 			</xs:enumeration>
 			<xs:enumeration value="PreferLeadReading"/>
-			<xs:enumeration value="PreferNonLeadReading"/>
-			<xs:enumeration value="PreferPrimaryLeadReading"/>
-			<xs:enumeration value="PreferNonPrimaryLeadReading"/>
 			<xs:enumeration value="PreferLeadReadingNoFrontText"/>
+			<xs:enumeration value="PreferLeadReadingNoFrontTextNotHyphenBound"/>
+			<xs:enumeration value="PreferLeadReadingNotHyphenBound"/>
+			<xs:enumeration value="PreferNonLeadReading"/>
 			<xs:enumeration value="PreferNonLeadReadingNoFrontText"/>
-			<xs:enumeration value="PreferPrimaryLeadReadingNoFrontText"/>
+			<xs:enumeration value="PreferNonLeadReadingNoFrontTextNotHyphenBound"/>
+			<xs:enumeration value="PreferNonLeadReadingNotHyphenBound"/>
+			<xs:enumeration value="PreferNonPrimaryLeadReading"/>
 			<xs:enumeration value="PreferNonPrimaryLeadReadingNoFrontText"/>
+			<xs:enumeration value="PreferNonPrimaryLeadReadingNoFrontTextNotHyphenBound"/>
+			<xs:enumeration value="PreferNonPrimaryLeadReadingNotHyphenBound"/>
+			<xs:enumeration value="PreferPrimaryLeadReading"/>
+			<xs:enumeration value="PreferPrimaryLeadReadingNoFrontText"/>
+			<xs:enumeration value="PreferPrimaryLeadReadingNoFrontTextNotHyphenBound"/>
+			<xs:enumeration value="PreferPrimaryLeadReadingNotHyphenBound"/>
 		</xs:restriction>
 	</xs:simpleType>
 	<xs:simpleType name="ReadingChoicePreferSingleMatchEnum">
 		<xs:restriction base="xs:string">
-			<!-- Allowable options are {Prefer[Non][Primary]LeadReading[NoFrontText]} -->
+			<!-- Allowable options are {Prefer[Non][Primary]LeadReading[NoFrontText][NotHyphenBound]} -->
 			<xs:enumeration value="PreferLeadReading"/>
-			<xs:enumeration value="PreferNonLeadReading"/>
-			<xs:enumeration value="PreferPrimaryLeadReading"/>
-			<xs:enumeration value="PreferNonPrimaryLeadReading"/>
 			<xs:enumeration value="PreferLeadReadingNoFrontText"/>
+			<xs:enumeration value="PreferLeadReadingNoFrontTextNotHyphenBound"/>
+			<xs:enumeration value="PreferLeadReadingNotHyphenBound"/>
+			<xs:enumeration value="PreferNonLeadReading"/>
 			<xs:enumeration value="PreferNonLeadReadingNoFrontText"/>
-			<xs:enumeration value="PreferPrimaryLeadReadingNoFrontText"/>
+			<xs:enumeration value="PreferNonLeadReadingNoFrontTextNotHyphenBound"/>
+			<xs:enumeration value="PreferNonLeadReadingNotHyphenBound"/>
+			<xs:enumeration value="PreferNonPrimaryLeadReading"/>
 			<xs:enumeration value="PreferNonPrimaryLeadReadingNoFrontText"/>
+			<xs:enumeration value="PreferNonPrimaryLeadReadingNoFrontTextNotHyphenBound"/>
+			<xs:enumeration value="PreferNonPrimaryLeadReadingNotHyphenBound"/>
+			<xs:enumeration value="PreferPrimaryLeadReading"/>
+			<xs:enumeration value="PreferPrimaryLeadReadingNoFrontText"/>
+			<xs:enumeration value="PreferPrimaryLeadReadingNoFrontTextNotHyphenBound"/>
+			<xs:enumeration value="PreferPrimaryLeadReadingNotHyphenBound"/>
 		</xs:restriction>
 	</xs:simpleType>
 	<xs:simpleType name="ReadingChoiceFullRequiredMatchEnum">
 		<xs:restriction base="xs:string">
-			<!-- Allowable options are {Require[All][Non][Primary]LeadReading[NoFrontText]} -->
+			<!-- Allowable options are {Require[All][Non][Primary]LeadReading[NoFrontText][NotHyphenBound]} -->
 			<xs:enumeration value="RequireLeadReading"/>
-			<xs:enumeration value="RequireNonLeadReading"/>
-			<xs:enumeration value="RequirePrimaryLeadReading"/>
-			<xs:enumeration value="RequireNonPrimaryLeadReading"/>
 			<xs:enumeration value="RequireLeadReadingNoFrontText"/>
+			<xs:enumeration value="RequireLeadReadingNoFrontTextNotHyphenBound"/>
+			<xs:enumeration value="RequireLeadReadingNotHyphenBound"/>
+			<xs:enumeration value="RequireNonLeadReading"/>
 			<xs:enumeration value="RequireNonLeadReadingNoFrontText"/>
+			<xs:enumeration value="RequireNonLeadReadingNoFrontTextNotHyphenBound"/>
+			<xs:enumeration value="RequireNonLeadReadingNotHyphenBound"/>
+			<xs:enumeration value="RequirePrimaryLeadReading"/>
 			<xs:enumeration value="RequirePrimaryLeadReadingNoFrontText"/>
+			<xs:enumeration value="RequirePrimaryLeadReadingNoFrontTextNotHyphenBound"/>
+			<xs:enumeration value="RequirePrimaryLeadReadingNotHyphenBound"/>
+			<xs:enumeration value="RequireNonPrimaryLeadReading"/>
 			<xs:enumeration value="RequireNonPrimaryLeadReadingNoFrontText"/>
+			<xs:enumeration value="RequireNonPrimaryLeadReadingNoFrontTextNotHyphenBound"/>
+			<xs:enumeration value="RequireNonPrimaryLeadReadingNotHyphenBound"/>
 			<xs:enumeration value="RequireAllLeadReading"/>
-			<xs:enumeration value="RequireAllNonLeadReading"/>
-			<xs:enumeration value="RequireAllPrimaryLeadReading"/>
-			<xs:enumeration value="RequireAllNonPrimaryLeadReading"/>
 			<xs:enumeration value="RequireAllLeadReadingNoFrontText"/>
+			<xs:enumeration value="RequireAllLeadReadingNoFrontTextNotHyphenBound"/>
+			<xs:enumeration value="RequireAllLeadReadingNotHyphenBound"/>
+			<xs:enumeration value="RequireAllNonLeadReading"/>
 			<xs:enumeration value="RequireAllNonLeadReadingNoFrontText"/>
-			<xs:enumeration value="RequireAllPrimaryLeadReadingNoFrontText"/>
+			<xs:enumeration value="RequireAllNonLeadReadingNoFrontTextNotHyphenBound"/>
+			<xs:enumeration value="RequireAllNonLeadReadingNotHyphenBound"/>
+			<xs:enumeration value="RequireAllNonPrimaryLeadReading"/>
 			<xs:enumeration value="RequireAllNonPrimaryLeadReadingNoFrontText"/>
+			<xs:enumeration value="RequireAllNonPrimaryLeadReadingNoFrontTextNotHyphenBound"/>
+			<xs:enumeration value="RequireAllNonPrimaryLeadReadingNotHyphenBound"/>
+			<xs:enumeration value="RequireAllPrimaryLeadReading"/>
+			<xs:enumeration value="RequireAllPrimaryLeadReadingNoFrontText"/>
+			<xs:enumeration value="RequireAllPrimaryLeadReadingNoFrontTextNotHyphenBound"/>
+			<xs:enumeration value="RequireAllPrimaryLeadReadingNotHyphenBound"/>
 		</xs:restriction>
 	</xs:simpleType>
 	<xs:simpleType name="ListStyleEnum">
@@ -170,8 +202,8 @@
 			<xs:enumeration value="IndentedList"/>
 			<xs:enumeration value="IndentedLogicalAndList"/>
 			<xs:enumeration value="IndentedLogicalOrList"/>
+			<xs:enumeration value="MultilineIndentedCompoundList"/>
 			<xs:enumeration value="ObjectTypeInstanceList"/>
-			<xs:enumeration value="SemiColonList"/>
 			<xs:enumeration value="SimpleList"/>
 			<xs:enumeration value="SimpleLogicalAndList"/>
 			<xs:enumeration value="SimpleLogicalOrList"/>
@@ -243,6 +275,11 @@
 				<xs:annotation>
 					<xs:documentation>Used when object type is objectified fact type.</xs:documentation>
 				</xs:annotation>				
+			</xs:enumeration>
+			<xs:enumeration value="BinaryLeadReading">
+				<xs:annotation>
+					<xs:documentation>Used to determine whether binary lead readings are available for some column of a two-column of a two-column SetComparisonConstraint.</xs:documentation>
+				</xs:annotation>
 			</xs:enumeration>
 		</xs:restriction>
 	</xs:simpleType>
@@ -341,7 +378,14 @@
 			<xs:enumeration value="IsBinaryLeadReading">
 				<xs:annotation>
 					<xs:documentation>
-						True if the directions of both readings in a set comparison constraint spanning both roles of binary predicates.
+						True if non-hyphenated lead readings start at lead column roles are available in a 2x2 set comparison constraint.
+					</xs:documentation>
+				</xs:annotation>
+			</xs:enumeration>
+			<xs:enumeration value="IsBinaryLeadReadingReverse">
+				<xs:annotation>
+					<xs:documentation>
+						True if non-hyphenated lead readings start at trailing column roles are available in a 2x2 set comparison constraint.
 					</xs:documentation>
 				</xs:annotation>
 			</xs:enumeration>
@@ -903,21 +947,18 @@
 				<xs:element name="Fact" type="FactType"/>
 				<xs:element name="Snippet" type="SnippetType"/>
 				<xs:element name="IterateContextRoles" type="IterateContextRolesType"/>
-				<xs:element name="RolePlayer">
-					<xs:complexType>
-						<xs:complexContent>
-							<xs:extension base="RolePlayerType">
-								<xs:attribute name="pass" use="optional" type="PassEnum"/>
-							</xs:extension>
-						</xs:complexContent>
-					</xs:complexType>
-				</xs:element>
+				<xs:element name="RolePlayer" type="RolePlayerType"/>
 			</xs:choice>
 		</xs:choice>
 		<xs:attribute name="match" type="IterateRolesMatchEnum" default="all"/>
 		<xs:attributeGroup ref="FactArityAttributes"/>
 		<xs:attribute name="pass" use="optional" type="PassEnum"/>
 		<xs:attribute name="hyphenBind" type="xs:boolean" default="false"/>
+		<xs:attribute name="uniqueFactType" type="xs:boolean" default="false">
+			<xs:annotation>
+				<xs:documentation>Set to true if a visited FactTypes should be tracked. If this is set, then a later role with the same FactType will be ignored.</xs:documentation>
+			</xs:annotation>
+		</xs:attribute>
 	</xs:complexType>
 	<xs:complexType name="IterateRolesType">
 		<xs:complexContent>
@@ -929,12 +970,16 @@
 	<xs:complexType name="IterateSequencesType">
 		<xs:choice minOccurs="0" maxOccurs="unbounded">
 			<xs:element name="Snippet" type="SnippetType"/>
-			<xs:element name="IterateSequenceFacts" type="IterateRolesType"/>
 			<xs:element name="IterateRoles" type="IterateRolesType"/>
 		</xs:choice>
 		<xs:attributeGroup ref="FactArityAttributes"/>
 		<xs:attribute name="pass" use="optional" type="PassEnum"/>
 		<xs:attribute name="listStyle" use="required" type="ListStyleEnumOrNull"/>
+		<xs:attribute name="compositeList" type="xs:boolean" fixed="true">
+			<xs:annotation>
+				<xs:documentation>The listStyle represents a composite list. Ignored if listStyle is null. false is not currently supported.</xs:documentation>
+			</xs:annotation>
+		</xs:attribute>
 		<xs:attribute name="hyphenBind" type="xs:boolean" default="false"/>
 	</xs:complexType>
 	<xs:complexType name="IterateInstancesType">

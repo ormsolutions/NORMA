@@ -481,10 +481,11 @@ namespace Neumont.Tools.ORM.ObjectModel
 		/// <param name="matchAnyLeadRole">Same as matchAnyLeadRole, except with a set match. An IList of RoleBase elements.</param>
 		/// <param name="invertLeadRoles">Invert the matchLeadRole and matchAnyLeadRole values</param>
 		/// <param name="noFrontText">Match a reading with no front text if possible</param>
+		/// <param name="notHyphenBound">If true, do not return a reading that uses any hyphen binding.</param>
 		/// <param name="defaultRoleOrder">The default order to match</param>
 		/// <param name="allowAnyOrder">If true, use the first reading order if there are no other matches</param>
 		/// <returns>A matching <see cref="IReading"/> instance. Can return null if allowAnyOrder is false, or the readingOrders collection is empty.</returns>
-		public IReading GetMatchingReading(LinkedElementCollection<ReadingOrder> readingOrders, ReadingOrder ignoreReadingOrder, RoleBase matchLeadRole, IList matchAnyLeadRole, bool invertLeadRoles, bool noFrontText, IList<RoleBase> defaultRoleOrder, bool allowAnyOrder)
+		public IReading GetMatchingReading(LinkedElementCollection<ReadingOrder> readingOrders, ReadingOrder ignoreReadingOrder, RoleBase matchLeadRole, IList matchAnyLeadRole, bool invertLeadRoles, bool noFrontText, bool notHyphenBound, IList<RoleBase> defaultRoleOrder, bool allowAnyOrder)
 		{
 			int orderCount = readingOrders.Count;
 			IReading retVal = null;
@@ -518,7 +519,7 @@ namespace Neumont.Tools.ORM.ObjectModel
 										break;
 									}
 								}
-								else if (GetMatchingReading(readingOrders, ignoreReadingOrderIndex, currentRole, defaultRoleOrder, noFrontText, !allowAnyOrder, ref readingMatch))
+								else if (GetMatchingReading(readingOrders, ignoreReadingOrderIndex, currentRole, defaultRoleOrder, noFrontText, notHyphenBound, !allowAnyOrder, ref readingMatch))
 								{
 									retVal = readingMatch;
 									break;
@@ -530,7 +531,7 @@ namespace Neumont.Tools.ORM.ObjectModel
 					{
 						retVal = GetImplicitReading(matchLeadRole);
 					}
-					else if (GetMatchingReading(readingOrders, ignoreReadingOrderIndex, matchLeadRole, defaultRoleOrder, noFrontText, !allowAnyOrder, ref readingMatch))
+					else if (GetMatchingReading(readingOrders, ignoreReadingOrderIndex, matchLeadRole, defaultRoleOrder, noFrontText, notHyphenBound, !allowAnyOrder, ref readingMatch))
 					{
 						retVal = readingMatch;
 					}
@@ -561,7 +562,7 @@ namespace Neumont.Tools.ORM.ObjectModel
 											break;
 										}
 									}
-									else if (GetMatchingReading(readingOrders, ignoreReadingOrderIndex, currentRole, defaultRoleOrder, noFrontText, !allowAnyOrder, ref readingMatch))
+									else if (GetMatchingReading(readingOrders, ignoreReadingOrderIndex, currentRole, defaultRoleOrder, noFrontText, notHyphenBound, !allowAnyOrder, ref readingMatch))
 									{
 										retVal = readingMatch;
 										break;
@@ -582,7 +583,7 @@ namespace Neumont.Tools.ORM.ObjectModel
 									break;
 								}
 							}
-							else if (GetMatchingReading(readingOrders, ignoreReadingOrderIndex, (RoleBase)matchAnyLeadRole[i], defaultRoleOrder, noFrontText, !allowAnyOrder, ref readingMatch))
+							else if (GetMatchingReading(readingOrders, ignoreReadingOrderIndex, (RoleBase)matchAnyLeadRole[i], defaultRoleOrder, noFrontText, notHyphenBound, !allowAnyOrder, ref readingMatch))
 							{
 								retVal = readingMatch;
 								break;
@@ -648,11 +649,12 @@ namespace Neumont.Tools.ORM.ObjectModel
 		/// <param name="matchLeadRole">The role to match as a lead</param>
 		/// <param name="defaultRoleOrder">The default role order. If not specified, any match will be considered optimal</param>
 		/// <param name="testNoFrontText">Test for no front text if true.</param>
-		/// <param name="requireNoFrontText">Ignored if testNoFrontText is false. Otherwise, do not set matchingReading if frontText not satisfied</param>
+		/// <param name="notHyphenBound">Do not return a reading with hyphen-bound text.</param>
+		/// <param name="strictMatch">Ignored if testNoFrontText is false and notHyphenBound is false. Otherwise, do not set matchingReading if frontText and hyphen binding requirements not satisfied</param>
 		/// <param name="matchingReading">The matching reading. Can be non-null to start with</param>
 		/// <returns>true if an optimal match was found. retVal will be false if a match is found but
 		/// a more optimal match is possible</returns>
-		private static bool GetMatchingReading(LinkedElementCollection<ReadingOrder> readingOrders, int ignoreReadingOrderIndex, RoleBase matchLeadRole, IList<RoleBase> defaultRoleOrder, bool testNoFrontText, bool requireNoFrontText, ref Reading matchingReading)
+		private static bool GetMatchingReading(LinkedElementCollection<ReadingOrder> readingOrders, int ignoreReadingOrderIndex, RoleBase matchLeadRole, IList<RoleBase> defaultRoleOrder, bool testNoFrontText, bool notHyphenBound, bool strictMatch, ref Reading matchingReading)
 		{
 			ReadingOrder matchingOrder = null;
 			int orderCount = readingOrders.Count;
@@ -708,29 +710,33 @@ namespace Neumont.Tools.ORM.ObjectModel
 			}
 			if (matchingOrder != null)
 			{
-				if (!testNoFrontText)
+				if (!(testNoFrontText || notHyphenBound))
 				{
 					matchingReading = matchingOrder.PrimaryReading;
 				}
 				else
 				{
 					LinkedElementCollection<Reading> readings = matchingOrder.ReadingCollection;
-					Reading noFrontTextReading = null;
+					Reading strictReadingMatch = null;
 					int readingCount = readings.Count;
 					for (int i = 0; i < readingCount; ++i)
 					{
 						Reading testReading = readings[i];
-						if (testReading.Text.StartsWith("{0}", StringComparison.Ordinal))
+						if (notHyphenBound && VerbalizationHyphenBinder.IsHyphenBound(testReading))
 						{
-							noFrontTextReading = testReading;
+							continue;
+						}
+						else if (!testNoFrontText || testReading.Text.StartsWith("{0}", StringComparison.Ordinal))
+						{
+							strictReadingMatch = testReading;
 							break;
 						}
 					}
-					if (noFrontTextReading != null)
+					if (strictReadingMatch != null)
 					{
-						matchingReading = noFrontTextReading;
+						matchingReading = strictReadingMatch;
 					}
-					else if (requireNoFrontText)
+					else if (strictMatch)
 					{
 						optimalMatch = false;
 					}
@@ -754,12 +760,17 @@ namespace Neumont.Tools.ORM.ObjectModel
 		/// the equality operator (Equals method, etc) (undesirable because we often
 		/// do need to know the difference), this means that factRoles.IndexOf(role)
 		/// will return a false negative, so we write our own helper function.</remarks>
-		public static int IndexOfRole(IList<RoleBase> factRoles, Role role)
+		public static int IndexOfRole(IList<RoleBase> factRoles, RoleBase role)
 		{
+			Role testRole = role as Role;
+			if (testRole == null)
+			{
+				return factRoles.IndexOf(role);
+			}
 			int roleCount = factRoles.Count;
 			for (int i = 0; i < roleCount; ++i)
 			{
-				if (factRoles[i].Role == role)
+				if (factRoles[i].Role == testRole)
 				{
 					return i;
 				}

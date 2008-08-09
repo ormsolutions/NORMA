@@ -209,19 +209,19 @@ You must not remove this notice, or any other, from this software.
 			<Snippet type="ObjectTypeInstanceListPairSeparator"><![CDATA[<span class="listSeparator">, </span>]]></Snippet>
 			<Snippet type="ObjectTypeInstanceListSeparator"><![CDATA[<span class="listSeparator">, </span>]]></Snippet>
 			<Snippet type="ObjectTypeInstanceListFinalSeparator"><![CDATA[<span class="listSeparator">, </span>]]></Snippet>
-			<Snippet type="ObjectTypeInstanceListClose"><![CDATA[.]]></Snippet>
-			<Snippet type="EqualityForEachIndentedQuantifier"><![CDATA[<span class="quantifier">for each</span> {0}, <span class="quantifier">all or none of the following hold:</span><br/><span class="smallIndent">{1}</span>]]></Snippet>
-			<Snippet type="SemiColonListOpen"><![CDATA[]]></Snippet>
-			<Snippet type="SemiColonListPairSeparator"><![CDATA[<span class="listSeparator">; </span><br/>]]></Snippet>
-			<Snippet type="SemiColonListSeparator"><![CDATA[<span class="listSeparator">; </span><br/>]]></Snippet>
-			<Snippet type="SemiColonListFinalSeparator"><![CDATA[<span class="listSeparator">; </span><br/>]]></Snippet>
-			<Snippet type="SemiColonListClose"><![CDATA[.]]></Snippet>
-			<Snippet type="ExclusionForEachIndentedQuantifier"><![CDATA[<span class="quantifier">for each</span> {0}, <span class="quantifier">at most one of the following holds:</span><br/><span class="smallIndent">{1}</span>]]></Snippet>
-			<Snippet type="ExclusiveOrForEachIndentedQuantifier"><![CDATA[<span class="quantifier">for each</span> {0}, <span class="quantifier">exactly one of the following holds:</span><br/><span class="smallIndent">{1}</span>]]></Snippet>
+			<Snippet type="ObjectTypeInstanceListClose"><![CDATA[]]></Snippet>
+			<Snippet type="GroupEquality"><![CDATA[<span class="quantifier">all or none of the following hold:</span> {0}]]></Snippet>
+			<Snippet type="MultilineIndentedCompoundListOpen"><![CDATA[<br/><span class="smallIndent">]]></Snippet>
+			<Snippet type="MultilineIndentedCompoundListPairSeparator"><![CDATA[<span class="listSeparator">; </span><br/>]]></Snippet>
+			<Snippet type="MultilineIndentedCompoundListSeparator"><![CDATA[<span class="listSeparator">; </span><br/>]]></Snippet>
+			<Snippet type="MultilineIndentedCompoundListFinalSeparator"><![CDATA[<span class="listSeparator">; </span><br/>]]></Snippet>
+			<Snippet type="MultilineIndentedCompoundListClose"><![CDATA[</span>]]></Snippet>
+			<Snippet type="GroupExclusion"><![CDATA[<span class="quantifier">at most one of the following holds:</span> {0}]]></Snippet>
+			<Snippet type="GroupExclusiveOr"><![CDATA[<span class="quantifier">exactly one of the following holds:</span> {0}]]></Snippet>
 			<Snippet type="Conditional"><![CDATA[<span class="quantifier">if </span>{0}<span class="quantifier"> then </span>{1}]]></Snippet>
 			<Snippet type="Equality"><![CDATA[{0}<span class="quantifier"> if and only if </span>{1}]]></Snippet>
-			<Snippet type="ExclusionBinaryLeadReading"><![CDATA[no {0}<span class="quantifier"> the same </span><span class="objectType">{1}</span>]]></Snippet>
-			<Snippet type="ExclusionCombined"><![CDATA[<span class="objectType">{0} </span>{1}]]></Snippet>
+			<Snippet type="ExclusionBinaryLeadReading"><![CDATA[<span class="quantifier">no</span> {0}<span class="quantifier"> the same </span>{1}]]></Snippet>
+			<Snippet type="ExclusionCombined"><![CDATA[{0} {1}]]></Snippet>
 			<Snippet type="FrequencyPopulation"><![CDATA[<span class="quantifier">each {0} in the population of “{1}” occurs there {2}</span>]]></Snippet>
 			<Snippet type="FrequencyRangeExact"><![CDATA[<span class="quantifier">exactly <span class="instance">{0}</span> times</span>]]></Snippet>
 			<Snippet type="FrequencyRangeMinAndMax"><![CDATA[<span class="quantifier">at least <span class="instance">{0}</span> and at most <span class="instance">{1}</span> times</span>]]></Snippet>

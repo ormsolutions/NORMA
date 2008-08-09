@@ -291,10 +291,10 @@
     <containedIn>
       <snippet name="Conditional" />
       <snippet name="Equality" />
-      <snippet name="EqualityForEachIndentedQuantifier" />
-      <snippet name="ExclusionForEachIndentedQuantifier" />
       <snippet name="ForEachCompactQuantifier" />
       <snippet name="ForEachIndentedQuantifier" />
+      <snippet name="GroupEquality" />
+      <snippet name="GroupExclusion" />
       <snippet name="ImpliedModalNecessityOperator" />
       <snippet name="ModalPossibilityOperator" />
     </containedIn>
@@ -344,24 +344,6 @@
     </contains>
     <containedIn>
       <snippet name="ForEachIndentedQuantifier" />
-      <snippet name="ImpliedModalNecessityOperator" />
-    </containedIn>
-    <usedBy>
-      <constraint name="EqualityConstraint" />
-    </usedBy>
-  </snippet>
-  <snippet name="EqualityForEachIndentedQuantifier" replacementCount="2">
-    <statement>
-							Description: Verbalizes an equality constraint.
-							Format alethic: for each {0}, all or none of the following hold:\n {1}  
-							Format deontic: it is obligatory that for each {0}, all or none of the following hold:\n {1}
-						</statement>
-    <unformattedSnippet>for each {0}, all or none of the following hold:{1}</unformattedSnippet>
-    <contains>
-      <snippet name="DefiniteArticle" />
-      <snippet name="ExistentialQuantifier" />
-    </contains>
-    <containedIn>
       <snippet name="ImpliedModalNecessityOperator" />
     </containedIn>
     <usedBy>
@@ -467,39 +449,6 @@
       <constraint name="ExclusionConstraint" />
     </usedBy>
   </snippet>
-  <snippet name="ExclusionForEachIndentedQuantifier" replacementCount="2">
-    <statement>
-							Description: Verbalizes an exclusion constraint.
-							Format alethic: for each {0}, at most one of the following holds:\n {1}
-							Format deontic: it is obligatory that for each {0}, at most one of the following holds:\n {1}
-							</statement>
-    <unformattedSnippet>for each {0}, at most one of the following holds:{1}</unformattedSnippet>
-    <contains>
-      <snippet name="DefiniteArticle" />
-      <snippet name="ExistentialQuantifier" />
-    </contains>
-    <containedIn>
-      <snippet name="ImpliedModalNecessityOperator" />
-    </containedIn>
-    <usedBy>
-      <constraint name="ExclusionConstraint" />
-    </usedBy>
-  </snippet>
-  <snippet name="ExclusiveOrForEachIndentedQuantifier" replacementCount="2">
-    <statement>
-							Description: Verbalizes an exclusive-or constraint.
-							Format alethic: for each {0}, exactly one of the following holds:\n {1}
-							Format deontic: it is obligatory that for each {0}, at most one of the following holds:\n {1}
-						</statement>
-    <unformattedSnippet>for each {0}, exactly one of the following holds:{1}</unformattedSnippet>
-    <contains />
-    <containedIn>
-      <snippet name="ImpliedModalNecessityOperator" />
-    </containedIn>
-    <usedBy>
-      <constraint name="ExclusionConstraint" />
-    </usedBy>
-  </snippet>
   <snippet name="ExistentialQuantifier" replacementCount="1">
     <statement>
 							Description: Used for 'some' before an object name to signify the context in which the object is being referred to.  Format: some {0}
@@ -509,10 +458,10 @@
     <containedIn>
       <snippet name="Conditional" />
       <snippet name="Equality" />
-      <snippet name="EqualityForEachIndentedQuantifier" />
-      <snippet name="ExclusionForEachIndentedQuantifier" />
       <snippet name="ForEachCompactQuantifier" />
       <snippet name="ForEachIndentedQuantifier" />
+      <snippet name="GroupEquality" />
+      <snippet name="GroupExclusion" />
       <snippet name="ImpliedModalNecessityOperator" />
     </containedIn>
     <usedBy>
@@ -553,13 +502,20 @@
       <snippet name="DefiniteArticle" />
       <snippet name="ExactlyOneQuantifier" />
       <snippet name="ExistentialQuantifier" />
+      <snippet name="GroupEquality" />
+      <snippet name="GroupExclusion" />
+      <snippet name="GroupExclusiveOr" />
       <snippet name="ImpliedModalNecessityOperator" />
       <snippet name="ModalPossibilityOperator" />
       <snippet name="OneQuantifier" />
     </contains>
-    <containedIn />
+    <containedIn>
+      <snippet name="ImpliedModalNecessityOperator" />
+    </containedIn>
     <usedBy>
       <constraint name="CombinedMandatoryUniqueVerbalizer" />
+      <constraint name="EqualityConstraint" />
+      <constraint name="ExclusionConstraint" />
       <constraint name="ImpliedMandatoryVerbalizer" />
       <constraint name="ImpliedUniqueVerbalizer" />
       <constraint name="MandatoryConstraint" />
@@ -683,6 +639,57 @@
       <constraint name="FrequencyConstraint" />
     </usedBy>
   </snippet>
+  <snippet name="GroupEquality" replacementCount="1">
+    <statement>
+							Description: Assert group equality.
+							Format: all or none of the following hold: {0}
+						</statement>
+    <unformattedSnippet>all or none of the following hold: {0}</unformattedSnippet>
+    <contains>
+      <snippet name="DefiniteArticle" />
+      <snippet name="ExistentialQuantifier" />
+    </contains>
+    <containedIn>
+      <snippet name="ForEachCompactQuantifier" />
+      <snippet name="ImpliedModalNecessityOperator" />
+    </containedIn>
+    <usedBy>
+      <constraint name="EqualityConstraint" />
+    </usedBy>
+  </snippet>
+  <snippet name="GroupExclusion" replacementCount="1">
+    <statement>
+							Description: Assert group exclusion.
+							Format: at most one of the following holds: {0}
+						</statement>
+    <unformattedSnippet>at most one of the following holds: {0}</unformattedSnippet>
+    <contains>
+      <snippet name="DefiniteArticle" />
+      <snippet name="ExistentialQuantifier" />
+    </contains>
+    <containedIn>
+      <snippet name="ForEachCompactQuantifier" />
+      <snippet name="ImpliedModalNecessityOperator" />
+    </containedIn>
+    <usedBy>
+      <constraint name="ExclusionConstraint" />
+    </usedBy>
+  </snippet>
+  <snippet name="GroupExclusiveOr" replacementCount="1">
+    <statement>
+							Description: Assert group exclusive-or.
+							Format: exactly one of the following holds: {0}
+						</statement>
+    <unformattedSnippet>exactly one of the following holds: {0}</unformattedSnippet>
+    <contains />
+    <containedIn>
+      <snippet name="ForEachCompactQuantifier" />
+      <snippet name="ImpliedModalNecessityOperator" />
+    </containedIn>
+    <usedBy>
+      <constraint name="ExclusionConstraint" />
+    </usedBy>
+  </snippet>
   <snippet name="HyphenBoundPredicatePart" replacementCount="2">
     <statement>Description: .  Format: {0}{{0}}{1}</statement>
     <unformattedSnippet>{0}{{0}}{1}</unformattedSnippet>
@@ -774,13 +781,11 @@
       <snippet name="Conditional" />
       <snippet name="DefiniteArticle" />
       <snippet name="Equality" />
-      <snippet name="EqualityForEachIndentedQuantifier" />
       <snippet name="ExactlyOneQuantifier" />
       <snippet name="ExclusionBinaryLeadReading" />
       <snippet name="ExclusionCombined" />
-      <snippet name="ExclusionForEachIndentedQuantifier" />
-      <snippet name="ExclusiveOrForEachIndentedQuantifier" />
       <snippet name="ExistentialQuantifier" />
+      <snippet name="ForEachCompactQuantifier" />
       <snippet name="ForEachIndentedQuantifier" />
       <snippet name="FrequencyPopulation" />
       <snippet name="FrequencyRangeExact" />
@@ -788,6 +793,9 @@
       <snippet name="FrequencyRangeMinAndMax" />
       <snippet name="FrequencyRangeMinUnbounded" />
       <snippet name="FrequencyRangeMinUnboundedOptimized" />
+      <snippet name="GroupEquality" />
+      <snippet name="GroupExclusion" />
+      <snippet name="GroupExclusiveOr" />
       <snippet name="IdentityReferenceQuantifier" />
       <snippet name="OccursInPopulation" />
       <snippet name="OneQuantifier" />
@@ -928,7 +936,9 @@
     <unformattedSnippet></unformattedSnippet>
     <contains />
     <containedIn />
-    <usedBy />
+    <usedBy>
+      <constraint name="ExclusionConstraint" />
+    </usedBy>
   </snippet>
   <snippet name="IndentedLogicalAndListFinalSeparator" replacementCount="0">
     <statement>
@@ -937,7 +947,9 @@
     <unformattedSnippet>and that </unformattedSnippet>
     <contains />
     <containedIn />
-    <usedBy />
+    <usedBy>
+      <constraint name="ExclusionConstraint" />
+    </usedBy>
   </snippet>
   <snippet name="IndentedLogicalAndListOpen" replacementCount="0">
     <statement>
@@ -946,7 +958,9 @@
     <unformattedSnippet></unformattedSnippet>
     <contains />
     <containedIn />
-    <usedBy />
+    <usedBy>
+      <constraint name="ExclusionConstraint" />
+    </usedBy>
   </snippet>
   <snippet name="IndentedLogicalAndListPairSeparator" replacementCount="0">
     <statement>
@@ -955,7 +969,9 @@
     <unformattedSnippet>and that </unformattedSnippet>
     <contains />
     <containedIn />
-    <usedBy />
+    <usedBy>
+      <constraint name="ExclusionConstraint" />
+    </usedBy>
   </snippet>
   <snippet name="IndentedLogicalAndListSeparator" replacementCount="0">
     <statement>
@@ -964,7 +980,9 @@
     <unformattedSnippet>and that </unformattedSnippet>
     <contains />
     <containedIn />
-    <usedBy />
+    <usedBy>
+      <constraint name="ExclusionConstraint" />
+    </usedBy>
   </snippet>
   <snippet name="IndentedLogicalOrListClose" replacementCount="0">
     <statement>
@@ -1199,6 +1217,66 @@
       <constraint name="UniquenessConstraint" />
     </usedBy>
   </snippet>
+  <snippet name="MultilineIndentedCompoundListClose" replacementCount="0">
+    <statement>
+							Description: Text used at the end of an indented compound list.  Format:
+						</statement>
+    <unformattedSnippet></unformattedSnippet>
+    <contains />
+    <containedIn />
+    <usedBy>
+      <constraint name="EqualityConstraint" />
+      <constraint name="ExclusionConstraint" />
+    </usedBy>
+  </snippet>
+  <snippet name="MultilineIndentedCompoundListFinalSeparator" replacementCount="0">
+    <statement>
+							Description: Used to separate the last two items in an indented compound list.  Format: ;
+						</statement>
+    <unformattedSnippet>; </unformattedSnippet>
+    <contains />
+    <containedIn />
+    <usedBy>
+      <constraint name="EqualityConstraint" />
+      <constraint name="ExclusionConstraint" />
+    </usedBy>
+  </snippet>
+  <snippet name="MultilineIndentedCompoundListOpen" replacementCount="0">
+    <statement>
+							Description: Text used at the beginning of an indented compound list with one item on each line.
+						</statement>
+    <unformattedSnippet></unformattedSnippet>
+    <contains />
+    <containedIn />
+    <usedBy>
+      <constraint name="EqualityConstraint" />
+      <constraint name="ExclusionConstraint" />
+    </usedBy>
+  </snippet>
+  <snippet name="MultilineIndentedCompoundListPairSeparator" replacementCount="0">
+    <statement>
+							Description: Used to separate items in an indented compound list.  Format: ;
+						</statement>
+    <unformattedSnippet>; </unformattedSnippet>
+    <contains />
+    <containedIn />
+    <usedBy>
+      <constraint name="EqualityConstraint" />
+      <constraint name="ExclusionConstraint" />
+    </usedBy>
+  </snippet>
+  <snippet name="MultilineIndentedCompoundListSeparator" replacementCount="0">
+    <statement>
+							Description: Used to separate items in an indented compound list.  Format: ;
+						</statement>
+    <unformattedSnippet>; </unformattedSnippet>
+    <contains />
+    <containedIn />
+    <usedBy>
+      <constraint name="EqualityConstraint" />
+      <constraint name="ExclusionConstraint" />
+    </usedBy>
+  </snippet>
   <snippet name="MultiValueValueConstraint" replacementCount="2">
     <statement>
 							Description: Used to verbalize a value range constraint with multiple values.
@@ -1271,7 +1349,7 @@
 							Description: Text used to close the sample population verbalization list.
 							Format: .
 						</statement>
-    <unformattedSnippet>.</unformattedSnippet>
+    <unformattedSnippet></unformattedSnippet>
     <contains />
     <containedIn />
     <usedBy />
@@ -1438,66 +1516,6 @@
     <usedBy>
       <constraint name="RoleValueConstraint" />
       <constraint name="ValueTypeValueConstraint" />
-    </usedBy>
-  </snippet>
-  <snippet name="SemiColonListClose" replacementCount="0">
-    <statement>
-							Description: Text used at the end of a semi colon list.  Format: .
-						</statement>
-    <unformattedSnippet>.</unformattedSnippet>
-    <contains />
-    <containedIn />
-    <usedBy>
-      <constraint name="EqualityConstraint" />
-      <constraint name="ExclusionConstraint" />
-    </usedBy>
-  </snippet>
-  <snippet name="SemiColonListFinalSeparator" replacementCount="0">
-    <statement>
-							Description: Used to separate the last two items in a semi colon list.  Format: ;
-						</statement>
-    <unformattedSnippet>; </unformattedSnippet>
-    <contains />
-    <containedIn />
-    <usedBy>
-      <constraint name="EqualityConstraint" />
-      <constraint name="ExclusionConstraint" />
-    </usedBy>
-  </snippet>
-  <snippet name="SemiColonListOpen" replacementCount="0">
-    <statement>
-							Description: Text used at the beginning of a semi colon list.
-						</statement>
-    <unformattedSnippet></unformattedSnippet>
-    <contains />
-    <containedIn />
-    <usedBy>
-      <constraint name="EqualityConstraint" />
-      <constraint name="ExclusionConstraint" />
-    </usedBy>
-  </snippet>
-  <snippet name="SemiColonListPairSeparator" replacementCount="0">
-    <statement>
-							Description: Used to separate items in a semi colon list.  Format: ;
-						</statement>
-    <unformattedSnippet>; </unformattedSnippet>
-    <contains />
-    <containedIn />
-    <usedBy>
-      <constraint name="EqualityConstraint" />
-      <constraint name="ExclusionConstraint" />
-    </usedBy>
-  </snippet>
-  <snippet name="SemiColonListSeparator" replacementCount="0">
-    <statement>
-							Description: Used to separate items in a semi colon list.  Format: ;
-						</statement>
-    <unformattedSnippet>; </unformattedSnippet>
-    <contains />
-    <containedIn />
-    <usedBy>
-      <constraint name="EqualityConstraint" />
-      <constraint name="ExclusionConstraint" />
     </usedBy>
   </snippet>
   <snippet name="SimpleListClose" replacementCount="0">

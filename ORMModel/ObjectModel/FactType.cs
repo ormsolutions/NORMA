@@ -251,6 +251,20 @@ namespace Neumont.Tools.ORM.ObjectModel
 				return Objectification.GetLinkToNestingType(this);
 			}
 		}
+		/// <summary>
+		/// Return roles in the order of the first reading order if available, or the
+		/// <see cref="RoleCollection"/> if readings are not specified.
+		/// </summary>
+		public IList<RoleBase> OrderedRoleCollection
+		{
+			get
+			{
+				// Note that this needs to be kept in sync with the InitializeDefaultFactRoles template
+				// in VerbalizationGenerator.xslt, which generates an inline form of this property
+				LinkedElementCollection<ReadingOrder> orders = ReadingOrderCollection;
+				return (orders.Count != 0) ? orders[0].RoleCollection : RoleCollection;
+			}
+		}
 		#endregion // FactType Specific
 		#region FactConstraintCollection implementation
 		private sealed class FactConstraintCollectionImpl : ICollection<IFactConstraint>

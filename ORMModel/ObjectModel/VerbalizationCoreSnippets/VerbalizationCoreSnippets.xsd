@@ -645,65 +645,62 @@
 						</xs:documentation>
 					</xs:annotation>
 				</xs:enumeration>
-				<xs:enumeration value="EqualityForEachIndentedQuantifier">
+				<xs:enumeration value="GroupEquality">
 					<xs:annotation>
 						<xs:documentation>
-							Description: Verbalizes an equality constraint.
-							Format alethic: for each {0}, all or none of the following hold:\n {1}  
-							Format deontic: it is obligatory that for each {0}, all or none of the following hold:\n {1}
+							Description: Assert group equality.
+							Format: all or none of the following hold: {0}
 						</xs:documentation>
 					</xs:annotation>
 				</xs:enumeration>
-				<xs:enumeration value="ExclusiveOrForEachIndentedQuantifier">
+				<xs:enumeration value="GroupExclusiveOr">
 					<xs:annotation>
 						<xs:documentation>
-							Description: Verbalizes an exclusive-or constraint.
-							Format alethic: for each {0}, exactly one of the following holds:\n {1}
-							Format deontic: it is obligatory that for each {0}, at most one of the following holds:\n {1}
+							Description: Assert group exclusive-or.
+							Format: exactly one of the following holds: {0}
 						</xs:documentation>
 					</xs:annotation>
 				</xs:enumeration>
-				<xs:enumeration value="ExclusionForEachIndentedQuantifier">
+				<xs:enumeration value="GroupExclusion">
 					<xs:annotation>
 						<xs:documentation>
-							Description: Verbalizes an exclusion constraint.
-							Format alethic: for each {0}, at most one of the following holds:\n {1}
-							Format deontic: it is obligatory that for each {0}, at most one of the following holds:\n {1}
-							</xs:documentation>
-					</xs:annotation>
-				</xs:enumeration>
-				<xs:enumeration value="SemiColonListOpen">
-					<xs:annotation>
-						<xs:documentation>
-							Description: Text used at the beginning of a semi colon list.
+							Description: Assert group exclusion.
+							Format: at most one of the following holds: {0}
 						</xs:documentation>
 					</xs:annotation>
 				</xs:enumeration>
-				<xs:enumeration value="SemiColonListPairSeparator">
+				<xs:enumeration value="MultilineIndentedCompoundListOpen">
 					<xs:annotation>
 						<xs:documentation>
-							Description: Used to separate items in a semi colon list.  Format: ;
+							Description: Text used at the beginning of an indented compound list with one item on each line.
 						</xs:documentation>
 					</xs:annotation>
 				</xs:enumeration>
-				<xs:enumeration value="SemiColonListSeparator">
+				<xs:enumeration value="MultilineIndentedCompoundListPairSeparator">
 					<xs:annotation>
 						<xs:documentation>
-							Description: Used to separate items in a semi colon list.  Format: ;
+							Description: Used to separate items in an indented compound list.  Format: ;
 						</xs:documentation>
 					</xs:annotation>
 				</xs:enumeration>
-				<xs:enumeration value="SemiColonListFinalSeparator">
+				<xs:enumeration value="MultilineIndentedCompoundListSeparator">
 					<xs:annotation>
 						<xs:documentation>
-							Description: Used to separate the last two items in a semi colon list.  Format: ;
+							Description: Used to separate items in an indented compound list.  Format: ;
 						</xs:documentation>
 					</xs:annotation>
 				</xs:enumeration>
-				<xs:enumeration value="SemiColonListClose">
+				<xs:enumeration value="MultilineIndentedCompoundListFinalSeparator">
 					<xs:annotation>
 						<xs:documentation>
-							Description: Text used at the end of a semi colon list.  Format: .
+							Description: Used to separate the last two items in an indented compound list.  Format: ;
+						</xs:documentation>
+					</xs:annotation>
+				</xs:enumeration>
+				<xs:enumeration value="MultilineIndentedCompoundListClose">
+					<xs:annotation>
+						<xs:documentation>
+							Description: Text used at the end of an indented compound list.  Format:
 						</xs:documentation>
 					</xs:annotation>
 				</xs:enumeration>
