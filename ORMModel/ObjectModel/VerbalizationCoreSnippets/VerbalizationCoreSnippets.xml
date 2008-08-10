@@ -88,14 +88,14 @@ You must not remove this notice, or any other, from this software.
 			<Snippet type="SelfReference"><![CDATA[{0}]]></Snippet>
 			<Snippet type="SingleValueValueConstraint"><![CDATA[<span class="quantifier">the possible value of</span> {0} <span class="quantifier">is</span> {1}]]></Snippet>
 			<Snippet type="MultiValueValueConstraint"><![CDATA[<span class="quantifier">the possible values of</span> {0} <span class="quantifier">are</span> {1}]]></Snippet>
-			<Snippet type="MinClosedMaxClosed"><![CDATA[<span class="quantifier">at least <span class="instance">{0}</span> to at most <span class="instance">{1}</span></span>]]></Snippet>
-			<Snippet type="MinClosedMaxOpen"><![CDATA[<span class="quantifier">at least <span class="instance">{0}</span> to below <span class="instance">{1}</span></span>]]></Snippet>
-			<Snippet type="MinClosedMaxUnbounded"><![CDATA[<span class="quantifier">at least <span class="instance">{0}</span></span>]]></Snippet>
-			<Snippet type="MinOpenMaxClosed"><![CDATA[<span class="quantifier">above <span class="instance">{0}</span> to at most <span class="instance">{1}</span></span>]]></Snippet>
-			<Snippet type="MinOpenMaxOpen"><![CDATA[<span class="quantifier">above <span class="instance">{0}</span> to below <span class="instance">{1}</span></span>]]></Snippet>
-			<Snippet type="MinOpenMaxUnbounded"><![CDATA[<span class="quantifier">above <span class="instance">{0}</span></span>]]></Snippet>
-			<Snippet type="MinUnboundedMaxClosed"><![CDATA[<span class="quantifier">at most <span class="instance">{1}</span></span>]]></Snippet>
-			<Snippet type="MinUnboundedMaxOpen"><![CDATA[<span class="quantifier">below <span class="instance">{1}</span></span>]]></Snippet>
+			<Snippet type="MinClosedMaxClosed"><![CDATA[<span class="quantifier">at least {0} to at most {1}</span>]]></Snippet>
+			<Snippet type="MinClosedMaxOpen"><![CDATA[<span class="quantifier">at least {0} to below {1}</span>]]></Snippet>
+			<Snippet type="MinClosedMaxUnbounded"><![CDATA[<span class="quantifier">at least {0}</span>]]></Snippet>
+			<Snippet type="MinOpenMaxClosed"><![CDATA[<span class="quantifier">above {0} to at most {1}</span>]]></Snippet>
+			<Snippet type="MinOpenMaxOpen"><![CDATA[<span class="quantifier">above {0} to below {1}</span>]]></Snippet>
+			<Snippet type="MinOpenMaxUnbounded"><![CDATA[<span class="quantifier">above {0}</span>]]></Snippet>
+			<Snippet type="MinUnboundedMaxClosed"><![CDATA[<span class="quantifier">at most {1}</span>]]></Snippet>
+			<Snippet type="MinUnboundedMaxOpen"><![CDATA[<span class="quantifier">below {1}</span>]]></Snippet>
 			<Snippet type="IdentityEqualityListOpen"><![CDATA[]]></Snippet>
 			<Snippet type="IdentityEqualityListPairSeparator"><![CDATA[<span class="logicalOperator"> that is a </span>]]></Snippet>
 			<Snippet type="IdentityEqualityListSeparator"><![CDATA[<span class="logicalOperator"> that is a </span>]]></Snippet>
@@ -203,9 +203,9 @@ You must not remove this notice, or any other, from this software.
 			<Snippet type="CombinedObjectAndInstanceTypeMissing"><![CDATA[Missing {0}]]></Snippet>
 			<Snippet type="TextInstanceValue"><![CDATA[<span class="instance">'{0}'</span>]]></Snippet>
 			<Snippet type="NonTextInstanceValue"><![CDATA[<span class="instance">{0}</span>]]></Snippet>
-			<Snippet type="FactTypeInstanceBlockStart"><![CDATA[<br /><br /><span class="quantifier">Examples: </span><span class="smallIndent">]]></Snippet>
+			<Snippet type="FactTypeInstanceBlockStart"><![CDATA[<br/><span class="quantifier">Examples: </span><span class="smallIndent">]]></Snippet>
 			<Snippet type="FactTypeInstanceBlockEnd"><![CDATA[</span>]]></Snippet>
-			<Snippet type="ObjectTypeInstanceListOpen"><![CDATA[<br /><br /><span class="quantifier">Examples:</span> ]]></Snippet>
+			<Snippet type="ObjectTypeInstanceListOpen"><![CDATA[<br/><span class="quantifier">Examples:</span> ]]></Snippet>
 			<Snippet type="ObjectTypeInstanceListPairSeparator"><![CDATA[<span class="listSeparator">, </span>]]></Snippet>
 			<Snippet type="ObjectTypeInstanceListSeparator"><![CDATA[<span class="listSeparator">, </span>]]></Snippet>
 			<Snippet type="ObjectTypeInstanceListFinalSeparator"><![CDATA[<span class="listSeparator">, </span>]]></Snippet>

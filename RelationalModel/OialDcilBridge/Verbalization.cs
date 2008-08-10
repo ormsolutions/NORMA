@@ -26,6 +26,37 @@ using System.IO;
 
 namespace Neumont.Tools.ORMAbstractionToConceptualDatabaseBridge
 {
+	partial class TableIsPrimarilyForConceptType : IVerbalize
+	{
+		#region IVerbalize Implementation
+		/// <summary>
+		/// Implements <see cref="IVerbalize.GetVerbalization"/>
+		/// </summary>
+		protected bool GetVerbalization(TextWriter writer, IDictionary<Type, IVerbalizationSets> snippetsDictionary, IVerbalizationContext verbalizationContext, bool isNegative)
+		{
+			// We are redirected to this point by the associated Table element
+			ConceptType conceptType = this.ConceptType;
+			ObjectType objectType;
+			if (null != (objectType = ConceptTypeIsForObjectType.GetObjectType(conceptType)))
+			{
+				verbalizationContext.DeferVerbalization(objectType, DeferVerbalizationOptions.None, null);
+				foreach (ConceptType alsoForConceptType in TableIsAlsoForConceptType.GetConceptType(this.Table))
+				{
+					if (null != (objectType = ConceptTypeIsForObjectType.GetObjectType(alsoForConceptType)))
+					{
+						writer.WriteLine();
+						verbalizationContext.DeferVerbalization(objectType, DeferVerbalizationOptions.None, null);
+					}
+				}
+			}
+			return false;
+		}
+		bool IVerbalize.GetVerbalization(TextWriter writer, IDictionary<Type, IVerbalizationSets> snippetsDictionary, IVerbalizationContext verbalizationContext, bool isNegative)
+		{
+			return GetVerbalization(writer, snippetsDictionary, verbalizationContext, isNegative);
+		}
+		#endregion // IVerbalize Implementation
+	}
 	partial class ColumnHasConceptTypeChild : IVerbalize
 	{
 		#region IVerbalize Implementation

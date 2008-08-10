@@ -49,7 +49,7 @@
 				</Snippet>
 				<Fact/>
 			</Snippet>
-			<Snippet ref="ReferenceSchemeVerbalization" conditionalMatch="HasSimplePreferredIdentifier">
+			<Snippet ref="ReferenceSchemeVerbalization" conditionalMatch="HasUnobjectifiedPreferredIdentifier">
 				<IterateRoles match="preferredIdentifier" listStyle="CompoundList">
 					<Fact/>
 				</IterateRoles>
@@ -929,8 +929,20 @@
 								<Snippet ref="MinOpenMaxClosed" conditionalMatch="MinOpenMaxClosed"/>
 								<Snippet ref="MinOpenMaxOpen" conditionalMatch="MinOpenMaxOpen"/>
 								<SnippetReplacements>
-									<MinValue/>
-									<MaxValue/>
+									<ConditionalSnippet>
+										<Snippet ref="TextInstanceValue" conditionalMatch="IsText"/>
+										<Snippet ref="NonTextInstanceValue"/>
+										<SnippetReplacements>
+											<MinValue/>
+										</SnippetReplacements>
+									</ConditionalSnippet>
+									<ConditionalSnippet>
+										<Snippet ref="TextInstanceValue" conditionalMatch="IsText"/>
+										<Snippet ref="NonTextInstanceValue"/>
+										<SnippetReplacements>
+											<MaxValue/>
+										</SnippetReplacements>
+									</ConditionalSnippet>
 								</SnippetReplacements>
 							</ConditionalSnippet>
 						</IterateValueRanges>
@@ -961,14 +973,71 @@
 								<Snippet ref="MinOpenMaxClosed" conditionalMatch="MinOpenMaxClosed"/>
 								<Snippet ref="MinOpenMaxOpen" conditionalMatch="MinOpenMaxOpen"/>
 								<SnippetReplacements>
-									<MinValue/>
-									<MaxValue/>
+									<ConditionalSnippet>
+										<Snippet ref="TextInstanceValue" conditionalMatch="IsText"/>
+										<Snippet ref="NonTextInstanceValue"/>
+										<SnippetReplacements>
+											<MinValue/>
+										</SnippetReplacements>
+									</ConditionalSnippet>
+									<ConditionalSnippet>
+										<Snippet ref="TextInstanceValue" conditionalMatch="IsText"/>
+										<Snippet ref="NonTextInstanceValue"/>
+										<SnippetReplacements>
+											<MaxValue/>
+										</SnippetReplacements>
+									</ConditionalSnippet>
 								</SnippetReplacements>
 							</ConditionalSnippet>
 						</IterateValueRanges>
 					</SnippetReplacements>
 				</ConditionalSnippet>
 			</Constraint>
+			<!-- End Value Type Value Constraint -->
+			<!-- Begin nearest EntityType ValueConstraint -->
+			<Constraint patternGroup="NearestValueConstraint" type="NearestValueConstraintVerbalizer" childHelperFor="ObjectType">
+				<ConditionalSnippet>
+					<!-- Determine whether the range is degenerate. -->
+					<Snippet ref="SingleValueValueConstraint" conditionalMatch="IsSingleValue"/>
+					<Snippet ref="MultiValueValueConstraint"/>
+					<SnippetReplacements>
+						<Snippet ref="ObjectType">
+							<ObjectTypeName/>
+						</Snippet>
+						<IterateValueRanges listStyle="CompactSimpleList">
+							<ConditionalSnippet>
+								<!-- Match one of the nine possible value range patterns.  MinUnboundedMaxUnbounded is not a valid value range pattern. -->
+								<Snippet ref="SelfReference" conditionalMatch="MinEqualsMax"/>
+								<Snippet ref="MinClosedMaxUnbounded" conditionalMatch="MinClosedMaxUnbounded"/>
+								<Snippet ref="MinOpenMaxUnbounded" conditionalMatch="MinOpenMaxUnbounded"/>
+								<Snippet ref="MinUnboundedMaxClosed" conditionalMatch="MinUnboundedMaxClosed"/>
+								<Snippet ref="MinUnboundedMaxOpen" conditionalMatch="MinUnboundedMaxOpen"/>
+								<Snippet ref="MinClosedMaxClosed" conditionalMatch="MinClosedMaxClosed"/>
+								<Snippet ref="MinClosedMaxOpen" conditionalMatch="MinClosedMaxOpen"/>
+								<Snippet ref="MinOpenMaxClosed" conditionalMatch="MinOpenMaxClosed"/>
+								<Snippet ref="MinOpenMaxOpen" conditionalMatch="MinOpenMaxOpen"/>
+								<SnippetReplacements>
+									<ConditionalSnippet>
+										<Snippet ref="TextInstanceValue" conditionalMatch="IsText"/>
+										<Snippet ref="NonTextInstanceValue"/>
+										<SnippetReplacements>
+											<MinValue/>
+										</SnippetReplacements>
+									</ConditionalSnippet>
+									<ConditionalSnippet>
+										<Snippet ref="TextInstanceValue" conditionalMatch="IsText"/>
+										<Snippet ref="NonTextInstanceValue"/>
+										<SnippetReplacements>
+											<MaxValue/>
+										</SnippetReplacements>
+									</ConditionalSnippet>
+								</SnippetReplacements>
+							</ConditionalSnippet>
+						</IterateValueRanges>
+					</SnippetReplacements>
+				</ConditionalSnippet>
+			</Constraint>
+			<!-- End nearest EntityType ValueConstraint -->
 			<Constraint type="RingConstraint" patternGroup="SetConstraint">
 				<EnableSubscripts minFactArity="3"/>
 				<ConstrainedRoles constraintArity="2" factCount="1" ringType="Irreflexive">
@@ -1209,6 +1278,9 @@
 			<SingleSnippet type="FactTypeInstanceBlockStart" childHelperFor="FactType" snippetRef="FactTypeInstanceBlockStart"/>
 			<SingleSnippet type="FactTypeInstanceBlockEnd" childHelperFor="FactType" snippetRef="FactTypeInstanceBlockEnd"/>
 			<SampleInstance type="FactTypeInstanceVerbalizer" childHelperFor="FactType">
+				<!-- UNDONE: Collapse this to use a mechanism similar to ObjectTypeInstanceVerbalizer.
+				IterateInstances should support a FactType parent, and the BlockStart/BlockEnd snippets
+				should be folded into a normal listStyle. -->
 				<Fact>
 					<InstanceRoleReplacement/>
 				</Fact>

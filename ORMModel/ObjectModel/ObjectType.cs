@@ -631,6 +631,42 @@ namespace Neumont.Tools.ORM.ObjectModel
 			}
 			return valueConstraint;
 		}
+		/// <summary>
+		/// Find the nearest <see cref="ValueConstraint"/> in the single-valued identification path
+		/// of this <see cref="ObjectType"/>.
+		/// </summary>
+		public ValueConstraint NearestValueConstraint
+		{
+			get
+			{
+				ObjectType currentObjectType = this;
+				while (currentObjectType != null)
+				{
+					if (currentObjectType.IsValueType)
+					{
+						return currentObjectType.ValueConstraint;
+					}
+					UniquenessConstraint pid;
+					LinkedElementCollection<Role> pidRoles;
+					if (null != (pid = currentObjectType.ResolvedPreferredIdentifier) &&
+						1 == (pidRoles = pid.RoleCollection).Count)
+					{
+						Role identifierRole = pidRoles[0];
+						ValueConstraint roleConstraint = identifierRole.ValueConstraint;
+						if (roleConstraint != null)
+						{
+							return roleConstraint;
+						}
+						currentObjectType = identifierRole.RolePlayer;
+					}
+					else
+					{
+						currentObjectType = null;
+					}
+				}
+				return null;
+			}
+		}
 		#endregion // Customize property display
 		#region Subtype and Supertype routines
 		/// <summary>
@@ -3969,6 +4005,13 @@ namespace Neumont.Tools.ORM.ObjectModel
 		/// </summary>
 		protected IEnumerable<CustomChildVerbalizer> GetCustomChildVerbalizations(IVerbalizeFilterChildren filter, bool isNegative)
 		{
+			ValueConstraint valueConstraint;
+			if (!IsValueType && null != (valueConstraint = NearestValueConstraint))
+			{
+				NearestValueConstraintVerbalizer verbalizer = NearestValueConstraintVerbalizer.GetVerbalizer();
+				verbalizer.Initialize(this, valueConstraint);
+				yield return new CustomChildVerbalizer(verbalizer, true);
+			}
 			ObjectTypeInstance[] instances = (IsValueType ? (ObjectTypeInstance[])ValueTypeInstanceCollection.ToArray() : (ObjectTypeInstance[])EntityTypeInstanceCollection.ToArray());
 			int instanceCount = instances.Length;
 			if (instanceCount > 0)
@@ -3999,6 +4042,7 @@ namespace Neumont.Tools.ORM.ObjectModel
 			}
 			private void DisposeHelper()
 			{
+				myParentObject = null;
 				myInstances = null;
 			}
 			private ObjectType ParentObject
@@ -4011,6 +4055,44 @@ namespace Neumont.Tools.ORM.ObjectModel
 			}
 		}
 		#endregion // ObjectTypeInstanceVerbalizer class
+		#region NearestValueConstraintVerbalizer class
+		private partial class NearestValueConstraintVerbalizer
+		{
+			private ObjectType myParentObject;
+			private ValueConstraint myValueConstraint;
+			public void Initialize(ObjectType parentObject, ValueConstraint valueConstraint)
+			{
+				myParentObject = parentObject;
+				myValueConstraint = valueConstraint;
+			}
+			private void DisposeHelper()
+			{
+				myParentObject = null;
+				myValueConstraint = null;
+			}
+			private string Name
+			{
+				get
+				{
+					return myParentObject.Name;
+				}
+			}
+			private bool IsText
+			{
+				get
+				{
+					return myValueConstraint.IsText;
+				}
+			}
+			private LinkedElementCollection<ValueRange> ValueRangeCollection
+			{
+				get
+				{
+					return myValueConstraint.ValueRangeCollection;
+				}
+			}
+		}
+		#endregion // NearestValueConstraintVerbalizer class
 	}
 	#region ValueTypeHasDataType class
 	public partial class ValueTypeHasDataType : IElementLinkRoleHasIndirectModelErrorOwner

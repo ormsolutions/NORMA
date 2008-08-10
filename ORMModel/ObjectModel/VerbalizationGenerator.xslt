@@ -217,10 +217,15 @@
 				<plx:param name="verbalizationContext" dataTypeName="IVerbalizationContext"/>
 				<plx:param name="isNegative" dataTypeName=".boolean"/>
 				<plx:returns dataTypeName=".boolean"/>
-				<!-- Verbalizing a fact type is a simple case of verbalizing a constraint.
-					 Leverage the code snippets we use for constraints by setting the right
-					 variable names and calling the constraint verbalization templates -->
 				<xsl:call-template name="DeclareSnippetsLocal"/>
+				<plx:callInstance name="BeginVerbalization">
+					<plx:callObject>
+						<plx:nameRef name="verbalizationContext" type="parameter"/>
+					</plx:callObject>
+					<plx:passParam>
+						<plx:callStatic name="Normal" dataTypeName="VerbalizationContent" type="field"/>
+					</plx:passParam>
+				</plx:callInstance>
 				<plx:callInstance name="Write" type="methodCall">
 					<plx:callObject>
 						<plx:nameRef name="writer" type="local"/>
@@ -366,6 +371,8 @@
 					</xsl:call-template>
 					<plx:pragma type="closeRegion" data="Preliminary"/>
 					<plx:pragma type="region" data="Pattern Matches"/>
+					<!-- UNDONE: This is not even reading the child XML. This should be reworked to use a more transparent mechanism,
+					including support for cvg:InstanceRoleReplacement -->
 					<xsl:variable name="factMockup">
 						<cvg:Fact />
 					</xsl:variable>
@@ -379,7 +386,9 @@
 				<xsl:if test="$parentClass='ObjectType'">
 					<plx:pragma type="closeRegion" data="Preliminary"/>
 					<plx:pragma type="region" data="Pattern Matches"/>
-					<xsl:apply-templates select="child::*" mode="ConstraintVerbalization"/>
+					<xsl:apply-templates select="child::*" mode="ConstraintVerbalization">
+						<xsl:with-param name="TopLevel" select="true()"/>
+					</xsl:apply-templates>
 					<plx:pragma type="closeRegion" data="Pattern Matches"/>
 				</xsl:if>
 				<!-- End check if we are iterating for ObjectType -->
@@ -585,7 +594,36 @@
 				<!-- Add some standard helper variables for related conditional patterns -->
 				<plx:local name="preferredIdentifier" dataTypeName="UniquenessConstraint">
 					<plx:initialize>
-						<plx:callThis name="PreferredIdentifier" type="property"/>
+						<plx:callThis name="ResolvedPreferredIdentifier" type="property"/>
+					</plx:initialize>
+				</plx:local>
+				<plx:local name="identifyingObjectType" dataTypeName="ObjectType">
+					<plx:initialize>
+						<plx:inlineStatement dataTypeName="LinkedElementCollection">
+							<plx:passTypeParam dataTypeName="Role"/>
+							<plx:conditionalOperator>
+								<plx:condition>
+									<plx:binaryOperator type="identityInequality">
+										<plx:left>
+											<plx:nameRef name="preferredIdentifier"/>
+										</plx:left>
+										<plx:right>
+											<plx:nullKeyword/>
+										</plx:right>
+									</plx:binaryOperator>
+								</plx:condition>
+								<plx:left>
+									<plx:callInstance name="PreferredIdentifierFor" type="property">
+										<plx:callObject>
+											<plx:nameRef name="preferredIdentifier"/>
+										</plx:callObject>
+									</plx:callInstance>
+								</plx:left>
+								<plx:right>
+									<plx:nullKeyword/>
+								</plx:right>
+							</plx:conditionalOperator>
+						</plx:inlineStatement>
 					</plx:initialize>
 				</plx:local>
 				<plx:local name="preferredIdentifierRoles" dataTypeName="LinkedElementCollection">
@@ -638,6 +676,7 @@
 		<xsl:variable name="patternGroup" select="string(@patternGroup)"/>
 		<xsl:variable name="isValueTypeValueConstraint" select="$patternGroup='ValueTypeValueConstraint'"/>
 		<xsl:variable name="isRoleValue" select="$patternGroup='RoleValueConstraint'"/>
+		<xsl:variable name="isNearestValueConstraint" select="$patternGroup='NearestValueConstraint'"/>
 		<xsl:variable name="isInternal" select="$patternGroup='InternalConstraint' or $isRoleValue"/>
 		<xsl:variable name="isSingleColumn" select="$patternGroup='SetConstraint'"/>
 		<xsl:variable name="parentClass" select="string(@childHelperFor)"/>
@@ -767,7 +806,7 @@
 						</plx:initialize>
 					</plx:local>
 				</xsl:if>
-				<xsl:if test="not($isValueTypeValueConstraint)">
+				<xsl:if test="not($isValueTypeValueConstraint or $isNearestValueConstraint)">
 					<plx:local name="parentFact" dataTypeName="FactType">
 						<xsl:choose>
 							<xsl:when test="$isInternal and not($isRoleValue)">
@@ -808,7 +847,7 @@
 						</plx:initialize>
 					</plx:local>
 				</xsl:if>
-				<xsl:if test="not($isValueTypeValueConstraint)">
+				<xsl:if test="not($isValueTypeValueConstraint or $isNearestValueConstraint)">
 					<plx:local name="allReadingOrders" dataTypeName="LinkedElementCollection">
 						<plx:passTypeParam dataTypeName="ReadingOrder"/>
 						<xsl:if test="$isInternal">
@@ -880,7 +919,7 @@
 						</plx:initialize>
 					</plx:local>
 				</xsl:if>
-				<xsl:if test="not($isInternal) and not($isValueTypeValueConstraint)">
+				<xsl:if test="not($isInternal) and not($isValueTypeValueConstraint or $isNearestValueConstraint)">
 					<xsl:choose>
 						<xsl:when test="not($isSetComparisonConstraint)">
 							<plx:local name="allConstraintRoles" dataTypeName="LinkedElementCollection">
@@ -1337,7 +1376,7 @@
 						<xsl:with-param name="SubscriptConditions" select="$subscriptConditions"/>
 					</xsl:call-template>
 				</xsl:if>
-				<xsl:if test="not($isValueTypeValueConstraint)">
+				<xsl:if test="not($isValueTypeValueConstraint or $isNearestValueConstraint)">
 					<plx:local name="roleReplacements" dataTypeName=".string" dataTypeIsSimpleArray="true">
 						<plx:initialize>
 							<plx:callNew dataTypeName=".string" dataTypeIsSimpleArray="true">
@@ -1358,13 +1397,14 @@
 					<plx:local name="reading" dataTypeName="IReading"/>
 					<plx:local name="hyphenBinder" dataTypeName="VerbalizationHyphenBinder"/>
 				</xsl:if>
-				<xsl:if test="$isRoleValue or $isValueTypeValueConstraint">
+				<xsl:if test="$isRoleValue or $isValueTypeValueConstraint or $isNearestValueConstraint">
 					<plx:local name="ranges" dataTypeName="LinkedElementCollection">
 						<plx:passTypeParam dataTypeName="ValueRange"/>
 						<plx:initialize>
 							<plx:callThis name="ValueRangeCollection" type="property"/>
 						</plx:initialize>
 					</plx:local>
+					<!-- UNDONE: Equality should be verified with the DataType's compare method, if available -->
 					<plx:local name="isSingleValue" dataTypeName=".boolean">
 						<plx:initialize>
 							<plx:binaryOperator type="booleanAnd">
@@ -1415,6 +1455,11 @@
 									</plx:binaryOperator>
 								</plx:right>
 							</plx:binaryOperator>
+						</plx:initialize>
+					</plx:local>
+					<plx:local name="isText" dataTypeName=".boolean">
+						<plx:initialize>
+							<plx:callThis name="IsText" type="property"/>
 						</plx:initialize>
 					</plx:local>
 				</xsl:if>
@@ -3888,7 +3933,7 @@
 				<plx:nameRef name="{$VariablePrefix}{$VariableDecorator}"/>
 			</plx:left>
 			<plx:right>
-					<plx:callThis name="Name" type="property" />
+				<plx:callThis name="Name" type="property" />
 			</plx:right>
 		</plx:assign>
 	</xsl:template>
@@ -3948,7 +3993,11 @@
 				<plx:nameRef name="{$VariablePrefix}{$VariableDecorator}"/>
 			</plx:left>
 			<plx:right>
-				<plx:callThis name="ReferenceModeDecoratedString" type="property"/>
+				<plx:callInstance name="ReferenceModeDecoratedString" type="property">
+					<plx:callObject>
+						<plx:nameRef name="identifyingObjectType"/>
+					</plx:callObject>
+				</plx:callInstance>
 			</plx:right>
 		</plx:assign>
 	</xsl:template>
@@ -5002,68 +5051,85 @@
 				<xsl:when test="$ConditionalMatch='HasPreferredIdentifier'">
 					<plx:binaryOperator type="identityInequality">
 						<plx:left>
-							<plx:callThis name="PreferredIdentifier" type="property"/>
+							<plx:nameRef name="preferredIdentifier"/>
 						</plx:left>
 						<plx:right>
 							<plx:nullKeyword/>
 						</plx:right>
 					</plx:binaryOperator>
 				</xsl:when>
-				<xsl:when test="$ConditionalMatch='HasSimplePreferredIdentifier'">
+				<xsl:when test="$ConditionalMatch='HasUnobjectifiedPreferredIdentifier'">
 					<plx:binaryOperator type="booleanAnd">
 						<plx:left>
-							<plx:binaryOperator type="booleanAnd">
+							<plx:binaryOperator type="identityInequality">
 								<plx:left>
-									<plx:binaryOperator type="identityInequality">
-										<plx:left>
-											<plx:nameRef name="preferredIdentifier"/>
-										</plx:left>
-										<plx:right>
-											<plx:nullKeyword/>
-										</plx:right>
-									</plx:binaryOperator>
-								</plx:left>
-								<plx:right>
-									<plx:binaryOperator type="equality">
-										<plx:left>
-											<plx:callInstance name="Count" type="property">
-												<plx:callObject>
-													<plx:nameRef name="preferredIdentifierRoles"/>
-												</plx:callObject>
-											</plx:callInstance>
-										</plx:left>
-										<plx:right>
-											<plx:value data="1" type="i4"/>
-										</plx:right>
-									</plx:binaryOperator>
-								</plx:right>
-							</plx:binaryOperator>
-						</plx:left>
-						<plx:right>
-							<plx:binaryOperator type="identityEquality">
-								<plx:left>
-									<plx:callInstance name="Proxy" type="property">
-										<plx:callObject>
-											<plx:callInstance name=".implied" type="indexerCall">
-												<plx:callObject>
-													<plx:nameRef name="preferredIdentifierRoles"/>
-												</plx:callObject>
-												<plx:passParam>
-													<plx:value data="0" type="i4"/>
-												</plx:passParam>
-											</plx:callInstance>
-										</plx:callObject>
-									</plx:callInstance>
+									<plx:nameRef name="preferredIdentifier"/>
 								</plx:left>
 								<plx:right>
 									<plx:nullKeyword/>
 								</plx:right>
 							</plx:binaryOperator>
+						</plx:left>
+						<plx:right>
+							<plx:unaryOperator type="booleanNot">
+								<plx:binaryOperator type="booleanAnd">
+									<plx:left>
+										<plx:callInstance name="IsInternal" type="property">
+											<plx:callObject>
+												<plx:nameRef name="preferredIdentifier"/>
+											</plx:callObject>
+										</plx:callInstance>
+									</plx:left>
+									<plx:right>
+										<plx:binaryOperator type="identityInequality">
+											<plx:left>
+												<plx:callInstance name="NestingType" type="property">
+													<plx:callObject>
+														<plx:callInstance name=".implied" type="indexerCall">
+															<plx:callObject>
+																<plx:callInstance name="FactTypeCollection" type="property">
+																	<plx:callObject>
+																		<plx:nameRef name="preferredIdentifier"/>
+																	</plx:callObject>
+																</plx:callInstance>
+															</plx:callObject>
+															<plx:passParam>
+																<plx:value data="0" type="i4"/>
+															</plx:passParam>
+														</plx:callInstance>
+													</plx:callObject>
+												</plx:callInstance>
+											</plx:left>
+											<plx:right>
+												<plx:nullKeyword/>
+											</plx:right>
+										</plx:binaryOperator>
+									</plx:right>
+								</plx:binaryOperator>
+							</plx:unaryOperator>
 						</plx:right>
 					</plx:binaryOperator>
 				</xsl:when>
 				<xsl:when test="$ConditionalMatch='HasReferenceMode'">
-					<plx:callThis name="HasReferenceMode" type="property"/>
+					<plx:binaryOperator type="booleanAnd">
+						<plx:left>
+							<plx:binaryOperator type="identityInequality">
+								<plx:left>
+									<plx:nameRef name="identifyingObjectType"/>
+								</plx:left>
+								<plx:right>
+									<plx:nullKeyword/>
+								</plx:right>
+							</plx:binaryOperator>
+						</plx:left>
+						<plx:right>
+							<plx:callInstance name="HasReferenceMode" type="property">
+								<plx:callObject>
+									<plx:nameRef name="identifyingObjectType"/>
+								</plx:callObject>
+							</plx:callInstance>
+						</plx:right>
+					</plx:binaryOperator>
 				</xsl:when>
 				<xsl:when test="$ConditionalMatch='HasNotes'">
 					<plx:unaryOperator type="booleanNot">
@@ -5133,6 +5199,9 @@
 				<xsl:when test="$ConditionalMatch='IsPreferredIdentifier'">
 					<plx:callThis type="property" name="IsPreferred"/>
 				</xsl:when>
+				<xsl:when test="$ConditionalMatch='IsText'">
+					<plx:nameRef name="isText" type="local"/>
+				</xsl:when>
 				<xsl:when test="$ConditionalMatch='IsSingleValue'">
 					<plx:nameRef name="isSingleValue" type="local"/>
 				</xsl:when>
@@ -5168,6 +5237,7 @@
 						</plx:right>
 					</plx:binaryOperator>
 				</xsl:when>
+				<!-- UNDONE: Equality should be verified with the DataType's compare method, if available -->
 				<xsl:when test="$ConditionalMatch='MinEqualsMax'">
 					<plx:binaryOperator type="equality">
 						<plx:left>
@@ -6355,13 +6425,7 @@
 			<plx:local dataTypeName="LinkedElementCollection" name="includedRoles">
 				<plx:passTypeParam dataTypeName="Role"/>
 				<plx:initialize>
-					<plx:callInstance name="RoleCollection" type="property">
-						<plx:callObject>
-							<plx:cast dataTypeName="ConstraintRoleSequence">
-								<plx:callThis name="PreferredIdentifier" type="property"/>
-							</plx:cast>
-						</plx:callObject>
-					</plx:callInstance>
+					<plx:nameRef name="preferredIdentifierRoles"/>
 				</plx:initialize>
 			</plx:local>
 			<plx:local dataTypeName=".i4" name="constraintRoleArity">

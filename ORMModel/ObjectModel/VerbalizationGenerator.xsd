@@ -53,6 +53,11 @@
 					<xs:documentation>Verbalizes value range constraints on value types.</xs:documentation>
 				</xs:annotation>
 			</xs:enumeration>
+			<xs:enumeration value="NearestValueConstraintVerbalizer">
+				<xs:annotation>
+					<xs:documentation>Verbalizes value range constraints on entity types.</xs:documentation>
+				</xs:annotation>
+			</xs:enumeration>
 			<xs:enumeration value="DefaultBinaryMissingUniquenessVerbalizer">
 				<xs:annotation>
 					<xs:documentation>Helper class for verbalizing default binary conditions. The childHelperFor attribute should be set to FactType.</xs:documentation>
@@ -105,6 +110,11 @@
 			<xs:enumeration value="ValueTypeValueConstraint">
 				<xs:annotation>
 					<xs:documentation>Verbalizes value type value constraints.</xs:documentation>
+				</xs:annotation>
+			</xs:enumeration>
+			<xs:enumeration value="NearestValueConstraint">
+				<xs:annotation>
+					<xs:documentation>Verbalizes entity type value constraints.</xs:documentation>
 				</xs:annotation>
 			</xs:enumeration>
 		</xs:restriction>
@@ -328,9 +338,9 @@
 					<xs:documentation>True if the current object type has preferred identifier.</xs:documentation>
 				</xs:annotation>
 			</xs:enumeration>
-			<xs:enumeration value="HasSimplePreferredIdentifier">
+			<xs:enumeration value="HasUnobjectifiedPreferredIdentifier">
 				<xs:annotation>
-					<xs:documentation>True if the current object type has a single-role preferred identifier where the role is not part of an objectified role.</xs:documentation>
+					<xs:documentation>True if the current object type has a preferred identifier that is not an internal constraint on an objectified fact type.</xs:documentation>
 				</xs:annotation>
 			</xs:enumeration>
 			<xs:enumeration value="IsPersonal">
@@ -372,6 +382,13 @@
 					<xs:documentation>
 						True if the value range collection has only one value range whose
 						min value is equal to the max value.
+					</xs:documentation>
+				</xs:annotation>
+			</xs:enumeration>
+			<xs:enumeration value="IsText">
+				<xs:annotation>
+					<xs:documentation>
+						True if the current ValueConstraint has a text data type.
 					</xs:documentation>
 				</xs:annotation>
 			</xs:enumeration>

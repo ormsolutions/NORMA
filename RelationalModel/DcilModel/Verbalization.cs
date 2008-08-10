@@ -20,6 +20,45 @@ using System.Collections.ObjectModel;
 
 namespace Neumont.Tools.RelationalModels.ConceptualDatabase
 {
+	partial class Table : IRedirectVerbalization
+	{
+		#region IRedirectVerbalization implementation
+		/// <summary>
+		/// The guid for the role to the primary table for the bridge model.
+		/// Lifted from the generated bridge code.
+		/// </summary>
+		private static readonly Guid TablePrimarilyForBridgeRoleId = new Guid(0xdaeb8db4, 0xc3a6, 0x497d, 0xba, 0x4c, 0x74, 0xd1, 0xaf, 0x6c, 0xcd, 0xc0);
+
+		/// <summary>
+		/// Implements <see cref="IRedirectVerbalization.SurrogateVerbalizer"/>. Defers to the
+		/// first bridge link element, if the bridge is loaded.
+		/// </summary>
+		protected IVerbalize SurrogateVerbalizer
+		{
+			get
+			{
+				// Look up the associated bridge links by guid, this project does not reference
+				// the bridge elements directly, so the type is not available.
+				DomainRoleInfo roleInfo;
+				ReadOnlyCollection<ElementLink> links;
+				IVerbalize retVal = null;
+				if (null != (roleInfo = Store.DomainDataDirectory.FindDomainRole(TablePrimarilyForBridgeRoleId)) &&
+					0 != (links = roleInfo.GetElementLinks(this)).Count)
+				{
+					retVal = links[0] as IVerbalize;
+				}
+				return retVal;
+			}
+		}
+		IVerbalize IRedirectVerbalization.SurrogateVerbalizer
+		{
+			get
+			{
+				return SurrogateVerbalizer;
+			}
+		}
+		#endregion // IRedirectVerbalization implementation
+	}
 	partial class Column : IRedirectVerbalization
 	{
 		#region IRedirectVerbalization implementation
