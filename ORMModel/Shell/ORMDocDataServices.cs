@@ -39,6 +39,7 @@ using Neumont.Tools.Modeling.Shell.DynamicSurveyTreeGrid;
 using Neumont.Tools.ORM.ObjectModel;
 using Neumont.Tools.ORM.ShapeModel;
 using MSOLE = Microsoft.VisualStudio.OLE.Interop;
+using System.IO;
 
 namespace Neumont.Tools.ORM.Shell
 {
@@ -1122,6 +1123,9 @@ namespace Neumont.Tools.ORM.Shell
 		private IORMToolTaskProvider myTaskProvider;
 		private string myLastVerbalizationSnippetsOptions;
 		private IDictionary<string, IDictionary<Type, IVerbalizationSets>> myTargetedVerbalizationSnippets;
+		private uint myInstanceVerbalizationChangeCookie;
+		private static FileSystemWatcher myVerbalizationChangeWatcher;
+		private static uint myVerbalizationChangeCookie;
 		private IDictionary<string, VerbalizationTargetData> myVerbalizationTargets;
 		private IDictionary<Type, LayoutEngineData> myLayoutEngines;
 		private int myCustomBlockCanAddTransactionCount;
@@ -1230,7 +1234,7 @@ namespace Neumont.Tools.ORM.Shell
 				verbalizationOptions = "";
 			}
 			bool loadTarget = false;
-			if (targetedSnippets == null || (currentSnippetsOptions == null || currentSnippetsOptions != verbalizationOptions))
+			if (targetedSnippets == null || myInstanceVerbalizationChangeCookie != myVerbalizationChangeCookie || (currentSnippetsOptions == null || currentSnippetsOptions != verbalizationOptions))
 			{
 				// UNDONE: See comments in LoadSnippetsDictionary about loading
 				// a dictionary with all type/target combinations then wrapping it
@@ -1242,6 +1246,7 @@ namespace Neumont.Tools.ORM.Shell
 				{
 					targetedSnippets.Clear();
 				}
+				myInstanceVerbalizationChangeCookie = myVerbalizationChangeCookie;
 			}
 			else if (targetedSnippets != null)
 			{
@@ -1257,10 +1262,49 @@ namespace Neumont.Tools.ORM.Shell
 				if (targetedSnippets == null)
 				{
 					myTargetedVerbalizationSnippets = targetedSnippets = new Dictionary<string, IDictionary<Type, IVerbalizationSets>>();
+					if (myVerbalizationChangeWatcher == null)
+					{
+						FileSystemWatcher changeWatcher = new FileSystemWatcher(ORMDesignerPackage.VerbalizationDirectory, "*.xml");
+						changeWatcher.IncludeSubdirectories = true;
+						changeWatcher.NotifyFilter = NotifyFilters.DirectoryName | NotifyFilters.FileName | NotifyFilters.LastWrite | NotifyFilters.CreationTime;
+						FileSystemEventHandler handler = new FileSystemEventHandler(VerbalizationCustomizationsChanged);
+						changeWatcher.Created += handler;
+						changeWatcher.Changed += handler;
+						changeWatcher.Deleted += handler;
+						changeWatcher.Renamed += new RenamedEventHandler(VerbalizationCustomizationsRenamed);
+						changeWatcher.EnableRaisingEvents = true;
+						FileSystemWatcher useWatcher = System.Threading.Interlocked.CompareExchange<FileSystemWatcher>(ref myVerbalizationChangeWatcher, changeWatcher, null);
+						if (useWatcher != null)
+						{
+							changeWatcher.Dispose();
+						}
+					}
 				}
 				targetedSnippets[target] = retVal;
 			}
 			return retVal;
+		}
+		/// <summary>
+		/// Track changes to the verbalization dictionary so that we can
+		/// reload snippets files as they change.
+		/// </summary>
+		private static void VerbalizationCustomizationsChanged(object sender, FileSystemEventArgs e)
+		{
+			unchecked
+			{
+				++myVerbalizationChangeCookie;
+			};
+		}
+		/// <summary>
+		/// Track changes to the verbalization dictionary so that we can
+		/// reload snippets files as they change.
+		/// </summary>
+		private static void VerbalizationCustomizationsRenamed(object sender, RenamedEventArgs e)
+		{
+			unchecked
+			{
+				++myVerbalizationChangeCookie;
+			};
 		}
 		IDictionary<Type, IVerbalizationSets> IORMToolServices.GetVerbalizationSnippetsDictionary(string target)
 		{

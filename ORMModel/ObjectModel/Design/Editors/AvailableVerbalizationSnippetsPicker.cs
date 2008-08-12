@@ -513,7 +513,7 @@ namespace Neumont.Tools.ORM.ObjectModel.Design
 					TargetedTypeData[] typeData = new TargetedTypeData[targetedTypesCount];
 					for (int i = 0; i < targetedTypesCount; ++i)
 					{
-						typeData[i] = new TargetedTypeData(GetVerbalizationTargetDisplayName(myTargetedTypes[firstTargetedType + 1].Target), firstTargetedType + i + 1);
+						typeData[i] = new TargetedTypeData(GetVerbalizationTargetDisplayName(myTargetedTypes[firstTargetedType + i + 1].Target), firstTargetedType + i + 1);
 					}
 					return new TypeBranchWithExplicitTargets(this, firstTargetedType, typeData);
 				}

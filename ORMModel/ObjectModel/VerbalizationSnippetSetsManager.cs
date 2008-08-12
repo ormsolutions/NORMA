@@ -664,7 +664,7 @@ namespace Neumont.Tools.ORM.ObjectModel
 			myEnumTypeName = enumTypeName;
 			myLangId = languageId;
 			myId = id;
-			myDescription = null;
+			myDescription = description;
 			myTarget = target ?? DefaultTarget;
 		}
 		#endregion // Constructors
@@ -1533,6 +1533,15 @@ namespace Neumont.Tools.ORM.ObjectModel
 						{
 							// Fallback case, base is not defined
 							baseSnippets = (IVerbalizationSets<TEnum>)processedSets[defaultSnippetsIdentifier];
+							if (currentBaseId.Target != VerbalizationSnippetsIdentifier.DefaultTarget &&
+								currentBaseId.IsTargetedDefaultIdentifier(currentBaseId.Target))
+							{
+								if (string.IsNullOrEmpty(currentBaseId.Description))
+								{
+									currentBaseId = new VerbalizationSnippetsIdentifier(currentBaseId.EnumTypeName, currentBaseId.Target, currentBaseId.LanguageId, currentBaseId.Id, defaultSnippetsIdentifier.Description);
+								}
+								processedSets.Add(currentBaseId, baseSnippets);
+							}
 						}
 					}
 					Debug.Assert(baseSnippets != null); // Should always have some base at this point
