@@ -289,7 +289,9 @@
 			</xsl:if>
 			<plx:namespaceImport name="System.Diagnostics.CodeAnalysis"/>
 			<plx:namespaceImport name="System.Linq"/>
-			<plx:namespaceImport name="System.Runtime.Serialization"/>
+			<xsl:if test="$GenerateServiceLayer">
+				<plx:namespaceImport name="System.Runtime.Serialization"/>
+			</xsl:if>
 			<plx:namespaceImport name="System.Security.Permissions"/>
 			<xsl:if test="$GenerateServiceLayer">
 				<plx:namespaceImport name="System.ServiceModel"/>
@@ -299,7 +301,10 @@
 			<xsl:apply-templates select="dcl:schema" mode="GenerateNamespace"/>
 		</plx:root>
 		<xsl:if test="function-available('oct:EnsureProjectReference')">
-			<xsl:variable name="addedProjectReference" select="oct:EnsureProjectReference('System.Data.Linq','System.Data.Linq') and oct:EnsureProjectReference('System.Data','System.Data')"/>
+			<xsl:variable name="addedProjectReferenceLinq" select="oct:EnsureProjectReference('System.Data.Linq','System.Data.Linq') and oct:EnsureProjectReference('System.Data','System.Data')"/>
+			<xsl:if test="$GenerateServiceLayer">
+				<xsl:variable name="addedProjectReferenceServiceLayer" select="oct:EnsureProjectReference('System.Runtime.Serialization','System.Runtime.Serialization') and oct:EnsureProjectReference('System.ServiceModel','System.ServiceModel')"/>
+			</xsl:if>
 		</xsl:if>
 	</xsl:template>
 
