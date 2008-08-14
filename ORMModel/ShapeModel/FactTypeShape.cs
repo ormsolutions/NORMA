@@ -43,18 +43,6 @@ namespace Neumont.Tools.ORM.ShapeModel
 	#region FactTypeShape class
 	public partial class FactTypeShape : ICustomShapeFolding, IModelErrorActivation, IProvideConnectorShape
 	{
-		#region Public token values
-		/// <summary>
-		/// A key to set in the top-level transaction context to indicate the role that
-		/// a newly added role should be added after.
-		/// </summary>
-		public static readonly object InsertAfterRoleKey = new object();
-		/// <summary>
-		/// A key to set in the top-level transaction context to indicate the role that
-		/// a newly added role should be added before.
-		/// </summary>
-		public static readonly object InsertBeforeRoleKey = new object();
-		#endregion // Public token values
 		#region ConstraintBoxRoleActivity enum
 		/// <summary>
 		/// The activity of a role in a ConstraintBox
@@ -2198,7 +2186,28 @@ namespace Neumont.Tools.ORM.ShapeModel
 			/// <returns>The vertical slice for this role</returns>
 			public sealed override RectangleD GetBounds(ShapeElement parentShape, ShapeField parentField)
 			{
-				return parentField.GetBounds(parentShape);
+				RectangleD retVal = RectangleD.Empty;
+				IConstraint testConstraint = myAssociatedConstraint;
+				if (testConstraint != null)
+				{
+					((FactTypeShape)parentShape).WalkConstraintBoxes(
+						parentField,
+						((ConstraintShapeField)parentField).AttachPosition,
+						delegate(ref ConstraintBox constraintBox)
+						{
+							if (constraintBox.FactConstraint.Constraint == testConstraint)
+							{
+								retVal = constraintBox.Bounds;
+								return false; // Don't continue, we got our item
+							}
+							return true;
+						});
+				}
+				if (retVal.IsEmpty)
+				{
+					retVal = parentField.GetBounds(parentShape);
+				}
+				return retVal;
 			}
 			#endregion // Required ShapeSubField
 			#region Accessor functions
@@ -2747,11 +2756,30 @@ namespace Neumont.Tools.ORM.ShapeModel
 				RectangleD retVal = parentField.GetBounds(parentShape);
 				FactTypeShape parentFactShape = parentShape as FactTypeShape;
 				LinkedElementCollection<RoleBase> roles = parentFactShape.DisplayedRoleOrder;
-				retVal.Width /= roles.Count;
+				int roleCount = roles.Count;
 				int roleIndex = roles.IndexOf(myAssociatedRole);
-				if (roleIndex > 0)
+				DisplayOrientation orientation = parentFactShape.DisplayOrientation;
+				switch (orientation)
 				{
-					retVal.Offset(roleIndex * retVal.Width, 0);
+					case DisplayOrientation.Horizontal:
+						retVal.Width /= roleCount;
+						if (roleIndex > 0)
+						{
+							retVal.Offset(roleIndex * retVal.Width, 0);
+						}
+						break;
+					case DisplayOrientation.VerticalRotatedLeft:
+					case DisplayOrientation.VerticalRotatedRight:
+						retVal.Height /= roleCount;
+						if (orientation == DisplayOrientation.VerticalRotatedLeft)
+						{
+							roleIndex = roleCount - roleIndex - 1;
+						}
+						if (roleIndex > 0)
+						{
+							retVal.Offset(0, roleIndex * retVal.Height);
+						}
+						break;
 				}
 				return retVal;
 			}

@@ -61,6 +61,18 @@ namespace Neumont.Tools.ORM.ObjectModel
 	#endregion // IFactConstraint interface
 	public partial class FactType : INamedElementDictionaryChild, INamedElementDictionaryRemoteParent, IModelErrorOwner, IVerbalizeCustomChildren, IHierarchyContextEnabled
 	{
+		#region Public token values
+		/// <summary>
+		/// A key to set in the top-level transaction context to indicate the role that
+		/// a newly added role should be added after.
+		/// </summary>
+		public static readonly object InsertAfterRoleKey = new object();
+		/// <summary>
+		/// A key to set in the top-level transaction context to indicate the role that
+		/// a newly added role should be added before.
+		/// </summary>
+		public static readonly object InsertBeforeRoleKey = new object();
+		#endregion // Public token values
 		#region ReadingOrder acquisition
 		/// <summary>
 		/// Gets a reading order, first by trying to find it, if one doesn't exist

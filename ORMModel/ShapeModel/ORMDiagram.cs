@@ -930,7 +930,7 @@ namespace Neumont.Tools.ORM.ShapeModel
 					return !objectifiedShape.ExpandRefMode;
 				}
 			}
-			return objectType.HasReferenceMode;
+			return false; // If a shape can't be found, then do not collapse, regardless of objectType.HasReferenceMode
 		}
 #if SHOW_FACTSHAPE_FOR_SUBTYPE
 		/// <summary>See <see cref="ORMDiagramBase.CreateChildShape"/>.</summary>
@@ -1698,14 +1698,15 @@ namespace Neumont.Tools.ORM.ShapeModel
 		/// <summary>
 		/// Implements IProxyDisplayProvider.ElementDisplayedAs
 		/// </summary>
-		protected ModelElement ElementDisplayedAs(ModelElement element)
+		protected ModelElement ElementDisplayedAs(ModelElement element, ModelError forError)
 		{
 			ObjectType objectElement;
 			ExclusionConstraint exclusionConstraint;
 			SetConstraint setConstraint;
 			if (null != (objectElement = element as ObjectType))
 			{
-				if (!ShouldDisplayObjectType(objectElement))
+				if (!ShouldDisplayObjectType(objectElement) &&
+					!(forError is ObjectTypeDuplicateNameError))
 				{
 					FactType nestedFact = objectElement.NestedFactType;
 					if (nestedFact != null)
@@ -1749,9 +1750,9 @@ namespace Neumont.Tools.ORM.ShapeModel
 			}
 			return null;
 		}
-		ModelElement IProxyDisplayProvider.ElementDisplayedAs(ModelElement element)
+		ModelElement IProxyDisplayProvider.ElementDisplayedAs(ModelElement element, ModelError forError)
 		{
-			return ElementDisplayedAs(element);
+			return ElementDisplayedAs(element, forError);
 		}
 		#endregion // IProxyDisplayProvider Implementation
 		#region IMergeElements implementation

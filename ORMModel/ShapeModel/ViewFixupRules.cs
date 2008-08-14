@@ -452,20 +452,19 @@ namespace Neumont.Tools.ORM.ShapeModel
 					{
 						Store store = shape.Store;
 						Dictionary<object, object> contextInfo = store.TransactionManager.CurrentTransaction.TopLevelTransaction.Context.ContextInfo;
+						object contextRole;
 						int insertIndex = -1;
-						if (contextInfo.ContainsKey(FactTypeShape.InsertAfterRoleKey))
+						if (contextInfo.TryGetValue(FactType.InsertAfterRoleKey, out contextRole))
 						{
-							RoleBase insertAfter = (RoleBase)contextInfo[FactTypeShape.InsertAfterRoleKey];
-							insertIndex = roles.IndexOf(insertAfter);
+							insertIndex = roles.IndexOf(contextRole as RoleBase);
 							if (insertIndex != -1)
 							{
 								++insertIndex;
 							}
 						}
-						else if (contextInfo.ContainsKey(FactTypeShape.InsertBeforeRoleKey))
+						else if (contextInfo.TryGetValue(FactType.InsertBeforeRoleKey, out contextRole))
 						{
-							RoleBase insertBefore = (RoleBase)contextInfo[FactTypeShape.InsertBeforeRoleKey];
-							insertIndex = roles.IndexOf(insertBefore);
+							insertIndex = roles.IndexOf(contextRole as RoleBase);
 						}
 						if (insertIndex != -1)
 						{

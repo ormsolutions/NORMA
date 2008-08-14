@@ -272,31 +272,91 @@ namespace Neumont.Tools.ORM.ObjectModel
 		/// This allows it to be used by both the rule and to be called
 		/// during post load model fixup.
 		/// </summary>
-		private static void ValidateReadingOrdersRoleCollection(FactType theFact, RoleBase addedRole)
+		private static void ValidateReadingOrdersRoleCollection(FactType factType, RoleBase addedRole)
 		{
-			Debug.Assert(theFact.Store.TransactionManager.InTransaction);
+			Debug.Assert(factType.Store.TransactionManager.InTransaction);
 
-			LinkedElementCollection<ReadingOrder> readingOrders = theFact.ReadingOrderCollection;
-			int orderCount = readingOrders.Count;
-			if (orderCount != 0)
+			LinkedElementCollection<ReadingOrder> readingOrders;
+			int orderCount;
+			if (null == factType.UnaryRole &&
+				0 != (orderCount = (readingOrders = factType.ReadingOrderCollection).Count))
 			{
-				bool isUnaryFactType = theFact.UnaryRole != null;
+				bool checkedContext = false;
+				bool insertAfter = false;
+				RoleBase insertBeside = null;
+				IFormatProvider formatProvider = CultureInfo.InvariantCulture;
 				for (int i = 0; i < orderCount; ++i)
 				{
 					ReadingOrder ord = readingOrders[i];
 					LinkedElementCollection<RoleBase> roles = ord.RoleCollection;
-					if (!roles.Contains(addedRole) && !isUnaryFactType)
+					if (!roles.Contains(addedRole))
 					{
-						ord.RoleCollection.Add(addedRole);
+						if (!checkedContext)
+						{
+							checkedContext = true;
+							Dictionary<object, object> contextInfo = factType.Store.TransactionManager.CurrentTransaction.TopLevelTransaction.Context.ContextInfo;
+							object contextRole;
+							if (contextInfo.TryGetValue(FactType.InsertAfterRoleKey, out contextRole))
+							{
+								insertBeside = contextRole as RoleBase;
+								insertAfter = true;
+							}
+							else if (contextInfo.TryGetValue(FactType.InsertBeforeRoleKey, out contextRole))
+							{
+								insertBeside = contextRole as RoleBase;
+							}
+						}
+						int insertIndex = -1;
+						if (insertBeside != null)
+						{
+							insertIndex = roles.IndexOf(insertBeside);
+						}
+
+						if (insertIndex != -1)
+						{
+							roles.Insert(insertIndex + (insertAfter ? 1 : 0), addedRole);
+						}
+						else
+						{
+							roles.Add(addedRole);
+						}
 						LinkedElementCollection<Reading> readings = ord.ReadingCollection;
 						int readingCount = readings.Count;
 						if (readingCount != 0)
 						{
-							string appendText = String.Concat("  {", (roles.Count - 1).ToString(CultureInfo.InvariantCulture), "}");
-							for (int j = 0; j < readingCount; ++j)
+							if (insertIndex == -1)
 							{
-								Reading reading = readings[j];
-								reading.SetAutoText(reading.Text + appendText);
+								string appendText = string.Concat("  {", (roles.Count - 1).ToString(CultureInfo.InvariantCulture), "}");
+								for (int j = 0; j < readingCount; ++j)
+								{
+									Reading reading = readings[j];
+									reading.SetAutoText(reading.Text + appendText);
+								}
+							}
+							else
+							{
+								for (int j = 0; j < readingCount; ++j)
+								{
+									Reading reading = readings[j];
+									reading.SetAutoText(Reading.ReplaceFields(
+										reading.Text,
+										delegate(int replaceIndex)
+										{
+											// UNDONE: Respect leading/trailing hyphen binding and keep them associated
+											// with the corresponding role. Will require work well beyond the scope of this
+											// routine.
+											if (replaceIndex == insertIndex)
+											{
+												return string.Concat("{", insertIndex.ToString(formatProvider), "} {", (insertIndex + 1).ToString(formatProvider), "}");
+											}
+											else if (replaceIndex > insertIndex)
+											{
+												return string.Concat("{", (replaceIndex + 1).ToString(formatProvider), "}");
+											}
+											return null; // Leave as is
+										}
+										));
+								}
 							}
 						}
 					}

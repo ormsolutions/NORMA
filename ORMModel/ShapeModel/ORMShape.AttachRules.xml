@@ -257,6 +257,18 @@
 			<arg:RolePlayerPositionChangeRule methodName="RoleDisplayOrderPositionChangedRule">
 				<arg:RuleOn targetType="FactTypeShapeHasRoleDisplayOrder" fireTime="TopLevelCommit" priority="DiagramFixupConstants.ResizeParentRulePriority"/>
 			</arg:RolePlayerPositionChangeRule>
+			<arg:AddRule methodName="RolePlayerAddedRule">
+				<arg:RuleOn targetType="ObjectTypePlaysRole" targetTypeQualifier="Neumont.Tools.ORM.ObjectModel" fireTime="TopLevelCommit" priority="DiagramFixupConstants.ResizeParentRulePriority"/>
+			</arg:AddRule>
+			<arg:ChangeRule methodName="RolePlayerChangedRule">
+				<arg:RuleOn targetType="ObjectType" targetTypeQualifier="Neumont.Tools.ORM.ObjectModel" fireTime="TopLevelCommit" priority="DiagramFixupConstants.ResizeParentRulePriority"/>
+			</arg:ChangeRule>
+			<arg:DeleteRule methodName="RolePlayerDeletedRule">
+				<arg:RuleOn targetType="ObjectTypePlaysRole" targetTypeQualifier="Neumont.Tools.ORM.ObjectModel" fireTime="TopLevelCommit" priority="DiagramFixupConstants.ResizeParentRulePriority"/>
+			</arg:DeleteRule>
+			<arg:RolePlayerChangeRule methodName="RolePlayerRolePlayerChangedRule">
+				<arg:RuleOn targetType="ObjectTypePlaysRole" targetTypeQualifier="Neumont.Tools.ORM.ObjectModel" fireTime="TopLevelCommit" priority="DiagramFixupConstants.ResizeParentRulePriority"/>
+			</arg:RolePlayerChangeRule>
 		</arg:RuleContainer>
 		<arg:RuleContainer class="RingConstraintShape">
 			<arg:ChangeRule methodName="RingConstraintPropertyChangeRule">

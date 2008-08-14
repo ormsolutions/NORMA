@@ -440,25 +440,37 @@ namespace Neumont.Tools.ORM.ShapeModel
 			}
 			return retVal;
 		}
-
+		/// <summary>
+		/// Cause the reading shape for a role to invalidate
+		/// </summary>
+		private static void InvalidateReadingShape(Role role)
+		{
+			FactType factType;
+			if (null != role &&
+				null != (factType = role.FactType))
+			{
+				InvalidateReadingShape(factType);
+			}
+		}
 		/// <summary>
 		/// Causes the ReadingShape on a FactTypeShape to invalidate
 		/// </summary>
 		public static void InvalidateReadingShape(FactType factType)
 		{
-			foreach (ShapeElement se in PresentationViewsSubject.GetPresentation(factType))
+			if (factType != null)
 			{
-				FactTypeShape factShape = se as FactTypeShape;
-				if (factShape != null)
+				foreach (ShapeElement se in PresentationViewsSubject.GetPresentation(factType))
 				{
-					foreach (ShapeElement se2 in se.RelativeChildShapes)
+					FactTypeShape factShape = se as FactTypeShape;
+					if (factShape != null)
 					{
-						ReadingShape readShape = se2 as ReadingShape;
-						if (readShape != null)
+						foreach (ShapeElement se2 in se.RelativeChildShapes)
 						{
-							readShape.myDisplayText = null;
-							readShape.InvalidateRequired(true);
-							readShape.AutoResize();
+							ReadingShape readShape = se2 as ReadingShape;
+							if (readShape != null)
+							{
+								readShape.InvalidateDisplayText();
+							}
 						}
 					}
 				}
@@ -1004,6 +1016,69 @@ namespace Neumont.Tools.ORM.ShapeModel
 					if (readingShape != null)
 					{
 						readingShape.InvalidateDisplayText();
+					}
+				}
+			}
+		}
+		/// <summary>
+		/// AddRule: typeof(Neumont.Tools.ORM.ObjectModel.ObjectTypePlaysRole), FireTime=TopLevelCommit, Priority=DiagramFixupConstants.ResizeParentRulePriority;
+		/// Update readings when the set of role player names is modified
+		/// </summary>
+		private static void RolePlayerAddedRule(ElementAddedEventArgs e)
+		{
+			ObjectTypePlaysRole link = (ObjectTypePlaysRole)e.ModelElement;
+			if (!link.IsDeleted)
+			{
+				InvalidateReadingShape(link.PlayedRole);
+			}
+		}
+		/// <summary>
+		/// DeleteRule: typeof(Neumont.Tools.ORM.ObjectModel.ObjectTypePlaysRole), FireTime=TopLevelCommit, Priority=DiagramFixupConstants.ResizeParentRulePriority;
+		/// Update readings when the set of role player names is modified
+		/// </summary>
+		private static void RolePlayerDeletedRule(ElementDeletedEventArgs e)
+		{
+			ObjectTypePlaysRole link = (ObjectTypePlaysRole)e.ModelElement;
+			Role role = link.PlayedRole;
+			if (!role.IsDeleted)
+			{
+				InvalidateReadingShape(role);
+			}
+		}
+		/// <summary>
+		/// RolePlayerChangeRule: typeof(Neumont.Tools.ORM.ObjectModel.ObjectTypePlaysRole), FireTime=TopLevelCommit, Priority=DiagramFixupConstants.ResizeParentRulePriority;
+		/// Update readings when the set of role player names is modified
+		/// </summary>
+		private static void RolePlayerRolePlayerChangedRule(RolePlayerChangedEventArgs e)
+		{
+			ObjectTypePlaysRole link = (ObjectTypePlaysRole)e.ElementLink;
+			if (!link.IsDeleted)
+			{
+				if (e.DomainRole.Id == ObjectTypePlaysRole.RolePlayerDomainRoleId)
+				{
+					InvalidateReadingShape(link.PlayedRole);
+				}
+				else
+				{
+					InvalidateReadingShape((Role)e.OldRolePlayer);
+					InvalidateReadingShape((Role)e.NewRolePlayer);
+				}
+			}
+		}
+		/// <summary>
+		/// ChangeRule: typeof(Neumont.Tools.ORM.ObjectModel.ObjectType), FireTime=TopLevelCommit, Priority=DiagramFixupConstants.ResizeParentRulePriority;
+		/// Update readings when the set of role player names is modified
+		/// </summary>
+		private static void RolePlayerChangedRule(ElementPropertyChangedEventArgs e)
+		{
+			if (e.DomainProperty.Id == ObjectType.NameDomainPropertyId)
+			{
+				ObjectType objectType = (ObjectType)e.ModelElement;
+				if (!objectType.IsDeleted)
+				{
+					foreach (Role role in ObjectTypePlaysRole.GetPlayedRoleCollection(objectType))
+					{
+						InvalidateReadingShape(role);
 					}
 				}
 			}

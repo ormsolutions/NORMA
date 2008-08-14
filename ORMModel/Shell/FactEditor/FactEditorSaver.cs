@@ -440,8 +440,8 @@ namespace Neumont.Tools.ORM.Shell
 										{
 											if (matchedRoles[i] == null)
 											{
-												// UNDONE: Consider using the FactTypeShape.InsertAfterRoleKey
-												// and FactTypeShape.InsertBeforeRoleKey context information
+												// UNDONE: Consider using the FactType.InsertAfterRoleKey
+												// and FactType.InsertBeforeRoleKey context information
 												// to modify display of inserted roles.
 
 												// Use an existing role if we have it

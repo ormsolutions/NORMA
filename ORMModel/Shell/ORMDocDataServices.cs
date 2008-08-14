@@ -1681,6 +1681,7 @@ namespace Neumont.Tools.ORM.Shell
 					}
 				}
 				ModelElement startElement = element;
+				ModelError modelError = locator as ModelError;
 				IProxyDisplayProvider proxyProvider = null;
 				bool useProxy = false;
 				bool haveCurrentDesigner = false;
@@ -1707,7 +1708,7 @@ namespace Neumont.Tools.ORM.Shell
 					if (useProxy)
 					{
 						// Second pass, we were unable to find a suitable shape for the first
-						selectElement = proxyProvider.ElementDisplayedAs(element);
+						selectElement = proxyProvider.ElementDisplayedAs(element, modelError);
 						if (selectElement != null && selectElement == element)
 						{
 							selectElement = null;
@@ -1791,12 +1792,11 @@ namespace Neumont.Tools.ORM.Shell
 
 									if (targetDocData.ActivateShapeHelper(shape, ref currentDocView, ref currentDesigner, ref haveCurrentDesigner))
 									{
-										ModelError error;
 										IModelErrorActivation activator;
-										if (null != (error = locator as ModelError) &
+										if (null != modelError &&
 											null != (activator = shape as IModelErrorActivation))
 										{
-											activator.ActivateModelError(error);
+											activator.ActivateModelError(modelError);
 										}
 										return true;
 									}

@@ -300,9 +300,12 @@ namespace Neumont.Tools.ORM.ObjectModel
 		/// passed in element.
 		/// </summary>
 		/// <param name="element">The element to find a proxy for</param>
+		/// <param name="forError">The <see cref="ModelError"/> that is being displayed.
+		/// If the displayed as element does not display this error, then it should not
+		/// be identified as a proxy display.</param>
 		/// <returns>The proxy display element. Return the element itself or null
 		/// if there is no proxy.</returns>
-		ModelElement ElementDisplayedAs(ModelElement element);
+		ModelElement ElementDisplayedAs(ModelElement element, ModelError forError);
 	}
 	#endregion // IProxyDisplayProvider
 	#region AssociatedErrorElementCallback delegate

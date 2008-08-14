@@ -250,6 +250,16 @@ namespace Neumont.Tools.ORM.ShapeModel
 			}
 		}
 		/// <summary>
+		/// Allow dragging the source element onto the target
+		/// </summary>
+		protected override void OnDraggingBegun(MouseActionEventArgs e)
+		{
+			if (mySourceElement == null)
+			{
+				mySourceElement = ElementFromShape<ORMModelElement>(MouseDownHitShape);
+			}
+			base.OnDraggingBegun(e);
+		}		/// <summary>
 		/// If we're emulating a drag (occurs when we're chained from RoleDragPendingAction),
 		/// then complete the action on mouse up
 		/// </summary>

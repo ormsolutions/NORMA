@@ -854,13 +854,15 @@ namespace Neumont.Tools.ORM.Shell
 			checkedCommands = ORMDesignerCommands.None;
 			toleratedCommands = ORMDesignerCommands.None;
 			FactType factType;
+			ReadingOrder readingOrder = null;
 			Role role;
 			ObjectType objectType;
 			NodeShape nodeShape;
 			SetConstraint setConstraint;
 			SetComparisonConstraint setComparisonConstraint = null;
 			bool otherShape = false;
-			if (null != (factType = element as FactType))
+			if (null != (factType = element as FactType) ||
+				(null != (readingOrder = element as ReadingOrder) && null != (factType = readingOrder.FactType)))
 			{
 				visibleCommands = enabledCommands = ORMDesignerCommands.DeleteFactType | ORMDesignerCommands.DeleteAny | ORMDesignerCommands.DisplayReadingsWindow;
 				Objectification objectification = factType.Objectification;
@@ -874,11 +876,16 @@ namespace Neumont.Tools.ORM.Shell
 					visibleCommands |= ORMDesignerCommands.UnobjectifyFactType;
 					enabledCommands |= ORMDesignerCommands.UnobjectifyFactType;
 				}
-				FactTypeShape factShape;
-				if (null != (factShape = presentationElement as FactTypeShape))
+				if (presentationElement is FactTypeShape ||
+					(readingOrder != null && presentationElement is ReadingShape))
 				{
-					visibleCommands |= ORMDesignerCommands.DeleteFactShape | ORMDesignerCommands.DeleteAnyShape | ORMDesignerCommands.AutoLayout | ORMDesignerCommands.AlignShapes | ORMDesignerCommands.DisplayOrientation | ORMDesignerCommands.DisplayConstraintsPosition;
-					enabledCommands |= ORMDesignerCommands.DeleteFactShape | ORMDesignerCommands.DeleteAnyShape | ORMDesignerCommands.AutoLayout | ORMDesignerCommands.AlignShapes | ORMDesignerCommands.DisplayOrientation | ORMDesignerCommands.DisplayConstraintsPosition;
+					visibleCommands |= ORMDesignerCommands.DeleteFactShape | ORMDesignerCommands.DeleteAnyShape | ORMDesignerCommands.DisplayOrientation | ORMDesignerCommands.DisplayConstraintsPosition;
+					enabledCommands |= ORMDesignerCommands.DeleteFactShape | ORMDesignerCommands.DeleteAnyShape | ORMDesignerCommands.DisplayOrientation | ORMDesignerCommands.DisplayConstraintsPosition;
+					if (readingOrder == null)
+					{
+						visibleCommands |= ORMDesignerCommands.AutoLayout | ORMDesignerCommands.AlignShapes;
+						enabledCommands |= ORMDesignerCommands.AutoLayout | ORMDesignerCommands.AlignShapes;
+					}
 					// Don't flag the DisplayOrientation or DisplayConstraintsPosition commands as checkable, multiselect check state mismatches handled dynamically in OnStatusCommand
 					if (factType.RoleCollection.Count > 1)
 					{
@@ -1287,11 +1294,14 @@ namespace Neumont.Tools.ORM.Shell
 						bool isChecked = true;
 						foreach (ModelElement mel in docView.SelectedElements)
 						{
-							FactTypeShape shape = mel as FactTypeShape;
-							if (shape != null)
+							FactTypeShape factTypeShape;
+							ReadingShape readingShape;
+							if (null != (factTypeShape = mel as FactTypeShape) ||
+								(null != (readingShape = mel as ReadingShape) &&
+								null != (factTypeShape = readingShape.ParentShape as FactTypeShape)))
 							{
 								// The command is checked when all selected values match the expected orientation
-								if (shape.DisplayOrientation != expectedOrientation)
+								if (factTypeShape.DisplayOrientation != expectedOrientation)
 								{
 									isChecked = false;
 									break;
@@ -1316,11 +1326,14 @@ namespace Neumont.Tools.ORM.Shell
 						bool isChecked = true;
 						foreach (ModelElement mel in docView.SelectedElements)
 						{
-							FactTypeShape shape = mel as FactTypeShape;
-							if (shape != null)
+							FactTypeShape factTypeShape;
+							ReadingShape readingShape;
+							if (null != (factTypeShape = mel as FactTypeShape) ||
+								(null != (readingShape = mel as ReadingShape) &&
+								null != (factTypeShape = readingShape.ParentShape as FactTypeShape)))
 							{
 								// The command is checked when all selected values match the expected orientation
-								if (shape.ConstraintDisplayPosition != expectedPosition)
+								if (factTypeShape.ConstraintDisplayPosition != expectedPosition)
 								{
 									isChecked = false;
 									break;
@@ -1796,19 +1809,20 @@ namespace Neumont.Tools.ORM.Shell
 							mel = pel.ModelElement;
 
 							// Remove the actual object in the model
-							if (mel != null && !mel.IsDeleted && !(mel is ReadingOrder))
+							if (mel != null && !mel.IsDeleted)
 							{
 								Role role;
 								if (null != (role = mel as Role) && pel is RoleNameShape)
 								{
 									role.Name = "";
 								}
-								else if (mel is ReadingOrder)
-								{
-									// Reading orders tolerate the delete command, but are not deleted directly
-								}
 								else
 								{
+									ReadingOrder readingOrder = mel as ReadingOrder;
+									if (readingOrder != null)
+									{
+										mel = readingOrder.FactType;
+									}
 									// Check if the object shape was in expanded mode
 									bool testRefModeCollapse = complexSelection || 0 != (enabledCommands & ORMDesignerCommands.DeleteObjectType);
 									ObjectTypeShape objectShape;
@@ -1890,14 +1904,23 @@ namespace Neumont.Tools.ORM.Shell
 						ModelElement mel = selectedElements[i] as ModelElement;
 						PresentationElement pel = mel as ShapeElement;
 						ObjectType backingObjectifiedType = null;
-						// ReadingShape and ValueConstraintShape tolerate deletion, but the
-						// shapes cannot be deleted individually
 						if (pel != null && !pel.IsDeleted)
 						{
 							ObjectifiedFactTypeNameShape objectifiedObjectShape;
-							if (pel is ReadingShape || pel is ValueConstraintShape)
+							ReadingShape readingShape;
+							if (pel is ValueConstraintShape)
 							{
+								// ValueConstraintShape tolerates deletion, but the
+								// shapes cannot be deleted individually
 								continue;
+							}
+							else if (null != (readingShape = pel as ReadingShape))
+							{
+								pel = readingShape.ParentShape;
+								if (pel == null)
+								{
+									continue;
+								}
 							}
 							else if (null != (objectifiedObjectShape = pel as ObjectifiedFactTypeNameShape))
 							{
@@ -2279,11 +2302,11 @@ namespace Neumont.Tools.ORM.Shell
 						if (insertAfter)
 						{
 							++insertIndex;
-							contextInfo[FactTypeShape.InsertAfterRoleKey] = role;
+							contextInfo[FactType.InsertAfterRoleKey] = role;
 						}
 						else
 						{
-							contextInfo[FactTypeShape.InsertBeforeRoleKey] = role;
+							contextInfo[FactType.InsertBeforeRoleKey] = role;
 						}
 						//bool aggressivelyKillValueType = store.TransactionManager.CurrentTransaction.TopLevelTransaction.Context.ContextInfo.ContainsKey(DeleteReferenceModeValueType);
 
@@ -3254,8 +3277,12 @@ namespace Neumont.Tools.ORM.Shell
 				IList selectedElements = SelectedElements;
 				for (int i = selectedElements.Count - 1; i >= 0; i--)
 				{
-					FactTypeShape factTypeShape = selectedElements[i] as FactTypeShape;
-					if (factTypeShape != null)
+					ModelElement element = selectedElements[i] as ModelElement;
+					FactTypeShape factTypeShape;
+					ReadingShape readingShape;
+					if (null != (factTypeShape = element as FactTypeShape) ||
+						(null != (readingShape = element as ReadingShape) &&
+						null != (factTypeShape = readingShape.ParentShape as FactTypeShape)))
 					{
 						factTypeShape.DisplayOrientation = orientation;
 					}
@@ -3287,8 +3314,12 @@ namespace Neumont.Tools.ORM.Shell
 				IList selectedElements = SelectedElements;
 				for (int i = selectedElements.Count - 1; i >= 0; i--)
 				{
-					FactTypeShape factTypeShape = selectedElements[i] as FactTypeShape;
-					if (factTypeShape != null)
+					ModelElement element = selectedElements[i] as ModelElement;
+					FactTypeShape factTypeShape;
+					ReadingShape readingShape;
+					if (null != (factTypeShape = element as FactTypeShape) ||
+						(null != (readingShape = element as ReadingShape) &&
+						null != (factTypeShape = readingShape.ParentShape as FactTypeShape)))
 					{
 						factTypeShape.ConstraintDisplayPosition = position;
 					}
@@ -3307,8 +3338,12 @@ namespace Neumont.Tools.ORM.Shell
 			IList selectedElements = SelectedElements;
 			for (int i = selectedElements.Count - 1; i >= 0; i--)
 			{
-				FactTypeShape factTypeShape = selectedElements[i] as FactTypeShape;
-				if (factTypeShape != null)
+				ModelElement element = selectedElements[i] as ModelElement;
+				FactTypeShape factTypeShape;
+				ReadingShape readingShape;
+				if (null != (factTypeShape =  element as FactTypeShape) ||
+					(null != (readingShape = element as ReadingShape) &&
+					null != (factTypeShape = readingShape.ParentShape as FactTypeShape)))
 				{
 					factTypeShape.ReverseDisplayedRoleOrder();
 					break;
