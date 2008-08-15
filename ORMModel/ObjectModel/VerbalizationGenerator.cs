@@ -8079,7 +8079,7 @@ namespace Neumont.Tools.ORM.ObjectModel
 					{
 						sbTemp.Length = 0;
 					}
-					for (int RoleIter2 = 0; RoleIter2 < columnArity; ++RoleIter2)
+					for (int RoleIter2 = 0; RoleIter2 < 1; ++RoleIter2)
 					{
 						RoleBase primaryRole = includedSequenceRoles[RoleIter2];
 						parentFact = primaryRole.FactType;
