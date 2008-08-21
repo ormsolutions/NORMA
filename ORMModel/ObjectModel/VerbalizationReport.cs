@@ -18,6 +18,7 @@ using System;
 using System.Collections;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
+using System.ComponentModel;
 using System.ComponentModel.Design;
 using System.Diagnostics;
 using System.Drawing;
@@ -288,6 +289,7 @@ namespace Neumont.Tools.ORM.ObjectModel.Verbalization
 					for (int i = 0; i < factCount; ++i)
 					{
 						bool firstCallPending = true;
+						verbalized.Clear();
 						fileStream = new FileStream(Path.Combine(factTypeDir, factTypeList[i].Name + ".html"), FileMode.Create, FileAccess.ReadWrite);
 						textWriter = new StreamWriter(fileStream);
 						writer = new VerbalizationReportCallbackWriter(snippetsDictionary, textWriter);
@@ -353,77 +355,6 @@ namespace Neumont.Tools.ORM.ObjectModel.Verbalization
 			#endregion // Constraint Validation Report
 		}
 		#endregion // Public Methods
-		#region Private Methods
-		/// <summary>
-		/// Retrieves a list of Constraints in the specified Model filtered with the given filter
-		/// </summary>
-		private static IList<IConstraint> FilterConstraints(ORMModel model, VerbalizationReportContent reportContent)
-		{
-			IList<IConstraint> constraintList = new List<IConstraint>();
-			if (0 != (reportContent & VerbalizationReportContent.AllSetConstraints))
-			{
-				LinkedElementCollection<SetConstraint> setConstraints = model.SetConstraintCollection;
-				int setConstraintCount = setConstraints.Count;
-				for (int i = 0; i < setConstraintCount; ++i)
-				{
-					if ((setConstraints[i] as IConstraint).ConstraintType == ConstraintType.DisjunctiveMandatory &&
-						(0 != (reportContent & VerbalizationReportContent.DisjunctiveMandatoryConstraints)))
-					{
-						constraintList.Add(setConstraints[i].Constraint);
-					}
-					else if ((setConstraints[i] as IConstraint).ConstraintType == ConstraintType.ExternalUniqueness &&
-						(0 != (reportContent & VerbalizationReportContent.ExternalUniquenessConstraints)))
-					{
-						constraintList.Add(setConstraints[i].Constraint);
-					}
-					else if ((setConstraints[i] as IConstraint).ConstraintType == ConstraintType.Frequency &&
-						(0 != (reportContent & VerbalizationReportContent.FrequencyConstraints)))
-					{
-						constraintList.Add(setConstraints[i].Constraint);
-					}
-					else if ((setConstraints[i] as IConstraint).ConstraintType == ConstraintType.InternalUniqueness &&
-						(0 != (reportContent & VerbalizationReportContent.InternalUniquenessConstraints)))
-					{
-						constraintList.Add(setConstraints[i].Constraint);
-					}
-					else if ((setConstraints[i] as IConstraint).ConstraintType == ConstraintType.Ring &&
-						(0 != (reportContent & VerbalizationReportContent.RingConstraints)))
-					{
-						constraintList.Add(setConstraints[i].Constraint);
-					}
-					else if ((setConstraints[i] as IConstraint).ConstraintType == ConstraintType.SimpleMandatory &&
-						(0 != (reportContent & VerbalizationReportContent.SimpleMandatoryConstraints)))
-					{
-						constraintList.Add(setConstraints[i].Constraint);
-					}
-				}
-			}
-			if (0 != (reportContent & VerbalizationReportContent.AllSetComparisonConstraints))
-			{
-				LinkedElementCollection<SetComparisonConstraint> setComparisonConstraints = model.SetComparisonConstraintCollection;
-				int constraintCount = setComparisonConstraints.Count;
-				for (int i = 0; i < constraintCount; ++i)
-				{
-					if ((setComparisonConstraints[i] as IConstraint).ConstraintType == ConstraintType.Equality &&
-						(0 != (reportContent & VerbalizationReportContent.EqualityConstraints)))
-					{
-						constraintList.Add(setComparisonConstraints[i]);
-					}
-					else if ((setComparisonConstraints[i] as IConstraint).ConstraintType == ConstraintType.Exclusion &&
-						(0 != (reportContent & VerbalizationReportContent.ExclusionConstraints)))
-					{
-						constraintList.Add(setComparisonConstraints[i]);
-					}
-					else if ((setComparisonConstraints[i] as IConstraint).ConstraintType == ConstraintType.Subset &&
-						(0 != (reportContent & VerbalizationReportContent.SubsetConstraints)))
-					{
-						constraintList.Add(setComparisonConstraints[i]);
-					}
-				}
-			}
-			return constraintList;
-		}
-		#endregion // Private Methods
 	}
 	#endregion // VerbalizationReportGenerator class
 	#endregion // VerbalizationReport Implementation
@@ -598,12 +529,15 @@ namespace Neumont.Tools.ORM.ObjectModel.Verbalization
 			/// <param name="content">The style of verbalization content</param>
 			public delegate void NotifyBeginVerbalization(VerbalizationContent content);
 			public delegate void NotifyDeferVerbalization(object target, DeferVerbalizationOptions options, IVerbalizeFilterChildren childFilter);
+			public delegate bool NotifyAlreadyVerbalized(object target);
 			private NotifyBeginVerbalization myBeginCallback;
 			private NotifyDeferVerbalization myDeferCallback;
-			public VerbalizationContextImpl(NotifyBeginVerbalization beginCallback, NotifyDeferVerbalization deferCallback)
+			private NotifyAlreadyVerbalized myAlreadyVerbalizedCallback;
+			public VerbalizationContextImpl(NotifyBeginVerbalization beginCallback, NotifyDeferVerbalization deferCallback, NotifyAlreadyVerbalized alreadyVerbalizedCallback)
 			{
 				myBeginCallback = beginCallback;
 				myDeferCallback = deferCallback;
+				myAlreadyVerbalizedCallback = alreadyVerbalizedCallback;
 			}
 			#region IVerbalizationContext Implementation
 			void IVerbalizationContext.BeginVerbalization(VerbalizationContent content)
@@ -616,6 +550,14 @@ namespace Neumont.Tools.ORM.ObjectModel.Verbalization
 				{
 					myDeferCallback(target, options, childFilter);
 				}
+			}
+			bool IVerbalizationContext.AlreadyVerbalized(object target)
+			{
+				if (myAlreadyVerbalizedCallback != null)
+				{
+					return myAlreadyVerbalizedCallback(target);
+				}
+				return false;
 			}
 			#endregion // IVerbalizationContext Implementation
 		}
@@ -705,13 +647,27 @@ namespace Neumont.Tools.ORM.ObjectModel.Verbalization
 						callback,
 						isNegative,
 						indentationLevel,
-						true,
+						(0 != (options & DeferVerbalizationOptions.AlwaysWriteLine)) ?
+							true :
+							((0 != (options & DeferVerbalizationOptions.NeverWriteLine)) ? false : writeSecondaryLines),
 						ref localfcp,
 						ref localfw,
 						ref localll);
 					localFirstCallPending = localfcp;
 					localFirstWrite = localfw;
 					localLastLevel = localll;
+				},
+				delegate(object target)
+				{
+					IVerbalize verbalizerKey = null;
+					IRedirectVerbalization surrogateRedirect;
+					if (alreadyVerbalized != null &&
+						(null == (surrogateRedirect = target as IRedirectVerbalization) ||
+						null == (verbalizerKey = surrogateRedirect.SurrogateVerbalizer)))
+					{
+						verbalizerKey = target as IVerbalize;
+					}
+					return (verbalizerKey == null) ? false : alreadyVerbalized.ContainsKey(verbalizerKey);
 				}),
 				isNegative);
 			lastLevel = localLastLevel;
@@ -1002,18 +958,19 @@ namespace Neumont.Tools.ORM.ObjectModel.Verbalization
 		/// </summary>
 		public static IList<FactType> GetFactTypesFromObjectType(ObjectType objectType)
 		{
-			List<FactType> factList = new List<FactType>();
+			List<FactType> factTypeList = new List<FactType>();
 			LinkedElementCollection<Role> roleCollecton = objectType.PlayedRoleCollection;
 			int roleCount = roleCollecton.Count;
 			for (int i = 0; i < roleCount; ++i)
 			{
-				if (!(roleCollecton[i].FactType is SubtypeFact) && !factList.Contains(roleCollecton[i].FactType))
+				FactType factType = roleCollecton[i].FactType;
+				if (!factTypeList.Contains(factType))
 				{
-					factList.Add(roleCollecton[i].FactType);
+					factTypeList.Add(factType);
 				}
 			}
-			factList.Sort(NamedElementComparer<FactType>.CurrentCulture);
-			return (IList<FactType>)factList;
+			factTypeList.Sort(NamedElementComparer<FactType>.CurrentCulture);
+			return (IList<FactType>)factTypeList;
 		}
 		/// <summary>
 		/// Retrieves a dictionary of all Constraints for the given Fact Type, filtered by the specified VerbalizationReportContent, indexed by ConstraintType
@@ -1030,51 +987,52 @@ namespace Neumont.Tools.ORM.ObjectModel.Verbalization
 		/// <summary>
 		/// Processes the specified FactType and adds the appropriate constraints based on the specified filter
 		/// </summary>
-		private static void ProcessFactTypeConstraints(FactType factType, VerbalizationReportContent reportContent, IDictionary<ConstraintType, IList<IConstraint>> constraintList)
+		private static void ProcessFactTypeConstraints(FactType factType, VerbalizationReportContent reportContent, IDictionary<ConstraintType, IList<IConstraint>> typedConstraintLists)
 		{
 			foreach (IFactConstraint factConstraint in factType.FactConstraintCollection)
 			{
-				bool addConstraint = false;
-				if (factConstraint.Constraint.ConstraintType == ConstraintType.DisjunctiveMandatory && (reportContent & VerbalizationReportContent.DisjunctiveMandatoryConstraints) != 0)
+				IConstraint constraint = factConstraint.Constraint;
+				ConstraintType constraintType = constraint.ConstraintType;
+				VerbalizationReportContent allowedContent;
+				switch (constraintType)
 				{
-					addConstraint = true;
+					case ConstraintType.DisjunctiveMandatory:
+						allowedContent = VerbalizationReportContent.DisjunctiveMandatoryConstraints;
+						break;
+					case ConstraintType.Equality:
+						allowedContent = VerbalizationReportContent.EqualityConstraints;
+						break;
+					case ConstraintType.Exclusion:
+						allowedContent = VerbalizationReportContent.ExclusionConstraints;
+						break;
+					case ConstraintType.ExternalUniqueness:
+						allowedContent = VerbalizationReportContent.ExternalUniquenessConstraints;
+						break;
+					case ConstraintType.Frequency:
+						allowedContent = VerbalizationReportContent.FrequencyConstraints;
+						break;
+					case ConstraintType.InternalUniqueness:
+						allowedContent = VerbalizationReportContent.InternalUniquenessConstraints;
+						break;
+					case ConstraintType.Ring:
+						allowedContent = VerbalizationReportContent.RingConstraints;
+						break;
+					case ConstraintType.SimpleMandatory:
+						allowedContent = VerbalizationReportContent.SimpleMandatoryConstraints;
+						break;
+					case ConstraintType.Subset:
+						allowedContent = VerbalizationReportContent.SubsetConstraints;
+						break;
+					default:
+						continue;
 				}
-				else if (factConstraint.Constraint.ConstraintType == ConstraintType.Equality && (reportContent & VerbalizationReportContent.EqualityConstraints) != 0)
+				if (0 != (reportContent & allowedContent))
 				{
-					addConstraint = true;
-				}
-				else if (factConstraint.Constraint.ConstraintType == ConstraintType.Exclusion && (reportContent & VerbalizationReportContent.ExclusionConstraints) != 0)
-				{
-					addConstraint = true;
-				}
-				else if (factConstraint.Constraint.ConstraintType == ConstraintType.ExternalUniqueness && (reportContent & VerbalizationReportContent.ExternalUniquenessConstraints) != 0)
-				{
-					addConstraint = true;
-				}
-				else if (factConstraint.Constraint.ConstraintType == ConstraintType.Frequency && (reportContent & VerbalizationReportContent.FrequencyConstraints) != 0)
-				{
-					addConstraint = true;
-				}
-				else if (factConstraint.Constraint.ConstraintType == ConstraintType.InternalUniqueness && (reportContent & VerbalizationReportContent.InternalUniquenessConstraints) != 0)
-				{
-					addConstraint = true;
-				}
-				else if (factConstraint.Constraint.ConstraintType == ConstraintType.Ring && (reportContent & VerbalizationReportContent.RingConstraints) != 0)
-				{
-					addConstraint = true;
-				}
-				else if (factConstraint.Constraint.ConstraintType == ConstraintType.SimpleMandatory && (reportContent & VerbalizationReportContent.SimpleMandatoryConstraints) != 0)
-				{
-					addConstraint = true;
-				}
-				else if (factConstraint.Constraint.ConstraintType == ConstraintType.Subset && (reportContent & VerbalizationReportContent.SubsetConstraints) != 0)
-				{
-					addConstraint = true;
-				}
-
-				if (addConstraint && !constraintList[factConstraint.Constraint.ConstraintType].Contains(factConstraint.Constraint))
-				{
-					constraintList[factConstraint.Constraint.ConstraintType].Add(factConstraint.Constraint);
+					IList<IConstraint> typedList = typedConstraintLists[constraintType];
+					if (!typedList.Contains(constraint))
+					{
+						typedList.Add(constraint);
+					}
 				}
 			}
 		}
@@ -1306,7 +1264,10 @@ namespace Neumont.Tools.ORM.ObjectModel.Verbalization
 			IVerbalizationSets<ReportVerbalizationSnippetType> snippets = (IVerbalizationSets<ReportVerbalizationSnippetType>)snippetsDictionary[typeof(ReportVerbalizationSnippetType)];
 			writer.Write(string.Format(writer.FormatProvider, snippets.GetSnippet(ReportVerbalizationSnippetType.ObjectTypePageHeader), (myVerbalizationObject as ObjectType).Name));
 			writer.Write(snippets.GetSnippet(ReportVerbalizationSnippetType.GenericSummaryOpen));
-			verbalizationContext.DeferVerbalization(myVerbalizationObject, DeferVerbalizationOptions.None, myFilterChildren);
+			verbalizationContext.DeferVerbalization(myVerbalizationObject, DeferVerbalizationOptions.AlwaysWriteLine, myFilterChildren);
+			// This must be called before additional calls to the writer or an increased indentation will not decrease before
+			// the close element is written.
+			verbalizationContext.BeginVerbalization(VerbalizationContent.Normal);
 			writer.Write(snippets.GetSnippet(ReportVerbalizationSnippetType.GenericSummaryClose));
 			return true;
 		}
@@ -1321,7 +1282,7 @@ namespace Neumont.Tools.ORM.ObjectModel.Verbalization
 	{
 		#region Member Variables
 		private ObjectType myObjectType;
-		private IList<FactType> uniqueFactList;
+		private IList<FactType> myUniqueFactTypeList;
 		#endregion Member Variables
 		#region Constructor
 		/// <summary>
@@ -1338,12 +1299,16 @@ namespace Neumont.Tools.ORM.ObjectModel.Verbalization
 		/// Gets the unique fact list.
 		/// </summary>
 		/// <value>The unique fact list.</value>
-		private IList<FactType> UniqueFactList
+		private IList<FactType> UniqueFactTypeList
 		{
 			get
 			{
-				if (uniqueFactList == null) uniqueFactList = VerbalizationHelper.GetFactTypesFromObjectType(myObjectType);
-				return uniqueFactList;
+				IList<FactType> retVal = myUniqueFactTypeList;
+				if (retVal == null)
+				{
+					myUniqueFactTypeList = retVal = VerbalizationHelper.GetFactTypesFromObjectType(myObjectType);
+				}
+				return retVal;
 			}
 		}
 		#endregion // Property
@@ -1364,22 +1329,24 @@ namespace Neumont.Tools.ORM.ObjectModel.Verbalization
 		/// </returns>
 		protected bool GetVerbalization(TextWriter writer, IDictionary<Type, IVerbalizationSets> snippetsDictionary, IVerbalizationContext verbalizationContext, bool isNegative)
 		{
-			bool retVal = true;
 			verbalizationContext.BeginVerbalization(VerbalizationContent.Normal);
 			IVerbalizationSets<ReportVerbalizationSnippetType> mySnippets = (IVerbalizationSets<ReportVerbalizationSnippetType>)snippetsDictionary[typeof(ReportVerbalizationSnippetType)];
-			int factTypeCount = UniqueFactList.Count;
+			IList<FactType> uniqueFactTypes = UniqueFactTypeList;
+			int factTypeCount = uniqueFactTypes.Count;
 
 			writer.Write(mySnippets.GetSnippet(ReportVerbalizationSnippetType.ObjectTypePageFactTypeListOpen));
-			for (int i = 0; i < factTypeCount; ++i)
+			if (factTypeCount != 0)
 			{
-				IVerbalize instance = new FactTypeVerbalizationWrapper(UniqueFactList[i]);
-				if (instance != null && !instance.GetVerbalization(writer, snippetsDictionary, verbalizationContext, isNegative))
+				FactTypeVerbalizationWrapper wrapper = new FactTypeVerbalizationWrapper(null);
+				IVerbalize verbalize = wrapper;
+				for (int i = 0; i < factTypeCount; ++i)
 				{
-					retVal = false;
+					wrapper.VerbalizationObject = uniqueFactTypes[i];
+					verbalize.GetVerbalization(writer, snippetsDictionary, verbalizationContext, isNegative);
 				}
 			}
 			writer.Write(mySnippets.GetSnippet(ReportVerbalizationSnippetType.ObjectTypePageFactTypeListClose));
-			return retVal;
+			return false; // No children to verbalize
 		}
 		#endregion // IVerbalize Implementation
 	}
@@ -1392,7 +1359,7 @@ namespace Neumont.Tools.ORM.ObjectModel.Verbalization
 	{
 		#region Member Variables
 		private ObjectType myObjectType;
-		private IList<ObjectType> relatedObjectList;
+		private IList<ObjectType> myRelatedObjectList;
 		#endregion // Member Variables
 		#region Constructor
 		/// <summary>
@@ -1413,26 +1380,33 @@ namespace Neumont.Tools.ORM.ObjectModel.Verbalization
 		{
 			get
 			{
-				if (relatedObjectList == null)
+				IList<ObjectType> retVal = myRelatedObjectList;
+				if (retVal == null)
 				{
-					relatedObjectList = new List<ObjectType>();
+					List<ObjectType> relatedObjectList = new List<ObjectType>();
 					IList<FactType> uniqueFactList = VerbalizationHelper.GetFactTypesFromObjectType(myObjectType);
 					int factCount = uniqueFactList.Count;
 					for (int i = 0; i < factCount; i++)
 					{
-						LinkedElementCollection<RoleBase> currentFactRoles = uniqueFactList[i].RoleCollection;
-						int currentFactRoleCount = currentFactRoles.Count;
-						for (int j = 0; j < currentFactRoleCount; ++j)
+						FactType factType = uniqueFactList[i];
+						if (!(factType is SubtypeFact)) // Role players are shown in subtype/supertype sections, not in relationships
 						{
-							if (currentFactRoles[j].Role.RolePlayer != null && currentFactRoles[j].Role.RolePlayer != myObjectType && !relatedObjectList.Contains(currentFactRoles[j].Role.RolePlayer))
+							LinkedElementCollection<RoleBase> currentFactRoles = factType.RoleCollection;
+							int currentFactRoleCount = currentFactRoles.Count;
+							for (int j = 0; j < currentFactRoleCount; ++j)
 							{
-								relatedObjectList.Add(currentFactRoles[j].Role.RolePlayer);
+								ObjectType rolePlayer = currentFactRoles[j].Role.RolePlayer;
+								if (rolePlayer != null && rolePlayer != myObjectType && !relatedObjectList.Contains(rolePlayer))
+								{
+									relatedObjectList.Add(rolePlayer);
+								}
 							}
 						}
 					}
-					(relatedObjectList as List<ObjectType>).Sort(NamedElementComparer<ObjectType>.CurrentCulture);
+					relatedObjectList.Sort(NamedElementComparer<ObjectType>.CurrentCulture);
+					myRelatedObjectList = retVal = relatedObjectList;
 				}
-				return relatedObjectList;
+				return retVal;
 			}
 		}
 		#endregion // Property
@@ -1446,23 +1420,25 @@ namespace Neumont.Tools.ORM.ObjectModel.Verbalization
 		/// </summary>
 		protected bool GetVerbalization(TextWriter writer, IDictionary<Type, IVerbalizationSets> snippetsDictionary, IVerbalizationContext verbalizationContext, bool isNegative)
 		{
-			bool retVal = true;
 			IVerbalizationSets<ReportVerbalizationSnippetType> mySnippets = (IVerbalizationSets<ReportVerbalizationSnippetType>)snippetsDictionary[typeof(ReportVerbalizationSnippetType)];
 			verbalizationContext.BeginVerbalization(VerbalizationContent.Normal);
 			writer.Write(mySnippets.GetSnippet(ReportVerbalizationSnippetType.GenericRelationshipsListOpen));
 
-			int relatedObjectCount = RelatedObjectList.Count;
-			for (int i = 0; i < relatedObjectCount; ++i)
+			IList<ObjectType> relatedObjects = RelatedObjectList;
+			int relatedObjectCount = relatedObjects.Count;
+			if (relatedObjectCount != 0)
 			{
-				IVerbalize instance = new ObjectTypeVerbalizationWrapper(ReportVerbalizationSnippetType.ObjectTypeValueLink, RelatedObjectList[i]);
-				if (instance != null && !instance.GetVerbalization(writer, snippetsDictionary, verbalizationContext, isNegative))
+				ObjectTypeVerbalizationWrapper wrapper = new ObjectTypeVerbalizationWrapper(ReportVerbalizationSnippetType.ObjectTypeValueLink, null);
+				IVerbalize verbalize = wrapper;
+				for (int i = 0; i < relatedObjectCount; ++i)
 				{
-					retVal = false;
+					wrapper.VerbalizationObject = relatedObjects[i];
+					verbalize.GetVerbalization(writer, snippetsDictionary, verbalizationContext, isNegative);
 				}
 			}
 
 			writer.Write(mySnippets.GetSnippet(ReportVerbalizationSnippetType.GenericRelationshipsListClose));
-			return retVal;
+			return false; // No children to verbalize
 		}
 		#endregion
 	}
@@ -1489,6 +1465,22 @@ namespace Neumont.Tools.ORM.ObjectModel.Verbalization
 			myVerbalizationObject = verbalizationObject;
 		}
 		#endregion // Constructor
+		#region Accessor properties
+		/// <summary>
+		/// Access the verbalization object
+		/// </summary>
+		public IVerbalize VerbalizationObject
+		{
+			get
+			{
+				return myVerbalizationObject;
+			}
+			set
+			{
+				myVerbalizationObject = value;
+			}
+		}
+		#endregion // Accessor properties
 		#region IVerbalize Implementation
 		bool IVerbalize.GetVerbalization(TextWriter writer, IDictionary<Type, IVerbalizationSets> snippetsDictionary, IVerbalizationContext verbalizationContext, bool isNegative)
 		{
@@ -1511,7 +1503,7 @@ namespace Neumont.Tools.ORM.ObjectModel.Verbalization
 			writer.Write(snippets.GetSnippet(ReportVerbalizationSnippetType.GenericListItemOpen));
 			writer.Write(string.Format(writer.FormatProvider, snippets.GetSnippet(myObjectTypeSnippet), (myVerbalizationObject as ObjectType).Name));
 			writer.Write(snippets.GetSnippet(ReportVerbalizationSnippetType.GenericListItemClose));
-			return true;
+			return false; // No children to verbalize
 		}
 		#endregion // IVerbalize Implementation
 	}
@@ -1560,19 +1552,21 @@ namespace Neumont.Tools.ORM.ObjectModel.Verbalization
 		{
 			verbalizationContext.BeginVerbalization(VerbalizationContent.Normal);
 			IVerbalizationSets<ReportVerbalizationSnippetType> snippets = (IVerbalizationSets<ReportVerbalizationSnippetType>)snippetsDictionary[typeof(ReportVerbalizationSnippetType)];
-			bool retVal = true;
 			writer.Write(snippets.GetSnippet(myHeaderSnippet));
-			int objectCount = myObjectTypeList.Count;
-			for (int i = 0; i < objectCount; ++i)
+			IList<ObjectType> objectTypes = myObjectTypeList;
+			int objectCount = objectTypes.Count;
+			if (objectCount != 0)
 			{
-				IVerbalize instance = new ObjectTypeVerbalizationWrapper(ReportVerbalizationSnippetType.ObjectTypeListObjectTypeValueLink, myObjectTypeList[i]);
-				if (instance != null && !instance.GetVerbalization(writer, snippetsDictionary, verbalizationContext, isNegative))
+				ObjectTypeVerbalizationWrapper wrapper = new ObjectTypeVerbalizationWrapper(ReportVerbalizationSnippetType.ObjectTypeListObjectTypeValueLink, null);
+				IVerbalize verbalize = wrapper;
+				for (int i = 0; i < objectCount; ++i)
 				{
-					retVal = false;
+					wrapper.VerbalizationObject = objectTypes[i];
+					verbalize.GetVerbalization(writer, snippetsDictionary, verbalizationContext, isNegative);
 				}
 			}
 			writer.Write(snippets.GetSnippet(myFooterSnippet));
-			return retVal;
+			return false; // No children to verbalize
 		}
 		#endregion // IVerbalize Implementation
 	}
@@ -1691,7 +1685,10 @@ namespace Neumont.Tools.ORM.ObjectModel.Verbalization
 			IVerbalizationSets<ReportVerbalizationSnippetType> snippets = (IVerbalizationSets<ReportVerbalizationSnippetType>)snippetsDictionary[typeof(ReportVerbalizationSnippetType)];
 			writer.Write(string.Format(writer.FormatProvider, snippets.GetSnippet(ReportVerbalizationSnippetType.FactTypePageHeader), (myVerbalizationObject as FactType).Name));
 			writer.Write(snippets.GetSnippet(ReportVerbalizationSnippetType.GenericSummaryOpen));
-			verbalizationContext.DeferVerbalization(myVerbalizationObject, DeferVerbalizationOptions.None, myFilter);
+			verbalizationContext.DeferVerbalization(myVerbalizationObject, DeferVerbalizationOptions.AlwaysWriteLine, myFilter);
+			// This must be called before additional calls to the writer or an increased indentation will not decrease before
+			// the close element is written.
+			verbalizationContext.BeginVerbalization(VerbalizationContent.Normal);
 			writer.Write(snippets.GetSnippet(ReportVerbalizationSnippetType.GenericSummaryClose));
 			return true;
 		}
@@ -1762,22 +1759,24 @@ namespace Neumont.Tools.ORM.ObjectModel.Verbalization
 		/// </returns>
 		protected bool GetVerbalization(TextWriter writer, IDictionary<Type, IVerbalizationSets> snippetsDictionary, IVerbalizationContext verbalizationContext, bool isNegative)
 		{
-			bool retVal = true;
 			IVerbalizationSets<ReportVerbalizationSnippetType> mySnippets = (IVerbalizationSets<ReportVerbalizationSnippetType>)snippetsDictionary[typeof(ReportVerbalizationSnippetType)];
 			verbalizationContext.BeginVerbalization(VerbalizationContent.Normal);
-			int objectTypeCount = ObjectTypeList.Count;
+			IList<ObjectType> objectTypes = ObjectTypeList;
+			int objectTypeCount = objectTypes.Count;
 
 			writer.Write(mySnippets.GetSnippet(ReportVerbalizationSnippetType.FactTypePageObjectTypeListOpen));
-			for (int i = 0; i < objectTypeCount; ++i)
+			if (objectTypeCount != 0)
 			{
-				IVerbalize instance = new ObjectTypeVerbalizationWrapper(myObjectTypeSnippet, ObjectTypeList[i]);
-				if (instance != null && !instance.GetVerbalization(writer, snippetsDictionary, verbalizationContext, isNegative))
+				ObjectTypeVerbalizationWrapper wrapper = new ObjectTypeVerbalizationWrapper(myObjectTypeSnippet, null);
+				IVerbalize verbalize = wrapper;
+				for (int i = 0; i < objectTypeCount; ++i)
 				{
-					retVal = false;
+					wrapper.VerbalizationObject = objectTypes[i];
+					verbalize.GetVerbalization(writer, snippetsDictionary, verbalizationContext, isNegative);
 				}
 			}
 			writer.Write(mySnippets.GetSnippet(ReportVerbalizationSnippetType.FactTypePageObjectTypeListClose));
-			return retVal;
+			return false; // No children to verbalize
 		}
 		#endregion
 	}
@@ -1801,6 +1800,22 @@ namespace Neumont.Tools.ORM.ObjectModel.Verbalization
 			myVerbalizationObject = verbalizationObject;
 		}
 		#endregion // Constructor
+		#region Accessor properties
+		/// <summary>
+		/// Access the verbalization object
+		/// </summary>
+		public IVerbalize VerbalizationObject
+		{
+			get
+			{
+				return myVerbalizationObject;
+			}
+			set
+			{
+				myVerbalizationObject = value;
+			}
+		}
+		#endregion // Accessor properties
 		#region IVerbalize Implementation
 		bool IVerbalize.GetVerbalization(TextWriter writer, IDictionary<Type, IVerbalizationSets> snippetsDictionary, IVerbalizationContext verbalizationContext, bool isNegative)
 		{
@@ -1818,15 +1833,14 @@ namespace Neumont.Tools.ORM.ObjectModel.Verbalization
 		/// </returns>
 		protected bool GetVerbalization(TextWriter writer, IDictionary<Type, IVerbalizationSets> snippetsDictionary, IVerbalizationContext verbalizationContext, bool isNegative)
 		{
-			bool retVal;
 			verbalizationContext.BeginVerbalization(VerbalizationContent.Normal);
 			IVerbalizationSets<ReportVerbalizationSnippetType> snippets = (IVerbalizationSets<ReportVerbalizationSnippetType>)snippetsDictionary[typeof(ReportVerbalizationSnippetType)];
 			writer.Write(snippets.GetSnippet(ReportVerbalizationSnippetType.GenericListItemOpen));
 			writer.Write(string.Format(snippets.GetSnippet(ReportVerbalizationSnippetType.FactTypeRelationshipLinkOpen), (myVerbalizationObject as FactType).Name));
-			retVal = myVerbalizationObject.GetVerbalization(writer, snippetsDictionary, verbalizationContext, isNegative);
+			myVerbalizationObject.GetVerbalization(writer, snippetsDictionary, verbalizationContext, isNegative);
 			writer.Write(snippets.GetSnippet(ReportVerbalizationSnippetType.FactTypeRelationshipLinkClose));
 			writer.Write(snippets.GetSnippet(ReportVerbalizationSnippetType.GenericListItemClose));
-			return retVal;
+			return false; // No children to verbalize
 		}
 		#endregion // IVerbalize Implementation
 	}
@@ -1913,15 +1927,16 @@ namespace Neumont.Tools.ORM.ObjectModel.Verbalization
 			return GetVerbalization(writer, snippetsDictionary, verbalizationContext, isNegative);
 		}
 		/// <summary>
-		/// Implements IVerbalize.GetVerbalization
+		/// Implements <see cref="IVerbalize.GetVerbalization"/>
 		/// </summary>
 		protected bool GetVerbalization(TextWriter writer, IDictionary<Type, IVerbalizationSets> snippetsDictionary, IVerbalizationContext verbalizationContext, bool isNegative)
 		{
-			bool retVal = true;
 			IVerbalizationSets<ReportVerbalizationSnippetType> mySnippets = (IVerbalizationSets<ReportVerbalizationSnippetType>)snippetsDictionary[typeof(ReportVerbalizationSnippetType)];
 			verbalizationContext.BeginVerbalization(VerbalizationContent.Normal);
 
 			writer.Write(mySnippets.GetSnippet(ReportVerbalizationSnippetType.GenericConstraintListOpen));
+			ConstraintVerbalizationWrapper wrapper = new ConstraintVerbalizationWrapper(ReportVerbalizationSnippetType.GenericConstraintListItemOpen, ReportVerbalizationSnippetType.GenericConstraintListItemClose, null);
+			IVerbalize verbalize = wrapper;
 
 			// Internal Uniqueness Constraints
 			if ((myReportContent & VerbalizationReportContent.InternalUniquenessConstraints) != 0)
@@ -1930,11 +1945,8 @@ namespace Neumont.Tools.ORM.ObjectModel.Verbalization
 				int constraintCount = constraintList.Count;
 				for (int i = 0; i < constraintCount; ++i)
 				{
-					IVerbalize instance = new ConstraintVerbalizationWrapper(ReportVerbalizationSnippetType.GenericConstraintListItemOpen, ReportVerbalizationSnippetType.GenericConstraintListItemClose, constraintList[i] as IVerbalize);
-					if (instance != null && !instance.GetVerbalization(writer, snippetsDictionary, verbalizationContext, isNegative))
-					{
-						retVal = false;
-					}
+					wrapper.VerbalizationObject = constraintList[i];
+					verbalize.GetVerbalization(writer, snippetsDictionary, verbalizationContext, isNegative);
 				}
 			}
 			// External Uniqueness Constraints
@@ -1944,53 +1956,8 @@ namespace Neumont.Tools.ORM.ObjectModel.Verbalization
 				int constraintCount = constraintList.Count;
 				for (int i = 0; i < constraintCount; ++i)
 				{
-					IVerbalize instance = new ConstraintVerbalizationWrapper(ReportVerbalizationSnippetType.GenericConstraintListItemOpen, ReportVerbalizationSnippetType.GenericConstraintListItemClose, constraintList[i] as IVerbalize);
-					if (instance != null && !instance.GetVerbalization(writer, snippetsDictionary, verbalizationContext, isNegative))
-					{
-						retVal = false;
-					}
-				}
-			}
-			// Disjunctive Mandatory Constraints
-			if ((myReportContent & VerbalizationReportContent.DisjunctiveMandatoryConstraints) != 0)
-			{
-				IList<IConstraint> constraintList = myConstraintList[ConstraintType.DisjunctiveMandatory];
-				int constraintCount = constraintList.Count;
-				for (int i = 0; i < constraintCount; ++i)
-				{
-					IVerbalize instance = new ConstraintVerbalizationWrapper(ReportVerbalizationSnippetType.GenericConstraintListItemOpen, ReportVerbalizationSnippetType.GenericConstraintListItemClose, constraintList[i] as IVerbalize);
-					if (instance != null && !instance.GetVerbalization(writer, snippetsDictionary, verbalizationContext, isNegative))
-					{
-						retVal = false;
-					}
-				}
-			}
-			// Simple Mandatory Constraints
-			if ((myReportContent & VerbalizationReportContent.SimpleMandatoryConstraints) != 0)
-			{
-				IList<IConstraint> constraintList = myConstraintList[ConstraintType.SimpleMandatory];
-				int constraintCount = constraintList.Count;
-				for (int i = 0; i < constraintCount; ++i)
-				{
-					IVerbalize instance = new ConstraintVerbalizationWrapper(ReportVerbalizationSnippetType.GenericConstraintListItemOpen, ReportVerbalizationSnippetType.GenericConstraintListItemClose, constraintList[i] as IVerbalize);
-					if (instance != null && !instance.GetVerbalization(writer, snippetsDictionary, verbalizationContext, isNegative))
-					{
-						retVal = false;
-					}
-				}
-			}
-			// Ring Constraints
-			if ((myReportContent & VerbalizationReportContent.RingConstraints) != 0)
-			{
-				IList<IConstraint> constraintList = myConstraintList[ConstraintType.Ring];
-				int constraintCount = constraintList.Count;
-				for (int i = 0; i < constraintCount; ++i)
-				{
-					IVerbalize instance = new ConstraintVerbalizationWrapper(ReportVerbalizationSnippetType.GenericConstraintListItemOpen, ReportVerbalizationSnippetType.GenericConstraintListItemClose, constraintList[i] as IVerbalize);
-					if (instance != null && !instance.GetVerbalization(writer, snippetsDictionary, verbalizationContext, isNegative))
-					{
-						retVal = false;
-					}
+					wrapper.VerbalizationObject = constraintList[i];
+					verbalize.GetVerbalization(writer, snippetsDictionary, verbalizationContext, isNegative);
 				}
 			}
 			// Frequency Constraints
@@ -2000,15 +1967,41 @@ namespace Neumont.Tools.ORM.ObjectModel.Verbalization
 				int constraintCount = constraintList.Count;
 				for (int i = 0; i < constraintCount; ++i)
 				{
-					IVerbalize constraint = constraintList[i] as IVerbalize;
-					if (constraint != null)
-					{
-						IVerbalize instance = new ConstraintVerbalizationWrapper(ReportVerbalizationSnippetType.GenericConstraintListItemOpen, ReportVerbalizationSnippetType.GenericConstraintListItemClose, constraintList[i] as IVerbalize);
-						if (instance != null && !instance.GetVerbalization(writer, snippetsDictionary, verbalizationContext, isNegative))
-						{
-							retVal = false;
-						}
-					}
+					wrapper.VerbalizationObject = constraintList[i];
+					verbalize.GetVerbalization(writer, snippetsDictionary, verbalizationContext, isNegative);
+				}
+			}
+			// Simple Mandatory Constraints
+			if ((myReportContent & VerbalizationReportContent.SimpleMandatoryConstraints) != 0)
+			{
+				IList<IConstraint> constraintList = myConstraintList[ConstraintType.SimpleMandatory];
+				int constraintCount = constraintList.Count;
+				for (int i = 0; i < constraintCount; ++i)
+				{
+					wrapper.VerbalizationObject = constraintList[i];
+					verbalize.GetVerbalization(writer, snippetsDictionary, verbalizationContext, isNegative);
+				}
+			}
+			// Disjunctive Mandatory Constraints
+			if ((myReportContent & VerbalizationReportContent.DisjunctiveMandatoryConstraints) != 0)
+			{
+				IList<IConstraint> constraintList = myConstraintList[ConstraintType.DisjunctiveMandatory];
+				int constraintCount = constraintList.Count;
+				for (int i = 0; i < constraintCount; ++i)
+				{
+					wrapper.VerbalizationObject = constraintList[i];
+					verbalize.GetVerbalization(writer, snippetsDictionary, verbalizationContext, isNegative);
+				}
+			}
+			// Ring Constraints
+			if ((myReportContent & VerbalizationReportContent.RingConstraints) != 0)
+			{
+				IList<IConstraint> constraintList = myConstraintList[ConstraintType.Ring];
+				int constraintCount = constraintList.Count;
+				for (int i = 0; i < constraintCount; ++i)
+				{
+					wrapper.VerbalizationObject = constraintList[i];
+					verbalize.GetVerbalization(writer, snippetsDictionary, verbalizationContext, isNegative);
 				}
 			}
 			// Equality Constraints
@@ -2018,11 +2011,8 @@ namespace Neumont.Tools.ORM.ObjectModel.Verbalization
 				int constraintCount = constraintList.Count;
 				for (int i = 0; i < constraintCount; ++i)
 				{
-					IVerbalize instance = new ConstraintVerbalizationWrapper(ReportVerbalizationSnippetType.GenericConstraintListItemOpen, ReportVerbalizationSnippetType.GenericConstraintListItemClose, constraintList[i] as IVerbalize);
-					if (instance != null && !instance.GetVerbalization(writer, snippetsDictionary, verbalizationContext, isNegative))
-					{
-						retVal = false;
-					}
+					wrapper.VerbalizationObject = constraintList[i];
+					verbalize.GetVerbalization(writer, snippetsDictionary, verbalizationContext, isNegative);
 				}
 			}
 			// Exclusion Constraints
@@ -2032,11 +2022,8 @@ namespace Neumont.Tools.ORM.ObjectModel.Verbalization
 				int constraintCount = constraintList.Count;
 				for (int i = 0; i < constraintCount; ++i)
 				{
-					IVerbalize instance = new ConstraintVerbalizationWrapper(ReportVerbalizationSnippetType.GenericConstraintListItemOpen, ReportVerbalizationSnippetType.GenericConstraintListItemClose, constraintList[i] as IVerbalize);
-					if (instance != null && !instance.GetVerbalization(writer, snippetsDictionary, verbalizationContext, isNegative))
-					{
-						retVal = false;
-					}
+					wrapper.VerbalizationObject = constraintList[i];
+					verbalize.GetVerbalization(writer, snippetsDictionary, verbalizationContext, isNegative);
 				}
 			}
 			// Subset Constraints
@@ -2046,16 +2033,13 @@ namespace Neumont.Tools.ORM.ObjectModel.Verbalization
 				int constraintCount = constraintList.Count;
 				for (int i = 0; i < constraintCount; ++i)
 				{
-					IVerbalize instance = new ConstraintVerbalizationWrapper(ReportVerbalizationSnippetType.GenericConstraintListItemOpen, ReportVerbalizationSnippetType.GenericConstraintListItemClose, constraintList[i] as IVerbalize);
-					if (instance != null && !instance.GetVerbalization(writer, snippetsDictionary, verbalizationContext, isNegative))
-					{
-						retVal = false;
-					}
+					wrapper.VerbalizationObject = constraintList[i];
+					verbalize.GetVerbalization(writer, snippetsDictionary, verbalizationContext, isNegative);
 				}
 			}
 
 			writer.Write(mySnippets.GetSnippet(ReportVerbalizationSnippetType.GenericConstraintListClose));
-			return retVal;
+			return false; // No children to verbalize
 		}
 		#endregion // IVerbalize Implementation
 	}
@@ -2124,20 +2108,27 @@ namespace Neumont.Tools.ORM.ObjectModel.Verbalization
 		/// </summary>
 		protected bool GetVerbalization(TextWriter writer, IDictionary<Type, IVerbalizationSets> snippetsDictionary, IVerbalizationContext verbalizationContext, bool isNegative)
 		{
-			bool retVal = true;
 			IVerbalizationSets<ReportVerbalizationSnippetType> mySnippets = (IVerbalizationSets<ReportVerbalizationSnippetType>)snippetsDictionary[typeof(ReportVerbalizationSnippetType)];
 			verbalizationContext.BeginVerbalization(VerbalizationContent.Normal);
 			writer.Write(mySnippets.GetSnippet(ReportVerbalizationSnippetType.GenericSuperTypeListOpen));
 
+			ObjectTypeVerbalizationWrapper wrapper = null;
+			IVerbalize verbalize = null;
 			bool hasContent = false;
 			foreach (ObjectType objectType in myObjectType.SupertypeCollection)
 			{
-				IVerbalize instance = new ObjectTypeVerbalizationWrapper(ReportVerbalizationSnippetType.ObjectTypeRelationshipValueLink, objectType);
-				if (instance != null && !instance.GetVerbalization(writer, snippetsDictionary, verbalizationContext, isNegative))
+				if (!hasContent)
 				{
-					retVal = false;
+					wrapper = new ObjectTypeVerbalizationWrapper(ReportVerbalizationSnippetType.ObjectTypeRelationshipValueLink, objectType);
+					verbalize = wrapper;
+					hasContent = true;
 				}
-				hasContent = true;
+				else
+				{
+					wrapper.VerbalizationObject = objectType;
+				}
+				IVerbalize instance = new ObjectTypeVerbalizationWrapper(ReportVerbalizationSnippetType.ObjectTypeRelationshipValueLink, objectType);
+				verbalize.GetVerbalization(writer, snippetsDictionary, verbalizationContext, isNegative);
 			}
 			if (!hasContent)
 			{
@@ -2145,7 +2136,7 @@ namespace Neumont.Tools.ORM.ObjectModel.Verbalization
 			}
 
 			writer.Write(mySnippets.GetSnippet(ReportVerbalizationSnippetType.GenericSuperTypeListClose));
-			return retVal;
+			return false; // No children to verbalize
 		}
 		#endregion // IVerbalize Implementation
 	}
@@ -2178,20 +2169,27 @@ namespace Neumont.Tools.ORM.ObjectModel.Verbalization
 		/// </summary>
 		protected bool GetVerbalization(TextWriter writer, IDictionary<Type, IVerbalizationSets> snippetsDictionary, IVerbalizationContext verbalizationContext, bool isNegative)
 		{
-			bool retVal = true;
 			IVerbalizationSets<ReportVerbalizationSnippetType> mySnippets = (IVerbalizationSets<ReportVerbalizationSnippetType>)snippetsDictionary[typeof(ReportVerbalizationSnippetType)];
 			verbalizationContext.BeginVerbalization(VerbalizationContent.Normal);
 			writer.Write(mySnippets.GetSnippet(ReportVerbalizationSnippetType.GenericSubTypeListOpen));
 
+			ObjectTypeVerbalizationWrapper wrapper = null;
+			IVerbalize verbalize = null;
 			bool hasContent = false;
 			foreach (ObjectType objectType in myObjectType.SubtypeCollection)
 			{
-				IVerbalize instance = new ObjectTypeVerbalizationWrapper(ReportVerbalizationSnippetType.ObjectTypeRelationshipValueLink, objectType);
-				if (instance != null && !instance.GetVerbalization(writer, snippetsDictionary, verbalizationContext, isNegative))
+				if (!hasContent)
 				{
-					retVal = false;
+					wrapper = new ObjectTypeVerbalizationWrapper(ReportVerbalizationSnippetType.ObjectTypeRelationshipValueLink, objectType);
+					verbalize = wrapper;
+					hasContent = true;
 				}
-				hasContent = true;
+				else
+				{
+					wrapper.VerbalizationObject = objectType;
+				}
+				IVerbalize instance = new ObjectTypeVerbalizationWrapper(ReportVerbalizationSnippetType.ObjectTypeRelationshipValueLink, objectType);
+				verbalize.GetVerbalization(writer, snippetsDictionary, verbalizationContext, isNegative);
 			}
 			if (!hasContent)
 			{
@@ -2199,7 +2197,7 @@ namespace Neumont.Tools.ORM.ObjectModel.Verbalization
 			}
 
 			writer.Write(mySnippets.GetSnippet(ReportVerbalizationSnippetType.GenericSubTypeListClose));
-			return retVal;
+			return false; // No children to verbalize
 		}
 		#endregion // IVerbalize Implementation
 	}
@@ -2316,11 +2314,12 @@ namespace Neumont.Tools.ORM.ObjectModel.Verbalization
 		/// </returns>
 		protected bool GetVerbalization(TextWriter writer, IDictionary<Type, IVerbalizationSets> snippetsDictionary, IVerbalizationContext verbalizationContext, bool isNegative)
 		{
-			bool retVal = true;
 			IVerbalizationSets<ReportVerbalizationSnippetType> mySnippets = (IVerbalizationSets<ReportVerbalizationSnippetType>)snippetsDictionary[typeof(ReportVerbalizationSnippetType)];
 			verbalizationContext.BeginVerbalization(VerbalizationContent.Normal);
 
 			writer.Write(mySnippets.GetSnippet(ReportVerbalizationSnippetType.GenericConstraintListOpen));
+			ConstraintVerbalizationWrapper wrapper = new ConstraintVerbalizationWrapper(ReportVerbalizationSnippetType.FactTypeConstraintValidationListItemOpen, ReportVerbalizationSnippetType.FactTypeConstraintValidationListItemClose, null);
+			IVerbalize verbalize = wrapper;
 
 			// Internal Uniqueness Constraints
 			if ((myReportContent & VerbalizationReportContent.InternalUniquenessConstraints) != 0)
@@ -2329,11 +2328,8 @@ namespace Neumont.Tools.ORM.ObjectModel.Verbalization
 				int constraintCount = constraintList.Count;
 				for (int i = 0; i < constraintCount; ++i)
 				{
-					IVerbalize instance = new ConstraintVerbalizationWrapper(ReportVerbalizationSnippetType.FactTypeConstraintValidationListItemOpen, ReportVerbalizationSnippetType.FactTypeConstraintValidationListItemClose, constraintList[i] as IVerbalize);
-					if (instance != null && !instance.GetVerbalization(writer, snippetsDictionary, verbalizationContext, isNegative))
-					{
-						retVal = false;
-					}
+					wrapper.VerbalizationObject = constraintList[i];
+					verbalize.GetVerbalization(writer, snippetsDictionary, verbalizationContext, isNegative);
 				}
 			}
 			// External Uniqueness Constraints
@@ -2343,53 +2339,8 @@ namespace Neumont.Tools.ORM.ObjectModel.Verbalization
 				int constraintCount = constraintList.Count;
 				for (int i = 0; i < constraintCount; ++i)
 				{
-					IVerbalize instance = new ConstraintVerbalizationWrapper(ReportVerbalizationSnippetType.FactTypeConstraintValidationListItemOpen, ReportVerbalizationSnippetType.FactTypeConstraintValidationListItemClose, constraintList[i] as IVerbalize);
-					if (instance != null && !instance.GetVerbalization(writer, snippetsDictionary, verbalizationContext, isNegative))
-					{
-						retVal = false;
-					}
-				}
-			}
-			// Disjunctive Mandatory Constraints
-			if ((myReportContent & VerbalizationReportContent.DisjunctiveMandatoryConstraints) != 0)
-			{
-				IList<IConstraint> constraintList = myConstraintList[ConstraintType.DisjunctiveMandatory];
-				int constraintCount = constraintList.Count;
-				for (int i = 0; i < constraintCount; ++i)
-				{
-					IVerbalize instance = new ConstraintVerbalizationWrapper(ReportVerbalizationSnippetType.FactTypeConstraintValidationListItemOpen, ReportVerbalizationSnippetType.FactTypeConstraintValidationListItemClose, constraintList[i] as IVerbalize);
-					if (instance != null && !instance.GetVerbalization(writer, snippetsDictionary, verbalizationContext, isNegative))
-					{
-						retVal = false;
-					}
-				}
-			}
-			// Simple Mandatory Constraints
-			if ((myReportContent & VerbalizationReportContent.SimpleMandatoryConstraints) != 0)
-			{
-				IList<IConstraint> constraintList = myConstraintList[ConstraintType.SimpleMandatory];
-				int constraintCount = constraintList.Count;
-				for (int i = 0; i < constraintCount; ++i)
-				{
-					IVerbalize instance = new ConstraintVerbalizationWrapper(ReportVerbalizationSnippetType.FactTypeConstraintValidationListItemOpen, ReportVerbalizationSnippetType.FactTypeConstraintValidationListItemClose, constraintList[i] as IVerbalize);
-					if (instance != null && !instance.GetVerbalization(writer, snippetsDictionary, verbalizationContext, isNegative))
-					{
-						retVal = false;
-					}
-				}
-			}
-			// Ring Constraints
-			if ((myReportContent & VerbalizationReportContent.RingConstraints) != 0)
-			{
-				IList<IConstraint> constraintList = myConstraintList[ConstraintType.Ring];
-				int constraintCount = constraintList.Count;
-				for (int i = 0; i < constraintCount; ++i)
-				{
-					IVerbalize instance = new ConstraintVerbalizationWrapper(ReportVerbalizationSnippetType.FactTypeConstraintValidationListItemOpen, ReportVerbalizationSnippetType.FactTypeConstraintValidationListItemClose, constraintList[i] as IVerbalize);
-					if (instance != null && !instance.GetVerbalization(writer, snippetsDictionary, verbalizationContext, isNegative))
-					{
-						retVal = false;
-					}
+					wrapper.VerbalizationObject = constraintList[i];
+					verbalize.GetVerbalization(writer, snippetsDictionary, verbalizationContext, isNegative);
 				}
 			}
 			// Frequency Constraints
@@ -2399,15 +2350,41 @@ namespace Neumont.Tools.ORM.ObjectModel.Verbalization
 				int constraintCount = constraintList.Count;
 				for (int i = 0; i < constraintCount; ++i)
 				{
-					IVerbalize constraint = constraintList[i] as IVerbalize;
-					if (constraint != null)
-					{
-						IVerbalize instance = new ConstraintVerbalizationWrapper(ReportVerbalizationSnippetType.FactTypeConstraintValidationListItemOpen, ReportVerbalizationSnippetType.FactTypeConstraintValidationListItemClose, constraintList[i] as IVerbalize);
-						if (instance != null && !instance.GetVerbalization(writer, snippetsDictionary, verbalizationContext, isNegative))
-						{
-							retVal = false;
-						}
-					}
+					wrapper.VerbalizationObject = constraintList[i];
+					verbalize.GetVerbalization(writer, snippetsDictionary, verbalizationContext, isNegative);
+				}
+			}
+			// Simple Mandatory Constraints
+			if ((myReportContent & VerbalizationReportContent.SimpleMandatoryConstraints) != 0)
+			{
+				IList<IConstraint> constraintList = myConstraintList[ConstraintType.SimpleMandatory];
+				int constraintCount = constraintList.Count;
+				for (int i = 0; i < constraintCount; ++i)
+				{
+					wrapper.VerbalizationObject = constraintList[i];
+					verbalize.GetVerbalization(writer, snippetsDictionary, verbalizationContext, isNegative);
+				}
+			}
+			// Disjunctive Mandatory Constraints
+			if ((myReportContent & VerbalizationReportContent.DisjunctiveMandatoryConstraints) != 0)
+			{
+				IList<IConstraint> constraintList = myConstraintList[ConstraintType.DisjunctiveMandatory];
+				int constraintCount = constraintList.Count;
+				for (int i = 0; i < constraintCount; ++i)
+				{
+					wrapper.VerbalizationObject = constraintList[i];
+					verbalize.GetVerbalization(writer, snippetsDictionary, verbalizationContext, isNegative);
+				}
+			}
+			// Ring Constraints
+			if ((myReportContent & VerbalizationReportContent.RingConstraints) != 0)
+			{
+				IList<IConstraint> constraintList = myConstraintList[ConstraintType.Ring];
+				int constraintCount = constraintList.Count;
+				for (int i = 0; i < constraintCount; ++i)
+				{
+					wrapper.VerbalizationObject = constraintList[i];
+					verbalize.GetVerbalization(writer, snippetsDictionary, verbalizationContext, isNegative);
 				}
 			}
 			// Equality Constraints
@@ -2417,11 +2394,8 @@ namespace Neumont.Tools.ORM.ObjectModel.Verbalization
 				int constraintCount = constraintList.Count;
 				for (int i = 0; i < constraintCount; ++i)
 				{
-					IVerbalize instance = new ConstraintVerbalizationWrapper(ReportVerbalizationSnippetType.FactTypeConstraintValidationListItemOpen, ReportVerbalizationSnippetType.FactTypeConstraintValidationListItemClose, constraintList[i] as IVerbalize);
-					if (instance != null && !instance.GetVerbalization(writer, snippetsDictionary, verbalizationContext, isNegative))
-					{
-						retVal = false;
-					}
+					wrapper.VerbalizationObject = constraintList[i];
+					verbalize.GetVerbalization(writer, snippetsDictionary, verbalizationContext, isNegative);
 				}
 			}
 			// Exclusion Constraints
@@ -2431,11 +2405,8 @@ namespace Neumont.Tools.ORM.ObjectModel.Verbalization
 				int constraintCount = constraintList.Count;
 				for (int i = 0; i < constraintCount; ++i)
 				{
-					IVerbalize instance = new ConstraintVerbalizationWrapper(ReportVerbalizationSnippetType.FactTypeConstraintValidationListItemOpen, ReportVerbalizationSnippetType.FactTypeConstraintValidationListItemClose, constraintList[i] as IVerbalize);
-					if (instance != null && !instance.GetVerbalization(writer, snippetsDictionary, verbalizationContext, isNegative))
-					{
-						retVal = false;
-					}
+					wrapper.VerbalizationObject = constraintList[i];
+					verbalize.GetVerbalization(writer, snippetsDictionary, verbalizationContext, isNegative);
 				}
 			}
 			// Subset Constraints
@@ -2445,16 +2416,13 @@ namespace Neumont.Tools.ORM.ObjectModel.Verbalization
 				int constraintCount = constraintList.Count;
 				for (int i = 0; i < constraintCount; ++i)
 				{
-					IVerbalize instance = new ConstraintVerbalizationWrapper(ReportVerbalizationSnippetType.FactTypeConstraintValidationListItemOpen, ReportVerbalizationSnippetType.FactTypeConstraintValidationListItemClose, constraintList[i] as IVerbalize);
-					if (instance != null && !instance.GetVerbalization(writer, snippetsDictionary, verbalizationContext, isNegative))
-					{
-						retVal = false;
-					}
+					wrapper.VerbalizationObject = constraintList[i];
+					verbalize.GetVerbalization(writer, snippetsDictionary, verbalizationContext, isNegative);
 				}
 			}
 
 			writer.Write(mySnippets.GetSnippet(ReportVerbalizationSnippetType.GenericConstraintListClose));
-			return retVal;
+			return false; // No children to verbalize
 		}
 		#endregion // IVerbalize Implementation
 	}
@@ -2466,7 +2434,7 @@ namespace Neumont.Tools.ORM.ObjectModel.Verbalization
 	public class ConstraintVerbalizationWrapper : IVerbalize
 	{
 		#region Member Variables
-		private IVerbalize myVerbalizationObject;
+		private object myVerbalizationObject;
 		private ReportVerbalizationSnippetType myOpeningSnippet;
 		private ReportVerbalizationSnippetType myClosingSnippet;
 		#endregion // Member Variables
@@ -2477,13 +2445,29 @@ namespace Neumont.Tools.ORM.ObjectModel.Verbalization
 		/// <param name="openingSnippet">The opening snippet.</param>
 		/// <param name="closingSnippet">The closing snippet.</param>
 		/// <param name="verbalizationObject">The verbalization object.</param>
-		public ConstraintVerbalizationWrapper(ReportVerbalizationSnippetType openingSnippet, ReportVerbalizationSnippetType closingSnippet, IVerbalize verbalizationObject)
+		public ConstraintVerbalizationWrapper(ReportVerbalizationSnippetType openingSnippet, ReportVerbalizationSnippetType closingSnippet, object verbalizationObject)
 		{
 			myOpeningSnippet = openingSnippet;
 			myClosingSnippet = closingSnippet;
 			myVerbalizationObject = verbalizationObject;
 		}
 		#endregion // Constructor
+		#region Accessor properties
+		/// <summary>
+		/// Access the verbalization object
+		/// </summary>
+		public object VerbalizationObject
+		{
+			get
+			{
+				return myVerbalizationObject;
+			}
+			set
+			{
+				myVerbalizationObject = value;
+			}
+		}
+		#endregion // Accessor properties
 		#region IVerbalize Implementation
 		bool IVerbalize.GetVerbalization(TextWriter writer, IDictionary<Type, IVerbalizationSets> snippetsDictionary, IVerbalizationContext verbalizationContext, bool isNegative)
 		{
@@ -2501,10 +2485,18 @@ namespace Neumont.Tools.ORM.ObjectModel.Verbalization
 		/// </returns>
 		protected bool GetVerbalization(TextWriter writer, IDictionary<Type, IVerbalizationSets> snippetsDictionary, IVerbalizationContext verbalizationContext, bool isNegative)
 		{
+			object verbalizationObject = this.myVerbalizationObject;
+			if (verbalizationObject == null || verbalizationContext.AlreadyVerbalized(verbalizationObject))
+			{
+				return false;
+			}
 			verbalizationContext.BeginVerbalization(VerbalizationContent.Normal);
 			IVerbalizationSets<ReportVerbalizationSnippetType> snippets = (IVerbalizationSets<ReportVerbalizationSnippetType>)snippetsDictionary[typeof(ReportVerbalizationSnippetType)];
-			writer.Write(snippets.GetSnippet(myOpeningSnippet), (myVerbalizationObject as ORMNamedElement).Name, (myVerbalizationObject as IConstraint).ConstraintType.ToString());
-			verbalizationContext.DeferVerbalization(myVerbalizationObject, DeferVerbalizationOptions.None, null);
+			writer.Write(snippets.GetSnippet(myOpeningSnippet), TypeDescriptor.GetComponentName(verbalizationObject), TypeDescriptor.GetClassName(verbalizationObject));
+			verbalizationContext.DeferVerbalization(verbalizationObject, DeferVerbalizationOptions.AlwaysWriteLine, null);
+			// This must be called before additional calls to the writer or an increased indentation will not decrease before
+			// the close element is written.
+			verbalizationContext.BeginVerbalization(VerbalizationContent.Normal);
 			writer.Write(snippets.GetSnippet(myClosingSnippet));
 			return true;
 		}

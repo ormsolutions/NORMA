@@ -57,6 +57,17 @@ namespace Neumont.Tools.ORM.ObjectModel
 		/// block subsequent verbalizations.
 		/// </summary>
 		MultipleVerbalizations = 1,
+		/// <summary>
+		/// Always write an additional line, unless this is the first write to the document.
+		/// If this is not set and <see cref="NeverWriteLine"/> is not set, then the context
+		/// setting is used.
+		/// </summary>
+		AlwaysWriteLine = 2,
+		/// <summary>
+		/// Never write an additional line. If this is not set and <see cref="AlwaysWriteLine"/>
+		/// is not set, then the context setting is used.
+		/// </summary>
+		NeverWriteLine = 4,
 	}
 	/// <summary>
 	/// An Interface to provide context services to <see cref="IVerbalize.GetVerbalization"/>. Allows elements
@@ -85,6 +96,14 @@ namespace Neumont.Tools.ORM.ObjectModel
 		/// <param name="options">Options modifying verbalization.</param>
 		/// <param name="childFilter">the filter used to remove aggregates.</param>
 		void DeferVerbalization(object target, DeferVerbalizationOptions options, IVerbalizeFilterChildren childFilter);
+		/// <summary>
+		/// Explicitly test if an element has already been verbalized
+		/// </summary>
+		/// <param name="target">
+		/// Any instance that implements <see cref="IVerbalize"/> or <see cref="IRedirectVerbalization"/>
+		/// </param>
+		/// <returns>true if the element is already verbalized</returns>
+		bool AlreadyVerbalized(object target);
 	}
 	/// <summary>
 	/// Interface for verbalization

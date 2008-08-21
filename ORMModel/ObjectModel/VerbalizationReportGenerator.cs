@@ -129,21 +129,23 @@ namespace Neumont.Tools.ORM.ObjectModel
 			sets[0] = new ArrayVerbalizationSet(new string[]{
 				@"<li class=""ListLink"">There are no items for this section.</li>",
 				@"
-				<div id=""spaceHeader"">Constraint Validation Report</div>
+				<div class=""spaceHeader"">Constraint Validation Report</div>
 			",
 				@"
 				
+					</span>
 				</div>
 				
 			",
 				@"
 				
-				<div class=""constraintName""><input type=""checkbox"" name=""chkConstraint"" value=""1""/>&nbsp;<span class=""constraintName"">{0}</span></div>
+				<div class=""constraintName""><input type=""checkbox"" name=""chkConstraint"" value=""1""/>&#xA0;<span class=""constraintName"">{0}</span></div>
 				<div class=""constraintHeader"">Type:</div>
 				<div class=""constraintType"">{1}</div>
 				<div class=""constraintHeaderNoWrap"">Verbalization:</div>
 				<div class=""constraintVerbalization"">
-				
+					<span class=""verbalization"">
+					
 			",
 				@"
 				
@@ -164,7 +166,7 @@ namespace Neumont.Tools.ORM.ObjectModel
 			",
 				@"
 				
-				<div id=""header"">
+				<div class=""topHeader"">
 					Fact Types
 				</div>
 				<div class=""body"">
@@ -173,9 +175,9 @@ namespace Neumont.Tools.ORM.ObjectModel
 			",
 				@"
 				
-				<div id=""header"">
-					<div id=""objectTypeName"">&quot;{0}&quot;</div>
-					<div id=""typeName"">Fact Type</div>
+				<div class=""topHeader"">
+					<div class=""objectTypeName"">&quot;{0}&quot;</div>
+					<div class=""typeName"">Fact Type<a href=""../ObjectTypeList.html"">&#xA0;&#x2191;</a></div>
 				</div>
 				
 			",
@@ -192,19 +194,19 @@ namespace Neumont.Tools.ORM.ObjectModel
 					<ul>
 				
 			",
-				"</a></span>",
+				"</a>",
 				@"<a href=""../FactTypes/{0}.html"">",
 				@"
 				Constraints
 			",
 				@"
 				
-					</div>
 				</div>
 				
 			",
 				@"
 				
+				</span>
 				</div>
 				
 			",
@@ -215,12 +217,13 @@ namespace Neumont.Tools.ORM.ObjectModel
 				<div class=""constraintType"">{1}</div>
 				<div class=""constraintHeaderNoWrap"">Verbalization:</div>
 				<div class=""constraintVerbalization"">
+				<span class=""verbalization"">
 				
 			",
 				@"
 				
 				<div class=""header"">Constraints</div>
-					<div class=""body"">
+				<div class=""body"">
 				
 			",
 				"</li>",
@@ -239,7 +242,7 @@ namespace Neumont.Tools.ORM.ObjectModel
 				@"
 				
 				<div class=""list"">
-				<div class=""header"">Relationships</div>
+				<div class=""header"">Related Types</div>
 					<ul>
 				
 			",
@@ -256,11 +259,12 @@ namespace Neumont.Tools.ORM.ObjectModel
 					<ul>
 				
 			",
-				"</div>",
+				"</span></div>",
 				@"
 				
 					<div class=""header"">Summary</div>
-					<div class=""body"">	
+					<div class=""body"">
+					<span class=""verbalization"">
 				
 			",
 				@"
@@ -284,7 +288,7 @@ namespace Neumont.Tools.ORM.ObjectModel
 			",
 				@"
 				
-				<div id=""header"">
+				<div class=""topHeader"">
 					Object Types
 				</div>
 				<div class=""body"">
@@ -302,14 +306,14 @@ namespace Neumont.Tools.ORM.ObjectModel
 				
 				<div class=""list"">
 				<div class=""header"">Fact Types</div>
-					<ul>
+					<ul class=""verbalization"">
 				
 			",
 				@"
 				
-				<div id=""header"">
-					<div id=""objectTypeName"">{0}</div>
-					<div id=""typeName"">Object Type</div>
+				<div class=""topHeader"">
+					<div class=""objectTypeName"">&quot;{0}&quot;</div>
+					<div class=""typeName"">Object Type<a href=""../ObjectTypeList.html"">&#xA0;&#x2191;</a></div>
 				</div>
 				
 			",
@@ -387,27 +391,27 @@ namespace Neumont.Tools.ORM.ObjectModel
 								.notAvailable { font-style: italic; }
 								.instance { color: Brown; font-weight: normal; }
 								
-								div#disclaimer
+								div.disclaimer
 								{
 									font-weight:bold;
 									color:#FF0000;
 									padding-bottom:25px;
 									padding-left:20px;
 								}
-								div#spaceHeader
+								div.spaceHeader
 								{
 									position:relative;
 									border-bottom: 2px solid #FFCE84;
 									margin-bottom: 150px;
 									font-size:18px;
 								}
-								div#header
+								div.topHeader
 								{
 									position:relative;
 									border-bottom: 2px solid #FFCE84;
 									font-size:18px;
 								}
-								div#container
+								div.container
 								{
 									position:relative;
 									width:650px;
@@ -431,18 +435,18 @@ namespace Neumont.Tools.ORM.ObjectModel
 								a:hover { text-decoration:none; color:#333333; }
 								:visited { text-decoration:none; color:#0088B5; }
 								
-								div#objectTypeName
+								div.objectTypeName
 								{
 									font-size:18px;
 									float:left;
 									margin-right:8px;
 									padding-bottom:5px;
 								}
-								div#typeName
+								div.typeName
 								{
 									font-size:18px;
 									padding-top:0px;
-									padding-bottom:5px;b
+									padding-bottom:5px;
 								}
 								div.header
 								{
@@ -506,6 +510,9 @@ namespace Neumont.Tools.ORM.ObjectModel
 								div#navBar h4
 								{
 									padding-left:10px;
+								}
+								li.ListLink
+								{
 								}
 								.roundTop1_b, .roundTop1_s { font-size:1px; }
 								.roundTop1_1, .roundTop1_2, .roundTop1_3, .roundTop1_4, .roundTop1_b, .roundTop1_s {display:block; overflow:hidden;}
