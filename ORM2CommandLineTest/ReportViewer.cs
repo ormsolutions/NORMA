@@ -33,20 +33,18 @@ namespace Neumont.Tools.ORM.SDK.TestReportViewer
 		#region private variables
 		private string[] args;
 		private const string MissingReportBaseline = "failReportMissingBaseline";
+		private const string MissingBaseline = "failMissingBaseline";
 		private const string ReportDiffgram = "failReportDiffgram";
 		private const string TestPassed = "pass";
+		private const string ReportFileName = "Report.xml";
 		private string myBaseDirectory;
 		IList<ReportSuite> myReportSuites;
-		private TestInfo myTestInfo;
 
 		private RichTextBox tbLeft;
 		private TreeView reportTreeView;
 		private SplitContainer splitContainerExpectedActual;
-		private Button btnLeft;
-		private Button btnRight;
+		private Button btnUpdateBaseline;
 		private Button btnCompare;
-		private Label labelResult;
-		private Label lblResult;
 		private OpenFileDialog solutionFileDialog;
 		private MenuStrip reportViewerMenu;
 		private ToolStripMenuItem fileToolStripMenuItem;
@@ -57,6 +55,14 @@ namespace Neumont.Tools.ORM.SDK.TestReportViewer
 		private Label labelTreeView;
 		private Label labelExpected;
 		private Label labelActual;
+		private ToolStripSeparator toolStripMenuItem1;
+		private ToolStripMenuItem exitToolStripMenuItem;
+		private ToolTip toolTips;
+		private IContainer components;
+		private ToolStripMenuItem optionsToolStripMenuItem;
+		private ToolStripMenuItem compareApplicationToolStripMenuItem;
+		private ToolStripMenuItem associatedSolutionToolStripMenuItem;
+		private OpenFileDialog compareApplicationFileDialog;
 		private RichTextBox tbRight;
 		
 		
@@ -121,7 +127,7 @@ namespace Neumont.Tools.ORM.SDK.TestReportViewer
 					return initialized;
 				}
 			}
-			public void Initialize(IList<ReportSuite> reportSuites, TreeNode node)
+			public void Initialize(IList<ReportSuite> reportSuites, TestCaseNode node)
 			{
 				//set private variables based on the contents of the tree node
 				mySuiteName = node.Parent.Parent.Parent.Text;
@@ -172,102 +178,320 @@ namespace Neumont.Tools.ORM.SDK.TestReportViewer
 
 
 		#region set tree control
-		private abstract class TestResultTreeNode : TreeNode
+		/// <summary>
+		/// Color representing that the testcase passed in the report file
+		/// </summary>
+		public static Color PassedOnLoadColor
 		{
-			public TestResultTreeNode(string text)
-				: base(text)
+			get
 			{
+				return Color.Green;
 			}
-			public abstract bool IsPassing { get;}
 		}
-		private class PassingTreeNode : TestResultTreeNode
+		/// <summary>
+		/// Color representing that the testcase failed in the report file
+		/// </summary>
+		public static Color FailedOnLoadColor
 		{
-			public PassingTreeNode(string text)
+			get
+			{
+				return Color.Red;
+			}
+		}
+		/// <summary>
+		/// Color representng that the testcase is in a repaired state
+		/// </summary>
+		public static Color RepairedLoadFailureColor
+		{
+			get
+			{
+				return SystemColors.WindowText;
+			}
+		}
+		/// <summary>
+		/// The failure state of a <see cref="FailStateTreeNode"/>
+		/// </summary>
+		private enum NodeFailState
+		{
+			/// <summary>
+			/// The node represents a currently passing test
+			/// </summary>
+			Passed,
+			/// <summary>
+			/// The node represents an unrepaired test
+			/// </summary>
+			Failed,
+			/// <summary>
+			/// The node represents a repaired test
+			/// </summary>
+			Repaired,
+		}
+		private abstract class FailStateNode : TreeNode
+		{
+			public FailStateNode(string text)
 				: base(text)
 			{
-				ForeColor = Color.Green;
 			}
-			public override bool IsPassing
+			public abstract NodeFailState FailState { get;}
+		}
+		private abstract class CompareNode : FailStateNode
+		{
+			public CompareNode(string text)
+				: base(text)
+			{
+			}
+		}
+		private class PassingCompareNode : CompareNode
+		{
+			public PassingCompareNode(string text)
+				: base(text)
+			{
+				ForeColor = PassedOnLoadColor;
+			}
+			public override NodeFailState FailState
 			{
 				get
 				{
-					return true;
+					return NodeFailState.Passed;
 				}
 			}
 		}
-		private class FailingTreeNode : TestResultTreeNode
+		private class FailingCompareNode : CompareNode
 		{
-			public FailingTreeNode(string text)
+			private bool myIsRepaired;
+			private bool myIsMissing;
+			public FailingCompareNode(string text, bool baselineMissing)
 				: base(text)
 			{
-				ForeColor = Color.Red;
+				ForeColor = FailedOnLoadColor;
+				myIsMissing = baselineMissing;
 			}
-			public override bool IsPassing
+			public override NodeFailState FailState
 			{
 				get
 				{
-					return false;
+					return myIsRepaired ? NodeFailState.Repaired : NodeFailState.Failed;
 				}
 			}
-		}
-		private class UnknownTreeNode : TestResultTreeNode
-		{
-			public UnknownTreeNode(string text)
-				: base(text)
-			{
-				ForeColor = Color.Black;
-			}
-			public override bool IsPassing
+			/// <summary>
+			/// Has the file for this node been updated?
+			/// </summary>
+			public bool IsRepaired
 			{
 				get
 				{
-					return false;
+					return myIsRepaired;
+				}
+				set
+				{
+					bool oldRepaired = myIsRepaired;
+					if (oldRepaired != value)
+					{
+						ContainerNode parentNode = Parent as ContainerNode;
+						if (oldRepaired)
+						{
+							// Switch to failed
+							ForeColor = FailedOnLoadColor;
+							if (parentNode != null)
+							{
+								parentNode.AddFailure();
+							}
+						}
+						else
+						{
+							// Switch to repaired
+							ForeColor = RepairedLoadFailureColor;
+							if (parentNode != null)
+							{
+								parentNode.RemoveFailure();
+							}
+						}
+						myIsRepaired = value;
+					}
+				}
+			}
+			/// <summary>
+			/// Is this failure node for a missing baseline file as opposed
+			/// to a diffgram?
+			/// </summary>
+			public bool MissingBaseline
+			{
+				get
+				{
+					return myIsMissing;
 				}
 			}
 		}
-		private class DummyTreeNode : TestResultTreeNode
+		private class DummyTreeNode : CompareNode
 		{
 			public DummyTreeNode(string text)
 				: base(text)
 			{
 			}
-			public override bool IsPassing
+			public override NodeFailState FailState
 			{
 				get
 				{
-					return false;
+					return NodeFailState.Failed;
 				}
+			}
+		}
+		private class ContainerNode : FailStateNode
+		{
+			private int myFailCount;
+			public ContainerNode(string text)
+				: base(text)
+			{
+				myFailCount = -1;
+				ForeColor = PassedOnLoadColor;
+			}
+			/// <summary>
+			/// Add a new failure to this node
+			/// </summary>
+			public void AddFailure()
+			{
+				int failCount = myFailCount;
+				if (failCount == -1)
+				{
+					failCount = 0;
+				}
+				if (failCount == 0)
+				{
+					ForeColor = FailedOnLoadColor;
+					ContainerNode parentNode = this.Parent as ContainerNode;
+					if (parentNode != null)
+					{
+						parentNode.AddFailure();
+					}
+				}
+				++failCount;
+				myFailCount = failCount;
+			}
+			/// <summary>
+			/// Remove a failure from this node
+			/// </summary>
+			public void RemoveFailure()
+			{
+				int failCount = myFailCount;
+				Debug.Assert(failCount > 0);
+				if (failCount <= 0)
+				{
+					return;
+				}
+				if (failCount == 1)
+				{
+					ForeColor = RepairedLoadFailureColor;
+					ContainerNode parentNode = this.Parent as ContainerNode;
+					if (parentNode != null)
+					{
+						parentNode.RemoveFailure();
+					}
+				}
+				--failCount;
+				myFailCount = failCount;
+			}
+			/// <summary>
+			/// Call when the node is initially attached to its parent node
+			/// </summary>
+			public void NotifyAttachedToParent()
+			{
+				ContainerNode parentNode = this.Parent as ContainerNode;
+				if (parentNode != null)
+				{
+					switch (myFailCount)
+					{
+						case -1:
+							// Nothing to do, leave the parent alone
+							break;
+						case 0:
+							// Make sure the parent node does not have a 'passed on load' state
+							parentNode.AddFailure();
+							parentNode.RemoveFailure();
+							break;
+						default:
+							parentNode.AddFailure();
+							break;
+					}
+				}
+			}
+			public void NotifyChildAttached(FailStateNode childNode)
+			{
+				switch (childNode.FailState)
+				{
+					case NodeFailState.Failed:
+						AddFailure();
+						break;
+					case NodeFailState.Repaired:
+						AddFailure();
+						RemoveFailure();
+						break;
+				}
+			}
+			public void NotifyChildDetached(FailStateNode childNode)
+			{
+				switch (childNode.FailState)
+				{
+					case NodeFailState.Failed:
+						RemoveFailure();
+						break;
+				}
+			}
+			public override NodeFailState FailState
+			{
+				get
+				{
+					switch (myFailCount)
+					{
+						case -1:
+							return NodeFailState.Passed;
+						case 0:
+							return NodeFailState.Repaired;
+						default:
+							return NodeFailState.Failed;
+					}
+				}
+			}
+		}
+		private class TestCaseNode : ContainerNode
+		{
+			public TestCaseNode(string text)
+				: base(text)
+			{
 			}
 		}
 		private void SetTreeNodes(IList<ReportSuite> reportSuites)
 		{
 			foreach (ReportSuite suite in reportSuites)
 			{
-				TreeNode suitenode = new TreeNode(suite.Name);
+				ContainerNode suitenode = new ContainerNode(suite.Name);
 				suitenode.Name = suite.Name;
 				foreach (ReportAssembly reportAssembly in suite.Assemblies)
 				{
-					TreeNode assemblyNode = new TreeNode(reportAssembly.Location);
+					ContainerNode assemblyNode = new ContainerNode(reportAssembly.Location);
 					assemblyNode.Name = reportAssembly.Location;
 					foreach (TestClass testClass in reportAssembly.TestClasses)
 					{
-						TreeNode testClassNode = new TreeNode(testClass.Name);
+						ContainerNode testClassNode = new ContainerNode(testClass.Name);
 						testClassNode.Name = testClass.TestNamespace;
 						foreach (Test test in testClass.Tests)
 						{
 							bool testPassed = test.Passed;
 							string testName = test.Name;
-							TreeNode testNode = testPassed ? new PassingTreeNode(testName) as TreeNode : new FailingTreeNode(testName);
-							if (!test.Passed)
+							TestCaseNode testNode = new TestCaseNode(testName);
+							if (!testPassed)
 							{
-
-								testNode.Nodes.Add(new DummyTreeNode("-"));
+								FailStateNode dummy = new DummyTreeNode("-");
+								testNode.Nodes.Add(dummy);
+								testNode.NotifyChildAttached(dummy);
 							}
 							testClassNode.Nodes.Add(testNode);
+							testClassNode.NotifyChildAttached(testNode);
 						}
 						assemblyNode.Nodes.Add(testClassNode);
+						testClassNode.NotifyAttachedToParent();
 					}
 					suitenode.Nodes.Add(assemblyNode);
+					assemblyNode.NotifyAttachedToParent();
 				}
 				reportTreeView.Nodes.Add(suitenode);
 			}
@@ -316,8 +540,29 @@ namespace Neumont.Tools.ORM.SDK.TestReportViewer
 			{
 				SetReportFile(args[0]);
 			}
-			reportTreeView.BeforeExpand += new TreeViewCancelEventHandler(reportTreeView_BeforeExpand);
-			reportTreeView.BeforeSelect += new TreeViewCancelEventHandler(reportTreeView_BeforeSelect);
+		}
+		private void ReportViewer_KeyDown(object sender, KeyEventArgs e)
+		{
+			if (e.Modifiers == Keys.Control)
+			{
+				switch (e.KeyCode)
+				{
+					case Keys.M:
+						if (btnCompare.Enabled)
+						{
+							btnCompare_Click(null, null);
+							e.Handled = true;
+						}
+						break;
+					case Keys.B:
+						if (btnUpdateBaseline.Enabled)
+						{
+							btnUpdateBaseline_Click(null, null);
+							e.Handled = true;
+						}
+						break;
+				}
+			}
 		}
 		private void SetReportFile(string reportFile)
 		{
@@ -332,79 +577,121 @@ namespace Neumont.Tools.ORM.SDK.TestReportViewer
 
 		void reportTreeView_BeforeSelect(object sender, TreeViewCancelEventArgs e)
 		{
-			tbLeft.Clear();
-			tbRight.Clear();
-			lblResult.Text = "";
-			myTestInfo = new TestInfo();
-			if (e.Node.Parent != null)
+			TestInfo testInfo = new TestInfo();
+			FailStateNode node = (FailStateNode)e.Node;
+			TreeNode parentNode = node.Parent;
+			string leftText = null;
+			string rightText = null;
+			bool informationalText = false;
+			if (parentNode != null)
 			{
-				EnableButtons(e.Node is TestResultTreeNode || e.Node.Parent is TestResultTreeNode, e.Node.Parent is TestResultTreeNode);
-				if (e.Node.Parent is TestResultTreeNode)
+				TestCaseNode parentTestCase = parentNode as TestCaseNode;
+				CompareNode compareNode = node as CompareNode;
+				if (parentTestCase != null)
 				{
-					myTestInfo.Initialize(myReportSuites, e.Node.Parent);
-					string result = myTestInfo.Result;
-					lblResult.Text = result;
-					tbRight.Clear();
-					tbLeft.Clear();
+					testInfo.Initialize(myReportSuites, parentTestCase);
+					string result = testInfo.Result;
 
-					ReportAssembly reportAssembly = GetReportAssembly(myTestInfo);
-					string nodeText = e.Node.Text;
-					if (result == TestPassed)
+					ReportAssembly reportAssembly = GetReportAssembly(testInfo);
+					string nodeText = node.Text;
+					if (result == MissingReportBaseline)
 					{
-					}
-					else if (result == MissingReportBaseline)
-					{
-						tbLeft.Text = FindMissingReport(reportAssembly, myTestInfo);
+						if (nodeText == ReportFileName)
+						{
+							rightText = FindMissingReport(testInfo, reportAssembly, true);
+						}
+						else if (compareNode.FailState != NodeFailState.Passed)
+						{
+							FailingCompareNode failingCompare = (FailingCompareNode)compareNode;
+							string missingReport = FindMissingReport(testInfo, reportAssembly, false);
+							if (failingCompare.MissingBaseline)
+							{
+								// The full text is in the report file
+								using (XmlReader reportReader = XmlReader.Create(new StringReader(missingReport)))
+								{
+									rightText = FindMissingCompare(reportReader, nodeText);
+								}
+							}
+							else
+							{
+								// The full text is available by patching with data in the assembly
+								leftText = GetExpectedText(testInfo, reportAssembly, nodeText);
+								rightText = GetActualCompare(testInfo, reportAssembly, missingReport, nodeText);
+							}
+						}
+						else
+						{
+							informationalText = true;
+							leftText = GetExpectedText(testInfo, reportAssembly, nodeText);
+						}
 					}
 					else if (result == ReportDiffgram)
 					{
-						tbLeft.Text = GetExpectedText(myTestInfo, reportAssembly, nodeText);
-
-						if (!(e.Node is PassingTreeNode))
+						if (node.FailState != NodeFailState.Passed)
 						{
-							string actual = nodeText == "Report.xml"
-								? GetFakeReportPassPath(myTestInfo, reportAssembly)
-								: GetORMActualPath(myTestInfo, reportAssembly, nodeText);
-							if (File.Exists(actual))
+							FailingCompareNode failingCompare = (FailingCompareNode)node;
+							if (failingCompare.MissingBaseline)
 							{
-								XmlReaderSettings readerSettings = new XmlReaderSettings();
-								using (XmlReader reader = XmlReader.Create(File.OpenRead(actual), readerSettings))
+								rightText = FindMissingCompare(testInfo, reportAssembly.Assembly, nodeText);
+							}
+							else
+							{
+								leftText = GetExpectedText(testInfo, reportAssembly, nodeText);
+								string actualText = nodeText == ReportFileName
+									? GetFakePassReport(testInfo, reportAssembly)
+									: GetActualCompare(testInfo, reportAssembly, null, nodeText);
+								if (!string.IsNullOrEmpty(actualText))
 								{
-									reader.MoveToContent();
-									tbRight.Text = reader.ReadOuterXml();
+									rightText = actualText;
 								}
 							}
 						}
+						else
+						{
+							informationalText = true;
+							leftText = GetExpectedText(testInfo, reportAssembly, nodeText);
+						}
 					}
 				}
-				else if (e.Node is TestResultTreeNode)
+				else if (null != (parentTestCase = node as TestCaseNode))
 				{
-					myTestInfo.Initialize(myReportSuites, e.Node);
-					lblResult.Text = myTestInfo.Result;
+					informationalText = true;
+					testInfo.Initialize(myReportSuites, parentTestCase);
 
-					//if the test has had its baseline updated, add a ?
-					if (!(e.Node is PassingTreeNode) && e.Node.Nodes.Count == 0)
-					{
-						lblResult.Text += '?';
-					}
-					ReportAssembly reportAssembly = GetReportAssembly(myTestInfo);
+					ReportAssembly reportAssembly = GetReportAssembly(testInfo);
 					//get the expected report
-					if (myTestInfo.Result == MissingReportBaseline)
+					if (testInfo.Result == TestPassed)
 					{
-						tbLeft.Text = string.Format(ResourceStrings.FailReportMessageText, myTestInfo.TestClassName, myTestInfo.TestName);
-					}
-					else if (myTestInfo.Result == "pass")
-					{
-						tbLeft.Text = GetExpectedText(myTestInfo, reportAssembly, "Report.xml");
+						leftText = GetExpectedText(testInfo, reportAssembly, ReportFileName);
 					}
 					else
 					{
-						tbLeft.Text = "Test Failure";
+						leftText = ResourceStrings.FailureDetailsAvailableText;
 					}
 				}
 			}
+			tbLeft.Text = leftText;
+			tbRight.Text = rightText;
+			if (leftText != null && !informationalText)
+			{
+				btnCompare.Enabled = rightText != null;
+				btnUpdateBaseline.Enabled = rightText != null;
+			}
+			else if (rightText != null && !informationalText)
+			{
+				btnCompare.Enabled = false;
+				btnUpdateBaseline.Enabled = true;
+			}
+			else
+			{
+				btnCompare.Enabled = false;
+				btnUpdateBaseline.Enabled = false;
+			}
+
+			// Assembly information is located on level 1
+			associatedSolutionToolStripMenuItem.Enabled = node.Level != 0 || node.Nodes.Count == 1;
 		}
-		private string FindMissingReport(ReportAssembly reportAssembly, TestInfo testInfo)
+		private string FindMissingReport(TestInfo testInfo, ReportAssembly reportAssembly, bool fakeComparePass)
 		{
 			string content = null;
 			foreach (TestClass testclass in reportAssembly.TestClasses)
@@ -429,6 +716,10 @@ namespace Neumont.Tools.ORM.SDK.TestReportViewer
 			{
 				return "XML failure: Report File Not Found.";
 			}
+			if (!fakeComparePass)
+			{
+				return content;
+			}
 			XmlWriterSettings writerSettings = new XmlWriterSettings();
 			writerSettings.Indent = true;
 			writerSettings.IndentChars = "\t";
@@ -445,76 +736,81 @@ namespace Neumont.Tools.ORM.SDK.TestReportViewer
 						XslCompiledTransform transform = FakePassTransform;
 						transform.Transform(reader, writer);
 
-
-						// Format the XML.
-						FormatXml(reader, writer);
-
+						using (MemoryStream formatStream = new MemoryStream((int)memoryStream.Position))
+						{
+							memoryStream.Position = 0;
+							using (XmlReader formatReader = XmlReader.Create(memoryStream))
+							{
+								using (XmlWriter formatWriter = XmlWriter.Create(formatStream, writerSettings))
+								{
+									FormatXml(formatReader, formatWriter);
+								}
+							}
+							formatStream.Position = 0;
+							return new StreamReader(formatStream).ReadToEnd();
+						}
 					}
 				}
-				memoryStream.Position = 0;
-
-
-
-				return new StreamReader(memoryStream).ReadToEnd();
 			}
 		}
-		private string FindMissingCompare(Assembly assembly, TestInfo testInfo, string stageName)
+		private string FindMissingCompare(TestInfo testInfo, Assembly assembly, string compareExtension)
 		{
 			string baseResourceName = String.Concat(testInfo.TestNamespace, ".", testInfo.TestClassName, ".", testInfo.TestName);
-			XmlPatch patcher = new XmlPatch();
-			string tempfile = Path.GetTempFileName();
 			StringReader diffReader = new StringReader(testInfo.Content);
 
-			using (FileStream patchedstream = new FileStream(tempfile, FileMode.OpenOrCreate))
+			using (MemoryStream patchedStream = new MemoryStream())
 			{
 
-				using (Stream reportstream = assembly.GetManifestResourceStream(string.Format("{0}.Report.xml", baseResourceName)))
+				using (Stream reportStream = assembly.GetManifestResourceStream(string.Format("{0}.Report.xml", baseResourceName)))
 				{
-					if (reportstream == null)
+					if (reportStream == null)
 					{
 						return "Report File Is Missing.";
 					}
-					using (XmlReader reportReader = XmlReader.Create(reportstream))
+					using (XmlReader reportReader = XmlReader.Create(reportStream))
 					{
 						using (XmlReader diffreader = XmlReader.Create(diffReader))
 						{
-							patcher.Patch(reportReader, patchedstream, diffreader);
+							new XmlPatch().Patch(reportReader, patchedStream, diffreader);
 						}
 					}
 				}
-				patchedstream.Position = 0;
-				using (MemoryStream memStream = new MemoryStream())
+				patchedStream.Position = 0;
+				using (XmlReader patchedReader = XmlReader.Create(patchedStream))
 				{
-					using (XmlReader patchedReader = XmlReader.Create(patchedstream))
-					{
-
-						using (XmlReader innerreader = XmlReader.Create(ExtractStringReaderFromCompareByName(patchedReader, stageName)))
-						{
-
-							XmlWriterSettings writerSettings = new XmlWriterSettings();
-							writerSettings.Indent = true;
-							writerSettings.IndentChars = "\t";
-							using (XmlWriter writer = XmlWriter.Create(memStream, writerSettings))
-							{
-								FormatXml(innerreader, writer);
-							}
-						}
-					}
-					memStream.Position = 0;
-					return new StreamReader(memStream).ReadToEnd();
+					return FindMissingCompare(patchedReader, compareExtension);
 				}
 			}
 		}
-		private ReportAssembly GetReportAssembly(TestInfo testinfo)
+		private string FindMissingCompare(XmlReader reportReader, string compareExtension)
+		{
+			using (MemoryStream memStream = new MemoryStream())
+			{
+				using (XmlReader innerReader = XmlReader.Create(ExtractStringReaderFromCompareByName(reportReader, compareExtension)))
+				{
+
+					XmlWriterSettings writerSettings = new XmlWriterSettings();
+					writerSettings.Indent = true;
+					writerSettings.IndentChars = "\t";
+					using (XmlWriter writer = XmlWriter.Create(memStream, writerSettings))
+					{
+						FormatXml(innerReader, writer);
+					}
+				}
+				memStream.Position = 0;
+				return new StreamReader(memStream).ReadToEnd();
+			}
+		}
+		private ReportAssembly GetReportAssembly(TestInfo testInfo)
 		{
 			ReportAssembly reportAssembly = new ReportAssembly();
 			foreach (ReportSuite reportSuite in myReportSuites)
 			{
-				if (reportSuite.Name == myTestInfo.SuiteName)
+				if (reportSuite.Name == testInfo.SuiteName)
 				{
 					foreach (ReportAssembly assembly in reportSuite.Assemblies)
 					{
-						if (assembly.Location == myTestInfo.AssemblyLocation)
+						if (assembly.Location == testInfo.AssemblyLocation)
 						{
 							reportAssembly = assembly;
 						}
@@ -526,21 +822,26 @@ namespace Neumont.Tools.ORM.SDK.TestReportViewer
 		}
 		void reportTreeView_BeforeExpand(object sender, TreeViewCancelEventArgs e)
 		{
-			if (e.Node is TestResultTreeNode)
+			TestCaseNode parentNode = e.Node as TestCaseNode;
+			if (parentNode != null)
 			{
-				myTestInfo.Initialize(myReportSuites, e.Node);
-				lblResult.Text = myTestInfo.Result;
+				TestInfo testInfo = new TestInfo();
+				testInfo.Initialize(myReportSuites, parentNode);
 
 				//clear out the dummy subnode, if present...
-				if (e.Node.Nodes.Count > 0)
+				TreeNodeCollection nodes = parentNode.Nodes;
+				if (nodes.Count > 0)
 				{
-					if (e.Node.FirstNode is DummyTreeNode)
+					FailStateNode firstNode = (FailStateNode)parentNode.FirstNode;
+					if (firstNode is DummyTreeNode)
 					{
-						e.Node.Nodes.Clear();
-						foreach (TreeNode node in GetTestCompareNodes(myTestInfo))
+						nodes.Clear();
+						foreach (FailStateNode childNode in GetTestCompareNodes(testInfo))
 						{
-							e.Node.Nodes.Add(node);
+							nodes.Add(childNode);
+							parentNode.NotifyChildAttached(childNode);
 						}
+						parentNode.NotifyChildDetached(firstNode);
 					}
 				}
 			}
@@ -551,97 +852,100 @@ namespace Neumont.Tools.ORM.SDK.TestReportViewer
 		/// </summary>
 		/// <param name="testInfo">struct containing information on a specific test.</param>
 		/// <returns>a collection of TreeNodes representing the Compare nodes in the report for that test</returns
-		private IList<TreeNode> GetTestCompareNodes(TestInfo testInfo)
+		private IEnumerable<FailStateNode> GetTestCompareNodes(TestInfo testInfo)
 		{
-			IList<TreeNode> retval = new List<TreeNode>();
 			string result = testInfo.Result;
+			bool missingBaseReport;
 
-			if (result == MissingReportBaseline)
-			{
-				TreeNode reportNode = new TreeNode("Report.xml");
-				reportNode.Name = "missingBaseline";
-				retval.Add(reportNode);
-			}
-			else if (result == ReportDiffgram)
+			if ((missingBaseReport = result == MissingReportBaseline) || result == ReportDiffgram)
 			{
 				ReportAssembly reportAssembly = GetReportAssembly(testInfo);
 
 				XmlReaderSettings readerSettings = new XmlReaderSettings();
+				readerSettings.CloseInput = true;
 
 				//The nodes returned are based on the Compare nodes found in the result report file.
 				//therefore, it is necessary to obtain this report file. 
-				XmlPatch patcher = new XmlPatch();
-				string tempFile = Path.GetTempFileName();
 				Assembly assembly = reportAssembly.Assembly;
-				StringReader innerreader = new StringReader(testInfo.Content);
-				using (XmlReader reportReader = XmlReader.Create(assembly.GetManifestResourceStream(testInfo.BaseFileName + ".Report.xml"), readerSettings))
+				using (Stream reportStream = missingBaseReport ? null : new MemoryStream())
 				{
-					using (XmlReader diffReader = XmlReader.Create(innerreader, readerSettings))
+					string rawMissingReport = null;
+					if (missingBaseReport)
 					{
-						using (FileStream fs = new FileStream(tempFile, FileMode.Open))
+						rawMissingReport = FindMissingReport(testInfo, reportAssembly, false);
+						FailStateNode reportNode = new FailingCompareNode(ReportFileName, true);
+						yield return reportNode;
+					}
+					else
+					{
+						using (XmlReader reportReader = XmlReader.Create(assembly.GetManifestResourceStream(testInfo.BaseFileName + ".Report.xml"), readerSettings))
 						{
-							patcher.Patch(reportReader, fs, diffReader);
+							using (XmlReader diffReader = XmlReader.Create(new StringReader(testInfo.Content), readerSettings))
+							{
+								new XmlPatch().Patch(reportReader, reportStream, diffReader);
+								reportStream.Position = 0;
+							}
+						}
+
+						// Eith reportStream now contains a TestReport XML file with at least 1 Compare node.
+						// Check it against a 'faked pass', to determine if the report node is a pass or a failure.
+						readerSettings.CloseInput = false;
+						using (MemoryStream fakeReportStream = new MemoryStream())
+						{
+							using (XmlReader reportReader = XmlReader.Create(reportStream, readerSettings))
+							{
+								XmlWriterSettings writerSettings = new XmlWriterSettings();
+								writerSettings.CloseOutput = false;
+								using (XmlWriter fakeReportWriter = XmlWriter.Create(fakeReportStream, writerSettings))
+								{
+									FakePassTransform.Transform(reportReader, fakeReportWriter);
+								}
+							}
+							fakeReportStream.Position = 0;
+							reportStream.Position = 0;
+							readerSettings.CloseInput = true;
+							using (XmlReader reportReader = XmlReader.Create(assembly.GetManifestResourceStream(testInfo.BaseFileName + ".Report.xml"), readerSettings))
+							{
+								using (XmlReader fakeReportReader = XmlReader.Create(fakeReportStream, readerSettings))
+								{
+									yield return new XmlDiff(XmlDiffOptions.IgnoreXmlDecl | XmlDiffOptions.IgnorePrefixes | XmlDiffOptions.IgnoreWhitespace | XmlDiffOptions.IgnoreComments | XmlDiffOptions.IgnorePI).Compare(fakeReportReader, reportReader) ?
+										new PassingCompareNode(ReportFileName) as FailStateNode :
+										new FailingCompareNode(ReportFileName, false);
+								}
+							}
 						}
 					}
-				}
 
-				//the tempFile now contains a TestReport XML file. This has at lease 1 Compare node.
-				//check it against a 'faked pass', to determine if a report node is needed.
-				using (XmlReader reportReader = XmlReader.Create(assembly.GetManifestResourceStream(testInfo.BaseFileName + ".Report.xml"), readerSettings))
-				{
-					string fakepassPath = GetFakeReportPassPath(testInfo, reportAssembly);
-					using (XmlReader fakepassReader = XmlReader.Create(fakepassPath, readerSettings))
+					//Next, create a treenode object for each compare node in the XML.
+					readerSettings.CloseInput = true;
+					using (XmlReader testResultReader = missingBaseReport ? XmlReader.Create(new StringReader(rawMissingReport), readerSettings) :  XmlReader.Create(reportStream, readerSettings))
 					{
-						using (XmlWriter disposableWriter = XmlWriter.Create(Path.GetTempFileName()))
+						while (testResultReader.Read())
 						{
-							XmlDiff diff = new XmlDiff(XmlDiffOptions.IgnoreXmlDecl);
-							if (!diff.Compare(fakepassReader, reportReader, disposableWriter))
+							if (testResultReader.IsStartElement() && testResultReader.LocalName == "Compare")
 							{
-								retval.Add(new TreeNode("Report.xml"));
+								string name = testResultReader.GetAttribute("name");
+								string testResult = testResultReader.GetAttribute("result");
+								string testName = string.Format("Compare{0}.orm", name == null ? "" : "." + name);
+								yield return testResult == TestPassed ?
+									new PassingCompareNode(testName) as FailStateNode :
+									new FailingCompareNode(testName, testResult == MissingBaseline);
 							}
 						}
 					}
 				}
-				//Next, create a treenode object for each compare node in the XML.
-
-				using (XmlReader testResultReader = XmlReader.Create(tempFile, readerSettings))
-				{
-					while (testResultReader.Read())
-					{
-						if (testResultReader.IsStartElement() && testResultReader.LocalName == "Compare")
-						{
-							string name = testResultReader.GetAttribute("name");
-							string testresult = testResultReader.GetAttribute("result");
-							string testName = string.Format("Compare{0}.orm", name == null ? "" : "." + name);
-							TreeNode node = testresult == "pass" ? 
-								new PassingTreeNode(testName) as TreeNode: 
-								new FailingTreeNode(testName);
-							retval.Add(node);
-						}
-					}
-				}
 			}
-
-			return retval;
 		}
-		private void EnableButtons(bool updateEnableStatus, bool compareEnableStatus)
-		{
-			btnCompare.Enabled = compareEnableStatus;
-			btnLeft.Enabled = updateEnableStatus;
-			btnRight.Enabled = updateEnableStatus;
-		}
-
 		#endregion
 		#region getTempFilePath functions
 		//these functions use the current FileInfo object to create
 		//temporary files. The testInfo object must be set before they are called.
 
 
-		private string GetORMActualPath(TestInfo testInfo, ReportAssembly reportAssembly, string extension)
+		private string GetActualCompare(TestInfo testInfo, ReportAssembly reportAssembly, string missingReport, string extension)
 		{
 			Assembly assembly = reportAssembly.Assembly;
 
-			string tempFile = Path.GetTempFileName();
 			foreach (TestClass testclass in reportAssembly.TestClasses)
 			{
 				if (testclass.Name == testInfo.TestClassName)
@@ -650,37 +954,39 @@ namespace Neumont.Tools.ORM.SDK.TestReportViewer
 					{
 						if (test.Name == testInfo.TestName && testclass.TestNamespace == testInfo.TestNamespace)
 						{
-							string tempReportFile = Path.GetTempFileName();
 							string result = test.Result;
 							string baseResourceName = testInfo.BaseFileName;
 							XmlReaderSettings readerSettings = new XmlReaderSettings();
-							XmlWriterSettings writerSettings = new XmlWriterSettings();
-							writerSettings.IndentChars = "\t";
-							StringReader innerreader = new StringReader(test.Content);
 
-							if (result == ReportDiffgram)
+							if (result == ReportDiffgram || missingReport != null)
 							{
-								XmlPatch patcher = new XmlPatch();
-								using (Stream stream = assembly.GetManifestResourceStream(baseResourceName + ".Report.xml"))
+								using (Stream reportStream = missingReport != null ? null : assembly.GetManifestResourceStream(baseResourceName + ".Report.xml"))
 								{
-									if (stream != null)
+									if (reportStream != null || missingReport != null)
 									{
-										using (XmlReader reportReader = XmlReader.Create(stream, readerSettings))
+										XmlPatch patcher = new XmlPatch();
+										using (XmlReader reportReader = missingReport != null ?
+											XmlReader.Create(new StringReader(missingReport)) :
+											XmlReader.Create(reportStream, readerSettings))
 										{
 											StringReader compareStringReader;
-											using (XmlReader diffReader = XmlReader.Create(innerreader, readerSettings))
+											if (missingReport != null)
 											{
-
-												using (FileStream fs = new FileStream(tempReportFile, FileMode.Create))
+												compareStringReader = ExtractStringReaderFromCompareByName(reportReader, extension);
+											}
+											else
+											{
+												using (XmlReader diffReader = XmlReader.Create(new StringReader(test.Content), readerSettings))
 												{
-													patcher.Patch(reportReader, fs, diffReader);
-													fs.Position = 0;
-													//the filestream is now the expected test report, containing a compare. 
-													//Now to get that compare...
+													using (MemoryStream compareStream = new MemoryStream())
+													{
+														patcher.Patch(reportReader, new UncloseableStream(compareStream), diffReader);
+														compareStream.Position = 0;
+														//the filestream is now the expected test report, containing a compare. 
+														//Now to get that compare...
 
-													string[] split = extension.Split('.');
-													string stageName = split.Length == 3 ? split[1] : "";
-													compareStringReader = ExtractStringReaderFromCompareByName(XmlReader.Create(fs), stageName);
+														compareStringReader = ExtractStringReaderFromCompareByName(XmlReader.Create(compareStream), extension);
+													}
 												}
 											}
 
@@ -691,53 +997,45 @@ namespace Neumont.Tools.ORM.SDK.TestReportViewer
 												{
 													using (XmlReader compareReader = XmlReader.Create(compareStream, readerSettings))
 													{
-														using (MemoryStream patchedPatchStream = new MemoryStream())
+														using (MemoryStream patchedCompareStream = new MemoryStream())
 														{
 															using (XmlReader reportCompareReader = XmlReader.Create(compareStringReader, readerSettings))
 															{
 																//an exception thrown here is generally caused by the report suite being outdated. 
-																patcher.Patch(compareReader, new UncloseableStream(patchedPatchStream), reportCompareReader);
+																patcher.Patch(compareReader, new UncloseableStream(patchedCompareStream), reportCompareReader);
 															}
-															patchedPatchStream.Position = 0;
-															using (FileStream patchedFileStream = new FileStream(tempFile, FileMode.OpenOrCreate))
+															patchedCompareStream.Position = 0;
+															using (MemoryStream patchedOutputStream = new MemoryStream())
 															{
-																using (XmlReader reader = XmlReader.Create(patchedPatchStream))
+																using (XmlReader reader = XmlReader.Create(patchedCompareStream))
 																{
-																	XmlWriterSettings formattedSettings = new XmlWriterSettings();
-																	formattedSettings.Indent = true;
-																	formattedSettings.IndentChars = "\t";
-																	using (XmlWriter writer = XmlWriter.Create(patchedFileStream, formattedSettings))
+																	XmlWriterSettings writerSettings = new XmlWriterSettings();
+																	writerSettings.Indent = true;
+																	writerSettings.IndentChars = "\t";
+																	writerSettings.CloseOutput = false;
+																	using (XmlWriter writer = XmlWriter.Create(patchedOutputStream, writerSettings))
 																	{
 																		FormatXml(reader, writer);
 																	}
 																}
+																patchedOutputStream.Position = 0;
+																return new StreamReader(patchedOutputStream).ReadToEnd();
 															}
 														}
 													}
 												}
-												else
-												{
-													return null;
-												}
 											}
 										}
 									}
-									else
-									{
-										return null;
-									}
 								}
-								return tempFile;
 							}
-							else
-							{
-								return null;
-							}
+							return null;
 						}
 					}
 				}
 			}
-			return "Internal Error. function: GetORMActualPath.";
+			Debug.Fail("Internal Error. function: GetActualCompare.");
+			return null;
 		}
 
 		private string GetExpectedText(TestInfo testInfo, ReportAssembly reportAssembly, string extension)
@@ -761,10 +1059,7 @@ namespace Neumont.Tools.ORM.SDK.TestReportViewer
 				}
 				else
 				{
-
-					string[] split = extension.Split('.');
-					string stageName = split.Length == 3 ? split[1] : null;
-					retval = FindMissingCompare(assembly, testInfo, stageName);
+					retval = FindMissingCompare(testInfo, assembly, extension);
 				}
 			}
 			return retval;
@@ -772,19 +1067,13 @@ namespace Neumont.Tools.ORM.SDK.TestReportViewer
 
 
 
-		private string GetFakeReportPassPath(TestInfo testInfo, ReportAssembly reportAssembly)
+		private string GetFakePassReport(TestInfo testInfo, ReportAssembly reportAssembly)
 		{
 			Assembly assembly = reportAssembly.Assembly;
-			XmlPatch patcher = new XmlPatch();
 			XslCompiledTransform transform = FakePassTransform;
-			XmlWriterSettings writerSettings = new XmlWriterSettings();
-			writerSettings.Indent = true;
-			writerSettings.IndentChars = "\t";
 			XmlReaderSettings readerSettings = new XmlReaderSettings();
 
 			string baseResourceName = String.Concat(testInfo.TestNamespace, ".", testInfo.TestClassName, ".", testInfo.TestName);
-			string fakedPass = Path.GetTempFileName();
-			string tempFile = Path.GetTempFileName();
 			foreach (TestClass testclass in reportAssembly.TestClasses)
 			{
 				if (testclass.Name == testInfo.TestClassName)
@@ -793,60 +1082,70 @@ namespace Neumont.Tools.ORM.SDK.TestReportViewer
 					{
 						if (test.Name == testInfo.TestName && testclass.TestNamespace == testInfo.TestNamespace)
 						{
-							StringReader innerreader = new StringReader(test.Content);
-
-							using (Stream stream = assembly.GetManifestResourceStream(baseResourceName + ".Report.xml"))
+							MemoryStream patchedStream = null;
+							try
 							{
-								if (stream != null)
+								using (Stream stream = assembly.GetManifestResourceStream(baseResourceName + ".Report.xml"))
 								{
-									using (XmlReader reportReader = XmlReader.Create(stream, readerSettings))
+									if (stream != null)
 									{
-										using (XmlReader diffReader = XmlReader.Create(innerreader, readerSettings))
+										using (XmlReader reportReader = XmlReader.Create(stream, readerSettings))
 										{
-											using (FileStream fs = new FileStream(tempFile, FileMode.Open))
+											using (XmlReader diffReader = XmlReader.Create(new StringReader(test.Content), readerSettings))
 											{
-												patcher.Patch(reportReader, fs, diffReader);
+												patchedStream = new MemoryStream();
+												new XmlPatch().Patch(reportReader, new UncloseableStream(patchedStream), diffReader);
 											}
 										}
 									}
+									else
+									{
+										return null;
+									}
 								}
-								else
+								patchedStream.Position = 0;
+								using (XmlReader failReader = XmlReader.Create(patchedStream, readerSettings))
 								{
-									return null;
+									using (MemoryStream fakePassStream = new MemoryStream())
+									{
+										XmlWriterSettings writerSettings = new XmlWriterSettings();
+										writerSettings.Indent = true;
+										writerSettings.IndentChars = "\t";
+										writerSettings.CloseOutput = false;
+										using (XmlWriter fakePassWriter = XmlWriter.Create(fakePassStream, writerSettings))
+										{
+											transform.Transform(failReader, fakePassWriter);
+										}
+										fakePassStream.Position = 0;
+										return new StreamReader(fakePassStream).ReadToEnd();
+									}
 								}
 							}
-							//the tempfile is now the test report, containing a compare with an ugly diffgram. 
-							//Now to fake its pass..
-							using (FileStream fs = new FileStream(tempFile, FileMode.Open))
+							finally
 							{
-								using (XmlReader failReader = XmlReader.Create(fs, readerSettings))
+								if (patchedStream != null)
 								{
-									using (XmlWriter fakePassWriter = XmlWriter.Create(fakedPass, writerSettings))
-									{
-										transform.Transform(failReader, fakePassWriter);
-									}
-
+									patchedStream.Dispose();
 								}
 							}
 						}
 					}
 				}
 			}
-
-
-			return fakedPass;
+			return null;
 		}
 
 
-		private StringReader ExtractStringReaderFromCompareByName(XmlReader reader, string name)
+		private StringReader ExtractStringReaderFromCompareByName(XmlReader reader, string compareExtension)
 		{
+			string[] split = compareExtension.Split('.');
+			string name = split.Length == 3 ? split[1] : null;
 			//change an empty name to a null, for the comparison with the getAttribute function later
-			name = name == "" ? null : name;
 
 			reader.MoveToContent();
 			while (reader.Read())
 			{
-				if (reader.LocalName == "Compare")
+				if (reader.NodeType == XmlNodeType.Element && reader.LocalName == "Compare")
 				{
 					if (name == (reader.GetAttribute("name")))
 					{
@@ -916,7 +1215,7 @@ namespace Neumont.Tools.ORM.SDK.TestReportViewer
 		#region Update Baseline & Compare buttons
 		private void btnCompare_Click(object sender, EventArgs e)
 		{
-
+			Control startActive = ActiveControl;
 			string baselineFile = Path.GetTempFileName();
 			string resultFile = Path.GetTempFileName();
 
@@ -926,25 +1225,63 @@ namespace Neumont.Tools.ORM.SDK.TestReportViewer
 			System.Diagnostics.Process proc = new System.Diagnostics.Process();
 			ProcessStartInfo startInfo = proc.StartInfo;
 
-
-			string programToShellTo = Settings.Default.DiffProgram;
+			// Start the process
 			//@"C:\Program Files\Microsoft Visual Studio 8\Common7\Tools\Bin\WinDiff.exe";
-			startInfo.FileName = programToShellTo;
+			startInfo.FileName = Settings.Default.DiffProgram;
 			startInfo.Arguments = string.Format(@"""{0}"" ""{1}""", baselineFile, resultFile);
-			startInfo.WindowStyle = (WindowState == FormWindowState.Maximized) ? ProcessWindowStyle.Maximized : ProcessWindowStyle.Normal;
+			FormWindowState startWindowState = WindowState;
+			startInfo.WindowStyle = (startWindowState == FormWindowState.Maximized) ? ProcessWindowStyle.Maximized : ProcessWindowStyle.Normal;
 
-			proc.Start();
-			proc.WaitForInputIdle();
+			bool reshell = true;
+			while (reshell)
+			{
+				try
+				{
+					reshell = false;
+					proc.Start();
+					proc.WaitForInputIdle();
+					break;
+				}
+				catch (Win32Exception)
+				{
+					reshell = true;
+				}
+				if (reshell)
+				{
+					if (ResetCompareApplication())
+					{
+						startInfo.FileName = Settings.Default.DiffProgram;
+						continue;
+					}
+				}
+				// We'll only get here is something went wrong with the
+				// selected app and the user cancels the dialog.
+				File.Delete(baselineFile);
+				File.Delete(resultFile);
+				return;
+			}
+
 			Visible = false;
+			WindowState = FormWindowState.Minimized;
 			proc.WaitForExit();
+
+			// Delete the temp files
+			File.Delete(baselineFile);
+			File.Delete(resultFile);
+
+			// Reactivate this application
 			Visible = true;
-			WindowState = FormWindowState.Normal;
+			WindowState = startWindowState;
 			Activate();
+			if (startActive != null)
+			{
+				startActive.Focus();
+			}
 		}
 
 		private void btnUpdateBaseline_Click(object sender, EventArgs e)
 		{
-			TreeNode currentNode = reportTreeView.SelectedNode;
+			FailingCompareNode currentNode = reportTreeView.SelectedNode as FailingCompareNode;
 			if (currentNode == null)
 			{
 				MessageBox.Show("Please make sure the correct item in the tree view to the left is selected.");
@@ -952,15 +1289,16 @@ namespace Neumont.Tools.ORM.SDK.TestReportViewer
 			}
 			
 			string extension = currentNode.Text;
-			myTestInfo.Initialize(myReportSuites, currentNode.Parent);
-			string newText = ((object)sender == btnLeft) ? tbLeft.Text : tbRight.Text;
+			TestInfo testInfo = new TestInfo();
+			testInfo.Initialize(myReportSuites, (TestCaseNode)currentNode.Parent);
+			string newText = tbRight.Text;
 			if (newText.Length < 2)
 			{
 				MessageBox.Show("Textbox cannot be empty.");
 				return;
 			}
 			
-			string assemblyLocation = myBaseDirectory + myTestInfo.AssemblyLocation;
+			string assemblyLocation = myBaseDirectory + testInfo.AssemblyLocation;
 			string solution = LookupSolution(assemblyLocation);
 
 			Project project = null;
@@ -972,7 +1310,7 @@ namespace Neumont.Tools.ORM.SDK.TestReportViewer
 			{
 				if (solution.Length == 0 || !File.Exists(solution))
 				{
-					solution = MapAssemblyToSolution(assemblyLocation, solution, true);
+					solution = MapAssemblyToSolution(assemblyLocation, solution, true, false);
 					if (solution.Length == 0)
 					{
 						return;
@@ -1018,12 +1356,12 @@ namespace Neumont.Tools.ORM.SDK.TestReportViewer
 				}
 				if (project == null)
 				{
-					MapAssemblyToSolution(assemblyLocation, "", false);
+					MapAssemblyToSolution(assemblyLocation, "", false, false);
 					solution = "";
 				}
 			}
 
-			string fileDirectory = myTestInfo.TestNamespace;
+			string fileDirectory = testInfo.TestNamespace;
 			int rootNamespaceLength = rootNamespace.Length;
 			if (rootNamespaceLength != 0)
 			{
@@ -1040,8 +1378,8 @@ namespace Neumont.Tools.ORM.SDK.TestReportViewer
 				}
 			}
 			fileDirectory = fileDirectory.Replace('.', '\\');
-			string testClassName = myTestInfo.TestClassName;
-			string testName = myTestInfo.TestName;
+			string testClassName = testInfo.TestClassName;
+			string testName = testInfo.TestName;
 
 			string fileName = string.Format(CultureInfo.InvariantCulture, "{0}.{1}.{2}", testClassName, testName, extension);
 			string filePath = (fileDirectory.Length == 0) ?
@@ -1061,7 +1399,8 @@ namespace Neumont.Tools.ORM.SDK.TestReportViewer
 				}
 			}
 
-			if (ProjectContains(project.ProjectItems, fileName))
+			ProjectItem existingProjectItem = ProjectContains(project.ProjectItems, fileName);
+			if (existingProjectItem != null)
 			{
 				// the project does contain the item.
 				if (documentUpdated)
@@ -1076,6 +1415,7 @@ namespace Neumont.Tools.ORM.SDK.TestReportViewer
 				{
 					File.WriteAllText(filePath, newText, Encoding.UTF8);
 				}
+				SetFileProperties(existingProjectItem);
 			}
 			else
 			{
@@ -1088,21 +1428,39 @@ namespace Neumont.Tools.ORM.SDK.TestReportViewer
 			}
 
 			//clear out the correct tree node, to prevent this method running again against this same node.
-			TreeNodeFixup(currentNode);
+			currentNode.IsRepaired = true;
 			return;
 		}
 
 
 		#region replace baseline file helper methods
-		private string MapAssemblyToSolution(string assemblyLocation, string solution, bool interactive)
+		private string MapAssemblyToSolution(string assemblyLocation, string solution, bool allowInteraction, bool forceInteraction)
 		{
-			if (interactive && solution.Length == 0 || !File.Exists(solution))
+			if ((forceInteraction || (allowInteraction && solution.Length == 0)) || !File.Exists(solution))
 			{
 				//request solution for the given assembly from the user
-				solutionFileDialog.Title = "Solution file for " + assemblyLocation;
+				FileInfo assemblyInfo = new FileInfo(assemblyLocation);
+				solutionFileDialog.Title = "Solution file for " + assemblyInfo.Directory.Name + "\\" + assemblyInfo.Name;
+
+				if (!forceInteraction || (!string.IsNullOrEmpty(solution) && !File.Exists(solution)))
+				{
+					solution = "";
+				}
+				if (!string.IsNullOrEmpty(solution))
+				{
+					solutionFileDialog.FileName = solution;
+				}
+				else
+				{
+					solutionFileDialog.InitialDirectory = assemblyInfo.DirectoryName;
+				}
 				if (solutionFileDialog.ShowDialog() == DialogResult.OK)
 				{
 					solution = solutionFileDialog.FileName;
+				}
+				else if (forceInteraction)
+				{
+					return "";
 				}
 				else
 				{
@@ -1185,25 +1543,30 @@ namespace Neumont.Tools.ORM.SDK.TestReportViewer
 			{
 				File.WriteAllText(filePath, fileText, Encoding.UTF8);
 				ProjectItem newItem = items.AddFromFile(filePath);
-				Properties properties = newItem.Properties;
-				properties.Item("BuildAction").Value = 3;   // 3 == VSLangProj.prjBuildAction.prjBuildActionEmbeddedResource
-				properties.Item("CustomTool").Value = "";
+				SetFileProperties(newItem);
 			}
 		}
-		private static bool ProjectContains(ProjectItems items, string fileName)
+		private static void SetFileProperties(ProjectItem item)
+		{
+			Properties properties = item.Properties;
+			properties.Item("BuildAction").Value = 3;   // 3 == VSLangProj.prjBuildAction.prjBuildActionEmbeddedResource
+			properties.Item("CustomTool").Value = "";
+		}
+		private static ProjectItem ProjectContains(ProjectItems items, string fileName)
 		{
 			foreach (ProjectItem testItem in items)
 			{
 				if (fileName == testItem.Name)
 				{
-					return true;
+					return testItem;
 				}
-				if (ProjectContains(testItem.ProjectItems, fileName))
+				ProjectItem retVal = ProjectContains(testItem.ProjectItems, fileName);
+				if (retVal != null)
 				{
-					return true;
+					return retVal;
 				}
 			}
-			return false;
+			return null;
 		}
 
 		[DllImport("ole32.dll")]
@@ -1282,13 +1645,6 @@ namespace Neumont.Tools.ORM.SDK.TestReportViewer
 			}
 		}
 		#endregion //replace baseline file helper methods
-		private void TreeNodeFixup(TreeNode currentNode)
-		{
-			TreeNode testNode = currentNode.Parent;
-			testNode.Nodes.Clear();
-			testNode.Nodes.Add(new UnknownTreeNode("Updated"));
-
-		}
 		#endregion // Update baseline
 		#region Shared LockObject
 		private static object myLockObject;
@@ -1311,18 +1667,16 @@ namespace Neumont.Tools.ORM.SDK.TestReportViewer
 		
 		private void InitializeComponent()
 		{
+			this.components = new System.ComponentModel.Container();
 			System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(ReportViewer));
 			this.tbLeft = new System.Windows.Forms.RichTextBox();
 			this.tbRight = new System.Windows.Forms.RichTextBox();
 			this.reportTreeView = new System.Windows.Forms.TreeView();
 			this.splitContainerExpectedActual = new System.Windows.Forms.SplitContainer();
 			this.labelExpected = new System.Windows.Forms.Label();
-			this.btnLeft = new System.Windows.Forms.Button();
 			this.labelActual = new System.Windows.Forms.Label();
-			this.btnRight = new System.Windows.Forms.Button();
+			this.btnUpdateBaseline = new System.Windows.Forms.Button();
 			this.btnCompare = new System.Windows.Forms.Button();
-			this.labelResult = new System.Windows.Forms.Label();
-			this.lblResult = new System.Windows.Forms.Label();
 			this.solutionFileDialog = new System.Windows.Forms.OpenFileDialog();
 			this.reportViewerMenu = new System.Windows.Forms.MenuStrip();
 			this.fileToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
@@ -1331,6 +1685,13 @@ namespace Neumont.Tools.ORM.SDK.TestReportViewer
 			this.reportSuiteFileDialog = new System.Windows.Forms.OpenFileDialog();
 			this.splitContainerOuter = new System.Windows.Forms.SplitContainer();
 			this.labelTreeView = new System.Windows.Forms.Label();
+			this.toolStripMenuItem1 = new System.Windows.Forms.ToolStripSeparator();
+			this.exitToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+			this.toolTips = new System.Windows.Forms.ToolTip(this.components);
+			this.optionsToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+			this.associatedSolutionToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+			this.compareApplicationToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+			this.compareApplicationFileDialog = new System.Windows.Forms.OpenFileDialog();
 			this.splitContainerExpectedActual.Panel1.SuspendLayout();
 			this.splitContainerExpectedActual.Panel2.SuspendLayout();
 			this.splitContainerExpectedActual.SuspendLayout();
@@ -1348,7 +1709,7 @@ namespace Neumont.Tools.ORM.SDK.TestReportViewer
 						| System.Windows.Forms.AnchorStyles.Right)));
 			this.tbLeft.Location = new System.Drawing.Point(0, 16);
 			this.tbLeft.Name = "tbLeft";
-			this.tbLeft.Size = new System.Drawing.Size(377, 596);
+			this.tbLeft.Size = new System.Drawing.Size(367, 631);
 			this.tbLeft.TabIndex = 3;
 			this.tbLeft.Text = "";
 			this.tbLeft.WordWrap = false;
@@ -1359,9 +1720,9 @@ namespace Neumont.Tools.ORM.SDK.TestReportViewer
 			this.tbRight.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom)
 						| System.Windows.Forms.AnchorStyles.Left)
 						| System.Windows.Forms.AnchorStyles.Right)));
-			this.tbRight.Location = new System.Drawing.Point(3, 16);
+			this.tbRight.Location = new System.Drawing.Point(0, 16);
 			this.tbRight.Name = "tbRight";
-			this.tbRight.Size = new System.Drawing.Size(357, 596);
+			this.tbRight.Size = new System.Drawing.Size(367, 631);
 			this.tbRight.TabIndex = 5;
 			this.tbRight.Text = "";
 			this.tbRight.WordWrap = false;
@@ -1374,7 +1735,7 @@ namespace Neumont.Tools.ORM.SDK.TestReportViewer
 			this.reportTreeView.HideSelection = false;
 			this.reportTreeView.Location = new System.Drawing.Point(0, 16);
 			this.reportTreeView.Name = "reportTreeView";
-			this.reportTreeView.Size = new System.Drawing.Size(312, 634);
+			this.reportTreeView.Size = new System.Drawing.Size(313, 671);
 			this.reportTreeView.TabIndex = 1;
 			this.reportTreeView.BeforeExpand += new System.Windows.Forms.TreeViewCancelEventHandler(this.reportTreeView_BeforeExpand);
 			this.reportTreeView.BeforeSelect += new System.Windows.Forms.TreeViewCancelEventHandler(this.reportTreeView_BeforeSelect);
@@ -1391,16 +1752,14 @@ namespace Neumont.Tools.ORM.SDK.TestReportViewer
 			// 
 			this.splitContainerExpectedActual.Panel1.Controls.Add(this.tbLeft);
 			this.splitContainerExpectedActual.Panel1.Controls.Add(this.labelExpected);
-			this.splitContainerExpectedActual.Panel1.Controls.Add(this.btnLeft);
 			// 
 			// splitContainerExpectedActual.Panel2
 			// 
 			this.splitContainerExpectedActual.Panel2.Controls.Add(this.labelActual);
-			this.splitContainerExpectedActual.Panel2.Controls.Add(this.btnRight);
 			this.splitContainerExpectedActual.Panel2.Controls.Add(this.tbRight);
-			this.splitContainerExpectedActual.Size = new System.Drawing.Size(740, 650);
-			this.splitContainerExpectedActual.SplitterDistance = 376;
-			this.splitContainerExpectedActual.SplitterWidth = 1;
+			this.splitContainerExpectedActual.Size = new System.Drawing.Size(739, 650);
+			this.splitContainerExpectedActual.SplitterDistance = 369;
+			this.splitContainerExpectedActual.SplitterWidth = 3;
 			this.splitContainerExpectedActual.TabIndex = 3;
 			// 
 			// labelExpected
@@ -1412,77 +1771,48 @@ namespace Neumont.Tools.ORM.SDK.TestReportViewer
 			this.labelExpected.TabIndex = 2;
 			this.labelExpected.Text = "&Expected:";
 			// 
-			// btnLeft
-			// 
-			this.btnLeft.Anchor = System.Windows.Forms.AnchorStyles.Bottom;
-			this.btnLeft.Location = new System.Drawing.Point(144, 615);
-			this.btnLeft.Name = "btnLeft";
-			this.btnLeft.Size = new System.Drawing.Size(88, 25);
-			this.btnLeft.TabIndex = 6;
-			this.btnLeft.Text = "Update to this";
-			this.btnLeft.UseVisualStyleBackColor = true;
-			this.btnLeft.Click += new System.EventHandler(this.btnUpdateBaseline_Click);
-			// 
 			// labelActual
 			// 
 			this.labelActual.AutoSize = true;
 			this.labelActual.Location = new System.Drawing.Point(3, 3);
 			this.labelActual.Name = "labelActual";
-			this.labelActual.Size = new System.Drawing.Size(37, 13);
+			this.labelActual.Size = new System.Drawing.Size(40, 13);
 			this.labelActual.TabIndex = 4;
-			this.labelActual.Text = "&Actual";
+			this.labelActual.Text = "&Actual:";
 			// 
-			// btnRight
+			// btnUpdateBaseline
 			// 
-			this.btnRight.Anchor = System.Windows.Forms.AnchorStyles.Bottom;
-			this.btnRight.Location = new System.Drawing.Point(139, 615);
-			this.btnRight.Name = "btnRight";
-			this.btnRight.Size = new System.Drawing.Size(86, 25);
-			this.btnRight.TabIndex = 7;
-			this.btnRight.Text = "Update to this";
-			this.btnRight.UseVisualStyleBackColor = true;
-			this.btnRight.Click += new System.EventHandler(this.btnUpdateBaseline_Click);
+			this.btnUpdateBaseline.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Right)));
+			this.btnUpdateBaseline.Location = new System.Drawing.Point(625, 656);
+			this.btnUpdateBaseline.Name = "btnUpdateBaseline";
+			this.btnUpdateBaseline.Size = new System.Drawing.Size(104, 25);
+			this.btnUpdateBaseline.TabIndex = 7;
+			this.btnUpdateBaseline.Text = "Update &Baseline";
+			this.toolTips.SetToolTip(this.btnUpdateBaseline, "Update project baseline files to the Actual contents (Ctrl-B)");
+			this.btnUpdateBaseline.UseVisualStyleBackColor = true;
+			this.btnUpdateBaseline.Click += new System.EventHandler(this.btnUpdateBaseline_Click);
 			// 
 			// btnCompare
 			// 
-			this.btnCompare.Anchor = System.Windows.Forms.AnchorStyles.Bottom;
-			this.btnCompare.Location = new System.Drawing.Point(320, 656);
+			this.btnCompare.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Right)));
+			this.btnCompare.Location = new System.Drawing.Point(510, 656);
 			this.btnCompare.Name = "btnCompare";
-			this.btnCompare.Size = new System.Drawing.Size(118, 23);
-			this.btnCompare.TabIndex = 8;
-			this.btnCompare.Text = "&Compare";
+			this.btnCompare.Size = new System.Drawing.Size(104, 23);
+			this.btnCompare.TabIndex = 6;
+			this.btnCompare.Text = "Co&mpare";
+			this.toolTips.SetToolTip(this.btnCompare, "Launch an application to compare files (Ctrl-M)");
 			this.btnCompare.UseVisualStyleBackColor = true;
 			this.btnCompare.Click += new System.EventHandler(this.btnCompare_Click);
-			// 
-			// labelResult
-			// 
-			this.labelResult.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left)
-						| System.Windows.Forms.AnchorStyles.Right)));
-			this.labelResult.AutoSize = true;
-			this.labelResult.Location = new System.Drawing.Point(3, 656);
-			this.labelResult.Name = "labelResult";
-			this.labelResult.Size = new System.Drawing.Size(43, 13);
-			this.labelResult.TabIndex = 5;
-			this.labelResult.Text = "Result: ";
-			// 
-			// lblResult
-			// 
-			this.lblResult.AutoSize = true;
-			this.lblResult.Location = new System.Drawing.Point(82, 569);
-			this.lblResult.Name = "lblResult";
-			this.lblResult.Size = new System.Drawing.Size(40, 13);
-			this.lblResult.TabIndex = 6;
-			this.lblResult.Text = "           ";
 			// 
 			// solutionFileDialog
 			// 
 			this.solutionFileDialog.Filter = "Solution File (*.sln)|*.sln|All Files|*.*";
-			this.solutionFileDialog.Title = "Missing Solution File";
 			// 
 			// reportViewerMenu
 			// 
 			this.reportViewerMenu.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
-            this.fileToolStripMenuItem});
+            this.fileToolStripMenuItem,
+            this.optionsToolStripMenuItem});
 			this.reportViewerMenu.Location = new System.Drawing.Point(0, 0);
 			this.reportViewerMenu.Name = "reportViewerMenu";
 			this.reportViewerMenu.Size = new System.Drawing.Size(1061, 24);
@@ -1493,7 +1823,9 @@ namespace Neumont.Tools.ORM.SDK.TestReportViewer
 			// 
 			this.fileToolStripMenuItem.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
             this.openToolStripMenuItem,
-            this.clearToolStripMenuItem});
+            this.clearToolStripMenuItem,
+            this.toolStripMenuItem1,
+            this.exitToolStripMenuItem});
 			this.fileToolStripMenuItem.Name = "fileToolStripMenuItem";
 			this.fileToolStripMenuItem.Size = new System.Drawing.Size(35, 20);
 			this.fileToolStripMenuItem.Text = "&File";
@@ -1509,7 +1841,7 @@ namespace Neumont.Tools.ORM.SDK.TestReportViewer
 			// 
 			this.clearToolStripMenuItem.Name = "clearToolStripMenuItem";
 			this.clearToolStripMenuItem.Size = new System.Drawing.Size(152, 22);
-			this.clearToolStripMenuItem.Text = "&Clear";
+			this.clearToolStripMenuItem.Text = "&Close";
 			this.clearToolStripMenuItem.Click += new System.EventHandler(this.clearToolStripMenuItem_Click);
 			// 
 			// reportSuiteFileDialog
@@ -1529,15 +1861,15 @@ namespace Neumont.Tools.ORM.SDK.TestReportViewer
 			// 
 			this.splitContainerOuter.Panel1.Controls.Add(this.labelTreeView);
 			this.splitContainerOuter.Panel1.Controls.Add(this.reportTreeView);
-			this.splitContainerOuter.Panel1.Controls.Add(this.labelResult);
 			// 
 			// splitContainerOuter.Panel2
 			// 
 			this.splitContainerOuter.Panel2.Controls.Add(this.splitContainerExpectedActual);
+			this.splitContainerOuter.Panel2.Controls.Add(this.btnUpdateBaseline);
 			this.splitContainerOuter.Panel2.Controls.Add(this.btnCompare);
 			this.splitContainerOuter.Size = new System.Drawing.Size(1061, 687);
 			this.splitContainerOuter.SplitterDistance = 313;
-			this.splitContainerOuter.SplitterWidth = 2;
+			this.splitContainerOuter.SplitterWidth = 3;
 			this.splitContainerOuter.TabIndex = 8;
 			// 
 			// labelTreeView
@@ -1549,17 +1881,62 @@ namespace Neumont.Tools.ORM.SDK.TestReportViewer
 			this.labelTreeView.TabIndex = 0;
 			this.labelTreeView.Text = "&Report Tree:";
 			// 
+			// toolStripMenuItem1
+			// 
+			this.toolStripMenuItem1.Name = "toolStripMenuItem1";
+			this.toolStripMenuItem1.Size = new System.Drawing.Size(149, 6);
+			// 
+			// exitToolStripMenuItem
+			// 
+			this.exitToolStripMenuItem.Name = "exitToolStripMenuItem";
+			this.exitToolStripMenuItem.Size = new System.Drawing.Size(152, 22);
+			this.exitToolStripMenuItem.Text = "E&xit";
+			this.exitToolStripMenuItem.Click += new System.EventHandler(this.exitToolStripMenuItem_Click);
+			// 
+			// optionsToolStripMenuItem
+			// 
+			this.optionsToolStripMenuItem.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
+            this.compareApplicationToolStripMenuItem,
+            this.associatedSolutionToolStripMenuItem});
+			this.optionsToolStripMenuItem.Name = "optionsToolStripMenuItem";
+			this.optionsToolStripMenuItem.Size = new System.Drawing.Size(56, 20);
+			this.optionsToolStripMenuItem.Text = "&Options";
+			// 
+			// associatedSolutionToolStripMenuItem
+			// 
+			this.associatedSolutionToolStripMenuItem.Enabled = false;
+			this.associatedSolutionToolStripMenuItem.Name = "associatedSolutionToolStripMenuItem";
+			this.associatedSolutionToolStripMenuItem.Size = new System.Drawing.Size(195, 22);
+			this.associatedSolutionToolStripMenuItem.Text = "&Associated Solution...";
+			this.associatedSolutionToolStripMenuItem.ToolTipText = "Specify implementing solution file for selected test assembly.";
+			this.associatedSolutionToolStripMenuItem.Click += new System.EventHandler(this.associatedSolutionToolStripMenuItem_Click);
+			// 
+			// compareApplicationToolStripMenuItem
+			// 
+			this.compareApplicationToolStripMenuItem.Name = "compareApplicationToolStripMenuItem";
+			this.compareApplicationToolStripMenuItem.Size = new System.Drawing.Size(195, 22);
+			this.compareApplicationToolStripMenuItem.Text = "&Compare Application...";
+			this.compareApplicationToolStripMenuItem.ToolTipText = "Specify the application used to compare files.";
+			this.compareApplicationToolStripMenuItem.Click += new System.EventHandler(this.compareApplicationToolStripMenuItem_Click);
+			// 
+			// compareApplicationFileDialog
+			// 
+			this.compareApplicationFileDialog.DefaultExt = "exe";
+			this.compareApplicationFileDialog.Filter = "Compare Application (*.exe)|*.exe|All files|*.*";
+			this.compareApplicationFileDialog.Title = "Select Compare Application";
+			// 
 			// ReportViewer
 			// 
 			this.ClientSize = new System.Drawing.Size(1061, 714);
 			this.Controls.Add(this.splitContainerOuter);
-			this.Controls.Add(this.lblResult);
 			this.Controls.Add(this.reportViewerMenu);
 			this.Icon = ((System.Drawing.Icon)(resources.GetObject("$this.Icon")));
+			this.KeyPreview = true;
 			this.MainMenuStrip = this.reportViewerMenu;
 			this.Name = "ReportViewer";
 			this.Text = "ReportViewer";
 			this.Load += new System.EventHandler(this.ReportViewer_Load);
+			this.KeyDown += new System.Windows.Forms.KeyEventHandler(this.ReportViewer_KeyDown);
 			this.splitContainerExpectedActual.Panel1.ResumeLayout(false);
 			this.splitContainerExpectedActual.Panel1.PerformLayout();
 			this.splitContainerExpectedActual.Panel2.ResumeLayout(false);
@@ -1580,9 +1957,7 @@ namespace Neumont.Tools.ORM.SDK.TestReportViewer
 		{
 			if (reportSuiteFileDialog.ShowDialog() == DialogResult.OK)
 			{
-				reportTreeView.Nodes.Clear();
-				tbLeft.Clear();
-				tbRight.Clear(); 
+				clearToolStripMenuItem_Click(null, null);
 				SetReportFile(reportSuiteFileDialog.FileName);
 				reportTreeView.Select();
 			}
@@ -1593,6 +1968,64 @@ namespace Neumont.Tools.ORM.SDK.TestReportViewer
 			reportTreeView.Nodes.Clear();
 			tbLeft.Clear();
 			tbRight.Clear();
+			btnCompare.Enabled = false;
+			btnUpdateBaseline.Enabled = false;
+			associatedSolutionToolStripMenuItem.Enabled = false;
+		}
+		private void exitToolStripMenuItem_Click(object sender, EventArgs e)
+		{
+			Close();
+		}
+		private void associatedSolutionToolStripMenuItem_Click(object sender, EventArgs e)
+		{
+			// Find the assembly information from the tree node at level 1
+			TreeNode node = reportTreeView.SelectedNode;
+			if (node != null)
+			{
+				int nodeLevel = node.Level;
+				if (nodeLevel == 0)
+				{
+					TreeNodeCollection childNodes = node.Nodes;
+					if (childNodes.Count != 1)
+					{
+						return;
+					}
+					node = childNodes[0];
+					nodeLevel = 1;
+				}
+				while (nodeLevel > 1)
+				{
+					node = node.Parent;
+					--nodeLevel;
+				}
+				string assemblyLocation = myBaseDirectory + node.Text;
+				string existingSolution = LookupSolution(assemblyLocation);
+				MapAssemblyToSolution(assemblyLocation, existingSolution, true, true);
+			}
+		}
+		private void compareApplicationToolStripMenuItem_Click(object sender, EventArgs e)
+		{
+			ResetCompareApplication();
+		}
+		private bool ResetCompareApplication()
+		{
+			string programToShellTo = Settings.Default.DiffProgram;
+			if (File.Exists(programToShellTo))
+			{
+				compareApplicationFileDialog.FileName = programToShellTo;
+			}
+			else
+			{
+				compareApplicationFileDialog.FileName = "";
+				compareApplicationFileDialog.InitialDirectory = Directory.GetCurrentDirectory();
+			}
+			if (compareApplicationFileDialog.ShowDialog() == DialogResult.OK)
+			{
+				Settings.Default.DiffProgram = compareApplicationFileDialog.FileName;
+				Settings.Default.Save();
+				return true;
+			}
+			return false;
 		}
 		#endregion Menu options
 	}
