@@ -186,6 +186,10 @@ namespace Neumont.Tools.ORM.SDK.TestEngine
 			{
 				return myServices.ActivateShape(shape);
 			}
+			bool IORMToolServices.NavigateTo(object element)
+			{
+				return myServices.NavigateTo(element);
+			}
 			#endregion // IORMToolServices Implementation
 			#region IModelingEventManagerProvider Implementation
 			ModelingEventManager IModelingEventManagerProvider.ModelingEventManager

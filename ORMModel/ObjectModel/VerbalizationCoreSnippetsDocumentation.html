@@ -607,6 +607,9 @@
                 <a href="#PortableDataTypeVerbalization">PortableDataTypeVerbalization</a>
               </li>
               <li>
+                <a href="#PredicatePart">PredicatePart</a>
+              </li>
+              <li>
                 <a href="#ReferenceModeVerbalization">ReferenceModeVerbalization</a>
               </li>
               <li>
@@ -2279,7 +2282,7 @@
             <a name="HyphenBoundPredicatePart" id="HyphenBoundPredicatePart">HyphenBoundPredicatePart</a>
           </span>
           <div class="snippetStatement">
-            <strong>Description: </strong> .  <br />
+            <strong>Description: </strong> <br />
             <strong>Format: </strong> {0}{{0}}{1}</div>
           <div class="snippetReplacementFieldCount">
             <span class="reportItem">Number of replacement fields: </span>2</div>
@@ -3631,10 +3634,10 @@
             <a name="ObjectType" id="ObjectType">ObjectType</a>
           </span>
           <div class="snippetStatement">
-            <strong>Description: </strong> Verbalizes an object.  <br />
-            <strong>Format: </strong> {0}</div>
+            <strong>Description: </strong> Verbalizes an object. {0} is the name, {1} is the guid id for the element<br />
+          </div>
           <div class="snippetReplacementFieldCount">
-            <span class="reportItem">Number of replacement fields: </span>1</div>
+            <span class="reportItem">Number of replacement fields: </span>2</div>
           <div class="snippetUnformattedText">
             <span class="reportItem">Unformatted version: </span>
             <div class="unformattedSnippet">
@@ -3777,14 +3780,14 @@
             <a name="ObjectTypeWithSubscript" id="ObjectTypeWithSubscript">ObjectTypeWithSubscript</a>
           </span>
           <div class="snippetStatement">
-            <strong>Description: </strong> Verbalizes an object type with a subscript.<br />
+            <strong>Description: </strong> Verbalizes an object type with a subscript. {0} is the name, {1} is the guid id for the element, {2} is the subscript<br />
           </div>
           <div class="snippetReplacementFieldCount">
-            <span class="reportItem">Number of replacement fields: </span>2</div>
+            <span class="reportItem">Number of replacement fields: </span>3</div>
           <div class="snippetUnformattedText">
             <span class="reportItem">Unformatted version: </span>
             <div class="unformattedSnippet">
-              <pre class="unformattedSnippetDecorator">{0}{1}</pre>
+              <pre class="unformattedSnippetDecorator">{0}{2}</pre>
             </div>
           </div>
         </div>
@@ -3948,6 +3951,22 @@
             <span class="reportItem">Unformatted version: </span>
             <div class="unformattedSnippet">
               <pre class="unformattedSnippetDecorator">Portable data type: {0}</pre>
+            </div>
+          </div>
+        </div>
+        <div id="PredicatePart" class="snippet">
+          <span class="snippetHeader">
+            <a name="PredicatePart" id="PredicatePart">PredicatePart</a>
+          </span>
+          <div class="snippetStatement">
+            <strong>Description: </strong> <br />
+          </div>
+          <div class="snippetReplacementFieldCount">
+            <span class="reportItem">Number of replacement fields: </span>1</div>
+          <div class="snippetUnformattedText">
+            <span class="reportItem">Unformatted version: </span>
+            <div class="unformattedSnippet">
+              <pre class="unformattedSnippetDecorator">{{0}}</pre>
             </div>
           </div>
         </div>
@@ -4870,11 +4889,14 @@
             <span class="reportItem">Unformatted version: </span>
             <div class="unformattedSnippet">
               <pre class="unformattedSnippetDecorator">
+			
 
 
 	ORM2 Verbalization
 	
 		body {{ font-family: {0}; font-size: {1}pt; padding: .1em; color: {2}; {3} }}
+		a {{text-decoration:none; }}
+		a:hover {{background-color:infobackground; }}
 		.objectType {{ color: {4}; {5} }}
 		.objectTypeMissing {{ color: {4}; {5} }}
 		.referenceMode {{ color: {10}; {11} }}

@@ -325,6 +325,18 @@ namespace Neumont.Tools.ORM.Shell
 			{
 				return ActivateShape(shape);
 			}
+			/// <summary>
+			/// Defer to NavigateTo on the document. Implements
+			/// <see cref="IORMToolServices.NavigateTo"/>
+			/// </summary>
+			protected bool NavigateTo(object target)
+			{
+				return myServices.NavigateTo(target);
+			}
+			bool IORMToolServices.NavigateTo(object target)
+			{
+				return NavigateTo(target);
+			}
 			#endregion // IORMToolServices Implementation
 			#region IModelingEventManagerProvider Implementation
 			/// <summary>  
@@ -1468,11 +1480,17 @@ namespace Neumont.Tools.ORM.Shell
 			VSDiagramView selectOnView = null;
 			if (diagramView != null)
 			{
+				docView = diagramView.DocView as MultiDiagramDocView;
 				if (currentDesigner != null && diagramView == currentDesigner)
 				{
 					selectOnView = diagramView;
+					if (docView != null)
+					{
+						// Show even if we're current or some selection changed events do not fire
+						docView.Show();
+					}
 				}
-				else if (null != (docView = diagramView.DocView as MultiDiagramDocView))
+				else if (docView != null)
 				{
 					selectOnView = diagramView;
 					docView.Show();
@@ -1574,6 +1592,251 @@ namespace Neumont.Tools.ORM.Shell
 		{
 			return ActivateShape(shape);
 		}
+		/// <summary>
+		/// Implements <see cref="IORMToolServices.NavigateTo"/>
+		/// </summary>
+		protected bool NavigateTo(object target)
+		{
+			ModelElement element = null;
+			IRepresentModelElements elementRep = target as IRepresentModelElements;
+			if (elementRep != null)
+			{
+				ModelElement[] elements = elementRep.GetRepresentedElements();
+				if (elements != null && elements.Length != 0)
+				{
+					// UNDONE: Support selection of multiple elements
+					element = elements[0];
+				}
+			}
+			if (element == null)
+			{
+				element = target as ModelElement;
+			}
+			ModelElement startElement = element;
+			ModelError modelError = target as ModelError;
+			IProxyDisplayProvider proxyProvider = null;
+			bool useProxy = false;
+			bool haveCurrentDesigner = false;
+			DiagramDocView currentDocView = null;
+			VSDiagramView currentDesigner = null;
+
+			// The shape priority is:
+			// 1) The first shape on a diagram which is the ActiveDiagramView for the current designer
+			// 2) The first shape with an active diagram view
+			// 3) The first shape.
+			// We'll walk through the collection first to pick up the different elements
+			const int ActiveViewOnActiveDocView = 0;
+			const int ActiveView = 1;
+			const int FirstShape = 2;
+			const int SelectShapesSize = 3;
+			ShapeElement[] selectShapes = new ShapeElement[SelectShapesSize];
+			bool selectShapesInitialized = true;
+			// UNDONE: Move navigation code from here down into 
+			// docdata and docview classes so we can use it elsewhere
+			while (element != null)
+			{
+				ModelElement selectElement = element;
+				if (useProxy)
+				{
+					// Second pass, we were unable to find a suitable shape for the first
+					selectElement = proxyProvider.ElementDisplayedAs(element, modelError);
+					if (selectElement != null && selectElement == element)
+					{
+						selectElement = null;
+					}
+				}
+
+				// UNDONE: We should potentially be creating a shape
+				// so we can jump to any error
+				if (selectElement != null)
+				{
+					bool continueNow = false;
+
+					// Grab the shapes in priority order
+					if (!selectShapesInitialized)
+					{
+						Array.Clear(selectShapes, 0, selectShapes.Length);
+						selectShapesInitialized = true;
+					}
+					foreach (PresentationElement pel in PresentationViewsSubject.GetPresentation(selectElement))
+					{
+						ShapeElement shape = pel as ShapeElement;
+						if (shape != null)
+						{
+							// Get the current active designer
+							if (!haveCurrentDesigner)
+							{
+								haveCurrentDesigner = true;
+								GetCurrentDesigner(ref currentDocView, ref currentDesigner);
+							}
+
+							// Get the shapes in priority
+							Diagram diagram = shape.Diagram;
+							if (diagram != null)
+							{
+								selectShapesInitialized = false;
+								if (selectShapes[FirstShape] == null)
+								{
+									selectShapes[FirstShape] = shape;
+								}
+								VSDiagramView diagramView = diagram.ActiveDiagramView as VSDiagramView;
+								if (diagramView != null)
+								{
+									if (selectShapes[ActiveView] == null)
+									{
+										selectShapes[ActiveView] = shape;
+									}
+									if (diagramView == currentDesigner)
+									{
+										if (selectShapes[ActiveViewOnActiveDocView] == null)
+										{
+											selectShapes[ActiveViewOnActiveDocView] = shape;
+										}
+									}
+								}
+							}
+						}
+					}
+
+					// Walk the shapes in priority order and try to select them
+					if (!selectShapesInitialized)
+					{
+						for (int i = 0; i < SelectShapesSize; ++i)
+						{
+							ShapeElement shape = selectShapes[i];
+							if (shape != null)
+							{
+								if (proxyProvider == null)
+								{
+									proxyProvider = shape as IProxyDisplayProvider;
+								}
+								if (!useProxy && element is ORMModel && element != startElement)
+								{
+									if (proxyProvider != null)
+									{
+										useProxy = true;
+										element = startElement;
+										continueNow = true;
+										break;
+									}
+								}
+
+								if (ActivateShapeHelper(shape, ref currentDocView, ref currentDesigner, ref haveCurrentDesigner))
+								{
+									IModelErrorActivation activator;
+									if (null != modelError &&
+										null != (activator = shape as IModelErrorActivation))
+									{
+										activator.ActivateModelError(modelError);
+									}
+									return true;
+								}
+							}
+						}
+					}
+					if (continueNow)
+					{
+						continue;
+					}
+				}
+				ModelElement nextElement = element;
+				element = null;
+
+				// If we could not select the current element, then go up the aggregation chain
+				foreach (DomainRoleInfo role in nextElement.GetDomainClass().AllDomainRolesPlayed)
+				{
+					DomainRoleInfo oppositeRole = role.OppositeDomainRole;
+					if (oppositeRole.IsEmbedding)
+					{
+						LinkedElementCollection<ModelElement> parents = role.GetLinkedElements(nextElement);
+						if (parents.Count > 0)
+						{
+							Debug.Assert(parents.Count == 1); // The aggregating side of a relationship should have multiplicity==1
+							element = parents[0];
+							break;
+						}
+					}
+				}
+			}
+
+			// We couldn't find this on the shapes, attempt to find the item in the model browser
+			if (startElement != null)
+			{
+				element = startElement;
+				VirtualTreeControl treeControl = null;
+				while (element != null)
+				{
+					if (element is ISurveyNode)
+					{
+						// Assume if we're a SurveyNode that it is possible to select the item in the survey tree
+						if (treeControl == null)
+						{
+							// Make sure a docview associated with the current model is
+							// active. Otherwise, the model browser will not contain the
+							// correct tree.
+							if (!haveCurrentDesigner)
+							{
+								haveCurrentDesigner = true;
+								GetCurrentDesigner(ref currentDocView, ref currentDesigner);
+							}
+							if (currentDocView == null || currentDocView.DocData != this)
+							{
+								if (null == ActivateView(null))
+								{
+									return false;
+								}
+							}
+							// UNDONE: See if we can get the tree control without forcing the window to show
+							// This is safe, but gives weird results if the initial item cannot be found.
+							ORMModelBrowserToolWindow browserWindow;
+							SurveyTreeContainer treeContainer;
+							if (null != (browserWindow = ORMDesignerPackage.ORMModelBrowserWindow))
+							{
+								browserWindow.Show();
+								if (null != (treeContainer = browserWindow.Window as SurveyTreeContainer))
+								{
+									treeControl = treeContainer.TreeControl;
+								}
+							}
+							if (null == treeControl)
+							{
+								return false;
+							}
+						}
+						if (treeControl.SelectObject(null, element, (int)ObjectStyle.TrackingObject, 0))
+						{
+							if (modelError != null)
+							{
+								ModelErrorActivationService.ActivateError(element, modelError);
+							}
+							return true;
+						}
+					}
+					ModelElement currentElement = element;
+					element = null;
+					// If we could not select the current element, then go up the aggregation chain
+					foreach (DomainRoleInfo role in currentElement.GetDomainClass().AllDomainRolesPlayed)
+					{
+						DomainRoleInfo oppositeRole = role.OppositeDomainRole;
+						if (oppositeRole.IsEmbedding)
+						{
+							LinkedElementCollection<ModelElement> parents = role.GetLinkedElements(currentElement);
+							if (parents.Count > 0)
+							{
+								Debug.Assert(parents.Count == 1); // The aggregating side of a relationship should have multiplicity==1
+								element = parents[0];
+								break;
+							}
+						}
+					}
+				}
+			}
+			return false;
+		}
+		bool IORMToolServices.NavigateTo(object target)
+		{
+			return NavigateTo(target);
+		}
 		#endregion // IORMToolServices Implementation
 		#region TaskProvider implementation
 		/// <summary>
@@ -1665,243 +1928,9 @@ namespace Neumont.Tools.ORM.Shell
 			/// <summary>
 			/// Implements <see cref="IORMToolTaskProvider.NavigateTo"/>
 			/// </summary>
-			/// <param name="task"></param>
-			/// <returns></returns>
 			protected bool NavigateTo(IORMToolTaskItem task)
 			{
-				ModelElement element = null;
-				IRepresentModelElements locator = task.ElementLocator;
-				if (locator != null)
-				{
-					ModelElement[] elements = locator.GetRepresentedElements();
-					if (elements != null && elements.Length != 0)
-					{
-						// UNDONE: Support selection of multiple elements
-						element = elements[0];
-					}
-				}
-				ModelElement startElement = element;
-				ModelError modelError = locator as ModelError;
-				IProxyDisplayProvider proxyProvider = null;
-				bool useProxy = false;
-				bool haveCurrentDesigner = false;
-				DiagramDocView currentDocView = null;
-				VSDiagramView currentDesigner = null;
-
-				// The shape priority is:
-				// 1) The first shape on a diagram which is the ActiveDiagramView for the current designer
-				// 2) The first shape with an active diagram view
-				// 3) The first shape.
-				// We'll walk through the collection first to pick up the different elements
-				const int ActiveViewOnActiveDocView = 0;
-				const int ActiveView = 1;
-				const int FirstShape = 2;
-				const int SelectShapesSize = 3;
-				ShapeElement[] selectShapes = new ShapeElement[SelectShapesSize];
-				bool selectShapesInitialized = true;
-				ORMDesignerDocData targetDocData = myDocument;
-				// UNDONE: Move navigation code from here down into 
-				// docdata and docview classes so we can use it elsewhere
-				while (element != null)
-				{
-					ModelElement selectElement = element;
-					if (useProxy)
-					{
-						// Second pass, we were unable to find a suitable shape for the first
-						selectElement = proxyProvider.ElementDisplayedAs(element, modelError);
-						if (selectElement != null && selectElement == element)
-						{
-							selectElement = null;
-						}
-					}
-
-					// UNDONE: We should potentially be creating a shape
-					// so we can jump to any error
-					if (selectElement != null)
-					{
-						bool continueNow = false;
-
-						// Grab the shapes in priority order
-						if (!selectShapesInitialized)
-						{
-							Array.Clear(selectShapes, 0, selectShapes.Length);
-							selectShapesInitialized = true;
-						}
-						foreach (PresentationElement pel in PresentationViewsSubject.GetPresentation(selectElement))
-						{
-							ShapeElement shape = pel as ShapeElement;
-							if (shape != null)
-							{
-								// Get the current active designer
-								if (!haveCurrentDesigner)
-								{
-									haveCurrentDesigner = true;
-									targetDocData.GetCurrentDesigner(ref currentDocView, ref currentDesigner);
-								}
-
-								// Get the shapes in priority
-								Diagram diagram = shape.Diagram;
-								if (diagram != null)
-								{
-									selectShapesInitialized = false;
-									if (selectShapes[FirstShape] == null)
-									{
-										selectShapes[FirstShape] = shape;
-									}
-									VSDiagramView diagramView = diagram.ActiveDiagramView as VSDiagramView;
-									if (diagramView != null)
-									{
-										if (selectShapes[ActiveView] == null)
-										{
-											selectShapes[ActiveView] = shape;
-										}
-										if (diagramView == currentDesigner)
-										{
-											if (selectShapes[ActiveViewOnActiveDocView] == null)
-											{
-												selectShapes[ActiveViewOnActiveDocView] = shape;
-											}
-										}
-									}
-								}
-							}
-						}
-
-						// Walk the shapes in priority order and try to select them
-						if (!selectShapesInitialized)
-						{
-							for (int i = 0; i < SelectShapesSize; ++i)
-							{
-								ShapeElement shape = selectShapes[i];
-								if (shape != null)
-								{
-									if (proxyProvider == null)
-									{
-										proxyProvider = shape as IProxyDisplayProvider;
-									}
-									if (!useProxy && element is ORMModel && element != startElement)
-									{
-										if (proxyProvider != null)
-										{
-											useProxy = true;
-											element = startElement;
-											continueNow = true;
-											break;
-										}
-									}
-
-									if (targetDocData.ActivateShapeHelper(shape, ref currentDocView, ref currentDesigner, ref haveCurrentDesigner))
-									{
-										IModelErrorActivation activator;
-										if (null != modelError &&
-											null != (activator = shape as IModelErrorActivation))
-										{
-											activator.ActivateModelError(modelError);
-										}
-										return true;
-									}
-								}
-							}
-						}
-						if (continueNow)
-						{
-							continue;
-						}
-					}
-					ModelElement nextElement = element;
-					element = null;
-
-					// If we could not select the current element, then go up the aggregation chain
-					foreach (DomainRoleInfo role in nextElement.GetDomainClass().AllDomainRolesPlayed)
-					{
-						DomainRoleInfo oppositeRole = role.OppositeDomainRole;
-						if (oppositeRole.IsEmbedding)
-						{
-							LinkedElementCollection<ModelElement> parents = role.GetLinkedElements(nextElement);
-							if (parents.Count > 0)
-							{
-								Debug.Assert(parents.Count == 1); // The aggregating side of a relationship should have multiplicity==1
-								element = parents[0];
-								break;
-							}
-						}
-					}
-				}
-
-				// We couldn't find this on the shapes, attempt to find the item in the model browser
-				if (startElement != null)
-				{
-					element = startElement;
-					VirtualTreeControl treeControl = null;
-					while (element != null)
-					{
-						if (element is ISurveyNode)
-						{
-							// Assume if we're a SurveyNode that it is possible to select the item in the survey tree
-							if (treeControl == null)
-							{
-								// Make sure a docview associated with the current model is
-								// active. Otherwise, the model browser will not contain the
-								// correct tree.
-								if (!haveCurrentDesigner)
-								{
-									haveCurrentDesigner = true;
-									targetDocData.GetCurrentDesigner(ref currentDocView, ref currentDesigner);
-								}
-								if (currentDocView == null || currentDocView.DocData != targetDocData)
-								{
-									if (null == targetDocData.ActivateView(null))
-									{
-										return false;
-									}
-								}
-								// UNDONE: See if we can get the tree control without forcing the window to show
-								// This is safe, but gives weird results if the initial item cannot be found.
-								ORMModelBrowserToolWindow browserWindow;
-								SurveyTreeContainer treeContainer;
-								if (null != (browserWindow = ORMDesignerPackage.ORMModelBrowserWindow))
-								{
-									browserWindow.Show();
-									if (null != (treeContainer = browserWindow.Window as SurveyTreeContainer))
-									{
-										treeControl = treeContainer.TreeControl;
-									}
-								}
-								if (null == treeControl)
-								{
-									return false;
-								}
-							}
-							if (treeControl.SelectObject(null, element, (int)ObjectStyle.TrackingObject, 0))
-							{
-								ModelError error;
-								if (null != (error = locator as ModelError))
-								{
-									((IORMToolServices)myDocument).ModelErrorActivationService.ActivateError(element, error);
-								}
-								return true;
-							}
-						}
-						ModelElement currentElement = element;
-						element = null;
-						// If we could not select the current element, then go up the aggregation chain
-						foreach (DomainRoleInfo role in currentElement.GetDomainClass().AllDomainRolesPlayed)
-						{
-							DomainRoleInfo oppositeRole = role.OppositeDomainRole;
-							if (oppositeRole.IsEmbedding)
-							{
-								LinkedElementCollection<ModelElement> parents = role.GetLinkedElements(currentElement);
-								if (parents.Count > 0)
-								{
-									Debug.Assert(parents.Count == 1); // The aggregating side of a relationship should have multiplicity==1
-									element = parents[0];
-									break;
-								}
-							}
-						}
-					}
-				}
-				return false;
+				return myDocument.NavigateTo(task.ElementLocator);
 			}
 			bool IORMToolTaskProvider.NavigateTo(IORMToolTaskItem task)
 			{

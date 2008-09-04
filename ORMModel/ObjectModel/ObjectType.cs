@@ -4077,6 +4077,13 @@ namespace Neumont.Tools.ORM.ObjectModel
 					return myParentObject.Name;
 				}
 			}
+			private Guid Id
+			{
+				get
+				{
+					return myParentObject.Id;
+				}
+			}
 			private bool IsText
 			{
 				get

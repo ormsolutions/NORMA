@@ -114,6 +114,10 @@ namespace Neumont.Tools.ORM.SDK.TestEngine
 			{
 				return false;
 			}
+			bool IORMToolServices.NavigateTo(object element)
+			{
+				return false;
+			}
 			#endregion // IORMToolServices Implementation
 			#region IORMFontAndColorService Implementation
 			Color IORMFontAndColorService.GetBackColor(ORMDesignerColor colorIndex)

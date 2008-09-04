@@ -226,7 +226,7 @@ namespace Neumont.Tools.ORM.ObjectModel
 		NotesVerbalization,
 		/// <summary>The 'ObjectifiesFactTypeVerbalization' format string snippet. Contains 2 replacement fields.</summary>
 		ObjectifiesFactTypeVerbalization,
-		/// <summary>The 'ObjectType' format string snippet. Contains 1 replacement field.</summary>
+		/// <summary>The 'ObjectType' format string snippet. Contains 2 replacement fields.</summary>
 		ObjectType,
 		/// <summary>The 'ObjectTypeInstanceListClose' simple snippet value.</summary>
 		ObjectTypeInstanceListClose,
@@ -240,7 +240,7 @@ namespace Neumont.Tools.ORM.ObjectModel
 		ObjectTypeInstanceListSeparator,
 		/// <summary>The 'ObjectTypeMissing' format string snippet. Contains 1 replacement field.</summary>
 		ObjectTypeMissing,
-		/// <summary>The 'ObjectTypeWithSubscript' format string snippet. Contains 2 replacement fields.</summary>
+		/// <summary>The 'ObjectTypeWithSubscript' format string snippet. Contains 3 replacement fields.</summary>
 		ObjectTypeWithSubscript,
 		/// <summary>The 'OccursInPopulation' format string snippet. Contains 2 replacement fields.</summary>
 		OccursInPopulation,
@@ -252,6 +252,8 @@ namespace Neumont.Tools.ORM.ObjectModel
 		PersonalPronoun,
 		/// <summary>The 'PortableDataTypeVerbalization' format string snippet. Contains 1 replacement field.</summary>
 		PortableDataTypeVerbalization,
+		/// <summary>The 'PredicatePart' format string snippet. Contains 1 replacement field.</summary>
+		PredicatePart,
 		/// <summary>The 'ReferenceModeVerbalization' format string snippet. Contains 1 replacement field.</summary>
 		ReferenceModeVerbalization,
 		/// <summary>The 'ReferenceScheme' format string snippet. Contains 2 replacement fields.</summary>
@@ -452,19 +454,20 @@ namespace Neumont.Tools.ORM.ObjectModel
 				@"<span class=""instance"">{0}</span>",
 				@"<span class=""quantifier"">Notes:</span> <span class=""note"">{0}</span>",
 				@"{0} <span class=""quantifier"">objectifies</span> ""{1}""",
-				@"<span class=""objectType"">{0}</span>",
+				@"<a class=""objectType"" href=""elementid:{1}"">{0}</a>",
 				"",
 				@"<span class=""listSeparator"">, </span>",
 				@"<br/><span class=""quantifier"">Examples:</span> ",
 				@"<span class=""listSeparator"">, </span>",
 				@"<span class=""listSeparator"">, </span>",
 				@"<span class=""objectTypeMissing"">Missing<sub>{0}</sub></span>",
-				@"<span class=""objectType"">{0}<sub>{1}</sub></span>",
+				@"<a class=""objectType"" href=""elementid:{1}"">{0}<sub>{2}</sub></a>",
 				@"{0} <span class=""quantifier"">occurs at most once in the population of</span> {1}",
 				@"<span class=""quantifier"">at most one</span> {0}",
 				@"{0}<span class=""listSeparator"">.</span>{1}",
 				@"<span class=""quantifier"">who</span> {0}",
 				@"<span class=""quantifier"">Portable data type:</span> {0}",
+				@"<a class=""predicateText"" href=""elementid:{1}"">{{0}}</a>",
 				@"<span class=""quantifier"">Reference Mode:</span> <span class=""referenceMode"">{0}</span>",
 				@"{0}<span class=""listSeparator"">(</span><span class=""referenceMode"">{1}</span><span class=""listSeparator"">)</span>",
 				@"<span class=""quantifier"">Reference Scheme:</span> {0}",
@@ -508,6 +511,8 @@ namespace Neumont.Tools.ORM.ObjectModel
 	<title>ORM2 Verbalization</title>
 	<style type=""text/css"">
 		body {{ font-family: {0}; font-size: {1}pt; padding: .1em; color: {2}; {3} }}
+		a {{text-decoration:none; }}
+		a:hover {{background-color:infobackground; }}
 		.objectType {{ color: {4}; {5} }}
 		.objectTypeMissing {{ color: {4}; {5} }}
 		.referenceMode {{ color: {10}; {11} }}
@@ -633,19 +638,20 @@ namespace Neumont.Tools.ORM.ObjectModel
 				@"<span class=""instance"">{0}</span>",
 				@"<span class=""quantifier"">Notes:</span> <span class=""note"">{0}</span>",
 				@"{0} <span class=""quantifier"">objectifies</span> ""{1}""",
-				@"<span class=""objectType"">{0}</span>",
+				@"<a class=""objectType"" href=""elementid:{1}"">{0}</a>",
 				"",
 				@"<span class=""listSeparator"">, </span>",
 				@"<br/><span class=""quantifier"">Examples:</span> ",
 				@"<span class=""listSeparator"">, </span>",
 				@"<span class=""listSeparator"">, </span>",
 				@"<span class=""objectTypeMissing"">Missing<sub>{0}</sub></span>",
-				@"<span class=""objectType"">{0}<sub>{1}</sub></span>",
+				@"<a class=""objectType"" href=""elementid:{1}"">{0}<sub>{2}</sub></a>",
 				@"{0} <span class=""quantifier"">occurs at most once in the population of</span> {1}",
 				@"<span class=""quantifier"">at most one</span> {0}",
 				@"{0}<span class=""listSeparator"">.</span>{1}",
 				@"<span class=""quantifier"">who</span> {0}",
 				@"<span class=""quantifier"">Portable data type:</span> {0}",
+				@"<a class=""predicateText"" href=""elementid:{1}"">{{0}}</a>",
 				@"<span class=""quantifier"">Reference Mode:</span> <span class=""referenceMode"">{0}</span>",
 				@"{0}<span class=""listSeparator"">(</span><span class=""referenceMode"">{1}</span><span class=""listSeparator"">)</span>",
 				@"<span class=""quantifier"">Reference Scheme:</span> {0}",
@@ -689,6 +695,8 @@ namespace Neumont.Tools.ORM.ObjectModel
 	<title>ORM2 Verbalization</title>
 	<style type=""text/css"">
 		body {{ font-family: {0}; font-size: {1}pt; padding: .1em; color: {2}; {3} }}
+		a {{text-decoration:none; }}
+		a:hover {{background-color:infobackground; }}
 		.objectType {{ color: {4}; {5} }}
 		.objectTypeMissing {{ color: {4}; {5} }}
 		.referenceMode {{ color: {10}; {11} }}
@@ -814,19 +822,20 @@ namespace Neumont.Tools.ORM.ObjectModel
 				@"<span class=""instance"">{0}</span>",
 				@"<span class=""quantifier"">Notes:</span> <span class=""note"">{0}</span>",
 				@"{0} <span class=""quantifier"">objectifies</span> ""{1}""",
-				@"<span class=""objectType"">{0}</span>",
+				@"<a class=""objectType"" href=""elementid:{1}"">{0}</a>",
 				"",
 				@"<span class=""listSeparator"">, </span>",
 				@"<br/><span class=""quantifier"">Examples:</span> ",
 				@"<span class=""listSeparator"">, </span>",
 				@"<span class=""listSeparator"">, </span>",
 				@"<span class=""objectTypeMissing"">Missing<sub>{0}</sub></span>",
-				@"<span class=""objectType"">{0}<sub>{1}</sub></span>",
+				@"<a class=""objectType"" href=""elementid:{1}"">{0}<sub>{2}</sub></a>",
 				@"{0} <span class=""quantifier"">occurs more than once in the population of</span> {1}",
 				@"<span class=""quantifier"">more than one</span> {0}",
 				@"{0}<span class=""listSeparator"">.</span>{1}",
 				@"<span class=""quantifier"">who</span> {0}",
 				@"<span class=""quantifier"">Portable data type:</span> {0}",
+				@"<a class=""predicateText"" href=""elementid:{1}"">{{0}}</a>",
 				@"<span class=""quantifier"">Reference Mode:</span> <span class=""referenceMode"">{0}</span>",
 				@"{0}<span class=""listSeparator"">(</span><span class=""referenceMode"">{1}</span><span class=""listSeparator"">)</span>",
 				@"<span class=""quantifier"">Reference Scheme:</span> {0}",
@@ -870,6 +879,8 @@ namespace Neumont.Tools.ORM.ObjectModel
 	<title>ORM2 Verbalization</title>
 	<style type=""text/css"">
 		body {{ font-family: {0}; font-size: {1}pt; padding: .1em; color: {2}; {3} }}
+		a {{text-decoration:none; }}
+		a:hover {{background-color:infobackground; }}
 		.objectType {{ color: {4}; {5} }}
 		.objectTypeMissing {{ color: {4}; {5} }}
 		.referenceMode {{ color: {10}; {11} }}
@@ -995,19 +1006,20 @@ namespace Neumont.Tools.ORM.ObjectModel
 				@"<span class=""instance"">{0}</span>",
 				@"<span class=""quantifier"">Notes:</span> <span class=""note"">{0}</span>",
 				@"{0} <span class=""quantifier"">objectifies</span> ""{1}""",
-				@"<span class=""objectType"">{0}</span>",
+				@"<a class=""objectType"" href=""elementid:{1}"">{0}</a>",
 				"",
 				@"<span class=""listSeparator"">, </span>",
 				@"<br/><span class=""quantifier"">Examples:</span> ",
 				@"<span class=""listSeparator"">, </span>",
 				@"<span class=""listSeparator"">, </span>",
 				@"<span class=""objectTypeMissing"">Missing<sub>{0}</sub></span>",
-				@"<span class=""objectType"">{0}<sub>{1}</sub></span>",
+				@"<a class=""objectType"" href=""elementid:{1}"">{0}<sub>{2}</sub></a>",
 				@"{0} <span class=""quantifier"">occurs more than once in the population of</span> {1}",
 				@"<span class=""quantifier"">more than one</span> {0}",
 				@"{0}<span class=""listSeparator"">.</span>{1}",
 				@"<span class=""quantifier"">who</span> {0}",
 				@"<span class=""quantifier"">Portable data type:</span> {0}",
+				@"<a class=""predicateText"" href=""elementid:{1}"">{{0}}</a>",
 				@"<span class=""quantifier"">Reference Mode:</span> <span class=""referenceMode"">{0}</span>",
 				@"{0}<span class=""listSeparator"">(</span><span class=""referenceMode"">{1}</span><span class=""listSeparator"">)</span>",
 				@"<span class=""quantifier"">Reference Scheme:</span> {0}",
@@ -1051,6 +1063,8 @@ namespace Neumont.Tools.ORM.ObjectModel
 	<title>ORM2 Verbalization</title>
 	<style type=""text/css"">
 		body {{ font-family: {0}; font-size: {1}pt; padding: .1em; color: {2}; {3} }}
+		a {{text-decoration:none; }}
+		a:hover {{background-color:infobackground; }}
 		.objectType {{ color: {4}; {5} }}
 		.objectTypeMissing {{ color: {4}; {5} }}
 		.referenceMode {{ color: {10}; {11} }}
@@ -1149,6 +1163,7 @@ namespace Neumont.Tools.ORM.ObjectModel
 			int unaryRoleOffset = unaryRoleIndex.HasValue ? unaryRoleIndex.Value : 0;
 			FactType parentFact = this;
 			const bool isDeontic = false;
+			string predicatePartFormatString = string.Format(writer.FormatProvider, snippets.GetSnippet(CoreVerbalizationSnippetType.PredicatePart, isDeontic, isNegative), parentFact.Name, parentFact.Id.ToString("D"));
 			IReading reading;
 			VerbalizationHyphenBinder hyphenBinder;
 			#endregion // Preliminary
@@ -1161,7 +1176,7 @@ namespace Neumont.Tools.ORM.ObjectModel
 				string basicReplacement;
 				if (rolePlayer != null)
 				{
-					basicReplacement = string.Format(writer.FormatProvider, snippets.GetSnippet(CoreVerbalizationSnippetType.ObjectType, isDeontic, isNegative), rolePlayer.Name);
+					basicReplacement = string.Format(writer.FormatProvider, snippets.GetSnippet(CoreVerbalizationSnippetType.ObjectType, isDeontic, isNegative), rolePlayer.Name, rolePlayer.Id.ToString("D"));
 				}
 				else
 				{
@@ -1171,8 +1186,8 @@ namespace Neumont.Tools.ORM.ObjectModel
 			}
 			verbalizationContext.BeginVerbalization(VerbalizationContent.Normal);
 			reading = parentFact.GetMatchingReading(allReadingOrders, null, factRoles[0], null, false, false, false, factRoles, true);
-			hyphenBinder = new VerbalizationHyphenBinder(reading, factRoles, unaryRoleIndex, snippets.GetSnippet(CoreVerbalizationSnippetType.HyphenBoundPredicatePart, isDeontic, isNegative));
-			FactType.WriteVerbalizerSentence(writer, hyphenBinder.PopulatePredicateText(reading, factRoles, basicRoleReplacements, true), snippets.GetSnippet(CoreVerbalizationSnippetType.CloseVerbalizationSentence, isDeontic, isNegative));
+			hyphenBinder = new VerbalizationHyphenBinder(reading, writer.FormatProvider, factRoles, unaryRoleIndex, snippets.GetSnippet(CoreVerbalizationSnippetType.HyphenBoundPredicatePart, isDeontic, isNegative), predicatePartFormatString);
+			FactType.WriteVerbalizerSentence(writer, hyphenBinder.PopulatePredicateText(reading, writer.FormatProvider, predicatePartFormatString, factRoles, basicRoleReplacements, true), snippets.GetSnippet(CoreVerbalizationSnippetType.CloseVerbalizationSentence, isDeontic, isNegative));
 			#endregion // Pattern Matches
 			#region Error report
 			if (errorOwner != null)
@@ -1275,18 +1290,24 @@ namespace Neumont.Tools.ORM.ObjectModel
 			#region Pattern Matches
 			if (!isNegative)
 			{
+				ObjectType supertype = this.Supertype;
+				ObjectType subtype = this.Subtype;
 				verbalizationContext.BeginVerbalization(VerbalizationContent.Normal);
 				string snippetFormat1 = snippets.GetSnippet(CoreVerbalizationSnippetType.SubtypeMetaReading, isDeontic, isNegative);
 				string snippet1Replace1 = null;
 				string snippet1ReplaceFormat1 = snippets.GetSnippet(CoreVerbalizationSnippetType.ObjectType, isDeontic, isNegative);
 				string snippet1Replace1Replace1 = null;
-				snippet1Replace1Replace1 = this.Subtype.Name;
-				snippet1Replace1 = string.Format(writer.FormatProvider, snippet1ReplaceFormat1, snippet1Replace1Replace1);
+				snippet1Replace1Replace1 = subtype.Name;
+				string snippet1Replace1Replace2 = null;
+				snippet1Replace1Replace2 = subtype.Id.ToString("D");
+				snippet1Replace1 = string.Format(writer.FormatProvider, snippet1ReplaceFormat1, snippet1Replace1Replace1, snippet1Replace1Replace2);
 				string snippet1Replace2 = null;
 				string snippet1ReplaceFormat2 = snippets.GetSnippet(CoreVerbalizationSnippetType.ObjectType, isDeontic, isNegative);
 				string snippet1Replace2Replace1 = null;
-				snippet1Replace2Replace1 = this.Supertype.Name;
-				snippet1Replace2 = string.Format(writer.FormatProvider, snippet1ReplaceFormat2, snippet1Replace2Replace1);
+				snippet1Replace2Replace1 = supertype.Name;
+				string snippet1Replace2Replace2 = null;
+				snippet1Replace2Replace2 = supertype.Id.ToString("D");
+				snippet1Replace2 = string.Format(writer.FormatProvider, snippet1ReplaceFormat2, snippet1Replace2Replace1, snippet1Replace2Replace2);
 				FactType.WriteVerbalizerSentence(writer, string.Format(writer.FormatProvider, snippetFormat1, snippet1Replace1, snippet1Replace2), snippets.GetSnippet(CoreVerbalizationSnippetType.CloseVerbalizationSentence, isDeontic, isNegative));
 			}
 			#endregion // Pattern Matches
@@ -1408,7 +1429,9 @@ namespace Neumont.Tools.ORM.ObjectModel
 			string variableSnippet1ReplaceFormat1 = snippets.GetSnippet(CoreVerbalizationSnippetType.ObjectType, isDeontic, isNegative);
 			string variableSnippet1Replace1Replace1 = null;
 			variableSnippet1Replace1Replace1 = this.Name;
-			variableSnippet1Replace1 = string.Format(writer.FormatProvider, variableSnippet1ReplaceFormat1, variableSnippet1Replace1Replace1);
+			string variableSnippet1Replace1Replace2 = null;
+			variableSnippet1Replace1Replace2 = this.Id.ToString("D");
+			variableSnippet1Replace1 = string.Format(writer.FormatProvider, variableSnippet1ReplaceFormat1, variableSnippet1Replace1Replace1, variableSnippet1Replace1Replace2);
 			FactType.WriteVerbalizerSentence(writer, string.Format(writer.FormatProvider, variableSnippetFormat1, variableSnippet1Replace1), snippets.GetSnippet(CoreVerbalizationSnippetType.CloseVerbalizationSentence, isDeontic, isNegative));
 			if (this.NestedFactType != null)
 			{
@@ -1420,6 +1443,7 @@ namespace Neumont.Tools.ORM.ObjectModel
 				IReading reading = null;
 				VerbalizationHyphenBinder hyphenBinder;
 				FactType parentFact = this.NestedFactType;
+				string predicatePartFormatString = string.Format(writer.FormatProvider, snippets.GetSnippet(CoreVerbalizationSnippetType.PredicatePart, isDeontic, isNegative), parentFact.Name, parentFact.Id.ToString("D"));
 				allReadingOrders = parentFact.ReadingOrderCollection;
 				factRoles = allReadingOrders.Count != 0 ? allReadingOrders[0].RoleCollection : parentFact.RoleCollection;
 				unaryRoleIndex = FactType.GetUnaryRoleIndex(factRoles);
@@ -1433,7 +1457,7 @@ namespace Neumont.Tools.ORM.ObjectModel
 					string basicReplacement;
 					if (rolePlayer != null)
 					{
-						basicReplacement = string.Format(writer.FormatProvider, snippets.GetSnippet(CoreVerbalizationSnippetType.ObjectType, isDeontic, isNegative), rolePlayer.Name);
+						basicReplacement = string.Format(writer.FormatProvider, snippets.GetSnippet(CoreVerbalizationSnippetType.ObjectType, isDeontic, isNegative), rolePlayer.Name, rolePlayer.Id.ToString("D"));
 					}
 					else
 					{
@@ -1447,11 +1471,13 @@ namespace Neumont.Tools.ORM.ObjectModel
 				string snippet2ReplaceFormat1 = snippets.GetSnippet(CoreVerbalizationSnippetType.ObjectType, isDeontic, isNegative);
 				string snippet2Replace1Replace1 = null;
 				snippet2Replace1Replace1 = this.Name;
-				snippet2Replace1 = string.Format(writer.FormatProvider, snippet2ReplaceFormat1, snippet2Replace1Replace1);
+				string snippet2Replace1Replace2 = null;
+				snippet2Replace1Replace2 = this.Id.ToString("D");
+				snippet2Replace1 = string.Format(writer.FormatProvider, snippet2ReplaceFormat1, snippet2Replace1Replace1, snippet2Replace1Replace2);
 				string snippet2Replace2 = null;
 				reading = parentFact.GetMatchingReading(allReadingOrders, null, factRoles[0], null, false, false, false, factRoles, true);
-				hyphenBinder = new VerbalizationHyphenBinder(reading, factRoles, unaryRoleIndex, snippets.GetSnippet(CoreVerbalizationSnippetType.HyphenBoundPredicatePart, isDeontic, isNegative));
-				snippet2Replace2 = hyphenBinder.PopulatePredicateText(reading, factRoles, basicRoleReplacements, true);
+				hyphenBinder = new VerbalizationHyphenBinder(reading, writer.FormatProvider, factRoles, unaryRoleIndex, snippets.GetSnippet(CoreVerbalizationSnippetType.HyphenBoundPredicatePart, isDeontic, isNegative), predicatePartFormatString);
+				snippet2Replace2 = hyphenBinder.PopulatePredicateText(reading, writer.FormatProvider, predicatePartFormatString, factRoles, basicRoleReplacements, true);
 				FactType.WriteVerbalizerSentence(writer, string.Format(writer.FormatProvider, snippetFormat2, snippet2Replace1, snippet2Replace2), snippets.GetSnippet(CoreVerbalizationSnippetType.CloseVerbalizationSentence, isDeontic, isNegative));
 			}
 			if (preferredIdentifier != null && !(preferredIdentifier.IsInternal && preferredIdentifier.FactTypeCollection[0].NestingType != null))
@@ -1473,6 +1499,7 @@ namespace Neumont.Tools.ORM.ObjectModel
 				{
 					RoleBase primaryRole = includedRoles[RoleIter1];
 					FactType parentFact = primaryRole.FactType;
+					string predicatePartFormatString = string.Format(writer.FormatProvider, snippets.GetSnippet(CoreVerbalizationSnippetType.PredicatePart, isDeontic, isNegative), parentFact.Name, parentFact.Id.ToString("D"));
 					LinkedElementCollection<ReadingOrder> allReadingOrders = parentFact.ReadingOrderCollection;
 					IList<RoleBase> factRoles = allReadingOrders.Count != 0 ? allReadingOrders[0].RoleCollection : parentFact.RoleCollection;
 					Nullable<int> unaryRoleIndex = FactType.GetUnaryRoleIndex(factRoles);
@@ -1488,7 +1515,7 @@ namespace Neumont.Tools.ORM.ObjectModel
 						string basicReplacement;
 						if (rolePlayer != null)
 						{
-							basicReplacement = string.Format(writer.FormatProvider, snippets.GetSnippet(CoreVerbalizationSnippetType.ObjectType, isDeontic, isNegative), rolePlayer.Name);
+							basicReplacement = string.Format(writer.FormatProvider, snippets.GetSnippet(CoreVerbalizationSnippetType.ObjectType, isDeontic, isNegative), rolePlayer.Name, rolePlayer.Id.ToString("D"));
 						}
 						else
 						{
@@ -1518,8 +1545,8 @@ namespace Neumont.Tools.ORM.ObjectModel
 					}
 					sbTemp.Append(snippets.GetSnippet(listSnippet, isDeontic, isNegative));
 					reading = parentFact.GetMatchingReading(allReadingOrders, null, factRoles[0], null, false, false, false, factRoles, true);
-					hyphenBinder = new VerbalizationHyphenBinder(reading, factRoles, unaryRoleIndex, snippets.GetSnippet(CoreVerbalizationSnippetType.HyphenBoundPredicatePart, isDeontic, isNegative));
-					snippet3Replace1 = hyphenBinder.PopulatePredicateText(reading, factRoles, basicRoleReplacements, true);
+					hyphenBinder = new VerbalizationHyphenBinder(reading, writer.FormatProvider, factRoles, unaryRoleIndex, snippets.GetSnippet(CoreVerbalizationSnippetType.HyphenBoundPredicatePart, isDeontic, isNegative), predicatePartFormatString);
+					snippet3Replace1 = hyphenBinder.PopulatePredicateText(reading, writer.FormatProvider, predicatePartFormatString, factRoles, basicRoleReplacements, true);
 					sbTemp.Append(snippet3Replace1);
 					if (RoleIter1 == constraintRoleArity - 1)
 					{
@@ -1545,7 +1572,9 @@ namespace Neumont.Tools.ORM.ObjectModel
 				string snippet5ReplaceFormat1 = snippets.GetSnippet(CoreVerbalizationSnippetType.ObjectType, isDeontic, isNegative);
 				string snippet5Replace1Replace1 = null;
 				snippet5Replace1Replace1 = this.Name;
-				snippet5Replace1 = string.Format(writer.FormatProvider, snippet5ReplaceFormat1, snippet5Replace1Replace1);
+				string snippet5Replace1Replace2 = null;
+				snippet5Replace1Replace2 = this.Id.ToString("D");
+				snippet5Replace1 = string.Format(writer.FormatProvider, snippet5ReplaceFormat1, snippet5Replace1Replace1, snippet5Replace1Replace2);
 				FactType.WriteVerbalizerSentence(writer, string.Format(writer.FormatProvider, snippetFormat5, snippet5Replace1), snippets.GetSnippet(CoreVerbalizationSnippetType.CloseVerbalizationSentence, isDeontic, isNegative));
 			}
 			if (this.DataType != null)
@@ -1866,6 +1895,7 @@ namespace Neumont.Tools.ORM.ObjectModel
 			bool isDeontic = (this as IConstraint).Modality == ConstraintModality.Deontic;
 			StringBuilder sbTemp = null;
 			FactType parentFact;
+			string predicatePartFormatString;
 			LinkedElementCollection<ReadingOrder> allReadingOrders;
 			IList<RoleBase> factRoles = null;
 			Nullable<int> unaryRoleIndex = null;
@@ -1976,7 +2006,7 @@ namespace Neumont.Tools.ORM.ObjectModel
 					string basicReplacement;
 					if (rolePlayer != null)
 					{
-						basicReplacement = string.Format(writer.FormatProvider, snippets.GetSnippet(CoreVerbalizationSnippetType.ObjectType, isDeontic, isNegative), rolePlayer.Name);
+						basicReplacement = string.Format(writer.FormatProvider, snippets.GetSnippet(CoreVerbalizationSnippetType.ObjectType, isDeontic, isNegative), rolePlayer.Name, rolePlayer.Id.ToString("D"));
 					}
 					else
 					{
@@ -2000,6 +2030,7 @@ namespace Neumont.Tools.ORM.ObjectModel
 				{
 					RoleBase primaryRole = allConstraintSequences[readingMatchIndex1][0];
 					parentFact = primaryRole.FactType;
+					predicatePartFormatString = string.Format(writer.FormatProvider, snippets.GetSnippet(CoreVerbalizationSnippetType.PredicatePart, isDeontic, isNegative), parentFact.Name, parentFact.Id.ToString("D"));
 					allReadingOrders = parentFact.ReadingOrderCollection;
 					factRoles = allReadingOrders.Count != 0 ? allReadingOrders[0].RoleCollection : parentFact.RoleCollection;
 					reading = parentFact.GetMatchingReading(allReadingOrders, null, primaryRole, null, false, false, false, factRoles, false);
@@ -2035,11 +2066,12 @@ namespace Neumont.Tools.ORM.ObjectModel
 						{
 							RoleBase primaryRole = includedSequenceRoles[RoleIter1];
 							parentFact = primaryRole.FactType;
+							predicatePartFormatString = string.Format(writer.FormatProvider, snippets.GetSnippet(CoreVerbalizationSnippetType.PredicatePart, isDeontic, isNegative), parentFact.Name, parentFact.Id.ToString("D"));
 							allReadingOrders = parentFact.ReadingOrderCollection;
 							factRoles = allReadingOrders.Count != 0 ? allReadingOrders[0].RoleCollection : parentFact.RoleCollection;
 							factArity = factRoles.Count;
 							reading = parentFact.GetMatchingReading(allReadingOrders, null, primaryRole, null, false, false, false, factRoles, true);
-							hyphenBinder = new VerbalizationHyphenBinder(reading, factRoles, unaryRoleIndex, snippets.GetSnippet(CoreVerbalizationSnippetType.HyphenBoundPredicatePart, isDeontic, isNegative));
+							hyphenBinder = new VerbalizationHyphenBinder(reading, writer.FormatProvider, factRoles, unaryRoleIndex, snippets.GetSnippet(CoreVerbalizationSnippetType.HyphenBoundPredicatePart, isDeontic, isNegative), predicatePartFormatString);
 							for (int snippet1Replace1ReplaceFactRoleIter1 = 0; snippet1Replace1ReplaceFactRoleIter1 < factArity; ++snippet1Replace1ReplaceFactRoleIter1)
 							{
 								RoleBase currentRole = factRoles[snippet1Replace1ReplaceFactRoleIter1];
@@ -2052,7 +2084,7 @@ namespace Neumont.Tools.ORM.ObjectModel
 								}
 								roleReplacements[snippet1Replace1ReplaceFactRoleIter1] = roleReplacement;
 							}
-							snippet1Replace1Replace1 = hyphenBinder.PopulatePredicateText(reading, factRoles, roleReplacements, false);
+							snippet1Replace1Replace1 = hyphenBinder.PopulatePredicateText(reading, writer.FormatProvider, predicatePartFormatString, factRoles, roleReplacements, false);
 							sbTemp.Append(snippet1Replace1Replace1);
 						}
 						snippet1Replace1Replace1 = sbTemp.ToString();
@@ -2074,11 +2106,12 @@ namespace Neumont.Tools.ORM.ObjectModel
 						{
 							RoleBase primaryRole = includedSequenceRoles[RoleIter2];
 							parentFact = primaryRole.FactType;
+							predicatePartFormatString = string.Format(writer.FormatProvider, snippets.GetSnippet(CoreVerbalizationSnippetType.PredicatePart, isDeontic, isNegative), parentFact.Name, parentFact.Id.ToString("D"));
 							allReadingOrders = parentFact.ReadingOrderCollection;
 							factRoles = allReadingOrders.Count != 0 ? allReadingOrders[0].RoleCollection : parentFact.RoleCollection;
 							factArity = factRoles.Count;
 							reading = parentFact.GetMatchingReading(allReadingOrders, null, primaryRole, null, false, false, false, factRoles, true);
-							hyphenBinder = new VerbalizationHyphenBinder(reading, factRoles, unaryRoleIndex, snippets.GetSnippet(CoreVerbalizationSnippetType.HyphenBoundPredicatePart, isDeontic, isNegative));
+							hyphenBinder = new VerbalizationHyphenBinder(reading, writer.FormatProvider, factRoles, unaryRoleIndex, snippets.GetSnippet(CoreVerbalizationSnippetType.HyphenBoundPredicatePart, isDeontic, isNegative), predicatePartFormatString);
 							for (int snippet1Replace1ReplaceFactRoleIter2 = 0; snippet1Replace1ReplaceFactRoleIter2 < factArity; ++snippet1Replace1ReplaceFactRoleIter2)
 							{
 								RoleBase currentRole = factRoles[snippet1Replace1ReplaceFactRoleIter2];
@@ -2098,7 +2131,7 @@ namespace Neumont.Tools.ORM.ObjectModel
 								}
 								roleReplacements[snippet1Replace1ReplaceFactRoleIter2] = roleReplacement;
 							}
-							snippet1Replace1Replace2 = hyphenBinder.PopulatePredicateText(reading, factRoles, roleReplacements, false);
+							snippet1Replace1Replace2 = hyphenBinder.PopulatePredicateText(reading, writer.FormatProvider, predicatePartFormatString, factRoles, roleReplacements, false);
 							sbTemp.Append(snippet1Replace1Replace2);
 						}
 						snippet1Replace1Replace2 = sbTemp.ToString();
@@ -2155,11 +2188,12 @@ namespace Neumont.Tools.ORM.ObjectModel
 						{
 							RoleBase primaryRole = includedSequenceRoles[RoleIter1];
 							parentFact = primaryRole.FactType;
+							predicatePartFormatString = string.Format(writer.FormatProvider, snippets.GetSnippet(CoreVerbalizationSnippetType.PredicatePart, isDeontic, isNegative), parentFact.Name, parentFact.Id.ToString("D"));
 							allReadingOrders = parentFact.ReadingOrderCollection;
 							factRoles = allReadingOrders.Count != 0 ? allReadingOrders[0].RoleCollection : parentFact.RoleCollection;
 							factArity = factRoles.Count;
 							reading = parentFact.GetMatchingReading(allReadingOrders, null, null, (System.Collections.IList)factRoles, false, false, false, factRoles, true);
-							hyphenBinder = new VerbalizationHyphenBinder(reading, factRoles, unaryRoleIndex, snippets.GetSnippet(CoreVerbalizationSnippetType.HyphenBoundPredicatePart, isDeontic, isNegative));
+							hyphenBinder = new VerbalizationHyphenBinder(reading, writer.FormatProvider, factRoles, unaryRoleIndex, snippets.GetSnippet(CoreVerbalizationSnippetType.HyphenBoundPredicatePart, isDeontic, isNegative), predicatePartFormatString);
 							for (int snippet1Replace1Replace2ReplaceFactRoleIter1 = 0; snippet1Replace1Replace2ReplaceFactRoleIter1 < factArity; ++snippet1Replace1Replace2ReplaceFactRoleIter1)
 							{
 								RoleBase currentRole = factRoles[snippet1Replace1Replace2ReplaceFactRoleIter1];
@@ -2179,7 +2213,7 @@ namespace Neumont.Tools.ORM.ObjectModel
 								}
 								roleReplacements[snippet1Replace1Replace2ReplaceFactRoleIter1] = roleReplacement;
 							}
-							snippet1Replace1Replace2Replace1 = hyphenBinder.PopulatePredicateText(reading, factRoles, roleReplacements, false);
+							snippet1Replace1Replace2Replace1 = hyphenBinder.PopulatePredicateText(reading, writer.FormatProvider, predicatePartFormatString, factRoles, roleReplacements, false);
 							sbTemp.Append(snippet1Replace1Replace2Replace1);
 						}
 						snippet1Replace1Replace2Replace1 = sbTemp.ToString();
@@ -2201,11 +2235,12 @@ namespace Neumont.Tools.ORM.ObjectModel
 						{
 							RoleBase primaryRole = includedSequenceRoles[RoleIter2];
 							parentFact = primaryRole.FactType;
+							predicatePartFormatString = string.Format(writer.FormatProvider, snippets.GetSnippet(CoreVerbalizationSnippetType.PredicatePart, isDeontic, isNegative), parentFact.Name, parentFact.Id.ToString("D"));
 							allReadingOrders = parentFact.ReadingOrderCollection;
 							factRoles = allReadingOrders.Count != 0 ? allReadingOrders[0].RoleCollection : parentFact.RoleCollection;
 							factArity = factRoles.Count;
 							reading = parentFact.GetMatchingReading(allReadingOrders, null, null, (System.Collections.IList)factRoles, false, false, false, factRoles, true);
-							hyphenBinder = new VerbalizationHyphenBinder(reading, factRoles, unaryRoleIndex, snippets.GetSnippet(CoreVerbalizationSnippetType.HyphenBoundPredicatePart, isDeontic, isNegative));
+							hyphenBinder = new VerbalizationHyphenBinder(reading, writer.FormatProvider, factRoles, unaryRoleIndex, snippets.GetSnippet(CoreVerbalizationSnippetType.HyphenBoundPredicatePart, isDeontic, isNegative), predicatePartFormatString);
 							for (int snippet1Replace1Replace2ReplaceFactRoleIter2 = 0; snippet1Replace1Replace2ReplaceFactRoleIter2 < factArity; ++snippet1Replace1Replace2ReplaceFactRoleIter2)
 							{
 								RoleBase currentRole = factRoles[snippet1Replace1Replace2ReplaceFactRoleIter2];
@@ -2225,7 +2260,7 @@ namespace Neumont.Tools.ORM.ObjectModel
 								}
 								roleReplacements[snippet1Replace1Replace2ReplaceFactRoleIter2] = roleReplacement;
 							}
-							snippet1Replace1Replace2Replace2 = hyphenBinder.PopulatePredicateText(reading, factRoles, roleReplacements, false);
+							snippet1Replace1Replace2Replace2 = hyphenBinder.PopulatePredicateText(reading, writer.FormatProvider, predicatePartFormatString, factRoles, roleReplacements, false);
 							sbTemp.Append(snippet1Replace1Replace2Replace2);
 						}
 						snippet1Replace1Replace2Replace2 = sbTemp.ToString();
@@ -2242,6 +2277,7 @@ namespace Neumont.Tools.ORM.ObjectModel
 				{
 					RoleBase primaryRole = allConstraintSequences[readingMatchIndex1][0];
 					parentFact = primaryRole.FactType;
+					predicatePartFormatString = string.Format(writer.FormatProvider, snippets.GetSnippet(CoreVerbalizationSnippetType.PredicatePart, isDeontic, isNegative), parentFact.Name, parentFact.Id.ToString("D"));
 					allReadingOrders = parentFact.ReadingOrderCollection;
 					factRoles = allReadingOrders.Count != 0 ? allReadingOrders[0].RoleCollection : parentFact.RoleCollection;
 					reading = parentFact.GetMatchingReading(allReadingOrders, null, primaryRole, null, false, false, false, factRoles, false);
@@ -2292,6 +2328,7 @@ namespace Neumont.Tools.ORM.ObjectModel
 						{
 							RoleBase primaryRole = includedSequenceRoles[RoleIter1];
 							parentFact = primaryRole.FactType;
+							predicatePartFormatString = string.Format(writer.FormatProvider, snippets.GetSnippet(CoreVerbalizationSnippetType.PredicatePart, isDeontic, isNegative), parentFact.Name, parentFact.Id.ToString("D"));
 							allReadingOrders = parentFact.ReadingOrderCollection;
 							factRoles = allReadingOrders.Count != 0 ? allReadingOrders[0].RoleCollection : parentFact.RoleCollection;
 							factArity = factRoles.Count;
@@ -2320,7 +2357,7 @@ namespace Neumont.Tools.ORM.ObjectModel
 								}
 								sbTemp.Append(snippets.GetSnippet(listSnippet, isDeontic, isNegative));
 								reading = parentFact.GetMatchingReading(allReadingOrders, null, primaryRole, null, false, false, false, factRoles, true);
-								hyphenBinder = new VerbalizationHyphenBinder(reading, factRoles, unaryRoleIndex, snippets.GetSnippet(CoreVerbalizationSnippetType.HyphenBoundPredicatePart, isDeontic, isNegative));
+								hyphenBinder = new VerbalizationHyphenBinder(reading, writer.FormatProvider, factRoles, unaryRoleIndex, snippets.GetSnippet(CoreVerbalizationSnippetType.HyphenBoundPredicatePart, isDeontic, isNegative), predicatePartFormatString);
 								for (int snippet1Replace1ReplaceFactRoleIter1 = 0; snippet1Replace1ReplaceFactRoleIter1 < factArity; ++snippet1Replace1ReplaceFactRoleIter1)
 								{
 									RoleBase currentRole = factRoles[snippet1Replace1ReplaceFactRoleIter1];
@@ -2333,7 +2370,7 @@ namespace Neumont.Tools.ORM.ObjectModel
 									}
 									roleReplacements[snippet1Replace1ReplaceFactRoleIter1] = roleReplacement;
 								}
-								snippet1Replace1Replace1 = hyphenBinder.PopulatePredicateText(reading, factRoles, roleReplacements, false);
+								snippet1Replace1Replace1 = hyphenBinder.PopulatePredicateText(reading, writer.FormatProvider, predicatePartFormatString, factRoles, roleReplacements, false);
 								sbTemp.Append(snippet1Replace1Replace1);
 								if (snippet1Replace1ReplaceFilteredIter1 == snippet1Replace1ReplaceFilteredCount1 - 1)
 								{
@@ -2376,6 +2413,7 @@ namespace Neumont.Tools.ORM.ObjectModel
 						{
 							RoleBase primaryRole = includedSequenceRoles[RoleIter2];
 							parentFact = primaryRole.FactType;
+							predicatePartFormatString = string.Format(writer.FormatProvider, snippets.GetSnippet(CoreVerbalizationSnippetType.PredicatePart, isDeontic, isNegative), parentFact.Name, parentFact.Id.ToString("D"));
 							allReadingOrders = parentFact.ReadingOrderCollection;
 							factRoles = allReadingOrders.Count != 0 ? allReadingOrders[0].RoleCollection : parentFact.RoleCollection;
 							factArity = factRoles.Count;
@@ -2404,7 +2442,7 @@ namespace Neumont.Tools.ORM.ObjectModel
 								}
 								sbTemp.Append(snippets.GetSnippet(listSnippet, isDeontic, isNegative));
 								reading = parentFact.GetMatchingReading(allReadingOrders, null, primaryRole, null, false, false, false, factRoles, true);
-								hyphenBinder = new VerbalizationHyphenBinder(reading, factRoles, unaryRoleIndex, snippets.GetSnippet(CoreVerbalizationSnippetType.HyphenBoundPredicatePart, isDeontic, isNegative));
+								hyphenBinder = new VerbalizationHyphenBinder(reading, writer.FormatProvider, factRoles, unaryRoleIndex, snippets.GetSnippet(CoreVerbalizationSnippetType.HyphenBoundPredicatePart, isDeontic, isNegative), predicatePartFormatString);
 								for (int snippet1Replace1ReplaceFactRoleIter2 = 0; snippet1Replace1ReplaceFactRoleIter2 < factArity; ++snippet1Replace1ReplaceFactRoleIter2)
 								{
 									RoleBase currentRole = factRoles[snippet1Replace1ReplaceFactRoleIter2];
@@ -2424,7 +2462,7 @@ namespace Neumont.Tools.ORM.ObjectModel
 									}
 									roleReplacements[snippet1Replace1ReplaceFactRoleIter2] = roleReplacement;
 								}
-								snippet1Replace1Replace2 = hyphenBinder.PopulatePredicateText(reading, factRoles, roleReplacements, false);
+								snippet1Replace1Replace2 = hyphenBinder.PopulatePredicateText(reading, writer.FormatProvider, predicatePartFormatString, factRoles, roleReplacements, false);
 								sbTemp.Append(snippet1Replace1Replace2);
 								if (snippet1Replace1ReplaceFilteredIter2 == snippet1Replace1ReplaceFilteredCount2 - 1)
 								{
@@ -2476,6 +2514,7 @@ namespace Neumont.Tools.ORM.ObjectModel
 						{
 							RoleBase primaryRole = includedSequenceRoles[RoleIter1];
 							parentFact = primaryRole.FactType;
+							predicatePartFormatString = string.Format(writer.FormatProvider, snippets.GetSnippet(CoreVerbalizationSnippetType.PredicatePart, isDeontic, isNegative), parentFact.Name, parentFact.Id.ToString("D"));
 							allReadingOrders = parentFact.ReadingOrderCollection;
 							factRoles = allReadingOrders.Count != 0 ? allReadingOrders[0].RoleCollection : parentFact.RoleCollection;
 							factArity = factRoles.Count;
@@ -2504,7 +2543,7 @@ namespace Neumont.Tools.ORM.ObjectModel
 								}
 								sbTemp.Append(snippets.GetSnippet(listSnippet, isDeontic, isNegative));
 								reading = parentFact.GetMatchingReading(allReadingOrders, null, primaryRole, null, false, false, false, factRoles, true);
-								hyphenBinder = new VerbalizationHyphenBinder(reading, factRoles, unaryRoleIndex, snippets.GetSnippet(CoreVerbalizationSnippetType.HyphenBoundPredicatePart, isDeontic, isNegative));
+								hyphenBinder = new VerbalizationHyphenBinder(reading, writer.FormatProvider, factRoles, unaryRoleIndex, snippets.GetSnippet(CoreVerbalizationSnippetType.HyphenBoundPredicatePart, isDeontic, isNegative), predicatePartFormatString);
 								for (int snippet1Replace1ReplaceFactRoleIter1 = 0; snippet1Replace1ReplaceFactRoleIter1 < factArity; ++snippet1Replace1ReplaceFactRoleIter1)
 								{
 									RoleBase currentRole = factRoles[snippet1Replace1ReplaceFactRoleIter1];
@@ -2517,7 +2556,7 @@ namespace Neumont.Tools.ORM.ObjectModel
 									}
 									roleReplacements[snippet1Replace1ReplaceFactRoleIter1] = roleReplacement;
 								}
-								snippet1Replace1Replace1 = hyphenBinder.PopulatePredicateText(reading, factRoles, roleReplacements, false);
+								snippet1Replace1Replace1 = hyphenBinder.PopulatePredicateText(reading, writer.FormatProvider, predicatePartFormatString, factRoles, roleReplacements, false);
 								sbTemp.Append(snippet1Replace1Replace1);
 								if (snippet1Replace1ReplaceFilteredIter1 == snippet1Replace1ReplaceFilteredCount1 - 1)
 								{
@@ -2560,6 +2599,7 @@ namespace Neumont.Tools.ORM.ObjectModel
 						{
 							RoleBase primaryRole = includedSequenceRoles[RoleIter2];
 							parentFact = primaryRole.FactType;
+							predicatePartFormatString = string.Format(writer.FormatProvider, snippets.GetSnippet(CoreVerbalizationSnippetType.PredicatePart, isDeontic, isNegative), parentFact.Name, parentFact.Id.ToString("D"));
 							allReadingOrders = parentFact.ReadingOrderCollection;
 							factRoles = allReadingOrders.Count != 0 ? allReadingOrders[0].RoleCollection : parentFact.RoleCollection;
 							factArity = factRoles.Count;
@@ -2588,7 +2628,7 @@ namespace Neumont.Tools.ORM.ObjectModel
 								}
 								sbTemp.Append(snippets.GetSnippet(listSnippet, isDeontic, isNegative));
 								reading = parentFact.GetMatchingReading(allReadingOrders, null, primaryRole, null, false, false, false, factRoles, true);
-								hyphenBinder = new VerbalizationHyphenBinder(reading, factRoles, unaryRoleIndex, snippets.GetSnippet(CoreVerbalizationSnippetType.HyphenBoundPredicatePart, isDeontic, isNegative));
+								hyphenBinder = new VerbalizationHyphenBinder(reading, writer.FormatProvider, factRoles, unaryRoleIndex, snippets.GetSnippet(CoreVerbalizationSnippetType.HyphenBoundPredicatePart, isDeontic, isNegative), predicatePartFormatString);
 								for (int snippet1Replace1ReplaceFactRoleIter2 = 0; snippet1Replace1ReplaceFactRoleIter2 < factArity; ++snippet1Replace1ReplaceFactRoleIter2)
 								{
 									RoleBase currentRole = factRoles[snippet1Replace1ReplaceFactRoleIter2];
@@ -2608,7 +2648,7 @@ namespace Neumont.Tools.ORM.ObjectModel
 									}
 									roleReplacements[snippet1Replace1ReplaceFactRoleIter2] = roleReplacement;
 								}
-								snippet1Replace1Replace2 = hyphenBinder.PopulatePredicateText(reading, factRoles, roleReplacements, false);
+								snippet1Replace1Replace2 = hyphenBinder.PopulatePredicateText(reading, writer.FormatProvider, predicatePartFormatString, factRoles, roleReplacements, false);
 								sbTemp.Append(snippet1Replace1Replace2);
 								if (snippet1Replace1ReplaceFilteredIter2 == snippet1Replace1ReplaceFilteredCount2 - 1)
 								{
@@ -2699,6 +2739,7 @@ namespace Neumont.Tools.ORM.ObjectModel
 				bool isDeontic = this.Modality == ConstraintModality.Deontic;
 				StringBuilder sbTemp = null;
 				FactType parentFact = this.FactType;
+				string predicatePartFormatString = string.Format(writer.FormatProvider, snippets.GetSnippet(CoreVerbalizationSnippetType.PredicatePart, isDeontic, isNegative), parentFact.Name, parentFact.Id.ToString("D"));
 				LinkedElementCollection<Role> includedRoles = this.RoleCollection;
 				LinkedElementCollection<ReadingOrder> allReadingOrders = parentFact.ReadingOrderCollection;
 				IList<RoleBase> factRoles = allReadingOrders.Count != 0 ? allReadingOrders[0].RoleCollection : parentFact.RoleCollection;
@@ -2718,7 +2759,7 @@ namespace Neumont.Tools.ORM.ObjectModel
 					string basicReplacement;
 					if (rolePlayer != null)
 					{
-						basicReplacement = string.Format(writer.FormatProvider, snippets.GetSnippet(CoreVerbalizationSnippetType.ObjectType, isDeontic, isNegative), rolePlayer.Name);
+						basicReplacement = string.Format(writer.FormatProvider, snippets.GetSnippet(CoreVerbalizationSnippetType.ObjectType, isDeontic, isNegative), rolePlayer.Name, rolePlayer.Id.ToString("D"));
 					}
 					else
 					{
@@ -2734,7 +2775,7 @@ namespace Neumont.Tools.ORM.ObjectModel
 				if (includedArity == 1 && factArity == 2 && !isNegative)
 				{
 					reading = parentFact.GetMatchingReading(allReadingOrders, null, null, includedRoles, false, false, false, factRoles, false);
-					hyphenBinder = new VerbalizationHyphenBinder(reading, factRoles, unaryRoleIndex, snippets.GetSnippet(CoreVerbalizationSnippetType.HyphenBoundPredicatePart, isDeontic, isNegative));
+					hyphenBinder = new VerbalizationHyphenBinder(reading, writer.FormatProvider, factRoles, unaryRoleIndex, snippets.GetSnippet(CoreVerbalizationSnippetType.HyphenBoundPredicatePart, isDeontic, isNegative), predicatePartFormatString);
 					if (reading != null)
 					{
 						verbalizationContext.BeginVerbalization(VerbalizationContent.Normal);
@@ -2759,13 +2800,13 @@ namespace Neumont.Tools.ORM.ObjectModel
 							}
 							roleReplacements[snippet1ReplaceFactRoleIter1] = roleReplacement;
 						}
-						snippet1Replace1 = hyphenBinder.PopulatePredicateText(reading, factRoles, roleReplacements, false);
+						snippet1Replace1 = hyphenBinder.PopulatePredicateText(reading, writer.FormatProvider, predicatePartFormatString, factRoles, roleReplacements, false);
 						FactType.WriteVerbalizerSentence(writer, string.Format(writer.FormatProvider, snippetFormat1, snippet1Replace1), snippets.GetSnippet(CoreVerbalizationSnippetType.CloseVerbalizationSentence, isDeontic, isNegative));
 					}
 					else
 					{
 						reading = parentFact.GetMatchingReading(allReadingOrders, null, factRoles[0], null, false, false, false, factRoles, true);
-						hyphenBinder = new VerbalizationHyphenBinder(reading, factRoles, unaryRoleIndex, snippets.GetSnippet(CoreVerbalizationSnippetType.HyphenBoundPredicatePart, isDeontic, isNegative));
+						hyphenBinder = new VerbalizationHyphenBinder(reading, writer.FormatProvider, factRoles, unaryRoleIndex, snippets.GetSnippet(CoreVerbalizationSnippetType.HyphenBoundPredicatePart, isDeontic, isNegative), predicatePartFormatString);
 						if (reading != null)
 						{
 							verbalizationContext.BeginVerbalization(VerbalizationContent.Normal);
@@ -2814,7 +2855,7 @@ namespace Neumont.Tools.ORM.ObjectModel
 							string snippet1ReplaceFormat2 = snippets.GetSnippet(CoreVerbalizationSnippetType.ImpliedModalNecessityOperator, isDeontic, isNegative);
 							string snippet1Replace2Replace1 = null;
 							reading = parentFact.GetMatchingReading(allReadingOrders, null, factRoles[0], null, false, false, false, factRoles, true);
-							hyphenBinder = new VerbalizationHyphenBinder(reading, factRoles, unaryRoleIndex, snippets.GetSnippet(CoreVerbalizationSnippetType.HyphenBoundPredicatePart, isDeontic, isNegative));
+							hyphenBinder = new VerbalizationHyphenBinder(reading, writer.FormatProvider, factRoles, unaryRoleIndex, snippets.GetSnippet(CoreVerbalizationSnippetType.HyphenBoundPredicatePart, isDeontic, isNegative), predicatePartFormatString);
 							for (int snippet1Replace2ReplaceFactRoleIter1 = 0; snippet1Replace2ReplaceFactRoleIter1 < factArity; ++snippet1Replace2ReplaceFactRoleIter1)
 							{
 								RoleBase currentRole = factRoles[snippet1Replace2ReplaceFactRoleIter1];
@@ -2834,7 +2875,7 @@ namespace Neumont.Tools.ORM.ObjectModel
 								}
 								roleReplacements[snippet1Replace2ReplaceFactRoleIter1] = roleReplacement;
 							}
-							snippet1Replace2Replace1 = hyphenBinder.PopulatePredicateText(reading, factRoles, roleReplacements, false);
+							snippet1Replace2Replace1 = hyphenBinder.PopulatePredicateText(reading, writer.FormatProvider, predicatePartFormatString, factRoles, roleReplacements, false);
 							snippet1Replace2 = string.Format(writer.FormatProvider, snippet1ReplaceFormat2, snippet1Replace2Replace1);
 							FactType.WriteVerbalizerSentence(writer, string.Format(writer.FormatProvider, snippetFormat1, snippet1Replace1, snippet1Replace2), snippets.GetSnippet(CoreVerbalizationSnippetType.CloseVerbalizationSentence, isDeontic, isNegative));
 						}
@@ -2880,7 +2921,7 @@ namespace Neumont.Tools.ORM.ObjectModel
 				else if (includedArity == 1 && factArity == 2)
 				{
 					reading = parentFact.GetMatchingReading(allReadingOrders, null, null, includedRoles, false, false, false, factRoles, true);
-					hyphenBinder = new VerbalizationHyphenBinder(reading, factRoles, unaryRoleIndex, snippets.GetSnippet(CoreVerbalizationSnippetType.HyphenBoundPredicatePart, isDeontic, isNegative));
+					hyphenBinder = new VerbalizationHyphenBinder(reading, writer.FormatProvider, factRoles, unaryRoleIndex, snippets.GetSnippet(CoreVerbalizationSnippetType.HyphenBoundPredicatePart, isDeontic, isNegative), predicatePartFormatString);
 					verbalizationContext.BeginVerbalization(VerbalizationContent.Normal);
 					string snippetFormat1 = snippets.GetSnippet(CoreVerbalizationSnippetType.ForEachCompactQuantifier, isDeontic, isNegative);
 					string snippet1Replace1 = null;
@@ -2945,7 +2986,7 @@ namespace Neumont.Tools.ORM.ObjectModel
 						}
 						roleReplacements[snippet1Replace2ReplaceFactRoleIter1] = roleReplacement;
 					}
-					snippet1Replace2Replace1 = hyphenBinder.PopulatePredicateText(reading, factRoles, roleReplacements, false);
+					snippet1Replace2Replace1 = hyphenBinder.PopulatePredicateText(reading, writer.FormatProvider, predicatePartFormatString, factRoles, roleReplacements, false);
 					snippet1Replace2 = string.Format(writer.FormatProvider, snippet1ReplaceFormat2, snippet1Replace2Replace1);
 					FactType.WriteVerbalizerSentence(writer, string.Format(writer.FormatProvider, snippetFormat1, snippet1Replace1, snippet1Replace2), snippets.GetSnippet(CoreVerbalizationSnippetType.CloseVerbalizationSentence, isDeontic, isNegative));
 				}
@@ -2997,6 +3038,7 @@ namespace Neumont.Tools.ORM.ObjectModel
 				bool isDeontic = this.Modality == ConstraintModality.Deontic;
 				StringBuilder sbTemp = null;
 				FactType parentFact = this.FactType;
+				string predicatePartFormatString = string.Format(writer.FormatProvider, snippets.GetSnippet(CoreVerbalizationSnippetType.PredicatePart, isDeontic, isNegative), parentFact.Name, parentFact.Id.ToString("D"));
 				LinkedElementCollection<Role> includedRoles = this.RoleCollection;
 				LinkedElementCollection<ReadingOrder> allReadingOrders = parentFact.ReadingOrderCollection;
 				IList<RoleBase> factRoles = allReadingOrders.Count != 0 ? allReadingOrders[0].RoleCollection : parentFact.RoleCollection;
@@ -3016,7 +3058,7 @@ namespace Neumont.Tools.ORM.ObjectModel
 					string basicReplacement;
 					if (rolePlayer != null)
 					{
-						basicReplacement = string.Format(writer.FormatProvider, snippets.GetSnippet(CoreVerbalizationSnippetType.ObjectType, isDeontic, isNegative), rolePlayer.Name);
+						basicReplacement = string.Format(writer.FormatProvider, snippets.GetSnippet(CoreVerbalizationSnippetType.ObjectType, isDeontic, isNegative), rolePlayer.Name, rolePlayer.Id.ToString("D"));
 					}
 					else
 					{
@@ -3032,7 +3074,7 @@ namespace Neumont.Tools.ORM.ObjectModel
 				if (factArity == 2)
 				{
 					reading = parentFact.GetMatchingReading(allReadingOrders, null, null, includedRoles, false, false, false, factRoles, false);
-					hyphenBinder = new VerbalizationHyphenBinder(reading, factRoles, unaryRoleIndex, snippets.GetSnippet(CoreVerbalizationSnippetType.HyphenBoundPredicatePart, isDeontic, isNegative));
+					hyphenBinder = new VerbalizationHyphenBinder(reading, writer.FormatProvider, factRoles, unaryRoleIndex, snippets.GetSnippet(CoreVerbalizationSnippetType.HyphenBoundPredicatePart, isDeontic, isNegative), predicatePartFormatString);
 					if (reading != null)
 					{
 						verbalizationContext.BeginVerbalization(VerbalizationContent.Normal);
@@ -3057,13 +3099,13 @@ namespace Neumont.Tools.ORM.ObjectModel
 							}
 							roleReplacements[snippet1ReplaceFactRoleIter1] = roleReplacement;
 						}
-						snippet1Replace1 = hyphenBinder.PopulatePredicateText(reading, factRoles, roleReplacements, false);
+						snippet1Replace1 = hyphenBinder.PopulatePredicateText(reading, writer.FormatProvider, predicatePartFormatString, factRoles, roleReplacements, false);
 						FactType.WriteVerbalizerSentence(writer, string.Format(writer.FormatProvider, snippetFormat1, snippet1Replace1), snippets.GetSnippet(CoreVerbalizationSnippetType.CloseVerbalizationSentence, isDeontic, isNegative));
 					}
 					else
 					{
 						reading = parentFact.GetMatchingReading(allReadingOrders, null, factRoles[0], null, false, false, false, factRoles, true);
-						hyphenBinder = new VerbalizationHyphenBinder(reading, factRoles, unaryRoleIndex, snippets.GetSnippet(CoreVerbalizationSnippetType.HyphenBoundPredicatePart, isDeontic, isNegative));
+						hyphenBinder = new VerbalizationHyphenBinder(reading, writer.FormatProvider, factRoles, unaryRoleIndex, snippets.GetSnippet(CoreVerbalizationSnippetType.HyphenBoundPredicatePart, isDeontic, isNegative), predicatePartFormatString);
 						if (reading != null)
 						{
 							verbalizationContext.BeginVerbalization(VerbalizationContent.Normal);
@@ -3112,7 +3154,7 @@ namespace Neumont.Tools.ORM.ObjectModel
 							string snippet1ReplaceFormat2 = snippets.GetSnippet(CoreVerbalizationSnippetType.ImpliedModalNecessityOperator, isDeontic, isNegative);
 							string snippet1Replace2Replace1 = null;
 							reading = parentFact.GetMatchingReading(allReadingOrders, null, factRoles[0], null, false, false, false, factRoles, true);
-							hyphenBinder = new VerbalizationHyphenBinder(reading, factRoles, unaryRoleIndex, snippets.GetSnippet(CoreVerbalizationSnippetType.HyphenBoundPredicatePart, isDeontic, isNegative));
+							hyphenBinder = new VerbalizationHyphenBinder(reading, writer.FormatProvider, factRoles, unaryRoleIndex, snippets.GetSnippet(CoreVerbalizationSnippetType.HyphenBoundPredicatePart, isDeontic, isNegative), predicatePartFormatString);
 							for (int snippet1Replace2ReplaceFactRoleIter1 = 0; snippet1Replace2ReplaceFactRoleIter1 < factArity; ++snippet1Replace2ReplaceFactRoleIter1)
 							{
 								RoleBase currentRole = factRoles[snippet1Replace2ReplaceFactRoleIter1];
@@ -3132,7 +3174,7 @@ namespace Neumont.Tools.ORM.ObjectModel
 								}
 								roleReplacements[snippet1Replace2ReplaceFactRoleIter1] = roleReplacement;
 							}
-							snippet1Replace2Replace1 = hyphenBinder.PopulatePredicateText(reading, factRoles, roleReplacements, false);
+							snippet1Replace2Replace1 = hyphenBinder.PopulatePredicateText(reading, writer.FormatProvider, predicatePartFormatString, factRoles, roleReplacements, false);
 							snippet1Replace2 = string.Format(writer.FormatProvider, snippet1ReplaceFormat2, snippet1Replace2Replace1);
 							FactType.WriteVerbalizerSentence(writer, string.Format(writer.FormatProvider, snippetFormat1, snippet1Replace1, snippet1Replace2), snippets.GetSnippet(CoreVerbalizationSnippetType.CloseVerbalizationSentence, isDeontic, isNegative));
 						}
@@ -3185,6 +3227,7 @@ namespace Neumont.Tools.ORM.ObjectModel
 				IVerbalizationSets<CoreVerbalizationSnippetType> snippets = (IVerbalizationSets<CoreVerbalizationSnippetType>)snippetsDictionary[typeof(CoreVerbalizationSnippetType)];
 				bool isDeontic = this.Modality == ConstraintModality.Deontic;
 				FactType parentFact = this.FactType;
+				string predicatePartFormatString = string.Format(writer.FormatProvider, snippets.GetSnippet(CoreVerbalizationSnippetType.PredicatePart, isDeontic, isNegative), parentFact.Name, parentFact.Id.ToString("D"));
 				LinkedElementCollection<Role> includedRoles = this.RoleCollection;
 				LinkedElementCollection<ReadingOrder> allReadingOrders = parentFact.ReadingOrderCollection;
 				IList<RoleBase> factRoles = allReadingOrders.Count != 0 ? allReadingOrders[0].RoleCollection : parentFact.RoleCollection;
@@ -3204,7 +3247,7 @@ namespace Neumont.Tools.ORM.ObjectModel
 					string basicReplacement;
 					if (rolePlayer != null)
 					{
-						basicReplacement = string.Format(writer.FormatProvider, snippets.GetSnippet(CoreVerbalizationSnippetType.ObjectType, isDeontic, isNegative), rolePlayer.Name);
+						basicReplacement = string.Format(writer.FormatProvider, snippets.GetSnippet(CoreVerbalizationSnippetType.ObjectType, isDeontic, isNegative), rolePlayer.Name, rolePlayer.Id.ToString("D"));
 					}
 					else
 					{
@@ -3223,7 +3266,7 @@ namespace Neumont.Tools.ORM.ObjectModel
 					string snippetFormat1 = snippets.GetSnippet(CoreVerbalizationSnippetType.ModalPossibilityOperator, isDeontic, isNegative);
 					string snippet1Replace1 = null;
 					reading = parentFact.GetMatchingReading(allReadingOrders, null, null, includedRoles, true, false, false, factRoles, true);
-					hyphenBinder = new VerbalizationHyphenBinder(reading, factRoles, unaryRoleIndex, snippets.GetSnippet(CoreVerbalizationSnippetType.HyphenBoundPredicatePart, isDeontic, isNegative));
+					hyphenBinder = new VerbalizationHyphenBinder(reading, writer.FormatProvider, factRoles, unaryRoleIndex, snippets.GetSnippet(CoreVerbalizationSnippetType.HyphenBoundPredicatePart, isDeontic, isNegative), predicatePartFormatString);
 					for (int snippet1ReplaceFactRoleIter1 = 0; snippet1ReplaceFactRoleIter1 < factArity; ++snippet1ReplaceFactRoleIter1)
 					{
 						RoleBase currentRole = factRoles[snippet1ReplaceFactRoleIter1];
@@ -3243,7 +3286,7 @@ namespace Neumont.Tools.ORM.ObjectModel
 						}
 						roleReplacements[snippet1ReplaceFactRoleIter1] = roleReplacement;
 					}
-					snippet1Replace1 = hyphenBinder.PopulatePredicateText(reading, factRoles, roleReplacements, false);
+					snippet1Replace1 = hyphenBinder.PopulatePredicateText(reading, writer.FormatProvider, predicatePartFormatString, factRoles, roleReplacements, false);
 					FactType.WriteVerbalizerSentence(writer, string.Format(writer.FormatProvider, snippetFormat1, snippet1Replace1), snippets.GetSnippet(CoreVerbalizationSnippetType.CloseVerbalizationSentence, isDeontic, isNegative));
 				}
 				#endregion // Pattern Matches
@@ -3294,6 +3337,7 @@ namespace Neumont.Tools.ORM.ObjectModel
 				bool isDeontic = this.Modality == ConstraintModality.Deontic;
 				StringBuilder sbTemp = null;
 				FactType parentFact = this.FactType;
+				string predicatePartFormatString = string.Format(writer.FormatProvider, snippets.GetSnippet(CoreVerbalizationSnippetType.PredicatePart, isDeontic, isNegative), parentFact.Name, parentFact.Id.ToString("D"));
 				LinkedElementCollection<Role> includedRoles = this.RoleCollection;
 				LinkedElementCollection<ReadingOrder> allReadingOrders = parentFact.ReadingOrderCollection;
 				IList<RoleBase> factRoles = allReadingOrders.Count != 0 ? allReadingOrders[0].RoleCollection : parentFact.RoleCollection;
@@ -3313,7 +3357,7 @@ namespace Neumont.Tools.ORM.ObjectModel
 					string basicReplacement;
 					if (rolePlayer != null)
 					{
-						basicReplacement = string.Format(writer.FormatProvider, snippets.GetSnippet(CoreVerbalizationSnippetType.ObjectType, isDeontic, isNegative), rolePlayer.Name);
+						basicReplacement = string.Format(writer.FormatProvider, snippets.GetSnippet(CoreVerbalizationSnippetType.ObjectType, isDeontic, isNegative), rolePlayer.Name, rolePlayer.Id.ToString("D"));
 					}
 					else
 					{
@@ -3329,7 +3373,7 @@ namespace Neumont.Tools.ORM.ObjectModel
 				if (factArity == 2 && !isNegative)
 				{
 					reading = parentFact.GetMatchingReading(allReadingOrders, null, null, includedRoles, false, false, false, factRoles, false);
-					hyphenBinder = new VerbalizationHyphenBinder(reading, factRoles, unaryRoleIndex, snippets.GetSnippet(CoreVerbalizationSnippetType.HyphenBoundPredicatePart, isDeontic, isNegative));
+					hyphenBinder = new VerbalizationHyphenBinder(reading, writer.FormatProvider, factRoles, unaryRoleIndex, snippets.GetSnippet(CoreVerbalizationSnippetType.HyphenBoundPredicatePart, isDeontic, isNegative), predicatePartFormatString);
 					if (reading != null)
 					{
 						verbalizationContext.BeginVerbalization(VerbalizationContent.Normal);
@@ -3354,13 +3398,13 @@ namespace Neumont.Tools.ORM.ObjectModel
 							}
 							roleReplacements[snippet1ReplaceFactRoleIter1] = roleReplacement;
 						}
-						snippet1Replace1 = hyphenBinder.PopulatePredicateText(reading, factRoles, roleReplacements, false);
+						snippet1Replace1 = hyphenBinder.PopulatePredicateText(reading, writer.FormatProvider, predicatePartFormatString, factRoles, roleReplacements, false);
 						FactType.WriteVerbalizerSentence(writer, string.Format(writer.FormatProvider, snippetFormat1, snippet1Replace1), snippets.GetSnippet(CoreVerbalizationSnippetType.CloseVerbalizationSentence, isDeontic, isNegative));
 					}
 					else
 					{
 						reading = parentFact.GetMatchingReading(allReadingOrders, null, factRoles[0], null, false, false, false, factRoles, true);
-						hyphenBinder = new VerbalizationHyphenBinder(reading, factRoles, unaryRoleIndex, snippets.GetSnippet(CoreVerbalizationSnippetType.HyphenBoundPredicatePart, isDeontic, isNegative));
+						hyphenBinder = new VerbalizationHyphenBinder(reading, writer.FormatProvider, factRoles, unaryRoleIndex, snippets.GetSnippet(CoreVerbalizationSnippetType.HyphenBoundPredicatePart, isDeontic, isNegative), predicatePartFormatString);
 						if (reading != null)
 						{
 							verbalizationContext.BeginVerbalization(VerbalizationContent.Normal);
@@ -3409,7 +3453,7 @@ namespace Neumont.Tools.ORM.ObjectModel
 							string snippet1ReplaceFormat2 = snippets.GetSnippet(CoreVerbalizationSnippetType.ImpliedModalNecessityOperator, isDeontic, isNegative);
 							string snippet1Replace2Replace1 = null;
 							reading = parentFact.GetMatchingReading(allReadingOrders, null, factRoles[0], null, false, false, false, factRoles, true);
-							hyphenBinder = new VerbalizationHyphenBinder(reading, factRoles, unaryRoleIndex, snippets.GetSnippet(CoreVerbalizationSnippetType.HyphenBoundPredicatePart, isDeontic, isNegative));
+							hyphenBinder = new VerbalizationHyphenBinder(reading, writer.FormatProvider, factRoles, unaryRoleIndex, snippets.GetSnippet(CoreVerbalizationSnippetType.HyphenBoundPredicatePart, isDeontic, isNegative), predicatePartFormatString);
 							for (int snippet1Replace2ReplaceFactRoleIter1 = 0; snippet1Replace2ReplaceFactRoleIter1 < factArity; ++snippet1Replace2ReplaceFactRoleIter1)
 							{
 								RoleBase currentRole = factRoles[snippet1Replace2ReplaceFactRoleIter1];
@@ -3429,7 +3473,7 @@ namespace Neumont.Tools.ORM.ObjectModel
 								}
 								roleReplacements[snippet1Replace2ReplaceFactRoleIter1] = roleReplacement;
 							}
-							snippet1Replace2Replace1 = hyphenBinder.PopulatePredicateText(reading, factRoles, roleReplacements, false);
+							snippet1Replace2Replace1 = hyphenBinder.PopulatePredicateText(reading, writer.FormatProvider, predicatePartFormatString, factRoles, roleReplacements, false);
 							snippet1Replace2 = string.Format(writer.FormatProvider, snippet1ReplaceFormat2, snippet1Replace2Replace1);
 							FactType.WriteVerbalizerSentence(writer, string.Format(writer.FormatProvider, snippetFormat1, snippet1Replace1, snippet1Replace2), snippets.GetSnippet(CoreVerbalizationSnippetType.CloseVerbalizationSentence, isDeontic, isNegative));
 						}
@@ -3507,6 +3551,7 @@ namespace Neumont.Tools.ORM.ObjectModel
 			bool isDeontic = (this as IConstraint).Modality == ConstraintModality.Deontic;
 			StringBuilder sbTemp = null;
 			FactType parentFact;
+			string predicatePartFormatString;
 			LinkedElementCollection<ReadingOrder> allReadingOrders;
 			IList<RoleBase> factRoles = null;
 			Nullable<int> unaryRoleIndex = null;
@@ -3616,7 +3661,7 @@ namespace Neumont.Tools.ORM.ObjectModel
 							int compatibleTypesCount = compatibleTypes.Length;
 							if (compatibleTypesCount == 1)
 							{
-								basicReplacement = string.Format(writer.FormatProvider, snippets.GetSnippet(CoreVerbalizationSnippetType.ObjectType, isDeontic, isNegative), compatibleTypes[0].Name);
+								basicReplacement = string.Format(writer.FormatProvider, snippets.GetSnippet(CoreVerbalizationSnippetType.ObjectType, isDeontic, isNegative), compatibleTypes[0].Name, compatibleTypes[0].Id.ToString("D"));
 							}
 							else
 							{
@@ -3651,7 +3696,7 @@ namespace Neumont.Tools.ORM.ObjectModel
 										listSnippet = CoreVerbalizationSnippetType.IdentityEqualityListSeparator;
 									}
 									sbTemp.Append(snippets.GetSnippet(listSnippet, isDeontic, isNegative));
-									sbTemp.Append(string.Format(writer.FormatProvider, snippets.GetSnippet(CoreVerbalizationSnippetType.ObjectType, isDeontic, isNegative), compatibleTypes[k].Name));
+									sbTemp.Append(string.Format(writer.FormatProvider, snippets.GetSnippet(CoreVerbalizationSnippetType.ObjectType, isDeontic, isNegative), compatibleTypes[k].Name, compatibleTypes[k].Id.ToString("D")));
 									if (k == compatibleTypesCount - 1)
 									{
 										sbTemp.Append(snippets.GetSnippet(CoreVerbalizationSnippetType.IdentityEqualityListClose, isDeontic, isNegative));
@@ -3662,7 +3707,7 @@ namespace Neumont.Tools.ORM.ObjectModel
 						}
 						else
 						{
-							basicReplacement = string.Format(writer.FormatProvider, snippets.GetSnippet(CoreVerbalizationSnippetType.ObjectType, isDeontic, isNegative), rolePlayer.Name);
+							basicReplacement = string.Format(writer.FormatProvider, snippets.GetSnippet(CoreVerbalizationSnippetType.ObjectType, isDeontic, isNegative), rolePlayer.Name, rolePlayer.Id.ToString("D"));
 						}
 					}
 					else
@@ -3684,6 +3729,7 @@ namespace Neumont.Tools.ORM.ObjectModel
 			if (constraintRoleArity == 1 && factArity == 1 && !isNegative)
 			{
 				parentFact = allFacts[0];
+				predicatePartFormatString = string.Format(writer.FormatProvider, snippets.GetSnippet(CoreVerbalizationSnippetType.PredicatePart, isDeontic, isNegative), parentFact.Name, parentFact.Id.ToString("D"));
 				allReadingOrders = parentFact.ReadingOrderCollection;
 				verbalizationContext.BeginVerbalization(VerbalizationContent.Normal);
 				string snippetFormat1 = snippets.GetSnippet(CoreVerbalizationSnippetType.ImpliedModalNecessityOperator, isDeontic, isNegative);
@@ -3691,17 +3737,18 @@ namespace Neumont.Tools.ORM.ObjectModel
 				string snippet1ReplaceFormat1 = snippets.GetSnippet(CoreVerbalizationSnippetType.UniversalQuantifier, isDeontic, isNegative);
 				string snippet1Replace1Replace1 = null;
 				reading = parentFact.GetMatchingReading(allReadingOrders, null, factRoles[0], null, false, false, false, factRoles, true);
-				hyphenBinder = new VerbalizationHyphenBinder(reading, factRoles, unaryRoleIndex, snippets.GetSnippet(CoreVerbalizationSnippetType.HyphenBoundPredicatePart, isDeontic, isNegative));
-				snippet1Replace1Replace1 = hyphenBinder.PopulatePredicateText(reading, factRoles, allBasicRoleReplacements[0], true);
+				hyphenBinder = new VerbalizationHyphenBinder(reading, writer.FormatProvider, factRoles, unaryRoleIndex, snippets.GetSnippet(CoreVerbalizationSnippetType.HyphenBoundPredicatePart, isDeontic, isNegative), predicatePartFormatString);
+				snippet1Replace1Replace1 = hyphenBinder.PopulatePredicateText(reading, writer.FormatProvider, predicatePartFormatString, factRoles, allBasicRoleReplacements[0], true);
 				snippet1Replace1 = string.Format(writer.FormatProvider, snippet1ReplaceFormat1, snippet1Replace1Replace1);
 				FactType.WriteVerbalizerSentence(writer, string.Format(writer.FormatProvider, snippetFormat1, snippet1Replace1), snippets.GetSnippet(CoreVerbalizationSnippetType.CloseVerbalizationSentence, isDeontic, isNegative));
 			}
 			else if (constraintRoleArity == 1 && factArity == 2 && maxFactArity <= 2)
 			{
 				parentFact = allFacts[0];
+				predicatePartFormatString = string.Format(writer.FormatProvider, snippets.GetSnippet(CoreVerbalizationSnippetType.PredicatePart, isDeontic, isNegative), parentFact.Name, parentFact.Id.ToString("D"));
 				allReadingOrders = parentFact.ReadingOrderCollection;
 				reading = parentFact.GetMatchingReading(allReadingOrders, null, null, allConstraintRoles, false, false, false, factRoles, false);
-				hyphenBinder = new VerbalizationHyphenBinder(reading, factRoles, unaryRoleIndex, snippets.GetSnippet(CoreVerbalizationSnippetType.HyphenBoundPredicatePart, isDeontic, isNegative));
+				hyphenBinder = new VerbalizationHyphenBinder(reading, writer.FormatProvider, factRoles, unaryRoleIndex, snippets.GetSnippet(CoreVerbalizationSnippetType.HyphenBoundPredicatePart, isDeontic, isNegative), predicatePartFormatString);
 				if (reading != null)
 				{
 					verbalizationContext.BeginVerbalization(VerbalizationContent.Normal);
@@ -3726,13 +3773,13 @@ namespace Neumont.Tools.ORM.ObjectModel
 						}
 						roleReplacements[snippet1ReplaceFactRoleIter1] = roleReplacement;
 					}
-					snippet1Replace1 = hyphenBinder.PopulatePredicateText(reading, factRoles, roleReplacements, false);
+					snippet1Replace1 = hyphenBinder.PopulatePredicateText(reading, writer.FormatProvider, predicatePartFormatString, factRoles, roleReplacements, false);
 					FactType.WriteVerbalizerSentence(writer, string.Format(writer.FormatProvider, snippetFormat1, snippet1Replace1), snippets.GetSnippet(CoreVerbalizationSnippetType.CloseVerbalizationSentence, isDeontic, isNegative));
 				}
 				else
 				{
 					reading = parentFact.GetMatchingReading(allReadingOrders, null, factRoles[0], null, false, false, false, factRoles, true);
-					hyphenBinder = new VerbalizationHyphenBinder(reading, factRoles, unaryRoleIndex, snippets.GetSnippet(CoreVerbalizationSnippetType.HyphenBoundPredicatePart, isDeontic, isNegative));
+					hyphenBinder = new VerbalizationHyphenBinder(reading, writer.FormatProvider, factRoles, unaryRoleIndex, snippets.GetSnippet(CoreVerbalizationSnippetType.HyphenBoundPredicatePart, isDeontic, isNegative), predicatePartFormatString);
 					if (reading != null)
 					{
 						verbalizationContext.BeginVerbalization(VerbalizationContent.Normal);
@@ -3781,7 +3828,7 @@ namespace Neumont.Tools.ORM.ObjectModel
 						string snippet1ReplaceFormat2 = snippets.GetSnippet(CoreVerbalizationSnippetType.ImpliedModalNecessityOperator, isDeontic, isNegative);
 						string snippet1Replace2Replace1 = null;
 						reading = parentFact.GetMatchingReading(allReadingOrders, null, factRoles[0], null, false, false, false, factRoles, true);
-						hyphenBinder = new VerbalizationHyphenBinder(reading, factRoles, unaryRoleIndex, snippets.GetSnippet(CoreVerbalizationSnippetType.HyphenBoundPredicatePart, isDeontic, isNegative));
+						hyphenBinder = new VerbalizationHyphenBinder(reading, writer.FormatProvider, factRoles, unaryRoleIndex, snippets.GetSnippet(CoreVerbalizationSnippetType.HyphenBoundPredicatePart, isDeontic, isNegative), predicatePartFormatString);
 						for (int snippet1Replace2ReplaceFactRoleIter1 = 0; snippet1Replace2ReplaceFactRoleIter1 < factArity; ++snippet1Replace2ReplaceFactRoleIter1)
 						{
 							RoleBase currentRole = factRoles[snippet1Replace2ReplaceFactRoleIter1];
@@ -3801,7 +3848,7 @@ namespace Neumont.Tools.ORM.ObjectModel
 							}
 							roleReplacements[snippet1Replace2ReplaceFactRoleIter1] = roleReplacement;
 						}
-						snippet1Replace2Replace1 = hyphenBinder.PopulatePredicateText(reading, factRoles, roleReplacements, false);
+						snippet1Replace2Replace1 = hyphenBinder.PopulatePredicateText(reading, writer.FormatProvider, predicatePartFormatString, factRoles, roleReplacements, false);
 						snippet1Replace2 = string.Format(writer.FormatProvider, snippet1ReplaceFormat2, snippet1Replace2Replace1);
 						FactType.WriteVerbalizerSentence(writer, string.Format(writer.FormatProvider, snippetFormat1, snippet1Replace1, snippet1Replace2), snippets.GetSnippet(CoreVerbalizationSnippetType.CloseVerbalizationSentence, isDeontic, isNegative));
 					}
@@ -3810,9 +3857,10 @@ namespace Neumont.Tools.ORM.ObjectModel
 			else if (constraintRoleArity == 1 && minFactArity >= 3)
 			{
 				parentFact = allFacts[0];
+				predicatePartFormatString = string.Format(writer.FormatProvider, snippets.GetSnippet(CoreVerbalizationSnippetType.PredicatePart, isDeontic, isNegative), parentFact.Name, parentFact.Id.ToString("D"));
 				allReadingOrders = parentFact.ReadingOrderCollection;
 				reading = parentFact.GetMatchingReading(allReadingOrders, null, null, allConstraintRoles, false, false, false, factRoles, false);
-				hyphenBinder = new VerbalizationHyphenBinder(reading, factRoles, unaryRoleIndex, snippets.GetSnippet(CoreVerbalizationSnippetType.HyphenBoundPredicatePart, isDeontic, isNegative));
+				hyphenBinder = new VerbalizationHyphenBinder(reading, writer.FormatProvider, factRoles, unaryRoleIndex, snippets.GetSnippet(CoreVerbalizationSnippetType.HyphenBoundPredicatePart, isDeontic, isNegative), predicatePartFormatString);
 				if (reading != null)
 				{
 					verbalizationContext.BeginVerbalization(VerbalizationContent.Normal);
@@ -3837,13 +3885,13 @@ namespace Neumont.Tools.ORM.ObjectModel
 						}
 						roleReplacements[snippet1ReplaceFactRoleIter1] = roleReplacement;
 					}
-					snippet1Replace1 = hyphenBinder.PopulatePredicateText(reading, factRoles, roleReplacements, false);
+					snippet1Replace1 = hyphenBinder.PopulatePredicateText(reading, writer.FormatProvider, predicatePartFormatString, factRoles, roleReplacements, false);
 					FactType.WriteVerbalizerSentence(writer, string.Format(writer.FormatProvider, snippetFormat1, snippet1Replace1), snippets.GetSnippet(CoreVerbalizationSnippetType.CloseVerbalizationSentence, isDeontic, isNegative));
 				}
 				else
 				{
 					reading = parentFact.GetMatchingReading(allReadingOrders, null, factRoles[0], null, false, false, false, factRoles, true);
-					hyphenBinder = new VerbalizationHyphenBinder(reading, factRoles, unaryRoleIndex, snippets.GetSnippet(CoreVerbalizationSnippetType.HyphenBoundPredicatePart, isDeontic, isNegative));
+					hyphenBinder = new VerbalizationHyphenBinder(reading, writer.FormatProvider, factRoles, unaryRoleIndex, snippets.GetSnippet(CoreVerbalizationSnippetType.HyphenBoundPredicatePart, isDeontic, isNegative), predicatePartFormatString);
 					if (reading != null)
 					{
 						verbalizationContext.BeginVerbalization(VerbalizationContent.Normal);
@@ -3892,7 +3940,7 @@ namespace Neumont.Tools.ORM.ObjectModel
 						string snippet1ReplaceFormat2 = snippets.GetSnippet(CoreVerbalizationSnippetType.ImpliedModalNecessityOperator, isDeontic, isNegative);
 						string snippet1Replace2Replace1 = null;
 						reading = parentFact.GetMatchingReading(allReadingOrders, null, factRoles[0], null, false, false, false, factRoles, true);
-						hyphenBinder = new VerbalizationHyphenBinder(reading, factRoles, unaryRoleIndex, snippets.GetSnippet(CoreVerbalizationSnippetType.HyphenBoundPredicatePart, isDeontic, isNegative));
+						hyphenBinder = new VerbalizationHyphenBinder(reading, writer.FormatProvider, factRoles, unaryRoleIndex, snippets.GetSnippet(CoreVerbalizationSnippetType.HyphenBoundPredicatePart, isDeontic, isNegative), predicatePartFormatString);
 						for (int snippet1Replace2ReplaceFactRoleIter1 = 0; snippet1Replace2ReplaceFactRoleIter1 < factArity; ++snippet1Replace2ReplaceFactRoleIter1)
 						{
 							RoleBase currentRole = factRoles[snippet1Replace2ReplaceFactRoleIter1];
@@ -3912,7 +3960,7 @@ namespace Neumont.Tools.ORM.ObjectModel
 							}
 							roleReplacements[snippet1Replace2ReplaceFactRoleIter1] = roleReplacement;
 						}
-						snippet1Replace2Replace1 = hyphenBinder.PopulatePredicateText(reading, factRoles, roleReplacements, false);
+						snippet1Replace2Replace1 = hyphenBinder.PopulatePredicateText(reading, writer.FormatProvider, predicatePartFormatString, factRoles, roleReplacements, false);
 						snippet1Replace2 = string.Format(writer.FormatProvider, snippet1ReplaceFormat2, snippet1Replace2Replace1);
 						FactType.WriteVerbalizerSentence(writer, string.Format(writer.FormatProvider, snippetFormat1, snippet1Replace1, snippet1Replace2), snippets.GetSnippet(CoreVerbalizationSnippetType.CloseVerbalizationSentence, isDeontic, isNegative));
 					}
@@ -3955,6 +4003,7 @@ namespace Neumont.Tools.ORM.ObjectModel
 				for (int FactIter2 = 0; FactIter2 < allFactsCount; ++FactIter2)
 				{
 					parentFact = allFacts[FactIter2];
+					predicatePartFormatString = string.Format(writer.FormatProvider, snippets.GetSnippet(CoreVerbalizationSnippetType.PredicatePart, isDeontic, isNegative), parentFact.Name, parentFact.Id.ToString("D"));
 					allReadingOrders = parentFact.ReadingOrderCollection;
 					factRoles = allReadingOrders.Count != 0 ? allReadingOrders[0].RoleCollection : parentFact.RoleCollection;
 					unaryRoleIndex = FactType.GetUnaryRoleIndex(factRoles);
@@ -3982,8 +4031,8 @@ namespace Neumont.Tools.ORM.ObjectModel
 					sbTemp.Append(snippets.GetSnippet(listSnippet, isDeontic, isNegative));
 					snippet1Replace1Replace2 = null;
 					reading = parentFact.GetMatchingReading(allReadingOrders, null, factRoles[0], null, false, false, false, factRoles, true);
-					hyphenBinder = new VerbalizationHyphenBinder(reading, factRoles, unaryRoleIndex, snippets.GetSnippet(CoreVerbalizationSnippetType.HyphenBoundPredicatePart, isDeontic, isNegative));
-					snippet1Replace1Replace2 = hyphenBinder.PopulatePredicateText(reading, factRoles, basicRoleReplacements, true);
+					hyphenBinder = new VerbalizationHyphenBinder(reading, writer.FormatProvider, factRoles, unaryRoleIndex, snippets.GetSnippet(CoreVerbalizationSnippetType.HyphenBoundPredicatePart, isDeontic, isNegative), predicatePartFormatString);
+					snippet1Replace1Replace2 = hyphenBinder.PopulatePredicateText(reading, writer.FormatProvider, predicatePartFormatString, factRoles, basicRoleReplacements, true);
 					sbTemp.Append(snippet1Replace1Replace2);
 					if (FactIter2 == allFactsCount - 1)
 					{
@@ -4001,6 +4050,7 @@ namespace Neumont.Tools.ORM.ObjectModel
 				{
 					RoleBase primaryRole = allConstraintRoles[readingMatchIndex1];
 					parentFact = primaryRole.FactType;
+					predicatePartFormatString = string.Format(writer.FormatProvider, snippets.GetSnippet(CoreVerbalizationSnippetType.PredicatePart, isDeontic, isNegative), parentFact.Name, parentFact.Id.ToString("D"));
 					allReadingOrders = parentFact.ReadingOrderCollection;
 					factRoles = allReadingOrders.Count != 0 ? allReadingOrders[0].RoleCollection : parentFact.RoleCollection;
 					reading = parentFact.GetMatchingReading(allReadingOrders, null, primaryRole, null, false, true, false, factRoles, false);
@@ -4031,6 +4081,7 @@ namespace Neumont.Tools.ORM.ObjectModel
 					{
 						RoleBase primaryRole = allConstraintRoles[RoleIter1];
 						parentFact = primaryRole.FactType;
+						predicatePartFormatString = string.Format(writer.FormatProvider, snippets.GetSnippet(CoreVerbalizationSnippetType.PredicatePart, isDeontic, isNegative), parentFact.Name, parentFact.Id.ToString("D"));
 						allReadingOrders = parentFact.ReadingOrderCollection;
 						factRoles = allReadingOrders.Count != 0 ? allReadingOrders[0].RoleCollection : parentFact.RoleCollection;
 						unaryRoleIndex = FactType.GetUnaryRoleIndex(factRoles);
@@ -4058,7 +4109,7 @@ namespace Neumont.Tools.ORM.ObjectModel
 						}
 						sbTemp.Append(snippets.GetSnippet(listSnippet, isDeontic, isNegative));
 						reading = allConstraintRoleReadings[RoleIter1];
-						hyphenBinder = new VerbalizationHyphenBinder(reading, factRoles, unaryRoleIndex, snippets.GetSnippet(CoreVerbalizationSnippetType.HyphenBoundPredicatePart, isDeontic, isNegative));
+						hyphenBinder = new VerbalizationHyphenBinder(reading, writer.FormatProvider, factRoles, unaryRoleIndex, snippets.GetSnippet(CoreVerbalizationSnippetType.HyphenBoundPredicatePart, isDeontic, isNegative), predicatePartFormatString);
 						for (int snippet1ReplaceFactRoleIter1 = 0; snippet1ReplaceFactRoleIter1 < factArity; ++snippet1ReplaceFactRoleIter1)
 						{
 							RoleBase currentRole = factRoles[snippet1ReplaceFactRoleIter1];
@@ -4078,7 +4129,7 @@ namespace Neumont.Tools.ORM.ObjectModel
 							}
 							roleReplacements[snippet1ReplaceFactRoleIter1] = roleReplacement;
 						}
-						snippet1Replace1 = hyphenBinder.PopulatePredicateText(reading, factRoles, roleReplacements, false);
+						snippet1Replace1 = hyphenBinder.PopulatePredicateText(reading, writer.FormatProvider, predicatePartFormatString, factRoles, roleReplacements, false);
 						sbTemp.Append(snippet1Replace1);
 						if (RoleIter1 == constraintRoleArity - 1)
 						{
@@ -4127,6 +4178,7 @@ namespace Neumont.Tools.ORM.ObjectModel
 					{
 						RoleBase primaryRole = allConstraintRoles[RoleIter1];
 						parentFact = primaryRole.FactType;
+						predicatePartFormatString = string.Format(writer.FormatProvider, snippets.GetSnippet(CoreVerbalizationSnippetType.PredicatePart, isDeontic, isNegative), parentFact.Name, parentFact.Id.ToString("D"));
 						allReadingOrders = parentFact.ReadingOrderCollection;
 						factRoles = allReadingOrders.Count != 0 ? allReadingOrders[0].RoleCollection : parentFact.RoleCollection;
 						unaryRoleIndex = FactType.GetUnaryRoleIndex(factRoles);
@@ -4154,7 +4206,7 @@ namespace Neumont.Tools.ORM.ObjectModel
 						}
 						sbTemp.Append(snippets.GetSnippet(listSnippet, isDeontic, isNegative));
 						reading = parentFact.GetMatchingReading(allReadingOrders, null, primaryRole, null, false, true, false, factRoles, true);
-						hyphenBinder = new VerbalizationHyphenBinder(reading, factRoles, unaryRoleIndex, snippets.GetSnippet(CoreVerbalizationSnippetType.HyphenBoundPredicatePart, isDeontic, isNegative));
+						hyphenBinder = new VerbalizationHyphenBinder(reading, writer.FormatProvider, factRoles, unaryRoleIndex, snippets.GetSnippet(CoreVerbalizationSnippetType.HyphenBoundPredicatePart, isDeontic, isNegative), predicatePartFormatString);
 						for (int snippet1Replace2ReplaceFactRoleIter1 = 0; snippet1Replace2ReplaceFactRoleIter1 < factArity; ++snippet1Replace2ReplaceFactRoleIter1)
 						{
 							RoleBase currentRole = factRoles[snippet1Replace2ReplaceFactRoleIter1];
@@ -4170,7 +4222,7 @@ namespace Neumont.Tools.ORM.ObjectModel
 							}
 							roleReplacements[snippet1Replace2ReplaceFactRoleIter1] = roleReplacement;
 						}
-						snippet1Replace2Replace1 = hyphenBinder.PopulatePredicateText(reading, factRoles, roleReplacements, false);
+						snippet1Replace2Replace1 = hyphenBinder.PopulatePredicateText(reading, writer.FormatProvider, predicatePartFormatString, factRoles, roleReplacements, false);
 						sbTemp.Append(snippet1Replace2Replace1);
 						if (RoleIter1 == constraintRoleArity - 1)
 						{
@@ -4189,6 +4241,7 @@ namespace Neumont.Tools.ORM.ObjectModel
 				{
 					RoleBase primaryRole = allConstraintRoles[readingMatchIndex1];
 					parentFact = primaryRole.FactType;
+					predicatePartFormatString = string.Format(writer.FormatProvider, snippets.GetSnippet(CoreVerbalizationSnippetType.PredicatePart, isDeontic, isNegative), parentFact.Name, parentFact.Id.ToString("D"));
 					allReadingOrders = parentFact.ReadingOrderCollection;
 					factRoles = allReadingOrders.Count != 0 ? allReadingOrders[0].RoleCollection : parentFact.RoleCollection;
 					reading = parentFact.GetMatchingReading(allReadingOrders, null, primaryRole, null, false, true, false, factRoles, false);
@@ -4249,6 +4302,7 @@ namespace Neumont.Tools.ORM.ObjectModel
 					{
 						RoleBase primaryRole = allConstraintRoles[RoleIter1];
 						parentFact = primaryRole.FactType;
+						predicatePartFormatString = string.Format(writer.FormatProvider, snippets.GetSnippet(CoreVerbalizationSnippetType.PredicatePart, isDeontic, isNegative), parentFact.Name, parentFact.Id.ToString("D"));
 						allReadingOrders = parentFact.ReadingOrderCollection;
 						factRoles = allReadingOrders.Count != 0 ? allReadingOrders[0].RoleCollection : parentFact.RoleCollection;
 						unaryRoleIndex = FactType.GetUnaryRoleIndex(factRoles);
@@ -4278,7 +4332,7 @@ namespace Neumont.Tools.ORM.ObjectModel
 							}
 							sbTemp.Append(snippets.GetSnippet(listSnippet, isDeontic, isNegative));
 							reading = allConstraintRoleReadings[RoleIter1];
-							hyphenBinder = new VerbalizationHyphenBinder(reading, factRoles, unaryRoleIndex, snippets.GetSnippet(CoreVerbalizationSnippetType.HyphenBoundPredicatePart, isDeontic, isNegative));
+							hyphenBinder = new VerbalizationHyphenBinder(reading, writer.FormatProvider, factRoles, unaryRoleIndex, snippets.GetSnippet(CoreVerbalizationSnippetType.HyphenBoundPredicatePart, isDeontic, isNegative), predicatePartFormatString);
 							for (int snippet1Replace1ItemFactRoleIter1 = 0; snippet1Replace1ItemFactRoleIter1 < factArity; ++snippet1Replace1ItemFactRoleIter1)
 							{
 								RoleBase currentRole = factRoles[snippet1Replace1ItemFactRoleIter1];
@@ -4302,7 +4356,7 @@ namespace Neumont.Tools.ORM.ObjectModel
 								}
 								roleReplacements[snippet1Replace1ItemFactRoleIter1] = roleReplacement;
 							}
-							snippet1Replace1Item1 = hyphenBinder.PopulatePredicateText(reading, factRoles, roleReplacements, false);
+							snippet1Replace1Item1 = hyphenBinder.PopulatePredicateText(reading, writer.FormatProvider, predicatePartFormatString, factRoles, roleReplacements, false);
 							sbTemp.Append(snippet1Replace1Item1);
 							if (snippet1ReplaceCompositeIterator1 == snippet1ReplaceCompositeCount1 - 1)
 							{
@@ -4317,6 +4371,7 @@ namespace Neumont.Tools.ORM.ObjectModel
 					{
 						RoleBase primaryRole = allConstraintRoles[RoleIter2];
 						parentFact = primaryRole.FactType;
+						predicatePartFormatString = string.Format(writer.FormatProvider, snippets.GetSnippet(CoreVerbalizationSnippetType.PredicatePart, isDeontic, isNegative), parentFact.Name, parentFact.Id.ToString("D"));
 						allReadingOrders = parentFact.ReadingOrderCollection;
 						factRoles = allReadingOrders.Count != 0 ? allReadingOrders[0].RoleCollection : parentFact.RoleCollection;
 						unaryRoleIndex = FactType.GetUnaryRoleIndex(factRoles);
@@ -4345,12 +4400,12 @@ namespace Neumont.Tools.ORM.ObjectModel
 							}
 							sbTemp.Append(snippets.GetSnippet(listSnippet, isDeontic, isNegative));
 							reading = allConstraintRoleReadings[RoleIter2];
-							hyphenBinder = new VerbalizationHyphenBinder(reading, factRoles, unaryRoleIndex, snippets.GetSnippet(CoreVerbalizationSnippetType.HyphenBoundPredicatePart, isDeontic, isNegative));
+							hyphenBinder = new VerbalizationHyphenBinder(reading, writer.FormatProvider, factRoles, unaryRoleIndex, snippets.GetSnippet(CoreVerbalizationSnippetType.HyphenBoundPredicatePart, isDeontic, isNegative), predicatePartFormatString);
 							for (int snippet1Replace1ItemFactRoleIter2 = 0; snippet1Replace1ItemFactRoleIter2 < factArity; ++snippet1Replace1ItemFactRoleIter2)
 							{
 								roleReplacements[snippet1Replace1ItemFactRoleIter2] = "";
 							}
-							snippet1Replace1Item2 = hyphenBinder.PopulatePredicateText(reading, factRoles, roleReplacements, false);
+							snippet1Replace1Item2 = hyphenBinder.PopulatePredicateText(reading, writer.FormatProvider, predicatePartFormatString, factRoles, roleReplacements, false);
 							sbTemp.Append(snippet1Replace1Item2);
 							if (snippet1ReplaceCompositeIterator1 == snippet1ReplaceCompositeCount1 - 1)
 							{
@@ -4434,6 +4489,7 @@ namespace Neumont.Tools.ORM.ObjectModel
 					{
 						RoleBase primaryRole = allConstraintRoles[RoleIter1];
 						parentFact = primaryRole.FactType;
+						predicatePartFormatString = string.Format(writer.FormatProvider, snippets.GetSnippet(CoreVerbalizationSnippetType.PredicatePart, isDeontic, isNegative), parentFact.Name, parentFact.Id.ToString("D"));
 						allReadingOrders = parentFact.ReadingOrderCollection;
 						factRoles = allReadingOrders.Count != 0 ? allReadingOrders[0].RoleCollection : parentFact.RoleCollection;
 						unaryRoleIndex = FactType.GetUnaryRoleIndex(factRoles);
@@ -4463,7 +4519,7 @@ namespace Neumont.Tools.ORM.ObjectModel
 							}
 							sbTemp.Append(snippets.GetSnippet(listSnippet, isDeontic, isNegative));
 							reading = parentFact.GetMatchingReading(allReadingOrders, null, primaryRole, null, false, true, false, factRoles, true);
-							hyphenBinder = new VerbalizationHyphenBinder(reading, factRoles, unaryRoleIndex, snippets.GetSnippet(CoreVerbalizationSnippetType.HyphenBoundPredicatePart, isDeontic, isNegative));
+							hyphenBinder = new VerbalizationHyphenBinder(reading, writer.FormatProvider, factRoles, unaryRoleIndex, snippets.GetSnippet(CoreVerbalizationSnippetType.HyphenBoundPredicatePart, isDeontic, isNegative), predicatePartFormatString);
 							for (int snippet1Replace2Replace1ItemFactRoleIter1 = 0; snippet1Replace2Replace1ItemFactRoleIter1 < factArity; ++snippet1Replace2Replace1ItemFactRoleIter1)
 							{
 								RoleBase currentRole = factRoles[snippet1Replace2Replace1ItemFactRoleIter1];
@@ -4483,7 +4539,7 @@ namespace Neumont.Tools.ORM.ObjectModel
 								}
 								roleReplacements[snippet1Replace2Replace1ItemFactRoleIter1] = roleReplacement;
 							}
-							snippet1Replace2Replace1Item1 = hyphenBinder.PopulatePredicateText(reading, factRoles, roleReplacements, false);
+							snippet1Replace2Replace1Item1 = hyphenBinder.PopulatePredicateText(reading, writer.FormatProvider, predicatePartFormatString, factRoles, roleReplacements, false);
 							sbTemp.Append(snippet1Replace2Replace1Item1);
 							if (snippet1Replace2ReplaceCompositeIterator1 == snippet1Replace2ReplaceCompositeCount1 - 1)
 							{
@@ -4497,6 +4553,7 @@ namespace Neumont.Tools.ORM.ObjectModel
 					{
 						RoleBase primaryRole = allConstraintRoles[RoleIter2];
 						parentFact = primaryRole.FactType;
+						predicatePartFormatString = string.Format(writer.FormatProvider, snippets.GetSnippet(CoreVerbalizationSnippetType.PredicatePart, isDeontic, isNegative), parentFact.Name, parentFact.Id.ToString("D"));
 						allReadingOrders = parentFact.ReadingOrderCollection;
 						factRoles = allReadingOrders.Count != 0 ? allReadingOrders[0].RoleCollection : parentFact.RoleCollection;
 						unaryRoleIndex = FactType.GetUnaryRoleIndex(factRoles);
@@ -4526,7 +4583,7 @@ namespace Neumont.Tools.ORM.ObjectModel
 							}
 							sbTemp.Append(snippets.GetSnippet(listSnippet, isDeontic, isNegative));
 							reading = parentFact.GetMatchingReading(allReadingOrders, null, factRoles[0], null, false, false, false, factRoles, true);
-							hyphenBinder = new VerbalizationHyphenBinder(reading, factRoles, unaryRoleIndex, snippets.GetSnippet(CoreVerbalizationSnippetType.HyphenBoundPredicatePart, isDeontic, isNegative));
+							hyphenBinder = new VerbalizationHyphenBinder(reading, writer.FormatProvider, factRoles, unaryRoleIndex, snippets.GetSnippet(CoreVerbalizationSnippetType.HyphenBoundPredicatePart, isDeontic, isNegative), predicatePartFormatString);
 							for (int snippet1Replace2Replace1ItemFactRoleIter2 = 0; snippet1Replace2Replace1ItemFactRoleIter2 < factArity; ++snippet1Replace2Replace1ItemFactRoleIter2)
 							{
 								RoleBase currentRole = factRoles[snippet1Replace2Replace1ItemFactRoleIter2];
@@ -4539,7 +4596,7 @@ namespace Neumont.Tools.ORM.ObjectModel
 								}
 								roleReplacements[snippet1Replace2Replace1ItemFactRoleIter2] = roleReplacement;
 							}
-							snippet1Replace2Replace1Item2 = hyphenBinder.PopulatePredicateText(reading, factRoles, roleReplacements, false);
+							snippet1Replace2Replace1Item2 = hyphenBinder.PopulatePredicateText(reading, writer.FormatProvider, predicatePartFormatString, factRoles, roleReplacements, false);
 							sbTemp.Append(snippet1Replace2Replace1Item2);
 							if (snippet1Replace2ReplaceCompositeIterator1 == snippet1Replace2ReplaceCompositeCount1 - 1)
 							{
@@ -4653,6 +4710,7 @@ namespace Neumont.Tools.ORM.ObjectModel
 			bool isDeontic = (this as IConstraint).Modality == ConstraintModality.Deontic;
 			StringBuilder sbTemp = null;
 			FactType parentFact;
+			string predicatePartFormatString;
 			LinkedElementCollection<ReadingOrder> allReadingOrders;
 			IList<RoleBase> factRoles = null;
 			Nullable<int> unaryRoleIndex = null;
@@ -4756,7 +4814,7 @@ namespace Neumont.Tools.ORM.ObjectModel
 					string basicReplacement;
 					if (rolePlayer != null)
 					{
-						basicReplacement = string.Format(writer.FormatProvider, snippets.GetSnippet(CoreVerbalizationSnippetType.ObjectType, isDeontic, isNegative), rolePlayer.Name);
+						basicReplacement = string.Format(writer.FormatProvider, snippets.GetSnippet(CoreVerbalizationSnippetType.ObjectType, isDeontic, isNegative), rolePlayer.Name, rolePlayer.Id.ToString("D"));
 					}
 					else
 					{
@@ -4777,6 +4835,7 @@ namespace Neumont.Tools.ORM.ObjectModel
 			if (allFactsCount == 1 && factArity == 1 && !isNegative)
 			{
 				parentFact = allFacts[0];
+				predicatePartFormatString = string.Format(writer.FormatProvider, snippets.GetSnippet(CoreVerbalizationSnippetType.PredicatePart, isDeontic, isNegative), parentFact.Name, parentFact.Id.ToString("D"));
 				allReadingOrders = parentFact.ReadingOrderCollection;
 				verbalizationContext.BeginVerbalization(VerbalizationContent.Normal);
 				string snippetFormat1 = snippets.GetSnippet(CoreVerbalizationSnippetType.ImpliedModalNecessityOperator, isDeontic, isNegative);
@@ -4826,12 +4885,13 @@ namespace Neumont.Tools.ORM.ObjectModel
 				snippet1Replace1Replace1 = string.Format(writer.FormatProvider, snippet1Replace1ReplaceFormat1, snippet1Replace1Replace1Replace1);
 				string snippet1Replace1Replace2 = null;
 				reading = parentFact.GetMatchingReading(allReadingOrders, null, factRoles[0], null, false, false, false, factRoles, true);
-				hyphenBinder = new VerbalizationHyphenBinder(reading, factRoles, unaryRoleIndex, snippets.GetSnippet(CoreVerbalizationSnippetType.HyphenBoundPredicatePart, isDeontic, isNegative));
-				snippet1Replace1Replace2 = hyphenBinder.PopulatePredicateText(reading, factRoles, allBasicRoleReplacements[0], true);
+				hyphenBinder = new VerbalizationHyphenBinder(reading, writer.FormatProvider, factRoles, unaryRoleIndex, snippets.GetSnippet(CoreVerbalizationSnippetType.HyphenBoundPredicatePart, isDeontic, isNegative), predicatePartFormatString);
+				snippet1Replace1Replace2 = hyphenBinder.PopulatePredicateText(reading, writer.FormatProvider, predicatePartFormatString, factRoles, allBasicRoleReplacements[0], true);
 				snippet1Replace1 = string.Format(writer.FormatProvider, snippet1ReplaceFormat1, snippet1Replace1Replace1, snippet1Replace1Replace2);
 				FactType.WriteVerbalizerSentence(writer, string.Format(writer.FormatProvider, snippetFormat1, snippet1Replace1), snippets.GetSnippet(CoreVerbalizationSnippetType.CloseVerbalizationSentence, isDeontic, isNegative));
 				if (this.IsPreferred)
 				{
+					ObjectType preferredFor = this.PreferredIdentifierFor;
 					writer.WriteLine();
 					string snippetFormat2 = snippets.GetSnippet(CoreVerbalizationSnippetType.ConstraintProvidesPreferredIdentifier, isDeontic, isNegative);
 					string snippet2Replace1 = null;
@@ -4851,17 +4911,20 @@ namespace Neumont.Tools.ORM.ObjectModel
 					string snippet2Replace2 = null;
 					string snippet2ReplaceFormat2 = snippets.GetSnippet(CoreVerbalizationSnippetType.ObjectType, isDeontic, isNegative);
 					string snippet2Replace2Replace1 = null;
-					snippet2Replace2Replace1 = this.PreferredIdentifierFor.Name;
-					snippet2Replace2 = string.Format(writer.FormatProvider, snippet2ReplaceFormat2, snippet2Replace2Replace1);
+					snippet2Replace2Replace1 = preferredFor.Name;
+					string snippet2Replace2Replace2 = null;
+					snippet2Replace2Replace2 = preferredFor.Id.ToString("D");
+					snippet2Replace2 = string.Format(writer.FormatProvider, snippet2ReplaceFormat2, snippet2Replace2Replace1, snippet2Replace2Replace2);
 					FactType.WriteVerbalizerSentence(writer, string.Format(writer.FormatProvider, snippetFormat2, snippet2Replace1, snippet2Replace2), snippets.GetSnippet(CoreVerbalizationSnippetType.CloseVerbalizationSentence, isDeontic, isNegative));
 				}
 			}
 			else if (allFactsCount == 1 && factArity == 1)
 			{
 				parentFact = allFacts[0];
+				predicatePartFormatString = string.Format(writer.FormatProvider, snippets.GetSnippet(CoreVerbalizationSnippetType.PredicatePart, isDeontic, isNegative), parentFact.Name, parentFact.Id.ToString("D"));
 				allReadingOrders = parentFact.ReadingOrderCollection;
 				reading = parentFact.GetMatchingReading(allReadingOrders, null, factRoles[0], null, false, false, false, factRoles, true);
-				hyphenBinder = new VerbalizationHyphenBinder(reading, factRoles, unaryRoleIndex, snippets.GetSnippet(CoreVerbalizationSnippetType.HyphenBoundPredicatePart, isDeontic, isNegative));
+				hyphenBinder = new VerbalizationHyphenBinder(reading, writer.FormatProvider, factRoles, unaryRoleIndex, snippets.GetSnippet(CoreVerbalizationSnippetType.HyphenBoundPredicatePart, isDeontic, isNegative), predicatePartFormatString);
 				verbalizationContext.BeginVerbalization(VerbalizationContent.Normal);
 				string snippetFormat1 = snippets.GetSnippet(CoreVerbalizationSnippetType.ModalPossibilityOperator, isDeontic, isNegative);
 				string snippet1Replace1 = null;
@@ -4910,13 +4973,14 @@ namespace Neumont.Tools.ORM.ObjectModel
 				snippet1Replace1Replace1Replace1 = sbTemp.ToString();
 				snippet1Replace1Replace1 = string.Format(writer.FormatProvider, snippet1Replace1ReplaceFormat1, snippet1Replace1Replace1Replace1);
 				string snippet1Replace1Replace2 = null;
-				snippet1Replace1Replace2 = hyphenBinder.PopulatePredicateText(reading, factRoles, allBasicRoleReplacements[0], true);
+				snippet1Replace1Replace2 = hyphenBinder.PopulatePredicateText(reading, writer.FormatProvider, predicatePartFormatString, factRoles, allBasicRoleReplacements[0], true);
 				snippet1Replace1 = string.Format(writer.FormatProvider, snippet1ReplaceFormat1, snippet1Replace1Replace1, snippet1Replace1Replace2);
 				FactType.WriteVerbalizerSentence(writer, string.Format(writer.FormatProvider, snippetFormat1, snippet1Replace1), snippets.GetSnippet(CoreVerbalizationSnippetType.CloseVerbalizationSentence, isDeontic, isNegative));
 			}
 			else if (allFactsCount == 1 && factArity == constraintRoleArity && !isNegative)
 			{
 				parentFact = allFacts[0];
+				predicatePartFormatString = string.Format(writer.FormatProvider, snippets.GetSnippet(CoreVerbalizationSnippetType.PredicatePart, isDeontic, isNegative), parentFact.Name, parentFact.Id.ToString("D"));
 				allReadingOrders = parentFact.ReadingOrderCollection;
 				verbalizationContext.BeginVerbalization(VerbalizationContent.Normal);
 				string snippetFormat1 = snippets.GetSnippet(CoreVerbalizationSnippetType.ModalPossibilityOperator, isDeontic, isNegative);
@@ -4954,7 +5018,7 @@ namespace Neumont.Tools.ORM.ObjectModel
 					}
 					sbTemp.Append(snippets.GetSnippet(listSnippet, isDeontic, isNegative));
 					reading = parentFact.GetMatchingReading(allReadingOrders, null, primaryRole, null, false, false, false, factRoles, true);
-					hyphenBinder = new VerbalizationHyphenBinder(reading, factRoles, unaryRoleIndex, snippets.GetSnippet(CoreVerbalizationSnippetType.HyphenBoundPredicatePart, isDeontic, isNegative));
+					hyphenBinder = new VerbalizationHyphenBinder(reading, writer.FormatProvider, factRoles, unaryRoleIndex, snippets.GetSnippet(CoreVerbalizationSnippetType.HyphenBoundPredicatePart, isDeontic, isNegative), predicatePartFormatString);
 					for (int snippet1ReplaceFactRoleIter1 = 0; snippet1ReplaceFactRoleIter1 < factArity; ++snippet1ReplaceFactRoleIter1)
 					{
 						RoleBase currentRole = factRoles[snippet1ReplaceFactRoleIter1];
@@ -4974,7 +5038,7 @@ namespace Neumont.Tools.ORM.ObjectModel
 						}
 						roleReplacements[snippet1ReplaceFactRoleIter1] = roleReplacement;
 					}
-					snippet1Replace1 = hyphenBinder.PopulatePredicateText(reading, factRoles, roleReplacements, false);
+					snippet1Replace1 = hyphenBinder.PopulatePredicateText(reading, writer.FormatProvider, predicatePartFormatString, factRoles, roleReplacements, false);
 					sbTemp.Append(snippet1Replace1);
 					if (RoleIter1 == factArity - 1)
 					{
@@ -5034,12 +5098,13 @@ namespace Neumont.Tools.ORM.ObjectModel
 				snippet2Replace1Replace1 = string.Format(writer.FormatProvider, snippet2Replace1ReplaceFormat1, snippet2Replace1Replace1Replace1);
 				string snippet2Replace1Replace2 = null;
 				reading = parentFact.GetMatchingReading(allReadingOrders, null, factRoles[0], null, false, false, false, factRoles, true);
-				hyphenBinder = new VerbalizationHyphenBinder(reading, factRoles, unaryRoleIndex, snippets.GetSnippet(CoreVerbalizationSnippetType.HyphenBoundPredicatePart, isDeontic, isNegative));
-				snippet2Replace1Replace2 = hyphenBinder.PopulatePredicateText(reading, factRoles, allBasicRoleReplacements[0], true);
+				hyphenBinder = new VerbalizationHyphenBinder(reading, writer.FormatProvider, factRoles, unaryRoleIndex, snippets.GetSnippet(CoreVerbalizationSnippetType.HyphenBoundPredicatePart, isDeontic, isNegative), predicatePartFormatString);
+				snippet2Replace1Replace2 = hyphenBinder.PopulatePredicateText(reading, writer.FormatProvider, predicatePartFormatString, factRoles, allBasicRoleReplacements[0], true);
 				snippet2Replace1 = string.Format(writer.FormatProvider, snippet2ReplaceFormat1, snippet2Replace1Replace1, snippet2Replace1Replace2);
 				FactType.WriteVerbalizerSentence(writer, string.Format(writer.FormatProvider, snippetFormat2, snippet2Replace1), snippets.GetSnippet(CoreVerbalizationSnippetType.CloseVerbalizationSentence, isDeontic, isNegative));
 				if (this.IsPreferred)
 				{
+					ObjectType preferredFor = this.PreferredIdentifierFor;
 					writer.WriteLine();
 					string snippetFormat3 = snippets.GetSnippet(CoreVerbalizationSnippetType.ConstraintProvidesPreferredIdentifier, isDeontic, isNegative);
 					string snippet3Replace1 = null;
@@ -5084,17 +5149,20 @@ namespace Neumont.Tools.ORM.ObjectModel
 					string snippet3Replace2 = null;
 					string snippet3ReplaceFormat2 = snippets.GetSnippet(CoreVerbalizationSnippetType.ObjectType, isDeontic, isNegative);
 					string snippet3Replace2Replace1 = null;
-					snippet3Replace2Replace1 = this.PreferredIdentifierFor.Name;
-					snippet3Replace2 = string.Format(writer.FormatProvider, snippet3ReplaceFormat2, snippet3Replace2Replace1);
+					snippet3Replace2Replace1 = preferredFor.Name;
+					string snippet3Replace2Replace2 = null;
+					snippet3Replace2Replace2 = preferredFor.Id.ToString("D");
+					snippet3Replace2 = string.Format(writer.FormatProvider, snippet3ReplaceFormat2, snippet3Replace2Replace1, snippet3Replace2Replace2);
 					FactType.WriteVerbalizerSentence(writer, string.Format(writer.FormatProvider, snippetFormat3, snippet3Replace1, snippet3Replace2), snippets.GetSnippet(CoreVerbalizationSnippetType.CloseVerbalizationSentence, isDeontic, isNegative));
 				}
 			}
 			else if (allFactsCount == 1 && factArity == constraintRoleArity)
 			{
 				parentFact = allFacts[0];
+				predicatePartFormatString = string.Format(writer.FormatProvider, snippets.GetSnippet(CoreVerbalizationSnippetType.PredicatePart, isDeontic, isNegative), parentFact.Name, parentFact.Id.ToString("D"));
 				allReadingOrders = parentFact.ReadingOrderCollection;
 				reading = parentFact.GetMatchingReading(allReadingOrders, null, factRoles[0], null, false, false, false, factRoles, true);
-				hyphenBinder = new VerbalizationHyphenBinder(reading, factRoles, unaryRoleIndex, snippets.GetSnippet(CoreVerbalizationSnippetType.HyphenBoundPredicatePart, isDeontic, isNegative));
+				hyphenBinder = new VerbalizationHyphenBinder(reading, writer.FormatProvider, factRoles, unaryRoleIndex, snippets.GetSnippet(CoreVerbalizationSnippetType.HyphenBoundPredicatePart, isDeontic, isNegative), predicatePartFormatString);
 				verbalizationContext.BeginVerbalization(VerbalizationContent.Normal);
 				string snippetFormat1 = snippets.GetSnippet(CoreVerbalizationSnippetType.ModalPossibilityOperator, isDeontic, isNegative);
 				string snippet1Replace1 = null;
@@ -5146,16 +5214,17 @@ namespace Neumont.Tools.ORM.ObjectModel
 				snippet1Replace1Replace1Replace1 = string.Format(writer.FormatProvider, snippet1Replace1Replace1ReplaceFormat1, snippet1Replace1Replace1Replace1Replace1);
 				snippet1Replace1Replace1 = string.Format(writer.FormatProvider, snippet1Replace1ReplaceFormat1, snippet1Replace1Replace1Replace1);
 				string snippet1Replace1Replace2 = null;
-				snippet1Replace1Replace2 = hyphenBinder.PopulatePredicateText(reading, factRoles, allBasicRoleReplacements[0], true);
+				snippet1Replace1Replace2 = hyphenBinder.PopulatePredicateText(reading, writer.FormatProvider, predicatePartFormatString, factRoles, allBasicRoleReplacements[0], true);
 				snippet1Replace1 = string.Format(writer.FormatProvider, snippet1ReplaceFormat1, snippet1Replace1Replace1, snippet1Replace1Replace2);
 				FactType.WriteVerbalizerSentence(writer, string.Format(writer.FormatProvider, snippetFormat1, snippet1Replace1), snippets.GetSnippet(CoreVerbalizationSnippetType.CloseVerbalizationSentence, isDeontic, isNegative));
 			}
 			else if (allFactsCount == 1 && factArity == 2 && !isNegative)
 			{
 				parentFact = allFacts[0];
+				predicatePartFormatString = string.Format(writer.FormatProvider, snippets.GetSnippet(CoreVerbalizationSnippetType.PredicatePart, isDeontic, isNegative), parentFact.Name, parentFact.Id.ToString("D"));
 				allReadingOrders = parentFact.ReadingOrderCollection;
 				reading = parentFact.GetMatchingReading(allReadingOrders, null, null, allConstraintRoles, false, false, false, factRoles, false);
-				hyphenBinder = new VerbalizationHyphenBinder(reading, factRoles, unaryRoleIndex, snippets.GetSnippet(CoreVerbalizationSnippetType.HyphenBoundPredicatePart, isDeontic, isNegative));
+				hyphenBinder = new VerbalizationHyphenBinder(reading, writer.FormatProvider, factRoles, unaryRoleIndex, snippets.GetSnippet(CoreVerbalizationSnippetType.HyphenBoundPredicatePart, isDeontic, isNegative), predicatePartFormatString);
 				if (reading != null)
 				{
 					verbalizationContext.BeginVerbalization(VerbalizationContent.Normal);
@@ -5180,13 +5249,13 @@ namespace Neumont.Tools.ORM.ObjectModel
 						}
 						roleReplacements[snippet1ReplaceFactRoleIter1] = roleReplacement;
 					}
-					snippet1Replace1 = hyphenBinder.PopulatePredicateText(reading, factRoles, roleReplacements, false);
+					snippet1Replace1 = hyphenBinder.PopulatePredicateText(reading, writer.FormatProvider, predicatePartFormatString, factRoles, roleReplacements, false);
 					FactType.WriteVerbalizerSentence(writer, string.Format(writer.FormatProvider, snippetFormat1, snippet1Replace1), snippets.GetSnippet(CoreVerbalizationSnippetType.CloseVerbalizationSentence, isDeontic, isNegative));
 				}
 				else
 				{
 					reading = parentFact.GetMatchingReading(allReadingOrders, null, factRoles[0], null, false, false, false, factRoles, true);
-					hyphenBinder = new VerbalizationHyphenBinder(reading, factRoles, unaryRoleIndex, snippets.GetSnippet(CoreVerbalizationSnippetType.HyphenBoundPredicatePart, isDeontic, isNegative));
+					hyphenBinder = new VerbalizationHyphenBinder(reading, writer.FormatProvider, factRoles, unaryRoleIndex, snippets.GetSnippet(CoreVerbalizationSnippetType.HyphenBoundPredicatePart, isDeontic, isNegative), predicatePartFormatString);
 					if (reading != null)
 					{
 						verbalizationContext.BeginVerbalization(VerbalizationContent.Normal);
@@ -5235,7 +5304,7 @@ namespace Neumont.Tools.ORM.ObjectModel
 						string snippet1ReplaceFormat2 = snippets.GetSnippet(CoreVerbalizationSnippetType.ImpliedModalNecessityOperator, isDeontic, isNegative);
 						string snippet1Replace2Replace1 = null;
 						reading = parentFact.GetMatchingReading(allReadingOrders, null, factRoles[0], null, false, false, false, factRoles, true);
-						hyphenBinder = new VerbalizationHyphenBinder(reading, factRoles, unaryRoleIndex, snippets.GetSnippet(CoreVerbalizationSnippetType.HyphenBoundPredicatePart, isDeontic, isNegative));
+						hyphenBinder = new VerbalizationHyphenBinder(reading, writer.FormatProvider, factRoles, unaryRoleIndex, snippets.GetSnippet(CoreVerbalizationSnippetType.HyphenBoundPredicatePart, isDeontic, isNegative), predicatePartFormatString);
 						for (int snippet1Replace2ReplaceFactRoleIter1 = 0; snippet1Replace2ReplaceFactRoleIter1 < factArity; ++snippet1Replace2ReplaceFactRoleIter1)
 						{
 							RoleBase currentRole = factRoles[snippet1Replace2ReplaceFactRoleIter1];
@@ -5255,13 +5324,14 @@ namespace Neumont.Tools.ORM.ObjectModel
 							}
 							roleReplacements[snippet1Replace2ReplaceFactRoleIter1] = roleReplacement;
 						}
-						snippet1Replace2Replace1 = hyphenBinder.PopulatePredicateText(reading, factRoles, roleReplacements, false);
+						snippet1Replace2Replace1 = hyphenBinder.PopulatePredicateText(reading, writer.FormatProvider, predicatePartFormatString, factRoles, roleReplacements, false);
 						snippet1Replace2 = string.Format(writer.FormatProvider, snippet1ReplaceFormat2, snippet1Replace2Replace1);
 						FactType.WriteVerbalizerSentence(writer, string.Format(writer.FormatProvider, snippetFormat1, snippet1Replace1, snippet1Replace2), snippets.GetSnippet(CoreVerbalizationSnippetType.CloseVerbalizationSentence, isDeontic, isNegative));
 					}
 				}
 				if (this.IsPreferred)
 				{
+					ObjectType preferredFor = this.PreferredIdentifierFor;
 					writer.WriteLine();
 					string snippetFormat2 = snippets.GetSnippet(CoreVerbalizationSnippetType.ConstraintProvidesPreferredIdentifier, isDeontic, isNegative);
 					string snippet2Replace1 = null;
@@ -5306,17 +5376,20 @@ namespace Neumont.Tools.ORM.ObjectModel
 					string snippet2Replace2 = null;
 					string snippet2ReplaceFormat2 = snippets.GetSnippet(CoreVerbalizationSnippetType.ObjectType, isDeontic, isNegative);
 					string snippet2Replace2Replace1 = null;
-					snippet2Replace2Replace1 = this.PreferredIdentifierFor.Name;
-					snippet2Replace2 = string.Format(writer.FormatProvider, snippet2ReplaceFormat2, snippet2Replace2Replace1);
+					snippet2Replace2Replace1 = preferredFor.Name;
+					string snippet2Replace2Replace2 = null;
+					snippet2Replace2Replace2 = preferredFor.Id.ToString("D");
+					snippet2Replace2 = string.Format(writer.FormatProvider, snippet2ReplaceFormat2, snippet2Replace2Replace1, snippet2Replace2Replace2);
 					FactType.WriteVerbalizerSentence(writer, string.Format(writer.FormatProvider, snippetFormat2, snippet2Replace1, snippet2Replace2), snippets.GetSnippet(CoreVerbalizationSnippetType.CloseVerbalizationSentence, isDeontic, isNegative));
 				}
 			}
 			else if (allFactsCount == 1 && factArity == 2)
 			{
 				parentFact = allFacts[0];
+				predicatePartFormatString = string.Format(writer.FormatProvider, snippets.GetSnippet(CoreVerbalizationSnippetType.PredicatePart, isDeontic, isNegative), parentFact.Name, parentFact.Id.ToString("D"));
 				allReadingOrders = parentFact.ReadingOrderCollection;
 				reading = parentFact.GetMatchingReading(allReadingOrders, null, null, allConstraintRoles, false, false, false, factRoles, true);
-				hyphenBinder = new VerbalizationHyphenBinder(reading, factRoles, unaryRoleIndex, snippets.GetSnippet(CoreVerbalizationSnippetType.HyphenBoundPredicatePart, isDeontic, isNegative));
+				hyphenBinder = new VerbalizationHyphenBinder(reading, writer.FormatProvider, factRoles, unaryRoleIndex, snippets.GetSnippet(CoreVerbalizationSnippetType.HyphenBoundPredicatePart, isDeontic, isNegative), predicatePartFormatString);
 				verbalizationContext.BeginVerbalization(VerbalizationContent.Normal);
 				string snippetFormat1 = snippets.GetSnippet(CoreVerbalizationSnippetType.ForEachCompactQuantifier, isDeontic, isNegative);
 				string snippet1Replace1 = null;
@@ -5381,19 +5454,20 @@ namespace Neumont.Tools.ORM.ObjectModel
 					}
 					roleReplacements[snippet1Replace2ReplaceFactRoleIter1] = roleReplacement;
 				}
-				snippet1Replace2Replace1 = hyphenBinder.PopulatePredicateText(reading, factRoles, roleReplacements, false);
+				snippet1Replace2Replace1 = hyphenBinder.PopulatePredicateText(reading, writer.FormatProvider, predicatePartFormatString, factRoles, roleReplacements, false);
 				snippet1Replace2 = string.Format(writer.FormatProvider, snippet1ReplaceFormat2, snippet1Replace2Replace1);
 				FactType.WriteVerbalizerSentence(writer, string.Format(writer.FormatProvider, snippetFormat1, snippet1Replace1, snippet1Replace2), snippets.GetSnippet(CoreVerbalizationSnippetType.CloseVerbalizationSentence, isDeontic, isNegative));
 			}
 			else if (allFactsCount == 1 && isNegative)
 			{
 				parentFact = allFacts[0];
+				predicatePartFormatString = string.Format(writer.FormatProvider, snippets.GetSnippet(CoreVerbalizationSnippetType.PredicatePart, isDeontic, isNegative), parentFact.Name, parentFact.Id.ToString("D"));
 				allReadingOrders = parentFact.ReadingOrderCollection;
 				verbalizationContext.BeginVerbalization(VerbalizationContent.Normal);
 				string snippetFormat1 = snippets.GetSnippet(CoreVerbalizationSnippetType.ModalPossibilityOperator, isDeontic, isNegative);
 				string snippet1Replace1 = null;
 				reading = parentFact.GetMatchingReading(allReadingOrders, null, factRoles[0], null, false, false, false, factRoles, true);
-				hyphenBinder = new VerbalizationHyphenBinder(reading, factRoles, unaryRoleIndex, snippets.GetSnippet(CoreVerbalizationSnippetType.HyphenBoundPredicatePart, isDeontic, isNegative));
+				hyphenBinder = new VerbalizationHyphenBinder(reading, writer.FormatProvider, factRoles, unaryRoleIndex, snippets.GetSnippet(CoreVerbalizationSnippetType.HyphenBoundPredicatePart, isDeontic, isNegative), predicatePartFormatString);
 				for (int snippet1ReplaceFactRoleIter1 = 0; snippet1ReplaceFactRoleIter1 < factArity; ++snippet1ReplaceFactRoleIter1)
 				{
 					RoleBase currentRole = factRoles[snippet1ReplaceFactRoleIter1];
@@ -5413,15 +5487,16 @@ namespace Neumont.Tools.ORM.ObjectModel
 					}
 					roleReplacements[snippet1ReplaceFactRoleIter1] = roleReplacement;
 				}
-				snippet1Replace1 = hyphenBinder.PopulatePredicateText(reading, factRoles, roleReplacements, false);
+				snippet1Replace1 = hyphenBinder.PopulatePredicateText(reading, writer.FormatProvider, predicatePartFormatString, factRoles, roleReplacements, false);
 				FactType.WriteVerbalizerSentence(writer, string.Format(writer.FormatProvider, snippetFormat1, snippet1Replace1), snippets.GetSnippet(CoreVerbalizationSnippetType.CloseVerbalizationSentence, isDeontic, isNegative));
 			}
 			else if (allFactsCount == 1)
 			{
 				parentFact = allFacts[0];
+				predicatePartFormatString = string.Format(writer.FormatProvider, snippets.GetSnippet(CoreVerbalizationSnippetType.PredicatePart, isDeontic, isNegative), parentFact.Name, parentFact.Id.ToString("D"));
 				allReadingOrders = parentFact.ReadingOrderCollection;
 				reading = parentFact.GetMatchingReading(allReadingOrders, null, factRoles[0], null, false, false, false, factRoles, true);
-				hyphenBinder = new VerbalizationHyphenBinder(reading, factRoles, unaryRoleIndex, snippets.GetSnippet(CoreVerbalizationSnippetType.HyphenBoundPredicatePart, isDeontic, isNegative));
+				hyphenBinder = new VerbalizationHyphenBinder(reading, writer.FormatProvider, factRoles, unaryRoleIndex, snippets.GetSnippet(CoreVerbalizationSnippetType.HyphenBoundPredicatePart, isDeontic, isNegative), predicatePartFormatString);
 				verbalizationContext.BeginVerbalization(VerbalizationContent.Normal);
 				string snippetFormat1 = snippets.GetSnippet(CoreVerbalizationSnippetType.ForEachIndentedQuantifier, isDeontic, isNegative);
 				string snippet1Replace1 = null;
@@ -5486,7 +5561,7 @@ namespace Neumont.Tools.ORM.ObjectModel
 					}
 					roleReplacements[snippet1Replace2ReplaceFactRoleIter1] = roleReplacement;
 				}
-				snippet1Replace2Replace1 = hyphenBinder.PopulatePredicateText(reading, factRoles, roleReplacements, false);
+				snippet1Replace2Replace1 = hyphenBinder.PopulatePredicateText(reading, writer.FormatProvider, predicatePartFormatString, factRoles, roleReplacements, false);
 				snippet1Replace2 = string.Format(writer.FormatProvider, snippet1ReplaceFormat2, snippet1Replace2Replace1);
 				FactType.WriteVerbalizerSentence(writer, string.Format(writer.FormatProvider, snippetFormat1, snippet1Replace1, snippet1Replace2), snippets.GetSnippet(CoreVerbalizationSnippetType.CloseVerbalizationSentence, isDeontic, isNegative));
 			}
@@ -5497,6 +5572,7 @@ namespace Neumont.Tools.ORM.ObjectModel
 				{
 					RoleBase primaryRole = allConstraintRoles[readingMatchIndex1];
 					parentFact = primaryRole.FactType;
+					predicatePartFormatString = string.Format(writer.FormatProvider, snippets.GetSnippet(CoreVerbalizationSnippetType.PredicatePart, isDeontic, isNegative), parentFact.Name, parentFact.Id.ToString("D"));
 					allReadingOrders = parentFact.ReadingOrderCollection;
 					factRoles = allReadingOrders.Count != 0 ? allReadingOrders[0].RoleCollection : parentFact.RoleCollection;
 					reading = parentFact.GetMatchingReading(allReadingOrders, null, primaryRole, null, true, true, false, factRoles, false);
@@ -5526,6 +5602,7 @@ namespace Neumont.Tools.ORM.ObjectModel
 					{
 						RoleBase primaryRole = allConstraintRoles[RoleIter1];
 						parentFact = primaryRole.FactType;
+						predicatePartFormatString = string.Format(writer.FormatProvider, snippets.GetSnippet(CoreVerbalizationSnippetType.PredicatePart, isDeontic, isNegative), parentFact.Name, parentFact.Id.ToString("D"));
 						allReadingOrders = parentFact.ReadingOrderCollection;
 						factRoles = allReadingOrders.Count != 0 ? allReadingOrders[0].RoleCollection : parentFact.RoleCollection;
 						unaryRoleIndex = FactType.GetUnaryRoleIndex(factRoles);
@@ -5552,7 +5629,7 @@ namespace Neumont.Tools.ORM.ObjectModel
 						}
 						sbTemp.Append(snippets.GetSnippet(listSnippet, isDeontic, isNegative));
 						reading = parentFact.GetMatchingReading(allReadingOrders, null, factRoles[0], null, false, false, false, factRoles, true);
-						hyphenBinder = new VerbalizationHyphenBinder(reading, factRoles, unaryRoleIndex, snippets.GetSnippet(CoreVerbalizationSnippetType.HyphenBoundPredicatePart, isDeontic, isNegative));
+						hyphenBinder = new VerbalizationHyphenBinder(reading, writer.FormatProvider, factRoles, unaryRoleIndex, snippets.GetSnippet(CoreVerbalizationSnippetType.HyphenBoundPredicatePart, isDeontic, isNegative), predicatePartFormatString);
 						int ResolvedRoleIndex1 = unaryReplacements[contextBasicReplacementIndex] ? 0 : FactType.IndexOfRole(factRoles, primaryRole);
 						sbTemp.Append(hyphenBinder.HyphenBindRoleReplacement(basicRoleReplacements[ResolvedRoleIndex1], ResolvedRoleIndex1));
 						if (RoleIter1 == constraintRoleArity - 1)
@@ -5575,6 +5652,7 @@ namespace Neumont.Tools.ORM.ObjectModel
 					{
 						RoleBase primaryRole = allConstraintRoles[RoleIter2];
 						parentFact = primaryRole.FactType;
+						predicatePartFormatString = string.Format(writer.FormatProvider, snippets.GetSnippet(CoreVerbalizationSnippetType.PredicatePart, isDeontic, isNegative), parentFact.Name, parentFact.Id.ToString("D"));
 						allReadingOrders = parentFact.ReadingOrderCollection;
 						factRoles = allReadingOrders.Count != 0 ? allReadingOrders[0].RoleCollection : parentFact.RoleCollection;
 						unaryRoleIndex = FactType.GetUnaryRoleIndex(factRoles);
@@ -5602,7 +5680,7 @@ namespace Neumont.Tools.ORM.ObjectModel
 						}
 						sbTemp.Append(snippets.GetSnippet(listSnippet, isDeontic, isNegative));
 						reading = allConstraintRoleReadings[RoleIter2];
-						hyphenBinder = new VerbalizationHyphenBinder(reading, factRoles, unaryRoleIndex, snippets.GetSnippet(CoreVerbalizationSnippetType.HyphenBoundPredicatePart, isDeontic, isNegative));
+						hyphenBinder = new VerbalizationHyphenBinder(reading, writer.FormatProvider, factRoles, unaryRoleIndex, snippets.GetSnippet(CoreVerbalizationSnippetType.HyphenBoundPredicatePart, isDeontic, isNegative), predicatePartFormatString);
 						for (int snippet1ReplaceFactRoleIter2 = 0; snippet1ReplaceFactRoleIter2 < factArity; ++snippet1ReplaceFactRoleIter2)
 						{
 							RoleBase currentRole = factRoles[snippet1ReplaceFactRoleIter2];
@@ -5626,7 +5704,7 @@ namespace Neumont.Tools.ORM.ObjectModel
 							}
 							roleReplacements[snippet1ReplaceFactRoleIter2] = roleReplacement;
 						}
-						snippet1Replace2 = hyphenBinder.PopulatePredicateText(reading, factRoles, roleReplacements, false);
+						snippet1Replace2 = hyphenBinder.PopulatePredicateText(reading, writer.FormatProvider, predicatePartFormatString, factRoles, roleReplacements, false);
 						sbTemp.Append(snippet1Replace2);
 						if (RoleIter2 == constraintRoleArity - 1)
 						{
@@ -5653,6 +5731,7 @@ namespace Neumont.Tools.ORM.ObjectModel
 					for (int FactIter1 = 0; FactIter1 < allFactsCount; ++FactIter1)
 					{
 						parentFact = allFacts[FactIter1];
+						predicatePartFormatString = string.Format(writer.FormatProvider, snippets.GetSnippet(CoreVerbalizationSnippetType.PredicatePart, isDeontic, isNegative), parentFact.Name, parentFact.Id.ToString("D"));
 						allReadingOrders = parentFact.ReadingOrderCollection;
 						factRoles = allReadingOrders.Count != 0 ? allReadingOrders[0].RoleCollection : parentFact.RoleCollection;
 						unaryRoleIndex = FactType.GetUnaryRoleIndex(factRoles);
@@ -5680,8 +5759,8 @@ namespace Neumont.Tools.ORM.ObjectModel
 						sbTemp.Append(snippets.GetSnippet(listSnippet, isDeontic, isNegative));
 						snippet1Replace1 = null;
 						reading = parentFact.GetMatchingReading(allReadingOrders, null, factRoles[0], null, false, false, false, factRoles, true);
-						hyphenBinder = new VerbalizationHyphenBinder(reading, factRoles, unaryRoleIndex, snippets.GetSnippet(CoreVerbalizationSnippetType.HyphenBoundPredicatePart, isDeontic, isNegative));
-						snippet1Replace1 = hyphenBinder.PopulatePredicateText(reading, factRoles, basicRoleReplacements, true);
+						hyphenBinder = new VerbalizationHyphenBinder(reading, writer.FormatProvider, factRoles, unaryRoleIndex, snippets.GetSnippet(CoreVerbalizationSnippetType.HyphenBoundPredicatePart, isDeontic, isNegative), predicatePartFormatString);
+						snippet1Replace1 = hyphenBinder.PopulatePredicateText(reading, writer.FormatProvider, predicatePartFormatString, factRoles, basicRoleReplacements, true);
 						sbTemp.Append(snippet1Replace1);
 						if (FactIter1 == allFactsCount - 1)
 						{
@@ -5786,6 +5865,7 @@ namespace Neumont.Tools.ORM.ObjectModel
 				}
 				if (this.IsPreferred)
 				{
+					ObjectType preferredFor = this.PreferredIdentifierFor;
 					writer.WriteLine();
 					string snippetFormat2 = snippets.GetSnippet(CoreVerbalizationSnippetType.ConstraintProvidesPreferredIdentifier, isDeontic, isNegative);
 					string snippet2Replace1 = null;
@@ -5835,8 +5915,10 @@ namespace Neumont.Tools.ORM.ObjectModel
 					string snippet2Replace2 = null;
 					string snippet2ReplaceFormat2 = snippets.GetSnippet(CoreVerbalizationSnippetType.ObjectType, isDeontic, isNegative);
 					string snippet2Replace2Replace1 = null;
-					snippet2Replace2Replace1 = this.PreferredIdentifierFor.Name;
-					snippet2Replace2 = string.Format(writer.FormatProvider, snippet2ReplaceFormat2, snippet2Replace2Replace1);
+					snippet2Replace2Replace1 = preferredFor.Name;
+					string snippet2Replace2Replace2 = null;
+					snippet2Replace2Replace2 = preferredFor.Id.ToString("D");
+					snippet2Replace2 = string.Format(writer.FormatProvider, snippet2ReplaceFormat2, snippet2Replace2Replace1, snippet2Replace2Replace2);
 					FactType.WriteVerbalizerSentence(writer, string.Format(writer.FormatProvider, snippetFormat2, snippet2Replace1, snippet2Replace2), snippets.GetSnippet(CoreVerbalizationSnippetType.CloseVerbalizationSentence, isDeontic, isNegative));
 				}
 			}
@@ -5847,6 +5929,7 @@ namespace Neumont.Tools.ORM.ObjectModel
 				{
 					RoleBase primaryRole = allConstraintRoles[readingMatchIndex1];
 					parentFact = primaryRole.FactType;
+					predicatePartFormatString = string.Format(writer.FormatProvider, snippets.GetSnippet(CoreVerbalizationSnippetType.PredicatePart, isDeontic, isNegative), parentFact.Name, parentFact.Id.ToString("D"));
 					allReadingOrders = parentFact.ReadingOrderCollection;
 					factRoles = allReadingOrders.Count != 0 ? allReadingOrders[0].RoleCollection : parentFact.RoleCollection;
 					reading = parentFact.GetMatchingReading(allReadingOrders, null, primaryRole, null, true, true, false, factRoles, false);
@@ -5877,6 +5960,7 @@ namespace Neumont.Tools.ORM.ObjectModel
 					{
 						RoleBase primaryRole = allConstraintRoles[RoleIter1];
 						parentFact = primaryRole.FactType;
+						predicatePartFormatString = string.Format(writer.FormatProvider, snippets.GetSnippet(CoreVerbalizationSnippetType.PredicatePart, isDeontic, isNegative), parentFact.Name, parentFact.Id.ToString("D"));
 						allReadingOrders = parentFact.ReadingOrderCollection;
 						factRoles = allReadingOrders.Count != 0 ? allReadingOrders[0].RoleCollection : parentFact.RoleCollection;
 						unaryRoleIndex = FactType.GetUnaryRoleIndex(factRoles);
@@ -5904,7 +5988,7 @@ namespace Neumont.Tools.ORM.ObjectModel
 						}
 						sbTemp.Append(snippets.GetSnippet(listSnippet, isDeontic, isNegative));
 						reading = allConstraintRoleReadings[RoleIter1];
-						hyphenBinder = new VerbalizationHyphenBinder(reading, factRoles, unaryRoleIndex, snippets.GetSnippet(CoreVerbalizationSnippetType.HyphenBoundPredicatePart, isDeontic, isNegative));
+						hyphenBinder = new VerbalizationHyphenBinder(reading, writer.FormatProvider, factRoles, unaryRoleIndex, snippets.GetSnippet(CoreVerbalizationSnippetType.HyphenBoundPredicatePart, isDeontic, isNegative), predicatePartFormatString);
 						for (int snippet1ReplaceFactRoleIter1 = 0; snippet1ReplaceFactRoleIter1 < factArity; ++snippet1ReplaceFactRoleIter1)
 						{
 							RoleBase currentRole = factRoles[snippet1ReplaceFactRoleIter1];
@@ -5928,7 +6012,7 @@ namespace Neumont.Tools.ORM.ObjectModel
 							}
 							roleReplacements[snippet1ReplaceFactRoleIter1] = roleReplacement;
 						}
-						snippet1Replace1 = hyphenBinder.PopulatePredicateText(reading, factRoles, roleReplacements, false);
+						snippet1Replace1 = hyphenBinder.PopulatePredicateText(reading, writer.FormatProvider, predicatePartFormatString, factRoles, roleReplacements, false);
 						sbTemp.Append(snippet1Replace1);
 						if (RoleIter1 == constraintRoleArity - 1)
 						{
@@ -5955,6 +6039,7 @@ namespace Neumont.Tools.ORM.ObjectModel
 					for (int FactIter1 = 0; FactIter1 < allFactsCount; ++FactIter1)
 					{
 						parentFact = allFacts[FactIter1];
+						predicatePartFormatString = string.Format(writer.FormatProvider, snippets.GetSnippet(CoreVerbalizationSnippetType.PredicatePart, isDeontic, isNegative), parentFact.Name, parentFact.Id.ToString("D"));
 						allReadingOrders = parentFact.ReadingOrderCollection;
 						factRoles = allReadingOrders.Count != 0 ? allReadingOrders[0].RoleCollection : parentFact.RoleCollection;
 						unaryRoleIndex = FactType.GetUnaryRoleIndex(factRoles);
@@ -5982,8 +6067,8 @@ namespace Neumont.Tools.ORM.ObjectModel
 						sbTemp.Append(snippets.GetSnippet(listSnippet, isDeontic, isNegative));
 						snippet1Replace1 = null;
 						reading = parentFact.GetMatchingReading(allReadingOrders, null, factRoles[0], null, false, false, false, factRoles, true);
-						hyphenBinder = new VerbalizationHyphenBinder(reading, factRoles, unaryRoleIndex, snippets.GetSnippet(CoreVerbalizationSnippetType.HyphenBoundPredicatePart, isDeontic, isNegative));
-						snippet1Replace1 = hyphenBinder.PopulatePredicateText(reading, factRoles, basicRoleReplacements, true);
+						hyphenBinder = new VerbalizationHyphenBinder(reading, writer.FormatProvider, factRoles, unaryRoleIndex, snippets.GetSnippet(CoreVerbalizationSnippetType.HyphenBoundPredicatePart, isDeontic, isNegative), predicatePartFormatString);
+						snippet1Replace1 = hyphenBinder.PopulatePredicateText(reading, writer.FormatProvider, predicatePartFormatString, factRoles, basicRoleReplacements, true);
 						sbTemp.Append(snippet1Replace1);
 						if (FactIter1 == allFactsCount - 1)
 						{
@@ -6187,6 +6272,7 @@ namespace Neumont.Tools.ORM.ObjectModel
 			bool isDeontic = (this as IConstraint).Modality == ConstraintModality.Deontic;
 			StringBuilder sbTemp = null;
 			FactType parentFact;
+			string predicatePartFormatString;
 			LinkedElementCollection<ReadingOrder> allReadingOrders;
 			IList<RoleBase> factRoles = null;
 			Nullable<int> unaryRoleIndex = null;
@@ -6314,11 +6400,11 @@ namespace Neumont.Tools.ORM.ObjectModel
 						}
 						if (useSubscript)
 						{
-							basicReplacement = string.Format(writer.FormatProvider, snippets.GetSnippet(CoreVerbalizationSnippetType.ObjectTypeWithSubscript, isDeontic, isNegative), rolePlayer.Name, subscript + 1);
+							basicReplacement = string.Format(writer.FormatProvider, snippets.GetSnippet(CoreVerbalizationSnippetType.ObjectTypeWithSubscript, isDeontic, isNegative), rolePlayer.Name, rolePlayer.Id.ToString("D"), subscript + 1);
 						}
 						else
 						{
-							basicReplacement = string.Format(writer.FormatProvider, snippets.GetSnippet(CoreVerbalizationSnippetType.ObjectType, isDeontic, isNegative), rolePlayer.Name);
+							basicReplacement = string.Format(writer.FormatProvider, snippets.GetSnippet(CoreVerbalizationSnippetType.ObjectType, isDeontic, isNegative), rolePlayer.Name, rolePlayer.Id.ToString("D"));
 						}
 					}
 					else
@@ -6340,9 +6426,10 @@ namespace Neumont.Tools.ORM.ObjectModel
 			if (allFactsCount == 1 && factArity == 2 && constraintRoleArity == 1 && !isNegative && this.MinFrequency == 1)
 			{
 				parentFact = allFacts[0];
+				predicatePartFormatString = string.Format(writer.FormatProvider, snippets.GetSnippet(CoreVerbalizationSnippetType.PredicatePart, isDeontic, isNegative), parentFact.Name, parentFact.Id.ToString("D"));
 				allReadingOrders = parentFact.ReadingOrderCollection;
 				reading = parentFact.GetMatchingReading(allReadingOrders, null, null, allConstraintRoles, false, false, false, factRoles, false);
-				hyphenBinder = new VerbalizationHyphenBinder(reading, factRoles, unaryRoleIndex, snippets.GetSnippet(CoreVerbalizationSnippetType.HyphenBoundPredicatePart, isDeontic, isNegative));
+				hyphenBinder = new VerbalizationHyphenBinder(reading, writer.FormatProvider, factRoles, unaryRoleIndex, snippets.GetSnippet(CoreVerbalizationSnippetType.HyphenBoundPredicatePart, isDeontic, isNegative), predicatePartFormatString);
 				if (reading != null)
 				{
 					verbalizationContext.BeginVerbalization(VerbalizationContent.Normal);
@@ -6369,13 +6456,13 @@ namespace Neumont.Tools.ORM.ObjectModel
 						}
 						roleReplacements[snippet1ReplaceFactRoleIter1] = roleReplacement;
 					}
-					snippet1Replace1 = hyphenBinder.PopulatePredicateText(reading, factRoles, roleReplacements, false);
+					snippet1Replace1 = hyphenBinder.PopulatePredicateText(reading, writer.FormatProvider, predicatePartFormatString, factRoles, roleReplacements, false);
 					FactType.WriteVerbalizerSentence(writer, string.Format(writer.FormatProvider, snippetFormat1, snippet1Replace1), snippets.GetSnippet(CoreVerbalizationSnippetType.CloseVerbalizationSentence, isDeontic, isNegative));
 				}
 				else
 				{
 					reading = parentFact.GetMatchingReading(allReadingOrders, null, factRoles[0], null, false, false, false, factRoles, true);
-					hyphenBinder = new VerbalizationHyphenBinder(reading, factRoles, unaryRoleIndex, snippets.GetSnippet(CoreVerbalizationSnippetType.HyphenBoundPredicatePart, isDeontic, isNegative));
+					hyphenBinder = new VerbalizationHyphenBinder(reading, writer.FormatProvider, factRoles, unaryRoleIndex, snippets.GetSnippet(CoreVerbalizationSnippetType.HyphenBoundPredicatePart, isDeontic, isNegative), predicatePartFormatString);
 					if (reading != null)
 					{
 						verbalizationContext.BeginVerbalization(VerbalizationContent.Normal);
@@ -6402,8 +6489,8 @@ namespace Neumont.Tools.ORM.ObjectModel
 						snippet1Replace1Replace1 = sbTemp.ToString();
 						string snippet1Replace1Replace2 = null;
 						reading = parentFact.GetMatchingReading(allReadingOrders, null, factRoles[0], null, false, false, false, factRoles, true);
-						hyphenBinder = new VerbalizationHyphenBinder(reading, factRoles, unaryRoleIndex, snippets.GetSnippet(CoreVerbalizationSnippetType.HyphenBoundPredicatePart, isDeontic, isNegative));
-						snippet1Replace1Replace2 = hyphenBinder.PopulatePredicateText(reading, factRoles, allBasicRoleReplacements[0], true);
+						hyphenBinder = new VerbalizationHyphenBinder(reading, writer.FormatProvider, factRoles, unaryRoleIndex, snippets.GetSnippet(CoreVerbalizationSnippetType.HyphenBoundPredicatePart, isDeontic, isNegative), predicatePartFormatString);
+						snippet1Replace1Replace2 = hyphenBinder.PopulatePredicateText(reading, writer.FormatProvider, predicatePartFormatString, factRoles, allBasicRoleReplacements[0], true);
 						string snippet1Replace1Replace3 = null;
 						CoreVerbalizationSnippetType snippet1Replace1ReplaceSnippetType3 = 0;
 						if (this.MinFrequency == this.MaxFrequency)
@@ -6436,6 +6523,7 @@ namespace Neumont.Tools.ORM.ObjectModel
 			else if (allFactsCount == 1 && minFactArity >= 2 && !isNegative)
 			{
 				parentFact = allFacts[0];
+				predicatePartFormatString = string.Format(writer.FormatProvider, snippets.GetSnippet(CoreVerbalizationSnippetType.PredicatePart, isDeontic, isNegative), parentFact.Name, parentFact.Id.ToString("D"));
 				allReadingOrders = parentFact.ReadingOrderCollection;
 				verbalizationContext.BeginVerbalization(VerbalizationContent.Normal);
 				string snippetFormat1 = snippets.GetSnippet(CoreVerbalizationSnippetType.ImpliedModalNecessityOperator, isDeontic, isNegative);
@@ -6512,8 +6600,8 @@ namespace Neumont.Tools.ORM.ObjectModel
 				}
 				string snippet1Replace1Replace2 = null;
 				reading = parentFact.GetMatchingReading(allReadingOrders, null, factRoles[0], null, false, false, false, factRoles, true);
-				hyphenBinder = new VerbalizationHyphenBinder(reading, factRoles, unaryRoleIndex, snippets.GetSnippet(CoreVerbalizationSnippetType.HyphenBoundPredicatePart, isDeontic, isNegative));
-				snippet1Replace1Replace2 = hyphenBinder.PopulatePredicateText(reading, factRoles, allBasicRoleReplacements[0], true);
+				hyphenBinder = new VerbalizationHyphenBinder(reading, writer.FormatProvider, factRoles, unaryRoleIndex, snippets.GetSnippet(CoreVerbalizationSnippetType.HyphenBoundPredicatePart, isDeontic, isNegative), predicatePartFormatString);
+				snippet1Replace1Replace2 = hyphenBinder.PopulatePredicateText(reading, writer.FormatProvider, predicatePartFormatString, factRoles, allBasicRoleReplacements[0], true);
 				string snippet1Replace1Replace3 = null;
 				CoreVerbalizationSnippetType snippet1Replace1ReplaceSnippetType3 = 0;
 				if (this.MinFrequency == this.MaxFrequency)
@@ -6642,6 +6730,7 @@ namespace Neumont.Tools.ORM.ObjectModel
 			bool isDeontic = false;
 			StringBuilder sbTemp = null;
 			FactType parentFact = valueRole.FactType;
+			string predicatePartFormatString = string.Format(writer.FormatProvider, snippets.GetSnippet(CoreVerbalizationSnippetType.PredicatePart, isDeontic, isNegative), parentFact.Name, parentFact.Id.ToString("D"));
 			IList<Role> includedRoles = new Role[]{
 				valueRole};
 			LinkedElementCollection<ReadingOrder> allReadingOrders = parentFact.ReadingOrderCollection;
@@ -6691,7 +6780,7 @@ namespace Neumont.Tools.ORM.ObjectModel
 				string basicReplacement;
 				if (rolePlayer != null)
 				{
-					basicReplacement = string.Format(writer.FormatProvider, snippets.GetSnippet(CoreVerbalizationSnippetType.ObjectType, isDeontic, isNegative), rolePlayer.Name);
+					basicReplacement = string.Format(writer.FormatProvider, snippets.GetSnippet(CoreVerbalizationSnippetType.ObjectType, isDeontic, isNegative), rolePlayer.Name, rolePlayer.Id.ToString("D"));
 				}
 				else
 				{
@@ -6769,7 +6858,7 @@ namespace Neumont.Tools.ORM.ObjectModel
 			else
 			{
 				reading = parentFact.GetMatchingReading(allReadingOrders, null, factRoles[0], null, false, false, false, factRoles, true);
-				hyphenBinder = new VerbalizationHyphenBinder(reading, factRoles, unaryRoleIndex, snippets.GetSnippet(CoreVerbalizationSnippetType.HyphenBoundPredicatePart, isDeontic, isNegative));
+				hyphenBinder = new VerbalizationHyphenBinder(reading, writer.FormatProvider, factRoles, unaryRoleIndex, snippets.GetSnippet(CoreVerbalizationSnippetType.HyphenBoundPredicatePart, isDeontic, isNegative), predicatePartFormatString);
 				string variableSnippet1ReplaceFormat1 = snippets.GetSnippet(CoreVerbalizationSnippetType.InQuantifier, isDeontic, isNegative);
 				string variableSnippet1Replace1Replace1 = null;
 				if (sbTemp == null)
@@ -6787,7 +6876,7 @@ namespace Neumont.Tools.ORM.ObjectModel
 				}
 				variableSnippet1Replace1Replace1 = sbTemp.ToString();
 				string variableSnippet1Replace1Replace2 = null;
-				variableSnippet1Replace1Replace2 = hyphenBinder.PopulatePredicateText(reading, factRoles, basicRoleReplacements, true);
+				variableSnippet1Replace1Replace2 = hyphenBinder.PopulatePredicateText(reading, writer.FormatProvider, predicatePartFormatString, factRoles, basicRoleReplacements, true);
 				variableSnippet1Replace1 = string.Format(writer.FormatProvider, variableSnippet1ReplaceFormat1, variableSnippet1Replace1Replace1, variableSnippet1Replace1Replace2);
 			}
 			string variableSnippet1Replace2 = null;
@@ -7021,7 +7110,9 @@ namespace Neumont.Tools.ORM.ObjectModel
 			string variableSnippet1ReplaceFormat1 = snippets.GetSnippet(CoreVerbalizationSnippetType.ObjectType, isDeontic, isNegative);
 			string variableSnippet1Replace1Replace1 = null;
 			variableSnippet1Replace1Replace1 = this.ValueType.Name;
-			variableSnippet1Replace1 = string.Format(writer.FormatProvider, variableSnippet1ReplaceFormat1, variableSnippet1Replace1Replace1);
+			string variableSnippet1Replace1Replace2 = null;
+			variableSnippet1Replace1Replace2 = this.ValueType.Id.ToString("D");
+			variableSnippet1Replace1 = string.Format(writer.FormatProvider, variableSnippet1ReplaceFormat1, variableSnippet1Replace1Replace1, variableSnippet1Replace1Replace2);
 			string variableSnippet1Replace2 = null;
 			if (sbTemp == null)
 			{
@@ -7229,7 +7320,9 @@ namespace Neumont.Tools.ORM.ObjectModel
 				string variableSnippet1ReplaceFormat1 = snippets.GetSnippet(CoreVerbalizationSnippetType.ObjectType, isDeontic, isNegative);
 				string variableSnippet1Replace1Replace1 = null;
 				variableSnippet1Replace1Replace1 = this.Name;
-				variableSnippet1Replace1 = string.Format(writer.FormatProvider, variableSnippet1ReplaceFormat1, variableSnippet1Replace1Replace1);
+				string variableSnippet1Replace1Replace2 = null;
+				variableSnippet1Replace1Replace2 = this.Id.ToString("D");
+				variableSnippet1Replace1 = string.Format(writer.FormatProvider, variableSnippet1ReplaceFormat1, variableSnippet1Replace1Replace1, variableSnippet1Replace1Replace2);
 				string variableSnippet1Replace2 = null;
 				if (sbTemp == null)
 				{
@@ -7414,6 +7507,7 @@ namespace Neumont.Tools.ORM.ObjectModel
 			bool isDeontic = (this as IConstraint).Modality == ConstraintModality.Deontic;
 			StringBuilder sbTemp = null;
 			FactType parentFact;
+			string predicatePartFormatString;
 			LinkedElementCollection<ReadingOrder> allReadingOrders;
 			IList<RoleBase> factRoles = null;
 			Nullable<int> unaryRoleIndex = null;
@@ -7540,11 +7634,11 @@ namespace Neumont.Tools.ORM.ObjectModel
 						}
 						if (useSubscript)
 						{
-							basicReplacement = string.Format(writer.FormatProvider, snippets.GetSnippet(CoreVerbalizationSnippetType.ObjectTypeWithSubscript, isDeontic, isNegative), rolePlayer.Name, subscript + 1);
+							basicReplacement = string.Format(writer.FormatProvider, snippets.GetSnippet(CoreVerbalizationSnippetType.ObjectTypeWithSubscript, isDeontic, isNegative), rolePlayer.Name, rolePlayer.Id.ToString("D"), subscript + 1);
 						}
 						else
 						{
-							basicReplacement = string.Format(writer.FormatProvider, snippets.GetSnippet(CoreVerbalizationSnippetType.ObjectType, isDeontic, isNegative), rolePlayer.Name);
+							basicReplacement = string.Format(writer.FormatProvider, snippets.GetSnippet(CoreVerbalizationSnippetType.ObjectType, isDeontic, isNegative), rolePlayer.Name, rolePlayer.Id.ToString("D"));
 						}
 					}
 					else
@@ -7566,6 +7660,7 @@ namespace Neumont.Tools.ORM.ObjectModel
 			if (constraintRoleArity == 2 && allFactsCount == 1 && this.RingType == RingConstraintType.Irreflexive)
 			{
 				parentFact = allFacts[0];
+				predicatePartFormatString = string.Format(writer.FormatProvider, snippets.GetSnippet(CoreVerbalizationSnippetType.PredicatePart, isDeontic, isNegative), parentFact.Name, parentFact.Id.ToString("D"));
 				allReadingOrders = parentFact.ReadingOrderCollection;
 				verbalizationContext.BeginVerbalization(VerbalizationContent.Normal);
 				string snippetFormat1 = snippets.GetSnippet(CoreVerbalizationSnippetType.ImpliedModalNecessityOperator, isDeontic, isNegative);
@@ -7582,7 +7677,7 @@ namespace Neumont.Tools.ORM.ObjectModel
 				{
 					RoleBase primaryRole = allConstraintRoles[RoleIter1];
 					reading = parentFact.GetMatchingReading(allReadingOrders, null, null, allConstraintRoles, false, false, false, factRoles, true);
-					hyphenBinder = new VerbalizationHyphenBinder(reading, factRoles, unaryRoleIndex, snippets.GetSnippet(CoreVerbalizationSnippetType.HyphenBoundPredicatePart, isDeontic, isNegative));
+					hyphenBinder = new VerbalizationHyphenBinder(reading, writer.FormatProvider, factRoles, unaryRoleIndex, snippets.GetSnippet(CoreVerbalizationSnippetType.HyphenBoundPredicatePart, isDeontic, isNegative), predicatePartFormatString);
 					for (int snippet1ReplaceFactRoleIter1 = 0; snippet1ReplaceFactRoleIter1 < factArity; ++snippet1ReplaceFactRoleIter1)
 					{
 						RoleBase currentRole = factRoles[snippet1ReplaceFactRoleIter1];
@@ -7602,7 +7697,7 @@ namespace Neumont.Tools.ORM.ObjectModel
 						}
 						roleReplacements[snippet1ReplaceFactRoleIter1] = roleReplacement;
 					}
-					snippet1Replace1 = hyphenBinder.PopulatePredicateText(reading, factRoles, roleReplacements, false);
+					snippet1Replace1 = hyphenBinder.PopulatePredicateText(reading, writer.FormatProvider, predicatePartFormatString, factRoles, roleReplacements, false);
 					sbTemp.Append(snippet1Replace1);
 				}
 				snippet1Replace1 = sbTemp.ToString();
@@ -7708,6 +7803,7 @@ namespace Neumont.Tools.ORM.ObjectModel
 			bool isDeontic = (this as IConstraint).Modality == ConstraintModality.Deontic;
 			StringBuilder sbTemp = null;
 			FactType parentFact;
+			string predicatePartFormatString;
 			LinkedElementCollection<ReadingOrder> allReadingOrders;
 			IList<RoleBase> factRoles = null;
 			Nullable<int> unaryRoleIndex = null;
@@ -7818,7 +7914,7 @@ namespace Neumont.Tools.ORM.ObjectModel
 					string basicReplacement;
 					if (rolePlayer != null)
 					{
-						basicReplacement = string.Format(writer.FormatProvider, snippets.GetSnippet(CoreVerbalizationSnippetType.ObjectType, isDeontic, isNegative), rolePlayer.Name);
+						basicReplacement = string.Format(writer.FormatProvider, snippets.GetSnippet(CoreVerbalizationSnippetType.ObjectType, isDeontic, isNegative), rolePlayer.Name, rolePlayer.Id.ToString("D"));
 					}
 					else
 					{
@@ -7884,11 +7980,12 @@ namespace Neumont.Tools.ORM.ObjectModel
 					{
 						RoleBase primaryRole = includedSequenceRoles[RoleIter1];
 						parentFact = primaryRole.FactType;
+						predicatePartFormatString = string.Format(writer.FormatProvider, snippets.GetSnippet(CoreVerbalizationSnippetType.PredicatePart, isDeontic, isNegative), parentFact.Name, parentFact.Id.ToString("D"));
 						allReadingOrders = parentFact.ReadingOrderCollection;
 						factRoles = allReadingOrders.Count != 0 ? allReadingOrders[0].RoleCollection : parentFact.RoleCollection;
 						factArity = factRoles.Count;
 						reading = parentFact.GetMatchingReading(allReadingOrders, null, primaryRole, null, false, false, false, factRoles, true);
-						hyphenBinder = new VerbalizationHyphenBinder(reading, factRoles, unaryRoleIndex, snippets.GetSnippet(CoreVerbalizationSnippetType.HyphenBoundPredicatePart, isDeontic, isNegative));
+						hyphenBinder = new VerbalizationHyphenBinder(reading, writer.FormatProvider, factRoles, unaryRoleIndex, snippets.GetSnippet(CoreVerbalizationSnippetType.HyphenBoundPredicatePart, isDeontic, isNegative), predicatePartFormatString);
 						for (int snippet1Replace1Replace2ReplaceFactRoleIter1 = 0; snippet1Replace1Replace2ReplaceFactRoleIter1 < factArity; ++snippet1Replace1Replace2ReplaceFactRoleIter1)
 						{
 							RoleBase currentRole = factRoles[snippet1Replace1Replace2ReplaceFactRoleIter1];
@@ -7908,7 +8005,7 @@ namespace Neumont.Tools.ORM.ObjectModel
 							}
 							roleReplacements[snippet1Replace1Replace2ReplaceFactRoleIter1] = roleReplacement;
 						}
-						snippet1Replace1Replace2Replace1 = hyphenBinder.PopulatePredicateText(reading, factRoles, roleReplacements, false);
+						snippet1Replace1Replace2Replace1 = hyphenBinder.PopulatePredicateText(reading, writer.FormatProvider, predicatePartFormatString, factRoles, roleReplacements, false);
 						sbTemp.Append(snippet1Replace1Replace2Replace1);
 					}
 					snippet1Replace1Replace2Replace1 = sbTemp.ToString();
@@ -7930,11 +8027,12 @@ namespace Neumont.Tools.ORM.ObjectModel
 					{
 						RoleBase primaryRole = includedSequenceRoles[RoleIter2];
 						parentFact = primaryRole.FactType;
+						predicatePartFormatString = string.Format(writer.FormatProvider, snippets.GetSnippet(CoreVerbalizationSnippetType.PredicatePart, isDeontic, isNegative), parentFact.Name, parentFact.Id.ToString("D"));
 						allReadingOrders = parentFact.ReadingOrderCollection;
 						factRoles = allReadingOrders.Count != 0 ? allReadingOrders[0].RoleCollection : parentFact.RoleCollection;
 						factArity = factRoles.Count;
 						reading = parentFact.GetMatchingReading(allReadingOrders, null, primaryRole, null, false, false, false, factRoles, true);
-						hyphenBinder = new VerbalizationHyphenBinder(reading, factRoles, unaryRoleIndex, snippets.GetSnippet(CoreVerbalizationSnippetType.HyphenBoundPredicatePart, isDeontic, isNegative));
+						hyphenBinder = new VerbalizationHyphenBinder(reading, writer.FormatProvider, factRoles, unaryRoleIndex, snippets.GetSnippet(CoreVerbalizationSnippetType.HyphenBoundPredicatePart, isDeontic, isNegative), predicatePartFormatString);
 						for (int snippet1Replace1Replace2ReplaceFactRoleIter2 = 0; snippet1Replace1Replace2ReplaceFactRoleIter2 < factArity; ++snippet1Replace1Replace2ReplaceFactRoleIter2)
 						{
 							RoleBase currentRole = factRoles[snippet1Replace1Replace2ReplaceFactRoleIter2];
@@ -7954,7 +8052,7 @@ namespace Neumont.Tools.ORM.ObjectModel
 							}
 							roleReplacements[snippet1Replace1Replace2ReplaceFactRoleIter2] = roleReplacement;
 						}
-						snippet1Replace1Replace2Replace2 = hyphenBinder.PopulatePredicateText(reading, factRoles, roleReplacements, false);
+						snippet1Replace1Replace2Replace2 = hyphenBinder.PopulatePredicateText(reading, writer.FormatProvider, predicatePartFormatString, factRoles, roleReplacements, false);
 						sbTemp.Append(snippet1Replace1Replace2Replace2);
 					}
 					snippet1Replace1Replace2Replace2 = sbTemp.ToString();
@@ -8037,11 +8135,12 @@ namespace Neumont.Tools.ORM.ObjectModel
 					{
 						RoleBase primaryRole = includedSequenceRoles[RoleIter1];
 						parentFact = primaryRole.FactType;
+						predicatePartFormatString = string.Format(writer.FormatProvider, snippets.GetSnippet(CoreVerbalizationSnippetType.PredicatePart, isDeontic, isNegative), parentFact.Name, parentFact.Id.ToString("D"));
 						allReadingOrders = parentFact.ReadingOrderCollection;
 						factRoles = allReadingOrders.Count != 0 ? allReadingOrders[0].RoleCollection : parentFact.RoleCollection;
 						factArity = factRoles.Count;
 						reading = parentFact.GetMatchingReading(allReadingOrders, null, primaryRole, null, false, false, false, factRoles, true);
-						hyphenBinder = new VerbalizationHyphenBinder(reading, factRoles, unaryRoleIndex, snippets.GetSnippet(CoreVerbalizationSnippetType.HyphenBoundPredicatePart, isDeontic, isNegative));
+						hyphenBinder = new VerbalizationHyphenBinder(reading, writer.FormatProvider, factRoles, unaryRoleIndex, snippets.GetSnippet(CoreVerbalizationSnippetType.HyphenBoundPredicatePart, isDeontic, isNegative), predicatePartFormatString);
 						for (int snippet1Replace1Replace2ReplaceFactRoleIter1 = 0; snippet1Replace1Replace2ReplaceFactRoleIter1 < factArity; ++snippet1Replace1Replace2ReplaceFactRoleIter1)
 						{
 							RoleBase currentRole = factRoles[snippet1Replace1Replace2ReplaceFactRoleIter1];
@@ -8061,7 +8160,7 @@ namespace Neumont.Tools.ORM.ObjectModel
 							}
 							roleReplacements[snippet1Replace1Replace2ReplaceFactRoleIter1] = roleReplacement;
 						}
-						snippet1Replace1Replace2Replace1 = hyphenBinder.PopulatePredicateText(reading, factRoles, roleReplacements, false);
+						snippet1Replace1Replace2Replace1 = hyphenBinder.PopulatePredicateText(reading, writer.FormatProvider, predicatePartFormatString, factRoles, roleReplacements, false);
 						sbTemp.Append(snippet1Replace1Replace2Replace1);
 					}
 					snippet1Replace1Replace2Replace1 = sbTemp.ToString();
@@ -8083,11 +8182,12 @@ namespace Neumont.Tools.ORM.ObjectModel
 					{
 						RoleBase primaryRole = includedSequenceRoles[RoleIter2];
 						parentFact = primaryRole.FactType;
+						predicatePartFormatString = string.Format(writer.FormatProvider, snippets.GetSnippet(CoreVerbalizationSnippetType.PredicatePart, isDeontic, isNegative), parentFact.Name, parentFact.Id.ToString("D"));
 						allReadingOrders = parentFact.ReadingOrderCollection;
 						factRoles = allReadingOrders.Count != 0 ? allReadingOrders[0].RoleCollection : parentFact.RoleCollection;
 						factArity = factRoles.Count;
 						reading = parentFact.GetMatchingReading(allReadingOrders, null, primaryRole, null, false, false, false, factRoles, true);
-						hyphenBinder = new VerbalizationHyphenBinder(reading, factRoles, unaryRoleIndex, snippets.GetSnippet(CoreVerbalizationSnippetType.HyphenBoundPredicatePart, isDeontic, isNegative));
+						hyphenBinder = new VerbalizationHyphenBinder(reading, writer.FormatProvider, factRoles, unaryRoleIndex, snippets.GetSnippet(CoreVerbalizationSnippetType.HyphenBoundPredicatePart, isDeontic, isNegative), predicatePartFormatString);
 						for (int snippet1Replace1Replace2ReplaceFactRoleIter2 = 0; snippet1Replace1Replace2ReplaceFactRoleIter2 < factArity; ++snippet1Replace1Replace2ReplaceFactRoleIter2)
 						{
 							RoleBase currentRole = factRoles[snippet1Replace1Replace2ReplaceFactRoleIter2];
@@ -8107,7 +8207,7 @@ namespace Neumont.Tools.ORM.ObjectModel
 							}
 							roleReplacements[snippet1Replace1Replace2ReplaceFactRoleIter2] = roleReplacement;
 						}
-						snippet1Replace1Replace2Replace2 = hyphenBinder.PopulatePredicateText(reading, factRoles, roleReplacements, false);
+						snippet1Replace1Replace2Replace2 = hyphenBinder.PopulatePredicateText(reading, writer.FormatProvider, predicatePartFormatString, factRoles, roleReplacements, false);
 						sbTemp.Append(snippet1Replace1Replace2Replace2);
 					}
 					snippet1Replace1Replace2Replace2 = sbTemp.ToString();
@@ -8210,6 +8310,7 @@ namespace Neumont.Tools.ORM.ObjectModel
 					{
 						RoleBase primaryRole = includedSequenceRoles[RoleIter1];
 						parentFact = primaryRole.FactType;
+						predicatePartFormatString = string.Format(writer.FormatProvider, snippets.GetSnippet(CoreVerbalizationSnippetType.PredicatePart, isDeontic, isNegative), parentFact.Name, parentFact.Id.ToString("D"));
 						allReadingOrders = parentFact.ReadingOrderCollection;
 						factRoles = allReadingOrders.Count != 0 ? allReadingOrders[0].RoleCollection : parentFact.RoleCollection;
 						factArity = factRoles.Count;
@@ -8238,7 +8339,7 @@ namespace Neumont.Tools.ORM.ObjectModel
 							}
 							sbTemp.Append(snippets.GetSnippet(listSnippet, isDeontic, isNegative));
 							reading = parentFact.GetMatchingReading(allReadingOrders, null, primaryRole, null, false, false, false, factRoles, true);
-							hyphenBinder = new VerbalizationHyphenBinder(reading, factRoles, unaryRoleIndex, snippets.GetSnippet(CoreVerbalizationSnippetType.HyphenBoundPredicatePart, isDeontic, isNegative));
+							hyphenBinder = new VerbalizationHyphenBinder(reading, writer.FormatProvider, factRoles, unaryRoleIndex, snippets.GetSnippet(CoreVerbalizationSnippetType.HyphenBoundPredicatePart, isDeontic, isNegative), predicatePartFormatString);
 							for (int snippet1Replace1Replace2Replace1ItemFactRoleIter1 = 0; snippet1Replace1Replace2Replace1ItemFactRoleIter1 < factArity; ++snippet1Replace1Replace2Replace1ItemFactRoleIter1)
 							{
 								RoleBase currentRole = factRoles[snippet1Replace1Replace2Replace1ItemFactRoleIter1];
@@ -8258,7 +8359,7 @@ namespace Neumont.Tools.ORM.ObjectModel
 								}
 								roleReplacements[snippet1Replace1Replace2Replace1ItemFactRoleIter1] = roleReplacement;
 							}
-							snippet1Replace1Replace2Replace1Item1 = hyphenBinder.PopulatePredicateText(reading, factRoles, roleReplacements, false);
+							snippet1Replace1Replace2Replace1Item1 = hyphenBinder.PopulatePredicateText(reading, writer.FormatProvider, predicatePartFormatString, factRoles, roleReplacements, false);
 							sbTemp.Append(snippet1Replace1Replace2Replace1Item1);
 							if (snippet1Replace1Replace2ReplaceCompositeIterator1 == snippet1Replace1Replace2ReplaceCompositeCount1 - 1)
 							{
@@ -8373,6 +8474,7 @@ namespace Neumont.Tools.ORM.ObjectModel
 			bool isDeontic = (this as IConstraint).Modality == ConstraintModality.Deontic;
 			StringBuilder sbTemp = null;
 			FactType parentFact;
+			string predicatePartFormatString;
 			LinkedElementCollection<ReadingOrder> allReadingOrders;
 			IList<RoleBase> factRoles = null;
 			Nullable<int> unaryRoleIndex = null;
@@ -8483,7 +8585,7 @@ namespace Neumont.Tools.ORM.ObjectModel
 					string basicReplacement;
 					if (rolePlayer != null)
 					{
-						basicReplacement = string.Format(writer.FormatProvider, snippets.GetSnippet(CoreVerbalizationSnippetType.ObjectType, isDeontic, isNegative), rolePlayer.Name);
+						basicReplacement = string.Format(writer.FormatProvider, snippets.GetSnippet(CoreVerbalizationSnippetType.ObjectType, isDeontic, isNegative), rolePlayer.Name, rolePlayer.Id.ToString("D"));
 					}
 					else
 					{
@@ -8603,6 +8705,7 @@ namespace Neumont.Tools.ORM.ObjectModel
 					{
 						RoleBase primaryRole = includedSequenceRoles[RoleIter1];
 						parentFact = primaryRole.FactType;
+						predicatePartFormatString = string.Format(writer.FormatProvider, snippets.GetSnippet(CoreVerbalizationSnippetType.PredicatePart, isDeontic, isNegative), parentFact.Name, parentFact.Id.ToString("D"));
 						allReadingOrders = parentFact.ReadingOrderCollection;
 						factRoles = allReadingOrders.Count != 0 ? allReadingOrders[0].RoleCollection : parentFact.RoleCollection;
 						factArity = factRoles.Count;
@@ -8631,7 +8734,7 @@ namespace Neumont.Tools.ORM.ObjectModel
 							}
 							sbTemp.Append(snippets.GetSnippet(listSnippet, isDeontic, isNegative));
 							reading = parentFact.GetMatchingReading(allReadingOrders, null, primaryRole, null, false, false, false, factRoles, true);
-							hyphenBinder = new VerbalizationHyphenBinder(reading, factRoles, unaryRoleIndex, snippets.GetSnippet(CoreVerbalizationSnippetType.HyphenBoundPredicatePart, isDeontic, isNegative));
+							hyphenBinder = new VerbalizationHyphenBinder(reading, writer.FormatProvider, factRoles, unaryRoleIndex, snippets.GetSnippet(CoreVerbalizationSnippetType.HyphenBoundPredicatePart, isDeontic, isNegative), predicatePartFormatString);
 							for (int snippet1Replace1Replace2Replace1ItemFactRoleIter1 = 0; snippet1Replace1Replace2Replace1ItemFactRoleIter1 < factArity; ++snippet1Replace1Replace2Replace1ItemFactRoleIter1)
 							{
 								RoleBase currentRole = factRoles[snippet1Replace1Replace2Replace1ItemFactRoleIter1];
@@ -8651,7 +8754,7 @@ namespace Neumont.Tools.ORM.ObjectModel
 								}
 								roleReplacements[snippet1Replace1Replace2Replace1ItemFactRoleIter1] = roleReplacement;
 							}
-							snippet1Replace1Replace2Replace1Item1 = hyphenBinder.PopulatePredicateText(reading, factRoles, roleReplacements, false);
+							snippet1Replace1Replace2Replace1Item1 = hyphenBinder.PopulatePredicateText(reading, writer.FormatProvider, predicatePartFormatString, factRoles, roleReplacements, false);
 							sbTemp.Append(snippet1Replace1Replace2Replace1Item1);
 							if (snippet1Replace1Replace2ReplaceCompositeIterator1 == snippet1Replace1Replace2ReplaceCompositeCount1 - 1)
 							{
@@ -8673,10 +8776,12 @@ namespace Neumont.Tools.ORM.ObjectModel
 				{
 					Role testLeadRole = allConstraintSequences[0][testColumnIndex];
 					parentFact = testLeadRole.FactType;
+					predicatePartFormatString = string.Format(writer.FormatProvider, snippets.GetSnippet(CoreVerbalizationSnippetType.PredicatePart, isDeontic, isNegative), parentFact.Name, parentFact.Id.ToString("D"));
 					if (parentFact.GetMatchingReading(parentFact.ReadingOrderCollection, null, testLeadRole, null, false, true, true, null, false) != null)
 					{
 						testLeadRole = allConstraintSequences[1][testColumnIndex];
 						parentFact = testLeadRole.FactType;
+						predicatePartFormatString = string.Format(writer.FormatProvider, snippets.GetSnippet(CoreVerbalizationSnippetType.PredicatePart, isDeontic, isNegative), parentFact.Name, parentFact.Id.ToString("D"));
 						if (parentFact.GetMatchingReading(parentFact.ReadingOrderCollection, null, testLeadRole, null, false, true, true, null, false) != null)
 						{
 							binaryLeadReadingColumnIndex = testColumnIndex;
@@ -8754,6 +8859,7 @@ namespace Neumont.Tools.ORM.ObjectModel
 						{
 							RoleBase primaryRole = includedSequenceRoles[RoleIter1];
 							parentFact = primaryRole.FactType;
+							predicatePartFormatString = string.Format(writer.FormatProvider, snippets.GetSnippet(CoreVerbalizationSnippetType.PredicatePart, isDeontic, isNegative), parentFact.Name, parentFact.Id.ToString("D"));
 							allReadingOrders = parentFact.ReadingOrderCollection;
 							factRoles = allReadingOrders.Count != 0 ? allReadingOrders[0].RoleCollection : parentFact.RoleCollection;
 							factArity = factRoles.Count;
@@ -8779,12 +8885,12 @@ namespace Neumont.Tools.ORM.ObjectModel
 							}
 							sbTemp.Append(snippets.GetSnippet(listSnippet, isDeontic, isNegative));
 							reading = parentFact.GetMatchingReading(allReadingOrders, null, primaryRole, null, false, true, true, factRoles, true);
-							hyphenBinder = new VerbalizationHyphenBinder(reading, factRoles, unaryRoleIndex, snippets.GetSnippet(CoreVerbalizationSnippetType.HyphenBoundPredicatePart, isDeontic, isNegative));
+							hyphenBinder = new VerbalizationHyphenBinder(reading, writer.FormatProvider, factRoles, unaryRoleIndex, snippets.GetSnippet(CoreVerbalizationSnippetType.HyphenBoundPredicatePart, isDeontic, isNegative), predicatePartFormatString);
 							for (int snippet1Replace1Replace1Replace2ItemFactRoleIter1 = 0; snippet1Replace1Replace1Replace2ItemFactRoleIter1 < factArity; ++snippet1Replace1Replace1Replace2ItemFactRoleIter1)
 							{
 								roleReplacements[snippet1Replace1Replace1Replace2ItemFactRoleIter1] = "";
 							}
-							snippet1Replace1Replace1Replace2Item1 = hyphenBinder.PopulatePredicateText(reading, factRoles, roleReplacements, false);
+							snippet1Replace1Replace1Replace2Item1 = hyphenBinder.PopulatePredicateText(reading, writer.FormatProvider, predicatePartFormatString, factRoles, roleReplacements, false);
 							sbTemp.Append(snippet1Replace1Replace1Replace2Item1);
 							if (snippet1Replace1Replace1ReplaceCompositeIterator2 == snippet1Replace1Replace1ReplaceCompositeCount2 - 1)
 							{
@@ -8848,6 +8954,7 @@ namespace Neumont.Tools.ORM.ObjectModel
 						{
 							RoleBase primaryRole = includedSequenceRoles[RoleIter1];
 							parentFact = primaryRole.FactType;
+							predicatePartFormatString = string.Format(writer.FormatProvider, snippets.GetSnippet(CoreVerbalizationSnippetType.PredicatePart, isDeontic, isNegative), parentFact.Name, parentFact.Id.ToString("D"));
 							allReadingOrders = parentFact.ReadingOrderCollection;
 							factRoles = allReadingOrders.Count != 0 ? allReadingOrders[0].RoleCollection : parentFact.RoleCollection;
 							factArity = factRoles.Count;
@@ -8873,12 +8980,12 @@ namespace Neumont.Tools.ORM.ObjectModel
 							}
 							sbTemp.Append(snippets.GetSnippet(listSnippet, isDeontic, isNegative));
 							reading = parentFact.GetMatchingReading(allReadingOrders, null, primaryRole, null, false, true, true, factRoles, true);
-							hyphenBinder = new VerbalizationHyphenBinder(reading, factRoles, unaryRoleIndex, snippets.GetSnippet(CoreVerbalizationSnippetType.HyphenBoundPredicatePart, isDeontic, isNegative));
+							hyphenBinder = new VerbalizationHyphenBinder(reading, writer.FormatProvider, factRoles, unaryRoleIndex, snippets.GetSnippet(CoreVerbalizationSnippetType.HyphenBoundPredicatePart, isDeontic, isNegative), predicatePartFormatString);
 							for (int snippet1Replace1Replace1Replace2ItemFactRoleIter1 = 0; snippet1Replace1Replace1Replace2ItemFactRoleIter1 < factArity; ++snippet1Replace1Replace1Replace2ItemFactRoleIter1)
 							{
 								roleReplacements[snippet1Replace1Replace1Replace2ItemFactRoleIter1] = "";
 							}
-							snippet1Replace1Replace1Replace2Item1 = hyphenBinder.PopulatePredicateText(reading, factRoles, roleReplacements, false);
+							snippet1Replace1Replace1Replace2Item1 = hyphenBinder.PopulatePredicateText(reading, writer.FormatProvider, predicatePartFormatString, factRoles, roleReplacements, false);
 							sbTemp.Append(snippet1Replace1Replace1Replace2Item1);
 							if (snippet1Replace1Replace1ReplaceCompositeIterator2 == snippet1Replace1Replace1ReplaceCompositeCount2 - 1)
 							{
@@ -9034,6 +9141,7 @@ namespace Neumont.Tools.ORM.ObjectModel
 						{
 							RoleBase primaryRole = includedSequenceRoles[RoleIter1];
 							parentFact = primaryRole.FactType;
+							predicatePartFormatString = string.Format(writer.FormatProvider, snippets.GetSnippet(CoreVerbalizationSnippetType.PredicatePart, isDeontic, isNegative), parentFact.Name, parentFact.Id.ToString("D"));
 							allReadingOrders = parentFact.ReadingOrderCollection;
 							factRoles = allReadingOrders.Count != 0 ? allReadingOrders[0].RoleCollection : parentFact.RoleCollection;
 							factArity = factRoles.Count;
@@ -9062,7 +9170,7 @@ namespace Neumont.Tools.ORM.ObjectModel
 								}
 								sbTemp.Append(snippets.GetSnippet(listSnippet, isDeontic, isNegative));
 								reading = parentFact.GetMatchingReading(allReadingOrders, null, factRoles[0], null, false, false, false, factRoles, true);
-								hyphenBinder = new VerbalizationHyphenBinder(reading, factRoles, unaryRoleIndex, snippets.GetSnippet(CoreVerbalizationSnippetType.HyphenBoundPredicatePart, isDeontic, isNegative));
+								hyphenBinder = new VerbalizationHyphenBinder(reading, writer.FormatProvider, factRoles, unaryRoleIndex, snippets.GetSnippet(CoreVerbalizationSnippetType.HyphenBoundPredicatePart, isDeontic, isNegative), predicatePartFormatString);
 								for (int snippet1Replace1Replace2Replace1ItemFactRoleIter1 = 0; snippet1Replace1Replace2Replace1ItemFactRoleIter1 < factArity; ++snippet1Replace1Replace2Replace1ItemFactRoleIter1)
 								{
 									RoleBase currentRole = factRoles[snippet1Replace1Replace2Replace1ItemFactRoleIter1];
@@ -9082,7 +9190,7 @@ namespace Neumont.Tools.ORM.ObjectModel
 									}
 									roleReplacements[snippet1Replace1Replace2Replace1ItemFactRoleIter1] = roleReplacement;
 								}
-								snippet1Replace1Replace2Replace1Item1 = hyphenBinder.PopulatePredicateText(reading, factRoles, roleReplacements, false);
+								snippet1Replace1Replace2Replace1Item1 = hyphenBinder.PopulatePredicateText(reading, writer.FormatProvider, predicatePartFormatString, factRoles, roleReplacements, false);
 								sbTemp.Append(snippet1Replace1Replace2Replace1Item1);
 								if (snippet1Replace1Replace2ReplaceCompositeIterator1 == snippet1Replace1Replace2ReplaceCompositeCount1 - 1)
 								{
@@ -9192,6 +9300,7 @@ namespace Neumont.Tools.ORM.ObjectModel
 					{
 						RoleBase primaryRole = includedSequenceRoles[RoleIter1];
 						parentFact = primaryRole.FactType;
+						predicatePartFormatString = string.Format(writer.FormatProvider, snippets.GetSnippet(CoreVerbalizationSnippetType.PredicatePart, isDeontic, isNegative), parentFact.Name, parentFact.Id.ToString("D"));
 						allReadingOrders = parentFact.ReadingOrderCollection;
 						factRoles = allReadingOrders.Count != 0 ? allReadingOrders[0].RoleCollection : parentFact.RoleCollection;
 						factArity = factRoles.Count;
@@ -9220,7 +9329,7 @@ namespace Neumont.Tools.ORM.ObjectModel
 							}
 							sbTemp.Append(snippets.GetSnippet(listSnippet, isDeontic, isNegative));
 							reading = parentFact.GetMatchingReading(allReadingOrders, null, primaryRole, null, false, false, false, factRoles, true);
-							hyphenBinder = new VerbalizationHyphenBinder(reading, factRoles, unaryRoleIndex, snippets.GetSnippet(CoreVerbalizationSnippetType.HyphenBoundPredicatePart, isDeontic, isNegative));
+							hyphenBinder = new VerbalizationHyphenBinder(reading, writer.FormatProvider, factRoles, unaryRoleIndex, snippets.GetSnippet(CoreVerbalizationSnippetType.HyphenBoundPredicatePart, isDeontic, isNegative), predicatePartFormatString);
 							for (int snippet1Replace1Replace2Replace1ItemFactRoleIter1 = 0; snippet1Replace1Replace2Replace1ItemFactRoleIter1 < factArity; ++snippet1Replace1Replace2Replace1ItemFactRoleIter1)
 							{
 								RoleBase currentRole = factRoles[snippet1Replace1Replace2Replace1ItemFactRoleIter1];
@@ -9240,7 +9349,7 @@ namespace Neumont.Tools.ORM.ObjectModel
 								}
 								roleReplacements[snippet1Replace1Replace2Replace1ItemFactRoleIter1] = roleReplacement;
 							}
-							snippet1Replace1Replace2Replace1Item1 = hyphenBinder.PopulatePredicateText(reading, factRoles, roleReplacements, false);
+							snippet1Replace1Replace2Replace1Item1 = hyphenBinder.PopulatePredicateText(reading, writer.FormatProvider, predicatePartFormatString, factRoles, roleReplacements, false);
 							sbTemp.Append(snippet1Replace1Replace2Replace1Item1);
 							if (snippet1Replace1Replace2ReplaceCompositeIterator1 == snippet1Replace1Replace2ReplaceCompositeCount1 - 1)
 							{
@@ -9479,6 +9588,7 @@ namespace Neumont.Tools.ORM.ObjectModel
 				int factArity = unaryRoleIndex.HasValue ? 1 : factRoles.Count;
 				int unaryRoleOffset = unaryRoleIndex.HasValue ? unaryRoleIndex.Value : 0;
 				const bool isDeontic = false;
+				string predicatePartFormatString = string.Format(writer.FormatProvider, snippets.GetSnippet(CoreVerbalizationSnippetType.PredicatePart, isDeontic, isNegative), parentFact.Name, parentFact.Id.ToString("D"));
 				IReading reading;
 				VerbalizationHyphenBinder hyphenBinder;
 				LinkedElementCollection<FactTypeRoleInstance> instanceRoles = Instance.RoleInstanceCollection;
@@ -9491,7 +9601,7 @@ namespace Neumont.Tools.ORM.ObjectModel
 					string basicReplacement;
 					if (rolePlayer != null)
 					{
-						basicReplacement = string.Format(writer.FormatProvider, snippets.GetSnippet(CoreVerbalizationSnippetType.ObjectType, isDeontic, isNegative), rolePlayer.Name);
+						basicReplacement = string.Format(writer.FormatProvider, snippets.GetSnippet(CoreVerbalizationSnippetType.ObjectType, isDeontic, isNegative), rolePlayer.Name, rolePlayer.Id.ToString("D"));
 					}
 					else
 					{
@@ -9526,8 +9636,8 @@ namespace Neumont.Tools.ORM.ObjectModel
 				#region Pattern Matches
 				verbalizationContext.BeginVerbalization(VerbalizationContent.Normal);
 				reading = parentFact.GetMatchingReading(allReadingOrders, null, factRoles[0], null, false, false, false, factRoles, true);
-				hyphenBinder = new VerbalizationHyphenBinder(reading, factRoles, unaryRoleIndex, snippets.GetSnippet(CoreVerbalizationSnippetType.HyphenBoundPredicatePart, isDeontic, isNegative));
-				FactType.WriteVerbalizerSentence(writer, hyphenBinder.PopulatePredicateText(reading, factRoles, basicRoleReplacements, true), snippets.GetSnippet(CoreVerbalizationSnippetType.CloseVerbalizationSentence, isDeontic, isNegative));
+				hyphenBinder = new VerbalizationHyphenBinder(reading, writer.FormatProvider, factRoles, unaryRoleIndex, snippets.GetSnippet(CoreVerbalizationSnippetType.HyphenBoundPredicatePart, isDeontic, isNegative), predicatePartFormatString);
+				FactType.WriteVerbalizerSentence(writer, hyphenBinder.PopulatePredicateText(reading, writer.FormatProvider, predicatePartFormatString, factRoles, basicRoleReplacements, true), snippets.GetSnippet(CoreVerbalizationSnippetType.CloseVerbalizationSentence, isDeontic, isNegative));
 				#endregion // Pattern Matches
 				#region Error report
 				if (errorOwner != null)

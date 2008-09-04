@@ -3008,7 +3008,7 @@ namespace Neumont.Tools.ORM.Shell
 					if (!myReadings.Contains(new ReadingData(null, reading)))
 					{
 						int index = myReadingMC.IndexOf(reading);
-						myReadings.Insert(index, new ReadingData(FactType.PopulatePredicateText(reading, myReadingOrder.RoleCollection, myReadingInformation.OrderedReplacementFields), reading));
+						myReadings.Insert(index, new ReadingData(FactType.PopulatePredicateText(reading, null, null, myReadingOrder.RoleCollection, myReadingInformation.OrderedReplacementFields), reading));
 						if (OnBranchModification != null)
 						{
 							OnBranchModification(this, BranchModificationEventArgs.InsertItems(this, -1, 1));
@@ -3081,7 +3081,7 @@ namespace Neumont.Tools.ORM.Shell
 						string[] replacements = myReadingInformation.OrderedReplacementFields;
 						if (roles.Count == replacements.Length)
 						{
-							myReadings[location] = new ReadingData(FactType.PopulatePredicateText(reading, roles, replacements), reading);
+							myReadings[location] = new ReadingData(FactType.PopulatePredicateText(reading, null, null, roles, replacements), reading);
 
 							if (OnBranchModification != null)
 							{
@@ -3244,7 +3244,7 @@ namespace Neumont.Tools.ORM.Shell
 					int numReadings = myReadingMC.Count;
 					for (int i = 0; i < numReadings; ++i)
 					{
-						myReadings.Add(new ReadingData(FactType.PopulatePredicateText(myReadingMC[i], roleCollection, myReadingInformation.OrderedReplacementFields), myReadingMC[i]));
+						myReadings.Add(new ReadingData(FactType.PopulatePredicateText(myReadingMC[i], null, null, roleCollection, myReadingInformation.OrderedReplacementFields), myReadingMC[i]));
 					}
 				}
 				#endregion //Branch Helper Methods

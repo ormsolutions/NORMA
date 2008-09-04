@@ -291,6 +291,16 @@
 					<xs:documentation>Used to determine whether binary lead readings are available for some column of a two-column of a two-column SetComparisonConstraint.</xs:documentation>
 				</xs:annotation>
 			</xs:enumeration>
+			<xs:enumeration value="SubtypeFactRolePlayers">
+				<xs:annotation>
+					<xs:documentation>Declare subtype and supertype variables for a SubtypeFact context.</xs:documentation>
+				</xs:annotation>
+			</xs:enumeration>
+			<xs:enumeration value="PreferredFor">
+				<xs:annotation>
+					<xs:documentation>Declare a preferredFor variable for a UniquenessConstraint context.</xs:documentation>
+				</xs:annotation>
+			</xs:enumeration>
 		</xs:restriction>
 	</xs:simpleType>
 	<xs:simpleType name="ConditionalMatchPatternType">
@@ -518,6 +528,7 @@
 			<xs:element name="Snippet" type="SnippetType"/>
 			<xs:element name="ConditionalSnippet" type="ConditionalSnippetType"/>
 			<xs:element name="ObjectTypeName" type="ObjectTypeNameType"/>
+			<xs:element name="ObjectTypeId" type="ElementIdType"/>
 			<xs:element name="NoteText" type="NoteTextType"/>
 			<xs:element name="ReferenceMode" type="ReferenceModeType"/>
 			<xs:element name="PortableDataType" type="PortableDataTypeType"/>
@@ -536,12 +547,16 @@
 			<xs:element name="MaxFrequencyValue" type="MaxFrequencyValueType"/>
 			<xs:element name="IterateContextRoles" type="IterateContextRolesType"/>
 			<xs:element name="PreferredIdentifierFor" type="PreferredIdentifierForType"/>
+			<xs:element name="PreferredIdentifierForId" type="ElementIdType"/>
 			<xs:element name="RoleName" type="RoleNameType"/>
 			<xs:element name="RolePlayer" type="RolePlayerType"/>
 			<xs:element name="RolePlayerReferenceMode" type="RolePlayerReferenceModeType"/>
 			<xs:element name="SubtypeName" type="SubtypeNameType"/>
+			<xs:element name="SubtypeId" type="ElementIdType"/>
 			<xs:element name="SupertypeName" type="SupertypeNameType"/>
+			<xs:element name="SupertypeId" type="ElementIdType"/>
 			<xs:element name="ValueRangeValueTypeName" type="ValueRangeValueTypeNameType"/>
+			<xs:element name="ValueRangeValueTypeId" type="ElementIdType"/>
 		</xs:choice>
 	</xs:group>
 	<xs:group name="ReplacementElementsWithConditionalMatchGroup">
@@ -791,6 +806,13 @@
 		<xs:annotation>
 			<xs:documentation>
 				Returns the name of the object type.
+			</xs:documentation>
+		</xs:annotation>
+	</xs:complexType>
+	<xs:complexType name="ElementIdType">
+		<xs:annotation>
+			<xs:documentation>
+				Returns the hyphenated string form of the id for the object type.
 			</xs:documentation>
 		</xs:annotation>
 	</xs:complexType>

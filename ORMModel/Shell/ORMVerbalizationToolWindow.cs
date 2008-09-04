@@ -195,6 +195,7 @@ namespace Neumont.Tools.ORM.Shell
 				if (browser == null)
 				{
 					myWebBrowser = browser = new WebBrowser();
+					browser.Navigating += new WebBrowserNavigatingEventHandler(Browser_Navigating);
 					browser.Dock = DockStyle.Fill;
 					StringWriter writer = myStringWriter;
 					browser.DocumentText = (writer != null) ? writer.ToString() : string.Empty;
@@ -204,6 +205,23 @@ namespace Neumont.Tools.ORM.Shell
 					container.Controls.Add(browser);
 				}
 				return browser.Parent;
+			}
+		}
+		private void Browser_Navigating(object sender, WebBrowserNavigatingEventArgs e)
+		{
+			Uri uri = e.Url;
+			if (uri.Scheme == "elementid")
+			{
+				ModelingDocData docData;
+				IORMToolServices services;
+				ModelElement element;
+				if (null != (docData = this.DocData as ModelingDocData) &&
+					null != (element = docData.Store.ElementDirectory.FindElement(new Guid(uri.LocalPath))) &&
+					null != (services = docData as IORMToolServices))
+				{
+					services.NavigateTo(element);
+				}
+				e.Cancel = true;
 			}
 		}
 		/// <summary>

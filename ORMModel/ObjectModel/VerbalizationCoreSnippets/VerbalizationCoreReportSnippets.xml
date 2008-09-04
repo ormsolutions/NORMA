@@ -17,6 +17,9 @@ You must not remove this notice, or any other, from this software.
 		<Snippets name="_default" description="Default Html Report" target="HtmlReport">
 			<Snippet type="VerbalizerOpenVerbalization"><![CDATA[]]></Snippet>
 			<Snippet type="VerbalizerCloseVerbalization"><![CDATA[]]></Snippet>
+			<Snippet type="ObjectType"><![CDATA[<span class="objectType">{0}</span>]]></Snippet>
+			<Snippet type="ObjectTypeWithSubscript"><![CDATA[<span class="objectType">{0}<sub>{2}</sub></span>]]></Snippet>
+			<Snippet type="PredicatePart"><![CDATA[{{0}}]]></Snippet>
 		</Snippets>
 	</Language>
 </Languages>

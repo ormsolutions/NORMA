@@ -29,10 +29,11 @@ You must not remove this notice, or any other, from this software.
 			<!-- All object type names are wrapped with this style automatically.
 					 The objectType class should not be used in other quantifiers because
 					 it will interfere with hyphen-binding and possible other features. -->
-			<Snippet type="ObjectType"><![CDATA[<span class="objectType">{0}</span>]]></Snippet>
-			<Snippet type="ObjectTypeWithSubscript"><![CDATA[<span class="objectType">{0}<sub>{1}</sub></span>]]></Snippet>
+			<Snippet type="ObjectType"><![CDATA[<a class="objectType" href="elementid:{1}">{0}</a>]]></Snippet>
+			<Snippet type="ObjectTypeWithSubscript"><![CDATA[<a class="objectType" href="elementid:{1}">{0}<sub>{2}</sub></a>]]></Snippet>
 			<Snippet type="ObjectTypeMissing"><![CDATA[<span class="objectTypeMissing">Missing<sub>{0}</sub></span>]]></Snippet>
 			<Snippet type="HyphenBoundPredicatePart"><![CDATA[{0}{{0}}{1}]]></Snippet>
+			<Snippet type="PredicatePart"><![CDATA[<a class="predicateText" href="elementid:{1}">{{0}}</a>]]></Snippet>
 			<Snippet type="DefiniteArticle"><![CDATA[<span class="quantifier">that</span> {0}]]></Snippet>
 
 			<Snippet type="ImpersonalPronoun"><![CDATA[<span class="quantifier">that</span> {0}]]></Snippet>
@@ -177,6 +178,8 @@ You must not remove this notice, or any other, from this software.
 	<title>ORM2 Verbalization</title>
 	<style type="text/css">
 		body {{ font-family: {0}; font-size: {1}pt; padding: .1em; color: {2}; {3} }}
+		a {{text-decoration:none; }}
+		a:hover {{background-color:infobackground; }}
 		.objectType {{ color: {4}; {5} }}
 		.objectTypeMissing {{ color: {4}; {5} }}
 		.referenceMode {{ color: {10}; {11} }}

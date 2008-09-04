@@ -91,6 +91,13 @@ namespace Neumont.Tools.ORM.ObjectModel
 		/// <param name="shape">A <see cref="ShapeElement"/> to activate.</param>
 		/// <returns>Returns <see langword="true"/> if shape activation succeeded.</returns>
 		bool ActivateShape(ShapeElement shape);
+		/// <summary>
+		/// Find the most convenient activation target for specified element
+		/// </summary>
+		/// <param name="target">The element to activate. Must either be a 
+		/// <see cref="ModelElement"/> or implement <see cref="IRepresentModelElements"/>.</param>
+		/// <returns></returns>
+		bool NavigateTo(object target);
 	}
 	#endregion // IORMToolServices interface
 	#region ORMModelErrorActivation delegate

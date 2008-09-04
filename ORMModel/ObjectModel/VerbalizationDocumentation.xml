@@ -696,7 +696,7 @@
     </usedBy>
   </snippet>
   <snippet name="HyphenBoundPredicatePart" replacementCount="2">
-    <statement>Description: .  Format: {0}{{0}}{1}</statement>
+    <statement>Description: Format string to combine predicate text from hyphen binding with the replacement field. Format: {0}{{0}}{1}</statement>
     <unformattedSnippet>{0}{{0}}{1}</unformattedSnippet>
     <contains />
     <containedIn />
@@ -1337,8 +1337,8 @@
     <containedIn />
     <usedBy />
   </snippet>
-  <snippet name="ObjectType" replacementCount="1">
-    <statement>Description: Verbalizes an object.  Format: {0}</statement>
+  <snippet name="ObjectType" replacementCount="2">
+    <statement>Description: Verbalizes an object. {0} is the name, {1} is the guid id for the element</statement>
     <unformattedSnippet>{0}</unformattedSnippet>
     <contains />
     <containedIn>
@@ -1409,9 +1409,9 @@
     <containedIn />
     <usedBy />
   </snippet>
-  <snippet name="ObjectTypeWithSubscript" replacementCount="2">
-    <statement>Description: Verbalizes an object type with a subscript.</statement>
-    <unformattedSnippet>{0}{1}</unformattedSnippet>
+  <snippet name="ObjectTypeWithSubscript" replacementCount="3">
+    <statement>Description: Verbalizes an object type with a subscript. {0} is the name, {1} is the guid id for the element, {2} is the subscript</statement>
+    <unformattedSnippet>{0}{2}</unformattedSnippet>
     <contains />
     <containedIn />
     <usedBy />
@@ -1482,6 +1482,13 @@
   <snippet name="PortableDataTypeVerbalization" replacementCount="1">
     <statement>Description: Verbalizes an object's portable data type.  Format: Portable data type: {0}</statement>
     <unformattedSnippet>Portable data type: {0}</unformattedSnippet>
+    <contains />
+    <containedIn />
+    <usedBy />
+  </snippet>
+  <snippet name="PredicatePart" replacementCount="1">
+    <statement>Description: Format string to decorate predicate text in between replacement fields. Must contain a {{0}}. Replacement field {0} is the FactType name, and {1} is the guid id for the element.</statement>
+    <unformattedSnippet>{{0}}</unformattedSnippet>
     <contains />
     <containedIn />
     <usedBy />
@@ -1945,11 +1952,14 @@
 							{13} instance value bold
 						</statement>
     <unformattedSnippet>
+			
 
 
 	ORM2 Verbalization
 	
 		body {{ font-family: {0}; font-size: {1}pt; padding: .1em; color: {2}; {3} }}
+		a {{text-decoration:none; }}
+		a:hover {{background-color:infobackground; }}
 		.objectType {{ color: {4}; {5} }}
 		.objectTypeMissing {{ color: {4}; {5} }}
 		.referenceMode {{ color: {10}; {11} }}

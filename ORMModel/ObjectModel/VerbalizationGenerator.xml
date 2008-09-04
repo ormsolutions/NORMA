@@ -23,12 +23,14 @@
 		<!-- Generate FactType verbalization along with constraints -->
 		<FactType/>
 		<SubtypeFact>
-			<Snippet ref="SubtypeMetaReading" conditionalMatch="IsPositive">
+			<Snippet ref="SubtypeMetaReading" conditionalMatch="IsPositive" conditionalBlockContext="SubtypeFactRolePlayers">
 				<Snippet ref="ObjectType">
 					<SubtypeName/>
+					<SubtypeId/>
 				</Snippet>
 				<Snippet ref="ObjectType">
 					<SupertypeName/>
+					<SupertypeId/>
 				</Snippet>
 			</Snippet>
 		</SubtypeFact>
@@ -40,12 +42,14 @@
 				<SnippetReplacements>
 					<Snippet ref="ObjectType">
 						<ObjectTypeName/>
+						<ObjectTypeId/>
 					</Snippet>
 				</SnippetReplacements>
 			</ConditionalSnippet>
 			<Snippet ref="ObjectifiesFactTypeVerbalization" conditionalMatch="IsObjectifiedFactType" conditionalBlockContext="ObjectifiedFactType">
 				<Snippet ref="ObjectType">
 					<ObjectTypeName/>
+					<ObjectTypeId/>
 				</Snippet>
 				<Fact/>
 			</Snippet>
@@ -60,6 +64,7 @@
 			<Snippet ref="IndependentVerbalization" conditionalMatch="IsIndependent">
 				<Snippet ref="ObjectType">
 					<ObjectTypeName/>
+					<ObjectTypeId/>
 				</Snippet>
 			</Snippet>
 			<Snippet ref="PortableDataTypeVerbalization" conditionalMatch="HasPortableDataType">
@@ -569,10 +574,11 @@
 							<Fact/>
 						</Snippet>
 					</Snippet>
-					<Snippet ref="ConstraintProvidesPreferredIdentifier" conditionalMatch="IsPreferredIdentifier">
+					<Snippet ref="ConstraintProvidesPreferredIdentifier" conditionalMatch="IsPreferredIdentifier" conditionalBlockContext="PreferredFor">
 						<IterateRoles listStyle="null" match="included"/>
 						<Snippet ref="ObjectType">
 							<PreferredIdentifierFor/>
+							<PreferredIdentifierForId/>
 						</Snippet>
 					</Snippet>
 				</ConstrainedRoles>
@@ -618,10 +624,11 @@
 							<Fact/>
 						</Snippet>
 					</Snippet>
-					<Snippet ref="ConstraintProvidesPreferredIdentifier" conditionalMatch="IsPreferredIdentifier">
+					<Snippet ref="ConstraintProvidesPreferredIdentifier" conditionalMatch="IsPreferredIdentifier" conditionalBlockContext="PreferredFor">
 						<IterateRoles listStyle="CompactSimpleList" match="included"/>
 						<Snippet ref="ObjectType">
 							<PreferredIdentifierFor/>
+							<PreferredIdentifierForId/>
 						</Snippet>
 					</Snippet>
 				</ConstrainedRoles>
@@ -670,10 +677,11 @@
 							</Snippet>
 						</ReadingChoice>
 					</ConditionalReading>
-					<Snippet ref="ConstraintProvidesPreferredIdentifier" conditionalMatch="IsPreferredIdentifier">
+					<Snippet ref="ConstraintProvidesPreferredIdentifier" conditionalMatch="IsPreferredIdentifier" conditionalBlockContext="PreferredFor">
 						<IterateRoles listStyle="CompactSimpleList" match="included"/>
 						<Snippet ref="ObjectType">
 							<PreferredIdentifierFor/>
+							<PreferredIdentifierForId/>
 						</Snippet>
 					</Snippet>
 				</ConstrainedRoles>
@@ -772,10 +780,11 @@
 							</Snippet>
 						</ReadingChoice>
 					</ConditionalReading>
-					<Snippet ref="ConstraintProvidesPreferredIdentifier" conditionalMatch="IsPreferredIdentifier">
+					<Snippet ref="ConstraintProvidesPreferredIdentifier" conditionalMatch="IsPreferredIdentifier" conditionalBlockContext="PreferredFor">
 						<IterateRoles listStyle="CompactSimpleList" match="constraintRoles"/>
 						<Snippet ref="ObjectType">
 							<PreferredIdentifierFor/>
+							<PreferredIdentifierForId/>
 						</Snippet>
 					</Snippet>
 				</ConstrainedRoles>
@@ -959,6 +968,7 @@
 					<SnippetReplacements>
 						<Snippet ref="ObjectType">
 							<ValueRangeValueTypeName/>
+							<ValueRangeValueTypeId/>
 						</Snippet>
 						<IterateValueRanges listStyle="CompactSimpleList">
 							<ConditionalSnippet>
@@ -1003,6 +1013,7 @@
 					<SnippetReplacements>
 						<Snippet ref="ObjectType">
 							<ObjectTypeName/>
+							<ObjectTypeId/>
 						</Snippet>
 						<IterateValueRanges listStyle="CompactSimpleList">
 							<ConditionalSnippet>

@@ -345,6 +345,11 @@
 							<plx:falseKeyword/>
 						</plx:initialize>
 					</plx:local>
+					<plx:local name="predicatePartFormatString" dataTypeName=".string">
+						<plx:initialize>
+							<xsl:call-template name="PopulatePredicatePartFormatString"/>
+						</plx:initialize>
+					</plx:local>
 					<plx:local name="reading" dataTypeName="IReading"/>
 					<plx:local name="hyphenBinder" dataTypeName="VerbalizationHyphenBinder"/>
 					<plx:local name="instanceRoles" dataTypeName="LinkedElementCollection">
@@ -477,6 +482,11 @@
 				<plx:local name="isDeontic" dataTypeName=".boolean" const="true">
 					<plx:initialize>
 						<plx:falseKeyword/>
+					</plx:initialize>
+				</plx:local>
+				<plx:local name="predicatePartFormatString" dataTypeName=".string">
+					<plx:initialize>
+						<xsl:call-template name="PopulatePredicatePartFormatString"/>
 					</plx:initialize>
 				</plx:local>
 				<plx:local name="reading" dataTypeName="IReading"/>
@@ -824,6 +834,13 @@
 								</plx:initialize>
 							</xsl:when>
 						</xsl:choose>
+					</plx:local>
+					<plx:local name="predicatePartFormatString" dataTypeName=".string">
+						<xsl:if test="$isInternal or $isRoleValue">
+							<plx:initialize>
+								<xsl:call-template name="PopulatePredicatePartFormatString"/>
+							</plx:initialize>
+						</xsl:if>
 					</plx:local>
 				</xsl:if>
 				<xsl:if test="$isInternal and not($isRoleValue)">
@@ -2211,6 +2228,20 @@
 					</plx:callObject>
 				</plx:callInstance>
 			</plx:passParam>
+			<plx:passParam>
+				<plx:callInstance name="ToString">
+					<plx:callObject>
+						<plx:callInstance name="Id" type="property">
+							<plx:callObject>
+								<xsl:copy-of select="$ObjectTypeExpression"/>
+							</plx:callObject>
+						</plx:callInstance>
+					</plx:callObject>
+					<plx:passParam>
+						<plx:string data="D"/>
+					</plx:passParam>
+				</plx:callInstance>
+			</plx:passParam>
 		</plx:callStatic>
 	</xsl:template>
 	<xsl:template name="PopulateBasicRoleReplacements_FormatSubscript">
@@ -2233,6 +2264,20 @@
 					<plx:callObject>
 						<xsl:copy-of select="$ObjectTypeExpression"/>
 					</plx:callObject>
+				</plx:callInstance>
+			</plx:passParam>
+			<plx:passParam>
+				<plx:callInstance name="ToString">
+					<plx:callObject>
+						<plx:callInstance name="Id" type="property">
+							<plx:callObject>
+								<xsl:copy-of select="$ObjectTypeExpression"/>
+							</plx:callObject>
+						</plx:callInstance>
+					</plx:callObject>
+					<plx:passParam>
+						<plx:string data="D"/>
+					</plx:passParam>
 				</plx:callInstance>
 			</plx:passParam>
 			<plx:passParam>
@@ -3062,6 +3107,14 @@
 			</plx:assign>
 			<plx:assign>
 				<plx:left>
+					<plx:nameRef name="predicatePartFormatString"/>
+				</plx:left>
+				<plx:right>
+					<xsl:call-template name="PopulatePredicatePartFormatString"/>
+				</plx:right>
+			</plx:assign>
+			<plx:assign>
+				<plx:left>
 					<plx:nameRef name="allReadingOrders"/>
 				</plx:left>
 				<plx:right>
@@ -3208,6 +3261,14 @@
 									<plx:nameRef name="primaryRole"/>
 								</plx:callObject>
 							</plx:callInstance>
+						</plx:right>
+					</plx:assign>
+					<plx:assign>
+						<plx:left>
+							<plx:nameRef name="predicatePartFormatString"/>
+						</plx:left>
+						<plx:right>
+							<xsl:call-template name="PopulatePredicatePartFormatString"/>
 						</plx:right>
 					</plx:assign>
 					<plx:assign>
@@ -3703,6 +3764,11 @@
 						<plx:callThis name="NestedFactType" type="property"/>
 					</plx:initialize>
 				</plx:local>
+				<plx:local name="predicatePartFormatString" dataTypeName=".string">
+					<plx:initialize>
+						<xsl:call-template name="PopulatePredicatePartFormatString"/>
+					</plx:initialize>
+				</plx:local>
 				<plx:assign>
 					<plx:left>
 						<plx:nameRef name="allReadingOrders"/>
@@ -3925,6 +3991,29 @@
 			</plx:right>
 		</plx:assign>
 	</xsl:template>
+	<xsl:template match="cvg:ValueRangeValueTypeId" mode="ConstraintVerbalization">
+		<xsl:param name="VariableDecorator" select="position()"/>
+		<xsl:param name="VariablePrefix" select="'factText'"/>
+		<plx:assign>
+			<plx:left>
+				<plx:nameRef name="{$VariablePrefix}{$VariableDecorator}"/>
+			</plx:left>
+			<plx:right>
+				<plx:callInstance name="ToString">
+					<plx:callObject>
+						<plx:callInstance name="Id" type="property">
+							<plx:callObject>
+								<plx:callThis name="ValueType" type="property"/>
+							</plx:callObject>
+						</plx:callInstance>
+					</plx:callObject>
+					<plx:passParam>
+						<plx:string data="D"/>
+					</plx:passParam>
+				</plx:callInstance>
+			</plx:right>
+		</plx:assign>
+	</xsl:template>
 	<xsl:template match="cvg:ObjectTypeName" mode="ConstraintVerbalization">
 		<xsl:param name="VariableDecorator" select="position()"/>
 		<xsl:param name="VariablePrefix" select="'factText'"/>
@@ -3934,6 +4023,25 @@
 			</plx:left>
 			<plx:right>
 				<plx:callThis name="Name" type="property" />
+			</plx:right>
+		</plx:assign>
+	</xsl:template>
+	<xsl:template match="cvg:ObjectTypeId" mode="ConstraintVerbalization">
+		<xsl:param name="VariableDecorator" select="position()"/>
+		<xsl:param name="VariablePrefix" select="'factText'"/>
+		<plx:assign>
+			<plx:left>
+				<plx:nameRef name="{$VariablePrefix}{$VariableDecorator}"/>
+			</plx:left>
+			<plx:right>
+				<plx:callInstance name="ToString">
+					<plx:callObject>
+						<plx:callThis name="Id" type="property" />
+					</plx:callObject>
+					<plx:passParam>
+						<plx:string data="D"/>
+					</plx:passParam>
+				</plx:callInstance>
 			</plx:right>
 		</plx:assign>
 	</xsl:template>
@@ -3947,8 +4055,31 @@
 			<plx:right>
 				<plx:callInstance name="Name" type="property">
 					<plx:callObject>
-						<plx:callThis name="PreferredIdentifierFor" type="property"/>
+						<plx:nameRef name="preferredFor"/>
 					</plx:callObject>
+				</plx:callInstance>
+			</plx:right>
+		</plx:assign>
+	</xsl:template>
+	<xsl:template match="cvg:PreferredIdentifierForId" mode="ConstraintVerbalization">
+		<xsl:param name="VariableDecorator" select="position()"/>
+		<xsl:param name="VariablePrefix" select="'factText'"/>
+		<plx:assign>
+			<plx:left>
+				<plx:nameRef name="{$VariablePrefix}{$VariableDecorator}"/>
+			</plx:left>
+			<plx:right>
+				<plx:callInstance name="ToString">
+					<plx:callObject>
+						<plx:callInstance name="Id" type="property">
+							<plx:callObject>
+								<plx:nameRef name="preferredFor"/>
+							</plx:callObject>
+						</plx:callInstance>
+					</plx:callObject>
+					<plx:passParam>
+						<plx:string data="D"/>
+					</plx:passParam>
 				</plx:callInstance>
 			</plx:right>
 		</plx:assign>
@@ -3963,7 +4094,7 @@
 			<plx:right>
 				<plx:callInstance name="Name" type="property">
 					<plx:callObject>
-						<plx:callThis name="Subtype" type="property"/>
+						<plx:nameRef name="subtype"/>
 					</plx:callObject>
 				</plx:callInstance>
 			</plx:right>
@@ -3979,8 +4110,54 @@
 			<plx:right>
 				<plx:callInstance name="Name" type="property">
 					<plx:callObject>
-						<plx:callThis name="Supertype" type="property"/>
+						<plx:nameRef name="supertype"/>
 					</plx:callObject>
+				</plx:callInstance>
+			</plx:right>
+		</plx:assign>
+	</xsl:template>
+	<xsl:template match="cvg:SubtypeId" mode="ConstraintVerbalization">
+		<xsl:param name="VariableDecorator" select="position()"/>
+		<xsl:param name="VariablePrefix" select="'subtypeIdText'"/>
+		<plx:assign>
+			<plx:left>
+				<plx:nameRef name="{$VariablePrefix}{$VariableDecorator}"/>
+			</plx:left>
+			<plx:right>
+				<plx:callInstance name="ToString">
+					<plx:callObject>
+						<plx:callInstance name="Id" type="property">
+							<plx:callObject>
+								<plx:nameRef name="subtype"/>
+							</plx:callObject>
+						</plx:callInstance>
+					</plx:callObject>
+					<plx:passParam>
+						<plx:string data="D"/>
+					</plx:passParam>
+				</plx:callInstance>
+			</plx:right>
+		</plx:assign>
+	</xsl:template>
+	<xsl:template match="cvg:SupertypeId" mode="ConstraintVerbalization">
+		<xsl:param name="VariableDecorator" select="position()"/>
+		<xsl:param name="VariablePrefix" select="'supertypeIdText'"/>
+		<plx:assign>
+			<plx:left>
+				<plx:nameRef name="{$VariablePrefix}{$VariableDecorator}"/>
+			</plx:left>
+			<plx:right>
+				<plx:callInstance name="ToString">
+					<plx:callObject>
+						<plx:callInstance name="Id" type="property">
+							<plx:callObject>
+								<plx:nameRef name="supertype"/>
+							</plx:callObject>
+						</plx:callInstance>
+					</plx:callObject>
+					<plx:passParam>
+						<plx:string data="D"/>
+					</plx:passParam>
 				</plx:callInstance>
 			</plx:right>
 		</plx:assign>
@@ -4547,6 +4724,16 @@
 				</plx:callObject>
 				<plx:passParam>
 					<plx:nameRef name="reading"/>
+				</plx:passParam>
+				<plx:passParam>
+					<plx:callInstance name="FormatProvider" type="property">
+						<plx:callObject>
+							<plx:nameRef type="parameter" name="writer"/>
+						</plx:callObject>
+					</plx:callInstance>
+				</plx:passParam>
+				<plx:passParam>
+					<plx:nameRef name="predicatePartFormatString"/>
 				</plx:passParam>
 				<plx:passParam>
 					<plx:nameRef name="factRoles"/>
@@ -5636,6 +5823,14 @@
 								</plx:callInstance>
 							</plx:right>
 						</plx:assign>
+						<plx:assign>
+							<plx:left>
+								<plx:nameRef name="predicatePartFormatString"/>
+							</plx:left>
+							<plx:right>
+								<xsl:call-template name="PopulatePredicatePartFormatString"/>
+							</plx:right>
+						</plx:assign>
 						<plx:branch>
 							<plx:condition>
 								<plx:binaryOperator type="identityInequality">
@@ -5716,6 +5911,14 @@
 									</plx:callInstance>
 								</plx:right>
 							</plx:assign>
+							<plx:assign>
+								<plx:left>
+									<plx:nameRef name="predicatePartFormatString"/>
+								</plx:left>
+								<plx:right>
+									<xsl:call-template name="PopulatePredicatePartFormatString"/>
+								</plx:right>
+							</plx:assign>
 							<plx:branch>
 								<plx:condition>
 									<plx:binaryOperator type="identityInequality">
@@ -5774,6 +5977,25 @@
 							</plx:branch>
 						</plx:branch>
 					</plx:loop>
+				</xsl:when>
+				<xsl:when test="$blockContext='SubtypeFactRolePlayers'">
+					<plx:local name="supertype" dataTypeName="ObjectType">
+						<plx:initialize>
+							<plx:callThis name="Supertype" type="property"/>
+						</plx:initialize>
+					</plx:local>
+					<plx:local name="subtype" dataTypeName="ObjectType">
+						<plx:initialize>
+							<plx:callThis name="Subtype" type="property"/>
+						</plx:initialize>
+					</plx:local>
+				</xsl:when>
+				<xsl:when test="$blockContext='PreferredFor'">
+					<plx:local name="preferredFor" dataTypeName="ObjectType">
+						<plx:initialize>
+							<plx:callThis name="PreferredIdentifierFor" type="property"/>
+						</plx:initialize>
+					</plx:local>
 				</xsl:when>
 				<xsl:otherwise>
 					<xsl:message terminate="yes">
@@ -6524,6 +6746,11 @@
 								</plx:callInstance>
 							</plx:initialize>
 						</plx:local>
+						<plx:local name="predicatePartFormatString" dataTypeName=".string">
+							<plx:initialize>
+								<xsl:call-template name="PopulatePredicatePartFormatString"/>
+							</plx:initialize>
+						</plx:local>
 						<plx:local name="allReadingOrders" dataTypeName="LinkedElementCollection">
 							<plx:passTypeParam dataTypeName="ReadingOrder"/>
 							<plx:initialize>
@@ -6588,6 +6815,14 @@
 										</plx:callInstance>
 									</xsl:otherwise>
 								</xsl:choose>
+							</plx:right>
+						</plx:assign>
+						<plx:assign>
+							<plx:left>
+								<plx:nameRef name="predicatePartFormatString"/>
+							</plx:left>
+							<plx:right>
+								<xsl:call-template name="PopulatePredicatePartFormatString"/>
 							</plx:right>
 						</plx:assign>
 						<plx:assign>
@@ -8149,6 +8384,14 @@
 							</plx:assign>
 							<plx:assign>
 								<plx:left>
+									<plx:nameRef name="predicatePartFormatString"/>
+								</plx:left>
+								<plx:right>
+									<xsl:call-template name="PopulatePredicatePartFormatString"/>
+								</plx:right>
+							</plx:assign>
+							<plx:assign>
+								<plx:left>
 									<plx:nameRef name="allReadingOrders"/>
 								</plx:left>
 								<plx:right>
@@ -8324,6 +8567,43 @@
 			</plx:assign>
 		</plx:fallbackBranch>
 	</xsl:template>
+	<xsl:template name="PopulatePredicatePartFormatString">
+		<plx:callStatic name="Format" dataTypeName=".string">
+			<plx:passParam>
+				<plx:callInstance name="FormatProvider" type="property">
+					<plx:callObject>
+						<plx:nameRef type="parameter" name="writer"/>
+					</plx:callObject>
+				</plx:callInstance>
+			</plx:passParam>
+			<plx:passParam>
+				<xsl:call-template name="SnippetFor">
+					<xsl:with-param name="SnippetType" select="'PredicatePart'"/>
+				</xsl:call-template>
+			</plx:passParam>
+			<plx:passParam>
+				<plx:callInstance name="Name" type="property">
+					<plx:callObject>
+						<plx:nameRef name="parentFact"/>
+					</plx:callObject>
+				</plx:callInstance>
+			</plx:passParam>
+			<plx:passParam>
+				<plx:callInstance name="ToString">
+					<plx:callObject>
+						<plx:callInstance name="Id" type="property">
+							<plx:callObject>
+								<plx:nameRef name="parentFact"/>
+							</plx:callObject>
+						</plx:callInstance>
+					</plx:callObject>
+					<plx:passParam>
+						<plx:string data="D"/>
+					</plx:passParam>
+				</plx:callInstance>
+			</plx:passParam>
+		</plx:callStatic>
+	</xsl:template>
 	<xsl:template name="PopulateReading">
 		<!-- Support readings for {Context, {Prefer|Require}[Non][Primary]LeadReading[NoFrontText], null} ReadingChoice values -->
 		<xsl:param name="ReadingChoice"/>
@@ -8357,6 +8637,13 @@
 								<plx:nameRef name="reading"/>
 							</plx:passParam>
 							<plx:passParam>
+								<plx:callInstance name="FormatProvider" type="property">
+									<plx:callObject>
+										<plx:nameRef name="writer" type="parameter"/>
+									</plx:callObject>
+								</plx:callInstance>
+							</plx:passParam>
+							<plx:passParam>
 								<plx:nameRef name="factRoles"/>
 							</plx:passParam>
 							<plx:passParam>
@@ -8366,6 +8653,9 @@
 								<xsl:call-template name="SnippetFor">
 									<xsl:with-param name="SnippetType" select="'HyphenBoundPredicatePart'"/>
 								</xsl:call-template>
+							</plx:passParam>
+							<plx:passParam>
+								<plx:nameRef name="predicatePartFormatString"/>
 							</plx:passParam>
 						</plx:callNew>
 					</plx:right>
@@ -8503,6 +8793,13 @@
 									<plx:nameRef name="reading"/>
 								</plx:passParam>
 								<plx:passParam>
+									<plx:callInstance name="FormatProvider" type="property">
+										<plx:callObject>
+											<plx:nameRef name="writer" type="parameter"/>
+										</plx:callObject>
+									</plx:callInstance>
+								</plx:passParam>
+								<plx:passParam>
 									<plx:nameRef name="factRoles"/>
 								</plx:passParam>
 								<plx:passParam>
@@ -8512,6 +8809,9 @@
 									<xsl:call-template name="SnippetFor">
 										<xsl:with-param name="SnippetType" select="'HyphenBoundPredicatePart'"/>
 									</xsl:call-template>
+								</plx:passParam>
+								<plx:passParam>
+									<plx:nameRef name="predicatePartFormatString"/>
 								</plx:passParam>
 							</plx:callNew>
 						</plx:right>

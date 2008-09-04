@@ -55,22 +55,22 @@ namespace Neumont.Tools.ORM.ObjectModel
 	#endregion // IReading interface
 	#region Reading text utility delegates
 	/// <summary>
-	/// A callback function for use with the <see cref="Reading.ReplaceFields(string,ReadingTextReplace)"/> method. Provides
+	/// A callback function for use with the <see cref="Reading.ReplaceFields(string,ReadingTextFieldReplace)"/> method. Provides
 	/// a replacement string for the provided <paramref name="index"/>.
 	/// </summary>
 	/// <param name="index">The zero-based index of the replacement field. The index is relative to the <see cref="ReadingOrder.RoleCollection"/>
 	/// for the <see cref="ReadingOrder"/> associated with the <see cref="Reading"/> that owns this text. The index is not guaranteed to be in range.</param>
 	/// <returns>A string to replace the placeholder for the given index. Return <see langword="null"/> to leave the replacement field.</returns>
-	public delegate string ReadingTextReplace(int index);
+	public delegate string ReadingTextFieldReplace(int index);
 	/// <summary>
-	/// A callback function for use with the <see cref="Reading.ReplaceFields(string,ReadingTextReplaceWithFieldGroup)"/> method. Provides
+	/// A callback function for use with the <see cref="Reading.ReplaceFields(string,ReadingTextFieldReplaceWithMatch)"/> method. Provides
 	/// a replacement string for the provided <paramref name="index"/>.
 	/// </summary>
 	/// <param name="index">The zero-based index of the replacement field. The index is relative to the <see cref="ReadingOrder.RoleCollection"/>
 	/// for the <see cref="ReadingOrder"/> associated with the <see cref="Reading"/> that owns this text. The index is not guaranteed to be in range.</param>
 	/// <param name="match">The <see cref="Match"/> information for this replacement. Contains information about the replacement location in the provided reading text.</param>
 	/// <returns>A string to replace the placeholder for the given index. Return <see langword="null"/> to leave the replacement field.</returns>
-	public delegate string ReadingTextReplaceWithFieldGroup(int index, Match match);
+	public delegate string ReadingTextFieldReplaceWithMatch(int index, Match match);
 	/// <summary>
 	/// A callback function for use with the <see cref="Reading.VisitFields"/> method. Called once for
 	/// each integer replacement field.
@@ -79,7 +79,7 @@ namespace Neumont.Tools.ORM.ObjectModel
 	/// for the <see cref="ReadingOrder"/> associated with the <see cref="Reading"/> that owns this text. The index is not guaranteed to be in range, and
 	/// the same index may be returned multiple times.</param>
 	/// <returns><see langword="true"/> to continue, or <see langword="false"/> to stop visiting.</returns>
-	public delegate bool ReadingTextVisit(int index);
+	public delegate bool ReadingTextFieldVisit(int index);
 	#endregion // Reading text utility delegates
 	#region Reading class
 	public partial class Reading : IModelErrorOwner, IHasIndirectModelErrorOwner, IReading
@@ -628,16 +628,21 @@ namespace Neumont.Tools.ORM.ObjectModel
 		#endregion // IReading Implementation
 		#region Reading text utility fields and methods
 		/// <summary>
-		/// Named field for the <see cref="Match"/> passed to the <see cref="ReadingTextReplaceWithFieldGroup"/> delegate.
+		/// Named field for the <see cref="Match"/> passed to the <see cref="ReadingTextFieldReplaceWithMatch"/> delegate.
 		/// Represents the entire replacement field, including the curly braces.
 		/// </summary>
 		public const string ReplaceFieldsMatchFieldGroupName = "Field";
 		/// <summary>
-		/// Named field for the <see cref="Match"/> passed to the <see cref="ReadingTextReplaceWithFieldGroup"/> delegate.
+		/// Named field for the <see cref="Match"/> passed to the <see cref="ReadingTextFieldReplaceWithMatch"/> delegate.
 		/// Represents the index portion of the  replacement field, not including the curly braces.
 		/// </summary>
 		public const string ReplaceFieldsMatchIndexGroupName = "Index";
+		/// <summary>
+		/// Named field for the <see cref="Match"/> used with the <see cref="FieldAndPredicatePartRegex"/>.
+		/// </summary>
+		private const string ReplaceFieldsMatchPredicatePartGroupName = "PredicatePart";
 		private static Regex myFieldRegex;
+		private static Regex myFieldAndPredicatePartRegex;
 
 		/// <summary>
 		/// Visits the fields in the reading to verify the text can be correctly modified.
@@ -645,7 +650,7 @@ namespace Neumont.Tools.ORM.ObjectModel
 		/// <param name="readingText">The reading text.<see cref="Reading"/></param>
 		/// <param name="visitCallback">The visit callback.</param>
 		/// <returns><see langword="true"/> to continue, or <see langword="false"/> to stop visiting.</returns>
-		public static bool VisitFields(string readingText, ReadingTextVisit visitCallback)
+		public static bool VisitFields(string readingText, ReadingTextFieldVisit visitCallback)
 		{
 			Match visitMatch = FieldRegex.Match(readingText);
 			while (visitMatch.Success)
@@ -676,9 +681,9 @@ namespace Neumont.Tools.ORM.ObjectModel
 		/// Replaces the fields in the reading text.
 		/// </summary>
 		/// <param name="readingText">The reading text.</param>
-		/// <param name="replaceCallback">The replace callback. See <see cref="ReadingTextReplace"/>.</param>
+		/// <param name="replaceCallback">The replace callback. See <see cref="ReadingTextFieldReplace"/>.</param>
 		/// <returns>Reading text with modified replacement fields.</returns>
-		public static string ReplaceFields(string readingText, ReadingTextReplace replaceCallback)
+		public static string ReplaceFields(string readingText, ReadingTextFieldReplace replaceCallback)
 		{
 			return FieldRegex.Replace(
 				readingText,
@@ -697,10 +702,10 @@ namespace Neumont.Tools.ORM.ObjectModel
 		/// <summary>
 		/// Replaces the fields in the reading text.
 		/// </summary>
-		/// <param name="readingText">The reading text. See <see cref="ReadingTextReplaceWithFieldGroup"/>.</param>
+		/// <param name="readingText">The reading text. See <see cref="ReadingTextFieldReplaceWithMatch"/>.</param>
 		/// <param name="replaceCallback">The replace callback.</param>
 		/// <returns>Reading text with modified replacement fields.</returns>
-		public static string ReplaceFields(string readingText, ReadingTextReplaceWithFieldGroup replaceCallback)
+		public static string ReplaceFields(string readingText, ReadingTextFieldReplaceWithMatch replaceCallback)
 		{
 			return FieldRegex.Replace(
 				readingText,
@@ -715,6 +720,51 @@ namespace Neumont.Tools.ORM.ObjectModel
 					}
 					return (retVal != null) ? retVal : match.Value;
 				});
+		}
+		/// <summary>
+		/// Replaces the fields in the reading text.
+		/// </summary>
+		/// <param name="readingText">The reading text.</param>
+		/// <param name="formatProvider">A <see cref="IFormatProvider"/>, or null to use the current culture</param>
+		/// <param name="predicatePartDecorator">A format string applied to predicate text between fields.</param>
+		/// <param name="replaceCallback">The replace callback. See <see cref="ReadingTextFieldReplace"/>.</param>
+		public static string ReplaceFields(string readingText, IFormatProvider formatProvider, string predicatePartDecorator, ReadingTextFieldReplace replaceCallback)
+		{
+			int lastIndex = 0;
+			formatProvider = formatProvider ?? CultureInfo.CurrentCulture;
+			bool decoratePredicateText = !string.IsNullOrEmpty(predicatePartDecorator) && predicatePartDecorator != "{0}";
+			string retVal = FieldAndPredicatePartRegex.Replace(
+				readingText,
+				delegate(Match match)
+				{
+					int index;
+					string fieldReplace = null;
+					if (replaceCallback != null &&
+						int.TryParse(match.Groups[ReplaceFieldsMatchIndexGroupName].Value, NumberStyles.None, formatProvider, out index))
+					{
+						//Index param to the delegate
+						fieldReplace = replaceCallback(index);
+					}
+					string predicatePart = match.Groups[ReplaceFieldsMatchPredicatePartGroupName].Value;
+					if (decoratePredicateText &&
+						!string.IsNullOrEmpty(predicatePart))
+					{
+						predicatePart = string.Format(formatProvider, predicatePartDecorator, predicatePart);
+					}
+					fieldReplace = (fieldReplace != null) ? fieldReplace : match.Groups[ReplaceFieldsMatchFieldGroupName].Value;
+					lastIndex += match.Length;
+					return (predicatePart != null) ? (predicatePart + fieldReplace) : fieldReplace;
+				});
+			if (decoratePredicateText)
+			{
+				int textLength = readingText.Length;
+				if (lastIndex < textLength)
+				{
+					// Note that remaining is already part of retVal and needs to be stripped
+					return retVal.Substring(0, retVal.Length - textLength + lastIndex) + string.Format(formatProvider, predicatePartDecorator, readingText.Substring(lastIndex));
+				}
+			}
+			return retVal;
 		}
 		/// <summary>
 		/// The regular expression used to find fields and indices in
@@ -732,10 +782,36 @@ namespace Neumont.Tools.ORM.ObjectModel
 					System.Threading.Interlocked.CompareExchange<Regex>(
 						ref myFieldRegex,
 						new Regex(
-							@"(?n)\.*?(?<Field>((?<!\{)\{)(?<Index>[0-9]+)(\}(?!\})))",
+							@"(?n)(?<Field>((?<!\{)\{)(?<Index>[0-9]+)(\}(?!\})))",
 							RegexOptions.Compiled),
 						null);
 					retVal = myFieldRegex;
+				}
+				return retVal;
+			}
+		}
+		/// <summary>
+		/// The regular expression used to find fields, indices, and predicate parts
+		/// in a reading format string. Captures named groups corresponding
+		/// to the <see cref="ReplaceFieldsMatchFieldGroupName"/>, <see cref="ReplaceFieldsMatchIndexGroupName"/>,
+		/// and <see cref="ReplaceFieldsMatchPredicatePartGroupName"/> constants.
+		/// Note that the final predicate part needs to be tracked separately after
+		/// the final field.
+		/// </summary>
+		private static Regex FieldAndPredicatePartRegex
+		{
+			get
+			{
+				Regex retVal = myFieldAndPredicatePartRegex;
+				if (retVal == null)
+				{
+					System.Threading.Interlocked.CompareExchange<Regex>(
+						ref myFieldAndPredicatePartRegex,
+						new Regex(
+							@"(?n)\G(?<PredicatePart>.*?)(?<Field>((?<!\{)\{)(?<Index>[0-9]+)(\}(?!\})))",
+							RegexOptions.Compiled),
+						null);
+					retVal = myFieldAndPredicatePartRegex;
 				}
 				return retVal;
 			}

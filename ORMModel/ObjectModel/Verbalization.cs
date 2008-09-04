@@ -800,11 +800,13 @@ namespace Neumont.Tools.ORM.ObjectModel
 		/// Populate the predicate text with the supplied replacement fields.
 		/// </summary>
 		/// <param name="reading">The reading to populate.</param>
+		/// <param name="formatProvider">A <see cref="IFormatProvider"/>, or null to use the current culture</param>
+		/// <param name="predicatePartDecorator">A format string applied to predicate text between fields.</param>
 		/// <param name="defaultOrder">The default role order. Corresponds to the order of the role replacement fields</param>
 		/// <param name="roleReplacements">The replacement fields. The length of the replacement array can be greater than
 		/// the number of roles in the defaultOrder collection</param>
 		/// <returns>The populated predicate text</returns>
-		public static string PopulatePredicateText(IReading reading, IList<RoleBase> defaultOrder, string[] roleReplacements)
+		public static string PopulatePredicateText(IReading reading, IFormatProvider formatProvider, string predicatePartDecorator, IList<RoleBase> defaultOrder, string[] roleReplacements)
 		{
 			string retVal = null;
 			if (reading != null)
@@ -813,53 +815,43 @@ namespace Neumont.Tools.ORM.ObjectModel
 				int roleCount = defaultOrder.Count;
 				IList<RoleBase> readingRoles = reading.RoleCollection;
 				int readingRoleCount = readingRoles.Count;
-				if (readingRoleCount == 1)
+				Exception exceptionToFormat = null;
+				try
 				{
-					try
-					{
-						// Single role reading for a unary FactType. The roleReplacement will always have a single
-						// element. However, the unary role can come second in the default order. The safest approach
-						// is to simple ignore defaultOrder in this case
-						retVal = string.Format(CultureInfo.CurrentCulture, reading.Text, roleReplacements[0]);
-					}
-					catch (FormatException ex)
-					{
-						// UNDONE: Localize
-						retVal = string.Format(CultureInfo.CurrentCulture, "{0} ({1})", reading.Text, ex.Message);
-					}
+					retVal = Reading.ReplaceFields(
+						reading.Text,
+						formatProvider,
+						predicatePartDecorator,
+						readingRoleCount == 1 ?
+							(ReadingTextFieldReplace)delegate(int fieldIndex)
+							{
+								// Single role reading for a unary FactType. The roleReplacement will always have a single
+								// element. However, the unary role can come second in the default order. The safest approach
+								// is to simple ignore defaultOrder in this case
+								return roleReplacements[0];
+							} :
+							delegate(int fieldIndex)
+							{
+								RoleBase readingRole = readingRoles[fieldIndex];
+								if (readingRole != defaultOrder[fieldIndex])
+								{
+									return roleReplacements[defaultOrder.IndexOf(readingRole)];
+								}
+								return roleReplacements[fieldIndex];
+							});
 				}
-				else
+				catch (FormatException ex)
 				{
-					Debug.Assert(readingRoles.Count >= roleCount);
-					// First, see if anything is out of order
-					int i;
-					for (i = 0; i < roleCount; ++i)
-					{
-						RoleBase testRole = readingRoles[i];
-						if (testRole != defaultOrder[i])
-						{
-							// Now we need a copy
-							useReplacements = new string[roleCount];
-							for (int j = 0; j < i; ++j)
-							{
-								useReplacements[j] = roleReplacements[j];
-							}
-							for (int j = i; j < roleCount; ++j)
-							{
-								useReplacements[j] = roleReplacements[defaultOrder.IndexOf(readingRoles[j])];
-							}
-							break;
-						}
-					}
-					try
-					{
-						retVal = string.Format(CultureInfo.CurrentCulture, reading.Text, useReplacements);
-					}
-					catch (FormatException ex)
-					{
-						// UNDONE: Localize
-						retVal = string.Format(CultureInfo.CurrentCulture, "{0} ({1})", reading.Text, ex.Message);
-					}
+					exceptionToFormat = ex;
+				}
+				catch (IndexOutOfRangeException ex)
+				{
+					exceptionToFormat = ex;
+				}
+				if (null != exceptionToFormat)
+				{
+					// UNDONE: Localize
+					retVal = string.Format(CultureInfo.CurrentCulture, "{0} ({1})", reading.Text, exceptionToFormat.Message);
 				}
 			}
 			return retVal;
@@ -1060,12 +1052,15 @@ namespace Neumont.Tools.ORM.ObjectModel
 		/// Initialize a structure to hyphen-bind the verbalization for a reading
 		/// </summary>
 		/// <param name="reading">The reading to test.</param>
+		/// <param name="formatProvider">A <see cref="IFormatProvider"/>, or null to use the current culture</param>
 		/// <param name="defaultOrder">The roles from the parent fact type. Provides the order of the expected replacement fields.</param>
 		/// <param name="unaryRoleIndex">Treat as a unary role if this index is set.</param>
 		/// <param name="replacementFormatString">The string used to format replacement fields. The format string is used to build another
 		/// format string with one replacement field. It must consist of a {{0}} representing the eventual replacement field, a {0} for the leading
 		/// hyphen-bound text, and a {1} for the trailing hyphen-bound text.</param>
-		public VerbalizationHyphenBinder(IReading reading, IList<RoleBase> defaultOrder, int? unaryRoleIndex, string replacementFormatString)
+		/// <param name="predicatePartDecorator">A format string applied to predicate text between fields. Provides supplemental formatting
+		/// for the leading and trailing replacement fields in <paramref name="replacementFormatString"/>.</param>
+		public VerbalizationHyphenBinder(IReading reading, IFormatProvider formatProvider, IList<RoleBase> defaultOrder, int? unaryRoleIndex, string replacementFormatString, string predicatePartDecorator)
 		{
 			string readingText;
 			int roleCount;
@@ -1130,8 +1125,9 @@ namespace Neumont.Tools.ORM.ObjectModel
 			Regex regexIndexMap = IndexMapRegex;
 
 			// Build the new format string and do index mapping along the way
-			IFormatProvider formatProvider = CultureInfo.CurrentCulture;
+			formatProvider = formatProvider ?? CultureInfo.CurrentCulture;
 			string[] hyphenBoundFormatStrings = null;
+			bool decoratePredicateText = !string.IsNullOrEmpty(predicatePartDecorator) && predicatePartDecorator != "{0}";
 			myModifiedReadingText = regexMain.Replace(
 				readingText,
 				delegate(Match match)
@@ -1148,7 +1144,14 @@ namespace Neumont.Tools.ORM.ObjectModel
 						bool validIndex = replaceIndex < roleCount;
 						if (validIndex)
 						{
-							string boundFormatter = string.Format(formatProvider, replacementFormatString, leftWord + groups["AfterLeftHyphen"].Value, groups["BeforeRightHyphen"].Value + rightWord);
+							leftWord = leftWord + groups["AfterLeftHyphen"];
+							rightWord = groups["BeforeRightHyphen"].Value + rightWord;
+							if (decoratePredicateText)
+							{
+								leftWord = string.Format(formatProvider, predicatePartDecorator, leftWord);
+								rightWord = string.Format(formatProvider, predicatePartDecorator, rightWord);
+							}
+							string boundFormatter = string.Format(formatProvider, replacementFormatString, leftWord, rightWord);
 							if (hyphenBoundFormatStrings == null)
 							{
 								hyphenBoundFormatStrings = new string[roleCount];
@@ -1222,34 +1225,36 @@ namespace Neumont.Tools.ORM.ObjectModel
 		/// FactType.PopulatePredicateText if no hyphen-bind occurred
 		/// </summary>
 		/// <param name="reading">The reading to populate.</param>
+		/// <param name="formatProvider">A <see cref="IFormatProvider"/>, or null to use the current culture</param>
+		/// <param name="predicatePartDecorator">A format string applied to predicate text between fields.</param>
 		/// <param name="defaultOrder">The default role order. Corresponds to the order of the role replacement fields</param>
 		/// <param name="roleReplacements">The replacement fields</param>
 		/// <param name="unmodifiedRoleReplacements">The roleReplacements array have not been modified with the HyphenBindRoleReplacement method</param>
 		/// <returns>The populated predicate text</returns>
-		public string PopulatePredicateText(IReading reading, IList<RoleBase> defaultOrder, string[] roleReplacements, bool unmodifiedRoleReplacements)
+		public string PopulatePredicateText(IReading reading, IFormatProvider formatProvider, string predicatePartDecorator, IList<RoleBase> defaultOrder, string[] roleReplacements, bool unmodifiedRoleReplacements)
 		{
 			string formatText = myModifiedReadingText;
 			if (formatText == null)
 			{
-				return FactType.PopulatePredicateText(reading, defaultOrder, roleReplacements);
+				return FactType.PopulatePredicateText(reading, formatProvider, predicatePartDecorator, defaultOrder, roleReplacements);
 			}
 			else
 			{
-				string[] useRoleReplacements = roleReplacements;
-				string[] formatFields;
-				if (unmodifiedRoleReplacements &&
-					(null != (formatFields = myFormatReplacementFields)))
-				{
-					IFormatProvider formatProvider = CultureInfo.CurrentCulture;
-					int count = formatFields.Length;
-					useRoleReplacements = new string[count];
-					for (int i = 0; i < count; ++i)
-					{
-						string useFormat = formatFields[i];
-						useRoleReplacements[i] = (useFormat == null) ? roleReplacements[i] : string.Format(formatProvider, useFormat, roleReplacements[i]);
-					}
-				}
-				return string.Format(CultureInfo.CurrentCulture, formatText, useRoleReplacements);
+				string[] formatFields = unmodifiedRoleReplacements ? myFormatReplacementFields : null;
+				return Reading.ReplaceFields(
+					formatText,
+					formatProvider,
+					predicatePartDecorator,
+					(formatFields == null) ?
+						(ReadingTextFieldReplace)delegate(int fieldIndex)
+						{
+							return roleReplacements[fieldIndex];
+						} :
+						delegate(int fieldIndex)
+						{
+							string useFormat = formatFields[fieldIndex];
+							return (useFormat == null) ? roleReplacements[fieldIndex] : string.Format(formatProvider, useFormat, roleReplacements[fieldIndex]);
+						});
 			}
 		}
 		#endregion // Member Functions

@@ -61,7 +61,7 @@
 				</xs:enumeration>
 				<xs:enumeration value="ObjectType">
 					<xs:annotation>
-						<xs:documentation>Description: Verbalizes an object.  Format: {0}</xs:documentation>
+						<xs:documentation>Description: Verbalizes an object. {0} is the name, {1} is the guid id for the element</xs:documentation>
 					</xs:annotation>
 				</xs:enumeration>
 				<xs:enumeration value="EntityTypeVerbalization">
@@ -76,7 +76,7 @@
 				</xs:enumeration>
 				<xs:enumeration value="ObjectTypeWithSubscript">
 					<xs:annotation>
-						<xs:documentation>Description: Verbalizes an object type with a subscript.</xs:documentation>
+						<xs:documentation>Description: Verbalizes an object type with a subscript. {0} is the name, {1} is the guid id for the element, {2} is the subscript</xs:documentation>
 					</xs:annotation>
 				</xs:enumeration>
 				<xs:enumeration value="ObjectTypeMissing">
@@ -86,7 +86,12 @@
 				</xs:enumeration>
 				<xs:enumeration value="HyphenBoundPredicatePart">
 					<xs:annotation>
-						<xs:documentation>Description: .  Format: {0}{{0}}{1}</xs:documentation>
+						<xs:documentation>Description: Format string to combine predicate text from hyphen binding with the replacement field. Format: {0}{{0}}{1}</xs:documentation>
+					</xs:annotation>
+				</xs:enumeration>
+				<xs:enumeration value="PredicatePart">
+					<xs:annotation>
+						<xs:documentation>Description: Format string to decorate predicate text in between replacement fields. Must contain a {{0}}. Replacement field {0} is the FactType name, and {1} is the guid id for the element.</xs:documentation>
 					</xs:annotation>
 				</xs:enumeration>
 				<xs:enumeration value="ImpersonalPronoun"/>
