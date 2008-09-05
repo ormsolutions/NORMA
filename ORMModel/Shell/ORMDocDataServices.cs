@@ -1501,6 +1501,7 @@ namespace Neumont.Tools.ORM.Shell
 				if (docView.SelectDiagram(diagram))
 				{
 					selectOnView = docView.CurrentDesigner;
+					docView.Show();
 				}
 			}
 			else
@@ -1631,8 +1632,6 @@ namespace Neumont.Tools.ORM.Shell
 			const int SelectShapesSize = 3;
 			ShapeElement[] selectShapes = new ShapeElement[SelectShapesSize];
 			bool selectShapesInitialized = true;
-			// UNDONE: Move navigation code from here down into 
-			// docdata and docview classes so we can use it elsewhere
 			while (element != null)
 			{
 				ModelElement selectElement = element;
