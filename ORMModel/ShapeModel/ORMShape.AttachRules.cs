@@ -70,6 +70,7 @@ namespace Neumont.Tools.ORM.ShapeModel
 						typeof(ObjectTypeShape).GetNestedType("PreferredIdentifierShortenedRuleClass", BindingFlags.Public | BindingFlags.NonPublic),
 						typeof(ObjectTypeShape).GetNestedType("RolePlayerAddedRuleClass", BindingFlags.Public | BindingFlags.NonPublic),
 						typeof(ObjectTypeShape).GetNestedType("RolePlayerDeleteRuleClass", BindingFlags.Public | BindingFlags.NonPublic),
+						typeof(ObjectTypeShape).GetNestedType("RolePlayerRolePlayerChangedRuleClass", BindingFlags.Public | BindingFlags.NonPublic),
 						typeof(ORMBaseBinaryLinkShape).GetNestedType("LinkChangeRuleClass", BindingFlags.Public | BindingFlags.NonPublic),
 						typeof(ORMBaseShape).GetNestedType("AbsoluteBoundsChangedRuleClass", BindingFlags.Public | BindingFlags.NonPublic),
 						typeof(ORMBaseShape).GetNestedType("ModelErrorAddedRuleClass", BindingFlags.Public | BindingFlags.NonPublic),
@@ -144,7 +145,7 @@ namespace Neumont.Tools.ORM.ShapeModel
 		{
 			Microsoft.VisualStudio.Modeling.RuleManager ruleManager = store.RuleManager;
 			Type[] disabledRuleTypes = ORMShapeDomainModel.CustomDomainModelTypes;
-			for (int i = 0; i < 77; ++i)
+			for (int i = 0; i < 78; ++i)
 			{
 				ruleManager.EnableRule(disabledRuleTypes[i]);
 			}
@@ -1118,6 +1119,32 @@ namespace Neumont.Tools.ORM.ShapeModel
 				Neumont.Tools.Modeling.Diagnostics.TraceUtility.TraceRuleStart(e.ModelElement.Store, "Neumont.Tools.ORM.ShapeModel.ObjectTypeShape.RolePlayerDeleteRule");
 				ObjectTypeShape.RolePlayerDeleteRule(e);
 				Neumont.Tools.Modeling.Diagnostics.TraceUtility.TraceRuleEnd(e.ModelElement.Store, "Neumont.Tools.ORM.ShapeModel.ObjectTypeShape.RolePlayerDeleteRule");
+			}
+		}
+		[Microsoft.VisualStudio.Modeling.RuleOn(typeof(Neumont.Tools.ORM.ObjectModel.ObjectTypePlaysRole), Priority=Neumont.Tools.Modeling.FrameworkDomainModel.InlineRulePriority)]
+		private sealed class RolePlayerRolePlayerChangedRuleClass : Microsoft.VisualStudio.Modeling.RolePlayerChangeRule
+		{
+			[System.Diagnostics.DebuggerStepThrough()]
+			public RolePlayerRolePlayerChangedRuleClass()
+			{
+				base.IsEnabled = false;
+			}
+			/// <summary>
+			/// Provide the following method in class: 
+			/// Neumont.Tools.ORM.ShapeModel.ObjectTypeShape
+			/// /// <summary>
+			/// /// RolePlayerChangeRule: typeof(Neumont.Tools.ORM.ObjectModel.ObjectTypePlaysRole)
+			/// /// </summary>
+			/// private static void RolePlayerRolePlayerChangedRule(RolePlayerChangedEventArgs e)
+			/// {
+			/// }
+			/// </summary>
+			[System.Diagnostics.DebuggerStepThrough()]
+			public override void RolePlayerChanged(Microsoft.VisualStudio.Modeling.RolePlayerChangedEventArgs e)
+			{
+				Neumont.Tools.Modeling.Diagnostics.TraceUtility.TraceRuleStart(e.ElementLink.Store, "Neumont.Tools.ORM.ShapeModel.ObjectTypeShape.RolePlayerRolePlayerChangedRule");
+				ObjectTypeShape.RolePlayerRolePlayerChangedRule(e);
+				Neumont.Tools.Modeling.Diagnostics.TraceUtility.TraceRuleEnd(e.ElementLink.Store, "Neumont.Tools.ORM.ShapeModel.ObjectTypeShape.RolePlayerRolePlayerChangedRule");
 			}
 		}
 	}

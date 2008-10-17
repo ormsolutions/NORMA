@@ -139,6 +139,9 @@
 			<arg:DeleteRule methodName="RolePlayerDeleteRule">
 				<arg:RuleOn targetType="ObjectTypePlaysRole" targetTypeQualifier="Neumont.Tools.ORM.ObjectModel" fireTime="TopLevelCommit" priority="DiagramFixupConstants.ResizeParentRulePriority"/>
 			</arg:DeleteRule>
+			<arg:RolePlayerChangeRule methodName="RolePlayerRolePlayerChangedRule">
+				<arg:RuleOn targetType="ObjectTypePlaysRole" targetTypeQualifier="Neumont.Tools.ORM.ObjectModel"/>
+			</arg:RolePlayerChangeRule>
 		</arg:RuleContainer>
 		<arg:RuleContainer class="ORMBaseBinaryLinkShape">
 			<arg:ChangeRule methodName="LinkChangeRule">

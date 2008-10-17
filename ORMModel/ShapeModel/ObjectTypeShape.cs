@@ -718,6 +718,76 @@ namespace Neumont.Tools.ORM.ShapeModel
 				}
 			}
 		}
+		/// <summary>
+		/// RolePlayerChangeRule: typeof(Neumont.Tools.ORM.ObjectModel.ObjectTypePlaysRole)
+		/// Changing the identifying role player of a FactType that participates in the refmode
+		/// pattern needs to appropriately update the ExpandRefMode property and to resize
+		/// shapes for the identified object types.
+		/// </summary>
+		private static void RolePlayerRolePlayerChangedRule(RolePlayerChangedEventArgs e)
+		{
+			ObjectTypePlaysRole link = e.ElementLink as ObjectTypePlaysRole;
+			if (e.DomainRole.Id == ObjectTypePlaysRole.RolePlayerDomainRoleId)
+			{
+				bool newPlayerIsValueType = link.RolePlayer.IsValueType;
+				bool oldPlayerIsValueType = ((ObjectType)e.OldRolePlayer).IsValueType;
+				if ((newPlayerIsValueType || oldPlayerIsValueType) &&
+					(newPlayerIsValueType != oldPlayerIsValueType))
+				{
+					LinkedElementCollection<ConstraintRoleSequence> sequences = link.PlayedRole.ConstraintRoleSequenceCollection;
+					int constraintsCount = sequences.Count;
+					for (int i = 0; i < constraintsCount; ++i)
+					{
+						UniquenessConstraint iuc = sequences[i] as UniquenessConstraint;
+						if (iuc != null && iuc.IsInternal)
+						{
+							ObjectType preferredFor = iuc.PreferredIdentifierFor;
+							if (preferredFor != null)
+							{
+								if (newPlayerIsValueType)
+								{
+									EnsureRefModeExpanded(iuc, preferredFor);
+								}
+								else
+								{
+									ResizeAssociatedShapes(preferredFor);
+								}
+							}
+						}
+					}
+				}
+			}
+			else
+			{
+				// This can add an expanded reference mode for an object type associated with the new
+				// role player and remove the reference mode for the old player
+				if (link.RolePlayer.IsValueType)
+				{
+					LinkedElementCollection<ConstraintRoleSequence> sequences = link.PlayedRole.ConstraintRoleSequenceCollection;
+					int constraintsCount = sequences.Count;
+					for (int i = 0; i < constraintsCount; ++i)
+					{
+						UniquenessConstraint iuc = sequences[i] as UniquenessConstraint;
+						if (iuc != null && iuc.IsInternal)
+						{
+							ObjectType preferredFor = iuc.PreferredIdentifierFor;
+							if (preferredFor != null)
+							{
+								EnsureRefModeExpanded(iuc, preferredFor);
+							}
+						}
+					}
+					foreach (ConstraintRoleSequence sequence in ((Role)e.OldRolePlayer).ConstraintRoleSequenceCollection)
+					{
+						UniquenessConstraint iuc = sequence as UniquenessConstraint;
+						if (iuc != null && iuc.IsInternal)
+						{
+							ResizeAssociatedShapes(iuc.PreferredIdentifierFor);
+						}
+					}
+				}
+			}
+		}
 		#endregion // Shape display update rules
 		#region Store Event Handlers
 		/// <summary>
