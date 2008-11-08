@@ -3,6 +3,7 @@
 * Neumont Object-Role Modeling Architect for Visual Studio                 *
 *                                                                          *
 * Copyright © Neumont University. All rights reserved.                     *
+* Copyright © Matthew Curland. All rights reserved.                        *
 *                                                                          *
 * The use and distribution terms for this software are covered by the      *
 * Common Public License 1.0 (http://opensource.org/licenses/cpl) which     *
@@ -3982,7 +3983,7 @@ namespace Neumont.Tools.ORM.ShapeModel
 		/// </summary>
 		protected bool ActivateModelError(ModelError error)
 		{
-			PopulationMandatoryError mandatory;
+			PopulationMandatoryError populationMandatory;
 			TooFewReadingRolesError tooFew;
 			TooManyReadingRolesError tooMany;
 			ReadingRequiresUserModificationError userModification;
@@ -4004,10 +4005,9 @@ namespace Neumont.Tools.ORM.ShapeModel
 			bool activateNamePropertyAfterSelect = false;
 			bool addActiveRoles = false;
 			bool retVal = true;
-			if (null != (mandatory = error as PopulationMandatoryError))
+			if (null != (populationMandatory = error as PopulationMandatoryError))
 			{
-				ORMSamplePopulationToolWindow window = ORMDesignerPackage.SamplePopulationEditorWindow;
-				window.AutoCorrectMandatoryError(mandatory);
+				ORMDesignerPackage.SamplePopulationEditorWindow.AutoCorrectMandatoryError(populationMandatory);
 			}
 			else if (null != (tooFew = error as TooFewReadingRolesError))
 			{
@@ -4128,6 +4128,10 @@ namespace Neumont.Tools.ORM.ShapeModel
 			else if (null != (valueTypeDetachedError = error as ValueConstraintValueTypeDetachedError))
 			{
 				retVal = null != (errorValueConstraint = valueTypeDetachedError.ValueConstraint as RoleValueConstraint);
+			}
+			else if (error is TooFewFactTypeRoleInstancesError || error is ObjectifyingInstanceRequiredError)
+			{
+				retVal = ORMDesignerPackage.SamplePopulationEditorWindow.ActivateModelError(error);
 			}
 			else
 			{
@@ -5565,24 +5569,33 @@ namespace Neumont.Tools.ORM.ShapeModel
 		#endregion // Customize appearance
 		#region IModelErrorActivation Implementation
 		/// <summary>
-		/// Implements IModelErrorActivation.ActivateModelError for DataTypeNotSpecifiedError
+		/// Implements IModelErrorActivation.ActivateModelError for activatable displayed errors
 		/// </summary>
 		protected bool ActivateModelError(ModelError error)
 		{
 			ObjectTypeDuplicateNameError duplicateName;
-			EntityTypeRequiresReferenceSchemeError requiresReferenceSchemeError;
+			EntityTypeRequiresReferenceSchemeError requiresReferenceScheme;
+			PopulationMandatoryError populationMandatory;
 			bool retVal = true;
 			if (null != (duplicateName = error as ObjectTypeDuplicateNameError))
 			{
 				ActivateNameProperty(duplicateName.ObjectTypeCollection[0]);
 			}
-			else if (null != (requiresReferenceSchemeError = error as EntityTypeRequiresReferenceSchemeError))
+			else if (null != (requiresReferenceScheme = error as EntityTypeRequiresReferenceSchemeError))
 			{
 				Store store = Store;
 				EditorUtility.ActivatePropertyEditor(
 					(store as IORMToolServices).ServiceProvider,
-					DomainTypeDescriptor.CreatePropertyDescriptor(requiresReferenceSchemeError.ObjectType, ObjectType.ReferenceModeDisplayDomainPropertyId),
+					DomainTypeDescriptor.CreatePropertyDescriptor(requiresReferenceScheme.ObjectType, ObjectType.ReferenceModeDisplayDomainPropertyId),
 					true);
+			}
+			else if (error is ObjectifiedInstanceRequiredError || error is TooFewEntityTypeRoleInstancesError)
+			{
+				ORMDesignerPackage.SamplePopulationEditorWindow.ActivateModelError(error);
+			}
+			else if (null != (populationMandatory = error as PopulationMandatoryError))
+			{
+				ORMDesignerPackage.SamplePopulationEditorWindow.AutoCorrectMandatoryError(populationMandatory);
 			}
 			else
 			{

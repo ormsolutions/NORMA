@@ -3,6 +3,7 @@
 * Neumont Object-Role Modeling Architect for Visual Studio                 *
 *                                                                          *
 * Copyright © Neumont University. All rights reserved.                     *
+* Copyright © Matthew Curland. All rights reserved.                        *
 *                                                                          *
 * The use and distribution terms for this software are covered by the      *
 * Common Public License 1.0 (http://opensource.org/licenses/cpl) which     *
@@ -188,7 +189,7 @@ namespace Neumont.Tools.Modeling
 		#region IsDescendantOrSelf methods
 		/// <summary>
 		/// Determines if the <see cref="DomainRoleInfo"/> specified by <paramref name="domainRole"/> is
-		/// or dervies from the <see cref="DomainRoleInfo"/> with the <see cref="DomainObjectInfo.Id"/>
+		/// or derives from the <see cref="DomainRoleInfo"/> with the <see cref="DomainObjectInfo.Id"/>
 		/// specified by <paramref name="desiredDomainRoleId"/>.
 		/// </summary>
 		/// <param name="domainRole">

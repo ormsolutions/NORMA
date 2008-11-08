@@ -3,6 +3,7 @@
 * Neumont Object-Role Modeling Architect for Visual Studio                 *
 *                                                                          *
 * Copyright © Neumont University. All rights reserved.                     *
+* Copyright © Matthew Curland. All rights reserved.                        *
 *                                                                          *
 * The use and distribution terms for this software are covered by the      *
 * Common Public License 1.0 (http://opensource.org/licenses/cpl) which     *
@@ -115,9 +116,9 @@ namespace Neumont.Tools.Modeling.Shell
 						Rectangle rect = ctl.Bounds;
 						Screen screen = Screen.FromControl(ctl);
 						int testLeft;
-						if ((screen != null) && (rect.X < (testLeft = screen.WorkingArea.Left)))
+						if ((screen != null) && ((rect.X - rect.Width / 3) < (testLeft = screen.WorkingArea.Left)))
 						{
-							// With the size bar always on the left we want to left room
+							// With the size bar always on the left we want to leave room
 							// to resize the dropdown. Anchor it on the left edge of the
 							// dropdown button instead of the default right edge.
 							rect.X = rect.Right - SystemInformation.VerticalScrollBarArrowHeight;

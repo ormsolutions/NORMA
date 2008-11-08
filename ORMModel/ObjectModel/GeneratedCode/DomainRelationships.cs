@@ -3,6 +3,7 @@
 * Neumont Object-Role Modeling Architect for Visual Studio                 *
 *                                                                          *
 * Copyright © Neumont University. All rights reserved.                     *
+* Copyright © Matthew Curland. All rights reserved.                        *
 *                                                                          *
 * The use and distribution terms for this software are covered by the      *
 * Common Public License 1.0 (http://opensource.org/licenses/cpl) which     *
@@ -27067,6 +27068,291 @@ namespace Neumont.Tools.ORM.ObjectModel
 namespace Neumont.Tools.ORM.ObjectModel
 {
 	/// <summary>
+	/// DomainRelationship EntityTypeSubtypeHasEntityTypeSubtypeInstance
+	/// Description for
+	/// Neumont.Tools.ORM.ObjectModel.EntityTypeSubtypeHasEntityTypeSubtypeInstance
+	/// </summary>
+	[DslDesign::DisplayNameResource("Neumont.Tools.ORM.ObjectModel.EntityTypeSubtypeHasEntityTypeSubtypeInstance.DisplayName", typeof(global::Neumont.Tools.ORM.ObjectModel.ORMCoreDomainModel), "Neumont.Tools.ORM.GeneratedCode.CoreDomainModelResx")]
+	[DslDesign::DescriptionResource("Neumont.Tools.ORM.ObjectModel.EntityTypeSubtypeHasEntityTypeSubtypeInstance.Description", typeof(global::Neumont.Tools.ORM.ObjectModel.ORMCoreDomainModel), "Neumont.Tools.ORM.GeneratedCode.CoreDomainModelResx")]
+	[global::System.CLSCompliant(true)]
+	[DslModeling::DomainRelationship(IsEmbedding=true)]
+	[DslModeling::DomainObjectId("7e059bd5-d4a9-48a1-88fa-6459b77d7e23")]
+	public partial class EntityTypeSubtypeHasEntityTypeSubtypeInstance : ObjectTypeHasObjectTypeInstance
+	{
+		#region Constructors, domain class Id
+		
+		/// <summary>
+		/// EntityTypeSubtypeHasEntityTypeSubtypeInstance domain class Id.
+		/// </summary>
+		public static readonly new global::System.Guid DomainClassId = new global::System.Guid(0x7e059bd5, 0xd4a9, 0x48a1, 0x88, 0xfa, 0x64, 0x59, 0xb7, 0x7d, 0x7e, 0x23);
+	
+				
+		/// <summary>
+		/// Constructor
+		/// Creates a EntityTypeSubtypeHasEntityTypeSubtypeInstance link in the same Partition as the given ObjectType
+		/// </summary>
+		/// <param name="source">ObjectType to use as the source of the relationship.</param>
+		/// <param name="target">EntityTypeSubtypeInstance to use as the target of the relationship.</param>
+		public EntityTypeSubtypeHasEntityTypeSubtypeInstance(ObjectType source, EntityTypeSubtypeInstance target)
+			: base((source != null ? source.Partition : null), new DslModeling::RoleAssignment[]{new DslModeling::RoleAssignment(EntityTypeSubtypeHasEntityTypeSubtypeInstance.EntityTypeSubtypeDomainRoleId, source), new DslModeling::RoleAssignment(EntityTypeSubtypeHasEntityTypeSubtypeInstance.EntityTypeSubtypeInstanceDomainRoleId, target)}, null)
+		{
+		}
+		
+		/// <summary>
+		/// Constructor
+		/// </summary>
+		/// <param name="store">Store where new link is to be created.</param>
+		/// <param name="roleAssignments">List of relationship role assignments.</param>
+		public EntityTypeSubtypeHasEntityTypeSubtypeInstance(DslModeling::Store store, params DslModeling::RoleAssignment[] roleAssignments)
+			: base(store != null ? store.DefaultPartition : null, roleAssignments, null)
+		{
+		}
+		
+		/// <summary>
+		/// Constructor
+		/// </summary>
+		/// <param name="store">Store where new link is to be created.</param>
+		/// <param name="roleAssignments">List of relationship role assignments.</param>
+		/// <param name="propertyAssignments">List of properties assignments to set on the new link.</param>
+		public EntityTypeSubtypeHasEntityTypeSubtypeInstance(DslModeling::Store store, DslModeling::RoleAssignment[] roleAssignments, DslModeling::PropertyAssignment[] propertyAssignments)
+			: base(store != null ? store.DefaultPartition : null, roleAssignments, propertyAssignments)
+		{
+		}
+		
+		/// <summary>
+		/// Constructor
+		/// </summary>
+		/// <param name="partition">Partition where new link is to be created.</param>
+		/// <param name="roleAssignments">List of relationship role assignments.</param>
+		public EntityTypeSubtypeHasEntityTypeSubtypeInstance(DslModeling::Partition partition, params DslModeling::RoleAssignment[] roleAssignments)
+			: base(partition, roleAssignments, null)
+		{
+		}
+		
+		/// <summary>
+		/// Constructor
+		/// </summary>
+		/// <param name="partition">Partition where new link is to be created.</param>
+		/// <param name="roleAssignments">List of relationship role assignments.</param>
+		/// <param name="propertyAssignments">List of properties assignments to set on the new link.</param>
+		public EntityTypeSubtypeHasEntityTypeSubtypeInstance(DslModeling::Partition partition, DslModeling::RoleAssignment[] roleAssignments, DslModeling::PropertyAssignment[] propertyAssignments)
+			: base(partition, roleAssignments, propertyAssignments)
+		{
+		}
+		#endregion
+		#region EntityTypeSubtype domain role code
+		
+		/// <summary>
+		/// EntityTypeSubtype domain role Id.
+		/// </summary>
+		public static readonly global::System.Guid EntityTypeSubtypeDomainRoleId = new global::System.Guid(0x0dade527, 0x8ad4, 0x4234, 0x9e, 0xf4, 0xf7, 0x8f, 0xd7, 0xd3, 0x60, 0xc2);
+		
+		/// <summary>
+		/// DomainRole EntityTypeSubtype
+		/// Description for
+		/// Neumont.Tools.ORM.ObjectModel.EntityTypeSubtypeHasEntityTypeSubtypeInstance.EntityTypeSubtype
+		/// </summary>
+		[DslDesign::DisplayNameResource("Neumont.Tools.ORM.ObjectModel.EntityTypeSubtypeHasEntityTypeSubtypeInstance/EntityTypeSubtype.DisplayName", typeof(global::Neumont.Tools.ORM.ObjectModel.ORMCoreDomainModel), "Neumont.Tools.ORM.GeneratedCode.CoreDomainModelResx")]
+		[DslDesign::DescriptionResource("Neumont.Tools.ORM.ObjectModel.EntityTypeSubtypeHasEntityTypeSubtypeInstance/EntityTypeSubtype.Description", typeof(global::Neumont.Tools.ORM.ObjectModel.ORMCoreDomainModel), "Neumont.Tools.ORM.GeneratedCode.CoreDomainModelResx")]
+		[DslModeling::DomainRole(DslModeling::DomainRoleOrder.Source, PropertyName = "EntityTypeSubtypeInstanceCollection", PropertyDisplayNameKey="Neumont.Tools.ORM.ObjectModel.EntityTypeSubtypeHasEntityTypeSubtypeInstance/EntityTypeSubtype.PropertyDisplayName", Multiplicity = DslModeling::Multiplicity.ZeroMany)]
+		[DslModeling::DomainObjectId("0dade527-8ad4-4234-9ef4-f78fd7d360c2")]
+		public virtual ObjectType EntityTypeSubtype
+		{
+			[global::System.Diagnostics.DebuggerStepThrough]
+			get
+			{
+				return (ObjectType)DslModeling::DomainRoleInfo.GetRolePlayer(this, EntityTypeSubtypeDomainRoleId);
+			}
+			[global::System.Diagnostics.DebuggerStepThrough]
+			set
+			{
+				DslModeling::DomainRoleInfo.SetRolePlayer(this, EntityTypeSubtypeDomainRoleId, value);
+			}
+		}
+				
+		#endregion
+		#region Static methods to access EntityTypeSubtype of a EntityTypeSubtypeInstance
+		/// <summary>
+		/// Gets EntityTypeSubtype.
+		/// </summary>
+		[global::System.Diagnostics.DebuggerStepThrough]
+		[global::System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Design", "CA1011")]
+		public static ObjectType GetEntityTypeSubtype(EntityTypeSubtypeInstance element)
+		{
+			return DslModeling::DomainRoleInfo.GetLinkedElement(element, EntityTypeSubtypeInstanceDomainRoleId) as ObjectType;
+		}
+		
+		/// <summary>
+		/// Sets EntityTypeSubtype.
+		/// </summary>
+		[global::System.Diagnostics.DebuggerStepThrough]
+		[global::System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Design", "CA1011")]
+		public static void SetEntityTypeSubtype(EntityTypeSubtypeInstance element, ObjectType newEntityTypeSubtype)
+		{
+			DslModeling::DomainRoleInfo.SetLinkedElement(element, EntityTypeSubtypeInstanceDomainRoleId, newEntityTypeSubtype);
+		}
+		#endregion
+		#region ObjectType domain role override
+		
+		/// <summary>
+		/// Gets the element playing EntityTypeSubtype domain role.
+		/// Description for
+		/// Neumont.Tools.ORM.ObjectModel.ObjectTypeHasObjectTypeInstance.ObjectType
+		/// </summary>
+		public override ObjectType ObjectType
+		{
+			[global::System.Diagnostics.DebuggerStepThrough]
+			get
+			{
+				return this.EntityTypeSubtype;
+			}
+			[global::System.Diagnostics.DebuggerStepThrough]
+			set
+			{
+				this.EntityTypeSubtype = value;
+			}
+		}
+		
+		#endregion
+		#region EntityTypeSubtypeInstance domain role code
+		
+		/// <summary>
+		/// EntityTypeSubtypeInstance domain role Id.
+		/// </summary>
+		public static readonly global::System.Guid EntityTypeSubtypeInstanceDomainRoleId = new global::System.Guid(0x9a51223a, 0x5d4d, 0x4e86, 0xbb, 0x76, 0xa4, 0x9f, 0x28, 0xde, 0xe7, 0x1d);
+		
+		/// <summary>
+		/// DomainRole EntityTypeSubtypeInstance
+		/// Description for
+		/// Neumont.Tools.ORM.ObjectModel.EntityTypeSubtypeHasEntityTypeSubtypeInstance.EntityTypeSubtypeInstance
+		/// </summary>
+		[DslDesign::DisplayNameResource("Neumont.Tools.ORM.ObjectModel.EntityTypeSubtypeHasEntityTypeSubtypeInstance/EntityTypeSubtypeInstance.DisplayName", typeof(global::Neumont.Tools.ORM.ObjectModel.ORMCoreDomainModel), "Neumont.Tools.ORM.GeneratedCode.CoreDomainModelResx")]
+		[DslDesign::DescriptionResource("Neumont.Tools.ORM.ObjectModel.EntityTypeSubtypeHasEntityTypeSubtypeInstance/EntityTypeSubtypeInstance.Description", typeof(global::Neumont.Tools.ORM.ObjectModel.ORMCoreDomainModel), "Neumont.Tools.ORM.GeneratedCode.CoreDomainModelResx")]
+		[DslModeling::DomainRole(DslModeling::DomainRoleOrder.Target, PropertyName = "EntityTypeSubtype", PropertyDisplayNameKey="Neumont.Tools.ORM.ObjectModel.EntityTypeSubtypeHasEntityTypeSubtypeInstance/EntityTypeSubtypeInstance.PropertyDisplayName", PropagatesDelete = true, Multiplicity = DslModeling::Multiplicity.One)]
+		[DslModeling::DomainObjectId("9a51223a-5d4d-4e86-bb76-a49f28dee71d")]
+		public virtual EntityTypeSubtypeInstance EntityTypeSubtypeInstance
+		{
+			[global::System.Diagnostics.DebuggerStepThrough]
+			get
+			{
+				return (EntityTypeSubtypeInstance)DslModeling::DomainRoleInfo.GetRolePlayer(this, EntityTypeSubtypeInstanceDomainRoleId);
+			}
+			[global::System.Diagnostics.DebuggerStepThrough]
+			set
+			{
+				DslModeling::DomainRoleInfo.SetRolePlayer(this, EntityTypeSubtypeInstanceDomainRoleId, value);
+			}
+		}
+				
+		#endregion
+		#region Static methods to access EntityTypeSubtypeInstanceCollection of a ObjectType
+		/// <summary>
+		/// Gets a list of EntityTypeSubtypeInstanceCollection.
+		/// </summary>
+		[global::System.Diagnostics.DebuggerStepThrough]
+		[global::System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Design", "CA1011")]
+		public static DslModeling::LinkedElementCollection<EntityTypeSubtypeInstance> GetEntityTypeSubtypeInstanceCollection(ObjectType element)
+		{
+			return new DslModeling::LinkedElementCollection<EntityTypeSubtypeInstance>(element, EntityTypeSubtypeDomainRoleId);
+		}
+		#endregion
+		#region ObjectTypeInstance domain role override
+		
+		/// <summary>
+		/// Gets the element playing EntityTypeSubtypeInstance domain role.
+		/// Description for
+		/// Neumont.Tools.ORM.ObjectModel.ObjectTypeHasObjectTypeInstance.ObjectTypeInstance
+		/// </summary>
+		public override ObjectTypeInstance ObjectTypeInstance
+		{
+			[global::System.Diagnostics.DebuggerStepThrough]
+			get
+			{
+				return this.EntityTypeSubtypeInstance;
+			}
+			[global::System.Diagnostics.DebuggerStepThrough]
+			set
+			{
+				this.EntityTypeSubtypeInstance = (EntityTypeSubtypeInstance)value;
+			}
+		}
+		
+		#endregion
+		#region EntityTypeSubtype link accessor
+		/// <summary>
+		/// Get the list of EntityTypeSubtypeHasEntityTypeSubtypeInstance links to a ObjectType.
+		/// </summary>
+		[global::System.Diagnostics.DebuggerStepThrough]
+		[global::System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Design", "CA1011")]
+		public static global::System.Collections.ObjectModel.ReadOnlyCollection<global::Neumont.Tools.ORM.ObjectModel.EntityTypeSubtypeHasEntityTypeSubtypeInstance> GetLinksToEntityTypeSubtypeInstanceCollection ( global::Neumont.Tools.ORM.ObjectModel.ObjectType entityTypeSubtypeInstance )
+		{
+			return DslModeling::DomainRoleInfo.GetElementLinks<global::Neumont.Tools.ORM.ObjectModel.EntityTypeSubtypeHasEntityTypeSubtypeInstance>(entityTypeSubtypeInstance, global::Neumont.Tools.ORM.ObjectModel.EntityTypeSubtypeHasEntityTypeSubtypeInstance.EntityTypeSubtypeDomainRoleId);
+		}
+		#endregion
+		#region EntityTypeSubtypeInstance link accessor
+		/// <summary>
+		/// Get the EntityTypeSubtypeHasEntityTypeSubtypeInstance link to a EntityTypeSubtypeInstance.
+		/// </summary>
+		[global::System.Diagnostics.DebuggerStepThrough]
+		[global::System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Design", "CA1011")]
+		public static global::Neumont.Tools.ORM.ObjectModel.EntityTypeSubtypeHasEntityTypeSubtypeInstance GetLinkToEntityTypeSubtype (global::Neumont.Tools.ORM.ObjectModel.EntityTypeSubtypeInstance entityTypeSubtypeInstanceInstance)
+		{
+			global::System.Collections.Generic.IList<global::Neumont.Tools.ORM.ObjectModel.EntityTypeSubtypeHasEntityTypeSubtypeInstance> links = DslModeling::DomainRoleInfo.GetElementLinks<global::Neumont.Tools.ORM.ObjectModel.EntityTypeSubtypeHasEntityTypeSubtypeInstance>(entityTypeSubtypeInstanceInstance, global::Neumont.Tools.ORM.ObjectModel.EntityTypeSubtypeHasEntityTypeSubtypeInstance.EntityTypeSubtypeInstanceDomainRoleId);
+			global::System.Diagnostics.Debug.Assert(links.Count <= 1, "Multiplicity of EntityTypeSubtypeInstance not obeyed.");
+			if ( links.Count == 0 )
+			{
+				return null;
+			}
+			else
+			{
+				return links[0];
+			}
+		}
+		#endregion
+		#region EntityTypeSubtypeHasEntityTypeSubtypeInstance instance accessors
+		
+		/// <summary>
+		/// Get any EntityTypeSubtypeHasEntityTypeSubtypeInstance links between a given ObjectType and a EntityTypeSubtypeInstance.
+		/// </summary>
+		[global::System.Diagnostics.DebuggerStepThrough]
+		[global::System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Design", "CA1011")]
+		public static global::System.Collections.ObjectModel.ReadOnlyCollection<global::Neumont.Tools.ORM.ObjectModel.EntityTypeSubtypeHasEntityTypeSubtypeInstance> GetLinks( global::Neumont.Tools.ORM.ObjectModel.ObjectType source, global::Neumont.Tools.ORM.ObjectModel.EntityTypeSubtypeInstance target )
+		{
+			global::System.Collections.Generic.List<global::Neumont.Tools.ORM.ObjectModel.EntityTypeSubtypeHasEntityTypeSubtypeInstance> outLinks = new global::System.Collections.Generic.List<global::Neumont.Tools.ORM.ObjectModel.EntityTypeSubtypeHasEntityTypeSubtypeInstance>();
+			global::System.Collections.Generic.IList<global::Neumont.Tools.ORM.ObjectModel.EntityTypeSubtypeHasEntityTypeSubtypeInstance> links = DslModeling::DomainRoleInfo.GetElementLinks<global::Neumont.Tools.ORM.ObjectModel.EntityTypeSubtypeHasEntityTypeSubtypeInstance>(source, global::Neumont.Tools.ORM.ObjectModel.EntityTypeSubtypeHasEntityTypeSubtypeInstance.EntityTypeSubtypeDomainRoleId);
+			foreach ( global::Neumont.Tools.ORM.ObjectModel.EntityTypeSubtypeHasEntityTypeSubtypeInstance link in links )
+			{
+				if ( target.Equals(link.EntityTypeSubtypeInstance) )
+				{
+					outLinks.Add(link);
+				}
+			}
+			return outLinks.AsReadOnly();
+		}
+		/// <summary>
+		/// Get the one EntityTypeSubtypeHasEntityTypeSubtypeInstance link between a given ObjectTypeand a EntityTypeSubtypeInstance.
+		/// </summary>
+		[global::System.Diagnostics.DebuggerStepThrough]
+		[global::System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Design", "CA1011")]
+		public static global::Neumont.Tools.ORM.ObjectModel.EntityTypeSubtypeHasEntityTypeSubtypeInstance GetLink( global::Neumont.Tools.ORM.ObjectModel.ObjectType source, global::Neumont.Tools.ORM.ObjectModel.EntityTypeSubtypeInstance target )
+		{
+			global::System.Collections.Generic.IList<global::Neumont.Tools.ORM.ObjectModel.EntityTypeSubtypeHasEntityTypeSubtypeInstance> links = DslModeling::DomainRoleInfo.GetElementLinks<global::Neumont.Tools.ORM.ObjectModel.EntityTypeSubtypeHasEntityTypeSubtypeInstance>(source, global::Neumont.Tools.ORM.ObjectModel.EntityTypeSubtypeHasEntityTypeSubtypeInstance.EntityTypeSubtypeDomainRoleId);
+			foreach ( global::Neumont.Tools.ORM.ObjectModel.EntityTypeSubtypeHasEntityTypeSubtypeInstance link in links )
+			{
+				if ( target.Equals(link.EntityTypeSubtypeInstance) )
+				{
+					return link;
+				}
+			}
+			return null;
+		}
+		
+		#endregion
+	}
+}
+namespace Neumont.Tools.ORM.ObjectModel
+{
+	/// <summary>
 	/// DomainRelationship ValueTypeHasValueTypeInstance
 	/// Description for Neumont.Tools.ORM.ObjectModel.ValueTypeHasValueTypeInstance
 	/// </summary>
@@ -28238,6 +28524,247 @@ namespace Neumont.Tools.ORM.ObjectModel
 namespace Neumont.Tools.ORM.ObjectModel
 {
 	/// <summary>
+	/// DomainRelationship EntityTypeSubtypeInstanceHasSupertypeInstance
+	/// Description for
+	/// Neumont.Tools.ORM.ObjectModel.EntityTypeSubtypeInstanceHasSupertypeInstance
+	/// </summary>
+	[DslDesign::DisplayNameResource("Neumont.Tools.ORM.ObjectModel.EntityTypeSubtypeInstanceHasSupertypeInstance.DisplayName", typeof(global::Neumont.Tools.ORM.ObjectModel.ORMCoreDomainModel), "Neumont.Tools.ORM.GeneratedCode.CoreDomainModelResx")]
+	[DslDesign::DescriptionResource("Neumont.Tools.ORM.ObjectModel.EntityTypeSubtypeInstanceHasSupertypeInstance.Description", typeof(global::Neumont.Tools.ORM.ObjectModel.ORMCoreDomainModel), "Neumont.Tools.ORM.GeneratedCode.CoreDomainModelResx")]
+	[global::System.CLSCompliant(true)]
+	[DslModeling::DomainRelationship()]
+	[DslModeling::DomainObjectId("f11d087f-8b5b-4ac9-9b67-f967d5a5013e")]
+	public partial class EntityTypeSubtypeInstanceHasSupertypeInstance : DslModeling::ElementLink
+	{
+		#region Constructors, domain class Id
+		
+		/// <summary>
+		/// EntityTypeSubtypeInstanceHasSupertypeInstance domain class Id.
+		/// </summary>
+		public static readonly new global::System.Guid DomainClassId = new global::System.Guid(0xf11d087f, 0x8b5b, 0x4ac9, 0x9b, 0x67, 0xf9, 0x67, 0xd5, 0xa5, 0x01, 0x3e);
+	
+				
+		/// <summary>
+		/// Constructor
+		/// Creates a EntityTypeSubtypeInstanceHasSupertypeInstance link in the same Partition as the given EntityTypeSubtypeInstance
+		/// </summary>
+		/// <param name="source">EntityTypeSubtypeInstance to use as the source of the relationship.</param>
+		/// <param name="target">EntityTypeInstance to use as the target of the relationship.</param>
+		public EntityTypeSubtypeInstanceHasSupertypeInstance(EntityTypeSubtypeInstance source, EntityTypeInstance target)
+			: base((source != null ? source.Partition : null), new DslModeling::RoleAssignment[]{new DslModeling::RoleAssignment(EntityTypeSubtypeInstanceHasSupertypeInstance.EntityTypeSubtypeInstanceDomainRoleId, source), new DslModeling::RoleAssignment(EntityTypeSubtypeInstanceHasSupertypeInstance.SupertypeInstanceDomainRoleId, target)}, null)
+		{
+		}
+		
+		/// <summary>
+		/// Constructor
+		/// </summary>
+		/// <param name="store">Store where new link is to be created.</param>
+		/// <param name="roleAssignments">List of relationship role assignments.</param>
+		public EntityTypeSubtypeInstanceHasSupertypeInstance(DslModeling::Store store, params DslModeling::RoleAssignment[] roleAssignments)
+			: base(store != null ? store.DefaultPartition : null, roleAssignments, null)
+		{
+		}
+		
+		/// <summary>
+		/// Constructor
+		/// </summary>
+		/// <param name="store">Store where new link is to be created.</param>
+		/// <param name="roleAssignments">List of relationship role assignments.</param>
+		/// <param name="propertyAssignments">List of properties assignments to set on the new link.</param>
+		public EntityTypeSubtypeInstanceHasSupertypeInstance(DslModeling::Store store, DslModeling::RoleAssignment[] roleAssignments, DslModeling::PropertyAssignment[] propertyAssignments)
+			: base(store != null ? store.DefaultPartition : null, roleAssignments, propertyAssignments)
+		{
+		}
+		
+		/// <summary>
+		/// Constructor
+		/// </summary>
+		/// <param name="partition">Partition where new link is to be created.</param>
+		/// <param name="roleAssignments">List of relationship role assignments.</param>
+		public EntityTypeSubtypeInstanceHasSupertypeInstance(DslModeling::Partition partition, params DslModeling::RoleAssignment[] roleAssignments)
+			: base(partition, roleAssignments, null)
+		{
+		}
+		
+		/// <summary>
+		/// Constructor
+		/// </summary>
+		/// <param name="partition">Partition where new link is to be created.</param>
+		/// <param name="roleAssignments">List of relationship role assignments.</param>
+		/// <param name="propertyAssignments">List of properties assignments to set on the new link.</param>
+		public EntityTypeSubtypeInstanceHasSupertypeInstance(DslModeling::Partition partition, DslModeling::RoleAssignment[] roleAssignments, DslModeling::PropertyAssignment[] propertyAssignments)
+			: base(partition, roleAssignments, propertyAssignments)
+		{
+		}
+		#endregion
+		#region EntityTypeSubtypeInstance domain role code
+		
+		/// <summary>
+		/// EntityTypeSubtypeInstance domain role Id.
+		/// </summary>
+		public static readonly global::System.Guid EntityTypeSubtypeInstanceDomainRoleId = new global::System.Guid(0x23f6cec5, 0xe016, 0x40ad, 0xa4, 0xd2, 0xb6, 0x84, 0xa9, 0xca, 0x02, 0x31);
+		
+		/// <summary>
+		/// DomainRole EntityTypeSubtypeInstance
+		/// Description for
+		/// Neumont.Tools.ORM.ObjectModel.EntityTypeSubtypeInstanceHasSupertypeInstance.EntityTypeSubtypeInstance
+		/// </summary>
+		[DslDesign::DisplayNameResource("Neumont.Tools.ORM.ObjectModel.EntityTypeSubtypeInstanceHasSupertypeInstance/EntityTypeSubtypeInstance.DisplayName", typeof(global::Neumont.Tools.ORM.ObjectModel.ORMCoreDomainModel), "Neumont.Tools.ORM.GeneratedCode.CoreDomainModelResx")]
+		[DslDesign::DescriptionResource("Neumont.Tools.ORM.ObjectModel.EntityTypeSubtypeInstanceHasSupertypeInstance/EntityTypeSubtypeInstance.Description", typeof(global::Neumont.Tools.ORM.ObjectModel.ORMCoreDomainModel), "Neumont.Tools.ORM.GeneratedCode.CoreDomainModelResx")]
+		[DslModeling::DomainRole(DslModeling::DomainRoleOrder.Source, PropertyName = "SupertypeInstance", PropertyDisplayNameKey="Neumont.Tools.ORM.ObjectModel.EntityTypeSubtypeInstanceHasSupertypeInstance/EntityTypeSubtypeInstance.PropertyDisplayName", PropagatesDelete = true, Multiplicity = DslModeling::Multiplicity.One)]
+		[DslModeling::DomainObjectId("23f6cec5-e016-40ad-a4d2-b684a9ca0231")]
+		public virtual EntityTypeSubtypeInstance EntityTypeSubtypeInstance
+		{
+			[global::System.Diagnostics.DebuggerStepThrough]
+			get
+			{
+				return (EntityTypeSubtypeInstance)DslModeling::DomainRoleInfo.GetRolePlayer(this, EntityTypeSubtypeInstanceDomainRoleId);
+			}
+			[global::System.Diagnostics.DebuggerStepThrough]
+			set
+			{
+				DslModeling::DomainRoleInfo.SetRolePlayer(this, EntityTypeSubtypeInstanceDomainRoleId, value);
+			}
+		}
+				
+		#endregion
+		#region Static methods to access EntityTypeSubtypeInstanceCollection of a EntityTypeInstance
+		/// <summary>
+		/// Gets a list of EntityTypeSubtypeInstanceCollection.
+		/// </summary>
+		[global::System.Diagnostics.DebuggerStepThrough]
+		[global::System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Design", "CA1011")]
+		public static DslModeling::LinkedElementCollection<EntityTypeSubtypeInstance> GetEntityTypeSubtypeInstanceCollection(EntityTypeInstance element)
+		{
+			return new DslModeling::LinkedElementCollection<EntityTypeSubtypeInstance>(element, SupertypeInstanceDomainRoleId);
+		}
+		#endregion
+		#region SupertypeInstance domain role code
+		
+		/// <summary>
+		/// SupertypeInstance domain role Id.
+		/// </summary>
+		public static readonly global::System.Guid SupertypeInstanceDomainRoleId = new global::System.Guid(0xbc2cd94c, 0xd143, 0x4676, 0x80, 0x36, 0xd4, 0x09, 0x4a, 0x61, 0xb9, 0x70);
+		
+		/// <summary>
+		/// DomainRole SupertypeInstance
+		/// Description for
+		/// Neumont.Tools.ORM.ObjectModel.EntityTypeSubtypeInstanceHasSupertypeInstance.SupertypeInstance
+		/// </summary>
+		[DslDesign::DisplayNameResource("Neumont.Tools.ORM.ObjectModel.EntityTypeSubtypeInstanceHasSupertypeInstance/SupertypeInstance.DisplayName", typeof(global::Neumont.Tools.ORM.ObjectModel.ORMCoreDomainModel), "Neumont.Tools.ORM.GeneratedCode.CoreDomainModelResx")]
+		[DslDesign::DescriptionResource("Neumont.Tools.ORM.ObjectModel.EntityTypeSubtypeInstanceHasSupertypeInstance/SupertypeInstance.Description", typeof(global::Neumont.Tools.ORM.ObjectModel.ORMCoreDomainModel), "Neumont.Tools.ORM.GeneratedCode.CoreDomainModelResx")]
+		[DslModeling::DomainRole(DslModeling::DomainRoleOrder.Target, PropertyName = "EntityTypeSubtypeInstanceCollection", PropertyDisplayNameKey="Neumont.Tools.ORM.ObjectModel.EntityTypeSubtypeInstanceHasSupertypeInstance/SupertypeInstance.PropertyDisplayName", Multiplicity = DslModeling::Multiplicity.ZeroMany)]
+		[DslModeling::DomainObjectId("bc2cd94c-d143-4676-8036-d4094a61b970")]
+		public virtual EntityTypeInstance SupertypeInstance
+		{
+			[global::System.Diagnostics.DebuggerStepThrough]
+			get
+			{
+				return (EntityTypeInstance)DslModeling::DomainRoleInfo.GetRolePlayer(this, SupertypeInstanceDomainRoleId);
+			}
+			[global::System.Diagnostics.DebuggerStepThrough]
+			set
+			{
+				DslModeling::DomainRoleInfo.SetRolePlayer(this, SupertypeInstanceDomainRoleId, value);
+			}
+		}
+				
+		#endregion
+		#region Static methods to access SupertypeInstance of a EntityTypeSubtypeInstance
+		/// <summary>
+		/// Gets SupertypeInstance.
+		/// </summary>
+		[global::System.Diagnostics.DebuggerStepThrough]
+		[global::System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Design", "CA1011")]
+		public static EntityTypeInstance GetSupertypeInstance(EntityTypeSubtypeInstance element)
+		{
+			return DslModeling::DomainRoleInfo.GetLinkedElement(element, EntityTypeSubtypeInstanceDomainRoleId) as EntityTypeInstance;
+		}
+		
+		/// <summary>
+		/// Sets SupertypeInstance.
+		/// </summary>
+		[global::System.Diagnostics.DebuggerStepThrough]
+		[global::System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Design", "CA1011")]
+		public static void SetSupertypeInstance(EntityTypeSubtypeInstance element, EntityTypeInstance newSupertypeInstance)
+		{
+			DslModeling::DomainRoleInfo.SetLinkedElement(element, EntityTypeSubtypeInstanceDomainRoleId, newSupertypeInstance);
+		}
+		#endregion
+		#region EntityTypeSubtypeInstance link accessor
+		/// <summary>
+		/// Get the EntityTypeSubtypeInstanceHasSupertypeInstance link to a EntityTypeSubtypeInstance.
+		/// </summary>
+		[global::System.Diagnostics.DebuggerStepThrough]
+		[global::System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Design", "CA1011")]
+		public static global::Neumont.Tools.ORM.ObjectModel.EntityTypeSubtypeInstanceHasSupertypeInstance GetLinkToSupertypeInstance (global::Neumont.Tools.ORM.ObjectModel.EntityTypeSubtypeInstance entityTypeSubtypeInstanceInstance)
+		{
+			global::System.Collections.Generic.IList<global::Neumont.Tools.ORM.ObjectModel.EntityTypeSubtypeInstanceHasSupertypeInstance> links = DslModeling::DomainRoleInfo.GetElementLinks<global::Neumont.Tools.ORM.ObjectModel.EntityTypeSubtypeInstanceHasSupertypeInstance>(entityTypeSubtypeInstanceInstance, global::Neumont.Tools.ORM.ObjectModel.EntityTypeSubtypeInstanceHasSupertypeInstance.EntityTypeSubtypeInstanceDomainRoleId);
+			global::System.Diagnostics.Debug.Assert(links.Count <= 1, "Multiplicity of EntityTypeSubtypeInstance not obeyed.");
+			if ( links.Count == 0 )
+			{
+				return null;
+			}
+			else
+			{
+				return links[0];
+			}
+		}
+		#endregion
+		#region SupertypeInstance link accessor
+		/// <summary>
+		/// Get the list of EntityTypeSubtypeInstanceHasSupertypeInstance links to a EntityTypeInstance.
+		/// </summary>
+		[global::System.Diagnostics.DebuggerStepThrough]
+		[global::System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Design", "CA1011")]
+		public static global::System.Collections.ObjectModel.ReadOnlyCollection<global::Neumont.Tools.ORM.ObjectModel.EntityTypeSubtypeInstanceHasSupertypeInstance> GetLinksToEntityTypeSubtypeInstanceCollection ( global::Neumont.Tools.ORM.ObjectModel.EntityTypeInstance supertypeInstanceInstance )
+		{
+			return DslModeling::DomainRoleInfo.GetElementLinks<global::Neumont.Tools.ORM.ObjectModel.EntityTypeSubtypeInstanceHasSupertypeInstance>(supertypeInstanceInstance, global::Neumont.Tools.ORM.ObjectModel.EntityTypeSubtypeInstanceHasSupertypeInstance.SupertypeInstanceDomainRoleId);
+		}
+		#endregion
+		#region EntityTypeSubtypeInstanceHasSupertypeInstance instance accessors
+		
+		/// <summary>
+		/// Get any EntityTypeSubtypeInstanceHasSupertypeInstance links between a given EntityTypeSubtypeInstance and a EntityTypeInstance.
+		/// </summary>
+		[global::System.Diagnostics.DebuggerStepThrough]
+		[global::System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Design", "CA1011")]
+		public static global::System.Collections.ObjectModel.ReadOnlyCollection<global::Neumont.Tools.ORM.ObjectModel.EntityTypeSubtypeInstanceHasSupertypeInstance> GetLinks( global::Neumont.Tools.ORM.ObjectModel.EntityTypeSubtypeInstance source, global::Neumont.Tools.ORM.ObjectModel.EntityTypeInstance target )
+		{
+			global::System.Collections.Generic.List<global::Neumont.Tools.ORM.ObjectModel.EntityTypeSubtypeInstanceHasSupertypeInstance> outLinks = new global::System.Collections.Generic.List<global::Neumont.Tools.ORM.ObjectModel.EntityTypeSubtypeInstanceHasSupertypeInstance>();
+			global::System.Collections.Generic.IList<global::Neumont.Tools.ORM.ObjectModel.EntityTypeSubtypeInstanceHasSupertypeInstance> links = DslModeling::DomainRoleInfo.GetElementLinks<global::Neumont.Tools.ORM.ObjectModel.EntityTypeSubtypeInstanceHasSupertypeInstance>(source, global::Neumont.Tools.ORM.ObjectModel.EntityTypeSubtypeInstanceHasSupertypeInstance.EntityTypeSubtypeInstanceDomainRoleId);
+			foreach ( global::Neumont.Tools.ORM.ObjectModel.EntityTypeSubtypeInstanceHasSupertypeInstance link in links )
+			{
+				if ( target.Equals(link.SupertypeInstance) )
+				{
+					outLinks.Add(link);
+				}
+			}
+			return outLinks.AsReadOnly();
+		}
+		/// <summary>
+		/// Get the one EntityTypeSubtypeInstanceHasSupertypeInstance link between a given EntityTypeSubtypeInstanceand a EntityTypeInstance.
+		/// </summary>
+		[global::System.Diagnostics.DebuggerStepThrough]
+		[global::System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Design", "CA1011")]
+		public static global::Neumont.Tools.ORM.ObjectModel.EntityTypeSubtypeInstanceHasSupertypeInstance GetLink( global::Neumont.Tools.ORM.ObjectModel.EntityTypeSubtypeInstance source, global::Neumont.Tools.ORM.ObjectModel.EntityTypeInstance target )
+		{
+			global::System.Collections.Generic.IList<global::Neumont.Tools.ORM.ObjectModel.EntityTypeSubtypeInstanceHasSupertypeInstance> links = DslModeling::DomainRoleInfo.GetElementLinks<global::Neumont.Tools.ORM.ObjectModel.EntityTypeSubtypeInstanceHasSupertypeInstance>(source, global::Neumont.Tools.ORM.ObjectModel.EntityTypeSubtypeInstanceHasSupertypeInstance.EntityTypeSubtypeInstanceDomainRoleId);
+			foreach ( global::Neumont.Tools.ORM.ObjectModel.EntityTypeSubtypeInstanceHasSupertypeInstance link in links )
+			{
+				if ( target.Equals(link.SupertypeInstance) )
+				{
+					return link;
+				}
+			}
+			return null;
+		}
+		
+		#endregion
+	}
+}
+namespace Neumont.Tools.ORM.ObjectModel
+{
+	/// <summary>
 	/// DomainRelationship FactTypeHasFactTypeInstance
 	/// Description for Neumont.Tools.ORM.ObjectModel.FactTypeHasFactTypeInstance
 	/// </summary>
@@ -28705,6 +29232,873 @@ namespace Neumont.Tools.ORM.ObjectModel
 			foreach ( global::Neumont.Tools.ORM.ObjectModel.FactTypeInstanceHasRoleInstance link in links )
 			{
 				if ( target.Equals(link.RoleInstance) )
+				{
+					return link;
+				}
+			}
+			return null;
+		}
+		
+		#endregion
+	}
+}
+namespace Neumont.Tools.ORM.ObjectModel
+{
+	/// <summary>
+	/// DomainRelationship ObjectificationInstance
+	/// Description for Neumont.Tools.ORM.ObjectModel.ObjectificationInstance
+	/// </summary>
+	[DslDesign::DisplayNameResource("Neumont.Tools.ORM.ObjectModel.ObjectificationInstance.DisplayName", typeof(global::Neumont.Tools.ORM.ObjectModel.ORMCoreDomainModel), "Neumont.Tools.ORM.GeneratedCode.CoreDomainModelResx")]
+	[DslDesign::DescriptionResource("Neumont.Tools.ORM.ObjectModel.ObjectificationInstance.Description", typeof(global::Neumont.Tools.ORM.ObjectModel.ORMCoreDomainModel), "Neumont.Tools.ORM.GeneratedCode.CoreDomainModelResx")]
+	[global::System.CLSCompliant(true)]
+	[DslModeling::DomainRelationship()]
+	[DslModeling::DomainObjectId("943f2cfd-0179-48d8-81d9-3b8277a8d449")]
+	public partial class ObjectificationInstance : DslModeling::ElementLink
+	{
+		#region Constructors, domain class Id
+		
+		/// <summary>
+		/// ObjectificationInstance domain class Id.
+		/// </summary>
+		public static readonly new global::System.Guid DomainClassId = new global::System.Guid(0x943f2cfd, 0x0179, 0x48d8, 0x81, 0xd9, 0x3b, 0x82, 0x77, 0xa8, 0xd4, 0x49);
+	
+				
+		/// <summary>
+		/// Constructor
+		/// Creates a ObjectificationInstance link in the same Partition as the given FactTypeInstance
+		/// </summary>
+		/// <param name="source">FactTypeInstance to use as the source of the relationship.</param>
+		/// <param name="target">ObjectTypeInstance to use as the target of the relationship.</param>
+		public ObjectificationInstance(FactTypeInstance source, ObjectTypeInstance target)
+			: base((source != null ? source.Partition : null), new DslModeling::RoleAssignment[]{new DslModeling::RoleAssignment(ObjectificationInstance.ObjectifiedInstanceDomainRoleId, source), new DslModeling::RoleAssignment(ObjectificationInstance.ObjectifyingInstanceDomainRoleId, target)}, null)
+		{
+		}
+		
+		/// <summary>
+		/// Constructor
+		/// </summary>
+		/// <param name="store">Store where new link is to be created.</param>
+		/// <param name="roleAssignments">List of relationship role assignments.</param>
+		public ObjectificationInstance(DslModeling::Store store, params DslModeling::RoleAssignment[] roleAssignments)
+			: base(store != null ? store.DefaultPartition : null, roleAssignments, null)
+		{
+		}
+		
+		/// <summary>
+		/// Constructor
+		/// </summary>
+		/// <param name="store">Store where new link is to be created.</param>
+		/// <param name="roleAssignments">List of relationship role assignments.</param>
+		/// <param name="propertyAssignments">List of properties assignments to set on the new link.</param>
+		public ObjectificationInstance(DslModeling::Store store, DslModeling::RoleAssignment[] roleAssignments, DslModeling::PropertyAssignment[] propertyAssignments)
+			: base(store != null ? store.DefaultPartition : null, roleAssignments, propertyAssignments)
+		{
+		}
+		
+		/// <summary>
+		/// Constructor
+		/// </summary>
+		/// <param name="partition">Partition where new link is to be created.</param>
+		/// <param name="roleAssignments">List of relationship role assignments.</param>
+		public ObjectificationInstance(DslModeling::Partition partition, params DslModeling::RoleAssignment[] roleAssignments)
+			: base(partition, roleAssignments, null)
+		{
+		}
+		
+		/// <summary>
+		/// Constructor
+		/// </summary>
+		/// <param name="partition">Partition where new link is to be created.</param>
+		/// <param name="roleAssignments">List of relationship role assignments.</param>
+		/// <param name="propertyAssignments">List of properties assignments to set on the new link.</param>
+		public ObjectificationInstance(DslModeling::Partition partition, DslModeling::RoleAssignment[] roleAssignments, DslModeling::PropertyAssignment[] propertyAssignments)
+			: base(partition, roleAssignments, propertyAssignments)
+		{
+		}
+		#endregion
+		#region ObjectifiedInstance domain role code
+		
+		/// <summary>
+		/// ObjectifiedInstance domain role Id.
+		/// </summary>
+		public static readonly global::System.Guid ObjectifiedInstanceDomainRoleId = new global::System.Guid(0x819a1d2b, 0x125b, 0x4193, 0xa3, 0x36, 0x25, 0xbe, 0x03, 0xea, 0x91, 0xc3);
+		
+		/// <summary>
+		/// DomainRole ObjectifiedInstance
+		/// Description for
+		/// Neumont.Tools.ORM.ObjectModel.ObjectificationInstance.ObjectifiedInstance
+		/// </summary>
+		[DslDesign::DisplayNameResource("Neumont.Tools.ORM.ObjectModel.ObjectificationInstance/ObjectifiedInstance.DisplayName", typeof(global::Neumont.Tools.ORM.ObjectModel.ORMCoreDomainModel), "Neumont.Tools.ORM.GeneratedCode.CoreDomainModelResx")]
+		[DslDesign::DescriptionResource("Neumont.Tools.ORM.ObjectModel.ObjectificationInstance/ObjectifiedInstance.Description", typeof(global::Neumont.Tools.ORM.ObjectModel.ORMCoreDomainModel), "Neumont.Tools.ORM.GeneratedCode.CoreDomainModelResx")]
+		[DslModeling::DomainRole(DslModeling::DomainRoleOrder.Source, PropertyName = "ObjectifyingInstance", PropertyDisplayNameKey="Neumont.Tools.ORM.ObjectModel.ObjectificationInstance/ObjectifiedInstance.PropertyDisplayName", Multiplicity = DslModeling::Multiplicity.ZeroOne)]
+		[DslModeling::DomainObjectId("819a1d2b-125b-4193-a336-25be03ea91c3")]
+		public virtual FactTypeInstance ObjectifiedInstance
+		{
+			[global::System.Diagnostics.DebuggerStepThrough]
+			get
+			{
+				return (FactTypeInstance)DslModeling::DomainRoleInfo.GetRolePlayer(this, ObjectifiedInstanceDomainRoleId);
+			}
+			[global::System.Diagnostics.DebuggerStepThrough]
+			set
+			{
+				DslModeling::DomainRoleInfo.SetRolePlayer(this, ObjectifiedInstanceDomainRoleId, value);
+			}
+		}
+				
+		#endregion
+		#region Static methods to access ObjectifiedInstance of a ObjectTypeInstance
+		/// <summary>
+		/// Gets ObjectifiedInstance.
+		/// </summary>
+		[global::System.Diagnostics.DebuggerStepThrough]
+		[global::System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Design", "CA1011")]
+		public static FactTypeInstance GetObjectifiedInstance(ObjectTypeInstance element)
+		{
+			return DslModeling::DomainRoleInfo.GetLinkedElement(element, ObjectifyingInstanceDomainRoleId) as FactTypeInstance;
+		}
+		
+		/// <summary>
+		/// Sets ObjectifiedInstance.
+		/// </summary>
+		[global::System.Diagnostics.DebuggerStepThrough]
+		[global::System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Design", "CA1011")]
+		public static void SetObjectifiedInstance(ObjectTypeInstance element, FactTypeInstance newObjectifiedInstance)
+		{
+			DslModeling::DomainRoleInfo.SetLinkedElement(element, ObjectifyingInstanceDomainRoleId, newObjectifiedInstance);
+		}
+		#endregion
+		#region ObjectifyingInstance domain role code
+		
+		/// <summary>
+		/// ObjectifyingInstance domain role Id.
+		/// </summary>
+		public static readonly global::System.Guid ObjectifyingInstanceDomainRoleId = new global::System.Guid(0x326e4cf1, 0x6a1f, 0x41ab, 0xb5, 0x35, 0x3a, 0x01, 0x6c, 0xe5, 0x9c, 0x7f);
+		
+		/// <summary>
+		/// DomainRole ObjectifyingInstance
+		/// Description for
+		/// Neumont.Tools.ORM.ObjectModel.ObjectificationInstance.ObjectifyingInstance
+		/// </summary>
+		[DslDesign::DisplayNameResource("Neumont.Tools.ORM.ObjectModel.ObjectificationInstance/ObjectifyingInstance.DisplayName", typeof(global::Neumont.Tools.ORM.ObjectModel.ORMCoreDomainModel), "Neumont.Tools.ORM.GeneratedCode.CoreDomainModelResx")]
+		[DslDesign::DescriptionResource("Neumont.Tools.ORM.ObjectModel.ObjectificationInstance/ObjectifyingInstance.Description", typeof(global::Neumont.Tools.ORM.ObjectModel.ORMCoreDomainModel), "Neumont.Tools.ORM.GeneratedCode.CoreDomainModelResx")]
+		[DslModeling::DomainRole(DslModeling::DomainRoleOrder.Target, PropertyName = "ObjectifiedInstance", PropertyDisplayNameKey="Neumont.Tools.ORM.ObjectModel.ObjectificationInstance/ObjectifyingInstance.PropertyDisplayName", Multiplicity = DslModeling::Multiplicity.ZeroOne)]
+		[DslModeling::DomainObjectId("326e4cf1-6a1f-41ab-b535-3a016ce59c7f")]
+		public virtual ObjectTypeInstance ObjectifyingInstance
+		{
+			[global::System.Diagnostics.DebuggerStepThrough]
+			get
+			{
+				return (ObjectTypeInstance)DslModeling::DomainRoleInfo.GetRolePlayer(this, ObjectifyingInstanceDomainRoleId);
+			}
+			[global::System.Diagnostics.DebuggerStepThrough]
+			set
+			{
+				DslModeling::DomainRoleInfo.SetRolePlayer(this, ObjectifyingInstanceDomainRoleId, value);
+			}
+		}
+				
+		#endregion
+		#region Static methods to access ObjectifyingInstance of a FactTypeInstance
+		/// <summary>
+		/// Gets ObjectifyingInstance.
+		/// </summary>
+		[global::System.Diagnostics.DebuggerStepThrough]
+		[global::System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Design", "CA1011")]
+		public static ObjectTypeInstance GetObjectifyingInstance(FactTypeInstance element)
+		{
+			return DslModeling::DomainRoleInfo.GetLinkedElement(element, ObjectifiedInstanceDomainRoleId) as ObjectTypeInstance;
+		}
+		
+		/// <summary>
+		/// Sets ObjectifyingInstance.
+		/// </summary>
+		[global::System.Diagnostics.DebuggerStepThrough]
+		[global::System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Design", "CA1011")]
+		public static void SetObjectifyingInstance(FactTypeInstance element, ObjectTypeInstance newObjectifyingInstance)
+		{
+			DslModeling::DomainRoleInfo.SetLinkedElement(element, ObjectifiedInstanceDomainRoleId, newObjectifyingInstance);
+		}
+		#endregion
+		#region ObjectifiedInstance link accessor
+		/// <summary>
+		/// Get the ObjectificationInstance link to a FactTypeInstance.
+		/// </summary>
+		[global::System.Diagnostics.DebuggerStepThrough]
+		[global::System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Design", "CA1011")]
+		public static global::Neumont.Tools.ORM.ObjectModel.ObjectificationInstance GetLinkToObjectifyingInstance (global::Neumont.Tools.ORM.ObjectModel.FactTypeInstance objectifiedInstanceInstance)
+		{
+			global::System.Collections.Generic.IList<global::Neumont.Tools.ORM.ObjectModel.ObjectificationInstance> links = DslModeling::DomainRoleInfo.GetElementLinks<global::Neumont.Tools.ORM.ObjectModel.ObjectificationInstance>(objectifiedInstanceInstance, global::Neumont.Tools.ORM.ObjectModel.ObjectificationInstance.ObjectifiedInstanceDomainRoleId);
+			global::System.Diagnostics.Debug.Assert(links.Count <= 1, "Multiplicity of ObjectifiedInstance not obeyed.");
+			if ( links.Count == 0 )
+			{
+				return null;
+			}
+			else
+			{
+				return links[0];
+			}
+		}
+		#endregion
+		#region ObjectifyingInstance link accessor
+		/// <summary>
+		/// Get the ObjectificationInstance link to a ObjectTypeInstance.
+		/// </summary>
+		[global::System.Diagnostics.DebuggerStepThrough]
+		[global::System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Design", "CA1011")]
+		public static global::Neumont.Tools.ORM.ObjectModel.ObjectificationInstance GetLinkToObjectifiedInstance (global::Neumont.Tools.ORM.ObjectModel.ObjectTypeInstance objectifyingInstanceInstance)
+		{
+			global::System.Collections.Generic.IList<global::Neumont.Tools.ORM.ObjectModel.ObjectificationInstance> links = DslModeling::DomainRoleInfo.GetElementLinks<global::Neumont.Tools.ORM.ObjectModel.ObjectificationInstance>(objectifyingInstanceInstance, global::Neumont.Tools.ORM.ObjectModel.ObjectificationInstance.ObjectifyingInstanceDomainRoleId);
+			global::System.Diagnostics.Debug.Assert(links.Count <= 1, "Multiplicity of ObjectifyingInstance not obeyed.");
+			if ( links.Count == 0 )
+			{
+				return null;
+			}
+			else
+			{
+				return links[0];
+			}
+		}
+		#endregion
+		#region ObjectificationInstance instance accessors
+		
+		/// <summary>
+		/// Get any ObjectificationInstance links between a given FactTypeInstance and a ObjectTypeInstance.
+		/// </summary>
+		[global::System.Diagnostics.DebuggerStepThrough]
+		[global::System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Design", "CA1011")]
+		public static global::System.Collections.ObjectModel.ReadOnlyCollection<global::Neumont.Tools.ORM.ObjectModel.ObjectificationInstance> GetLinks( global::Neumont.Tools.ORM.ObjectModel.FactTypeInstance source, global::Neumont.Tools.ORM.ObjectModel.ObjectTypeInstance target )
+		{
+			global::System.Collections.Generic.List<global::Neumont.Tools.ORM.ObjectModel.ObjectificationInstance> outLinks = new global::System.Collections.Generic.List<global::Neumont.Tools.ORM.ObjectModel.ObjectificationInstance>();
+			global::System.Collections.Generic.IList<global::Neumont.Tools.ORM.ObjectModel.ObjectificationInstance> links = DslModeling::DomainRoleInfo.GetElementLinks<global::Neumont.Tools.ORM.ObjectModel.ObjectificationInstance>(source, global::Neumont.Tools.ORM.ObjectModel.ObjectificationInstance.ObjectifiedInstanceDomainRoleId);
+			foreach ( global::Neumont.Tools.ORM.ObjectModel.ObjectificationInstance link in links )
+			{
+				if ( target.Equals(link.ObjectifyingInstance) )
+				{
+					outLinks.Add(link);
+				}
+			}
+			return outLinks.AsReadOnly();
+		}
+		/// <summary>
+		/// Get the one ObjectificationInstance link between a given FactTypeInstanceand a ObjectTypeInstance.
+		/// </summary>
+		[global::System.Diagnostics.DebuggerStepThrough]
+		[global::System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Design", "CA1011")]
+		public static global::Neumont.Tools.ORM.ObjectModel.ObjectificationInstance GetLink( global::Neumont.Tools.ORM.ObjectModel.FactTypeInstance source, global::Neumont.Tools.ORM.ObjectModel.ObjectTypeInstance target )
+		{
+			global::System.Collections.Generic.IList<global::Neumont.Tools.ORM.ObjectModel.ObjectificationInstance> links = DslModeling::DomainRoleInfo.GetElementLinks<global::Neumont.Tools.ORM.ObjectModel.ObjectificationInstance>(source, global::Neumont.Tools.ORM.ObjectModel.ObjectificationInstance.ObjectifiedInstanceDomainRoleId);
+			foreach ( global::Neumont.Tools.ORM.ObjectModel.ObjectificationInstance link in links )
+			{
+				if ( target.Equals(link.ObjectifyingInstance) )
+				{
+					return link;
+				}
+			}
+			return null;
+		}
+		
+		#endregion
+	}
+}
+namespace Neumont.Tools.ORM.ObjectModel
+{
+	/// <summary>
+	/// DomainRelationship ObjectifiedInstanceHasObjectifyingInstanceRequiredError
+	/// Description for
+	/// Neumont.Tools.ORM.ObjectModel.ObjectifiedInstanceHasObjectifyingInstanceRequiredError
+	/// </summary>
+	[DslDesign::DisplayNameResource("Neumont.Tools.ORM.ObjectModel.ObjectifiedInstanceHasObjectifyingInstanceRequiredError.DisplayName", typeof(global::Neumont.Tools.ORM.ObjectModel.ORMCoreDomainModel), "Neumont.Tools.ORM.GeneratedCode.CoreDomainModelResx")]
+	[DslDesign::DescriptionResource("Neumont.Tools.ORM.ObjectModel.ObjectifiedInstanceHasObjectifyingInstanceRequiredError.Description", typeof(global::Neumont.Tools.ORM.ObjectModel.ORMCoreDomainModel), "Neumont.Tools.ORM.GeneratedCode.CoreDomainModelResx")]
+	[global::System.CLSCompliant(true)]
+	[DslModeling::DomainRelationship()]
+	[DslModeling::DomainObjectId("4c26f55b-d01b-4871-96c7-659ffb8448e9")]
+	public partial class ObjectifiedInstanceHasObjectifyingInstanceRequiredError : ElementAssociatedWithModelError
+	{
+		#region Constructors, domain class Id
+		
+		/// <summary>
+		/// ObjectifiedInstanceHasObjectifyingInstanceRequiredError domain class Id.
+		/// </summary>
+		public static readonly new global::System.Guid DomainClassId = new global::System.Guid(0x4c26f55b, 0xd01b, 0x4871, 0x96, 0xc7, 0x65, 0x9f, 0xfb, 0x84, 0x48, 0xe9);
+	
+				
+		/// <summary>
+		/// Constructor
+		/// Creates a ObjectifiedInstanceHasObjectifyingInstanceRequiredError link in the same Partition as the given FactTypeInstance
+		/// </summary>
+		/// <param name="source">FactTypeInstance to use as the source of the relationship.</param>
+		/// <param name="target">ObjectifyingInstanceRequiredError to use as the target of the relationship.</param>
+		public ObjectifiedInstanceHasObjectifyingInstanceRequiredError(FactTypeInstance source, ObjectifyingInstanceRequiredError target)
+			: base((source != null ? source.Partition : null), new DslModeling::RoleAssignment[]{new DslModeling::RoleAssignment(ObjectifiedInstanceHasObjectifyingInstanceRequiredError.FactTypeInstanceDomainRoleId, source), new DslModeling::RoleAssignment(ObjectifiedInstanceHasObjectifyingInstanceRequiredError.ObjectifyingInstanceRequiredErrorDomainRoleId, target)}, null)
+		{
+		}
+		
+		/// <summary>
+		/// Constructor
+		/// </summary>
+		/// <param name="store">Store where new link is to be created.</param>
+		/// <param name="roleAssignments">List of relationship role assignments.</param>
+		public ObjectifiedInstanceHasObjectifyingInstanceRequiredError(DslModeling::Store store, params DslModeling::RoleAssignment[] roleAssignments)
+			: base(store != null ? store.DefaultPartition : null, roleAssignments, null)
+		{
+		}
+		
+		/// <summary>
+		/// Constructor
+		/// </summary>
+		/// <param name="store">Store where new link is to be created.</param>
+		/// <param name="roleAssignments">List of relationship role assignments.</param>
+		/// <param name="propertyAssignments">List of properties assignments to set on the new link.</param>
+		public ObjectifiedInstanceHasObjectifyingInstanceRequiredError(DslModeling::Store store, DslModeling::RoleAssignment[] roleAssignments, DslModeling::PropertyAssignment[] propertyAssignments)
+			: base(store != null ? store.DefaultPartition : null, roleAssignments, propertyAssignments)
+		{
+		}
+		
+		/// <summary>
+		/// Constructor
+		/// </summary>
+		/// <param name="partition">Partition where new link is to be created.</param>
+		/// <param name="roleAssignments">List of relationship role assignments.</param>
+		public ObjectifiedInstanceHasObjectifyingInstanceRequiredError(DslModeling::Partition partition, params DslModeling::RoleAssignment[] roleAssignments)
+			: base(partition, roleAssignments, null)
+		{
+		}
+		
+		/// <summary>
+		/// Constructor
+		/// </summary>
+		/// <param name="partition">Partition where new link is to be created.</param>
+		/// <param name="roleAssignments">List of relationship role assignments.</param>
+		/// <param name="propertyAssignments">List of properties assignments to set on the new link.</param>
+		public ObjectifiedInstanceHasObjectifyingInstanceRequiredError(DslModeling::Partition partition, DslModeling::RoleAssignment[] roleAssignments, DslModeling::PropertyAssignment[] propertyAssignments)
+			: base(partition, roleAssignments, propertyAssignments)
+		{
+		}
+		#endregion
+		#region FactTypeInstance domain role code
+		
+		/// <summary>
+		/// FactTypeInstance domain role Id.
+		/// </summary>
+		public static readonly global::System.Guid FactTypeInstanceDomainRoleId = new global::System.Guid(0x2d8dd1d8, 0x131e, 0x44e7, 0x90, 0x30, 0xe1, 0x6c, 0xc5, 0x88, 0xa0, 0xaa);
+		
+		/// <summary>
+		/// DomainRole FactTypeInstance
+		/// Description for
+		/// Neumont.Tools.ORM.ObjectModel.ObjectifiedInstanceHasObjectifyingInstanceRequiredError.FactTypeInstance
+		/// </summary>
+		[DslDesign::DisplayNameResource("Neumont.Tools.ORM.ObjectModel.ObjectifiedInstanceHasObjectifyingInstanceRequiredError/FactTypeInstance.DisplayName", typeof(global::Neumont.Tools.ORM.ObjectModel.ORMCoreDomainModel), "Neumont.Tools.ORM.GeneratedCode.CoreDomainModelResx")]
+		[DslDesign::DescriptionResource("Neumont.Tools.ORM.ObjectModel.ObjectifiedInstanceHasObjectifyingInstanceRequiredError/FactTypeInstance.Description", typeof(global::Neumont.Tools.ORM.ObjectModel.ORMCoreDomainModel), "Neumont.Tools.ORM.GeneratedCode.CoreDomainModelResx")]
+		[DslModeling::DomainRole(DslModeling::DomainRoleOrder.Source, PropertyName = "ObjectifyingInstanceRequiredError", PropertyDisplayNameKey="Neumont.Tools.ORM.ObjectModel.ObjectifiedInstanceHasObjectifyingInstanceRequiredError/FactTypeInstance.PropertyDisplayName", Multiplicity = DslModeling::Multiplicity.ZeroOne)]
+		[DslModeling::DomainObjectId("2d8dd1d8-131e-44e7-9030-e16cc588a0aa")]
+		public virtual FactTypeInstance FactTypeInstance
+		{
+			[global::System.Diagnostics.DebuggerStepThrough]
+			get
+			{
+				return (FactTypeInstance)DslModeling::DomainRoleInfo.GetRolePlayer(this, FactTypeInstanceDomainRoleId);
+			}
+			[global::System.Diagnostics.DebuggerStepThrough]
+			set
+			{
+				DslModeling::DomainRoleInfo.SetRolePlayer(this, FactTypeInstanceDomainRoleId, value);
+			}
+		}
+				
+		#endregion
+		#region Static methods to access FactTypeInstance of a ObjectifyingInstanceRequiredError
+		/// <summary>
+		/// Gets FactTypeInstance.
+		/// </summary>
+		[global::System.Diagnostics.DebuggerStepThrough]
+		[global::System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Design", "CA1011")]
+		public static FactTypeInstance GetFactTypeInstance(ObjectifyingInstanceRequiredError element)
+		{
+			return DslModeling::DomainRoleInfo.GetLinkedElement(element, ObjectifyingInstanceRequiredErrorDomainRoleId) as FactTypeInstance;
+		}
+		
+		/// <summary>
+		/// Sets FactTypeInstance.
+		/// </summary>
+		[global::System.Diagnostics.DebuggerStepThrough]
+		[global::System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Design", "CA1011")]
+		public static void SetFactTypeInstance(ObjectifyingInstanceRequiredError element, FactTypeInstance newFactTypeInstance)
+		{
+			DslModeling::DomainRoleInfo.SetLinkedElement(element, ObjectifyingInstanceRequiredErrorDomainRoleId, newFactTypeInstance);
+		}
+		#endregion
+		#region AssociatedElement domain role override
+		
+		/// <summary>
+		/// Gets the element playing FactTypeInstance domain role.
+		/// Description for
+		/// Neumont.Tools.ORM.ObjectModel.ElementAssociatedWithModelError.AssociatedElement
+		/// </summary>
+		public override global::Microsoft.VisualStudio.Modeling.ModelElement AssociatedElement
+		{
+			[global::System.Diagnostics.DebuggerStepThrough]
+			get
+			{
+				return this.FactTypeInstance;
+			}
+			[global::System.Diagnostics.DebuggerStepThrough]
+			set
+			{
+				this.FactTypeInstance = (FactTypeInstance)value;
+			}
+		}
+		
+		#endregion
+		#region ObjectifyingInstanceRequiredError domain role code
+		
+		/// <summary>
+		/// ObjectifyingInstanceRequiredError domain role Id.
+		/// </summary>
+		public static readonly global::System.Guid ObjectifyingInstanceRequiredErrorDomainRoleId = new global::System.Guid(0x0b7c29c1, 0x067c, 0x4986, 0x9c, 0xb6, 0xe4, 0x85, 0xcd, 0x09, 0x1c, 0x28);
+		
+		/// <summary>
+		/// DomainRole ObjectifyingInstanceRequiredError
+		/// Description for
+		/// Neumont.Tools.ORM.ObjectModel.ObjectifiedInstanceHasObjectifyingInstanceRequiredError.ObjectifyingInstanceRequiredError
+		/// </summary>
+		[DslDesign::DisplayNameResource("Neumont.Tools.ORM.ObjectModel.ObjectifiedInstanceHasObjectifyingInstanceRequiredError/ObjectifyingInstanceRequiredError.DisplayName", typeof(global::Neumont.Tools.ORM.ObjectModel.ORMCoreDomainModel), "Neumont.Tools.ORM.GeneratedCode.CoreDomainModelResx")]
+		[DslDesign::DescriptionResource("Neumont.Tools.ORM.ObjectModel.ObjectifiedInstanceHasObjectifyingInstanceRequiredError/ObjectifyingInstanceRequiredError.Description", typeof(global::Neumont.Tools.ORM.ObjectModel.ORMCoreDomainModel), "Neumont.Tools.ORM.GeneratedCode.CoreDomainModelResx")]
+		[DslModeling::DomainRole(DslModeling::DomainRoleOrder.Target, PropertyName = "FactTypeInstance", PropertyDisplayNameKey="Neumont.Tools.ORM.ObjectModel.ObjectifiedInstanceHasObjectifyingInstanceRequiredError/ObjectifyingInstanceRequiredError.PropertyDisplayName", PropagatesDelete = true, Multiplicity = DslModeling::Multiplicity.One)]
+		[DslModeling::DomainObjectId("0b7c29c1-067c-4986-9cb6-e485cd091c28")]
+		public virtual ObjectifyingInstanceRequiredError ObjectifyingInstanceRequiredError
+		{
+			[global::System.Diagnostics.DebuggerStepThrough]
+			get
+			{
+				return (ObjectifyingInstanceRequiredError)DslModeling::DomainRoleInfo.GetRolePlayer(this, ObjectifyingInstanceRequiredErrorDomainRoleId);
+			}
+			[global::System.Diagnostics.DebuggerStepThrough]
+			set
+			{
+				DslModeling::DomainRoleInfo.SetRolePlayer(this, ObjectifyingInstanceRequiredErrorDomainRoleId, value);
+			}
+		}
+				
+		#endregion
+		#region Static methods to access ObjectifyingInstanceRequiredError of a FactTypeInstance
+		/// <summary>
+		/// Gets ObjectifyingInstanceRequiredError.
+		/// </summary>
+		[global::System.Diagnostics.DebuggerStepThrough]
+		[global::System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Design", "CA1011")]
+		public static ObjectifyingInstanceRequiredError GetObjectifyingInstanceRequiredError(FactTypeInstance element)
+		{
+			return DslModeling::DomainRoleInfo.GetLinkedElement(element, FactTypeInstanceDomainRoleId) as ObjectifyingInstanceRequiredError;
+		}
+		
+		/// <summary>
+		/// Sets ObjectifyingInstanceRequiredError.
+		/// </summary>
+		[global::System.Diagnostics.DebuggerStepThrough]
+		[global::System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Design", "CA1011")]
+		public static void SetObjectifyingInstanceRequiredError(FactTypeInstance element, ObjectifyingInstanceRequiredError newObjectifyingInstanceRequiredError)
+		{
+			DslModeling::DomainRoleInfo.SetLinkedElement(element, FactTypeInstanceDomainRoleId, newObjectifyingInstanceRequiredError);
+		}
+		#endregion
+		#region ModelError domain role override
+		
+		/// <summary>
+		/// Gets the element playing ObjectifyingInstanceRequiredError domain role.
+		/// Description for
+		/// Neumont.Tools.ORM.ObjectModel.ElementAssociatedWithModelError.ModelError
+		/// </summary>
+		public override ModelError ModelError
+		{
+			[global::System.Diagnostics.DebuggerStepThrough]
+			get
+			{
+				return this.ObjectifyingInstanceRequiredError;
+			}
+			[global::System.Diagnostics.DebuggerStepThrough]
+			set
+			{
+				this.ObjectifyingInstanceRequiredError = (ObjectifyingInstanceRequiredError)value;
+			}
+		}
+		
+		#endregion
+		#region FactTypeInstance link accessor
+		/// <summary>
+		/// Get the ObjectifiedInstanceHasObjectifyingInstanceRequiredError link to a FactTypeInstance.
+		/// </summary>
+		[global::System.Diagnostics.DebuggerStepThrough]
+		[global::System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Design", "CA1011")]
+		public static global::Neumont.Tools.ORM.ObjectModel.ObjectifiedInstanceHasObjectifyingInstanceRequiredError GetLinkToObjectifyingInstanceRequiredError (global::Neumont.Tools.ORM.ObjectModel.FactTypeInstance factTypeInstanceInstance)
+		{
+			global::System.Collections.Generic.IList<global::Neumont.Tools.ORM.ObjectModel.ObjectifiedInstanceHasObjectifyingInstanceRequiredError> links = DslModeling::DomainRoleInfo.GetElementLinks<global::Neumont.Tools.ORM.ObjectModel.ObjectifiedInstanceHasObjectifyingInstanceRequiredError>(factTypeInstanceInstance, global::Neumont.Tools.ORM.ObjectModel.ObjectifiedInstanceHasObjectifyingInstanceRequiredError.FactTypeInstanceDomainRoleId);
+			global::System.Diagnostics.Debug.Assert(links.Count <= 1, "Multiplicity of FactTypeInstance not obeyed.");
+			if ( links.Count == 0 )
+			{
+				return null;
+			}
+			else
+			{
+				return links[0];
+			}
+		}
+		#endregion
+		#region ObjectifyingInstanceRequiredError link accessor
+		/// <summary>
+		/// Get the ObjectifiedInstanceHasObjectifyingInstanceRequiredError link to a ObjectifyingInstanceRequiredError.
+		/// </summary>
+		[global::System.Diagnostics.DebuggerStepThrough]
+		[global::System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Design", "CA1011")]
+		public static global::Neumont.Tools.ORM.ObjectModel.ObjectifiedInstanceHasObjectifyingInstanceRequiredError GetLinkToFactTypeInstance (global::Neumont.Tools.ORM.ObjectModel.ObjectifyingInstanceRequiredError objectifyingInstanceRequiredErrorInstance)
+		{
+			global::System.Collections.Generic.IList<global::Neumont.Tools.ORM.ObjectModel.ObjectifiedInstanceHasObjectifyingInstanceRequiredError> links = DslModeling::DomainRoleInfo.GetElementLinks<global::Neumont.Tools.ORM.ObjectModel.ObjectifiedInstanceHasObjectifyingInstanceRequiredError>(objectifyingInstanceRequiredErrorInstance, global::Neumont.Tools.ORM.ObjectModel.ObjectifiedInstanceHasObjectifyingInstanceRequiredError.ObjectifyingInstanceRequiredErrorDomainRoleId);
+			global::System.Diagnostics.Debug.Assert(links.Count <= 1, "Multiplicity of ObjectifyingInstanceRequiredError not obeyed.");
+			if ( links.Count == 0 )
+			{
+				return null;
+			}
+			else
+			{
+				return links[0];
+			}
+		}
+		#endregion
+		#region ObjectifiedInstanceHasObjectifyingInstanceRequiredError instance accessors
+		
+		/// <summary>
+		/// Get any ObjectifiedInstanceHasObjectifyingInstanceRequiredError links between a given FactTypeInstance and a ObjectifyingInstanceRequiredError.
+		/// </summary>
+		[global::System.Diagnostics.DebuggerStepThrough]
+		[global::System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Design", "CA1011")]
+		public static global::System.Collections.ObjectModel.ReadOnlyCollection<global::Neumont.Tools.ORM.ObjectModel.ObjectifiedInstanceHasObjectifyingInstanceRequiredError> GetLinks( global::Neumont.Tools.ORM.ObjectModel.FactTypeInstance source, global::Neumont.Tools.ORM.ObjectModel.ObjectifyingInstanceRequiredError target )
+		{
+			global::System.Collections.Generic.List<global::Neumont.Tools.ORM.ObjectModel.ObjectifiedInstanceHasObjectifyingInstanceRequiredError> outLinks = new global::System.Collections.Generic.List<global::Neumont.Tools.ORM.ObjectModel.ObjectifiedInstanceHasObjectifyingInstanceRequiredError>();
+			global::System.Collections.Generic.IList<global::Neumont.Tools.ORM.ObjectModel.ObjectifiedInstanceHasObjectifyingInstanceRequiredError> links = DslModeling::DomainRoleInfo.GetElementLinks<global::Neumont.Tools.ORM.ObjectModel.ObjectifiedInstanceHasObjectifyingInstanceRequiredError>(source, global::Neumont.Tools.ORM.ObjectModel.ObjectifiedInstanceHasObjectifyingInstanceRequiredError.FactTypeInstanceDomainRoleId);
+			foreach ( global::Neumont.Tools.ORM.ObjectModel.ObjectifiedInstanceHasObjectifyingInstanceRequiredError link in links )
+			{
+				if ( target.Equals(link.ObjectifyingInstanceRequiredError) )
+				{
+					outLinks.Add(link);
+				}
+			}
+			return outLinks.AsReadOnly();
+		}
+		/// <summary>
+		/// Get the one ObjectifiedInstanceHasObjectifyingInstanceRequiredError link between a given FactTypeInstanceand a ObjectifyingInstanceRequiredError.
+		/// </summary>
+		[global::System.Diagnostics.DebuggerStepThrough]
+		[global::System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Design", "CA1011")]
+		public static global::Neumont.Tools.ORM.ObjectModel.ObjectifiedInstanceHasObjectifyingInstanceRequiredError GetLink( global::Neumont.Tools.ORM.ObjectModel.FactTypeInstance source, global::Neumont.Tools.ORM.ObjectModel.ObjectifyingInstanceRequiredError target )
+		{
+			global::System.Collections.Generic.IList<global::Neumont.Tools.ORM.ObjectModel.ObjectifiedInstanceHasObjectifyingInstanceRequiredError> links = DslModeling::DomainRoleInfo.GetElementLinks<global::Neumont.Tools.ORM.ObjectModel.ObjectifiedInstanceHasObjectifyingInstanceRequiredError>(source, global::Neumont.Tools.ORM.ObjectModel.ObjectifiedInstanceHasObjectifyingInstanceRequiredError.FactTypeInstanceDomainRoleId);
+			foreach ( global::Neumont.Tools.ORM.ObjectModel.ObjectifiedInstanceHasObjectifyingInstanceRequiredError link in links )
+			{
+				if ( target.Equals(link.ObjectifyingInstanceRequiredError) )
+				{
+					return link;
+				}
+			}
+			return null;
+		}
+		
+		#endregion
+	}
+}
+namespace Neumont.Tools.ORM.ObjectModel
+{
+	/// <summary>
+	/// DomainRelationship ObjectifyingInstanceHasObjectifiedInstanceRequiredError
+	/// Description for
+	/// Neumont.Tools.ORM.ObjectModel.ObjectifyingInstanceHasObjectifiedInstanceRequiredError
+	/// </summary>
+	[DslDesign::DisplayNameResource("Neumont.Tools.ORM.ObjectModel.ObjectifyingInstanceHasObjectifiedInstanceRequiredError.DisplayName", typeof(global::Neumont.Tools.ORM.ObjectModel.ORMCoreDomainModel), "Neumont.Tools.ORM.GeneratedCode.CoreDomainModelResx")]
+	[DslDesign::DescriptionResource("Neumont.Tools.ORM.ObjectModel.ObjectifyingInstanceHasObjectifiedInstanceRequiredError.Description", typeof(global::Neumont.Tools.ORM.ObjectModel.ORMCoreDomainModel), "Neumont.Tools.ORM.GeneratedCode.CoreDomainModelResx")]
+	[global::System.CLSCompliant(true)]
+	[DslModeling::DomainRelationship()]
+	[DslModeling::DomainObjectId("a66ff864-b788-4287-b774-09babe9e62b9")]
+	public partial class ObjectifyingInstanceHasObjectifiedInstanceRequiredError : ElementAssociatedWithModelError
+	{
+		#region Constructors, domain class Id
+		
+		/// <summary>
+		/// ObjectifyingInstanceHasObjectifiedInstanceRequiredError domain class Id.
+		/// </summary>
+		public static readonly new global::System.Guid DomainClassId = new global::System.Guid(0xa66ff864, 0xb788, 0x4287, 0xb7, 0x74, 0x09, 0xba, 0xbe, 0x9e, 0x62, 0xb9);
+	
+				
+		/// <summary>
+		/// Constructor
+		/// Creates a ObjectifyingInstanceHasObjectifiedInstanceRequiredError link in the same Partition as the given ObjectTypeInstance
+		/// </summary>
+		/// <param name="source">ObjectTypeInstance to use as the source of the relationship.</param>
+		/// <param name="target">ObjectifiedInstanceRequiredError to use as the target of the relationship.</param>
+		public ObjectifyingInstanceHasObjectifiedInstanceRequiredError(ObjectTypeInstance source, ObjectifiedInstanceRequiredError target)
+			: base((source != null ? source.Partition : null), new DslModeling::RoleAssignment[]{new DslModeling::RoleAssignment(ObjectifyingInstanceHasObjectifiedInstanceRequiredError.ObjectTypeInstanceDomainRoleId, source), new DslModeling::RoleAssignment(ObjectifyingInstanceHasObjectifiedInstanceRequiredError.ObjectifiedInstanceRequiredErrorDomainRoleId, target)}, null)
+		{
+		}
+		
+		/// <summary>
+		/// Constructor
+		/// </summary>
+		/// <param name="store">Store where new link is to be created.</param>
+		/// <param name="roleAssignments">List of relationship role assignments.</param>
+		public ObjectifyingInstanceHasObjectifiedInstanceRequiredError(DslModeling::Store store, params DslModeling::RoleAssignment[] roleAssignments)
+			: base(store != null ? store.DefaultPartition : null, roleAssignments, null)
+		{
+		}
+		
+		/// <summary>
+		/// Constructor
+		/// </summary>
+		/// <param name="store">Store where new link is to be created.</param>
+		/// <param name="roleAssignments">List of relationship role assignments.</param>
+		/// <param name="propertyAssignments">List of properties assignments to set on the new link.</param>
+		public ObjectifyingInstanceHasObjectifiedInstanceRequiredError(DslModeling::Store store, DslModeling::RoleAssignment[] roleAssignments, DslModeling::PropertyAssignment[] propertyAssignments)
+			: base(store != null ? store.DefaultPartition : null, roleAssignments, propertyAssignments)
+		{
+		}
+		
+		/// <summary>
+		/// Constructor
+		/// </summary>
+		/// <param name="partition">Partition where new link is to be created.</param>
+		/// <param name="roleAssignments">List of relationship role assignments.</param>
+		public ObjectifyingInstanceHasObjectifiedInstanceRequiredError(DslModeling::Partition partition, params DslModeling::RoleAssignment[] roleAssignments)
+			: base(partition, roleAssignments, null)
+		{
+		}
+		
+		/// <summary>
+		/// Constructor
+		/// </summary>
+		/// <param name="partition">Partition where new link is to be created.</param>
+		/// <param name="roleAssignments">List of relationship role assignments.</param>
+		/// <param name="propertyAssignments">List of properties assignments to set on the new link.</param>
+		public ObjectifyingInstanceHasObjectifiedInstanceRequiredError(DslModeling::Partition partition, DslModeling::RoleAssignment[] roleAssignments, DslModeling::PropertyAssignment[] propertyAssignments)
+			: base(partition, roleAssignments, propertyAssignments)
+		{
+		}
+		#endregion
+		#region ObjectTypeInstance domain role code
+		
+		/// <summary>
+		/// ObjectTypeInstance domain role Id.
+		/// </summary>
+		public static readonly global::System.Guid ObjectTypeInstanceDomainRoleId = new global::System.Guid(0x07cbb8ae, 0xfc88, 0x4f02, 0x90, 0x5e, 0x2c, 0xe7, 0x25, 0x8e, 0xba, 0x46);
+		
+		/// <summary>
+		/// DomainRole ObjectTypeInstance
+		/// Description for
+		/// Neumont.Tools.ORM.ObjectModel.ObjectifyingInstanceHasObjectifiedInstanceRequiredError.ObjectTypeInstance
+		/// </summary>
+		[DslDesign::DisplayNameResource("Neumont.Tools.ORM.ObjectModel.ObjectifyingInstanceHasObjectifiedInstanceRequiredError/ObjectTypeInstance.DisplayName", typeof(global::Neumont.Tools.ORM.ObjectModel.ORMCoreDomainModel), "Neumont.Tools.ORM.GeneratedCode.CoreDomainModelResx")]
+		[DslDesign::DescriptionResource("Neumont.Tools.ORM.ObjectModel.ObjectifyingInstanceHasObjectifiedInstanceRequiredError/ObjectTypeInstance.Description", typeof(global::Neumont.Tools.ORM.ObjectModel.ORMCoreDomainModel), "Neumont.Tools.ORM.GeneratedCode.CoreDomainModelResx")]
+		[DslModeling::DomainRole(DslModeling::DomainRoleOrder.Source, PropertyName = "ObjectifiedInstanceRequiredError", PropertyDisplayNameKey="Neumont.Tools.ORM.ObjectModel.ObjectifyingInstanceHasObjectifiedInstanceRequiredError/ObjectTypeInstance.PropertyDisplayName", Multiplicity = DslModeling::Multiplicity.ZeroOne)]
+		[DslModeling::DomainObjectId("07cbb8ae-fc88-4f02-905e-2ce7258eba46")]
+		public virtual ObjectTypeInstance ObjectTypeInstance
+		{
+			[global::System.Diagnostics.DebuggerStepThrough]
+			get
+			{
+				return (ObjectTypeInstance)DslModeling::DomainRoleInfo.GetRolePlayer(this, ObjectTypeInstanceDomainRoleId);
+			}
+			[global::System.Diagnostics.DebuggerStepThrough]
+			set
+			{
+				DslModeling::DomainRoleInfo.SetRolePlayer(this, ObjectTypeInstanceDomainRoleId, value);
+			}
+		}
+				
+		#endregion
+		#region Static methods to access ObjectTypeInstance of a ObjectifiedInstanceRequiredError
+		/// <summary>
+		/// Gets ObjectTypeInstance.
+		/// </summary>
+		[global::System.Diagnostics.DebuggerStepThrough]
+		[global::System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Design", "CA1011")]
+		public static ObjectTypeInstance GetObjectTypeInstance(ObjectifiedInstanceRequiredError element)
+		{
+			return DslModeling::DomainRoleInfo.GetLinkedElement(element, ObjectifiedInstanceRequiredErrorDomainRoleId) as ObjectTypeInstance;
+		}
+		
+		/// <summary>
+		/// Sets ObjectTypeInstance.
+		/// </summary>
+		[global::System.Diagnostics.DebuggerStepThrough]
+		[global::System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Design", "CA1011")]
+		public static void SetObjectTypeInstance(ObjectifiedInstanceRequiredError element, ObjectTypeInstance newObjectTypeInstance)
+		{
+			DslModeling::DomainRoleInfo.SetLinkedElement(element, ObjectifiedInstanceRequiredErrorDomainRoleId, newObjectTypeInstance);
+		}
+		#endregion
+		#region AssociatedElement domain role override
+		
+		/// <summary>
+		/// Gets the element playing ObjectTypeInstance domain role.
+		/// Description for
+		/// Neumont.Tools.ORM.ObjectModel.ElementAssociatedWithModelError.AssociatedElement
+		/// </summary>
+		public override global::Microsoft.VisualStudio.Modeling.ModelElement AssociatedElement
+		{
+			[global::System.Diagnostics.DebuggerStepThrough]
+			get
+			{
+				return this.ObjectTypeInstance;
+			}
+			[global::System.Diagnostics.DebuggerStepThrough]
+			set
+			{
+				this.ObjectTypeInstance = (ObjectTypeInstance)value;
+			}
+		}
+		
+		#endregion
+		#region ObjectifiedInstanceRequiredError domain role code
+		
+		/// <summary>
+		/// ObjectifiedInstanceRequiredError domain role Id.
+		/// </summary>
+		public static readonly global::System.Guid ObjectifiedInstanceRequiredErrorDomainRoleId = new global::System.Guid(0xb8b818dd, 0xb4f9, 0x4641, 0x99, 0x2f, 0xc4, 0x05, 0xc4, 0x5c, 0x6f, 0x8f);
+		
+		/// <summary>
+		/// DomainRole ObjectifiedInstanceRequiredError
+		/// Description for
+		/// Neumont.Tools.ORM.ObjectModel.ObjectifyingInstanceHasObjectifiedInstanceRequiredError.ObjectifiedInstanceRequiredError
+		/// </summary>
+		[DslDesign::DisplayNameResource("Neumont.Tools.ORM.ObjectModel.ObjectifyingInstanceHasObjectifiedInstanceRequiredError/ObjectifiedInstanceRequiredError.DisplayName", typeof(global::Neumont.Tools.ORM.ObjectModel.ORMCoreDomainModel), "Neumont.Tools.ORM.GeneratedCode.CoreDomainModelResx")]
+		[DslDesign::DescriptionResource("Neumont.Tools.ORM.ObjectModel.ObjectifyingInstanceHasObjectifiedInstanceRequiredError/ObjectifiedInstanceRequiredError.Description", typeof(global::Neumont.Tools.ORM.ObjectModel.ORMCoreDomainModel), "Neumont.Tools.ORM.GeneratedCode.CoreDomainModelResx")]
+		[DslModeling::DomainRole(DslModeling::DomainRoleOrder.Target, PropertyName = "ObjectTypeInstance", PropertyDisplayNameKey="Neumont.Tools.ORM.ObjectModel.ObjectifyingInstanceHasObjectifiedInstanceRequiredError/ObjectifiedInstanceRequiredError.PropertyDisplayName", PropagatesDelete = true, Multiplicity = DslModeling::Multiplicity.One)]
+		[DslModeling::DomainObjectId("b8b818dd-b4f9-4641-992f-c405c45c6f8f")]
+		public virtual ObjectifiedInstanceRequiredError ObjectifiedInstanceRequiredError
+		{
+			[global::System.Diagnostics.DebuggerStepThrough]
+			get
+			{
+				return (ObjectifiedInstanceRequiredError)DslModeling::DomainRoleInfo.GetRolePlayer(this, ObjectifiedInstanceRequiredErrorDomainRoleId);
+			}
+			[global::System.Diagnostics.DebuggerStepThrough]
+			set
+			{
+				DslModeling::DomainRoleInfo.SetRolePlayer(this, ObjectifiedInstanceRequiredErrorDomainRoleId, value);
+			}
+		}
+				
+		#endregion
+		#region Static methods to access ObjectifiedInstanceRequiredError of a ObjectTypeInstance
+		/// <summary>
+		/// Gets ObjectifiedInstanceRequiredError.
+		/// </summary>
+		[global::System.Diagnostics.DebuggerStepThrough]
+		[global::System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Design", "CA1011")]
+		public static ObjectifiedInstanceRequiredError GetObjectifiedInstanceRequiredError(ObjectTypeInstance element)
+		{
+			return DslModeling::DomainRoleInfo.GetLinkedElement(element, ObjectTypeInstanceDomainRoleId) as ObjectifiedInstanceRequiredError;
+		}
+		
+		/// <summary>
+		/// Sets ObjectifiedInstanceRequiredError.
+		/// </summary>
+		[global::System.Diagnostics.DebuggerStepThrough]
+		[global::System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Design", "CA1011")]
+		public static void SetObjectifiedInstanceRequiredError(ObjectTypeInstance element, ObjectifiedInstanceRequiredError newObjectifiedInstanceRequiredError)
+		{
+			DslModeling::DomainRoleInfo.SetLinkedElement(element, ObjectTypeInstanceDomainRoleId, newObjectifiedInstanceRequiredError);
+		}
+		#endregion
+		#region ModelError domain role override
+		
+		/// <summary>
+		/// Gets the element playing ObjectifiedInstanceRequiredError domain role.
+		/// Description for
+		/// Neumont.Tools.ORM.ObjectModel.ElementAssociatedWithModelError.ModelError
+		/// </summary>
+		public override ModelError ModelError
+		{
+			[global::System.Diagnostics.DebuggerStepThrough]
+			get
+			{
+				return this.ObjectifiedInstanceRequiredError;
+			}
+			[global::System.Diagnostics.DebuggerStepThrough]
+			set
+			{
+				this.ObjectifiedInstanceRequiredError = (ObjectifiedInstanceRequiredError)value;
+			}
+		}
+		
+		#endregion
+		#region ObjectTypeInstance link accessor
+		/// <summary>
+		/// Get the ObjectifyingInstanceHasObjectifiedInstanceRequiredError link to a ObjectTypeInstance.
+		/// </summary>
+		[global::System.Diagnostics.DebuggerStepThrough]
+		[global::System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Design", "CA1011")]
+		public static global::Neumont.Tools.ORM.ObjectModel.ObjectifyingInstanceHasObjectifiedInstanceRequiredError GetLinkToObjectifiedInstanceRequiredError (global::Neumont.Tools.ORM.ObjectModel.ObjectTypeInstance objectTypeInstanceInstance)
+		{
+			global::System.Collections.Generic.IList<global::Neumont.Tools.ORM.ObjectModel.ObjectifyingInstanceHasObjectifiedInstanceRequiredError> links = DslModeling::DomainRoleInfo.GetElementLinks<global::Neumont.Tools.ORM.ObjectModel.ObjectifyingInstanceHasObjectifiedInstanceRequiredError>(objectTypeInstanceInstance, global::Neumont.Tools.ORM.ObjectModel.ObjectifyingInstanceHasObjectifiedInstanceRequiredError.ObjectTypeInstanceDomainRoleId);
+			global::System.Diagnostics.Debug.Assert(links.Count <= 1, "Multiplicity of ObjectTypeInstance not obeyed.");
+			if ( links.Count == 0 )
+			{
+				return null;
+			}
+			else
+			{
+				return links[0];
+			}
+		}
+		#endregion
+		#region ObjectifiedInstanceRequiredError link accessor
+		/// <summary>
+		/// Get the ObjectifyingInstanceHasObjectifiedInstanceRequiredError link to a ObjectifiedInstanceRequiredError.
+		/// </summary>
+		[global::System.Diagnostics.DebuggerStepThrough]
+		[global::System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Design", "CA1011")]
+		public static global::Neumont.Tools.ORM.ObjectModel.ObjectifyingInstanceHasObjectifiedInstanceRequiredError GetLinkToObjectTypeInstance (global::Neumont.Tools.ORM.ObjectModel.ObjectifiedInstanceRequiredError objectifiedInstanceRequiredErrorInstance)
+		{
+			global::System.Collections.Generic.IList<global::Neumont.Tools.ORM.ObjectModel.ObjectifyingInstanceHasObjectifiedInstanceRequiredError> links = DslModeling::DomainRoleInfo.GetElementLinks<global::Neumont.Tools.ORM.ObjectModel.ObjectifyingInstanceHasObjectifiedInstanceRequiredError>(objectifiedInstanceRequiredErrorInstance, global::Neumont.Tools.ORM.ObjectModel.ObjectifyingInstanceHasObjectifiedInstanceRequiredError.ObjectifiedInstanceRequiredErrorDomainRoleId);
+			global::System.Diagnostics.Debug.Assert(links.Count <= 1, "Multiplicity of ObjectifiedInstanceRequiredError not obeyed.");
+			if ( links.Count == 0 )
+			{
+				return null;
+			}
+			else
+			{
+				return links[0];
+			}
+		}
+		#endregion
+		#region ObjectifyingInstanceHasObjectifiedInstanceRequiredError instance accessors
+		
+		/// <summary>
+		/// Get any ObjectifyingInstanceHasObjectifiedInstanceRequiredError links between a given ObjectTypeInstance and a ObjectifiedInstanceRequiredError.
+		/// </summary>
+		[global::System.Diagnostics.DebuggerStepThrough]
+		[global::System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Design", "CA1011")]
+		public static global::System.Collections.ObjectModel.ReadOnlyCollection<global::Neumont.Tools.ORM.ObjectModel.ObjectifyingInstanceHasObjectifiedInstanceRequiredError> GetLinks( global::Neumont.Tools.ORM.ObjectModel.ObjectTypeInstance source, global::Neumont.Tools.ORM.ObjectModel.ObjectifiedInstanceRequiredError target )
+		{
+			global::System.Collections.Generic.List<global::Neumont.Tools.ORM.ObjectModel.ObjectifyingInstanceHasObjectifiedInstanceRequiredError> outLinks = new global::System.Collections.Generic.List<global::Neumont.Tools.ORM.ObjectModel.ObjectifyingInstanceHasObjectifiedInstanceRequiredError>();
+			global::System.Collections.Generic.IList<global::Neumont.Tools.ORM.ObjectModel.ObjectifyingInstanceHasObjectifiedInstanceRequiredError> links = DslModeling::DomainRoleInfo.GetElementLinks<global::Neumont.Tools.ORM.ObjectModel.ObjectifyingInstanceHasObjectifiedInstanceRequiredError>(source, global::Neumont.Tools.ORM.ObjectModel.ObjectifyingInstanceHasObjectifiedInstanceRequiredError.ObjectTypeInstanceDomainRoleId);
+			foreach ( global::Neumont.Tools.ORM.ObjectModel.ObjectifyingInstanceHasObjectifiedInstanceRequiredError link in links )
+			{
+				if ( target.Equals(link.ObjectifiedInstanceRequiredError) )
+				{
+					outLinks.Add(link);
+				}
+			}
+			return outLinks.AsReadOnly();
+		}
+		/// <summary>
+		/// Get the one ObjectifyingInstanceHasObjectifiedInstanceRequiredError link between a given ObjectTypeInstanceand a ObjectifiedInstanceRequiredError.
+		/// </summary>
+		[global::System.Diagnostics.DebuggerStepThrough]
+		[global::System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Design", "CA1011")]
+		public static global::Neumont.Tools.ORM.ObjectModel.ObjectifyingInstanceHasObjectifiedInstanceRequiredError GetLink( global::Neumont.Tools.ORM.ObjectModel.ObjectTypeInstance source, global::Neumont.Tools.ORM.ObjectModel.ObjectifiedInstanceRequiredError target )
+		{
+			global::System.Collections.Generic.IList<global::Neumont.Tools.ORM.ObjectModel.ObjectifyingInstanceHasObjectifiedInstanceRequiredError> links = DslModeling::DomainRoleInfo.GetElementLinks<global::Neumont.Tools.ORM.ObjectModel.ObjectifyingInstanceHasObjectifiedInstanceRequiredError>(source, global::Neumont.Tools.ORM.ObjectModel.ObjectifyingInstanceHasObjectifiedInstanceRequiredError.ObjectTypeInstanceDomainRoleId);
+			foreach ( global::Neumont.Tools.ORM.ObjectModel.ObjectifyingInstanceHasObjectifiedInstanceRequiredError link in links )
+			{
+				if ( target.Equals(link.ObjectifiedInstanceRequiredError) )
 				{
 					return link;
 				}

@@ -12,6 +12,7 @@
 			Neumont Object-Role Modeling Architect for Visual Studio
 
 			Copyright © Neumont University. All rights reserved.
+			Copyright © Matthew Curland. All rights reserved.
 
 			The use and distribution terms for this software are covered by the
 			Common Public License 1.0 (http://opensource.org/licenses/cpl) which
@@ -514,6 +515,13 @@
 					</xs:documentation>
 				</xs:annotation>
 			</xs:enumeration>
+			<xs:enumeration value="ObjectifyingInstance">
+				<xs:annotation>
+					<xs:documentation>
+						The FactTypeInstance has an objectifying identifier that should be displayed
+					</xs:documentation>
+				</xs:annotation>
+			</xs:enumeration>
 		</xs:restriction>
 	</xs:simpleType>
 	<xs:complexType name="SnippetType">
@@ -528,6 +536,7 @@
 			<xs:element name="Snippet" type="SnippetType"/>
 			<xs:element name="ConditionalSnippet" type="ConditionalSnippetType"/>
 			<xs:element name="ObjectTypeName" type="ObjectTypeNameType"/>
+			<xs:element name="ObjectifyingInstanceIdentifierName" type="ObjectifyingInstanceIdentifierNameType"/>
 			<xs:element name="ObjectTypeId" type="ElementIdType"/>
 			<xs:element name="NoteText" type="NoteTextType"/>
 			<xs:element name="ReferenceMode" type="ReferenceModeType"/>
@@ -806,6 +815,13 @@
 		<xs:annotation>
 			<xs:documentation>
 				Returns the name of the object type.
+			</xs:documentation>
+		</xs:annotation>
+	</xs:complexType>
+	<xs:complexType name="ObjectifyingInstanceIdentifierNameType">
+		<xs:annotation>
+			<xs:documentation>
+				Returns the IdentifierName for an ObjectTypeInstance.
 			</xs:documentation>
 		</xs:annotation>
 	</xs:complexType>
@@ -1189,13 +1205,12 @@
 		</xs:annotation>
 		<xs:choice minOccurs="1" maxOccurs="1">
 			<xs:element name="IterateInstances" type="IterateInstancesType"/>
-			<xs:element name="Fact">
-				<xs:complexType>
-					<xs:choice minOccurs="1" maxOccurs="1">
-						<xs:element name="InstanceRoleReplacement"/>
-					</xs:choice>
-				</xs:complexType>
-			</xs:element>
+			<xs:sequence>
+				<xs:element name="FactInstance">
+					<xs:complexType/>
+				</xs:element>
+				<xs:element name="Snippet" type="SnippetTypeWithConditionalMatch"/>
+			</xs:sequence>
 		</xs:choice>
 		<xs:attribute name="type" use="required"/>
 		<xs:attribute name="childHelperFor" type="ChildHelperForEnum" use="optional"/>

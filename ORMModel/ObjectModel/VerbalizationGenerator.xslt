@@ -3,6 +3,7 @@
 	Neumont Object-Role Modeling Architect for Visual Studio
 
 	Copyright © Neumont University. All rights reserved.
+	Copyright © Matthew Curland. All rights reserved.
 
 	The use and distribution terms for this software are covered by the
 	Common Public License 1.0 (http://opensource.org/licenses/cpl) which
@@ -374,14 +375,30 @@
 					<xsl:call-template name="PopulateBasicRoleReplacements">
 						<xsl:with-param name="IncludeInstanceData" select="true()"/>
 					</xsl:call-template>
+					<plx:local name="objectifyingInstance" dataTypeName="ObjectTypeInstance">
+						<plx:initialize>
+							<plx:inlineStatement dataTypeName="ObjectTypeInstance">
+								<plx:conditionalOperator>
+									<plx:condition>
+										<plx:callThis name="DisplayIdentifier" type="property"/>
+									</plx:condition>
+									<plx:left>
+										<plx:callInstance name="ObjectifyingInstance" type="property">
+											<plx:callObject>
+												<plx:callThis name="Instance" type="property"/>
+											</plx:callObject>
+										</plx:callInstance>
+									</plx:left>
+									<plx:right>
+										<plx:nullKeyword/>
+									</plx:right>
+								</plx:conditionalOperator>
+							</plx:inlineStatement>
+						</plx:initialize>
+					</plx:local>
 					<plx:pragma type="closeRegion" data="Preliminary"/>
 					<plx:pragma type="region" data="Pattern Matches"/>
-					<!-- UNDONE: This is not even reading the child XML. This should be reworked to use a more transparent mechanism,
-					including support for cvg:InstanceRoleReplacement -->
-					<xsl:variable name="factMockup">
-						<cvg:Fact />
-					</xsl:variable>
-					<xsl:apply-templates select="exsl:node-set($factMockup)/child::*" mode="ConstraintVerbalization">
+					<xsl:apply-templates select="*" mode="ConstraintVerbalization">
 						<xsl:with-param name="TopLevel" select="true()"/>
 					</xsl:apply-templates>
 					<plx:pragma type="closeRegion" data="Pattern Matches"/>
@@ -2531,6 +2548,53 @@
 					</plx:callNew>
 				</plx:initialize>
 			</plx:local>
+			<xsl:if test="$IncludeInstanceData">
+				<plx:local name="textFormat" dataTypeName="string">
+					<plx:initialize>
+						<plx:callInstance name="GetSnippet">
+							<plx:callObject>
+								<plx:nameRef name="snippets"/>
+							</plx:callObject>
+							<plx:passParam>
+								<plx:callStatic name="TextInstanceValue" dataTypeName="{$VerbalizationTextSnippetType}" type="field"/>
+							</plx:passParam>
+							<plx:passParam>
+								<plx:nameRef name="isDeontic" type="local" />
+							</plx:passParam>
+							<plx:passParam>
+								<plx:nameRef name="isNegative" type="local" />
+							</plx:passParam>
+						</plx:callInstance>
+					</plx:initialize>
+				</plx:local>
+				<plx:local name="nonTextFormat" dataTypeName="string">
+					<plx:initialize>
+						<plx:callInstance name="GetSnippet">
+							<plx:callObject>
+								<plx:nameRef name="snippets"/>
+							</plx:callObject>
+							<plx:passParam>
+								<plx:callStatic name="NonTextInstanceValue" dataTypeName="{$VerbalizationTextSnippetType}" type="field"/>
+							</plx:passParam>
+							<plx:passParam>
+								<plx:nameRef name="isDeontic" type="local" />
+							</plx:passParam>
+							<plx:passParam>
+								<plx:nameRef name="isNegative" type="local" />
+							</plx:passParam>
+						</plx:callInstance>
+					</plx:initialize>
+				</plx:local>
+				<plx:local name="formatProvider" dataTypeName="IFormatProvider">
+					<plx:initialize>
+						<plx:callInstance name="FormatProvider" type="property">
+							<plx:callObject>
+								<plx:nameRef name="writer" type="local"/>
+							</plx:callObject>
+						</plx:callInstance>
+					</plx:initialize>
+				</plx:local>
+			</xsl:if>
 			<xsl:if test="$SubscriptConditions and not($SubscriptConditions[1]/self::plx:trueKeyword)">
 				<plx:local name="generateSubscripts" dataTypeName=".boolean">
 					<plx:initialize>
@@ -2922,51 +2986,6 @@
 						</plx:binaryOperator>
 					</plx:condition>
 					<plx:local name="instanceValue" dataTypeName="string"/>
-					<plx:local name="textFormat" dataTypeName="string">
-						<plx:initialize>
-							<plx:callInstance name="GetSnippet">
-								<plx:callObject>
-									<plx:nameRef name="snippets"/>
-								</plx:callObject>
-								<plx:passParam>
-									<plx:callStatic name="TextInstanceValue" dataTypeName="{$VerbalizationTextSnippetType}" type="field"/>
-								</plx:passParam>
-								<plx:passParam>
-									<plx:nameRef name="isDeontic" type="local" />
-								</plx:passParam>
-								<plx:passParam>
-									<plx:nameRef name="isNegative" type="local" />
-								</plx:passParam>
-							</plx:callInstance>
-						</plx:initialize>
-					</plx:local>
-					<plx:local name="nonTextFormat" dataTypeName="string">
-						<plx:initialize>
-							<plx:callInstance name="GetSnippet">
-								<plx:callObject>
-									<plx:nameRef name="snippets"/>
-								</plx:callObject>
-								<plx:passParam>
-									<plx:callStatic name="NonTextInstanceValue" dataTypeName="{$VerbalizationTextSnippetType}" type="field"/>
-								</plx:passParam>
-								<plx:passParam>
-									<plx:nameRef name="isDeontic" type="local" />
-								</plx:passParam>
-								<plx:passParam>
-									<plx:nameRef name="isNegative" type="local" />
-								</plx:passParam>
-							</plx:callInstance>
-						</plx:initialize>
-					</plx:local>
-					<plx:local name="formatProvider" dataTypeName="IFormatProvider">
-						<plx:initialize>
-							<plx:callInstance name="FormatProvider" type="property">
-								<plx:callObject>
-									<plx:nameRef name="writer" type="local"/>
-								</plx:callObject>
-							</plx:callInstance>
-						</plx:initialize>
-					</plx:local>
 					<plx:assign>
 						<plx:left>
 							<plx:nameRef name="instanceValue" type="local"/>
@@ -2982,6 +3001,9 @@
 								</plx:passParam>
 								<plx:passParam>
 									<plx:nameRef name="rolePlayer" type="local"/>
+								</plx:passParam>
+								<plx:passParam>
+									<plx:falseKeyword/>
 								</plx:passParam>
 								<plx:passParam>
 									<plx:nameRef name="formatProvider" type="local"/>
@@ -4014,6 +4036,41 @@
 			</plx:right>
 		</plx:assign>
 	</xsl:template>
+	<xsl:template match="cvg:ObjectifyingInstanceIdentifierName" mode="ConstraintVerbalization">
+		<xsl:param name="VariableDecorator" select="position()"/>
+		<xsl:param name="VariablePrefix" select="'instance'"/>
+		<plx:assign>
+			<plx:left>
+				<plx:nameRef name="{$VariablePrefix}{$VariableDecorator}"/>
+			</plx:left>
+			<plx:right>
+				<plx:callStatic name="GetDisplayString" dataTypeName="ObjectTypeInstance">
+					<plx:passParam>
+						<plx:nameRef name="objectifyingInstance"/>
+					</plx:passParam>
+					<plx:passParam>
+						<plx:callInstance name="ObjectType" type="property">
+							<plx:callObject>
+								<plx:nameRef name="objectifyingInstance"/>
+							</plx:callObject>
+						</plx:callInstance>
+					</plx:passParam>
+					<plx:passParam>
+						<plx:trueKeyword/>
+					</plx:passParam>
+					<plx:passParam>
+						<plx:nameRef name="formatProvider" type="local"/>
+					</plx:passParam>
+					<plx:passParam>
+						<plx:nameRef name="textFormat" type="local"/>
+					</plx:passParam>
+					<plx:passParam>
+						<plx:nameRef name="nonTextFormat" type="local"/>
+					</plx:passParam>
+				</plx:callStatic>
+			</plx:right>
+		</plx:assign>
+	</xsl:template>
 	<xsl:template match="cvg:ObjectTypeName" mode="ConstraintVerbalization">
 		<xsl:param name="VariableDecorator" select="position()"/>
 		<xsl:param name="VariablePrefix" select="'factText'"/>
@@ -4436,6 +4493,12 @@
 				</plx:callInstance>
 			</plx:right>
 		</plx:assign>
+	</xsl:template>
+	<xsl:template match="cvg:FactInstance" mode="ConstraintVerbalization">
+		<xsl:param name="TopLevel" select="false()"/>
+		<xsl:call-template name="ProcessFact">
+			<xsl:with-param name="TopLevel" select="$TopLevel"/>
+		</xsl:call-template>
 	</xsl:template>
 	<xsl:template match="cvg:Fact" mode="ConstraintVerbalization" name="ProcessFact">
 		<xsl:param name="VariableDecorator" select="position()"/>
@@ -5739,6 +5802,16 @@
 						</plx:right>
 					</plx:binaryOperator>
 				</xsl:when>
+				<xsl:when test="$ConditionalMatch='ObjectifyingInstance'">
+					<plx:binaryOperator type="identityInequality">
+						<plx:left>
+							<plx:nameRef name="objectifyingInstance"/>
+						</plx:left>
+						<plx:right>
+							<plx:nullKeyword/>
+						</plx:right>
+					</plx:binaryOperator>
+				</xsl:when>
 				<xsl:otherwise>
 					<xsl:message terminate="yes">
 						<xsl:text>Unrecognized conditional snippet pattern '</xsl:text>
@@ -6461,7 +6534,7 @@
 		</plx:local>
 		<plx:local dataTypeName=".i4" name="instanceCount">
 			<plx:initialize>
-				<plx:callInstance name="Length" type="property">
+				<plx:callInstance name="Count" type="property">
 					<plx:callObject>
 						<plx:callThis name="Instances" type="property"/>
 					</plx:callObject>
@@ -7208,6 +7281,9 @@
 								</plx:passParam>
 								<plx:passParam>
 									<plx:callThis name="ParentObject" type="property"/>
+								</plx:passParam>
+								<plx:passParam>
+									<plx:falseKeyword/>
 								</plx:passParam>
 								<plx:passParam>
 									<plx:callInstance name="FormatProvider" type="property">

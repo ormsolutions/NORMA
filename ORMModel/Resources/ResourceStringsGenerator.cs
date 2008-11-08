@@ -4,6 +4,7 @@
 // * Neumont Object-Role Modeling Architect for Visual Studio                 *
 // *                                                                          *
 // * Copyright © Neumont University. All rights reserved.                     *
+// * Copyright © Matthew Curland. All rights reserved.                        *
 // *                                                                          *
 // * The use and distribution terms for this software are covered by the      *
 // * Common Public License 1.0 (http://opensource.org/licenses/cpl) which     *
@@ -748,6 +749,22 @@ namespace Neumont.Tools.ORM
 				return ResourceStrings.GetString(ResourceManagers.Model, "ModelException.Objectification.ImpliedObjectificationNotAllowed");
 			}
 		}
+		/// <summary>Exception message when an attempt is made to modify an EntityTypeInstance implied by a FactTypeInstance and an internal preferred identifier on the objectified FactType.</summary>
+		public static string ModelExceptionObjectificationInstanceDirectModificationOfImpliedEntityTypeInstance
+		{
+			get
+			{
+				return ResourceStrings.GetString(ResourceManagers.Model, "ModelException.ObjectificationInstance.DirectModificationOfImpliedEntityTypeInstance");
+			}
+		}
+		/// <summary>Exception message when an attempt is made to create an ObjectificationInstance will partially constructed endpoint instances.</summary>
+		public static string ModelExceptionObjectificationInstanceIncompleteRolePlayers
+		{
+			get
+			{
+				return ResourceStrings.GetString(ResourceManagers.Model, "ModelException.ObjectificationInstance.IncompleteRolePlayers");
+			}
+		}
 		/// <summary>Exception message output when an attempt is made to set the IsPrimaryForReadingOrder or IsPrimaryForFactType properties of a Reading to false.</summary>
 		public static string ModelExceptionReadingIsPrimaryToFalse
 		{
@@ -1004,6 +1021,14 @@ namespace Neumont.Tools.ORM
 				return ResourceStrings.GetString(ResourceManagers.Model, "ModelException.ObjectType.EnforceIsIndependentPattern");
 			}
 		}
+		/// <summary>Exception message when an attempt is made to change the role players of an ObjectTypeHasObjectTypeInstance relationship.</summary>
+		public static string ModelExceptionObjectTypeInstanceEnforceFixedRolePlayers
+		{
+			get
+			{
+				return ResourceStrings.GetString(ResourceManagers.Model, "ModelException.ObjectTypeInstance.EnforceFixedRolePlayers");
+			}
+		}
 		/// <summary>Exception message when an attempt is made to set both a primary identifier and a value type on the same object type.</summary>
 		public static string ModelExceptionEnforcePreferredIdentifierForEntityType
 		{
@@ -1026,6 +1051,14 @@ namespace Neumont.Tools.ORM
 			get
 			{
 				return ResourceStrings.GetString(ResourceManagers.Model, "ModelException.Role.IsMandatoryRequiresAttachedFactType");
+			}
+		}
+		/// <summary>Exception message when an attempt is made to modify the Role of a RoleInstance.</summary>
+		public static string ModelExceptionRoleInstanceEnforceInitialRole
+		{
+			get
+			{
+				return ResourceStrings.GetString(ResourceManagers.Model, "ModelException.RoleInstance.EnforceInitialRole");
 			}
 		}
 		/// <summary>Exception message when an attempt is made to set a uniqueness constraint as a preferred identifier when the preconditions are not met.</summary>
@@ -1100,12 +1133,52 @@ namespace Neumont.Tools.ORM
 				return ResourceStrings.GetString(ResourceManagers.Model, "Verbalization.ReportSnippetsTypeDescription");
 			}
 		}
+		/// <summary>Exception message when an attempt is made to add a FactTypeInstance to an implied population.</summary>
+		public static string ModelExceptionFactTypeInstanceDirectionPopulationOfImpliedInstances
+		{
+			get
+			{
+				return ResourceStrings.GetString(ResourceManagers.Model, "ModelException.FactTypeInstance.DirectionPopulationOfImpliedInstances");
+			}
+		}
+		/// <summary>Exception message when an attempt is made to modify either role player on a FactTypeInstanceHasRoleInstance relationship.</summary>
+		public static string ModelExceptionFactTypeInstanceEnforceFixedRoleInstance
+		{
+			get
+			{
+				return ResourceStrings.GetString(ResourceManagers.Model, "ModelException.FactTypeInstance.EnforceFixedRoleInstance");
+			}
+		}
+		/// <summary>Exception message when an attempt is made to add a FactTypeRoleInstance with a duplicate Role to the FactTypeRoleInstance collection.</summary>
+		public static string ModelExceptionFactTypeInstanceEnforceRoleUniqueness
+		{
+			get
+			{
+				return ResourceStrings.GetString(ResourceManagers.Model, "ModelException.FactTypeInstance.EnforceRoleUniqueness");
+			}
+		}
 		/// <summary>Exception message when an attempt is made to add roles from different fact types to a role sequence owned by a fact type instance.</summary>
 		public static string ModelExceptionFactTypeInstanceInconsistentRoleOwners
 		{
 			get
 			{
 				return ResourceStrings.GetString(ResourceManagers.Model, "ModelException.FactTypeInstance.InconsistentRoleOwners");
+			}
+		}
+		/// <summary>Exception message when an attempt is made to modify either role player on a EntityTypeInstanceHasRoleInstance relationship.</summary>
+		public static string ModelExceptionEntityTypeInstanceEnforceFixedRoleInstance
+		{
+			get
+			{
+				return ResourceStrings.GetString(ResourceManagers.Model, "ModelException.EntityTypeInstance.EnforceFixedRoleInstance");
+			}
+		}
+		/// <summary>Exception message when an attempt is made to add an EntityTypeRoleInstance with a duplicate Role to the EntityTypeRoleInstance collection.</summary>
+		public static string ModelExceptionEntiyTypeInstanceEnforceRoleUniqueness
+		{
+			get
+			{
+				return ResourceStrings.GetString(ResourceManagers.Model, "ModelException.EntiyTypeInstance.EnforceRoleUniqueness");
 			}
 		}
 		/// <summary>Exception message when an attempt is made to hook up role instances to an entity type where the roles are not in the entity type's preferred identifier collection.</summary>
@@ -1122,6 +1195,22 @@ namespace Neumont.Tools.ORM
 			get
 			{
 				return ResourceStrings.GetString(ResourceManagers.Model, "ModelException.EntityTypeInstance.InvalidEntityTypeParent");
+			}
+		}
+		/// <summary>Exception message when an attempt is made to attach an EntityTypeSubtypeInstance to an EntityTypeSubtype that is associated with another EntityTypeSubtypeInstance on the same subtype.</summary>
+		public static string ModelExceptionEntityTypeSubtypeInstanceDuplicateSupertypeInstance
+		{
+			get
+			{
+				return ResourceStrings.GetString(ResourceManagers.Model, "ModelException.EntityTypeSubtypeInstance.DuplicateSupertypeInstance");
+			}
+		}
+		/// <summary>Exception message when an attempt is made to modify the EntityTypeSubtypeInstance role of the EntityTypeSubtypeInstanceHasSupertypeInstance relationship</summary>
+		public static string ModelExceptionEntityTypeSubtypeInstanceEnforceInitialSubtypeInstance
+		{
+			get
+			{
+				return ResourceStrings.GetString(ResourceManagers.Model, "ModelException.EntityTypeSubtypeInstance.EnforceInitialSubtypeInstance");
 			}
 		}
 		/// <summary>Exception message when an attempt is made to hook up an EntityType to a ValueTypeInstance.</summary>
@@ -1428,7 +1517,7 @@ namespace Neumont.Tools.ORM
 				return ResourceStrings.GetString(ResourceManagers.Model, "ModelSamplePopulationEditor.NewInstanceTransactionText");
 			}
 		}
-		/// <summary>Text used to describe the transaction when editing an instance.  Replacement field 0 is the column name of the instance being edited.</summary>
+		/// <summary>Text used to describe the transaction when editing an instance.  {0}=ObjectType or FactType name, {1}=instance name</summary>
 		public static string ModelSamplePopulationEditorEditInstanceTransactionText
 		{
 			get
@@ -1436,12 +1525,68 @@ namespace Neumont.Tools.ORM
 				return ResourceStrings.GetString(ResourceManagers.Model, "ModelSamplePopulationEditor.EditInstanceTransactionText");
 			}
 		}
-		/// <summary>Text used to describe the transaction when removing an instance.  Replacement field 0 is the column name of the instance being removed.</summary>
-		public static string ModelSamplePopulationEditorRemoveInstanceTransactionText
+		/// <summary>Text used to describe the editor exception when an objectification identifier is chosen that is already associated with another FactType instance.</summary>
+		public static string ModelSamplePopulationEditorObjectifyingIdentifierAlreadyUsedExceptionText
 		{
 			get
 			{
-				return ResourceStrings.GetString(ResourceManagers.Model, "ModelSamplePopulationEditor.RemoveInstanceTransactionText");
+				return ResourceStrings.GetString(ResourceManagers.Model, "ModelSamplePopulationEditor.ObjectifyingIdentifierAlreadyUsedExceptionText");
+			}
+		}
+		/// <summary>Text used to describe the editor exception when an objectification identifier is chosen that conflicts with existing FactType instance relationships.</summary>
+		public static string ModelSamplePopulationEditorObjectifyingIdentifierRelationshipConflictsExceptionText
+		{
+			get
+			{
+				return ResourceStrings.GetString(ResourceManagers.Model, "ModelSamplePopulationEditor.ObjectifyingIdentifierRelationshipConflictsExceptionText");
+			}
+		}
+		/// <summary>Text used to describe the editor exception when an implied element cannot be deleted because it would simply reappear.</summary>
+		public static string ModelSamplePopulationEditorRefuseDeleteRoleInstanceExceptionText
+		{
+			get
+			{
+				return ResourceStrings.GetString(ResourceManagers.Model, "ModelSamplePopulationEditor.RefuseDeleteRoleInstanceExceptionText");
+			}
+		}
+		/// <summary>Text used to describe the transaction when an identifier is attached to an objectified FactType instance. {0}=type name, {1}=identifier instance name, {2}=fact instance name.</summary>
+		public static string ModelSamplePopulationEditorRelateObjectifiedInstanceIdentifierTransactionText
+		{
+			get
+			{
+				return ResourceStrings.GetString(ResourceManagers.Model, "ModelSamplePopulationEditor.RelateObjectifiedInstanceIdentifierTransactionText");
+			}
+		}
+		/// <summary>Text used to describe the transaction when removing a fact instance. {0}=instance name.</summary>
+		public static string ModelSamplePopulationEditorRemoveFactInstanceTransactionText
+		{
+			get
+			{
+				return ResourceStrings.GetString(ResourceManagers.Model, "ModelSamplePopulationEditor.RemoveFactInstanceTransactionText");
+			}
+		}
+		/// <summary>Text used to describe the transaction when a reference an object instance is removed. {0}=type name {1}=instance name.</summary>
+		public static string ModelSamplePopulationEditorRemoveObjectInstanceReferenceTransactionText
+		{
+			get
+			{
+				return ResourceStrings.GetString(ResourceManagers.Model, "ModelSamplePopulationEditor.RemoveObjectInstanceReferenceTransactionText");
+			}
+		}
+		/// <summary>Text used to describe the transaction when removing an object instance. {0}=type name {1}=instance name.</summary>
+		public static string ModelSamplePopulationEditorRemoveObjectInstanceTransactionText
+		{
+			get
+			{
+				return ResourceStrings.GetString(ResourceManagers.Model, "ModelSamplePopulationEditor.RemoveObjectInstanceTransactionText");
+			}
+		}
+		/// <summary>Text used to describe the transaction when an identifier is separated from an objectified FactType instance. {0}=type name, {1}=identifier instance name, {2}=fact instance name.</summary>
+		public static string ModelSamplePopulationEditorSeparateObjectifiedInstanceIdentifierTransactionText
+		{
+			get
+			{
+				return ResourceStrings.GetString(ResourceManagers.Model, "ModelSamplePopulationEditor.SeparateObjectifiedInstanceIdentifierTransactionText");
 			}
 		}
 		/// <summary>Text to place in the title bar of the sample population window.</summary>
@@ -1948,12 +2093,28 @@ namespace Neumont.Tools.ORM
 				return ResourceStrings.GetString(ResourceManagers.Model, "ModelError.ValueType.DataTypeNotSpecified.Message");
 			}
 		}
-		/// <summary>Text displayed when there aren't enough entity type role instances to completely fill a single entity population row. {0}=entitytype, {1}=model.</summary>
+		/// <summary>Text displayed when an objectified FactType instance is not associated with an external identifying instance. {0}=instance, {1}=entitytype, {2}=model.</summary>
+		public static string ModelErrorEntityTypeInstanceObjectifiedInstanceRequiredMessage
+		{
+			get
+			{
+				return ResourceStrings.GetString(ResourceManagers.Model, "ModelError.EntityTypeInstance.ObjectifiedInstanceRequired.Message");
+			}
+		}
+		/// <summary>Text displayed when there aren't enough entity type role instances to completely fill a single entity population row. {0}=entitytype, {1}=instance, {2}=model.</summary>
 		public static string ModelErrorEntityTypeInstanceTooFewEntityTypeRoleInstancesMessage
 		{
 			get
 			{
 				return ResourceStrings.GetString(ResourceManagers.Model, "ModelError.EntityTypeInstance.TooFewEntityTypeRoleInstances.Message");
+			}
+		}
+		/// <summary>Text displayed when an external identifier is needed for a FactTypeInstance. {0}=instance {1}=model.</summary>
+		public static string ModelErrorFactTypeInstanceObjectifyingInstanceRequiredMessage
+		{
+			get
+			{
+				return ResourceStrings.GetString(ResourceManagers.Model, "ModelError.FactTypeInstance.ObjectifyingInstanceRequired.Message");
 			}
 		}
 		/// <summary>Text displayed when there aren't enough fact type role instances to completely fill a single fact type population row. {0}=facttype {1}=model.</summary>

@@ -3,6 +3,7 @@
 * Neumont Object-Role Modeling Architect for Visual Studio                 *
 *                                                                          *
 * Copyright © Neumont University. All rights reserved.                     *
+* Copyright © Matthew Curland. All rights reserved.                        *
 *                                                                          *
 * The use and distribution terms for this software are covered by the      *
 * Common Public License 1.0 (http://opensource.org/licenses/cpl) which     *
@@ -141,6 +142,13 @@ namespace Neumont.Tools.ORM.Shell
 				}
 			}
 		}
+		/// <summary>
+		/// Called when the current document changes
+		/// </summary>
+		protected override void OnCurrentDocumentChanged()
+		{
+			OnORMSelectionContainerChanged();
+		}
 		#endregion // ToolWindow Overrides
 		#region Selection Monitoring
 		/// <summary>
@@ -157,33 +165,26 @@ namespace Neumont.Tools.ORM.Shell
 			{
 				foreach (object selectedObject in selectedObjects)
 				{
-					ObjectType testObjectType = EditorUtility.ResolveContextInstance(selectedObject, false) as ObjectType;
-					if (testObjectType != null)
+					ObjectType testObjectType;
+					FactType testFactType;
+					if (null != (testObjectType = EditorUtility.ResolveContextInstance(selectedObject, false) as ObjectType))
 					{
 						if (testObjectType.IsValueType)
 						{
 							SelectedValueType = testObjectType;
 						}
-						else if (testObjectType != null)
+						else
 						{
 							SelectedEntityType = testObjectType;
 						}
-						else
-						{
-							NullSelection();
-						}
+					}
+					else if (null != (testFactType = ORMEditorUtility.ResolveContextFactType(selectedObject) as FactType))
+					{
+						SelectedFactType = testFactType;
 					}
 					else
 					{
-						FactType testFactType = ORMEditorUtility.ResolveContextFactType(selectedObject) as FactType;
-						if (testFactType != null)
-						{
-							SelectedFactType = testFactType;
-						}
-						else
-						{
-							NullSelection();
-						}
+						NullSelection();
 					}
 				}
 			}
@@ -276,12 +277,48 @@ namespace Neumont.Tools.ORM.Shell
 			// Only supports simple mandatory constraints
 			if (constraintRoles.Count == 1)
 			{
-				this.SelectedFactType = constraintRoles[0].FactType;
-				myEditor.AutoCorrectMandatoryError(error);
-				this.Show();
+				// Verify the selection, which needs to be set before this method is called
+				FactType factType = constraintRoles[0].FactType;
+				SubtypeFact subtypeFact;
+				bool correctSelection;
+				if (null != (subtypeFact = factType as SubtypeFact) &&
+					subtypeFact.ProvidesPreferredIdentifier)
+				{
+					ObjectType subtype = subtypeFact.Subtype;
+					ObjectType selectedEntityType;
+					FactType objectifiedFactType;
+					correctSelection = (null != (selectedEntityType = SelectedEntityType) && selectedEntityType == subtype) ||
+						(null != (objectifiedFactType = subtype.NestedFactType) && objectifiedFactType == SelectedFactType);
+				}
+				else
+				{
+					correctSelection = SelectedFactType == factType;
+				}
+				if (correctSelection)
+				{
+					this.Show();
+					myEditor.AutoCorrectMandatoryError(error);
+				}
 			}
 		}
 		#endregion
+		#region Error Activation
+		/// <summary>
+		/// Attempt to activate the specified <paramref name="error"/>
+		/// </summary>
+		/// <param name="error">A <see cref="ModelError"/> to activate</param>
+		/// <returns>true if the error is recognized and successfully activated</returns>
+		public bool ActivateModelError(ModelError error)
+		{
+			bool retVal = false;
+			if (error is ObjectifiedInstanceRequiredError || error is TooFewFactTypeRoleInstancesError || error is TooFewEntityTypeRoleInstancesError || error is ObjectifyingInstanceRequiredError)
+			{
+				Show();
+				retVal = myEditor.ActivateModelError(error);
+			}
+			return retVal;
+		}
+		#endregion // Error Activation
 		#region ORMToolWindow Implementation
 		/// <summary>
 		/// Gets the title that will be displayed on the tool window.

@@ -3,6 +3,7 @@
 * Neumont Object-Role Modeling Architect for Visual Studio                 *
 *                                                                          *
 * Copyright © Neumont University. All rights reserved.                     *
+* Copyright © Matthew Curland. All rights reserved.                        *
 *                                                                          *
 * The use and distribution terms for this software are covered by the      *
 * Common Public License 1.0 (http://opensource.org/licenses/cpl) which     *
@@ -640,6 +641,13 @@ namespace Neumont.Tools.ORM.Shell
 		/// Populates the tool window when the selection changes
 		/// </summary>
 		protected override void OnORMSelectionContainerChanged()
+		{
+			PopulateSelectedNoteOwners();
+		}
+		/// <summary>
+		/// Populate the tool window when the document changes
+		/// </summary>
+		protected override void OnCurrentDocumentChanged()
 		{
 			PopulateSelectedNoteOwners();
 		}

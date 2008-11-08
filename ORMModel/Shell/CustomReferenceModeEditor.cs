@@ -1,6 +1,7 @@
 #region Common Public License Copyright Notice
 /**************************************************************************\
 * Neumont Object-Role Modeling Architect for Visual Studio                 *
+* Copyright © Matthew Curland. All rights reserved.                        *
 *                                                                          *
 * Copyright © Neumont University. All rights reserved.                     *
 *                                                                          *
@@ -98,7 +99,7 @@ namespace Neumont.Tools.ORM.Shell
 						new	VirtualTreeColumnHeader(ResourceStrings.ModelReferenceModeEditorKindColumn),
 						new	VirtualTreeColumnHeader(ResourceStrings.ModelReferenceModeEditorFormatStringColumn)}
 						, true);
-					MultiColumnTree treeData = new MultiColumnTree(3);
+					MultiColumnTree treeData = new StandardMultiColumnTree(3);
 					((ITree)treeData).Root = myHeaders = new ReferenceModeHeaderBranch();
 					tree.MultiColumnTree = (IMultiColumnTree)treeData;
 				}

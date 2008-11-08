@@ -329,7 +329,9 @@
     <Compile Include="Shell\ORMDocView.cs" />
     <Compile Include="Shell\ORMEditorFactory.cs" />
     <Compile Include="Shell\ORMModelBrowserCommandSet.cs" />
-    <Compile Include="Shell\ORMNotesWindow.cs" />
+    <Compile Include="Shell\ORMNotesWindow.cs">
+      <SubType>Component</SubType>
+    </Compile>
     <Compile Include="Shell\ORMPackage.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="..\CommonAssemblyInfo.cs">
@@ -403,6 +405,8 @@
     <Compile Include="Framework\Framework.AttachRules.cs">
       <DependentUpon>Framework.AttachRules.xml</DependentUpon>
       <AutoGen>True</AutoGen>
+    </Compile>
+    <Compile Include="Framework\Shell\StandardMultiColumnTree.cs">
     </Compile>
     <Compile Include="Framework\Shell\StandardVirtualTreeControl.cs">
       <SubType>Component</SubType>
@@ -547,6 +551,7 @@
     <None Include="Shell\Converters\VisioToCoreModelImport.xslt" />
     <EmbeddedResource Include="Shell\ExtensionStripper.xslt" />
     <None Include="Shell\Converters\CustomPropertiesPreviewTo2007-11.xslt" />
+    <Content Include="Resources\SamplePopulationEditor.ImageStrip.png" />
     <Content Include="Shell\ORMDesignerSettings.xml" />
     <None Include="Transforms\ResourceStringsGenerator.xslt" />
     <None Include="Transforms\SurveyQuestionProvider.xslt" />

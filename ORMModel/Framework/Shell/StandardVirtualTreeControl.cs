@@ -3,6 +3,7 @@
 * Neumont Object-Role Modeling Architect for Visual Studio                 *
 *                                                                          *
 * Copyright © Neumont University. All rights reserved.                     *
+* Copyright © Matthew Curland. All rights reserved.                        *
 *                                                                          *
 * The use and distribution terms for this software are covered by the      *
 * Common Public License 1.0 (http://opensource.org/licenses/cpl) which     *
@@ -40,6 +41,8 @@ namespace Neumont.Tools.Modeling.Shell
 		{
 			[DllImport("user32.dll", CharSet = CharSet.Auto)]
 			public static extern int SendMessage(HandleRef hWnd, int msg, int wParam, int lParam);
+			[DllImport("user32.dll", CharSet = CharSet.Auto)]
+			public static extern IntPtr SendMessage(HandleRef hWnd, IntPtr msg, IntPtr wParam, IntPtr lParam);
 			public const int LB_GETITEMHEIGHT = 0x1A1;
 		}
 		#endregion // NativeMethods class
@@ -207,6 +210,25 @@ namespace Neumont.Tools.Modeling.Shell
 				// Note that this far from perfect, but it does fix the bug.
 				base.TopIndex = value < 0 ? value + 2 : value;
 			}
+		}
+		/// <summary>
+		/// Make sure that an Escape key is processed by the active <see cref="P:LabelEditControl"/>.
+		/// The default Visual Studio key settings map the Escape key to Window.ActivateDocumentWindow,
+		/// which takes focus from the current control before the in active editing control can even
+		/// see the command. Given the special nature of this key, we preempt its handling for this environment.
+		/// </summary>
+		protected override bool ProcessCmdKey(ref Message msg, Keys keyData)
+		{
+			if (keyData == Keys.Escape)
+			{
+				Control activeControl = LabelEditControl;
+				if (activeControl != null)
+				{
+					msg.Result = NativeMethods.SendMessage(new HandleRef(activeControl, activeControl.Handle), (IntPtr)msg.Msg, msg.WParam, msg.LParam);
+					return true;
+				}
+			}
+			return base.ProcessCmdKey(ref msg, keyData);
 		}
 		#endregion // Base Overrides
 	}

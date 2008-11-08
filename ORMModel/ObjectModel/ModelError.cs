@@ -3,6 +3,7 @@
 * Neumont Object-Role Modeling Architect for Visual Studio                 *
 *                                                                          *
 * Copyright © Neumont University. All rights reserved.                     *
+* Copyright © Matthew Curland. All rights reserved.                        *
 *                                                                          *
 * The use and distribution terms for this software are covered by the      *
 * Common Public License 1.0 (http://opensource.org/licenses/cpl) which     *
@@ -299,7 +300,9 @@ namespace Neumont.Tools.ORM.ObjectModel
 		/// Return the element that is used to display the
 		/// passed in element.
 		/// </summary>
-		/// <param name="element">The element to find a proxy for</param>
+		/// <param name="element">The element to find a proxy for. If a <see cref="Microsoft.VisualStudio.Modeling.Diagrams.ShapeElement"/>
+		/// is returned here then it will generally be attached to the implementing shape and will
+		/// me used in its place.</param>
 		/// <param name="forError">The <see cref="ModelError"/> that is being displayed.
 		/// If the displayed as element does not display this error, then it should not
 		/// be identified as a proxy display.</param>
@@ -308,6 +311,29 @@ namespace Neumont.Tools.ORM.ObjectModel
 		ModelElement ElementDisplayedAs(ModelElement element, ModelError forError);
 	}
 	#endregion // IProxyDisplayProvider
+	#region IIndirectModelErrorOwnerPath
+	/// <summary>
+	/// An interface to implement on an <see cref="ElementLink"/> to
+	/// indicate that one of the role players is a remote <see cref="IModelErrorOwner"/>
+	/// for the other endpoint. Generally, deriving the owning relationship to
+	/// a <see cref="ModelError"/> from the <see cref="ElementAssociatedWithModelError"/>
+	/// is sufficient for updating the error display. However, in cases where model errors
+	/// are displayed remotely and events are used to synchronize error state for deleted
+	/// objects, the path from an owner to the error may be broken, so the owner cannot
+	/// be notified that the error state needs to be updated. This is a helper interface
+	/// that is already implemented by ElementAssociatedWithModelError that supports easy
+	/// integration with custom events designed to monitor error state. The interface
+	/// is not automatically monitored, so events must be explicitly attached.
+	/// </summary>
+	public interface IModelErrorOwnerPath
+	{
+		/// <summary>
+		/// The role player element that is or leads to the
+		/// remoted <see cref="IModelErrorOwner"/> implementation.
+		/// </summary>
+		ModelElement ErrorOwnerRolePlayer { get;}
+	}
+	#endregion // 
 	#region AssociatedErrorElementCallback delegate
 	/// <summary>
 	/// Used with the <see cref="ModelError.WalkAssociatedElements(AssociatedErrorElementCallback)"/> and
@@ -608,4 +634,28 @@ namespace Neumont.Tools.ORM.ObjectModel
 		#endregion // IRepresentModelElements Implementation
 	}
 	#endregion // ModelError class
+	#region ElementAssociatedWithModelError class
+	partial class ElementAssociatedWithModelError : IModelErrorOwnerPath
+	{
+		#region IModelErrorOwnerPath Implementation
+		/// <summary>
+		/// Implements <see cref="IModelErrorOwnerPath.ErrorOwnerRolePlayer"/>
+		/// </summary>
+		protected ModelElement ErrorOwnerRolePlayer
+		{
+			get
+			{
+				return AssociatedElement;
+			}
+		}
+		ModelElement IModelErrorOwnerPath.ErrorOwnerRolePlayer
+		{
+			get
+			{
+				return ErrorOwnerRolePlayer;
+			}
+		}
+		#endregion // IModelErrorOwnerPath Implementation
+	}
+	#endregion // ElementAssociatedWithModelError class
 }

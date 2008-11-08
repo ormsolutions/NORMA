@@ -3,6 +3,7 @@
 * Neumont Object-Role Modeling Architect for Visual Studio                 *
 *                                                                          *
 * Copyright © Neumont University. All rights reserved.                     *
+* Copyright © Matthew Curland. All rights reserved.                        *
 *                                                                          *
 * The use and distribution terms for this software are covered by the      *
 * Common Public License 1.0 (http://opensource.org/licenses/cpl) which     *
@@ -274,7 +275,18 @@ namespace Neumont.Tools.ORM.ObjectModel
 				// Note that this needs to be kept in sync with the InitializeDefaultFactRoles template
 				// in VerbalizationGenerator.xslt, which generates an inline form of this property
 				LinkedElementCollection<ReadingOrder> orders = ReadingOrderCollection;
-				return (orders.Count != 0) ? orders[0].RoleCollection : RoleCollection;
+				if (orders.Count != 0)
+				{
+					return orders[0].RoleCollection;
+				}
+				else
+				{
+					LinkedElementCollection<RoleBase> roles = RoleCollection;
+					int? unaryRoleIndex = GetUnaryRoleIndex(roles);
+					return (unaryRoleIndex.HasValue) ?
+						(IList<RoleBase>)new RoleBase[] { roles[unaryRoleIndex.Value] } :
+						roles;
+				}
 			}
 		}
 		#endregion // FactType Specific
@@ -504,7 +516,7 @@ namespace Neumont.Tools.ORM.ObjectModel
 			Objectification objectification;
 			ObjectType nestingType;
 			Store store = Store;
-			if (store.InUndo || store.InRedo)
+			if (store.InUndoRedoOrRollback)
 			{
 				return myGeneratedName;
 			}
@@ -520,7 +532,7 @@ namespace Neumont.Tools.ORM.ObjectModel
 			else
 			{
 				string generatedName = myGeneratedName;
-				if (string.IsNullOrEmpty(generatedName))
+				if (string.IsNullOrEmpty(generatedName) && !IsDeleting && !IsDeleted)
 				{
 					generatedName = GenerateName();
 					if (!string.IsNullOrEmpty(generatedName))
@@ -806,7 +818,7 @@ namespace Neumont.Tools.ORM.ObjectModel
 				}
 			}
 
-			if (0 != (filter & ModelErrorUses.DisplayPrimary))
+			if (0 != (filter & (ModelErrorUses.DisplayPrimary | ModelErrorUses.Verbalize)))
 			{
 				LinkedElementCollection<FactTypeInstance> factTypeInstances = this.FactTypeInstanceCollection;
 				int factTypeInstanceCount = factTypeInstances.Count;
@@ -1274,7 +1286,7 @@ namespace Neumont.Tools.ORM.ObjectModel
 								else
 								{
 									// Force a change in the transaction log so that we can
-									// update the generated name as needed
+									// undo the generated name as needed
 									GeneratedNamePropertyHandler.SetGeneratedName(factType, oldGeneratedName, newGeneratedName);
 								}
 							}
@@ -1938,22 +1950,27 @@ namespace Neumont.Tools.ORM.ObjectModel
 		/// </summary>
 		private static void ValidateFactTypeNameForObjectificationRolePlayerChangeRule(RolePlayerChangedEventArgs e)
 		{
-			Guid changedRoleGuid = e.DomainRole.Id;
 			FactType oldFactType = null;
 			ObjectType oldObjectType = null;
 			Objectification link = e.ElementLink as Objectification;
-			if (changedRoleGuid == Objectification.NestingTypeDomainRoleId)
+			bool resetObjectTypeName;
+			if (e.DomainRole.Id == Objectification.NestingTypeDomainRoleId)
 			{
 				oldObjectType = (ObjectType)e.OldRolePlayer;
 				oldFactType = link.NestedFactType;
+				resetObjectTypeName = false; // Leave the old object type name if we grab it
 			}
-			else if (changedRoleGuid == Objectification.NestedFactTypeDomainRoleId)
+			else
 			{
 				oldFactType = (FactType)e.OldRolePlayer;
 				oldObjectType = link.NestingType;
+				resetObjectTypeName = true;
 			}
-			string oldFactTypeName = oldFactType.myGeneratedName;
-			bool resetObjectTypeName = !string.IsNullOrEmpty(oldFactTypeName) && oldFactTypeName == oldObjectType.Name;
+			if (resetObjectTypeName)
+			{
+				string oldFactTypeName = oldFactType.myGeneratedName;
+				resetObjectTypeName = !string.IsNullOrEmpty(oldFactTypeName) && oldFactTypeName == oldObjectType.Name;
+			}
 			ProcessValidateFactNameForObjectificationDelete(link, oldFactType, oldObjectType);
 			ProcessValidateFactNameForObjectificationAdded(link);
 			if (resetObjectTypeName)
@@ -2263,10 +2280,12 @@ namespace Neumont.Tools.ORM.ObjectModel
 		{
 			private FactType myFact;
 			private FactTypeInstance myInstance;
-			public void Initialize(FactType fact, FactTypeInstance instance)
+			private bool myDisplayIdentifier;
+			public void Initialize(FactType factType, FactTypeInstance factInstance, bool displayIdentifier)
 			{
-				myFact = fact;
-				myInstance = instance;
+				myFact = factType;
+				myInstance = factInstance;
+				myDisplayIdentifier = displayIdentifier;
 			}
 			private void DisposeHelper()
 			{
@@ -2285,6 +2304,13 @@ namespace Neumont.Tools.ORM.ObjectModel
 				get
 				{
 					return myInstance;
+				}
+			}
+			private bool DisplayIdentifier
+			{
+				get
+				{
+					return myDisplayIdentifier;
 				}
 			}
 		}
@@ -2563,11 +2589,17 @@ namespace Neumont.Tools.ORM.ObjectModel
 			int instanceCount = instances.Count;
 			if (instanceCount != 0)
 			{
+				ObjectType objectifyingType;
+				UniquenessConstraint pid;
+				bool displayIdentifier =
+					null != (objectifyingType = NestingType) &&
+					(null == (pid = objectifyingType.PreferredIdentifier) ||
+					!pid.IsObjectifiedPreferredIdentifier);
 				yield return new CustomChildVerbalizer(FactTypeInstanceBlockStart.GetVerbalizer(), true);
 				for (int i = 0; i < instanceCount; ++i)
 				{
 					FactTypeInstanceVerbalizer verbalizer = FactTypeInstanceVerbalizer.GetVerbalizer();
-					verbalizer.Initialize(this, instances[i]);
+					verbalizer.Initialize(this, instances[i], displayIdentifier);
 					yield return new CustomChildVerbalizer(verbalizer, true);
 				}
 				yield return new CustomChildVerbalizer(FactTypeInstanceBlockEnd.GetVerbalizer(), true);

@@ -3,6 +3,7 @@
 Neumont Object-Role Modeling Architect for Visual Studio
 
 Copyright © Neumont University. All rights reserved.
+Copyright © Matthew Curland. All rights reserved.
 
 The use and distribution terms for this software are covered by the
 Common Public License 1.0 (http://opensource.org/licenses/cpl) which
@@ -208,6 +209,7 @@ You must not remove this notice, or any other, from this software.
 			<Snippet type="NonTextInstanceValue"><![CDATA[<span class="instance">{0}</span>]]></Snippet>
 			<Snippet type="FactTypeInstanceBlockStart"><![CDATA[<br/><span class="quantifier">Examples: </span><span class="smallIndent">]]></Snippet>
 			<Snippet type="FactTypeInstanceBlockEnd"><![CDATA[</span>]]></Snippet>
+			<Snippet type="FactTypeInstanceIdentifier"><![CDATA[<span class="smallIndent"><span class="quantifier">Identifier: <span class="instance">{0}</span></span></span>]]></Snippet>
 			<Snippet type="ObjectTypeInstanceListOpen"><![CDATA[<br/><span class="quantifier">Examples:</span> ]]></Snippet>
 			<Snippet type="ObjectTypeInstanceListPairSeparator"><![CDATA[<span class="listSeparator">, </span>]]></Snippet>
 			<Snippet type="ObjectTypeInstanceListSeparator"><![CDATA[<span class="listSeparator">, </span>]]></Snippet>

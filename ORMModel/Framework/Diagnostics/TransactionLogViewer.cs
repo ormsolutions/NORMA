@@ -3,6 +3,7 @@
 * Neumont Object-Role Modeling Architect for Visual Studio                 *
 *                                                                          *
 * Copyright © Neumont University. All rights reserved.                     *
+* Copyright © Matthew Curland. All rights reserved.                        *
 *                                                                          *
 * The use and distribution terms for this software are covered by the      *
 * Common Public License 1.0 (http://opensource.org/licenses/cpl) which     *
@@ -27,6 +28,7 @@ using Emit = System.Reflection.Emit;
 using System.Diagnostics;
 using System.Drawing;
 using System.Globalization;
+using Neumont.Tools.Modeling.Shell;
 
 namespace Neumont.Tools.Modeling.Diagnostics
 {
@@ -325,7 +327,7 @@ namespace Neumont.Tools.Modeling.Diagnostics
 			myRedoItems = undoManager.RedoableTransactions;
 			FillCombo(UndoItemsCombo, myUndoItems);
 			FillCombo(RedoItemsCombo, myRedoItems);
-			TreeControl.MultiColumnTree = new MultiColumnTree((int)ChangeBranch.ColumnContent.Count);
+			TreeControl.MultiColumnTree = new StandardMultiColumnTree((int)ChangeBranch.ColumnContent.Count);
 			if (myUndoItems.Count != 0)
 			{
 				UndoItemsCombo.SelectedIndex = 0;

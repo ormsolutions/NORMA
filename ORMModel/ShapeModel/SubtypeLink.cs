@@ -3,6 +3,7 @@
 * Neumont Object-Role Modeling Architect for Visual Studio                 *
 *                                                                          *
 * Copyright © Neumont University. All rights reserved.                     *
+* Copyright © Matthew Curland. All rights reserved.                        *
 *                                                                          *
 * The use and distribution terms for this software are covered by the      *
 * Common Public License 1.0 (http://opensource.org/licenses/cpl) which     *
@@ -329,41 +330,14 @@ namespace Neumont.Tools.ORM.ShapeModel
 		/// </summary>
 		protected bool ActivateModelError(ModelError error)
 		{
-			TooFewReadingRolesError tooFew;
-			TooManyReadingRolesError tooMany;
-			FactTypeRequiresReadingError noReading;
-			FactType fact;
-			Reading reading = null;
-			bool retVal = true;
-			if (null != (tooFew = error as TooFewReadingRolesError))
+			PopulationMandatoryError populationMandatoryError;
+			if (null != (populationMandatoryError = error as PopulationMandatoryError))
 			{
-				reading = tooFew.Reading;
+				ORMSamplePopulationToolWindow window = ORMDesignerPackage.SamplePopulationEditorWindow;
+				window.AutoCorrectMandatoryError(populationMandatoryError);
+				return true;
 			}
-			else if (null != (tooMany = error as TooManyReadingRolesError))
-			{
-				reading = tooMany.Reading;
-			}
-			else if (null != (noReading = error as FactTypeRequiresReadingError))
-			{
-				fact = noReading.FactType;
-				Debug.Assert(fact != null);
-				ORMReadingEditorToolWindow window = ORMDesignerPackage.ReadingEditorWindow;
-				window.Show();
-				window.ActivateReading(fact);
-			}
-			else
-			{
-				retVal = false;
-			}
-
-			if (reading != null)
-			{
-				// Open the reading editor window and activate the reading  
-				ORMReadingEditorToolWindow window = ORMDesignerPackage.ReadingEditorWindow;
-				window.Show();
-				window.ActivateReading(reading);
-			}
-			return retVal;
+			return false;
 		}
 		bool IModelErrorActivation.ActivateModelError(ModelError error)
 		{

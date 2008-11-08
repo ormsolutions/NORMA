@@ -7,6 +7,7 @@
 	<xs:annotation>
 		<xs:appinfo source="zlib/libpng License Copyright Notice">
 			Copyright © Neumont University. All rights reserved.
+			Copyright © Matthew Curland. All rights reserved.
 
 			This software is provided 'as-is', without any express or implied warranty. In no event will the authors be held liable for any damages arising from the use of this software.
 			Permission is granted to anyone to use this software for any purpose, including commercial applications, and to alter it and redistribute it freely, subject to the following restrictions:
@@ -146,6 +147,7 @@
 				<xs:sequence>
 					<xs:element name="PreferredIdentifier" type="ConstraintRef" minOccurs="0"/>
 					<xs:element name="NestedPredicate" type="ObjectifiedFactRef"/>
+					<xs:element name="Instances" type="EntityTypeInstances" minOccurs="0"/>
 					<xs:element name="Extensions" type="Extensions" minOccurs="0"/>
 				</xs:sequence>
 				<!--ReferenceMode is derived.-->
@@ -173,18 +175,31 @@
 		<xs:attribute name="ref" type="xs:IDREF"/>
 	</xs:complexType>
 	<xs:complexType name="EntityTypeInstances">
-		<xs:sequence>
+		<xs:choice>
 			<xs:element name="EntityTypeInstance" type="EntityTypeInstance" minOccurs="0" maxOccurs="unbounded"/>
-		</xs:sequence>
+			<xs:element name="EntityTypeSubtypeInstance" type="EntityTypeSubtypeInstance" minOccurs="0" maxOccurs="unbounded"/>
+		</xs:choice>
 	</xs:complexType>
 	<xs:complexType name="EntityTypeInstance">
 		<xs:sequence>
 			<xs:element name="RoleInstances" type="EntityTypeRoleInstances" minOccurs="0"/>
+			<xs:element name="ObjectifiedInstance" type="FactTypeInstanceRef" minOccurs="0"/>
+			<xs:element name="Extensions" type="Extensions" minOccurs="0"/>
+		</xs:sequence>
+		<xs:attribute name="id" type="xs:ID" use="required"/>
+	</xs:complexType>
+	<xs:complexType name="EntityTypeSubtypeInstance">
+		<xs:sequence>
+			<xs:element name="SupertypeInstance" type="EntityTypeInstanceRef" minOccurs="0"/>
+			<xs:element name="ObjectifiedInstance" type="FactTypeInstanceRef" minOccurs="0"/>
 			<xs:element name="Extensions" type="Extensions" minOccurs="0"/>
 		</xs:sequence>
 		<xs:attribute name="id" type="xs:ID" use="required"/>
 	</xs:complexType>
 	<xs:complexType name="EntityTypeInstanceRef">
+		<xs:attribute name="ref" type="xs:IDREF"/>
+	</xs:complexType>
+	<xs:complexType name="EntityTypeSubtypeInstanceRef">
 		<xs:attribute name="ref" type="xs:IDREF"/>
 	</xs:complexType>
 	<xs:complexType name="EntityTypeRoleInstances">
@@ -967,6 +982,8 @@
 			<xs:element name="ObjectTypeRequiresPrimarySupertypeError" type="ObjectTypeRequiresPrimarySupertypeError"/>
 			<xs:element name="PreferredIdentifierRequiresMandatoryError" type="PreferredIdentifierRequiresMandatoryError"/>
 			<xs:element name="CompatibleSupertypesError" type="CompatibleSupertypesError"/>
+			<xs:element name="ObjectifyingInstanceRequiredError" type="ObjectifyingInstanceRequiredError"/>
+			<xs:element name="ObjectifiedInstanceRequiredError" type="ObjectifiedInstanceRequiredError"/>
 			<xs:element name="CompatibleValueTypeInstanceValueError" type="CompatibleValueTypeInstanceValueError"/>
 			<xs:element name="PopulationMandatoryError" type="PopulationMandatoryError"/>
 			<xs:element name="PopulationUniquenessError" type="PopulationUniquenessError"/>
@@ -1446,6 +1463,25 @@
 						</xs:complexType>
 					</xs:element>
 				</xs:sequence>
+			</xs:extension>
+		</xs:complexContent>
+	</xs:complexType>
+	<xs:complexType name="ObjectifyingInstanceRequiredError">
+		<xs:complexContent>
+			<xs:extension base="ModelError">
+				<xs:choice>
+					<xs:element name="FactTypeInstance" type="FactTypeInstanceRef"/>
+				</xs:choice>
+			</xs:extension>
+		</xs:complexContent>
+	</xs:complexType>
+	<xs:complexType name="ObjectifiedInstanceRequiredError">
+		<xs:complexContent>
+			<xs:extension base="ModelError">
+				<xs:choice>
+					<xs:element name="EntityTypeInstance" type="EntityTypeInstanceRef"/>
+					<xs:element name="EntityTypeSubtypeInstance" type="EntityTypeSubtypeInstanceRef"/>
+				</xs:choice>
 			</xs:extension>
 		</xs:complexContent>
 	</xs:complexType>

@@ -1,4 +1,5 @@
-﻿<TestReport xmlns="http://schemas.neumont.edu/ORM/SDK/TestReport">
+﻿<?xml version="1.0" encoding="utf-8"?>
+<TestReport xmlns="http://schemas.neumont.edu/ORM/SDK/TestReport">
 	<ValidationErrors name="Expect V2=100 Population Mandatory">
 		<ValidationError>'V2' instance '100' in model 'ORMModel1' must participate in FactType 'PopulateMeSV2'.</ValidationError>
 	</ValidationErrors>
@@ -16,7 +17,7 @@
 		<ValidationError>'PopulateMe' instance 'Dick' in model 'ORMModel1' must participate in FactType 'PopulateMeSV2'.</ValidationError>
 	</ValidationErrors>
 	<ValidationErrors name="Add a partial FactTypeInstance for Dick, 1 error remaining for partial FactTypeInstance">
-		<ValidationError>FactType 'PopulateMeSV2' in model 'ORMModel1' is missing instance data to completely identify a sample instance.</ValidationError>
+		<ValidationError>FactType instance 'Dick s ?' in model 'ORMModel1' has a partial population.</ValidationError>
 	</ValidationErrors>
 	<Compare result="pass" />
 </TestReport>

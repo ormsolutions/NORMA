@@ -3,6 +3,7 @@
 * Neumont Object-Role Modeling Architect for Visual Studio                 *
 *                                                                          *
 * Copyright © Neumont University. All rights reserved.                     *
+* Copyright © Matthew Curland. All rights reserved.                        *
 *                                                                          *
 * The use and distribution terms for this software are covered by the      *
 * Common Public License 1.0 (http://opensource.org/licenses/cpl) which     *
@@ -129,6 +130,12 @@ namespace Neumont.Tools.ORM.ObjectModel
 				//Error state changed
 				classInfo = directory.FindDomainRelationship(ElementAssociatedWithModelError.DomainClassId);
 				eventManager.AddOrRemoveHandler(classInfo, new EventHandler<ElementAddedEventArgs>(ModelElementErrorStateChanged), action);
+				eventManager.AddOrRemoveHandler(classInfo, new EventHandler<ElementDeletedEventArgs>(ModelElementErrorStateChanged), action);
+
+				classInfo = directory.FindDomainRelationship(FactTypeHasFactTypeInstance.DomainClassId);
+				eventManager.AddOrRemoveHandler(classInfo, new EventHandler<ElementDeletedEventArgs>(ModelElementErrorStateChanged), action);
+
+				classInfo = directory.FindDomainRelationship(ObjectTypeHasObjectTypeInstance.DomainClassId);
 				eventManager.AddOrRemoveHandler(classInfo, new EventHandler<ElementDeletedEventArgs>(ModelElementErrorStateChanged), action);
 
 				//ModalityChanged
@@ -694,7 +701,7 @@ namespace Neumont.Tools.ORM.ObjectModel
 			ModelElement element;
 			if (null != (eventNotify = ((element = e.ModelElement).Store as IORMToolServices).NotifySurveyElementChanged))
 			{
-				ModelError.WalkAssociatedElements((element as ElementAssociatedWithModelError).AssociatedElement,
+				ModelError.WalkAssociatedElements(((IModelErrorOwnerPath)element).ErrorOwnerRolePlayer,
 					delegate(ModelElement associatedElement)
 					{
 						eventNotify.ElementChanged(associatedElement, SurveyErrorQuestionTypes);
@@ -703,4 +710,50 @@ namespace Neumont.Tools.ORM.ObjectModel
 		}
 		#endregion //SurveyEventHandling
 	}
+	#region IModelErrorOwner Implementations
+	partial class FactTypeHasFactTypeInstance : IModelErrorOwnerPath
+	{
+		#region IModelErrorOwnerPath Implementation
+		/// <summary>
+		/// Implements <see cref="IModelErrorOwnerPath.ErrorOwnerRolePlayer"/>
+		/// </summary>
+		protected ModelElement ErrorOwnerRolePlayer
+		{
+			get
+			{
+				return FactType;
+			}
+		}
+		ModelElement IModelErrorOwnerPath.ErrorOwnerRolePlayer
+		{
+			get
+			{
+				return ErrorOwnerRolePlayer;
+			}
+		}
+		#endregion // IModelErrorOwnerPath Implementation
+	}
+	partial class ObjectTypeHasObjectTypeInstance : IModelErrorOwnerPath
+	{
+		#region IModelErrorOwnerPath Implementation
+		/// <summary>
+		/// Implements <see cref="IModelErrorOwnerPath.ErrorOwnerRolePlayer"/>
+		/// </summary>
+		protected ModelElement ErrorOwnerRolePlayer
+		{
+			get
+			{
+				return ObjectType;
+			}
+		}
+		ModelElement IModelErrorOwnerPath.ErrorOwnerRolePlayer
+		{
+			get
+			{
+				return ErrorOwnerRolePlayer;
+			}
+		}
+		#endregion // IModelErrorOwnerPath Implementation
+	}
+	#endregion // IModelErrorOwner Implementations
 }

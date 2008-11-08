@@ -11,6 +11,7 @@ using Neumont.Tools.Modeling.Shell;
 // * Neumont Object-Role Modeling Architect for Visual Studio                 *
 // *                                                                          *
 // * Copyright © Neumont University. All rights reserved.                     *
+// * Copyright © Matthew Curland. All rights reserved.                        *
 // *                                                                          *
 // * The use and distribution terms for this software are covered by the      *
 // * Common Public License 1.0 (http://opensource.org/licenses/cpl) which     *
@@ -191,6 +192,7 @@ namespace Neumont.Tools.ORM.ObjectModel
 				classNameMap.Add("RecognizedPhrase", RecognizedPhrase.DomainClassId);
 				classNameMap.Add("ValueTypeInstance", ValueTypeInstance.DomainClassId);
 				classNameMap.Add("EntityTypeInstance", EntityTypeInstance.DomainClassId);
+				classNameMap.Add("EntityTypeSubtypeInstance", EntityTypeSubtypeInstance.DomainClassId);
 				classNameMap.Add("EntityTypeRoleInstance", EntityTypeRoleInstance.DomainClassId);
 				classNameMap.Add("CustomReferenceMode", CustomReferenceMode.DomainClassId);
 				classNameMap.Add("DataType", DataType.DomainClassId);
@@ -241,6 +243,8 @@ namespace Neumont.Tools.ORM.ObjectModel
 				classNameMap.Add("TooFewEntityTypeRoleInstancesError", TooFewEntityTypeRoleInstancesError.DomainClassId);
 				classNameMap.Add("TooFewFactTypeRoleInstancesError", TooFewFactTypeRoleInstancesError.DomainClassId);
 				classNameMap.Add("PopulationMandatoryError", PopulationMandatoryError.DomainClassId);
+				classNameMap.Add("ObjectifiedInstanceRequiredError", ObjectifiedInstanceRequiredError.DomainClassId);
+				classNameMap.Add("ObjectifyingInstanceRequiredError", ObjectifyingInstanceRequiredError.DomainClassId);
 				classNameMap.Add("PopulationUniquenessError", PopulationUniquenessError.DomainClassId);
 				classNameMap.Add("TooFewReadingRolesError", TooFewReadingRolesError.DomainClassId);
 				classNameMap.Add("ReadingRequiresUserModificationError", ReadingRequiresUserModificationError.DomainClassId);
@@ -1393,7 +1397,7 @@ namespace Neumont.Tools.ORM.ObjectModel
 				ret[2] = new CustomSerializedContainerElementInfo(null, "Abbreviations", null, CustomSerializedElementWriteStyle.Element, null, ObjectTypeHasAbbreviation.AbbreviationDomainRoleId);
 				ret[3] = new CustomSerializedContainerElementInfo(null, "PlayedRoles", null, CustomSerializedElementWriteStyle.Element, null, ObjectTypePlaysRole.PlayedRoleDomainRoleId);
 				ret[4] = new CustomSerializedContainerElementInfo(null, "ValueRestriction", null, CustomSerializedElementWriteStyle.Element, null, ValueTypeHasValueConstraint.ValueConstraintDomainRoleId);
-				ret[5] = new CustomSerializedContainerElementInfo(null, "Instances", null, CustomSerializedElementWriteStyle.Element, null, ValueTypeHasValueTypeInstance.ValueTypeInstanceDomainRoleId, EntityTypeHasEntityTypeInstance.EntityTypeInstanceDomainRoleId);
+				ret[5] = new CustomSerializedContainerElementInfo(null, "Instances", null, CustomSerializedElementWriteStyle.Element, null, ValueTypeHasValueTypeInstance.ValueTypeInstanceDomainRoleId, EntityTypeHasEntityTypeInstance.EntityTypeInstanceDomainRoleId, EntityTypeSubtypeHasEntityTypeSubtypeInstance.EntityTypeSubtypeInstanceDomainRoleId);
 				ObjectType.myCustomSerializedChildElementInfo = ret;
 			}
 			return ret;
@@ -1573,6 +1577,8 @@ namespace Neumont.Tools.ORM.ObjectModel
 				roleOrderDictionary[string.Concat(domainRole.DomainRelationship.ImplementationClass.FullName, ".", domainRole.Name)] = 8;
 				domainRole = domainDataDirectory.FindDomainRole(EntityTypeHasEntityTypeInstance.EntityTypeInstanceDomainRoleId).OppositeDomainRole;
 				roleOrderDictionary[string.Concat(domainRole.DomainRelationship.ImplementationClass.FullName, ".", domainRole.Name)] = 8;
+				domainRole = domainDataDirectory.FindDomainRole(EntityTypeSubtypeHasEntityTypeSubtypeInstance.EntityTypeSubtypeInstanceDomainRoleId).OppositeDomainRole;
+				roleOrderDictionary[string.Concat(domainRole.DomainRelationship.ImplementationClass.FullName, ".", domainRole.Name)] = 8;
 				domainRole = domainDataDirectory.FindDomainRole(ObjectTypeImpliesMandatoryConstraint.MandatoryConstraintDomainRoleId).OppositeDomainRole;
 				roleOrderDictionary[string.Concat(domainRole.DomainRelationship.ImplementationClass.FullName, ".", domainRole.Name)] = 9;
 				domainRole = domainDataDirectory.FindDomainRole(ObjectTypeHasEntityTypeRequiresReferenceSchemeError.ReferenceSchemeErrorDomainRoleId).OppositeDomainRole;
@@ -1663,7 +1669,7 @@ namespace Neumont.Tools.ORM.ObjectModel
 				childElementMappings.Add("||http://schemas.neumont.edu/ORM/2006-04/ORMCore|Abbreviations||", match);
 				match.InitializeRoles(ValueTypeHasValueConstraint.ValueConstraintDomainRoleId);
 				childElementMappings.Add("||http://schemas.neumont.edu/ORM/2006-04/ORMCore|ValueRestriction||", match);
-				match.InitializeRoles(ValueTypeHasValueTypeInstance.ValueTypeInstanceDomainRoleId, EntityTypeHasEntityTypeInstance.EntityTypeInstanceDomainRoleId);
+				match.InitializeRoles(ValueTypeHasValueTypeInstance.ValueTypeInstanceDomainRoleId, EntityTypeHasEntityTypeInstance.EntityTypeInstanceDomainRoleId, EntityTypeSubtypeHasEntityTypeSubtypeInstance.EntityTypeSubtypeInstanceDomainRoleId);
 				childElementMappings.Add("||http://schemas.neumont.edu/ORM/2006-04/ORMCore|Instances||", match);
 				ObjectType.myChildElementMappings = childElementMappings;
 			}
@@ -1927,7 +1933,7 @@ namespace Neumont.Tools.ORM.ObjectModel
 		{
 			get
 			{
-				return base.SupportedCustomSerializedOperations | CustomSerializedElementSupportedOperations.ChildElementInfo | CustomSerializedElementSupportedOperations.ElementInfo | CustomSerializedElementSupportedOperations.LinkInfo;
+				return base.SupportedCustomSerializedOperations | CustomSerializedElementSupportedOperations.ChildElementInfo | CustomSerializedElementSupportedOperations.ElementInfo | CustomSerializedElementSupportedOperations.LinkInfo | CustomSerializedElementSupportedOperations.CustomSortChildRoles;
 			}
 		}
 		CustomSerializedElementSupportedOperations ICustomSerializedElement.SupportedCustomSerializedOperations
@@ -1991,6 +1997,10 @@ namespace Neumont.Tools.ORM.ObjectModel
 			{
 				return new CustomSerializedElementInfo(null, "EntityTypeRoleInstance", null, CustomSerializedElementWriteStyle.Element, null);
 			}
+			if (roleId == ObjectificationInstance.ObjectifiedInstanceDomainRoleId)
+			{
+				return new CustomSerializedElementInfo(null, "ObjectifiedInstance", null, CustomSerializedElementWriteStyle.Element, null);
+			}
 			if (roleId == EntityTypeRoleInstance.RoleDomainRoleId)
 			{
 				return new CustomSerializedElementInfo(null, null, null, CustomSerializedElementWriteStyle.NotWritten, null);
@@ -2007,6 +2017,14 @@ namespace Neumont.Tools.ORM.ObjectModel
 			{
 				return new CustomSerializedElementInfo(null, null, null, CustomSerializedElementWriteStyle.NotWritten, null);
 			}
+			if (roleId == EntityTypeSubtypeInstanceHasSupertypeInstance.EntityTypeSubtypeInstanceDomainRoleId)
+			{
+				return new CustomSerializedElementInfo(null, null, null, CustomSerializedElementWriteStyle.NotWritten, null);
+			}
+			if (roleId == ObjectifyingInstanceHasObjectifiedInstanceRequiredError.ObjectifiedInstanceRequiredErrorDomainRoleId)
+			{
+				return new CustomSerializedElementInfo(null, null, null, CustomSerializedElementWriteStyle.NotWritten, null);
+			}
 			if (0 != (CustomSerializedElementSupportedOperations.LinkInfo & base.SupportedCustomSerializedOperations))
 			{
 				return base.GetCustomSerializedLinkInfo(rolePlayedInfo, elementLink);
@@ -2017,6 +2035,84 @@ namespace Neumont.Tools.ORM.ObjectModel
 		{
 			return this.GetCustomSerializedLinkInfo(rolePlayedInfo, elementLink);
 		}
+		private static IComparer<DomainRoleInfo> myCustomSortChildComparer;
+		private sealed class CustomSortChildComparer : IComparer<DomainRoleInfo>
+		{
+			private readonly Dictionary<string, int> myRoleOrderDictionary;
+			private IComparer<DomainRoleInfo> myBaseComparer;
+			public CustomSortChildComparer(Store store, IComparer<DomainRoleInfo> baseComparer)
+			{
+				this.myBaseComparer = baseComparer;
+				DomainDataDirectory domainDataDirectory = store.DomainDataDirectory;
+				Dictionary<string, int> roleOrderDictionary = new Dictionary<string, int>();
+				DomainRoleInfo domainRole;
+				domainRole = domainDataDirectory.FindDomainRole(EntityTypeInstanceHasRoleInstance.RoleInstanceDomainRoleId).OppositeDomainRole;
+				roleOrderDictionary[string.Concat(domainRole.DomainRelationship.ImplementationClass.FullName, ".", domainRole.Name)] = 0;
+				domainRole = domainDataDirectory.FindDomainRole(ObjectificationInstance.ObjectifiedInstanceDomainRoleId).OppositeDomainRole;
+				roleOrderDictionary[string.Concat(domainRole.DomainRelationship.ImplementationClass.FullName, ".", domainRole.Name)] = 1;
+				domainRole = domainDataDirectory.FindDomainRole(EntityTypeRoleInstance.RoleDomainRoleId).OppositeDomainRole;
+				roleOrderDictionary[string.Concat(domainRole.DomainRelationship.ImplementationClass.FullName, ".", domainRole.Name)] = 2;
+				domainRole = domainDataDirectory.FindDomainRole(FactTypeRoleInstance.RoleDomainRoleId).OppositeDomainRole;
+				roleOrderDictionary[string.Concat(domainRole.DomainRelationship.ImplementationClass.FullName, ".", domainRole.Name)] = 3;
+				domainRole = domainDataDirectory.FindDomainRole(EntityTypeInstanceHasTooFewEntityTypeRoleInstancesError.TooFewEntityTypeRoleInstancesErrorDomainRoleId).OppositeDomainRole;
+				roleOrderDictionary[string.Concat(domainRole.DomainRelationship.ImplementationClass.FullName, ".", domainRole.Name)] = 4;
+				domainRole = domainDataDirectory.FindDomainRole(ObjectTypeInstanceHasPopulationMandatoryError.PopulationMandatoryErrorDomainRoleId).OppositeDomainRole;
+				roleOrderDictionary[string.Concat(domainRole.DomainRelationship.ImplementationClass.FullName, ".", domainRole.Name)] = 5;
+				domainRole = domainDataDirectory.FindDomainRole(EntityTypeSubtypeInstanceHasSupertypeInstance.EntityTypeSubtypeInstanceDomainRoleId).OppositeDomainRole;
+				roleOrderDictionary[string.Concat(domainRole.DomainRelationship.ImplementationClass.FullName, ".", domainRole.Name)] = 6;
+				domainRole = domainDataDirectory.FindDomainRole(ObjectifyingInstanceHasObjectifiedInstanceRequiredError.ObjectifiedInstanceRequiredErrorDomainRoleId).OppositeDomainRole;
+				roleOrderDictionary[string.Concat(domainRole.DomainRelationship.ImplementationClass.FullName, ".", domainRole.Name)] = 7;
+				this.myRoleOrderDictionary = roleOrderDictionary;
+			}
+			int IComparer<DomainRoleInfo>.Compare(DomainRoleInfo x, DomainRoleInfo y)
+			{
+				if (this.myBaseComparer != null)
+				{
+					int baseOpinion = this.myBaseComparer.Compare(x, y);
+					if (0 != baseOpinion)
+					{
+						return baseOpinion;
+					}
+				}
+				int xPos;
+				if (!this.myRoleOrderDictionary.TryGetValue(string.Concat(x.DomainRelationship.ImplementationClass.FullName, ".", x.Name), out xPos))
+				{
+					xPos = int.MaxValue;
+				}
+				int yPos;
+				if (!this.myRoleOrderDictionary.TryGetValue(string.Concat(y.DomainRelationship.ImplementationClass.FullName, ".", y.Name), out yPos))
+				{
+					yPos = int.MaxValue;
+				}
+				return xPos.CompareTo(yPos);
+			}
+		}
+		/// <summary>Implements ICustomSerializedElement.CustomSerializedChildRoleComparer</summary>
+		protected new IComparer<DomainRoleInfo> CustomSerializedChildRoleComparer
+		{
+			get
+			{
+				IComparer<DomainRoleInfo> retVal = EntityTypeInstance.myCustomSortChildComparer;
+				if (null == retVal)
+				{
+					IComparer<DomainRoleInfo> baseComparer = null;
+					if (0 != (CustomSerializedElementSupportedOperations.CustomSortChildRoles & base.SupportedCustomSerializedOperations))
+					{
+						baseComparer = base.CustomSerializedChildRoleComparer;
+					}
+					retVal = new CustomSortChildComparer(this.Store, baseComparer);
+					EntityTypeInstance.myCustomSortChildComparer = retVal;
+				}
+				return retVal;
+			}
+		}
+		IComparer<DomainRoleInfo> ICustomSerializedElement.CustomSerializedChildRoleComparer
+		{
+			get
+			{
+				return this.CustomSerializedChildRoleComparer;
+			}
+		}
 		private static Dictionary<string, CustomSerializedElementMatch> myChildElementMappings;
 		/// <summary>Implements ICustomSerializedElement.MapChildElement</summary>
 		protected new CustomSerializedElementMatch MapChildElement(string elementNamespace, string elementName, string containerNamespace, string containerName, string outerContainerNamespace, string outerContainerName)
@@ -2026,6 +2122,8 @@ namespace Neumont.Tools.ORM.ObjectModel
 			{
 				childElementMappings = new Dictionary<string, CustomSerializedElementMatch>();
 				CustomSerializedElementMatch match = new CustomSerializedElementMatch();
+				match.InitializeRoles(ObjectificationInstance.ObjectifiedInstanceDomainRoleId);
+				childElementMappings.Add("||||http://schemas.neumont.edu/ORM/2006-04/ORMCore|ObjectifiedInstance", match);
 				match.InitializeRoles(EntityTypeInstanceHasRoleInstance.RoleInstanceDomainRoleId);
 				childElementMappings.Add("||http://schemas.neumont.edu/ORM/2006-04/ORMCore|RoleInstances||EntityTypeRoleInstance", match);
 				EntityTypeInstance.myChildElementMappings = childElementMappings;
@@ -2043,6 +2141,179 @@ namespace Neumont.Tools.ORM.ObjectModel
 		}
 	}
 	#endregion // EntityTypeInstance serialization
+	#region EntityTypeSubtypeInstance serialization
+	partial class EntityTypeSubtypeInstance : ICustomSerializedElement
+	{
+		/// <summary>Implements ICustomSerializedElement.SupportedCustomSerializedOperations</summary>
+		protected new CustomSerializedElementSupportedOperations SupportedCustomSerializedOperations
+		{
+			get
+			{
+				return base.SupportedCustomSerializedOperations | CustomSerializedElementSupportedOperations.ElementInfo | CustomSerializedElementSupportedOperations.LinkInfo | CustomSerializedElementSupportedOperations.CustomSortChildRoles;
+			}
+		}
+		CustomSerializedElementSupportedOperations ICustomSerializedElement.SupportedCustomSerializedOperations
+		{
+			get
+			{
+				return this.SupportedCustomSerializedOperations;
+			}
+		}
+		/// <summary>Implements ICustomSerializedElement.CustomSerializedElementInfo</summary>
+		protected new CustomSerializedElementInfo CustomSerializedElementInfo
+		{
+			get
+			{
+				return new CustomSerializedElementInfo(null, "EntityTypeSubtypeInstance", null, CustomSerializedElementWriteStyle.Element, null);
+			}
+		}
+		CustomSerializedElementInfo ICustomSerializedElement.CustomSerializedElementInfo
+		{
+			get
+			{
+				return this.CustomSerializedElementInfo;
+			}
+		}
+		/// <summary>Implements ICustomSerializedElement.GetCustomSerializedLinkInfo</summary>
+		protected new CustomSerializedElementInfo GetCustomSerializedLinkInfo(DomainRoleInfo rolePlayedInfo, ElementLink elementLink)
+		{
+			Guid roleId = rolePlayedInfo.Id;
+			if (roleId == EntityTypeSubtypeInstanceHasSupertypeInstance.SupertypeInstanceDomainRoleId)
+			{
+				return new CustomSerializedElementInfo(null, "SupertypeInstance", null, CustomSerializedElementWriteStyle.Element, null);
+			}
+			if (roleId == ObjectificationInstance.ObjectifiedInstanceDomainRoleId)
+			{
+				return new CustomSerializedElementInfo(null, "ObjectifiedInstance", null, CustomSerializedElementWriteStyle.Element, null);
+			}
+			if (roleId == EntityTypeRoleInstance.RoleDomainRoleId)
+			{
+				return new CustomSerializedElementInfo(null, null, null, CustomSerializedElementWriteStyle.NotWritten, null);
+			}
+			if (roleId == FactTypeRoleInstance.RoleDomainRoleId)
+			{
+				return new CustomSerializedElementInfo(null, null, null, CustomSerializedElementWriteStyle.NotWritten, null);
+			}
+			if (roleId == ObjectTypeInstanceHasPopulationMandatoryError.PopulationMandatoryErrorDomainRoleId)
+			{
+				return new CustomSerializedElementInfo(null, null, null, CustomSerializedElementWriteStyle.NotWritten, null);
+			}
+			if (roleId == ObjectifyingInstanceHasObjectifiedInstanceRequiredError.ObjectifiedInstanceRequiredErrorDomainRoleId)
+			{
+				return new CustomSerializedElementInfo(null, null, null, CustomSerializedElementWriteStyle.NotWritten, null);
+			}
+			if (0 != (CustomSerializedElementSupportedOperations.LinkInfo & base.SupportedCustomSerializedOperations))
+			{
+				return base.GetCustomSerializedLinkInfo(rolePlayedInfo, elementLink);
+			}
+			return CustomSerializedElementInfo.Default;
+		}
+		CustomSerializedElementInfo ICustomSerializedElement.GetCustomSerializedLinkInfo(DomainRoleInfo rolePlayedInfo, ElementLink elementLink)
+		{
+			return this.GetCustomSerializedLinkInfo(rolePlayedInfo, elementLink);
+		}
+		private static IComparer<DomainRoleInfo> myCustomSortChildComparer;
+		private sealed class CustomSortChildComparer : IComparer<DomainRoleInfo>
+		{
+			private readonly Dictionary<string, int> myRoleOrderDictionary;
+			private IComparer<DomainRoleInfo> myBaseComparer;
+			public CustomSortChildComparer(Store store, IComparer<DomainRoleInfo> baseComparer)
+			{
+				this.myBaseComparer = baseComparer;
+				DomainDataDirectory domainDataDirectory = store.DomainDataDirectory;
+				Dictionary<string, int> roleOrderDictionary = new Dictionary<string, int>();
+				DomainRoleInfo domainRole;
+				domainRole = domainDataDirectory.FindDomainRole(EntityTypeSubtypeInstanceHasSupertypeInstance.SupertypeInstanceDomainRoleId).OppositeDomainRole;
+				roleOrderDictionary[string.Concat(domainRole.DomainRelationship.ImplementationClass.FullName, ".", domainRole.Name)] = 0;
+				domainRole = domainDataDirectory.FindDomainRole(ObjectificationInstance.ObjectifiedInstanceDomainRoleId).OppositeDomainRole;
+				roleOrderDictionary[string.Concat(domainRole.DomainRelationship.ImplementationClass.FullName, ".", domainRole.Name)] = 1;
+				domainRole = domainDataDirectory.FindDomainRole(EntityTypeRoleInstance.RoleDomainRoleId).OppositeDomainRole;
+				roleOrderDictionary[string.Concat(domainRole.DomainRelationship.ImplementationClass.FullName, ".", domainRole.Name)] = 2;
+				domainRole = domainDataDirectory.FindDomainRole(FactTypeRoleInstance.RoleDomainRoleId).OppositeDomainRole;
+				roleOrderDictionary[string.Concat(domainRole.DomainRelationship.ImplementationClass.FullName, ".", domainRole.Name)] = 3;
+				domainRole = domainDataDirectory.FindDomainRole(ObjectTypeInstanceHasPopulationMandatoryError.PopulationMandatoryErrorDomainRoleId).OppositeDomainRole;
+				roleOrderDictionary[string.Concat(domainRole.DomainRelationship.ImplementationClass.FullName, ".", domainRole.Name)] = 4;
+				domainRole = domainDataDirectory.FindDomainRole(ObjectifyingInstanceHasObjectifiedInstanceRequiredError.ObjectifiedInstanceRequiredErrorDomainRoleId).OppositeDomainRole;
+				roleOrderDictionary[string.Concat(domainRole.DomainRelationship.ImplementationClass.FullName, ".", domainRole.Name)] = 5;
+				this.myRoleOrderDictionary = roleOrderDictionary;
+			}
+			int IComparer<DomainRoleInfo>.Compare(DomainRoleInfo x, DomainRoleInfo y)
+			{
+				if (this.myBaseComparer != null)
+				{
+					int baseOpinion = this.myBaseComparer.Compare(x, y);
+					if (0 != baseOpinion)
+					{
+						return baseOpinion;
+					}
+				}
+				int xPos;
+				if (!this.myRoleOrderDictionary.TryGetValue(string.Concat(x.DomainRelationship.ImplementationClass.FullName, ".", x.Name), out xPos))
+				{
+					xPos = int.MaxValue;
+				}
+				int yPos;
+				if (!this.myRoleOrderDictionary.TryGetValue(string.Concat(y.DomainRelationship.ImplementationClass.FullName, ".", y.Name), out yPos))
+				{
+					yPos = int.MaxValue;
+				}
+				return xPos.CompareTo(yPos);
+			}
+		}
+		/// <summary>Implements ICustomSerializedElement.CustomSerializedChildRoleComparer</summary>
+		protected new IComparer<DomainRoleInfo> CustomSerializedChildRoleComparer
+		{
+			get
+			{
+				IComparer<DomainRoleInfo> retVal = EntityTypeSubtypeInstance.myCustomSortChildComparer;
+				if (null == retVal)
+				{
+					IComparer<DomainRoleInfo> baseComparer = null;
+					if (0 != (CustomSerializedElementSupportedOperations.CustomSortChildRoles & base.SupportedCustomSerializedOperations))
+					{
+						baseComparer = base.CustomSerializedChildRoleComparer;
+					}
+					retVal = new CustomSortChildComparer(this.Store, baseComparer);
+					EntityTypeSubtypeInstance.myCustomSortChildComparer = retVal;
+				}
+				return retVal;
+			}
+		}
+		IComparer<DomainRoleInfo> ICustomSerializedElement.CustomSerializedChildRoleComparer
+		{
+			get
+			{
+				return this.CustomSerializedChildRoleComparer;
+			}
+		}
+		private static Dictionary<string, CustomSerializedElementMatch> myChildElementMappings;
+		/// <summary>Implements ICustomSerializedElement.MapChildElement</summary>
+		protected new CustomSerializedElementMatch MapChildElement(string elementNamespace, string elementName, string containerNamespace, string containerName, string outerContainerNamespace, string outerContainerName)
+		{
+			Dictionary<string, CustomSerializedElementMatch> childElementMappings = EntityTypeSubtypeInstance.myChildElementMappings;
+			if (childElementMappings == null)
+			{
+				childElementMappings = new Dictionary<string, CustomSerializedElementMatch>();
+				CustomSerializedElementMatch match = new CustomSerializedElementMatch();
+				match.InitializeRoles(EntityTypeSubtypeInstanceHasSupertypeInstance.SupertypeInstanceDomainRoleId);
+				childElementMappings.Add("||||http://schemas.neumont.edu/ORM/2006-04/ORMCore|SupertypeInstance", match);
+				match.InitializeRoles(ObjectificationInstance.ObjectifiedInstanceDomainRoleId);
+				childElementMappings.Add("||||http://schemas.neumont.edu/ORM/2006-04/ORMCore|ObjectifiedInstance", match);
+				EntityTypeSubtypeInstance.myChildElementMappings = childElementMappings;
+			}
+			CustomSerializedElementMatch rVal;
+			if (!childElementMappings.TryGetValue(string.Concat(outerContainerNamespace, "|", outerContainerName, "|", (object)containerNamespace != (object)outerContainerNamespace ? containerNamespace : null, "|", containerName, "|", (object)elementNamespace != (object)containerNamespace ? elementNamespace : null, "|", elementName), out rVal))
+			{
+				rVal = base.MapChildElement(elementNamespace, elementName, containerNamespace, containerName, outerContainerNamespace, outerContainerName);
+			}
+			return rVal;
+		}
+		CustomSerializedElementMatch ICustomSerializedElement.MapChildElement(string elementNamespace, string elementName, string containerNamespace, string containerName, string outerContainerNamespace, string outerContainerName)
+		{
+			return this.MapChildElement(elementNamespace, elementName, containerNamespace, containerName, outerContainerNamespace, outerContainerName);
+		}
+	}
+	#endregion // EntityTypeSubtypeInstance serialization
 	#region EntityTypeRoleInstance serialization
 	partial class EntityTypeRoleInstance : ICustomSerializedElement
 	{
@@ -3163,6 +3434,14 @@ namespace Neumont.Tools.ORM.ObjectModel
 				return new CustomSerializedElementInfo(null, null, null, CustomSerializedElementWriteStyle.NotWritten, null);
 			}
 			if (roleId == FactTypeInstanceHasTooFewFactTypeRoleInstancesError.TooFewFactTypeRoleInstancesErrorDomainRoleId)
+			{
+				return new CustomSerializedElementInfo(null, null, null, CustomSerializedElementWriteStyle.NotWritten, null);
+			}
+			if (roleId == ObjectificationInstance.ObjectifyingInstanceDomainRoleId)
+			{
+				return new CustomSerializedElementInfo(null, null, null, CustomSerializedElementWriteStyle.NotWritten, null);
+			}
+			if (roleId == ObjectifiedInstanceHasObjectifyingInstanceRequiredError.ObjectifyingInstanceRequiredErrorDomainRoleId)
 			{
 				return new CustomSerializedElementInfo(null, null, null, CustomSerializedElementWriteStyle.NotWritten, null);
 			}
@@ -7491,6 +7770,145 @@ namespace Neumont.Tools.ORM.ObjectModel
 		}
 	}
 	#endregion // PopulationMandatoryError serialization
+	#region ObjectifiedInstanceRequiredError serialization
+	partial class ObjectifiedInstanceRequiredError : ICustomSerializedElement
+	{
+		/// <summary>Implements ICustomSerializedElement.SupportedCustomSerializedOperations</summary>
+		protected new CustomSerializedElementSupportedOperations SupportedCustomSerializedOperations
+		{
+			get
+			{
+				return base.SupportedCustomSerializedOperations | CustomSerializedElementSupportedOperations.LinkInfo;
+			}
+		}
+		CustomSerializedElementSupportedOperations ICustomSerializedElement.SupportedCustomSerializedOperations
+		{
+			get
+			{
+				return this.SupportedCustomSerializedOperations;
+			}
+		}
+		/// <summary>Implements ICustomSerializedElement.GetCustomSerializedLinkInfo</summary>
+		protected new CustomSerializedElementInfo GetCustomSerializedLinkInfo(DomainRoleInfo rolePlayedInfo, ElementLink elementLink)
+		{
+			Guid roleId = rolePlayedInfo.Id;
+			if (roleId == ObjectifyingInstanceHasObjectifiedInstanceRequiredError.ObjectTypeInstanceDomainRoleId)
+			{
+				string name = "EntityTypeInstance";
+				if (this.ObjectTypeInstance is EntityTypeSubtypeInstance)
+				{
+					name = "EntityTypeSubtypeInstance";
+				}
+				return new CustomSerializedElementInfo(null, name, null, CustomSerializedElementWriteStyle.Element, null);
+			}
+			if (0 != (CustomSerializedElementSupportedOperations.LinkInfo & base.SupportedCustomSerializedOperations))
+			{
+				return base.GetCustomSerializedLinkInfo(rolePlayedInfo, elementLink);
+			}
+			return CustomSerializedElementInfo.Default;
+		}
+		CustomSerializedElementInfo ICustomSerializedElement.GetCustomSerializedLinkInfo(DomainRoleInfo rolePlayedInfo, ElementLink elementLink)
+		{
+			return this.GetCustomSerializedLinkInfo(rolePlayedInfo, elementLink);
+		}
+		private static Dictionary<string, CustomSerializedElementMatch> myChildElementMappings;
+		/// <summary>Implements ICustomSerializedElement.MapChildElement</summary>
+		protected new CustomSerializedElementMatch MapChildElement(string elementNamespace, string elementName, string containerNamespace, string containerName, string outerContainerNamespace, string outerContainerName)
+		{
+			Dictionary<string, CustomSerializedElementMatch> childElementMappings = ObjectifiedInstanceRequiredError.myChildElementMappings;
+			if (childElementMappings == null)
+			{
+				childElementMappings = new Dictionary<string, CustomSerializedElementMatch>();
+				CustomSerializedElementMatch match = new CustomSerializedElementMatch();
+				match.InitializeRoles(ObjectifyingInstanceHasObjectifiedInstanceRequiredError.ObjectTypeInstanceDomainRoleId);
+				childElementMappings.Add("||||http://schemas.neumont.edu/ORM/2006-04/ORMCore|EntityTypeInstance", match);
+				childElementMappings.Add("||||http://schemas.neumont.edu/ORM/2006-04/ORMCore|EntityTypeSubtypeInstance", match);
+				ObjectifiedInstanceRequiredError.myChildElementMappings = childElementMappings;
+			}
+			CustomSerializedElementMatch rVal;
+			if (!childElementMappings.TryGetValue(string.Concat(outerContainerNamespace, "|", outerContainerName, "|", (object)containerNamespace != (object)outerContainerNamespace ? containerNamespace : null, "|", containerName, "|", (object)elementNamespace != (object)containerNamespace ? elementNamespace : null, "|", elementName), out rVal))
+			{
+				rVal = base.MapChildElement(elementNamespace, elementName, containerNamespace, containerName, outerContainerNamespace, outerContainerName);
+			}
+			return rVal;
+		}
+		CustomSerializedElementMatch ICustomSerializedElement.MapChildElement(string elementNamespace, string elementName, string containerNamespace, string containerName, string outerContainerNamespace, string outerContainerName)
+		{
+			return this.MapChildElement(elementNamespace, elementName, containerNamespace, containerName, outerContainerNamespace, outerContainerName);
+		}
+		/// <summary>Implements ICustomSerializedElement.ShouldSerialize</summary>
+		protected new bool ShouldSerialize()
+		{
+			return ((ICustomSerializedElement)this.ObjectTypeInstance).ShouldSerialize();
+		}
+		bool ICustomSerializedElement.ShouldSerialize()
+		{
+			return this.ShouldSerialize();
+		}
+	}
+	#endregion // ObjectifiedInstanceRequiredError serialization
+	#region ObjectifyingInstanceRequiredError serialization
+	partial class ObjectifyingInstanceRequiredError : ICustomSerializedElement
+	{
+		/// <summary>Implements ICustomSerializedElement.SupportedCustomSerializedOperations</summary>
+		protected new CustomSerializedElementSupportedOperations SupportedCustomSerializedOperations
+		{
+			get
+			{
+				return base.SupportedCustomSerializedOperations | CustomSerializedElementSupportedOperations.LinkInfo;
+			}
+		}
+		CustomSerializedElementSupportedOperations ICustomSerializedElement.SupportedCustomSerializedOperations
+		{
+			get
+			{
+				return this.SupportedCustomSerializedOperations;
+			}
+		}
+		/// <summary>Implements ICustomSerializedElement.GetCustomSerializedLinkInfo</summary>
+		protected new CustomSerializedElementInfo GetCustomSerializedLinkInfo(DomainRoleInfo rolePlayedInfo, ElementLink elementLink)
+		{
+			Guid roleId = rolePlayedInfo.Id;
+			if (roleId == ObjectifiedInstanceHasObjectifyingInstanceRequiredError.FactTypeInstanceDomainRoleId)
+			{
+				return new CustomSerializedElementInfo(null, "FactTypeInstance", null, CustomSerializedElementWriteStyle.Element, null);
+			}
+			if (0 != (CustomSerializedElementSupportedOperations.LinkInfo & base.SupportedCustomSerializedOperations))
+			{
+				return base.GetCustomSerializedLinkInfo(rolePlayedInfo, elementLink);
+			}
+			return CustomSerializedElementInfo.Default;
+		}
+		CustomSerializedElementInfo ICustomSerializedElement.GetCustomSerializedLinkInfo(DomainRoleInfo rolePlayedInfo, ElementLink elementLink)
+		{
+			return this.GetCustomSerializedLinkInfo(rolePlayedInfo, elementLink);
+		}
+		private static Dictionary<string, CustomSerializedElementMatch> myChildElementMappings;
+		/// <summary>Implements ICustomSerializedElement.MapChildElement</summary>
+		protected new CustomSerializedElementMatch MapChildElement(string elementNamespace, string elementName, string containerNamespace, string containerName, string outerContainerNamespace, string outerContainerName)
+		{
+			Dictionary<string, CustomSerializedElementMatch> childElementMappings = ObjectifyingInstanceRequiredError.myChildElementMappings;
+			if (childElementMappings == null)
+			{
+				childElementMappings = new Dictionary<string, CustomSerializedElementMatch>();
+				CustomSerializedElementMatch match = new CustomSerializedElementMatch();
+				match.InitializeRoles(ObjectifiedInstanceHasObjectifyingInstanceRequiredError.FactTypeInstanceDomainRoleId);
+				childElementMappings.Add("||||http://schemas.neumont.edu/ORM/2006-04/ORMCore|FactTypeInstance", match);
+				ObjectifyingInstanceRequiredError.myChildElementMappings = childElementMappings;
+			}
+			CustomSerializedElementMatch rVal;
+			if (!childElementMappings.TryGetValue(string.Concat(outerContainerNamespace, "|", outerContainerName, "|", (object)containerNamespace != (object)outerContainerNamespace ? containerNamespace : null, "|", containerName, "|", (object)elementNamespace != (object)containerNamespace ? elementNamespace : null, "|", elementName), out rVal))
+			{
+				rVal = base.MapChildElement(elementNamespace, elementName, containerNamespace, containerName, outerContainerNamespace, outerContainerName);
+			}
+			return rVal;
+		}
+		CustomSerializedElementMatch ICustomSerializedElement.MapChildElement(string elementNamespace, string elementName, string containerNamespace, string containerName, string outerContainerNamespace, string outerContainerName)
+		{
+			return this.MapChildElement(elementNamespace, elementName, containerNamespace, containerName, outerContainerNamespace, outerContainerName);
+		}
+	}
+	#endregion // ObjectifyingInstanceRequiredError serialization
 	#region PopulationUniquenessError serialization
 	partial class PopulationUniquenessError : ICustomSerializedElement
 	{

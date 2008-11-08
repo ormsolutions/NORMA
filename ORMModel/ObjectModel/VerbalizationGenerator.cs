@@ -10,6 +10,7 @@ using Microsoft.VisualStudio.Modeling;
 // * Neumont Object-Role Modeling Architect for Visual Studio                 *
 // *                                                                          *
 // * Copyright © Neumont University. All rights reserved.                     *
+// * Copyright © Matthew Curland. All rights reserved.                        *
 // *                                                                          *
 // * The use and distribution terms for this software are covered by the      *
 // * Common Public License 1.0 (http://opensource.org/licenses/cpl) which     *
@@ -100,6 +101,8 @@ namespace Neumont.Tools.ORM.ObjectModel
 		FactTypeInstanceBlockEnd,
 		/// <summary>The 'FactTypeInstanceBlockStart' simple snippet value.</summary>
 		FactTypeInstanceBlockStart,
+		/// <summary>The 'FactTypeInstanceIdentifier' format string snippet. Contains 1 replacement field.</summary>
+		FactTypeInstanceIdentifier,
 		/// <summary>The 'ForEachCompactQuantifier' format string snippet. Contains 2 replacement fields.</summary>
 		ForEachCompactQuantifier,
 		/// <summary>The 'ForEachIndentedQuantifier' format string snippet. Contains 2 replacement fields.</summary>
@@ -391,6 +394,7 @@ namespace Neumont.Tools.ORM.ObjectModel
 				@"<span class=""quantifier"">some</span> {0}",
 				"</span>",
 				@"<br/><span class=""quantifier"">Examples: </span><span class=""smallIndent"">",
+				@"<span class=""smallIndent""><span class=""quantifier"">Identifier: <span class=""instance"">{0}</span></span></span>",
 				@"<span class=""quantifier"">for each</span> {0}, {1}",
 				@"<span class=""quantifier"">for each</span> {0},<br/><span class=""smallIndent"">{1}</span>",
 				@"<span class=""quantifier"">each {0} in the population of “{1}” occurs there {2}</span>",
@@ -575,6 +579,7 @@ namespace Neumont.Tools.ORM.ObjectModel
 				@"<span class=""quantifier"">some</span> {0}",
 				"</span>",
 				@"<br/><span class=""quantifier"">Examples: </span><span class=""smallIndent"">",
+				@"<span class=""smallIndent""><span class=""quantifier"">Identifier: <span class=""instance"">{0}</span></span></span>",
 				@"<span class=""quantifier"">for each</span> {0}, {1}",
 				@"<span class=""quantifier"">for each</span> {0},<br/><span class=""smallIndent"">{1}</span>",
 				@"<span class=""quantifier"">each {0} in the population of “{1}” occurs there {2}</span>",
@@ -759,6 +764,7 @@ namespace Neumont.Tools.ORM.ObjectModel
 				@"<span class=""quantifier"">no</span> {0}",
 				"</span>",
 				@"<br/><span class=""quantifier"">Examples: </span><span class=""smallIndent"">",
+				@"<span class=""smallIndent""><span class=""quantifier"">Identifier: <span class=""instance"">{0}</span></span></span>",
 				@"<span class=""quantifier"">for each</span> {0}, {1}",
 				@"<span class=""quantifier"">for each</span> {0},<br/><span class=""smallIndent"">{1}</span>",
 				@"<span class=""quantifier"">each {0} in the population of “{1}” occurs there {2}</span>",
@@ -943,6 +949,7 @@ namespace Neumont.Tools.ORM.ObjectModel
 				@"<span class=""quantifier"">no</span> {0}",
 				"</span>",
 				@"<br/><span class=""quantifier"">Examples: </span><span class=""smallIndent"">",
+				@"<span class=""smallIndent""><span class=""quantifier"">Identifier: <span class=""instance"">{0}</span></span></span>",
 				@"<span class=""quantifier"">for each</span> {0}, {1}",
 				@"<span class=""quantifier"">for each</span> {0},<br/><span class=""smallIndent"">{1}</span>",
 				@"<span class=""quantifier"">each {0} in the population of “{1}” occurs there {2}</span>",
@@ -9594,6 +9601,9 @@ namespace Neumont.Tools.ORM.ObjectModel
 				LinkedElementCollection<FactTypeRoleInstance> instanceRoles = Instance.RoleInstanceCollection;
 				int instanceRoleCount = instanceRoles.Count;
 				string[] basicRoleReplacements = new string[factArity];
+				string textFormat = snippets.GetSnippet(CoreVerbalizationSnippetType.TextInstanceValue, isDeontic, isNegative);
+				string nonTextFormat = snippets.GetSnippet(CoreVerbalizationSnippetType.NonTextInstanceValue, isDeontic, isNegative);
+				IFormatProvider formatProvider = writer.FormatProvider;
 				for (int i = 0; i < factArity; ++i)
 				{
 					Role factRole = factRoles[i + unaryRoleOffset].Role;
@@ -9620,10 +9630,7 @@ namespace Neumont.Tools.ORM.ObjectModel
 					if (roleInstance != null)
 					{
 						string instanceValue;
-						string textFormat = snippets.GetSnippet(CoreVerbalizationSnippetType.TextInstanceValue, isDeontic, isNegative);
-						string nonTextFormat = snippets.GetSnippet(CoreVerbalizationSnippetType.NonTextInstanceValue, isDeontic, isNegative);
-						IFormatProvider formatProvider = writer.FormatProvider;
-						instanceValue = ObjectTypeInstance.GetDisplayString(roleInstance.ObjectTypeInstance, rolePlayer, formatProvider, textFormat, nonTextFormat);
+						instanceValue = ObjectTypeInstance.GetDisplayString(roleInstance.ObjectTypeInstance, rolePlayer, false, formatProvider, textFormat, nonTextFormat);
 						basicReplacement = string.Format(writer.FormatProvider, snippets.GetSnippet(CoreVerbalizationSnippetType.CombinedObjectAndInstance, isDeontic, isNegative), basicReplacement, instanceValue);
 					}
 					else
@@ -9632,12 +9639,21 @@ namespace Neumont.Tools.ORM.ObjectModel
 					}
 					basicRoleReplacements[i] = basicReplacement;
 				}
+				ObjectTypeInstance objectifyingInstance = this.DisplayIdentifier ? this.Instance.ObjectifyingInstance : null;
 				#endregion // Preliminary
 				#region Pattern Matches
 				verbalizationContext.BeginVerbalization(VerbalizationContent.Normal);
 				reading = parentFact.GetMatchingReading(allReadingOrders, null, factRoles[0], null, false, false, false, factRoles, true);
 				hyphenBinder = new VerbalizationHyphenBinder(reading, writer.FormatProvider, factRoles, unaryRoleIndex, snippets.GetSnippet(CoreVerbalizationSnippetType.HyphenBoundPredicatePart, isDeontic, isNegative), predicatePartFormatString);
 				FactType.WriteVerbalizerSentence(writer, hyphenBinder.PopulatePredicateText(reading, writer.FormatProvider, predicatePartFormatString, factRoles, basicRoleReplacements, true), snippets.GetSnippet(CoreVerbalizationSnippetType.CloseVerbalizationSentence, isDeontic, isNegative));
+				if (objectifyingInstance != null)
+				{
+					writer.WriteLine();
+					string snippetFormat2 = snippets.GetSnippet(CoreVerbalizationSnippetType.FactTypeInstanceIdentifier, isDeontic, isNegative);
+					string snippet2Replace1 = null;
+					snippet2Replace1 = ObjectTypeInstance.GetDisplayString(objectifyingInstance, objectifyingInstance.ObjectType, true, formatProvider, textFormat, nonTextFormat);
+					FactType.WriteVerbalizerSentence(writer, string.Format(writer.FormatProvider, snippetFormat2, snippet2Replace1), snippets.GetSnippet(CoreVerbalizationSnippetType.CloseVerbalizationSentence, isDeontic, isNegative));
+				}
 				#endregion // Pattern Matches
 				#region Error report
 				if (errorOwner != null)
@@ -9769,7 +9785,7 @@ namespace Neumont.Tools.ORM.ObjectModel
 				#region Pattern Matches
 				const bool isDeontic = false;
 				StringBuilder sbTemp = null;
-				int instanceCount = this.Instances.Length;
+				int instanceCount = this.Instances.Count;
 				verbalizationContext.BeginVerbalization(VerbalizationContent.Normal);
 				if (sbTemp == null)
 				{
@@ -9802,7 +9818,7 @@ namespace Neumont.Tools.ORM.ObjectModel
 						listSnippet = CoreVerbalizationSnippetType.ObjectTypeInstanceListSeparator;
 					}
 					sbTemp.Append(snippets.GetSnippet(listSnippet, isDeontic, isNegative));
-					sbTemp.Append(ObjectTypeInstance.GetDisplayString(this.Instances[InstanceIter1], this.ParentObject, writer.FormatProvider, snippets.GetSnippet(CoreVerbalizationSnippetType.TextInstanceValue, isDeontic, isNegative), snippets.GetSnippet(CoreVerbalizationSnippetType.NonTextInstanceValue, isDeontic, isNegative)));
+					sbTemp.Append(ObjectTypeInstance.GetDisplayString(this.Instances[InstanceIter1], this.ParentObject, false, writer.FormatProvider, snippets.GetSnippet(CoreVerbalizationSnippetType.TextInstanceValue, isDeontic, isNegative), snippets.GetSnippet(CoreVerbalizationSnippetType.NonTextInstanceValue, isDeontic, isNegative)));
 					if (InstanceIter1 == instanceCount - 1)
 					{
 						sbTemp.Append(snippets.GetSnippet(CoreVerbalizationSnippetType.ObjectTypeInstanceListClose, isDeontic, isNegative));

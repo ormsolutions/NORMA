@@ -3,6 +3,7 @@
 * Neumont Object-Role Modeling Architect for Visual Studio                 *
 *                                                                          *
 * Copyright © Neumont University. All rights reserved.                     *
+* Copyright © Matthew Curland. All rights reserved.                        *
 *                                                                          *
 * The use and distribution terms for this software are covered by the      *
 * Common Public License 1.0 (http://opensource.org/licenses/cpl) which     *
@@ -83,9 +84,41 @@ namespace Neumont.Tools.ORM.ObjectModel.Design
 			if (propertyDescriptor.DomainPropertyInfo.Id.Equals(SubtypeFact.ProvidesPreferredIdentifierDomainPropertyId))
 			{
 				SubtypeFact subtypeFact = ModelElement;
-				ObjectType subtype;
-				return subtypeFact.ProvidesPreferredIdentifier ||
-					(null != (subtype = subtypeFact.Subtype) && subtype.PreferredIdentifier != null);
+				ObjectType subtype = subtypeFact.Subtype;
+				if (subtypeFact.ProvidesPreferredIdentifier)
+				{
+					// We can only turn this off if there is a single candidate
+					// internal uniqueness constraint on an objectification that
+					// can automatically take the preferred identifier
+					FactType objectifiedFactType;
+					if (null != (objectifiedFactType = subtype.NestedFactType))
+					{
+						if (objectifiedFactType.UnaryRole != null)
+						{
+							// The uniqueness constraint on the objectified unary
+							// role is the only possible candidate
+							return false;
+						}
+						else
+						{
+							int pidCandidateCount = 0;
+							foreach (UniquenessConstraint uc in objectifiedFactType.GetInternalConstraints<UniquenessConstraint>())
+							{
+								if (++pidCandidateCount > 1)
+								{
+									break;
+								}
+							}
+							if (pidCandidateCount == 1)
+							{
+								return false;
+							}
+						}
+					}
+					return true;
+				}
+				UniquenessConstraint pid;
+				return null != (subtype = subtypeFact.Subtype) && null != (pid = subtype.PreferredIdentifier) && !pid.IsObjectifiedPreferredIdentifier;
 			}
 			return base.IsPropertyDescriptorReadOnly(propertyDescriptor);
 		}

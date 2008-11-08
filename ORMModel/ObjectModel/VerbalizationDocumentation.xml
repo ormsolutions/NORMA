@@ -480,7 +480,7 @@
   </snippet>
   <snippet name="FactTypeInstanceBlockEnd" replacementCount="0">
     <statement>
-							Description: Formatted used to end a sample population verbalization of fact types block.
+							Description: Formatted single snippet used to end a sample population verbalization of fact types block.
 						</statement>
     <unformattedSnippet></unformattedSnippet>
     <contains />
@@ -493,6 +493,16 @@
 							Format: Examples:
 						</statement>
     <unformattedSnippet>Examples: </unformattedSnippet>
+    <contains />
+    <containedIn />
+    <usedBy />
+  </snippet>
+  <snippet name="FactTypeInstanceIdentifier" replacementCount="1">
+    <statement>
+							Description: The text describing the identifier for an objectified FactType instance with an external identifier.
+							Examples: Identifier:
+						</statement>
+    <unformattedSnippet>Identifier: {0}</unformattedSnippet>
     <contains />
     <containedIn />
     <usedBy />
@@ -1952,7 +1962,6 @@
 							{13} instance value bold
 						</statement>
     <unformattedSnippet>
-			
 
 
 	ORM2 Verbalization

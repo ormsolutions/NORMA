@@ -3,6 +3,7 @@
 * Neumont Object-Role Modeling Architect for Visual Studio                 *
 *                                                                          *
 * Copyright © Neumont University. All rights reserved.                     *
+* Copyright © Matthew Curland. All rights reserved.                        *
 *                                                                          *
 * The use and distribution terms for this software are covered by the      *
 * Common Public License 1.0 (http://opensource.org/licenses/cpl) which     *
@@ -330,6 +331,7 @@ namespace Neumont.Tools.ORM.ShapeModel
 			DataTypeNotSpecifiedError dataTypeError;
 			EntityTypeRequiresReferenceSchemeError requiresReferenceSchemeError;
 			ObjectTypeDuplicateNameError duplicateName;
+			PopulationMandatoryError populationMandatory;
 			bool retVal = true;
 			if (null != (dataTypeError = error as DataTypeNotSpecifiedError))
 			{
@@ -351,6 +353,14 @@ namespace Neumont.Tools.ORM.ShapeModel
 			else if (null != (duplicateName = error as ObjectTypeDuplicateNameError))
 			{
 				ActivateNameProperty(duplicateName.ObjectTypeCollection[0]);
+			}
+			else if (null != (populationMandatory = error as PopulationMandatoryError))
+			{
+				ORMDesignerPackage.SamplePopulationEditorWindow.AutoCorrectMandatoryError(populationMandatory);
+			}
+			else if (error is TooFewEntityTypeRoleInstancesError)
+			{
+				retVal = ORMDesignerPackage.SamplePopulationEditorWindow.ActivateModelError(error);
 			}
 			else
 			{

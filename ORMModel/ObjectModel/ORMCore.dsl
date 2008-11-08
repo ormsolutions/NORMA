@@ -3,6 +3,7 @@
 	Neumont Object-Role Modeling Architect for Visual Studio
 
 	Copyright © Neumont University. All rights reserved.
+	Copyright © Matthew Curland. All rights reserved.
 
 	The use and distribution terms for this software are covered by the
 	Common Public License 1.0 (http://opensource.org/licenses/cpl) which
@@ -941,6 +942,18 @@
 			</BaseClass>
 		</DomainClass>
 
+		<DomainClass Name="ObjectifiedInstanceRequiredError" Namespace="Neumont.Tools.ORM.ObjectModel" Id="0B96D8AA-7EB3-4B6E-B45E-F94E8C63064A" DisplayName="Missing Objectified FactType Instance" Description="">
+			<BaseClass>
+				<DomainClassMoniker Name="ModelError"/>
+			</BaseClass>
+		</DomainClass>
+
+		<DomainClass Name="ObjectifyingInstanceRequiredError" Namespace="Neumont.Tools.ORM.ObjectModel" Id="23808265-C2BE-4E03-B555-A4DB84CF053C" DisplayName="Missing Objectifying EntityType Instance" Description="">
+			<BaseClass>
+				<DomainClassMoniker Name="ModelError"/>
+			</BaseClass>
+		</DomainClass>
+
 		<DomainClass Name="ConstraintDuplicateNameError" Namespace="Neumont.Tools.ORM.ObjectModel" Id="AA63E81B-6978-49A2-A4AC-86022A172EDD" DisplayName="Duplicate Constraint Names" Description="">
 			<BaseClass>
 				<DomainClassMoniker Name="DuplicateNameError"/>
@@ -1627,7 +1640,19 @@
 				<DomainClassMoniker Name="ORMModelElement"/>
 			</BaseClass>
 			<Properties>
-				<DomainProperty Name="Name" DefaultValue="" DisplayName="Name" IsElementName="true" Id="553DEB12-8FE0-4FE4-B94E-52F1CD5DCF0A" Kind="Calculated">
+				<DomainProperty Name="Name" DefaultValue="" DisplayName="Name" IsElementName="true" Id="553DEB12-8FE0-4FE4-B94E-52F1CD5DCF0A" Kind="CustomStorage"  GetterAccessModifier="Public" SetterAccessModifier="Private" Description="An ordered tuple of values for this instance. If the parent &lt;see cref=&quot;ObjectType&quot;/&gt; objectifies a &lt;see cref=&quot;FactType&quot;/&gt;, then Name returns the FactType population prepended by an external identifier reference.">
+					<Attributes>
+						<ClrAttribute Name="global::System.ComponentModel.MergableProperty">
+							<Parameters>
+								<AttributeParameter Value="false"/>
+							</Parameters>
+						</ClrAttribute>
+					</Attributes>
+					<Type>
+						<ExternalTypeMoniker Name="/System/String"/>
+					</Type>
+				</DomainProperty>
+				<DomainProperty Name="IdentifierName" DefaultValue="" DisplayName="IdentifierName" Id="AC967572-B11E-41C9-A206-CC2424E5E17E" Kind="CustomStorage"  GetterAccessModifier="Public" SetterAccessModifier="Private" Description="An ordered tuple of values for this instance, ignores objectification of the associated &lt;see cref=&quot;ObjectType&quot;/&gt;.">
 					<Attributes>
 						<ClrAttribute Name="global::System.ComponentModel.MergableProperty">
 							<Parameters>
@@ -1653,6 +1678,12 @@
 			</BaseClass>
 		</DomainClass>
 
+		<DomainClass Name="EntityTypeSubtypeInstance" Namespace="Neumont.Tools.ORM.ObjectModel" Id="19F9A457-D2C6-4D0A-B767-542DF80FEFF3" DisplayName="EntityTypeSubtypeInstance" Description="An instance of an EntityType Subtype that uses the preferred identification scheme of a parent.">
+			<BaseClass>
+				<DomainClassMoniker Name="ObjectTypeInstance"/>
+			</BaseClass>
+		</DomainClass>
+
 		<DomainClass Name="ValueTypeInstance" Namespace="Neumont.Tools.ORM.ObjectModel" Id="BCC1483D-CBB8-4E4F-903B-16224768F6F5" DisplayName="ValueTypeInstance" Description="">
 			<BaseClass>
 				<DomainClassMoniker Name="ObjectTypeInstance"/>
@@ -1671,6 +1702,25 @@
 			<BaseClass>
 				<DomainClassMoniker Name="ORMModelElement"/>
 			</BaseClass>
+			<Properties>
+				<DomainProperty Name="Name" DefaultValue="" DisplayName="Name" IsElementName="true" Id="AA6CFB60-9F6A-48AB-AB0F-445BF7112FB9" Kind="CustomStorage"  GetterAccessModifier="Public" SetterAccessModifier="Private">
+					<Attributes>
+						<ClrAttribute Name="global::System.ComponentModel.MergableProperty">
+							<Parameters>
+								<AttributeParameter Value="false"/>
+							</Parameters>
+						</ClrAttribute>
+					</Attributes>
+					<Type>
+						<ExternalTypeMoniker Name="/System/String"/>
+					</Type>
+				</DomainProperty>
+				<DomainProperty Name="NameChanged" DefaultValue="" DisplayName="NameChanged" Id="F510E9DB-71BF-4D70-B36A-4C6BF17D0917" IsBrowsable="false" Kind="CustomStorage">
+					<Type>
+						<ExternalTypeMoniker Name="/System/Int64"/>
+					</Type>
+				</DomainProperty>
+			</Properties>
 		</DomainClass>
 
 		<DomainClass Name="TooFewEntityTypeRoleInstancesError" Namespace="Neumont.Tools.ORM.ObjectModel" Id="39F447EA-8EA4-483D-B791-848AD27544E2" DisplayName="Incomplete Sample Population to Identify EntityType" Description="">
@@ -3771,6 +3821,26 @@
 			</Target>
 		</DomainRelationship>
 
+		<DomainRelationship Name="EntityTypeSubtypeHasEntityTypeSubtypeInstance" Namespace="Neumont.Tools.ORM.ObjectModel" IsEmbedding="true" Id="7E059BD5-D4A9-48A1-88FA-6459B77D7E23">
+			<BaseRelationship>
+				<DomainRelationshipMoniker Name="ObjectTypeHasObjectTypeInstance"/>
+			</BaseRelationship>
+			<Source>
+				<DomainRole Name="EntityTypeSubtype" PropertyName="EntityTypeSubtypeInstanceCollection" Multiplicity="ZeroMany" PropagatesDelete="false" IsPropertyGenerator="true" DisplayName="EntityTypeSubtype" Id="0DADE527-8AD4-4234-9EF4-F78FD7D360C2">
+					<RolePlayer>
+						<DomainClassMoniker Name="ObjectType"/>
+					</RolePlayer>
+				</DomainRole>
+			</Source>
+			<Target>
+				<DomainRole Name="EntityTypeSubtypeInstance" PropertyName="EntityTypeSubtype" Multiplicity="One" PropagatesDelete="true" IsPropertyGenerator="true" DisplayName="EntityTypeSubtypeInstance" Id="9A51223A-5D4D-4E86-BB76-A49F28DEE71D">
+					<RolePlayer>
+						<DomainClassMoniker Name="EntityTypeSubtypeInstance"/>
+					</RolePlayer>
+				</DomainRole>
+			</Target>
+		</DomainRelationship>
+
 		<DomainRelationship Name="ValueTypeHasValueTypeInstance" Namespace="Neumont.Tools.ORM.ObjectModel" IsEmbedding="true" Id="E01B8EC6-F3BF-4963-92DB-7E352501C04D">
 			<BaseRelationship>
 				<DomainRelationshipMoniker Name="ObjectTypeHasObjectTypeInstance"/>
@@ -3879,6 +3949,23 @@
 			</Target>
 		</DomainRelationship>
 
+		<DomainRelationship Name="EntityTypeSubtypeInstanceHasSupertypeInstance" Namespace="Neumont.Tools.ORM.ObjectModel" Id="F11D087F-8B5B-4AC9-9B67-F967D5A5013E">
+			<Source>
+				<DomainRole Name="EntityTypeSubtypeInstance" PropertyName="SupertypeInstance" Multiplicity="One" PropagatesDelete="true" IsPropertyGenerator="true" DisplayName="EntityTypeSubtypeInstance" Id="23F6CEC5-E016-40AD-A4D2-B684A9CA0231">
+					<RolePlayer>
+						<DomainClassMoniker Name="EntityTypeSubtypeInstance"/>
+					</RolePlayer>
+				</DomainRole>
+			</Source>
+			<Target>
+				<DomainRole Name="SupertypeInstance" PropertyName="EntityTypeSubtypeInstanceCollection" Multiplicity="ZeroMany" PropagatesDelete="false" IsPropertyGenerator="true" DisplayName="SupertypeInstance" Id="BC2CD94C-D143-4676-8036-D4094A61B970">
+					<RolePlayer>
+						<DomainClassMoniker Name="EntityTypeInstance"/>
+					</RolePlayer>
+				</DomainRole>
+			</Target>
+		</DomainRelationship>
+
 		<DomainRelationship Name="FactTypeHasFactTypeInstance" Namespace="Neumont.Tools.ORM.ObjectModel" IsEmbedding="true" Id="5283F53B-0DA8-4E4C-8A31-BDE51057E7EF">
 			<!--<BaseRelationship>
 				<DomainRelationshipMoniker Name="ORMElementLink"/>
@@ -3914,6 +4001,63 @@
 				<DomainRole Name="RoleInstance" PropertyName="FactTypeInstance" Multiplicity="One" PropagatesDelete="true" IsPropertyGenerator="true" DisplayName="RoleInstance" Id="AF7B2192-02B6-49A6-A6D7-67A608124BB6">
 					<RolePlayer>
 						<DomainRelationshipMoniker Name="FactTypeRoleInstance"/>
+					</RolePlayer>
+				</DomainRole>
+			</Target>
+		</DomainRelationship>
+
+		<DomainRelationship Name="ObjectificationInstance" Namespace="Neumont.Tools.ORM.ObjectModel" IsEmbedding="false" Id="943F2CFD-0179-48D8-81D9-3B8277A8D449">
+			<Source>
+				<DomainRole Name="ObjectifiedInstance" PropertyName="ObjectifyingInstance" Multiplicity="ZeroOne" PropagatesDelete="false" IsPropertyGenerator="true" DisplayName="ObjectifiedInstance" Id="819A1D2B-125B-4193-A336-25BE03EA91C3">
+					<RolePlayer>
+						<DomainClassMoniker Name="FactTypeInstance"/>
+					</RolePlayer>
+				</DomainRole>
+			</Source>
+			<Target>
+				<DomainRole Name="ObjectifyingInstance" PropertyName="ObjectifiedInstance" Multiplicity="ZeroOne" PropagatesDelete="false" IsPropertyGenerator="true" DisplayName="ObjectifyingInstance" Id="326E4CF1-6A1F-41AB-B535-3A016CE59C7F">
+					<RolePlayer>
+						<DomainClassMoniker Name="ObjectTypeInstance"/>
+					</RolePlayer>
+				</DomainRole>
+			</Target>
+		</DomainRelationship>
+
+		<DomainRelationship Name="ObjectifiedInstanceHasObjectifyingInstanceRequiredError" Namespace="Neumont.Tools.ORM.ObjectModel" Id="4C26F55B-D01B-4871-96C7-659FFB8448E9">
+			<BaseRelationship>
+				<DomainRelationshipMoniker Name="ElementAssociatedWithModelError"/>
+			</BaseRelationship>
+			<Source>
+				<DomainRole Name="FactTypeInstance" PropertyName="ObjectifyingInstanceRequiredError" Multiplicity="ZeroOne" PropagatesDelete="false" IsPropertyGenerator="true" DisplayName="FactTypeInstance" Id="2D8DD1D8-131E-44E7-9030-E16CC588A0AA">
+					<RolePlayer>
+						<DomainClassMoniker Name="FactTypeInstance"/>
+					</RolePlayer>
+				</DomainRole>
+			</Source>
+			<Target>
+				<DomainRole Name="ObjectifyingInstanceRequiredError" PropertyName="FactTypeInstance" Multiplicity="One" PropagatesDelete="true" IsPropertyGenerator="true" DisplayName="ObjectifyingInstanceRequiredError" Id="0B7C29C1-067C-4986-9CB6-E485CD091C28">
+					<RolePlayer>
+						<DomainClassMoniker Name="ObjectifyingInstanceRequiredError"/>
+					</RolePlayer>
+				</DomainRole>
+			</Target>
+		</DomainRelationship>
+
+		<DomainRelationship Name="ObjectifyingInstanceHasObjectifiedInstanceRequiredError" Namespace="Neumont.Tools.ORM.ObjectModel" Id="A66FF864-B788-4287-B774-09BABE9E62B9">
+			<BaseRelationship>
+				<DomainRelationshipMoniker Name="ElementAssociatedWithModelError"/>
+			</BaseRelationship>
+			<Source>
+				<DomainRole Name="ObjectTypeInstance" PropertyName="ObjectifiedInstanceRequiredError" Multiplicity="ZeroOne" PropagatesDelete="false" IsPropertyGenerator="true" DisplayName="ObjectTypeInstance" Id="07CBB8AE-FC88-4F02-905E-2CE7258EBA46">
+					<RolePlayer>
+						<DomainClassMoniker Name="ObjectTypeInstance"/>
+					</RolePlayer>
+				</DomainRole>
+			</Source>
+			<Target>
+				<DomainRole Name="ObjectifiedInstanceRequiredError" PropertyName="ObjectTypeInstance" Multiplicity="One" PropagatesDelete="true" IsPropertyGenerator="true" DisplayName="ObjectifiedInstanceRequiredError" Id="B8B818DD-B4F9-4641-992F-C405C45C6F8F">
+					<RolePlayer>
+						<DomainClassMoniker Name="ObjectifiedInstanceRequiredError"/>
 					</RolePlayer>
 				</DomainRole>
 			</Target>

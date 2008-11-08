@@ -11,6 +11,7 @@
 			Neumont Object-Role Modeling Architect for Visual Studio
 
 			Copyright © Neumont University. All rights reserved.
+			Copyright © Matthew Curland. All rights reserved.
 
 			The use and distribution terms for this software are covered by the
 			Common Public License 1.0 (http://opensource.org/licenses/cpl) which
@@ -1019,7 +1020,15 @@
 				<xs:enumeration value="FactTypeInstanceBlockEnd">
 					<xs:annotation>
 						<xs:documentation>
-							Description: Formatted used to end a sample population verbalization of fact types block.
+							Description: Formatted single snippet used to end a sample population verbalization of fact types block.
+						</xs:documentation>
+					</xs:annotation>
+				</xs:enumeration>
+				<xs:enumeration value="FactTypeInstanceIdentifier">
+					<xs:annotation>
+						<xs:documentation>
+							Description: The text describing the identifier for an objectified FactType instance with an external identifier.
+							Examples: Identifier:
 						</xs:documentation>
 					</xs:annotation>
 				</xs:enumeration>

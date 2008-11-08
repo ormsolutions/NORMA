@@ -3,6 +3,7 @@
 * Neumont Object-Role Modeling Architect for Visual Studio                 *
 *                                                                          *
 * Copyright © Neumont University. All rights reserved.                     *
+* Copyright © Matthew Curland. All rights reserved.                        *
 *                                                                          *
 * The use and distribution terms for this software are covered by the      *
 * Common Public License 1.0 (http://opensource.org/licenses/cpl) which     *
@@ -4918,6 +4919,7 @@ namespace Neumont.Tools.ORM.ObjectModel
 				// 3) Each fact must be binary
 				// 4) The opposite role player for each fact must be set to the same object
 				// 5) The opposite role player must be an entity type
+				// 6) The opposite role must not be an objectified unary role
 				// The other conditions (at least one opposite role is mandatory and all
 				// opposite roles have a single-role uniqueness constraint) will either
 				// be enforced (single-role uniqueness) in the rule that makes  the change
@@ -4962,6 +4964,10 @@ namespace Neumont.Tools.ORM.ObjectModel
 								if (oppositeRole == role)
 								{
 									oppositeRole = factRoles[1].Role;
+								}
+								if (oppositeRole is ObjectifiedUnaryRole) // Condition 6, Can't be opposite an objectified unary role
+								{
+									break;
 								}
 								rolePlayer = oppositeRole.RolePlayer;
 							}
@@ -5054,6 +5060,33 @@ namespace Neumont.Tools.ORM.ObjectModel
 					null != (proxy = constraintRoles[0].Proxy) &&
 					null != (impliedFact = proxy.FactType) &&
 					impliedFact.ImpliedByObjectification == objectification;
+			}
+		}
+		/// <summary>
+		/// Returns true if this uniqueness constraint is internal
+		/// to an objectified <see cref="FactType"/> that is objectified
+		/// by the <see cref="ObjectType"/> the constraint is a preferred
+		/// identifier, or if the preferred identifier is part of a unary
+		/// objectification FactType.
+		/// </summary>
+		public bool IsObjectifiedPreferredIdentifier
+		{
+			get
+			{
+				ObjectType preferredFor;
+				FactType objectifiedFactType;
+				LinkedElementCollection<FactType> pidFactTypes;
+				Role unaryRole;
+				ObjectifiedUnaryRole objectifiedUnaryRole;
+				FactType identifierFactType;
+				return IsInternal &&
+					null != (preferredFor = PreferredIdentifierFor) &&
+					null != (objectifiedFactType = preferredFor.NestedFactType) &&
+					1 == (pidFactTypes = FactTypeCollection).Count &&
+					((identifierFactType = pidFactTypes[0]) == objectifiedFactType ||
+					(null != (unaryRole = objectifiedFactType.UnaryRole) &&
+					null != (objectifiedUnaryRole = unaryRole.ObjectifiedUnaryRole) &&
+					identifierFactType == objectifiedUnaryRole.FactType));
 			}
 		}
 		#endregion // UniquenessConstraint Specific

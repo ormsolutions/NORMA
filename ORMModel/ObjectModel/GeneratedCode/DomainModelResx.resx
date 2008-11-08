@@ -1005,6 +1005,22 @@
     <value>Missing Mandatory Sample Population</value>
     <comment>DisplayName for DomainClass &apos;PopulationMandatoryError&apos;</comment>
   </data>
+  <data name="Neumont.Tools.ORM.ObjectModel.ObjectifiedInstanceRequiredError.Description" xml:space="preserve">
+    <value></value>
+    <comment>Description for DomainClass &apos;ObjectifiedInstanceRequiredError&apos;</comment>
+  </data>
+  <data name="Neumont.Tools.ORM.ObjectModel.ObjectifiedInstanceRequiredError.DisplayName" xml:space="preserve">
+    <value>Missing Objectified FactType Instance</value>
+    <comment>DisplayName for DomainClass &apos;ObjectifiedInstanceRequiredError&apos;</comment>
+  </data>
+  <data name="Neumont.Tools.ORM.ObjectModel.ObjectifyingInstanceRequiredError.Description" xml:space="preserve">
+    <value></value>
+    <comment>Description for DomainClass &apos;ObjectifyingInstanceRequiredError&apos;</comment>
+  </data>
+  <data name="Neumont.Tools.ORM.ObjectModel.ObjectifyingInstanceRequiredError.DisplayName" xml:space="preserve">
+    <value>Missing Objectifying EntityType Instance</value>
+    <comment>DisplayName for DomainClass &apos;ObjectifyingInstanceRequiredError&apos;</comment>
+  </data>
   <data name="Neumont.Tools.ORM.ObjectModel.ConstraintDuplicateNameError.Description" xml:space="preserve">
     <value></value>
     <comment>Description for DomainClass &apos;ConstraintDuplicateNameError&apos;</comment>
@@ -1830,12 +1846,20 @@
     <comment>DisplayName for DomainClass &apos;ObjectTypeInstance&apos;</comment>
   </data>
   <data name="Neumont.Tools.ORM.ObjectModel.ObjectTypeInstance/Name.Description" xml:space="preserve">
-    <value>Description for Neumont.Tools.ORM.ObjectModel.ObjectTypeInstance.Name</value>
+    <value>An ordered tuple of values for this instance. If the parent &lt;see cref=&quot;ObjectType&quot;/&gt; objectifies a &lt;see cref=&quot;FactType&quot;/&gt;, then Name returns the FactType population prepended by an external identifier reference.</value>
     <comment>Description for DomainProperty &apos;Name&apos; on DomainClass &apos;ObjectTypeInstance&apos;</comment>
   </data>
   <data name="Neumont.Tools.ORM.ObjectModel.ObjectTypeInstance/Name.DisplayName" xml:space="preserve">
     <value>Name</value>
     <comment>DisplayName for DomainProperty &apos;Name&apos; on DomainClass &apos;ObjectTypeInstance&apos;</comment>
+  </data>
+  <data name="Neumont.Tools.ORM.ObjectModel.ObjectTypeInstance/IdentifierName.Description" xml:space="preserve">
+    <value>An ordered tuple of values for this instance, ignores objectification of the associated &lt;see cref=&quot;ObjectType&quot;/&gt;.</value>
+    <comment>Description for DomainProperty &apos;IdentifierName&apos; on DomainClass &apos;ObjectTypeInstance&apos;</comment>
+  </data>
+  <data name="Neumont.Tools.ORM.ObjectModel.ObjectTypeInstance/IdentifierName.DisplayName" xml:space="preserve">
+    <value>IdentifierName</value>
+    <comment>DisplayName for DomainProperty &apos;IdentifierName&apos; on DomainClass &apos;ObjectTypeInstance&apos;</comment>
   </data>
   <data name="Neumont.Tools.ORM.ObjectModel.ObjectTypeInstance/NameChanged.Description" xml:space="preserve">
     <value>Description for Neumont.Tools.ORM.ObjectModel.ObjectTypeInstance.NameChanged</value>
@@ -1852,6 +1876,14 @@
   <data name="Neumont.Tools.ORM.ObjectModel.EntityTypeInstance.DisplayName" xml:space="preserve">
     <value>EntityTypeInstance</value>
     <comment>DisplayName for DomainClass &apos;EntityTypeInstance&apos;</comment>
+  </data>
+  <data name="Neumont.Tools.ORM.ObjectModel.EntityTypeSubtypeInstance.Description" xml:space="preserve">
+    <value>An instance of an EntityType Subtype that uses the preferred identification scheme of a parent.</value>
+    <comment>Description for DomainClass &apos;EntityTypeSubtypeInstance&apos;</comment>
+  </data>
+  <data name="Neumont.Tools.ORM.ObjectModel.EntityTypeSubtypeInstance.DisplayName" xml:space="preserve">
+    <value>EntityTypeSubtypeInstance</value>
+    <comment>DisplayName for DomainClass &apos;EntityTypeSubtypeInstance&apos;</comment>
   </data>
   <data name="Neumont.Tools.ORM.ObjectModel.ValueTypeInstance.Description" xml:space="preserve">
     <value></value>
@@ -1876,6 +1908,22 @@
   <data name="Neumont.Tools.ORM.ObjectModel.FactTypeInstance.DisplayName" xml:space="preserve">
     <value>FactTypeInstance</value>
     <comment>DisplayName for DomainClass &apos;FactTypeInstance&apos;</comment>
+  </data>
+  <data name="Neumont.Tools.ORM.ObjectModel.FactTypeInstance/Name.Description" xml:space="preserve">
+    <value>Description for Neumont.Tools.ORM.ObjectModel.FactTypeInstance.Name</value>
+    <comment>Description for DomainProperty &apos;Name&apos; on DomainClass &apos;FactTypeInstance&apos;</comment>
+  </data>
+  <data name="Neumont.Tools.ORM.ObjectModel.FactTypeInstance/Name.DisplayName" xml:space="preserve">
+    <value>Name</value>
+    <comment>DisplayName for DomainProperty &apos;Name&apos; on DomainClass &apos;FactTypeInstance&apos;</comment>
+  </data>
+  <data name="Neumont.Tools.ORM.ObjectModel.FactTypeInstance/NameChanged.Description" xml:space="preserve">
+    <value>Description for Neumont.Tools.ORM.ObjectModel.FactTypeInstance.NameChanged</value>
+    <comment>Description for DomainProperty &apos;NameChanged&apos; on DomainClass &apos;FactTypeInstance&apos;</comment>
+  </data>
+  <data name="Neumont.Tools.ORM.ObjectModel.FactTypeInstance/NameChanged.DisplayName" xml:space="preserve">
+    <value>NameChanged</value>
+    <comment>DisplayName for DomainProperty &apos;NameChanged&apos; on DomainClass &apos;FactTypeInstance&apos;</comment>
   </data>
   <data name="Neumont.Tools.ORM.ObjectModel.TooFewEntityTypeRoleInstancesError.Description" xml:space="preserve">
     <value></value>
@@ -5157,6 +5205,38 @@
     <value>Entity Type</value>
     <comment>PropertyDisplayName for DomainRole &apos;EntityTypeInstance&apos; on DomainRelationship &apos;EntityTypeHasEntityTypeInstance&apos;</comment>
   </data>
+  <data name="Neumont.Tools.ORM.ObjectModel.EntityTypeSubtypeHasEntityTypeSubtypeInstance.Description" xml:space="preserve">
+    <value>Description for Neumont.Tools.ORM.ObjectModel.EntityTypeSubtypeHasEntityTypeSubtypeInstance</value>
+    <comment>Description for DomainClass &apos;EntityTypeSubtypeHasEntityTypeSubtypeInstance&apos;</comment>
+  </data>
+  <data name="Neumont.Tools.ORM.ObjectModel.EntityTypeSubtypeHasEntityTypeSubtypeInstance.DisplayName" xml:space="preserve">
+    <value>Entity Type Subtype Has Entity Type Subtype Instance</value>
+    <comment>DisplayName for DomainClass &apos;EntityTypeSubtypeHasEntityTypeSubtypeInstance&apos;</comment>
+  </data>
+  <data name="Neumont.Tools.ORM.ObjectModel.EntityTypeSubtypeHasEntityTypeSubtypeInstance/EntityTypeSubtype.Description" xml:space="preserve">
+    <value>Description for Neumont.Tools.ORM.ObjectModel.EntityTypeSubtypeHasEntityTypeSubtypeInstance.EntityTypeSubtype</value>
+    <comment>Description for DomainRole &apos;EntityTypeSubtype&apos; on DomainRelationship &apos;EntityTypeSubtypeHasEntityTypeSubtypeInstance&apos;</comment>
+  </data>
+  <data name="Neumont.Tools.ORM.ObjectModel.EntityTypeSubtypeHasEntityTypeSubtypeInstance/EntityTypeSubtype.DisplayName" xml:space="preserve">
+    <value>EntityTypeSubtype</value>
+    <comment>DisplayName for DomainRole &apos;EntityTypeSubtype&apos; on DomainRelationship &apos;EntityTypeSubtypeHasEntityTypeSubtypeInstance&apos;</comment>
+  </data>
+  <data name="Neumont.Tools.ORM.ObjectModel.EntityTypeSubtypeHasEntityTypeSubtypeInstance/EntityTypeSubtype.PropertyDisplayName" xml:space="preserve">
+    <value>Entity Type Subtype Instance Collection</value>
+    <comment>PropertyDisplayName for DomainRole &apos;EntityTypeSubtype&apos; on DomainRelationship &apos;EntityTypeSubtypeHasEntityTypeSubtypeInstance&apos;</comment>
+  </data>
+  <data name="Neumont.Tools.ORM.ObjectModel.EntityTypeSubtypeHasEntityTypeSubtypeInstance/EntityTypeSubtypeInstance.Description" xml:space="preserve">
+    <value>Description for Neumont.Tools.ORM.ObjectModel.EntityTypeSubtypeHasEntityTypeSubtypeInstance.EntityTypeSubtypeInstance</value>
+    <comment>Description for DomainRole &apos;EntityTypeSubtypeInstance&apos; on DomainRelationship &apos;EntityTypeSubtypeHasEntityTypeSubtypeInstance&apos;</comment>
+  </data>
+  <data name="Neumont.Tools.ORM.ObjectModel.EntityTypeSubtypeHasEntityTypeSubtypeInstance/EntityTypeSubtypeInstance.DisplayName" xml:space="preserve">
+    <value>EntityTypeSubtypeInstance</value>
+    <comment>DisplayName for DomainRole &apos;EntityTypeSubtypeInstance&apos; on DomainRelationship &apos;EntityTypeSubtypeHasEntityTypeSubtypeInstance&apos;</comment>
+  </data>
+  <data name="Neumont.Tools.ORM.ObjectModel.EntityTypeSubtypeHasEntityTypeSubtypeInstance/EntityTypeSubtypeInstance.PropertyDisplayName" xml:space="preserve">
+    <value>Entity Type Subtype</value>
+    <comment>PropertyDisplayName for DomainRole &apos;EntityTypeSubtypeInstance&apos; on DomainRelationship &apos;EntityTypeSubtypeHasEntityTypeSubtypeInstance&apos;</comment>
+  </data>
   <data name="Neumont.Tools.ORM.ObjectModel.ValueTypeHasValueTypeInstance.Description" xml:space="preserve">
     <value>Description for Neumont.Tools.ORM.ObjectModel.ValueTypeHasValueTypeInstance</value>
     <comment>Description for DomainClass &apos;ValueTypeHasValueTypeInstance&apos;</comment>
@@ -5317,6 +5397,38 @@
     <value>Entity Type Instance</value>
     <comment>PropertyDisplayName for DomainRole &apos;RoleInstance&apos; on DomainRelationship &apos;EntityTypeInstanceHasRoleInstance&apos;</comment>
   </data>
+  <data name="Neumont.Tools.ORM.ObjectModel.EntityTypeSubtypeInstanceHasSupertypeInstance.Description" xml:space="preserve">
+    <value>Description for Neumont.Tools.ORM.ObjectModel.EntityTypeSubtypeInstanceHasSupertypeInstance</value>
+    <comment>Description for DomainClass &apos;EntityTypeSubtypeInstanceHasSupertypeInstance&apos;</comment>
+  </data>
+  <data name="Neumont.Tools.ORM.ObjectModel.EntityTypeSubtypeInstanceHasSupertypeInstance.DisplayName" xml:space="preserve">
+    <value>Entity Type Subtype Instance Has Supertype Instance</value>
+    <comment>DisplayName for DomainClass &apos;EntityTypeSubtypeInstanceHasSupertypeInstance&apos;</comment>
+  </data>
+  <data name="Neumont.Tools.ORM.ObjectModel.EntityTypeSubtypeInstanceHasSupertypeInstance/EntityTypeSubtypeInstance.Description" xml:space="preserve">
+    <value>Description for Neumont.Tools.ORM.ObjectModel.EntityTypeSubtypeInstanceHasSupertypeInstance.EntityTypeSubtypeInstance</value>
+    <comment>Description for DomainRole &apos;EntityTypeSubtypeInstance&apos; on DomainRelationship &apos;EntityTypeSubtypeInstanceHasSupertypeInstance&apos;</comment>
+  </data>
+  <data name="Neumont.Tools.ORM.ObjectModel.EntityTypeSubtypeInstanceHasSupertypeInstance/EntityTypeSubtypeInstance.DisplayName" xml:space="preserve">
+    <value>EntityTypeSubtypeInstance</value>
+    <comment>DisplayName for DomainRole &apos;EntityTypeSubtypeInstance&apos; on DomainRelationship &apos;EntityTypeSubtypeInstanceHasSupertypeInstance&apos;</comment>
+  </data>
+  <data name="Neumont.Tools.ORM.ObjectModel.EntityTypeSubtypeInstanceHasSupertypeInstance/EntityTypeSubtypeInstance.PropertyDisplayName" xml:space="preserve">
+    <value>Supertype Instance</value>
+    <comment>PropertyDisplayName for DomainRole &apos;EntityTypeSubtypeInstance&apos; on DomainRelationship &apos;EntityTypeSubtypeInstanceHasSupertypeInstance&apos;</comment>
+  </data>
+  <data name="Neumont.Tools.ORM.ObjectModel.EntityTypeSubtypeInstanceHasSupertypeInstance/SupertypeInstance.Description" xml:space="preserve">
+    <value>Description for Neumont.Tools.ORM.ObjectModel.EntityTypeSubtypeInstanceHasSupertypeInstance.SupertypeInstance</value>
+    <comment>Description for DomainRole &apos;SupertypeInstance&apos; on DomainRelationship &apos;EntityTypeSubtypeInstanceHasSupertypeInstance&apos;</comment>
+  </data>
+  <data name="Neumont.Tools.ORM.ObjectModel.EntityTypeSubtypeInstanceHasSupertypeInstance/SupertypeInstance.DisplayName" xml:space="preserve">
+    <value>SupertypeInstance</value>
+    <comment>DisplayName for DomainRole &apos;SupertypeInstance&apos; on DomainRelationship &apos;EntityTypeSubtypeInstanceHasSupertypeInstance&apos;</comment>
+  </data>
+  <data name="Neumont.Tools.ORM.ObjectModel.EntityTypeSubtypeInstanceHasSupertypeInstance/SupertypeInstance.PropertyDisplayName" xml:space="preserve">
+    <value>Entity Type Subtype Instance Collection</value>
+    <comment>PropertyDisplayName for DomainRole &apos;SupertypeInstance&apos; on DomainRelationship &apos;EntityTypeSubtypeInstanceHasSupertypeInstance&apos;</comment>
+  </data>
   <data name="Neumont.Tools.ORM.ObjectModel.FactTypeHasFactTypeInstance.Description" xml:space="preserve">
     <value>Description for Neumont.Tools.ORM.ObjectModel.FactTypeHasFactTypeInstance</value>
     <comment>Description for DomainClass &apos;FactTypeHasFactTypeInstance&apos;</comment>
@@ -5380,6 +5492,102 @@
   <data name="Neumont.Tools.ORM.ObjectModel.FactTypeInstanceHasRoleInstance/RoleInstance.PropertyDisplayName" xml:space="preserve">
     <value>Fact Type Instance</value>
     <comment>PropertyDisplayName for DomainRole &apos;RoleInstance&apos; on DomainRelationship &apos;FactTypeInstanceHasRoleInstance&apos;</comment>
+  </data>
+  <data name="Neumont.Tools.ORM.ObjectModel.ObjectificationInstance.Description" xml:space="preserve">
+    <value>Description for Neumont.Tools.ORM.ObjectModel.ObjectificationInstance</value>
+    <comment>Description for DomainClass &apos;ObjectificationInstance&apos;</comment>
+  </data>
+  <data name="Neumont.Tools.ORM.ObjectModel.ObjectificationInstance.DisplayName" xml:space="preserve">
+    <value>Objectification Instance</value>
+    <comment>DisplayName for DomainClass &apos;ObjectificationInstance&apos;</comment>
+  </data>
+  <data name="Neumont.Tools.ORM.ObjectModel.ObjectificationInstance/ObjectifiedInstance.Description" xml:space="preserve">
+    <value>Description for Neumont.Tools.ORM.ObjectModel.ObjectificationInstance.ObjectifiedInstance</value>
+    <comment>Description for DomainRole &apos;ObjectifiedInstance&apos; on DomainRelationship &apos;ObjectificationInstance&apos;</comment>
+  </data>
+  <data name="Neumont.Tools.ORM.ObjectModel.ObjectificationInstance/ObjectifiedInstance.DisplayName" xml:space="preserve">
+    <value>ObjectifiedInstance</value>
+    <comment>DisplayName for DomainRole &apos;ObjectifiedInstance&apos; on DomainRelationship &apos;ObjectificationInstance&apos;</comment>
+  </data>
+  <data name="Neumont.Tools.ORM.ObjectModel.ObjectificationInstance/ObjectifiedInstance.PropertyDisplayName" xml:space="preserve">
+    <value>Objectifying Instance</value>
+    <comment>PropertyDisplayName for DomainRole &apos;ObjectifiedInstance&apos; on DomainRelationship &apos;ObjectificationInstance&apos;</comment>
+  </data>
+  <data name="Neumont.Tools.ORM.ObjectModel.ObjectificationInstance/ObjectifyingInstance.Description" xml:space="preserve">
+    <value>Description for Neumont.Tools.ORM.ObjectModel.ObjectificationInstance.ObjectifyingInstance</value>
+    <comment>Description for DomainRole &apos;ObjectifyingInstance&apos; on DomainRelationship &apos;ObjectificationInstance&apos;</comment>
+  </data>
+  <data name="Neumont.Tools.ORM.ObjectModel.ObjectificationInstance/ObjectifyingInstance.DisplayName" xml:space="preserve">
+    <value>ObjectifyingInstance</value>
+    <comment>DisplayName for DomainRole &apos;ObjectifyingInstance&apos; on DomainRelationship &apos;ObjectificationInstance&apos;</comment>
+  </data>
+  <data name="Neumont.Tools.ORM.ObjectModel.ObjectificationInstance/ObjectifyingInstance.PropertyDisplayName" xml:space="preserve">
+    <value>Objectified Instance</value>
+    <comment>PropertyDisplayName for DomainRole &apos;ObjectifyingInstance&apos; on DomainRelationship &apos;ObjectificationInstance&apos;</comment>
+  </data>
+  <data name="Neumont.Tools.ORM.ObjectModel.ObjectifiedInstanceHasObjectifyingInstanceRequiredError.Description" xml:space="preserve">
+    <value>Description for Neumont.Tools.ORM.ObjectModel.ObjectifiedInstanceHasObjectifyingInstanceRequiredError</value>
+    <comment>Description for DomainClass &apos;ObjectifiedInstanceHasObjectifyingInstanceRequiredError&apos;</comment>
+  </data>
+  <data name="Neumont.Tools.ORM.ObjectModel.ObjectifiedInstanceHasObjectifyingInstanceRequiredError.DisplayName" xml:space="preserve">
+    <value>Objectified Instance Has Objectifying Instance Required Error</value>
+    <comment>DisplayName for DomainClass &apos;ObjectifiedInstanceHasObjectifyingInstanceRequiredError&apos;</comment>
+  </data>
+  <data name="Neumont.Tools.ORM.ObjectModel.ObjectifiedInstanceHasObjectifyingInstanceRequiredError/FactTypeInstance.Description" xml:space="preserve">
+    <value>Description for Neumont.Tools.ORM.ObjectModel.ObjectifiedInstanceHasObjectifyingInstanceRequiredError.FactTypeInstance</value>
+    <comment>Description for DomainRole &apos;FactTypeInstance&apos; on DomainRelationship &apos;ObjectifiedInstanceHasObjectifyingInstanceRequiredError&apos;</comment>
+  </data>
+  <data name="Neumont.Tools.ORM.ObjectModel.ObjectifiedInstanceHasObjectifyingInstanceRequiredError/FactTypeInstance.DisplayName" xml:space="preserve">
+    <value>FactTypeInstance</value>
+    <comment>DisplayName for DomainRole &apos;FactTypeInstance&apos; on DomainRelationship &apos;ObjectifiedInstanceHasObjectifyingInstanceRequiredError&apos;</comment>
+  </data>
+  <data name="Neumont.Tools.ORM.ObjectModel.ObjectifiedInstanceHasObjectifyingInstanceRequiredError/FactTypeInstance.PropertyDisplayName" xml:space="preserve">
+    <value>Objectifying Instance Required Error</value>
+    <comment>PropertyDisplayName for DomainRole &apos;FactTypeInstance&apos; on DomainRelationship &apos;ObjectifiedInstanceHasObjectifyingInstanceRequiredError&apos;</comment>
+  </data>
+  <data name="Neumont.Tools.ORM.ObjectModel.ObjectifiedInstanceHasObjectifyingInstanceRequiredError/ObjectifyingInstanceRequiredError.Description" xml:space="preserve">
+    <value>Description for Neumont.Tools.ORM.ObjectModel.ObjectifiedInstanceHasObjectifyingInstanceRequiredError.ObjectifyingInstanceRequiredError</value>
+    <comment>Description for DomainRole &apos;ObjectifyingInstanceRequiredError&apos; on DomainRelationship &apos;ObjectifiedInstanceHasObjectifyingInstanceRequiredError&apos;</comment>
+  </data>
+  <data name="Neumont.Tools.ORM.ObjectModel.ObjectifiedInstanceHasObjectifyingInstanceRequiredError/ObjectifyingInstanceRequiredError.DisplayName" xml:space="preserve">
+    <value>ObjectifyingInstanceRequiredError</value>
+    <comment>DisplayName for DomainRole &apos;ObjectifyingInstanceRequiredError&apos; on DomainRelationship &apos;ObjectifiedInstanceHasObjectifyingInstanceRequiredError&apos;</comment>
+  </data>
+  <data name="Neumont.Tools.ORM.ObjectModel.ObjectifiedInstanceHasObjectifyingInstanceRequiredError/ObjectifyingInstanceRequiredError.PropertyDisplayName" xml:space="preserve">
+    <value>Fact Type Instance</value>
+    <comment>PropertyDisplayName for DomainRole &apos;ObjectifyingInstanceRequiredError&apos; on DomainRelationship &apos;ObjectifiedInstanceHasObjectifyingInstanceRequiredError&apos;</comment>
+  </data>
+  <data name="Neumont.Tools.ORM.ObjectModel.ObjectifyingInstanceHasObjectifiedInstanceRequiredError.Description" xml:space="preserve">
+    <value>Description for Neumont.Tools.ORM.ObjectModel.ObjectifyingInstanceHasObjectifiedInstanceRequiredError</value>
+    <comment>Description for DomainClass &apos;ObjectifyingInstanceHasObjectifiedInstanceRequiredError&apos;</comment>
+  </data>
+  <data name="Neumont.Tools.ORM.ObjectModel.ObjectifyingInstanceHasObjectifiedInstanceRequiredError.DisplayName" xml:space="preserve">
+    <value>Objectifying Instance Has Objectified Instance Required Error</value>
+    <comment>DisplayName for DomainClass &apos;ObjectifyingInstanceHasObjectifiedInstanceRequiredError&apos;</comment>
+  </data>
+  <data name="Neumont.Tools.ORM.ObjectModel.ObjectifyingInstanceHasObjectifiedInstanceRequiredError/ObjectTypeInstance.Description" xml:space="preserve">
+    <value>Description for Neumont.Tools.ORM.ObjectModel.ObjectifyingInstanceHasObjectifiedInstanceRequiredError.ObjectTypeInstance</value>
+    <comment>Description for DomainRole &apos;ObjectTypeInstance&apos; on DomainRelationship &apos;ObjectifyingInstanceHasObjectifiedInstanceRequiredError&apos;</comment>
+  </data>
+  <data name="Neumont.Tools.ORM.ObjectModel.ObjectifyingInstanceHasObjectifiedInstanceRequiredError/ObjectTypeInstance.DisplayName" xml:space="preserve">
+    <value>ObjectTypeInstance</value>
+    <comment>DisplayName for DomainRole &apos;ObjectTypeInstance&apos; on DomainRelationship &apos;ObjectifyingInstanceHasObjectifiedInstanceRequiredError&apos;</comment>
+  </data>
+  <data name="Neumont.Tools.ORM.ObjectModel.ObjectifyingInstanceHasObjectifiedInstanceRequiredError/ObjectTypeInstance.PropertyDisplayName" xml:space="preserve">
+    <value>Objectified Instance Required Error</value>
+    <comment>PropertyDisplayName for DomainRole &apos;ObjectTypeInstance&apos; on DomainRelationship &apos;ObjectifyingInstanceHasObjectifiedInstanceRequiredError&apos;</comment>
+  </data>
+  <data name="Neumont.Tools.ORM.ObjectModel.ObjectifyingInstanceHasObjectifiedInstanceRequiredError/ObjectifiedInstanceRequiredError.Description" xml:space="preserve">
+    <value>Description for Neumont.Tools.ORM.ObjectModel.ObjectifyingInstanceHasObjectifiedInstanceRequiredError.ObjectifiedInstanceRequiredError</value>
+    <comment>Description for DomainRole &apos;ObjectifiedInstanceRequiredError&apos; on DomainRelationship &apos;ObjectifyingInstanceHasObjectifiedInstanceRequiredError&apos;</comment>
+  </data>
+  <data name="Neumont.Tools.ORM.ObjectModel.ObjectifyingInstanceHasObjectifiedInstanceRequiredError/ObjectifiedInstanceRequiredError.DisplayName" xml:space="preserve">
+    <value>ObjectifiedInstanceRequiredError</value>
+    <comment>DisplayName for DomainRole &apos;ObjectifiedInstanceRequiredError&apos; on DomainRelationship &apos;ObjectifyingInstanceHasObjectifiedInstanceRequiredError&apos;</comment>
+  </data>
+  <data name="Neumont.Tools.ORM.ObjectModel.ObjectifyingInstanceHasObjectifiedInstanceRequiredError/ObjectifiedInstanceRequiredError.PropertyDisplayName" xml:space="preserve">
+    <value>Object Type Instance</value>
+    <comment>PropertyDisplayName for DomainRole &apos;ObjectifiedInstanceRequiredError&apos; on DomainRelationship &apos;ObjectifyingInstanceHasObjectifiedInstanceRequiredError&apos;</comment>
   </data>
   <data name="Neumont.Tools.ORM.ObjectModel.EntityTypeInstanceHasTooFewEntityTypeRoleInstancesError.Description" xml:space="preserve">
     <value>Description for Neumont.Tools.ORM.ObjectModel.EntityTypeInstanceHasTooFewEntityTypeRoleInstancesError</value>
@@ -6135,6 +6343,7 @@ A DomainClass can be serialized as a moniker only if
 <!--
 	Neumont Object-Role Modeling Architect for Visual Studio
 
+	Copyright © Neumont University. All rights reserved.
 	Copyright © Neumont University. All rights reserved.
 
 	The use and distribution terms for this software are covered by the

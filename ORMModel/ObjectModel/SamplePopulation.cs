@@ -3,6 +3,7 @@
 * Neumont Object-Role Modeling Architect for Visual Studio                 *
 *                                                                          *
 * Copyright © Neumont University. All rights reserved.                     *
+* Copyright © Matthew Curland. All rights reserved.                        *
 *                                                                          *
 * The use and distribution terms for this software are covered by the      *
 * Common Public License 1.0 (http://opensource.org/licenses/cpl) which     *
@@ -13,6 +14,20 @@
 * You must not remove this notice, or any other, from this software.       *
 \**************************************************************************/
 #endregion
+// UNDONE: MSBUG If this is turned on, then an undo of a duplicate RoleInstance does not work correctly.
+// This appears to be a problem in the ElementLink.SetRolePlayer method (and downstream internal
+// helpers) when duplicate links are allowed. To test the scenario,
+// 1) Uncomment the following line (and the corresponding line in SamplePopulationEditor.cs)
+// 2) In a new model, use the Fact Editor to add 'A(.id) has B(.name)'
+// 3) (This step simplifies the problematic transaction, but does not directly affect the problem)
+//    To stop population mandatory and uniqueness errors from appearing, set the IsIndepedent property
+//    for A and B to true and do not add any internal uniqueness constraints (ignore the validation error).
+// 4) Select the 'A has B' FactType and enter the population {10, Foo} in the ORM Sample Population Editor
+// 5) Add a second population row with {20,} (adding a second name value does not matter)
+// 6) Select the '10' cell in the first row and select the '20' value from the dropdown (press F2 to activate the editor if it is not active)
+// 7) Undo to get an internal error in Microsoft.VisualStudio.Modeling.RolePlayerLinksCollection.RoleLinks.Insert.
+// It appears that the linkIndex value is incorrect in this case
+//#define ROLEINSTANCE_ROLEPLAYERCHANGE // Keep in sync with define in Shell/SamplePopulationEditor.cs
 
 using System;
 using System.Collections;
@@ -38,16 +53,14 @@ namespace Neumont.Tools.ORM.ObjectModel
 		/// </summary>
 		public override void GenerateErrorText()
 		{
-			EntityTypeInstance entityTypeInstance = EntityTypeInstance;
-			ObjectType entityType = (entityTypeInstance != null) ? entityTypeInstance.EntityType : null;
-			string entityName = (entityType != null) ? entityType.Name : "";
-			string modelName = Model.Name;
-			string currentText = ErrorText;
-			string newText = string.Format(ResourceStrings.ModelErrorEntityTypeInstanceTooFewEntityTypeRoleInstancesMessage, entityName, modelName);
-			if (currentText != newText)
-			{
-				ErrorText = newText;
-			}
+			EntityTypeInstance entityInstance = EntityTypeInstance;
+			ObjectType entityType = (entityInstance != null) ? entityInstance.EntityType : null;
+			ORMModel model = Model;
+			ErrorText = string.Format(
+				ResourceStrings.ModelErrorEntityTypeInstanceTooFewEntityTypeRoleInstancesMessage,
+				entityType != null ? entityType.Name : "",
+				entityInstance != null ? entityInstance.Name : "",
+				model != null ? model.Name : "");
 		}
 		/// <summary>
 		/// Regenerate the error text when the constraint name changes
@@ -70,16 +83,12 @@ namespace Neumont.Tools.ORM.ObjectModel
 		/// </summary>
 		public override void GenerateErrorText()
 		{
-			FactTypeInstance factTypeInstance = FactTypeInstance;
-			FactType factType = (factTypeInstance != null) ? factTypeInstance.FactType : null;
-			string factName = (factType != null) ? factType.Name : "";
-			string modelName = Model.Name;
-			string currentText = ErrorText;
-			string newText = string.Format(ResourceStrings.ModelErrorFactTypeInstanceTooFewFactTypeRoleInstancesMessage, factName, modelName);
-			if (currentText != newText)
-			{
-				ErrorText = newText;
-			}
+			FactTypeInstance factInstance = FactTypeInstance;
+			ORMModel model = Model;
+			ErrorText = string.Format(
+				ResourceStrings.ModelErrorFactTypeInstanceTooFewFactTypeRoleInstancesMessage,
+				factInstance != null ? factInstance.Name : "",
+				model != null ? model.Name : "");
 		}
 		/// <summary>
 		/// Regenerate the error text when the constraint name changes
@@ -130,6 +139,7 @@ namespace Neumont.Tools.ORM.ObjectModel
 	[ModelErrorDisplayFilter(typeof(PopulationErrorCategory))]
 	public partial class PopulationUniquenessError : IHasIndirectModelErrorOwner
 	{
+		#region PopulationUniquenessError Specific
 		/// <summary>
 		/// Return the duplicated ObjectTypeInstance
 		/// </summary>
@@ -151,7 +161,7 @@ namespace Neumont.Tools.ORM.ObjectModel
 				return this.RoleInstanceCollection[0].Role;
 			}
 		}
-
+		#endregion // PopulationUniquenessError Specific
 		#region Base overrides
 		/// <summary>
 		/// Generate text for the error
@@ -175,7 +185,7 @@ namespace Neumont.Tools.ORM.ObjectModel
 			string modelName = Model.Name;
 			string objectTypeName = commonRole.RolePlayer.Name;
 			string currentText = ErrorText;
-			string newText = String.Format(CultureInfo.CurrentCulture, formatString, objectTypeName, instanceDisplayString, modelName, typeName);
+			string newText = string.Format(CultureInfo.CurrentCulture, formatString, objectTypeName, instanceDisplayString, modelName, typeName);
 			if (currentText != newText)
 			{
 				ErrorText = newText;
@@ -192,56 +202,7 @@ namespace Neumont.Tools.ORM.ObjectModel
 			}
 		}
 		#endregion // Base overrides
-
-		#region IModelErrorOwner Implementation
-		/*
-		#region IModelErrorOwner Members
-
-		#region IModelErrorOwner Implementation
-		/// <summary>
-		/// Implements IModelErrorOwner.GetErrorCollection
-		/// </summary>
-		protected new IEnumerable<ModelErrorUsage> GetErrorCollection(ModelErrorUses filter)
-		{
-			yield return new ModelErrorUsage(this);
-			foreach (ModelErrorUsage modelErrorUsage in base.GetErrorCollection(filter))
-			{
-				yield return modelErrorUsage;
-			}
-		}
-		IEnumerable<ModelErrorUsage> IModelErrorOwner.GetErrorCollection(ModelErrorUses filter)
-		{
-			return GetErrorCollection(filter);
-		}
-		/// <summary>
-		/// Implements IModelErrorOwner.ValidateErrors
-		/// </summary>
-		/// <param name="notifyAdded">A callback for notifying
-		/// the caller of all objects that are added.</param>
-		protected new void ValidateErrors(INotifyElementAdded notifyAdded)
-		{
-			// No validation here
-		}
-		void IModelErrorOwner.ValidateErrors(INotifyElementAdded notifyAdded)
-		{
-			ValidateErrors(notifyAdded);
-		}
-		/// <summary>
-		/// Implements IModelErrorOwner.DelayValidateErrors
-		/// </summary>
-		protected new void DelayValidateErrors()
-		{
-			// No Validation Here
-		}
-		void IModelErrorOwner.DelayValidateErrors()
-		{
-			DelayValidateErrors();
-		}
-		#endregion // IModelErrorOwner Implementation
-		*/
-		#endregion
-		#region IHasIndirectModelErrorOwner Members
-
+		#region IHasIndirectModelErrorOwner Implementation
 		private static Guid[] myIndirectModelErrorOwnerLinkRoles;
 		/// <summary>
 		/// Implements IHasIndirectModelErrorOwner.GetIndirectModelErrorOwnerLinkRoles()
@@ -261,9 +222,7 @@ namespace Neumont.Tools.ORM.ObjectModel
 		{
 			return GetIndirectModelErrorOwnerLinkRoles();
 		}
-
-				#endregion
-
+		#endregion // IHasIndirectModelErrorOwner Implementation
 	}
 	[ModelErrorDisplayFilter(typeof(PopulationErrorCategory))]
 	public partial class PopulationMandatoryError : IRepresentModelElements
@@ -292,7 +251,7 @@ namespace Neumont.Tools.ORM.ObjectModel
 			string modelName = Model.Name;
 			string currentText = ErrorText;
 			ObjectType rolePlayer = role.RolePlayer;
-			string newText = String.Format(formatProvider, ResourceStrings.ModelErrorModelHasPopulationMandatoryError, rolePlayer != null ? rolePlayer.Name : "", instanceDisplayString, modelName, role.FactType.Name, additionalFactTypes);
+			string newText = string.Format(formatProvider, ResourceStrings.ModelErrorModelHasPopulationMandatoryError, rolePlayer != null ? rolePlayer.Name : "", instanceDisplayString, modelName, role.FactType.Name, additionalFactTypes);
 			if (currentText != newText)
 			{
 				ErrorText = newText;
@@ -312,13 +271,132 @@ namespace Neumont.Tools.ORM.ObjectModel
 		#region IRepresentModelElements Members
 		/// <summary>
 		/// Implements <see cref="IRepresentModelElements.GetRepresentedElements"/>. Returns all <see cref="FactType"/>s
-		/// associated with the error constraint.
+		/// associated with the error constraint, unless the population of the FactType is implied, in which case
+		/// the identified <see cref="ObjectType"/> is returned.
 		/// </summary>
 		protected new ModelElement[] GetRepresentedElements()
 		{
-			return MandatoryConstraint.FactTypeCollection.ToArray();
+			MandatoryConstraint constraint = MandatoryConstraint;
+			LinkedElementCollection<Role> roles = constraint.RoleCollection;
+			int roleCount = roles.Count;
+			ModelElement[] retVal = new ModelElement[roleCount];
+			for (int i = 0; i < roleCount; ++i)
+			{
+				// For each role, we want the identified object type
+				// if the population of the associated FactType is implied.
+				// Otherwise, we want the FactType. For now, we don't care
+				// about duplicates in the returned list.
+				Role role = roles[i];
+				SupertypeMetaRole supertypeRole;
+				if (null != (supertypeRole = role as SupertypeMetaRole))
+				{
+					SubtypeFact subtypeFact = (SubtypeFact)role.FactType;
+					retVal[i] = subtypeFact.ProvidesPreferredIdentifier ? (ModelElement)subtypeFact.Subtype : subtypeFact;
+				}
+				else
+				{
+					ObjectType identifiedType;
+					switch (role.GetReferenceSchemePattern(out identifiedType))
+					{
+						case ReferenceSchemeRolePattern.OptionalSimpleIdentifierRole:
+						case ReferenceSchemeRolePattern.OptionalCompositeIdentifierRole:
+							retVal[i] = identifiedType;
+							break;
+						default:
+							retVal[i] = role.FactType;
+							break;
+					}
+				}
+			}
+			return retVal;
 		}
 
+		ModelElement[] IRepresentModelElements.GetRepresentedElements()
+		{
+			return GetRepresentedElements();
+		}
+		#endregion
+	}
+	[ModelErrorDisplayFilter(typeof(PopulationErrorCategory))]
+	public partial class ObjectifiedInstanceRequiredError : IRepresentModelElements
+	{
+		#region Base overrides
+		/// <summary>
+		/// Generate text for the error
+		/// </summary>
+		public override void GenerateErrorText()
+		{
+			ObjectTypeInstance instance = this.ObjectTypeInstance;
+			ObjectType entityType = (instance != null) ? instance.ObjectType : null;
+			ORMModel model = Model;
+			ErrorText = string.Format(
+				CultureInfo.InvariantCulture,
+				ResourceStrings.ModelErrorEntityTypeInstanceObjectifiedInstanceRequiredMessage,
+				(instance != null) ? instance.Name : "",
+				(entityType != null) ? entityType.Name : "",
+				(model != null) ? model.Name : "");
+		}
+		/// <summary>
+		/// Regenerate the error text when the model name changes
+		/// </summary>
+		public override RegenerateErrorTextEvents RegenerateEvents
+		{
+			get
+			{
+				return RegenerateErrorTextEvents.ModelNameChange | RegenerateErrorTextEvents.OwnerNameChange;
+			}
+		}
+		#endregion // Base overrides
+		#region IRepresentModelElements Members
+		/// <summary>
+		/// Implements <see cref="IRepresentModelElements.GetRepresentedElements"/>. Returns associated <see cref="ObjectTypeInstance"/>.
+		/// </summary>
+		protected new ModelElement[] GetRepresentedElements()
+		{
+			return new ModelElement[]{this.ObjectTypeInstance};
+		}
+		ModelElement[] IRepresentModelElements.GetRepresentedElements()
+		{
+			return GetRepresentedElements();
+		}
+		#endregion
+	}
+	[ModelErrorDisplayFilter(typeof(PopulationErrorCategory))]
+	public partial class ObjectifyingInstanceRequiredError : IRepresentModelElements
+	{
+		#region Base overrides
+		/// <summary>
+		/// Generate text for the error
+		/// </summary>
+		public override void GenerateErrorText()
+		{
+			FactTypeInstance instance = this.FactTypeInstance;
+			ORMModel model = Model;
+			ErrorText = string.Format(
+				CultureInfo.InvariantCulture,
+				ResourceStrings.ModelErrorFactTypeInstanceObjectifyingInstanceRequiredMessage,
+				instance != null ? instance.Name : "",
+				model != null ? model.Name : "");
+		}
+		/// <summary>
+		/// Regenerate the error text when the model name changes
+		/// </summary>
+		public override RegenerateErrorTextEvents RegenerateEvents
+		{
+			get
+			{
+				return RegenerateErrorTextEvents.ModelNameChange | RegenerateErrorTextEvents.OwnerNameChange;
+			}
+		}
+		#endregion // Base overrides
+		#region IRepresentModelElements Members
+		/// <summary>
+		/// Implements <see cref="IRepresentModelElements.GetRepresentedElements"/>. Returns associated <see cref="FactTypeInstance"/>
+		/// </summary>
+		protected new ModelElement[] GetRepresentedElements()
+		{
+			return new ModelElement[] { this.FactTypeInstance };
+		}
 		ModelElement[] IRepresentModelElements.GetRepresentedElements()
 		{
 			return GetRepresentedElements();
@@ -331,26 +409,78 @@ namespace Neumont.Tools.ORM.ObjectModel
 	{
 		#region Helper Methods
 		/// <summary>
-		/// Finds the FactTypeRoleInstance for the given Role.
+		/// Finds the <see cref="FactTypeRoleInstance"/> for the given <paramref name="role"/>.
 		/// Returns null if no matching RoleInstance is found.
 		/// </summary>
-		/// <param name="selectedRole">Role to match on</param>
+		/// <param name="role">Role to match on</param>
 		/// <returns>FactTypeRoleInstance for the given role, or null if none found.</returns>
-		public FactTypeRoleInstance FindRoleInstance(Role selectedRole)
+		public FactTypeRoleInstance FindRoleInstance(Role role)
 		{
-			LinkedElementCollection<FactTypeRoleInstance> roleInstances = RoleInstanceCollection;
+			return FindRoleInstance(RoleInstanceCollection, role);
+		}
+		/// <summary>
+		/// Finds the FactTypeRoleInstance for the given <paramref name="role"/>
+		/// in the provided <paramref name="roleInstances"/>.
+		/// Returns null if no matching RoleInstance is found.
+		/// </summary>
+		/// <param name="roleInstances"></param>
+		/// <param name="role">Role to match on</param>
+		/// <returns>FactTypeRoleInstance for the given role, or null if none found.</returns>
+		public static FactTypeRoleInstance FindRoleInstance(IList<FactTypeRoleInstance> roleInstances, Role role)
+		{
 			int roleInstanceCount = roleInstances.Count;
 			FactTypeRoleInstance roleInstance;
 			for (int i = 0; i < roleInstanceCount; ++i)
 			{
-				if ((roleInstance = roleInstances[i]).Role == selectedRole)
+				if ((roleInstance = roleInstances[i]).Role == role)
 				{
 					return roleInstance;
 				}
 			}
 			return null;
 		}
-		#endregion
+		/// <summary>
+		/// Attach the <paramref name="instance"/> to the specified <paramref name="factRole"/>
+		/// This routine safed creates a new <see cref="FactTypeRoleInstance"/>. A new FactTypeRoleInstance
+		/// should be created directly only for new <see cref="FactTypeInstance"/> elements.
+		/// </summary>
+		/// <param name="factRole">A role from the <see cref="FactType"/> to attach to</param>
+		/// <param name="instance">The instance to attach</param>
+		/// <returns>The new (or exisitng) <see cref="FactTypeRoleInstance"/></returns>
+		public FactTypeRoleInstance EnsureRoleInstance(Role factRole, ObjectTypeInstance instance)
+		{
+			FactTypeRoleInstance roleInstance = FindRoleInstance(factRole);
+			bool sameInstance = false;
+			if (roleInstance != null)
+			{
+				sameInstance = roleInstance.ObjectTypeInstance == instance;
+#if !ROLEINSTANCE_ROLEPLAYERCHANGE
+				if (!sameInstance)
+				{
+					roleInstance.Delete();
+				}
+#endif // !ROLEINSTANCE_ROLEPLAYERCHANGE
+			}
+			if (!sameInstance)
+			{
+
+#if ROLEINSTANCE_ROLEPLAYERCHANGE
+				if (roleInstance == null)
+				{
+#endif // ROLEINSTANCE_ROLEPLAYERCHANGE
+				roleInstance = new FactTypeRoleInstance(factRole, instance);
+				roleInstance.FactTypeInstance = this;
+#if ROLEINSTANCE_ROLEPLAYERCHANGE
+				}
+				else
+				{
+					roleInstance.ObjectTypeInstance = instance;
+				}
+#endif // ROLEINSTANCE_ROLEPLAYERCHANGE
+			}
+			return roleInstance;
+		}
+		#endregion // Helper Methods
 		#region IModelErrorOwner Implementation
 		/// <summary>
 		/// Returns the errors associated with the object.
@@ -367,6 +497,12 @@ namespace Neumont.Tools.ORM.ObjectModel
 				if (tooFew != null)
 				{
 					yield return tooFew;
+				}
+
+				ObjectifyingInstanceRequiredError objectifyingInstance = ObjectifyingInstanceRequiredError;
+				if (objectifyingInstance != null)
+				{
+					yield return objectifyingInstance;
 				}
 
 				LinkedElementCollection<FactTypeRoleInstance> roleInstances = this.RoleInstanceCollection;
@@ -400,6 +536,7 @@ namespace Neumont.Tools.ORM.ObjectModel
 		{
 			// Calls added here need corresponding delayed calls in DelayValidateErrors
 			ValidateTooFewFactTypeRoleInstancesError(notifyAdded);
+			ValidateObjectifyingInstanceRequiredError(notifyAdded);
 		}
 
 		void IModelErrorOwner.ValidateErrors(INotifyElementAdded notifyAdded)
@@ -413,6 +550,7 @@ namespace Neumont.Tools.ORM.ObjectModel
 		protected new void DelayValidateErrors()
 		{
 			FrameworkDomainModel.DelayValidateElement(this, DelayValidateTooFewFactTypeRoleInstancesError);
+			FrameworkDomainModel.DelayValidateElement(this, DelayValidateObjectifyingInstanceRequiredError);
 		}
 
 		void IModelErrorOwner.DelayValidateErrors()
@@ -441,6 +579,212 @@ namespace Neumont.Tools.ORM.ObjectModel
 			return GetIndirectModelErrorOwnerLinkRoles();
 		}
 		#endregion // IHasIndirectModelErrorOwner Implementation
+		#region Automatic Name Generation
+		private string myGeneratedName = String.Empty;
+		partial class NamePropertyHandler
+		{
+			/// <summary>
+			/// Add a name modification to the transaction log
+			/// without reading the current name, which forces it to regenerated
+			/// </summary>
+			/// <param name="factInstance">The <see cref="FactTypeInstance"/> to modify</param>
+			/// <param name="oldName">The old name to record</param>
+			/// <param name="newName">The new name to record</param>
+			public static void SetName(FactTypeInstance factInstance, string oldName, string newName)
+			{
+				factInstance.myGeneratedName = newName;
+				Instance.ValueChanged(factInstance, oldName, newName);
+			}
+		}
+		private string GetNameValue()
+		{
+			Store store = Store;
+			if (store.InUndoRedoOrRollback)
+			{
+				return myGeneratedName;
+			}
+			else if (!store.TransactionManager.InTransaction)
+			{
+				string generatedName = myGeneratedName;
+				return String.IsNullOrEmpty(generatedName) ? myGeneratedName = GenerateName() : generatedName;
+			}
+			else
+			{
+				string generatedName = myGeneratedName;
+				if (string.IsNullOrEmpty(generatedName) && !IsDeleting && !IsDeleted)
+				{
+					generatedName = GenerateName();
+					if (!string.IsNullOrEmpty(generatedName))
+					{
+						NamePropertyHandler.SetName(this, "", generatedName);
+					}
+				}
+				return generatedName ?? String.Empty;
+			}
+		}
+		private void SetNameValue(string newValue)
+		{
+			Debug.Assert(Store.InUndoRedoOrRollback || (Store.TransactionActive && Store.TransactionManager.CurrentTransaction.TopLevelTransaction.Context.ContextInfo.ContainsKey(ElementGroupPrototype.CreatingKey)), "Call NamePropertyHandler.SetGeneratedName directly to modify myGeneratedName field.");
+			if (Store.InUndoRedoOrRollback)
+			{
+				// We only set this in undo/redo scenarios so that the initial
+				// change on a writable property comes indirectly from the objectifying
+				// type changing its name.
+				myGeneratedName = newValue;
+			}
+		}
+		private void OnFactTypeInstanceNameChanged()
+		{
+			TransactionManager tmgr = Store.TransactionManager;
+			if (tmgr.InTransaction)
+			{
+				NameChanged = tmgr.CurrentTransaction.SequenceNumber;
+			}
+		}
+		private long GetNameChangedValue()
+		{
+			TransactionManager tmgr = Store.TransactionManager;
+			if (tmgr.InTransaction)
+			{
+				// Subtract 1 so that we get a difference in the transaction log
+				return unchecked(tmgr.CurrentTransaction.SequenceNumber - 1);
+			}
+			else
+			{
+				return 0L;
+			}
+		}
+		private void SetNameChangedValue(long newValue)
+		{
+			// Nothing to do, we're just trying to create a transaction log entry
+		}
+		/// <summary>
+		/// Delayed validation handler used to updated the name of an <see cref="ObjectTypeInstance"/>
+		/// </summary>
+		protected static void DelayValidateNamePartChanged(ModelElement element)
+		{
+			if (!element.IsDeleted)
+			{
+				FactTypeInstance factInstance = (FactTypeInstance)element;
+				Store store = element.Store;
+				string oldGeneratedName = factInstance.myGeneratedName;
+				string newGeneratedName = null;
+				bool haveNewName = false;
+
+				// Keep going with an empty name. Any callback to the Name
+				// property will generate on demand
+				foreach (ModelError error in ((IModelErrorOwner)factInstance).GetErrorCollection(ModelErrorUses.None))
+				{
+					if (0 != (error.RegenerateEvents & RegenerateErrorTextEvents.OwnerNameChange))
+					{
+						if (newGeneratedName == null)
+						{
+							newGeneratedName = factInstance.GenerateName();
+							haveNewName = true;
+							if (newGeneratedName == oldGeneratedName)
+							{
+								newGeneratedName = null;
+								break; // Look no further, name did not change
+							}
+							else
+							{
+								// Force a change in the transaction log so that we can
+								// undo the generated name as needed
+								NamePropertyHandler.SetName(factInstance, oldGeneratedName, newGeneratedName);
+							}
+						}
+						error.GenerateErrorText();
+					}
+				}
+				if (newGeneratedName == null && !haveNewName)
+				{
+					// Name did not change, but no one cared inside the object model.
+					// Add a simple entry to the transaction log
+					if (!string.IsNullOrEmpty(oldGeneratedName))
+					{
+						NamePropertyHandler.SetName(factInstance, oldGeneratedName, "");
+					}
+				}
+				factInstance.OnFactTypeInstanceNameChanged();
+			}
+		}
+		/// <summary>
+		/// Generate an empty instance name based solely on a <see cref="FactType"/>
+		/// </summary>
+		public static string GenerateEmptyInstanceName(FactType factType)
+		{
+			return GenerateInstanceName(factType, null);
+		}
+		/// <summary>
+		/// Generate an empty instance name based solely on a <see cref="FactType"/>
+		/// </summary>
+		private static string GenerateInstanceName(FactType factType, FactTypeInstance instance)
+		{
+			IReading reading = factType.GetDefaultReading();
+			bool fakeReading = !(reading is Reading);
+			string listSeparator = fakeReading ? CultureInfo.CurrentCulture.TextInfo.ListSeparator + " " : null;
+			IList<RoleBase> readingRoles = reading.RoleCollection;
+			int lastRoleIndex = readingRoles.Count - 1;
+			IList<FactTypeRoleInstance> factRoleInstances = (instance != null) ? instance.RoleInstanceCollection : null;
+			return Reading.ReplaceFields(
+				reading.Text,
+				delegate(int replaceIndex)
+				{
+					FactTypeRoleInstance roleInstance = (factRoleInstances != null ) ? FindRoleInstance(factRoleInstances, readingRoles[replaceIndex].Role) : null;
+					string replacement = (roleInstance != null) ?
+						roleInstance.ObjectTypeInstance.Name :
+						"?";
+					if (fakeReading)
+					{
+						// Indices are ordered, we know the first and the last
+						if (replaceIndex == 0)
+						{
+							if (0 == lastRoleIndex)
+							{
+								replacement = "(" + replacement + ")";
+							}
+							else
+							{
+								replacement = "(" + replacement + listSeparator;
+							}
+						}
+						else if (replaceIndex == lastRoleIndex)
+						{
+							replacement = replacement + ")";
+						}
+						else
+						{
+							replacement = replacement + listSeparator;
+						}
+					}
+					return replacement;
+				});
+		}
+		/// <summary>
+		/// Helper function to get the current setting for the generated Name property
+		/// </summary>
+		private string GenerateName()
+		{
+			return GenerateInstanceName(this.FactType, this);
+		}
+		/// <summary>
+		/// Override to use our own name handling
+		/// </summary>
+		protected override void MergeConfigure(ElementGroup elementGroup)
+		{
+			// Do nothing here. The base calls SetUniqueName, but we don't enforce
+			// unique names on the generated ObjectTypeInstance name.
+		}
+		#endregion // Automatic Name Generation
+		#region Base overrides
+		/// <summary>
+		/// Display the value for ToString
+		/// </summary>
+		public override string ToString()
+		{
+			return Name;
+		}
+		#endregion // Base overrides
 		#region TooFewFactTypeRoleInstancesError Validation
 		/// <summary>
 		/// Validator callback for TooFewFactTypeRoleInstancesError
@@ -529,6 +873,65 @@ namespace Neumont.Tools.ORM.ObjectModel
 			}
 		}
 		#endregion
+		#region ObjectifyingInstanceRequiredError Validation
+		/// <summary>
+		/// Validation callback for <see cref="ObjectifyingInstanceRequiredError"/>
+		/// </summary>
+		internal static void DelayValidateObjectifyingInstanceRequiredError(ModelElement element)
+		{
+			// Internal justification: The error being validated is on the FactTypeInstance,
+			// but there is a corresponding error on the ObjectTypeInstance which is validated
+			// in response to the same rules. Make the delayvalidation routines internal so
+			// that we can call them from a single location without duplicating delete and
+			// roleplayer changed rules.
+			((FactTypeInstance)element).ValidateObjectifyingInstanceRequiredError(null);
+		}
+		private void ValidateObjectifyingInstanceRequiredError(INotifyElementAdded notifyAdded)
+		{
+			// Validate that an objectifying instance is specified and that the instance
+			// has attached role players. No specified role players results in
+			// ObjectifyingInstanceRequiredError instead of TooFewEntityTypeRoleInstancesError
+			if (!this.IsDeleted)
+			{
+				FactType factType;
+				ObjectType entityType;
+				ObjectTypeInstance objectifyingInstance = null;
+				bool hasError = false;
+				if (null != (factType = this.FactType) &&
+					null != (entityType = factType.NestingType) &&
+					null == (objectifyingInstance = this.ObjectifyingInstance) &&
+					null != entityType.ResolvedPreferredIdentifier)
+				{
+					hasError = true;
+				}
+				else if (objectifyingInstance != null)
+				{
+					EntityTypeSubtypeInstance subtypeInstance = objectifyingInstance as EntityTypeSubtypeInstance;
+					EntityTypeInstance entityInstance = (subtypeInstance != null) ? subtypeInstance.SupertypeInstance : (EntityTypeInstance)objectifyingInstance;
+					hasError = entityInstance.RoleInstanceCollection.Count == 0;
+				}
+				ObjectifyingInstanceRequiredError error = this.ObjectifyingInstanceRequiredError;
+				if (hasError)
+				{
+					if (error == null)
+					{
+						error = new ObjectifyingInstanceRequiredError(Store);
+						error.FactTypeInstance = this;
+						error.Model = factType.Model;
+						error.GenerateErrorText();
+						if (notifyAdded != null)
+						{
+							notifyAdded.ElementAdded(error, true);
+						}
+					}
+				}
+				else if (error != null)
+				{
+					error.Delete();
+				}
+			}
+		}
+		#endregion // ObjectifyingInstanceRequiredError Validation
 		#region Inline Error Helper Methods
 		/// <summary>
 		/// Ensure that the role is owned by the same
@@ -561,16 +964,14 @@ namespace Neumont.Tools.ORM.ObjectModel
 			Role role = link.RoleInstance.Role;
 			if (role != null)
 			{
-
 				ReadOnlyCollection<FactTypeInstanceHasRoleInstance> currentLinks = FactTypeInstanceHasRoleInstance.GetLinksToRoleInstanceCollection(this);
 				int linkCount = currentLinks.Count;
-				for (int i = linkCount - 1; i >= 0; --i)
+				for (int i = 0; i < linkCount; ++i)
 				{
 					FactTypeInstanceHasRoleInstance currentLink = currentLinks[i];
 					if (link != currentLink && role == currentLink.RoleInstance.Role)
 					{
-						currentLink.Delete();
-						break;
+						throw new InvalidOperationException(ResourceStrings.ModelExceptionFactTypeInstanceEnforceRoleUniqueness);
 					}
 				}
 			}
@@ -582,13 +983,13 @@ namespace Neumont.Tools.ORM.ObjectModel
 		/// If a Role is added to a FactType's role collection, all FactTypeInstances of that FactType
 		/// should be revalidated to ensure that they form a complete instance of the FactType
 		/// </summary>
-		private static void FactTypeHasRoleAddedRule(ElementAddedEventArgs e)
+		private static void FactTypeRoleAddedRule(ElementAddedEventArgs e)
 		{
 			FactTypeHasRole link = e.ModelElement as FactTypeHasRole;
 			FactType parent = link.FactType;
-			foreach (FactTypeInstance factTypeInstance in parent.FactTypeInstanceCollection)
+			foreach (FactTypeInstance factInstance in parent.FactTypeInstanceCollection)
 			{
-				FrameworkDomainModel.DelayValidateElement(factTypeInstance, DelayValidateTooFewFactTypeRoleInstancesError);
+				FrameworkDomainModel.DelayValidateElement(factInstance, DelayValidateTooFewFactTypeRoleInstancesError);
 			}
 		}
 		/// <summary>
@@ -605,9 +1006,9 @@ namespace Neumont.Tools.ORM.ObjectModel
 				!(role = link.PlayedRole).IsDeleted &&
 				null != (factType = role.FactType))
 			{
-				foreach (FactTypeInstance factTypeInstance in factType.FactTypeInstanceCollection)
+				foreach (FactTypeInstance factInstance in factType.FactTypeInstanceCollection)
 				{
-					FrameworkDomainModel.DelayValidateElement(factTypeInstance, DelayValidateTooFewFactTypeRoleInstancesError);
+					FrameworkDomainModel.DelayValidateElement(factInstance, DelayValidateTooFewFactTypeRoleInstancesError);
 				}
 			}
 		}
@@ -618,7 +1019,7 @@ namespace Neumont.Tools.ORM.ObjectModel
 		/// will force deletion of any FactTypeInstances which no longer have
 		/// any FactTypeRoleInstances.
 		/// </summary>
-		private static void FactTypeHasRoleDeletedRule(ElementDeletedEventArgs e)
+		private static void FactTypeRoleDeletedRule(ElementDeletedEventArgs e)
 		{
 			FactTypeHasRole link = e.ModelElement as FactTypeHasRole;
 			FactType factType = link.FactType;
@@ -628,10 +1029,10 @@ namespace Neumont.Tools.ORM.ObjectModel
 				int factTypeInstanceCount = factTypeInstances.Count;
 				for (int i = 0; i < factTypeInstanceCount; ++i)
 				{
-					FactTypeInstance factTypeInstance = factTypeInstances[i];
-					if (!factTypeInstance.IsDeleted)
+					FactTypeInstance factInstance = factTypeInstances[i];
+					if (!factInstance.IsDeleted)
 					{
-						FrameworkDomainModel.DelayValidateElement(factTypeInstance, DelayValidateTooFewFactTypeRoleInstancesError);
+						FrameworkDomainModel.DelayValidateElement(factInstance, DelayValidateTooFewFactTypeRoleInstancesError);
 					}
 				}
 			}
@@ -641,21 +1042,90 @@ namespace Neumont.Tools.ORM.ObjectModel
 		/// If a FactTypeInstance with existing RoleInstances is added
 		/// to a FactType, make sure all of the RoleInstance Roles
 		/// have the same FactType as a parent
+		/// Automatically add a corresponding <see cref="EntityTypeInstance"/> to
+		/// an objectification with an internal preferred identifier in the objectified
+		/// <see cref="FactType"/>
 		/// </summary>
-		private static void FactTypeHasFactTypeInstanceAdded(ElementAddedEventArgs e)
+		private static void FactTypeInstanceAddedRule(ElementAddedEventArgs e)
 		{
-			FactTypeHasFactTypeInstance link = e.ModelElement as FactTypeHasFactTypeInstance;
-			FactType existingFactType = link.FactType;
+			FactTypeHasFactTypeInstance link = (FactTypeHasFactTypeInstance)e.ModelElement;
+			FactType factType = link.FactType;
+			SubtypeFact subtypeFact;
+			if (factType.ImpliedByObjectification != null ||
+				(null != (subtypeFact = factType as SubtypeFact) &&
+				subtypeFact.ProvidesPreferredIdentifier))
+			{
+				throw new InvalidOperationException(ResourceStrings.ModelExceptionFactTypeInstanceDirectionPopulationOfImpliedInstances);
+			}
 
-			FactTypeInstance newInstance = link.FactTypeInstance;
-			LinkedElementCollection<FactTypeRoleInstance> roleInstances = newInstance.RoleInstanceCollection;
+			// Basic structural check
+			FactTypeInstance factInstance = link.FactTypeInstance;
+			LinkedElementCollection<FactTypeRoleInstance> roleInstances = factInstance.RoleInstanceCollection;
 			int roleInstanceCount = roleInstances.Count;
 			for (int i = 0; i < roleInstanceCount; ++i)
 			{
 				// Check each role being related to the FactType
-				newInstance.EnsureConsistentRoleOwner(existingFactType, roleInstances[i].Role);
+				factInstance.EnsureConsistentRoleOwner(factType, roleInstances[i].Role);
 			}
-			FrameworkDomainModel.DelayValidateElement(newInstance, DelayValidateTooFewFactTypeRoleInstancesError);
+			FrameworkDomainModel.DelayValidateElement(factInstance, DelayValidateTooFewFactTypeRoleInstancesError);
+			FrameworkDomainModel.DelayValidateElement(factInstance, DelayValidateNamePartChanged);
+
+			// Objectification instance handling
+			ObjectType entityType;
+			UniquenessConstraint pid;
+			if (null != (entityType = factType.NestingType) &&
+				null != (pid = entityType.PreferredIdentifier))
+			{
+				LinkedElementCollection<FactType> pidFactTypes;
+				FactType identifierFactType;
+				Role unaryRole = null;
+				ObjectifiedUnaryRole objectifiedUnaryRole = null;
+				if (pid.IsInternal &&
+					1 == (pidFactTypes = pid.FactTypeCollection).Count &&
+					((identifierFactType = pidFactTypes[0]) == factType ||
+					(null != (unaryRole = factType.UnaryRole) &&
+					null != (objectifiedUnaryRole = unaryRole.ObjectifiedUnaryRole) &&
+					identifierFactType == objectifiedUnaryRole.FactType)))
+				{
+					// Create a new EntityTypeInstance, populate it based on existing
+					// population in the FactTypeInstance, and associated it with
+					// the FactTypeInstance.
+					Store store = factType.Store;
+					EntityTypeInstance entityInstance = new EntityTypeInstance(store);
+					entityInstance.EntityType = entityType;
+					entityInstance.ObjectifiedInstance = factInstance;
+
+					// Attach any preexisting role instances
+					if (roleInstanceCount != 0)
+					{
+						LinkedElementCollection<Role> pidRoles = pid.RoleCollection;
+						for (int i = 0; i < roleInstanceCount; ++i)
+						{
+							FactTypeRoleInstance factRoleInstance = roleInstances[i];
+							Role role = factRoleInstance.Role;
+							if (unaryRole != null)
+							{
+								if (role == unaryRole)
+								{
+									new EntityTypeRoleInstance(objectifiedUnaryRole, factRoleInstance.ObjectTypeInstance).EntityTypeInstance = entityInstance;
+								}
+							}
+							else
+							{
+								if (pidRoles.Contains(role))
+								{
+									new EntityTypeRoleInstance(role, factRoleInstance.ObjectTypeInstance).EntityTypeInstance = entityInstance;
+								}
+							}
+						}
+					}
+				}
+				else
+				{
+					// External identifier, this FactTypeInstance needs an explicit ObjectificationInstance
+					FrameworkDomainModel.DelayValidateElement(link.FactTypeInstance, DelayValidateObjectifyingInstanceRequiredError);
+				}
+			}
 		}
 		/// <summary>
 		/// AddRule: typeof(FactTypeInstanceHasRoleInstance)
@@ -663,18 +1133,57 @@ namespace Neumont.Tools.ORM.ObjectModel
 		/// to a FactTypeInstance, make sure all of the
 		/// roles have the same FactType as a parent and that a RoleInstance
 		/// for the given role doesn't already exist
+		/// For an objectification pattern with an internal identifying uniquenes,
+		/// automatically populate the corresponding role on the implied <see cref="EntityTypeInstance"/>
 		/// </summary>
-		private static void FactTypeInstanceHasRoleInstanceAddedRule(ElementAddedEventArgs e)
+		private static void FactTypeRoleInstanceAddedRule(ElementAddedEventArgs e)
 		{
 			FactTypeInstanceHasRoleInstance link = e.ModelElement as FactTypeInstanceHasRoleInstance;
-			FactTypeInstance newInstance = link.FactTypeInstance;
-			FactType existingFactType = newInstance.FactType;
+			FactTypeInstance factInstance = link.FactTypeInstance;
+			FactType factType = factInstance.FactType;
 
-			FactTypeRoleInstance roleInstance = link.RoleInstance;
-			Role role = roleInstance.Role;
-			newInstance.EnsureConsistentRoleOwner(existingFactType, role);
-			newInstance.EnsureNonDuplicateRoleInstance(link);
-			FrameworkDomainModel.DelayValidateElement(newInstance, DelayValidateTooFewFactTypeRoleInstancesError);
+			// Basic structural verification
+			FactTypeRoleInstance factRoleInstance = link.RoleInstance;
+			Role role = factRoleInstance.Role;
+			factInstance.EnsureConsistentRoleOwner(factType, role);
+			factInstance.EnsureNonDuplicateRoleInstance(link);
+			FrameworkDomainModel.DelayValidateElement(factInstance, DelayValidateTooFewFactTypeRoleInstancesError);
+			FrameworkDomainModel.DelayValidateElement(factInstance, DelayValidateNamePartChanged);
+
+			// ObjectificationInstance handling
+			EntityTypeInstance entityInstance;
+			ObjectType entityType;
+			UniquenessConstraint pid;
+			LinkedElementCollection<FactType> pidFactTypes;
+			FactType identifierFactType;
+			Role unaryRole = null;
+			ObjectifiedUnaryRole objectifiedUnaryRole = null;
+			if (null != (factType = factInstance.FactType) &&
+				null != (entityInstance = factInstance.ObjectifyingInstance as EntityTypeInstance) && // Note that an EntityTypeSubtypeInstance is externally identified and has no implicit population
+				null != (entityType = entityInstance.ObjectType) &&
+				null != (pid = entityType.PreferredIdentifier) &&
+				pid.IsInternal &&
+				1 == (pidFactTypes = pid.FactTypeCollection).Count &&
+				((identifierFactType = pidFactTypes[0]) == factType ||
+				(null != (unaryRole = factType.UnaryRole) &&
+				null != (objectifiedUnaryRole = unaryRole.ObjectifiedUnaryRole) &&
+				identifierFactType == objectifiedUnaryRole.FactType)))
+			{
+				if (unaryRole != null)
+				{
+					if (pid.RoleCollection.Contains(objectifiedUnaryRole))
+					{
+						entityInstance.EnsureRoleInstance(objectifiedUnaryRole, factRoleInstance.ObjectTypeInstance);
+					}
+				}
+				else
+				{
+					if (pid.RoleCollection.Contains(role))
+					{
+						entityInstance.EnsureRoleInstance(role, factRoleInstance.ObjectTypeInstance);
+					}
+				}
+			}
 		}
 		/// <summary>
 		/// DeleteRule: typeof(FactTypeInstanceHasRoleInstance), FireTime=LocalCommit, Priority=ORMCoreDomainModel.BeforeDelayValidateRulePriority;
@@ -682,49 +1191,258 @@ namespace Neumont.Tools.ORM.ObjectModel
 		/// to ensure complete population of its roles.  If the FactTypeRoleInstance
 		/// removed was the last one, remove the FactTypeInstance.
 		/// </summary>
-		private static void FactTypeInstanceHasRoleInstanceDeletedRule(ElementDeletedEventArgs e)
+		private static void FactTypeRoleInstanceDeletedRule(ElementDeletedEventArgs e)
 		{
-			FactTypeInstanceHasRoleInstance link = e.ModelElement as FactTypeInstanceHasRoleInstance;
-			FactTypeInstance instance = link.FactTypeInstance;
-			if (!instance.IsDeleted)
+			FactTypeInstanceHasRoleInstance link = (FactTypeInstanceHasRoleInstance)e.ModelElement;
+			FactTypeInstance factInstance = link.FactTypeInstance;
+			if (!factInstance.IsDeleted)
 			{
-				if (instance.RoleInstanceCollection.Count == 0)
+				if (factInstance.RoleInstanceCollection.Count == 0)
 				{
-					instance.Delete();
+					factInstance.Delete();
 				}
 				else
 				{
-					FrameworkDomainModel.DelayValidateElement(instance, DelayValidateTooFewFactTypeRoleInstancesError);
+					// Structural check
+					FrameworkDomainModel.DelayValidateElement(factInstance, DelayValidateTooFewFactTypeRoleInstancesError);
+					FrameworkDomainModel.DelayValidateElement(factInstance, DelayValidateNamePartChanged);
+
+					// ObjectificationInstance handling, manage the implied entityTypeInstance
+					EntityTypeInstance entityInstance;
+					FactType factType;
+					ObjectType entityType;
+					UniquenessConstraint pid;
+					LinkedElementCollection<FactType> pidFactTypes;
+					RoleInstance linkRoleInstance = link.RoleInstance;
+					Role role = linkRoleInstance.Role; // Note that role will not be null because both steps are links
+					FactType identifierFactType;
+					Role unaryRole = null;
+					ObjectifiedUnaryRole objectifiedUnaryRole = null;
+					if (!role.IsDeleted &&
+						null != (entityInstance = factInstance.ObjectifyingInstance as EntityTypeInstance) &&
+						null != (factType = factInstance.FactType) &&
+						null != (entityType = entityInstance.EntityType) &&
+						null != (pid = entityType.PreferredIdentifier) &&
+						pid.IsInternal &&
+						1 == (pidFactTypes = pid.FactTypeCollection).Count &&
+						((identifierFactType = pidFactTypes[0]) == factType ||
+						(null != (unaryRole = factType.UnaryRole) &&
+						null != (objectifiedUnaryRole = unaryRole.ObjectifiedUnaryRole) &&
+						identifierFactType == objectifiedUnaryRole.FactType)))
+					{
+						LinkedElementCollection<Role> pidRoles = pid.RoleCollection;
+						EntityTypeRoleInstance roleInstance;
+						if (unaryRole != null)
+						{
+							role = objectifiedUnaryRole;
+						}
+						if (pidRoles.Contains(role) &&
+							null != (roleInstance = entityInstance.FindRoleInstance(role)) &&
+							!roleInstance.IsDeleting &&
+							// The final instance check allows a new instance to be attached to the role before this rule fires
+							roleInstance.ObjectTypeInstance == linkRoleInstance.ObjectTypeInstance)
+						{
+							roleInstance.Delete();
+						}
+					}
 				}
 			}
+		}
+		/// <summary>
+		/// ChangeRule: typeof(FactType)
+		/// Update generated names when the FactType predicate changes
+		/// </summary>
+		private static void FactTypeNameChangedRule(ElementPropertyChangedEventArgs e)
+		{
+			if (e.DomainProperty.Id == FactType.NameChangedDomainPropertyId)
+			{
+				foreach (FactTypeInstance instance in ((FactType)e.ModelElement).FactTypeInstanceCollection)
+				{
+					FrameworkDomainModel.DelayValidateElement(instance, DelayValidateNamePartChanged);
+				}
+			}
+		}
+		/// <summary>
+		/// ChangeRule: typeof(ObjectTypeInstance)
+		/// Update generated names when the role fields change predicate changes
+		/// </summary>
+		private static void ObjectTypeInstanceNameChangedRule(ElementPropertyChangedEventArgs e)
+		{
+			if (e.DomainProperty.Id == ObjectTypeInstance.NameChangedDomainPropertyId)
+			{
+				foreach (FactTypeRoleInstance roleInstance in FactTypeRoleInstance.GetLinksToRoleCollection((ObjectTypeInstance)e.ModelElement))
+				{
+					FrameworkDomainModel.DelayValidateElement(roleInstance.FactTypeInstance, DelayValidateNamePartChanged);
+				}
+			}
+		}
+		/// <summary>
+		/// RolePlayerChangeRule: typeof(FactTypeRoleInstance)
+		/// Update generated names when the associated instances change
+		/// </summary>
+		private static void FactTypeRoleInstanceRolePlayerChangedRule(RolePlayerChangedEventArgs e)
+		{
+			FactTypeInstance factInstance;
+			if (e.DomainRole.Id == FactTypeRoleInstance.ObjectTypeInstanceDomainRoleId && // Note that the opposite role change is blocked in a RoleInstance rule
+				null != (factInstance = ((FactTypeRoleInstance)e.ElementLink).FactTypeInstance))
+			{
+				FrameworkDomainModel.DelayValidateElement(factInstance, DelayValidateNamePartChanged);
+			}
+		}
+		/// <summary>
+		/// RolePlayerChangeRule: typeof(FactTypeInstanceHasRoleInstance)
+		/// Block role instance from moving to different instance
+		/// </summary>
+		private static void FactTypeInstanceHasRoleInstanceRolePlayerChangedRule(RolePlayerChangedEventArgs e)
+		{
+			throw new InvalidOperationException(ResourceStrings.ModelExceptionFactTypeInstanceEnforceFixedRoleInstance);
 		}
 		#endregion
 	}
 
 	public partial class EntityTypeInstance : IModelErrorOwner, IHasIndirectModelErrorOwner
 	{
+		#region Base overrides
+		private string myGeneratedName = string.Empty;
+		private string myGeneratedIdentifierName = string.Empty;
+		/// <summary>
+		/// Enable name generation
+		/// </summary>
+		protected override bool HasGeneratedNames
+		{
+			get
+			{
+				return true;
+			}
+		}
+		/// <summary>
+		/// Generate the current value for the <see cref="P:Name"/> property
+		/// </summary>
+		protected override string GenerateName()
+		{
+			return ObjectTypeInstance.GetDisplayString(this, EntityType, false);
+		}
+		/// <summary>
+		/// Generate the current value for the <see cref="P:IdentifierName"/> property
+		/// </summary>
+		protected override string GenerateIdentifierName()
+		{
+			return ObjectTypeInstance.GetDisplayString(this, EntityType, true);
+		}
+		/// <summary>
+		/// Provide storage for the generated <see cref="P:Name"/>
+		/// </summary>
+		protected override string GeneratedName
+		{
+			get
+			{
+				return myGeneratedName;
+			}
+			set
+			{
+				myGeneratedName = value;
+			}
+		}
+		/// <summary>
+		/// Provide storage for the generated <see cref="P:IdentifierName"/>
+		/// </summary>
+		protected override string GeneratedIdentifierName
+		{
+			get
+			{
+				return myGeneratedIdentifierName;
+			}
+			set
+			{
+				myGeneratedIdentifierName = value;
+			}
+		}
+		/// <summary>
+		/// If this identifier is empty, then verify that it is both associated with
+		/// a <see cref="FactTypeInstance"/> and included in another instance definition.
+		/// </summary>
+		protected override void DelayValidateIfEmpty()
+		{
+			if (RoleInstanceCollection.Count == 0)
+			{
+				FrameworkDomainModel.DelayValidateElement(this, DelayValidateTooFewEntityTypeRoleInstancesError);
+			}
+		}
+		#endregion // Base overrides
 		#region Helper Methods
 		/// <summary>
-		/// Finds the EntityTypeRoleInstance for the given Role.
+		/// Finds the <see cref="EntityTypeRoleInstance"/> for the given <paramref name="role"/>.
 		/// Returns null if no matching RoleInstance is found.
 		/// </summary>
-		/// <param name="selectedRole">Role to match on</param>
+		/// <param name="role">Role to match on</param>
 		/// <returns>EntityTypeRoleInstance for the given role, or null if none found.</returns>
-		public EntityTypeRoleInstance FindRoleInstance(Role selectedRole)
+		public EntityTypeRoleInstance FindRoleInstance(Role role)
 		{
-			LinkedElementCollection<EntityTypeRoleInstance> roleInstances = RoleInstanceCollection;
+			return FindRoleInstance(RoleInstanceCollection, role);
+		}
+		/// <summary>
+		/// Finds the <see cref="EntityTypeRoleInstance"/> for the given <paramref name="role"/>
+		/// in the provided <paramref name="roleInstances"/>.
+		/// Returns null if no matching RoleInstance is found.
+		/// </summary>
+		/// <param name="roleInstances"></param>
+		/// <param name="role">Role to match on</param>
+		/// <returns>EntityTypeRoleInstance for the given role, or null if none found.</returns>
+		public static EntityTypeRoleInstance FindRoleInstance(IList<EntityTypeRoleInstance> roleInstances, Role role)
+		{
 			int roleInstanceCount = roleInstances.Count;
 			EntityTypeRoleInstance roleInstance;
 			for (int i = 0; i < roleInstanceCount; ++i)
 			{
-				if ((roleInstance = roleInstances[i]).Role == selectedRole)
+				if ((roleInstance = roleInstances[i]).Role == role)
 				{
 					return roleInstance;
 				}
 			}
 			return null;
 		}
-		#endregion
+		/// <summary>
+		/// Attach the <paramref name="instance"/> to the specified <paramref name="identifierRole"/>.
+		/// This routine safed creates a new <see cref="EntityTypeRoleInstance"/>. A new EntityTypeRoleInstance
+		/// should be created directly only for new <see cref="EntityTypeInstance"/> elements.
+		/// </summary>
+		/// <param name="identifierRole">A role from the entity identifier to attach to</param>
+		/// <param name="instance">The instance to attach</param>
+		/// <returns>The new (or exisitng) <see cref="EntityTypeRoleInstance"/></returns>
+		public EntityTypeRoleInstance EnsureRoleInstance(Role identifierRole, ObjectTypeInstance instance)
+		{
+			EntityTypeRoleInstance roleInstance = FindRoleInstance(identifierRole);
+			bool sameInstance = false;
+			if (roleInstance != null)
+			{
+				sameInstance = roleInstance.ObjectTypeInstance == instance;
+#if !ROLEINSTANCE_ROLEPLAYERCHANGE
+				if (!sameInstance)
+				{
+					roleInstance.Delete();
+				}
+#endif // !ROLEINSTANCE_ROLEPLAYERCHANGE
+			}
+			if (!sameInstance)
+			{
+
+#if ROLEINSTANCE_ROLEPLAYERCHANGE
+				if (roleInstance == null)
+				{
+#endif // ROLEINSTANCE_ROLEPLAYERCHANGE
+					roleInstance = new EntityTypeRoleInstance(identifierRole, instance);
+					roleInstance.EntityTypeInstance = this;
+#if ROLEINSTANCE_ROLEPLAYERCHANGE
+				}
+				else
+				{
+					roleInstance.ObjectTypeInstance = instance;
+				}
+#endif // ROLEINSTANCE_ROLEPLAYERCHANGE
+			}
+			return roleInstance;
+		}
+		#endregion // Helper Methods
 		#region IModelErrorOwner Implementation
 		/// <summary>
 		/// Returns the errors associated with the object.
@@ -806,34 +1524,101 @@ namespace Neumont.Tools.ORM.ObjectModel
 				bool hasError = false;
 				LinkedElementCollection<EntityTypeRoleInstance> roleInstances = RoleInstanceCollection;
 				ObjectType parent = EntityType;
-				UniquenessConstraint preferredIdent;
-				if (parent != null && roleInstances != null && (preferredIdent = parent.PreferredIdentifier) != null)
+				UniquenessConstraint pid;
+				if (parent != null && roleInstances != null && (pid = parent.PreferredIdentifier) != null)
 				{
-					LinkedElementCollection<Role> entityPreferredIdentRoles = preferredIdent.RoleCollection;
-					bool roleMatch;
-					int identifierRoleCount = entityPreferredIdentRoles.Count;
-					int roleInstancesCount = roleInstances.Count;
-					if (identifierRoleCount != roleInstancesCount)
+					int roleInstanceCount = roleInstances.Count;
+					if (roleInstanceCount == 0)
 					{
-						hasError = true;
+						// The instance is alive so that a FactTypeInstance can be referenced
+						// via an ObjectTypeInstance and the associated ObjectificationInstance.
+						// We report rules as if these empty instances do not exist.
+						// If we are currently deserializing (notifyAdded is not null), then
+						// the error verification will happen with the FactTypeInstance. This
+						// routine just needs to verify that the instance is still needed.
+						hasError = false;
+						bool referencedForFactInstance = false;
+						FactTypeInstance factInstance;
+						if (null != (factInstance = ObjectifiedInstance))
+						{
+							referencedForFactInstance = RoleCollection.Count != 0;
+							if (notifyAdded == null)
+							{
+								FactTypeInstance.DelayValidateObjectifyingInstanceRequiredError(factInstance);
+							}
+						}
+						LinkedElementCollection<EntityTypeSubtypeInstance> subtypeInstances = EntityTypeSubtypeInstanceCollection;
+						int subtypeInstanceCount = subtypeInstances.Count;
+						for (int i = subtypeInstanceCount - 1; i >= 0; --i)
+						{
+							EntityTypeSubtypeInstance subtypeInstance = subtypeInstances[i];
+							bool subtypeInstancedReferencedForFactInstance = false;
+							if (null != (factInstance = subtypeInstance.ObjectifiedInstance))
+							{
+								subtypeInstancedReferencedForFactInstance = subtypeInstance.RoleCollection.Count != 0;
+								if (notifyAdded == null)
+								{
+									FactTypeInstance.DelayValidateObjectifyingInstanceRequiredError(factInstance);
+								}
+							}
+							if (subtypeInstancedReferencedForFactInstance)
+							{
+								referencedForFactInstance = true;
+							}
+							else
+							{
+								subtypeInstance.Delete();
+							}
+						}
+						if (!referencedForFactInstance)
+						{
+							this.Delete();
+							return;
+						}
 					}
 					else
 					{
-						for (int i = 0; !hasError && i < identifierRoleCount; ++i)
+						LinkedElementCollection<Role> pidRoles = pid.RoleCollection;
+						int pidRoleCount = pidRoles.Count;
+						if (pidRoleCount != roleInstanceCount)
 						{
-							roleMatch = false;
-							for (int j = 0; !hasError && j < roleInstancesCount; ++j)
+							hasError = true;
+						}
+						else
+						{
+							for (int i = 0; !hasError && i < pidRoleCount; ++i)
 							{
-								if (entityPreferredIdentRoles[i] == roleInstances[j].Role)
+								bool roleMatch = false;
+								for (int j = 0; !hasError && j < roleInstanceCount; ++j)
 								{
-									roleMatch = true;
+									if (pidRoles[i] == roleInstances[j].Role)
+									{
+										roleMatch = true;
+										break;
+									}
+								}
+								if (!roleMatch)
+								{
+									hasError = true;
 									break;
 								}
 							}
-							if (!roleMatch)
+						}
+						// We have at least one role, so make sure related FactTypeInstances
+						// do not have an ObjectifyingInstanceRequiredError
+						if (null == notifyAdded)
+						{
+							FactTypeInstance factInstance = ObjectifiedInstance;
+							if (factInstance != null)
 							{
-								hasError = true;
-								break;
+								factInstance.ObjectifyingInstanceRequiredError = null;
+							}
+							foreach (EntityTypeSubtypeInstance subtypeInstance in EntityTypeSubtypeInstanceCollection)
+							{
+								if (null != (factInstance = subtypeInstance.ObjectifiedInstance))
+								{
+									factInstance.ObjectifyingInstanceRequiredError = null;
+								}
 							}
 						}
 					}
@@ -860,6 +1645,167 @@ namespace Neumont.Tools.ORM.ObjectModel
 			}
 		}
 		#endregion
+		#region ObjectificationInstance Validation
+		/// <summary>
+		/// Validate objectification instances for a new <see cref="Objectification"/>
+		/// </summary>
+		[DelayValidatePriority(3)] // Run after subtype instances are in validated
+		private static void DelayValidateObjectificationInstances(ModelElement element)
+		{
+			Objectification objectification = (Objectification)element;
+			Store store = objectification.Store;
+			FactType factType = objectification.NestedFactType;
+			ObjectType entityType = objectification.NestingType;
+			bool deletedLink = objectification.IsDeleted;
+			UniquenessConstraint pid = null;
+			LinkedElementCollection<FactType> pidFactTypes;
+			FactType identifierFactType;
+			Role unaryRole = null;
+			ObjectifiedUnaryRole objectifiedUnaryRole = null;
+			if (!deletedLink &&
+				null != (pid = entityType.PreferredIdentifier) &&
+				pid.IsInternal &&
+				1 == (pidFactTypes = pid.FactTypeCollection).Count &&
+				((identifierFactType = pidFactTypes[0]) == factType ||
+				(null != (unaryRole = factType.UnaryRole) &&
+				null != (objectifiedUnaryRole = unaryRole.ObjectifiedUnaryRole) &&
+				identifierFactType == objectifiedUnaryRole.FactType)))
+			{
+				// Preferred uniqueness constraint is internal to the objectified FactType,
+				// so the EntityType instances are implied
+				LinkedElementCollection<Role> pidRoles = null;
+				LinkedElementCollection<FactTypeInstance> factInstances = factType.FactTypeInstanceCollection;
+				int factInstanceCount = factInstances.Count;
+				for (int i = 0; i < factInstanceCount; ++i)
+				{
+					FactTypeInstance factInstance = factInstances[i];
+					if (factInstance.ObjectifyingInstance == null)
+					{
+						factInstance.ObjectifyingInstanceRequiredError = null;
+						EntityTypeInstance entityInstance = new EntityTypeInstance(store);
+						entityInstance.EntityType = entityType;
+						entityInstance.ObjectifiedInstance = factInstance;
+
+						// Attach role instances
+						if (unaryRole != null)
+						{
+							FactTypeRoleInstance factRoleInstance = factInstance.FindRoleInstance(unaryRole);
+							if (factRoleInstance != null)
+							{
+								pidRoles = pidRoles ?? pid.RoleCollection;
+								if (pidRoles.Contains(objectifiedUnaryRole))
+								{
+									new EntityTypeRoleInstance(objectifiedUnaryRole, factRoleInstance.ObjectTypeInstance).EntityTypeInstance = entityInstance;
+								}
+							}
+						}
+						else
+						{
+							LinkedElementCollection<FactTypeRoleInstance> roleInstances = factInstance.RoleInstanceCollection;
+							int roleInstanceCount = roleInstances.Count;
+							if (roleInstanceCount != 0)
+							{
+								pidRoles = pidRoles ?? pid.RoleCollection;
+								for (int j = 0; j < roleInstanceCount; ++j)
+								{
+									FactTypeRoleInstance factRoleInstance = roleInstances[j];
+									Role role = factRoleInstance.Role;
+									if (pidRoles.Contains(role))
+									{
+										new EntityTypeRoleInstance(role, factRoleInstance.ObjectTypeInstance).EntityTypeInstance = entityInstance;
+									}
+								}
+							}
+						}
+					}
+				}
+				LinkedElementCollection<ObjectTypeInstance> objectInstances = entityType.ObjectTypeInstanceCollection;
+				int objectInstanceCount = objectInstances.Count;
+				int unattachedCount = objectInstanceCount - factInstanceCount;
+				if (unattachedCount > 0)
+				{
+					// Unlikely, but cleans up any non-implicit entity instances
+					for (int i = objectInstanceCount - 1; i >= 0; --i)
+					{
+						ObjectTypeInstance objectInstance = objectInstances[i];
+						if (objectInstance.ObjectifiedInstance == null)
+						{
+							objectInstance.Delete();
+							if (--unattachedCount == 0)
+							{
+								break;
+							}
+						}
+					}
+				}
+			}
+			else if (!deletedLink && pid != null)
+			{
+				// Validate instances on each end of the relationship. This is a repeat of
+				// the single instance validation routines, but it is not work delay validating
+				// each instance to avoid this.
+				ORMModel model = null;
+				foreach (FactTypeInstance factInstance in factType.FactTypeInstanceCollection)
+				{
+					ObjectTypeInstance objectifyingInstance = factInstance.ObjectifyingInstance;
+					bool hasError = objectifyingInstance == null;
+					if (!hasError)
+					{
+						EntityTypeSubtypeInstance subtypeInstance = objectifyingInstance as EntityTypeSubtypeInstance;
+						EntityTypeInstance entityInstance = (subtypeInstance != null) ? subtypeInstance.SupertypeInstance : (EntityTypeInstance)objectifyingInstance;
+						hasError = entityInstance.RoleCollection.Count == 0;
+					}
+					ObjectifyingInstanceRequiredError error = factInstance.ObjectifyingInstanceRequiredError;
+					if (hasError)
+					{
+						if (error == null)
+						{
+							error = new ObjectifyingInstanceRequiredError(store);
+							error.FactTypeInstance = factInstance;
+							error.Model = model ?? (model = factType.Model);
+							error.GenerateErrorText();
+						}
+					}
+					else if (error != null)
+					{
+						error.Delete();
+					}
+				}
+				foreach (ObjectTypeInstance objectInstance in entityType.ObjectTypeInstanceCollection)
+				{
+					ObjectifiedInstanceRequiredError error = objectInstance.ObjectifiedInstanceRequiredError;
+					if (objectInstance.ObjectifiedInstance == null)
+					{
+						if (error == null)
+						{
+							error = new ObjectifiedInstanceRequiredError(store);
+							error.ObjectTypeInstance = objectInstance;
+							error.Model = model ?? (model = entityType.Model);
+							error.GenerateErrorText();
+						}
+					}
+					else if (error != null)
+					{
+						error.Delete();
+					}
+				}
+			}
+			else
+			{
+				// Clear all links and errors on remaining instances
+				foreach (FactTypeInstance factInstance in factType.FactTypeInstanceCollection)
+				{
+					factInstance.ObjectifyingInstance = null;
+					factInstance.ObjectifyingInstanceRequiredError = null;
+				}
+				foreach (ObjectTypeInstance objectInstance in entityType.ObjectTypeInstanceCollection)
+				{
+					objectInstance.ObjectifiedInstance = null;
+					objectInstance.ObjectifiedInstanceRequiredError = null;
+				}
+			}
+		}
+		#endregion // ObjectificationInstance Validation
 		#region IHasIndirectModelErrorOwner Implementation
 		private static Guid[] myIndirectModelErrorOwnerLinkRoles;
 		/// <summary>
@@ -914,13 +1860,12 @@ namespace Neumont.Tools.ORM.ObjectModel
 			{
 				ReadOnlyCollection<EntityTypeInstanceHasRoleInstance> currentLinks = EntityTypeInstanceHasRoleInstance.GetLinksToRoleInstanceCollection(this);
 				int linkCount = currentLinks.Count;
-				for (int i = linkCount - 1; i >= 0; --i)
+				for (int i = 0; i < linkCount; ++i)
 				{
 					EntityTypeInstanceHasRoleInstance currentLink = currentLinks[i];
 					if (link != currentLink && role == currentLink.RoleInstance.Role)
 					{
-						currentLink.Delete();
-						break;
+						throw new InvalidOperationException(ResourceStrings.ModelExceptionEntiyTypeInstanceEnforceRoleUniqueness);
 					}
 				}
 			}
@@ -976,7 +1921,7 @@ namespace Neumont.Tools.ORM.ObjectModel
 				}
 				else
 				{
-					// The opposite identifier role is optional, so there population mandatory errors
+					// The opposite identifier role is optional, so population mandatory errors
 					// are possible. Validate the opposite instances.
 					foreach (EntityTypeRoleInstance roleInstance in instance.RoleInstanceCollection)
 					{
@@ -990,129 +1935,215 @@ namespace Neumont.Tools.ORM.ObjectModel
 			}
 		}
 		/// <summary>
+		/// AddRule: typeof(Objectification)
+		/// Validate <see cref="ObjectificationInstance"/> elements when an <see cref="Objectification"/> is added
+		/// </summary>
+		private static void ObjectificationAddedRule(ElementAddedEventArgs e)
+		{
+			FrameworkDomainModel.DelayValidateElement(e.ModelElement, DelayValidateObjectificationInstances);
+		}
+		/// <summary>
 		/// AddRule: typeof(EntityTypeHasPreferredIdentifier)
 		/// Clean up ValueTypeInstances when an ObjectType becomes an EntityType
 		/// </summary>
-		private static void EntityTypeHasPreferredIdentifierAddedRule(ElementAddedEventArgs e)
+		private static void PreferredIdentifierAddedRule(ElementAddedEventArgs e)
 		{
-			ProcessEntityTypeHasPreferredIdentifierAdded(e.ModelElement as EntityTypeHasPreferredIdentifier);
+			ProcessPreferredIdentifierAdded((EntityTypeHasPreferredIdentifier)e.ModelElement);
 		}
 		/// <summary>
 		/// Rule helper method
 		/// </summary>
-		private static void ProcessEntityTypeHasPreferredIdentifierAdded(EntityTypeHasPreferredIdentifier link)
+		private static void ProcessPreferredIdentifierAdded(EntityTypeHasPreferredIdentifier link)
 		{
-			UniquenessConstraint pid = link.PreferredIdentifier;
-			if (pid.IsInternal)
+			FrameworkDomainModel.DelayValidateElement(link.PreferredIdentifier, DelayValidatePreferredIdentifier);
+			ObjectType entityType = link.PreferredIdentifierFor;
+			Objectification objectification;
+			if (null != (objectification = entityType.Objectification))
 			{
-				FrameworkDomainModel.DelayValidateElement(link.PreferredIdentifier, DelayValidatePreferredIdentifier);
+				FrameworkDomainModel.DelayValidateElement(objectification, DelayValidateObjectificationInstances);
 			}
 		}
-		[DelayValidatePriority(1)] // Needs to run after implied mandatory validation on the role players
+		/// <summary>
+		/// DeleteRule: typeof(Objectification), Priority=1;
+		/// Remove all <see cref="ObjectificationInstance"/> links when an objectification
+		/// is deleted while both of its endpoints remain intact.
+		/// </summary>
+		private static void ObjectificationDeletedRule(ElementDeletedEventArgs e)
+		{
+			Objectification link = (Objectification)e.ModelElement;
+			ObjectType entityType;
+			FactType factType;
+			if (!(entityType = link.NestingType).IsDeleted &&
+				!(factType = link.NestedFactType).IsDeleted)
+			{
+				// Note that we run this at priority 1 to let the preferred identifier
+				// deletion process first, which will potentially clear the ObjectTypeInstanceCollection
+				// and leave us with less to do here.
+				foreach (ObjectTypeInstance instance in entityType.ObjectTypeInstanceCollection)
+				{
+					instance.ObjectifiedInstance = null;
+					instance.ObjectifiedInstanceRequiredError = null; // No need to delay validate
+				}
+				foreach (FactTypeInstance instance in factType.FactTypeInstanceCollection)
+				{
+					// All ObjectificationInstance relationships will have been taken care of by the previous loop
+					instance.ObjectifyingInstanceRequiredError = null;
+				}
+			}
+		}
+		/// <summary>
+		/// RolePlayerChangeRule: typeof(Objectification), Priority=1;
+		/// Clean up <see cref="ObjectificationInstance"/> relationships for the old objectification/instance pair
+		/// </summary>
+		private static void ObjectificationRolePlayerChangedRule(RolePlayerChangedEventArgs e)
+		{
+			// Note that we run this at priority 1 to let the preferred identifier
+			// deletion process first, which will potentially clear the ObjectTypeInstanceCollection
+			// and leave us with less to do here.
+			Objectification objectification = (Objectification)e.ElementLink;
+			FactType factType;
+			ObjectType entityType;
+			if (e.DomainRole.Id == Objectification.NestingTypeDomainRoleId)
+			{
+				factType = objectification.NestedFactType;
+				entityType = (ObjectType)e.OldRolePlayer;
+			}
+			else
+			{
+				factType = (FactType)e.OldRolePlayer;
+				entityType = objectification.NestingType;
+			}
+			foreach (ObjectTypeInstance instance in entityType.ObjectTypeInstanceCollection)
+			{
+				instance.ObjectifiedInstance = null;
+				instance.ObjectifiedInstanceRequiredError = null; // No need to delay validate
+			}
+			foreach (FactTypeInstance instance in factType.FactTypeInstanceCollection)
+			{
+				// All ObjectificationInstance relationships will have been taken care of by the previous loop
+				instance.ObjectifyingInstanceRequiredError = null;
+			}
+			FrameworkDomainModel.DelayValidateElement(objectification, DelayValidateObjectificationInstances);
+		}
+		[DelayValidatePriority(1)] // Needs to run after implied mandatory validation on the role players and removal of subtype instances
 		private static void DelayValidatePreferredIdentifier(ModelElement element)
 		{
 			if (!element.IsDeleted)
 			{
 				UniquenessConstraint preferredIdentifier = (UniquenessConstraint)element;
-				LinkedElementCollection<Role> roles;
-				Role identifierRole;
-				Role identifiedRole;
 				ObjectType identifiedObjectType;
-				ObjectType identifyingObjectType;
-				if (preferredIdentifier.IsInternal &&
-					1 == (roles = preferredIdentifier.RoleCollection).Count &&
-					null != (identifyingObjectType = (identifierRole = roles[0]).RolePlayer) &&
-					null != (identifiedRole = identifierRole.OppositeRole as Role) &&
-					(identifiedObjectType = identifiedRole.RolePlayer) == preferredIdentifier.PreferredIdentifierFor)
+				if (null != (identifiedObjectType = preferredIdentifier.PreferredIdentifierFor))
 				{
-					// This is a simple reference scheme preferred identifier. All FactTypeInstance
-					// populations for this pattern are implicit, so the fact type instances should
-					// not be populated. If the preferred identifier role is also mandatory (implied
-					// or explicit), then all instances for the role player on that role should be referenced
-					// by corresponding EntityTypeInstances on the identified role. All population mandatory
-					// errors should be cleared for mandatory constraints on the identified role, and the
-					// identifier role should have no population mandatory errors if it is mandatory or if the
-					// identified role has any implied populated.
-					identifierRole.FactType.FactTypeInstanceCollection.Clear();
-					foreach (ConstraintRoleSequence sequence in identifiedRole.ConstraintRoleSequenceCollection)
-					{
-						MandatoryConstraint constraint = sequence as MandatoryConstraint;
-						if (constraint != null && constraint.Modality == ConstraintModality.Alethic)
-						{
-							constraint.PopulationMandatoryErrorCollection.Clear();
-						}
-					}
-					LinkedElementCollection<ConstraintRoleSequence> identifierConstraintSequences = identifierRole.ConstraintRoleSequenceCollection;
-					if (identifierRole.SingleRoleAlethicMandatoryConstraint != null)
-					{
-						// Full population is implied, clear any population mandatory errors and synchronize the sets
-						foreach (ConstraintRoleSequence sequence in identifierConstraintSequences)
-						{
-							MandatoryConstraint constraint = sequence as MandatoryConstraint;
-							if (constraint != null && constraint.Modality == ConstraintModality.Alethic)
-							{
-								constraint.PopulationMandatoryErrorCollection.Clear();
-							}
-						}
-						EnsureImpliedEntityTypeInstances(identifiedObjectType, identifierRole);
-					}
-					else
-					{
-						foreach (ObjectTypeInstance identifyingInstance in identifyingObjectType.ObjectTypeInstanceCollection)
-						{
-							bool requireError = true;
-							bool checkedError = false;
-							bool haveMandatoryConstraints = false;
+					// An ObjectType with a preferred identifier cannot have EntityTypeSubtypeInstances
+					identifiedObjectType.EntityTypeSubtypeInstanceCollection.Clear();
 
-							// Find disjunctive mandatory roles
-							foreach (ConstraintRoleSequence sequence in identifierConstraintSequences)
+					if (!preferredIdentifier.IsObjectifiedPreferredIdentifier)
+					{
+						// This identifier provides a reference scheme. All FactTypeInstance
+						// populations for this pattern are implicit, so the fact type instances should
+						// not be populated. If the preferred identifier is simple and the constrained role
+						// is also mandatory (implied or explicit), then all instances for the role player
+						// on that role should be referenced by corresponding EntityTypeInstances on the identified
+						// role. All population mandatory errors should be cleared for mandatory constraints
+						// on the identified role, and the identifier role should have no population mandatory
+						// errors if it is mandatory or if the identified role has any implied population.
+						LinkedElementCollection<Role> identifierRoles = preferredIdentifier.RoleCollection;
+						int identifierRoleCount = identifierRoles.Count;
+						for (int i = 0; i < identifierRoleCount; ++i)
+						{
+							Role identifierRole = identifierRoles[i];
+							ObjectType identifyingObjectType = identifierRole.RolePlayer;
+							Role identifiedRole = identifierRole.OppositeRole as Role;
+
+							identifierRole.FactType.FactTypeInstanceCollection.Clear();
+
+							if (null != identifiedRole)
 							{
-								MandatoryConstraint constraint = sequence as MandatoryConstraint;
-								if (constraint != null && constraint.Modality == ConstraintModality.Alethic)
+								foreach (ConstraintRoleSequence sequence in identifiedRole.ConstraintRoleSequenceCollection)
 								{
-									if (!checkedError)
+									MandatoryConstraint constraint = sequence as MandatoryConstraint;
+									if (constraint != null && constraint.Modality == ConstraintModality.Alethic)
 									{
-										checkedError = true;
-										haveMandatoryConstraints = true;
-										foreach (EntityTypeRoleInstance roleInstance in EntityTypeRoleInstance.GetLinksToRoleCollection(identifyingInstance))
-										{
-											if (roleInstance.Role == identifierRole)
-											{
-												requireError = false;
-												break;
-											}
-										}
-									}
-									LinkedElementCollection<PopulationMandatoryError> errors = constraint.PopulationMandatoryErrorCollection;
-									PopulationMandatoryError error = null;
-									foreach (PopulationMandatoryError testError in errors)
-									{
-										if (testError.ObjectTypeInstance == identifyingInstance)
-										{
-											error = testError;
-											break;
-										}
-									}
-									if (requireError)
-									{
-										if (error == null)
-										{
-											error = new PopulationMandatoryError(element.Store);
-											error.ObjectTypeInstance = identifyingInstance;
-											error.MandatoryConstraint = constraint;
-											error.Model = constraint.Model;
-										}
-										error.GenerateErrorText();
-									}
-									else if (error != null)
-									{
-										error.Delete();
+										constraint.PopulationMandatoryErrorCollection.Clear();
 									}
 								}
 							}
-							if (!haveMandatoryConstraints)
+							if (identifierRoleCount == 1 && identifierRole.SingleRoleAlethicMandatoryConstraint != null)
 							{
-								break;
+								// Full population is implied, clear any population mandatory errors and synchronize the sets
+								foreach (ConstraintRoleSequence sequence in identifierRole.ConstraintRoleSequenceCollection)
+								{
+									MandatoryConstraint constraint = sequence as MandatoryConstraint;
+									if (constraint != null && constraint.Modality == ConstraintModality.Alethic)
+									{
+										constraint.PopulationMandatoryErrorCollection.Clear();
+									}
+								}
+								EnsureImpliedEntityTypeInstances(identifiedObjectType, identifierRole);
+							}
+							else if (identifyingObjectType != null)
+							{
+								LinkedElementCollection<ConstraintRoleSequence> identifierConstraintSequences = null;
+								foreach (ObjectTypeInstance identifyingInstance in identifyingObjectType.ObjectTypeInstanceCollection)
+								{
+									bool requireError = true;
+									bool haveMandatoryConstraints = false;
+
+									if (identifierConstraintSequences == null)
+									{
+										identifierConstraintSequences = identifierRole.ConstraintRoleSequenceCollection;
+									}
+
+									// Find disjunctive mandatory roles
+									foreach (ConstraintRoleSequence sequence in identifierConstraintSequences)
+									{
+										MandatoryConstraint constraint = sequence as MandatoryConstraint;
+										if (constraint != null && constraint.Modality == ConstraintModality.Alethic)
+										{
+											if (!haveMandatoryConstraints)
+											{
+												haveMandatoryConstraints = true;
+												foreach (EntityTypeRoleInstance roleInstance in EntityTypeRoleInstance.GetLinksToRoleCollection(identifyingInstance))
+												{
+													if (roleInstance.Role == identifierRole)
+													{
+														requireError = false;
+														break;
+													}
+												}
+											}
+											LinkedElementCollection<PopulationMandatoryError> errors = constraint.PopulationMandatoryErrorCollection;
+											PopulationMandatoryError error = null;
+											foreach (PopulationMandatoryError testError in errors)
+											{
+												if (testError.ObjectTypeInstance == identifyingInstance)
+												{
+													error = testError;
+													break;
+												}
+											}
+											if (requireError)
+											{
+												if (error == null)
+												{
+													error = new PopulationMandatoryError(element.Store);
+													error.ObjectTypeInstance = identifyingInstance;
+													error.MandatoryConstraint = constraint;
+													error.Model = constraint.Model;
+												}
+												error.GenerateErrorText();
+											}
+											else if (error != null)
+											{
+												error.Delete();
+											}
+										}
+									}
+									if (!haveMandatoryConstraints)
+									{
+										break;
+									}
+								}
 							}
 						}
 					}
@@ -1123,57 +2154,178 @@ namespace Neumont.Tools.ORM.ObjectModel
 		/// DeleteRule: typeof(EntityTypeHasPreferredIdentifier)
 		/// Clean up EntityTypeInstances when an ObjectType becomes a ValueTypeInstance
 		/// </summary>
-		private static void EntityTypeHasPreferredIdentifierDeletedRule(ElementDeletedEventArgs e)
+		private static void PreferredIdentifierDeletedRule(ElementDeletedEventArgs e)
 		{
-			ProcessEntityTypeHasPreferredIdentifierDeleted(e.ModelElement as EntityTypeHasPreferredIdentifier, null);
+			ProcessPreferredIdentifierDeleted(e.ModelElement as EntityTypeHasPreferredIdentifier, null);
 		}
 		/// <summary>
 		/// Rule helper method
 		/// </summary>
-		private static void ProcessEntityTypeHasPreferredIdentifierDeleted(EntityTypeHasPreferredIdentifier link, ObjectType objectType)
+		private static void ProcessPreferredIdentifierDeleted(EntityTypeHasPreferredIdentifier link, ObjectType objectType)
 		{
 			if (objectType == null)
 			{
 				objectType = link.PreferredIdentifierFor;
 			}
-			if (!objectType.IsDeleted)
+			if (!(objectType.IsDeleted || objectType.IsDeleting))
 			{
 				objectType.EntityTypeInstanceCollection.Clear();
+				Objectification objectification;
+				if (null != (objectification = objectType.Objectification))
+				{
+					FrameworkDomainModel.DelayValidateElement(objectification, DelayValidateObjectificationInstances);
+				}
 			}
 		}
 		/// <summary>
 		/// RolePlayerChangeRule: typeof(EntityTypeHasPreferredIdentifier)
 		/// </summary>
-		private static void EntityTypeHasPreferredIdentifierRolePlayerChangedRule(RolePlayerChangedEventArgs e)
+		private static void PreferredIdentifierRolePlayerChangedRule(RolePlayerChangedEventArgs e)
 		{
-			Guid changedRoleGuid = e.DomainRole.Id;
+			EntityTypeHasPreferredIdentifier link = (EntityTypeHasPreferredIdentifier)e.ElementLink;
 			ObjectType oldObjectType = null;
-			if (changedRoleGuid == EntityTypeHasPreferredIdentifier.PreferredIdentifierForDomainRoleId)
+			if (e.DomainRole.Id == EntityTypeHasPreferredIdentifier.PreferredIdentifierForDomainRoleId)
 			{
 				oldObjectType = (ObjectType)e.OldRolePlayer;
 			}
-			EntityTypeHasPreferredIdentifier link = (EntityTypeHasPreferredIdentifier)e.ElementLink;
-			ProcessEntityTypeHasPreferredIdentifierDeleted(link, oldObjectType);
-			ProcessEntityTypeHasPreferredIdentifierAdded(link);
+			else
+			{
+				// Verify if the pid has been changed for an objectification from one internal
+				// constraint on the FactType to another. If this is the case, then fixup any existing
+				// entity instances.
+				ObjectType entityType = link.PreferredIdentifierFor;
+				UniquenessConstraint oldIdentifier;
+				UniquenessConstraint newIdentifier;
+				FactType objectifiedFactType;
+				LinkedElementCollection<FactType> pidFactTypes;
+				if (null != (objectifiedFactType = entityType.NestedFactType) &&
+					(oldIdentifier = (UniquenessConstraint)e.OldRolePlayer).IsInternal &&
+					(newIdentifier = (UniquenessConstraint)link.PreferredIdentifier).IsInternal &&
+					1 == (pidFactTypes = oldIdentifier.FactTypeCollection).Count &&
+					pidFactTypes[0] == objectifiedFactType &&
+					1 == (pidFactTypes = newIdentifier.FactTypeCollection).Count &&
+					pidFactTypes[0] == objectifiedFactType)
+				{
+					bool haveRoleDiff = false;
+					Role[] modifiedRoles = null;
+					int[] roleOperation = null; // 0 = leave alone, 1 = add, 2 = remove
+					int modifiedRoleCount = 0;
+					foreach (EntityTypeInstance entityInstance in entityType.ObjectTypeInstanceCollection)
+					{
+						FactTypeInstance factInstance = entityInstance.ObjectifiedInstance;
+						if (factInstance == null)
+						{
+							continue;
+						}
+						if (!haveRoleDiff)
+						{
+							haveRoleDiff = true;
+							LinkedElementCollection<Role> oldRoles = oldIdentifier.RoleCollection;
+							LinkedElementCollection<Role> newRoles = newIdentifier.RoleCollection;
+							LinkedElementCollection<RoleBase> factRoles = objectifiedFactType.RoleCollection;
+							modifiedRoleCount = factRoles.Count;
+							modifiedRoles = new Role[modifiedRoleCount];
+							roleOperation = new int[modifiedRoleCount];
+							int nextRoleIndex = 0;
+							for (int i = 0; i < modifiedRoleCount; ++i)
+							{
+								Role testRole = factRoles[i].Role;
+								if (oldRoles.Contains(testRole))
+								{
+									if (newRoles.Contains(testRole))
+									{
+										continue;
+									}
+									// Deletion
+									modifiedRoles[nextRoleIndex] = testRole;
+									roleOperation[nextRoleIndex] = 2;
+									++nextRoleIndex;
+								}
+								else if (newRoles.Contains(testRole))
+								{
+									modifiedRoles[nextRoleIndex] = testRole;
+									roleOperation[nextRoleIndex] = 1;
+									++nextRoleIndex;
+								}
+							}
+							if (nextRoleIndex == 0)
+							{
+								// Nothing to do, the old and new populations are exactly the same
+								return;
+							}
+							modifiedRoleCount = nextRoleIndex;
+						}
+						for (int i = 0; i < modifiedRoleCount; ++i)
+						{
+							Role testRole = modifiedRoles[i];
+							FactTypeRoleInstance factRoleInstance;
+							EntityTypeRoleInstance entityRoleInstance;
+							switch (roleOperation[i])
+							{
+								case 1: // Add
+									if (null != (factRoleInstance = factInstance.FindRoleInstance(testRole)))
+									{
+										entityInstance.EnsureRoleInstance(testRole, factRoleInstance.ObjectTypeInstance);
+									}
+									break;
+								case 2: // Remove
+									if (null != (entityRoleInstance = entityInstance.FindRoleInstance(testRole)))
+									{
+										entityRoleInstance.Delete();
+									}
+									break;
+							}
+						}
+					}
+					return;
+				}
+			}
+			ProcessPreferredIdentifierDeleted(link, oldObjectType);
+			ProcessPreferredIdentifierAdded(link);
 		}
 		/// <summary>
 		/// AddRule: typeof(ConstraintRoleSequenceHasRole)
 		/// If a Role is added to an EntityType's preferred identifier collection, all EntityTypeInstances of that EntityType
 		/// should be revalidated to ensure that they form a complete instance of the EntityType
+		///
+		/// If an objectified internal preferred identifier is extended, then
+		/// automatically fill in the additional roles based on the associated
+		/// FactTypeInstance collection.
 		/// </summary>
-		private static void ConstraintRoleSequenceHasRoleAddedRule(ElementAddedEventArgs e)
+		private static void PreferredIdentifierRoleAddedRule(ElementAddedEventArgs e)
 		{
-			ConstraintRoleSequenceHasRole link = e.ModelElement as ConstraintRoleSequenceHasRole;
-			ConstraintRoleSequence sequence = link.ConstraintRoleSequence;
-			UniquenessConstraint uniConstraint = sequence as UniquenessConstraint;
-			ObjectType parent;
-			if (uniConstraint != null && (parent = uniConstraint.PreferredIdentifierFor) != null)
+			ConstraintRoleSequenceHasRole link = (ConstraintRoleSequenceHasRole)e.ModelElement;
+			UniquenessConstraint pid;
+			ObjectType entityType;
+			if (null != (pid = link.ConstraintRoleSequence as UniquenessConstraint) &&
+				null != (entityType = pid.PreferredIdentifierFor))
 			{
-				foreach (EntityTypeInstance entityTypeInstance in parent.EntityTypeInstanceCollection)
+				// Structural check
+				foreach (EntityTypeInstance entityInstance in entityType.EntityTypeInstanceCollection)
 				{
-					if (!entityTypeInstance.IsDeleted)
+					FrameworkDomainModel.DelayValidateElement(entityInstance, DelayValidateTooFewEntityTypeRoleInstancesError);
+				}
+
+				// ObjectificationInstance verification
+				FactType factType;
+				LinkedElementCollection<FactType> pidFactTypes;
+				if (null != (factType = entityType.NestedFactType) &&
+					pid.IsInternal &&
+					1 == (pidFactTypes = pid.FactTypeCollection).Count &&
+					pidFactTypes[0] == factType)
+				{
+					Role newRole = link.Role;
+					Store store = newRole.Store;
+					foreach (FactTypeInstance factInstance in factType.FactTypeInstanceCollection)
 					{
-						FrameworkDomainModel.DelayValidateElement(entityTypeInstance, DelayValidateTooFewEntityTypeRoleInstancesError);
+						EntityTypeInstance entityInstance;
+						FactTypeRoleInstance factRoleInstance;
+						if (null != (entityInstance = factInstance.ObjectifyingInstance as EntityTypeInstance) &&
+							null == entityInstance.FindRoleInstance(newRole) &&
+							null != (factRoleInstance = factInstance.FindRoleInstance(newRole)))
+						{
+							entityInstance.EnsureRoleInstance(newRole, factRoleInstance.ObjectTypeInstance);
+						}
 					}
 				}
 			}
@@ -1181,11 +2333,11 @@ namespace Neumont.Tools.ORM.ObjectModel
 		/// <summary>
 		/// DeleteRule: typeof(ConstraintRoleSequenceHasRole)
 		/// If a Role is removed from an EntityType's preferred identifier collection, it will
-		/// automatically propogate and destroy any role instances.  This rule
+		/// automatically propagate and destroy any role instances.  This rule
 		/// will force deletion of any EntityTypeInstances which no longer have
 		/// any EntityTypeRoleInstances.
 		/// </summary>
-		private static void ConstraintRoleSequenceHasRoleDeletedRule(ElementDeletedEventArgs e)
+		private static void PreferredIdentifierRoleDeletedRule(ElementDeletedEventArgs e)
 		{
 			ConstraintRoleSequenceHasRole link = e.ModelElement as ConstraintRoleSequenceHasRole;
 			ConstraintRoleSequence sequence = link.ConstraintRoleSequence;
@@ -1197,41 +2349,36 @@ namespace Neumont.Tools.ORM.ObjectModel
 				LinkedElementCollection<EntityTypeRoleInstance> roleInstances;
 				LinkedElementCollection<EntityTypeInstance> instances = parent.EntityTypeInstanceCollection;
 				EntityTypeInstance currentInstance;
-				bool cleanUp;
-				for (int i = 0; i < instances.Count; )
+				for (int i = instances.Count - 1; i >= 0; --i)
 				{
 					currentInstance = instances[i];
-					if (!currentInstance.IsDeleted)
+					if (!currentInstance.IsDeleting)
 					{
-						cleanUp = true;
+						bool cleanUp = true;
 						roleInstances = currentInstance.RoleInstanceCollection;
 						EntityTypeRoleInstance currentRoleInstance;
-						for (int j = 0; j < roleInstances.Count; )
+						for (int j = roleInstances.Count - 1; j >= 0; --j)
 						{
 							currentRoleInstance = roleInstances[j];
-							if (!currentRoleInstance.IsDeleted)
+							if (!currentRoleInstance.IsDeleting)
 							{
 								if (currentRoleInstance.Role == removedRole)
 								{
 									currentRoleInstance.Delete();
-									j = 0;
 								}
 								else
 								{
 									cleanUp = false;
-									++j;
 								}
 							}
 						}
 						if (cleanUp)
 						{
 							currentInstance.Delete();
-							i = 0;
 						}
 						else
 						{
 							FrameworkDomainModel.DelayValidateElement(currentInstance, DelayValidateTooFewEntityTypeRoleInstancesError);
-							++i;
 						}
 					}
 				}
@@ -1243,7 +2390,7 @@ namespace Neumont.Tools.ORM.ObjectModel
 		/// to an EntityType, ensure that all of the RoleInstances are hooked up to a role in the 
 		/// EntityType's preferred identifier.
 		/// </summary>
-		private static void EntityTypeHasEntityTypeInstanceAddedRule(ElementAddedEventArgs e)
+		private static void EntityTypeInstanceAddedRule(ElementAddedEventArgs e)
 		{
 			EntityTypeHasEntityTypeInstance link = e.ModelElement as EntityTypeHasEntityTypeInstance;
 			ObjectType entity = link.EntityType;
@@ -1251,14 +2398,14 @@ namespace Neumont.Tools.ORM.ObjectModel
 			{
 				throw new InvalidOperationException(ResourceStrings.ModelExceptionEntityTypeInstanceInvalidEntityTypeParent);
 			}
-			EntityTypeInstance entityTypeInstance = link.EntityTypeInstance;
-			ReadOnlyLinkedElementCollection<Role> entityTypeRoleInstances = entityTypeInstance.RoleCollection;
+			EntityTypeInstance entityInstance = link.EntityTypeInstance;
+			ReadOnlyLinkedElementCollection<Role> entityTypeRoleInstances = entityInstance.RoleCollection;
 			int roleCount = entityTypeRoleInstances.Count;
 			for (int i = 0; i < roleCount; ++i)
 			{
-				entityTypeInstance.EnsureConsistentRoleCollections(entity, entityTypeRoleInstances[i]);
+				entityInstance.EnsureConsistentRoleCollections(entity, entityTypeRoleInstances[i]);
 			}
-			FrameworkDomainModel.DelayValidateElement(entityTypeInstance, ObjectTypeInstance.DelayValidateInstancePopulationMandatoryError);
+			FrameworkDomainModel.DelayValidateElement(entityInstance, ObjectTypeInstance.DelayValidateInstancePopulationMandatoryError);
 		}
 		/// <summary>
 		/// AddRule: typeof(EntityTypeInstanceHasRoleInstance)
@@ -1266,39 +2413,62 @@ namespace Neumont.Tools.ORM.ObjectModel
 		/// in the EntityType parent's PreferredIdentifier, and that there are no duplicates.
 		/// Also validate the EntityTypeInstance to ensure a full instance population.
 		/// </summary>
-		private static void EntityTypeInstanceHasRoleInstanceAddedRule(ElementAddedEventArgs e)
+		private static void EntityTypeRoleInstanceAddedRule(ElementAddedEventArgs e)
 		{
 			EntityTypeInstanceHasRoleInstance link = e.ModelElement as EntityTypeInstanceHasRoleInstance;
 			EntityTypeRoleInstance roleInstance = link.RoleInstance;
-			EntityTypeInstance entityTypeInstance = link.EntityTypeInstance;
+			EntityTypeInstance entityInstance = link.EntityTypeInstance;
 			Role role = roleInstance.Role;
-			entityTypeInstance.EnsureConsistentRoleCollections(entityTypeInstance.EntityType, role);
-			entityTypeInstance.EnsureNonDuplicateRoleInstance(link);
-			FrameworkDomainModel.DelayValidateElement(entityTypeInstance, DelayValidateTooFewEntityTypeRoleInstancesError);
+			entityInstance.EnsureConsistentRoleCollections(entityInstance.EntityType, role);
+			entityInstance.EnsureNonDuplicateRoleInstance(link);
+			FrameworkDomainModel.DelayValidateElement(entityInstance, DelayValidateTooFewEntityTypeRoleInstancesError);
+			FrameworkDomainModel.DelayValidateElement(entityInstance, ObjectTypeInstance.DelayValidateNamePartChanged);
 		}
 		/// <summary>
-		/// DeletingRule: typeof(EntityTypeInstanceHasRoleInstance)
+		/// DeleteRule: typeof(EntityTypeInstanceHasRoleInstance), FireTime=LocalCommit, Priority=FrameworkDomainModel.BeforeDelayValidateRulePriority;
 		/// Revalidate the EntityTypeInstance when it loses one of its RoleInstances,
 		/// to ensure that the EntityTypeInstance is fully populated.  If the EntityTypeRoleInstance
 		/// removed is the last one, remove the parent EntityTypeInstance.
 		/// </summary>
-		private static void EntityTypeInstanceHasRoleInstanceDeletingRule(ElementDeletingEventArgs e)
+		private static void EntityTypeRoleInstanceDeletedRule(ElementDeletedEventArgs e)
 		{
-			EntityTypeInstanceHasRoleInstance link = e.ModelElement as EntityTypeInstanceHasRoleInstance;
-			EntityTypeInstance instance = link.EntityTypeInstance;
-			if (!instance.IsDeleting)
+			EntityTypeInstanceHasRoleInstance link = (EntityTypeInstanceHasRoleInstance)e.ModelElement;
+			EntityTypeInstance entityInstance = link.EntityTypeInstance;
+			if (!entityInstance.IsDeleted)
 			{
-				// We're in a Deleting, so we can't trust the count. Get an accurate count to
-				// see if the last element is being deleted.
-				foreach (EntityTypeInstanceHasRoleInstance remainingRoleInstance in EntityTypeInstanceHasRoleInstance.GetLinksToRoleInstanceCollection(instance))
+				ObjectType entityType;
+				FactType factType;
+				FactTypeInstance factInstance;
+				UniquenessConstraint pid = null;
+				LinkedElementCollection<FactType> pidFactTypes;
+				FactType identifierFactType;
+				Role unaryRole = null;
+				ObjectifiedUnaryRole objectifiedUnaryRole = null;
+				FactTypeRoleInstance factRoleInstance;
+				RoleInstance linkRoleInstance;
+				Role role;
+				if (null != (factInstance = entityInstance.ObjectifiedInstance) &&
+					null != (factType = factInstance.FactType) &&
+					null != (entityType = entityInstance.EntityType) &&
+					null != (pid = entityType.PreferredIdentifier) &&
+					pid.IsInternal &&
+					1 == (pidFactTypes = pid.FactTypeCollection).Count &&
+					((identifierFactType = pidFactTypes[0]) == factType ||
+					(null != (unaryRole = factType.UnaryRole) &&
+					null != (objectifiedUnaryRole = unaryRole.ObjectifiedUnaryRole) &&
+					identifierFactType == objectifiedUnaryRole.FactType)) &&
+					pid.RoleCollection.Contains(role = (linkRoleInstance = link.RoleInstance).Role) &&
+					null != (factRoleInstance = factInstance.FindRoleInstance((role == objectifiedUnaryRole) ? unaryRole : role)) &&
+					factRoleInstance.ObjectTypeInstance == linkRoleInstance.ObjectTypeInstance)
 				{
-					if (!remainingRoleInstance.IsDeleting)
-					{
-						FrameworkDomainModel.DelayValidateElement(instance, DelayValidateTooFewEntityTypeRoleInstancesError);
-						return;
-					}
+					// The instances are implied. This is allowed if the
+					// corresponding role instance on the fact instance is
+					// deleted, otherwise it is a direct edit of an implied pattern
+					throw new InvalidOperationException(ResourceStrings.ModelExceptionObjectificationInstanceDirectModificationOfImpliedEntityTypeInstance);
 				}
-				instance.Delete();
+				// Defer to TooFew validation for a full check on FactTypeInstance references on empty instances
+				FrameworkDomainModel.DelayValidateElement(entityInstance, ObjectTypeInstance.DelayValidateNamePartChanged);
+				FrameworkDomainModel.DelayValidateElement(entityInstance, DelayValidateTooFewEntityTypeRoleInstancesError);
 			}
 		}
 		/// <summary>
@@ -1315,16 +2485,45 @@ namespace Neumont.Tools.ORM.ObjectModel
 		}
 		#endregion
 	}
-
 	public partial class ValueTypeInstance : IModelErrorOwner
 	{
 		#region Base overrides
 		/// <summary>
-		/// Display the value for ToString
+		/// Display the <see cref="Value"/> property
 		/// </summary>
 		public override string ToString()
 		{
+			// Note that we would get here eventually with the
+			// base implementation, but this cuts out two virtual calls
 			return Value;
+		}
+		/// <summary>
+		/// Provide the current value for the <see cref="P:Name"/> property
+		/// </summary>
+		protected override string GeneratedName
+		{
+			get
+			{
+				return Value;
+			}
+			set
+			{
+				// Leave empty per instructions on base class
+			}
+		}
+		/// <summary>
+		/// Provide the current value for the <see cref="P:IdentifierName"/> property
+		/// </summary>
+		protected override string GeneratedIdentifierName
+		{
+			get
+			{
+				return Value;
+			}
+			set
+			{
+				// Leave empty per instructions on base class
+			}
 		}
 		#endregion // Base overrides
 		#region IModelErrorOwner Implementation
@@ -1513,10 +2712,11 @@ namespace Neumont.Tools.ORM.ObjectModel
 		/// </summary>
 		private static void ValueTypeInstanceValueChangedRule(ElementPropertyChangedEventArgs e)
 		{
-			ValueTypeInstance valueTypeInstance = e.ModelElement as ValueTypeInstance;
-			if (!valueTypeInstance.IsDeleted)
+			if (e.DomainProperty.Id == ValueTypeInstance.ValueDomainPropertyId)
 			{
-				FrameworkDomainModel.DelayValidateElement(valueTypeInstance, DelayValidateCompatibleValueTypeInstanceValueError);
+				ModelElement instance = e.ModelElement;
+				FrameworkDomainModel.DelayValidateElement(instance, DelayValidateCompatibleValueTypeInstanceValueError);
+				FrameworkDomainModel.DelayValidateElement(instance, ObjectTypeInstance.DelayValidateNamePartChanged);
 			}
 		}
 		/// <summary>
@@ -1608,11 +2808,86 @@ namespace Neumont.Tools.ORM.ObjectModel
 					HashSet<ObjectTypeInstance, RoleInstance> population = null;
 					for (int i = 0; i < roleInstanceCount; ++i)
 					{
+						RoleInstance roleInstance = roleInstances[i];
+						EntityTypeRoleInstance entityTypeRoleInstance;
+						FactTypeRoleInstance factTypeRoleInstance = null;
+						ObjectTypeInstance boundInstance = roleInstance.ObjectTypeInstance;
+						if (null != (entityTypeRoleInstance = roleInstance as EntityTypeRoleInstance))
+						{
+							// Check for objectified pairs, which will end up as duplicates if
+							// we don't check.
+							EntityTypeInstance entityInstance;
+							FactTypeInstance pairedFactInstance;
+							FactTypeRoleInstance pairedRoleInstance;
+							if (null != (entityInstance = entityTypeRoleInstance.EntityTypeInstance) &&
+								null != (pairedFactInstance = entityInstance.ObjectifiedInstance) &&
+								null != (pairedRoleInstance = pairedFactInstance.FindRoleInstance(this)) &&
+								pairedRoleInstance.ObjectTypeInstance == boundInstance)
+							{
+								continue;
+							}
+						}
+						else
+						{
+							factTypeRoleInstance = (FactTypeRoleInstance)roleInstance;
+						}
 						if (population == null)
 						{
 							population = new HashSet<ObjectTypeInstance, RoleInstance>(RoleInstanceKeyProvider.ProviderInstance);
 						}
-						AddRoleInstance(population, roleInstances[i], notifyAdded);
+						bool duplicate = !population.Add(roleInstance);
+						IList<RoleInstance> knownInstances = population.GetValues(boundInstance);
+						int knownInstanceCount = knownInstances.Count;
+						PopulationUniquenessError error = null;
+						for (int j = 0; error == null && j < knownInstanceCount; ++j)
+						{
+							error = knownInstances[j].PopulationUniquenessError;
+						}
+						if (error != null)
+						{
+							if (duplicate)
+							{
+								RoleInstanceHasPopulationUniquenessError newLink = null;
+								if (null != factTypeRoleInstance)
+								{
+									newLink = new FactTypeRoleInstanceHasPopulationUniquenessError(factTypeRoleInstance, error);
+								}
+								else
+								{
+									newLink = new EntityTypeRoleInstanceHasPopulationUniquenessError(entityTypeRoleInstance, error);
+								}
+								if (notifyAdded != null && newLink != null)
+								{
+									notifyAdded.ElementAdded(newLink);
+								}
+							}
+							else
+							{
+								error.Delete();
+							}
+						}
+						else if (duplicate)
+						{
+							error = new PopulationUniquenessError(roleInstance.Store);
+							for (int j = 0; j < knownInstanceCount; ++j)
+							{
+								RoleInstance knownInstance = knownInstances[j];
+								if (null != (factTypeRoleInstance = knownInstance as FactTypeRoleInstance))
+								{
+									new FactTypeRoleInstanceHasPopulationUniquenessError(factTypeRoleInstance, error);
+								}
+								else
+								{
+									new EntityTypeRoleInstanceHasPopulationUniquenessError((EntityTypeRoleInstance)knownInstance, error);
+								}
+							}
+							error.Model = this.FactType.Model;
+							error.GenerateErrorText();
+							if (notifyAdded != null)
+							{
+								notifyAdded.ElementAdded(error, true);
+							}
+						}
 					}
 				}
 				else
@@ -1625,66 +2900,6 @@ namespace Neumont.Tools.ORM.ObjectModel
 							error.Delete();
 						}
 					}
-				}
-			}
-		}
-
-		private static void AddRoleInstance(HashSet<ObjectTypeInstance, RoleInstance> population, RoleInstance roleInstance, INotifyElementAdded notifyAdded)
-		{
-			bool duplicate = !population.Add(roleInstance);
-			IList<RoleInstance> knownInstances = population.GetValues(roleInstance.ObjectTypeInstance);
-			int knownInstanceCount = knownInstances.Count;
-			PopulationUniquenessError error = null;
-			FactTypeRoleInstance factTypeRoleInstance;
-			EntityTypeRoleInstance entityTypeRoleInstance;
-			for (int j = 0; error == null && j < knownInstanceCount; ++j)
-			{
-				error = knownInstances[j].PopulationUniquenessError;
-			}
-			if (error != null)
-			{
-				if (duplicate)
-				{
-					RoleInstanceHasPopulationUniquenessError newLink = null;
-					if (null != (factTypeRoleInstance = roleInstance as FactTypeRoleInstance))
-					{
-						newLink = new FactTypeRoleInstanceHasPopulationUniquenessError(factTypeRoleInstance, error);
-					}
-					else if (null != (entityTypeRoleInstance = roleInstance as EntityTypeRoleInstance))
-					{
-						newLink = new EntityTypeRoleInstanceHasPopulationUniquenessError(entityTypeRoleInstance, error);
-					}
-					if (notifyAdded != null && newLink != null)
-					{
-						notifyAdded.ElementAdded(newLink);
-					}
-				}
-				else
-				{
-					error.Delete();
-				}
-			}
-			else if (duplicate)
-			{
-				error = new PopulationUniquenessError(roleInstance.Store);
-				for (int i = 0; i < knownInstanceCount; ++i)
-				{
-					RoleInstance knownInstance = knownInstances[i];
-					if (null != (factTypeRoleInstance = knownInstance as FactTypeRoleInstance))
-					{
-						new FactTypeRoleInstanceHasPopulationUniquenessError(factTypeRoleInstance, error);
-					}
-					else if (null != (entityTypeRoleInstance = knownInstance as EntityTypeRoleInstance))
-					{
-						new EntityTypeRoleInstanceHasPopulationUniquenessError(entityTypeRoleInstance, error);
-					}
-				}
-				//error.RoleInstanceCollection.AddRange(knownInstances);
-				error.Model = roleInstance.Role.FactType.Model;
-				error.GenerateErrorText();
-				if (notifyAdded != null)
-				{
-					notifyAdded.ElementAdded(error, true);
 				}
 			}
 		}
@@ -1770,33 +2985,19 @@ namespace Neumont.Tools.ORM.ObjectModel
 		}
 		/// <summary>
 		/// RolePlayerChangeRule: typeof(RoleInstance)
-		/// UNDONE: This rule is garbage, it's comparing DomainRoleId values to DomainClassId values
-		/// The rule should probably be a RolePlayerPositionChangeRule, not a RolePlayerChangeRule
 		/// </summary>
 		private static void RoleInstanceRolePlayerChangedRule(RolePlayerChangedEventArgs e)
 		{
-			Guid changedRole = e.DomainRole.Id;
-			RoleInstance roleInstance = e.ElementLink as RoleInstance;
-			Role newRole = null;
-			if (changedRole == Role.DomainClassId)
+			// Note that role changes are blocked by the corresponding rule in ObjectTypeInstance.RoleInstanceRolePlayerChangedRule
+			if (Utility.IsDescendantOrSelf(e.DomainRole, RoleInstance.ObjectTypeInstanceDomainRoleId) && e.OldRolePlayer != e.NewRolePlayer)
 			{
-				newRole = e.NewRolePlayer as Role;
-				Role oldRole = e.OldRolePlayer as Role;
-				FrameworkDomainModel.DelayValidateElement(oldRole, DelayValidatePopulationUniquenessError);
-			}
-			else if (changedRole == ObjectTypeInstance.DomainClassId)
-			{
-				newRole = roleInstance.Role;
-			}
-			if (!roleInstance.IsDeleted && newRole != null)
-			{
-				FrameworkDomainModel.DelayValidateElement(newRole, DelayValidatePopulationUniquenessError);
+				FrameworkDomainModel.DelayValidateElement(((RoleInstance)e.ElementLink).Role, DelayValidatePopulationUniquenessError);
 			}
 		}
 		#endregion // Role Rules
 	}
 
-	public partial class ObjectTypeInstance : IModelErrorOwner
+	partial class ObjectTypeInstance : IModelErrorOwner
 	{
 		#region IModelErrorOwner Implementation
 		/// <summary>
@@ -1810,6 +3011,12 @@ namespace Neumont.Tools.ORM.ObjectModel
 			}
 			if (0 != (filter & (ModelErrorUses.Verbalize | ModelErrorUses.DisplayPrimary)))
 			{
+				ObjectifiedInstanceRequiredError objectifiedInstance = ObjectifiedInstanceRequiredError;
+				if (objectifiedInstance != null)
+				{
+					yield return objectifiedInstance;
+				}
+
 				ReadOnlyCollection<RoleInstance> roleInstances = RoleInstance.GetLinksToRoleCollection(this);
 				int roleInstanceCount = roleInstances.Count;
 				for (int i = 0; i < roleInstanceCount; ++i)
@@ -1851,6 +3058,7 @@ namespace Neumont.Tools.ORM.ObjectModel
 		{
 			// Calls added here need corresponding delayed calls in DelayValidateErrors
 			ValidateInstancePopulationMandatoryError(notifyAdded);
+			ValidateObjectifiedInstanceRequiredError(notifyAdded);
 		}
 		void IModelErrorOwner.ValidateErrors(INotifyElementAdded notifyAdded)
 		{
@@ -1862,34 +3070,122 @@ namespace Neumont.Tools.ORM.ObjectModel
 		protected new void DelayValidateErrors()
 		{
 			FrameworkDomainModel.DelayValidateElement(this, DelayValidateInstancePopulationMandatoryError);
+			FrameworkDomainModel.DelayValidateElement(this, DelayValidateObjectifiedInstanceRequiredError);
 		}
 		void IModelErrorOwner.DelayValidateErrors()
 		{
 			DelayValidateErrors();
 		}
 		#endregion // IModelErrorOwner Implementation
-		#region Custom Storage Handlers
-		private string GetNameValue()
+		#region Automatic Name Generation
+		partial class NamePropertyHandler
+		{
+			/// <summary>
+			/// Add a Name modification to the transaction log
+			/// without reading the current Name, which forces it to regenerated
+			/// </summary>
+			/// <param name="objectInstance">The <see cref="ObjectTypeInstance"/> to modify</param>
+			/// <param name="oldName">The old name to record</param>
+			/// <param name="newName">The new name to record</param>
+			public static void SetName(ObjectTypeInstance objectInstance, string oldName, string newName)
+			{
+				objectInstance.GeneratedName = newName;
+				Instance.ValueChanged(objectInstance, oldName, newName);
+			}
+		}
+		partial class IdentifierNamePropertyHandler
+		{
+			/// <summary>
+			/// Add an IdentifierName modification to the transaction log
+			/// without reading the current Identifiername, which forces it to regenerated
+			/// </summary>
+			/// <param name="objectInstance">The <see cref="ObjectTypeInstance"/> to modify</param>
+			/// <param name="oldIdentifierName">The old name to record</param>
+			/// <param name="newIdentifierName">The new name to record</param>
+			public static void SetIdentifierName(ObjectTypeInstance objectInstance, string oldIdentifierName, string newIdentifierName)
+			{
+				objectInstance.GeneratedIdentifierName = newIdentifierName;
+				Instance.ValueChanged(objectInstance, oldIdentifierName, newIdentifierName);
+			}
+		}
+		/// <summary>
+		/// Generate the instance name on demand.
+		/// </summary>
+		protected string GetNameValue()
 		{
 			Store store = Store;
-			if (store.InUndo || store.InRedo)
+			if (store.InUndoRedoOrRollback || !HasGeneratedNames)
 			{
-				return myGeneratedName;
+				return GeneratedName;
 			}
 			else if (!store.TransactionManager.InTransaction)
 			{
-				string generatedName = myGeneratedName;
-				return String.IsNullOrEmpty(generatedName) ? myGeneratedName = GenerateName() : generatedName;
+				string currentName = GeneratedName;
+				return String.IsNullOrEmpty(currentName) ? GeneratedName = GenerateName() : currentName;
 			}
 			else
 			{
-				string generatedName = myGeneratedName;
-				if ((object)generatedName != null && generatedName.Length == 0)
+				string currentName = GeneratedName;
+				if (string.IsNullOrEmpty(currentName) && !IsDeleting && !IsDeleted)
 				{
-					// The == null here is a hack. Use myGeneratedName = null before calling to skip setting this during a transaction
-					return myGeneratedName = GenerateName();
+					currentName = GenerateName();
+					if (!string.IsNullOrEmpty(currentName))
+					{
+						NamePropertyHandler.SetName(this, "", currentName);
+					}
 				}
-				return generatedName ?? String.Empty;
+				return currentName ?? String.Empty;
+			}
+		}
+		/// <summary>
+		/// Allow derived classes to optimize name generation by deferring to another instance
+		/// </summary>
+		protected virtual string GetIdentifierNameValue()
+		{
+			Store store = Store;
+			if (store.InUndoRedoOrRollback || !HasGeneratedNames)
+			{
+				return GeneratedIdentifierName;
+			}
+			else if (!store.TransactionManager.InTransaction)
+			{
+				string currentName = GeneratedIdentifierName;
+				return String.IsNullOrEmpty(currentName) ? GeneratedIdentifierName = GenerateIdentifierName() : currentName;
+			}
+			else
+			{
+				string currentName = GeneratedIdentifierName;
+				if (string.IsNullOrEmpty(currentName) && !IsDeleting)
+				{
+					currentName = GenerateIdentifierName();
+					if (!string.IsNullOrEmpty(currentName))
+					{
+						IdentifierNamePropertyHandler.SetIdentifierName(this, "", currentName);
+					}
+				}
+				return currentName ?? String.Empty;
+			}
+		}
+		private void SetNameValue(string newValue)
+		{
+			Debug.Assert(Store.InUndoRedoOrRollback || (Store.TransactionActive && Store.TransactionManager.CurrentTransaction.TopLevelTransaction.Context.ContextInfo.ContainsKey(ElementGroupPrototype.CreatingKey)), "Call NamePropertyHandler.SetName directly to modify the stored GeneratedName value.");
+			if (Store.InUndoRedoOrRollback)
+			{
+				// We only set this in undo/redo scenarios so that the initial
+				// change on a writable property comes indirectly from the objectifying
+				// type changing its name.
+				GeneratedName = newValue;
+			}
+		}
+		private void SetIdentifierNameValue(string newValue)
+		{
+			Debug.Assert(Store.InUndoRedoOrRollback || (Store.TransactionActive && Store.TransactionManager.CurrentTransaction.TopLevelTransaction.Context.ContextInfo.ContainsKey(ElementGroupPrototype.CreatingKey)), "Call IdentifierNamePropertyHandler.SetIdentifierName directly to modify the store GeneratedIdentifierName value.");
+			if (Store.InUndoRedoOrRollback)
+			{
+				// We only set this in undo/redo scenarios so that the initial
+				// change on a writable property comes indirectly from the objectifying
+				// type changing its name.
+				GeneratedIdentifierName = newValue;
 			}
 		}
 		private void OnObjectTypeInstanceNameChanged()
@@ -1915,120 +3211,135 @@ namespace Neumont.Tools.ORM.ObjectModel
 		}
 		private void SetNameChangedValue(long newValue)
 		{
-			if (Store.InUndoRedoOrRollback)
-			{
-				myGeneratedName = null;
-			}
+			// Nothing to do, we're just trying to create a transaction log entry
 		}
-		#endregion
-		#region Automatic Name Generation
-		private static void DelayValidateObjectTypeInstanceNamePartChanged(ModelElement element)
+		/// <summary>
+		/// Delayed validation handler used to updated the name of an <see cref="ObjectTypeInstance"/>
+		/// </summary>
+		protected static void DelayValidateNamePartChanged(ModelElement element)
 		{
-			ObjectTypeInstance objectTypeInstance = element as ObjectTypeInstance;
-			if (!objectTypeInstance.IsDeleted)
+			if (!element.IsDeleted)
 			{
+				ObjectTypeInstance objectTypeInstance = (ObjectTypeInstance)element;
 				Store store = element.Store;
-				string oldGeneratedName = objectTypeInstance.myGeneratedName;
-				string newGeneratedName = null;
-				bool haveNewName = false;
-				//if (string.IsNullOrEmpty(oldGeneratedName))
-				//{
-				//    objectTypeInstance.myGeneratedName = null; // Set explicitly to null, see notes in GetValueForCustomStoredAttribute
-				//}
-				//objectTypeInstance.myGeneratedName = newGeneratedName; // See notes in SetValueForCustomStoredAttribute on setting myGeneratedName
-				// Now move on to any model errors
+				bool logEmptyName = false;
+				bool logEmptyIdentifierName = false;
+				if (objectTypeInstance.HasGeneratedNames)
+				{
+					string oldGeneratedName = objectTypeInstance.GeneratedName;
+					if (!string.IsNullOrEmpty(oldGeneratedName))
+					{
+						string newGeneratedName = objectTypeInstance.GenerateName();
+						if (newGeneratedName == oldGeneratedName)
+						{
+							return;
+						}
+						else
+						{
+							// Force a change in the transaction log so that we can
+							// undo the generated name as needed
+							NamePropertyHandler.SetName(objectTypeInstance, oldGeneratedName, newGeneratedName);
+						}
+					}
+					else
+					{
+						// Add an entry changing the blank to a blank. If we do not do this, then
+						// there is no transaction record, and a name that is generated on demand outside
+						// the transaction is not cleared on undo, so it does not get regenerated with
+						// the original name.
+						logEmptyName = true;
+					}
+					string oldGeneratedIdentifierName = objectTypeInstance.GeneratedIdentifierName;
+					if (!string.IsNullOrEmpty(oldGeneratedIdentifierName))
+					{
+						// We don't use this name directly, clear it so that it can regenerate on demand
+						IdentifierNamePropertyHandler.SetIdentifierName(objectTypeInstance, oldGeneratedIdentifierName, "");
+					}
+					else
+					{
+						logEmptyIdentifierName = true;
+					}
+				}
+				// Keep going with an empty name. Any callback to the Name
+				// property will generate on demand
 				foreach (ModelError error in (objectTypeInstance as IModelErrorOwner).GetErrorCollection(ModelErrorUses.None))
 				{
 					if (0 != (error.RegenerateEvents & RegenerateErrorTextEvents.OwnerNameChange))
 					{
-						if (newGeneratedName == null)
-						{
-							newGeneratedName = objectTypeInstance.GenerateName();
-							haveNewName = true;
-							if (newGeneratedName == oldGeneratedName)
-							{
-								newGeneratedName = null;
-								break; // Look no further, name did not change
-							}
-							else
-							{
-								if (string.IsNullOrEmpty(oldGeneratedName))
-								{
-									objectTypeInstance.myGeneratedName = null; // Set explicitly to null, see notes in GetValueForCustomStoredAttribute
-								}
-								objectTypeInstance.myGeneratedName = newGeneratedName; // See notes in SetValueForCustomStoredAttribute on setting myGeneratedName
-							}
-						}
 						error.GenerateErrorText();
 					}
 				}
-				if (!haveNewName && newGeneratedName == null)
+
+				// Since the name changed, tell any RoleInstances which use it to revalidate since their name probably changed
+				foreach (EntityTypeRoleInstance entityRoleInstance in EntityTypeRoleInstance.GetLinksToRoleCollection(objectTypeInstance))
 				{
-					if (!String.IsNullOrEmpty(oldGeneratedName))
+					EntityTypeInstance relatedEntityInstance = entityRoleInstance.EntityTypeInstance;
+					if (relatedEntityInstance != null)
 					{
-						objectTypeInstance.myGeneratedName = null;
+						FrameworkDomainModel.DelayValidateElement(relatedEntityInstance, DelayValidateNamePartChanged);
 					}
 				}
-				// Since the name changed, tell any RoleInstances which use it to revalidate since their name probaly changed
-				ReadOnlyCollection<RoleInstance> roleInstances = RoleInstance.GetLinksToRoleCollection(objectTypeInstance);
-				int roleInstanceCount = roleInstances.Count;
-				EntityTypeRoleInstance entityRoleInstance;
-				for (int i = 0; i < roleInstanceCount; ++i)
+
+				// Subtype instances need refreshing
+				EntityTypeInstance entityInstance = objectTypeInstance as EntityTypeInstance;
+				if (entityInstance != null)
 				{
-					if (null != (entityRoleInstance = roleInstances[i] as EntityTypeRoleInstance))
+					foreach (EntityTypeSubtypeInstance subtypeInstance in entityInstance.EntityTypeSubtypeInstanceCollection)
 					{
-						DelayValidateObjectTypeInstanceNamePartChanged(entityRoleInstance.EntityTypeInstance);
+						FrameworkDomainModel.DelayValidateElement(subtypeInstance, DelayValidateNamePartChanged);
 					}
+				}
+
+				if (logEmptyName && string.IsNullOrEmpty(objectTypeInstance.GeneratedName))
+				{
+					// If the name has not been regenerated on demand, then log an empty entry so
+					// that an undo clears any non-logged generated name
+					NamePropertyHandler.SetName(objectTypeInstance, "", "");
+				}
+				if (logEmptyIdentifierName && string.IsNullOrEmpty(objectTypeInstance.GeneratedIdentifierName))
+				{
+					// Same comments as name, we need a history to revert the state on undo
+					IdentifierNamePropertyHandler.SetIdentifierName(objectTypeInstance, "", "");
 				}
 				objectTypeInstance.OnObjectTypeInstanceNameChanged();
 			}
 		}
 		/// <summary>
-		/// Helper function to get the current setting for the generated Name property
+		/// Overide and return true to enable name generation
 		/// </summary>
-		private string GenerateName()
-		{
-			string retVal = "";
-			EntityTypeInstance entityInstance;
-			ValueTypeInstance valueInstance;
-			if(null != (entityInstance = this as EntityTypeInstance))
-			{
-				retVal = ObjectTypeInstance.GetDisplayString(entityInstance, entityInstance.EntityType);
-			}
-			else if(null != (valueInstance = this as ValueTypeInstance))
-			{
-				retVal = ObjectTypeInstance.GetDisplayString(valueInstance, valueInstance.ValueType);
-			}
-			return retVal;
-		}
-		private string myGeneratedName = String.Empty;
-		/// <summary>
-		/// The auto-generated name for this object type instance.
-		/// </summary>
-		public string GeneratedName
+		protected virtual bool HasGeneratedNames
 		{
 			get
 			{
-				string retVal = myGeneratedName;
-				if (string.IsNullOrEmpty(retVal))
-				{
-					retVal = GenerateName();
-					if (retVal.Length != 0)
-					{
-						if (Store.TransactionManager.InTransaction)
-						{
-							myGeneratedName = null; // Set explicitly to null, see notes in GetNameValue
-							myGeneratedName = retVal;
-						}
-						else
-						{
-							myGeneratedName = retVal;
-						}
-					}
-				}
-				return retVal ?? String.Empty;
+				return false;
 			}
 		}
+		/// <summary>
+		/// Helper function to generate the current value for the <see cref="Name"/> property.
+		/// Override with <see cref="HasGeneratedNames"/>
+		/// </summary>
+		protected virtual string GenerateName()
+		{
+			return null;
+		}
+		/// <summary>
+		/// Helper function to generate the current value for the <see cref="IdentifierName"/> property.
+		/// Override with <see cref="HasGeneratedNames"/>
+		/// </summary>
+		protected virtual string GenerateIdentifierName()
+		{
+			return null;
+		}
+		/// <summary>
+		/// Provide the current stored value of the generated name. The setter should be
+		/// be empty unless an override is also specified for <see cref="HasGeneratedNames"/>.
+		/// </summary>
+		protected abstract string GeneratedName { get; set; }
+		/// <summary>
+		/// Provide the current stored value of the generated identifier name. The setter should
+		/// be empty unless an override is also specified for <see cref="HasGeneratedNames"/>.
+		/// </summary>
+		protected abstract string GeneratedIdentifierName { get; set; }
 		/// <summary>
 		/// Override to use our own name handling
 		/// </summary>
@@ -2044,31 +3355,47 @@ namespace Neumont.Tools.ORM.ObjectModel
 		/// </summary>
 		public override string ToString()
 		{
-			return this.Name;
+			return Name;
 		}
 		#endregion // Base overrides
 		#region Helper Methods
 		/// <summary>
-		/// Returns the display string for the given instance
+		/// Returns the display string for the given <paramref name="objectInstance"/>, or the
+		/// nested tuple structure for the <paramref name="parentObjectType"/> if the instance is not provided.
 		/// </summary>
-		/// <param name="objectTypeInstance">Instance to format into a display string. Can be null.</param>
-		/// <param name="parentType">Parent Type of the instance.</param>
+		/// <param name="objectInstance">Instance to format into a display string. Can be null.</param>
+		/// <param name="parentObjectType">Parent Type of the instance.</param>
+		/// <param name="ignoreObjectification">Set to true to generate a name based solely on the identifier instead of using the objectified FactType.</param>
 		/// <returns>String representation of the instance.</returns>
-		public static string GetDisplayString(ObjectTypeInstance objectTypeInstance, ObjectType parentType)
+		public static string GetDisplayString(ObjectTypeInstance objectInstance, ObjectType parentObjectType, bool ignoreObjectification)
 		{
-			return GetDisplayString(objectTypeInstance, parentType, null, null, null);
+			return GetDisplayString(objectInstance, parentObjectType, ignoreObjectification, null, null, null);
 		}
 
 		/// <summary>
-		/// Returns the display string for the given instance
+		/// Returns the display string for the given <paramref name="factInstance"/>, or the
+		/// nested tuple structure for the <paramref name="parentFactType"/> if the instance is not provided.
 		/// </summary>
-		/// <param name="objectTypeInstance">Instance to format into a display string. Can be null.</param>
-		/// <param name="parentType">Parent Type of the instance.</param>
+		/// <param name="factInstance">Instance to format into a display string. Can be null.</param>
+		/// <param name="parentFactType">Parent Type of the instance.</param>
+		/// <returns>String representation of the instance.</returns>
+		public static string GetDisplayString(FactTypeInstance factInstance, FactType parentFactType)
+		{
+			return GetDisplayString(factInstance, parentFactType, null, null, null);
+		}
+
+		/// <summary>
+		/// Returns the display string for the given <paramref name="objectInstance"/>, or the
+		/// nested tuple structure for the <paramref name="parentObjectType"/> if the instance is not provided.
+		/// </summary>
+		/// <param name="objectInstance">Instance to format into a display string. Can be null.</param>
+		/// <param name="parentObjectType">Parent Type of the instance.</param>
+		/// <param name="ignoreObjectification">Set to true to generate a name based solely on the identifier instead of using the objectified FactType.</param>
 		/// <param name="formatProvider">Format provider for desired culture.</param>
 		/// <param name="valueNonTextFormat">Format string for non text value type instances.</param>
 		/// <param name="valueTextFormat">Format string for text value type instances.</param>
 		/// <returns>String representation of the instance.</returns>
-		public static string GetDisplayString(ObjectTypeInstance objectTypeInstance, ObjectType parentType, IFormatProvider formatProvider, string valueTextFormat, string valueNonTextFormat)
+		public static string GetDisplayString(ObjectTypeInstance objectInstance, ObjectType parentObjectType, bool ignoreObjectification, IFormatProvider formatProvider, string valueTextFormat, string valueNonTextFormat)
 		{
 			StringBuilder outputText = null;
 			if (valueTextFormat == "{0}")
@@ -2079,35 +3406,64 @@ namespace Neumont.Tools.ORM.ObjectModel
 			{
 				valueNonTextFormat = null;
 			}
-			string retVal = (parentType == null) ? "" : RecurseObjectTypeInstanceValue(objectTypeInstance, parentType, null, ref outputText, formatProvider, valueTextFormat, valueNonTextFormat);
-			return (outputText != null) ? outputText.ToString() : retVal;
+			string listSeparator = null;
+			string retVal = (parentObjectType == null) ? "" : RecurseObjectTypeInstanceValue(objectInstance, parentObjectType, ignoreObjectification, false, null, null, ref listSeparator, ref outputText, formatProvider, valueTextFormat, valueNonTextFormat, false);
+			retVal = (outputText != null) ? outputText.ToString() : retVal;
+			return (retVal == null) ? "" : retVal.Trim();
 		}
 
-		private static string RecurseObjectTypeInstanceValue(ObjectTypeInstance objectTypeInstance, ObjectType parentType, string listSeparator, ref StringBuilder outputText, IFormatProvider formatProvider, string valueTextFormat, string valueNonTextFormat)
+		/// <summary>
+		/// Returns the display string for the given <paramref name="objectInstance"/>, or the
+		/// nested tuple structure for the <paramref name="parentObjectType"/> if the instance is not provided.
+		/// </summary>
+		/// <param name="factInstance">Instance to format into a display string. Can be null.</param>
+		/// <param name="parentFactType">Parent Type of the instance.</param>
+		/// <param name="formatProvider">Format provider for desired culture.</param>
+		/// <param name="valueNonTextFormat">Format string for non text value type instances.</param>
+		/// <param name="valueTextFormat">Format string for text value type instances.</param>
+		/// <returns>String representation of the instance.</returns>
+		public static string GetDisplayString(FactTypeInstance factInstance, FactType parentFactType, IFormatProvider formatProvider, string valueTextFormat, string valueNonTextFormat)
 		{
-			ValueTypeInstance valueInstance;
-			EntityTypeInstance entityTypeInstance;
-			if (parentType == null)
+			StringBuilder outputText = null;
+			if (valueTextFormat == "{0}")
+			{
+				valueTextFormat = null;
+			}
+			if (valueNonTextFormat == "{0}")
+			{
+				valueNonTextFormat = null;
+			}
+			string listSeparator = null;
+			string retVal = (parentFactType == null) ? "" : RecurseObjectTypeInstanceValue(null, null, false, false, factInstance, parentFactType, ref listSeparator, ref outputText, formatProvider, valueTextFormat, valueNonTextFormat, false);
+			retVal = (outputText != null) ? outputText.ToString() : retVal;
+			return (retVal == null) ? "" : retVal.Trim();
+		}
+
+		private static string RecurseObjectTypeInstanceValue(ObjectTypeInstance objectInstance, ObjectType parentObjectType, bool ignoreObjectification, bool nestedLeadValue, FactTypeInstance factInstance, FactType parentFactType, ref string listSeparator, ref StringBuilder outputText, IFormatProvider formatProvider, string valueTextFormat, string valueNonTextFormat, bool outerGrouping)
+		{
+			string blankValueText = nestedLeadValue ? " " : "";
+			if (parentObjectType == null && parentFactType == null)
 			{
 				if (outputText != null)
 				{
-					outputText.Append(" ");
+					outputText.Append(blankValueText);
 				}
-				return " ";
+				return blankValueText;
 			}
-			else if (parentType.IsValueType)
+			else if (parentObjectType != null &&
+				parentObjectType.IsValueType)
 			{
-				valueInstance = objectTypeInstance as ValueTypeInstance;
-				string valueText = " ";
+				ValueTypeInstance valueInstance = objectInstance as ValueTypeInstance;
+				string valueText = blankValueText;
 				if (valueInstance != null)
 				{
-					if (valueTextFormat != null && parentType.DataType is TextDataType)
+					if (valueTextFormat != null && parentObjectType.DataType is TextDataType)
 					{
 						if (formatProvider == null)
 						{
 							formatProvider = CultureInfo.CurrentCulture;
 						}
-						valueText = String.Format(formatProvider, valueTextFormat, valueInstance.Value);
+						valueText = string.Format(formatProvider, valueTextFormat, valueInstance.Value);
 					}
 					else if (valueNonTextFormat != null)
 					{
@@ -2115,7 +3471,7 @@ namespace Neumont.Tools.ORM.ObjectModel
 						{
 							formatProvider = CultureInfo.CurrentCulture;
 						}
-						valueText = String.Format(formatProvider, valueNonTextFormat, valueInstance.Value);
+						valueText = string.Format(formatProvider, valueNonTextFormat, valueInstance.Value);
 					}
 					else
 					{
@@ -2131,92 +3487,290 @@ namespace Neumont.Tools.ORM.ObjectModel
 			}
 			else
 			{
-				entityTypeInstance = objectTypeInstance as EntityTypeInstance;
-				UniquenessConstraint identifier = parentType.PreferredIdentifier;
-				if (identifier == null)
+				IList<Role> roles = null;
+				int roleCount = 0;
+				FactType objectifiedFactType = null;
+				EntityTypeInstance entityInstance = null;
+				if (parentFactType != null)
 				{
-					string valueText = " ";
-					if (outputText != null)
+					// Just do the FactType tuple, without any identifier parts
+					IList<RoleBase> factRoles = parentFactType.OrderedRoleCollection;
+					roleCount = factRoles.Count;
+					Role[] resolvedRoles = new Role[roleCount];
+					for (int i = 0; i < roleCount; ++i)
 					{
-						outputText.Append(valueText);
-						return null;
+						resolvedRoles[i] = factRoles[i].Role;
 					}
-					return valueText;
-				}
-				LinkedElementCollection<Role> identifierRoles = identifier.RoleCollection;
-				int identifierCount = identifierRoles.Count;
-				if (identifierCount == 1)
-				{
-					ObjectTypeInstance nestedInstance = null;
-					if (entityTypeInstance != null)
-					{
-						LinkedElementCollection<EntityTypeRoleInstance> roleInstances = entityTypeInstance.RoleInstanceCollection;
-						if (roleInstances.Count > 0)
-						{
-							nestedInstance = roleInstances[0].ObjectTypeInstance;
-						}
-					}
-					return RecurseObjectTypeInstanceValue(nestedInstance, identifierRoles[0].RolePlayer, listSeparator, ref outputText, formatProvider, valueTextFormat, valueNonTextFormat);
+					roles = resolvedRoles;
 				}
 				else
 				{
-					LinkedElementCollection<EntityTypeRoleInstance> roleInstances = null;
-					int roleInstanceCount = 0;
-					if (entityTypeInstance != null)
+					if (!ignoreObjectification)
 					{
-						roleInstances = entityTypeInstance.RoleInstanceCollection;
-						roleInstanceCount = roleInstances.Count;
+						objectifiedFactType = parentObjectType.NestedFactType;
 					}
+					UniquenessConstraint identifier = parentObjectType.ResolvedPreferredIdentifier;
+					ObjectType preferredFor = (identifier != null) ? identifier.PreferredIdentifierFor : null;
+					if (objectifiedFactType != null)
+					{
+						if (preferredFor == parentObjectType && identifier.IsObjectifiedPreferredIdentifier)
+						{
+							// The entity is represented by the complete ordered FactType tuple, not just
+							// the identifier.
+							return RecurseObjectTypeInstanceValue(
+								null,
+								null,
+								false,
+								false,
+								(objectInstance != null) ? objectInstance.ObjectifiedInstance : null,
+								objectifiedFactType,
+								ref listSeparator,
+								ref outputText,
+								formatProvider,
+								valueTextFormat,
+								valueNonTextFormat,
+								outerGrouping);
+						}
+						else if (preferredFor != null && preferredFor != parentObjectType)
+						{
+							// The subtype is associated with an objectified facttype. Show
+							// the identifier from the supertype with the objectified FactType
+							if (outputText == null)
+							{
+								outputText = new StringBuilder();
+							}
+							if (!outerGrouping)
+							{
+								outputText.Append("(");
+							}
+							EntityTypeSubtypeInstance subtypeInstance = objectInstance as EntityTypeSubtypeInstance;
+							RecurseObjectTypeInstanceValue(
+								(subtypeInstance != null) ? subtypeInstance.SupertypeInstance : null,
+								preferredFor,
+								false,
+								true,
+								null,
+								null,
+								ref listSeparator,
+								ref outputText,
+								formatProvider,
+								valueTextFormat,
+								valueNonTextFormat,
+								false);
+							outputText.Append(listSeparator ?? (listSeparator = GetListSeparator(formatProvider)));
+							RecurseObjectTypeInstanceValue(
+								null,
+								null,
+								false,
+								false,
+								(objectInstance != null) ? objectInstance.ObjectifiedInstance : null,
+								objectifiedFactType,
+								ref listSeparator,
+								ref outputText,
+								formatProvider,
+								valueTextFormat,
+								valueNonTextFormat,
+								true);
+							if (!outerGrouping)
+							{
+								outputText.Append(")");
+							}
+							return null;
+						}
+					}
+					if (preferredFor != null && preferredFor != parentObjectType)
+					{
+						EntityTypeSubtypeInstance subtypeInstance = objectInstance as EntityTypeSubtypeInstance;
+						return RecurseObjectTypeInstanceValue(
+							(subtypeInstance != null) ? subtypeInstance.SupertypeInstance : null,
+							preferredFor,
+							false,
+							nestedLeadValue,
+							null,
+							null,
+							ref listSeparator,
+							ref outputText,
+							formatProvider,
+							valueTextFormat,
+							valueNonTextFormat,
+							outerGrouping);
+					}
+					entityInstance = objectInstance as EntityTypeInstance;
+					if (identifier != null)
+					{
+						roles = identifier.RoleCollection;
+						roleCount = roles.Count;
+					}
+					else if (objectifiedFactType == null)
+					{
+						if (outputText != null)
+						{
+							outputText.Append(blankValueText);
+							return null;
+						}
+						return blankValueText;
+					}
+				}
+				if (objectifiedFactType != null)
+				{
 					if (outputText == null)
 					{
 						outputText = new StringBuilder();
 					}
-					outputText.Append("(");
-					if (listSeparator == null)
+					if (!outerGrouping)
 					{
-						if (formatProvider == null)
+						outputText.Append("(");
+						nestedLeadValue = true;
+						blankValueText = " ";
+					}
+				}
+				if (roles == null)
+				{
+					// Note non-objectified case handled earlier
+					outputText.Append(blankValueText);
+				}
+				else
+				{
+					if (roleCount == 1 && (factInstance == null || !outerGrouping)) // Always parenthesize a fact tuple, even a unary
+					{
+						Role role = roles[0];
+						RoleInstance roleInstance = null;
+						if (entityInstance != null)
 						{
-							listSeparator = CultureInfo.CurrentCulture.TextInfo.ListSeparator + " ";
+							roleInstance = entityInstance.FindRoleInstance(role);
 						}
-						else
+						else if (factInstance != null)
 						{
-							listSeparator = (formatProvider as CultureInfo).TextInfo.ListSeparator;
+							roleInstance = factInstance.FindRoleInstance(role);
+						}
+						string retVal = RecurseObjectTypeInstanceValue(
+							(roleInstance != null) ? roleInstance.ObjectTypeInstance : null,
+							role.RolePlayer,
+							false,
+							nestedLeadValue,
+							null,
+							null,
+							ref listSeparator,
+							ref outputText,
+							formatProvider,
+							valueTextFormat,
+							valueNonTextFormat,
+							false);
+						if (objectifiedFactType == null)
+						{
+							return retVal;
 						}
 					}
-					for (int i = 0; i < identifierCount; ++i)
+					else
 					{
-						Role identifierRole = identifierRoles[i];
-						bool match = false;
-						if (i != 0)
+						LinkedElementCollection<EntityTypeRoleInstance> entityRoleInstances = null;
+						LinkedElementCollection<FactTypeRoleInstance> factRoleInstances = null;
+						int roleInstanceCount = 0;
+						if (entityInstance != null)
 						{
-							outputText.Append(listSeparator);
+							entityRoleInstances = entityInstance.RoleInstanceCollection;
+							roleInstanceCount = entityRoleInstances.Count;
 						}
-						if (roleInstanceCount != 0)
+						else if (factInstance != null)
 						{
-							for (int j = 0; j < roleInstanceCount; ++j)
+							factRoleInstances = factInstance.RoleInstanceCollection;
+							roleInstanceCount = factRoleInstances.Count;
+						}
+						if (outputText == null)
+						{
+							outputText = new StringBuilder();
+						}
+						if (!outerGrouping)
+						{
+							outputText.Append("(");
+						}
+						if (listSeparator == null)
+						{
+							listSeparator = GetListSeparator(formatProvider);
+						}
+						for (int i = 0; i < roleCount; ++i)
+						{
+							Role role = roles[i];
+							RoleInstance matchInstance = null;
+							if (i != 0)
 							{
-								EntityTypeRoleInstance instance = roleInstances[j];
-								if (instance.Role == identifierRole)
+								outputText.Append(listSeparator);
+							}
+							if (roleInstanceCount != 0)
+							{
+								if (entityInstance != null)
 								{
-									RecurseObjectTypeInstanceValue(instance.ObjectTypeInstance, identifierRole.RolePlayer, listSeparator, ref outputText, formatProvider, valueTextFormat, valueNonTextFormat);
-									match = true;
-									break;
+									for (int j = 0; j < roleInstanceCount; ++j)
+									{
+										EntityTypeRoleInstance instance = entityRoleInstances[j];
+										if (instance.Role == role)
+										{
+											matchInstance = instance;
+											break;
+										}
+									}
+								}
+								else if (factInstance != null)
+								{
+									for (int j = 0; j < roleInstanceCount; ++j)
+									{
+										FactTypeRoleInstance instance = factRoleInstances[j];
+										if (instance.Role == role)
+										{
+											matchInstance = instance;
+											break;
+										}
+									}
 								}
 							}
+							RecurseObjectTypeInstanceValue(
+								(matchInstance != null) ? matchInstance.ObjectTypeInstance : null,
+								role.RolePlayer,
+								false,
+								i == 0 && !outerGrouping,
+								null,
+								null,
+								ref listSeparator,
+								ref outputText,
+								formatProvider,
+								valueTextFormat,
+								valueNonTextFormat,
+								false);
 						}
-						else if (i == 0)
+						if (!outerGrouping)
 						{
-							outputText.Append(" ");
-						}
-						if (!match)
-						{
-							RecurseObjectTypeInstanceValue(null, identifierRole.RolePlayer, listSeparator, ref outputText, formatProvider, valueTextFormat, valueNonTextFormat);
+							outputText.Append(")");
 						}
 					}
-					outputText.Append(")");
+				}
+				if (objectifiedFactType != null)
+				{
+					outputText.Append(listSeparator ?? (listSeparator = GetListSeparator(formatProvider)));
+					RecurseObjectTypeInstanceValue(
+						null,
+						null,
+						false,
+						false,
+						(entityInstance != null) ? entityInstance.ObjectifiedInstance : null,
+						objectifiedFactType,
+						ref listSeparator,
+						ref outputText,
+						formatProvider,
+						valueTextFormat,
+						valueNonTextFormat,
+						true);
+					if (!outerGrouping)
+					{
+						outputText.Append(")");
+					}
 				}
 				return null;
 			}
+		}
+		private static string GetListSeparator(IFormatProvider formatProvider)
+		{
+			CultureInfo cultureInfo = formatProvider as CultureInfo ?? CultureInfo.CurrentCulture;
+			return cultureInfo.TextInfo.ListSeparator + " ";
 		}
 		#endregion
 		#region PopulationMandatoryError Validation
@@ -2224,99 +3778,10 @@ namespace Neumont.Tools.ORM.ObjectModel
 		/// Validator callback for PopulationMandatoryError
 		/// <remarks>DelayValidatePriority is set to run after implied mandatory constraint creation</remarks>
 		/// </summary>
-		[DelayValidatePriority(2)]
+		[DelayValidatePriority(4)]
 		protected static void DelayValidateInstancePopulationMandatoryError(ModelElement element)
 		{
 			(element as ObjectTypeInstance).ValidateInstancePopulationMandatoryError(null);
-		}
-		/// <summary>
-		/// Return values for the <see cref="ObjectTypeInstance.GetSimpleReferenceSchemePattern"/>
-		/// </summary>
-		private enum SimpleReferenceSchemeRolePattern
-		{
-			/// <summary>
-			/// The <see cref="Role"/> is not part of a <see cref="FactType"/> that
-			/// matches the simple reference scheme pattern.
-			/// </summary>
-			None,
-			/// <summary>
-			/// The <see cref="Role"/> is the non-identifying role of a <see cref="FactType"/> that
-			/// matches the simple reference scheme pattern. The non-identifying role has a simple
-			/// mandatory constraint and non-preferred single-role uniqueness constraint. The
-			/// role player is identified by a preferred single-role uniqueness constraint on
-			/// the optional opposite role.
-			/// </summary>
-			OptionalIdentifiedRole,
-			/// <summary>
-			/// The <see cref="Role"/> is the non-identifying role of a <see cref="FactType"/> that
-			/// matches the simple reference scheme pattern. The non-identifying role has a simple
-			/// mandatory constraint and non-preferred single-role uniqueness constraint. The
-			/// role player is identified by a preferred single-role uniqueness constraint on
-			/// the mandatory opposite role.
-			/// </summary>
-			MandatoryIdentifiedRole,
-			/// <summary>
-			/// The <see cref="Role"/> is an optional identifying role of a <see cref="FactType"/> that
-			/// matches the simple reference scheme pattern. The identifying preferred single-role
-			/// uniqueness constraint that is the preferred identifier for the role player of the
-			/// opposite role.
-			/// </summary>
-			OptionalIdentifierRole,
-			/// <summary>
-			/// The <see cref="Role"/> is a mandatory identifying role of a <see cref="FactType"/> that
-			/// matches the simple reference scheme pattern. The identifying preferred single-role
-			/// uniqueness constraint that is the preferred identifier for the role player of the
-			/// opposite role.
-			/// </summary>
-			MandatoryIdentifierRole,
-		}
-		/// <summary>
-		/// Determine if the role is part of a <see cref="FactType"/> that matches
-		/// the simple reference scheme pattern, namely a single-role preferred identifier
-		/// for the opposite role player on one of the roles.
-		/// </summary>
-		/// <param name="role">The <see cref="Role"/> to test</param>
-		/// <param name="identifiedEntityType">The <see cref="ObjectType"/> that is identified by the reference scheme pattern.</param>
-		/// <returns>A <see cref="SimpleReferenceSchemeRolePattern"/> value</returns>
-		private static SimpleReferenceSchemeRolePattern GetSimpleReferenceSchemePattern(Role role, out ObjectType identifiedEntityType)
-		{
-			UniquenessConstraint uniqueness;
-			Role oppositeRole;
-			identifiedEntityType = null;
-			if (null != (uniqueness = role.SingleRoleAlethicUniquenessConstraint) &&
-				null != (oppositeRole = role.OppositeRole as Role))
-			{
-				ObjectType preferredFor = uniqueness.PreferredIdentifierFor;
-
-				if (preferredFor != null)
-				{
-					// We're on the preferred end of a binary fact type that
-					// matches the simple reference scheme pattern
-					if (oppositeRole.RolePlayer == preferredFor)
-					{
-						identifiedEntityType = preferredFor;
-						return role.SingleRoleAlethicMandatoryConstraint == null ?
-							SimpleReferenceSchemeRolePattern.OptionalIdentifierRole :
-							SimpleReferenceSchemeRolePattern.MandatoryIdentifierRole;
-					}
-				}
-				else
-				{
-					preferredFor = role.RolePlayer;
-					LinkedElementCollection<Role> uniquenessRoles;
-					if (preferredFor != null &&
-						null != (uniqueness = preferredFor.PreferredIdentifier) &&
-						1 == (uniquenessRoles = uniqueness.RoleCollection).Count &&
-						uniquenessRoles[0] == oppositeRole)
-					{
-						identifiedEntityType = preferredFor;
-						return oppositeRole.SingleRoleAlethicMandatoryConstraint == null ?
-							SimpleReferenceSchemeRolePattern.OptionalIdentifiedRole :
-							SimpleReferenceSchemeRolePattern.MandatoryIdentifiedRole;
-					}
-				}
-			}
-			return SimpleReferenceSchemeRolePattern.None;
 		}
 		/// <summary>
 		/// Rule helper for validating the current <see cref="ObjectTypeInstance"/>
@@ -2340,23 +3805,26 @@ namespace Neumont.Tools.ORM.ObjectModel
 					{
 						ObjectTypeInstance identifyingInstance = null;
 						bool retrievedIdentifyingInstance = false;
+						ObjectTypeInstance matchSupertypeInstance = null;
+						bool retrievedMatchSupertypeInstance = false;
 						for (int i = 0; i < playedRoleCount; ++i)
 						{
 							Role currentRole = playedRoles[i];
 							ReadOnlyLinkedElementCollection<ObjectTypeInstance> currentRoleInstances = null;
 							ObjectType identifiedEntityType;
-							switch (GetSimpleReferenceSchemePattern(currentRole, out identifiedEntityType))
+							bool impliedObjectificationRole = false;
+							switch (currentRole.GetReferenceSchemePattern(out identifiedEntityType))
 							{
-								//case SimpleReferenceSchemeRolePattern.None:
+								//case ReferenceSchemeRolePattern.None:
 								//    break;
-								case SimpleReferenceSchemeRolePattern.OptionalIdentifiedRole:
+								case ReferenceSchemeRolePattern.OptionalSimpleIdentifiedRole:
 									// This one is tricky. The implied FactTypeRoleInstance population
 									// for the opposite (identifier) role is based on the set of EntityTypeInstances
 									// on this role. Because the opposite role is optional, the population
 									// for this role is not automatically filled in, so it is possible to
 									// have PopulationMandatoryErrors on any disjunctive mandatory constraint
 									// intersecting the opposite role.
-									// Note that we always have an opposite role. Otherwise, the simple reference scheme
+									// Note that we always have an opposite role. Otherwise, the reference scheme
 									// pattern would not hold.
 									foreach (ConstraintRoleSequence sequence in currentRole.OppositeRole.Role.ConstraintRoleSequenceCollection)
 									{
@@ -2366,10 +3834,14 @@ namespace Neumont.Tools.ORM.ObjectModel
 											if (!retrievedIdentifyingInstance)
 											{
 												retrievedIdentifyingInstance = true;
-												LinkedElementCollection<EntityTypeRoleInstance> identifyingInstances = (this as EntityTypeInstance).RoleInstanceCollection;
-												if (identifyingInstances.Count == 1)
+												EntityTypeInstance entityInstance;
+												if (null != (entityInstance = this as EntityTypeInstance))
 												{
-													identifyingInstance = identifyingInstances[0].ObjectTypeInstance;
+													LinkedElementCollection<EntityTypeRoleInstance> identifyingInstances = entityInstance.RoleInstanceCollection;
+													if (identifyingInstances.Count == 1)
+													{
+														identifyingInstance = identifyingInstances[0].ObjectTypeInstance;
+													}
 												}
 											}
 											if (identifyingInstance == null)
@@ -2389,45 +3861,92 @@ namespace Neumont.Tools.ORM.ObjectModel
 										}
 									}
 									continue;
-								case SimpleReferenceSchemeRolePattern.MandatoryIdentifierRole:
+								//case ReferenceSchemeRolePattern.MandatoryCompositeIdentifierRole:
+								//    // This is a special case because the instance must be represented
+								//    // in a population, but the population we're concerned about are the
+								//    // entity instances of the opposite role, not the implied FactTypeInstances.
+								//    // However, because these instances are part of the ObjectTypeInstanceCollection
+								//    // on the role, there is no special handling needed.
+								//    continue;
+								case ReferenceSchemeRolePattern.MandatorySimpleIdentifierRole:
 									// Synchronize the EntityTypeInstances on the opposite role with the identifying object
 									// Note that this will trigger the MandatoryIdentifiedRole case on another call.
 									EnsureImpliedEntityTypeInstance(this, identifiedEntityType, currentRole);
 									continue;
-								case SimpleReferenceSchemeRolePattern.MandatoryIdentifiedRole:
+								case ReferenceSchemeRolePattern.CompositeIdentifiedRole:
+									// Nothing to do here. These are populated manually because the composite
+									// nature means the tuples cannot be populated automatically.
+								case ReferenceSchemeRolePattern.MandatorySimpleIdentifiedRole:
 									// Nothing to do here. These are populated automatically when instances
 									// are added to the opposite role.
-								case SimpleReferenceSchemeRolePattern.OptionalIdentifierRole:
+								case ReferenceSchemeRolePattern.OptionalSimpleIdentifierRole:
+								case ReferenceSchemeRolePattern.OptionalCompositeIdentifierRole:
 									// There is nothing to do here. The implied FactTypeInstance
 									// population for this FactType is controlled by the opposite EntityTypeInstance
 									// population.
 									continue;
+								case ReferenceSchemeRolePattern.ImpliedObjectificationRole:
+									impliedObjectificationRole = true;
+									break;
 							}
+							SubtypeMetaRole subtypeRole;
+							bool impliedRolePopulation = impliedObjectificationRole || ((null != (subtypeRole = currentRole as SubtypeMetaRole)) && this is EntityTypeSubtypeInstance && ((SubtypeFact)subtypeRole.FactType).ProvidesPreferredIdentifier);
 							foreach (ConstraintRoleSequence sequence in currentRole.ConstraintRoleSequenceCollection)
 							{
 								MandatoryConstraint constraint = sequence as MandatoryConstraint;
 								if (constraint != null && constraint.Modality == ConstraintModality.Alethic)
 								{
-									if (currentRoleInstances == null)
+									bool hasError = false;
+									if (!impliedRolePopulation)
 									{
-										currentRoleInstances = currentRole.ObjectTypeInstanceCollection;
-									}
-									LinkedElementCollection<Role> constraintRoles = constraint.RoleCollection;
-									int constraintRoleCount = constraintRoles.Count;
-									int j = 0;
-									if (!objectType.IsImplicitBooleanValue)
-									{
-										for (; j < constraintRoleCount; ++j)
+										if (currentRoleInstances == null)
 										{
-											Role constraintRole = constraintRoles[j];
-											ReadOnlyLinkedElementCollection<ObjectTypeInstance> roleInstances = (currentRole == constraintRole) ? currentRoleInstances : constraintRole.ObjectTypeInstanceCollection;
-											if (roleInstances.Contains(this))
+											currentRoleInstances = currentRole.ObjectTypeInstanceCollection;
+										}
+										LinkedElementCollection<Role> constraintRoles = constraint.RoleCollection;
+										int constraintRoleCount = constraintRoles.Count;
+										int j = 0;
+										if (!objectType.IsImplicitBooleanValue)
+										{
+											for (; j < constraintRoleCount; ++j)
 											{
-												break;
+												Role constraintRole = constraintRoles[j];
+												SupertypeMetaRole supertypeRole = constraintRole as SupertypeMetaRole;
+												if (supertypeRole != null && ((SubtypeFact)supertypeRole.FactType).ProvidesPreferredIdentifier)
+												{
+													bool hasMatchingSubtypeInstance = false;
+													foreach (EntityTypeSubtypeInstance subtypeInstance in supertypeRole.OppositeRole.Role.RolePlayer.EntityTypeSubtypeInstanceCollection)
+													{
+														if (!retrievedMatchSupertypeInstance)
+														{
+															retrievedMatchSupertypeInstance = true;
+															EntityTypeSubtypeInstance thisAsSubtypeInstance = this as EntityTypeSubtypeInstance;
+															matchSupertypeInstance = (null != thisAsSubtypeInstance) ? subtypeInstance.SupertypeInstance : this;
+														}
+														if (matchSupertypeInstance == subtypeInstance.SupertypeInstance)
+														{
+															hasMatchingSubtypeInstance = true;
+															break;
+														}
+													}
+													if (hasMatchingSubtypeInstance)
+													{
+														break;
+													}
+												}
+												else
+												{
+													ReadOnlyLinkedElementCollection<ObjectTypeInstance> roleInstances = (currentRole == constraintRole) ? currentRoleInstances : constraintRole.ObjectTypeInstanceCollection;
+													if (roleInstances.Contains(this))
+													{
+														break;
+													}
+												}
 											}
 										}
+										hasError = j == constraintRoleCount;
 									}
-									if (j == constraintRoleCount)
+									if (hasError)
 									{
 										// Make sure we have an error
 										int errorCount = errors.Count;
@@ -2495,7 +4014,7 @@ namespace Neumont.Tools.ORM.ObjectModel
 		/// Verify that there is an <see cref="EntityTypeInstance"/> associated with the
 		/// <paramref name="entityType"/> that references the specified <paramref name="instance"/>
 		/// through the provided <paramref name="identifierRole"/>. Used to create consistent
-		/// implicit populations for any <see cref="FactType"/> matching the simple reference scheme
+		/// implicit populations for any <see cref="FactType"/> matching the reference scheme
 		/// pattern.
 		/// </summary>
 		/// <param name="instance">The <see cref="ObjectTypeInstance"/> from the identifier role</param>
@@ -2549,28 +4068,20 @@ namespace Neumont.Tools.ORM.ObjectModel
 		/// <summary>
 		/// Validator callback for PopulationMandatoryError. Runs after the much cheaper <see cref="DelayValidateRemovePopulationMandatoryError"/>
 		/// </summary>
-		[DelayValidatePriority(2)]
+		[DelayValidatePriority(4)]
 		private static void DelayValidateRolePopulationMandatoryError(ModelElement element)
 		{
-			ValidateRolePopulationMandatoryError((Role)element, null);
-		}
-
-		/// <summary>
-		/// Rule helper for verifying mandatory constraints on constraint changes
-		/// </summary>
-		/// <param name="role">The <see cref="Role"/> to verify population for.</param>
-		/// <param name="notifyAdded">Element notification, set during deserialization</param>
-		private static void ValidateRolePopulationMandatoryError(Role role, INotifyElementAdded notifyAdded)
-		{
+			Role role = (Role)element;
 			if (!role.IsDeleted)
 			{
 				ObjectType rolePlayer;
 				if (null != (rolePlayer = role.RolePlayer))
 				{
 					ObjectType identifiedEntityType;
-					switch (GetSimpleReferenceSchemePattern(role, out identifiedEntityType))
+					switch (role.GetReferenceSchemePattern(out identifiedEntityType))
 					{
-						case SimpleReferenceSchemeRolePattern.None:
+						case ReferenceSchemeRolePattern.None:
+						case ReferenceSchemeRolePattern.MandatoryCompositeIdentifierRole:
 							{
 								int instanceCount = 0;
 								ObjectTypeInstance[] instances = null;
@@ -2578,11 +4089,18 @@ namespace Neumont.Tools.ORM.ObjectModel
 								MandatoryConstraint constraint;
 								IComparer<ObjectTypeInstance> comparer = HashCodeComparer<ObjectTypeInstance>.Instance;
 								ReadOnlyLinkedElementCollection<ObjectTypeInstance> thisRoleObjectTypeInstances = null;
+								SubtypeMetaRole subtypeRole;
+								bool impliedRolePopulation = (null != (subtypeRole = role as SubtypeMetaRole)) && ((SubtypeFact)subtypeRole.FactType).ProvidesPreferredIdentifier;
 								foreach (ConstraintRoleSequence sequence in role.ConstraintRoleSequenceCollection)
 								{
 									constraint = sequence as MandatoryConstraint;
 									if (constraint != null && constraint.Modality == ConstraintModality.Alethic)
 									{
+										if (impliedRolePopulation)
+										{
+											constraint.PopulationMandatoryErrorCollection.Clear();
+											break;
+										}
 										int seenInstanceCount = 0;
 										int constraintRoleCount = 0;
 										if (!rolePlayer.IsImplicitBooleanValue)
@@ -2602,7 +4120,7 @@ namespace Neumont.Tools.ORM.ObjectModel
 											}
 											else
 											{
-												seenInstances.Initialize();
+												Array.Clear(seenInstances, 0, instanceCount);
 											}
 
 											// Intersect each role with the instances on the current role player.
@@ -2615,18 +4133,38 @@ namespace Neumont.Tools.ORM.ObjectModel
 											for (int i = 0; i < constraintRoleCount && seenInstanceCount < instanceCount; ++i)
 											{
 												Role currentRole = constraintRoles[i];
-												ReadOnlyLinkedElementCollection<ObjectTypeInstance> roleInstances = (currentRole == role) ? thisRoleObjectTypeInstances : currentRole.ObjectTypeInstanceCollection;
-												int roleInstanceCount = roleInstances.Count;
-												for (int j = 0; j < roleInstanceCount; ++j)
+												SupertypeMetaRole supertypeRole = currentRole as SupertypeMetaRole;
+												if (supertypeRole != null && ((SubtypeFact)supertypeRole.FactType).ProvidesPreferredIdentifier)
 												{
-													int index = Array.BinarySearch<ObjectTypeInstance>(instances, roleInstances[j], comparer);
-													if (index >= 0 && !seenInstances[index])
+													foreach (EntityTypeSubtypeInstance subtypeInstance in supertypeRole.OppositeRole.Role.RolePlayer.EntityTypeSubtypeInstanceCollection)
 													{
-														++seenInstanceCount;
-														seenInstances[index] = true;
-														if (seenInstanceCount == instanceCount)
+														int index = Array.BinarySearch<ObjectTypeInstance>(instances, subtypeInstance.SupertypeInstance, comparer);
+														if (index >= 0 && !seenInstances[index])
 														{
-															break;
+															++seenInstanceCount;
+															seenInstances[index] = true;
+															if (seenInstanceCount == instanceCount)
+															{
+																break;
+															}
+														}
+													}
+												}
+												else
+												{
+													ReadOnlyLinkedElementCollection<ObjectTypeInstance> roleInstances = (currentRole == role) ? thisRoleObjectTypeInstances : currentRole.ObjectTypeInstanceCollection;
+													int roleInstanceCount = roleInstances.Count;
+													for (int j = 0; j < roleInstanceCount; ++j)
+													{
+														int index = Array.BinarySearch<ObjectTypeInstance>(instances, roleInstances[j], comparer);
+														if (index >= 0 && !seenInstances[index])
+														{
+															++seenInstanceCount;
+															seenInstances[index] = true;
+															if (seenInstanceCount == instanceCount)
+															{
+																break;
+															}
 														}
 													}
 												}
@@ -2692,10 +4230,6 @@ namespace Neumont.Tools.ORM.ObjectModel
 													error.MandatoryConstraint = constraint;
 													error.Model = constraint.Model;
 													error.GenerateErrorText();
-													if (notifyAdded != null)
-													{
-														notifyAdded.ElementAdded(error);
-													}
 												}
 											}
 										}
@@ -2703,14 +4237,14 @@ namespace Neumont.Tools.ORM.ObjectModel
 								}
 							}
 							break;
-						case SimpleReferenceSchemeRolePattern.OptionalIdentifiedRole:
+						case ReferenceSchemeRolePattern.OptionalSimpleIdentifiedRole:
 							// This one is tricky. The implied FactTypeRoleInstance population
 							// for the opposite (identifier) role is based on the set of EntityTypeInstances
 							// on this role. Because the opposite role is optional, the population
 							// for this role is not automatically filled in, so it is possible to
 							// have PopulationMandatoryErrors on any disjunctive mandatory constraint
 							// intersecting the opposite role.
-							// Note that we always have an opposite role. Otherwise, the simple reference scheme
+							// Note that we always have an opposite role. Otherwise, the reference scheme
 							// pattern would not hold.
 							LinkedElementCollection<ObjectTypeInstance> rolePlayerInstances = null;
 							foreach (ConstraintRoleSequence sequence in role.OppositeRole.Role.ConstraintRoleSequenceCollection)
@@ -2739,15 +4273,23 @@ namespace Neumont.Tools.ORM.ObjectModel
 								}
 							}
 							break;
-						case SimpleReferenceSchemeRolePattern.MandatoryIdentifierRole:
+						case ReferenceSchemeRolePattern.MandatorySimpleIdentifierRole:
 							// Full population is implied, clear any population mandatory errors and synchronize the sets
 							EnsureImpliedEntityTypeInstances(identifiedEntityType, role);
 							break;
-						case SimpleReferenceSchemeRolePattern.MandatoryIdentifiedRole:
+						case ReferenceSchemeRolePattern.ImpliedObjectificationRole:
+							// Nothing to do here, the implied population corresponds to the
+							// FactTypeInstance and EntityTypeInstance population, which are correlated
+							// with ObjectificationInstance relationships.
+						case ReferenceSchemeRolePattern.CompositeIdentifiedRole:
+							// Nothing to do here. These are populated manually because the composite
+							// nature means the tuples cannot be populated automatically.
+						case ReferenceSchemeRolePattern.MandatorySimpleIdentifiedRole:
 							// Nothing to do here. These are populated automatically when instances
 							// are added to the opposite role.
 							break;
-						case SimpleReferenceSchemeRolePattern.OptionalIdentifierRole:
+						case ReferenceSchemeRolePattern.OptionalSimpleIdentifierRole:
+						case ReferenceSchemeRolePattern.OptionalCompositeIdentifierRole:
 							// There is nothing to do here. The implied FactTypeInstance
 							// population for this FactType is controlled by the opposite EntityTypeInstance
 							// population. However, we need to regenerate text for existing mandatory errors.
@@ -2768,6 +4310,46 @@ namespace Neumont.Tools.ORM.ObjectModel
 			}
 		}
 		#endregion // PopulationMandatoryError Validation
+		#region ObjectifiedInstanceRequiredError Validation
+		/// <summary>
+		/// Validation callback for <see cref="ObjectifiedInstanceRequiredError"/>
+		/// </summary>
+		internal static void DelayValidateObjectifiedInstanceRequiredError(ModelElement element)
+		{
+			// Internal justification: See comments in FactTypeInstance.DelayValidateObjectifyingInstanceRequiredError
+			((ObjectTypeInstance)element).ValidateObjectifiedInstanceRequiredError(null);
+		}
+		private void ValidateObjectifiedInstanceRequiredError(INotifyElementAdded notifyAdded)
+		{
+			if (!this.IsDeleted)
+			{
+				FactType factType;
+				ObjectType entityType;
+				ObjectifiedInstanceRequiredError error = this.ObjectifiedInstanceRequiredError;
+				if (null != (entityType = this.ObjectType) &&
+					null != (factType = entityType.NestedFactType) &&
+					null == this.ObjectifiedInstance &&
+					null != entityType.ResolvedPreferredIdentifier)
+				{
+					if (error == null)
+					{
+						error = new ObjectifiedInstanceRequiredError(Store);
+						error.ObjectTypeInstance = this;
+						error.Model = entityType.Model;
+						error.GenerateErrorText();
+						if (notifyAdded != null)
+						{
+							notifyAdded.ElementAdded(error, true);
+						}
+					}
+				}
+				else if (error != null)
+				{
+					error.Delete();
+				}
+			}
+		}
+		#endregion // ObjectifiedInstanceRequiredError Validation
 		#region ObjectTypeInstance Rules
 		/// <summary>
 		/// AddRule: typeof(ConstraintRoleSequenceHasRole)
@@ -2793,7 +4375,7 @@ namespace Neumont.Tools.ORM.ObjectModel
 					{
 						foreach (ObjectTypeInstance instance in rolePlayer.ObjectTypeInstanceCollection)
 						{
-							FrameworkDomainModel.DelayValidateElement(instance, DelayValidateObjectTypeInstanceNamePartChanged);
+							FrameworkDomainModel.DelayValidateElement(instance, DelayValidateNamePartChanged);
 						}
 					}
 					break;
@@ -2831,7 +4413,7 @@ namespace Neumont.Tools.ORM.ObjectModel
 					{
 						foreach (ObjectTypeInstance instance in rolePlayer.ObjectTypeInstanceCollection)
 						{
-							FrameworkDomainModel.DelayValidateElement(instance, DelayValidateObjectTypeInstanceNamePartChanged);
+							FrameworkDomainModel.DelayValidateElement(instance, DelayValidateNamePartChanged);
 						}
 					}
 					break;
@@ -2853,60 +4435,236 @@ namespace Neumont.Tools.ORM.ObjectModel
 			}
 		}
 		/// <summary>
-		/// AddRule: typeof(EntityTypeInstanceHasRoleInstance)
+		/// AddRule: typeof(EntityTypeSubtypeInstanceHasSupertypeInstance)
 		/// </summary>
-		private static void EntityTypeInstanceHasRoleInstanceAddedRule(ElementAddedEventArgs e)
+		private static void EntityTypeSupertypeInstanceAddedRule(ElementAddedEventArgs e)
 		{
-			FrameworkDomainModel.DelayValidateElement(((EntityTypeInstanceHasRoleInstance)e.ModelElement).EntityTypeInstance, DelayValidateObjectTypeInstanceNamePartChanged);
-		}
-		/// <summary>
-		/// DeleteRule: typeof(EntityTypeInstanceHasRoleInstance)
-		/// </summary>
-		private static void EntityTypeInstanceHasRoleInstanceDeletedRule(ElementDeletedEventArgs e)
-		{
-			EntityTypeInstanceHasRoleInstance link = e.ModelElement as EntityTypeInstanceHasRoleInstance;
-			EntityTypeInstance instance = link.EntityTypeInstance;
-			if (!instance.IsDeleted)
+			EntityTypeSubtypeInstanceHasSupertypeInstance link = (EntityTypeSubtypeInstanceHasSupertypeInstance)e.ModelElement;
+			EntityTypeSubtypeInstance subtypeInstance = link.EntityTypeSubtypeInstance;
+			ObjectType subtype;
+			if (null != (subtype = subtypeInstance.EntityTypeSubtype))
 			{
-				FrameworkDomainModel.DelayValidateElement(instance, DelayValidateObjectTypeInstanceNamePartChanged);
+				ValidateAttachedSubtypeInstance(subtype, subtypeInstance, link.SupertypeInstance);
 			}
 		}
-		// UNDONE: This rule is garbage, it's comparing DomainRoleId values to DomainClassId values
-		// The rule should probably be a RolePlayerPositionChangeRule, not a RolePlayerChangeRule
+		/// <summary>
+		/// DeleteRule: typeof(EntityTypeSubtypeInstanceHasSupertypeInstance)
+		/// </summary>
+		private static void EntityTypeSupertypeInstanceDeletedRule(ElementDeletedEventArgs e)
+		{
+			EntityTypeInstance supertypeInstance = ((EntityTypeSubtypeInstanceHasSupertypeInstance)e.ModelElement).SupertypeInstance;
+			if (!supertypeInstance.IsDeleted)
+			{
+				supertypeInstance.DelayValidateIfEmpty();
+			}
+		}
+		/// <summary>
+		/// RolePlayerChangeRule: typeof(EntityTypeSubtypeInstanceHasSupertypeInstance)
+		/// </summary>
+		private static void EntityTypeSupertypeInstanceRolePlayerChangedRule(RolePlayerChangedEventArgs e)
+		{
+			if (e.DomainRole.Id == EntityTypeSubtypeInstanceHasSupertypeInstance.EntityTypeSubtypeInstanceDomainRoleId)
+			{
+				throw new InvalidOperationException(ResourceStrings.ModelExceptionEntityTypeSubtypeInstanceEnforceInitialSubtypeInstance);
+			}
+			EntityTypeSubtypeInstanceHasSupertypeInstance link = (EntityTypeSubtypeInstanceHasSupertypeInstance)e.ElementLink;
+			EntityTypeSubtypeInstance subtypeInstance = link.EntityTypeSubtypeInstance;
+			ObjectType subtype;
+			if (null != (subtype = subtypeInstance.EntityTypeSubtype))
+			{
+				ValidateAttachedSubtypeInstance(subtype, subtypeInstance, link.SupertypeInstance);
+
+				EntityTypeInstance detachedSupertypeInstance = (EntityTypeInstance)e.OldRolePlayer;
+				detachedSupertypeInstance.DelayValidateIfEmpty();
+				ObjectType resolvedSupertype;
+				if (null != (resolvedSupertype = detachedSupertypeInstance.ObjectType))
+				{
+					// See if the supertype is a direct supertype or if there are indirect
+					// stages, in which case we treat this as a use of the indirect supertypes,
+					// not the identifying supertype.
+					LinkedElementCollection<EntityTypeSubtypeInstance> relatedDetachedSubtypeInstances = null;
+					int relatedDetachedSubtypeInstancesCount = 0;
+					ObjectType.WalkSupertypes(
+						subtype,
+						delegate(ObjectType directSupertype, int depth, bool isPrimary)
+						{
+							if (depth == 0)
+							{
+								return ObjectTypeVisitorResult.Continue;
+							}
+							Debug.Assert(depth == 1);
+							if (isPrimary)
+							{
+								if (directSupertype == resolvedSupertype)
+								{
+									FrameworkDomainModel.DelayValidateElement(detachedSupertypeInstance, DelayValidateInstancePopulationMandatoryError);
+									// Note that we should only satisfy this condition once if the subtype
+									// graph is intransitive, so we could break here. However, we
+									// are not in any position at this point to assume graph intransitivity
+									// so we do not break the loop.
+								}
+								else
+								{
+									if (relatedDetachedSubtypeInstances == null)
+									{
+										relatedDetachedSubtypeInstances = detachedSupertypeInstance.EntityTypeSubtypeInstanceCollection;
+										relatedDetachedSubtypeInstancesCount = relatedDetachedSubtypeInstances.Count;
+									}
+									for (int i = 0; i < relatedDetachedSubtypeInstancesCount; ++i)
+									{
+										EntityTypeSubtypeInstance instance = relatedDetachedSubtypeInstances[i];
+										if (instance.ObjectType == directSupertype)
+										{
+											FrameworkDomainModel.DelayValidateElement(instance, DelayValidateInstancePopulationMandatoryError);
+										}
+									}
+								}
+							}
+							return ObjectTypeVisitorResult.SkipChildren;
+						});
+					// Downstream subtype instances may still require the old instance, revalidate them.
+					// CONSIDER: This will produce odd results if a roleplayer is changed in the middle
+					// of a subtype graph because the old instance will reappear. The other alternatives
+					// are to change the role players on all downstream instances (potentially requiring
+					// new instances to be created up different branches of the graph), delete the downstream
+					// instances, or to throw if the user attempts this operation.
+					if (relatedDetachedSubtypeInstances == null ||
+						relatedDetachedSubtypeInstancesCount != 0)
+					{
+						ObjectType.WalkSubtypes(
+							subtype,
+							delegate(ObjectType subsubtype, int depth, bool isPrimary)
+							{
+								if (depth == 0)
+								{
+									return ObjectTypeVisitorResult.Continue;
+								}
+								if (isPrimary)
+								{
+									if (relatedDetachedSubtypeInstances == null)
+									{
+										relatedDetachedSubtypeInstances = detachedSupertypeInstance.EntityTypeSubtypeInstanceCollection;
+										relatedDetachedSubtypeInstancesCount = relatedDetachedSubtypeInstances.Count;
+										if (relatedDetachedSubtypeInstancesCount == 0)
+										{
+											// Nothing left to do
+											return ObjectTypeVisitorResult.Stop;
+										}
+									}
+									for (int i = 0; i < relatedDetachedSubtypeInstancesCount; ++i)
+									{
+										EntityTypeSubtypeInstance otherInstance = relatedDetachedSubtypeInstances[i];
+										if (otherInstance.EntityTypeSubtype == subsubtype)
+										{
+											FrameworkDomainModel.DelayValidateElement(otherInstance, DelayValidateSubtypeInstance);
+										}
+									}
+									// We do not need to continue here, the downstream instances remain in a valid state
+								}
+								return ObjectTypeVisitorResult.SkipChildren;
+							});
+					}
+				}
+			}
+		}
+		/// <summary>
+		/// AddRule: typeof(EntityTypeSubtypeHasEntityTypeSubtypeInstance)
+		/// </summary>
+		private static void EntityTypeSubtypeInstanceAddedRule(ElementAddedEventArgs e)
+		{
+			EntityTypeSubtypeHasEntityTypeSubtypeInstance link = (EntityTypeSubtypeHasEntityTypeSubtypeInstance)e.ModelElement;
+			EntityTypeSubtypeInstance subtypeInstance = link.EntityTypeSubtypeInstance;
+			EntityTypeInstance supertypeInstance;
+			if (null != (supertypeInstance = subtypeInstance.SupertypeInstance))
+			{
+				ValidateAttachedSubtypeInstance(link.EntityTypeSubtype, subtypeInstance, supertypeInstance);
+			}
+		}
+		/// <summary>
+		/// An <see cref="EntityTypeSubtypeInstance"/> is not valid until it is attached to
+		/// both its supertype instance and the subtype. This validation helper runs when
+		/// both relationships have been established, which is assumed to happen before the
+		/// end of a transaction.
+		/// Verify that the specified a <paramref name="subtypeInstance"/> is the only instance of its <paramref name="subtype"/>
+		/// with the given <paramref name="supertypeInstance"/>
+		/// </summary>
+		/// <exception cref="InvalidOperationException">For a given supertype instance a corresponding subtype instance must
+		/// not be specified more than once per subtype.</exception>
+		private static void ValidateAttachedSubtypeInstance(ObjectType subtype, EntityTypeSubtypeInstance subtypeInstance, EntityTypeInstance supertypeInstance)
+		{
+			// Verify that the supertype instance is associated with only one EntityTypeSubtypeInstance
+			// on the subtype. Note that the size of the supertypeInstance.EntityTypeSubtypeInstanceCollection
+			// collection is limited by the total number of subtypes, whereas the subtype.EntityTypeSubtypeInstanceCollection
+			// is unbounded. We walk the smaller collection.
+			foreach (EntityTypeSubtypeInstance testInstance in supertypeInstance.EntityTypeSubtypeInstanceCollection)
+			{
+				if (testInstance != subtypeInstance && testInstance.ObjectType == subtype)
+				{
+					throw new InvalidOperationException(ResourceStrings.ModelExceptionEntityTypeSubtypeInstanceDuplicateSupertypeInstance);
+				}
+			}
+
+			// Verify that intermediate subtypes have a corresponding instance collection and are
+			// otherwise well formed.
+			FrameworkDomainModel.DelayValidateElement(subtypeInstance, DelayValidateSubtypeInstance);
+
+			// Provide event listeners with a single type of event when the instance name changes
+			FrameworkDomainModel.DelayValidateElement(subtypeInstance, DelayValidateNamePartChanged);
+
+			// Verify population mandatory issues
+			FrameworkDomainModel.DelayValidateElement(subtypeInstance, DelayValidateInstancePopulationMandatoryError);
+			ObjectType resolvedSupertype;
+			if (null != (resolvedSupertype = supertypeInstance.ObjectType))
+			{
+				// See if the supertype is a direct supertype or if there are indirect
+				// stages, in which case we treat this as a use of the indirect supertypes,
+				// not the identifying supertype.
+				LinkedElementCollection<EntityTypeSubtypeInstance> relatedSubtypeInstances = null;
+				ObjectType.WalkSupertypes(
+					subtype,
+					delegate(ObjectType directSupertype, int depth, bool isPrimary)
+					{
+						if (depth == 0)
+						{
+							return ObjectTypeVisitorResult.Continue;
+						}
+						Debug.Assert(depth == 1);
+						if (isPrimary)
+						{
+							if (directSupertype == resolvedSupertype)
+							{
+								FrameworkDomainModel.DelayValidateElement(supertypeInstance, DelayValidateInstancePopulationMandatoryError);
+								// Note that we should only satisfy this condition once if the subtype
+								// graph is intransitive, so we could break here. However, we
+								// are not in any position at this point to assume graph intransitivity
+								// so we do not break the loop.
+							}
+							else
+							{
+								if (relatedSubtypeInstances == null)
+								{
+									relatedSubtypeInstances = supertypeInstance.EntityTypeSubtypeInstanceCollection;
+								}
+								foreach (EntityTypeSubtypeInstance instance in relatedSubtypeInstances)
+								{
+									if (instance != subtypeInstance && instance.ObjectType == directSupertype)
+									{
+										FrameworkDomainModel.DelayValidateElement(instance, DelayValidateInstancePopulationMandatoryError);
+									}
+								}
+							}
+						}
+						return ObjectTypeVisitorResult.SkipChildren;
+					});
+			}
+		}
 		/// <summary>
 		/// RolePlayerChangeRule: typeof(EntityTypeInstanceHasRoleInstance)
+		/// Block role instance from moving to different instance
 		/// </summary>
 		private static void EntityTypeInstanceHasRoleInstanceRolePlayerChangedRule(RolePlayerChangedEventArgs e)
 		{
-			Guid changedRole = e.DomainRole.Id;
-			EntityTypeInstanceHasRoleInstance link = e.ElementLink as EntityTypeInstanceHasRoleInstance;
-			EntityTypeInstance newInstance = null;
-			if (changedRole == EntityTypeInstance.DomainClassId)
-			{
-				newInstance = e.NewRolePlayer as EntityTypeInstance;
-				EntityTypeInstance oldInstance = e.OldRolePlayer as EntityTypeInstance;
-				FrameworkDomainModel.DelayValidateElement(oldInstance, DelayValidateObjectTypeInstanceNamePartChanged);
-			}
-			else if (changedRole == RoleInstance.DomainClassId)
-			{
-				newInstance = link.EntityTypeInstance;
-			}
-			if (newInstance != null)
-			{
-				FrameworkDomainModel.DelayValidateElement(newInstance, DelayValidateObjectTypeInstanceNamePartChanged);
-			}
-		}
-		/// <summary>
-		/// ChangeRule: typeof(ValueTypeInstance)
-		/// </summary>
-		private static void ValueTypeInstanceValueChangedRule(ElementPropertyChangedEventArgs e)
-		{
-			Guid attributeGuid = e.DomainProperty.Id;
-			if (attributeGuid == ValueTypeInstance.ValueDomainPropertyId)
-			{
-				ValueTypeInstance instance = e.ModelElement as ValueTypeInstance;
-				FrameworkDomainModel.DelayValidateElement(instance, DelayValidateObjectTypeInstanceNamePartChanged);
-			}
+			throw new InvalidOperationException(ResourceStrings.ModelExceptionEntityTypeInstanceEnforceFixedRoleInstance);
 		}
 		/// <summary>
 		/// ChangeRule: typeof(MandatoryConstraint)
@@ -2929,9 +4687,43 @@ namespace Neumont.Tools.ORM.ObjectModel
 		/// </summary>
 		private static void RoleInstanceAddedRule(ElementAddedEventArgs e)
 		{
-			RoleInstance roleInstance = e.ModelElement as RoleInstance;
+			RoleInstance roleInstance = (RoleInstance)e.ModelElement;
+			ObjectType rolePlayer = roleInstance.Role.RolePlayer;
+			ObjectTypeInstance instance;
+			if (rolePlayer != null && rolePlayer != (instance = roleInstance.ObjectTypeInstance).ObjectType)
+			{
+				// Note that this will throw in ObjectTypeInstanceRolePlayerChangedRule if the current ObjectType is not null
+				instance.ObjectType = rolePlayer;
+			}
 			FrameworkDomainModel.DelayValidateElement(roleInstance, DelayValidateRemovePopulationMandatoryError);
 		}
+		/// <summary>
+		/// RolePlayerChangeRule: typeof(RoleInstance)
+		/// </summary>
+		private static void RoleInstanceRolePlayerChangedRule(RolePlayerChangedEventArgs e)
+		{
+			if (Utility.IsDescendantOrSelf(e.DomainRole, RoleInstance.RoleDomainRoleId))
+			{
+				throw new InvalidOperationException(ResourceStrings.ModelExceptionRoleInstanceEnforceInitialRole);
+			}
+#if !ROLEINSTANCE_ROLEPLAYERCHANGE
+			Debug.Fail("A DSLTools framework bug is preventing Undo of ObjectTypeInstance role player changes with duplicate role/instance pairs, do not call until this is resolved.");
+#endif // ROLEINSTANCE_ROLEPLAYERCHANGE
+			RoleInstance roleInstance = (RoleInstance)e.ElementLink;
+			ObjectType rolePlayer = roleInstance.Role.RolePlayer;
+			ObjectTypeInstance instance = roleInstance.ObjectTypeInstance;
+			if (rolePlayer != null && rolePlayer != instance.ObjectType)
+			{
+				// Note that this will throw in ObjectTypeInstanceRolePlayerChangedRule the current ObjectType is not null
+				instance.ObjectType = rolePlayer;
+			}
+			FrameworkDomainModel.DelayValidateElement(instance, DelayValidateNamePartChanged);
+			FrameworkDomainModel.DelayValidateElement(roleInstance, DelayValidateRemovePopulationMandatoryError);
+			instance = (ObjectTypeInstance)e.OldRolePlayer;
+			instance.DelayValidateIfEmpty();
+			FrameworkDomainModel.DelayValidateElement(instance, DelayValidateInstancePopulationMandatoryError);
+		}
+
 		/// <summary>
 		/// DeleteRule: typeof(RoleInstance)
 		/// Validation population mandatory conditions when a RoleInstance is deleted
@@ -2943,6 +4735,11 @@ namespace Neumont.Tools.ORM.ObjectModel
 			if (!role.IsDeleted)
 			{
 				FrameworkDomainModel.DelayValidateElement(role, DelayValidateRolePopulationMandatoryError);
+			}
+			ObjectTypeInstance objectInstance = roleInstance.ObjectTypeInstance;
+			if (!objectInstance.IsDeleted)
+			{
+				objectInstance.DelayValidateIfEmpty();
 			}
 		}
 		/// <summary>
@@ -2997,18 +4794,905 @@ namespace Neumont.Tools.ORM.ObjectModel
 			{
 				rolePlayer = link.RolePlayer;
 			}
-			if (!role.IsDeleted &&
-				!rolePlayer.IsDeleted)
+			if (!rolePlayer.IsDeleted)
 			{
-				ReadOnlyCollection<RoleInstance> instances = RoleInstance.GetLinksToObjectTypeInstanceCollection(role);
-				int instanceCount = instances.Count;
-				for (int i = instanceCount - 1; i >= 0; --i)
+				if (!role.IsDeleted)
 				{
-					Debug.Assert(instances[i].ObjectTypeInstance.ObjectType == rolePlayer);
-					instances[i].Delete();
+					ReadOnlyCollection<RoleInstance> instances = RoleInstance.GetLinksToObjectTypeInstanceCollection(role);
+					int instanceCount = instances.Count;
+					for (int i = instanceCount - 1; i >= 0; --i)
+					{
+						Debug.Assert(instances[i].ObjectTypeInstance.ObjectType == rolePlayer);
+						instances[i].Delete();
+					}
+				}
+				if (role is SubtypeMetaRole)
+				{
+					FrameworkDomainModel.DelayValidateElement(rolePlayer, DelayValidateSubtypeInstances);
 				}
 			}
 		}
+		/// <summary>
+		/// ChangeRule: typeof(SubtypeFact)
+		/// Validate subtype instances when the preferred identification path is modified
+		/// </summary>
+		private static void PreferredSupertypeChangedRule(ElementPropertyChangedEventArgs e)
+		{
+			if (e.DomainProperty.Id == SubtypeFact.ProvidesPreferredIdentifierDomainPropertyId)
+			{
+				SubtypeFact subtypeFact = (SubtypeFact)e.ModelElement;
+				ObjectType subtype = subtypeFact.Subtype;
+				if (subtype != null)
+				{
+					FrameworkDomainModel.DelayValidateElement(subtype, DelayValidateSubtypeInstances);
+					if (!(bool)e.NewValue)
+					{
+						ObjectType.WalkSubtypes(
+							subtype,
+							delegate(ObjectType subsubtype, int depth, bool isPrimary)
+							{
+								if (depth == 0)
+								{
+									return ObjectTypeVisitorResult.Continue;
+								}
+								else if (isPrimary)
+								{
+									FrameworkDomainModel.DelayValidateElement(subsubtype, DelayValidateSubtypeInstances);
+									return ObjectTypeVisitorResult.Continue;
+								}
+								return ObjectTypeVisitorResult.SkipChildren;
+							});
+					}
+					else
+					{
+						// The FactType population is now implied by the EntityTypeSubtype instances of the subtype
+						subtypeFact.FactTypeInstanceCollection.Clear();
+					}
+				}
+			}
+		}
+		partial class EntityTypeSubtypeInstanceDeletingRuleClass
+		{
+			private bool myIsDisabled;
+			/// <summary>
+			/// DeletingRule: typeof(EntityTypeSubtypeInstance)
+			/// When an EntityTypeSubtypeInstance is deleting, delete any subtype instances
+			/// attached to the same supertype instance.
+			/// </summary>
+			private void EntityTypeSubtypeInstanceDeletingRule(ElementDeletingEventArgs e)
+			{
+				if (myIsDisabled)
+				{
+					return;
+				}
+				myIsDisabled = true;
+				try
+				{
+					EntityTypeSubtypeInstance subtypeInstance = (EntityTypeSubtypeInstance)e.ModelElement;
+					ObjectType subtype;
+					EntityTypeInstance supertypeInstance;
+					if (null != (subtype = subtypeInstance.EntityTypeSubtype) &&
+						!subtype.IsDeleting &&
+						null != (supertypeInstance = subtypeInstance.SupertypeInstance) &&
+						!supertypeInstance.IsDeleting)
+					{
+						LinkedElementCollection<EntityTypeSubtypeInstance> allSubtypeInstances = null;
+						int allSubtypeInstancesCount = 0;
+						// In a deleting rule, we need to see the relationships so that we can test the
+						// deleting state.
+						ObjectType.WalkSubtypeRelationships(
+							subtype,
+							delegate(SubtypeFact subSubtypeFact, ObjectType subSubtype, int depth)
+							{
+								if (!subSubtypeFact.IsDeleting && !subSubtype.IsDeleting && subSubtypeFact.ProvidesPreferredIdentifier)
+								{
+									if (allSubtypeInstances == null)
+									{
+										allSubtypeInstances = supertypeInstance.EntityTypeSubtypeInstanceCollection;
+										allSubtypeInstancesCount = allSubtypeInstances.Count;
+										if (allSubtypeInstancesCount < 2)
+										{
+											// The only one left is the one currently being deleted for this notification
+											return ObjectTypeVisitorResult.Stop;
+										}
+									}
+									for (int i = allSubtypeInstancesCount - 1; i >= 0; --i)
+									{
+										EntityTypeSubtypeInstance otherInstance = allSubtypeInstances[i];
+										if (!otherInstance.IsDeleting && otherInstance.EntityTypeSubtype == subSubtype)
+										{
+											// Look for another primary supertype that is not the current supertype
+											otherInstance.Delete();
+											if (--allSubtypeInstancesCount < 2)
+											{
+												// The only one left is the one currently being deleted for this method
+												return ObjectTypeVisitorResult.Stop;
+											}
+										}
+									}
+									return ObjectTypeVisitorResult.Continue;
+								}
+								return ObjectTypeVisitorResult.SkipChildren;
+							});
+
+							// Now walk the other way to find subtype instances between this subtype and the
+							// resolved supertype.
+							ObjectType resolvedSupertype = supertypeInstance.ObjectType;
+							ObjectType.WalkSupertypeRelationships(
+								subtype,
+								delegate(SubtypeFact subSuperttypeFact, ObjectType subSupertype, int depth)
+								{
+									if (!subSuperttypeFact.IsDeleting && !subSupertype.IsDeleting && subSuperttypeFact.ProvidesPreferredIdentifier)
+									{
+										if (subSupertype == resolvedSupertype)
+										{
+											FrameworkDomainModel.DelayValidateElement(supertypeInstance, DelayValidateInstancePopulationMandatoryError);
+											// Note that we should only satisfy this condition once if the subtype
+											// graph is intransitive, so we could break here. However, we
+											// are not in any position at this point to assume graph intransitivity
+											// so we do not break the loop.
+										}
+										else
+										{
+											if (allSubtypeInstances == null)
+											{
+												allSubtypeInstances = supertypeInstance.EntityTypeSubtypeInstanceCollection;
+												allSubtypeInstancesCount = allSubtypeInstances.Count;
+											}
+											for (int i = 0; i < allSubtypeInstancesCount; ++i)
+											{
+												EntityTypeSubtypeInstance instance = allSubtypeInstances[i];
+												if (!instance.IsDeleting && instance != subtypeInstance && instance.ObjectType == subSupertype)
+												{
+													FrameworkDomainModel.DelayValidateElement(instance, DelayValidateInstancePopulationMandatoryError);
+												}
+											}
+										}
+									}
+									return ObjectTypeVisitorResult.SkipChildren;
+								});
+					}
+				}
+				finally
+				{
+					myIsDisabled = false;
+				}
+			}
+		}
+		[DelayValidatePriority(2)] // Validate subtype instances after all other instances are in place
+		private static void DelayValidateSubtypeInstance(ModelElement element)
+		{
+			if (!element.IsDeleted)
+			{
+				EntityTypeSubtypeInstance subtypeInstance = (EntityTypeSubtypeInstance)element;
+				ObjectType subtype;
+				ObjectType supertype;
+				EntityTypeInstance supertypeInstance;
+				UniquenessConstraint pid;
+				ObjectType preferredFor;
+				if (null == (subtype = subtypeInstance.EntityTypeSubtype) ||
+					null == (supertypeInstance = subtypeInstance.SupertypeInstance) ||
+					null == (supertype = supertypeInstance.EntityType) ||
+					null == (pid = subtype.ResolvedPreferredIdentifier) ||
+					null == (preferredFor = pid.PreferredIdentifierFor) ||
+					preferredFor != supertype)
+				{
+					subtypeInstance.Delete();
+				}
+				else
+				{
+					ObjectType.WalkSupertypes(
+						subtype,
+						delegate(ObjectType intermediateSupertype, int depth, bool isPrimary)
+						{
+							if (depth == 0)
+							{
+								return ObjectTypeVisitorResult.Continue;
+							}
+							else if (isPrimary && intermediateSupertype != supertype)
+							{
+								LinkedElementCollection<EntityTypeSubtypeInstance> intermediateInstances = intermediateSupertype.EntityTypeSubtypeInstanceCollection;
+								int intermediateInstanceCount = intermediateInstances.Count;
+								int i = 0;
+								for (; i < intermediateInstanceCount; ++i)
+								{
+									if (intermediateInstances[i].SupertypeInstance == supertypeInstance)
+									{
+										break;
+									}
+								}
+								if (i == intermediateInstanceCount)
+								{
+									EntityTypeSubtypeInstance.GetSubtypeInstance(supertypeInstance, intermediateSupertype, false, true);
+								}
+							}
+							// Always skip, only do one level at a time
+							return ObjectTypeVisitorResult.SkipChildren;
+						});
+				}
+			}
+		}
+		[DelayValidatePriority(2)] // Validate subtype instances after all other instances are in place
+		private static void DelayValidateSubtypeInstances(ModelElement element)
+		{
+			if (!element.IsDeleted)
+			{
+				ObjectType subtype = (ObjectType)element;
+				UniquenessConstraint pid;
+				ObjectType preferredFor = null;
+				if ((null == (pid = subtype.ResolvedPreferredIdentifier)) ||
+					(null == (preferredFor = pid.PreferredIdentifierFor)) ||
+					preferredFor == subtype)
+				{
+					subtype.EntityTypeSubtypeInstanceCollection.Clear();
+				}
+				if (preferredFor != null && preferredFor != subtype)
+				{
+					// Make sure that the instances resolve to the identifying supertype
+					LinkedElementCollection<EntityTypeSubtypeInstance> subtypeInstances = subtype.EntityTypeSubtypeInstanceCollection;
+					int subtypeInstanceCount = subtypeInstances.Count;
+					for (int i = subtypeInstanceCount - 1; i >= 0; --i)
+					{
+						EntityTypeSubtypeInstance subtypeInstance = subtypeInstances[i];
+						EntityTypeInstance supertypeInstance;
+						if (null == (supertypeInstance = subtypeInstance.SupertypeInstance) ||
+							preferredFor != supertypeInstance.EntityType)
+						{
+							subtypeInstance.Delete();
+						}
+					}
+
+					// Make sure that, for each of the remaining instances, all intermediate subtypes also
+					// are also linked to the identifying supertype instances
+					subtypeInstanceCount = subtypeInstances.Count;
+					if (subtypeInstanceCount != 0)
+					{
+						Store store = element.Store;
+						EntityTypeInstance[] supertypeInstances = null;
+						bool[] instanceMatches = null;
+						IComparer<EntityTypeInstance> comparer = null;
+						ObjectType.WalkSupertypes(
+							subtype,
+							delegate(ObjectType supertype, int depth, bool isPrimary)
+							{
+								if (depth == 0)
+								{
+									return ObjectTypeVisitorResult.Continue;
+								}
+								else if (isPrimary && supertype != preferredFor && supertype.ResolvedPreferredIdentifier == pid)
+								{
+									// Non-primary supertypes need to be manually populated and
+									// will produce population mandatory errors.
+									// Note that the subtype graph, compatibility, and the preferred path
+									// have already been validated, so checking the primary state is sufficient
+									// Anything else gets automatically populated
+									if (supertypeInstances == null)
+									{
+										supertypeInstances = new EntityTypeInstance[subtypeInstanceCount];
+										instanceMatches = new bool[subtypeInstanceCount];
+										for (int i = 0; i < subtypeInstanceCount; ++i)
+										{
+											supertypeInstances[i] = subtypeInstances[i].SupertypeInstance;
+										}
+										Array.Sort<EntityTypeInstance>(supertypeInstances, comparer = HashCodeComparer<EntityTypeInstance>.Instance);
+									}
+									int matched = 0;
+									foreach (EntityTypeSubtypeInstance intermediateInstance in supertype.EntityTypeSubtypeInstanceCollection)
+									{
+										EntityTypeInstance boundInstance = intermediateInstance.SupertypeInstance;
+										if (boundInstance.EntityType == preferredFor) // Sanity check, will be cleaned up by other iterations of this function
+										{
+											int matchingIndex = Array.BinarySearch<EntityTypeInstance>(supertypeInstances, boundInstance, comparer);
+											if (matchingIndex >= 0 && !instanceMatches[matchingIndex])
+											{
+												instanceMatches[matchingIndex] = true;
+												++matched;
+											}
+										}
+									}
+									if (matched != subtypeInstanceCount)
+									{
+										// Add the new instance
+										for (int i = 0; i < subtypeInstanceCount; ++i)
+										{
+											if (!instanceMatches[i])
+											{
+												instanceMatches[i] = false; // prepare for next pass
+												EntityTypeSubtypeInstance.GetSubtypeInstance(supertypeInstances[i], supertype, false, true);
+											}
+										}
+									}
+									else
+									{
+										Array.Clear(instanceMatches, 0, subtypeInstanceCount); // prepare for next pass
+									}
+								}
+								// Skip in all cases. If we added, then rules will trigger additional adds for other
+								// intermediate supertypes
+								return ObjectTypeVisitorResult.SkipChildren;
+							});
+					}
+				}
+			}
+		}
+		/// <summary>
+		/// AddRule: typeof(ObjectTypeHasObjectTypeInstance)
+		/// Verify that implied instances were added by us, and that
+		/// objectified instances all get an error.
+		/// </summary>
+		private static void ObjectTypeInstanceAddedRule(ElementAddedEventArgs e)
+		{
+			ObjectTypeHasObjectTypeInstance link = (ObjectTypeHasObjectTypeInstance)e.ModelElement;
+			ObjectType entityType = link.ObjectType;
+			FactType factType;
+			UniquenessConstraint pid;
+			if (null != (factType = entityType.NestedFactType) &&
+				null != (pid = entityType.ResolvedPreferredIdentifier))
+			{
+				LinkedElementCollection<FactType> pidFactTypes;
+				FactType identifierFactType;
+				Role unaryRole;
+				ObjectifiedUnaryRole objectifiedUnaryRole;
+				if (pid.PreferredIdentifierFor == entityType && // quick check to rule out a subtype situation
+					pid.IsInternal &&
+					1 == (pidFactTypes = pid.FactTypeCollection).Count &&
+					((identifierFactType = pidFactTypes[0]) == factType ||
+					(null != (unaryRole = factType.UnaryRole) &&
+					null != (objectifiedUnaryRole = unaryRole.ObjectifiedUnaryRole) &&
+					identifierFactType == objectifiedUnaryRole.FactType)))
+				{
+					// UNDONE: Better mechanism to check that this coming from the FactTypeInstance.FactTypeInstanceAddedRule,
+					// not just any rule. Note that the expense of turning this rule on/off is not worth it.
+					// A framework service allowing a rule to 'push' itself on a stack would be useful, but maintaining the
+					// statck is not worth doing arbitrarily, only for the unusual cases. This comment also applies to any
+					// other rule checking for ChangeSource.Rule.
+					if (e.ChangeSource != ChangeSource.Rule)
+					{
+						throw new InvalidOperationException(ResourceStrings.ModelExceptionObjectificationInstanceDirectModificationOfImpliedEntityTypeInstance);
+					}
+				}
+				else
+				{
+					FrameworkDomainModel.DelayValidateElement(link.ObjectTypeInstance, DelayValidateObjectifiedInstanceRequiredError);
+				}
+			}
+		}
+		/// <summary>
+		/// RolePlayerChangeRule: typeof(ObjectTypeHasObjectTypeInstance)
+		/// </summary>
+		private static void ObjectTypeInstanceRolePlayerChangedRule(RolePlayerChangedEventArgs e)
+		{
+			throw new InvalidOperationException(ResourceStrings.ModelExceptionObjectTypeInstanceEnforceFixedRolePlayers);
+		}
+		#region Handle objectified FactType inclusion in generated name
+		/// <summary>
+		/// ChangeRule: typeof(FactTypeInstance)
+		/// Update objectified instance name
+		/// </summary>
+		private static void FactTypeInstanceNameChangedRule(ElementPropertyChangedEventArgs e)
+		{
+			ObjectTypeInstance objectInstance;
+			if (e.DomainProperty.Id == FactTypeInstance.NameChangedDomainPropertyId &&
+				null != (objectInstance = ((FactTypeInstance)e.ModelElement).ObjectifyingInstance))
+			{
+				FrameworkDomainModel.DelayValidateElement(objectInstance, DelayValidateNamePartChanged);
+			}
+		}
+		/// <summary>
+		/// ChangeRule: typeof(FactType)
+		/// Update objectified instance name
+		/// </summary>
+		private static void FactTypeNameChangedRule(ElementPropertyChangedEventArgs e)
+		{
+			if (e.DomainProperty.Id == FactType.NameChangedDomainPropertyId)
+			{
+				DelayValidateInstanceNames(((FactType)e.ModelElement).NestingType);
+			}
+		}
+		/// <summary>
+		/// Rule helper method
+		/// </summary>
+		private static void DelayValidateInstanceNames(ObjectType objectType)
+		{
+			if (objectType != null && !objectType.IsDeleted)
+			{
+				foreach (ObjectTypeInstance objectInstance in objectType.ObjectTypeInstanceCollection)
+				{
+					// Note that these are generally done through the FactTypeInstance, but a
+					// missing ObjectificationInstance link requires us to watch the FactType directly
+					FrameworkDomainModel.DelayValidateElement(objectInstance, DelayValidateNamePartChanged);
+				}
+			}
+		}
+		/// <summary>
+		/// AddRule: typeof(Objectification)
+		/// Update objectified instance name
+		/// </summary>
+		private static void ObjectificationAddedRule(ElementAddedEventArgs e)
+		{
+			DelayValidateInstanceNames(((Objectification)e.ModelElement).NestingType);
+		}
+		/// <summary>
+		/// DeleteRule: typeof(Objectification)
+		/// Update objectified instance name
+		/// </summary>
+		private static void ObjectificationDeletedRule(ElementDeletedEventArgs e)
+		{
+			DelayValidateInstanceNames(((Objectification)e.ModelElement).NestingType);
+		}
+		/// <summary>
+		/// AddRule: typeof(ObjectificationInstance)
+		/// Update objectified instance name
+		/// </summary>
+		private static void ObjectificationInstanceAddedRule(ElementAddedEventArgs e)
+		{
+			FrameworkDomainModel.DelayValidateElement(((ObjectificationInstance)e.ModelElement).ObjectifyingInstance, DelayValidateNamePartChanged);
+		}
+		/// <summary>
+		/// DeleteRule: typeof(ObjectificationInstance)
+		/// Update objectified instance name
+		/// </summary>
+		private static void ObjectificationInstanceDeletedRule(ElementDeletedEventArgs e)
+		{
+			ObjectTypeInstance objectInstance = ((ObjectificationInstance)e.ModelElement).ObjectifyingInstance;
+			if (!objectInstance.IsDeleted)
+			{
+				objectInstance.DelayValidateIfEmpty();
+				FrameworkDomainModel.DelayValidateElement(objectInstance, DelayValidateNamePartChanged);
+			}
+		}
+		/// <summary>
+		/// RolePlayerChangeRule: typeof(ObjectificationInstance)
+		/// Update objectified instance name
+		/// </summary>
+		private static void ObjectificationInstanceRolePlayerChangeRule(RolePlayerChangedEventArgs e)
+		{
+			if (e.DomainRole.Id == ObjectificationInstance.ObjectifyingInstanceDomainRoleId)
+			{
+				ObjectTypeInstance oldInstance = (ObjectTypeInstance)e.OldRolePlayer;
+				oldInstance.DelayValidateIfEmpty();
+				FrameworkDomainModel.DelayValidateElement(oldInstance, DelayValidateNamePartChanged);
+				FrameworkDomainModel.DelayValidateElement(e.NewRolePlayer, DelayValidateNamePartChanged);
+			}
+			else
+			{
+				FrameworkDomainModel.DelayValidateElement(((ObjectificationInstance)e.ElementLink).ObjectifyingInstance, DelayValidateNamePartChanged);
+			}
+		}
+		/// <summary>
+		/// RolePlayerChangeRule: typeof(Objectification)
+		/// Update objectified instance name
+		/// </summary>
+		private static void ObjectificationRolePlayerChangeRule(RolePlayerChangedEventArgs e)
+		{
+			if (e.DomainRole.Id == Objectification.NestingTypeDomainRoleId)
+			{
+				DelayValidateInstanceNames((ObjectType)e.OldRolePlayer);
+			}
+			DelayValidateInstanceNames(((Objectification)e.ElementLink).NestingType);
+		}
+		/// <summary>
+		/// Validate an <see cref="ObjectTypeInstance"/> using the <see cref="DelayValidateIfEmpty"/> method.
+		/// </summary>
+		protected static void DelayValidateEmptyInstance(ObjectTypeInstance objectInstance)
+		{
+			objectInstance.DelayValidateIfEmpty();
+		}
+		/// <summary>
+		/// A use of a potentially empty instance is no longer referencing this instance,
+		/// make sure that the existing of the empty instance is validated.
+		/// </summary>
+		protected virtual void DelayValidateIfEmpty()
+		{
+			// Default is empty
+		}
+		#endregion // Handle objectified FactType inclusion in generated name
 		#endregion // ObjectTypeInstance Rules
+	}
+	partial class EntityTypeSubtypeInstance : IHasIndirectModelErrorOwner
+	{
+		#region Base overrides
+		private string myGeneratedName = string.Empty;
+		private string myGeneratedIdentifierName = string.Empty;
+		/// <summary>
+		/// Enable name generation
+		/// </summary>
+		protected override bool HasGeneratedNames
+		{
+			get
+			{
+				return true;
+			}
+		}
+		/// <summary>
+		/// Generate the current value for the <see cref="P:Name"/> property
+		/// </summary>
+		protected override string GenerateName()
+		{
+			return ObjectTypeInstance.GetDisplayString(this, EntityTypeSubtype, false);
+		}
+		/// <summary>
+		/// Generate the current value for the <see cref="P:IdentifierName"/> property
+		/// </summary>
+		protected override string GenerateIdentifierName()
+		{
+			return ObjectTypeInstance.GetDisplayString(this, EntityTypeSubtype, true);
+		}
+		/// <summary>
+		/// Provide storage for the generated <see cref="P:Name"/>
+		/// </summary>
+		protected override string GeneratedName
+		{
+			get
+			{
+				return myGeneratedName;
+			}
+			set
+			{
+				myGeneratedName = value;
+			}
+		}
+		/// <summary>
+		/// Provide storage for the generated <see cref="P:IdentifierName"/>
+		/// </summary>
+		protected override string GeneratedIdentifierName
+		{
+			get
+			{
+				return myGeneratedIdentifierName;
+			}
+			set
+			{
+				myGeneratedIdentifierName = value;
+			}
+		}
+		/// <summary>
+		/// If this identifier is empty, then verify that it is both associated with
+		/// a <see cref="FactTypeInstance"/> and included in another instance definition.
+		/// </summary>
+		protected override void DelayValidateIfEmpty()
+		{
+			EntityTypeInstance supertypeInstance;
+			if (!IsDeleted &&
+				null != (supertypeInstance = SupertypeInstance))
+			{
+				DelayValidateEmptyInstance(supertypeInstance);
+			}
+		}
+		#endregion // Base overrides
+		#region IHasIndirectModelErrorOwner Implementation
+		private static Guid[] myIndirectModelErrorOwnerLinkRoles;
+		/// <summary>
+		/// Implements IHasIndirectModelErrorOwner.GetIndirectModelErrorOwnerLinkRoles()
+		/// </summary>
+		protected Guid[] GetIndirectModelErrorOwnerLinkRoles()
+		{
+			// Creating a static readonly guid array is causing static field initialization
+			// ordering issues with the partial classes. Defer initialization.
+			Guid[] linkRoles = myIndirectModelErrorOwnerLinkRoles;
+			if (linkRoles == null)
+			{
+				myIndirectModelErrorOwnerLinkRoles = linkRoles = new Guid[] { EntityTypeSubtypeHasEntityTypeSubtypeInstance.EntityTypeSubtypeInstanceDomainRoleId };
+			}
+			return linkRoles;
+		}
+		Guid[] IHasIndirectModelErrorOwner.GetIndirectModelErrorOwnerLinkRoles()
+		{
+			return GetIndirectModelErrorOwnerLinkRoles();
+		}
+		#endregion // IHasIndirectModelErrorOwner Implementation
+		#region Helper Methods
+		/// <summary>
+		/// Retrieve an <see cref="EntityTypeSubtypeInstance"/> for the <paramref name="entityInstance"/>
+		/// that matches the specified <paramref name="subtype"/>.
+		/// </summary>
+		/// <param name="entityInstance">The <see cref="EntityTypeInstance"/> to use as the <see cref="P:SuperTypeInstance"/></param>
+		/// <param name="subtype">The <see cref="ObjectType"/> that is a subtype identified by the <see cref="P:EntityTypeInstance.EntityType"/>
+		/// of the <paramref name="entityInstance"/></param>
+		/// <param name="checkExisting">True to check existing instances for an existing subtype instance.</param>
+		/// <param name="forceCreate">If <paramref name="checkExisting"/> is set and no match is found, then create a new instance</param>
+		/// <returns>An <see cref="EntityTypeSubtypeInstance"/> or <see langword="null"/>, depending on the specified options.</returns>
+		public static EntityTypeSubtypeInstance GetSubtypeInstance(EntityTypeInstance entityInstance, ObjectType subtype, bool checkExisting, bool forceCreate)
+		{
+			if (checkExisting)
+			{
+				// Note that the total set of subtype instances for any given entity is unbound as the population grows.
+				// However, the total number of subtype instances is bounded by the number of identified subtypes in the
+				// model, not the number of instances.
+				foreach (EntityTypeSubtypeInstance testSubtypeInstance in entityInstance.EntityTypeSubtypeInstanceCollection)
+				{
+					if (testSubtypeInstance.EntityTypeSubtype == subtype)
+					{
+						return testSubtypeInstance;
+					}
+				}
+			}
+			else
+			{
+				forceCreate = true;
+			}
+			if (forceCreate)
+			{
+				EntityTypeSubtypeInstance newSubtypeInstance = new EntityTypeSubtypeInstance(entityInstance.Store);
+				newSubtypeInstance.SupertypeInstance = entityInstance;
+				newSubtypeInstance.EntityTypeSubtype = subtype;
+				return newSubtypeInstance;
+			}
+			return null;
+		}
+		#endregion // Helper Methods
+	}
+	partial class ObjectificationInstance
+	{
+		#region Rule methods
+		partial class RoleInstanceRolePlayerChangedRuleClass
+		{
+			private bool myIsDisabled;
+			/// <summary>
+			/// RolePlayerChangeRule: typeof(RoleInstance)
+			/// Enforce role player change semantics for objectification associations
+			/// </summary>
+			private void RoleInstanceRolePlayerChangedRule(RolePlayerChangedEventArgs e)
+			{
+				if (myIsDisabled)
+				{
+					return;
+				}
+				if (Utility.IsDescendantOrSelf(e.DomainRole, RoleInstance.ObjectTypeInstanceDomainRoleId))
+				{
+					RoleInstance link = (RoleInstance)e.ElementLink;
+					FactTypeRoleInstance factRoleInstance;
+					EntityTypeRoleInstance entityRoleInstance;
+					FactTypeInstance factInstance;
+					EntityTypeInstance entityInstance;
+					FactType factType;
+					ObjectType entityType;
+					UniquenessConstraint pid;
+					LinkedElementCollection<FactType> pidFactTypes;
+					FactType identifierFactType;
+					Role unaryRole = null;
+					ObjectifiedUnaryRole objectifiedUnaryRole = null;
+					Role findRole;
+					if (null != (factRoleInstance = link as FactTypeRoleInstance))
+					{
+						if (null != (factInstance = factRoleInstance.FactTypeInstance) &&
+							null != (entityInstance = factInstance.ObjectifyingInstance as EntityTypeInstance) && // Note that an EntityTypeSubtypeInstance is externally identified and has no implicit population
+							null != (factType = factInstance.FactType) &&
+							null != (entityType = entityInstance.ObjectType) &&
+							null != (pid = entityType.PreferredIdentifier) &&
+							pid.IsInternal &&
+							1 == (pidFactTypes = pid.FactTypeCollection).Count &&
+							((identifierFactType = pidFactTypes[0]) == factType ||
+							(null != (unaryRole = factType.UnaryRole) &&
+							null != (objectifiedUnaryRole = unaryRole.ObjectifiedUnaryRole) &&
+							identifierFactType == objectifiedUnaryRole.FactType)) &&
+							null != (entityRoleInstance = entityInstance.FindRoleInstance(((findRole = factRoleInstance.Role) == unaryRole) ? objectifiedUnaryRole : findRole)))
+						{
+							myIsDisabled = true;
+							try
+							{
+								entityRoleInstance.ObjectTypeInstance = factRoleInstance.ObjectTypeInstance;
+							}
+							finally
+							{
+								myIsDisabled = false;
+							}
+						}
+					}
+					else if (null != (entityRoleInstance = link as EntityTypeRoleInstance))
+					{
+						if (null != (entityInstance = entityRoleInstance.EntityTypeInstance) &&
+							null != (factInstance = entityInstance.ObjectifiedInstance) &&
+							null != (factType = factInstance.FactType) &&
+							null != (entityType = entityInstance.ObjectType) &&
+							null != (pid = entityType.PreferredIdentifier) &&
+							pid.IsInternal &&
+							1 == (pidFactTypes = pid.FactTypeCollection).Count &&
+							((identifierFactType = pidFactTypes[0]) == factType ||
+							(null != (unaryRole = factType.UnaryRole) &&
+							null != (objectifiedUnaryRole = unaryRole.ObjectifiedUnaryRole) &&
+							identifierFactType == objectifiedUnaryRole.FactType)))
+						{
+							throw new InvalidOperationException(ResourceStrings.ModelExceptionObjectificationInstanceDirectModificationOfImpliedEntityTypeInstance);
+						}
+					}
+				}
+			}
+		}
+		/// <summary>
+		/// AddRule: typeof(ObjectificationInstance)
+		/// Verify that an <see cref="ObjectificationInstance"/> is consistent with the
+		/// <see cref="Objectification"/> link between the associated <see cref="FactType"/>
+		/// and <see cref="ObjectType"/>
+		/// </summary>
+		private static void ObjectificationInstanceAddedRule(ElementAddedEventArgs e)
+		{
+			ObjectificationInstance link = (ObjectificationInstance)e.ModelElement;
+			FactTypeInstance factInstance = link.ObjectifiedInstance;
+			ObjectTypeInstance objectInstance = link.ObjectifyingInstance;
+			FactType factType;
+			ObjectType entityType;
+			if (null == (factType = factInstance.FactType) ||
+				null == (entityType = objectInstance.ObjectType) ||
+				factType.NestingType != entityType)
+			{
+				throw new InvalidOperationException(ResourceStrings.ModelExceptionObjectificationInstanceIncompleteRolePlayers);
+			}
+			// The entityInstance has a trivial error condition (any FactTypeInstance is required, even empty ones)
+			// However, the factInstance condition is non-trivial as an ObjectifyingInstanceRequiredError
+			// is displayed if the non-implied identifier instance is empty.
+			FrameworkDomainModel.DelayValidateElement(factInstance, FactTypeInstance.DelayValidateObjectifyingInstanceRequiredError);
+			objectInstance.ObjectifiedInstanceRequiredError = null; // Trivial condition, not worth delay validating
+		}
+		/// <summary>
+		/// DeletingRule: typeof(ObjectificationInstance)
+		/// Emulate delete propagation if the <see cref="ObjectifiedInstance"/> endpoint is
+		/// deleted and the uniqueness constraint is internal to the objectified FactType.
+		/// Note that we do not propagate an identifier instance deletion because there is
+		/// never a good reason to toss a FactType population, and this has side-effects
+		/// when preferred identifiers are changed and the old object instance is interpreted
+		/// as internal because of the
+		/// </summary>
+		private static void ObjectificationInstanceDeletingRule(ElementDeletingEventArgs e)
+		{
+			ObjectificationInstance link = (ObjectificationInstance)e.ModelElement;
+			FactTypeInstance factInstance = link.ObjectifiedInstance;
+			ObjectTypeInstance objectInstance = link.ObjectifyingInstance;
+			FactType factType;
+			ObjectType entityType;
+			EntityTypeHasPreferredIdentifier pidLink;
+			Objectification objectification;
+			UniquenessConstraint pid;
+			LinkedElementCollection<FactType> pidFactTypes;
+			FactType identifierFactType;
+			Role unaryRole;
+			ObjectifiedUnaryRoleHasRole objectifiedUnaryLink;
+			bool factInstanceDeleting = factInstance.IsDeleting;
+			bool entityInstanceDeleting = objectInstance.IsDeleting;
+			EntityTypeInstance typedEntityInstance = null;
+			if (factInstanceDeleting &&
+				!entityInstanceDeleting &&
+				null != (typedEntityInstance = objectInstance as EntityTypeInstance) && // A subtype instance is never an internal identifier
+				null != (factType = factInstance.FactType) &&
+				!factType.IsDeleting &&
+				null != (entityType = objectInstance.ObjectType) &&
+				!entityType.IsDeleting &&
+				null != (objectification = entityType.Objectification) && // Allow invalidated links to be blown away without turning off this rule
+				objectification.NestedFactType == factType &&
+				null != (pidLink = EntityTypeHasPreferredIdentifier.GetLinkToPreferredIdentifier(entityType)) &&
+				!pidLink.IsDeleting &&
+				(pid = pidLink.PreferredIdentifier).IsInternal &&
+				1 == (pidFactTypes = pid.FactTypeCollection).Count &&
+				((identifierFactType = pidFactTypes[0]) == factType ||
+				(null != (unaryRole = factType.UnaryRole) &&
+				null != (objectifiedUnaryLink = ObjectifiedUnaryRoleHasRole.GetLinkToObjectifiedUnaryRole(unaryRole)) &&
+				!objectifiedUnaryLink.IsDeleting &&
+				identifierFactType == objectifiedUnaryLink.ObjectifiedUnaryRole.FactType)))
+			{
+				objectInstance.Delete();
+			}
+			else
+			{
+				if (!factInstanceDeleting)
+				{
+					if (factInstance.RoleInstanceCollection.Count == 0)
+					{
+						// If an attempt is made to associate an entity instance with a new fact instance,
+						// then an empty FactTypeInstance must be created without an attached FactTypeRoleInstance.
+						// These empty instances need to be deleted if the objectification link or the corresponding
+						// entity instance is deleted.
+						factInstance.Delete();
+					}
+					else
+					{
+						FrameworkDomainModel.DelayValidateElement(factInstance, FactTypeInstance.DelayValidateObjectifyingInstanceRequiredError);
+					}
+				}
+				if (!entityInstanceDeleting)
+				{
+					if (typedEntityInstance != null && typedEntityInstance.RoleInstanceCollection.Count == 0)
+					{
+						// The same logic applies to the other end: an empty EntityTypeInstance may need
+						// to be created so that it can be associated with a populated FactTypeInstance
+						typedEntityInstance.Delete();
+					}
+					else
+					{
+						FrameworkDomainModel.DelayValidateElement(objectInstance, ObjectTypeInstance.DelayValidateObjectifiedInstanceRequiredError);
+					}
+				}
+			}
+		}
+		/// <summary>
+		/// RolePlayerChangeRule: typeof(ObjectificationInstance)
+		/// Validate appropriate errors if an ObjectifiedInstance role changes
+		/// </summary>
+		private static void ObjectificationInstanceRolePlayerChangedRule(RolePlayerChangedEventArgs e)
+		{
+			ObjectificationInstance link = (ObjectificationInstance)e.ElementLink;
+			FactTypeInstance factInstance = link.ObjectifiedInstance;
+			ObjectTypeInstance objectInstance = link.ObjectifyingInstance;
+			FactType factType;
+			ObjectType entityType;
+			UniquenessConstraint pid;
+			LinkedElementCollection<FactType> pidFactTypes;
+			FactType identifierFactType;
+			Role unaryRole;
+			ObjectifiedUnaryRole objectifiedUnaryRole;
+			if (null != (factType = factInstance.FactType) &&
+				null != (entityType = objectInstance.ObjectType) &&
+				null != (pid = entityType.PreferredIdentifier) &&
+				!pid.IsInternal &&
+				1 == (pidFactTypes = pid.FactTypeCollection).Count &&
+				((identifierFactType = pidFactTypes[0]) == factType ||
+				(null != (unaryRole = factType.UnaryRole) &&
+				null != (objectifiedUnaryRole = unaryRole.ObjectifiedUnaryRole) &&
+				identifierFactType == objectifiedUnaryRole.FactType)))
+			{
+				throw new InvalidOperationException(ResourceStrings.ModelExceptionObjectificationInstanceDirectModificationOfImpliedEntityTypeInstance);
+			}
+			if (e.DomainRole.Id == ObjectificationInstance.ObjectifiedInstanceDomainRoleId)
+			{
+				FactTypeInstance oldFactInstance = (FactTypeInstance)e.OldRolePlayer;
+				if (oldFactInstance.FactType != factInstance.FactType)
+				{
+					throw new InvalidOperationException(ResourceStrings.ModelExceptionObjectificationInstanceIncompleteRolePlayers);
+				}
+				if (oldFactInstance.RoleInstanceCollection.Count == 0)
+				{
+					// See comments in ObjectificationInstanceDeletingRule
+					oldFactInstance.Delete();
+				}
+				else
+				{
+					FrameworkDomainModel.DelayValidateElement(oldFactInstance, FactTypeInstance.DelayValidateObjectifyingInstanceRequiredError);
+				}
+				FrameworkDomainModel.DelayValidateElement(e.NewRolePlayer, FactTypeInstance.DelayValidateObjectifyingInstanceRequiredError);
+			}
+			else
+			{
+				ObjectTypeInstance oldObjectInstance = (ObjectTypeInstance)e.OldRolePlayer;
+				if (oldObjectInstance.ObjectType != objectInstance.ObjectType)
+				{
+					throw new InvalidOperationException(ResourceStrings.ModelExceptionObjectificationInstanceIncompleteRolePlayers);
+				}
+				EntityTypeInstance oldEntityInstance = oldObjectInstance as EntityTypeInstance;
+				if (oldEntityInstance != null && oldEntityInstance.RoleInstanceCollection.Count == 0)
+				{
+					// See comments in ObjectificationInstanceDeletingRule
+					oldEntityInstance.Delete();
+				}
+				else
+				{
+					FrameworkDomainModel.DelayValidateElement(e.OldRolePlayer, ObjectTypeInstance.DelayValidateObjectifiedInstanceRequiredError);
+				}
+				FrameworkDomainModel.DelayValidateElement(e.NewRolePlayer, ObjectTypeInstance.DelayValidateObjectifiedInstanceRequiredError);
+			}
+		}
+		#endregion // Rule methods
+	}
+	partial class EntityTypeRoleInstance : IHasIndirectModelErrorOwner
+	{
+		#region IHasIndirectModelErrorOwner Implementation
+		private static Guid[] myIndirectModelErrorOwnerLinkRoles;
+		/// <summary>
+		/// Implements <see cref="IHasIndirectModelErrorOwner.GetIndirectModelErrorOwnerLinkRoles"/>
+		/// </summary>
+		protected Guid[] GetIndirectModelErrorOwnerLinkRoles()
+		{
+			// Creating a static readonly guid array is causing static field initialization
+			// ordering issues with the partial classes. Defer initialization.
+			Guid[] linkRoles = myIndirectModelErrorOwnerLinkRoles;
+			if (linkRoles == null)
+			{
+				myIndirectModelErrorOwnerLinkRoles = linkRoles = new Guid[] { EntityTypeInstanceHasRoleInstance.RoleInstanceDomainRoleId };
+			}
+			return linkRoles;
+		}
+		Guid[] IHasIndirectModelErrorOwner.GetIndirectModelErrorOwnerLinkRoles()
+		{
+			return GetIndirectModelErrorOwnerLinkRoles();
+		}
+		#endregion // IHasIndirectModelErrorOwner Implementation
 	}
 }

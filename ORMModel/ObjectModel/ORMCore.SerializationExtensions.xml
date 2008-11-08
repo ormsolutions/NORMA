@@ -7,6 +7,7 @@
 		<se:CopyrightLine>* Neumont Object-Role Modeling Architect for Visual Studio                 *</se:CopyrightLine>
 		<se:CopyrightLine>*                                                                          *</se:CopyrightLine>
 		<se:CopyrightLine>* Copyright © Neumont University. All rights reserved.                     *</se:CopyrightLine>
+		<se:CopyrightLine>* Copyright © Matthew Curland. All rights reserved.                        *</se:CopyrightLine>
 		<se:CopyrightLine>*                                                                          *</se:CopyrightLine>
 		<se:CopyrightLine>* The use and distribution terms for this software are covered by the      *</se:CopyrightLine>
 		<se:CopyrightLine>* Common Public License 1.0 (http://opensource.org/licenses/cpl) which     *</se:CopyrightLine>
@@ -332,6 +333,7 @@
 		<se:Container Name="Instances">
 			<se:Embed RelationshipName="ValueTypeHasValueTypeInstance" RoleName="ValueTypeInstance"/>
 			<se:Embed RelationshipName="EntityTypeHasEntityTypeInstance" RoleName="EntityTypeInstance"/>
+			<se:Embed RelationshipName="EntityTypeSubtypeHasEntityTypeSubtypeInstance" RoleName="EntityTypeSubtypeInstance"/>
 		</se:Container>
 		<se:Link RelationshipName="ObjectTypeImpliesMandatoryConstraint" RoleName="MandatoryConstraint" WriteStyle="NotWritten"/>
 		<se:Link RelationshipName="ObjectTypeHasEntityTypeRequiresReferenceSchemeError" RoleName="ReferenceSchemeError" WriteStyle="NotWritten"/>
@@ -386,15 +388,26 @@
 		<se:Link RelationshipName="ValueTypeInstanceHasCompatibleValueTypeInstanceValueError" RoleName="CompatibleValueTypeInstanceValueError" WriteStyle="NotWritten"/>
 		<se:Link RelationshipName="ObjectTypeInstanceHasPopulationMandatoryError" RoleName="PopulationMandatoryError" WriteStyle="NotWritten"/>
 	</se:Element>
-	<se:Element Class="EntityTypeInstance" Name="EntityTypeInstance" Override="true">
+	<se:Element Class="EntityTypeInstance" Name="EntityTypeInstance" SortChildElements="true" Override="true">
 		<se:Container Name="RoleInstances">
 			<se:Link RelationshipName="EntityTypeInstanceHasRoleInstance" RoleName="RoleInstance"/>
 		</se:Container>
 		<se:Link Name="EntityTypeRoleInstance" RelationshipName="EntityTypeInstanceHasRoleInstance" RoleName="RoleInstance"/>
+		<se:Link Name="ObjectifiedInstance" RelationshipName="ObjectificationInstance" RoleName="ObjectifiedInstance"/>
 		<se:Link RelationshipName="EntityTypeRoleInstance" RoleName="Role" WriteStyle="NotWritten"/>
 		<se:Link RelationshipName="FactTypeRoleInstance" RoleName="Role" WriteStyle="NotWritten"/>
 		<se:Link RelationshipName="EntityTypeInstanceHasTooFewEntityTypeRoleInstancesError" RoleName="TooFewEntityTypeRoleInstancesError" WriteStyle="NotWritten"/>
 		<se:Link RelationshipName="ObjectTypeInstanceHasPopulationMandatoryError" RoleName="PopulationMandatoryError" WriteStyle="NotWritten"/>
+		<se:Link RelationshipName="EntityTypeSubtypeInstanceHasSupertypeInstance" RoleName="EntityTypeSubtypeInstance" WriteStyle="NotWritten"/>
+		<se:Link RelationshipName="ObjectifyingInstanceHasObjectifiedInstanceRequiredError" RoleName="ObjectifiedInstanceRequiredError" WriteStyle="NotWritten"/>
+	</se:Element>
+	<se:Element Class="EntityTypeSubtypeInstance" Name="EntityTypeSubtypeInstance" SortChildElements="true" Override="true">
+		<se:Link RelationshipName="EntityTypeSubtypeInstanceHasSupertypeInstance" RoleName="SupertypeInstance" Name="SupertypeInstance"/>
+		<se:Link Name="ObjectifiedInstance" RelationshipName="ObjectificationInstance" RoleName="ObjectifiedInstance"/>
+		<se:Link RelationshipName="EntityTypeRoleInstance" RoleName="Role" WriteStyle="NotWritten"/>
+		<se:Link RelationshipName="FactTypeRoleInstance" RoleName="Role" WriteStyle="NotWritten"/>
+		<se:Link RelationshipName="ObjectTypeInstanceHasPopulationMandatoryError" RoleName="PopulationMandatoryError" WriteStyle="NotWritten"/>
+		<se:Link RelationshipName="ObjectifyingInstanceHasObjectifiedInstanceRequiredError" RoleName="ObjectifiedInstanceRequiredError" WriteStyle="NotWritten"/>
 	</se:Element>
 	<se:Element Class="EntityTypeRoleInstance">
 		<se:Link RelationshipName="EntityTypeInstanceHasRoleInstance" RoleName="EntityTypeInstance" WriteStyle="NotWritten" />
@@ -560,6 +573,8 @@
 		<se:Link RelationshipName="EntityTypeRoleInstance" RoleName="Role" WriteStyle="NotWritten"/>
 		<se:Link RelationshipName="FactTypeRoleInstance" RoleName="Role" WriteStyle="NotWritten"/>
 		<se:Link RelationshipName="FactTypeInstanceHasTooFewFactTypeRoleInstancesError" RoleName="TooFewFactTypeRoleInstancesError" WriteStyle="NotWritten"/>
+		<se:Link RelationshipName="ObjectificationInstance" RoleName="ObjectifyingInstance" WriteStyle="NotWritten"/>
+		<se:Link RelationshipName="ObjectifiedInstanceHasObjectifyingInstanceRequiredError" RoleName="ObjectifyingInstanceRequiredError" WriteStyle="NotWritten"/>
 	</se:Element>
 	<se:Element Class="FactTypeRoleInstance">
 		<se:ConditionalSerialization>
@@ -887,6 +902,34 @@
 		</se:ConditionalSerialization>
 		<se:Link RelationshipName="ObjectTypeInstanceHasPopulationMandatoryError" RoleName="ObjectTypeInstance" Name="ObjectTypeInstance"/>
 		<se:Link RelationshipName="MandatoryConstraintHasPopulationMandatoryError" RoleName="MandatoryConstraint" Name="MandatoryConstraint"/>
+	</se:Element>
+	<se:Element Class="ObjectifiedInstanceRequiredError" Override="true">
+		<se:ConditionalSerialization>
+			<plx:return>
+				<plx:callInstance name="ShouldSerialize">
+					<plx:callObject>
+						<plx:cast dataTypeName="ICustomSerializedElement">
+							<plx:callThis name="ObjectTypeInstance" type="property"/>
+						</plx:cast>
+					</plx:callObject>
+				</plx:callInstance>
+			</plx:return>
+		</se:ConditionalSerialization>
+		<se:Link RelationshipName="ObjectifyingInstanceHasObjectifiedInstanceRequiredError" RoleName="ObjectTypeInstance" Name="EntityTypeInstance">
+			<se:ConditionalName Name="EntityTypeSubtypeInstance">
+				<plx:binaryOperator type="typeEquality">
+					<plx:left>
+						<plx:callThis name="ObjectTypeInstance" type="property"/>
+					</plx:left>
+					<plx:right>
+						<plx:directTypeReference dataTypeName="EntityTypeSubtypeInstance"/>
+					</plx:right>
+				</plx:binaryOperator>
+			</se:ConditionalName>
+		</se:Link>
+	</se:Element>
+	<se:Element Class="ObjectifyingInstanceRequiredError" Override="true">
+		<se:Link RelationshipName="ObjectifiedInstanceHasObjectifyingInstanceRequiredError" RoleName="FactTypeInstance" Name="FactTypeInstance"/>
 	</se:Element>
 	<se:Element Class="PopulationUniquenessError" Override="true">
 		<se:Container Name="RoleInstances">

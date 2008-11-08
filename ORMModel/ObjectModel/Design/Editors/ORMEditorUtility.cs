@@ -3,6 +3,7 @@
 * Neumont Object-Role Modeling Architect for Visual Studio                 *
 *                                                                          *
 * Copyright © Neumont University. All rights reserved.                     *
+* Copyright © Matthew Curland. All rights reserved.                        *
 *                                                                          *
 * The use and distribution terms for this software are covered by the      *
 * Common Public License 1.0 (http://opensource.org/licenses/cpl) which     *
@@ -245,6 +246,7 @@ namespace Neumont.Tools.ORM.ObjectModel.Design
 					delegate(IORMToolServices services, ModelElement selectedElement, ModelError error)
 					{
 						bool retVal = true;
+						PopulationMandatoryError populationMandatory;
 						if (error is DataTypeNotSpecifiedError)
 						{
 							EditorUtility.ActivatePropertyEditor(
@@ -270,6 +272,14 @@ namespace Neumont.Tools.ORM.ObjectModel.Design
 						{
 							ActivateNameProperty(selectedElement);
 						}
+						else if (error is ObjectifiedInstanceRequiredError || error is TooFewEntityTypeRoleInstancesError)
+						{
+							ORMDesignerPackage.SamplePopulationEditorWindow.ActivateModelError(error);
+						}
+						else if (null != (populationMandatory = error as PopulationMandatoryError))
+						{
+							ORMDesignerPackage.SamplePopulationEditorWindow.AutoCorrectMandatoryError(populationMandatory);
+						}
 						else
 						{
 							retVal = false;
@@ -283,7 +293,7 @@ namespace Neumont.Tools.ORM.ObjectModel.Design
 					true,
 					delegate(IORMToolServices services, ModelElement selectedElement, ModelError error)
 					{
-						PopulationMandatoryError mandatory;
+						PopulationMandatoryError populationMandatory;
 						TooFewReadingRolesError tooFew;
 						TooManyReadingRolesError tooMany;
 						ReadingRequiresUserModificationError userModification;
@@ -292,10 +302,9 @@ namespace Neumont.Tools.ORM.ObjectModel.Design
 						ImpliedInternalUniquenessConstraintError implConstraint;
 						Reading reading = null;
 						bool retVal = true;
-						if (null != (mandatory = error as PopulationMandatoryError))
+						if (null != (populationMandatory = error as PopulationMandatoryError))
 						{
-							ORMSamplePopulationToolWindow window = ORMDesignerPackage.SamplePopulationEditorWindow;
-							window.AutoCorrectMandatoryError(mandatory);
+							ORMDesignerPackage.SamplePopulationEditorWindow.AutoCorrectMandatoryError(populationMandatory);
 						}
 						else if (null != (tooFew = error as TooFewReadingRolesError))
 						{
@@ -342,6 +351,10 @@ namespace Neumont.Tools.ORM.ObjectModel.Design
 								services.ServiceProvider,
 								DomainTypeDescriptor.CreatePropertyDescriptor(selectedElement, ObjectType.ValueRangeTextDomainPropertyId),
 								false);
+						}
+						else if (error is TooFewFactTypeRoleInstancesError || error is ObjectifyingInstanceRequiredError)
+						{
+							ORMDesignerPackage.SamplePopulationEditorWindow.ActivateModelError(error);
 						}
 						else
 						{

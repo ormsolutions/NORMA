@@ -3,6 +3,7 @@
 * Neumont Object-Role Modeling Architect for Visual Studio                 *
 *                                                                          *
 * Copyright © Neumont University. All rights reserved.                     *
+* Copyright © Matthew Curland. All rights reserved.                        *
 *                                                                          *
 * The use and distribution terms for this software are covered by the      *
 * Common Public License 1.0 (http://opensource.org/licenses/cpl) which     *
@@ -410,7 +411,8 @@ namespace Neumont.Tools.ORM.ObjectModel
 			ORMModel model = this.Model;
 			ObjectType valueType = FindValueType(valueTypeName, model);
 			Role constrainedRole = constraintRoles[0];
-			if (!IsValueTypeShared(preferredConstraint) && valueType == null)
+			bool valueTypeNotShared = !IsValueTypeShared(preferredConstraint);
+			if (valueTypeNotShared && valueType == null)
 			{
 				valueType = constrainedRole.RolePlayer;
 				if (valueType.IsValueType)
@@ -429,7 +431,7 @@ namespace Neumont.Tools.ORM.ObjectModel
 					valueType.IsValueType = true;
 				}
 
-				if (!IsValueTypeShared(preferredConstraint))
+				if (valueTypeNotShared)
 				{
 					constrainedRole.RolePlayer.Delete();
 				}
@@ -497,14 +499,17 @@ namespace Neumont.Tools.ORM.ObjectModel
 								link.GetDomainClass().DomainModel == nativeModel &&
 								!(link is ORMModelElementHasExtensionElement) &&
 								!(link is ObjectTypeImpliesMandatoryConstraint) &&
-								!(link is ElementAssociatedWithModelError))
+								!(link is ElementAssociatedWithModelError) &&
+								!(link is ValueTypeHasValueTypeInstance))
 							{
 								++count;
 								// We're expecting a ValueTypeHasDataType,
 								// ObjectTypePlaysRole, and ModelHasObjectType from our
 								// object model, plus an arbitrary number of links from
 								// outside our model. Any other links (except
-								// ORMExtendableElementHasExtensionElement-derived links)
+								// ORMExtendableElementHasExtensionElement-derived links,
+								// ElementAssociatedWithModeLError-derived links,
+								// and ValueTypeHasValueTypeInstance links)
 								// indicate a shared value type.
 								if (count > 3)
 								{
@@ -3522,15 +3527,81 @@ namespace Neumont.Tools.ORM.ObjectModel
 				if (attributeId == SubtypeFact.ProvidesPreferredIdentifierDomainPropertyId)
 				{
 					bool newValue = (bool)e.NewValue;
-					SubtypeFact changedSubtypeLink;
-					ObjectType changedSubtype = null; ;
-					if (!newValue ||
-						(null != (changedSubtypeLink = e.ModelElement as SubtypeFact) && null != (changedSubtype = changedSubtypeLink.Subtype) && null != changedSubtype.PreferredIdentifier))
+					SubtypeFact changedSubtypeLink = (SubtypeFact)e.ModelElement;
+					ObjectType changedSubtype = changedSubtypeLink.Subtype;
+					bool blockChange = false;
+					if (!newValue)
 					{
 						if (myIgnoreRule)
 						{
 							return;
 						}
+						FactType objectifiedFactType;
+						if (null != changedSubtype &&
+							null != (objectifiedFactType = changedSubtype.NestedFactType))
+						{
+							UniquenessConstraint internalIdentifier = null;
+							Role unaryRole = objectifiedFactType.UnaryRole;
+							if (unaryRole != null)
+							{
+								// Use the constraint on the objectified unary role
+								foreach (ConstraintRoleSequence sequence in unaryRole.ObjectifiedUnaryRole.ConstraintRoleSequenceCollection)
+								{
+									UniquenessConstraint uc = sequence as UniquenessConstraint;
+									if (uc != null)
+									{
+										internalIdentifier = uc;
+										break;
+									}
+								}
+							}
+							else
+							{
+								foreach (UniquenessConstraint uc in objectifiedFactType.GetInternalConstraints<UniquenessConstraint>())
+								{
+									if (internalIdentifier == null)
+									{
+										internalIdentifier = uc;
+									}
+									else
+									{
+										// Have two, don't know which one to choose
+										internalIdentifier = null;
+										break;
+									}
+								}
+							}
+							if (internalIdentifier != null)
+							{
+								// The side effects of this change will clear the
+								// identifiers on the subtype path
+								internalIdentifier.IsPreferred = true;
+								return;
+							}
+						}
+						blockChange = true;
+					}
+					else
+					{
+						UniquenessConstraint existingIdentifier;
+						if (null != changedSubtype && null != (existingIdentifier = changedSubtype.PreferredIdentifier))
+						{
+							if (myIgnoreRule)
+							{
+								return;
+							}
+							if (existingIdentifier.IsObjectifiedPreferredIdentifier)
+							{
+								// The side effects of this change will move the identifier
+								// to the subtype path
+								existingIdentifier.IsPreferred = false;
+								return;
+							}
+							blockChange = true;
+						}
+					}
+					if (blockChange)
+					{
 						throw new InvalidOperationException(ResourceStrings.ModelExceptionSubtypeFactProvidesPreferredIdentifierInvalid);
 					}
 					if (changedSubtype != null)
@@ -4012,16 +4083,13 @@ namespace Neumont.Tools.ORM.ObjectModel
 				verbalizer.Initialize(this, valueConstraint);
 				yield return new CustomChildVerbalizer(verbalizer, true);
 			}
-			ObjectTypeInstance[] instances = (IsValueType ? (ObjectTypeInstance[])ValueTypeInstanceCollection.ToArray() : (ObjectTypeInstance[])EntityTypeInstanceCollection.ToArray());
-			int instanceCount = instances.Length;
-			if (instanceCount > 0)
+			IList<ObjectTypeInstance> instances = ObjectTypeInstanceCollection;
+			if (instances.Count != 0 &&
+				(filter == null || !filter.FilterChildVerbalizer(instances[0], isNegative).IsBlocked))
 			{
-				if (filter == null || !filter.FilterChildVerbalizer(instances[0], isNegative).IsBlocked)
-				{
-					ObjectTypeInstanceVerbalizer verbalizer = ObjectTypeInstanceVerbalizer.GetVerbalizer();
-					verbalizer.Initialize(this, instances);
-					yield return new CustomChildVerbalizer(verbalizer, true);
-				}
+				ObjectTypeInstanceVerbalizer verbalizer = ObjectTypeInstanceVerbalizer.GetVerbalizer();
+				verbalizer.Initialize(this, instances);
+				yield return new CustomChildVerbalizer(verbalizer, true);
 			}
 		}
 		IEnumerable<CustomChildVerbalizer> IVerbalizeCustomChildren.GetCustomChildVerbalizations(IVerbalizeFilterChildren filter, bool isNegative)
@@ -4034,8 +4102,8 @@ namespace Neumont.Tools.ORM.ObjectModel
 		private partial class ObjectTypeInstanceVerbalizer
 		{
 			private ObjectType myParentObject;
-			private ObjectTypeInstance[] myInstances;
-			public void Initialize(ObjectType parentObject, ObjectTypeInstance[] instances)
+			private IList<ObjectTypeInstance> myInstances;
+			public void Initialize(ObjectType parentObject, IList<ObjectTypeInstance> instances)
 			{
 				myParentObject = parentObject;
 				myInstances = instances;
@@ -4049,7 +4117,7 @@ namespace Neumont.Tools.ORM.ObjectModel
 			{
 				get { return myParentObject; }
 			}
-			private ObjectTypeInstance[] Instances
+			private IList<ObjectTypeInstance> Instances
 			{
 				get { return myInstances; }
 			}

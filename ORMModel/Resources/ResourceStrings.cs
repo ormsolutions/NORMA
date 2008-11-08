@@ -3,6 +3,7 @@
 * Neumont Object-Role Modeling Architect for Visual Studio                 *
 *                                                                          *
 * Copyright © Neumont University. All rights reserved.                     *
+* Copyright © Matthew Curland. All rights reserved.                        *
 *                                                                          *
 * The use and distribution terms for this software are covered by the      *
 * Common Public License 1.0 (http://opensource.org/licenses/cpl) which     *
@@ -480,6 +481,7 @@ namespace Neumont.Tools.ORM
 		#region Private resource ids
 		private const string SurveyTreeImageList_Id = "SurveyTree.ImageStrip";
 		private const string FactEditorIntellisenseImageList_Id = "FactEditor.Intellisense.ImageList";
+		private const string SamplePopulationEditorImageList_Id = "SamplePopulationEditor.ImageStrip";
 		#endregion // Private resource ids
 
 		#region Public accessor properties
@@ -517,6 +519,21 @@ namespace Neumont.Tools.ORM
 			{
 				ImageList list = new ImageList();
 				Bitmap image = GetObject(ResourceManagers.Diagram, SurveyTreeImageList_Id) as Bitmap;
+				list.Images.AddStrip(image);
+				list.ColorDepth = ColorDepth.Depth32Bit;
+				list.TransparentColor = Color.Transparent;
+				return list;
+			}
+		}
+		/// <summary>
+		/// The images used in the model browser for the core model
+		/// </summary>
+		public static ImageList SamplePopulationEditorImageList
+		{
+			get
+			{
+				ImageList list = new ImageList();
+				Bitmap image = GetObject(ResourceManagers.Diagram, SamplePopulationEditorImageList_Id) as Bitmap;
 				list.Images.AddStrip(image);
 				list.ColorDepth = ColorDepth.Depth32Bit;
 				list.TransparentColor = Color.Transparent;

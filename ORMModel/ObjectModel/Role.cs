@@ -3,6 +3,7 @@
 * Neumont Object-Role Modeling Architect for Visual Studio                 *
 *                                                                          *
 * Copyright © Neumont University. All rights reserved.                     *
+* Copyright © Matthew Curland. All rights reserved.                        *
 *                                                                          *
 * The use and distribution terms for this software are covered by the      *
 * Common Public License 1.0 (http://opensource.org/licenses/cpl) which     *
@@ -41,6 +42,75 @@ namespace Neumont.Tools.ORM.ObjectModel
 	/// <returns>true to continue walking</returns>
 	public delegate bool ValueRoleVisitor(Role role, ValueTypeHasDataType dataTypeLink, RoleValueConstraint currentValueConstraint, ValueConstraint previousValueConstraint);
 	#endregion // ValueRoleVisitor delegate definition
+	#region ReferenceSchemePattern enum
+	/// <summary>
+	/// Return values for <see cref="Role.GetReferenceSchemePattern(out ObjectType)"/>. Specifying how
+	/// a <see cref="Role"/> relates to a reference schemes.
+	/// </summary>
+	public enum ReferenceSchemeRolePattern
+	{
+		/// <summary>
+		/// The <see cref="Role"/> is not part of a <see cref="FactType"/> that
+		/// matches the reference scheme pattern.
+		/// </summary>
+		None,
+		/// <summary>
+		/// The <see cref="Role"/> is the non-identifying role of a <see cref="FactType"/> that
+		/// matches the simple reference scheme pattern. The non-identifying role has a simple
+		/// mandatory constraint and non-preferred single-role uniqueness constraint. The
+		/// role player is identified by a preferred single-role uniqueness constraint on
+		/// the optional opposite role.
+		/// </summary>
+		OptionalSimpleIdentifiedRole,
+		/// <summary>
+		/// The <see cref="Role"/> is the non-identifying role of a <see cref="FactType"/> that
+		/// matches the simple reference scheme pattern. The non-identifying role has a simple
+		/// mandatory constraint and non-preferred single-role uniqueness constraint. The
+		/// role player is identified by a preferred single-role uniqueness constraint on
+		/// the mandatory opposite role.
+		/// </summary>
+		MandatorySimpleIdentifiedRole,
+		/// <summary>
+		/// The <see cref="Role"/> is the non-identifying role of a <see cref="FactType"/> that
+		/// is part of a composite reference scheme. The role player for this role is identified
+		/// by a preferred external uniqueness constraint on an opposite role. The mandatory
+		/// state of this role is not currently tracked, so we do not break it down further.
+		/// </summary>
+		CompositeIdentifiedRole,
+		/// <summary>
+		/// The <see cref="Role"/> is an optional identifying role of a <see cref="FactType"/> that
+		/// matches the simple reference scheme pattern. The identifying preferred single-role
+		/// uniqueness constraint that is the preferred identifier for the role player of the
+		/// opposite role.
+		/// </summary>
+		OptionalSimpleIdentifierRole,
+		/// <summary>
+		/// The <see cref="Role"/> is a mandatory identifying role of a <see cref="FactType"/> that
+		/// matches the simple reference scheme pattern. The identifying preferred single-role
+		/// uniqueness constraint that is the preferred identifier for the role player of the
+		/// opposite role.
+		/// </summary>
+		MandatorySimpleIdentifierRole,
+		/// <summary>
+		/// The <see cref="Role"/> is an optional identifying role of a <see cref="FactType"/> the
+		/// is part of a composite reference scheme pattern. The role is part of the external
+		/// preferred uniqueness constraint for the role player on the opposite role.
+		/// </summary>
+		OptionalCompositeIdentifierRole,
+		/// <summary>
+		/// The <see cref="Role"/> is a mandatory identifying role of a <see cref="FactType"/> the
+		/// is part of a composite reference scheme pattern. The role is part of the external
+		/// preferred uniqueness constraint for the role player on the opposite role.
+		/// </summary>
+		MandatoryCompositeIdentifierRole,
+		/// <summary>
+		/// The <see cref="Role"/> is the implicit role created for the implied objectification.
+		/// No further investigation is done to check the state of the opposite role. The implied
+		/// objectification role always has single role uniqueness and mandatory constraints.
+		/// </summary>
+		ImpliedObjectificationRole,
+	}
+	#endregion // ReferenceSchemePattern enum
 	public partial class Role : IModelErrorOwner, IRedirectVerbalization, IVerbalizeChildren, INamedElementDictionaryParent, INamedElementDictionaryRemoteParent, IHasIndirectModelErrorOwner, IHierarchyContextEnabled
 	{
 		#region Helper methods
@@ -98,6 +168,85 @@ namespace Neumont.Tools.ORM.ObjectModel
 			}
 		}
 		#endregion // ReplaceRole method
+		#region GetReferenceSchemePattern method
+		/// <summary>
+		/// Determine if the role is part of a <see cref="FactType"/> that participates
+		/// in a simple or complex reference scheme.
+		/// </summary>
+		/// <returns>A <see cref="ReferenceSchemeRolePattern"/> value</returns>
+		public ReferenceSchemeRolePattern GetReferenceSchemePattern()
+		{
+			ObjectType identifiedEntityType;
+			return GetReferenceSchemePattern(out identifiedEntityType);
+		}
+		/// <summary>
+		/// Determine if the role is part of a <see cref="FactType"/> that participates
+		/// in a simple or complex reference scheme.
+		/// </summary>
+		/// <param name="identifiedEntityType">The <see cref="ObjectType"/> that is identified by the reference scheme pattern.</param>
+		/// <returns>A <see cref="ReferenceSchemeRolePattern"/> value</returns>
+		public ReferenceSchemeRolePattern GetReferenceSchemePattern(out ObjectType identifiedEntityType)
+		{
+			UniquenessConstraint uniqueness;
+			RoleBase oppositeRoleBase;
+			LinkedElementCollection<Role> uniquenessRoles;
+			ObjectType preferredFor;
+			identifiedEntityType = null;
+			if (null != (oppositeRoleBase = OppositeRole))
+			{
+				Role oppositeRole;
+				if (null == (oppositeRole = oppositeRoleBase as Role) || oppositeRole is ObjectifiedUnaryRole)
+				{
+					// These roles always have the same pattern, no need to look any farther
+					return ReferenceSchemeRolePattern.ImpliedObjectificationRole;
+				}
+				else if (null != (uniqueness = SingleRoleAlethicUniquenessConstraint))
+				{
+					preferredFor = uniqueness.PreferredIdentifierFor;
+
+					if (preferredFor != null)
+					{
+						// We're on the preferred end of a binary fact type that
+						// matches the simple reference scheme pattern
+						if (oppositeRole.RolePlayer == preferredFor)
+						{
+							identifiedEntityType = preferredFor;
+							return SingleRoleAlethicMandatoryConstraint == null ?
+								ReferenceSchemeRolePattern.OptionalSimpleIdentifierRole :
+								ReferenceSchemeRolePattern.MandatorySimpleIdentifierRole;
+						}
+					}
+					else
+					{
+						preferredFor = RolePlayer;
+						if (preferredFor != null &&
+							null != (uniqueness = preferredFor.PreferredIdentifier) &&
+							(uniquenessRoles = uniqueness.RoleCollection).Contains(oppositeRole))
+						{
+							identifiedEntityType = preferredFor;
+							return uniquenessRoles.Count == 1 ?
+								oppositeRole.SingleRoleAlethicMandatoryConstraint == null ?
+									ReferenceSchemeRolePattern.OptionalSimpleIdentifiedRole :
+									ReferenceSchemeRolePattern.MandatorySimpleIdentifiedRole :
+								ReferenceSchemeRolePattern.CompositeIdentifiedRole;
+						}
+					}
+				}
+				else if (null != (uniqueness = oppositeRole.SingleRoleAlethicUniquenessConstraint) &&
+					null != (preferredFor = oppositeRole.RolePlayer) &&
+					null != (uniqueness = preferredFor.PreferredIdentifier) &&
+					1 < (uniquenessRoles = uniqueness.RoleCollection).Count &&
+					uniquenessRoles.Contains(this))
+				{
+					identifiedEntityType = preferredFor;
+					return SingleRoleAlethicMandatoryConstraint == null ?
+						ReferenceSchemeRolePattern.OptionalCompositeIdentifierRole :
+						ReferenceSchemeRolePattern.MandatoryCompositeIdentifierRole;
+				}
+			}
+			return ReferenceSchemeRolePattern.None;
+		}
+		#endregion // GetReferenceSchemePattern method
 		#endregion // Helper methods
 		#region CustomStorage handlers
 		#region CustomStorage setters
@@ -1395,6 +1544,7 @@ namespace Neumont.Tools.ORM.ObjectModel
 	}
 	public partial class RoleBase
 	{
+		#region Accessor properties
 		/// <summary>
 		/// Convert a RoleBase to a Role, resolving a proxy as needed
 		/// </summary>
@@ -1510,6 +1660,7 @@ namespace Neumont.Tools.ORM.ObjectModel
 
 			}
 		}
+		#endregion // Accessor properties
 	}
 	[ModelErrorDisplayFilter(typeof(FactTypeDefinitionErrorCategory))]
 	public partial class RolePlayerRequiredError

@@ -3,6 +3,7 @@
 * Neumont Object-Role Modeling Architect for Visual Studio                 *
 *                                                                          *
 * Copyright © Neumont University. All rights reserved.                     *
+* Copyright © Matthew Curland. All rights reserved.                        *
 *                                                                          *
 * The use and distribution terms for this software are covered by the      *
 * Common Public License 1.0 (http://opensource.org/licenses/cpl) which     *
@@ -1705,18 +1706,33 @@ namespace Neumont.Tools.ORM.Shell
 							ShapeElement shape = selectShapes[i];
 							if (shape != null)
 							{
-								if (proxyProvider == null)
-								{
-									proxyProvider = shape as IProxyDisplayProvider;
-								}
+								IProxyDisplayProvider localProxyProvider = shape as IProxyDisplayProvider;
 								if (!useProxy && element is ORMModel && element != startElement)
 								{
+									if (proxyProvider == null)
+									{
+										proxyProvider = localProxyProvider;
+									}
 									if (proxyProvider != null)
 									{
 										useProxy = true;
 										element = startElement;
 										continueNow = true;
 										break;
+									}
+								}
+								ModelElement proxyElement;
+								if (null != localProxyProvider &&
+									null != (proxyElement = localProxyProvider.ElementDisplayedAs(element, modelError)))
+								{
+									ShapeElement alternateShape = proxyElement as ShapeElement;
+									if (alternateShape != null)
+									{
+										shape = alternateShape;
+									}
+									else if (proxyProvider == null)
+									{
+										proxyProvider = localProxyProvider;
 									}
 								}
 

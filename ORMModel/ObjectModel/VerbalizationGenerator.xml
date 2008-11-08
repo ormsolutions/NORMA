@@ -9,6 +9,7 @@
 		<CopyrightLine>* Neumont Object-Role Modeling Architect for Visual Studio                 *</CopyrightLine>
 		<CopyrightLine>*                                                                          *</CopyrightLine>
 		<CopyrightLine>* Copyright © Neumont University. All rights reserved.                     *</CopyrightLine>
+		<CopyrightLine>* Copyright © Matthew Curland. All rights reserved.                        *</CopyrightLine>
 		<CopyrightLine>*                                                                          *</CopyrightLine>
 		<CopyrightLine>* The use and distribution terms for this software are covered by the      *</CopyrightLine>
 		<CopyrightLine>* Common Public License 1.0 (http://opensource.org/licenses/cpl) which     *</CopyrightLine>
@@ -1292,9 +1293,10 @@
 				<!-- UNDONE: Collapse this to use a mechanism similar to ObjectTypeInstanceVerbalizer.
 				IterateInstances should support a FactType parent, and the BlockStart/BlockEnd snippets
 				should be folded into a normal listStyle. -->
-				<Fact>
-					<InstanceRoleReplacement/>
-				</Fact>
+				<FactInstance/>
+				<Snippet ref="FactTypeInstanceIdentifier" conditionalMatch="ObjectifyingInstance">
+					<ObjectifyingInstanceIdentifierName/>
+				</Snippet>
 			</SampleInstance>
 			<SampleInstance type="ObjectTypeInstanceVerbalizer" childHelperFor="ObjectType">
 				<IterateInstances listStyle="ObjectTypeInstanceList">
