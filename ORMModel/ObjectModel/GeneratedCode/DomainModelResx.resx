@@ -501,6 +501,14 @@
     <value>IsImplicitBooleanValue</value>
     <comment>DisplayName for DomainProperty &apos;IsImplicitBooleanValue&apos; on DomainClass &apos;ObjectType&apos;</comment>
   </data>
+  <data name="Neumont.Tools.ORM.ObjectModel.ObjectType/DerivationRuleDisplay.Description" xml:space="preserve">
+    <value>Description for Neumont.Tools.ORM.ObjectModel.ObjectType.DerivationRule</value>
+    <comment>Description for DomainProperty &apos;DerivationRuleDisplay&apos; on DomainClass &apos;ObjectType&apos;</comment>
+  </data>
+  <data name="Neumont.Tools.ORM.ObjectModel.ObjectType/DerivationRuleDisplay.DisplayName" xml:space="preserve">
+    <value>DerivationRule</value>
+    <comment>DisplayName for DomainProperty &apos;DerivationRuleDisplay&apos; on DomainClass &apos;ObjectType&apos;</comment>
+  </data>
   <data name="Neumont.Tools.ORM.ObjectModel.FactType.Description" xml:space="preserve">
     <value></value>
     <comment>Description for DomainClass &apos;FactType&apos;</comment>
@@ -1836,6 +1844,14 @@
   <data name="Neumont.Tools.ORM.ObjectModel.FactTypeDerivationExpression/DerivationStorage.DisplayName" xml:space="preserve">
     <value>DerivationStorage</value>
     <comment>DisplayName for DomainProperty &apos;DerivationStorage&apos; on DomainClass &apos;FactTypeDerivationExpression&apos;</comment>
+  </data>
+  <data name="Neumont.Tools.ORM.ObjectModel.SubtypeDerivationExpression.Description" xml:space="preserve">
+    <value></value>
+    <comment>Description for DomainClass &apos;SubtypeDerivationExpression&apos;</comment>
+  </data>
+  <data name="Neumont.Tools.ORM.ObjectModel.SubtypeDerivationExpression.DisplayName" xml:space="preserve">
+    <value>SubtypeDerivationExpression</value>
+    <comment>DisplayName for DomainClass &apos;SubtypeDerivationExpression&apos;</comment>
   </data>
   <data name="Neumont.Tools.ORM.ObjectModel.ObjectTypeInstance.Description" xml:space="preserve">
     <value></value>
@@ -5140,6 +5156,38 @@
   <data name="Neumont.Tools.ORM.ObjectModel.FactTypeHasDerivationExpression/DerivationRule.PropertyDisplayName" xml:space="preserve">
     <value>Fact Type</value>
     <comment>PropertyDisplayName for DomainRole &apos;DerivationRule&apos; on DomainRelationship &apos;FactTypeHasDerivationExpression&apos;</comment>
+  </data>
+  <data name="Neumont.Tools.ORM.ObjectModel.SubtypeHasDerivationExpression.Description" xml:space="preserve">
+    <value>Description for Neumont.Tools.ORM.ObjectModel.SubtypeHasDerivationExpression</value>
+    <comment>Description for DomainClass &apos;SubtypeHasDerivationExpression&apos;</comment>
+  </data>
+  <data name="Neumont.Tools.ORM.ObjectModel.SubtypeHasDerivationExpression.DisplayName" xml:space="preserve">
+    <value>Subtype Has Derivation Expression</value>
+    <comment>DisplayName for DomainClass &apos;SubtypeHasDerivationExpression&apos;</comment>
+  </data>
+  <data name="Neumont.Tools.ORM.ObjectModel.SubtypeHasDerivationExpression/Subtype.Description" xml:space="preserve">
+    <value>Description for Neumont.Tools.ORM.ObjectModel.SubtypeHasDerivationExpression.Subtype</value>
+    <comment>Description for DomainRole &apos;Subtype&apos; on DomainRelationship &apos;SubtypeHasDerivationExpression&apos;</comment>
+  </data>
+  <data name="Neumont.Tools.ORM.ObjectModel.SubtypeHasDerivationExpression/Subtype.DisplayName" xml:space="preserve">
+    <value>Subtype</value>
+    <comment>DisplayName for DomainRole &apos;Subtype&apos; on DomainRelationship &apos;SubtypeHasDerivationExpression&apos;</comment>
+  </data>
+  <data name="Neumont.Tools.ORM.ObjectModel.SubtypeHasDerivationExpression/Subtype.PropertyDisplayName" xml:space="preserve">
+    <value>Derivation Rule</value>
+    <comment>PropertyDisplayName for DomainRole &apos;Subtype&apos; on DomainRelationship &apos;SubtypeHasDerivationExpression&apos;</comment>
+  </data>
+  <data name="Neumont.Tools.ORM.ObjectModel.SubtypeHasDerivationExpression/DerivationRule.Description" xml:space="preserve">
+    <value>Description for Neumont.Tools.ORM.ObjectModel.SubtypeHasDerivationExpression.DerivationRule</value>
+    <comment>Description for DomainRole &apos;DerivationRule&apos; on DomainRelationship &apos;SubtypeHasDerivationExpression&apos;</comment>
+  </data>
+  <data name="Neumont.Tools.ORM.ObjectModel.SubtypeHasDerivationExpression/DerivationRule.DisplayName" xml:space="preserve">
+    <value>DerivationRule</value>
+    <comment>DisplayName for DomainRole &apos;DerivationRule&apos; on DomainRelationship &apos;SubtypeHasDerivationExpression&apos;</comment>
+  </data>
+  <data name="Neumont.Tools.ORM.ObjectModel.SubtypeHasDerivationExpression/DerivationRule.PropertyDisplayName" xml:space="preserve">
+    <value>Subtype</value>
+    <comment>PropertyDisplayName for DomainRole &apos;DerivationRule&apos; on DomainRelationship &apos;SubtypeHasDerivationExpression&apos;</comment>
   </data>
   <data name="Neumont.Tools.ORM.ObjectModel.ObjectTypeHasObjectTypeInstance.Description" xml:space="preserve">
     <value>Description for Neumont.Tools.ORM.ObjectModel.ObjectTypeHasObjectTypeInstance</value>

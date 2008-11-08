@@ -470,7 +470,7 @@ namespace Neumont.Tools.ORM.ShapeModel
 		/// <param name="objectType">The associated model element</param>
 		private static void ResizeAssociatedShapes(ObjectType objectType)
 		{
-			if (objectType != null)
+			if (!objectType.IsDeleted && objectType != null)
 			{
 				LinkedElementCollection<PresentationElement> pels = PresentationViewsSubject.GetPresentation(objectType);
 				int pelCount = pels.Count;
@@ -683,12 +683,14 @@ namespace Neumont.Tools.ORM.ShapeModel
 		/// AddRule: typeof(Neumont.Tools.ORM.ObjectModel.ObjectTypePlaysRole)
 		/// A preferred identifier internal uniqueness constraint can be attached to a role with no
 		/// role player. Attaching a role player will match the reference mode pattern, which then needs
-		/// to ensure that the ExpandRefMode property is correct.
+		/// to ensure that the ExpandRefMode property is correct. Also, resize shapes if the first subtype role
+		/// is added where this is an existing derivation rule.
 		/// </summary>
 		private static void RolePlayerAddedRule(ElementAddedEventArgs e)
 		{
 			ObjectTypePlaysRole link = e.ModelElement as ObjectTypePlaysRole;
-			if (link.RolePlayer.IsValueType)
+			ObjectType rolePlayer = link.RolePlayer;
+			if (rolePlayer.IsValueType)
 			{
 				LinkedElementCollection<ConstraintRoleSequence> sequences = link.PlayedRole.ConstraintRoleSequenceCollection;
 				int constraintsCount = sequences.Count;
@@ -705,16 +707,33 @@ namespace Neumont.Tools.ORM.ShapeModel
 					}
 				}
 			}
+			if (link.PlayedRole is SubtypeMetaRole &&
+				null != rolePlayer.DerivationRule)
+			{
+				int subtypeCount = 0;
+				ObjectType.WalkSupertypeRelationships(
+					rolePlayer,
+					delegate(SubtypeFact subtypeFact, ObjectType type, int depth)
+					{
+						++subtypeCount;
+						return (subtypeCount == 1) ? ObjectTypeVisitorResult.SkipChildren : ObjectTypeVisitorResult.Stop;
+					});
+				if (subtypeCount == 1)
+				{
+					ResizeAssociatedShapes(rolePlayer);
+				}
+			}
 		}
 		/// <summary>
 		/// DeleteRule: typeof(Neumont.Tools.ORM.ObjectModel.ObjectTypePlaysRole), FireTime=TopLevelCommit, Priority=DiagramFixupConstants.ResizeParentRulePriority;
 		/// Deleting a value type that participates in a refmode pattern does not remove the
 		/// preferred identifier, so there is no notification to the shape that the refmode is gone.
 		/// This forces the opposite ObjectTypeShape to resize in case it lost its refmode.
+		/// Also, remove the derivation decorator if the last Subtype is removed.
 		/// </summary>
 		private static void RolePlayerDeleteRule(ElementDeletedEventArgs e)
 		{
-			ObjectTypePlaysRole link = e.ModelElement as ObjectTypePlaysRole;
+			ObjectTypePlaysRole link = (ObjectTypePlaysRole)e.ModelElement;
 			Role role = link.PlayedRole;
 			if (!role.IsDeleted)
 			{
@@ -726,6 +745,14 @@ namespace Neumont.Tools.ORM.ShapeModel
 						ResizeAssociatedShapes(iuc.PreferredIdentifierFor);
 					}
 				}
+			}
+			ObjectType rolePlayer = link.RolePlayer;
+			if (!rolePlayer.IsDeleted &&
+				role is SubtypeMetaRole &&
+				rolePlayer.DerivationRule != null &&
+				!rolePlayer.IsSubtype)
+			{
+				ResizeAssociatedShapes(rolePlayer);
 			}
 		}
 		/// <summary>
@@ -797,6 +824,21 @@ namespace Neumont.Tools.ORM.ShapeModel
 					}
 				}
 			}
+		}
+		/// <summary>
+		/// AddRule: typeof(Neumont.Tools.ORM.ObjectModel.SubtypeHasDerivationExpression), FireTime=TopLevelCommit, Priority=DiagramFixupConstants.AutoLayoutShapesRulePriority;
+		/// Resize associated shapes when a derivation rule is added
+		/// </summary>
+		private static void SubtypeDerivationAddedRule(ElementAddedEventArgs e)
+		{
+			ResizeAssociatedShapes(((SubtypeHasDerivationExpression)e.ModelElement).Subtype);
+		}
+		/// <summary>
+		/// DeleteRule: typeof(Neumont.Tools.ORM.ObjectModel.SubtypeHasDerivationExpression), FireTime=TopLevelCommit, Priority=DiagramFixupConstants.AutoLayoutShapesRulePriority;
+		/// </summary>
+		private static void SubtypeDerivationDeletedRule(ElementDeletedEventArgs e)
+		{
+			ResizeAssociatedShapes(((SubtypeHasDerivationExpression)e.ModelElement).Subtype);
 		}
 		#endregion // Shape display update rules
 		#region Store Event Handlers
@@ -949,13 +991,67 @@ namespace Neumont.Tools.ORM.ShapeModel
 			{
 				string retVal = base.GetDisplayText(parentShape);
 				ObjectType objectType = parentShape.ModelElement as ObjectType;
-				if (objectType != null && objectType.IsIndependent)
+				if (objectType != null)
 				{
-					retVal = string.Format(CultureInfo.InvariantCulture, ResourceStrings.ObjectTypeShapeIndependentFormatString, retVal);
+					if (objectType.IsIndependent)
+					{
+						retVal = string.Format(CultureInfo.InvariantCulture, ResourceStrings.ObjectTypeShapeIndependentFormatString, retVal);
+					}
+					else if (objectType.DerivationRule != null && objectType.IsSubtype) // Note that subtypes are never independent
+					{
+						retVal = string.Format(CultureInfo.InvariantCulture, ResourceStrings.ObjectTypeShapeDerivedSubtypeFormatString, retVal);
+					}
 				}
 				return retVal;
 			}
 		}
 		#endregion // ObjectNameTextField class
+		#region Deserialization Fixup
+		/// <summary>
+		/// Return a deserialization fixup listener. The listener ensures
+		/// the correct size for an <see cref="ObjectTypeShape"/>.
+		/// </summary>
+		public static IDeserializationFixupListener FixupListener
+		{
+			get
+			{
+				return new ObjectTypeShapeFixupListener();
+			}
+		}
+		/// <summary>
+		/// A listener to reset the size of an ObjectTypeShape.
+		/// </summary>
+		private sealed class ObjectTypeShapeFixupListener : DeserializationFixupListener<ObjectTypeShape>
+		{
+			/// <summary>
+			/// Create a new ObjectTypeShapeFixupListener
+			/// </summary>
+			public ObjectTypeShapeFixupListener()
+				: base((int)ORMDeserializationFixupPhase.ModifyStoredPresentationElements)
+			{
+			}
+			/// <summary>
+			/// Update the shape size if it is independent or if the derivation status is set.
+			/// The size for these strings depends on localized values, which may change when
+			/// loading the file on a different machine.
+			/// Also, the SubtypeFact fixup rule may dynamically create a derivation rule if
+			/// a rule is specified on the SubtypeFact instead of on the Subtype itself.
+			/// </summary>
+			protected sealed override void ProcessElement(ObjectTypeShape element, Store store, INotifyElementAdded notifyAdded)
+			{
+				ObjectType objectType;
+				if (!element.IsDeleted &&
+					null != (objectType = element.AssociatedObjectType) &&
+					(objectType.IsIndependent ||
+					(objectType.DerivationRule != null && objectType.IsSubtype)))
+				{
+					// Note that technically the size may be wrong if a derivation rule or an independent
+					// setting has been removed. However, in this case, the length will be a little too long,
+					// which is harmless. This fixes the situation where it is too short.
+					element.AutoResize();
+				}
+			}
+		}
+		#endregion // Deserialization Fixup
 	}
 }

@@ -742,6 +742,32 @@ namespace Neumont.Tools.ORM.ObjectModel
 						element.IsPrimary = false;
 					}
 					
+					// Move any derivation rules to the subtype
+					// UNDONE: Do this during file format upgrade transformation
+					FactTypeDerivationExpression derivation;
+					if (null != (derivation = element.DerivationRule))
+					{
+						string ruleBody = derivation.Body;
+						if (!string.IsNullOrEmpty(ruleBody))
+						{
+							ObjectType subtype = element.Subtype;
+							SubtypeDerivationExpression subtypeDerivation = subtype.DerivationRule;
+							if (subtypeDerivation == null)
+							{
+								subtypeDerivation = new SubtypeDerivationExpression(
+									store,
+									new PropertyAssignment(SubtypeDerivationExpression.BodyDomainPropertyId, ruleBody));
+								subtypeDerivation.Subtype = subtype;
+								notifyAdded.ElementAdded(subtypeDerivation, true);
+							}
+							else
+							{
+								string existingExpression = subtypeDerivation.Body;
+								subtypeDerivation.Body = string.IsNullOrEmpty(existingExpression) ? ruleBody : existingExpression + "\r\n" + ruleBody;
+							}
+						}
+						derivation.Delete();
+					}
 				}
 			}
 			/// <summary>

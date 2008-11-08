@@ -3,6 +3,7 @@
 * Neumont Object-Role Modeling Architect for Visual Studio                 *
 *                                                                          *
 * Copyright © Neumont University. All rights reserved.                     *
+* Copyright © Matthew Curland. All rights reserved.                        *
 *                                                                          *
 * The use and distribution terms for this software are covered by the      *
 * Common Public License 1.0 (http://opensource.org/licenses/cpl) which     *
@@ -48,30 +49,34 @@ namespace Neumont.Tools.ORM.ObjectModel.Design
 		{
 			ObjectType objectType = ModelElement;
 			Guid propertyId = domainProperty.Id;
-			if (propertyId.Equals(ObjectType.DataTypeDisplayDomainPropertyId) ||
-				propertyId.Equals(ObjectType.ValueRangeTextDomainPropertyId))
+			if (propertyId == ObjectType.DataTypeDisplayDomainPropertyId ||
+				propertyId == ObjectType.ValueRangeTextDomainPropertyId)
 			{
 				return objectType.IsValueType || objectType.HasReferenceMode;
 			}
-			else if (propertyId.Equals(ObjectType.ScaleDomainPropertyId))
+			else if (propertyId == ObjectType.ScaleDomainPropertyId)
 			{
 				DataType dataType = GetObjectTypeDataType(objectType);
 				return dataType != null && dataType.ScaleName != null;
 			}
-			else if (propertyId.Equals(ObjectType.LengthDomainPropertyId))
+			else if (propertyId == ObjectType.LengthDomainPropertyId)
 			{
 				DataType dataType = objectType.DataType ?? (objectType.HasReferenceMode ? objectType.PreferredIdentifier.RoleCollection[0].RolePlayer.DataType : null);
 				return dataType != null && dataType.LengthName != null;
 			}
-			else if (propertyId.Equals(ObjectType.ValueTypeValueRangeTextDomainPropertyId))
+			else if (propertyId == ObjectType.ValueTypeValueRangeTextDomainPropertyId)
 			{
 				return objectType.HasReferenceMode;
 			}
-			else if (propertyId.Equals(ObjectType.ReferenceModeDisplayDomainPropertyId))
+			else if (propertyId == ObjectType.ReferenceModeDisplayDomainPropertyId)
 			{
 				return !objectType.IsValueType;
 			}
-			else if (propertyId.Equals(ObjectType.IsExternalDomainPropertyId))
+			else if (propertyId == ObjectType.DerivationRuleDisplayDomainPropertyId)
+			{
+				return objectType.IsSubtype;
+			}
+			else if (propertyId == ObjectType.IsExternalDomainPropertyId)
 			{
 				// UNDONE: Support IsExternal
 				return false;
@@ -174,15 +179,15 @@ namespace Neumont.Tools.ORM.ObjectModel.Design
 			{
 				return true;
 			}
-			else if (propertyId.Equals(ObjectType.IsValueTypeDomainPropertyId))
+			else if (propertyId == ObjectType.IsValueTypeDomainPropertyId)
 			{
 				return objectType.NestedFactType != null || objectType.PreferredIdentifier != null || objectType.IsSubtypeOrSupertype;
 			}
-			else if (propertyId.Equals(ObjectType.ValueRangeTextDomainPropertyId))
+			else if (propertyId == ObjectType.ValueRangeTextDomainPropertyId)
 			{
 				return !(objectType.IsValueType || objectType.HasReferenceMode);
 			}
-			else if (propertyId.Equals(ObjectType.IsIndependentDomainPropertyId))
+			else if (propertyId == ObjectType.IsIndependentDomainPropertyId)
 			{
 				if (objectType.IsIndependent)
 				{
@@ -194,7 +199,7 @@ namespace Neumont.Tools.ORM.ObjectModel.Design
 					return !objectType.AllowIsIndependent();
 				}
 			}
-			else if (propertyId.Equals(ObjectType.ReferenceModeDisplayDomainPropertyId))
+			else if (propertyId == ObjectType.ReferenceModeDisplayDomainPropertyId)
 			{
 				Objectification objectification = objectType.Objectification;
 				return objectification != null && objectification.IsImplied;

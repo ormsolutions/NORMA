@@ -26544,6 +26544,265 @@ namespace Neumont.Tools.ORM.ObjectModel
 namespace Neumont.Tools.ORM.ObjectModel
 {
 	/// <summary>
+	/// DomainRelationship SubtypeHasDerivationExpression
+	/// Description for Neumont.Tools.ORM.ObjectModel.SubtypeHasDerivationExpression
+	/// </summary>
+	[DslDesign::DisplayNameResource("Neumont.Tools.ORM.ObjectModel.SubtypeHasDerivationExpression.DisplayName", typeof(global::Neumont.Tools.ORM.ObjectModel.ORMCoreDomainModel), "Neumont.Tools.ORM.GeneratedCode.CoreDomainModelResx")]
+	[DslDesign::DescriptionResource("Neumont.Tools.ORM.ObjectModel.SubtypeHasDerivationExpression.Description", typeof(global::Neumont.Tools.ORM.ObjectModel.ORMCoreDomainModel), "Neumont.Tools.ORM.GeneratedCode.CoreDomainModelResx")]
+	[global::System.CLSCompliant(true)]
+	[DslModeling::DomainRelationship(IsEmbedding=true)]
+	[DslModeling::DomainObjectId("efc3b143-5649-4d72-87b1-3fbbc58d9764")]
+	public partial class SubtypeHasDerivationExpression : DslModeling::ElementLink
+	{
+		#region Constructors, domain class Id
+		
+		/// <summary>
+		/// SubtypeHasDerivationExpression domain class Id.
+		/// </summary>
+		public static readonly new global::System.Guid DomainClassId = new global::System.Guid(0xefc3b143, 0x5649, 0x4d72, 0x87, 0xb1, 0x3f, 0xbb, 0xc5, 0x8d, 0x97, 0x64);
+	
+				
+		/// <summary>
+		/// Constructor
+		/// Creates a SubtypeHasDerivationExpression link in the same Partition as the given ObjectType
+		/// </summary>
+		/// <param name="source">ObjectType to use as the source of the relationship.</param>
+		/// <param name="target">SubtypeDerivationExpression to use as the target of the relationship.</param>
+		public SubtypeHasDerivationExpression(ObjectType source, SubtypeDerivationExpression target)
+			: base((source != null ? source.Partition : null), new DslModeling::RoleAssignment[]{new DslModeling::RoleAssignment(SubtypeHasDerivationExpression.SubtypeDomainRoleId, source), new DslModeling::RoleAssignment(SubtypeHasDerivationExpression.DerivationRuleDomainRoleId, target)}, null)
+		{
+		}
+		
+		/// <summary>
+		/// Constructor
+		/// </summary>
+		/// <param name="store">Store where new link is to be created.</param>
+		/// <param name="roleAssignments">List of relationship role assignments.</param>
+		public SubtypeHasDerivationExpression(DslModeling::Store store, params DslModeling::RoleAssignment[] roleAssignments)
+			: base(store != null ? store.DefaultPartition : null, roleAssignments, null)
+		{
+		}
+		
+		/// <summary>
+		/// Constructor
+		/// </summary>
+		/// <param name="store">Store where new link is to be created.</param>
+		/// <param name="roleAssignments">List of relationship role assignments.</param>
+		/// <param name="propertyAssignments">List of properties assignments to set on the new link.</param>
+		public SubtypeHasDerivationExpression(DslModeling::Store store, DslModeling::RoleAssignment[] roleAssignments, DslModeling::PropertyAssignment[] propertyAssignments)
+			: base(store != null ? store.DefaultPartition : null, roleAssignments, propertyAssignments)
+		{
+		}
+		
+		/// <summary>
+		/// Constructor
+		/// </summary>
+		/// <param name="partition">Partition where new link is to be created.</param>
+		/// <param name="roleAssignments">List of relationship role assignments.</param>
+		public SubtypeHasDerivationExpression(DslModeling::Partition partition, params DslModeling::RoleAssignment[] roleAssignments)
+			: base(partition, roleAssignments, null)
+		{
+		}
+		
+		/// <summary>
+		/// Constructor
+		/// </summary>
+		/// <param name="partition">Partition where new link is to be created.</param>
+		/// <param name="roleAssignments">List of relationship role assignments.</param>
+		/// <param name="propertyAssignments">List of properties assignments to set on the new link.</param>
+		public SubtypeHasDerivationExpression(DslModeling::Partition partition, DslModeling::RoleAssignment[] roleAssignments, DslModeling::PropertyAssignment[] propertyAssignments)
+			: base(partition, roleAssignments, propertyAssignments)
+		{
+		}
+		#endregion
+		#region Subtype domain role code
+		
+		/// <summary>
+		/// Subtype domain role Id.
+		/// </summary>
+		public static readonly global::System.Guid SubtypeDomainRoleId = new global::System.Guid(0x10ea88c0, 0x446d, 0x4f1c, 0x84, 0xe2, 0x72, 0x60, 0x31, 0xc1, 0x42, 0x11);
+		
+		/// <summary>
+		/// DomainRole Subtype
+		/// Description for
+		/// Neumont.Tools.ORM.ObjectModel.SubtypeHasDerivationExpression.Subtype
+		/// </summary>
+		[DslDesign::DisplayNameResource("Neumont.Tools.ORM.ObjectModel.SubtypeHasDerivationExpression/Subtype.DisplayName", typeof(global::Neumont.Tools.ORM.ObjectModel.ORMCoreDomainModel), "Neumont.Tools.ORM.GeneratedCode.CoreDomainModelResx")]
+		[DslDesign::DescriptionResource("Neumont.Tools.ORM.ObjectModel.SubtypeHasDerivationExpression/Subtype.Description", typeof(global::Neumont.Tools.ORM.ObjectModel.ORMCoreDomainModel), "Neumont.Tools.ORM.GeneratedCode.CoreDomainModelResx")]
+		[DslModeling::DomainRole(DslModeling::DomainRoleOrder.Source, PropertyName = "DerivationRule", PropertyDisplayNameKey="Neumont.Tools.ORM.ObjectModel.SubtypeHasDerivationExpression/Subtype.PropertyDisplayName", Multiplicity = DslModeling::Multiplicity.ZeroOne)]
+		[DslModeling::DomainObjectId("10ea88c0-446d-4f1c-84e2-726031c14211")]
+		public virtual ObjectType Subtype
+		{
+			[global::System.Diagnostics.DebuggerStepThrough]
+			get
+			{
+				return (ObjectType)DslModeling::DomainRoleInfo.GetRolePlayer(this, SubtypeDomainRoleId);
+			}
+			[global::System.Diagnostics.DebuggerStepThrough]
+			set
+			{
+				DslModeling::DomainRoleInfo.SetRolePlayer(this, SubtypeDomainRoleId, value);
+			}
+		}
+				
+		#endregion
+		#region Static methods to access Subtype of a SubtypeDerivationExpression
+		/// <summary>
+		/// Gets Subtype.
+		/// </summary>
+		[global::System.Diagnostics.DebuggerStepThrough]
+		[global::System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Design", "CA1011")]
+		public static ObjectType GetSubtype(SubtypeDerivationExpression element)
+		{
+			return DslModeling::DomainRoleInfo.GetLinkedElement(element, DerivationRuleDomainRoleId) as ObjectType;
+		}
+		
+		/// <summary>
+		/// Sets Subtype.
+		/// </summary>
+		[global::System.Diagnostics.DebuggerStepThrough]
+		[global::System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Design", "CA1011")]
+		public static void SetSubtype(SubtypeDerivationExpression element, ObjectType newSubtype)
+		{
+			DslModeling::DomainRoleInfo.SetLinkedElement(element, DerivationRuleDomainRoleId, newSubtype);
+		}
+		#endregion
+		#region DerivationRule domain role code
+		
+		/// <summary>
+		/// DerivationRule domain role Id.
+		/// </summary>
+		public static readonly global::System.Guid DerivationRuleDomainRoleId = new global::System.Guid(0xaccefc08, 0xfd9d, 0x48b5, 0xb6, 0x64, 0x29, 0xb3, 0x84, 0x84, 0x32, 0x6b);
+		
+		/// <summary>
+		/// DomainRole DerivationRule
+		/// Description for
+		/// Neumont.Tools.ORM.ObjectModel.SubtypeHasDerivationExpression.DerivationRule
+		/// </summary>
+		[DslDesign::DisplayNameResource("Neumont.Tools.ORM.ObjectModel.SubtypeHasDerivationExpression/DerivationRule.DisplayName", typeof(global::Neumont.Tools.ORM.ObjectModel.ORMCoreDomainModel), "Neumont.Tools.ORM.GeneratedCode.CoreDomainModelResx")]
+		[DslDesign::DescriptionResource("Neumont.Tools.ORM.ObjectModel.SubtypeHasDerivationExpression/DerivationRule.Description", typeof(global::Neumont.Tools.ORM.ObjectModel.ORMCoreDomainModel), "Neumont.Tools.ORM.GeneratedCode.CoreDomainModelResx")]
+		[DslModeling::DomainRole(DslModeling::DomainRoleOrder.Target, PropertyName = "Subtype", PropertyDisplayNameKey="Neumont.Tools.ORM.ObjectModel.SubtypeHasDerivationExpression/DerivationRule.PropertyDisplayName", PropagatesDelete = true, Multiplicity = DslModeling::Multiplicity.One)]
+		[DslModeling::DomainObjectId("accefc08-fd9d-48b5-b664-29b38484326b")]
+		public virtual SubtypeDerivationExpression DerivationRule
+		{
+			[global::System.Diagnostics.DebuggerStepThrough]
+			get
+			{
+				return (SubtypeDerivationExpression)DslModeling::DomainRoleInfo.GetRolePlayer(this, DerivationRuleDomainRoleId);
+			}
+			[global::System.Diagnostics.DebuggerStepThrough]
+			set
+			{
+				DslModeling::DomainRoleInfo.SetRolePlayer(this, DerivationRuleDomainRoleId, value);
+			}
+		}
+				
+		#endregion
+		#region Static methods to access DerivationRule of a ObjectType
+		/// <summary>
+		/// Gets DerivationRule.
+		/// </summary>
+		[global::System.Diagnostics.DebuggerStepThrough]
+		[global::System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Design", "CA1011")]
+		public static SubtypeDerivationExpression GetDerivationRule(ObjectType element)
+		{
+			return DslModeling::DomainRoleInfo.GetLinkedElement(element, SubtypeDomainRoleId) as SubtypeDerivationExpression;
+		}
+		
+		/// <summary>
+		/// Sets DerivationRule.
+		/// </summary>
+		[global::System.Diagnostics.DebuggerStepThrough]
+		[global::System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Design", "CA1011")]
+		public static void SetDerivationRule(ObjectType element, SubtypeDerivationExpression newDerivationRule)
+		{
+			DslModeling::DomainRoleInfo.SetLinkedElement(element, SubtypeDomainRoleId, newDerivationRule);
+		}
+		#endregion
+		#region Subtype link accessor
+		/// <summary>
+		/// Get the SubtypeHasDerivationExpression link to a ObjectType.
+		/// </summary>
+		[global::System.Diagnostics.DebuggerStepThrough]
+		[global::System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Design", "CA1011")]
+		public static global::Neumont.Tools.ORM.ObjectModel.SubtypeHasDerivationExpression GetLinkToDerivationRule (global::Neumont.Tools.ORM.ObjectModel.ObjectType subtypeInstance)
+		{
+			global::System.Collections.Generic.IList<global::Neumont.Tools.ORM.ObjectModel.SubtypeHasDerivationExpression> links = DslModeling::DomainRoleInfo.GetElementLinks<global::Neumont.Tools.ORM.ObjectModel.SubtypeHasDerivationExpression>(subtypeInstance, global::Neumont.Tools.ORM.ObjectModel.SubtypeHasDerivationExpression.SubtypeDomainRoleId);
+			global::System.Diagnostics.Debug.Assert(links.Count <= 1, "Multiplicity of Subtype not obeyed.");
+			if ( links.Count == 0 )
+			{
+				return null;
+			}
+			else
+			{
+				return links[0];
+			}
+		}
+		#endregion
+		#region DerivationRule link accessor
+		/// <summary>
+		/// Get the SubtypeHasDerivationExpression link to a SubtypeDerivationExpression.
+		/// </summary>
+		[global::System.Diagnostics.DebuggerStepThrough]
+		[global::System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Design", "CA1011")]
+		public static global::Neumont.Tools.ORM.ObjectModel.SubtypeHasDerivationExpression GetLinkToSubtype (global::Neumont.Tools.ORM.ObjectModel.SubtypeDerivationExpression derivationRuleInstance)
+		{
+			global::System.Collections.Generic.IList<global::Neumont.Tools.ORM.ObjectModel.SubtypeHasDerivationExpression> links = DslModeling::DomainRoleInfo.GetElementLinks<global::Neumont.Tools.ORM.ObjectModel.SubtypeHasDerivationExpression>(derivationRuleInstance, global::Neumont.Tools.ORM.ObjectModel.SubtypeHasDerivationExpression.DerivationRuleDomainRoleId);
+			global::System.Diagnostics.Debug.Assert(links.Count <= 1, "Multiplicity of DerivationRule not obeyed.");
+			if ( links.Count == 0 )
+			{
+				return null;
+			}
+			else
+			{
+				return links[0];
+			}
+		}
+		#endregion
+		#region SubtypeHasDerivationExpression instance accessors
+		
+		/// <summary>
+		/// Get any SubtypeHasDerivationExpression links between a given ObjectType and a SubtypeDerivationExpression.
+		/// </summary>
+		[global::System.Diagnostics.DebuggerStepThrough]
+		[global::System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Design", "CA1011")]
+		public static global::System.Collections.ObjectModel.ReadOnlyCollection<global::Neumont.Tools.ORM.ObjectModel.SubtypeHasDerivationExpression> GetLinks( global::Neumont.Tools.ORM.ObjectModel.ObjectType source, global::Neumont.Tools.ORM.ObjectModel.SubtypeDerivationExpression target )
+		{
+			global::System.Collections.Generic.List<global::Neumont.Tools.ORM.ObjectModel.SubtypeHasDerivationExpression> outLinks = new global::System.Collections.Generic.List<global::Neumont.Tools.ORM.ObjectModel.SubtypeHasDerivationExpression>();
+			global::System.Collections.Generic.IList<global::Neumont.Tools.ORM.ObjectModel.SubtypeHasDerivationExpression> links = DslModeling::DomainRoleInfo.GetElementLinks<global::Neumont.Tools.ORM.ObjectModel.SubtypeHasDerivationExpression>(source, global::Neumont.Tools.ORM.ObjectModel.SubtypeHasDerivationExpression.SubtypeDomainRoleId);
+			foreach ( global::Neumont.Tools.ORM.ObjectModel.SubtypeHasDerivationExpression link in links )
+			{
+				if ( target.Equals(link.DerivationRule) )
+				{
+					outLinks.Add(link);
+				}
+			}
+			return outLinks.AsReadOnly();
+		}
+		/// <summary>
+		/// Get the one SubtypeHasDerivationExpression link between a given ObjectTypeand a SubtypeDerivationExpression.
+		/// </summary>
+		[global::System.Diagnostics.DebuggerStepThrough]
+		[global::System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Design", "CA1011")]
+		public static global::Neumont.Tools.ORM.ObjectModel.SubtypeHasDerivationExpression GetLink( global::Neumont.Tools.ORM.ObjectModel.ObjectType source, global::Neumont.Tools.ORM.ObjectModel.SubtypeDerivationExpression target )
+		{
+			global::System.Collections.Generic.IList<global::Neumont.Tools.ORM.ObjectModel.SubtypeHasDerivationExpression> links = DslModeling::DomainRoleInfo.GetElementLinks<global::Neumont.Tools.ORM.ObjectModel.SubtypeHasDerivationExpression>(source, global::Neumont.Tools.ORM.ObjectModel.SubtypeHasDerivationExpression.SubtypeDomainRoleId);
+			foreach ( global::Neumont.Tools.ORM.ObjectModel.SubtypeHasDerivationExpression link in links )
+			{
+				if ( target.Equals(link.DerivationRule) )
+				{
+					return link;
+				}
+			}
+			return null;
+		}
+		
+		#endregion
+	}
+}
+namespace Neumont.Tools.ORM.ObjectModel
+{
+	/// <summary>
 	/// DomainRelationship ObjectTypeHasObjectTypeInstance
 	/// Description for Neumont.Tools.ORM.ObjectModel.ObjectTypeHasObjectTypeInstance
 	/// </summary>

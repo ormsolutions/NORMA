@@ -27,6 +27,7 @@ using Microsoft.VisualStudio.Modeling.Diagrams;
 using Neumont.Tools.ORM.ObjectModel;
 using Neumont.Tools.ORM.Shell;
 using Neumont.Tools.Modeling.Diagrams;
+using Neumont.Tools.Modeling;
 namespace Neumont.Tools.ORM.ShapeModel
 {
 	#region ModelNoteShape class
@@ -192,6 +193,40 @@ namespace Neumont.Tools.ORM.ShapeModel
 			}
 		}
 		#endregion // Shape display update rules
+		#region Deserialization Fixup
+		/// <summary>
+		/// <see cref="ModelNoteShape"/> elements are rendering with different
+		/// sizes on different Visual Studio/DSL versions. Resize them on load
+		/// until we can get consistent drawing across the different platforms.
+		/// </summary>
+		public static IDeserializationFixupListener FixupListener
+		{
+			get
+			{
+				return new ModelNoteShapeFixupListener();
+			}
+		}
+		/// <summary>
+		/// A listener to reset the size of a ModelNoteShape.
+		/// </summary>
+		private sealed class ModelNoteShapeFixupListener : DeserializationFixupListener<ModelNoteShape>
+		{
+			/// <summary>
+			/// Create a new ModelNoteShapeFixupListener
+			/// </summary>
+			public ModelNoteShapeFixupListener()
+				: base((int)ORMDeserializationFixupPhase.ModifyStoredPresentationElements)
+			{
+			}
+			/// <summary>
+			/// Update the shape size on load.
+			/// </summary>
+			protected sealed override void ProcessElement(ModelNoteShape element, Store store, INotifyElementAdded notifyAdded)
+			{
+				element.AutoResize();
+			}
+		}
+		#endregion // Deserialization Fixup
 	}
 	#endregion // ModelNoteShape class
 }

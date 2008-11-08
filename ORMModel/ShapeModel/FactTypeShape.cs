@@ -5395,52 +5395,6 @@ namespace Neumont.Tools.ORM.ShapeModel
 			}
 		}
 		#endregion // CustomFactTypeShapeGeometry
-		#region Derivation Rules
-		/// <summary>
-		/// ChangeRule: typeof(Neumont.Tools.ORM.ObjectModel.FactTypeHasDerivationExpression), FireTime=TopLevelCommit, Priority=DiagramFixupConstants.AutoLayoutShapesRulePriority;
-		/// </summary>
-		private static void DerivationChangedRule(ElementPropertyChangedEventArgs e)
-		{
-			if (e.DomainProperty.Id == FactTypeDerivationExpression.DerivationStorageDomainPropertyId)
-			{
-				FactTypeDerivationExpression ftde = e.ModelElement as FactTypeDerivationExpression;
-				if (!ftde.IsDeleted)
-				{
-					FactType ft = ftde.FactType;
-					if (ft != null)
-					{
-						ReadingShape.InvalidateReadingShape(ft);
-					}
-				}
-			}
-		}
-		/// <summary>
-		/// AddRule: typeof(Neumont.Tools.ORM.ObjectModel.FactTypeHasDerivationExpression), FireTime=TopLevelCommit, Priority=DiagramFixupConstants.AutoLayoutShapesRulePriority;
-		/// </summary>
-		private static void DerivationAddedRule(ElementAddedEventArgs e)
-		{
-			FactTypeHasDerivationExpression ftde = e.ModelElement as FactTypeHasDerivationExpression;
-			if (null != ftde)
-			{
-				ReadingShape.InvalidateReadingShape(ftde.FactType);
-			}
-		}
-		/// <summary>
-		/// DeleteRule: typeof(Neumont.Tools.ORM.ObjectModel.FactTypeHasDerivationExpression), FireTime=TopLevelCommit, Priority=DiagramFixupConstants.AutoLayoutShapesRulePriority;
-		/// </summary>
-		private static void DerivationDeletedRule(ElementDeletedEventArgs e)
-		{
-			FactTypeHasDerivationExpression ftde = e.ModelElement as FactTypeHasDerivationExpression;
-			if (null != ftde)
-			{
-				FactType ft = ftde.FactType;
-				if (!ft.IsDeleted)
-				{
-					ReadingShape.InvalidateReadingShape(ft);
-				}
-			}
-		}
-		#endregion // Derivation Rules
 		#region Deserialization Fixup
 		/// <summary>
 		/// Return a deserialization fixup listener. The listener
@@ -5689,24 +5643,76 @@ namespace Neumont.Tools.ORM.ShapeModel
 				if (objectType != null)
 				{
 					bool independent = objectType.IsIndependent;
+					bool derived = !independent && objectType.DerivationRule != null && objectType.IsSubtype;
 					refModeString = objectType.ReferenceModeDecoratedString;
 					if (refModeString.Length != 0)
 					{
-						formatString = independent ? ResourceStrings.ObjectifiedFactTypeNameShapeRefModeIndependentFormatString : ResourceStrings.ObjectifiedFactTypeNameShapeRefModeFormatString;
+						formatString = independent ?
+							ResourceStrings.ObjectifiedFactTypeNameShapeRefModeIndependentFormatString :
+							derived ?
+								ResourceStrings.ObjectifiedFactTypeNameShapeRefModeDerivedSubtypeFormatString :
+								ResourceStrings.ObjectifiedFactTypeNameShapeRefModeFormatString;
 					}
 					else if (independent)
 					{
-						formatString = ResourceStrings.ObjectifiedFactTypeNameShapeIndependentFormatString;
+						formatString = ResourceStrings.ObjectTypeShapeIndependentFormatString;
+					}
+					else if (derived)
+					{
+						formatString = ResourceStrings.ObjectTypeShapeIndependentFormatString;
 					}
 				}
-				if (formatString == null)
-				{
-					formatString = ResourceStrings.ObjectifiedFactTypeNameShapeStandardFormatString;
-				}
-				return string.Format(CultureInfo.InvariantCulture, formatString, baseText, refModeString);
+				return (formatString == null) ? baseText : string.Format(CultureInfo.InvariantCulture, formatString, baseText, refModeString);
 			}
 		}
 		#endregion // ObjectNameTextField class
+		#region Deserialization Fixup
+		/// <summary>
+		/// Return a deserialization fixup listener. The listener ensures
+		/// the correct size for an <see cref="ObjectifiedFactTypeNameShape"/>.
+		/// </summary>
+		public static IDeserializationFixupListener FixupListener
+		{
+			get
+			{
+				return new ObjectifiedFactTypeNameShapeFixupListener();
+			}
+		}
+		/// <summary>
+		/// A listener to reset the size of an ObjectifiedFactTypeNameShape.
+		/// </summary>
+		private sealed class ObjectifiedFactTypeNameShapeFixupListener : DeserializationFixupListener<ObjectifiedFactTypeNameShape>
+		{
+			/// <summary>
+			/// Create a new ObjectifiedFactTypeNameShapeFixupListener
+			/// </summary>
+			public ObjectifiedFactTypeNameShapeFixupListener()
+				: base((int)ORMDeserializationFixupPhase.ModifyStoredPresentationElements)
+			{
+			}
+			/// <summary>
+			/// Update the shape size if it is independent or if the derivation status is set.
+			/// The size for these strings depends on localized values, which may change when
+			/// loading the file on a different machine.
+			/// Also, the SubtypeFact fixup rule may dynamically create a derivation rule if
+			/// a rule is specified on the SubtypeFact instead of on the Subtype itself.
+			/// </summary>
+			protected sealed override void ProcessElement(ObjectifiedFactTypeNameShape element, Store store, INotifyElementAdded notifyAdded)
+			{
+				ObjectType objectType;
+				if (!element.IsDeleted &&
+					null != (objectType = element.AssociatedObjectType) &&
+					(objectType.IsIndependent ||
+					(objectType.DerivationRule != null && objectType.IsSubtype)))
+				{
+					// Note that technically the size may be wrong if a derivation rule or an independent
+					// setting has been removed. However, in this case, the length will be a little too long,
+					// which is harmless. This fixes the situation where it is too short.
+					element.AutoResize();
+				}
+			}
+		}
+		#endregion // Deserialization Fixup
 	}
 	#endregion // ObjectifiedFactTypeNameShape class
 	#region FactTypeLinkConnectorShape class

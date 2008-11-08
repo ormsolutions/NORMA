@@ -52,15 +52,6 @@
 			<arg:ChangeRule methodName="ConstraintDisplayPositionChangeRule">
 				<arg:RuleOn targetType="FactTypeShape" fireTime="TopLevelCommit" priority="DiagramFixupConstants.AddConnectionRulePriority"/>
 			</arg:ChangeRule>
-			<arg:AddRule methodName="DerivationAddedRule">
-				<arg:RuleOn targetType="FactTypeHasDerivationExpression" targetTypeQualifier="Neumont.Tools.ORM.ObjectModel" fireTime="TopLevelCommit" priority="DiagramFixupConstants.AutoLayoutShapesRulePriority"/>
-			</arg:AddRule>
-			<arg:ChangeRule methodName="DerivationChangedRule">
-				<arg:RuleOn targetType="FactTypeHasDerivationExpression" targetTypeQualifier="Neumont.Tools.ORM.ObjectModel" fireTime="TopLevelCommit" priority="DiagramFixupConstants.AutoLayoutShapesRulePriority"/>
-			</arg:ChangeRule>
-			<arg:DeleteRule methodName="DerivationDeletedRule">
-				<arg:RuleOn targetType="FactTypeHasDerivationExpression" targetTypeQualifier="Neumont.Tools.ORM.ObjectModel" fireTime="TopLevelCommit" priority="DiagramFixupConstants.AutoLayoutShapesRulePriority"/>
-			</arg:DeleteRule>
 			<arg:ChangeRule methodName="ExternalConstraintShapeChangeRule">
 				<arg:RuleOn targetType="ExternalConstraintShape" fireTime="TopLevelCommit" priority="DiagramFixupConstants.AddConnectionRulePriority"/>
 			</arg:ChangeRule>
@@ -142,6 +133,12 @@
 			<arg:RolePlayerChangeRule methodName="RolePlayerRolePlayerChangedRule">
 				<arg:RuleOn targetType="ObjectTypePlaysRole" targetTypeQualifier="Neumont.Tools.ORM.ObjectModel"/>
 			</arg:RolePlayerChangeRule>
+			<arg:AddRule methodName="SubtypeDerivationAddedRule">
+				<arg:RuleOn targetType="SubtypeHasDerivationExpression" targetTypeQualifier="Neumont.Tools.ORM.ObjectModel" fireTime="TopLevelCommit" priority="DiagramFixupConstants.AutoLayoutShapesRulePriority"/>
+			</arg:AddRule>
+			<arg:DeleteRule methodName="SubtypeDerivationDeletedRule">
+				<arg:RuleOn targetType="SubtypeHasDerivationExpression" targetTypeQualifier="Neumont.Tools.ORM.ObjectModel" fireTime="TopLevelCommit" priority="DiagramFixupConstants.AutoLayoutShapesRulePriority"/>
+			</arg:DeleteRule>
 		</arg:RuleContainer>
 		<arg:RuleContainer class="ORMBaseBinaryLinkShape">
 			<arg:ChangeRule methodName="LinkChangeRule">
@@ -239,6 +236,15 @@
 			</arg:AddRule>
 		</arg:RuleContainer>
 		<arg:RuleContainer class="ReadingShape">
+			<arg:AddRule methodName="DerivationAddedRule">
+				<arg:RuleOn targetType="FactTypeHasDerivationExpression" targetTypeQualifier="Neumont.Tools.ORM.ObjectModel" fireTime="TopLevelCommit" priority="DiagramFixupConstants.AutoLayoutShapesRulePriority"/>
+			</arg:AddRule>
+			<arg:ChangeRule methodName="DerivationChangedRule">
+				<arg:RuleOn targetType="FactTypeDerivationExpression" targetTypeQualifier="Neumont.Tools.ORM.ObjectModel" fireTime="TopLevelCommit" priority="DiagramFixupConstants.AutoLayoutShapesRulePriority"/>
+			</arg:ChangeRule>
+			<arg:DeleteRule methodName="DerivationDeletedRule">
+				<arg:RuleOn targetType="FactTypeHasDerivationExpression" targetTypeQualifier="Neumont.Tools.ORM.ObjectModel" fireTime="TopLevelCommit" priority="DiagramFixupConstants.AutoLayoutShapesRulePriority"/>
+			</arg:DeleteRule>
 			<arg:ChangeRule methodName="DisplayOrientationChangedRule">
 				<arg:RuleOn targetType="FactTypeShape" fireTime="TopLevelCommit" priority="DiagramFixupConstants.ResizeParentRulePriority"/>
 			</arg:ChangeRule>

@@ -3700,6 +3700,98 @@ namespace Neumont.Tools.ORM.ObjectModel
 		}
 		
 		#endregion
+		#region DerivationRuleDisplay domain property code
+		
+		/// <summary>
+		/// DerivationRuleDisplay domain property Id.
+		/// </summary>
+		public static readonly global::System.Guid DerivationRuleDisplayDomainPropertyId = new global::System.Guid(0xb852bc09, 0x7887, 0x4ba7, 0xa7, 0xaa, 0x09, 0xd4, 0xf4, 0xe2, 0xaa, 0xd2);
+		
+		/// <summary>
+		/// Gets or sets the value of DerivationRuleDisplay domain property.
+		/// Description for Neumont.Tools.ORM.ObjectModel.ObjectType.DerivationRule
+		/// </summary>
+		[global::System.ComponentModel.Editor(typeof(global::Neumont.Tools.ORM.ObjectModel.Design.DerivationRuleEditor), typeof(global::System.Drawing.Design.UITypeEditor))]
+		[global::System.ComponentModel.MergableProperty(false)]
+		[DslDesign::DisplayNameResource("Neumont.Tools.ORM.ObjectModel.ObjectType/DerivationRuleDisplay.DisplayName", typeof(global::Neumont.Tools.ORM.ObjectModel.ORMCoreDomainModel), "Neumont.Tools.ORM.GeneratedCode.CoreDomainModelResx")]
+		[DslDesign::DescriptionResource("Neumont.Tools.ORM.ObjectModel.ObjectType/DerivationRuleDisplay.Description", typeof(global::Neumont.Tools.ORM.ObjectModel.ORMCoreDomainModel), "Neumont.Tools.ORM.GeneratedCode.CoreDomainModelResx")]
+		[DslModeling::DomainProperty(Kind = DslModeling::DomainPropertyKind.CustomStorage)]
+		[DslModeling::DomainObjectId("b852bc09-7887-4ba7-a7aa-09d4f4e2aad2")]
+		public global::System.String DerivationRuleDisplay
+		{
+			[global::System.Diagnostics.DebuggerStepThrough]
+			get
+			{
+				return DerivationRuleDisplayPropertyHandler.Instance.GetValue(this);
+			}
+			[global::System.Diagnostics.DebuggerStepThrough]
+			set
+			{
+				DerivationRuleDisplayPropertyHandler.Instance.SetValue(this, value);
+			}
+		}
+		/// <summary>
+		/// Value handler for the ObjectType.DerivationRuleDisplay domain property.
+		/// </summary>
+		internal sealed partial class DerivationRuleDisplayPropertyHandler : DslModeling::DomainPropertyValueHandler<ObjectType, global::System.String>
+		{
+			private DerivationRuleDisplayPropertyHandler() { }
+		
+			/// <summary>
+			/// Gets the singleton instance of the ObjectType.DerivationRuleDisplay domain property value handler.
+			/// </summary>
+			public static readonly DerivationRuleDisplayPropertyHandler Instance = new DerivationRuleDisplayPropertyHandler();
+		
+			/// <summary>
+			/// Gets the Id of the ObjectType.DerivationRuleDisplay domain property.
+			/// </summary>
+			public sealed override global::System.Guid DomainPropertyId
+			{
+				[global::System.Diagnostics.DebuggerStepThrough]
+				get
+				{
+					return DerivationRuleDisplayDomainPropertyId;
+				}
+			}
+			
+			/// <summary>
+			/// Gets a strongly-typed value of the property on specified element.
+			/// </summary>
+			/// <param name="element">Element which owns the property.</param>
+			/// <returns>Property value.</returns>
+			public override sealed global::System.String GetValue(ObjectType element)
+			{
+				if (element == null) throw new global::System.ArgumentNullException("element");
+				// There is no storage for DerivationRuleDisplay because its Kind is
+				// set to CustomStorage. Please provide the GetDerivationRuleDisplayValue()
+				// method on the domain class.
+				return element.GetDerivationRuleDisplayValue();
+			}
+		
+			/// <summary>
+			/// Sets property value on an element.
+			/// </summary>
+			/// <param name="element">Element which owns the property.</param>
+			/// <param name="newValue">New property value.</param>
+			public override sealed void SetValue(ObjectType element, global::System.String newValue)
+			{
+				if (element == null) throw new global::System.ArgumentNullException("element");
+		
+				global::System.String oldValue = GetValue(element);
+				if (newValue != oldValue)
+				{
+					ValueChanging(element, oldValue, newValue);
+					// There is no storage for DerivationRuleDisplay because its Kind is
+					// set to CustomStorage. Please provide the SetDerivationRuleDisplayValue()
+					// method on the domain class.
+					element.SetDerivationRuleDisplayValue(newValue);
+					//ValueChanged(element, oldValue, GetValue(element));
+					ValueChanged(element, oldValue, newValue);
+				}
+			}
+		}
+		
+		#endregion
 		#region DataType opposite domain role accessor
 		/// <summary>
 		/// Gets or sets DataType.
@@ -4083,6 +4175,38 @@ namespace Neumont.Tools.ORM.ObjectModel
 				else
 				{
 					DslModeling::DomainRoleInfo.SetLinkedElement(this, global::Neumont.Tools.ORM.ObjectModel.ObjectTypeHasPreferredIdentifierRequiresMandatoryError.ObjectTypeDomainRoleId, value);
+				}
+			}
+		}
+		#endregion
+		#region DerivationRule opposite domain role accessor
+		/// <summary>
+		/// Gets or sets DerivationRule.
+		/// Description for
+		/// Neumont.Tools.ORM.ObjectModel.SubtypeHasDerivationExpression.Subtype
+		/// </summary>
+		public virtual SubtypeDerivationExpression DerivationRule
+		{
+			[global::System.Diagnostics.DebuggerStepThrough]
+			get
+			{
+				return DslModeling::DomainRoleInfo.GetLinkedElement(this, global::Neumont.Tools.ORM.ObjectModel.SubtypeHasDerivationExpression.SubtypeDomainRoleId) as SubtypeDerivationExpression;
+			}
+			[global::System.Diagnostics.DebuggerStepThrough]
+			set
+			{
+				DslModeling::ModelElement existingSource;
+				if (null != value &&
+					null != (existingSource = DslModeling::DomainRoleInfo.GetLinkedElement(value, global::Neumont.Tools.ORM.ObjectModel.SubtypeHasDerivationExpression.DerivationRuleDomainRoleId)))
+				{
+					if (existingSource != value)
+					{
+						DslModeling::DomainRoleInfo.SetLinkedElement(value, global::Neumont.Tools.ORM.ObjectModel.SubtypeHasDerivationExpression.DerivationRuleDomainRoleId, this);
+					}
+				}
+				else
+				{
+					DslModeling::DomainRoleInfo.SetLinkedElement(this, global::Neumont.Tools.ORM.ObjectModel.SubtypeHasDerivationExpression.SubtypeDomainRoleId, value);
 				}
 			}
 		}
@@ -16928,6 +17052,77 @@ namespace Neumont.Tools.ORM.ObjectModel
 				else
 				{
 					DslModeling::DomainRoleInfo.SetLinkedElement(this, global::Neumont.Tools.ORM.ObjectModel.FactTypeHasDerivationExpression.DerivationRuleDomainRoleId, value);
+				}
+			}
+		}
+		#endregion
+	}
+}
+namespace Neumont.Tools.ORM.ObjectModel
+{
+	/// <summary>
+	/// DomainClass SubtypeDerivationExpression
+	/// </summary>
+	[DslDesign::DisplayNameResource("Neumont.Tools.ORM.ObjectModel.SubtypeDerivationExpression.DisplayName", typeof(global::Neumont.Tools.ORM.ObjectModel.ORMCoreDomainModel), "Neumont.Tools.ORM.GeneratedCode.CoreDomainModelResx")]
+	[DslDesign::DescriptionResource("Neumont.Tools.ORM.ObjectModel.SubtypeDerivationExpression.Description", typeof(global::Neumont.Tools.ORM.ObjectModel.ORMCoreDomainModel), "Neumont.Tools.ORM.GeneratedCode.CoreDomainModelResx")]
+	[global::System.CLSCompliant(true)]
+	[DslModeling::DomainObjectId("cce39440-4c8d-45e2-acfe-1642989d1107")]
+	public partial class SubtypeDerivationExpression : Expression
+	{
+		#region Constructors, domain class Id
+	
+		/// <summary>
+		/// SubtypeDerivationExpression domain class Id.
+		/// </summary>
+		public static readonly new global::System.Guid DomainClassId = new global::System.Guid(0xcce39440, 0x4c8d, 0x45e2, 0xac, 0xfe, 0x16, 0x42, 0x98, 0x9d, 0x11, 0x07);
+		/// <summary>
+		/// Constructor
+		/// </summary>
+		/// <param name="store">Store where new element is to be created.</param>
+		/// <param name="propertyAssignments">List of domain property id/value pairs to set once the element is created.</param>
+		public SubtypeDerivationExpression(DslModeling::Store store, params DslModeling::PropertyAssignment[] propertyAssignments)
+			: this(store != null ? store.DefaultPartition : null, propertyAssignments)
+		{
+		}
+		
+		/// <summary>
+		/// Constructor
+		/// </summary>
+		/// <param name="partition">Partition where new element is to be created.</param>
+		/// <param name="propertyAssignments">List of domain property id/value pairs to set once the element is created.</param>
+		public SubtypeDerivationExpression(DslModeling::Partition partition, params DslModeling::PropertyAssignment[] propertyAssignments)
+			: base(partition, propertyAssignments)
+		{
+		}
+		#endregion
+		#region Subtype opposite domain role accessor
+		/// <summary>
+		/// Gets or sets Subtype.
+		/// Description for
+		/// Neumont.Tools.ORM.ObjectModel.SubtypeHasDerivationExpression.DerivationRule
+		/// </summary>
+		public virtual ObjectType Subtype
+		{
+			[global::System.Diagnostics.DebuggerStepThrough]
+			get
+			{
+				return DslModeling::DomainRoleInfo.GetLinkedElement(this, global::Neumont.Tools.ORM.ObjectModel.SubtypeHasDerivationExpression.DerivationRuleDomainRoleId) as ObjectType;
+			}
+			[global::System.Diagnostics.DebuggerStepThrough]
+			set
+			{
+				DslModeling::ModelElement existingSource;
+				if (null != value &&
+					null != (existingSource = DslModeling::DomainRoleInfo.GetLinkedElement(value, global::Neumont.Tools.ORM.ObjectModel.SubtypeHasDerivationExpression.SubtypeDomainRoleId)))
+				{
+					if (existingSource != value)
+					{
+						DslModeling::DomainRoleInfo.SetLinkedElement(value, global::Neumont.Tools.ORM.ObjectModel.SubtypeHasDerivationExpression.SubtypeDomainRoleId, this);
+					}
+				}
+				else
+				{
+					DslModeling::DomainRoleInfo.SetLinkedElement(this, global::Neumont.Tools.ORM.ObjectModel.SubtypeHasDerivationExpression.DerivationRuleDomainRoleId, value);
 				}
 			}
 		}

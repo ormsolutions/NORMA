@@ -1978,7 +1978,23 @@ namespace Neumont.Tools.ORM.ObjectModel
 				link.NestingType.Name = "";
 			}
 		}
-		#endregion
+		/// <summary>
+		/// ChangeRule: typeof(FactTypeDerivationExpression)
+		/// check the Body property of the FactTypeDerivationExpression and delete the FactTypeDerivationExpression 
+		/// if Body is empty
+		/// </summary>
+		private static void FactTypeDerivationExpressionChangeRule(ElementPropertyChangedEventArgs e)
+		{
+			Guid attributeGuid = e.DomainProperty.Id;
+			if (attributeGuid == FactTypeDerivationExpression.BodyDomainPropertyId)
+			{
+				if (string.IsNullOrEmpty((string)e.NewValue))
+				{
+					e.ModelElement.Delete();
+				}
+			}
+		}
+		#endregion // Model Validation Rules
 		#region AutoFix Methods
 		/// <summary>
 		/// Remove implied (including duplicate) internal uniqueness constraints. Internal
@@ -2875,26 +2891,4 @@ namespace Neumont.Tools.ORM.ObjectModel
 	#endregion //class NMinusOneError
 
 	#endregion // FactType Model Validation Errors
-	#region FactTypeDerivationExpression
-	public partial class FactTypeDerivationExpression
-	{
-		/// <summary>
-		/// ChangeRule: typeof(FactTypeDerivationExpression)
-		/// check the Body property of the FactTypeDerivationExpression and delete the FactTypeDerivationExpression 
-		/// if Body is empty
-		/// </summary>
-		private static void FactTypeDerivationExpressionChangeRule(ElementPropertyChangedEventArgs e)
-		{
-			Guid attributeGuid = e.DomainProperty.Id;
-			if (attributeGuid == FactTypeDerivationExpression.BodyDomainPropertyId)
-			{
-				FactTypeDerivationExpression ftde = e.ModelElement as FactTypeDerivationExpression;
-				if (!ftde.IsDeleted && string.IsNullOrEmpty(ftde.Body))
-				{
-					ftde.Delete();
-				}
-			}
-		}
-	}
-	#endregion
 }

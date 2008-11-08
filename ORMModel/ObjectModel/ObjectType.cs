@@ -138,6 +138,10 @@ namespace Neumont.Tools.ORM.ObjectModel
 		{
 			// Handled by ObjectTypeChangeRule
 		}
+		private void SetDerivationRuleDisplayValue(string newValue)
+		{
+			// Handled by ObjectTypeChangeRule
+		}
 
 		private bool GetIsValueTypeValue()
 		{
@@ -244,6 +248,11 @@ namespace Neumont.Tools.ORM.ObjectModel
 		{
 			Note currentNote = Note;
 			return (currentNote != null) ? currentNote.Text : String.Empty;
+		}
+		private string GetDerivationRuleDisplayValue()
+		{
+			SubtypeDerivationExpression derivation = DerivationRule;
+			return (derivation == null || derivation.IsDeleted) ? String.Empty : derivation.Body;
 		}
 		/// <summary>
 		/// Return the link object between a value type and its referenced
@@ -736,6 +745,48 @@ namespace Neumont.Tools.ORM.ObjectModel
 			}
 		}
 		/// <summary>
+		/// Returns true if this ObjectType is the subtype
+		/// at least one other Objectype
+		/// </summary>
+		public bool IsSubtype
+		{
+			get
+			{
+				LinkedElementCollection<Role> playedRoles = PlayedRoleCollection;
+				int playedRoleCount = playedRoles.Count;
+				for (int i = 0; i < playedRoleCount; ++i)
+				{
+					Role role = playedRoles[i];
+					if (role is SubtypeMetaRole)
+					{
+						return true;
+					}
+				}
+				return false;
+			}
+		}
+		/// <summary>
+		/// Returns true if this ObjectType is the supertype
+		/// at least one other Objectype
+		/// </summary>
+		public bool IsSupertype
+		{
+			get
+			{
+				LinkedElementCollection<Role> playedRoles = PlayedRoleCollection;
+				int playedRoleCount = playedRoles.Count;
+				for (int i = 0; i < playedRoleCount; ++i)
+				{
+					Role role = playedRoles[i];
+					if (role is SupertypeMetaRole)
+					{
+						return true;
+					}
+				}
+				return false;
+			}
+		}
+		/// <summary>
 		/// Get the PreferredIdentifier for this object type, walking primary supertypes
 		/// as needed.
 		/// </summary>
@@ -949,7 +1000,7 @@ namespace Neumont.Tools.ORM.ObjectModel
 			return result;
 		}
 		/// <summary>
-		/// Recursively walk all bertype relationships of a starting <see cref="ObjectType"/>.
+		/// Recursively walk all subtype relationships of a starting <see cref="ObjectType"/>.
 		/// </summary>
 		/// <param name="startingType">The type to begin recursion with</param>
 		/// <param name="visitor">A callback delegate. Returns values from <see cref="ObjectTypeVisitorResult"/>.</param>
@@ -1243,6 +1294,24 @@ namespace Neumont.Tools.ORM.ObjectModel
 			}
 		}
 		#endregion // Subtype and Supertype routines
+		#region Derivation Rules
+		/// <summary>
+		/// ChangeRule: typeof(SubtypeDerivationExpression)
+		/// Check the Body property of the SubtypeDerivationExpression and delete the SubtypeDerivationExpression 
+		/// if Body is empty
+		/// </summary>
+		private static void SubtypeDerivationExpressionChangeRule(ElementPropertyChangedEventArgs e)
+		{
+			Guid attributeGuid = e.DomainProperty.Id;
+			if (attributeGuid == SubtypeDerivationExpression.BodyDomainPropertyId)
+			{
+				if (string.IsNullOrEmpty((string)e.NewValue))
+				{
+					e.ModelElement.Delete();
+				}
+			}
+		}
+		#endregion // Derivation Rules
 		#region ObjectTypeChangeRule
 		/// <summary>
 		/// ChangeRule: typeof(ObjectType)
@@ -1450,6 +1519,27 @@ namespace Neumont.Tools.ORM.ObjectModel
 				else
 				{
 					FrameworkDomainModel.DelayValidateElement(objectType, DelayValidateIsIndependent);
+				}
+			}
+			else if (attributeGuid == ObjectType.DerivationRuleDisplayDomainPropertyId)
+			{
+				string newVal = e.NewValue as string;
+				SubtypeDerivationExpression currentRule = objectType.DerivationRule;
+				if (string.IsNullOrEmpty(newVal))
+				{
+					if (currentRule != null)
+					{
+						currentRule.Body = string.Empty;
+					}
+				}
+				else
+				{
+					if (null == currentRule)
+					{
+						currentRule = new SubtypeDerivationExpression(objectType.Store);
+						objectType.DerivationRule = currentRule;
+					}
+					currentRule.Body = newVal;
 				}
 			}
 			else if (attributeGuid == ObjectType.IsImplicitBooleanValueDomainPropertyId)

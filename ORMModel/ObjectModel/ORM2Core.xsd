@@ -120,6 +120,7 @@
 			<xs:element name="Notes" type="NotesType" minOccurs="0"/>
 			<xs:element name="Abbreviations" type="AliasesType" minOccurs="0"/>
 			<xs:element name="PlayedRoles" type="PlayedRoles" minOccurs="0"/>
+			<xs:element name="SubtypeDerivationRule" type="SubtypeDerivationRuleType" minOccurs="0"/>
 		</xs:sequence>
 		<xs:attribute name="Name" use="required" type="xs:string"/>
 		<xs:attribute name="id" use="required" type="xs:ID"/>
@@ -168,6 +169,11 @@
 				<xs:attribute name="IsImplicitBooleanValue" type="xs:boolean" default="false"/>
 			</xs:extension>
 		</xs:complexContent>
+	</xs:complexType>
+	<xs:complexType name="SubtypeDerivationRuleType">
+		<xs:sequence minOccurs="0">
+			<xs:element name="SubtypeDerivationExpression" type="DerivationExpressionType"/>
+		</xs:sequence>
 	</xs:complexType>
 	<!--End Objects and Object Types-->
 	<!--ObjectTypeInstances-->
@@ -656,7 +662,7 @@
 			<xs:element name="FactRoles" type="Roles" minOccurs="0"/>
 			<xs:element name="ReadingOrders" type="ReadingOrders" minOccurs="0"/>
 			<xs:element name="InternalConstraints" type="InternalConstraints" minOccurs="0"/>
-			<xs:element name="DerivationRule" type="DerivationRuleType" minOccurs="0"/>
+			<xs:element name="DerivationRule" type="FactTypeDerivationRuleType" minOccurs="0"/>
 			<xs:element name="Instances" type="FactTypeInstances" minOccurs="0"/>
 			<xs:element name="Extensions" type="Extensions" minOccurs="0"/>
 		</xs:sequence>
@@ -672,7 +678,7 @@
 			<xs:element name="FactRoles" type="ImpliedFactRoles" minOccurs="0"/>
 			<xs:element name="ReadingOrders" type="ReadingOrders" minOccurs="0"/>
 			<xs:element name="InternalConstraints" type="InternalConstraints" minOccurs="0"/>
-			<xs:element name="DerivationRule" type="DerivationRuleType" minOccurs="0"/>
+			<xs:element name="DerivationRule" type="FactTypeDerivationRuleType" minOccurs="0"/>
 			<xs:element name="ImpliedByObjectification" type="ObjectificationRef"/>
 			<xs:element name="Extensions" type="Extensions" minOccurs="0"/>
 		</xs:sequence>
@@ -688,7 +694,8 @@
 			<xs:element name="FactRoles" type="SubtypeRoles"/>
 			<xs:element name="ReadingOrders" type="ReadingOrders" minOccurs="0"/>
 			<xs:element name="InternalConstraints" type="InternalConstraints" minOccurs="0"/>
-			<xs:element name="DerivationRule" type="DerivationRuleType" minOccurs="0"/>
+			<!-- UNDONE: Remove SubtypeFact.DerivationRule when file format is officially updated -->
+			<xs:element name="DerivationRule" type="FactTypeDerivationRuleType" minOccurs="0"/>
 			<xs:element name="Instances" type="FactTypeInstances" minOccurs="0"/>
 			<xs:element name="Extensions" type="Extensions" minOccurs="0"/>
 		</xs:sequence>
@@ -704,17 +711,23 @@
 		<xs:attribute name="PreferredIdentificationPath" type="xs:boolean" default="false"/>
 	</xs:complexType>
 	<!--Derived FactType-->
-	<xs:complexType name="DerivationRuleType">
+	<xs:complexType name="FactTypeDerivationRuleType">
 		<xs:sequence minOccurs="0">
-			<xs:element name="DerivationExpression" type="DerivationExpressionType"/>
+			<xs:element name="DerivationExpression" type="FactTypeDerivationExpressionType"/>
 		</xs:sequence>
 	</xs:complexType>
 	<xs:complexType name="DerivationExpressionType">
 		<xs:sequence>
 			<xs:element name="Body" type="xs:string"/>
 		</xs:sequence>
-		<xs:attribute name="DerivationStorage" type="DerivationStorageType" use="required"/>
 		<xs:attribute name="id" type="xs:ID" use="required"/>
+	</xs:complexType>
+	<xs:complexType name="FactTypeDerivationExpressionType">
+		<xs:complexContent>
+			<xs:extension base="DerivationExpressionType">
+				<xs:attribute name="DerivationStorage" type="DerivationStorageType" use="required"/>
+			</xs:extension>
+		</xs:complexContent>
 	</xs:complexType>
 	<xs:simpleType name="DerivationStorageType">
 		<xs:restriction base="xs:string">

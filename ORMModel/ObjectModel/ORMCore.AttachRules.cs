@@ -76,6 +76,7 @@ namespace Neumont.Tools.ORM.ObjectModel
 						typeof(FactType).GetNestedType("BlockRoleMigrationRuleClass", BindingFlags.Public | BindingFlags.NonPublic),
 						typeof(FactType).GetNestedType("FactTypeAddedRuleClass", BindingFlags.Public | BindingFlags.NonPublic),
 						typeof(FactType).GetNestedType("FactTypeChangeRuleClass", BindingFlags.Public | BindingFlags.NonPublic),
+						typeof(FactType).GetNestedType("FactTypeDerivationExpressionChangeRuleClass", BindingFlags.Public | BindingFlags.NonPublic),
 						typeof(FactType).GetNestedType("FactTypeHasReadingOrderAddRuleClass", BindingFlags.Public | BindingFlags.NonPublic),
 						typeof(FactType).GetNestedType("FactTypeHasReadingOrderDeleteRuleClass", BindingFlags.Public | BindingFlags.NonPublic),
 						typeof(FactType).GetNestedType("FactTypeHasRoleAddRuleClass", BindingFlags.Public | BindingFlags.NonPublic),
@@ -106,7 +107,6 @@ namespace Neumont.Tools.ORM.ObjectModel
 						typeof(FactType).GetNestedType("UnaryBinarizationUtility", BindingFlags.Public | BindingFlags.NonPublic).GetNestedType("ObjectTypePlaysRoleDeletedRuleClass", BindingFlags.Public | BindingFlags.NonPublic),
 						typeof(FactType).GetNestedType("UnaryBinarizationUtility", BindingFlags.Public | BindingFlags.NonPublic).GetNestedType("ObjectTypePlaysRoleRolePlayerChangedRuleClass", BindingFlags.Public | BindingFlags.NonPublic),
 						typeof(FactType).GetNestedType("UnaryBinarizationUtility", BindingFlags.Public | BindingFlags.NonPublic).GetNestedType("RoleNameChangedRuleClass", BindingFlags.Public | BindingFlags.NonPublic),
-						typeof(FactTypeDerivationExpression).GetNestedType("FactTypeDerivationExpressionChangeRuleClass", BindingFlags.Public | BindingFlags.NonPublic),
 						typeof(FactTypeInstance).GetNestedType("FactTypeInstanceAddedRuleClass", BindingFlags.Public | BindingFlags.NonPublic),
 						typeof(FactTypeInstance).GetNestedType("FactTypeRoleAddedRuleClass", BindingFlags.Public | BindingFlags.NonPublic),
 						typeof(FactTypeInstance).GetNestedType("FactTypeRoleDeletedRuleClass", BindingFlags.Public | BindingFlags.NonPublic),
@@ -164,6 +164,7 @@ namespace Neumont.Tools.ORM.ObjectModel
 						typeof(ObjectType).GetNestedType("ObjectTypeAddedRuleClass", BindingFlags.Public | BindingFlags.NonPublic),
 						typeof(ObjectType).GetNestedType("ObjectTypeChangeRuleClass", BindingFlags.Public | BindingFlags.NonPublic),
 						typeof(ObjectType).GetNestedType("ObjectTypeDeletingRuleClass", BindingFlags.Public | BindingFlags.NonPublic),
+						typeof(ObjectType).GetNestedType("SubtypeDerivationExpressionChangeRuleClass", BindingFlags.Public | BindingFlags.NonPublic),
 						typeof(ObjectType).GetNestedType("SubtypeFactChangeRuleClass", BindingFlags.Public | BindingFlags.NonPublic),
 						typeof(ObjectType).GetNestedType("SupertypeAddedRuleClass", BindingFlags.Public | BindingFlags.NonPublic),
 						typeof(ObjectType).GetNestedType("SupertypeDeleteRuleClass", BindingFlags.Public | BindingFlags.NonPublic),
@@ -328,7 +329,7 @@ namespace Neumont.Tools.ORM.ObjectModel
 		{
 			Microsoft.VisualStudio.Modeling.RuleManager ruleManager = store.RuleManager;
 			Type[] disabledRuleTypes = ORMCoreDomainModel.CustomDomainModelTypes;
-			for (int i = 0; i < 260; ++i)
+			for (int i = 0; i < 261; ++i)
 			{
 				ruleManager.EnableRule(disabledRuleTypes[i]);
 			}
@@ -1447,6 +1448,32 @@ namespace Neumont.Tools.ORM.ObjectModel
 				Neumont.Tools.Modeling.Diagnostics.TraceUtility.TraceRuleEnd(e.ModelElement.Store, "Neumont.Tools.ORM.ObjectModel.FactType.FactTypeChangeRule");
 			}
 		}
+		[Microsoft.VisualStudio.Modeling.RuleOn(typeof(FactTypeDerivationExpression), Priority=Neumont.Tools.Modeling.FrameworkDomainModel.InlineRulePriority)]
+		private sealed class FactTypeDerivationExpressionChangeRuleClass : Microsoft.VisualStudio.Modeling.ChangeRule
+		{
+			[System.Diagnostics.DebuggerStepThrough()]
+			public FactTypeDerivationExpressionChangeRuleClass()
+			{
+				base.IsEnabled = false;
+			}
+			/// <summary>
+			/// Provide the following method in class: 
+			/// Neumont.Tools.ORM.ObjectModel.FactType
+			/// /// <summary>
+			/// /// ChangeRule: typeof(FactTypeDerivationExpression)
+			/// /// </summary>
+			/// private static void FactTypeDerivationExpressionChangeRule(ElementPropertyChangedEventArgs e)
+			/// {
+			/// }
+			/// </summary>
+			[System.Diagnostics.DebuggerStepThrough()]
+			public override void ElementPropertyChanged(Microsoft.VisualStudio.Modeling.ElementPropertyChangedEventArgs e)
+			{
+				Neumont.Tools.Modeling.Diagnostics.TraceUtility.TraceRuleStart(e.ModelElement.Store, "Neumont.Tools.ORM.ObjectModel.FactType.FactTypeDerivationExpressionChangeRule");
+				FactType.FactTypeDerivationExpressionChangeRule(e);
+				Neumont.Tools.Modeling.Diagnostics.TraceUtility.TraceRuleEnd(e.ModelElement.Store, "Neumont.Tools.ORM.ObjectModel.FactType.FactTypeDerivationExpressionChangeRule");
+			}
+		}
 		[Microsoft.VisualStudio.Modeling.RuleOn(typeof(FactTypeHasReadingOrder), Priority=Neumont.Tools.Modeling.FrameworkDomainModel.InlineRulePriority)]
 		private sealed class FactTypeHasReadingOrderAddRuleClass : Microsoft.VisualStudio.Modeling.AddRule
 		{
@@ -2237,37 +2264,6 @@ namespace Neumont.Tools.ORM.ObjectModel
 		}
 	}
 	#endregion // Rule classes for FactType.UnaryBinarizationUtility
-	#region Rule classes for FactTypeDerivationExpression
-	partial class FactTypeDerivationExpression
-	{
-		[Microsoft.VisualStudio.Modeling.RuleOn(typeof(FactTypeDerivationExpression), Priority=Neumont.Tools.Modeling.FrameworkDomainModel.InlineRulePriority)]
-		private sealed class FactTypeDerivationExpressionChangeRuleClass : Microsoft.VisualStudio.Modeling.ChangeRule
-		{
-			[System.Diagnostics.DebuggerStepThrough()]
-			public FactTypeDerivationExpressionChangeRuleClass()
-			{
-				base.IsEnabled = false;
-			}
-			/// <summary>
-			/// Provide the following method in class: 
-			/// Neumont.Tools.ORM.ObjectModel.FactTypeDerivationExpression
-			/// /// <summary>
-			/// /// ChangeRule: typeof(FactTypeDerivationExpression)
-			/// /// </summary>
-			/// private static void FactTypeDerivationExpressionChangeRule(ElementPropertyChangedEventArgs e)
-			/// {
-			/// }
-			/// </summary>
-			[System.Diagnostics.DebuggerStepThrough()]
-			public override void ElementPropertyChanged(Microsoft.VisualStudio.Modeling.ElementPropertyChangedEventArgs e)
-			{
-				Neumont.Tools.Modeling.Diagnostics.TraceUtility.TraceRuleStart(e.ModelElement.Store, "Neumont.Tools.ORM.ObjectModel.FactTypeDerivationExpression.FactTypeDerivationExpressionChangeRule");
-				FactTypeDerivationExpression.FactTypeDerivationExpressionChangeRule(e);
-				Neumont.Tools.Modeling.Diagnostics.TraceUtility.TraceRuleEnd(e.ModelElement.Store, "Neumont.Tools.ORM.ObjectModel.FactTypeDerivationExpression.FactTypeDerivationExpressionChangeRule");
-			}
-		}
-	}
-	#endregion // Rule classes for FactTypeDerivationExpression
 	#region Rule classes for FactTypeInstance
 	partial class FactTypeInstance
 	{
@@ -3756,6 +3752,32 @@ namespace Neumont.Tools.ORM.ObjectModel
 				Neumont.Tools.Modeling.Diagnostics.TraceUtility.TraceRuleStart(e.ModelElement.Store, "Neumont.Tools.ORM.ObjectModel.ObjectType.ObjectTypeDeletingRule");
 				ObjectType.ObjectTypeDeletingRule(e);
 				Neumont.Tools.Modeling.Diagnostics.TraceUtility.TraceRuleEnd(e.ModelElement.Store, "Neumont.Tools.ORM.ObjectModel.ObjectType.ObjectTypeDeletingRule");
+			}
+		}
+		[Microsoft.VisualStudio.Modeling.RuleOn(typeof(SubtypeDerivationExpression), Priority=Neumont.Tools.Modeling.FrameworkDomainModel.InlineRulePriority)]
+		private sealed class SubtypeDerivationExpressionChangeRuleClass : Microsoft.VisualStudio.Modeling.ChangeRule
+		{
+			[System.Diagnostics.DebuggerStepThrough()]
+			public SubtypeDerivationExpressionChangeRuleClass()
+			{
+				base.IsEnabled = false;
+			}
+			/// <summary>
+			/// Provide the following method in class: 
+			/// Neumont.Tools.ORM.ObjectModel.ObjectType
+			/// /// <summary>
+			/// /// ChangeRule: typeof(SubtypeDerivationExpression)
+			/// /// </summary>
+			/// private static void SubtypeDerivationExpressionChangeRule(ElementPropertyChangedEventArgs e)
+			/// {
+			/// }
+			/// </summary>
+			[System.Diagnostics.DebuggerStepThrough()]
+			public override void ElementPropertyChanged(Microsoft.VisualStudio.Modeling.ElementPropertyChangedEventArgs e)
+			{
+				Neumont.Tools.Modeling.Diagnostics.TraceUtility.TraceRuleStart(e.ModelElement.Store, "Neumont.Tools.ORM.ObjectModel.ObjectType.SubtypeDerivationExpressionChangeRule");
+				ObjectType.SubtypeDerivationExpressionChangeRule(e);
+				Neumont.Tools.Modeling.Diagnostics.TraceUtility.TraceRuleEnd(e.ModelElement.Store, "Neumont.Tools.ORM.ObjectModel.ObjectType.SubtypeDerivationExpressionChangeRule");
 			}
 		}
 		[Microsoft.VisualStudio.Modeling.RuleOn(typeof(SubtypeFact), Priority=Neumont.Tools.Modeling.FrameworkDomainModel.InlineRulePriority)]

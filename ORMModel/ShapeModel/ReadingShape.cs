@@ -430,7 +430,7 @@ namespace Neumont.Tools.ORM.ShapeModel
 							retVal = " **";
 							break;
 						case DerivationStorageType.PartiallyDerived:
-							retVal = " *—";
+							retVal = " +"; // previously " *—";
 							break;
 						default:
 							Debug.Fail("Unknown derivation storage type");
@@ -453,11 +453,11 @@ namespace Neumont.Tools.ORM.ShapeModel
 			}
 		}
 		/// <summary>
-		/// Causes the ReadingShape on a FactTypeShape to invalidate
+		/// Causes the <see cref="ReadingShape"/> child shapes on a <see cref="FactTypeShape"/>
 		/// </summary>
-		public static void InvalidateReadingShape(FactType factType)
+		private static void InvalidateReadingShape(FactType factType)
 		{
-			if (factType != null)
+			if (factType != null && !factType.IsDeleted)
 			{
 				foreach (ShapeElement se in PresentationViewsSubject.GetPresentation(factType))
 				{
@@ -657,6 +657,32 @@ namespace Neumont.Tools.ORM.ShapeModel
 			}
 		}
 		#endregion // Reading text display update rules
+		#region Derivation Rules
+		/// <summary>
+		/// ChangeRule: typeof(Neumont.Tools.ORM.ObjectModel.FactTypeDerivationExpression), FireTime=TopLevelCommit, Priority=DiagramFixupConstants.AutoLayoutShapesRulePriority;
+		/// </summary>
+		private static void DerivationChangedRule(ElementPropertyChangedEventArgs e)
+		{
+			if (e.DomainProperty.Id == FactTypeDerivationExpression.DerivationStorageDomainPropertyId)
+			{
+				InvalidateReadingShape(((FactTypeDerivationExpression)e.ModelElement).FactType);
+			}
+		}
+		/// <summary>
+		/// AddRule: typeof(Neumont.Tools.ORM.ObjectModel.FactTypeHasDerivationExpression), FireTime=TopLevelCommit, Priority=DiagramFixupConstants.AutoLayoutShapesRulePriority;
+		/// </summary>
+		private static void DerivationAddedRule(ElementAddedEventArgs e)
+		{
+			InvalidateReadingShape(((FactTypeHasDerivationExpression)e.ModelElement).FactType);
+		}
+		/// <summary>
+		/// DeleteRule: typeof(Neumont.Tools.ORM.ObjectModel.FactTypeHasDerivationExpression), FireTime=TopLevelCommit, Priority=DiagramFixupConstants.AutoLayoutShapesRulePriority;
+		/// </summary>
+		private static void DerivationDeletedRule(ElementDeletedEventArgs e)
+		{
+			InvalidateReadingShape(((FactTypeHasDerivationExpression)e.ModelElement).FactType);
+		}
+		#endregion // Derivation Rules
 		#region nested class ReadingAutoSizeTextField
 		/// <summary>
 		/// Contains code to replace RolePlayer place holders with an ellipsis.
@@ -1173,5 +1199,49 @@ namespace Neumont.Tools.ORM.ShapeModel
 			base.OnDoubleClick(e);
 		}
 		#endregion // Mouse handling
+		#region Deserialization Fixup
+		/// <summary>
+		/// Return a deserialization fixup listener. The listener ensures
+		/// the correct size for reading shapes.
+		/// </summary>
+		public static IDeserializationFixupListener FixupListener
+		{
+			get
+			{
+				return new ReadingShapeFixupListener();
+			}
+		}
+		/// <summary>
+		/// A listener to reset the size of a reading shape for a derived FactType.
+		/// </summary>
+		private sealed class ReadingShapeFixupListener : DeserializationFixupListener<ReadingShape>
+		{
+			/// <summary>
+			/// Create a new ReadingShapeFixupListener
+			/// </summary>
+			public ReadingShapeFixupListener()
+				: base((int)ORMDeserializationFixupPhase.ModifyStoredPresentationElements)
+			{
+			}
+			/// <summary>
+			/// Update the shape size if the derivation status is set. Fixes an earlier
+			/// problem where the shape was not correctly sized, and accounts for decorator
+			/// markings being modified over time and/or localized.
+			/// </summary>
+			protected sealed override void ProcessElement(ReadingShape element, Store store, INotifyElementAdded notifyAdded)
+			{
+				ReadingOrder order;
+				FactType factType;
+				FactTypeDerivationExpression derivationExpression;
+				if (!element.IsDeleted &&
+					null != (order = (ReadingOrder)element.ModelElement) &&
+					null != (factType = order.FactType) &&
+					null != (derivationExpression = factType.DerivationRule))
+				{
+					element.AutoResize();
+				}
+			}
+		}
+		#endregion // Deserialization Fixup
 	}
 }

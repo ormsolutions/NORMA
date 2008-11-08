@@ -2213,6 +2213,14 @@ namespace Neumont.Tools.ORM
 				return ResourceStrings.GetString(ResourceManagers.Model, "ModelError.RecognizedPhrase.DuplicateNameError.Message");
 			}
 		}
+		/// <summary>The string used to display that a subtype object is derived.</summary>
+		public static string ObjectTypeShapeDerivedSubtypeFormatString
+		{
+			get
+			{
+				return ResourceStrings.GetString(ResourceManagers.Diagram, "ObjectTypeShape.DerivedSubtypeFormatString");
+			}
+		}
 		/// <summary>The string used to display that an object is independent.</summary>
 		public static string ObjectTypeShapeIndependentFormatString
 		{
@@ -2229,20 +2237,12 @@ namespace Neumont.Tools.ORM
 				return ResourceStrings.GetString(ResourceManagers.Diagram, "ObjectTypeShape.ReferenceModeFormatString");
 			}
 		}
-		/// <summary>The string used to display an objectified type name.</summary>
-		public static string ObjectifiedFactTypeNameShapeStandardFormatString
+		/// <summary>The string used to display an objectified type name for an derived subtype with a reference mode.</summary>
+		public static string ObjectifiedFactTypeNameShapeRefModeDerivedSubtypeFormatString
 		{
 			get
 			{
-				return ResourceStrings.GetString(ResourceManagers.Diagram, "ObjectifiedFactTypeNameShape.StandardFormatString");
-			}
-		}
-		/// <summary>The string used to display an objectified type name for an independent object.</summary>
-		public static string ObjectifiedFactTypeNameShapeIndependentFormatString
-		{
-			get
-			{
-				return ResourceStrings.GetString(ResourceManagers.Diagram, "ObjectifiedFactTypeNameShape.IndependentFormatString");
+				return ResourceStrings.GetString(ResourceManagers.Diagram, "ObjectifiedFactTypeNameShape.RefModeDerivedSubtypeFormatString");
 			}
 		}
 		/// <summary>The string used to display an objectified type name for an independent object with a reference mode.</summary>

@@ -122,5 +122,18 @@ namespace Neumont.Tools.ORM.ObjectModel.Design
 			}
 			return base.IsPropertyDescriptorReadOnly(propertyDescriptor);
 		}
+		/// <summary>
+		/// Never show derivation rules on a <see cref="SubtypeFact"/>
+		/// </summary>
+		protected override bool ShouldCreatePropertyDescriptor(ModelElement requestor, DomainPropertyInfo domainProperty)
+		{
+			Guid propertyId = domainProperty.Id;
+			if (propertyId == FactType.DerivationRuleDisplayDomainPropertyId ||
+				propertyId == FactType.DerivationStorageDisplayDomainPropertyId)
+			{
+				return false;
+			}
+			return base.ShouldCreatePropertyDescriptor(requestor, domainProperty);
+		}
 	}
 }

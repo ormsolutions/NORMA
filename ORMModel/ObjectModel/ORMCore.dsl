@@ -416,6 +416,24 @@
 						<ExternalTypeMoniker Name="/System/Boolean"/>
 					</Type>
 				</DomainProperty>
+				<DomainProperty Name="DerivationRuleDisplay" DefaultValue="" DisplayName="DerivationRule" Id="B852BC09-7887-4BA7-A7AA-09D4F4E2AAD2" Kind="CustomStorage">
+					<Attributes>
+						<ClrAttribute Name="global::System.ComponentModel.Editor">
+							<Parameters>
+								<AttributeParameter Value="typeof(global::Neumont.Tools.ORM.ObjectModel.Design.DerivationRuleEditor)"/>
+								<AttributeParameter Value="typeof(global::System.Drawing.Design.UITypeEditor)"/>
+							</Parameters>
+						</ClrAttribute>
+						<ClrAttribute Name="global::System.ComponentModel.MergableProperty">
+							<Parameters>
+								<AttributeParameter Value="false"/>
+							</Parameters>
+						</ClrAttribute>
+					</Attributes>
+					<Type>
+						<ExternalTypeMoniker Name="/System/String"/>
+					</Type>
+				</DomainProperty>
 			</Properties>
 		</DomainClass>
 
@@ -1633,6 +1651,12 @@
 					</Type>
 				</DomainProperty>
 			</Properties>
+		</DomainClass>
+
+		<DomainClass Name="SubtypeDerivationExpression" Namespace="Neumont.Tools.ORM.ObjectModel" Id="CCE39440-4C8D-45E2-ACFE-1642989D1107" DisplayName="SubtypeDerivationExpression" Description="">
+			<BaseClass>
+				<DomainClassMoniker Name="Expression"/>
+			</BaseClass>
 		</DomainClass>
 
 		<DomainClass Name="ObjectTypeInstance" Namespace="Neumont.Tools.ORM.ObjectModel" Id="870F5EE8-0859-4710-A526-66635F4EFD14" DisplayName="ObjectTypeInstance" InheritanceModifier="Abstract" Description="">
@@ -3776,6 +3800,26 @@
 				<DomainRole Name="DerivationRule" PropertyName="FactType" Multiplicity="One" PropagatesDelete="true" IsPropertyGenerator="true" DisplayName="DerivationRule" Id="F0EBCC89-95A8-45E8-9865-616A9AC858F9">
 					<RolePlayer>
 						<DomainClassMoniker Name="FactTypeDerivationExpression"/>
+					</RolePlayer>
+				</DomainRole>
+			</Target>
+		</DomainRelationship>
+
+		<DomainRelationship Name="SubtypeHasDerivationExpression" Namespace="Neumont.Tools.ORM.ObjectModel" IsEmbedding="true" Id="EFC3B143-5649-4D72-87B1-3FBBC58D9764">
+			<!--<BaseRelationship>
+				<DomainRelationshipMoniker Name="ORMElementLink"/>
+			</BaseRelationship>-->
+			<Source>
+				<DomainRole Name="Subtype" PropertyName="DerivationRule" Multiplicity="ZeroOne" PropagatesDelete="false" IsPropertyGenerator="true" DisplayName="Subtype" Id="10EA88C0-446D-4F1C-84E2-726031C14211">
+					<RolePlayer>
+						<DomainClassMoniker Name="ObjectType"/>
+					</RolePlayer>
+				</DomainRole>
+			</Source>
+			<Target>
+				<DomainRole Name="DerivationRule" PropertyName="Subtype" Multiplicity="One" PropagatesDelete="true" IsPropertyGenerator="true" DisplayName="DerivationRule" Id="ACCEFC08-FD9D-48B5-B664-29B38484326B">
+					<RolePlayer>
+						<DomainClassMoniker Name="SubtypeDerivationExpression"/>
 					</RolePlayer>
 				</DomainRole>
 			</Target>

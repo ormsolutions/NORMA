@@ -207,6 +207,7 @@ namespace Neumont.Tools.ORM.ObjectModel
 				classNameMap.Add("FactTypeRoleInstance", FactTypeRoleInstance.DomainClassId);
 				classNameMap.Add("Expression", Expression.DomainClassId);
 				classNameMap.Add("DerivationExpression", FactTypeDerivationExpression.DomainClassId);
+				classNameMap.Add("SubtypeDerivationExpression", SubtypeDerivationExpression.DomainClassId);
 				classNameMap.Add("SubtypeFact", SubtypeFact.DomainClassId);
 				classNameMap.Add("ReadingOrder", ReadingOrder.DomainClassId);
 				classNameMap.Add("Reading", Reading.DomainClassId);
@@ -1387,17 +1388,18 @@ namespace Neumont.Tools.ORM.ObjectModel
 						baseInfoCount = baseInfo.Length;
 					}
 				}
-				ret = new CustomSerializedContainerElementInfo[baseInfoCount + 6];
+				ret = new CustomSerializedContainerElementInfo[baseInfoCount + 7];
 				if (baseInfoCount != 0)
 				{
-					baseInfo.CopyTo(ret, 6);
+					baseInfo.CopyTo(ret, 7);
 				}
 				ret[0] = new CustomSerializedContainerElementInfo(null, "Definitions", null, CustomSerializedElementWriteStyle.Element, null, ObjectTypeHasDefinition.DefinitionDomainRoleId);
 				ret[1] = new CustomSerializedContainerElementInfo(null, "Notes", null, CustomSerializedElementWriteStyle.Element, null, ObjectTypeHasNote.NoteDomainRoleId);
 				ret[2] = new CustomSerializedContainerElementInfo(null, "Abbreviations", null, CustomSerializedElementWriteStyle.Element, null, ObjectTypeHasAbbreviation.AbbreviationDomainRoleId);
 				ret[3] = new CustomSerializedContainerElementInfo(null, "PlayedRoles", null, CustomSerializedElementWriteStyle.Element, null, ObjectTypePlaysRole.PlayedRoleDomainRoleId);
-				ret[4] = new CustomSerializedContainerElementInfo(null, "ValueRestriction", null, CustomSerializedElementWriteStyle.Element, null, ValueTypeHasValueConstraint.ValueConstraintDomainRoleId);
-				ret[5] = new CustomSerializedContainerElementInfo(null, "Instances", null, CustomSerializedElementWriteStyle.Element, null, ValueTypeHasValueTypeInstance.ValueTypeInstanceDomainRoleId, EntityTypeHasEntityTypeInstance.EntityTypeInstanceDomainRoleId, EntityTypeSubtypeHasEntityTypeSubtypeInstance.EntityTypeSubtypeInstanceDomainRoleId);
+				ret[4] = new CustomSerializedContainerElementInfo(null, "SubtypeDerivationRule", null, CustomSerializedElementWriteStyle.Element, null, SubtypeHasDerivationExpression.DerivationRuleDomainRoleId);
+				ret[5] = new CustomSerializedContainerElementInfo(null, "ValueRestriction", null, CustomSerializedElementWriteStyle.Element, null, ValueTypeHasValueConstraint.ValueConstraintDomainRoleId);
+				ret[6] = new CustomSerializedContainerElementInfo(null, "Instances", null, CustomSerializedElementWriteStyle.Element, null, ValueTypeHasValueTypeInstance.ValueTypeInstanceDomainRoleId, EntityTypeHasEntityTypeInstance.EntityTypeInstanceDomainRoleId, EntityTypeSubtypeHasEntityTypeSubtypeInstance.EntityTypeSubtypeInstanceDomainRoleId);
 				ObjectType.myCustomSerializedChildElementInfo = ret;
 			}
 			return ret;
@@ -1565,32 +1567,34 @@ namespace Neumont.Tools.ORM.ObjectModel
 				roleOrderDictionary[string.Concat(domainRole.DomainRelationship.ImplementationClass.FullName, ".", domainRole.Name)] = 2;
 				domainRole = domainDataDirectory.FindDomainRole(ObjectTypePlaysRole.PlayedRoleDomainRoleId).OppositeDomainRole;
 				roleOrderDictionary[string.Concat(domainRole.DomainRelationship.ImplementationClass.FullName, ".", domainRole.Name)] = 3;
-				domainRole = domainDataDirectory.FindDomainRole(ValueTypeHasDataType.DataTypeDomainRoleId).OppositeDomainRole;
+				domainRole = domainDataDirectory.FindDomainRole(SubtypeHasDerivationExpression.DerivationRuleDomainRoleId).OppositeDomainRole;
 				roleOrderDictionary[string.Concat(domainRole.DomainRelationship.ImplementationClass.FullName, ".", domainRole.Name)] = 4;
-				domainRole = domainDataDirectory.FindDomainRole(ValueTypeHasValueConstraint.ValueConstraintDomainRoleId).OppositeDomainRole;
+				domainRole = domainDataDirectory.FindDomainRole(ValueTypeHasDataType.DataTypeDomainRoleId).OppositeDomainRole;
 				roleOrderDictionary[string.Concat(domainRole.DomainRelationship.ImplementationClass.FullName, ".", domainRole.Name)] = 5;
-				domainRole = domainDataDirectory.FindDomainRole(EntityTypeHasPreferredIdentifier.PreferredIdentifierDomainRoleId).OppositeDomainRole;
+				domainRole = domainDataDirectory.FindDomainRole(ValueTypeHasValueConstraint.ValueConstraintDomainRoleId).OppositeDomainRole;
 				roleOrderDictionary[string.Concat(domainRole.DomainRelationship.ImplementationClass.FullName, ".", domainRole.Name)] = 6;
-				domainRole = domainDataDirectory.FindDomainRole(Objectification.NestedFactTypeDomainRoleId).OppositeDomainRole;
+				domainRole = domainDataDirectory.FindDomainRole(EntityTypeHasPreferredIdentifier.PreferredIdentifierDomainRoleId).OppositeDomainRole;
 				roleOrderDictionary[string.Concat(domainRole.DomainRelationship.ImplementationClass.FullName, ".", domainRole.Name)] = 7;
+				domainRole = domainDataDirectory.FindDomainRole(Objectification.NestedFactTypeDomainRoleId).OppositeDomainRole;
+				roleOrderDictionary[string.Concat(domainRole.DomainRelationship.ImplementationClass.FullName, ".", domainRole.Name)] = 8;
 				domainRole = domainDataDirectory.FindDomainRole(ValueTypeHasValueTypeInstance.ValueTypeInstanceDomainRoleId).OppositeDomainRole;
-				roleOrderDictionary[string.Concat(domainRole.DomainRelationship.ImplementationClass.FullName, ".", domainRole.Name)] = 8;
-				domainRole = domainDataDirectory.FindDomainRole(EntityTypeHasEntityTypeInstance.EntityTypeInstanceDomainRoleId).OppositeDomainRole;
-				roleOrderDictionary[string.Concat(domainRole.DomainRelationship.ImplementationClass.FullName, ".", domainRole.Name)] = 8;
-				domainRole = domainDataDirectory.FindDomainRole(EntityTypeSubtypeHasEntityTypeSubtypeInstance.EntityTypeSubtypeInstanceDomainRoleId).OppositeDomainRole;
-				roleOrderDictionary[string.Concat(domainRole.DomainRelationship.ImplementationClass.FullName, ".", domainRole.Name)] = 8;
-				domainRole = domainDataDirectory.FindDomainRole(ObjectTypeImpliesMandatoryConstraint.MandatoryConstraintDomainRoleId).OppositeDomainRole;
 				roleOrderDictionary[string.Concat(domainRole.DomainRelationship.ImplementationClass.FullName, ".", domainRole.Name)] = 9;
-				domainRole = domainDataDirectory.FindDomainRole(ObjectTypeHasEntityTypeRequiresReferenceSchemeError.ReferenceSchemeErrorDomainRoleId).OppositeDomainRole;
+				domainRole = domainDataDirectory.FindDomainRole(EntityTypeHasEntityTypeInstance.EntityTypeInstanceDomainRoleId).OppositeDomainRole;
+				roleOrderDictionary[string.Concat(domainRole.DomainRelationship.ImplementationClass.FullName, ".", domainRole.Name)] = 9;
+				domainRole = domainDataDirectory.FindDomainRole(EntityTypeSubtypeHasEntityTypeSubtypeInstance.EntityTypeSubtypeInstanceDomainRoleId).OppositeDomainRole;
+				roleOrderDictionary[string.Concat(domainRole.DomainRelationship.ImplementationClass.FullName, ".", domainRole.Name)] = 9;
+				domainRole = domainDataDirectory.FindDomainRole(ObjectTypeImpliesMandatoryConstraint.MandatoryConstraintDomainRoleId).OppositeDomainRole;
 				roleOrderDictionary[string.Concat(domainRole.DomainRelationship.ImplementationClass.FullName, ".", domainRole.Name)] = 10;
-				domainRole = domainDataDirectory.FindDomainRole(ObjectTypeHasDuplicateNameError.DuplicateNameErrorDomainRoleId).OppositeDomainRole;
+				domainRole = domainDataDirectory.FindDomainRole(ObjectTypeHasEntityTypeRequiresReferenceSchemeError.ReferenceSchemeErrorDomainRoleId).OppositeDomainRole;
 				roleOrderDictionary[string.Concat(domainRole.DomainRelationship.ImplementationClass.FullName, ".", domainRole.Name)] = 11;
-				domainRole = domainDataDirectory.FindDomainRole(ObjectTypeHasPreferredIdentifierRequiresMandatoryError.PreferredIdentifierRequiresMandatoryErrorDomainRoleId).OppositeDomainRole;
+				domainRole = domainDataDirectory.FindDomainRole(ObjectTypeHasDuplicateNameError.DuplicateNameErrorDomainRoleId).OppositeDomainRole;
 				roleOrderDictionary[string.Concat(domainRole.DomainRelationship.ImplementationClass.FullName, ".", domainRole.Name)] = 12;
-				domainRole = domainDataDirectory.FindDomainRole(ObjectTypeHasCompatibleSupertypesError.CompatibleSupertypesErrorDomainRoleId).OppositeDomainRole;
+				domainRole = domainDataDirectory.FindDomainRole(ObjectTypeHasPreferredIdentifierRequiresMandatoryError.PreferredIdentifierRequiresMandatoryErrorDomainRoleId).OppositeDomainRole;
 				roleOrderDictionary[string.Concat(domainRole.DomainRelationship.ImplementationClass.FullName, ".", domainRole.Name)] = 13;
-				domainRole = domainDataDirectory.FindDomainRole(ModelNoteReferencesObjectType.NoteDomainRoleId).OppositeDomainRole;
+				domainRole = domainDataDirectory.FindDomainRole(ObjectTypeHasCompatibleSupertypesError.CompatibleSupertypesErrorDomainRoleId).OppositeDomainRole;
 				roleOrderDictionary[string.Concat(domainRole.DomainRelationship.ImplementationClass.FullName, ".", domainRole.Name)] = 14;
+				domainRole = domainDataDirectory.FindDomainRole(ModelNoteReferencesObjectType.NoteDomainRoleId).OppositeDomainRole;
+				roleOrderDictionary[string.Concat(domainRole.DomainRelationship.ImplementationClass.FullName, ".", domainRole.Name)] = 15;
 				this.myRoleOrderDictionary = roleOrderDictionary;
 			}
 			int IComparer<DomainRoleInfo>.Compare(DomainRoleInfo x, DomainRoleInfo y)
@@ -1667,6 +1671,8 @@ namespace Neumont.Tools.ORM.ObjectModel
 				childElementMappings.Add("||http://schemas.neumont.edu/ORM/2006-04/ORMCore|Notes||", match);
 				match.InitializeRoles(ObjectTypeHasAbbreviation.AbbreviationDomainRoleId);
 				childElementMappings.Add("||http://schemas.neumont.edu/ORM/2006-04/ORMCore|Abbreviations||", match);
+				match.InitializeRoles(SubtypeHasDerivationExpression.DerivationRuleDomainRoleId);
+				childElementMappings.Add("||http://schemas.neumont.edu/ORM/2006-04/ORMCore|SubtypeDerivationRule||", match);
 				match.InitializeRoles(ValueTypeHasValueConstraint.ValueConstraintDomainRoleId);
 				childElementMappings.Add("||http://schemas.neumont.edu/ORM/2006-04/ORMCore|ValueRestriction||", match);
 				match.InitializeRoles(ValueTypeHasValueTypeInstance.ValueTypeInstanceDomainRoleId, EntityTypeHasEntityTypeInstance.EntityTypeInstanceDomainRoleId, EntityTypeSubtypeHasEntityTypeSubtypeInstance.EntityTypeSubtypeInstanceDomainRoleId);
@@ -3698,6 +3704,36 @@ namespace Neumont.Tools.ORM.ObjectModel
 		}
 	}
 	#endregion // FactTypeDerivationExpression serialization
+	#region SubtypeDerivationExpression serialization
+	partial class SubtypeDerivationExpression : ICustomSerializedElement
+	{
+		/// <summary>Implements ICustomSerializedElement.SupportedCustomSerializedOperations</summary>
+		protected new CustomSerializedElementSupportedOperations SupportedCustomSerializedOperations
+		{
+			get
+			{
+				return base.SupportedCustomSerializedOperations | CustomSerializedElementSupportedOperations.None;
+			}
+		}
+		CustomSerializedElementSupportedOperations ICustomSerializedElement.SupportedCustomSerializedOperations
+		{
+			get
+			{
+				return this.SupportedCustomSerializedOperations;
+			}
+		}
+		/// <summary>Implements ICustomSerializedElement.ShouldSerialize</summary>
+		protected new bool ShouldSerialize()
+		{
+			// We leave this in memory so that a user can easily switch subtypes, but do not serialize it.
+			return this.Subtype.IsSubtype;
+		}
+		bool ICustomSerializedElement.ShouldSerialize()
+		{
+			return this.ShouldSerialize();
+		}
+	}
+	#endregion // SubtypeDerivationExpression serialization
 	#region SubtypeFact serialization
 	partial class SubtypeFact : ICustomSerializedElement
 	{

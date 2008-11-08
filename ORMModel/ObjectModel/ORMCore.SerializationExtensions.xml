@@ -288,6 +288,9 @@
 		<se:Container Name="PlayedRoles">
 			<se:Link RelationshipName="ObjectTypePlaysRole" RoleName="PlayedRole"/>
 		</se:Container>
+		<se:Container Name="SubtypeDerivationRule">
+			<se:Embed RelationshipName="SubtypeHasDerivationExpression" RoleName="DerivationRule"/>
+		</se:Container>
 		<se:Link Name="ConceptualDataType" RelationshipName="ValueTypeHasDataType" RoleName="DataType" WriteStyle="PrimaryLinkElement"/>
 		<se:Container Name="ValueRestriction">
 			<se:Embed RelationshipName="ValueTypeHasValueConstraint" RoleName="ValueConstraint"/>
@@ -601,6 +604,18 @@
 		<se:Attribute ID="Body" WriteStyle="Element"/>
 	</se:Element>
 	<se:Element Class="FactTypeDerivationExpression" Name="DerivationExpression" Override="true"/>
+	<se:Element Class="SubtypeDerivationExpression" Override="true">
+		<se:ConditionalSerialization>
+			<plx:comment>We leave this in memory so that a user can easily switch subtypes, but do not serialize it.</plx:comment>
+			<plx:return>
+				<plx:callInstance name="IsSubtype" type="property">
+					<plx:callObject>
+						<plx:callThis name="Subtype" type="property"/>
+					</plx:callObject>
+				</plx:callInstance>
+			</plx:return>
+		</se:ConditionalSerialization>
+	</se:Element>
 	<se:Element Class="SubtypeFact" Name="SubtypeFact" Override="true">
 		<!-- UNDONE: Remove IsPrimary on next file format change -->
 		<se:Attribute ID="IsPrimary" ReadOnly="true"/>

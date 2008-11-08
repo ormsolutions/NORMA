@@ -146,7 +146,7 @@
 		<value>Derived And Stored</value>
 	</data>
 	<data name="DerivationStorageType.PartiallyDerived" xml:space="preserve">
-		<value>Partially Derived</value>
+		<value>SemiDerived</value>
 	</data>
 	<data name="ExclusiveOrConstraint.ClassName" xml:space="preserve">
 		<value>ExclusiveOrConstraint</value>

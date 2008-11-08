@@ -531,6 +531,10 @@
     <value xml:space="preserve">Move Role Sequence Up</value>
     <comment xml:space="preserve">The transaction name used for moving a role sequence up in a multi column external uniqueness constraint. The text appears in the undo dropdown in the VS IDE.</comment>
   </data>
+  <data name="ObjectTypeShape.DerivedSubtypeFormatString">
+    <value xml:space="preserve">{0} *</value>
+    <comment xml:space="preserve">The string used to display that a subtype object is derived.</comment>
+  </data>
   <data name="ObjectTypeShape.IndependentFormatString">
     <value xml:space="preserve">{0} !</value>
     <comment xml:space="preserve">The string used to display that an object is independent.</comment>
@@ -539,6 +543,10 @@
     <value xml:space="preserve">({0})</value>
     <comment xml:space="preserve">The string used to display a reference mode.</comment>
   </data>
+  <data name="ObjectifiedFactTypeNameShape.RefModeDerivedSubtypeFormatString">
+    <value xml:space="preserve">"{0} ({1})*"</value>
+    <comment xml:space="preserve">The string used to display an objectified type name for an derived subtype with a reference mode.</comment>
+  </data>
   <data name="ObjectifiedFactTypeNameShape.RefModeIndependentFormatString">
     <value xml:space="preserve">"{0} ({1})!"</value>
     <comment xml:space="preserve">The string used to display an objectified type name for an independent object with a reference mode.</comment>
@@ -546,14 +554,6 @@
   <data name="ObjectifiedFactTypeNameShape.RefModeFormatString">
     <value xml:space="preserve">"{0} ({1})"</value>
     <comment xml:space="preserve">The string used to display an objectified type name for an object with a reference mode.</comment>
-  </data>
-  <data name="ObjectifiedFactTypeNameShape.StandardFormatString">
-    <value xml:space="preserve">"{0}"</value>
-    <comment xml:space="preserve">The string used to display an objectified type name.</comment>
-  </data>
-  <data name="ObjectifiedFactTypeNameShape.IndependentFormatString">
-    <value xml:space="preserve">"{0} !"</value>
-    <comment xml:space="preserve">The string used to display an objectified type name for an independent object.</comment>
   </data>
   <data name="ObjectifyFactType.TransactionName">
     <value xml:space="preserve">Objectify Fact Type</value>
