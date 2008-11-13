@@ -1074,13 +1074,14 @@ namespace Neumont.Tools.ORM.ObjectModel
 			ObjectType entityType;
 			UniquenessConstraint pid;
 			if (null != (entityType = factType.NestingType) &&
-				null != (pid = entityType.PreferredIdentifier))
+				null != (pid = entityType.ResolvedPreferredIdentifier))
 			{
 				LinkedElementCollection<FactType> pidFactTypes;
 				FactType identifierFactType;
 				Role unaryRole = null;
 				ObjectifiedUnaryRole objectifiedUnaryRole = null;
-				if (pid.IsInternal &&
+				if (pid.PreferredIdentifierFor == entityType &&
+					pid.IsInternal &&
 					1 == (pidFactTypes = pid.FactTypeCollection).Count &&
 					((identifierFactType = pidFactTypes[0]) == factType ||
 					(null != (unaryRole = factType.UnaryRole) &&

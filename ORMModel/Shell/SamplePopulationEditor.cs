@@ -2361,6 +2361,14 @@ namespace Neumont.Tools.ORM.Shell
 				{
 					EntityTypeSubtypeInstance subtypeInstance = objectInstance as EntityTypeSubtypeInstance;
 					EntityTypeInstance entityInstance = (subtypeInstance != null) ? subtypeInstance.SupertypeInstance : (EntityTypeInstance)objectInstance;
+					ObjectType entityTypeSubtype;
+					if (subtypeInstance == null &&
+						null != (entityTypeSubtype = myEntityTypeSubtype))
+					{
+						// Doing this simple sanity check means that we can call this
+						// update function for all subtype cases.
+						subtypeInstance = EntityTypeSubtypeInstance.GetSubtypeInstance(entityInstance, entityTypeSubtype, true, false);
+					}
 					UpdateInstanceFields(entityInstance, subtypeInstance);
 				}
 				/// <summary>
@@ -2476,7 +2484,7 @@ namespace Neumont.Tools.ORM.Shell
 					get
 					{
 						Role role = myRole;
-						return (role != null) ? role.RolePlayer : myIsEntityTypeEditor ? myEntityType : (myEntityTypeSubtype ?? myEntityType);
+						return (role != null && (!(role is SubtypeMetaRole) || myEntityType == null)) ? role.RolePlayer : myIsEntityTypeEditor ? myEntityType : (myEntityTypeSubtype ?? myEntityType);
 					}
 				}
 				#endregion // Accessor Properties
@@ -2488,8 +2496,9 @@ namespace Neumont.Tools.ORM.Shell
 				public IVirtualTreeInPlaceControl CreateInPlaceEditControl()
 				{
 					ObjectType rolePlayer;
+					Role role = myRole;
 					bool blockEdits =
-						(null == (rolePlayer = ContextTargetObjectType)) ||
+						(null == (rolePlayer = (role is SubtypeMetaRole) ? ContextTargetObjectType : ContextObjectType)) ||
 						(myRole != null && rolePlayer.NestedFactType != null) ||
 						HasComplexIdentifier(rolePlayer);
 					TypeEditorHost host = EditContextTypeEditorHost.Create(
@@ -2524,10 +2533,10 @@ namespace Neumont.Tools.ORM.Shell
 								Role role = instance.myRole;
 								if (columnInstance == null)
 								{
-									ObjectType objectifyingType = (role != null) ? role.RolePlayer : (instance.myEntityTypeSubtype ?? instance.myEntityType);
+									ObjectType objectifyingType = (role != null) ? ((role is SubtypeMetaRole) ? instance.myEntityType : role.RolePlayer) : (instance.myEntityTypeSubtype ?? instance.myEntityType);
 									if (objectifyingType != null)
 									{
-										return ObjectTypeInstance.GetDisplayString(null, instance.myEntityTypeSubtype ?? objectifyingType, role == null);
+										return ObjectTypeInstance.GetDisplayString(null, (role is SubtypeMetaRole) ? objectifyingType : (instance.myEntityTypeSubtype ?? objectifyingType), role == null);
 									}
 								}
 								else if (role == null)
@@ -5915,7 +5924,7 @@ namespace Neumont.Tools.ORM.Shell
 							editContext = new CellEditContext(
 								(supertypeIdentifyingRole != null) ? supertypeIdentifyingRole.RolePlayer : rowType,
 								(supertypeIdentifyingRole != null) ? rowType : null,
-								supertypeIdentifyingRole,
+								GetPreferredSubtypeRole(rowType),
 								myEditInstance,
 								myEditSubtypeInstance, this);
 							break;
@@ -7477,7 +7486,7 @@ namespace Neumont.Tools.ORM.Shell
 				EntityTypeInstance editInstance = myEditInstance;
 				ObjectTypeInstance recurseConnectInstance = null;
 
-				if (identifierRole is SupertypeMetaRole && (factInstance == null || !(factInstance.FactType is SubtypeFact)))
+				if ((identifierRole is SupertypeMetaRole || identifierRole is SubtypeMetaRole) && (factInstance == null || !(factInstance.FactType is SubtypeFact)))
 				{
 					ObjectType subtype = ContextObjectType;
 					EntityTypeInstance entityInstance = (EntityTypeInstance)instance;

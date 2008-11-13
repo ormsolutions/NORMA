@@ -470,7 +470,7 @@ namespace Neumont.Tools.ORM.ShapeModel
 		/// <param name="objectType">The associated model element</param>
 		private static void ResizeAssociatedShapes(ObjectType objectType)
 		{
-			if (!objectType.IsDeleted && objectType != null)
+			if (objectType != null && !objectType.IsDeleted)
 			{
 				LinkedElementCollection<PresentationElement> pels = PresentationViewsSubject.GetPresentation(objectType);
 				int pelCount = pels.Count;
