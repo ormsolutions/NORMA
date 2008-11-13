@@ -123,6 +123,8 @@ namespace Neumont.Tools.ORM.Shell
 						AttachEventHandlers(currentDoc);
 						OnORMSelectionContainerChanged();
 					}
+					Guid commandSetId = typeof(ORMDesignerEditorFactory).GUID;
+					Frame.SetGuidProperty((int)__VSFPROPID.VSFPROPID_InheritKeyBindings, ref commandSetId);
 				}
 				return myEditor;
 			}

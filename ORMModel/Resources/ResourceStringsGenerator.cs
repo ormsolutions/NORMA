@@ -1357,6 +1357,30 @@ namespace Neumont.Tools.ORM
 				return ResourceStrings.GetString(ResourceManagers.Diagram, "Command.NextOnThisDiagram.Text");
 			}
 		}
+		/// <summary>The window title for the ORM diagram spy window</summary>
+		public static string DiagramSpyWindowTitle
+		{
+			get
+			{
+				return ResourceStrings.GetString(ResourceManagers.Diagram, "DiagramSpy.WindowTitle");
+			}
+		}
+		/// <summary>The header text shown on the diagram spy watermark when a diagram is not selected</summary>
+		public static string DiagramSpyDiagramListStart
+		{
+			get
+			{
+				return ResourceStrings.GetString(ResourceManagers.Diagram, "DiagramSpy.DiagramListStart");
+			}
+		}
+		/// <summary>The text shown on the diagram spy watermark when no diagrams are available</summary>
+		public static string DiagramSpyNoSelection
+		{
+			get
+			{
+				return ResourceStrings.GetString(ResourceManagers.Diagram, "DiagramSpy.NoSelection");
+			}
+		}
 		/// <summary>The text that will be displayed in the column header of the reading list in the reading editor tool window.</summary>
 		public static string ModelReadingEditorListColumnHeaderReadingText
 		{

@@ -3,6 +3,7 @@
 	Neumont Object-Role Modeling Architect for Visual Studio
 
 	Copyright © Neumont University. All rights reserved.
+	Copyright © Matthew Curland. All rights reserved.
 
 	The use and distribution terms for this software are covered by the
 	Common Public License 1.0 (http://opensource.org/licenses/cpl) which
@@ -162,6 +163,15 @@
 			<RegistryKey Action="createAndRemoveOnUninstall" Key="{2B93A7CC-1F28-4347-8A22-644FB7B92090}">
 				<RegistryValue Value="{$(var.NORMAVSPackageGuid)}" Type="string"/>
 				<RegistryValue Name="Name" Value="Neumont.Tools.ORM.Shell.ORMContextWindow" Type="string"/>
+				<RegistryValue Name="Style" Value="Tabbed" Type="string"/>
+				<RegistryValue Name="Orientation" Value="Right" Type="string"/>
+				<RegistryValue Name="Window" Value="{$(var.VSOutputWindowGuid)}" Type="string"/>
+				<RegistryValue Name="DontForceCreate" Value="1" Type="integer"/>
+				<RegistryValue Key="Visibility" Name="{$(var.NORMAVSEditorGuid)}" Value="0" Type="integer"/>
+			</RegistryKey>
+			<RegistryKey Action="createAndRemoveOnUninstall" Key="{19A5C15D-14D4-4A88-9891-A3294077BE56}">
+				<RegistryValue Value="{$(var.NORMAVSPackageGuid)}" Type="string"/>
+				<RegistryValue Name="Name" Value="Neumont.Tools.ORM.Shell.ORMDiagramSpyWindow" Type="string"/>
 				<RegistryValue Name="Style" Value="Tabbed" Type="string"/>
 				<RegistryValue Name="Orientation" Value="Right" Type="string"/>
 				<RegistryValue Name="Window" Value="{$(var.VSOutputWindowGuid)}" Type="string"/>

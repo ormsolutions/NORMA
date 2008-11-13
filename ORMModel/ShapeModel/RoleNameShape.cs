@@ -3,6 +3,7 @@
 * Neumont Object-Role Modeling Architect for Visual Studio                 *
 *                                                                          *
 * Copyright © Neumont University. All rights reserved.                     *
+* Copyright © Matthew Curland. All rights reserved.                        *
 *                                                                          *
 * The use and distribution terms for this software are covered by the      *
 * Common Public License 1.0 (http://opensource.org/licenses/cpl) which     *
@@ -27,7 +28,7 @@ using System.Globalization;
 
 namespace Neumont.Tools.ORM.ShapeModel
 {
-	public partial class RoleNameShape : ISelectionContainerFilter
+	public partial class RoleNameShape : ISelectionContainerFilter, IProxyDisplayProvider
 	{
 		#region Member Variables
 		private static AutoSizeTextField myTextField;
@@ -238,5 +239,36 @@ namespace Neumont.Tools.ORM.ShapeModel
 			}
 		}
 		#endregion // RoleNameAutoSizeTextField class
+
+		#region IProxyDisplayProvider Implementation
+		/// <summary>
+		/// Implements <see cref="IProxyDisplayProvider.ElementDisplayedAs"/>
+		/// </summary>
+		protected object ElementDisplayedAs(ModelElement element, ModelError forError)
+		{
+			Role role;
+			FactType factType;
+			//((Role)ModelElement).FactType == ((FactType)element).ImpliedByObjectification.NestedFactType
+			if (null != (role = element as Role))
+			{
+				return ((FactTypeShape)ParentShape).GetDiagramItem(role);
+			}
+			else if (null != (factType = element as FactType))
+			{
+				Objectification objectification;
+				if (null != (objectification = factType.ImpliedByObjectification) &&
+					null != (role = (Role)ModelElement) &&
+					role.FactType == objectification.NestedFactType)
+				{
+					return ((FactTypeShape)ParentShape).GetDiagramItem(role);
+				}
+			}
+			return null;
+		}
+		object IProxyDisplayProvider.ElementDisplayedAs(ModelElement element, ModelError forError)
+		{
+			return ElementDisplayedAs(element, forError);
+		}
+		#endregion // IProxyDisplayProvider Implementation
 	}
 }

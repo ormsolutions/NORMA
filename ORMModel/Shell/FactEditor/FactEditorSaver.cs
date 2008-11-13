@@ -3,6 +3,7 @@
 * Neumont Object-Role Modeling Architect for Visual Studio                 *
 *                                                                          *
 * Copyright © Neumont University. All rights reserved.                     *
+* Copyright © Matthew Curland. All rights reserved.                        *
 *                                                                          *
 * The use and distribution terms for this software are covered by the      *
 * Common Public License 1.0 (http://opensource.org/licenses/cpl) which     *
@@ -38,7 +39,7 @@ namespace Neumont.Tools.ORM.Shell
 		/// </summary>
 		private struct FactSaver
 		{
-			private ORMDesignerDocView myCurrentDocView;
+			private IORMDesignerView myCurrentDocView;
 			private ORMDesignerDocData myCurrentDocument;
 			private ReadingOrder mySelectedReadingOrder;
 			private IList<RoleBase> mySelectedRoleOrder;
@@ -55,12 +56,12 @@ namespace Neumont.Tools.ORM.Shell
 			/// <param name="selectedRoleOrder">Non-binding currently selected role order that does not match and existing reading order.</param>
 			/// <param name="parsedFactType">Parsed FactType</param>
 			/// <returns>The <see cref="ReadingOrder"/> that was created or modified</returns>
-			public static ReadingOrder IntegrateParsedFactType(ORMDesignerDocData docData, ORMDesignerDocView docView, FactType selectedFactType, ReadingOrder selectedReadingOrder, IList<RoleBase> selectedRoleOrder, ParsedFactType parsedFactType)
+			public static ReadingOrder IntegrateParsedFactType(ORMDesignerDocData docData, IORMDesignerView docView, FactType selectedFactType, ReadingOrder selectedReadingOrder, IList<RoleBase> selectedRoleOrder, ParsedFactType parsedFactType)
 			{
 				return (new FactSaver(docData, docView, selectedFactType, selectedReadingOrder, selectedRoleOrder, parsedFactType)).Go();
 			}
 
-			private FactSaver(ORMDesignerDocData docData, ORMDesignerDocView docView, FactType selectedFactType, ReadingOrder selectedReadingOrder, IList<RoleBase> selectedRoleOrder, ParsedFactType parsedFactType)
+			private FactSaver(ORMDesignerDocData docData, IORMDesignerView docView, FactType selectedFactType, ReadingOrder selectedReadingOrder, IList<RoleBase> selectedRoleOrder, ParsedFactType parsedFactType)
 			{
 				myCurrentDocView = docView;
 				myCurrentDocument = docData;
@@ -80,7 +81,7 @@ namespace Neumont.Tools.ORM.Shell
 
 				if (null != model)
 				{
-					ORMDesignerDocView docView = myCurrentDocView;
+					IORMDesignerView docView = myCurrentDocView;
 					ORMDiagram diagram = (docView != null) ? docView.CurrentDiagram as ORMDiagram : null;
 					LayoutManager layoutManager = (diagram != null) ? new LayoutManager(diagram, (diagram.Store as IORMToolServices).GetLayoutEngine(typeof(ORMRadialLayoutEngine))) : null;
 					List<ModelElement> newlyCreatedElementsWithNoShape = null;

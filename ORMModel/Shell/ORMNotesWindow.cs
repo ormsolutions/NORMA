@@ -347,6 +347,8 @@ namespace Neumont.Tools.ORM.Shell
 					textBox.LostFocus += new EventHandler(myTextBox_LostFocus);
 					ContainerControl container = new ContainerControl();	// and set up a parent container.
 					container.Controls.Add(textBox);
+					Guid commandSetId = typeof(ORMDesignerEditorFactory).GUID;
+					Frame.SetGuidProperty((int)__VSFPROPID.VSFPROPID_InheritKeyBindings, ref commandSetId);
 				}
 				return textBox.Parent;	// Finally, pass the parent container back as the window.
 			}
@@ -436,7 +438,7 @@ namespace Neumont.Tools.ORM.Shell
 		}
 		/// <summary>
 		/// Populates mySelectedNoteOwners with all currently selected note
-		/// owners in the passed in ORMDesignerDocView.
+		/// owners in the current selection container.
 		/// </summary>
 		private void PopulateSelectedNoteOwners()
 		{

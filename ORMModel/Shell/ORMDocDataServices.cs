@@ -318,25 +318,25 @@ namespace Neumont.Tools.ORM.Shell
 			/// Defer to ActivateShape on the document. Implements
 			/// <see cref="IORMToolServices.ActivateShape"/>
 			/// </summary>
-			protected bool ActivateShape(ShapeElement shape)
+			protected bool ActivateShape(ShapeElement shape, NavigateToWindow window)
 			{
-				return myServices.ActivateShape(shape);
+				return myServices.ActivateShape(shape, window);
 			}
-			bool IORMToolServices.ActivateShape(ShapeElement shape)
+			bool IORMToolServices.ActivateShape(ShapeElement shape, NavigateToWindow window)
 			{
-				return ActivateShape(shape);
+				return ActivateShape(shape, window);
 			}
 			/// <summary>
 			/// Defer to NavigateTo on the document. Implements
 			/// <see cref="IORMToolServices.NavigateTo"/>
 			/// </summary>
-			protected bool NavigateTo(object target)
+			protected bool NavigateTo(object target, NavigateToWindow window)
 			{
-				return myServices.NavigateTo(target);
+				return myServices.NavigateTo(target, window);
 			}
-			bool IORMToolServices.NavigateTo(object target)
+			bool IORMToolServices.NavigateTo(object target, NavigateToWindow window)
 			{
-				return NavigateTo(target);
+				return NavigateTo(target, window);
 			}
 			#endregion // IORMToolServices Implementation
 			#region IModelingEventManagerProvider Implementation
@@ -1441,13 +1441,32 @@ namespace Neumont.Tools.ORM.Shell
 		/// <summary>
 		/// Implements <see cref="IORMToolServices.ActivateShape"/>
 		/// </summary>
-		protected bool ActivateShape(ShapeElement shape)
+		protected bool ActivateShape(ShapeElement shape, NavigateToWindow window)
 		{
-			DiagramDocView currentDocView = null;
-			VSDiagramView currentDesigner = null;
-			bool haveCurrentDesigner = false;
-
-			return ActivateShapeHelper(shape, ref currentDocView, ref currentDesigner, ref haveCurrentDesigner);
+			if (shape != null)
+			{
+				switch (window)
+				{
+					case NavigateToWindow.Document:
+						Diagram diagram = shape as Diagram;
+						if (diagram != null)
+						{
+							return ActivateView(diagram) != null;
+						}
+						else
+						{
+							DiagramDocView currentDocView = null;
+							VSDiagramView currentDesigner = null;
+							bool haveCurrentDesigner = false;
+							return ActivateShapeHelper(shape, null, ref currentDocView, ref currentDesigner, ref haveCurrentDesigner);
+						}
+					case NavigateToWindow.DiagramSpy:
+						return ORMDesignerPackage.DiagramSpyWindow.ActivateShape(shape);
+					case NavigateToWindow.ModelBrowser:
+						return NavigateTo(shape.ModelElement, NavigateToWindow.ModelBrowser);
+				}
+			}
+			return false;
 		}
 		private void GetCurrentDesigner(ref DiagramDocView currentDocView, ref VSDiagramView currentDesigner)
 		{
@@ -1463,7 +1482,7 @@ namespace Neumont.Tools.ORM.Shell
 				currentDesigner = currentDocView.CurrentDesigner;
 			}
 		}
-		private bool ActivateShapeHelper(ShapeElement shape, ref DiagramDocView currentDocView, ref VSDiagramView currentDesigner, ref bool haveCurrentDesigner)
+		private bool ActivateShapeHelper(ShapeElement shape, DiagramItem diagramItem, ref DiagramDocView currentDocView, ref VSDiagramView currentDesigner, ref bool haveCurrentDesigner)
 		{
 			bool retVal = false;
 			if (!haveCurrentDesigner)
@@ -1517,7 +1536,7 @@ namespace Neumont.Tools.ORM.Shell
 
 			if (selectOnView != null)
 			{
-				selectOnView.Selection.Set(new DiagramItem(shape));
+				selectOnView.Selection.Set(diagramItem ?? new DiagramItem(shape));
 				selectOnView.DiagramClientView.EnsureVisible(new ShapeElement[] { shape });
 				retVal = true;
 			}
@@ -1590,14 +1609,14 @@ namespace Neumont.Tools.ORM.Shell
 			#endregion // Walk RunningDocumentTable
 			return docView;
 		}
-		bool IORMToolServices.ActivateShape(ShapeElement shape)
+		bool IORMToolServices.ActivateShape(ShapeElement shape, NavigateToWindow window)
 		{
-			return ActivateShape(shape);
+			return ActivateShape(shape, window);
 		}
 		/// <summary>
 		/// Implements <see cref="IORMToolServices.NavigateTo"/>
 		/// </summary>
-		protected bool NavigateTo(object target)
+		protected bool NavigateTo(object target, NavigateToWindow window)
 		{
 			ModelElement element = null;
 			IRepresentModelElements elementRep = target as IRepresentModelElements;
@@ -1613,162 +1632,219 @@ namespace Neumont.Tools.ORM.Shell
 			if (element == null)
 			{
 				element = target as ModelElement;
+				if (element == null)
+				{
+					return false;
+				}
 			}
 			ModelElement startElement = element;
 			ModelError modelError = target as ModelError;
-			IProxyDisplayProvider proxyProvider = null;
-			bool useProxy = false;
 			bool haveCurrentDesigner = false;
 			DiagramDocView currentDocView = null;
 			VSDiagramView currentDesigner = null;
-
-			// The shape priority is:
-			// 1) The first shape on a diagram which is the ActiveDiagramView for the current designer
-			// 2) The first shape with an active diagram view
-			// 3) The first shape.
-			// We'll walk through the collection first to pick up the different elements
-			const int ActiveViewOnActiveDocView = 0;
-			const int ActiveView = 1;
-			const int FirstShape = 2;
-			const int SelectShapesSize = 3;
-			ShapeElement[] selectShapes = new ShapeElement[SelectShapesSize];
-			bool selectShapesInitialized = true;
-			while (element != null)
+			if (window != NavigateToWindow.ModelBrowser)
 			{
-				ModelElement selectElement = element;
-				if (useProxy)
-				{
-					// Second pass, we were unable to find a suitable shape for the first
-					selectElement = proxyProvider.ElementDisplayedAs(element, modelError);
-					if (selectElement != null && selectElement == element)
-					{
-						selectElement = null;
-					}
-				}
+				IProxyDisplayProvider proxyProvider = null;
+				bool useProxy = false;
+				ORMDiagramSpyWindow diagramSpyWindow = null;
+				bool activateInSpyWindow = window == NavigateToWindow.DiagramSpy;
+				Diagram diagramSpyDiagram = activateInSpyWindow ? (diagramSpyWindow = ORMDesignerPackage.DiagramSpyWindow).ActiveDiagram : null;
 
-				// UNDONE: We should potentially be creating a shape
-				// so we can jump to any error
-				if (selectElement != null)
+				// The shape priority is:
+				// 1) If we're selecting on the diagram spy, the first shape on the active DiagramSpy diagram
+				// 2) The first shape on a diagram which is the ActiveDiagramView for the current designer
+				// 3) The first shape with an active diagram view
+				// 4) The first shape.
+				// We'll walk through the collection first to pick up the different elements
+				const int DiagramSpyView = 0;
+				const int ActiveViewOnActiveDocView = 1;
+				const int ActiveView = 2;
+				const int FirstShape = 3;
+				const int SelectShapesSize = 4;
+				ShapeElement[] selectShapes = new ShapeElement[SelectShapesSize];
+				bool selectShapesInitialized = true;
+				bool usedProxy = false;
+				while (element != null)
 				{
-					bool continueNow = false;
-
-					// Grab the shapes in priority order
-					if (!selectShapesInitialized)
+					ModelElement selectElement = element;
+					if (useProxy && !usedProxy)
 					{
-						Array.Clear(selectShapes, 0, selectShapes.Length);
-						selectShapesInitialized = true;
-					}
-					foreach (PresentationElement pel in PresentationViewsSubject.GetPresentation(selectElement))
-					{
-						ShapeElement shape = pel as ShapeElement;
-						if (shape != null)
+						// Second pass, we were unable to find a suitable shape for the first
+						usedProxy = true;
+						selectElement = proxyProvider.ElementDisplayedAs(element, modelError) as ModelElement;
+						if (selectElement != null)
 						{
-							// Get the current active designer
-							if (!haveCurrentDesigner)
+							if (selectElement == element)
 							{
-								haveCurrentDesigner = true;
-								GetCurrentDesigner(ref currentDocView, ref currentDesigner);
+								selectElement = null;
 							}
-
-							// Get the shapes in priority
-							Diagram diagram = shape.Diagram;
-							if (diagram != null)
+							else
 							{
-								selectShapesInitialized = false;
-								if (selectShapes[FirstShape] == null)
+								element = selectElement;
+							}
+						}
+					}
+
+					if (selectElement != null)
+					{
+						bool continueNow = false;
+
+						// Grab the shapes in priority order
+						if (!selectShapesInitialized)
+						{
+							Array.Clear(selectShapes, 0, selectShapes.Length);
+							selectShapesInitialized = true;
+						}
+						foreach (PresentationElement pel in PresentationViewsSubject.GetPresentation(selectElement))
+						{
+							ShapeElement shape = pel as ShapeElement;
+							if (shape != null)
+							{
+								// Get the current active designer
+								if (!haveCurrentDesigner)
 								{
-									selectShapes[FirstShape] = shape;
+									haveCurrentDesigner = true;
+									GetCurrentDesigner(ref currentDocView, ref currentDesigner);
 								}
-								VSDiagramView diagramView = diagram.ActiveDiagramView as VSDiagramView;
-								if (diagramView != null)
+
+								// Get the shapes in priority
+								Diagram diagram = shape.Diagram;
+								if (diagram != null)
 								{
-									if (selectShapes[ActiveView] == null)
+									selectShapesInitialized = false;
+									if (selectShapes[FirstShape] == null)
 									{
-										selectShapes[ActiveView] = shape;
+										selectShapes[FirstShape] = shape;
 									}
-									if (diagramView == currentDesigner)
+									if (diagramSpyDiagram == diagram && selectShapes[DiagramSpyView] == null)
 									{
-										if (selectShapes[ActiveViewOnActiveDocView] == null)
+										selectShapes[DiagramSpyView] = shape;
+										break; // No reason to continue, we'll end up using this shape
+									}
+									VSDiagramView diagramView = (currentDesigner != null && currentDesigner.Diagram == diagram) ? currentDesigner : diagram.ActiveDiagramView as VSDiagramView;
+									if (diagramView != null)
+									{
+										if (selectShapes[ActiveView] == null)
 										{
-											selectShapes[ActiveViewOnActiveDocView] = shape;
+											selectShapes[ActiveView] = shape;
+										}
+										if (diagramView == currentDesigner)
+										{
+											if (selectShapes[ActiveViewOnActiveDocView] == null)
+											{
+												selectShapes[ActiveViewOnActiveDocView] = shape;
+											}
 										}
 									}
 								}
 							}
 						}
-					}
 
-					// Walk the shapes in priority order and try to select them
-					if (!selectShapesInitialized)
-					{
-						for (int i = 0; i < SelectShapesSize; ++i)
+						// Walk the shapes in priority order and try to select them
+						if (!selectShapesInitialized)
 						{
-							ShapeElement shape = selectShapes[i];
-							if (shape != null)
+							for (int i = 0; i < SelectShapesSize; ++i)
 							{
-								IProxyDisplayProvider localProxyProvider = shape as IProxyDisplayProvider;
-								if (!useProxy && element is ORMModel && element != startElement)
+								ShapeElement shape = selectShapes[i];
+								if (shape != null)
 								{
-									if (proxyProvider == null)
+									IProxyDisplayProvider localProxyProvider = shape as IProxyDisplayProvider;
+									if (element is ORMModel && element != startElement)
 									{
-										proxyProvider = localProxyProvider;
+										if (useProxy)
+										{
+											// There is no where else to go, move on to the model browser
+											element = null;
+											continueNow = true;
+											break;
+										}
+										else
+										{
+											if (proxyProvider == null)
+											{
+												proxyProvider = localProxyProvider;
+											}
+											if (proxyProvider != null)
+											{
+												useProxy = true;
+												element = startElement;
+												continueNow = true;
+												break;
+											}
+										}
 									}
-									if (proxyProvider != null)
+									object proxyElement;
+									DiagramItem proxyDiagramItem = null;
+									if (null != localProxyProvider &&
+										null != (proxyElement = localProxyProvider.ElementDisplayedAs(startElement, modelError)))
 									{
-										useProxy = true;
-										element = startElement;
-										continueNow = true;
-										break;
+										ShapeElement alternateShape;
+										if (null != (proxyDiagramItem = proxyElement as DiagramItem))
+										{
+											alternateShape = proxyDiagramItem.Shape;
+										}
+										else
+										{
+											alternateShape = proxyElement as ShapeElement;
+										}
+										if (alternateShape != null)
+										{
+											shape = alternateShape;
+										}
+										else if (proxyProvider == null)
+										{
+											proxyProvider = localProxyProvider;
+										}
 									}
-								}
-								ModelElement proxyElement;
-								if (null != localProxyProvider &&
-									null != (proxyElement = localProxyProvider.ElementDisplayedAs(element, modelError)))
-								{
-									ShapeElement alternateShape = proxyElement as ShapeElement;
-									if (alternateShape != null)
-									{
-										shape = alternateShape;
-									}
-									else if (proxyProvider == null)
-									{
-										proxyProvider = localProxyProvider;
-									}
-								}
 
-								if (ActivateShapeHelper(shape, ref currentDocView, ref currentDesigner, ref haveCurrentDesigner))
-								{
-									IModelErrorActivation activator;
-									if (null != modelError &&
-										null != (activator = shape as IModelErrorActivation))
+									if (activateInSpyWindow)
 									{
-										activator.ActivateModelError(modelError);
+										if (proxyDiagramItem != null)
+										{
+											if (diagramSpyWindow.ActivateDiagramItem(proxyDiagramItem))
+											{
+												return true;
+											}
+										}
+										else if (diagramSpyWindow.ActivateShape(shape))
+										{
+											return true;
+										}
 									}
-									return true;
+									else if (ActivateShapeHelper(shape, proxyDiagramItem, ref currentDocView, ref currentDesigner, ref haveCurrentDesigner))
+									{
+										IModelErrorActivation activator;
+										if (null != modelError &&
+											null != (activator = shape as IModelErrorActivation))
+										{
+											activator.ActivateModelError(modelError);
+										}
+										return true;
+									}
 								}
 							}
 						}
-					}
-					if (continueNow)
-					{
-						continue;
-					}
-				}
-				ModelElement nextElement = element;
-				element = null;
-
-				// If we could not select the current element, then go up the aggregation chain
-				foreach (DomainRoleInfo role in nextElement.GetDomainClass().AllDomainRolesPlayed)
-				{
-					DomainRoleInfo oppositeRole = role.OppositeDomainRole;
-					if (oppositeRole.IsEmbedding)
-					{
-						LinkedElementCollection<ModelElement> parents = role.GetLinkedElements(nextElement);
-						if (parents.Count > 0)
+						if (continueNow)
 						{
-							Debug.Assert(parents.Count == 1); // The aggregating side of a relationship should have multiplicity==1
-							element = parents[0];
-							break;
+							continue;
+						}
+					}
+					ModelElement nextElement = element;
+					element = null;
+
+					// If we could not select the current element, then go up the aggregation chain
+					foreach (DomainRoleInfo role in nextElement.GetDomainClass().AllDomainRolesPlayed)
+					{
+						DomainRoleInfo oppositeRole = role.OppositeDomainRole;
+						if (oppositeRole.IsEmbedding)
+						{
+							LinkedElementCollection<ModelElement> parents = role.GetLinkedElements(nextElement);
+							if (parents.Count > 0)
+							{
+								Debug.Assert(parents.Count == 1); // The aggregating side of a relationship should have multiplicity==1
+								element = parents[0];
+								break;
+							}
 						}
 					}
 				}
@@ -1848,9 +1924,9 @@ namespace Neumont.Tools.ORM.Shell
 			}
 			return false;
 		}
-		bool IORMToolServices.NavigateTo(object target)
+		bool IORMToolServices.NavigateTo(object target, NavigateToWindow window)
 		{
-			return NavigateTo(target);
+			return NavigateTo(target, window);
 		}
 		#endregion // IORMToolServices Implementation
 		#region TaskProvider implementation
@@ -1945,7 +2021,7 @@ namespace Neumont.Tools.ORM.Shell
 			/// </summary>
 			protected bool NavigateTo(IORMToolTaskItem task)
 			{
-				return myDocument.NavigateTo(task.ElementLocator);
+				return myDocument.NavigateTo(task.ElementLocator, NavigateToWindow.Document);
 			}
 			bool IORMToolTaskProvider.NavigateTo(IORMToolTaskItem task)
 			{

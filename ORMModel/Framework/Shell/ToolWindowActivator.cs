@@ -3,6 +3,7 @@
 * Neumont Object-Role Modeling Architect for Visual Studio                 *
 *                                                                          *
 * Copyright © Neumont University. All rights reserved.                     *
+* Copyright © Matthew Curland. All rights reserved.                        *
 *                                                                          *
 * The use and distribution terms for this software are covered by the      *
 * Common Public License 1.0 (http://opensource.org/licenses/cpl) which     *
@@ -175,9 +176,9 @@ namespace Neumont.Tools.Modeling.Shell
 		/// </summary>
 		private DocViewType myCurrentDocumentView;
 		/// <summary>
-		/// The service provider passed to the constructor. The base class messes with this.
+		/// The service to monitor the selection
 		/// </summary>
-		private readonly IServiceProvider myServiceProvider;
+		private readonly IMonitorSelectionService myMonitorSelectionService;
 		/// <summary>
 		/// Current frame visibility state
 		/// </summary>
@@ -224,7 +225,7 @@ namespace Neumont.Tools.Modeling.Shell
 				throw new ArgumentNullException("notifyCallback");
 			}
 			myLastFrameMode = (VSFRAMEMODE)(-1);
-			myServiceProvider = unfilteredServiceProvider;
+			myMonitorSelectionService = (IMonitorSelectionService)unfilteredServiceProvider.GetService(typeof(IMonitorSelectionService));
 			myFrame = frame;
 			myCoveredFrameActions = coveredFrameActions;
 			myNotifyCallback = notifyCallback;
@@ -343,7 +344,18 @@ namespace Neumont.Tools.Modeling.Shell
 		{
 			get
 			{
-				return myCurrentSelectionContainer;
+				SelectionContainerType cachedContainer = myCurrentSelectionContainer;
+				SelectionContainerType currentContainer;
+				if (cachedContainer != null &&
+					null != (currentContainer = myMonitorSelectionService.CurrentSelectionContainer as SelectionContainerType))
+				{
+					// We do not trust the cached value for the current selection container because
+					// it can cause the IORMSelectionContainer mechanism to go into an infinite loop
+					// when the selection is switching between two containers. The cached value
+					// will eventually change to match when the notification is received by this window.
+					return currentContainer;
+				}
+				return cachedContainer;
 			}
 			private set
 			{
@@ -407,7 +419,7 @@ namespace Neumont.Tools.Modeling.Shell
 			{
 				case FrameVisibilityFlags.Covered:
 				case FrameVisibilityFlags.Visible:
-					IMonitorSelectionService monitor = (IMonitorSelectionService)myServiceProvider.GetService(typeof(IMonitorSelectionService));
+					IMonitorSelectionService monitor = myMonitorSelectionService;
 					monitor.SelectionChanged -= new EventHandler<MonitorSelectionEventArgs>(MonitorSelectionChanged);
 					monitor.DocumentWindowChanged -= new EventHandler<MonitorSelectionEventArgs>(DocumentWindowChanged);
 					myFrameVisibility = FrameVisibilityFlags.Hidden | (flags & FrameVisibilityFlags.PersistentFlagsMask);
@@ -425,7 +437,7 @@ namespace Neumont.Tools.Modeling.Shell
 					myFrameVisibility = FrameVisibilityFlags.Visible | (flags & FrameVisibilityFlags.PersistentFlagsMask) | FrameVisibilityFlags.HasBeenVisible;
 					break;
 				case FrameVisibilityFlags.Hidden:
-					IMonitorSelectionService monitor = (IMonitorSelectionService)myServiceProvider.GetService(typeof(IMonitorSelectionService));
+					IMonitorSelectionService monitor = myMonitorSelectionService;
 					monitor.SelectionChanged += new EventHandler<MonitorSelectionEventArgs>(MonitorSelectionChanged);
 					monitor.DocumentWindowChanged += new EventHandler<MonitorSelectionEventArgs>(DocumentWindowChanged);
 					SetCurrentDocument(SafeGetCurrentDocument(monitor) as DocDataType, monitor.CurrentDocumentView as DocViewType);

@@ -3,6 +3,7 @@
 * Neumont Object-Role Modeling Architect for Visual Studio                 *
 *                                                                          *
 * Copyright © Neumont University. All rights reserved.                     *
+* Copyright © Matthew Curland. All rights reserved.                        *
 *                                                                          *
 * The use and distribution terms for this software are covered by the      *
 * Common Public License 1.0 (http://opensource.org/licenses/cpl) which     *
@@ -396,7 +397,7 @@ namespace Neumont.Tools.ORM.Shell
 				if (diagram.AutoPopulateShapes)
 				{
 					diagram.AutoPopulateShapes = false;
-					ORMDesignerDocView.AutoLayoutDiagram(diagram, diagram.NestedChildShapes, true);
+					ORMDesignerCommandManager.AutoLayoutDiagram(diagram, diagram.NestedChildShapes, true);
 				}
 			}
 
@@ -507,6 +508,14 @@ namespace Neumont.Tools.ORM.Shell
 			{
 				subscriber.ManageModelingEventHandlers(eventManager, reasons, EventHandlerAction.Add);
 			}
+			foreach (ModelingDocView docView in DocViews)
+			{
+				IModelingEventSubscriber subscriber = docView as IModelingEventSubscriber;
+				if (subscriber != null)
+				{
+					subscriber.ManageModelingEventHandlers(eventManager, reasons, EventHandlerAction.Add);
+				}
+			}
 			SetFlag(PrivateFlags.AddedPreLoadEvents, true);
 		}
 		/// <summary>
@@ -525,6 +534,14 @@ namespace Neumont.Tools.ORM.Shell
 			foreach (IModelingEventSubscriber subscriber in Utility.EnumerateDomainModels<IModelingEventSubscriber>(Store.DomainModels))
 			{
 				subscriber.ManageModelingEventHandlers(eventManager, reasons, EventHandlerAction.Add);
+			}
+			foreach (ModelingDocView docView in DocViews)
+			{
+				IModelingEventSubscriber subscriber = docView as IModelingEventSubscriber;
+				if (subscriber != null)
+				{
+					subscriber.ManageModelingEventHandlers(eventManager, reasons, EventHandlerAction.Add);
+				}
 			}
 			ReloadSurveyTree(isReload);
 			ManageErrorReportingEvents(eventManager, EventHandlerAction.Add);
@@ -567,6 +584,14 @@ namespace Neumont.Tools.ORM.Shell
 			foreach (IModelingEventSubscriber subscriber in Utility.EnumerateDomainModels<IModelingEventSubscriber>(Store.DomainModels))
 			{
 				subscriber.ManageModelingEventHandlers(eventManager, reasons, EventHandlerAction.Remove);
+			}
+			foreach (ModelingDocView docView in DocViews)
+			{
+				IModelingEventSubscriber subscriber = docView as IModelingEventSubscriber;
+				if (subscriber != null)
+				{
+					subscriber.ManageModelingEventHandlers(eventManager, reasons, EventHandlerAction.Remove);
+				}
 			}
 			UnloadSurveyTree();
 			if (addedPostLoad)

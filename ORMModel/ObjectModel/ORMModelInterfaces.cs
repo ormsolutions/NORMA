@@ -3,6 +3,7 @@
 * Neumont Object-Role Modeling Architect for Visual Studio                 *
 *                                                                          *
 * Copyright © Neumont University. All rights reserved.                     *
+* Copyright © Matthew Curland. All rights reserved.                        *
 *                                                                          *
 * The use and distribution terms for this software are covered by the      *
 * Common Public License 1.0 (http://opensource.org/licenses/cpl) which     *
@@ -29,6 +30,30 @@ using Neumont.Tools.Modeling.Diagrams;
 namespace Neumont.Tools.ORM.ObjectModel
 {
 	#region IORMToolServices interface
+	/// <summary>
+	/// Specify which window <see cref="IORMToolServices.NavigateTo"/>
+	/// or <see cref="IORMToolServices.ActivateShape"/> should jump to.
+	/// </summary>
+	public enum NavigateToWindow
+	{
+		/// <summary>
+		/// Select the shape in the most appropriate view
+		/// for the primary document window. If no corresponding
+		/// shape is available, then attempt to select the item in
+		/// the model browser.
+		/// </summary>
+		Document,
+		/// <summary>
+		/// Select the shape in the diagram spy window. If no
+		/// corresponding shape is available, then attempt to
+		/// select the item in the model browser.
+		/// </summary>
+		DiagramSpy,
+		/// <summary>
+		/// Select the specified element in the model browser
+		/// </summary>
+		ModelBrowser,
+	}
 	/// <summary>
 	/// An interface that should be implemented by any
 	/// store that hosts ORM-derived object models. This
@@ -89,15 +114,17 @@ namespace Neumont.Tools.ORM.ObjectModel
 		/// Activate the specified shape on the most appropriate view
 		/// </summary>
 		/// <param name="shape">A <see cref="ShapeElement"/> to activate.</param>
+		/// <param name="window">The type of window to select the shape in.</param>
 		/// <returns>Returns <see langword="true"/> if shape activation succeeded.</returns>
-		bool ActivateShape(ShapeElement shape);
+		bool ActivateShape(ShapeElement shape, NavigateToWindow window);
 		/// <summary>
 		/// Find the most convenient activation target for specified element
 		/// </summary>
 		/// <param name="target">The element to activate. Must either be a 
 		/// <see cref="ModelElement"/> or implement <see cref="IRepresentModelElements"/>.</param>
-		/// <returns></returns>
-		bool NavigateTo(object target);
+		/// <param name="window">The type of window to select the element in.</param>
+		/// <returns>Returns <see langword="true"/> if activate succeeds</returns>
+		bool NavigateTo(object target, NavigateToWindow window);
 	}
 	#endregion // IORMToolServices interface
 	#region ORMModelErrorActivation delegate

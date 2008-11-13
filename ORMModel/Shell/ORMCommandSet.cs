@@ -3,6 +3,7 @@
 * Neumont Object-Role Modeling Architect for Visual Studio                 *
 *                                                                          *
 * Copyright © Neumont University. All rights reserved.                     *
+* Copyright © Matthew Curland. All rights reserved.                        *
 *                                                                          *
 * The use and distribution terms for this software are covered by the      *
 * Common Public License 1.0 (http://opensource.org/licenses/cpl) which     *
@@ -47,7 +48,7 @@ namespace Neumont.Tools.ORM.Shell
 		/// <summary>
 		/// Command objects for the ORMDesignerDocView
 		/// </summary>
-		protected class ORMDesignerCommandSet : CommandSet, IDisposable
+		protected class ORMDesignerCommandSet : CommandSet, IEnumerable<MenuCommand>, IDisposable
 		{
 			/// <summary>
 			/// Commands
@@ -90,7 +91,11 @@ namespace Neumont.Tools.ORM.Shell
 						,new DynamicStatusMenuCommand(
 						new EventHandler(OnStatusStandardWindow),
 						new EventHandler(OnMenuContextWindow),
-						ORMDesignerCommandIds.NewContextWindow)
+						ORMDesignerCommandIds.ViewContextWindow)
+						,new DynamicStatusMenuCommand(
+						new EventHandler(OnStatusStandardWindow),
+						new EventHandler(OnMenuDiagramSpyWindow),
+						ORMDesignerCommandIds.ViewDiagramSpyWindow)
 						,new DynamicStatusMenuCommand(
 						new EventHandler(OnStatusCopyImage),
 						new EventHandler(OnMenuCopyImage),
@@ -150,6 +155,10 @@ namespace Neumont.Tools.ORM.Shell
 						new EventHandler(OnStatusShowPositiveVerbalization),
 						new EventHandler(OnMenuShowPositiveVerbalization),
 						ORMDesignerCommandIds.ShowPositiveVerbalization)
+						,new DynamicStatusMenuCommand(
+						new EventHandler(OnStatusVerbalizationHyperlinkToDiagramSpy),
+						new EventHandler(OnMenuVerbalizationHyperlinkToDiagramSpy),
+						ORMDesignerCommandIds.VerbalizationHyperlinkToDiagramSpy)
 						,new DynamicStatusMenuCommand(
 						new EventHandler(OnStatusShowNegativeVerbalization),
 						new EventHandler(OnMenuShowNegativeVerbalization),
@@ -267,6 +276,14 @@ namespace Neumont.Tools.ORM.Shell
 						new EventHandler(OnStatusDiagramList),
 						new EventHandler(OnMenuDiagramList),
 						ORMDesignerCommandIds.DiagramList)
+						,new DynamicStatusMenuCommand(
+						new EventHandler(OnStatusSelectInDiagramSpy),
+						new EventHandler(OnMenuSelectInDiagramSpy),
+						ORMDesignerCommandIds.SelectInDiagramSpy)
+						,new DynamicStatusMenuCommand(
+						new EventHandler(OnStatusSelectInDocumentWindow),
+						new EventHandler(OnMenuSelectInDocumentWindow),
+						ORMDesignerCommandIds.SelectInDocumentWindow)
 						,new MenuCommand(
 						new EventHandler(OnMenuNewWindow),
 						new CommandID(VSConstants.GUID_VSStandardCommandSet97, (int)VSConstants.VSStd97CmdID.NewWindow))
@@ -363,18 +380,18 @@ namespace Neumont.Tools.ORM.Shell
 			/// </summary>
 			protected void OnStatusCopyImage(object sender, EventArgs e)
 			{
-				ORMDesignerDocView.OnStatusCommand(sender, CurrentORMView, ORMDesignerCommands.CopyImage);
+				ORMDesignerCommandManager.OnStatusCommand(sender, CurrentORMView, ORMDesignerCommands.CopyImage);
 			}
 			/// <summary>
 			/// Copies as image
 			/// </summary>
 			protected void OnMenuCopyImage(object sender, EventArgs e)
 			{
-				ORMDesignerDocView docView = CurrentORMView;
-				if (docView != null)
+				IORMDesignerView designerView = CurrentORMView;
+				if (designerView != null)
 				{
 					// call CopyImage on the doc view
-					docView.OnMenuCopyImage();
+					designerView.CommandManager.OnMenuCopyImage();
 				}
 			}
 
@@ -412,7 +429,7 @@ namespace Neumont.Tools.ORM.Shell
 			/// </summary>
 			private void OnStatusDeleteAlternate(object sender, EventArgs e)
 			{
-				ORMDesignerDocView.OnStatusCommand(
+				ORMDesignerCommandManager.OnStatusCommand(
 					sender,
 					CurrentORMView,
 					(OptionsPage.CurrentPrimaryDeleteBehavior == PrimaryDeleteBehavior.DeleteShape) ?
@@ -424,17 +441,17 @@ namespace Neumont.Tools.ORM.Shell
 			/// </summary>
 			private void OnMenuDeleteAlternate(object sender, EventArgs e)
 			{
-				ORMDesignerDocView docView = CurrentORMView;
-				if (docView != null)
+				IORMDesignerView designerView = CurrentORMView;
+				if (designerView != null)
 				{
 					// call the appropriate delete on the doc view
 					switch (OptionsPage.CurrentPrimaryDeleteBehavior)
 					{
 						case PrimaryDeleteBehavior.DeleteShape:
-							docView.OnMenuDeleteElement((sender as OleMenuCommand).Text);
+							designerView.CommandManager.OnMenuDeleteElement((sender as OleMenuCommand).Text);
 							break;
 						case PrimaryDeleteBehavior.DeleteElement:
-							docView.OnMenuDeleteShape((sender as OleMenuCommand).Text);
+							designerView.CommandManager.OnMenuDeleteShape((sender as OleMenuCommand).Text);
 							break;
 					}
 				}
@@ -444,7 +461,7 @@ namespace Neumont.Tools.ORM.Shell
 			/// </summary>
 			private void OnStatusDelete(object sender, EventArgs e)
 			{
-				ORMDesignerDocView.OnStatusCommand(
+				ORMDesignerCommandManager.OnStatusCommand(
 					sender,
 					CurrentORMView,
 					(OptionsPage.CurrentPrimaryDeleteBehavior == PrimaryDeleteBehavior.DeleteElement) ?
@@ -456,17 +473,17 @@ namespace Neumont.Tools.ORM.Shell
 			/// </summary>
 			private void OnMenuDelete(object sender, EventArgs e)
 			{
-				ORMDesignerDocView docView = CurrentORMView;
-				if (docView != null)
+				IORMDesignerView designerView = CurrentORMView;
+				if (designerView != null)
 				{
 					// call the appropriate delete on the doc view
 					switch (OptionsPage.CurrentPrimaryDeleteBehavior)
 					{
 						case PrimaryDeleteBehavior.DeleteElement:
-							docView.OnMenuDeleteElement((sender as OleMenuCommand).Text);
+							designerView.CommandManager.OnMenuDeleteElement((sender as OleMenuCommand).Text);
 							break;
 						case PrimaryDeleteBehavior.DeleteShape:
-							docView.OnMenuDeleteShape((sender as OleMenuCommand).Text);
+							designerView.CommandManager.OnMenuDeleteShape((sender as OleMenuCommand).Text);
 							break;
 					}
 				}
@@ -476,7 +493,7 @@ namespace Neumont.Tools.ORM.Shell
 			/// </summary>
 			private void OnStatusReadingsWindow(object sender, EventArgs e)
 			{
-				ORMDesignerDocView.OnStatusCommand(sender, CurrentORMView, ORMDesignerCommands.DisplayReadingsWindow);
+				ORMDesignerCommandManager.OnStatusCommand(sender, CurrentORMView, ORMDesignerCommands.DisplayReadingsWindow);
 			}
 			/// <summary>
 			/// Menu handler
@@ -489,34 +506,34 @@ namespace Neumont.Tools.ORM.Shell
 
 			private void OnStatusSelectAll(object sender, EventArgs e)
 			{
-				ORMDesignerDocView.OnStatusCommand(sender, CurrentORMView, ORMDesignerCommands.SelectAll);
+				ORMDesignerCommandManager.OnStatusCommand(sender, CurrentORMView, ORMDesignerCommands.SelectAll);
 			}
 			/// <summary>
 			/// Menu handler for the SelectAll command
 			/// </summary>
 			protected void OnMenuSelectAll(object sender, EventArgs e)
 			{
-				ORMDesignerDocView docView = CurrentORMView;
-				if (docView != null)
+				IORMDesignerView designerView = CurrentORMView;
+				if (designerView != null)
 				{
 					// call delete on the doc view
-					docView.OnMenuSelectAll();
+					designerView.CommandManager.OnMenuSelectAll();
 				}
 			}
 			private void OnStatusAutoLayout(object sender, EventArgs e)
 			{
-				ORMDesignerDocView.OnStatusCommand(sender, CurrentORMView, ORMDesignerCommands.AutoLayout);
+				ORMDesignerCommandManager.OnStatusCommand(sender, CurrentORMView, ORMDesignerCommands.AutoLayout);
 			}
 			/// <summary>
 			/// Menu handler for the SelectAll command
 			/// </summary>
 			protected void OnMenuAutoLayout(object sender, EventArgs e)
 			{
-				ORMDesignerDocView docView = CurrentORMView;
-				if (docView != null)
+				IORMDesignerView designerView = CurrentORMView;
+				if (designerView != null)
 				{
 					// call auto layout on the doc view
-					docView.OnMenuAutoLayout();
+					designerView.CommandManager.OnMenuAutoLayout();
 				}
 			}
 			/// <summary>
@@ -524,18 +541,18 @@ namespace Neumont.Tools.ORM.Shell
 			/// </summary>
 			private void OnStatusInsertRole(object sender, EventArgs e)
 			{
-				ORMDesignerDocView.OnStatusCommand(sender, CurrentORMView, ORMDesignerCommands.InsertRole);
+				ORMDesignerCommandManager.OnStatusCommand(sender, CurrentORMView, ORMDesignerCommands.InsertRole);
 			}
 			/// <summary>
 			/// Menu handler
 			/// </summary>
 			protected void OnMenuInsertRoleAfter(object sender, EventArgs e)
 			{
-				ORMDesignerDocView docView = CurrentORMView;
-				if (docView != null)
+				IORMDesignerView designerView = CurrentORMView;
+				if (designerView != null)
 				{
 					// Defer to the doc view
-					docView.OnMenuInsertRole(true);
+					designerView.CommandManager.OnMenuInsertRole(true);
 				}
 			}
 			/// <summary>
@@ -543,11 +560,11 @@ namespace Neumont.Tools.ORM.Shell
 			/// </summary>
 			protected void OnMenuInsertRoleBefore(object sender, EventArgs e)
 			{
-				ORMDesignerDocView docView = CurrentORMView;
-				if (docView != null)
+				IORMDesignerView designerView = CurrentORMView;
+				if (designerView != null)
 				{
 					// Defer to the doc view
-					docView.OnMenuInsertRole(false);
+					designerView.CommandManager.OnMenuInsertRole(false);
 				}
 			}
 			/// <summary>
@@ -555,18 +572,18 @@ namespace Neumont.Tools.ORM.Shell
 			/// </summary>
 			private void OnStatusToggleSimpleMandatory(object sender, EventArgs e)
 			{
-				ORMDesignerDocView.OnStatusCommand(sender, CurrentORMView, ORMDesignerCommands.ToggleSimpleMandatory);
+				ORMDesignerCommandManager.OnStatusCommand(sender, CurrentORMView, ORMDesignerCommands.ToggleSimpleMandatory);
 			}
 			/// <summary>
 			/// Menu handler
 			/// </summary>
 			protected void OnMenuToggleSimpleMandatory(object sender, EventArgs e)
 			{
-				ORMDesignerDocView docView = CurrentORMView;
-				if (docView != null)
+				IORMDesignerView designerView = CurrentORMView;
+				if (designerView != null)
 				{
 					// Defer to the doc view
-					docView.OnMenuToggleSimpleMandatory();
+					designerView.CommandManager.OnMenuToggleSimpleMandatory();
 				}
 			}
 			/// <summary>
@@ -574,18 +591,18 @@ namespace Neumont.Tools.ORM.Shell
 			/// </summary>
 			private void OnStatusAddInternalUniqueness(object sender, EventArgs e)
 			{
-				ORMDesignerDocView.OnStatusCommand(sender, CurrentORMView, ORMDesignerCommands.AddInternalUniqueness);
+				ORMDesignerCommandManager.OnStatusCommand(sender, CurrentORMView, ORMDesignerCommands.AddInternalUniqueness);
 			}
 			/// <summary>
 			/// Menu handler
 			/// </summary>
 			protected void OnMenuAddInternalUniqueness(object sender, EventArgs e)
 			{
-				ORMDesignerDocView docView = CurrentORMView;
-				if (docView != null)
+				IORMDesignerView designerView = CurrentORMView;
+				if (designerView != null)
 				{
 					// Defer to the doc view
-					docView.OnMenuAddInternalUniqueness();
+					designerView.CommandManager.OnMenuAddInternalUniqueness();
 				}
 			}
 			/// <summary>
@@ -593,79 +610,79 @@ namespace Neumont.Tools.ORM.Shell
 			/// </summary>
 			private void OnStatusExtensionManager(object sender, EventArgs e)
 			{
-				ORMDesignerDocView.OnStatusCommand(sender, CurrentORMView, ORMDesignerCommands.ExtensionManager);
+				ORMDesignerCommandManager.OnStatusCommand(sender, CurrentORMView, ORMDesignerCommands.ExtensionManager);
 			}
 			/// <summary>
 			/// Menu handler
 			/// </summary>
 			protected void OnMenuExtensionManager(object sender, EventArgs e)
 			{
-				ORMDesignerDocView docView = CurrentORMView;
-				if (docView != null)
+				IORMDesignerView designerView = CurrentORMView;
+				if (designerView != null)
 				{
 					// Defer to the doc view
-					docView.OnMenuExtensionManager();
+					designerView.CommandManager.OnMenuExtensionManager();
 				}
 			}
 			private void OnStatusMoveRoleLeft(object sender, EventArgs e)
 			{
-				ORMDesignerDocView.OnStatusCommand(sender, CurrentORMView, ORMDesignerCommands.MoveRoleLeft);
+				ORMDesignerCommandManager.OnStatusCommand(sender, CurrentORMView, ORMDesignerCommands.MoveRoleLeft);
 			}
 			/// <summary>
 			/// Menu handler
 			/// </summary>
 			protected void OnMenuMoveRoleLeft(object sender, EventArgs e)
 			{
-				ORMDesignerDocView docView = CurrentORMView;
-				if (docView != null)
+				IORMDesignerView designerView = CurrentORMView;
+				if (designerView != null)
 				{
 					// Defer to the doc view
-					docView.OnMenuMoveRoleLeft();
+					designerView.CommandManager.OnMenuMoveRoleLeft();
 				}
 			}
 			private void OnStatusMoveRoleRight(object sender, EventArgs e)
 			{
-				ORMDesignerDocView.OnStatusCommand(sender, CurrentORMView, ORMDesignerCommands.MoveRoleRight);
+				ORMDesignerCommandManager.OnStatusCommand(sender, CurrentORMView, ORMDesignerCommands.MoveRoleRight);
 			}
 			/// <summary>
 			/// Menu handler
 			/// </summary>
 			protected void OnMenuMoveRoleRight(object sender, EventArgs e)
 			{
-				ORMDesignerDocView docView = CurrentORMView;
-				if (docView != null)
+				IORMDesignerView designerView = CurrentORMView;
+				if (designerView != null)
 				{
 					// Defer to the doc view
-					docView.OnMenuMoveRoleRight();
+					designerView.CommandManager.OnMenuMoveRoleRight();
 				}
 			}
 			private void OnStatusObjectifyFactType(object sender, EventArgs e)
 			{
-				ORMDesignerDocView.OnStatusCommand(sender, CurrentORMView, ORMDesignerCommands.ObjectifyFactType);
+				ORMDesignerCommandManager.OnStatusCommand(sender, CurrentORMView, ORMDesignerCommands.ObjectifyFactType);
 			}
 			/// <summary>
 			/// Menu handler
 			/// </summary>
 			protected void OnMenuObjectifyFactType(object sender, EventArgs e)
 			{
-				ORMDesignerDocView docView = CurrentORMView;
-				if (docView != null)
+				IORMDesignerView designerView = CurrentORMView;
+				if (designerView != null)
 				{
 					// Defer to the doc view
-					docView.OnMenuObjectifyFactType();
+					designerView.CommandManager.OnMenuObjectifyFactType();
 				}
 			}
 			private void OnStatusDisplayOrientationHorizontal(object sender, EventArgs e)
 			{
-				ORMDesignerDocView.OnStatusCommand(sender, CurrentORMView, ORMDesignerCommands.DisplayOrientationHorizontal);
+				ORMDesignerCommandManager.OnStatusCommand(sender, CurrentORMView, ORMDesignerCommands.DisplayOrientationHorizontal);
 			}
 			private void OnStatusDisplayOrientationRotatedLeft(object sender, EventArgs e)
 			{
-				ORMDesignerDocView.OnStatusCommand(sender, CurrentORMView, ORMDesignerCommands.DisplayOrientationRotatedLeft);
+				ORMDesignerCommandManager.OnStatusCommand(sender, CurrentORMView, ORMDesignerCommands.DisplayOrientationRotatedLeft);
 			}
 			private void OnStatusDisplayOrientationRotatedRight(object sender, EventArgs e)
 			{
-				ORMDesignerDocView.OnStatusCommand(sender, CurrentORMView, ORMDesignerCommands.DisplayOrientationRotatedRight);
+				ORMDesignerCommandManager.OnStatusCommand(sender, CurrentORMView, ORMDesignerCommands.DisplayOrientationRotatedRight);
 			}
 			/// <summary>
 			/// Menu handler
@@ -693,20 +710,20 @@ namespace Neumont.Tools.ORM.Shell
 			/// </summary>
 			private void OnMenuDisplayOrientation(DisplayOrientation orientation)
 			{
-				ORMDesignerDocView docView = CurrentORMView;
-				if (docView != null)
+				IORMDesignerView designerView = CurrentORMView;
+				if (designerView != null)
 				{
 					// Defer to the doc view
-					docView.OnMenuDisplayOrientation(orientation);
+					designerView.CommandManager.OnMenuDisplayOrientation(orientation);
 				}
 			}
 			private void OnStatusDisplayConstraintsOnTop(object sender, EventArgs e)
 			{
-				ORMDesignerDocView.OnStatusCommand(sender, CurrentORMView, ORMDesignerCommands.DisplayConstraintsOnTop);
+				ORMDesignerCommandManager.OnStatusCommand(sender, CurrentORMView, ORMDesignerCommands.DisplayConstraintsOnTop);
 			}
 			private void OnStatusDisplayConstraintsOnBottom(object sender, EventArgs e)
 			{
-				ORMDesignerDocView.OnStatusCommand(sender, CurrentORMView, ORMDesignerCommands.DisplayConstraintsOnBottom);
+				ORMDesignerCommandManager.OnStatusCommand(sender, CurrentORMView, ORMDesignerCommands.DisplayConstraintsOnBottom);
 			}
 			/// <summary>
 			/// Menu handler
@@ -727,64 +744,64 @@ namespace Neumont.Tools.ORM.Shell
 			/// </summary>
 			private void OnMenuDisplayConstraintPosition(ConstraintDisplayPosition position)
 			{
-				ORMDesignerDocView docView = CurrentORMView;
-				if (docView != null)
+				IORMDesignerView designerView = CurrentORMView;
+				if (designerView != null)
 				{
 					// Defer to the doc view
-					docView.OnMenuDisplayConstraintPosition(position);
+					designerView.CommandManager.OnMenuDisplayConstraintPosition(position);
 				}
 			}
 			private void OnStatusDisplayReverseRoleOrder(object sender, EventArgs e)
 			{
-				ORMDesignerDocView.OnStatusCommand(sender, CurrentORMView, ORMDesignerCommands.DisplayReverseRoleOrder);
+				ORMDesignerCommandManager.OnStatusCommand(sender, CurrentORMView, ORMDesignerCommands.DisplayReverseRoleOrder);
 			}
 			/// <summary>
 			/// Menu handler
 			/// </summary>
 			private void OnMenuDisplayReverseRoleOrder(object sender, EventArgs e)
 			{
-				ORMDesignerDocView docView = CurrentORMView;
-				if (docView != null)
+				IORMDesignerView designerView = CurrentORMView;
+				if (designerView != null)
 				{
 					// Defer to the doc view
-					docView.OnMenuDisplayReverseRoleOrder();
+					designerView.CommandManager.OnMenuDisplayReverseRoleOrder();
 				}
 			}
 			private void OnStatusExclusiveOrCoupler(object sender, EventArgs e)
 			{
-				ORMDesignerDocView.OnStatusCommand(sender, CurrentORMView, ORMDesignerCommands.ExclusiveOrCoupler);
+				ORMDesignerCommandManager.OnStatusCommand(sender, CurrentORMView, ORMDesignerCommands.ExclusiveOrCoupler);
 			}
 			/// <summary>
 			/// Menu handler
 			/// </summary>
 			private void OnMenuExclusiveOrCoupler(object sender, EventArgs e)
 			{
-				ORMDesignerDocView docView = CurrentORMView;
-				if (docView != null)
+				IORMDesignerView designerView = CurrentORMView;
+				if (designerView != null)
 				{
 					// Defer to the doc view
-					docView.OnMenuExclusiveOrCoupler();
+					designerView.CommandManager.OnMenuExclusiveOrCoupler();
 				}
 			}
 			private void OnStatusExclusiveOrDecoupler(object sender, EventArgs e)
 			{
-				ORMDesignerDocView.OnStatusCommand(sender, CurrentORMView, ORMDesignerCommands.ExclusiveOrDecoupler);
+				ORMDesignerCommandManager.OnStatusCommand(sender, CurrentORMView, ORMDesignerCommands.ExclusiveOrDecoupler);
 			}
 			/// <summary>
 			/// Menu handler
 			/// </summary>
 			private void OnMenuExclusiveOrDecoupler(object sender, EventArgs e)
 			{
-				ORMDesignerDocView docView = CurrentORMView;
-				if (docView != null)
+				IORMDesignerView designerView = CurrentORMView;
+				if (designerView != null)
 				{
 					// Defer to the doc view
-					docView.OnMenuExclusiveOrDecoupler();
+					designerView.CommandManager.OnMenuExclusiveOrDecoupler();
 				}
 			}
 			private void OnStatusReportGenerator(object sender, EventArgs e)
 			{
-				ORMDesignerDocView.OnStatusCommand(sender, CurrentORMView, ORMDesignerCommands.ReportGeneratorList);
+				ORMDesignerCommandManager.OnStatusCommand(sender, CurrentORMView, ORMDesignerCommands.ReportGeneratorList);
 				((OleMenuCommand)sender).MatchedCommandId = 0;
 			}
 			/// <summary>
@@ -792,11 +809,11 @@ namespace Neumont.Tools.ORM.Shell
 			/// </summary>
 			private void OnMenuReportGenerator(object sender, EventArgs e)
 			{
-				ORMDesignerDocView docView = CurrentORMView;
-				if (docView != null)
+				IORMDesignerView designerView = CurrentORMView;
+				if (designerView != null)
 				{
 					// Defer to the doc view
-					docView.OnMenuGenerateReport(((OleMenuCommand)sender).MatchedCommandId);
+					designerView.CommandManager.OnMenuGenerateReport(((OleMenuCommand)sender).MatchedCommandId);
 				}
 			}
 			private sealed class DynamicReportGeneratorCommand : DynamicStatusMenuCommand
@@ -821,18 +838,18 @@ namespace Neumont.Tools.ORM.Shell
 			}
 			private void OnStatusUnobjectifyFactType(object sender, EventArgs e)
 			{
-				ORMDesignerDocView.OnStatusCommand(sender, CurrentORMView, ORMDesignerCommands.UnobjectifyFactType);
+				ORMDesignerCommandManager.OnStatusCommand(sender, CurrentORMView, ORMDesignerCommands.UnobjectifyFactType);
 			}
 			/// <summary>
 			/// Menu handler
 			/// </summary>
 			protected void OnMenuUnobjectifyFactType(object sender, EventArgs e)
 			{
-				ORMDesignerDocView docView = CurrentORMView;
-				if (docView != null)
+				IORMDesignerView designerView = CurrentORMView;
+				if (designerView != null)
 				{
 					// Defer to the doc view
-					docView.OnMenuUnobjectifyFactType();
+					designerView.CommandManager.OnMenuUnobjectifyFactType();
 				}
 			}
 			/// <summary>
@@ -840,18 +857,18 @@ namespace Neumont.Tools.ORM.Shell
 			/// </summary>
 			private void OnStatusAlignShapes(object sender, EventArgs e)
 			{
-				ORMDesignerDocView.OnStatusCommand(sender, CurrentORMView, ORMDesignerCommands.AlignShapes);
+				ORMDesignerCommandManager.OnStatusCommand(sender, CurrentORMView, ORMDesignerCommands.AlignShapes);
 			}
 			/// <summary>
 			/// Menu handler
 			/// </summary>
 			protected void OnMenuAlignShapes(object sender, EventArgs e)
 			{
-				ORMDesignerDocView docView = CurrentORMView;
-				if (docView != null)
+				IORMDesignerView designerView = CurrentORMView;
+				if (designerView != null)
 				{
 					// Defer to the doc view
-					docView.OnMenuAlignShapes((sender as MenuCommand).CommandID.ID);
+					designerView.CommandManager.OnMenuAlignShapes((sender as MenuCommand).CommandID.ID);
 				}
 			}
 
@@ -982,7 +999,7 @@ namespace Neumont.Tools.ORM.Shell
 			/// </summary>
 			protected void OnStatusErrorList(object sender, EventArgs e)
 			{
-				ORMDesignerDocView.OnStatusCommand(sender, CurrentORMView, ORMDesignerCommands.ErrorList);
+				ORMDesignerCommandManager.OnStatusCommand(sender, CurrentORMView, ORMDesignerCommands.ErrorList);
 				((OleMenuCommand)sender).MatchedCommandId = 0;
 			}
 			/// <summary>
@@ -990,11 +1007,11 @@ namespace Neumont.Tools.ORM.Shell
 			/// </summary>
 			protected void OnMenuErrorList(object sender, EventArgs e)
 			{
-				ORMDesignerDocView docView = CurrentORMView;
-				if (docView != null)
+				IORMDesignerView designerView = CurrentORMView;
+				if (designerView != null)
 				{
 					// Defer to the doc view
-					docView.OnMenuErrorList(((OleMenuCommand)sender).MatchedCommandId);
+					designerView.CommandManager.OnMenuErrorList(((OleMenuCommand)sender).MatchedCommandId);
 				}
 			}
 			private sealed class DynamicDiagramCommand : DynamicStatusMenuCommand
@@ -1021,9 +1038,45 @@ namespace Neumont.Tools.ORM.Shell
 			/// <summary>
 			/// Status callback
 			/// </summary>
+			protected void OnStatusSelectInDiagramSpy(object sender, EventArgs e)
+			{
+				ORMDesignerCommandManager.OnStatusCommand(sender, CurrentORMView, ORMDesignerCommands.SelectInDiagramSpy);
+			}
+			/// <summary>
+			/// Menu handler
+			/// </summary>
+			protected void OnMenuSelectInDiagramSpy(object sender, EventArgs e)
+			{
+				IORMDesignerView designerView = CurrentORMView;
+				if (designerView != null)
+				{
+					designerView.CommandManager.OnMenuSelectInDiagramSpy();
+				}
+			}
+			/// <summary>
+			/// Status callback
+			/// </summary>
+			protected void OnStatusSelectInDocumentWindow(object sender, EventArgs e)
+			{
+				ORMDesignerCommandManager.OnStatusCommand(sender, CurrentORMView, ORMDesignerCommands.SelectInDocumentWindow);
+			}
+			/// <summary>
+			/// Menu handler
+			/// </summary>
+			protected void OnMenuSelectInDocumentWindow(object sender, EventArgs e)
+			{
+				IORMDesignerView designerView = CurrentORMView;
+				if (designerView != null)
+				{
+					designerView.CommandManager.OnMenuSelectInDocumentWindow();
+				}
+			}
+			/// <summary>
+			/// Status callback
+			/// </summary>
 			protected void OnStatusDiagramList(object sender, EventArgs e)
 			{
-				ORMDesignerDocView.OnStatusCommand(sender, CurrentORMView, ORMDesignerCommands.DiagramList);
+				ORMDesignerCommandManager.OnStatusCommand(sender, CurrentORMView, ORMDesignerCommands.DiagramList);
 				((OleMenuCommand)sender).MatchedCommandId = 0;
 			}
 			/// <summary>
@@ -1031,11 +1084,11 @@ namespace Neumont.Tools.ORM.Shell
 			/// </summary>
 			protected void OnMenuDiagramList(object sender, EventArgs e)
 			{
-				ORMDesignerDocView docView = CurrentORMView;
-				if (docView != null)
+				IORMDesignerView designerView = CurrentORMView;
+				if (designerView != null)
 				{
 					// Defer to the doc view
-					docView.OnMenuDiagramList(((OleMenuCommand)sender).MatchedCommandId);
+					designerView.CommandManager.OnMenuDiagramList(((OleMenuCommand)sender).MatchedCommandId);
 				}
 			}
 			/// <summary>
@@ -1043,10 +1096,10 @@ namespace Neumont.Tools.ORM.Shell
 			/// </summary>
 			protected void OnMenuNewWindow(object sender, EventArgs e)
 			{
-				ORMDesignerDocView docView = CurrentORMView;
-				if (docView != null)
+				IORMDesignerView designerView = CurrentORMView;
+				if (designerView != null)
 				{
-					docView.OnMenuNewWindow();
+					designerView.CommandManager.OnMenuNewWindow();
 				}
 			}
 			#region External Constraint editing menu options
@@ -1077,12 +1130,18 @@ namespace Neumont.Tools.ORM.Shell
 			/// <summary>
 			/// Context window menu handler
 			/// </summary>
-			/// <param name="sender">The sender.</param>
-			/// <param name="e">The <see cref="T:System.EventArgs"/> instance containing the event data.</param>
 			protected void OnMenuContextWindow(object sender, EventArgs e)
 			{
 				ORMContextWindow contextWindow = ORMDesignerPackage.ContextWindow;
 				contextWindow.Show();
+			}
+			/// <summary>
+			/// Diagram Spy menu handler
+			/// </summary>
+			protected void OnMenuDiagramSpyWindow(object sender, EventArgs e)
+			{
+				ORMDiagramSpyWindow diagramSpyWindow = ORMDesignerPackage.DiagramSpyWindow;
+				diagramSpyWindow.Show();
 			}
 			/// <summary>
 			/// Menu handler
@@ -1098,7 +1157,7 @@ namespace Neumont.Tools.ORM.Shell
 			/// </summary>
 			private void OnStatusStandardWindow(object sender, EventArgs e)
 			{
-				ORMDesignerDocView.OnStatusCommand(sender, CurrentORMView, ORMDesignerCommands.DisplayStandardWindows);
+				ORMDesignerCommandManager.OnStatusCommand(sender, CurrentORMView, ORMDesignerCommands.DisplayStandardWindows);
 			}
 			/// <summary>
 			/// Menu handler
@@ -1115,24 +1174,6 @@ namespace Neumont.Tools.ORM.Shell
 			{
 				ORMSamplePopulationToolWindow sampleWindow = ORMDesignerPackage.SamplePopulationEditorWindow;
 				sampleWindow.Show();
-			}
-			/// <summary>
-			/// Status callback
-			/// </summary>
-			protected void OnStatusShowPositiveVerbalization(object sender, EventArgs e)
-			{
-				MenuCommand command = sender as MenuCommand;
-				command.Enabled = true;
-				command.Visible = true;
-				command.Supported = true;
-				command.Checked = !ORMDesignerPackage.VerbalizationWindowSettings.ShowNegativeVerbalizations;
-			}
-			/// <summary>
-			/// Menu handler
-			/// </summary>
-			protected void OnMenuShowPositiveVerbalization(object sender, EventArgs e)
-			{
-				ORMDesignerPackage.VerbalizationWindowSettings.ShowNegativeVerbalizations = false;
 			}
 			/// <summary>
 			/// Status callback
@@ -1155,37 +1196,74 @@ namespace Neumont.Tools.ORM.Shell
 			/// <summary>
 			/// Status callback
 			/// </summary>
+			protected void OnStatusShowPositiveVerbalization(object sender, EventArgs e)
+			{
+				MenuCommand command = sender as MenuCommand;
+				command.Enabled = true;
+				command.Visible = true;
+				command.Supported = true;
+				command.Checked = !ORMDesignerPackage.VerbalizationWindowSettings.ShowNegativeVerbalizations;
+			}
+			/// <summary>
+			/// Menu handler
+			/// </summary>
+			protected void OnMenuShowPositiveVerbalization(object sender, EventArgs e)
+			{
+				ORMDesignerPackage.VerbalizationWindowSettings.ShowNegativeVerbalizations = false;
+			}
+			/// <summary>
+			/// Status callback
+			/// </summary>
+			protected void OnStatusVerbalizationHyperlinkToDiagramSpy(object sender, EventArgs e)
+			{
+				MenuCommand command = sender as MenuCommand;
+				command.Enabled = true;
+				command.Visible = true;
+				command.Supported = true;
+				command.Checked = ORMDesignerPackage.VerbalizationWindowSettings.HyperlinkToDiagramSpy;
+			}
+			/// <summary>
+			/// Menu handler
+			/// </summary>
+			protected void OnMenuVerbalizationHyperlinkToDiagramSpy(object sender, EventArgs e)
+			{
+				ORMVerbalizationToolWindowSettings settings = ORMDesignerPackage.VerbalizationWindowSettings;
+				settings.HyperlinkToDiagramSpy = !settings.HyperlinkToDiagramSpy;
+			}
+			/// <summary>
+			/// Status callback
+			/// </summary>
 			protected void OnStatusEditExternalConstraint(object sender, EventArgs e)
 			{
-				ORMDesignerDocView.OnStatusCommand(sender, CurrentORMView, ORMDesignerCommands.EditExternalConstraint);
+				ORMDesignerCommandManager.OnStatusCommand(sender, CurrentORMView, ORMDesignerCommands.EditExternalConstraint);
 			}
 			/// <summary>
 			/// Status callback
 			/// </summary>
 			protected void OnStatusActivateRoleSequence(object sender, EventArgs e)
 			{
-				ORMDesignerDocView.OnStatusCommand(sender, CurrentORMView, ORMDesignerCommands.ActivateRoleSequence);
+				ORMDesignerCommandManager.OnStatusCommand(sender, CurrentORMView, ORMDesignerCommands.ActivateRoleSequence);
 			}
 			/// <summary>
 			/// Status callback
 			/// </summary>
 			protected void OnStatusDeleteRowSequence(object sender, EventArgs e)
 			{
-				ORMDesignerDocView.OnStatusCommand(sender, CurrentORMView, ORMDesignerCommands.DeleteRoleSequence);
+				ORMDesignerCommandManager.OnStatusCommand(sender, CurrentORMView, ORMDesignerCommands.DeleteRoleSequence);
 			}
 			/// <summary>
 			/// Status callback
 			/// </summary>
 			protected void OnStatusMoveRoleSequenceUp(object sender, EventArgs e)
 			{
-				ORMDesignerDocView.OnStatusCommand(sender, CurrentORMView, ORMDesignerCommands.MoveRoleSequenceUp);
+				ORMDesignerCommandManager.OnStatusCommand(sender, CurrentORMView, ORMDesignerCommands.MoveRoleSequenceUp);
 			}
 			/// <summary>
 			/// Status callback
 			/// </summary>
 			protected void OnStatusMoveRoleSequenceDown(object sender, EventArgs e)
 			{
-				ORMDesignerDocView.OnStatusCommand(sender, CurrentORMView, ORMDesignerCommands.MoveRoleSequenceDown);
+				ORMDesignerCommandManager.OnStatusCommand(sender, CurrentORMView, ORMDesignerCommands.MoveRoleSequenceDown);
 			}
 			#endregion // Status queries
 			#region Menu actions
@@ -1194,10 +1272,10 @@ namespace Neumont.Tools.ORM.Shell
 			/// </summary>
 			protected void OnMenuEditExternalConstraint(object sender, EventArgs e)
 			{
-				ORMDesignerDocView docView = CurrentORMView;
-				if (docView != null)
+				IORMDesignerView designerView = CurrentORMView;
+				if (designerView != null)
 				{
-					docView.OnMenuEditExternalConstraint();
+					designerView.CommandManager.OnMenuEditExternalConstraint();
 				}
 			}
 			/// <summary>
@@ -1205,10 +1283,10 @@ namespace Neumont.Tools.ORM.Shell
 			/// </summary>
 			protected void OnMenuActivateRoleSequence(object sender, EventArgs e)
 			{
-				ORMDesignerDocView docView = CurrentORMView;
-				if (docView != null)
+				IORMDesignerView designerView = CurrentORMView;
+				if (designerView != null)
 				{
-					docView.OnMenuActivateRoleSequence();
+					designerView.CommandManager.OnMenuActivateRoleSequence();
 				}
 			}
 			/// <summary>
@@ -1216,11 +1294,11 @@ namespace Neumont.Tools.ORM.Shell
 			/// </summary>
 			protected void OnMenuDeleteRowSequence(object sender, EventArgs e)
 			{
-				ORMDesignerDocView docView = CurrentORMView;
-				if (docView != null)
+				IORMDesignerView designerView = CurrentORMView;
+				if (designerView != null)
 				{
 					// call delete on the doc view
-					docView.OnMenuDeleteRoleSequence();
+					designerView.CommandManager.OnMenuDeleteRoleSequence();
 				}
 			}
 			/// <summary>
@@ -1228,10 +1306,10 @@ namespace Neumont.Tools.ORM.Shell
 			/// </summary>
 			protected void OnMenuMoveRoleSequenceUp(object sender, EventArgs e)
 			{
-				ORMDesignerDocView docView = CurrentORMView;
-				if (docView != null)
+				IORMDesignerView designerView = CurrentORMView;
+				if (designerView != null)
 				{
-					docView.OnMenuMoveRoleSequenceUp();
+					designerView.CommandManager.OnMenuMoveRoleSequenceUp();
 				}
 			}
 			/// <summary>
@@ -1239,35 +1317,47 @@ namespace Neumont.Tools.ORM.Shell
 			/// </summary>
 			protected void OnMenuMoveRoleSequenceDown(object sender, EventArgs e)
 			{
-				ORMDesignerDocView docView = CurrentORMView;
-				if (docView != null)
+				IORMDesignerView designerView = CurrentORMView;
+				if (designerView != null)
 				{
-					docView.OnMenuMoveRoleSequenceDown();
+					designerView.CommandManager.OnMenuMoveRoleSequenceDown();
 				}
 			}
 			#endregion // Menu actions
 			#endregion // External Constraint editing menu options
-
 			/// <summary>
-			/// Currently focused document
+			/// Currently focused ORM designer view
 			/// </summary>
-			protected ORMDesignerDocData CurrentORMData
+			protected IORMDesignerView CurrentORMView
 			{
 				get
 				{
-					return base.CurrentDocData as ORMDesignerDocData;
+					IORMDesignerView retVal = MonitorSelection.CurrentWindow as IORMDesignerView;
+					if (null != retVal &&
+						null != retVal.CurrentDesigner)
+					{
+						return retVal;
+					}
+					return CurrentDocView as IORMDesignerView;
 				}
 			}
+			#region IEnumerable<MenuCommand> Implementation
 			/// <summary>
-			/// Currently focused ORM document view
+			/// Enumerate the current menu commands
 			/// </summary>
-			protected ORMDesignerDocView CurrentORMView
+			public IEnumerator<MenuCommand> GetEnumerator()
 			{
-				get
-				{
-					return base.CurrentDocView as ORMDesignerDocView;
-				}
+				return GetMenuCommands().GetEnumerator();
 			}
+			IEnumerator<MenuCommand> IEnumerable<MenuCommand>.GetEnumerator()
+			{
+				return GetEnumerator();
+			}
+			IEnumerator IEnumerable.GetEnumerator()
+			{
+				return GetEnumerator();
+			}
+			#endregion // IEnumerable<MenuCommand> Implementation
 		}
 
 		/// <summary>
@@ -1314,9 +1404,13 @@ namespace Neumont.Tools.ORM.Shell
 			/// </summary>
 			public static readonly CommandID ViewNotesWindow = new CommandID(guidORMDesignerCommandSet, cmdIdViewNotesWindow);
 			/// <summary>
-			/// The ORM Note Window item on the context menu
+			/// The ORM Context Window item on the context menu
 			/// </summary>
-			public static readonly CommandID NewContextWindow = new CommandID(guidORMDesignerCommandSet, cmdIdNewORMContextWindow);
+			public static readonly CommandID ViewContextWindow = new CommandID(guidORMDesignerCommandSet, cmdIdViewContextWindow);
+			/// <summary>
+			/// The ORM Diagram Spy Window item on the context menu
+			/// </summary>
+			public static readonly CommandID ViewDiagramSpyWindow = new CommandID(guidORMDesignerCommandSet, cmdIdViewDiagramSpyWindow);
 			/// <summary>
 			/// Insert a role after the selected role
 			/// </summary>
@@ -1345,6 +1439,11 @@ namespace Neumont.Tools.ORM.Shell
 			/// The ORM Verbalization Browser toolbar button for negative verbalization
 			/// </summary>
 			public static readonly CommandID ShowNegativeVerbalization = new CommandID(guidORMDesignerCommandSet, cmdIdShowNegativeVerbalization);
+			/// <summary>
+			/// Verbalization option toggle, enable indicates jump to diagram spy instead
+			/// of document window.
+			/// </summary>
+			public static readonly CommandID VerbalizationHyperlinkToDiagramSpy = new CommandID(guidORMDesignerCommandSet, cmdIdVerbalizationHyperlinkToDiagramSpy);
 			/// <summary>
 			/// The AutoLayout command
 			/// </summary>
@@ -1497,6 +1596,10 @@ namespace Neumont.Tools.ORM.Shell
 			/// </summary>
 			public const int DiagramListLength = cmdIdDiagramListEnd - cmdIdDiagramList + 1;
 			/// <summary>
+			/// Available to display a complementary diagram list targeted at the diagram spy window
+			/// </summary>
+			public static readonly CommandID DiagramSpyDiagramList = new CommandID(guidORMDesignerCommandSet, cmdIdDiagramSpyDiagramList);
+			/// <summary>
 			/// Available if report generators are registered
 			/// </summary>
 			public static readonly CommandID ReportGeneratorList = new CommandID(guidORMDesignerCommandSet, cmdIdReportGeneratorList);
@@ -1504,6 +1607,14 @@ namespace Neumont.Tools.ORM.Shell
 			/// Indicates the number of command ids reserved for display diagrams
 			/// </summary>
 			public const int ReportGeneratorListLength = cmdIdReportGeneratorListEnd - cmdIdReportGeneratorList + 1;
+			/// <summary>
+			/// Activate the selected display element in the diagram spy window.
+			/// </summary>
+			public static readonly CommandID SelectInDiagramSpy = new CommandID(guidORMDesignerCommandSet, cmdIdSelectInDiagramSpy);
+			/// <summary>
+			/// Activate the selected display element in the document window.
+			/// </summary>
+			public static readonly CommandID SelectInDocumentWindow = new CommandID(guidORMDesignerCommandSet, cmdIdSelectInDocumentWindow);
 			#endregion //CommandID objects for menus
 			#region cmdIds
 			// IMPORTANT: keep these constants in sync with PkgCmd.vsct
@@ -1657,7 +1768,7 @@ namespace Neumont.Tools.ORM.Shell
 			/// <summary>
 			/// The ORM Context Window
 			/// </summary>
-			private const int cmdIdNewORMContextWindow = 0x2917;
+			private const int cmdIdViewContextWindow = 0x2917;
 			/// <summary>
 			/// Initiates the drop down to add a new reading in the Reading Editor
 			/// </summary>
@@ -1732,6 +1843,27 @@ namespace Neumont.Tools.ORM.Shell
 			private const int cmdIdViewInformalDefinitionWindow = 0x292a;
 			// Commit a line in the fact editor, not used by the designer
 			//private const int cmdIdFactEditorCommitLine = 0x292b;
+			/// <summary>
+			/// The ORM Diagram Spy Window item on the context menu
+			/// </summary>
+			private const int cmdIdViewDiagramSpyWindow = 0x292c;
+			/// <summary>
+			/// Verbalization option toggle, enable indicates jump to diagram spy instead
+			/// of document window.
+			/// </summary>
+			private const int cmdIdVerbalizationHyperlinkToDiagramSpy = 0x292d;
+			/// <summary>
+			/// Activate the selected display element in the diagram spy window.
+			/// </summary>
+			private const int cmdIdSelectInDiagramSpy = 0x292e;
+			/// <summary>
+			/// Activate the selected display element in the document window.
+			/// </summary>
+			private const int cmdIdSelectInDocumentWindow = 0x292f;
+			/// <summary>
+			/// The context menu item for related diagrams, targeted to the diagram spy
+			/// </summary>
+			private const int cmdIdDiagramSpyDiagramList = 0x2d00;
 			#endregion
 		}
 	}

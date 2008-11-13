@@ -61,10 +61,17 @@
 				</Strings>
 			</Menu>
 			<Menu guid="guidORMDesignerCommandSet" id="menuIdDiagramList" priority="0x0100" type="Context">
-				<Parent guid="guidORMDesignerCommandSet" id="groupIdModelCommands"/>
+				<Parent guid="guidORMDesignerCommandSet" id="groupIdSelectCommands"/>
 				<Strings>
 					<ButtonText>ORM Diagram List</ButtonText>
 					<CommandName>Select on Dia&amp;gram</CommandName>
+				</Strings>
+			</Menu>
+			<Menu guid="guidORMDesignerCommandSet" id="menuIdDiagramSpyDiagramList" priority="0x0200" type="Context">
+				<Parent guid="guidORMDesignerCommandSet" id="groupIdSelectCommands"/>
+				<Strings>
+					<ButtonText>ORM Diagram List for Diagram Spy</ButtonText>
+					<CommandName>Select on Diagram Sp&amp;y</CommandName>
 				</Strings>
 			</Menu>
 			<Menu guid="guidORMDesignerCommandSet" id="menuIdReportGeneratorList" priority="0x0400" type="Context">
@@ -114,6 +121,9 @@
 			<Group guid="guidORMDesignerCommandSet" id="groupIdFactShapeCommands" priority="0x0060">
 				<Parent guid="guidORMDesignerCommandSet" id="menuIdContextMenu"/>
 			</Group>
+			<Group guid="guidORMDesignerCommandSet" id="groupIdSelectCommands" priority="0x0068">
+				<Parent guid="guidORMDesignerCommandSet" id="menuIdContextMenu"/>
+			</Group>
 			<Group guid="guidORMDesignerCommandSet" id="groupIdModelCommands" priority="0x0070">
 				<Parent guid="guidORMDesignerCommandSet" id="menuIdContextMenu"/>
 			</Group>
@@ -122,6 +132,10 @@
 			</Group>
 
 			<Group guid="guidORMDesignerCommandSet" id="groupIdVerbalizationCommands" priority="0x0010">
+				<Parent guid="guidORMDesignerCommandSet" id="menuIdVerbalizationToolBar"/>
+			</Group>
+
+			<Group guid="guidORMDesignerCommandSet" id="groupIdVerbalizationOptions" priority="0x0020">
 				<Parent guid="guidORMDesignerCommandSet" id="menuIdVerbalizationToolBar"/>
 			</Group>
 
@@ -141,6 +155,10 @@
 
 			<Group guid="guidORMDesignerCommandSet" id="groupIdDiagramListTest" priority="0x0010">
 				<Parent guid="guidORMDesignerCommandSet" id="menuIdDiagramList"/>
+			</Group>
+
+			<Group guid="guidORMDesignerCommandSet" id="groupIdDiagramSpyDiagramListTest" priority="0x0010">
+				<Parent guid="guidORMDesignerCommandSet" id="menuIdDiagramSpyDiagramList"/>
 			</Group>
 
 			<Group guid="guidORMDesignerCommandSet" id="groupIdReportGeneratorListTest" priority="0x0010">
@@ -267,7 +285,7 @@
 				<CommandFlag>DefaultInvisible</CommandFlag>
 				<CommandFlag>DynamicVisibility</CommandFlag>
 				<Strings>
-					<ButtonText>&amp;Unobjectify Fact Type</ButtonText>
+					<ButtonText>Unob&amp;jectify Fact Type</ButtonText>
 				</Strings>
 			</Button>
 
@@ -293,6 +311,17 @@
 
 			<Button guid="guidORMDesignerCommandSet" id="cmdIdDiagramList" priority="0x0010" type="Button">
 				<Parent guid="guidORMDesignerCommandSet" id="groupIdDiagramListTest"/>
+				<CommandFlag>DynamicItemStart</CommandFlag>
+				<CommandFlag>DefaultInvisible</CommandFlag>
+				<CommandFlag>DynamicVisibility</CommandFlag>
+				<CommandFlag>TextChanges</CommandFlag>
+				<Strings>
+					<ButtonText>No Other &amp;Diagrams</ButtonText>
+				</Strings>
+			</Button>
+
+			<Button guid="guidORMDesignerCommandSet" id="cmdIdDiagramSpyDiagramList" priority="0x0010" type="Button">
+				<Parent guid="guidORMDesignerCommandSet" id="groupIdDiagramSpyDiagramListTest"/>
 				<CommandFlag>DynamicItemStart</CommandFlag>
 				<CommandFlag>DefaultInvisible</CommandFlag>
 				<CommandFlag>DynamicVisibility</CommandFlag>
@@ -439,13 +468,41 @@
 					<ButtonText>ORM R&amp;eference Mode Editor</ButtonText>
 				</Strings>
 			</Button>
-			<Button guid="guidORMDesignerCommandSet" id="cmdIdNewContextWindow" priority="0x0700" type="Button">
+			<Button guid="guidORMDesignerCommandSet" id="cmdIdViewContextWindow" priority="0x0700" type="Button">
 				<Parent guid="guidORMDesignerCommandSet" id="groupIdORMToolWindows"/>
 				<Icon guid="guidORMToolWindowIcons" id="bmpIdToolWindowContextWindow"/>
 				<CommandFlag>DefaultInvisible</CommandFlag>
 				<CommandFlag>DynamicVisibility</CommandFlag>
 				<Strings>
 					<ButtonText>ORM &amp;Context Window</ButtonText>
+				</Strings>
+			</Button>
+			<Button guid="guidORMDesignerCommandSet" id="cmdIdViewDiagramSpyWindow" priority="0x0800" type="Button">
+				<Parent guid="guidORMDesignerCommandSet" id="groupIdORMToolWindows"/>
+				<Icon guid="guidORMToolWindowIcons" id="bmpIdToolWindowDiagramSpy"/>
+				<CommandFlag>DefaultInvisible</CommandFlag>
+				<CommandFlag>DynamicVisibility</CommandFlag>
+				<Strings>
+					<ButtonText>ORM &amp;Diagram Spy Window</ButtonText>
+				</Strings>
+			</Button>
+
+			<Button guid="guidORMDesignerCommandSet" id="cmdIdSelectInDiagramSpy" priority="0x0300" type="Button">
+				<Parent guid="guidORMDesignerCommandSet" id="groupIdSelectCommands"/>
+				<Icon guid="guidORMToolWindowIcons" id="bmpIdToolWindowDiagramSpy"/>
+				<CommandFlag>DefaultInvisible</CommandFlag>
+				<CommandFlag>DynamicVisibility</CommandFlag>
+				<Strings>
+					<ButtonText>Select in Diagram Sp&amp;y</ButtonText>
+				</Strings>
+			</Button>
+
+			<Button guid="guidORMDesignerCommandSet" id="cmdIdSelectInDocumentWindow" priority="0x0400" type="Button">
+				<Parent guid="guidORMDesignerCommandSet" id="groupIdSelectCommands"/>
+				<CommandFlag>DefaultInvisible</CommandFlag>
+				<CommandFlag>DynamicVisibility</CommandFlag>
+				<Strings>
+					<ButtonText>Select in Doc&amp;ument Window</ButtonText>
 				</Strings>
 			</Button>
 
@@ -455,7 +512,7 @@
 				<CommandFlag>DefaultInvisible</CommandFlag>
 				<CommandFlag>DynamicVisibility</CommandFlag>
 				<Strings>
-					<ButtonText>Cop&amp;y Image</ButtonText>
+					<ButtonText>Copy &amp;Image</ButtonText>
 				</Strings>
 			</Button>
 			<Button guid="guidORMDesignerCommandSet" id="cmdIdAutoLayout" priority="0x0300" type="Button">
@@ -539,6 +596,16 @@
 				</Strings>
 			</Button>
 
+			<Button guid="guidORMDesignerCommandSet" id="cmdIdVerbalizationHyperlinkToDiagramSpy" priority="0x010" type="Button">
+				<Parent guid="guidORMDesignerCommandSet" id="groupIdVerbalizationOptions"/>
+				<Icon guid="guidORMVerbalizationToolbarImages" id="bmpIdVerbalizationHyperlinkToDiagramSpy"/>
+				<CommandFlag>DefaultInvisible</CommandFlag>
+				<CommandFlag>DynamicVisibility</CommandFlag>
+				<Strings>
+					<ButtonText>Hyperlink changes ORM Diagram Spy selection</ButtonText>
+				</Strings>
+			</Button>
+
 			<Button guid="guidORMDesignerCommandSet" id="cmdIdDeleteAlternate" priority="0x020" type="Button">
 				<Parent guid="guidORMDesignerCommandSet" id="groupIdDeleteContext"/>
 				<CommandFlag>DefaultInvisible</CommandFlag>
@@ -611,8 +678,8 @@
 		<!--<Combos/>-->
 
 		<Bitmaps>
-			<Bitmap guid="guidORMVerbalizationToolbarImages" href="../../Resources/VerbalizationToolbarImages.bmp" usedList="bmpIdShowNegativeVerbalization, bmpIdShowPositiveVerbalization"/>
-			<Bitmap guid="guidORMToolWindowIcons" href="../../Resources/ToolWindowIcons32.bmp" usedList="bmpIdToolWindowVerbalizationBrowser, bmpIdToolWindowReadingEditor, bmpIdToolWindowReferenceModeEditor, bmpIdToolWindowFactEditor, bmpIdToolWindowModelBrowser, bmpIdToolWindowNotesEditor, bmpIdToolWindowPopulationEditor, bmpIdToolWindowContextWindow, bmpIdToolWindowDefinitionEditor"/>
+			<Bitmap guid="guidORMVerbalizationToolbarImages" href="../../Resources/VerbalizationToolbarImages.png" usedList="bmpIdShowNegativeVerbalization, bmpIdShowPositiveVerbalization, bmpIdVerbalizationHyperlinkToDiagramSpy"/>
+			<Bitmap guid="guidORMToolWindowIcons" href="../../Resources/ToolWindowIcons.png" usedList="bmpIdToolWindowVerbalizationBrowser, bmpIdToolWindowReadingEditor, bmpIdToolWindowReferenceModeEditor, bmpIdToolWindowFactEditor, bmpIdToolWindowModelBrowser, bmpIdToolWindowNotesEditor, bmpIdToolWindowPopulationEditor, bmpIdToolWindowContextWindow, bmpIdToolWindowDefinitionEditor, bmpIdToolWindowDiagramSpy"/>
 		</Bitmaps>
 
 	</Commands>
@@ -639,7 +706,8 @@
 		<KeyBinding guid="guidORMDesignerCommandSet" id="cmdIdViewSamplePopulationEditor" editor="guidORMDesignerEditor" key1="W" mod1="Control" key2="S" mod2="Control"/>
 		<KeyBinding guid="guidORMDesignerCommandSet" id="cmdIdViewNotesWindow" editor="guidORMDesignerEditor" key1="W" mod1="Control" key2="N" mod2="Control"/>
 		<KeyBinding guid="guidORMDesignerCommandSet" id="cmdIdViewReferenceModeEditor" editor="guidORMDesignerEditor" key1="W" mod1="Control" key2="E" mod2="Control"/>
-		<KeyBinding guid="guidORMDesignerCommandSet" id="cmdIdNewContextWindow" editor="guidORMDesignerEditor" key1="W" mod1="Control" key2="C" mod2="Control"/>
+		<KeyBinding guid="guidORMDesignerCommandSet" id="cmdIdViewContextWindow" editor="guidORMDesignerEditor" key1="W" mod1="Control" key2="C" mod2="Control"/>
+		<KeyBinding guid="guidORMDesignerCommandSet" id="cmdIdViewDiagramSpyWindow" editor="guidORMDesignerEditor" key1="W" mod1="Control" key2="D" mod2="Control"/>
 
 		<!-- Fact editor key bindings-->
 		<KeyBinding guid="guidORMDesignerCommandSet" id="cmdIdFactEditorCommitLine" editor="guidFactEditorFactory" key1="VK_RETURN" mod1="Control"/>
@@ -762,6 +830,7 @@
 			<IDSymbol value="0x0106" name="menuIdDiagramList"/>
 			<IDSymbol value="0x0107" name="menuIdReportGeneratorList"/>
 			<IDSymbol value="0x0108" name="menuIdFactEditorContextMenu"/>
+			<IDSymbol value="0x0109" name="menuIdDiagramSpyDiagramList"/>
 
 			<!-- Groups (0x10__) -->
 			<IDSymbol value="0x0FFF" name="groupIdDebugCommands"/>
@@ -786,6 +855,9 @@
 			<IDSymbol value="0x1012" name="groupIdDiagramListTest"/>
 			<IDSymbol value="0x1013" name="groupIdReportGeneratorListTest"/>
 			<IDSymbol value="0x1014" name="groupIdFactEditorCommitCommands"/>
+			<IDSymbol value="0x1015" name="groupIdVerbalizationOptions"/>
+			<IDSymbol value="0x1016" name="groupIdSelectCommands"/>
+			<IDSymbol value="0x1017" name="groupIdDiagramSpyDiagramListTest"/>
 
 			<!-- Commands (0x2___) -->
 			<IDSymbol value="0x28FE" name="cmdIdDebugViewTransactionLogs"/>
@@ -813,7 +885,7 @@
 			<IDSymbol value="0x2914" name="cmdIdDeleteAlternate"/>
 			<IDSymbol value="0x2915" name="cmdIdMoveRoleLeft"/>
 			<IDSymbol value="0x2916" name="cmdIdMoveRoleRight"/>
-			<IDSymbol value="0x2917" name="cmdIdNewContextWindow"/>
+			<IDSymbol value="0x2917" name="cmdIdViewContextWindow"/>
 			<IDSymbol value="0x2918" name="cmdIdReadingEditorAddReading"/>
 			<IDSymbol value="0x2919" name="cmdIdReadingEditorAddReadingOrder"/>
 			<IDSymbol value="0x291A" name="cmdIdReadingEditorDeleteReading"/>
@@ -834,19 +906,26 @@
 			<IDSymbol value="0x2929" name="cmdIdUnobjectifyFactType"/>
 			<IDSymbol value="0x292A" name="cmdIdViewInformalDefinitionWindow"/>
 			<IDSymbol value="0x292B" name="cmdIdFactEditorCommitLine"/>
+			<IDSymbol value="0x292C" name="cmdIdViewDiagramSpyWindow"/>
+			<IDSymbol value="0x292D" name="cmdIdVerbalizationHyperlinkToDiagramSpy"/>
+			<IDSymbol value="0x292E" name="cmdIdSelectInDiagramSpy"/>
+			<IDSymbol value="0x292F" name="cmdIdSelectInDocumentWindow"/>
 
 			<!-- Large ranges for dynamic commands, keep single commands in the 0x29__ range -->
 			<IDSymbol value="0x2A00" name="cmdIdErrorList"/>
 			<!-- Reserve 2A__ range for errors. -->
 			<IDSymbol value="0x2B00" name="cmdIdDiagramList"/>
-			<!-- Reserve 2B__ range for errors. -->
+			<!-- Reserve 2B__ range for diagram lists. -->
 			<IDSymbol value="0x2C00" name="cmdIdReportGeneratorList"/>
 			<!-- Reserve 2C__ range for reports. -->
+			<IDSymbol value="0x2D00" name="cmdIdDiagramSpyDiagramList"/>
+			<!-- Reserve 2D__ range for diagram spy diagram lists. -->
 		</GuidSymbol>
 		<GuidSymbol name="guidFactEditorFactory" value="{EE99A954-82C4-4098-A2BD-5C75E3D138A7}"/>
 		<GuidSymbol name="guidORMVerbalizationToolbarImages" value="{5743D786-F88A-45F9-8117-F915CA6A9433}">
 			<IDSymbol value="0x0001" name="bmpIdShowNegativeVerbalization"/>
 			<IDSymbol value="0x0002" name="bmpIdShowPositiveVerbalization"/>
+			<IDSymbol value="0x0003" name="bmpIdVerbalizationHyperlinkToDiagramSpy"/>
 		</GuidSymbol>
 		<GuidSymbol name="guidORMToolWindowIcons" value="{EA662CED-462E-41EA-B0B5-42BF76C4B853}">
 			<!-- Keep in sync with PackageResources.cs -->
@@ -860,6 +939,7 @@
 			<IDSymbol value="0x0007" name="bmpIdToolWindowPopulationEditor"/>
 			<IDSymbol value="0x0008" name="bmpIdToolWindowContextWindow"/>
 			<IDSymbol value="0x0009" name="bmpIdToolWindowDefinitionEditor"/>
+			<IDSymbol value="0x000A" name="bmpIdToolWindowDiagramSpy"/>
 		</GuidSymbol>
 		<GuidSymbol name="CMDSETID_StandardCommandSet97" value="Extern">
 			<IDSymbol value="Extern" name="cmdidDelete"/>

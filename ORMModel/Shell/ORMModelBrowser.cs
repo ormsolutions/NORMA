@@ -1,3 +1,20 @@
+#region Common Public License Copyright Notice
+/**************************************************************************\
+* Neumont Object-Role Modeling Architect for Visual Studio                 *
+*                                                                          *
+* Copyright © Neumont University. All rights reserved.                     *
+* Copyright © Matthew Curland. All rights reserved.                        *
+*                                                                          *
+* The use and distribution terms for this software are covered by the      *
+* Common Public License 1.0 (http://opensource.org/licenses/cpl) which     *
+* can be found in the file CPL.txt at the root of this distribution.       *
+* By using this software in any fashion, you are agreeing to be bound by   *
+* the terms of this license.                                               *
+*                                                                          *
+* You must not remove this notice, or any other, from this software.       *
+\**************************************************************************/
+#endregion
+
 using System;
 using System.Collections.Generic;
 using System.Text;
@@ -191,7 +208,8 @@ namespace Neumont.Tools.ORM.Shell
 		/// Activate the shape on the selected diagram
 		/// </summary>
 		/// <param name="diagramIndex">The index of the diagram in the diagram list</param>
-		protected virtual void OnMenuDiagramList(int diagramIndex)
+		/// <param name="targetWindow">The type of window to navigate to select the diagram in</param>
+		protected virtual void OnMenuDiagramList(int diagramIndex, NavigateToWindow targetWindow)
 		{
 			ModelElement element;
 			if (null != (element = SelectedNode as ModelElement))
@@ -204,7 +222,7 @@ namespace Neumont.Tools.ORM.Shell
 					{
 						if (diagramIndex == 0)
 						{
-							(shape.Store as IORMToolServices).ActivateShape(shape);
+							(shape.Store as IORMToolServices).ActivateShape(shape, targetWindow);
 							return false;
 						}
 						--diagramIndex;
@@ -217,6 +235,11 @@ namespace Neumont.Tools.ORM.Shell
 		/// </summary>
 		/// <param name="e"></param>
 		protected override void OnSelectionChanged(EventArgs e)
+		{
+			base.OnSelectionChanged(e);
+			UpdateCommandStatus();
+		}
+		private void UpdateCommandStatus()
 		{
 			ORMDesignerCommands visibleCommands = ORMDesignerCommands.None;
 			ORMDesignerCommands enabledCommands = ORMDesignerCommands.None;
@@ -232,7 +255,7 @@ namespace Neumont.Tools.ORM.Shell
 					ModelElement selectedType = EditorUtility.ResolveContextInstance(selectedNode, false) as ModelElement;
 					if (selectedType != null)
 					{
-						currentDoc.SetCommandStatus(selectedType, null, true, out visibleCommands, out enabledCommands, out checkableCommands, out checkedCommands, out toleratedCommands);
+						((IORMDesignerView)currentDoc).CommandManager.SetCommandStatus(selectedType, null, true, out visibleCommands, out enabledCommands, out checkableCommands, out checkedCommands, out toleratedCommands);
 						// Add in label editing command
 						ISurveyNode surveyNode = selectedType as ISurveyNode;
 						if (surveyNode != null && surveyNode.IsSurveyNameEditable)
@@ -250,7 +273,6 @@ namespace Neumont.Tools.ORM.Shell
 			myEnabledCommands = enabledCommands;
 			myCheckedCommands = checkedCommands & visibleCommands;
 			myCheckableCommands = checkableCommands & visibleCommands & enabledCommands;
-			base.OnSelectionChanged(e);
 		}
 		#region set command text
 		/// <summary>
@@ -310,6 +332,8 @@ namespace Neumont.Tools.ORM.Shell
 				treeControl.SelectionChanged += new EventHandler(Tree_SelectionChanged);
 				treeControl.ContextMenuInvoked += new ContextMenuEventHandler(Tree_ContextMenuInvoked);
 				treeControl.LabelEditControlChanged += new EventHandler(Tree_LabelEditControlChanged);
+				Guid commandSetId = typeof(ORMDesignerEditorFactory).GUID;
+				Frame.SetGuidProperty((int)__VSFPROPID.VSFPROPID_InheritKeyBindings, ref commandSetId);
 			}
 
 			ORMDesignerDocData currentDocument = this.CurrentDocument;
@@ -361,6 +385,7 @@ namespace Neumont.Tools.ORM.Shell
 			{
 				tree.DelayRedraw = false;
 			}
+			UpdateCommandStatus();
 		}
 		/// <summary>
 		/// called when document current selected document changes

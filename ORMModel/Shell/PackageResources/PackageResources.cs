@@ -51,6 +51,7 @@ namespace Neumont.Tools.ORM.Shell
 			public const int PopulationEditor = 6;
 			public const int ContextWindow = 7;
 			public const int DefinitionEditor = 8;
+			public const int DiagramSpy = 9;
 		}
 	}
 }

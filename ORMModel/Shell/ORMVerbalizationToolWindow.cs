@@ -67,6 +67,26 @@ namespace Neumont.Tools.ORM.Shell
 				}
 			}
 		}
+		/// <summary>
+		/// Store the state of the diagram spy hyperlink toggle
+		/// </summary>
+		public bool HyperlinkToDiagramSpy
+		{
+			get
+			{
+				return OptionsPage.CurrentVerbalizationHyperlinkTarget == HyperlinkTargetWindow.DiagramSpyWindow;
+			}
+			set
+			{
+				if (HyperlinkToDiagramSpy != value)
+				{
+					OptionsPage page = new OptionsPage();
+					page.Initialize();
+					page.VerbalizationHyperlinkTarget = value ? HyperlinkTargetWindow.DiagramSpyWindow : HyperlinkTargetWindow.DocumentWindow;
+					page.ApplyChanges();
+				}
+			}
+		}
 		#endregion // Accessor Properties
 	}
 	/// <summary>
@@ -204,6 +224,8 @@ namespace Neumont.Tools.ORM.Shell
 					// to go all the way to a form
 					ContainerControl container = new ContainerControl();
 					container.Controls.Add(browser);
+					Guid commandSetId = typeof(ORMDesignerEditorFactory).GUID;
+					Frame.SetGuidProperty((int)__VSFPROPID.VSFPROPID_InheritKeyBindings, ref commandSetId);
 				}
 				return browser.Parent;
 			}
@@ -220,7 +242,7 @@ namespace Neumont.Tools.ORM.Shell
 					null != (element = docData.Store.ElementDirectory.FindElement(new Guid(uri.LocalPath))) &&
 					null != (services = docData as IORMToolServices))
 				{
-					services.NavigateTo(element);
+					services.NavigateTo(element, ORMDesignerPackage.VerbalizationWindowSettings.HyperlinkToDiagramSpy ? NavigateToWindow.DiagramSpy : NavigateToWindow.Document);
 				}
 				e.Cancel = true;
 			}

@@ -406,6 +406,9 @@
       <DependentUpon>Framework.AttachRules.xml</DependentUpon>
       <AutoGen>True</AutoGen>
     </Compile>
+    <Compile Include="Framework\Shell\ToolWindowDiagramView.cs">
+      <SubType>Component</SubType>
+    </Compile>
     <Compile Include="Framework\Shell\StandardMultiColumnTree.cs">
     </Compile>
     <Compile Include="Framework\Shell\StandardVirtualTreeControl.cs">
@@ -439,6 +442,9 @@
     </Compile>
     <Compile Include="ObjectModel\Design\Editors\AliasManagerForm.Designer.cs">
       <DependentUpon>AliasManagerForm.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Shell\ORMDesignerCommandManager.cs" />
+    <Compile Include="Shell\ORMDiagramSpy.cs">
     </Compile>
     <Compile Include="Shell\ImportStepOptions.cs">
       <SubType>Form</SubType>
@@ -552,6 +558,8 @@
     <EmbeddedResource Include="Shell\ExtensionStripper.xslt" />
     <None Include="Shell\Converters\CustomPropertiesPreviewTo2007-11.xslt" />
     <Content Include="Resources\SamplePopulationEditor.ImageStrip.png" />
+    <None Include="Resources\ToolWindowIcons.png" />
+    <None Include="Resources\VerbalizationToolbarImages.png" />
     <Content Include="Shell\ORMDesignerSettings.xml" />
     <None Include="Transforms\ResourceStringsGenerator.xslt" />
     <None Include="Transforms\SurveyQuestionProvider.xslt" />
@@ -711,8 +719,6 @@
     <None Include="Resources\Toolbox.ObjectifiedFactType.Bitmap.Id.bmp" />
     <None Include="Resources\Toolbox.RingConstraint.Bitmap.Id.bmp" />
     <None Include="Resources\ToolWindowIcons.bmp" />
-    <None Include="Resources\ToolWindowIcons32.bmp" />
-    <None Include="Resources\VerbalizationToolbarImages.bmp" />
     <None Include="Resources\DiagramTabImage.png" />
     <None Include="Resources\AboutBox.ico" />
     <None Include="Resources\ORM.ico" />

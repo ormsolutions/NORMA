@@ -3,6 +3,7 @@
 * Neumont Object-Role Modeling Architect for Visual Studio                 *
 *                                                                          *
 * Copyright © Neumont University. All rights reserved.                     *
+* Copyright © Matthew Curland. All rights reserved.                        *
 *                                                                          *
 * The use and distribution terms for this software are covered by the      *
 * Common Public License 1.0 (http://opensource.org/licenses/cpl) which     *
@@ -153,7 +154,7 @@ namespace Neumont.Tools.ORM.Shell
 						activationContext.ClearFactTypeSelection();
 						ReadingOrder readingOrder = FactSaver.IntegrateParsedFactType(
 							activationContext.CurrentDocument,
-							activationContext.CurrentDocumentView as ORMDesignerDocView,
+							activationContext.CurrentDocumentView,
 							activeFactType,
 							activeReadingOrder,
 							activeRoleOrder,
@@ -563,11 +564,16 @@ namespace Neumont.Tools.ORM.Shell
 			/// <summary>
 			/// Get the current document
 			/// </summary>
-			public DiagramDocView CurrentDocumentView
+			public IORMDesignerView CurrentDocumentView
 			{
 				get
 				{
-					return myActivator.CurrentDocumentView;
+					IORMDesignerView designerView = myActivator.CurrentSelectionContainer as IORMDesignerView;
+					if (designerView != null && designerView.CurrentDesigner != null)
+					{
+						return designerView;
+					}
+					return  myActivator.CurrentDocumentView as IORMDesignerView;
 				}
 			}
 			/// <summary>

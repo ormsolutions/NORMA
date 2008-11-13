@@ -3,6 +3,7 @@
 	Neumont Object-Role Modeling Architect for Visual Studio
 
 	Copyright © Neumont University. All rights reserved.
+	Copyright © Matthew Curland. All rights reserved.
 
 	The use and distribution terms for this software are covered by the
 	Common Public License 1.0 (http://opensource.org/licenses/cpl) which
@@ -442,6 +443,8 @@
 										<File Id="VrbCrDef.xml" Name="_default.xml" Source="..\ORMModel\ObjectModel\VerbalizationCoreSnippets\VerbalizationCoreSnippets.xml"
 											DefaultLanguage="0" CompanionFile="Neumont.Tools.ORM$(var.VSExt).dll"/>
 										<File Id="VrbCrRep.xml" ShortName="VrbCrRep.xml" Name="DefaultReportSnippets.xml"  Source="..\ORMModel\ObjectModel\VerbalizationCoreSnippets\VerbalizationCoreReportSnippets.xml"
+											DefaultLanguage="0" CompanionFile="Neumont.Tools.ORM$(var.VSExt).dll"/>
+										<File Id="VrbCrNoH.xml" Name="BrowserNoHyperlinksSnippets.xml" Source="..\ORMModel\ObjectModel\VerbalizationCoreSnippets\VerbalizationCoreBrowserNoHyperlinksSnippets.xml"
 											DefaultLanguage="0" CompanionFile="Neumont.Tools.ORM$(var.VSExt).dll"/>
 										<File Id="VerbalizationCoreSnippets.xsd" ShortName="VrbCrSnp.xsd" Name="VerbalizationCoreSnippets.xsd" Source="..\ORMModel\ObjectModel\VerbalizationCoreSnippets\VerbalizationCoreSnippets.xsd"
 											DefaultLanguage="0" CompanionFile="Neumont.Tools.ORM$(var.VSExt).dll"/>

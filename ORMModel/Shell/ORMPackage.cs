@@ -3,6 +3,7 @@
 * Neumont Object-Role Modeling Architect for Visual Studio                 *
 *                                                                          *
 * Copyright © Neumont University. All rights reserved.                     *
+* Copyright © Matthew Curland. All rights reserved.                        *
 *                                                                          *
 * The use and distribution terms for this software are covered by the      *
 * Common Public License 1.0 (http://opensource.org/licenses/cpl) which     *
@@ -63,6 +64,7 @@ namespace Neumont.Tools.ORM.Shell
 	[ProvideToolWindow(typeof(ORMDefinitionToolWindow), Style=VsDockStyle.Tabbed, Transient=true, Orientation=ToolWindowOrientation.Right, Window=ToolWindowGuids.Outputwindow)]
 	[ProvideToolWindow(typeof(ORMNotesToolWindow), Style = VsDockStyle.Tabbed, Transient = true, Orientation = ToolWindowOrientation.Right, Window = ToolWindowGuids.Outputwindow)]
 	[ProvideToolWindow(typeof(ORMContextWindow), Style = VsDockStyle.Tabbed, Transient = true, Orientation = ToolWindowOrientation.Right, Window = ToolWindowGuids.Outputwindow)]
+	[ProvideToolWindow(typeof(ORMDiagramSpyWindow), Style = VsDockStyle.Tabbed, Transient = true, Orientation = ToolWindowOrientation.Right, Window = ToolWindowGuids.Outputwindow)]
 	[ProvideToolWindowVisibility(typeof(FactEditorToolWindow), ORMDesignerEditorFactory.GuidString)]
 	[ProvideToolWindowVisibility(typeof(ORMReferenceModeEditorToolWindow), ORMDesignerEditorFactory.GuidString)]
 	[ProvideToolWindowVisibility(typeof(ORMSamplePopulationToolWindow), ORMDesignerEditorFactory.GuidString)]
@@ -72,6 +74,7 @@ namespace Neumont.Tools.ORM.Shell
 	[ProvideToolWindowVisibility(typeof(ORMDefinitionToolWindow), ORMDesignerEditorFactory.GuidString)]
 	[ProvideToolWindowVisibility(typeof(ORMNotesToolWindow), ORMDesignerEditorFactory.GuidString)]
 	[ProvideToolWindowVisibility(typeof(ORMContextWindow), ORMDesignerEditorFactory.GuidString)]
+	[ProvideToolWindowVisibility(typeof(ORMDiagramSpyWindow), ORMDesignerEditorFactory.GuidString)]
 	[ProvideMenuResource(PackageResources.Id.CTMenu, 1)]
 	[ProvideService(typeof(FactEditorLanguageService), ServiceName = FactEditorLanguageService.LanguageName)]
 	[ProvideLanguageService(typeof(FactEditorLanguageService),
@@ -154,7 +157,7 @@ namespace Neumont.Tools.ORM.Shell
 		/// <summary>
 		/// Gets the singleton command set create for this package.
 		/// </summary>
-		public static object CommandSet
+		public static CommandSet CommandSet
 		{
 			get
 			{
@@ -303,6 +306,7 @@ namespace Neumont.Tools.ORM.Shell
 				AddToolWindow(typeof(ORMDefinitionToolWindow));
 				AddToolWindow(typeof(ORMNotesToolWindow));
 				AddToolWindow(typeof(ORMContextWindow));
+				AddToolWindow(typeof(ORMDiagramSpyWindow));
 
 				// Make sure our options are loaded from the registry
 				GetDialogPage(typeof(OptionsPage));
@@ -595,7 +599,6 @@ namespace Neumont.Tools.ORM.Shell
 		/// <summary>
 		/// Gets the context tool window.
 		/// </summary>
-		/// <value>The context tool window.</value>
 		public static ORMContextWindow ContextWindow
 		{
 			get
@@ -603,7 +606,18 @@ namespace Neumont.Tools.ORM.Shell
 				return (ORMContextWindow)mySingleton.GetToolWindow(typeof(ORMContextWindow), true);
 			}
 		}
-	
+
+		/// <summary>
+		/// Gets the diagram spy tool window.
+		/// </summary>
+		public static ORMDiagramSpyWindow DiagramSpyWindow
+		{
+			get
+			{
+				return (ORMDiagramSpyWindow)mySingleton.GetToolWindow(typeof(ORMDiagramSpyWindow), true);
+			}
+		}
+
 		/// <summary>
 		/// The reference mode editor window.
 		/// </summary>

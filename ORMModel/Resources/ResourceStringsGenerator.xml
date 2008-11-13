@@ -303,6 +303,9 @@
 	<ResourceString name="CommandEditReadingText" model="Diagram" resourceName="Command.EditReading.Text"/>
 	<ResourceString name="CommandSwapRoleOrderText" model="Diagram" resourceName="Command.SwapRoleOrder.Text"/>
 	<ResourceString name="CommandNextOnThisDiagramText" model="Diagram" resourceName="Command.NextOnThisDiagram.Text"/>
+	<ResourceString name="DiagramSpyWindowTitle" model="Diagram" resourceName="DiagramSpy.WindowTitle"/>
+	<ResourceString name="DiagramSpyDiagramListStart" model="Diagram" resourceName="DiagramSpy.DiagramListStart"/>
+	<ResourceString name="DiagramSpyNoSelection" model="Diagram" resourceName="DiagramSpy.NoSelection"/>
 	<ResourceString name="ModelReadingEditorListColumnHeaderReadingText" model="Model" resourceName="ModelReadingEditor.ListColumnHeader.ReadingText"/>
 	<ResourceString name="ModelReadingEditorListColumnHeaderIsPrimary" model="Model" resourceName="ModelReadingEditor.ListColumnHeader.IsPrimary"/>
 	<ResourceString name="ModelReadingEditorAllReadingsNodeName" model="Model" resourceName="ModelReadingEditor.AllReadingsNodeName"/>

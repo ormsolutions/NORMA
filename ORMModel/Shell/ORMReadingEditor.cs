@@ -133,6 +133,8 @@ namespace Neumont.Tools.ORM.Shell
 						AttachEventHandlers(currentDoc);
 						OnORMSelectionContainerChanged();
 					}
+					Guid commandSetId = typeof(ORMDesignerEditorFactory).GUID;
+					Frame.SetGuidProperty((int)__VSFPROPID.VSFPROPID_InheritKeyBindings, ref commandSetId);
 				}
 				return form;
 			}
@@ -237,10 +239,12 @@ namespace Neumont.Tools.ORM.Shell
 				else if (theFact != currentFact || secondaryFact != currentImpliedFact)
 				{
 					ReadOnlyCollection<RoleBase> displayOrder = null;
-					ORMDesignerDocView docView = CurrentORMSelectionContainer as ORMDesignerDocView;
-					if (docView != null)
+					IORMDesignerView designerView;
+					DiagramView designer;
+					if (null != (designerView = CurrentORMSelectionContainer as IORMDesignerView) &&
+						null != (designer = designerView.CurrentDesigner))
 					{
-						SelectedShapesCollection shapes = docView.CurrentDesigner.DiagramClientView.Selection;
+						SelectedShapesCollection shapes = designer.DiagramClientView.Selection;
 						if (shapes.Count == 1)
 						{
 							DiagramItem item = null;

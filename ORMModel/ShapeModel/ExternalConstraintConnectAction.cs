@@ -3,6 +3,7 @@
 * Neumont Object-Role Modeling Architect for Visual Studio                 *
 *                                                                          *
 * Copyright © Neumont University. All rights reserved.                     *
+* Copyright © Matthew Curland. All rights reserved.                        *
 *                                                                          *
 * The use and distribution terms for this software are covered by the      *
 * Common Public License 1.0 (http://opensource.org/licenses/cpl) which     *
@@ -626,7 +627,6 @@ namespace Neumont.Tools.ORM.ShapeModel
 			Reset();
 			if (chainOnShape != null)
 			{
-				Shell.ORMDesignerDocView.RefreshCommandStatus(e.DiagramClientView);
 				// Depending on the type of constraint you're editing, and possibly depending on the 
 				// state of the model at the moment, you may want to activate the ExternalConstraintConnectAction
 				// again.  If you want to do any fun tricks after a user's committed the action,

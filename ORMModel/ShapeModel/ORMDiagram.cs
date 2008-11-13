@@ -3,6 +3,7 @@
 * Neumont Object-Role Modeling Architect for Visual Studio                 *
 *                                                                          *
 * Copyright © Neumont University. All rights reserved.                     *
+* Copyright © Matthew Curland. All rights reserved.                        *
 *                                                                          *
 * The use and distribution terms for this software are covered by the      *
 * Common Public License 1.0 (http://opensource.org/licenses/cpl) which     *
@@ -713,16 +714,17 @@ namespace Neumont.Tools.ORM.ShapeModel
 					IServiceProvider serviceProvider;
 					IMonitorSelectionService selectionService;
 					object selectionContainer;
-					DiagramDocView currentView;
+					IORMDesignerView currentView;
 					Store store = Store;
 					TransactionManager transactionManager = store.TransactionManager;
 					Guid diagramDropTargetId;
 					if (transactionManager.InTransaction &&
 						((null == (serviceProvider = (store as IORMToolServices).ServiceProvider) ||
 						null == (selectionService = (IMonitorSelectionService)serviceProvider.GetService(typeof(IMonitorSelectionService))) ||
-						null == (currentView = selectionService.CurrentDocumentView as DiagramDocView) ||
+						(null == (currentView = (selectionContainer = selectionService.CurrentSelectionContainer) as IORMDesignerView) &&
+						null == (currentView = selectionService.CurrentDocumentView as IORMDesignerView)) ||
 						currentView.CurrentDesigner != activeDiagramView ||
-						((selectionContainer = selectionService.CurrentSelectionContainer) != currentView && selectionContainer is IORMSelectionContainer)) ||
+						(selectionContainer != currentView && selectionContainer is IORMSelectionContainer)) ||
 						((diagramDropTargetId = DropTargetContext.GetTargetDiagramId(transactionManager.CurrentTransaction.TopLevelTransaction)) != Guid.Empty &&
 						diagramDropTargetId != this.Id)))
 					{
@@ -1698,11 +1700,12 @@ namespace Neumont.Tools.ORM.ShapeModel
 		/// <summary>
 		/// Implements IProxyDisplayProvider.ElementDisplayedAs
 		/// </summary>
-		protected ModelElement ElementDisplayedAs(ModelElement element, ModelError forError)
+		protected object ElementDisplayedAs(ModelElement element, ModelError forError)
 		{
 			ObjectType objectElement;
 			ExclusionConstraint exclusionConstraint;
 			SetConstraint setConstraint;
+			FactType factType;
 			if (null != (objectElement = element as ObjectType))
 			{
 				if (!ShouldDisplayObjectType(objectElement) &&
@@ -1730,6 +1733,28 @@ namespace Neumont.Tools.ORM.ShapeModel
 					}
 				}
 			}
+			else if (null != (factType = element as FactType))
+			{
+				// For an implied FactType, select the associated role on the
+				// nesting FactType.
+				Objectification objectification;
+				if (null != (objectification = factType.ImpliedByObjectification))
+				{
+					foreach (RoleBase roleBase in factType.RoleCollection)
+					{
+						RoleProxy proxy;
+						ObjectifiedUnaryRole objectifiedUnaryRole;
+						if (null != (proxy = roleBase as RoleProxy))
+						{
+							return proxy.TargetRole;
+						}
+						else if (null != (objectifiedUnaryRole = roleBase as ObjectifiedUnaryRole))
+						{
+							return objectifiedUnaryRole.TargetRole;
+						}
+					}
+				}
+			}
 			else if (null != (exclusionConstraint = element as ExclusionConstraint))
 			{
 				MandatoryConstraint mandatoryConstraint = exclusionConstraint.ExclusiveOrMandatoryConstraint;
@@ -1750,7 +1775,7 @@ namespace Neumont.Tools.ORM.ShapeModel
 			}
 			return null;
 		}
-		ModelElement IProxyDisplayProvider.ElementDisplayedAs(ModelElement element, ModelError forError)
+		object IProxyDisplayProvider.ElementDisplayedAs(ModelElement element, ModelError forError)
 		{
 			return ElementDisplayedAs(element, forError);
 		}

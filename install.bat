@@ -74,6 +74,10 @@ IF EXIST "%NORMADir%\Xml\Verbalization\Core\VerbalizationCoreReportSnippets.xml"
 	CALL:_CleanupFile "%NORMADir%\Xml\Verbalization\Core\DefaultReportSnippets.xml"
 	REN "%NORMADir%\Xml\Verbalization\Core\VerbalizationCoreReportSnippets.xml" "DefaultReportSnippets.xml"
 )
+IF EXIST "%NORMADir%\Xml\Verbalization\Core\BrowserNoHyperlinksSnippets.xml" (
+	CALL:_CleanupFile "%NORMADir%\Xml\Verbalization\Core\BrowserNoHyperlinksSnippets.xml"
+	REN "%NORMADir%\Xml\Verbalization\Core\VerbalizationCoreBrowserNoHyperlinksSnippets.xml" "BrowserNoHyperlinksSnippets.xml"
+)
 IF EXIST "%NORMADir%\Xml\Verbalization\HtmlReport\VerbalizationReportSnippets.xml" (
 	CALL:_CleanupFile "%NORMADir%\Xml\Verbalization\HtmlReport\_default.xml"
 	REN "%NORMADir%\Xml\Verbalization\HtmlReport\VerbalizationReportSnippets.xml" "_default.xml"

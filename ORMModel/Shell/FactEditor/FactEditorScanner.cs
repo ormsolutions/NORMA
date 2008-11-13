@@ -3,6 +3,7 @@
 * Neumont Object-Role Modeling Architect for Visual Studio                 *
 *                                                                          *
 * Copyright © Neumont University. All rights reserved.                     *
+* Copyright © Matthew Curland. All rights reserved.                        *
 *                                                                          *
 * The use and distribution terms for this software are covered by the      *
 * Common Public License 1.0 (http://opensource.org/licenses/cpl) which     *
@@ -44,7 +45,7 @@ namespace Neumont.Tools.ORM.Shell
 			private int m_Offset;
 			private LanguageService m_LanguageService;
 			private IVsTextLines m_TextLines;
-			private ORMDesignerDocView m_View;
+			private IORMDesignerView m_View;
 			#endregion // Private Members
 			#region Constructors
 			/// <summary>
@@ -56,14 +57,19 @@ namespace Neumont.Tools.ORM.Shell
 				m_TextLines = textLines;
 
 				IMonitorSelectionService monitor = m_LanguageService.GetService(typeof(IMonitorSelectionService)) as IMonitorSelectionService;
-				monitor.DocumentWindowChanged += new EventHandler<MonitorSelectionEventArgs>(DocumentWindowChanged);
-				m_View = monitor.CurrentDocumentView as ORMDesignerDocView;
+				EventHandler<MonitorSelectionEventArgs> windowChange = new EventHandler<MonitorSelectionEventArgs>(DocumentWindowChanged);
+				monitor.DocumentWindowChanged += windowChange;
+				monitor.WindowChanged += windowChange;
+				IORMDesignerView testView = monitor.CurrentSelectionContainer as IORMDesignerView;
+				m_View = (testView != null && testView.CurrentDesigner != null) ? testView : monitor.CurrentDocumentView as IORMDesignerView;
 			}
 			#endregion // Constructors
 			#region Document Changed Events
 			private void DocumentWindowChanged(Object sender, MonitorSelectionEventArgs e)
 			{
-				this.CurrentDocumentView = ((IMonitorSelectionService)sender).CurrentDocumentView as ORMDesignerDocView;
+				IMonitorSelectionService monitor = (IMonitorSelectionService)sender;
+				IORMDesignerView testView = monitor.CurrentSelectionContainer as IORMDesignerView;
+				this.CurrentDesignerView = (testView != null && testView.CurrentDesigner != null) ? testView : monitor.CurrentDocumentView as IORMDesignerView;
 			}
 			#endregion // Document Changed Events
 			#region IScanner Implementation
@@ -239,12 +245,12 @@ namespace Neumont.Tools.ORM.Shell
 #if FACTEDITOR_TIPTEXT
 			private bool ObjectTypeExists(string name)
 			{
-				ORMDesignerDocView currentDocView = m_View;
-				if (currentDocView != null)
+				IORMDesignerView currentDesignerView = m_View;
+				if (currentDesignerView != null)
 				{
 					// UNDONE: This is painfully slow. Use ObjectTypesDictionary on the current model
 					List<ObjectType> temp = new List<ObjectType>();
-					temp.AddRange(currentDocView.DocData.Store.ElementDirectory.FindElements<ObjectType>());
+					temp.AddRange(currentDesignerView.DocData.Store.ElementDirectory.FindElements<ObjectType>());
 					//temp.Sort(Modeling.NamedElementComparer<ObjectType>.CurrentCulture);
 
 					foreach (ObjectType o in temp)
@@ -260,10 +266,9 @@ namespace Neumont.Tools.ORM.Shell
 			#endregion // Model Helper Methods
 			#region Private Properties
 			/// <summary>
-			/// Gets or sets the current document view.
+			/// Gets or sets the current designer view.
 			/// </summary>
-			/// <value>The current document view.</value>
-			private ORMDesignerDocView CurrentDocumentView
+			private IORMDesignerView CurrentDesignerView
 			{
 				get
 				{
@@ -271,7 +276,7 @@ namespace Neumont.Tools.ORM.Shell
 				}
 				set
 				{
-					ORMDesignerDocView oldView = m_View;
+					IORMDesignerView oldView = m_View;
 					if (oldView != null)
 					{
 						if (value != null)

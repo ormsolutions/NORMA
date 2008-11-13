@@ -3,6 +3,7 @@
 * Neumont Object-Role Modeling Architect for Visual Studio                 *
 *                                                                          *
 * Copyright © Neumont University. All rights reserved.                     *
+* Copyright © Matthew Curland. All rights reserved.                        *
 *                                                                          *
 * The use and distribution terms for this software are covered by the      *
 * Common Public License 1.0 (http://opensource.org/licenses/cpl) which     *
@@ -64,6 +65,10 @@ namespace Neumont.Tools.ORM.Shell
 					new EventHandler(OnStatusDiagramList),
 					new EventHandler(OnMenuDiagramList),
 					ORMDesignerDocView.ORMDesignerCommandIds.DiagramList)
+					,new DynamicDiagramCommand(
+					new EventHandler(OnStatusDiagramList),
+					new EventHandler(OnMenuDiagramSpyDiagramList),
+					ORMDesignerDocView.ORMDesignerCommandIds.DiagramSpyDiagramList)
 				};
 				#endregion //command array
 				AddCommands(myCommands);
@@ -200,7 +205,18 @@ namespace Neumont.Tools.ORM.Shell
 				ORMModelBrowserToolWindow currentWindow = CurrentToolWindow;
 				if (currentWindow != null)
 				{
-					currentWindow.OnMenuDiagramList(((OleMenuCommand)sender).MatchedCommandId);
+					currentWindow.OnMenuDiagramList(((OleMenuCommand)sender).MatchedCommandId, NavigateToWindow.Document);
+				}
+			}
+			/// <summary>
+			/// Menu handler
+			/// </summary>
+			public void OnMenuDiagramSpyDiagramList(object sender, EventArgs e)
+			{
+				ORMModelBrowserToolWindow currentWindow = CurrentToolWindow;
+				if (currentWindow != null)
+				{
+					currentWindow.OnMenuDiagramList(((OleMenuCommand)sender).MatchedCommandId, NavigateToWindow.DiagramSpy);
 				}
 			}
 			#endregion // Command Handlers

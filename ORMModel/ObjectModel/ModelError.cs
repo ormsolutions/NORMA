@@ -307,8 +307,10 @@ namespace Neumont.Tools.ORM.ObjectModel
 		/// If the displayed as element does not display this error, then it should not
 		/// be identified as a proxy display.</param>
 		/// <returns>The proxy display element. Return the element itself or null
-		/// if there is no proxy.</returns>
-		ModelElement ElementDisplayedAs(ModelElement element, ModelError forError);
+		/// if there is no proxy. To redirect to a different known shape, return
+		/// a <see cref="T:Microsoft.VisualStudio.Modeling.Diagrams.ShapeElement"/> or a
+		/// <see cref="T:Microsoft.VisualStudio.Modeling.Diagrams.DiagramItem"/></returns>
+		object ElementDisplayedAs(ModelElement element, ModelError forError);
 	}
 	#endregion // IProxyDisplayProvider
 	#region IIndirectModelErrorOwnerPath

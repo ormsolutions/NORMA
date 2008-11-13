@@ -42,7 +42,7 @@ using Neumont.Tools.Modeling.Diagrams;
 namespace Neumont.Tools.ORM.ShapeModel
 {
 	#region FactTypeShape class
-	public partial class FactTypeShape : ICustomShapeFolding, IModelErrorActivation, IProvideConnectorShape
+	public partial class FactTypeShape : ICustomShapeFolding, IModelErrorActivation, IProvideConnectorShape, IProxyDisplayProvider
 	{
 		#region ConstraintBoxRoleActivity enum
 		/// <summary>
@@ -4001,8 +4001,6 @@ namespace Neumont.Tools.ORM.ShapeModel
 			ValueRangeOverlapError overlapError;
 			ValueConstraintValueTypeDetachedError valueTypeDetachedError;
 			RoleValueConstraint errorValueConstraint = null;
-			bool selectConstraintOnly = false;
-			bool activateNamePropertyAfterSelect = false;
 			bool addActiveRoles = false;
 			bool retVal = true;
 			if (null != (populationMandatory = error as PopulationMandatoryError))
@@ -4057,13 +4055,12 @@ namespace Neumont.Tools.ORM.ShapeModel
 			}
 			else if (null != (requireRolePlayer = error as RolePlayerRequiredError))
 			{
+				// The role will be selected by the IProxyDisplayProvider implementation
 				ORMDiagram ormDiagram = Diagram as ORMDiagram;
-				Role role = requireRolePlayer.Role;
-				DiagramClientView clientView = ormDiagram.ActiveDiagramView.DiagramClientView;
-				DiagramItem diagramItem = new DiagramItem(this, RolesShape, new RoleSubField(role));
-				clientView.Selection.Set(diagramItem);
-				RoleConnectAction connectAction = ormDiagram.RoleConnectAction;
-				connectAction.ChainMouseAction(GetAbsoluteRoleAttachPoint(role), clientView, false);
+				ormDiagram.RoleConnectAction.ChainMouseAction(
+					GetAbsoluteRoleAttachPoint(requireRolePlayer.Role),
+					ormDiagram.ActiveDiagramView.DiagramClientView,
+					false);
 			}
 			else if (null != (constraintNameError = error as ConstraintDuplicateNameError))
 			{
@@ -4081,12 +4078,10 @@ namespace Neumont.Tools.ORM.ShapeModel
 						switch (ic.ConstraintType)
 						{
 							case ConstraintType.InternalUniqueness:
-								activateConstraint = (UniquenessConstraint)setConstraint;
-								selectConstraintOnly = true;
-								activateNamePropertyAfterSelect = true;
-								break;
 							case ConstraintType.SimpleMandatory:
-								Diagram.ActiveDiagramView.DiagramClientView.Selection.Set(new DiagramItem(this, RolesShape, new RoleSubField(setConstraint.RoleCollection[0])));
+								// The appropriate role (for a mandatory constraint) or
+								// an internal uniqueness constraint will be selected by
+								// the proxy display provider
 								ActivateNameProperty(setConstraint);
 								break;
 						}
@@ -4147,59 +4142,30 @@ namespace Neumont.Tools.ORM.ShapeModel
 			}
 			else if (activateConstraint != null)
 			{
-				ConstraintShapeField targetSubfield = null;
-				switch (ConstraintDisplayPosition)
+				ORMDiagram ormDiagram = Diagram as ORMDiagram;
+				InternalUniquenessConstraintConnectAction connectAction = ormDiagram.InternalUniquenessConstraintConnectAction;
+				ActiveInternalUniquenessConstraintConnectAction = connectAction;
+				if (addActiveRoles)
 				{
-					case ConstraintDisplayPosition.Top:
-						targetSubfield = myTopConstraintShapeField;
-						break;
-					case ConstraintDisplayPosition.Bottom:
-						targetSubfield = myBottomConstraintShapeField;
-						break;
-				}
-				Debug.Assert(targetSubfield != null);
-				if (targetSubfield != null)
-				{
-					ORMDiagram ormDiagram = Diagram as ORMDiagram;
-					DiagramClientView clientView = ormDiagram.ActiveDiagramView.DiagramClientView;
-					DiagramItem diagramItem = new DiagramItem(this, targetSubfield, new ConstraintSubField(activateConstraint));
-					clientView.Selection.Set(diagramItem);
-					if (!selectConstraintOnly)
+					LinkedElementCollection<Role> roleColl = activateConstraint.RoleCollection;
+					if (roleColl.Count != 0)
 					{
-						InternalUniquenessConstraintConnectAction connectAction = ormDiagram.InternalUniquenessConstraintConnectAction;
-						ActiveInternalUniquenessConstraintConnectAction = connectAction;
-						if (addActiveRoles)
+						IList<Role> selectedRoles = connectAction.SelectedRoleCollection;
+						foreach (Role r in roleColl)
 						{
-							LinkedElementCollection<Role> roleColl = activateConstraint.RoleCollection;
-							if (roleColl.Count != 0)
-							{
-								IList<Role> selectedRoles = connectAction.SelectedRoleCollection;
-								foreach (Role r in roleColl)
-								{
-									selectedRoles.Add(r);
-								}
-							}
+							selectedRoles.Add(r);
 						}
-						this.Invalidate(true);
-						connectAction.ChainMouseAction(this, activateConstraint, clientView);
-					}
-					else if (activateNamePropertyAfterSelect)
-					{
-						ActivateNameProperty(activateConstraint);
 					}
 				}
+				this.Invalidate(true);
+				connectAction.ChainMouseAction(this, activateConstraint, ormDiagram.ActiveDiagramView.DiagramClientView);
 			}
 			else if (errorValueConstraint != null)
 			{
-				ORMDiagram ormDiagram = Diagram as ORMDiagram;
-				Role role = errorValueConstraint.Role;
-				DiagramClientView clientView = ormDiagram.ActiveDiagramView.DiagramClientView;
-				DiagramItem diagramItem = new DiagramItem(this, RolesShape, new RoleSubField(role));
-				clientView.Selection.Set(diagramItem);
-				Store store = Store;
+				// The role is activated by the proxy display provider
 				EditorUtility.ActivatePropertyEditor(
-					(store as IORMToolServices).ServiceProvider,
-					DomainTypeDescriptor.CreatePropertyDescriptor(role, Role.ValueRangeTextDomainPropertyId),
+					(Store as IORMToolServices).ServiceProvider,
+					DomainTypeDescriptor.CreatePropertyDescriptor(errorValueConstraint.Role, Role.ValueRangeTextDomainPropertyId),
 					false);
 			}
 			return retVal;
@@ -4209,6 +4175,79 @@ namespace Neumont.Tools.ORM.ShapeModel
 			return ActivateModelError(error);
 		}
 		#endregion // IModelErrorActivation Implementation
+		#region IProxyDisplayProvider Implementation
+		/// <summary>
+		/// Implements <see cref="IProxyDisplayProvider.ElementDisplayedAs"/> by
+		/// returning a <see cref="DiagramItem"/> for a <see cref="Role"/>
+		/// </summary>
+		protected object ElementDisplayedAs(ModelElement element, ModelError forError)
+		{
+			Role role;
+			UniquenessConstraint uniquenessConstraint;
+			MandatoryConstraint mandatoryConstraint;
+			FactType factType;
+			if (null != (role = element as Role))
+			{
+				if (role.FactType == AssociatedFactType)
+				{
+					return GetDiagramItem(role);
+				}
+			}
+			else if (null != (uniquenessConstraint = element as UniquenessConstraint))
+			{
+				LinkedElementCollection<FactType> constraintFactTypes;
+				if (uniquenessConstraint.IsInternal &&
+					1 == (constraintFactTypes = uniquenessConstraint.FactTypeCollection).Count &&
+					constraintFactTypes[0] == AssociatedFactType)
+				{
+					return GetDiagramItem(uniquenessConstraint);
+				}
+			}
+			else if (null != (mandatoryConstraint = element as MandatoryConstraint))
+			{
+				LinkedElementCollection<Role> constraintRoles;
+				if (mandatoryConstraint.IsSimple &&
+					1 == (constraintRoles = mandatoryConstraint.RoleCollection).Count &&
+					(role = constraintRoles[0]).FactType == AssociatedFactType)
+				{
+					return GetDiagramItem(role);
+				}
+			}
+			else if (null != (factType = element as FactType))
+			{
+				Objectification objectification;
+				if (null != (objectification = factType.ImpliedByObjectification) &&
+					objectification.NestedFactType == AssociatedFactType)
+				{
+					Role targetRole = null;
+					foreach (RoleBase roleBase in factType.RoleCollection)
+					{
+						RoleProxy proxy;
+						ObjectifiedUnaryRole objectifiedUnaryRole;
+						if (null != (proxy = roleBase as RoleProxy))
+						{
+							targetRole = proxy.TargetRole;
+							break;
+						}
+						else if (null != (objectifiedUnaryRole = roleBase as ObjectifiedUnaryRole))
+						{
+							targetRole = objectifiedUnaryRole.TargetRole;
+							break;
+						}
+					}
+					if (targetRole != null)
+					{
+						return GetDiagramItem(targetRole);
+					}
+				}
+			}
+			return null;
+		}
+		object IProxyDisplayProvider.ElementDisplayedAs(ModelElement element, ModelError forError)
+		{
+			return ElementDisplayedAs(element, forError);
+		}
+		#endregion // IProxyDisplayProvider Implementation
 		#region Mouse handling
 		/// <summary>
 		/// Attempt model error activation
@@ -4285,7 +4324,7 @@ namespace Neumont.Tools.ORM.ShapeModel
 		public DiagramItem GetDiagramItem(UniquenessConstraint constraint)
 		{
 			Debug.Assert(constraint.IsInternal);
-			return new DiagramItem(this, (ConstraintDisplayPosition == ConstraintDisplayPosition.Top) ? myTopConstraintShapeField : myBottomConstraintShapeField, new ConstraintSubField(constraint));
+			return new DiagramItem(this, InternalConstraintShapeField, new ConstraintSubField(constraint));
 		}
 		/// <summary>
 		/// Get a diagram item for a role on the associated fact.

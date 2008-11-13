@@ -3,6 +3,7 @@
 * Neumont Object-Role Modeling Architect for Visual Studio                 *
 *                                                                          *
 * Copyright © Neumont University. All rights reserved.                     *
+* Copyright © Matthew Curland. All rights reserved.                        *
 *                                                                          *
 * The use and distribution terms for this software are covered by the      *
 * Common Public License 1.0 (http://opensource.org/licenses/cpl) which     *
@@ -261,6 +262,20 @@ namespace Neumont.Tools.ORM.Shell
 		/// </summary>
 		Prompt,
 	}
+	/// <summary>
+	/// Provide options for the behavior of hyperlinks in the verbalization browser
+	/// </summary>
+	public enum HyperlinkTargetWindow
+	{
+		/// <summary>
+		/// Hyperlink to a shape in the primary document window
+		/// </summary>
+		DocumentWindow,
+		/// <summary>
+		/// Hyperlink to a shape in the Diagram Spy tool window
+		/// </summary>
+		DiagramSpyWindow,
+	}
 	#endregion
 	#region NotifyDocument Delegate
 	/// <summary>
@@ -358,6 +373,10 @@ namespace Neumont.Tools.ORM.Shell
 		private static bool myCurrentShowDefaultConstraintVerbalization = ShowDefaultConstraintVerbalization_Default;
 		private bool myShowDefaultConstraintVerbalization = ShowDefaultConstraintVerbalization_Default;
 
+		private const HyperlinkTargetWindow VerbalizationHyperlinkTarget_Default = HyperlinkTargetWindow.DiagramSpyWindow;
+		private static HyperlinkTargetWindow myCurrentVerbalizationHyperlinkTarget = VerbalizationHyperlinkTarget_Default;
+		private HyperlinkTargetWindow myVerbalizationHyperlinkTarget = VerbalizationHyperlinkTarget_Default;
+
 		private const string CustomVerbalizationSnippets_Default = "";
 		private static string myCurrentCustomVerbalizationSnippets = CustomVerbalizationSnippets_Default;
 		private string myCustomVerbalizationSnippets = CustomVerbalizationSnippets_Default;
@@ -387,6 +406,23 @@ namespace Neumont.Tools.ORM.Shell
 		private static bool myCurrentDisplayDefinitionTooltips = DisplayDefinitionTooltips_Default;
 		private bool myDisplayDefinitionTooltips = DisplayDefinitionTooltips_Default;
 		#endregion // Member variables
+		#region Custom Loading
+		/// <summary>
+		/// Load the cached settings into the current instance
+		/// </summary>
+		public void Initialize()
+		{
+			OnActivate(null);
+		}
+		/// <summary>
+		/// Apply changes for a locally created options page
+		/// </summary>
+		public void ApplyChanges()
+		{
+			SaveSettingsToStorage();
+			OnApply(null);
+		}
+		#endregion // Custom Loading
 		#region Base overrides
 		/// <summary>
 		/// Set the current values of the static properties
@@ -405,6 +441,7 @@ namespace Neumont.Tools.ORM.Shell
 			myCurrentFinalShapeDeleteBehavior = myFinalShapeDeleteBehavior;
 			myCurrentCombineMandatoryAndUniqueVerbalization = myCombineMandatoryAndUniqueVerbalization;
 			myCurrentShowDefaultConstraintVerbalization = myShowDefaultConstraintVerbalization;
+			myCurrentVerbalizationHyperlinkTarget = myVerbalizationHyperlinkTarget;
 			myCurrentCustomVerbalizationSnippets = myCustomVerbalizationSnippets;
 			myCurrentPreferredInternalUniquenessConstraintDisplay = myPreferredInternalUniquenessConstraintDisplay;
 			myCurrentReadingDirectionIndicatorDisplay = myReadingDirectionIndicatorDisplay;
@@ -429,6 +466,7 @@ namespace Neumont.Tools.ORM.Shell
 			myFinalShapeDeleteBehavior = myCurrentFinalShapeDeleteBehavior;
 			myCombineMandatoryAndUniqueVerbalization = myCurrentCombineMandatoryAndUniqueVerbalization;
 			myShowDefaultConstraintVerbalization = myCurrentShowDefaultConstraintVerbalization;
+			myVerbalizationHyperlinkTarget = myCurrentVerbalizationHyperlinkTarget;
 			myCustomVerbalizationSnippets = myCurrentCustomVerbalizationSnippets;
 			myPreferredInternalUniquenessConstraintDisplay = myCurrentPreferredInternalUniquenessConstraintDisplay;
 			myReadingDirectionIndicatorDisplay = myCurrentReadingDirectionIndicatorDisplay;
@@ -463,6 +501,7 @@ namespace Neumont.Tools.ORM.Shell
 				myCurrentFinalShapeDeleteBehavior = myFinalShapeDeleteBehavior;
 				myCurrentCombineMandatoryAndUniqueVerbalization = myCombineMandatoryAndUniqueVerbalization;
 				myCurrentShowDefaultConstraintVerbalization = myShowDefaultConstraintVerbalization;
+				myCurrentVerbalizationHyperlinkTarget = myVerbalizationHyperlinkTarget;
 				myCurrentCustomVerbalizationSnippets = myCustomVerbalizationSnippets;
 				myCurrentShowDebugCommands = myShowDebugCommands;
 				myCurrentDisplayDefinitionTooltips = myDisplayDefinitionTooltips;
@@ -489,6 +528,7 @@ namespace Neumont.Tools.ORM.Shell
 			myCurrentFinalShapeDeleteBehavior = myFinalShapeDeleteBehavior;
 			myCurrentCombineMandatoryAndUniqueVerbalization = myCombineMandatoryAndUniqueVerbalization;
 			myCurrentShowDefaultConstraintVerbalization = myShowDefaultConstraintVerbalization;
+			myCurrentVerbalizationHyperlinkTarget = myVerbalizationHyperlinkTarget;
 			myCurrentCustomVerbalizationSnippets = myCustomVerbalizationSnippets;
 			myCurrentPreferredInternalUniquenessConstraintDisplay = myPreferredInternalUniquenessConstraintDisplay;
 			myCurrentReadingDirectionIndicatorDisplay = myReadingDirectionIndicatorDisplay;
@@ -823,6 +863,27 @@ namespace Neumont.Tools.ORM.Shell
 		public static bool CurrentShowDefaultConstraintVerbalization
 		{
 			get { return myCurrentShowDefaultConstraintVerbalization; }
+		}
+
+		/// <summary>
+		/// Current setting for VerbalizationHyperlinkTarget
+		/// </summary>
+		[DefaultValue(VerbalizationHyperlinkTarget_Default)]
+		[LocalizedCategory(ResourceStrings.OptionsPageCategoryVerbalizationBehaviorId)]
+		[LocalizedDescription(ResourceStrings.OptionsPagePropertyVerbalizationHyperlinkTargetDescriptionId)]
+		[LocalizedDisplayName(ResourceStrings.OptionsPagePropertyVerbalizationHyperlinkTargetDisplayNameId)]
+		public HyperlinkTargetWindow VerbalizationHyperlinkTarget
+		{
+			get { return myVerbalizationHyperlinkTarget; }
+			set { myVerbalizationHyperlinkTarget = value; }
+		}
+
+		/// <summary>
+		/// Current VS session-wide setting for VerbalizationHyperlinkTarget
+		/// </summary>
+		public static HyperlinkTargetWindow CurrentVerbalizationHyperlinkTarget
+		{
+			get { return myCurrentVerbalizationHyperlinkTarget; }
 		}
 
 		/// <summary>
