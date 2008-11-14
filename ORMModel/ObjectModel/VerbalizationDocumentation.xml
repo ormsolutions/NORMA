@@ -385,6 +385,7 @@
   <snippet name="ErrorOpenSecondaryReport" replacementCount="0">
     <statement>
 							Description: Used to open a secondary error report. Secondary reports contain errors that do not block verbalization.
+							Replacement: {0}=error text,{1}=error id
 							Format: Model Error: {0}
 						</statement>
     <unformattedSnippet></unformattedSnippet>
@@ -392,9 +393,10 @@
     <containedIn />
     <usedBy />
   </snippet>
-  <snippet name="ErrorPrimary" replacementCount="1">
+  <snippet name="ErrorPrimary" replacementCount="2">
     <statement>
 							Description: Used to verbalize a single primary error.
+							Replacement: {0}=error text,{1}=error id
 							Format: Model Error: {0}
 						</statement>
     <unformattedSnippet>Model Error: {0}</unformattedSnippet>
@@ -402,7 +404,7 @@
     <containedIn />
     <usedBy />
   </snippet>
-  <snippet name="ErrorSecondary" replacementCount="1">
+  <snippet name="ErrorSecondary" replacementCount="2">
     <statement>
 							Description: Used to verbalize a single secondary error.
 							Format: Model Error: {0}
@@ -503,6 +505,53 @@
 							Examples: Identifier:
 						</statement>
     <unformattedSnippet>Identifier: {0}</unformattedSnippet>
+    <contains />
+    <containedIn />
+    <usedBy />
+  </snippet>
+  <snippet name="FactTypeListClose" replacementCount="0">
+    <statement>
+							Description: Text used to close the sample population verbalization list.
+							Format:
+						</statement>
+    <unformattedSnippet></unformattedSnippet>
+    <contains />
+    <containedIn />
+    <usedBy />
+  </snippet>
+  <snippet name="FactTypeListFinalSeparator" replacementCount="0">
+    <statement>
+							Description: Text used to separate the last two items in a sample population verbalization list.
+							Format: &lt;br/&gt;</statement>
+    <unformattedSnippet></unformattedSnippet>
+    <contains />
+    <containedIn />
+    <usedBy />
+  </snippet>
+  <snippet name="FactTypeListOpen" replacementCount="0">
+    <statement>
+							Description:  Text and formatting to begin a sample population verbalization basic predicate text.
+							Format: FactTypes: &lt;br/&gt;
+						</statement>
+    <unformattedSnippet>Fact Types:</unformattedSnippet>
+    <contains />
+    <containedIn />
+    <usedBy />
+  </snippet>
+  <snippet name="FactTypeListPairSeparator" replacementCount="0">
+    <statement>
+							Description: Text used to separate items in a sample population verbalization list.
+							Format: &lt;br/&gt;</statement>
+    <unformattedSnippet></unformattedSnippet>
+    <contains />
+    <containedIn />
+    <usedBy />
+  </snippet>
+  <snippet name="FactTypeListSeparator" replacementCount="0">
+    <statement>
+							Description: Text used to separate items in a sample population verbalization list.
+							Format: &lt;br/&gt;</statement>
+    <unformattedSnippet></unformattedSnippet>
     <contains />
     <containedIn />
     <usedBy />
@@ -812,8 +861,10 @@
       <snippet name="GroupExclusion" />
       <snippet name="GroupExclusiveOr" />
       <snippet name="IdentityReferenceQuantifier" />
+      <snippet name="ObjectType" />
       <snippet name="OccursInPopulation" />
       <snippet name="OneQuantifier" />
+      <snippet name="SubtypeMetaReading" />
       <snippet name="UniversalQuantifier" />
     </contains>
     <containedIn>
@@ -1353,6 +1404,7 @@
     <contains />
     <containedIn>
       <snippet name="ConstraintProvidesPreferredIdentifier" />
+      <snippet name="ImpliedModalNecessityOperator" />
       <snippet name="IndependentVerbalization" />
       <snippet name="ObjectifiesFactTypeVerbalization" />
       <snippet name="SubtypeMetaReading" />
@@ -1749,16 +1801,18 @@
       <constraint name="ValueTypeValueConstraint" />
     </usedBy>
   </snippet>
-  <snippet name="SubtypeMetaReading" replacementCount="2">
+  <snippet name="SubtypeMetaReading" replacementCount="3">
     <statement>
 							Description: Used to describe the relationship between a Subtype and its Supertype at the meta level (i.e: Each Man is an instance of Person). 
-							Format: {0} is a subtype of {1}
+							Format: {0}=subtype, {1}=supertype, {2}=SubtypeFact identifier
 						</statement>
-    <unformattedSnippet>Each {0} is an instance of {1}</unformattedSnippet>
+    <unformattedSnippet>each {0} is an instance of {1}</unformattedSnippet>
     <contains>
       <snippet name="ObjectType" />
     </contains>
-    <containedIn />
+    <containedIn>
+      <snippet name="ImpliedModalNecessityOperator" />
+    </containedIn>
     <usedBy />
   </snippet>
   <snippet name="TextInstanceValue" replacementCount="1">

@@ -16,11 +16,11 @@ You must not remove this notice, or any other, from this software.
 <Languages xmlns="http://schemas.neumont.edu/ORM/SDK/Verbalization" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://schemas.neumont.edu/ORM/SDK/Verbalization VerbalizationCoreSnippets.xsd">
 	<Language xml:lang="en-US">
 		<Snippets name="_default" description="Built-in verbalization snippets">
-			<Snippet type="IndependentVerbalization"><![CDATA[{0} <span class="quantifier">is independent (it may have instances that play no other roles)</span>]]></Snippet>
-			<Snippet type="PortableDataTypeVerbalization"><![CDATA[<span class="quantifier">Portable data type:</span> {0}]]></Snippet>
-			<Snippet type="ReferenceModeVerbalization"><![CDATA[<span class="quantifier">Reference Mode:</span> <span class="referenceMode">{0}</span>]]></Snippet>
-			<Snippet type="ReferenceSchemeVerbalization"><![CDATA[<span class="quantifier">Reference Scheme:</span> {0}]]></Snippet>
-			<Snippet type="ObjectifiesFactTypeVerbalization"><![CDATA[{0} <span class="quantifier">objectifies</span> "{1}"]]></Snippet>
+			<Snippet type="IndependentVerbalization"><![CDATA[<span class="smallIndent">{0} <span class="quantifier">is independent (it may have instances that play no other roles)</span></span>]]></Snippet>
+			<Snippet type="PortableDataTypeVerbalization"><![CDATA[<span class="smallIndent"><span class="quantifier">Portable data type:</span> {0}</span>]]></Snippet>
+			<Snippet type="ReferenceModeVerbalization"><![CDATA[<span class="smallIndent"><span class="quantifier">Reference Mode:</span> <span class="referenceMode">{0}</span></span>]]></Snippet>
+			<Snippet type="ReferenceSchemeVerbalization"><![CDATA[<span class="smallIndent"><span class="quantifier">Reference Scheme:</span> {0}</span>]]></Snippet>
+			<Snippet type="ObjectifiesFactTypeVerbalization"><![CDATA[<span class="smallIndent">{0} <span class="quantifier">objectifies</span> "{1}"</span>]]></Snippet>
 			<Snippet type="EntityTypeVerbalization"><![CDATA[{0} <span class="quantifier">is an entity type</span>]]></Snippet>
 			<Snippet type="ValueTypeVerbalization"><![CDATA[{0} <span class="quantifier">is a value type</span>]]></Snippet>
 			<Snippet type="NotesVerbalization"><![CDATA[<span class="quantifier">Notes:</span> <span class="note">{0}</span>]]></Snippet>
@@ -138,7 +138,8 @@ You must not remove this notice, or any other, from this software.
 			<Snippet type="SimpleLogicalAndListSeparator"><![CDATA[<span class="logicalOperator"> and </span>]]></Snippet>
 			<Snippet type="SimpleLogicalAndListFinalSeparator"><![CDATA[<span class="logicalOperator"> and </span>]]></Snippet>
 			<Snippet type="SimpleLogicalAndListClose"><![CDATA[]]></Snippet>
-			<Snippet type="SubtypeMetaReading"><![CDATA[<span class="quantifier">Each </span>{0} <span class="quantifier">is an instance of</span> {1}]]></Snippet>
+			<Snippet type="SubtypeMetaReading" sign="positive"><![CDATA[<span class="quantifier">each </span>{0} <a class="predicateText" href="elementid:{2}">is an instance of</a> {1}]]></Snippet>
+			<Snippet type="SubtypeMetaReading" sign="negative"><![CDATA[<span class="quantifier">some </span>{0} <a class="predicateText" href="elementid:{2}">is not an instance of</a> {1}]]></Snippet>
 			<Snippet type="TopLevelIndentedLogicalAndListOpen"><![CDATA[<span>]]></Snippet>
 			<Snippet type="TopLevelIndentedLogicalAndListPairSeparator"><![CDATA[</span><span class="smallIndent"><br/><span class="logicalOperator">and that </span>]]></Snippet>
 			<Snippet type="TopLevelIndentedLogicalAndListSeparator"><![CDATA[</span><span class="smallIndent"><br/><span class="logicalOperator">and that </span>]]></Snippet>
@@ -165,8 +166,8 @@ You must not remove this notice, or any other, from this software.
 			<Snippet type="ErrorClosePrimaryReport"><![CDATA[</span>]]></Snippet>
 			<Snippet type="ErrorOpenSecondaryReport"><![CDATA[<span class="secondaryErrorReport">]]></Snippet>
 			<Snippet type="ErrorCloseSecondaryReport"><![CDATA[</span>]]></Snippet>
-			<Snippet type="ErrorPrimary"><![CDATA[Model Error: {0}]]></Snippet>
-			<Snippet type="ErrorSecondary"><![CDATA[Model Error: {0}]]></Snippet>
+			<Snippet type="ErrorPrimary"><![CDATA[Model Error: <a class="primaryErrorReport" href="elementid:{1}">{0}</a>]]></Snippet>
+			<Snippet type="ErrorSecondary"><![CDATA[Model Error: <a class="secondaryErrorReport" href="elementid:{1}">{0}</a>]]></Snippet>
 			<Snippet type="CloseVerbalizationSentence"><![CDATA[<span class="listSeparator">.</span>]]></Snippet>
 			<Snippet type="VerbalizerNewLine"><![CDATA[<br/>]]></Snippet>
 			<Snippet type="VerbalizerIncreaseIndent"><![CDATA[<span class="indent">]]></Snippet>
@@ -215,6 +216,11 @@ You must not remove this notice, or any other, from this software.
 			<Snippet type="ObjectTypeInstanceListSeparator"><![CDATA[<span class="listSeparator">, </span>]]></Snippet>
 			<Snippet type="ObjectTypeInstanceListFinalSeparator"><![CDATA[<span class="listSeparator">, </span>]]></Snippet>
 			<Snippet type="ObjectTypeInstanceListClose"><![CDATA[]]></Snippet>
+			<Snippet type="FactTypeListOpen"><![CDATA[<br/><span class="indent"><span class="quantifier">Fact Types:</span><span class="smallIndent"><br/>]]></Snippet>
+			<Snippet type="FactTypeListPairSeparator"><![CDATA[<br/>]]></Snippet>
+			<Snippet type="FactTypeListSeparator"><![CDATA[<br/>]]></Snippet>
+			<Snippet type="FactTypeListFinalSeparator"><![CDATA[<br/>]]></Snippet>
+			<Snippet type="FactTypeListClose"><![CDATA[</span></span>]]></Snippet>
 			<Snippet type="GroupEquality"><![CDATA[<span class="quantifier">all or none of the following hold:</span> {0}]]></Snippet>
 			<Snippet type="MultilineIndentedCompoundListOpen"><![CDATA[<br/><span class="smallIndent">]]></Snippet>
 			<Snippet type="MultilineIndentedCompoundListPairSeparator"><![CDATA[<span class="listSeparator">; </span><br/>]]></Snippet>

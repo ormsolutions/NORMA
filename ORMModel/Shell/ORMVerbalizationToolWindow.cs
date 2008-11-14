@@ -242,7 +242,7 @@ namespace Neumont.Tools.ORM.Shell
 					null != (element = docData.Store.ElementDirectory.FindElement(new Guid(uri.LocalPath))) &&
 					null != (services = docData as IORMToolServices))
 				{
-					services.NavigateTo(element, ORMDesignerPackage.VerbalizationWindowSettings.HyperlinkToDiagramSpy ? NavigateToWindow.DiagramSpy : NavigateToWindow.Document);
+					services.NavigateTo(element, (!(element is ModelError) && ORMDesignerPackage.VerbalizationWindowSettings.HyperlinkToDiagramSpy) ? NavigateToWindow.DiagramSpy : NavigateToWindow.Document);
 				}
 				e.Cancel = true;
 			}
@@ -366,6 +366,7 @@ namespace Neumont.Tools.ORM.Shell
 							VerbalizationHelper.VerbalizeElement(
 								mel,
 								snippetsDictionary,
+								ORMCoreDomainModel.VerbalizationTargetName,
 								verbalized,
 								showNegative,
 								callbackWriter,

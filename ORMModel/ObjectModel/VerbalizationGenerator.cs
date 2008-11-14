@@ -85,9 +85,9 @@ namespace Neumont.Tools.ORM.ObjectModel
 		ErrorOpenPrimaryReport,
 		/// <summary>The 'ErrorOpenSecondaryReport' simple snippet value.</summary>
 		ErrorOpenSecondaryReport,
-		/// <summary>The 'ErrorPrimary' format string snippet. Contains 1 replacement field.</summary>
+		/// <summary>The 'ErrorPrimary' format string snippet. Contains 2 replacement fields.</summary>
 		ErrorPrimary,
-		/// <summary>The 'ErrorSecondary' format string snippet. Contains 1 replacement field.</summary>
+		/// <summary>The 'ErrorSecondary' format string snippet. Contains 2 replacement fields.</summary>
 		ErrorSecondary,
 		/// <summary>The 'ExactlyOneQuantifier' format string snippet. Contains 1 replacement field.</summary>
 		ExactlyOneQuantifier,
@@ -103,6 +103,16 @@ namespace Neumont.Tools.ORM.ObjectModel
 		FactTypeInstanceBlockStart,
 		/// <summary>The 'FactTypeInstanceIdentifier' format string snippet. Contains 1 replacement field.</summary>
 		FactTypeInstanceIdentifier,
+		/// <summary>The 'FactTypeListClose' simple snippet value.</summary>
+		FactTypeListClose,
+		/// <summary>The 'FactTypeListFinalSeparator' simple snippet value.</summary>
+		FactTypeListFinalSeparator,
+		/// <summary>The 'FactTypeListOpen' simple snippet value.</summary>
+		FactTypeListOpen,
+		/// <summary>The 'FactTypeListPairSeparator' simple snippet value.</summary>
+		FactTypeListPairSeparator,
+		/// <summary>The 'FactTypeListSeparator' simple snippet value.</summary>
+		FactTypeListSeparator,
 		/// <summary>The 'ForEachCompactQuantifier' format string snippet. Contains 2 replacement fields.</summary>
 		ForEachCompactQuantifier,
 		/// <summary>The 'ForEachIndentedQuantifier' format string snippet. Contains 2 replacement fields.</summary>
@@ -297,7 +307,7 @@ namespace Neumont.Tools.ORM.ObjectModel
 		SimpleLogicalOrListSeparator,
 		/// <summary>The 'SingleValueValueConstraint' format string snippet. Contains 2 replacement fields.</summary>
 		SingleValueValueConstraint,
-		/// <summary>The 'SubtypeMetaReading' format string snippet. Contains 2 replacement fields.</summary>
+		/// <summary>The 'SubtypeMetaReading' format string snippet. Contains 3 replacement fields.</summary>
 		SubtypeMetaReading,
 		/// <summary>The 'TextInstanceValue' format string snippet. Contains 1 replacement field.</summary>
 		TextInstanceValue,
@@ -386,8 +396,8 @@ namespace Neumont.Tools.ORM.ObjectModel
 				"</span>",
 				@"<span class=""primaryErrorReport"">",
 				@"<span class=""secondaryErrorReport"">",
-				"Model Error: {0}",
-				"Model Error: {0}",
+				@"Model Error: <a class=""primaryErrorReport"" href=""elementid:{1}"">{0}</a>",
+				@"Model Error: <a class=""secondaryErrorReport"" href=""elementid:{1}"">{0}</a>",
 				@"<span class=""quantifier"">exactly one</span> {0}",
 				@"<span class=""quantifier"">no</span> {0}<span class=""quantifier""> the same </span>{1}",
 				"{0} {1}",
@@ -395,6 +405,11 @@ namespace Neumont.Tools.ORM.ObjectModel
 				"</span>",
 				@"<br/><span class=""quantifier"">Examples: </span><span class=""smallIndent"">",
 				@"<span class=""smallIndent""><span class=""quantifier"">Identifier: <span class=""instance"">{0}</span></span></span>",
+				"</span></span>",
+				"<br/>",
+				@"<br/><span class=""indent""><span class=""quantifier"">Fact Types:</span><span class=""smallIndent""><br/>",
+				"<br/>",
+				"<br/>",
 				@"<span class=""quantifier"">for each</span> {0}, {1}",
 				@"<span class=""quantifier"">for each</span> {0},<br/><span class=""smallIndent"">{1}</span>",
 				@"<span class=""quantifier"">each {0} in the population of “{1}” occurs there {2}</span>",
@@ -435,7 +450,7 @@ namespace Neumont.Tools.ORM.ObjectModel
 				@"<br/><span class=""smallIndent"">",
 				@"<br/><span class=""logicalOperator"">or </span>",
 				@"<br/><span class=""logicalOperator"">or </span>",
-				@"{0} <span class=""quantifier"">is independent (it may have instances that play no other roles)</span>",
+				@"<span class=""smallIndent"">{0} <span class=""quantifier"">is independent (it may have instances that play no other roles)</span></span>",
 				@"{0} <span class=""quantifier"">in</span> {1}",
 				@"<span class=""quantifier"">at least {0} to at most {1}</span>",
 				@"<span class=""quantifier"">at least {0} to below {1}</span>",
@@ -457,7 +472,7 @@ namespace Neumont.Tools.ORM.ObjectModel
 				@"<span class=""quantifier"">some</span> {0} <span class=""quantifier"">participates in none of the following:</span>{1}",
 				@"<span class=""instance"">{0}</span>",
 				@"<span class=""quantifier"">Notes:</span> <span class=""note"">{0}</span>",
-				@"{0} <span class=""quantifier"">objectifies</span> ""{1}""",
+				@"<span class=""smallIndent"">{0} <span class=""quantifier"">objectifies</span> ""{1}""</span>",
 				@"<a class=""objectType"" href=""elementid:{1}"">{0}</a>",
 				"",
 				@"<span class=""listSeparator"">, </span>",
@@ -470,11 +485,11 @@ namespace Neumont.Tools.ORM.ObjectModel
 				@"<span class=""quantifier"">at most one</span> {0}",
 				@"{0}<span class=""listSeparator"">.</span>{1}",
 				@"<span class=""quantifier"">who</span> {0}",
-				@"<span class=""quantifier"">Portable data type:</span> {0}",
+				@"<span class=""smallIndent""><span class=""quantifier"">Portable data type:</span> {0}</span>",
 				@"<a class=""predicateText"" href=""elementid:{1}"">{{0}}</a>",
-				@"<span class=""quantifier"">Reference Mode:</span> <span class=""referenceMode"">{0}</span>",
+				@"<span class=""smallIndent""><span class=""quantifier"">Reference Mode:</span> <span class=""referenceMode"">{0}</span></span>",
 				@"{0}<span class=""listSeparator"">(</span><span class=""referenceMode"">{1}</span><span class=""listSeparator"">)</span>",
-				@"<span class=""quantifier"">Reference Scheme:</span> {0}",
+				@"<span class=""smallIndent""><span class=""quantifier"">Reference Scheme:</span> {0}</span>",
 				"{0}",
 				"",
 				@"<span class=""listSeparator"">, and </span>",
@@ -492,7 +507,7 @@ namespace Neumont.Tools.ORM.ObjectModel
 				@"<span class=""logicalOperator""> or </span>",
 				@"<span class=""logicalOperator""> or </span>",
 				@"<span class=""quantifier"">the possible value of</span> {0} <span class=""quantifier"">is</span> {1}",
-				@"<span class=""quantifier"">Each </span>{0} <span class=""quantifier"">is an instance of</span> {1}",
+				@"<span class=""quantifier"">each </span>{0} <a class=""predicateText"" href=""elementid:{2}"">is an instance of</a> {1}",
 				@"<span class=""instance"">'{0}'</span>",
 				"</span>",
 				@"</span><span class=""smallIndent""><br/><span class=""logicalOperator"">and that </span>",
@@ -571,8 +586,8 @@ namespace Neumont.Tools.ORM.ObjectModel
 				"</span>",
 				@"<span class=""primaryErrorReport"">",
 				@"<span class=""secondaryErrorReport"">",
-				"Model Error: {0}",
-				"Model Error: {0}",
+				@"Model Error: <a class=""primaryErrorReport"" href=""elementid:{1}"">{0}</a>",
+				@"Model Error: <a class=""secondaryErrorReport"" href=""elementid:{1}"">{0}</a>",
 				@"<span class=""quantifier"">exactly one</span> {0}",
 				@"<span class=""quantifier"">no</span> {0}<span class=""quantifier""> the same </span>{1}",
 				"{0} {1}",
@@ -580,6 +595,11 @@ namespace Neumont.Tools.ORM.ObjectModel
 				"</span>",
 				@"<br/><span class=""quantifier"">Examples: </span><span class=""smallIndent"">",
 				@"<span class=""smallIndent""><span class=""quantifier"">Identifier: <span class=""instance"">{0}</span></span></span>",
+				"</span></span>",
+				"<br/>",
+				@"<br/><span class=""indent""><span class=""quantifier"">Fact Types:</span><span class=""smallIndent""><br/>",
+				"<br/>",
+				"<br/>",
 				@"<span class=""quantifier"">for each</span> {0}, {1}",
 				@"<span class=""quantifier"">for each</span> {0},<br/><span class=""smallIndent"">{1}</span>",
 				@"<span class=""quantifier"">each {0} in the population of “{1}” occurs there {2}</span>",
@@ -620,7 +640,7 @@ namespace Neumont.Tools.ORM.ObjectModel
 				@"<br/><span class=""smallIndent"">",
 				@"<br/><span class=""logicalOperator"">or </span>",
 				@"<br/><span class=""logicalOperator"">or </span>",
-				@"{0} <span class=""quantifier"">is independent (it may have instances that play no other roles)</span>",
+				@"<span class=""smallIndent"">{0} <span class=""quantifier"">is independent (it may have instances that play no other roles)</span></span>",
 				@"{0} <span class=""quantifier"">in</span> {1}",
 				@"<span class=""quantifier"">at least {0} to at most {1}</span>",
 				@"<span class=""quantifier"">at least {0} to below {1}</span>",
@@ -642,7 +662,7 @@ namespace Neumont.Tools.ORM.ObjectModel
 				@"<span class=""quantifier"">some</span> {0} <span class=""quantifier"">participates in none of the following:</span>{1}",
 				@"<span class=""instance"">{0}</span>",
 				@"<span class=""quantifier"">Notes:</span> <span class=""note"">{0}</span>",
-				@"{0} <span class=""quantifier"">objectifies</span> ""{1}""",
+				@"<span class=""smallIndent"">{0} <span class=""quantifier"">objectifies</span> ""{1}""</span>",
 				@"<a class=""objectType"" href=""elementid:{1}"">{0}</a>",
 				"",
 				@"<span class=""listSeparator"">, </span>",
@@ -655,11 +675,11 @@ namespace Neumont.Tools.ORM.ObjectModel
 				@"<span class=""quantifier"">at most one</span> {0}",
 				@"{0}<span class=""listSeparator"">.</span>{1}",
 				@"<span class=""quantifier"">who</span> {0}",
-				@"<span class=""quantifier"">Portable data type:</span> {0}",
+				@"<span class=""smallIndent""><span class=""quantifier"">Portable data type:</span> {0}</span>",
 				@"<a class=""predicateText"" href=""elementid:{1}"">{{0}}</a>",
-				@"<span class=""quantifier"">Reference Mode:</span> <span class=""referenceMode"">{0}</span>",
+				@"<span class=""smallIndent""><span class=""quantifier"">Reference Mode:</span> <span class=""referenceMode"">{0}</span></span>",
 				@"{0}<span class=""listSeparator"">(</span><span class=""referenceMode"">{1}</span><span class=""listSeparator"">)</span>",
-				@"<span class=""quantifier"">Reference Scheme:</span> {0}",
+				@"<span class=""smallIndent""><span class=""quantifier"">Reference Scheme:</span> {0}</span>",
 				"{0}",
 				"",
 				@"<span class=""listSeparator"">, and </span>",
@@ -677,7 +697,7 @@ namespace Neumont.Tools.ORM.ObjectModel
 				@"<span class=""logicalOperator""> or </span>",
 				@"<span class=""logicalOperator""> or </span>",
 				@"<span class=""quantifier"">the possible value of</span> {0} <span class=""quantifier"">is</span> {1}",
-				@"<span class=""quantifier"">Each </span>{0} <span class=""quantifier"">is an instance of</span> {1}",
+				@"<span class=""quantifier"">each </span>{0} <a class=""predicateText"" href=""elementid:{2}"">is an instance of</a> {1}",
 				@"<span class=""instance"">'{0}'</span>",
 				"</span>",
 				@"</span><span class=""smallIndent""><br/><span class=""logicalOperator"">and that </span>",
@@ -756,8 +776,8 @@ namespace Neumont.Tools.ORM.ObjectModel
 				"</span>",
 				@"<span class=""primaryErrorReport"">",
 				@"<span class=""secondaryErrorReport"">",
-				"Model Error: {0}",
-				"Model Error: {0}",
+				@"Model Error: <a class=""primaryErrorReport"" href=""elementid:{1}"">{0}</a>",
+				@"Model Error: <a class=""secondaryErrorReport"" href=""elementid:{1}"">{0}</a>",
 				@"<span class=""quantifier"">exactly one</span> {0}",
 				@"<span class=""quantifier"">no</span> {0}<span class=""quantifier""> the same </span>{1}",
 				"{0} {1}",
@@ -765,6 +785,11 @@ namespace Neumont.Tools.ORM.ObjectModel
 				"</span>",
 				@"<br/><span class=""quantifier"">Examples: </span><span class=""smallIndent"">",
 				@"<span class=""smallIndent""><span class=""quantifier"">Identifier: <span class=""instance"">{0}</span></span></span>",
+				"</span></span>",
+				"<br/>",
+				@"<br/><span class=""indent""><span class=""quantifier"">Fact Types:</span><span class=""smallIndent""><br/>",
+				"<br/>",
+				"<br/>",
 				@"<span class=""quantifier"">for each</span> {0}, {1}",
 				@"<span class=""quantifier"">for each</span> {0},<br/><span class=""smallIndent"">{1}</span>",
 				@"<span class=""quantifier"">each {0} in the population of “{1}” occurs there {2}</span>",
@@ -805,7 +830,7 @@ namespace Neumont.Tools.ORM.ObjectModel
 				@"<br/><span class=""smallIndent"">",
 				@"<br/><span class=""logicalOperator"">or </span>",
 				@"<br/><span class=""logicalOperator"">or </span>",
-				@"{0} <span class=""quantifier"">is independent (it may have instances that play no other roles)</span>",
+				@"<span class=""smallIndent"">{0} <span class=""quantifier"">is independent (it may have instances that play no other roles)</span></span>",
 				@"{0} <span class=""quantifier"">in</span> {1}",
 				@"<span class=""quantifier"">at least {0} to at most {1}</span>",
 				@"<span class=""quantifier"">at least {0} to below {1}</span>",
@@ -827,7 +852,7 @@ namespace Neumont.Tools.ORM.ObjectModel
 				@"<span class=""quantifier"">some</span> {0} <span class=""quantifier"">participates in none of the following:</span>{1}",
 				@"<span class=""instance"">{0}</span>",
 				@"<span class=""quantifier"">Notes:</span> <span class=""note"">{0}</span>",
-				@"{0} <span class=""quantifier"">objectifies</span> ""{1}""",
+				@"<span class=""smallIndent"">{0} <span class=""quantifier"">objectifies</span> ""{1}""</span>",
 				@"<a class=""objectType"" href=""elementid:{1}"">{0}</a>",
 				"",
 				@"<span class=""listSeparator"">, </span>",
@@ -840,11 +865,11 @@ namespace Neumont.Tools.ORM.ObjectModel
 				@"<span class=""quantifier"">more than one</span> {0}",
 				@"{0}<span class=""listSeparator"">.</span>{1}",
 				@"<span class=""quantifier"">who</span> {0}",
-				@"<span class=""quantifier"">Portable data type:</span> {0}",
+				@"<span class=""smallIndent""><span class=""quantifier"">Portable data type:</span> {0}</span>",
 				@"<a class=""predicateText"" href=""elementid:{1}"">{{0}}</a>",
-				@"<span class=""quantifier"">Reference Mode:</span> <span class=""referenceMode"">{0}</span>",
+				@"<span class=""smallIndent""><span class=""quantifier"">Reference Mode:</span> <span class=""referenceMode"">{0}</span></span>",
 				@"{0}<span class=""listSeparator"">(</span><span class=""referenceMode"">{1}</span><span class=""listSeparator"">)</span>",
-				@"<span class=""quantifier"">Reference Scheme:</span> {0}",
+				@"<span class=""smallIndent""><span class=""quantifier"">Reference Scheme:</span> {0}</span>",
 				"{0}",
 				"",
 				@"<span class=""listSeparator"">, and </span>",
@@ -862,7 +887,7 @@ namespace Neumont.Tools.ORM.ObjectModel
 				@"<span class=""logicalOperator""> or </span>",
 				@"<span class=""logicalOperator""> or </span>",
 				@"<span class=""quantifier"">the possible value of</span> {0} <span class=""quantifier"">is</span> {1}",
-				@"<span class=""quantifier"">Each </span>{0} <span class=""quantifier"">is an instance of</span> {1}",
+				@"<span class=""quantifier"">some </span>{0} <a class=""predicateText"" href=""elementid:{2}"">is not an instance of</a> {1}",
 				@"<span class=""instance"">'{0}'</span>",
 				"</span>",
 				@"</span><span class=""smallIndent""><br/><span class=""logicalOperator"">and that </span>",
@@ -941,8 +966,8 @@ namespace Neumont.Tools.ORM.ObjectModel
 				"</span>",
 				@"<span class=""primaryErrorReport"">",
 				@"<span class=""secondaryErrorReport"">",
-				"Model Error: {0}",
-				"Model Error: {0}",
+				@"Model Error: <a class=""primaryErrorReport"" href=""elementid:{1}"">{0}</a>",
+				@"Model Error: <a class=""secondaryErrorReport"" href=""elementid:{1}"">{0}</a>",
 				@"<span class=""quantifier"">exactly one</span> {0}",
 				@"<span class=""quantifier"">no</span> {0}<span class=""quantifier""> the same </span>{1}",
 				"{0} {1}",
@@ -950,6 +975,11 @@ namespace Neumont.Tools.ORM.ObjectModel
 				"</span>",
 				@"<br/><span class=""quantifier"">Examples: </span><span class=""smallIndent"">",
 				@"<span class=""smallIndent""><span class=""quantifier"">Identifier: <span class=""instance"">{0}</span></span></span>",
+				"</span></span>",
+				"<br/>",
+				@"<br/><span class=""indent""><span class=""quantifier"">Fact Types:</span><span class=""smallIndent""><br/>",
+				"<br/>",
+				"<br/>",
 				@"<span class=""quantifier"">for each</span> {0}, {1}",
 				@"<span class=""quantifier"">for each</span> {0},<br/><span class=""smallIndent"">{1}</span>",
 				@"<span class=""quantifier"">each {0} in the population of “{1}” occurs there {2}</span>",
@@ -990,7 +1020,7 @@ namespace Neumont.Tools.ORM.ObjectModel
 				@"<br/><span class=""smallIndent"">",
 				@"<br/><span class=""logicalOperator"">or </span>",
 				@"<br/><span class=""logicalOperator"">or </span>",
-				@"{0} <span class=""quantifier"">is independent (it may have instances that play no other roles)</span>",
+				@"<span class=""smallIndent"">{0} <span class=""quantifier"">is independent (it may have instances that play no other roles)</span></span>",
 				@"{0} <span class=""quantifier"">in</span> {1}",
 				@"<span class=""quantifier"">at least {0} to at most {1}</span>",
 				@"<span class=""quantifier"">at least {0} to below {1}</span>",
@@ -1012,7 +1042,7 @@ namespace Neumont.Tools.ORM.ObjectModel
 				@"<span class=""quantifier"">some</span> {0} <span class=""quantifier"">participates in none of the following:</span>{1}",
 				@"<span class=""instance"">{0}</span>",
 				@"<span class=""quantifier"">Notes:</span> <span class=""note"">{0}</span>",
-				@"{0} <span class=""quantifier"">objectifies</span> ""{1}""",
+				@"<span class=""smallIndent"">{0} <span class=""quantifier"">objectifies</span> ""{1}""</span>",
 				@"<a class=""objectType"" href=""elementid:{1}"">{0}</a>",
 				"",
 				@"<span class=""listSeparator"">, </span>",
@@ -1025,11 +1055,11 @@ namespace Neumont.Tools.ORM.ObjectModel
 				@"<span class=""quantifier"">more than one</span> {0}",
 				@"{0}<span class=""listSeparator"">.</span>{1}",
 				@"<span class=""quantifier"">who</span> {0}",
-				@"<span class=""quantifier"">Portable data type:</span> {0}",
+				@"<span class=""smallIndent""><span class=""quantifier"">Portable data type:</span> {0}</span>",
 				@"<a class=""predicateText"" href=""elementid:{1}"">{{0}}</a>",
-				@"<span class=""quantifier"">Reference Mode:</span> <span class=""referenceMode"">{0}</span>",
+				@"<span class=""smallIndent""><span class=""quantifier"">Reference Mode:</span> <span class=""referenceMode"">{0}</span></span>",
 				@"{0}<span class=""listSeparator"">(</span><span class=""referenceMode"">{1}</span><span class=""listSeparator"">)</span>",
-				@"<span class=""quantifier"">Reference Scheme:</span> {0}",
+				@"<span class=""smallIndent""><span class=""quantifier"">Reference Scheme:</span> {0}</span>",
 				"{0}",
 				"",
 				@"<span class=""listSeparator"">, and </span>",
@@ -1047,7 +1077,7 @@ namespace Neumont.Tools.ORM.ObjectModel
 				@"<span class=""logicalOperator""> or </span>",
 				@"<span class=""logicalOperator""> or </span>",
 				@"<span class=""quantifier"">the possible value of</span> {0} <span class=""quantifier"">is</span> {1}",
-				@"<span class=""quantifier"">Each </span>{0} <span class=""quantifier"">is an instance of</span> {1}",
+				@"<span class=""quantifier"">some </span>{0} <a class=""predicateText"" href=""elementid:{2}"">is not an instance of</a> {1}",
 				@"<span class=""instance"">'{0}'</span>",
 				"</span>",
 				@"</span><span class=""smallIndent""><br/><span class=""logicalOperator"">and that </span>",
@@ -1130,7 +1160,7 @@ namespace Neumont.Tools.ORM.ObjectModel
 					{
 						writer.WriteLine();
 					}
-					writer.Write(string.Format(writer.FormatProvider, snippets.GetSnippet(CoreVerbalizationSnippetType.ErrorPrimary, false, false), error.ErrorText));
+					writer.Write(string.Format(writer.FormatProvider, snippets.GetSnippet(CoreVerbalizationSnippetType.ErrorPrimary, false, false), error.ErrorText, error.Id.ToString("D")));
 				}
 				if (!firstErrorPending)
 				{
@@ -1153,7 +1183,7 @@ namespace Neumont.Tools.ORM.ObjectModel
 						{
 							writer.WriteLine();
 						}
-						writer.Write(string.Format(writer.FormatProvider, snippets.GetSnippet(CoreVerbalizationSnippetType.ErrorSecondary, false, false), error.ErrorText));
+						writer.Write(string.Format(writer.FormatProvider, snippets.GetSnippet(CoreVerbalizationSnippetType.ErrorSecondary, false, false), error.ErrorText, error.Id.ToString("D")));
 					}
 					if (!firstErrorPending)
 					{
@@ -1217,7 +1247,7 @@ namespace Neumont.Tools.ORM.ObjectModel
 					{
 						writer.WriteLine();
 					}
-					writer.Write(string.Format(writer.FormatProvider, snippets.GetSnippet(CoreVerbalizationSnippetType.ErrorSecondary, false, false), error.ErrorText));
+					writer.Write(string.Format(writer.FormatProvider, snippets.GetSnippet(CoreVerbalizationSnippetType.ErrorSecondary, false, false), error.ErrorText, error.Id.ToString("D")));
 				}
 				if (!firstErrorPending)
 				{
@@ -1259,7 +1289,7 @@ namespace Neumont.Tools.ORM.ObjectModel
 					{
 						writer.WriteLine();
 					}
-					writer.Write(string.Format(writer.FormatProvider, snippets.GetSnippet(CoreVerbalizationSnippetType.ErrorPrimary, false, false), error.ErrorText));
+					writer.Write(string.Format(writer.FormatProvider, snippets.GetSnippet(CoreVerbalizationSnippetType.ErrorPrimary, false, false), error.ErrorText, error.Id.ToString("D")));
 				}
 				if (!firstErrorPending)
 				{
@@ -1282,7 +1312,7 @@ namespace Neumont.Tools.ORM.ObjectModel
 						{
 							writer.WriteLine();
 						}
-						writer.Write(string.Format(writer.FormatProvider, snippets.GetSnippet(CoreVerbalizationSnippetType.ErrorSecondary, false, false), error.ErrorText));
+						writer.Write(string.Format(writer.FormatProvider, snippets.GetSnippet(CoreVerbalizationSnippetType.ErrorSecondary, false, false), error.ErrorText, error.Id.ToString("D")));
 					}
 					if (!firstErrorPending)
 					{
@@ -1295,28 +1325,30 @@ namespace Neumont.Tools.ORM.ObjectModel
 			const bool isDeontic = false;
 			#endregion // Preliminary
 			#region Pattern Matches
-			if (!isNegative)
-			{
-				ObjectType supertype = this.Supertype;
-				ObjectType subtype = this.Subtype;
-				verbalizationContext.BeginVerbalization(VerbalizationContent.Normal);
-				string snippetFormat1 = snippets.GetSnippet(CoreVerbalizationSnippetType.SubtypeMetaReading, isDeontic, isNegative);
-				string snippet1Replace1 = null;
-				string snippet1ReplaceFormat1 = snippets.GetSnippet(CoreVerbalizationSnippetType.ObjectType, isDeontic, isNegative);
-				string snippet1Replace1Replace1 = null;
-				snippet1Replace1Replace1 = subtype.Name;
-				string snippet1Replace1Replace2 = null;
-				snippet1Replace1Replace2 = subtype.Id.ToString("D");
-				snippet1Replace1 = string.Format(writer.FormatProvider, snippet1ReplaceFormat1, snippet1Replace1Replace1, snippet1Replace1Replace2);
-				string snippet1Replace2 = null;
-				string snippet1ReplaceFormat2 = snippets.GetSnippet(CoreVerbalizationSnippetType.ObjectType, isDeontic, isNegative);
-				string snippet1Replace2Replace1 = null;
-				snippet1Replace2Replace1 = supertype.Name;
-				string snippet1Replace2Replace2 = null;
-				snippet1Replace2Replace2 = supertype.Id.ToString("D");
-				snippet1Replace2 = string.Format(writer.FormatProvider, snippet1ReplaceFormat2, snippet1Replace2Replace1, snippet1Replace2Replace2);
-				FactType.WriteVerbalizerSentence(writer, string.Format(writer.FormatProvider, snippetFormat1, snippet1Replace1, snippet1Replace2), snippets.GetSnippet(CoreVerbalizationSnippetType.CloseVerbalizationSentence, isDeontic, isNegative));
-			}
+			ObjectType supertype = this.Supertype;
+			ObjectType subtype = this.Subtype;
+			verbalizationContext.BeginVerbalization(VerbalizationContent.Normal);
+			string snippetFormat1 = snippets.GetSnippet(CoreVerbalizationSnippetType.ImpliedModalNecessityOperator, isDeontic, isNegative);
+			string snippet1Replace1 = null;
+			string snippet1ReplaceFormat1 = snippets.GetSnippet(CoreVerbalizationSnippetType.SubtypeMetaReading, isDeontic, isNegative);
+			string snippet1Replace1Replace1 = null;
+			string snippet1Replace1ReplaceFormat1 = snippets.GetSnippet(CoreVerbalizationSnippetType.ObjectType, isDeontic, isNegative);
+			string snippet1Replace1Replace1Replace1 = null;
+			snippet1Replace1Replace1Replace1 = subtype.Name;
+			string snippet1Replace1Replace1Replace2 = null;
+			snippet1Replace1Replace1Replace2 = subtype.Id.ToString("D");
+			snippet1Replace1Replace1 = string.Format(writer.FormatProvider, snippet1Replace1ReplaceFormat1, snippet1Replace1Replace1Replace1, snippet1Replace1Replace1Replace2);
+			string snippet1Replace1Replace2 = null;
+			string snippet1Replace1ReplaceFormat2 = snippets.GetSnippet(CoreVerbalizationSnippetType.ObjectType, isDeontic, isNegative);
+			string snippet1Replace1Replace2Replace1 = null;
+			snippet1Replace1Replace2Replace1 = supertype.Name;
+			string snippet1Replace1Replace2Replace2 = null;
+			snippet1Replace1Replace2Replace2 = supertype.Id.ToString("D");
+			snippet1Replace1Replace2 = string.Format(writer.FormatProvider, snippet1Replace1ReplaceFormat2, snippet1Replace1Replace2Replace1, snippet1Replace1Replace2Replace2);
+			string snippet1Replace1Replace3 = null;
+			snippet1Replace1Replace3 = this.Id.ToString("D");
+			snippet1Replace1 = string.Format(writer.FormatProvider, snippet1ReplaceFormat1, snippet1Replace1Replace1, snippet1Replace1Replace2, snippet1Replace1Replace3);
+			FactType.WriteVerbalizerSentence(writer, string.Format(writer.FormatProvider, snippetFormat1, snippet1Replace1), snippets.GetSnippet(CoreVerbalizationSnippetType.CloseVerbalizationSentence, isDeontic, isNegative));
 			#endregion // Pattern Matches
 			#region Error report
 			if (errorOwner != null)
@@ -1339,7 +1371,7 @@ namespace Neumont.Tools.ORM.ObjectModel
 					{
 						writer.WriteLine();
 					}
-					writer.Write(string.Format(writer.FormatProvider, snippets.GetSnippet(CoreVerbalizationSnippetType.ErrorSecondary, false, false), error.ErrorText));
+					writer.Write(string.Format(writer.FormatProvider, snippets.GetSnippet(CoreVerbalizationSnippetType.ErrorSecondary, false, false), error.ErrorText, error.Id.ToString("D")));
 				}
 				if (!firstErrorPending)
 				{
@@ -1381,7 +1413,7 @@ namespace Neumont.Tools.ORM.ObjectModel
 					{
 						writer.WriteLine();
 					}
-					writer.Write(string.Format(writer.FormatProvider, snippets.GetSnippet(CoreVerbalizationSnippetType.ErrorPrimary, false, false), error.ErrorText));
+					writer.Write(string.Format(writer.FormatProvider, snippets.GetSnippet(CoreVerbalizationSnippetType.ErrorPrimary, false, false), error.ErrorText, error.Id.ToString("D")));
 				}
 				if (!firstErrorPending)
 				{
@@ -1404,7 +1436,7 @@ namespace Neumont.Tools.ORM.ObjectModel
 						{
 							writer.WriteLine();
 						}
-						writer.Write(string.Format(writer.FormatProvider, snippets.GetSnippet(CoreVerbalizationSnippetType.ErrorSecondary, false, false), error.ErrorText));
+						writer.Write(string.Format(writer.FormatProvider, snippets.GetSnippet(CoreVerbalizationSnippetType.ErrorSecondary, false, false), error.ErrorText, error.Id.ToString("D")));
 					}
 					if (!firstErrorPending)
 					{
@@ -1592,6 +1624,112 @@ namespace Neumont.Tools.ORM.ObjectModel
 				snippet6Replace1 = this.DataType.ToString();
 				FactType.WriteVerbalizerSentence(writer, string.Format(writer.FormatProvider, snippetFormat6, snippet6Replace1), snippets.GetSnippet(CoreVerbalizationSnippetType.CloseVerbalizationSentence, isDeontic, isNegative));
 			}
+			if (Neumont.Tools.ORM.Shell.OptionsPage.CurrentVerbalizeFactTypesWithObjectType && verbalizationContext.VerbalizationTarget == ORMCoreDomainModel.VerbalizationTargetName)
+			{
+				writer.WriteLine();
+				string snippetFormat7 = snippets.GetSnippet(CoreVerbalizationSnippetType.SelfReference, isDeontic, isNegative);
+				string snippet7Replace1 = null;
+				if (sbTemp == null)
+				{
+					sbTemp = new StringBuilder();
+				}
+				else
+				{
+					sbTemp.Length = 0;
+				}
+				LinkedElementCollection<Role> playedRoles = this.PlayedRoleCollection;
+				int playedRoleCount = playedRoles.Count;
+				FactType[] snippet7ReplaceUniqueFactTypes1 = new FactType[playedRoleCount];
+				FactType snippet7ReplaceTestUniqueFactType1;
+				int snippet7ReplaceFilteredIter1;
+				int snippet7ReplaceFilteredCount1 = 0;
+				for (snippet7ReplaceFilteredIter1 = 0; snippet7ReplaceFilteredIter1 < playedRoleCount; ++snippet7ReplaceFilteredIter1)
+				{
+					RoleBase primaryRole = playedRoles[snippet7ReplaceFilteredIter1];
+					if (Array.IndexOf(snippet7ReplaceUniqueFactTypes1, snippet7ReplaceTestUniqueFactType1 = primaryRole.FactType) == -1)
+					{
+						snippet7ReplaceUniqueFactTypes1[snippet7ReplaceFilteredIter1] = snippet7ReplaceTestUniqueFactType1;
+						++snippet7ReplaceFilteredCount1;
+					}
+				}
+				Array.Clear(snippet7ReplaceUniqueFactTypes1, 0, snippet7ReplaceUniqueFactTypes1.Length);
+				snippet7ReplaceFilteredIter1 = 0;
+				for (int RoleIter1 = 0; RoleIter1 < playedRoleCount; ++RoleIter1)
+				{
+					RoleBase primaryRole = playedRoles[RoleIter1];
+					FactType parentFact = primaryRole.FactType;
+					SubtypeFact parentSubtypeFact = parentFact as SubtypeFact;
+					string predicatePartFormatString = string.Format(writer.FormatProvider, snippets.GetSnippet(CoreVerbalizationSnippetType.PredicatePart, isDeontic, isNegative), parentFact.Name, parentFact.Id.ToString("D"));
+					LinkedElementCollection<ReadingOrder> allReadingOrders = parentFact.ReadingOrderCollection;
+					IList<RoleBase> factRoles = allReadingOrders.Count != 0 ? allReadingOrders[0].RoleCollection : parentSubtypeFact == null ? parentFact.RoleCollection : (IList<RoleBase>)new RoleBase[]{
+						parentSubtypeFact.SubtypeRole,
+						parentSubtypeFact.SupertypeRole};
+					Nullable<int> unaryRoleIndex = FactType.GetUnaryRoleIndex(factRoles);
+					int factArity = unaryRoleIndex.HasValue ? 1 : factRoles.Count;
+					int unaryRoleOffset = unaryRoleIndex.HasValue ? unaryRoleIndex.Value : 0;
+					IReading reading = null;
+					VerbalizationHyphenBinder hyphenBinder;
+					string[] basicRoleReplacements = new string[factArity];
+					for (int i = 0; i < factArity; ++i)
+					{
+						Role factRole = factRoles[i + unaryRoleOffset].Role;
+						ObjectType rolePlayer = factRole.RolePlayer;
+						string basicReplacement;
+						if (rolePlayer != null)
+						{
+							basicReplacement = string.Format(writer.FormatProvider, snippets.GetSnippet(CoreVerbalizationSnippetType.ObjectType, isDeontic, isNegative), rolePlayer.Name, rolePlayer.Id.ToString("D"));
+						}
+						else
+						{
+							basicReplacement = string.Format(writer.FormatProvider, snippets.GetSnippet(CoreVerbalizationSnippetType.ObjectTypeMissing, isDeontic, isNegative), i + 1);
+						}
+						basicRoleReplacements[i] = basicReplacement;
+					}
+					if (Array.IndexOf(snippet7ReplaceUniqueFactTypes1, snippet7ReplaceTestUniqueFactType1 = primaryRole.FactType) == -1)
+					{
+						snippet7ReplaceUniqueFactTypes1[RoleIter1] = snippet7ReplaceTestUniqueFactType1;
+						CoreVerbalizationSnippetType listSnippet;
+						if (snippet7ReplaceFilteredIter1 == 0)
+						{
+							listSnippet = CoreVerbalizationSnippetType.FactTypeListOpen;
+						}
+						else if (snippet7ReplaceFilteredIter1 == snippet7ReplaceFilteredCount1 - 1)
+						{
+							if (snippet7ReplaceFilteredIter1 == 1)
+							{
+								listSnippet = CoreVerbalizationSnippetType.FactTypeListPairSeparator;
+							}
+							else
+							{
+								listSnippet = CoreVerbalizationSnippetType.FactTypeListFinalSeparator;
+							}
+						}
+						else
+						{
+							listSnippet = CoreVerbalizationSnippetType.FactTypeListSeparator;
+						}
+						sbTemp.Append(snippets.GetSnippet(listSnippet, isDeontic, isNegative));
+						if (parentSubtypeFact != null)
+						{
+							snippet7Replace1 = FactType.CreateVerbalizerSentence(string.Format(writer.FormatProvider, snippets.GetSnippet(CoreVerbalizationSnippetType.SubtypeMetaReading, isDeontic, false), basicRoleReplacements[0], basicRoleReplacements[1], parentFact.Id.ToString("D")), snippets.GetSnippet(CoreVerbalizationSnippetType.CloseVerbalizationSentence, isDeontic, isNegative));
+						}
+						else
+						{
+							reading = parentFact.GetMatchingReading(allReadingOrders, null, factRoles[0], null, false, false, false, factRoles, true);
+							hyphenBinder = new VerbalizationHyphenBinder(reading, writer.FormatProvider, factRoles, unaryRoleIndex, snippets.GetSnippet(CoreVerbalizationSnippetType.HyphenBoundPredicatePart, isDeontic, isNegative), predicatePartFormatString);
+							snippet7Replace1 = FactType.CreateVerbalizerSentence(hyphenBinder.PopulatePredicateText(reading, writer.FormatProvider, predicatePartFormatString, factRoles, basicRoleReplacements, true), snippets.GetSnippet(CoreVerbalizationSnippetType.CloseVerbalizationSentence, isDeontic, isNegative));
+						}
+						sbTemp.Append(snippet7Replace1);
+						if (snippet7ReplaceFilteredIter1 == snippet7ReplaceFilteredCount1 - 1)
+						{
+							sbTemp.Append(snippets.GetSnippet(CoreVerbalizationSnippetType.FactTypeListClose, isDeontic, isNegative));
+						}
+						++snippet7ReplaceFilteredIter1;
+					}
+				}
+				snippet7Replace1 = sbTemp.ToString();
+				FactType.WriteVerbalizerSentence(writer, string.Format(writer.FormatProvider, snippetFormat7, snippet7Replace1), snippets.GetSnippet(CoreVerbalizationSnippetType.CloseVerbalizationSentence, isDeontic, isNegative));
+			}
 			#endregion // Pattern Matches
 			#region Error report
 			if (errorOwner != null)
@@ -1614,7 +1752,7 @@ namespace Neumont.Tools.ORM.ObjectModel
 					{
 						writer.WriteLine();
 					}
-					writer.Write(string.Format(writer.FormatProvider, snippets.GetSnippet(CoreVerbalizationSnippetType.ErrorSecondary, false, false), error.ErrorText));
+					writer.Write(string.Format(writer.FormatProvider, snippets.GetSnippet(CoreVerbalizationSnippetType.ErrorSecondary, false, false), error.ErrorText, error.Id.ToString("D")));
 				}
 				if (!firstErrorPending)
 				{
@@ -1656,7 +1794,7 @@ namespace Neumont.Tools.ORM.ObjectModel
 					{
 						writer.WriteLine();
 					}
-					writer.Write(string.Format(writer.FormatProvider, snippets.GetSnippet(CoreVerbalizationSnippetType.ErrorPrimary, false, false), error.ErrorText));
+					writer.Write(string.Format(writer.FormatProvider, snippets.GetSnippet(CoreVerbalizationSnippetType.ErrorPrimary, false, false), error.ErrorText, error.Id.ToString("D")));
 				}
 				if (!firstErrorPending)
 				{
@@ -1679,7 +1817,7 @@ namespace Neumont.Tools.ORM.ObjectModel
 						{
 							writer.WriteLine();
 						}
-						writer.Write(string.Format(writer.FormatProvider, snippets.GetSnippet(CoreVerbalizationSnippetType.ErrorSecondary, false, false), error.ErrorText));
+						writer.Write(string.Format(writer.FormatProvider, snippets.GetSnippet(CoreVerbalizationSnippetType.ErrorSecondary, false, false), error.ErrorText, error.Id.ToString("D")));
 					}
 					if (!firstErrorPending)
 					{
@@ -1719,7 +1857,7 @@ namespace Neumont.Tools.ORM.ObjectModel
 					{
 						writer.WriteLine();
 					}
-					writer.Write(string.Format(writer.FormatProvider, snippets.GetSnippet(CoreVerbalizationSnippetType.ErrorSecondary, false, false), error.ErrorText));
+					writer.Write(string.Format(writer.FormatProvider, snippets.GetSnippet(CoreVerbalizationSnippetType.ErrorSecondary, false, false), error.ErrorText, error.Id.ToString("D")));
 				}
 				if (!firstErrorPending)
 				{
@@ -1761,7 +1899,7 @@ namespace Neumont.Tools.ORM.ObjectModel
 					{
 						writer.WriteLine();
 					}
-					writer.Write(string.Format(writer.FormatProvider, snippets.GetSnippet(CoreVerbalizationSnippetType.ErrorPrimary, false, false), error.ErrorText));
+					writer.Write(string.Format(writer.FormatProvider, snippets.GetSnippet(CoreVerbalizationSnippetType.ErrorPrimary, false, false), error.ErrorText, error.Id.ToString("D")));
 				}
 				if (!firstErrorPending)
 				{
@@ -1784,7 +1922,7 @@ namespace Neumont.Tools.ORM.ObjectModel
 						{
 							writer.WriteLine();
 						}
-						writer.Write(string.Format(writer.FormatProvider, snippets.GetSnippet(CoreVerbalizationSnippetType.ErrorSecondary, false, false), error.ErrorText));
+						writer.Write(string.Format(writer.FormatProvider, snippets.GetSnippet(CoreVerbalizationSnippetType.ErrorSecondary, false, false), error.ErrorText, error.Id.ToString("D")));
 					}
 					if (!firstErrorPending)
 					{
@@ -1824,7 +1962,7 @@ namespace Neumont.Tools.ORM.ObjectModel
 					{
 						writer.WriteLine();
 					}
-					writer.Write(string.Format(writer.FormatProvider, snippets.GetSnippet(CoreVerbalizationSnippetType.ErrorSecondary, false, false), error.ErrorText));
+					writer.Write(string.Format(writer.FormatProvider, snippets.GetSnippet(CoreVerbalizationSnippetType.ErrorSecondary, false, false), error.ErrorText, error.Id.ToString("D")));
 				}
 				if (!firstErrorPending)
 				{
@@ -1866,7 +2004,7 @@ namespace Neumont.Tools.ORM.ObjectModel
 					{
 						writer.WriteLine();
 					}
-					writer.Write(string.Format(writer.FormatProvider, snippets.GetSnippet(CoreVerbalizationSnippetType.ErrorPrimary, false, false), error.ErrorText));
+					writer.Write(string.Format(writer.FormatProvider, snippets.GetSnippet(CoreVerbalizationSnippetType.ErrorPrimary, false, false), error.ErrorText, error.Id.ToString("D")));
 				}
 				if (!firstErrorPending)
 				{
@@ -1889,7 +2027,7 @@ namespace Neumont.Tools.ORM.ObjectModel
 						{
 							writer.WriteLine();
 						}
-						writer.Write(string.Format(writer.FormatProvider, snippets.GetSnippet(CoreVerbalizationSnippetType.ErrorSecondary, false, false), error.ErrorText));
+						writer.Write(string.Format(writer.FormatProvider, snippets.GetSnippet(CoreVerbalizationSnippetType.ErrorSecondary, false, false), error.ErrorText, error.Id.ToString("D")));
 					}
 					if (!firstErrorPending)
 					{
@@ -1941,7 +2079,7 @@ namespace Neumont.Tools.ORM.ObjectModel
 						{
 							writer.WriteLine();
 						}
-						writer.Write(string.Format(writer.FormatProvider, snippets.GetSnippet(CoreVerbalizationSnippetType.ErrorSecondary, false, false), error.ErrorText));
+						writer.Write(string.Format(writer.FormatProvider, snippets.GetSnippet(CoreVerbalizationSnippetType.ErrorSecondary, false, false), error.ErrorText, error.Id.ToString("D")));
 					}
 					if (!firstErrorPending)
 					{
@@ -1982,7 +2120,7 @@ namespace Neumont.Tools.ORM.ObjectModel
 							{
 								writer.WriteLine();
 							}
-							writer.Write(string.Format(writer.FormatProvider, snippets.GetSnippet(CoreVerbalizationSnippetType.ErrorSecondary, false, false), error.ErrorText));
+							writer.Write(string.Format(writer.FormatProvider, snippets.GetSnippet(CoreVerbalizationSnippetType.ErrorSecondary, false, false), error.ErrorText, error.Id.ToString("D")));
 						}
 						if (!firstErrorPending)
 						{
@@ -2692,7 +2830,7 @@ namespace Neumont.Tools.ORM.ObjectModel
 					{
 						writer.WriteLine();
 					}
-					writer.Write(string.Format(writer.FormatProvider, snippets.GetSnippet(CoreVerbalizationSnippetType.ErrorSecondary, false, false), error.ErrorText));
+					writer.Write(string.Format(writer.FormatProvider, snippets.GetSnippet(CoreVerbalizationSnippetType.ErrorSecondary, false, false), error.ErrorText, error.Id.ToString("D")));
 				}
 				if (!firstErrorPending)
 				{
@@ -3522,7 +3660,7 @@ namespace Neumont.Tools.ORM.ObjectModel
 					{
 						writer.WriteLine();
 					}
-					writer.Write(string.Format(writer.FormatProvider, snippets.GetSnippet(CoreVerbalizationSnippetType.ErrorPrimary, false, false), error.ErrorText));
+					writer.Write(string.Format(writer.FormatProvider, snippets.GetSnippet(CoreVerbalizationSnippetType.ErrorPrimary, false, false), error.ErrorText, error.Id.ToString("D")));
 				}
 				if (!firstErrorPending)
 				{
@@ -3545,7 +3683,7 @@ namespace Neumont.Tools.ORM.ObjectModel
 						{
 							writer.WriteLine();
 						}
-						writer.Write(string.Format(writer.FormatProvider, snippets.GetSnippet(CoreVerbalizationSnippetType.ErrorSecondary, false, false), error.ErrorText));
+						writer.Write(string.Format(writer.FormatProvider, snippets.GetSnippet(CoreVerbalizationSnippetType.ErrorSecondary, false, false), error.ErrorText, error.Id.ToString("D")));
 					}
 					if (!firstErrorPending)
 					{
@@ -3590,7 +3728,7 @@ namespace Neumont.Tools.ORM.ObjectModel
 						{
 							writer.WriteLine();
 						}
-						writer.Write(string.Format(writer.FormatProvider, snippets.GetSnippet(CoreVerbalizationSnippetType.ErrorSecondary, false, false), error.ErrorText));
+						writer.Write(string.Format(writer.FormatProvider, snippets.GetSnippet(CoreVerbalizationSnippetType.ErrorSecondary, false, false), error.ErrorText, error.Id.ToString("D")));
 					}
 					if (!firstErrorPending)
 					{
@@ -3631,7 +3769,7 @@ namespace Neumont.Tools.ORM.ObjectModel
 							{
 								writer.WriteLine();
 							}
-							writer.Write(string.Format(writer.FormatProvider, snippets.GetSnippet(CoreVerbalizationSnippetType.ErrorSecondary, false, false), error.ErrorText));
+							writer.Write(string.Format(writer.FormatProvider, snippets.GetSnippet(CoreVerbalizationSnippetType.ErrorSecondary, false, false), error.ErrorText, error.Id.ToString("D")));
 						}
 						if (!firstErrorPending)
 						{
@@ -4639,7 +4777,7 @@ namespace Neumont.Tools.ORM.ObjectModel
 					{
 						writer.WriteLine();
 					}
-					writer.Write(string.Format(writer.FormatProvider, snippets.GetSnippet(CoreVerbalizationSnippetType.ErrorSecondary, false, false), error.ErrorText));
+					writer.Write(string.Format(writer.FormatProvider, snippets.GetSnippet(CoreVerbalizationSnippetType.ErrorSecondary, false, false), error.ErrorText, error.Id.ToString("D")));
 				}
 				if (!firstErrorPending)
 				{
@@ -4681,7 +4819,7 @@ namespace Neumont.Tools.ORM.ObjectModel
 					{
 						writer.WriteLine();
 					}
-					writer.Write(string.Format(writer.FormatProvider, snippets.GetSnippet(CoreVerbalizationSnippetType.ErrorPrimary, false, false), error.ErrorText));
+					writer.Write(string.Format(writer.FormatProvider, snippets.GetSnippet(CoreVerbalizationSnippetType.ErrorPrimary, false, false), error.ErrorText, error.Id.ToString("D")));
 				}
 				if (!firstErrorPending)
 				{
@@ -4704,7 +4842,7 @@ namespace Neumont.Tools.ORM.ObjectModel
 						{
 							writer.WriteLine();
 						}
-						writer.Write(string.Format(writer.FormatProvider, snippets.GetSnippet(CoreVerbalizationSnippetType.ErrorSecondary, false, false), error.ErrorText));
+						writer.Write(string.Format(writer.FormatProvider, snippets.GetSnippet(CoreVerbalizationSnippetType.ErrorSecondary, false, false), error.ErrorText, error.Id.ToString("D")));
 					}
 					if (!firstErrorPending)
 					{
@@ -4749,7 +4887,7 @@ namespace Neumont.Tools.ORM.ObjectModel
 						{
 							writer.WriteLine();
 						}
-						writer.Write(string.Format(writer.FormatProvider, snippets.GetSnippet(CoreVerbalizationSnippetType.ErrorSecondary, false, false), error.ErrorText));
+						writer.Write(string.Format(writer.FormatProvider, snippets.GetSnippet(CoreVerbalizationSnippetType.ErrorSecondary, false, false), error.ErrorText, error.Id.ToString("D")));
 					}
 					if (!firstErrorPending)
 					{
@@ -4790,7 +4928,7 @@ namespace Neumont.Tools.ORM.ObjectModel
 							{
 								writer.WriteLine();
 							}
-							writer.Write(string.Format(writer.FormatProvider, snippets.GetSnippet(CoreVerbalizationSnippetType.ErrorSecondary, false, false), error.ErrorText));
+							writer.Write(string.Format(writer.FormatProvider, snippets.GetSnippet(CoreVerbalizationSnippetType.ErrorSecondary, false, false), error.ErrorText, error.Id.ToString("D")));
 						}
 						if (!firstErrorPending)
 						{
@@ -4814,6 +4952,7 @@ namespace Neumont.Tools.ORM.ObjectModel
 					maxFactArity = factArity;
 				}
 				string[] basicRoleReplacements = new string[factArity];
+				bool generateSubscripts = allFactsCount == 1 && factArity >= 3;
 				for (int i = 0; i < factArity; ++i)
 				{
 					Role factRole = factRoles[i + unaryRoleOffset].Role;
@@ -4821,7 +4960,35 @@ namespace Neumont.Tools.ORM.ObjectModel
 					string basicReplacement;
 					if (rolePlayer != null)
 					{
-						basicReplacement = string.Format(writer.FormatProvider, snippets.GetSnippet(CoreVerbalizationSnippetType.ObjectType, isDeontic, isNegative), rolePlayer.Name, rolePlayer.Id.ToString("D"));
+						int subscript = 0;
+						bool useSubscript = false;
+						if (generateSubscripts)
+						{
+							int j = 0;
+							for (; j < i; ++j)
+							{
+								if (rolePlayer == factRoles[j].Role.RolePlayer)
+								{
+									useSubscript = true;
+									++subscript;
+								}
+							}
+							for (j = i + 1; !useSubscript && j < factArity; ++j)
+							{
+								if (rolePlayer == factRoles[j].Role.RolePlayer)
+								{
+									useSubscript = true;
+								}
+							}
+						}
+						if (useSubscript)
+						{
+							basicReplacement = string.Format(writer.FormatProvider, snippets.GetSnippet(CoreVerbalizationSnippetType.ObjectTypeWithSubscript, isDeontic, isNegative), rolePlayer.Name, rolePlayer.Id.ToString("D"), subscript + 1);
+						}
+						else
+						{
+							basicReplacement = string.Format(writer.FormatProvider, snippets.GetSnippet(CoreVerbalizationSnippetType.ObjectType, isDeontic, isNegative), rolePlayer.Name, rolePlayer.Id.ToString("D"));
+						}
 					}
 					else
 					{
@@ -6201,7 +6368,7 @@ namespace Neumont.Tools.ORM.ObjectModel
 					{
 						writer.WriteLine();
 					}
-					writer.Write(string.Format(writer.FormatProvider, snippets.GetSnippet(CoreVerbalizationSnippetType.ErrorSecondary, false, false), error.ErrorText));
+					writer.Write(string.Format(writer.FormatProvider, snippets.GetSnippet(CoreVerbalizationSnippetType.ErrorSecondary, false, false), error.ErrorText, error.Id.ToString("D")));
 				}
 				if (!firstErrorPending)
 				{
@@ -6243,7 +6410,7 @@ namespace Neumont.Tools.ORM.ObjectModel
 					{
 						writer.WriteLine();
 					}
-					writer.Write(string.Format(writer.FormatProvider, snippets.GetSnippet(CoreVerbalizationSnippetType.ErrorPrimary, false, false), error.ErrorText));
+					writer.Write(string.Format(writer.FormatProvider, snippets.GetSnippet(CoreVerbalizationSnippetType.ErrorPrimary, false, false), error.ErrorText, error.Id.ToString("D")));
 				}
 				if (!firstErrorPending)
 				{
@@ -6266,7 +6433,7 @@ namespace Neumont.Tools.ORM.ObjectModel
 						{
 							writer.WriteLine();
 						}
-						writer.Write(string.Format(writer.FormatProvider, snippets.GetSnippet(CoreVerbalizationSnippetType.ErrorSecondary, false, false), error.ErrorText));
+						writer.Write(string.Format(writer.FormatProvider, snippets.GetSnippet(CoreVerbalizationSnippetType.ErrorSecondary, false, false), error.ErrorText, error.Id.ToString("D")));
 					}
 					if (!firstErrorPending)
 					{
@@ -6311,7 +6478,7 @@ namespace Neumont.Tools.ORM.ObjectModel
 						{
 							writer.WriteLine();
 						}
-						writer.Write(string.Format(writer.FormatProvider, snippets.GetSnippet(CoreVerbalizationSnippetType.ErrorSecondary, false, false), error.ErrorText));
+						writer.Write(string.Format(writer.FormatProvider, snippets.GetSnippet(CoreVerbalizationSnippetType.ErrorSecondary, false, false), error.ErrorText, error.Id.ToString("D")));
 					}
 					if (!firstErrorPending)
 					{
@@ -6351,7 +6518,7 @@ namespace Neumont.Tools.ORM.ObjectModel
 							{
 								writer.WriteLine();
 							}
-							writer.Write(string.Format(writer.FormatProvider, snippets.GetSnippet(CoreVerbalizationSnippetType.ErrorSecondary, false, false), error.ErrorText));
+							writer.Write(string.Format(writer.FormatProvider, snippets.GetSnippet(CoreVerbalizationSnippetType.ErrorSecondary, false, false), error.ErrorText, error.Id.ToString("D")));
 						}
 						if (!firstErrorPending)
 						{
@@ -6658,7 +6825,7 @@ namespace Neumont.Tools.ORM.ObjectModel
 					{
 						writer.WriteLine();
 					}
-					writer.Write(string.Format(writer.FormatProvider, snippets.GetSnippet(CoreVerbalizationSnippetType.ErrorSecondary, false, false), error.ErrorText));
+					writer.Write(string.Format(writer.FormatProvider, snippets.GetSnippet(CoreVerbalizationSnippetType.ErrorSecondary, false, false), error.ErrorText, error.Id.ToString("D")));
 				}
 				if (!firstErrorPending)
 				{
@@ -6700,7 +6867,7 @@ namespace Neumont.Tools.ORM.ObjectModel
 					{
 						writer.WriteLine();
 					}
-					writer.Write(string.Format(writer.FormatProvider, snippets.GetSnippet(CoreVerbalizationSnippetType.ErrorPrimary, false, false), error.ErrorText));
+					writer.Write(string.Format(writer.FormatProvider, snippets.GetSnippet(CoreVerbalizationSnippetType.ErrorPrimary, false, false), error.ErrorText, error.Id.ToString("D")));
 				}
 				if (!firstErrorPending)
 				{
@@ -6723,7 +6890,7 @@ namespace Neumont.Tools.ORM.ObjectModel
 						{
 							writer.WriteLine();
 						}
-						writer.Write(string.Format(writer.FormatProvider, snippets.GetSnippet(CoreVerbalizationSnippetType.ErrorSecondary, false, false), error.ErrorText));
+						writer.Write(string.Format(writer.FormatProvider, snippets.GetSnippet(CoreVerbalizationSnippetType.ErrorSecondary, false, false), error.ErrorText, error.Id.ToString("D")));
 					}
 					if (!firstErrorPending)
 					{
@@ -6769,7 +6936,7 @@ namespace Neumont.Tools.ORM.ObjectModel
 						{
 							writer.WriteLine();
 						}
-						writer.Write(string.Format(writer.FormatProvider, snippets.GetSnippet(CoreVerbalizationSnippetType.ErrorSecondary, false, false), error.ErrorText));
+						writer.Write(string.Format(writer.FormatProvider, snippets.GetSnippet(CoreVerbalizationSnippetType.ErrorSecondary, false, false), error.ErrorText, error.Id.ToString("D")));
 					}
 					if (!firstErrorPending)
 					{
@@ -7020,7 +7187,7 @@ namespace Neumont.Tools.ORM.ObjectModel
 					{
 						writer.WriteLine();
 					}
-					writer.Write(string.Format(writer.FormatProvider, snippets.GetSnippet(CoreVerbalizationSnippetType.ErrorSecondary, false, false), error.ErrorText));
+					writer.Write(string.Format(writer.FormatProvider, snippets.GetSnippet(CoreVerbalizationSnippetType.ErrorSecondary, false, false), error.ErrorText, error.Id.ToString("D")));
 				}
 				if (!firstErrorPending)
 				{
@@ -7062,7 +7229,7 @@ namespace Neumont.Tools.ORM.ObjectModel
 					{
 						writer.WriteLine();
 					}
-					writer.Write(string.Format(writer.FormatProvider, snippets.GetSnippet(CoreVerbalizationSnippetType.ErrorPrimary, false, false), error.ErrorText));
+					writer.Write(string.Format(writer.FormatProvider, snippets.GetSnippet(CoreVerbalizationSnippetType.ErrorPrimary, false, false), error.ErrorText, error.Id.ToString("D")));
 				}
 				if (!firstErrorPending)
 				{
@@ -7085,7 +7252,7 @@ namespace Neumont.Tools.ORM.ObjectModel
 						{
 							writer.WriteLine();
 						}
-						writer.Write(string.Format(writer.FormatProvider, snippets.GetSnippet(CoreVerbalizationSnippetType.ErrorSecondary, false, false), error.ErrorText));
+						writer.Write(string.Format(writer.FormatProvider, snippets.GetSnippet(CoreVerbalizationSnippetType.ErrorSecondary, false, false), error.ErrorText, error.Id.ToString("D")));
 					}
 					if (!firstErrorPending)
 					{
@@ -7254,7 +7421,7 @@ namespace Neumont.Tools.ORM.ObjectModel
 					{
 						writer.WriteLine();
 					}
-					writer.Write(string.Format(writer.FormatProvider, snippets.GetSnippet(CoreVerbalizationSnippetType.ErrorSecondary, false, false), error.ErrorText));
+					writer.Write(string.Format(writer.FormatProvider, snippets.GetSnippet(CoreVerbalizationSnippetType.ErrorSecondary, false, false), error.ErrorText, error.Id.ToString("D")));
 				}
 				if (!firstErrorPending)
 				{
@@ -7478,7 +7645,7 @@ namespace Neumont.Tools.ORM.ObjectModel
 					{
 						writer.WriteLine();
 					}
-					writer.Write(string.Format(writer.FormatProvider, snippets.GetSnippet(CoreVerbalizationSnippetType.ErrorPrimary, false, false), error.ErrorText));
+					writer.Write(string.Format(writer.FormatProvider, snippets.GetSnippet(CoreVerbalizationSnippetType.ErrorPrimary, false, false), error.ErrorText, error.Id.ToString("D")));
 				}
 				if (!firstErrorPending)
 				{
@@ -7501,7 +7668,7 @@ namespace Neumont.Tools.ORM.ObjectModel
 						{
 							writer.WriteLine();
 						}
-						writer.Write(string.Format(writer.FormatProvider, snippets.GetSnippet(CoreVerbalizationSnippetType.ErrorSecondary, false, false), error.ErrorText));
+						writer.Write(string.Format(writer.FormatProvider, snippets.GetSnippet(CoreVerbalizationSnippetType.ErrorSecondary, false, false), error.ErrorText, error.Id.ToString("D")));
 					}
 					if (!firstErrorPending)
 					{
@@ -7546,7 +7713,7 @@ namespace Neumont.Tools.ORM.ObjectModel
 						{
 							writer.WriteLine();
 						}
-						writer.Write(string.Format(writer.FormatProvider, snippets.GetSnippet(CoreVerbalizationSnippetType.ErrorSecondary, false, false), error.ErrorText));
+						writer.Write(string.Format(writer.FormatProvider, snippets.GetSnippet(CoreVerbalizationSnippetType.ErrorSecondary, false, false), error.ErrorText, error.Id.ToString("D")));
 					}
 					if (!firstErrorPending)
 					{
@@ -7586,7 +7753,7 @@ namespace Neumont.Tools.ORM.ObjectModel
 							{
 								writer.WriteLine();
 							}
-							writer.Write(string.Format(writer.FormatProvider, snippets.GetSnippet(CoreVerbalizationSnippetType.ErrorSecondary, false, false), error.ErrorText));
+							writer.Write(string.Format(writer.FormatProvider, snippets.GetSnippet(CoreVerbalizationSnippetType.ErrorSecondary, false, false), error.ErrorText, error.Id.ToString("D")));
 						}
 						if (!firstErrorPending)
 						{
@@ -7732,7 +7899,7 @@ namespace Neumont.Tools.ORM.ObjectModel
 					{
 						writer.WriteLine();
 					}
-					writer.Write(string.Format(writer.FormatProvider, snippets.GetSnippet(CoreVerbalizationSnippetType.ErrorSecondary, false, false), error.ErrorText));
+					writer.Write(string.Format(writer.FormatProvider, snippets.GetSnippet(CoreVerbalizationSnippetType.ErrorSecondary, false, false), error.ErrorText, error.Id.ToString("D")));
 				}
 				if (!firstErrorPending)
 				{
@@ -7774,7 +7941,7 @@ namespace Neumont.Tools.ORM.ObjectModel
 					{
 						writer.WriteLine();
 					}
-					writer.Write(string.Format(writer.FormatProvider, snippets.GetSnippet(CoreVerbalizationSnippetType.ErrorPrimary, false, false), error.ErrorText));
+					writer.Write(string.Format(writer.FormatProvider, snippets.GetSnippet(CoreVerbalizationSnippetType.ErrorPrimary, false, false), error.ErrorText, error.Id.ToString("D")));
 				}
 				if (!firstErrorPending)
 				{
@@ -7797,7 +7964,7 @@ namespace Neumont.Tools.ORM.ObjectModel
 						{
 							writer.WriteLine();
 						}
-						writer.Write(string.Format(writer.FormatProvider, snippets.GetSnippet(CoreVerbalizationSnippetType.ErrorSecondary, false, false), error.ErrorText));
+						writer.Write(string.Format(writer.FormatProvider, snippets.GetSnippet(CoreVerbalizationSnippetType.ErrorSecondary, false, false), error.ErrorText, error.Id.ToString("D")));
 					}
 					if (!firstErrorPending)
 					{
@@ -7849,7 +8016,7 @@ namespace Neumont.Tools.ORM.ObjectModel
 						{
 							writer.WriteLine();
 						}
-						writer.Write(string.Format(writer.FormatProvider, snippets.GetSnippet(CoreVerbalizationSnippetType.ErrorSecondary, false, false), error.ErrorText));
+						writer.Write(string.Format(writer.FormatProvider, snippets.GetSnippet(CoreVerbalizationSnippetType.ErrorSecondary, false, false), error.ErrorText, error.Id.ToString("D")));
 					}
 					if (!firstErrorPending)
 					{
@@ -7890,7 +8057,7 @@ namespace Neumont.Tools.ORM.ObjectModel
 							{
 								writer.WriteLine();
 							}
-							writer.Write(string.Format(writer.FormatProvider, snippets.GetSnippet(CoreVerbalizationSnippetType.ErrorSecondary, false, false), error.ErrorText));
+							writer.Write(string.Format(writer.FormatProvider, snippets.GetSnippet(CoreVerbalizationSnippetType.ErrorSecondary, false, false), error.ErrorText, error.Id.ToString("D")));
 						}
 						if (!firstErrorPending)
 						{
@@ -8403,7 +8570,7 @@ namespace Neumont.Tools.ORM.ObjectModel
 					{
 						writer.WriteLine();
 					}
-					writer.Write(string.Format(writer.FormatProvider, snippets.GetSnippet(CoreVerbalizationSnippetType.ErrorSecondary, false, false), error.ErrorText));
+					writer.Write(string.Format(writer.FormatProvider, snippets.GetSnippet(CoreVerbalizationSnippetType.ErrorSecondary, false, false), error.ErrorText, error.Id.ToString("D")));
 				}
 				if (!firstErrorPending)
 				{
@@ -8445,7 +8612,7 @@ namespace Neumont.Tools.ORM.ObjectModel
 					{
 						writer.WriteLine();
 					}
-					writer.Write(string.Format(writer.FormatProvider, snippets.GetSnippet(CoreVerbalizationSnippetType.ErrorPrimary, false, false), error.ErrorText));
+					writer.Write(string.Format(writer.FormatProvider, snippets.GetSnippet(CoreVerbalizationSnippetType.ErrorPrimary, false, false), error.ErrorText, error.Id.ToString("D")));
 				}
 				if (!firstErrorPending)
 				{
@@ -8468,7 +8635,7 @@ namespace Neumont.Tools.ORM.ObjectModel
 						{
 							writer.WriteLine();
 						}
-						writer.Write(string.Format(writer.FormatProvider, snippets.GetSnippet(CoreVerbalizationSnippetType.ErrorSecondary, false, false), error.ErrorText));
+						writer.Write(string.Format(writer.FormatProvider, snippets.GetSnippet(CoreVerbalizationSnippetType.ErrorSecondary, false, false), error.ErrorText, error.Id.ToString("D")));
 					}
 					if (!firstErrorPending)
 					{
@@ -8520,7 +8687,7 @@ namespace Neumont.Tools.ORM.ObjectModel
 						{
 							writer.WriteLine();
 						}
-						writer.Write(string.Format(writer.FormatProvider, snippets.GetSnippet(CoreVerbalizationSnippetType.ErrorSecondary, false, false), error.ErrorText));
+						writer.Write(string.Format(writer.FormatProvider, snippets.GetSnippet(CoreVerbalizationSnippetType.ErrorSecondary, false, false), error.ErrorText, error.Id.ToString("D")));
 					}
 					if (!firstErrorPending)
 					{
@@ -8561,7 +8728,7 @@ namespace Neumont.Tools.ORM.ObjectModel
 							{
 								writer.WriteLine();
 							}
-							writer.Write(string.Format(writer.FormatProvider, snippets.GetSnippet(CoreVerbalizationSnippetType.ErrorSecondary, false, false), error.ErrorText));
+							writer.Write(string.Format(writer.FormatProvider, snippets.GetSnippet(CoreVerbalizationSnippetType.ErrorSecondary, false, false), error.ErrorText, error.Id.ToString("D")));
 						}
 						if (!firstErrorPending)
 						{
@@ -9393,7 +9560,7 @@ namespace Neumont.Tools.ORM.ObjectModel
 					{
 						writer.WriteLine();
 					}
-					writer.Write(string.Format(writer.FormatProvider, snippets.GetSnippet(CoreVerbalizationSnippetType.ErrorSecondary, false, false), error.ErrorText));
+					writer.Write(string.Format(writer.FormatProvider, snippets.GetSnippet(CoreVerbalizationSnippetType.ErrorSecondary, false, false), error.ErrorText, error.Id.ToString("D")));
 				}
 				if (!firstErrorPending)
 				{
@@ -9555,7 +9722,7 @@ namespace Neumont.Tools.ORM.ObjectModel
 						{
 							writer.WriteLine();
 						}
-						writer.Write(string.Format(writer.FormatProvider, snippets.GetSnippet(CoreVerbalizationSnippetType.ErrorPrimary, false, false), error.ErrorText));
+						writer.Write(string.Format(writer.FormatProvider, snippets.GetSnippet(CoreVerbalizationSnippetType.ErrorPrimary, false, false), error.ErrorText, error.Id.ToString("D")));
 					}
 					if (!firstErrorPending)
 					{
@@ -9578,7 +9745,7 @@ namespace Neumont.Tools.ORM.ObjectModel
 							{
 								writer.WriteLine();
 							}
-							writer.Write(string.Format(writer.FormatProvider, snippets.GetSnippet(CoreVerbalizationSnippetType.ErrorSecondary, false, false), error.ErrorText));
+							writer.Write(string.Format(writer.FormatProvider, snippets.GetSnippet(CoreVerbalizationSnippetType.ErrorSecondary, false, false), error.ErrorText, error.Id.ToString("D")));
 						}
 						if (!firstErrorPending)
 						{
@@ -9676,7 +9843,7 @@ namespace Neumont.Tools.ORM.ObjectModel
 						{
 							writer.WriteLine();
 						}
-						writer.Write(string.Format(writer.FormatProvider, snippets.GetSnippet(CoreVerbalizationSnippetType.ErrorSecondary, false, false), error.ErrorText));
+						writer.Write(string.Format(writer.FormatProvider, snippets.GetSnippet(CoreVerbalizationSnippetType.ErrorSecondary, false, false), error.ErrorText, error.Id.ToString("D")));
 					}
 					if (!firstErrorPending)
 					{
@@ -9748,7 +9915,7 @@ namespace Neumont.Tools.ORM.ObjectModel
 						{
 							writer.WriteLine();
 						}
-						writer.Write(string.Format(writer.FormatProvider, snippets.GetSnippet(CoreVerbalizationSnippetType.ErrorPrimary, false, false), error.ErrorText));
+						writer.Write(string.Format(writer.FormatProvider, snippets.GetSnippet(CoreVerbalizationSnippetType.ErrorPrimary, false, false), error.ErrorText, error.Id.ToString("D")));
 					}
 					if (!firstErrorPending)
 					{
@@ -9771,7 +9938,7 @@ namespace Neumont.Tools.ORM.ObjectModel
 							{
 								writer.WriteLine();
 							}
-							writer.Write(string.Format(writer.FormatProvider, snippets.GetSnippet(CoreVerbalizationSnippetType.ErrorSecondary, false, false), error.ErrorText));
+							writer.Write(string.Format(writer.FormatProvider, snippets.GetSnippet(CoreVerbalizationSnippetType.ErrorSecondary, false, false), error.ErrorText, error.Id.ToString("D")));
 						}
 						if (!firstErrorPending)
 						{
@@ -9847,7 +10014,7 @@ namespace Neumont.Tools.ORM.ObjectModel
 						{
 							writer.WriteLine();
 						}
-						writer.Write(string.Format(writer.FormatProvider, snippets.GetSnippet(CoreVerbalizationSnippetType.ErrorSecondary, false, false), error.ErrorText));
+						writer.Write(string.Format(writer.FormatProvider, snippets.GetSnippet(CoreVerbalizationSnippetType.ErrorSecondary, false, false), error.ErrorText, error.Id.ToString("D")));
 					}
 					if (!firstErrorPending)
 					{

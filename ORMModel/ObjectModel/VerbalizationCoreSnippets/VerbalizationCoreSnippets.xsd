@@ -872,6 +872,7 @@
 					<xs:annotation>
 						<xs:documentation>
 							Description: Used to verbalize a single primary error.
+							Replacement: {0}=error text,{1}=error id
 							Format: Model Error: {0}
 						</xs:documentation>
 					</xs:annotation>
@@ -880,6 +881,7 @@
 					<xs:annotation>
 						<xs:documentation>
 							Description: Used to open a secondary error report. Secondary reports contain errors that do not block verbalization.
+							Replacement: {0}=error text,{1}=error id
 							Format: Model Error: {0}
 						</xs:documentation>
 					</xs:annotation>
@@ -1032,6 +1034,43 @@
 						</xs:documentation>
 					</xs:annotation>
 				</xs:enumeration>
+				<xs:enumeration value="FactTypeListOpen">
+					<xs:annotation>
+						<xs:documentation>
+							Description:  Text and formatting to begin a sample population verbalization basic predicate text.
+							Format: FactTypes: &lt;br/&gt;
+						</xs:documentation>
+					</xs:annotation>
+				</xs:enumeration>
+				<xs:enumeration value="FactTypeListPairSeparator">
+					<xs:annotation>
+						<xs:documentation>
+							Description: Text used to separate items in a sample population verbalization list.
+							Format: &lt;br/&gt;</xs:documentation>
+					</xs:annotation>
+				</xs:enumeration>
+				<xs:enumeration value="FactTypeListSeparator">
+					<xs:annotation>
+						<xs:documentation>
+							Description: Text used to separate items in a sample population verbalization list.
+							Format: &lt;br/&gt;</xs:documentation>
+					</xs:annotation>
+				</xs:enumeration>
+				<xs:enumeration value="FactTypeListFinalSeparator">
+					<xs:annotation>
+						<xs:documentation>
+							Description: Text used to separate the last two items in a sample population verbalization list.
+							Format: &lt;br/&gt;</xs:documentation>
+					</xs:annotation>
+				</xs:enumeration>
+				<xs:enumeration value="FactTypeListClose">
+					<xs:annotation>
+						<xs:documentation>
+							Description: Text used to close the sample population verbalization list.
+							Format:
+						</xs:documentation>
+					</xs:annotation>
+				</xs:enumeration>
 				<xs:enumeration value="ObjectTypeInstanceListOpen">
 					<xs:annotation>
 						<xs:documentation>
@@ -1107,7 +1146,7 @@
 					<xs:annotation>
 						<xs:documentation>
 							Description: Used to describe the relationship between a Subtype and its Supertype at the meta level (i.e: Each Man is an instance of Person). 
-							Format: {0} is a subtype of {1}
+							Format: {0}=subtype, {1}=supertype, {2}=SubtypeFact identifier
 						</xs:documentation>
 					</xs:annotation>
 				</xs:enumeration>

@@ -217,6 +217,7 @@ namespace Neumont.Tools.ORM.ObjectModel.Verbalization
 					VerbalizationHelper.VerbalizeElement(
 						objectTypeListReport,
 						snippetsDictionary,
+						HtmlReport.HtmlReportTargetName,
 						verbalized,
 						null,
 						isNegative,
@@ -251,6 +252,7 @@ namespace Neumont.Tools.ORM.ObjectModel.Verbalization
 						VerbalizationHelper.VerbalizeElement(
 							objectTypePageReport,
 							snippetsDictionary,
+							HtmlReport.HtmlReportTargetName,
 							verbalized,
 							objectTypePageReport,
 							isNegative,
@@ -298,6 +300,7 @@ namespace Neumont.Tools.ORM.ObjectModel.Verbalization
 						VerbalizationHelper.VerbalizeElement(
 							factTypePageReport,
 							snippetsDictionary,
+							HtmlReport.HtmlReportTargetName,
 							verbalized,
 							factTypePageReport,
 							isNegative,
@@ -336,6 +339,7 @@ namespace Neumont.Tools.ORM.ObjectModel.Verbalization
 					VerbalizationHelper.VerbalizeElement(
 						factTypeConstraintValidationReport,
 						snippetsDictionary,
+						HtmlReport.HtmlReportTargetName,
 						verbalized,
 						factTypeConstraintValidationReport,
 						isNegative,
@@ -514,7 +518,7 @@ namespace Neumont.Tools.ORM.ObjectModel.Verbalization
 		/// <summary>
 		/// Callback for child verbalizations
 		/// </summary>
-		private delegate VerbalizationResult VerbalizationHandler(VerbalizationCallbackWriter writer, IDictionary<Type, IVerbalizationSets> snippetsDictionary, IDictionary<IVerbalize, IVerbalize> alreadyVerbalized, IVerbalize verbalizer, VerbalizationHandler callback, int indentationLevel, bool isNegative, bool writeSecondaryLines, ref bool firstCallPending, ref bool firstWrite, ref int lastLevel);
+		private delegate VerbalizationResult VerbalizationHandler(VerbalizationCallbackWriter writer, IDictionary<Type, IVerbalizationSets> snippetsDictionary, string verbalizationTarget, IDictionary<IVerbalize, IVerbalize> alreadyVerbalized, IVerbalize verbalizer, VerbalizationHandler callback, int indentationLevel, bool isNegative, bool writeSecondaryLines, ref bool firstCallPending, ref bool firstWrite, ref int lastLevel);
 		#endregion // VerbalizationHandler Delegate
 		#region VerbalizationContextImpl class
 		private sealed class VerbalizationContextImpl : IVerbalizationContext
@@ -533,11 +537,13 @@ namespace Neumont.Tools.ORM.ObjectModel.Verbalization
 			private NotifyBeginVerbalization myBeginCallback;
 			private NotifyDeferVerbalization myDeferCallback;
 			private NotifyAlreadyVerbalized myAlreadyVerbalizedCallback;
-			public VerbalizationContextImpl(NotifyBeginVerbalization beginCallback, NotifyDeferVerbalization deferCallback, NotifyAlreadyVerbalized alreadyVerbalizedCallback)
+			private string myVerbalizationTarget;
+			public VerbalizationContextImpl(NotifyBeginVerbalization beginCallback, NotifyDeferVerbalization deferCallback, NotifyAlreadyVerbalized alreadyVerbalizedCallback, string verbalizationTarget)
 			{
 				myBeginCallback = beginCallback;
 				myDeferCallback = deferCallback;
 				myAlreadyVerbalizedCallback = alreadyVerbalizedCallback;
+				myVerbalizationTarget = verbalizationTarget;
 			}
 			#region IVerbalizationContext Implementation
 			void IVerbalizationContext.BeginVerbalization(VerbalizationContent content)
@@ -559,6 +565,13 @@ namespace Neumont.Tools.ORM.ObjectModel.Verbalization
 				}
 				return false;
 			}
+			string IVerbalizationContext.VerbalizationTarget
+			{
+				get
+				{
+					return myVerbalizationTarget;
+				}
+			}
 			#endregion // IVerbalizationContext Implementation
 		}
 		#endregion // VerbalizationContextImpl class
@@ -567,6 +580,7 @@ namespace Neumont.Tools.ORM.ObjectModel.Verbalization
 		/// </summary>
 		/// <param name="writer">The VerbalizationCallbackWriter object used to write target specific snippets</param>
 		/// <param name="snippetsDictionary"></param>
+		/// <param name="verbalizationTarget"></param>
 		/// <param name="alreadyVerbalized"></param>
 		/// <param name="verbalizer">The IVerbalize element to verbalize</param>
 		/// <param name="callback">The original callback handler.</param>
@@ -577,7 +591,7 @@ namespace Neumont.Tools.ORM.ObjectModel.Verbalization
 		/// <param name="firstWrite"></param>
 		/// <param name="lastLevel"></param>
 		/// <returns></returns>
-		private static VerbalizationResult VerbalizeElement_VerbalizationResult(VerbalizationCallbackWriter writer, IDictionary<Type, IVerbalizationSets> snippetsDictionary, IDictionary<IVerbalize, IVerbalize> alreadyVerbalized, IVerbalize verbalizer, VerbalizationHandler callback, int indentationLevel, bool isNegative, bool writeSecondaryLines, ref bool firstCallPending, ref bool firstWrite, ref int lastLevel)
+		private static VerbalizationResult VerbalizeElement_VerbalizationResult(VerbalizationCallbackWriter writer, IDictionary<Type, IVerbalizationSets> snippetsDictionary, string verbalizationTarget, IDictionary<IVerbalize, IVerbalize> alreadyVerbalized, IVerbalize verbalizer, VerbalizationHandler callback, int indentationLevel, bool isNegative, bool writeSecondaryLines, ref bool firstCallPending, ref bool firstWrite, ref int lastLevel)
 		{
 			if (indentationLevel == 0 &&
 				alreadyVerbalized != null &&
@@ -641,6 +655,7 @@ namespace Neumont.Tools.ORM.ObjectModel.Verbalization
 					VerbalizationHelper.VerbalizeElement(
 						target as ModelElement,
 						snippetsDictionary,
+						verbalizationTarget,
 						(0 == (options & DeferVerbalizationOptions.MultipleVerbalizations)) ? alreadyVerbalized : null,
 						childFilter,
 						writer,
@@ -668,7 +683,8 @@ namespace Neumont.Tools.ORM.ObjectModel.Verbalization
 						verbalizerKey = target as IVerbalize;
 					}
 					return (verbalizerKey == null) ? false : alreadyVerbalized.ContainsKey(verbalizerKey);
-				}),
+				},
+				verbalizationTarget),
 				isNegative);
 			lastLevel = localLastLevel;
 			firstWrite = localFirstWrite;
@@ -692,12 +708,13 @@ namespace Neumont.Tools.ORM.ObjectModel.Verbalization
 		/// </summary>
 		/// <param name="element">The element to verbalize</param>
 		/// <param name="snippetsDictionary">The default or loaded verbalization sets. Passed through all verbalization calls.</param>
+		/// <param name="verbalizationTarget">The verbalization target name, representing the container for the verbalization output.</param>
 		/// <param name="alreadyVerbalized">A dictionary of top-level (indentationLevel == 0) elements that have already been verbalized.</param>
 		/// <param name="isNegative">Use the negative form of the reading</param>
 		/// <param name="writer">The VerbalizationCallbackWriter for verbalization output</param>
 		/// <param name="writeSecondaryLines">True to automatically add a line between callbacks. Set to <see langword="true"/> for multi-select scenarios.</param>
 		/// <param name="firstCallPending"></param>
-		public static void VerbalizeElement(ModelElement element, IDictionary<Type, IVerbalizationSets> snippetsDictionary, IDictionary<IVerbalize, IVerbalize> alreadyVerbalized, bool isNegative, VerbalizationCallbackWriter writer, bool writeSecondaryLines, ref bool firstCallPending)
+		public static void VerbalizeElement(ModelElement element, IDictionary<Type, IVerbalizationSets> snippetsDictionary, string verbalizationTarget, IDictionary<IVerbalize, IVerbalize> alreadyVerbalized, bool isNegative, VerbalizationCallbackWriter writer, bool writeSecondaryLines, ref bool firstCallPending)
 		{
 			int lastLevel = 0;
 			bool firstWrite = true;
@@ -705,6 +722,7 @@ namespace Neumont.Tools.ORM.ObjectModel.Verbalization
 			VerbalizeElement(
 				element,
 				snippetsDictionary,
+				verbalizationTarget,
 				alreadyVerbalized,
 				null,
 				writer,
@@ -733,13 +751,14 @@ namespace Neumont.Tools.ORM.ObjectModel.Verbalization
 		/// </summary>
 		/// <param name="customChildren">The IVerbalizeCustomChildren implementation to verbalize</param>
 		/// <param name="snippetsDictionary">The default or loaded verbalization sets. Passed through all verbalization calls.</param>
+		/// <param name="verbalizationTarget">The verbalization target name, representing the container for the verbalization output.</param>
 		/// <param name="alreadyVerbalized">A dictionary of top-level (indentationLevel == 0) elements that have already been verbalized.</param>
 		/// <param name="filter"></param>
 		/// <param name="isNegative">Use the negative form of the reading</param>
 		/// <param name="writer">The VerbalizationCallbackWriter for verbalization output</param>
 		/// <param name="writeSecondaryLines">True to automatically add a line between callbacks. Set to <see langword="true"/> for multi-select scenarios.</param>
 		/// <param name="firstCallPending"></param>
-		public static void VerbalizeElement(IVerbalizeCustomChildren customChildren, IDictionary<Type, IVerbalizationSets> snippetsDictionary, IDictionary<IVerbalize, IVerbalize> alreadyVerbalized, IVerbalizeFilterChildren filter, bool isNegative, VerbalizationCallbackWriter writer, bool writeSecondaryLines, ref bool firstCallPending)
+		public static void VerbalizeElement(IVerbalizeCustomChildren customChildren, IDictionary<Type, IVerbalizationSets> snippetsDictionary, string verbalizationTarget, IDictionary<IVerbalize, IVerbalize> alreadyVerbalized, IVerbalizeFilterChildren filter, bool isNegative, VerbalizationCallbackWriter writer, bool writeSecondaryLines, ref bool firstCallPending)
 		{
 			int lastLevel = 0;
 			bool firstWrite = true;
@@ -749,6 +768,7 @@ namespace Neumont.Tools.ORM.ObjectModel.Verbalization
 				writer,
 				new VerbalizationHandler(VerbalizeElement_VerbalizationResult),
 				snippetsDictionary,
+				verbalizationTarget,
 				alreadyVerbalized,
 				filter,
 				isNegative,
@@ -774,6 +794,7 @@ namespace Neumont.Tools.ORM.ObjectModel.Verbalization
 		/// </summary>
 		/// <param name="element"></param>
 		/// <param name="snippetsDictionary"></param>
+		/// <param name="verbalizationTarget"></param>
 		/// <param name="alreadyVerbalized"></param>
 		/// <param name="outerFilter"></param>
 		/// <param name="writer"></param>
@@ -784,7 +805,7 @@ namespace Neumont.Tools.ORM.ObjectModel.Verbalization
 		/// <param name="firstCallPending"></param>
 		/// <param name="firstWrite"></param>
 		/// <param name="lastLevel"></param>
-		private static void VerbalizeElement(ModelElement element, IDictionary<Type, IVerbalizationSets> snippetsDictionary, IDictionary<IVerbalize, IVerbalize> alreadyVerbalized, IVerbalizeFilterChildren outerFilter, VerbalizationCallbackWriter writer, VerbalizationHandler callback, bool isNegative, int indentLevel, bool writeSecondaryLines, ref bool firstCallPending, ref bool firstWrite, ref int lastLevel)
+		private static void VerbalizeElement(ModelElement element, IDictionary<Type, IVerbalizationSets> snippetsDictionary, string verbalizationTarget, IDictionary<IVerbalize, IVerbalize> alreadyVerbalized, IVerbalizeFilterChildren outerFilter, VerbalizationCallbackWriter writer, VerbalizationHandler callback, bool isNegative, int indentLevel, bool writeSecondaryLines, ref bool firstCallPending, ref bool firstWrite, ref int lastLevel)
 		{
 			IVerbalize parentVerbalize = null;
 			IRedirectVerbalization surrogateRedirect;
@@ -807,7 +828,7 @@ namespace Neumont.Tools.ORM.ObjectModel.Verbalization
 			}
 			try
 			{
-				VerbalizationResult result = (parentVerbalize != null) ? callback(writer, snippetsDictionary, alreadyVerbalized, parentVerbalize, callback, indentLevel, isNegative, writeSecondaryLines, ref firstCallPending, ref firstWrite, ref lastLevel) : VerbalizationResult.NotVerbalized;
+				VerbalizationResult result = (parentVerbalize != null) ? callback(writer, snippetsDictionary, verbalizationTarget, alreadyVerbalized, parentVerbalize, callback, indentLevel, isNegative, writeSecondaryLines, ref firstCallPending, ref firstWrite, ref lastLevel) : VerbalizationResult.NotVerbalized;
 				if (result == VerbalizationResult.AlreadyVerbalized)
 				{
 					return;
@@ -843,7 +864,7 @@ namespace Neumont.Tools.ORM.ObjectModel.Verbalization
 							int childCount = children.Count;
 							for (int j = 0; j < childCount; ++j)
 							{
-								VerbalizeElement(children[j], snippetsDictionary, alreadyVerbalized, filter, writer, callback, isNegative, indentLevel, writeSecondaryLines, ref firstCallPending, ref firstWrite, ref lastLevel);
+								VerbalizeElement(children[j], snippetsDictionary, verbalizationTarget, alreadyVerbalized, filter, writer, callback, isNegative, indentLevel, writeSecondaryLines, ref firstCallPending, ref firstWrite, ref lastLevel);
 							}
 						}
 					}
@@ -854,6 +875,7 @@ namespace Neumont.Tools.ORM.ObjectModel.Verbalization
 						writer,
 						callback,
 						snippetsDictionary,
+						ORMCoreDomainModel.VerbalizationTargetName,
 						alreadyVerbalized,
 						filter,
 						isNegative,
@@ -917,6 +939,7 @@ namespace Neumont.Tools.ORM.ObjectModel.Verbalization
 		/// <param name="writer">The target specific Writer to use</param>
 		/// <param name="callback">The delegate used to handle the verbalization</param>
 		/// <param name="snippetsDictionary"></param>
+		/// <param name="verbalizationTarget"></param>
 		/// <param name="alreadyVerbalized"></param>
 		/// <param name="filter"></param>
 		/// <param name="isNegative">Whether or not the verbalization is negative</param>
@@ -925,7 +948,7 @@ namespace Neumont.Tools.ORM.ObjectModel.Verbalization
 		/// <param name="firstCallPending"></param>
 		/// <param name="firstWrite"></param>
 		/// <param name="lastLevel"></param>
-		private static void VerbalizeCustomChildren(IVerbalizeCustomChildren customChildren, VerbalizationCallbackWriter writer, VerbalizationHandler callback, IDictionary<Type, IVerbalizationSets> snippetsDictionary, IDictionary<IVerbalize, IVerbalize> alreadyVerbalized, IVerbalizeFilterChildren filter, bool isNegative, int indentationLevel, bool writeSecondaryLines, ref bool firstCallPending, ref bool firstWrite, ref int lastLevel)
+		private static void VerbalizeCustomChildren(IVerbalizeCustomChildren customChildren, VerbalizationCallbackWriter writer, VerbalizationHandler callback, IDictionary<Type, IVerbalizationSets> snippetsDictionary, string verbalizationTarget, IDictionary<IVerbalize, IVerbalize> alreadyVerbalized, IVerbalizeFilterChildren filter, bool isNegative, int indentationLevel, bool writeSecondaryLines, ref bool firstCallPending, ref bool firstWrite, ref int lastLevel)
 		{
 			if (customChildren != null)
 			{
@@ -936,7 +959,7 @@ namespace Neumont.Tools.ORM.ObjectModel.Verbalization
 					{
 						try
 						{
-							callback(writer, snippetsDictionary, alreadyVerbalized, childVerbalize, callback, indentationLevel, isNegative, writeSecondaryLines, ref firstCallPending, ref firstWrite, ref lastLevel);
+							callback(writer, snippetsDictionary, verbalizationTarget, alreadyVerbalized, childVerbalize, callback, indentationLevel, isNegative, writeSecondaryLines, ref firstCallPending, ref firstWrite, ref lastLevel);
 						}
 						finally
 						{

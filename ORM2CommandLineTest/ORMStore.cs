@@ -182,13 +182,13 @@ namespace Neumont.Tools.ORM.SDK.TestEngine
 				}
 				return retVal[engineType].Instance;
 			}
-			bool IORMToolServices.ActivateShape(ShapeElement shape)
+			bool IORMToolServices.ActivateShape(ShapeElement shape, NavigateToWindow window)
 			{
-				return myServices.ActivateShape(shape);
+				return myServices.ActivateShape(shape, window);
 			}
-			bool IORMToolServices.NavigateTo(object element)
+			bool IORMToolServices.NavigateTo(object element, NavigateToWindow window)
 			{
-				return myServices.NavigateTo(element);
+				return myServices.NavigateTo(element, window);
 			}
 			#endregion // IORMToolServices Implementation
 			#region IModelingEventManagerProvider Implementation

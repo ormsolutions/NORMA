@@ -4105,7 +4105,7 @@ namespace Neumont.Tools.ORM.Shell
 							{
 								if (null == EntityTypeInstance.FindRoleInstance(roleInstances, identifierRoles[i]))
 								{
-									column = i;
+									column = i + 1;
 									break;
 								}
 							}
@@ -5028,7 +5028,7 @@ namespace Neumont.Tools.ORM.Shell
 								if (null == FactTypeInstance.FindRoleInstance(roleInstances, factRoles[i].Role))
 								{
 									int testColumn = 1;
-									column = i + ResolveColumn(ref testColumn) == ColumnType.EntityType ? 2 : 1;
+									column = i + (ResolveColumn(ref testColumn) == ColumnType.EntityType ? 2 : 1);
 									break;
 								}
 							}

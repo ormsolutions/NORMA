@@ -24,14 +24,17 @@
 		<!-- Generate FactType verbalization along with constraints -->
 		<FactType/>
 		<SubtypeFact>
-			<Snippet ref="SubtypeMetaReading" conditionalMatch="IsPositive" conditionalBlockContext="SubtypeFactRolePlayers">
-				<Snippet ref="ObjectType">
-					<SubtypeName/>
-					<SubtypeId/>
-				</Snippet>
-				<Snippet ref="ObjectType">
-					<SupertypeName/>
-					<SupertypeId/>
+			<Snippet ref="ImpliedModalNecessityOperator" conditionalBlockContext="SubtypeFactRolePlayers">
+				<Snippet ref="SubtypeMetaReading">
+					<Snippet ref="ObjectType">
+						<SubtypeName/>
+						<SubtypeId/>
+					</Snippet>
+					<Snippet ref="ObjectType">
+						<SupertypeName/>
+						<SupertypeId/>
+					</Snippet>
+					<ContextId/>
 				</Snippet>
 			</Snippet>
 		</SubtypeFact>
@@ -43,14 +46,14 @@
 				<SnippetReplacements>
 					<Snippet ref="ObjectType">
 						<ObjectTypeName/>
-						<ObjectTypeId/>
+						<ContextId/>
 					</Snippet>
 				</SnippetReplacements>
 			</ConditionalSnippet>
 			<Snippet ref="ObjectifiesFactTypeVerbalization" conditionalMatch="IsObjectifiedFactType" conditionalBlockContext="ObjectifiedFactType">
 				<Snippet ref="ObjectType">
 					<ObjectTypeName/>
-					<ObjectTypeId/>
+					<ContextId/>
 				</Snippet>
 				<Fact/>
 			</Snippet>
@@ -65,11 +68,16 @@
 			<Snippet ref="IndependentVerbalization" conditionalMatch="IsIndependent">
 				<Snippet ref="ObjectType">
 					<ObjectTypeName/>
-					<ObjectTypeId/>
+					<ContextId/>
 				</Snippet>
 			</Snippet>
 			<Snippet ref="PortableDataTypeVerbalization" conditionalMatch="HasPortableDataType">
 				<PortableDataType/>
+			</Snippet>
+			<Snippet ref="SelfReference" conditionalMatch="VerbalizeFactTypesWithBrowserObjectType">
+				<IterateRoles match="playedRoles" listStyle="FactTypeList" uniqueFactType="true">
+					<Fact subtypeMetaReading="true" closeSentence="true"/>
+				</IterateRoles>
 			</Snippet>
 		</ObjectType>
 		<Definition>
@@ -564,6 +572,12 @@
 			</Constraint>
 			<!-- Start Uniqueness Constraint-->
 			<Constraint type="UniquenessConstraint" patternGroup="SetConstraint">
+				<!-- UNDONE: Subscripting requirements are harder than this. Subscripting
+				needs to go across FactTypes, and be based on included/excluded roles. In this
+				case, the subscripts are only needed if the duplicates role players intersect
+				the constraint roles. For now, this subscripts internal uniqueness correctly
+				in most situations. -->
+				<EnableSubscripts factCount="1" minFactArity="3"/>
 				<!-- Internal constraints -->
 				<ConstrainedRoles factCount="1" factArity="1" sign="positive">
 					<!-- span='all' is implicit in the other conditions. 0 arity includedRoles is blocked. -->
@@ -1014,7 +1028,7 @@
 					<SnippetReplacements>
 						<Snippet ref="ObjectType">
 							<ObjectTypeName/>
-							<ObjectTypeId/>
+							<ContextId/>
 						</Snippet>
 						<IterateValueRanges listStyle="CompactSimpleList">
 							<ConditionalSnippet>

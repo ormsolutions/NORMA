@@ -489,6 +489,7 @@
       <Generator>NUPlixLoader</Generator>
       <LastGenOutput>ORMCore.SurveyQuestionProvider.cs</LastGenOutput>
     </Content>
+    <None Include="ObjectModel\VerbalizationCoreSnippets\VerbalizationCoreBrowserNoHyperlinksSnippets.xml" />
     <Content Include="ObjectModel\VerbalizationCoreSnippets\VerbalizationCoreReportSnippets.xml" />
     <Content Include="ObjectModel\VerbalizationGenerator.Sets.xslt" />
     <Content Include="ObjectModel\DataTypesGenerator.xslt" />

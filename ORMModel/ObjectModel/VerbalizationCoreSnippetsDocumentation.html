@@ -382,6 +382,21 @@
                 <a href="#FactTypeInstanceIdentifier">FactTypeInstanceIdentifier</a>
               </li>
               <li>
+                <a href="#FactTypeListClose">FactTypeListClose</a>
+              </li>
+              <li>
+                <a href="#FactTypeListFinalSeparator">FactTypeListFinalSeparator</a>
+              </li>
+              <li>
+                <a href="#FactTypeListOpen">FactTypeListOpen</a>
+              </li>
+              <li>
+                <a href="#FactTypeListPairSeparator">FactTypeListPairSeparator</a>
+              </li>
+              <li>
+                <a href="#FactTypeListSeparator">FactTypeListSeparator</a>
+              </li>
+              <li>
                 <a href="#ForEachCompactQuantifier">ForEachCompactQuantifier</a>
               </li>
               <li>
@@ -1566,6 +1581,7 @@
           </span>
           <div class="snippetStatement">
             <strong>Description: </strong> Used to open a secondary error report. Secondary reports contain errors that do not block verbalization.
+							Replacement: {0}=error text,{1}=error id
 							<br />
             <strong>Format: </strong> Model Error: {0}
 						</div>
@@ -1584,11 +1600,12 @@
           </span>
           <div class="snippetStatement">
             <strong>Description: </strong> Used to verbalize a single primary error.
+							Replacement: {0}=error text,{1}=error id
 							<br />
             <strong>Format: </strong> Model Error: {0}
 						</div>
           <div class="snippetReplacementFieldCount">
-            <span class="reportItem">Number of replacement fields: </span>1</div>
+            <span class="reportItem">Number of replacement fields: </span>2</div>
           <div class="snippetUnformattedText">
             <span class="reportItem">Unformatted version: </span>
             <div class="unformattedSnippet">
@@ -1606,7 +1623,7 @@
             <strong>Format: </strong> Model Error: {0}
 						</div>
           <div class="snippetReplacementFieldCount">
-            <span class="reportItem">Number of replacement fields: </span>1</div>
+            <span class="reportItem">Number of replacement fields: </span>2</div>
           <div class="snippetUnformattedText">
             <span class="reportItem">Unformatted version: </span>
             <div class="unformattedSnippet">
@@ -1815,6 +1832,93 @@
             <span class="reportItem">Unformatted version: </span>
             <div class="unformattedSnippet">
               <pre class="unformattedSnippetDecorator">Identifier: {0}</pre>
+            </div>
+          </div>
+        </div>
+        <div id="FactTypeListClose" class="snippet">
+          <span class="snippetHeader">
+            <a name="FactTypeListClose" id="FactTypeListClose">FactTypeListClose</a>
+          </span>
+          <div class="snippetStatement">
+            <strong>Description: </strong> Text used to close the sample population verbalization list.
+							<br />
+            <strong>Format: </strong>
+						</div>
+          <div class="snippetReplacementFieldCount">
+            <span class="reportItem">Number of replacement fields: </span>0</div>
+          <div class="snippetUnformattedText">
+            <span class="reportItem">Unformatted version: </span>
+            <div class="unformattedSnippet">
+              <strong>Not Available</strong>
+            </div>
+          </div>
+        </div>
+        <div id="FactTypeListFinalSeparator" class="snippet">
+          <span class="snippetHeader">
+            <a name="FactTypeListFinalSeparator" id="FactTypeListFinalSeparator">FactTypeListFinalSeparator</a>
+          </span>
+          <div class="snippetStatement">
+            <strong>Description: </strong> Text used to separate the last two items in a sample population verbalization list.
+							<br />
+            <strong>Format: </strong> &lt;br/&gt;</div>
+          <div class="snippetReplacementFieldCount">
+            <span class="reportItem">Number of replacement fields: </span>0</div>
+          <div class="snippetUnformattedText">
+            <span class="reportItem">Unformatted version: </span>
+            <div class="unformattedSnippet">
+              <strong>Not Available</strong>
+            </div>
+          </div>
+        </div>
+        <div id="FactTypeListOpen" class="snippet">
+          <span class="snippetHeader">
+            <a name="FactTypeListOpen" id="FactTypeListOpen">FactTypeListOpen</a>
+          </span>
+          <div class="snippetStatement">
+            <strong>Description: </strong>  Text and formatting to begin a sample population verbalization basic predicate text.
+							<br />
+            <strong>Format: </strong> FactTypes: &lt;br/&gt;
+						</div>
+          <div class="snippetReplacementFieldCount">
+            <span class="reportItem">Number of replacement fields: </span>0</div>
+          <div class="snippetUnformattedText">
+            <span class="reportItem">Unformatted version: </span>
+            <div class="unformattedSnippet">
+              <pre class="unformattedSnippetDecorator">Fact Types:</pre>
+            </div>
+          </div>
+        </div>
+        <div id="FactTypeListPairSeparator" class="snippet">
+          <span class="snippetHeader">
+            <a name="FactTypeListPairSeparator" id="FactTypeListPairSeparator">FactTypeListPairSeparator</a>
+          </span>
+          <div class="snippetStatement">
+            <strong>Description: </strong> Text used to separate items in a sample population verbalization list.
+							<br />
+            <strong>Format: </strong> &lt;br/&gt;</div>
+          <div class="snippetReplacementFieldCount">
+            <span class="reportItem">Number of replacement fields: </span>0</div>
+          <div class="snippetUnformattedText">
+            <span class="reportItem">Unformatted version: </span>
+            <div class="unformattedSnippet">
+              <strong>Not Available</strong>
+            </div>
+          </div>
+        </div>
+        <div id="FactTypeListSeparator" class="snippet">
+          <span class="snippetHeader">
+            <a name="FactTypeListSeparator" id="FactTypeListSeparator">FactTypeListSeparator</a>
+          </span>
+          <div class="snippetStatement">
+            <strong>Description: </strong> Text used to separate items in a sample population verbalization list.
+							<br />
+            <strong>Format: </strong> &lt;br/&gt;</div>
+          <div class="snippetReplacementFieldCount">
+            <span class="reportItem">Number of replacement fields: </span>0</div>
+          <div class="snippetUnformattedText">
+            <span class="reportItem">Unformatted version: </span>
+            <div class="unformattedSnippet">
+              <strong>Not Available</strong>
             </div>
           </div>
         </div>
@@ -2551,10 +2655,16 @@
                   <a href="#IdentityReferenceQuantifier">IdentityReferenceQuantifier</a>
                 </li>
                 <li>
+                  <a href="#ObjectType">ObjectType</a>
+                </li>
+                <li>
                   <a href="#OccursInPopulation">OccursInPopulation</a>
                 </li>
                 <li>
                   <a href="#OneQuantifier">OneQuantifier</a>
+                </li>
+                <li>
+                  <a href="#SubtypeMetaReading">SubtypeMetaReading</a>
                 </li>
                 <li>
                   <a href="#UniversalQuantifier">UniversalQuantifier</a>
@@ -3671,6 +3781,9 @@
                   <a href="#ConstraintProvidesPreferredIdentifier">ConstraintProvidesPreferredIdentifier</a>
                 </li>
                 <li>
+                  <a href="#ImpliedModalNecessityOperator">ImpliedModalNecessityOperator</a>
+                </li>
+                <li>
                   <a href="#IndependentVerbalization">IndependentVerbalization</a>
                 </li>
                 <li>
@@ -4484,20 +4597,28 @@
           <div class="snippetStatement">
             <strong>Description: </strong> Used to describe the relationship between a Subtype and its Supertype at the meta level (i.e: Each Man is an instance of Person). 
 							<br />
-            <strong>Format: </strong> {0} is a subtype of {1}
+            <strong>Format: </strong> {0}=subtype, {1}=supertype, {2}=SubtypeFact identifier
 						</div>
           <div class="snippetReplacementFieldCount">
-            <span class="reportItem">Number of replacement fields: </span>2</div>
+            <span class="reportItem">Number of replacement fields: </span>3</div>
           <div class="snippetUnformattedText">
             <span class="reportItem">Unformatted version: </span>
             <div class="unformattedSnippet">
-              <pre class="unformattedSnippetDecorator">Each {0} is an instance of {1}</pre>
+              <pre class="unformattedSnippetDecorator">each {0} is an instance of {1}</pre>
             </div>
           </div>
           <div class="snippetContains">
             <p>The <strong>SubtypeMetaReading</strong> snippet contains the following snippets: <ul class="contains">
                 <li>
                   <a href="#ObjectType">ObjectType</a>
+                </li>
+              </ul>
+            </p>
+          </div>
+          <div classs="snippetContainedIn">
+            <p>The <strong>SubtypeMetaReading</strong> snippet is contained in the following snippets: <ul class="containedIn">
+                <li>
+                  <a href="#ImpliedModalNecessityOperator">ImpliedModalNecessityOperator</a>
                 </li>
               </ul>
             </p>

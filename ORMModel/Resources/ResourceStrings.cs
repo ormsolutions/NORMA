@@ -386,6 +386,14 @@ namespace Neumont.Tools.ORM
 		/// </summary>
 		public const string OptionsPagePropertyShowDefaultConstraintVerbalizationDisplayNameId = "OptionsPage.Property.ShowDefaultConstraintVerbalization.DisplayName";
 		/// <summary>
+		/// Description of the Verbalize FactTypes with ObjectType Verbalization option
+		/// </summary>
+		public const string OptionsPagePropertyVerbalizeFactTypesWithObjectTypeDescriptionId = "OptionsPage.Property.VerbalizeFactTypesWithObjectType.Description";
+		/// <summary>
+		/// Display Name of the Verbalize FactTypes with ObjectType Verbalization option
+		/// </summary>
+		public const string OptionsPagePropertyVerbalizeFactTypesWithObjectTypeDisplayNameId = "OptionsPage.Property.VerbalizeFactTypesWithObjectType.DisplayName";
+		/// <summary>
 		/// Description of the Hyperlink Target Window Verbalization option
 		/// </summary>
 		public const string OptionsPagePropertyVerbalizationHyperlinkTargetDescriptionId = "OptionsPage.Property.VerbalizationHyperlinkTarget.Description";

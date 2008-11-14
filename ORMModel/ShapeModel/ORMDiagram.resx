@@ -619,6 +619,14 @@
     <value xml:space="preserve">Verbalize Default Constraint</value>
     <comment xml:space="preserve">The display name of the Show Default Constraint Verbalization option.</comment>
   </data>
+  <data name="OptionsPage.Property.VerbalizeFactTypesWithObjectType.Description">
+    <value xml:space="preserve">Should all FactTypes associated with an ObjectType be verbalized with an ObjectType selection in the Verbalization Browser?</value>
+    <comment xml:space="preserve">The description of the Verbalize FactTypes with ObjectType Verbalization option.</comment>
+  </data>
+  <data name="OptionsPage.Property.VerbalizeFactTypesWithObjectType.DisplayName">
+    <value xml:space="preserve">Verbalize FactTypes with ObjectType</value>
+    <comment xml:space="preserve">The display name of the Verbalize FactTypes with ObjectType Verbalization option.</comment>
+  </data>
   <data name="OptionsPage.Property.VerbalizationHyperlinkTarget.Description">
     <value xml:space="preserve">Should clicking a hyperlink in the browser activate the primary document window or the Diagram Spy tool window?</value>
     <comment xml:space="preserve">The description of the Hyperlink Target Window Verbalization option.</comment>

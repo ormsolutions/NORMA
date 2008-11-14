@@ -104,6 +104,10 @@ namespace Neumont.Tools.ORM.ObjectModel
 		/// </param>
 		/// <returns>true if the element is already verbalized</returns>
 		bool AlreadyVerbalized(object target);
+		/// <summary>
+		/// Get the name of the verbalization target
+		/// </summary>
+		string VerbalizationTarget { get;}
 	}
 	/// <summary>
 	/// Interface for verbalization
@@ -900,6 +904,15 @@ namespace Neumont.Tools.ORM.ObjectModel
 				return;
 			}
 			writer.Write(body);
+		}
+		/// <summary>
+		/// Create a verbalizer sentence, returned as a string.
+		/// </summary>
+		public static string CreateVerbalizerSentence(string body, string closeSentenceWith)
+		{
+			StringWriter writer = new StringWriter();
+			WriteVerbalizerSentence(writer, body, closeSentenceWith);
+			return writer.ToString();
 		}
 		private static bool CloseSentence(TextWriter writer, string body, string closeSentenceWith)
 		{

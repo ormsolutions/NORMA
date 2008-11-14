@@ -373,6 +373,10 @@ namespace Neumont.Tools.ORM.Shell
 		private static bool myCurrentShowDefaultConstraintVerbalization = ShowDefaultConstraintVerbalization_Default;
 		private bool myShowDefaultConstraintVerbalization = ShowDefaultConstraintVerbalization_Default;
 
+		private const bool VerbalizeFactTypesWithObjectType_Default = true;
+		private static bool myCurrentVerbalizeFactTypesWithObjectType = VerbalizeFactTypesWithObjectType_Default;
+		private bool myVerbalizeFactTypesWithObjectType = VerbalizeFactTypesWithObjectType_Default;
+
 		private const HyperlinkTargetWindow VerbalizationHyperlinkTarget_Default = HyperlinkTargetWindow.DiagramSpyWindow;
 		private static HyperlinkTargetWindow myCurrentVerbalizationHyperlinkTarget = VerbalizationHyperlinkTarget_Default;
 		private HyperlinkTargetWindow myVerbalizationHyperlinkTarget = VerbalizationHyperlinkTarget_Default;
@@ -441,6 +445,7 @@ namespace Neumont.Tools.ORM.Shell
 			myCurrentFinalShapeDeleteBehavior = myFinalShapeDeleteBehavior;
 			myCurrentCombineMandatoryAndUniqueVerbalization = myCombineMandatoryAndUniqueVerbalization;
 			myCurrentShowDefaultConstraintVerbalization = myShowDefaultConstraintVerbalization;
+			myCurrentVerbalizeFactTypesWithObjectType = myVerbalizeFactTypesWithObjectType;
 			myCurrentVerbalizationHyperlinkTarget = myVerbalizationHyperlinkTarget;
 			myCurrentCustomVerbalizationSnippets = myCustomVerbalizationSnippets;
 			myCurrentPreferredInternalUniquenessConstraintDisplay = myPreferredInternalUniquenessConstraintDisplay;
@@ -466,6 +471,7 @@ namespace Neumont.Tools.ORM.Shell
 			myFinalShapeDeleteBehavior = myCurrentFinalShapeDeleteBehavior;
 			myCombineMandatoryAndUniqueVerbalization = myCurrentCombineMandatoryAndUniqueVerbalization;
 			myShowDefaultConstraintVerbalization = myCurrentShowDefaultConstraintVerbalization;
+			myVerbalizeFactTypesWithObjectType = myCurrentVerbalizeFactTypesWithObjectType;
 			myVerbalizationHyperlinkTarget = myCurrentVerbalizationHyperlinkTarget;
 			myCustomVerbalizationSnippets = myCurrentCustomVerbalizationSnippets;
 			myPreferredInternalUniquenessConstraintDisplay = myCurrentPreferredInternalUniquenessConstraintDisplay;
@@ -484,6 +490,7 @@ namespace Neumont.Tools.ORM.Shell
 			bool updateVerbalizer =
 				myCurrentCombineMandatoryAndUniqueVerbalization != myCombineMandatoryAndUniqueVerbalization ||
 				myCurrentShowDefaultConstraintVerbalization != myShowDefaultConstraintVerbalization ||
+				myCurrentVerbalizeFactTypesWithObjectType != myVerbalizeFactTypesWithObjectType ||
 				myCurrentCustomVerbalizationSnippets != myCustomVerbalizationSnippets;
 			// Get out early if none of the displayed settings have changed
 			if (myCurrentMandatoryDotPlacement == myMandatoryDotPlacement &&
@@ -501,6 +508,7 @@ namespace Neumont.Tools.ORM.Shell
 				myCurrentFinalShapeDeleteBehavior = myFinalShapeDeleteBehavior;
 				myCurrentCombineMandatoryAndUniqueVerbalization = myCombineMandatoryAndUniqueVerbalization;
 				myCurrentShowDefaultConstraintVerbalization = myShowDefaultConstraintVerbalization;
+				myCurrentVerbalizeFactTypesWithObjectType = myVerbalizeFactTypesWithObjectType;
 				myCurrentVerbalizationHyperlinkTarget = myVerbalizationHyperlinkTarget;
 				myCurrentCustomVerbalizationSnippets = myCustomVerbalizationSnippets;
 				myCurrentShowDebugCommands = myShowDebugCommands;
@@ -528,6 +536,7 @@ namespace Neumont.Tools.ORM.Shell
 			myCurrentFinalShapeDeleteBehavior = myFinalShapeDeleteBehavior;
 			myCurrentCombineMandatoryAndUniqueVerbalization = myCombineMandatoryAndUniqueVerbalization;
 			myCurrentShowDefaultConstraintVerbalization = myShowDefaultConstraintVerbalization;
+			myCurrentVerbalizeFactTypesWithObjectType = myVerbalizeFactTypesWithObjectType;
 			myCurrentVerbalizationHyperlinkTarget = myVerbalizationHyperlinkTarget;
 			myCurrentCustomVerbalizationSnippets = myCustomVerbalizationSnippets;
 			myCurrentPreferredInternalUniquenessConstraintDisplay = myPreferredInternalUniquenessConstraintDisplay;
@@ -863,6 +872,27 @@ namespace Neumont.Tools.ORM.Shell
 		public static bool CurrentShowDefaultConstraintVerbalization
 		{
 			get { return myCurrentShowDefaultConstraintVerbalization; }
+		}
+
+		/// <summary>
+		/// Current setting for VerbalizeFactTypesWithObjectType
+		/// </summary>
+		[DefaultValue(VerbalizeFactTypesWithObjectType_Default)]
+		[LocalizedCategory(ResourceStrings.OptionsPageCategoryVerbalizationBehaviorId)]
+		[LocalizedDescription(ResourceStrings.OptionsPagePropertyVerbalizeFactTypesWithObjectTypeDescriptionId)]
+		[LocalizedDisplayName(ResourceStrings.OptionsPagePropertyVerbalizeFactTypesWithObjectTypeDisplayNameId)]
+		public bool VerbalizeFactTypesWithObjectType
+		{
+			get { return myVerbalizeFactTypesWithObjectType; }
+			set { myVerbalizeFactTypesWithObjectType = value; }
+		}
+
+		/// <summary>
+		/// Current VS session-wide setting for VerbalizeFactTypesWithObjectType
+		/// </summary>
+		public static bool CurrentVerbalizeFactTypesWithObjectType
+		{
+			get { return myCurrentVerbalizeFactTypesWithObjectType; }
 		}
 
 		/// <summary>

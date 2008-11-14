@@ -110,11 +110,11 @@ namespace Neumont.Tools.ORM.SDK.TestEngine
 			{
 				return null;
 			}
-			bool IORMToolServices.ActivateShape(ShapeElement shape)
+			bool IORMToolServices.ActivateShape(ShapeElement shape, NavigateToWindow window)
 			{
 				return false;
 			}
-			bool IORMToolServices.NavigateTo(object element)
+			bool IORMToolServices.NavigateTo(object element, NavigateToWindow window)
 			{
 				return false;
 			}

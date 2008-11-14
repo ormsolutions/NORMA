@@ -208,6 +208,7 @@
 		<xs:restriction base="xs:string">
 			<xs:enumeration value="CompactSimpleList"/>
 			<xs:enumeration value="CompoundList"/>
+			<xs:enumeration value="FactTypeList"/>
 			<xs:enumeration value="IdentityEqualityList"/>
 			<xs:enumeration value="IndentedCompoundList"/>
 			<xs:enumeration value="IndentedList"/>
@@ -246,6 +247,7 @@
 			<xs:enumeration value="excluded"/>
 			<xs:enumeration value="constraintRoles"/>
 			<xs:enumeration value="preferredIdentifier"/>
+			<xs:enumeration value="playedRoles"/>
 		</xs:restriction>
 	</xs:simpleType>
 	<xs:attributeGroup name="FactArityAttributes">
@@ -522,6 +524,13 @@
 					</xs:documentation>
 				</xs:annotation>
 			</xs:enumeration>
+			<xs:enumeration value="VerbalizeFactTypesWithBrowserObjectType">
+				<xs:annotation>
+					<xs:documentation>
+						Verbalize only if we're writing to the verbalization browser and have the correct option set.
+					</xs:documentation>
+				</xs:annotation>
+			</xs:enumeration>
 		</xs:restriction>
 	</xs:simpleType>
 	<xs:complexType name="SnippetType">
@@ -537,7 +546,7 @@
 			<xs:element name="ConditionalSnippet" type="ConditionalSnippetType"/>
 			<xs:element name="ObjectTypeName" type="ObjectTypeNameType"/>
 			<xs:element name="ObjectifyingInstanceIdentifierName" type="ObjectifyingInstanceIdentifierNameType"/>
-			<xs:element name="ObjectTypeId" type="ElementIdType"/>
+			<xs:element name="ContextId" type="ElementIdType"/>
 			<xs:element name="NoteText" type="NoteTextType"/>
 			<xs:element name="ReferenceMode" type="ReferenceModeType"/>
 			<xs:element name="PortableDataType" type="PortableDataTypeType"/>
@@ -978,6 +987,16 @@
 			<xs:element name="PredicateReplacement" type="PredicateReplacementType" minOccurs="0" maxOccurs="unbounded"/>
 		</xs:sequence>
 		<xs:attribute name="readingChoice" use="optional" type="ReadingChoicePreferSingleMatchWithContextEnum"/>
+		<xs:attribute name="subtypeMetaReading" type="xs:boolean" default="false">
+			<xs:annotation>
+				<xs:documentation>Use the 'Each A is an instance of B' meta reading for subtype facts instead of the 'A is B' instance reading.</xs:documentation>
+			</xs:annotation>
+		</xs:attribute>
+		<xs:attribute name="closeSentence" type="xs:boolean" default="false">
+			<xs:annotation>
+				<xs:documentation>Capitalize and punctuation the fact statement. Not applicable for top-level elements.</xs:documentation>
+			</xs:annotation>
+		</xs:attribute>
 	</xs:complexType>
 	<xs:complexType name="ReferenceSchemeType">
 		<xs:annotation>
@@ -1129,6 +1148,9 @@
 		<xs:attribute name="minFactArity" type="xs:positiveInteger"/>
 		<xs:attribute name="maxFactArity" type="xs:positiveInteger"/>
 		<xs:attribute name="factArity" type="xs:positiveInteger"/>
+		<xs:attribute name="factCount" type="xs:positiveInteger"/>
+		<xs:attribute name="minFactCount" type="xs:positiveInteger"/>
+		<xs:attribute name="maxFactCount" type="xs:positiveInteger"/>
 		<xs:attribute name="nonOptimizedFrequencyPattern" type="xs:boolean"/>
 	</xs:complexType>
 	<xs:simpleType name="RingTypeEnum">
