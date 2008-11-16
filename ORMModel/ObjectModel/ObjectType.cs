@@ -4171,7 +4171,7 @@ namespace Neumont.Tools.ORM.ObjectModel
 			{
 				NearestValueConstraintVerbalizer verbalizer = NearestValueConstraintVerbalizer.GetVerbalizer();
 				verbalizer.Initialize(this, valueConstraint);
-				yield return new CustomChildVerbalizer(verbalizer, true);
+				yield return CustomChildVerbalizer.VerbalizeInstance(verbalizer, true);
 			}
 			IList<ObjectTypeInstance> instances = ObjectTypeInstanceCollection;
 			if (instances.Count != 0 &&
@@ -4179,7 +4179,7 @@ namespace Neumont.Tools.ORM.ObjectModel
 			{
 				ObjectTypeInstanceVerbalizer verbalizer = ObjectTypeInstanceVerbalizer.GetVerbalizer();
 				verbalizer.Initialize(this, instances);
-				yield return new CustomChildVerbalizer(verbalizer, true);
+				yield return CustomChildVerbalizer.VerbalizeInstance(verbalizer, true);
 			}
 		}
 		IEnumerable<CustomChildVerbalizer> IVerbalizeCustomChildren.GetCustomChildVerbalizations(IVerbalizeFilterChildren filter, bool isNegative)

@@ -20872,6 +20872,263 @@ namespace Neumont.Tools.ORM.ObjectModel
 namespace Neumont.Tools.ORM.ObjectModel
 {
 	/// <summary>
+	/// DomainRelationship ModelHasDefinition
+	/// Description for Neumont.Tools.ORM.ObjectModel.ModelHasDefinition
+	/// </summary>
+	[DslDesign::DisplayNameResource("Neumont.Tools.ORM.ObjectModel.ModelHasDefinition.DisplayName", typeof(global::Neumont.Tools.ORM.ObjectModel.ORMCoreDomainModel), "Neumont.Tools.ORM.GeneratedCode.CoreDomainModelResx")]
+	[DslDesign::DescriptionResource("Neumont.Tools.ORM.ObjectModel.ModelHasDefinition.Description", typeof(global::Neumont.Tools.ORM.ObjectModel.ORMCoreDomainModel), "Neumont.Tools.ORM.GeneratedCode.CoreDomainModelResx")]
+	[global::System.CLSCompliant(true)]
+	[DslModeling::DomainRelationship(IsEmbedding=true)]
+	[DslModeling::DomainObjectId("bc513c18-d426-4e5e-907c-1cd0c87732f1")]
+	public partial class ModelHasDefinition : DslModeling::ElementLink
+	{
+		#region Constructors, domain class Id
+		
+		/// <summary>
+		/// ModelHasDefinition domain class Id.
+		/// </summary>
+		public static readonly new global::System.Guid DomainClassId = new global::System.Guid(0xbc513c18, 0xd426, 0x4e5e, 0x90, 0x7c, 0x1c, 0xd0, 0xc8, 0x77, 0x32, 0xf1);
+	
+				
+		/// <summary>
+		/// Constructor
+		/// Creates a ModelHasDefinition link in the same Partition as the given ORMModel
+		/// </summary>
+		/// <param name="source">ORMModel to use as the source of the relationship.</param>
+		/// <param name="target">Definition to use as the target of the relationship.</param>
+		public ModelHasDefinition(ORMModel source, Definition target)
+			: base((source != null ? source.Partition : null), new DslModeling::RoleAssignment[]{new DslModeling::RoleAssignment(ModelHasDefinition.ModelDomainRoleId, source), new DslModeling::RoleAssignment(ModelHasDefinition.DefinitionDomainRoleId, target)}, null)
+		{
+		}
+		
+		/// <summary>
+		/// Constructor
+		/// </summary>
+		/// <param name="store">Store where new link is to be created.</param>
+		/// <param name="roleAssignments">List of relationship role assignments.</param>
+		public ModelHasDefinition(DslModeling::Store store, params DslModeling::RoleAssignment[] roleAssignments)
+			: base(store != null ? store.DefaultPartition : null, roleAssignments, null)
+		{
+		}
+		
+		/// <summary>
+		/// Constructor
+		/// </summary>
+		/// <param name="store">Store where new link is to be created.</param>
+		/// <param name="roleAssignments">List of relationship role assignments.</param>
+		/// <param name="propertyAssignments">List of properties assignments to set on the new link.</param>
+		public ModelHasDefinition(DslModeling::Store store, DslModeling::RoleAssignment[] roleAssignments, DslModeling::PropertyAssignment[] propertyAssignments)
+			: base(store != null ? store.DefaultPartition : null, roleAssignments, propertyAssignments)
+		{
+		}
+		
+		/// <summary>
+		/// Constructor
+		/// </summary>
+		/// <param name="partition">Partition where new link is to be created.</param>
+		/// <param name="roleAssignments">List of relationship role assignments.</param>
+		public ModelHasDefinition(DslModeling::Partition partition, params DslModeling::RoleAssignment[] roleAssignments)
+			: base(partition, roleAssignments, null)
+		{
+		}
+		
+		/// <summary>
+		/// Constructor
+		/// </summary>
+		/// <param name="partition">Partition where new link is to be created.</param>
+		/// <param name="roleAssignments">List of relationship role assignments.</param>
+		/// <param name="propertyAssignments">List of properties assignments to set on the new link.</param>
+		public ModelHasDefinition(DslModeling::Partition partition, DslModeling::RoleAssignment[] roleAssignments, DslModeling::PropertyAssignment[] propertyAssignments)
+			: base(partition, roleAssignments, propertyAssignments)
+		{
+		}
+		#endregion
+		#region Model domain role code
+		
+		/// <summary>
+		/// Model domain role Id.
+		/// </summary>
+		public static readonly global::System.Guid ModelDomainRoleId = new global::System.Guid(0xee4b3d9b, 0x415e, 0x4105, 0x90, 0xbd, 0xbe, 0x09, 0xd8, 0xe1, 0x35, 0xa7);
+		
+		/// <summary>
+		/// DomainRole Model
+		/// Description for Neumont.Tools.ORM.ObjectModel.ModelHasDefinition.Model
+		/// </summary>
+		[DslDesign::DisplayNameResource("Neumont.Tools.ORM.ObjectModel.ModelHasDefinition/Model.DisplayName", typeof(global::Neumont.Tools.ORM.ObjectModel.ORMCoreDomainModel), "Neumont.Tools.ORM.GeneratedCode.CoreDomainModelResx")]
+		[DslDesign::DescriptionResource("Neumont.Tools.ORM.ObjectModel.ModelHasDefinition/Model.Description", typeof(global::Neumont.Tools.ORM.ObjectModel.ORMCoreDomainModel), "Neumont.Tools.ORM.GeneratedCode.CoreDomainModelResx")]
+		[DslModeling::DomainRole(DslModeling::DomainRoleOrder.Source, PropertyName = "Definition", PropertyDisplayNameKey="Neumont.Tools.ORM.ObjectModel.ModelHasDefinition/Model.PropertyDisplayName", Multiplicity = DslModeling::Multiplicity.ZeroOne)]
+		[DslModeling::DomainObjectId("ee4b3d9b-415e-4105-90bd-be09d8e135a7")]
+		public virtual ORMModel Model
+		{
+			[global::System.Diagnostics.DebuggerStepThrough]
+			get
+			{
+				return (ORMModel)DslModeling::DomainRoleInfo.GetRolePlayer(this, ModelDomainRoleId);
+			}
+			[global::System.Diagnostics.DebuggerStepThrough]
+			set
+			{
+				DslModeling::DomainRoleInfo.SetRolePlayer(this, ModelDomainRoleId, value);
+			}
+		}
+				
+		#endregion
+		#region Static methods to access Model of a Definition
+		/// <summary>
+		/// Gets Model.
+		/// </summary>
+		[global::System.Diagnostics.DebuggerStepThrough]
+		[global::System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Design", "CA1011")]
+		public static ORMModel GetModel(Definition element)
+		{
+			return DslModeling::DomainRoleInfo.GetLinkedElement(element, DefinitionDomainRoleId) as ORMModel;
+		}
+		
+		/// <summary>
+		/// Sets Model.
+		/// </summary>
+		[global::System.Diagnostics.DebuggerStepThrough]
+		[global::System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Design", "CA1011")]
+		public static void SetModel(Definition element, ORMModel newModel)
+		{
+			DslModeling::DomainRoleInfo.SetLinkedElement(element, DefinitionDomainRoleId, newModel);
+		}
+		#endregion
+		#region Definition domain role code
+		
+		/// <summary>
+		/// Definition domain role Id.
+		/// </summary>
+		public static readonly global::System.Guid DefinitionDomainRoleId = new global::System.Guid(0x86f015da, 0x181f, 0x4431, 0x97, 0x73, 0x89, 0x2d, 0x82, 0xe1, 0xc4, 0x48);
+		
+		/// <summary>
+		/// DomainRole Definition
+		/// Description for Neumont.Tools.ORM.ObjectModel.ModelHasDefinition.Definition
+		/// </summary>
+		[DslDesign::DisplayNameResource("Neumont.Tools.ORM.ObjectModel.ModelHasDefinition/Definition.DisplayName", typeof(global::Neumont.Tools.ORM.ObjectModel.ORMCoreDomainModel), "Neumont.Tools.ORM.GeneratedCode.CoreDomainModelResx")]
+		[DslDesign::DescriptionResource("Neumont.Tools.ORM.ObjectModel.ModelHasDefinition/Definition.Description", typeof(global::Neumont.Tools.ORM.ObjectModel.ORMCoreDomainModel), "Neumont.Tools.ORM.GeneratedCode.CoreDomainModelResx")]
+		[DslModeling::DomainRole(DslModeling::DomainRoleOrder.Target, PropertyName = "Model", PropertyDisplayNameKey="Neumont.Tools.ORM.ObjectModel.ModelHasDefinition/Definition.PropertyDisplayName", PropagatesDelete = true, Multiplicity = DslModeling::Multiplicity.ZeroOne)]
+		[DslModeling::DomainObjectId("86f015da-181f-4431-9773-892d82e1c448")]
+		public virtual Definition Definition
+		{
+			[global::System.Diagnostics.DebuggerStepThrough]
+			get
+			{
+				return (Definition)DslModeling::DomainRoleInfo.GetRolePlayer(this, DefinitionDomainRoleId);
+			}
+			[global::System.Diagnostics.DebuggerStepThrough]
+			set
+			{
+				DslModeling::DomainRoleInfo.SetRolePlayer(this, DefinitionDomainRoleId, value);
+			}
+		}
+				
+		#endregion
+		#region Static methods to access Definition of a ORMModel
+		/// <summary>
+		/// Gets Definition.
+		/// </summary>
+		[global::System.Diagnostics.DebuggerStepThrough]
+		[global::System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Design", "CA1011")]
+		public static Definition GetDefinition(ORMModel element)
+		{
+			return DslModeling::DomainRoleInfo.GetLinkedElement(element, ModelDomainRoleId) as Definition;
+		}
+		
+		/// <summary>
+		/// Sets Definition.
+		/// </summary>
+		[global::System.Diagnostics.DebuggerStepThrough]
+		[global::System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Design", "CA1011")]
+		public static void SetDefinition(ORMModel element, Definition newDefinition)
+		{
+			DslModeling::DomainRoleInfo.SetLinkedElement(element, ModelDomainRoleId, newDefinition);
+		}
+		#endregion
+		#region Model link accessor
+		/// <summary>
+		/// Get the ModelHasDefinition link to a ORMModel.
+		/// </summary>
+		[global::System.Diagnostics.DebuggerStepThrough]
+		[global::System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Design", "CA1011")]
+		public static global::Neumont.Tools.ORM.ObjectModel.ModelHasDefinition GetLinkToDefinition (global::Neumont.Tools.ORM.ObjectModel.ORMModel modelInstance)
+		{
+			global::System.Collections.Generic.IList<global::Neumont.Tools.ORM.ObjectModel.ModelHasDefinition> links = DslModeling::DomainRoleInfo.GetElementLinks<global::Neumont.Tools.ORM.ObjectModel.ModelHasDefinition>(modelInstance, global::Neumont.Tools.ORM.ObjectModel.ModelHasDefinition.ModelDomainRoleId);
+			global::System.Diagnostics.Debug.Assert(links.Count <= 1, "Multiplicity of Model not obeyed.");
+			if ( links.Count == 0 )
+			{
+				return null;
+			}
+			else
+			{
+				return links[0];
+			}
+		}
+		#endregion
+		#region Definition link accessor
+		/// <summary>
+		/// Get the ModelHasDefinition link to a Definition.
+		/// </summary>
+		[global::System.Diagnostics.DebuggerStepThrough]
+		[global::System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Design", "CA1011")]
+		public static global::Neumont.Tools.ORM.ObjectModel.ModelHasDefinition GetLinkToModel (global::Neumont.Tools.ORM.ObjectModel.Definition definitionInstance)
+		{
+			global::System.Collections.Generic.IList<global::Neumont.Tools.ORM.ObjectModel.ModelHasDefinition> links = DslModeling::DomainRoleInfo.GetElementLinks<global::Neumont.Tools.ORM.ObjectModel.ModelHasDefinition>(definitionInstance, global::Neumont.Tools.ORM.ObjectModel.ModelHasDefinition.DefinitionDomainRoleId);
+			global::System.Diagnostics.Debug.Assert(links.Count <= 1, "Multiplicity of Definition not obeyed.");
+			if ( links.Count == 0 )
+			{
+				return null;
+			}
+			else
+			{
+				return links[0];
+			}
+		}
+		#endregion
+		#region ModelHasDefinition instance accessors
+		
+		/// <summary>
+		/// Get any ModelHasDefinition links between a given ORMModel and a Definition.
+		/// </summary>
+		[global::System.Diagnostics.DebuggerStepThrough]
+		[global::System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Design", "CA1011")]
+		public static global::System.Collections.ObjectModel.ReadOnlyCollection<global::Neumont.Tools.ORM.ObjectModel.ModelHasDefinition> GetLinks( global::Neumont.Tools.ORM.ObjectModel.ORMModel source, global::Neumont.Tools.ORM.ObjectModel.Definition target )
+		{
+			global::System.Collections.Generic.List<global::Neumont.Tools.ORM.ObjectModel.ModelHasDefinition> outLinks = new global::System.Collections.Generic.List<global::Neumont.Tools.ORM.ObjectModel.ModelHasDefinition>();
+			global::System.Collections.Generic.IList<global::Neumont.Tools.ORM.ObjectModel.ModelHasDefinition> links = DslModeling::DomainRoleInfo.GetElementLinks<global::Neumont.Tools.ORM.ObjectModel.ModelHasDefinition>(source, global::Neumont.Tools.ORM.ObjectModel.ModelHasDefinition.ModelDomainRoleId);
+			foreach ( global::Neumont.Tools.ORM.ObjectModel.ModelHasDefinition link in links )
+			{
+				if ( target.Equals(link.Definition) )
+				{
+					outLinks.Add(link);
+				}
+			}
+			return outLinks.AsReadOnly();
+		}
+		/// <summary>
+		/// Get the one ModelHasDefinition link between a given ORMModeland a Definition.
+		/// </summary>
+		[global::System.Diagnostics.DebuggerStepThrough]
+		[global::System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Design", "CA1011")]
+		public static global::Neumont.Tools.ORM.ObjectModel.ModelHasDefinition GetLink( global::Neumont.Tools.ORM.ObjectModel.ORMModel source, global::Neumont.Tools.ORM.ObjectModel.Definition target )
+		{
+			global::System.Collections.Generic.IList<global::Neumont.Tools.ORM.ObjectModel.ModelHasDefinition> links = DslModeling::DomainRoleInfo.GetElementLinks<global::Neumont.Tools.ORM.ObjectModel.ModelHasDefinition>(source, global::Neumont.Tools.ORM.ObjectModel.ModelHasDefinition.ModelDomainRoleId);
+			foreach ( global::Neumont.Tools.ORM.ObjectModel.ModelHasDefinition link in links )
+			{
+				if ( target.Equals(link.Definition) )
+				{
+					return link;
+				}
+			}
+			return null;
+		}
+		
+		#endregion
+	}
+}
+namespace Neumont.Tools.ORM.ObjectModel
+{
+	/// <summary>
 	/// DomainRelationship ObjectTypeHasDefinition
 	/// Description for Neumont.Tools.ORM.ObjectModel.ObjectTypeHasDefinition
 	/// </summary>
@@ -21885,6 +22142,263 @@ namespace Neumont.Tools.ORM.ObjectModel
 		{
 			global::System.Collections.Generic.IList<global::Neumont.Tools.ORM.ObjectModel.ObjectTypeHasNote> links = DslModeling::DomainRoleInfo.GetElementLinks<global::Neumont.Tools.ORM.ObjectModel.ObjectTypeHasNote>(source, global::Neumont.Tools.ORM.ObjectModel.ObjectTypeHasNote.ObjectTypeDomainRoleId);
 			foreach ( global::Neumont.Tools.ORM.ObjectModel.ObjectTypeHasNote link in links )
+			{
+				if ( target.Equals(link.Note) )
+				{
+					return link;
+				}
+			}
+			return null;
+		}
+		
+		#endregion
+	}
+}
+namespace Neumont.Tools.ORM.ObjectModel
+{
+	/// <summary>
+	/// DomainRelationship ModelHasPrimaryNote
+	/// Description for Neumont.Tools.ORM.ObjectModel.ModelHasPrimaryNote
+	/// </summary>
+	[DslDesign::DisplayNameResource("Neumont.Tools.ORM.ObjectModel.ModelHasPrimaryNote.DisplayName", typeof(global::Neumont.Tools.ORM.ObjectModel.ORMCoreDomainModel), "Neumont.Tools.ORM.GeneratedCode.CoreDomainModelResx")]
+	[DslDesign::DescriptionResource("Neumont.Tools.ORM.ObjectModel.ModelHasPrimaryNote.Description", typeof(global::Neumont.Tools.ORM.ObjectModel.ORMCoreDomainModel), "Neumont.Tools.ORM.GeneratedCode.CoreDomainModelResx")]
+	[global::System.CLSCompliant(true)]
+	[DslModeling::DomainRelationship(IsEmbedding=true)]
+	[DslModeling::DomainObjectId("bea348b0-fc00-4b2f-8285-882693fe408f")]
+	public partial class ModelHasPrimaryNote : DslModeling::ElementLink
+	{
+		#region Constructors, domain class Id
+		
+		/// <summary>
+		/// ModelHasPrimaryNote domain class Id.
+		/// </summary>
+		public static readonly new global::System.Guid DomainClassId = new global::System.Guid(0xbea348b0, 0xfc00, 0x4b2f, 0x82, 0x85, 0x88, 0x26, 0x93, 0xfe, 0x40, 0x8f);
+	
+				
+		/// <summary>
+		/// Constructor
+		/// Creates a ModelHasPrimaryNote link in the same Partition as the given ORMModel
+		/// </summary>
+		/// <param name="source">ORMModel to use as the source of the relationship.</param>
+		/// <param name="target">Note to use as the target of the relationship.</param>
+		public ModelHasPrimaryNote(ORMModel source, Note target)
+			: base((source != null ? source.Partition : null), new DslModeling::RoleAssignment[]{new DslModeling::RoleAssignment(ModelHasPrimaryNote.ModelDomainRoleId, source), new DslModeling::RoleAssignment(ModelHasPrimaryNote.NoteDomainRoleId, target)}, null)
+		{
+		}
+		
+		/// <summary>
+		/// Constructor
+		/// </summary>
+		/// <param name="store">Store where new link is to be created.</param>
+		/// <param name="roleAssignments">List of relationship role assignments.</param>
+		public ModelHasPrimaryNote(DslModeling::Store store, params DslModeling::RoleAssignment[] roleAssignments)
+			: base(store != null ? store.DefaultPartition : null, roleAssignments, null)
+		{
+		}
+		
+		/// <summary>
+		/// Constructor
+		/// </summary>
+		/// <param name="store">Store where new link is to be created.</param>
+		/// <param name="roleAssignments">List of relationship role assignments.</param>
+		/// <param name="propertyAssignments">List of properties assignments to set on the new link.</param>
+		public ModelHasPrimaryNote(DslModeling::Store store, DslModeling::RoleAssignment[] roleAssignments, DslModeling::PropertyAssignment[] propertyAssignments)
+			: base(store != null ? store.DefaultPartition : null, roleAssignments, propertyAssignments)
+		{
+		}
+		
+		/// <summary>
+		/// Constructor
+		/// </summary>
+		/// <param name="partition">Partition where new link is to be created.</param>
+		/// <param name="roleAssignments">List of relationship role assignments.</param>
+		public ModelHasPrimaryNote(DslModeling::Partition partition, params DslModeling::RoleAssignment[] roleAssignments)
+			: base(partition, roleAssignments, null)
+		{
+		}
+		
+		/// <summary>
+		/// Constructor
+		/// </summary>
+		/// <param name="partition">Partition where new link is to be created.</param>
+		/// <param name="roleAssignments">List of relationship role assignments.</param>
+		/// <param name="propertyAssignments">List of properties assignments to set on the new link.</param>
+		public ModelHasPrimaryNote(DslModeling::Partition partition, DslModeling::RoleAssignment[] roleAssignments, DslModeling::PropertyAssignment[] propertyAssignments)
+			: base(partition, roleAssignments, propertyAssignments)
+		{
+		}
+		#endregion
+		#region Model domain role code
+		
+		/// <summary>
+		/// Model domain role Id.
+		/// </summary>
+		public static readonly global::System.Guid ModelDomainRoleId = new global::System.Guid(0x189b06e7, 0x23c1, 0x42c1, 0x9d, 0xa0, 0x25, 0xa6, 0x2a, 0xca, 0x12, 0xe1);
+		
+		/// <summary>
+		/// DomainRole Model
+		/// Description for Neumont.Tools.ORM.ObjectModel.ModelHasPrimaryNote.Model
+		/// </summary>
+		[DslDesign::DisplayNameResource("Neumont.Tools.ORM.ObjectModel.ModelHasPrimaryNote/Model.DisplayName", typeof(global::Neumont.Tools.ORM.ObjectModel.ORMCoreDomainModel), "Neumont.Tools.ORM.GeneratedCode.CoreDomainModelResx")]
+		[DslDesign::DescriptionResource("Neumont.Tools.ORM.ObjectModel.ModelHasPrimaryNote/Model.Description", typeof(global::Neumont.Tools.ORM.ObjectModel.ORMCoreDomainModel), "Neumont.Tools.ORM.GeneratedCode.CoreDomainModelResx")]
+		[DslModeling::DomainRole(DslModeling::DomainRoleOrder.Source, PropertyName = "Note", PropertyDisplayNameKey="Neumont.Tools.ORM.ObjectModel.ModelHasPrimaryNote/Model.PropertyDisplayName", Multiplicity = DslModeling::Multiplicity.ZeroOne)]
+		[DslModeling::DomainObjectId("189b06e7-23c1-42c1-9da0-25a62aca12e1")]
+		public virtual ORMModel Model
+		{
+			[global::System.Diagnostics.DebuggerStepThrough]
+			get
+			{
+				return (ORMModel)DslModeling::DomainRoleInfo.GetRolePlayer(this, ModelDomainRoleId);
+			}
+			[global::System.Diagnostics.DebuggerStepThrough]
+			set
+			{
+				DslModeling::DomainRoleInfo.SetRolePlayer(this, ModelDomainRoleId, value);
+			}
+		}
+				
+		#endregion
+		#region Static methods to access PrimaryForModel of a Note
+		/// <summary>
+		/// Gets PrimaryForModel.
+		/// </summary>
+		[global::System.Diagnostics.DebuggerStepThrough]
+		[global::System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Design", "CA1011")]
+		public static ORMModel GetPrimaryForModel(Note element)
+		{
+			return DslModeling::DomainRoleInfo.GetLinkedElement(element, NoteDomainRoleId) as ORMModel;
+		}
+		
+		/// <summary>
+		/// Sets PrimaryForModel.
+		/// </summary>
+		[global::System.Diagnostics.DebuggerStepThrough]
+		[global::System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Design", "CA1011")]
+		public static void SetPrimaryForModel(Note element, ORMModel newModel)
+		{
+			DslModeling::DomainRoleInfo.SetLinkedElement(element, NoteDomainRoleId, newModel);
+		}
+		#endregion
+		#region Note domain role code
+		
+		/// <summary>
+		/// Note domain role Id.
+		/// </summary>
+		public static readonly global::System.Guid NoteDomainRoleId = new global::System.Guid(0x9f33e7cb, 0xa993, 0x451f, 0xa6, 0x0e, 0x2b, 0xe8, 0xe2, 0x1b, 0x9a, 0xc3);
+		
+		/// <summary>
+		/// DomainRole Note
+		/// Description for Neumont.Tools.ORM.ObjectModel.ModelHasPrimaryNote.Note
+		/// </summary>
+		[DslDesign::DisplayNameResource("Neumont.Tools.ORM.ObjectModel.ModelHasPrimaryNote/Note.DisplayName", typeof(global::Neumont.Tools.ORM.ObjectModel.ORMCoreDomainModel), "Neumont.Tools.ORM.GeneratedCode.CoreDomainModelResx")]
+		[DslDesign::DescriptionResource("Neumont.Tools.ORM.ObjectModel.ModelHasPrimaryNote/Note.Description", typeof(global::Neumont.Tools.ORM.ObjectModel.ORMCoreDomainModel), "Neumont.Tools.ORM.GeneratedCode.CoreDomainModelResx")]
+		[DslModeling::DomainRole(DslModeling::DomainRoleOrder.Target, PropertyName = "PrimaryForModel", PropertyDisplayNameKey="Neumont.Tools.ORM.ObjectModel.ModelHasPrimaryNote/Note.PropertyDisplayName", PropagatesDelete = true, Multiplicity = DslModeling::Multiplicity.ZeroOne)]
+		[DslModeling::DomainObjectId("9f33e7cb-a993-451f-a60e-2be8e21b9ac3")]
+		public virtual Note Note
+		{
+			[global::System.Diagnostics.DebuggerStepThrough]
+			get
+			{
+				return (Note)DslModeling::DomainRoleInfo.GetRolePlayer(this, NoteDomainRoleId);
+			}
+			[global::System.Diagnostics.DebuggerStepThrough]
+			set
+			{
+				DslModeling::DomainRoleInfo.SetRolePlayer(this, NoteDomainRoleId, value);
+			}
+		}
+				
+		#endregion
+		#region Static methods to access Note of a ORMModel
+		/// <summary>
+		/// Gets Note.
+		/// </summary>
+		[global::System.Diagnostics.DebuggerStepThrough]
+		[global::System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Design", "CA1011")]
+		public static Note GetNote(ORMModel element)
+		{
+			return DslModeling::DomainRoleInfo.GetLinkedElement(element, ModelDomainRoleId) as Note;
+		}
+		
+		/// <summary>
+		/// Sets Note.
+		/// </summary>
+		[global::System.Diagnostics.DebuggerStepThrough]
+		[global::System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Design", "CA1011")]
+		public static void SetNote(ORMModel element, Note newNote)
+		{
+			DslModeling::DomainRoleInfo.SetLinkedElement(element, ModelDomainRoleId, newNote);
+		}
+		#endregion
+		#region Model link accessor
+		/// <summary>
+		/// Get the ModelHasPrimaryNote link to a ORMModel.
+		/// </summary>
+		[global::System.Diagnostics.DebuggerStepThrough]
+		[global::System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Design", "CA1011")]
+		public static global::Neumont.Tools.ORM.ObjectModel.ModelHasPrimaryNote GetLinkToNote (global::Neumont.Tools.ORM.ObjectModel.ORMModel modelInstance)
+		{
+			global::System.Collections.Generic.IList<global::Neumont.Tools.ORM.ObjectModel.ModelHasPrimaryNote> links = DslModeling::DomainRoleInfo.GetElementLinks<global::Neumont.Tools.ORM.ObjectModel.ModelHasPrimaryNote>(modelInstance, global::Neumont.Tools.ORM.ObjectModel.ModelHasPrimaryNote.ModelDomainRoleId);
+			global::System.Diagnostics.Debug.Assert(links.Count <= 1, "Multiplicity of Model not obeyed.");
+			if ( links.Count == 0 )
+			{
+				return null;
+			}
+			else
+			{
+				return links[0];
+			}
+		}
+		#endregion
+		#region Note link accessor
+		/// <summary>
+		/// Get the ModelHasPrimaryNote link to a Note.
+		/// </summary>
+		[global::System.Diagnostics.DebuggerStepThrough]
+		[global::System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Design", "CA1011")]
+		public static global::Neumont.Tools.ORM.ObjectModel.ModelHasPrimaryNote GetLinkToPrimaryForModel (global::Neumont.Tools.ORM.ObjectModel.Note noteInstance)
+		{
+			global::System.Collections.Generic.IList<global::Neumont.Tools.ORM.ObjectModel.ModelHasPrimaryNote> links = DslModeling::DomainRoleInfo.GetElementLinks<global::Neumont.Tools.ORM.ObjectModel.ModelHasPrimaryNote>(noteInstance, global::Neumont.Tools.ORM.ObjectModel.ModelHasPrimaryNote.NoteDomainRoleId);
+			global::System.Diagnostics.Debug.Assert(links.Count <= 1, "Multiplicity of Note not obeyed.");
+			if ( links.Count == 0 )
+			{
+				return null;
+			}
+			else
+			{
+				return links[0];
+			}
+		}
+		#endregion
+		#region ModelHasPrimaryNote instance accessors
+		
+		/// <summary>
+		/// Get any ModelHasPrimaryNote links between a given ORMModel and a Note.
+		/// </summary>
+		[global::System.Diagnostics.DebuggerStepThrough]
+		[global::System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Design", "CA1011")]
+		public static global::System.Collections.ObjectModel.ReadOnlyCollection<global::Neumont.Tools.ORM.ObjectModel.ModelHasPrimaryNote> GetLinks( global::Neumont.Tools.ORM.ObjectModel.ORMModel source, global::Neumont.Tools.ORM.ObjectModel.Note target )
+		{
+			global::System.Collections.Generic.List<global::Neumont.Tools.ORM.ObjectModel.ModelHasPrimaryNote> outLinks = new global::System.Collections.Generic.List<global::Neumont.Tools.ORM.ObjectModel.ModelHasPrimaryNote>();
+			global::System.Collections.Generic.IList<global::Neumont.Tools.ORM.ObjectModel.ModelHasPrimaryNote> links = DslModeling::DomainRoleInfo.GetElementLinks<global::Neumont.Tools.ORM.ObjectModel.ModelHasPrimaryNote>(source, global::Neumont.Tools.ORM.ObjectModel.ModelHasPrimaryNote.ModelDomainRoleId);
+			foreach ( global::Neumont.Tools.ORM.ObjectModel.ModelHasPrimaryNote link in links )
+			{
+				if ( target.Equals(link.Note) )
+				{
+					outLinks.Add(link);
+				}
+			}
+			return outLinks.AsReadOnly();
+		}
+		/// <summary>
+		/// Get the one ModelHasPrimaryNote link between a given ORMModeland a Note.
+		/// </summary>
+		[global::System.Diagnostics.DebuggerStepThrough]
+		[global::System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Design", "CA1011")]
+		public static global::Neumont.Tools.ORM.ObjectModel.ModelHasPrimaryNote GetLink( global::Neumont.Tools.ORM.ObjectModel.ORMModel source, global::Neumont.Tools.ORM.ObjectModel.Note target )
+		{
+			global::System.Collections.Generic.IList<global::Neumont.Tools.ORM.ObjectModel.ModelHasPrimaryNote> links = DslModeling::DomainRoleInfo.GetElementLinks<global::Neumont.Tools.ORM.ObjectModel.ModelHasPrimaryNote>(source, global::Neumont.Tools.ORM.ObjectModel.ModelHasPrimaryNote.ModelDomainRoleId);
+			foreach ( global::Neumont.Tools.ORM.ObjectModel.ModelHasPrimaryNote link in links )
 			{
 				if ( target.Equals(link.Note) )
 				{

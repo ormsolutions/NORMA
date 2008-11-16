@@ -9,6 +9,7 @@ using Microsoft.VisualStudio.Modeling;
 // * Neumont Object-Role Modeling Architect for Visual Studio                 *
 // *                                                                          *
 // * Copyright © Neumont University. All rights reserved.                     *
+// * Copyright © Matthew Curland. All rights reserved.                        *
 // *                                                                          *
 // * The use and distribution terms for this software are covered by the      *
 // * Common Public License 1.0 (http://opensource.org/licenses/cpl) which     *
@@ -25,6 +26,10 @@ namespace Neumont.Tools.ORM.ObjectModel
 	/// <summary>An enum with one value for each recognized snippet</summary>
 	public enum ReportVerbalizationSnippetType
 	{
+		/// <summary>The 'ContextModelDescriptionClose' simple snippet value.</summary>
+		ContextModelDescriptionClose,
+		/// <summary>The 'ContextModelDescriptionOpen' simple snippet value.</summary>
+		ContextModelDescriptionOpen,
 		/// <summary>The 'EmptyContentListItemSnippet' simple snippet value.</summary>
 		EmptyContentListItemSnippet,
 		/// <summary>The 'FactTypeConstraintValidationHeader' simple snippet value.</summary>
@@ -127,9 +132,18 @@ namespace Neumont.Tools.ORM.ObjectModel
 		protected override void PopulateVerbalizationSets(VerbalizationSet[] sets, object userData)
 		{
 			sets[0] = new ArrayVerbalizationSet(new string[]{
+				@"
+				
+				</div>
+			",
+				@"
+				
+				<div>
+				
+			",
 				@"<li class=""ListLink"">There are no items for this section.</li>",
 				@"
-				<div class=""spaceHeader"">Constraint Validation Report</div>
+				<div class=""topHeader"">Constraint Validation Report</div>
 			",
 				@"
 				
@@ -398,18 +412,12 @@ namespace Neumont.Tools.ORM.ObjectModel
 									padding-bottom:25px;
 									padding-left:20px;
 								}
-								div.spaceHeader
-								{
-									position:relative;
-									border-bottom: 2px solid #FFCE84;
-									margin-bottom: 150px;
-									font-size:18px;
-								}
 								div.topHeader
 								{
 									position:relative;
 									border-bottom: 2px solid #FFCE84;
 									font-size:18px;
+									margin-top: 8px;
 								}
 								div.container
 								{
@@ -505,7 +513,8 @@ namespace Neumont.Tools.ORM.ObjectModel
 								div#navBar
 								{
 									float:right;
-									padding-top:50px;
+									padding-top:15px;
+									padding-left:20px;
 								}
 								div#navBar h4
 								{

@@ -220,6 +220,7 @@ namespace Neumont.Tools.ORM.Shell
 					browser.Dock = DockStyle.Fill;
 					StringWriter writer = myStringWriter;
 					browser.DocumentText = (writer != null) ? writer.ToString() : string.Empty;
+					browser.DocumentCompleted += new WebBrowserDocumentCompletedEventHandler(Browser_DocumentCompleted);
 					// The container magically provides resize support, we don't have
 					// to go all the way to a form
 					ContainerControl container = new ContainerControl();
@@ -228,6 +229,21 @@ namespace Neumont.Tools.ORM.Shell
 					Frame.SetGuidProperty((int)__VSFPROPID.VSFPROPID_InheritKeyBindings, ref commandSetId);
 				}
 				return browser.Parent;
+			}
+		}
+		void Browser_DocumentCompleted(object sender, WebBrowserDocumentCompletedEventArgs e)
+		{
+			StringWriter writer = myStringWriter;
+			WebBrowser browser;
+			if (writer != null &&
+				writer.GetStringBuilder().Length != 0 &&
+				string.IsNullOrEmpty((browser = myWebBrowser).DocumentTitle))
+			{
+				// The document is resetting on load after we set the document. This
+				// only appears to happen on the initial load, so we don't need to check
+				// the condition after we've caught this one time.
+				browser.DocumentText = writer.ToString();
+				browser.DocumentCompleted -= new WebBrowserDocumentCompletedEventHandler(Browser_DocumentCompleted);
 			}
 		}
 		private void Browser_Navigating(object sender, WebBrowserNavigatingEventArgs e)

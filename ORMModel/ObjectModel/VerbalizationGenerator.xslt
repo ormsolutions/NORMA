@@ -578,6 +578,56 @@
 			</plx:function>
 		</plx:class>
 	</xsl:template>
+	<xsl:template match="cvg:ORMModel" mode="GenerateClasses">
+		<plx:class name="ORMModel" visibility="public" partial="true">
+			<plx:leadingInfo>
+				<plx:pragma type="region" data="ORMModel verbalization"/>
+			</plx:leadingInfo>
+			<plx:trailingInfo>
+				<plx:pragma type="closeRegion" data="ORMModel verbalization"/>
+			</plx:trailingInfo>
+			<plx:implementsInterface dataTypeName="IVerbalize"/>
+			<plx:function name="GetVerbalization" visibility="protected">
+				<plx:leadingInfo>
+					<plx:docComment>
+						<summary><see cref="IVerbalize.GetVerbalization"/> implementation</summary>
+					</plx:docComment>
+				</plx:leadingInfo>
+				<plx:interfaceMember memberName="GetVerbalization" dataTypeName="IVerbalize"/>
+				<plx:param name="writer" dataTypeName="TextWriter"/>
+				<plx:param name="snippetsDictionary" dataTypeName="IDictionary">
+					<plx:passTypeParam dataTypeName="Type"/>
+					<plx:passTypeParam dataTypeName="IVerbalizationSets"/>
+				</plx:param>
+				<plx:param name="verbalizationContext" dataTypeName="IVerbalizationContext"/>
+				<plx:param name="isNegative" dataTypeName=".boolean"/>
+				<plx:returns dataTypeName=".boolean"/>
+
+				<plx:pragma type="region" data="Preliminary"/>
+				<xsl:call-template name="DeclareSnippetsLocal"/>
+				<!-- Don't proceed with verbalization if blocking errors are present -->
+				<xsl:call-template name="CheckErrorConditions"/>
+				<plx:local name="isDeontic" dataTypeName=".boolean" const="true">
+					<plx:initialize>
+						<plx:falseKeyword/>
+					</plx:initialize>
+				</plx:local>
+				<plx:pragma type="closeRegion" data="Preliminary"/>
+				<plx:pragma type="region" data="Pattern Matches"/>
+				<xsl:apply-templates select="*" mode="ConstraintVerbalization">
+					<xsl:with-param name="TopLevel" select="true()"/>
+				</xsl:apply-templates>
+				<plx:pragma type="closeRegion" data="Pattern Matches"/>
+				<xsl:call-template name="CheckErrorConditions">
+					<xsl:with-param name="Primary" select="false()"/>
+					<xsl:with-param name="DeclareErrorOwner" select="false()"/>
+				</xsl:call-template>
+				<plx:return>
+					<plx:trueKeyword/>
+				</plx:return>
+			</plx:function>
+		</plx:class>
+	</xsl:template>
 	<xsl:template match="cvg:ObjectType" mode="GenerateClasses">
 		<plx:class name="{name()}" partial="true" visibility="public">
 			<plx:leadingInfo>
@@ -689,15 +739,23 @@
 					<xsl:with-param name="TopLevel" select="true()"/>
 				</xsl:apply-templates>
 				<plx:pragma type="closeRegion" data="Pattern Matches"/>
-				<xsl:call-template name="CheckErrorConditions">
-					<xsl:with-param name="Primary" select="false()"/>
-					<xsl:with-param name="DeclareErrorOwner" select="false()"/>
-				</xsl:call-template>
+				<xsl:if test="not(cvg:ErrorReportHere)">
+					<xsl:call-template name="CheckErrorConditions">
+						<xsl:with-param name="Primary" select="false()"/>
+						<xsl:with-param name="DeclareErrorOwner" select="false()"/>
+					</xsl:call-template>
+				</xsl:if>
 				<plx:return>
 					<plx:trueKeyword/>
 				</plx:return>
 			</plx:function>
 		</plx:class>
+	</xsl:template>
+	<xsl:template match="cvg:ErrorReportHere" mode="ConstraintVerbalization">
+		<xsl:call-template name="CheckErrorConditions">
+			<xsl:with-param name="Primary" select="false()"/>
+			<xsl:with-param name="DeclareErrorOwner" select="false()"/>
+		</xsl:call-template>
 	</xsl:template>
 	<xsl:template match="cvg:Constraint" mode="ConstraintVerbalization">
 		<xsl:variable name="patternGroup" select="string(@patternGroup)"/>
@@ -4085,7 +4143,7 @@
 			</plx:right>
 		</plx:assign>
 	</xsl:template>
-	<xsl:template match="cvg:ObjectTypeName" mode="ConstraintVerbalization">
+	<xsl:template match="cvg:ContextName" mode="ConstraintVerbalization">
 		<xsl:param name="VariableDecorator" select="position()"/>
 		<xsl:param name="VariablePrefix" select="'factText'"/>
 		<plx:assign>
@@ -4093,7 +4151,7 @@
 				<plx:nameRef name="{$VariablePrefix}{$VariableDecorator}"/>
 			</plx:left>
 			<plx:right>
-				<plx:callThis name="Name" type="property" />
+				<plx:callThis name="Name" type="property"/>
 			</plx:right>
 		</plx:assign>
 	</xsl:template>
@@ -5574,12 +5632,26 @@
 					</plx:unaryOperator>
 				</xsl:when>
 				<xsl:when test="$ConditionalMatch='HasPortableDataType'">
-					<plx:binaryOperator type="identityInequality">
+					<plx:binaryOperator type="booleanAnd">
 						<plx:left>
-							<plx:callThis name="DataType" type="property"/>
+							<plx:binaryOperator type="identityInequality">
+								<plx:left>
+									<plx:callThis name="DataType" type="property"/>
+								</plx:left>
+								<plx:right>
+									<plx:nullKeyword/>
+								</plx:right>
+							</plx:binaryOperator>
 						</plx:left>
 						<plx:right>
-							<plx:nullKeyword/>
+							<plx:binaryOperator type="identityEquality">
+								<plx:left>
+									<plx:callThis name="DataTypeNotSpecifiedError" type="property"/>
+								</plx:left>
+								<plx:right>
+									<plx:nullKeyword/>
+								</plx:right>
+							</plx:binaryOperator>
 						</plx:right>
 					</plx:binaryOperator>
 				</xsl:when>

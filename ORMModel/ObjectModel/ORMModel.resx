@@ -626,9 +626,17 @@
 		<value>{0}: {1}</value>
 		<comment>Text that separates a root type's name from notes if multiple notes are displayed in the ORM notes window. Replacement field 0 is the element name, 1 is the note text.</comment>
 	</data>
+	<data name="ModelDefinitionWindow.EmptyDisplayText" xml:space="preserve">
+		<value>An informal definition is not available for the current selection.</value>
+		<comment>Text to place in an empty description editor tool window.</comment>
+	</data>
 	<data name="ModelDefinitionWindow.WindowTitle" xml:space="preserve">
 		<value>ORM Informal Definition Editor</value>
 		<comment>Text to place in the title bar of the description editor tool window.</comment>
+	</data>
+	<data name="ModelNotesWindow.EmptyDisplayText" xml:space="preserve">
+		<value>Notes are not available for the current selection.</value>
+		<comment>Text to place in an empty notes editor tool window.</comment>
 	</data>
 	<data name="ModelNotesWindow.WindowTitle" xml:space="preserve">
 		<value>ORM Notes Editor</value>
@@ -809,6 +817,10 @@
 	<data name="ModelSamplePopulationEditor.WindowTitle" xml:space="preserve">
 		<value>ORM Sample Population Editor</value>
 		<comment>Text to place in the title bar of the sample population window.</comment>
+	</data>
+	<data name="ModelSamplePopulationEditor.EmptyDisplayText" xml:space="preserve">
+		<value>Sample population is not available for the current selection.</value>
+		<comment>Text to place in an empty sample population window.</comment>
 	</data>
 	<data name="ModelVerbalization.WindowTitle" xml:space="preserve">
 		<value>ORM Verbalization Browser</value>

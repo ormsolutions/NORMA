@@ -207,7 +207,7 @@ namespace Neumont.Tools.ORM.Shell
 		}
 		#endregion // Constructor
 		#region Base overrides
-		private static readonly Guid[] myNoteRoleIdentifiers = { ObjectTypeHasNote.NoteDomainRoleId, FactTypeHasNote.NoteDomainRoleId, ModelHasModelNote.NoteDomainRoleId };
+		private static readonly Guid[] myNoteRoleIdentifiers = { ObjectTypeHasNote.NoteDomainRoleId, FactTypeHasNote.NoteDomainRoleId, ModelHasModelNote.NoteDomainRoleId, ModelHasPrimaryNote.NoteDomainRoleId };
 		/// <summary>
 		/// Return role identifiers for <see cref="ObjectType"/>, <see cref="FactType"/> and <see cref="ModelNote"/> <see cref="Note"/>s
 		/// </summary>
@@ -245,6 +245,16 @@ namespace Neumont.Tools.ORM.Shell
 				return PackageResources.ToolWindowIconIndex.NotesEditor;
 			}
 		}
+		/// <summary>
+		/// Base override
+		/// </summary>
+		protected override string EmptyDisplayText
+		{
+			get
+			{
+				return ResourceStrings.ModelNotesWindowEmptyDisplayText;
+			}
+		}
 		#endregion // Base overrides
 	}
 	#endregion // ORMNotesToolWindow class
@@ -267,7 +277,7 @@ namespace Neumont.Tools.ORM.Shell
 		}
 		#endregion // Constructor
 		#region Base overrides
-		private static readonly Guid[] myNoteRoleIdentifiers = { ObjectTypeHasDefinition.DefinitionDomainRoleId, FactTypeHasDefinition.DefinitionDomainRoleId };
+		private static readonly Guid[] myNoteRoleIdentifiers = { ObjectTypeHasDefinition.DefinitionDomainRoleId, FactTypeHasDefinition.DefinitionDomainRoleId, ModelHasDefinition.DefinitionDomainRoleId };
 		/// <summary>
 		/// Return role identifiers for <see cref="ObjectType"/> and <see cref="FactType"/> <see cref="Definition"/>s
 		/// </summary>
@@ -303,6 +313,16 @@ namespace Neumont.Tools.ORM.Shell
 			get
 			{
 				return PackageResources.ToolWindowIconIndex.DefinitionEditor;
+			}
+		}
+		/// <summary>
+		/// Base override
+		/// </summary>
+		protected override string EmptyDisplayText
+		{
+			get
+			{
+				return ResourceStrings.ModelDefinitionWindowEmptyDisplayText;
 			}
 		}
 		#endregion // Base overrides
@@ -343,10 +363,14 @@ namespace Neumont.Tools.ORM.Shell
 					textBox.Dock = DockStyle.Fill;
 					textBox.WordWrap = true;
 					textBox.Multiline = true;
+					textBox.ReadOnly = true;
+					textBox.Enabled = false;
+					textBox.Text = EmptyDisplayText;
 					textBox.ScrollBars = ScrollBars.Vertical;
 					textBox.LostFocus += new EventHandler(myTextBox_LostFocus);
 					ContainerControl container = new ContainerControl();	// and set up a parent container.
 					container.Controls.Add(textBox);
+					container.ActiveControl = textBox;
 					Guid commandSetId = typeof(ORMDesignerEditorFactory).GUID;
 					Frame.SetGuidProperty((int)__VSFPROPID.VSFPROPID_InheritKeyBindings, ref commandSetId);
 				}
@@ -469,6 +493,10 @@ namespace Neumont.Tools.ORM.Shell
 			DisplayNotes();	// Display the notes for all selected owners.
 		}
 		/// <summary>
+		/// Return the text to show for an empty window display
+		/// </summary>
+		protected abstract string EmptyDisplayText { get;}
+		/// <summary>
 		/// Displays the notes for all selected note owners in the Notes Window.
 		/// </summary>
 		private void DisplayNotes()
@@ -479,18 +507,22 @@ namespace Neumont.Tools.ORM.Shell
 			if (textBox != null) // If the text box is not null,
 			{
 				textBox.Clear(); // clear it's text
-				textBox.ReadOnly = false; // and set it to read only.
 				if (selectedNoteOwnersCount == 0) // If there aren't any selected note owners,
 				{
-					return; // bail out.
+					textBox.ReadOnly = true;
+					textBox.Enabled = false;
+					textBox.AppendText(EmptyDisplayText);
 				}
 				else if (selectedNoteOwnersCount == 1) // If there is only one selected note owner,
 				{
+					textBox.ReadOnly = false;
+					textBox.Enabled = true;
 					textBox.AppendText(selectedNoteOwners[0].NoteText); // add its note text to the text box.
 				}
 				else
 				{
-					textBox.ReadOnly = true; // Otherwise, the textbox should be read-only because multiple
+					textBox.ReadOnly = true; // Otherwise, the textbox should be read-only because multiple elements can't be edited together
+					textBox.Enabled = true;
 					StringBuilder sb = new StringBuilder();
 					string formatString = ResourceStrings.ModelNotesWindowRootTypeNameNotesSeparatorFormatString;
 					// root types are selected.

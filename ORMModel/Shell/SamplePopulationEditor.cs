@@ -77,6 +77,7 @@ namespace Neumont.Tools.ORM.Shell
 		public SamplePopulationEditor()
 		{
 			InitializeComponent();
+			lblNoSelection.Text = ResourceStrings.ModelSamplePopulationEditorEmptyDisplayText;
 			VirtualTreeControl treeControl = vtrSamplePopulation;
 			ImageList images = ResourceStrings.SamplePopulationEditorImageList;
 			treeControl.ImageList = images;

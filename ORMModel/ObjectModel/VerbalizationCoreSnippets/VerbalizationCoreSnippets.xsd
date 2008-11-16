@@ -95,6 +95,11 @@
 						<xs:documentation>Description: Format string to decorate predicate text in between replacement fields. Must contain a {{0}}. Replacement field {0} is the FactType name, and {1} is the guid id for the element.</xs:documentation>
 					</xs:annotation>
 				</xs:enumeration>
+				<xs:enumeration value="ModelVerbalization">
+					<xs:annotation>
+						<xs:documentation>Description: Format string to verbalize the model element. Replacement field {0} is the Model name, and {1} is the guid id for the model.</xs:documentation>
+					</xs:annotation>
+				</xs:enumeration>
 				<xs:enumeration value="ImpersonalPronoun"/>
 				<xs:enumeration value="PersonalPronoun"/>
 				<xs:enumeration value="DefiniteArticle">

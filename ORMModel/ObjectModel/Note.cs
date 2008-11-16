@@ -3,6 +3,7 @@
 * Neumont Object-Role Modeling Architect for Visual Studio                 *
 *                                                                          *
 * Copyright © Neumont University. All rights reserved.                     *
+* Copyright © Matthew Curland. All rights reserved.                        *
 *                                                                          *
 * The use and distribution terms for this software are covered by the      *
 * Common Public License 1.0 (http://opensource.org/licenses/cpl) which     *
@@ -44,7 +45,7 @@ namespace Neumont.Tools.ORM.ObjectModel
 		PropertyDescriptor NoteTextPropertyDescriptor { get;}
 	}
 	#endregion // INoteOwner interface
-	public partial class Note
+	partial class Note
 	{
 		#region NoteChangeRule
 		/// <summary>
@@ -71,7 +72,7 @@ namespace Neumont.Tools.ORM.ObjectModel
 		}
 		#endregion // NoteChangeRule
 	}
-	public partial class FactType : INoteOwner<Note>, INoteOwner<Definition>
+	partial class FactType : INoteOwner<Note>, INoteOwner<Definition>
 	{
 		#region INoteOwner<Note> Implementation
 		/// <summary>
@@ -119,7 +120,7 @@ namespace Neumont.Tools.ORM.ObjectModel
 		}
 		#endregion // INoteOwner<Definition> Implementation
 	}
-	public partial class ObjectType : INoteOwner<Note>, INoteOwner<Definition>
+	partial class ObjectType : INoteOwner<Note>, INoteOwner<Definition>
 	{
 		#region INoteOwner<Note> Implementation
 		/// <summary>
@@ -167,7 +168,55 @@ namespace Neumont.Tools.ORM.ObjectModel
 		}
 		#endregion // INoteOwner<Definition> Implementation
 	}
-	public partial class ModelNote : INoteOwner<Note>
+	partial class ORMModel : INoteOwner<Note>, INoteOwner<Definition>
+	{
+		#region INoteOwner<Note> Implementation
+		/// <summary>
+		/// Implements <see cref="INoteOwner{Note}.NoteTextPropertyDescriptor"/>
+		/// </summary>
+		protected PropertyDescriptor NoteTextPropertyDescriptor
+		{
+			get
+			{
+				return DomainTypeDescriptor.CreatePropertyDescriptor(this, NoteTextDomainPropertyId);
+			}
+		}
+		PropertyDescriptor INoteOwner<Note>.NoteTextPropertyDescriptor
+		{
+			get
+			{
+				return NoteTextPropertyDescriptor;
+			}
+		}
+		#endregion // INoteOwner<Note> Implementation
+		#region INoteOwner<Definition> Implementation
+		/// <summary>
+		/// Implements <see cref="INoteOwner{Definition}.NoteTextPropertyDescriptor"/>
+		/// </summary>
+		protected PropertyDescriptor DefinitionTextPropertyDescriptor
+		{
+			get
+			{
+				return DomainTypeDescriptor.CreatePropertyDescriptor(this, DefinitionTextDomainPropertyId);
+			}
+		}
+		PropertyDescriptor INoteOwner<Definition>.NoteTextPropertyDescriptor
+		{
+			get
+			{
+				return DefinitionTextPropertyDescriptor;
+			}
+		}
+		string INoteOwner<Definition>.NoteText
+		{
+			get
+			{
+				return DefinitionText;
+			}
+		}
+		#endregion // INoteOwner<Definition> Implementation
+	}
+	partial class ModelNote : INoteOwner<Note>
 	{
 		#region INoteOwner Implementation
 		/// <summary>

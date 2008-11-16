@@ -3,6 +3,7 @@
 * Neumont Object-Role Modeling Architect for Visual Studio                 *
 *                                                                          *
 * Copyright © Neumont University. All rights reserved.                     *
+* Copyright © Matthew Curland. All rights reserved.                        *
 *                                                                          *
 * The use and distribution terms for this software are covered by the      *
 * Common Public License 1.0 (http://opensource.org/licenses/cpl) which     *
@@ -72,7 +73,7 @@ namespace Neumont.Tools.ORM.ObjectModel
 		AddImplicitPresentationElements = 700,
 	}
 	#endregion // ORMDeserializationFixupPhase enum
-	public partial class ORMModel
+	public partial class ORMModel : IVerbalizeCustomChildren, IVerbalizeFilterChildrenByRole
 	{
 		/// <summary>
 		/// Used as the value for <see cref="ElementGroup.UserData"/> to indicate that the
@@ -85,6 +86,48 @@ namespace Neumont.Tools.ORM.ObjectModel
 		/// </summary>
 		public static readonly object InternalUniquenessConstraintUserDataKey = new object();
 
+		#region CustomStorage handlers
+		private string GetDefinitionTextValue()
+		{
+			Definition currentDefinition = Definition;
+			return (currentDefinition != null) ? currentDefinition.Text : String.Empty;
+		}
+		private string GetNoteTextValue()
+		{
+			Note currentNote = this.Note;
+			return (currentNote != null) ? currentNote.Text : String.Empty;
+		}
+		private void SetDefinitionTextValue(string newValue)
+		{
+			if (!Store.InUndoRedoOrRollback)
+			{
+				Definition definition = Definition;
+				if (definition != null)
+				{
+					definition.Text = newValue;
+				}
+				else if (!string.IsNullOrEmpty(newValue))
+				{
+					Definition = new Definition(Store, new PropertyAssignment(Definition.TextDomainPropertyId, newValue));
+				}
+			}
+		}
+		private void SetNoteTextValue(string newValue)
+		{
+			if (!Store.InUndoRedoOrRollback)
+			{
+				Note note = Note;
+				if (note != null)
+				{
+					note.Text = newValue;
+				}
+				else if (!string.IsNullOrEmpty(newValue))
+				{
+					Note = new Note(Store, new PropertyAssignment(Note.TextDomainPropertyId, newValue));
+				}
+			}
+		}
+		#endregion // CustomStorage handlers
 		#region Entity- and ValueType specific collections
 		/// <summary>
 		/// All of the entity types in the object types collection.
@@ -190,6 +233,46 @@ namespace Neumont.Tools.ORM.ObjectModel
 			ManageReferenceModeModelStateEventHandlers(store, eventManager, action);
 		}
 		#endregion // Event integration
+		#region IVerbalizeCustomChildren Implementation
+		/// <summary>
+		/// Implements <see cref="IVerbalizeCustomChildren.GetCustomChildVerbalizations"/>.
+		/// Explicitly verbalizes the definitions and notes fields
+		/// </summary>
+		protected IEnumerable<CustomChildVerbalizer> GetCustomChildVerbalizations(IVerbalizeFilterChildren filter, bool isNegative)
+		{
+			Definition definition;
+			if (null != (definition = Definition) &&
+				(filter == null || !filter.FilterChildVerbalizer(definition, isNegative).IsBlocked))
+			{
+				yield return CustomChildVerbalizer.VerbalizeInstance(definition);
+			}
+			Note note = Note;
+			if (null != (note = Note) &&
+				(filter == null || !filter.FilterChildVerbalizer(note, isNegative).IsBlocked))
+			{
+				yield return CustomChildVerbalizer.VerbalizeInstance(note);
+			}
+		}
+		IEnumerable<CustomChildVerbalizer> IVerbalizeCustomChildren.GetCustomChildVerbalizations(IVerbalizeFilterChildren filter, bool isNegative)
+		{
+			return GetCustomChildVerbalizations(filter, isNegative);
+		}
+		#endregion // IVerbalizeCustomChildren Implementation
+		#region IVerbalizeFilterChildrenByRole Implementation
+		/// <summary>
+		/// Implements <see cref="IVerbalizeFilterChildrenByRole.BlockEmbeddedVerbalization"/>.
+		/// All relationships of the core domain model are blocked, with individal elements
+		/// turned back on via the <see cref="IVerbalizeCustomChildren"/> implementation.
+		/// </summary>
+		protected bool BlockEmbeddedVerbalization(DomainRoleInfo embeddingRole)
+		{
+			return embeddingRole.DomainModel.Id == ORMCoreDomainModel.DomainModelId;
+		}
+		bool IVerbalizeFilterChildrenByRole.BlockEmbeddedVerbalization(DomainRoleInfo embeddingRole)
+		{
+			return BlockEmbeddedVerbalization(embeddingRole);
+		}
+		#endregion // IVerbalizeFilterChildrenByRole Implementation
 	}
 	#region NamedElementDictionary and DuplicateNameError integration
 	public partial class ORMModel : INamedElementDictionaryParent

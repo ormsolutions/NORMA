@@ -24,6 +24,16 @@
 	<xs:redefine schemaLocation="../VerbalizationUntypedSnippets.xsd">
 		<xs:simpleType name="SnippetTypeEnum">
 			<xs:restriction base="SnippetTypeEnum">
+				<xs:enumeration value="ContextModelDescriptionOpen">
+					<xs:annotation>
+						<xs:documentation>Description: Opening section for describing the context model. Includes a replacement field for the model name.</xs:documentation>
+					</xs:annotation>
+				</xs:enumeration>
+				<xs:enumeration value="ContextModelDescriptionClose">
+					<xs:annotation>
+						<xs:documentation>Description: Closing section for describing the context model.</xs:documentation>
+					</xs:annotation>
+				</xs:enumeration>
 				<xs:enumeration value="ObjectTypePageHeader">
 					<xs:annotation>
 						<xs:documentation>Description: Header for the individual Object Type Page</xs:documentation>

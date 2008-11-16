@@ -1265,6 +1265,13 @@
       <constraint name="UniquenessConstraint" />
     </usedBy>
   </snippet>
+  <snippet name="ModelVerbalization" replacementCount="1">
+    <statement>Description: Format string to verbalize the model element. Replacement field {0} is the Model name, and {1} is the guid id for the model.</statement>
+    <unformattedSnippet>Object-Role Model: {0}</unformattedSnippet>
+    <contains />
+    <containedIn />
+    <usedBy />
+  </snippet>
   <snippet name="MoreThanOneQuantifier" replacementCount="1">
     <statement>
 							Description: Used for 'more than one' before an object name to define quantity as more than one.  Format: more than one {0}

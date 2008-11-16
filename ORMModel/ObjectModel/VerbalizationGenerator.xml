@@ -21,6 +21,12 @@
 		<CopyrightLine>\**************************************************************************/</CopyrightLine>
 	</Copyright>
 	<Constructs>
+		<ORMModel>
+			<Snippet ref="ModelVerbalization">
+				<ContextName/>
+				<ContextId/>
+			</Snippet>
+		</ORMModel>
 		<!-- Generate FactType verbalization along with constraints -->
 		<FactType/>
 		<SubtypeFact>
@@ -45,14 +51,15 @@
 				<Snippet ref="ValueTypeVerbalization"/>
 				<SnippetReplacements>
 					<Snippet ref="ObjectType">
-						<ObjectTypeName/>
+						<ContextName/>
 						<ContextId/>
 					</Snippet>
 				</SnippetReplacements>
 			</ConditionalSnippet>
+			<ErrorReportHere/>
 			<Snippet ref="ObjectifiesFactTypeVerbalization" conditionalMatch="IsObjectifiedFactType" conditionalBlockContext="ObjectifiedFactType">
 				<Snippet ref="ObjectType">
-					<ObjectTypeName/>
+					<ContextName/>
 					<ContextId/>
 				</Snippet>
 				<Fact/>
@@ -67,7 +74,7 @@
 			</Snippet>
 			<Snippet ref="IndependentVerbalization" conditionalMatch="IsIndependent">
 				<Snippet ref="ObjectType">
-					<ObjectTypeName/>
+					<ContextName/>
 					<ContextId/>
 				</Snippet>
 			</Snippet>
@@ -1027,7 +1034,7 @@
 					<Snippet ref="MultiValueValueConstraint"/>
 					<SnippetReplacements>
 						<Snippet ref="ObjectType">
-							<ObjectTypeName/>
+							<ContextName/>
 							<ContextId/>
 						</Snippet>
 						<IterateValueRanges listStyle="CompactSimpleList">

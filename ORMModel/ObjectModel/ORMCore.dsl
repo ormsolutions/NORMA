@@ -224,6 +224,42 @@
 						<ExternalTypeMoniker Name="/Neumont.Tools.ORM.ObjectModel/ModelErrorDisplayFilter"/>
 					</Type>
 				</DomainProperty>
+				<DomainProperty Name="DefinitionText" DefaultValue="" DisplayName="InformalDefinition" Description="A definition of this Model. To insert new lines, use Control-Enter in the dropdown editor, or open the 'ORM Informal Definition Editor' toolwindow." Id="E86A38C9-2F8E-4066-8114-384184C5E3C3" Kind="CustomStorage">
+					<Attributes>
+						<ClrAttribute Name="global::System.ComponentModel.Editor">
+							<Parameters>
+								<AttributeParameter Value="typeof(global::Neumont.Tools.Modeling.Design.MultilineTextEditor&lt;global::Neumont.Tools.ORM.ObjectModel.Definition&gt;)"/>
+								<AttributeParameter Value="typeof(global::System.Drawing.Design.UITypeEditor)"/>
+							</Parameters>
+						</ClrAttribute>
+						<ClrAttribute Name="global::System.ComponentModel.MergableProperty">
+							<Parameters>
+								<AttributeParameter Value="false"/>
+							</Parameters>
+						</ClrAttribute>
+					</Attributes>
+					<Type>
+						<ExternalTypeMoniker Name="/System/String"/>
+					</Type>
+				</DomainProperty>
+				<DomainProperty Name="NoteText" DefaultValue="" DisplayName="Note" Description="A note to associate with this Model. To insert new lines, use Control-Enter in the dropdown editor, or open the 'ORM Notes Editor' toolwindow." Id="603A1F7B-06A4-4B85-9B0D-E3A85629FF98" Kind="CustomStorage">
+					<Attributes>
+						<ClrAttribute Name="global::System.ComponentModel.Editor">
+							<Parameters>
+								<AttributeParameter Value="typeof(global::Neumont.Tools.Modeling.Design.MultilineTextEditor&lt;global::Neumont.Tools.ORM.ObjectModel.Note&gt;)"/>
+								<AttributeParameter Value="typeof(global::System.Drawing.Design.UITypeEditor)"/>
+							</Parameters>
+						</ClrAttribute>
+						<ClrAttribute Name="global::System.ComponentModel.MergableProperty">
+							<Parameters>
+								<AttributeParameter Value="false"/>
+							</Parameters>
+						</ClrAttribute>
+					</Attributes>
+					<Type>
+						<ExternalTypeMoniker Name="/System/String"/>
+					</Type>
+				</DomainProperty>
 			</Properties>
 			<ElementMergeDirectives>
 				<ElementMergeDirective UsesCustomAccept="false" UsesCustomMerge="true">
@@ -287,7 +323,7 @@
 						<ExternalTypeMoniker Name="/System/Boolean"/>
 					</Type>
 				</DomainProperty>
-				<DomainProperty Name="DefinitionText" DefaultValue="" DisplayName="InformalDefinition" Description="A definition of this ObjectType. To insert new lines, use Control-Enter in the dropdown editor, or open the 'ORM Notes Editor' toolwindow." Id="431A8A8F-E8EC-4014-B1A1-843E55751A55" Kind="CustomStorage">
+				<DomainProperty Name="DefinitionText" DefaultValue="" DisplayName="InformalDefinition" Description="A definition of this ObjectType. To insert new lines, use Control-Enter in the dropdown editor, or open the 'ORM Informal Definition Editor' toolwindow." Id="431A8A8F-E8EC-4014-B1A1-843E55751A55" Kind="CustomStorage">
 					<Attributes>
 						<ClrAttribute Name="global::System.ComponentModel.Editor">
 							<Parameters>
@@ -454,7 +490,7 @@
 						<ExternalTypeMoniker Name="/System/Boolean"/>
 					</Type>
 				</DomainProperty>
-				<DomainProperty Name="DefinitionText" DefaultValue="" DisplayName="InformalDefinition" Description="A definition of this FactType. To insert new lines, use Control-Enter in the dropdown editor, or open the 'ORM Notes Editor' toolwindow." Id="3F58E4D1-4562-478A-A3FE-08715E455CD8" Kind="CustomStorage">
+				<DomainProperty Name="DefinitionText" DefaultValue="" DisplayName="InformalDefinition" Description="A definition of this FactType. To insert new lines, use Control-Enter in the dropdown editor, or open the 'ORM Informal Definition Editor' toolwindow." Id="3F58E4D1-4562-478A-A3FE-08715E455CD8" Kind="CustomStorage">
 					<Attributes>
 						<ClrAttribute Name="global::System.ComponentModel.Editor">
 							<Parameters>
@@ -3365,6 +3401,26 @@
 			</Target>
 		</DomainRelationship>
 
+		<DomainRelationship Name="ModelHasDefinition" Namespace="Neumont.Tools.ORM.ObjectModel" IsEmbedding="true" Id="BC513C18-D426-4E5E-907C-1CD0C87732F1">
+			<!--<BaseRelationship>
+				<DomainRelationshipMoniker Name="ORMElementLink"/>
+			</BaseRelationship>-->
+			<Source>
+				<DomainRole Name="Model" PropertyName="Definition" Multiplicity="ZeroOne" PropagatesDelete="false" IsPropertyGenerator="true" DisplayName="Model" Id="EE4B3D9B-415E-4105-90BD-BE09D8E135A7">
+					<RolePlayer>
+						<DomainClassMoniker Name="ORMModel"/>
+					</RolePlayer>
+				</DomainRole>
+			</Source>
+			<Target>
+				<DomainRole Name="Definition" PropertyName="Model" Multiplicity="ZeroOne" PropagatesDelete="true" IsPropertyGenerator="true" DisplayName="Definition" Id="86F015DA-181F-4431-9773-892D82E1C448">
+					<RolePlayer>
+						<DomainClassMoniker Name="Definition"/>
+					</RolePlayer>
+				</DomainRole>
+			</Target>
+		</DomainRelationship>
+
 		<DomainRelationship Name="ObjectTypeHasDefinition" Namespace="Neumont.Tools.ORM.ObjectModel" IsEmbedding="true" Id="CC5801E2-DC99-4927-8924-F3E451F61E60">
 			<!--<BaseRelationship>
 				<DomainRelationshipMoniker Name="ORMElementLink"/>
@@ -3438,6 +3494,26 @@
 			</Source>
 			<Target>
 				<DomainRole Name="Note" PropertyName="ObjectType" Multiplicity="ZeroOne" PropagatesDelete="true" IsPropertyGenerator="true" DisplayName="Note" Id="B2BC6ECC-430A-48AE-A862-D4D876748130">
+					<RolePlayer>
+						<DomainClassMoniker Name="Note"/>
+					</RolePlayer>
+				</DomainRole>
+			</Target>
+		</DomainRelationship>
+
+		<DomainRelationship Name="ModelHasPrimaryNote" Namespace="Neumont.Tools.ORM.ObjectModel" IsEmbedding="true" Id="BEA348B0-FC00-4B2F-8285-882693FE408F">
+			<!--<BaseRelationship>
+				<DomainRelationshipMoniker Name="ORMElementLink"/>
+			</BaseRelationship>-->
+			<Source>
+				<DomainRole Name="Model" PropertyName="Note" Multiplicity="ZeroOne" PropagatesDelete="false" IsPropertyGenerator="true" DisplayName="Model" Id="189B06E7-23C1-42C1-9DA0-25A62ACA12E1">
+					<RolePlayer>
+						<DomainClassMoniker Name="ORMModel"/>
+					</RolePlayer>
+				</DomainRole>
+			</Source>
+			<Target>
+				<DomainRole Name="Note" PropertyName="PrimaryForModel" Multiplicity="ZeroOne" PropagatesDelete="true" IsPropertyGenerator="true" DisplayName="Note" Id="9F33E7CB-A993-451F-A60E-2BE8E21B9AC3">
 					<RolePlayer>
 						<DomainClassMoniker Name="Note"/>
 					</RolePlayer>

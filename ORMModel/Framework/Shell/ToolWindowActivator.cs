@@ -441,7 +441,7 @@ namespace Neumont.Tools.Modeling.Shell
 					monitor.SelectionChanged += new EventHandler<MonitorSelectionEventArgs>(MonitorSelectionChanged);
 					monitor.DocumentWindowChanged += new EventHandler<MonitorSelectionEventArgs>(DocumentWindowChanged);
 					SetCurrentDocument(SafeGetCurrentDocument(monitor) as DocDataType, monitor.CurrentDocumentView as DocViewType);
-					CurrentSelectionContainer = monitor.CurrentSelectionContainer as SelectionContainerType;
+					CurrentSelectionContainer = monitor.CurrentSelectionContainer as SelectionContainerType ?? monitor.CurrentDocumentView as SelectionContainerType;
 					myFrameVisibility = FrameVisibilityFlags.Visible | (flags & FrameVisibilityFlags.PersistentFlagsMask) | FrameVisibilityFlags.HasBeenVisible;
 					break;
 			}
@@ -601,7 +601,8 @@ namespace Neumont.Tools.Modeling.Shell
 		/// </summary>
 		private void MonitorSelectionChanged(object sender, MonitorSelectionEventArgs e)
 		{
-			CurrentSelectionContainer = ((IMonitorSelectionService)sender).CurrentSelectionContainer as SelectionContainerType;
+			IMonitorSelectionService monitor = (IMonitorSelectionService)sender;
+			CurrentSelectionContainer = monitor.CurrentSelectionContainer as SelectionContainerType ?? monitor.CurrentDocumentView as SelectionContainerType;
 		}
 		/// <summary>
 		/// Handles the DocumentWindowChanged event on the IMonitorSelectionService

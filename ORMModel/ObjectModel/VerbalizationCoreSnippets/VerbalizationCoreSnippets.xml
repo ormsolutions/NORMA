@@ -23,6 +23,7 @@ You must not remove this notice, or any other, from this software.
 			<Snippet type="ObjectifiesFactTypeVerbalization"><![CDATA[<span class="smallIndent">{0} <span class="quantifier">objectifies</span> "{1}"</span>]]></Snippet>
 			<Snippet type="EntityTypeVerbalization"><![CDATA[{0} <span class="quantifier">is an entity type</span>]]></Snippet>
 			<Snippet type="ValueTypeVerbalization"><![CDATA[{0} <span class="quantifier">is a value type</span>]]></Snippet>
+			<Snippet type="ModelVerbalization"><![CDATA[<span class="quantifier">Object-Role Model:</span> {0}]]></Snippet>
 			<Snippet type="NotesVerbalization"><![CDATA[<span class="quantifier">Notes:</span> <span class="note">{0}</span>]]></Snippet>
 			<Snippet type="DefinitionVerbalization"><![CDATA[<span class="quantifier">Definition:</span> <span class="definition">{0}</span>]]></Snippet>
 			<Snippet type="ConstraintProvidesPreferredIdentifier"><![CDATA[<span class="smallIndent"><span class="quantifier">this association with</span> {0} <span class="quantifier">provides the preferred identification scheme for</span> {1}</span>]]></Snippet>

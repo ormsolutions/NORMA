@@ -544,7 +544,7 @@
 		<xs:choice>
 			<xs:element name="Snippet" type="SnippetType"/>
 			<xs:element name="ConditionalSnippet" type="ConditionalSnippetType"/>
-			<xs:element name="ObjectTypeName" type="ObjectTypeNameType"/>
+			<xs:element name="ContextName" type="ContextNameType"/>
 			<xs:element name="ObjectifyingInstanceIdentifierName" type="ObjectifyingInstanceIdentifierNameType"/>
 			<xs:element name="ContextId" type="ElementIdType"/>
 			<xs:element name="NoteText" type="NoteTextType"/>
@@ -820,10 +820,10 @@
 			</xs:documentation>
 		</xs:annotation>
 	</xs:complexType>
-	<xs:complexType name="ObjectTypeNameType">
+	<xs:complexType name="ContextNameType">
 		<xs:annotation>
 			<xs:documentation>
-				Returns the name of the object type.
+				Returns the name of the context (this) element.
 			</xs:documentation>
 		</xs:annotation>
 	</xs:complexType>
@@ -967,6 +967,15 @@
 			<xs:element name="ConditionalSnippet" type="ConditionalSnippetType" />
 		</xs:choice>
 	</xs:complexType>
+	<xs:complexType name="ModelConstructType">
+		<xs:annotation>
+			<xs:documentation>Returns the verbalization for the ORMModel.</xs:documentation>
+		</xs:annotation>
+		<xs:choice maxOccurs="unbounded">
+			<xs:element name="Snippet" type="SnippetTypeWithConditionalMatch" />
+			<xs:element name="ConditionalSnippet" type="ConditionalSnippetType" />
+		</xs:choice>
+	</xs:complexType>
 	<xs:complexType name="ObjectConstructType">
 		<xs:annotation>
 			<xs:documentation>Returns the full verbalization for an entity, value, or objectified fact type.</xs:documentation>
@@ -974,8 +983,13 @@
 		<xs:choice maxOccurs="unbounded">
 			<xs:element name="Snippet" type="SnippetTypeWithConditionalMatch" />
 			<xs:element name="ConditionalSnippet" type="ConditionalSnippetType" />
-			<xs:element name="IterateInstances" type="IterateInstancesType" />
+			<xs:element name="ErrorReportHere" type="ErrorReportHereType"/>
 		</xs:choice>
+	</xs:complexType>
+	<xs:complexType name="ErrorReportHereType">
+		<xs:annotation>
+			<xs:documentation>Add this tag between top-level snippets to indidate that the error report should be placed here instead of at the end.</xs:documentation>
+		</xs:annotation>
 	</xs:complexType>
 	<xs:complexType name="FactType">
 		<xs:annotation>
@@ -1271,6 +1285,7 @@
 							<xs:element name="ObjectType" type="ObjectConstructType" />
 							<xs:element name="Definition" type="NoteConstructType" />
 							<xs:element name="Note" type="NoteConstructType" />
+							<xs:element name="ORMModel" type="ModelConstructType" />
 						</xs:all>
 					</xs:complexType>
 				</xs:element>

@@ -102,6 +102,12 @@
 		<se:Attribute ID="ErrorText" Name="Name"/>
 	</se:Element>
 	<se:Element Class="ORMModel" Name="ORMModel" SortChildElements="true" Override="true">
+		<se:Container Name="Definitions">
+			<se:Embed RelationshipName="ModelHasDefinition" RoleName="Definition"/>
+		</se:Container>
+		<se:Container Name="Notes">
+			<se:Embed RelationshipName="ModelHasPrimaryNote" RoleName="Note"/>
+		</se:Container>
 		<se:Container Name="Objects">
 			<se:Embed RelationshipName="ModelHasObjectType" RoleName="ObjectType"/>
 		</se:Container>

@@ -2436,7 +2436,7 @@ namespace Neumont.Tools.ORM.ObjectModel
 							}
 							else
 							{
-								yield return new CustomChildVerbalizer((IVerbalize)constraint);
+								yield return CustomChildVerbalizer.VerbalizeInstance((IVerbalize)constraint);
 							}
 						}
 					}
@@ -2495,7 +2495,7 @@ namespace Neumont.Tools.ORM.ObjectModel
 										// Combine verbalizations into one
 										CombinedMandatoryUniqueVerbalizer verbalizer = CombinedMandatoryUniqueVerbalizer.GetVerbalizer();
 										verbalizer.Initialize(this, uniquenessConstraint);
-										yield return new CustomChildVerbalizer(verbalizer, true);
+										yield return CustomChildVerbalizer.VerbalizeInstance(verbalizer, true);
 									}
 									else if (uniquenessConstraint != null)
 									{
@@ -2504,11 +2504,11 @@ namespace Neumont.Tools.ORM.ObjectModel
 											// Make sure the readings come from the implied fact
 											ImpliedUniqueVerbalizer verbalizer = ImpliedUniqueVerbalizer.GetVerbalizer();
 											verbalizer.Initialize(this, uniquenessConstraint);
-											yield return new CustomChildVerbalizer(verbalizer, true);
+											yield return CustomChildVerbalizer.VerbalizeInstance(verbalizer, true);
 										}
 										else
 										{
-											yield return new CustomChildVerbalizer(uniquenessConstraint);
+											yield return CustomChildVerbalizer.VerbalizeInstance(uniquenessConstraint);
 										}
 									}
 									else if (mandatoryConstraint != null)
@@ -2518,11 +2518,11 @@ namespace Neumont.Tools.ORM.ObjectModel
 											// Make sure the readings come from the implied fact
 											ImpliedMandatoryVerbalizer verbalizer = ImpliedMandatoryVerbalizer.GetVerbalizer();
 											verbalizer.Initialize(this, mandatoryConstraint);
-											yield return new CustomChildVerbalizer(verbalizer, true);
+											yield return CustomChildVerbalizer.VerbalizeInstance(verbalizer, true);
 										}
 										else
 										{
-											yield return new CustomChildVerbalizer(mandatoryConstraint);
+											yield return CustomChildVerbalizer.VerbalizeInstance(mandatoryConstraint);
 										}
 									}
 								}
@@ -2535,11 +2535,11 @@ namespace Neumont.Tools.ORM.ObjectModel
 											// Make sure the readings come from the implied fact
 											ImpliedUniqueVerbalizer verbalizer = ImpliedUniqueVerbalizer.GetVerbalizer();
 											verbalizer.Initialize(this, uniquenessConstraint);
-											yield return new CustomChildVerbalizer(verbalizer, true);
+											yield return CustomChildVerbalizer.VerbalizeInstance(verbalizer, true);
 										}
 										else
 										{
-											yield return new CustomChildVerbalizer(uniquenessConstraint);
+											yield return CustomChildVerbalizer.VerbalizeInstance(uniquenessConstraint);
 										}
 									}
 									if (mandatoryConstraint != null)
@@ -2549,11 +2549,11 @@ namespace Neumont.Tools.ORM.ObjectModel
 											// Make sure the readings come from the implied fact
 											ImpliedMandatoryVerbalizer verbalizer = ImpliedMandatoryVerbalizer.GetVerbalizer();
 											verbalizer.Initialize(this, mandatoryConstraint);
-											yield return new CustomChildVerbalizer(verbalizer, true);
+											yield return CustomChildVerbalizer.VerbalizeInstance(verbalizer, true);
 										}
 										else
 										{
-											yield return new CustomChildVerbalizer(mandatoryConstraint);
+											yield return CustomChildVerbalizer.VerbalizeInstance(mandatoryConstraint);
 										}
 									}
 								}
@@ -2565,7 +2565,7 @@ namespace Neumont.Tools.ORM.ObjectModel
 					{
 						DefaultBinaryMissingUniquenessVerbalizer verbalizer = DefaultBinaryMissingUniquenessVerbalizer.GetVerbalizer();
 						verbalizer.Initialize(this, (UniquenessConstraint)constraintWithImpliedOppositeDefault);
-						yield return new CustomChildVerbalizer(verbalizer, true);
+						yield return CustomChildVerbalizer.VerbalizeInstance(verbalizer, true);
 					}
 				}
 				else if (!isUnaryFactType)
@@ -2577,7 +2577,7 @@ namespace Neumont.Tools.ORM.ObjectModel
 						if (constraint.Constraint.ConstraintIsInternal &&
 							(filter == null || !filter.FilterChildVerbalizer(constraint, isNegative).IsBlocked))
 						{
-							yield return new CustomChildVerbalizer((IVerbalize)constraint);
+							yield return CustomChildVerbalizer.VerbalizeInstance((IVerbalize)constraint);
 						}
 					}
 				}
@@ -2594,7 +2594,7 @@ namespace Neumont.Tools.ORM.ObjectModel
 						if (constraint.FactTypeCollection.Count == 1 &&
 							(filter == null || !filter.FilterChildVerbalizer(constraint, isNegative).IsBlocked))
 						{
-							yield return new CustomChildVerbalizer((IVerbalize)constraint);
+							yield return CustomChildVerbalizer.VerbalizeInstance((IVerbalize)constraint);
 						}
 						break;
 				}
@@ -2611,14 +2611,14 @@ namespace Neumont.Tools.ORM.ObjectModel
 					null != (objectifyingType = NestingType) &&
 					(null == (pid = objectifyingType.PreferredIdentifier) ||
 					!pid.IsObjectifiedPreferredIdentifier);
-				yield return new CustomChildVerbalizer(FactTypeInstanceBlockStart.GetVerbalizer(), true);
+				yield return CustomChildVerbalizer.VerbalizeInstance(FactTypeInstanceBlockStart.GetVerbalizer(), true);
 				for (int i = 0; i < instanceCount; ++i)
 				{
 					FactTypeInstanceVerbalizer verbalizer = FactTypeInstanceVerbalizer.GetVerbalizer();
 					verbalizer.Initialize(this, instances[i], displayIdentifier);
-					yield return new CustomChildVerbalizer(verbalizer, true);
+					yield return CustomChildVerbalizer.VerbalizeInstance(verbalizer, true);
 				}
-				yield return new CustomChildVerbalizer(FactTypeInstanceBlockEnd.GetVerbalizer(), true);
+				yield return CustomChildVerbalizer.VerbalizeInstance(FactTypeInstanceBlockEnd.GetVerbalizer(), true);
 			}
 		}
 		IEnumerable<CustomChildVerbalizer> IVerbalizeCustomChildren.GetCustomChildVerbalizations(IVerbalizeFilterChildren filter, bool isNegative)

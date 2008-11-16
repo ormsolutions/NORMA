@@ -15,6 +15,16 @@ You must not remove this notice, or any other, from this software.
 <Languages xmlns="http://schemas.neumont.edu/ORM/SDK/Verbalization" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://schemas.neumont.edu/ORM/SDK/Verbalization VerbalizationReportSnippets.xsd">
 	<Language xml:lang="en-US">
 		<Snippets name="_default" description="Built-in verbalization report snippets">
+			<!-- Model context snippets -->
+			<Snippet type="ContextModelDescriptionOpen">
+				<![CDATA[
+				<div>
+				]]>
+			</Snippet>
+			<Snippet type="ContextModelDescriptionClose">
+				<![CDATA[
+				</div>]]>
+			</Snippet>
 			<!-- Object Type Page Snippets -->
 			<Snippet type="ObjectTypePageHeader">
 				<![CDATA[
@@ -95,7 +105,7 @@ You must not remove this notice, or any other, from this software.
 
 			<!-- Begin FactType/Constraint Validation Report Snippets -->
 			<Snippet type="FactTypeConstraintValidationHeader">
-				<![CDATA[<div class="spaceHeader">Constraint Validation Report</div>]]>
+				<![CDATA[<div class="topHeader">Constraint Validation Report</div>]]>
 			</Snippet>
 			<Snippet type="FactTypeConstraintValidationListItemOpen">
 				<![CDATA[
@@ -252,18 +262,12 @@ You must not remove this notice, or any other, from this software.
 									padding-bottom:25px;
 									padding-left:20px;
 								}
-								div.spaceHeader
-								{
-									position:relative;
-									border-bottom: 2px solid #FFCE84;
-									margin-bottom: 150px;
-									font-size:18px;
-								}
 								div.topHeader
 								{
 									position:relative;
 									border-bottom: 2px solid #FFCE84;
 									font-size:18px;
+									margin-top: 8px;
 								}
 								div.container
 								{
@@ -359,7 +363,8 @@ You must not remove this notice, or any other, from this software.
 								div#navBar
 								{
 									float:right;
-									padding-top:50px;
+									padding-top:15px;
+									padding-left:20px;
 								}
 								div#navBar h4
 								{

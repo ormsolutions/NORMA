@@ -25,6 +25,8 @@
 	<xs:element name="ORMModel" type="ORMModel"/>
 	<xs:complexType name="ORMModel">
 		<xs:all>
+			<xs:element name="Definitions" type="DefinitionsType" minOccurs="0"/>
+			<xs:element name="Notes" type="NotesType" minOccurs="0"/>
 			<xs:element name="Objects" type="Objects" minOccurs="0"/>
 			<xs:element name="Facts" type="Facts" minOccurs="0"/>
 			<xs:element name="Constraints" type="Constraints" minOccurs="0"/>

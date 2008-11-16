@@ -1493,12 +1493,28 @@ namespace Neumont.Tools.ORM
 				return ResourceStrings.GetString(ResourceManagers.Model, "ModelReadingEditor.PrimaryFactTypeReadingsText");
 			}
 		}
+		/// <summary>Text to place in an empty description editor tool window.</summary>
+		public static string ModelDefinitionWindowEmptyDisplayText
+		{
+			get
+			{
+				return ResourceStrings.GetString(ResourceManagers.Model, "ModelDefinitionWindow.EmptyDisplayText");
+			}
+		}
 		/// <summary>Text to place in the title bar of the description editor tool window.</summary>
 		public static string ModelDefinitionWindowTitle
 		{
 			get
 			{
 				return ResourceStrings.GetString(ResourceManagers.Model, "ModelDefinitionWindow.WindowTitle");
+			}
+		}
+		/// <summary>Text to place in an empty notes editor tool window.</summary>
+		public static string ModelNotesWindowEmptyDisplayText
+		{
+			get
+			{
+				return ResourceStrings.GetString(ResourceManagers.Model, "ModelNotesWindow.EmptyDisplayText");
 			}
 		}
 		/// <summary>Text to place in the title bar of the notes editor tool window.</summary>
@@ -1611,6 +1627,14 @@ namespace Neumont.Tools.ORM
 			get
 			{
 				return ResourceStrings.GetString(ResourceManagers.Model, "ModelSamplePopulationEditor.SeparateObjectifiedInstanceIdentifierTransactionText");
+			}
+		}
+		/// <summary>Text to place in an empty sample population window.</summary>
+		public static string ModelSamplePopulationEditorEmptyDisplayText
+		{
+			get
+			{
+				return ResourceStrings.GetString(ResourceManagers.Model, "ModelSamplePopulationEditor.EmptyDisplayText");
 			}
 		}
 		/// <summary>Text to place in the title bar of the sample population window.</summary>

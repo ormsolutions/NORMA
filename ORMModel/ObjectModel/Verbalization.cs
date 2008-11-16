@@ -3,6 +3,7 @@
 * Neumont Object-Role Modeling Architect for Visual Studio                 *
 *                                                                          *
 * Copyright © Neumont University. All rights reserved.                     *
+* Copyright © Matthew Curland. All rights reserved.                        *
 *                                                                          *
 * The use and distribution terms for this software are covered by the      *
 * Common Public License 1.0 (http://opensource.org/licenses/cpl) which     *
@@ -18,6 +19,7 @@ using System;
 using System.IO;
 using System.Collections;
 using System.Collections.Generic;
+using System.Collections.ObjectModel;
 using System.Diagnostics;
 using System.Globalization;
 using System.Text;
@@ -151,6 +153,7 @@ namespace Neumont.Tools.ORM.ObjectModel
 	/// </summary>
 	public struct CustomChildVerbalizer : IEquatable<CustomChildVerbalizer>
 	{
+		#region BlockVerbalize class
 		private sealed class BlockVerbalize : IVerbalize
 		{
 			#region IVerbalize Implementation
@@ -161,8 +164,84 @@ namespace Neumont.Tools.ORM.ObjectModel
 			}
 			#endregion // IVerbalize Implementation
 		}
+		#endregion // BlockVerbalize class
+		#region DeferVerbalizationWrapper class
+		/// <summary>
+		/// A wrapper class to do deferred verbalization.
+		/// </summary>
+		private sealed class DeferVerbalizationWrapper : IVerbalize
+		{
+			private IVerbalize myVerbalizeTarget;
+			private readonly IVerbalizeFilterChildren myDeferFilter;
+			private readonly DeferVerbalizationOptions myDeferOptions;
+			private readonly bool myDisposeAfterVerbalization;
+			/// <summary>
+			/// Defer to the specified target
+			/// </summary>
+			/// <param name="verbalizeTarget">The instance to defer to</param>
+			/// <param name="deferOptions">Defer options</param>
+			/// <param name="childFilter">The child filter</param>
+			/// <param name="disposeAfterVerbalization">Disposes the instance after verbalization</param>
+			public DeferVerbalizationWrapper(IVerbalize verbalizeTarget, DeferVerbalizationOptions deferOptions, IVerbalizeFilterChildren childFilter, bool disposeAfterVerbalization)
+			{
+				myVerbalizeTarget = verbalizeTarget;
+				myDeferOptions = deferOptions;
+				myDeferFilter = childFilter;
+				myDisposeAfterVerbalization = disposeAfterVerbalization;
+			}
+			#region IVerbalize Implementation
+			bool IVerbalize.GetVerbalization(TextWriter writer, IDictionary<Type, IVerbalizationSets> snippetsDictionary, IVerbalizationContext verbalizationContext, bool isNegative)
+			{
+				IVerbalize verbalize = myVerbalizeTarget;
+				if (verbalize != null)
+				{
+					verbalizationContext.DeferVerbalization(verbalize, myDeferOptions, myDeferFilter);
+					if (myDisposeAfterVerbalization)
+					{
+						IDisposable dispose = verbalize as IDisposable;
+						if (dispose != null)
+						{
+							myVerbalizeTarget = null;
+							dispose.Dispose();
+						}
+					}
+				}
+				return false;
+			}
+			#endregion // IVerbalize Implementation
+		}
+		#endregion // DeferVerbalizationWrapper class
+		#region Member Variables
 		private readonly IVerbalize myInstance;
-		private readonly bool myOptions;
+		private readonly bool myDisposeAfterVerbalization;
+		#endregion // Member Variables
+		#region Private constructors
+		/// <summary>
+		/// Create an VerbalizationFilterResult structure
+		/// </summary>
+		/// <param name="instance">The child instance to verbalize</param>
+		/// <param name="disposeAfterVerbalization">Indicate if the instance should be
+		/// disposed after verbalization is complete.</param>
+		private CustomChildVerbalizer(IVerbalize instance, bool disposeAfterVerbalization)
+		{
+			myInstance = instance;
+			myDisposeAfterVerbalization = disposeAfterVerbalization;
+		}
+		/// <summary>
+		/// Create an VerbalizationFilterResult structure for deferred verbalization
+		/// </summary>
+		/// <param name="instance">The child instance to verbalize</param>
+		/// <param name="deferOptions">Defer options</param>
+		/// <param name="childFilter">The filter to apply to child verbalization</param>
+		/// <param name="disposeAfterVerbalization">Indicate if the instance should be
+		/// disposed after verbalization is complete.</param>
+		private CustomChildVerbalizer(IVerbalize instance, DeferVerbalizationOptions deferOptions, IVerbalizeFilterChildren childFilter, bool disposeAfterVerbalization)
+		{
+			myInstance = new DeferVerbalizationWrapper(instance, deferOptions, childFilter, disposeAfterVerbalization);
+			myDisposeAfterVerbalization = false;
+		}
+		#endregion // Private constructors
+		#region Public Members
 		/// <summary>
 		/// Any empty VerbalizationFilterResult structure
 		/// </summary>
@@ -194,21 +273,47 @@ namespace Neumont.Tools.ORM.ObjectModel
 			}
 		}
 		/// <summary>
-		/// Create an VerbalizationFilterResult structure
+		/// Verbalize a single instance and do not try to verbalize child instances.
+		/// Dose not dispose the instance after verbalization.
 		/// </summary>
-		/// <param name="instance">The resulting IVerbalize</param>
-		/// <param name="options">Options specifying how the instance is used. true indicates
-		/// the returned element should be disposed.</param>
-		public CustomChildVerbalizer(IVerbalize instance, bool options)
+		/// <param name="instance">The child instance to verbalize</param>
+		public static CustomChildVerbalizer VerbalizeInstance(IVerbalize instance)
 		{
-			myInstance = instance;
-			myOptions = options;
+			return new CustomChildVerbalizer(instance, false);
 		}
 		/// <summary>
-		/// Create an VerbalizationFilterResult structure
+		/// Verbalize a single instance and do not try to verbalize child instances.
 		/// </summary>
-		/// <param name="instance">The resulting IVerbalize</param>
-		public CustomChildVerbalizer(IVerbalize instance) : this(instance, false) { }
+		/// <param name="instance">The child instance to verbalize</param>
+		/// <param name="disposeAfterVerbalization">Indicate if the instance should be
+		/// disposed after verbalization is complete.</param>
+		public static CustomChildVerbalizer VerbalizeInstance(IVerbalize instance, bool disposeAfterVerbalization)
+		{
+			return new CustomChildVerbalizer(instance, disposeAfterVerbalization);
+		}
+		/// <summary>
+		/// Verbalize an instance and its child instances using <see cref="IVerbalizationContext.DeferVerbalization"/>
+		/// Does not dispose the instance after verbalization.
+		/// </summary>
+		/// <param name="instance">The child instance to verbalize</param>
+		/// <param name="deferOptions">Defer options</param>
+		/// <param name="childFilter">The filter to apply to child verbalization</param>
+		public static CustomChildVerbalizer VerbalizeInstanceWithChildren(IVerbalize instance, DeferVerbalizationOptions deferOptions, IVerbalizeFilterChildren childFilter)
+		{
+			return new CustomChildVerbalizer(instance, deferOptions, childFilter, false);
+		}
+		/// <summary>
+		/// Verbalize an instance and its child instances using <see cref="IVerbalizationContext.DeferVerbalization"/>
+		/// </summary>
+		/// <param name="instance">The child instance to verbalize</param>
+		/// <param name="deferOptions">Defer options</param>
+		/// <param name="childFilter">The filter to apply to child verbalization</param>
+		/// <param name="disposeAfterVerbalization">Indicate if the instance should be
+		/// disposed after verbalization is complete.</param>
+		public static CustomChildVerbalizer VerbalizeInstanceWithChildren(IVerbalize instance, DeferVerbalizationOptions deferOptions, IVerbalizeFilterChildren childFilter, bool disposeAfterVerbalization)
+		{
+			return new CustomChildVerbalizer(instance, deferOptions, childFilter, disposeAfterVerbalization);
+		}
 		/// <summary>
 		/// The instance.
 		/// </summary>
@@ -224,13 +329,14 @@ namespace Neumont.Tools.ORM.ObjectModel
 		/// <summary>
 		/// Options for using the instance
 		/// </summary>
-		public bool Options
+		public bool DisposeAfterVerbalization
 		{
 			get
 			{
-				return myOptions;
+				return myDisposeAfterVerbalization;
 			}
 		}
+		#endregion // Public members
 		#region Equality and casting routines
 		/// <summary>
 		/// Standard Equals override
@@ -247,7 +353,7 @@ namespace Neumont.Tools.ORM.ObjectModel
 			IVerbalize instance = myInstance;
 			if (instance != null)
 			{
-				return Neumont.Tools.Modeling.Utility.GetCombinedHashCode(instance.GetHashCode(), myOptions.GetHashCode());
+				return Neumont.Tools.Modeling.Utility.GetCombinedHashCode(instance.GetHashCode(), myDisposeAfterVerbalization.GetHashCode());
 			}
 			return 0;
 		}
@@ -256,7 +362,7 @@ namespace Neumont.Tools.ORM.ObjectModel
 		/// </summary>
 		public bool Equals(CustomChildVerbalizer obj)
 		{
-			return myInstance == obj.myInstance && myOptions == obj.myOptions;
+			return myInstance == obj.myInstance && myDisposeAfterVerbalization == obj.myDisposeAfterVerbalization;
 		}
 		/// <summary>
 		/// Equality operator
@@ -313,6 +419,26 @@ namespace Neumont.Tools.ORM.ObjectModel
 		CustomChildVerbalizer FilterChildVerbalizer(object child, bool isNegative);
 	}
 	#endregion // IVerbalizeFilterChildren interface
+	#region IVerbalizeFilterChildrenByRole
+	/// <summary>
+	/// Implement to block verbalization of embedded child
+	/// elements based on the relationship to the child element.
+	/// This runs before an element is offered to <see cref="IVerbalizeFilterChildren"/>
+	/// and is used as an optimization to aid verbalization of
+	/// high-level container elements.
+	/// </summary>
+	public interface IVerbalizeFilterChildrenByRole
+	{
+		/// <summary>
+		/// Test if aggregated elements should be blocked from being
+		/// verbalized based on the type of child relationship.
+		/// </summary>
+		/// <param name="embeddingRole">A role on this object that is
+		/// the container side of an embedding relationship</param>
+		/// <returns><see langword="true"/> to block verbalization</returns>
+		bool BlockEmbeddedVerbalization(DomainRoleInfo embeddingRole);
+	}
+	#endregion // IVerbalizeFilterChildrenByRole
 	#region IVerbalizationSets interface
 	/// <summary>A base interface for the generic VerbalizationSets interface.</summary>
 	public interface IVerbalizationSets
@@ -1338,4 +1464,598 @@ namespace Neumont.Tools.ORM.ObjectModel
 		#endregion // Static Functions
 	}
 	#endregion // VerbalizationHyphenBinder struct
+	#region VerbalizationCallbackWriter class
+	/// <summary>
+	/// Handles the writing of utility snippets for Verbalization targets
+	/// </summary>
+	public class VerbalizationCallbackWriter
+	{
+		/// <summary>
+		/// Writer used to write Verbalizations
+		/// </summary>
+		private TextWriter myWriter;
+		/// <summary>
+		/// Replacement fields for CSS stylesheet declaration
+		/// </summary>
+		private string[] myDocumentHeaderReplacementFields;
+		/// <summary>
+		/// List of Core Verbalization Snippets
+		/// </summary>
+		private IVerbalizationSets<CoreVerbalizationSnippetType> myCoreSnippets;
+
+		/// <summary>
+		/// Initializes a new instance of <see cref="VerbalizationCallbackWriter"/>
+		/// </summary>
+		/// <param name="snippets">The <see cref="IVerbalizationSets"/> containing the Verbalization snippet set to use</param>
+		/// <param name="writer">The <see cref="TextWriter"/> to write to</param>
+		public VerbalizationCallbackWriter(IVerbalizationSets<CoreVerbalizationSnippetType> snippets, TextWriter writer)
+		{
+			myCoreSnippets = snippets;
+			myWriter = writer;
+			writer.NewLine = snippets.GetSnippet(CoreVerbalizationSnippetType.VerbalizerNewLine);
+		}
+		/// <summary>
+		/// Initializes a new instance of <see cref="VerbalizationCallbackWriter"/>
+		/// </summary>
+		/// <param name="snippets">The <see cref="IVerbalizationSets"/> containing the Verbalization snippet set to use</param>
+		/// <param name="writer">The <see cref="TextWriter"/> to write to</param>
+		/// <param name="documentHeaderReplacementFields">The replacement fields used to define the colors for the CSS applied to snippets</param>
+		public VerbalizationCallbackWriter(IVerbalizationSets<CoreVerbalizationSnippetType> snippets, TextWriter writer, string[] documentHeaderReplacementFields)
+			: this(snippets, writer)
+		{
+			myDocumentHeaderReplacementFields = documentHeaderReplacementFields;
+		}
+		/// <summary>
+		/// Gets the underlying TextWriter
+		/// </summary>
+		public TextWriter Writer
+		{
+			get { return myWriter; }
+		}
+		/// <summary>
+		/// Writes the Document Header defined in the current Verbalization Snippet Set
+		/// </summary>
+		public virtual void WriteDocumentHeader()
+		{
+			myWriter.Write(string.Format(CultureInfo.InvariantCulture, myCoreSnippets.GetSnippet(CoreVerbalizationSnippetType.VerbalizerDocumentHeader), myDocumentHeaderReplacementFields));
+		}
+		/// <summary>
+		/// Writes the Document Footer defined in the current Verbalization Snippet Set
+		/// </summary>
+		public virtual void WriteDocumentFooter()
+		{
+			myWriter.Write(string.Format(CultureInfo.InvariantCulture, myCoreSnippets.GetSnippet(CoreVerbalizationSnippetType.VerbalizerDocumentFooter)));
+		}
+		/// <summary>
+		/// Writes the verbalization opener defined in the current Verbalization Snippet Set
+		/// </summary>
+		public virtual void WriteOpen()
+		{
+			myWriter.Write(myCoreSnippets.GetSnippet(CoreVerbalizationSnippetType.VerbalizerOpenVerbalization));
+		}
+		/// <summary>
+		/// Writes the verbalization closer defined in the current Verbalization Snippet Set
+		/// </summary>
+		public virtual void WriteClose()
+		{
+			myWriter.Write(myCoreSnippets.GetSnippet(CoreVerbalizationSnippetType.VerbalizerCloseVerbalization));
+		}
+		/// <summary>
+		/// Writes the snippet used to increase indentation defined in the current Verbalization Snippet Set
+		/// </summary>
+		public virtual void IncreaseIndent()
+		{
+			myWriter.Write(myCoreSnippets.GetSnippet(CoreVerbalizationSnippetType.VerbalizerIncreaseIndent));
+		}
+		/// <summary>
+		/// Writes the snippet used to decrease indentation defined in the current Verbalization Snippet Set
+		/// </summary>
+		public virtual void DecreaseIndent()
+		{
+			myWriter.Write(myCoreSnippets.GetSnippet(CoreVerbalizationSnippetType.VerbalizerDecreaseIndent));
+		}
+	}
+	#endregion // VerbalizationCallbackWriter class
+	#region VerbalizationHelper class
+	/// <summary>
+	/// Provides helper methods for Verbalizations
+	/// </summary>
+	public static class VerbalizationHelper
+	{
+		#region VerbalizationResult Enum
+		/// <summary>
+		/// An enum to determine callback handling during verbalization
+		/// </summary>
+		private enum VerbalizationResult
+		{
+			/// <summary>
+			/// The element was successfully verbalized
+			/// </summary>
+			Verbalized,
+			/// <summary>
+			/// The element was previously verbalized
+			/// </summary>
+			AlreadyVerbalized,
+			/// <summary>
+			/// The element was not verbalized
+			/// </summary>
+			NotVerbalized,
+		}
+		#endregion // VerbalizationResult Enum
+		#region VerbalizationHandler Delegate
+		/// <summary>
+		/// Callback for child verbalizations
+		/// </summary>
+		private delegate VerbalizationResult VerbalizationHandler(VerbalizationCallbackWriter writer, IDictionary<Type, IVerbalizationSets> snippetsDictionary, string verbalizationTarget, IDictionary<IVerbalize, IVerbalize> alreadyVerbalized, IVerbalize verbalizer, VerbalizationHandler callback, int indentationLevel, bool isNegative, bool writeSecondaryLines, ref bool firstCallPending, ref bool firstWrite, ref int lastLevel);
+		#endregion // VerbalizationHandler Delegate
+		#region VerbalizationContextImpl class
+		private sealed class VerbalizationContextImpl : IVerbalizationContext
+		{
+			/// <summary>
+			/// A callback delegate enabling a verbalizer to tell
+			/// the hosting window that it is about to begin verbalizing.
+			/// This enables the host window to delay writing content outer
+			/// content until it knows that text is about to be written by
+			/// the verbalizer to the writer
+			/// </summary>
+			/// <param name="content">The style of verbalization content</param>
+			public delegate void NotifyBeginVerbalization(VerbalizationContent content);
+			public delegate void NotifyDeferVerbalization(object target, DeferVerbalizationOptions options, IVerbalizeFilterChildren childFilter);
+			public delegate bool NotifyAlreadyVerbalized(object target);
+			private NotifyBeginVerbalization myBeginCallback;
+			private NotifyDeferVerbalization myDeferCallback;
+			private NotifyAlreadyVerbalized myAlreadyVerbalizedCallback;
+			private string myVerbalizationTarget;
+			public VerbalizationContextImpl(NotifyBeginVerbalization beginCallback, NotifyDeferVerbalization deferCallback, NotifyAlreadyVerbalized alreadyVerbalizedCallback, string verbalizationTarget)
+			{
+				myBeginCallback = beginCallback;
+				myDeferCallback = deferCallback;
+				myAlreadyVerbalizedCallback = alreadyVerbalizedCallback;
+				myVerbalizationTarget = verbalizationTarget;
+			}
+			#region IVerbalizationContext Implementation
+			void IVerbalizationContext.BeginVerbalization(VerbalizationContent content)
+			{
+				myBeginCallback(content);
+			}
+			void IVerbalizationContext.DeferVerbalization(object target, DeferVerbalizationOptions options, IVerbalizeFilterChildren childFilter)
+			{
+				if (myDeferCallback != null)
+				{
+					myDeferCallback(target, options, childFilter);
+				}
+			}
+			bool IVerbalizationContext.AlreadyVerbalized(object target)
+			{
+				if (myAlreadyVerbalizedCallback != null)
+				{
+					return myAlreadyVerbalizedCallback(target);
+				}
+				return false;
+			}
+			string IVerbalizationContext.VerbalizationTarget
+			{
+				get
+				{
+					return myVerbalizationTarget;
+				}
+			}
+			#endregion // IVerbalizationContext Implementation
+		}
+		#endregion // VerbalizationContextImpl class
+		#region VerbalizeElement methods
+		/// <summary>
+		/// Handles the callback made by VerbalizeElement to execute verbalization
+		/// </summary>
+		/// <param name="writer">The VerbalizationCallbackWriter object used to write target specific snippets</param>
+		/// <param name="snippetsDictionary"></param>
+		/// <param name="verbalizationTarget"></param>
+		/// <param name="alreadyVerbalized"></param>
+		/// <param name="verbalizer">The IVerbalize element to verbalize</param>
+		/// <param name="callback">The original callback handler.</param>
+		/// <param name="indentationLevel">The indentation level of the verbalization</param>
+		/// <param name="isNegative"></param>
+		/// <param name="writeSecondaryLines">True to automatically add a line between callbacks. Set to <see langword="true"/> for multi-select scenarios.</param>
+		/// <param name="firstCallPending"></param>
+		/// <param name="firstWrite"></param>
+		/// <param name="lastLevel"></param>
+		/// <returns></returns>
+		private static VerbalizationResult VerbalizeElement_VerbalizationResult(VerbalizationCallbackWriter writer, IDictionary<Type, IVerbalizationSets> snippetsDictionary, string verbalizationTarget, IDictionary<IVerbalize, IVerbalize> alreadyVerbalized, IVerbalize verbalizer, VerbalizationHandler callback, int indentationLevel, bool isNegative, bool writeSecondaryLines, ref bool firstCallPending, ref bool firstWrite, ref int lastLevel)
+		{
+			if (indentationLevel == 0 &&
+				alreadyVerbalized != null &&
+				alreadyVerbalized.ContainsKey(verbalizer))
+			{
+				return VerbalizationResult.AlreadyVerbalized;
+			}
+			bool localFirstWrite = firstWrite;
+			bool localFirstCallPending = firstCallPending;
+			int localLastLevel = lastLevel;
+			bool retVal = verbalizer.GetVerbalization(
+				writer.Writer,
+				snippetsDictionary,
+				new VerbalizationContextImpl(
+				delegate(VerbalizationContent content)
+				{
+					// Prepare for verbalization on this element. Everything
+					// is delayed to this point in case the verbalization implementation
+					// does not callback to the text writer.
+					if (localFirstWrite)
+					{
+						if (localFirstCallPending)
+						{
+							localFirstCallPending = false;
+							// Write the HTML header to the buffer
+							writer.WriteDocumentHeader();
+						}
+
+						// write open tag for new verbalization
+						writer.WriteOpen();
+						localFirstWrite = false;
+					}
+					else if (writeSecondaryLines)
+					{
+						writer.Writer.WriteLine();
+					}
+
+					// Write indentation tags as needed
+					if (indentationLevel > localLastLevel)
+					{
+						do
+						{
+							writer.IncreaseIndent();
+							++localLastLevel;
+						} while (localLastLevel != indentationLevel);
+					}
+					else if (localLastLevel > indentationLevel)
+					{
+						do
+						{
+							writer.DecreaseIndent();
+							--localLastLevel;
+						} while (localLastLevel != indentationLevel);
+					}
+				},
+				delegate(object target, DeferVerbalizationOptions options, IVerbalizeFilterChildren childFilter)
+				{
+					bool localfcp = localFirstCallPending;
+					bool localfw = localFirstWrite;
+					int localll = localLastLevel;
+					VerbalizationHelper.VerbalizeElement(
+						target as ModelElement,
+						snippetsDictionary,
+						verbalizationTarget,
+						(0 == (options & DeferVerbalizationOptions.MultipleVerbalizations)) ? alreadyVerbalized : null,
+						childFilter,
+						writer,
+						callback,
+						isNegative,
+						indentationLevel,
+						(0 != (options & DeferVerbalizationOptions.AlwaysWriteLine)) ?
+							true :
+							((0 != (options & DeferVerbalizationOptions.NeverWriteLine)) ? false : writeSecondaryLines),
+						ref localfcp,
+						ref localfw,
+						ref localll);
+					localFirstCallPending = localfcp;
+					localFirstWrite = localfw;
+					localLastLevel = localll;
+				},
+				delegate(object target)
+				{
+					IVerbalize verbalizerKey = null;
+					IRedirectVerbalization surrogateRedirect;
+					if (alreadyVerbalized != null &&
+						(null == (surrogateRedirect = target as IRedirectVerbalization) ||
+						null == (verbalizerKey = surrogateRedirect.SurrogateVerbalizer)))
+					{
+						verbalizerKey = target as IVerbalize;
+					}
+					return (verbalizerKey == null) ? false : alreadyVerbalized.ContainsKey(verbalizerKey);
+				},
+				verbalizationTarget),
+				isNegative);
+			lastLevel = localLastLevel;
+			firstWrite = localFirstWrite;
+			firstCallPending = localFirstCallPending;
+			if (retVal)
+			{
+				if (indentationLevel == 0 && alreadyVerbalized != null)
+				{
+					alreadyVerbalized.Add(verbalizer, verbalizer);
+				}
+				return VerbalizationResult.Verbalized;
+			}
+			else
+			{
+				return VerbalizationResult.NotVerbalized;
+			}
+		}
+		/// <summary>
+		/// Determine the indentation level for verbalizing a ModelElement, and fire
+		/// the delegate for verbalization
+		/// </summary>
+		/// <param name="element">The element to verbalize</param>
+		/// <param name="snippetsDictionary">The default or loaded verbalization sets. Passed through all verbalization calls.</param>
+		/// <param name="verbalizationTarget">The verbalization target name, representing the container for the verbalization output.</param>
+		/// <param name="alreadyVerbalized">A dictionary of top-level (indentationLevel == 0) elements that have already been verbalized.</param>
+		/// <param name="isNegative">Use the negative form of the reading</param>
+		/// <param name="writer">The VerbalizationCallbackWriter for verbalization output</param>
+		/// <param name="writeSecondaryLines">True to automatically add a line between callbacks. Set to <see langword="true"/> for multi-select scenarios.</param>
+		/// <param name="firstCallPending"></param>
+		public static void VerbalizeElement(ModelElement element, IDictionary<Type, IVerbalizationSets> snippetsDictionary, string verbalizationTarget, IDictionary<IVerbalize, IVerbalize> alreadyVerbalized, bool isNegative, VerbalizationCallbackWriter writer, bool writeSecondaryLines, ref bool firstCallPending)
+		{
+			int lastLevel = 0;
+			bool firstWrite = true;
+			bool localFirstCallPending = firstCallPending;
+			VerbalizeElement(
+				element,
+				snippetsDictionary,
+				verbalizationTarget,
+				alreadyVerbalized,
+				null,
+				writer,
+				new VerbalizationHandler(VerbalizeElement_VerbalizationResult),
+				isNegative,
+				0,
+				writeSecondaryLines,
+				ref localFirstCallPending,
+				ref firstWrite,
+				ref lastLevel);
+			while (lastLevel > 0)
+			{
+				writer.DecreaseIndent();
+				--lastLevel;
+			}
+			// close the opening tag for the new verbalization
+			if (!firstWrite)
+			{
+				writer.WriteClose();
+			}
+			firstCallPending = localFirstCallPending;
+		}
+		/// <summary>
+		/// Determine the indentation level for verbalizing an implementation of IVerbalizeCustomChildren, and fire
+		/// the delegate for verbalization
+		/// </summary>
+		/// <param name="customChildren">The IVerbalizeCustomChildren implementation to verbalize</param>
+		/// <param name="snippetsDictionary">The default or loaded verbalization sets. Passed through all verbalization calls.</param>
+		/// <param name="verbalizationTarget">The verbalization target name, representing the container for the verbalization output.</param>
+		/// <param name="alreadyVerbalized">A dictionary of top-level (indentationLevel == 0) elements that have already been verbalized.</param>
+		/// <param name="filter"></param>
+		/// <param name="isNegative">Use the negative form of the reading</param>
+		/// <param name="writer">The VerbalizationCallbackWriter for verbalization output</param>
+		/// <param name="writeSecondaryLines">True to automatically add a line between callbacks. Set to <see langword="true"/> for multi-select scenarios.</param>
+		/// <param name="firstCallPending"></param>
+		public static void VerbalizeElement(IVerbalizeCustomChildren customChildren, IDictionary<Type, IVerbalizationSets> snippetsDictionary, string verbalizationTarget, IDictionary<IVerbalize, IVerbalize> alreadyVerbalized, IVerbalizeFilterChildren filter, bool isNegative, VerbalizationCallbackWriter writer, bool writeSecondaryLines, ref bool firstCallPending)
+		{
+			if (customChildren == null)
+			{
+				return;
+			}
+			int lastLevel = 0;
+			bool firstWrite = true;
+			bool localFirstCallPending = firstCallPending;
+			VerbalizeCustomChildren(
+				customChildren,
+				writer,
+				new VerbalizationHandler(VerbalizeElement_VerbalizationResult),
+				snippetsDictionary,
+				verbalizationTarget,
+				alreadyVerbalized,
+				filter,
+				isNegative,
+				0,
+				writeSecondaryLines,
+				ref localFirstCallPending,
+				ref firstWrite,
+				ref lastLevel);
+			while (lastLevel > 0)
+			{
+				writer.DecreaseIndent();
+				--lastLevel;
+			}
+			// close the opening tag for the new verbalization
+			if (!firstWrite)
+			{
+				writer.WriteClose();
+			}
+			firstCallPending = localFirstCallPending;
+		}
+		/// <summary>
+		/// Verbalize the passed in element and all its children
+		/// </summary>
+		/// <param name="element"></param>
+		/// <param name="snippetsDictionary"></param>
+		/// <param name="verbalizationTarget"></param>
+		/// <param name="alreadyVerbalized"></param>
+		/// <param name="outerFilter"></param>
+		/// <param name="writer"></param>
+		/// <param name="callback"></param>
+		/// <param name="isNegative"></param>
+		/// <param name="indentLevel"></param>
+		/// <param name="writeSecondaryLines">True to automatically add a line between callbacks. Set to <see langword="true"/> for multi-select scenarios.</param>
+		/// <param name="firstCallPending"></param>
+		/// <param name="firstWrite"></param>
+		/// <param name="lastLevel"></param>
+		private static void VerbalizeElement(ModelElement element, IDictionary<Type, IVerbalizationSets> snippetsDictionary, string verbalizationTarget, IDictionary<IVerbalize, IVerbalize> alreadyVerbalized, IVerbalizeFilterChildren outerFilter, VerbalizationCallbackWriter writer, VerbalizationHandler callback, bool isNegative, int indentLevel, bool writeSecondaryLines, ref bool firstCallPending, ref bool firstWrite, ref int lastLevel)
+		{
+			IVerbalize parentVerbalize = null;
+			IRedirectVerbalization surrogateRedirect;
+			if (indentLevel == 0 &&
+				null != (surrogateRedirect = element as IRedirectVerbalization) &&
+				null != (parentVerbalize = surrogateRedirect.SurrogateVerbalizer))
+			{
+				element = parentVerbalize as ModelElement;
+			}
+			else
+			{
+				parentVerbalize = element as IVerbalize;
+			}
+			bool disposeVerbalizer = false;
+			if (outerFilter != null && parentVerbalize != null)
+			{
+				CustomChildVerbalizer filterResult = outerFilter.FilterChildVerbalizer(parentVerbalize, isNegative);
+				parentVerbalize = filterResult.Instance;
+				disposeVerbalizer = filterResult.DisposeAfterVerbalization;
+			}
+			try
+			{
+				VerbalizationResult result = (parentVerbalize != null) ? callback(writer, snippetsDictionary, verbalizationTarget, alreadyVerbalized, parentVerbalize, callback, indentLevel, isNegative, writeSecondaryLines, ref firstCallPending, ref firstWrite, ref lastLevel) : VerbalizationResult.NotVerbalized;
+				if (result == VerbalizationResult.AlreadyVerbalized)
+				{
+					return;
+				}
+				bool parentVerbalizeOK = result == VerbalizationResult.Verbalized;
+				bool verbalizeChildren = parentVerbalizeOK ? (element != null) : (element is IVerbalizeChildren);
+				IVerbalizeCustomChildren customChildren = element as IVerbalizeCustomChildren;
+				if (verbalizeChildren || (customChildren != null))
+				{
+					if (parentVerbalizeOK)
+					{
+						++indentLevel;
+					}
+					IVerbalizeFilterChildren filter = parentVerbalize as IVerbalizeFilterChildren;
+					if (filter != null)
+					{
+						if (outerFilter != null)
+						{
+							filter = new CompositeChildFilter(outerFilter, filter);
+						}
+					}
+					else
+					{
+						filter = outerFilter;
+					}
+
+					if (verbalizeChildren)
+					{
+						IVerbalizeFilterChildrenByRole roleFilter = parentVerbalize as IVerbalizeFilterChildrenByRole;
+						ReadOnlyCollection<DomainRoleInfo> aggregatingList = element.GetDomainClass().AllDomainRolesPlayed;
+						int aggregatingCount = aggregatingList.Count;
+						for (int i = 0; i < aggregatingCount; ++i)
+						{
+							DomainRoleInfo roleInfo = aggregatingList[i];
+							if (roleInfo.IsEmbedding &&
+								(roleFilter == null || !roleFilter.BlockEmbeddedVerbalization(roleInfo)))
+							{
+								LinkedElementCollection<ModelElement> children = roleInfo.GetLinkedElements(element);
+								int childCount = children.Count;
+								for (int j = 0; j < childCount; ++j)
+								{
+									VerbalizeElement(children[j], snippetsDictionary, verbalizationTarget, alreadyVerbalized, filter, writer, callback, isNegative, indentLevel, writeSecondaryLines, ref firstCallPending, ref firstWrite, ref lastLevel);
+								}
+							}
+						}
+					}
+					// TODO: Need BeforeNaturalChildren/AfterNaturalChildren/SkipNaturalChildren settings for IVerbalizeCustomChildren
+					if (customChildren != null)
+					{
+						VerbalizeCustomChildren(
+							customChildren,
+							writer,
+							callback,
+							snippetsDictionary,
+							ORMCoreDomainModel.VerbalizationTargetName,
+							alreadyVerbalized,
+							filter,
+							isNegative,
+							indentLevel,
+							writeSecondaryLines,
+							ref firstCallPending,
+							ref firstWrite,
+							ref lastLevel);
+					}
+				}
+			}
+			finally
+			{
+				if (disposeVerbalizer)
+				{
+					IDisposable dispose = parentVerbalize as IDisposable;
+					if (dispose != null)
+					{
+						dispose.Dispose();
+					}
+				}
+			}
+		}
+		#region CompositeChildFilter class
+		private sealed class CompositeChildFilter : IVerbalizeFilterChildren
+		{
+			#region Member Variables
+			private IVerbalizeFilterChildren[] myFilters;
+			#endregion // Member Variables
+			#region Constructor
+			public CompositeChildFilter(params IVerbalizeFilterChildren[] filters)
+			{
+				myFilters = filters;
+			}
+			#endregion // Constructor
+			#region IVerbalizeFilterChildren Implementation
+			CustomChildVerbalizer IVerbalizeFilterChildren.FilterChildVerbalizer(object child, bool isNegative)
+			{
+				CustomChildVerbalizer retVal = CustomChildVerbalizer.Empty;
+				IVerbalizeFilterChildren[] filters = myFilters;
+				for (int i = 0; i < filters.Length; ++i)
+				{
+					retVal = filters[i].FilterChildVerbalizer(child, isNegative);
+					if (!retVal.IsEmpty)
+					{
+						break;
+					}
+					else if (retVal.IsBlocked)
+					{
+						break;
+					}
+				}
+				return retVal;
+			}
+			#endregion // IVerbalizeFilterChildren Implementation
+		}
+		#endregion // CompositeChildFilter class
+		/// <summary>
+		/// Verbalizes the children specified by the given IVerbalizeCustomChildren implementation
+		/// </summary>
+		/// <param name="customChildren">The IVerbalizeCustomChildren implementation to verbalize</param>
+		/// <param name="writer">The target specific Writer to use</param>
+		/// <param name="callback">The delegate used to handle the verbalization</param>
+		/// <param name="snippetsDictionary"></param>
+		/// <param name="verbalizationTarget"></param>
+		/// <param name="alreadyVerbalized"></param>
+		/// <param name="filter"></param>
+		/// <param name="isNegative">Whether or not the verbalization is negative</param>
+		/// <param name="indentationLevel">The current level of indentation</param>
+		/// <param name="writeSecondaryLines">True to automatically add a line between callbacks. Set to <see langword="true"/> for multi-select scenarios.</param>
+		/// <param name="firstCallPending"></param>
+		/// <param name="firstWrite"></param>
+		/// <param name="lastLevel"></param>
+		private static void VerbalizeCustomChildren(IVerbalizeCustomChildren customChildren, VerbalizationCallbackWriter writer, VerbalizationHandler callback, IDictionary<Type, IVerbalizationSets> snippetsDictionary, string verbalizationTarget, IDictionary<IVerbalize, IVerbalize> alreadyVerbalized, IVerbalizeFilterChildren filter, bool isNegative, int indentationLevel, bool writeSecondaryLines, ref bool firstCallPending, ref bool firstWrite, ref int lastLevel)
+		{
+			foreach (CustomChildVerbalizer customChild in customChildren.GetCustomChildVerbalizations(filter, isNegative))
+			{
+				IVerbalize childVerbalize = customChild.Instance;
+				if (childVerbalize != null)
+				{
+					try
+					{
+						callback(writer, snippetsDictionary, verbalizationTarget, alreadyVerbalized, childVerbalize, callback, indentationLevel, isNegative, writeSecondaryLines, ref firstCallPending, ref firstWrite, ref lastLevel);
+					}
+					finally
+					{
+						if (customChild.DisposeAfterVerbalization)
+						{
+							IDisposable dispose = childVerbalize as IDisposable;
+							if (dispose != null)
+							{
+								dispose.Dispose();
+							}
+						}
+					}
+				}
+			}
+		}
+		#endregion // VerbalizeElement methods
+	}
+	#endregion // VerbalizationHelper class
 }

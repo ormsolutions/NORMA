@@ -320,7 +320,9 @@
 	<ResourceString name="ModelReadingEditorWindowTitle" model="Model" resourceName="ModelReadingEditor.WindowTitle"/>
 	<ResourceString name="ModelReadingEditorImpliedFactTypeReadingsText" model="Model" resourceName="ModelReadingEditor.ImpliedFactTypeReadingsText"/>
 	<ResourceString name="ModelReadingEditorPrimaryFactTypeReadingsText" model="Model" resourceName="ModelReadingEditor.PrimaryFactTypeReadingsText"/>
+	<ResourceString name="ModelDefinitionWindowEmptyDisplayText" model="Model" resourceName="ModelDefinitionWindow.EmptyDisplayText"/>
 	<ResourceString name="ModelDefinitionWindowTitle" model="Model" resourceName="ModelDefinitionWindow.WindowTitle"/>
+	<ResourceString name="ModelNotesWindowEmptyDisplayText" model="Model" resourceName="ModelNotesWindow.EmptyDisplayText"/>
 	<ResourceString name="ModelNotesWindowTitle" model="Model" resourceName="ModelNotesWindow.WindowTitle"/>
 	<ResourceString name="ModelContextWindowTitle" model="Model" resourceName="ModelContextWindow.WindowTitle"/>
 	<ResourceString name="ModelNotesWindowRootTypeNameNotesSeparatorFormatString" model="Model" resourceName="ModelNotesWindow.RootTypeNameNotesSeparatorFormatString"/>
@@ -335,6 +337,7 @@
 	<ResourceString name="ModelSamplePopulationEditorRemoveObjectInstanceReferenceTransactionText" model="Model" resourceName="ModelSamplePopulationEditor.RemoveObjectInstanceReferenceTransactionText"/>
 	<ResourceString name="ModelSamplePopulationEditorRemoveObjectInstanceTransactionText" model="Model" resourceName="ModelSamplePopulationEditor.RemoveObjectInstanceTransactionText"/>
 	<ResourceString name="ModelSamplePopulationEditorSeparateObjectifiedInstanceIdentifierTransactionText" model="Model" resourceName="ModelSamplePopulationEditor.SeparateObjectifiedInstanceIdentifierTransactionText"/>
+	<ResourceString name="ModelSamplePopulationEditorEmptyDisplayText" model="Model" resourceName="ModelSamplePopulationEditor.EmptyDisplayText"/>
 	<ResourceString name="ModelSamplePopulationEditorWindowTitle" model="Model" resourceName="ModelSamplePopulationEditor.WindowTitle"/>
 	<ResourceString name="ModelSamplePopulationEditorNullSelection" model="Model" resourceName="ModelSamplePopulationEditor.NullSelection"/>
 	<ResourceString name="NameGeneratorAbbreviationsEditorAbbreviationColumnHeader" model="Model" resourceName="NameGeneratorAbbreviations.Editor.AbbreviationColumnHeader"/>
