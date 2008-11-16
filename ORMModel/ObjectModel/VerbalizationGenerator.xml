@@ -82,7 +82,7 @@
 				<PortableDataType/>
 			</Snippet>
 			<Snippet ref="SelfReference" conditionalMatch="VerbalizeFactTypesWithBrowserObjectType">
-				<IterateRoles match="playedRoles" listStyle="FactTypeList" uniqueFactType="true">
+				<IterateRoles match="playedRoles" listStyle="FactTypeList" verifyCanVerbalizeFactType="true" uniqueFactType="true">
 					<Fact subtypeMetaReading="true" closeSentence="true"/>
 				</IterateRoles>
 			</Snippet>

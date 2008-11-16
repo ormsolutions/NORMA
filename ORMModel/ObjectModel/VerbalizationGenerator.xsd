@@ -1047,6 +1047,11 @@
 				<xs:documentation>Set to true if a visited FactTypes should be tracked. If this is set, then a later role with the same FactType will be ignored.</xs:documentation>
 			</xs:annotation>
 		</xs:attribute>
+		<xs:attribute name="verifyCanVerbalizeFactType" type="xs:boolean" default="false">
+			<xs:annotation>
+				<xs:documentation>Set to true if the FactType has not already been verified as have sufficient state to support verbalization.</xs:documentation>
+			</xs:annotation>
+		</xs:attribute>
 	</xs:complexType>
 	<xs:complexType name="IterateRolesType">
 		<xs:complexContent>

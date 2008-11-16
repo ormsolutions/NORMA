@@ -8678,6 +8678,26 @@
 			</xsl:otherwise>
 		</xsl:choose>
 	</xsl:template>
+	<xsl:template match="@verifyCanVerbalizeFactType" mode="IterateRolesFilterOperator">
+		<xsl:if test=".='true' or .='1'">
+			<plx:binaryOperator type="identityEquality">
+				<plx:left>
+					<plx:callInstance name="ReadingRequiredError" type="property">
+						<plx:callObject>
+							<plx:callInstance name="FactType" type="property">
+								<plx:callObject>
+									<plx:nameRef name="primaryRole"/>
+								</plx:callObject>
+							</plx:callInstance>
+						</plx:callObject>
+					</plx:callInstance>
+				</plx:left>
+				<plx:right>
+					<plx:nullKeyword/>
+				</plx:right>
+			</plx:binaryOperator>
+		</xsl:if>
+	</xsl:template>
 	<!-- Ignore attributes that are not used as a filter -->
 	<xsl:template match="@listStyle|@pass|@conditionalMatch|@hyphenBind" mode="IterateRolesFilterOperator"/>
 	<!-- Terminate processing if we see an unrecognized operator -->

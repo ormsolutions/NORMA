@@ -1788,7 +1788,7 @@ namespace Neumont.Tools.ORM.ObjectModel
 				for (snippet8ReplaceFilteredIter1 = 0; snippet8ReplaceFilteredIter1 < playedRoleCount; ++snippet8ReplaceFilteredIter1)
 				{
 					RoleBase primaryRole = playedRoles[snippet8ReplaceFilteredIter1];
-					if (Array.IndexOf(snippet8ReplaceUniqueFactTypes1, snippet8ReplaceTestUniqueFactType1 = primaryRole.FactType) == -1)
+					if (primaryRole.FactType.ReadingRequiredError == null && Array.IndexOf(snippet8ReplaceUniqueFactTypes1, snippet8ReplaceTestUniqueFactType1 = primaryRole.FactType) == -1)
 					{
 						snippet8ReplaceUniqueFactTypes1[snippet8ReplaceFilteredIter1] = snippet8ReplaceTestUniqueFactType1;
 						++snippet8ReplaceFilteredCount1;
@@ -1827,7 +1827,7 @@ namespace Neumont.Tools.ORM.ObjectModel
 						}
 						basicRoleReplacements[i] = basicReplacement;
 					}
-					if (Array.IndexOf(snippet8ReplaceUniqueFactTypes1, snippet8ReplaceTestUniqueFactType1 = primaryRole.FactType) == -1)
+					if (primaryRole.FactType.ReadingRequiredError == null && Array.IndexOf(snippet8ReplaceUniqueFactTypes1, snippet8ReplaceTestUniqueFactType1 = primaryRole.FactType) == -1)
 					{
 						snippet8ReplaceUniqueFactTypes1[RoleIter1] = snippet8ReplaceTestUniqueFactType1;
 						CoreVerbalizationSnippetType listSnippet;

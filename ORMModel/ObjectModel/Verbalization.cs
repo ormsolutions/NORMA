@@ -1004,6 +1004,10 @@ namespace Neumont.Tools.ORM.ObjectModel
 		/// </summary>
 		public static void WriteVerbalizerSentence(TextWriter writer, string body, string closeSentenceWith)
 		{
+			if (string.IsNullOrEmpty(body))
+			{
+				return;
+			}
 			Match match = FirstBodyCharacterPatternLower.Match(body);
 			if (match.Success)
 			{
