@@ -42,7 +42,7 @@ CREATE TABLE Person
 	CONSTRAINT Person_UC8 UNIQUE(mandatoryUniqueString),
 	CONSTRAINT Person_UC9 UNIQUE(optionalUniqueTinyInt),
 	CONSTRAINT Person_UC10 UNIQUE(mandatoryUniqueTinyInt),
-	CONSTRAINT Person_UC11 UNIQUE(childPersonFather, childPersonBirthOrderNr, childPersonMother),
+	CONSTRAINT Person_UC11 UNIQUE(childPersonFather, childPersonBirthOrderNr, childPersonMother)
 );
 
 CREATE TABLE Task

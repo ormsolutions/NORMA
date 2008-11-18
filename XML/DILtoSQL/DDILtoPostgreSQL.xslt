@@ -70,6 +70,9 @@
 
 	<xsl:template match="ddl:columnDefinition[ddl:identityColumnSpecification]">
 		<xsl:param name="indent"/>
+		<xsl:if test="not(position()=1)">
+			<xsl:text>,</xsl:text>
+		</xsl:if>
 		<xsl:value-of select="$NewLine"/>
 		<xsl:value-of select="$indent"/>
 		<xsl:apply-templates select="@name" mode="ForColumnName"/>
@@ -78,9 +81,6 @@
 		<xsl:apply-templates select="ddl:defaultClause"/>
 		<xsl:apply-templates select="ddl:generationClause"/>
 		<xsl:apply-templates select="ddl:columnConstraintDefinition"/>
-		<xsl:if test="position()!=last() or following-sibling::*">
-			<xsl:text>,</xsl:text>
-		</xsl:if>
 	</xsl:template>
 
 	<xsl:template match="ddt:exactNumeric | ddt:approximateNumeric" mode="ForPostgresIdentityColumn">

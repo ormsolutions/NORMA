@@ -627,6 +627,9 @@
 
 	<xsl:template match="ddl:columnDefinition">
 		<xsl:param name="indent"/>
+		<xsl:if test="not(position()=1)">
+			<xsl:text>,</xsl:text>
+		</xsl:if>
 		<xsl:value-of select="$NewLine"/>
 		<xsl:value-of select="$indent"/>
 		<xsl:apply-templates select="@name" mode="ForColumnName"/>
@@ -635,9 +638,6 @@
 		<xsl:apply-templates select="ddl:identityColumnSpecification"/>
 		<xsl:apply-templates select="ddl:generationClause"/>
 		<xsl:apply-templates select="ddl:columnConstraintDefinition"/>
-		<xsl:if test="position()!=last() or following-sibling::*">
-			<xsl:text>,</xsl:text>
-		</xsl:if>
 	</xsl:template>
 
 	<xsl:template match="ddl:generationClause">
@@ -1816,6 +1816,9 @@
 				<xsl:text>ADD </xsl:text>
 			</xsl:when>
 			<xsl:otherwise>
+				<xsl:if test="not(position()=1) or preceding-sibling::*">
+					<xsl:text>,</xsl:text>
+				</xsl:if>
 				<xsl:value-of select="$NewLine"/>
 				<xsl:value-of select="$indent"/>
 			</xsl:otherwise>
@@ -1825,9 +1828,6 @@
 		<xsl:text> </xsl:text>
 		<xsl:apply-templates/>
 		<xsl:apply-templates select="@constraintCharacteristics"/>
-		<xsl:if test="not(position()=last())">
-			<xsl:text>,</xsl:text>
-		</xsl:if>
 	</xsl:template>
 
 	<xsl:template match="ddl:uniqueConstraintDefinition">
