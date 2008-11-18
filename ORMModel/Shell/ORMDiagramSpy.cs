@@ -222,15 +222,23 @@ namespace Neumont.Tools.ORM.Shell
 		}
 		private void DiagramAddedEvent(object sender, ElementAddedEventArgs e)
 		{
-			myDiagramSetChanged = true;
+			ModelElement element = e.ModelElement;
+			if (element.Store.DefaultPartition == element.Partition)
+			{
+				myDiagramSetChanged = true;
+			}
 		}
 		private void DiagramRemovedEvent(object sender, ElementDeletedEventArgs e)
 		{
-			myDiagramSetChanged = true;
-			if (e.ModelElement == myDiagramView.Diagram)
+			ModelElement element = e.ModelElement;
+			if (element.Store.DefaultPartition == element.Partition)
 			{
-				// Note that this is unlikely, the diagram will be disassociatin firts
-				AdjustVisibility(false, true);
+				myDiagramSetChanged = true;
+				if (element == myDiagramView.Diagram)
+				{
+					// Note that this is unlikely, the diagram will be disassociatin firts
+					AdjustVisibility(false, true);
+				}
 			}
 		}
 		private void Disassociate()
@@ -261,7 +269,11 @@ namespace Neumont.Tools.ORM.Shell
 		}
 		private void DiagramNameChangedEvent(object sender, ElementPropertyChangedEventArgs e)
 		{
-			myDiagramSetChanged = true;
+			ModelElement element = e.ModelElement;
+			if (element.Store.DefaultPartition == element.Partition)
+			{
+				myDiagramSetChanged = true;
+			}
 		}
 		private void ElementEventsEnded(object sender, ElementEventsEndedEventArgs e)
 		{
@@ -323,32 +335,61 @@ namespace Neumont.Tools.ORM.Shell
 				{
 					Diagram[] diagramArray = new Diagram[diagramCount];
 					diagrams.CopyTo(diagramArray, 0);
+					Partition targetPartition = store.DefaultPartition;
 					Array.Sort<Diagram>(
 						diagramArray,
 						delegate(Diagram left, Diagram right)
 						{
+							// Filter diagrams, such as the context window, that are not in the default partition
+							if (left.Partition != targetPartition)
+							{
+								if (right.Partition == targetPartition)
+								{
+									return 1;
+								}
+							}
+							else if (right.Partition != targetPartition)
+							{
+								return -1;
+							}
 							return string.Compare(left.Name, right.Name, StringComparison.CurrentCultureIgnoreCase);
 						});
-					StringBuilder builder = new StringBuilder(ResourceStrings.DiagramSpyDiagramListStart);
-					string listSeparator = CultureInfo.CurrentCulture.TextInfo.ListSeparator + " ";
-					int separatorLength = listSeparator.Length;
-					int offset = builder.Length;
-					links.Clear();
-					for (int i = 0; i < diagramCount; ++i)
+					for (int i = diagramCount - 1; i >= 0; --i)
 					{
-						Diagram diagram = diagramArray[i];
-						string diagramName = diagram.Name;
-						int nameLength = diagramName.Length;
-						if (i != 0)
+						if (diagramArray[i].Partition == targetPartition)
 						{
-							offset += separatorLength;
-							builder.Append(listSeparator);
+							break;
 						}
-						builder.Append(diagramName);
-						links.Add(offset, nameLength, diagram);
-						offset += nameLength;
+						--diagramCount;
 					}
-					watermarkLabel.Text = builder.ToString();
+					if (diagramCount == 0)
+					{
+						watermarkLabel.Text = ResourceStrings.DiagramSpyNoSelection;
+						links.Clear();
+					}
+					else
+					{
+						StringBuilder builder = new StringBuilder(ResourceStrings.DiagramSpyDiagramListStart);
+						string listSeparator = CultureInfo.CurrentCulture.TextInfo.ListSeparator + " ";
+						int separatorLength = listSeparator.Length;
+						int offset = builder.Length;
+						links.Clear();
+						for (int i = 0; i < diagramCount; ++i)
+						{
+							Diagram diagram = diagramArray[i];
+							string diagramName = diagram.Name;
+							int nameLength = diagramName.Length;
+							if (i != 0)
+							{
+								offset += separatorLength;
+								builder.Append(listSeparator);
+							}
+							builder.Append(diagramName);
+							links.Add(offset, nameLength, diagram);
+							offset += nameLength;
+						}
+						watermarkLabel.Text = builder.ToString();
+					}
 				}
 			}
 		}

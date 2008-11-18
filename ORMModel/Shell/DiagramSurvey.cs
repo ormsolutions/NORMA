@@ -176,11 +176,16 @@ namespace Neumont.Tools.ORM.Shell
 			if (expansionKey == null)
 			{
 				Dictionary<Diagram, DiagramNode> diagramToNodeMap = myDiagramToNodeMap ?? (myDiagramToNodeMap = new Dictionary<Diagram, DiagramNode>());
+				Store store = Store;
+				Partition defaultPartition = store.DefaultPartition;
 				foreach (Diagram diagram in Store.ElementDirectory.FindElements<Diagram>(true))
 				{
-					DiagramNode node = new DiagramNode(diagram);
-					diagramToNodeMap.Add(diagram, node);
-					yield return node;
+					if (diagram.Partition == defaultPartition)
+					{
+						DiagramNode node = new DiagramNode(diagram);
+						diagramToNodeMap.Add(diagram, node);
+						yield return node;
+					}
 				}
 			}
 		}
@@ -213,7 +218,10 @@ namespace Neumont.Tools.ORM.Shell
 		{
 			INotifySurveyElementChanged eventNotify;
 			ModelElement element = e.ModelElement;
-			if (!element.IsDeleted && null != (eventNotify = (element.Store as IORMToolServices).NotifySurveyElementChanged))
+			Store store;
+			if (!element.IsDeleted &&
+				(store = element.Store).DefaultPartition == element.Partition &&
+				null != (eventNotify = (store as IORMToolServices).NotifySurveyElementChanged))
 			{
 				Diagram diagram = (Diagram)element;
 				DiagramNode node = new DiagramNode(diagram);
@@ -228,8 +236,10 @@ namespace Neumont.Tools.ORM.Shell
 			Dictionary<Diagram, DiagramNode> nodeMap;
 			DiagramNode node;
 			Diagram diagram;
+			Store store;
 			if (null != (nodeMap = myDiagramToNodeMap) &&
-				null != (eventNotify = (element.Store as IORMToolServices).NotifySurveyElementChanged) &&
+				(store = element.Store).DefaultPartition == element.Partition &&
+				null != (eventNotify = (store as IORMToolServices).NotifySurveyElementChanged) &&
 				nodeMap.TryGetValue(diagram = (Diagram)element, out node))
 			{
 				nodeMap.Remove(diagram);
@@ -242,9 +252,11 @@ namespace Neumont.Tools.ORM.Shell
 			ModelElement element = e.ModelElement;
 			Dictionary<Diagram, DiagramNode> nodeMap;
 			DiagramNode node;
+			Store store;
 			if (!element.IsDeleted &&
 				null != (nodeMap = myDiagramToNodeMap) &&
-				null != (eventNotify = (element.Store as IORMToolServices).NotifySurveyElementChanged) &&
+				(store = element.Store).DefaultPartition == element.Partition &&
+				null != (eventNotify = (store as IORMToolServices).NotifySurveyElementChanged) &&
 				nodeMap.TryGetValue((Diagram)element, out node))
 			{
 				eventNotify.ElementRenamed(node);
