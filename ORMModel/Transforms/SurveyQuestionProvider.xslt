@@ -23,46 +23,191 @@
 	<!-- Pick up param value supplied automatically by plix loader -->
 	<xsl:param name="CustomToolNamespace" select="'TestNamespace'"/>
 	<xsl:template match="qp:surveyQuestionProvider">
+		<xsl:variable name="questions" select="qp:surveyQuestions/qp:surveyQuestion"/>
+		<xsl:variable name="dynamicQuestions" select="$questions[@dynamicValues='true' or @dynamicValues='1']"/>
 		<plx:root>
 			<plx:namespaceImport name="System"/>
 			<plx:namespaceImport name="System.Windows.Forms"/>
 			<plx:namespaceImport name="System.Collections.Generic"/>
+			<xsl:if test="$dynamicQuestions">
+				<plx:namespaceImport name="Microsoft.VisualStudio.Modeling"/>
+			</xsl:if>
 			<plx:namespaceImport name="Neumont.Tools.Modeling.Shell.DynamicSurveyTreeGrid"/>
 			<plx:namespace name="{$CustomToolNamespace}">
 				<plx:class name="{@class}" partial="true" visibility="deferToPartial">
 					<plx:implementsInterface dataTypeName="ISurveyQuestionProvider"/>
 					<xsl:variable name="groupings" select="qp:groupings/qp:grouping"/>
+					<xsl:for-each select="$dynamicQuestions">
+						<plx:field name="myDynamic{@questionType}QuestionInstance" dataTypeName="ProvideSurveyQuestionFor{@questionType}" visibility="private"/>
+					</xsl:for-each>
 					<xsl:choose>
 						<xsl:when test="$groupings">
 							<xsl:for-each select="$groupings">
-								<plx:field name="mySurveyQuestionTypeInfo{position()}" visibility="private" static="true" readOnly="true" dataTypeName="ISurveyQuestionTypeInfo" dataTypeIsSimpleArray="true">
-									<plx:initialize>
-										<plx:callNew dataTypeName="ISurveyQuestionTypeInfo" dataTypeIsSimpleArray="true">
-											<plx:arrayInitializer>
-												<xsl:for-each select="qp:surveyQuestion">
-													<plx:callStatic type="field" name="Instance" dataTypeName="ProvideSurveyQuestionFor{@ref}"/>
-												</xsl:for-each>
-											</plx:arrayInitializer>
-										</plx:callNew>
-									</plx:initialize>
-								</plx:field>
+								<xsl:choose>
+									<xsl:when test="qp:surveyQuestion/@ref=$dynamicQuestions/@questionType">
+										<plx:field name="mySurveyQuestionTypeInfo{position()}" visibility="private" dataTypeName="ISurveyQuestionTypeInfo" dataTypeIsSimpleArray="true"/>
+										<plx:function name="EnsureSurveyQuestionTypeInfo{position()}" visibility="private">
+											<plx:returns dataTypeName="ISurveyQuestionTypeInfo" dataTypeIsSimpleArray="true"/>
+											<plx:return>
+												<plx:inlineStatement dataTypeName="ISurveyQuestionTypeInfo" dataTypeIsSimpleArray="true">
+													<plx:nullFallbackOperator>
+														<plx:left>
+															<plx:callThis name="mySurveyQuestionTypeInfo{position()}" type="field"/>
+														</plx:left>
+														<plx:right>
+															<plx:inlineStatement dataTypeName="ISurveyQuestionTypeInfo" dataTypeIsSimpleArray="true">
+																<plx:assign>
+																	<plx:left>
+																		<plx:callThis name="mySurveyQuestionTypeInfo{position()}" type="field"/>
+																	</plx:left>
+																	<plx:right>
+																		<plx:callNew dataTypeName="ISurveyQuestionTypeInfo" dataTypeIsSimpleArray="true">
+																			<plx:arrayInitializer>
+																				<xsl:for-each select="qp:surveyQuestion">
+																					<xsl:choose>
+																						<xsl:when test="$dynamicQuestions/@questionType=@ref">
+																							<plx:inlineStatement dataTypeName="ProvideSurveyQuestionFor{@ref}">
+																								<plx:nullFallbackOperator>
+																									<plx:left>
+																										<plx:callThis name="myDynamic{@ref}QuestionInstance" type="field"/>
+																									</plx:left>
+																									<plx:right>
+																										<plx:inlineStatement dataTypeName="{@ref}">
+																											<plx:assign>
+																												<plx:left>
+																													<plx:callThis name="myDynamic{@ref}QuestionInstance" type="field"/>
+																												</plx:left>
+																												<plx:right>
+																													<plx:callNew dataTypeName="ProvideSurveyQuestionFor{@ref}">
+																														<plx:passParam>
+																															<plx:callThis name="Store" type="property"/>
+																														</plx:passParam>
+																													</plx:callNew>
+																												</plx:right>
+																											</plx:assign>
+																										</plx:inlineStatement>
+																									</plx:right>
+																								</plx:nullFallbackOperator>
+																							</plx:inlineStatement>
+																						</xsl:when>
+																						<xsl:otherwise>
+																							<plx:callStatic type="field" name="Instance" dataTypeName="ProvideSurveyQuestionFor{@ref}"/>
+																						</xsl:otherwise>
+																					</xsl:choose>
+																				</xsl:for-each>
+																			</plx:arrayInitializer>
+																		</plx:callNew>
+																	</plx:right>
+																</plx:assign>
+															</plx:inlineStatement>
+														</plx:right>
+													</plx:nullFallbackOperator>
+												</plx:inlineStatement>
+											</plx:return>
+										</plx:function>
+									</xsl:when>
+									<xsl:otherwise>
+										<plx:field name="mySurveyQuestionTypeInfo{position()}" visibility="private" static="true" readOnly="true" dataTypeName="ISurveyQuestionTypeInfo" dataTypeIsSimpleArray="true">
+											<plx:initialize>
+												<plx:callNew dataTypeName="ISurveyQuestionTypeInfo" dataTypeIsSimpleArray="true">
+													<plx:arrayInitializer>
+														<xsl:for-each select="qp:surveyQuestion">
+															<plx:callStatic type="field" name="Instance" dataTypeName="ProvideSurveyQuestionFor{@ref}"/>
+														</xsl:for-each>
+													</plx:arrayInitializer>
+												</plx:callNew>
+											</plx:initialize>
+										</plx:field>
+									</xsl:otherwise>
+								</xsl:choose>
 							</xsl:for-each>
 						</xsl:when>
 						<xsl:otherwise>
-							<plx:field name="mySurveyQuestionTypeInfo" visibility="private" static="true" readOnly="true" dataTypeName="ISurveyQuestionTypeInfo" dataTypeIsSimpleArray="true">
-								<plx:initialize>
-									<plx:callNew dataTypeName="ISurveyQuestionTypeInfo" dataTypeIsSimpleArray="true">
-										<plx:arrayInitializer>
-											<xsl:for-each select="qp:surveyQuestions/qp:surveyQuestion">
-												<plx:callStatic type="field" name="Instance" dataTypeName="ProvideSurveyQuestionFor{@questionType}"/>
-											</xsl:for-each>
-										</plx:arrayInitializer>
-									</plx:callNew>
-								</plx:initialize>
-							</plx:field>
+							<xsl:choose>
+								<xsl:when test="$dynamicQuestions">
+									<plx:field name="mySurveyQuestionTypeInfo" visibility="private" dataTypeName="ISurveyQuestionTypeInfo" dataTypeIsSimpleArray="true"/>
+									<plx:function name="EnsureSurveyQuestionTypeInfo" visibility="private">
+										<plx:returns dataTypeName="ISurveyQuestionTypeInfo" dataTypeIsSimpleArray="true"/>
+										<plx:return>
+											<plx:inlineStatement dataTypeName="ISurveyQuestionTypeInfo" dataTypeIsSimpleArray="true">
+												<plx:nullFallbackOperator>
+													<plx:left>
+														<plx:callThis name="mySurveyQuestionTypeInfo" type="field"/>
+													</plx:left>
+													<plx:right>
+														<plx:inlineStatement dataTypeName="ISurveyQuestionTypeInfo" dataTypeIsSimpleArray="true">
+															<plx:assign>
+																<plx:left>
+																	<plx:callThis name="mySurveyQuestionTypeInfo" type="field"/>
+																</plx:left>
+																<plx:right>
+																	<plx:callNew dataTypeName="ISurveyQuestionTypeInfo" dataTypeIsSimpleArray="true">
+																		<plx:arrayInitializer>
+																			<xsl:for-each select="$questions">
+																				<xsl:choose>
+																					<xsl:when test="@dynamicValues='true' or @dynamicValues='1'">
+																						<plx:inlineStatement dataTypeName="ProvideSurveyQuestionFor{@questionType}">
+																							<plx:nullFallbackOperator>
+																								<plx:left>
+																									<plx:callThis name="myDynamic{@questionType}QuestionInstance" type="field"/>
+																								</plx:left>
+																								<plx:right>
+																									<plx:inlineStatement dataTypeName="{@questionType}">
+																										<plx:assign>
+																											<plx:left>
+																												<plx:callThis name="myDynamic{@questionType}QuestionInstance" type="field"/>
+																											</plx:left>
+																											<plx:right>
+																												<plx:callNew dataTypeName="ProvideSurveyQuestionFor{@questionType}">
+																													<plx:passParam>
+																														<plx:callThis name="Store" type="property"/>
+																													</plx:passParam>
+																												</plx:callNew>
+																											</plx:right>
+																										</plx:assign>
+																									</plx:inlineStatement>
+																								</plx:right>
+																							</plx:nullFallbackOperator>
+																						</plx:inlineStatement>
+																					</xsl:when>
+																					<xsl:otherwise>
+																						<plx:callStatic type="field" name="Instance" dataTypeName="ProvideSurveyQuestionFor{@questionType}"/>
+																					</xsl:otherwise>
+																				</xsl:choose>
+																			</xsl:for-each>
+																		</plx:arrayInitializer>
+																	</plx:callNew>
+																</plx:right>
+															</plx:assign>
+														</plx:inlineStatement>
+													</plx:right>
+												</plx:nullFallbackOperator>
+											</plx:inlineStatement>
+										</plx:return>
+									</plx:function>
+								</xsl:when>
+								<xsl:otherwise>
+									<plx:field name="mySurveyQuestionTypeInfo" visibility="private" static="true" readOnly="true" dataTypeName="ISurveyQuestionTypeInfo" dataTypeIsSimpleArray="true">
+										<plx:initialize>
+											<plx:callNew dataTypeName="ISurveyQuestionTypeInfo" dataTypeIsSimpleArray="true">
+												<plx:arrayInitializer>
+													<xsl:for-each select="$questions">
+														<plx:callStatic type="field" name="Instance" dataTypeName="ProvideSurveyQuestionFor{@questionType}"/>
+													</xsl:for-each>
+												</plx:arrayInitializer>
+											</plx:callNew>
+										</plx:initialize>
+									</plx:field>
+								</xsl:otherwise>
+							</xsl:choose>
 						</xsl:otherwise>
 					</xsl:choose>
 					<plx:function visibility="protected" modifier="static" name="GetSurveyQuestions">
+						<xsl:if test="$dynamicQuestions">
+							<xsl:attribute name="modifier">
+								<xsl:text>none</xsl:text>
+							</xsl:attribute>
+						</xsl:if>
 						<plx:leadingInfo>
 							<plx:docComment>
 								<summary>Implements <see cref="ISurveyQuestionProvider.GetSurveyQuestions"/>
@@ -107,7 +252,14 @@
 											</plx:binaryOperator>
 										</plx:condition>
 										<plx:return>
-											<plx:callThis accessor="static" type="field" name="mySurveyQuestionTypeInfo{position()}"/>
+											<xsl:choose>
+												<xsl:when test="qp:surveyQuestion/@ref=$dynamicQuestions/@questionType">
+													<plx:callThis name="EnsureSurveyQuestionTypeInfo{position()}"/>
+												</xsl:when>
+												<xsl:otherwise>
+													<plx:callThis accessor="static" type="field" name="mySurveyQuestionTypeInfo{position()}"/>
+												</xsl:otherwise>
+											</xsl:choose>
 										</plx:return>
 									</xsl:element>
 								</xsl:for-each>
@@ -117,7 +269,14 @@
 							</xsl:when>
 							<xsl:otherwise>
 								<plx:return>
-									<plx:callThis accessor="static" type="field" name="mySurveyQuestionTypeInfo"/>
+									<xsl:choose>
+										<xsl:when test="$dynamicQuestions">
+											<plx:callThis name="EnsureSurveyQuestionTypeInfo"/>
+										</xsl:when>
+										<xsl:otherwise>
+											<plx:callThis accessor="static" type="field" name="mySurveyQuestionTypeInfo"/>
+										</xsl:otherwise>
+									</xsl:choose>
 								</plx:return>
 							</xsl:otherwise>
 						</xsl:choose>
@@ -174,20 +333,43 @@
 							</xsl:choose>
 						</plx:return>
 					</plx:function>
-					<xsl:apply-templates select="qp:surveyQuestions/qp:surveyQuestion"/>
+					<xsl:apply-templates select="$questions"/>
 				</plx:class>
 			</plx:namespace>
 		</plx:root>
 	</xsl:template>
 	<xsl:template match="qp:surveyQuestion">
+		<xsl:variable name="dynamic" select="@dynamicValues='true' or @dynamicValues='1'"/>
 		<plx:class name="ProvideSurveyQuestionFor{@questionType}" visibility="private" modifier="sealed">
 			<plx:implementsInterface dataTypeName="ISurveyQuestionTypeInfo"/>
-			<plx:function name=".construct" visibility="private"/>
-			<plx:field name="Instance" visibility="public" static="true" readOnly="true" dataTypeName="ISurveyQuestionTypeInfo">
-				<plx:initialize>
-					<plx:callNew dataTypeName="ProvideSurveyQuestionFor{@questionType}"/>
-				</plx:initialize>
-			</plx:field>
+			<xsl:choose>
+				<xsl:when test="$dynamic">
+					<plx:field name="myDynamicValues" dataTypeName="{@questionType}" visibility="private"/>
+					<plx:function name=".construct" visibility="public">
+						<plx:param name="store" dataTypeName="Store"/>
+						<plx:assign>
+							<plx:left>
+								<plx:callThis name="myDynamicValues" type="field"/>
+							</plx:left>
+							<plx:right>
+								<plx:callNew dataTypeName="{@questionType}">
+									<plx:passParam>
+										<plx:nameRef name="store" type="parameter"/>
+									</plx:passParam>
+								</plx:callNew>
+							</plx:right>
+						</plx:assign>
+					</plx:function>
+				</xsl:when>
+				<xsl:otherwise>
+					<plx:function name=".construct" visibility="private"/>
+					<plx:field name="Instance" visibility="public" static="true" readOnly="true" dataTypeName="ISurveyQuestionTypeInfo">
+						<plx:initialize>
+							<plx:callNew dataTypeName="ProvideSurveyQuestionFor{@questionType}"/>
+						</plx:initialize>
+					</plx:field>
+				</xsl:otherwise>
+			</xsl:choose>
 			<plx:property name="QuestionType" visibility="public">
 				<plx:interfaceMember dataTypeName="ISurveyQuestionTypeInfo" memberName="QuestionType"/>
 				<plx:returns dataTypeName="Type"/>
@@ -197,14 +379,41 @@
 					</plx:return>
 				</plx:get>
 			</plx:property>
+			<plx:property name="DynamicQuestionValues" visibility="public">
+				<plx:interfaceMember dataTypeName="ISurveyQuestionTypeInfo" memberName="DynamicQuestionValues"/>
+				<plx:returns dataTypeName="ISurveyDynamicValues"/>
+				<plx:get>
+					<plx:return>
+						<xsl:choose>
+							<xsl:when test="$dynamic">
+								<plx:callThis name="myDynamicValues" type="field"/>
+							</xsl:when>
+							<xsl:otherwise>
+								<plx:nullKeyword/>
+							</xsl:otherwise>
+						</xsl:choose>
+					</plx:return>
+				</plx:get>
+			</plx:property>
 			<plx:function name="AskQuestion" visibility="public">
 				<plx:interfaceMember dataTypeName="ISurveyQuestionTypeInfo" memberName="AskQuestion"/>
 				<plx:param name="data" dataTypeName=".object"/>
 				<plx:returns dataTypeName=".i4"/>
-				<plx:local name="typedData" dataTypeName="IAnswerSurveyQuestion">
+				<xsl:variable name="interfaceTypeSnippet">
+					<xsl:choose>
+						<xsl:when test="$dynamic">
+							<xsl:text>IAnswerSurveyDynamicQuestion</xsl:text>
+						</xsl:when>
+						<xsl:otherwise>
+							<xsl:text>IAnswerSurveyQuestion</xsl:text>
+						</xsl:otherwise>
+					</xsl:choose>
+				</xsl:variable>
+				<xsl:variable name="interfaceType" select="string($interfaceTypeSnippet)"/>
+				<plx:local name="typedData" dataTypeName="{$interfaceType}">
 					<plx:passTypeParam dataTypeName="{@questionType}"/>
 					<plx:initialize>
-						<plx:cast dataTypeName="IAnswerSurveyQuestion" type="testCast">
+						<plx:cast dataTypeName="{$interfaceType}" type="testCast">
 							<plx:passTypeParam dataTypeName="{@questionType}"/>
 							<plx:nameRef name="data" type="parameter"/>
 						</plx:cast>
@@ -226,6 +435,11 @@
 							<plx:callObject>
 								<plx:nameRef name="typedData"/>
 							</plx:callObject>
+							<xsl:if test="$dynamic">
+								<plx:passParam>
+									<plx:callThis name="myDynamicValues" type="field"/>
+								</plx:passParam>
+							</xsl:if>
 						</plx:callInstance>
 					</plx:return>
 				</plx:branch>
@@ -415,6 +629,21 @@
 								</xsl:for-each>
 							</xsl:otherwise>
 						</xsl:choose>
+					</plx:return>
+				</plx:get>
+			</plx:property>
+			<plx:property name="QuestionPriority" visibility="public" modifier="static">
+				<plx:interfaceMember dataTypeName="ISurveyQuestionTypeInfo" memberName="QuestionPriority"/>
+				<plx:returns dataTypeName=".i4"/>
+				<plx:get>
+					<plx:return>
+						<plx:value data="0" type="i4">
+							<xsl:if test="@questionPriority">
+								<xsl:attribute name="data">
+									<xsl:value-of select="@questionPriority"/>
+								</xsl:attribute>
+							</xsl:if>
+						</plx:value>
 					</plx:return>
 				</plx:get>
 			</plx:property>

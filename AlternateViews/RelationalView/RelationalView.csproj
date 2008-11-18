@@ -142,7 +142,8 @@
       <Generator>NUPlixLoader</Generator>
       <LastGenOutput>RelationalShape.SerializationExtensions.cs</LastGenOutput>
     </Content>
-    <Content Include="Resources\RelationalViewTabImage.png" />
+    <None Include="Resources\RelationalViewBrowserImage.png" />
+    <None Include="Resources\RelationalViewTabImage.png" />
   </ItemGroup>
   <ItemGroup>
     <Compile Include="..\..\Version.cs">

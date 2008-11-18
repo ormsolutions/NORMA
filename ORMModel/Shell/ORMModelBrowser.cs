@@ -90,6 +90,18 @@ namespace Neumont.Tools.ORM.Shell
 					VirtualTreeItemInfo info = treeControl.Tree.GetItemInfo(currentIndex, 0, false);
 					int options = 0;
 					object trackingObject = info.Branch.GetObject(info.Row, 0, ObjectStyle.TrackingObject, ref options);
+					
+					// There is no guarantee we'll get a ModelElement, but things work better if we can
+					IRepresentModelElements proxy;
+					ModelElement[] representedElements;
+					if (trackingObject != null &&
+						!(trackingObject is ModelElement) &&
+						null != (proxy = trackingObject as IRepresentModelElements) &&
+						null != (representedElements = proxy.GetRepresentedElements()) &&
+						1 == representedElements.Length)
+					{
+						trackingObject = representedElements[0];
+					}
 					return trackingObject;
 				}
 				return null;
@@ -205,6 +217,18 @@ namespace Neumont.Tools.ORM.Shell
 			myTreeContainer.TreeControl.BeginLabelEdit();
 		}
 		/// <summary>
+		/// Select the specified shape in the specified target window.
+		/// The shape may be a diagram.
+		/// </summary>
+		protected virtual void OnMenuSelectShape(NavigateToWindow targetWindow)
+		{
+			ShapeElement shape;
+			if (null != (shape = SelectedNode as ShapeElement))
+			{
+				((IORMToolServices)shape.Store).ActivateShape(shape, targetWindow);
+			}
+		}
+		/// <summary>
 		/// Activate the shape on the selected diagram
 		/// </summary>
 		/// <param name="diagramIndex">The index of the diagram in the diagram list</param>
@@ -263,9 +287,22 @@ namespace Neumont.Tools.ORM.Shell
 							visibleCommands |= ORMDesignerCommands.EditLabel;
 							enabledCommands |= ORMDesignerCommands.EditLabel;
 						}
-						// Do later checking for the DiagramList command
-						visibleCommands |= ORMDesignerCommands.DiagramList;
-						enabledCommands |= ORMDesignerCommands.DiagramList;
+						if (selectedNode is ShapeElement)
+						{
+							visibleCommands |= ORMDesignerCommands.SelectInDocumentWindow | ORMDesignerCommands.SelectInDiagramSpy;
+							enabledCommands |= ORMDesignerCommands.SelectInDocumentWindow | ORMDesignerCommands.SelectInDiagramSpy;
+						}
+						else
+						{
+							// These may be turned on by the current document, but we have our own handlers,
+							// so we need the command flags off to avoid showing innapropriate commands.
+							visibleCommands &= ~(ORMDesignerCommands.SelectInDocumentWindow | ORMDesignerCommands.SelectInDiagramSpy);
+							enabledCommands &= ~(ORMDesignerCommands.SelectInDocumentWindow | ORMDesignerCommands.SelectInDiagramSpy);
+
+							// Do later checking for the DiagramList command
+							visibleCommands |= ORMDesignerCommands.DiagramList;
+							enabledCommands |= ORMDesignerCommands.DiagramList;
+						}
 					}
 				}
 			}

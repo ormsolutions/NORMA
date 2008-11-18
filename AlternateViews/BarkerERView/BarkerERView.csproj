@@ -142,7 +142,8 @@
       <Generator>NUPlixLoader</Generator>
       <LastGenOutput>EntityRelationship.SerializationExtensions.cs</LastGenOutput>
     </Content>
-    <Content Include="Resources\BarkerERViewTabImage.png" />
+    <None Include="Resources\BarkerERViewBrowserImage.png" />
+    <None Include="Resources\BarkerERViewTabImage.png" />
   </ItemGroup>
   <ItemGroup>
     <Compile Include="..\..\Version.cs">

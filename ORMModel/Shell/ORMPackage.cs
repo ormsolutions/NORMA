@@ -893,13 +893,14 @@ namespace Neumont.Tools.ORM.Shell
 				retVal = package.myStandardDomainModelsMap;
 				if (retVal == null)
 				{
-					retVal = new Dictionary<Guid, Type>(5);
+					retVal = new Dictionary<Guid, Type>(6);
 					retVal.Add(FrameworkDomainModel.DomainModelId, typeof(FrameworkDomainModel));
 					retVal.Add(ORMCoreDomainModel.DomainModelId, typeof(ORMCoreDomainModel));
 					retVal.Add(CoreDesignSurfaceDomainModel.DomainModelId, typeof(CoreDesignSurfaceDomainModel));
 					retVal.Add(ORMShapeDomainModel.DomainModelId, typeof(ORMShapeDomainModel));
 					// UNDONE: Temporary until the report validation is moved into a separate dll. See https://projects.neumont.edu/orm2/ticket/315
 					retVal.Add(ObjectModel.Verbalization.HtmlReport.DomainModelId, typeof(ObjectModel.Verbalization.HtmlReport));
+					retVal.Add(DiagramSurvey.DomainModelId, typeof(DiagramSurvey));
 					package.myStandardDomainModelsMap = retVal;
 				}
 			}

@@ -75,6 +75,13 @@ namespace Neumont.Tools.ORM.ObjectModel
 					return typeof(SurveyElementType);
 				}
 			}
+			public ISurveyDynamicValues DynamicQuestionValues
+			{
+				get
+				{
+					return null;
+				}
+			}
 			public int AskQuestion(object data)
 			{
 				IAnswerSurveyQuestion<SurveyElementType> typedData = data as IAnswerSurveyQuestion<SurveyElementType>;
@@ -99,6 +106,20 @@ namespace Neumont.Tools.ORM.ObjectModel
 					return SurveyQuestionUISupport.Grouping | SurveyQuestionUISupport.Sorting;
 				}
 			}
+			public static int QuestionPriority
+			{
+				get
+				{
+					return 0;
+				}
+			}
+			int ISurveyQuestionTypeInfo.QuestionPriority
+			{
+				get
+				{
+					return QuestionPriority;
+				}
+			}
 		}
 		private sealed class ProvideSurveyQuestionForSurveyErrorState : ISurveyQuestionTypeInfo
 		{
@@ -111,6 +132,13 @@ namespace Neumont.Tools.ORM.ObjectModel
 				get
 				{
 					return typeof(SurveyErrorState);
+				}
+			}
+			public ISurveyDynamicValues DynamicQuestionValues
+			{
+				get
+				{
+					return null;
 				}
 			}
 			public int AskQuestion(object data)
@@ -147,6 +175,20 @@ namespace Neumont.Tools.ORM.ObjectModel
 					return SurveyQuestionUISupport.Overlay;
 				}
 			}
+			public static int QuestionPriority
+			{
+				get
+				{
+					return 0;
+				}
+			}
+			int ISurveyQuestionTypeInfo.QuestionPriority
+			{
+				get
+				{
+					return QuestionPriority;
+				}
+			}
 		}
 		private sealed class ProvideSurveyQuestionForSurveyQuestionGlyph : ISurveyQuestionTypeInfo
 		{
@@ -159,6 +201,13 @@ namespace Neumont.Tools.ORM.ObjectModel
 				get
 				{
 					return typeof(SurveyQuestionGlyph);
+				}
+			}
+			public ISurveyDynamicValues DynamicQuestionValues
+			{
+				get
+				{
+					return null;
 				}
 			}
 			public int AskQuestion(object data)
@@ -185,6 +234,20 @@ namespace Neumont.Tools.ORM.ObjectModel
 					return SurveyQuestionUISupport.Glyph;
 				}
 			}
+			public static int QuestionPriority
+			{
+				get
+				{
+					return 0;
+				}
+			}
+			int ISurveyQuestionTypeInfo.QuestionPriority
+			{
+				get
+				{
+					return QuestionPriority;
+				}
+			}
 		}
 		private sealed class ProvideSurveyQuestionForSurveyFactTypeDetailType : ISurveyQuestionTypeInfo
 		{
@@ -197,6 +260,13 @@ namespace Neumont.Tools.ORM.ObjectModel
 				get
 				{
 					return typeof(SurveyFactTypeDetailType);
+				}
+			}
+			public ISurveyDynamicValues DynamicQuestionValues
+			{
+				get
+				{
+					return null;
 				}
 			}
 			public int AskQuestion(object data)
@@ -223,6 +293,20 @@ namespace Neumont.Tools.ORM.ObjectModel
 					return SurveyQuestionUISupport.Grouping | SurveyQuestionUISupport.Sorting;
 				}
 			}
+			public static int QuestionPriority
+			{
+				get
+				{
+					return 0;
+				}
+			}
+			int ISurveyQuestionTypeInfo.QuestionPriority
+			{
+				get
+				{
+					return QuestionPriority;
+				}
+			}
 		}
 		private sealed class ProvideSurveyQuestionForSurveyNameGeneratorRefinementType : ISurveyQuestionTypeInfo
 		{
@@ -235,6 +319,13 @@ namespace Neumont.Tools.ORM.ObjectModel
 				get
 				{
 					return typeof(SurveyNameGeneratorRefinementType);
+				}
+			}
+			public ISurveyDynamicValues DynamicQuestionValues
+			{
+				get
+				{
+					return null;
 				}
 			}
 			public int AskQuestion(object data)
@@ -259,6 +350,20 @@ namespace Neumont.Tools.ORM.ObjectModel
 				get
 				{
 					return SurveyQuestionUISupport.Sorting;
+				}
+			}
+			public static int QuestionPriority
+			{
+				get
+				{
+					return 0;
+				}
+			}
+			int ISurveyQuestionTypeInfo.QuestionPriority
+			{
+				get
+				{
+					return QuestionPriority;
 				}
 			}
 		}

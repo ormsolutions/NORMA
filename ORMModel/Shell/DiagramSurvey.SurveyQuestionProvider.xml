@@ -1,0 +1,38 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<qp:surveyQuestionProvider xmlns:qp="http://schemas.neumont.edu/ORM/SDK/SurveyQuestionProvider" xmlns:plx="http://schemas.neumont.edu/CodeGeneration/PLiX" class="DiagramSurvey">
+	<qp:surveyQuestions>
+		<qp:surveyQuestion questionType="DiagramSurveyType" questionPriority="-1000">
+			<qp:displaySupport displayCategory="Grouping"/>
+			<qp:displaySupport displayCategory="Sorting"/>
+		</qp:surveyQuestion>
+		<qp:surveyQuestion questionType="DiagramGlyphSurveyType" dynamicValues="true">
+			<qp:displaySupport displayCategory="Glyph"/>
+			<qp:sequentialImageMap/>
+		</qp:surveyQuestion>
+	</qp:surveyQuestions>
+	<qp:groupings>
+		<qp:grouping>
+			<qp:surveyQuestion ref="DiagramGlyphSurveyType"/>
+			<qp:surveyQuestion ref="DiagramSurveyType"/>
+		</qp:grouping>
+	</qp:groupings>
+	<qp:imageInformation>
+		<plx:comment>Note that this relies heavily on the current structure of the generated code</plx:comment>
+		<plx:callThis name="EnsureSurveyQuestionTypeInfo1"/>
+		<plx:return>
+			<plx:callInstance name="DiagramImages" type="property">
+				<plx:callObject>
+					<plx:cast dataTypeName="DiagramGlyphSurveyType" dataTypeQualifier="DiagramSurvey">
+						<plx:callInstance name="DynamicQuestionValues" type="property">
+							<plx:callObject>
+								<plx:callThis name="myDynamicDiagramGlyphSurveyTypeQuestionInstance" type="field"/>
+							</plx:callObject>
+						</plx:callInstance>
+					</plx:cast>
+				</plx:callObject>
+			</plx:callInstance>
+		</plx:return>
+	</qp:imageInformation>
+</qp:surveyQuestionProvider>
+
+

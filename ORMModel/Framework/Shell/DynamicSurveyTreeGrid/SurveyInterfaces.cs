@@ -3,6 +3,7 @@
 * Neumont Object-Role Modeling Architect for Visual Studio                 *
 *                                                                          *
 * Copyright © Neumont University. All rights reserved.                     *
+* Copyright © Matthew Curland. All rights reserved.                        *
 *                                                                          *
 * The use and distribution terms for this software are covered by the      *
 * Common Public License 1.0 (http://opensource.org/licenses/cpl) which     *
@@ -154,9 +155,14 @@ namespace Neumont.Tools.Modeling.Shell.DynamicSurveyTreeGrid
 	{
 		/// <summary>
 		/// The type of question that this ISurveyQuestionTypeInfo represents.
-		/// The return type must be an <see cref="Enum"/>
+		/// The return type must be an <see cref="Enum"/> or implement <see cref="ISurveyDynamicValues"/>
 		/// </summary>
-		Type QuestionType { get; }
+		Type QuestionType { get;}
+		/// <summary>
+		/// If the <see cref="QuestionType"/> represents a set of dynamic values,
+		/// then return the dynamic value instant.
+		/// </summary>
+		ISurveyDynamicValues DynamicQuestionValues { get;}
 		/// <summary>
 		/// Retrieve the answer of any object to my question
 		/// </summary>
@@ -184,23 +190,66 @@ namespace Neumont.Tools.Modeling.Shell.DynamicSurveyTreeGrid
 		/// UISupport for Question
 		/// </summary>
 		SurveyQuestionUISupport UISupport { get;}
+		/// <summary>
+		/// Retrieve a priority to allow questions to be sorted relative
+		/// to other questions. Lower priority sorts first in the list.
+		/// </summary>
+		int QuestionPriority { get;}
 	}
 	#endregion // ISurveyQuestionTypeInfo interface
 	#region IAnswerSurveyQuestion<T> interface
 	/// <summary>
-	/// Any object which is going to be displayed in the survey tree must implement this interface
+	/// Implement this interface to answer a question by
+	/// providing a value from an enum.
 	/// </summary>
 	/// <typeparam name="TAnswerEnum">an enum representing the potential answers to this question</typeparam>
 	public interface IAnswerSurveyQuestion<TAnswerEnum>
 		where TAnswerEnum : struct, IFormattable, IComparable
 	{
 		/// <summary>
-		/// called by survey tree to create node data of the implementing object's answers
+		/// Called by survey tree to get the answer for an enum question
 		/// </summary>
-		/// <returns>int representing the answer to the enum question</returns>
+		/// <returns>int representing the answer to the enum question, or -1 for a 'not applicable' answer.</returns>
 		int AskQuestion();
 	}
 	#endregion // IAnswerSurveyQuestion<T> interface
+	#region IAnswerSurveyDynamicQuestion<T> interface
+	/// <summary>
+	/// Implement this interface to answer a question for
+	/// a dynamic question.
+	/// </summary>
+	/// <typeparam name="TAnswerValues">an enum representing the potential answers to this question</typeparam>
+	public interface IAnswerSurveyDynamicQuestion<TAnswerValues>
+		where TAnswerValues : class, ISurveyDynamicValues
+	{
+		/// <summary>
+		/// Called by survey tree to get the answer for a dynamic value
+		/// </summary>
+		/// <returns>int representing the answer to the enum question, or -1 for a 'not applicable' answer.</returns>
+		int AskQuestion(TAnswerValues answerValues);
+	}
+	#endregion // IAnswerSurveyDynamicQuestion<T> interface
+	#region ISurveyDynamicValues interface
+	/// <summary>
+	/// Represent a set of dynamic values to be used in place of
+	/// a fixed <see cref="T:System.Enum"/>. The set of available
+	/// values is more dynamic than an enum, but it is still fixed
+	/// within the context of a single <see cref="Store"/> instance.
+	/// </summary>
+	public interface ISurveyDynamicValues
+	{
+		/// <summary>
+		/// Get the total number of dynamic values supported
+		/// </summary>
+		int ValueCount { get;}
+		/// <summary>
+		/// Get the localized name of a value. This name will
+		/// only be used if a dynamic question applied associated
+		/// with this value set supports grouping.
+		/// </summary>
+		string GetValueName(int value);
+	}
+	#endregion // ISurveyDynamicValues interface
 	#region ISurveyNode interface
 	/// <summary>
 	/// must be implemented on objects to be displayed on survey tree, used to get their displayable and editable names

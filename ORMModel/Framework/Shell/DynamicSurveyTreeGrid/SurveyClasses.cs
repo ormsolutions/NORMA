@@ -3,6 +3,7 @@
 * Neumont Object-Role Modeling Architect for Visual Studio                 *
 *                                                                          *
 * Copyright © Neumont University. All rights reserved.                     *
+* Copyright © Matthew Curland. All rights reserved.                        *
 *                                                                          *
 * The use and distribution terms for this software are covered by the      *
 * Common Public License 1.0 (http://opensource.org/licenses/cpl) which     *
@@ -255,6 +256,40 @@ namespace Neumont.Tools.Modeling.Shell.DynamicSurveyTreeGrid
 						totalShift += currentQuestion.BitCount;
 						myQuestions.Add(currentQuestion);
 					}
+					// Sort by priority, but within reason. Grouped elements are given priority over non-group elements
+					// to make it easier to find these important groups
+					myQuestions.Sort(
+						delegate(SurveyQuestion leftQuestion, SurveyQuestion rightQuestion)
+						{
+							if (leftQuestion == rightQuestion)
+							{
+								return 0;
+							}
+							ISurveyQuestionTypeInfo leftQuestionInfo = leftQuestion.Question;
+							ISurveyQuestionTypeInfo rightQuestionInfo = rightQuestion.Question;
+							if (0 != (leftQuestionInfo.UISupport & SurveyQuestionUISupport.Grouping))
+							{
+								if (0 == (rightQuestionInfo.UISupport & SurveyQuestionUISupport.Grouping))
+								{
+									return -1;
+								}
+							}
+							else if (0 != (rightQuestionInfo.UISupport & SurveyQuestionUISupport.Grouping))
+							{
+								return 1;
+							}
+							int leftPriority = leftQuestionInfo.QuestionPriority;
+							int rightPriority = rightQuestionInfo.QuestionPriority;
+							if (leftPriority < rightPriority)
+							{
+								return -1;
+							}
+							else if (leftPriority == rightPriority)
+							{
+								return 0;
+							}
+							return 1;
+						});
 					ImageList currentImageList = provider.SurveyQuestionImageList;
 					if (currentImageList != null)
 					{
@@ -469,7 +504,7 @@ namespace Neumont.Tools.Modeling.Shell.DynamicSurveyTreeGrid
 				}
 			}
 			/// <summary>
-			/// number of answers to this question, doesn't include not applicable.
+			/// Number of answers to this question, not including the 'not applicable' answer
 			/// </summary>
 			public int CategoryCount
 			{
@@ -479,7 +514,7 @@ namespace Neumont.Tools.Modeling.Shell.DynamicSurveyTreeGrid
 				}
 			}
 			/// <summary>
-			/// number of bytes needed to store all answers to this question, does allot necessary space for not applicable
+			/// Number of bits needed to store all answers to this question, not including the 'not applicable' answer
 			/// </summary>
 			public int BitCount
 			{
@@ -497,10 +532,8 @@ namespace Neumont.Tools.Modeling.Shell.DynamicSurveyTreeGrid
 			}
 
 			/// <summary>
-			/// returns the header 
+			/// Returns the header for this answer
 			/// </summary>
-			/// <param name="answer"></param>
-			/// <returns></returns>
 			public string CategoryHeader(int answer)
 			{
 				if (answer < 0 || answer > myHeaders.Length - 1)
@@ -532,7 +565,22 @@ namespace Neumont.Tools.Modeling.Shell.DynamicSurveyTreeGrid
 					throw new ArgumentNullException("question");
 				}
 				myQuestion = question;
-				myHeaders = Utility.GetLocalizedEnumNames(question.QuestionType, true);
+				ISurveyDynamicValues dynamicValues = question.DynamicQuestionValues;
+				string[] headers;
+				if (dynamicValues != null)
+				{
+					int valueCount = dynamicValues.ValueCount;
+					headers = new string[valueCount];
+					for (int i = 0; i < valueCount; ++i)
+					{
+						headers[i] = dynamicValues.GetValueName(i);
+					}
+				}
+				else
+				{
+					headers = Utility.GetLocalizedEnumNames(question.QuestionType, true);
+				}
+				myHeaders = headers;
 				myProviderImageListOffset = providerImageListOffset;
 			}
 

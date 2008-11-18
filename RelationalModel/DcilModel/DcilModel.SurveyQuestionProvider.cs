@@ -84,6 +84,13 @@ namespace Neumont.Tools.RelationalModels.ConceptualDatabase
 					return typeof(SurveySchemaType);
 				}
 			}
+			public ISurveyDynamicValues DynamicQuestionValues
+			{
+				get
+				{
+					return null;
+				}
+			}
 			public int AskQuestion(object data)
 			{
 				IAnswerSurveyQuestion<SurveySchemaType> typedData = data as IAnswerSurveyQuestion<SurveySchemaType>;
@@ -108,6 +115,20 @@ namespace Neumont.Tools.RelationalModels.ConceptualDatabase
 					return SurveyQuestionUISupport.Grouping | SurveyQuestionUISupport.Sorting | SurveyQuestionUISupport.Glyph;
 				}
 			}
+			public static int QuestionPriority
+			{
+				get
+				{
+					return 200;
+				}
+			}
+			int ISurveyQuestionTypeInfo.QuestionPriority
+			{
+				get
+				{
+					return QuestionPriority;
+				}
+			}
 		}
 		private sealed class ProvideSurveyQuestionForSurveySchemaChildType : ISurveyQuestionTypeInfo
 		{
@@ -120,6 +141,13 @@ namespace Neumont.Tools.RelationalModels.ConceptualDatabase
 				get
 				{
 					return typeof(SurveySchemaChildType);
+				}
+			}
+			public ISurveyDynamicValues DynamicQuestionValues
+			{
+				get
+				{
+					return null;
 				}
 			}
 			public int AskQuestion(object data)
@@ -146,6 +174,20 @@ namespace Neumont.Tools.RelationalModels.ConceptualDatabase
 					return SurveyQuestionUISupport.Grouping | SurveyQuestionUISupport.Sorting | SurveyQuestionUISupport.Glyph;
 				}
 			}
+			public static int QuestionPriority
+			{
+				get
+				{
+					return 0;
+				}
+			}
+			int ISurveyQuestionTypeInfo.QuestionPriority
+			{
+				get
+				{
+					return QuestionPriority;
+				}
+			}
 		}
 		private sealed class ProvideSurveyQuestionForSurveyTableChildType : ISurveyQuestionTypeInfo
 		{
@@ -158,6 +200,13 @@ namespace Neumont.Tools.RelationalModels.ConceptualDatabase
 				get
 				{
 					return typeof(SurveyTableChildType);
+				}
+			}
+			public ISurveyDynamicValues DynamicQuestionValues
+			{
+				get
+				{
+					return null;
 				}
 			}
 			public int AskQuestion(object data)
@@ -184,6 +233,20 @@ namespace Neumont.Tools.RelationalModels.ConceptualDatabase
 					return SurveyQuestionUISupport.Grouping | SurveyQuestionUISupport.Sorting;
 				}
 			}
+			public static int QuestionPriority
+			{
+				get
+				{
+					return 0;
+				}
+			}
+			int ISurveyQuestionTypeInfo.QuestionPriority
+			{
+				get
+				{
+					return QuestionPriority;
+				}
+			}
 		}
 		private sealed class ProvideSurveyQuestionForSurveyTableChildGlyphType : ISurveyQuestionTypeInfo
 		{
@@ -196,6 +259,13 @@ namespace Neumont.Tools.RelationalModels.ConceptualDatabase
 				get
 				{
 					return typeof(SurveyTableChildGlyphType);
+				}
+			}
+			public ISurveyDynamicValues DynamicQuestionValues
+			{
+				get
+				{
+					return null;
 				}
 			}
 			public int AskQuestion(object data)
@@ -222,6 +292,20 @@ namespace Neumont.Tools.RelationalModels.ConceptualDatabase
 					return SurveyQuestionUISupport.Glyph;
 				}
 			}
+			public static int QuestionPriority
+			{
+				get
+				{
+					return 0;
+				}
+			}
+			int ISurveyQuestionTypeInfo.QuestionPriority
+			{
+				get
+				{
+					return QuestionPriority;
+				}
+			}
 		}
 		private sealed class ProvideSurveyQuestionForSurveyColumnClassificationType : ISurveyQuestionTypeInfo
 		{
@@ -234,6 +318,13 @@ namespace Neumont.Tools.RelationalModels.ConceptualDatabase
 				get
 				{
 					return typeof(SurveyColumnClassificationType);
+				}
+			}
+			public ISurveyDynamicValues DynamicQuestionValues
+			{
+				get
+				{
+					return null;
 				}
 			}
 			public int AskQuestion(object data)
@@ -277,6 +368,20 @@ namespace Neumont.Tools.RelationalModels.ConceptualDatabase
 					return SurveyQuestionUISupport.Overlay | SurveyQuestionUISupport.DisplayData;
 				}
 			}
+			public static int QuestionPriority
+			{
+				get
+				{
+					return 0;
+				}
+			}
+			int ISurveyQuestionTypeInfo.QuestionPriority
+			{
+				get
+				{
+					return QuestionPriority;
+				}
+			}
 		}
 		private sealed class ProvideSurveyQuestionForSurveyReferenceConstraintChildType : ISurveyQuestionTypeInfo
 		{
@@ -289,6 +394,13 @@ namespace Neumont.Tools.RelationalModels.ConceptualDatabase
 				get
 				{
 					return typeof(SurveyReferenceConstraintChildType);
+				}
+			}
+			public ISurveyDynamicValues DynamicQuestionValues
+			{
+				get
+				{
+					return null;
 				}
 			}
 			public int AskQuestion(object data)
@@ -315,6 +427,20 @@ namespace Neumont.Tools.RelationalModels.ConceptualDatabase
 					return SurveyQuestionUISupport.Sorting | SurveyQuestionUISupport.Glyph;
 				}
 			}
+			public static int QuestionPriority
+			{
+				get
+				{
+					return 0;
+				}
+			}
+			int ISurveyQuestionTypeInfo.QuestionPriority
+			{
+				get
+				{
+					return QuestionPriority;
+				}
+			}
 		}
 		private sealed class ProvideSurveyQuestionForSurveyUniquenessConstraintChildType : ISurveyQuestionTypeInfo
 		{
@@ -327,6 +453,13 @@ namespace Neumont.Tools.RelationalModels.ConceptualDatabase
 				get
 				{
 					return typeof(SurveyUniquenessConstraintChildType);
+				}
+			}
+			public ISurveyDynamicValues DynamicQuestionValues
+			{
+				get
+				{
+					return null;
 				}
 			}
 			public int AskQuestion(object data)
@@ -351,6 +484,20 @@ namespace Neumont.Tools.RelationalModels.ConceptualDatabase
 				get
 				{
 					return SurveyQuestionUISupport.Sorting | SurveyQuestionUISupport.Glyph;
+				}
+			}
+			public static int QuestionPriority
+			{
+				get
+				{
+					return 0;
+				}
+			}
+			int ISurveyQuestionTypeInfo.QuestionPriority
+			{
+				get
+				{
+					return QuestionPriority;
 				}
 			}
 		}

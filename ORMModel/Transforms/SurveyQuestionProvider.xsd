@@ -13,6 +13,7 @@
 			Neumont Object-Role Modeling Architect for Visual Studio
 
 			Copyright © Neumont University. All rights reserved.
+			Copyright © Matthew Curland. All rights reserved.
 	
 			The use and distribution terms for this software are covered by the
 			Common Public License 1.0 (http://opensource.org/licenses/cpl) which
@@ -93,8 +94,26 @@
 			<xs:element ref="imageMap" minOccurs="0"/>
 			<xs:element ref="displayDataMap" minOccurs="0"/>
 		</xs:sequence>
-		<xs:attribute name="questionType" type="xs:string" use="required"/>
-		<xs:attribute name="isErrorDisplay" type="xs:boolean" default="false"/>
+		<xs:attribute name="questionType" type="xs:string" use="required">
+			<xs:annotation>
+				<xs:documentation>The name of an enum type with sequential values starting at zero that forms the set of answers to this question.</xs:documentation>
+			</xs:annotation>
+		</xs:attribute>
+		<xs:attribute name="dynamicValues" type="xs:boolean" default="false">
+			<xs:annotation>
+				<xs:documentation>The questionType attribute refers to the name of a type that implements the ISurveyDynamicValues interface instead of an enum. The type should have a constructor callable from this scope that takes a single Store parameter. Not compatible with isErrorDisplay.</xs:documentation>
+			</xs:annotation>
+		</xs:attribute>
+		<xs:attribute name="isErrorDisplay" type="xs:boolean" default="false">
+			<xs:annotation>
+				<xs:documentation>The answers to this question are used to display the element's error state. Not compatible with dynamicValues.</xs:documentation>
+			</xs:annotation>
+		</xs:attribute>
+		<xs:attribute name="questionPriority" type="xs:integer" default="0">
+			<xs:annotation>
+				<xs:documentation>Set the question priority relative to other questions. This affects the header display order in the survey tree. The default value is 0, lower numbers (including negative) are placed higher in the list.</xs:documentation>
+			</xs:annotation>
+		</xs:attribute>
 	</xs:complexType>
 	<xs:element name="displayDataMap" type="displayDataMapType">
 		<xs:unique name="DisplayDataUnique">

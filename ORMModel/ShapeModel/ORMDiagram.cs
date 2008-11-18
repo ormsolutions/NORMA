@@ -44,7 +44,7 @@ using Neumont.Tools.Modeling.Shell;
 namespace Neumont.Tools.ORM.ShapeModel
 {
 	// NOTE: ORMDiagram must be the first class in this file or ORMDiagram.resx will end up with the wrong name in the assembly
-	[DiagramMenuDisplay(DiagramMenuDisplayOptions.Required | DiagramMenuDisplayOptions.AllowMultiple, typeof(ORMDiagram), "UNDONE", "Diagram.TabImage")]
+	[DiagramMenuDisplay(DiagramMenuDisplayOptions.Required | DiagramMenuDisplayOptions.AllowMultiple, typeof(ORMDiagram), "UNDONE", "Diagram.TabImage", "Diagram.BrowserImage")]
 	[ToolboxItemFilterAttribute(ORMDiagram.ORMDiagramDefaultFilterString, ToolboxItemFilterType.Require)]
 	public partial class ORMDiagram : IProxyDisplayProvider, IMergeElements
 	{

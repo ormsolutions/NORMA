@@ -98,9 +98,11 @@ namespace Neumont.Tools.ORM.Shell
 				{
 					DiagramView diagramView = myDiagramView;
 					Diagram oldDiagram = diagramView.Diagram;
+					bool reselectOldDiagram = false;
 					if (oldDiagram != null)
 					{
-						if (oldDiagram != diagram)
+						reselectOldDiagram = oldDiagram == diagram;
+						if (!reselectOldDiagram)
 						{
 							myDisassociating = true;
 							try
@@ -113,13 +115,24 @@ namespace Neumont.Tools.ORM.Shell
 							}
 						}
 					}
-					diagram.Associate(diagramView);
+					if (!reselectOldDiagram)
+					{
+						diagram.Associate(diagramView);
+					}
 					AdjustVisibility(true, false);
 					if (!calledShow)
 					{
 						Show();
 					}
-					SetSelectedComponents(new object[] { diagram });
+					if (reselectOldDiagram && diagramView.Selection.PrimaryItem != null)
+					{
+						OnSelectionChanging(EventArgs.Empty);
+						OnSelectionChanged(EventArgs.Empty);
+					}
+					else
+					{
+						SetSelectedComponents(new object[] { diagram });
+					}
 					return true;
 				}
 			}
@@ -142,10 +155,18 @@ namespace Neumont.Tools.ORM.Shell
 		/// <returns>true if activation was successful</returns>
 		public bool ActivateShape(ShapeElement shape)
 		{
-			if (ActivateDiagram(shape.Diagram))
+			Diagram diagram = shape as Diagram;
+			if (ActivateDiagram(diagram ?? shape.Diagram))
 			{
-				myDiagramView.DiagramClientView.EnsureVisible(GetShapeBoundingBox(shape), DiagramClientView.EnsureVisiblePreferences.ScrollIntoViewCenter);
-				myDiagramView.Selection.Set(new DiagramItem(shape));
+				if (diagram == null)
+				{
+					// Do not select the rectangle for a diagram, the view zooms out to fit it in the window
+					myDiagramView.DiagramClientView.EnsureVisible(GetShapeBoundingBox(shape), DiagramClientView.EnsureVisiblePreferences.ScrollIntoViewCenter);
+					// We could select a diagram, but this leaves it with the old selection state instead
+					// if this is the currently selected spy diagram. If the user really wants the diagram,
+					// they are only one click away after this point.
+					myDiagramView.Selection.Set(new DiagramItem(shape));
+				}
 				return true;
 			}
 			return false;

@@ -32,7 +32,7 @@ using b = Neumont.Tools.EntityRelationshipModels.Barker;
 
 namespace Neumont.Tools.ORM.Views.BarkerERView
 {
-	[DiagramMenuDisplay(DiagramMenuDisplayOptions.BlockRename | DiagramMenuDisplayOptions.Required, typeof(BarkerERDiagram), BarkerERDiagram.NameResourceName, "Diagram.TabImage")]
+	[DiagramMenuDisplay(DiagramMenuDisplayOptions.BlockRename | DiagramMenuDisplayOptions.Required, typeof(BarkerERDiagram), BarkerERDiagram.NameResourceName, "Diagram.TabImage", "Diagram.BrowserImage")]
 	partial class BarkerERDiagram
 	{
 		private const string NameResourceName = "Diagram.MenuDisplayName";

@@ -3,6 +3,7 @@
 * Neumont Object-Role Modeling Architect for Visual Studio                 *
 *                                                                          *
 * Copyright © Neumont University. All rights reserved.                     *
+* Copyright © Matthew Curland. All rights reserved.                        *
 *                                                                          *
 * The use and distribution terms for this software are covered by the      *
 * Common Public License 1.0 (http://opensource.org/licenses/cpl) which     *
@@ -388,11 +389,11 @@ namespace Neumont.Tools.Modeling.Shell.DynamicSurveyTreeGrid
 				{
 					if (myNeutralOnTop)
 					{
-						CreateSubBranchMetaData(HandleNeutral(startIndex, endIndex), endIndex);
+						CreateSubBranchMetaData(CreateNeutralMetaData(startIndex, endIndex), endIndex);
 					}
 					else
 					{
-						HandleNeutral(CreateSubBranchMetaData(startIndex, endIndex), endIndex);
+						CreateNeutralMetaData(CreateSubBranchMetaData(startIndex, endIndex), endIndex);
 					}
 				}
 				/// <summary>
@@ -402,7 +403,7 @@ namespace Neumont.Tools.Modeling.Shell.DynamicSurveyTreeGrid
 				/// <param name="startIndex"></param>
 				/// <param name="endIndex"></param>
 				/// <returns>either startIndex that was passed if no neutrals were found or the index after the last neutral node</returns>
-				private int HandleNeutral(int startIndex, int endIndex)
+				private int CreateNeutralMetaData(int startIndex, int endIndex)
 				{
 					List<SampleDataElementNode> nodes = ((MainList)myBaseBranch).myNodes;
 					int index;
@@ -421,34 +422,39 @@ namespace Neumont.Tools.Modeling.Shell.DynamicSurveyTreeGrid
 					}
 					if (--index >= startNeutralIndex)
 					{
-						int questionIndex = mySurvey.GetIndex(myQuestion.Question.QuestionType);
-						int questionCount = mySurvey.Count;
-						int groupableQuestionIndex = -1;
-						for (int i = questionIndex + 1; i < questionCount; ++i)
-						{
-							// UNDONE: This should come from the display information, not the question
-							// itself.
-							if (0 != (mySurvey[i].UISupport & SurveyQuestionUISupport.Grouping))
-							{
-								groupableQuestionIndex = i;
-								break;
-							}
-						}
-						
-						if (groupableQuestionIndex == -1)
-						{
-							myNeutralBranch = new SimpleListShifter(myBaseBranch, startNeutralIndex, index - startNeutralIndex + 1);
-						}
-						else
-						{
+						SurveyQuestion nextQuestion = NextGroupableQuestion;
+						myNeutralBranch = (nextQuestion != null) ?
 							//TODO: use neutralOnTop bool stored with question instead of passing one in
-							myNeutralBranch = new ListGrouper(myBaseBranch, mySurvey[groupableQuestionIndex], startNeutralIndex, index, myNeutralOnTop);
-						}
+							(IBranch)new ListGrouper(myBaseBranch, nextQuestion, startNeutralIndex, index, myNeutralOnTop) :
+							new SimpleListShifter(myBaseBranch, startNeutralIndex, index - startNeutralIndex + 1);
 						return ++index;
 					}
 					else
 					{
 						return startNeutralIndex;
+					}
+				}
+				/// <summary>
+				/// Return the first groupable <see cref="SurveyQuestion"/> after
+				/// the current question in the context <see cref="Survey"/>.
+				/// </summary>
+				private SurveyQuestion NextGroupableQuestion
+				{
+					get
+					{
+						Survey survey = mySurvey;
+						int contextQuestionIndex = survey.GetIndex(myQuestion.Question.QuestionType);
+						int questionCount = survey.Count;
+						for (int i = contextQuestionIndex + 1; i < questionCount; ++i)
+						{
+							// UNDONE: This should come from the display information, not the question
+							// itself.
+							if (0 != (survey[i].UISupport & SurveyQuestionUISupport.Grouping))
+							{
+								return survey[i];
+							}
+						}
+						return null;
 					}
 				}
 				/// <summary>
@@ -599,7 +605,7 @@ namespace Neumont.Tools.Modeling.Shell.DynamicSurveyTreeGrid
 				{
 					get
 					{
-						return BranchFeatures.Expansions | BranchFeatures.BranchRelocation | BranchFeatures.InsertsAndDeletes | BranchFeatures.PositionTracking;
+						return BranchFeatures.Expansions | BranchFeatures.BranchRelocation | BranchFeatures.InsertsAndDeletes | BranchFeatures.PositionTracking | BranchFeatures.ExplicitLabelEdits;
 					}
 				}
 				/// <summary>
@@ -872,7 +878,7 @@ namespace Neumont.Tools.Modeling.Shell.DynamicSurveyTreeGrid
 					{
 						Debug.Assert(notifyThroughOffset == 0 || notifyThrough != null);
 						int offsetAdjustment = notifyThroughOffset + (myNeutralOnTop ? 0 : myVisibleSubBranchCount);
-						IBranch notifyBranch = (notifyThrough != null) ? notifyThrough : this;
+						IBranch notifyBranch = notifyThrough ?? this;
 						SimpleListShifter shifter;
 						if (null == (shifter = (neutralBranch as SimpleListShifter)))
 						{
@@ -883,13 +889,18 @@ namespace Neumont.Tools.Modeling.Shell.DynamicSurveyTreeGrid
 						{
 							shifter.FirstItem -= 1;
 						}
-						else if (shifter.LastItem <= index)
+						else if (shifter.LastItem >= index)
 						{
 							shifter.Count -= 1;
 							if (modificationEvents != null)
 							{
 								modificationEvents(notifyBranch, BranchModificationEventArgs.DeleteItems(notifyBranch, offsetAdjustment + index - shifter.FirstItem, 1));
 							}
+						}
+						if (neutralBranch.VisibleItemCount == 0)
+						{
+							// This can be recreated, there is no reason to keep an empty passthrough branch
+							myNeutralBranch = null;
 						}
 					}
 				}
@@ -914,9 +925,12 @@ namespace Neumont.Tools.Modeling.Shell.DynamicSurveyTreeGrid
 				private void ElementAddedAt(int index, BranchModificationEventHandler modificationEvents, IBranch notifyThrough, int notifyThroughOffset)
 				{
 					int currentAnswer = myQuestion.ExtractAnswer(((MainList)myBaseBranch).myNodes[index].NodeData);
-					for (int i = 0; i < this.mySubBranches.Length; i++)
+					bool neutralOnTop = myNeutralOnTop;
+					int testCurrentAnswer = (currentAnswer == SurveyQuestion.NeutralAnswer && !neutralOnTop) ? int.MaxValue : currentAnswer;
+					SubBranchMetaData[] subBranches = mySubBranches;
+					for (int i = 0; i < subBranches.Length; i++)
 					{
-						if (mySubBranches[i].AdjustAdd(i == currentAnswer, i > currentAnswer, index, modificationEvents))
+						if (subBranches[i].AdjustAdd(i == testCurrentAnswer, i > testCurrentAnswer, index, modificationEvents))
 						{
 							// We need to add the header row
 							int currentHeaderCount = myVisibleSubBranchCount;
@@ -963,8 +977,8 @@ namespace Neumont.Tools.Modeling.Shell.DynamicSurveyTreeGrid
 					if (neutralBranch != null)
 					{
 						Debug.Assert(notifyThroughOffset == 0 || notifyThrough != null);
-						int offsetAdjustment = notifyThroughOffset + (myNeutralOnTop ? 0 : myVisibleSubBranchCount);
-						IBranch notifyBranch = (notifyThrough != null) ? notifyThrough : this;
+						int offsetAdjustment = notifyThroughOffset + (neutralOnTop ? 0 : myVisibleSubBranchCount);
+						IBranch notifyBranch = notifyThrough ?? this;
 						SimpleListShifter shifter;
 						if (null == (shifter = (neutralBranch as SimpleListShifter)))
 						{
@@ -975,13 +989,30 @@ namespace Neumont.Tools.Modeling.Shell.DynamicSurveyTreeGrid
 						{
 							shifter.FirstItem += 1;	
 						}
-						else if (shifter.LastItem <= index)
+						else if (shifter.LastItem >= index ||
+							(currentAnswer == SurveyQuestion.NeutralAnswer && index == (shifter.LastItem + 1)))
 						{
 							shifter.Count += 1;
 							if (modificationEvents != null)
 							{
 								modificationEvents(notifyBranch, BranchModificationEventArgs.InsertItems(notifyBranch, offsetAdjustment + index - shifter.FirstItem - 1, 1));
 							}
+						}
+					}
+					else if (currentAnswer == SurveyQuestion.NeutralAnswer &&
+						index == (neutralOnTop ? subBranches[0].Start - 1 : (subBranches[subBranches.Length - 1].End + 1)))
+					{
+						// Dynamically create the neutral branch
+						SurveyQuestion nextQuestion = NextGroupableQuestion;
+						myNeutralBranch = neutralBranch = (nextQuestion != null) ?
+							//TODO: use neutralOnTop bool stored with question instead of passing one in
+							(IBranch)new ListGrouper(myBaseBranch, nextQuestion, index, index, myNeutralOnTop) :
+							new SimpleListShifter(myBaseBranch, index, 1);
+						if (modificationEvents != null)
+						{
+							Debug.Assert(notifyThroughOffset == 0 || notifyThrough != null);
+							IBranch notifyBranch = notifyThrough ?? this;
+							modificationEvents(notifyBranch, BranchModificationEventArgs.InsertItems(notifyBranch, notifyThroughOffset + (myNeutralOnTop ? 0 : myVisibleSubBranchCount) - 1, 1));
 						}
 					}
 				}
@@ -1077,7 +1108,7 @@ namespace Neumont.Tools.Modeling.Shell.DynamicSurveyTreeGrid
 						{
 							Debug.Assert(notifyThroughOffset == 0 || notifyThrough != null);
 							int offsetAdjustment = notifyThroughOffset + (myNeutralOnTop ? 0 : myVisibleSubBranchCount);
-							IBranch notifyBranch = (notifyThrough != null) ? notifyThrough : this;
+							IBranch notifyBranch = notifyThrough ?? this;
 							SimpleListShifter shifter;
 							if (null == (shifter = (neutralBranch as SimpleListShifter)))
 							{

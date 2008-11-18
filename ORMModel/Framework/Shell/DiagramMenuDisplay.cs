@@ -3,6 +3,7 @@
 * Neumont Object-Role Modeling Architect for Visual Studio                 *
 *                                                                          *
 * Copyright © Neumont University. All rights reserved.                     *
+* Copyright © Matthew Curland. All rights reserved.                        *
 *                                                                          *
 * The use and distribution terms for this software are covered by the      *
 * Common Public License 1.0 (http://opensource.org/licenses/cpl) which     *
@@ -60,10 +61,11 @@ namespace Neumont.Tools.Modeling.Shell
 	[AttributeUsage(AttributeTargets.Class, Inherited = false)]
 	public sealed class DiagramMenuDisplayAttribute : System.Attribute
 	{
-		private DiagramMenuDisplayOptions diagramOption;
-		private string nameResourceId;
-		private string imageResourceId;
-		private ResourceManager resourceManager;
+		private DiagramMenuDisplayOptions myDiagramOptions;
+		private string myNameResourceId;
+		private string myTabImageResourceId;
+		private string myBrowserImageResourceId;
+		private ResourceManager myResourceManager;
 		
 		/// <summary>
 		/// Retrieves the diagram options for Diagram Menu Display.
@@ -72,7 +74,7 @@ namespace Neumont.Tools.Modeling.Shell
 		{
 			get
 			{
-				return diagramOption;
+				return myDiagramOptions;
 			}
 		}
 				
@@ -83,14 +85,14 @@ namespace Neumont.Tools.Modeling.Shell
 		{
 			get
 			{
-				ResourceManager resourceManager = this.resourceManager;
-				if (resourceManager == null || string.IsNullOrEmpty(nameResourceId))
+				ResourceManager resourceManager = this.myResourceManager;
+				if (resourceManager == null || string.IsNullOrEmpty(myNameResourceId))
 				{
 					return string.Empty;
 				}
 				else
 				{
-					return resourceManager.GetString(nameResourceId, CultureInfo.CurrentUICulture);
+					return resourceManager.GetString(myNameResourceId, CultureInfo.CurrentUICulture);
 				}
 			}
 		}
@@ -98,18 +100,37 @@ namespace Neumont.Tools.Modeling.Shell
 		/// <summary>
 		/// Retrieves the Glyph for the Diagram Menu.
 		/// </summary>
-		public Image Image
+		public Image TabImage
 		{
 			get
 			{
-				ResourceManager resourceManager = this.resourceManager;
-				if (resourceManager == null || string.IsNullOrEmpty(imageResourceId))
+				ResourceManager resourceManager = this.myResourceManager;
+				if (resourceManager == null || string.IsNullOrEmpty(myTabImageResourceId))
 				{
 					return null;
 				}
 				else
 				{
-					return resourceManager.GetObject(imageResourceId, CultureInfo.CurrentUICulture) as Image;
+					return resourceManager.GetObject(myTabImageResourceId, CultureInfo.CurrentUICulture) as Image;
+				}
+			}
+		}
+
+		/// <summary>
+		/// Retrieves the Glyph for the Model Browser.
+		/// </summary>
+		public Image BrowserImage
+		{
+			get
+			{
+				ResourceManager resourceManager = this.myResourceManager;
+				if (resourceManager == null || string.IsNullOrEmpty(myBrowserImageResourceId))
+				{
+					return null;
+				}
+				else
+				{
+					return resourceManager.GetObject(myBrowserImageResourceId, CultureInfo.CurrentUICulture) as Image;
 				}
 			}
 		}
@@ -119,20 +140,21 @@ namespace Neumont.Tools.Modeling.Shell
 		/// </summary>
 		/// <param name="diagramOption">Option that describes if the diagram is Single, Multiple, or Required</param>
 		/// <param name="resourceManagerSource">The type of class that the resource manager will target</param>
-		/// <param name="nameResourceId">The GUID that identifies the name of the Diagram Menu Item</param>
-		/// <param name="imageResourceId">The GUID that identifies the Glyph of the Diagram Menu Item</param>
-		public DiagramMenuDisplayAttribute(DiagramMenuDisplayOptions diagramOption, Type resourceManagerSource, string nameResourceId, string imageResourceId)
+		/// <param name="nameResourceId">The resource name that identifies the name of the Diagram Menu Item</param>
+		/// <param name="tabImageResourceId">The resource name that identifies the Glyph of the Diagram Menu Item</param>
+		/// <param name="browserImageResourceId">The resource that identifies the Glyph of diagrams of this type in the Model Browser</param>
+		public DiagramMenuDisplayAttribute(DiagramMenuDisplayOptions diagramOption, Type resourceManagerSource, string nameResourceId, string tabImageResourceId, string browserImageResourceId)
 		{
 			if (resourceManagerSource == null)
 			{
 				throw new ArgumentNullException("ResourceManagerSource");
 			}
-			this.diagramOption = diagramOption;
-			this.nameResourceId = nameResourceId;
-			this.imageResourceId = imageResourceId;
+			myDiagramOptions = diagramOption;
+			myNameResourceId = nameResourceId;
+			myTabImageResourceId = tabImageResourceId;
+			myBrowserImageResourceId = browserImageResourceId; 
 
-			resourceManager = typeof(ResourceAccessor<>).MakeGenericType(resourceManagerSource).InvokeMember("ResourceManager", BindingFlags.Public | BindingFlags.Static | BindingFlags.GetProperty | BindingFlags.ExactBinding | BindingFlags.DeclaredOnly, null, null, null, null, CultureInfo.InvariantCulture, null) as ResourceManager;
-
+			myResourceManager = typeof(ResourceAccessor<>).MakeGenericType(resourceManagerSource).InvokeMember("ResourceManager", BindingFlags.Public | BindingFlags.Static | BindingFlags.GetProperty | BindingFlags.ExactBinding | BindingFlags.DeclaredOnly, null, null, null, null, CultureInfo.InvariantCulture, null) as ResourceManager;
 		}
 	}
 }

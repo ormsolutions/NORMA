@@ -31,7 +31,7 @@ using Neumont.Tools.ORMToORMAbstractionBridge;
 
 namespace Neumont.Tools.ORM.Views.RelationalView
 {
-	[DiagramMenuDisplay(DiagramMenuDisplayOptions.BlockRename | DiagramMenuDisplayOptions.Required, typeof(RelationalDiagram), RelationalDiagram.NameResourceName, "Diagram.TabImage")]
+	[DiagramMenuDisplay(DiagramMenuDisplayOptions.BlockRename | DiagramMenuDisplayOptions.Required, typeof(RelationalDiagram), RelationalDiagram.NameResourceName, "Diagram.TabImage", "Diagram.BrowserImage")]
 	partial class RelationalDiagram
 	{
 		private const string NameResourceName = "Diagram.MenuDisplayName";

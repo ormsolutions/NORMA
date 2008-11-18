@@ -98,7 +98,7 @@ namespace Neumont.Tools.Modeling.Shell.DynamicSurveyTreeGrid
 				}
 				SampleDataElementNode.InitializeNodes(nodes, survey);
 				nodes.Sort(myNodeComparer);
-				foreach (SampleDataElementNode node in myNodes)
+				foreach (SampleDataElementNode node in nodes)
 				{
 					mySurveyTree.myNodeDictionary.Add(node.Element, new NodeLocation(this, node));
 				}

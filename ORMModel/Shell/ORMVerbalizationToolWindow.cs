@@ -363,9 +363,9 @@ namespace Neumont.Tools.ORM.Shell
 				}
 				if (selectedObjects != null)
 				{
-					foreach (ModelElement melIter in selectedObjects)
+					foreach (object melIter in selectedObjects)
 					{
-						ModelElement mel = melIter;
+						ModelElement mel = melIter as ModelElement;
 						PresentationElement pel = mel as PresentationElement;
 						if (pel != null)
 						{

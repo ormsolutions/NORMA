@@ -94,6 +94,13 @@ namespace Neumont.Tools.EntityRelationshipModels.Barker
 					return typeof(SurveyBarkerModelType);
 				}
 			}
+			public ISurveyDynamicValues DynamicQuestionValues
+			{
+				get
+				{
+					return null;
+				}
+			}
 			public int AskQuestion(object data)
 			{
 				IAnswerSurveyQuestion<SurveyBarkerModelType> typedData = data as IAnswerSurveyQuestion<SurveyBarkerModelType>;
@@ -128,6 +135,20 @@ namespace Neumont.Tools.EntityRelationshipModels.Barker
 					return SurveyQuestionUISupport.Grouping | SurveyQuestionUISupport.Sorting | SurveyQuestionUISupport.Glyph;
 				}
 			}
+			public static int QuestionPriority
+			{
+				get
+				{
+					return 400;
+				}
+			}
+			int ISurveyQuestionTypeInfo.QuestionPriority
+			{
+				get
+				{
+					return QuestionPriority;
+				}
+			}
 		}
 		private sealed class ProvideSurveyQuestionForSurveyBarkerElementType : ISurveyQuestionTypeInfo
 		{
@@ -140,6 +161,13 @@ namespace Neumont.Tools.EntityRelationshipModels.Barker
 				get
 				{
 					return typeof(SurveyBarkerElementType);
+				}
+			}
+			public ISurveyDynamicValues DynamicQuestionValues
+			{
+				get
+				{
+					return null;
 				}
 			}
 			public int AskQuestion(object data)
@@ -182,6 +210,20 @@ namespace Neumont.Tools.EntityRelationshipModels.Barker
 					return SurveyQuestionUISupport.Grouping | SurveyQuestionUISupport.Sorting | SurveyQuestionUISupport.Glyph;
 				}
 			}
+			public static int QuestionPriority
+			{
+				get
+				{
+					return 0;
+				}
+			}
+			int ISurveyQuestionTypeInfo.QuestionPriority
+			{
+				get
+				{
+					return QuestionPriority;
+				}
+			}
 		}
 		private sealed class ProvideSurveyQuestionForSurveyEntityChildType : ISurveyQuestionTypeInfo
 		{
@@ -194,6 +236,13 @@ namespace Neumont.Tools.EntityRelationshipModels.Barker
 				get
 				{
 					return typeof(SurveyEntityChildType);
+				}
+			}
+			public ISurveyDynamicValues DynamicQuestionValues
+			{
+				get
+				{
+					return null;
 				}
 			}
 			public int AskQuestion(object data)
@@ -236,6 +285,20 @@ namespace Neumont.Tools.EntityRelationshipModels.Barker
 					return SurveyQuestionUISupport.Grouping | SurveyQuestionUISupport.Sorting | SurveyQuestionUISupport.Glyph;
 				}
 			}
+			public static int QuestionPriority
+			{
+				get
+				{
+					return 0;
+				}
+			}
+			int ISurveyQuestionTypeInfo.QuestionPriority
+			{
+				get
+				{
+					return QuestionPriority;
+				}
+			}
 		}
 		private sealed class ProvideSurveyQuestionForSurveyBinaryAssociationChildType : ISurveyQuestionTypeInfo
 		{
@@ -248,6 +311,13 @@ namespace Neumont.Tools.EntityRelationshipModels.Barker
 				get
 				{
 					return typeof(SurveyBinaryAssociationChildType);
+				}
+			}
+			public ISurveyDynamicValues DynamicQuestionValues
+			{
+				get
+				{
+					return null;
 				}
 			}
 			public int AskQuestion(object data)
@@ -299,6 +369,20 @@ namespace Neumont.Tools.EntityRelationshipModels.Barker
 					return SurveyQuestionUISupport.Glyph;
 				}
 			}
+			public static int QuestionPriority
+			{
+				get
+				{
+					return 0;
+				}
+			}
+			int ISurveyQuestionTypeInfo.QuestionPriority
+			{
+				get
+				{
+					return QuestionPriority;
+				}
+			}
 		}
 		private sealed class ProvideSurveyQuestionForSurveyAttributeChildType : ISurveyQuestionTypeInfo
 		{
@@ -311,6 +395,13 @@ namespace Neumont.Tools.EntityRelationshipModels.Barker
 				get
 				{
 					return typeof(SurveyAttributeChildType);
+				}
+			}
+			public ISurveyDynamicValues DynamicQuestionValues
+			{
+				get
+				{
+					return null;
 				}
 			}
 			public int AskQuestion(object data)
@@ -347,6 +438,20 @@ namespace Neumont.Tools.EntityRelationshipModels.Barker
 					return SurveyQuestionUISupport.Grouping | SurveyQuestionUISupport.Sorting | SurveyQuestionUISupport.Glyph;
 				}
 			}
+			public static int QuestionPriority
+			{
+				get
+				{
+					return 0;
+				}
+			}
+			int ISurveyQuestionTypeInfo.QuestionPriority
+			{
+				get
+				{
+					return QuestionPriority;
+				}
+			}
 		}
 		private sealed class ProvideSurveyQuestionForSurveyRoleChildType : ISurveyQuestionTypeInfo
 		{
@@ -359,6 +464,13 @@ namespace Neumont.Tools.EntityRelationshipModels.Barker
 				get
 				{
 					return typeof(SurveyRoleChildType);
+				}
+			}
+			public ISurveyDynamicValues DynamicQuestionValues
+			{
+				get
+				{
+					return null;
 				}
 			}
 			public int AskQuestion(object data)
@@ -395,6 +507,20 @@ namespace Neumont.Tools.EntityRelationshipModels.Barker
 					return SurveyQuestionUISupport.Grouping | SurveyQuestionUISupport.Sorting | SurveyQuestionUISupport.Glyph;
 				}
 			}
+			public static int QuestionPriority
+			{
+				get
+				{
+					return 0;
+				}
+			}
+			int ISurveyQuestionTypeInfo.QuestionPriority
+			{
+				get
+				{
+					return QuestionPriority;
+				}
+			}
 		}
 		private sealed class ProvideSurveyQuestionForSurveyExclusiveArcChildType : ISurveyQuestionTypeInfo
 		{
@@ -407,6 +533,13 @@ namespace Neumont.Tools.EntityRelationshipModels.Barker
 				get
 				{
 					return typeof(SurveyExclusiveArcChildType);
+				}
+			}
+			public ISurveyDynamicValues DynamicQuestionValues
+			{
+				get
+				{
+					return null;
 				}
 			}
 			public int AskQuestion(object data)
@@ -441,6 +574,20 @@ namespace Neumont.Tools.EntityRelationshipModels.Barker
 				get
 				{
 					return SurveyQuestionUISupport.Grouping | SurveyQuestionUISupport.Sorting | SurveyQuestionUISupport.Glyph;
+				}
+			}
+			public static int QuestionPriority
+			{
+				get
+				{
+					return 0;
+				}
+			}
+			int ISurveyQuestionTypeInfo.QuestionPriority
+			{
+				get
+				{
+					return QuestionPriority;
 				}
 			}
 		}

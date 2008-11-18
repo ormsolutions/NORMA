@@ -69,6 +69,14 @@ namespace Neumont.Tools.ORM.Shell
 					new EventHandler(OnStatusDiagramList),
 					new EventHandler(OnMenuDiagramSpyDiagramList),
 					ORMDesignerDocView.ORMDesignerCommandIds.DiagramSpyDiagramList)
+					,new DynamicStatusMenuCommand(
+					new EventHandler(OnStatusSelectShapeInDocumentWindow),
+					new EventHandler(OnMenuSelectShapeInDocumentWindow),
+					ORMDesignerDocView.ORMDesignerCommandIds.SelectInDocumentWindow)
+					,new DynamicStatusMenuCommand(
+					new EventHandler(OnStatusSelectShapeInDiagramSpy),
+					new EventHandler(OnMenuSelectShapeInDiagramSpy),
+					ORMDesignerDocView.ORMDesignerCommandIds.SelectInDiagramSpy)
 				};
 				#endregion //command array
 				AddCommands(myCommands);
@@ -217,6 +225,42 @@ namespace Neumont.Tools.ORM.Shell
 				if (currentWindow != null)
 				{
 					currentWindow.OnMenuDiagramList(((OleMenuCommand)sender).MatchedCommandId, NavigateToWindow.DiagramSpy);
+				}
+			}
+			/// <summary>
+			/// Status callback
+			/// </summary>
+			public void OnStatusSelectShapeInDocumentWindow(object sender, EventArgs e)
+			{
+				ORMModelBrowserToolWindow.OnStatusCommand(sender, ORMDesignerCommands.SelectInDocumentWindow, CurrentToolWindow);
+			}
+			/// <summary>
+			/// Menu handler
+			/// </summary>
+			public void OnMenuSelectShapeInDocumentWindow(object sender, EventArgs e)
+			{
+				ORMModelBrowserToolWindow currentWindow = CurrentToolWindow;
+				if (currentWindow != null)
+				{
+					currentWindow.OnMenuSelectShape(NavigateToWindow.Document);
+				}
+			}
+			/// <summary>
+			/// Status callback
+			/// </summary>
+			public void OnStatusSelectShapeInDiagramSpy(object sender, EventArgs e)
+			{
+				ORMModelBrowserToolWindow.OnStatusCommand(sender, ORMDesignerCommands.SelectInDiagramSpy, CurrentToolWindow);
+			}
+			/// <summary>
+			/// Menu handler
+			/// </summary>
+			public void OnMenuSelectShapeInDiagramSpy(object sender, EventArgs e)
+			{
+				ORMModelBrowserToolWindow currentWindow = CurrentToolWindow;
+				if (currentWindow != null)
+				{
+					currentWindow.OnMenuSelectShape(NavigateToWindow.DiagramSpy);
 				}
 			}
 			#endregion // Command Handlers

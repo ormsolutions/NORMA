@@ -474,7 +474,7 @@ namespace Neumont.Tools.ORM.Shell
 					if (attributes.Length > 0)
 					{
 						DiagramMenuDisplayAttribute attribute = (DiagramMenuDisplayAttribute)attributes[0];
-						Image image = attribute.Image;
+						Image image = attribute.TabImage;
 						string name = attribute.DisplayName;
 						if (string.IsNullOrEmpty(name))
 						{

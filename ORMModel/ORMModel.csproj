@@ -370,6 +370,11 @@
       <SubType>Designer</SubType>
     </EmbeddedResource>
     <None Include="ObjectModel\VerbalizationCoreSnippets\VerbalizationCoreSnippets.xml" />
+    <Compile Include="Shell\DiagramSurvey.cs" />
+    <Compile Include="Shell\DiagramSurvey.SurveyQuestionProvider.cs">
+      <DependentUpon>DiagramSurvey.SurveyQuestionProvider.xml</DependentUpon>
+      <AutoGen>True</AutoGen>
+    </Compile>
     <Compile Include="Framework\FrameworkDomainModel.cs" />
     <Compile Include="Framework\Diagnostics\TraceUtility.cs" />
     <Compile Include="Framework\Design\Editors\FlagsEnumEditor.cs" />
@@ -480,6 +485,11 @@
     <Compile Include="Shell\ModelErrorDisplayFilterForm.Designer.cs">
       <DependentUpon>ModelErrorDisplayFilterForm.cs</DependentUpon>
     </Compile>
+    <None Include="Resources\DiagramBrowserImage.png" />
+    <Content Include="Shell\DiagramSurvey.SurveyQuestionProvider.xml">
+      <Generator>NUPlixLoader</Generator>
+      <LastGenOutput>DiagramSurvey.SurveyQuestionProvider.cs</LastGenOutput>
+    </Content>
     <Content Include="Framework\Framework.AttachRules.xml">
       <Generator>NUPlixLoader</Generator>
       <LastGenOutput>Framework.AttachRules.cs</LastGenOutput>

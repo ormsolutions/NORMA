@@ -200,7 +200,7 @@ namespace Neumont.Tools.RelationalModels.ConceptualDatabase
 		{
 			get
 			{
-				return DomainTypeDescriptor.CreatePropertyDescriptor(this, Schema.NameDomainPropertyId).IsReadOnly;
+				return !DomainTypeDescriptor.CreatePropertyDescriptor(this, Schema.NameDomainPropertyId).IsReadOnly;
 			}
 		}
 		string ISurveyNode.SurveyName
@@ -319,7 +319,7 @@ namespace Neumont.Tools.RelationalModels.ConceptualDatabase
 		{
 			get
 			{
-				return DomainTypeDescriptor.CreatePropertyDescriptor(this, Table.NameDomainPropertyId).IsReadOnly;
+				return !DomainTypeDescriptor.CreatePropertyDescriptor(this, Table.NameDomainPropertyId).IsReadOnly;
 			}
 		}
 		string ISurveyNode.SurveyName
@@ -486,7 +486,7 @@ namespace Neumont.Tools.RelationalModels.ConceptualDatabase
 		{
 			get
 			{
-				return DomainTypeDescriptor.CreatePropertyDescriptor(this, Column.NameDomainPropertyId).IsReadOnly;
+				return !DomainTypeDescriptor.CreatePropertyDescriptor(this, Column.NameDomainPropertyId).IsReadOnly;
 			}
 		}
 		string ISurveyNode.SurveyName
@@ -694,7 +694,7 @@ namespace Neumont.Tools.RelationalModels.ConceptualDatabase
 		{
 			get
 			{
-				return DomainTypeDescriptor.CreatePropertyDescriptor(this, ReferenceConstraint.NameDomainPropertyId).IsReadOnly;
+				return !DomainTypeDescriptor.CreatePropertyDescriptor(this, ReferenceConstraint.NameDomainPropertyId).IsReadOnly;
 			}
 		}
 		string ISurveyNode.SurveyName
@@ -846,7 +846,7 @@ namespace Neumont.Tools.RelationalModels.ConceptualDatabase
 		{
 			get
 			{
-				return DomainTypeDescriptor.CreatePropertyDescriptor(this, UniquenessConstraint.NameDomainPropertyId).IsReadOnly;
+				return !DomainTypeDescriptor.CreatePropertyDescriptor(this, UniquenessConstraint.NameDomainPropertyId).IsReadOnly;
 			}
 		}
 		string ISurveyNode.SurveyName
@@ -985,7 +985,7 @@ namespace Neumont.Tools.RelationalModels.ConceptualDatabase
 		{
 			get
 			{
-				return DomainTypeDescriptor.CreatePropertyDescriptor(TargetTable, Table.NameDomainPropertyId).IsReadOnly;
+				return !DomainTypeDescriptor.CreatePropertyDescriptor(TargetTable, Table.NameDomainPropertyId).IsReadOnly;
 			}
 		}
 		string ISurveyNode.SurveyName
@@ -1121,7 +1121,7 @@ namespace Neumont.Tools.RelationalModels.ConceptualDatabase
 		{
 			get
 			{
-				return DomainTypeDescriptor.CreatePropertyDescriptor(SourceColumn, Column.NameDomainPropertyId).IsReadOnly;
+				return !DomainTypeDescriptor.CreatePropertyDescriptor(SourceColumn, Column.NameDomainPropertyId).IsReadOnly;
 			}
 		}
 		string ISurveyNode.SurveyName
@@ -1308,7 +1308,7 @@ namespace Neumont.Tools.RelationalModels.ConceptualDatabase
 		{
 			get
 			{
-				return DomainTypeDescriptor.CreatePropertyDescriptor(Column, Column.NameDomainPropertyId).IsReadOnly;
+				return !DomainTypeDescriptor.CreatePropertyDescriptor(Column, Column.NameDomainPropertyId).IsReadOnly;
 			}
 		}
 		string ISurveyNode.SurveyName
