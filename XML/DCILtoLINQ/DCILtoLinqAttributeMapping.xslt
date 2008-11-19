@@ -131,14 +131,14 @@
 		<xsl:variable name="setting" select="string($LinqToSqlSettings/opt:ServiceLayer/@Generate)"/>
 		<xsl:choose>
 			<xsl:when test="$setting">
-				<xsl:value-of select="$setting='false' or $setting='0'"/>
+				<xsl:value-of select="$setting='true' or $setting='1'"/>
 			</xsl:when>
 			<xsl:otherwise>
 				<xsl:value-of select="false()"/>
 			</xsl:otherwise>
 		</xsl:choose>
 	</xsl:variable>
-	<xsl:variable name="GenerateServiceLayer" select="string($GenerateServiceLayerFragment)"/>
+	<xsl:variable name="GenerateServiceLayer" select="string($GenerateServiceLayerFragment)='true'"/>
 	<xsl:variable name="CreateKeywordFragment">
 		<xsl:variable name="setting" select="string($LinqToSqlSettings/opt:ServiceLayer/@CreateKeyword)"/>
 		<xsl:choose>
@@ -234,7 +234,31 @@
 			</xsl:otherwise>
 		</xsl:choose>
 	</xsl:variable>
-	<xsl:variable name="UseTransactionScopes" select="string($UseTransactionScopesFragment)"/>
+	<xsl:variable name="UseTransactionScopes" select="string($UseTransactionScopesFragment)='true'"/>
+	<xsl:variable name="UseTransactionFlowFragment">
+		<xsl:variable name="setting" select="string($LinqToSqlSettings/opt:ServiceLayer/@UseTransactionFlow)"/>
+		<xsl:choose>
+			<xsl:when test="$setting">
+				<xsl:value-of select="$setting='true' or $setting='1'"/>
+			</xsl:when>
+			<xsl:otherwise>
+				<xsl:value-of select="false()"/>
+			</xsl:otherwise>
+		</xsl:choose>
+	</xsl:variable>
+	<xsl:variable name="UseTransactionFlow" select="string($UseTransactionFlowFragment)='true'"/>
+	<xsl:variable name="OptimizeOperationalMethodsFragment">
+		<xsl:variable name="setting" select="string($LinqToSqlSettings/opt:ServiceLayer/@OptimizeOperationalMethods)"/>
+		<xsl:choose>
+			<xsl:when test="$setting">
+				<xsl:value-of select="$setting='true' or $setting='1'"/>
+			</xsl:when>
+			<xsl:otherwise>
+				<xsl:value-of select="false()"/>
+			</xsl:otherwise>
+		</xsl:choose>
+	</xsl:variable>
+	<xsl:variable name="OptimizeOperationalMethods" select="string($OptimizeOperationalMethodsFragment)='true'"/>
 	<xsl:variable name="InstanceContextModeFragment">
 		<xsl:variable name="setting" select="string($LinqToSqlSettings/opt:ServiceLayer/@InstanceContextMode)"/>
 		<xsl:choose>
@@ -324,7 +348,7 @@
 	</xsl:template>
 
 	<xsl:template name="GenerateOperationContractAttribute">
-		<xsl:param name="isOneWay" select="true()"/>
+		<xsl:param name="isOneWay" select="$OptimizeOperationalMethods"/>
 		<plx:attribute dataTypeName="OperationContract">
 			<plx:passParam>
 				<plx:binaryOperator type="assignNamed">
@@ -367,13 +391,11 @@
 					<xsl:variable name="deleteFunctionParameterName" select="concat($parameterEntityNamePrefix,$to,$DeleteKeyword)"/>
 					<!--NOTE: readFunctionName & readFunctionParameterName are more complicated and are not defined here.-->
 					<plx:function visibility="public" name="{$createFunctionName}">
-						<xsl:call-template name="GenerateOperationContractAttribute">
-							<xsl:with-param name="isOneWay" select="true()"/>
-						</xsl:call-template>
-						<xsl:if test="$UseTransactionScopes">
+						<xsl:call-template name="GenerateOperationContractAttribute"/>
+						<xsl:if test="$UseTransactionFlow and not($OptimizeOperationalMethods)">
 							<plx:attribute dataTypeName="TransactionFlow">
 								<plx:passParam>
-									<plx:callStatic dataTypeName="TransactionFlowOption" name="Allowed" type="property"/>
+									<plx:callStatic dataTypeName="TransactionFlowOption" name="Allowed" type="field"/>
 								</plx:passParam>
 							</plx:attribute>
 						</xsl:if>
@@ -433,13 +455,11 @@
 						</plx:function>
 					</xsl:for-each>
 					<plx:function visibility="public" name="{$updateFunctionName}">
-						<xsl:call-template name="GenerateOperationContractAttribute">
-							<xsl:with-param name="isOneWay" select="true()"/>
-						</xsl:call-template>
-						<xsl:if test="$UseTransactionScopes">
+						<xsl:call-template name="GenerateOperationContractAttribute"/>
+						<xsl:if test="$UseTransactionFlow and not($OptimizeOperationalMethods)">
 							<plx:attribute dataTypeName="TransactionFlow">
 								<plx:passParam>
-									<plx:callStatic dataTypeName="TransactionFlowOption" name="Allowed" type="property"/>
+									<plx:callStatic dataTypeName="TransactionFlowOption" name="Allowed" type="field"/>
 								</plx:passParam>
 							</plx:attribute>
 						</xsl:if>
@@ -447,13 +467,11 @@
 						<plx:param dataTypeName="{$entityName}" name="{$updateFunctionParameterNameOld}"/>
 					</plx:function>
 					<plx:function name="{$deleteFunctionName}" visibility="public">
-						<xsl:call-template name="GenerateOperationContractAttribute">
-							<xsl:with-param name="isOneWay" select="true()"/>
-						</xsl:call-template>
-						<xsl:if test="$UseTransactionScopes">
+						<xsl:call-template name="GenerateOperationContractAttribute"/>
+						<xsl:if test="$UseTransactionFlow and not($OptimizeOperationalMethods)">
 							<plx:attribute dataTypeName="TransactionFlow">
 								<plx:passParam>
-									<plx:callStatic dataTypeName="TransactionFlowOption" name="Allowed" type="property"/>
+									<plx:callStatic dataTypeName="TransactionFlowOption" name="Allowed" type="field"/>
 								</plx:passParam>
 							</plx:attribute>
 						</xsl:if>
@@ -543,7 +561,7 @@
 					<plx:attribute dataTypeName="OnSerializingAttribute"/>
 					<plx:attribute dataTypeName="EditorBrowsableAttribute">
 						<plx:passParam>
-							<plx:callStatic dataTypeName="EditorBrowsableState" name="Never" type="property"/>
+							<plx:callStatic dataTypeName="EditorBrowsableState" name="Never" type="field"/>
 						</plx:passParam>
 					</plx:attribute>
 					<plx:param dataTypeName="StreamingContext" name="context"/>
@@ -560,7 +578,7 @@
 					<plx:attribute dataTypeName="OnSerializedAttribute"/>
 					<plx:attribute dataTypeName="EditorBrowsableAttribute">
 						<plx:passParam>
-							<plx:callStatic dataTypeName="EditorBrowsableState" name="Never" type="property"/>
+							<plx:callStatic dataTypeName="EditorBrowsableState" name="Never" type="field"/>
 						</plx:passParam>
 					</plx:attribute>
 					<plx:param dataTypeName="StreamingContext" name="context"/>
@@ -577,7 +595,7 @@
 					<plx:attribute dataTypeName="OnDeserializingAttribute"/>
 					<plx:attribute dataTypeName="EditorBrowsableAttribute">
 						<plx:passParam>
-							<plx:callStatic dataTypeName="EditorBrowsableState" name="Never" type="property"/>
+							<plx:callStatic dataTypeName="EditorBrowsableState" name="Never" type="field"/>
 						</plx:passParam>
 					</plx:attribute>
 					<plx:param dataTypeName="StreamingContext" name="context"/>
@@ -1791,7 +1809,7 @@
 							<plx:nameRef name="InstanceContextMode"/>
 						</plx:left>
 						<plx:right>
-							<plx:callStatic dataTypeName="InstanceContextMode" name="{$InstanceContextMode}" type="property"/>
+							<plx:callStatic dataTypeName="InstanceContextMode" name="{$InstanceContextMode}" type="field"/>
 						</plx:right>
 					</plx:binaryOperator>
 				</plx:passParam>
@@ -2195,7 +2213,7 @@
 								<plx:nameRef name="InstanceContextMode"/>
 							</plx:left>
 							<plx:right>
-								<plx:callStatic dataTypeName="InstanceContextMode" name="{$InstanceContextMode}" type="property"/>
+								<plx:callStatic dataTypeName="InstanceContextMode" name="{$InstanceContextMode}" type="field"/>
 							</plx:right>
 						</plx:binaryOperator>
 					</plx:passParam>

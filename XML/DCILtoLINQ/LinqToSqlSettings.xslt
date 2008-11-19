@@ -7,17 +7,17 @@
 	<xsl:template match="/">
 		<LinqToSqlSettings xmlns="http://schemas.neumont.edu/ORM/2008-04/LinqToSql/Settings">
 			<xsl:comment>These settings affect LinqToSql generators, but modifications here
-	have no effect until the .ORM file is regenerated. To force regenerationt, right
-	click the	parent .ORM file in the Solution Explorer and choose 'Run Custom Tool'.
+	have no effect until the .ORM file is regenerated. To force regeneration, right
+	click the parent .ORM file in the Solution Explorer and choose 'Run Custom Tool'.
 	The schema file at the end this settings file is designed to help you customize
 	your settings. For any of the settings areas, click immediately after the element
-	name and click space to see a list of individual attributes.</xsl:comment>
+	name and press space to see a list of individual attributes.</xsl:comment>
 			<xsl:comment>Change connection string properties here</xsl:comment>
 			<ConnectionString DataSource="." SettingsProperty="" DatabaseName=""/>
 			<xsl:comment>Change basic name generation settings</xsl:comment>
 			<NameParts/>
-			<xsl:comment>Change WCF name generation settings</xsl:comment>
-			<ServiceLayer/>
+			<xsl:comment>Change WCF service layer generation settings</xsl:comment>
+			<ServiceLayer Generate="true"/>
 			<xsl:comment>Inline settings schema, do not modify</xsl:comment>
 			<xs:schema xmlns:xs="http://www.w3.org/2001/XMLSchema"
 				targetNamespace="http://schemas.neumont.edu/ORM/2008-04/LinqToSql/Settings"
@@ -51,27 +51,27 @@
 								<xs:complexType>
 									<xs:attribute name="DataContextClassSuffix" type="NamePartType" default="DataContext">
 										<xs:annotation>
-											<xs:documentation>The text appended to the name of the generated class that is derived from System.Data.Linq.DataContext</xs:documentation>
+											<xs:documentation>The text appended to the name of the generated class that is derived from System.Data.Linq.DataContext. Default='DataContext'</xs:documentation>
 										</xs:annotation>
 									</xs:attribute>
 									<xs:attribute name="DataContextTableSuffix" type="NamePartType" default="Table">
 										<xs:annotation>
-											<xs:documentation>The text appended to the names of typed table getters in a DataContext class.</xs:documentation>
+											<xs:documentation>The text appended to the names of typed table getters in a DataContext class. Default='Table'</xs:documentation>
 										</xs:annotation>
 									</xs:attribute>
 									<xs:attribute name="CollectionSuffix" type="NamePartType" default="Collection">
 										<xs:annotation>
-											<xs:documentation>The text appended to the names of typed EntitySet properties.</xs:documentation>
+											<xs:documentation>The text appended to the names of typed EntitySet properties. Default='Collection'</xs:documentation>
 										</xs:annotation>
 									</xs:attribute>
 									<xs:attribute name="AssociationReferenceSuffix" type="NamePartType" default="Reference">
 										<xs:annotation>
-											<xs:documentation>The text appended to the names of typed properties used for association navigation (the source or target of a foreign key).</xs:documentation>
+											<xs:documentation>The text appended to the names of typed properties used for association navigation (the source or target of a foreign key). Default='Reference'</xs:documentation>
 										</xs:annotation>
 									</xs:attribute>
 									<xs:attribute name="PrivateFieldPrefix" type="NamePartType" default="_">
 										<xs:annotation>
-											<xs:documentation>The text prepended to private field names.</xs:documentation>
+											<xs:documentation>The text prepended to private field names. Default='_'</xs:documentation>
 										</xs:annotation>
 									</xs:attribute>
 								</xs:complexType>
@@ -80,47 +80,62 @@
 								<xs:complexType>
 									<xs:attribute name="Generate" type="xs:boolean" default="false">
 										<xs:annotation>
-											<xs:documentation>Determines whether or not the generator should include WCF DataContract attributes and ServiceContract calls.</xs:documentation>
+											<xs:documentation>Determines whether or not the generator should include WCF DataContract attributes and ServiceContract calls. Default=false</xs:documentation>
+										</xs:annotation>
+									</xs:attribute>
+									<xs:attribute name="UseTransactionScopes" type="xs:boolean" default="true">
+										<xs:annotation>
+											<xs:documentation>Determines whether or not the generator should use Transaction Scopes in the operational methods. Default=true</xs:documentation>
+										</xs:annotation>
+									</xs:attribute>
+									<xs:attribute name="UseTransactionFlow" type="xs:boolean" default="false">
+										<xs:annotation>
+											<xs:documentation>Determines whether or not the generator should support transaction flow from the client in the WCF contract. Default=false</xs:documentation>
+										</xs:annotation>
+									</xs:attribute>
+									<xs:attribute name="OptimizeOperationalMethods" type="xs:boolean" default="false">
+										<xs:annotation>
+											<xs:documentation>Determines whether or not the generator should mark operational methods as one way in the contract.  Transaction Flow is not used if set to true. Default=false</xs:documentation>
 										</xs:annotation>
 									</xs:attribute>
 									<xs:attribute name="CreateKeyword" type="NamePartType" default="Insert">
 										<xs:annotation>
-											<xs:documentation>The text prepended to the name of 'create' service methods in the WCF service contract.</xs:documentation>
+											<xs:documentation>The text prepended to the name of 'create' service methods in the WCF service contract. Default='Insert'</xs:documentation>
 										</xs:annotation>
 									</xs:attribute>
 									<xs:attribute name="ReadKeyword" type="NamePartType" default="Select">
 										<xs:annotation>
-											<xs:documentation>The text prepended to the name of 'read' service methods in the WCF service contract.</xs:documentation>
+											<xs:documentation>The text prepended to the name of 'read' service methods in the WCF service contract. Default='Select'</xs:documentation>
 										</xs:annotation>
 									</xs:attribute>
 									<xs:attribute name="UpdateKeyword" type="NamePartType" default="Update">
 										<xs:annotation>
-											<xs:documentation>The text prepended to the name of 'update' service methods in the WCF service contract.</xs:documentation>
+											<xs:documentation>The text prepended to the name of 'update' service methods in the WCF service contract. Default='Update'</xs:documentation>
 										</xs:annotation>
 									</xs:attribute>
 									<xs:attribute name="DeleteKeyword" type="NamePartType" default="Delete">
 										<xs:annotation>
-											<xs:documentation>The text prepended to the name of 'delete' service methods in the WCF service contract.</xs:documentation>
+											<xs:documentation>The text prepended to the name of 'delete' service methods in the WCF service contract. Default='Delete'</xs:documentation>
 										</xs:annotation>
 									</xs:attribute>
 									<xs:attribute name="PreferredIdKeyword" type="NamePartType" default="PreferredIdentifier">
 										<xs:annotation>
-											<xs:documentation>The text appended to the name of service methods used to select by the preferred identifier.</xs:documentation>
+											<xs:documentation>The text appended to the name of service methods used to select by the preferred identifier. Default='PreferredIdentifier'</xs:documentation>
 										</xs:annotation>
 									</xs:attribute>
 									<xs:attribute name="ServiceNameSuffix" type="NamePartType" default="Service">
 										<xs:annotation>
-											<xs:documentation>The text appended to the name of service contract interfaces.</xs:documentation>
+											<xs:documentation>The text appended to the name of service contract interfaces. Default='Service'</xs:documentation>
 										</xs:annotation>
 									</xs:attribute>
 									<xs:attribute name="InitializeFunctionName" type="NamePartType" default="Initialize">
 										<xs:annotation>
-											<xs:documentation>If WCF service is generated, this specifes the function name for initializing EntitySet members for serialization.</xs:documentation>
+											<xs:documentation>If WCF service is generated, this specifes the function name for initializing EntitySet members for serialization. Default='Initialize'</xs:documentation>
 										</xs:annotation>
 									</xs:attribute>
 									<xs:attribute name="InstanceContextMode" default="PerCall">
 										<xs:annotation>
-											<xs:documentation>Determines the InstanceContextMode used with the ServiceBehavior attribute.</xs:documentation>
+											<xs:documentation>Determines the InstanceContextMode used with the ServiceBehavior attribute. Default='PerCall'</xs:documentation>
 										</xs:annotation>
 										<xs:simpleType>
 											<xs:restriction base="xs:token">
