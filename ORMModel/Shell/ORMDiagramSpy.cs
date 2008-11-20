@@ -41,7 +41,7 @@ namespace Neumont.Tools.ORM.Shell
 	/// </summary>
 	[Guid("19A5C15D-14D4-4A88-9891-A3294077BE56")]
 	[CLSCompliant(false)]
-	public class ORMDiagramSpyWindow : ORMToolWindow, IORMSelectionContainer, IORMDesignerView
+	public class ORMDiagramSpyWindow : ORMToolWindow, IORMSelectionContainer, IProvideFrameVisibility, IORMDesignerView
 	{
 		#region Member Variables
 		private ToolWindowDiagramView myDiagramView;
@@ -557,6 +557,15 @@ namespace Neumont.Tools.ORM.Shell
 			}
 		}
 		#endregion // IORMDesignerView Implementation
+		#region IProvideFrameVisibility Implementation
+		FrameVisibility IProvideFrameVisibility.CurrentFrameVisibility
+		{
+			get
+			{
+				return CurrentFrameVisibility;
+			}
+		}
+		#endregion // IProvideFrameVisibility Implementation
 		#region ORMDiagramSpyToolWindow specific
 		/// <summary>
 		/// Loads the SurveyTreeControl from the current document

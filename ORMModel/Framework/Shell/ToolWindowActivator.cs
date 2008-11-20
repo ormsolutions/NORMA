@@ -85,6 +85,7 @@ namespace Neumont.Tools.Modeling.Shell
 		ClearContentsOnSelectionChanged,
 	}
 	#endregion // CoveredFrameContentActions enum
+	#region INotifyToolWindowActivation interface
 	/// <summary>
 	/// Callback interface provided by consumers of the <see cref="T:ToolWindowActivationHelper"/> class.
 	/// </summary>
@@ -122,7 +123,21 @@ namespace Neumont.Tools.Modeling.Shell
 		/// <param name="docData">The document to detach from</param>
 		void ActivatorDetachEventHandlers(DocDataType docData);
 	}
-
+	#endregion // INotifyToolWindowActivation interface
+	#region ICurrentFrameVisibility interface
+	/// <summary>
+	/// Provide the current frame visibility. Implement this interface
+	/// on a selection container tool window to enable maintaining the tool
+	/// window as a selection container even when it is hidden.
+	/// </summary>
+	public interface IProvideFrameVisibility
+	{
+		/// <summary>
+		/// The current <see cref="FrameVisibility"/> for this container
+		/// </summary>
+		FrameVisibility CurrentFrameVisibility { get;}
+	}
+	#endregion // ICurrentFrameVisibility interface
 	#region ToolWindowActivationHelper class
 	/// <summary>
 	/// Helper class to enable tool window implementations to track changes selection
@@ -410,7 +425,7 @@ namespace Neumont.Tools.Modeling.Shell
 			}
 		}
 		/// <summary>
-		/// Clear the contents of the tool window associated with thie <see cref="T:ToolWindowActivationHelper"/>
+		/// Clear the contents of the tool window associated with this <see cref="T:ToolWindowActivationHelper"/>
 		/// </summary>
 		protected virtual void ClearContents()
 		{
@@ -602,7 +617,16 @@ namespace Neumont.Tools.Modeling.Shell
 		private void MonitorSelectionChanged(object sender, MonitorSelectionEventArgs e)
 		{
 			IMonitorSelectionService monitor = (IMonitorSelectionService)sender;
-			CurrentSelectionContainer = monitor.CurrentSelectionContainer as SelectionContainerType ?? monitor.CurrentDocumentView as SelectionContainerType;
+			SelectionContainerType newContainer = monitor.CurrentSelectionContainer as SelectionContainerType;
+			if (newContainer == null)
+			{
+				IProvideFrameVisibility visibility = myCurrentSelectionContainer as IProvideFrameVisibility;
+				if (visibility == null || visibility.CurrentFrameVisibility == FrameVisibility.Hidden)
+				{
+					newContainer = monitor.CurrentDocumentView as SelectionContainerType;
+				}
+			}
+			CurrentSelectionContainer = newContainer;
 		}
 		/// <summary>
 		/// Handles the DocumentWindowChanged event on the IMonitorSelectionService
