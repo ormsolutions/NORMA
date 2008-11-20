@@ -10,25 +10,49 @@ namespace Neumont.Tools.ORM.ObjectModel
 	public enum HierarchyContextPlacementPriority
 	{
 		/// <summary>
+		/// Highest
+		/// </summary>
+		Highest = 100,
+		/// <summary>
 		/// VeryHigh
 		/// </summary>
-		VeryHigh = 100, // Object types
+		VeryHigh = 90, // Entity types
+		/// <summary>
+		/// Higher
+		/// </summary>
+		Higher = 80, // Objectified Fact Types
 		/// <summary>
 		/// High
 		/// </summary>
-		High = 75, // Objectified Fact Types
+		High = 70, // Value types
+		/// <summary>
+		/// MediumHigh
+		/// </summary>
+		MediumHigh = 60,
 		/// <summary>
 		/// Medium
 		/// </summary>
 		Medium = 50, // Fact types
 		/// <summary>
+		/// MediumLow
+		/// </summary>
+		MediumLow = 40,
+		/// <summary>
 		/// Low
 		/// </summary>
-		Low = 25, // roles
+		Low = 30, // roles
+		/// <summary>
+		/// Lower
+		/// </summary>
+		Lower = 20,
 		/// <summary>
 		/// VeryLow
 		/// </summary>
-		VeryLow = 0, // Constraints
+		VeryLow = 10, // Constraints
+		/// <summary>
+		/// Lowest
+		/// </summary>
+		Lowest = 0,
 	}
 	/// <summary>
 	/// Defines the methods and properties required for an object to display in the ORMContextWindow
@@ -66,8 +90,10 @@ namespace Neumont.Tools.ORM.ObjectModel
 		/// Gets the elements that the current instance is dependant on for display.
 		/// The returned elements will be forced to display in the context window.
 		/// </summary>
-		/// <value>The dependant context elements.</value>
-		IEnumerable<IHierarchyContextEnabled> ForcedHierarchyContextElementCollection { get;}
+		/// <param name="minimalElements">The final elements have been retrieved,
+		/// retrieve the minimal number of elements for display.</param>
+		/// <returns>Elements that always need to be shown with this element</returns>
+		IEnumerable<IHierarchyContextEnabled> GetForcedHierarchyContextElements(bool minimalElements);
 		/// <summary>
 		/// Gets the place priority. The place priority specifies the order in which the element will
 		/// be placed on the context diagram.

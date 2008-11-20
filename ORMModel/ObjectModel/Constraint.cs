@@ -1465,21 +1465,15 @@ namespace Neumont.Tools.ORM.ObjectModel
 			}
 		}
 		/// <summary>
-		/// Implements <see cref="IHierarchyContextEnabled.ForcedHierarchyContextElementCollection"/>
+		/// Implements <see cref="IHierarchyContextEnabled.GetForcedHierarchyContextElements"/>
 		/// </summary>
-		protected static IEnumerable<IHierarchyContextEnabled> ForcedHierarchyContextElementCollection
+		protected static IEnumerable<IHierarchyContextEnabled> GetForcedHierarchyContextElements(bool minimalElements)
 		{
-			get
-			{
-				return null;
-			}
+			return null;
 		}
-		IEnumerable<IHierarchyContextEnabled> IHierarchyContextEnabled.ForcedHierarchyContextElementCollection
+		IEnumerable<IHierarchyContextEnabled> IHierarchyContextEnabled.GetForcedHierarchyContextElements(bool minimalElements)
 		{
-			get
-			{
-				return ForcedHierarchyContextElementCollection;
-			}
+			return GetForcedHierarchyContextElements(minimalElements);
 		}
 		/// <summary>
 		/// Implements <see cref="IHierarchyContextEnabled.HierarchyContextPlacementPriority"/>
@@ -2639,21 +2633,15 @@ namespace Neumont.Tools.ORM.ObjectModel
 			}
 		}
 		/// <summary>
-		/// Implements <see cref="IHierarchyContextEnabled.ForcedHierarchyContextElementCollection"/>
+		/// Implements <see cref="IHierarchyContextEnabled.GetForcedHierarchyContextElements"/>
 		/// </summary>
-		protected static IEnumerable<IHierarchyContextEnabled> ForcedHierarchyContextElementCollection
+		protected static IEnumerable<IHierarchyContextEnabled> GetForcedHierarchyContextElements(bool minimalElements)
 		{
-			get
-			{
-				return null;
-			}
+			return null;
 		}
-		IEnumerable<IHierarchyContextEnabled> IHierarchyContextEnabled.ForcedHierarchyContextElementCollection
+		IEnumerable<IHierarchyContextEnabled> IHierarchyContextEnabled.GetForcedHierarchyContextElements(bool minimalElements)
 		{
-			get
-			{
-				return ForcedHierarchyContextElementCollection;
-			}
+			return GetForcedHierarchyContextElements(minimalElements);
 		}
 		/// <summary>
 		/// Implements <see cref="IHierarchyContextEnabled.HierarchyContextPlacementPriority"/>

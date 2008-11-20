@@ -347,9 +347,7 @@ namespace Neumont.Tools.ORM.Shell
 		/// <param name="element">The element.</param>
 		private void PlaceObject(IHierarchyContextEnabled element)
 		{
-			SortedList<IHierarchyContextEnabled, int> elementsToPlace = GetRelatedContextableElements(element, myGenerations);
-			IList<IHierarchyContextEnabled> elements = elementsToPlace.Keys;
-			foreach (IHierarchyContextEnabled elem in elements)
+			foreach (IHierarchyContextEnabled elem in GetRelatedContextableElements(element, myGenerations))
 			{
 				if (elem.ForwardHierarchyContextTo != null)
 				{
@@ -363,34 +361,56 @@ namespace Neumont.Tools.ORM.Shell
 		/// </summary>
 		/// <param name="element">The element.</param>
 		/// <param name="generations">The numeber of generations out to go.</param>
-		/// <returns></returns>
-		private static SortedList<IHierarchyContextEnabled, int> GetRelatedContextableElements(IHierarchyContextEnabled element, int generations)
+		/// <returns>Sorted list of elements</returns>
+		private static IList<IHierarchyContextEnabled> GetRelatedContextableElements(IHierarchyContextEnabled element, int generations)
 		{
-			SortedList<IHierarchyContextEnabled, int> relatedElementsCollection = new SortedList<IHierarchyContextEnabled, int>(HierarchyContextPlacePrioritySortComparer.Instance);
-			GetRelatedContextableElementsHelper(element, ref relatedElementsCollection, generations);
-			IList<IHierarchyContextEnabled> keys = relatedElementsCollection.Keys;
-			int relatedElementsCount = keys.Count;
-			for (int i = 0; i < relatedElementsCount; ++i)
+			Dictionary<IHierarchyContextEnabled, int> masterDictionary = new Dictionary<IHierarchyContextEnabled, int>();
+			GetRelatedContextableElementsHelper(element, masterDictionary, ref masterDictionary, generations);
+			int nextPassCount = masterDictionary.Count;
+			IHierarchyContextEnabled[] firstPassElements = new IHierarchyContextEnabled[nextPassCount];
+			masterDictionary.Keys.CopyTo(firstPassElements, 0);
+			ICollection<IHierarchyContextEnabled> nextPassElements = firstPassElements;
+
+			while (nextPassCount != 0)
 			{
-				IEnumerable<IHierarchyContextEnabled> forcedContextElements = keys[i].ForcedHierarchyContextElementCollection;
-				if (forcedContextElements != null)
+				Dictionary<IHierarchyContextEnabled, int> localDictionary = null;
+				bool requestMinimum = generations == 0;
+				generations = Math.Max(generations - 1, 0);
+				foreach (IHierarchyContextEnabled nextPassElement in nextPassElements)
 				{
-					foreach (IHierarchyContextEnabled dependantContextableElement in forcedContextElements)
+					IEnumerable<IHierarchyContextEnabled> forcedContextElements = nextPassElement.GetForcedHierarchyContextElements(requestMinimum);
+					if (forcedContextElements != null)
 					{
-						GetRelatedContextableElementsHelper(dependantContextableElement, ref relatedElementsCollection, 0);
+						foreach (IHierarchyContextEnabled dependantContextableElement in forcedContextElements)
+						{
+							GetRelatedContextableElementsHelper(dependantContextableElement, masterDictionary, ref localDictionary, generations);
+						}
 					}
 				}
+				if (localDictionary != null)
+				{
+					nextPassElements = localDictionary.Keys;
+					nextPassCount = nextPassElements.Count;
+				}
+				else
+				{
+					nextPassCount = 0;
+				}
 			}
-			return relatedElementsCollection;
+			List<IHierarchyContextEnabled> retVal = new List<IHierarchyContextEnabled>(masterDictionary.Keys);
+			retVal.Sort(HierarchyContextPlacePrioritySortComparer.Instance);
+			return retVal;
 		}
 		/// <summary>
 		/// Dont use this method. Use GetRelatedContextableElements instead.
 		/// helper function for GetRelatedContextableElements.
 		/// </summary>
 		/// <param name="element">The element.</param>
-		/// <param name="relatedElementsCollection">The related elements collection.</param>
+		/// <param name="masterDictionary">A master dictionary of all elements</param>
+		/// <param name="localDictionary">A local dictionary for this pass through.
+		/// Allows us to track multiple passes while iterating through the elements of another dictionary.</param>
 		/// <param name="generations">The generations.</param>
-		private static void GetRelatedContextableElementsHelper(IHierarchyContextEnabled element, ref SortedList<IHierarchyContextEnabled, int> relatedElementsCollection, int generations)
+		private static void GetRelatedContextableElementsHelper(IHierarchyContextEnabled element, Dictionary<IHierarchyContextEnabled, int> masterDictionary, ref Dictionary<IHierarchyContextEnabled, int> localDictionary, int generations)
 		{
 			if (element == null)
 			{
@@ -401,37 +421,55 @@ namespace Neumont.Tools.ORM.Shell
 			{
 				return;
 			}
-			if (!relatedElementsCollection.ContainsKey(contextableElement))
+			int existingGenerations;
+			if (!masterDictionary.TryGetValue(contextableElement, out existingGenerations))
 			{
-				relatedElementsCollection.Add(contextableElement, generations);
+				masterDictionary.Add(contextableElement, generations);
+				if (localDictionary != masterDictionary)
+				{
+					(localDictionary ?? (localDictionary = new Dictionary<IHierarchyContextEnabled, int>())).Add(contextableElement, generations);
+				}
 			}
 			else
 			{
-				if (relatedElementsCollection[contextableElement] >= generations)
+				if (existingGenerations >= generations)
 				{
 					return;
 				}
 				else
 				{
-					relatedElementsCollection[contextableElement] = generations;
+					masterDictionary[contextableElement] = generations;
+					if (localDictionary == null)
+					{
+						(localDictionary = new Dictionary<IHierarchyContextEnabled,int>()).Add(contextableElement, generations);
+					}
+					else if (localDictionary != masterDictionary && !localDictionary.ContainsKey(contextableElement))
+					{
+						// Note that we don't actually use the generations value from
+						// the local dictionary, there is no reason to update it.
+						localDictionary.Add(contextableElement, generations);
+					}
 				}
 			}
-			if (contextableElement.ForwardHierarchyContextTo != null)
+			IHierarchyContextEnabled forwardTo;
+			if (null != (forwardTo = contextableElement.ForwardHierarchyContextTo))
 			{
-				GetRelatedContextableElementsHelper(contextableElement.ForwardHierarchyContextTo, ref relatedElementsCollection, generations);
+				GetRelatedContextableElementsHelper(forwardTo, masterDictionary, ref localDictionary, generations);
 			}
-			if (generations > 0 && (relatedElementsCollection.Count == 1 || contextableElement.ContinueWalkingHierarchyContext))
+			if (generations > 0 && (masterDictionary.Count == 1 || contextableElement.ContinueWalkingHierarchyContext))
 			{
-				GetLinkedElements(contextableElement, ref relatedElementsCollection, generations);
+				GetLinkedElements(contextableElement, masterDictionary, ref localDictionary, generations);
 			}
 		}
 		/// <summary>
 		/// Gets the linked elements for the specified element.
 		/// </summary>
 		/// <param name="element">The element.</param>
-		/// <param name="relatedElementsCollection">The related elements collection.</param>
+		/// <param name="masterDictionary">A master dictionary of all elements</param>
+		/// <param name="localDictionary">A local dictionary for this pass through.
+		/// Allows us to track multiple passes while iterating through the elements of another dictionary.</param>
 		/// <param name="generations">The generations.</param>
-		private static void GetLinkedElements(IHierarchyContextEnabled element, ref SortedList<IHierarchyContextEnabled, int> relatedElementsCollection, int generations)
+		private static void GetLinkedElements(IHierarchyContextEnabled element, Dictionary<IHierarchyContextEnabled, int> masterDictionary, ref Dictionary<IHierarchyContextEnabled, int> localDictionary, int generations)
 		{
 			ReadOnlyCollection<ElementLink> col = DomainRoleInfo.GetAllElementLinks((ModelElement)element);
 			foreach (ElementLink link in col)
@@ -444,11 +482,11 @@ namespace Neumont.Tools.ORM.Shell
 						continue;
 					}
 					int decrement = contextableElement.HierarchyContextDecrementCount;
-					if (relatedElementsCollection.Count == 1 && contextableElement.ForwardHierarchyContextTo != null)
+					if (masterDictionary.Count == 1 && contextableElement.ForwardHierarchyContextTo != null)
 					{
 						decrement = 0;
 					}
-					GetRelatedContextableElementsHelper(contextableElement, ref relatedElementsCollection, generations - decrement);
+					GetRelatedContextableElementsHelper(contextableElement, masterDictionary, ref localDictionary, generations - decrement);
 				}
 			}
 		}

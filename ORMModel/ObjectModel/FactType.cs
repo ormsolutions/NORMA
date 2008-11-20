@@ -2678,22 +2678,54 @@ namespace Neumont.Tools.ORM.ObjectModel
 			}
 		}
 		/// <summary>
-		/// Gets the elements that the current instance is dependant on for display.
-		/// The returned elements will be forced to display in the context window.
+		/// Implements <see cref="IHierarchyContextEnabled.GetForcedHierarchyContextElements"/>.
+		/// Returns all role players if minimal elements are called for, otherwise returns all
+		/// related FactTypes, Subtypes, and Supertypes of an ObjectifiedFactType, plus the elements
+		/// needed for display of those elements.
 		/// </summary>
-		/// <value>The dependant context elements.</value>
-		protected IEnumerable<IHierarchyContextEnabled> ForcedHierarchyContextElementCollection
+		protected IEnumerable<IHierarchyContextEnabled> GetForcedHierarchyContextElements(bool minimalElements)
 		{
-			get
+			foreach (RoleBase roleBase in RoleCollection)
 			{
-				LinkedElementCollection<RoleBase> collection = RoleCollection;
-				int collectionCount = collection.Count;
-				for (int i = 0; i < collectionCount; ++i)
+				ObjectType rolePlayer = roleBase.Role.RolePlayer;
+				if (!rolePlayer.IsImplicitBooleanValue)
 				{
-					IHierarchyContextEnabled rolePlayer = collection[i].Role.RolePlayer as IHierarchyContextEnabled;
-					if (rolePlayer != null)
+					yield return roleBase.Role.RolePlayer;
+				}
+			}
+			if (!minimalElements)
+			{
+				ObjectType nestingType = NestingType;
+				if (nestingType != null)
+				{
+					// Make sure an objectified FactType picks up its supertypes, subtypes, and
+					// facttypes for directly played roles
+					foreach (Role role in nestingType.PlayedRoleCollection)
 					{
-						yield return rolePlayer;
+						SubtypeMetaRole subtypeRole;
+						SupertypeMetaRole supertypeRole;
+						if (null != (subtypeRole = role as SubtypeMetaRole))
+						{
+							yield return ((SubtypeFact)role.FactType).Supertype;
+						}
+						else if (null != (supertypeRole = role as SupertypeMetaRole))
+						{
+							yield return ((SubtypeFact)role.FactType).Subtype;
+						}
+						else
+						{
+							FactType relatedFactType = role.FactType;
+							yield return relatedFactType;
+							foreach (RoleBase roleBase in relatedFactType.RoleCollection)
+							{
+								ObjectType rolePlayer = roleBase.Role.RolePlayer;
+								if (rolePlayer != nestingType &&
+									!rolePlayer.IsImplicitBooleanValue)
+								{
+									yield return rolePlayer;
+								}
+							}
+						}
 					}
 				}
 			}
@@ -2713,7 +2745,7 @@ namespace Neumont.Tools.ORM.ObjectModel
 				}
 				else
 				{
-					return HierarchyContextPlacementPriority.High;
+					return HierarchyContextPlacementPriority.Higher;
 				}
 			}
 		}
@@ -2754,9 +2786,9 @@ namespace Neumont.Tools.ORM.ObjectModel
 		{
 			get { return ForwardHierarchyContextTo; }
 		}
-		IEnumerable<IHierarchyContextEnabled> IHierarchyContextEnabled.ForcedHierarchyContextElementCollection
+		IEnumerable<IHierarchyContextEnabled> IHierarchyContextEnabled.GetForcedHierarchyContextElements(bool minimalElements)
 		{
-			get { return ForcedHierarchyContextElementCollection; }
+			return GetForcedHierarchyContextElements(minimalElements);
 		}
 		HierarchyContextPlacementPriority IHierarchyContextEnabled.HierarchyContextPlacementPriority
 		{

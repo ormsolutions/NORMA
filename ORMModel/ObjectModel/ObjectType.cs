@@ -4133,26 +4133,24 @@ namespace Neumont.Tools.ORM.ObjectModel
 			get { return ForwardHierarchyContextTo; }
 		}
 		/// <summary>
-		/// Gets the elements that the current instance is dependant on for display.
-		/// The returned elements will be forced to display in the context window.
+		/// Implements <see cref="IHierarchyContextEnabled.GetForcedHierarchyContextElements"/>
 		/// </summary>
-		/// <value>The dependant context elements.</value>
-		protected static IEnumerable<IHierarchyContextEnabled> ForcedHierarchyContextElementCollection
+		protected static IEnumerable<IHierarchyContextEnabled> GetForcedHierarchyContextElements(bool minimalElements)
 		{
-			get { return null; }
+			return null;
 		}
-		IEnumerable<IHierarchyContextEnabled> IHierarchyContextEnabled.ForcedHierarchyContextElementCollection
+		IEnumerable<IHierarchyContextEnabled> IHierarchyContextEnabled.GetForcedHierarchyContextElements(bool minimalElements)
 		{
-			get { return ForcedHierarchyContextElementCollection; }
+			return GetForcedHierarchyContextElements(minimalElements);
 		}
 		/// <summary>
 		/// Gets the place priority. The place priority specifies the order in which the element will
 		/// be placed on the context diagram.
 		/// </summary>
 		/// <value>The place priority.</value>
-		protected static HierarchyContextPlacementPriority HierarchyContextPlacementPriority
+		protected HierarchyContextPlacementPriority HierarchyContextPlacementPriority
 		{
-			get { return HierarchyContextPlacementPriority.VeryHigh; }
+			get { return IsValueType ? HierarchyContextPlacementPriority.High : HierarchyContextPlacementPriority.VeryHigh; }
 		}
 		HierarchyContextPlacementPriority IHierarchyContextEnabled.HierarchyContextPlacementPriority
 		{
