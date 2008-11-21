@@ -374,16 +374,12 @@ namespace Neumont.Tools.ORM.Shell
 						}
 						break;
 					case VSConstants.VSStd97CmdID.EditLabel:
-						// Inform the shell that we should have a chance to handle the edit command
-						if (!this.myEditor.FullRowSelect && !this.myEditor.InLabelEdit)
-						{
-							cmd.cmdf = (int)(MSOLE.OLECMDF.OLECMDF_SUPPORTED | MSOLE.OLECMDF.OLECMDF_ENABLED);
-							prgCmds[0] = cmd;
-						}
-						else
-						{
-							goto default;
-						}
+						// Support this command regardless of the current state of the inline editor.
+						// If we do not do this, then an F2 keypress with an editor already open will
+						// report the command as disabled and we would need to use IVsUIShell.UpdateCommandUI
+						// whenever an editor closed to reenable the command.
+						cmd.cmdf = (int)(MSOLE.OLECMDF.OLECMDF_SUPPORTED | MSOLE.OLECMDF.OLECMDF_ENABLED);
+						prgCmds[0] = cmd;
 						break;
 					default:
 						// Inform the shell that we don't support any other commands.
@@ -486,13 +482,10 @@ namespace Neumont.Tools.ORM.Shell
 									SendMessage(editHandle, 0x101, (int)Keys.F2, 0x40000001);
 								}
 							}
-							// We enabled the command, so we say we handled it regardless of the further conditions
-							hr = VSConstants.S_OK;
 						}
-						else
-						{
-							goto default;
-						}
+						// We enabled the command, so we say we handled it irrespective of the other conditions.
+						// See commands in QueryStatus regarding the enabled state of this command.
+						hr = VSConstants.S_OK;
 						break;
 					default:
 						// If the command is from our command set, but not explicitly handled, inform the shell

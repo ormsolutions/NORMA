@@ -420,16 +420,12 @@ namespace Neumont.Tools.ORM.Shell
 						break;
 
 					case VSConstants.VSStd97CmdID.EditLabel:
-						// Inform the shell that we should have a chance to handle the edit label (rename) command.
-						if (!this.myForm.ReadingEditor.EditingFactType.IsEmpty)
-						{
-							cmd.cmdf = (int)(MSOLE.OLECMDF.OLECMDF_SUPPORTED | MSOLE.OLECMDF.OLECMDF_ENABLED);
-							prgCmds[0] = cmd;
-						}
-						else
-						{
-							goto default;
-						}
+						// Support this command regardless of the current state of the inline editor.
+						// If we do not do this, then an F2 keypress with an editor already open will
+						// report the command as disabled and we would need to use IVsUIShell.UpdateCommandUI
+						// whenever an editor closed to reenable the command.
+						cmd.cmdf = (int)(MSOLE.OLECMDF.OLECMDF_SUPPORTED | MSOLE.OLECMDF.OLECMDF_ENABLED);
+						prgCmds[0] = cmd;
 						break;
 
 					default:
@@ -528,13 +524,9 @@ namespace Neumont.Tools.ORM.Shell
 									myForm.EditSelectedReading();
 								}
 							}
-							// We enabled the command, so we say we handled it regardless of the further conditions
-							hr = VSConstants.S_OK;
 						}
-						else
-						{
-							goto default;
-						}
+						// We enabled the command, so we say we handled it regardless of the further conditions
+						hr = VSConstants.S_OK;
 						break;
 
 					default:

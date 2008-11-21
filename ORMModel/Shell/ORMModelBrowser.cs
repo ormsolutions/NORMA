@@ -218,7 +218,12 @@ namespace Neumont.Tools.ORM.Shell
 		/// </summary>
 		protected virtual void OnMenuEditLabel()
 		{
-			myTreeContainer.TreeControl.BeginLabelEdit();
+			// We always report an enabled status on this, so verify that it
+			// is actually enabled before handling it.
+			if (0 != (myEnabledCommands & ORMDesignerCommands.EditLabel))
+			{
+				myTreeContainer.TreeControl.BeginLabelEdit();
+			}
 		}
 		/// <summary>
 		/// Select the specified shape in the specified target window.

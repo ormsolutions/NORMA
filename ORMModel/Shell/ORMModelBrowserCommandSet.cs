@@ -166,7 +166,16 @@ namespace Neumont.Tools.ORM.Shell
 			}
 			public void OnStatusEditLabel(Object sender, EventArgs e)
 			{
-				ORMModelBrowserToolWindow.OnStatusCommand(sender, ORMDesignerCommands.EditLabel, CurrentToolWindow);
+				MenuCommand command = sender as MenuCommand;
+				if (command != null)
+				{
+					// Support this command regardless of whether or not it is supported by the current
+					// element or the current state of the inline editor. If we do not do this, then an F2
+					// keypress with an editor already open will report the command as disabled and we would
+					// need to use IVsUIShell.UpdateCommandUI whenever an editor closed to reenable the command.
+					command.Visible = true;
+					command.Enabled = true;
+				}
 			}
 			public void OnMenuEditLabel(Object sender, EventArgs e)
 			{
