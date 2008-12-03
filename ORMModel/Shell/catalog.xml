@@ -11,4 +11,5 @@
 	<Schema targetNamespace="http://schemas.neumont.edu/ORM/EntityRelationship/2008-05/Barker" href="BarkerERModel.xsd"/>
 	<Schema targetNamespace="http://schemas.neumont.edu/ORM/Bridge/2008-05/ORMAbstractionToBarkerER" href="ORMAbstractionToBarkerERBridge.xsd"/>
 	<Schema targetNamespace="http://schemas.neumont.edu/ORM/2008-05/BarkerERView" href="BarkerERView.xsd"/>
+	<Schema targetNamespace="http://schemas.neumont.edu/ORM/2008-11/DiagramDisplay" href="DiagramDisplay.xsd"/>
 </SchemaCatalog>

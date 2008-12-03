@@ -56,9 +56,9 @@ namespace Neumont.Tools.ORMAbstractionToConceptualDatabaseBridge
 	{
 		#region Extension property provider callbacks
 		/// <summary>
-		/// An <see cref="ORMPropertyProvisioning"/> callback for adding extender properties to an <see cref="ObjectType"/>
+		/// An <see cref="PropertyProvider"/> callback for adding extender properties to an <see cref="ObjectType"/>
 		/// </summary>
-		public static void PopulateReferenceModeNamingExtensionProperties(IORMExtendableElement extendableElement, PropertyDescriptorCollection properties)
+		public static void PopulateReferenceModeNamingExtensionProperties(ModelElement extendableElement, PropertyDescriptorCollection properties)
 		{
 			ObjectType objectType;
 			IReferenceModePattern referenceMode;
@@ -84,9 +84,9 @@ namespace Neumont.Tools.ORMAbstractionToConceptualDatabaseBridge
 			}
 		}
 		/// <summary>
-		/// An <see cref="ORMPropertyProvisioning"/> callback for adding extender properties to an <see cref="ORMModel"/>
+		/// An <see cref="PropertyProvider"/> callback for adding extender properties to an <see cref="ORMModel"/>
 		/// </summary>
-		public static void PopulateDefaultReferenceModeNamingExtensionPropertiesOnORMModel(IORMExtendableElement extendableElement, PropertyDescriptorCollection properties)
+		public static void PopulateDefaultReferenceModeNamingExtensionPropertiesOnORMModel(ModelElement extendableElement, PropertyDescriptorCollection properties)
 		{
 			ORMModel model;
 			if (null != (model = extendableElement as ORMModel) &&
@@ -98,9 +98,9 @@ namespace Neumont.Tools.ORMAbstractionToConceptualDatabaseBridge
 			}
 		}
 		/// <summary>
-		/// An <see cref="ORMPropertyProvisioning"/> callback for adding extender properties to an <see cref="RelationalNameGenerator"/>
+		/// An <see cref="PropertyProvider"/> callback for adding extender properties to an <see cref="RelationalNameGenerator"/>
 		/// </summary>
-		public static void PopulateDefaultReferenceModeNamingExtensionPropertiesOnColumnNameGenerator(IORMExtendableElement extendableElement, PropertyDescriptorCollection properties)
+		public static void PopulateDefaultReferenceModeNamingExtensionPropertiesOnColumnNameGenerator(ModelElement extendableElement, PropertyDescriptorCollection properties)
 		{
 			RelationalNameGenerator generator;
 			if (null != (generator = extendableElement as RelationalNameGenerator) &&

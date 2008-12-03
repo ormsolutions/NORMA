@@ -34,7 +34,7 @@ namespace Neumont.Tools.ORM.CustomProperties
 		#region CustomPropertyProviders class
 		private static class CustomPropertyProviders
 		{
-			private static void GetProvidedProperties(ORMTypes selectedTypes, IORMExtendableElement extendableElement, PropertyDescriptorCollection properties)
+			private static void GetProvidedProperties(ORMTypes selectedTypes, ModelElement extendableElement, PropertyDescriptorCollection properties)
 			{
 				foreach (CustomPropertyDefinition customPropertyDefinition in extendableElement.Store.ElementDirectory.FindElements<CustomPropertyDefinition>())
 				{
@@ -46,55 +46,55 @@ namespace Neumont.Tools.ORM.CustomProperties
 				}
 			}
 
-			public static readonly ORMPropertyProvisioning ObjectType = delegate(IORMExtendableElement extendableElement, PropertyDescriptorCollection properties)
+			public static readonly PropertyProvider ObjectType = delegate(ModelElement extendableElement, PropertyDescriptorCollection properties)
 			{
 				GetProvidedProperties(((ObjectType)extendableElement).IsValueType ? ORMTypes.ValueType : ORMTypes.EntityType, extendableElement, properties);
 			};
-			public static readonly ORMPropertyProvisioning FactType = delegate(IORMExtendableElement extendableElement, PropertyDescriptorCollection properties)
+			public static readonly PropertyProvider FactType = delegate(ModelElement extendableElement, PropertyDescriptorCollection properties)
 			{
 				GetProvidedProperties(ORMTypes.FactType, extendableElement, properties);
 			};
-			public static readonly ORMPropertyProvisioning SubtypeFact = delegate(IORMExtendableElement extendableElement, PropertyDescriptorCollection properties)
+			public static readonly PropertyProvider SubtypeFact = delegate(ModelElement extendableElement, PropertyDescriptorCollection properties)
 			{
 				GetProvidedProperties(ORMTypes.SubtypeFact, extendableElement, properties);
 			};
-			public static readonly ORMPropertyProvisioning Role = delegate(IORMExtendableElement extendableElement, PropertyDescriptorCollection properties)
+			public static readonly PropertyProvider Role = delegate(ModelElement extendableElement, PropertyDescriptorCollection properties)
 			{
 				GetProvidedProperties(ORMTypes.Role, extendableElement, properties);
 			};
-			public static readonly ORMPropertyProvisioning FrequencyConstraint = delegate(IORMExtendableElement extendableElement, PropertyDescriptorCollection properties)
+			public static readonly PropertyProvider FrequencyConstraint = delegate(ModelElement extendableElement, PropertyDescriptorCollection properties)
 			{
 				GetProvidedProperties(ORMTypes.FrequencyConstraint, extendableElement, properties);
 			};
-			public static readonly ORMPropertyProvisioning MandatoryConstraint = delegate(IORMExtendableElement extendableElement, PropertyDescriptorCollection properties)
+			public static readonly PropertyProvider MandatoryConstraint = delegate(ModelElement extendableElement, PropertyDescriptorCollection properties)
 			{
 				GetProvidedProperties(ORMTypes.MandatoryConstraint, extendableElement, properties);
 			};
-			public static readonly ORMPropertyProvisioning RingConstraint = delegate(IORMExtendableElement extendableElement, PropertyDescriptorCollection properties)
+			public static readonly PropertyProvider RingConstraint = delegate(ModelElement extendableElement, PropertyDescriptorCollection properties)
 			{
 				GetProvidedProperties(ORMTypes.RingConstraint, extendableElement, properties);
 			};
-			public static readonly ORMPropertyProvisioning UniquenessConstraint = delegate(IORMExtendableElement extendableElement, PropertyDescriptorCollection properties)
+			public static readonly PropertyProvider UniquenessConstraint = delegate(ModelElement extendableElement, PropertyDescriptorCollection properties)
 			{
 				GetProvidedProperties(ORMTypes.UniquenessConstraint, extendableElement, properties);
 			};
-			public static readonly ORMPropertyProvisioning EqualityConstraint = delegate(IORMExtendableElement extendableElement, PropertyDescriptorCollection properties)
+			public static readonly PropertyProvider EqualityConstraint = delegate(ModelElement extendableElement, PropertyDescriptorCollection properties)
 			{
 				GetProvidedProperties(ORMTypes.EqualityConstraint, extendableElement, properties);
 			};
-			public static readonly ORMPropertyProvisioning ExclusionConstraint = delegate(IORMExtendableElement extendableElement, PropertyDescriptorCollection properties)
+			public static readonly PropertyProvider ExclusionConstraint = delegate(ModelElement extendableElement, PropertyDescriptorCollection properties)
 			{
 				GetProvidedProperties(ORMTypes.ExclusionConstraint, extendableElement, properties);
 			};
-			public static readonly ORMPropertyProvisioning SubsetConstraint = delegate(IORMExtendableElement extendableElement, PropertyDescriptorCollection properties)
+			public static readonly PropertyProvider SubsetConstraint = delegate(ModelElement extendableElement, PropertyDescriptorCollection properties)
 			{
 				GetProvidedProperties(ORMTypes.SubsetConstraint, extendableElement, properties);
 			};
-			public static readonly ORMPropertyProvisioning ValueConstraint = delegate(IORMExtendableElement extendableElement, PropertyDescriptorCollection properties)
+			public static readonly PropertyProvider ValueConstraint = delegate(ModelElement extendableElement, PropertyDescriptorCollection properties)
 			{
 				GetProvidedProperties(ORMTypes.ValueConstraint, extendableElement, properties);
 			};
-			public static readonly ORMPropertyProvisioning CustomPropertiesEditor = delegate(IORMExtendableElement extendableElement, PropertyDescriptorCollection properties)
+			public static readonly PropertyProvider CustomPropertiesEditor = delegate(ModelElement extendableElement, PropertyDescriptorCollection properties)
 			{
 				properties.Add(CustomPropertiesEditorPropertyDescriptor.Instance);
 			};
@@ -105,7 +105,7 @@ namespace Neumont.Tools.ORM.CustomProperties
 		{
 			if (0 != (reasons & EventSubscriberReasons.DocumentLoaded))
 			{
-				IORMPropertyProviderService propertyProvisioningService = ((IORMToolServices)this.Store).PropertyProviderService;
+				IPropertyProviderService propertyProvisioningService = ((IFrameworkServices)this.Store).PropertyProviderService;
 				propertyProvisioningService.AddOrRemovePropertyProvider<ORMModel>(CustomPropertyProviders.CustomPropertiesEditor, true, action);
 				propertyProvisioningService.AddOrRemovePropertyProvider<ObjectType>(CustomPropertyProviders.ObjectType, true, action);
 				propertyProvisioningService.AddOrRemovePropertyProvider<SubtypeFact>(CustomPropertyProviders.SubtypeFact, true, action);

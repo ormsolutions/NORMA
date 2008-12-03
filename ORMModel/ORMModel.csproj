@@ -370,11 +370,52 @@
       <SubType>Designer</SubType>
     </EmbeddedResource>
     <None Include="ObjectModel\VerbalizationCoreSnippets\VerbalizationCoreSnippets.xml" />
-    <Compile Include="Shell\DiagramSurvey.cs" />
-    <Compile Include="Shell\DiagramSurvey.SurveyQuestionProvider.cs">
-      <DependentUpon>DiagramSurvey.SurveyQuestionProvider.xml</DependentUpon>
+    <Compile Include="Framework\FrameworkServices.cs" />
+    <Compile Include="Framework\Design\PropertyProvider.cs" />
+    <Compile Include="Framework\Resources\ResourceStrings.cs" />
+    <Compile Include="Framework\Resources\ResourceStringsGenerator.cs">
+      <AutoGen>True</AutoGen>
+      <DependentUpon>ResourceStringsGenerator.xml</DependentUpon>
+    </Compile>
+    <Compile Include="Framework\Shell\DiagramDisplay.cs" />
+    <Compile Include="Framework\Shell\DiagramDisplay.SerializationExtensions.cs">
+      <AutoGen>True</AutoGen>
+      <DependentUpon>DiagramDisplay.SerializationExtensions.xml</DependentUpon>
+    </Compile>
+    <Compile Include="Framework\Shell\DiagramDisplay.AttachRules.cs">
+      <DependentUpon>DiagramDisplay.AttachRules.xml</DependentUpon>
       <AutoGen>True</AutoGen>
     </Compile>
+    <Compile Include="Framework\Shell\DiagramOrderDialog.cs">
+      <SubType>Form</SubType>
+      <CustomToolNamespace>Neumont.Tools.Modeling.Shell</CustomToolNamespace>
+    </Compile>
+    <Compile Include="Framework\Shell\DiagramOrderDialog.Designer.cs">
+      <DependentUpon>DiagramOrderDialog.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Framework\Shell\DiagramSurvey.cs" />
+    <Compile Include="Framework\Shell\DiagramSurvey.SurveyQuestionProvider.cs">
+      <SubType>Code</SubType>
+      <CustomToolNamespace>Neumont.Tools.Modeling.Shell</CustomToolNamespace>
+      <AutoGen>True</AutoGen>
+      <DependentUpon>DiagramSurvey.SurveyQuestionProvider.xml</DependentUpon>
+    </Compile>
+    <Compile Include="Framework\Shell\GeneratedCode\DomainClasses.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>DomainClasses.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Framework\Shell\GeneratedCode\DomainModel.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>DomainModel.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Framework\Shell\GeneratedCode\DomainRelationships.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>DomainRelationships.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Framework\Shell\DiagramDisplay.DeserializationFixupListeners.cs" />
     <Compile Include="Framework\FrameworkDomainModel.cs" />
     <Compile Include="Framework\Diagnostics\TraceUtility.cs" />
     <Compile Include="Framework\Design\Editors\FlagsEnumEditor.cs" />
@@ -486,14 +527,30 @@
       <DependentUpon>ModelErrorDisplayFilterForm.cs</DependentUpon>
     </Compile>
     <None Include="Resources\DiagramBrowserImage.png" />
-    <Content Include="Shell\DiagramSurvey.SurveyQuestionProvider.xml">
+    <Content Include="Framework\Resources\ResourceStringsGenerator.xml">
+      <CustomToolNamespace>Neumont.Tools.Modeling</CustomToolNamespace>
       <Generator>NUPlixLoader</Generator>
-      <LastGenOutput>DiagramSurvey.SurveyQuestionProvider.cs</LastGenOutput>
+      <LastGenOutput>ResourceStringsGenerator.cs</LastGenOutput>
+    </Content>
+    <Content Include="Framework\Shell\DiagramDisplay.SerializationExtensions.xml">
+      <Generator>NUPlixLoader</Generator>
+      <LastGenOutput>DiagramDisplay.SerializationExtensions.cs</LastGenOutput>
+      <CustomToolNamespace>Neumont.Tools.Modeling.Shell</CustomToolNamespace>
+    </Content>
+    <Content Include="Framework\Shell\DiagramDisplay.AttachRules.xml">
+      <Generator>NUPlixLoader</Generator>
+      <LastGenOutput>DiagramDisplay.AttachRules.cs</LastGenOutput>
+      <CustomToolNamespace>Neumont.Tools.Modeling.Shell</CustomToolNamespace>
     </Content>
     <Content Include="Framework\Framework.AttachRules.xml">
       <Generator>NUPlixLoader</Generator>
       <LastGenOutput>Framework.AttachRules.cs</LastGenOutput>
       <CustomToolNamespace>Neumont.Tools.Modeling</CustomToolNamespace>
+    </Content>
+    <Content Include="Framework\Shell\DiagramSurvey.SurveyQuestionProvider.xml">
+      <Generator>NUPlixLoader</Generator>
+      <LastGenOutput>DiagramSurvey.SurveyQuestionProvider.cs</LastGenOutput>
+      <CustomToolNamespace>Neumont.Tools.Modeling.Shell</CustomToolNamespace>
     </Content>
     <Content Include="ObjectModel\ORMCore.SurveyQuestionProvider.xml">
       <Generator>NUPlixLoader</Generator>
@@ -636,6 +693,7 @@
       <DependentUpon>SamplePopulationEditor.cs</DependentUpon>
       <SubType>Designer</SubType>
     </EmbeddedResource>
+    <None Include="Framework\CoreDesignSurfaceDummy.dsl" />
     <None Include="Framework\Framework.dsl" />
     <None Include="Framework\GeneratedCode\DomainClasses.tt">
       <Generator>TextTemplatingFileGenerator</Generator>
@@ -653,6 +711,31 @@
       <Generator>TextTemplatingFileGenerator</Generator>
       <LastGenOutput>DomainRelationships.cs</LastGenOutput>
     </None>
+    <None Include="Framework\Shell\DiagramDisplay.dsl" />
+    <None Include="Framework\Shell\GeneratedCode\DomainClasses.tt">
+      <Generator>TextTemplatingFileGenerator</Generator>
+      <LastGenOutput>DomainClasses.cs</LastGenOutput>
+      <CustomToolNamespace>Neumont.Tools.Modeling.Shell</CustomToolNamespace>
+    </None>
+    <None Include="Framework\Shell\GeneratedCode\DomainModel.tt">
+      <Generator>TextTemplatingFileGenerator</Generator>
+      <LastGenOutput>DomainModel.cs</LastGenOutput>
+      <CustomToolNamespace>Neumont.Tools.Modeling.Shell</CustomToolNamespace>
+    </None>
+    <None Include="Framework\Shell\GeneratedCode\DomainModelResx.tt">
+      <Generator>TextTemplatingFileGenerator</Generator>
+      <LastGenOutput>DomainModelResx.resx</LastGenOutput>
+      <CustomToolNamespace>Neumont.Tools.Modeling.Shell</CustomToolNamespace>
+    </None>
+    <None Include="Framework\Shell\GeneratedCode\DomainRelationships.tt">
+      <Generator>TextTemplatingFileGenerator</Generator>
+      <LastGenOutput>DomainRelationships.cs</LastGenOutput>
+      <CustomToolNamespace>Neumont.Tools.Modeling.Shell</CustomToolNamespace>
+    </None>
+    <EmbeddedResource Include="Framework\Shell\DiagramDisplay.xsd">
+      <LogicalName>Neumont.Tools.Modeling.Shell.DiagramDisplay.xsd</LogicalName>
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
     <None Include="Framework\SystemCore.dsl" />
     <None Include="ObjectModel\VerbalizationReportSnippets\VerbalizationReportSnippets.xsd">
       <SubType>Designer</SubType>
@@ -747,12 +830,28 @@
       <ResourceName>1000</ResourceName>
       <MergeTarget>Shell\PackageResources\VSPackage.resx</MergeTarget>
     </CompileVsct>
+    <EmbeddedResource Include="Framework\FrameworkServices.resx">
+      <LogicalName>Neumont.Tools.Modeling.IFrameworkServices.resources</LogicalName>
+      <DependentUpon>FrameworkServices.cs</DependentUpon>
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
     <EmbeddedResource Include="Framework\GeneratedCode\DomainModelResx.resx">
       <LogicalName>Neumont.Tools.Modeling.GeneratedCode.FrameworkDomainModelResx.resources</LogicalName>
       <DependentUpon>DomainModelResx.tt</DependentUpon>
       <AutoGen>True</AutoGen>
       <SubType>Designer</SubType>
       <DesignTime>True</DesignTime>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Framework\Shell\DiagramOrderDialog.resx">
+      <SubType>Designer</SubType>
+      <DependentUpon>DiagramOrderDialog.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Framework\Shell\GeneratedCode\DomainModelResx.resx">
+      <LogicalName>Neumont.Tools.ORM.GeneratedCode.DiagramDisplayDomainModelResx.resources</LogicalName>
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>DomainModelResx.tt</DependentUpon>
+      <SubType>Designer</SubType>
     </EmbeddedResource>
     <EmbeddedResource Include="ObjectModel\Design\Editors\AliasManagerForm.resx">
       <SubType>Designer</SubType>

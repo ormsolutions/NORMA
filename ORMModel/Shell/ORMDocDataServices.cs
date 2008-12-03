@@ -41,6 +41,7 @@ using Neumont.Tools.ORM.ObjectModel;
 using Neumont.Tools.ORM.ShapeModel;
 using MSOLE = Microsoft.VisualStudio.OLE.Interop;
 using System.IO;
+using Neumont.Tools.Modeling.Design;
 
 namespace Neumont.Tools.ORM.Shell
 {
@@ -141,16 +142,16 @@ namespace Neumont.Tools.ORM.Shell
 			#endregion // Constructors
 			#region IORMToolServices Implementation
 			/// <summary>
-			/// Defer to <see cref="IORMToolServices.PropertyProviderService"/> on the document.
+			/// Defer to <see cref="IFrameworkServices.PropertyProviderService"/> on the document.
 			/// </summary>
-			protected IORMPropertyProviderService PropertyProviderService
+			protected IPropertyProviderService PropertyProviderService
 			{
 				get
 				{
 					return myServices.PropertyProviderService;
 				}
 			}
-			IORMPropertyProviderService IORMToolServices.PropertyProviderService
+			IPropertyProviderService IFrameworkServices.PropertyProviderService
 			{
 				get
 				{
@@ -281,7 +282,7 @@ namespace Neumont.Tools.ORM.Shell
 					return myServices.NotifySurveyElementChanged;
 				}
 			}
-			INotifySurveyElementChanged IORMToolServices.NotifySurveyElementChanged
+			INotifySurveyElementChanged IFrameworkServices.NotifySurveyElementChanged
 			{
 				get
 				{
@@ -967,107 +968,6 @@ namespace Neumont.Tools.ORM.Shell
 		}
 
 		#endregion // Store services passthrough
-		#region ORMPropertyProviderService class
-		private sealed class ORMPropertyProviderService : IORMPropertyProviderService, IDisposable
-		{
-			private readonly Store myStore;
-			private readonly Dictionary<RuntimeTypeHandle, ORMPropertyProvisioning> myProvisioningDictionary;
-
-			public ORMPropertyProviderService(Store store)
-				: base()
-			{
-				Debug.Assert(store != null);
-				this.myStore = store;
-				this.myProvisioningDictionary = new Dictionary<RuntimeTypeHandle, ORMPropertyProvisioning>(RuntimeTypeHandleComparer.Instance);
-			}
-
-			public void Dispose()
-			{
-				this.myProvisioningDictionary.Clear();
-			}
-
-			public void AddOrRemovePropertyProvider<TExtendableElement>(ORMPropertyProvisioning propertyProvisioning, bool includeSubtypes, EventHandlerAction action)
-				where TExtendableElement : ModelElement, IORMExtendableElement
-			{
-				if ((object)propertyProvisioning == null)
-				{
-					throw new ArgumentNullException("propertyProvisioning");
-				}
-
-				bool register = action == EventHandlerAction.Add;
-
-				Type extendableElementType = typeof(TExtendableElement);
-
-				if (register)
-				{
-					this.RegisterPropertyProvider(extendableElementType.TypeHandle, propertyProvisioning);
-				}
-				else
-				{
-					this.UnregisterPropertyProvider(extendableElementType.TypeHandle, propertyProvisioning);
-				}
-				if (includeSubtypes)
-				{
-					Store store = this.myStore;
-					DomainClassInfo domainClassInfo = store.DomainDataDirectory.GetDomainClass(extendableElementType);
-					foreach (DomainClassInfo subtypeInfo in domainClassInfo.AllDescendants)
-					{
-						if (register)
-						{
-							this.RegisterPropertyProvider(subtypeInfo.ImplementationClass.TypeHandle, propertyProvisioning);
-						}
-						else
-						{
-							this.UnregisterPropertyProvider(subtypeInfo.ImplementationClass.TypeHandle, propertyProvisioning);
-						}
-					}
-				}
-			}
-			private void RegisterPropertyProvider(RuntimeTypeHandle extendableElementRuntimeTypeHandle, ORMPropertyProvisioning propertyProvisioning)
-			{
-				Dictionary<RuntimeTypeHandle, ORMPropertyProvisioning> provisioningDictionary = this.myProvisioningDictionary;
-				ORMPropertyProvisioning existingPropertyProvider;
-				provisioningDictionary.TryGetValue(extendableElementRuntimeTypeHandle, out existingPropertyProvider);
-				provisioningDictionary[extendableElementRuntimeTypeHandle] = (ORMPropertyProvisioning)Delegate.Combine(existingPropertyProvider, propertyProvisioning);
-			}
-
-			private void UnregisterPropertyProvider(RuntimeTypeHandle extendableElementRuntimeTypeHandle, ORMPropertyProvisioning propertyProvisioning)
-			{
-				Dictionary<RuntimeTypeHandle, ORMPropertyProvisioning> provisioningDictionary = this.myProvisioningDictionary;
-				ORMPropertyProvisioning existingPropertyProvisioning;
-				provisioningDictionary.TryGetValue(extendableElementRuntimeTypeHandle, out existingPropertyProvisioning);
-				existingPropertyProvisioning = (ORMPropertyProvisioning)Delegate.Remove(existingPropertyProvisioning, propertyProvisioning);
-				if ((object)existingPropertyProvisioning == null)
-				{
-					provisioningDictionary.Remove(extendableElementRuntimeTypeHandle);
-				}
-				else
-				{
-					provisioningDictionary[extendableElementRuntimeTypeHandle] = existingPropertyProvisioning;
-				}
-			}
-
-			public void GetProvidedProperties(IORMExtendableElement extendableElement, PropertyDescriptorCollection properties)
-			{
-				if (extendableElement == null)
-				{
-					throw new ArgumentNullException("extendableElement");
-				}
-				if (properties == null)
-				{
-					throw new ArgumentNullException("properties");
-				}
-
-				ORMPropertyProvisioning propertyProvisioning;
-				if (this.myProvisioningDictionary.TryGetValue(extendableElement.GetType().TypeHandle, out propertyProvisioning))
-				{
-					// We don't need to check propertyProvisioning for null, since UnregisterPropertyProvider would have removed it from the
-					// dictionary if there were no provisionings left.
-					propertyProvisioning(extendableElement, properties);
-				}
-			}
-		}
-		#endregion // ORMPropertyProvisioningService class
 		#region ORMModelErrorActivationService class
 		private sealed class ORMModelErrorActivationService : IORMModelErrorActivationService
 		{
@@ -1142,21 +1042,21 @@ namespace Neumont.Tools.ORM.Shell
 		private IDictionary<string, VerbalizationTargetData> myVerbalizationTargets;
 		private IDictionary<Type, LayoutEngineData> myLayoutEngines;
 		private int myCustomBlockCanAddTransactionCount;
-		private IORMPropertyProviderService myPropertyProviderService;
+		private IPropertyProviderService myPropertyProviderService;
 		private IORMModelErrorActivationService myModelErrorActivatorService;
 
 		/// <summary>
-		/// Retrieve the <see cref="IORMPropertyProviderService"/> for this document.
-		/// Implements <see cref="IORMToolServices.PropertyProviderService"/>.
+		/// Retrieve the <see cref="IPropertyProviderService"/> for this document.
+		/// Implements <see cref="IFrameworkServices.PropertyProviderService"/>.
 		/// </summary>
-		protected IORMPropertyProviderService PropertyProviderService
+		protected IPropertyProviderService PropertyProviderService
 		{
 			get
 			{
-				return myPropertyProviderService ?? (myPropertyProviderService = new ORMPropertyProviderService(Store));
+				return myPropertyProviderService ?? (myPropertyProviderService = new PropertyProviderService(Store));
 			}
 		}
-		IORMPropertyProviderService IORMToolServices.PropertyProviderService
+		IPropertyProviderService IFrameworkServices.PropertyProviderService
 		{
 			get
 			{
@@ -1396,7 +1296,7 @@ namespace Neumont.Tools.ORM.Shell
 				return this.mySurveyTree as INotifySurveyElementChanged;
 			}
 		}
-		INotifySurveyElementChanged IORMToolServices.NotifySurveyElementChanged
+		INotifySurveyElementChanged IFrameworkServices.NotifySurveyElementChanged
 		{
 			get
 			{

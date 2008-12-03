@@ -78,6 +78,9 @@
 								<File Id="Neumont.Tools.ORM$(var.VSExt).xml" ShortName="ORM.xml" Name="Neumont.Tools.ORM$(var.VSExt).xml" Source="..\ORMModel\bin\$(var.BuildConfiguration)\Neumont.Tools.ORM$(var.VSExt).xml"
 									DefaultLanguage="0" CompanionFile="Neumont.Tools.ORM$(var.VSExt).dll"/>
 								<?include NORMAVSPackageRegistry.wxi?>
+								<RegistryKey Action="createAndRemoveOnUninstall" Root="HKLM" Key="$(var.NORMAVSExtensionsRegRoot)\http://schemas.neumont.edu/ORM/2008-11/DiagramDisplay">
+									<RegistryValue Type="string" Name="Class" Value="Neumont.Tools.Modeling.Shell.DiagramDisplayDomainModel"/>
+								</RegistryKey>
 								<ProgId Id="ormfile" Description="!(loc.ORMFileDescription)" Icon="Neumont.Tools.ORM$(var.VSExt).dll" IconIndex="0">
 									<Extension Id="orm" ContentType="application/orm+xml">
 										<MIME ContentType="application/orm+xml" Default="yes"/>
@@ -400,6 +403,10 @@
 								<Component Id="NORMAVSBarkerERViewSchemaComponent" Guid="BF7FCA1E-0DDD-4118-$(var.VersionGuidSuffix)" DiskId="1" Win64="$(var.Win64)" KeyPath="yes">
 									<File Id="BarkerERView.xsd" ShortName="BarkerVw.xsd" Name="BarkerERView.xsd" Source="..\AlternateViews\BarkerERView\BarkerERView.xsd"
 										DefaultLanguage="0" CompanionFile="Neumont.Tools.ORM.Views.BarkerERView$(var.VSExt).dll"/>
+								</Component>
+								<Component Id="NORMAVSDiagramDisplaySchemaComponent" Guid="1EFF5DE0-713C-439A-$(var.VersionGuidSuffix)" DiskId="1" Win64="$(var.Win64)" KeyPath="yes">
+									<File Id="DiagramDisplay.xsd" Name="DiagramDisplay.xsd" Source="..\ORMModel\Framework\Shell\DiagramDisplay.xsd"
+										DefaultLanguage="0" CompanionFile="Neumont.Tools.ORM$(var.VSExt).dll"/>
 								</Component>
 							</Directory>
 							<Directory Id="Transforms" ShortName="Trnsfrms" Name="Transforms">

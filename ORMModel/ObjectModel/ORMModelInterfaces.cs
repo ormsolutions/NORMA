@@ -61,7 +61,7 @@ namespace Neumont.Tools.ORM.ObjectModel
 	/// or directly on a store for non-VS loading and validation
 	/// of the object model.
 	/// </summary>
-	public interface IORMToolServices
+	public interface IORMToolServices : IFrameworkServices
 	{
 		/// <summary>
 		/// Retrieve the service for adding and removing tasks
@@ -71,10 +71,6 @@ namespace Neumont.Tools.ORM.ObjectModel
 		/// Retrieve the service for getting current font and color information
 		/// </summary>
 		IORMFontAndColorService FontAndColorService { get;}
-		/// <summary>
-		/// Retrieve the service for registering and unregistering <see cref="ORMPropertyProvisioning"/>s.
-		/// </summary>
-		IORMPropertyProviderService PropertyProviderService { get;}
 		/// <summary>
 		/// Retrieve the <see cref="IORMModelErrorActivationService">service</see> for managing model error activation.
 		/// </summary>
@@ -98,10 +94,6 @@ namespace Neumont.Tools.ORM.ObjectModel
 		/// Retrieve the LayoutEngines dictionary for this store
 		/// </summary>
 		LayoutEngine GetLayoutEngine(Type engineType);
-		/// <summary>
-		/// Retrieve the INotifySurveyElmentChanged interface for this store
-		/// </summary>
-		INotifySurveyElementChanged NotifySurveyElementChanged { get;}
 		/// <summary>
 		/// Return true if a new transaction can be added at this time.
 		/// This will return false if the store is currently in UndoRedoOrRollback,
@@ -167,66 +159,6 @@ namespace Neumont.Tools.ORM.ObjectModel
 		void RegisterErrorActivator(Type elementType, bool registerDerivedTypes, ORMModelErrorActivator activator);
 	}
 	#endregion // IORMModelErrorActivationService
-	#region ORMPropertyProvisioning delegate
-	/// <summary>
-	/// Adds extension <see cref="PropertyDescriptor"/>s for the <see cref="IORMExtendableElement"/> specified
-	/// by <paramref name="extendableElement"/> to the <see cref="PropertyDescriptorCollection"/> specified by
-	/// <paramref name="properties"/>.
-	/// </summary>
-	public delegate void ORMPropertyProvisioning(IORMExtendableElement extendableElement, PropertyDescriptorCollection properties);
-	#endregion // ORMPropertyProvisioning delegate
-	#region IORMPropertyProviderService interface
-	/// <summary>
-	/// Provides methods for registrating and unregistrating <see cref="ORMPropertyProvisioning"/>s for
-	/// <see cref="IORMExtendableElement"/>s.
-	/// </summary>
-	public interface IORMPropertyProviderService
-	{
-		/// <summary>
-		/// Registers or unregisters the <see cref="ORMPropertyProvisioning"/> specified by <paramref name="propertyProvisioning"/> for the
-		/// type specified by <typeparamref name="TExtendableElement"/>.
-		/// </summary>
-		/// <typeparam name="TExtendableElement">
-		/// The type for which the <see cref="ORMPropertyProvisioning"/> should be added. This type specified must
-		/// by a subtype of <see cref="ModelElement"/> and implement <see cref="IORMExtendableElement"/>.
-		/// </typeparam>
-		/// <param name="propertyProvisioning">
-		/// The <see cref="ORMPropertyProvisioning"/> being registered.
-		/// </param>
-		/// <param name="includeSubtypes">
-		/// Specifies whether the <see cref="ORMPropertyProvisioning"/> should also be registered for subtypes of
-		/// <typeparamref name="TExtendableElement"/>.
-		/// </param>
-		/// <param name="action">
-		/// Specifies whether the property provider is being added or removed. See <see cref="EventHandlerAction"/></param>
-		void AddOrRemovePropertyProvider<TExtendableElement>(ORMPropertyProvisioning propertyProvisioning, bool includeSubtypes, EventHandlerAction action)
-			where TExtendableElement : ModelElement, IORMExtendableElement;
-
-		/// <summary>
-		/// Adds extension <see cref="PropertyDescriptor"/>s for the <see cref="IORMExtendableElement"/> specified
-		/// by <paramref name="extendableElement"/> to the <see cref="PropertyDescriptorCollection"/> specified by
-		/// <paramref name="properties"/>.
-		/// </summary>
-		void GetProvidedProperties(IORMExtendableElement extendableElement, PropertyDescriptorCollection properties);
-	}
-	#endregion // IORMPropertyProviderService interface
-	#region IRepresentedModelElements interface
-	/// <summary>
-	/// Retrieve the ModelElement associated with object. Implemented
-	/// on objects that are directly associated with task items.
-	/// </summary>
-	public interface IRepresentModelElements
-	{
-		/// <summary>
-		/// Retrieve the model element associated with this item.
-		/// The retrieved item should have a shape associated with
-		/// it that can be selected on an ORM diagram. If a shape is
-		/// not available, then aggregating parent chain is used to
-		/// find a shape that is available.
-		/// </summary>
-		ModelElement[] GetRepresentedElements();
-	}
-	#endregion // IRepresentedModelElements interface
 	#region ISelectionContainerFilter interface
 	/// <summary>
 	/// Implement this interface to dynamically stop a selectable

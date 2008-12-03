@@ -13,13 +13,14 @@ using Neumont.Tools.Modeling;
 using Neumont.Tools.Modeling.Diagrams;
 using Microsoft.VisualStudio.Modeling.Diagrams;
 using Neumont.Tools.Modeling.Shell;
+using Neumont.Tools.Modeling.Design;
 #endregion
 
 namespace Neumont.Tools.ORM.SDK.TestEngine
 {
 	public partial struct Suite
 	{
-		private class ORMStore : Store, IORMToolServices, IModelingEventManagerProvider, ISerializationContextHost
+		private class ORMStore : Store, IORMToolServices, IFrameworkServices, IModelingEventManagerProvider, ISerializationContextHost
 		{
 			#region Member Variables
 			private readonly IORMToolServices myServices;
@@ -101,7 +102,7 @@ namespace Neumont.Tools.ORM.SDK.TestEngine
 			}
 			#endregion // ORMModelErrorActivationService class
 			#region IORMToolServices Implementation
-			IORMPropertyProviderService IORMToolServices.PropertyProviderService
+			IPropertyProviderService IFrameworkServices.PropertyProviderService
 			{
 				get
 				{
@@ -164,7 +165,7 @@ namespace Neumont.Tools.ORM.SDK.TestEngine
 			{
 				return myServices.GetVerbalizationSnippetsDictionary(target);
 			}
-			INotifySurveyElementChanged IORMToolServices.NotifySurveyElementChanged
+			INotifySurveyElementChanged IFrameworkServices.NotifySurveyElementChanged
 			{
 				get
 				{

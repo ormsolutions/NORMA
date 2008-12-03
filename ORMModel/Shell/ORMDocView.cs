@@ -295,22 +295,22 @@ namespace Neumont.Tools.ORM.Shell
 		public static readonly object ContextMenuItemNeedsSelectedTab = new object();
 		private void ContextMenuOpening(object sender, EventArgs e)
 		{
-			//ContextMenuStrip contextMenu = sender as ContextMenuStrip;
-			//bool haveSelectedTab = base.GetDesignerAtPoint(contextMenu.Location) != null;
-			//foreach (ToolStripItem item in contextMenu.Items)
-			//{
-			//    if (item.Tag == ContextMenuItemNeedsSelectedTab)
-			//    {
-			//        item.Enabled = haveSelectedTab;
-			//    }
-			//}
+			MultiDiagramContextMenuStrip contextMenu = ContextMenuStrip;
+			ToolStripItemCollection menuItems = contextMenu.Items;
+			Diagram diagram = contextMenu.SelectedDiagram;
+			bool haveSelectedTab = diagram != null;
+			foreach (ToolStripItem item in menuItems)
+			{
+				if (item.Tag == ContextMenuItemNeedsSelectedTab)
+				{
+					item.Enabled = haveSelectedTab;
+				}
+			}
 
-			ContextMenuStrip contextMenu = sender as ContextMenuStrip;
-			DiagramView designer = base.GetDesignerAtPoint(contextMenu.Location);
 			Partition partition = this.DocData.Store.DefaultPartition;
 
 			//Disable/Enable New Diagram Tabs stuff wow
-			ToolStripDropDownItem newPageMenuItem = (ToolStripDropDownItem)contextMenu.Items[ResourceStrings.DiagramCommandNewPage];
+			ToolStripDropDownItem newPageMenuItem = (ToolStripDropDownItem)menuItems[ResourceStrings.DiagramCommandNewPage];
 			ToolStripItemCollection items = newPageMenuItem.DropDownItems;
 			int itemCount = items.Count;
 
@@ -319,7 +319,7 @@ namespace Neumont.Tools.ORM.Shell
 				DomainClassInfo diagramInfo = (DomainClassInfo)items[i].Tag;
 				ReadOnlyCollection<ModelElement> modelElements = partition.ElementDirectory.FindElements(diagramInfo);
 
-				object[] attributes = diagramInfo.ImplementationClass.GetCustomAttributes(typeof(DiagramMenuDisplayAttribute), true);
+				object[] attributes = diagramInfo.ImplementationClass.GetCustomAttributes(typeof(DiagramMenuDisplayAttribute), false);
 				if (attributes.Length > 0)
 				{
 					DiagramMenuDisplayAttribute attribute = (DiagramMenuDisplayAttribute)attributes[0];
@@ -336,16 +336,23 @@ namespace Neumont.Tools.ORM.Shell
 				}
 			}
 
-			//If a diagram tab is selected
-			if (designer != null)
+			// Disable page reordering if there is only one page
+			string reorderKey = ResourceStrings.DiagramCommandReorderPages;
+			if (menuItems.ContainsKey(reorderKey))
 			{
-				Diagram diagram = designer.Diagram;
+				menuItems[reorderKey].Enabled = HasMultiplePages;
+			}
+
+
+			//If a diagram tab is selected
+			if (diagram != null)
+			{
 				//Retrieve all existing diagrams of the same type as the one selected
 				ReadOnlyCollection<ModelElement> modelElements = partition.ElementDirectory.FindElements(diagram.GetDomainClass(), true);
 				DomainClassInfo diagramInfo = diagram.GetDomainClass();
 
 				//Grab the attribute of the diagram type selected
-				object[] attributes = diagramInfo.ImplementationClass.GetCustomAttributes(typeof(DiagramMenuDisplayAttribute), true);
+				object[] attributes = diagramInfo.ImplementationClass.GetCustomAttributes(typeof(DiagramMenuDisplayAttribute), false);
 				if (attributes.Length > 0)
 				{
 					DiagramMenuDisplayAttribute attribute = (DiagramMenuDisplayAttribute)attributes[0];
@@ -353,26 +360,26 @@ namespace Neumont.Tools.ORM.Shell
 					if ((attribute.DiagramOption & DiagramMenuDisplayOptions.Required) != 0 && modelElements.Count <= 1)
 					{
 						//DISABLE DELETE
-						ToolStripMenuItem deletePageMenuItem = (ToolStripMenuItem)contextMenu.Items[ResourceStrings.DiagramCommandDeletePage];
+						ToolStripMenuItem deletePageMenuItem = (ToolStripMenuItem)menuItems[ResourceStrings.DiagramCommandDeletePage];
 						deletePageMenuItem.Enabled = false;
 					}
 					else
 					{
 						//ALLOW DELETE
-						ToolStripMenuItem deletePageMenuItem = (ToolStripMenuItem)contextMenu.Items[ResourceStrings.DiagramCommandDeletePage];
+						ToolStripMenuItem deletePageMenuItem = (ToolStripMenuItem)menuItems[ResourceStrings.DiagramCommandDeletePage];
 						deletePageMenuItem.Enabled = true;
 					}
 
 					if ((attribute.DiagramOption & DiagramMenuDisplayOptions.BlockRename) != 0)
 					{
 						//DISABLE RENAME
-						ToolStripMenuItem renamePageMenuItem = (ToolStripMenuItem)contextMenu.Items[ResourceStrings.DiagramCommandRenamePage];
+						ToolStripMenuItem renamePageMenuItem = (ToolStripMenuItem)menuItems[ResourceStrings.DiagramCommandRenamePage];
 						renamePageMenuItem.Enabled = false;
 					}
 					else
 					{
 						//ALLOW RENAME
-						ToolStripMenuItem renamePageMenuItem = (ToolStripMenuItem)contextMenu.Items[ResourceStrings.DiagramCommandRenamePage];
+						ToolStripMenuItem renamePageMenuItem = (ToolStripMenuItem)menuItems[ResourceStrings.DiagramCommandRenamePage];
 						renamePageMenuItem.Enabled = true;
 					}
 				}
@@ -400,7 +407,19 @@ namespace Neumont.Tools.ORM.Shell
 					DomainClassInfo diagramInfo = menuItem.Tag as DomainClassInfo;
 					if (diagramInfo != null)
 					{
-						store.ElementFactory.CreateElement(diagramInfo);
+						Diagram newDiagram = (Diagram)store.ElementFactory.CreateElement(diagramInfo);
+						Diagram selectedDiagram;
+						DiagramDisplay displayContainer;
+						LinkedElementCollection<Diagram> diagramOrder;
+						int selectedDiagramIndex;
+						if (null != (selectedDiagram = ContextMenuStrip.SelectedDiagram) &&
+							null != (displayContainer = DiagramDisplayHasDiagramOrder.GetDiagramDisplay(selectedDiagram)) &&
+							(selectedDiagramIndex = (diagramOrder = displayContainer.OrderedDiagramCollection).IndexOf(selectedDiagram)) < (diagramOrder.Count - 1))
+						{
+							// Add the page immediately after the selected diagram, unless we're already at the end, in which
+							// case we leave it to the rules to add in the correct place
+							diagramOrder.Insert(selectedDiagramIndex + 1, newDiagram);
+						}
 						t.Commit();
 					}
 				}
@@ -408,11 +427,9 @@ namespace Neumont.Tools.ORM.Shell
 		}
 		private void ContextMenuDeletePageClick(object sender, EventArgs e)
 		{
-			ToolStrip senderOwner = ((ToolStripItem)sender).Owner;
-			DiagramView designer = base.GetDesignerAtPoint(senderOwner.Location);
-			if (designer != null)
+			Diagram diagram = ContextMenuStrip.SelectedDiagram;
+			if (diagram != null)
 			{
-				Diagram diagram = designer.Diagram;
 				Store store = diagram.Store;
 				using (Transaction t = store.TransactionManager.BeginTransaction(ResourceStrings.DiagramCommandDeletePage.Replace("&", "")))
 				{
@@ -443,7 +460,11 @@ namespace Neumont.Tools.ORM.Shell
 		}
 		private void ContextMenuRenamePageClick(object sender, EventArgs e)
 		{
-			base.RenameDiagramAtPoint(((ToolStripItem)sender).Owner.Location);
+			base.RenameDiagram(ContextMenuStrip.SelectedDiagram);
+		}
+		private void ContextMenuPageOrderClick(object sender, EventArgs e)
+		{
+			base.ReorderDiagrams();
 		}
 		#endregion // Context Menu
 
@@ -470,7 +491,7 @@ namespace Neumont.Tools.ORM.Shell
 				for (int i = 0; i < diagramCount; ++i)
 				{
 					DomainClassInfo diagramInfo = diagrams[i];
-					object[] attributes = diagramInfo.ImplementationClass.GetCustomAttributes(typeof(DiagramMenuDisplayAttribute), true);
+					object[] attributes = diagramInfo.ImplementationClass.GetCustomAttributes(typeof(DiagramMenuDisplayAttribute), false);
 					if (attributes.Length > 0)
 					{
 						DiagramMenuDisplayAttribute attribute = (DiagramMenuDisplayAttribute)attributes[0];
@@ -500,25 +521,65 @@ namespace Neumont.Tools.ORM.Shell
 				renamePageMenuItem.Click += ContextMenuRenamePageClick;
 				renamePageMenuItem.Tag = ContextMenuItemNeedsSelectedTab;
 
-				contextMenu.Items.AddRange(new ToolStripItem[] { newPageMenuItem, new ToolStripSeparator(), deletePageMenuItem, renamePageMenuItem });
+				if (null != Store.FindDomainModel(DiagramDisplayDomainModel.DomainModelId))
+				{
+					ToolStripMenuItem reorderPagesMenuItem = new ToolStripMenuItem(ResourceStrings.DiagramCommandReorderPages);
+					reorderPagesMenuItem.Name = ResourceStrings.DiagramCommandReorderPages;
+					reorderPagesMenuItem.Click += ContextMenuPageOrderClick;
+
+					contextMenu.Items.AddRange(new ToolStripItem[] { newPageMenuItem, reorderPagesMenuItem, new ToolStripSeparator(), deletePageMenuItem, renamePageMenuItem });
+				}
+				else
+				{
+					contextMenu.Items.AddRange(new ToolStripItem[] { newPageMenuItem, new ToolStripSeparator(), deletePageMenuItem, renamePageMenuItem });
+				}
 				#endregion // Setup context menu
 
 				Store store = document.Store;
-				// Add our existing diagrams, or make a new one if we don't already have one
-				ReadOnlyCollection<Diagram> existingDiagrams = store.ElementDirectory.FindElements<Diagram>(true);
-				int existingDiagramsCount = existingDiagrams.Count;
-				if (existingDiagramsCount != 0)
+				// Add our existing diagrams. If we have the diagram display model extension turned on
+				// for this designer, then we will always have an ordered set of diagrams at this point.
+				if (null != (store.FindDomainModel(DiagramDisplayDomainModel.DomainModelId)))
 				{
-					bool seenDiagram = false;
-					Partition defaultPartition = store.DefaultPartition;
-					for (int i = 0; i < existingDiagramsCount; ++i)
+					ReadOnlyCollection<DiagramDisplay> diagramDisplayElements = store.ElementDirectory.FindElements<DiagramDisplay>(false);
+					if (diagramDisplayElements.Count != 0)
 					{
-						Diagram existingDiagram = existingDiagrams[i];
-						if (existingDiagram.Partition == defaultPartition)
+						IList<DiagramDisplayHasDiagramOrder> existingDiagramLinks = DiagramDisplayHasDiagramOrder.GetLinksToOrderedDiagramCollection(diagramDisplayElements[0]);
+						int existingDiagramsCount = existingDiagramLinks.Count;
+						if (existingDiagramsCount != 0)
 						{
-							// Make the first diagram be selected
-							base.AddDiagram(existingDiagram, !seenDiagram);
-							seenDiagram = true;
+							Partition defaultPartition = store.DefaultPartition;
+							for (int i = 0; i < existingDiagramsCount; ++i)
+							{
+								DiagramDisplayHasDiagramOrder link = existingDiagramLinks[i];
+								Diagram existingDiagram = link.Diagram;
+								if (existingDiagram.Partition == defaultPartition)
+								{
+									// The fixup listeners guarantee that there is exactly one active diagram,
+									// so we can safely trust the property to get an active diagram
+									base.AddDiagram(existingDiagram, link.IsActiveDiagram);
+								}
+							}
+						}
+					}
+				}
+				else
+				{
+					// Add our existing diagrams
+					ReadOnlyCollection<Diagram> existingDiagrams = store.ElementDirectory.FindElements<Diagram>(true);
+					int existingDiagramsCount = existingDiagrams.Count;
+					if (existingDiagramsCount != 0)
+					{
+						bool seenDiagram = false;
+						Partition defaultPartition = store.DefaultPartition;
+						for (int i = 0; i < existingDiagramsCount; ++i)
+						{
+							Diagram existingDiagram = existingDiagrams[i];
+							if (existingDiagram.Partition == defaultPartition)
+							{
+								// Make the first diagram be selected
+								base.AddDiagram(existingDiagram, !seenDiagram);
+								seenDiagram = true;
+							}
 						}
 					}
 				}
@@ -526,7 +587,6 @@ namespace Neumont.Tools.ORM.Shell
 				// Make sure we get a closing notification so we can clear the
 				// selected components
 				document.DocumentClosing += new EventHandler(DocumentClosing);
-
 				return true;
 			}
 			return false;
@@ -593,8 +653,9 @@ namespace Neumont.Tools.ORM.Shell
 		/// <summary>
 		/// Implements <see cref="IModelingEventSubscriber.ManageModelingEventHandlers"/>.
 		/// </summary>
-		protected void ManageModelingEventHandlers(ModelingEventManager eventManager, EventSubscriberReasons reasons, EventHandlerAction action)
+		protected new void ManageModelingEventHandlers(ModelingEventManager eventManager, EventSubscriberReasons reasons, EventHandlerAction action)
 		{
+			base.ManageModelingEventHandlers(eventManager, reasons, action);
 			if ((EventSubscriberReasons.DocumentLoaded | EventSubscriberReasons.UserInterfaceEvents) == (reasons & (EventSubscriberReasons.DocumentLoaded | EventSubscriberReasons.UserInterfaceEvents)))
 			{
 				eventManager.AddOrRemoveHandler(new EventHandler<ElementEventsEndedEventArgs>(OnElementEventsEnded), action);
@@ -757,7 +818,6 @@ namespace Neumont.Tools.ORM.Shell
 				});
 		}
 		#endregion // ORMDesignerDocView Specific
-
 		#region IORMDesignerView Implementation
 		/// <summary>
 		/// Implements <see cref="IORMDesignerView.CommandManager"/>

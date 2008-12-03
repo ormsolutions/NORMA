@@ -3,6 +3,7 @@
 * Neumont Object-Role Modeling Architect for Visual Studio                 *
 *                                                                          *
 * Copyright © Neumont University. All rights reserved.                     *
+* Copyright © Matthew Curland. All rights reserved.                        *
 *                                                                          *
 * The use and distribution terms for this software are covered by the      *
 * Common Public License 1.0 (http://opensource.org/licenses/cpl) which     *
@@ -33,17 +34,11 @@ namespace Neumont.Tools.Modeling.Shell
 	{
 		private sealed class DiagramTabPage : TabPage
 		{
+			#region Member Variables
 			private readonly MultiDiagramDocViewControl myDocViewControl;
+			private bool myTurnOffResizeEventInFocusEvent;
 			public readonly DiagramView Designer;
-			public Diagram Diagram
-			{
-				[DebuggerStepThrough]
-				get
-				{
-					return Designer.Diagram;
-				}
-			}
-
+			#endregion // Member Variables
 			#region Constructor
 			public DiagramTabPage(MultiDiagramDocViewControl docViewControl, DiagramView designer)
 			{
@@ -55,15 +50,203 @@ namespace Neumont.Tools.Modeling.Shell
 				Diagram diagram = designer.Diagram;
 				base.Text = base.Name = diagram.Name;
 				base.Controls.Add(designer);
-				docViewControl.TabPages.Add(this);
+				// Find the correct tab location for this diagram, depending on the diagram order and the
+				// pages that have already been added
+				TabControl.TabPageCollection pages = docViewControl.TabPages;
+				bool inserted = false;
+				Store store = diagram.Store;
+				bool useDiagramDisplay = store.FindDomainModel(DiagramDisplayDomainModel.DomainModelId) != null;
+				if (useDiagramDisplay)
+				{
+					DiagramDisplay display = DiagramDisplayHasDiagramOrder.GetDiagramDisplay(diagram);
+					if (display != null)
+					{
+						// Walk the existing pages and match up the expected display order. Note that
+						// there is no guarantee that all of the preceding diagrams have tab pages already.
+						// If the previous pages are out of order, then we will get a reorder event later on
+						// that puts them in the correct order. This will add them in an unpredictable order
+						// if the sequences are different.
+						IList<Diagram> orderedDiagrams = display.OrderedDiagramCollection;
+						int diagramCount = orderedDiagrams.Count;
+						int nextDiagramIndex = 0;
+						Diagram nextDiagram = orderedDiagrams[nextDiagramIndex];
+						int pageCount = pages.Count;
+						if (nextDiagram == diagram)
+						{
+							if (pageCount != 0)
+							{
+								// The new diagram is first, insert at the beginning
+								pages.Insert(0, this);
+								inserted = true;
+							}
+						}
+						else
+						{
+							for (int pageIndex = 0; pageIndex < pageCount && !inserted; ++pageIndex)
+							{
+								DiagramTabPage page = (DiagramTabPage)pages[pageIndex];
+								Diagram pageDiagram = page.Diagram;
+								bool getNextDiagram = false;
+								if (pageDiagram == nextDiagram)
+								{
+									getNextDiagram = true;
+								}
+								else
+								{
+									// Keep walking diagrams until we get a match
+									while (nextDiagramIndex < diagramCount)
+									{
+										nextDiagram = orderedDiagrams[++nextDiagramIndex];
+										if (pageDiagram == nextDiagram)
+										{
+											getNextDiagram = true;
+										}
+										else if (nextDiagram == diagram)
+										{
+											if ((pageIndex + 1) < pageCount)
+											{
+												pages.Insert(pageIndex + 1, this);
+												inserted = true;
+												break;
+											}
+										}
+									}
+								}
+								if (getNextDiagram)
+								{
+									if (nextDiagramIndex < diagramCount)
+									{
+										nextDiagram = orderedDiagrams[++nextDiagramIndex];
+										if (nextDiagram == diagram)
+										{
+											// Insert immediately after the current page
+											if ((pageIndex + 1) < pageCount)
+											{
+												pages.Insert(pageIndex + 1, this);
+												inserted = true;
+											}
+											break;
+										}
+									}
+									else
+									{
+										break;
+									}
+								}
+							}
+						}
+					}
+				}
+				if (!inserted)
+				{
+					pages.Add(this);
+				}
+				// If the image key is set before the page is inserted then the tab size is incorrect
+				// and nothing draws property. I have no idea why.
 				base.ImageKey = diagram.GetType().GUID.ToString("N", null);
 				base.ResumeLayout(false);
-				diagram.Store.EventManagerDirectory.ElementPropertyChanged.Add(diagram.GetDomainClass().NameDomainProperty, diagram.Id, (EventHandler<ElementPropertyChangedEventArgs>)DiagramNameChanged);
+				store.EventManagerDirectory.ElementPropertyChanged.Add(diagram.GetDomainClass().NameDomainProperty, diagram.Id, (EventHandler<ElementPropertyChangedEventArgs>)DiagramNameChanged);
+				if (useDiagramDisplay)
+				{
+					designer.DiagramClientView.GotFocus += new EventHandler(ViewGotFocus);
+					designer.DiagramClientView.Resize += new EventHandler(InitialViewResize);
+					myTurnOffResizeEventInFocusEvent = true;
+				}
 				designer.DiagramClientView.DiagramDisassociating += DiagramDisassociating;
 			}
 			#endregion // Constructor
-			
+			#region Accessor Properties
+			public Diagram Diagram
+			{
+				[DebuggerStepThrough]
+				get
+				{
+					return Designer.Diagram;
+				}
+			}
+			#endregion // Accessor Properties
 			#region Event handlers
+			private static void InitialViewResize(object sender, EventArgs e)
+			{
+				DiagramClientView view;
+				Diagram diagram;
+				DiagramDisplayHasDiagramOrder link;
+				if (null != (view = sender as DiagramClientView) &&
+					null != (diagram = view.Diagram))
+				{
+					if (null != (link = DiagramDisplayHasDiagramOrder.GetLinkToDiagramDisplay(diagram)))
+					{
+						// Update the display position from the diagram display information
+						float desiredZoomFactor = link.ZoomFactor;
+						if (desiredZoomFactor != view.ZoomFactor)
+						{
+							view.SetZoomFactor(desiredZoomFactor, link.CenterPoint, true);
+						}
+						else
+						{
+							view.ScrollTo(new PointD(link.CenterPoint.X - view.ViewBounds.Width / 2, link.CenterPoint.Y - view.ViewBounds.Height / 2));
+						}
+					}
+				}
+			}
+			private void ViewGotFocus(object sender, EventArgs e)
+			{
+				DiagramClientView view;
+				Diagram diagram;
+				DiagramDisplayHasDiagramOrder link;
+				if (null != (view = sender as DiagramClientView) &&
+					null != (diagram = view.Diagram) &&
+					null != (link = DiagramDisplayHasDiagramOrder.GetLinkToDiagramDisplay(diagram)))
+				{
+					if (myTurnOffResizeEventInFocusEvent)
+					{
+						// Use the cached until the view has been focused once, then
+						// the view gets control of the settings
+						myTurnOffResizeEventInFocusEvent = false;
+						view.Resize -= new EventHandler(InitialViewResize);
+					}
+					link.UpdatePosition(view.ViewBounds.Center, view.ZoomFactor);
+					link.Activate();
+					view.ScrollPositionChanged += new ScrollPositionChangedEventHandler(ViewDisplayChanged);
+					view.ZoomChanged += new ZoomChangedEventHandler(ViewDisplayChanged);
+					view.Resize += new EventHandler(ViewSizeChanged);
+					view.LostFocus += new EventHandler(ViewLostFocus);
+				}
+			}
+			private static void ViewLostFocus(object sender, EventArgs e)
+			{
+				DiagramClientView view;
+				if (null != (view = sender as DiagramClientView))
+				{
+					view.LostFocus -= new EventHandler(ViewLostFocus);
+					view.ScrollPositionChanged -= new ScrollPositionChangedEventHandler(ViewDisplayChanged);
+					view.ZoomChanged -= new ZoomChangedEventHandler(ViewDisplayChanged);
+					view.Resize -= new EventHandler(ViewSizeChanged);
+				}
+			}
+			private static void ViewDisplayChanged(object sender, DiagramEventArgs e)
+			{
+				DiagramClientView view = e.DiagramClientView;
+				Diagram diagram;
+				DiagramDisplayHasDiagramOrder link;
+				if (null != (diagram = view.Diagram) &&
+					null != (link = DiagramDisplayHasDiagramOrder.GetLinkToDiagramDisplay(diagram)))
+				{
+					link.UpdatePosition(view.ViewBounds.Center, view.ZoomFactor);
+				}
+			}
+			private static void ViewSizeChanged(object sender, EventArgs e)
+			{
+				DiagramClientView view;
+				Diagram diagram;
+				DiagramDisplayHasDiagramOrder link;
+				if (null != (view = sender as DiagramClientView) &&
+					null != (diagram = view.Diagram) &&
+					null != (link = DiagramDisplayHasDiagramOrder.GetLinkToDiagramDisplay(diagram)))
+				{
+					link.UpdatePosition(view.ViewBounds.Center, view.ZoomFactor);
+				}
+			}
 			private void DiagramNameChanged(object sender, ElementPropertyChangedEventArgs e)
 			{
 				string newName = ((Diagram)e.ModelElement).Name;
@@ -100,7 +283,6 @@ namespace Neumont.Tools.Modeling.Shell
 				}
 			}
 			#endregion // Event handlers
-
 			#region Dispose method
 			protected sealed override void Dispose(bool disposing)
 			{
@@ -129,7 +311,6 @@ namespace Neumont.Tools.Modeling.Shell
 				base.Dispose(disposing);
 			}
 			#endregion // Dispose method
-
 			#region OnGotFocus method
 			protected sealed override void OnGotFocus(EventArgs e)
 			{
@@ -140,7 +321,6 @@ namespace Neumont.Tools.Modeling.Shell
 				}
 			}
 			#endregion // OnGotFocus method
-
 			#region ResetText method
 			public sealed override void ResetText()
 			{
@@ -155,7 +335,6 @@ namespace Neumont.Tools.Modeling.Shell
 				}
 			}
 			#endregion
-
 			#region Text property
 			public sealed override string Text
 			{
@@ -187,7 +366,6 @@ namespace Neumont.Tools.Modeling.Shell
 				}
 			}
 			#endregion // Text property
-
 			#region Font property
 			// This is not currently used by TabControl (it just uses its own), but just in case that changes in the future...
 			public sealed override Font Font
@@ -202,7 +380,6 @@ namespace Neumont.Tools.Modeling.Shell
 				}
 			}
 			#endregion // Font property
-
 			#region DefaultMargin property
 			protected sealed override Padding DefaultMargin
 			{

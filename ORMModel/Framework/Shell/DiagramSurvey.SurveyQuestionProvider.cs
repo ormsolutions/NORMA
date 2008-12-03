@@ -3,7 +3,7 @@ using System.Windows.Forms;
 using System.Collections.Generic;
 using Microsoft.VisualStudio.Modeling;
 using Neumont.Tools.Modeling.Shell.DynamicSurveyTreeGrid;
-namespace Neumont.Tools.ORM.Shell
+namespace Neumont.Tools.Modeling.Shell
 {
 	partial class DiagramSurvey : ISurveyQuestionProvider
 	{

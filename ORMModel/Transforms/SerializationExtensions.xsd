@@ -501,6 +501,16 @@
 								<xs:documentation>Allow duplicate links of this type between the parent and referenced element. Use with caution: you should only specify one end of this. The other end should be marked as NotWritten.</xs:documentation>
 							</xs:annotation>
 						</xs:attribute>
+						<xs:attribute name="ForwardReferenceRolePlayerType" type="plx:simpleNameType" use="optional">
+							<xs:annotation>
+								<xs:documentation>(optional) For a relationship with an opposite role player that is a base type and may be stored as a top level element, the standard behavior of creating a forward reference as an arbitrary derived type that satisfies the role player type. With top-level elements, creating these dummy elements during load can effect the final order of the loaded collection, which results in radical changes in the resaved file.</xs:documentation>
+							</xs:annotation>
+						</xs:attribute>
+						<xs:attribute name="ForwardReferenceRolePlayerTypeQualifier" type="plx:qualifierNameType" use="optional">
+							<xs:annotation>
+								<xs:documentation>(optional) The type qualifier for the forward reference role player type.</xs:documentation>
+							</xs:annotation>
+						</xs:attribute>
 					</xs:complexType>
 				</xs:element>
 				<xs:element name="StandaloneLink">

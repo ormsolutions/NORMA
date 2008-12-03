@@ -1220,7 +1220,7 @@ namespace Neumont.Tools.ORM.ShapeModel
 			/// Create a new ReadingShapeFixupListener
 			/// </summary>
 			public ReadingShapeFixupListener()
-				: base((int)ORMDeserializationFixupPhase.ModifyStoredPresentationElements)
+				: base((int)ORMDeserializationFixupPhase.ValidateStoredPresentationElements)
 			{
 			}
 			/// <summary>

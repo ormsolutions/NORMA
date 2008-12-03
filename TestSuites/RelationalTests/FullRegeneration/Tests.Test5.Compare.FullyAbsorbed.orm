@@ -1,4 +1,5 @@
-﻿<ormRoot:ORM2 xmlns:ddt="http://schemas.orm.net/DIL/DILDT" xmlns:odt="http://schemas.neumont.edu/ORM/Abstraction/2007-06/DataTypes/Core" xmlns:oial="http://schemas.neumont.edu/ORM/Abstraction/2007-06/Core" xmlns:oialtocdb="http://schemas.neumont.edu/ORM/Bridge/2007-06/ORMAbstractionToConceptualDatabase" xmlns:orm="http://schemas.neumont.edu/ORM/2006-04/ORMCore" xmlns:ormDiagram="http://schemas.neumont.edu/ORM/2006-04/ORMDiagram" xmlns:ormRoot="http://schemas.neumont.edu/ORM/2006-04/ORMRoot" xmlns:ormtooial="http://schemas.neumont.edu/ORM/Bridge/2007-06/ORMToORMAbstraction" xmlns:rcd="http://schemas.neumont.edu/ORM/Relational/2007-06/ConceptualDatabase">
+﻿<?xml version="1.0" encoding="utf-8"?>
+<ormRoot:ORM2 xmlns:ddt="http://schemas.orm.net/DIL/DILDT" xmlns:odt="http://schemas.neumont.edu/ORM/Abstraction/2007-06/DataTypes/Core" xmlns:oial="http://schemas.neumont.edu/ORM/Abstraction/2007-06/Core" xmlns:oialtocdb="http://schemas.neumont.edu/ORM/Bridge/2007-06/ORMAbstractionToConceptualDatabase" xmlns:orm="http://schemas.neumont.edu/ORM/2006-04/ORMCore" xmlns:ormDiagram="http://schemas.neumont.edu/ORM/2006-04/ORMDiagram" xmlns:ormRoot="http://schemas.neumont.edu/ORM/2006-04/ORMRoot" xmlns:ormtooial="http://schemas.neumont.edu/ORM/Bridge/2007-06/ORMToORMAbstraction" xmlns:rcd="http://schemas.neumont.edu/ORM/Relational/2007-06/ConceptualDatabase">
 	<orm:ORMModel Name="ORMModel1" id="_3AB1211A-4D44-4326-BB49-EADBBBB1B86B">
 		<orm:Objects>
 			<orm:EntityType Name="Person" _ReferenceMode="" id="_B952E37F-9306-4210-8931-804419B9170A">
@@ -903,7 +904,7 @@
 					<ormDiagram:ReadingShape AbsoluteBounds="4.67027244059369, 2.0925570689613622, 1.1934249401092529, 0.12950302660465241" IsExpanded="true" id="_B22ABBB2-53B2-4EA9-9FBA-027F1DF6E95C">
 						<ormDiagram:Subject ref="_C1209F3D-12A7-4F7F-913A-C9E04AFA5465" />
 					</ormDiagram:ReadingShape>
-					<ormDiagram:ObjectifiedFactTypeNameShape AbsoluteBounds="4.8056891072603571, 1.5380787934263547, 0.32013389468193054, 0.12950302660465241" IsExpanded="true" id="_0A5EE47B-92B8-477A-A4C8-114EB12FD212">
+					<ormDiagram:ObjectifiedFactTypeNameShape IsExpanded="true" id="_0A5EE47B-92B8-477A-A4C8-114EB12FD212" AbsoluteBounds="4.8056891072603571, 1.5380787934263547, 0.23971669375896454, 0.12950302660465241">
 						<ormDiagram:Subject ref="_7D2F9283-2563-45F3-B3AD-DA7FC799FA9E" />
 					</ormDiagram:ObjectifiedFactTypeNameShape>
 				</ormDiagram:RelativeShapes>
@@ -918,7 +919,7 @@
 					<ormDiagram:ReadingShape AbsoluteBounds="4.8544391072603572, 2.9381124184206868, 0.21868669986724854, 0.12950302660465241" IsExpanded="true" id="_11493A6E-1522-4D21-B519-C3682CBDFAA5">
 						<ormDiagram:Subject ref="_B2A61E65-0982-4ED3-A1BE-DE915F569E57" />
 					</ormDiagram:ReadingShape>
-					<ormDiagram:ObjectifiedFactTypeNameShape AbsoluteBounds="4.8544391072603572, 2.4432174762190129, 0.37534359097480774, 0.12950302660465241" IsExpanded="true" id="_B9E2ED1A-9AD9-4EF1-B2D3-BE28040C04DD">
+					<ormDiagram:ObjectifiedFactTypeNameShape IsExpanded="true" id="_B9E2ED1A-9AD9-4EF1-B2D3-BE28040C04DD" AbsoluteBounds="4.8544391072603572, 2.4432174762190129, 0.29492637515068054, 0.12950302660465241">
 						<ormDiagram:Subject ref="_03692516-326D-473C-955F-B876B9D5A255" />
 					</ormDiagram:ObjectifiedFactTypeNameShape>
 				</ormDiagram:RelativeShapes>
@@ -959,7 +960,7 @@
 					<ormDiagram:ReadingShape AbsoluteBounds="2.4791667461395264, 3.75578072496131, 0.38379356265068054, 0.12950302660465241" IsExpanded="true" id="_9AA83070-B68F-480A-A6A4-DA0BA7674013">
 						<ormDiagram:Subject ref="_AB55500E-2C9C-4F13-8A02-D5F8BA838FE5" />
 					</ormDiagram:ReadingShape>
-					<ormDiagram:ObjectifiedFactTypeNameShape AbsoluteBounds="2.4791667461395264, 3.1908857827596364, 0.68894219398498535, 0.12950302660465241" IsExpanded="true" id="_53BD9492-7D8A-453C-949A-3B38A4D8F4D2">
+					<ormDiagram:ObjectifiedFactTypeNameShape IsExpanded="true" id="_53BD9492-7D8A-453C-949A-3B38A4D8F4D2" AbsoluteBounds="2.4791667461395264, 3.1908857827596364, 0.60852497816085815, 0.12950302660465241">
 						<ormDiagram:Subject ref="_B282FDB1-4EF1-4ABF-B704-09E8CB9FFC5A" />
 					</ormDiagram:ObjectifiedFactTypeNameShape>
 				</ormDiagram:RelativeShapes>

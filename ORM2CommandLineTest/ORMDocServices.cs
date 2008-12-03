@@ -20,6 +20,7 @@ using System.Xml.Xsl;
 using Microsoft.XmlDiffPatch;
 using Neumont.Tools.Modeling.Shell.DynamicSurveyTreeGrid;
 using Neumont.Tools.Modeling.Diagrams;
+using Neumont.Tools.Modeling.Design;
 
 namespace Neumont.Tools.ORM.SDK.TestEngine
 {
@@ -33,10 +34,10 @@ namespace Neumont.Tools.ORM.SDK.TestEngine
 		{
 			return new ORMDocServices();
 		}
-		private class ORMDocServices : IORMToolServices, IORMFontAndColorService, IORMToolTestServices, IORMToolTestSuiteReportFactory, IORMPropertyProviderService, IServiceProvider
+		private class ORMDocServices : IORMToolServices, IFrameworkServices, IORMFontAndColorService, IORMToolTestServices, IORMToolTestSuiteReportFactory, IPropertyProviderService, IServiceProvider
 		{
 			#region IORMToolServices Implementation
-			IORMPropertyProviderService IORMToolServices.PropertyProviderService
+			IPropertyProviderService IFrameworkServices.PropertyProviderService
 			{
 				get
 				{
@@ -89,7 +90,7 @@ namespace Neumont.Tools.ORM.SDK.TestEngine
 			{
 				return null;
 			}
-			INotifySurveyElementChanged IORMToolServices.NotifySurveyElementChanged
+			INotifySurveyElementChanged IFrameworkServices.NotifySurveyElementChanged
 			{
 				get
 				{
@@ -138,12 +139,12 @@ namespace Neumont.Tools.ORM.SDK.TestEngine
 				return Color.White;
 			}
 			#endregion // IORMFontAndColorService Implementation
-			#region IORMPropertyProviderService Implementation
-			void IORMPropertyProviderService.GetProvidedProperties(IORMExtendableElement extendableElement, System.ComponentModel.PropertyDescriptorCollection properties)
+			#region IPropertyProviderService Implementation
+			void IPropertyProviderService.GetProvidedProperties(ModelElement extendableElement, System.ComponentModel.PropertyDescriptorCollection properties)
 			{
 				// We don't yet need to support this for testing.
 			}
-			void IORMPropertyProviderService.AddOrRemovePropertyProvider<TExtendableElement>(ORMPropertyProvisioning propertyProvisioning, bool includeSubtypes, EventHandlerAction action)
+			void IPropertyProviderService.AddOrRemovePropertyProvider<TExtendableElement>(PropertyProvider propertyProvider, bool includeSubtypes, EventHandlerAction action)
 			{
 				// We don't yet need to support this for testing.
 			}

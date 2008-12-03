@@ -148,10 +148,6 @@
 	<data name="DerivationStorageType.PartiallyDerived" xml:space="preserve">
 		<value>SemiDerived</value>
 	</data>
-	<data name="DiagramSurveyType.Diagram">
-		<value xml:space="preserve">Diagrams</value>
-		<comment xml:space="preserve">The text shown in the model browser as the header for the sorted diagram list</comment>
-	</data>
 	<data name="ExclusiveOrConstraint.ClassName" xml:space="preserve">
 		<value>ExclusiveOrConstraint</value>
 		<comment>Text used as the class name, displayed in the properties window.</comment>

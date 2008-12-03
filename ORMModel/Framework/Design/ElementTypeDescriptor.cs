@@ -238,6 +238,9 @@ namespace Neumont.Tools.Modeling.Design
 						}
 					}
 				}
+
+				// Add any extension properties
+				((IFrameworkServices)requestor.Store).PropertyProviderService.GetProvidedProperties(requestor, propertyDescriptors);
 			}
 			return propertyDescriptors;
 		}

@@ -215,7 +215,7 @@ namespace Neumont.Tools.ORM.ShapeModel
 			/// Create a new ModelNoteShapeFixupListener
 			/// </summary>
 			public ModelNoteShapeFixupListener()
-				: base((int)ORMDeserializationFixupPhase.ModifyStoredPresentationElements)
+				: base((int)ORMDeserializationFixupPhase.ValidateStoredPresentationElements)
 			{
 			}
 			/// <summary>

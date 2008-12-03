@@ -91,7 +91,7 @@ namespace Neumont.Tools.Modeling
 				Neumont.Tools.Modeling.Diagnostics.TraceUtility.TraceRuleEnd(e.ModelElement.Store, "Neumont.Tools.Modeling.FrameworkDomainModel.DelayValidateElements");
 			}
 		}
-		[Microsoft.VisualStudio.Modeling.RuleOn(typeof(FrameworkDomainModel), Priority=Neumont.Tools.Modeling.FrameworkDomainModel.InlineRulePriority)]
+		[Microsoft.VisualStudio.Modeling.RuleOn(typeof(FrameworkDomainModel))]
 		private sealed partial class TransactionRulesFixupHack : Microsoft.VisualStudio.Modeling.TransactionBeginningRule
 		{
 			/// <summary>

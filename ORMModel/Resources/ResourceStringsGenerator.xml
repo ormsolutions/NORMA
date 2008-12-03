@@ -472,6 +472,7 @@
 	<ResourceString name="ExtensionLoadFailureMessage" model="Diagram" resourceName="ExtensionLoadFailure.Message"/>
 	<ResourceString name="DiagramCommandNewPage" model="Diagram" resourceName="Diagram.Command.NewPage"/>
 	<ResourceString name="DiagramCommandRenamePage" model="Diagram" resourceName="Diagram.Command.RenamePage"/>
+	<ResourceString name="DiagramCommandReorderPages" model="Diagram" resourceName="Diagram.Command.ReorderPages"/>
 	<ResourceString name="DiagramCommandDeletePage" model="Diagram" resourceName="Diagram.Command.DeletePage"/>
 	<ResourceString name="SetConstraintStickyRoleFormatString" model="Diagram" resourceName="SetConstraintStickyRole.DisplayFormatString"/>
 	<ResourceString name="SetConstraintStickyRoleTooltipFormatString" model="Diagram" resourceName="SetConstraintStickyRole.DisplayTooltipFormatString"/>

@@ -97,7 +97,7 @@ namespace Neumont.Tools.ORM.ObjectModel
 		/// <summary>
 		/// Adds the properties from the extension <see cref="ModelElement"/>s of the
 		/// <see cref="IORMExtendableElement"/> specified by <paramref name="extendableElement"/>
-		/// to the <see cref="PropertyDescriptorCollection"/> sepcified by <paramref name="properties"/>.
+		/// to the <see cref="PropertyDescriptorCollection"/> specified by <paramref name="properties"/>.
 		/// </summary>
 		/// <param name="extendableElement">
 		/// The <see cref="IORMExtendableElement"/> from which the extension properties should be retrieved.
@@ -115,7 +115,6 @@ namespace Neumont.Tools.ORM.ObjectModel
 			{
 				throw new ArgumentNullException("properties");
 			}
-			extendableElement.ORMToolServices.PropertyProviderService.GetProvidedProperties(extendableElement, properties);
 			foreach (ModelElement extension in extendableElement.ExtensionCollection)
 			{
 				IORMPropertyExtension customPropertyExtension = extension as IORMPropertyExtension;

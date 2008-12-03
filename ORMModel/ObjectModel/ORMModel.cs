@@ -37,40 +37,40 @@ namespace Neumont.Tools.ORM.ObjectModel
 		/// are not serialized but are always present in the model. For example,
 		/// intrinsic data types or intrinsic reference modes.
 		/// </summary>
-		AddIntrinsicElements = 100,
+		AddIntrinsicElements = StandardFixupPhase.AddIntrinsicElements,
 		/// <summary>
-		/// Verify that any implied elements that are serialized with the model
+		/// Verify any implied elements that are serialized with the model
 		/// but must follow a proscribed pattern based on another serialized element.
 		/// This stage may both add and remove elements.
 		/// </summary>
-		ValidateImplicitStoredElements = 200,
+		ValidateImplicitStoredElements = StandardFixupPhase.ValidateImplicitStoredElements,
 		/// <summary>
 		/// Add implicit elements at this stage. An implicit element is
 		/// not serialized and is generally created by a rule once the model
 		/// is loaded.
 		/// </summary>
-		AddImplicitElements = 300,
+		AddImplicitElements = StandardFixupPhase.AddImplicitElements,
 		/// <summary>
 		/// Element names should be tracked and validated after
 		/// all intrinsic, implicitstored, and implicit elements are in place.
 		/// </summary>
-		ValidateElementNames = 400,
+		ValidateElementNames = StandardFixupPhase.LastModelElementPhase + 100,
 		/// <summary>
 		/// Model errors are stored with the model, but are vulnerable
 		/// to the Notepad effect, which can cause errors to be added
 		/// or removed from the model. Validate errors after all other
 		/// explicit, intrinsic, and implicit elements are in place.
 		/// </summary>
-		ValidateErrors = 500,
+		ValidateErrors = StandardFixupPhase.LastModelElementPhase + 200,
 		/// <summary>
 		/// Fixup stored presentation elements
 		/// </summary>
-		ModifyStoredPresentationElements = 600,
+		ValidateStoredPresentationElements = StandardFixupPhase.ValidateStoredPresentationElements,
 		/// <summary>
 		/// Add any presentation elements that are implicit and not
 		/// serialized with the model.
 		/// </summary>
-		AddImplicitPresentationElements = 700,
+		AddImplicitPresentationElements = StandardFixupPhase.AddImplicitPresentationElements,
 	}
 	#endregion // ORMDeserializationFixupPhase enum
 	public partial class ORMModel : IVerbalizeCustomChildren, IVerbalizeFilterChildrenByRole

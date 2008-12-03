@@ -35,7 +35,8 @@ namespace Neumont.Tools.ORM.CustomProperties
 		{
 			get
 			{
-				return typeof(ORMDeserializationFixupPhase);
+				// Uses the same fixup phase as the dependent core ORM domain model
+				return null;
 			}
 		}
 		#endregion // IDeserializationFixupListenerProvider Implementation

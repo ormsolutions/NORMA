@@ -3,6 +3,7 @@
 * Neumont Object-Role Modeling Architect for Visual Studio                 *
 *                                                                          *
 * Copyright © Neumont University. All rights reserved.                     *
+* Copyright © Matthew Curland. All rights reserved.                        *
 *                                                                          *
 * The use and distribution terms for this software are covered by the      *
 * Common Public License 1.0 (http://opensource.org/licenses/cpl) which     *
@@ -218,7 +219,7 @@ namespace Neumont.Tools.Modeling.Shell.DynamicSurveyTreeGrid
 						}
 						if (retVal == 0)
 						{
-							retVal = unchecked(element1.GetHashCode() - element1.GetHashCode());
+							retVal = unchecked(element1.GetHashCode() - element2.GetHashCode());
 							if (retVal == 0)
 							{
 								// A little overkill, but the whole system breaks down if we

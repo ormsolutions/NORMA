@@ -24,13 +24,11 @@ using Microsoft.VisualStudio.Modeling.Diagrams;
 using Neumont.Tools.Modeling;
 using Neumont.Tools.Modeling.Design;
 using Neumont.Tools.Modeling.Shell.DynamicSurveyTreeGrid;
-using Neumont.Tools.ORM.ObjectModel;
 using System.ComponentModel;
 using System.Windows.Forms;
 using System.Drawing;
-using Neumont.Tools.Modeling.Shell;
 
-namespace Neumont.Tools.ORM.Shell
+namespace Neumont.Tools.Modeling.Shell
 {
 	#region DiagramSurvey class
 	/// <summary>
@@ -62,7 +60,7 @@ namespace Neumont.Tools.ORM.Shell
 		/// <summary>
 		/// Enum representing the possible survey question answers
 		/// </summary>
-		[TypeConverter(typeof(EnumConverter<DiagramSurveyType, ORMModel>))]
+		[TypeConverter(typeof(EnumConverter<DiagramSurveyType, IFrameworkServices>))]
 		private enum DiagramSurveyType
 		{
 			/// <summary>
@@ -221,7 +219,7 @@ namespace Neumont.Tools.ORM.Shell
 			Store store;
 			if (!element.IsDeleted &&
 				(store = element.Store).DefaultPartition == element.Partition &&
-				null != (eventNotify = (store as IORMToolServices).NotifySurveyElementChanged))
+				null != (eventNotify = (store as IFrameworkServices).NotifySurveyElementChanged))
 			{
 				Diagram diagram = (Diagram)element;
 				DiagramNode node = new DiagramNode(diagram);
@@ -239,7 +237,7 @@ namespace Neumont.Tools.ORM.Shell
 			Store store;
 			if (null != (nodeMap = myDiagramToNodeMap) &&
 				(store = element.Store).DefaultPartition == element.Partition &&
-				null != (eventNotify = (store as IORMToolServices).NotifySurveyElementChanged) &&
+				null != (eventNotify = (store as IFrameworkServices).NotifySurveyElementChanged) &&
 				nodeMap.TryGetValue(diagram = (Diagram)element, out node))
 			{
 				nodeMap.Remove(diagram);
@@ -256,7 +254,7 @@ namespace Neumont.Tools.ORM.Shell
 			if (!element.IsDeleted &&
 				null != (nodeMap = myDiagramToNodeMap) &&
 				(store = element.Store).DefaultPartition == element.Partition &&
-				null != (eventNotify = (store as IORMToolServices).NotifySurveyElementChanged) &&
+				null != (eventNotify = (store as IFrameworkServices).NotifySurveyElementChanged) &&
 				nodeMap.TryGetValue((Diagram)element, out node))
 			{
 				eventNotify.ElementRenamed(node);

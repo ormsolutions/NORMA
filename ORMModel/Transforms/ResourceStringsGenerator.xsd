@@ -94,6 +94,16 @@
 					</xs:complexType>
 				</xs:element>
 			</xs:sequence>
+			<xs:attribute name="UseProjectNamespace" type="xs:boolean" default="true">
+				<xs:annotation>
+					<xs:documentation>(Default=true) Generate the ResourceStrings class in the project namespace. The CustomToolNamespace is used if this is false.</xs:documentation>
+				</xs:annotation>
+			</xs:attribute>
+			<xs:attribute name="ClassName" type="xs:string" default="ResourceStrings">
+				<xs:annotation>
+					<xs:documentation>(Default=ResourceStrings) The name of the class to generate.</xs:documentation>
+				</xs:annotation>
+			</xs:attribute>
 		</xs:complexType>
 	</xs:element>
 	<xs:simpleType name="modelType">

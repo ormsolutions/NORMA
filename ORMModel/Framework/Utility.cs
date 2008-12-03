@@ -18,9 +18,12 @@
 using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
-using Microsoft.VisualStudio.Modeling;
 using System.ComponentModel;
 using System.Reflection;
+using System.Windows.Forms;
+using Microsoft.VisualStudio;
+using Microsoft.VisualStudio.Modeling;
+using Microsoft.VisualStudio.Shell.Interop;
 
 namespace Neumont.Tools.Modeling
 {
@@ -411,5 +414,35 @@ namespace Neumont.Tools.Modeling
 			return false;
 		}
 		#endregion // IsCriticalException methods
+		#region GetOwnerWindow method
+		/// <summary>
+		/// Get an appropriate dialog owner window for the specified <see cref="IServiceProvider"/>
+		/// </summary>
+		public static IWin32Window GetDialogOwnerWindow(IServiceProvider serviceProvider)
+		{
+			return new DialogOwnerWindow(serviceProvider);
+		}
+		private sealed class DialogOwnerWindow : IWin32Window
+		{
+			private readonly IntPtr myHandle;
+			[System.Runtime.InteropServices.DllImport("user32.dll", CharSet = System.Runtime.InteropServices.CharSet.Auto, ExactSpelling = true)]
+			private static extern IntPtr GetDesktopWindow();
+			public DialogOwnerWindow(IServiceProvider serviceProvider)
+			{
+				IVsUIShell shell = (IVsUIShell)serviceProvider.GetService(typeof(IVsUIShell));
+				if (shell == null || ErrorHandler.Failed(shell.GetDialogOwnerHwnd(out myHandle)) || myHandle == IntPtr.Zero)
+				{
+					myHandle = GetDesktopWindow();
+				}
+			}
+			public IntPtr Handle
+			{
+				get
+				{
+					return myHandle;
+				}
+			}
+		}
+		#endregion // GetOwnerWindow method
 	}
 }

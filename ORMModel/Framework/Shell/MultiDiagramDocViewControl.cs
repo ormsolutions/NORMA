@@ -3,6 +3,7 @@
 * Neumont Object-Role Modeling Architect for Visual Studio                 *
 *                                                                          *
 * Copyright © Neumont University. All rights reserved.                     *
+* Copyright © Matthew Curland. All rights reserved.                        *
 *                                                                          *
 * The use and distribution terms for this software are covered by the      *
 * Common Public License 1.0 (http://opensource.org/licenses/cpl) which     *
@@ -301,20 +302,44 @@ namespace Neumont.Tools.Modeling.Shell
 			}
 			#endregion // OnGotFocus method
 			#region WndProc method
-			public DiagramView DesignerForContextMenu;
+			private DiagramView myDesignerForContextMenu;
+			private bool myTrustDesignerForContextMenu;
+			/// <summary>
+			/// Get the designer for the tab that was clicked on for this context menu.
+			/// The designer needs to be established based on the initial click point, not
+			/// where the system decides to show the context menu, so we need to acquire
+			/// the designer with the initial message.
+			/// </summary>
+			public DiagramView AcquireContextMenuDesigner
+			{
+				get
+				{
+					DiagramView retVal = myDesignerForContextMenu;
+					bool trustDesigner = myTrustDesignerForContextMenu;
+					myDesignerForContextMenu = null;
+					myTrustDesignerForContextMenu = false;
+					return trustDesigner ? retVal : null;
+				}
+			}
 			protected sealed override void WndProc(ref Message m)
 			{
 				const int WM_CONTEXTMENU = 0x007B;
 
-				if (m.Msg == WM_CONTEXTMENU)
+				bool contextMenuMessage;
+				if (contextMenuMessage = (m.Msg == WM_CONTEXTMENU))
 				{
 					uint lParam = (uint)m.LParam;
 					int x = (int)(lParam & 0xFFFF);
 					int y = (int)((lParam >> 16) & 0xFFFF);
 					DiagramTabPage diagramTabPage = (x == -1 && y == -1) ? SelectedDiagramTab : GetTabAtPoint(base.PointToClient(new Point(x, y)));
-					DesignerForContextMenu = (diagramTabPage != null) ? diagramTabPage.Designer : null;
+					myTrustDesignerForContextMenu = true;
+					myDesignerForContextMenu = (diagramTabPage != null) ? diagramTabPage.Designer : null;
 				}
 				base.WndProc(ref m);
+				if (contextMenuMessage)
+				{
+					myTrustDesignerForContextMenu = false;
+				}
 			}
 			#endregion // WndProc method
 			#region OnMouseDoubleClick method
@@ -323,7 +348,16 @@ namespace Neumont.Tools.Modeling.Shell
 				Point point = e.Location;
 				if (e.Button == MouseButtons.Left && !DisplayRectangle.Contains(point))
 				{
-					RenameTab(GetTabAtPoint(point));
+					DiagramTabPage tab;
+					Diagram diagram;
+					object[] attributes;
+					if (null != (tab = GetTabAtPoint(point)) &&
+						null != (diagram = tab.Diagram) &&
+						((null == (attributes = diagram.GetType().GetCustomAttributes(typeof(DiagramMenuDisplayAttribute), false)) || attributes.Length == 0) ||
+						0 == (((DiagramMenuDisplayAttribute)attributes[0]).DiagramOption & DiagramMenuDisplayOptions.BlockRename)))
+					{
+						RenameTab(tab);
+					}
 				}
 				base.OnMouseDoubleClick(e);
 			}
@@ -353,12 +387,19 @@ namespace Neumont.Tools.Modeling.Shell
 				}
 			}
 			#endregion // RenameTab method
-			#region RenameTabAtPoint method
-			public void RenameTabAtPoint(Point point)
+			#region RenameDiagram method
+			public void RenameDiagram(Diagram diagram)
 			{
-				RenameTab(GetTabAtPoint(base.PointToClient(point)));
+				foreach (DiagramTabPage tabPage in TabPages)
+				{
+					if (tabPage.Diagram == diagram)
+					{
+						RenameTab(tabPage);
+						break;
+					}
+				}
 			}
-			#endregion // RenameTabAtPoint method
+			#endregion // RenameDiagram method
 			#region OnSelectedIndexChanged method
 			protected sealed override void OnSelectedIndexChanged(EventArgs e)
 			{
@@ -459,13 +500,6 @@ namespace Neumont.Tools.Modeling.Shell
 				return null;
 			}
 			#endregion // GetTabAtPoint method
-			#region GetDesignerFromTabAtPoint method
-			public DiagramView GetDesignerFromTabAtPoint(Point point)
-			{
-				DiagramTabPage tabPage = GetTabAtPoint(base.PointToClient(point));
-				return (tabPage != null) ? tabPage.Designer : null;
-			}
-			#endregion // GetDesignerFromTabAtPoint method
 			#region OnPaint method
 			protected sealed override void OnPaint(PaintEventArgs e)
 			{
@@ -641,6 +675,56 @@ namespace Neumont.Tools.Modeling.Shell
 				}
 			}
 			#endregion // Inline rename support
+			#region Diagram Order Verification
+			/// <summary>
+			/// Verify that the tab pages are in the correct order
+			/// </summary>
+			public void VerifyDiagramOrder(IList<Diagram> diagrams)
+			{
+				TabControl.TabPageCollection pages = TabPages;
+				int pageCount = pages.Count;
+				int diagramCount = diagrams.Count;
+				for (int i = 0; i < pageCount; ++i)
+				{
+					DiagramTabPage tabPage = (DiagramTabPage)pages[i];
+					if (i < diagramCount && tabPage.Diagram == diagrams[i])
+					{
+						continue;
+					}
+
+					SuspendLayout();
+					// We're out of sync, pull remaining tabs and readd in diagram order
+					DiagramTabPage reselectPage = SelectedDiagramTab;
+					Dictionary<Diagram, DiagramTabPage> keyedPages = new Dictionary<Diagram, DiagramTabPage>(pageCount - i + 1);
+					for (int j = pageCount - 1; j >= i; --j)
+					{
+						tabPage = (DiagramTabPage)pages[j];
+						keyedPages.Add(tabPage.Diagram, tabPage);
+						tabPage.Parent = null;
+					}
+					
+					// Add the diagram pages back in order
+					for (int j = i; j < diagramCount; ++j)
+					{
+						Diagram diagram = diagrams[j];
+						if (keyedPages.TryGetValue(diagram, out tabPage))
+						{
+							pages.Add(tabPage);
+							keyedPages.Remove(diagram);
+						}
+					}
+					
+					// Dispose any remaining pages
+					foreach (DiagramTabPage unboundPage in keyedPages.Values)
+					{
+						unboundPage.Dispose();
+					}
+					SelectedTab = reselectPage;
+					ResumeLayout(false);
+					break;
+				}
+			}
+			#endregion // Diagram Order Verification
 		}
 	}
 }

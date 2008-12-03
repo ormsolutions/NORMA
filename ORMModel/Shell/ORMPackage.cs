@@ -812,27 +812,38 @@ namespace Neumont.Tools.ORM.Shell
 						valueObject = hkeyExtension.GetValue("AutoLoadNamespace");
 						isAutoLoad = valueObject != null && ((int)valueObject) == 1;
 
-						AssemblyName extensionAssemblyName;
-						string extensionAssemblyNameString = hkeyExtension.GetValue("Assembly") as string;
-						if (!string.IsNullOrEmpty(extensionAssemblyNameString))
+						string assemblyValue = hkeyExtension.GetValue("Assembly") as string;
+						string codeBaseValue = hkeyExtension.GetValue("CodeBase") as string;
+						if (string.IsNullOrEmpty(assemblyValue) && string.IsNullOrEmpty(codeBaseValue))
 						{
-							extensionAssemblyName = new AssemblyName(extensionAssemblyNameString);
+							// Extension is registered in this assembly
+							return typeof(ORMDesignerPackage).Assembly.GetType(extensionTypeString, true, false);
 						}
 						else
 						{
-							extensionAssemblyName = new AssemblyName();
-						}
-						extensionAssemblyName.CodeBase = hkeyExtension.GetValue("CodeBase") as string;
 
-						Assembly extensionAssembly = Assembly.Load(extensionAssemblyName);
-						Type extensionType = extensionAssembly.GetType(extensionTypeString, true, false);
+							AssemblyName extensionAssemblyName;
+							string extensionAssemblyNameString = hkeyExtension.GetValue("Assembly") as string;
+							if (!string.IsNullOrEmpty(extensionAssemblyNameString))
+							{
+								extensionAssemblyName = new AssemblyName(extensionAssemblyNameString);
+							}
+							else
+							{
+								extensionAssemblyName = new AssemblyName();
+							}
+							extensionAssemblyName.CodeBase = hkeyExtension.GetValue("CodeBase") as string;
 
-						if (extensionType.IsSubclassOf(typeof(DomainModel)))
-						{
-							// SECURITY: APTCA: See the comment near our AssemblyResolve handler for information regarding
-							// changes that would be needed here in order to securely support partially-trusted callers.
-							ORMDesignerPackage.KnownAssemblies[extensionAssembly.FullName] = extensionAssembly;
-							return extensionType;
+							Assembly extensionAssembly = Assembly.Load(extensionAssemblyName);
+							Type extensionType = extensionAssembly.GetType(extensionTypeString, true, false);
+
+							if (extensionType.IsSubclassOf(typeof(DomainModel)))
+							{
+								// SECURITY: APTCA: See the comment near our AssemblyResolve handler for information regarding
+								// changes that would be needed here in order to securely support partially-trusted callers.
+								ORMDesignerPackage.KnownAssemblies[extensionAssembly.FullName] = extensionAssembly;
+								return extensionType;
+							}
 						}
 					}
 					catch (Exception ex)
@@ -876,9 +887,12 @@ namespace Neumont.Tools.ORM.Shell
 		/// <summary>
 		/// Get the standard models that are always loaded with the tool
 		/// </summary>
-		public static ICollection<Type> GetStandardDomainModels()
+		public static ICollection<Type> StandardDomainModels
 		{
-			return GetStandardDomainModelsMap().Values;
+			get
+			{
+				return GetStandardDomainModelsMap().Values;
+			}
 		}
 		/// <summary>
 		/// Get a dictionary containing all standard domain models
@@ -900,7 +914,7 @@ namespace Neumont.Tools.ORM.Shell
 					retVal.Add(ORMShapeDomainModel.DomainModelId, typeof(ORMShapeDomainModel));
 					// UNDONE: Temporary until the report validation is moved into a separate dll. See https://projects.neumont.edu/orm2/ticket/315
 					retVal.Add(ObjectModel.Verbalization.HtmlReport.DomainModelId, typeof(ObjectModel.Verbalization.HtmlReport));
-					retVal.Add(DiagramSurvey.DomainModelId, typeof(DiagramSurvey));
+					retVal.Add(Neumont.Tools.Modeling.Shell.DiagramSurvey.DomainModelId, typeof(Neumont.Tools.Modeling.Shell.DiagramSurvey));
 					package.myStandardDomainModelsMap = retVal;
 				}
 			}

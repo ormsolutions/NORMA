@@ -604,7 +604,7 @@
 																		<plx:nameRef name="elementLinkDomainId"/>
 																	</plx:left>
 																	<plx:right>
-																		<plx:callStatic name="DomainClassId" dataTypeName="{@CreateAsRelationshipName}" type="property"/>
+																		<plx:callStatic name="DomainClassId" dataTypeName="{@CreateAsRelationshipName}" type="field"/>
 																	</plx:right>
 																</plx:binaryOperator>
 															</plx:condition>
@@ -624,7 +624,7 @@
 																						<plx:nameRef name="elementLinkDomainId"/>
 																					</plx:left>
 																					<plx:right>
-																						<plx:callStatic name="DomainClassId" dataTypeName="{@CreateAsRelationshipName}" type="property"/>
+																						<plx:callStatic name="DomainClassId" dataTypeName="{@CreateAsRelationshipName}" type="field"/>
 																					</plx:right>
 																				</plx:binaryOperator>
 																			</plx:condition>
@@ -1135,12 +1135,23 @@
 						NOT contained in $linksInContainerElement -->
 						<xsl:when test="not(@contained)">
 							<xsl:variable name="createAsRelationshipName" select="normalize-space(@CreateAsRelationshipName)"/>
+							<xsl:variable name="explicitForwardReferenceType" select="string(@ForwardReferenceRolePlayerType)"/>
 							<plx:callInstance name="InitializeRoles">
-								<xsl:if test="$createAsRelationshipName">
-									<xsl:attribute name="name">
-										<xsl:text>InitializeRolesWithExplicitRelationship</xsl:text>
-									</xsl:attribute>
-								</xsl:if>
+								<xsl:choose>
+									<xsl:when test="$createAsRelationshipName">
+										<xsl:if test="$explicitForwardReferenceType">
+											<xsl:message terminate="yes">CreateAsRelationshipName and ForwardReferenceRolePlayerType not supported simultaneously</xsl:message>
+										</xsl:if>
+										<xsl:attribute name="name">
+											<xsl:text>InitializeRolesWithExplicitRelationship</xsl:text>
+										</xsl:attribute>
+									</xsl:when>
+									<xsl:when test="$explicitForwardReferenceType">
+										<xsl:attribute name="name">
+											<xsl:text>InitializeRolesWithExplicitForwardReference</xsl:text>
+										</xsl:attribute>
+									</xsl:when>
+								</xsl:choose>
 								<plx:callObject>
 									<plx:nameRef name="match"/>
 								</plx:callObject>
@@ -1151,7 +1162,18 @@
 								</xsl:if>
 								<xsl:if test="$createAsRelationshipName">
 									<plx:passParam>
-										<plx:callStatic name="DomainClassId" dataTypeName="{$createAsRelationshipName}" type="property"/>
+										<plx:callStatic name="DomainClassId" dataTypeName="{$createAsRelationshipName}" type="field"/>
+									</plx:passParam>
+								</xsl:if>
+								<xsl:if test="$explicitForwardReferenceType">
+									<plx:passParam>
+										<plx:callStatic name="DomainClassId" dataTypeName="{$explicitForwardReferenceType}" type="field">
+											<xsl:if test="string(@ForwardReferenceRolePlayerTypeQualifier)">
+												<xsl:attribute name="dataTypeQualifier">
+													<xsl:value-of select="@ForwardReferenceRolePlayerTypeQualifier"/>
+												</xsl:attribute>
+											</xsl:if>
+										</plx:callStatic>
 									</plx:passParam>
 								</xsl:if>
 								<plx:passParam>
@@ -1277,6 +1299,7 @@
 						<xsl:variable name="containerNamespace" select="string($containerNamespaceFragment)"/>
 						<xsl:for-each select="$localLinks">
 							<xsl:variable name="createAsRelationshipName" select="normalize-space(@CreateAsRelationshipName)"/>
+							<xsl:variable name="explicitForwardReferenceType" select="string(@ForwardReferenceRolePlayerType)"/>
 							<xsl:variable name="elementNamespaceFragment">
 								<xsl:call-template name="ResolveNamespace">
 									<xsl:with-param name="namespaces" select="$namespaces"/>
@@ -1285,11 +1308,21 @@
 							</xsl:variable>
 							<xsl:variable name="elementNamespace" select="string($elementNamespaceFragment)"/>
 							<plx:callInstance name="InitializeRoles">
-								<xsl:if test="$createAsRelationshipName">
-									<xsl:attribute name="name">
-										<xsl:text>InitializeRolesWithExplicitRelationship</xsl:text>
-									</xsl:attribute>
-								</xsl:if>
+								<xsl:choose>
+									<xsl:when test="$createAsRelationshipName">
+										<xsl:if test="$explicitForwardReferenceType">
+											<xsl:message terminate="yes">CreateAsRelationshipName and ForwardReferenceRolePlayerType not supported simultaneously</xsl:message>
+										</xsl:if>
+										<xsl:attribute name="name">
+											<xsl:text>InitializeRolesWithExplicitRelationship</xsl:text>
+										</xsl:attribute>
+									</xsl:when>
+									<xsl:when test="$explicitForwardReferenceType">
+										<xsl:attribute name="name">
+											<xsl:text>InitializeRolesWithExplicitForwardReference</xsl:text>
+										</xsl:attribute>
+									</xsl:when>
+								</xsl:choose>
 								<plx:callObject>
 									<plx:nameRef name="match"/>
 								</plx:callObject>
@@ -1300,7 +1333,7 @@
 								</xsl:if>
 								<xsl:if test="$createAsRelationshipName">
 									<plx:passParam>
-										<plx:callStatic name="DomainClassId" dataTypeName="{$createAsRelationshipName}" type="property"/>
+										<plx:callStatic name="DomainClassId" dataTypeName="{$createAsRelationshipName}" type="field"/>
 									</plx:passParam>
 								</xsl:if>
 								<xsl:if test="self::se:StandaloneLink">
@@ -1309,6 +1342,17 @@
 											<xsl:with-param name="namespaces" select="$namespaces"/>
 											<xsl:with-param name="defaultNamespace" select="$defaultNamespace"/>
 										</xsl:call-template>
+									</plx:passParam>
+								</xsl:if>
+								<xsl:if test="$explicitForwardReferenceType">
+									<plx:passParam>
+										<plx:callStatic name="DomainClassId" dataTypeName="{$explicitForwardReferenceType}" type="field">
+											<xsl:if test="string(@ForwardReferenceRolePlayerTypeQualifier)">
+												<xsl:attribute name="dataTypeQualifier">
+													<xsl:value-of select="@ForwardReferenceRolePlayerTypeQualifier"/>
+												</xsl:attribute>
+											</xsl:if>
+										</plx:callStatic>
 									</plx:passParam>
 								</xsl:if>
 								<plx:passParam>
@@ -1379,7 +1423,7 @@
 								<xsl:if test="$createAsRelationshipName">
 									<explicitCreateMarker>
 										<plx:passParam>
-											<plx:callStatic name="DomainClassId" dataTypeName="{$createAsRelationshipName}" type="property"/>
+											<plx:callStatic name="DomainClassId" dataTypeName="{$createAsRelationshipName}" type="field"/>
 										</plx:passParam>
 									</explicitCreateMarker>
 								</xsl:if>
@@ -1393,6 +1437,8 @@
 					<xsl:if test="$embeds">
 						<xsl:variable name="explicitCreateParam" select="$embeds/self::explicitCreateMarker/plx:passParam"/>
 						<xsl:choose>
+							<!-- Note that InitializeRolesWithExplicitForwardReference is used only link elements, not with embeddings
+							because there is no ambiguity with respect to the type of the opposite role player with an embedding. -->
 							<xsl:when test="$explicitCreateParam">
 								<plx:callInstance name="InitializeRolesWithExplicitRelationship">
 									<plx:callObject>
@@ -1725,7 +1771,7 @@
 					</xsl:choose>
 				</plx:function>
 			</xsl:if>
-			<xsl:variable name="attributes" select="se:Attribute[@WriteStyle='Attribute' or not(@WriteStyle)]"/>
+			<xsl:variable name="attributes" select="se:Attribute[@WriteStyle='Attribute' or not(@WriteStyle) or se:Condition[@WriteStyle='Attribute' or not(@WriteStyle)]]"/>
 			<xsl:if test="$attributes">
 				<plx:field name="myCustomSerializedAttributes" dataTypeName="Dictionary" visibility="private" static="true">
 					<plx:passTypeParam dataTypeName=".string"/>
@@ -1787,35 +1833,78 @@
 									</plx:right>
 								</plx:assign>
 								<xsl:for-each select="$attributes">
-									<plx:callInstance name="Add">
-										<plx:callObject>
-											<plx:nameRef name="customSerializedAttributes"/>
-										</plx:callObject>
-										<plx:passParam>
-											<plx:string>
-												<xsl:if test="string-length(@Prefix)">
-													<!-- For attributes, the lack of a prefix means unqualified. Only concatenate if a namespace is explicitly specified -->
-													<plx:string>
-														<xsl:call-template name="ResolveNamespace">
-															<xsl:with-param name="namespaces" select="$namespaces"/>
-															<!-- Use default for prefix parameter -->
-														</xsl:call-template>
-													</plx:string>
-													<plx:string data="|"/>
-												</xsl:if>
-												<plx:string data="{@ID}">
-													<xsl:if test="string-length(@Name)">
-														<xsl:attribute name="data">
-															<xsl:value-of select="@Name"/>
-														</xsl:attribute>
+									<!-- We need to pick up names for both the main element and any child elements with different names -->
+									<xsl:variable name="writeSelf" select="@WriteStyle='Attribute' or not(@WriteStyle) or se:Condition[not(string(@Name)) and not(string(@Prefix))][@WriteStyle='Attribute' or not(@WriteStyle)]"/>
+									<xsl:variable name="selfName" select="string(@Name)"/>
+									<xsl:variable name="selfPrefix" select="string(@Prefix)"/>
+									<xsl:variable name="selfID" select="string(@ID)"/>
+									<xsl:if test="$writeSelf">
+										<plx:callInstance name="Add">
+											<plx:callObject>
+												<plx:nameRef name="customSerializedAttributes"/>
+											</plx:callObject>
+											<plx:passParam>
+												<plx:string>
+													<xsl:if test="$selfPrefix">
+														<!-- For attributes, the lack of a prefix means unqualified. Only concatenate if a namespace is explicitly specified -->
+														<plx:string>
+															<xsl:call-template name="ResolveNamespace">
+																<xsl:with-param name="namespaces" select="$namespaces"/>
+																<!-- Use default for prefix parameter -->
+															</xsl:call-template>
+														</plx:string>
+														<plx:string data="|"/>
 													</xsl:if>
+													<plx:string data="{$selfID}">
+														<xsl:if test="$selfName">
+															<xsl:attribute name="data">
+																<xsl:value-of select="$selfName"/>
+															</xsl:attribute>
+														</xsl:if>
+													</plx:string>
 												</plx:string>
-											</plx:string>
-										</plx:passParam>
-										<plx:passParam>
-											<plx:callStatic name="{@ID}DomainPropertyId" dataTypeName="{$ClassName}" type="field"/>
-										</plx:passParam>
-									</plx:callInstance>
+											</plx:passParam>
+											<plx:passParam>
+												<plx:callStatic name="{$selfID}DomainPropertyId" dataTypeName="{$ClassName}" type="field"/>
+											</plx:passParam>
+										</plx:callInstance>
+									</xsl:if>
+									<xsl:for-each select="se:Condition[string(@Name) or string(@Prefix)][@WriteStyle='Attribute' or not(@WriteStyle)][not($writeSelf) or not(($selfName and @Name=$selfName and string(@Prefix)=$selfPrefix) or (not($selfName) and @Name=current()/@ID and string(@Prefix)=$selfPrefix))]">
+										<xsl:variable name="conditionName" select="string(@Name)"/>
+										<xsl:variable name="conditionPrefix" select="string(@Prefix)"/>
+										<!-- Make sure the names are unique -->
+										<xsl:if test="not(preceding-sibling::*[@WriteStyle='Attribute' or not(@WriteStyle)][@Name=$conditionName and string(@Prefix)=$conditionPrefix])">
+											<plx:callInstance name="Add">
+												<plx:callObject>
+													<plx:nameRef name="customSerializedAttributes"/>
+												</plx:callObject>
+												<plx:passParam>
+													<plx:string>
+														<xsl:if test="$conditionPrefix">
+															<!-- For attributes, the lack of a prefix means unqualified. Only concatenate if a namespace is explicitly specified -->
+															<plx:string>
+																<xsl:call-template name="ResolveNamespace">
+																	<xsl:with-param name="namespaces" select="$namespaces"/>
+																	<!-- Use default for prefix parameter -->
+																</xsl:call-template>
+															</plx:string>
+															<plx:string data="|"/>
+														</xsl:if>
+														<plx:string data="{$selfID}">
+															<xsl:if test="$conditionName">
+																<xsl:attribute name="data">
+																	<xsl:value-of select="$conditionName"/>
+																</xsl:attribute>
+															</xsl:if>
+														</plx:string>
+													</plx:string>
+												</plx:passParam>
+												<plx:passParam>
+													<plx:callStatic name="{$selfID}DomainPropertyId" dataTypeName="{$ClassName}" type="field"/>
+												</plx:passParam>
+											</plx:callInstance>
+										</xsl:if>
+									</xsl:for-each>
 								</xsl:for-each>
 								<plx:assign>
 									<plx:left>
@@ -2634,7 +2723,7 @@
 								</plx:string>
 							</plx:passParam>
 							<plx:passParam>
-								<plx:callStatic name="DomainClassId" dataTypeName="{@Class}" type="property"/>
+								<plx:callStatic name="DomainClassId" dataTypeName="{@Class}" type="field"/>
 							</plx:passParam>
 						</plx:callInstance>
 						<!-- Handle the less obvious Conditional Names -->
@@ -2648,7 +2737,7 @@
 									<plx:string data="{@Name}"/>
 								</plx:passParam>
 								<plx:passParam>
-									<plx:callStatic name="DomainClassId" dataTypeName="{$className}" type="property"/>
+									<plx:callStatic name="DomainClassId" dataTypeName="{$className}" type="field"/>
 								</plx:passParam>
 							</plx:callInstance>
 						</xsl:for-each>

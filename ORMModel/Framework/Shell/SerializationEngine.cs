@@ -589,6 +589,7 @@ namespace Neumont.Tools.Modeling.Shell
 	/// </summary>
 	public struct CustomSerializedElementMatch
 	{
+		#region Member Variables
 		/// <summary>
 		/// Holds a single role guid, or the explicit relationship guid
 		/// </summary>
@@ -603,10 +604,17 @@ namespace Neumont.Tools.Modeling.Shell
 		/// Stored as an array to minimize storage impact when not used.
 		/// </summary>
 		private CustomSerializedStandaloneRelationship[] myStandaloneRelationship;
+		/// <summary>
+		/// Hold the explicit forward reference information for this match.
+		/// Stored as an array to minimized storage impact when not used.
+		/// </summary>
+		private Guid[] myExplicitForwardReferenceGuids;
 		private CustomSerializedElementMatchStyle myMatchStyle;
 		private const CustomSerializedElementMatchStyle StyleMask = (CustomSerializedElementMatchStyle)0xFFFF;
 		private const CustomSerializedElementMatchStyle AllowDuplicatesBit = (CustomSerializedElementMatchStyle)((int)StyleMask + 1);
 		private string myDoubleTagName;
+		#endregion // Member Variables
+		#region InitializeAttribute method
 		/// <summary>
 		/// The element was recognized as a meta property.
 		/// </summary>
@@ -619,13 +627,15 @@ namespace Neumont.Tools.Modeling.Shell
 			myDoubleTagName = (doubleTagName != null && doubleTagName.Length != 0) ? doubleTagName : null;
 			myStandaloneRelationship = null;
 		}
+		#endregion // InitializeAttribute method
+		#region InitializeRoles methods
 		/// <summary>
 		/// The element was recognized as an opposite role player
 		/// </summary>
 		/// <param name="oppositeDomainRoleIds">1 or more opposite meta role guids</param>
 		public void InitializeRoles(params Guid[] oppositeDomainRoleIds)
 		{
-			InitializeRoles(false, null, oppositeDomainRoleIds);
+			InitializeRoles(false, null, null, oppositeDomainRoleIds);
 		}
 		/// <summary>
 		/// The element was recognized as an opposite role player
@@ -634,7 +644,7 @@ namespace Neumont.Tools.Modeling.Shell
 		/// <param name="oppositeDomainRoleIds">1 or more opposite meta role guids</param>
 		public void InitializeRoles(CustomSerializedStandaloneRelationship standaloneRelationship, params Guid[] oppositeDomainRoleIds)
 		{
-			InitializeRoles(false, new CustomSerializedStandaloneRelationship[] { standaloneRelationship }, oppositeDomainRoleIds);
+			InitializeRoles(false, new CustomSerializedStandaloneRelationship[] { standaloneRelationship }, null, oppositeDomainRoleIds);
 		}
 		/// <summary>
 		/// The element was recognized as an opposite role player
@@ -643,7 +653,7 @@ namespace Neumont.Tools.Modeling.Shell
 		/// <param name="oppositeDomainRoleIds">1 or more opposite meta role guids</param>
 		public void InitializeRoles(bool allowDuplicates, params Guid[] oppositeDomainRoleIds)
 		{
-			InitializeRoles(allowDuplicates, null, oppositeDomainRoleIds);
+			InitializeRoles(allowDuplicates, null, null, oppositeDomainRoleIds);
 		}
 		/// <summary>
 		/// The element was recognized as an opposite role player
@@ -653,9 +663,9 @@ namespace Neumont.Tools.Modeling.Shell
 		/// <param name="oppositeDomainRoleIds">1 or more opposite meta role guids</param>
 		public void InitializeRoles(bool allowDuplicates, CustomSerializedStandaloneRelationship standaloneRelationship, params Guid[] oppositeDomainRoleIds)
 		{
-			InitializeRoles(allowDuplicates, new CustomSerializedStandaloneRelationship[] { standaloneRelationship }, oppositeDomainRoleIds);
+			InitializeRoles(allowDuplicates, new CustomSerializedStandaloneRelationship[] { standaloneRelationship }, null, oppositeDomainRoleIds);
 		}
-		private void InitializeRoles(bool allowDuplicates, CustomSerializedStandaloneRelationship[] standaloneRelationship, params Guid[] oppositeDomainRoleIds)
+		private void InitializeRoles(bool allowDuplicates, CustomSerializedStandaloneRelationship[] standaloneRelationship, Guid[] explicitForwardReferenceIds, params Guid[] oppositeDomainRoleIds)
 		{
 			Debug.Assert(oppositeDomainRoleIds != null && oppositeDomainRoleIds.Length != 0);
 			if (oppositeDomainRoleIds.Length == 1)
@@ -675,6 +685,7 @@ namespace Neumont.Tools.Modeling.Shell
 				myMatchStyle |= AllowDuplicatesBit;
 			}
 			myDoubleTagName = null;
+			myExplicitForwardReferenceGuids = explicitForwardReferenceIds;
 		}
 		/// <summary>
 		/// The element was recognized as an opposite role player. Optimized overload
@@ -683,7 +694,7 @@ namespace Neumont.Tools.Modeling.Shell
 		/// <param name="oppositeDomainRoleId">The opposite meta role guid</param>
 		public void InitializeRoles(Guid oppositeDomainRoleId)
 		{
-			InitializeRoles(false, null, oppositeDomainRoleId);
+			InitializeRoles(false, null, null, oppositeDomainRoleId);
 		}
 		/// <summary>
 		/// The element was recognized as an opposite role player. Optimized overload
@@ -693,7 +704,7 @@ namespace Neumont.Tools.Modeling.Shell
 		/// <param name="oppositeDomainRoleId">The opposite meta role guid</param>
 		public void InitializeRoles(CustomSerializedStandaloneRelationship standaloneRelationship, Guid oppositeDomainRoleId)
 		{
-			InitializeRoles(false, new CustomSerializedStandaloneRelationship[] { standaloneRelationship }, oppositeDomainRoleId);
+			InitializeRoles(false, new CustomSerializedStandaloneRelationship[] { standaloneRelationship }, null, oppositeDomainRoleId);
 		}
 		/// <summary>
 		/// The element was recognized as an opposite role player. Optimized overload
@@ -703,7 +714,7 @@ namespace Neumont.Tools.Modeling.Shell
 		/// <param name="oppositeDomainRoleId">The opposite meta role guid</param>
 		public void InitializeRoles(bool allowDuplicates, Guid oppositeDomainRoleId)
 		{
-			InitializeRoles(allowDuplicates, null, oppositeDomainRoleId);
+			InitializeRoles(allowDuplicates, null, null, oppositeDomainRoleId);
 		}
 		/// <summary>
 		/// The element was recognized as an opposite role player. Optimized overload
@@ -714,9 +725,9 @@ namespace Neumont.Tools.Modeling.Shell
 		/// <param name="oppositeDomainRoleId">The opposite meta role guid</param>
 		public void InitializeRoles(bool allowDuplicates, CustomSerializedStandaloneRelationship standaloneRelationship, Guid oppositeDomainRoleId)
 		{
-			InitializeRoles(allowDuplicates, new CustomSerializedStandaloneRelationship[] { standaloneRelationship }, oppositeDomainRoleId);
+			InitializeRoles(allowDuplicates, new CustomSerializedStandaloneRelationship[] { standaloneRelationship }, null, oppositeDomainRoleId);
 		}
-		private void InitializeRoles(bool allowDuplicates, CustomSerializedStandaloneRelationship[] standaloneRelationship, Guid oppositeDomainRoleId)
+		private void InitializeRoles(bool allowDuplicates, CustomSerializedStandaloneRelationship[] standaloneRelationship, Guid[] explicitForwardReferenceIds, Guid oppositeDomainRoleId)
 		{
 			mySingleGuid = oppositeDomainRoleId;
 			myMultiGuids = null;
@@ -726,7 +737,104 @@ namespace Neumont.Tools.Modeling.Shell
 				myMatchStyle |= AllowDuplicatesBit;
 			}
 			myStandaloneRelationship = standaloneRelationship;
+			myExplicitForwardReferenceGuids = explicitForwardReferenceIds;
 		}
+		#endregion // InitializeRoles methods
+		#region InitializeRolesWithExplicitForwardReference methods
+		/// <summary>
+		/// The element was recognized as an opposite role player
+		/// </summary>
+		/// <param name="explicitForwardReferenceIds">Specify an explicit type per opposite domain role
+		/// to create in a forward reference situation.</param>
+		/// <param name="oppositeDomainRoleIds">1 or more opposite meta role guids</param>
+		public void InitializeRolesWithExplicitForwardReference(Guid[] explicitForwardReferenceIds, params Guid[] oppositeDomainRoleIds)
+		{
+			InitializeRoles(false, null, explicitForwardReferenceIds, oppositeDomainRoleIds);
+		}
+		/// <summary>
+		/// The element was recognized as an opposite role player
+		/// </summary>
+		/// <param name="standaloneRelationship">A <see cref="CustomSerializedStandaloneRelationship"/> structure</param>
+		/// <param name="explicitForwardReferenceIds">Specify an explicit type per opposite domain role
+		/// to create in a forward reference situation.</param>
+		/// <param name="oppositeDomainRoleIds">1 or more opposite meta role guids</param>
+		public void InitializeRolesWithExplicitForwardReference(CustomSerializedStandaloneRelationship standaloneRelationship, Guid[] explicitForwardReferenceIds, params Guid[] oppositeDomainRoleIds)
+		{
+			InitializeRoles(false, new CustomSerializedStandaloneRelationship[] { standaloneRelationship }, explicitForwardReferenceIds, oppositeDomainRoleIds);
+		}
+		/// <summary>
+		/// The element was recognized as an opposite role player
+		/// </summary>
+		/// <param name="allowDuplicates">Allow duplicates for this link</param>
+		/// <param name="explicitForwardReferenceIds">Specify an explicit type per opposite domain role
+		/// to create in a forward reference situation.</param>
+		/// <param name="oppositeDomainRoleIds">1 or more opposite meta role guids</param>
+		public void InitializeRolesWithExplicitForwardReference(bool allowDuplicates, Guid[] explicitForwardReferenceIds, params Guid[] oppositeDomainRoleIds)
+		{
+			InitializeRoles(allowDuplicates, null, explicitForwardReferenceIds, oppositeDomainRoleIds);
+		}
+		/// <summary>
+		/// The element was recognized as an opposite role player
+		/// </summary>
+		/// <param name="allowDuplicates">Allow duplicates for this link</param>
+		/// <param name="standaloneRelationship">A <see cref="CustomSerializedStandaloneRelationship"/> structure</param>
+		/// <param name="explicitForwardReferenceIds">Specify an explicit type per opposite domain role
+		/// to create in a forward reference situation.</param>
+		/// <param name="oppositeDomainRoleIds">1 or more opposite meta role guids</param>
+		public void InitializeRolesWithExplicitForwardReference(bool allowDuplicates, CustomSerializedStandaloneRelationship standaloneRelationship, Guid[] explicitForwardReferenceIds, params Guid[] oppositeDomainRoleIds)
+		{
+			InitializeRoles(allowDuplicates, new CustomSerializedStandaloneRelationship[] { standaloneRelationship }, explicitForwardReferenceIds, oppositeDomainRoleIds);
+		}
+		/// <summary>
+		/// The element was recognized as an opposite role player. Optimized overload
+		/// for 1 element.
+		/// </summary>
+		/// <param name="explicitForwardReferenceId">Specify an explicit type for the opposite domain role
+		/// to create in a forward reference situation.</param>
+		/// <param name="oppositeDomainRoleId">The opposite meta role guid</param>
+		public void InitializeRolesWithExplicitForwardReference(Guid explicitForwardReferenceId, Guid oppositeDomainRoleId)
+		{
+			InitializeRoles(false, null, (explicitForwardReferenceId != Guid.Empty) ? new Guid[] { explicitForwardReferenceId } : null, oppositeDomainRoleId);
+		}
+		/// <summary>
+		/// The element was recognized as an opposite role player. Optimized overload
+		/// for 1 element.
+		/// </summary>
+		/// <param name="standaloneRelationship">A <see cref="CustomSerializedStandaloneRelationship"/> structure</param>
+		/// <param name="explicitForwardReferenceId">Specify an explicit type for the opposite domain role
+		/// to create in a forward reference situation.</param>
+		/// <param name="oppositeDomainRoleId">The opposite meta role guid</param>
+		public void InitializeRolesWithExplicitForwardReference(CustomSerializedStandaloneRelationship standaloneRelationship, Guid explicitForwardReferenceId, Guid oppositeDomainRoleId)
+		{
+			InitializeRoles(false, new CustomSerializedStandaloneRelationship[] { standaloneRelationship }, (explicitForwardReferenceId != Guid.Empty) ? new Guid[] { explicitForwardReferenceId } : null, oppositeDomainRoleId);
+		}
+		/// <summary>
+		/// The element was recognized as an opposite role player. Optimized overload
+		/// for 1 element.
+		/// </summary>
+		/// <param name="allowDuplicates">Allow duplicates for this link</param>
+		/// <param name="explicitForwardReferenceId">Specify an explicit type for the opposite domain role
+		/// to create in a forward reference situation.</param>
+		/// <param name="oppositeDomainRoleId">The opposite meta role guid</param>
+		public void InitializeRolesWithExplicitForwardReference(bool allowDuplicates, Guid explicitForwardReferenceId, Guid oppositeDomainRoleId)
+		{
+			InitializeRoles(allowDuplicates, null, (explicitForwardReferenceId != Guid.Empty) ? new Guid[] { explicitForwardReferenceId } : null, oppositeDomainRoleId);
+		}
+		/// <summary>
+		/// The element was recognized as an opposite role player. Optimized overload
+		/// for 1 element.
+		/// </summary>
+		/// <param name="allowDuplicates">Allow duplicates for this link</param>
+		/// <param name="standaloneRelationship">A <see cref="CustomSerializedStandaloneRelationship"/> structure</param>
+		/// <param name="explicitForwardReferenceId">Specify an explicit type for the opposite domain role
+		/// to create in a forward reference situation.</param>
+		/// <param name="oppositeDomainRoleId">The opposite meta role guid</param>
+		public void InitializeRolesWithExplicitForwardReference(bool allowDuplicates, CustomSerializedStandaloneRelationship standaloneRelationship, Guid explicitForwardReferenceId, Guid oppositeDomainRoleId)
+		{
+			InitializeRoles(allowDuplicates, new CustomSerializedStandaloneRelationship[] { standaloneRelationship }, (explicitForwardReferenceId != Guid.Empty) ? new Guid[] { explicitForwardReferenceId } : null, oppositeDomainRoleId);
+		}
+		#endregion // InitializeRolesWithExplicitForwardReference methods
+		#region InitializeRolesWithExplicitRelationship methods
 		/// <summary>
 		/// The element was recognized as an opposite role player of an explicit link type
 		/// </summary>
@@ -844,6 +952,8 @@ namespace Neumont.Tools.Modeling.Shell
 			}
 			myStandaloneRelationship = standaloneRelationship;
 		}
+		#endregion // InitializeRolesWithExplicitRelationship methods
+		#region Accessor Properties
 		/// <summary>
 		/// The guid identifying the meta property. Valid for a match
 		/// style of Property.
@@ -872,6 +982,49 @@ namespace Neumont.Tools.Modeling.Shell
 					default:
 						return Guid.Empty;
 				}
+			}
+		}
+		/// <summary>
+		/// Return the identifier for a type that satisfies the opposite role
+		/// that should be created for a forward reference.
+		/// </summary>
+		public Guid SingleForwardReferenceTypeId
+		{
+			get
+			{
+				Guid[] forwardReferenceIds = myExplicitForwardReferenceGuids;
+				if (forwardReferenceIds != null)
+				{
+					switch (myMatchStyle & StyleMask)
+					{
+						case CustomSerializedElementMatchStyle.SingleOppositeDomainRole:
+						case CustomSerializedElementMatchStyle.SingleOppositeDomainRoleExplicitRelationshipType:
+							return forwardReferenceIds[0];
+					}
+				}
+				return Guid.Empty;
+			}
+		}
+		/// <summary>
+		/// Return the identifiers for types that satisfy the opposite role
+		/// that should be created for forward references needed to create
+		/// the relationships.
+		/// </summary>
+		public IList<Guid> ForwardReferenceTypeIdCollection
+		{
+			get
+			{
+				Guid[] forwardReferenceIds = myExplicitForwardReferenceGuids;
+				if (forwardReferenceIds != null)
+				{
+					switch (myMatchStyle & StyleMask)
+					{
+						case CustomSerializedElementMatchStyle.SingleOppositeDomainRole:
+						case CustomSerializedElementMatchStyle.SingleOppositeDomainRoleExplicitRelationshipType:
+							return Array.AsReadOnly<Guid>(forwardReferenceIds);
+					}
+				}
+				return null;
 			}
 		}
 		/// <summary>
@@ -955,6 +1108,7 @@ namespace Neumont.Tools.Modeling.Shell
 				return 0 != (myMatchStyle & AllowDuplicatesBit);
 			}
 		}
+		#endregion // Accessor Properties
 	}
 	#endregion // CustomSerializedElementMatch struct
 	#endregion // Public Classes
@@ -1414,8 +1568,8 @@ namespace Neumont.Tools.Modeling.Shell
 	#region Public Attributes
 	#region CustomSerializedXmlNamespacesAttribute class
 	/// <summary>
-	/// An attribute to associated with <see cref="DomainModel"/> that indicates all of the
-	/// xml namespaces associated with that model.
+	/// An attribute associated with a <see cref="DomainModel"/> that indicates all of the
+	/// xml namespaces serialized by that model.
 	/// </summary>
 	[AttributeUsage(AttributeTargets.Class, AllowMultiple=false, Inherited=false)]
 	public sealed class CustomSerializedXmlNamespacesAttribute : Attribute, IEnumerable<string>
@@ -3259,7 +3413,7 @@ namespace Neumont.Tools.Modeling.Shell
 					}
 				}
 				bool isNewElementDummy;
-				return myEngine.CreateElement(idValue, classInfo, domainClassIdentifier, createAsPlaceHolder, out isNewElementDummy);
+				return myEngine.CreateElement(idValue, classInfo, domainClassIdentifier, Guid.Empty, createAsPlaceHolder, out isNewElementDummy);
 			}
 			ElementLink ISerializationContext.RealizeElementLink(string idValue, ModelElement rolePlayer, ModelElement oppositeRolePlayer, Guid oppositeDomainRoleInfoId, Guid? explicitDomainRelationshipInfoId)
 			{
@@ -3448,11 +3602,13 @@ namespace Neumont.Tools.Modeling.Shell
 																								rolePlayerIds[0],
 																								rolePlayerDomainClasses[0],
 																								Guid.Empty,
+																								Guid.Empty,
 																								rolePlayerDomainClasses[0].AllDescendants.Count == 0,
 																								out isNewElementDummy),
 																							CreateElement(
 																								rolePlayerIds[1],
 																								rolePlayerDomainClasses[1],
+																								Guid.Empty,
 																								Guid.Empty,
 																								rolePlayerDomainClasses[1].AllDescendants.Count == 0,
 																								out isNewElementDummy),
@@ -3635,6 +3791,7 @@ namespace Neumont.Tools.Modeling.Shell
 					DomainRoleInfo oppositeDomainRole = null;
 					DomainClassInfo oppositeDomainClass = null;
 					DomainRelationshipInfo explicitRelationshipType = null;
+					Guid explicitForwardReferenceTypeId = Guid.Empty;
 					bool oppositeDomainClassFullyDeterministic = false;
 					bool resolveOppositeDomainClass = false;
 					bool allowDuplicates = false;
@@ -3716,6 +3873,7 @@ namespace Neumont.Tools.Modeling.Shell
 							{
 								case CustomSerializedElementMatchStyle.SingleOppositeDomainRole:
 									oppositeDomainRole = dataDir.FindDomainRole(match.SingleOppositeDomainRoleId);
+									explicitForwardReferenceTypeId = match.SingleForwardReferenceTypeId;
 									resolveOppositeDomainClass = true;
 									break;
 								case CustomSerializedElementMatchStyle.SingleOppositeDomainRoleExplicitRelationshipType:
@@ -3965,7 +4123,7 @@ namespace Neumont.Tools.Modeling.Shell
 							bool createLink = true;
 							if (!standaloneRelationship.HasValue)
 							{
-								oppositeElement = CreateElement(elementId, oppositeDomainClass, Guid.Empty, !oppositeDomainClassFullyDeterministic, out isNewElement);
+								oppositeElement = CreateElement(elementId, oppositeDomainClass, Guid.Empty, explicitForwardReferenceTypeId, !oppositeDomainClassFullyDeterministic, out isNewElement);
 							}
 							else
 							{
@@ -4006,12 +4164,14 @@ namespace Neumont.Tools.Modeling.Shell
 													rolePlayerIds[0],
 													rolePlayerDomainClasses[0],
 													Guid.Empty,
+													explicitForwardReferenceTypeId,
 													rolePlayerDomainClasses[0].AllDescendants.Count == 0,
 													out isNewElementDummy),
 												CreateElement(
 													rolePlayerIds[1],
 													rolePlayerDomainClasses[1],
 													Guid.Empty,
+													explicitForwardReferenceTypeId,
 													rolePlayerDomainClasses[1].AllDescendants.Count == 0,
 													out isNewElementDummy),
 												oppositeRoleInfo,
@@ -4306,7 +4466,7 @@ namespace Neumont.Tools.Modeling.Shell
 		private ModelElement CreateElement(string idValue, DomainClassInfo domainClassInfo, Guid domainClassId)
 		{
 			bool isNewElement;
-			return CreateElement(idValue, domainClassInfo, domainClassId, false, out isNewElement);
+			return CreateElement(idValue, domainClassInfo, domainClassId, Guid.Empty, false, out isNewElement);
 		}
 		/// <summary>
 		/// Create a class element with the id specified in the reader
@@ -4315,6 +4475,10 @@ namespace Neumont.Tools.Modeling.Shell
 		/// <param name="domainClassInfo">The meta class info of the element to create. If null,
 		/// the domainClassId is used to find the class info</param>
 		/// <param name="domainClassId">The identifier for the class</param>
+		/// <param name="explicitForwardReferenceDomainClassId">The identifier for a class derived from
+		/// the specified domain class that should be created for a placeholder instead of the specified
+		/// domain class. This allowed forward referencing without adverse effects on the load order of
+		/// top-level elements that are forward referenced.</param>
 		/// <param name="createAsPlaceholder">The provided meta class information is not unique.
 		/// If this element is not already created then add it with a separate tracked id so it can
 		/// be replaced later by the fully resolved type. All role players will be automatically
@@ -4322,7 +4486,7 @@ namespace Neumont.Tools.Modeling.Shell
 		/// <param name="isNewElement">true if the element is actually created, as opposed
 		/// to being identified as an existing element</param>
 		/// <returns>A new ModelElement</returns>
-		private ModelElement CreateElement(string idValue, DomainClassInfo domainClassInfo, Guid domainClassId, bool createAsPlaceholder, out bool isNewElement)
+		private ModelElement CreateElement(string idValue, DomainClassInfo domainClassInfo, Guid domainClassId, Guid explicitForwardReferenceDomainClassId, bool createAsPlaceholder, out bool isNewElement)
 		{
 			isNewElement = false;
 
@@ -4352,6 +4516,10 @@ namespace Neumont.Tools.Modeling.Shell
 					if (placeholderMap == null)
 					{
 						myPlaceholderElementMap = placeholderMap = new Dictionary<Guid, PlaceholderElement>();
+					}
+					if (explicitForwardReferenceDomainClassId != Guid.Empty)
+					{
+						domainClassInfo = myStore.DomainDataDirectory.GetDomainClass(explicitForwardReferenceDomainClassId);
 					}
 					retVal = placeholder.CreatePlaceholderElement(myStore, domainClassInfo);
 					placeholderMap[id] = placeholder;

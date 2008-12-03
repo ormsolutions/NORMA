@@ -24,6 +24,7 @@
 			<ComponentRef Id="NORMAVSSettingsSchemaComponent"/>
 			<ComponentRef Id="NORMAVSSettingsComponent"/>
 			<ComponentRef Id="NORMAVSConvertersComponent"/>
+			<ComponentRef Id="NORMAVSDiagramDisplaySchemaComponent"/>
 			<ComponentRef Id="NORMAVSProjectItemsGeneralComponent"/>
 			<ComponentRef Id="NORMAVSProjectItemsVBasicComponent"/>
 			<ComponentRef Id="NORMAVSProjectItemsVCSharpComponent"/>

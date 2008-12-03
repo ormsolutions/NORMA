@@ -3,6 +3,7 @@
 * Neumont Object-Role Modeling Architect for Visual Studio                 *
 *                                                                          *
 * Copyright © Neumont University. All rights reserved.                     *
+* Copyright © Matthew Curland. All rights reserved.                        *
 *                                                                          *
 * The use and distribution terms for this software are covered by the      *
 * Common Public License 1.0 (http://opensource.org/licenses/cpl) which     *
@@ -24,6 +25,7 @@ using System.Windows.Forms.Design;
 using Microsoft.VisualStudio.Modeling;
 using Microsoft.VisualStudio.Modeling.Shell;
 using Microsoft.VisualStudio.Modeling.Diagrams;
+using Neumont.Tools.Modeling.Design;
 
 namespace Neumont.Tools.Modeling.Shell
 {
@@ -31,7 +33,7 @@ namespace Neumont.Tools.Modeling.Shell
 	/// Base class for <see cref="DiagramDocView"/> implementations that support multiple <see cref="Diagram"/>s.
 	/// </summary>
 	[CLSCompliant(false)]
-	public abstract partial class MultiDiagramDocView : DiagramDocView
+	public abstract partial class MultiDiagramDocView : DiagramDocView, IModelingEventSubscriber
 	{
 		#region Constructor
 		/// <summary>
@@ -48,6 +50,7 @@ namespace Neumont.Tools.Modeling.Shell
 		#region Fields and Private Properties
 		private readonly Dictionary<Diagram, int> myDiagramRefCounts;
 		private MultiDiagramDocViewControl myDocViewControl;
+		private bool myVerifyPageOrder;
 		private MultiDiagramDocViewControl DocViewControl
 		{
 			get
@@ -88,17 +91,6 @@ namespace Neumont.Tools.Modeling.Shell
 
 			private DiagramView mySelectedDesigner;
 			/// <summary>
-			/// Gets the <see cref="DiagramView"/> against which this <see cref="MultiDiagramContextMenuStrip"/>
-			/// is currently operating.
-			/// </summary>
-			public DiagramView SelectedDesigner
-			{
-				get
-				{
-					return mySelectedDesigner;
-				}
-			}
-			/// <summary>
 			/// Gets the <see cref="Diagram"/> against which this <see cref="MultiDiagramContextMenuStrip"/>
 			/// is currently operating.
 			/// </summary>
@@ -117,21 +109,9 @@ namespace Neumont.Tools.Modeling.Shell
 				MultiDiagramDocViewControl docViewControl = base.SourceControl as MultiDiagramDocViewControl;
 				if (docViewControl != null)
 				{
-					mySelectedDesigner = docViewControl.DesignerForContextMenu;
+					mySelectedDesigner = docViewControl.AcquireContextMenuDesigner;
 				}
 				base.OnOpening(e);
-			}
-
-			/// <summary>See <see cref="ToolStripDropDown.OnClosed"/>.</summary>
-			protected override void OnClosed(ToolStripDropDownClosedEventArgs e)
-			{
-				base.OnClosed(e);
-				mySelectedDesigner = null;
-				MultiDiagramDocViewControl docViewControl = base.SourceControl as MultiDiagramDocViewControl;
-				if (docViewControl != null)
-				{
-					docViewControl.DesignerForContextMenu = null;
-				}
 			}
 		}
 		/// <summary>
@@ -275,47 +255,52 @@ namespace Neumont.Tools.Modeling.Shell
 			}
 		}
 		#endregion // RegisterImageForDiagramType method
-		#region GetDesignerAtPoint method
+		#region RenameDiagram method
 		/// <summary>
-		/// Returns the <see cref="DiagramView"/> displayed on the tab at the <see cref="Point"/> specified
-		/// by <paramref name="point"/>.
+		/// Activates the user interface for renaming the specified <see cref="Diagram"/>
 		/// </summary>
-		/// <param name="point">
-		/// The <see cref="Point"/> in screen coordinates (i.e. not client coordinates) of the tab which displays
-		/// the desired <see cref="DiagramView"/>.
-		/// </param>
-		/// <returns>
-		/// The requested <see cref="DiagramView"/>, or <see langword="null"/> if <paramref name="point"/> doesn't
-		/// correspond to a tab.
-		/// </returns>
-		public DiagramView GetDesignerAtPoint(Point point)
+		public void RenameDiagram(Diagram diagram)
 		{
-			MultiDiagramDocViewControl docViewControl = myDocViewControl;
-			if (docViewControl != null)
+			MultiDiagramDocViewControl docViewControl;
+			if (null != diagram &&
+				null != (docViewControl = myDocViewControl))
 			{
-				return docViewControl.GetDesignerFromTabAtPoint(point);
-			}
-			return null;
-		}
-		#endregion // GetDesignerAtPoint method
-		#region RenameDiagramAtPoint method
-		/// <summary>
-		/// Activates the user interface for renaming the <see cref="Diagram"/> displayed on the tab at the
-		/// <see cref="Point"/> specified by <paramref name="point"/>.
-		/// </summary>
-		/// <param name="point">
-		/// The <see cref="Point"/> in screen coordinates (i.e. not client coordinates) of the tab which displays
-		/// the <see cref="Diagram"/> to be renamed.
-		/// </param>
-		public void RenameDiagramAtPoint(Point point)
-		{
-			MultiDiagramDocViewControl docViewControl = myDocViewControl;
-			if (docViewControl != null)
-			{
-				docViewControl.RenameTabAtPoint(point);
+				docViewControl.RenameDiagram(diagram);
 			}
 		}
-		#endregion // RenameDiagramAtPoint method
+		#endregion // RenameDiagram method
+		#region ReorderDiagrams method
+		/// <summary>
+		/// Reorder the diagram tab pages
+		/// </summary>
+		public void ReorderDiagrams()
+		{
+			MultiDiagramDocViewControl docViewControl;
+			TabControl.TabPageCollection pages;
+			int diagramCount;
+			if (null != (docViewControl = myDocViewControl) &&
+				0 != (diagramCount = (pages = docViewControl.TabPages).Count))
+			{
+				Diagram[] diagrams = new Diagram[diagramCount];
+				for (int i = 0; i < diagramCount; ++i)
+				{
+					diagrams[i] = ((DiagramTabPage)pages[i]).Diagram;
+				}
+				DiagramOrderDialog.ShowDialog(ServiceProvider, DocData, diagrams, myDocViewControl.ImageList);
+			}
+		}
+		/// <summary>
+		/// Check if a diagram has multiple pages.
+		/// </summary>
+		public bool HasMultiplePages
+		{
+			get
+			{
+				MultiDiagramDocViewControl docViewControl = myDocViewControl;
+				return null != docViewControl && 1 < docViewControl.TabPages.Count;
+			}
+		}
+		#endregion // ReorderDiagrams method
 		#region Add methods
 		/// <summary>
 		/// Adds the <see cref="Diagram"/> specified by <paramref name="diagram"/> to this <see cref="MultiDiagramDocView"/>.
@@ -370,13 +355,10 @@ namespace Neumont.Tools.Modeling.Shell
 				diagram.DiagramRemoved += DiagramRemoved;
 			}
 			diagramRefCounts[diagram] = refCount + 1;
-			if (tabCount == 0)
+			if (selectAsCurrent)
 			{
+				// If this is not here then the tab is not correctly activated.
 				docViewControl.SelectedIndex = -1;
-				docViewControl.SelectTab(tabPage);
-			}
-			else if (selectAsCurrent)
-			{
 				docViewControl.SelectTab(tabPage);
 			}
 		}
@@ -555,5 +537,70 @@ namespace Neumont.Tools.Modeling.Shell
 		}
 		#endregion // Dispose method
 		#endregion // Methods
+		#region IModelingEventSubscriber Implementation
+		/// <summary>
+		/// Implement <see cref="IModelingEventSubscriber.ManageModelingEventHandlers"/>
+		/// </summary>
+		protected void ManageModelingEventHandlers(ModelingEventManager eventManager, EventSubscriberReasons reasons, EventHandlerAction action)
+		{
+			if (0 != (reasons & EventSubscriberReasons.DocumentLoaded))
+			{
+				Store store = this.Store;
+				if (null != store.FindDomainModel(DiagramDisplayDomainModel.DomainModelId))
+				{
+					IPropertyProviderService providerService = ((IFrameworkServices)store).PropertyProviderService;
+					if (providerService != null)
+					{
+						providerService.AddOrRemovePropertyProvider<Diagram>(DiagramDisplay.ProvideDiagramProperties, true, action);
+					}
+					if (0 != (reasons & EventSubscriberReasons.UserInterfaceEvents))
+					{
+						DomainDataDirectory dataDirectory = store.DomainDataDirectory;
+						DomainClassInfo classInfo;
+						classInfo = dataDirectory.FindDomainClass(DiagramDisplayHasDiagramOrder.DomainClassId);
+						if (classInfo != null)
+						{
+							// DiagramDisplay is an optional domain model, it may not be loaded in the store
+							eventManager.AddOrRemoveHandler(classInfo, new EventHandler<ElementAddedEventArgs>(VerifyPageOrderEvent), action);
+							eventManager.AddOrRemoveHandler(classInfo, new EventHandler<ElementDeletedEventArgs>(VerifyPageOrderEvent), action);
+							eventManager.AddOrRemoveHandler(classInfo, new EventHandler<RolePlayerOrderChangedEventArgs>(VerifyPageOrderEvent), action);
+							eventManager.AddOrRemoveHandler(classInfo, new EventHandler<RolePlayerChangedEventArgs>(VerifyPageOrderEvent), action);
+							eventManager.AddOrRemoveHandler(new EventHandler<ElementEventsEndedEventArgs>(ElementEventsEndedEvent), action);
+						}
+					}
+				}
+			}
+		}
+		void IModelingEventSubscriber.ManageModelingEventHandlers(ModelingEventManager eventManager, EventSubscriberReasons reasons, EventHandlerAction action)
+		{
+			ManageModelingEventHandlers(eventManager, reasons, action);
+		}
+		/// <summary>
+		/// Mark the tab order as potentially dirty
+		/// </summary>
+		private void VerifyPageOrderEvent(object sender, EventArgs e)
+		{
+			myVerifyPageOrder = true;
+		}
+		/// <summary>
+		/// Verify tab order when events have complete
+		/// </summary>
+		private void ElementEventsEndedEvent(object sender, ElementEventsEndedEventArgs e)
+		{
+			if (myVerifyPageOrder)
+			{
+				myVerifyPageOrder = false;
+				MultiDiagramDocViewControl control;
+				Store store;
+				IList<DiagramDisplay> containers;
+				if (null != (control = myDocViewControl) &&
+					null != (store = this.Store) &&
+					0 != (containers = store.ElementDirectory.FindElements<DiagramDisplay>(false)).Count)
+				{
+					control.VerifyDiagramOrder(containers[0].OrderedDiagramCollection);
+				}
+			}
+		}
+		#endregion // IModelingEventSubscriber Implementation
 	}
 }

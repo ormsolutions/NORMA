@@ -263,4 +263,65 @@ namespace Neumont.Tools.Modeling
 		#endregion // DeserializationFixupListener specific
 	}
 	#endregion // DeserializationFixupListener class
+	#region StandardFixupPhase enum
+	/// <summary>
+	/// Standard values to use with enum types return by <see cref="IDeserializationFixupListenerProvider.DeserializationFixupPhaseType"/>
+	/// implementations. This enum is not loaded as a phase, rather it is meant as a starting
+	/// point for coordinating loading across different models. These values can be used directly
+	/// in other enums.
+	/// </summary>
+	public enum StandardFixupPhase
+	{
+		/// <summary>
+		/// The first standard fixup phase for loading model elements. Presentation
+		/// elements have a separate set of phases.
+		/// </summary>
+		FirstModelElementPhase = AddIntrinsicElements,
+		/// <summary>
+		/// Add any intrinsic elements at this stage. Intrinsic elements
+		/// are not serialized but must always be present in a fully loaded
+		/// model.
+		/// </summary>
+		AddIntrinsicElements = 100,
+		/// <summary>
+		/// Verify any implied elements that are serialized with the model
+		/// but must follow a proscribed pattern based on another serialized element.
+		/// This stage may both add and remove elements.
+		/// </summary>
+		ValidateImplicitStoredElements = 200,
+		/// <summary>
+		/// Add implicit elements at this stage. An implicit element is
+		/// not serialized and is generally created by a rule once the model
+		/// is loaded.
+		/// </summary>
+		AddImplicitElements = 300,
+		/// <summary>
+		/// The last standard fixup phase for loading model elements. Presentation
+		/// elements have a separate set of phases
+		/// </summary>
+		LastModelElementPhase = AddImplicitElements,
+		/// <summary>
+		/// The first standard fixup phase for loading presentation elements.
+		/// </summary>
+		FirstPresentationElementPhase = ValidateStoredPresentationElements,
+		/// <summary>
+		/// Fixup stored presentation elements
+		/// </summary>
+		ValidateStoredPresentationElements = 5100,
+		/// <summary>
+		/// Validate presentation elements that are implicitly recreated
+		/// if they are not serialized.
+		/// </summary>
+		ValidateImplicitStoredPresentationElements = 5200,
+		/// <summary>
+		/// Add any presentation elements that are implicit and not
+		/// serialized with the model.
+		/// </summary>
+		AddImplicitPresentationElements = 5300,
+		/// <summary>
+		/// The last standard fixup phase for loading presentation elements.
+		/// </summary>
+		LastPresentationElementPhase = AddImplicitPresentationElements,
+	}
+	#endregion // StandardFixupPhase enum
 }	

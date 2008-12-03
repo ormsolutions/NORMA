@@ -19,6 +19,7 @@ using System.Collections.Generic;
 using System.ComponentModel;
 using Microsoft.VisualStudio.Modeling;
 using Neumont.Tools.Modeling;
+using Neumont.Tools.Modeling.Design;
 using Neumont.Tools.Modeling.Shell.DynamicSurveyTreeGrid;
 
 namespace Neumont.Tools.ORM.ObjectModel
@@ -28,7 +29,7 @@ namespace Neumont.Tools.ORM.ObjectModel
 	/// An ORM <see cref="ModelElement"/> that can be extended.
 	/// </summary>
 	/// <remarks>
-	/// In order to support <see cref="IORMPropertyExtension"/>s and <see cref="ORMPropertyProvisioning"/>s,
+	/// In order to support <see cref="IORMPropertyExtension"/>s and <see cref="PropertyProvider"/>s,
 	/// implementions must ensure that their <see cref="ICustomTypeDescriptor.GetProperties(Attribute[])"/>
 	/// method calls <see cref="ExtendableElementUtility.GetExtensionProperties"/>.
 	/// </remarks>
@@ -38,17 +39,10 @@ namespace Neumont.Tools.ORM.ObjectModel
 		/// See <see cref="ModelElement.Store"/>.
 		/// </summary>
 		Store Store { get;}
-
-		/// <summary>
-		/// The <see cref="IORMToolServices"/> for this <see cref="IORMExtendableElement"/>.
-		/// </summary>
-		IORMToolServices ORMToolServices { get;}
-
 		/// <summary>
 		/// The collection of extension <see cref="ModelElement"/>s.
 		/// </summary>
 		LinkedElementCollection<ModelElement> ExtensionCollection { get;}
-
 		/// <summary>
 		/// The collection of extension <see cref="ModelError"/>s.
 		/// </summary>

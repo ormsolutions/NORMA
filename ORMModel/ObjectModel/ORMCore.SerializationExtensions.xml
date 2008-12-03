@@ -114,9 +114,9 @@
 		<se:Container Name="Facts">
 			<se:Embed RelationshipName="ModelHasFactType" RoleName="FactType"/>
 		</se:Container>
-		<se:Container Name="Constraints">
-			<se:Embed RelationshipName="ModelHasSetComparisonConstraint" RoleName="SetComparisonConstraint"/>
+		<se:Container Name="Constraints" SortChildElements="true">
 			<se:Embed RelationshipName="ModelHasSetConstraint" RoleName="SetConstraint"/>
+			<se:Embed RelationshipName="ModelHasSetComparisonConstraint" RoleName="SetComparisonConstraint"/>
 		</se:Container>
 		<se:Container Name="DataTypes">
 			<se:Embed RelationshipName="ModelHasDataType" RoleName="DataType"/>

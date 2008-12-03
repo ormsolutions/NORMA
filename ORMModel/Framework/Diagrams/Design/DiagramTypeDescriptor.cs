@@ -283,6 +283,9 @@ namespace Neumont.Tools.Modeling.Diagrams.Design
 						}
 					}
 				}
+
+				// Add any extension properties registered on the presentation element
+				((IFrameworkServices)requestor.Store).PropertyProviderService.GetProvidedProperties(requestor, propertyDescriptors);
 			}
 			return propertyDescriptors;
 		}

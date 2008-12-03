@@ -229,6 +229,10 @@
     <value xml:space="preserve">&amp;Rename Page</value>
     <comment xml:space="preserve">The context menu command text and transaction name for renaming a diagram.</comment>
   </data>
+  <data name="Diagram.Command.ReorderPages">
+    <value xml:space="preserve">Re&amp;order Pages…</value>
+    <comment xml:space="preserve">The context menu command text and transaction name for reordering diagram.</comment>
+  </data>
   <data name="Diagram.BrowserImage" type="System.Resources.ResXFileRef, System.Windows.Forms">
     <value>../Resources/DiagramBrowserImage.png;System.Drawing.Bitmap, System.Drawing, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
     <comment xml:space="preserve">The image shown on the model browser for ORM diagrams.</comment>

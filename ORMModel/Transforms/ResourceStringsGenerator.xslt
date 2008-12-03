@@ -19,6 +19,7 @@
 	xmlns:exsl="http://exslt.org/common"
 	xmlns:plx="http://schemas.neumont.edu/CodeGeneration/PLiX">
 	<xsl:param name="ProjectNamespace" select="'TestNamespace'"/>
+	<xsl:param name="CustomToolNamespace" select="'TestNamespace'"/>
 	<!-- Indenting is useful for debugging the transform, but a waste of memory at generation time -->
 	<xsl:output method="xml" encoding="utf-8" indent="no"/>
 	<xsl:template match="rsg:ResourceStrings">
@@ -28,6 +29,11 @@
 		<xsl:variable name="resxCache" select="exsl:node-set($resxCacheFragment)/child::*"/>
 		<plx:root xmlns:plx="http://schemas.neumont.edu/CodeGeneration/PLiX">
 			<plx:namespace name="{$ProjectNamespace}">
+				<xsl:if test="@UseProjectNamespace='0' or @UseProjectNamespace='false'">
+					<xsl:attribute name="name">
+						<xsl:value-of select="$CustomToolNamespace"/>
+					</xsl:attribute>
+				</xsl:if>
 				<xsl:variable name="copyright" select="rsg:Copyright"/>
 				<xsl:if test="$copyright">
 					<plx:leadingInfo>
@@ -43,15 +49,26 @@
 						<plx:comment blankLine="true"/>
 					</plx:leadingInfo>
 				</xsl:if>
-				<plx:class name="ResourceStrings" partial="true" visibility="internal">
+				<xsl:variable name="classNameFragment">
+					<xsl:choose>
+						<xsl:when test="string(@ClassName)">
+							<xsl:value-of select="@ClassName"/>
+						</xsl:when>
+						<xsl:otherwise>
+							<xsl:text>ResourceStrings</xsl:text>
+						</xsl:otherwise>
+					</xsl:choose>
+				</xsl:variable>
+				<xsl:variable name="className" select="string($classNameFragment)"/>
+				<plx:class name="{$className}" partial="true" visibility="internal">
 					<plx:leadingInfo>
-						<plx:pragma type="region" data="ResourceStrings class"/>
+						<plx:pragma type="region" data="{$className} class"/>
 						<plx:docComment>
 							<summary>A helper class to insulate the rest of the code from direct resource manipulation.</summary>
 						</plx:docComment>
 					</plx:leadingInfo>
 					<plx:trailingInfo>
-						<plx:pragma type="closeRegion" data="ResourceStrings class"/>
+						<plx:pragma type="closeRegion" data="{$className} class"/>
 					</plx:trailingInfo>
 					<xsl:for-each select="rsg:ResourceString">
 						<xsl:variable name="resxDoc" select="$resxCache[@model=current()/@model]"/>
@@ -109,7 +126,7 @@
 							<plx:returns dataTypeName=".string"/>
 							<plx:get>
 								<plx:return>
-									<plx:callStatic name="GetString" dataTypeName="ResourceStrings">
+									<plx:callStatic name="GetString" dataTypeName="{$className}">
 										<plx:passParam type="in">
 											<plx:callStatic name="{@model}" dataTypeName="ResourceManagers" type="field"/>
 										</plx:passParam>

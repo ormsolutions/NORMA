@@ -5455,7 +5455,7 @@ namespace Neumont.Tools.ORM.ShapeModel
 			/// Create a new FactTypeShapeFixupListener
 			/// </summary>
 			public FactTypeShapeFixupListener()
-				: base((int)ORMDeserializationFixupPhase.ModifyStoredPresentationElements)
+				: base((int)ORMDeserializationFixupPhase.ValidateStoredPresentationElements)
 			{
 			}
 			/// <summary>
@@ -5726,7 +5726,7 @@ namespace Neumont.Tools.ORM.ShapeModel
 			/// Create a new ObjectifiedFactTypeNameShapeFixupListener
 			/// </summary>
 			public ObjectifiedFactTypeNameShapeFixupListener()
-				: base((int)ORMDeserializationFixupPhase.ModifyStoredPresentationElements)
+				: base((int)ORMDeserializationFixupPhase.ValidateStoredPresentationElements)
 			{
 			}
 			/// <summary>

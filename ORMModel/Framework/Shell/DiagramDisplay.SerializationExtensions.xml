@@ -1,0 +1,101 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<se:CustomSerializedElements
+	xmlns:se="http://schemas.neumont.edu/ORM/SDK/SerializationExtensions"
+	xmlns:plx="http://schemas.neumont.edu/CodeGeneration/PLiX">
+	<se:Copyright name="Common Public License Copyright Notice">
+		<se:CopyrightLine>/**************************************************************************\</se:CopyrightLine>
+		<se:CopyrightLine>* Natural Object-Role Modeling Architect for Visual Studio                 *</se:CopyrightLine>
+		<se:CopyrightLine>*                                                                          *</se:CopyrightLine>
+		<se:CopyrightLine>* Copyright © Matthew Curland. All rights reserved.                        *</se:CopyrightLine>
+		<se:CopyrightLine>*                                                                          *</se:CopyrightLine>
+		<se:CopyrightLine>* The use and distribution terms for this software are covered by the      *</se:CopyrightLine>
+		<se:CopyrightLine>* Common Public License 1.0 (http://opensource.org/licenses/cpl) which     *</se:CopyrightLine>
+		<se:CopyrightLine>* can be found in the file CPL.txt at the root of this distribution.       *</se:CopyrightLine>
+		<se:CopyrightLine>* By using this software in any fashion, you are agreeing to be bound by   *</se:CopyrightLine>
+		<se:CopyrightLine>* the terms of this license.                                               *</se:CopyrightLine>
+		<se:CopyrightLine>*                                                                          *</se:CopyrightLine>
+		<se:CopyrightLine>* You must not remove this notice, or any other, from this software.       *</se:CopyrightLine>
+		<se:CopyrightLine>\**************************************************************************/</se:CopyrightLine>
+	</se:Copyright>
+	<se:DomainModel Class="DiagramDisplayDomainModel">
+		<se:Namespaces>
+			<se:Namespace Prefix="diagramDisplay" URI="http://schemas.neumont.edu/ORM/2008-11/DiagramDisplay" SchemaFile="DiagramDisplay.xsd" DefaultPrefix="true"/>
+		</se:Namespaces>
+		<se:RootElements>
+			<se:RootElement Class="DiagramDisplay"/>
+		</se:RootElements>
+	</se:DomainModel>
+	<se:Element Class="DiagramDisplay" Sealed="true">
+		<se:Attribute ID="SaveDiagramPosition">
+			<se:Condition>
+				<plx:unaryOperator type="booleanNot">
+					<plx:callThis name="SaveDiagramPosition" type="property"/>
+				</plx:unaryOperator>
+			</se:Condition>
+		</se:Attribute>
+		<se:Link Name="Diagram" RelationshipName="DiagramDisplayHasDiagramOrder" RoleName="Diagram" WriteStyle="PrimaryLinkElement" ForwardReferenceRolePlayerType="DiagramPlaceHolder"/>
+	</se:Element>
+	<se:Element Class="DiagramDisplayHasDiagramOrder" LinkOnly="true">
+		<se:Attribute ID="IsActiveDiagram" WriteStyle="NotWritten">
+			<se:Condition WriteCustomStorage="true" Name="IsActive">
+				<plx:binaryOperator type="booleanAnd">
+					<plx:left>
+						<plx:callThis name="IsActiveDiagram" type="property"/>
+					</plx:left>
+					<plx:right>
+						<plx:callInstance name="SaveDiagramPosition" type="property">
+							<plx:callObject>
+								<plx:callThis name="DiagramDisplay" type="property"/>
+							</plx:callObject>
+						</plx:callInstance>
+					</plx:right>
+				</plx:binaryOperator>
+			</se:Condition>
+		</se:Attribute>
+		<se:Attribute ID="CenterPoint" WriteStyle="NotWritten">
+			<se:Condition WriteCustomStorage="true">
+				<plx:binaryOperator type="booleanAnd">
+					<plx:left>
+						<plx:unaryOperator type="booleanNot">
+							<plx:callInstance name="IsEmpty" type="property">
+								<plx:callObject>
+									<plx:callThis name="CenterPoint" type="property"/>
+								</plx:callObject>
+							</plx:callInstance>
+						</plx:unaryOperator>
+					</plx:left>
+					<plx:right>
+						<plx:callInstance name="SaveDiagramPosition" type="property">
+							<plx:callObject>
+								<plx:callThis name="DiagramDisplay" type="property"/>
+							</plx:callObject>
+						</plx:callInstance>
+					</plx:right>
+				</plx:binaryOperator>
+			</se:Condition>
+		</se:Attribute>
+		<se:Attribute ID="ZoomFactor" WriteStyle="NotWritten">
+			<se:Condition WriteCustomStorage="true">
+				<plx:binaryOperator type="booleanAnd">
+					<plx:left>
+						<plx:binaryOperator type="inequality">
+							<plx:left>
+								<plx:callThis name="ZoomFactor" type="property"/>
+							</plx:left>
+							<plx:right>
+								<plx:value data="1" type="r4"/>
+							</plx:right>
+						</plx:binaryOperator>
+					</plx:left>
+					<plx:right>
+						<plx:callInstance name="SaveDiagramPosition" type="property">
+							<plx:callObject>
+								<plx:callThis name="DiagramDisplay" type="property"/>
+							</plx:callObject>
+						</plx:callInstance>
+					</plx:right>
+				</plx:binaryOperator>
+			</se:Condition>
+		</se:Attribute>
+	</se:Element>
+</se:CustomSerializedElements>

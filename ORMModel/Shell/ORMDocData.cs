@@ -126,7 +126,7 @@ namespace Neumont.Tools.ORM.Shell
 		/// </summary>
 		protected override IList<Type> GetDomainModels()
 		{
-			ICollection<Type> standardDomainModels = ORMDesignerPackage.GetStandardDomainModels();
+			ICollection<Type> standardDomainModels = ORMDesignerPackage.StandardDomainModels;
 			int standardCount = standardDomainModels.Count;
 			int count = standardCount;
 			IDictionary<string, ORMExtensionType> extensionDomainModels = myExtensionDomainModels;
@@ -204,11 +204,6 @@ namespace Neumont.Tools.ORM.Shell
 			{
 				this.RemoveModelingEventHandlers(isReload);
 
-				IDisposable propertyProviderService = this.myPropertyProviderService as IDisposable;
-				if (propertyProviderService != null)
-				{
-					propertyProviderService.Dispose();
-				}
 				// Null out the myPropertyProviderService field so that a new instance will be created
 				// with the new Store next time it is needed
 				this.myPropertyProviderService = null;
@@ -895,7 +890,7 @@ namespace Neumont.Tools.ORM.Shell
 					Debug.Assert(stream != null);
 
 					ORMDesignerPackage.VerifyRequiredExtensions(loadedExtensions);
-					stream = ExtensionManager.CleanupStream(stream, loadedExtensions.Values);
+					stream = ExtensionManager.CleanupStream(stream, ORMDesignerPackage.StandardDomainModels, loadedExtensions.Values);
 					myDocData.ReloadFromStream(stream);
 				}
 			}

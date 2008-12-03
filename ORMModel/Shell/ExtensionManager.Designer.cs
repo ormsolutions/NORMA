@@ -97,6 +97,7 @@ namespace Neumont.Tools.ORM.Shell
 			this.Controls.Add(this.lvExtensions);
 			this.MinimizeBox = false;
 			this.Name = "ExtensionManager";
+			this.ShowIcon = false;
 			this.ResumeLayout(false);
 
 		}

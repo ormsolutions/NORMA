@@ -2613,6 +2613,14 @@ namespace Neumont.Tools.ORM
 				return ResourceStrings.GetString(ResourceManagers.Diagram, "Diagram.Command.RenamePage");
 			}
 		}
+		/// <summary>The context menu command text and transaction name for reordering diagram.</summary>
+		public static string DiagramCommandReorderPages
+		{
+			get
+			{
+				return ResourceStrings.GetString(ResourceManagers.Diagram, "Diagram.Command.ReorderPages");
+			}
+		}
 		/// <summary>The context menu command text and transaction name for deleting diagram.</summary>
 		public static string DiagramCommandDeletePage
 		{
