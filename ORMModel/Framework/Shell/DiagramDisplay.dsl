@@ -35,7 +35,7 @@
 	<Classes>
 		<DomainClass Name="DiagramDisplay" Namespace="Neumont.Tools.Modeling.Shell" Id="14A6B724-7849-4D7D-A5C2-29910FFBB516" DisplayName="DiagramDisplay" InheritanceModifier="Sealed" Description="">
 			<Properties>
-				<DomainProperty Name="SaveDiagramPosition" DisplayName="SaveDiagramPosition" IsBrowsable="true" DefaultValue="true" Id="17AA2B64-3328-4420-8C68-34157D10DB77" Description="Save the most recent position and zoom information for each diagram in addition to diagram order.">
+				<DomainProperty Name="SaveDiagramPosition" DisplayName="SaveDiagramPositions" IsBrowsable="true" DefaultValue="true" Id="17AA2B64-3328-4420-8C68-34157D10DB77" Description="Save the most recent position and zoom information for each diagram in addition to diagram order.">
 					<Type>
 						<ExternalTypeMoniker Name="/System/Boolean"/>
 					</Type>

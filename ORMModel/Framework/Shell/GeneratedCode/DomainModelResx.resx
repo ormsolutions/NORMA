@@ -138,7 +138,7 @@
     <comment>Description for DomainProperty &apos;SaveDiagramPosition&apos; on DomainClass &apos;DiagramDisplay&apos;</comment>
   </data>
   <data name="Neumont.Tools.Modeling.Shell.DiagramDisplay/SaveDiagramPosition.DisplayName" xml:space="preserve">
-    <value>SaveDiagramPosition</value>
+    <value>SaveDiagramPositions</value>
     <comment>DisplayName for DomainProperty &apos;SaveDiagramPosition&apos; on DomainClass &apos;DiagramDisplay&apos;</comment>
   </data>
   <data name="Neumont.Tools.Modeling.Shell.DiagramPlaceHolder.Description" xml:space="preserve">

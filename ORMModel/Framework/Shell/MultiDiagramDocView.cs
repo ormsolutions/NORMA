@@ -557,7 +557,7 @@ namespace Neumont.Tools.Modeling.Shell
 					{
 						DomainDataDirectory dataDirectory = store.DomainDataDirectory;
 						DomainClassInfo classInfo;
-						classInfo = dataDirectory.FindDomainClass(DiagramDisplayHasDiagramOrder.DomainClassId);
+						classInfo = dataDirectory.FindDomainRelationship(DiagramDisplayHasDiagramOrder.DomainClassId);
 						if (classInfo != null)
 						{
 							// DiagramDisplay is an optional domain model, it may not be loaded in the store

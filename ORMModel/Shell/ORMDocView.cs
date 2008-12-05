@@ -413,6 +413,7 @@ namespace Neumont.Tools.ORM.Shell
 						LinkedElementCollection<Diagram> diagramOrder;
 						int selectedDiagramIndex;
 						if (null != (selectedDiagram = ContextMenuStrip.SelectedDiagram) &&
+							null != store.FindDomainModel(DiagramDisplayDomainModel.DomainModelId) &&
 							null != (displayContainer = DiagramDisplayHasDiagramOrder.GetDiagramDisplay(selectedDiagram)) &&
 							(selectedDiagramIndex = (diagramOrder = displayContainer.OrderedDiagramCollection).IndexOf(selectedDiagram)) < (diagramOrder.Count - 1))
 						{
