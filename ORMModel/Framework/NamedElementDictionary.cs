@@ -914,11 +914,12 @@ namespace Neumont.Tools.Modeling
 		/// ensures that the name dictionaries are correctly populated
 		/// after a model deserialization is completed.
 		/// </summary>
-		/// <param name="implicitFixupPhase">A fixup phase for adding implicitly
+		/// <param name="fixupPhase">A fixup phase for adding implicitly
 		/// created elements and populating the name dictionaries</param>
-		public static IDeserializationFixupListener GetFixupListener(int implicitFixupPhase)
+		/// <param name="elementDomainModel">The required domain model type for processed elements</param>
+		public static IDeserializationFixupListener GetFixupListener(int fixupPhase, DomainModelInfo elementDomainModel)
 		{
-			return new DeserializationFixupListener(implicitFixupPhase);
+			return new DeserializationFixupListener(fixupPhase, elementDomainModel);
 		}
 		/// <summary>
 		/// A listener class to validate and/or populate the ModelError
@@ -926,13 +927,20 @@ namespace Neumont.Tools.Modeling
 		/// </summary>
 		private sealed class DeserializationFixupListener : DeserializationFixupListener<INamedElementDictionaryLink>
 		{
+			private DomainModelInfo myDomainModelFilter;
 			/// <summary>
 			/// Create a new NamedElementDictionary.DeserializationFixupListener
 			/// </summary>
-			/// <param name="implicitFixupPhase">A fixup phase for adding implicitly
-			/// created elements and populating the name dictionaries</param>
-			public DeserializationFixupListener(int implicitFixupPhase) : base(implicitFixupPhase)
+			/// <param name="fixupPhase">The phase number for this listener</param>
+			/// <param name="elementDomainModel">The required domain model type for processed elements</param>
+			public DeserializationFixupListener(int fixupPhase, DomainModelInfo elementDomainModel) : base(fixupPhase)
 			{
+				myDomainModelFilter = elementDomainModel;
+			}
+			protected override bool VerifyElementType(ModelElement element)
+			{
+				DomainModelInfo modelFilter = myDomainModelFilter;
+				return (modelFilter != null) ? element.GetDomainClass().DomainModel == modelFilter : true;
 			}
 			/// <summary>
 			/// Add this element to the appropriate dictionary, and allow

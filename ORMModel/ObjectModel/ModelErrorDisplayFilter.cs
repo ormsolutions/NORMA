@@ -70,6 +70,7 @@ namespace Neumont.Tools.ORM.ObjectModel
 	#region ModelErrorDisplayFilter class
 	public partial class ModelErrorDisplayFilter : IXmlSerializable
 	{
+		#region Xml serialization names
 		private const string XMLCategoriesElement = "Categories";
 		private const string XMLIncludedErrorsElement = "IncludedErrors";
 		private const string XMLExcludedErrorsElement = "ExcludedErrors";
@@ -77,7 +78,8 @@ namespace Neumont.Tools.ORM.ObjectModel
 		private const string XMLPrefix = "orm";
 		private const string XMLModelReferenceAttribute = "ref";
 		private const char ListDelimiter = ' ';
-
+		#endregion // Xml serialization names
+		#region Member variables
 		private bool myIncludedErrorsChanged = false;
 		private bool myExcludedErrorsChanged = false;
 		private bool myExcludedCategoriesChanged = false;
@@ -87,7 +89,8 @@ namespace Neumont.Tools.ORM.ObjectModel
 		private Dictionary<Type, Type> myIncludedErrors;
 		private Dictionary<Type, Type> myExcludedErrors;
 		private Dictionary<Type, Type> myExcludedCategories;
-
+		#endregion // Member variables
+		#region Private Helper Methods
 		private Dictionary<Type, Type> ExcludedCategoriesDictionary
 		{
 			get
@@ -95,9 +98,9 @@ namespace Neumont.Tools.ORM.ObjectModel
 				if (!myExcludedCategoriesChanged)
 				{
 					myExcludedCategories = ParseList(myExcludedCategoriesList, myExcludedCategories);
-			}
+				}
 				return myExcludedCategories;
-		}
+			}
 		}
 		private Dictionary<Type, Type> IncludedErrorsDictionary
 		{
@@ -106,9 +109,9 @@ namespace Neumont.Tools.ORM.ObjectModel
 				if (!myIncludedErrorsChanged)
 				{
 					myIncludedErrors = ParseList(myIncludedErrorsList, myIncludedErrors);
-			}
+				}
 				return myIncludedErrors;
-		}
+			}
 		}
 		private Dictionary<Type, Type> ExcludedErrorsDictionary
 		{
@@ -117,9 +120,9 @@ namespace Neumont.Tools.ORM.ObjectModel
 				if (!myExcludedErrorsChanged)
 				{
 					myExcludedErrors = ParseList(myExcludedErrorsList, myExcludedErrors);
-			}
+				}
 				return myExcludedErrors;
-		}
+			}
 		}
 		private Dictionary<Type, Type> ParseList(string list, Dictionary<Type, Type> cache)
 		{
@@ -151,14 +154,14 @@ namespace Neumont.Tools.ORM.ObjectModel
 			return myExcludedCategoriesList;
 		}
 		private void SetExcludedCategoriesValue(string newValue)
-			{
+		{
 			myExcludedCategoriesList = newValue;
 			Dictionary<Type, Type> cache = ExcludedCategoriesDictionary;
 			if (cache != null)
-				{
+			{
 				cache.Clear();
-				}
 			}
+		}
 		private string GetExcludedErrorsValue()
 		{
 			return myExcludedErrorsList;
@@ -185,7 +188,41 @@ namespace Neumont.Tools.ORM.ObjectModel
 				cache.Clear();
 			}
 		}
+		private string GetValue(string myList, ref Dictionary<Type, Type> myCache)
+		{
+			string retVal = myList;
+			Dictionary<Type, Type> cache;
+			if ((cache = myCache) == null)
+			{
+				cache = myCache = new Dictionary<Type, Type>();
+			}
+			//write the cache to a string
+			retVal = string.Empty;
+			foreach (Type type in cache.Keys)
+			{
+				retVal += type.FullName + ListDelimiter;
+			}
+			return retVal;
+		}
+		private Type GetCategory(Type error)
+		{
+			Type category = null;
 
+			object[] atributes = error.GetCustomAttributes(typeof(ModelErrorDisplayFilterAttribute), true);
+			foreach (object o in atributes)
+			{
+				ModelErrorDisplayFilterAttribute attribute = o as ModelErrorDisplayFilterAttribute;
+				if (attribute != null)
+				{
+					category = attribute.Category;
+					break;
+				}
+			}
+
+			return category;
+		}
+		#endregion // Private Helper Methods
+		#region Public accessor methods
 		/// <summary>
 		/// Determines if an error should be displayed or not.
 		/// </summary>
@@ -217,20 +254,20 @@ namespace Neumont.Tools.ORM.ObjectModel
 			if (exclude)
 			{
 				if (!(dictionary.ContainsKey(category)))
-			{
+				{
 					myExcludedCategoriesChanged = true;
-				dictionary.Add(category, null);
-			}
-		}
-			else
-		{
-				if ((dictionary.ContainsKey(category)))
-			{
-					myExcludedCategoriesChanged = true;
-					dictionary.Remove(category);
-					}
+					dictionary.Add(category, null);
 				}
 			}
+			else
+			{
+				if ((dictionary.ContainsKey(category)))
+				{
+					myExcludedCategoriesChanged = true;
+					dictionary.Remove(category);
+				}
+			}
+		}
 		/// <summary>
 		/// Toggles an error type to include or exclude.
 		/// </summary>
@@ -252,7 +289,7 @@ namespace Neumont.Tools.ORM.ObjectModel
 
 				//flip whether to include or exclude the error in the sub-list
 				exclude = !exclude;
-				}
+			}
 			else
 			{
 				dictionary = ExcludedErrorsDictionary;
@@ -264,7 +301,7 @@ namespace Neumont.Tools.ORM.ObjectModel
 			}
 
 			if (exclude)
-				{
+			{
 				if (!(dictionary.ContainsKey(error)))
 				{
 					dictionary.Add(error, null);
@@ -300,12 +337,12 @@ namespace Neumont.Tools.ORM.ObjectModel
 				Dictionary<Type, Type> dictionary = IncludedErrorsDictionary;
 				return !(dictionary != null && dictionary.ContainsKey(error));
 			}
-				else
-				{
+			else
+			{
 				Dictionary<Type, Type> dictionary = ExcludedErrorsDictionary;
 				return (dictionary != null && dictionary.ContainsKey(error));
-				}
 			}
+		}
 		/// <summary>
 		/// Commit any changes pending from calls to ToggleCategory or ToggleError.
 		/// </summary>
@@ -328,40 +365,6 @@ namespace Neumont.Tools.ORM.ObjectModel
 			myExcludedErrorsChanged = false;
 			myIncludedErrorsChanged = false;
 		}
-		private string GetValue(string myList, ref Dictionary<Type, Type> myCache)
-		{
-			string retVal = myList;
-			Dictionary<Type, Type> cache;
-			if ((cache = myCache) == null)
-			{
-				cache = myCache = new Dictionary<Type, Type>();
-			}
-			//write the cache to a string
-			retVal = string.Empty;
-			foreach (Type type in cache.Keys)
-			{
-				retVal += type.FullName + ListDelimiter;
-			}
-			return retVal;
-		}
-		private Type GetCategory(Type error)
-		{
-			Type category = null;
-
-			object[] atributes = error.GetCustomAttributes(typeof(ModelErrorDisplayFilterAttribute), true);
-			foreach (object o in atributes)
-			{
-				ModelErrorDisplayFilterAttribute attribute = o as ModelErrorDisplayFilterAttribute;
-				if (attribute != null)
-				{
-					category = attribute.Category;
-					break;
-				}
-			}
-
-			return category;
-		}
-
 		/// <summary>
 		/// returns string.Empty
 		/// </summary>
@@ -370,7 +373,46 @@ namespace Neumont.Tools.ORM.ObjectModel
 		{
 			return ResourceStrings.ModelErrorDisplayFilteredText;
 		}
-
+		#endregion // Public accessor methods
+		#region Deserialization Fixup
+		/// <summary>
+		/// Return a deserialization fixup listener. The listener
+		/// verifies that the settings are not empty.
+		/// </summary>
+		public static IDeserializationFixupListener FixupListener
+		{
+			get
+			{
+				return new DisplayFilterFixupListener();
+			}
+		}
+		/// <summary>
+		/// Validate display filter contents
+		/// </summary>
+		private sealed class DisplayFilterFixupListener : DeserializationFixupListener<ModelErrorDisplayFilter>
+		{
+			/// <summary>
+			/// DisplayFilterFixupListener constructor
+			/// </summary>
+			public DisplayFilterFixupListener()
+				: base((int)ORMDeserializationFixupPhase.ValidateErrors)
+			{
+			}
+			/// <summary>
+			/// Process objectification elements
+			/// </summary>
+			protected sealed override void ProcessElement(ModelErrorDisplayFilter element, Store store, INotifyElementAdded notifyAdded)
+			{
+				if (!element.IsDeleted)
+				{
+					if (string.IsNullOrEmpty(element.myExcludedCategoriesList) && string.IsNullOrEmpty(element.myExcludedErrorsList) && string.IsNullOrEmpty(element.myIncludedErrorsList))
+					{
+						element.Delete();
+					}
+				}
+			}
+		}
+		#endregion // Deserialization Fixup
 		#region IXmlSerializable Implementation
 		XmlSchema IXmlSerializable.GetSchema()
 		{
@@ -445,7 +487,17 @@ namespace Neumont.Tools.ORM.ObjectModel
 							{
 								namespaces = new Dictionary<string, string>();
 							}
-							namespaces.Add(serializationInfo.GetCustomElementNamespaces()[0, 1], serializationInfo.GetType().Namespace);
+							string defaultPrefix = serializationInfo.DefaultElementPrefix;
+							string[,] namespaceInfo = serializationInfo.GetCustomElementNamespaces();
+							int infoCount = namespaceInfo.GetLength(0);
+							for (int i = 0; i < infoCount; ++i)
+							{
+								if (namespaceInfo[i, 0] == defaultPrefix)
+								{
+									namespaces.Add(namespaceInfo[i, 1], serializationInfo.GetType().Namespace);
+									break;
+								}
+							}
 						}
 					}
 					if (namespaces != null)
@@ -467,40 +519,60 @@ namespace Neumont.Tools.ORM.ObjectModel
 		}
 		void IXmlSerializable.WriteXml(XmlWriter writer)
 		{
-			string XmlNamespace = ORMCoreDomainModel.XmlNamespace;
-
-			writer.WriteStartElement(XMLPrefix, XMLElement, XmlNamespace);
+			writer.WriteStartElement(XMLPrefix, XMLElement, ORMCoreDomainModel.XmlNamespace);
 			writer.WriteAttributeString("id", "_" + this.Id);
 			writer.WriteAttributeString(XMLModelReferenceAttribute, "_" + Model.Id.ToString("D"));
 
-			writer.WriteStartElement(XMLPrefix, XMLCategoriesElement, XmlNamespace);
-			string[] types = myExcludedCategoriesList.Split(new char[] { ListDelimiter }, StringSplitOptions.RemoveEmptyEntries);
-			for (int i = 0; i < types.Length; ++i)
+			Dictionary<string, string[]> namespaceMap = null;
+			WriteTypeElements(writer, XMLCategoriesElement, myExcludedCategoriesList, ref namespaceMap);
+			WriteTypeElements(writer, XMLIncludedErrorsElement, myIncludedErrorsList, ref namespaceMap);
+			WriteTypeElements(writer, XMLExcludedErrorsElement, myExcludedErrorsList, ref namespaceMap);
+			writer.WriteEndElement();
+		}
+		/// <summary>
+		/// Write the elements for the given container information
+		/// </summary>
+		/// <param name="writer">The current writer</param>
+		/// <param name="containerElementName">The name of the container element to write</param>
+		/// <param name="typeList">A space-delimited list of type names</param>
+		/// <param name="xmlNamespaceMap">A map associating CLR namespace names with XML prefix and namespace values</param>
+		private void WriteTypeElements(XmlWriter writer, string containerElementName, string typeList, ref Dictionary<string, string[]> xmlNamespaceMap)
+		{
+			string[] types = typeList.Split(new char[] { ListDelimiter }, StringSplitOptions.RemoveEmptyEntries);
+			if (types != null && types.Length != 0)
 			{
-				string type = types[i];
-				writer.WriteElementString(XMLPrefix, type.Substring(type.LastIndexOf('.') + 1), XmlNamespace, string.Empty);
+				writer.WriteStartElement(XMLPrefix, containerElementName, ORMCoreDomainModel.XmlNamespace);
+				for (int i = 0; i < types.Length; ++i)
+				{
+					string typeName = types[i];
+					int namespaceDelimiterPosition = typeName.LastIndexOf('.');
+					string[] xmlNames = (xmlNamespaceMap ?? (xmlNamespaceMap = BuildXmlNamespaceMap()))[typeName.Substring(0, namespaceDelimiterPosition)];
+					writer.WriteElementString(xmlNames[0], typeName.Substring(typeName.LastIndexOf('.') + 1), xmlNames[1], string.Empty);
 				}
-			writer.WriteEndElement();
-
-			writer.WriteStartElement(XMLPrefix, XMLIncludedErrorsElement, XmlNamespace);
-			types = myIncludedErrorsList.Split(new char[] { ListDelimiter }, StringSplitOptions.RemoveEmptyEntries);
-			for (int i = 0; i < types.Length; ++i)
+				writer.WriteEndElement();
+			}
+		}
+		/// <summary>
+		/// Build a dictionary mapping a type namespace to an XML prefix and namespace
+		/// </summary>
+		private Dictionary<string, string[]> BuildXmlNamespaceMap()
+		{
+			Dictionary<string, string[]> retVal = new Dictionary<string,string[]>();
+			foreach (ICustomSerializedDomainModel serializationInfo in Utility.EnumerateDomainModels<ICustomSerializedDomainModel>(Store.DomainModels))
 			{
-				string type = types[i];
-				writer.WriteElementString(XMLPrefix, type.Substring(type.LastIndexOf('.') + 1), XmlNamespace, string.Empty);
+				string defaultPrefix = serializationInfo.DefaultElementPrefix;
+				string[,] namespaceInfo = serializationInfo.GetCustomElementNamespaces();
+				int infoCount = namespaceInfo.GetLength(0);
+				for (int i = 0; i < infoCount; ++i)
+				{
+					if (namespaceInfo[i, 0] == defaultPrefix)
+					{
+						retVal.Add(serializationInfo.GetType().Namespace, new string[]{defaultPrefix, namespaceInfo[i, 1]});
+						break;
+					}
 				}
-			writer.WriteEndElement();
-
-			writer.WriteStartElement(XMLPrefix, XMLExcludedErrorsElement, XmlNamespace);
-			types = myExcludedErrorsList.Split(new char[] { ListDelimiter }, StringSplitOptions.RemoveEmptyEntries);
-			for (int i = 0; i < types.Length; ++i)
-			{
-				string type = types[i];
-				writer.WriteElementString(XMLPrefix, type.Substring(type.LastIndexOf('.') + 1), XmlNamespace, string.Empty);
-				}
-			writer.WriteEndElement();
-
-			writer.WriteEndElement();
+			}
+			return retVal;
 		}
 		#endregion // IXmlSerializable Implementation
 	}

@@ -16,6 +16,7 @@
 
 using System;
 using System.Collections.Generic;
+using Microsoft.VisualStudio.Modeling;
 using Neumont.Tools.Modeling;
 
 namespace Neumont.Tools.ORM.ObjectModel
@@ -26,13 +27,14 @@ namespace Neumont.Tools.ORM.ObjectModel
 		/// <summary>
 		/// Implements <see cref="IDeserializationFixupListenerProvider.DeserializationFixupListenerCollection"/>
 		/// </summary>
-		protected static IEnumerable<IDeserializationFixupListener> DeserializationFixupListenerCollection
+		protected IEnumerable<IDeserializationFixupListener> DeserializationFixupListenerCollection
 		{
 			get
 			{
+				DomainModelInfo contextDomainModel = DomainModelInfo;
 				yield return SetComparisonConstraint.FixupListener;
 				yield return SetConstraint.FixupListener;
-				yield return NamedElementDictionary.GetFixupListener((int)ORMDeserializationFixupPhase.ValidateElementNames);
+				yield return NamedElementDictionary.GetFixupListener((int)ORMDeserializationFixupPhase.ValidateElementNames, contextDomainModel);
 				yield return SubtypeFact.FixupListener;
 				yield return FactType.NameFixupListener;
 				yield return FactType.UnaryFixupListener;
@@ -43,9 +45,10 @@ namespace Neumont.Tools.ORM.ObjectModel
 				yield return ORMModel.DataTypesFixupListener;
 				yield return ObjectType.IsIndependentFixupListener;
 				yield return ObjectType.PreferredIdentificationPathFixupListener;
-				yield return ModelError.FixupListener;
+				yield return ModelError.GetFixupListener((int)ORMDeserializationFixupPhase.ValidateErrors, contextDomainModel);
 				yield return NameAlias.FixupListener;
 				yield return NameGenerator.FixupListener;
+				yield return ModelErrorDisplayFilter.FixupListener;
 			}
 		}
 		IEnumerable<IDeserializationFixupListener> IDeserializationFixupListenerProvider.DeserializationFixupListenerCollection

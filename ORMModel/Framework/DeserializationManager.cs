@@ -207,7 +207,10 @@ namespace Neumont.Tools.Modeling
 			TElement typedElement = element as TElement;
 			if (typedElement != null)
 			{
-				ElementCollection.Add(typedElement);
+				if (VerifyElementType(element))
+				{
+					ElementCollection.Add(typedElement);
+				}
 			}
 		}
 		void INotifyElementAdded.ElementAdded(ModelElement element)
@@ -259,6 +262,20 @@ namespace Neumont.Tools.Modeling
 		/// <param name="store">The context store</param>
 		protected virtual void PhaseCompleted(Store store)
 		{
+		}
+		/// <summary>
+		/// Verify type information about the provided element. This filter is applied
+		/// after the <paramref name="element"/> is known to be of type <typeparamref name="TElement"/>.
+		/// Although the <see cref="ModelElement"/> instance is provided, no properties or
+		/// relationships generally associated with a fully constructed element are available
+		/// at this point. The only reliable information is available through <see cref="M:ModelElement.GetClassInfo"/>
+		/// and <see cref="P:ModelElement.Store"/>.
+		/// </summary>
+		/// <param name="element">The element to verify</param>
+		/// <returns><see langword="true"/> to process the element.</returns>
+		protected virtual bool VerifyElementType(ModelElement element)
+		{
+			return true;
 		}
 		#endregion // DeserializationFixupListener specific
 	}

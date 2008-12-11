@@ -381,16 +381,15 @@ namespace Neumont.Tools.ORM.ObjectModel
 				return;
 			}
 
-			IORMToolTaskProvider provider = (error.Store as IORMToolServices).TaskProvider;
-			IORMToolTaskItem newTask = provider.CreateTask();
-			newTask.ElementLocator = error as IRepresentModelElements;
-			newTask.Text = error.ErrorText;
-			Debug.Assert(error.TaskData == null);
-			error.TaskData = newTask;
-
 			ModelErrorDisplayFilter filter = error.Model.ModelErrorDisplayFilter;
 			if (filter == null || filter.ShouldDisplay(error))
 			{
+				IORMToolTaskProvider provider = (error.Store as IORMToolServices).TaskProvider;
+				IORMToolTaskItem newTask = provider.CreateTask();
+				newTask.ElementLocator = error as IRepresentModelElements;
+				newTask.Text = error.ErrorText;
+				Debug.Assert(error.TaskData == null);
+				error.TaskData = newTask;
 				provider.AddTask(newTask);
 			}
 		}
@@ -406,15 +405,15 @@ namespace Neumont.Tools.ORM.ObjectModel
 		#endregion // ModelError specific
 		#region Deserialization Fixup
 		/// <summary>
-		/// Return a deserialization fixup listener. The listener
-		/// validates all model errors and adds errors to the task provider.
+		/// Return a deserialization fixup listener. Return an error fixup listener
+		/// for errors in the specified domain model. The fixup listener validates
+		/// all model errors and adds errors to the task provider.
 		/// </summary>
-		public static IDeserializationFixupListener FixupListener
+		/// <param name="fixupPhase">The phase for this listener</param>
+		/// <param name="errorDomainModel">The domain model that owns the errors</param>
+		public static IDeserializationFixupListener GetFixupListener(int fixupPhase, DomainModelInfo errorDomainModel)
 		{
-			get
-			{
-				return new ModelErrorFixupListener();
-			}
+			return new ModelErrorFixupListener(fixupPhase, errorDomainModel);
 		}
 		/// <summary>
 		/// A listener class to validate and/or populate the ModelError
@@ -422,12 +421,16 @@ namespace Neumont.Tools.ORM.ObjectModel
 		/// </summary>
 		private sealed class ModelErrorFixupListener : DeserializationFixupListener<IModelErrorOwner>
 		{
+			private DomainModelInfo myDomainModelFilter;
 			/// <summary>
 			/// Create a new ModelErrorFixupListener
 			/// </summary>
-			public ModelErrorFixupListener()
-				: base((int)ORMDeserializationFixupPhase.ValidateErrors)
+			/// <param name="fixupPhase">The phase for this listener</param>
+			/// <param name="errorDomainModel">The domain model that owns the errors</param>
+			public ModelErrorFixupListener(int fixupPhase, DomainModelInfo errorDomainModel)
+				: base(fixupPhase)
 			{
+				myDomainModelFilter = errorDomainModel;
 			}
 			/// <summary>
 			/// Defer to the IModelErrorOwner.ValidateErrors method
@@ -441,19 +444,29 @@ namespace Neumont.Tools.ORM.ObjectModel
 				element.ValidateErrors(notifyAdded);
 			}
 			/// <summary>
-			/// Add all model errors in the specific store to
-			/// the task list.
+			/// Verify that the element belongs to the correct domain model
 			/// </summary>
-			/// <param name="store">The context store</param>
+			protected override bool VerifyElementType(ModelElement element)
+			{
+				DomainModelInfo modelFilter = myDomainModelFilter;
+				return (modelFilter != null) ? element.GetDomainClass().DomainModel == modelFilter : true;
+			}
+			/// <summary>
+			/// Add all model errors in the specific store that match the specified domain
+			/// model to the task provider.
+			/// </summary>
 			protected sealed override void PhaseCompleted(Store store)
 			{
+				DomainModelInfo modelFilter = myDomainModelFilter;
 				IList<ModelHasError> errorLinks = store.ElementDirectory.FindElements<ModelHasError>();
 				int linkCount = errorLinks.Count;
 				for (int i = 0; i < linkCount; ++i)
 				{
 					ModelHasError errorLink = errorLinks[i];
 					ModelError error = errorLink.Error;
-					if (!errorLink.IsDeleted && !error.IsDeleted)
+					if (!errorLink.IsDeleted &&
+						!error.IsDeleted &&
+						(modelFilter == null || error.GetDomainClass().DomainModel == modelFilter))
 					{
 						// Make sure the text is up to date
 						error.GenerateErrorText();

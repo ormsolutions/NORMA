@@ -1701,7 +1701,7 @@ namespace Neumont.Tools.ORM.ObjectModel
 		/// returned elements will all come from a
 		/// generated metarole collections.
 		/// </summary>
-		protected abstract IList<ORMNamedElement> DuplicateElements { get;}
+		protected abstract IList<ModelElement> DuplicateElements { get;}
 		/// <summary>
 		/// Get the text to display the duplicate error information. Replacement
 		/// field {0} is replaced by the model name, field {1} is replaced by the
@@ -1709,12 +1709,26 @@ namespace Neumont.Tools.ORM.ObjectModel
 		/// </summary>
 		protected abstract string ErrorFormatText { get;}
 		/// <summary>
+		/// Get the name of an element. The default implementation uses
+		/// the <see cref="DomainClassInfo.NameDomainProperty"/> to determine
+		/// the name. Derived classes can produce a more efficient implementation
+		/// if they know the actual element type.
+		/// </summary>
+		/// <param name="element"></param>
+		/// <returns></returns>
+		protected virtual string GetElementName(ModelElement element)
+		{
+			DomainPropertyInfo nameProperty = element.GetDomainClass().NameDomainProperty;
+			Debug.Assert(nameProperty != null, "Duplicate names should only be checked on elements with names");
+			return nameProperty.GetValue(element) as string;
+		}
+		/// <summary>
 		/// Verify that all of the duplicate elements attached to
 		/// this error actually have the same name.
 		/// </summary>
 		/// <returns>true if validation succeeded. false is
 		/// returned if testElement does not have a name specified</returns>
-		public bool ValidateDuplicates(ORMNamedElement testElement)
+		public bool ValidateDuplicates(ModelElement testElement)
 		{
 			return ValidateDuplicates(testElement, null);
 		}
@@ -1727,9 +1741,9 @@ namespace Neumont.Tools.ORM.ObjectModel
 		/// <param name="duplicates">Pre-fetched duplicates, or null</param>
 		/// <returns>true if validation succeeded. false is
 		/// returned if testElement does not have a name specified</returns>
-		private bool ValidateDuplicates(ORMNamedElement testElement, IList<ORMNamedElement> duplicates)
+		private bool ValidateDuplicates(ModelElement testElement, IList<ModelElement> duplicates)
 		{
-			string testName = testElement.Name;
+			string testName = GetElementName(testElement);
 			if (testName.Length > 0)
 			{
 				if (duplicates == null)
@@ -1739,8 +1753,8 @@ namespace Neumont.Tools.ORM.ObjectModel
 				int duplicatesCount = duplicates.Count;
 				for (int i = 0; i < duplicatesCount; ++i)
 				{
-					ORMNamedElement compareTo = duplicates[i];
-					if (compareTo != testElement && compareTo.Name != testElement.Name)
+					ModelElement compareTo = duplicates[i];
+					if (compareTo != testElement && GetElementName(compareTo) != testName)
 					{
 						return false;
 					}
@@ -1756,8 +1770,8 @@ namespace Neumont.Tools.ORM.ObjectModel
 		/// </summary>
 		public override void GenerateErrorText()
 		{
-			IList<ORMNamedElement> elements = DuplicateElements;
-			string elementName = (elements.Count != 0) ? (elements[0]).Name : string.Empty;
+			IList<ModelElement> elements = DuplicateElements;
+			string elementName = (elements.Count != 0) ? GetElementName(elements[0]) : string.Empty;
 			ORMModel model = Model;
 			string modelName = (model != null) ? model.Name : string.Empty;
 			string newText = string.Format(CultureInfo.InvariantCulture, ErrorFormatText, modelName, elementName);
@@ -1784,19 +1798,23 @@ namespace Neumont.Tools.ORM.ObjectModel
 		/// <summary>
 		/// Implements <see cref="IRepresentModelElements.GetRepresentedElements"/>
 		/// </summary>
-		protected new ORMNamedElement[] GetRepresentedElements()
+		protected new ModelElement[] GetRepresentedElements()
 		{
 			// Pick up all roles played directly by this element. This
 			// will get ObjectTypeCollection, FactTypeCollection, etc, but
 			// not the owning model. These are non-aggregating roles.
-			IList<ORMNamedElement> elements = DuplicateElements;
+			IList<ModelElement> elements = DuplicateElements;
 			int count = elements.Count;
 			if (count == 0)
 			{
 				return null;
 			}
-			ORMNamedElement[] retVal = new ORMNamedElement[count];
-			elements.CopyTo(retVal, 0);
+			ModelElement[] retVal = elements as ModelElement[];
+			if (retVal == null)
+			{
+				retVal = new ModelElement[count];
+				elements.CopyTo(retVal, 0);
+			}
 			return retVal;
 		}
 		ModelElement[] IRepresentModelElements.GetRepresentedElements()
@@ -1830,7 +1848,7 @@ namespace Neumont.Tools.ORM.ObjectModel
 		{
 			if (!IsDeleted)
 			{
-				IList<ORMNamedElement> duplicates = DuplicateElements;
+				IList<ModelElement> duplicates = DuplicateElements;
 				// Note that existing name error links are validated when
 				// the element is loaded via the IDuplicateNameCollectionManager
 				// implementation(s) on the model itself. All remaining duplicate
@@ -1868,12 +1886,19 @@ namespace Neumont.Tools.ORM.ObjectModel
 		/// Get the duplicate elements represented by this DuplicateNameError
 		/// </summary>
 		/// <returns>ObjectTypeCollection</returns>
-		protected override IList<ORMNamedElement> DuplicateElements
+		protected override IList<ModelElement> DuplicateElements
 		{
 			get
 			{
 				return ObjectTypeCollection.ToArray();
 			}
+		}
+		/// <summary>
+		/// Provide an efficient name lookup
+		/// </summary>
+		protected override string GetElementName(ModelElement element)
+		{
+			return ((ORMNamedElement)element).Name;
 		}
 		/// <summary>
 		/// Get the text to display the duplicate error information. Replacement
@@ -1916,12 +1941,19 @@ namespace Neumont.Tools.ORM.ObjectModel
 		/// Get the duplicate elements represented by this DuplicateNameError
 		/// </summary>
 		/// <returns>ConstraintCollection</returns>
-		protected override IList<ORMNamedElement> DuplicateElements
+		protected override IList<ModelElement> DuplicateElements
 		{
 			get
 			{
-				return ConstraintCollection;
+				return ConstraintCollection as IList<ModelElement>;
 			}
+		}
+		/// <summary>
+		/// Provide an efficient name lookup
+		/// </summary>
+		protected override string GetElementName(ModelElement element)
+		{
+			return ((ORMNamedElement)element).Name;
 		}
 		/// <summary>
 		/// Get the text to display the duplicate error information. Replacement
@@ -2136,9 +2168,16 @@ namespace Neumont.Tools.ORM.ObjectModel
 		/// <summary>
 		/// Returns the list of DuplicateElements 
 		/// </summary>
-		protected override IList<ORMNamedElement> DuplicateElements
+		protected override IList<ModelElement> DuplicateElements
 		{
 			get { return RecognizedPhraseCollection.ToArray(); }
+		}
+		/// <summary>
+		/// Provide an efficient name lookup
+		/// </summary>
+		protected override string GetElementName(ModelElement element)
+		{
+			return ((ORMNamedElement)element).Name;
 		}
 		/// <summary>
 		/// Text to be displayed when an error is thrown.
