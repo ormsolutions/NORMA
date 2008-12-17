@@ -29,7 +29,7 @@ using System;
 using System.Collections.Generic;
 namespace Neumont.Tools.ORM.Views.BarkerERView
 {
-	partial class AssociationConnector : IReconfigureableLink
+	partial class AssociationConnector : IReconfigureableLink, IConfigureAsChildShape
 	{
 		#region Customize appearance
 		/// <summary>
@@ -82,11 +82,16 @@ namespace Neumont.Tools.ORM.Views.BarkerERView
 		#endregion // Customize appearance
 		#region reconfigure
 		/// <summary>
-		/// Override of <see cref="ORMBaseBinaryLinkShape.ConfiguringAsChildOf"/>
+		/// Implements <see cref="IConfigureAsChildShape.ConfiguringAsChildOf"/>
 		/// </summary>
-		public override void ConfiguringAsChildOf(Neumont.Tools.ORM.ShapeModel.ORMDiagram diagram, bool createdDuringViewFixup)
+		protected new void ConfiguringAsChildOf(NodeShape parentShape, bool createdDuringViewFixup)
 		{
+			base.ConfiguringAsChildOf(parentShape, createdDuringViewFixup);
 			Reconfigure(null);
+		}
+		void IConfigureAsChildShape.ConfiguringAsChildOf(NodeShape parentShape, bool createdDuringViewFixup)
+		{
+			ConfiguringAsChildOf(parentShape, createdDuringViewFixup);
 		}
 		/// <summary>
 		/// Associate the <see cref="EntityRelationshipShapeGeometry"/> shape geometry with this connector shape.

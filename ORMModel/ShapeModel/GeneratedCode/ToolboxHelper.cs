@@ -133,6 +133,7 @@ namespace Neumont.Tools.ORM.ShapeModel
 				store.LoadDomainModels(typeof(DslDiagrams::CoreDesignSurfaceDomainModel),
 					typeof(global::Neumont.Tools.Modeling.FrameworkDomainModel),
 					typeof(global::Neumont.Tools.ORM.ObjectModel.ORMCoreDomainModel),
+					typeof(global::Microsoft.VisualStudio.Modeling.Diagrams.CoreDesignSurfaceDomainModel),
 					typeof(global::Neumont.Tools.ORM.ShapeModel.ORMShapeDomainModel));
 				global::System.Resources.ResourceManager resourceManager = global::Neumont.Tools.ORM.ShapeModel.ORMShapeDomainModel.SingletonResourceManager;
 				global::System.Globalization.CultureInfo resourceCulture = global::System.Globalization.CultureInfo.CurrentUICulture;

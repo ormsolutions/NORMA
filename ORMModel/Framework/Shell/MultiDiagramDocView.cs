@@ -26,6 +26,7 @@ using Microsoft.VisualStudio.Modeling;
 using Microsoft.VisualStudio.Modeling.Shell;
 using Microsoft.VisualStudio.Modeling.Diagrams;
 using Neumont.Tools.Modeling.Design;
+using System.Drawing.Design;
 
 namespace Neumont.Tools.Modeling.Shell
 {
@@ -51,6 +52,10 @@ namespace Neumont.Tools.Modeling.Shell
 		private readonly Dictionary<Diagram, int> myDiagramRefCounts;
 		private MultiDiagramDocViewControl myDocViewControl;
 		private bool myVerifyPageOrder;
+		/// <summary>
+		/// Determine when the toolbox should be refreshed
+		/// </summary>
+		private Type myLastDiagramType;
 		private MultiDiagramDocViewControl DocViewControl
 		{
 			get
@@ -73,6 +78,28 @@ namespace Neumont.Tools.Modeling.Shell
 		/// </summary>
 		public static readonly Size DiagramImageSize = new Size(DiagramImageWidth, DiagramImageHeight);
 		#endregion // Constants
+		#region Base Overrides
+		/// <summary>
+		/// Enable the set of toolbox items to change when the toolbox type changes
+		/// or the document is reloaded.
+		/// </summary>
+		protected override void OnSelectionChanged(EventArgs e)
+		{
+			base.OnSelectionChanged(e);
+			Diagram diagram = CurrentDiagram;
+			Type diagramType;
+			if (diagram != null &&
+				(diagramType = diagram.GetType()) != myLastDiagramType)
+			{
+				myLastDiagramType = diagramType;
+				IToolboxService toolboxService;
+				if (this.UpdateToolboxFilters(ToolboxItemFilterType.Diagram, true) && (null != (toolboxService = base.ToolboxService)))
+				{
+					toolboxService.Refresh();
+				}
+			}
+		}
+		#endregion // Base Overrides
 		#region Public Properties
 		#region Context Menu support
 		/// <summary>
@@ -545,6 +572,10 @@ namespace Neumont.Tools.Modeling.Shell
 		{
 			if (0 != (reasons & EventSubscriberReasons.DocumentLoaded))
 			{
+				// Force toolbox refresh on next selection change
+				myLastDiagramType = null;
+
+				// Attach extra properties and events if we're tracking diagram order and position
 				Store store = this.Store;
 				if (null != store.FindDomainModel(DiagramDisplayDomainModel.DomainModelId))
 				{

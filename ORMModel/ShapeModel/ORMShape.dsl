@@ -36,6 +36,11 @@
 				<AttributeParameter Value="&quot;3EAE649F-E654-4D04-8289-C25D2C0322D8&quot;/*Neumont.Tools.ORM.ObjectModel.ORMCoreDomainModel*/"/>
 			</Parameters>
 		</ClrAttribute>
+		<ClrAttribute Name="DslModeling::ExtendsDomainModel">
+			<Parameters>
+				<AttributeParameter Value="&quot;91D59B16-E488-4A28-8D51-59273AD5BF2E&quot;/*Microsoft.VisualStudio.Modeling.Diagrams.CoreDesignSurfaceDomainModel*/"/>
+			</Parameters>
+		</ClrAttribute>
 	</Attributes>
 
 	<Relationships>

@@ -268,7 +268,7 @@ namespace Neumont.Tools.Modeling
 			return false;
 		}
 		#endregion // IsDescendantOrSelf methods
-		#region EnumerateDomainModels methods
+		#region EnumerateDomainModels method
 		/// <summary>
 		/// Enumerate the provided domain models, filtering on the specifies type
 		/// </summary>
@@ -286,7 +286,46 @@ namespace Neumont.Tools.Modeling
 				}
 			}
 		}
-		#endregion // EnumerateDomainModels methods
+		#endregion // EnumerateDomainModels method
+		#region GetSupportingDomainModels method
+		/// <summary>
+		/// Return all domain models that support the provided interface. Use instead of
+		/// <see cref="EnumerateDomainModels"/> to cache the results.
+		/// </summary>
+		/// <typeparam name="T">The type of interface to test support for on the element</typeparam>
+		/// <param name="domainModels">An enumeration of domain models</param>
+		/// <returns>An array with element type <typeparamref name="T"/></returns>
+		public static T[] GetTypedDomainModels<T>(IEnumerable<DomainModel> domainModels) where T : class
+		{
+			int count = 0;
+			foreach (DomainModel domainModel in domainModels)
+			{
+				if (domainModel is T)
+				{
+					++count;
+				}
+			}
+			if (count == 0)
+			{
+				return null;
+			}
+			T[] retVal = new T[count];
+			int index = 0;
+			foreach (DomainModel domainModel in domainModels)
+			{
+				T typedModel = domainModel as T;
+				if (typedModel != null)
+				{
+					retVal[index] = typedModel;
+					if (++index == count)
+					{
+						break;
+					}
+				}
+			}
+			return retVal;
+		}
+		#endregion // GetSupportingDomainModels method
 		#region GetLocalizedEnumName method
 		/// <summary>
 		/// Retrieve localized names for all values in an <paramref name="enumType"/>

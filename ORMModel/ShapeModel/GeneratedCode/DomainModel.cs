@@ -33,6 +33,7 @@ namespace Neumont.Tools.ORM.ShapeModel
 	/// </summary>
 	[DslModeling::ExtendsDomainModel("F60BC3F1-C38E-4C7D-9EE5-9211DB26CB45"/*Neumont.Tools.Modeling.FrameworkDomainModel*/)]
 	[DslModeling::ExtendsDomainModel("3EAE649F-E654-4D04-8289-C25D2C0322D8"/*Neumont.Tools.ORM.ObjectModel.ORMCoreDomainModel*/)]
+	[DslModeling::ExtendsDomainModel("91D59B16-E488-4A28-8D51-59273AD5BF2E"/*Microsoft.VisualStudio.Modeling.Diagrams.CoreDesignSurfaceDomainModel*/)]
 	[DslDesign::DisplayNameResource("Neumont.Tools.ORM.ShapeModel.ORMShapeDomainModel.DisplayName", typeof(global::Neumont.Tools.ORM.ShapeModel.ORMShapeDomainModel), "Neumont.Tools.ORM.GeneratedCode.ShapeDomainModelResx")]
 	[DslDesign::DescriptionResource("Neumont.Tools.ORM.ShapeModel.ORMShapeDomainModel.Description", typeof(global::Neumont.Tools.ORM.ShapeModel.ORMShapeDomainModel), "Neumont.Tools.ORM.GeneratedCode.ShapeDomainModelResx")]
 	[global::System.CLSCompliant(true)]

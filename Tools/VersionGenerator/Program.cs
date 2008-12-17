@@ -81,6 +81,8 @@ namespace Neumont.Tools.ORM.SDK
 			if (!versionWXI.Exists || versionWXI.LastWriteTime.Date != today || versionWXI.LastWriteTime < versionConfigLastModified)
 			{
 				XmlWriterSettings settings = new XmlWriterSettings();
+				settings.Indent = true;
+				settings.IndentChars = "\t";
 				settings.CloseOutput = true;
 				using (XmlWriter writer = XmlWriter.Create(versionWXI.CreateText(), settings))
 				{
@@ -89,6 +91,8 @@ namespace Neumont.Tools.ORM.SDK
 					writer.WriteStartElement("Include", "http://schemas.microsoft.com/wix/2006/wi");
 					writer.WriteProcessingInstruction("define", string.Format("MajorMinorVersion=\"{0}.{1}\"", Config.MajorVersion, Config.MinorVersion));
 					writer.WriteProcessingInstruction("define", string.Format("MajorVersionHexits=\"{0:d2}\"", Config.MajorVersion));
+					writer.WriteProcessingInstruction("define", string.Format("BuildVersion=\"{0}\"", build));
+					writer.WriteProcessingInstruction("define", string.Format("RevisionVersion=\"{0}\"", revision));
 					writer.WriteProcessingInstruction("define", string.Format("ProductVersion=\"{0}\"", unquotedFileVersion));
 					writer.WriteProcessingInstruction("define", string.Format("VersionGuidSuffix=\"$(var.Debug)$(var.ExperimentalHive)$(var.Architecture)-$(var.MajorVersionHexits){0:d2}{1:d4}{2:d4}\"", Config.MinorVersion, build, revision));
 					writer.WriteProcessingInstruction("define", "ReleaseDescription=" + quotedReleaseDescription);
@@ -100,6 +104,30 @@ namespace Neumont.Tools.ORM.SDK
 			else
 			{
 				Console.WriteLine(statusPrefix + "Version.wxi already up to date.");
+			}
+			#endregion
+
+			#region Version.bat
+			FileInfo versionBAT = new FileInfo("Version.bat");
+			if (!versionBAT.Exists || versionBAT.LastWriteTime.Date != today || versionBAT.LastWriteTime < versionConfigLastModified)
+			{
+				using (StreamWriter writer = versionBAT.CreateText())
+				{
+					writer.WriteLine(":: " + generatedWarning);
+					writer.Write("@SET ProductMajorVersion=");
+					writer.WriteLine(Config.MajorVersion);
+					writer.Write("@SET ProductMinorVersion=");
+					writer.WriteLine(Config.MinorVersion);
+					writer.Write("@SET ProductBuildVersion=");
+					writer.WriteLine(build);
+					writer.Write("@SET ProductRevisionVersion=");
+					writer.WriteLine(revision);
+				}
+				Console.WriteLine(statusPrefix + "Generated Version.bat.");
+			}
+			else
+			{
+				Console.WriteLine(statusPrefix + "Version.bat already up to date.");
 			}
 			#endregion
 

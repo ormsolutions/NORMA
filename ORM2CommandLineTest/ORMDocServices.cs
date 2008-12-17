@@ -44,6 +44,11 @@ namespace Neumont.Tools.ORM.SDK.TestEngine
 					return this;
 				}
 			}
+			T[] IFrameworkServices.GetTypedDomainModelProviders<T>()
+			{
+				// This is implemented on a per-store basis, we don't implement it on the document services
+				return null;
+			}
 			IORMModelErrorActivationService IORMToolServices.ModelErrorActivationService
 			{
 				get
@@ -142,13 +147,13 @@ namespace Neumont.Tools.ORM.SDK.TestEngine
 			#region IPropertyProviderService Implementation
 			void IPropertyProviderService.GetProvidedProperties(ModelElement extendableElement, System.ComponentModel.PropertyDescriptorCollection properties)
 			{
-				// We don't yet need to support this for testing.
+				// This is implemented on a per-store basis, we don't implement it on the testing document
 			}
 			void IPropertyProviderService.AddOrRemovePropertyProvider<TExtendableElement>(PropertyProvider propertyProvider, bool includeSubtypes, EventHandlerAction action)
 			{
-				// We don't yet need to support this for testing.
+				// This is implemented on a per-store basis, we don't implement it on the testing document
 			}
-			#endregion // IORMPropertyProviderService Implementation
+			#endregion // IPropertyProviderService Implementation
 			#region IServiceProvider Implementation
 			object IServiceProvider.GetService(Type serviceType)
 			{

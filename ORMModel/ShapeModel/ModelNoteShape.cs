@@ -31,7 +31,7 @@ using Neumont.Tools.Modeling;
 namespace Neumont.Tools.ORM.ShapeModel
 {
 	#region ModelNoteShape class
-	public partial class ModelNoteShape
+	public partial class ModelNoteShape : IConfigureAsChildShape
 	{
 		private static AutoSizeTextField myTextField;
 		// Now combined in DSL InitialWidth and InitialHeight
@@ -93,11 +93,16 @@ namespace Neumont.Tools.ORM.ShapeModel
 			}
 		}
 		/// <summary>
-		/// Ensure initial size
+		/// Implements <see cref="IConfigureAsChildShape.ConfiguringAsChildOf"/>
+		/// Ensure initial size.
 		/// </summary>
-		public override void ConfiguringAsChildOf(NodeShape parent, bool createdDuringViewFixup)
+		protected void ConfiguringAsChildOf(NodeShape parentShape, bool createdDuringViewFixup)
 		{
 			AutoResize();
+		}
+		void IConfigureAsChildShape.ConfiguringAsChildOf(NodeShape parentShape, bool createdDuringViewFixup)
+		{
+			ConfiguringAsChildOf(parentShape, createdDuringViewFixup);
 		}
 		/// <summary>
 		/// Show a shadow if this <see cref="ModelNoteShape"/> represents an <see cref="ModelNote"/> that appears

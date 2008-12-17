@@ -763,24 +763,47 @@ namespace Neumont.Tools.Modeling.Shell.DynamicSurveyTreeGrid
 				/// </summary>
 				public void OnDragEvent(object sender, int row, int column, DragEventType eventType, DragEventArgs args)
 				{
+					switch (TranslateRow(ref row))
+					{
+						case RowType.Neutral:
+							myNeutralBranch.OnDragEvent(sender, row, column, eventType, args);
+							break;
+					}
 				}
 				/// <summary>
 				/// Implements <see cref="IBranch.OnGiveFeedback"/>
 				/// </summary>
 				public void OnGiveFeedback(GiveFeedbackEventArgs args, int row, int column)
 				{
+					switch (TranslateRow(ref row))
+					{
+						case RowType.Neutral:
+							myNeutralBranch.OnGiveFeedback(args, row, column);
+							break;
+					}
 				}
 				/// <summary>
 				/// Implements <see cref="IBranch.OnQueryContinueDrag"/>
 				/// </summary>
 				public void OnQueryContinueDrag(QueryContinueDragEventArgs args, int row, int column)
 				{
+					switch (TranslateRow(ref row))
+					{
+						case RowType.Neutral:
+							myNeutralBranch.OnQueryContinueDrag(args, row, column);
+							break;
+					}
 				}
 				/// <summary>
 				/// Implements <see cref="IBranch.OnStartDrag"/>
 				/// </summary>
 				public VirtualTreeStartDragData OnStartDrag(object sender, int row, int column, DragReason reason)
 				{
+					switch (TranslateRow(ref row))
+					{
+						case RowType.Neutral:
+							return myNeutralBranch.OnStartDrag(sender, row, column, reason);
+					}
 					return VirtualTreeStartDragData.Empty;
 				}
 				/// <summary>
@@ -788,6 +811,11 @@ namespace Neumont.Tools.Modeling.Shell.DynamicSurveyTreeGrid
 				/// </summary>
 				public StateRefreshChanges SynchronizeState(int row, int column, IBranch matchBranch, int matchRow, int matchColumn)
 				{
+					switch (TranslateRow(ref row))
+					{
+						case RowType.Neutral:
+							return myNeutralBranch.SynchronizeState(row, column, matchBranch, matchRow, matchColumn);
+					}
 					return StateRefreshChanges.None;
 				}
 				/// <summary>
@@ -795,6 +823,11 @@ namespace Neumont.Tools.Modeling.Shell.DynamicSurveyTreeGrid
 				/// </summary>
 				public StateRefreshChanges ToggleState(int row, int column)
 				{
+					switch (TranslateRow(ref row))
+					{
+						case RowType.Neutral:
+							return myNeutralBranch.ToggleState(row, column);
+					}
 					return StateRefreshChanges.None;
 				}
 				/// <summary>

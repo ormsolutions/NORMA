@@ -159,6 +159,17 @@ namespace Neumont.Tools.ORM.Shell
 				}
 			}
 			/// <summary>
+			/// Defer to <see cref="IFrameworkServices.GetTypedDomainModelProviders"/> on the document.
+			/// </summary>
+			protected T[] GetTypedDomainModelProviders<T>() where T : class
+			{
+				return myServices.GetTypedDomainModelProviders<T>();
+			}
+			T[] IFrameworkServices.GetTypedDomainModelProviders<T>()
+			{
+				return GetTypedDomainModelProviders<T>();
+			}
+			/// <summary>
 			/// Defer to <see cref="IORMToolServices.ModelErrorActivationService"/> on the document.
 			/// </summary>
 			protected IORMModelErrorActivationService ModelErrorActivationService
@@ -1043,6 +1054,7 @@ namespace Neumont.Tools.ORM.Shell
 		private IDictionary<Type, LayoutEngineData> myLayoutEngines;
 		private int myCustomBlockCanAddTransactionCount;
 		private IPropertyProviderService myPropertyProviderService;
+		private TypedDomainModelProviderCache myTypedDomainModelProviderCache;
 		private IORMModelErrorActivationService myModelErrorActivatorService;
 
 		/// <summary>
@@ -1063,7 +1075,23 @@ namespace Neumont.Tools.ORM.Shell
 				return PropertyProviderService;
 			}
 		}
-
+		/// <summary>
+		/// Retrieve the domain models that implement a given interface for this model
+		/// Implements <see cref="IFrameworkServices.GetTypedDomainModelProviders"/>.
+		/// </summary>
+		protected T[] GetTypedDomainModelProviders<T>() where T : class
+		{
+			TypedDomainModelProviderCache cache = myTypedDomainModelProviderCache;
+			if (cache == null)
+			{
+				myTypedDomainModelProviderCache = cache = new TypedDomainModelProviderCache(Store);
+			}
+			return cache.GetTypedDomainModelProviders<T>();
+		}
+		T[] IFrameworkServices.GetTypedDomainModelProviders<T>()
+		{
+			return GetTypedDomainModelProviders<T>();
+		}
 		/// <summary>
 		/// Retrieve the <see cref="IORMModelErrorActivationService"/> for this document.
 		/// Implements <see cref="IORMToolServices.ModelErrorActivationService"/>.

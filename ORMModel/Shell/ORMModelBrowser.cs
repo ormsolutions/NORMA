@@ -182,7 +182,7 @@ namespace Neumont.Tools.ORM.Shell
 			if (currentNode != null)
 			{
 				ModelElement selectedType = EditorUtility.ResolveContextInstance(currentNode, false) as ModelElement;
-				if (0 != (myEnabledCommands & ORMDesignerCommands.Delete))//facts objects multi and single column external constraints
+				if (0 != (myEnabledCommands & (ORMDesignerCommands.Delete | ORMDesignerCommands.DeleteAny)))//facts objects multi and single column external constraints
 				{
 					Store store = selectedType.Store;
 					Debug.Assert(store != null);

@@ -14,6 +14,11 @@
 * You must not remove this notice, or any other, from this software.       *
 \**************************************************************************/
 #endregion
+
+// Turn this on to always refresh the toolbox for development builds. This incurs significant
+// startup costs during debugging sessions, but should be turned on temporarily if toolbox items
+// are currently under development
+//#define ALWAYS_REFRESH_EXP_TOOLBOX
 using System;
 using System.Collections.Generic;
 using System.ComponentModel;
@@ -24,16 +29,17 @@ using System.Resources;
 using System.Runtime.InteropServices;
 using System.Windows.Forms;
 using Microsoft.VisualStudio;
+using Microsoft.VisualStudio.Modeling;
 using Microsoft.VisualStudio.Modeling.Design;
+using Microsoft.VisualStudio.Modeling.Diagrams;
 using Microsoft.VisualStudio.Modeling.Shell;
 using Microsoft.VisualStudio.Shell;
 using Microsoft.VisualStudio.Shell.Interop;
 using Microsoft.Win32;
+using Neumont.Tools.Modeling;
+using Neumont.Tools.Modeling.Diagrams.Design;
 using Neumont.Tools.ORM.ObjectModel;
 using Neumont.Tools.ORM.ShapeModel;
-using Neumont.Tools.Modeling;
-using Microsoft.VisualStudio.Modeling.Diagrams;
-using Microsoft.VisualStudio.Modeling;
 
 namespace Neumont.Tools.ORM.Shell
 {
@@ -107,7 +113,8 @@ namespace Neumont.Tools.ORM.Shell
 		private const string REGISTRYVALUE_SETTINGSPATH = "SettingsPath";
 		private const string REGISTRYVALUE_CONVERTERSDIR = "ConvertersDir";
 		private const string REGISTRYVALUE_VERBALIZATIONDIR = "VerbalizationDir";
-		private const string REGISTRYVALUE_TOOLBOXREVISION = "ToolboxRevision";
+		private const string REGISTRYVALUE_TOOLBOXREVISION_OBSOLETESINGLEVALUE = "ToolboxRevision";
+		private const string REGISTRYKEY_TOOLBOXREVISIONS = "ToolboxRevisions";
 		#endregion
 		#region Member variables
 		/// <summary>
@@ -120,6 +127,7 @@ namespace Neumont.Tools.ORM.Shell
 		private IDictionary<string, ORMExtensionType> myAvailableExtensions;
 		private IDictionary<Guid, string> myExtensionIdToExtensionNameMap;
 		private IDictionary<Guid, Type> myStandardDomainModelsMap;
+		private IDictionary<string, ToolboxProviderInfo> myToolboxProviderInfoMap;
 		private string[] myAutoLoadExtensions;
 		private static ORMDesignerPackage mySingleton;
 		#endregion
@@ -320,6 +328,7 @@ namespace Neumont.Tools.ORM.Shell
 		/// </summary>
 		private void InitializeToolbox()
 		{
+#if ALWAYS_REFRESH_EXP_TOOLBOX
 			IVsAppCommandLine vsAppCommandLine = (IVsAppCommandLine)base.GetService(typeof(IVsAppCommandLine));
 			int present;
 			string optionValue;
@@ -335,56 +344,107 @@ namespace Neumont.Tools.ORM.Shell
 				}
 				else
 				{
-					// Get the current revision number, defaulting to 0 if something goes wrong.
-					int currentRevision = 0;
-					object[] customAttributes = typeof(ORMDesignerPackage).Assembly.GetCustomAttributes(typeof(AssemblyFileVersionAttribute), false);
-					for (int i = 0; i < customAttributes.Length; i++)
-					{
-						AssemblyFileVersionAttribute fileVersion = customAttributes[i] as AssemblyFileVersionAttribute;
-						if (fileVersion != null)
-						{
-							currentRevision = new Version(fileVersion.Version).Revision;
-							break;
-						}
-					}
-
+#endif // ALWAYS_REFRESH_EXP_TOOLBOX
 					RegistryKey userRegistryRoot = null;
 					RegistryKey packageRegistryRoot = null;
+					RegistryKey toolboxRevisionsKey = null;
+					IDictionary<string, ToolboxProviderInfo> providers = GetToolboxProviderInfoMap();
+					bool refreshRequired = false;
 					try
 					{
 						userRegistryRoot = this.UserRegistryRoot;
-						packageRegistryRoot = userRegistryRoot.OpenSubKey(REGISTRYROOT_PACKAGE, RegistryKeyPermissionCheck.ReadSubTree);
+						// Note that we could do this twice, once to verify in read mode and a second time to write the
+						// values back out, but it isn't work the extra hassle to do this twice simply to avoid a write
+						// permission check on a user registry key.
+						packageRegistryRoot = userRegistryRoot.OpenSubKey(REGISTRYROOT_PACKAGE, RegistryKeyPermissionCheck.ReadWriteSubTree);
+						bool hadRegistryRoot = packageRegistryRoot != null;
+						bool hadRevisionsKey = false;
 
-						if (packageRegistryRoot != null)
+						// If the toolbox has the correct values for all domain models that provide toolbox items,
+						// then we don't do anything.
+						if (hadRegistryRoot)
 						{
-							// Lookup the recorded toolbox revision, and check whether it matches the current revision.
-							int? toolboxRevision = packageRegistryRoot.GetValue(REGISTRYVALUE_TOOLBOXREVISION, null) as int?;
-							if (toolboxRevision.HasValue && toolboxRevision.GetValueOrDefault() == currentRevision)
-							{
-								// If the toolbox is already from this exact revision, don't do anything.
-								return;
-							}
-							packageRegistryRoot.Close();
+							// Remove obsolete data
+							packageRegistryRoot.DeleteValue(REGISTRYVALUE_TOOLBOXREVISION_OBSOLETESINGLEVALUE, false);
+
+							// Get new key information
+							toolboxRevisionsKey = packageRegistryRoot.OpenSubKey(REGISTRYKEY_TOOLBOXREVISIONS, RegistryKeyPermissionCheck.ReadWriteSubTree);
+							hadRevisionsKey = toolboxRevisionsKey != null;
 						}
-
-						// Since the toolbox has either not been set up before, or is from an older or newer revision, call SetupDynamicToolbox.
-						// This might not be necessary if it is from a newer revision, but we do it anyway to be safe.
-						base.SetupDynamicToolbox();
-
-						try
+						if (!hadRegistryRoot)
 						{
-							// If a exception were to occur right here, Close() could get called twice for packageRegistryRoot, but that wouldn't actually hurt anything.
 							packageRegistryRoot = userRegistryRoot.CreateSubKey(REGISTRYROOT_PACKAGE, RegistryKeyPermissionCheck.ReadWriteSubTree);
-
-							// Record the current revision in the registry.
-							packageRegistryRoot.SetValue(REGISTRYVALUE_TOOLBOXREVISION, currentRevision, RegistryValueKind.DWord);
 						}
-						catch (System.Security.SecurityException ex)
+						if (!hadRevisionsKey)
 						{
-							Debug.Fail("A security exception occurred while trying to write the current toolbox format revision number to the user registry. " +
-								"You can safely continue execution of the program.", ex.ToString());
-							// Swallow the exception, since it won't actually cause a problem. The next time the package is loaded, we'll just initialize the toolbox again.
+							toolboxRevisionsKey = packageRegistryRoot.CreateSubKey(REGISTRYKEY_TOOLBOXREVISIONS, RegistryKeyPermissionCheck.ReadWriteSubTree);
 						}
+
+						string[] valueNames = hadRevisionsKey ? toolboxRevisionsKey.GetValueNames() : null;
+						int matchIndex;
+						int hitCount = 0;
+						foreach (KeyValuePair<string, ToolboxProviderInfo> providerInfo in providers)
+						{
+							int assemblyRevision = providerInfo.Value.ExpectedRevisionNumber;
+							string typeFullName = providerInfo.Key;
+							if (hadRevisionsKey && -1 != (matchIndex = Array.IndexOf<string>(valueNames, typeFullName)))
+							{
+								string valueName = valueNames[matchIndex];
+								valueNames[matchIndex] = null;
+								++hitCount;
+								if (assemblyRevision != 0)
+								{
+									int? revision = toolboxRevisionsKey.GetValue(valueName, null) as int?;
+									if (revision.HasValue)
+									{
+										if (assemblyRevision != revision.Value)
+										{
+											refreshRequired = true;
+											toolboxRevisionsKey.SetValue(valueName, assemblyRevision, RegistryValueKind.DWord);
+										}
+									}
+									else
+									{
+										// Wrong value kind, delete and readd the value
+										refreshRequired = true;
+										toolboxRevisionsKey.DeleteValue(valueName);
+										toolboxRevisionsKey.SetValue(valueName, assemblyRevision, RegistryValueKind.DWord);
+									}
+								}
+								else
+								{
+									refreshRequired = true;
+									toolboxRevisionsKey.DeleteValue(valueName);
+								}
+							}
+							else
+							{
+								refreshRequired = true;
+								if (assemblyRevision != 0)
+								{
+									toolboxRevisionsKey.SetValue(typeFullName, assemblyRevision, RegistryValueKind.DWord);
+								}
+							}
+						}
+						if (hadRevisionsKey && hitCount != valueNames.Length)
+						{
+							refreshRequired = true;
+							for (int i = 0; i < valueNames.Length; --i)
+							{
+								string removeValue = valueNames[i];
+								if (removeValue != null)
+								{
+									toolboxRevisionsKey.DeleteValue(removeValue, false);
+								}
+
+							}
+						}
+					}
+					catch (System.Security.SecurityException ex)
+					{
+						Debug.Fail("A security exception occurred while trying to write the current toolbox format revision number to the user registry. " +
+							"You can safely continue execution of the program.", ex.ToString());
+						// Swallow the exception, since it won't actually cause a problem. The next time the package is loaded, we'll just initialize the toolbox again.
 					}
 					finally
 					{
@@ -392,11 +452,23 @@ namespace Neumont.Tools.ORM.Shell
 						{
 							if (packageRegistryRoot != null)
 							{
+								if (toolboxRevisionsKey != null)
+								{
+									toolboxRevisionsKey.Close();
+								}
 								packageRegistryRoot.Close();
 							}
 							userRegistryRoot.Close();
 						}
 					}
+
+					if (refreshRequired)
+					{
+						// Since the toolbox has either not been set up before, or is from an older or newer revision, call SetupDynamicToolbox.
+						// This might not be necessary if it is from a newer revision, but we do it anyway to be safe.
+						base.SetupDynamicToolbox();
+					}
+#if ALWAYS_REFRESH_EXP_TOOLBOX
 				}
 			}
 			else if (!string.IsNullOrEmpty(optionValue))
@@ -404,7 +476,8 @@ namespace Neumont.Tools.ORM.Shell
 				// If any non-empty root suffix was specified as a command line parameter, call SetupDynamicToolbox.
 				base.SetupDynamicToolbox();
 			}
-		}
+#endif // ALWAYS_REFRESH_EXP_TOOLBOX
+				}
 		/// <summary>
 		/// This is called by the package base class when our package gets unloaded.
 		/// </summary>
@@ -421,90 +494,49 @@ namespace Neumont.Tools.ORM.Shell
 		}
 		/// <summary>
 		/// Retrieve toolbox items. Called during devenv /setup or
-		/// toolbox refresh. Uses standard prototype settings (mostly
-		/// created in ORMDiagram.InitializeToolboxItem) and adds additional
-		/// filter strings as required.
+		/// toolbox refresh.
 		/// </summary>
-		/// <seealso cref="ModelingPackage.CreateToolboxItems"/>
 		protected sealed override IList<ModelingToolboxItem> CreateToolboxItems()
 		{
-			IList<ModelingToolboxItem> items;
-			FrameworkDomainModel.InitializingToolboxItems = true;
-			try
+			IList<ModelingToolboxItem> items = null;
+			foreach (ToolboxProviderInfo providerInfo in GetToolboxProviderInfoMap().Values)
 			{
-				items = new ORMShapeToolboxHelper(this).CreateToolboxItems();
-			}
-			finally
-			{
-				FrameworkDomainModel.InitializingToolboxItems = false;
-			}
-
-			// Build up a dictionary of items so we can add filter strings. This is
-			// much easier than trying to maintain all of the filter strings at the ims level,
-			// which would require elements with different filter string sets to be placed on different
-			// ims elements.
-			Dictionary<string, int> itemIndexDictionary = new Dictionary<string, int>(items.Count);
-			for (int i = 0; i < items.Count; i++)
-			{
-				itemIndexDictionary[items[i].Id] = i;
-			}
-
-			ToolboxItemFilterAttribute attribute = new ToolboxItemFilterAttribute(ORMDiagram.ORMDiagramInternalUniquenessConstraintFilterString, ToolboxItemFilterType.Allow);
-			AddFilterAttribute(items, itemIndexDictionary, ResourceStrings.ToolboxInternalUniquenessConstraintItemId, attribute);
-
-			attribute = new ToolboxItemFilterAttribute(ORMDiagram.ORMDiagramConnectInternalUniquenessConstraintFilterString, ToolboxItemFilterType.Allow);
-			AddFilterAttribute(items, itemIndexDictionary, ResourceStrings.ToolboxInternalUniquenessConstraintConnectorItemId, attribute);
-
-			attribute = new ToolboxItemFilterAttribute(ORMDiagram.ORMDiagramConnectExternalConstraintFilterString, ToolboxItemFilterType.Allow);
-			AddFilterAttribute(items, itemIndexDictionary, ResourceStrings.ToolboxExternalConstraintConnectorItemId, attribute);
-
-			attribute = new ToolboxItemFilterAttribute(ORMDiagram.ORMDiagramConnectRoleFilterString, ToolboxItemFilterType.Allow);
-			AddFilterAttribute(items, itemIndexDictionary, ResourceStrings.ToolboxRoleConnectorItemId, attribute);
-
-			attribute = new ToolboxItemFilterAttribute(ORMDiagram.ORMDiagramCreateSubtypeFilterString, ToolboxItemFilterType.Allow);
-			AddFilterAttribute(items, itemIndexDictionary, ResourceStrings.ToolboxSubtypeConnectorItemId, attribute);
-
-			attribute = new ToolboxItemFilterAttribute(ORMDiagram.ORMDiagramModelNoteFilterString, ToolboxItemFilterType.Allow);
-			AddFilterAttribute(items, itemIndexDictionary, ResourceStrings.ToolboxModelNoteItemId, attribute);
-
-			attribute = new ToolboxItemFilterAttribute(ORMDiagram.ORMDiagramExternalConstraintFilterString, ToolboxItemFilterType.Allow);
-			string[] itemIds = new string[] {
-				ResourceStrings.ToolboxEqualityConstraintItemId,
-				ResourceStrings.ToolboxExclusionConstraintItemId,
-				ResourceStrings.ToolboxExclusiveOrConstraintItemId,
-				ResourceStrings.ToolboxExternalUniquenessConstraintItemId,
-				ResourceStrings.ToolboxInclusiveOrConstraintItemId,
-				ResourceStrings.ToolboxRingConstraintItemId,
-				ResourceStrings.ToolboxSubsetConstraintItemId,
-				ResourceStrings.ToolboxFrequencyConstraintItemId
-			};
-			for (int i = 0; i < itemIds.Length; ++i)
-			{
-				AddFilterAttribute(items, itemIndexDictionary, itemIds[i], attribute);
+				Type providerType = providerInfo.GetResolvedType();
+				if (providerType != null)
+				{
+					object[] attributes = providerType.GetCustomAttributes(typeof(ModelingToolboxItemProviderAttribute), false);
+					int attributeCount;
+					if (attributes != null &&
+						0 != (attributeCount = attributes.Length))
+					{
+						for (int i = 0; i < attributes.Length; ++i)
+						{
+							IList<ModelingToolboxItem> localItems = ((ModelingToolboxItemProviderAttribute)attributes[i]).CreateToolboxItems(this, providerType);
+							int localItemCount;
+							if (localItems != null &&
+								0 != (localItemCount = localItems.Count))
+							{
+								if (items == null)
+								{
+									items = localItems;
+								}
+								else
+								{
+									if (items.IsReadOnly)
+									{
+										items = new List<ModelingToolboxItem>(items);
+									}
+									for (int j = 0; j < localItemCount; ++j)
+									{
+										items.Add(localItems[j]);
+									}
+								}
+							}
+						}
+					}
+				}
 			}
 			return items;
-		}
-		/// <summary>
-		/// Add a filter string to the specified ModelingToolboxItem
-		/// </summary>
-		/// <param name="items">An array of existing items</param>
-		/// <param name="itemIndexDictionary">A dictionary mapping from the item name
-		/// to an index in the items array</param>
-		/// <param name="itemId">The name of the item to modify</param>
-		/// <param name="attribute">The filter property to add</param>
-		private static void AddFilterAttribute(IList<ModelingToolboxItem> items, Dictionary<string, int> itemIndexDictionary, string itemId, ToolboxItemFilterAttribute attribute)
-		{
-			int itemIndex;
-			if (itemIndexDictionary.TryGetValue(itemId, out itemIndex))
-			{
-				ModelingToolboxItem itemBase = items[itemIndex];
-				System.Collections.ICollection baseFilters = itemBase.Filter;
-				int baseFilterCount = baseFilters.Count;
-				ToolboxItemFilterAttribute[] newFilters = new ToolboxItemFilterAttribute[baseFilterCount + 1];
-				baseFilters.CopyTo(newFilters, 0);
-				newFilters[baseFilterCount] = attribute;
-				itemBase.Filter = newFilters;
-			}
 		}
 		#endregion // Base overrides
 		#region IVsInstalledProduct Members
@@ -894,6 +926,120 @@ namespace Neumont.Tools.ORM.Shell
 				return GetStandardDomainModelsMap().Values;
 			}
 		}
+		private class ToolboxProviderInfo
+		{
+			private string myExtensionNamespaceUri;
+			private int myExpectedRevisionNumber;
+			private Type myResolvedType;
+			/// <summary>
+			/// Create toolbox provider revision information for loaded type
+			/// </summary>
+			/// <param name="providerType">A standard provider type</param>
+			public ToolboxProviderInfo(Type providerType)
+			{
+				myResolvedType = providerType;
+				object[] customAttributes = providerType.Assembly.GetCustomAttributes(typeof(AssemblyFileVersionAttribute), false);
+				int? assemblyRevision = null;
+				for (int i = 0; i < customAttributes.Length; i++)
+				{
+					assemblyRevision = new Version(((AssemblyFileVersionAttribute)customAttributes[i]).Version).Revision;
+				}
+				myExpectedRevisionNumber = assemblyRevision.GetValueOrDefault(0);
+			}
+			/// <summary>
+			/// Create toolbox provider revision information for an extension type
+			/// </summary>
+			/// <param name="extensionNamespaceUri">The extension identifier</param>
+			/// <param name="extensionRevisionNumber">The expected revision number for the package</param>
+			public ToolboxProviderInfo(string extensionNamespaceUri, int extensionRevisionNumber)
+			{
+				myExtensionNamespaceUri = extensionNamespaceUri;
+				myExpectedRevisionNumber = extensionRevisionNumber;
+			}
+			/// <summary>
+			/// Get the expected revision number for this toolbox provider
+			/// </summary>
+			public int ExpectedRevisionNumber
+			{
+				get
+				{
+					return myExpectedRevisionNumber;
+				}
+			}
+			/// <summary>
+			/// Get the resolved type for the toolbox provider <see cref="DomainModel"/>
+			/// </summary>
+			public Type GetResolvedType()
+			{
+				Type retVal = myResolvedType;
+				if (retVal == null)
+				{
+					ORMExtensionType? extensionType = GetExtensionDomainModel(myExtensionNamespaceUri);
+					if (extensionType.HasValue)
+					{
+						myResolvedType = retVal = extensionType.Value.Type;
+					}
+				}
+				return retVal;
+			}
+		}
+		private static IDictionary<string, ToolboxProviderInfo> GetToolboxProviderInfoMap()
+		{
+			IDictionary<string, ToolboxProviderInfo> retVal = null;
+			ORMDesignerPackage package = mySingleton;
+			if (package != null)
+			{
+				retVal = package.myToolboxProviderInfoMap;
+				if (retVal == null)
+				{
+					retVal = new Dictionary<string, ToolboxProviderInfo>();
+
+					// Add standard types
+					Type standardType = typeof(ORMShapeDomainModel);
+					retVal.Add(standardType.FullName, new ToolboxProviderInfo(standardType));
+
+					// Get revision information from the registry. The revision information is written to
+					// the registry to enable toolbox maintenance without unnecessarily loading extension assemblies.
+					using (RegistryKey applicationRegistryRoot = package.ApplicationRegistryRoot)
+					{
+						LoadExtensionToolboxProviders(applicationRegistryRoot, retVal);
+					}
+					using (RegistryKey userRegistryRoot = package.UserRegistryRoot)
+					{
+						LoadExtensionToolboxProviders(userRegistryRoot, retVal);
+					}
+					package.myToolboxProviderInfoMap = retVal;
+				}
+			}
+			return retVal;
+		}
+		/// <summary>
+		/// Helper method for <see cref="GetToolboxProviderInfoMap"/>
+		/// </summary>
+		private static void LoadExtensionToolboxProviders(RegistryKey rootKey, IDictionary<string, ToolboxProviderInfo> providerMap)
+		{
+			using (RegistryKey hkeyExtensions = rootKey.OpenSubKey(REGISTRYROOT_EXTENSIONS, RegistryKeyPermissionCheck.ReadSubTree))
+			{
+				if (hkeyExtensions != null)
+				{
+					string[] extensionNamespaces = hkeyExtensions.GetSubKeyNames();
+					for (int i = 0; i < extensionNamespaces.Length; ++i)
+					{
+						string extensionNamespace = extensionNamespaces[i];
+						using (RegistryKey hkeyExtensionKey = hkeyExtensions.OpenSubKey(extensionNamespace))
+						{
+							int? revisionNumber = hkeyExtensionKey.GetValue("ToolboxItemProviderRevisionNumber") as int?;
+							string extensionClass;
+							if (revisionNumber.HasValue &&
+								!string.IsNullOrEmpty(extensionClass = hkeyExtensionKey.GetValue("Class") as string))
+							{
+								providerMap[extensionClass] = new ToolboxProviderInfo(extensionNamespace, revisionNumber.Value);
+							}
+						}
+					}
+				}
+			}
+		}
 		/// <summary>
 		/// Get a dictionary containing all standard domain models
 		/// keyed of the domain model identifier.
@@ -907,6 +1053,7 @@ namespace Neumont.Tools.ORM.Shell
 				retVal = package.myStandardDomainModelsMap;
 				if (retVal == null)
 				{
+					// Any model change here that has toolbox information requires a corresponding change in GetToolboxProviderInfoMap
 					retVal = new Dictionary<Guid, Type>(6);
 					retVal.Add(FrameworkDomainModel.DomainModelId, typeof(FrameworkDomainModel));
 					retVal.Add(ORMCoreDomainModel.DomainModelId, typeof(ORMCoreDomainModel));
@@ -939,54 +1086,42 @@ namespace Neumont.Tools.ORM.Shell
 					// Check for CustomExtensions in the ApplicationRegistryRoot and the UserRegistryRoot keys
 					using (RegistryKey applicationRegistryRoot = package.ApplicationRegistryRoot)
 					{
-						using (RegistryKey hkeyApplicationExtensions = applicationRegistryRoot.OpenSubKey(REGISTRYROOT_EXTENSIONS, RegistryKeyPermissionCheck.ReadSubTree))
-						{
-							if (hkeyApplicationExtensions != null)
-							{
-								string[] extensionNamespaces = hkeyApplicationExtensions.GetSubKeyNames();
-								foreach (string extensionNamespace in extensionNamespaces)
-								{
-									Type t;
-									ORMExtensionType extensionType;
-									bool isSecondary;
-									bool isAutoLoad;
-									if (null != (t = LoadExtension(extensionNamespace, hkeyApplicationExtensions, out isSecondary, out isAutoLoad)) &&
-										(extensionType = new ORMExtensionType(extensionNamespace, t, isSecondary, isAutoLoad)).IsValidExtension)
-									{
-										retVal[extensionNamespace] = extensionType;
-									}
-								}
-							}
-						}
+						LoadAvailableCustomExtensions(applicationRegistryRoot, retVal);
 					}
-
 					using (RegistryKey userRegistryRoot = package.UserRegistryRoot)
 					{
-						using (RegistryKey hkeyUserExtensions = userRegistryRoot.OpenSubKey(REGISTRYROOT_EXTENSIONS, RegistryKeyPermissionCheck.ReadSubTree))
-						{
-							if (hkeyUserExtensions != null)
-							{
-								string[] extensionNamespaces = hkeyUserExtensions.GetSubKeyNames();
-								foreach (string extensionNamespace in extensionNamespaces)
-								{
-									Type t;
-									ORMExtensionType extensionType;
-									bool isSecondary;
-									bool isAutoLoad;
-									if (null != (t = LoadExtension(extensionNamespace, hkeyUserExtensions, out isSecondary, out isAutoLoad)) &&
-										(extensionType = new ORMExtensionType(extensionNamespace, t, isSecondary, isAutoLoad)).IsValidExtension)
-									{
-										// If there is a duplicate, let the user settings win
-										retVal[extensionNamespace] = extensionType;
-									}
-								}
-							}
-						}
+						LoadAvailableCustomExtensions(userRegistryRoot, retVal);
 					}
 					package.myAvailableExtensions = retVal;
 				}
 			}
 			return retVal;
+		}
+		/// <summary>
+		/// Helper method for <see cref="GetAvailableCustomExtensions"/>
+		/// </summary>
+		private static void LoadAvailableCustomExtensions(RegistryKey rootKey, IDictionary<string, ORMExtensionType> extensionMap)
+		{
+			using (RegistryKey hkeyExtensions = rootKey.OpenSubKey(REGISTRYROOT_EXTENSIONS, RegistryKeyPermissionCheck.ReadSubTree))
+			{
+				if (hkeyExtensions != null)
+				{
+					string[] extensionNamespaces = hkeyExtensions.GetSubKeyNames();
+					foreach (string extensionNamespace in extensionNamespaces)
+					{
+						Type t;
+						ORMExtensionType extensionType;
+						bool isSecondary;
+						bool isAutoLoad;
+						if (null != (t = LoadExtension(extensionNamespace, hkeyExtensions, out isSecondary, out isAutoLoad)) &&
+							(extensionType = new ORMExtensionType(extensionNamespace, t, isSecondary, isAutoLoad)).IsValidExtension)
+						{
+							// If there is a duplicate, let the user settings win
+							extensionMap[extensionNamespace] = extensionType;
+						}
+					}
+				}
+			}
 		}
 		/// <summary>
 		/// Get the domain model name corresponding to an extension domain model identifier.

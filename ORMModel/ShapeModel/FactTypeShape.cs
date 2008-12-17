@@ -42,7 +42,7 @@ using Neumont.Tools.Modeling.Diagrams;
 namespace Neumont.Tools.ORM.ShapeModel
 {
 	#region FactTypeShape class
-	public partial class FactTypeShape : ICustomShapeFolding, IModelErrorActivation, IProvideConnectorShape, IProxyDisplayProvider
+	public partial class FactTypeShape : ICustomShapeFolding, IModelErrorActivation, IProvideConnectorShape, IProxyDisplayProvider, IConfigureAsChildShape
 	{
 		#region ConstraintBoxRoleActivity enum
 		/// <summary>
@@ -567,9 +567,9 @@ namespace Neumont.Tools.ORM.ShapeModel
 			return displayRoles;
 		}
 		/// <summary>
-		/// Standard override
+		/// Implements <see cref="IConfigureAsChildShape.ConfiguringAsChildOf"/>
 		/// </summary>
-		public override void ConfiguringAsChildOf(NodeShape parent, bool createdDuringViewFixup)
+		protected void ConfiguringAsChildOf(NodeShape parentShape, bool createdDuringViewFixup)
 		{
 			// Make sure the factType shape is prepared to display as a unary
 			FactType factType;
@@ -600,6 +600,10 @@ namespace Neumont.Tools.ORM.ShapeModel
 				}
 				displayRoles.Add(unaryRole);
 			}
+		}
+		void IConfigureAsChildShape.ConfiguringAsChildOf(NodeShape parentShape, bool createdDuringViewFixup)
+		{
+			ConfiguringAsChildOf(parentShape, createdDuringViewFixup);
 		}
 		/// <summary>
 		/// Retrieve an editable version of the <see cref="DisplayedRoleOrder"/> property. Editing

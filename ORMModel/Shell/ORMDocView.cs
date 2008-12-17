@@ -647,6 +647,7 @@ namespace Neumont.Tools.ORM.Shell
 		/// </summary>
 		protected override void OnSelectionChanged(EventArgs e)
 		{
+			base.OnSelectionChanged(e);
 			CommandManager.UpdateCommandStatus();
 		}
 		#endregion // Base overrides

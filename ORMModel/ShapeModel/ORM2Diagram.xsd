@@ -23,65 +23,71 @@
 			<xs:element name="Shapes" minOccurs="0">
 				<xs:complexType>
 					<xs:choice minOccurs="0" maxOccurs="unbounded">
-						<xs:element name="ObjectTypeShape" type="ObjectTypeShape" minOccurs="0" maxOccurs="unbounded" />
-						<xs:element name="FactTypeShape" type="FactTypeShape" minOccurs="0" maxOccurs="unbounded" />
-						<xs:element name="ExternalConstraintShape" type="ExternalConstraintShape" minOccurs="0" maxOccurs="unbounded" />
-						<xs:element name="FrequencyConstraintShape" type="FrequencyConstraintShape" minOccurs="0" maxOccurs="unbounded" />
-						<xs:element name="RingConstraintShape" type="RingConstraintShape" minOccurs="0" maxOccurs="unbounded" />
-						<xs:element name="ModelNoteShape" type="ModelNoteShape" minOccurs="0" maxOccurs="unbounded" />
+						<xs:element name="ObjectTypeShape" type="ObjectTypeShape"/>
+						<xs:element name="FactTypeShape" type="FactTypeShape"/>
+						<xs:element name="ExternalConstraintShape" type="ExternalConstraintShape"/>
+						<xs:element name="FrequencyConstraintShape" type="FrequencyConstraintShape"/>
+						<xs:element name="RingConstraintShape" type="RingConstraintShape"/>
+						<xs:element name="ModelNoteShape" type="ModelNoteShape"/>
+						<xs:element ref="DiagramExtensionShape"/>
 					</xs:choice>
 				</xs:complexType>
 			</xs:element>
-			<xs:element name="Subject" type="SubjectRef"/>
+			<xs:element ref="Subject"/>
 		</xs:sequence>
-		<xs:attribute name="id" type="xs:ID" use="required" />
-		<xs:attribute name="IsCompleteView" type="xs:boolean" use="required" />
-		<xs:attribute name="Name" type="xs:string" use="required" />
-		<xs:attribute name="BaseFontName" type="xs:string" use="required" />
-		<xs:attribute name="BaseFontSize" type="xs:decimal" use="required" />
+		<xs:attribute name="id" type="xs:ID" use="required"/>
+		<xs:attribute name="IsCompleteView" type="xs:boolean" use="required"/>
+		<xs:attribute name="Name" type="xs:string" use="required"/>
+		<xs:attribute name="BaseFontName" type="xs:string" use="required"/>
+		<xs:attribute name="BaseFontSize" type="xs:decimal" use="required"/>
 		<xs:attribute name="AutoPopulateShapes" type="xs:boolean" default="false">
 			<xs:annotation>
 				<xs:documentation>If this is set to true, then all shapes in the model will be loaded onto this diagram when the diagram is first loaded. AutoPopulateShapes is never written, but is useful for importing models with no diagram information.</xs:documentation>
 			</xs:annotation>
 		</xs:attribute>
 	</xs:complexType>
-	<xs:complexType name="Shape" abstract="true">
-		<xs:attribute name="id" type="xs:ID" use="required" />
-		<xs:attribute name="IsExpanded" type="xs:boolean" />
-		<xs:attribute name="AbsoluteBounds" type="xs:string"  />
+	<xs:complexType name="ShapeType" abstract="true">
+		<xs:attribute name="id" type="xs:ID" use="required"/>
+		<xs:attribute name="IsExpanded" type="xs:boolean"/>
+		<xs:attribute name="AbsoluteBounds" type="xs:string"/>
 	</xs:complexType>
+	<xs:element name="DiagramExtensionShape" type="ShapeType" abstract="true"/>
+	<xs:element name="ObjectTypeRelativeExtensionShape" type="ShapeType" abstract="true"/>
+	<xs:element name="FactTypeRelativeExtensionShape" type="ShapeType" abstract="true"/>
 	<xs:complexType name="ObjectTypeShape">
 		<xs:complexContent>
-			<xs:extension base="Shape">
+			<xs:extension base="ShapeType">
 				<xs:sequence>
 					<xs:element name="RelativeShapes" minOccurs="0">
 						<xs:complexType>
-							<xs:sequence >
-								<xs:element name="ValueConstraintShape" type="ValueConstraintShape" minOccurs="0"  maxOccurs="unbounded" />
-							</xs:sequence>
+							<xs:choice minOccurs="0" maxOccurs="unbounded">
+								<xs:element name="ValueConstraintShape" type="ValueConstraintShape"/>
+								<xs:element ref="ObjectTypeRelativeExtensionShape"/>
+							</xs:choice>
 						</xs:complexType>
 					</xs:element>
-					<xs:element name="Subject" type="SubjectRef"/>
+					<xs:element ref="Subject"/>
 				</xs:sequence>
-				<xs:attribute name="ExpandRefMode" type="xs:boolean" default="false" />
+				<xs:attribute name="ExpandRefMode" type="xs:boolean" default="false"/>
 			</xs:extension>
 		</xs:complexContent>
 	</xs:complexType>
 	<xs:complexType name="FactTypeShape">
 		<xs:complexContent>
-			<xs:extension base="Shape">
+			<xs:extension base="ShapeType">
 				<xs:sequence>
-					<xs:element name="RelativeShapes" minOccurs="0"  maxOccurs="unbounded">
+					<xs:element name="RelativeShapes" minOccurs="0">
 						<xs:complexType>
 							<xs:choice minOccurs="0" maxOccurs="unbounded">
 								<xs:element name="ObjectifiedFactTypeNameShape" type="ObjectTypeShape"/>
 								<xs:element name="ReadingShape" type="ReadingShape"/>
 								<xs:element name="ValueConstraintShape" type="ValueConstraintShape"/>
 								<xs:element name="RoleNameShape" type="RoleNameShape"/>
+								<xs:element ref="FactTypeRelativeExtensionShape"/>
 							</xs:choice>
 						</xs:complexType>
 					</xs:element>
-					<xs:element name="Subject" type="SubjectRef"/>
+					<xs:element ref="Subject"/>
 					<xs:element name="RoleDisplayOrder" minOccurs="0">
 						<xs:complexType>
 							<xs:choice minOccurs="0" maxOccurs="unbounded">
@@ -125,36 +131,36 @@
 	</xs:complexType>
 	<xs:complexType name="ReadingShape">
 		<xs:complexContent>
-			<xs:extension base="Shape">
+			<xs:extension base="ShapeType">
 				<xs:sequence>
-					<xs:element name="Subject" type="SubjectRef"/>
+					<xs:element ref="Subject"/>
 				</xs:sequence>
 			</xs:extension>
 		</xs:complexContent>
 	</xs:complexType>
 	<xs:complexType name="ValueConstraintShape">
 		<xs:complexContent>
-			<xs:extension base="Shape">
+			<xs:extension base="ShapeType">
 				<xs:sequence>
-					<xs:element name="Subject" type="SubjectRef"/>
+					<xs:element ref="Subject"/>
 				</xs:sequence>
 			</xs:extension>
 		</xs:complexContent>
 	</xs:complexType>
 	<xs:complexType name="RoleNameShape">
 		<xs:complexContent>
-			<xs:extension base="Shape">
+			<xs:extension base="ShapeType">
 				<xs:sequence>
-					<xs:element name="Subject" type="SubjectRef"/>
+					<xs:element ref="Subject"/>
 				</xs:sequence>
 			</xs:extension>
 		</xs:complexContent>
 	</xs:complexType>
 	<xs:complexType name="ExternalConstraintShape">
 		<xs:complexContent>
-			<xs:extension base="Shape">
+			<xs:extension base="ShapeType">
 				<xs:sequence>
-					<xs:element name="Subject" type="SubjectRef"/>
+					<xs:element ref="Subject"/>
 				</xs:sequence>
 			</xs:extension>
 		</xs:complexContent>
@@ -171,13 +177,14 @@
 	</xs:complexType>
 	<xs:complexType name="ModelNoteShape">
 		<xs:complexContent>
-			<xs:extension base="Shape">
+			<xs:extension base="ShapeType">
 				<xs:sequence>
-					<xs:element name="Subject" type="SubjectRef"/>
+					<xs:element ref="Subject"/>
 				</xs:sequence>
 			</xs:extension>
 		</xs:complexContent>
 	</xs:complexType>
+	<xs:element name="Subject" type="SubjectRef"/>
 	<xs:complexType name="SubjectRef">
 		<xs:attribute name="ref" type="xs:IDREF"/>
 	</xs:complexType>

@@ -39,7 +39,7 @@ using Neumont.Tools.Modeling.Diagrams;
 
 namespace Neumont.Tools.ORM.ShapeModel
 {
-	public partial class SubtypeLink : ORMBaseBinaryLinkShape, IModelErrorActivation, IProvideConnectorShape, IReconfigureableLink
+	public partial class SubtypeLink : ORMBaseBinaryLinkShape, IModelErrorActivation, IProvideConnectorShape, IReconfigureableLink, IConfigureAsChildShape
 	{
 		#region Customize appearance
 		//The Resource ID's for the given subtype drawing type.
@@ -356,13 +356,16 @@ namespace Neumont.Tools.ORM.ShapeModel
 			}
 		}
 		/// <summary>
-		/// Configuring this link after it has been added to the diagram
+		/// Implements <see cref="IConfigureAsChildShape.ConfiguringAsChildOf"/>
 		/// </summary>
-		/// <param name="diagram">The parent diagram</param>
-		/// <param name="createdDuringViewFixup">Whether this shape was created as part of a view fixup</param>
-		public override void ConfiguringAsChildOf(ORMDiagram diagram, bool createdDuringViewFixup)
+		protected new void ConfiguringAsChildOf(NodeShape parentShape, bool createdDuringViewFixup)
 		{
+			base.ConfiguringAsChildOf(parentShape, createdDuringViewFixup);
 			Reconfigure(null);
+		}
+		void IConfigureAsChildShape.ConfiguringAsChildOf(NodeShape parentShape, bool createdDuringViewFixup)
+		{
+			ConfiguringAsChildOf(parentShape, createdDuringViewFixup);
 		}
 		/// <summary>
 		/// Implements <see cref="IReconfigureableLink.Reconfigure"/>

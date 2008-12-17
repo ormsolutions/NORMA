@@ -362,14 +362,18 @@
       <DependentUpon>ReadingEditor.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="ObjectModel\ORMModel.resx">
+      <LogicalName>Neumont.tools.ORM.ObjectModel.ORMModel.resources</LogicalName>
       <DependentUpon>ORMModel.cs</DependentUpon>
       <SubType>Designer</SubType>
     </EmbeddedResource>
     <EmbeddedResource Include="ShapeModel\ORMDiagram.resx">
+      <LogicalName>Neumont.Tools.ORM.ShapeModel.ORMDiagram.resources</LogicalName>
       <DependentUpon>ORMDiagram.cs</DependentUpon>
       <SubType>Designer</SubType>
     </EmbeddedResource>
     <None Include="ObjectModel\VerbalizationCoreSnippets\VerbalizationCoreSnippets.xml" />
+    <Compile Include="Framework\Diagrams\Design\ModelingToolboxItemProvider.cs" />
+    <Compile Include="Framework\Diagrams\ShapeExtension.cs" />
     <Compile Include="Framework\FrameworkServices.cs" />
     <Compile Include="Framework\Design\PropertyProvider.cs" />
     <Compile Include="Framework\Resources\ResourceStrings.cs" />

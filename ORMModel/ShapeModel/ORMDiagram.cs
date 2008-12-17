@@ -37,15 +37,22 @@ using Microsoft.VisualStudio.Modeling.Diagrams.GraphObject;
 using Microsoft.VisualStudio.Modeling.Shell;
 using Neumont.Tools.ORM.ObjectModel;
 using Neumont.Tools.ORM.Shell;
+using Neumont.Tools.Modeling;
 using Neumont.Tools.Modeling.Design;
 using Neumont.Tools.Modeling.Diagrams;
+using Neumont.Tools.Modeling.Diagrams.Design;
 using Neumont.Tools.Modeling.Shell;
 
 namespace Neumont.Tools.ORM.ShapeModel
 {
-	// NOTE: ORMDiagram must be the first class in this file or ORMDiagram.resx will end up with the wrong name in the assembly
+	/// <summary>
+	/// A callback delegate to use during shape placement. Used with <see cref="M:ORMDiagram.PlaceElementOnDiagram"/>
+	/// and <see cref="M:ORMDiagram.FixupRelatedLinks"/>
+	/// </summary>
+	/// <param name="element">The placed element</param>
+	/// <param name="newShape">The newly created shape element</param>
+	public delegate void FixupNewShape(ModelElement element, ShapeElement newShape);
 	[DiagramMenuDisplay(DiagramMenuDisplayOptions.Required | DiagramMenuDisplayOptions.AllowMultiple, typeof(ORMDiagram), "UNDONE", "Diagram.TabImage", "Diagram.BrowserImage")]
-	[ToolboxItemFilterAttribute(ORMDiagram.ORMDiagramDefaultFilterString, ToolboxItemFilterType.Require)]
 	public partial class ORMDiagram : IProxyDisplayProvider, IMergeElements
 	{
 		#region Constructors
@@ -89,6 +96,17 @@ namespace Neumont.Tools.ORM.ShapeModel
 				e.Effect = DragDropEffects.All;
 				e.Handled = true;
 			}
+			if (!e.Handled)
+			{
+				IShapeExtender<ORMDiagram>[] extenders = ((IFrameworkServices)Store).GetTypedDomainModelProviders<IShapeExtender<ORMDiagram>>();
+				if (extenders != null)
+				{
+					for (int i = 0; i < extenders.Length && !e.Handled; ++i)
+					{
+						extenders[i].OnDragOver(this, e);
+					}
+				}
+			}
 			base.OnDragOver(e);
 		}
 		/// <summary>
@@ -106,6 +124,17 @@ namespace Neumont.Tools.ORM.ShapeModel
 			{
 				e.Effect = DragDropEffects.All;
 				e.Handled = true;
+			}
+			if (!e.Handled)
+			{
+				IShapeExtender<ORMDiagram>[] extenders = ((IFrameworkServices)Store).GetTypedDomainModelProviders<IShapeExtender<ORMDiagram>>();
+				if (extenders != null)
+				{
+					for (int i = 0; i < extenders.Length && !e.Handled; ++i)
+					{
+						extenders[i].OnDragDrop(this, e);
+					}
+				}
 			}
 			base.OnDragDrop(e);
 		}
@@ -236,6 +265,71 @@ namespace Neumont.Tools.ORM.ShapeModel
 					{
 						selectOnView.Selection.Set(new DiagramItem(shape));
 						selectOnView.DiagramClientView.EnsureVisible(new ShapeElement[] { shape });
+					}
+				}
+			}
+			return retVal;
+		}
+		/// <summary>
+		/// Place a new shape for an existing element onto this diagram
+		/// </summary>
+		/// <param name="elementToPlace">The the element to place.</param>
+		/// <param name="elementPosition">An initial position for the element</param>
+		/// <param name="placementOptions">Controls the actions by this method</param>
+		/// <param name="fixupShapeCallback">A <see cref="FixupNewShape"/> callback used to configure the shape</param>
+		/// <returns>true if the element was placed</returns>
+		public bool PlaceElementOnDiagram(ModelElement elementToPlace, PointD elementPosition, ORMPlacementOption placementOptions, FixupNewShape fixupShapeCallback)
+		{
+			bool retVal = false;
+			if (elementToPlace != null)
+			{
+				using (Transaction transaction = Store.TransactionManager.BeginTransaction(ResourceStrings.DropShapeTransactionName))
+				{
+					bool clearContext;
+					if (clearContext = !elementPosition.IsEmpty)
+					{
+						DropTargetContext.Set(transaction.TopLevelTransaction, Id, elementPosition, null);
+					}
+					Dictionary<object, object> topLevelContextInfo = transaction.TopLevelTransaction.Context.ContextInfo;
+					if (placementOptions == ORMPlacementOption.AllowMultipleShapes)
+					{
+						topLevelContextInfo.Add(MultiShapeUtility.AllowMultipleShapes, null);
+					}
+					ShapeElement shapeElement = FixUpLocalDiagram(elementToPlace);
+					if (clearContext)
+					{
+						DropTargetContext.Remove(transaction.TopLevelTransaction);
+					}
+					if (shapeElement != null && fixupShapeCallback != null)
+					{
+						fixupShapeCallback(elementToPlace, shapeElement);
+					}
+					if (placementOptions == ORMPlacementOption.AllowMultipleShapes)
+					{
+						topLevelContextInfo.Remove(MultiShapeUtility.AllowMultipleShapes);
+					}
+					if (transaction.HasPendingChanges)
+					{
+						transaction.Commit();
+						retVal = true;
+					}
+				}
+				if (!retVal && placementOptions == ORMPlacementOption.SelectIfNotPlaced)
+				{
+					DiagramView selectOnView = ActiveDiagramView;
+					ShapeElement shape = null;
+
+					foreach (ShapeElement existingShape in MultiShapeUtility.FindAllShapesForElement<ShapeElement>(this, elementToPlace))
+					{
+						shape = existingShape;
+						break;
+					}
+
+					if (selectOnView != null && shape != null)
+					{
+						selectOnView.Selection.Set(new DiagramItem(shape));
+						selectOnView.DiagramClientView.EnsureVisible(new ShapeElement[] { shape });
+						retVal = true;
 					}
 				}
 			}
@@ -426,7 +520,7 @@ namespace Neumont.Tools.ORM.ShapeModel
 						constraint is SetComparisonConstraint ?
 						FactSetComparisonConstraint.SetComparisonConstraintDomainRoleId :
 						FactSetConstraint.SetConstraintDomainRoleId),
-					delegate(ElementLink link, ShapeElement newShape)
+					delegate(ModelElement link, ShapeElement newShape)
 					{
 						ExternalConstraintLink linkShape = newShape as ExternalConstraintLink;
 						if (linkShape != null)
@@ -458,16 +552,10 @@ namespace Neumont.Tools.ORM.ShapeModel
 			}
 		}
 		/// <summary>
-		/// Callback used with <see cref="FixupRelatedLinks(ReadOnlyCollection{ElementLink},AfterLinkFixup)"/>
-		/// </summary>
-		/// <param name="link">The link that was fixed up</param>
-		/// <param name="newShape">A newly created shape associated with the link</param>
-		private delegate void AfterLinkFixup(ElementLink link, ShapeElement newShape);
-		/// <summary>
 		/// Fixes up the local diagram for each of the links
 		/// </summary>
 		/// <param name="links">The links</param>
-		private void FixupRelatedLinks(ReadOnlyCollection<ElementLink> links)
+		public void FixupRelatedLinks(ReadOnlyCollection<ElementLink> links)
 		{
 			FixupRelatedLinks(links, null);
 		}
@@ -475,8 +563,8 @@ namespace Neumont.Tools.ORM.ShapeModel
 		/// Fixes up the local diagram for each of the links
 		/// </summary>
 		/// <param name="links">The links</param>
-		/// <param name="afterFixup">A callback that fires after link fixup is complete</param>
-		private void FixupRelatedLinks(ReadOnlyCollection<ElementLink> links, AfterLinkFixup afterFixup)
+		/// <param name="afterFixup">A <see cref="FixupNewShape"/> callback that fires after link fixup is complete</param>
+		public void FixupRelatedLinks(ReadOnlyCollection<ElementLink> links, FixupNewShape afterFixup)
 		{
 			int linksCount = links.Count;
 			for (int i = 0; i < linksCount; ++i)
@@ -560,14 +648,10 @@ namespace Neumont.Tools.ORM.ShapeModel
 		}
 		#endregion // DragDrop overrides
 		#region Toolbox filter strings
-		// UNDONE: 2006-06 DSL Tools port: Some of these toolbox filter strings have been changed to point to the filter strings
-		// in ToolboxHelper. Is this the correct thing to do, and does anything else need to be done? (The original versions of
-		// the changed filter strings are below, commented out.)
 		/// <summary>
 		/// The filter string used for simple actions
 		/// </summary>
 		public const string ORMDiagramDefaultFilterString = ORMShapeToolboxHelper.ToolboxFilterString;
-		//public const string ORMDiagramDefaultFilterString = "ORMDiagramDefaultFilterString";
 
 		/// <summary>
 		/// The filter string used to create an external constraint. Very similar to a
@@ -579,12 +663,10 @@ namespace Neumont.Tools.ORM.ShapeModel
 		/// The filter string used to connect role sequences to external constraints
 		/// </summary>
 		public const string ORMDiagramConnectExternalConstraintFilterString = ORMShapeToolboxHelper.ExternalConstraintConnectorFilterString;
-		//public const string ORMDiagramConnectExternalConstraintFilterString = "ORMDiagramConnectExternalConstraintFilterString";
 		/// <summary>
 		/// The filter string used to create subtype relationships between object types
 		/// </summary>
 		public const string ORMDiagramCreateSubtypeFilterString = ORMShapeToolboxHelper.SubtypeConnectorFilterString;
-		//public const string ORMDiagramCreateSubtypeFilterString = "ORMDiagramCreateSubtypeFilterString";
 		/// <summary>
 		/// The filter string used to create an internal constraint. Very similar to a
 		/// normal action, except the internal constraint connector is activated on completion
@@ -599,7 +681,6 @@ namespace Neumont.Tools.ORM.ShapeModel
 		/// The filter string used to connect a role to its role player object type
 		/// </summary>
 		public const string ORMDiagramConnectRoleFilterString = ORMShapeToolboxHelper.RoleConnectorFilterString;
-		//public const string ORMDiagramConnectRoleFilterString = "ORMDiagramConnectRoleFilterString";
 		/// <summary>
 		/// The filter string used to create a model note. Very similar to a
 		/// normal action, except the model note property editor is activated on
@@ -808,6 +889,17 @@ namespace Neumont.Tools.ORM.ShapeModel
 			{
 				return ShouldDisplayObjectType(objType);
 			}
+			IShapeExtender<ORMDiagram>[] extenders = ((IFrameworkServices)Store).GetTypedDomainModelProviders<IShapeExtender<ORMDiagram>>();
+			if (extenders != null)
+			{
+				for (int i = 0; i < extenders.Length; ++i)
+				{
+					if (extenders[i].ShouldAddShapeForElement(this, element))
+					{
+						return true;
+					}
+				}
+			}
 			return false;
 		}
 		/// <summary>
@@ -946,25 +1038,16 @@ namespace Neumont.Tools.ORM.ShapeModel
 		}
 #endif // SHOW_FACTSHAPE_FOR_SUBTYPE
 		/// <summary>
-		/// Defer to ConfiguringAsChildOf for ORMBaseShape and ORMBaseBinaryLinkShape children
+		/// Defer to <see cref="IConfigureAsChildShape.ConfiguringAsChildOf"/> on the child shape
 		/// </summary>
 		/// <param name="child">The child being configured</param>
 		/// <param name="createdDuringViewFixup">Whether this shape was created as part of a view fixup</param>
 		protected override void OnChildConfiguring(ShapeElement child, bool createdDuringViewFixup)
 		{
-			ORMBaseShape baseShape;
-			ORMBaseBinaryLinkShape baseLinkShape;
-			if (null != (baseShape = child as ORMBaseShape))
+			IConfigureAsChildShape baseShape;
+			if (null != (baseShape = child as IConfigureAsChildShape))
 			{
 				baseShape.ConfiguringAsChildOf(this, createdDuringViewFixup);
-			}
-			else if (null != (baseLinkShape = child as ORMBaseBinaryLinkShape))
-			{
-				// ORM lines cross, they don't jump. However, the RouteJumpType cannot
-				// be set before the diagram is in place, so this property cannot be set
-				// from initialization code in the shape itself.
-				baseLinkShape.RouteJumpType = VGObjectLineJumpCode.VGObjectJumpCodeNever;
-				baseLinkShape.ConfiguringAsChildOf(this, createdDuringViewFixup);
 			}
 		}
 		/// <summary>
@@ -1209,9 +1292,21 @@ namespace Neumont.Tools.ORM.ShapeModel
 				{
 					action = ModelNoteConnectAction;
 				}
-				else if (activeView.SelectedToolboxItemSupportsFilterString(ORMDiagram.ORMDiagramDefaultFilterString))
+				else
 				{
-					action = ToolboxAction;
+					IShapeExtender<ORMDiagram>[] extenders = ((IFrameworkServices)Store).GetTypedDomainModelProviders<IShapeExtender<ORMDiagram>>();
+					if (extenders != null)
+					{
+						for (int i = 0; i < extenders.Length && action == null; ++i)
+						{
+							action = extenders[i].GetMouseAction(this, activeView);
+						}
+					}
+					if (action == null &&
+						activeView.SelectedToolboxItemSupportsFilterString(ORMDiagram.ORMDiagramDefaultFilterString))
+					{
+						action = ToolboxAction;
+					}
 				}
 			}
 
@@ -1600,6 +1695,18 @@ namespace Neumont.Tools.ORM.ShapeModel
 					if (disposeMe != null)
 					{
 						disposeMe.Dispose();
+					}
+					Store store = Store;
+					if (!(store.Disposed || store.ShuttingDown))
+					{
+						IShapeExtender<ORMDiagram>[] extenders = ((IFrameworkServices)Store).GetTypedDomainModelProviders<IShapeExtender<ORMDiagram>>();
+						if (extenders != null)
+						{
+							for (int i = 0; i < extenders.Length; ++i)
+							{
+								extenders[i].ExtendedShapeDisposed(this);
+							}
+						}
 					}
 				}
 			}
@@ -2160,7 +2267,134 @@ namespace Neumont.Tools.ORM.ShapeModel
 		}
 		#endregion // ORMDesignerElementOperations class
 		#endregion // IMergeElements implementation
+		#region ShapeExtension support
+		/// <summary>
+		/// Add loaded extension attributes to the standard toolbox items attributes
+		/// </summary>
+		public override ICollection TargetToolboxItemFilterAttributes
+		{
+			get
+			{
+				ICollection baseAttributes = base.TargetToolboxItemFilterAttributes;
+				IShapeExtender<ORMDiagram>[] extenders = ((IFrameworkServices)Store).GetTypedDomainModelProviders<IShapeExtender<ORMDiagram>>();
+				if (extenders != null)
+				{
+					ICollection[] extenderAttributeSets = null;
+					int extenderCount = extenders.Length;
+					int extenderAttributeCount = 0;
+					for (int i = 0; i < extenderCount; ++i)
+					{
+						ICollection extenderAttributes = extenders[i].GetToolboxFilterAttributes() as ICollection;
+						int attributeCount;
+						if (extenderAttributes != null &&
+							0 != (attributeCount = extenderAttributes.Count))
+						{
+							extenderAttributeCount += attributeCount;
+							(extenderAttributeSets ?? (extenderAttributeSets = new ICollection[extenderCount]))[i] = extenderAttributes;
+						}
+					}
+					if (extenderAttributeCount != 0)
+					{
+						int baseCount = (baseAttributes != null) ? baseAttributes.Count : 0;
+						ToolboxItemFilterAttribute[] allAttributes = new ToolboxItemFilterAttribute[baseCount + extenderAttributeCount];
+						baseAttributes.CopyTo(allAttributes, 0);
+						int copyToIndex = baseCount;
+						for (int i = 0; i < extenderCount; ++i)
+						{
+							ICollection extenderCollection = extenderAttributeSets[i];
+							if (extenderCollection != null)
+							{
+								extenderCollection.CopyTo(allAttributes, copyToIndex);
+								copyToIndex += extenderCollection.Count;
+							}
+						}
+						return allAttributes;
+					}
+				}
+				return baseAttributes;
+			}
+		}
+		/// <summary>
+		/// Defer child shape creation to <see cref="IShapeExtender{ORMDiagram}"/> implementations as needed
+		/// </summary>
+		protected override ShapeElement CreateChildShape(ModelElement element)
+		{
+			ShapeElement retVal = base.CreateChildShape(element);
+			if (retVal == null)
+			{
+				IShapeExtender<ORMDiagram>[] extenders = ((IFrameworkServices)Store).GetTypedDomainModelProviders<IShapeExtender<ORMDiagram>>();
+				if (extenders != null)
+				{
+					for (int i = 0; i < extenders.Length && retVal == null; ++i)
+					{
+						retVal = extenders[i].CreateChildShape(this, element);
+					}
+				}
+			}
+			return retVal;
+		}
+		#endregion // ShapeExtension support
 	}
+	#region ORMShapeDomainModel toolbox initialization
+	[ModelingToolboxItemProvider("ToolboxInitializer")]
+	partial class ORMShapeDomainModel
+	{
+		private sealed class ToolboxInitializer : IModelingToolboxItemProvider
+		{
+			#region IModelingToolboxItemProvider Implementation
+			IList<ModelingToolboxItem> IModelingToolboxItemProvider.CreateToolboxItems(IServiceProvider serviceProvider)
+			{
+				IList<ModelingToolboxItem> items;
+				FrameworkDomainModel.InitializingToolboxItems = true;
+				try
+				{
+					items = new ORMShapeToolboxHelper(serviceProvider).CreateToolboxItems();
+				}
+				finally
+				{
+					FrameworkDomainModel.InitializingToolboxItems = false;
+				}
+
+				// Add additional filter strings. These are not easily specified in the .dsl file, so we
+				// do it here.
+				IDictionary<string, int> itemIndexDictionary = ToolboxHelperUtility.CreateIdentifierToIndexMap(items);
+
+				ToolboxItemFilterAttribute attribute = new ToolboxItemFilterAttribute(ORMDiagram.ORMDiagramInternalUniquenessConstraintFilterString, ToolboxItemFilterType.Allow);
+				ToolboxHelperUtility.AddFilterAttribute(items, itemIndexDictionary, ResourceStrings.ToolboxInternalUniquenessConstraintItemId, attribute);
+
+				attribute = new ToolboxItemFilterAttribute(ORMDiagram.ORMDiagramConnectInternalUniquenessConstraintFilterString, ToolboxItemFilterType.Allow);
+				ToolboxHelperUtility.AddFilterAttribute(items, itemIndexDictionary, ResourceStrings.ToolboxInternalUniquenessConstraintConnectorItemId, attribute);
+
+				attribute = new ToolboxItemFilterAttribute(ORMDiagram.ORMDiagramModelNoteFilterString, ToolboxItemFilterType.Allow);
+				ToolboxHelperUtility.AddFilterAttribute(items, itemIndexDictionary, ResourceStrings.ToolboxModelNoteItemId, attribute);
+
+				attribute = new ToolboxItemFilterAttribute(ORMDiagram.ORMDiagramExternalConstraintFilterString, ToolboxItemFilterType.Allow);
+				string[] itemIds = new string[] {
+					ResourceStrings.ToolboxEqualityConstraintItemId,
+					ResourceStrings.ToolboxExclusionConstraintItemId,
+					ResourceStrings.ToolboxExclusiveOrConstraintItemId,
+					ResourceStrings.ToolboxExternalUniquenessConstraintItemId,
+					ResourceStrings.ToolboxInclusiveOrConstraintItemId,
+					ResourceStrings.ToolboxRingConstraintItemId,
+					ResourceStrings.ToolboxSubsetConstraintItemId,
+					ResourceStrings.ToolboxFrequencyConstraintItemId};
+				for (int i = 0; i < itemIds.Length; ++i)
+				{
+					ToolboxHelperUtility.AddFilterAttribute(items, itemIndexDictionary, itemIds[i], attribute);
+				}
+				return items;
+			}
+			int IModelingToolboxItemProvider.ToolboxItemPositionOffset
+			{
+				get
+				{
+					return 0;
+				}
+			}
+			#endregion // IModelingToolboxItemProvider Implementation
+		}
+	}
+	#endregion // ORMShapeDomainModel toolbox initialization
 	#region IStickyObject interface
 	/// <summary>
 	/// Interface for implementing "Sticky" selections.  Presentation elements that are sticky

@@ -154,7 +154,7 @@ namespace Neumont.Tools.ORM.Shell
 
 			public void OnStatusDelete(Object sender, EventArgs e)
 			{
-				ORMModelBrowserToolWindow.OnStatusCommand(sender, ORMDesignerCommands.Delete, CurrentToolWindow); 
+				ORMModelBrowserToolWindow.OnStatusCommand(sender, ORMDesignerCommands.Delete | ORMDesignerCommands.DeleteAny, CurrentToolWindow); 
 			}
 			public void OnMenuDelete(Object sender, EventArgs e)
 			{

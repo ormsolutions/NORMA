@@ -1,0 +1,7 @@
+<?xml version="1.0" encoding="utf-8"?>
+<SchemaCatalog xmlns="http://schemas.microsoft.com/xsd/catalog">
+	<Schema targetNamespace="http://schemas.neumont.edu/ORM/SDK/AttachRulesGenerator" href="AttachRulesGenerator.xsd"/>
+	<Schema targetNamespace="http://schemas.neumont.edu/ORM/SDK/ResourceStringsGenerator" href="ResourceStringsGenerator.xsd"/>
+	<Schema targetNamespace="http://schemas.neumont.edu/ORM/SDK/SerializationExtensions" href="SerializationExtensions.xsd"/>
+	<Schema targetNamespace="http://schemas.neumont.edu/ORM/SDK/SurveyQuestionProvider" href="SurveyQuestionProvider.xsd"/>
+</SchemaCatalog>

@@ -618,6 +618,33 @@ namespace Neumont.Tools.ORM.Shell
 			{
 				otherShape = true;
 			}
+			else if (nodeShape is IAllowStandardCommands)
+			{
+				// Add some standard handling for extension elements.
+				// UNDONE: Add a more sophisticated mechanism here to allow external command handlers
+				// to plug into the package command set. Give that any sophisticated command handling
+				// requires an external package, doing basic handling for common commands here is worth
+				// the benefits with minimal costs.
+				enabledCommands |=
+					ORMDesignerCommands.DeleteAnyShape |
+					ORMDesignerCommands.AutoLayout |
+					ORMDesignerCommands.AlignShapes;
+				visibleCommands |=
+					ORMDesignerCommands.DeleteAnyShape |
+					ORMDesignerCommands.AutoLayout |
+					ORMDesignerCommands.AlignShapes;
+				// Handle the shape and element commands separately
+				if (element is IAllowStandardCommands)
+				{
+					enabledCommands |= ORMDesignerCommands.DeleteAny;
+					visibleCommands |= ORMDesignerCommands.DeleteAny;
+				}
+			}
+			else if (element is IAllowStandardCommands)
+			{
+				enabledCommands |= ORMDesignerCommands.DeleteAny;
+				visibleCommands |= ORMDesignerCommands.DeleteAny;
+			}
 			if (otherShape)
 			{
 				toleratedCommands |=

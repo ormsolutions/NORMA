@@ -206,7 +206,7 @@
 			</Properties>
 		</DomainClass>
 
-		<DomainClass Name="ORMModel" Namespace="Neumont.Tools.ORM.ObjectModel" Id="73E1F528-9E60-4198-AAC2-F8D6CCF62EB3" DisplayName="ORMModel" Description="">
+		<DomainClass Name="ORMModel" Namespace="Neumont.Tools.ORM.ObjectModel" Id="73E1F528-9E60-4198-AAC2-F8D6CCF62EB3" DisplayName="ORMModel" Description="" GeneratesDoubleDerived="true">
 			<BaseClass>
 				<DomainClassMoniker Name="ORMNamedElement"/>
 			</BaseClass>

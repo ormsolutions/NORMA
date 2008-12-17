@@ -41,7 +41,7 @@ using Neumont.Tools.Modeling;
 
 namespace Neumont.Tools.ORM.ShapeModel
 {
-	public partial class ORMBaseBinaryLinkShape : IReconfigureableLink
+	public partial class ORMBaseBinaryLinkShape : IReconfigureableLink, IConfigureAsChildShape
 #if LINKS_ALWAYS_CONNECT
 		, IBinaryLinkAnchor
 		#endif //LINKS_ALWAYS_CONNECT
@@ -121,10 +121,20 @@ namespace Neumont.Tools.ORM.ShapeModel
 			}
 		}
 		/// <summary>
-		/// Abstract method to configure this link after it has been added to
-		/// the diagram.
+		/// Implements <see cref="IConfigureAsChildShape.ConfiguringAsChildOf"/>
 		/// </summary>
-		public abstract void ConfiguringAsChildOf(ORMDiagram diagram, bool createdDuringViewFixup);
+		protected void ConfiguringAsChildOf(NodeShape parentShape, bool createdDuringViewFixup)
+		{
+			// ORM lines cross, they don't jump. However, the RouteJumpType cannot
+			// be set before the diagram is in place, so this property cannot be set
+			// from initialization code in the shape itself.
+			RouteJumpType = VGObjectLineJumpCode.VGObjectJumpCodeNever;
+		}
+		void IConfigureAsChildShape.ConfiguringAsChildOf(NodeShape parentShape, bool createdDuringViewFixup)
+		{
+			ConfiguringAsChildOf(parentShape, createdDuringViewFixup);
+		}
+
 		#endregion Customize appearance
 		#region Auto-invalidate tracking
 		/// <summary>

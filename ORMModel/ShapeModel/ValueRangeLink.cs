@@ -35,7 +35,7 @@ using Neumont.Tools.Modeling.Diagrams;
 
 namespace Neumont.Tools.ORM.ShapeModel
 {
-	public partial class ValueRangeLink : IReconfigureableLink
+	public partial class ValueRangeLink : IReconfigureableLink, IConfigureAsChildShape
 	{
 		#region Customize appearance
 		/// <summary>
@@ -80,15 +80,19 @@ namespace Neumont.Tools.ORM.ShapeModel
 			}
 		}
 		/// <summary>
-		/// Configuring this link after it has been added to the diagram
+		/// Implements <see cref="IConfigureAsChildShape.ConfiguringAsChildOf"/>
 		/// </summary>
-		/// <param name="diagram">The parent diagram</param>
-		/// <param name="createdDuringViewFixup">Whether this shape was created as part of a view fixup</param>
-		public override void ConfiguringAsChildOf(ORMDiagram diagram, bool createdDuringViewFixup)
+		protected new void ConfiguringAsChildOf(NodeShape parentShape, bool createdDuringViewFixup)
 		{
-			//We have to make sure each shape is connected to its parent,
+			base.ConfiguringAsChildOf(parentShape, createdDuringViewFixup);
+			// We have to make sure each shape is connected to its parent,
 			// so we can't use the MultiShapeUtility.
 
+			Diagram diagram = parentShape as Diagram;
+			if (diagram == null)
+			{
+				return;
+			}
 			RoleHasValueConstraint modelLink = ModelElement as RoleHasValueConstraint;
 			ModelElement factType = modelLink.Role.FactType;
 			//connect the first unconnected constraint shape to its parent
@@ -118,6 +122,10 @@ namespace Neumont.Tools.ORM.ShapeModel
 			//this link should not have been created unless there were shapes to connect
 			Debug.Assert(false);
 			Delete();
+		}
+		void IConfigureAsChildShape.ConfiguringAsChildOf(NodeShape parentShape, bool createdDuringViewFixup)
+		{
+			ConfiguringAsChildOf(parentShape, createdDuringViewFixup);
 		}
 		/// <summary>
 		/// Implements <see cref="IReconfigureableLink.Reconfigure"/>

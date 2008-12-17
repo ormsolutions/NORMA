@@ -1735,13 +1735,13 @@ namespace Neumont.Tools.ORM.ObjectModel
 namespace Neumont.Tools.ORM.ObjectModel
 {
 	/// <summary>
-	/// DomainClass ORMModel
+	/// Double-derived base class for DomainClass ORMModel
 	/// </summary>
 	[DslDesign::DisplayNameResource("Neumont.Tools.ORM.ObjectModel.ORMModel.DisplayName", typeof(global::Neumont.Tools.ORM.ObjectModel.ORMCoreDomainModel), "Neumont.Tools.ORM.GeneratedCode.CoreDomainModelResx")]
 	[DslDesign::DescriptionResource("Neumont.Tools.ORM.ObjectModel.ORMModel.Description", typeof(global::Neumont.Tools.ORM.ObjectModel.ORMCoreDomainModel), "Neumont.Tools.ORM.GeneratedCode.CoreDomainModelResx")]
 	[global::System.CLSCompliant(true)]
 	[DslModeling::DomainObjectId("73e1f528-9e60-4198-aac2-f8d6ccf62eb3")]
-	public partial class ORMModel : ORMNamedElement
+	public abstract partial class ORMModelBase : ORMNamedElement
 	{
 		#region Constructors, domain class Id
 	
@@ -1750,21 +1750,11 @@ namespace Neumont.Tools.ORM.ObjectModel
 		/// </summary>
 		public static readonly new global::System.Guid DomainClassId = new global::System.Guid(0x73e1f528, 0x9e60, 0x4198, 0xaa, 0xc2, 0xf8, 0xd6, 0xcc, 0xf6, 0x2e, 0xb3);
 		/// <summary>
-		/// Constructor
-		/// </summary>
-		/// <param name="store">Store where new element is to be created.</param>
-		/// <param name="propertyAssignments">List of domain property id/value pairs to set once the element is created.</param>
-		public ORMModel(DslModeling::Store store, params DslModeling::PropertyAssignment[] propertyAssignments)
-			: this(store != null ? store.DefaultPartition : null, propertyAssignments)
-		{
-		}
-		
-		/// <summary>
-		/// Constructor
+		/// Constructor.
 		/// </summary>
 		/// <param name="partition">Partition where new element is to be created.</param>
 		/// <param name="propertyAssignments">List of domain property id/value pairs to set once the element is created.</param>
-		public ORMModel(DslModeling::Partition partition, params DslModeling::PropertyAssignment[] propertyAssignments)
+		protected ORMModelBase(DslModeling::Partition partition, DslModeling::PropertyAssignment[] propertyAssignments)
 			: base(partition, propertyAssignments)
 		{
 		}
@@ -1801,7 +1791,7 @@ namespace Neumont.Tools.ORM.ObjectModel
 		/// <summary>
 		/// Value handler for the ORMModel.ModelErrorDisplayFilterDisplay domain property.
 		/// </summary>
-		internal sealed partial class ModelErrorDisplayFilterDisplayPropertyHandler : DslModeling::DomainPropertyValueHandler<ORMModel, ModelErrorDisplayFilter>
+		internal sealed partial class ModelErrorDisplayFilterDisplayPropertyHandler : DslModeling::DomainPropertyValueHandler<ORMModelBase, ModelErrorDisplayFilter>
 		{
 			private ModelErrorDisplayFilterDisplayPropertyHandler() { }
 		
@@ -1827,7 +1817,7 @@ namespace Neumont.Tools.ORM.ObjectModel
 			/// </summary>
 			/// <param name="element">Element which owns the property.</param>
 			/// <returns>Property value.</returns>
-			public override sealed ModelErrorDisplayFilter GetValue(ORMModel element)
+			public override sealed ModelErrorDisplayFilter GetValue(ORMModelBase element)
 			{
 				if (element == null) throw new global::System.ArgumentNullException("element");
 				// There is no storage for ModelErrorDisplayFilterDisplay because its Kind is
@@ -1841,7 +1831,7 @@ namespace Neumont.Tools.ORM.ObjectModel
 			/// </summary>
 			/// <param name="element">Element which owns the property.</param>
 			/// <param name="newValue">New property value.</param>
-			public override sealed void SetValue(ORMModel element, ModelErrorDisplayFilter newValue)
+			public override sealed void SetValue(ORMModelBase element, ModelErrorDisplayFilter newValue)
 			{
 				if (element == null) throw new global::System.ArgumentNullException("element");
 		
@@ -1894,7 +1884,7 @@ namespace Neumont.Tools.ORM.ObjectModel
 		/// <summary>
 		/// Value handler for the ORMModel.DefinitionText domain property.
 		/// </summary>
-		internal sealed partial class DefinitionTextPropertyHandler : DslModeling::DomainPropertyValueHandler<ORMModel, global::System.String>
+		internal sealed partial class DefinitionTextPropertyHandler : DslModeling::DomainPropertyValueHandler<ORMModelBase, global::System.String>
 		{
 			private DefinitionTextPropertyHandler() { }
 		
@@ -1920,7 +1910,7 @@ namespace Neumont.Tools.ORM.ObjectModel
 			/// </summary>
 			/// <param name="element">Element which owns the property.</param>
 			/// <returns>Property value.</returns>
-			public override sealed global::System.String GetValue(ORMModel element)
+			public override sealed global::System.String GetValue(ORMModelBase element)
 			{
 				if (element == null) throw new global::System.ArgumentNullException("element");
 				// There is no storage for DefinitionText because its Kind is
@@ -1934,7 +1924,7 @@ namespace Neumont.Tools.ORM.ObjectModel
 			/// </summary>
 			/// <param name="element">Element which owns the property.</param>
 			/// <param name="newValue">New property value.</param>
-			public override sealed void SetValue(ORMModel element, global::System.String newValue)
+			public override sealed void SetValue(ORMModelBase element, global::System.String newValue)
 			{
 				if (element == null) throw new global::System.ArgumentNullException("element");
 		
@@ -1987,7 +1977,7 @@ namespace Neumont.Tools.ORM.ObjectModel
 		/// <summary>
 		/// Value handler for the ORMModel.NoteText domain property.
 		/// </summary>
-		internal sealed partial class NoteTextPropertyHandler : DslModeling::DomainPropertyValueHandler<ORMModel, global::System.String>
+		internal sealed partial class NoteTextPropertyHandler : DslModeling::DomainPropertyValueHandler<ORMModelBase, global::System.String>
 		{
 			private NoteTextPropertyHandler() { }
 		
@@ -2013,7 +2003,7 @@ namespace Neumont.Tools.ORM.ObjectModel
 			/// </summary>
 			/// <param name="element">Element which owns the property.</param>
 			/// <returns>Property value.</returns>
-			public override sealed global::System.String GetValue(ORMModel element)
+			public override sealed global::System.String GetValue(ORMModelBase element)
 			{
 				if (element == null) throw new global::System.ArgumentNullException("element");
 				// There is no storage for NoteText because its Kind is
@@ -2027,7 +2017,7 @@ namespace Neumont.Tools.ORM.ObjectModel
 			/// </summary>
 			/// <param name="element">Element which owns the property.</param>
 			/// <param name="newValue">New property value.</param>
-			public override sealed void SetValue(ORMModel element, global::System.String newValue)
+			public override sealed void SetValue(ORMModelBase element, global::System.String newValue)
 			{
 				if (element == null) throw new global::System.ArgumentNullException("element");
 		
@@ -2462,6 +2452,35 @@ namespace Neumont.Tools.ORM.ObjectModel
 			}
 			// Fall through to base class if this class hasn't handled the unmerge.
 			base.MergeDisconnect(sourceElement);
+		}
+		#endregion
+	}
+	/// <summary>
+	/// DomainClass ORMModel
+	/// </summary>
+	[global::System.CLSCompliant(true)]
+			
+	public partial class ORMModel : ORMModelBase
+	{
+		#region Constructors
+		/// <summary>
+		/// Constructor
+		/// </summary>
+		/// <param name="store">Store where new element is to be created.</param>
+		/// <param name="propertyAssignments">List of domain property id/value pairs to set once the element is created.</param>
+		public ORMModel(DslModeling::Store store, params DslModeling::PropertyAssignment[] propertyAssignments)
+			: this(store != null ? store.DefaultPartition : null, propertyAssignments)
+		{
+		}
+		
+		/// <summary>
+		/// Constructor
+		/// </summary>
+		/// <param name="partition">Partition where new element is to be created.</param>
+		/// <param name="propertyAssignments">List of domain property id/value pairs to set once the element is created.</param>
+		public ORMModel(DslModeling::Partition partition, params DslModeling::PropertyAssignment[] propertyAssignments)
+			: base(partition, propertyAssignments)
+		{
 		}
 		#endregion
 	}

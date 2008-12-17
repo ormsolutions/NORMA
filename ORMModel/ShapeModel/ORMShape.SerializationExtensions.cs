@@ -436,7 +436,7 @@ namespace Neumont.Tools.ORM.ShapeModel
 			Guid roleId = rolePlayedInfo.Id;
 			if (roleId == PresentationViewsSubject.SubjectDomainRoleId)
 			{
-				return new CustomSerializedElementInfo(null, "Subject", null, CustomSerializedElementWriteStyle.Element, null);
+				return new CustomSerializedElementInfo("ormDiagram", "Subject", null, CustomSerializedElementWriteStyle.Element, null);
 			}
 			return CustomSerializedElementInfo.Default;
 		}

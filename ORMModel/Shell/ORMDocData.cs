@@ -204,9 +204,10 @@ namespace Neumont.Tools.ORM.Shell
 			{
 				this.RemoveModelingEventHandlers(isReload);
 
-				// Null out the myPropertyProviderService field so that a new instance will be created
-				// with the new Store next time it is needed
+				// Null out the myPropertyProviderService and myTypedDomainModelProviderCache fields
+				// so that a new instance will be created with the new Store next time it is needed
 				this.myPropertyProviderService = null;
+				this.myTypedDomainModelProviderCache = null;
 
 				foreach (ModelingDocView view in DocViews)
 				{
@@ -280,6 +281,7 @@ namespace Neumont.Tools.ORM.Shell
 					myExtensionDomainModels = documentExtensions;
 					stream.Position = 0;
 
+					
 					retVal = base.LoadDocData(fileName, isReload);
 
 					// HACK: After the file is loaded and the load transaction has committed, commit a new transaction.

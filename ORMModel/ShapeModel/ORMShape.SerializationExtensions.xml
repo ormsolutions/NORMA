@@ -73,7 +73,11 @@
 		<se:Container Name="NestedShapes">
 			<se:Embed RelationshipName="ParentShapeContainsNestedChildShapes" RoleName="NestedChildShapes"/>
 		</se:Container>
-		<se:Link Name="Subject" RelationshipName="PresentationViewsSubject" RoleName="Subject"/>
+		<!-- The PresentationViewsSubject relationship in a namespace associated with any namespace/prefix. The fallback
+		behavior gives the node the same namespace as the parent element unless it is explicitly marked. If an extension
+		shape does not add explicit serialization information, then the Subject element writes with the parent's namespace
+		and we cannot resolve the link. Explicitly mark the prefix for this relationship to handle the extension case. -->
+		<se:Link Name="Subject" RelationshipName="PresentationViewsSubject" RoleName="Subject" Prefix="ormDiagram"/>
 	</se:Element>
 	<se:Element Class="ObjectTypeShape" Override="true">
 		<se:Attribute ID="ExpandRefMode">

@@ -949,10 +949,11 @@ namespace Neumont.Tools.Modeling.Diagrams
 	#endregion // CustomFoldRectangleShapeGeometry class
 	#region CustomFoldRoundedRectangleShapeGeometry class
 	/// <summary>
-	/// A geometry shape for custom shape folding on rectangles
+	/// A geometry shape for custom shape folding on rounded rectangles with a standard
+	/// 1.5mm corner radius.
 	/// Designed to work with CenterToCenter routing.
 	/// </summary>
-	public class CustomFoldRoundedRectangleShapeGeometry : RoundedRectangleShapeGeometry, IOffsetBorderPoint
+	public class CustomFoldRoundedRectangleShapeGeometry : CustomFoldRoundedRectangleShapeGeometryBase
 	{
 		/// <summary>
 		/// Singleton CustomFoldRoundedRectangleShapeGeometry instance
@@ -963,8 +964,25 @@ namespace Neumont.Tools.Modeling.Diagrams
 		/// as a singleton instead of being publicly constructed.
 		/// </summary>
 		protected CustomFoldRoundedRectangleShapeGeometry()
+			: base(1.5 / 25.4) // 1.5 mm corner
 		{
-			Radius = 1.5 / 25.4; // 1.5 mm
+		}
+	}
+	/// <summary>
+	/// A geometry shape for custom shape folding on rounded rectangles. Derived
+	/// concreted classes should provide a singleton and a corner radius to the constructor.
+	/// Designed to work with CenterToCenter routing.
+	/// </summary>
+	public abstract class CustomFoldRoundedRectangleShapeGeometryBase : RoundedRectangleShapeGeometry, IOffsetBorderPoint
+	{
+		/// <summary>
+		/// Protected default constructor. Derived classes should be used
+		/// as singletons instead of being publicly constructed.
+		/// </summary>
+		/// <param name="cornerRadius">The corner radius specified in inches</param>
+		protected CustomFoldRoundedRectangleShapeGeometryBase(double cornerRadius)
+			: base(cornerRadius)
+		{
 		}
 		/// <summary>
 		/// Provide custom shape folding for rectangular fact types

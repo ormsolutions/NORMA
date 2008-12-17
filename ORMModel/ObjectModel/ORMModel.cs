@@ -73,19 +73,8 @@ namespace Neumont.Tools.ORM.ObjectModel
 		AddImplicitPresentationElements = StandardFixupPhase.AddImplicitPresentationElements,
 	}
 	#endregion // ORMDeserializationFixupPhase enum
-	public partial class ORMModel : IVerbalizeCustomChildren, IVerbalizeFilterChildrenByRole
+	partial class ORMModelBase
 	{
-		/// <summary>
-		/// Used as the value for <see cref="ElementGroup.UserData"/> to indicate that the
-		/// <see cref="ObjectType"/> should be a ValueType.
-		/// </summary>
-		public static readonly object ValueTypeUserDataKey = new object();
-		/// <summary>
-		/// Used as the value for <see cref="ElementGroup.UserData"/> to indicate that the
-		/// <see cref="UniquenessConstraint"/> is internal.
-		/// </summary>
-		public static readonly object InternalUniquenessConstraintUserDataKey = new object();
-
 		#region CustomStorage handlers
 		private string GetDefinitionTextValue()
 		{
@@ -127,7 +116,58 @@ namespace Neumont.Tools.ORM.ObjectModel
 				}
 			}
 		}
+		private ModelErrorDisplayFilter GetModelErrorDisplayFilterDisplayValue()
+		{
+			return ModelErrorDisplayFilter;
+		}
+		private void SetModelErrorDisplayFilterDisplayValue(ModelErrorDisplayFilter newValue)
+		{
+			if (!Store.InUndoRedoOrRollback)
+			{
+				ModelErrorDisplayFilter = newValue;
+			}
+		}
 		#endregion // CustomStorage handlers
+		#region MergeContext functions
+		private void MergeRelateObjectType(ModelElement sourceElement, ElementGroup elementGroup)
+		{
+			ObjectType objectType = sourceElement as ObjectType;
+			if (elementGroup.UserData == ORMModel.ValueTypeUserDataKey)
+			{
+				objectType.DataType = ((ORMModel)this).DefaultDataType;
+			}
+			this.ObjectTypeCollection.Add(objectType);
+		}
+		private void MergeDisconnectObjectType(ModelElement sourceElement)
+		{
+			ObjectType objectType = sourceElement as ObjectType;
+			// Delete link for path ModelHasObjectType.ObjectTypeCollection
+			foreach (ElementLink link in ModelHasObjectType.GetLinks((ORMModel)this, objectType))
+			{
+				// Delete the link, but without possible delete propagation to the element since it's moving to a new location.
+				link.Delete(ModelHasObjectType.ModelDomainRoleId, ModelHasObjectType.ObjectTypeDomainRoleId);
+			}
+		}
+		private bool CanMergeSetConstraint(ProtoElementBase rootElement, ElementGroupPrototype elementGroupPrototype)
+		{
+			return elementGroupPrototype.UserData != ORMModel.InternalUniquenessConstraintUserDataKey;
+		}
+		#endregion // MergeContext functions
+	}
+	partial class ORMModel : IVerbalizeCustomChildren, IVerbalizeFilterChildrenByRole
+	{
+		#region ElementGroup.UserData keys
+		/// <summary>
+		/// Used as the value for <see cref="ElementGroup.UserData"/> to indicate that the
+		/// <see cref="ObjectType"/> should be a ValueType.
+		/// </summary>
+		public static readonly object ValueTypeUserDataKey = new object();
+		/// <summary>
+		/// Used as the value for <see cref="ElementGroup.UserData"/> to indicate that the
+		/// <see cref="UniquenessConstraint"/> is internal.
+		/// </summary>
+		public static readonly object InternalUniquenessConstraintUserDataKey = new object();
+		#endregion // ElementGroup.UserData keys
 		#region Entity- and ValueType specific collections
 		/// <summary>
 		/// All of the entity types in the object types collection.
@@ -182,44 +222,6 @@ namespace Neumont.Tools.ORM.ObjectModel
 		}
 		#endregion
 		#endregion // ErrorCollection
-		#region Custom storage accessor functions
-		private ModelErrorDisplayFilter GetModelErrorDisplayFilterDisplayValue()
-		{
-			return ModelErrorDisplayFilter;
-		}
-		private void SetModelErrorDisplayFilterDisplayValue(ModelErrorDisplayFilter newValue)
-		{
-			if (!Store.InUndoRedoOrRollback)
-			{
-				ModelErrorDisplayFilter = newValue;
-			}
-		}
-		#endregion // Custom storage accessor functions
-		#region MergeContext functions
-		private void MergeRelateObjectType(ModelElement sourceElement, ElementGroup elementGroup)
-		{
-			ObjectType objectType = sourceElement as ObjectType;
-			if (elementGroup.UserData == ORMModel.ValueTypeUserDataKey)
-			{
-				objectType.DataType = DefaultDataType;
-			}
-			this.ObjectTypeCollection.Add(objectType);
-		}
-		private void MergeDisconnectObjectType(ModelElement sourceElement)
-		{
-			ObjectType objectType = sourceElement as ObjectType;
-			// Delete link for path ModelHasObjectType.ObjectTypeCollection
-			foreach (ElementLink link in ModelHasObjectType.GetLinks(this, objectType))
-			{
-				// Delete the link, but without possible delete propagation to the element since it's moving to a new location.
-				link.Delete(ModelHasObjectType.ModelDomainRoleId, ModelHasObjectType.ObjectTypeDomainRoleId);
-			}
-		}
-		private bool CanMergeSetConstraint(ProtoElementBase rootElement, ElementGroupPrototype elementGroupPrototype)
-		{
-			return elementGroupPrototype.UserData != ORMModel.InternalUniquenessConstraintUserDataKey;
-		}
-		#endregion // MergeContext functions
 		#region Event integration
 		/// <summary>
 		/// Manages <see cref="EventHandler{TEventArgs}"/>s in the <see cref="Store"/> for state in the
@@ -274,6 +276,122 @@ namespace Neumont.Tools.ORM.ObjectModel
 		}
 		#endregion // IVerbalizeFilterChildrenByRole Implementation
 	}
+	#region Indirect merge support
+	partial class ORMModel
+	{
+		/// <summary>
+		/// Forward <see cref="IMergeElements.CanMerge"/> requests to <see cref="IMergeIndirectElements{ORMModel}"/> extensions
+		/// </summary>
+		protected override bool CanMerge(ProtoElementBase rootElement, ElementGroupPrototype elementGroupPrototype)
+		{
+			bool retVal = base.CanMerge(rootElement, elementGroupPrototype);
+			if (!retVal)
+			{
+				IMergeIndirectElements<ORMModel>[] extenders = ((IFrameworkServices)Store).GetTypedDomainModelProviders<IMergeIndirectElements<ORMModel>>();
+				if (extenders != null)
+				{
+					for (int i = 0; i < extenders.Length && !retVal; ++i)
+					{
+						retVal = extenders[i].CanMergeIndirect(this, rootElement, elementGroupPrototype);
+					}
+				}
+			}
+			return retVal;
+		}
+		/// <summary>
+		/// Forward <see cref="IMergeElements.ChooseMergeTarget(ElementGroup)"/> requests to <see cref="IMergeIndirectElements{ORMModel}"/> extensions
+		/// </summary>
+		protected override ModelElement ChooseMergeTarget(ElementGroup elementGroup)
+		{
+			ModelElement retVal = base.ChooseMergeTarget(elementGroup);
+			if (retVal == null)
+			{
+				IMergeIndirectElements<ORMModel>[] extenders = ((IFrameworkServices)Store).GetTypedDomainModelProviders<IMergeIndirectElements<ORMModel>>();
+				if (extenders != null)
+				{
+					for (int i = 0; i < extenders.Length && retVal == null; ++i)
+					{
+						retVal = extenders[i].ChooseIndirectMergeTarget(this, elementGroup);
+					}
+				}
+			}
+			return retVal;
+		}
+		/// <summary>
+		/// Forward <see cref="IMergeElements.ChooseMergeTarget(ElementGroupPrototype)"/> requests to <see cref="IMergeIndirectElements{ORMModel}"/> extensions
+		/// </summary>
+		protected override ModelElement ChooseMergeTarget(ElementGroupPrototype elementGroupPrototype)
+		{
+			ModelElement retVal = base.ChooseMergeTarget(elementGroupPrototype);
+			if (retVal == null)
+			{
+				IMergeIndirectElements<ORMModel>[] extenders = ((IFrameworkServices)Store).GetTypedDomainModelProviders<IMergeIndirectElements<ORMModel>>();
+				if (extenders != null)
+				{
+					for (int i = 0; i < extenders.Length && retVal == null; ++i)
+					{
+						retVal = extenders[i].ChooseIndirectMergeTarget(this, elementGroupPrototype);
+					}
+				}
+			}
+			return retVal;
+		}
+		/// <summary>
+		/// Forward <see cref="IMergeElements.MergeRelate"/> requests to <see cref="IMergeIndirectElements{ORMModel}"/> extensions
+		/// </summary>
+		protected override void MergeRelate(ModelElement sourceElement, ElementGroup elementGroup)
+		{
+			IMergeIndirectElements<ORMModel>[] extenders = ((IFrameworkServices)Store).GetTypedDomainModelProviders<IMergeIndirectElements<ORMModel>>();
+			if (extenders != null)
+			{
+				for (int i = 0; i < extenders.Length; ++i)
+				{
+					if (extenders[i].MergeRelateIndirect(this, sourceElement, elementGroup))
+					{
+						return;
+					}
+				}
+			}
+			base.MergeRelate(sourceElement, elementGroup);
+		}
+		/// <summary>
+		/// Forward <see cref="IMergeElements.MergeDisconnect"/> requests to <see cref="IMergeIndirectElements{ORMModel}"/> extensions
+		/// </summary>
+		protected override void MergeDisconnect(ModelElement sourceElement)
+		{
+			IMergeIndirectElements<ORMModel>[] extenders = ((IFrameworkServices)Store).GetTypedDomainModelProviders<IMergeIndirectElements<ORMModel>>();
+			if (extenders != null)
+			{
+				for (int i = 0; i < extenders.Length; ++i)
+				{
+					if (extenders[i].MergeDisconnectIndirect(this, sourceElement))
+					{
+						return;
+					}
+				}
+			}
+			base.MergeDisconnect(sourceElement);
+		}
+		/// <summary>
+		/// Forward <see cref="IMergeElements.MergeConfigure"/> requests to <see cref="IMergeIndirectElements{ORMModel}"/> extensions
+		/// </summary>
+		protected override void MergeConfigure(ElementGroup elementGroup)
+		{
+			IMergeIndirectElements<ORMModel>[] extenders = ((IFrameworkServices)Store).GetTypedDomainModelProviders<IMergeIndirectElements<ORMModel>>();
+			if (extenders != null)
+			{
+				for (int i = 0; i < extenders.Length; ++i)
+				{
+					if (extenders[i].MergeConfigureIndirect(this, elementGroup))
+					{
+						return;
+					}
+				}
+			}
+			base.MergeConfigure(elementGroup);
+		}
+	}
+	#endregion // Indirect merge support
 	#region NamedElementDictionary and DuplicateNameError integration
 	public partial class ORMModel : INamedElementDictionaryParent
 	{

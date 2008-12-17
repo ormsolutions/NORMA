@@ -102,18 +102,37 @@ namespace Neumont.Tools.ORM.SDK.TestEngine
 			}
 			#endregion // ORMModelErrorActivationService class
 			#region IORMToolServices Implementation
+			private PropertyProviderService myPropertyProviderService;
 			IPropertyProviderService IFrameworkServices.PropertyProviderService
 			{
 				get
 				{
-					return myServices.PropertyProviderService;
+					// Implemented on a per-store basis, do not defer to myServices
+					PropertyProviderService providerService = myPropertyProviderService;
+					if (providerService == null)
+					{
+						myPropertyProviderService = providerService = new PropertyProviderService(this);
+					}
+					return providerService;
 				}
+			}
+			private TypedDomainModelProviderCache myTypedDomainModelCache;
+			T[] IFrameworkServices.GetTypedDomainModelProviders<T>()
+			{
+				// Implemented on a per-store basis, do not defer to myServices
+				TypedDomainModelProviderCache cache = myTypedDomainModelCache;
+				if (cache == null)
+				{
+					myTypedDomainModelCache = cache = new TypedDomainModelProviderCache(this);
+				}
+				return cache.GetTypedDomainModelProviders<T>();
 			}
 			private ORMModelErrorActivationService myActivationService;
 			IORMModelErrorActivationService IORMToolServices.ModelErrorActivationService
 			{
 				get
 				{
+					// Implemented on a per-store basis, do not defer to myServices
 					ORMModelErrorActivationService retVal = myActivationService;
 					if (retVal == null)
 					{

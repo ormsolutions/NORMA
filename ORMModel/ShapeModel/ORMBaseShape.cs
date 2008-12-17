@@ -45,15 +45,6 @@ namespace Neumont.Tools.ORM.ShapeModel
 		#endregion // Public token values
 		#region Virtual extensions
 		/// <summary>
-		/// Called during the OnChildConfiguring from the parent shape.
-		/// The default implementation does nothing.
-		/// </summary>
-		/// <param name="parent">The parent shape. May be a diagram.</param>
-		/// <param name="createdDuringViewFixup">Whether this shape was created as part of a view fixup</param>
-		public virtual void ConfiguringAsChildOf(NodeShape parent, bool createdDuringViewFixup)
-		{
-		}
-		/// <summary>
 		/// Place the child shape the first time it is placed
 		/// on the diagram
 		/// </summary>
@@ -315,14 +306,14 @@ namespace Neumont.Tools.ORM.ShapeModel
 			}
 		}
 		/// <summary>
-		/// Defer to ConfiguringAsChildOf for ORMBaseShape children
+		/// Defer to <see cref="IConfigureAsChildShape.ConfiguringAsChildOf"/> on the child shape
 		/// </summary>
 		/// <param name="child">The child being configured</param>
 		/// <param name="createdDuringViewFixup">Whether this shape was created as part of a view fixup</param>
 		protected override void OnChildConfiguring(ShapeElement child, bool createdDuringViewFixup)
 		{
-			ORMBaseShape baseShape;
-			if (null != (baseShape = child as ORMBaseShape))
+			IConfigureAsChildShape baseShape;
+			if (null != (baseShape = child as IConfigureAsChildShape))
 			{
 				baseShape.ConfiguringAsChildOf(this, createdDuringViewFixup);
 			}
