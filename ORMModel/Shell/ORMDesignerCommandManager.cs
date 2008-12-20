@@ -41,6 +41,7 @@ using Neumont.Tools.ORM.ShapeModel;
 
 namespace Neumont.Tools.ORM.Shell
 {
+	#region IORMDesignerView interface
 	/// <summary>
 	/// An interface representing a container that displays an ORM diagram.
 	/// Abstracting the view enables commands to be handled/ the same for
@@ -89,6 +90,245 @@ namespace Neumont.Tools.ORM.Shell
 		/// </summary>
 		object PrimarySelection { get;}
 	}
+	#endregion // IORMDesignerView interface
+	#region ToolboxFilterSet enum
+	/// <summary>
+	/// The type of selection filter type to check. Used by <see cref="ToolboxFilterCache.UpdateFilters"/>
+	/// </summary>
+	[Flags]
+	public enum ToolboxFilterSet
+	{
+		/// <summary>
+		/// Update the filters for the currently selected item
+		/// </summary>
+		Selection = 1,
+		/// <summary>
+		/// Update the filters for the current diagram
+		/// </summary>
+		Diagram = 2,
+		/// <summary>
+		/// Udpate all filters
+		/// </summary>
+		All = Selection | Diagram,
+	}
+	#endregion // ToolboxFilterSet enum
+	#region ToolboxFilterCache class
+	/// <summary>
+	/// A class to manage toolbox filters as the selection in a <see cref="IORMDesignerView"/> implementation is modified
+	/// </summary>
+	[CLSCompliant(false)]
+	public class ToolboxFilterCache
+	{
+		// Use positive values for diagram items, negative for selection
+		private Dictionary<object, int> myFilterCache = new Dictionary<object, int>();
+		private int myDiagramCookie;
+		private int mySelectionCookie;
+		private int myDiagramFilterCount;
+		private int mySelectionFilterCount;
+		private object[] myFilterCollection;
+		/// <summary>
+		/// Update the current toolbox filters to correspond to the current selection in <paramref name="designerView"/>
+		/// </summary>
+		/// <param name="designerView">The current <see cref="IORMDesignerView"/> to populate settings for</param>
+		/// <param name="filterType">The <see cref="ToolboxFilterSet"/> indicating the set of toolbox items to update</param>
+		/// <returns><see langword="true"/> if the filter set is changed.</returns>
+		public bool UpdateFilters(IORMDesignerView designerView, ToolboxFilterSet filterType)
+		{
+			Dictionary<object, int> filterCache = myFilterCache;
+			int diagramCookie = myDiagramCookie;
+			int selectionCookie = mySelectionCookie;
+			bool repopulate = false;
+
+			// Check for first pass
+			if (diagramCookie == 0)
+			{
+				diagramCookie = NewDiagramCookie();
+				filterType = ToolboxFilterSet.All;
+			}
+			if (selectionCookie == 0)
+			{
+				selectionCookie = NewSelectionCookie();
+				filterType = ToolboxFilterSet.All;
+			}
+
+			// Update the diagram information
+			if (0 != (filterType & ToolboxFilterSet.Diagram))
+			{
+				Diagram diagram;
+				ICollection filters;
+				if (null != (diagram = designerView.CurrentDiagram) &&
+					null != (filters = diagram.TargetToolboxItemFilterAttributes))
+				{
+					int oldCount = myDiagramFilterCount;
+					int newCount = 0;
+					if (oldCount != 0)
+					{
+						int oldCookie = diagramCookie;
+						diagramCookie = NewDiagramCookie();
+						foreach (object filter in filters)
+						{
+							int testCookie;
+							if (filterCache.TryGetValue(filter, out testCookie))
+							{
+								filterCache[filter] = diagramCookie;
+								if (oldCookie != testCookie)
+								{
+									// Filter was not included in previous count
+									repopulate = true;
+								}
+								++newCount;
+							}
+							else
+							{
+								filterCache[filter] = diagramCookie;
+								++newCount;
+								repopulate = true;
+							}
+						}
+						if (!repopulate && newCount != oldCount)
+						{
+							repopulate = true;
+						}
+					}
+					else
+					{
+						foreach (object filter in filters)
+						{
+							// We updated the cookie when the count was set to zero, no reason to repeat
+							filterCache[filter] = diagramCookie;
+							++newCount;
+						}
+						if (newCount != 0)
+						{
+							repopulate = true;
+						}
+					}
+					myDiagramFilterCount = newCount;
+				}
+				else if (myDiagramFilterCount != 0)
+				{
+					diagramCookie = NewDiagramCookie();
+					myDiagramFilterCount = 0;
+					repopulate = true;
+				}
+			}
+			if (0 != (filterType & ToolboxFilterSet.Selection))
+			{
+				IList selectedElements;
+				ShapeElement selectedShape;
+				ICollection filters;
+				if (null != (selectedElements = designerView.SelectedElements) &&
+					1 == selectedElements.Count &&
+					null != (selectedShape = selectedElements[0] as ShapeElement) &&
+					selectedShape != designerView.CurrentDiagram &&
+					null != (filters = selectedShape.TargetToolboxItemFilterAttributes))
+				{
+					int oldCount = mySelectionFilterCount;
+					int newCount = 0;
+					if (oldCount != 0)
+					{
+						int oldCookie = selectionCookie;
+						selectionCookie = NewSelectionCookie();
+						foreach (object filter in filters)
+						{
+							int testCookie;
+							if (filterCache.TryGetValue(filter, out testCookie))
+							{
+								filterCache[filter] = selectionCookie;
+								if (oldCookie != testCookie)
+								{
+									// Filter was not included in previous count
+									repopulate = true;
+								}
+								++newCount;
+							}
+							else
+							{
+								filterCache[filter] = selectionCookie;
+								++newCount;
+								repopulate = true;
+							}
+						}
+						if (!repopulate && newCount != oldCount)
+						{
+							repopulate = true;
+						}
+					}
+					else
+					{
+						foreach (object filter in filters)
+						{
+							// We updated the cookie when the count was set to zero, no reason to repeat
+							filterCache[filter] = selectionCookie;
+							++newCount;
+						}
+						if (newCount != 0)
+						{
+							repopulate = true;
+						}
+					}
+					mySelectionFilterCount = newCount;
+				}
+				else if (mySelectionFilterCount != 0)
+				{
+					selectionCookie = NewSelectionCookie();
+					mySelectionFilterCount = 0;
+					repopulate = true;
+				}
+			}
+			if (repopulate)
+			{
+				myFilterCollection = null;
+			}
+			return repopulate;
+		}
+		/// <summary>
+		/// Get a collection of all current toolbox filters
+		/// </summary>
+		public ICollection ToolboxFilters
+		{
+			get
+			{
+				object[] filters = myFilterCollection;
+				if (filters == null)
+				{
+					int totalCount = myDiagramFilterCount + mySelectionFilterCount;
+					myFilterCollection = filters = new object[totalCount];
+					if (totalCount != 0)
+					{
+						int index = -1;
+						int diagramCookie = myDiagramCookie;
+						int selectionCookie = mySelectionCookie;
+						foreach (KeyValuePair<object, int> pair in myFilterCache)
+						{
+							int testValue = pair.Value;
+							if (testValue == diagramCookie || testValue == selectionCookie)
+							{
+								filters[++index] = pair.Key;
+							}
+						}
+					}
+				}
+				return filters;
+			}
+		}
+		private int NewDiagramCookie()
+		{
+			// Diagram cookies are positive
+			int cookie = myDiagramCookie;
+			myDiagramCookie = cookie = (cookie == int.MaxValue) ? 1 : (cookie + 1);
+			return cookie;
+		}
+		private int NewSelectionCookie()
+		{
+			// Selection cookies are negative
+			int cookie = mySelectionCookie;
+			mySelectionCookie = cookie = (cookie == int.MinValue) ? -11 : (cookie - 1);
+			return cookie;
+		}
+	}
+	#endregion // ToolboxFilterCache class
+	#region ORMDesignerCommandManager class
 	/// <summary>
 	/// Handle command routing for views on the ORM designer
 	/// </summary>
@@ -3024,4 +3264,5 @@ namespace Neumont.Tools.ORM.Shell
 		}
 		#endregion // Command Handlers
 	}
+	#endregion // ORMDesignerCommandManager class
 }

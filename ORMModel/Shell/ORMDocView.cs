@@ -31,6 +31,7 @@ using Neumont.Tools.Modeling.Shell;
 using Neumont.Tools.ORM.ObjectModel;
 using Neumont.Tools.ORM.ShapeModel;
 using Neumont.Tools.Modeling;
+using Microsoft.VisualStudio.Shell.Interop;
 
 namespace Neumont.Tools.ORM.Shell
 {
@@ -266,10 +267,11 @@ namespace Neumont.Tools.ORM.Shell
 	/// <see cref="DiagramDocView"/> designed to contain multiple <see cref="ORMDiagram"/>s.
 	/// </summary>
 	[CLSCompliant(false)]
-	public partial class ORMDesignerDocView : MultiDiagramDocView, IORMSelectionContainer, IORMDesignerView, IModelingEventSubscriber
+	public partial class ORMDesignerDocView : MultiDiagramDocView, IORMSelectionContainer, IORMDesignerView, IModelingEventSubscriber, IVsToolboxUser
 	{
 		#region Member variables
 		private IServiceProvider myCtorServiceProvider;
+		private IMonitorSelectionService myMonitorSelectionService;
 		private ORMDesignerCommandManager myCommandManager;
 		#endregion // Member variables
 		#region Construction/destruction
@@ -819,6 +821,16 @@ namespace Neumont.Tools.ORM.Shell
 					}
 				});
 		}
+		/// <summary>
+		/// Get the selection service for this designer
+		/// </summary>
+		protected IMonitorSelectionService MonitorSelection
+		{
+			get
+			{
+				return myMonitorSelectionService ?? (myMonitorSelectionService = (IMonitorSelectionService)myCtorServiceProvider.GetService(typeof(IMonitorSelectionService)));
+			}
+		}
 		#endregion // ORMDesignerDocView Specific
 		#region IORMDesignerView Implementation
 		/// <summary>
@@ -860,5 +872,39 @@ namespace Neumont.Tools.ORM.Shell
 			}
 		}
 		#endregion // IORMDesignerView Implementation
+		#region IVsToolboxUser Toolwindow Redirection
+		int IVsToolboxUser.IsSupported(Microsoft.VisualStudio.OLE.Interop.IDataObject pDO)
+		{
+			// Redirect toolbox queries to supporting tool windows if the document is not the
+			// active selection container.
+			object selectionContainer = MonitorSelection.CurrentSelectionContainer;
+			IVsToolboxUser redirectUser;
+			IORMDesignerView designerView;
+			if (selectionContainer != this &&
+				null != (redirectUser = selectionContainer as IVsToolboxUser) &&
+				null != (designerView = selectionContainer as IORMDesignerView) &&
+				null != designerView.CurrentDiagram)
+			{
+				return redirectUser.IsSupported(pDO);
+			}
+			return IsSupported(pDO);
+		}
+		int IVsToolboxUser.ItemPicked(Microsoft.VisualStudio.OLE.Interop.IDataObject pDO)
+		{
+			// Redirect toolbox queries to supporting tool windows if the document is not the
+			// active selection container.
+			object selectionContainer = MonitorSelection.CurrentSelectionContainer;
+			IVsToolboxUser redirectUser;
+			IORMDesignerView designerView;
+			if (selectionContainer != this &&
+				null != (redirectUser = selectionContainer as IVsToolboxUser) &&
+				null != (designerView = selectionContainer as IORMDesignerView) &&
+				null != designerView.CurrentDiagram)
+			{
+				return redirectUser.ItemPicked(pDO);
+			}
+			return ItemPicked(pDO);
+		}
+		#endregion // IVsToolboxUser Toolwindow Redirection
 	}
 }

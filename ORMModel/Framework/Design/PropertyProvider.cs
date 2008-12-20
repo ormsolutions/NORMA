@@ -88,6 +88,18 @@ namespace Neumont.Tools.Modeling.Design
 			this.myProviderDictionary = new Dictionary<RuntimeTypeHandle, PropertyProvider>(RuntimeTypeHandleComparer.Instance);
 		}
 		#endregion // Constructor
+		#region Accessor Properties
+		/// <summary>
+		/// Get the context <see cref="Store"/>
+		/// </summary>
+		public Store Store
+		{
+			get
+			{
+				return myStore;
+			}
+		}
+		#endregion // Access Properties
 		#region IPropertyProviderService implementation
 		void IPropertyProviderService.AddOrRemovePropertyProvider<TExtendableElement>(PropertyProvider provider, bool includeSubtypes, EventHandlerAction action)
 		{

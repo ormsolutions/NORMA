@@ -83,6 +83,16 @@ namespace Neumont.Tools.Modeling
 			myStore = store;
 		}
 		/// <summary>
+		/// The current <see cref="Store"/>
+		/// </summary>
+		public Store Store
+		{
+			get
+			{
+				return myStore;
+			}
+		}
+		/// <summary>
 		/// Get an array of providers of the requested type, or null if the interface is not implemented
 		/// </summary>
 		public T[] GetTypedDomainModelProviders<T>() where T : class

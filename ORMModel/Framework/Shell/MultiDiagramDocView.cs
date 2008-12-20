@@ -55,7 +55,7 @@ namespace Neumont.Tools.Modeling.Shell
 		/// <summary>
 		/// Determine when the toolbox should be refreshed
 		/// </summary>
-		private Type myLastDiagramType;
+		private Type myLastToolboxDiagramType;
 		private MultiDiagramDocViewControl DocViewControl
 		{
 			get
@@ -86,17 +86,47 @@ namespace Neumont.Tools.Modeling.Shell
 		protected override void OnSelectionChanged(EventArgs e)
 		{
 			base.OnSelectionChanged(e);
-			Diagram diagram = CurrentDiagram;
+			if (UpdateToolboxDiagram(CurrentDiagram))
+			{
+				RefreshDiagramToolboxItems();
+			}
+		}
+		/// <summary>
+		/// Update the type of diagram that sources the toolbox items for this document. If this
+		/// returns <see langword="true"/>, then it is the responsibility of the caller to call
+		/// <see cref="IToolboxService.Refresh"/> after updating the current toolbox filters.
+		/// </summary>
+		/// <param name="diagram">The <see cref="Diagram"/> to activate</param>
+		/// <returns><see langword="true"/> if the diagram type is changed</returns>
+		/// <remarks>The toolbox service always requests toolbox items from the document window, even
+		/// when the active selection container in a tool window supports the <see cref="Microsoft.VisualStudio.Shell.Interop.IVsToolboxUser"/>
+		/// interface. Derived classes can reimplement <see cref="Microsoft.VisualStudio.Shell.Interop.IVsToolboxUser"/> to redirect to the
+		/// implementation on an active toolwindow, but the document window needs to know the type of the
+		/// last diagram for which items were requested by both the document and tool windows. This enables
+		/// the items to be refreshed when the selection container is switched back and forth between the
+		/// document window and the tool window toolbox users.</remarks>
+		public bool UpdateToolboxDiagram(Diagram diagram)
+		{
 			Type diagramType;
 			if (diagram != null &&
-				(diagramType = diagram.GetType()) != myLastDiagramType)
+				(diagramType = diagram.GetType()) != myLastToolboxDiagramType)
 			{
-				myLastDiagramType = diagramType;
-				IToolboxService toolboxService;
-				if (this.UpdateToolboxFilters(ToolboxItemFilterType.Diagram, true) && (null != (toolboxService = base.ToolboxService)))
-				{
-					toolboxService.Refresh();
-				}
+				myLastToolboxDiagramType = diagramType;
+				return true;
+			}
+			return false;
+		}
+		/// <summary>
+		/// Helper method to perform toolbox filter refresh. Should only call if <see cref="UpdateToolboxDiagram"/> returns true.
+		/// </summary>
+		private void RefreshDiagramToolboxItems()
+		{
+			IToolboxService toolboxService;
+			if (null != (toolboxService = base.ToolboxService))
+			{
+				// We refresh on this request regardless of the response from UpdateToolboxFilters
+				UpdateToolboxFilters(ToolboxItemFilterType.Diagram, true);
+				toolboxService.Refresh();
 			}
 		}
 		#endregion // Base Overrides
@@ -328,6 +358,33 @@ namespace Neumont.Tools.Modeling.Shell
 			}
 		}
 		#endregion // ReorderDiagrams method
+		#region DeactivateMouseActions method
+		/// <summary>
+		/// Verify that all mouse actions for the specified <see cref="DiagramView"/>
+		/// are canceled. Mouse actions are also canceled for the active view on the
+		/// associated <see cref="Diagram"/>.
+		/// </summary>
+		public static void DeactivateMouseActions(DiagramView diagramView)
+		{
+			if (diagramView != null)
+			{
+				MouseAction mouseAction;
+				if (null != (mouseAction = diagramView.ActiveMouseAction))
+				{
+					diagramView.ActiveMouseAction = null;
+				}
+				Diagram diagram;
+				DiagramView activeView;
+				if (null != (diagram = diagramView.Diagram) &&
+					null != (activeView = diagram.ActiveDiagramView) &&
+					activeView != diagramView &&
+					null != (mouseAction = activeView.ActiveMouseAction))
+				{
+					diagramView.ActiveMouseAction = null;
+				}
+			}
+		}
+		#endregion // DeactivateMouseActions method
 		#region Add methods
 		/// <summary>
 		/// Adds the <see cref="Diagram"/> specified by <paramref name="diagram"/> to this <see cref="MultiDiagramDocView"/>.
@@ -573,7 +630,7 @@ namespace Neumont.Tools.Modeling.Shell
 			if (0 != (reasons & EventSubscriberReasons.DocumentLoaded))
 			{
 				// Force toolbox refresh on next selection change
-				myLastDiagramType = null;
+				myLastToolboxDiagramType = null;
 
 				// Attach extra properties and events if we're tracking diagram order and position
 				Store store = this.Store;

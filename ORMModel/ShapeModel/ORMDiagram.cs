@@ -1319,7 +1319,7 @@ namespace Neumont.Tools.ORM.ShapeModel
 				// during a chained mouse action cancels the action.
 				// See corresponding code in ExternalConstraintConnectAction.ChainMouseAction and
 				// InternalUniquenessConstraintConnectAction.ChainMouseAction.
-				(action != null || activeView.Toolbox.GetSelectedToolboxItem() != null))
+				(action != null || (activeView != null && activeView.Toolbox.GetSelectedToolboxItem() != null)))
 			{
 				clientView.ActiveMouseAction = action;
 			}

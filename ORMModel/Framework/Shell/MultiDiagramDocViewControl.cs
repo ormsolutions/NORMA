@@ -298,6 +298,10 @@ namespace Neumont.Tools.Modeling.Shell
 				if (tabPage != null)
 				{
 					tabPage.Focus();
+					if (DocView.UpdateToolboxDiagram(((DiagramTabPage)tabPage).Diagram))
+					{
+						DocView.RefreshDiagramToolboxItems();
+					}
 				}
 			}
 			#endregion // OnGotFocus method
@@ -415,6 +419,26 @@ namespace Neumont.Tools.Modeling.Shell
 				{
 					DocView.SetSelectedComponents(null);
 				}
+			}
+			protected override void OnSelecting(TabControlCancelEventArgs e)
+			{
+				DiagramTabPage tabPage;
+				if (e.Action == TabControlAction.Selecting &&
+					null != (tabPage = e.TabPage as DiagramTabPage))
+				{
+					DeactivateMouseActions(tabPage.Designer);
+				}
+				base.OnSelecting(e);
+			}
+			protected override void OnDeselecting(TabControlCancelEventArgs e)
+			{
+				DiagramTabPage tabPage;
+				if (e.Action == TabControlAction.Deselecting &&
+					null != (tabPage = e.TabPage as DiagramTabPage))
+				{
+					DeactivateMouseActions(tabPage.Designer);
+				}
+				base.OnDeselecting(e);
 			}
 			#endregion // OnSelectedIndexChanged method
 			#region IndexOf methods

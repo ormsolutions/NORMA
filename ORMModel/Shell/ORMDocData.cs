@@ -202,12 +202,12 @@ namespace Neumont.Tools.ORM.Shell
 
 			if (isReload)
 			{
-				this.RemoveModelingEventHandlers(isReload);
-
 				// Null out the myPropertyProviderService and myTypedDomainModelProviderCache fields
 				// so that a new instance will be created with the new Store next time it is needed
 				this.myPropertyProviderService = null;
 				this.myTypedDomainModelProviderCache = null;
+
+				this.RemoveModelingEventHandlers(isReload);
 
 				foreach (ModelingDocView view in DocViews)
 				{

@@ -1065,7 +1065,19 @@ namespace Neumont.Tools.ORM.Shell
 		{
 			get
 			{
-				return myPropertyProviderService ?? (myPropertyProviderService = new PropertyProviderService(Store));
+				// Defensively verify store state
+				PropertyProviderService providers = myPropertyProviderService as PropertyProviderService;
+				Store store = Store;
+				if (providers == null || providers.Store != store)
+				{
+					if (store.ShuttingDown || store.Disposed)
+					{
+						myPropertyProviderService = null;
+						return null;
+					}
+					myPropertyProviderService = providers = new PropertyProviderService(store);
+				}
+				return providers;
 			}
 		}
 		IPropertyProviderService IFrameworkServices.PropertyProviderService
@@ -1081,10 +1093,17 @@ namespace Neumont.Tools.ORM.Shell
 		/// </summary>
 		protected T[] GetTypedDomainModelProviders<T>() where T : class
 		{
+			// Defensively verify store state
 			TypedDomainModelProviderCache cache = myTypedDomainModelProviderCache;
-			if (cache == null)
+			Store store = Store;
+			if (cache == null || cache.Store != store)
 			{
-				myTypedDomainModelProviderCache = cache = new TypedDomainModelProviderCache(Store);
+				if (store.ShuttingDown || store.Disposed)
+				{
+					myTypedDomainModelProviderCache = null;
+					return null;
+				}
+				myTypedDomainModelProviderCache = cache = new TypedDomainModelProviderCache(store);
 			}
 			return cache.GetTypedDomainModelProviders<T>();
 		}

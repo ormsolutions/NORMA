@@ -32,6 +32,8 @@ using Microsoft.VisualStudio.Modeling.Shell;
 using Microsoft.VisualStudio.Shell.Interop;
 using Neumont.Tools.Modeling.Shell;
 using Neumont.Tools.Modeling;
+using OLE = Microsoft.VisualStudio.OLE.Interop;
+using System.Drawing.Design;
 
 namespace Neumont.Tools.ORM.Shell
 {
@@ -41,7 +43,7 @@ namespace Neumont.Tools.ORM.Shell
 	/// </summary>
 	[Guid("19A5C15D-14D4-4A88-9891-A3294077BE56")]
 	[CLSCompliant(false)]
-	public class ORMDiagramSpyWindow : ORMToolWindow, IORMSelectionContainer, IProvideFrameVisibility, IORMDesignerView
+	public class ORMDiagramSpyWindow : ORMToolWindow, IORMSelectionContainer, IProvideFrameVisibility, IORMDesignerView, IVsToolboxUser
 	{
 		#region Member Variables
 		private ToolWindowDiagramView myDiagramView;
@@ -49,6 +51,8 @@ namespace Neumont.Tools.ORM.Shell
 		private LinkLabel myWatermarkLabel;
 		private bool myDiagramSetChanged;
 		private bool myDisassociating;
+		private IToolboxService myToolboxService;
+		private ToolboxFilterCache myToolboxFilterCache;
 		private Store myStore;
 		#endregion // Member Variables
 		#region Constructor
@@ -117,11 +121,13 @@ namespace Neumont.Tools.ORM.Shell
 					}
 					if (!reselectOldDiagram)
 					{
+						MultiDiagramDocView.DeactivateMouseActions(diagram.ActiveDiagramView);
 						diagram.Associate(diagramView);
 					}
 					AdjustVisibility(true, false);
 					if (!calledShow)
 					{
+						calledShow = true;
 						Show();
 					}
 					if (reselectOldDiagram && diagramView.Selection.PrimaryItem != null)
@@ -132,6 +138,12 @@ namespace Neumont.Tools.ORM.Shell
 					else
 					{
 						SetSelectedComponents(new object[] { diagram });
+					}
+					DiagramClientView clientView;
+					if (calledShow &&
+						!(clientView = diagramView.DiagramClientView).Focused)
+					{
+						clientView.Focus();
 					}
 					return true;
 				}
@@ -236,7 +248,7 @@ namespace Neumont.Tools.ORM.Shell
 				myDiagramSetChanged = true;
 				if (element == myDiagramView.Diagram)
 				{
-					// Note that this is unlikely, the diagram will be disassociatin firts
+					// Note that this is unlikely, the diagram will be disassociated first
 					AdjustVisibility(false, true);
 				}
 			}
@@ -250,6 +262,7 @@ namespace Neumont.Tools.ORM.Shell
 				myDisassociating = true;
 				try
 				{
+					MultiDiagramDocView.DeactivateMouseActions(diagramView);
 					diagram.Disassociate(diagramView);
 				}
 				finally
@@ -288,16 +301,17 @@ namespace Neumont.Tools.ORM.Shell
 		}
 		private void AdjustVisibility(bool diagramVisible, bool deferRebuildWatermark)
 		{
+			DiagramView diagramView = myDiagramView;
 			if (!diagramVisible)
 			{
-				DiagramView view = myDiagramView;
-				Diagram diagram = view.Diagram;
+				Diagram diagram = diagramView.Diagram;
 				if (diagram != null)
 				{
 					myDisassociating = true;
 					try
 					{
-						diagram.Disassociate(view);
+						MultiDiagramDocView.DeactivateMouseActions(diagramView);
+						diagram.Disassociate(diagramView);
 					}
 					finally
 					{
@@ -311,7 +325,7 @@ namespace Neumont.Tools.ORM.Shell
 					RebuildWatermark();
 				}
 			}
-			myDiagramView.Visible = diagramVisible;
+			diagramView.Visible = diagramVisible;
 			myWatermarkLabel.Visible = !diagramVisible;
 		}
 		private void RebuildWatermark()
@@ -453,6 +467,31 @@ namespace Neumont.Tools.ORM.Shell
 		protected override void OnSelectionChanged(EventArgs e)
 		{
 			CommandManager.UpdateCommandStatus();
+			UpdateToolbox();
+		}
+		/// <summary>
+		/// Update the toolbox when this window is activated
+		/// </summary>
+		protected override void OnORMSelectionContainerChanged()
+		{
+			if (CurrentORMSelectionContainer == this)
+			{
+				UpdateToolbox();
+			}
+		}
+		private void UpdateToolbox()
+		{
+			MultiDiagramDocView docView;
+			if (null != (docView = CurrentDocumentView as MultiDiagramDocView) &&
+				docView.UpdateToolboxDiagram(CurrentDiagram))
+			{
+				IToolboxService toolboxService;
+				if (null != (toolboxService = ToolboxService))
+				{
+					ToolboxFilterManager.UpdateFilters(this, ToolboxFilterSet.Diagram);
+					toolboxService.Refresh();
+				}
+			}
 		}
 		#endregion //ORMToolWindow overrides
 		#region IORMDesignerView Implementation
@@ -668,5 +707,68 @@ namespace Neumont.Tools.ORM.Shell
 			this.MenuService.ShowContextMenu(contextMenuId, pt.X, pt.Y);
 		}
 		#endregion // ContextMenu
+		#region IVsToolboxUser Implementation
+		/// <summary>
+		/// Get the <see cref="IToolboxService"/> for this object
+		/// </summary>
+		protected IToolboxService ToolboxService
+		{
+			get
+			{
+				return myToolboxService ?? (myToolboxService = (IToolboxService)ExternalServiceProvider.GetService(typeof(IToolboxService)));
+			}
+		}
+		/// <summary>
+		/// Get the <see cref="ToolboxFilterManager"/> for this window
+		/// </summary>
+		protected ToolboxFilterCache ToolboxFilterManager
+		{
+			get
+			{
+				ToolboxFilterCache retVal = myToolboxFilterCache;
+				if (retVal == null)
+				{
+					myToolboxFilterCache = retVal = new ToolboxFilterCache();
+					retVal.UpdateFilters(this, ToolboxFilterSet.All);
+				}
+				return retVal;
+			}
+		}
+		/// <summary>
+		/// Implements <see cref="IVsToolboxUser.IsSupported"/>
+		/// </summary>
+		protected int IsSupported(OLE.IDataObject pDO)
+		{
+			IDataObject data = pDO as IDataObject;
+			if (data == null)
+			{
+				data = new DataObject(pDO);
+			}
+			IToolboxService toolboxService;
+			if (null != (toolboxService = ToolboxService))
+			{
+				if (toolboxService.IsSupported(data, ToolboxFilterManager.ToolboxFilters))
+				{
+					return VSConstants.S_OK;
+				}
+			}
+			return VSConstants.E_FAIL;
+		}
+		int IVsToolboxUser.IsSupported(OLE.IDataObject pDO)
+		{
+			return IsSupported(pDO);
+		}
+		/// <summary>
+		/// Implements <see cref="IVsToolboxUser.ItemPicked"/>
+		/// </summary>
+		protected static int ItemPicked(OLE.IDataObject pDO)
+		{
+			return VSConstants.S_OK;
+		}
+		int IVsToolboxUser.ItemPicked(OLE.IDataObject pDO)
+		{
+			return ItemPicked(pDO);
+		}
+		#endregion // IVsToolboxUser Implementation
 	}
 }
