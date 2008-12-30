@@ -86,19 +86,17 @@ namespace Neumont.Tools.ORM.Shell
 			if (tree != null)
 			{
 				Store store = Store;
-				List<ISurveyNodeProvider> nodeProviderList = new List<ISurveyNodeProvider>();
-				List<ISurveyQuestionProvider> questionProviderList = new List<ISurveyQuestionProvider>();
-				ICollection<DomainModel> domainModels = store.DomainModels;
 				ModelingEventManager eventManager = ModelingEventManager.GetModelingEventManager(store);
+				IFrameworkServices frameworkServices = (IFrameworkServices)store;
 				SurveyTree rootBranch = new SurveyTree(
-					Utility.EnumerateDomainModels<ISurveyNodeProvider>(domainModels),
-					Utility.EnumerateDomainModels<ISurveyQuestionProvider>(domainModels));
+					frameworkServices.GetTypedDomainModelProviders<ISurveyNodeProvider>(),
+					frameworkServices.GetTypedDomainModelProviders<ISurveyQuestionProvider>());
 				EventSubscriberReasons reasons = EventSubscriberReasons.SurveyQuestionEvents | EventSubscriberReasons.ModelStateEvents | EventSubscriberReasons.UserInterfaceEvents;
 				if (isReload)
 				{
 					reasons |= EventSubscriberReasons.DocumentReloading;
 				}
-				foreach (IModelingEventSubscriber eventSubscriber in Utility.EnumerateDomainModels<IModelingEventSubscriber>(domainModels))
+				foreach (IModelingEventSubscriber eventSubscriber in Utility.EnumerateDomainModels<IModelingEventSubscriber>(store.DomainModels))
 				{
 					eventSubscriber.ManageModelingEventHandlers(eventManager, reasons, EventHandlerAction.Add);
 				}

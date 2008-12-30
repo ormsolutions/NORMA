@@ -25,56 +25,52 @@ namespace Neumont.Tools.ORM.ObjectModel
 {
 	public partial class ObjectType : IAnswerSurveyQuestion<SurveyErrorState>, IAnswerSurveyQuestion<SurveyElementType>, IAnswerSurveyQuestion<SurveyQuestionGlyph>, ISurveyNode
 	{
-		#region IAnswerSurveyQuestion<ErrorState> Implementation
-		int IAnswerSurveyQuestion<SurveyErrorState>.AskQuestion()
+		#region IAnswerSurveyQuestion<SurveyErrorState> Implementation
+		int IAnswerSurveyQuestion<SurveyErrorState>.AskQuestion(object contextElement)
 		{
-			return AskErrorQuestion();
+			return AskErrorQuestion(contextElement);
 		}
 		/// <summary>
-		/// implmentation of AskQuestion from IAnswerSurveyQuestion
+		/// Implements <see cref="IAnswerSurveyQuestion{SurveyErrorState}.AskQuestion"/>
 		/// </summary>
-		/// <returns></returns>
-		protected int AskErrorQuestion()
+		protected int AskErrorQuestion(object contextElement)
 		{
-			if (Model == null)
-				return -1;
-			return (int)(ModelError.HasErrors(this, ModelErrorUses.DisplayPrimary, Model.ModelErrorDisplayFilter) ? SurveyErrorState.HasError : SurveyErrorState.NoError);
+			ORMModel model = Model;
+			return (Model == null) ?
+				-1 :
+				(int)(ModelError.HasErrors(this, ModelErrorUses.DisplayPrimary, model.ModelErrorDisplayFilter) ? SurveyErrorState.HasError : SurveyErrorState.NoError);
 		}
-		#endregion // IAnswerSurveyQuestion<ErrorState> Implementation
-		#region IAnswerSurveyQuestion<ElementType> Members
-
-		int IAnswerSurveyQuestion<SurveyElementType>.AskQuestion()
+		#endregion // IAnswerSurveyQuestion<SurveyErrorState> Implementation
+		#region IAnswerSurveyQuestion<SurveyElementType> Implementation
+		int IAnswerSurveyQuestion<SurveyElementType>.AskQuestion(object contextElement)
 		{
-			return AskElementQuestion();
+			return AskElementQuestion(contextElement);
 		}
 		/// <summary>
-		/// implementation of AskQuestion from IAnswerSurveyQuestion
+		/// Implements <see cref="IAnswerSurveyQuestion{SurveyElementType}.AskQuestion"/>
 		/// </summary>
-		/// <returns></returns>
-		protected int AskElementQuestion()
+		protected static int AskElementQuestion(object contextElements)
 		{
 			return (int)SurveyElementType.ObjectType;
 		}
-
-		#endregion
-		#region IAnswerSurveyQuestion<SurveyQuestionGlyph> Members
-
-		int IAnswerSurveyQuestion<SurveyQuestionGlyph>.AskQuestion()
+		#endregion // IAnswerSurveyQuestion<SurveyElementType> Implementation
+		#region IAnswerSurveyQuestion<SurveyQuestionGlyph> Implementation
+		int IAnswerSurveyQuestion<SurveyQuestionGlyph>.AskQuestion(object contextElement)
 		{
-			return AnswerGlyphQuestion();
+			return AnswerGlyphQuestion(contextElement);
 		}
-
 		/// <summary>
-		/// Answers the glyph question.
+		/// Implements <see cref="IAnswerSurveyQuestion{SurveyQuestionGlyph}.AskQuestion"/>
 		/// </summary>
-		/// <returns></returns>
-		protected int AnswerGlyphQuestion()
+		protected int AnswerGlyphQuestion(object contextElement)
 		{
+			Objectification objectification;
 			if (this.IsValueType)
 			{
 				return (int)SurveyQuestionGlyph.ValueType;
 			}
-			else if (this.Objectification != null && !this.Objectification.IsImplied)
+			else if (null != (objectification = this.Objectification) &&
+				!objectification.IsImplied)
 			{
 				return (int)SurveyQuestionGlyph.ObjectifiedFactType;
 			}
@@ -83,9 +79,8 @@ namespace Neumont.Tools.ORM.ObjectModel
 				return (int)SurveyQuestionGlyph.EntityType;
 			}
 		}
-
-		#endregion
-		#region ISurveyNode Members
+		#endregion // IAnswerSurveyQuestion<SurveyQuestionGlyph> Implementation
+		#region ISurveyNode Implementation
 		/// <summary>
 		/// Implements <see cref="ISurveyNode.SurveyNodeDataObject"/>
 		/// </summary>
@@ -114,9 +109,7 @@ namespace Neumont.Tools.ORM.ObjectModel
 				return SurveyNodeDataObject;
 			}
 		}
-		#endregion
-
-
+		#endregion // ISurveyNode Implementation
 	}
 
 }

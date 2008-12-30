@@ -216,7 +216,7 @@ namespace Neumont.Tools.Modeling.Shell.DynamicSurveyTreeGrid
 									}
 									else
 									{
-										notifyListGrouper.ElementAddedAt(startIndex, modificationEvents, null, 0);
+										notifyListGrouper.ElementAddedAt(startIndex, true, modificationEvents, null, 0);
 									}
 								}
 							}
@@ -232,7 +232,7 @@ namespace Neumont.Tools.Modeling.Shell.DynamicSurveyTreeGrid
 									}
 									else
 									{
-										notifyListGrouper.ElementAddedAt(index, null, null, 0);
+										notifyListGrouper.ElementAddedAt(index, false, null, null, 0);
 									}
 								}
 							}
@@ -946,16 +946,17 @@ namespace Neumont.Tools.Modeling.Shell.DynamicSurveyTreeGrid
 				/// <param name="modificationEvents">The event handler to notify the tree with</param>
 				public void ElementAddedAt(int index, BranchModificationEventHandler modificationEvents)
 				{
-					ElementAddedAt(index, modificationEvents, null, 0);
+					ElementAddedAt(index, false, modificationEvents, null, 0);
 				}
 				/// <summary>
 				/// Adds a node at given the index and adjusts indices
 				/// </summary>
 				/// <param name="index">The index of the newly added element</param>
+				/// <param name="neutralChanged">Forwarded from an outer grouping where the neutral contents have changed.</param>
 				/// <param name="modificationEvents">The event handler to notify the tree with</param>
 				/// <param name="notifyThrough">A wrapper branch. Notify the event handler with this branch, not the current branch</param>
 				/// <param name="notifyThroughOffset">Used if notifyThrough is not null. The starting offset of this branch in the outer branch.</param>
-				private void ElementAddedAt(int index, BranchModificationEventHandler modificationEvents, IBranch notifyThrough, int notifyThroughOffset)
+				private void ElementAddedAt(int index, bool neutralChanged, BranchModificationEventHandler modificationEvents, IBranch notifyThrough, int notifyThroughOffset)
 				{
 					int currentAnswer = myQuestion.ExtractAnswer(((MainList)myBaseBranch).myNodes[index].NodeData);
 					bool neutralOnTop = myNeutralOnTop;
@@ -1015,10 +1016,10 @@ namespace Neumont.Tools.Modeling.Shell.DynamicSurveyTreeGrid
 						SimpleListShifter shifter;
 						if (null == (shifter = (neutralBranch as SimpleListShifter)))
 						{
-							((ListGrouper)neutralBranch).ElementAddedAt(index, modificationEvents, notifyBranch, offsetAdjustment);
+							((ListGrouper)neutralBranch).ElementAddedAt(index, neutralChanged && currentAnswer == SurveyQuestion.NeutralAnswer, modificationEvents, notifyBranch, offsetAdjustment);
 						}
 						// Simple shifter cases
-						else if (shifter.FirstItem > index)
+						else if (shifter.FirstItem > (index - (neutralChanged ? 0 : 1)))
 						{
 							shifter.FirstItem += 1;	
 						}

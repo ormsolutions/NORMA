@@ -101,12 +101,12 @@ namespace Neumont.Tools.EntityRelationshipModels.Barker
 					return null;
 				}
 			}
-			public int AskQuestion(object data)
+			public int AskQuestion(object data, object contextElement)
 			{
 				IAnswerSurveyQuestion<SurveyBarkerModelType> typedData = data as IAnswerSurveyQuestion<SurveyBarkerModelType>;
 				if (typedData != null)
 				{
-					return typedData.AskQuestion();
+					return typedData.AskQuestion(contextElement);
 				}
 				return -1;
 			}
@@ -170,12 +170,12 @@ namespace Neumont.Tools.EntityRelationshipModels.Barker
 					return null;
 				}
 			}
-			public int AskQuestion(object data)
+			public int AskQuestion(object data, object contextElement)
 			{
 				IAnswerSurveyQuestion<SurveyBarkerElementType> typedData = data as IAnswerSurveyQuestion<SurveyBarkerElementType>;
 				if (typedData != null)
 				{
-					return typedData.AskQuestion();
+					return typedData.AskQuestion(contextElement);
 				}
 				return -1;
 			}
@@ -245,12 +245,12 @@ namespace Neumont.Tools.EntityRelationshipModels.Barker
 					return null;
 				}
 			}
-			public int AskQuestion(object data)
+			public int AskQuestion(object data, object contextElement)
 			{
 				IAnswerSurveyQuestion<SurveyEntityChildType> typedData = data as IAnswerSurveyQuestion<SurveyEntityChildType>;
 				if (typedData != null)
 				{
-					return typedData.AskQuestion();
+					return typedData.AskQuestion(contextElement);
 				}
 				return -1;
 			}
@@ -320,12 +320,12 @@ namespace Neumont.Tools.EntityRelationshipModels.Barker
 					return null;
 				}
 			}
-			public int AskQuestion(object data)
+			public int AskQuestion(object data, object contextElement)
 			{
 				IAnswerSurveyQuestion<SurveyBinaryAssociationChildType> typedData = data as IAnswerSurveyQuestion<SurveyBinaryAssociationChildType>;
 				if (typedData != null)
 				{
-					return typedData.AskQuestion();
+					return typedData.AskQuestion(contextElement);
 				}
 				return -1;
 			}
@@ -404,12 +404,12 @@ namespace Neumont.Tools.EntityRelationshipModels.Barker
 					return null;
 				}
 			}
-			public int AskQuestion(object data)
+			public int AskQuestion(object data, object contextElement)
 			{
 				IAnswerSurveyQuestion<SurveyAttributeChildType> typedData = data as IAnswerSurveyQuestion<SurveyAttributeChildType>;
 				if (typedData != null)
 				{
-					return typedData.AskQuestion();
+					return typedData.AskQuestion(contextElement);
 				}
 				return -1;
 			}
@@ -473,12 +473,12 @@ namespace Neumont.Tools.EntityRelationshipModels.Barker
 					return null;
 				}
 			}
-			public int AskQuestion(object data)
+			public int AskQuestion(object data, object contextElement)
 			{
 				IAnswerSurveyQuestion<SurveyRoleChildType> typedData = data as IAnswerSurveyQuestion<SurveyRoleChildType>;
 				if (typedData != null)
 				{
-					return typedData.AskQuestion();
+					return typedData.AskQuestion(contextElement);
 				}
 				return -1;
 			}
@@ -542,12 +542,12 @@ namespace Neumont.Tools.EntityRelationshipModels.Barker
 					return null;
 				}
 			}
-			public int AskQuestion(object data)
+			public int AskQuestion(object data, object contextElement)
 			{
 				IAnswerSurveyQuestion<SurveyExclusiveArcChildType> typedData = data as IAnswerSurveyQuestion<SurveyExclusiveArcChildType>;
 				if (typedData != null)
 				{
-					return typedData.AskQuestion();
+					return typedData.AskQuestion(contextElement);
 				}
 				return -1;
 			}

@@ -32,6 +32,10 @@
 			<xs:selector xpath="qp:groupings/qp:grouping/qp:surveyQuestion"/>
 			<xs:field xpath="@ref"/>
 		</xs:keyref>
+		<xs:keyref name="imageOffsetQuestionTypeRef" refer="uniqueQuestionType">
+			<xs:selector xpath="qp:surveyQuestions/qp:surveyQuestion/qp:*/qp:offset"/>
+			<xs:field xpath="@afterSurveyQuestion"/>
+		</xs:keyref>
 	</xs:element>
 	<xs:complexType name="surveyQuestionProviderType">
 		<xs:all>
@@ -169,7 +173,31 @@
 			</xs:element>
 		</xs:choice>
 	</xs:complexType>
-	<xs:complexType name="imageMapType"/>
+	<xs:complexType name="imageMapType">
+		<xs:sequence>
+			<xs:element name="offset" minOccurs="0">
+				<xs:complexType>
+					<xs:sequence>
+						<xs:any namespace="http://schemas.neumont.edu/CodeGeneration/PLiX" minOccurs="0">
+							<xs:annotation>
+								<xs:documentation>A plix expression forming a code snippet to use as a custom offset for the image map. This value is added to values implied by the @afterSurveyQuestion attribute.</xs:documentation>
+							</xs:annotation>
+						</xs:any>
+					</xs:sequence>
+					<xs:attribute name="afterSurveyQuestion" type="xs:token" use="optional">
+						<xs:annotation>
+							<xs:documentation>The images in this imageMap are offset from the values in the image map for the referenced question. If the referenced image map specifies the @lastAnswer attribute, then this map begins one after that value and there is generally no need to specify a custom offset.</xs:documentation>
+						</xs:annotation>
+					</xs:attribute>
+				</xs:complexType>
+			</xs:element>
+		</xs:sequence>
+		<xs:attribute name="lastAnswer" type="xs:token" use="optional">
+			<xs:annotation>
+				<xs:documentation>The name of the answer with the highest numeric value for this question. This value is used indirectly through the offset/@afterSurveyQuestion attribute of another imageMap.</xs:documentation>
+			</xs:annotation>
+		</xs:attribute>
+	</xs:complexType>
 	<xs:element name="imageMap" abstract="true" type="imageMapType"/>
 	<xs:element name="sequentialImageMap" type="sequentialImageMapType" substitutionGroup="imageMap">
 	</xs:element>
@@ -178,21 +206,7 @@
 			<xs:documentation>Enum values in this question type map directly to image indices in the image list.</xs:documentation>
 		</xs:annotation>
 		<xs:complexContent>
-			<xs:extension base="imageMapType">
-				<xs:sequence>
-					<xs:element name="offset" minOccurs="0">
-						<xs:complexType>
-							<xs:sequence>
-								<xs:any namespace="http://schemas.neumont.edu/CodeGeneration/PLiX">
-									<xs:annotation>
-										<xs:documentation>A plix expression forming a code snippet to use as the base offset for the image map.</xs:documentation>
-									</xs:annotation>
-								</xs:any>
-							</xs:sequence>
-						</xs:complexType>
-					</xs:element>
-				</xs:sequence>
-			</xs:extension>
+			<xs:extension base="imageMapType"/>
 		</xs:complexContent>
 	</xs:complexType>
 	<xs:element name="explicitImageMap" type="explicitImageMapType" substitutionGroup="imageMap">

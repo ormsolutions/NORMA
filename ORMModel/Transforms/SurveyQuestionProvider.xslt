@@ -333,12 +333,15 @@
 							</xsl:choose>
 						</plx:return>
 					</plx:function>
-					<xsl:apply-templates select="$questions"/>
+					<xsl:apply-templates select="$questions">
+						<xsl:with-param name="AllQuestions" select="$questions"/>
+					</xsl:apply-templates>
 				</plx:class>
 			</plx:namespace>
 		</plx:root>
 	</xsl:template>
 	<xsl:template match="qp:surveyQuestion">
+		<xsl:param name="AllQuestions"/>
 		<xsl:variable name="dynamic" select="@dynamicValues='true' or @dynamicValues='1'"/>
 		<plx:class name="ProvideSurveyQuestionFor{@questionType}" visibility="private" modifier="sealed">
 			<plx:implementsInterface dataTypeName="ISurveyQuestionTypeInfo"/>
@@ -398,6 +401,7 @@
 			<plx:function name="AskQuestion" visibility="public">
 				<plx:interfaceMember dataTypeName="ISurveyQuestionTypeInfo" memberName="AskQuestion"/>
 				<plx:param name="data" dataTypeName=".object"/>
+				<plx:param name="contextElement" dataTypeName=".object"/>
 				<plx:returns dataTypeName=".i4"/>
 				<xsl:variable name="interfaceTypeSnippet">
 					<xsl:choose>
@@ -440,6 +444,9 @@
 									<plx:callThis name="myDynamicValues" type="field"/>
 								</plx:passParam>
 							</xsl:if>
+							<plx:passParam>
+								<plx:nameRef name="contextElement" type="parameter"/>
+							</plx:passParam>
 						</plx:callInstance>
 					</plx:return>
 				</plx:branch>
@@ -454,10 +461,16 @@
 				<xsl:variable name="imageMap" select="qp:sequentialImageMap | qp:explicitImageMap"/>
 				<xsl:choose>
 					<xsl:when test="$imageMap and qp:displaySupport[@displayCategory='Glyph' or @displayCategory='Overlay']">
+						<xsl:variable name="offsetFragment">
+							<xsl:call-template name="ResolveOffset">
+								<xsl:with-param name="ImageMap" select="$imageMap"/>
+								<xsl:with-param name="AllQuestions" select="$AllQuestions"/>
+							</xsl:call-template>
+						</xsl:variable>
+						<xsl:variable name="offset" select="exsl:node-set($offsetFragment)/child::*"/>
 						<xsl:choose>
 							<xsl:when test="$imageMap[self::qp:sequentialImageMap]">
 								<plx:return>
-									<xsl:variable name="offset" select="$imageMap/qp:offset/child::plx:*"/>
 									<xsl:choose>
 										<xsl:when test="$offset">
 											<plx:binaryOperator type="add">
@@ -467,7 +480,7 @@
 												<plx:right>
 													<plx:nameRef name="answer" type="parameter"/>
 												</plx:right>
-											</plx:binaryOperator>	
+											</plx:binaryOperator>
 										</xsl:when>
 										<xsl:otherwise>
 											<plx:nameRef name="answer" type="parameter"/>
@@ -501,10 +514,6 @@
 												<plx:right>
 													<xsl:choose>
 														<xsl:when test="@imageIndex='.custom'">
-																<xsl:copy-of select="child::plx:*"/>
-														</xsl:when>
-														<xsl:otherwise>
-															<xsl:variable name="offset" select="child::plx:*"/>
 															<xsl:choose>
 																<xsl:when test="$offset">
 																	<plx:binaryOperator type="add">
@@ -512,12 +521,58 @@
 																			<xsl:copy-of select="$offset"/>
 																		</plx:left>
 																		<plx:right>
+																			<xsl:copy-of select="child::plx:*"/>
+																		</plx:right>
+																	</plx:binaryOperator>
+																</xsl:when>
+																<xsl:otherwise>
+																	<xsl:copy-of select="child::plx:*"/>
+																</xsl:otherwise>
+															</xsl:choose>
+														</xsl:when>
+														<xsl:otherwise>
+															<xsl:variable name="mapOffset" select="child::plx:*"/>
+															<xsl:choose>
+																<xsl:when test="$mapOffset">
+																	<plx:binaryOperator type="add">
+																		<plx:left>
+																			<xsl:choose>
+																				<xsl:when test="$offset">
+																					<plx:binaryOperator type="add">
+																						<plx:left>
+																							<xsl:copy-of select="$offset"/>
+																						</plx:left>
+																						<plx:right>
+																							<xsl:copy-of select="$mapOffset"/>
+																						</plx:right>
+																					</plx:binaryOperator>
+																				</xsl:when>
+																				<xsl:otherwise>
+																					<xsl:copy-of select="$mapOffset"/>
+																				</xsl:otherwise>
+																			</xsl:choose>
+																		</plx:left>
+																		<plx:right>
 																			<plx:value data="{@imageIndex}" type="i4"/>
 																		</plx:right>
 																	</plx:binaryOperator>
 																</xsl:when>
 																<xsl:otherwise>
-																	<plx:value data="{@imageIndex}" type="i4"/>
+																	<xsl:choose>
+																		<xsl:when test="$offset">
+																			<plx:binaryOperator type="add">
+																				<plx:left>
+																					<xsl:copy-of select="$offset"/>
+																				</plx:left>
+																				<plx:right>
+																					<plx:value data="{@imageIndex}" type="i4"/>
+																				</plx:right>
+																			</plx:binaryOperator>
+																		</xsl:when>
+																		<xsl:otherwise>
+																			<plx:value data="{@imageIndex}" type="i4"/>
+																		</xsl:otherwise>
+																	</xsl:choose>
 																</xsl:otherwise>
 															</xsl:choose>
 														</xsl:otherwise>
@@ -648,6 +703,105 @@
 				</plx:get>
 			</plx:property>
 		</plx:class>
+	</xsl:template>
+	<xsl:template name="ResolveOffset">
+		<xsl:param name="ImageMap"/>
+		<xsl:param name="AllQuestions"/>
+		<xsl:param name="ApplyLastAnswer" select="false()"/>
+		<xsl:variable name="offset" select="$ImageMap/qp:offset"/>
+		<xsl:variable name="lastAnswer" select="string($ImageMap/@lastAnswer)"/>
+		<xsl:choose>
+			<xsl:when test="$offset">
+				<xsl:variable name="afterQuestion" select="string($offset/@afterSurveyQuestion)"/>
+				<xsl:choose>
+					<xsl:when test="$afterQuestion">
+						<xsl:variable name="referencedOffsetFragment">
+							<xsl:call-template name="ResolveOffset">
+								<xsl:with-param name="ImageMap" select="$AllQuestions[@questionType=$afterQuestion]/qp:*[self::qp:sequentialImageMap | self::qp:explicitImageMap]"/>
+								<xsl:with-param name="AllQuestions" select="$AllQuestions"/>
+								<xsl:with-param name="ApplyLastAnswer" select="true()"/>
+							</xsl:call-template>
+						</xsl:variable>
+						<xsl:variable name="referencedOffset" select="exsl:node-set($referencedOffsetFragment)/child::*"/>
+						<xsl:variable name="localOffsetFragment">
+							<xsl:choose>
+								<xsl:when test="$ApplyLastAnswer and $lastAnswer">
+									<xsl:variable name="customOffset" select="$offset/child::plx:*"/>
+									<xsl:variable name="lastAnswerOffsetFragment">
+										<plx:binaryOperator type="add">
+											<plx:left>
+												<plx:cast dataTypeName=".i4">
+													<plx:callStatic dataTypeName="{$ImageMap/../@questionType}" name="{$lastAnswer}" type="field"/>
+												</plx:cast>
+											</plx:left>
+											<plx:right>
+												<plx:value data="1" type="i4"/>
+											</plx:right>
+										</plx:binaryOperator>
+									</xsl:variable>
+									<xsl:choose>
+										<xsl:when test="$customOffset">
+											<plx:binaryOperator type="add">
+												<plx:left>
+													<xsl:copy-of select="$lastAnswerOffsetFragment"/>
+												</plx:left>
+												<plx:right>
+													<xsl:copy-of select="$customOffset"/>
+												</plx:right>
+											</plx:binaryOperator>
+										</xsl:when>
+										<xsl:otherwise>
+											<xsl:copy-of select="$lastAnswerOffsetFragment"/>
+										</xsl:otherwise>
+									</xsl:choose>
+								</xsl:when>
+								<xsl:otherwise>
+									<xsl:copy-of select="$offset/child::plx:*"/>
+								</xsl:otherwise>
+							</xsl:choose>
+						</xsl:variable>
+						<xsl:variable name="localOffset" select="exsl:node-set($localOffsetFragment)/child::*"/>
+						<xsl:choose>
+							<xsl:when test="$referencedOffset">
+								<xsl:choose>
+									<xsl:when test="$localOffset">
+										<plx:binaryOperator type="add">
+											<plx:left>
+												<xsl:copy-of select="$referencedOffset"/>
+											</plx:left>
+											<plx:right>
+												<xsl:copy-of select="$localOffset"/>
+											</plx:right>
+										</plx:binaryOperator>
+									</xsl:when>
+									<xsl:otherwise>
+										<xsl:copy-of select="$referencedOffset"/>
+									</xsl:otherwise>
+								</xsl:choose>
+							</xsl:when>
+							<xsl:when test="$localOffset">
+								<xsl:copy-of select="$localOffset"/>
+							</xsl:when>
+						</xsl:choose>
+					</xsl:when>
+					<xsl:otherwise>
+						<xsl:copy-of select="$offset/child::plx:*"/>
+					</xsl:otherwise>
+				</xsl:choose>
+			</xsl:when>
+			<xsl:when test="$ApplyLastAnswer and $lastAnswer">
+				<plx:binaryOperator type="add">
+					<plx:left>
+						<plx:cast dataTypeName=".i4">
+							<plx:callStatic dataTypeName="{$ImageMap/../@questionType}" name="{$lastAnswer}" type="field"/>
+						</plx:cast>
+					</plx:left>
+					<plx:right>
+						<plx:value data="1" type="i4"/>
+					</plx:right>
+				</plx:binaryOperator>
+			</xsl:when>
+		</xsl:choose>
 	</xsl:template>
 	<!-- Or together enum values from the given type. The current state on the initial
 	     call should be the position()=1 element inside a for-each context where the elements

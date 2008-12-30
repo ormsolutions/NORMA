@@ -23,10 +23,99 @@ using Neumont.Tools.Modeling.Design;
 using Neumont.Tools.Modeling.Shell.DynamicSurveyTreeGrid;
 using System.Windows.Forms;
 using System.Diagnostics;
+using System.Globalization;
 
 namespace Neumont.Tools.ORM.ObjectModel
 {
-	public partial class RoleBase : IAnswerSurveyQuestion<SurveyFactTypeDetailType>, ISurveyNode, ISurveyNodeContext, ICustomComparableSurveyNode
+	partial class RoleBase : IAnswerSurveyQuestion<SurveyFactTypeDetailType>, ISurveyNodeContext, ICustomComparableSurveyNode
+	{
+		#region IAnswerSurveyQuestion<SurveyFactTypeDetailType> Implementation
+		int IAnswerSurveyQuestion<SurveyFactTypeDetailType>.AskQuestion(object contextElement)
+		{
+			return AskFactTypeDetailQuestion(contextElement);
+		}
+		/// <summary>
+		/// Implements <see cref="IAnswerSurveyQuestion{SurveyFactTypeDetailType}.AskQuestion"/>
+		/// </summary>
+		protected static int AskFactTypeDetailQuestion(object contextElement)
+		{
+			return (int)SurveyFactTypeDetailType.Role;
+		}
+		#endregion // IAnswerSurveyQuestion<SurveyFactTypeDetailType> Implementation
+		#region ICustomComparableSurveyNode Implementation
+		int ICustomComparableSurveyNode.CompareToSurveyNode(object contextElement, object other, object customSortData, object otherCustomSortData)
+		{
+			return CompareToSurveyNode(contextElement, other, customSortData, otherCustomSortData);
+		}
+		/// <summary>
+		/// Implements <see cref="ICustomComparableSurveyNode.CompareToSurveyNode"/>. Roles
+		/// compare based on order in the FactType.RoleCollection. 0 (no information) is
+		/// returned for a comparison to all other element types.
+		/// </summary>
+		protected int CompareToSurveyNode(object contextElement, object other, object customSortData, object otherCustomSortData)
+		{
+			if (other is RoleBase)
+			{
+				int thisIndex = (int)customSortData;
+				int otherIndex = (int)otherCustomSortData;
+				if (thisIndex < otherIndex)
+				{
+					return -1;
+				}
+				else if (thisIndex != otherIndex)
+				{
+					return 1;
+				}
+			}
+			// For this comparison, this implies no information is available
+			return 0;
+		}
+		bool ICustomComparableSurveyNode.ResetCustomSortData(object contextElement, ref object customSortData)
+		{
+			return ResetCustomSortData(contextElement, ref customSortData);
+		}
+		/// <summary>
+		/// Implements <see cref="ICustomComparableSurveyNode.CompareToSurveyNode"/>. Returns
+		/// the current position in the RoleCollection of the parent <see cref="FactType"/>
+		/// </summary>
+		protected bool ResetCustomSortData(object contextElement, ref object customSortData)
+		{
+			int retVal = -1;
+			FactType factType;
+			if (null != (factType = FactType))
+			{
+				retVal = factType.RoleCollection.IndexOf(this);
+			}
+			if (null == customSortData || (int)customSortData != retVal)
+			{
+				customSortData = retVal;
+				return true;
+			}
+			return false;
+		}
+		#endregion // ICustomComparableSurveyNode Implementation
+		#region ISurveyNodeContext Implementation
+		/// <summary>
+		/// The survey node context for a <see cref="Role"/> is
+		/// its parent <see cref="FactType"/>
+		/// </summary>
+		protected object SurveyNodeContext
+		{
+			get
+			{
+				return FactType;
+			}
+		}
+		object ISurveyNodeContext.SurveyNodeContext
+		{
+			get
+			{
+				return SurveyNodeContext;
+			}
+		}
+		#endregion // ISurveyNodeContext Implementation
+	}
+	partial class Role : IAnswerSurveyQuestion<SurveyQuestionGlyph>, ISurveyNode
 	{
 		#region ISurveyNode Members
 		bool ISurveyNode.IsSurveyNameEditable
@@ -43,7 +132,7 @@ namespace Neumont.Tools.ORM.ObjectModel
 		{
 			get
 			{
-				return !DomainTypeDescriptor.CreatePropertyDescriptor(this, FactType.NameDomainPropertyId).IsReadOnly;
+				return !DomainTypeDescriptor.CreatePropertyDescriptor(this, Role.NameDomainPropertyId).IsReadOnly;
 			}
 		}
 		string ISurveyNode.SurveyName
@@ -60,14 +149,14 @@ namespace Neumont.Tools.ORM.ObjectModel
 		{
 			get
 			{
-				Role role = Role;
-				string retVal = role.Name;
-				if (string.IsNullOrEmpty(retVal))
+				ObjectType rolePlayer = RolePlayer;
+				string rolePlayerName = (rolePlayer != null) ? rolePlayer.Name : ResourceStrings.RoleSurveyNameMissingRolePlayer;
+				string roleName = Name;
+				if (!string.IsNullOrEmpty(roleName))
 				{
-					// UNDONE: Use a better name here
-					retVal = TypeDescriptor.GetClassName(role);
+					return string.Format(CultureInfo.CurrentCulture, ResourceStrings.RoleSurveyNameFormat, rolePlayerName, roleName);
 				}
-				return retVal;
+				return rolePlayerName;
 			}
 		}
 		string ISurveyNode.EditableSurveyName
@@ -88,12 +177,11 @@ namespace Neumont.Tools.ORM.ObjectModel
 		{
 			get
 			{
-				return Role.Name;
+				return Name;
 			}
 			set
 			{
-				Role role = Role;
-				DomainTypeDescriptor.CreatePropertyDescriptor(role, Role.NameDomainPropertyId).SetValue(role, value);
+				DomainTypeDescriptor.CreatePropertyDescriptor(this, Role.NameDomainPropertyId).SetValue(this, value);
 			}
 		}
 		/// <summary>
@@ -103,8 +191,7 @@ namespace Neumont.Tools.ORM.ObjectModel
 		{
 			get
 			{
-				Role role = Role;
-				FactType resolvedFactType = role.FactType;
+				FactType resolvedFactType = FactType;
 				Objectification objectification;
 				if (null != (objectification = resolvedFactType.ImpliedByObjectification))
 				{
@@ -140,90 +227,160 @@ namespace Neumont.Tools.ORM.ObjectModel
 			}
 		}
 		#endregion
-		#region IAnswerSurveyQuestion<SurveyFactTypeDetailType> Members
-		int IAnswerSurveyQuestion<SurveyFactTypeDetailType>.AskQuestion()
+		#region IAnswerSurveyQuestion<SurveyQuestionGlyph> Implementation
+		int IAnswerSurveyQuestion<SurveyQuestionGlyph>.AskQuestion(object contextElement)
 		{
-			return AskFactTypeDetailQuestion();
+			return AskGlyphQuestion(contextElement);
 		}
 		/// <summary>
-		/// returns answer to IAnswerSurveyQuestion for fact type details
+		/// Implements <see cref="IAnswerSurveyQuestion{SurveyQuestionGlyph}.AskQuestion"/>
 		/// </summary>
-		protected int AskFactTypeDetailQuestion()
+		protected int AskGlyphQuestion(object contextElement)
 		{
-			return (int)SurveyFactTypeDetailType.Role;
-		}
-		#endregion
-		#region ICustomComparableSurveyNode Members
-		int ICustomComparableSurveyNode.CompareToSurveyNode(object other, object customSortData, object otherCustomSortData)
-		{
-			return CompareToSurveyNode(other, customSortData, otherCustomSortData);
-		}
-		/// <summary>
-		/// Implements <see cref="ICustomComparableSurveyNode.CompareToSurveyNode"/>. Roles
-		/// compare based on order in the FactType.RoleCollection. 0 (no information) is
-		/// returned for a comparison to all other element types.
-		/// </summary>
-		protected int CompareToSurveyNode(object other, object customSortData, object otherCustomSortData)
-		{
-			if (other is RoleBase)
+			ObjectType rolePlayer = RolePlayer;
+			if (rolePlayer != null)
 			{
-				int thisIndex = (int)customSortData;
-				int otherIndex = (int)otherCustomSortData;
-				if (thisIndex < otherIndex)
-				{
-					return -1;
-				}
-				else if (thisIndex != otherIndex)
-				{
-					return 1;
-				}
+				return ((IAnswerSurveyQuestion<SurveyQuestionGlyph>)rolePlayer).AskQuestion(null);
 			}
-			// For this comparison, this implies no information is available
-			return 0;
+			return -1;
 		}
-		bool ICustomComparableSurveyNode.ResetCustomSortData(ref object customSortData)
+		#endregion // IAnswerSurveyQuestion<SurveyQuestionGlyph> Implementation
+	}
+	partial class RoleProxy : ISurveyNodeReference
+	{
+		#region ISurveyNodeReference Implementation
+		/// <summary>
+		/// Implements <see cref="ISurveyNodeReference.ReferencedSurveyNode"/>
+		/// </summary>
+		protected object ReferencedSurveyNode
 		{
-			return ResetCustomSortData(ref customSortData);
+			get
+			{
+				return Role;
+			}
+		}
+		object ISurveyNodeReference.ReferencedSurveyNode
+		{
+			get
+			{
+				return ReferencedSurveyNode;
+			}
 		}
 		/// <summary>
-		/// Implements <see cref="ICustomComparableSurveyNode.CompareToSurveyNode"/>. Returns
-		/// the current position in the RoleCollection of the parent <see cref="FactType"/>
+		/// Implements <see cref="ISurveyNodeReference.SurveyNodeReferenceReason"/>
 		/// </summary>
-		protected bool ResetCustomSortData(ref object customSortData)
+		protected object SurveyNodeReferenceReason
 		{
-			int retVal = -1;
-			FactType factType;
-			if (null != (factType = FactType))
+			get
 			{
-				retVal = factType.RoleCollection.IndexOf(this);
+				return this;
 			}
-			if (null == customSortData || (int)customSortData != retVal)
+		}
+		object ISurveyNodeReference.SurveyNodeReferenceReason
+		{
+			get
 			{
-				customSortData = retVal;
+				return SurveyNodeReferenceReason;
+			}
+		}
+		/// <summary>
+		/// Implements <see cref="ISurveyNodeReference.SurveyNodeReferenceOptions"/>
+		/// </summary>
+		protected static SurveyNodeReferenceOptions SurveyNodeReferenceOptions
+		{
+			get
+			{
+				return SurveyNodeReferenceOptions.None;
+			}
+		}
+		SurveyNodeReferenceOptions ISurveyNodeReference.SurveyNodeReferenceOptions
+		{
+			get
+			{
+				return SurveyNodeReferenceOptions;
+			}
+		}
+		/// <summary>
+		/// Implements <see cref="ISurveyNodeReference.UseSurveyNodeReferenceAnswer"/>
+		/// </summary>
+		protected static bool UseSurveyNodeReferenceAnswer(Type questionType, ISurveyDynamicValues dynamicValues, int answer)
+		{
+			return true;
+		}
+		bool ISurveyNodeReference.UseSurveyNodeReferenceAnswer(Type questionType, ISurveyDynamicValues dynamicValues, int answer)
+		{
+			return UseSurveyNodeReferenceAnswer(questionType, dynamicValues, answer);
+		}
+		#endregion // ISurveyNodeReference Implementation
+	}
+	partial class SubtypeMetaRole : ICustomComparableSurveyNode, IAnswerSurveyQuestion<SurveyRoleType>
+	{
+		#region ICustomComparableSurveyNode Implementation
+		bool ICustomComparableSurveyNode.ResetCustomSortData(object contextElement, ref object customSortData)
+		{
+			return ResetCustomSortData(contextElement, ref customSortData);
+		}
+		/// <summary>
+		/// Implements <see cref="ICustomComparableSurveyNode.CompareToSurveyNode"/>.
+		/// Returns 1 to place the subtype role after the supertype role.
+		/// </summary>
+		protected new bool ResetCustomSortData(object contextElement, ref object customSortData)
+		{
+			if (null == customSortData || (int)customSortData != 1)
+			{
+				customSortData = 1;
 				return true;
 			}
 			return false;
 		}
-		#endregion
-		#region ISurveyNodeContext Implementation
+		#endregion // ICustomComparableSurveyNode Implementation
+		#region IAnswerSurveyQuestion<SurveyRoleType> Implementation
+		int IAnswerSurveyQuestion<SurveyRoleType>.AskQuestion(object contextElement)
+		{
+			return AskRoleTypeQuestion(contextElement);
+		}
 		/// <summary>
-		/// The survey node context for a <see cref="Role"/> is
-		/// its parent <see cref="FactType"/>
+		/// Implements <see cref="IAnswerSurveyQuestion{SurveyRoleType}.AskQuestion"/>
 		/// </summary>
-		protected object SurveyNodeContext
+		protected static int AskRoleTypeQuestion(object contextElement)
 		{
-			get
-			{
-				return FactType;
-			}
+			return (int)SurveyRoleType.Subtype;
 		}
-		object ISurveyNodeContext.SurveyNodeContext
+		#endregion // IAnswerSurveyQuestion<SurveyRoleType> Implementation
+	}
+	partial class SupertypeMetaRole : ICustomComparableSurveyNode, IAnswerSurveyQuestion<SurveyRoleType>
+	{
+		#region ICustomComparableSurveyNode Implementation
+		bool ICustomComparableSurveyNode.ResetCustomSortData(object contextElement, ref object customSortData)
 		{
-			get
-			{
-				return SurveyNodeContext;
-			}
+			return ResetCustomSortData(contextElement, ref customSortData);
 		}
-		#endregion // ISurveyNodeContext Implementation
+		/// <summary>
+		/// Implements <see cref="ICustomComparableSurveyNode.CompareToSurveyNode"/>.
+		/// Returns 0 to place the subtype role after the supertype role.
+		/// </summary>
+		protected new bool ResetCustomSortData(object contextElement, ref object customSortData)
+		{
+			if (null == customSortData || (int)customSortData != 0)
+			{
+				customSortData = 0;
+				return true;
+			}
+			return false;
+		}
+		#endregion // ICustomComparableSurveyNode Implementation
+		#region IAnswerSurveyQuestion<SurveyRoleType> Implementation
+		int IAnswerSurveyQuestion<SurveyRoleType>.AskQuestion(object contextElement)
+		{
+			return AskRoleTypeQuestion(contextElement);
+		}
+		/// <summary>
+		/// Implements <see cref="IAnswerSurveyQuestion{SurveyRoleType}.AskQuestion"/>
+		/// </summary>
+		protected static int AskRoleTypeQuestion(object contextElement)
+		{
+			return (int)SurveyRoleType.Supertype;
+		}
+		#endregion // IAnswerSurveyQuestion<SurveyRoleType> Implementation
 	}
 }

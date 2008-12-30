@@ -2205,6 +2205,22 @@ namespace Neumont.Tools.ORM
 				return ResourceStrings.GetString(ResourceManagers.Model, "ExclusiveOrConstraint.ExclusionConstraintName.DisplayName");
 			}
 		}
+		/// <summary>The format string for a selected role when a role name is specified. {0}=ObjectType Name, {1}=Role Name</summary>
+		public static string RoleSurveyNameFormat
+		{
+			get
+			{
+				return ResourceStrings.GetString(ResourceManagers.Model, "Role.SurveyNameFormat");
+			}
+		}
+		/// <summary>The name for a role name in place of an ObjectType name when no role player is specified.</summary>
+		public static string RoleSurveyNameMissingRolePlayer
+		{
+			get
+			{
+				return ResourceStrings.GetString(ResourceManagers.Model, "Role.SurveyNameMissingRolePlayer");
+			}
+		}
 		/// <summary>Pattern showing left- and right-string to use for containing a value range definition.</summary>
 		public static string ValueConstraintDefinitionContainerPattern
 		{

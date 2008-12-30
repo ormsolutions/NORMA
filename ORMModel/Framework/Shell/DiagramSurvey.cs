@@ -90,13 +90,13 @@ namespace Neumont.Tools.Modeling.Shell
 			}
 			#endregion // Member variables and constructors
 			#region IAnswerSurveyQuestion<DiagramSurveyType> Implementation
-			int IAnswerSurveyQuestion<DiagramSurveyType>.AskQuestion()
+			int IAnswerSurveyQuestion<DiagramSurveyType>.AskQuestion(object contextElement)
 			{
 				return (int)DiagramSurveyType.Diagram;
 			}
 			#endregion // IAnswerSurveyQuestion<DiagramSurveyType> Implementation
 			#region IAnswerSurveyDynamicQuestion<DiagramGlyphSurveyType> Implementation
-			int IAnswerSurveyDynamicQuestion<DiagramGlyphSurveyType>.AskQuestion(DiagramGlyphSurveyType answerValues)
+			int IAnswerSurveyDynamicQuestion<DiagramGlyphSurveyType>.AskQuestion(DiagramGlyphSurveyType answerValues, object contextElement)
 			{
 				return answerValues.GetDiagramIndex(myDiagram);
 			}

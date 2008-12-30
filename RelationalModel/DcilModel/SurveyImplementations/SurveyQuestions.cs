@@ -168,19 +168,33 @@ namespace Neumont.Tools.RelationalModels.ConceptualDatabase
 		/// </summary>
 		Last = ColumnReference,
 	}
+	/// <summary>
+	/// Specify the type of endpoint for a column in a <see cref="ColumnReference"/>
+	/// </summary>
+	public enum SurveyColumnReferenceChildType
+	{
+		/// <summary>
+		/// The column from the source table
+		/// </summary>
+		SourceColumn,
+		/// <summary>
+		/// The column from the referenced target table
+		/// </summary>
+		TargetColumn,
+	}
 	#endregion // Survey Question Type Enums
 	#region Schema answers
 	partial class Schema : IAnswerSurveyQuestion<SurveySchemaType>, ISurveyNode
 	{
 		#region IAnswerSurveyQuestion<SurveySchemaType> Implementation
-		int IAnswerSurveyQuestion<SurveySchemaType>.AskQuestion()
+		int IAnswerSurveyQuestion<SurveySchemaType>.AskQuestion(object contextElement)
 		{
-			return AskElementQuestion();
+			return AskElementQuestion(contextElement);
 		}
 		/// <summary>
-		/// implementation of AskQuestion method from IAnswerSurveyQuestion
+		/// Implements <see cref="IAnswerSurveyQuestion{SurveySchemaType}.AskQuestion"/>
 		/// </summary>
-		protected int AskElementQuestion()
+		protected static int AskElementQuestion(object contextElement)
 		{
 			return (int)SurveySchemaType.Schema;
 		}
@@ -292,14 +306,14 @@ namespace Neumont.Tools.RelationalModels.ConceptualDatabase
 	partial class Table : IAnswerSurveyQuestion<SurveySchemaChildType>, ISurveyNode, ISurveyNodeContext
 	{
 		#region IAnswerSurveyQuestion<SurveySchemaChildType> Implementation
-		int IAnswerSurveyQuestion<SurveySchemaChildType>.AskQuestion()
+		int IAnswerSurveyQuestion<SurveySchemaChildType>.AskQuestion(object contextElement)
 		{
-			return AskElementQuestion();
+			return AskElementQuestion(contextElement);
 		}
 		/// <summary>
-		/// implementation of AskQuestion method from IAnswerSurveyQuestion
+		/// Implements <see cref="IAnswerSurveyQuestion{SurveySchemaChildType}.AskQuestion"/>
 		/// </summary>
-		protected int AskElementQuestion()
+		protected static int AskElementQuestion(object contextElement)
 		{
 			return (int)SurveySchemaChildType.Table;
 		}
@@ -431,40 +445,40 @@ namespace Neumont.Tools.RelationalModels.ConceptualDatabase
 	partial class Column : IAnswerSurveyQuestion<SurveyTableChildType>, IAnswerSurveyQuestion<SurveyTableChildGlyphType>, IAnswerSurveyQuestion<SurveyColumnClassificationType>, ISurveyNode, ISurveyNodeContext, ICustomComparableSurveyNode
 	{
 		#region IAnswerSurveyQuestion<SurveyTableChildType> Implementation
-		int IAnswerSurveyQuestion<SurveyTableChildType>.AskQuestion()
+		int IAnswerSurveyQuestion<SurveyTableChildType>.AskQuestion(object contextElement)
 		{
-			return AskElementQuestion();
+			return AskElementQuestion(contextElement);
 		}
 		/// <summary>
-		/// implementation of AskQuestion method from IAnswerSurveyQuestion
+		/// Implements <see cref="IAnswerSurveyQuestion{SurveyTableChildType}.AskQuestion"/>
 		/// </summary>
-		protected int AskElementQuestion()
+		protected static int AskElementQuestion(object contextElement)
 		{
 			return (int)SurveyTableChildType.Column;
 		}
 		#endregion // IAnswerSurveyQuestion<SurveyTableChildType> Implementation
 		#region IAnswerSurveyQuestion<SurveyTableChildGlyphType> Implementation
-		int IAnswerSurveyQuestion<SurveyTableChildGlyphType>.AskQuestion()
+		int IAnswerSurveyQuestion<SurveyTableChildGlyphType>.AskQuestion(object contextElement)
 		{
-			return AskElementQuestionForGlyph();
+			return AskElementQuestionForGlyph(contextElement);
 		}
 		/// <summary>
-		/// implementation of AskQuestion method from IAnswerSurveyQuestion
+		/// Implements <see cref="IAnswerSurveyQuestion{SurveyTableChildGlyphType}.AskQuestion"/>
 		/// </summary>
-		protected int AskElementQuestionForGlyph()
+		protected static int AskElementQuestionForGlyph(object contextElement)
 		{
 			return (int)SurveyTableChildGlyphType.Column;
 		}
 		#endregion // IAnswerSurveyQuestion<SurveyTableChildGlyphType> Implementation
 		#region IAnswerSurveyQuestion<SurveyColumnClassificationType> Implementation
-		int IAnswerSurveyQuestion<SurveyColumnClassificationType>.AskQuestion()
+		int IAnswerSurveyQuestion<SurveyColumnClassificationType>.AskQuestion(object contextElement)
 		{
-			return AskElementQuestionForClassification();
+			return AskElementQuestionForClassification(contextElement);
 		}
 		/// <summary>
-		/// implementation of AskQuestion method from IAnswerSurveyQuestion
+		/// Implements <see cref="IAnswerSurveyQuestion{SurveyColumnClassificationType}.AskQuestion"/>
 		/// </summary>
-		protected int AskElementQuestionForClassification()
+		protected int AskElementQuestionForClassification(object contextElement)
 		{
 			return (int)(IsPartOfPrimaryIdentifier ?
 				IsNullable ? SurveyColumnClassificationType.PrimaryNullable : SurveyColumnClassificationType.PrimaryRequired :
@@ -589,15 +603,15 @@ namespace Neumont.Tools.RelationalModels.ConceptualDatabase
 		}
 		#endregion // ISurveyNodeContext Implementation
 		#region ICustomComparableSurveyNode Implementation
-		int ICustomComparableSurveyNode.CompareToSurveyNode(object other, object customSortData, object otherCustomSortData)
+		int ICustomComparableSurveyNode.CompareToSurveyNode(object contextElement, object other, object customSortData, object otherCustomSortData)
 		{
-			return CompareToSurveyNode(other, customSortData, otherCustomSortData);
+			return CompareToSurveyNode(contextElement, other, customSortData, otherCustomSortData);
 		}
 		/// <summary>
 		/// Implements <see cref="ICustomComparableSurveyNode.CompareToSurveyNode"/>. Columns
 		/// sort with columns in the preferred identifier first.
 		/// </summary>
-		protected int CompareToSurveyNode(object other, object customSortData, object otherCustomSortData)
+		protected int CompareToSurveyNode(object contextElement, object other, object customSortData, object otherCustomSortData)
 		{
 			if (other is Column)
 			{
@@ -611,15 +625,15 @@ namespace Neumont.Tools.RelationalModels.ConceptualDatabase
 			// For this comparison, 0 implies no information is available
 			return 0;
 		}
-		bool ICustomComparableSurveyNode.ResetCustomSortData(ref object customSortData)
+		bool ICustomComparableSurveyNode.ResetCustomSortData(object contextElement, ref object customSortData)
 		{
-			return ResetCustomSortData(ref customSortData);
+			return ResetCustomSortData(contextElement, ref customSortData);
 		}
 		/// <summary>
 		/// Implements <see cref="ICustomComparableSurveyNode.ResetCustomSortData"/>. Returns
 		/// a boolean corresponding to the <see cref="IsPartOfPrimaryIdentifier"/> property.
 		/// </summary>
-		protected bool ResetCustomSortData(ref object customSortData)
+		protected bool ResetCustomSortData(object contextElement, ref object customSortData)
 		{
 			bool retVal = IsPartOfPrimaryIdentifier;
 			if (customSortData == null || (bool)customSortData != retVal)
@@ -654,27 +668,27 @@ namespace Neumont.Tools.RelationalModels.ConceptualDatabase
 	partial class ReferenceConstraint : IAnswerSurveyQuestion<SurveyTableChildType>, IAnswerSurveyQuestion<SurveyTableChildGlyphType>, ISurveyNode, ISurveyNodeContext
 	{
 		#region IAnswerSurveyQuestion<SurveyTableChildType> Implementation
-		int IAnswerSurveyQuestion<SurveyTableChildType>.AskQuestion()
+		int IAnswerSurveyQuestion<SurveyTableChildType>.AskQuestion(object contextElement)
 		{
-			return AskElementQuestion();
+			return AskElementQuestion(contextElement);
 		}
 		/// <summary>
-		/// implementation of AskQuestion method from IAnswerSurveyQuestion
+		/// Implements <see cref="IAnswerSurveyQuestion{SurveyTableChildType}.AskQuestion"/>
 		/// </summary>
-		protected int AskElementQuestion()
+		protected static int AskElementQuestion(object contextElement)
 		{
 			return (int)SurveyTableChildType.ReferenceConstraint;
 		}
 		#endregion // IAnswerSurveyQuestion<SurveyTableChildType> Implementation
 		#region IAnswerSurveyQuestion<SurveyTableChildGlyphType> Implementation
-		int IAnswerSurveyQuestion<SurveyTableChildGlyphType>.AskQuestion()
+		int IAnswerSurveyQuestion<SurveyTableChildGlyphType>.AskQuestion(object contextElement)
 		{
-			return AskElementQuestionForGlyph();
+			return AskElementQuestionForGlyph(contextElement);
 		}
 		/// <summary>
-		/// implementation of AskQuestion method from IAnswerSurveyQuestion
+		/// Implements <see cref="IAnswerSurveyQuestion{SurveyTableChildGlyphType}.AskQuestion"/>
 		/// </summary>
-		protected int AskElementQuestionForGlyph()
+		protected static int AskElementQuestionForGlyph(object contextElement)
 		{
 			return (int)SurveyTableChildGlyphType.ReferenceConstraint;
 		}
@@ -806,27 +820,27 @@ namespace Neumont.Tools.RelationalModels.ConceptualDatabase
 	partial class UniquenessConstraint : IAnswerSurveyQuestion<SurveyTableChildType>, IAnswerSurveyQuestion<SurveyTableChildGlyphType>, ISurveyNode, ISurveyNodeContext
 	{
 		#region IAnswerSurveyQuestion<SurveyTableChildType> Implementation
-		int IAnswerSurveyQuestion<SurveyTableChildType>.AskQuestion()
+		int IAnswerSurveyQuestion<SurveyTableChildType>.AskQuestion(object contextElement)
 		{
-			return AskElementQuestion();
+			return AskElementQuestion(contextElement);
 		}
 		/// <summary>
-		/// implementation of AskQuestion method from IAnswerSurveyQuestion
+		/// Implements <see cref="IAnswerSurveyQuestion{SurveyTableChildType}.AskQuestion"/>
 		/// </summary>
-		protected int AskElementQuestion()
+		protected static int AskElementQuestion(object contextElement)
 		{
 			return (int)SurveyTableChildType.Constraint;
 		}
 		#endregion // IAnswerSurveyQuestion<SurveyTableChildType> Implementation
 		#region IAnswerSurveyQuestion<SurveyTableChildGlyphType> Implementation
-		int IAnswerSurveyQuestion<SurveyTableChildGlyphType>.AskQuestion()
+		int IAnswerSurveyQuestion<SurveyTableChildGlyphType>.AskQuestion(object contextElement)
 		{
-			return AskElementQuestionForGlyph();
+			return AskElementQuestionForGlyph(contextElement);
 		}
 		/// <summary>
-		/// implementation of AskQuestion method from IAnswerSurveyQuestion
+		/// Implements <see cref="IAnswerSurveyQuestion{SurveyTableChildGlyphType}.AskQuestion"/>
 		/// </summary>
-		protected int AskElementQuestionForGlyph()
+		protected int AskElementQuestionForGlyph(object contextElement)
 		{
 			return IsPrimary ? (int)SurveyTableChildGlyphType.PrimaryUniquenessConstraint : (int)SurveyTableChildGlyphType.UniquenessConstraint;
 		}
@@ -955,17 +969,17 @@ namespace Neumont.Tools.RelationalModels.ConceptualDatabase
 	}
 	#endregion // UniquenessConstraint answers
 	#region ReferenceConstraintTargetsTable answers
-	partial class ReferenceConstraintTargetsTable : IAnswerSurveyQuestion<SurveyReferenceConstraintChildType>, ISurveyNode, ISurveyNodeContext
+	partial class ReferenceConstraintTargetsTable : IAnswerSurveyQuestion<SurveyReferenceConstraintChildType>, ISurveyNode, ISurveyNodeContext, ISurveyNodeReference
 	{
 		#region IAnswerSurveyQuestion<SurveyReferenceConstraintChildType> Implementation
-		int IAnswerSurveyQuestion<SurveyReferenceConstraintChildType>.AskQuestion()
+		int IAnswerSurveyQuestion<SurveyReferenceConstraintChildType>.AskQuestion(object contextElement)
 		{
-			return AskElementQuestion();
+			return AskElementQuestion(contextElement);
 		}
 		/// <summary>
-		/// implementation of AskQuestion method from IAnswerSurveyQuestion
+		/// Implements <see cref="IAnswerSurveyQuestion{SurveyReferenceConstraintChildType}.AskQuestion"/>
 		/// </summary>
-		protected int AskElementQuestion()
+		protected static int AskElementQuestion(object contextElement)
 		{
 			return (int)SurveyReferenceConstraintChildType.TableReference;
 		}
@@ -1088,20 +1102,84 @@ namespace Neumont.Tools.RelationalModels.ConceptualDatabase
 			}
 		}
 		#endregion // ISurveyNodeContext Implementation
+		#region ISurveyNodeReference Implementation
+		/// <summary>
+		/// Implements <see cref="ISurveyNodeReference.ReferencedSurveyNode"/>
+		/// </summary>
+		protected object ReferencedSurveyNode
+		{
+			get
+			{
+				return TargetTable;
+			}
+		}
+		object ISurveyNodeReference.ReferencedSurveyNode
+		{
+			get
+			{
+				return ReferencedSurveyNode;
+			}
+		}
+		/// <summary>
+		/// Implements <see cref="ISurveyNodeReference.SurveyNodeReferenceReason"/>
+		/// </summary>
+		protected object SurveyNodeReferenceReason
+		{
+			get
+			{
+				return this;
+			}
+		}
+		object ISurveyNodeReference.SurveyNodeReferenceReason
+		{
+			get
+			{
+				return SurveyNodeReferenceReason;
+			}
+		}
+		/// <summary>
+		/// Implements <see cref="ISurveyNodeReference.SurveyNodeReferenceOptions"/>
+		/// </summary>
+		protected static SurveyNodeReferenceOptions SurveyNodeReferenceOptions
+		{
+			get
+			{
+				return SurveyNodeReferenceOptions.None;
+			}
+		}
+		SurveyNodeReferenceOptions ISurveyNodeReference.SurveyNodeReferenceOptions
+		{
+			get
+			{
+				return SurveyNodeReferenceOptions;
+			}
+		}
+		/// <summary>
+		/// Implements <see cref="ISurveyNodeReference.UseSurveyNodeReferenceAnswer"/>
+		/// </summary>
+		protected static bool UseSurveyNodeReferenceAnswer(Type questionType, ISurveyDynamicValues dynamicValues, int answer)
+		{
+			return true;
+		}
+		bool ISurveyNodeReference.UseSurveyNodeReferenceAnswer(Type questionType, ISurveyDynamicValues dynamicValues, int answer)
+		{
+			return UseSurveyNodeReferenceAnswer(questionType, dynamicValues, answer);
+		}
+		#endregion // ISurveyNodeReference Implementation
 	}
 	#endregion // ReferenceConstraintTargetsTable answers
 	#region ColumnReference answers
 	partial class ColumnReference : IAnswerSurveyQuestion<SurveyReferenceConstraintChildType>, ISurveyNode, ISurveyNodeContext, ICustomComparableSurveyNode
 	{
 		#region IAnswerSurveyQuestion<SurveyReferenceConstraintChildType> Implementation
-		int IAnswerSurveyQuestion<SurveyReferenceConstraintChildType>.AskQuestion()
+		int IAnswerSurveyQuestion<SurveyReferenceConstraintChildType>.AskQuestion(object contextElement)
 		{
-			return AskElementQuestion();
+			return AskElementQuestion(contextElement);
 		}
 		/// <summary>
-		/// implementation of AskQuestion method from IAnswerSurveyQuestion
+		/// Implements <see cref="IAnswerSurveyQuestion{SurveyReferenceConstraintChildType}.AskQuestion"/>
 		/// </summary>
-		protected static int AskElementQuestion()
+		protected static int AskElementQuestion(object contextElement)
 		{
 			return (int)SurveyReferenceConstraintChildType.ColumnReference;
 		}
@@ -1117,11 +1195,11 @@ namespace Neumont.Tools.RelationalModels.ConceptualDatabase
 		/// <summary>
 		/// Implements <see cref="ISurveyNode.IsSurveyNameEditable"/>
 		/// </summary>
-		protected bool IsSurveyNameEditable
+		protected static bool IsSurveyNameEditable
 		{
 			get
 			{
-				return !DomainTypeDescriptor.CreatePropertyDescriptor(SourceColumn, Column.NameDomainPropertyId).IsReadOnly;
+				return false;
 			}
 		}
 		string ISurveyNode.SurveyName
@@ -1155,16 +1233,14 @@ namespace Neumont.Tools.RelationalModels.ConceptualDatabase
 		/// <summary>
 		/// Implements <see cref="ISurveyNode.EditableSurveyName"/>
 		/// </summary>
-		protected string EditableSurveyName
+		protected static string EditableSurveyName
 		{
 			get
 			{
-				return SourceColumn.Name;
+				return null;
 			}
 			set
 			{
-				Column sourceColumn = SourceColumn;
-				DomainTypeDescriptor.CreatePropertyDescriptor(sourceColumn, Column.NameDomainPropertyId).SetValue(sourceColumn, value);
 			}
 		}
 		/// <summary>
@@ -1193,7 +1269,7 @@ namespace Neumont.Tools.RelationalModels.ConceptualDatabase
 		{
 			get
 			{
-				return null;
+				return SurveyExpansionKey;
 			}
 		}
 		object ISurveyNode.SurveyNodeExpansionKey
@@ -1203,6 +1279,10 @@ namespace Neumont.Tools.RelationalModels.ConceptualDatabase
 				return SurveyNodeExpansionKey;
 			}
 		}
+		/// <summary>
+		/// The key used to retrieve expansion details for the model browser
+		/// </summary>
+		public static readonly object SurveyExpansionKey = new object();
 		#endregion // ISurveyNode Implementation
 		#region ISurveyNodeContext Implementation
 		/// <summary>
@@ -1225,15 +1305,15 @@ namespace Neumont.Tools.RelationalModels.ConceptualDatabase
 		}
 		#endregion // ISurveyNodeContext Implementation
 		#region ICustomComparableSurveyNode Implementation
-		int ICustomComparableSurveyNode.CompareToSurveyNode(object other, object customSortData, object otherCustomSortData)
+		int ICustomComparableSurveyNode.CompareToSurveyNode(object contextElement, object other, object customSortData, object otherCustomSortData)
 		{
-			return CompareToSurveyNode(other, customSortData, otherCustomSortData);
+			return CompareToSurveyNode(contextElement, other, customSortData, otherCustomSortData);
 		}
 		/// <summary>
 		/// Implements <see cref="ICustomComparableSurveyNode.CompareToSurveyNode"/>. Columns
 		/// sort with columns in the preferred identifier first.
 		/// </summary>
-		protected int CompareToSurveyNode(object other, object customSortData, object otherCustomSortData)
+		protected int CompareToSurveyNode(object contextElement, object other, object customSortData, object otherCustomSortData)
 		{
 			if (other is ColumnReference)
 			{
@@ -1251,15 +1331,15 @@ namespace Neumont.Tools.RelationalModels.ConceptualDatabase
 			// For this comparison, 0 implies no information is available
 			return 0;
 		}
-		bool ICustomComparableSurveyNode.ResetCustomSortData(ref object customSortData)
+		bool ICustomComparableSurveyNode.ResetCustomSortData(object contextElement, ref object customSortData)
 		{
-			return ResetCustomSortData(ref customSortData);
+			return ResetCustomSortData(contextElement, ref customSortData);
 		}
 		/// <summary>
 		/// Implements <see cref="ICustomComparableSurveyNode.ResetCustomSortData"/>. Returns
 		/// the current position in the ColumnReferenceCollection of the parent <see cref="ReferenceConstraint"/>
 		/// </summary>
-		protected bool ResetCustomSortData(ref object customSortData)
+		protected bool ResetCustomSortData(object contextElement, ref object customSortData)
 		{
 			int retVal = -1;
 			ReferenceConstraint parentConstraint;
@@ -1278,17 +1358,17 @@ namespace Neumont.Tools.RelationalModels.ConceptualDatabase
 	}
 	#endregion // ColumnReference answers
 	#region UniquenessConstraintIncludesColumn answers
-	partial class UniquenessConstraintIncludesColumn : IAnswerSurveyQuestion<SurveyUniquenessConstraintChildType>, ISurveyNode, ISurveyNodeContext, ICustomComparableSurveyNode
+	partial class UniquenessConstraintIncludesColumn : IAnswerSurveyQuestion<SurveyUniquenessConstraintChildType>, ISurveyNode, ISurveyNodeContext, ICustomComparableSurveyNode, ISurveyNodeReference
 	{
 		#region IAnswerSurveyQuestion<SurveyUniquenessConstraintChildType> Implementation
-		int IAnswerSurveyQuestion<SurveyUniquenessConstraintChildType>.AskQuestion()
+		int IAnswerSurveyQuestion<SurveyUniquenessConstraintChildType>.AskQuestion(object contextElement)
 		{
-			return AskElementQuestion();
+			return AskElementQuestion(contextElement);
 		}
 		/// <summary>
-		/// implementation of AskQuestion method from IAnswerSurveyQuestion
+		/// Implements <see cref="IAnswerSurveyQuestion{SurveyUniquenessConstraintChildType}.AskQuestion"/>
 		/// </summary>
-		protected int AskElementQuestion()
+		protected static int AskElementQuestion(object contextElement)
 		{
 			return (int)SurveyUniquenessConstraintChildType.ColumnReference;
 		}
@@ -1412,15 +1492,15 @@ namespace Neumont.Tools.RelationalModels.ConceptualDatabase
 		}
 		#endregion // ISurveyNodeContext Implementation
 		#region ICustomComparableSurveyNode Implementation
-		int ICustomComparableSurveyNode.CompareToSurveyNode(object other, object customSortData, object otherCustomSortData)
+		int ICustomComparableSurveyNode.CompareToSurveyNode(object contextElement, object other, object customSortData, object otherCustomSortData)
 		{
-			return CompareToSurveyNode(other, customSortData, otherCustomSortData);
+			return CompareToSurveyNode(contextElement, other, customSortData, otherCustomSortData);
 		}
 		/// <summary>
 		/// Implements <see cref="ICustomComparableSurveyNode.CompareToSurveyNode"/>. Columns
 		/// sort with columns in the preferred identifier first.
 		/// </summary>
-		protected int CompareToSurveyNode(object other, object customSortData, object otherCustomSortData)
+		protected int CompareToSurveyNode(object contextElement, object other, object customSortData, object otherCustomSortData)
 		{
 			if (other is UniquenessConstraintIncludesColumn)
 			{
@@ -1438,15 +1518,15 @@ namespace Neumont.Tools.RelationalModels.ConceptualDatabase
 			// For this comparison, 0 implies no information is available
 			return 0;
 		}
-		bool ICustomComparableSurveyNode.ResetCustomSortData(ref object customSortData)
+		bool ICustomComparableSurveyNode.ResetCustomSortData(object contextElement, ref object customSortData)
 		{
-			return ResetCustomSortData(ref customSortData);
+			return ResetCustomSortData(contextElement, ref customSortData);
 		}
 		/// <summary>
 		/// Implements <see cref="ICustomComparableSurveyNode.ResetCustomSortData"/>. Returns
 		/// the current position in the ColumnReferenceCollection of the parent <see cref="UniquenessConstraint"/>
 		/// </summary>
-		protected bool ResetCustomSortData(ref object customSortData)
+		protected bool ResetCustomSortData(object contextElement, ref object customSortData)
 		{
 			int retVal = -1;
 			UniquenessConstraint parentConstraint;
@@ -1462,6 +1542,70 @@ namespace Neumont.Tools.RelationalModels.ConceptualDatabase
 			return false;
 		}
 		#endregion // ICustomComparableSurveyNode Implementation
+		#region ISurveyNodeReference Implementation
+		/// <summary>
+		/// Implements <see cref="ISurveyNodeReference.ReferencedSurveyNode"/>
+		/// </summary>
+		protected object ReferencedSurveyNode
+		{
+			get
+			{
+				return Column;
+			}
+		}
+		object ISurveyNodeReference.ReferencedSurveyNode
+		{
+			get
+			{
+				return ReferencedSurveyNode;
+			}
+		}
+		/// <summary>
+		/// Implements <see cref="ISurveyNodeReference.SurveyNodeReferenceReason"/>
+		/// </summary>
+		protected object SurveyNodeReferenceReason
+		{
+			get
+			{
+				return this;
+			}
+		}
+		object ISurveyNodeReference.SurveyNodeReferenceReason
+		{
+			get
+			{
+				return SurveyNodeReferenceReason;
+			}
+		}
+		/// <summary>
+		/// Implements <see cref="ISurveyNodeReference.SurveyNodeReferenceOptions"/>
+		/// </summary>
+		protected static SurveyNodeReferenceOptions SurveyNodeReferenceOptions
+		{
+			get
+			{
+				return SurveyNodeReferenceOptions.FilterReferencedAnswers;
+			}
+		}
+		SurveyNodeReferenceOptions ISurveyNodeReference.SurveyNodeReferenceOptions
+		{
+			get
+			{
+				return SurveyNodeReferenceOptions;
+			}
+		}
+		/// <summary>
+		/// Implements <see cref="ISurveyNodeReference.UseSurveyNodeReferenceAnswer"/>
+		/// </summary>
+		protected static bool UseSurveyNodeReferenceAnswer(Type questionType, ISurveyDynamicValues dynamicValues, int answer)
+		{
+			return questionType != typeof(SurveyColumnClassificationType);
+		}
+		bool ISurveyNodeReference.UseSurveyNodeReferenceAnswer(Type questionType, ISurveyDynamicValues dynamicValues, int answer)
+		{
+			return UseSurveyNodeReferenceAnswer(questionType, dynamicValues, answer);
+		}
+		#endregion // ISurveyNodeReference Implementation
 	}
 	#endregion // ReferenceConstraintTargetsTable answers
 	#region ISurveyNodeProvider Implementation
@@ -1520,7 +1664,6 @@ namespace Neumont.Tools.RelationalModels.ConceptualDatabase
 				ReferenceConstraint referenceConstraint = context as ReferenceConstraint;
 				if (referenceConstraint != null)
 				{
-					// UNDONE: Do the table reference directly as a link in the model browser when the construct is available
 					ReferenceConstraintTargetsTable tableLink = ReferenceConstraintTargetsTable.GetLinkToTargetTable(referenceConstraint);
 					if (tableLink != null)
 					{
@@ -1532,12 +1675,20 @@ namespace Neumont.Tools.RelationalModels.ConceptualDatabase
 					}
 				}
 			}
+			else if (expansionKey == ColumnReference.SurveyExpansionKey)
+			{
+				ColumnReference columnReference = context as ColumnReference;
+				if (columnReference != null)
+				{
+					yield return new SourceColumnSurveyReference(columnReference);
+					yield return new TargetColumnSurveyReference(columnReference);
+				}
+			}
 			else if (expansionKey == UniquenessConstraint.SurveyExpansionKey)
 			{
 				UniquenessConstraint uniquenessConstraint = context as UniquenessConstraint;
 				if (uniquenessConstraint != null)
 				{
-					// UNDONE: Do this directly as a link in the model browser when the construct is available
 					foreach (UniquenessConstraintIncludesColumn columnRef in UniquenessConstraintIncludesColumn.GetLinksToColumnCollection(uniquenessConstraint))
 					{
 						yield return columnRef;
@@ -1545,6 +1696,106 @@ namespace Neumont.Tools.RelationalModels.ConceptualDatabase
 				}
 			}
 		}
+		#region Reference classes for ColumnReference children
+		/// <summary>
+		/// A reference class to provide a survey link between a column reference and the source column
+		/// </summary>
+		private sealed class SourceColumnSurveyReference : ISurveyNodeReference, IAnswerSurveyQuestion<SurveyColumnReferenceChildType>
+		{
+			#region Member Variables and Constructor
+			private Column myTargetColumn;
+			/// <summary>
+			/// Create a new <see cref="SourceColumnSurveyReference"/> for the specified <see cref="ColumnReference"/>
+			/// </summary>
+			public SourceColumnSurveyReference(ColumnReference columnReference)
+			{
+				myTargetColumn = columnReference.SourceColumn;
+			}
+			#endregion // Member Variables and Constructor
+			#region ISurveyNodeReference Implementation
+			object ISurveyNodeReference.ReferencedSurveyNode
+			{
+				get
+				{
+					return myTargetColumn;
+				}
+			}
+			object ISurveyNodeReference.SurveyNodeReferenceReason
+			{
+				get
+				{
+					return typeof(SourceColumnSurveyReference);
+				}
+			}
+			SurveyNodeReferenceOptions ISurveyNodeReference.SurveyNodeReferenceOptions
+			{
+				get
+				{
+					return SurveyNodeReferenceOptions.FilterReferencedAnswers;
+				}
+			}
+			bool ISurveyNodeReference.UseSurveyNodeReferenceAnswer(Type questionType, ISurveyDynamicValues dynamicValues, int answer)
+			{
+				return questionType != typeof(SurveyColumnClassificationType);
+			}
+			#endregion // ISurveyNodeReference Implementation
+			#region IAnswerSurveyQuestion<SurveyColumnReferenceChildType> Implementation
+			int IAnswerSurveyQuestion<SurveyColumnReferenceChildType>.AskQuestion(object contextElement)
+			{
+				return (int)SurveyColumnReferenceChildType.SourceColumn;
+			}
+			#endregion // IAnswerSurveyQuestion<SurveyColumnReferenceChildType> Implementation
+		}
+		/// <summary>
+		/// A reference class to provide a survey link between a column reference and the target column
+		/// </summary>
+		private sealed class TargetColumnSurveyReference : ISurveyNodeReference, IAnswerSurveyQuestion<SurveyColumnReferenceChildType>
+		{
+			#region Member Variables and Constructor
+			private Column myTargetColumn;
+			/// <summary>
+			/// Create a new <see cref="TargetColumnSurveyReference"/> for the specified <see cref="ColumnReference"/>
+			/// </summary>
+			public TargetColumnSurveyReference(ColumnReference columnReference)
+			{
+				myTargetColumn = columnReference.TargetColumn;
+			}
+			#endregion // Member Variables and Constructor
+			#region ISurveyNodeReference Implementation
+			object ISurveyNodeReference.ReferencedSurveyNode
+			{
+				get
+				{
+					return myTargetColumn;
+				}
+			}
+			object ISurveyNodeReference.SurveyNodeReferenceReason
+			{
+				get
+				{
+					return typeof(TargetColumnSurveyReference);
+				}
+			}
+			SurveyNodeReferenceOptions ISurveyNodeReference.SurveyNodeReferenceOptions
+			{
+				get
+				{
+					return SurveyNodeReferenceOptions.FilterReferencedAnswers;
+				}
+			}
+			bool ISurveyNodeReference.UseSurveyNodeReferenceAnswer(Type questionType, ISurveyDynamicValues dynamicValues, int answer)
+			{
+				return questionType != typeof(SurveyColumnClassificationType);
+			}
+			#endregion // ISurveyNodeReference Implementation
+			#region IAnswerSurveyQuestion<SurveyColumnReferenceChildType> Implementation
+			int IAnswerSurveyQuestion<SurveyColumnReferenceChildType>.AskQuestion(object contextElement)
+			{
+				return (int)SurveyColumnReferenceChildType.TargetColumn;
+			}
+			#endregion // IAnswerSurveyQuestion<SurveyColumnReferenceChildType> Implementation
+		}
+		#endregion // Reference classes for ColumnReference children
 		#endregion // ISurveyNodeProvider Implementation
 		#region IModelingEventSubscriber Implementation
 		/// <summary>
@@ -1595,7 +1846,7 @@ namespace Neumont.Tools.RelationalModels.ConceptualDatabase
 			// Reference constraint expansion elements
 			classInfo = dataDir.FindDomainRelationship(ReferenceConstraintTargetsTable.DomainClassId);
 			eventManager.AddOrRemoveHandler(classInfo, new EventHandler<ElementAddedEventArgs>(TargetedTableAdded), action);
-			eventManager.AddOrRemoveHandler(classInfo, new EventHandler<ElementDeletedEventArgs>(ElementRemoved), action);
+			eventManager.AddOrRemoveHandler(classInfo, new EventHandler<ElementDeletedEventArgs>(TargetedTableDeleted), action);
 			classInfo = dataDir.FindDomainRelationship(ReferenceConstraintContainsColumnReference.DomainClassId);
 			eventManager.AddOrRemoveHandler(classInfo, new EventHandler<ElementAddedEventArgs>(ReferenceConstraintColumnReferenceAdded), action);
 			eventManager.AddOrRemoveHandler(classInfo, new EventHandler<ElementDeletedEventArgs>(ReferenceConstraintColumnReferenceDeleted), action);
@@ -1667,10 +1918,6 @@ namespace Neumont.Tools.RelationalModels.ConceptualDatabase
 				if (null != (eventNotify = (element.Store as IORMToolServices).NotifySurveyElementChanged))
 				{
 					eventNotify.ElementRenamed(element);
-					foreach (ReferenceConstraintTargetsTable targetTableLink in ReferenceConstraintTargetsTable.GetLinksToReferenceConstraints((Table)element))
-					{
-						eventNotify.ElementRenamed(targetTableLink);
-					}
 				}
 			}
 		}
@@ -1700,10 +1947,6 @@ namespace Neumont.Tools.RelationalModels.ConceptualDatabase
 						eventNotify.ElementRenamed(columnRef);
 					}
 					foreach (ColumnReference columnRef in ColumnReference.GetLinksToTargetColumnCollection(column))
-					{
-						eventNotify.ElementRenamed(columnRef);
-					}
-					foreach (UniquenessConstraintIncludesColumn columnRef in UniquenessConstraintIncludesColumn.GetLinksToUniquenessConstraints(column))
 					{
 						eventNotify.ElementRenamed(columnRef);
 					}
@@ -1744,6 +1987,16 @@ namespace Neumont.Tools.RelationalModels.ConceptualDatabase
 			{
 				ReferenceConstraintTargetsTable link = element as ReferenceConstraintTargetsTable;
 				eventNotify.ElementAdded(link.TargetTable, link.ReferenceConstraint);
+			}
+		}
+		private static void TargetedTableDeleted(object sender, ElementDeletedEventArgs e)
+		{
+			INotifySurveyElementChanged eventNotify;
+			ModelElement element = e.ModelElement;
+			if (null != (eventNotify = (element.Store as IORMToolServices).NotifySurveyElementChanged))
+			{
+				ReferenceConstraintTargetsTable link = (ReferenceConstraintTargetsTable)element;
+				eventNotify.ElementReferenceDeleted(link.TargetTable, link, link.ReferenceConstraint);
 			}
 		}
 		private static void ReferenceConstraintColumnReferenceAdded(object sender, ElementAddedEventArgs e)
@@ -1841,7 +2094,7 @@ namespace Neumont.Tools.RelationalModels.ConceptualDatabase
 				{
 					foreach (UniquenessConstraintIncludesColumn link in UniquenessConstraintIncludesColumn.GetLinksToColumnCollection(constraint))
 					{
-						eventNotify.ElementCustomSortChanged(link);
+						eventNotify.ElementReferenceCustomSortChanged(link.Column, link, link.UniquenessConstraint);
 					}
 				}
 			}
@@ -1860,7 +2113,7 @@ namespace Neumont.Tools.RelationalModels.ConceptualDatabase
 					{
 						if (otherLink != link)
 						{
-							eventNotify.ElementCustomSortChanged(otherLink);
+							eventNotify.ElementReferenceCustomSortChanged(link.Column, otherLink, link.UniquenessConstraint);
 						}
 					}
 					eventNotify.ElementAdded(link, constraint);
@@ -1875,12 +2128,12 @@ namespace Neumont.Tools.RelationalModels.ConceptualDatabase
 			{
 				UniquenessConstraintIncludesColumn link = (UniquenessConstraintIncludesColumn)element;
 				UniquenessConstraint constraint = link.UniquenessConstraint;
-				eventNotify.ElementDeleted(link);
+				eventNotify.ElementReferenceDeleted(link.Column, link, constraint);
 				if (!constraint.IsDeleted)
 				{
 					foreach (UniquenessConstraintIncludesColumn otherLink in UniquenessConstraintIncludesColumn.GetLinksToColumnCollection(constraint))
 					{
-						eventNotify.ElementCustomSortChanged(otherLink);
+						eventNotify.ElementReferenceCustomSortChanged(otherLink.Column, otherLink, constraint);
 					}
 				}
 			}

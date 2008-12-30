@@ -556,6 +556,9 @@
       <LastGenOutput>DiagramSurvey.SurveyQuestionProvider.cs</LastGenOutput>
       <CustomToolNamespace>Neumont.Tools.Modeling.Shell</CustomToolNamespace>
     </Content>
+    <EmbeddedResource Include="Framework\Shell\DynamicSurveyTreeGrid\LinkOverlay.png">
+      <LogicalName>Neumont.Tools.Modeling.Shell.DynamicSurveyTreeGrid.LinkOverlay.png</LogicalName>
+    </EmbeddedResource>
     <Content Include="ObjectModel\ORMCore.SurveyQuestionProvider.xml">
       <Generator>NUPlixLoader</Generator>
       <LastGenOutput>ORMCore.SurveyQuestionProvider.cs</LastGenOutput>

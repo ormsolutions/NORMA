@@ -126,32 +126,32 @@ namespace Neumont.Tools.ORM.ObjectModel
 			}
 		}
 		#endregion
-		#region IAnswerSurveyQuestion<SurveyElementType> Members
-		int IAnswerSurveyQuestion<SurveyElementType>.AskQuestion()
+		#region IAnswerSurveyQuestion<SurveyElementType> Implementation
+		int IAnswerSurveyQuestion<SurveyElementType>.AskQuestion(object contextElement)
 		{
-			return AskElementTypeDetailQuestion();
+			return AskElementTypeDetailQuestion(contextElement);
 		}
 		/// <summary>
-		/// returns answer to IAnswerSurveyQuestion for a name generator
+		/// Implements <see cref="IAnswerSurveyQuestion{SurveyElementType}.AskQuestion"/>
 		/// </summary>
-		protected static int AskElementTypeDetailQuestion()
+		protected static int AskElementTypeDetailQuestion(object contextElement)
 		{
 			return (int)SurveyElementType.NameGenerator;
 		}
-		#endregion
-		#region IAnswerSurveyQuestion<SurveyElementType> Members
-		int IAnswerSurveyQuestion<SurveyNameGeneratorRefinementType>.AskQuestion()
+		#endregion // IAnswerSurveyQuestion<SurveyElementType> Implementation
+		#region IAnswerSurveyQuestion<SurveyNameGeneratorRefinementType> Implementation
+		int IAnswerSurveyQuestion<SurveyNameGeneratorRefinementType>.AskQuestion(object contextElement)
 		{
-			return AskRefinementTypeDetailQuestion();
+			return AskRefinementTypeDetailQuestion(contextElement);
 		}
 		/// <summary>
-		/// returns answer to IAnswerSurveyQuestion for a name generator
+		/// Implements <see cref="IAnswerSurveyQuestion{SurveyNameGeneratorRefinementType}.AskQuestion"/>
 		/// </summary>
-		protected int AskRefinementTypeDetailQuestion()
+		protected int AskRefinementTypeDetailQuestion(object contextElement)
 		{
 			return (NameUsageType != null) ? (int)SurveyNameGeneratorRefinementType.UsageRefinement : (int)SurveyNameGeneratorRefinementType.TypeRefinement;
 		}
-		#endregion
+		#endregion // IAnswerSurveyQuestion<SurveyNameGeneratorRefinementType> Implementation
 		#region ISurveyNodeContext Implementation
 		/// <summary>
 		/// The survey node context for a <see cref="Role"/> is

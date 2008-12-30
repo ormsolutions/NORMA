@@ -5,25 +5,14 @@
 			<qp:displaySupport displayCategory="Grouping"/>
 			<qp:displaySupport displayCategory="Sorting"/>
 			<qp:displaySupport displayCategory="Glyph"/>
-			<qp:sequentialImageMap/>
+			<qp:sequentialImageMap lastAnswer="Last"/>
 		</qp:surveyQuestion>
 		<qp:surveyQuestion questionType="SurveySchemaChildType">
 			<qp:displaySupport displayCategory="Grouping"/>
 			<qp:displaySupport displayCategory="Sorting"/>
 			<qp:displaySupport displayCategory="Glyph"/>
-			<qp:sequentialImageMap>
-				<qp:offset>
-					<plx:binaryOperator type="add">
-						<plx:left>
-							<plx:cast dataTypeName=".i4">
-								<plx:callStatic dataTypeName="SurveySchemaType" name="Last" type="field"/>
-							</plx:cast>
-						</plx:left>
-						<plx:right>
-							<plx:value data="1" type="i4"/>
-						</plx:right>
-					</plx:binaryOperator>
-				</qp:offset>
+			<qp:sequentialImageMap lastAnswer="Last">
+				<qp:offset afterSurveyQuestion="SurveySchemaType"/>
 			</qp:sequentialImageMap>
 		</qp:surveyQuestion>
 		<qp:surveyQuestion questionType="SurveyTableChildType">
@@ -32,117 +21,16 @@
 		</qp:surveyQuestion>
 		<qp:surveyQuestion questionType="SurveyTableChildGlyphType">
 			<qp:displaySupport displayCategory="Glyph"/>
-			<qp:sequentialImageMap>
-				<qp:offset>
-					<plx:binaryOperator type="add">
-						<plx:left>
-							<plx:binaryOperator type="add">
-								<plx:left>
-									<plx:cast dataTypeName=".i4">
-										<plx:callStatic dataTypeName="SurveySchemaType" name="Last" type="field"/>
-									</plx:cast>
-								</plx:left>
-								<plx:right>
-									<plx:value data="1" type="i4"/>
-								</plx:right>
-							</plx:binaryOperator>
-						</plx:left>
-						<plx:right>
-							<plx:binaryOperator type="add">
-								<plx:left>
-									<plx:cast dataTypeName=".i4">
-										<plx:callStatic dataTypeName="SurveySchemaChildType" name="Last" type="field"/>
-									</plx:cast>
-								</plx:left>
-								<plx:right>
-									<plx:value data="1" type="i4"/>
-								</plx:right>
-							</plx:binaryOperator>
-						</plx:right>
-					</plx:binaryOperator>
-				</qp:offset>
+			<qp:sequentialImageMap lastAnswer="Last">
+				<qp:offset afterSurveyQuestion="SurveySchemaChildType"/>
 			</qp:sequentialImageMap>
 		</qp:surveyQuestion>
 		<qp:surveyQuestion questionType="SurveyColumnClassificationType">
 			<qp:displaySupport displayCategory="Overlay"/>
 			<qp:displaySupport displayCategory="DisplayData"/>
 			<qp:explicitImageMap>
-				<qp:map enumValue="PrimaryRequired" imageIndex="0">
-					<plx:binaryOperator type="add">
-						<plx:left>
-							<plx:binaryOperator type="add">
-								<plx:left>
-									<plx:binaryOperator type="add">
-										<plx:left>
-											<plx:binaryOperator type="add">
-												<plx:left>
-													<plx:binaryOperator type="add">
-														<plx:left>
-															<plx:cast dataTypeName=".i4">
-																<plx:callStatic dataTypeName="SurveySchemaType" name="Last" type="field"/>
-															</plx:cast>
-														</plx:left>
-														<plx:right>
-															<plx:value data="1" type="i4"/>
-														</plx:right>
-													</plx:binaryOperator>
-												</plx:left>
-												<plx:right>
-													<plx:binaryOperator type="add">
-														<plx:left>
-															<plx:cast dataTypeName=".i4">
-																<plx:callStatic dataTypeName="SurveySchemaChildType" name="Last" type="field"/>
-															</plx:cast>
-														</plx:left>
-														<plx:right>
-															<plx:value data="1" type="i4"/>
-														</plx:right>
-													</plx:binaryOperator>
-												</plx:right>
-											</plx:binaryOperator>
-										</plx:left>
-										<plx:right>
-											<plx:binaryOperator type="add">
-												<plx:left>
-													<plx:cast dataTypeName=".i4">
-														<plx:callStatic dataTypeName="SurveyTableChildGlyphType" name="Last" type="field"/>
-													</plx:cast>
-												</plx:left>
-												<plx:right>
-													<plx:value data="1" type="i4"/>
-												</plx:right>
-											</plx:binaryOperator>
-										</plx:right>
-									</plx:binaryOperator>
-								</plx:left>
-								<plx:right>
-									<plx:binaryOperator type="add">
-										<plx:left>
-											<plx:cast dataTypeName=".i4">
-												<plx:callStatic dataTypeName="SurveyReferenceConstraintChildType" name="Last" type="field"/>
-											</plx:cast>
-										</plx:left>
-										<plx:right>
-											<plx:value data="1" type="i4"/>
-										</plx:right>
-									</plx:binaryOperator>
-								</plx:right>
-							</plx:binaryOperator>
-						</plx:left>
-						<plx:right>
-							<plx:binaryOperator type="add">
-								<plx:left>
-									<plx:cast dataTypeName=".i4">
-										<plx:callStatic dataTypeName="SurveyUniquenessConstraintChildType" name="Last" type="field"/>
-									</plx:cast>
-								</plx:left>
-								<plx:right>
-									<plx:value data="1" type="i4"/>
-								</plx:right>
-							</plx:binaryOperator>
-						</plx:right>
-					</plx:binaryOperator>
-				</qp:map>
+				<qp:offset afterSurveyQuestion="SurveyUniquenessConstraintChildType"/>
+				<qp:map enumValue="PrimaryRequired" imageIndex="0"/>
 				<qp:mapSameAs enumValue="PrimaryNullable" targetEnumValue="PrimaryRequired"/>
 			</qp:explicitImageMap>
 			<qp:displayDataMap>
@@ -153,117 +41,18 @@
 		<qp:surveyQuestion questionType="SurveyReferenceConstraintChildType">
 			<qp:displaySupport displayCategory="Sorting"/>
 			<qp:displaySupport displayCategory="Glyph"/>
-			<qp:sequentialImageMap>
-				<qp:offset>
-					<plx:binaryOperator type="add">
-						<plx:left>
-							<plx:binaryOperator type="add">
-								<plx:left>
-									<plx:binaryOperator type="add">
-										<plx:left>
-											<plx:cast dataTypeName=".i4">
-												<plx:callStatic dataTypeName="SurveySchemaType" name="Last" type="field"/>
-											</plx:cast>
-										</plx:left>
-										<plx:right>
-											<plx:value data="1" type="i4"/>
-										</plx:right>
-									</plx:binaryOperator>
-								</plx:left>
-								<plx:right>
-									<plx:binaryOperator type="add">
-										<plx:left>
-											<plx:cast dataTypeName=".i4">
-												<plx:callStatic dataTypeName="SurveySchemaChildType" name="Last" type="field"/>
-											</plx:cast>
-										</plx:left>
-										<plx:right>
-											<plx:value data="1" type="i4"/>
-										</plx:right>
-									</plx:binaryOperator>
-								</plx:right>
-							</plx:binaryOperator>
-						</plx:left>
-						<plx:right>
-							<plx:binaryOperator type="add">
-								<plx:left>
-									<plx:cast dataTypeName=".i4">
-										<plx:callStatic dataTypeName="SurveyTableChildGlyphType" name="Last" type="field"/>
-									</plx:cast>
-								</plx:left>
-								<plx:right>
-									<plx:value data="1" type="i4"/>
-								</plx:right>
-							</plx:binaryOperator>
-						</plx:right>
-					</plx:binaryOperator>
-				</qp:offset>
+			<qp:sequentialImageMap lastAnswer="Last">
+				<qp:offset afterSurveyQuestion="SurveyTableChildGlyphType"/>
 			</qp:sequentialImageMap>
+		</qp:surveyQuestion>
+		<qp:surveyQuestion questionType="SurveyColumnReferenceChildType">
+			<qp:displaySupport displayCategory="Sorting"/>
 		</qp:surveyQuestion>
 		<qp:surveyQuestion questionType="SurveyUniquenessConstraintChildType">
 			<qp:displaySupport displayCategory="Sorting"/>
 			<qp:displaySupport displayCategory="Glyph"/>
-			<qp:sequentialImageMap>
-				<qp:offset>
-					<plx:binaryOperator type="add">
-						<plx:left>
-							<plx:binaryOperator type="add">
-								<plx:left>
-									<plx:binaryOperator type="add">
-										<plx:left>
-											<plx:binaryOperator type="add">
-												<plx:left>
-													<plx:cast dataTypeName=".i4">
-														<plx:callStatic dataTypeName="SurveySchemaType" name="Last" type="field"/>
-													</plx:cast>
-												</plx:left>
-												<plx:right>
-													<plx:value data="1" type="i4"/>
-												</plx:right>
-											</plx:binaryOperator>
-										</plx:left>
-										<plx:right>
-											<plx:binaryOperator type="add">
-												<plx:left>
-													<plx:cast dataTypeName=".i4">
-														<plx:callStatic dataTypeName="SurveySchemaChildType" name="Last" type="field"/>
-													</plx:cast>
-												</plx:left>
-												<plx:right>
-													<plx:value data="1" type="i4"/>
-												</plx:right>
-											</plx:binaryOperator>
-										</plx:right>
-									</plx:binaryOperator>
-								</plx:left>
-								<plx:right>
-									<plx:binaryOperator type="add">
-										<plx:left>
-											<plx:cast dataTypeName=".i4">
-												<plx:callStatic dataTypeName="SurveyTableChildGlyphType" name="Last" type="field"/>
-											</plx:cast>
-										</plx:left>
-										<plx:right>
-											<plx:value data="1" type="i4"/>
-										</plx:right>
-									</plx:binaryOperator>
-								</plx:right>
-							</plx:binaryOperator>
-						</plx:left>
-						<plx:right>
-							<plx:binaryOperator type="add">
-								<plx:left>
-									<plx:cast dataTypeName=".i4">
-										<plx:callStatic dataTypeName="SurveyReferenceConstraintChildType" name="Last" type="field"/>
-									</plx:cast>
-								</plx:left>
-								<plx:right>
-									<plx:value data="1" type="i4"/>
-								</plx:right>
-							</plx:binaryOperator>
-						</plx:right>
-					</plx:binaryOperator>
-				</qp:offset>
+			<qp:sequentialImageMap lastAnswer="Last">
+				<qp:offset afterSurveyQuestion="SurveyReferenceConstraintChildType"/>
 			</qp:sequentialImageMap>
 		</qp:surveyQuestion>
 	</qp:surveyQuestions>
@@ -290,6 +79,12 @@
 				<plx:callStatic dataTypeName="ReferenceConstraint" name="SurveyExpansionKey" type="property"/>
 			</qp:expansionKey>
 			<qp:surveyQuestion ref="SurveyReferenceConstraintChildType"/>
+		</qp:grouping>
+		<qp:grouping>
+			<qp:expansionKey>
+				<plx:callStatic dataTypeName="ColumnReference" name="SurveyExpansionKey" type="property"/>
+			</qp:expansionKey>
+			<qp:surveyQuestion ref="SurveyColumnReferenceChildType"/>
 		</qp:grouping>
 		<qp:grouping>
 			<qp:expansionKey>

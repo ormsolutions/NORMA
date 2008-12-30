@@ -72,7 +72,7 @@ namespace Neumont.Tools.Modeling.Shell.DynamicSurveyTreeGrid
 			/// <summary>
 			/// Public constructor
 			/// </summary>
-			public MainList(SurveyTree surveyTree, object context, object expansionKey)
+			public MainList(SurveyTree surveyTree, object contextElement, object expansionKey)
 			{
 				Debug.Assert(surveyTree != null, "SurveyTree required");
 				Survey survey = surveyTree.GetSurvey(expansionKey);
@@ -81,15 +81,15 @@ namespace Neumont.Tools.Modeling.Shell.DynamicSurveyTreeGrid
 				mySurveyTree = surveyTree;
 				List<SampleDataElementNode> nodes = new List<SampleDataElementNode>();
 				myNodes = nodes;
-				foreach (ISurveyNodeProvider nodeProvider in surveyTree.myNodeProviderList)
+				foreach (ISurveyNodeProvider nodeProvider in surveyTree.myNodeProviders)
 				{
-					foreach (object elementNode in nodeProvider.GetSurveyNodes(context, expansionKey))
+					foreach (object elementNode in nodeProvider.GetSurveyNodes(contextElement, expansionKey))
 					{
-						nodes.Add(new SampleDataElementNode(elementNode));
+						nodes.Add(SampleDataElementNode.Create(surveyTree, survey, contextElement, elementNode));
 					}
 				}
 				mySurvey = survey;
-				myContextElement = context;
+				myContextElement = contextElement;
 				List<SurveyQuestionDisplay> currentDisplays = new List<SurveyQuestionDisplay>();
 				myCurrentDisplays = currentDisplays;
 				int surveyCount = survey.Count;
@@ -97,27 +97,38 @@ namespace Neumont.Tools.Modeling.Shell.DynamicSurveyTreeGrid
 				{
 					currentDisplays.Add(new SurveyQuestionDisplay(survey[i]));
 				}
-				SampleDataElementNode.InitializeNodes(nodes, survey);
 				nodes.Sort(myNodeComparer);
 				foreach (SampleDataElementNode node in nodes)
 				{
-					mySurveyTree.myNodeDictionary.Add(node.Element, new NodeLocation(this, node));
+					// Use the indexer instead of add in case there is a referenced element that is
+					// current being deleted.
+					if (!(node.Element is ISurveyNodeReference))
+					{
+						mySurveyTree.myNodeDictionary[node.Element] = new NodeLocation(this, node);
+					}
 				}
 			}
 			#endregion // Constructor and instance fields
 
 			#region root branch and survey properties
 			/// <summary>
-			/// provides the RootBranch for a SurveyTree
+			/// Get the root branch for this list. The root branch may be
+			/// this branch, or a grouping branch if the list is currently grouped.
 			/// </summary>
-			public IBranch CreateRootBranch()
+			/// <param name="recreate">Always recreate the grouping branch. Otherwise, create if necessary.</param>
+			public IBranch GetRootBranch(bool recreate)
 			{
 				SurveyQuestion question;
 				// UNDONE: This is placeholder slop, it needs to depend on the display settings to pick the top-most SurveyQuestion
 				if (mySurvey.Count != 0 &&
 					(0 != ((question = mySurvey[0]).UISupport & SurveyQuestionUISupport.Grouping)))
 				{
-					return myRootGrouper = new ListGrouper(this, mySurvey[0], 0, myNodes.Count - 1, myCurrentDisplays[0].NeutralOnTop);
+					ListGrouper grouper = myRootGrouper;
+					if (grouper == null || recreate)
+					{
+						myRootGrouper = grouper = new ListGrouper(this, mySurvey[0], 0, myNodes.Count - 1, myCurrentDisplays[0].NeutralOnTop);
+					}
+					return grouper;
 				}
 				myRootGrouper = null;
 				return this;
@@ -205,21 +216,31 @@ namespace Neumont.Tools.Modeling.Shell.DynamicSurveyTreeGrid
 						// Categorization left us hanging, fall back on the custom sort
 						// followed by the survey name.
 						ICustomComparableSurveyNode customCompare = element1 as ICustomComparableSurveyNode;
+						object contextElement = myParent.myContextElement;
 						if (customCompare != null)
 						{
-							retVal = customCompare.CompareToSurveyNode(element2, node1.CustomSortData, node2.CustomSortData);
+							retVal = customCompare.CompareToSurveyNode(contextElement, element2, node1.CustomSortData, node2.CustomSortData);
 						}
 						if (retVal == 0 && null != (customCompare = element2 as ICustomComparableSurveyNode))
 						{
-							retVal = -customCompare.CompareToSurveyNode(element1, node2.CustomSortData, node1.CustomSortData);
+							retVal = -customCompare.CompareToSurveyNode(contextElement, element1, node2.CustomSortData, node1.CustomSortData);
 						}
 						if (retVal == 0)
 						{
-							retVal = String.CompareOrdinal(node1.SurveyName, node2.SurveyName);
+							retVal = String.Compare(node1.SurveyName, node2.SurveyName, StringComparison.CurrentCultureIgnoreCase);
 						}
 						if (retVal == 0)
 						{
-							retVal = unchecked(element1.GetHashCode() - element2.GetHashCode());
+							// If this is a node reference, then use the combined hashcode of the target and the target element
+							// instead of the hash from the element itself. This allows the reference elements to be recreated as needed.
+							ISurveyNodeReference reference;
+							int hash1 = (null != (reference = element1 as ISurveyNodeReference)) ?
+								Utility.GetCombinedHashCode(reference.ReferencedSurveyNode.GetHashCode(), reference.SurveyNodeReferenceReason.GetHashCode()) :
+								element1.GetHashCode();
+							int hash2 = (null != (reference = element2 as ISurveyNodeReference)) ?
+								Utility.GetCombinedHashCode(reference.ReferencedSurveyNode.GetHashCode(), reference.SurveyNodeReferenceReason.GetHashCode()) :
+								element2.GetHashCode();
+							retVal = unchecked(hash1 - hash2);
 							if (retVal == 0)
 							{
 								// A little overkill, but the whole system breaks down if we
@@ -309,66 +330,106 @@ namespace Neumont.Tools.Modeling.Shell.DynamicSurveyTreeGrid
 			protected VirtualTreeDisplayData GetDisplayData(int row, int column, VirtualTreeDisplayDataMasks requiredData)
 			{
 				VirtualTreeDisplayData retVal = VirtualTreeDisplayData.Empty;
-				int nodeData = myNodes[row].NodeData;
-				int questionCount = mySurvey.Count;
+				SampleDataElementNode node = myNodes[row];
+				SurveyTree surveyTree = mySurveyTree;
 				int image = -1;
-
-				int overlayImage = -1;
-				int overlayBitField = -1;
-				for (int i = 0; i < questionCount; i++)
+				ISurveyNodeReference reference = node.Element as ISurveyNodeReference;
+				SampleDataElementNode referenceNode;
+				SurveyNodeReferenceOptions referenceOptions;
+				Survey referenceSurvey;
+				bool filterTargetQuestions;
+				if (reference != null)
 				{
-					SurveyQuestion question = mySurvey[i];
-					ISurveyQuestionTypeInfo questionInfo = question.Question;
-					SurveyQuestionUISupport support = questionInfo.UISupport;
-					if (0 != (support & (SurveyQuestionUISupport.Glyph | SurveyQuestionUISupport.Overlay | SurveyQuestionUISupport.DisplayData)))
-					{
-						int answer = myCurrentDisplays[i].Question.ExtractAnswer(nodeData);
-						if (answer != SurveyQuestion.NeutralAnswer)
-						{
-							// Extract image and overlay support
-							if (0 != (support & SurveyQuestionUISupport.Glyph))
-							{
-								if (image == -1 &&
-									0 <= (image = questionInfo.MapAnswerToImageIndex(answer)))
-								{
-									image += question.ProviderImageListOffset;
-								}
-							}
-							else if (0 != (support & SurveyQuestionUISupport.Overlay))
-							{
-								int answerImage = questionInfo.MapAnswerToImageIndex(answer);
-								if (0 <= answerImage)
-								{
-									if (overlayImage == -1)
-									{
-										overlayImage = answerImage + question.ProviderImageListOffset;
-									}
-									else
-									{
-										if (overlayBitField == -1)
-										{
-											overlayBitField = 0;
-											AddToOverlayList(overlayImage, ref overlayBitField);
-										}
-										AddToOverlayList(answerImage + question.ProviderImageListOffset, ref overlayBitField);
-									}
-								}
-							}
+					referenceOptions = reference.SurveyNodeReferenceOptions;
+					filterTargetQuestions = 0 != (referenceOptions & SurveyNodeReferenceOptions.FilterReferencedAnswers);
+					NodeLocation targetLocation = surveyTree.myNodeDictionary[reference.ReferencedSurveyNode];
+					referenceNode = targetLocation.ElementNode;
+					referenceSurvey = targetLocation.Survey;
+				}
+				else
+				{
+					referenceOptions = SurveyNodeReferenceOptions.None;
+					filterTargetQuestions = false;
+					referenceNode = default(SampleDataElementNode);
+					referenceSurvey = null;
+				}
 
-							// Extract other display settings
-							if (0 != (support & SurveyQuestionUISupport.DisplayData))
+				int overlayImage = (reference != null && 0 == (referenceOptions & SurveyNodeReferenceOptions.BlockLinkDisplay)) ? LinkOverlayImageIndex : -1;
+				int overlayBitField = -1;
+				SurveyQuestionUISupport supportMask = SurveyQuestionUISupport.Glyph | SurveyQuestionUISupport.Overlay | SurveyQuestionUISupport.DisplayData;
+				Survey survey = mySurvey;
+				bool referencePass = false;
+				int nodeData = node.NodeData;
+				while (true)
+				{
+					int questionCount = survey.Count;
+					for (int i = 0; i < questionCount; i++)
+					{
+						SurveyQuestion question = survey[i];
+						ISurveyQuestionTypeInfo questionInfo = question.Question;
+						SurveyQuestionUISupport support = questionInfo.UISupport & supportMask;
+						if (0 != support)
+						{
+							int answer = question.ExtractAnswer(nodeData);
+							if (answer != SurveyQuestion.NeutralAnswer &&
+								(!referencePass || !filterTargetQuestions || reference.UseSurveyNodeReferenceAnswer(questionInfo.QuestionType, questionInfo.DynamicQuestionValues, answer)))
 							{
-								SurveyQuestionDisplayData displayData = questionInfo.GetDisplayData(answer);
-								retVal.Bold = displayData.Bold;
-								retVal.GrayText = displayData.GrayText;
+								// Extract image and overlay support
+								if (0 != (support & SurveyQuestionUISupport.Glyph))
+								{
+									if (0 <= (image = questionInfo.MapAnswerToImageIndex(answer)))
+									{
+										supportMask &= ~SurveyQuestionUISupport.Glyph;
+										image += question.ProviderImageListOffset;
+									}
+								}
+								else if (0 != (support & SurveyQuestionUISupport.Overlay))
+								{
+									int answerImage = questionInfo.MapAnswerToImageIndex(answer);
+									if (0 <= answerImage)
+									{
+										if (overlayImage == -1)
+										{
+											overlayImage = answerImage + question.ProviderImageListOffset;
+										}
+										else
+										{
+											if (overlayBitField == -1)
+											{
+												overlayBitField = 0;
+												AddToOverlayList(overlayImage, ref overlayBitField);
+											}
+											AddToOverlayList(answerImage + question.ProviderImageListOffset, ref overlayBitField);
+										}
+									}
+								}
+
+								// Extract other display settings
+								if (0 != (support & SurveyQuestionUISupport.DisplayData))
+								{
+									supportMask &= ~SurveyQuestionUISupport.DisplayData;
+									SurveyQuestionDisplayData displayData = questionInfo.GetDisplayData(answer);
+									retVal.Bold = displayData.Bold;
+									retVal.GrayText = displayData.GrayText;
+								}
 							}
 						}
+					}
+					if (!referencePass && referenceSurvey != null)
+					{
+						referencePass = true;
+						survey = referenceSurvey;
+						nodeData = referenceNode.NodeData;
+					}
+					else
+					{
+						break;
 					}
 				}
 
 				if (0 <= image)
 				{
-					retVal.ImageList = mySurvey.MainImageList;
+					retVal.ImageList = surveyTree.myImageList;
 					retVal.SelectedImage = retVal.Image = (short)image;
 				}
 
@@ -421,13 +482,31 @@ namespace Neumont.Tools.Modeling.Shell.DynamicSurveyTreeGrid
 						{
 							SampleDataElementNode node = myNodes[row];
 							object expansionKey;
+							ISurveyNodeReference reference;
+							ISurveyNode referencedNode;
+							object expandElement = null;
 							if (null != (expansionKey = node.SurveyNodeExpansionKey))
 							{
-								object element = node.Element;
+								expandElement = node.Element;
+							}
+							else if (null != (reference = node.Element as ISurveyNodeReference) &&
+								0 != (reference.SurveyNodeReferenceOptions & SurveyNodeReferenceOptions.InlineExpansion) &&
+								null != (referencedNode = reference.ReferencedSurveyNode as ISurveyNode) &&
+								null != (expansionKey = referencedNode.SurveyNodeExpansionKey))
+							{
+								expandElement = referencedNode;
+							}
+							if (expandElement != null)
+							{
 								SurveyTree parent = mySurveyTree;
-								MainList expansion = new MainList(parent, element, expansionKey);
-								mySurveyTree.myMainListDictionary[element] = expansion;
-								return expansion.CreateRootBranch();
+								Dictionary<object, MainList> expansions = parent.myMainListDictionary;
+								MainList expansion;
+								if (!expansions.TryGetValue(expandElement, out expansion))
+								{
+									expansion = new MainList(parent, expandElement, expansionKey);
+									expansions[expandElement] = expansion;
+								}
+								return expansion.GetRootBranch(false);
 							}
 							break;
 						}
@@ -456,10 +535,9 @@ namespace Neumont.Tools.Modeling.Shell.DynamicSurveyTreeGrid
 			/// Implements <see cref="IBranch.GetTipText"/>
 			/// </summary>
 			/// <returns>Returns The Display Text Of The Node</returns>
-			protected string GetTipText(int row, int column, ToolTipType tipType)
+			protected static string GetTipText(int row, int column, ToolTipType tipType)
 			{
-				return myNodes[row].SurveyName;
-
+				return (tipType == ToolTipType.Default) ? null : string.Empty;
 			}
 			string IBranch.GetTipText(int row, int column, ToolTipType tipType)
 			{
@@ -470,7 +548,14 @@ namespace Neumont.Tools.Modeling.Shell.DynamicSurveyTreeGrid
 			/// </summary>
 			protected bool IsExpandable(int row, int column)
 			{
-				return myNodes[row].SurveyNodeExpansionKey != null;
+				SampleDataElementNode node = myNodes[row];
+				ISurveyNodeReference reference;
+				ISurveyNode referencedNode;
+				return null != node.SurveyNodeExpansionKey ||
+					(null != (reference = node.Element as ISurveyNodeReference) &&
+					0 != (reference.SurveyNodeReferenceOptions & SurveyNodeReferenceOptions.InlineExpansion) &&
+					null != (referencedNode = reference.ReferencedSurveyNode as ISurveyNode) &&
+					null != referencedNode.SurveyNodeExpansionKey);
 			}
 			bool IBranch.IsExpandable(int row, int column)
 			{
@@ -487,9 +572,10 @@ namespace Neumont.Tools.Modeling.Shell.DynamicSurveyTreeGrid
 					int nodeIndex;
 					ISurveyNodeContext nodeContext;
 					object contextElement = null;
-					if (mySurveyTree.myNodeDictionary.TryGetValue(obj, out location))
+					MainList locatedList;
+					if (mySurveyTree.myNodeDictionary.TryGetValue(obj, out location) &&
+						null != (locatedList = location.MainList))
 					{
-						MainList locatedList = location.MainList;
 						if (locatedList == this)
 						{
 							if (0 <= (nodeIndex = myNodes.BinarySearch(location.ElementNode, myNodeComparer)))
@@ -673,8 +759,7 @@ namespace Neumont.Tools.Modeling.Shell.DynamicSurveyTreeGrid
 			/// </summary>
 			public void ElementAdded(object element)
 			{
-				SampleDataElementNode newNode = new SampleDataElementNode(element);
-				newNode.Initialize(mySurvey);
+				SampleDataElementNode newNode = SampleDataElementNode.Create(mySurveyTree, mySurvey, myContextElement, element);
 				int index;
 				if (0 <= (index = myNodes.BinarySearch(newNode, myNodeComparer)))
 				{
@@ -683,7 +768,10 @@ namespace Neumont.Tools.Modeling.Shell.DynamicSurveyTreeGrid
 				}
 				index = ~index;
 				myNodes.Insert(index, newNode);
-				mySurveyTree.myNodeDictionary[element] = new NodeLocation(this, newNode);
+				if (!(element is ISurveyNodeReference))
+				{
+					mySurveyTree.myNodeDictionary[element] = new NodeLocation(this, newNode);
+				}
 				if (myRootGrouper == null)
 				{
 					RaiseBranchEvent(BranchModificationEventArgs.InsertItems(this, index - 1, 1));
@@ -715,17 +803,27 @@ namespace Neumont.Tools.Modeling.Shell.DynamicSurveyTreeGrid
 			/// <summary>
 			/// Forwarded from <see cref="INotifySurveyElementChanged.ElementChanged"/>
 			/// </summary>
-			public void NodeChanged(SampleDataElementNode node, params Type[] questionTypes)
+			public void NodeChanged(SampleDataElementNode node, LinkedNode<SurveyNodeReference> nodeReference, bool displayChangeOnly, params Type[] questionTypes)
 			{
 				int index;
 				if (0 > (index = myNodes.BinarySearch(node, myNodeComparer)))
 				{
 					return;
 				}
-				node.Update(questionTypes, mySurvey);
-				myNodes[index] = node;
-				mySurveyTree.myNodeDictionary[node.Element] = new NodeLocation(this, node);
-
+				if (!displayChangeOnly)
+				{
+					node.Update(questionTypes, myContextElement, mySurvey);
+					myNodes[index] = node;
+					if (nodeReference != null)
+					{
+						Debug.Assert(nodeReference.Value.ContextElement == myContextElement);
+						nodeReference.Value = new SurveyNodeReference(node, myContextElement);
+					}
+					else
+					{
+						mySurveyTree.myNodeDictionary[node.Element] = new NodeLocation(this, node);
+					}
+				}
 				BranchModificationEventHandler modificationEvents = myModificationEvents;
 				if (myRootGrouper != null)
 				{
@@ -781,19 +879,19 @@ namespace Neumont.Tools.Modeling.Shell.DynamicSurveyTreeGrid
 			/// <summary>
 			/// Forwarded from <see cref="INotifySurveyElementChanged.ElementRenamed"/>
 			/// </summary>
-			public void NodeRenamed(SampleDataElementNode node)
+			public void NodeRenamed(SampleDataElementNode node, LinkedNode<SurveyNodeReference> nodeReference)
 			{
 				int fromIndex;
 				if (0 > (fromIndex = myNodes.BinarySearch(node, myNodeComparer)))
 				{
 					return;
 				}
-				UpdateNode(fromIndex, new SampleDataElementNode(node.Element, node.NodeData, null, node.CustomSortData), true);
+				UpdateNode(fromIndex, nodeReference, node.UpdateSurveyName(mySurveyTree, myContextElement), true);
 			}
 			/// <summary>
 			/// Forwarded from <see cref="INotifySurveyElementChanged.ElementCustomSortChanged"/>
 			/// </summary>
-			public void NodeCustomSortChanged(SampleDataElementNode node)
+			public void NodeCustomSortChanged(SampleDataElementNode node, LinkedNode<SurveyNodeReference> nodeReference)
 			{
 				int fromIndex;
 				if (0 > (fromIndex = myNodes.BinarySearch(node, myNodeComparer)))
@@ -806,14 +904,14 @@ namespace Neumont.Tools.Modeling.Shell.DynamicSurveyTreeGrid
 					return;
 				}
 				object customSortData = node.CustomSortData;
-				if (!customCompare.ResetCustomSortData(ref customSortData))
+				if (!customCompare.ResetCustomSortData(myContextElement, ref customSortData))
 				{
 					return;
 				}
 				Debug.Assert(!object.ReferenceEquals(customSortData, node.CustomSortData), "ICustomComparableSurveyNode.ResetCustomSortData should return a new instance, or false");
-				UpdateNode(fromIndex, new SampleDataElementNode(node.Element, node.NodeData, node.SurveyName, customSortData), false);
+				UpdateNode(fromIndex, nodeReference, node.UpdateCustomSortData(mySurveyTree, myContextElement, customSortData), false);
 			}
-			private void UpdateNode(int nodeIndex, SampleDataElementNode replacementNode, bool displayChanged)
+			private void UpdateNode(int nodeIndex, LinkedNode<SurveyNodeReference> nodeReference, SampleDataElementNode replacementNode, bool displayChanged)
 			{
 				int toIndex = myNodes.BinarySearch(replacementNode, myNodeComparer);
 				int inverseToIndex = ~toIndex;
@@ -821,7 +919,15 @@ namespace Neumont.Tools.Modeling.Shell.DynamicSurveyTreeGrid
 				if (nodeIndex == toIndex || (inverseToIndex >= 0 && (inverseToIndex == nodeIndex || (inverseToIndex - nodeIndex) == 1)))
 				{
 					myNodes[nodeIndex] = replacementNode;
-					mySurveyTree.myNodeDictionary[replacementNode.Element] = new NodeLocation(this, replacementNode);
+					if (nodeReference != null)
+					{
+						Debug.Assert(nodeReference.Value.ContextElement == myContextElement);
+						nodeReference.Value = new SurveyNodeReference(replacementNode, myContextElement);
+					}
+					else
+					{
+						mySurveyTree.myNodeDictionary[replacementNode.Element] = new NodeLocation(this, replacementNode);
+					}
 					if (myRootGrouper != null)
 					{
 						myRootGrouper.ElementModifiedAt(nodeIndex, nodeIndex, displayChanged, modificationEvents);
@@ -839,7 +945,15 @@ namespace Neumont.Tools.Modeling.Shell.DynamicSurveyTreeGrid
 						--inverseToIndex;
 					}
 					myNodes.Insert(inverseToIndex, replacementNode);
-					mySurveyTree.myNodeDictionary[replacementNode.Element] = new NodeLocation(this, replacementNode);
+					if (nodeReference != null)
+					{
+						Debug.Assert(nodeReference.Value.ContextElement == myContextElement);
+						nodeReference.Value = new SurveyNodeReference(replacementNode, myContextElement);
+					}
+					else
+					{
+						mySurveyTree.myNodeDictionary[replacementNode.Element] = new NodeLocation(this, replacementNode);
+					}
 					if (myRootGrouper != null)
 					{
 						myRootGrouper.ElementModifiedAt(nodeIndex, inverseToIndex, displayChanged, modificationEvents);

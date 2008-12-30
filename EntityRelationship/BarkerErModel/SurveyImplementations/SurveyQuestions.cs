@@ -154,14 +154,14 @@ namespace Neumont.Tools.EntityRelationshipModels.Barker
 	partial class BarkerErModel : IAnswerSurveyQuestion<SurveyBarkerModelType>, ISurveyNode, ISurveyNodeContext
 	{
 		#region IAnswerSurveyQuestion<SurveyBarkerModelType> Members
-		int IAnswerSurveyQuestion<SurveyBarkerModelType>.AskQuestion()
+		int IAnswerSurveyQuestion<SurveyBarkerModelType>.AskQuestion(object contextElement)
 		{
-			return AskQuestion();
+			return AskQuestion(contextElement);
 		}
 		/// <summary>
 		/// Implements <see cref="IAnswerSurveyQuestion{SurveyBarkerModelType}.AskQuestion"/>
 		/// </summary>
-		protected int AskQuestion()
+		protected static int AskQuestion(object contextElement)
 		{
 			return (int)SurveyBarkerModelType.Model;
 		}
@@ -292,14 +292,14 @@ namespace Neumont.Tools.EntityRelationshipModels.Barker
 	partial class EntityType : IAnswerSurveyQuestion<SurveyBarkerElementType>, ISurveyNode, ISurveyNodeContext
 	{
 		#region IAnswerSurveyQuestion<SurveyBarkerElementType> Members
-		int IAnswerSurveyQuestion<SurveyBarkerElementType>.AskQuestion()
+		int IAnswerSurveyQuestion<SurveyBarkerElementType>.AskQuestion(object contextElement)
 		{
-			return AskQuestion();
+			return AskQuestion(contextElement);
 		}
 		/// <summary>
 		/// Implements <see cref="IAnswerSurveyQuestion{SurveyBarkerElementType}.AskQuestion"/>
 		/// </summary>
-		protected int AskQuestion()
+		protected static int AskQuestion(object contextElement)
 		{
 			return (int)SurveyBarkerElementType.EntityType;
 		}
@@ -438,14 +438,14 @@ namespace Neumont.Tools.EntityRelationshipModels.Barker
 	partial class BinaryAssociation : IAnswerSurveyQuestion<SurveyBarkerElementType>, ISurveyNode, ISurveyNodeContext
 	{
 		#region IAnswerSurveyQuestion<SurveyBarkerElementType> Members
-		int IAnswerSurveyQuestion<SurveyBarkerElementType>.AskQuestion()
+		int IAnswerSurveyQuestion<SurveyBarkerElementType>.AskQuestion(object contextElement)
 		{
-			return AskQuestion();
+			return AskQuestion(contextElement);
 		}
 		/// <summary>
 		/// Implements <see cref="IAnswerSurveyQuestion{SurveyBarkerElementType}.AskQuestion"/>
 		/// </summary>
-		protected int AskQuestion()
+		protected static int AskQuestion(object contextElement)
 		{
 			return (int)SurveyBarkerElementType.BinaryAssociation;
 		}
@@ -576,14 +576,14 @@ namespace Neumont.Tools.EntityRelationshipModels.Barker
 	partial class ExclusiveArc : IAnswerSurveyQuestion<SurveyBarkerElementType>, ISurveyNode, ISurveyNodeContext
 	{
 		#region IAnswerSurveyQuestion<SurveyBarkerElementType> Members
-		int IAnswerSurveyQuestion<SurveyBarkerElementType>.AskQuestion()
+		int IAnswerSurveyQuestion<SurveyBarkerElementType>.AskQuestion(object contextElement)
 		{
-			return AskQuestion();
+			return AskQuestion(contextElement);
 		}
 		/// <summary>
 		/// Implements <see cref="IAnswerSurveyQuestion{SurveyBarkerElementType}.AskQuestion"/>
 		/// </summary>
-		protected int AskQuestion()
+		protected static int AskQuestion(object contextElement)
 		{
 			return (int)SurveyBarkerElementType.Constraint;
 		}
@@ -714,14 +714,14 @@ namespace Neumont.Tools.EntityRelationshipModels.Barker
 	partial class Attribute : IAnswerSurveyQuestion<SurveyEntityChildType>, ISurveyNode, ISurveyNodeContext
 	{
 		#region IAnswerSurveyQuestion<SurveyEntityChildType> Members
-		int IAnswerSurveyQuestion<SurveyEntityChildType>.AskQuestion()
+		int IAnswerSurveyQuestion<SurveyEntityChildType>.AskQuestion(object contextElement)
 		{
-			return AskQuestion();
+			return AskQuestion(contextElement);
 		}
 		/// <summary>
 		/// Implements <see cref="IAnswerSurveyQuestion{SurveyEntityChildType}.AskQuestion"/>
 		/// </summary>
-		protected int AskQuestion()
+		protected static int AskQuestion(object contextElement)
 		{
 			return (int)SurveyEntityChildType.Attribute;
 		}
@@ -852,14 +852,14 @@ namespace Neumont.Tools.EntityRelationshipModels.Barker
 	partial class EntityTypeIsSubtypeOfEntityType : IAnswerSurveyQuestion<SurveyEntityChildType>, ISurveyNode, ISurveyNodeContext
 	{
 		#region IAnswerSurveyQuestion<SurveyEntityChildType> Members
-		int IAnswerSurveyQuestion<SurveyEntityChildType>.AskQuestion()
+		int IAnswerSurveyQuestion<SurveyEntityChildType>.AskQuestion(object contextElement)
 		{
-			return AskQuestion();
+			return AskQuestion(contextElement);
 		}
 		/// <summary>
 		/// Implements <see cref="IAnswerSurveyQuestion{SurveyEntityChildType}.AskQuestion"/>
 		/// </summary>
-		protected int AskQuestion()
+		protected static int AskQuestion(object contextElement)
 		{
 			return (int)SurveyEntityChildType.Subtype;
 		}
@@ -990,14 +990,14 @@ namespace Neumont.Tools.EntityRelationshipModels.Barker
 	partial class EntityTypePlaysRole : IAnswerSurveyQuestion<SurveyEntityChildType>, ISurveyNode, ISurveyNodeContext
 	{
 		#region IAnswerSurveyQuestion<SurveyEntityChildType> Members
-		int IAnswerSurveyQuestion<SurveyEntityChildType>.AskQuestion()
+		int IAnswerSurveyQuestion<SurveyEntityChildType>.AskQuestion(object contextElement)
 		{
-			return AskQuestion();
+			return AskQuestion(contextElement);
 		}
 		/// <summary>
 		/// Implements <see cref="IAnswerSurveyQuestion{SurveyEntityChildType}.AskQuestion"/>
 		/// </summary>
-		protected int AskQuestion()
+		protected static int AskQuestion(object contextElement)
 		{
 				return (int)SurveyEntityChildType.RoleRef;
 		}
@@ -1128,14 +1128,14 @@ namespace Neumont.Tools.EntityRelationshipModels.Barker
 	partial class ExclusiveArcSpansOptionalRole : IAnswerSurveyQuestion<SurveyExclusiveArcChildType>, ISurveyNode, ISurveyNodeContext
 	{
 		#region IAnswerSurveyQuestion<SurveyExclusiveArcChildType> Members
-		int IAnswerSurveyQuestion<SurveyExclusiveArcChildType>.AskQuestion()
+		int IAnswerSurveyQuestion<SurveyExclusiveArcChildType>.AskQuestion(object contextElement)
 		{
-			return AskQuestion();
+			return AskQuestion(contextElement);
 		}
 		/// <summary>
 		/// Implements <see cref="IAnswerSurveyQuestion{SurveyExclusiveArcChildType}.AskQuestion"/>
 		/// </summary>
-		protected int AskQuestion()
+		protected static int AskQuestion(object contextElement)
 		{
 			return (int)SurveyExclusiveArcChildType.RoleRef;
 		}
@@ -1369,14 +1369,14 @@ namespace Neumont.Tools.EntityRelationshipModels.Barker
 
 		#endregion
 		#region IAnswerSurveyQuestion<SurveyAttributeChildType> Members
-		int IAnswerSurveyQuestion<SurveyAttributeChildType>.AskQuestion()
+		int IAnswerSurveyQuestion<SurveyAttributeChildType>.AskQuestion(object contextElement)
 		{
-			return AskQuestion();
+			return AskQuestion(contextElement);
 		}
 		/// <summary>
 		/// Implements <see cref="IAnswerSurveyQuestion{SurveyAttributeChildType}.AskQuestion"/>
 		/// </summary>
-		protected int AskQuestion()
+		protected static int AskQuestion(object contextElement)
 		{
 			return (int)SurveyAttributeChildType.PossibleValue;
 		}
@@ -1388,32 +1388,32 @@ namespace Neumont.Tools.EntityRelationshipModels.Barker
 	partial class Role : IAnswerSurveyQuestion<SurveyBinaryAssociationChildType>, ISurveyNode, ISurveyNodeContext
 	{
 		#region IAnswerSurveyQuestion<SurveyBinaryAssociationChildType> Members
-		int IAnswerSurveyQuestion<SurveyBinaryAssociationChildType>.AskQuestion()
+		int IAnswerSurveyQuestion<SurveyBinaryAssociationChildType>.AskQuestion(object contextElement)
 		{
-			return AskQuestion();
+			return AskQuestion(contextElement);
 		}
 		/// <summary>
 		/// Implements <see cref="IAnswerSurveyQuestion{SurveyBinaryAssociationChildType}.AskQuestion"/>
 		/// </summary>
-		protected int AskQuestion()
+		protected int AskQuestion(object contextElement)
 		{
-			bool IsMandatory = this.IsMandatory;
-			bool IsMultiValued = this.IsMultiValued;
-			bool IsPrimaryIdComponent = this.IsPrimaryIdComponent;
-			if (IsMandatory)
+			bool isMandatory = this.IsMandatory;
+			bool isMultiValued = this.IsMultiValued;
+			bool isPrimaryIdComponent = this.IsPrimaryIdComponent;
+			if (isMandatory)
 			{
-				if (IsMultiValued)
+				if (isMultiValued)
 				{
-					return (int)(IsPrimaryIdComponent ? SurveyBinaryAssociationChildType.Role_MandatoryManyPrimary : SurveyBinaryAssociationChildType.Role_MandatoryMany);
+					return (int)(isPrimaryIdComponent ? SurveyBinaryAssociationChildType.Role_MandatoryManyPrimary : SurveyBinaryAssociationChildType.Role_MandatoryMany);
 				}
 				else
 				{
-					return (int)(IsPrimaryIdComponent ? SurveyBinaryAssociationChildType.Role_MandatoryOnePrimary : SurveyBinaryAssociationChildType.Role_MandatoryOne);
+					return (int)(isPrimaryIdComponent ? SurveyBinaryAssociationChildType.Role_MandatoryOnePrimary : SurveyBinaryAssociationChildType.Role_MandatoryOne);
 				}
 			}
-			else // !IsMandatory
+			else // !isMandatory
 			{
-				return (int)(IsMultiValued ? SurveyBinaryAssociationChildType.Role_OptionalMany : SurveyBinaryAssociationChildType.Role_OptionalOne);
+				return (int)(isMultiValued ? SurveyBinaryAssociationChildType.Role_OptionalMany : SurveyBinaryAssociationChildType.Role_OptionalOne);
 			}
 		}
 
@@ -1655,14 +1655,14 @@ namespace Neumont.Tools.EntityRelationshipModels.Barker
 
 		#endregion
 		#region IAnswerSurveyQuestion<SurveyRoleChildType> Members
-		int IAnswerSurveyQuestion<SurveyRoleChildType>.AskQuestion()
+		int IAnswerSurveyQuestion<SurveyRoleChildType>.AskQuestion(object contextElement)
 		{
-			return AskQuestion();
+			return AskQuestion(contextElement);
 		}
 		/// <summary>
 		/// Implements <see cref="IAnswerSurveyQuestion{SurveyRoleChildType}.AskQuestion"/>
 		/// </summary>
-		protected int AskQuestion()
+		protected static int AskQuestion(object contextElement)
 		{
 			return (int)SurveyRoleChildType.CardinalityQualifier;
 		}

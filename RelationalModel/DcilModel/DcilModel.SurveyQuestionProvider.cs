@@ -17,6 +17,8 @@ namespace Neumont.Tools.RelationalModels.ConceptualDatabase
 		private static readonly ISurveyQuestionTypeInfo[] mySurveyQuestionTypeInfo4 = new ISurveyQuestionTypeInfo[]{
 			ProvideSurveyQuestionForSurveyReferenceConstraintChildType.Instance};
 		private static readonly ISurveyQuestionTypeInfo[] mySurveyQuestionTypeInfo5 = new ISurveyQuestionTypeInfo[]{
+			ProvideSurveyQuestionForSurveyColumnReferenceChildType.Instance};
+		private static readonly ISurveyQuestionTypeInfo[] mySurveyQuestionTypeInfo6 = new ISurveyQuestionTypeInfo[]{
 			ProvideSurveyQuestionForSurveyUniquenessConstraintChildType.Instance};
 		/// <summary>Implements <see cref="ISurveyQuestionProvider.GetSurveyQuestions"/></summary>
 		protected static IEnumerable<ISurveyQuestionTypeInfo> GetSurveyQuestions(object expansionKey)
@@ -37,9 +39,13 @@ namespace Neumont.Tools.RelationalModels.ConceptualDatabase
 			{
 				return mySurveyQuestionTypeInfo4;
 			}
-			else if (expansionKey == UniquenessConstraint.SurveyExpansionKey)
+			else if (expansionKey == ColumnReference.SurveyExpansionKey)
 			{
 				return mySurveyQuestionTypeInfo5;
+			}
+			else if (expansionKey == UniquenessConstraint.SurveyExpansionKey)
+			{
+				return mySurveyQuestionTypeInfo6;
 			}
 			return null;
 		}
@@ -91,12 +97,12 @@ namespace Neumont.Tools.RelationalModels.ConceptualDatabase
 					return null;
 				}
 			}
-			public int AskQuestion(object data)
+			public int AskQuestion(object data, object contextElement)
 			{
 				IAnswerSurveyQuestion<SurveySchemaType> typedData = data as IAnswerSurveyQuestion<SurveySchemaType>;
 				if (typedData != null)
 				{
-					return typedData.AskQuestion();
+					return typedData.AskQuestion(contextElement);
 				}
 				return -1;
 			}
@@ -150,12 +156,12 @@ namespace Neumont.Tools.RelationalModels.ConceptualDatabase
 					return null;
 				}
 			}
-			public int AskQuestion(object data)
+			public int AskQuestion(object data, object contextElement)
 			{
 				IAnswerSurveyQuestion<SurveySchemaChildType> typedData = data as IAnswerSurveyQuestion<SurveySchemaChildType>;
 				if (typedData != null)
 				{
-					return typedData.AskQuestion();
+					return typedData.AskQuestion(contextElement);
 				}
 				return -1;
 			}
@@ -209,12 +215,12 @@ namespace Neumont.Tools.RelationalModels.ConceptualDatabase
 					return null;
 				}
 			}
-			public int AskQuestion(object data)
+			public int AskQuestion(object data, object contextElement)
 			{
 				IAnswerSurveyQuestion<SurveyTableChildType> typedData = data as IAnswerSurveyQuestion<SurveyTableChildType>;
 				if (typedData != null)
 				{
-					return typedData.AskQuestion();
+					return typedData.AskQuestion(contextElement);
 				}
 				return -1;
 			}
@@ -268,12 +274,12 @@ namespace Neumont.Tools.RelationalModels.ConceptualDatabase
 					return null;
 				}
 			}
-			public int AskQuestion(object data)
+			public int AskQuestion(object data, object contextElement)
 			{
 				IAnswerSurveyQuestion<SurveyTableChildGlyphType> typedData = data as IAnswerSurveyQuestion<SurveyTableChildGlyphType>;
 				if (typedData != null)
 				{
-					return typedData.AskQuestion();
+					return typedData.AskQuestion(contextElement);
 				}
 				return -1;
 			}
@@ -327,12 +333,12 @@ namespace Neumont.Tools.RelationalModels.ConceptualDatabase
 					return null;
 				}
 			}
-			public int AskQuestion(object data)
+			public int AskQuestion(object data, object contextElement)
 			{
 				IAnswerSurveyQuestion<SurveyColumnClassificationType> typedData = data as IAnswerSurveyQuestion<SurveyColumnClassificationType>;
 				if (typedData != null)
 				{
-					return typedData.AskQuestion();
+					return typedData.AskQuestion(contextElement);
 				}
 				return -1;
 			}
@@ -403,12 +409,12 @@ namespace Neumont.Tools.RelationalModels.ConceptualDatabase
 					return null;
 				}
 			}
-			public int AskQuestion(object data)
+			public int AskQuestion(object data, object contextElement)
 			{
 				IAnswerSurveyQuestion<SurveyReferenceConstraintChildType> typedData = data as IAnswerSurveyQuestion<SurveyReferenceConstraintChildType>;
 				if (typedData != null)
 				{
-					return typedData.AskQuestion();
+					return typedData.AskQuestion(contextElement);
 				}
 				return -1;
 			}
@@ -425,6 +431,65 @@ namespace Neumont.Tools.RelationalModels.ConceptualDatabase
 				get
 				{
 					return SurveyQuestionUISupport.Sorting | SurveyQuestionUISupport.Glyph;
+				}
+			}
+			public static int QuestionPriority
+			{
+				get
+				{
+					return 0;
+				}
+			}
+			int ISurveyQuestionTypeInfo.QuestionPriority
+			{
+				get
+				{
+					return QuestionPriority;
+				}
+			}
+		}
+		private sealed class ProvideSurveyQuestionForSurveyColumnReferenceChildType : ISurveyQuestionTypeInfo
+		{
+			private ProvideSurveyQuestionForSurveyColumnReferenceChildType()
+			{
+			}
+			public static readonly ISurveyQuestionTypeInfo Instance = new ProvideSurveyQuestionForSurveyColumnReferenceChildType();
+			public Type QuestionType
+			{
+				get
+				{
+					return typeof(SurveyColumnReferenceChildType);
+				}
+			}
+			public ISurveyDynamicValues DynamicQuestionValues
+			{
+				get
+				{
+					return null;
+				}
+			}
+			public int AskQuestion(object data, object contextElement)
+			{
+				IAnswerSurveyQuestion<SurveyColumnReferenceChildType> typedData = data as IAnswerSurveyQuestion<SurveyColumnReferenceChildType>;
+				if (typedData != null)
+				{
+					return typedData.AskQuestion(contextElement);
+				}
+				return -1;
+			}
+			public int MapAnswerToImageIndex(int answer)
+			{
+				return -1;
+			}
+			public SurveyQuestionDisplayData GetDisplayData(int answer)
+			{
+				return SurveyQuestionDisplayData.Default;
+			}
+			public SurveyQuestionUISupport UISupport
+			{
+				get
+				{
+					return SurveyQuestionUISupport.Sorting;
 				}
 			}
 			public static int QuestionPriority
@@ -462,12 +527,12 @@ namespace Neumont.Tools.RelationalModels.ConceptualDatabase
 					return null;
 				}
 			}
-			public int AskQuestion(object data)
+			public int AskQuestion(object data, object contextElement)
 			{
 				IAnswerSurveyQuestion<SurveyUniquenessConstraintChildType> typedData = data as IAnswerSurveyQuestion<SurveyUniquenessConstraintChildType>;
 				if (typedData != null)
 				{
-					return typedData.AskQuestion();
+					return typedData.AskQuestion(contextElement);
 				}
 				return -1;
 			}

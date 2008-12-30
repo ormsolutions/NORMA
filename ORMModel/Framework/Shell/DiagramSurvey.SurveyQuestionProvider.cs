@@ -74,12 +74,12 @@ namespace Neumont.Tools.Modeling.Shell
 					return null;
 				}
 			}
-			public int AskQuestion(object data)
+			public int AskQuestion(object data, object contextElement)
 			{
 				IAnswerSurveyQuestion<DiagramSurveyType> typedData = data as IAnswerSurveyQuestion<DiagramSurveyType>;
 				if (typedData != null)
 				{
-					return typedData.AskQuestion();
+					return typedData.AskQuestion(contextElement);
 				}
 				return -1;
 			}
@@ -134,12 +134,12 @@ namespace Neumont.Tools.Modeling.Shell
 					return this.myDynamicValues;
 				}
 			}
-			public int AskQuestion(object data)
+			public int AskQuestion(object data, object contextElement)
 			{
 				IAnswerSurveyDynamicQuestion<DiagramGlyphSurveyType> typedData = data as IAnswerSurveyDynamicQuestion<DiagramGlyphSurveyType>;
 				if (typedData != null)
 				{
-					return typedData.AskQuestion(this.myDynamicValues);
+					return typedData.AskQuestion(this.myDynamicValues, contextElement);
 				}
 				return -1;
 			}

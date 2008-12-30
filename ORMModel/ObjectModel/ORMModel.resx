@@ -911,6 +911,14 @@
 	<data name="RingConstraintType.Undefined" xml:space="preserve">
 		<value>Undefined</value>
 	</data>
+	<data name="Role.SurveyNameFormat" xml:space="preserve">
+		<value>{0} ({1})</value>
+		<comment>The format string for a selected role when a role name is specified. {0}=ObjectType Name, {1}=Role Name</comment>
+	</data>
+	<data name="Role.SurveyNameMissingRolePlayer" xml:space="preserve">
+		<value>Missing</value>
+		<comment>The name for a role name in place of an ObjectType name when no role player is specified.</comment>
+	</data>
 	<data name="RoleMultiplicity.ExactlyOne" xml:space="preserve">
 		<value>1</value>
 	</data>

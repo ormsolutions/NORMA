@@ -13,7 +13,8 @@ namespace Neumont.Tools.ORM.ObjectModel
 		private static readonly ISurveyQuestionTypeInfo[] mySurveyQuestionTypeInfo2 = new ISurveyQuestionTypeInfo[]{
 			ProvideSurveyQuestionForSurveyFactTypeDetailType.Instance,
 			ProvideSurveyQuestionForSurveyErrorState.Instance,
-			ProvideSurveyQuestionForSurveyQuestionGlyph.Instance};
+			ProvideSurveyQuestionForSurveyQuestionGlyph.Instance,
+			ProvideSurveyQuestionForSurveyRoleType.Instance};
 		private static readonly ISurveyQuestionTypeInfo[] mySurveyQuestionTypeInfo3 = new ISurveyQuestionTypeInfo[]{
 			ProvideSurveyQuestionForSurveyNameGeneratorRefinementType.Instance};
 		/// <summary>Implements <see cref="ISurveyQuestionProvider.GetSurveyQuestions"/></summary>
@@ -82,12 +83,12 @@ namespace Neumont.Tools.ORM.ObjectModel
 					return null;
 				}
 			}
-			public int AskQuestion(object data)
+			public int AskQuestion(object data, object contextElement)
 			{
 				IAnswerSurveyQuestion<SurveyElementType> typedData = data as IAnswerSurveyQuestion<SurveyElementType>;
 				if (typedData != null)
 				{
-					return typedData.AskQuestion();
+					return typedData.AskQuestion(contextElement);
 				}
 				return -1;
 			}
@@ -110,7 +111,7 @@ namespace Neumont.Tools.ORM.ObjectModel
 			{
 				get
 				{
-					return 0;
+					return -500;
 				}
 			}
 			int ISurveyQuestionTypeInfo.QuestionPriority
@@ -141,12 +142,12 @@ namespace Neumont.Tools.ORM.ObjectModel
 					return null;
 				}
 			}
-			public int AskQuestion(object data)
+			public int AskQuestion(object data, object contextElement)
 			{
 				IAnswerSurveyQuestion<SurveyErrorState> typedData = data as IAnswerSurveyQuestion<SurveyErrorState>;
 				if (typedData != null)
 				{
-					return typedData.AskQuestion();
+					return typedData.AskQuestion(contextElement);
 				}
 				return -1;
 			}
@@ -156,7 +157,7 @@ namespace Neumont.Tools.ORM.ObjectModel
 				switch ((SurveyErrorState)answer)
 				{
 					case SurveyErrorState.HasError:
-						retVal = (int)SurveyQuestionGlyph.Last + 1;
+						retVal = (int)SurveyQuestionGlyph.Last + 1 + 0;
 						break;
 					default:
 						retVal = -1;
@@ -210,12 +211,12 @@ namespace Neumont.Tools.ORM.ObjectModel
 					return null;
 				}
 			}
-			public int AskQuestion(object data)
+			public int AskQuestion(object data, object contextElement)
 			{
 				IAnswerSurveyQuestion<SurveyQuestionGlyph> typedData = data as IAnswerSurveyQuestion<SurveyQuestionGlyph>;
 				if (typedData != null)
 				{
-					return typedData.AskQuestion();
+					return typedData.AskQuestion(contextElement);
 				}
 				return -1;
 			}
@@ -269,12 +270,12 @@ namespace Neumont.Tools.ORM.ObjectModel
 					return null;
 				}
 			}
-			public int AskQuestion(object data)
+			public int AskQuestion(object data, object contextElement)
 			{
 				IAnswerSurveyQuestion<SurveyFactTypeDetailType> typedData = data as IAnswerSurveyQuestion<SurveyFactTypeDetailType>;
 				if (typedData != null)
 				{
-					return typedData.AskQuestion();
+					return typedData.AskQuestion(contextElement);
 				}
 				return -1;
 			}
@@ -291,6 +292,78 @@ namespace Neumont.Tools.ORM.ObjectModel
 				get
 				{
 					return SurveyQuestionUISupport.Grouping | SurveyQuestionUISupport.Sorting;
+				}
+			}
+			public static int QuestionPriority
+			{
+				get
+				{
+					return 0;
+				}
+			}
+			int ISurveyQuestionTypeInfo.QuestionPriority
+			{
+				get
+				{
+					return QuestionPriority;
+				}
+			}
+		}
+		private sealed class ProvideSurveyQuestionForSurveyRoleType : ISurveyQuestionTypeInfo
+		{
+			private ProvideSurveyQuestionForSurveyRoleType()
+			{
+			}
+			public static readonly ISurveyQuestionTypeInfo Instance = new ProvideSurveyQuestionForSurveyRoleType();
+			public Type QuestionType
+			{
+				get
+				{
+					return typeof(SurveyRoleType);
+				}
+			}
+			public ISurveyDynamicValues DynamicQuestionValues
+			{
+				get
+				{
+					return null;
+				}
+			}
+			public int AskQuestion(object data, object contextElement)
+			{
+				IAnswerSurveyQuestion<SurveyRoleType> typedData = data as IAnswerSurveyQuestion<SurveyRoleType>;
+				if (typedData != null)
+				{
+					return typedData.AskQuestion(contextElement);
+				}
+				return -1;
+			}
+			public int MapAnswerToImageIndex(int answer)
+			{
+				int retVal;
+				switch ((SurveyRoleType)answer)
+				{
+					case SurveyRoleType.Subtype:
+						retVal = (int)SurveyQuestionGlyph.Last + 1 + 1;
+						break;
+					case SurveyRoleType.Supertype:
+						retVal = (int)SurveyQuestionGlyph.Last + 1 + 2;
+						break;
+					default:
+						retVal = -1;
+						break;
+				}
+				return retVal;
+			}
+			public SurveyQuestionDisplayData GetDisplayData(int answer)
+			{
+				return SurveyQuestionDisplayData.Default;
+			}
+			public SurveyQuestionUISupport UISupport
+			{
+				get
+				{
+					return SurveyQuestionUISupport.Overlay;
 				}
 			}
 			public static int QuestionPriority
@@ -328,12 +401,12 @@ namespace Neumont.Tools.ORM.ObjectModel
 					return null;
 				}
 			}
-			public int AskQuestion(object data)
+			public int AskQuestion(object data, object contextElement)
 			{
 				IAnswerSurveyQuestion<SurveyNameGeneratorRefinementType> typedData = data as IAnswerSurveyQuestion<SurveyNameGeneratorRefinementType>;
 				if (typedData != null)
 				{
-					return typedData.AskQuestion();
+					return typedData.AskQuestion(contextElement);
 				}
 				return -1;
 			}

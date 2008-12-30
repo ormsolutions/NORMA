@@ -172,7 +172,6 @@ namespace Neumont.Tools.ORM.ObjectModel
 		/// <summary>
 		/// Provide the default implicit reading for a subtype fact
 		/// </summary>
-		/// <returns></returns>
 		protected override IReading GetDefaultImplicitReading()
 		{
 			return new ImplicitReading(ResourceStrings.SubtypeFactDefaultReadingText, new RoleBase[] { SubtypeRole, SupertypeRole });
@@ -871,26 +870,18 @@ namespace Neumont.Tools.ORM.ObjectModel
 			return GetCustomChildVerbalizations(filter, isNegative);
 		}
 		#endregion // IVerbalizeCustomChildren Implementation
-		#region IAnswerSurveyQuestion<SurveyQuestionGlyph> implementation
-		int IAnswerSurveyQuestion<SurveyQuestionGlyph>.AskQuestion()
+		#region IAnswerSurveyQuestion<SurveyQuestionGlyph> Implementation
+		int IAnswerSurveyQuestion<SurveyQuestionGlyph>.AskQuestion(object contextElement)
 		{
-			return AskGlyphQuestion();
+			return AskGlyphQuestion(contextElement);
 		}
 		/// <summary>
-		/// returns answer to IAnswerSurveyQuestion for glyphs
+		/// Implements <see cref="IAnswerSurveyQuestion{SurveyQuestionGlyph}.AskQuestion"/>
 		/// </summary>
-		/// <returns></returns>
-		protected new int AskGlyphQuestion()
+		protected new int AskGlyphQuestion(object contextElement)
 		{
-			if (this.ProvidesPreferredIdentifier)
-			{
-				return (int)SurveyQuestionGlyph.PrimarySubtypeRelationship;
-			}
-			else
-			{
-				return (int)SurveyQuestionGlyph.SecondarySubtypeRelationship;
-			}
+			return ProvidesPreferredIdentifier ? (int)SurveyQuestionGlyph.PrimarySubtypeRelationship : (int)SurveyQuestionGlyph.SecondarySubtypeRelationship;
 		}
-		#endregion // IAnswerSurveyQuestion<SurveyQuestionGlyph> implementation
+		#endregion // IAnswerSurveyQuestion<SurveyQuestionGlyph> Implementation
 	}
 }

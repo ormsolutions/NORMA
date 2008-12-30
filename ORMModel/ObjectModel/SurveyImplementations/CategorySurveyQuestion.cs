@@ -71,7 +71,7 @@ namespace Neumont.Tools.ORM.ObjectModel
 	#endregion // FactType Detail Question
 	#region Error State question
 	/// <summary>
-	/// error state enum question answers
+	/// ErrorState survey answers
 	/// </summary>
 	public enum SurveyErrorState
 	{
@@ -85,6 +85,22 @@ namespace Neumont.Tools.ORM.ObjectModel
 		HasError,
 	}
 	#endregion // Error State question
+	#region  Role Type question
+	/// <summary>
+	/// Role type survey answers
+	/// </summary>
+	public enum SurveyRoleType
+	{
+		/// <summary>
+		/// The role is a <see cref="SubtypeMetaRole"/>
+		/// </summary>
+		Subtype,
+		/// <summary>
+		/// The role is a <see cref="SupertypeMetaRole"/>
+		/// </summary>
+		Supertype,
+	}
+	#endregion // Role Type question
 	#region Survey Glyph questions
 	/// <summary>
 	/// Glyph type enum question answers

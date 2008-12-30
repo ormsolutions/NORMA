@@ -28,38 +28,36 @@ namespace Neumont.Tools.ORM.ObjectModel
 {
 	public partial class FactType : IAnswerSurveyQuestion<SurveyElementType>, IAnswerSurveyQuestion<SurveyErrorState>, IAnswerSurveyQuestion<SurveyQuestionGlyph>, IAnswerSurveyQuestion<SurveyFactTypeDetailType>, ISurveyNode, ISurveyNodeContext
 	{
-		#region IAnswerSurveyQuestion<ErrorState> Implementation
-		int IAnswerSurveyQuestion<SurveyErrorState>.AskQuestion()
+		#region IAnswerSurveyQuestion<SurveyErrorState> Implementation
+		int IAnswerSurveyQuestion<SurveyErrorState>.AskQuestion(object contextElement)
 		{
-			return AskErrorQuestion();
+			return AskErrorQuestion(contextElement);
 		}
 		/// <summary>
-		/// returns answer to IAnswerSurveyQuestion for errors
+		/// Implements <see cref="IAnswerSurveyQuestion{SurveyErrorState}.AskQuestion"/>
 		/// </summary>
-		/// <returns></returns>
-		protected int AskErrorQuestion()
+		protected int AskErrorQuestion(object contextElement)
 		{
-			if (Model == null)
-				return -1;
-			return (int)(ModelError.HasErrors(this, ModelErrorUses.DisplayPrimary, Model.ModelErrorDisplayFilter) ? SurveyErrorState.HasError : SurveyErrorState.NoError);
+			ORMModel model = Model;
+			return (model == null) ?
+				-1 :
+				(int)(ModelError.HasErrors(this, ModelErrorUses.DisplayPrimary, model.ModelErrorDisplayFilter) ? SurveyErrorState.HasError : SurveyErrorState.NoError);
 		}
-		#endregion // IAnswerSurveyQuestion<ErrorState> Implementation
-		#region IAnswerSurveyQuestion<ElementType> Members
-		int IAnswerSurveyQuestion<SurveyElementType>.AskQuestion()
+		#endregion // IAnswerSurveyQuestion<SurveyErrorState> Implementation
+		#region IAnswerSurveyQuestion<ElementType> Implementation
+		int IAnswerSurveyQuestion<SurveyElementType>.AskQuestion(object contextElement)
 		{
-			return AskElementQuestion();
+			return AskElementQuestion(contextElement);
 		}
 		/// <summary>
-		/// implementation of AskQuestion method from IAnswerSurveyQuestion
+		/// Implements <see cref="IAnswerSurveyQuestion{SurveyElementType}.AskQuestion"/>
 		/// </summary>
-		/// <returns></returns>
-		protected int AskElementQuestion()
+		protected int AskElementQuestion(object contextElement)
 		{
 			return (int)SurveyElementType.FactType;
 		}
-
-		#endregion
-		#region ISurveyNode Members
+		#endregion // IAnswerSurveyQuestion<ElementType> Implementation
+		#region ISurveyNode Implementation
 		bool ISurveyNode.IsSurveyNameEditable
 		{
 			get
@@ -163,7 +161,7 @@ namespace Neumont.Tools.ORM.ObjectModel
 			}
 		}
 		/// <summary>
-		/// The key used to retrieve expansion details for the model browser
+		/// The key used to retrieve <see cref="FactType"/> expansion details for the model browser
 		/// </summary>
 		public static readonly object SurveyExpansionKey = new object();
 		/// <summary>
@@ -183,7 +181,7 @@ namespace Neumont.Tools.ORM.ObjectModel
 				return SurveyNodeExpansionKey;
 			}
 		}
-		#endregion
+		#endregion // ISurveyNode Implementation
 		#region ISurveyNodeContext Implementation
 		/// <summary>
 		/// The survey node context for an implied <see cref="FactType"/> is
@@ -205,19 +203,18 @@ namespace Neumont.Tools.ORM.ObjectModel
 			}
 		}
 		#endregion // ISurveyNodeContext Implementation
-		#region IAnswerSurveyQuestion<SurveyQuestionGlyph> Members
-
-		int IAnswerSurveyQuestion<SurveyQuestionGlyph>.AskQuestion()
+		#region IAnswerSurveyQuestion<SurveyQuestionGlyph> Implementation
+		int IAnswerSurveyQuestion<SurveyQuestionGlyph>.AskQuestion(object contextElement)
 		{
-			return AskGlyphQuestion();
+			return AskGlyphQuestion(contextElement);
 		}
 		/// <summary>
-		/// returns answer to IAnswerSurveyQuestion for glyphs
+		/// Implements <see cref="IAnswerSurveyQuestion{SurveyQuestionGlyph}.AskQuestion"/>
 		/// </summary>
-		/// <returns></returns>
-		protected int AskGlyphQuestion()
+		protected int AskGlyphQuestion(object contextElement)
 		{
-			if (this.Objectification != null && !this.Objectification.IsImplied)
+			Objectification objectification = Objectification;
+			if (objectification != null && !objectification.IsImplied)
 			{
 				return (int)SurveyQuestionGlyph.ObjectifiedFactType;
 			}
@@ -238,23 +235,22 @@ namespace Neumont.Tools.ORM.ObjectModel
 
 				}
 			}
-
 		}
-		#endregion
-		#region IAnswerSurveyQuestion<SurveyFactTypeDetailType> Members
-		int IAnswerSurveyQuestion<SurveyFactTypeDetailType>.AskQuestion()
+		#endregion // IAnswerSurveyQuestion<SurveyQuestionGlyph> Implementation
+		#region IAnswerSurveyQuestion<SurveyFactTypeDetailType> Implementation
+		int IAnswerSurveyQuestion<SurveyFactTypeDetailType>.AskQuestion(object contextElement)
 		{
-			return AskFactTypeDetailQuestion();
+			return AskFactTypeDetailQuestion(contextElement);
 		}
 		/// <summary>
-		/// returns answer to IAnswerSurveyQuestion for fact type details
+		/// Implements <see cref="IAnswerSurveyQuestion{SurveyFactTypeDetailType}.AskQuestion"/>
 		/// </summary>
-		protected int AskFactTypeDetailQuestion()
+		protected int AskFactTypeDetailQuestion(object contextElement)
 		{
 			// If this question is being asked, then we must be an implicit fact type
 			Debug.Assert(this.ImpliedByObjectification != null);
 			return (int)SurveyFactTypeDetailType.ImpliedFactType;
 		}
-		#endregion
+		#endregion // IAnswerSurveyQuestion<SurveyFactTypeDetailType> Implementation
 	}
 }

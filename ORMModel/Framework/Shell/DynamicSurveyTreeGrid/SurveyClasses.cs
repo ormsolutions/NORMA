@@ -17,8 +17,10 @@
 
 using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.Windows.Forms;
 using Microsoft.VisualStudio.VirtualTreeGrid;
+using System.Drawing;
 
 namespace Neumont.Tools.Modeling.Shell.DynamicSurveyTreeGrid
 {
@@ -29,49 +31,341 @@ namespace Neumont.Tools.Modeling.Shell.DynamicSurveyTreeGrid
 	public partial class SurveyTree : INotifySurveyElementChanged
 	{
 		#region NodeLocation structure
+		/// <summary>
+		/// Store the location of a primary element, keyed off that element.
+		/// If a reference is created to a node before the node is displayed
+		/// in its own list, then this 'location' simply caches the <see cref="Survey"/>
+		/// information for the node.
+		/// </summary>
 		private struct NodeLocation
 		{
-			public MainList MainList;
+			private object myContext;
+			/// <summary>
+			/// The context node
+			/// </summary>
 			public SampleDataElementNode ElementNode;
+			/// <summary>
+			/// Place a node in an expanded list
+			/// </summary>
+			/// <param name="list">The <see cref="MainList"/> that is the primary location for this node</param>
+			/// <param name="node">The node itself</param>
 			public NodeLocation(MainList list, SampleDataElementNode node)
 			{
 				ElementNode = node;
-				MainList = list;
+				myContext = list;
+			}
+			/// <summary>
+			/// Record a node without placing it in an explicit list
+			/// </summary>
+			/// <param name="survey">The <see cref="Survey"/> to interpret the source data</param>
+			/// <param name="node">The node itself</param>
+			public NodeLocation(Survey survey, SampleDataElementNode node)
+			{
+				ElementNode = node;
+				myContext = survey;
+			}
+			/// <summary>
+			/// The list where this element is located. Can be null if the element is a reference that is not yet
+			/// included in an expanded branch.
+			/// </summary>
+			public MainList MainList
+			{
+				get
+				{
+					return myContext as MainList;
+				}
+			}
+			/// <summary>
+			/// The <see cref="Survey"/> used to interpet the element data.
+			/// </summary>
+			public Survey Survey
+			{
+				get
+				{
+					return myContext as Survey ?? ((MainList)myContext).QuestionList;
+				}
 			}
 		}
 		#endregion // NodeLocation structure
+		#region LinkedNode class
+		/// <summary>
+		/// A simple linked list node class. LinkedList{} is too hard to modify during iteration,
+		/// and a LinkedListNode{} requires a LinkedList.
+		/// </summary>
+		private class LinkedNode<T>
+		{
+			private T myValue;
+			private LinkedNode<T> myNext;
+			private LinkedNode<T> myPrev;
+			public LinkedNode(T value)
+			{
+				myValue = value;
+			}
+			/// <summary>
+			/// Set the next element
+			/// </summary>
+			/// <param name="next">Next element. If next has a previous element, then the head of the next element is inserted.</param>
+			/// <param name="head">Reference to head node</param>
+			public void SetNext(LinkedNode<T> next, ref LinkedNode<T> head)
+			{
+				Debug.Assert(next != null);
+				if (next.myPrev != null)
+				{
+					next.myPrev.SetNext(GetHead(), ref head);
+					return;
+				}
+				if (myNext != null)
+				{
+					myNext.myPrev = next.GetTail();
+				}
+				if (myPrev == null)
+				{
+					head = this;
+				}
+				myNext = next;
+				next.myPrev = this;
+			}
+			/// <summary>
+			/// The value passed to the constructor or set directly
+			/// </summary>
+			public T Value
+			{
+				get
+				{
+					return myValue;
+				}
+				set
+				{
+					myValue = value;
+				}
+			}
+			/// <summary>
+			/// Get the next node
+			/// </summary>
+			public LinkedNode<T> Next
+			{
+				get
+				{
+					return myNext;
+				}
+			}
+			/// <summary>
+			/// Get the previous node
+			/// </summary>
+			public LinkedNode<T> Previous
+			{
+				get
+				{
+					return myPrev;
+				}
+			}
+			/// <summary>
+			/// Get the head element in the linked list
+			/// </summary>
+			public LinkedNode<T> GetHead()
+			{
+				LinkedNode<T> retVal = this;
+				LinkedNode<T> prev;
+				while (null != (prev = retVal.myPrev))
+				{
+					retVal = prev;
+				}
+				return retVal;
+			}
+			/// <summary>
+			/// Get the tail element in the linked list
+			/// </summary>
+			public LinkedNode<T> GetTail()
+			{
+				LinkedNode<T> retVal = this;
+				LinkedNode<T> next;
+				while (null != (next = retVal.myNext))
+				{
+					retVal = next;
+				}
+				return retVal;
+			}
+			/// <summary>
+			/// Detach the current node
+			/// </summary>
+			/// <param name="headNode"></param>
+			public void Detach(ref LinkedNode<T> headNode)
+			{
+				if (myPrev == null)
+				{
+					headNode = myNext;
+				}
+				else
+				{
+					myPrev.myNext = myNext;
+				}
+				if (myNext != null)
+				{
+					myNext.myPrev = myPrev;
+				}
+				myNext = null;
+				myPrev = null;
+			}
+		}
+		#endregion // LinkedNode class
+		#region SurveyNodeReference struct
+		/// <summary>
+		/// A structure representing a reference to a primary element
+		/// </summary>
+		private struct SurveyNodeReference
+		{
+			private SampleDataElementNode myNode;
+			private object myContextElement;
+			/// <summary>
+			/// Create a new <see cref="SurveyNodeReference"/>
+			/// </summary>
+			/// <param name="node">The node corresponding to this reference element</param>
+			/// <param name="contextElement">The context element that includes this instance</param>
+			public SurveyNodeReference(SampleDataElementNode node, object contextElement)
+			{
+				myNode = node;
+				myContextElement = contextElement;
+			}
+			/// <summary>
+			/// Retrieve the <see cref="SampleDataElementNode"/> within the expansion for the current <see cref="ContextElement"/>
+			/// </summary>
+			public SampleDataElementNode Node
+			{
+				get
+				{
+					return myNode;
+				}
+			}
+			/// <summary>
+			/// The referenced element
+			/// </summary>
+			public object ReferencedElement
+			{
+				get
+				{
+					return ((ISurveyNodeReference)myNode.Element).ReferencedSurveyNode;
+				}
+			}
+			/// <summary>
+			/// The reason for the node reference
+			/// </summary>
+			public object ReferenceReason
+			{
+				get
+				{
+					return ((ISurveyNodeReference)myNode.Element).SurveyNodeReferenceReason;
+				}
+			}
+			/// <summary>
+			/// The container element that owns the reference
+			/// </summary>
+			public object ContextElement
+			{
+				get
+				{
+					return myContextElement;
+				}
+			}
+		}
+		#endregion // SurveyNodeReference struct
 		#region Member Variables
 		/// <summary>
 		/// An expansionKey to use instead of the public <see langword="null"/> representation of
 		/// the top level element grouping.
 		/// </summary>
 		private static readonly object TopLevelExpansionKey = new object();
-		private IEnumerable<ISurveyNodeProvider> myNodeProviderList;
-		private IEnumerable<ISurveyQuestionProvider> myQuestionProviderList;
-		private Dictionary<object, MainList> myMainListDictionary;
-		private Dictionary<object, NodeLocation> myNodeDictionary;
-		private Dictionary<object, Survey> mySurveyDictionary;
+		/// <summary>
+		/// The location of the standard link overlay image in the image list
+		/// </summary>
+		private const int LinkOverlayImageIndex = 0;
+		/// <summary>
+		/// The node providers, used to retrieve elements for initial set population
+		/// </summary>
+		private readonly ISurveyNodeProvider[] myNodeProviders;
+		/// <summary>
+		/// The question providers, used to determine which questions to ask and how they should be used
+		/// </summary>
+		private readonly ISurveyQuestionProvider[] myQuestionProviders;
+		/// <summary>
+		/// Map primary elements to the expanded lists associated with those elements
+		/// </summary>
+		private readonly Dictionary<object, MainList> myMainListDictionary;
+		/// <summary>
+		/// Map primary elements to the list they're contained in
+		/// </summary>
+		private readonly Dictionary<object, NodeLocation> myNodeDictionary;
+		/// <summary>
+		/// Map expansion keys to cached survey information
+		/// </summary>
+		private readonly Dictionary<object, Survey> mySurveyDictionary;
+		/// <summary>
+		/// Track the links referencing a primary element
+		/// </summary>
+		private readonly Dictionary<object, LinkedNode<SurveyNodeReference>> myReferenceDictionary;
+		/// <summary>
+		/// The composite image list for all question providers
+		/// </summary>
+		private readonly ImageList myImageList;
+		/// <summary>
+		/// The provider offsets into the consolidated image list
+		/// </summary>
+		private readonly int[] myQuestionProviderImageOffsets;
+		/// <summary>
+		/// A set of all question types that are used for error display
+		/// </summary>
 		private Type[] myErrorDisplayTypes;
 		#endregion // Member Variables
 		#region Constructor
 		/// <summary>
 		/// Public constructor
 		/// </summary>
-		public SurveyTree(IEnumerable<ISurveyNodeProvider> nodeProviderList, IEnumerable<ISurveyQuestionProvider> questionProviderList)
+		public SurveyTree(ISurveyNodeProvider[] nodeProviders, ISurveyQuestionProvider[] questionProviders)
 		{
-			if (nodeProviderList == null)
-			{
-				throw new ArgumentNullException("nodeProviderList");
-			}
-			if (questionProviderList == null)
-			{
-				throw new ArgumentNullException("questionProviderList");
-			}
-			myNodeProviderList = nodeProviderList;
-			myQuestionProviderList = questionProviderList;
+			myNodeProviders = nodeProviders ?? new ISurveyNodeProvider[0];
+			myQuestionProviders = questionProviders ?? new ISurveyQuestionProvider[0];
 			myMainListDictionary = new Dictionary<object, MainList>();
 			myNodeDictionary = new Dictionary<object, NodeLocation>();
 			mySurveyDictionary = new Dictionary<object, Survey>();
+			myReferenceDictionary = new Dictionary<object, LinkedNode<SurveyNodeReference>>();
+			int questionProviderCount;
+			ImageList compositeImageList = new ImageList();
+			compositeImageList.ColorDepth = ColorDepth.Depth32Bit;
+			ImageList.ImageCollection compositeImages = compositeImageList.Images;
+			Type resourceType = typeof(SurveyTree);
+			Image overlayImage = Image.FromStream(resourceType.Assembly.GetManifestResourceStream(resourceType, "LinkOverlay.png"), true, true);
+			compositeImages.Add(overlayImage); // Note that the link overlay position corresponds to LinkOverlayImageIndex
+			if (questionProviders != null &&
+				0 != (questionProviderCount = questionProviders.Length))
+			{
+				int imageOffset = 1; // Standard overlay image is first
+				int[] providerImageOffsets = new int[questionProviderCount];
+				for (int i = 0; i < questionProviderCount; ++i)
+				{
+					ImageList currentImageList;
+					ImageList.ImageCollection currentImages;
+					int currentCount;
+					if (null != (currentImageList = questionProviders[i].SurveyQuestionImageList) &&
+						0 != (currentCount = (currentImages = currentImageList.Images).Count))
+					{
+						for (int j = 0; j < currentCount; ++j)
+						{
+							compositeImages.Add(currentImages[j]);
+						}
+						providerImageOffsets[i] = imageOffset;
+						imageOffset += currentCount;
+					}
+					else
+					{
+						providerImageOffsets[i] = -1;
+					}
+				}
+				myQuestionProviderImageOffsets = providerImageOffsets;
+			}
+			else
+			{
+				myQuestionProviderImageOffsets = new int[0];
+			}
+			myImageList = compositeImageList;
 		}
 		#endregion // Constructor
 		#region Accessor Properties
@@ -85,7 +379,7 @@ namespace Neumont.Tools.Modeling.Shell.DynamicSurveyTreeGrid
 			{
 				myMainListDictionary.Add(TopLevelExpansionKey, mainList = new MainList(this, null, null));
 			}
-			return mainList.CreateRootBranch();
+			return mainList.GetRootBranch(true);
 		}
 		/// <summary>
 		/// Update the error display for the specified element.
@@ -102,7 +396,7 @@ namespace Neumont.Tools.Modeling.Shell.DynamicSurveyTreeGrid
 				if (retVal == null)
 				{
 					List<Type> displayTypes = new List<Type>();
-					foreach (ISurveyQuestionProvider questionProvider in myQuestionProviderList)
+					foreach (ISurveyQuestionProvider questionProvider in myQuestionProviders)
 					{
 						IEnumerable<Type> providerDisplayTypes = questionProvider.GetErrorDisplayTypes();
 						if (providerDisplayTypes != null)
@@ -124,9 +418,11 @@ namespace Neumont.Tools.Modeling.Shell.DynamicSurveyTreeGrid
 		{
 			Survey retVal;
 			Dictionary<object, Survey> dictionary = mySurveyDictionary;
-			if (!dictionary.TryGetValue((expansionKey == null) ? TopLevelExpansionKey : expansionKey, out retVal))
+			object key = expansionKey ?? TopLevelExpansionKey;
+			if (!dictionary.TryGetValue(key, out retVal))
 			{
-				retVal = new Survey(myQuestionProviderList, expansionKey);
+				retVal = new Survey(myQuestionProviders, myQuestionProviderImageOffsets, expansionKey);
+				dictionary[key] = retVal;
 			}
 			return retVal;
 		}
@@ -152,15 +448,59 @@ namespace Neumont.Tools.Modeling.Shell.DynamicSurveyTreeGrid
 		/// </summary>
 		protected void ElementChanged(object element, params Type[] questionTypes)
 		{
-			NodeLocation value;
-			if (myNodeDictionary.TryGetValue(element, out value))
+			NodeLocation location;
+			if (myNodeDictionary.TryGetValue(element, out location))
 			{
-				value.MainList.NodeChanged(value.ElementNode, questionTypes);
+				MainList notifyList = location.MainList;
+				if (notifyList != null)
+				{
+					notifyList.NodeChanged(location.ElementNode, null, false, questionTypes);
+				}
+				LinkedNode<SurveyNodeReference> linkNode;
+				if (myReferenceDictionary.TryGetValue(element, out linkNode))
+				{
+					while (linkNode != null)
+					{
+						SurveyNodeReference link = linkNode.Value;
+						if (myMainListDictionary.TryGetValue(link.ContextElement ?? TopLevelExpansionKey, out notifyList))
+						{
+							notifyList.NodeChanged(linkNode.Value.Node, linkNode, true, questionTypes);
+						}
+						linkNode = linkNode.Next;
+					}
+				}
 			}
 		}
 		void INotifySurveyElementChanged.ElementChanged(object element, params Type[] questionTypes)
 		{
 			ElementChanged(element, questionTypes);
+		}
+		/// <summary>
+		/// Implements <see cref="INotifySurveyElementChanged.ElementReferenceChanged"/>
+		/// </summary>
+		void ElementReferenceChanged(object element, object referenceReason, object contextElement, params Type[] questionTypes)
+		{
+			LinkedNode<SurveyNodeReference> linkNode;
+			MainList notifyList;
+			if (myMainListDictionary.TryGetValue(contextElement ?? TopLevelExpansionKey, out notifyList) &&
+				myReferenceDictionary.TryGetValue(element, out linkNode))
+			{
+				while (linkNode != null)
+				{
+					SurveyNodeReference link = linkNode.Value;
+					if (link.ContextElement == contextElement &&
+						referenceReason == link.ReferenceReason)
+					{
+						notifyList.NodeChanged(link.Node, linkNode, false, questionTypes);
+						break;
+					}
+					linkNode = linkNode.Next;
+				}
+			}
+		}
+		void INotifySurveyElementChanged.ElementReferenceChanged(object element, object referenceReason, object contextElement, params Type[] questionTypes)
+		{
+			ElementReferenceChanged(element, referenceReason, contextElement, questionTypes);
 		}
 		/// <summary>
 		/// Implements <see cref="INotifySurveyElementChanged.ElementDeleted"/>
@@ -170,8 +510,33 @@ namespace Neumont.Tools.Modeling.Shell.DynamicSurveyTreeGrid
 			NodeLocation value;
 			if (myNodeDictionary.TryGetValue(element, out value))
 			{
-				value.MainList.NodeDeleted(value.ElementNode);
+				// Remove items from the primary display location
+				MainList notifyList;
+				if (null != (notifyList = value.MainList))
+				{
+					notifyList.NodeDeleted(value.ElementNode);
+				}
+
+				// Remove items from all secondary display locations
+				LinkedNode<SurveyNodeReference> linkNode;
+				if (myReferenceDictionary.TryGetValue(element, out linkNode))
+				{
+					while (linkNode != null)
+					{
+						SurveyNodeReference link = linkNode.Value;
+						if (myMainListDictionary.TryGetValue(link.ContextElement ?? TopLevelExpansionKey, out notifyList))
+						{
+							notifyList.NodeDeleted(linkNode.Value.Node);
+						}
+						linkNode = linkNode.Next;
+					}
+					myReferenceDictionary.Remove(element);
+				}
+
+				// Remove the tracking entry for this element
 				myNodeDictionary.Remove(element);
+
+				// Remove tracking for an expansion of this element
 				if (myMainListDictionary.ContainsKey(element))
 				{
 					myMainListDictionary.Remove(element);
@@ -183,14 +548,64 @@ namespace Neumont.Tools.Modeling.Shell.DynamicSurveyTreeGrid
 			ElementDeleted(element);
 		}
 		/// <summary>
+		/// Implements <see cref="INotifySurveyElementChanged.ElementReferenceDeleted"/>
+		/// </summary>
+		protected void ElementReferenceDeleted(object element, object referenceReason, object contextElement)
+		{
+			LinkedNode<SurveyNodeReference> headLinkNode;
+			MainList notifyList;
+			if (myMainListDictionary.TryGetValue(contextElement ?? TopLevelExpansionKey, out notifyList) &&
+				myReferenceDictionary.TryGetValue(element, out headLinkNode))
+			{
+				LinkedNode<SurveyNodeReference> linkNode = headLinkNode;
+				while (linkNode != null)
+				{
+					SurveyNodeReference link = linkNode.Value;
+					if (link.ContextElement == contextElement &&
+						referenceReason == link.ReferenceReason)
+					{
+						notifyList.NodeDeleted(link.Node);
+						linkNode.Detach(ref headLinkNode);
+						break;
+					}
+					linkNode = linkNode.Next;
+				}
+				if (headLinkNode == null)
+				{
+					myReferenceDictionary.Remove(element);
+				}
+			}
+		}
+		void INotifySurveyElementChanged.ElementReferenceDeleted(object element, object referenceReason, object contextElement)
+		{
+			ElementReferenceDeleted(element, referenceReason, contextElement);
+		}
+		/// <summary>
 		/// Implements <see cref="INotifySurveyElementChanged.ElementRenamed"/>
 		/// </summary>
 		protected void ElementRenamed(object element)
 		{
-			NodeLocation value;
-			if (myNodeDictionary.TryGetValue(element, out value))
+			NodeLocation location;
+			if (myNodeDictionary.TryGetValue(element, out location))
 			{
-				value.MainList.NodeRenamed(value.ElementNode);
+				MainList notifyList = location.MainList;
+				if (notifyList != null)
+				{
+					notifyList.NodeRenamed(location.ElementNode, null);
+				}
+				LinkedNode<SurveyNodeReference> linkNode;
+				if (myReferenceDictionary.TryGetValue(element, out linkNode))
+				{
+					while (linkNode != null)
+					{
+						SurveyNodeReference link = linkNode.Value;
+						if (myMainListDictionary.TryGetValue(link.ContextElement ?? TopLevelExpansionKey, out notifyList))
+						{
+							notifyList.NodeRenamed(linkNode.Value.Node, linkNode);
+						}
+						linkNode = linkNode.Next;
+					}
+				}
 			}
 		}
 		void INotifySurveyElementChanged.ElementRenamed(object element)
@@ -198,19 +613,78 @@ namespace Neumont.Tools.Modeling.Shell.DynamicSurveyTreeGrid
 			ElementRenamed(element);
 		}
 		/// <summary>
+		/// Implements <see cref="INotifySurveyElementChanged.ElementReferenceRenamed"/>
+		/// </summary>
+		protected void ElementReferenceRenamed(object element, object referenceReason, object contextElement)
+		{
+			LinkedNode<SurveyNodeReference> linkNode;
+			MainList notifyList;
+			if (myMainListDictionary.TryGetValue(contextElement ?? TopLevelExpansionKey, out notifyList) &&
+				myReferenceDictionary.TryGetValue(element, out linkNode))
+			{
+				while (linkNode != null)
+				{
+					SurveyNodeReference link = linkNode.Value;
+					if (link.ContextElement == contextElement &&
+						referenceReason == link.ReferenceReason)
+					{
+						notifyList.NodeRenamed(link.Node, linkNode);
+						break;
+					}
+					linkNode = linkNode.Next;
+				}
+			}
+		}
+		void INotifySurveyElementChanged.ElementReferenceRenamed(object element, object referenceReason, object contextElement)
+		{
+			ElementReferenceRenamed(element, referenceReason, contextElement);
+		}
+		/// <summary>
 		/// Implements <see cref="INotifySurveyElementChanged.ElementCustomSortChanged"/>
 		/// </summary>
 		protected void ElementCustomSortChanged(object element)
 		{
-			NodeLocation value;
-			if (myNodeDictionary.TryGetValue(element, out value))
+			NodeLocation location;
+			if (myNodeDictionary.TryGetValue(element, out location))
 			{
-				value.MainList.NodeCustomSortChanged(value.ElementNode);
+				MainList notifyList = location.MainList;
+				if (notifyList != null)
+				{
+					notifyList.NodeCustomSortChanged(location.ElementNode, null);
+				}
+				// The custom sort on the element is not used by references, do not notify
 			}
 		}
 		void INotifySurveyElementChanged.ElementCustomSortChanged(object element)
 		{
 			ElementCustomSortChanged(element);
+		}
+		/// <summary>
+		/// Implements <see cref="INotifySurveyElementChanged.ElementReferenceCustomSortChanged"/>
+		/// </summary>
+		protected void ElementReferenceCustomSortChanged(object element, object referenceReason, object contextElement)
+		{
+			LinkedNode<SurveyNodeReference> linkNode;
+			MainList notifyList;
+			if (myMainListDictionary.TryGetValue(contextElement ?? TopLevelExpansionKey, out notifyList) &&
+				myReferenceDictionary.TryGetValue(element, out linkNode))
+			{
+				while (linkNode != null)
+				{
+					SurveyNodeReference link = linkNode.Value;
+					if (link.ContextElement == contextElement &&
+						referenceReason == link.ReferenceReason)
+					{
+						notifyList.NodeCustomSortChanged(link.Node, linkNode);
+						break;
+					}
+					linkNode = linkNode.Next;
+				}
+			}
+		}
+		void INotifySurveyElementChanged.ElementReferenceCustomSortChanged(object element, object referenceReason, object contextElement)
+		{
+			ElementReferenceCustomSortChanged(element, referenceReason, contextElement);
 		}
 		#endregion //INotifySurveyElementChanged Implementation
 		#region Survey class
@@ -221,108 +695,71 @@ namespace Neumont.Tools.Modeling.Shell.DynamicSurveyTreeGrid
 		{
 			#region Member Variables
 			private readonly List<SurveyQuestion> myQuestions;
-			private int totalShift;
-			ImageList myMainImageList;
 			#endregion // Member Variables
 			#region Constructor
 			/// <summary>
 			/// public constructor
 			/// </summary>
-			/// <param name="questionProviderList">enumerable object of ISurveyQuestion providers</param>
+			/// <param name="questionProviders">Array of <see cref="ISurveyQuestionProvider"/> instances</param>
+			/// <param name="providerImageOffsets">Array of offsets into the global image list with indices corresponding to each provider</param>
 			/// <param name="expansionKey">Key to identify the set of questions being retrieved from the <paramref name="questionProviderList"/></param>
-			public Survey(IEnumerable<ISurveyQuestionProvider> questionProviderList, object expansionKey)
+			public Survey(ISurveyQuestionProvider[] questionProviders, int[] providerImageOffsets, object expansionKey)
 			{
-				if (questionProviderList == null)
+				int providerCount = questionProviders.Length;
+				List<SurveyQuestion> surveyQuestions = new List<SurveyQuestion>();
+				int totalShift = 0;
+				for (int i = 0; i < providerCount; ++i)
 				{
-					throw new ArgumentNullException("questionProviderList");
-				}
-				myQuestions = new List<SurveyQuestion>();
-				myMainImageList = null;
-				bool combinedImageList = false;
-				int imageOffset = 0;
-				foreach (ISurveyQuestionProvider provider in questionProviderList)
-				{
-					IEnumerable<ISurveyQuestionTypeInfo> questions = provider.GetSurveyQuestions(expansionKey);
+					IEnumerable<ISurveyQuestionTypeInfo> questions = questionProviders[i].GetSurveyQuestions(expansionKey);
 					if (questions == null)
 					{
 						continue;
 					}
 					foreach (ISurveyQuestionTypeInfo currentQuestionTypeInfo in questions)
 					{
-						SurveyQuestion currentQuestion = new SurveyQuestion(currentQuestionTypeInfo, imageOffset);
+						SurveyQuestion currentQuestion = new SurveyQuestion(currentQuestionTypeInfo, providerImageOffsets[i]);
 						currentQuestion.Shift = totalShift;
 						currentQuestion.Mask = GenerateMask(currentQuestion.BitCount, currentQuestion.Shift);
 						currentQuestion.QuestionList = this;
 						totalShift += currentQuestion.BitCount;
-						myQuestions.Add(currentQuestion);
+						surveyQuestions.Add(currentQuestion);
 					}
-					// Sort by priority, but within reason. Grouped elements are given priority over non-group elements
-					// to make it easier to find these important groups
-					myQuestions.Sort(
-						delegate(SurveyQuestion leftQuestion, SurveyQuestion rightQuestion)
+				}
+				// Sort by priority, but within reason. Grouped elements are given priority over non-group elements
+				// to make it easier to find these important groups
+				surveyQuestions.Sort(
+					delegate(SurveyQuestion leftQuestion, SurveyQuestion rightQuestion)
+					{
+						if (leftQuestion == rightQuestion)
 						{
-							if (leftQuestion == rightQuestion)
-							{
-								return 0;
-							}
-							ISurveyQuestionTypeInfo leftQuestionInfo = leftQuestion.Question;
-							ISurveyQuestionTypeInfo rightQuestionInfo = rightQuestion.Question;
-							if (0 != (leftQuestionInfo.UISupport & SurveyQuestionUISupport.Grouping))
-							{
-								if (0 == (rightQuestionInfo.UISupport & SurveyQuestionUISupport.Grouping))
-								{
-									return -1;
-								}
-							}
-							else if (0 != (rightQuestionInfo.UISupport & SurveyQuestionUISupport.Grouping))
-							{
-								return 1;
-							}
-							int leftPriority = leftQuestionInfo.QuestionPriority;
-							int rightPriority = rightQuestionInfo.QuestionPriority;
-							if (leftPriority < rightPriority)
+							return 0;
+						}
+						ISurveyQuestionTypeInfo leftQuestionInfo = leftQuestion.Question;
+						ISurveyQuestionTypeInfo rightQuestionInfo = rightQuestion.Question;
+						if (0 != (leftQuestionInfo.UISupport & SurveyQuestionUISupport.Grouping))
+						{
+							if (0 == (rightQuestionInfo.UISupport & SurveyQuestionUISupport.Grouping))
 							{
 								return -1;
 							}
-							else if (leftPriority == rightPriority)
-							{
-								return 0;
-							}
-							return 1;
-						});
-					ImageList currentImageList = provider.SurveyQuestionImageList;
-					if (currentImageList != null)
-					{
-						ImageList.ImageCollection currentImages = currentImageList.Images;
-						int currentCount = currentImages.Count;
-						if (currentCount != 0)
-						{
-							if (myMainImageList == null)
-							{
-								myMainImageList = currentImageList;
-							}
-							else
-							{
-								if (!combinedImageList)
-								{
-									combinedImageList = true;
-									ImageList oldList = myMainImageList;
-									myMainImageList = new ImageList();
-									ImageList.ImageCollection oldImages = oldList.Images;
-									for (int i = 0; i < imageOffset; ++i)
-									{
-										myMainImageList.Images.Add(oldImages[i]);
-									}
-								}
-								for (int i = 0; i < currentCount; ++i)
-								{
-									myMainImageList.Images.Add(currentImages[i]);
-								}
-							}
-							imageOffset += currentCount;
 						}
-					}
-				}
+						else if (0 != (rightQuestionInfo.UISupport & SurveyQuestionUISupport.Grouping))
+						{
+							return 1;
+						}
+						int leftPriority = leftQuestionInfo.QuestionPriority;
+						int rightPriority = rightQuestionInfo.QuestionPriority;
+						if (leftPriority < rightPriority)
+						{
+							return -1;
+						}
+						else if (leftPriority == rightPriority)
+						{
+							return 0;
+						}
+						return 1;
+					});
+				myQuestions = surveyQuestions;
 			}
 			#endregion // Constructor
 			#region Indexers
@@ -347,9 +784,11 @@ namespace Neumont.Tools.Modeling.Shell.DynamicSurveyTreeGrid
 			{
 				get
 				{
-					for (int i = 0; i < myQuestions.Count; ++i)
+					List<SurveyQuestion> questions = myQuestions;
+					int questionCount = questions.Count;
+					for (int i = 0; i < questionCount; ++i)
 					{
-						SurveyQuestion currentQuestion = myQuestions[i];
+						SurveyQuestion currentQuestion = questions[i];
 						if (currentQuestion.Question.QuestionType == question)
 						{
 							return currentQuestion;
@@ -370,19 +809,6 @@ namespace Neumont.Tools.Modeling.Shell.DynamicSurveyTreeGrid
 					return myQuestions.Count;
 				}
 			}
-
-			/// <summary>
-			/// Gets the main image list.
-			/// </summary>
-			/// <value>The main image list.</value>
-			public ImageList MainImageList
-			{
-
-				get
-				{
-					return myMainImageList;
-				}
-			}
 			#endregion // Accessor Properties
 			#region Methods
 			/// <summary>
@@ -390,9 +816,11 @@ namespace Neumont.Tools.Modeling.Shell.DynamicSurveyTreeGrid
 			/// </summary>
 			public int GetIndex(Type question)
 			{
-				for (int i = 0; i < myQuestions.Count; ++i)
+				List<SurveyQuestion> questions = myQuestions;
+				int questionCount = questions.Count;
+				for (int i = 0; i < questionCount; ++i)
 				{
-					if (question == myQuestions[i].Question.QuestionType)
+					if (question == questions[i].Question.QuestionType)
 					{
 						return i;
 					}
@@ -408,7 +836,9 @@ namespace Neumont.Tools.Modeling.Shell.DynamicSurveyTreeGrid
 		#endregion // Survey class
 		#region SurveyQuestion class
 		/// <summary>
-		/// wrapper for ISurveyQeustionTypeInfo, holds some metadata about the question
+		/// Wrapper class for <see cref="ISurveyQuestionTypeInfo"/> that coordinates information
+		/// for storing answers to this questions with storage information for other questions in
+		/// a <see cref="Survey"/>
 		/// </summary>
 		private sealed class SurveyQuestion
 		{

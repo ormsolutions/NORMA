@@ -8,27 +8,25 @@
 		<qp:surveyQuestion questionType="SurveyErrorState" isErrorDisplay="true">
 			<qp:displaySupport displayCategory="Overlay"/>
 			<qp:explicitImageMap>
-				<qp:map enumValue="HasError" imageIndex=".custom">
-					<plx:binaryOperator type="add">
-						<plx:left>
-							<plx:cast dataTypeName=".i4">
-								<plx:callStatic dataTypeName="SurveyQuestionGlyph" name="Last" type="field"/>
-							</plx:cast>
-						</plx:left>
-						<plx:right>
-							<plx:value data="1" type="i4"/>
-						</plx:right>
-					</plx:binaryOperator>
-				</qp:map>
+				<qp:offset afterSurveyQuestion="SurveyQuestionGlyph"/>
+				<qp:map enumValue="HasError" imageIndex="0"/>
 			</qp:explicitImageMap>
 		</qp:surveyQuestion>
 		<qp:surveyQuestion questionType="SurveyQuestionGlyph">
 			<qp:displaySupport displayCategory="Glyph"/>
-			<qp:sequentialImageMap/>
+			<qp:sequentialImageMap lastAnswer="Last"/>
 		</qp:surveyQuestion>
 		<qp:surveyQuestion questionType="SurveyFactTypeDetailType">
 			<qp:displaySupport displayCategory="Grouping"/>
 			<qp:displaySupport displayCategory="Sorting"/>
+		</qp:surveyQuestion>
+		<qp:surveyQuestion questionType="SurveyRoleType">
+			<qp:displaySupport displayCategory="Overlay"/>
+			<qp:explicitImageMap>
+				<qp:offset afterSurveyQuestion="SurveyQuestionGlyph"/>
+				<qp:map enumValue="Subtype" imageIndex="1"/>
+				<qp:map enumValue="Supertype" imageIndex="2"/>
+			</qp:explicitImageMap>
 		</qp:surveyQuestion>
 		<qp:surveyQuestion questionType="SurveyNameGeneratorRefinementType">
 			<qp:displaySupport displayCategory="Sorting"/>
@@ -47,6 +45,7 @@
 			<qp:surveyQuestion ref="SurveyFactTypeDetailType"/>
 			<qp:surveyQuestion ref="SurveyErrorState"/>
 			<qp:surveyQuestion ref="SurveyQuestionGlyph"/>
+			<qp:surveyQuestion ref="SurveyRoleType"/>
 		</qp:grouping>
 		<qp:grouping>
 			<qp:expansionKey>

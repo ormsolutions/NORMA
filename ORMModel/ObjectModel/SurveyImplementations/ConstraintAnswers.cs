@@ -28,51 +28,49 @@ namespace Neumont.Tools.ORM.ObjectModel
 {
 	public partial class SetConstraint : IAnswerSurveyQuestion<SurveyElementType>, IAnswerSurveyQuestion<SurveyErrorState>, IAnswerSurveyQuestion<SurveyQuestionGlyph>, IAnswerSurveyQuestion<SurveyFactTypeDetailType>, ISurveyNode, ISurveyNodeContext
 	{
-		#region IAnswerSurveyQuestion<ErrorState> Implementation
-		int IAnswerSurveyQuestion<SurveyErrorState>.AskQuestion()
+		#region IAnswerSurveyQuestion<SurveyErrorState> Implementation
+		int IAnswerSurveyQuestion<SurveyErrorState>.AskQuestion(object contextElement)
 		{
-			return AskErrorQuestion();
+			return AskErrorQuestion(contextElement);
 		}
 		/// <summary>
-		/// returns answer to IAnswerSurveyQuestion for errors
+		/// Implements <see cref="IAnswerSurveyQuestion{SurveyErrorState}.AskQuestion"/>
 		/// </summary>
-		/// <returns></returns>
-		protected int AskErrorQuestion()
+		protected int AskErrorQuestion(object contextElement)
 		{
-			if (Model == null)
-				return -1;
-			return (int)(ModelError.HasErrors(this, ModelErrorUses.DisplayPrimary, Model.ModelErrorDisplayFilter) ? SurveyErrorState.HasError : SurveyErrorState.NoError);
+			ORMModel model = Model;
+			return (model == null) ?
+				-1 :
+				(int)(ModelError.HasErrors(this, ModelErrorUses.DisplayPrimary, model.ModelErrorDisplayFilter) ? SurveyErrorState.HasError : SurveyErrorState.NoError);
 		}
-		#endregion // IAnswerSurveyQuestion<ErrorState> Implementation
-		#region IAnswerSurveyQuestion<ElementType> Members
-		int IAnswerSurveyQuestion<SurveyElementType>.AskQuestion()
+		#endregion // IAnswerSurveyQuestion<SurveyErrorState> Implementation
+		#region IAnswerSurveyQuestion<SurveyElementType> Implementation
+		int IAnswerSurveyQuestion<SurveyElementType>.AskQuestion(object contextElement)
 		{
-			return AskElementQuestion();
+			return AskElementQuestion(contextElement);
 		}
 		/// <summary>
-		/// implementation of AskQuestion method from IAnswerSurveyQuestion
+		/// Implements <see cref="IAnswerSurveyQuestion{SurveyElementType}.AskQuestion"/>
 		/// </summary>
-		/// <returns></returns>
-		protected int AskElementQuestion()
+		protected static int AskElementQuestion(object contextElement)
 		{
 			return (int)SurveyElementType.ExternalConstraint;
 		}
-
-		#endregion
-		#region IAnswerSurveyQuestion<SurveyFactTypeDetailType> Members
-		int IAnswerSurveyQuestion<SurveyFactTypeDetailType>.AskQuestion()
+		#endregion // IAnswerSurveyQuestion<SurveyElementType> Implementation
+		#region IAnswerSurveyQuestion<SurveyFactTypeDetailType> Implementation
+		int IAnswerSurveyQuestion<SurveyFactTypeDetailType>.AskQuestion(object contextElement)
 		{
-			return AskFactTypeDetailQuestion();
+			return AskFactTypeDetailQuestion(contextElement);
 		}
 		/// <summary>
-		/// returns answer to IAnswerSurveyQuestion for fact type details
+		/// Implements <see cref="IAnswerSurveyQuestion{SurveyFactTypeDetailType}.AskQuestion"/>
 		/// </summary>
-		protected int AskFactTypeDetailQuestion()
+		protected static int AskFactTypeDetailQuestion(object contextElement)
 		{
 			return (int)SurveyFactTypeDetailType.InternalConstraint;
 		}
-		#endregion
-		#region ISurveyNode Members
+		#endregion // IAnswerSurveyQuestion<SurveyFactTypeDetailType> Implementation
+		#region ISurveyNode Implementation
 		/// <summary>
 		/// Implements <see cref="ISurveyNode.SurveyNodeDataObject"/>
 		/// </summary>
@@ -100,7 +98,29 @@ namespace Neumont.Tools.ORM.ObjectModel
 				return SurveyNodeDataObject;
 			}
 		}
-		#endregion
+		/// <summary>
+		/// Implements <see cref="ISurveyNode.SurveyNodeExpansionKey"/>
+		/// </summary>
+		protected new object SurveyNodeExpansionKey
+		{
+			get
+			{
+				IConstraint constraint = Constraint;
+				if (!constraint.ConstraintIsInternal && constraint.ConstraintType != ConstraintType.ImpliedMandatory)
+				{
+					return FactConstraint.SurveyConstraintExpansionKey;
+				}
+				return null;
+			}
+		}
+			object ISurveyNode.SurveyNodeExpansionKey
+			{
+				get
+				{
+					return SurveyNodeExpansionKey;
+				}
+			}
+		#endregion // ISurveyNode Implementation
 		#region ISurveyNodeContext Implementation
 		/// <summary>
 		/// The survey node context for an internal <see cref="SetConstraint"/> is
@@ -111,7 +131,7 @@ namespace Neumont.Tools.ORM.ObjectModel
 			get
 			{
 				LinkedElementCollection<FactType> factTypes;
-				if (((IConstraint)this).ConstraintIsInternal &&
+				if (Constraint.ConstraintIsInternal &&
 					(factTypes = FactTypeCollection).Count == 1)
 				{
 					return factTypes[0];
@@ -127,23 +147,22 @@ namespace Neumont.Tools.ORM.ObjectModel
 			}
 		}
 		#endregion // ISurveyNodeContext Implementation
-		#region IAnswerSurveyQuestion<SurveyQuestionGlyph> Members
-		int IAnswerSurveyQuestion<SurveyQuestionGlyph>.AskQuestion()
+		#region IAnswerSurveyQuestion<SurveyQuestionGlyph> Implementation
+		int IAnswerSurveyQuestion<SurveyQuestionGlyph>.AskQuestion(object contextElement)
 		{
-			return AskGlyphQuestion();
+			return AskGlyphQuestion(contextElement);
 		}
-		#region AskGlyphQuestion
 		/// <summary>
-		/// Answers the glyph question.
+		/// Implements <see cref="IAnswerSurveyQuestion{SurveyQuestionGlyph}.AskQuestion"/>
 		/// </summary>
-		/// <returns></returns>
-		protected int AskGlyphQuestion()
+		protected int AskGlyphQuestion(object contextElement)
 		{
-			if (this.Constraint.Modality == ConstraintModality.Alethic)
+			IConstraint constraint = this.Constraint;
+			if (constraint.Modality == ConstraintModality.Alethic)
 			{
-				if (this.Constraint.ConstraintType == ConstraintType.Ring)
+				if (constraint.ConstraintType == ConstraintType.Ring)
 				{
-					switch ((this as RingConstraint).RingType)
+					switch (((RingConstraint)this).RingType)
 					{
 						case RingConstraintType.Undefined:
 							return (int)SurveyQuestionGlyph.RingUndefined;
@@ -171,24 +190,16 @@ namespace Neumont.Tools.ORM.ObjectModel
 							return (int)SurveyQuestionGlyph.RingSymmetricIrreflexive;
 						default:
 							return (int)SurveyQuestionGlyph.RingUndefined;
-
 					}
-
 				}
 				else
 				{
-
-					switch (this.Constraint.ConstraintType)
+					switch (constraint.ConstraintType)
 					{
 						case ConstraintType.ExternalUniqueness:
-							if ((this as UniquenessConstraint).IsPreferred)
-							{
-								return (int)SurveyQuestionGlyph.ExternalUniquenessConstraintIsPreferred;
-							}
-							else
-							{
-								return (int)SurveyQuestionGlyph.ExternalUniquenessConstraint;
-							}
+							return ((UniquenessConstraint)this).IsPreferred ?
+								(int)SurveyQuestionGlyph.ExternalUniquenessConstraintIsPreferred :
+								(int)SurveyQuestionGlyph.ExternalUniquenessConstraint;
 						case ConstraintType.SimpleMandatory:
 							return (int)SurveyQuestionGlyph.SimpleMandatoryConstraint;
 						case ConstraintType.InternalUniqueness:
@@ -196,14 +207,9 @@ namespace Neumont.Tools.ORM.ObjectModel
 						case ConstraintType.Frequency:
 							return (int)SurveyQuestionGlyph.FrequencyConstraint;
 						case ConstraintType.DisjunctiveMandatory:
-							if (null != (this as MandatoryConstraint).ExclusiveOrExclusionConstraint)
-							{
-								return (int)SurveyQuestionGlyph.ExclusiveOrConstraint;
-							}
-							else
-							{
-								return (int)SurveyQuestionGlyph.DisjunctiveMandatoryConstraint;
-							}
+							return (null != ((MandatoryConstraint)this).ExclusiveOrExclusionConstraint) ?
+								(int)SurveyQuestionGlyph.ExclusiveOrConstraint :
+								(int)SurveyQuestionGlyph.DisjunctiveMandatoryConstraint;
 						default:
 							Debug.Fail("Constraint has to be one of the above!");
 							return -1;
@@ -212,10 +218,9 @@ namespace Neumont.Tools.ORM.ObjectModel
 			}
 			else
 			{
-				if (this.Constraint.ConstraintType == ConstraintType.Ring)
+				if (constraint.ConstraintType == ConstraintType.Ring)
 				{
-
-					switch ((this as RingConstraint).RingType)
+					switch (((RingConstraint)this).RingType)
 					{
 						case RingConstraintType.Undefined:
 							return (int)SurveyQuestionGlyph.RingUndefinedDeontic;
@@ -243,24 +248,16 @@ namespace Neumont.Tools.ORM.ObjectModel
 							return (int)SurveyQuestionGlyph.RingSymmetricIrreflexiveDeontic;
 						default:
 							return (int)SurveyQuestionGlyph.RingUndefinedDeontic;
-
 					}
-
 				}
 				else
 				{
-
-					switch (this.Constraint.ConstraintType)
+					switch (constraint.ConstraintType)
 					{
 						case ConstraintType.ExternalUniqueness:
-							if ((this as UniquenessConstraint).IsPreferred)
-							{
-								return (int)SurveyQuestionGlyph.ExternalUniquenessConstraintIsPreferredDeontic;
-							}
-							else
-							{
-								return (int)SurveyQuestionGlyph.ExternalUniquenessConstraintDeontic;
-							}
+							return ((UniquenessConstraint)this).IsPreferred ?
+								(int)SurveyQuestionGlyph.ExternalUniquenessConstraintIsPreferredDeontic :
+								(int)SurveyQuestionGlyph.ExternalUniquenessConstraintDeontic;
 						case ConstraintType.SimpleMandatory:
 							return (int)SurveyQuestionGlyph.SimpleMandatoryConstraintDeontic;
 						case ConstraintType.InternalUniqueness:
@@ -268,14 +265,9 @@ namespace Neumont.Tools.ORM.ObjectModel
 						case ConstraintType.Frequency:
 							return (int)SurveyQuestionGlyph.FrequencyConstraintDeontic;
 						case ConstraintType.DisjunctiveMandatory:
-							if (null != (this as MandatoryConstraint).ExclusiveOrExclusionConstraint)
-							{
-								return (int)SurveyQuestionGlyph.ExclusiveOrConstraintDeontic;
-							}
-							else
-							{
-								return (int)SurveyQuestionGlyph.DisjunctiveMandatoryConstraintDeontic;
-							}
+							return (null != ((MandatoryConstraint)this).ExclusiveOrExclusionConstraint) ?
+								(int)SurveyQuestionGlyph.ExclusiveOrConstraintDeontic :
+								(int)SurveyQuestionGlyph.DisjunctiveMandatoryConstraintDeontic;
 						default:
 							Debug.Fail("Constraint has to be one of the above!");
 							return -1;
@@ -284,56 +276,48 @@ namespace Neumont.Tools.ORM.ObjectModel
 			}
 
 		}
-		#endregion
-
-		#endregion
+		#endregion // IAnswerSurveyQuestion<SurveyQuestionGlyph> Implementation
 	}
 	public partial class SetComparisonConstraint : IAnswerSurveyQuestion<SurveyElementType>, IAnswerSurveyQuestion<SurveyErrorState>, IAnswerSurveyQuestion<SurveyQuestionGlyph>, ISurveyNode
 	{
-		#region IAnswerSurveyQuestion<ErrorState> Implementation
-		int IAnswerSurveyQuestion<SurveyErrorState>.AskQuestion()
+		#region IAnswerSurveyQuestion<SurveyErrorState> Implementation
+		int IAnswerSurveyQuestion<SurveyErrorState>.AskQuestion(object contextElement)
 		{
-			return AskErrorQuestion();
+			return AskErrorQuestion(contextElement);
 		}
 		/// <summary>
-		/// returns answer to IAnswerSurveyQuestion for errors
+		/// Implements <see cref="IAnswerSurveyQuestion{SurveyErrorState}.AskQuestion"/>
 		/// </summary>
-		/// <returns></returns>
-		protected int AskErrorQuestion()
+		protected int AskErrorQuestion(object contextElement)
 		{
-			if (Model == null)
-				return -1;
-			return (int)(ModelError.HasErrors(this, ModelErrorUses.DisplayPrimary, Model.ModelErrorDisplayFilter) ? SurveyErrorState.HasError : SurveyErrorState.NoError);
+			ORMModel model = Model;
+			return (model == null) ?
+				-1 :
+				(int)(ModelError.HasErrors(this, ModelErrorUses.DisplayPrimary, model.ModelErrorDisplayFilter) ? SurveyErrorState.HasError : SurveyErrorState.NoError);
 		}
-		#endregion // IAnswerSurveyQuestion<ErrorState> Implementation
-		#region IAnswerSurveyQuestion<ElementType> Members
-		int IAnswerSurveyQuestion<SurveyElementType>.AskQuestion()
+		#endregion // IAnswerSurveyQuestion<SurveyErrorState> Implementation
+		#region IAnswerSurveyQuestion<SurveyElementType> Implementation
+		int IAnswerSurveyQuestion<SurveyElementType>.AskQuestion(object contextElement)
 		{
-			return AskElementQuestion();
+			return AskElementQuestion(contextElement);
 		}
 		/// <summary>
-		/// implementation of AskQuestion method from IAnswerSurveyQuestion
+		/// Implements <see cref="IAnswerSurveyQuestion{SurveyElementType}.AskQuestion"/>
 		/// </summary>
-		/// <returns></returns>
-		protected int AskElementQuestion()
+		protected static int AskElementQuestion(object contextElement)
 		{
-
 			return (int)SurveyElementType.ExternalConstraint;
 		}
-
-		#endregion
-		#region IAnswerSurveyQuestion<SurveyQuestionGlyph> Members
-
-		int IAnswerSurveyQuestion<SurveyQuestionGlyph>.AskQuestion()
+		#endregion // IAnswerSurveyQuestion<SurveyElementType> Implementation
+		#region IAnswerSurveyQuestion<SurveyQuestionGlyph> Implementation
+		int IAnswerSurveyQuestion<SurveyQuestionGlyph>.AskQuestion(object contextElement)
 		{
-			return AskGlyphQuestion();
+			return AskGlyphQuestion(contextElement);
 		}
-		#region AskGlyphQuestion
 		/// <summary>
-		/// implementation of AskQuestion method from IAnswerSurveyQuestion for Glyph types
+		/// Implements <see cref="IAnswerSurveyQuestion{SurveyQuestionGlyph}.AskQuestion"/>
 		/// </summary>
-		/// <returns></returns>
-		protected int AskGlyphQuestion()
+		protected int AskGlyphQuestion(object contextElement)
 		{
 			IConstraint constraint = this as IConstraint;
 			if (constraint.Modality == ConstraintModality.Alethic)
@@ -382,9 +366,8 @@ namespace Neumont.Tools.ORM.ObjectModel
 				}
 			}
 		}
-		#endregion
-		#endregion
-		#region ISurveyNode Members
+		#endregion // IAnswerSurveyQuestion<SurveyQuestionGlyph> Implementation
+		#region ISurveyNode Implementation
 		/// <summary>
 		/// Implements <see cref="ISurveyNode.SurveyNodeDataObject"/>
 		/// </summary>
@@ -404,13 +387,30 @@ namespace Neumont.Tools.ORM.ObjectModel
 				return SurveyNodeDataObject;
 			}
 		}
-		#endregion
+		/// <summary>
+		/// Implements <see cref="ISurveyNode.SurveyNodeExpansionKey"/>
+		/// </summary>
+		protected new static object SurveyNodeExpansionKey
+		{
+			get
+			{
+				return FactConstraint.SurveyConstraintExpansionKey;
+			}
+		}
+		object ISurveyNode.SurveyNodeExpansionKey
+		{
+			get
+			{
+				return SurveyNodeExpansionKey;
+			}
+		}
+		#endregion // ISurveyNode Implementation
 	}
 	public partial class ExclusionConstraint : ISurveyNode
 	{
 		#region ISurveyNode Members
 		/// <summary>
-		/// Implements <see cref="ISurveyNode"/>.<see cref="SurveyNodeDataObject"/>
+		/// Implements <see cref="ISurveyNode.SurveyNodeDataObject"/>
 		/// </summary>
 		protected new object SurveyNodeDataObject
 		{
@@ -434,5 +434,76 @@ namespace Neumont.Tools.ORM.ObjectModel
 			}
 		}
 		#endregion
+	}
+	partial class FactConstraint : ISurveyNodeReference
+	{
+		/// <summary>
+		/// The key used to retrieve external constraint expansion details
+		/// </summary>
+		public static readonly object SurveyConstraintExpansionKey = new object();
+		#region ISurveyNodeReference Implementation
+		/// <summary>
+		/// Implements <see cref="ISurveyNodeReference.ReferencedSurveyNode"/>
+		/// </summary>
+		protected object ReferencedSurveyNode
+		{
+			get
+			{
+				return FactType;
+			}
+		}
+		object ISurveyNodeReference.ReferencedSurveyNode
+		{
+			get
+			{
+				return ReferencedSurveyNode;
+			}
+		}
+		/// <summary>
+		/// Implements <see cref="ISurveyNodeReference.SurveyNodeReferenceReason"/>
+		/// </summary>
+		protected object SurveyNodeReferenceReason
+		{
+			get
+			{
+				return this;
+			}
+		}
+		object ISurveyNodeReference.SurveyNodeReferenceReason
+		{
+			get
+			{
+				return SurveyNodeReferenceReason;
+			}
+		}
+		/// <summary>
+		/// Implements <see cref="ISurveyNodeReference.SurveyNodeReferenceOptions"/>
+		/// </summary>
+		protected static SurveyNodeReferenceOptions SurveyNodeReferenceOptions
+		{
+			get
+			{
+				return SurveyNodeReferenceOptions.FilterReferencedAnswers;
+			}
+		}
+		SurveyNodeReferenceOptions ISurveyNodeReference.SurveyNodeReferenceOptions
+		{
+			get
+			{
+				return SurveyNodeReferenceOptions;
+			}
+		}
+		/// <summary>
+		/// Implements <see cref="ISurveyNodeReference.UseSurveyNodeReferenceAnswer"/>
+		/// </summary>
+		protected static bool UseSurveyNodeReferenceAnswer(Type questionType, ISurveyDynamicValues dynamicValues, int answer)
+		{
+			return questionType != typeof(SurveyErrorState);
+		}
+		bool ISurveyNodeReference.UseSurveyNodeReferenceAnswer(Type questionType, ISurveyDynamicValues dynamicValues, int answer)
+		{
+			return UseSurveyNodeReferenceAnswer(questionType, dynamicValues, answer);
+		}
+		#endregion // ISurveyNodeReference Implementation
 	}
 }

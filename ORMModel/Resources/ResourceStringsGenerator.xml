@@ -409,6 +409,8 @@
 	<ResourceString name="ExclusiveOrConstraint" model="Model" resourceName="ExclusiveOrConstraint.ClassName"/>
 	<ResourceString name="ExclusiveOrConstraintMandatoryConstraintNameDisplayName" model="Model" resourceName="ExclusiveOrConstraint.MandatoryConstraintName.DisplayName"/>
 	<ResourceString name="ExclusiveOrConstraintExclusionConstraintNameDisplayName" model="Model" resourceName="ExclusiveOrConstraint.ExclusionConstraintName.DisplayName"/>
+	<ResourceString name="RoleSurveyNameFormat" model="Model" resourceName="Role.SurveyNameFormat"/>
+	<ResourceString name="RoleSurveyNameMissingRolePlayer" model="Model" resourceName="Role.SurveyNameMissingRolePlayer"/>
 	<ResourceString name="ValueConstraintDefinitionContainerPattern" model="ObjectModel" resourceName="Neumont.Tools.ORM.ObjectModel.ValueConstraint.DefinitionContainerPattern">
 		<comment>Pattern showing left- and right-string to use for containing a value range definition.</comment>
 	</ResourceString>

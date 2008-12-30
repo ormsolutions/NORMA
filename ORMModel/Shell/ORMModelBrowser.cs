@@ -94,6 +94,22 @@ namespace Neumont.Tools.ORM.Shell
 					VirtualTreeItemInfo info = treeControl.Tree.GetItemInfo(currentIndex, 0, false);
 					int options = 0;
 					object trackingObject = info.Branch.GetObject(info.Row, 0, ObjectStyle.TrackingObject, ref options);
+
+					// Resolve reference reasons
+					ISurveyNodeReference reference = trackingObject as ISurveyNodeReference;
+					if (reference != null)
+					{
+						switch (reference.SurveyNodeReferenceOptions & (SurveyNodeReferenceOptions.SelectReferenceReason | SurveyNodeReferenceOptions.SelectSelf))
+						{
+							//case SurveyNodeReferenceOptions.SelectSelf:
+							case SurveyNodeReferenceOptions.SelectReferenceReason:
+								trackingObject = reference.SurveyNodeReferenceReason;
+								break;
+							default:
+								trackingObject = reference.ReferencedSurveyNode;
+								break;
+						}
+					}
 					
 					// There is no guarantee we'll get a ModelElement, but things work better if we can
 					IRepresentModelElements proxy;
@@ -378,6 +394,7 @@ namespace Neumont.Tools.ORM.Shell
 				treeControl.SelectionChanged += new EventHandler(Tree_SelectionChanged);
 				treeControl.ContextMenuInvoked += new ContextMenuEventHandler(Tree_ContextMenuInvoked);
 				treeControl.LabelEditControlChanged += new EventHandler(Tree_LabelEditControlChanged);
+				treeControl.DoubleClick += new DoubleClickEventHandler(Tree_DoubleClick);
 				Guid commandSetId = typeof(ORMDesignerEditorFactory).GUID;
 				Frame.SetGuidProperty((int)__VSFPROPID.VSFPROPID_InheritKeyBindings, ref commandSetId);
 			}
@@ -385,7 +402,24 @@ namespace Neumont.Tools.ORM.Shell
 			ORMDesignerDocData currentDocument = this.CurrentDocument;
 			treeContainer.Tree = (currentDocument != null) ? currentDocument.SurveyTree : null;
 		}
-
+		private void Tree_DoubleClick(object sender, DoubleClickEventArgs e)
+		{
+			if (!e.Handled &&
+				e.Button == MouseButtons.Left &&
+				0 != (e.HitInfo.HitTarget & (VirtualTreeHitTargets.OnItem | VirtualTreeHitTargets.OnItemRight)))
+			{
+				VirtualTreeItemInfo itemInfo = e.ItemInfo;
+				int options = 0;
+				ISurveyNodeReference reference = itemInfo.Branch.GetObject(itemInfo.Row, 0, ObjectStyle.TrackingObject, ref options) as ISurveyNodeReference;
+				if (reference != null)
+				{
+					if (((VirtualTreeControl)sender).SelectObject(null, reference.ReferencedSurveyNode, (int)ObjectStyle.TrackingObject, 0))
+					{
+						e.Handled = true;
+					}
+				}
+			}
+		}
 		private void Tree_LabelEditControlChanged(object sender, EventArgs e)
 		{
 			ActiveInPlaceEditWindow = myTreeContainer.TreeControl.LabelEditControl;
