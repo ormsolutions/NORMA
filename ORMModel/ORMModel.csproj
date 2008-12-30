@@ -667,9 +667,6 @@
       <SubType>Designer</SubType>
       <DesignTime>True</DesignTime>
     </EmbeddedResource>
-    <EmbeddedResource Include="ObjectModel\ORMCoreDomainModel.resx">
-      <SubType>Designer</SubType>
-    </EmbeddedResource>
     <EmbeddedResource Include="ObjectModel\GeneratedCode\DomainModelResx.resx">
       <LogicalName>Neumont.Tools.ORM.GeneratedCode.CoreDomainModelResx.resources</LogicalName>
       <DependentUpon>DomainModelResx.tt</DependentUpon>

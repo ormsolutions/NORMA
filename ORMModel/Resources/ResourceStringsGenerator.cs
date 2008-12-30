@@ -37,28 +37,12 @@ namespace Neumont.Tools.ORM
 				return ResourceStrings.GetString(ResourceManagers.ShapeModel, "Neumont.Tools.ORM.ShapeModel.ORMDiagram.DisplayName");
 			}
 		}
-		/// <summary>The display name used for an ObjectType when IsValueType is false</summary>
-		public static string ValueType
-		{
-			get
-			{
-				return ResourceStrings.GetString(ResourceManagers.ObjectModel, "Neumont.Tools.ORM.ObjectModel.ValueType");
-			}
-		}
-		/// <summary>The display name used for an ObjectType when IsValueType is true</summary>
-		public static string EntityType
-		{
-			get
-			{
-				return ResourceStrings.GetString(ResourceManagers.ObjectModel, "Neumont.Tools.ORM.ObjectModel.EntityType");
-			}
-		}
 		/// <summary>The display name used for a simple FactType</summary>
 		public static string FactType
 		{
 			get
 			{
-				return ResourceStrings.GetString(ResourceManagers.ObjectModel, "Neumont.Tools.ORM.ObjectModel.FactType");
+				return ResourceStrings.GetString(ResourceManagers.ObjectModel, "Neumont.Tools.ORM.ObjectModel.FactType.DisplayName");
 			}
 		}
 		/// <summary>The display name used for a SubtypeFact</summary>
@@ -66,31 +50,7 @@ namespace Neumont.Tools.ORM
 		{
 			get
 			{
-				return ResourceStrings.GetString(ResourceManagers.ObjectModel, "Neumont.Tools.ORM.ObjectModel.SubtypeFact");
-			}
-		}
-		/// <summary>The display name used for an objectified (nested) FactType</summary>
-		public static string ObjectifiedFactType
-		{
-			get
-			{
-				return ResourceStrings.GetString(ResourceManagers.ObjectModel, "Neumont.Tools.ORM.ObjectModel.ObjectifiedFactType");
-			}
-		}
-		/// <summary>The display name used for an internal uniqueness constraint</summary>
-		public static string InternalUniquenessConstraint
-		{
-			get
-			{
-				return ResourceStrings.GetString(ResourceManagers.ObjectModel, "Neumont.Tools.ORM.ObjectModel.InternalUniquenessConstraint");
-			}
-		}
-		/// <summary>The display name used for an external uniqueness constraint</summary>
-		public static string ExternalUniquenessConstraint
-		{
-			get
-			{
-				return ResourceStrings.GetString(ResourceManagers.ObjectModel, "Neumont.Tools.ORM.ObjectModel.UniquenessConstraint");
+				return ResourceStrings.GetString(ResourceManagers.ObjectModel, "Neumont.Tools.ORM.ObjectModel.SubtypeFact.DisplayName");
 			}
 		}
 		/// <summary>The display name used for a disjunctive mandatory constraint</summary>
@@ -98,23 +58,7 @@ namespace Neumont.Tools.ORM
 		{
 			get
 			{
-				return ResourceStrings.GetString(ResourceManagers.ObjectModel, "Neumont.Tools.ORM.ObjectModel.MandatoryConstraint");
-			}
-		}
-		/// <summary>The display name used for an implied mandatory constraint</summary>
-		public static string ImpliedMandatoryConstraint
-		{
-			get
-			{
-				return ResourceStrings.GetString(ResourceManagers.ObjectModel, "Neumont.Tools.ORM.ObjectModel.ImpliedMandatoryConstraint");
-			}
-		}
-		/// <summary>The display name used for a simple mandatory constraint</summary>
-		public static string SimpleMandatoryConstraint
-		{
-			get
-			{
-				return ResourceStrings.GetString(ResourceManagers.ObjectModel, "Neumont.Tools.ORM.ObjectModel.SimpleMandatoryConstraint");
+				return ResourceStrings.GetString(ResourceManagers.ObjectModel, "Neumont.Tools.ORM.ObjectModel.MandatoryConstraint.DisplayName");
 			}
 		}
 		/// <summary>The display name used for a ReadingType</summary>
@@ -122,7 +66,63 @@ namespace Neumont.Tools.ORM
 		{
 			get
 			{
-				return ResourceStrings.GetString(ResourceManagers.ObjectModel, "Neumont.Tools.ORM.ObjectModel.Reading");
+				return ResourceStrings.GetString(ResourceManagers.ObjectModel, "Neumont.Tools.ORM.ObjectModel.Reading.DisplayName");
+			}
+		}
+		/// <summary>The display name used for an ObjectType when IsValueType is true</summary>
+		public static string ValueType
+		{
+			get
+			{
+				return ResourceStrings.GetString(ResourceManagers.Model, "ObjectModel.ValueType");
+			}
+		}
+		/// <summary>The display name used for an ObjectType when IsValueType is false</summary>
+		public static string EntityType
+		{
+			get
+			{
+				return ResourceStrings.GetString(ResourceManagers.Model, "ObjectModel.EntityType");
+			}
+		}
+		/// <summary>The display name used for an objectified (nested) FactType</summary>
+		public static string ObjectifiedFactType
+		{
+			get
+			{
+				return ResourceStrings.GetString(ResourceManagers.Model, "ObjectModel.ObjectifiedFactType");
+			}
+		}
+		/// <summary>The display name used for an internal uniqueness constraint</summary>
+		public static string InternalUniquenessConstraint
+		{
+			get
+			{
+				return ResourceStrings.GetString(ResourceManagers.Model, "ObjectModel.InternalUniquenessConstraint");
+			}
+		}
+		/// <summary>The display name used for an external uniqueness constraint</summary>
+		public static string ExternalUniquenessConstraint
+		{
+			get
+			{
+				return ResourceStrings.GetString(ResourceManagers.Model, "ObjectModel.UniquenessConstraint");
+			}
+		}
+		/// <summary>The display name used for an implied mandatory constraint</summary>
+		public static string ImpliedMandatoryConstraint
+		{
+			get
+			{
+				return ResourceStrings.GetString(ResourceManagers.Model, "ObjectModel.ImpliedMandatoryConstraint");
+			}
+		}
+		/// <summary>The display name used for a simple mandatory constraint</summary>
+		public static string SimpleMandatoryConstraint
+		{
+			get
+			{
+				return ResourceStrings.GetString(ResourceManagers.Model, "ObjectModel.SimpleMandatoryConstraint");
 			}
 		}
 		/// <summary>The name displayed to represent null in the role player picker</summary>
@@ -130,7 +130,7 @@ namespace Neumont.Tools.ORM
 		{
 			get
 			{
-				return ResourceStrings.GetString(ResourceManagers.ObjectModel, "Neumont.Tools.ORM.ObjectModel.Editors.RolePlayerPicker.NullItemText");
+				return ResourceStrings.GetString(ResourceManagers.Model, "ObjectModel.Editors.RolePlayerPicker.NullItemText");
 			}
 		}
 		/// <summary>The name displayed to represent null in the nested fact type picker</summary>
@@ -138,7 +138,7 @@ namespace Neumont.Tools.ORM
 		{
 			get
 			{
-				return ResourceStrings.GetString(ResourceManagers.ObjectModel, "Neumont.Tools.ORM.ObjectModel.Editors.NestedFactTypePicker.NullItemText");
+				return ResourceStrings.GetString(ResourceManagers.Model, "ObjectModel.Editors.NestedFactTypePicker.NullItemText");
 			}
 		}
 		/// <summary>The name displayed to represent null in the nesting type picker</summary>
@@ -146,7 +146,7 @@ namespace Neumont.Tools.ORM
 		{
 			get
 			{
-				return ResourceStrings.GetString(ResourceManagers.ObjectModel, "Neumont.Tools.ORM.ObjectModel.Editors.NestingTypePicker.NullItemText");
+				return ResourceStrings.GetString(ResourceManagers.Model, "ObjectModel.Editors.NestingTypePicker.NullItemText");
 			}
 		}
 		/// <summary>The base name used to create a name for a new EntityType. This is a format string</summary>
@@ -154,7 +154,7 @@ namespace Neumont.Tools.ORM
 		{
 			get
 			{
-				return ResourceStrings.GetString(ResourceManagers.ObjectModel, "Neumont.Tools.ORM.ObjectModel.EntityType.DefaultNamePattern");
+				return ResourceStrings.GetString(ResourceManagers.Model, "ObjectModel.EntityType.DefaultNamePattern");
 			}
 		}
 		/// <summary>The descriptive text for a PortableDataType of Unspecified.</summary>
@@ -162,7 +162,7 @@ namespace Neumont.Tools.ORM
 		{
 			get
 			{
-				return ResourceStrings.GetString(ResourceManagers.ObjectModel, "Neumont.Tools.ORM.ObjectModel.DataType.PortableDataType.Unspecified.Text");
+				return ResourceStrings.GetString(ResourceManagers.Model, "ObjectModel.DataType.PortableDataType.Unspecified.Text");
 			}
 		}
 		/// <summary>A fixed length text data type</summary>
@@ -170,7 +170,7 @@ namespace Neumont.Tools.ORM
 		{
 			get
 			{
-				return ResourceStrings.GetString(ResourceManagers.ObjectModel, "Neumont.Tools.ORM.ObjectModel.DataType.PortableDataType.Text.FixedLength.Text");
+				return ResourceStrings.GetString(ResourceManagers.Model, "ObjectModel.DataType.PortableDataType.Text.FixedLength.Text");
 			}
 		}
 		/// <summary>A variable length text data type</summary>
@@ -178,7 +178,7 @@ namespace Neumont.Tools.ORM
 		{
 			get
 			{
-				return ResourceStrings.GetString(ResourceManagers.ObjectModel, "Neumont.Tools.ORM.ObjectModel.DataType.PortableDataType.Text.VariableLength.Text");
+				return ResourceStrings.GetString(ResourceManagers.Model, "ObjectModel.DataType.PortableDataType.Text.VariableLength.Text");
 			}
 		}
 		/// <summary>A large length text data type</summary>
@@ -186,7 +186,7 @@ namespace Neumont.Tools.ORM
 		{
 			get
 			{
-				return ResourceStrings.GetString(ResourceManagers.ObjectModel, "Neumont.Tools.ORM.ObjectModel.DataType.PortableDataType.Text.LargeLength.Text");
+				return ResourceStrings.GetString(ResourceManagers.Model, "ObjectModel.DataType.PortableDataType.Text.LargeLength.Text");
 			}
 		}
 		/// <summary>A signed integer numeric data type</summary>
@@ -194,7 +194,7 @@ namespace Neumont.Tools.ORM
 		{
 			get
 			{
-				return ResourceStrings.GetString(ResourceManagers.ObjectModel, "Neumont.Tools.ORM.ObjectModel.DataType.PortableDataType.Numeric.SignedInteger.Text");
+				return ResourceStrings.GetString(ResourceManagers.Model, "ObjectModel.DataType.PortableDataType.Numeric.SignedInteger.Text");
 			}
 		}
 		/// <summary>A signed large integer numeric data type</summary>
@@ -202,7 +202,7 @@ namespace Neumont.Tools.ORM
 		{
 			get
 			{
-				return ResourceStrings.GetString(ResourceManagers.ObjectModel, "Neumont.Tools.ORM.ObjectModel.DataType.PortableDataType.Numeric.SignedLargeInteger.Text");
+				return ResourceStrings.GetString(ResourceManagers.Model, "ObjectModel.DataType.PortableDataType.Numeric.SignedLargeInteger.Text");
 			}
 		}
 		/// <summary>A signed small integer numeric data type</summary>
@@ -210,7 +210,7 @@ namespace Neumont.Tools.ORM
 		{
 			get
 			{
-				return ResourceStrings.GetString(ResourceManagers.ObjectModel, "Neumont.Tools.ORM.ObjectModel.DataType.PortableDataType.Numeric.SignedSmallInteger.Text");
+				return ResourceStrings.GetString(ResourceManagers.Model, "ObjectModel.DataType.PortableDataType.Numeric.SignedSmallInteger.Text");
 			}
 		}
 		/// <summary>An unsigned integer numeric data type</summary>
@@ -218,7 +218,7 @@ namespace Neumont.Tools.ORM
 		{
 			get
 			{
-				return ResourceStrings.GetString(ResourceManagers.ObjectModel, "Neumont.Tools.ORM.ObjectModel.DataType.PortableDataType.Numeric.UnsignedInteger.Text");
+				return ResourceStrings.GetString(ResourceManagers.Model, "ObjectModel.DataType.PortableDataType.Numeric.UnsignedInteger.Text");
 			}
 		}
 		/// <summary>An unsigned large integer numeric data type</summary>
@@ -226,7 +226,7 @@ namespace Neumont.Tools.ORM
 		{
 			get
 			{
-				return ResourceStrings.GetString(ResourceManagers.ObjectModel, "Neumont.Tools.ORM.ObjectModel.DataType.PortableDataType.Numeric.UnsignedLargeInteger.Text");
+				return ResourceStrings.GetString(ResourceManagers.Model, "ObjectModel.DataType.PortableDataType.Numeric.UnsignedLargeInteger.Text");
 			}
 		}
 		/// <summary>An unsigned small integer numeric data type</summary>
@@ -234,7 +234,7 @@ namespace Neumont.Tools.ORM
 		{
 			get
 			{
-				return ResourceStrings.GetString(ResourceManagers.ObjectModel, "Neumont.Tools.ORM.ObjectModel.DataType.PortableDataType.Numeric.UnsignedSmallInteger.Text");
+				return ResourceStrings.GetString(ResourceManagers.Model, "ObjectModel.DataType.PortableDataType.Numeric.UnsignedSmallInteger.Text");
 			}
 		}
 		/// <summary>An unsigned tiny integer numeric data type</summary>
@@ -242,7 +242,7 @@ namespace Neumont.Tools.ORM
 		{
 			get
 			{
-				return ResourceStrings.GetString(ResourceManagers.ObjectModel, "Neumont.Tools.ORM.ObjectModel.DataType.PortableDataType.Numeric.UnsignedTinyInteger.Text");
+				return ResourceStrings.GetString(ResourceManagers.Model, "ObjectModel.DataType.PortableDataType.Numeric.UnsignedTinyInteger.Text");
 			}
 		}
 		/// <summary>An auto counter numeric data type</summary>
@@ -250,7 +250,7 @@ namespace Neumont.Tools.ORM
 		{
 			get
 			{
-				return ResourceStrings.GetString(ResourceManagers.ObjectModel, "Neumont.Tools.ORM.ObjectModel.DataType.PortableDataType.Numeric.AutoCounter.Text");
+				return ResourceStrings.GetString(ResourceManagers.Model, "ObjectModel.DataType.PortableDataType.Numeric.AutoCounter.Text");
 			}
 		}
 		/// <summary>A custom precision floating point numeric data type</summary>
@@ -258,7 +258,7 @@ namespace Neumont.Tools.ORM
 		{
 			get
 			{
-				return ResourceStrings.GetString(ResourceManagers.ObjectModel, "Neumont.Tools.ORM.ObjectModel.DataType.PortableDataType.Numeric.FloatingPoint.Text");
+				return ResourceStrings.GetString(ResourceManagers.Model, "ObjectModel.DataType.PortableDataType.Numeric.FloatingPoint.Text");
 			}
 		}
 		/// <summary>A single precision floating point numeric data type</summary>
@@ -266,7 +266,7 @@ namespace Neumont.Tools.ORM
 		{
 			get
 			{
-				return ResourceStrings.GetString(ResourceManagers.ObjectModel, "Neumont.Tools.ORM.ObjectModel.DataType.PortableDataType.Numeric.SinglePrecisionFloatingPoint.Text");
+				return ResourceStrings.GetString(ResourceManagers.Model, "ObjectModel.DataType.PortableDataType.Numeric.SinglePrecisionFloatingPoint.Text");
 			}
 		}
 		/// <summary>A double precision floating point numeric data type</summary>
@@ -274,7 +274,7 @@ namespace Neumont.Tools.ORM
 		{
 			get
 			{
-				return ResourceStrings.GetString(ResourceManagers.ObjectModel, "Neumont.Tools.ORM.ObjectModel.DataType.PortableDataType.Numeric.DoublePrecisionFloatingPoint.Text");
+				return ResourceStrings.GetString(ResourceManagers.Model, "ObjectModel.DataType.PortableDataType.Numeric.DoublePrecisionFloatingPoint.Text");
 			}
 		}
 		/// <summary>A decimal numeric data type</summary>
@@ -282,7 +282,7 @@ namespace Neumont.Tools.ORM
 		{
 			get
 			{
-				return ResourceStrings.GetString(ResourceManagers.ObjectModel, "Neumont.Tools.ORM.ObjectModel.DataType.PortableDataType.Numeric.Decimal.Text");
+				return ResourceStrings.GetString(ResourceManagers.Model, "ObjectModel.DataType.PortableDataType.Numeric.Decimal.Text");
 			}
 		}
 		/// <summary>A money numeric data type</summary>
@@ -290,7 +290,7 @@ namespace Neumont.Tools.ORM
 		{
 			get
 			{
-				return ResourceStrings.GetString(ResourceManagers.ObjectModel, "Neumont.Tools.ORM.ObjectModel.DataType.PortableDataType.Numeric.Money.Text");
+				return ResourceStrings.GetString(ResourceManagers.Model, "ObjectModel.DataType.PortableDataType.Numeric.Money.Text");
 			}
 		}
 		/// <summary>A fixed length raw data data type</summary>
@@ -298,7 +298,7 @@ namespace Neumont.Tools.ORM
 		{
 			get
 			{
-				return ResourceStrings.GetString(ResourceManagers.ObjectModel, "Neumont.Tools.ORM.ObjectModel.DataType.PortableDataType.RawData.FixedLength.Text");
+				return ResourceStrings.GetString(ResourceManagers.Model, "ObjectModel.DataType.PortableDataType.RawData.FixedLength.Text");
 			}
 		}
 		/// <summary>A variable length raw data data type</summary>
@@ -306,7 +306,7 @@ namespace Neumont.Tools.ORM
 		{
 			get
 			{
-				return ResourceStrings.GetString(ResourceManagers.ObjectModel, "Neumont.Tools.ORM.ObjectModel.DataType.PortableDataType.RawData.VariableLength.Text");
+				return ResourceStrings.GetString(ResourceManagers.Model, "ObjectModel.DataType.PortableDataType.RawData.VariableLength.Text");
 			}
 		}
 		/// <summary>A large length raw data data type</summary>
@@ -314,7 +314,7 @@ namespace Neumont.Tools.ORM
 		{
 			get
 			{
-				return ResourceStrings.GetString(ResourceManagers.ObjectModel, "Neumont.Tools.ORM.ObjectModel.DataType.PortableDataType.RawData.LargeLength.Text");
+				return ResourceStrings.GetString(ResourceManagers.Model, "ObjectModel.DataType.PortableDataType.RawData.LargeLength.Text");
 			}
 		}
 		/// <summary>A picture raw data data type</summary>
@@ -322,7 +322,7 @@ namespace Neumont.Tools.ORM
 		{
 			get
 			{
-				return ResourceStrings.GetString(ResourceManagers.ObjectModel, "Neumont.Tools.ORM.ObjectModel.DataType.PortableDataType.RawData.Picture.Text");
+				return ResourceStrings.GetString(ResourceManagers.Model, "ObjectModel.DataType.PortableDataType.RawData.Picture.Text");
 			}
 		}
 		/// <summary>An OLE object raw data data type</summary>
@@ -330,7 +330,7 @@ namespace Neumont.Tools.ORM
 		{
 			get
 			{
-				return ResourceStrings.GetString(ResourceManagers.ObjectModel, "Neumont.Tools.ORM.ObjectModel.DataType.PortableDataType.RawData.OleObject.Text");
+				return ResourceStrings.GetString(ResourceManagers.Model, "ObjectModel.DataType.PortableDataType.RawData.OleObject.Text");
 			}
 		}
 		/// <summary>An auto timestamp temporal data type</summary>
@@ -338,31 +338,31 @@ namespace Neumont.Tools.ORM
 		{
 			get
 			{
-				return ResourceStrings.GetString(ResourceManagers.ObjectModel, "Neumont.Tools.ORM.ObjectModel.DataType.PortableDataType.Temporal.AutoTimestamp.Text");
+				return ResourceStrings.GetString(ResourceManagers.Model, "ObjectModel.DataType.PortableDataType.Temporal.AutoTimestamp.Text");
 			}
 		}
-		/// <summary>An time temporal data type</summary>
+		/// <summary>A time temporal data type</summary>
 		public static string PortableDataTypeTemporalTime
 		{
 			get
 			{
-				return ResourceStrings.GetString(ResourceManagers.ObjectModel, "Neumont.Tools.ORM.ObjectModel.DataType.PortableDataType.Temporal.Time.Text");
+				return ResourceStrings.GetString(ResourceManagers.Model, "ObjectModel.DataType.PortableDataType.Temporal.Time.Text");
 			}
 		}
-		/// <summary>An date temporal data type</summary>
+		/// <summary>A date temporal data type</summary>
 		public static string PortableDataTypeTemporalDate
 		{
 			get
 			{
-				return ResourceStrings.GetString(ResourceManagers.ObjectModel, "Neumont.Tools.ORM.ObjectModel.DataType.PortableDataType.Temporal.Date.Text");
+				return ResourceStrings.GetString(ResourceManagers.Model, "ObjectModel.DataType.PortableDataType.Temporal.Date.Text");
 			}
 		}
-		/// <summary>An date and time temporal data type</summary>
+		/// <summary>A date and time temporal data type</summary>
 		public static string PortableDataTypeTemporalDateAndTime
 		{
 			get
 			{
-				return ResourceStrings.GetString(ResourceManagers.ObjectModel, "Neumont.Tools.ORM.ObjectModel.DataType.PortableDataType.Temporal.DateAndTime.Text");
+				return ResourceStrings.GetString(ResourceManagers.Model, "ObjectModel.DataType.PortableDataType.Temporal.DateAndTime.Text");
 			}
 		}
 		/// <summary>A true or false logical data type</summary>
@@ -370,7 +370,7 @@ namespace Neumont.Tools.ORM
 		{
 			get
 			{
-				return ResourceStrings.GetString(ResourceManagers.ObjectModel, "Neumont.Tools.ORM.ObjectModel.DataType.PortableDataType.Logical.TrueOrFalse.Text");
+				return ResourceStrings.GetString(ResourceManagers.Model, "ObjectModel.DataType.PortableDataType.Logical.TrueOrFalse.Text");
 			}
 		}
 		/// <summary>A yes or no logical data type</summary>
@@ -378,7 +378,7 @@ namespace Neumont.Tools.ORM
 		{
 			get
 			{
-				return ResourceStrings.GetString(ResourceManagers.ObjectModel, "Neumont.Tools.ORM.ObjectModel.DataType.PortableDataType.Logical.YesOrNo.Text");
+				return ResourceStrings.GetString(ResourceManagers.Model, "ObjectModel.DataType.PortableDataType.Logical.YesOrNo.Text");
 			}
 		}
 		/// <summary>A row id data type (can not be classified in any of the groups above)</summary>
@@ -386,7 +386,7 @@ namespace Neumont.Tools.ORM
 		{
 			get
 			{
-				return ResourceStrings.GetString(ResourceManagers.ObjectModel, "Neumont.Tools.ORM.ObjectModel.DataType.PortableDataType.Other.RowId.Text");
+				return ResourceStrings.GetString(ResourceManagers.Model, "ObjectModel.DataType.PortableDataType.Other.RowId.Text");
 			}
 		}
 		/// <summary>An object id data type (can not be classified in any of the groups above)</summary>
@@ -394,7 +394,7 @@ namespace Neumont.Tools.ORM
 		{
 			get
 			{
-				return ResourceStrings.GetString(ResourceManagers.ObjectModel, "Neumont.Tools.ORM.ObjectModel.DataType.PortableDataType.Other.ObjectId.Text");
+				return ResourceStrings.GetString(ResourceManagers.Model, "ObjectModel.DataType.PortableDataType.Other.ObjectId.Text");
 			}
 		}
 		/// <summary>Used to automatically turn a value type into an entity type with a reference mode when IsValueType is set to false and the ValueType has downstream value roles. Replacement field {0} is the name of the exisiting type and field {1} is used to insert a number to ensure that the name is unique. {0}Values{1} is the default format.</summary>
@@ -402,7 +402,7 @@ namespace Neumont.Tools.ORM
 		{
 			get
 			{
-				return ResourceStrings.GetString(ResourceManagers.ObjectModel, "Neumont.Tools.ORM.ObjectModel.ValueType.AutoCreateReferenceModeNamePattern");
+				return ResourceStrings.GetString(ResourceManagers.Model, "ObjectModel.ValueType.AutoCreateReferenceModeNamePattern");
 			}
 		}
 		/// <summary>The base name used to create a name for a new ValueType. This is a format string with {0} being the placeholder for the number placement.</summary>
@@ -410,7 +410,7 @@ namespace Neumont.Tools.ORM
 		{
 			get
 			{
-				return ResourceStrings.GetString(ResourceManagers.ObjectModel, "Neumont.Tools.ORM.ObjectModel.ValueType.DefaultNamePattern");
+				return ResourceStrings.GetString(ResourceManagers.Model, "ObjectModel.ValueType.DefaultNamePattern");
 			}
 		}
 		/// <summary>The format string for the default reading of a subtype. The {0} replacement field is used for the subtype element name; {1} for the supertype.</summary>
@@ -2226,7 +2226,7 @@ namespace Neumont.Tools.ORM
 		{
 			get
 			{
-				return ResourceStrings.GetString(ResourceManagers.ObjectModel, "Neumont.Tools.ORM.ObjectModel.ValueConstraint.DefinitionContainerPattern");
+				return ResourceStrings.GetString(ResourceManagers.Model, "ObjectModel.ValueConstraint.DefinitionContainerPattern");
 			}
 		}
 		/// <summary>String used to delimit sets of value ranges in a definition.</summary>
@@ -2234,7 +2234,7 @@ namespace Neumont.Tools.ORM
 		{
 			get
 			{
-				return ResourceStrings.GetString(ResourceManagers.ObjectModel, "Neumont.Tools.ORM.ObjectModel.ValueConstraint.RangeDelimiter");
+				return ResourceStrings.GetString(ResourceManagers.Model, "ObjectModel.ValueConstraint.RangeDelimiter");
 			}
 		}
 		/// <summary>String used to delimit the min- and max-values of a value range.</summary>
@@ -2242,7 +2242,7 @@ namespace Neumont.Tools.ORM
 		{
 			get
 			{
-				return ResourceStrings.GetString(ResourceManagers.ObjectModel, "Neumont.Tools.ORM.ObjectModel.ValueConstraint.ValueDelimiter");
+				return ResourceStrings.GetString(ResourceManagers.Model, "ObjectModel.ValueConstraint.ValueDelimiter");
 			}
 		}
 		/// <summary>Pattern showing left- and right-string to use for containing a value range as a string.</summary>
@@ -2250,7 +2250,7 @@ namespace Neumont.Tools.ORM
 		{
 			get
 			{
-				return ResourceStrings.GetString(ResourceManagers.ObjectModel, "Neumont.Tools.ORM.ObjectModel.ValueConstraint.StringContainerPattern");
+				return ResourceStrings.GetString(ResourceManagers.Model, "ObjectModel.ValueConstraint.StringContainerPattern");
 			}
 		}
 		/// <summary>Pattern showing left- and right-string to use to indicate the min- and max-values are open (i.e. the value itself is not a member of the range).</summary>
@@ -2258,7 +2258,7 @@ namespace Neumont.Tools.ORM
 		{
 			get
 			{
-				return ResourceStrings.GetString(ResourceManagers.ObjectModel, "Neumont.Tools.ORM.ObjectModel.ValueConstraint.OpenInclusionPattern");
+				return ResourceStrings.GetString(ResourceManagers.Model, "ObjectModel.ValueConstraint.OpenInclusionPattern");
 			}
 		}
 		/// <summary>Pattern showing left- and right-string to use to indicate the min- and max-values are closed (i.e. the value itself is a member of the range).</summary>
@@ -2266,7 +2266,7 @@ namespace Neumont.Tools.ORM
 		{
 			get
 			{
-				return ResourceStrings.GetString(ResourceManagers.ObjectModel, "Neumont.Tools.ORM.ObjectModel.ValueConstraint.ClosedInclusionPattern");
+				return ResourceStrings.GetString(ResourceManagers.Model, "ObjectModel.ValueConstraint.ClosedInclusionPattern");
 			}
 		}
 		/// <summary>Model validation error text used when multiple recognized phrases with the same name are loaded into a model.Field 0 is the model name, field 1 is the element name.This is an uncommon condition that should only occur with a hand edit to a model file.</summary>

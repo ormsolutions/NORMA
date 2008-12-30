@@ -34,7 +34,7 @@
 	</xs:schema>
 	<FileAssociations>
 		<FileAssociation model="ShapeModel" resourceFile="..\ShapeModel\GeneratedCode\DomainModelResx.resx" useFileComments="never"/>
-		<FileAssociation model="ObjectModel" resourceFile="..\ObjectModel\ORMCoreDomainModel.resx" useFileComments="secondary"/>
+		<FileAssociation model="ObjectModel" resourceFile="..\ObjectModel\GeneratedCode\DomainModelResx.resx" useFileComments="never"/>
 		<FileAssociation model="Diagram" resourceFile="..\ShapeModel\ORMDiagram.resx" useFileComments="primary"/>
 		<FileAssociation model="Model" resourceFile="..\ObjectModel\ORMModel.resx" useFileComments="primary"/>
 	</FileAssociations>
@@ -44,147 +44,61 @@
 	<ResourceString name="ORMDiagramAccessibleName" resourceName="Neumont.Tools.ORM.ShapeModel.ORMDiagram.DisplayName" model="ShapeModel">
 		<comment>The accessible name for a diagram</comment>
 	</ResourceString>
-	<ResourceString name="ValueType" model="ObjectModel" resourceName="Neumont.Tools.ORM.ObjectModel.ValueType">
-		<comment>The display name used for an ObjectType when IsValueType is false</comment>
-	</ResourceString>
-	<ResourceString name="EntityType" model="ObjectModel" resourceName="Neumont.Tools.ORM.ObjectModel.EntityType">
-		<comment>The display name used for an ObjectType when IsValueType is true</comment>
-	</ResourceString>
-	<ResourceString name="FactType" model="ObjectModel" resourceName="Neumont.Tools.ORM.ObjectModel.FactType">
+	<ResourceString name="FactType" model="ObjectModel" resourceName="Neumont.Tools.ORM.ObjectModel.FactType.DisplayName">
 		<comment>The display name used for a simple FactType</comment>
 	</ResourceString>
-	<ResourceString name="SubtypeFact" model="ObjectModel" resourceName="Neumont.Tools.ORM.ObjectModel.SubtypeFact">
+	<ResourceString name="SubtypeFact" model="ObjectModel" resourceName="Neumont.Tools.ORM.ObjectModel.SubtypeFact.DisplayName">
 		<comment>The display name used for a SubtypeFact</comment>
 	</ResourceString>
-	<ResourceString name="ObjectifiedFactType" model="ObjectModel" resourceName="Neumont.Tools.ORM.ObjectModel.ObjectifiedFactType">
-		<comment>The display name used for an objectified (nested) FactType</comment>
-	</ResourceString>
-	<ResourceString name="InternalUniquenessConstraint" model="ObjectModel" resourceName="Neumont.Tools.ORM.ObjectModel.InternalUniquenessConstraint">
-		<comment>The display name used for an internal uniqueness constraint</comment>
-	</ResourceString>
-	<ResourceString name="ExternalUniquenessConstraint" model="ObjectModel" resourceName="Neumont.Tools.ORM.ObjectModel.UniquenessConstraint">
-		<comment>The display name used for an external uniqueness constraint</comment>
-	</ResourceString>
-	<ResourceString name="DisjunctiveMandatoryConstraint" model="ObjectModel" resourceName="Neumont.Tools.ORM.ObjectModel.MandatoryConstraint">
+	<ResourceString name="DisjunctiveMandatoryConstraint" model="ObjectModel" resourceName="Neumont.Tools.ORM.ObjectModel.MandatoryConstraint.DisplayName">
 		<comment>The display name used for a disjunctive mandatory constraint</comment>
 	</ResourceString>
-	<ResourceString name="ImpliedMandatoryConstraint" model="ObjectModel" resourceName="Neumont.Tools.ORM.ObjectModel.ImpliedMandatoryConstraint">
-		<comment>The display name used for an implied mandatory constraint</comment>
-	</ResourceString>
-	<ResourceString name="SimpleMandatoryConstraint" model="ObjectModel" resourceName="Neumont.Tools.ORM.ObjectModel.SimpleMandatoryConstraint">
-		<comment>The display name used for a simple mandatory constraint</comment>
-	</ResourceString>
-	<ResourceString name="ReadingType" model="ObjectModel" resourceName="Neumont.Tools.ORM.ObjectModel.Reading">
+	<ResourceString name="ReadingType" model="ObjectModel" resourceName="Neumont.Tools.ORM.ObjectModel.Reading.DisplayName">
 		<comment>The display name used for a ReadingType</comment>
 	</ResourceString>
-	<ResourceString name="RolePlayerPickerNullItemText" model="ObjectModel" resourceName="Neumont.Tools.ORM.ObjectModel.Editors.RolePlayerPicker.NullItemText">
-		<comment>The name displayed to represent null in the role player picker</comment>
-	</ResourceString>
-	<ResourceString name="NestedFactTypePickerNullItemText" model="ObjectModel" resourceName="Neumont.Tools.ORM.ObjectModel.Editors.NestedFactTypePicker.NullItemText">
-		<comment>The name displayed to represent null in the nested fact type picker</comment>
-	</ResourceString>
-	<ResourceString name="NestingTypePickerNullItemText" model="ObjectModel" resourceName="Neumont.Tools.ORM.ObjectModel.Editors.NestingTypePicker.NullItemText">
-		<comment>The name displayed to represent null in the nesting type picker</comment>
-	</ResourceString>
-	<ResourceString name="EntityTypeDefaultNamePattern" model="ObjectModel" resourceName="Neumont.Tools.ORM.ObjectModel.EntityType.DefaultNamePattern">
-		<comment>The base name used to create a name for a new EntityType. This is a format string</comment>
-	</ResourceString>
-	<ResourceString name="PortableDataTypeUnspecified" model="ObjectModel" resourceName="Neumont.Tools.ORM.ObjectModel.DataType.PortableDataType.Unspecified.Text">
-		<comment>The descriptive text for a PortableDataType of Unspecified.</comment>
-	</ResourceString>
-	<ResourceString name="PortableDataTypeTextFixedLength" model="ObjectModel" resourceName="Neumont.Tools.ORM.ObjectModel.DataType.PortableDataType.Text.FixedLength.Text">
-		<comment>A fixed length text data type</comment>
-	</ResourceString>
-	<ResourceString name="PortableDataTypeTextVariableLength" model="ObjectModel" resourceName="Neumont.Tools.ORM.ObjectModel.DataType.PortableDataType.Text.VariableLength.Text">
-		<comment>A variable length text data type</comment>
-	</ResourceString>
-	<ResourceString name="PortableDataTypeTextLargeLength" model="ObjectModel" resourceName="Neumont.Tools.ORM.ObjectModel.DataType.PortableDataType.Text.LargeLength.Text">
-		<comment>A large length text data type</comment>
-	</ResourceString>
-	<ResourceString name="PortableDataTypeNumericSignedInteger" model="ObjectModel" resourceName="Neumont.Tools.ORM.ObjectModel.DataType.PortableDataType.Numeric.SignedInteger.Text">
-		<comment>A signed integer numeric data type</comment>
-	</ResourceString>
-	<ResourceString name="PortableDataTypeNumericSignedLargeInteger" model="ObjectModel" resourceName="Neumont.Tools.ORM.ObjectModel.DataType.PortableDataType.Numeric.SignedLargeInteger.Text">
-		<comment>A signed large integer numeric data type</comment>
-	</ResourceString>
-	<ResourceString name="PortableDataTypeNumericSignedSmallInteger" model="ObjectModel" resourceName="Neumont.Tools.ORM.ObjectModel.DataType.PortableDataType.Numeric.SignedSmallInteger.Text">
-		<comment>A signed small integer numeric data type</comment>
-	</ResourceString>
-	<ResourceString name="PortableDataTypeNumericUnsignedInteger" model="ObjectModel" resourceName="Neumont.Tools.ORM.ObjectModel.DataType.PortableDataType.Numeric.UnsignedInteger.Text">
-		<comment>An unsigned integer numeric data type</comment>
-	</ResourceString>
-	<ResourceString name="PortableDataTypeNumericUnsignedLargeInteger" model="ObjectModel" resourceName="Neumont.Tools.ORM.ObjectModel.DataType.PortableDataType.Numeric.UnsignedLargeInteger.Text">
-		<comment>An unsigned large integer numeric data type</comment>
-	</ResourceString>
-	<ResourceString name="PortableDataTypeNumericUnsignedSmallInteger" model="ObjectModel" resourceName="Neumont.Tools.ORM.ObjectModel.DataType.PortableDataType.Numeric.UnsignedSmallInteger.Text">
-		<comment>An unsigned small integer numeric data type</comment>
-	</ResourceString>
-	<ResourceString name="PortableDataTypeNumericUnsignedTinyInteger" model="ObjectModel" resourceName="Neumont.Tools.ORM.ObjectModel.DataType.PortableDataType.Numeric.UnsignedTinyInteger.Text">
-		<comment>An unsigned tiny integer numeric data type</comment>
-	</ResourceString>
-	<ResourceString name="PortableDataTypeNumericAutoCounter" model="ObjectModel" resourceName="Neumont.Tools.ORM.ObjectModel.DataType.PortableDataType.Numeric.AutoCounter.Text">
-		<comment>An auto counter numeric data type</comment>
-	</ResourceString>
-	<ResourceString name="PortableDataTypeNumericFloatingPoint" model="ObjectModel" resourceName="Neumont.Tools.ORM.ObjectModel.DataType.PortableDataType.Numeric.FloatingPoint.Text">
-		<comment>A custom precision floating point numeric data type</comment>
-	</ResourceString>
-	<ResourceString name="PortableDataTypeNumericSinglePrecisionFloatingPoint" model="ObjectModel" resourceName="Neumont.Tools.ORM.ObjectModel.DataType.PortableDataType.Numeric.SinglePrecisionFloatingPoint.Text">
-		<comment>A single precision floating point numeric data type</comment>
-	</ResourceString>
-	<ResourceString name="PortableDataTypeNumericDoublePrecisionFloatingPoint" model="ObjectModel" resourceName="Neumont.Tools.ORM.ObjectModel.DataType.PortableDataType.Numeric.DoublePrecisionFloatingPoint.Text">
-		<comment>A double precision floating point numeric data type</comment>
-	</ResourceString>
-	<ResourceString name="PortableDataTypeNumericDecimal" model="ObjectModel" resourceName="Neumont.Tools.ORM.ObjectModel.DataType.PortableDataType.Numeric.Decimal.Text">
-		<comment>A decimal numeric data type</comment>
-	</ResourceString>
-	<ResourceString name="PortableDataTypeNumericMoney" model="ObjectModel" resourceName="Neumont.Tools.ORM.ObjectModel.DataType.PortableDataType.Numeric.Money.Text">
-		<comment>A money numeric data type</comment>
-	</ResourceString>
-	<ResourceString name="PortableDataTypeRawDataFixedLength" model="ObjectModel" resourceName="Neumont.Tools.ORM.ObjectModel.DataType.PortableDataType.RawData.FixedLength.Text">
-		<comment>A fixed length raw data data type</comment>
-	</ResourceString>
-	<ResourceString name="PortableDataTypeRawDataVariableLength" model="ObjectModel" resourceName="Neumont.Tools.ORM.ObjectModel.DataType.PortableDataType.RawData.VariableLength.Text">
-		<comment>A variable length raw data data type</comment>
-	</ResourceString>
-	<ResourceString name="PortableDataTypeRawDataLargeLength" model="ObjectModel" resourceName="Neumont.Tools.ORM.ObjectModel.DataType.PortableDataType.RawData.LargeLength.Text">
-		<comment>A large length raw data data type</comment>
-	</ResourceString>
-	<ResourceString name="PortableDataTypeRawDataPicture" model="ObjectModel" resourceName="Neumont.Tools.ORM.ObjectModel.DataType.PortableDataType.RawData.Picture.Text">
-		<comment>A picture raw data data type</comment>
-	</ResourceString>
-	<ResourceString name="PortableDataTypeRawDataOleObject" model="ObjectModel" resourceName="Neumont.Tools.ORM.ObjectModel.DataType.PortableDataType.RawData.OleObject.Text">
-		<comment>An OLE object raw data data type</comment>
-	</ResourceString>
-	<ResourceString name="PortableDataTypeTemporalAutoTimestamp" model="ObjectModel" resourceName="Neumont.Tools.ORM.ObjectModel.DataType.PortableDataType.Temporal.AutoTimestamp.Text">
-		<comment>An auto timestamp temporal data type</comment>
-	</ResourceString>
-	<ResourceString name="PortableDataTypeTemporalTime" model="ObjectModel" resourceName="Neumont.Tools.ORM.ObjectModel.DataType.PortableDataType.Temporal.Time.Text">
-		<comment>An time temporal data type</comment>
-	</ResourceString>
-	<ResourceString name="PortableDataTypeTemporalDate" model="ObjectModel" resourceName="Neumont.Tools.ORM.ObjectModel.DataType.PortableDataType.Temporal.Date.Text">
-		<comment>An date temporal data type</comment>
-	</ResourceString>
-	<ResourceString name="PortableDataTypeTemporalDateAndTime" model="ObjectModel" resourceName="Neumont.Tools.ORM.ObjectModel.DataType.PortableDataType.Temporal.DateAndTime.Text">
-		<comment>An date and time temporal data type</comment>
-	</ResourceString>
-	<ResourceString name="PortableDataTypeLogicalTrueOrFalse" model="ObjectModel" resourceName="Neumont.Tools.ORM.ObjectModel.DataType.PortableDataType.Logical.TrueOrFalse.Text">
-		<comment>A true or false logical data type</comment>
-	</ResourceString>
-	<ResourceString name="PortableDataTypeLogicalYesOrNo" model="ObjectModel" resourceName="Neumont.Tools.ORM.ObjectModel.DataType.PortableDataType.Logical.YesOrNo.Text">
-		<comment>A yes or no logical data type</comment>
-	</ResourceString>
-	<ResourceString name="PortableDataTypeOtherRowId" model="ObjectModel" resourceName="Neumont.Tools.ORM.ObjectModel.DataType.PortableDataType.Other.RowId.Text">
-		<comment>A row id data type (can not be classified in any of the groups above)</comment>
-	</ResourceString>
-	<ResourceString name="PortableDataTypeOtherObjectId" model="ObjectModel" resourceName="Neumont.Tools.ORM.ObjectModel.DataType.PortableDataType.Other.ObjectId.Text">
-		<comment>An object id data type (can not be classified in any of the groups above)</comment>
-	</ResourceString>
-	<ResourceString name="ValueTypeAutoCreateReferenceModeNamePattern" model="ObjectModel" resourceName="Neumont.Tools.ORM.ObjectModel.ValueType.AutoCreateReferenceModeNamePattern">
-		<comment>Used to automatically turn a value type into an entity type with a reference mode when IsValueType is set to false and the ValueType has downstream value roles. Replacement field {0} is the name of the exisiting type and field {1} is used to insert a number to ensure that the name is unique. {0}Values{1} is the default format.</comment>
-	</ResourceString>
-	<ResourceString name="ValueTypeDefaultNamePattern" model="ObjectModel" resourceName="Neumont.Tools.ORM.ObjectModel.ValueType.DefaultNamePattern">
-		<comment>The base name used to create a name for a new ValueType. This is a format string with {0} being the placeholder for the number placement.</comment>
-	</ResourceString>
+	<ResourceString name="ValueType" model="Model" resourceName="ObjectModel.ValueType"/>
+	<ResourceString name="EntityType" model="Model" resourceName="ObjectModel.EntityType"/>
+	<ResourceString name="ObjectifiedFactType" model="Model" resourceName="ObjectModel.ObjectifiedFactType"/>
+	<ResourceString name="InternalUniquenessConstraint" model="Model" resourceName="ObjectModel.InternalUniquenessConstraint"/>
+	<ResourceString name="ExternalUniquenessConstraint" model="Model" resourceName="ObjectModel.UniquenessConstraint"/>
+	<ResourceString name="ImpliedMandatoryConstraint" model="Model" resourceName="ObjectModel.ImpliedMandatoryConstraint"/>
+	<ResourceString name="SimpleMandatoryConstraint" model="Model" resourceName="ObjectModel.SimpleMandatoryConstraint"/>
+	<ResourceString name="RolePlayerPickerNullItemText" model="Model" resourceName="ObjectModel.Editors.RolePlayerPicker.NullItemText"/>
+	<ResourceString name="NestedFactTypePickerNullItemText" model="Model" resourceName="ObjectModel.Editors.NestedFactTypePicker.NullItemText"/>
+	<ResourceString name="NestingTypePickerNullItemText" model="Model" resourceName="ObjectModel.Editors.NestingTypePicker.NullItemText"/>
+	<ResourceString name="EntityTypeDefaultNamePattern" model="Model" resourceName="ObjectModel.EntityType.DefaultNamePattern"/>
+	<ResourceString name="PortableDataTypeUnspecified" model="Model" resourceName="ObjectModel.DataType.PortableDataType.Unspecified.Text"/>
+	<ResourceString name="PortableDataTypeTextFixedLength" model="Model" resourceName="ObjectModel.DataType.PortableDataType.Text.FixedLength.Text"/>
+	<ResourceString name="PortableDataTypeTextVariableLength" model="Model" resourceName="ObjectModel.DataType.PortableDataType.Text.VariableLength.Text"/>
+	<ResourceString name="PortableDataTypeTextLargeLength" model="Model" resourceName="ObjectModel.DataType.PortableDataType.Text.LargeLength.Text"/>
+	<ResourceString name="PortableDataTypeNumericSignedInteger" model="Model" resourceName="ObjectModel.DataType.PortableDataType.Numeric.SignedInteger.Text"/>
+	<ResourceString name="PortableDataTypeNumericSignedLargeInteger" model="Model" resourceName="ObjectModel.DataType.PortableDataType.Numeric.SignedLargeInteger.Text"/>
+	<ResourceString name="PortableDataTypeNumericSignedSmallInteger" model="Model" resourceName="ObjectModel.DataType.PortableDataType.Numeric.SignedSmallInteger.Text"/>
+	<ResourceString name="PortableDataTypeNumericUnsignedInteger" model="Model" resourceName="ObjectModel.DataType.PortableDataType.Numeric.UnsignedInteger.Text"/>
+	<ResourceString name="PortableDataTypeNumericUnsignedLargeInteger" model="Model" resourceName="ObjectModel.DataType.PortableDataType.Numeric.UnsignedLargeInteger.Text"/>
+	<ResourceString name="PortableDataTypeNumericUnsignedSmallInteger" model="Model" resourceName="ObjectModel.DataType.PortableDataType.Numeric.UnsignedSmallInteger.Text"/>
+	<ResourceString name="PortableDataTypeNumericUnsignedTinyInteger" model="Model" resourceName="ObjectModel.DataType.PortableDataType.Numeric.UnsignedTinyInteger.Text"/>
+	<ResourceString name="PortableDataTypeNumericAutoCounter" model="Model" resourceName="ObjectModel.DataType.PortableDataType.Numeric.AutoCounter.Text"/>
+	<ResourceString name="PortableDataTypeNumericFloatingPoint" model="Model" resourceName="ObjectModel.DataType.PortableDataType.Numeric.FloatingPoint.Text"/>
+	<ResourceString name="PortableDataTypeNumericSinglePrecisionFloatingPoint" model="Model" resourceName="ObjectModel.DataType.PortableDataType.Numeric.SinglePrecisionFloatingPoint.Text"/>
+	<ResourceString name="PortableDataTypeNumericDoublePrecisionFloatingPoint" model="Model" resourceName="ObjectModel.DataType.PortableDataType.Numeric.DoublePrecisionFloatingPoint.Text"/>
+	<ResourceString name="PortableDataTypeNumericDecimal" model="Model" resourceName="ObjectModel.DataType.PortableDataType.Numeric.Decimal.Text"/>
+	<ResourceString name="PortableDataTypeNumericMoney" model="Model" resourceName="ObjectModel.DataType.PortableDataType.Numeric.Money.Text"/>
+	<ResourceString name="PortableDataTypeRawDataFixedLength" model="Model" resourceName="ObjectModel.DataType.PortableDataType.RawData.FixedLength.Text"/>
+	<ResourceString name="PortableDataTypeRawDataVariableLength" model="Model" resourceName="ObjectModel.DataType.PortableDataType.RawData.VariableLength.Text"/>
+	<ResourceString name="PortableDataTypeRawDataLargeLength" model="Model" resourceName="ObjectModel.DataType.PortableDataType.RawData.LargeLength.Text"/>
+	<ResourceString name="PortableDataTypeRawDataPicture" model="Model" resourceName="ObjectModel.DataType.PortableDataType.RawData.Picture.Text"/>
+	<ResourceString name="PortableDataTypeRawDataOleObject" model="Model" resourceName="ObjectModel.DataType.PortableDataType.RawData.OleObject.Text"/>
+	<ResourceString name="PortableDataTypeTemporalAutoTimestamp" model="Model" resourceName="ObjectModel.DataType.PortableDataType.Temporal.AutoTimestamp.Text"/>
+	<ResourceString name="PortableDataTypeTemporalTime" model="Model" resourceName="ObjectModel.DataType.PortableDataType.Temporal.Time.Text"/>
+	<ResourceString name="PortableDataTypeTemporalDate" model="Model" resourceName="ObjectModel.DataType.PortableDataType.Temporal.Date.Text"/>
+	<ResourceString name="PortableDataTypeTemporalDateAndTime" model="Model" resourceName="ObjectModel.DataType.PortableDataType.Temporal.DateAndTime.Text"/>
+	<ResourceString name="PortableDataTypeLogicalTrueOrFalse" model="Model" resourceName="ObjectModel.DataType.PortableDataType.Logical.TrueOrFalse.Text"/>
+	<ResourceString name="PortableDataTypeLogicalYesOrNo" model="Model" resourceName="ObjectModel.DataType.PortableDataType.Logical.YesOrNo.Text"/>
+	<ResourceString name="PortableDataTypeOtherRowId" model="Model" resourceName="ObjectModel.DataType.PortableDataType.Other.RowId.Text"/>
+	<ResourceString name="PortableDataTypeOtherObjectId" model="Model" resourceName="ObjectModel.DataType.PortableDataType.Other.ObjectId.Text"/>
+	<ResourceString name="ValueTypeAutoCreateReferenceModeNamePattern" model="Model" resourceName="ObjectModel.ValueType.AutoCreateReferenceModeNamePattern"/>
+	<ResourceString name="ValueTypeDefaultNamePattern" model="Model" resourceName="ObjectModel.ValueType.DefaultNamePattern"/>
 	<ResourceString name="SubtypeFactDefaultReadingText" model="Model" resourceName="SubtypeFact.DefaultReadingText"/>
 	<ResourceString name="SubtypeFactElementNameFormat" model="Model" resourceName="SubtypeFact.ElementNameFormat"/>
 	<ResourceString name="SubtypeFactPredicateInverseReading" model="Model" resourceName="SubtypeFact.PredicateInverseReading"/>
@@ -411,24 +325,12 @@
 	<ResourceString name="ExclusiveOrConstraintExclusionConstraintNameDisplayName" model="Model" resourceName="ExclusiveOrConstraint.ExclusionConstraintName.DisplayName"/>
 	<ResourceString name="RoleSurveyNameFormat" model="Model" resourceName="Role.SurveyNameFormat"/>
 	<ResourceString name="RoleSurveyNameMissingRolePlayer" model="Model" resourceName="Role.SurveyNameMissingRolePlayer"/>
-	<ResourceString name="ValueConstraintDefinitionContainerPattern" model="ObjectModel" resourceName="Neumont.Tools.ORM.ObjectModel.ValueConstraint.DefinitionContainerPattern">
-		<comment>Pattern showing left- and right-string to use for containing a value range definition.</comment>
-	</ResourceString>
-	<ResourceString name="ValueConstraintRangeDelimiter" model="ObjectModel" resourceName="Neumont.Tools.ORM.ObjectModel.ValueConstraint.RangeDelimiter">
-		<comment>String used to delimit sets of value ranges in a definition.</comment>
-	</ResourceString>
-	<ResourceString name="ValueConstraintValueDelimiter" model="ObjectModel" resourceName="Neumont.Tools.ORM.ObjectModel.ValueConstraint.ValueDelimiter">
-		<comment>String used to delimit the min- and max-values of a value range.</comment>
-	</ResourceString>
-	<ResourceString name="ValueConstraintStringContainerPattern" model="ObjectModel" resourceName="Neumont.Tools.ORM.ObjectModel.ValueConstraint.StringContainerPattern">
-		<comment>Pattern showing left- and right-string to use for containing a value range as a string.</comment>
-	</ResourceString>
-	<ResourceString name="ValueConstraintOpenInclusionContainer" model="ObjectModel" resourceName="Neumont.Tools.ORM.ObjectModel.ValueConstraint.OpenInclusionPattern">
-		<comment>Pattern showing left- and right-string to use to indicate the min- and max-values are open (i.e. the value itself is not a member of the range).</comment>
-	</ResourceString>
-	<ResourceString name="ValueConstraintClosedInclusionContainer" model="ObjectModel" resourceName="Neumont.Tools.ORM.ObjectModel.ValueConstraint.ClosedInclusionPattern">
-		<comment>Pattern showing left- and right-string to use to indicate the min- and max-values are closed (i.e. the value itself is a member of the range).</comment>
-	</ResourceString>
+	<ResourceString name="ValueConstraintDefinitionContainerPattern" model="Model" resourceName="ObjectModel.ValueConstraint.DefinitionContainerPattern"/>
+	<ResourceString name="ValueConstraintRangeDelimiter" model="Model" resourceName="ObjectModel.ValueConstraint.RangeDelimiter"/>
+	<ResourceString name="ValueConstraintValueDelimiter" model="Model" resourceName="ObjectModel.ValueConstraint.ValueDelimiter"/>
+	<ResourceString name="ValueConstraintStringContainerPattern" model="Model" resourceName="ObjectModel.ValueConstraint.StringContainerPattern"/>
+	<ResourceString name="ValueConstraintOpenInclusionContainer" model="Model" resourceName="ObjectModel.ValueConstraint.OpenInclusionPattern"/>
+	<ResourceString name="ValueConstraintClosedInclusionContainer" model="Model" resourceName="ObjectModel.ValueConstraint.ClosedInclusionPattern"/>
 	<ResourceString name="ModelErrorModelHasDuplicateRecognizedPhrases" model="Model" resourceName="ModelError.RecognizedPhrase.DuplicateNameError.Message"/>
 	<ResourceString name="ObjectTypeShapeDerivedSubtypeFormatString" model="Diagram" resourceName="ObjectTypeShape.DerivedSubtypeFormatString"/>
 	<ResourceString name="ObjectTypeShapeIndependentFormatString" model="Diagram" resourceName="ObjectTypeShape.IndependentFormatString"/>

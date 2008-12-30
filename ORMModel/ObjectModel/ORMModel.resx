@@ -974,6 +974,202 @@
 	<data name="NameGeneratorSubjectArea.Suffix" xml:space="preserve">
 		<value>Suffix</value>
 	</data>
+	<data name="ObjectModel.DataType.PortableDataType.Logical.TrueOrFalse.Text" xml:space="preserve">
+		<value>Logical: True or False</value>
+		<comment>A true or false logical data type</comment>
+	</data>
+	<data name="ObjectModel.DataType.PortableDataType.Logical.YesOrNo.Text" xml:space="preserve">
+		<value>Logical: Yes or No</value>
+		<comment>A yes or no logical data type</comment>
+	</data>
+	<data name="ObjectModel.DataType.PortableDataType.Numeric.AutoCounter.Text" xml:space="preserve">
+		<value>Numeric: Auto Counter</value>
+		<comment>An auto counter numeric data type</comment>
+	</data>
+	<data name="ObjectModel.DataType.PortableDataType.Numeric.Decimal.Text" xml:space="preserve">
+		<value>Numeric: Decimal</value>
+		<comment>A decimal numeric data type</comment>
+	</data>
+	<data name="ObjectModel.DataType.PortableDataType.Numeric.DoublePrecisionFloatingPoint.Text" xml:space="preserve">
+		<value>Numeric: Float (Double Precision)</value>
+		<comment>A double precision floating point numeric data type</comment>
+	</data>
+	<data name="ObjectModel.DataType.PortableDataType.Numeric.FloatingPoint.Text" xml:space="preserve">
+		<value>Numeric: Float (Custom Precision)</value>
+		<comment>A custom precision floating point numeric data type</comment>
+	</data>
+	<data name="ObjectModel.DataType.PortableDataType.Numeric.Money.Text" xml:space="preserve">
+		<value>Numeric: Money</value>
+		<comment>A money numeric data type</comment>
+	</data>
+	<data name="ObjectModel.DataType.PortableDataType.Numeric.SignedInteger.Text" xml:space="preserve">
+		<value>Numeric: Signed Integer</value>
+		<comment>A signed integer numeric data type</comment>
+	</data>
+	<data name="ObjectModel.DataType.PortableDataType.Numeric.SignedLargeInteger.Text" xml:space="preserve">
+		<value>Numeric: Signed Big Integer</value>
+		<comment>A signed large integer numeric data type</comment>
+	</data>
+	<data name="ObjectModel.DataType.PortableDataType.Numeric.SignedSmallInteger.Text" xml:space="preserve">
+		<value>Numeric: Signed Small Integer</value>
+		<comment>A signed small integer numeric data type</comment>
+	</data>
+	<data name="ObjectModel.DataType.PortableDataType.Numeric.SinglePrecisionFloatingPoint.Text" xml:space="preserve">
+		<value>Numeric: Float (Single Precision)</value>
+		<comment>A single precision floating point numeric data type</comment>
+	</data>
+	<data name="ObjectModel.DataType.PortableDataType.Numeric.UnsignedInteger.Text" xml:space="preserve">
+		<value>Numeric: Unsigned Integer</value>
+		<comment>An unsigned integer numeric data type</comment>
+	</data>
+	<data name="ObjectModel.DataType.PortableDataType.Numeric.UnsignedLargeInteger.Text" xml:space="preserve">
+		<value>Numeric: Unsigned Big Integer</value>
+		<comment>An unsigned large integer numeric data type</comment>
+	</data>
+	<data name="ObjectModel.DataType.PortableDataType.Numeric.UnsignedSmallInteger.Text" xml:space="preserve">
+		<value>Numeric: Unsigned Small Integer</value>
+		<comment>An unsigned small integer numeric data type</comment>
+	</data>
+	<data name="ObjectModel.DataType.PortableDataType.Numeric.UnsignedTinyInteger.Text" xml:space="preserve">
+		<value>Numeric: Unsigned Tiny Integer</value>
+		<comment>An unsigned tiny integer numeric data type</comment>
+	</data>
+	<data name="ObjectModel.DataType.PortableDataType.Other.ObjectId.Text" xml:space="preserve">
+		<value>Other: Object ID</value>
+		<comment>An object id data type (can not be classified in any of the groups above)</comment>
+	</data>
+	<data name="ObjectModel.DataType.PortableDataType.Other.RowId.Text" xml:space="preserve">
+		<value>Other: Row ID</value>
+		<comment>A row id data type (can not be classified in any of the groups above)</comment>
+	</data>
+	<data name="ObjectModel.DataType.PortableDataType.RawData.FixedLength.Text" xml:space="preserve">
+		<value>Raw Data: Fixed Length</value>
+		<comment>A fixed length raw data data type</comment>
+	</data>
+	<data name="ObjectModel.DataType.PortableDataType.RawData.LargeLength.Text" xml:space="preserve">
+		<value>Raw Data: Large Length</value>
+		<comment>A large length raw data data type</comment>
+	</data>
+	<data name="ObjectModel.DataType.PortableDataType.RawData.OleObject.Text" xml:space="preserve">
+		<value>Raw Data: OLE Object</value>
+		<comment>An OLE object raw data data type</comment>
+	</data>
+	<data name="ObjectModel.DataType.PortableDataType.RawData.Picture.Text" xml:space="preserve">
+		<value>Raw Data: Picture</value>
+		<comment>A picture raw data data type</comment>
+	</data>
+	<data name="ObjectModel.DataType.PortableDataType.RawData.VariableLength.Text" xml:space="preserve">
+		<value>Raw Data: Variable Length</value>
+		<comment>A variable length raw data data type</comment>
+	</data>
+	<data name="ObjectModel.DataType.PortableDataType.Temporal.AutoTimestamp.Text" xml:space="preserve">
+		<value>Temporal: Auto Timestamp</value>
+		<comment>An auto timestamp temporal data type</comment>
+	</data>
+	<data name="ObjectModel.DataType.PortableDataType.Temporal.Date.Text" xml:space="preserve">
+		<value>Temporal: Date</value>
+		<comment>A date temporal data type</comment>
+	</data>
+	<data name="ObjectModel.DataType.PortableDataType.Temporal.DateAndTime.Text" xml:space="preserve">
+		<value>Temporal: Date &amp; Time</value>
+		<comment>A date and time temporal data type</comment>
+	</data>
+	<data name="ObjectModel.DataType.PortableDataType.Temporal.Time.Text" xml:space="preserve">
+		<value>Temporal: Time</value>
+		<comment>A time temporal data type</comment>
+	</data>
+	<data name="ObjectModel.DataType.PortableDataType.Text.FixedLength.Text" xml:space="preserve">
+		<value>Text: Fixed Length</value>
+		<comment>A fixed length text data type</comment>
+	</data>
+	<data name="ObjectModel.DataType.PortableDataType.Text.LargeLength.Text" xml:space="preserve">
+		<value>Text: Large Length</value>
+		<comment>A large length text data type</comment>
+	</data>
+	<data name="ObjectModel.DataType.PortableDataType.Text.VariableLength.Text" xml:space="preserve">
+		<value>Text: Variable Length</value>
+		<comment>A variable length text data type</comment>
+	</data>
+	<data name="ObjectModel.DataType.PortableDataType.Unspecified.Text" xml:space="preserve">
+		<value>&lt;Data Type Not Set&gt;</value>
+		<comment>The descriptive text for a PortableDataType of Unspecified.</comment>
+	</data>
+	<data name="ObjectModel.Editors.NestedFactTypePicker.NullItemText" xml:space="preserve">
+		<value>&lt;Not Objectified&gt;</value>
+		<comment>The name displayed to represent null in the nested fact type picker</comment>
+	</data>
+	<data name="ObjectModel.Editors.NestingTypePicker.NullItemText" xml:space="preserve">
+		<value>&lt;No Objectification&gt;</value>
+		<comment>The name displayed to represent null in the nesting type picker</comment>
+	</data>
+	<data name="ObjectModel.Editors.RolePlayerPicker.NullItemText" xml:space="preserve">
+		<value>&lt;Role Player Not Set&gt;</value>
+		<comment>The name displayed to represent null in the role player picker</comment>
+	</data>
+	<data name="ObjectModel.EntityType" xml:space="preserve">
+		<value>EntityType</value>
+		<comment>The display name used for an ObjectType when IsValueType is false</comment>
+	</data>
+	<data name="ObjectModel.EntityType.DefaultNamePattern" xml:space="preserve">
+		<value>EntityType{0}</value>
+		<comment>The base name used to create a name for a new EntityType. This is a format string</comment>
+	</data>
+	<data name="ObjectModel.ImpliedMandatoryConstraint" xml:space="preserve">
+		<value>ImpliedMandatoryConstraint</value>
+		<comment>The display name used for an implied mandatory constraint</comment>
+	</data>
+	<data name="ObjectModel.InternalUniquenessConstraint" xml:space="preserve">
+		<value>InternalUniquenessConstraint</value>
+		<comment>The display name used for an internal uniqueness constraint</comment>
+	</data>
+	<data name="ObjectModel.ObjectifiedFactType" xml:space="preserve">
+		<value>ObjectifiedFactType</value>
+		<comment>The display name used for an objectified (nested) FactType</comment>
+	</data>
+	<data name="ObjectModel.SimpleMandatoryConstraint" xml:space="preserve">
+		<value>SimpleMandatoryConstraint</value>
+		<comment>The display name used for a simple mandatory constraint</comment>
+	</data>
+	<data name="ObjectModel.UniquenessConstraint" xml:space="preserve">
+		<value>ExternalUniquenessConstraint</value>
+		<comment>The display name used for an external uniqueness constraint</comment>
+	</data>
+	<data name="ObjectModel.ValueConstraint.ClosedInclusionPattern" xml:space="preserve">
+		<value>[{0}]</value>
+		<comment>Pattern showing left- and right-string to use to indicate the min- and max-values are closed (i.e. the value itself is a member of the range).</comment>
+	</data>
+	<data name="ObjectModel.ValueConstraint.DefinitionContainerPattern" xml:space="preserve">
+		<value>{ {0} }</value>
+		<comment>Pattern showing left- and right-string to use for containing a value range definition.</comment>
+	</data>
+	<data name="ObjectModel.ValueConstraint.OpenInclusionPattern" xml:space="preserve">
+		<value>({0})</value>
+		<comment>Pattern showing left- and right-string to use to indicate the min- and max-values are open (i.e. the value itself is not a member of the range).</comment>
+	</data>
+	<data name="ObjectModel.ValueConstraint.RangeDelimiter" xml:space="preserve">
+		<value>, </value>
+		<comment>String used to delimit sets of value ranges in a definition.</comment>
+	</data>
+	<data name="ObjectModel.ValueConstraint.StringContainerPattern" xml:space="preserve">
+		<value>'{0}'</value>
+		<comment>Pattern showing left- and right-string to use for containing a value range as a string.</comment>
+	</data>
+	<data name="ObjectModel.ValueConstraint.ValueDelimiter" xml:space="preserve">
+		<value>..</value>
+		<comment>String used to delimit the min- and max-values of a value range.</comment>
+	</data>
+	<data name="ObjectModel.ValueType" xml:space="preserve">
+		<value>ValueType</value>
+		<comment>The display name used for an ObjectType when IsValueType is true</comment>
+	</data>
+	<data name="ObjectModel.ValueType.DefaultNamePattern" xml:space="preserve">
+		<value>ValueType{0}</value>
+		<comment>The base name used to create a name for a new ValueType. This is a format string with {0} being the placeholder for the number placement.</comment>
+	</data>
+	<data name="ObjectModel.ValueType.AutoCreateReferenceModeNamePattern" xml:space="preserve">
+		<value>{0}_RefMode{1}</value>
+		<comment>Used to automatically turn a value type into an entity type with a reference mode when IsValueType is set to false and the ValueType has downstream value roles. Replacement field {0} is the name of the exisiting type and field {1} is used to insert a number to ensure that the name is unique. {0}Values{1} is the default format.</comment>
+	</data>
 	<data name="SubtypeFact.ComponentNameFormat" xml:space="preserve">
 		<value>{0}-&gt;{1}</value>
 		<comment>String for generating a component name for a subtype. The {0} replacement field is used for the subtype component name; {1} for the supertype.</comment>

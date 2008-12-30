@@ -5,6 +5,7 @@ using System.Text.RegularExpressions;
 using Microsoft.VisualStudio.Modeling;
 using Neumont.Tools.ORM.ObjectModel;
 using Neumont.Tools.Modeling;
+using Neumont.Tools.Modeling.Design;
 using System.Globalization;
 using System.Resources;
 
@@ -41,12 +42,10 @@ namespace Neumont.Tools.ORM.ExtensionExample
 				Regex regex = objectTypeRegex;
 				if (regex == null)
 				{
-					ResourceManager resMgr = ORMCoreDomainModel.SingletonResourceManager;
+					ResourceManager resMgr = ResourceAccessor<ORMModel>.ResourceManager;
 					regex = System.Threading.Interlocked.CompareExchange<Regex>(
 						ref objectTypeRegex,
-						// UNDONE: Redirect the strings to a real resource in the core dll, it isn't here at the moment.
-						//new Regex(string.Format(CultureInfo.InvariantCulture, @"\A({0}|{1})\d+\z", resMgr.GetString("Neumont.Tools.ORM.ObjectModel.ValueType"), resMgr.GetString("Neumont.Tools.ORM.ObjectModel.EntityType")), RegexOptions.Compiled | RegexOptions.IgnoreCase),
-						new Regex(string.Format(CultureInfo.InvariantCulture, @"\A({0}|{1})\d+\z", "ValueType", "EntityType"), RegexOptions.Compiled | RegexOptions.IgnoreCase),
+						new Regex(string.Format(CultureInfo.InvariantCulture, @"\A({0}|{1})\d+\z", resMgr.GetString("ObjectModel.ValueType"), resMgr.GetString("ObjectModel.EntityType")), RegexOptions.Compiled | RegexOptions.IgnoreCase),
 						null);
 					regex = objectTypeRegex;
 				}
