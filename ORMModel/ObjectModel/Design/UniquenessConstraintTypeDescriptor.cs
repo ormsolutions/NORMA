@@ -3,6 +3,7 @@
 * Neumont Object-Role Modeling Architect for Visual Studio                 *
 *                                                                          *
 * Copyright © Neumont University. All rights reserved.                     *
+* Copyright © Matthew Curland. All rights reserved.                        *
 *                                                                          *
 * The use and distribution terms for this software are covered by the      *
 * Common Public License 1.0 (http://opensource.org/licenses/cpl) which     *
@@ -30,7 +31,7 @@ namespace Neumont.Tools.ORM.ObjectModel.Design
 	/// <see cref="ElementTypeDescriptor"/> for <see cref="UniquenessConstraint"/>s.
 	/// </summary>
 	[HostProtection(SecurityAction.LinkDemand, SharedState = true)]
-	public class UniquenessConstraintTypeDescriptor<TModelElement> : ORMModelElementTypeDescriptor<TModelElement>
+	public class UniquenessConstraintTypeDescriptor<TModelElement> : SetConstraintTypeDescriptor<TModelElement>
 		where TModelElement : UniquenessConstraint
 	{
 		/// <summary>

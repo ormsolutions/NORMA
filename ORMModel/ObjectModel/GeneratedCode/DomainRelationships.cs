@@ -1393,6 +1393,7 @@ namespace Neumont.Tools.ORM.ObjectModel
 		/// </summary>
 		[DslDesign::DisplayNameResource("Neumont.Tools.ORM.ObjectModel.ValueTypeHasDataType/Scale.DisplayName", typeof(global::Neumont.Tools.ORM.ObjectModel.ORMCoreDomainModel), "Neumont.Tools.ORM.GeneratedCode.CoreDomainModelResx")]
 		[DslDesign::DescriptionResource("Neumont.Tools.ORM.ObjectModel.ValueTypeHasDataType/Scale.Description", typeof(global::Neumont.Tools.ORM.ObjectModel.ORMCoreDomainModel), "Neumont.Tools.ORM.GeneratedCode.CoreDomainModelResx")]
+		[global::System.ComponentModel.Browsable(false)]
 		[DslModeling::DomainObjectId("f21936e2-e7e6-4afc-b96f-43e9c76f8a9b")]
 		public global::System.Int32 Scale
 		{
@@ -1480,6 +1481,7 @@ namespace Neumont.Tools.ORM.ObjectModel
 		/// </summary>
 		[DslDesign::DisplayNameResource("Neumont.Tools.ORM.ObjectModel.ValueTypeHasDataType/Length.DisplayName", typeof(global::Neumont.Tools.ORM.ObjectModel.ORMCoreDomainModel), "Neumont.Tools.ORM.GeneratedCode.CoreDomainModelResx")]
 		[DslDesign::DescriptionResource("Neumont.Tools.ORM.ObjectModel.ValueTypeHasDataType/Length.Description", typeof(global::Neumont.Tools.ORM.ObjectModel.ORMCoreDomainModel), "Neumont.Tools.ORM.GeneratedCode.CoreDomainModelResx")]
+		[global::System.ComponentModel.Browsable(false)]
 		[DslModeling::DomainObjectId("60d1471d-23c9-4d4d-91af-6aa5e9ba7b8b")]
 		public global::System.Int32 Length
 		{
@@ -1738,7 +1740,7 @@ namespace Neumont.Tools.ORM.ObjectModel
 		
 		/// <summary>
 		/// DomainRole NestingType
-		/// Description for Neumont.Tools.ORM.ObjectModel.Objectification.NestingType
+		/// The FactType objectified by this EntityType.
 		/// </summary>
 		[global::System.ComponentModel.Editor(typeof(global::Neumont.Tools.ORM.ObjectModel.Design.NestedFactTypePicker), typeof(global::System.Drawing.Design.UITypeEditor))]
 		[global::System.ComponentModel.MergableProperty(false)]
@@ -1792,7 +1794,7 @@ namespace Neumont.Tools.ORM.ObjectModel
 		
 		/// <summary>
 		/// DomainRole NestedFactType
-		/// Description for Neumont.Tools.ORM.ObjectModel.Objectification.NestedFactType
+		/// The EntityType that objectifies this FactType.
 		/// </summary>
 		[global::System.ComponentModel.Editor(typeof(global::Neumont.Tools.ORM.ObjectModel.Design.NestingTypePicker), typeof(global::System.Drawing.Design.UITypeEditor))]
 		[global::System.ComponentModel.MergableProperty(false)]

@@ -300,6 +300,7 @@ namespace Neumont.Tools.ORM.ObjectModel
 		
 		/// <summary>
 		/// Gets or sets the value of CasingOption domain property.
+		/// Specify upper/lower case settings of names generated for this context.
 		/// </summary>
 		[DslDesign::DisplayNameResource("Neumont.Tools.ORM.ObjectModel.NameGenerator/CasingOption.DisplayName", typeof(global::Neumont.Tools.ORM.ObjectModel.ORMCoreDomainModel), "Neumont.Tools.ORM.GeneratedCode.CoreDomainModelResx")]
 		[DslDesign::DescriptionResource("Neumont.Tools.ORM.ObjectModel.NameGenerator/CasingOption.Description", typeof(global::Neumont.Tools.ORM.ObjectModel.ORMCoreDomainModel), "Neumont.Tools.ORM.GeneratedCode.CoreDomainModelResx")]
@@ -387,6 +388,8 @@ namespace Neumont.Tools.ORM.ObjectModel
 		
 		/// <summary>
 		/// Gets or sets the value of SpacingFormat domain property.
+		/// Specify if whitespace is preserved, removed, or replaced in names generated for
+		/// this context.
 		/// </summary>
 		[DslDesign::DisplayNameResource("Neumont.Tools.ORM.ObjectModel.NameGenerator/SpacingFormat.DisplayName", typeof(global::Neumont.Tools.ORM.ObjectModel.ORMCoreDomainModel), "Neumont.Tools.ORM.GeneratedCode.CoreDomainModelResx")]
 		[DslDesign::DescriptionResource("Neumont.Tools.ORM.ObjectModel.NameGenerator/SpacingFormat.Description", typeof(global::Neumont.Tools.ORM.ObjectModel.ORMCoreDomainModel), "Neumont.Tools.ORM.GeneratedCode.CoreDomainModelResx")]
@@ -474,6 +477,8 @@ namespace Neumont.Tools.ORM.ObjectModel
 		
 		/// <summary>
 		/// Gets or sets the value of SpacingReplacement domain property.
+		/// Specify the characters used instead of spaces in names generated for this
+		/// context.
 		/// </summary>
 		[DslDesign::DisplayNameResource("Neumont.Tools.ORM.ObjectModel.NameGenerator/SpacingReplacement.DisplayName", typeof(global::Neumont.Tools.ORM.ObjectModel.ORMCoreDomainModel), "Neumont.Tools.ORM.GeneratedCode.CoreDomainModelResx")]
 		[DslDesign::DescriptionResource("Neumont.Tools.ORM.ObjectModel.NameGenerator/SpacingReplacement.Description", typeof(global::Neumont.Tools.ORM.ObjectModel.ORMCoreDomainModel), "Neumont.Tools.ORM.GeneratedCode.CoreDomainModelResx")]
@@ -560,6 +565,8 @@ namespace Neumont.Tools.ORM.ObjectModel
 		
 		/// <summary>
 		/// Gets or sets the value of AutomaticallyShortenNames domain property.
+		/// Specify if names generated for this context should be automatically shortened if
+		/// they are too long for the generation target.
 		/// </summary>
 		[DslDesign::DisplayNameResource("Neumont.Tools.ORM.ObjectModel.NameGenerator/AutomaticallyShortenNames.DisplayName", typeof(global::Neumont.Tools.ORM.ObjectModel.ORMCoreDomainModel), "Neumont.Tools.ORM.GeneratedCode.CoreDomainModelResx")]
 		[DslDesign::DescriptionResource("Neumont.Tools.ORM.ObjectModel.NameGenerator/AutomaticallyShortenNames.Description", typeof(global::Neumont.Tools.ORM.ObjectModel.ORMCoreDomainModel), "Neumont.Tools.ORM.GeneratedCode.CoreDomainModelResx")]
@@ -647,6 +654,8 @@ namespace Neumont.Tools.ORM.ObjectModel
 		
 		/// <summary>
 		/// Gets or sets the value of UseTargetDefaultMaximum domain property.
+		/// Specify if the default maximum name length for this name generation context
+		/// should be used when shortening names.
 		/// </summary>
 		[DslDesign::DisplayNameResource("Neumont.Tools.ORM.ObjectModel.NameGenerator/UseTargetDefaultMaximum.DisplayName", typeof(global::Neumont.Tools.ORM.ObjectModel.ORMCoreDomainModel), "Neumont.Tools.ORM.GeneratedCode.CoreDomainModelResx")]
 		[DslDesign::DescriptionResource("Neumont.Tools.ORM.ObjectModel.NameGenerator/UseTargetDefaultMaximum.Description", typeof(global::Neumont.Tools.ORM.ObjectModel.ORMCoreDomainModel), "Neumont.Tools.ORM.GeneratedCode.CoreDomainModelResx")]
@@ -734,6 +743,7 @@ namespace Neumont.Tools.ORM.ObjectModel
 		
 		/// <summary>
 		/// Gets or sets the value of UserDefinedMaximum domain property.
+		/// Specify a custom maximum name length for this name generation context.
 		/// </summary>
 		[DslDesign::DisplayNameResource("Neumont.Tools.ORM.ObjectModel.NameGenerator/UserDefinedMaximum.DisplayName", typeof(global::Neumont.Tools.ORM.ObjectModel.ORMCoreDomainModel), "Neumont.Tools.ORM.GeneratedCode.CoreDomainModelResx")]
 		[DslDesign::DescriptionResource("Neumont.Tools.ORM.ObjectModel.NameGenerator/UserDefinedMaximum.Description", typeof(global::Neumont.Tools.ORM.ObjectModel.ORMCoreDomainModel), "Neumont.Tools.ORM.GeneratedCode.CoreDomainModelResx")]
@@ -1057,6 +1067,7 @@ namespace Neumont.Tools.ORM.ObjectModel
 		/// </summary>
 		[DslDesign::DisplayNameResource("Neumont.Tools.ORM.ObjectModel.ModelErrorDisplayFilter/ExcludedCategories.DisplayName", typeof(global::Neumont.Tools.ORM.ObjectModel.ORMCoreDomainModel), "Neumont.Tools.ORM.GeneratedCode.CoreDomainModelResx")]
 		[DslDesign::DescriptionResource("Neumont.Tools.ORM.ObjectModel.ModelErrorDisplayFilter/ExcludedCategories.Description", typeof(global::Neumont.Tools.ORM.ObjectModel.ORMCoreDomainModel), "Neumont.Tools.ORM.GeneratedCode.CoreDomainModelResx")]
+		[global::System.ComponentModel.Browsable(false)]
 		[DslModeling::DomainProperty(Kind = DslModeling::DomainPropertyKind.CustomStorage)]
 		[DslModeling::DomainObjectId("46f355f4-001c-4a3f-8a0f-56bec4eacdeb")]
 		public global::System.String ExcludedCategories
@@ -1148,6 +1159,7 @@ namespace Neumont.Tools.ORM.ObjectModel
 		/// </summary>
 		[DslDesign::DisplayNameResource("Neumont.Tools.ORM.ObjectModel.ModelErrorDisplayFilter/IncludedErrors.DisplayName", typeof(global::Neumont.Tools.ORM.ObjectModel.ORMCoreDomainModel), "Neumont.Tools.ORM.GeneratedCode.CoreDomainModelResx")]
 		[DslDesign::DescriptionResource("Neumont.Tools.ORM.ObjectModel.ModelErrorDisplayFilter/IncludedErrors.Description", typeof(global::Neumont.Tools.ORM.ObjectModel.ORMCoreDomainModel), "Neumont.Tools.ORM.GeneratedCode.CoreDomainModelResx")]
+		[global::System.ComponentModel.Browsable(false)]
 		[DslModeling::DomainProperty(Kind = DslModeling::DomainPropertyKind.CustomStorage)]
 		[DslModeling::DomainObjectId("d83d0737-79b4-415d-9c93-73442f3c606f")]
 		public global::System.String IncludedErrors
@@ -1239,6 +1251,7 @@ namespace Neumont.Tools.ORM.ObjectModel
 		/// </summary>
 		[DslDesign::DisplayNameResource("Neumont.Tools.ORM.ObjectModel.ModelErrorDisplayFilter/ExcludedErrors.DisplayName", typeof(global::Neumont.Tools.ORM.ObjectModel.ORMCoreDomainModel), "Neumont.Tools.ORM.GeneratedCode.CoreDomainModelResx")]
 		[DslDesign::DescriptionResource("Neumont.Tools.ORM.ObjectModel.ModelErrorDisplayFilter/ExcludedErrors.Description", typeof(global::Neumont.Tools.ORM.ObjectModel.ORMCoreDomainModel), "Neumont.Tools.ORM.GeneratedCode.CoreDomainModelResx")]
+		[global::System.ComponentModel.Browsable(false)]
 		[DslModeling::DomainProperty(Kind = DslModeling::DomainPropertyKind.CustomStorage)]
 		[DslModeling::DomainObjectId("593d1e1a-c01d-48e8-8385-1507c7f95a25")]
 		public global::System.String ExcludedErrors
@@ -1655,7 +1668,7 @@ namespace Neumont.Tools.ORM.ObjectModel
 		
 		/// <summary>
 		/// Gets or sets the value of Name domain property.
-		/// Description for Neumont.Tools.ORM.ObjectModel.ORMNamedElement.Name
+		/// A name for this element.
 		/// </summary>
 		[global::System.ComponentModel.MergableProperty(false)]
 		[DslDesign::DisplayNameResource("Neumont.Tools.ORM.ObjectModel.ORMNamedElement/Name.DisplayName", typeof(global::Neumont.Tools.ORM.ObjectModel.ORMCoreDomainModel), "Neumont.Tools.ORM.GeneratedCode.CoreDomainModelResx")]
@@ -1737,6 +1750,7 @@ namespace Neumont.Tools.ORM.ObjectModel
 	/// <summary>
 	/// Double-derived base class for DomainClass ORMModel
 	/// </summary>
+	[global::System.ComponentModel.TypeDescriptionProvider(typeof(global::Neumont.Tools.Modeling.Design.ElementTypeDescriptionProvider<ORMModel, Design.ORMModelTypeDescriptor<ORMModel>>))]
 	[DslDesign::DisplayNameResource("Neumont.Tools.ORM.ObjectModel.ORMModel.DisplayName", typeof(global::Neumont.Tools.ORM.ObjectModel.ORMCoreDomainModel), "Neumont.Tools.ORM.GeneratedCode.CoreDomainModelResx")]
 	[DslDesign::DescriptionResource("Neumont.Tools.ORM.ObjectModel.ORMModel.Description", typeof(global::Neumont.Tools.ORM.ObjectModel.ORMCoreDomainModel), "Neumont.Tools.ORM.GeneratedCode.CoreDomainModelResx")]
 	[global::System.CLSCompliant(true)]
@@ -1768,7 +1782,8 @@ namespace Neumont.Tools.ORM.ObjectModel
 		
 		/// <summary>
 		/// Gets or sets the value of ModelErrorDisplayFilterDisplay domain property.
-		/// Description for Neumont.Tools.ORM.ObjectModel.ORMModel.ErrorDisplay
+		/// Validation error display options for this model. Control error display by
+		/// category and individually.
 		/// </summary>
 		[global::System.ComponentModel.Editor(typeof(global::Neumont.Tools.ORM.ObjectModel.Design.ModelErrorDisplayFilterEditor), typeof(global::System.Drawing.Design.UITypeEditor))]
 		[DslDesign::DisplayNameResource("Neumont.Tools.ORM.ObjectModel.ORMModel/ModelErrorDisplayFilterDisplay.DisplayName", typeof(global::Neumont.Tools.ORM.ObjectModel.ORMCoreDomainModel), "Neumont.Tools.ORM.GeneratedCode.CoreDomainModelResx")]
@@ -1859,8 +1874,9 @@ namespace Neumont.Tools.ORM.ObjectModel
 		
 		/// <summary>
 		/// Gets or sets the value of DefinitionText domain property.
-		/// A definition of this Model. To insert new lines, use Control-Enter in the
-		/// dropdown editor, or open the 'ORM Informal Definition Editor' toolwindow.
+		/// A definition of this Model.
+		///     To insert new lines, use Control-Enter in the dropdown editor, or open the
+		/// 'ORM Informal Definition Editor' tool window.
 		/// </summary>
 		[global::System.ComponentModel.Editor(typeof(global::Neumont.Tools.Modeling.Design.MultilineTextEditor<global::Neumont.Tools.ORM.ObjectModel.Definition>), typeof(global::System.Drawing.Design.UITypeEditor))]
 		[global::System.ComponentModel.MergableProperty(false)]
@@ -1952,8 +1968,9 @@ namespace Neumont.Tools.ORM.ObjectModel
 		
 		/// <summary>
 		/// Gets or sets the value of NoteText domain property.
-		/// A note to associate with this Model. To insert new lines, use Control-Enter in
-		/// the dropdown editor, or open the 'ORM Notes Editor' toolwindow.
+		/// A note to associate with this Model.
+		///     To insert new lines, use Control-Enter in the dropdown editor, or open the
+		/// 'ORM Notes Editor' tool window.
 		/// </summary>
 		[global::System.ComponentModel.Editor(typeof(global::Neumont.Tools.Modeling.Design.MultilineTextEditor<global::Neumont.Tools.ORM.ObjectModel.Note>), typeof(global::System.Drawing.Design.UITypeEditor))]
 		[global::System.ComponentModel.MergableProperty(false)]
@@ -2537,7 +2554,7 @@ namespace Neumont.Tools.ORM.ObjectModel
 		
 		/// <summary>
 		/// Gets or sets the value of IsExternal domain property.
-		/// Description for Neumont.Tools.ORM.ObjectModel.ObjectType.IsExternal
+		/// Is this ObjectType defined in an external model?
 		/// </summary>
 		[DslDesign::DisplayNameResource("Neumont.Tools.ORM.ObjectModel.ObjectType/IsExternal.DisplayName", typeof(global::Neumont.Tools.ORM.ObjectModel.ORMCoreDomainModel), "Neumont.Tools.ORM.GeneratedCode.CoreDomainModelResx")]
 		[DslDesign::DescriptionResource("Neumont.Tools.ORM.ObjectModel.ObjectType/IsExternal.Description", typeof(global::Neumont.Tools.ORM.ObjectModel.ORMCoreDomainModel), "Neumont.Tools.ORM.GeneratedCode.CoreDomainModelResx")]
@@ -2619,8 +2636,9 @@ namespace Neumont.Tools.ORM.ObjectModel
 		
 		/// <summary>
 		/// Gets or sets the value of DefinitionText domain property.
-		/// A definition of this ObjectType. To insert new lines, use Control-Enter in the
-		/// dropdown editor, or open the 'ORM Informal Definition Editor' toolwindow.
+		/// A definition of this ObjectType.
+		///     To insert new lines, use Control-Enter in the dropdown editor, or open the
+		/// 'ORM Informal Definition Editor' tool window.
 		/// </summary>
 		[global::System.ComponentModel.Editor(typeof(global::Neumont.Tools.Modeling.Design.MultilineTextEditor<global::Neumont.Tools.ORM.ObjectModel.Definition>), typeof(global::System.Drawing.Design.UITypeEditor))]
 		[global::System.ComponentModel.MergableProperty(false)]
@@ -2712,8 +2730,9 @@ namespace Neumont.Tools.ORM.ObjectModel
 		
 		/// <summary>
 		/// Gets or sets the value of NoteText domain property.
-		/// A note to associate with this ObjectType. To insert new lines, use Control-Enter
-		/// in the dropdown editor, or open the 'ORM Notes Editor' toolwindow.
+		/// A note to associate with this ObjectType.
+		///     To insert new lines, use Control-Enter in the dropdown editor, or open the
+		/// 'ORM Notes Editor' tool window.
 		/// </summary>
 		[global::System.ComponentModel.Editor(typeof(global::Neumont.Tools.Modeling.Design.MultilineTextEditor<global::Neumont.Tools.ORM.ObjectModel.Note>), typeof(global::System.Drawing.Design.UITypeEditor))]
 		[global::System.ComponentModel.MergableProperty(false)]
@@ -2810,7 +2829,7 @@ namespace Neumont.Tools.ORM.ObjectModel
 		
 		/// <summary>
 		/// Gets or sets the value of IsIndependent domain property.
-		/// Description for Neumont.Tools.ORM.ObjectModel.ObjectType.IsIndependent
+		/// Can an instance of this ObjectType exist if that instance plays no roles?
 		/// </summary>
 		[DslDesign::DisplayNameResource("Neumont.Tools.ORM.ObjectModel.ObjectType/IsIndependent.DisplayName", typeof(global::Neumont.Tools.ORM.ObjectModel.ORMCoreDomainModel), "Neumont.Tools.ORM.GeneratedCode.CoreDomainModelResx")]
 		[DslDesign::DescriptionResource("Neumont.Tools.ORM.ObjectModel.ObjectType/IsIndependent.Description", typeof(global::Neumont.Tools.ORM.ObjectModel.ORMCoreDomainModel), "Neumont.Tools.ORM.GeneratedCode.CoreDomainModelResx")]
@@ -2892,7 +2911,7 @@ namespace Neumont.Tools.ORM.ObjectModel
 		
 		/// <summary>
 		/// Gets or sets the value of IsValueType domain property.
-		/// Description for Neumont.Tools.ORM.ObjectModel.ObjectType.IsValueType
+		/// Is this ObjectType a self-identifying value or an entity?
 		/// </summary>
 		[global::System.ComponentModel.RefreshProperties(global::System.ComponentModel.RefreshProperties.All)]
 		[DslDesign::DisplayNameResource("Neumont.Tools.ORM.ObjectModel.ObjectType/IsValueType.DisplayName", typeof(global::Neumont.Tools.ORM.ObjectModel.ORMCoreDomainModel), "Neumont.Tools.ORM.GeneratedCode.CoreDomainModelResx")]
@@ -2983,7 +3002,8 @@ namespace Neumont.Tools.ORM.ObjectModel
 		
 		/// <summary>
 		/// Gets or sets the value of Scale domain property.
-		/// Description for Neumont.Tools.ORM.ObjectModel.ObjectType.DataTypeScale
+		/// The number of digits allowed to the right of the decimal point in a value with
+		/// this DataType.
 		/// </summary>
 		[DslDesign::DisplayNameResource("Neumont.Tools.ORM.ObjectModel.ObjectType/Scale.DisplayName", typeof(global::Neumont.Tools.ORM.ObjectModel.ORMCoreDomainModel), "Neumont.Tools.ORM.GeneratedCode.CoreDomainModelResx")]
 		[DslDesign::DescriptionResource("Neumont.Tools.ORM.ObjectModel.ObjectType/Scale.Description", typeof(global::Neumont.Tools.ORM.ObjectModel.ORMCoreDomainModel), "Neumont.Tools.ORM.GeneratedCode.CoreDomainModelResx")]
@@ -3073,7 +3093,7 @@ namespace Neumont.Tools.ORM.ObjectModel
 		
 		/// <summary>
 		/// Gets or sets the value of Length domain property.
-		/// Description for Neumont.Tools.ORM.ObjectModel.ObjectType.DataTypeLength
+		/// The maximum length of values with this DataType.
 		/// </summary>
 		[DslDesign::DisplayNameResource("Neumont.Tools.ORM.ObjectModel.ObjectType/Length.DisplayName", typeof(global::Neumont.Tools.ORM.ObjectModel.ORMCoreDomainModel), "Neumont.Tools.ORM.GeneratedCode.CoreDomainModelResx")]
 		[DslDesign::DescriptionResource("Neumont.Tools.ORM.ObjectModel.ObjectType/Length.Description", typeof(global::Neumont.Tools.ORM.ObjectModel.ORMCoreDomainModel), "Neumont.Tools.ORM.GeneratedCode.CoreDomainModelResx")]
@@ -3163,7 +3183,13 @@ namespace Neumont.Tools.ORM.ObjectModel
 		
 		/// <summary>
 		/// Gets or sets the value of ReferenceModeDisplay domain property.
-		/// Description for Neumont.Tools.ORM.ObjectModel.ObjectType.RefMode
+		/// The reference mode pattern for the EntityType.
+		///     If the desired reference mode pattern is not specified in the dropdown, then
+		/// a new pattern can be entered. The type of a new reference mode pattern is set by
+		/// prepending a '.' for a popular reference mode, appending a ':' for a unit-based
+		/// reference mode, and applying no decorators for a general reference mode.
+		/// Reference mode settings can also be managed with the 'ORM Reference Mode Editor'
+		/// tool window.
 		/// </summary>
 		[global::System.ComponentModel.Editor(typeof(global::Neumont.Tools.ORM.ObjectModel.Design.ReferenceModePicker), typeof(global::System.Drawing.Design.UITypeEditor))]
 		[global::System.ComponentModel.TypeConverter(typeof(global::Neumont.Tools.ORM.ObjectModel.Design.ReferenceModeConverter))]
@@ -3530,7 +3556,10 @@ namespace Neumont.Tools.ORM.ObjectModel
 		
 		/// <summary>
 		/// Gets or sets the value of DataTypeDisplay domain property.
-		/// Description for Neumont.Tools.ORM.ObjectModel.ObjectType.DataType
+		/// The DataType for this ValueType, or the DataType for the identifying ValueType
+		/// if this is an EntityType.
+		///     This is a portable DataType. The final physical DataType is dependent on the
+		/// generation target.
 		/// </summary>
 		[global::System.ComponentModel.Editor(typeof(global::Neumont.Tools.ORM.ObjectModel.Design.DataTypePicker), typeof(global::System.Drawing.Design.UITypeEditor))]
 		[DslDesign::DisplayNameResource("Neumont.Tools.ORM.ObjectModel.ObjectType/DataTypeDisplay.DisplayName", typeof(global::Neumont.Tools.ORM.ObjectModel.ORMCoreDomainModel), "Neumont.Tools.ORM.GeneratedCode.CoreDomainModelResx")]
@@ -3621,7 +3650,12 @@ namespace Neumont.Tools.ORM.ObjectModel
 		
 		/// <summary>
 		/// Gets or sets the value of ValueRangeText domain property.
-		/// Description for Neumont.Tools.ORM.ObjectModel.ObjectType.ValueRange
+		/// Restrict the range of possible values for instances of this ObjectType.
+		///     To specify a range, use '..' between the range endpoints, square brackets to
+		/// specify a closed endpoint, and parentheses to specify an open endpoint. Commas
+		/// are used to entered multiple ranges or discrete values.
+		///     Example: {[10..20), 30} specifies all values between 10 and 20 (but not
+		/// including 20) and the value 30.
 		/// </summary>
 		[DslDesign::DisplayNameResource("Neumont.Tools.ORM.ObjectModel.ObjectType/ValueRangeText.DisplayName", typeof(global::Neumont.Tools.ORM.ObjectModel.ORMCoreDomainModel), "Neumont.Tools.ORM.GeneratedCode.CoreDomainModelResx")]
 		[DslDesign::DescriptionResource("Neumont.Tools.ORM.ObjectModel.ObjectType/ValueRangeText.Description", typeof(global::Neumont.Tools.ORM.ObjectModel.ORMCoreDomainModel), "Neumont.Tools.ORM.GeneratedCode.CoreDomainModelResx")]
@@ -3711,7 +3745,11 @@ namespace Neumont.Tools.ORM.ObjectModel
 		
 		/// <summary>
 		/// Gets or sets the value of ValueTypeValueRangeText domain property.
-		/// Description for Neumont.Tools.ORM.ObjectModel.ObjectType.ValueTypeValueRange
+		/// The ValueRange property for the ValueType that identifies this EntityType.
+		///     The ValueRange property of an EntityType is applied to the identifying role,
+		/// not directly to the identifying ValueType. This allows EntityType ValueRanges to
+		/// be specified independently for multiple EntityTypes identified with the same
+		/// unit-based or general reference mode patterns.
 		/// </summary>
 		[DslDesign::DisplayNameResource("Neumont.Tools.ORM.ObjectModel.ObjectType/ValueTypeValueRangeText.DisplayName", typeof(global::Neumont.Tools.ORM.ObjectModel.ORMCoreDomainModel), "Neumont.Tools.ORM.GeneratedCode.CoreDomainModelResx")]
 		[DslDesign::DescriptionResource("Neumont.Tools.ORM.ObjectModel.ObjectType/ValueTypeValueRangeText.Description", typeof(global::Neumont.Tools.ORM.ObjectModel.ORMCoreDomainModel), "Neumont.Tools.ORM.GeneratedCode.CoreDomainModelResx")]
@@ -3806,7 +3844,9 @@ namespace Neumont.Tools.ORM.ObjectModel
 		
 		/// <summary>
 		/// Gets or sets the value of IsPersonal domain property.
-		/// Description for Neumont.Tools.ORM.ObjectModel.ObjectType.IsPersonal
+		/// Does this ObjectType represent a person instead of a thing?
+		///     Used as a verbalization directive to render references to this type using a
+		/// personal pronoun ('who' instead of 'that').
 		/// </summary>
 		[DslDesign::DisplayNameResource("Neumont.Tools.ORM.ObjectModel.ObjectType/IsPersonal.DisplayName", typeof(global::Neumont.Tools.ORM.ObjectModel.ORMCoreDomainModel), "Neumont.Tools.ORM.GeneratedCode.CoreDomainModelResx")]
 		[DslDesign::DescriptionResource("Neumont.Tools.ORM.ObjectModel.ObjectType/IsPersonal.Description", typeof(global::Neumont.Tools.ORM.ObjectModel.ORMCoreDomainModel), "Neumont.Tools.ORM.GeneratedCode.CoreDomainModelResx")]
@@ -3976,7 +4016,8 @@ namespace Neumont.Tools.ORM.ObjectModel
 		
 		/// <summary>
 		/// Gets or sets the value of DerivationRuleDisplay domain property.
-		/// Description for Neumont.Tools.ORM.ObjectModel.ObjectType.DerivationRule
+		/// The derivation rule for this subtype. If a rule is not specified, then this is
+		/// treated as an asserted subtype.
 		/// </summary>
 		[global::System.ComponentModel.Editor(typeof(global::Neumont.Tools.ORM.ObjectModel.Design.DerivationRuleEditor), typeof(global::System.Drawing.Design.UITypeEditor))]
 		[global::System.ComponentModel.MergableProperty(false)]
@@ -4081,7 +4122,7 @@ namespace Neumont.Tools.ORM.ObjectModel
 		#region NestedFactType opposite domain role accessor
 		/// <summary>
 		/// Gets or sets NestedFactType.
-		/// Description for Neumont.Tools.ORM.ObjectModel.Objectification.NestingType
+		/// The FactType objectified by this EntityType.
 		/// </summary>
 		public virtual FactType NestedFactType
 		{
@@ -4593,7 +4634,7 @@ namespace Neumont.Tools.ORM.ObjectModel
 		
 		/// <summary>
 		/// Gets or sets the value of IsExternal domain property.
-		/// Description for Neumont.Tools.ORM.ObjectModel.FactType.IsExternal
+		/// Is this FactType defined in an external model?
 		/// </summary>
 		[DslDesign::DisplayNameResource("Neumont.Tools.ORM.ObjectModel.FactType/IsExternal.DisplayName", typeof(global::Neumont.Tools.ORM.ObjectModel.ORMCoreDomainModel), "Neumont.Tools.ORM.GeneratedCode.CoreDomainModelResx")]
 		[DslDesign::DescriptionResource("Neumont.Tools.ORM.ObjectModel.FactType/IsExternal.Description", typeof(global::Neumont.Tools.ORM.ObjectModel.ORMCoreDomainModel), "Neumont.Tools.ORM.GeneratedCode.CoreDomainModelResx")]
@@ -4675,8 +4716,9 @@ namespace Neumont.Tools.ORM.ObjectModel
 		
 		/// <summary>
 		/// Gets or sets the value of DefinitionText domain property.
-		/// A definition of this FactType. To insert new lines, use Control-Enter in the
-		/// dropdown editor, or open the 'ORM Informal Definition Editor' toolwindow.
+		/// A definition of this FactType.
+		///     To insert new lines, use Control-Enter in the dropdown editor, or open the
+		/// 'ORM Informal Definition Editor' tool window.
 		/// </summary>
 		[global::System.ComponentModel.Editor(typeof(global::Neumont.Tools.Modeling.Design.MultilineTextEditor<global::Neumont.Tools.ORM.ObjectModel.Definition>), typeof(global::System.Drawing.Design.UITypeEditor))]
 		[global::System.ComponentModel.MergableProperty(false)]
@@ -4768,8 +4810,9 @@ namespace Neumont.Tools.ORM.ObjectModel
 		
 		/// <summary>
 		/// Gets or sets the value of NoteText domain property.
-		/// A note to associate with this FactType. To insert new lines, use Control-Enter
-		/// in the dropdown editor, or open the 'ORM Notes Editor' toolwindow.
+		/// A note to associate with this FactType.
+		///     To insert new lines, use Control-Enter in the dropdown editor, or open the
+		/// 'ORM Notes Editor' tool window.
 		/// </summary>
 		[global::System.ComponentModel.Editor(typeof(global::Neumont.Tools.Modeling.Design.MultilineTextEditor<global::Neumont.Tools.ORM.ObjectModel.Note>), typeof(global::System.Drawing.Design.UITypeEditor))]
 		[global::System.ComponentModel.MergableProperty(false)]
@@ -4861,7 +4904,12 @@ namespace Neumont.Tools.ORM.ObjectModel
 		
 		/// <summary>
 		/// Gets or sets the value of Name domain property.
-		/// Description for Neumont.Tools.ORM.ObjectModel.FactType.Name
+		/// The name for this FactType.
+		///     If the Name property is read-only, then it is a generated name based on
+		/// primary reading.
+		///     If the Name property is editable, then it is the name of an explicit or
+		/// implicit objectifying EntityType. The editable name can be reset to match the
+		/// generated name by clearing the property value.
 		/// </summary>
 		[global::System.ComponentModel.MergableProperty(false)]
 		[DslDesign::DisplayNameResource("Neumont.Tools.ORM.ObjectModel.FactType/Name.DisplayName", typeof(global::Neumont.Tools.ORM.ObjectModel.ORMCoreDomainModel), "Neumont.Tools.ORM.GeneratedCode.CoreDomainModelResx")]
@@ -5136,7 +5184,7 @@ namespace Neumont.Tools.ORM.ObjectModel
 		
 		/// <summary>
 		/// Gets or sets the value of DerivationRuleDisplay domain property.
-		/// Description for Neumont.Tools.ORM.ObjectModel.FactType.DerivationRule
+		/// A derivation rule for this FactType.
 		/// </summary>
 		[global::System.ComponentModel.Editor(typeof(global::Neumont.Tools.ORM.ObjectModel.Design.DerivationRuleEditor), typeof(global::System.Drawing.Design.UITypeEditor))]
 		[global::System.ComponentModel.MergableProperty(false)]
@@ -5228,7 +5276,7 @@ namespace Neumont.Tools.ORM.ObjectModel
 		
 		/// <summary>
 		/// Gets or sets the value of DerivationStorageDisplay domain property.
-		/// Description for Neumont.Tools.ORM.ObjectModel.FactType.DerivationStorage
+		/// Storage options for a derived FactType.
 		/// </summary>
 		[DslDesign::DisplayNameResource("Neumont.Tools.ORM.ObjectModel.FactType/DerivationStorageDisplay.DisplayName", typeof(global::Neumont.Tools.ORM.ObjectModel.ORMCoreDomainModel), "Neumont.Tools.ORM.GeneratedCode.CoreDomainModelResx")]
 		[DslDesign::DescriptionResource("Neumont.Tools.ORM.ObjectModel.FactType/DerivationStorageDisplay.Description", typeof(global::Neumont.Tools.ORM.ObjectModel.ORMCoreDomainModel), "Neumont.Tools.ORM.GeneratedCode.CoreDomainModelResx")]
@@ -5341,7 +5389,7 @@ namespace Neumont.Tools.ORM.ObjectModel
 		#region NestingType opposite domain role accessor
 		/// <summary>
 		/// Gets or sets NestingType.
-		/// Description for Neumont.Tools.ORM.ObjectModel.Objectification.NestedFactType
+		/// The EntityType that objectifies this FactType.
 		/// </summary>
 		public virtual ObjectType NestingType
 		{
@@ -6056,7 +6104,7 @@ namespace Neumont.Tools.ORM.ObjectModel
 		
 		/// <summary>
 		/// Gets or sets the value of RolePlayerDisplay domain property.
-		/// Description for Neumont.Tools.ORM.ObjectModel.Role.RolePlayer
+		/// The ObjectType that plays this Role.
 		/// </summary>
 		[global::System.ComponentModel.Editor(typeof(global::Neumont.Tools.ORM.ObjectModel.Design.RolePlayerPicker), typeof(global::System.Drawing.Design.UITypeEditor))]
 		[DslDesign::DisplayNameResource("Neumont.Tools.ORM.ObjectModel.Role/RolePlayerDisplay.DisplayName", typeof(global::Neumont.Tools.ORM.ObjectModel.ORMCoreDomainModel), "Neumont.Tools.ORM.GeneratedCode.CoreDomainModelResx")]
@@ -6147,7 +6195,7 @@ namespace Neumont.Tools.ORM.ObjectModel
 		
 		/// <summary>
 		/// Gets or sets the value of IsMandatory domain property.
-		/// Description for Neumont.Tools.ORM.ObjectModel.Role.IsMandatory
+		/// Does this Role have a simple mandatory constraint?
 		/// </summary>
 		[DslDesign::DisplayNameResource("Neumont.Tools.ORM.ObjectModel.Role/IsMandatory.DisplayName", typeof(global::Neumont.Tools.ORM.ObjectModel.ORMCoreDomainModel), "Neumont.Tools.ORM.GeneratedCode.CoreDomainModelResx")]
 		[DslDesign::DescriptionResource("Neumont.Tools.ORM.ObjectModel.Role/IsMandatory.Description", typeof(global::Neumont.Tools.ORM.ObjectModel.ORMCoreDomainModel), "Neumont.Tools.ORM.GeneratedCode.CoreDomainModelResx")]
@@ -6237,7 +6285,8 @@ namespace Neumont.Tools.ORM.ObjectModel
 		
 		/// <summary>
 		/// Gets or sets the value of Multiplicity domain property.
-		/// Description for Neumont.Tools.ORM.ObjectModel.Role.Multiplicity
+		/// The multiplicity specification for a Role of a binary FactType. Affects the
+		/// uniqueness and mandatory constraints on the opposite Role.
 		/// </summary>
 		[global::System.ComponentModel.MergableProperty(false)]
 		[DslDesign::DisplayNameResource("Neumont.Tools.ORM.ObjectModel.Role/Multiplicity.DisplayName", typeof(global::Neumont.Tools.ORM.ObjectModel.ORMCoreDomainModel), "Neumont.Tools.ORM.GeneratedCode.CoreDomainModelResx")]
@@ -6329,7 +6378,13 @@ namespace Neumont.Tools.ORM.ObjectModel
 		
 		/// <summary>
 		/// Gets or sets the value of ValueRangeText domain property.
-		/// Description for Neumont.Tools.ORM.ObjectModel.Role.ValueRange
+		/// Restrict the range of possible values for instances of the RolePlayer
+		/// ObjectType.
+		///     To specify a range, use '..' between the range endpoints, square brackets to
+		/// specify a closed endpoint, and parentheses to specify an open endpoint. Commas
+		/// are used to entered multiple ranges or discrete values.
+		///     Example: {[10..20), 30} specifies all values between 10 and 20 (but not
+		/// including 20) and the value 30.
 		/// </summary>
 		[DslDesign::DisplayNameResource("Neumont.Tools.ORM.ObjectModel.Role/ValueRangeText.DisplayName", typeof(global::Neumont.Tools.ORM.ObjectModel.ORMCoreDomainModel), "Neumont.Tools.ORM.GeneratedCode.CoreDomainModelResx")]
 		[DslDesign::DescriptionResource("Neumont.Tools.ORM.ObjectModel.Role/ValueRangeText.Description", typeof(global::Neumont.Tools.ORM.ObjectModel.ORMCoreDomainModel), "Neumont.Tools.ORM.GeneratedCode.CoreDomainModelResx")]
@@ -6419,7 +6474,7 @@ namespace Neumont.Tools.ORM.ObjectModel
 		
 		/// <summary>
 		/// Gets or sets the value of MandatoryConstraintName domain property.
-		/// Description for Neumont.Tools.ORM.ObjectModel.Role.MandatoryConstraintName
+		/// The Name of the simple mandatory constraint on this Role.
 		/// </summary>
 		[DslDesign::DisplayNameResource("Neumont.Tools.ORM.ObjectModel.Role/MandatoryConstraintName.DisplayName", typeof(global::Neumont.Tools.ORM.ObjectModel.ORMCoreDomainModel), "Neumont.Tools.ORM.GeneratedCode.CoreDomainModelResx")]
 		[DslDesign::DescriptionResource("Neumont.Tools.ORM.ObjectModel.Role/MandatoryConstraintName.Description", typeof(global::Neumont.Tools.ORM.ObjectModel.ORMCoreDomainModel), "Neumont.Tools.ORM.GeneratedCode.CoreDomainModelResx")]
@@ -6509,7 +6564,10 @@ namespace Neumont.Tools.ORM.ObjectModel
 		
 		/// <summary>
 		/// Gets or sets the value of MandatoryConstraintModality domain property.
-		/// Description for Neumont.Tools.ORM.ObjectModel.Role.MandatoryConstraintModality
+		/// The Modality of the simple mandatory constraint on this Role.
+		///     Alethic modality means the constraint is structurally enforced and data
+		/// violating the constraint cannot be entered in the system;
+		///     Deontic modality means that data violating the constraint can be recorded.
 		/// </summary>
 		[DslDesign::DisplayNameResource("Neumont.Tools.ORM.ObjectModel.Role/MandatoryConstraintModality.DisplayName", typeof(global::Neumont.Tools.ORM.ObjectModel.ORMCoreDomainModel), "Neumont.Tools.ORM.GeneratedCode.CoreDomainModelResx")]
 		[DslDesign::DescriptionResource("Neumont.Tools.ORM.ObjectModel.Role/MandatoryConstraintModality.Description", typeof(global::Neumont.Tools.ORM.ObjectModel.ORMCoreDomainModel), "Neumont.Tools.ORM.GeneratedCode.CoreDomainModelResx")]
@@ -6604,7 +6662,7 @@ namespace Neumont.Tools.ORM.ObjectModel
 		
 		/// <summary>
 		/// Gets or sets the value of Name domain property.
-		/// Description for Neumont.Tools.ORM.ObjectModel.Role.Name
+		/// The explicit Name for this role.
 		/// </summary>
 		[global::System.ComponentModel.MergableProperty(false)]
 		[DslDesign::DisplayNameResource("Neumont.Tools.ORM.ObjectModel.Role/Name.DisplayName", typeof(global::Neumont.Tools.ORM.ObjectModel.ORMCoreDomainModel), "Neumont.Tools.ORM.GeneratedCode.CoreDomainModelResx")]
@@ -6687,7 +6745,11 @@ namespace Neumont.Tools.ORM.ObjectModel
 		
 		/// <summary>
 		/// Gets or sets the value of ObjectificationOppositeRoleName domain property.
-		/// Description for Neumont.Tools.ORM.ObjectModel.Role.ImpliedRoleName
+		/// The Name of the implied Role attached to the objectifying EntityType.
+		///     An implied binary FactType is created relating the objectifying EntityType
+		/// to each of the role players of an objectified FactType. Binary FactTypes with a
+		/// spanning internal uniqueness constraint and ternary (or higher arity) FactTypes
+		/// are automatically objectified.
 		/// </summary>
 		[global::System.ComponentModel.MergableProperty(false)]
 		[DslDesign::DisplayNameResource("Neumont.Tools.ORM.ObjectModel.Role/ObjectificationOppositeRoleName.DisplayName", typeof(global::Neumont.Tools.ORM.ObjectModel.ORMCoreDomainModel), "Neumont.Tools.ORM.GeneratedCode.CoreDomainModelResx")]
@@ -7079,6 +7141,7 @@ namespace Neumont.Tools.ORM.ObjectModel
 		/// </summary>
 		[DslDesign::DisplayNameResource("Neumont.Tools.ORM.ObjectModel.NameAlias/NameConsumer.DisplayName", typeof(global::Neumont.Tools.ORM.ObjectModel.ORMCoreDomainModel), "Neumont.Tools.ORM.GeneratedCode.CoreDomainModelResx")]
 		[DslDesign::DescriptionResource("Neumont.Tools.ORM.ObjectModel.NameAlias/NameConsumer.Description", typeof(global::Neumont.Tools.ORM.ObjectModel.ORMCoreDomainModel), "Neumont.Tools.ORM.GeneratedCode.CoreDomainModelResx")]
+		[global::System.ComponentModel.Browsable(false)]
 		[DslModeling::DomainProperty(Kind = DslModeling::DomainPropertyKind.CustomStorage)]
 		[DslModeling::DomainObjectId("be9edeb2-c60e-4446-bac0-73ccd61716ea")]
 		public global::System.String NameConsumer
@@ -7169,6 +7232,7 @@ namespace Neumont.Tools.ORM.ObjectModel
 		/// </summary>
 		[DslDesign::DisplayNameResource("Neumont.Tools.ORM.ObjectModel.NameAlias/NameUsage.DisplayName", typeof(global::Neumont.Tools.ORM.ObjectModel.ORMCoreDomainModel), "Neumont.Tools.ORM.GeneratedCode.CoreDomainModelResx")]
 		[DslDesign::DescriptionResource("Neumont.Tools.ORM.ObjectModel.NameAlias/NameUsage.Description", typeof(global::Neumont.Tools.ORM.ObjectModel.ORMCoreDomainModel), "Neumont.Tools.ORM.GeneratedCode.CoreDomainModelResx")]
+		[global::System.ComponentModel.Browsable(false)]
 		[DslModeling::DomainProperty(Kind = DslModeling::DomainPropertyKind.CustomStorage)]
 		[DslModeling::DomainObjectId("18dbb768-b471-4926-b678-5b2245760333")]
 		public global::System.String NameUsage
@@ -7469,6 +7533,7 @@ namespace Neumont.Tools.ORM.ObjectModel
 	/// <summary>
 	/// DomainClass SetComparisonConstraint
 	/// </summary>
+	[global::System.ComponentModel.TypeDescriptionProvider(typeof(global::Neumont.Tools.Modeling.Design.ElementTypeDescriptionProvider<SetComparisonConstraint, Design.SetComparisonConstraintTypeDescriptor<SetComparisonConstraint>>))]
 	[DslDesign::DisplayNameResource("Neumont.Tools.ORM.ObjectModel.SetComparisonConstraint.DisplayName", typeof(global::Neumont.Tools.ORM.ObjectModel.ORMCoreDomainModel), "Neumont.Tools.ORM.GeneratedCode.CoreDomainModelResx")]
 	[DslDesign::DescriptionResource("Neumont.Tools.ORM.ObjectModel.SetComparisonConstraint.Description", typeof(global::Neumont.Tools.ORM.ObjectModel.ORMCoreDomainModel), "Neumont.Tools.ORM.GeneratedCode.CoreDomainModelResx")]
 	[global::System.CLSCompliant(true)]
@@ -7505,7 +7570,10 @@ namespace Neumont.Tools.ORM.ObjectModel
 		
 		/// <summary>
 		/// Gets or sets the value of Modality domain property.
-		/// Description for Neumont.Tools.ORM.ObjectModel.SetComparisonConstraint.Modality
+		/// The Modality of the simple mandatory constraint on this Role.
+		///     Alethic modality means the constraint is structurally enforced and data
+		/// violating the constraint cannot be entered in the system;
+		///     Deontic modality means that data violating the constraint can be recorded.
 		/// </summary>
 		[DslDesign::DisplayNameResource("Neumont.Tools.ORM.ObjectModel.SetComparisonConstraint/Modality.DisplayName", typeof(global::Neumont.Tools.ORM.ObjectModel.ORMCoreDomainModel), "Neumont.Tools.ORM.GeneratedCode.CoreDomainModelResx")]
 		[DslDesign::DescriptionResource("Neumont.Tools.ORM.ObjectModel.SetComparisonConstraint/Modality.Description", typeof(global::Neumont.Tools.ORM.ObjectModel.ORMCoreDomainModel), "Neumont.Tools.ORM.GeneratedCode.CoreDomainModelResx")]
@@ -7941,6 +8009,7 @@ namespace Neumont.Tools.ORM.ObjectModel
 		/// </summary>
 		[DslDesign::DisplayNameResource("Neumont.Tools.ORM.ObjectModel.Expression/Body.DisplayName", typeof(global::Neumont.Tools.ORM.ObjectModel.ORMCoreDomainModel), "Neumont.Tools.ORM.GeneratedCode.CoreDomainModelResx")]
 		[DslDesign::DescriptionResource("Neumont.Tools.ORM.ObjectModel.Expression/Body.Description", typeof(global::Neumont.Tools.ORM.ObjectModel.ORMCoreDomainModel), "Neumont.Tools.ORM.GeneratedCode.CoreDomainModelResx")]
+		[global::System.ComponentModel.Browsable(false)]
 		[DslModeling::DomainObjectId("9760d258-0126-4749-a370-d7cc5a04f138")]
 		public global::System.String Body
 		{
@@ -8028,6 +8097,7 @@ namespace Neumont.Tools.ORM.ObjectModel
 		/// </summary>
 		[DslDesign::DisplayNameResource("Neumont.Tools.ORM.ObjectModel.Expression/Language.DisplayName", typeof(global::Neumont.Tools.ORM.ObjectModel.ORMCoreDomainModel), "Neumont.Tools.ORM.GeneratedCode.CoreDomainModelResx")]
 		[DslDesign::DescriptionResource("Neumont.Tools.ORM.ObjectModel.Expression/Language.Description", typeof(global::Neumont.Tools.ORM.ObjectModel.ORMCoreDomainModel), "Neumont.Tools.ORM.GeneratedCode.CoreDomainModelResx")]
+		[global::System.ComponentModel.Browsable(false)]
 		[DslModeling::DomainObjectId("53d116fa-e39c-47c5-a4d6-41e42786eedb")]
 		public global::System.String Language
 		{
@@ -8209,7 +8279,7 @@ namespace Neumont.Tools.ORM.ObjectModel
 		
 		/// <summary>
 		/// Gets or sets the value of RingType domain property.
-		/// Description for Neumont.Tools.ORM.ObjectModel.RingConstraint.RingType
+		/// Restriction type of this Ring constraint.
 		/// </summary>
 		[DslDesign::DisplayNameResource("Neumont.Tools.ORM.ObjectModel.RingConstraint/RingType.DisplayName", typeof(global::Neumont.Tools.ORM.ObjectModel.ORMCoreDomainModel), "Neumont.Tools.ORM.GeneratedCode.CoreDomainModelResx")]
 		[DslDesign::DescriptionResource("Neumont.Tools.ORM.ObjectModel.RingConstraint/RingType.Description", typeof(global::Neumont.Tools.ORM.ObjectModel.ORMCoreDomainModel), "Neumont.Tools.ORM.GeneratedCode.CoreDomainModelResx")]
@@ -8368,7 +8438,8 @@ namespace Neumont.Tools.ORM.ObjectModel
 		
 		/// <summary>
 		/// Gets or sets the value of MinFrequency domain property.
-		/// Description for Neumont.Tools.ORM.ObjectModel.FrequencyConstraint.MinFrequency
+		/// The minimum number of occurrences for each instance that plays the restricted
+		/// roles.
 		/// </summary>
 		[global::System.ComponentModel.TypeConverter(typeof(global::Neumont.Tools.ORM.ObjectModel.Design.FrequencyConstraintMinConverter))]
 		[DslDesign::DisplayNameResource("Neumont.Tools.ORM.ObjectModel.FrequencyConstraint/MinFrequency.DisplayName", typeof(global::Neumont.Tools.ORM.ObjectModel.ORMCoreDomainModel), "Neumont.Tools.ORM.GeneratedCode.CoreDomainModelResx")]
@@ -8457,7 +8528,8 @@ namespace Neumont.Tools.ORM.ObjectModel
 		
 		/// <summary>
 		/// Gets or sets the value of MaxFrequency domain property.
-		/// Description for Neumont.Tools.ORM.ObjectModel.FrequencyConstraint.MaxFrequency
+		/// The maximum number of occurrences for each instance that plays the restricted
+		/// roles.
 		/// </summary>
 		[global::System.ComponentModel.Editor(typeof(global::Neumont.Tools.ORM.ObjectModel.Design.FrequencyConstraintMaxPicker), typeof(global::System.Drawing.Design.UITypeEditor))]
 		[global::System.ComponentModel.TypeConverter(typeof(global::Neumont.Tools.ORM.ObjectModel.Design.FrequencyConstraintMaxConverter))]
@@ -8661,8 +8733,12 @@ namespace Neumont.Tools.ORM.ObjectModel
 		
 		/// <summary>
 		/// Gets or sets the value of IsPreferred domain property.
-		/// Description for
-		/// Neumont.Tools.ORM.ObjectModel.UniquenessConstraint.IsPreferredIdentifier
+		/// Is this the preferred identifier for the EntityType role player of the opposite
+		/// role(s)?
+		///     The opposite role player of an internal constraint on an objectified
+		/// FactType is the objectifying EntityType. Binary FactTypes with a spanning
+		/// internal uniqueness constraint and ternary (or higher arity) FactTypes are
+		/// automatically objectified.
 		/// </summary>
 		[DslDesign::DisplayNameResource("Neumont.Tools.ORM.ObjectModel.UniquenessConstraint/IsPreferred.DisplayName", typeof(global::Neumont.Tools.ORM.ObjectModel.ORMCoreDomainModel), "Neumont.Tools.ORM.GeneratedCode.CoreDomainModelResx")]
 		[DslDesign::DescriptionResource("Neumont.Tools.ORM.ObjectModel.UniquenessConstraint/IsPreferred.Description", typeof(global::Neumont.Tools.ORM.ObjectModel.ORMCoreDomainModel), "Neumont.Tools.ORM.GeneratedCode.CoreDomainModelResx")]
@@ -9249,6 +9325,7 @@ namespace Neumont.Tools.ORM.ObjectModel
 	/// <summary>
 	/// DomainClass SetConstraint
 	/// </summary>
+	[global::System.ComponentModel.TypeDescriptionProvider(typeof(global::Neumont.Tools.Modeling.Design.ElementTypeDescriptionProvider<SetConstraint, Design.SetConstraintTypeDescriptor<SetConstraint>>))]
 	[DslDesign::DisplayNameResource("Neumont.Tools.ORM.ObjectModel.SetConstraint.DisplayName", typeof(global::Neumont.Tools.ORM.ObjectModel.ORMCoreDomainModel), "Neumont.Tools.ORM.GeneratedCode.CoreDomainModelResx")]
 	[DslDesign::DescriptionResource("Neumont.Tools.ORM.ObjectModel.SetConstraint.Description", typeof(global::Neumont.Tools.ORM.ObjectModel.ORMCoreDomainModel), "Neumont.Tools.ORM.GeneratedCode.CoreDomainModelResx")]
 	[global::System.CLSCompliant(true)]
@@ -9285,7 +9362,10 @@ namespace Neumont.Tools.ORM.ObjectModel
 		
 		/// <summary>
 		/// Gets or sets the value of Modality domain property.
-		/// Description for Neumont.Tools.ORM.ObjectModel.SetConstraint.Modality
+		/// The Modality of the simple mandatory constraint on this Role.
+		///     Alethic modality means the constraint is structurally enforced and data
+		/// violating the constraint cannot be entered in the system;
+		///     Deontic modality means that data violating the constraint can be recorded.
 		/// </summary>
 		[DslDesign::DisplayNameResource("Neumont.Tools.ORM.ObjectModel.SetConstraint/Modality.DisplayName", typeof(global::Neumont.Tools.ORM.ObjectModel.ORMCoreDomainModel), "Neumont.Tools.ORM.GeneratedCode.CoreDomainModelResx")]
 		[DslDesign::DescriptionResource("Neumont.Tools.ORM.ObjectModel.SetConstraint/Modality.Description", typeof(global::Neumont.Tools.ORM.ObjectModel.ORMCoreDomainModel), "Neumont.Tools.ORM.GeneratedCode.CoreDomainModelResx")]
@@ -9669,7 +9749,7 @@ namespace Neumont.Tools.ORM.ObjectModel
 		
 		/// <summary>
 		/// Gets or sets the value of JoinType domain property.
-		/// Description for Neumont.Tools.ORM.ObjectModel.Join.JoinType
+		/// Is this an inner or an outer Join?
 		/// </summary>
 		[DslDesign::DisplayNameResource("Neumont.Tools.ORM.ObjectModel.Join/JoinType.DisplayName", typeof(global::Neumont.Tools.ORM.ObjectModel.ORMCoreDomainModel), "Neumont.Tools.ORM.GeneratedCode.CoreDomainModelResx")]
 		[DslDesign::DescriptionResource("Neumont.Tools.ORM.ObjectModel.Join/JoinType.Description", typeof(global::Neumont.Tools.ORM.ObjectModel.ORMCoreDomainModel), "Neumont.Tools.ORM.GeneratedCode.CoreDomainModelResx")]
@@ -11406,6 +11486,7 @@ namespace Neumont.Tools.ORM.ObjectModel
 		/// </summary>
 		[DslDesign::DisplayNameResource("Neumont.Tools.ORM.ObjectModel.CompatibleRolePlayerTypeError/Column.DisplayName", typeof(global::Neumont.Tools.ORM.ObjectModel.ORMCoreDomainModel), "Neumont.Tools.ORM.GeneratedCode.CoreDomainModelResx")]
 		[DslDesign::DescriptionResource("Neumont.Tools.ORM.ObjectModel.CompatibleRolePlayerTypeError/Column.Description", typeof(global::Neumont.Tools.ORM.ObjectModel.ORMCoreDomainModel), "Neumont.Tools.ORM.GeneratedCode.CoreDomainModelResx")]
+		[global::System.ComponentModel.Browsable(false)]
 		[DslModeling::DomainObjectId("222dcf1c-83fb-43f1-a8be-3d05b8cf1693")]
 		public global::System.Int32 Column
 		{
@@ -11931,6 +12012,7 @@ namespace Neumont.Tools.ORM.ObjectModel
 		[global::System.ComponentModel.MergableProperty(false)]
 		[DslDesign::DisplayNameResource("Neumont.Tools.ORM.ObjectModel.ModelError/ErrorText.DisplayName", typeof(global::Neumont.Tools.ORM.ObjectModel.ORMCoreDomainModel), "Neumont.Tools.ORM.GeneratedCode.CoreDomainModelResx")]
 		[DslDesign::DescriptionResource("Neumont.Tools.ORM.ObjectModel.ModelError/ErrorText.Description", typeof(global::Neumont.Tools.ORM.ObjectModel.ORMCoreDomainModel), "Neumont.Tools.ORM.GeneratedCode.CoreDomainModelResx")]
+		[global::System.ComponentModel.Browsable(false)]
 		[DslModeling::ElementName]
 		[DslModeling::DomainObjectId("6a6023e7-ac27-4d86-afe4-6428659a048e")]
 		public global::System.String ErrorText
@@ -12088,7 +12170,8 @@ namespace Neumont.Tools.ORM.ObjectModel
 		
 		/// <summary>
 		/// Gets or sets the value of FormatString domain property.
-		/// Description for Neumont.Tools.ORM.ObjectModel.ReferenceModeKind.FormatString
+		/// Default format string for reference mode patterns with this ReferenceModeKind.
+		/// Replacement field {0}=EntityTypeName, {1}=ReferenceModeName
 		/// </summary>
 		[DslDesign::DisplayNameResource("Neumont.Tools.ORM.ObjectModel.ReferenceModeKind/FormatString.DisplayName", typeof(global::Neumont.Tools.ORM.ObjectModel.ORMCoreDomainModel), "Neumont.Tools.ORM.GeneratedCode.CoreDomainModelResx")]
 		[DslDesign::DescriptionResource("Neumont.Tools.ORM.ObjectModel.ReferenceModeKind/FormatString.Description", typeof(global::Neumont.Tools.ORM.ObjectModel.ORMCoreDomainModel), "Neumont.Tools.ORM.GeneratedCode.CoreDomainModelResx")]
@@ -12175,8 +12258,7 @@ namespace Neumont.Tools.ORM.ObjectModel
 		
 		/// <summary>
 		/// Gets or sets the value of ReferenceModeType domain property.
-		/// Description for
-		/// Neumont.Tools.ORM.ObjectModel.ReferenceModeKind.ReferenceModeType
+		/// One of Popular, UnitBased, or General.
 		/// </summary>
 		[DslDesign::DisplayNameResource("Neumont.Tools.ORM.ObjectModel.ReferenceModeKind/ReferenceModeType.DisplayName", typeof(global::Neumont.Tools.ORM.ObjectModel.ORMCoreDomainModel), "Neumont.Tools.ORM.GeneratedCode.CoreDomainModelResx")]
 		[DslDesign::DescriptionResource("Neumont.Tools.ORM.ObjectModel.ReferenceModeKind/ReferenceModeType.Description", typeof(global::Neumont.Tools.ORM.ObjectModel.ORMCoreDomainModel), "Neumont.Tools.ORM.GeneratedCode.CoreDomainModelResx")]
@@ -12377,8 +12459,8 @@ namespace Neumont.Tools.ORM.ObjectModel
 		
 		/// <summary>
 		/// Gets or sets the value of CustomFormatString domain property.
-		/// Description for
-		/// Neumont.Tools.ORM.ObjectModel.CustomReferenceMode.CustomFormatString
+		/// Custom format string for this reference mode pattern. Replacement field
+		/// {0}=EntityTypeName, {1}=ReferenceModeName
 		/// </summary>
 		[DslDesign::DisplayNameResource("Neumont.Tools.ORM.ObjectModel.CustomReferenceMode/CustomFormatString.DisplayName", typeof(global::Neumont.Tools.ORM.ObjectModel.ORMCoreDomainModel), "Neumont.Tools.ORM.GeneratedCode.CoreDomainModelResx")]
 		[DslDesign::DescriptionResource("Neumont.Tools.ORM.ObjectModel.CustomReferenceMode/CustomFormatString.Description", typeof(global::Neumont.Tools.ORM.ObjectModel.ORMCoreDomainModel), "Neumont.Tools.ORM.GeneratedCode.CoreDomainModelResx")]
@@ -12489,7 +12571,7 @@ namespace Neumont.Tools.ORM.ObjectModel
 		
 		/// <summary>
 		/// Gets or sets the value of KindDisplay domain property.
-		/// Description for Neumont.Tools.ORM.ObjectModel.ReferenceMode.Kind
+		/// The kind of the reference mode pattern. One of Popular, UnitBase, or General.
 		/// </summary>
 		[global::System.ComponentModel.Editor(typeof(global::Neumont.Tools.ORM.ObjectModel.Design.ReferenceModeKindPicker), typeof(global::System.Drawing.Design.UITypeEditor))]
 		[DslDesign::DisplayNameResource("Neumont.Tools.ORM.ObjectModel.ReferenceMode/KindDisplay.DisplayName", typeof(global::Neumont.Tools.ORM.ObjectModel.ORMCoreDomainModel), "Neumont.Tools.ORM.GeneratedCode.CoreDomainModelResx")]
@@ -14072,7 +14154,8 @@ namespace Neumont.Tools.ORM.ObjectModel
 		
 		/// <summary>
 		/// Gets or sets the value of Text domain property.
-		/// Description for Neumont.Tools.ORM.ObjectModel.Reading.Text
+		/// The text of this reading. Includes ordered replacement fields corresponding to
+		/// the parent ReadingOrder.
 		/// </summary>
 		[DslDesign::DisplayNameResource("Neumont.Tools.ORM.ObjectModel.Reading/Text.DisplayName", typeof(global::Neumont.Tools.ORM.ObjectModel.ORMCoreDomainModel), "Neumont.Tools.ORM.GeneratedCode.CoreDomainModelResx")]
 		[DslDesign::DescriptionResource("Neumont.Tools.ORM.ObjectModel.Reading/Text.Description", typeof(global::Neumont.Tools.ORM.ObjectModel.ORMCoreDomainModel), "Neumont.Tools.ORM.GeneratedCode.CoreDomainModelResx")]
@@ -14254,6 +14337,7 @@ namespace Neumont.Tools.ORM.ObjectModel
 		/// </summary>
 		[DslDesign::DisplayNameResource("Neumont.Tools.ORM.ObjectModel.Reading/Language.DisplayName", typeof(global::Neumont.Tools.ORM.ObjectModel.ORMCoreDomainModel), "Neumont.Tools.ORM.GeneratedCode.CoreDomainModelResx")]
 		[DslDesign::DescriptionResource("Neumont.Tools.ORM.ObjectModel.Reading/Language.Description", typeof(global::Neumont.Tools.ORM.ObjectModel.ORMCoreDomainModel), "Neumont.Tools.ORM.GeneratedCode.CoreDomainModelResx")]
+		[global::System.ComponentModel.Browsable(false)]
 		[DslModeling::DomainObjectId("34c42f00-5d21-4731-8e38-9a03271f045a")]
 		public global::System.String Language
 		{
@@ -14576,7 +14660,8 @@ namespace Neumont.Tools.ORM.ObjectModel
 		
 		/// <summary>
 		/// Gets or sets the value of ReadingText domain property.
-		/// Description for Neumont.Tools.ORM.ObjectModel.ReadingOrder.ReadingText
+		/// The text for the default Reading of this ReadingOrder. Includes ordered
+		/// replacement fields corresponding to this ReadingOrder.
 		/// </summary>
 		[global::System.ComponentModel.Editor(typeof(global::Neumont.Tools.ORM.ObjectModel.Design.ReadingTextEditor), typeof(global::System.Drawing.Design.UITypeEditor))]
 		[DslDesign::DisplayNameResource("Neumont.Tools.ORM.ObjectModel.ReadingOrder/ReadingText.DisplayName", typeof(global::Neumont.Tools.ORM.ObjectModel.ORMCoreDomainModel), "Neumont.Tools.ORM.GeneratedCode.CoreDomainModelResx")]
@@ -14765,6 +14850,7 @@ namespace Neumont.Tools.ORM.ObjectModel
 		/// </summary>
 		[DslDesign::DisplayNameResource("Neumont.Tools.ORM.ObjectModel.ValueRange/MinValue.DisplayName", typeof(global::Neumont.Tools.ORM.ObjectModel.ORMCoreDomainModel), "Neumont.Tools.ORM.GeneratedCode.CoreDomainModelResx")]
 		[DslDesign::DescriptionResource("Neumont.Tools.ORM.ObjectModel.ValueRange/MinValue.Description", typeof(global::Neumont.Tools.ORM.ObjectModel.ORMCoreDomainModel), "Neumont.Tools.ORM.GeneratedCode.CoreDomainModelResx")]
+		[global::System.ComponentModel.Browsable(false)]
 		[DslModeling::DomainObjectId("59b141fd-47ed-43ff-837e-858f140fad57")]
 		public global::System.String MinValue
 		{
@@ -14852,6 +14938,7 @@ namespace Neumont.Tools.ORM.ObjectModel
 		/// </summary>
 		[DslDesign::DisplayNameResource("Neumont.Tools.ORM.ObjectModel.ValueRange/MaxValue.DisplayName", typeof(global::Neumont.Tools.ORM.ObjectModel.ORMCoreDomainModel), "Neumont.Tools.ORM.GeneratedCode.CoreDomainModelResx")]
 		[DslDesign::DescriptionResource("Neumont.Tools.ORM.ObjectModel.ValueRange/MaxValue.Description", typeof(global::Neumont.Tools.ORM.ObjectModel.ORMCoreDomainModel), "Neumont.Tools.ORM.GeneratedCode.CoreDomainModelResx")]
+		[global::System.ComponentModel.Browsable(false)]
 		[DslModeling::DomainObjectId("08199824-9ddc-4878-8e04-e0f432069726")]
 		public global::System.String MaxValue
 		{
@@ -14934,6 +15021,7 @@ namespace Neumont.Tools.ORM.ObjectModel
 		/// </summary>
 		[DslDesign::DisplayNameResource("Neumont.Tools.ORM.ObjectModel.ValueRange/Text.DisplayName", typeof(global::Neumont.Tools.ORM.ObjectModel.ORMCoreDomainModel), "Neumont.Tools.ORM.GeneratedCode.CoreDomainModelResx")]
 		[DslDesign::DescriptionResource("Neumont.Tools.ORM.ObjectModel.ValueRange/Text.Description", typeof(global::Neumont.Tools.ORM.ObjectModel.ORMCoreDomainModel), "Neumont.Tools.ORM.GeneratedCode.CoreDomainModelResx")]
+		[global::System.ComponentModel.Browsable(false)]
 		[DslModeling::DomainProperty(Kind = DslModeling::DomainPropertyKind.CustomStorage)]
 		[DslModeling::DomainObjectId("1fb8c126-4481-41d0-b41c-5a30bc7245de")]
 		public global::System.String Text
@@ -15030,6 +15118,7 @@ namespace Neumont.Tools.ORM.ObjectModel
 		[DslDesign::DisplayNameResource("Neumont.Tools.ORM.ObjectModel.ValueRange/MinInclusion.DisplayName", typeof(global::Neumont.Tools.ORM.ObjectModel.ORMCoreDomainModel), "Neumont.Tools.ORM.GeneratedCode.CoreDomainModelResx")]
 		[DslDesign::DescriptionResource("Neumont.Tools.ORM.ObjectModel.ValueRange/MinInclusion.Description", typeof(global::Neumont.Tools.ORM.ObjectModel.ORMCoreDomainModel), "Neumont.Tools.ORM.GeneratedCode.CoreDomainModelResx")]
 		[global::System.ComponentModel.DefaultValue(Neumont.Tools.ORM.ObjectModel.RangeInclusion.NotSet)]
+		[global::System.ComponentModel.Browsable(false)]
 		[DslModeling::DomainObjectId("cde9fc53-be51-4c27-9e6c-675cdb580f3a")]
 		public RangeInclusion MinInclusion
 		{
@@ -15118,6 +15207,7 @@ namespace Neumont.Tools.ORM.ObjectModel
 		[DslDesign::DisplayNameResource("Neumont.Tools.ORM.ObjectModel.ValueRange/MaxInclusion.DisplayName", typeof(global::Neumont.Tools.ORM.ObjectModel.ORMCoreDomainModel), "Neumont.Tools.ORM.GeneratedCode.CoreDomainModelResx")]
 		[DslDesign::DescriptionResource("Neumont.Tools.ORM.ObjectModel.ValueRange/MaxInclusion.Description", typeof(global::Neumont.Tools.ORM.ObjectModel.ORMCoreDomainModel), "Neumont.Tools.ORM.GeneratedCode.CoreDomainModelResx")]
 		[global::System.ComponentModel.DefaultValue(Neumont.Tools.ORM.ObjectModel.RangeInclusion.NotSet)]
+		[global::System.ComponentModel.Browsable(false)]
 		[DslModeling::DomainObjectId("eb018230-2726-4206-ae2e-1c911b606fc1")]
 		public RangeInclusion MaxInclusion
 		{
@@ -15420,6 +15510,7 @@ namespace Neumont.Tools.ORM.ObjectModel
 	/// <summary>
 	/// DomainClass ValueConstraint
 	/// </summary>
+	[global::System.ComponentModel.TypeDescriptionProvider(typeof(global::Neumont.Tools.Modeling.Design.ElementTypeDescriptionProvider<ValueConstraint, Design.ValueConstraintTypeDescriptor<ValueConstraint>>))]
 	[DslDesign::DisplayNameResource("Neumont.Tools.ORM.ObjectModel.ValueConstraint.DisplayName", typeof(global::Neumont.Tools.ORM.ObjectModel.ORMCoreDomainModel), "Neumont.Tools.ORM.GeneratedCode.CoreDomainModelResx")]
 	[DslDesign::DescriptionResource("Neumont.Tools.ORM.ObjectModel.ValueConstraint.Description", typeof(global::Neumont.Tools.ORM.ObjectModel.ORMCoreDomainModel), "Neumont.Tools.ORM.GeneratedCode.CoreDomainModelResx")]
 	[global::System.CLSCompliant(true)]
@@ -15451,7 +15542,12 @@ namespace Neumont.Tools.ORM.ObjectModel
 		
 		/// <summary>
 		/// Gets or sets the value of Text domain property.
-		/// Description for Neumont.Tools.ORM.ObjectModel.ValueConstraint.Text
+		/// The range of possible values.
+		///     To specify a range, use '..' between the range endpoints, square brackets to
+		/// specify a closed endpoint, and parentheses to specify an open endpoint. Commas
+		/// are used to entered multiple ranges or discrete values.
+		///     Example: {[10..20), 30} specifies all values between 10 and 20 (but not
+		/// including 20) and the value 30.
 		/// </summary>
 		[DslDesign::DisplayNameResource("Neumont.Tools.ORM.ObjectModel.ValueConstraint/Text.DisplayName", typeof(global::Neumont.Tools.ORM.ObjectModel.ORMCoreDomainModel), "Neumont.Tools.ORM.GeneratedCode.CoreDomainModelResx")]
 		[DslDesign::DescriptionResource("Neumont.Tools.ORM.ObjectModel.ValueConstraint/Text.Description", typeof(global::Neumont.Tools.ORM.ObjectModel.ORMCoreDomainModel), "Neumont.Tools.ORM.GeneratedCode.CoreDomainModelResx")]
@@ -16245,8 +16341,9 @@ namespace Neumont.Tools.ORM.ObjectModel
 		
 		/// <summary>
 		/// Gets or sets the value of Text domain property.
-		/// The definition contents. To insert new lines, use Control-Enter in the dropdown
-		/// editor, or open the 'ORM Notes Editor' toolwindow.
+		/// The definition contents.
+		///     To insert new lines, use Control-Enter in the dropdown editor, or open the
+		/// 'ORM Notes Editor' tool window.
 		/// </summary>
 		[global::System.ComponentModel.Editor(typeof(global::Neumont.Tools.Modeling.Design.MultilineTextEditor<global::Neumont.Tools.ORM.ObjectModel.Definition>), typeof(global::System.Drawing.Design.UITypeEditor))]
 		[global::System.ComponentModel.MergableProperty(false)]
@@ -16467,8 +16564,9 @@ namespace Neumont.Tools.ORM.ObjectModel
 		
 		/// <summary>
 		/// Gets or sets the value of Text domain property.
-		/// The note contents. To insert new lines, use Control-Enter in the dropdown
-		/// editor, or open the 'ORM Notes Editor' toolwindow.
+		/// The note contents.
+		///     To insert new lines, use Control-Enter in the dropdown editor, or open the
+		/// 'ORM Notes Editor' tool window.
 		/// </summary>
 		[global::System.ComponentModel.Editor(typeof(global::Neumont.Tools.Modeling.Design.MultilineTextEditor<global::Neumont.Tools.ORM.ObjectModel.Note>), typeof(global::System.Drawing.Design.UITypeEditor))]
 		[global::System.ComponentModel.MergableProperty(false)]
@@ -17284,6 +17382,7 @@ namespace Neumont.Tools.ORM.ObjectModel
 		[DslDesign::DisplayNameResource("Neumont.Tools.ORM.ObjectModel.FactTypeDerivationExpression/DerivationStorage.DisplayName", typeof(global::Neumont.Tools.ORM.ObjectModel.ORMCoreDomainModel), "Neumont.Tools.ORM.GeneratedCode.CoreDomainModelResx")]
 		[DslDesign::DescriptionResource("Neumont.Tools.ORM.ObjectModel.FactTypeDerivationExpression/DerivationStorage.Description", typeof(global::Neumont.Tools.ORM.ObjectModel.ORMCoreDomainModel), "Neumont.Tools.ORM.GeneratedCode.CoreDomainModelResx")]
 		[global::System.ComponentModel.DefaultValue(Neumont.Tools.ORM.ObjectModel.DerivationStorageType.Derived)]
+		[global::System.ComponentModel.Browsable(false)]
 		[DslModeling::DomainObjectId("6b011b44-9854-436a-aded-7bbc635a7c1f")]
 		public DerivationStorageType DerivationStorage
 		{
@@ -18133,7 +18232,7 @@ namespace Neumont.Tools.ORM.ObjectModel
 		
 		/// <summary>
 		/// Gets or sets the value of Value domain property.
-		/// Description for Neumont.Tools.ORM.ObjectModel.ValueTypeInstance.Value
+		/// The instance value.
 		/// </summary>
 		[DslDesign::DisplayNameResource("Neumont.Tools.ORM.ObjectModel.ValueTypeInstance/Value.DisplayName", typeof(global::Neumont.Tools.ORM.ObjectModel.ORMCoreDomainModel), "Neumont.Tools.ORM.GeneratedCode.CoreDomainModelResx")]
 		[DslDesign::DescriptionResource("Neumont.Tools.ORM.ObjectModel.ValueTypeInstance/Value.Description", typeof(global::Neumont.Tools.ORM.ObjectModel.ORMCoreDomainModel), "Neumont.Tools.ORM.GeneratedCode.CoreDomainModelResx")]
@@ -18312,6 +18411,7 @@ namespace Neumont.Tools.ORM.ObjectModel
 		[global::System.ComponentModel.MergableProperty(false)]
 		[DslDesign::DisplayNameResource("Neumont.Tools.ORM.ObjectModel.FactTypeInstance/Name.DisplayName", typeof(global::Neumont.Tools.ORM.ObjectModel.ORMCoreDomainModel), "Neumont.Tools.ORM.GeneratedCode.CoreDomainModelResx")]
 		[DslDesign::DescriptionResource("Neumont.Tools.ORM.ObjectModel.FactTypeInstance/Name.Description", typeof(global::Neumont.Tools.ORM.ObjectModel.ORMCoreDomainModel), "Neumont.Tools.ORM.GeneratedCode.CoreDomainModelResx")]
+		[global::System.ComponentModel.Browsable(false)]
 		[global::System.ComponentModel.ReadOnly(true)]
 		[DslModeling::ElementName]
 		[DslModeling::DomainProperty(Kind = DslModeling::DomainPropertyKind.CustomStorage)]

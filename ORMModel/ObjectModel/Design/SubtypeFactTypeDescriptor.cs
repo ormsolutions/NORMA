@@ -135,5 +135,16 @@ namespace Neumont.Tools.ORM.ObjectModel.Design
 			}
 			return base.ShouldCreatePropertyDescriptor(requestor, domainProperty);
 		}
+		/// <summary>
+		/// Customize the description of the Name property
+		/// </summary>
+		protected override string GetDescription(ElementPropertyDescriptor propertyDescriptor)
+		{
+			if (propertyDescriptor.DomainPropertyInfo.Id == FactType.NameDomainPropertyId)
+			{
+				return ResourceStrings.SubtypeFactNameDescription;
+			}
+			return base.GetDescription(propertyDescriptor);
+		}
 	}
 }

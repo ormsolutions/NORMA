@@ -3,6 +3,7 @@
 	Neumont Object-Role Modeling Architect for Visual Studio
 
 	Copyright © Neumont University. All rights reserved.
+	Copyright © Matthew Curland. All rights reserved.
 
 	The use and distribution terms for this software are covered by the
 	Common Public License 1.0 (http://opensource.org/licenses/cpl) which
@@ -128,7 +129,7 @@
 				<GeometryShapeMoniker Name="ORMBaseShape"/>
 			</BaseGeometryShape>
 			<Properties>
-				<DomainProperty Name="ExpandRefMode" DisplayName="ExpandRefMode" Id="B2415BB1-1C83-4F0B-B2C3-58B67BC620DD" DefaultValue="false">
+				<DomainProperty Name="ExpandRefMode" DisplayName="ExpandRefMode" Id="B2415BB1-1C83-4F0B-B2C3-58B67BC620DD" DefaultValue="false" Description="Should shapes for the FactType and ValueType corresponding to this ReferenceMode pattern be displayed on the diagram?">
 					<Type>
 						<ExternalTypeMoniker Name="/System/Boolean"/>
 					</Type>
@@ -206,7 +207,7 @@
 				<GeometryShapeMoniker Name="FloatingTextShape"/>
 			</BaseGeometryShape>
 			<Properties>
-				<DomainProperty Name="ExpandRefMode" DisplayName="ExpandRefMode" Id="5BDAFE8C-AFA7-4B78-ADC6-CAE876AB2140" DefaultValue="false">
+				<DomainProperty Name="ExpandRefMode" DisplayName="ExpandRefMode" Id="5BDAFE8C-AFA7-4B78-ADC6-CAE876AB2140" DefaultValue="false" Description="Should shapes for the FactType and ValueType corresponding to this ReferenceMode pattern be displayed on the diagram?">
 					<Type>
 						<ExternalTypeMoniker Name="/System/Boolean"/>
 					</Type>

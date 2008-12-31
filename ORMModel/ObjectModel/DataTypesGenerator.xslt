@@ -3,6 +3,7 @@
 	Neumont Object-Role Modeling Architect for Visual Studio
 
 	Copyright © Neumont University. All rights reserved.
+	Copyright © Matthew Curland. All rights reserved.
 
 	The use and distribution terms for this software are covered by the
 	Common Public License 1.0 (http://opensource.org/licenses/cpl) which
@@ -368,9 +369,9 @@
 												<xsl:choose>
 													<xsl:when test="string(@lengthName)">
 														<summary>
-															<xsl:text>Show the Length property named as '</xsl:text>
+															<xsl:text>Show the Length property for this DataType based on the '</xsl:text>
 															<xsl:value-of select="@lengthName"/>
-															<xsl:text>' with this DataType</xsl:text></summary>
+															<xsl:text>' resource string.</xsl:text></summary>
 													</xsl:when>
 													<xsl:otherwise>
 														<summary>Show the Length property with this DataType</summary>
@@ -381,14 +382,37 @@
 										<plx:returns dataTypeName=".string"/>
 										<plx:get>
 											<plx:return>
-												<plx:string>
-													<xsl:if test="string(@lengthName)">
-														<xsl:value-of select="@lengthName"/>
-													</xsl:if>
-												</plx:string>
+												<xsl:choose>
+													<xsl:when test="string(@lengthName)">
+														<plx:callStatic name="{@lengthName}" dataTypeName="ResourceStrings" type="property"/>
+													</xsl:when>
+													<xsl:otherwise>
+														<plx:string/>
+													</xsl:otherwise>
+												</xsl:choose>
 											</plx:return>
 										</plx:get>
 									</plx:property>
+									<xsl:variable name="lengthDescription" select="string(@lengthDescription)"/>
+									<xsl:if test="$lengthDescription">
+										<plx:property name="LengthDescription" modifier="override" visibility="public">
+											<plx:leadingInfo>
+												<plx:docComment>
+													<summary>
+														<xsl:text>Show the description for the Length property for this DataType based on the '</xsl:text>
+														<xsl:value-of select="$lengthDescription"/>
+														<xsl:text>' resource string.</xsl:text>
+													</summary>
+												</plx:docComment>
+											</plx:leadingInfo>
+											<plx:returns dataTypeName=".string"/>
+											<plx:get>
+												<plx:return>
+													<plx:callStatic name="{@lengthDescription}" dataTypeName="ResourceStrings" type="property"/>
+												</plx:return>
+											</plx:get>
+										</plx:property>
+									</xsl:if>
 								</xsl:if>
 								<xsl:if test="@scaleName">
 									<plx:property name="ScaleName" modifier="override" visibility="public">
@@ -397,10 +421,9 @@
 												<xsl:choose>
 													<xsl:when test="string(@scaleName)">
 														<summary>
-															<xsl:text>Show the Scale property named as '</xsl:text>
-															<xsl:value-of select="@scaleName"/>
-															<xsl:text>' with this DataType</xsl:text>
-														</summary>
+															<xsl:text>Show the Scale property for this DataType based on the '</xsl:text>
+															<xsl:value-of select="@lengthName"/>
+															<xsl:text>' resource string.</xsl:text></summary>
 													</xsl:when>
 													<xsl:otherwise>
 														<summary>Show the Scale property with this DataType</summary>
@@ -411,14 +434,37 @@
 										<plx:returns dataTypeName=".string"/>
 										<plx:get>
 											<plx:return>
-												<plx:string>
-													<xsl:if test="string(@scaleName)">
-														<xsl:value-of select="@scaleName"/>
-													</xsl:if>
-												</plx:string>
+												<xsl:choose>
+													<xsl:when test="string(@scaleName)">
+														<plx:callStatic name="{@scaleName}" dataTypeName="ResourceStrings" type="property"/>
+													</xsl:when>
+													<xsl:otherwise>
+														<plx:string/>
+													</xsl:otherwise>
+												</xsl:choose>
 											</plx:return>
 										</plx:get>
 									</plx:property>
+									<xsl:variable name="scaleDescription" select="string(@scaleDescription)"/>
+									<xsl:if test="$scaleDescription">
+										<plx:property name="ScaleDescription" modifier="override" visibility="public">
+											<plx:leadingInfo>
+												<plx:docComment>
+													<summary>
+														<xsl:text>Show the description for the Scale property for this DataType based on the '</xsl:text>
+														<xsl:value-of select="$scaleDescription"/>
+														<xsl:text>' resource string.</xsl:text>
+													</summary>
+												</plx:docComment>
+											</plx:leadingInfo>
+											<plx:returns dataTypeName=".string"/>
+											<plx:get>
+												<plx:return>
+													<plx:callStatic name="{@scaleDescription}" dataTypeName="ResourceStrings" type="property"/>
+												</plx:return>
+											</plx:get>
+										</plx:property>
+									</xsl:if>
 								</xsl:if>
 							</plx:class>
 						</xsl:for-each>

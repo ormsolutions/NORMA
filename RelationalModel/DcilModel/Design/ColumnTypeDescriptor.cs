@@ -3,6 +3,7 @@
 * Neumont Object-Role Modeling Architect for Visual Studio                 *
 *                                                                          *
 * Copyright © Neumont University. All rights reserved.                     *
+* Copyright © Matthew Curland. All rights reserved.                        *
 *                                                                          *
 * The use and distribution terms for this software are covered by the      *
 * Common Public License 1.0 (http://opensource.org/licenses/cpl) which     *
@@ -92,6 +93,34 @@ namespace Neumont.Tools.RelationalModels.ConceptualDatabase.Design
 				}
 			}
 			return base.GetPropertyDescriptorDisplayName(propertyDescriptor);
+		}
+		/// <summary>
+		/// Provide description information for the passthrough DataType properties
+		/// </summary>
+		protected override string GetDescription(ElementPropertyDescriptor propertyDescriptor)
+		{
+			Guid propertyId = propertyDescriptor.DomainPropertyInfo.Id;
+			Guid passthroughPropertyId;
+			if (propertyId == Column.ScaleDomainPropertyId)
+			{
+				passthroughPropertyId = ObjectType.ScaleDomainPropertyId;
+			}
+			else if (propertyId == Column.LengthDomainPropertyId)
+			{
+				passthroughPropertyId = ObjectType.LengthDomainPropertyId;
+			}
+			else
+			{
+				return base.GetDescription(propertyDescriptor);
+			}
+			Column column;
+			ObjectType valueType;
+			if (null != (column = propertyDescriptor.ModelElement as Column) &&
+				null != (valueType = column.AssociatedValueType))
+			{
+				return DomainTypeDescriptor.CreatePropertyDescriptor(valueType, valueType.Store.DomainDataDirectory.GetDomainProperty(passthroughPropertyId)).Description;
+			}
+			return base.GetDescription(propertyDescriptor);
 		}
 	}
 }

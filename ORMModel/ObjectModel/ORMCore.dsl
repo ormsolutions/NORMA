@@ -64,32 +64,32 @@
 						<ExternalTypeMoniker Name="/System/String"/>
 					</Type>
 				</DomainProperty>
-				<DomainProperty Name="CasingOption" DefaultValue="None" DisplayName="CasingOption" Id="30950747-68E7-4A64-8ED7-BACEDAAFD4A2" Description="">
+				<DomainProperty Name="CasingOption" DefaultValue="None" DisplayName="CasingOption" Id="30950747-68E7-4A64-8ED7-BACEDAAFD4A2" Description="Specify upper/lower case settings of names generated for this context.">
 					<Type>
 						<DomainEnumerationMoniker Name="NameGeneratorCasingOption"/>
 					</Type>
 				</DomainProperty>
-				<DomainProperty Name="SpacingFormat" DefaultValue="Retain" DisplayName="SpacingFormat" Id="CFD3E74C-DE51-4FD9-ADDB-01B0F5414BFD" Description="">
+				<DomainProperty Name="SpacingFormat" DefaultValue="Retain" DisplayName="SpacingFormat" Id="CFD3E74C-DE51-4FD9-ADDB-01B0F5414BFD" Description="Specify if whitespace is preserved, removed, or replaced in names generated for this context.">
 					<Type>
 						<DomainEnumerationMoniker Name="NameGeneratorSpacingFormat"/>
 					</Type>
 				</DomainProperty>
-				<DomainProperty Name="SpacingReplacement" DefaultValue="" DisplayName="SpacingReplacement" Id="0E203ACB-3611-4180-9324-7FD7D30A5AE4" Description="">
+				<DomainProperty Name="SpacingReplacement" DefaultValue="" DisplayName="SpacingReplacement" Id="0E203ACB-3611-4180-9324-7FD7D30A5AE4" Description="Specify the characters used instead of spaces in names generated for this context.">
 					<Type>
 						<ExternalTypeMoniker Name="/System/String"/>
 					</Type>
 				</DomainProperty>
-				<DomainProperty Name="AutomaticallyShortenNames" DefaultValue="true" DisplayName="AutomaticallyShortenNames" Id="6A3526D9-AFB3-417E-A988-A44644AA094E" Description="">
+				<DomainProperty Name="AutomaticallyShortenNames" DefaultValue="true" DisplayName="AutomaticallyShortenNames" Id="6A3526D9-AFB3-417E-A988-A44644AA094E" Description="Specify if names generated for this context should be automatically shortened if they are too long for the generation target.">
 					<Type>
 						<ExternalTypeMoniker Name="/System/Boolean"/>
 					</Type>
 				</DomainProperty>
-				<DomainProperty Name="UseTargetDefaultMaximum" DefaultValue="true" DisplayName="UseTargetDefaultMaximum" Id="67B83B76-394F-4702-A984-6009DC51D224" Description="">
+				<DomainProperty Name="UseTargetDefaultMaximum" DefaultValue="true" DisplayName="UseTargetDefaultMaximum" Id="67B83B76-394F-4702-A984-6009DC51D224" Description="Specify if the default maximum name length for this name generation context should be used when shortening names.">
 					<Type>
 						<ExternalTypeMoniker Name="/System/Boolean"/>
 					</Type>
 				</DomainProperty>
-				<DomainProperty Name="UserDefinedMaximum" DefaultValue="128" DisplayName="UserDefinedMaximum" Id="FC154AD5-AB52-4AC8-856C-28B00395ABF4" Description="">
+				<DomainProperty Name="UserDefinedMaximum" DefaultValue="128" DisplayName="UserDefinedMaximum" Id="FC154AD5-AB52-4AC8-856C-28B00395ABF4" Description="Specify a custom maximum name length for this name generation context.">
 					<Type>
 						<ExternalTypeMoniker Name="/System/Int32"/>
 					</Type>
@@ -123,17 +123,17 @@
 		<DomainClass Name="ModelErrorCategory" Namespace="Neumont.Tools.ORM.ObjectModel" Id="C9730E21-67A1-47E1-A065-B08C2B3815CE" DisplayName="ModelErrorCategory" InheritanceModifier="Abstract" Description=""/>
 		<DomainClass Name="ModelErrorDisplayFilter" Namespace="Neumont.Tools.ORM.ObjectModel" Id="67CDCE7B-3D28-4A92-B9EB-00418152A13F" DisplayName="ModelErrorDisplayFilter" InheritanceModifier="Sealed" Description="">
 			<Properties>
-				<DomainProperty Name="ExcludedCategories" DefaultValue="" DisplayName="ExcludedCategories" Id="46F355F4-001C-4A3F-8A0F-56BEC4EACDEB" Kind="CustomStorage">
+				<DomainProperty Name="ExcludedCategories" DefaultValue="" DisplayName="ExcludedCategories" IsBrowsable="false" Id="46F355F4-001C-4A3F-8A0F-56BEC4EACDEB" Kind="CustomStorage">
 					<Type>
 						<ExternalTypeMoniker Name="/System/String"/>
 					</Type>
 				</DomainProperty>
-				<DomainProperty Name="IncludedErrors" DefaultValue="" DisplayName="IncludedErrors" Id="D83D0737-79B4-415D-9C93-73442F3C606F" Kind="CustomStorage">
+				<DomainProperty Name="IncludedErrors" DefaultValue="" DisplayName="IncludedErrors" IsBrowsable="false" Id="D83D0737-79B4-415D-9C93-73442F3C606F" Kind="CustomStorage">
 					<Type>
 						<ExternalTypeMoniker Name="/System/String"/>
 					</Type>
 				</DomainProperty>
-				<DomainProperty Name="ExcludedErrors" DefaultValue="" DisplayName="ExcludedErrors" Id="593D1E1A-C01D-48E8-8385-1507C7F95A25" Kind="CustomStorage">
+				<DomainProperty Name="ExcludedErrors" DefaultValue="" DisplayName="ExcludedErrors" IsBrowsable="false" Id="593D1E1A-C01D-48E8-8385-1507C7F95A25" Kind="CustomStorage">
 					<Type>
 						<ExternalTypeMoniker Name="/System/String"/>
 					</Type>
@@ -191,7 +191,7 @@
 				<DomainClassMoniker Name="ORMModelElement"/>
 			</BaseClass>
 			<Properties>
-				<DomainProperty Name="Name" DefaultValue="" DisplayName="Name" IsElementName="true" Id="4A557C1E-0A89-49B7-B4BD-FA095F6267D7">
+				<DomainProperty Name="Name" DefaultValue="" DisplayName="Name" IsElementName="true" Id="4A557C1E-0A89-49B7-B4BD-FA095F6267D7" Description="A name for this element.">
 					<Attributes>
 						<ClrAttribute Name="global::System.ComponentModel.MergableProperty">
 							<Parameters>
@@ -207,11 +207,18 @@
 		</DomainClass>
 
 		<DomainClass Name="ORMModel" Namespace="Neumont.Tools.ORM.ObjectModel" Id="73E1F528-9E60-4198-AAC2-F8D6CCF62EB3" DisplayName="ORMModel" Description="" GeneratesDoubleDerived="true">
+			<Attributes>
+				<ClrAttribute Name="global::System.ComponentModel.TypeDescriptionProvider">
+					<Parameters>
+						<AttributeParameter Value="typeof(global::Neumont.Tools.Modeling.Design.ElementTypeDescriptionProvider&lt;ORMModel, Design.ORMModelTypeDescriptor&lt;ORMModel&gt;&gt;)"/>
+					</Parameters>
+				</ClrAttribute>
+			</Attributes>
 			<BaseClass>
 				<DomainClassMoniker Name="ORMNamedElement"/>
 			</BaseClass>
 			<Properties>
-				<DomainProperty Name="ModelErrorDisplayFilterDisplay" DefaultValue="" DisplayName="ErrorDisplay" Id="C5A66492-0FFA-46F9-A64B-361E62D696B0" Kind="CustomStorage">
+				<DomainProperty Name="ModelErrorDisplayFilterDisplay" DefaultValue="" DisplayName="ErrorDisplay" Id="C5A66492-0FFA-46F9-A64B-361E62D696B0" Kind="CustomStorage" Description="Validation error display options for this model. Control error display by category and individually.">
 					<Attributes>
 						<ClrAttribute Name="global::System.ComponentModel.Editor">
 							<Parameters>
@@ -224,7 +231,7 @@
 						<ExternalTypeMoniker Name="/Neumont.Tools.ORM.ObjectModel/ModelErrorDisplayFilter"/>
 					</Type>
 				</DomainProperty>
-				<DomainProperty Name="DefinitionText" DefaultValue="" DisplayName="InformalDefinition" Description="A definition of this Model. To insert new lines, use Control-Enter in the dropdown editor, or open the 'ORM Informal Definition Editor' toolwindow." Id="E86A38C9-2F8E-4066-8114-384184C5E3C3" Kind="CustomStorage">
+				<DomainProperty Name="DefinitionText" DefaultValue="" DisplayName="InformalDefinition" Description="A definition of this Model.&#xd;&#xa;    To insert new lines, use Control-Enter in the dropdown editor, or open the 'ORM Informal Definition Editor' tool window." Id="E86A38C9-2F8E-4066-8114-384184C5E3C3" Kind="CustomStorage">
 					<Attributes>
 						<ClrAttribute Name="global::System.ComponentModel.Editor">
 							<Parameters>
@@ -242,7 +249,7 @@
 						<ExternalTypeMoniker Name="/System/String"/>
 					</Type>
 				</DomainProperty>
-				<DomainProperty Name="NoteText" DefaultValue="" DisplayName="Note" Description="A note to associate with this Model. To insert new lines, use Control-Enter in the dropdown editor, or open the 'ORM Notes Editor' toolwindow." Id="603A1F7B-06A4-4B85-9B0D-E3A85629FF98" Kind="CustomStorage">
+				<DomainProperty Name="NoteText" DefaultValue="" DisplayName="Note" Description="A note to associate with this Model.&#xd;&#xa;    To insert new lines, use Control-Enter in the dropdown editor, or open the 'ORM Notes Editor' tool window." Id="603A1F7B-06A4-4B85-9B0D-E3A85629FF98" Kind="CustomStorage">
 					<Attributes>
 						<ClrAttribute Name="global::System.ComponentModel.Editor">
 							<Parameters>
@@ -318,12 +325,12 @@
 				<DomainClassMoniker Name="ORMNamedElement"/>
 			</BaseClass>
 			<Properties>
-				<DomainProperty Name="IsExternal" DefaultValue="false" DisplayName="IsExternal" Id="D03828FD-1DA7-4804-A16B-CC27F2046F57">
+				<DomainProperty Name="IsExternal" DefaultValue="false" DisplayName="IsExternal" Id="D03828FD-1DA7-4804-A16B-CC27F2046F57" Description="Is this ObjectType defined in an external model?">
 					<Type>
 						<ExternalTypeMoniker Name="/System/Boolean"/>
 					</Type>
 				</DomainProperty>
-				<DomainProperty Name="DefinitionText" DefaultValue="" DisplayName="InformalDefinition" Description="A definition of this ObjectType. To insert new lines, use Control-Enter in the dropdown editor, or open the 'ORM Informal Definition Editor' toolwindow." Id="431A8A8F-E8EC-4014-B1A1-843E55751A55" Kind="CustomStorage">
+				<DomainProperty Name="DefinitionText" DefaultValue="" DisplayName="InformalDefinition" Description="A definition of this ObjectType.&#xd;&#xa;    To insert new lines, use Control-Enter in the dropdown editor, or open the 'ORM Informal Definition Editor' tool window." Id="431A8A8F-E8EC-4014-B1A1-843E55751A55" Kind="CustomStorage">
 					<Attributes>
 						<ClrAttribute Name="global::System.ComponentModel.Editor">
 							<Parameters>
@@ -341,7 +348,7 @@
 						<ExternalTypeMoniker Name="/System/String"/>
 					</Type>
 				</DomainProperty>
-				<DomainProperty Name="NoteText" DefaultValue="" DisplayName="Note" Description="A note to associate with this ObjectType. To insert new lines, use Control-Enter in the dropdown editor, or open the 'ORM Notes Editor' toolwindow." Id="17C4E23D-CA49-4329-982F-48F4EFCA23BD" Kind="CustomStorage">
+				<DomainProperty Name="NoteText" DefaultValue="" DisplayName="Note" Description="A note to associate with this ObjectType.&#xd;&#xa;    To insert new lines, use Control-Enter in the dropdown editor, or open the 'ORM Notes Editor' tool window." Id="17C4E23D-CA49-4329-982F-48F4EFCA23BD" Kind="CustomStorage">
 					<Attributes>
 						<ClrAttribute Name="global::System.ComponentModel.Editor">
 							<Parameters>
@@ -359,12 +366,12 @@
 						<ExternalTypeMoniker Name="/System/String"/>
 					</Type>
 				</DomainProperty>
-				<DomainProperty Name="IsIndependent" DefaultValue="false" DisplayName="IsIndependent" Id="D52257EF-D76A-404D-AAC5-7450BA5CC790">
+				<DomainProperty Name="IsIndependent" DefaultValue="false" DisplayName="IsIndependent" Id="D52257EF-D76A-404D-AAC5-7450BA5CC790" Description="Can an instance of this ObjectType exist if that instance plays no roles?">
 					<Type>
 						<ExternalTypeMoniker Name="/System/Boolean"/>
 					</Type>
 				</DomainProperty>
-				<DomainProperty Name="IsValueType" DefaultValue="false" DisplayName="IsValueType" Id="F63ACB94-8526-432E-964C-3B4441195754" Kind="CustomStorage">
+				<DomainProperty Name="IsValueType" DefaultValue="false" DisplayName="IsValueType" Id="F63ACB94-8526-432E-964C-3B4441195754" Kind="CustomStorage" Description="Is this ObjectType a self-identifying value or an entity?">
 					<Attributes>
 						<ClrAttribute Name="global::System.ComponentModel.RefreshProperties">
 							<Parameters>
@@ -376,17 +383,17 @@
 						<ExternalTypeMoniker Name="/System/Boolean"/>
 					</Type>
 				</DomainProperty>
-				<DomainProperty Name="Scale" DefaultValue="0" DisplayName="DataTypeScale" Id="BD2D708A-7687-4218-94BC-05834AFAC869" Kind="CustomStorage">
+				<DomainProperty Name="Scale" DefaultValue="0" DisplayName="DataTypeScale" Id="BD2D708A-7687-4218-94BC-05834AFAC869" Kind="CustomStorage"  Description="The number of digits allowed to the right of the decimal point in a value with this DataType.">
 					<Type>
 						<ExternalTypeMoniker Name="/System/Int32"/>
 					</Type>
 				</DomainProperty>
-				<DomainProperty Name="Length" DefaultValue="0" DisplayName="DataTypeLength" Id="C9B01797-2CA1-4FF8-865A-FDA0DDF33F8D" Kind="CustomStorage">
+				<DomainProperty Name="Length" DefaultValue="0" DisplayName="DataTypeLength" Id="C9B01797-2CA1-4FF8-865A-FDA0DDF33F8D" Kind="CustomStorage" Description="The maximum length of values with this DataType.">
 					<Type>
 						<ExternalTypeMoniker Name="/System/Int32"/>
 					</Type>
 				</DomainProperty>
-				<DomainProperty Name="ReferenceModeDisplay" DefaultValue="" DisplayName="RefMode" Id="2E56D25A-BD96-4478-A55C-9F17A15C94B6" Kind="CustomStorage">
+				<DomainProperty Name="ReferenceModeDisplay" DefaultValue="" DisplayName="RefMode" Id="2E56D25A-BD96-4478-A55C-9F17A15C94B6" Kind="CustomStorage" Description="The reference mode pattern for the EntityType.&#xd;&#xa;    If the desired reference mode pattern is not specified in the dropdown, then a new pattern can be entered. The type of a new reference mode pattern is set by prepending a '.' for a popular reference mode, appending a ':' for a unit-based reference mode, and applying no decorators for a general reference mode. Reference mode settings can also be managed with the 'ORM Reference Mode Editor' tool window.">
 					<Attributes>
 						<ClrAttribute Name="global::System.ComponentModel.Editor">
 							<Parameters>
@@ -419,7 +426,7 @@
 						<ExternalTypeMoniker Name="/Neumont.Tools.ORM.ObjectModel/ReferenceMode"/>
 					</Type>
 				</DomainProperty>
-				<DomainProperty Name="DataTypeDisplay" DefaultValue="" DisplayName="DataType" Id="3E8893A7-5985-4200-A595-CB1E9EC9ADA7" Kind="CustomStorage">
+				<DomainProperty Name="DataTypeDisplay" DefaultValue="" DisplayName="DataType" Id="3E8893A7-5985-4200-A595-CB1E9EC9ADA7" Kind="CustomStorage" Description="The DataType for this ValueType, or the DataType for the identifying ValueType if this is an EntityType.&#xd;&#xa;    This is a portable DataType. The final physical DataType is dependent on the generation target.">
 					<Attributes>
 						<ClrAttribute Name="global::System.ComponentModel.Editor">
 							<Parameters>
@@ -432,17 +439,17 @@
 						<ExternalTypeMoniker Name="/Neumont.Tools.ORM.ObjectModel/DataType"/>
 					</Type>
 				</DomainProperty>
-				<DomainProperty Name="ValueRangeText" DefaultValue="" DisplayName="ValueRange" Id="F0662C59-700B-435C-B57B-93E5FD84B71F" Kind="CustomStorage">
+				<DomainProperty Name="ValueRangeText" DefaultValue="" DisplayName="ValueRange" Id="F0662C59-700B-435C-B57B-93E5FD84B71F" Kind="CustomStorage" Description="Restrict the range of possible values for instances of this ObjectType.&#xd;&#xa;    To specify a range, use '..' between the range endpoints, square brackets to specify a closed endpoint, and parentheses to specify an open endpoint. Commas are used to entered multiple ranges or discrete values.&#xd;&#xa;    Example: {[10..20), 30} specifies all values between 10 and 20 (but not including 20) and the value 30.">
 					<Type>
 						<ExternalTypeMoniker Name="/System/String"/>
 					</Type>
 				</DomainProperty>
-				<DomainProperty Name="ValueTypeValueRangeText" DefaultValue="" DisplayName="ValueTypeValueRange" Id="6EBE45BB-1054-4785-8C9D-905A41599EF9" Kind="CustomStorage">
+				<DomainProperty Name="ValueTypeValueRangeText" DefaultValue="" DisplayName="ValueTypeValueRange" Id="6EBE45BB-1054-4785-8C9D-905A41599EF9" Kind="CustomStorage" Description="The ValueRange property for the ValueType that identifies this EntityType.&#xd;&#xa;    The ValueRange property of an EntityType is applied to the identifying role, not directly to the identifying ValueType. This allows EntityType ValueRanges to be specified independently for multiple EntityTypes identified with the same unit-based or general reference mode patterns.">
 					<Type>
 						<ExternalTypeMoniker Name="/System/String"/>
 					</Type>
 				</DomainProperty>
-				<DomainProperty Name="IsPersonal" DefaultValue="false" DisplayName="IsPersonal" Id="EF9AE461-4327-46DC-8FE0-D1388F061B30">
+				<DomainProperty Name="IsPersonal" DefaultValue="false" DisplayName="IsPersonal" Id="EF9AE461-4327-46DC-8FE0-D1388F061B30" Description="Does this ObjectType represent a person instead of a thing?&#xd;&#xa;    Used as a verbalization directive to render references to this type using a personal pronoun ('who' instead of 'that').">
 					<Type>
 						<ExternalTypeMoniker Name="/System/Boolean"/>
 					</Type>
@@ -452,7 +459,7 @@
 						<ExternalTypeMoniker Name="/System/Boolean"/>
 					</Type>
 				</DomainProperty>
-				<DomainProperty Name="DerivationRuleDisplay" DefaultValue="" DisplayName="DerivationRule" Id="B852BC09-7887-4BA7-A7AA-09D4F4E2AAD2" Kind="CustomStorage">
+				<DomainProperty Name="DerivationRuleDisplay" DefaultValue="" DisplayName="DerivationRule" Id="B852BC09-7887-4BA7-A7AA-09D4F4E2AAD2" Kind="CustomStorage" Description="The derivation rule for this subtype. If a rule is not specified, then this is treated as an asserted subtype.">
 					<Attributes>
 						<ClrAttribute Name="global::System.ComponentModel.Editor">
 							<Parameters>
@@ -485,12 +492,12 @@
 				<DomainClassMoniker Name="ORMModelElement"/>
 			</BaseClass>
 			<Properties>
-				<DomainProperty Name="IsExternal" DefaultValue="false" DisplayName="IsExternal" Id="67EA8C95-FD9A-473B-8AA2-E35FCDD68361">
+				<DomainProperty Name="IsExternal" DefaultValue="false" DisplayName="IsExternal" Id="67EA8C95-FD9A-473B-8AA2-E35FCDD68361" Description="Is this FactType defined in an external model?">
 					<Type>
 						<ExternalTypeMoniker Name="/System/Boolean"/>
 					</Type>
 				</DomainProperty>
-				<DomainProperty Name="DefinitionText" DefaultValue="" DisplayName="InformalDefinition" Description="A definition of this FactType. To insert new lines, use Control-Enter in the dropdown editor, or open the 'ORM Informal Definition Editor' toolwindow." Id="3F58E4D1-4562-478A-A3FE-08715E455CD8" Kind="CustomStorage">
+				<DomainProperty Name="DefinitionText" DefaultValue="" DisplayName="InformalDefinition" Description="A definition of this FactType.&#xd;&#xa;    To insert new lines, use Control-Enter in the dropdown editor, or open the 'ORM Informal Definition Editor' tool window." Id="3F58E4D1-4562-478A-A3FE-08715E455CD8" Kind="CustomStorage">
 					<Attributes>
 						<ClrAttribute Name="global::System.ComponentModel.Editor">
 							<Parameters>
@@ -508,7 +515,7 @@
 						<ExternalTypeMoniker Name="/System/String"/>
 					</Type>
 				</DomainProperty>
-				<DomainProperty Name="NoteText" DefaultValue="" DisplayName="Note" Description="A note to associate with this FactType. To insert new lines, use Control-Enter in the dropdown editor, or open the 'ORM Notes Editor' toolwindow." Id="AF6200B1-068D-434A-98D3-44E872B921BD" Kind="CustomStorage">
+				<DomainProperty Name="NoteText" DefaultValue="" DisplayName="Note" Description="A note to associate with this FactType.&#xd;&#xa;    To insert new lines, use Control-Enter in the dropdown editor, or open the 'ORM Notes Editor' tool window." Id="AF6200B1-068D-434A-98D3-44E872B921BD" Kind="CustomStorage">
 					<Attributes>
 						<ClrAttribute Name="global::System.ComponentModel.Editor">
 							<Parameters>
@@ -526,7 +533,7 @@
 						<ExternalTypeMoniker Name="/System/String"/>
 					</Type>
 				</DomainProperty>
-				<DomainProperty Name="Name" DefaultValue="" DisplayName="Name" IsElementName="true" Id="B17F5E42-A0FA-4B88-9D24-D148CEEE7DB0" Kind="CustomStorage">
+				<DomainProperty Name="Name" DefaultValue="" DisplayName="Name" IsElementName="true" Id="B17F5E42-A0FA-4B88-9D24-D148CEEE7DB0" Kind="CustomStorage" Description="The name for this FactType.&#xd;&#xa;    If the Name property is read-only, then it is a generated name based on primary reading.&#xd;&#xa;    If the Name property is editable, then it is the name of an explicit or implicit objectifying EntityType. The editable name can be reset to match the generated name by clearing the property value.">
 					<Attributes>
 						<ClrAttribute Name="global::System.ComponentModel.MergableProperty">
 							<Parameters>
@@ -548,7 +555,7 @@
 						<ExternalTypeMoniker Name="/System/Int64"/>
 					</Type>
 				</DomainProperty>
-				<DomainProperty Name="DerivationRuleDisplay" DefaultValue="" DisplayName="DerivationRule" Id="7AF5C436-C28A-49BA-B8E0-05C409B67358" Kind="CustomStorage">
+				<DomainProperty Name="DerivationRuleDisplay" DefaultValue="" DisplayName="DerivationRule" Id="7AF5C436-C28A-49BA-B8E0-05C409B67358" Kind="CustomStorage" Description="A derivation rule for this FactType.">
 					<Attributes>
 						<ClrAttribute Name="global::System.ComponentModel.Editor">
 							<Parameters>
@@ -566,7 +573,7 @@
 						<ExternalTypeMoniker Name="/System/String"/>
 					</Type>
 				</DomainProperty>
-				<DomainProperty Name="DerivationStorageDisplay" DefaultValue="" DisplayName="DerivationStorage" Id="307C9629-ACE8-43E1-ABF3-33E8BB7146B7" Kind="CustomStorage">
+				<DomainProperty Name="DerivationStorageDisplay" DefaultValue="" DisplayName="DerivationStorage" Id="307C9629-ACE8-43E1-ABF3-33E8BB7146B7" Kind="CustomStorage" Description="Storage options for a derived FactType.">
 					<Type>
 						<DomainEnumerationMoniker Name="DerivationStorageType"/>
 					</Type>
@@ -630,7 +637,7 @@
 				<DomainClassMoniker Name="RoleBase"/>
 			</BaseClass>
 			<Properties>
-				<DomainProperty Name="RolePlayerDisplay" DefaultValue="" DisplayName="RolePlayer" Id="B66FCA99-E6EC-46C9-B445-D549F6D7ABE1" Kind="CustomStorage">
+				<DomainProperty Name="RolePlayerDisplay" DefaultValue="" DisplayName="RolePlayer" Id="B66FCA99-E6EC-46C9-B445-D549F6D7ABE1" Kind="CustomStorage" Description="The ObjectType that plays this Role.">
 					<Attributes>
 						<ClrAttribute Name="global::System.ComponentModel.Editor">
 							<Parameters>
@@ -643,12 +650,12 @@
 						<ExternalTypeMoniker Name="/Neumont.Tools.ORM.ObjectModel/ObjectType"/>
 					</Type>
 				</DomainProperty>
-				<DomainProperty Name="IsMandatory" DefaultValue="false" DisplayName="IsMandatory" Id="0F5EED7E-7584-413A-9250-BD4624DC164E" Kind="CustomStorage">
+				<DomainProperty Name="IsMandatory" DefaultValue="false" DisplayName="IsMandatory" Id="0F5EED7E-7584-413A-9250-BD4624DC164E" Kind="CustomStorage" Description="Does this Role have a simple mandatory constraint?">
 					<Type>
 						<ExternalTypeMoniker Name="/System/Boolean"/>
 					</Type>
 				</DomainProperty>
-				<DomainProperty Name="Multiplicity" DefaultValue="Unspecified" DisplayName="Multiplicity" Id="ADA46024-61B8-4E1D-BB28-2FF2C71B83CD" Kind="CustomStorage">
+				<DomainProperty Name="Multiplicity" DefaultValue="Unspecified" DisplayName="Multiplicity" Id="ADA46024-61B8-4E1D-BB28-2FF2C71B83CD" Kind="CustomStorage" Description="The multiplicity specification for a Role of a binary FactType. Affects the uniqueness and mandatory constraints on the opposite Role.">
 					<Attributes>
 						<ClrAttribute Name="global::System.ComponentModel.MergableProperty">
 							<Parameters>
@@ -660,22 +667,22 @@
 						<DomainEnumerationMoniker Name="RoleMultiplicity"/>
 					</Type>
 				</DomainProperty>
-				<DomainProperty Name="ValueRangeText" DefaultValue="" DisplayName="ValueRange" Id="3882C0AC-6F4A-4CF1-B856-E57A2DD4650C" Kind="CustomStorage">
+				<DomainProperty Name="ValueRangeText" DefaultValue="" DisplayName="ValueRange" Id="3882C0AC-6F4A-4CF1-B856-E57A2DD4650C" Kind="CustomStorage" Description="Restrict the range of possible values for instances of the RolePlayer ObjectType.&#xd;&#xa;    To specify a range, use '..' between the range endpoints, square brackets to specify a closed endpoint, and parentheses to specify an open endpoint. Commas are used to entered multiple ranges or discrete values.&#xd;&#xa;    Example: {[10..20), 30} specifies all values between 10 and 20 (but not including 20) and the value 30.">
 					<Type>
 						<ExternalTypeMoniker Name="/System/String"/>
 					</Type>
 				</DomainProperty>
-				<DomainProperty Name="MandatoryConstraintName" DefaultValue="" DisplayName="MandatoryConstraintName" Id="A6680C0F-84B1-499C-8B58-1E1C5D09570C" Kind="CustomStorage">
+				<DomainProperty Name="MandatoryConstraintName" DefaultValue="" DisplayName="MandatoryConstraintName" Id="A6680C0F-84B1-499C-8B58-1E1C5D09570C" Kind="CustomStorage" Description="The Name of the simple mandatory constraint on this Role.">
 					<Type>
 						<ExternalTypeMoniker Name="/System/String"/>
 					</Type>
 				</DomainProperty>
-				<DomainProperty Name="MandatoryConstraintModality" DefaultValue="" DisplayName="MandatoryConstraintModality" Id="29B14765-434B-4CCF-9C93-BEE8BB7E2697" Kind="CustomStorage">
+				<DomainProperty Name="MandatoryConstraintModality" DefaultValue="" DisplayName="MandatoryConstraintModality" Id="29B14765-434B-4CCF-9C93-BEE8BB7E2697" Kind="CustomStorage" Description="The Modality of the simple mandatory constraint on this Role.&#xd;&#xa;    Alethic modality means the constraint is structurally enforced and data violating the constraint cannot be entered in the system;&#xd;&#xa;    Deontic modality means that data violating the constraint can be recorded.">
 					<Type>
 						<DomainEnumerationMoniker Name="ConstraintModality"/>
 					</Type>
 				</DomainProperty>
-				<DomainProperty Name="Name" DefaultValue="" DisplayName="Name" Id="F173D0FA-8F94-479D-8794-2572B8CD8D9A">
+				<DomainProperty Name="Name" DefaultValue="" DisplayName="Name" Id="F173D0FA-8F94-479D-8794-2572B8CD8D9A" Description="The explicit Name for this role.">
 					<Attributes>
 						<ClrAttribute Name="global::System.ComponentModel.MergableProperty">
 							<Parameters>
@@ -687,7 +694,7 @@
 						<ExternalTypeMoniker Name="/System/String"/>
 					</Type>
 				</DomainProperty>
-				<DomainProperty Name="ObjectificationOppositeRoleName" DefaultValue="" DisplayName="ImpliedRoleName" Id="4719AAC4-E0E7-467A-B261-CDB8AE9826ED" Kind="CustomStorage">
+				<DomainProperty Name="ObjectificationOppositeRoleName" DefaultValue="" DisplayName="ImpliedRoleName" Id="4719AAC4-E0E7-467A-B261-CDB8AE9826ED" Kind="CustomStorage" Description="The Name of the implied Role attached to the objectifying EntityType.&#xd;&#xa;    An implied binary FactType is created relating the objectifying EntityType to each of the role players of an objectified FactType. Binary FactTypes with a spanning internal uniqueness constraint and ternary (or higher arity) FactTypes are automatically objectified.">
 					<Attributes>
 						<ClrAttribute Name="global::System.ComponentModel.MergableProperty">
 							<Parameters>
@@ -713,12 +720,12 @@
 				<DomainClassMoniker Name="ORMNamedElement"/>
 			</BaseClass>
 			<Properties>
-				<DomainProperty Name="NameConsumer" DisplayName="NameConsumer" Id="BE9EDEB2-C60E-4446-BAC0-73CCD61716EA" Kind="CustomStorage">
+				<DomainProperty Name="NameConsumer" DisplayName="NameConsumer" IsBrowsable="false" Id="BE9EDEB2-C60E-4446-BAC0-73CCD61716EA" Kind="CustomStorage">
 					<Type>
 						<ExternalTypeMoniker Name="/System/String"/>
 					</Type>
 				</DomainProperty>
-				<DomainProperty Name="NameUsage" DisplayName="NameUsage" Id="18DBB768-B471-4926-B678-5B2245760333" Kind="CustomStorage">
+				<DomainProperty Name="NameUsage" DisplayName="NameUsage" IsBrowsable="false" Id="18DBB768-B471-4926-B678-5B2245760333" Kind="CustomStorage">
 					<Type>
 						<ExternalTypeMoniker Name="/System/String"/>
 					</Type>
@@ -752,11 +759,18 @@
 		</DomainClass>
 
 		<DomainClass Name="SetComparisonConstraint" Namespace="Neumont.Tools.ORM.ObjectModel" Id="85074B82-ED14-4D70-B95C-0B29F2D64210" DisplayName="SetComparisonConstraint" InheritanceModifier="Abstract" Description="">
+			<Attributes>
+				<ClrAttribute Name="global::System.ComponentModel.TypeDescriptionProvider">
+					<Parameters>
+						<AttributeParameter Value="typeof(global::Neumont.Tools.Modeling.Design.ElementTypeDescriptionProvider&lt;SetComparisonConstraint, Design.SetComparisonConstraintTypeDescriptor&lt;SetComparisonConstraint&gt;&gt;)"/>
+					</Parameters>
+				</ClrAttribute>
+			</Attributes>
 			<BaseClass>
 				<DomainClassMoniker Name="ORMNamedElement"/>
 			</BaseClass>
 			<Properties>
-				<DomainProperty Name="Modality" DefaultValue="Alethic" DisplayName="Modality" Id="C0AEF802-D9E9-4938-B44B-DE9A6A530D9B">
+				<DomainProperty Name="Modality" DefaultValue="Alethic" DisplayName="Modality" Id="C0AEF802-D9E9-4938-B44B-DE9A6A530D9B" Description="The Modality of the simple mandatory constraint on this Role.&#xd;&#xa;    Alethic modality means the constraint is structurally enforced and data violating the constraint cannot be entered in the system;&#xd;&#xa;    Deontic modality means that data violating the constraint can be recorded.">
 					<Type>
 						<DomainEnumerationMoniker Name="ConstraintModality"/>
 					</Type>
@@ -769,18 +783,17 @@
 				<DomainClassMoniker Name="ORMModelElement"/>
 			</BaseClass>
 			<Properties>
-				<DomainProperty Name="Body" DefaultValue="" DisplayName="Body" Id="9760D258-0126-4749-A370-D7CC5A04F138">
+				<DomainProperty Name="Body" DefaultValue="" DisplayName="Body" IsBrowsable="false" Id="9760D258-0126-4749-A370-D7CC5A04F138">
 					<Type>
 						<ExternalTypeMoniker Name="/System/String"/>
 					</Type>
 				</DomainProperty>
-				<DomainProperty Name="Language" DefaultValue="" DisplayName="Language" Id="53D116FA-E39C-47C5-A4D6-41E42786EEDB">
+				<DomainProperty Name="Language" DefaultValue="" DisplayName="Language" IsBrowsable="false" Id="53D116FA-E39C-47C5-A4D6-41E42786EEDB">
 					<Type>
 						<ExternalTypeMoniker Name="/System/String"/>
 					</Type>
 				</DomainProperty>
 			</Properties>
-
 		</DomainClass>
 
 		<DomainClass Name="SetComparisonConstraintRoleSequence" Namespace="Neumont.Tools.ORM.ObjectModel" Id="9E59F946-8745-4936-A4AA-74552664790E" DisplayName="SetComparisonConstraintRoleSequence" Description="">
@@ -794,13 +807,12 @@
 				<DomainClassMoniker Name="SetConstraint"/>
 			</BaseClass>
 			<Properties>
-				<DomainProperty Name="RingType" DefaultValue="Undefined" DisplayName="RingType" Id="54D182E1-6650-4393-8BD8-9D9E42BB8CE7">
+				<DomainProperty Name="RingType" DefaultValue="Undefined" DisplayName="RingType" Id="54D182E1-6650-4393-8BD8-9D9E42BB8CE7" Description="Restriction type of this Ring constraint.">
 					<Type>
 						<DomainEnumerationMoniker Name="RingConstraintType"/>
 					</Type>
 				</DomainProperty>
 			</Properties>
-
 		</DomainClass>
 
 		<DomainClass Name="FrequencyConstraint" Namespace="Neumont.Tools.ORM.ObjectModel" Id="A6D76D01-FDC3-43A2-8AAF-56C2E0BD0465" DisplayName="FrequencyConstraint" Description="">
@@ -808,7 +820,7 @@
 				<DomainClassMoniker Name="SetConstraint"/>
 			</BaseClass>
 			<Properties>
-				<DomainProperty Name="MinFrequency" DefaultValue="1" DisplayName="MinFrequency" Id="2D48D3CA-564D-459E-A701-4209A12C4783">
+				<DomainProperty Name="MinFrequency" DefaultValue="1" DisplayName="MinFrequency" Id="2D48D3CA-564D-459E-A701-4209A12C4783" Description="The minimum number of occurrences for each instance that plays the restricted roles.">
 					<Attributes>
 						<ClrAttribute Name="global::System.ComponentModel.TypeConverter">
 							<Parameters>
@@ -820,7 +832,7 @@
 						<ExternalTypeMoniker Name="/System/Int32"/>
 					</Type>
 				</DomainProperty>
-				<DomainProperty Name="MaxFrequency" DefaultValue="2" DisplayName="MaxFrequency" Id="F46D9200-3602-435C-B852-C53BE10D99C6">
+				<DomainProperty Name="MaxFrequency" DefaultValue="2" DisplayName="MaxFrequency" Id="F46D9200-3602-435C-B852-C53BE10D99C6" Description="The maximum number of occurrences for each instance that plays the restricted roles.">
 					<Attributes>
 						<ClrAttribute Name="global::System.ComponentModel.Editor">
 							<Parameters>
@@ -853,7 +865,7 @@
 				<DomainClassMoniker Name="SetConstraint"/>
 			</BaseClass>
 			<Properties>
-				<DomainProperty Name="IsPreferred" DefaultValue="false" DisplayName="IsPreferredIdentifier" Id="585DE7A0-8E09-43F3-8463-F20609A16790" Kind="CustomStorage">
+				<DomainProperty Name="IsPreferred" DefaultValue="false" DisplayName="IsPreferredIdentifier" Id="585DE7A0-8E09-43F3-8463-F20609A16790" Kind="CustomStorage" Description="Is this the preferred identifier for the EntityType role player of the opposite role(s)?&#xd;&#xa;    The opposite role player of an internal constraint on an objectified FactType is the objectifying EntityType. Binary FactTypes with a spanning internal uniqueness constraint and ternary (or higher arity) FactTypes are automatically objectified.">
 					<Type>
 						<ExternalTypeMoniker Name="/System/Boolean"/>
 					</Type>
@@ -892,11 +904,18 @@
 		</DomainClass>
 
 		<DomainClass Name="SetConstraint" Namespace="Neumont.Tools.ORM.ObjectModel" Id="1B85E4BE-0C95-45BD-A76F-2087456F891B" DisplayName="SetConstraint" InheritanceModifier="Abstract" Description="">
+			<Attributes>
+				<ClrAttribute Name="global::System.ComponentModel.TypeDescriptionProvider">
+					<Parameters>
+						<AttributeParameter Value="typeof(global::Neumont.Tools.Modeling.Design.ElementTypeDescriptionProvider&lt;SetConstraint, Design.SetConstraintTypeDescriptor&lt;SetConstraint&gt;&gt;)"/>
+					</Parameters>
+				</ClrAttribute>
+			</Attributes>
 			<BaseClass>
 				<DomainClassMoniker Name="ConstraintRoleSequence"/>
 			</BaseClass>
 			<Properties>
-				<DomainProperty Name="Modality" DefaultValue="Alethic" DisplayName="Modality" Id="B4F1902A-7EB9-464F-A0F8-F816658C1BD8">
+				<DomainProperty Name="Modality" DefaultValue="Alethic" DisplayName="Modality" Id="B4F1902A-7EB9-464F-A0F8-F816658C1BD8" Description="The Modality of the simple mandatory constraint on this Role.&#xd;&#xa;    Alethic modality means the constraint is structurally enforced and data violating the constraint cannot be entered in the system;&#xd;&#xa;    Deontic modality means that data violating the constraint can be recorded.">
 					<Type>
 						<DomainEnumerationMoniker Name="ConstraintModality"/>
 					</Type>
@@ -922,7 +941,7 @@
 				<DomainClassMoniker Name="ORMModelElement"/>
 			</BaseClass>
 			<Properties>
-				<DomainProperty Name="JoinType" DefaultValue="Inner" DisplayName="JoinType" Id="59049038-A13E-4AD1-A86B-8EC3493DFDC9">
+				<DomainProperty Name="JoinType" DefaultValue="Inner" DisplayName="JoinType" Id="59049038-A13E-4AD1-A86B-8EC3493DFDC9" Description="Is this an inner or an outer Join?">
 					<Type>
 						<DomainEnumerationMoniker Name="JoinType"/>
 					</Type>
@@ -1067,7 +1086,7 @@
 				<DomainClassMoniker Name="ModelError"/>
 			</BaseClass>
 			<Properties>
-				<DomainProperty Name="Column" DefaultValue="0" DisplayName="Column" Id="222DCF1C-83FB-43F1-A8BE-3D05B8CF1693">
+				<DomainProperty Name="Column" DefaultValue="0" DisplayName="Column" IsBrowsable="false" Id="222DCF1C-83FB-43F1-A8BE-3D05B8CF1693">
 					<Type>
 						<ExternalTypeMoniker Name="/System/Int32"/>
 					</Type>
@@ -1111,7 +1130,7 @@
 				<DomainClassMoniker Name="ORMModelElement"/>
 			</BaseClass>
 			<Properties>
-				<DomainProperty Name="ErrorText" DefaultValue="" DisplayName="ErrorText" IsElementName="true" Id="6A6023E7-AC27-4D86-AFE4-6428659A048E">
+				<DomainProperty Name="ErrorText" DefaultValue="" DisplayName="ErrorText" IsBrowsable="false" IsElementName="true" Id="6A6023E7-AC27-4D86-AFE4-6428659A048E">
 					<Attributes>
 						<ClrAttribute Name="global::System.ComponentModel.MergableProperty">
 							<Parameters>
@@ -1131,12 +1150,12 @@
 				<DomainClassMoniker Name="ORMModelElement"/>
 			</BaseClass>
 			<Properties>
-				<DomainProperty Name="FormatString" DefaultValue="" DisplayName="FormatString" Id="3D1B9C67-FF56-4345-B445-30F1F3367613">
+				<DomainProperty Name="FormatString" DefaultValue="" DisplayName="FormatString" Id="3D1B9C67-FF56-4345-B445-30F1F3367613" Description="Default format string for reference mode patterns with this ReferenceModeKind. Replacement field {0}=EntityTypeName, {1}=ReferenceModeName">
 					<Type>
 						<ExternalTypeMoniker Name="/System/String"/>
 					</Type>
 				</DomainProperty>
-				<DomainProperty Name="ReferenceModeType" DefaultValue="General" DisplayName="ReferenceModeType" Id="3543E2CB-037D-4D6E-A76A-10CBDFB05146">
+				<DomainProperty Name="ReferenceModeType" DefaultValue="General" DisplayName="ReferenceModeType" Id="3543E2CB-037D-4D6E-A76A-10CBDFB05146" Description="One of Popular, UnitBased, or General.">
 					<Type>
 						<DomainEnumerationMoniker Name="ReferenceModeType"/>
 					</Type>
@@ -1156,7 +1175,7 @@
 				<DomainClassMoniker Name="ReferenceMode"/>
 			</BaseClass>
 			<Properties>
-				<DomainProperty Name="CustomFormatString" DefaultValue="" DisplayName="CustomFormatString" Id="4A7202FF-1D4F-4770-953A-D63ADA849CB3">
+				<DomainProperty Name="CustomFormatString" DefaultValue="" DisplayName="CustomFormatString" Id="4A7202FF-1D4F-4770-953A-D63ADA849CB3" Description="Custom format string for this reference mode pattern. Replacement field {0}=EntityTypeName, {1}=ReferenceModeName">
 					<Type>
 						<ExternalTypeMoniker Name="/System/String"/>
 					</Type>
@@ -1170,7 +1189,7 @@
 				<DomainClassMoniker Name="ORMNamedElement"/>
 			</BaseClass>
 			<Properties>
-				<DomainProperty Name="KindDisplay" DefaultValue="" DisplayName="Kind" Id="BBC452CA-0454-4047-9143-B11E065556FB" Kind="CustomStorage">
+				<DomainProperty Name="KindDisplay" DefaultValue="" DisplayName="Kind" Id="BBC452CA-0454-4047-9143-B11E065556FB" Kind="CustomStorage" Description="The kind of the reference mode pattern. One of Popular, UnitBase, or General.">
 					<Attributes>
 						<ClrAttribute Name="global::System.ComponentModel.Editor">
 							<Parameters>
@@ -1427,7 +1446,7 @@
 				<DomainClassMoniker Name="ORMModelElement"/>
 			</BaseClass>
 			<Properties>
-				<DomainProperty Name="Text" DefaultValue="" DisplayName="Text" Id="A6239359-0AC5-4934-B38A-011AA1F935A6">
+				<DomainProperty Name="Text" DefaultValue="" DisplayName="Text" Id="A6239359-0AC5-4934-B38A-011AA1F935A6" Description="The text of this reading. Includes ordered replacement fields corresponding to the parent ReadingOrder.">
 					<Type>
 						<ExternalTypeMoniker Name="/System/String"/>
 					</Type>
@@ -1437,7 +1456,7 @@
 						<ExternalTypeMoniker Name="/System/Boolean"/>
 					</Type>
 				</DomainProperty>
-				<DomainProperty Name="Language" DefaultValue="" DisplayName="Language" Id="34C42F00-5D21-4731-8E38-9A03271F045A">
+				<DomainProperty Name="Language" DefaultValue="" DisplayName="Language" IsBrowsable="false" Id="34C42F00-5D21-4731-8E38-9A03271F045A">
 					<Type>
 						<ExternalTypeMoniker Name="/System/String"/>
 					</Type>
@@ -1455,7 +1474,7 @@
 				<DomainClassMoniker Name="ORMModelElement"/>
 			</BaseClass>
 			<Properties>
-				<DomainProperty Name="ReadingText" DefaultValue="" DisplayName="ReadingText" IsUIReadOnly="true" Id="4E75AD63-A42B-4571-85CE-81A4C5E02C23" Kind="CustomStorage">
+				<DomainProperty Name="ReadingText" DefaultValue="" DisplayName="ReadingText" IsUIReadOnly="true" Id="4E75AD63-A42B-4571-85CE-81A4C5E02C23" Kind="CustomStorage" Description="The text for the default Reading of this ReadingOrder. Includes ordered replacement fields corresponding to this ReadingOrder.">
 					<Attributes>
 						<ClrAttribute Name="global::System.ComponentModel.Editor">
 							<Parameters>
@@ -1476,27 +1495,27 @@
 				<DomainClassMoniker Name="ORMModelElement"/>
 			</BaseClass>
 			<Properties>
-				<DomainProperty Name="MinValue" DefaultValue="" DisplayName="MinValue" Id="59B141FD-47ED-43FF-837E-858F140FAD57">
+				<DomainProperty Name="MinValue" DefaultValue="" DisplayName="MinValue" IsBrowsable="false" Id="59B141FD-47ED-43FF-837E-858F140FAD57">
 					<Type>
 						<ExternalTypeMoniker Name="/System/String"/>
 					</Type>
 				</DomainProperty>
-				<DomainProperty Name="MaxValue" DefaultValue="" DisplayName="MaxValue" Id="08199824-9DDC-4878-8E04-E0F432069726">
+				<DomainProperty Name="MaxValue" DefaultValue="" DisplayName="MaxValue" IsBrowsable="false" Id="08199824-9DDC-4878-8E04-E0F432069726">
 					<Type>
 						<ExternalTypeMoniker Name="/System/String"/>
 					</Type>
 				</DomainProperty>
-				<DomainProperty Name="Text" DefaultValue="" DisplayName="Text" Id="1FB8C126-4481-41D0-B41C-5A30BC7245DE" Kind="CustomStorage">
+				<DomainProperty Name="Text" DefaultValue="" DisplayName="Text" IsBrowsable="false" Id="1FB8C126-4481-41D0-B41C-5A30BC7245DE" Kind="CustomStorage">
 					<Type>
 						<ExternalTypeMoniker Name="/System/String"/>
 					</Type>
 				</DomainProperty>
-				<DomainProperty Name="MinInclusion" DefaultValue="NotSet" DisplayName="MinInclusion" Id="CDE9FC53-BE51-4C27-9E6C-675CDB580F3A">
+				<DomainProperty Name="MinInclusion" DefaultValue="NotSet" DisplayName="MinInclusion" IsBrowsable="false" Id="CDE9FC53-BE51-4C27-9E6C-675CDB580F3A">
 					<Type>
 						<DomainEnumerationMoniker Name="RangeInclusion"/>
 					</Type>
 				</DomainProperty>
-				<DomainProperty Name="MaxInclusion" DefaultValue="NotSet" DisplayName="MaxInclusion" Id="EB018230-2726-4206-AE2E-1C911B606FC1">
+				<DomainProperty Name="MaxInclusion" DefaultValue="NotSet" DisplayName="MaxInclusion" IsBrowsable="false" Id="EB018230-2726-4206-AE2E-1C911B606FC1">
 					<Type>
 						<DomainEnumerationMoniker Name="RangeInclusion"/>
 					</Type>
@@ -1517,11 +1536,18 @@
 		</DomainClass>
 
 		<DomainClass Name="ValueConstraint" Namespace="Neumont.Tools.ORM.ObjectModel" Id="EF2EFEAD-A124-413C-8F86-C95E2B47160C" DisplayName="ValueConstraint" InheritanceModifier="Abstract" Description="">
+			<Attributes>
+				<ClrAttribute Name="global::System.ComponentModel.TypeDescriptionProvider">
+					<Parameters>
+						<AttributeParameter Value="typeof(global::Neumont.Tools.Modeling.Design.ElementTypeDescriptionProvider&lt;ValueConstraint, Design.ValueConstraintTypeDescriptor&lt;ValueConstraint&gt;&gt;)"/>
+					</Parameters>
+				</ClrAttribute>
+			</Attributes>
 			<BaseClass>
 				<DomainClassMoniker Name="ORMNamedElement"/>
 			</BaseClass>
 			<Properties>
-				<DomainProperty Name="Text" DefaultValue="" DisplayName="Text" Id="410FCE34-DACB-4F59-94A6-FF7E42108E74" Kind="CustomStorage">
+				<DomainProperty Name="Text" DefaultValue="" DisplayName="Text" Id="410FCE34-DACB-4F59-94A6-FF7E42108E74" Kind="CustomStorage" Description="The range of possible values.&#xd;&#xa;    To specify a range, use '..' between the range endpoints, square brackets to specify a closed endpoint, and parentheses to specify an open endpoint. Commas are used to entered multiple ranges or discrete values.&#xd;&#xa;    Example: {[10..20), 30} specifies all values between 10 and 20 (but not including 20) and the value 30.">
 					<Type>
 						<ExternalTypeMoniker Name="/System/String"/>
 					</Type>
@@ -1587,7 +1613,7 @@
 				<DomainClassMoniker Name="ORMModelElement"/>
 			</BaseClass>
 			<Properties>
-				<DomainProperty Name="Text" DefaultValue="" Description="The definition contents. To insert new lines, use Control-Enter in the dropdown editor, or open the 'ORM Notes Editor' toolwindow." DisplayName="Text" Id="B68867A8-4B52-4DE1-8B39-7EEE5ECB60A4">
+				<DomainProperty Name="Text" DefaultValue="" Description="The definition contents.&#xd;&#xa;    To insert new lines, use Control-Enter in the dropdown editor, or open the 'ORM Notes Editor' tool window." DisplayName="Text" Id="B68867A8-4B52-4DE1-8B39-7EEE5ECB60A4">
 					<Attributes>
 						<ClrAttribute Name="global::System.ComponentModel.Editor">
 							<Parameters>
@@ -1613,7 +1639,7 @@
 				<DomainClassMoniker Name="ORMModelElement"/>
 			</BaseClass>
 			<Properties>
-				<DomainProperty Name="Text" DefaultValue="" Description="The note contents. To insert new lines, use Control-Enter in the dropdown editor, or open the 'ORM Notes Editor' toolwindow." DisplayName="Note" Id="0EF3BC12-45FF-46A8-B325-CDFCC105A1E1">
+				<DomainProperty Name="Text" DefaultValue="" Description="The note contents.&#xd;&#xa;    To insert new lines, use Control-Enter in the dropdown editor, or open the 'ORM Notes Editor' tool window." DisplayName="Note" Id="0EF3BC12-45FF-46A8-B325-CDFCC105A1E1">
 					<Attributes>
 						<ClrAttribute Name="global::System.ComponentModel.Editor">
 							<Parameters>
@@ -1681,7 +1707,7 @@
 				<DomainClassMoniker Name="Expression"/>
 			</BaseClass>
 			<Properties>
-				<DomainProperty Name="DerivationStorage" DefaultValue="Derived" DisplayName="DerivationStorage" Id="6B011B44-9854-436A-ADED-7BBC635A7C1F">
+				<DomainProperty Name="DerivationStorage" DefaultValue="Derived" DisplayName="DerivationStorage" IsBrowsable="false" Id="6B011B44-9854-436A-ADED-7BBC635A7C1F">
 					<Type>
 						<DomainEnumerationMoniker Name="DerivationStorageType"/>
 					</Type>
@@ -1749,7 +1775,7 @@
 				<DomainClassMoniker Name="ObjectTypeInstance"/>
 			</BaseClass>
 			<Properties>
-				<DomainProperty Name="Value" DefaultValue="" DisplayName="Value" Id="1D0232BA-A92F-4B81-99BF-2A2A44821030">
+				<DomainProperty Name="Value" DefaultValue="" DisplayName="Value" Id="1D0232BA-A92F-4B81-99BF-2A2A44821030" Description="The instance value.">
 					<Type>
 						<ExternalTypeMoniker Name="/System/String"/>
 					</Type>
@@ -1763,7 +1789,7 @@
 				<DomainClassMoniker Name="ORMModelElement"/>
 			</BaseClass>
 			<Properties>
-				<DomainProperty Name="Name" DefaultValue="" DisplayName="Name" IsElementName="true" Id="AA6CFB60-9F6A-48AB-AB0F-445BF7112FB9" Kind="CustomStorage"  GetterAccessModifier="Public" SetterAccessModifier="Private">
+				<DomainProperty Name="Name" DefaultValue="" DisplayName="Name" IsBrowsable="false" IsElementName="true" Id="AA6CFB60-9F6A-48AB-AB0F-445BF7112FB9" Kind="CustomStorage"  GetterAccessModifier="Public" SetterAccessModifier="Private">
 					<Attributes>
 						<ClrAttribute Name="global::System.ComponentModel.MergableProperty">
 							<Parameters>
@@ -1926,12 +1952,12 @@
 				<DomainRelationshipMoniker Name="ORMElementLink"/>
 			</BaseRelationship>-->
 			<Properties>
-				<DomainProperty Name="Scale" DefaultValue="0" DisplayName="Scale" Id="F21936E2-E7E6-4AFC-B96F-43E9C76F8A9B">
+				<DomainProperty Name="Scale" DefaultValue="0" DisplayName="Scale" IsBrowsable="false" Id="F21936E2-E7E6-4AFC-B96F-43E9C76F8A9B">
 					<Type>
 						<ExternalTypeMoniker Name="/System/Int32"/>
 					</Type>
 				</DomainProperty>
-				<DomainProperty Name="Length" DefaultValue="0" DisplayName="Length" Id="60D1471D-23C9-4D4D-91AF-6AA5E9BA7B8B">
+				<DomainProperty Name="Length" DefaultValue="0" DisplayName="Length" IsBrowsable="false" Id="60D1471D-23C9-4D4D-91AF-6AA5E9BA7B8B">
 					<Type>
 						<ExternalTypeMoniker Name="/System/Int32"/>
 					</Type>
@@ -1965,7 +1991,7 @@
 				</DomainProperty>
 			</Properties>
 			<Source>
-				<DomainRole Name="NestingType" PropertyName="NestedFactType" Multiplicity="ZeroOne" PropagatesDelete="false" IsPropertyGenerator="true" DisplayName="NestingType" PropertyDisplayName="ObjectifiedFactType" Id="2660CF3E-2A56-496D-98CD-BFFAC5E73198">
+				<DomainRole Name="NestingType" PropertyName="NestedFactType" Multiplicity="ZeroOne" PropagatesDelete="false" IsPropertyGenerator="true" DisplayName="NestingType" PropertyDisplayName="ObjectifiedFactType" Id="2660CF3E-2A56-496D-98CD-BFFAC5E73198" Description="The FactType objectified by this EntityType.">
 					<Attributes>
 						<ClrAttribute Name="global::System.ComponentModel.Editor">
 							<Parameters>
@@ -1986,7 +2012,7 @@
 				</DomainRole>
 			</Source>
 			<Target>
-				<DomainRole Name="NestedFactType" PropertyName="NestingType" Multiplicity="ZeroOne" PropagatesDelete="false" IsPropertyGenerator="true" DisplayName="NestedFactType" PropertyDisplayName="ObjectifyingEntityType" Id="69F805CC-874F-4E03-8364-0A0445168B26">
+				<DomainRole Name="NestedFactType" PropertyName="NestingType" Multiplicity="ZeroOne" PropagatesDelete="false" IsPropertyGenerator="true" DisplayName="NestedFactType" PropertyDisplayName="ObjectifyingEntityType" Id="69F805CC-874F-4E03-8364-0A0445168B26" Description="The EntityType that objectifies this FactType.">
 					<Attributes>
 						<ClrAttribute Name="global::System.ComponentModel.Editor">
 							<Parameters>

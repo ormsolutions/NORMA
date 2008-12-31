@@ -3,6 +3,7 @@
 * Neumont Object-Role Modeling Architect for Visual Studio                 *
 *                                                                          *
 * Copyright © Neumont University. All rights reserved.                     *
+* Copyright © Matthew Curland. All rights reserved.                        *
 *                                                                          *
 * The use and distribution terms for this software are covered by the      *
 * Common Public License 1.0 (http://opensource.org/licenses/cpl) which     *
@@ -905,8 +906,12 @@ namespace Neumont.Tools.RelationalModels.ConceptualDatabase
 		
 		/// <summary>
 		/// Gets or sets the value of DataType domain property.
-		/// Description for
-		/// Neumont.Tools.RelationalModels.ConceptualDatabase.Column.DataType
+		/// The DataType for this Column. Corresponds to the DataType of the terminal
+		/// ValueType in the FactType path for this Column.
+		///     Changing this DataType changes the DataType for all columns that terminate
+		/// at the same ValueType.
+		///     This is a portable DataType. The final physical DataType is dependent on the
+		/// generation target.
 		/// </summary>
 		[global::System.ComponentModel.Editor(typeof(global::Neumont.Tools.RelationalModels.ConceptualDatabase.Design.ColumnDataTypePicker), typeof(global::System.Drawing.Design.UITypeEditor))]
 		[DslDesign::DisplayNameResource("Neumont.Tools.RelationalModels.ConceptualDatabase.Column/DataType.DisplayName", typeof(global::Neumont.Tools.RelationalModels.ConceptualDatabase.ConceptualDatabaseDomainModel), "Neumont.Tools.RelationalModels.ConceptualDatabase.GeneratedCode.DomainModelResx")]

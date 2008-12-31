@@ -85,6 +85,38 @@ namespace Neumont.Tools.ORM
 				return ResourceStrings.GetString(ResourceManagers.Model, "ObjectModel.EntityType");
 			}
 		}
+		/// <summary>The description for the Name property of a constraint.</summary>
+		public static string ConstraintNameDescription
+		{
+			get
+			{
+				return ResourceStrings.GetString(ResourceManagers.Model, "ObjectModel.Constraint.Name.Description");
+			}
+		}
+		/// <summary>The description for the Name property of an ORMModel.</summary>
+		public static string ModelNameDescription
+		{
+			get
+			{
+				return ResourceStrings.GetString(ResourceManagers.Model, "ObjectModel.Model.Name.Description");
+			}
+		}
+		/// <summary>The description for the Name property of an ObjectType.</summary>
+		public static string ObjectTypeNameDescription
+		{
+			get
+			{
+				return ResourceStrings.GetString(ResourceManagers.Model, "ObjectModel.ObjectType.Name.Description");
+			}
+		}
+		/// <summary>The description for the Name property of a SubtypeFact.</summary>
+		public static string SubtypeFactNameDescription
+		{
+			get
+			{
+				return ResourceStrings.GetString(ResourceManagers.Model, "ObjectModel.SubtypeFact.Name.Description");
+			}
+		}
 		/// <summary>The display name used for an objectified (nested) FactType</summary>
 		public static string ObjectifiedFactType
 		{
@@ -155,6 +187,30 @@ namespace Neumont.Tools.ORM
 			get
 			{
 				return ResourceStrings.GetString(ResourceManagers.Model, "ObjectModel.EntityType.DefaultNamePattern");
+			}
+		}
+		/// <summary>An alternate description for the DataType.Length property. The default description describes a variable length.</summary>
+		public static string DataTypeExactLengthDescription
+		{
+			get
+			{
+				return ResourceStrings.GetString(ResourceManagers.Model, "ObjectModel.DataType.Length.ExactLengthDescription");
+			}
+		}
+		/// <summary>An alternate display name for the DataType.Length property.</summary>
+		public static string DataTypePrecision
+		{
+			get
+			{
+				return ResourceStrings.GetString(ResourceManagers.Model, "ObjectModel.DataType.Precision");
+			}
+		}
+		/// <summary>An alternate description for the DataType.Length property.</summary>
+		public static string DataTypePrecisionDescription
+		{
+			get
+			{
+				return ResourceStrings.GetString(ResourceManagers.Model, "ObjectModel.DataType.Precision.Description");
 			}
 		}
 		/// <summary>The descriptive text for a PortableDataType of Unspecified.</summary>

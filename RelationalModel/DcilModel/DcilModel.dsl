@@ -3,6 +3,7 @@
 	Neumont Object-Role Modeling Architect for Visual Studio
 
 	Copyright © Neumont University. All rights reserved.
+	Copyright © Matthew Curland. All rights reserved.
 
 	The use and distribution terms for this software are covered by the
 	Common Public License 1.0 (http://opensource.org/licenses/cpl) which
@@ -141,7 +142,7 @@
 						<ExternalTypeMoniker Name="/System/Boolean"/>
 					</Type>
 				</DomainProperty>
-				<DomainProperty Name="DataType" DefaultValue="" DisplayName="DataType" Id="02E07257-8739-4708-8474-5145183BACF5" Kind="CustomStorage">
+				<DomainProperty Name="DataType" DefaultValue="" DisplayName="DataType" Id="02E07257-8739-4708-8474-5145183BACF5" Kind="CustomStorage" Description="The DataType for this Column. Corresponds to the DataType of the terminal ValueType in the FactType path for this Column.&#xd;&#xa;    Changing this DataType changes the DataType for all columns that terminate at the same ValueType.&#xd;&#xa;    This is a portable DataType. The final physical DataType is dependent on the generation target.">
 					<Attributes>
 						<ClrAttribute Name="global::System.ComponentModel.Editor">
 							<Parameters>

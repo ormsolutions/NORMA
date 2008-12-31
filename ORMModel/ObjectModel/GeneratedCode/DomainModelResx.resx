@@ -158,7 +158,7 @@
     <comment>DisplayName for DomainProperty &apos;NameUsage&apos; on DomainClass &apos;NameGenerator&apos;</comment>
   </data>
   <data name="Neumont.Tools.ORM.ObjectModel.NameGenerator/CasingOption.Description" xml:space="preserve">
-    <value></value>
+    <value>Specify upper/lower case settings of names generated for this context.</value>
     <comment>Description for DomainProperty &apos;CasingOption&apos; on DomainClass &apos;NameGenerator&apos;</comment>
   </data>
   <data name="Neumont.Tools.ORM.ObjectModel.NameGenerator/CasingOption.DisplayName" xml:space="preserve">
@@ -166,7 +166,7 @@
     <comment>DisplayName for DomainProperty &apos;CasingOption&apos; on DomainClass &apos;NameGenerator&apos;</comment>
   </data>
   <data name="Neumont.Tools.ORM.ObjectModel.NameGenerator/SpacingFormat.Description" xml:space="preserve">
-    <value></value>
+    <value>Specify if whitespace is preserved, removed, or replaced in names generated for this context.</value>
     <comment>Description for DomainProperty &apos;SpacingFormat&apos; on DomainClass &apos;NameGenerator&apos;</comment>
   </data>
   <data name="Neumont.Tools.ORM.ObjectModel.NameGenerator/SpacingFormat.DisplayName" xml:space="preserve">
@@ -174,7 +174,7 @@
     <comment>DisplayName for DomainProperty &apos;SpacingFormat&apos; on DomainClass &apos;NameGenerator&apos;</comment>
   </data>
   <data name="Neumont.Tools.ORM.ObjectModel.NameGenerator/SpacingReplacement.Description" xml:space="preserve">
-    <value></value>
+    <value>Specify the characters used instead of spaces in names generated for this context.</value>
     <comment>Description for DomainProperty &apos;SpacingReplacement&apos; on DomainClass &apos;NameGenerator&apos;</comment>
   </data>
   <data name="Neumont.Tools.ORM.ObjectModel.NameGenerator/SpacingReplacement.DisplayName" xml:space="preserve">
@@ -182,7 +182,7 @@
     <comment>DisplayName for DomainProperty &apos;SpacingReplacement&apos; on DomainClass &apos;NameGenerator&apos;</comment>
   </data>
   <data name="Neumont.Tools.ORM.ObjectModel.NameGenerator/AutomaticallyShortenNames.Description" xml:space="preserve">
-    <value></value>
+    <value>Specify if names generated for this context should be automatically shortened if they are too long for the generation target.</value>
     <comment>Description for DomainProperty &apos;AutomaticallyShortenNames&apos; on DomainClass &apos;NameGenerator&apos;</comment>
   </data>
   <data name="Neumont.Tools.ORM.ObjectModel.NameGenerator/AutomaticallyShortenNames.DisplayName" xml:space="preserve">
@@ -190,7 +190,7 @@
     <comment>DisplayName for DomainProperty &apos;AutomaticallyShortenNames&apos; on DomainClass &apos;NameGenerator&apos;</comment>
   </data>
   <data name="Neumont.Tools.ORM.ObjectModel.NameGenerator/UseTargetDefaultMaximum.Description" xml:space="preserve">
-    <value></value>
+    <value>Specify if the default maximum name length for this name generation context should be used when shortening names.</value>
     <comment>Description for DomainProperty &apos;UseTargetDefaultMaximum&apos; on DomainClass &apos;NameGenerator&apos;</comment>
   </data>
   <data name="Neumont.Tools.ORM.ObjectModel.NameGenerator/UseTargetDefaultMaximum.DisplayName" xml:space="preserve">
@@ -198,7 +198,7 @@
     <comment>DisplayName for DomainProperty &apos;UseTargetDefaultMaximum&apos; on DomainClass &apos;NameGenerator&apos;</comment>
   </data>
   <data name="Neumont.Tools.ORM.ObjectModel.NameGenerator/UserDefinedMaximum.Description" xml:space="preserve">
-    <value></value>
+    <value>Specify a custom maximum name length for this name generation context.</value>
     <comment>Description for DomainProperty &apos;UserDefinedMaximum&apos; on DomainClass &apos;NameGenerator&apos;</comment>
   </data>
   <data name="Neumont.Tools.ORM.ObjectModel.NameGenerator/UserDefinedMaximum.DisplayName" xml:space="preserve">
@@ -342,7 +342,7 @@
     <comment>DisplayName for DomainClass &apos;ORMNamedElement&apos;</comment>
   </data>
   <data name="Neumont.Tools.ORM.ObjectModel.ORMNamedElement/Name.Description" xml:space="preserve">
-    <value>Description for Neumont.Tools.ORM.ObjectModel.ORMNamedElement.Name</value>
+    <value>A name for this element.</value>
     <comment>Description for DomainProperty &apos;Name&apos; on DomainClass &apos;ORMNamedElement&apos;</comment>
   </data>
   <data name="Neumont.Tools.ORM.ObjectModel.ORMNamedElement/Name.DisplayName" xml:space="preserve">
@@ -358,7 +358,7 @@
     <comment>DisplayName for DomainClass &apos;ORMModel&apos;</comment>
   </data>
   <data name="Neumont.Tools.ORM.ObjectModel.ORMModel/ModelErrorDisplayFilterDisplay.Description" xml:space="preserve">
-    <value>Description for Neumont.Tools.ORM.ObjectModel.ORMModel.ErrorDisplay</value>
+    <value>Validation error display options for this model. Control error display by category and individually.</value>
     <comment>Description for DomainProperty &apos;ModelErrorDisplayFilterDisplay&apos; on DomainClass &apos;ORMModel&apos;</comment>
   </data>
   <data name="Neumont.Tools.ORM.ObjectModel.ORMModel/ModelErrorDisplayFilterDisplay.DisplayName" xml:space="preserve">
@@ -366,7 +366,8 @@
     <comment>DisplayName for DomainProperty &apos;ModelErrorDisplayFilterDisplay&apos; on DomainClass &apos;ORMModel&apos;</comment>
   </data>
   <data name="Neumont.Tools.ORM.ObjectModel.ORMModel/DefinitionText.Description" xml:space="preserve">
-    <value>A definition of this Model. To insert new lines, use Control-Enter in the dropdown editor, or open the &apos;ORM Informal Definition Editor&apos; toolwindow.</value>
+    <value>A definition of this Model.
+    To insert new lines, use Control-Enter in the dropdown editor, or open the &apos;ORM Informal Definition Editor&apos; tool window.</value>
     <comment>Description for DomainProperty &apos;DefinitionText&apos; on DomainClass &apos;ORMModel&apos;</comment>
   </data>
   <data name="Neumont.Tools.ORM.ObjectModel.ORMModel/DefinitionText.DisplayName" xml:space="preserve">
@@ -374,7 +375,8 @@
     <comment>DisplayName for DomainProperty &apos;DefinitionText&apos; on DomainClass &apos;ORMModel&apos;</comment>
   </data>
   <data name="Neumont.Tools.ORM.ObjectModel.ORMModel/NoteText.Description" xml:space="preserve">
-    <value>A note to associate with this Model. To insert new lines, use Control-Enter in the dropdown editor, or open the &apos;ORM Notes Editor&apos; toolwindow.</value>
+    <value>A note to associate with this Model.
+    To insert new lines, use Control-Enter in the dropdown editor, or open the &apos;ORM Notes Editor&apos; tool window.</value>
     <comment>Description for DomainProperty &apos;NoteText&apos; on DomainClass &apos;ORMModel&apos;</comment>
   </data>
   <data name="Neumont.Tools.ORM.ObjectModel.ORMModel/NoteText.DisplayName" xml:space="preserve">
@@ -390,7 +392,7 @@
     <comment>DisplayName for DomainClass &apos;ObjectType&apos;</comment>
   </data>
   <data name="Neumont.Tools.ORM.ObjectModel.ObjectType/IsExternal.Description" xml:space="preserve">
-    <value>Description for Neumont.Tools.ORM.ObjectModel.ObjectType.IsExternal</value>
+    <value>Is this ObjectType defined in an external model?</value>
     <comment>Description for DomainProperty &apos;IsExternal&apos; on DomainClass &apos;ObjectType&apos;</comment>
   </data>
   <data name="Neumont.Tools.ORM.ObjectModel.ObjectType/IsExternal.DisplayName" xml:space="preserve">
@@ -398,7 +400,8 @@
     <comment>DisplayName for DomainProperty &apos;IsExternal&apos; on DomainClass &apos;ObjectType&apos;</comment>
   </data>
   <data name="Neumont.Tools.ORM.ObjectModel.ObjectType/DefinitionText.Description" xml:space="preserve">
-    <value>A definition of this ObjectType. To insert new lines, use Control-Enter in the dropdown editor, or open the &apos;ORM Informal Definition Editor&apos; toolwindow.</value>
+    <value>A definition of this ObjectType.
+    To insert new lines, use Control-Enter in the dropdown editor, or open the &apos;ORM Informal Definition Editor&apos; tool window.</value>
     <comment>Description for DomainProperty &apos;DefinitionText&apos; on DomainClass &apos;ObjectType&apos;</comment>
   </data>
   <data name="Neumont.Tools.ORM.ObjectModel.ObjectType/DefinitionText.DisplayName" xml:space="preserve">
@@ -406,7 +409,8 @@
     <comment>DisplayName for DomainProperty &apos;DefinitionText&apos; on DomainClass &apos;ObjectType&apos;</comment>
   </data>
   <data name="Neumont.Tools.ORM.ObjectModel.ObjectType/NoteText.Description" xml:space="preserve">
-    <value>A note to associate with this ObjectType. To insert new lines, use Control-Enter in the dropdown editor, or open the &apos;ORM Notes Editor&apos; toolwindow.</value>
+    <value>A note to associate with this ObjectType.
+    To insert new lines, use Control-Enter in the dropdown editor, or open the &apos;ORM Notes Editor&apos; tool window.</value>
     <comment>Description for DomainProperty &apos;NoteText&apos; on DomainClass &apos;ObjectType&apos;</comment>
   </data>
   <data name="Neumont.Tools.ORM.ObjectModel.ObjectType/NoteText.DisplayName" xml:space="preserve">
@@ -414,7 +418,7 @@
     <comment>DisplayName for DomainProperty &apos;NoteText&apos; on DomainClass &apos;ObjectType&apos;</comment>
   </data>
   <data name="Neumont.Tools.ORM.ObjectModel.ObjectType/IsIndependent.Description" xml:space="preserve">
-    <value>Description for Neumont.Tools.ORM.ObjectModel.ObjectType.IsIndependent</value>
+    <value>Can an instance of this ObjectType exist if that instance plays no roles?</value>
     <comment>Description for DomainProperty &apos;IsIndependent&apos; on DomainClass &apos;ObjectType&apos;</comment>
   </data>
   <data name="Neumont.Tools.ORM.ObjectModel.ObjectType/IsIndependent.DisplayName" xml:space="preserve">
@@ -422,7 +426,7 @@
     <comment>DisplayName for DomainProperty &apos;IsIndependent&apos; on DomainClass &apos;ObjectType&apos;</comment>
   </data>
   <data name="Neumont.Tools.ORM.ObjectModel.ObjectType/IsValueType.Description" xml:space="preserve">
-    <value>Description for Neumont.Tools.ORM.ObjectModel.ObjectType.IsValueType</value>
+    <value>Is this ObjectType a self-identifying value or an entity?</value>
     <comment>Description for DomainProperty &apos;IsValueType&apos; on DomainClass &apos;ObjectType&apos;</comment>
   </data>
   <data name="Neumont.Tools.ORM.ObjectModel.ObjectType/IsValueType.DisplayName" xml:space="preserve">
@@ -430,7 +434,7 @@
     <comment>DisplayName for DomainProperty &apos;IsValueType&apos; on DomainClass &apos;ObjectType&apos;</comment>
   </data>
   <data name="Neumont.Tools.ORM.ObjectModel.ObjectType/Scale.Description" xml:space="preserve">
-    <value>Description for Neumont.Tools.ORM.ObjectModel.ObjectType.DataTypeScale</value>
+    <value>The number of digits allowed to the right of the decimal point in a value with this DataType.</value>
     <comment>Description for DomainProperty &apos;Scale&apos; on DomainClass &apos;ObjectType&apos;</comment>
   </data>
   <data name="Neumont.Tools.ORM.ObjectModel.ObjectType/Scale.DisplayName" xml:space="preserve">
@@ -438,7 +442,7 @@
     <comment>DisplayName for DomainProperty &apos;Scale&apos; on DomainClass &apos;ObjectType&apos;</comment>
   </data>
   <data name="Neumont.Tools.ORM.ObjectModel.ObjectType/Length.Description" xml:space="preserve">
-    <value>Description for Neumont.Tools.ORM.ObjectModel.ObjectType.DataTypeLength</value>
+    <value>The maximum length of values with this DataType.</value>
     <comment>Description for DomainProperty &apos;Length&apos; on DomainClass &apos;ObjectType&apos;</comment>
   </data>
   <data name="Neumont.Tools.ORM.ObjectModel.ObjectType/Length.DisplayName" xml:space="preserve">
@@ -446,7 +450,8 @@
     <comment>DisplayName for DomainProperty &apos;Length&apos; on DomainClass &apos;ObjectType&apos;</comment>
   </data>
   <data name="Neumont.Tools.ORM.ObjectModel.ObjectType/ReferenceModeDisplay.Description" xml:space="preserve">
-    <value>Description for Neumont.Tools.ORM.ObjectModel.ObjectType.RefMode</value>
+    <value>The reference mode pattern for the EntityType.
+    If the desired reference mode pattern is not specified in the dropdown, then a new pattern can be entered. The type of a new reference mode pattern is set by prepending a &apos;.&apos; for a popular reference mode, appending a &apos;:&apos; for a unit-based reference mode, and applying no decorators for a general reference mode. Reference mode settings can also be managed with the &apos;ORM Reference Mode Editor&apos; tool window.</value>
     <comment>Description for DomainProperty &apos;ReferenceModeDisplay&apos; on DomainClass &apos;ObjectType&apos;</comment>
   </data>
   <data name="Neumont.Tools.ORM.ObjectModel.ObjectType/ReferenceModeDisplay.DisplayName" xml:space="preserve">
@@ -478,7 +483,8 @@
     <comment>DisplayName for DomainProperty &apos;ReferenceMode&apos; on DomainClass &apos;ObjectType&apos;</comment>
   </data>
   <data name="Neumont.Tools.ORM.ObjectModel.ObjectType/DataTypeDisplay.Description" xml:space="preserve">
-    <value>Description for Neumont.Tools.ORM.ObjectModel.ObjectType.DataType</value>
+    <value>The DataType for this ValueType, or the DataType for the identifying ValueType if this is an EntityType.
+    This is a portable DataType. The final physical DataType is dependent on the generation target.</value>
     <comment>Description for DomainProperty &apos;DataTypeDisplay&apos; on DomainClass &apos;ObjectType&apos;</comment>
   </data>
   <data name="Neumont.Tools.ORM.ObjectModel.ObjectType/DataTypeDisplay.DisplayName" xml:space="preserve">
@@ -486,7 +492,9 @@
     <comment>DisplayName for DomainProperty &apos;DataTypeDisplay&apos; on DomainClass &apos;ObjectType&apos;</comment>
   </data>
   <data name="Neumont.Tools.ORM.ObjectModel.ObjectType/ValueRangeText.Description" xml:space="preserve">
-    <value>Description for Neumont.Tools.ORM.ObjectModel.ObjectType.ValueRange</value>
+    <value>Restrict the range of possible values for instances of this ObjectType.
+    To specify a range, use &apos;..&apos; between the range endpoints, square brackets to specify a closed endpoint, and parentheses to specify an open endpoint. Commas are used to entered multiple ranges or discrete values.
+    Example: {[10..20), 30} specifies all values between 10 and 20 (but not including 20) and the value 30.</value>
     <comment>Description for DomainProperty &apos;ValueRangeText&apos; on DomainClass &apos;ObjectType&apos;</comment>
   </data>
   <data name="Neumont.Tools.ORM.ObjectModel.ObjectType/ValueRangeText.DisplayName" xml:space="preserve">
@@ -494,7 +502,8 @@
     <comment>DisplayName for DomainProperty &apos;ValueRangeText&apos; on DomainClass &apos;ObjectType&apos;</comment>
   </data>
   <data name="Neumont.Tools.ORM.ObjectModel.ObjectType/ValueTypeValueRangeText.Description" xml:space="preserve">
-    <value>Description for Neumont.Tools.ORM.ObjectModel.ObjectType.ValueTypeValueRange</value>
+    <value>The ValueRange property for the ValueType that identifies this EntityType.
+    The ValueRange property of an EntityType is applied to the identifying role, not directly to the identifying ValueType. This allows EntityType ValueRanges to be specified independently for multiple EntityTypes identified with the same unit-based or general reference mode patterns.</value>
     <comment>Description for DomainProperty &apos;ValueTypeValueRangeText&apos; on DomainClass &apos;ObjectType&apos;</comment>
   </data>
   <data name="Neumont.Tools.ORM.ObjectModel.ObjectType/ValueTypeValueRangeText.DisplayName" xml:space="preserve">
@@ -502,7 +511,8 @@
     <comment>DisplayName for DomainProperty &apos;ValueTypeValueRangeText&apos; on DomainClass &apos;ObjectType&apos;</comment>
   </data>
   <data name="Neumont.Tools.ORM.ObjectModel.ObjectType/IsPersonal.Description" xml:space="preserve">
-    <value>Description for Neumont.Tools.ORM.ObjectModel.ObjectType.IsPersonal</value>
+    <value>Does this ObjectType represent a person instead of a thing?
+    Used as a verbalization directive to render references to this type using a personal pronoun (&apos;who&apos; instead of &apos;that&apos;).</value>
     <comment>Description for DomainProperty &apos;IsPersonal&apos; on DomainClass &apos;ObjectType&apos;</comment>
   </data>
   <data name="Neumont.Tools.ORM.ObjectModel.ObjectType/IsPersonal.DisplayName" xml:space="preserve">
@@ -518,7 +528,7 @@
     <comment>DisplayName for DomainProperty &apos;IsImplicitBooleanValue&apos; on DomainClass &apos;ObjectType&apos;</comment>
   </data>
   <data name="Neumont.Tools.ORM.ObjectModel.ObjectType/DerivationRuleDisplay.Description" xml:space="preserve">
-    <value>Description for Neumont.Tools.ORM.ObjectModel.ObjectType.DerivationRule</value>
+    <value>The derivation rule for this subtype. If a rule is not specified, then this is treated as an asserted subtype.</value>
     <comment>Description for DomainProperty &apos;DerivationRuleDisplay&apos; on DomainClass &apos;ObjectType&apos;</comment>
   </data>
   <data name="Neumont.Tools.ORM.ObjectModel.ObjectType/DerivationRuleDisplay.DisplayName" xml:space="preserve">
@@ -534,7 +544,7 @@
     <comment>DisplayName for DomainClass &apos;FactType&apos;</comment>
   </data>
   <data name="Neumont.Tools.ORM.ObjectModel.FactType/IsExternal.Description" xml:space="preserve">
-    <value>Description for Neumont.Tools.ORM.ObjectModel.FactType.IsExternal</value>
+    <value>Is this FactType defined in an external model?</value>
     <comment>Description for DomainProperty &apos;IsExternal&apos; on DomainClass &apos;FactType&apos;</comment>
   </data>
   <data name="Neumont.Tools.ORM.ObjectModel.FactType/IsExternal.DisplayName" xml:space="preserve">
@@ -542,7 +552,8 @@
     <comment>DisplayName for DomainProperty &apos;IsExternal&apos; on DomainClass &apos;FactType&apos;</comment>
   </data>
   <data name="Neumont.Tools.ORM.ObjectModel.FactType/DefinitionText.Description" xml:space="preserve">
-    <value>A definition of this FactType. To insert new lines, use Control-Enter in the dropdown editor, or open the &apos;ORM Informal Definition Editor&apos; toolwindow.</value>
+    <value>A definition of this FactType.
+    To insert new lines, use Control-Enter in the dropdown editor, or open the &apos;ORM Informal Definition Editor&apos; tool window.</value>
     <comment>Description for DomainProperty &apos;DefinitionText&apos; on DomainClass &apos;FactType&apos;</comment>
   </data>
   <data name="Neumont.Tools.ORM.ObjectModel.FactType/DefinitionText.DisplayName" xml:space="preserve">
@@ -550,7 +561,8 @@
     <comment>DisplayName for DomainProperty &apos;DefinitionText&apos; on DomainClass &apos;FactType&apos;</comment>
   </data>
   <data name="Neumont.Tools.ORM.ObjectModel.FactType/NoteText.Description" xml:space="preserve">
-    <value>A note to associate with this FactType. To insert new lines, use Control-Enter in the dropdown editor, or open the &apos;ORM Notes Editor&apos; toolwindow.</value>
+    <value>A note to associate with this FactType.
+    To insert new lines, use Control-Enter in the dropdown editor, or open the &apos;ORM Notes Editor&apos; tool window.</value>
     <comment>Description for DomainProperty &apos;NoteText&apos; on DomainClass &apos;FactType&apos;</comment>
   </data>
   <data name="Neumont.Tools.ORM.ObjectModel.FactType/NoteText.DisplayName" xml:space="preserve">
@@ -558,7 +570,9 @@
     <comment>DisplayName for DomainProperty &apos;NoteText&apos; on DomainClass &apos;FactType&apos;</comment>
   </data>
   <data name="Neumont.Tools.ORM.ObjectModel.FactType/Name.Description" xml:space="preserve">
-    <value>Description for Neumont.Tools.ORM.ObjectModel.FactType.Name</value>
+    <value>The name for this FactType.
+    If the Name property is read-only, then it is a generated name based on primary reading.
+    If the Name property is editable, then it is the name of an explicit or implicit objectifying EntityType. The editable name can be reset to match the generated name by clearing the property value.</value>
     <comment>Description for DomainProperty &apos;Name&apos; on DomainClass &apos;FactType&apos;</comment>
   </data>
   <data name="Neumont.Tools.ORM.ObjectModel.FactType/Name.DisplayName" xml:space="preserve">
@@ -582,7 +596,7 @@
     <comment>DisplayName for DomainProperty &apos;NameChanged&apos; on DomainClass &apos;FactType&apos;</comment>
   </data>
   <data name="Neumont.Tools.ORM.ObjectModel.FactType/DerivationRuleDisplay.Description" xml:space="preserve">
-    <value>Description for Neumont.Tools.ORM.ObjectModel.FactType.DerivationRule</value>
+    <value>A derivation rule for this FactType.</value>
     <comment>Description for DomainProperty &apos;DerivationRuleDisplay&apos; on DomainClass &apos;FactType&apos;</comment>
   </data>
   <data name="Neumont.Tools.ORM.ObjectModel.FactType/DerivationRuleDisplay.DisplayName" xml:space="preserve">
@@ -590,7 +604,7 @@
     <comment>DisplayName for DomainProperty &apos;DerivationRuleDisplay&apos; on DomainClass &apos;FactType&apos;</comment>
   </data>
   <data name="Neumont.Tools.ORM.ObjectModel.FactType/DerivationStorageDisplay.Description" xml:space="preserve">
-    <value>Description for Neumont.Tools.ORM.ObjectModel.FactType.DerivationStorage</value>
+    <value>Storage options for a derived FactType.</value>
     <comment>Description for DomainProperty &apos;DerivationStorageDisplay&apos; on DomainClass &apos;FactType&apos;</comment>
   </data>
   <data name="Neumont.Tools.ORM.ObjectModel.FactType/DerivationStorageDisplay.DisplayName" xml:space="preserve">
@@ -646,7 +660,7 @@
     <comment>DisplayName for DomainClass &apos;Role&apos;</comment>
   </data>
   <data name="Neumont.Tools.ORM.ObjectModel.Role/RolePlayerDisplay.Description" xml:space="preserve">
-    <value>Description for Neumont.Tools.ORM.ObjectModel.Role.RolePlayer</value>
+    <value>The ObjectType that plays this Role.</value>
     <comment>Description for DomainProperty &apos;RolePlayerDisplay&apos; on DomainClass &apos;Role&apos;</comment>
   </data>
   <data name="Neumont.Tools.ORM.ObjectModel.Role/RolePlayerDisplay.DisplayName" xml:space="preserve">
@@ -654,7 +668,7 @@
     <comment>DisplayName for DomainProperty &apos;RolePlayerDisplay&apos; on DomainClass &apos;Role&apos;</comment>
   </data>
   <data name="Neumont.Tools.ORM.ObjectModel.Role/IsMandatory.Description" xml:space="preserve">
-    <value>Description for Neumont.Tools.ORM.ObjectModel.Role.IsMandatory</value>
+    <value>Does this Role have a simple mandatory constraint?</value>
     <comment>Description for DomainProperty &apos;IsMandatory&apos; on DomainClass &apos;Role&apos;</comment>
   </data>
   <data name="Neumont.Tools.ORM.ObjectModel.Role/IsMandatory.DisplayName" xml:space="preserve">
@@ -662,7 +676,7 @@
     <comment>DisplayName for DomainProperty &apos;IsMandatory&apos; on DomainClass &apos;Role&apos;</comment>
   </data>
   <data name="Neumont.Tools.ORM.ObjectModel.Role/Multiplicity.Description" xml:space="preserve">
-    <value>Description for Neumont.Tools.ORM.ObjectModel.Role.Multiplicity</value>
+    <value>The multiplicity specification for a Role of a binary FactType. Affects the uniqueness and mandatory constraints on the opposite Role.</value>
     <comment>Description for DomainProperty &apos;Multiplicity&apos; on DomainClass &apos;Role&apos;</comment>
   </data>
   <data name="Neumont.Tools.ORM.ObjectModel.Role/Multiplicity.DisplayName" xml:space="preserve">
@@ -670,7 +684,9 @@
     <comment>DisplayName for DomainProperty &apos;Multiplicity&apos; on DomainClass &apos;Role&apos;</comment>
   </data>
   <data name="Neumont.Tools.ORM.ObjectModel.Role/ValueRangeText.Description" xml:space="preserve">
-    <value>Description for Neumont.Tools.ORM.ObjectModel.Role.ValueRange</value>
+    <value>Restrict the range of possible values for instances of the RolePlayer ObjectType.
+    To specify a range, use &apos;..&apos; between the range endpoints, square brackets to specify a closed endpoint, and parentheses to specify an open endpoint. Commas are used to entered multiple ranges or discrete values.
+    Example: {[10..20), 30} specifies all values between 10 and 20 (but not including 20) and the value 30.</value>
     <comment>Description for DomainProperty &apos;ValueRangeText&apos; on DomainClass &apos;Role&apos;</comment>
   </data>
   <data name="Neumont.Tools.ORM.ObjectModel.Role/ValueRangeText.DisplayName" xml:space="preserve">
@@ -678,7 +694,7 @@
     <comment>DisplayName for DomainProperty &apos;ValueRangeText&apos; on DomainClass &apos;Role&apos;</comment>
   </data>
   <data name="Neumont.Tools.ORM.ObjectModel.Role/MandatoryConstraintName.Description" xml:space="preserve">
-    <value>Description for Neumont.Tools.ORM.ObjectModel.Role.MandatoryConstraintName</value>
+    <value>The Name of the simple mandatory constraint on this Role.</value>
     <comment>Description for DomainProperty &apos;MandatoryConstraintName&apos; on DomainClass &apos;Role&apos;</comment>
   </data>
   <data name="Neumont.Tools.ORM.ObjectModel.Role/MandatoryConstraintName.DisplayName" xml:space="preserve">
@@ -686,7 +702,9 @@
     <comment>DisplayName for DomainProperty &apos;MandatoryConstraintName&apos; on DomainClass &apos;Role&apos;</comment>
   </data>
   <data name="Neumont.Tools.ORM.ObjectModel.Role/MandatoryConstraintModality.Description" xml:space="preserve">
-    <value>Description for Neumont.Tools.ORM.ObjectModel.Role.MandatoryConstraintModality</value>
+    <value>The Modality of the simple mandatory constraint on this Role.
+    Alethic modality means the constraint is structurally enforced and data violating the constraint cannot be entered in the system;
+    Deontic modality means that data violating the constraint can be recorded.</value>
     <comment>Description for DomainProperty &apos;MandatoryConstraintModality&apos; on DomainClass &apos;Role&apos;</comment>
   </data>
   <data name="Neumont.Tools.ORM.ObjectModel.Role/MandatoryConstraintModality.DisplayName" xml:space="preserve">
@@ -694,7 +712,7 @@
     <comment>DisplayName for DomainProperty &apos;MandatoryConstraintModality&apos; on DomainClass &apos;Role&apos;</comment>
   </data>
   <data name="Neumont.Tools.ORM.ObjectModel.Role/Name.Description" xml:space="preserve">
-    <value>Description for Neumont.Tools.ORM.ObjectModel.Role.Name</value>
+    <value>The explicit Name for this role.</value>
     <comment>Description for DomainProperty &apos;Name&apos; on DomainClass &apos;Role&apos;</comment>
   </data>
   <data name="Neumont.Tools.ORM.ObjectModel.Role/Name.DisplayName" xml:space="preserve">
@@ -702,7 +720,8 @@
     <comment>DisplayName for DomainProperty &apos;Name&apos; on DomainClass &apos;Role&apos;</comment>
   </data>
   <data name="Neumont.Tools.ORM.ObjectModel.Role/ObjectificationOppositeRoleName.Description" xml:space="preserve">
-    <value>Description for Neumont.Tools.ORM.ObjectModel.Role.ImpliedRoleName</value>
+    <value>The Name of the implied Role attached to the objectifying EntityType.
+    An implied binary FactType is created relating the objectifying EntityType to each of the role players of an objectified FactType. Binary FactTypes with a spanning internal uniqueness constraint and ternary (or higher arity) FactTypes are automatically objectified.</value>
     <comment>Description for DomainProperty &apos;ObjectificationOppositeRoleName&apos; on DomainClass &apos;Role&apos;</comment>
   </data>
   <data name="Neumont.Tools.ORM.ObjectModel.Role/ObjectificationOppositeRoleName.DisplayName" xml:space="preserve">
@@ -774,7 +793,9 @@
     <comment>DisplayName for DomainClass &apos;SetComparisonConstraint&apos;</comment>
   </data>
   <data name="Neumont.Tools.ORM.ObjectModel.SetComparisonConstraint/Modality.Description" xml:space="preserve">
-    <value>Description for Neumont.Tools.ORM.ObjectModel.SetComparisonConstraint.Modality</value>
+    <value>The Modality of the simple mandatory constraint on this Role.
+    Alethic modality means the constraint is structurally enforced and data violating the constraint cannot be entered in the system;
+    Deontic modality means that data violating the constraint can be recorded.</value>
     <comment>Description for DomainProperty &apos;Modality&apos; on DomainClass &apos;SetComparisonConstraint&apos;</comment>
   </data>
   <data name="Neumont.Tools.ORM.ObjectModel.SetComparisonConstraint/Modality.DisplayName" xml:space="preserve">
@@ -822,7 +843,7 @@
     <comment>DisplayName for DomainClass &apos;RingConstraint&apos;</comment>
   </data>
   <data name="Neumont.Tools.ORM.ObjectModel.RingConstraint/RingType.Description" xml:space="preserve">
-    <value>Description for Neumont.Tools.ORM.ObjectModel.RingConstraint.RingType</value>
+    <value>Restriction type of this Ring constraint.</value>
     <comment>Description for DomainProperty &apos;RingType&apos; on DomainClass &apos;RingConstraint&apos;</comment>
   </data>
   <data name="Neumont.Tools.ORM.ObjectModel.RingConstraint/RingType.DisplayName" xml:space="preserve">
@@ -838,7 +859,7 @@
     <comment>DisplayName for DomainClass &apos;FrequencyConstraint&apos;</comment>
   </data>
   <data name="Neumont.Tools.ORM.ObjectModel.FrequencyConstraint/MinFrequency.Description" xml:space="preserve">
-    <value>Description for Neumont.Tools.ORM.ObjectModel.FrequencyConstraint.MinFrequency</value>
+    <value>The minimum number of occurrences for each instance that plays the restricted roles.</value>
     <comment>Description for DomainProperty &apos;MinFrequency&apos; on DomainClass &apos;FrequencyConstraint&apos;</comment>
   </data>
   <data name="Neumont.Tools.ORM.ObjectModel.FrequencyConstraint/MinFrequency.DisplayName" xml:space="preserve">
@@ -846,7 +867,7 @@
     <comment>DisplayName for DomainProperty &apos;MinFrequency&apos; on DomainClass &apos;FrequencyConstraint&apos;</comment>
   </data>
   <data name="Neumont.Tools.ORM.ObjectModel.FrequencyConstraint/MaxFrequency.Description" xml:space="preserve">
-    <value>Description for Neumont.Tools.ORM.ObjectModel.FrequencyConstraint.MaxFrequency</value>
+    <value>The maximum number of occurrences for each instance that plays the restricted roles.</value>
     <comment>Description for DomainProperty &apos;MaxFrequency&apos; on DomainClass &apos;FrequencyConstraint&apos;</comment>
   </data>
   <data name="Neumont.Tools.ORM.ObjectModel.FrequencyConstraint/MaxFrequency.DisplayName" xml:space="preserve">
@@ -862,7 +883,8 @@
     <comment>DisplayName for DomainClass &apos;UniquenessConstraint&apos;</comment>
   </data>
   <data name="Neumont.Tools.ORM.ObjectModel.UniquenessConstraint/IsPreferred.Description" xml:space="preserve">
-    <value>Description for Neumont.Tools.ORM.ObjectModel.UniquenessConstraint.IsPreferredIdentifier</value>
+    <value>Is this the preferred identifier for the EntityType role player of the opposite role(s)?
+    The opposite role player of an internal constraint on an objectified FactType is the objectifying EntityType. Binary FactTypes with a spanning internal uniqueness constraint and ternary (or higher arity) FactTypes are automatically objectified.</value>
     <comment>Description for DomainProperty &apos;IsPreferred&apos; on DomainClass &apos;UniquenessConstraint&apos;</comment>
   </data>
   <data name="Neumont.Tools.ORM.ObjectModel.UniquenessConstraint/IsPreferred.DisplayName" xml:space="preserve">
@@ -910,7 +932,9 @@
     <comment>DisplayName for DomainClass &apos;SetConstraint&apos;</comment>
   </data>
   <data name="Neumont.Tools.ORM.ObjectModel.SetConstraint/Modality.Description" xml:space="preserve">
-    <value>Description for Neumont.Tools.ORM.ObjectModel.SetConstraint.Modality</value>
+    <value>The Modality of the simple mandatory constraint on this Role.
+    Alethic modality means the constraint is structurally enforced and data violating the constraint cannot be entered in the system;
+    Deontic modality means that data violating the constraint can be recorded.</value>
     <comment>Description for DomainProperty &apos;Modality&apos; on DomainClass &apos;SetConstraint&apos;</comment>
   </data>
   <data name="Neumont.Tools.ORM.ObjectModel.SetConstraint/Modality.DisplayName" xml:space="preserve">
@@ -934,7 +958,7 @@
     <comment>DisplayName for DomainClass &apos;Join&apos;</comment>
   </data>
   <data name="Neumont.Tools.ORM.ObjectModel.Join/JoinType.Description" xml:space="preserve">
-    <value>Description for Neumont.Tools.ORM.ObjectModel.Join.JoinType</value>
+    <value>Is this an inner or an outer Join?</value>
     <comment>Description for DomainProperty &apos;JoinType&apos; on DomainClass &apos;Join&apos;</comment>
   </data>
   <data name="Neumont.Tools.ORM.ObjectModel.Join/JoinType.DisplayName" xml:space="preserve">
@@ -1198,7 +1222,7 @@
     <comment>DisplayName for DomainClass &apos;ReferenceModeKind&apos;</comment>
   </data>
   <data name="Neumont.Tools.ORM.ObjectModel.ReferenceModeKind/FormatString.Description" xml:space="preserve">
-    <value>Description for Neumont.Tools.ORM.ObjectModel.ReferenceModeKind.FormatString</value>
+    <value>Default format string for reference mode patterns with this ReferenceModeKind. Replacement field {0}=EntityTypeName, {1}=ReferenceModeName</value>
     <comment>Description for DomainProperty &apos;FormatString&apos; on DomainClass &apos;ReferenceModeKind&apos;</comment>
   </data>
   <data name="Neumont.Tools.ORM.ObjectModel.ReferenceModeKind/FormatString.DisplayName" xml:space="preserve">
@@ -1206,7 +1230,7 @@
     <comment>DisplayName for DomainProperty &apos;FormatString&apos; on DomainClass &apos;ReferenceModeKind&apos;</comment>
   </data>
   <data name="Neumont.Tools.ORM.ObjectModel.ReferenceModeKind/ReferenceModeType.Description" xml:space="preserve">
-    <value>Description for Neumont.Tools.ORM.ObjectModel.ReferenceModeKind.ReferenceModeType</value>
+    <value>One of Popular, UnitBased, or General.</value>
     <comment>Description for DomainProperty &apos;ReferenceModeType&apos; on DomainClass &apos;ReferenceModeKind&apos;</comment>
   </data>
   <data name="Neumont.Tools.ORM.ObjectModel.ReferenceModeKind/ReferenceModeType.DisplayName" xml:space="preserve">
@@ -1230,7 +1254,7 @@
     <comment>DisplayName for DomainClass &apos;CustomReferenceMode&apos;</comment>
   </data>
   <data name="Neumont.Tools.ORM.ObjectModel.CustomReferenceMode/CustomFormatString.Description" xml:space="preserve">
-    <value>Description for Neumont.Tools.ORM.ObjectModel.CustomReferenceMode.CustomFormatString</value>
+    <value>Custom format string for this reference mode pattern. Replacement field {0}=EntityTypeName, {1}=ReferenceModeName</value>
     <comment>Description for DomainProperty &apos;CustomFormatString&apos; on DomainClass &apos;CustomReferenceMode&apos;</comment>
   </data>
   <data name="Neumont.Tools.ORM.ObjectModel.CustomReferenceMode/CustomFormatString.DisplayName" xml:space="preserve">
@@ -1246,7 +1270,7 @@
     <comment>DisplayName for DomainClass &apos;ReferenceMode&apos;</comment>
   </data>
   <data name="Neumont.Tools.ORM.ObjectModel.ReferenceMode/KindDisplay.Description" xml:space="preserve">
-    <value>Description for Neumont.Tools.ORM.ObjectModel.ReferenceMode.Kind</value>
+    <value>The kind of the reference mode pattern. One of Popular, UnitBase, or General.</value>
     <comment>Description for DomainProperty &apos;KindDisplay&apos; on DomainClass &apos;ReferenceMode&apos;</comment>
   </data>
   <data name="Neumont.Tools.ORM.ObjectModel.ReferenceMode/KindDisplay.DisplayName" xml:space="preserve">
@@ -1558,7 +1582,7 @@
     <comment>DisplayName for DomainClass &apos;Reading&apos;</comment>
   </data>
   <data name="Neumont.Tools.ORM.ObjectModel.Reading/Text.Description" xml:space="preserve">
-    <value>Description for Neumont.Tools.ORM.ObjectModel.Reading.Text</value>
+    <value>The text of this reading. Includes ordered replacement fields corresponding to the parent ReadingOrder.</value>
     <comment>Description for DomainProperty &apos;Text&apos; on DomainClass &apos;Reading&apos;</comment>
   </data>
   <data name="Neumont.Tools.ORM.ObjectModel.Reading/Text.DisplayName" xml:space="preserve">
@@ -1598,7 +1622,7 @@
     <comment>DisplayName for DomainClass &apos;ReadingOrder&apos;</comment>
   </data>
   <data name="Neumont.Tools.ORM.ObjectModel.ReadingOrder/ReadingText.Description" xml:space="preserve">
-    <value>Description for Neumont.Tools.ORM.ObjectModel.ReadingOrder.ReadingText</value>
+    <value>The text for the default Reading of this ReadingOrder. Includes ordered replacement fields corresponding to this ReadingOrder.</value>
     <comment>Description for DomainProperty &apos;ReadingText&apos; on DomainClass &apos;ReadingOrder&apos;</comment>
   </data>
   <data name="Neumont.Tools.ORM.ObjectModel.ReadingOrder/ReadingText.DisplayName" xml:space="preserve">
@@ -1678,7 +1702,9 @@
     <comment>DisplayName for DomainClass &apos;ValueConstraint&apos;</comment>
   </data>
   <data name="Neumont.Tools.ORM.ObjectModel.ValueConstraint/Text.Description" xml:space="preserve">
-    <value>Description for Neumont.Tools.ORM.ObjectModel.ValueConstraint.Text</value>
+    <value>The range of possible values.
+    To specify a range, use &apos;..&apos; between the range endpoints, square brackets to specify a closed endpoint, and parentheses to specify an open endpoint. Commas are used to entered multiple ranges or discrete values.
+    Example: {[10..20), 30} specifies all values between 10 and 20 (but not including 20) and the value 30.</value>
     <comment>Description for DomainProperty &apos;Text&apos; on DomainClass &apos;ValueConstraint&apos;</comment>
   </data>
   <data name="Neumont.Tools.ORM.ObjectModel.ValueConstraint/Text.DisplayName" xml:space="preserve">
@@ -1766,7 +1792,8 @@
     <comment>DisplayName for DomainClass &apos;Definition&apos;</comment>
   </data>
   <data name="Neumont.Tools.ORM.ObjectModel.Definition/Text.Description" xml:space="preserve">
-    <value>The definition contents. To insert new lines, use Control-Enter in the dropdown editor, or open the &apos;ORM Notes Editor&apos; toolwindow.</value>
+    <value>The definition contents.
+    To insert new lines, use Control-Enter in the dropdown editor, or open the &apos;ORM Notes Editor&apos; tool window.</value>
     <comment>Description for DomainProperty &apos;Text&apos; on DomainClass &apos;Definition&apos;</comment>
   </data>
   <data name="Neumont.Tools.ORM.ObjectModel.Definition/Text.DisplayName" xml:space="preserve">
@@ -1782,7 +1809,8 @@
     <comment>DisplayName for DomainClass &apos;Note&apos;</comment>
   </data>
   <data name="Neumont.Tools.ORM.ObjectModel.Note/Text.Description" xml:space="preserve">
-    <value>The note contents. To insert new lines, use Control-Enter in the dropdown editor, or open the &apos;ORM Notes Editor&apos; toolwindow.</value>
+    <value>The note contents.
+    To insert new lines, use Control-Enter in the dropdown editor, or open the &apos;ORM Notes Editor&apos; tool window.</value>
     <comment>Description for DomainProperty &apos;Text&apos; on DomainClass &apos;Note&apos;</comment>
   </data>
   <data name="Neumont.Tools.ORM.ObjectModel.Note/Text.DisplayName" xml:space="preserve">
@@ -1926,7 +1954,7 @@
     <comment>DisplayName for DomainClass &apos;ValueTypeInstance&apos;</comment>
   </data>
   <data name="Neumont.Tools.ORM.ObjectModel.ValueTypeInstance/Value.Description" xml:space="preserve">
-    <value>Description for Neumont.Tools.ORM.ObjectModel.ValueTypeInstance.Value</value>
+    <value>The instance value.</value>
     <comment>Description for DomainProperty &apos;Value&apos; on DomainClass &apos;ValueTypeInstance&apos;</comment>
   </data>
   <data name="Neumont.Tools.ORM.ObjectModel.ValueTypeInstance/Value.DisplayName" xml:space="preserve">
@@ -2206,7 +2234,7 @@
     <comment>DisplayName for DomainProperty &apos;IsImplied&apos; on DomainClass &apos;Objectification&apos;</comment>
   </data>
   <data name="Neumont.Tools.ORM.ObjectModel.Objectification/NestingType.Description" xml:space="preserve">
-    <value>Description for Neumont.Tools.ORM.ObjectModel.Objectification.NestingType</value>
+    <value>The FactType objectified by this EntityType.</value>
     <comment>Description for DomainRole &apos;NestingType&apos; on DomainRelationship &apos;Objectification&apos;</comment>
   </data>
   <data name="Neumont.Tools.ORM.ObjectModel.Objectification/NestingType.DisplayName" xml:space="preserve">
@@ -2218,7 +2246,7 @@
     <comment>PropertyDisplayName for DomainRole &apos;NestingType&apos; on DomainRelationship &apos;Objectification&apos;</comment>
   </data>
   <data name="Neumont.Tools.ORM.ObjectModel.Objectification/NestedFactType.Description" xml:space="preserve">
-    <value>Description for Neumont.Tools.ORM.ObjectModel.Objectification.NestedFactType</value>
+    <value>The EntityType that objectifies this FactType.</value>
     <comment>Description for DomainRole &apos;NestedFactType&apos; on DomainRelationship &apos;Objectification&apos;</comment>
   </data>
   <data name="Neumont.Tools.ORM.ObjectModel.Objectification/NestedFactType.DisplayName" xml:space="preserve">
@@ -6472,7 +6500,7 @@ A DomainClass can be serialized as a moniker only if
 	Neumont Object-Role Modeling Architect for Visual Studio
 
 	Copyright © Neumont University. All rights reserved.
-	Copyright © Neumont University. All rights reserved.
+	Copyright © Matthew Curland. All rights reserved.
 
 	The use and distribution terms for this software are covered by the
 	Common Public License 1.0 (http://opensource.org/licenses/cpl) which

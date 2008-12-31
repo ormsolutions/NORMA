@@ -120,6 +120,39 @@ namespace Neumont.Tools.ORM.ObjectModel.Design
 		}
 
 		/// <summary>
+		/// Get custom description names for the Scale and Length properties
+		/// </summary>
+		/// <param name="propertyDescriptor"></param>
+		/// <returns></returns>
+		protected override string GetDescription(ElementPropertyDescriptor propertyDescriptor)
+		{
+			Guid propertyId = propertyDescriptor.DomainPropertyInfo.Id;
+			DataType dataType;
+			string description;
+			if (propertyId == ObjectType.NameDomainPropertyId)
+			{
+				return ResourceStrings.ObjectTypeNameDescription;
+			}
+			else if (propertyId == ObjectType.ScaleDomainPropertyId)
+			{
+				if (null != (dataType = GetObjectTypeDataType(propertyDescriptor.ModelElement as ObjectType)) &&
+					!string.IsNullOrEmpty(description = dataType.ScaleDescription))
+				{
+					return description;
+				}
+			}
+			else if (propertyId == ObjectType.LengthDomainPropertyId)
+			{
+				if (null != (dataType = GetObjectTypeDataType(propertyDescriptor.ModelElement as ObjectType)) &&
+					!string.IsNullOrEmpty(description = dataType.LengthDescription))
+				{
+					return description;
+				}
+			}
+			return base.GetDescription(propertyDescriptor);
+		}
+
+		/// <summary>
 		/// Allow <see cref="RolePlayerPropertyDescriptor"/>s if this isn't a ValueType.
 		/// </summary>
 		protected override bool IncludeOppositeRolePlayerProperties(ModelElement requestor)

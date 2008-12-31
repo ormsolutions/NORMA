@@ -222,11 +222,31 @@ namespace Neumont.Tools.ORM.ObjectModel
 			}
 		}
 		/// <summary>
+		/// Override to return a customized description to display for the Scale property.
+		/// </summary>
+		public virtual string ScaleDescription
+		{
+			get
+			{
+				return null;
+			}
+		}
+		/// <summary>
 		/// Override to return a name to display for the Length property.
 		/// A <see langword="null"/> return does not show the property,
 		/// and an empty string uses the default name.
 		/// </summary>
 		public virtual string LengthName
+		{
+			get
+			{
+				return null;
+			}
+		}
+		/// <summary>
+		/// Override to return a customized description to display for the Length property.
+		/// </summary>
+		public virtual string LengthDescription
 		{
 			get
 			{

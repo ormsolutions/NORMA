@@ -214,7 +214,9 @@
     <comment>DisplayName for DomainProperty &apos;IsIdentity&apos; on DomainClass &apos;Column&apos;</comment>
   </data>
   <data name="Neumont.Tools.RelationalModels.ConceptualDatabase.Column/DataType.Description" xml:space="preserve">
-    <value>Description for Neumont.Tools.RelationalModels.ConceptualDatabase.Column.DataType</value>
+    <value>The DataType for this Column. Corresponds to the DataType of the terminal ValueType in the FactType path for this Column.
+    Changing this DataType changes the DataType for all columns that terminate at the same ValueType.
+    This is a portable DataType. The final physical DataType is dependent on the generation target.</value>
     <comment>Description for DomainProperty &apos;DataType&apos; on DomainClass &apos;Column&apos;</comment>
   </data>
   <data name="Neumont.Tools.RelationalModels.ConceptualDatabase.Column/DataType.DisplayName" xml:space="preserve">
@@ -1296,6 +1298,7 @@ A DomainClass can be serialized as a moniker only if
 	Neumont Object-Role Modeling Architect for Visual Studio
 
 	Copyright © Neumont University. All rights reserved.
+	Copyright © Matthew Curland. All rights reserved.
 
 	The use and distribution terms for this software are covered by the
 	Common Public License 1.0 (http://opensource.org/licenses/cpl) which

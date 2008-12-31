@@ -58,6 +58,10 @@
 	</ResourceString>
 	<ResourceString name="ValueType" model="Model" resourceName="ObjectModel.ValueType"/>
 	<ResourceString name="EntityType" model="Model" resourceName="ObjectModel.EntityType"/>
+	<ResourceString name="ConstraintNameDescription" model="Model" resourceName="ObjectModel.Constraint.Name.Description"/>
+	<ResourceString name="ModelNameDescription" model="Model" resourceName="ObjectModel.Model.Name.Description"/>
+	<ResourceString name="ObjectTypeNameDescription" model="Model" resourceName="ObjectModel.ObjectType.Name.Description"/>
+	<ResourceString name="SubtypeFactNameDescription" model="Model" resourceName="ObjectModel.SubtypeFact.Name.Description"/>
 	<ResourceString name="ObjectifiedFactType" model="Model" resourceName="ObjectModel.ObjectifiedFactType"/>
 	<ResourceString name="InternalUniquenessConstraint" model="Model" resourceName="ObjectModel.InternalUniquenessConstraint"/>
 	<ResourceString name="ExternalUniquenessConstraint" model="Model" resourceName="ObjectModel.UniquenessConstraint"/>
@@ -67,6 +71,9 @@
 	<ResourceString name="NestedFactTypePickerNullItemText" model="Model" resourceName="ObjectModel.Editors.NestedFactTypePicker.NullItemText"/>
 	<ResourceString name="NestingTypePickerNullItemText" model="Model" resourceName="ObjectModel.Editors.NestingTypePicker.NullItemText"/>
 	<ResourceString name="EntityTypeDefaultNamePattern" model="Model" resourceName="ObjectModel.EntityType.DefaultNamePattern"/>
+	<ResourceString name="DataTypeExactLengthDescription" model="Model" resourceName="ObjectModel.DataType.Length.ExactLengthDescription"/>
+	<ResourceString name="DataTypePrecision" model="Model" resourceName="ObjectModel.DataType.Precision"/>
+	<ResourceString name="DataTypePrecisionDescription" model="Model" resourceName="ObjectModel.DataType.Precision.Description"/>
 	<ResourceString name="PortableDataTypeUnspecified" model="Model" resourceName="ObjectModel.DataType.PortableDataType.Unspecified.Text"/>
 	<ResourceString name="PortableDataTypeTextFixedLength" model="Model" resourceName="ObjectModel.DataType.PortableDataType.Text.FixedLength.Text"/>
 	<ResourceString name="PortableDataTypeTextVariableLength" model="Model" resourceName="ObjectModel.DataType.PortableDataType.Text.VariableLength.Text"/>

@@ -5,6 +5,7 @@
 		<CopyrightLine>* Neumont Object-Role Modeling Architect for Visual Studio                 *</CopyrightLine>
 		<CopyrightLine>*                                                                          *</CopyrightLine>
 		<CopyrightLine>* Copyright © Neumont University. All rights reserved.                     *</CopyrightLine>
+		<CopyrightLine>* Copyright © Matthew Curland. All rights reserved.                        *</CopyrightLine>
 		<CopyrightLine>*                                                                          *</CopyrightLine>
 		<CopyrightLine>* The use and distribution terms for this software are covered by the      *</CopyrightLine>
 		<CopyrightLine>* Common Public License 1.0 (http://opensource.org/licenses/cpl) which     *</CopyrightLine>
@@ -21,7 +22,7 @@
 		</SubType>
 	</DataType>
 	<DataType name="Text" backingType=".string">
-		<SubType name="FixedLength" lengthName="">
+		<SubType name="FixedLength" lengthName="" lengthDescription="DataTypeExactLengthDescription">
 			<comment type="summary">A fixed length text data type</comment>
 		</SubType>
 		<SubType name="VariableLength" lengthName="">
@@ -56,7 +57,7 @@
 		<SubType name="AutoCounter" backingType=".u8">
 			<comment type="summary">An auto counter numeric data type</comment>
 		</SubType>
-		<SubType name="FloatingPoint" rangeSupport="Open" backingType=".r8" lengthName="DataTypePrecision">
+		<SubType name="FloatingPoint" rangeSupport="Open" backingType=".r8" lengthName="DataTypePrecision" lengthDescription="DataTypePrecisionDescription">
 			<comment type="summary">A custom precision floating point numeric data type</comment>
 		</SubType>
 		<SubType name="SinglePrecisionFloatingPoint" rangeSupport="Open" backingType=".r4">
@@ -65,15 +66,15 @@
 		<SubType name="DoublePrecisionFloatingPoint" rangeSupport="Open" backingType=".r8">
 			<comment type="summary">A 64-bit floating point numeric data type</comment>
 		</SubType>
-		<SubType name="Decimal" rangeSupport="Open" backingType=".decimal" lengthName="DataTypePrecision" scaleName="">
+		<SubType name="Decimal" rangeSupport="Open" backingType=".decimal" lengthName="DataTypePrecision" lengthDescription="DataTypePrecisionDescription" scaleName="">
 			<comment type="summary">A decimal numeric data type</comment>
 		</SubType>
-		<SubType name="Money" rangeSupport="Open" backingType=".decimal" lengthName="DataTypePrecision" scaleName="">
+		<SubType name="Money" rangeSupport="Open" backingType=".decimal" lengthName="DataTypePrecision" lengthDescription="DataTypePrecisionDescription" scaleName="">
 			<comment type="summary">A money numeric data type</comment>
 		</SubType>
 	</DataType>
 	<DataType name="RawData" canCompare="false" rangeSupport="None">
-		<SubType name="FixedLength" lengthName="">
+		<SubType name="FixedLength" lengthName="" lengthDescription="DataTypeExactLengthDescription">
 			<comment type="summary">A fixed length raw data data type</comment>
 		</SubType>
 		<SubType name="VariableLength" lengthName="">

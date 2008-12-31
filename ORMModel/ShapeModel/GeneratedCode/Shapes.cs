@@ -3,6 +3,7 @@
 * Neumont Object-Role Modeling Architect for Visual Studio                 *
 *                                                                          *
 * Copyright © Neumont University. All rights reserved.                     *
+* Copyright © Matthew Curland. All rights reserved.                        *
 *                                                                          *
 * The use and distribution terms for this software are covered by the      *
 * Common Public License 1.0 (http://opensource.org/licenses/cpl) which     *
@@ -323,7 +324,8 @@ namespace Neumont.Tools.ORM.ShapeModel
 		
 		/// <summary>
 		/// Gets or sets the value of ExpandRefMode domain property.
-		/// Description for Neumont.Tools.ORM.ShapeModel.ObjectTypeShape.ExpandRefMode
+		/// Should shapes for the FactType and ValueType corresponding to this ReferenceMode
+		/// pattern be displayed on the diagram?
 		/// </summary>
 		[DslDesign::DisplayNameResource("Neumont.Tools.ORM.ShapeModel.ObjectTypeShape/ExpandRefMode.DisplayName", typeof(global::Neumont.Tools.ORM.ShapeModel.ORMShapeDomainModel), "Neumont.Tools.ORM.GeneratedCode.ShapeDomainModelResx")]
 		[DslDesign::DescriptionResource("Neumont.Tools.ORM.ShapeModel.ObjectTypeShape/ExpandRefMode.Description", typeof(global::Neumont.Tools.ORM.ShapeModel.ORMShapeDomainModel), "Neumont.Tools.ORM.GeneratedCode.ShapeDomainModelResx")]
@@ -1633,8 +1635,8 @@ namespace Neumont.Tools.ORM.ShapeModel
 		
 		/// <summary>
 		/// Gets or sets the value of ExpandRefMode domain property.
-		/// Description for
-		/// Neumont.Tools.ORM.ShapeModel.ObjectifiedFactTypeNameShape.ExpandRefMode
+		/// Should shapes for the FactType and ValueType corresponding to this ReferenceMode
+		/// pattern be displayed on the diagram?
 		/// </summary>
 		[DslDesign::DisplayNameResource("Neumont.Tools.ORM.ShapeModel.ObjectifiedFactTypeNameShape/ExpandRefMode.DisplayName", typeof(global::Neumont.Tools.ORM.ShapeModel.ORMShapeDomainModel), "Neumont.Tools.ORM.GeneratedCode.ShapeDomainModelResx")]
 		[DslDesign::DescriptionResource("Neumont.Tools.ORM.ShapeModel.ObjectifiedFactTypeNameShape/ExpandRefMode.Description", typeof(global::Neumont.Tools.ORM.ShapeModel.ORMShapeDomainModel), "Neumont.Tools.ORM.GeneratedCode.ShapeDomainModelResx")]

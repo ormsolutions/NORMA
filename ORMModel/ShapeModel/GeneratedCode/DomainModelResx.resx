@@ -246,7 +246,7 @@
     <comment>DisplayName for DomainClass &apos;ObjectTypeShape&apos;</comment>
   </data>
   <data name="Neumont.Tools.ORM.ShapeModel.ObjectTypeShape/ExpandRefMode.Description" xml:space="preserve">
-    <value>Description for Neumont.Tools.ORM.ShapeModel.ObjectTypeShape.ExpandRefMode</value>
+    <value>Should shapes for the FactType and ValueType corresponding to this ReferenceMode pattern be displayed on the diagram?</value>
     <comment>Description for DomainProperty &apos;ExpandRefMode&apos; on DomainClass &apos;ObjectTypeShape&apos;</comment>
   </data>
   <data name="Neumont.Tools.ORM.ShapeModel.ObjectTypeShape/ExpandRefMode.DisplayName" xml:space="preserve">
@@ -342,7 +342,7 @@
     <comment>DisplayName for DomainClass &apos;ObjectifiedFactTypeNameShape&apos;</comment>
   </data>
   <data name="Neumont.Tools.ORM.ShapeModel.ObjectifiedFactTypeNameShape/ExpandRefMode.Description" xml:space="preserve">
-    <value>Description for Neumont.Tools.ORM.ShapeModel.ObjectifiedFactTypeNameShape.ExpandRefMode</value>
+    <value>Should shapes for the FactType and ValueType corresponding to this ReferenceMode pattern be displayed on the diagram?</value>
     <comment>Description for DomainProperty &apos;ExpandRefMode&apos; on DomainClass &apos;ObjectifiedFactTypeNameShape&apos;</comment>
   </data>
   <data name="Neumont.Tools.ORM.ShapeModel.ObjectifiedFactTypeNameShape/ExpandRefMode.DisplayName" xml:space="preserve">
@@ -809,6 +809,7 @@ A DomainClass can be serialized as a moniker only if
 	Neumont Object-Role Modeling Architect for Visual Studio
 
 	Copyright © Neumont University. All rights reserved.
+	Copyright © Matthew Curland. All rights reserved.
 
 	The use and distribution terms for this software are covered by the
 	Common Public License 1.0 (http://opensource.org/licenses/cpl) which

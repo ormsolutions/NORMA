@@ -974,6 +974,22 @@
 	<data name="NameGeneratorSubjectArea.Suffix" xml:space="preserve">
 		<value>Suffix</value>
 	</data>
+	<data name="ObjectModel.Constraint.Name.Description" xml:space="preserve">
+		<value>The name of the Constraint. Constraint names must be unique within the ORM model.</value>
+		<comment>The description for the Name property of a constraint.</comment>
+	</data>
+	<data name="ObjectModel.DataType.Length.ExactLengthDescription" xml:space="preserve">
+		<value>The exact length of values with this DataType.</value>
+		<comment>An alternate description for the DataType.Length property. The default description describes a variable length.</comment>
+	</data>
+	<data name="ObjectModel.DataType.Precision" xml:space="preserve">
+		<value>DataTypePrecision</value>
+		<comment>An alternate display name for the DataType.Length property.</comment>
+	</data>
+	<data name="ObjectModel.DataType.Precision.Description" xml:space="preserve">
+		<value>The total number of all digits allowed in a value with this DataType.</value>
+		<comment>An alternate description for the DataType.Length property.</comment>
+	</data>
 	<data name="ObjectModel.DataType.PortableDataType.Logical.TrueOrFalse.Text" xml:space="preserve">
 		<value>Logical: True or False</value>
 		<comment>A true or false logical data type</comment>
@@ -1122,6 +1138,14 @@
 		<value>InternalUniquenessConstraint</value>
 		<comment>The display name used for an internal uniqueness constraint</comment>
 	</data>
+	<data name="ObjectModel.Model.Name.Description" xml:space="preserve">
+		<value>The name of the ORM model.</value>
+		<comment>The description for the Name property of an ORMModel.</comment>
+	</data>
+	<data name="ObjectModel.ObjectType.Name.Description" xml:space="preserve">
+		<value>The name of the ObjectType. ObjectType names must be unique within the ORM model.</value>
+		<comment>The description for the Name property of an ObjectType.</comment>
+	</data>
 	<data name="ObjectModel.ObjectifiedFactType" xml:space="preserve">
 		<value>ObjectifiedFactType</value>
 		<comment>The display name used for an objectified (nested) FactType</comment>
@@ -1129,6 +1153,10 @@
 	<data name="ObjectModel.SimpleMandatoryConstraint" xml:space="preserve">
 		<value>SimpleMandatoryConstraint</value>
 		<comment>The display name used for a simple mandatory constraint</comment>
+	</data>
+	<data name="ObjectModel.SubtypeFact.Name.Description" xml:space="preserve">
+		<value>The generated name for this Subtype relationship.</value>
+		<comment>The description for the Name property of a SubtypeFact.</comment>
 	</data>
 	<data name="ObjectModel.UniquenessConstraint" xml:space="preserve">
 		<value>ExternalUniquenessConstraint</value>

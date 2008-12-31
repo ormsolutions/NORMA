@@ -6,6 +6,7 @@ using System.Diagnostics;
 // * Neumont Object-Role Modeling Architect for Visual Studio                 *
 // *                                                                          *
 // * Copyright © Neumont University. All rights reserved.                     *
+// * Copyright © Matthew Curland. All rights reserved.                        *
 // *                                                                          *
 // * The use and distribution terms for this software are covered by the      *
 // * Common Public License 1.0 (http://opensource.org/licenses/cpl) which     *
@@ -203,6 +204,14 @@ namespace Neumont.Tools.ORM.ObjectModel
 			get
 			{
 				return "";
+			}
+		}
+		/// <summary>Show the description for the Length property for this DataType based on the 'DataTypeExactLengthDescription' resource string.</summary>
+		public override string LengthDescription
+		{
+			get
+			{
+				return ResourceStrings.DataTypeExactLengthDescription;
 			}
 		}
 	}
@@ -731,12 +740,20 @@ namespace Neumont.Tools.ORM.ObjectModel
 			double.TryParse(value2, out typedValue2);
 			return ((IComparable<double>)typedValue1).CompareTo(typedValue2);
 		}
-		/// <summary>Show the Length property named as 'DataTypePrecision' with this DataType</summary>
+		/// <summary>Show the Length property for this DataType based on the 'DataTypePrecision' resource string.</summary>
 		public override string LengthName
 		{
 			get
 			{
-				return "DataTypePrecision";
+				return ResourceStrings.DataTypePrecision;
+			}
+		}
+		/// <summary>Show the description for the Length property for this DataType based on the 'DataTypePrecisionDescription' resource string.</summary>
+		public override string LengthDescription
+		{
+			get
+			{
+				return ResourceStrings.DataTypePrecisionDescription;
 			}
 		}
 	}
@@ -889,12 +906,20 @@ namespace Neumont.Tools.ORM.ObjectModel
 			decimal.TryParse(value2, out typedValue2);
 			return ((IComparable<decimal>)typedValue1).CompareTo(typedValue2);
 		}
-		/// <summary>Show the Length property named as 'DataTypePrecision' with this DataType</summary>
+		/// <summary>Show the Length property for this DataType based on the 'DataTypePrecision' resource string.</summary>
 		public override string LengthName
 		{
 			get
 			{
-				return "DataTypePrecision";
+				return ResourceStrings.DataTypePrecision;
+			}
+		}
+		/// <summary>Show the description for the Length property for this DataType based on the 'DataTypePrecisionDescription' resource string.</summary>
+		public override string LengthDescription
+		{
+			get
+			{
+				return ResourceStrings.DataTypePrecisionDescription;
 			}
 		}
 		/// <summary>Show the Scale property with this DataType</summary>
@@ -955,12 +980,20 @@ namespace Neumont.Tools.ORM.ObjectModel
 			decimal.TryParse(value2, out typedValue2);
 			return ((IComparable<decimal>)typedValue1).CompareTo(typedValue2);
 		}
-		/// <summary>Show the Length property named as 'DataTypePrecision' with this DataType</summary>
+		/// <summary>Show the Length property for this DataType based on the 'DataTypePrecision' resource string.</summary>
 		public override string LengthName
 		{
 			get
 			{
-				return "DataTypePrecision";
+				return ResourceStrings.DataTypePrecision;
+			}
+		}
+		/// <summary>Show the description for the Length property for this DataType based on the 'DataTypePrecisionDescription' resource string.</summary>
+		public override string LengthDescription
+		{
+			get
+			{
+				return ResourceStrings.DataTypePrecisionDescription;
 			}
 		}
 		/// <summary>Show the Scale property with this DataType</summary>
@@ -1016,6 +1049,14 @@ namespace Neumont.Tools.ORM.ObjectModel
 			get
 			{
 				return "";
+			}
+		}
+		/// <summary>Show the description for the Length property for this DataType based on the 'DataTypeExactLengthDescription' resource string.</summary>
+		public override string LengthDescription
+		{
+			get
+			{
+				return ResourceStrings.DataTypeExactLengthDescription;
 			}
 		}
 	}

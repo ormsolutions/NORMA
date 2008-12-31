@@ -470,6 +470,10 @@
     <Compile Include="Framework\Shell\DiagramMenuDisplay.cs" />
     <Compile Include="Framework\Shell\SerializationEngine.cs" />
     <Compile Include="Framework\Shell\ToolWindowActivator.cs" />
+    <Compile Include="ObjectModel\Design\ORMModelTypeDescriptor.cs" />
+    <Compile Include="ObjectModel\Design\ValueConstraintTypeDescriptor.cs" />
+    <Compile Include="ObjectModel\Design\SetComparisonConstraintTypeDescriptor.cs" />
+    <Compile Include="ObjectModel\Design\SetConstraintTypeDescriptor.cs" />
     <Compile Include="ObjectModel\GenerationState.cs" />
     <Compile Include="ObjectModel\Design\NameGeneratorTypeDescriptor.cs" />
     <Compile Include="ObjectModel\NameGenerator.cs" />
