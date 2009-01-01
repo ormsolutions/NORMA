@@ -44,7 +44,65 @@ namespace Neumont.Tools.RelationalModels.ConceptualDatabase.Design
 			: base(parent, selectedElement)
 		{
 		}
-
+		/// <summary>
+		/// Create property descriptors that only allow merging of DataType facet properties
+		/// when the <see cref="P:ObjectType.DataType"/> instances are equal.
+		/// </summary>
+		protected override ElementPropertyDescriptor CreatePropertyDescriptor(ModelElement requestor, DomainPropertyInfo domainPropertyInfo, Attribute[] attributes)
+		{
+			Guid propertyId = domainPropertyInfo.Id;
+			if (propertyId == Column.DataTypeLengthDomainPropertyId || propertyId == Column.DataTypeScaleDomainPropertyId)
+			{
+				return new MatchDataTypePropertyDescriptor(this, requestor, domainPropertyInfo, attributes);
+			}
+			return base.CreatePropertyDescriptor(requestor, domainPropertyInfo, attributes);
+		}
+		/// <summary>
+		/// An element property descriptor that merges DataType facet properties only if the
+		/// DataTypes of the multi-selected elements match.
+		/// </summary>
+		private sealed class MatchDataTypePropertyDescriptor : ElementPropertyDescriptor
+		{
+			public MatchDataTypePropertyDescriptor(ElementTypeDescriptor owner, ModelElement modelElement, DomainPropertyInfo domainProperty, Attribute[] attributes)
+				: base(owner, modelElement, domainProperty, attributes)
+			{
+			}
+			/// <summary>
+			/// Allow equality only if the opposite element has the same DataType
+			/// </summary>
+			public override bool Equals(object obj)
+			{
+				bool retVal = base.Equals(obj);
+				if (retVal)
+				{
+					MatchDataTypePropertyDescriptor oppositeDescriptor = obj as MatchDataTypePropertyDescriptor;
+					Column thisElement;
+					Column otherElement;
+					if (oppositeDescriptor != null &&
+						null != (thisElement = ModelElement as Column) &&
+						null != (otherElement = oppositeDescriptor.ModelElement as Column))
+					{
+						retVal = thisElement.DataType == otherElement.DataType;
+					}
+				}
+				return retVal;
+			}
+			/// <summary>
+			/// Required with Equals override
+			/// </summary>
+			public override int GetHashCode()
+			{
+				int retVal = base.GetHashCode();
+				Column element;
+				DataType dataType;
+				if (null != (element = ModelElement as Column) &&
+					null != (dataType = element.DataType as DataType))
+				{
+					retVal ^= dataType.GetHashCode();
+				}
+				return retVal;
+			}
+		}
 		/// <summary>See <see cref="ElementTypeDescriptor.ShouldCreatePropertyDescriptor"/>.</summary>
 		protected override bool ShouldCreatePropertyDescriptor(ModelElement requestor, DomainPropertyInfo domainProperty)
 		{
@@ -55,11 +113,11 @@ namespace Neumont.Tools.RelationalModels.ConceptualDatabase.Design
 			{
 				return null != column.AssociatedValueType;
 			}
-			else if (propertyId == Column.LengthDomainPropertyId)
+			else if (propertyId == Column.DataTypeLengthDomainPropertyId)
 			{
 				return null != (valueType = column.AssociatedValueType) && valueType.DataType.LengthName != null;
 			}
-			else if (propertyId == Column.ScaleDomainPropertyId)
+			else if (propertyId == Column.DataTypeScaleDomainPropertyId)
 			{
 				return null != (valueType = column.AssociatedValueType) && valueType.DataType.ScaleName != null;
 			}
@@ -74,7 +132,7 @@ namespace Neumont.Tools.RelationalModels.ConceptualDatabase.Design
 			Column column;
 			ObjectType valueType;
 			string displayName;
-			if (propertyId == Column.ScaleDomainPropertyId)
+			if (propertyId == Column.DataTypeScaleDomainPropertyId)
 			{
 				if (null != (column = propertyDescriptor.ModelElement as Column) &&
 					null != (valueType = column.AssociatedValueType) &&
@@ -83,7 +141,7 @@ namespace Neumont.Tools.RelationalModels.ConceptualDatabase.Design
 					return displayName;
 				}
 			}
-			else if (propertyId == Column.LengthDomainPropertyId)
+			else if (propertyId == Column.DataTypeLengthDomainPropertyId)
 			{
 				if (null != (column = propertyDescriptor.ModelElement as Column) &&
 					null != (valueType = column.AssociatedValueType) &&
@@ -101,13 +159,13 @@ namespace Neumont.Tools.RelationalModels.ConceptualDatabase.Design
 		{
 			Guid propertyId = propertyDescriptor.DomainPropertyInfo.Id;
 			Guid passthroughPropertyId;
-			if (propertyId == Column.ScaleDomainPropertyId)
+			if (propertyId == Column.DataTypeScaleDomainPropertyId)
 			{
-				passthroughPropertyId = ObjectType.ScaleDomainPropertyId;
+				passthroughPropertyId = ObjectType.DataTypeScaleDomainPropertyId;
 			}
-			else if (propertyId == Column.LengthDomainPropertyId)
+			else if (propertyId == Column.DataTypeLengthDomainPropertyId)
 			{
-				passthroughPropertyId = ObjectType.LengthDomainPropertyId;
+				passthroughPropertyId = ObjectType.DataTypeLengthDomainPropertyId;
 			}
 			else
 			{

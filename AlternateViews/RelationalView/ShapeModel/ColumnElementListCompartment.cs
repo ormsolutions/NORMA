@@ -216,8 +216,8 @@ namespace Neumont.Tools.ORM.Views.RelationalView
 				return "BOOLEAN";
 			}
 			DataType dataType = valueType.DataType;
-			int precision = Math.Max(valueType.Length, 0);
-			int scale = Math.Max(valueType.Scale, 0);
+			int precision = Math.Max(valueType.DataTypeLength, 0);
+			int scale = Math.Max(valueType.DataTypeScale, 0);
 			if (dataType is NumericDataType || dataType is OtherDataType)
 			{
 				if (dataType is AutoCounterNumericDataType || dataType is SignedIntegerNumericDataType || dataType is UnsignedIntegerNumericDataType)

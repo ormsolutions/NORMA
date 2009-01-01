@@ -90,11 +90,11 @@ namespace Neumont.Tools.ORM.ObjectModel
 		{
 			// Handled by ObjectTypeChangeRule
 		}
-		private void SetScaleValue(int newValue)
+		private void SetDataTypeScaleValue(int newValue)
 		{
 			// Handled by ObjectTypeChangeRule
 		}
-		private void SetLengthValue(int newValue)
+		private void SetDataTypeLengthValue(int newValue)
 		{
 			// Handled by ObjectTypeChangeRule
 		}
@@ -161,7 +161,7 @@ namespace Neumont.Tools.ORM.ObjectModel
 				return link != null && (!link.IsDeleting || IsDeleting);
 			}
 		}
-		private int GetScaleValue()
+		private int GetDataTypeScaleValue()
 		{
 			ValueTypeHasDataType link = GetDataTypeLink();
 			if (link == null)
@@ -174,7 +174,7 @@ namespace Neumont.Tools.ORM.ObjectModel
 			}
 			return (link == null) ? 0 : link.Scale;
 		}
-		private int GetLengthValue()
+		private int GetDataTypeLengthValue()
 		{
 			ValueTypeHasDataType link = GetDataTypeLink();
 			if (link == null)
@@ -1339,7 +1339,7 @@ namespace Neumont.Tools.ORM.ObjectModel
 				}
 				objectType.DataType = dataType;
 			}
-			else if (attributeGuid == ObjectType.ScaleDomainPropertyId)
+			else if (attributeGuid == ObjectType.DataTypeScaleDomainPropertyId)
 			{
 				ValueTypeHasDataType link = objectType.GetDataTypeLink();
 				// No effect for non-value types
@@ -1367,7 +1367,7 @@ namespace Neumont.Tools.ORM.ObjectModel
 				}
 				objectType.DataType = e.NewValue as DataType;
 			}
-			else if (attributeGuid == ObjectType.LengthDomainPropertyId)
+			else if (attributeGuid == ObjectType.DataTypeLengthDomainPropertyId)
 			{
 				ValueTypeHasDataType link = objectType.GetDataTypeLink();
 				// No effect for non-value types

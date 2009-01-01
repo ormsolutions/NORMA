@@ -155,12 +155,12 @@
 						<ExternalTypeMoniker Name="/System/Object"/>
 					</Type>
 				</DomainProperty>
-				<DomainProperty Name="Scale" DefaultValue="0" DisplayName="DataTypeScale" Id="A30271E0-613D-4198-9147-9C67A8BF0D3F" Kind="CustomStorage">
+				<DomainProperty Name="DataTypeScale" DefaultValue="0" DisplayName="DataTypeScale" Id="A30271E0-613D-4198-9147-9C67A8BF0D3F" Kind="CustomStorage">
 					<Type>
 						<ExternalTypeMoniker Name="/System/Int32"/>
 					</Type>
 				</DomainProperty>
-				<DomainProperty Name="Length" DefaultValue="0" DisplayName="DataTypeLength" Id="1A3AA9D0-A2B9-46A5-8B77-55BA9F5D4D98" Kind="CustomStorage">
+				<DomainProperty Name="DataTypeLength" DefaultValue="0" DisplayName="DataTypeLength" Id="1A3AA9D0-A2B9-46A5-8B77-55BA9F5D4D98" Kind="CustomStorage">
 					<Type>
 						<ExternalTypeMoniker Name="/System/Int32"/>
 					</Type>

@@ -61,35 +61,35 @@ namespace Neumont.Tools.RelationalModels.ConceptualDatabase
 				}
 			}
 		}
-		private int GetLengthValue()
+		private int GetDataTypeLengthValue()
 		{
 			ObjectType valueType = AssociatedValueType;
-			return (valueType != null) ? valueType.Length : 0;
+			return (valueType != null) ? valueType.DataTypeLength : 0;
 		}
-		private void SetLengthValue(int value)
+		private void SetDataTypeLengthValue(int value)
 		{
 			if (Store.TransactionActive)
 			{
 				ObjectType valueType = AssociatedValueType;
 				if (valueType != null)
 				{
-					valueType.Length = value;
+					valueType.DataTypeLength = value;
 				}
 			}
 		}
-		private int GetScaleValue()
+		private int GetDataTypeScaleValue()
 		{
 			ObjectType valueType = AssociatedValueType;
-			return (valueType != null) ? valueType.Scale : 0;
+			return (valueType != null) ? valueType.DataTypeScale : 0;
 		}
-		private void SetScaleValue(int value)
+		private void SetDataTypeScaleValue(int value)
 		{
 			if (Store.TransactionActive)
 			{
 				ObjectType valueType = AssociatedValueType;
 				if (valueType != null)
 				{
-					valueType.Scale = value;
+					valueType.DataTypeScale = value;
 				}
 			}
 		}

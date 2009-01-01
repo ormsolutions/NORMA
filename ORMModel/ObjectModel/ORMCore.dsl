@@ -383,12 +383,12 @@
 						<ExternalTypeMoniker Name="/System/Boolean"/>
 					</Type>
 				</DomainProperty>
-				<DomainProperty Name="Scale" DefaultValue="0" DisplayName="DataTypeScale" Id="BD2D708A-7687-4218-94BC-05834AFAC869" Kind="CustomStorage"  Description="The number of digits allowed to the right of the decimal point in a value with this DataType.">
+				<DomainProperty Name="DataTypeScale" DefaultValue="0" DisplayName="DataTypeScale" Id="BD2D708A-7687-4218-94BC-05834AFAC869" Kind="CustomStorage"  Description="The number of digits allowed to the right of the decimal point in a value with this DataType.">
 					<Type>
 						<ExternalTypeMoniker Name="/System/Int32"/>
 					</Type>
 				</DomainProperty>
-				<DomainProperty Name="Length" DefaultValue="0" DisplayName="DataTypeLength" Id="C9B01797-2CA1-4FF8-865A-FDA0DDF33F8D" Kind="CustomStorage" Description="The maximum length of values with this DataType.">
+				<DomainProperty Name="DataTypeLength" DefaultValue="0" DisplayName="DataTypeLength" Id="C9B01797-2CA1-4FF8-865A-FDA0DDF33F8D" Kind="CustomStorage" Description="The maximum length of values with this DataType.">
 					<Type>
 						<ExternalTypeMoniker Name="/System/Int32"/>
 					</Type>

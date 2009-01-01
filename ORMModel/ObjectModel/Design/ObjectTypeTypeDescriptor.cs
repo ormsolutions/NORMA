@@ -43,7 +43,65 @@ namespace Neumont.Tools.ORM.ObjectModel.Design
 			: base(parent, selectedElement)
 		{
 		}
-
+		/// <summary>
+		/// Create property descriptors that only allow merging of DataType facet properties
+		/// when the <see cref="P:ObjectType.DataType"/> instances are equal.
+		/// </summary>
+		protected override ElementPropertyDescriptor CreatePropertyDescriptor(ModelElement requestor, DomainPropertyInfo domainPropertyInfo, Attribute[] attributes)
+		{
+			Guid propertyId = domainPropertyInfo.Id;
+			if (propertyId == ObjectType.DataTypeLengthDomainPropertyId || propertyId == ObjectType.DataTypeScaleDomainPropertyId)
+			{
+				return new MatchDataTypePropertyDescriptor(this, requestor, domainPropertyInfo, attributes);
+			}
+			return base.CreatePropertyDescriptor(requestor, domainPropertyInfo, attributes);
+		}
+		/// <summary>
+		/// An element property descriptor that merges DataType facet properties only if the
+		/// DataTypes of the multi-selected elements match.
+		/// </summary>
+		private sealed class MatchDataTypePropertyDescriptor : ElementPropertyDescriptor
+		{
+			public MatchDataTypePropertyDescriptor(ElementTypeDescriptor owner, ModelElement modelElement, DomainPropertyInfo domainProperty, Attribute[] attributes)
+				: base(owner, modelElement, domainProperty, attributes)
+			{
+			}
+			/// <summary>
+			/// Allow equality only if the opposite element has the same DataType
+			/// </summary>
+			public override bool Equals(object obj)
+			{
+				bool retVal = base.Equals(obj);
+				if (retVal)
+				{
+					MatchDataTypePropertyDescriptor oppositeDescriptor = obj as MatchDataTypePropertyDescriptor;
+					ObjectType thisElement;
+					ObjectType otherElement;
+					if (oppositeDescriptor != null &&
+						null != (thisElement = ModelElement as ObjectType) &&
+						null != (otherElement = oppositeDescriptor.ModelElement as ObjectType))
+					{
+						retVal = thisElement.DataTypeDisplay == otherElement.DataTypeDisplay;
+					}
+				}
+				return retVal;
+			}
+			/// <summary>
+			/// Required with Equals override
+			/// </summary>
+			public override int GetHashCode()
+			{
+				int retVal = base.GetHashCode();
+				ObjectType element;
+				DataType dataType;
+				if (null != (element = ModelElement as ObjectType) &&
+					null != (dataType = element.DataTypeDisplay))
+				{
+					retVal ^= dataType.GetHashCode();
+				}
+				return retVal;
+			}
+		}
 		/// <summary>See <see cref="ElementTypeDescriptor.ShouldCreatePropertyDescriptor"/>.</summary>
 		protected override bool ShouldCreatePropertyDescriptor(ModelElement requestor, DomainPropertyInfo domainProperty)
 		{
@@ -54,12 +112,12 @@ namespace Neumont.Tools.ORM.ObjectModel.Design
 			{
 				return objectType.IsValueType || objectType.HasReferenceMode;
 			}
-			else if (propertyId == ObjectType.ScaleDomainPropertyId)
+			else if (propertyId == ObjectType.DataTypeScaleDomainPropertyId)
 			{
 				DataType dataType = GetObjectTypeDataType(objectType);
 				return dataType != null && dataType.ScaleName != null;
 			}
-			else if (propertyId == ObjectType.LengthDomainPropertyId)
+			else if (propertyId == ObjectType.DataTypeLengthDomainPropertyId)
 			{
 				DataType dataType = objectType.DataType ?? (objectType.HasReferenceMode ? objectType.PreferredIdentifier.RoleCollection[0].RolePlayer.DataType : null);
 				return dataType != null && dataType.LengthName != null;
@@ -100,7 +158,7 @@ namespace Neumont.Tools.ORM.ObjectModel.Design
 			Guid propertyId = propertyDescriptor.DomainPropertyInfo.Id;
 			DataType dataType;
 			string displayName;
-			if (propertyId == ObjectType.ScaleDomainPropertyId)
+			if (propertyId == ObjectType.DataTypeScaleDomainPropertyId)
 			{
 				if (null != (dataType = GetObjectTypeDataType(propertyDescriptor.ModelElement as ObjectType)) &&
 					!string.IsNullOrEmpty(displayName = dataType.ScaleName))
@@ -108,7 +166,7 @@ namespace Neumont.Tools.ORM.ObjectModel.Design
 					return displayName;
 				}
 			}
-			else if (propertyId == ObjectType.LengthDomainPropertyId)
+			else if (propertyId == ObjectType.DataTypeLengthDomainPropertyId)
 			{
 				if (null != (dataType = GetObjectTypeDataType(propertyDescriptor.ModelElement as ObjectType)) &&
 					!string.IsNullOrEmpty(displayName = dataType.LengthName))
@@ -133,7 +191,7 @@ namespace Neumont.Tools.ORM.ObjectModel.Design
 			{
 				return ResourceStrings.ObjectTypeNameDescription;
 			}
-			else if (propertyId == ObjectType.ScaleDomainPropertyId)
+			else if (propertyId == ObjectType.DataTypeScaleDomainPropertyId)
 			{
 				if (null != (dataType = GetObjectTypeDataType(propertyDescriptor.ModelElement as ObjectType)) &&
 					!string.IsNullOrEmpty(description = dataType.ScaleDescription))
@@ -141,7 +199,7 @@ namespace Neumont.Tools.ORM.ObjectModel.Design
 					return description;
 				}
 			}
-			else if (propertyId == ObjectType.LengthDomainPropertyId)
+			else if (propertyId == ObjectType.DataTypeLengthDomainPropertyId)
 			{
 				if (null != (dataType = GetObjectTypeDataType(propertyDescriptor.ModelElement as ObjectType)) &&
 					!string.IsNullOrEmpty(description = dataType.LengthDescription))

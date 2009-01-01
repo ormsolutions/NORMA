@@ -18,7 +18,7 @@
 // Turn this on to always refresh the toolbox for development builds. This incurs significant
 // startup costs during debugging sessions, but should be turned on temporarily if toolbox items
 // are currently under development
-//#define ALWAYS_REFRESH_EXP_TOOLBOX
+#define ALWAYS_REFRESH_EXP_TOOLBOX
 using System;
 using System.Collections.Generic;
 using System.ComponentModel;

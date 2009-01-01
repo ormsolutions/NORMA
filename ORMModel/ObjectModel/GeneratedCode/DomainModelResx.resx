@@ -433,21 +433,21 @@
     <value>IsValueType</value>
     <comment>DisplayName for DomainProperty &apos;IsValueType&apos; on DomainClass &apos;ObjectType&apos;</comment>
   </data>
-  <data name="Neumont.Tools.ORM.ObjectModel.ObjectType/Scale.Description" xml:space="preserve">
+  <data name="Neumont.Tools.ORM.ObjectModel.ObjectType/DataTypeScale.Description" xml:space="preserve">
     <value>The number of digits allowed to the right of the decimal point in a value with this DataType.</value>
-    <comment>Description for DomainProperty &apos;Scale&apos; on DomainClass &apos;ObjectType&apos;</comment>
+    <comment>Description for DomainProperty &apos;DataTypeScale&apos; on DomainClass &apos;ObjectType&apos;</comment>
   </data>
-  <data name="Neumont.Tools.ORM.ObjectModel.ObjectType/Scale.DisplayName" xml:space="preserve">
+  <data name="Neumont.Tools.ORM.ObjectModel.ObjectType/DataTypeScale.DisplayName" xml:space="preserve">
     <value>DataTypeScale</value>
-    <comment>DisplayName for DomainProperty &apos;Scale&apos; on DomainClass &apos;ObjectType&apos;</comment>
+    <comment>DisplayName for DomainProperty &apos;DataTypeScale&apos; on DomainClass &apos;ObjectType&apos;</comment>
   </data>
-  <data name="Neumont.Tools.ORM.ObjectModel.ObjectType/Length.Description" xml:space="preserve">
+  <data name="Neumont.Tools.ORM.ObjectModel.ObjectType/DataTypeLength.Description" xml:space="preserve">
     <value>The maximum length of values with this DataType.</value>
-    <comment>Description for DomainProperty &apos;Length&apos; on DomainClass &apos;ObjectType&apos;</comment>
+    <comment>Description for DomainProperty &apos;DataTypeLength&apos; on DomainClass &apos;ObjectType&apos;</comment>
   </data>
-  <data name="Neumont.Tools.ORM.ObjectModel.ObjectType/Length.DisplayName" xml:space="preserve">
+  <data name="Neumont.Tools.ORM.ObjectModel.ObjectType/DataTypeLength.DisplayName" xml:space="preserve">
     <value>DataTypeLength</value>
-    <comment>DisplayName for DomainProperty &apos;Length&apos; on DomainClass &apos;ObjectType&apos;</comment>
+    <comment>DisplayName for DomainProperty &apos;DataTypeLength&apos; on DomainClass &apos;ObjectType&apos;</comment>
   </data>
   <data name="Neumont.Tools.ORM.ObjectModel.ObjectType/ReferenceModeDisplay.Description" xml:space="preserve">
     <value>The reference mode pattern for the EntityType.

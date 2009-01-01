@@ -223,21 +223,21 @@
     <value>DataType</value>
     <comment>DisplayName for DomainProperty &apos;DataType&apos; on DomainClass &apos;Column&apos;</comment>
   </data>
-  <data name="Neumont.Tools.RelationalModels.ConceptualDatabase.Column/Scale.Description" xml:space="preserve">
+  <data name="Neumont.Tools.RelationalModels.ConceptualDatabase.Column/DataTypeScale.Description" xml:space="preserve">
     <value>Description for Neumont.Tools.RelationalModels.ConceptualDatabase.Column.DataTypeScale</value>
-    <comment>Description for DomainProperty &apos;Scale&apos; on DomainClass &apos;Column&apos;</comment>
+    <comment>Description for DomainProperty &apos;DataTypeScale&apos; on DomainClass &apos;Column&apos;</comment>
   </data>
-  <data name="Neumont.Tools.RelationalModels.ConceptualDatabase.Column/Scale.DisplayName" xml:space="preserve">
+  <data name="Neumont.Tools.RelationalModels.ConceptualDatabase.Column/DataTypeScale.DisplayName" xml:space="preserve">
     <value>DataTypeScale</value>
-    <comment>DisplayName for DomainProperty &apos;Scale&apos; on DomainClass &apos;Column&apos;</comment>
+    <comment>DisplayName for DomainProperty &apos;DataTypeScale&apos; on DomainClass &apos;Column&apos;</comment>
   </data>
-  <data name="Neumont.Tools.RelationalModels.ConceptualDatabase.Column/Length.Description" xml:space="preserve">
+  <data name="Neumont.Tools.RelationalModels.ConceptualDatabase.Column/DataTypeLength.Description" xml:space="preserve">
     <value>Description for Neumont.Tools.RelationalModels.ConceptualDatabase.Column.DataTypeLength</value>
-    <comment>Description for DomainProperty &apos;Length&apos; on DomainClass &apos;Column&apos;</comment>
+    <comment>Description for DomainProperty &apos;DataTypeLength&apos; on DomainClass &apos;Column&apos;</comment>
   </data>
-  <data name="Neumont.Tools.RelationalModels.ConceptualDatabase.Column/Length.DisplayName" xml:space="preserve">
+  <data name="Neumont.Tools.RelationalModels.ConceptualDatabase.Column/DataTypeLength.DisplayName" xml:space="preserve">
     <value>DataTypeLength</value>
-    <comment>DisplayName for DomainProperty &apos;Length&apos; on DomainClass &apos;Column&apos;</comment>
+    <comment>DisplayName for DomainProperty &apos;DataTypeLength&apos; on DomainClass &apos;Column&apos;</comment>
   </data>
   <data name="Neumont.Tools.RelationalModels.ConceptualDatabase.Constraint.Description" xml:space="preserve">
     <value>Base class for ConceptualData constraints.</value>

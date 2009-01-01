@@ -2993,56 +2993,56 @@ namespace Neumont.Tools.ORM.ObjectModel
 		}
 		
 		#endregion
-		#region Scale domain property code
+		#region DataTypeScale domain property code
 		
 		/// <summary>
-		/// Scale domain property Id.
+		/// DataTypeScale domain property Id.
 		/// </summary>
-		public static readonly global::System.Guid ScaleDomainPropertyId = new global::System.Guid(0xbd2d708a, 0x7687, 0x4218, 0x94, 0xbc, 0x05, 0x83, 0x4a, 0xfa, 0xc8, 0x69);
+		public static readonly global::System.Guid DataTypeScaleDomainPropertyId = new global::System.Guid(0xbd2d708a, 0x7687, 0x4218, 0x94, 0xbc, 0x05, 0x83, 0x4a, 0xfa, 0xc8, 0x69);
 		
 		/// <summary>
-		/// Gets or sets the value of Scale domain property.
+		/// Gets or sets the value of DataTypeScale domain property.
 		/// The number of digits allowed to the right of the decimal point in a value with
 		/// this DataType.
 		/// </summary>
-		[DslDesign::DisplayNameResource("Neumont.Tools.ORM.ObjectModel.ObjectType/Scale.DisplayName", typeof(global::Neumont.Tools.ORM.ObjectModel.ORMCoreDomainModel), "Neumont.Tools.ORM.GeneratedCode.CoreDomainModelResx")]
-		[DslDesign::DescriptionResource("Neumont.Tools.ORM.ObjectModel.ObjectType/Scale.Description", typeof(global::Neumont.Tools.ORM.ObjectModel.ORMCoreDomainModel), "Neumont.Tools.ORM.GeneratedCode.CoreDomainModelResx")]
+		[DslDesign::DisplayNameResource("Neumont.Tools.ORM.ObjectModel.ObjectType/DataTypeScale.DisplayName", typeof(global::Neumont.Tools.ORM.ObjectModel.ORMCoreDomainModel), "Neumont.Tools.ORM.GeneratedCode.CoreDomainModelResx")]
+		[DslDesign::DescriptionResource("Neumont.Tools.ORM.ObjectModel.ObjectType/DataTypeScale.Description", typeof(global::Neumont.Tools.ORM.ObjectModel.ORMCoreDomainModel), "Neumont.Tools.ORM.GeneratedCode.CoreDomainModelResx")]
 		[DslModeling::DomainProperty(Kind = DslModeling::DomainPropertyKind.CustomStorage)]
 		[DslModeling::DomainObjectId("bd2d708a-7687-4218-94bc-05834afac869")]
-		public global::System.Int32 Scale
+		public global::System.Int32 DataTypeScale
 		{
 			[global::System.Diagnostics.DebuggerStepThrough]
 			get
 			{
-				return ScalePropertyHandler.Instance.GetValue(this);
+				return DataTypeScalePropertyHandler.Instance.GetValue(this);
 			}
 			[global::System.Diagnostics.DebuggerStepThrough]
 			set
 			{
-				ScalePropertyHandler.Instance.SetValue(this, value);
+				DataTypeScalePropertyHandler.Instance.SetValue(this, value);
 			}
 		}
 		/// <summary>
-		/// Value handler for the ObjectType.Scale domain property.
+		/// Value handler for the ObjectType.DataTypeScale domain property.
 		/// </summary>
-		internal sealed partial class ScalePropertyHandler : DslModeling::DomainPropertyValueHandler<ObjectType, global::System.Int32>
+		internal sealed partial class DataTypeScalePropertyHandler : DslModeling::DomainPropertyValueHandler<ObjectType, global::System.Int32>
 		{
-			private ScalePropertyHandler() { }
+			private DataTypeScalePropertyHandler() { }
 		
 			/// <summary>
-			/// Gets the singleton instance of the ObjectType.Scale domain property value handler.
+			/// Gets the singleton instance of the ObjectType.DataTypeScale domain property value handler.
 			/// </summary>
-			public static readonly ScalePropertyHandler Instance = new ScalePropertyHandler();
+			public static readonly DataTypeScalePropertyHandler Instance = new DataTypeScalePropertyHandler();
 		
 			/// <summary>
-			/// Gets the Id of the ObjectType.Scale domain property.
+			/// Gets the Id of the ObjectType.DataTypeScale domain property.
 			/// </summary>
 			public sealed override global::System.Guid DomainPropertyId
 			{
 				[global::System.Diagnostics.DebuggerStepThrough]
 				get
 				{
-					return ScaleDomainPropertyId;
+					return DataTypeScaleDomainPropertyId;
 				}
 			}
 			
@@ -3054,10 +3054,10 @@ namespace Neumont.Tools.ORM.ObjectModel
 			public override sealed global::System.Int32 GetValue(ObjectType element)
 			{
 				if (element == null) throw new global::System.ArgumentNullException("element");
-				// There is no storage for Scale because its Kind is
-				// set to CustomStorage. Please provide the GetScaleValue()
+				// There is no storage for DataTypeScale because its Kind is
+				// set to CustomStorage. Please provide the GetDataTypeScaleValue()
 				// method on the domain class.
-				return element.GetScaleValue();
+				return element.GetDataTypeScaleValue();
 			}
 		
 			/// <summary>
@@ -3073,10 +3073,10 @@ namespace Neumont.Tools.ORM.ObjectModel
 				if (newValue != oldValue)
 				{
 					ValueChanging(element, oldValue, newValue);
-					// There is no storage for Scale because its Kind is
-					// set to CustomStorage. Please provide the SetScaleValue()
+					// There is no storage for DataTypeScale because its Kind is
+					// set to CustomStorage. Please provide the SetDataTypeScaleValue()
 					// method on the domain class.
-					element.SetScaleValue(newValue);
+					element.SetDataTypeScaleValue(newValue);
 					//ValueChanged(element, oldValue, GetValue(element));
 					ValueChanged(element, oldValue, newValue);
 				}
@@ -3084,55 +3084,55 @@ namespace Neumont.Tools.ORM.ObjectModel
 		}
 		
 		#endregion
-		#region Length domain property code
+		#region DataTypeLength domain property code
 		
 		/// <summary>
-		/// Length domain property Id.
+		/// DataTypeLength domain property Id.
 		/// </summary>
-		public static readonly global::System.Guid LengthDomainPropertyId = new global::System.Guid(0xc9b01797, 0x2ca1, 0x4ff8, 0x86, 0x5a, 0xfd, 0xa0, 0xdd, 0xf3, 0x3f, 0x8d);
+		public static readonly global::System.Guid DataTypeLengthDomainPropertyId = new global::System.Guid(0xc9b01797, 0x2ca1, 0x4ff8, 0x86, 0x5a, 0xfd, 0xa0, 0xdd, 0xf3, 0x3f, 0x8d);
 		
 		/// <summary>
-		/// Gets or sets the value of Length domain property.
+		/// Gets or sets the value of DataTypeLength domain property.
 		/// The maximum length of values with this DataType.
 		/// </summary>
-		[DslDesign::DisplayNameResource("Neumont.Tools.ORM.ObjectModel.ObjectType/Length.DisplayName", typeof(global::Neumont.Tools.ORM.ObjectModel.ORMCoreDomainModel), "Neumont.Tools.ORM.GeneratedCode.CoreDomainModelResx")]
-		[DslDesign::DescriptionResource("Neumont.Tools.ORM.ObjectModel.ObjectType/Length.Description", typeof(global::Neumont.Tools.ORM.ObjectModel.ORMCoreDomainModel), "Neumont.Tools.ORM.GeneratedCode.CoreDomainModelResx")]
+		[DslDesign::DisplayNameResource("Neumont.Tools.ORM.ObjectModel.ObjectType/DataTypeLength.DisplayName", typeof(global::Neumont.Tools.ORM.ObjectModel.ORMCoreDomainModel), "Neumont.Tools.ORM.GeneratedCode.CoreDomainModelResx")]
+		[DslDesign::DescriptionResource("Neumont.Tools.ORM.ObjectModel.ObjectType/DataTypeLength.Description", typeof(global::Neumont.Tools.ORM.ObjectModel.ORMCoreDomainModel), "Neumont.Tools.ORM.GeneratedCode.CoreDomainModelResx")]
 		[DslModeling::DomainProperty(Kind = DslModeling::DomainPropertyKind.CustomStorage)]
 		[DslModeling::DomainObjectId("c9b01797-2ca1-4ff8-865a-fda0ddf33f8d")]
-		public global::System.Int32 Length
+		public global::System.Int32 DataTypeLength
 		{
 			[global::System.Diagnostics.DebuggerStepThrough]
 			get
 			{
-				return LengthPropertyHandler.Instance.GetValue(this);
+				return DataTypeLengthPropertyHandler.Instance.GetValue(this);
 			}
 			[global::System.Diagnostics.DebuggerStepThrough]
 			set
 			{
-				LengthPropertyHandler.Instance.SetValue(this, value);
+				DataTypeLengthPropertyHandler.Instance.SetValue(this, value);
 			}
 		}
 		/// <summary>
-		/// Value handler for the ObjectType.Length domain property.
+		/// Value handler for the ObjectType.DataTypeLength domain property.
 		/// </summary>
-		internal sealed partial class LengthPropertyHandler : DslModeling::DomainPropertyValueHandler<ObjectType, global::System.Int32>
+		internal sealed partial class DataTypeLengthPropertyHandler : DslModeling::DomainPropertyValueHandler<ObjectType, global::System.Int32>
 		{
-			private LengthPropertyHandler() { }
+			private DataTypeLengthPropertyHandler() { }
 		
 			/// <summary>
-			/// Gets the singleton instance of the ObjectType.Length domain property value handler.
+			/// Gets the singleton instance of the ObjectType.DataTypeLength domain property value handler.
 			/// </summary>
-			public static readonly LengthPropertyHandler Instance = new LengthPropertyHandler();
+			public static readonly DataTypeLengthPropertyHandler Instance = new DataTypeLengthPropertyHandler();
 		
 			/// <summary>
-			/// Gets the Id of the ObjectType.Length domain property.
+			/// Gets the Id of the ObjectType.DataTypeLength domain property.
 			/// </summary>
 			public sealed override global::System.Guid DomainPropertyId
 			{
 				[global::System.Diagnostics.DebuggerStepThrough]
 				get
 				{
-					return LengthDomainPropertyId;
+					return DataTypeLengthDomainPropertyId;
 				}
 			}
 			
@@ -3144,10 +3144,10 @@ namespace Neumont.Tools.ORM.ObjectModel
 			public override sealed global::System.Int32 GetValue(ObjectType element)
 			{
 				if (element == null) throw new global::System.ArgumentNullException("element");
-				// There is no storage for Length because its Kind is
-				// set to CustomStorage. Please provide the GetLengthValue()
+				// There is no storage for DataTypeLength because its Kind is
+				// set to CustomStorage. Please provide the GetDataTypeLengthValue()
 				// method on the domain class.
-				return element.GetLengthValue();
+				return element.GetDataTypeLengthValue();
 			}
 		
 			/// <summary>
@@ -3163,10 +3163,10 @@ namespace Neumont.Tools.ORM.ObjectModel
 				if (newValue != oldValue)
 				{
 					ValueChanging(element, oldValue, newValue);
-					// There is no storage for Length because its Kind is
-					// set to CustomStorage. Please provide the SetLengthValue()
+					// There is no storage for DataTypeLength because its Kind is
+					// set to CustomStorage. Please provide the SetDataTypeLengthValue()
 					// method on the domain class.
-					element.SetLengthValue(newValue);
+					element.SetDataTypeLengthValue(newValue);
 					//ValueChanged(element, oldValue, GetValue(element));
 					ValueChanged(element, oldValue, newValue);
 				}
