@@ -163,6 +163,7 @@
 	<ResourceString name="ModelErrorConstraintExternalConstraintArityMismatch" model="Model" resourceName="ModelError.Constraint.ExternalConstraintArityMismatch.Text"/>
 	<ResourceString name="ModelErrorModelHasDuplicateConstraintNames" model="Model" resourceName="ModelError.Model.DuplicateConstraintNames.Text"/>
 	<ResourceString name="ModelErrorModelHasDuplicateObjectTypeNames" model="Model" resourceName="ModelError.Model.DuplicateObjectTypeNames.Text"/>
+	<ResourceString name="ModelErrorModelHasDuplicateRecognizedPhraseNames" model="Model" resourceName="ModelError.Model.DuplicateRecognizedPhraseNames.Text"/>
 	<ResourceString name="ModelErrorModelHasPopulationUniquenessErrorWithNamedRole" model="Model" resourceName="ModelError.Model.PopulationUniquenessError.Role.Text"/>
 	<ResourceString name="ModelErrorModelHasPopulationUniquenessErrorWithUnnamedRole" model="Model" resourceName="ModelError.Model.PopulationUniquenessError.FactType.Text"/>
 	<ResourceString name="ModelErrorModelHasPopulationMandatoryError" model="Model" resourceName="ModelError.Model.PopulationMandatoryError.Text"/>

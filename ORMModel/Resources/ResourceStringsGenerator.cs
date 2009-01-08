@@ -925,6 +925,14 @@ namespace Neumont.Tools.ORM
 				return ResourceStrings.GetString(ResourceManagers.Model, "ModelError.Model.DuplicateObjectTypeNames.Text");
 			}
 		}
+		/// <summary>Model validation error text used when multiple recognized phrases with the same name are loaded into a model.Field 0 is the model name, field 1 is the element name.This is an uncommon condition that should only occur with a hand edit to a model file.</summary>
+		public static string ModelErrorModelHasDuplicateRecognizedPhraseNames
+		{
+			get
+			{
+				return ResourceStrings.GetString(ResourceManagers.Model, "ModelError.Model.DuplicateRecognizedPhraseNames.Text");
+			}
+		}
 		/// <summary>Model validation error shown when a population violates a uniqueness constraint and its role is named.  Field 0 is the name of the object type, field 1 is the string representation of the instance, field 2 is the model name, field 3 is the role name.</summary>
 		public static string ModelErrorModelHasPopulationUniquenessErrorWithNamedRole
 		{

@@ -2055,6 +2055,7 @@ namespace Neumont.Tools.ORM.ObjectModel
 	[ModelErrorDisplayFilter(typeof(NameErrorCategory))]
 	public partial class ConstraintDuplicateNameError : DuplicateNameError, IHasIndirectModelErrorOwner
 	{
+		#region Base overrides
 		/// <summary>
 		/// Get the duplicate elements represented by this DuplicateNameError
 		/// </summary>
@@ -2063,7 +2064,7 @@ namespace Neumont.Tools.ORM.ObjectModel
 		{
 			get
 			{
-				return ConstraintCollection as IList<ModelElement>;
+				return ConstraintCollection;
 			}
 		}
 		/// <summary>
@@ -2085,6 +2086,7 @@ namespace Neumont.Tools.ORM.ObjectModel
 				return ResourceStrings.ModelErrorModelHasDuplicateConstraintNames;
 			}
 		}
+		#endregion // Base overrides
 		#region ConstraintCollection Implementation
 		[NonSerialized]
 		private CompositeCollection myCompositeList;
@@ -2093,14 +2095,14 @@ namespace Neumont.Tools.ORM.ObjectModel
 		/// single column external, multi column external, internal constraints, and value constraints
 		/// </summary>
 		/// <value></value>
-		public IList<ORMNamedElement> ConstraintCollection
+		public IList<ModelElement> ConstraintCollection
 		{
 			get
 			{
 				return myCompositeList ?? (myCompositeList = new CompositeCollection(this));
 			}
 		}
-		private sealed class CompositeCollection : IList<ORMNamedElement>
+		private sealed class CompositeCollection : IList<ModelElement>
 		{
 			#region Member Variables
 			private readonly LinkedElementCollection<SetComparisonConstraint> myList1;
@@ -2115,8 +2117,8 @@ namespace Neumont.Tools.ORM.ObjectModel
 				myList3 = error.ValueConstraintCollection;
 			}
 			#endregion // Constructors
-			#region IList<ORMNamedElement> Implementation
-			int IList<ORMNamedElement>.IndexOf(ORMNamedElement value)
+			#region IList<ModelElement> Implementation
+			int IList<ModelElement>.IndexOf(ModelElement value)
 			{
 				SetComparisonConstraint setComparisonConstraint;
 				SetConstraint setConstraint;
@@ -2135,7 +2137,7 @@ namespace Neumont.Tools.ORM.ObjectModel
 				}
 				return -1;
 			}
-			ORMNamedElement IList<ORMNamedElement>.this[int index]
+			ModelElement IList<ModelElement>.this[int index]
 			{
 				get
 				{
@@ -2144,7 +2146,7 @@ namespace Neumont.Tools.ORM.ObjectModel
 					{
 						index -= list1Count;
 						int list2Count = myList2.Count;
-						return (index >= list2Count) ? (ORMNamedElement)myList3[index - list2Count] : myList2[index];
+						return (index >= list2Count) ? (ModelElement)myList3[index - list2Count] : myList2[index];
 					}
 					return myList1[index];
 				}
@@ -2153,17 +2155,17 @@ namespace Neumont.Tools.ORM.ObjectModel
 					throw new NotSupportedException(); // Not supported for readonly list
 				}
 			}
-			void IList<ORMNamedElement>.Insert(int index, ORMNamedElement value)
+			void IList<ModelElement>.Insert(int index, ModelElement value)
 			{
 				throw new NotSupportedException(); // Not supported for readonly list
 			}
-			void IList<ORMNamedElement>.RemoveAt(int index)
+			void IList<ModelElement>.RemoveAt(int index)
 			{
 				throw new NotSupportedException(); // Not supported for readonly list
 			}
-			#endregion // IList<ORMNamedElement> Implementation
-			#region ICollection<ORMNamedElement> Implementation
-			void ICollection<ORMNamedElement>.CopyTo(ORMNamedElement[] array, int index)
+			#endregion // IList<ModelElement> Implementation
+			#region ICollection<ModelElement> Implementation
+			void ICollection<ModelElement>.CopyTo(ModelElement[] array, int index)
 			{
 				int baseIndex = index;
 				int nextCount = myList1.Count;
@@ -2184,14 +2186,14 @@ namespace Neumont.Tools.ORM.ObjectModel
 					((ICollection)myList3).CopyTo(array, baseIndex);
 				}
 			}
-			int ICollection<ORMNamedElement>.Count
+			int ICollection<ModelElement>.Count
 			{
 				get
 				{
 					return myList1.Count + myList2.Count + myList3.Count;
 				}
 			}
-			bool ICollection<ORMNamedElement>.Contains(ORMNamedElement value)
+			bool ICollection<ModelElement>.Contains(ModelElement value)
 			{
 				SetComparisonConstraint setComparisonConstraint;
 				SetConstraint setConstraint;
@@ -2210,47 +2212,47 @@ namespace Neumont.Tools.ORM.ObjectModel
 				}
 				return false;
 			}
-			bool ICollection<ORMNamedElement>.IsReadOnly
+			bool ICollection<ModelElement>.IsReadOnly
 			{
 				get
 				{
 					return true;
 				}
 			}
-			void ICollection<ORMNamedElement>.Add(ORMNamedElement value)
+			void ICollection<ModelElement>.Add(ModelElement value)
 			{
 				throw new NotSupportedException(); // Not supported for readonly list
 			}
-			void ICollection<ORMNamedElement>.Clear()
+			void ICollection<ModelElement>.Clear()
 			{
 				throw new NotSupportedException(); // Not supported for readonly list
 			}
-			bool ICollection<ORMNamedElement>.Remove(ORMNamedElement value)
+			bool ICollection<ModelElement>.Remove(ModelElement value)
 			{
 				throw new NotSupportedException(); // Not supported for readonly list
 			}
-			#endregion // ICollection<ORMNamedElement> Implementation
-			#region IEnumerable<ORMNamedElement> Implementation
-			IEnumerator<ORMNamedElement> IEnumerable<ORMNamedElement>.GetEnumerator()
+			#endregion // ICollection<ModelElement> Implementation
+			#region IEnumerable<ModelElement> Implementation
+			IEnumerator<ModelElement> IEnumerable<ModelElement>.GetEnumerator()
 			{
-				foreach (ORMNamedElement element in myList1)
+				foreach (ModelElement element in myList1)
 				{
 					yield return element;
 				}
-				foreach (ORMNamedElement element in myList2)
+				foreach (ModelElement element in myList2)
 				{
 					yield return element;
 				}
-				foreach (ORMNamedElement element in myList3)
+				foreach (ModelElement element in myList3)
 				{
 					yield return element;
 				}
 			}
-			#endregion // IEnumerable<ORMNamedElement> Implementation
+			#endregion // IEnumerable<ModelElement> Implementation
 			#region IEnumerable Implementation
 			IEnumerator IEnumerable.GetEnumerator()
 			{
-				return ((IEnumerable<ORMNamedElement>)this).GetEnumerator();
+				return ((IEnumerable<ModelElement>)this).GetEnumerator();
 			}
 			#endregion // IEnumerable Implementation
 		}
@@ -2288,7 +2290,10 @@ namespace Neumont.Tools.ORM.ObjectModel
 		/// </summary>
 		protected override IList<ModelElement> DuplicateElements
 		{
-			get { return RecognizedPhraseCollection.ToArray(); }
+			get
+			{
+				return RecognizedPhraseCollection.ToArray();
+			}
 		}
 		/// <summary>
 		/// Provide an efficient name lookup
@@ -2300,12 +2305,13 @@ namespace Neumont.Tools.ORM.ObjectModel
 		/// <summary>
 		/// Text to be displayed when an error is thrown.
 		///</summary>
-		//TODO: Add this to the ResourceStrings collection
 		protected override string ErrorFormatText
 		{
-			get { return "Duplicate recognized word exists in the model."; }
+			get
+			{
+				return ResourceStrings.ModelErrorModelHasDuplicateRecognizedPhraseNames;
+			}
 		}
-
 		#region IHasIndirectModelErrorOwner Implementation
 		private static Guid[] myIndirectModelErrorOwnerLinkRoles;
 		/// <summary>

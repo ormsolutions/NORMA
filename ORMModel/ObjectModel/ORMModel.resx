@@ -306,6 +306,10 @@
 		<value>Model '{0}' contains multiple object types named '{1}'. Type names must be unique across all entity and value types in a model.</value>
 		<comment>Model validation error text used when multiple object types with the same name are loaded into a model.Field 0 is the model name, field 1 is the element name.This is an uncommon condition that should only occur with a hand edit to a model file.</comment>
 	</data>
+	<data name="ModelError.Model.DuplicateRecognizedPhraseNames.Text" xml:space="preserve">
+		<value>Model '{0}' contains multiple recognized phrases called '{1}'. Phrase names must be unique across all phrases in a model.</value>
+		<comment>Model validation error text used when multiple recognized phrases with the same name are loaded into a model.Field 0 is the model name, field 1 is the element name.This is an uncommon condition that should only occur with a hand edit to a model file.</comment>
+	</data>
 	<data name="ModelError.Model.PopulationMandatoryError.Text" xml:space="preserve">
 		<value>'{0}' instance '{1}' in model '{2}' must participate in FactType '{3}'{4}.</value>
 		<comment>Model validation error shown when a population violates a mandatory constraint. Field 0 is the name of the role player, field 1 is the derived name of the instance, field 2 is the model name, field 3 is the name of the first facttype name, field 4 is a placeholder for additional fact types.</comment>
