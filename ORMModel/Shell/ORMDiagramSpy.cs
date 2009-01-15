@@ -607,6 +607,28 @@ namespace Neumont.Tools.ORM.Shell
 		#endregion // IProvideFrameVisibility Implementation
 		#region ORMDiagramSpyToolWindow specific
 		/// <summary>
+		/// MSBUG: Quick fix for a GDI+ bug that crashes the LinkLabel if there
+		/// are too many diagrams.
+		/// </summary>
+		private sealed class SafeLinkLabel : LinkLabel
+		{
+			protected override void OnPaint(PaintEventArgs e)
+			{
+				try
+				{
+					base.OnPaint(e);
+				}
+				catch (OverflowException)
+				{
+					// The SetMeasureableCharacterRanges API fails with an OverflowException
+					// if the is too much text in the LinkLabel. If I could turn UseCompatibleTextRendering
+					// off for this one control then this would work, but this is controlled
+					// at the application level.
+					Links.Clear();
+				}
+			}
+		}
+		/// <summary>
 		/// Loads the SurveyTreeControl from the current document
 		/// </summary>
 		protected void LoadWindow()
@@ -618,7 +640,7 @@ namespace Neumont.Tools.ORM.Shell
 				ContainerControl container = new ContainerControl();
 				myDiagramView = diagramView = new ToolWindowDiagramView(this);
 				diagramView.DiagramClientView.DiagramDisassociating += new EventHandler(DiagramDisassociatingEvent);
-				myWatermarkLabel = watermarkLabel = new LinkLabel();
+				myWatermarkLabel = watermarkLabel = new SafeLinkLabel();
 				watermarkLabel.Dock = DockStyle.Fill;
 				watermarkLabel.Site = diagramView.Site;
 				watermarkLabel.TextAlign = ContentAlignment.MiddleCenter;
