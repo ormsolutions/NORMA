@@ -343,9 +343,12 @@
 	<ResourceString name="ObjectTypeShapeDerivedSubtypeFormatString" model="Diagram" resourceName="ObjectTypeShape.DerivedSubtypeFormatString"/>
 	<ResourceString name="ObjectTypeShapeIndependentFormatString" model="Diagram" resourceName="ObjectTypeShape.IndependentFormatString"/>
 	<ResourceString name="ObjectTypeShapeReferenceModeFormatString" model="Diagram" resourceName="ObjectTypeShape.ReferenceModeFormatString"/>
+	<ResourceString name="ObjectifiedFactTypeNameShapeDerivedSubtypeFormatString" model="Diagram" resourceName="ObjectifiedFactTypeNameShape.DerivedSubtypeFormatString"/>
+	<ResourceString name="ObjectifiedFactTypeNameShapeIndependentFormatString" model="Diagram" resourceName="ObjectifiedFactTypeNameShape.IndependentFormatString"/>
 	<ResourceString name="ObjectifiedFactTypeNameShapeRefModeDerivedSubtypeFormatString" model="Diagram" resourceName="ObjectifiedFactTypeNameShape.RefModeDerivedSubtypeFormatString"/>
 	<ResourceString name="ObjectifiedFactTypeNameShapeRefModeIndependentFormatString" model="Diagram" resourceName="ObjectifiedFactTypeNameShape.RefModeIndependentFormatString"/>
 	<ResourceString name="ObjectifiedFactTypeNameShapeRefModeFormatString" model="Diagram" resourceName="ObjectifiedFactTypeNameShape.RefModeFormatString"/>
+	<ResourceString name="ObjectifiedFactTypeNameShapeStandardFormatString" model="Diagram" resourceName="ObjectifiedFactTypeNameShape.StandardFormatString"/>
 	<ResourceString name="ReadingShapeReadingSeparator" model="Diagram" resourceName="ReadingShape.ReadingSeparator"/>
 	<ResourceString name="ReadingShapeEllipsis" model="Diagram" resourceName="ReadingShape.Ellipsis"/>
 	<ResourceString name="ReadingShapeAttachedRoleDisplay" model="Diagram" resourceName="ReadingShape.AttachedRoleDisplay"/>

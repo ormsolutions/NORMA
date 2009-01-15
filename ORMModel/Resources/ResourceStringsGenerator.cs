@@ -2365,6 +2365,22 @@ namespace Neumont.Tools.ORM
 				return ResourceStrings.GetString(ResourceManagers.Diagram, "ObjectTypeShape.ReferenceModeFormatString");
 			}
 		}
+		/// <summary>The string used to display an objectified type that is a derived subtype.</summary>
+		public static string ObjectifiedFactTypeNameShapeDerivedSubtypeFormatString
+		{
+			get
+			{
+				return ResourceStrings.GetString(ResourceManagers.Diagram, "ObjectifiedFactTypeNameShape.DerivedSubtypeFormatString");
+			}
+		}
+		/// <summary>The string used to display an objectified type name for an independent object.</summary>
+		public static string ObjectifiedFactTypeNameShapeIndependentFormatString
+		{
+			get
+			{
+				return ResourceStrings.GetString(ResourceManagers.Diagram, "ObjectifiedFactTypeNameShape.IndependentFormatString");
+			}
+		}
 		/// <summary>The string used to display an objectified type name for an derived subtype with a reference mode.</summary>
 		public static string ObjectifiedFactTypeNameShapeRefModeDerivedSubtypeFormatString
 		{
@@ -2387,6 +2403,14 @@ namespace Neumont.Tools.ORM
 			get
 			{
 				return ResourceStrings.GetString(ResourceManagers.Diagram, "ObjectifiedFactTypeNameShape.RefModeFormatString");
+			}
+		}
+		/// <summary>The string used to display an objectified type name.</summary>
+		public static string ObjectifiedFactTypeNameShapeStandardFormatString
+		{
+			get
+			{
+				return ResourceStrings.GetString(ResourceManagers.Diagram, "ObjectifiedFactTypeNameShape.StandardFormatString");
 			}
 		}
 		/// <summary>The string used to divide multiple readings shown in a ReadingShape.</summary>

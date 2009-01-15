@@ -5698,11 +5698,15 @@ namespace Neumont.Tools.ORM.ShapeModel
 					}
 					else if (independent)
 					{
-						formatString = ResourceStrings.ObjectTypeShapeIndependentFormatString;
+						formatString = ResourceStrings.ObjectifiedFactTypeNameShapeIndependentFormatString;
 					}
 					else if (derived)
 					{
-						formatString = ResourceStrings.ObjectTypeShapeIndependentFormatString;
+						formatString = ResourceStrings.ObjectifiedFactTypeNameShapeDerivedSubtypeFormatString;
+					}
+					else
+					{
+						formatString = ResourceStrings.ObjectifiedFactTypeNameShapeStandardFormatString;
 					}
 				}
 				return (formatString == null) ? baseText : string.Format(CultureInfo.InvariantCulture, formatString, baseText, refModeString);
