@@ -741,7 +741,6 @@ namespace Neumont.Tools.ORMToORMAbstractionBridge
 			private static void ObjectificationRolePlayerChangedRule(RolePlayerChangedEventArgs e)
 			{
 				Objectification link = (Objectification)e.ElementLink;
-				FactType factType;
 				if (e.DomainRole.Id == Objectification.NestedFactTypeDomainRoleId)
 				{
 					ProcessFactTypeForObjectificationDeleted((FactType)e.OldRolePlayer);
