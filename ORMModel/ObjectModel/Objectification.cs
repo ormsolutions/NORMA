@@ -742,14 +742,16 @@ namespace Neumont.Tools.ORM.ObjectModel
 			ObjectType rolePlayer = link.RolePlayer;
 			FactType factType;
 			Objectification objectification;
-			// Note if the roleplayer is removed, then the links all go away
-			// automatically. There is no additional work to do or checks to make.
-			if (rolePlayer.IsDeleted || rolePlayer.IsDeleting)
+			if (rolePlayer.IsImplicitBooleanValue)
 			{
-				if (rolePlayer.IsImplicitBooleanValue &&
-					null != (factType = role.FactType) &&
+				// The standard code to debinarize a FactType detaches the role first
+				// so that we can distinguish here whether we need to rebuild an implied
+				// FactType for the role. If the role is deleting before the implied value,
+				// then assume the implied value will be deleted right after this call as well.
+				if (null != (factType = role.FactType) &&
 					null != (objectification = factType.Objectification))
 				{
+					bool removeRolePlayer = role.IsDeleting && !(rolePlayer.IsDeleted || rolePlayer.IsDeleting);
 					foreach (RoleBase otherRoleBase in factType.RoleCollection)
 					{
 						// Find the old unary role and modify its implied FactType
@@ -757,7 +759,7 @@ namespace Neumont.Tools.ORM.ObjectModel
 						FactType impliedFactType;
 						Role otherRole;
 						if (otherRoleBase != role &&
-							!role.IsDeleting &&
+							!otherRoleBase.IsDeleting &&
 							null != (objectifiedUnaryRole = (otherRole = otherRoleBase.Role).ObjectifiedUnaryRole) &&
 							!objectifiedUnaryRole.IsDeleting &&
 							null != (impliedFactType = objectifiedUnaryRole.FactType))
@@ -775,6 +777,8 @@ namespace Neumont.Tools.ORM.ObjectModel
 							}
 							ObjectType nestingType = objectification.NestingType;
 							CreateImpliedFactTypeForRole(model, nestingType, otherRole, objectification, false);
+							// Note that even if this role is not currently being deleted it will be soon. There
+							// is no reason to keep these. Anything we create here will simply be deleted
 							if (!role.IsDeleting && role.Proxy == null)
 							{
 								CreateImpliedFactTypeForRole(model, nestingType, role, objectification, false);
@@ -782,9 +786,14 @@ namespace Neumont.Tools.ORM.ObjectModel
 							break;
 						}
 					}
+					if (removeRolePlayer)
+					{
+						rolePlayer.Delete();
+					}
 				}
 			}
-			else if (null != (factType = role.FactType))
+			else if (!(rolePlayer.IsDeleted || rolePlayer.IsDeleting) &&
+				null != (factType = role.FactType))
 			{
 				SubtypeMetaRole subtypeRole;
 				ObjectifiedUnaryRole objectifiedUnaryRole;

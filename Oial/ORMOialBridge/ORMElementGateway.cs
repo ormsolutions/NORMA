@@ -379,7 +379,10 @@ namespace Neumont.Tools.ORMToORMAbstractionBridge
 				if (forceCreate ||
 					null == ExcludedORMModelElement.GetAbstractionModel(factType))
 				{
-					new ExcludedORMModelElement(factType, model);
+					if (null == factType.Objectification || factType.UnaryRole != null)
+					{
+						new ExcludedORMModelElement(factType, model);
+					}
 					if (notifyExcluded != null)
 					{
 						notifyExcluded(factType);
@@ -689,6 +692,63 @@ namespace Neumont.Tools.ORMToORMAbstractionBridge
 				});
 			}
 			#endregion // Preferred Identifier Tracking Rules
+			#region Objectification Tracking Rules
+			/// <summary>
+			/// AddRule: typeof(Neumont.Tools.ORM.ObjectModel.Objectification)
+			/// Objectification FactTypes are automatically excluded, so changing
+			/// the objectification state is the same as adding/removing a blocking
+			/// error.
+			/// </summary>
+			private static void ObjectificationAddedRule(ElementAddedEventArgs e)
+			{
+				ProcessFactTypeForObjectificationAdded(((Objectification)e.ModelElement).NestedFactType);
+			}
+			private static void ProcessFactTypeForObjectificationAdded(FactType factType)
+			{
+				if (factType.UnaryRole == null)
+				{
+					ExcludedORMModelElement excludedLink = ExcludedORMModelElement.GetLinkToAbstractionModel(factType);
+					if (excludedLink != null)
+					{
+						// We don't keep the exclusion link on objectified FactTypes, but deleting
+						// it does not imply any additional processing because we were already not
+						// considering this FactType
+						excludedLink.Delete();
+					}
+					else
+					{
+						FilterModifiedFactType(factType, false); // false because new implied FactTypes will get notifications on their own
+					}
+				}
+			}
+			private static void ProcessFactTypeForObjectificationDeleted(FactType factType)
+			{
+				if (!factType.IsDeleted && factType.UnaryRole == null)
+				{
+					FilterModifiedFactType(factType, false); // false because there are no implied facttypes without an objectification
+				}
+			}
+			/// <summary>
+			/// DeleteRule: typeof(Neumont.Tools.ORM.ObjectModel.Objectification)
+			/// </summary>
+			private static void ObjectificationDeletedRule(ElementDeletedEventArgs e)
+			{
+				ProcessFactTypeForObjectificationDeleted(((Objectification)e.ModelElement).NestedFactType);
+			}
+			/// <summary>
+			/// RolePlayerChangeRule: typeof(Neumont.Tools.ORM.ObjectModel.Objectification)
+			/// </summary>
+			private static void ObjectificationRolePlayerChangedRule(RolePlayerChangedEventArgs e)
+			{
+				Objectification link = (Objectification)e.ElementLink;
+				FactType factType;
+				if (e.DomainRole.Id == Objectification.NestedFactTypeDomainRoleId)
+				{
+					ProcessFactTypeForObjectificationDeleted((FactType)e.OldRolePlayer);
+					ProcessFactTypeForObjectificationAdded(link.NestedFactType);
+				}
+			}
+			#endregion // Objectification Tracking Rules
 			#region RolePlayer tracking rules
 			/// <summary>
 			/// AddRule: typeof(Neumont.Tools.ORM.ObjectModel.ObjectTypePlaysRole)

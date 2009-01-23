@@ -55,6 +55,15 @@
 				<arg:RuleOn targetType="ObjectTypeHasPreferredIdentifierRequiresMandatoryError" targetTypeQualifier="Neumont.Tools.ORM.ObjectModel"/>
 				<arg:RuleOn targetType="ValueTypeHasUnspecifiedDataTypeError" targetTypeQualifier="Neumont.Tools.ORM.ObjectModel"/>
 			</arg:DeleteRule>
+			<arg:AddRule methodName="ObjectificationAddedRule">
+				<arg:RuleOn targetType="Objectification" targetTypeQualifier="Neumont.Tools.ORM.ObjectModel"/>
+			</arg:AddRule>
+			<arg:DeleteRule methodName="ObjectificationDeletedRule">
+				<arg:RuleOn targetType="Objectification" targetTypeQualifier="Neumont.Tools.ORM.ObjectModel"/>
+			</arg:DeleteRule>
+			<arg:RolePlayerChangeRule methodName="ObjectificationRolePlayerChangedRule">
+				<arg:RuleOn targetType="Objectification" targetTypeQualifier="Neumont.Tools.ORM.ObjectModel"/>
+			</arg:RolePlayerChangeRule>
 			<arg:AddRule methodName="PreferredIdentifierAddedRule">
 				<arg:RuleOn targetType="EntityTypeHasPreferredIdentifier" targetTypeQualifier="Neumont.Tools.ORM.ObjectModel"/>
 			</arg:AddRule>

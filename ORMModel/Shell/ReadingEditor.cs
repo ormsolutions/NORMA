@@ -1101,13 +1101,16 @@ namespace Neumont.Tools.ORM.Shell
 				return;
 			}
 			ReadingOrderHasReading link = e.ModelElement as ReadingOrderHasReading;
-			ReadingOrder readingOrder = link.ReadingOrder;
-			FactType fact = readingOrder.FactType;
-			if (fact == myFact || fact == mySecondaryFact)
+			if (!link.IsDeleted)
 			{
-				myMainBranch.ReadingAdded(link.Reading);
+				ReadingOrder readingOrder = link.ReadingOrder;
+				FactType fact = readingOrder.FactType;
+				if (fact == myFact || fact == mySecondaryFact)
+				{
+					myMainBranch.ReadingAdded(link.Reading);
+				}
+				this.UpdateMenuItems();
 			}
-			this.UpdateMenuItems();
 		}
 		private void ReadingLinkRemovedEvent(object sender, ElementDeletedEventArgs e)
 		{
@@ -1403,14 +1406,20 @@ namespace Neumont.Tools.ORM.Shell
 			/// <param name="reading">the reading to add</param>
 			public void ReadingAdded(Reading reading)
 			{
-				ReadingOrder order = reading.ReadingOrder;
-				if (order.FactType == myFact)
+				ReadingOrder order;
+				FactType orderFactType;
+				if (!reading.IsDeleted &&
+					null != (order = reading.ReadingOrder) &&
+					null != (orderFactType = order.FactType))
 				{
-					this.OrderBranch.ReadingAdded(reading);
-				}
-				else
-				{
-					this.ImpliedBranch.ReadingAdded(reading);
+					if (orderFactType == myFact)
+					{
+						this.OrderBranch.ReadingAdded(reading);
+					}
+					else
+					{
+						this.ImpliedBranch.ReadingAdded(reading);
+					}
 				}
 			}
 			/// <summary>
@@ -1920,36 +1929,38 @@ namespace Neumont.Tools.ORM.Shell
 			public void ReadingAdded(Reading reading)
 			{
 				ReadingOrder order = reading.ReadingOrder;
-				int location = this.LocateCollectionItem(order);
-
-				if (location < 0)
+				if (order != null)
 				{
-					this.PopulateReadingOrderInfo(order);
-					if (OnBranchModification != null)
-					{
-						int newLoc = this.LocateCollectionItem(order);
-						OnBranchModification(this, BranchModificationEventArgs.InsertItems(this, newLoc - 1, 1));
-						OnBranchModification(this, BranchModificationEventArgs.UpdateCellStyle(this, newLoc, (int)ColumnIndex.ReadingBranch, true)); //may not be needed due to callback on update
-						//redraw off and back on in the branch if it has no more than 1 reading
-					}
-				}
+					int location = this.LocateCollectionItem(order);
 
-				if (location >= 0)
-				{
-					myReadingOrderKeyedCollection[location].EnsureBranch().AddReading(reading);
-					if (OnBranchModification != null)
+					if (location < 0)
 					{
-						OnBranchModification(this, BranchModificationEventArgs.UpdateCellStyle(this, location, (int)ColumnIndex.ReadingBranch, true));
-
-						int actualIndex = myFact.ReadingOrderCollection.IndexOf(order);
-						if (actualIndex != location)
+						this.PopulateReadingOrderInfo(order);
+						if (OnBranchModification != null)
 						{
-							this.ReadingOrderLocationUpdate(order);
+							int newLoc = this.LocateCollectionItem(order);
+							OnBranchModification(this, BranchModificationEventArgs.InsertItems(this, newLoc - 1, 1));
+							OnBranchModification(this, BranchModificationEventArgs.UpdateCellStyle(this, newLoc, (int)ColumnIndex.ReadingBranch, true)); //may not be needed due to callback on update
+							//redraw off and back on in the branch if it has no more than 1 reading
 						}
-						else
+					}
+					else
+					{
+						myReadingOrderKeyedCollection[location].EnsureBranch().AddReading(reading);
+						if (OnBranchModification != null)
 						{
-							OnBranchModification(this, BranchModificationEventArgs.Redraw(false));
-							OnBranchModification(this, BranchModificationEventArgs.Redraw(true));
+							OnBranchModification(this, BranchModificationEventArgs.UpdateCellStyle(this, location, (int)ColumnIndex.ReadingBranch, true));
+
+							int actualIndex = myFact.ReadingOrderCollection.IndexOf(order);
+							if (actualIndex != location)
+							{
+								this.ReadingOrderLocationUpdate(order);
+							}
+							else
+							{
+								OnBranchModification(this, BranchModificationEventArgs.Redraw(false));
+								OnBranchModification(this, BranchModificationEventArgs.Redraw(true));
+							}
 						}
 					}
 				}

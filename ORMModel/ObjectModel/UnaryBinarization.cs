@@ -237,11 +237,22 @@ namespace Neumont.Tools.ORM.ObjectModel
 								ruleManager.DisableRule(typeof(ObjectTypePlaysRoleDeletedRuleClass));
 								ruleDisabled = true;
 							}
-							implicitBooleanValueType.Delete();
 							if (deleteImplicitBooleanRole)
 							{
+								// We delete the role first so that rules do not
+								// try to recreate and implied fact type for this rule
+								// if it is part of an objectified FactType.
 								implicitBooleanRole.Delete();
 								--roleCount;
+								if (!implicitBooleanValueType.IsDeleted)
+								{
+									// The Objectification.RolePlayerDeletingRule rule will delet this automatically
+									implicitBooleanValueType.Delete();
+								}
+							}
+							else
+							{
+								implicitBooleanValueType.Delete();
 							}
 						}
 						finally
@@ -319,7 +330,7 @@ namespace Neumont.Tools.ORM.ObjectModel
 								contextInfo.Remove(ORMModel.AllowDuplicateNamesKey);
 							}
 						}
-						if (!ValidateConstraints(unaryRole, implicitBooleanRole) || !ValidateImplictBooleanValueType(implicitBooleanRole.RolePlayer))
+						if (!ValidateConstraints(unaryRole, implicitBooleanRole) || !ValidateImplicitBooleanValueType(implicitBooleanRole.RolePlayer))
 						{
 							LinkedElementCollection<RoleBase> roles = factType.RoleCollection;
 							DebinarizeUnary(roles, false, notifyAdded);
@@ -416,7 +427,7 @@ namespace Neumont.Tools.ORM.ObjectModel
 			/// Checks that only one role is played by the value type, that it has a boolean data type, and that
 			/// if it has a value constraint, that value constraint is alethic and only allows the value 'true'.
 			/// </summary>
-			private static bool ValidateImplictBooleanValueType(ObjectType implicitBooleanValueType)
+			private static bool ValidateImplicitBooleanValueType(ObjectType implicitBooleanValueType)
 			{
 				if (!implicitBooleanValueType.IsValueType || !implicitBooleanValueType.IsImplicitBooleanValue || implicitBooleanValueType.IsIndependent ||
 					implicitBooleanValueType.PlayedRoleCollection.Count != 1 || !(implicitBooleanValueType.DataType is TrueOrFalseLogicalDataType))

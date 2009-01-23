@@ -193,9 +193,9 @@ namespace Neumont.Tools.ORM.Shell
 				FactType secondaryFact = null;
 				if (selectedObjects != null)
 				{
-					foreach (object o in selectedObjects)
+					foreach (object element in selectedObjects)
 					{
-						FactType testFact = ORMEditorUtility.ResolveContextFactType(o);
+						FactType testFact = ORMEditorUtility.ResolveContextFactType(element);
 						// Handle selection of multiple elements as long as
 						// they all resolve to the same fact
 						if (theFact == null)
@@ -203,10 +203,17 @@ namespace Neumont.Tools.ORM.Shell
 							theFact = testFact;
 							Role testImpliedRole;
 							RoleProxy proxy;
-							if (null != (testImpliedRole = o as Role) &&
-								null != (proxy = testImpliedRole.Proxy))
+							ObjectifiedUnaryRole objectifiedUnaryRole;
+							if (null != (testImpliedRole = element as Role))
 							{
-								secondaryFact = proxy.FactType;
+								if (null != (proxy = testImpliedRole.Proxy))
+								{
+									secondaryFact = proxy.FactType;
+								}
+								else if (null != (objectifiedUnaryRole = testImpliedRole.ObjectifiedUnaryRole))
+								{
+									secondaryFact = objectifiedUnaryRole.FactType;
+								}
 							}
 						}
 						else if (testFact != theFact)
