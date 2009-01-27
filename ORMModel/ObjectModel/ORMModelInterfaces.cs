@@ -55,6 +55,13 @@ namespace Neumont.Tools.ORM.ObjectModel
 		ModelBrowser,
 	}
 	/// <summary>
+	/// A callback used by <see cref="IORMToolServices.AutomatedElementFilter"/>
+	/// and <see cref="IORMToolServices.IsAutomatedElement"/>
+	/// </summary>
+	/// <param name="element">The element to test</param>
+	/// <returns>True if the element is automated</returns>
+	public delegate bool AutomatedElementFilterCallback(ModelElement element);
+	/// <summary>
 	/// An interface that should be implemented by any
 	/// store that hosts ORM-derived object models. This
 	/// can be implemented via pass-through to the host document,
@@ -102,6 +109,18 @@ namespace Neumont.Tools.ORM.ObjectModel
 		/// begin a new transaction at this time.
 		/// </summary>
 		bool CanAddTransaction { get; set;}
+		/// <summary>
+		/// Add callbacks to determine the result of <see cref="IsAutomatedElement"/>
+		/// </summary>
+		event AutomatedElementFilterCallback AutomatedElementFilter;
+		/// <summary>
+		/// True if a rule is currently consider to be automatically added
+		/// based on listeners attached to <see cref="AutomatedElementFilter"/>.
+		/// This allows rules and editors to easily notify presentation layers
+		/// to respond differently when new elements are being added in
+		/// an automated fashion.
+		/// </summary>
+		bool IsAutomatedElement(ModelElement element);
 		/// <summary>
 		/// Activate the specified shape on the most appropriate view
 		/// </summary>

@@ -54,6 +54,10 @@ namespace Neumont.Tools.ORM.ObjectModel.Design
 			{
 				return new MatchDataTypePropertyDescriptor(this, requestor, domainPropertyInfo, attributes);
 			}
+			else if (propertyId == ObjectType.ReferenceModeDisplayDomainPropertyId)
+			{
+				return new AutomatedElementFilterPropertyDescriptor(this, requestor, domainPropertyInfo, attributes);
+			}
 			return base.CreatePropertyDescriptor(requestor, domainPropertyInfo, attributes);
 		}
 		/// <summary>

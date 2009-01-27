@@ -112,6 +112,34 @@ namespace Neumont.Tools.ORM.SDK.TestEngine
 				{
 				}
 			}
+			private Delegate myAutomedElementFilter;
+			bool IORMToolServices.IsAutomatedElement(ModelElement element)
+			{
+				Delegate filterList = myAutomedElementFilter;
+				if (filterList != null)
+				{
+					Delegate[] targets = filterList.GetInvocationList();
+					for (int i = 0; i < targets.Length; ++i)
+					{
+						if (((AutomatedElementFilterCallback)targets[i])(element))
+						{
+							return true;
+						}
+					}
+				}
+				return false;
+			}
+			event AutomatedElementFilterCallback IORMToolServices.AutomatedElementFilter
+			{
+				add
+				{
+					myAutomedElementFilter = Delegate.Combine(myAutomedElementFilter, value);
+				}
+				remove
+				{
+					myAutomedElementFilter = Delegate.Remove(myAutomedElementFilter, value);
+				}
+			}
 			LayoutEngine IORMToolServices.GetLayoutEngine(Type engineType)
 			{
 				return null;

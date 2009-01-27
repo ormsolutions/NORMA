@@ -282,16 +282,26 @@ namespace Neumont.Tools.ORM.Shell
 				#endregion Commented Out
 				ParsedFactTypeRolePlayerCollection objects = instance.myRolePlayers;
 				//Reading text is in format: {0} <blank> {1}
-				instance.ReadingText = builderFact.ToString().Trim();
+				string readingText = builderFact.ToString().Trim();
+				instance.ReadingText = readingText;
 				//Checks if the fact is a binary fact type with a forward AND reverse reading, denoted by the presence of the "/"
 				//Then it splits the text into representations of two seperate readings
-				if (nrObjects == 2 && instance.ReadingText.Contains("/"))
+				if (nrObjects == 2 && readingText.Contains("/"))
 				{
-					string[] splitReadings = instance.ReadingText.Split(new char[] { '/' }, 2, StringSplitOptions.RemoveEmptyEntries);
+					string[] splitReadings = readingText.Split(new char[] { '/' }, 2, StringSplitOptions.RemoveEmptyEntries);
 					if (splitReadings.Length == 2)
 					{
-						instance.ReadingText = splitReadings[0].Trim() + " {1}";
-						instance.ReverseReadingText = "{0} " + splitReadings[1].Trim();
+						string leftText = splitReadings[0];
+						string rightText = splitReadings[1];
+						if (leftText.Contains("{0}") && rightText.Contains("{1}")) // Sanity check
+						{
+							// Set the reading text strings to empty instead of null to indicate
+							// that the readings (especially the reverse) were specified with empty content
+							string trimmed = leftText.Trim();
+							instance.ReadingText = (trimmed == "{0}") ? "" : (trimmed + " {1}");
+							trimmed = rightText.Trim();
+							instance.ReverseReadingText = (trimmed == "{1}") ? "" : ("{0} " + trimmed);
+						}
 					}
 				}
 				instance.myRolePlayers.AddRange(rolePlayers);

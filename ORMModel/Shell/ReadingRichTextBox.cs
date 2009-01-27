@@ -419,6 +419,25 @@ namespace Neumont.Tools.ORM.Shell
 		#endregion // ReadingRichText specific
 		#region Base overrides
 		/// <summary>
+		/// A modification of <see cref="RichTextBox.SelectionProtected"/>
+		/// that recognizes a partially protected region. A fully protected
+		/// region is considered partially protected.
+		/// </summary>
+		public bool SelectionPartiallyProtected
+		{
+			get
+			{
+				NativeMethods.CHARFORMATA charFormat = NativeMethods.CHARFORMATA.Create(this, true);
+				if (charFormat != null)
+				{
+					// We're partially protected if the first character is protected (specified
+					// by the effects), or if the settings are inconsistent (specified by the mask)
+					return 0 != (charFormat.dwEffects & NativeMethods.CFE_PROTECTED) || 0 == (charFormat.dwMask & NativeMethods.CFM_PROTECTED);
+				}
+				return false;
+			}
+		}
+		/// <summary>
 		/// Determine where the first change in a string occured. This can give
 		/// different values depending on whether the string is viewed in forward
 		/// or reverse perspectives.
@@ -572,13 +591,35 @@ namespace Neumont.Tools.ORM.Shell
 		/// </summary>
 		protected override void OnKeyDown(KeyEventArgs e)
 		{
-			if ((e.KeyCode == Keys.V && (e.Modifiers & ~Keys.Shift) == Keys.Control) ||
-				(e.KeyCode == Keys.Insert && e.Modifiers == Keys.Shift))
+			Keys keyCode = e.KeyCode;
+			Keys modifiers = e.Modifiers;
+			if ((keyCode == Keys.V && (modifiers & ~Keys.Shift) == Keys.Control) ||
+				(keyCode == Keys.Insert && modifiers == Keys.Shift))
 			{
 				DoPaste();
 				e.SuppressKeyPress = true;
 			}
-			else if (e.KeyCode == Keys.Insert && e.Modifiers == Keys.None)
+			else if ((keyCode == Keys.C && (modifiers & ~Keys.Shift) == Keys.Control) ||
+				(keyCode == Keys.Insert && modifiers == Keys.Control))
+			{
+				string text = SelectedText;
+				if (text.Length != 0)
+				{
+					Copy();
+				}
+				e.SuppressKeyPress = true;
+			}
+			else if ((keyCode == Keys.X && (modifiers & ~Keys.Shift) == Keys.Control) ||
+				(keyCode == Keys.Delete && modifiers == Keys.Shift))
+			{
+				string text = SelectedText;
+				if (text.Length != 0)
+				{
+					Cut();
+				}
+				e.SuppressKeyPress = true;
+			}
+			else if (keyCode == Keys.Insert && modifiers == Keys.None)
 			{
 				// Insert mode allows overwrite of the initial protected
 				// keys when we unprotect the character for normal typing.
@@ -586,6 +627,13 @@ namespace Neumont.Tools.ORM.Shell
 				e.SuppressKeyPress = true;
 			}
 			base.OnKeyDown(e);
+		}
+		/// <summary>
+		/// Shadow the standard Paste command to not paste rich text
+		/// </summary>
+		public new void Paste()
+		{
+			DoPaste();
 		}
 		/// <summary>
 		/// Make sure that only straight text is pasted into the control.
@@ -674,6 +722,8 @@ namespace Neumont.Tools.ORM.Shell
 			public const int EN_PROTECTED = 0x704;
 			public const int WM_KEYDOWN = 0x100;
 			public const int WM_APPCOMMAND = 0x319;
+			public const int WM_USER = 0x400;
+			public const int EM_GETCHARFORMAT = WM_USER + 0x3a;
 			public const int FAPPCOMMAND_MASK = 0xF000;
 			public const short APPCOMMAND_PASTE = 38;
 			public static short GET_APPCOMMAND_LPARAM(IntPtr lParam)
@@ -687,6 +737,38 @@ namespace Neumont.Tools.ORM.Shell
 			public static int HIWORD(int n)
 			{
 				return ((n >> 0x10) & 0xffff);
+			}
+
+			// Charformat API
+			private const int SCF_DEFAULT = 0x0000;
+			private const int SCF_SELECTION = 0x0001;
+			public const int CFE_PROTECTED = 0x0010;
+			public const int CFM_PROTECTED = 0x0010;
+			[DllImport("user32.dll", CharSet = CharSet.Auto)]
+			private static extern IntPtr SendMessage(HandleRef hWnd, int msg, int wParam, [In, Out, MarshalAs(UnmanagedType.LPStruct)] CHARFORMATA lParam);
+			[StructLayout(LayoutKind.Sequential, Pack = 4)]
+			public class CHARFORMATA
+			{
+				public static CHARFORMATA Create(Control control, bool selection)
+				{
+					CHARFORMATA retVal = null;
+					if (control.IsHandleCreated)
+					{
+						retVal = new CHARFORMATA();
+						SendMessage(new HandleRef(control, control.Handle), EM_GETCHARFORMAT, selection ? SCF_SELECTION : SCF_DEFAULT, retVal);
+					}
+					return retVal;
+				}
+				public int cbSize = Marshal.SizeOf(typeof(NativeMethods.CHARFORMATA));
+				public int dwMask;
+				public int dwEffects;
+				public int yHeight;
+				public int yOffset;
+				public int crTextColor;
+				public byte bCharSet;
+				public byte bPitchAndFamily;
+				[MarshalAs(UnmanagedType.ByValArray, SizeConst = 0x20)]
+				public byte[] szFaceName = new byte[0x20];
 			}
 		}
 		#endregion // NativeMethods class

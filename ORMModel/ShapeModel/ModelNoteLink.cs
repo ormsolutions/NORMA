@@ -34,7 +34,7 @@ using Neumont.Tools.Modeling.Diagrams;
 
 namespace Neumont.Tools.ORM.ShapeModel
 {
-	public partial class ModelNoteLink : ISelectionContainerFilter, IReconfigureableLink, IConfigureAsChildShape
+	public partial class ModelNoteLink : ISelectionContainerFilter, IReconfigureableLink, IConfigureAsChildShape, IAutoCreatedSelectableShape
 	{
 		#region Customize appearance
 		/// <summary>

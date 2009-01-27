@@ -12540,6 +12540,7 @@ namespace Neumont.Tools.ORM.ObjectModel
 	/// <summary>
 	/// DomainClass ReferenceMode
 	/// </summary>
+	[global::System.ComponentModel.TypeDescriptionProvider(typeof(global::Neumont.Tools.Modeling.Design.ElementTypeDescriptionProvider<ReferenceMode, Design.ReferenceModeTypeDescriptor<ReferenceMode>>))]
 	[DslDesign::DisplayNameResource("Neumont.Tools.ORM.ObjectModel.ReferenceMode.DisplayName", typeof(global::Neumont.Tools.ORM.ObjectModel.ORMCoreDomainModel), "Neumont.Tools.ORM.GeneratedCode.CoreDomainModelResx")]
 	[DslDesign::DescriptionResource("Neumont.Tools.ORM.ObjectModel.ReferenceMode.Description", typeof(global::Neumont.Tools.ORM.ObjectModel.ORMCoreDomainModel), "Neumont.Tools.ORM.GeneratedCode.CoreDomainModelResx")]
 	[global::System.CLSCompliant(true)]

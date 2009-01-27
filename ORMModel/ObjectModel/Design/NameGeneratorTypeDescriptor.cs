@@ -3,6 +3,7 @@
 * Neumont Object-Role Modeling Architect for Visual Studio                 *
 *                                                                          *
 * Copyright © Neumont University. All rights reserved.                     *
+* Copyright © Matthew Curland. All rights reserved.                        *
 *                                                                          *
 * The use and distribution terms for this software are covered by the      *
 * Common Public License 1.0 (http://opensource.org/licenses/cpl) which     *
@@ -31,21 +32,23 @@ using System.Windows.Forms;
 namespace Neumont.Tools.ORM.ObjectModel.Design
 {
 	/// <summary>
-	/// <see cref="ElementTypeDescriptor"/> for <see cref="DataType"/>s.
+	/// <see cref="ElementTypeDescriptor"/> for <see cref="NameGenerator"/>s.
 	/// </summary>
 	[HostProtection(SecurityAction.LinkDemand, SharedState = true)]
 	public class NameGeneratorTypeDescriptor<TModelElement> : ORMModelElementTypeDescriptor<TModelElement>
 		where TModelElement : NameGenerator
 	{
+		#region Constructor
 		/// <summary>
-		/// Initializes a new instance of <see cref="DataTypeTypeDescriptor{TModelElement}"/>
+		/// Initializes a new instance of <see cref="NameGeneratorTypeDescriptor{TModelElement}"/>
 		/// for <paramref name="selectedElement"/>.
 		/// </summary>
 		public NameGeneratorTypeDescriptor(ICustomTypeDescriptor parent, TModelElement selectedElement)
 			: base(parent, selectedElement)
 		{
 		}
-
+		#endregion // Constructor
+		#region Base overrides
 		/// <summary>
 		/// Don't create property descriptors for properties that are
 		/// modifiers for other settings.
@@ -63,7 +66,30 @@ namespace Neumont.Tools.ORM.ObjectModel.Design
 			}
 			return base.ShouldCreatePropertyDescriptor(requestor, domainProperty);
 		}
+		/// <summary>
+		/// Create a custom property descriptor for all properties to
+		/// enable custom handling of property serialization and resets
+		/// based on the hierarchy.
+		/// </summary>
+		protected override ElementPropertyDescriptor CreatePropertyDescriptor(ModelElement requestor, DomainPropertyInfo domainPropertyInfo, Attribute[] attributes)
+		{
+			return new NameGeneratorPropertyDescriptor(this, requestor, domainPropertyInfo, attributes);
+		}
 
+		/// <summary>
+		/// Add custom property descriptors 
+		/// </summary>
+		public override PropertyDescriptorCollection GetProperties(Attribute[] attributes)
+		{
+			PropertyDescriptorCollection retVal = base.GetProperties(attributes);
+			retVal.Add(AbbreviationsPropertyDescriptor.Instance);
+			return retVal;
+		}
+		#endregion // Base overrides
+		#region NameGeneratorPropertyDescriptor class
+		/// <summary>
+		/// A property descriptor with default values based on the refined <see cref="NameGenerator"/>
+		/// </summary>
 		private class NameGeneratorPropertyDescriptor : ElementPropertyDescriptor
 		{
 			public NameGeneratorPropertyDescriptor(ElementTypeDescriptor owner, ModelElement modelElement, DomainPropertyInfo domainProperty, Attribute[] attributes)
@@ -98,43 +124,50 @@ namespace Neumont.Tools.ORM.ObjectModel.Design
 				}
 			}
 		}
-		/// <summary>
-		/// Create a custom property descriptor for all properties to
-		/// enable custom handling of property serialization and resets
-		/// based on the hierarchy.
-		/// </summary>
-		protected override ElementPropertyDescriptor CreatePropertyDescriptor(ModelElement requestor, DomainPropertyInfo domainPropertyInfo, Attribute[] attributes)
-		{
-			return new NameGeneratorPropertyDescriptor(this, requestor, domainPropertyInfo, attributes);
-		}
-
-		/// <summary>
-		/// Add custom property descriptors 
-		/// </summary>
-		public override PropertyDescriptorCollection GetProperties(Attribute[] attributes)
-		{
-			PropertyDescriptorCollection retVal = base.GetProperties(attributes);
-			retVal.Add(AbbreviationsPropertyDescriptor.Instance);
-			return retVal;
-		}
+		#endregion // NameGeneratorPropertyDescriptor class
+		#region AbbreviationsPropertyDescriptor class
 		/// <summary>
 		/// A property descriptor to show name alias (aka abbreviations) in the context of this name generator
 		/// </summary>
 		private class AbbreviationsPropertyDescriptor : PropertyDescriptor
 		{
+			#region AliasManagerEditor class
+			/// <summary>
+			/// A <see cref="UITypeEditor"/> to show the <see cref="AliasManagerForm"/>
+			/// </summary>
+			private class AliasManagerEditor : UITypeEditor
+			{
+				/// <summary>
+				/// Make this a modal editor
+				/// </summary>
+				public override UITypeEditorEditStyle GetEditStyle(System.ComponentModel.ITypeDescriptorContext context)
+				{
+					return (context != null) ? UITypeEditorEditStyle.Modal : base.GetEditStyle(context);
+				}
+				/// <summary>
+				/// Show the form to change the value
+				/// </summary>
+				public override object EditValue(System.ComponentModel.ITypeDescriptorContext context, IServiceProvider provider, object value)
+				{
+					AliasManagerForm.Show((NameGenerator)EditorUtility.ResolveContextInstance(context.Instance, false), provider);
+					return null;
+				}
+			}
+			#endregion // AliasManagerEditor class
+			#region Singleton Accessor
 			public static readonly PropertyDescriptor Instance = new AbbreviationsPropertyDescriptor();
-
+			#endregion // Singleton Accessor
+			#region Constructor
 			private AbbreviationsPropertyDescriptor()
 				: base("AbbreviationsPropertyDescriptor", null)
 			{
-
 			}
-
+			#endregion // Constructor
+			#region Base overrides
 			public override bool CanResetValue(object component)
 			{
 				return false;
 			}
-
 			public override Type ComponentType
 			{
 				get
@@ -142,40 +175,28 @@ namespace Neumont.Tools.ORM.ObjectModel.Design
 					return typeof(NameGenerator);
 				}
 			}
-
 			public override object GetValue(object component)
 			{
 				return null;
 			}
-
-
 			public override bool IsReadOnly
 			{
 				get { return true; }
 			}
-
-
 			public override Type PropertyType
 			{
 				get { return typeof(string); }
 			}
-
-
 			public override void ResetValue(object component)
 			{
-				//Fluff to keep the compiler happy.
 			}
-
 			public override void SetValue(object component, object value)
 			{
-				//Fluff to keep the compiler happy.
 			}
-
 			public override bool ShouldSerializeValue(object component)
 			{
 				return false;
 			}
-
 			public override string Description
 			{
 				get
@@ -183,7 +204,6 @@ namespace Neumont.Tools.ORM.ObjectModel.Design
 					return ResourceStrings.NameGeneratorAbbreviationsPropertyDescriptorDescription;
 				}
 			}
-
 			public override string DisplayName
 			{
 				get
@@ -191,47 +211,16 @@ namespace Neumont.Tools.ORM.ObjectModel.Design
 					return ResourceStrings.NameGeneratorAbbreviationsPropertyDescriptorDisplayName;
 				}
 			}
-
 			public override object GetEditor(Type editorBaseType)
 			{
 				if (editorBaseType == typeof(System.Drawing.Design.UITypeEditor))
 				{
-					return new AliasManager();
+					return new AliasManagerEditor();
 				}
 				return base.GetEditor(editorBaseType);
 			}
+			#endregion // Base overrides
 		}
-
-
-		/// <summary>
-		/// 
-		/// </summary>
-		public partial class AliasManager : UITypeEditor
-		{
-			/// <summary>
-			/// 
-			/// </summary>
-			/// <param name="context"></param>
-			/// <returns></returns>
-			public override UITypeEditorEditStyle GetEditStyle(System.ComponentModel.ITypeDescriptorContext context)
-			{
-				if (context != null) return UITypeEditorEditStyle.Modal;
-				return base.GetEditStyle(context);
-			}
-
-			/// <summary>
-			/// 
-			/// </summary>
-			/// <param name="context"></param>
-			/// <param name="provider"></param>
-			/// <param name="value"></param>
-			/// <returns></returns>
-			public override object EditValue(System.ComponentModel.ITypeDescriptorContext context, IServiceProvider provider, object value)
-			{
-				AliasManagerForm.Show((NameGenerator)EditorUtility.ResolveContextInstance(context.Instance, false), provider);
-				return null;
-			}
-		}
-	
+		#endregion // AbbreviationsPropertyDescriptor class
 	}
 }

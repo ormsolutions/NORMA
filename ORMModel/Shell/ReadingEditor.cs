@@ -633,8 +633,8 @@ namespace Neumont.Tools.ORM.Shell
 			Debug.Assert(myInstance == null, "ORMReadingEditorToolWindow should be a singleton");
 			myInstance = this;
 			InitializeComponent();
+			vtrReadings.LabelEditControlChanged += Tree_LabelEditControlChanged;
 		}
-
 		private void SetHeaders(bool wideHeader)
 		{
 			CustomVirtualTreeControl treeControl = this.vtrReadings;
@@ -745,6 +745,12 @@ namespace Neumont.Tools.ORM.Shell
 		}
 
 		#endregion //Properties
+		#region Tree Events
+		private void Tree_LabelEditControlChanged(object sender, EventArgs e)
+		{
+			myToolWindow.ActiveInPlaceEditWindow = vtrReadings.LabelEditControl;
+		}
+		#endregion // Tree Events
 
 		#region PopulateControl and helpers
 		private void PopulateControl()

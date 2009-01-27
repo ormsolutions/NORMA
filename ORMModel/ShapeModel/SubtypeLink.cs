@@ -39,7 +39,7 @@ using Neumont.Tools.Modeling.Diagrams;
 
 namespace Neumont.Tools.ORM.ShapeModel
 {
-	public partial class SubtypeLink : ORMBaseBinaryLinkShape, IModelErrorActivation, IProvideConnectorShape, IReconfigureableLink, IConfigureAsChildShape
+	public partial class SubtypeLink : ORMBaseBinaryLinkShape, IModelErrorActivation, IProvideConnectorShape, IReconfigureableLink, IConfigureAsChildShape, IAutoCreatedSelectableShape
 	{
 		#region Customize appearance
 		//The Resource ID's for the given subtype drawing type.

@@ -1185,6 +1185,13 @@
 		</DomainClass>
 
 		<DomainClass Name="ReferenceMode" Namespace="Neumont.Tools.ORM.ObjectModel" Id="5123D945-262C-42B7-838D-1B7F4E5A911C" DisplayName="ReferenceMode" InheritanceModifier="Abstract" Description="">
+			<Attributes>
+				<ClrAttribute Name="global::System.ComponentModel.TypeDescriptionProvider">
+					<Parameters>
+						<AttributeParameter Value="typeof(global::Neumont.Tools.Modeling.Design.ElementTypeDescriptionProvider&lt;ReferenceMode, Design.ReferenceModeTypeDescriptor&lt;ReferenceMode&gt;&gt;)"/>
+					</Parameters>
+				</ClrAttribute>
+			</Attributes>
 			<BaseClass>
 				<DomainClassMoniker Name="ORMNamedElement"/>
 			</BaseClass>
@@ -3568,6 +3575,13 @@
 		</DomainRelationship>
 
 		<DomainRelationship Name="ModelNoteReferencesModelElement" Namespace="Neumont.Tools.ORM.ObjectModel" IsEmbedding="false" Id="57A1D17B-DB15-418A-8D82-3D44B3D1169F" AllowsDuplicates="false" InheritanceModifier="Abstract">
+			<Attributes>
+				<ClrAttribute Name="global::System.ComponentModel.TypeDescriptionProvider">
+					<Parameters>
+						<AttributeParameter Value="typeof(global::Neumont.Tools.Modeling.Design.ElementTypeDescriptionProvider&lt;ModelNoteReferencesModelElement, global::Neumont.Tools.Modeling.Design.ElementTypeDescriptor&lt;ModelNoteReferencesModelElement&gt;&gt;)"/>
+					</Parameters>
+				</ClrAttribute>
+			</Attributes>
 			<!--<BaseRelationship>
 				<DomainRelationshipMoniker Name="ORMElementLink"/>
 			</BaseRelationship>-->
@@ -3587,7 +3601,7 @@
 			</Target>
 		</DomainRelationship>
 
-		<DomainRelationship Name="ModelNoteReferencesFactType" Namespace="Neumont.Tools.ORM.ObjectModel" IsEmbedding="false" Id="A6F1EB10-F929-4389-B584-38DFE11A85C2">
+		<DomainRelationship Name="ModelNoteReferencesFactType" Namespace="Neumont.Tools.ORM.ObjectModel" IsEmbedding="false" Id="A6F1EB10-F929-4389-B584-38DFE11A85C2" DisplayName="ModelNoteOnFactType">
 			<BaseRelationship>
 				<DomainRelationshipMoniker Name="ModelNoteReferencesModelElement"/>
 			</BaseRelationship>
@@ -3607,7 +3621,7 @@
 			</Target>
 		</DomainRelationship>
 
-		<DomainRelationship Name="ModelNoteReferencesObjectType" Namespace="Neumont.Tools.ORM.ObjectModel" IsEmbedding="false" Id="CB83FD24-7819-4C34-AF59-B4E14AE3BE8F">
+		<DomainRelationship Name="ModelNoteReferencesObjectType" Namespace="Neumont.Tools.ORM.ObjectModel" IsEmbedding="false" Id="CB83FD24-7819-4C34-AF59-B4E14AE3BE8F" DisplayName="ModelNoteOnObjectType">
 			<BaseRelationship>
 				<DomainRelationshipMoniker Name="ModelNoteReferencesModelElement"/>
 			</BaseRelationship>
@@ -3627,7 +3641,7 @@
 			</Target>
 		</DomainRelationship>
 
-		<DomainRelationship Name="ModelNoteReferencesSetConstraint" Namespace="Neumont.Tools.ORM.ObjectModel" IsEmbedding="false" Id="F5582A97-F2AE-45FA-A3B8-A00D62020519">
+		<DomainRelationship Name="ModelNoteReferencesSetConstraint" Namespace="Neumont.Tools.ORM.ObjectModel" IsEmbedding="false" Id="F5582A97-F2AE-45FA-A3B8-A00D62020519" DisplayName="ModelNoteOnConstraint">
 			<BaseRelationship>
 				<DomainRelationshipMoniker Name="ModelNoteReferencesModelElement"/>
 			</BaseRelationship>
@@ -3647,7 +3661,7 @@
 			</Target>
 		</DomainRelationship>
 
-		<DomainRelationship Name="ModelNoteReferencesSetComparisonConstraint" Namespace="Neumont.Tools.ORM.ObjectModel" IsEmbedding="false" Id="57A31B5C-E265-4C91-8C6C-151101258E28">
+		<DomainRelationship Name="ModelNoteReferencesSetComparisonConstraint" Namespace="Neumont.Tools.ORM.ObjectModel" IsEmbedding="false" Id="57A31B5C-E265-4C91-8C6C-151101258E28" DisplayName="ModelNoteOnConstraint">
 			<BaseRelationship>
 				<DomainRelationshipMoniker Name="ModelNoteReferencesModelElement"/>
 			</BaseRelationship>

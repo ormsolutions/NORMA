@@ -559,6 +559,26 @@ namespace Neumont.Tools.ORM.ShapeModel
 			}
 			PresentationViewsSubject.GetPresentation(link).Clear();
 			FixupRolePlayerLink(link);
+			// For simple reference scheme cases, the identified ObjectType displays
+			// errors that will not be removed and automatically updated because the
+			// actual error state has not changed.
+			foreach (ConstraintRoleSequence constraintSequence in link.PlayedRole.ConstraintRoleSequenceCollection)
+			{
+				UniquenessConstraint uniquenessConstraint;
+				ObjectType identified;
+				if (null != (uniquenessConstraint = constraintSequence as UniquenessConstraint) &&
+					null != (identified = uniquenessConstraint.PreferredIdentifierFor))
+				{
+					foreach (PresentationElement pel in PresentationViewsSubject.GetPresentation(identified))
+					{
+						ORMBaseShape updateShape = (ORMBaseShape)(pel as ObjectTypeShape) ?? pel as ObjectifiedFactTypeNameShape;
+						if (updateShape != null)
+						{
+							updateShape.InvalidateRequired(true);
+						}
+					}
+				}
+			}
 		}
 		#endregion // ObjectTypePlaysRoleRolePlayerChangeRule
 		/// <summary>

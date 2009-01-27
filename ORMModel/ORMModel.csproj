@@ -470,6 +470,8 @@
     <Compile Include="Framework\Shell\DiagramMenuDisplay.cs" />
     <Compile Include="Framework\Shell\SerializationEngine.cs" />
     <Compile Include="Framework\Shell\ToolWindowActivator.cs" />
+    <Compile Include="ObjectModel\Design\BlockAutomatedElementsPropertyDescriptor.cs" />
+    <Compile Include="ObjectModel\Design\ReferenceModeTypeDescriptor.cs" />
     <Compile Include="ObjectModel\Design\ORMModelTypeDescriptor.cs" />
     <Compile Include="ObjectModel\Design\ValueConstraintTypeDescriptor.cs" />
     <Compile Include="ObjectModel\Design\SetComparisonConstraintTypeDescriptor.cs" />

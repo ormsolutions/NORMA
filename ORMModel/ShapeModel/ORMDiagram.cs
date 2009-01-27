@@ -52,6 +52,14 @@ namespace Neumont.Tools.ORM.ShapeModel
 	/// <param name="element">The placed element</param>
 	/// <param name="newShape">The newly created shape element</param>
 	public delegate void FixupNewShape(ModelElement element, ShapeElement newShape);
+	/// <summary>
+	/// Implement this interface on any shape (generally a link shape) that is auto-created
+	/// and also selectable. If this is set, then the element is filtered out of any drag/drop
+	/// or copy or shapes.
+	/// </summary>
+	public interface IAutoCreatedSelectableShape
+	{
+	}
 	[DiagramMenuDisplay(DiagramMenuDisplayOptions.Required | DiagramMenuDisplayOptions.AllowMultiple, typeof(ORMDiagram), "UNDONE", "Diagram.TabImage", "Diagram.BrowserImage")]
 	public partial class ORMDiagram : IProxyDisplayProvider, IMergeElements
 	{
@@ -799,8 +807,10 @@ namespace Neumont.Tools.ORM.ShapeModel
 					Store store = Store;
 					TransactionManager transactionManager = store.TransactionManager;
 					Guid diagramDropTargetId;
+					IORMToolServices toolServices;
 					if (transactionManager.InTransaction &&
-						((null == (serviceProvider = (store as IORMToolServices).ServiceProvider) ||
+						((toolServices = (IORMToolServices)store).IsAutomatedElement(element) ||
+						(null == (serviceProvider = toolServices.ServiceProvider) ||
 						null == (selectionService = (IMonitorSelectionService)serviceProvider.GetService(typeof(IMonitorSelectionService))) ||
 						(null == (currentView = (selectionContainer = selectionService.CurrentSelectionContainer) as IORMDesignerView) &&
 						null == (currentView = selectionService.CurrentDocumentView as IORMDesignerView)) ||
@@ -1921,6 +1931,7 @@ namespace Neumont.Tools.ORM.ShapeModel
 			ObjectType objectType;
 			SetConstraint setConstraint;
 			SetComparisonConstraint setComparisonConstraint;
+			ModelNote modelNote;
 			if (null != (factType = element as FactType))
 			{
 				FixupFactType(factType, shape as FactTypeShape, true);
@@ -1936,6 +1947,10 @@ namespace Neumont.Tools.ORM.ShapeModel
 			else if (null != (setComparisonConstraint = element as SetComparisonConstraint))
 			{
 				FixupConstraint(setComparisonConstraint, (ExternalConstraintShape)shape);
+			}
+			else if (null != (modelNote = element as ModelNote))
+			{
+				FixupModelNote(modelNote, (ModelNoteShape)shape);
 			}
 
 			if (!containedAllowMultipleShapes)
@@ -2190,6 +2205,7 @@ namespace Neumont.Tools.ORM.ShapeModel
 			{
 				get
 				{
+					// UNDONE: Wire the CopyOrderComparer into the ShapeExtension mechanism
 					return new Comparison<ModelElement>(CompareElementsForCopy);
 				}
 			}
@@ -2200,7 +2216,7 @@ namespace Neumont.Tools.ORM.ShapeModel
 			/// <returns>Return <see langword="true"/> to include the <paramref name="element"/>.</returns>
 			protected virtual bool FilterCopiedElement(ModelElement element)
 			{
-				return !(element is SubtypeLink);
+				return !(element is IAutoCreatedSelectableShape);
 			}
 			/// <summary>
 			/// Reorder elements so that <see cref="ExternalConstraintShape"/> elements

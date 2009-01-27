@@ -4758,7 +4758,7 @@
     <comment>Description for DomainClass &apos;ModelNoteReferencesFactType&apos;</comment>
   </data>
   <data name="Neumont.Tools.ORM.ObjectModel.ModelNoteReferencesFactType.DisplayName" xml:space="preserve">
-    <value>Model Note References Fact Type</value>
+    <value>ModelNoteOnFactType</value>
     <comment>DisplayName for DomainClass &apos;ModelNoteReferencesFactType&apos;</comment>
   </data>
   <data name="Neumont.Tools.ORM.ObjectModel.ModelNoteReferencesFactType/Note.Description" xml:space="preserve">
@@ -4790,7 +4790,7 @@
     <comment>Description for DomainClass &apos;ModelNoteReferencesObjectType&apos;</comment>
   </data>
   <data name="Neumont.Tools.ORM.ObjectModel.ModelNoteReferencesObjectType.DisplayName" xml:space="preserve">
-    <value>Model Note References Object Type</value>
+    <value>ModelNoteOnObjectType</value>
     <comment>DisplayName for DomainClass &apos;ModelNoteReferencesObjectType&apos;</comment>
   </data>
   <data name="Neumont.Tools.ORM.ObjectModel.ModelNoteReferencesObjectType/Note.Description" xml:space="preserve">
@@ -4822,7 +4822,7 @@
     <comment>Description for DomainClass &apos;ModelNoteReferencesSetConstraint&apos;</comment>
   </data>
   <data name="Neumont.Tools.ORM.ObjectModel.ModelNoteReferencesSetConstraint.DisplayName" xml:space="preserve">
-    <value>Model Note References Set Constraint</value>
+    <value>ModelNoteOnConstraint</value>
     <comment>DisplayName for DomainClass &apos;ModelNoteReferencesSetConstraint&apos;</comment>
   </data>
   <data name="Neumont.Tools.ORM.ObjectModel.ModelNoteReferencesSetConstraint/Note.Description" xml:space="preserve">
@@ -4854,7 +4854,7 @@
     <comment>Description for DomainClass &apos;ModelNoteReferencesSetComparisonConstraint&apos;</comment>
   </data>
   <data name="Neumont.Tools.ORM.ObjectModel.ModelNoteReferencesSetComparisonConstraint.DisplayName" xml:space="preserve">
-    <value>Model Note References Set Comparison Constraint</value>
+    <value>ModelNoteOnConstraint</value>
     <comment>DisplayName for DomainClass &apos;ModelNoteReferencesSetComparisonConstraint&apos;</comment>
   </data>
   <data name="Neumont.Tools.ORM.ObjectModel.ModelNoteReferencesSetComparisonConstraint/Note.Description" xml:space="preserve">

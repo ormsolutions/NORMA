@@ -159,6 +159,21 @@ namespace Neumont.Tools.ORM.SDK.TestEngine
 				{
 				}
 			}
+			bool IORMToolServices.IsAutomatedElement(ModelElement element)
+			{
+				return myServices.IsAutomatedElement(element);
+			}
+			event AutomatedElementFilterCallback IORMToolServices.AutomatedElementFilter
+			{
+				add
+				{
+					myServices.AutomatedElementFilter += value;
+				}
+				remove
+				{
+					myServices.AutomatedElementFilter -= value;
+				}
+			}
 			IORMFontAndColorService IORMToolServices.FontAndColorService
 			{
 				get

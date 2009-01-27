@@ -302,6 +302,7 @@ namespace Neumont.Tools.Modeling.Shell.DynamicSurveyTreeGrid
 					{
 						if (Start <= index && End >= index)
 						{
+							int startIndex = index;
 							index -= Start;
 							IBranch branch = myBranch;
 							if (branch != null)
@@ -314,7 +315,7 @@ namespace Neumont.Tools.Modeling.Shell.DynamicSurveyTreeGrid
 								}
 								else if (null != (grouper = branch as ListGrouper))
 								{
-									grouper.ElementChangedAt(index, modificationEvents, null, 0);
+									grouper.ElementChangedAt(startIndex, modificationEvents, null, 0);
 								}
 							}
 						}

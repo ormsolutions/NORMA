@@ -397,7 +397,74 @@ namespace Neumont.Tools.ORM.Shell
 		}
 		#endregion
 		#region IOleCommandTarget Members
-
+		private IWin32Window myActiveInlineEditor;
+		private bool myRichTextSelected;
+		private bool myRichTextProtected;
+		/// <summary>
+		/// Shadow the <see cref="ModelingWindowPane.ActiveInPlaceEditWindow"/>,
+		/// which is not properly handling the nuances of our inplace <see cref="RichTextBox"/>
+		/// </summary>
+		public new IWin32Window ActiveInPlaceEditWindow
+		{
+			get
+			{
+				return myActiveInlineEditor;
+			}
+			set
+			{
+				IWin32Window activeWindow = myActiveInlineEditor;
+				if (activeWindow == value)
+				{
+					return;
+				}
+				ReadingRichTextBox activeRichText = activeWindow as ReadingRichTextBox;
+				ReadingRichTextBox newRichText = value as ReadingRichTextBox;
+				if (activeRichText != null)
+				{
+					activeRichText.SelectionChanged -= RichTextSelectionChanged;
+					activeRichText.Disposed -= RichTextDisposed;
+				}
+				if (newRichText != null)
+				{
+					myRichTextSelected = newRichText.SelectionLength != 0;
+					myRichTextProtected = newRichText.SelectionPartiallyProtected;
+					newRichText.SelectionChanged += RichTextSelectionChanged;
+					newRichText.Disposed += RichTextDisposed;
+				}
+				if (activeRichText != null || newRichText != null)
+				{
+					IVsUIShell service = myCtorServiceProvider.GetService(typeof(SVsUIShell)) as IVsUIShell;
+					if (service != null)
+					{
+						service.UpdateCommandUI(1);
+					}
+				}
+				myActiveInlineEditor = value;
+			}
+		}
+		private void RichTextSelectionChanged(object sender, EventArgs e)
+		{
+			ReadingRichTextBox richText = (ReadingRichTextBox)sender;
+			bool newHasSelection = richText.SelectionLength != 0;
+			bool newIsProtected = richText.SelectionPartiallyProtected;
+			if (newHasSelection ^ myRichTextSelected || newIsProtected ^ myRichTextProtected)
+			{
+				myRichTextSelected = newHasSelection;
+				myRichTextProtected = newIsProtected;
+				IVsUIShell service = myCtorServiceProvider.GetService(typeof(SVsUIShell)) as IVsUIShell;
+				if (service != null)
+				{
+					service.UpdateCommandUI(1);
+				}
+			}
+		}
+		private void RichTextDisposed(object sender, EventArgs e)
+		{
+			if (sender == myActiveInlineEditor)
+			{
+				myActiveInlineEditor = null;
+			}
+		}
 		/// <summary>
 		/// Provides a first chance to tell the shell that this window is capable of handling certain commands. Implements IOleCommandTarget.QueryStatus
 		/// </summary>
@@ -411,35 +478,73 @@ namespace Neumont.Tools.ORM.Shell
 				// There typically is only one command passed in to this array - in any case, we only care
 				// about the first command.
 				MSOLE.OLECMD cmd = prgCmds[0];
+				MSOLE.OLECMDF flags = 0;
+				ReadingRichTextBox activeRichTextEditor = myActiveInlineEditor as ReadingRichTextBox;
 				switch ((VSConstants.VSStd97CmdID)cmd.cmdID)
 				{
+					case VSConstants.VSStd97CmdID.Cut:
+						if (activeRichTextEditor != null)
+						{
+							flags = (myRichTextSelected && !myRichTextProtected) ? MSOLE.OLECMDF.OLECMDF_SUPPORTED | MSOLE.OLECMDF.OLECMDF_ENABLED : MSOLE.OLECMDF.OLECMDF_SUPPORTED;
+						}
+						break;
+					case VSConstants.VSStd97CmdID.Copy:
+						if (activeRichTextEditor != null)
+						{
+							flags = myRichTextSelected ? MSOLE.OLECMDF.OLECMDF_SUPPORTED | MSOLE.OLECMDF.OLECMDF_ENABLED : MSOLE.OLECMDF.OLECMDF_SUPPORTED;
+						}
+						break;
+					case VSConstants.VSStd97CmdID.Paste:
+						if (activeRichTextEditor != null)
+						{
+							flags = (!myRichTextProtected && (Clipboard.ContainsText(TextDataFormat.Text) || Clipboard.ContainsText(TextDataFormat.UnicodeText))) ? MSOLE.OLECMDF.OLECMDF_SUPPORTED | MSOLE.OLECMDF.OLECMDF_ENABLED : MSOLE.OLECMDF.OLECMDF_SUPPORTED;
+						}
+						break;
+					case VSConstants.VSStd97CmdID.SelectAll:
+						if (activeRichTextEditor != null)
+						{
+							flags = MSOLE.OLECMDF.OLECMDF_SUPPORTED | MSOLE.OLECMDF.OLECMDF_ENABLED;
+						}
+						break;
+					case VSConstants.VSStd97CmdID.Redo:
+					case VSConstants.VSStd97CmdID.MultiLevelRedo:
+					case VSConstants.VSStd97CmdID.MultiLevelUndo:
+						if (activeRichTextEditor != null)
+						{
+							flags = MSOLE.OLECMDF.OLECMDF_SUPPORTED;
+						}
+						break;
+					case VSConstants.VSStd97CmdID.Undo:
+						if (activeRichTextEditor != null)
+						{
+							flags = activeRichTextEditor.CanUndo ? MSOLE.OLECMDF.OLECMDF_SUPPORTED | MSOLE.OLECMDF.OLECMDF_ENABLED : MSOLE.OLECMDF.OLECMDF_SUPPORTED;
+						}
+						break;
 					case VSConstants.VSStd97CmdID.Delete:
 						// Inform the shell that we should have a chance to handle the delete command.
 						if (!this.myForm.ReadingEditor.EditingFactType.IsEmpty)
 						{
-							cmd.cmdf = (int)(MSOLE.OLECMDF.OLECMDF_SUPPORTED | MSOLE.OLECMDF.OLECMDF_ENABLED);
-							prgCmds[0] = cmd;
-						}
-						else
-						{
-							goto default;
+							flags = MSOLE.OLECMDF.OLECMDF_SUPPORTED | MSOLE.OLECMDF.OLECMDF_ENABLED;
 						}
 						break;
-
 					case VSConstants.VSStd97CmdID.EditLabel:
 						// Support this command regardless of the current state of the inline editor.
 						// If we do not do this, then an F2 keypress with an editor already open will
 						// report the command as disabled and we would need to use IVsUIShell.UpdateCommandUI
 						// whenever an editor closed to reenable the command.
-						cmd.cmdf = (int)(MSOLE.OLECMDF.OLECMDF_SUPPORTED | MSOLE.OLECMDF.OLECMDF_ENABLED);
-						prgCmds[0] = cmd;
+						flags = MSOLE.OLECMDF.OLECMDF_SUPPORTED | MSOLE.OLECMDF.OLECMDF_ENABLED;
 						break;
-
-					default:
-						// Inform the shell that we don't support any other commands.
-						handled = false;
-						hr = (int)MSOLE.Constants.OLECMDERR_E_NOTSUPPORTED;
-						break;
+				}
+				if (flags == 0)
+				{
+					// Inform the shell that we don't support the command.
+					handled = false;
+					hr = (int)MSOLE.Constants.OLECMDERR_E_NOTSUPPORTED;
+				}
+				else
+				{
+					cmd.cmdf = (uint)flags;
+					prgCmds[0] = cmd;
 				}
 			}
 			else
@@ -482,25 +587,82 @@ namespace Neumont.Tools.ORM.Shell
 			// Only handle commands from the Office 97 Command Set (aka VSStandardCommandSet97).
 			if (pguidCmdGroup == VSConstants.GUID_VSStandardCommandSet97)
 			{
-				ReadingEditor myReadingEditor = this.myForm.ReadingEditor;
+				ReadingsViewForm form = myForm;
+				ReadingEditor editor = form.ReadingEditor;
+				ReadingRichTextBox activeRichTextEditor = myActiveInlineEditor as ReadingRichTextBox;
 				// Default to a not-supported status.
 				switch ((VSConstants.VSStd97CmdID)nCmdID)
 				{
+					case VSConstants.VSStd97CmdID.Cut:
+						if (activeRichTextEditor != null)
+						{
+							activeRichTextEditor.Cut();
+							hr = VSConstants.S_OK;
+						}
+						else
+						{
+							goto default;
+						}
+						break;
+					case VSConstants.VSStd97CmdID.Copy:
+						if (activeRichTextEditor != null)
+						{
+							activeRichTextEditor.Copy();
+							hr = VSConstants.S_OK;
+						}
+						else
+						{
+							goto default;
+						}
+						break;
+					case VSConstants.VSStd97CmdID.Paste:
+						if (activeRichTextEditor != null)
+						{
+							activeRichTextEditor.Paste();
+							hr = VSConstants.S_OK;
+						}
+						else
+						{
+							goto default;
+						}
+						break;
+					case VSConstants.VSStd97CmdID.SelectAll:
+						if (activeRichTextEditor != null)
+						{
+							activeRichTextEditor.SelectAll();
+							hr = VSConstants.S_OK;
+						}
+						else
+						{
+							goto default;
+						}
+						break;
+					case VSConstants.VSStd97CmdID.Undo:
+						if (activeRichTextEditor != null)
+						{
+							activeRichTextEditor.Undo();
+							hr = VSConstants.S_OK;
+						}
+						else
+						{
+							goto default;
+						}
+						break;
 					case VSConstants.VSStd97CmdID.Delete:
 						// If we aren't in label edit (in which case the commands should be passed down to the
 						// VirtualTreeView control), handle the delete command and set the hresult to a handled status.
-						if (!this.myForm.ReadingEditor.EditingFactType.IsEmpty)
+						if (!editor.EditingFactType.IsEmpty)
 						{
-							if (!myReadingEditor.InLabelEdit)
+							if (!editor.InLabelEdit)
 							{
-								if (myReadingEditor.IsReadingPaneActive && myReadingEditor.CurrentReading != null)
+								if (editor.IsReadingPaneActive && editor.CurrentReading != null)
 								{
-									myForm.DeleteSelectedReading();
+									form.DeleteSelectedReading();
 								}
 							}
 							else
 							{
-								Control editControl = myReadingEditor.LabelEditControl;
+								Control editControl = editor.LabelEditControl;
 								if (editControl != null)
 								{
 									IntPtr editHandle = editControl.Handle;
@@ -522,13 +684,13 @@ namespace Neumont.Tools.ORM.Shell
 					case VSConstants.VSStd97CmdID.EditLabel:
 						// If we aren't in label edit (in which case the commands should be passed down to the
 						// VirtualTreeView control), handle the edit command and set the hresult to a handled status.
-						if (!this.myForm.ReadingEditor.EditingFactType.IsEmpty)
+						if (!editor.EditingFactType.IsEmpty)
 						{
-							if (myReadingEditor.CurrentReading != null)
+							if (editor.CurrentReading != null)
 							{
-								if (myReadingEditor.IsReadingPaneActive)
+								if (editor.IsReadingPaneActive)
 								{
-									myForm.EditSelectedReading();
+									form.EditSelectedReading();
 								}
 							}
 						}

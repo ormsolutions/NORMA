@@ -733,9 +733,8 @@ namespace Neumont.Tools.ORM.Shell
 				RoleBase leadRole = null;
 				RoleBase[] roleOrder = null;
 				RoleBase unaryRole = null;
-				IList<RoleBase> roleOrderList = null;
 				string forwardReadingText = null;
-				string reverseReadingText = null;
+				string reverseReadingOrderText = null;
 
 				IList<RoleBase> defaultOrder = null;
 				int openRoleIndex = 0;
@@ -815,7 +814,6 @@ namespace Neumont.Tools.ORM.Shell
 									}
 									currentFactType = null;
 									roleOrder = null;
-									roleOrderList = null;
 								}
 								else if (currentFactType == null)
 								{
@@ -828,7 +826,6 @@ namespace Neumont.Tools.ORM.Shell
 								{
 									currentFactType = null;
 									roleOrder = null;
-									roleOrderList = null;
 									break;
 								}
 								if (testFactType != null)
@@ -860,13 +857,12 @@ namespace Neumont.Tools.ORM.Shell
 												if (currentRole != leadRole)
 												{
 													roleOrder = new RoleBase[fullOrderRoleCount];
-													roleOrderList = roleOrder;
 													roleOrder[0] = leadRole;
 													roleOrder[1] = currentRole;
 													openRoleIndex = 2;
 												}
 											}
-											else if (!roleOrderList.Contains(currentRole))
+											else if (Array.IndexOf<RoleBase>(roleOrder, currentRole) == -1)
 											{
 												roleOrder[openRoleIndex] = currentRole;
 												++openRoleIndex;
@@ -886,7 +882,6 @@ namespace Neumont.Tools.ORM.Shell
 								if (roleOrder == null)
 								{
 									roleOrder = new RoleBase[fullOrderRoleCount];
-									roleOrderList = roleOrder;
 									roleOrder[0] = leadRole;
 									openRoleIndex = 1;
 								}
@@ -951,7 +946,7 @@ namespace Neumont.Tools.ORM.Shell
 											for (int i = fullOrderRoleCount - 2; i >= 0; --i)
 											{
 												RoleBase testRole = defaultOrder[i];
-												if (!roleOrderList.Contains(testRole))
+												if (Array.IndexOf<RoleBase>(roleOrder, testRole) == -1)
 												{
 													roleOrder[openRoleIndex] = testRole;
 													if (++openRoleIndex == fullOrderRoleCount)
@@ -966,7 +961,7 @@ namespace Neumont.Tools.ORM.Shell
 											for (int i = 0; i < fullOrderRoleCount; ++i)
 											{
 												RoleBase testRole = defaultOrder[i];
-												if (!roleOrderList.Contains(testRole))
+												if (Array.IndexOf<RoleBase>(roleOrder, testRole) == -1)
 												{
 													roleOrder[openRoleIndex] = testRole;
 													if (++openRoleIndex == fullOrderRoleCount)
@@ -983,6 +978,7 @@ namespace Neumont.Tools.ORM.Shell
 								{
 									roleOrder = new RoleBase[fullOrderRoleCount];
 									defaultOrder.CopyTo(roleOrder, 0);
+									openRoleIndex = fullOrderRoleCount;
 								}
 							}
 							else
@@ -992,24 +988,35 @@ namespace Neumont.Tools.ORM.Shell
 
 							// Check reverse order for binary display. Combining displays requires
 							// that both readings begin and end with the replacement fields
-							if (currentReadingOrder != null && fullOrderRoleCount == 2)
+							if (fullOrderRoleCount == 2)
 							{
-								forwardReadingText = currentReadingOrder.ReadingText;
-								if (forwardReadingText.StartsWith("{0}") && forwardReadingText.EndsWith("{1}"))
+								if (currentReadingOrder != null)
 								{
-									if (currentReadingOrderRoles == null)
+									forwardReadingText = currentReadingOrder.ReadingText;
+									if (forwardReadingText.StartsWith("{0}") && forwardReadingText.EndsWith("{1}"))
 									{
-										currentReadingOrderRoles = currentReadingOrder.RoleCollection;
-									}
-									reverseReadingOrder = FactType.FindMatchingReadingOrder(readingOrders, new RoleBase[] { currentReadingOrderRoles[1], currentReadingOrderRoles[0] });
-									if (reverseReadingOrder != null)
-									{
-										reverseReadingText = reverseReadingOrder.ReadingText;
-										if (!(reverseReadingText.StartsWith("{0}") && reverseReadingText.EndsWith("{1}")))
+										if (currentReadingOrderRoles == null)
 										{
-											reverseReadingText = null;
-											reverseReadingOrder = null;
+											currentReadingOrderRoles = currentReadingOrder.RoleCollection;
 										}
+										reverseReadingOrder = FactType.FindMatchingReadingOrder(readingOrders, new RoleBase[] { currentReadingOrderRoles[1], currentReadingOrderRoles[0] });
+									}
+								}
+								else if (roleOrder != null && openRoleIndex == fullOrderRoleCount)
+								{
+									// Find the reverse order based on the role order we were searching for
+									reverseReadingOrder = FactType.FindMatchingReadingOrder(readingOrders, new RoleBase[] { roleOrder[1], roleOrder[0] });
+								}
+								if (reverseReadingOrder != null)
+								{
+									reverseReadingOrderText = reverseReadingOrder.ReadingText;
+									if (string.IsNullOrEmpty(reverseReadingOrderText) ||
+										!(reverseReadingOrderText.StartsWith("{0}") && reverseReadingOrderText.EndsWith("{1}")) ||
+										Reading.ReplaceFields(reverseReadingOrderText, "").Trim().Length == 0)
+									{
+										// Pattern fails, ignore it
+										reverseReadingOrderText = null;
+										reverseReadingOrder = null;
 									}
 								}
 							}
@@ -1019,7 +1026,6 @@ namespace Neumont.Tools.ORM.Shell
 				int newCaretPosition = -1;
 				string newSourceText = null;
 				string currentReadingOrderText = currentReadingOrder != null ? currentReadingOrder.ReadingText : null;
-				string reverseReadingOrderText = reverseReadingOrder != null ? reverseReadingOrder.ReadingText : null;
 				if (forceUpdate ||
 					(mySelectedFactType != currentFactType ||
 					mySelectedReadingOrder != currentReadingOrder ||
@@ -1055,15 +1061,15 @@ namespace Neumont.Tools.ORM.Shell
 							{
 								forwardReadingText = currentReadingOrder.ReadingText;
 							}
-							else if (reverseReadingText != null)
+							else if (reverseReadingOrderText != null)
 							{
-								reverseReadingText = reverseReadingText.Substring(3, reverseReadingText.Length - 6).Trim();
+								reverseReadingOrderText = reverseReadingOrderText.Substring(3, reverseReadingOrderText.Length - 6).Trim();
 								int insertAfter = forwardReadingText.Length - 4;
 								while (char.IsWhiteSpace(forwardReadingText[insertAfter]))
 								{
 									--insertAfter;
 								}
-								forwardReadingText = forwardReadingText.Insert(insertAfter + 1, "/" + reverseReadingText);
+								forwardReadingText = forwardReadingText.Insert(insertAfter + 1, "/" + reverseReadingOrderText);
 							}
 							newSourceText = Reading.ReplaceFields(
 								forwardReadingText,
@@ -1072,6 +1078,33 @@ namespace Neumont.Tools.ORM.Shell
 									if (replaceIndex < replaceRoleCount)
 									{
 										return FormatReplacementField(currentReadingOrderRoles[replaceIndex], defaultOrder, unaryRole != null);
+									}
+									return null;
+								});
+						}
+						else if (reverseReadingOrder != null && reverseReadingOrderText != null)
+						{
+							IList<RoleBase> reverseReadingOrderRoles = reverseReadingOrder.RoleCollection;
+							// Note that we've previously verified that this reading text starts and ends with replacement
+							// fields and has something in the middle
+							int insertAfter = 3;
+							while (char.IsWhiteSpace(reverseReadingOrderText[insertAfter]))
+							{
+								++insertAfter;
+							}
+							int replaceRoleCount = reverseReadingOrderRoles.Count;
+							newSourceText = Reading.ReplaceFields(
+								reverseReadingOrderText.Insert(insertAfter, "/"),
+								delegate(int replaceIndex)
+								{
+									if (replaceIndex < replaceRoleCount)
+									{
+										// The defaultOrder here cannot be used for the defaultRoleOrder parameter
+										// because it may already be this role order, in which case the fields
+										// replace as if the opposite direction were selected. However, with the
+										// added slash, the replacement fields are backwards, so we translate the
+										// requested index against the known order.
+										return FormatReplacementField(reverseReadingOrderRoles[(replaceIndex + 1) % 2], reverseReadingOrderRoles, false);
 									}
 									return null;
 								});

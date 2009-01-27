@@ -420,7 +420,8 @@ namespace Neumont.Tools.ORM.ObjectModel
 			ORMModel model = this.Model;
 			ObjectType valueType = FindValueType(valueTypeName, model);
 			Role constrainedRole = constraintRoles[0];
-			bool valueTypeNotShared = !IsValueTypeShared(preferredConstraint);
+			ObjectType identifyingValueType;
+			bool valueTypeNotShared = !IsValueTypeShared(preferredConstraint, out identifyingValueType);
 			if (valueTypeNotShared && valueType == null)
 			{
 				valueType = constrainedRole.RolePlayer;
@@ -437,15 +438,57 @@ namespace Neumont.Tools.ORM.ObjectModel
 					valueType = new ObjectType(store);
 					valueType.Name = valueTypeName;
 					valueType.Model = model;
-					valueType.IsValueType = true;
+
+					// Use the DataType of the starting ValueType if it is
+					// specified. Otherwise, use the IsValueType property to
+					// automatically grab the users current settings.
+					ValueTypeHasDataType dataTypeLink;
+					DataType dataType;
+					if (identifyingValueType != null &&
+						null != (dataTypeLink = ValueTypeHasDataType.GetLinkToDataType(identifyingValueType)) &&
+						!((dataType = dataTypeLink.DataType) is UnspecifiedDataType))
+					{
+						// Create initial facet values if non-default on the link instance and used
+						// by the current data type
+						int dataTypeScale = dataTypeLink.Scale;
+						int dataTypeLength = dataTypeLink.Length;
+						RoleAssignment[] roleAssignments = new RoleAssignment[]{
+							new RoleAssignment(ValueTypeHasDataType.ValueTypeDomainRoleId, valueType),
+							new RoleAssignment(ValueTypeHasDataType.DataTypeDomainRoleId, dataType)};
+						PropertyAssignment[] propertyAssignments = null;
+						if (dataTypeScale != 0 && dataType.ScaleName != null)
+						{
+							if (dataTypeLength != 0 && dataType.LengthName != null)
+							{
+								propertyAssignments = new PropertyAssignment[]{
+									new PropertyAssignment(ValueTypeHasDataType.ScaleDomainPropertyId, dataTypeScale),
+									new PropertyAssignment(ValueTypeHasDataType.LengthDomainPropertyId, dataTypeLength)};
+							}
+							else
+							{
+								propertyAssignments = new PropertyAssignment[]{
+									new PropertyAssignment(ValueTypeHasDataType.ScaleDomainPropertyId, dataTypeScale)};
+							}
+						}
+						else if (dataTypeLength != 0 && dataType.LengthName != null)
+						{
+							propertyAssignments = new PropertyAssignment[]{
+								new PropertyAssignment(ValueTypeHasDataType.LengthDomainPropertyId, dataTypeLength)};
+						}
+						new ValueTypeHasDataType(valueType.Partition, roleAssignments, propertyAssignments);
+					}
+					else
+					{
+						valueType.IsValueType = true;
+					}
 				}
 
-				if (valueTypeNotShared)
-				{
-					constrainedRole.RolePlayer.Delete();
-				}
-
+				ObjectType deleteOldRolePlayer = valueTypeNotShared ? constrainedRole.RolePlayer : null;
 				constrainedRole.RolePlayer = valueType;
+				if (null != deleteOldRolePlayer)
+				{
+					deleteOldRolePlayer.Delete();
+				}
 			}
 		}
 
@@ -489,12 +532,19 @@ namespace Neumont.Tools.ORM.ObjectModel
 		}
 		private static bool IsValueTypeShared(UniquenessConstraint preferredConstraint)
 		{
+			ObjectType dummy;
+			return IsValueTypeShared(preferredConstraint, out dummy);
+		}
+		private static bool IsValueTypeShared(UniquenessConstraint preferredConstraint, out ObjectType identifyingValueType)
+		{
+			identifyingValueType = null;
 			if (preferredConstraint != null && preferredConstraint.IsInternal)
 			{
 				LinkedElementCollection<Role> constraintRoles = preferredConstraint.RoleCollection;
 				ObjectType valueType;
 				if (constraintRoles.Count == 1 && (valueType = constraintRoles[0].RolePlayer).IsValueType)
 				{
+					identifyingValueType = valueType;
 					ReadOnlyCollection<ElementLink> links = DomainRoleInfo.GetAllElementLinks(valueType);
 					int linkCount = links.Count;
 					if (linkCount > 3) // Easy initial check

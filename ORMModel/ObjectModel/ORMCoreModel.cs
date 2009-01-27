@@ -71,6 +71,7 @@ namespace Neumont.Tools.ORM.ObjectModel
 				DomainDataDirectory directory = store.DomainDataDirectory;
 				EventHandler<ElementDeletedEventArgs> standardDeleteHandler = new EventHandler<ElementDeletedEventArgs>(ModelElementRemovedEvent);
 				EventHandler<ElementPropertyChangedEventArgs> standardGlyphChangeHandler = new EventHandler<ElementPropertyChangedEventArgs>(SurveyGlyphChangedEvent);
+				EventHandler<ElementDeletedEventArgs> standardErrorPathDeletedHandler = new EventHandler<ElementDeletedEventArgs>(ModelElementErrorStateChangedEvent);
 				//Object Type
 				DomainClassInfo classInfo = directory.FindDomainClass(ObjectType.DomainClassId);
 				DomainPropertyInfo propertyInfo = directory.FindDomainProperty(ObjectType.NameDomainPropertyId);
@@ -136,13 +137,13 @@ namespace Neumont.Tools.ORM.ObjectModel
 				//Error state changed
 				classInfo = directory.FindDomainRelationship(ElementAssociatedWithModelError.DomainClassId);
 				eventManager.AddOrRemoveHandler(classInfo, new EventHandler<ElementAddedEventArgs>(ModelElementErrorStateChangedEvent), action);
-				eventManager.AddOrRemoveHandler(classInfo, new EventHandler<ElementDeletedEventArgs>(ModelElementErrorStateChangedEvent), action);
+				eventManager.AddOrRemoveHandler(classInfo, standardErrorPathDeletedHandler, action);
 
 				classInfo = directory.FindDomainRelationship(FactTypeHasFactTypeInstance.DomainClassId);
-				eventManager.AddOrRemoveHandler(classInfo, new EventHandler<ElementDeletedEventArgs>(ModelElementErrorStateChangedEvent), action);
+				eventManager.AddOrRemoveHandler(classInfo, standardErrorPathDeletedHandler, action);
 
 				classInfo = directory.FindDomainRelationship(ObjectTypeHasObjectTypeInstance.DomainClassId);
-				eventManager.AddOrRemoveHandler(classInfo, new EventHandler<ElementDeletedEventArgs>(ModelElementErrorStateChangedEvent), action);
+				eventManager.AddOrRemoveHandler(classInfo, standardErrorPathDeletedHandler, action);
 
 				//ModalityChanged
 				propertyInfo = directory.FindDomainProperty(SetConstraint.ModalityDomainPropertyId);
@@ -157,6 +158,10 @@ namespace Neumont.Tools.ORM.ObjectModel
 				//Preferred Identifier Changed
 				propertyInfo = directory.FindDomainProperty(UniquenessConstraint.IsPreferredDomainPropertyId);
 				eventManager.AddOrRemoveHandler(propertyInfo, standardGlyphChangeHandler, action);
+
+				classInfo = directory.FindDomainClass(EntityTypeHasPreferredIdentifier.DomainClassId);
+				eventManager.AddOrRemoveHandler(classInfo, standardErrorPathDeletedHandler, action);
+				eventManager.AddOrRemoveHandler(classInfo, new EventHandler<RolePlayerChangedEventArgs>(PreferredIdentifierRolePlayerChangedEvent), action);
 
 				//ExclusiveOr added deleted 
 				classInfo = directory.FindDomainClass(ExclusiveOrConstraintCoupler.DomainClassId);
@@ -691,14 +696,45 @@ namespace Neumont.Tools.ORM.ObjectModel
 				Role role = link.PlayedRole;
 				if (!role.IsDeleted)
 				{
-					eventNotify.ElementChanged(role, SurveyGlyphQuestionTypes);
-					eventNotify.ElementRenamed(role);
+					NotifyRoleChanged(eventNotify, role);
 				}
 				if (e.DomainRole.Id == ObjectTypePlaysRole.PlayedRoleDomainRoleId &&
 					!(role = (Role)e.OldRolePlayer).IsDeleted)
 				{
-					eventNotify.ElementChanged(role, SurveyGlyphQuestionTypes);
-					eventNotify.ElementRenamed(role);
+					NotifyRoleChanged(eventNotify, role);
+				}
+			}
+		}
+		private static void NotifyRoleChanged(INotifySurveyElementChanged eventNotify, Role role)
+		{
+			foreach (ConstraintRoleSequence sequence in role.ConstraintRoleSequenceCollection)
+			{
+				UniquenessConstraint uniquenessConstraint;
+				EntityTypeHasPreferredIdentifier identifierLink;
+				if (null != (uniquenessConstraint = sequence as UniquenessConstraint) &&
+					null != (identifierLink = EntityTypeHasPreferredIdentifier.GetLinkToPreferredIdentifierFor(uniquenessConstraint)))
+				{
+					NotifyErrorStateChanged(eventNotify, identifierLink);
+				}
+			}
+			eventNotify.ElementChanged(role, SurveyGlyphQuestionTypes);
+			eventNotify.ElementRenamed(role);
+		}
+		/// <summary>
+		/// Verify that error glyphs for the remote entity type update on role player changes
+		/// </summary>
+		private static void PreferredIdentifierRolePlayerChangedEvent(object sender, RolePlayerChangedEventArgs e)
+		{
+			INotifySurveyElementChanged eventNotify;
+			ModelElement element;
+			if (null != (eventNotify = ((element = e.ElementLink).Store as IORMToolServices).NotifySurveyElementChanged))
+			{
+				NotifyErrorStateChanged(eventNotify, element as IModelErrorOwnerPath);
+				ObjectType objectType;
+				if (e.DomainRole.Id == EntityTypeHasPreferredIdentifier.PreferredIdentifierForDomainRoleId &&
+					!(objectType = (ObjectType)e.OldRolePlayer).IsDeleted)
+				{
+					eventNotify.ElementChanged(objectType, SurveyErrorQuestionTypes);
 				}
 			}
 		}
@@ -852,7 +888,14 @@ namespace Neumont.Tools.ORM.ObjectModel
 			ModelElement element;
 			if (null != (eventNotify = ((element = e.ModelElement).Store as IORMToolServices).NotifySurveyElementChanged))
 			{
-				ModelError.WalkAssociatedElements(((IModelErrorOwnerPath)element).ErrorOwnerRolePlayer,
+				NotifyErrorStateChanged(eventNotify, element as IModelErrorOwnerPath);
+			}
+		}
+		private static void NotifyErrorStateChanged(INotifySurveyElementChanged eventNotify, IModelErrorOwnerPath errorPath)
+		{
+			if (errorPath != null)
+			{
+				ModelError.WalkAssociatedElements(errorPath.ErrorOwnerRolePlayer,
 					delegate(ModelElement associatedElement)
 					{
 						eventNotify.ElementChanged(associatedElement, SurveyErrorQuestionTypes);
@@ -895,6 +938,28 @@ namespace Neumont.Tools.ORM.ObjectModel
 			get
 			{
 				return ObjectType;
+			}
+		}
+		ModelElement IModelErrorOwnerPath.ErrorOwnerRolePlayer
+		{
+			get
+			{
+				return ErrorOwnerRolePlayer;
+			}
+		}
+		#endregion // IModelErrorOwnerPath Implementation
+	}
+	partial class EntityTypeHasPreferredIdentifier : IModelErrorOwnerPath
+	{
+		#region IModelErrorOwnerPath Implementation
+		/// <summary>
+		/// Implements <see cref="IModelErrorOwnerPath.ErrorOwnerRolePlayer"/>
+		/// </summary>
+		protected ModelElement ErrorOwnerRolePlayer
+		{
+			get
+			{
+				return PreferredIdentifierFor;
 			}
 		}
 		ModelElement IModelErrorOwnerPath.ErrorOwnerRolePlayer

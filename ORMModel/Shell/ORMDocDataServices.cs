@@ -325,6 +325,44 @@ namespace Neumont.Tools.ORM.Shell
 				}
 			}
 			/// <summary>
+			/// Defer to IsAutomatedElement on the document. Implements
+			/// <see cref="IORMToolServices.IsAutomatedElement"/>
+			/// </summary>
+			protected bool IsAutomatedElement(ModelElement element)
+			{
+				return myServices.IsAutomatedElement(element);
+			}
+			bool IORMToolServices.IsAutomatedElement(ModelElement element)
+			{
+				return IsAutomatedElement(element);
+			}
+			/// <summary>
+			/// Defer to AutomatedElementFilter on the document. Implements
+			/// <see cref="IORMToolServices.AutomatedElementFilter"/>
+			/// </summary>
+			protected event AutomatedElementFilterCallback AutomatedElementFilter
+			{
+				add
+				{
+					myServices.AutomatedElementFilter += value;
+				}
+				remove
+				{
+					myServices.AutomatedElementFilter -= value;
+				}
+			}
+			event AutomatedElementFilterCallback IORMToolServices.AutomatedElementFilter
+			{
+				add
+				{
+					AutomatedElementFilter += value;
+				}
+				remove
+				{
+					AutomatedElementFilter -= value;
+				}
+			}
+			/// <summary>
 			/// Defer to ActivateShape on the document. Implements
 			/// <see cref="IORMToolServices.ActivateShape"/>
 			/// </summary>
@@ -1054,6 +1092,7 @@ namespace Neumont.Tools.ORM.Shell
 		private IPropertyProviderService myPropertyProviderService;
 		private TypedDomainModelProviderCache myTypedDomainModelProviderCache;
 		private IORMModelErrorActivationService myModelErrorActivatorService;
+		private Delegate myAutomedElementFilter;
 
 		/// <summary>
 		/// Retrieve the <see cref="IPropertyProviderService"/> for this document.
@@ -1381,6 +1420,54 @@ namespace Neumont.Tools.ORM.Shell
 			set
 			{
 				CanAddTransaction = value;
+			}
+		}
+		/// <summary>
+		/// Implements <see cref="IORMToolServices.IsAutomatedElement"/>
+		/// </summary>
+		protected bool IsAutomatedElement(ModelElement element)
+		{
+			Delegate filterList = myAutomedElementFilter;
+			if (filterList != null)
+			{
+				Delegate[] targets = filterList.GetInvocationList();
+				for (int i = 0; i < targets.Length; ++i)
+				{
+					if (((AutomatedElementFilterCallback)targets[i])(element))
+					{
+						return true;
+					}
+				}
+			}
+			return false;
+		}
+		bool IORMToolServices.IsAutomatedElement(ModelElement element)
+		{
+			return IsAutomatedElement(element);
+		}
+		/// <summary>
+		/// Implements <see cref="IORMToolServices.AutomatedElementFilter"/>
+		/// </summary>
+		protected event AutomatedElementFilterCallback AutomatedElementFilter
+		{
+			add
+			{
+				myAutomedElementFilter = Delegate.Combine(myAutomedElementFilter, value);
+			}
+			remove
+			{
+				myAutomedElementFilter = Delegate.Remove(myAutomedElementFilter, value);
+			}
+		}
+		event AutomatedElementFilterCallback IORMToolServices.AutomatedElementFilter
+		{
+			add
+			{
+				AutomatedElementFilter += value;
+			}
+			remove
+			{
+				AutomatedElementFilter -= value;
 			}
 		}
 		/// <summary>

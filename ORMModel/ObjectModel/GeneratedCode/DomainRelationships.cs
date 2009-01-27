@@ -22657,6 +22657,7 @@ namespace Neumont.Tools.ORM.ObjectModel
 	/// DomainRelationship ModelNoteReferencesModelElement
 	/// Description for Neumont.Tools.ORM.ObjectModel.ModelNoteReferencesModelElement
 	/// </summary>
+	[global::System.ComponentModel.TypeDescriptionProvider(typeof(global::Neumont.Tools.Modeling.Design.ElementTypeDescriptionProvider<ModelNoteReferencesModelElement, global::Neumont.Tools.Modeling.Design.ElementTypeDescriptor<ModelNoteReferencesModelElement>>))]
 	[DslDesign::DisplayNameResource("Neumont.Tools.ORM.ObjectModel.ModelNoteReferencesModelElement.DisplayName", typeof(global::Neumont.Tools.ORM.ObjectModel.ORMCoreDomainModel), "Neumont.Tools.ORM.GeneratedCode.CoreDomainModelResx")]
 	[DslDesign::DescriptionResource("Neumont.Tools.ORM.ObjectModel.ModelNoteReferencesModelElement.Description", typeof(global::Neumont.Tools.ORM.ObjectModel.ORMCoreDomainModel), "Neumont.Tools.ORM.GeneratedCode.CoreDomainModelResx")]
 	[global::System.CLSCompliant(true)]
