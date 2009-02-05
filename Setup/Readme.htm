@@ -1,0 +1,299 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.0 Transitional//EN">
+<html xmlns="http://www.w3.org/1999/xhtml">
+
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=windows-1252"/>
+<title>NORMA January 2009 CTP Readme</title>
+<style type="text/css">
+	.new {font-size:x-small; color:Gold; }
+	li {padding-bottom: 3px;}
+</style>
+</head>
+
+<body>
+
+<p><b><a id="The Top" style="font-family:Verdana;font-size:medium">NORMA January 2009 CTP Readme</a>&nbsp;</b></p>
+<p>This file supersedes the previous readme.txt and older readme.htm files. This readme has parallel indexing mechanisms: by topic, and by release date (starting with the October 2008 (2008-10) release, I won't be adding historical dates). The file will be extended for future product releases.<br/><br/>
+The January 2009 drop is a bug-fix drop with no new major functionality relative to the December 2008 CTP release.
+<br/><br/></p>
+<h2>Contents</h2>
+<ul>
+  <li><a href="#Setup">Installing NORMA</a></li>
+  <li><a href="#General Use">General Use</a></li>
+  <li><a href="#Visual Studio Windows">Window Management in Visual Studio</a></li>
+  <li><a href="#Fact Editor">Fact Editor</a></li>
+  <li><a href="#Verbalization">Verbalization</a></li>
+  <li><a href="#SamplePopulation">Sample Population</a></li>
+  <li><a href="#Notation">ORM Notation</a></li>
+  <li><a href="#Notes and Definitions">Notes and Definitions</a></li>
+  <li><a href="#Relational">Relational Extensions</a></li>
+  <li><a href="#Database Import">Database Import</a></li>
+  <li><a href="#Code Generation">Code Generation</a></li>
+  <li><a href="#Reporting Issues">Instructions for reporting issues with NORMA</a></li>
+  <li><a href="#Mystery Bugs">Things we've seen or heard about but can't reproduce</a></li>
+</ul>
+<!--<hr/>
+<h2>Daily Changes</h2>
+<div>The daily drop includes all modifications since the last CTP drop. Changeset numbers are marked below.</div>
+<ul>
+<li><a href="#TOPIC DAILY">TOPIC DESCRIPTION</a>&nbsp;(Changeset ####)</li>
+</ul>-->
+<hr/>
+<h2>January 2009 CTP Changes</h2>
+<div>The Januar 2009 CTP drop includes all modifications through changeset 1356. Full changeset descriptions can be found at the <a href="http://orm.svn.sourceforge.net/viewvc/orm/trunk/?view=log">sourceforge code repository</a> (be patient with this link, the page contains a full changeset history).</div>
+<ul>
+<li><a href="#FactEditor Inverse Readings 2009-01">Fact Editor inverse readings</a>&nbsp;</li>
+<li>Other Changes:
+<ol>
+<li>Standard editing hotkeys (cut/copy/paste/undo/selectall) now work correctly in the Reading Editor.</li>
+<li>Quotes on objectified FactType names have been restored.</li>
+<li>Dragging a shape selection that contained a model note connector would stop the shapes from being duplicate across or within a diagram.</li>
+<li>Fixed a 'Null reference exception' changing FactType arity or adding/removing an objectification with the Relational extensions enabled.</li>
+<li>Added this file to setup.</li>
+</ol>
+</li>
+</ul><hr/>
+<h2>December 2008 CTP Changes</h2>
+<div>The December 2008 CTP (a) drop includes all modifications through changeset 1350.</div>
+<ul>
+<li><a href="#Diagram Management 2008-12">Diagram order and position caching</a>&nbsp;</li>
+<li><a href="#Model Browser Links 2008-12">Model Browser link nodes</a>&nbsp;</li>
+<li>Other Changes:
+<ol>
+<li>Description text has been added to all Properties Window properties</li>
+<li>Role display in the model browser has been improved by displaying the role player ObjectType names and glyphs.</li>
+</ol>
+</li>
+</ul><hr/>
+<h2>October 2008 CTP Changes</h2>
+<div>The October 2008 CTP drop includes all modifications through changeset 1340.<br/><br/>
+The October 2008 drop includes two major functionality additions plus a number of smaller pieces. The major changes relate to sample population (you can now fully populate a model, including objectified FactTypes and Subtypes) and model navigation using the Verbalization Browser and the new 'ORM Diagram Spy' tool window.
+</div>
+<ul>
+  <li><a href="#Setup 2008-10">SetupVista.bat elevates install permissions on Vista</a></li>
+  <li><a href="#Diagram Spy 2008-10">Diagram Spy tool window for model navigation without primary selection changes</a></li>
+  <li><a href="#Diagrams Expansion 2008-10">Diagrams node in the Model Browser</a></li>
+  <li><a href="#CodeGeneration LinqToSqlSettings 2008-10">LinqToSql settings changes</a></li>
+  <li><a href="#Model Definitions 2008-10">Model definition and notes</a></li>
+  <li><a href="#Verbalization Relational 2008-10">Relational table and column verbalization</a></li>
+  <li><a href="#SamplePopulation Keyboard 2008-10">Sample population keyboard navigation</a></li>
+  <li><a href="#SamplePopulation Subtypes 2008-10">Sample population of subtype instances</a></li>
+  <li><a href="#SamplePopulation ObjectifiedFactType 2008-10">Sample population referencing objectified FactType instances</a></li>
+  <li><a href="#SamplePopulation ExternalObjectificationId 2008-10">Sample population association of an objectified FactType instance with an external identifier</a></li>
+  <li><a href="#SamplePopulation CloneValueOnUse 2008-10">Sample population handling of ValueType instances used in multiple relationships</a></li>
+  <li><a href="#SamplePopulation ImpliedFactTypePopulations 2008-10">Sample population implied FactType instances for common FactType patterns</a></li>
+  <li><a href="#Notation SubtypeDerivation 2008-10">Subtype derivation rules</a></li>
+  <li><a href="#KeyBindings 2008-10">Tool window key bindings work from other tool windows</a></li>
+  <li><a href="#Verbalization ValueConstraints 2008-10">Verbalization of ValueConstraints added to all ObjectTypes</a></li>
+  <li><a href="#Verbalization ReadingOrder 2008-10">Verbalization respects preferred reading order</a></li>
+  <li><a href="#Verbalization Hyperlinks 2008-10">Verbalization Browser hyperlinks activated</a></li>
+  <li><a href="#Verbalization FactTypesWithObjectType 2008-10">Verbalization of associated FactTypes for ObjectType selection</a></li>
+</ul>
+<hr/>
+<h3><a id="Setup">Installing NORMA</a></h3>
+<ol>
+<li>Updating NORMA to the latest version requires Setup.bat to be run from the downloaded .zip file, which should be chosen based on whether you want to install for Visual Studio 2008 or Visual Studio 2005. NORMA does not share installation files between these two products, so you must choose your target.</li>
+<li>Any previous NORMA versions and any dependencies will be automatically uninstalled and reinstalled by the Setup.bat file. Make sure Visual Studio is not running during the installation pocess. Please be patient with the uninstall, which takes roughly the same amount of time as the install. Killing installation processes (the setup command prompt, msiexec, devenv) can leave you with a system that requires manual intervention to restore.</li>
+<li>First extract the files from the .zip file first unless you open them with the standard 'Compressed (zipped) Folders' viewer, in which case you can usually run Setup.bat without pre-expanding the zip file. Vista is likely to recommend expansion even with the standard viewer.</li>
+<li><a id="#Setup 2008-10" class="new" title="October 2008 CTP: SetupVista.bat elevates install permissions on Vista">2008-10</a>&nbsp;
+The setup process must be run with admistrative permissions on Vista. You can either right-click the Setup.bat file and choose 'Run as Administrator', or you can run SetupVista.bat instead of Setup.bat and agree to the Vista security warnings.</li>
+<li>(Visual Studio 2005 Install Only) The DSLToolsRedist.msi included with this drop will not automatically upgrade if you have an older DSL installation on your machine. If you were an early user of NORMA or other DSL products and have not previously upgraded, or have experience designer issues on Windows Vista, then you may want to explicit uninstall the 'Microsoft DSL Tools Redistributable' product before running NORMA setup.</li>
+</ol>
+<a href="#The Top">Return to top</a>
+<hr/>
+<h3><a id="General Use">General Use</a></h3>
+<ol>
+<li>You can selectively turn off display of specific classes of errors. This only affects display, not the underlying error state, which is always tracked. Errors are displayed in the Error List, Model Browser, Verbalization Browser, all diagrams, and in generated reports. Turning off error display affects all of these visualizations. To modify this setting, click on any diagram and choose the 'ErrorDisplay' property.</li>
+<li>Direct keystroke access has been added for all of the tool windows. For example, Ctrl-W, Ctrl-F (hold down the control key and type WF) will open the 'ORM Fact Editor' tool window. Other keystrokes correspond to the accelerator keys on the ORM Designer context window. To see the key associations, place focus anywhere in the ORM designer and press the context menu key followed by 'w' to open the 'ORM Tool Windows' sub menu. The accelerator characters shown correspond to the default key bindings for the second key (note that F is underlined for 'ORM Fact Editor').</li>
+<li><a id="KeyBindings 2008-10" class="new" title="October 2008 CTP: Tool window key bindings work from other tool windows">2008-10</a>&nbsp;
+The key bindings now work with the focus in all tool windows except the ORM Fact Editor, where Ctrl-W is bound to the 'Select Current Word' command.</li>
+<li><a id="Diagrams Expansion 2008-10" class="new" title="October 2008 CTP: Diagrams node in the Model Browser">2008-10</a>&nbsp;
+The ORM Model Browser tool window now has a <em>Diagrams</em> node that shows an alphabetized list of all current diagrams. The name of a diagram can be edited directly in the browser with the standard F2 command (except for diagrams that have 'rename' disabled on the diagram tab). Commands are available on the context menu to select the diagram in either the current document window or the Diagram Spy tool window.</li>
+<li><a id="Diagram Spy 2008-10" class="new" title="October 2008 CTP: Diagram Spy tool window for model navigation without primary selection changes">2008-10</a>&nbsp;
+Added the <em>ORM Diagram Spy</em> tool window to assist model navigation. The Diagram Spy is a view on an existing diagram in the model, unlike the Context Window which populates a new diagram when an item is selected. The Diagram Spy window, along with the Model Browser, is a selection-enabled tool window, meaning that changing the selection in the Diagram Spy will update the state of all other tool windows. This also means that all editing capabilities supported in the main document window are also supported in the Diagram Spy window.<br/><br/>
+The diagram spy works together with the new hyperlink features in the Verbalization Browser to enable rapid movement through even complex ORM models. This is easiest to accomplish if you place these two tool windows so that they are both visible instead of on the same set of tabs. This can be accomplished by dragging the tool window tab and docking it in a separate location (I like the Verbalization Browser at the bottom of the document window). The verbalization option (available on the Verbalization Browser toolbar) to direct hyperlinks to the Diagram Spy window is on by default.<br/><br/>
+Commands are provided to jump from any shape selection in a main document view to the same shape in the Diagram Spy window, and vice versa. The 'Select on Diagram' command applied from the Diagram Spy will remain in the spy window. The Model Browser commands have also been extended to allow selection in either the main set of diagrams or in the Diagram Spy.</li>
+<li><a id="Model Browser Links 2008-12" class="new" title="December 2008 CTP: Model Browser link nodes">2008-12</a>&nbsp;
+The ORM Model Browser tool window contains some nodes that are links to other elements. Link nodes are marked with a shortcut overlay glyph, and selecting these nodes is equivalent to a selection of the target node. Double-clicking a link node will select the target node. Link nodes to the constrained FactTypes have been added to external constraint expansions, and column reference links appear in multiple places in the Relational Schema.</li>
+</ol>
+<a href="#The Top">Return to top</a>
+<hr/>
+<h3><a id="Visual Studio Windows">Window Management in Visual Studio</a></h3>
+<div>NORMA is hosted in the Visual Studio environment, and all window management is provided by the host environment. There are two classes of Visual Studio windows, <em>document windows</em> host your document files (the .orm file, for NORMA), and <em>tool windows</em> that have content based on the selection in a document window. Tool window content can also be based on the selection in another tool window if the other tool window is a Visual Studio <em>selection container</em>. In NORMA, the <em>ORM Model Browser</em> and <em>ORM Diagram Spy</em> tool windows are selection containers and can control the contents of other NORMA tool windows. If you are not experienced with managing windows in Visual Studio then we strongly recommend that you take the time to try each of the actions discussed here. This is included in the readme because poor window management can severely diminish your user experience with NORMA, and we have seen a number of feature requests that are easily remedied with existing window management.</div>
+<ul>
+<li><strong>Document Window Commands</strong>
+<ul>
+<li>The <em>New Window</em> command, located on the <em>Window</em> menu, is supported by the ORM designer. This command lets you open a second view on the same document. You will see the document tabs numbered (SampleModel.orm:1, SampleModel.orm:2) after applying this command. For NORMA, this means that you can have multiple diagrams or different parts of the same diagram open simultaneously in different document windows.</li>
+<li>The <em>New Horizontal Tab Group</em> and <em>New Vertical Tab Group</em> commands enable you to look at multiple document windows side-by-side instead of one at a time. These commands can be found on the context menu of any document tab (the tab with the file name), and can also be activated by dragging any document tab and dropping it on the document space below the tab. Document windows can be moved between existing tab groups (or reordered within the same tab group) by using the drag-drop gesture on the tabs. Once you have created a new tab group you can simultaneously view two or more .orm diagrams from the same file. NORMA supports dragging one or more shapes from one diagram to another.</li>
+</ul></li>
+<li><strong>Tool Window Commands</strong>
+<p>Visual Studio supports a large number of tool window states. A tool window can be docked (attached to one of the sides of the Visual Studio environment), floating (hovering over the environment, including outside the bounds of IDE), or treated as a document window (giving you the same window management capabilities as a normal document window, minus the New Window command). NORMA wakes up with all of its tool windows except the ORM Model Browser docked in the same container, so you can view the contents of exactly one tool window at any given time. This can be a suboptimal working environment for some tasks. For example, examining the ORM information backing a relational model is easily done with both the Verbalization Browser and Diagram Spy windows visible, plus either a document window (showing the Relational View) or the Model Browser (expanded to show the relational schema). Selecting a relational column will populate the Verbalization Browser, and the Verbalization Browser hyperlinks can then be used to select individual items in the Diagram Spy, which will change the Verbalization Browser contents (recurse as needed via hyperlinks). Obviously, this experience is significantly enhanced if the Verbalization Browser and Diagram Spy windows are both visible.</p>
+<ul>
+<li>A tool window can be switched to a floating state, or to another new or existing tool window group, simply by dragging the tool window tab. Visual Studio provides a large variety of potential docking positions, which can be previewed by dragging over the various popup windows offered by the environment when you start your window drag.</li>
+<li>A floating tool window can be returned to a docked form by double-clicking the tool window title bar, or by opening a context menu on the tool window title bar and choosing <em>Floating</em>. Similarly, a tabbed tool window can be switched to a floating state by double-clicking on its tab.</li>
+<li>Choosing <em>Tabbed Document</em> on the context menu of a floating tool window title bar or docked tool window tab is used to move the tool window into the document window space. The <em>Floating</em> and <em>Dockable</em> commands are also available on tab for a tool window in the document space to restore them to the normal tool window locations.</li>
+<li>Tool windows can also be hidden at any time using the <em>Hide</em> command on a tool window tab context menu. If you need additional screen real estate, you can also enable the <em>Auto Hide</em> feature, which makes the tool window retractable.</li>
+</ul></li>
+<li><a id="Diagram Management 2008-12" class="new" title="December 2008 CTP: Diagram order and position caching">2008-12</a>&nbsp;
+The <em>Diagram Management</em> extension model can be selected to enable diagram reordering and position caching across sessions.
+<ul>
+<li>Diagram reordering is available via the context menu on the page tab section of the document window. Pages can be reordered by selecting the item and using the up/down buttons (Alt-Up and Alt-Down as shown on the button tooltips), or by drag-drop in the list. Note that primary selected item is distinguished by a solid selection rectangle with normal text (this is not my first choice, it is a control issue).</li>
+<li>The active diagram, as well as the center position and zoom for the last active view on a page, will be remember when the model is saved. If the <em>SaveDiagramPositions</em> property selection (available on any diagram) is set to false, then the position will not be saved with the file.</li>
+<li>Diagram position and activation changes do not support undo/redo. Activating a diagram or change the scroll/zoom state also does not cause the document to be marked as dirty, so you must explicitly save the file if other changes have not been made.</li>
+</ul>
+</li>
+</ul>
+
+<a href="#The Top">Return to top</a>
+<hr/>
+<h3><a id="Fact Editor">Fact Editor</a></h3>
+<ol>
+<li>The Fact Editor supports entering one line at a time, the current selection determines if a new FactType is created or if the selected FactType is edited. If you want to create a new FactType, make sure that an existing FactType is not selected.</li>
+<li>Fact Editor lines are committed using the Control-Enter keystroke.</li>
+<li>The Fact Editor now responds to changes in ObjectType and Role selection. Selecting roles in a non-default order in a FactType prompts the Fact Editor to edit the reading for that role order. You can also add new readings between object types by multi-selecting the target ObjectTypes. For example, to add a new FactType between ObjectTypes A and B, hold down the control key, click on A then B, then type WF (with the control key still down) to activate the FactEditor with the caret between the two Object Types.</li>
+<li>Selection of an objectified FactType is interpreted by the Fact Editor as a FactType selection, not an ObjectType selection. Selecting the ObjectType name (shown in quotes above the objectified FactType) is treated as a selection of the ObjectType.</li>
+<li>Entering one or more ObjectType names in the Fact Editor, including the trailing () to indicate a ValueType or (.id) for a simple reference scheme, will add just the ObjectTypes as long as text is not specified between any of the ObjectType names. So 'Person(.id) Car(.code) PersonName()' followed by Control-Enter will add two EntityTypes and one ValueType to the model.</li>
+<li><a id="FactEditor Inverse Readings 2009-01" class="new" title="January 2009 CTP: Fact Editor inverse readings">2009-01</a>&nbsp;
+Selecting a binary FactType with an inverse reading only will now display the inverse reading in the Fact Editor using a forward slash before the reading text. <em>A /s B</em> indicates an inverse reading, but no forward reading, for the selected order {A,B} order. This allows you to see an existing inverse reading without changing your selection, and to enter an inverse reading without a forward reading. If you leave a leading or trailing forward slash and a reading exists for that direction then the reading will be deleted. For example, changing <em>A r/s B</em> to <em>A r/ B</em> will remove the inverse <em>s</em> reading. However, changing to <em>A rr B</em> will modify the forward reading without touching the inverse reading.</li>
+</ol>
+<a href="#The Top">Return to top</a>
+<hr/>
+<h3><a id="Verbalization">Verbalization</a></h3>
+<ol>
+<li>
+<a id="Verbalization ValueConstraints 2008-10" class="new" title="October 2008 CTP: Verbalization of ValueConstraints added to all ObjectTypes">2008-10</a>&nbsp;
+The nearest value constraint (theoretically the most restrictive, although this condition is not validated yet in NORMA) is verbalized along with any EntityType that is identified by a single restricted value. Before this change, the value range for an EntityType with a reference mode would only verbalize with the identifying FactType or the implied ValueType. The designer showed the allowed values with the EntityType, but the verbalization and report engines did not.</li>
+<li><a id="Verbalization ReadingOrder 2008-10" class="new" title="October 2008 CTP: Verbalization respects preferred reading order">2008-10</a>&nbsp;
+The preferred reading order is now respected for all verbalization. The preferred reading order can be set using the 'ORM Reading Editor' dialog, but the order did not affect verbalization until this fix.</li>
+<li>
+<a id="Verbalization Hyperlinks 2008-10" class="new" title="October 2008 CTP: Verbalization Browser hyperlinks activated">2008-10</a>&nbsp;
+Many elements in the Verbalization Browser now have hyperlinks on them. The links are non-invasise because most of the elements have the potential to eventually be hyperlink—you will see a cursor change and subtle background color change when you mouse over a hyperlinked area. The following elements currently have links:<br/>
+<ul>
+<li><strong>ObjectTypes:</strong> Clicking the ObjectType name navigates to the ObjectType.</li>
+<li><strong>FactTypes:</strong> Clicking the predicate text selects the FactType. If the text for an implied FactType is shown (implied FactTypes result from explicit and implicit objectification and are frequently in the FactType path for relational columns) then the corresponding role for the objectified FactType is selected in a diagram. You can see and edit the readings for the implied binary FactType in the ORM Reading Editor tool window with this selection.</li>
+<li><strong>Errors:</strong> Clicking a validation error hyperlink has the same effect as double-clicking the corresponding error in the Visual Studio Error List window, selecting the error from the 'Validation Errors' menu, or double-clicking a hashed red shape on a diagram. The action is to first select the item with the error, the attempt to activate the necessary tool to fix the problem. For example, clicking an error indicating that a ValueType does not have a DataType specified will select the ValueType, open the Properties Window, select the DataType property, and open the dropdown. Note that error hyperlinks always select shapes in the main document window and cannot be redirected to the Diagram Spy window. This is done so that automatic tool activation has the best chance of success without covering the current selection [this design choice is still an open issue].</li>
+</ul>
+<br/>
+While the hyperlinks are great for navigating, they can produce strange results if the resulting HTML is copied and pasted. An alternate set of verbalization snippets
+have been provided to allow you to verbalize without hyperlinks. To turn off hyperlinks, open the Tools/Options dialog, select the 'ORM Designer' page, and open the
+dropdown for the 'Alternate Verbalization Text' property in the Verbalization category. In the tree control, expand 'Core ORM Verbalization' and 'Browser Settings'.
+Double-click the checkbox beside 'Default, No Hyperlinks' to choose the alternate verbalization. You can later select the 'Default Verbalization' setting to restore hyperlinks.
+</li>
+<li><a id="Verbalization FactTypesWithObjectType 2008-10" class="new" title="October 2008 CTP: Verbalization of associated FactTypes for ObjectType selection">2008-10</a>&nbsp;
+All FactTypes associated with an ObjectType are now shown with the verbalization for that ObjectType. This is turned on by default to facilitate navigating through a model using the hyperlinks in the Verbalization Browser. You can turn off FactType display by setting the 'Verbalize FactTypes with ObjectType' option in the 'ORM Designer' tab of the Tools/Options dialog to False.</li>
+<li>
+<a id="Verbalization Relational 2008-10" class="new" title="October 2008 CTP: Relational table and column verbalization">2008-10</a>&nbsp;
+Table elements now verbalize all of the top-level ObjectTypes that correspond to the table. The full FactType path is also verbalized for each column selection. These verbalizations, along with the new Diagram Spy window, allow the user to navigation through and edit ORM space while the Relational View remains the primary selected document.</li>
+</ol>
+<a href="#The Top">Return to top</a>
+<hr />
+<h3><a id="SamplePopulation">Sample Population</a></h3>
+<ol>
+<li><a id="SamplePopulation Keyboard 2008-10" class="new" title="October 2008 CTP: Sample population keyboard navigation">2008-10</a>&nbsp;
+Some of the sample population keyboard navigation issues have been addressed. We have not reached the point where you get a spreadsheet-like experience, where you can simply start typing in a text field and you automatically enter edit mode, but there were a number of improvements made that should improve the overall editing experience even without the automatic activation. In addition to the arrow keys used for moving between cells within the sample population grid, there are three keystrokes that are used for edit activation.
+<ul>
+<li><strong>F2</strong> activates an in-place edit control if one is not currently active</li>
+<li><strong>Escape</strong> deactivates an in-place control. Note that if you have a dropdown open, the first escape closes the dropdown, and the second escape deactivates the in-place editor. Be very careful with the third escape, which is associated with the global Visual Studio <em>Window.ActivateDocumentWindow</em> command, which deactivates the current tool window and reactivates the document window.</li>
+<li><strong>Alt-Down</strong> opens a dropdown window for the active in-place editor. You can use Alt-Down at any time instead of clicking the displayed down button.</li>
+</ul>
+Several bug fixes have been made for the 2008-10 drop.
+<ul>
+<li>The Escape key is now handled directly if an in-place editor is active. Previously, the keystroke was caught and handled by the global command handler, which activated the document window.</li>
+<li>If a cell is expanded, the Down key from the first element in the cell will move down the expanded tree, not to the next numbered row in that column. If a cell has a closed expansion, then <em>Right</em> will expand it and <em>Left</em> will collapse it. A second <em>Right</em> will move to the next column. You can also move to the next column without expanding with a <em>Tab</em>, but not if an in-place editor is open (<em>Tab</em> in this case will select the dropdown button).</li>
+<li>Only leaf nodes (ones without an expansion button) support direct text editing. However, non-leaf nodes were also activated with a read-only text box, which trapped navigation keys in the text box. Expandable cells are now activated with just the dropdown button and pass all keystrokes except <em>Alt-Down</em> and <em>Tab</em> to the main grid control. What this means for you is that, except for leaf nodes, the arrow keys work the same whether or not the dropdown button is visible.</li>
+</ul>
+</li>
+<li><a id="SamplePopulation Subtypes 2008-10" class="new" title="October 2008 CTP: Sample population of subtype instances">2008-10</a>&nbsp;
+Sample population supports population of subtypes without their own identifiers via a direct reference to an instance of the supertype that provides the identifier. Text editing is not enabled for subtype instances in the editor. Instead, the use can either choose from a pick list of existing supertype instances that are not currently link to another instance of the subtype, or expand the subtype node to add a new supertype instance. As the identifying supertype may not be an immediate supertype of the element, add an instance to a subtype will automatically populate intermediate supertypes.</li>
+<li><a id="SamplePopulation ObjectifiedFactType 2008-10" class="new" title="October 2008 CTP: Sample population referencing objectified FactType instances">2008-10</a>&nbsp;
+Objectified FactTypes can now be directly referenced and populated in the Sample Population editor. All FactType roles are displayed for any reference to an instance of an objectified FactType, even if the identifier only spans a portion of the roles in the FactType. Inline editing of a FactType instance is accomplished the same way as inline editing of complex identifiers, namely with an expansion within the editing cell that allows existing instances to be edited and new instances to be defined.</li>
+<li><a id="SamplePopulation ExternalObjectificationId 2008-10" class="new" title="October 2008 CTP: Sample population association of an objectified FactType instance with an external identifier">2008-10</a>&nbsp;
+Most objectified FactTypes use one of the internal uniqueness constraints of the FactType as the preferred identifier. However, any identification scheme (reference mode, complex, subtype, etc) can also be applied to an objectifying EntityType. By convention, an objectified FactType with an external identifier is shown with an extra lead column for the identifier. If the identifier is complex, then the contents of the first column are expandable. New validation errors have been added to verify that all objectified FactType instances are associated with an identifier instance, and vice versa. Unattached FactType instances are shown in the sample population editor, while unattached identifier instances are available in the instance picker dropdown in the first column. Activating the population error (via a double-click in the Error List, selecting the error in the 'Validation Errors' submenu, double-click the error shape, or clicking an error hyperlink in the Verbalization Browser) will activate the Sample Population Editor with the appropriate selection for fixing the error. To delete an external identification, select it as the identifier of an empty FactType instance, select the row by clicking the first column, and the press delete.</li>
+<li><a id="SamplePopulation CloneValueOnUse 2008-10" class="new" title="October 2008 CTP: Sample population handling of ValueType instances used in multiple relationships">2008-10</a>&nbsp;
+In previous builds, indirect editing of a ValueType used as an identifier would modify the value for all relationships. This is the expected behavior for popular reference modes, where the underlying ValueType is reference via a single relationship. However, it is completely inappropriate for general and unit-based reference mode patterns, where a single value can be used to identify multiple instances. To handle this case, a new value is now created if the old value participates in other FactType instances. To change all uses of a ValueType instance, select the ValueType itself and edit the instance.</li>
+<li><a id="SamplePopulation ImpliedFactTypePopulations 2008-10" class="new" title="October 2008 CTP: Sample population implied FactType instances for common FactType patterns">2008-10</a>&nbsp;
+Most models have a number of FactType populations that are fully implied by one of the role players. The most common of these cases is the standard reference mode pattern, where the population of a one-to-one FactType is implied by the identified EntityType. Other FactType patterns that are implied are SubtypeFacts where the subtype uses a supertype identifier and the binary FactTypes implied by an objectification pattern. Implied FactTypes appear read-only in the sample population editor.</li>
+</ol>
+<a href="#The Top">Return to top</a>
+<hr />
+<h3><a id="Notation">ORM Notation</a></h3>
+<ol>
+<li>The displayed reference mode notation corresponds to notational changes introduced in <em>Information Modeling and Relational Databases</em> (Second Edition by Terry Halpin and Tony Morgan, March 2008). A . (period) is prepended to popular reference modes and a : is appended to unit-based reference modes. We will eventually expand the : notation to formally recognized units of comparable dimension (length, for example). Entering either of these notations will automatically introduce a new recognized reference mode pattern to the model. You can see the reference modes you've added in the 'ORM Reference Mode Editor' tool window.</li>
+<li>A solid subtyping line indicates that the subtyping relationship leads to the preferred identifier directly or indirectly (over other supertypes). The old notation marked a primary supertype even if the subtype had an explicit preferred identifier. If multiple paths now lead to the preferred identifier then all paths will be solid. The old 'IsPrimary' notion will be updated when the .orm file is loaded. Loading a modified file on a previous NORMA version will now give schema validation errors on load, but the file should load successfully if the Shift key is held down during load (follow the directions in the schema validation error dialog).</li>
+<li>There is an option called <em>Binary FactType Multiplicity Display</em> in the <em>Entity Relationship Learning Mode</em> category on the 'ORM Designer' tab of the Tools/Options diagram. Enabling this options overlays common Entity Relationship (ER) multiplicity notations on binary FactTypes on the ORM diagram. You can choose CrowsFoot only (displays many), Barker notation (crowsfoot plus dotted line on mandatory roles), or Information Engineering (line symbols correspond to the UML-ish derived Multiplicity property in the Properties Window when a Role is selected). The display changes impact binary role player links only—the multiplicity concept breaks down badly when applied to non-binary facts. Thanks to Dr. Gordon Everest for the suggestion. The Barker option only applies to multiplicity settings; it does not add the tick on the line indicating a part of the identification scheme. The 'Mandatory Dot Placement' option is ignored when ER learning mode is enabled, so mandatory dots will always be displayed on the Role end of the relationship.</li>
+<li><a id="Notation SubtypeDerivation 2008-10" class="new" title="October 2008 CTP: Subtype derivation rules">2008-10</a>&nbsp;
+Although derivation rules in NORMA are still informal, they are now display them in the right place. All derivation rules were originally displayed on the FactType and the SubtypeFact. This convention rapidly breaks down for SubtypeFact relationships because one subtype can have multiple supertypes, and because there is no good way to indicate the presence of a subtype derivation rule on the diagram.
+<ul>
+<li>Derivation rules are now available for any subtype, and are no longer available on the SubtypeFact relationship.</li>
+<li>The presence of a derivation rule on a Subtype is indicated with a * decoration on the Subtype.</li>
+<li>Any existing derivation rules on the SubtypeFact will be moved to the Subtype when an existing document loads.</li>
+<li>If you have a subtype derivation rule but delete the subtype relationship, then the rule will be remembered but ignored and not saved,
+so changing the subtype relationship in the same session will not lose your derivation rule.</li>
+<li>Verbalization of derivation rules has not been done.</li>
+</ul>
+</li>
+</ol>
+<a href="#The Top">Return to top</a>
+<hr />
+<h3><a id="Notes and Definitions">Notes and Informal Definitions</a></h3>
+<ol>
+<li>An informal definition field is available for FactType and ObjectType elements. The 'ORM Informal Definition Window' works like the 'ORM Notes Window' (changes are committed on focus change). You can also enter informal definition text in the properties window. Definitions verbalize and can also be displayed in tooltips with the 'Show Definition Tooltips' option, which is off by default. Informal definitions are not formal derivation rules and have no impact on the formal interpretation of the model. We will eventually support links to other terms, but for now this field is just plain text.</li>
+<li><a id="Model Definitions 2008-10" class="new" title="October 2008 CTP: Model definition and notes">2008-10</a>&nbsp;
+The Notes and InformationDefinition semantics are now supported with a Model selection. The resulting information is verbalized and appears in the generated reports.</li>
+</ol>
+<a href="#The Top">Return to top</a>
+<hr/>
+<h3><a id="Relational">Relational Extensions</a></h3>
+<ol>
+<li>A relational model is generated automatically in NORMA when you turn on the 'Map to Relational Model' extension. All extensions are available using the 'Extension Manager...' dialog on the main NORMA designer context menu. The tool supports 'live' regeneration of the relational model, but does not yet support incremental generation. The clearest evidence you'll see of the regeneration is that the Tables expansion in the Relational Schema (shown in the model browser) will collapse when significant changes are made to the model. Some things are incremental (name changes, mandatories on one-to-many binary fact types), but the majority of ORM changes will result in a full regeneration of the relational model.</li>
+<li>Once you've turned on the 'Map to Relational Model' extension, you will now have a 'Relational Schema' node in the 'ORM Model Browser' (available under 'ORM Tool Windows' on the context menu,Ctrl-W,Ctrl-M). You can expand the nodes here to see what will be generated. As noted earlier, the displayed relational model is frequently regenerated. Usability note: the * key on your number pad (or via Num Lock on a laptop keyboard) recursively expands treeview nodes.</li>
+<li>The 'Relational View' extension provides a live view on the relational model, but is not required to see the relational information. The 'Relational View' is also a placeholder for later work and can be a performance drain. Selecting a table or column in the relational view is equivalent to selecting the same table or column in the 'ORM Model Browser' window. The Relational View performs very badly because the shapes are fully regenerated (and the lines rerouted) for most ORM changes. As with the 'Relational Schema' expansion in the model browser, property changes made to the model are not validated and will be overwritten the next time the relational model is generated. A performant and well designed relational view has been specified (see 'Documentation\Relational Designer' in the source code), but requires fully incremental relational changes to be successful.</li>
+<li>The displayed relational model is not yet self-validating (we simply generate a correct model), so there are a number of changes that can be made that are inconsistent with the ORM model and other parts of the relational model, such as changing the Column.IsNullable or UniquenessConstraint.IsPrimary properties. These changes will be lost on the next regeneration triggered by an ORM modification. Also, the algorithm version used to generate the relational model is now stored with the .orm file. Opening an existing file with newer version of NORMA may result in a regeneration of the relational model.</li>
+<li>The exception to 'change at your own risk' with generated relational properties is the DataType property displayed on a column. Changing the DataType (and related DataTypePrecsion/DataTypeLength/DataTypeScale properties) on the column  makes the corresponding change directly on the underlying ValueType in the ORM model. The implications of these DataType are easiest to see in the 'Relational View' with datatype display enabled.</li>
+<li>You will see additional properties on SubtypeFacts and ObjectTypes when the extension models are turned on. These properties are displayed under the 'Relational Mapping' category and allow you to control absorption/separation/partitioning of tables. Partitioning is offered only when an XOr constraint exists between all subtypes (the exclusion and mandatory constraints must be joined, select both and use the 'Combine as Exclusive Or Constraint' context menu to create a formal relationship between the two constraints).</li>
+<li>We now have two parallel generation algorithms examining the ORM model. The current algorithm is only used when generating DDL and for the LinqToSqlAttributeMapping generator (Visual Studio 2008 only). The older code generation pieces (Plix Implementation in the generator settings dialog) are not yet using the new information. If you have an existing project with old DDL generation, it is likely you are not picking up the new generator. To fix this problem, select the .ORM file in the Solution Explorer, open the 'ORMGeneratorSettings' dialog, and expand the 'Intermediate and Secondary Files' and 'DCIL' nodes. The DCIL node should contain the 'ConceptualDB to DCIL' and 'OIAL to DCIL' generation choices. Make sure the first one is selected. This will also automatically load the required extensions when you 'Save Changes' in the 'ORM Generator Selection' dialog. In the future, all generation will use the same absorption source.</li>
+<li>Column name generation has an extensive set of options. Names should now be shorter and less repetitive with other names. The main point of control for name generation is specifying how popular, unit-based, and general reference mode patterns are used when referencing EntityTypes or specifying identifying columns. The default settings for these are available on the model itself (under the 'Relational Mapping' categories) and are repeated under the 'Name Generation Settings' branch (specifically the Column Specific refinement of the 'Relational Names' branch). Overrides for individual EntityTypes are available by selecting that EntityType.</li>
+<li>Additional abbreviation of individual ObjectType names as well as specific phrases are available in the 'Abbreviations' dialog for any of the Name Generation Settings nodes. Phrase abbreviations can include multiple words and can map to empty strings, which will omit the phrase. Phrases are treated case insensitively for replacement. Note that each child node in the Name Generation Settings branch is a refinement of the parent node and affects the scope where the abbreviation is supplied and all children. For example, changes made with the <em>Relational Names</em> node selected apply to both column and table names.</li>
+</ol>
+<a href="#The Top">Return to top</a>
+<hr/>
+<h3><a id="Database Import">Database Import</a></h3>
+<ol>
+<li>When you add a new file you will now see both an 'Object-Role Modeling File' and 'Object-Role Modeling (DBImport)' choice. We currently support import from SQL Server and MySQL databases. You will be asked to choose a single schema during import. Importing multiple schemas in a single step is not currently supported.</li>
+<li>After you choose your import schema, you will be prompted twice for various options. This happens because the wizard portion of the importer generates an XML file in DCIL format (the format we use during generation to represent a database). This file is then run through the normal import mechanism, which recursively runes XSLT transforms against the starting XML until the result of the transform can be loaded natively. For database import, we run three transforms. The first has no options, the second generates an ORM model with core elements only (the first prompt), the third transform (the second prompt asking about shape population) adds diagram information and produces a designer-compliant file format.</li>
+</ol>
+<a href="#The Top">Return to top</a>
+<hr/>
+<h3><a id="Code Generation">Code Generation</a></h3>
+<ol>
+<li>There are currently several options for generating an object model from an ORM model, but only one (LinqToSqlAttributeMapping on Visual Studio 2008) is up to date. The older generation layers are based on an XSLT absorption algorithm that is several generations behind our current absorption algorithm. The other generation layers (PLiX_Implementation, PHPEntitiesImplementation) are included for those who already use them, but we can't recommend that you base extensive development on them. We will note in the readme when this status changes.</li>
+<li><a id="CodeGeneration LinqToSqlSettings 2008-10" class="new" title="October 2008 CTP: LinqToSql settings changes">2008-10</a>&nbsp;
+The settings file for the LinqToSqlAttributeMapping layer has been updated. This file is generated once then left for you to edit. We will eventually have a mechanism for automatically updating the settings file to integrate your settings with new schema information, but this feature has not been completed. You will need to use the ORMGeneratorSettings dialog to turn off the generated layer, save your changes, then reopen the dialog to turn the generator back on. You will need to reapply any customizations you made to the settings file (copy them before the file is regenerated).</li>
+<li>If you are using the PLiX_Implementation generation classes, then the global support classes (shown in the generators dialog as PLiX_Support) must be selected for exactly one model in your project. This is no longer an automatic prerequisite because this forces it to be generated for all .ORM files, which will block compilation.</li>
+</ol>
+<a href="#The Top">Return to top</a>
+<hr/>
+<h3><a id="Reporting Issues">Instructions for reporting issues in NORMA</a></h3>
+<ol>
+<li>NORMA issues should be reported to the <a href="http://www.ormfoundation.org/forums/30.aspx">NORMA Technical support</a> forum on the <a href="http://www.ormfoundation.org">ORM foundation</a> site.</li>
+<li>The posted NORMA versions are debug builds. This means that asserts are enabled in the code base. The asserts basically say 'you've reached a state that wasn't expected'. Assert dialogs are not crashes. They are meant to help the developer determine how an unexpected state was reached and handle the case. You will see three buttons on the dialog box (Abort, Retry, Ignore). Your default reaction to an assert dialog should be to:
+<ul>
+<li>Ctrl-C to copy the assert dialog contents, which will include a message and a callstack. Paste into notepad to make sure you have the contents before closing the dialog.</li>
+<li>Press Ignore to continue with NORMA. Abort will end the program immediately, Retry will attempt to attach a debugger. Obviously, if the asserts keep coming you may eventually have to quit, but most of these asserts can be ignored and you will be able to save.</li>
+<li>Attempt to reproduce the condition and report the issue.</li>
+</ul></li>
+<li>You will also see 'crash' dialogs from Visual Studio. NORMA is written in managed .NET code, while VS itself is a native (C++) framework. If you see a crash dialog, it generally means that an exception made it past the .NET code, but was handled by the native code. In most cases, you can safely continue and keep running. Do not panic and abort the program unless the dialog keeps coming back. You should also be able to get a callstack. A couple of NORMA notes in this area.
+<ul>
+<li>NORMA is built on a transacted object model, so if you get an exception during a transaction (basically, any user action such as setting a property. A single transaction corresponds to one item on the undo stack) then the state is already rolled back before you even see the dialog.</li>
+<li>Another set of exceptions comes from tool windows. All exceptions in NORMA tool windows are cached and displayed after all tool windows have finished updating. This was added as a stability feature to stop one unhandled transaction state or poorly implemented tool window from taking down all of VS. However, a successful recovery does not help if you abort the process.</li>
+</ul></li>
+</ol>
+<hr/>
+<h3><a id="Mystery Bugs">Mystery Bugs</a></h3>
+<p>If you encounter these issues or have a reproducible scenario, please <a href="#Reporting Issues">let us know</a>.</p>
+<ol>
+<li>We have had cases where the Custom Properties extension does not work correctly on Vista. The 'PropertiesEditor' property is available on the model, but the custom properties do not appear on the target elements. This does not happen on all machines, but when it does, the workaround is to launch VS2008 as an administrator instead of as a normal user.</li>
+<li>The FactEditor has refused to load properly immediate after installation on Visual Studio 2008. Restarting Visual Studio fixed the problem.</li>
+</ol>
+</body>
+</html>

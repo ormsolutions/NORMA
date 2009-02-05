@@ -17,6 +17,7 @@
 	<Fragment>
 		<ComponentGroup Id="MainFeatureComponents">
 			<ComponentRef Id="LicenseFilesComponent"/>
+			<ComponentRef Id="ReadmeComponent"/>
 			<ComponentRef Id="NORMAVSPackageComponent"/>
 			<ComponentRef Id="NORMAVSPackageGACComponent"/>
 			<ComponentRef Id="NORMAVSSchemaCatalogComponent"/>

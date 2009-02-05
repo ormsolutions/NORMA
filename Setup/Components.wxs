@@ -67,6 +67,11 @@
 								DefaultLanguage="0" CompanionFile="Neumont.Tools.ORM$(var.VSExt).dll"/>
 						</Component>
 
+						<Component Id="ReadmeComponent" Guid="818AC083-01BC-4DBC-$(var.VersionGuidSuffix)" DiskId="1" Win64="$(var.Win64)" KeyPath="yes">
+							<File Id="Readme.htm" Name="Readme.htm" Source="Readme.htm"
+								DefaultLanguage="0" CompanionFile="Neumont.Tools.ORM$(var.VSExt).dll"/>
+						</Component>
+
 						<Directory Id="BINDIR" Name="bin">
 
 							<!-- Executables and PDBs go here -->
