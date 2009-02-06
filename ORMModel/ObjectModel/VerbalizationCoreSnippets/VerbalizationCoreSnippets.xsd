@@ -733,8 +733,8 @@
 					<xs:annotation>
 						<xs:documentation>
 							Description: Verbalizes that an object occurs at most once or more than once in a given population.
-							Format positive: {0} occurs at most once in the population of {1}
-							Format negative: {0} occurs more than once in the population of {1}
+							Format positive: in each population of {1}, {0} occurs at most once
+							Format negative: {0} occurs more than once in the same population of {1}
 						</xs:documentation>
 					</xs:annotation>
 				</xs:enumeration>
