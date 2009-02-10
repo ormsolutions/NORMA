@@ -138,7 +138,7 @@ namespace Neumont.Tools.ORM.ORMCustomTool
 			}
 			assemblyName.CodeBase = codeBase;
 
-			return (IORMGenerator)Activator.CreateInstance(Assembly.Load(assemblyName).GetType(typeName, true, false));
+			return (IORMGenerator)Activator.CreateInstance(Assembly.Load(assemblyName).GetType(typeName, true, false), generatorKey);
 		}
 	}
 }

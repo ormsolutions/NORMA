@@ -429,14 +429,13 @@ namespace Neumont.Tools.ORM.Shell
 						if (hadRevisionsKey && hitCount != valueNames.Length)
 						{
 							refreshRequired = true;
-							for (int i = 0; i < valueNames.Length; --i)
+							for (int i = 0; i < valueNames.Length; ++i)
 							{
 								string removeValue = valueNames[i];
 								if (removeValue != null)
 								{
 									toolboxRevisionsKey.DeleteValue(removeValue, false);
 								}
-
 							}
 						}
 					}
