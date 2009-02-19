@@ -132,7 +132,7 @@ namespace Neumont.Tools.ORM.ObjectModel
 		private void MergeRelateObjectType(ModelElement sourceElement, ElementGroup elementGroup)
 		{
 			ObjectType objectType = sourceElement as ObjectType;
-			if (elementGroup.UserData == ORMModel.ValueTypeUserDataKey)
+			if (ORMModel.ValueTypeUserDataKey.Equals(elementGroup.UserData as string))
 			{
 				objectType.DataType = ((ORMModel)this).DefaultDataType;
 			}
@@ -150,7 +150,7 @@ namespace Neumont.Tools.ORM.ObjectModel
 		}
 		private bool CanMergeSetConstraint(ProtoElementBase rootElement, ElementGroupPrototype elementGroupPrototype)
 		{
-			return elementGroupPrototype.UserData != ORMModel.InternalUniquenessConstraintUserDataKey;
+			return !ORMModel.InternalUniquenessConstraintUserDataKey.Equals(elementGroupPrototype.UserData as string);
 		}
 		#endregion // MergeContext functions
 	}
@@ -161,12 +161,12 @@ namespace Neumont.Tools.ORM.ObjectModel
 		/// Used as the value for <see cref="ElementGroup.UserData"/> to indicate that the
 		/// <see cref="ObjectType"/> should be a ValueType.
 		/// </summary>
-		public static readonly object ValueTypeUserDataKey = new object();
+		public const string ValueTypeUserDataKey = "CreateAsValueType";
 		/// <summary>
 		/// Used as the value for <see cref="ElementGroup.UserData"/> to indicate that the
 		/// <see cref="UniquenessConstraint"/> is internal.
 		/// </summary>
-		public static readonly object InternalUniquenessConstraintUserDataKey = new object();
+		public const string InternalUniquenessConstraintUserDataKey = "CreateAsInternalUniqueness";
 		#endregion // ElementGroup.UserData keys
 		#region Entity- and ValueType specific collections
 		/// <summary>

@@ -420,7 +420,7 @@ namespace Neumont.Tools.ORM.ObjectModel
 				DomainClassInfo classInfo = Store.DomainDataDirectory.FindDomainClass(rootElement.DomainClassId);
 				if (classInfo.IsDerivedFrom(UniquenessConstraint.DomainClassId))
 				{
-					return elementGroupPrototype.UserData == ORMModel.InternalUniquenessConstraintUserDataKey;
+					return ORMModel.InternalUniquenessConstraintUserDataKey.Equals(elementGroupPrototype.UserData as string);
 				}
 			}
 			return false;
