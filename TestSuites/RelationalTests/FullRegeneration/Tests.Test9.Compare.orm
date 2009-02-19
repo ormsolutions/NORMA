@@ -1,4 +1,5 @@
-﻿<ormRoot:ORM2 xmlns:orm="http://schemas.neumont.edu/ORM/2006-04/ORMCore" xmlns:ormDiagram="http://schemas.neumont.edu/ORM/2006-04/ORMDiagram" xmlns:oial="http://schemas.neumont.edu/ORM/Abstraction/2007-06/Core" xmlns:odt="http://schemas.neumont.edu/ORM/Abstraction/2007-06/DataTypes/Core" xmlns:rcd="http://schemas.neumont.edu/ORM/Relational/2007-06/ConceptualDatabase" xmlns:ddt="http://schemas.orm.net/DIL/DILDT" xmlns:ormtooial="http://schemas.neumont.edu/ORM/Bridge/2007-06/ORMToORMAbstraction" xmlns:oialtocdb="http://schemas.neumont.edu/ORM/Bridge/2007-06/ORMAbstractionToConceptualDatabase" xmlns:ormRoot="http://schemas.neumont.edu/ORM/2006-04/ORMRoot">
+﻿<?xml version="1.0" encoding="utf-8"?>
+<ormRoot:ORM2 xmlns:orm="http://schemas.neumont.edu/ORM/2006-04/ORMCore" xmlns:ormDiagram="http://schemas.neumont.edu/ORM/2006-04/ORMDiagram" xmlns:oial="http://schemas.neumont.edu/ORM/Abstraction/2007-06/Core" xmlns:odt="http://schemas.neumont.edu/ORM/Abstraction/2007-06/DataTypes/Core" xmlns:rcd="http://schemas.neumont.edu/ORM/Relational/2007-06/ConceptualDatabase" xmlns:ddt="http://schemas.orm.net/DIL/DILDT" xmlns:ormtooial="http://schemas.neumont.edu/ORM/Bridge/2007-06/ORMToORMAbstraction" xmlns:oialtocdb="http://schemas.neumont.edu/ORM/Bridge/2007-06/ORMAbstractionToConceptualDatabase" xmlns:ormRoot="http://schemas.neumont.edu/ORM/2006-04/ORMRoot">
 	<orm:ORMModel id="_36E685DF-CF7F-4948-B8F6-062E91C68661" Name="ORMModel1">
 		<orm:Objects>
 			<orm:EntityType id="_D9FCA31C-2693-4CA3-9334-A406C577D09D" Name="A" _ReferenceMode="id">
@@ -360,7 +361,7 @@
 	</orm:NameGenerator>
 	<orm:GenerationState id="_60A97CA1-7A34-40BD-A48A-DE043570D047">
 		<orm:GenerationSettings>
-			<ormtooial:AbstractionModelGenerationSetting id="_FA93223F-D82D-479F-A103-D8886756E8E2" AlgorithmVersion="1.004">
+			<ormtooial:AbstractionModelGenerationSetting id="_FA93223F-D82D-479F-A103-D8886756E8E2" AlgorithmVersion="1.005">
 				<ormtooial:AbstractionModel ref="_2F7377B5-BC91-4951-B9DC-8D6389C48738" />
 			</ormtooial:AbstractionModelGenerationSetting>
 			<oialtocdb:SchemaGenerationSetting id="_833EE616-E4B4-4F9E-9DBC-522A018D54FC" CoreAlgorithmVersion="1.004" NameAlgorithmVersion="1.009">
@@ -491,12 +492,12 @@
 	</rcd:Catalog>
 	<ormtooial:Bridge>
 		<ormtooial:AbstractionModelIsForORMModel id="_4BAE3DA1-2B1C-475B-BDF8-35B89DEED777" AbstractionModel="_2F7377B5-BC91-4951-B9DC-8D6389C48738" ORMModel="_36E685DF-CF7F-4948-B8F6-062E91C68661" />
-		<ormtooial:FactTypeMapsTowardsRole id="_1EF0D7D1-C318-4388-9371-90DC0B08E74A" FactType="_BBEADF8C-4D2C-4F18-A07E-759E9FDF654B" TowardsRole="_63BB7FE2-DF76-4B51-B209-3D4B1C792C9E" Depth="Shallow" UniquenessPattern="OneToOne" MandatoryPattern="BothRolesMandatory" />
+		<ormtooial:FactTypeMapsTowardsRole id="_1EF0D7D1-C318-4388-9371-90DC0B08E74A" FactType="_BBEADF8C-4D2C-4F18-A07E-759E9FDF654B" TowardsRole="_63BB7FE2-DF76-4B51-B209-3D4B1C792C9E" Depth="Shallow" UniquenessPattern="OneToOne" MandatoryPattern="TowardsRoleMandatory" />
 		<ormtooial:FactTypeMapsTowardsRole id="_62BF349C-782E-4876-9D7A-4AE7C4BD0EA8" FactType="_22F2514E-8548-4332-9D02-1794AE260282" TowardsRole="_64A19A2D-CF6C-4D00-8E32-BA1C189F251C" Depth="Deep" UniquenessPattern="Subtype" MandatoryPattern="OppositeRoleMandatory" />
-		<ormtooial:FactTypeMapsTowardsRole id="_A9085210-8550-43AF-AF61-36B5E74869E8" FactType="_6FD5DEFA-D0C2-4A54-B861-F804762E2B66" TowardsRole="_363F89D4-548C-4753-866C-94C52EACAF89" Depth="Deep" UniquenessPattern="OneToOne" MandatoryPattern="BothRolesMandatory" />
+		<ormtooial:FactTypeMapsTowardsRole id="_A9085210-8550-43AF-AF61-36B5E74869E8" FactType="_6FD5DEFA-D0C2-4A54-B861-F804762E2B66" TowardsRole="_363F89D4-548C-4753-866C-94C52EACAF89" UniquenessPattern="OneToOne" Depth="Shallow" MandatoryPattern="TowardsRoleMandatory" />
 		<ormtooial:FactTypeMapsTowardsRole id="_144774FC-47A6-43BC-A760-CB57FE976126" FactType="_66E5B5E6-97C2-45F1-A168-358969CBBE57" TowardsRole="_DA32C816-9CD0-4856-8A51-FA194D8724A8" Depth="Deep" UniquenessPattern="Subtype" MandatoryPattern="OppositeRoleMandatory" />
 		<ormtooial:FactTypeMapsTowardsRole id="_B6ED0344-B682-4DB1-A11E-CBA594AA27D9" FactType="_056DAFDA-2D49-4C46-9B2A-547FE7E65FA9" TowardsRole="_D969CB7B-769C-4068-A777-2A728A387DE0" Depth="Shallow" UniquenessPattern="OneToMany" MandatoryPattern="TowardsRoleMandatory" />
-		<ormtooial:FactTypeMapsTowardsRole id="_265D0128-BA94-4387-9191-9AC96F954BCF" FactType="_4AE25796-923C-46DA-816E-C35BF4FEDACE" TowardsRole="_66E0A19B-76BB-4475-97B9-3B84D3480F92" Depth="Shallow" UniquenessPattern="OneToOne" MandatoryPattern="BothRolesMandatory" />
+		<ormtooial:FactTypeMapsTowardsRole id="_265D0128-BA94-4387-9191-9AC96F954BCF" FactType="_4AE25796-923C-46DA-816E-C35BF4FEDACE" TowardsRole="_66E0A19B-76BB-4475-97B9-3B84D3480F92" Depth="Shallow" UniquenessPattern="OneToOne" MandatoryPattern="TowardsRoleMandatory" />
 		<ormtooial:ConceptTypeIsForObjectType id="_FC76D19F-9A01-4655-A39E-E187B4AB250B" ConceptType="_A532744F-A5A3-4FA6-A046-0F60B1FB712D" ObjectType="_D9FCA31C-2693-4CA3-9334-A406C577D09D" />
 		<ormtooial:ConceptTypeIsForObjectType id="_01422E20-207F-4CD7-B018-AA06A09BEC57" ConceptType="_E8D28583-5F61-4DC1-80CA-90AD28466330" ObjectType="_6E959790-37D7-4B82-8415-19CFF4522177" />
 		<ormtooial:ConceptTypeIsForObjectType id="_31BF6D01-89E6-4AFB-BBED-E5B0D3111248" ConceptType="_83732391-4CCF-4761-9E22-EB6708996EA0" ObjectType="_65DA2E36-6589-4B3B-A201-0216E797DCE0" />

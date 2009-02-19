@@ -34,7 +34,7 @@ namespace Neumont.Tools.ORMToORMAbstractionBridge
 		/// <summary>
 		/// The algorithm version written to the file
 		/// </summary>
-		public const string CurrentAlgorithmVersion = "1.004";
+		public const string CurrentAlgorithmVersion = "1.005";
 		#endregion // CurrentAlgorithmVersion constant
 		#region ValidationPriority enum
 		/// <summary>
@@ -330,25 +330,42 @@ namespace Neumont.Tools.ORMToORMAbstractionBridge
 					// We don't need to worry about shallow mappings towards preferred identifiers on many-to-ones, since the preferred
 					// identifier pattern ensures that these cases will always map towards the object type being identified anyway.
 
+					const int FIRST_SECOND_SHALLOW = 1;
+					const int FIRST_SECOND_DEEP = 2;
+					const int SECOND_FIRST_SHALLOW = 4;
+					const int SECOND_FIRST_DEEP = 8;
+					int possibilityBits = 0;
+
 					// If only firstRole is unique...
 					if (firstRoleIsUnique && !secondRoleIsUnique)
 					{
 						// Shallow map toward firstRolePlayer.
-						FactTypeMapping factTypeMapping = new FactTypeMapping(factType, secondRole, firstRole, MappingDepth.Shallow);
-
-						decidedManyToOneFactTypeMappings.Add(factType, factTypeMapping);
+						possibilityBits |= SECOND_FIRST_SHALLOW;
 					}
 					else if (!firstRoleIsUnique && secondRoleIsUnique) // ...only secondRole is unique...
 					{
 						// Shallow map toward secondRolePlayer.
-						FactTypeMapping factTypeMapping = new FactTypeMapping(factType, firstRole, secondRole, MappingDepth.Shallow);
-
-						decidedManyToOneFactTypeMappings.Add(factType, factTypeMapping);
+						possibilityBits |= FIRST_SECOND_SHALLOW;
 					}
 					else if (firstRoleIsUnique && secondRoleIsUnique) // ...both roles are unique...
 					{
-						bool firstRoleIsMandatory = (firstRole.SingleRoleAlethicMandatoryConstraint != null);
-						bool secondRoleIsMandatory = (secondRole.SingleRoleAlethicMandatoryConstraint != null);
+						MandatoryConstraint mandatory;
+						bool firstRoleIsMandatory = ((mandatory = firstRole.SingleRoleAlethicMandatoryConstraint) != null);
+						bool firstRoleIsImpliedMandatory = firstRoleIsMandatory && mandatory.IsImplied;
+						bool secondRoleIsMandatory = ((mandatory = secondRole.SingleRoleAlethicMandatoryConstraint) != null);
+						if (firstRoleIsImpliedMandatory ^ (secondRoleIsMandatory && mandatory.IsImplied))
+						{
+							// Adjust mandatory patterns to ignore implied mandatory on naturally asymmetric
+							// one-to-one relationships.
+							if (firstRoleIsImpliedMandatory)
+							{
+								firstRoleIsMandatory = !secondRoleIsMandatory;
+							}
+							else
+							{
+								secondRoleIsMandatory = !firstRoleIsMandatory;
+							}
+						}
 
 						// If this is a ring fact type...
 						if (firstRolePlayer == secondRolePlayer)
@@ -357,23 +374,17 @@ namespace Neumont.Tools.ORMToORMAbstractionBridge
 							if (firstRoleIsMandatory && !secondRoleIsMandatory)
 							{
 								// Shallow map toward firstRolePlayer (mandatory role player).
-								FactTypeMapping factTypeMapping = new FactTypeMapping(factType, firstRole, secondRole, MappingDepth.Shallow);
-
-								decidedOneToOneFactTypeMappings.Add(factType, factTypeMapping);
+								possibilityBits |= FIRST_SECOND_SHALLOW;
 							}
 							else if (!firstRoleIsMandatory && secondRoleIsMandatory) // ...only secondRole is mandatory...
 							{
 								// Shallow map toward secondRolePlayer (mandatory role player).
-								FactTypeMapping factTypeMapping = new FactTypeMapping(factType, secondRole, firstRole, MappingDepth.Shallow);
-
-								decidedOneToOneFactTypeMappings.Add(factType, factTypeMapping);
+								possibilityBits |= SECOND_FIRST_SHALLOW;
 							}
 							else // ...otherwise...
 							{
 								// Shallow map toward firstRolePlayer.
-								FactTypeMapping factTypeMapping = new FactTypeMapping(factType, firstRole, secondRole, MappingDepth.Shallow);
-
-								decidedOneToOneFactTypeMappings.Add(factType, factTypeMapping);
+								possibilityBits |= FIRST_SECOND_SHALLOW;
 							}
 						}
 						else // ...not a ring fact type...
@@ -382,8 +393,6 @@ namespace Neumont.Tools.ORMToORMAbstractionBridge
 							bool firstRoleIsUniqueAndPreferred = firstRoleIsUnique && firstRoleUniquenessConstraint.IsPreferred;
 							bool secondRoleIsUniqueAndPreferred = secondRoleIsUnique && secondRoleUniquenessConstraint.IsPreferred;
 
-							FactTypeMappingList potentialFactTypeMappings = new FactTypeMappingList();
-
 							// If neither role is mandatory...
 							if (!firstRoleIsMandatory && !secondRoleIsMandatory)
 							{
@@ -391,53 +400,53 @@ namespace Neumont.Tools.ORMToORMAbstractionBridge
 								if (!firstRoleIsUniqueAndPreferred)
 								{
 									// Shallow map toward firstRolePlayer.
-									potentialFactTypeMappings.Add(new FactTypeMapping(factType, secondRole, firstRole, MappingDepth.Shallow));
+									possibilityBits |= SECOND_FIRST_SHALLOW;
 								}
 
-								// If seccondRole is not preferred...
+								// If secondRole is not preferred...
 								if (!secondRoleIsUniqueAndPreferred)
 								{
 									// Shallow map toward secondRolePlayer.
-									potentialFactTypeMappings.Add(new FactTypeMapping(factType, firstRole, secondRole, MappingDepth.Shallow));
+									possibilityBits = FIRST_SECOND_SHALLOW;
 								}
 							}
 							else if (firstRoleIsMandatory && !secondRoleIsMandatory) // ...only firstRole is mandatory...
 							{
-								// If firstRole is not preferred...
-								if (!firstRoleIsUniqueAndPreferred)
-								{
-									// Shallow map toward firstRolePlayer.
-									potentialFactTypeMappings.Add(new FactTypeMapping(factType, secondRole, firstRole, MappingDepth.Shallow));
-								}
+								// Note that the first role cannot be be preferred if the second role is not mandatory
+								// Shallow map toward firstRolePlayer.
+								possibilityBits |= SECOND_FIRST_SHALLOW;
 
-								// If seccondRole is not preferred...
-								if (!secondRoleIsUniqueAndPreferred)
+								if (secondRolePlayer.ImpliedMandatoryConstraint == null)
 								{
-									// Shallow map toward secondRolePlayer.
-									potentialFactTypeMappings.Add(new FactTypeMapping(factType, firstRole, secondRole, MappingDepth.Shallow));
-								}
+									// If secondRole is not preferred...
+									if (!secondRoleIsUniqueAndPreferred)
+									{
+										// Shallow map toward secondRolePlayer.
+										possibilityBits |= FIRST_SECOND_SHALLOW;
+									}
 
-								// Deep map toward secondRolePlayer.
-								potentialFactTypeMappings.Add(new FactTypeMapping(factType, firstRole, secondRole, MappingDepth.Deep));
+									// Deep map toward secondRolePlayer.
+									possibilityBits |= FIRST_SECOND_DEEP;
+								}
 							}
 							else if (!firstRoleIsMandatory && secondRoleIsMandatory) // ...only secondRole is mandatory...
 							{
-								// If firstRole is not preferred...
-								if (!firstRoleIsUniqueAndPreferred)
+								if (firstRolePlayer.ImpliedMandatoryConstraint == null)
 								{
-									// Shallow map toward firstRolePlayer.
-									potentialFactTypeMappings.Add(new FactTypeMapping(factType, secondRole, firstRole, MappingDepth.Shallow));
+									// If firstRole is not preferred...
+									if (!firstRoleIsUniqueAndPreferred)
+									{
+										// Shallow map toward firstRolePlayer.
+										possibilityBits |= SECOND_FIRST_SHALLOW;
+									}
+
+									// Deep map toward firstRolePlayer.
+									possibilityBits |= SECOND_FIRST_DEEP;
 								}
 
-								// Deep map toward firstRolePlayer.
-								potentialFactTypeMappings.Add(new FactTypeMapping(factType, secondRole, firstRole, MappingDepth.Deep));
-
-								// If seccondRole is not preferred...
-								if (!secondRoleIsUniqueAndPreferred)
-								{
-									// Shallow map toward secondRolePlayer.
-									potentialFactTypeMappings.Add(new FactTypeMapping(factType, firstRole, secondRole, MappingDepth.Shallow));
-								}
+								// Note that the second role cannot be preferred if the first role is not mandatory
+								// Shallow map toward secondRolePlayer.
+								possibilityBits |= FIRST_SECOND_SHALLOW;
 							}
 							else // ...both roles are mandatory...
 							{
@@ -445,33 +454,74 @@ namespace Neumont.Tools.ORMToORMAbstractionBridge
 								if (!firstRoleIsUniqueAndPreferred)
 								{
 									// Shallow map toward firstRolePlayer.
-									potentialFactTypeMappings.Add(new FactTypeMapping(factType, secondRole, firstRole, MappingDepth.Shallow));
+									possibilityBits |= SECOND_FIRST_SHALLOW;
 								}
 
-								// If seccondRole is not preferred...
+								// If secondRole is not preferred...
 								if (!secondRoleIsUniqueAndPreferred)
 								{
 									// Shallow map toward secondRolePlayer.
-									potentialFactTypeMappings.Add(new FactTypeMapping(factType, firstRole, secondRole, MappingDepth.Shallow));
+									possibilityBits |= FIRST_SECOND_SHALLOW;
 								}
 
-								// Deep map toward firstRolePlayer.
-								potentialFactTypeMappings.Add(new FactTypeMapping(factType, secondRole, firstRole, MappingDepth.Deep));
-
-								// Deep map toward secondRolePlayer.
-								potentialFactTypeMappings.Add(new FactTypeMapping(factType, firstRole, secondRole, MappingDepth.Deep));
-							}
-
-							Debug.Assert(potentialFactTypeMappings.Count > 0);
-							if (potentialFactTypeMappings.Count == 1)
-							{
-								decidedOneToOneFactTypeMappings.Add(factType, potentialFactTypeMappings[0]);
-							}
-							else
-							{
-								undecidedOneToOneFactTypeMappings.Add(factType, potentialFactTypeMappings);
+								// Possible deep map toward firstRolePlayer and toward secondRolePlayer
+								possibilityBits |= FIRST_SECOND_DEEP | SECOND_FIRST_DEEP;
 							}
 						}
+					}
+					Debug.Assert(possibilityBits != 0);
+					switch (possibilityBits)
+					{
+						case FIRST_SECOND_SHALLOW:
+							decidedManyToOneFactTypeMappings.Add(factType, new FactTypeMapping(factType, firstRole, secondRole, MappingDepth.Shallow));
+							break;
+						case SECOND_FIRST_SHALLOW:
+							decidedManyToOneFactTypeMappings.Add(factType, new FactTypeMapping(factType, secondRole, firstRole, MappingDepth.Shallow));
+							break;
+						case FIRST_SECOND_DEEP:
+							decidedManyToOneFactTypeMappings.Add(factType, new FactTypeMapping(factType, firstRole, secondRole, MappingDepth.Deep));
+							break;
+						case SECOND_FIRST_DEEP:
+							decidedManyToOneFactTypeMappings.Add(factType, new FactTypeMapping(factType, secondRole, firstRole, MappingDepth.Deep));
+							break;
+						default:
+							{
+								// UNDONE: I don't see any reason to use a heavy-weight list structure here. The
+								// same information could be stored in an UndecidedFactTypeMapping structure that
+								// uses a bit field mechanism similar to this block of code. This would allow us
+								// to store the factType/firstRole/secondRole once and interpret the contents based
+								// on a single bitfield. In the meantime, keep the list as small as possible.
+								int countBits = possibilityBits;
+								int count = 0;
+								while (countBits != 0)
+								{
+									if (0 != (countBits & 1))
+									{
+										++count;
+									}
+									countBits >>= 1;
+								}
+								FactTypeMappingList potentialMappingList = new FactTypeMappingList(count);
+								count = -1;
+								if (0 != (possibilityBits & FIRST_SECOND_SHALLOW))
+								{
+									potentialMappingList.Add(new FactTypeMapping(factType, firstRole, secondRole, MappingDepth.Shallow));
+								}
+								if (0 != (possibilityBits & SECOND_FIRST_SHALLOW))
+								{
+									potentialMappingList.Add(new FactTypeMapping(factType, secondRole, firstRole, MappingDepth.Shallow));
+								}
+								if (0 != (possibilityBits & FIRST_SECOND_DEEP))
+								{
+									potentialMappingList.Add(new FactTypeMapping(factType, firstRole, secondRole, MappingDepth.Deep));
+								}
+								if (0 != (possibilityBits & SECOND_FIRST_DEEP))
+								{
+									potentialMappingList.Add(new FactTypeMapping(factType, secondRole, firstRole, MappingDepth.Deep));
+								}
+								undecidedOneToOneFactTypeMappings.Add(factType, potentialMappingList);
+								break;
+							}
 					}
 				}
 			}

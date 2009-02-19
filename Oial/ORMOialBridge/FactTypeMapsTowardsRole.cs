@@ -135,22 +135,39 @@ namespace Neumont.Tools.ORMToORMAbstractionBridge
 			{
 				bool towardsRoleUnique;
 				bool towardsRoleMandatory;
+				bool towardsRoleImpliedMandatory;
 				bool fromRoleUnique;
 				bool fromRoleMandatory;
-				GetUniqueAndMandatory(towardsRole, out towardsRoleUnique, out towardsRoleMandatory);
-				GetUniqueAndMandatory(fromRole, out fromRoleUnique, out fromRoleMandatory);
+				bool fromRoleImpliedMandatory;
+				bool oneToOne = false;
+				GetUniqueAndMandatory(towardsRole, out towardsRoleUnique, out towardsRoleMandatory, out towardsRoleImpliedMandatory);
+				GetUniqueAndMandatory(fromRole, out fromRoleUnique, out fromRoleMandatory, out fromRoleImpliedMandatory);
 				uniquenessPattern = towardsRoleUnique ?
-					(fromRoleUnique ? MappingUniquenessPattern.OneToOne : MappingUniquenessPattern.OneToMany) :
+					((oneToOne = fromRoleUnique) ? MappingUniquenessPattern.OneToOne : MappingUniquenessPattern.OneToMany) :
 					MappingUniquenessPattern.ManyToOne;
+				if (oneToOne && (fromRoleImpliedMandatory ^ towardsRoleImpliedMandatory))
+				{
+					// Adjust mandatory patterns to ignore implied mandatory on naturally asymmetric
+					// one-to-one relationships.
+					if (fromRoleImpliedMandatory)
+					{
+						fromRoleMandatory = !towardsRoleMandatory;
+					}
+					else
+					{
+						towardsRoleMandatory = !fromRoleMandatory;
+					}
+				}
 				mandatoryPattern = towardsRoleMandatory ?
 					(fromRoleMandatory ? MappingMandatoryPattern.BothRolesMandatory : MappingMandatoryPattern.TowardsRoleMandatory) :
 					(fromRoleMandatory ? MappingMandatoryPattern.OppositeRoleMandatory : MappingMandatoryPattern.NotMandatory);
 			}
 		}
-		private static void GetUniqueAndMandatory(Role role, out bool hasUniqueness, out bool hasMandatory)
+		private static void GetUniqueAndMandatory(Role role, out bool hasUniqueness, out bool hasMandatory, out bool mandatoryIsImplied)
 		{
 			hasUniqueness = false;
 			hasMandatory = false;
+			mandatoryIsImplied = false;
 			LinkedElementCollection<ConstraintRoleSequence> constraintRoleSequences = role.ConstraintRoleSequenceCollection;
 			int roleSequenceCount = constraintRoleSequences.Count;
 			for (int i = 0; i < roleSequenceCount; ++i)
@@ -184,6 +201,7 @@ namespace Neumont.Tools.ORMToORMAbstractionBridge
 							if (roleSequence.RoleCollection.Count == 1)
 							{
 								hasMandatory = true;
+								mandatoryIsImplied = true;
 								if (hasUniqueness)
 								{
 									return;

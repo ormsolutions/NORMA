@@ -883,7 +883,7 @@
 	</orm:NameGenerator>
 	<orm:GenerationState id="_131855A5-E2F4-4B93-859A-3BF1DCE156A4">
 		<orm:GenerationSettings>
-			<ormtooial:AbstractionModelGenerationSetting AlgorithmVersion="1.004" id="_077B1376-3174-4CAC-9C4A-B8245485F67E">
+			<ormtooial:AbstractionModelGenerationSetting id="_077B1376-3174-4CAC-9C4A-B8245485F67E" AlgorithmVersion="1.005">
 				<ormtooial:AbstractionModel ref="_C50661E8-E857-43F3-A1D2-9EF787A84EFE" />
 			</ormtooial:AbstractionModelGenerationSetting>
 			<oialtocdb:SchemaGenerationSetting id="_CC0244D5-F67A-4DE3-8E18-4B16640FB1F1" CoreAlgorithmVersion="1.004" NameAlgorithmVersion="1.009">
@@ -1106,14 +1106,14 @@
 	</rcd:Catalog>
 	<ormtooial:Bridge>
 		<ormtooial:AbstractionModelIsForORMModel AbstractionModel="_C50661E8-E857-43F3-A1D2-9EF787A84EFE" ORMModel="_3AB1211A-4D44-4326-BB49-EADBBBB1B86B" id="_983B861A-E828-4BF8-9720-07FB90A31C35" />
-		<ormtooial:FactTypeMapsTowardsRole Depth="Shallow" FactType="_F6F3DE7B-6281-4AAC-A014-44A09FEDE54D" MandatoryPattern="BothRolesMandatory" TowardsRole="_AEC03ECD-5CA6-4FEB-8391-6D778A271B9E" UniquenessPattern="OneToOne" id="_34F69C5E-56C6-40A9-97F4-CB5D593E4CDA" />
+		<ormtooial:FactTypeMapsTowardsRole Depth="Shallow" FactType="_F6F3DE7B-6281-4AAC-A014-44A09FEDE54D" TowardsRole="_AEC03ECD-5CA6-4FEB-8391-6D778A271B9E" UniquenessPattern="OneToOne" id="_34F69C5E-56C6-40A9-97F4-CB5D593E4CDA" MandatoryPattern="TowardsRoleMandatory" />
 		<ormtooial:FactTypeMapsTowardsRole Depth="Shallow" FactType="_90FE6FA9-9CF6-458F-B8C7-7BFFD705E72C" MandatoryPattern="NotMandatory" TowardsRole="_0A0E3D95-7598-43E6-94C5-1C2086A35E5D" UniquenessPattern="OneToMany" id="_EADB1BB0-BD92-41C0-BF4A-C491C7466D8E" />
-		<ormtooial:FactTypeMapsTowardsRole Depth="Shallow" FactType="_A9CAFF58-E876-4A28-AC63-70D9149517F2" MandatoryPattern="BothRolesMandatory" TowardsRole="_1BFE9670-E474-4600-9597-8E2B0D40508D" UniquenessPattern="OneToOne" id="_85E1528F-F733-4ABD-8706-09A7A07CEEE8" />
+		<ormtooial:FactTypeMapsTowardsRole Depth="Shallow" FactType="_A9CAFF58-E876-4A28-AC63-70D9149517F2" TowardsRole="_1BFE9670-E474-4600-9597-8E2B0D40508D" UniquenessPattern="OneToOne" id="_85E1528F-F733-4ABD-8706-09A7A07CEEE8" MandatoryPattern="TowardsRoleMandatory" />
 		<ormtooial:FactTypeMapsTowardsRole Depth="Shallow" FactType="_92C5D90F-B546-4912-8A5E-3796802EBEC4" MandatoryPattern="TowardsRoleMandatory" TowardsRole="_97A11E86-02EE-498A-9BBF-875B328BC2D3" UniquenessPattern="OneToMany" id="_A850E450-EE3F-49AE-AFBE-76CF116477DC" />
 		<ormtooial:FactTypeMapsTowardsRole Depth="Shallow" FactType="_1A40C1F5-0B3A-44D6-ACED-28D8C7AE9AEF" MandatoryPattern="OppositeRoleMandatory" TowardsRole="_29B475BF-BB38-4105-B168-6629DAD619C9" UniquenessPattern="OneToMany" id="_4C48368F-E39F-451D-A3C7-20877D4F3F85" />
 		<ormtooial:FactTypeMapsTowardsRole Depth="Shallow" FactType="_5FFD109D-1E12-4646-8F59-FF57AE770F50" MandatoryPattern="TowardsRoleMandatory" TowardsRole="_6B857366-AFA7-4F8A-BCD3-826627DA5BBC" UniquenessPattern="OneToMany" id="_E69EC8E8-7F75-4B6D-9A84-3E9721B9F75A" />
 		<ormtooial:FactTypeMapsTowardsRole Depth="Deep" FactType="_2474A7EC-435A-44A5-B30D-102810641C39" MandatoryPattern="OppositeRoleMandatory" TowardsRole="_265D659B-19D5-4628-8632-64B47C0F4415" UniquenessPattern="Subtype" id="_DE500EB8-0D05-45E8-A42B-16B860B68822" />
-		<ormtooial:FactTypeMapsTowardsRole Depth="Shallow" FactType="_93FCB283-1D3F-4385-802B-537B2E0B8799" MandatoryPattern="BothRolesMandatory" TowardsRole="_5E550BD2-551E-4D0F-B9DE-C1555BD30B17" UniquenessPattern="OneToOne" id="_C80CF21E-A968-448B-8304-112B3FCA943A" />
+		<ormtooial:FactTypeMapsTowardsRole Depth="Shallow" FactType="_93FCB283-1D3F-4385-802B-537B2E0B8799" TowardsRole="_5E550BD2-551E-4D0F-B9DE-C1555BD30B17" UniquenessPattern="OneToOne" id="_C80CF21E-A968-448B-8304-112B3FCA943A" MandatoryPattern="TowardsRoleMandatory" />
 		<ormtooial:FactTypeMapsTowardsRole Depth="Deep" FactType="_563A9578-1903-4B58-AA8B-1A0CA6C5A822" MandatoryPattern="OppositeRoleMandatory" TowardsRole="_EA35122A-2D1C-4F24-BFB0-F8B0B9C03347" UniquenessPattern="OneToOne" id="_55370787-2C67-4FEE-8F4A-4838EA9581E7" />
 		<ormtooial:FactTypeMapsTowardsRole Depth="Shallow" FactType="_A50A2B58-EC3B-47F4-B5B8-1E29A66DC9DD" MandatoryPattern="BothRolesMandatory" TowardsRole="_67FF9228-20C1-48F7-B22B-BA459EC729BB" UniquenessPattern="OneToMany" id="_AB7307C5-7F22-4C27-B443-8A1907828D65" />
 		<ormtooial:FactTypeMapsTowardsRole Depth="Shallow" FactType="_D1CD69C7-330D-402E-B0E2-D3A49E2237BB" MandatoryPattern="BothRolesMandatory" TowardsRole="_AB59E94B-B75E-4DBE-9FC7-283F9C0005B4" UniquenessPattern="OneToMany" id="_208BCEAA-C6D3-4657-BCD3-41A462A65A6D" />

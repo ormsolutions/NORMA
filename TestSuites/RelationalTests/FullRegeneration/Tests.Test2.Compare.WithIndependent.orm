@@ -1,4 +1,5 @@
-﻿<ormRoot:ORM2 xmlns:ddt="http://schemas.orm.net/DIL/DILDT" xmlns:odt="http://schemas.neumont.edu/ORM/Abstraction/2007-06/DataTypes/Core" xmlns:oial="http://schemas.neumont.edu/ORM/Abstraction/2007-06/Core" xmlns:oialtocdb="http://schemas.neumont.edu/ORM/Bridge/2007-06/ORMAbstractionToConceptualDatabase" xmlns:orm="http://schemas.neumont.edu/ORM/2006-04/ORMCore" xmlns:ormDiagram="http://schemas.neumont.edu/ORM/2006-04/ORMDiagram" xmlns:ormRoot="http://schemas.neumont.edu/ORM/2006-04/ORMRoot" xmlns:ormtooial="http://schemas.neumont.edu/ORM/Bridge/2007-06/ORMToORMAbstraction" xmlns:rcd="http://schemas.neumont.edu/ORM/Relational/2007-06/ConceptualDatabase">
+﻿<?xml version="1.0" encoding="utf-8"?>
+<ormRoot:ORM2 xmlns:ddt="http://schemas.orm.net/DIL/DILDT" xmlns:odt="http://schemas.neumont.edu/ORM/Abstraction/2007-06/DataTypes/Core" xmlns:oial="http://schemas.neumont.edu/ORM/Abstraction/2007-06/Core" xmlns:oialtocdb="http://schemas.neumont.edu/ORM/Bridge/2007-06/ORMAbstractionToConceptualDatabase" xmlns:orm="http://schemas.neumont.edu/ORM/2006-04/ORMCore" xmlns:ormDiagram="http://schemas.neumont.edu/ORM/2006-04/ORMDiagram" xmlns:ormRoot="http://schemas.neumont.edu/ORM/2006-04/ORMRoot" xmlns:ormtooial="http://schemas.neumont.edu/ORM/Bridge/2007-06/ORMToORMAbstraction" xmlns:rcd="http://schemas.neumont.edu/ORM/Relational/2007-06/ConceptualDatabase">
 	<orm:ORMModel Name="ORMModel2" id="_587F4DD7-D59D-425E-A9CD-36D3265569AD">
 		<orm:Objects>
 			<orm:EntityType Name="Harry" _ReferenceMode="id" id="_3E529D02-56BA-46D2-A5DD-DE559E5CAA77">
@@ -281,7 +282,7 @@
 	</orm:NameGenerator>
 	<orm:GenerationState id="_54101972-8FEE-4228-AD12-FC8C396A2A2C">
 		<orm:GenerationSettings>
-			<ormtooial:AbstractionModelGenerationSetting id="_216FCBEF-24A6-4138-9F8D-255066420DD2" AlgorithmVersion="1.004">
+			<ormtooial:AbstractionModelGenerationSetting id="_216FCBEF-24A6-4138-9F8D-255066420DD2" AlgorithmVersion="1.005">
 				<ormtooial:AbstractionModel ref="_FE3D35D4-8BFA-4604-B769-6F8224F4CC89" />
 			</ormtooial:AbstractionModelGenerationSetting>
 			<oialtocdb:SchemaGenerationSetting id="_AB43283A-160B-4A51-9E75-F464582D1F72" CoreAlgorithmVersion="1.004" NameAlgorithmVersion="1.009">
@@ -405,7 +406,7 @@
 	<ormtooial:Bridge>
 		<ormtooial:AbstractionModelIsForORMModel AbstractionModel="_FE3D35D4-8BFA-4604-B769-6F8224F4CC89" ORMModel="_587F4DD7-D59D-425E-A9CD-36D3265569AD" id="_9B22C127-CC42-4B25-B975-AFFEBDCB61D9" />
 		<ormtooial:FactTypeMapsTowardsRole Depth="Shallow" FactType="_56E03C19-EE02-492B-863D-EE621F538295" MandatoryPattern="TowardsRoleMandatory" TowardsRole="_BA0030EE-5B62-4DAA-B0B2-CD9955A882D7" UniquenessPattern="OneToOne" id="_9C81FFED-C3A1-4FEF-A3E4-20FD08454439" />
-		<ormtooial:FactTypeMapsTowardsRole Depth="Shallow" FactType="_1D66ED9E-AD73-43E1-8685-D93B1EF05434" MandatoryPattern="BothRolesMandatory" TowardsRole="_275A82F9-8C5D-4FA0-8ED9-CD136532B41C" UniquenessPattern="OneToOne" id="_9F7B1DFD-7A31-49D1-9D17-55C72D995F3A" />
+		<ormtooial:FactTypeMapsTowardsRole Depth="Shallow" FactType="_1D66ED9E-AD73-43E1-8685-D93B1EF05434" TowardsRole="_275A82F9-8C5D-4FA0-8ED9-CD136532B41C" UniquenessPattern="OneToOne" id="_9F7B1DFD-7A31-49D1-9D17-55C72D995F3A" MandatoryPattern="TowardsRoleMandatory" />
 		<ormtooial:FactTypeMapsTowardsRole Depth="Shallow" FactType="_E441C3C1-2551-4F42-AC20-565BB49F84AB" MandatoryPattern="TowardsRoleMandatory" TowardsRole="_FE236504-0991-45AA-9BA2-E1BF757123DD" UniquenessPattern="OneToMany" id="_2A501CF3-442F-47D9-A944-D163D17648F9" />
 		<ormtooial:FactTypeMapsTowardsRole Depth="Shallow" FactType="_5A4F23BE-318B-4147-87BE-2332F5996DC3" MandatoryPattern="TowardsRoleMandatory" TowardsRole="_90492A52-F36F-4D15-BAB6-E5E2071DFB0F" UniquenessPattern="OneToOne" id="_E17AB453-D6AC-4B72-A61F-D355F4CDDF2E" />
 		<ormtooial:ConceptTypeIsForObjectType ConceptType="_043FFC82-0767-48FF-AEC3-BA6674A27F47" ObjectType="_26254316-12F7-48DD-8A1B-77A506300273" id="_11D0BE80-D32D-43A4-9A92-B8B45EB0F0C2" />

@@ -2521,16 +2521,6 @@
 			</orm:ImpliedFact>
 		</orm:Facts>
 		<orm:Constraints>
-			<orm:ExclusionConstraint id="_38FAC3C9-2930-4D3A-A3BF-5AED59D6AC37" Name="ExclusionConstraint2">
-				<orm:RoleSequences>
-					<orm:RoleSequence id="_4E59DCE5-D9B5-4933-855A-1DE1768A8B29">
-						<orm:Role id="_2B3A2BAB-D843-4E00-8C2B-80D60B70B01E" ref="_9F1F7C52-3E4E-4161-ACB9-E417F8D293A6" />
-					</orm:RoleSequence>
-					<orm:RoleSequence id="_6C551D9F-5659-487B-8104-C9A7B39CD535">
-						<orm:Role id="_44F51FF3-53ED-4E5B-9FC2-2DA725EA8D92" ref="_089D0A43-FD48-4580-A6A6-45A6FA189DEA" />
-					</orm:RoleSequence>
-				</orm:RoleSequences>
-			</orm:ExclusionConstraint>
 			<orm:UniquenessConstraint id="_F40FEEF1-947A-453D-8B63-C791930EB876" Name="ExternalUniquenessConstraint1">
 				<orm:RoleSequence>
 					<orm:Role id="_627DE234-1797-4500-B40B-754D5773B03C" ref="_0D9E47FC-891C-45C5-95E6-CEC245F61265" />
@@ -3516,6 +3506,16 @@
 					<orm:Role id="_53770547-CD10-4FF7-8A4C-19AB7D4D9351" ref="_5FEB0E2A-F99E-41AB-B3E1-2296ED431914" />
 				</orm:RoleSequence>
 			</orm:MandatoryConstraint>
+			<orm:ExclusionConstraint id="_38FAC3C9-2930-4D3A-A3BF-5AED59D6AC37" Name="ExclusionConstraint2">
+				<orm:RoleSequences>
+					<orm:RoleSequence id="_4E59DCE5-D9B5-4933-855A-1DE1768A8B29">
+						<orm:Role id="_2B3A2BAB-D843-4E00-8C2B-80D60B70B01E" ref="_9F1F7C52-3E4E-4161-ACB9-E417F8D293A6" />
+					</orm:RoleSequence>
+					<orm:RoleSequence id="_6C551D9F-5659-487B-8104-C9A7B39CD535">
+						<orm:Role id="_44F51FF3-53ED-4E5B-9FC2-2DA725EA8D92" ref="_089D0A43-FD48-4580-A6A6-45A6FA189DEA" />
+					</orm:RoleSequence>
+				</orm:RoleSequences>
+			</orm:ExclusionConstraint>
 		</orm:Constraints>
 		<orm:DataTypes>
 			<orm:VariableLengthTextDataType id="_229A15D5-CDF8-48A0-89A5-010A457F82D8" />
